@@ -1,0 +1,95 @@
+\section{The arithmetic foundation}\label{sec:arith}
+
+\subsection{The exact version of iPRA}
+We use first-order intuitionistic logic with equality, a symbol for every
+primitive-recursive definition, its defining equations, successor
+injectivity, $Sx\ne0$, and induction for quantifier-free formulas with
+parameters. This is the system explicitly defined by
+\texttt{PR}, \texttt{PTm}, and \texttt{PRAAx} in ProveIt's
+\texttt{ConciseIPRA/PR.lean} \cite{repo-pr}.
+Quantifier-free induction is not induction for arbitrary formulas about
+geometric objects or real names.
+
+Natural-number equality is decidable in this theory. Define its Boolean
+test by primitive recursion, first using the zero test and predecessor,
+and then comparing successors. The defining equations and
+quantifier-free induction prove the test correct. Consequently every
+finite Boolean combination of the integer equalities below permits
+intuitionistically valid case analysis. This uses a decision procedure
+for the specified predicate, rather than excluded middle for all formulas.
+
+\subsection{Signed integers without a quotient-set assumption}
+An integer is represented by a pair $(p,n)$ of natural numbers, read as
+$p-n$. There is no need to form a set-theoretic quotient internally. Set
+\begin{align*}
+ (p,n)\simeq(p',n')&\quad\Longleftrightarrow\quad p+n'=p'+n,\\
+ (p,n)+(r,s)&=(p+r,n+s),\\
+ -(p,n)&=(n,p),\\
+ (p,n)(r,s)&=(pr+ns,ps+nr).
+\end{align*}
+Zero and one are $(0,0)$ and $(1,0)$. These operations and the equality
+test are primitive recursive and respect $\simeq$. Subsequent integer
+equalities abbreviate this numerical equality relation. A tuple may be
+left as finitely many variables or packed by a primitive-recursive
+pairing function.
+
+For completeness, the elementary arithmetic behind this interpretation
+is as follows. Define $x+0=x$, $x+S y=S(x+y)$, $x\cdot0=0$, and
+$x\cdot S y=x\cdot y+x$. Quantifier-free induction proves
+$0+x=x$, $Sx+y=S(x+y)$, and associativity of addition. The first two
+equations give commutativity of addition by induction on its second
+argument. Induction on the repeated summand proves distributivity;
+using distributivity, induction proves associativity and commutativity
+of multiplication. Each induction formula is an equation with the other
+quantities as parameters. Cancellation of a common additive summand
+follows by induction on that summand and successor injectivity.
+Expanding the pair operations now proves all commutative-ring laws:
+both sides reduce to equal sums of natural monomials. The same expansions
+show that replacing an input by an equivalent pair preserves the output.
+
+We also need that these interpreted integers have no zero divisors.
+Truncated subtraction $x\mathbin{\dot-}y$ is primitive recursive; its
+recursion on $y$ uses predecessor. Its elementary defining identities
+show that $(p,n)$ is equivalent to
+\[
+ (p\mathbin{\dot-}n,\ n\mathbin{\dot-}p),
+\]
+and that at least one of these two components is zero. One direct proof
+uses the primitive-recursive comparison: strip successors from both
+inputs until a zero is reached; the process can be bounded by $p+n$.
+Induction on this explicit counter, with equations for the two registers
+and the Boolean comparison result, is quantifier free. It proves the
+usual alternatives $p=n+d$ or $n=p+d$, where the appropriate $d$ is the
+displayed truncated difference. In either alternative the normalization
+and its equality to $(p,n)$ follow by additive cancellation.
+
+Every nonzero integer therefore has either the form $(S r,0)$ or
+$(0,S r)$. The product of two such integers has a nonzero component,
+since
+\[
+ S r\cdot S s=S\bigl(r+s+rs\bigr).
+\]
+This is unequal to zero by successor separation. Splitting on the
+decidable zero test thus proves
+\begin{equation}\label{eq:cancel}
+ uv=0\ \land\ u\ne0\quad\Longrightarrow\quad v=0.
+\end{equation}
+All normalizations and comparisons here have primitive-recursive
+definitions. None searches without a bound, and all the indicated
+induction formulas are quantifier free.
+
+\subsection{Why integer triples cover rational geometry}
+A rational number can be presented by a signed numerator and a positive
+natural denominator. Multiplying a triple by the product of its three
+denominators produces an integer triple. Applying the same operation
+to the six conic coefficients produces an integer quadratic equation.
+No greatest common divisor or canonical representative is needed.
+Multiplication by these nonzero denominators preserves incidence and
+the zero or nonzero status of every determinant and cross product in
+the statements. These operations are primitive recursive.
+
+Thus rational points, rational lines, and rational homogeneous conics
+can all be treated with the signed-pair arithmetic above. The later
+real-name schema explains a separate interpretation for coordinates
+or coefficients given by effective real approximations.
+

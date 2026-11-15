@@ -1,0 +1,633 @@
+\section{A constructive Davenport--Schmidt theorem with an explicit modulus}
+\label{sec:ds}
+
+The theorem linked in the question concerns approximation by algebraic
+numbers of degree at most two, with exponent three.  It is not the later
+Davenport--Schmidt theorem about simultaneous approximation to a number and
+its square.  The original 1967 result gives the constant
+$C>160/9$ in
+\[
+  |\xi-\alpha|< C\max(1,\xi^2)H(\alpha)^{-3}.
+\]
+Here we retain the exponent and the dependence on $\xi$, but use the
+larger absolute constant $32768$.  In exchange, every search below has an
+explicit primitive recursive bound.  The proof is a finite reconstruction
+of the minimal-point argument of Davenport and Schmidt
+\cite{DavenportSchmidt1967}, with an elementary pigeonhole estimate in
+place of its sharper geometry-of-numbers estimate.
+
+\subsection{The positive hypothesis and the exact claim}
+
+For a nonzero integer polynomial $f=aX^2+bX+c$ of degree at most two put
+$\|f\|=\max(|a|,|b|,|c|)$.  A quadratic separation modulus for $\xi$ is a
+nondecreasing function $\rho:\mathbb N_{\geq1}\to\mathbb N$ such that
+\begin{equation}\label{eq:ds-separation}
+  0<\|f\|\leq H\quad\Longrightarrow\quad
+  |f(\xi)|\geq 2^{-\rho(H)}.
+\end{equation}
+This is positive information.  It implies that $\xi$ is neither rational
+nor quadratic.  We do not infer the existence of a primitive recursive
+$\rho$ from the negative assertion that no quadratic polynomial vanishes.
+
+\begin{theorem}[Constructive Davenport--Schmidt, with supplied separation]
+\label{thm:ds-constructive}
+Fix a primitive recursive rational name for a real number $\xi$, a
+primitive recursive modulus $\rho$ satisfying
+\eqref{eq:ds-separation}, and an integer $M\geq1$ with $|\xi|\leq M$.
+For every integer $h\geq1$, a bounded primitive recursive procedure
+produces a rational number or real quadratic irrational $\alpha$ such that
+\[
+ H(\alpha)>h,\qquad
+ |\xi-\alpha|<32768\max(1,\xi^2)H(\alpha)^{-3}.
+\]
+The output consists of its primitive minimal polynomial and a root
+selector.  All bounds used by the procedure are displayed below.
+
+In first-order iPRA this is a schema for the fixed primitive recursive
+name and modulus, conditional on their stated arithmetical correctness
+properties.  It does not quantify over arbitrary functions as objects.
+\end{theorem}
+
+An algebraic real of fixed degree at least three admits such a modulus by
+an elementary resultant estimate.  Thus the hypothesis has substantial
+unconditional instances; it is not restricted to a hypothetical oracle.
+A construction of the modulus is given at the end of this section.
+
+We first prove a finite arithmetic core at a rational working point
+$0<\eta<1$.  Temporarily, $\rho$ denotes the separation exponent used
+by this core.  Separation is required only for coefficient heights at most
+$W=2B^2$, where $B$ is the finite bound constructed below.  This is
+consistent with $\eta$ being rational: its own linear relation may have
+height much greater than $W$.  In the actual algorithm we will compute
+$B$ with the exponent $\rho+1$ and obtain the working point by one
+sufficiently accurate rational sample of the given real number.  Write
+\[
+ K=16,\qquad D=4096,\qquad C=8192=2D,\qquad
+ \varepsilon(H)=2^{-\rho(H)}.
+\]
+The rational core has constant $C$.  Its rational sample will give the
+normalized real conclusion with constant $16384$.
+
+\subsection{A finite pigeonhole estimate}
+
+For every integer $3\leq U\leq B$ there is a nonzero integer triple
+$v=(a,b,c)$ with
+\begin{equation}\label{eq:ds-dirichlet}
+ \|v\|<U,\qquad 0<|a\eta^2+b\eta+c|<\frac{16}{U^2}.
+\end{equation}
+To prove this, put $N=\lfloor(U-1)/2\rfloor$.  The $(N+1)^2$ numbers
+\[
+ a\eta^2+b\eta\qquad(0\leq a,b\leq N)
+\]
+have fractional parts in $[0,1)$.  Partition that interval into $N^2$
+half-open intervals of length $N^{-2}$.  Two distinct pairs give fractional
+parts in the same interval.  Subtract them, and subtract the corresponding
+integer parts.  The resulting $a,b$ have absolute values at most $N$;
+the constant coefficient has absolute value at most $2N$ because the
+original numbers lie in $[0,2N]$.  The triple is nonzero, since the pairs
+are distinct.  Its value is nonzero by the separation hypothesis and has
+absolute value less than $N^{-2}$.  Finally $2N<U$ and $N\geq U/4$.
+
+This pigeonhole argument is constructive.  At the rational working point,
+integer parts and occupied subintervals are computed by exact integer
+division.  Boundary equality is decidable.  The ordinary finite
+pigeonhole proof uses induction only on finite lists.  The separation
+assumption is needed only for the final nonzero triple, whose height is
+less than $U\leq B$.
+
+\subsection{Finite minimal points and a bound for the next record}
+
+For each integer $1\leq H\leq B$, consider the finite collection of nonzero
+integer triples of height at most $H$.  After changing signs when needed,
+their values under
+\[
+ L(a,b,c)=a\eta^2+b\eta+c
+\]
+are positive.  Choose the triple having the smallest positive value.
+It is unique: equality of two values would give a nonzero quadratic
+polynomial of height at most $2B\leq W$ vanishing at $\eta$.  List the distinct choices in increasing
+order of the height at which they first occur, stopping at any specified
+finite bound.  Denote them by $v_i$, and put
+\[
+ H_i=\|v_i\|,\qquad E_i=L(v_i)>0,\qquad
+ P(v)=2\eta a+b,\qquad P_i=|P(v_i)|.
+\]
+Then $H_i$ strictly increases, $E_i$ strictly decreases, and every $v_i$
+is primitive.  Indeed, a common divisor greater than one would give a
+smaller positive value at a smaller height.  Consecutive $v_i$ are linearly
+independent: primitive proportional integer vectors agree up to sign,
+which is incompatible with their distinct positive values.
+
+Whenever $H_{i+1}\geq3$, \eqref{eq:ds-dirichlet} applied with
+$U=H_{i+1}$ gives
+\begin{equation}\label{eq:ds-record-estimate}
+ E_i<\frac{K}{H_{i+1}^2}.
+\end{equation}
+The reason is that $E_i$ is the least positive absolute value at heights
+strictly below $H_{i+1}$.
+
+Define the primitive recursive function
+\begin{equation}\label{eq:ds-jump}
+ J(R)=\max\{R+2,\,8\cdot2^{\rho(R)}\}\qquad(R\geq1).
+\end{equation}
+Whenever $J(R)\leq B$, there is a record of height strictly greater
+than $R$ and strictly less than $J(R)$.  In fact, \eqref{eq:ds-dirichlet} at $J(R)$ supplies a value
+less than
+\[
+ \frac{16}{J(R)^2}\leq\frac14\,2^{-2\rho(R)}
+ <2^{-\rho(R)},
+\]
+whereas every nonzero triple of height at most $R$ has value at least
+$2^{-\rho(R)}$.  This proves a bound for obtaining a later record without
+any appeal to an infinite sequence or an unbounded search.
+
+\subsection{The integral-plane lemma}
+
+Two consecutive minimal points $v_i,v_{i+1}$ form an integral basis for
+the integer points in their rational plane.  To see this, if an integer
+point in that plane were outside their integral span, reduce its two
+rational coordinates modulo integers into $[-1/2,1/2]$.  This produces
+a nonzero integer point
+\[
+ w=r v_i+s v_{i+1},\qquad |r|,|s|\leq\tfrac12.
+\]
+It satisfies
+\[
+ \|w\|\leq\tfrac12(H_i+H_{i+1})<H_{i+1},\qquad
+ |L(w)|\leq\tfrac12(E_i+E_{i+1})<E_i,
+\]
+contradicting minimality.  The coordinates can be computed by a nonzero
+two-by-two minor, so this argument involves only rational arithmetic.
+
+If three consecutive points are linearly dependent, the two adjacent
+pairs are integral bases of the same plane.  Consequently
+\begin{equation}\label{eq:ds-plane-relation}
+ v_{i-1}=u v_i+s v_{i+1},\qquad u\in\mathbb Z,\quad s\in\{1,-1\}.
+\end{equation}
+For completeness, expansion in one integral basis gives the coefficient
+$s$ as an integer.  Expansion in the other basis shows that its inverse
+is an integer.  Hence $s=\pm1$.
+For any two linear forms $A,B$, relation
+\eqref{eq:ds-plane-relation} preserves, up to sign, the quantity
+\[
+ A(v_{i-1})B(v_i)-A(v_i)B(v_{i-1}).
+\]
+In particular, its absolute value is constant along a finite string of
+dependent consecutive triples.
+
+\subsection{A finite bound for finding an independent triple}
+
+Suppose a pair of consecutive records $v_r,v_{r+1}$ has heights at most
+$R$, and the upper bound $J(G(R))$ below is at most $B$.  Some coordinate $j$ makes
+\[
+ w=(v_r)_j v_{r+1}-(v_{r+1})_j v_r
+\]
+nonzero, because the pair is independent.  We have $\|w\|\leq2R^2$, and
+therefore
+\begin{equation}\label{eq:ds-wedge-lower}
+ |L(w)|\geq2^{-\rho(2R^2)}.
+\end{equation}
+Define
+\begin{equation}\label{eq:ds-gap}
+ G(R)=\max\{R+1,\,32\cdot2^{\rho(2R^2)}+1\}.
+\end{equation}
+Take a later record $v_t$ with $H_t>G(R)$, available below $J(G(R))$.
+If every triple with center $r+1,r+2,\ldots,t-1$ were dependent, the
+integral-plane lemma would make the absolute value in
+\eqref{eq:ds-wedge-lower} equal to
+\[
+ |(v_{t-1})_jE_t-(v_t)_jE_{t-1}|
+ \leq H_{t-1}E_t+H_tE_{t-1}
+ <\frac{2K}{H_t}
+ <2^{-\rho(2R^2)}.
+\]
+The penultimate inequality uses \eqref{eq:ds-record-estimate} and
+$E_t<E_{t-1}$.  This contradiction proves that an independent triple
+occurs in the displayed finite range.  No assertion about infinitely many
+independent triples has been used.
+
+\subsection{The determinant calculation}
+
+We now prove the key finite obstruction.  Suppose, over the finite range
+under consideration, that every relevant record satisfies
+\begin{equation}\label{eq:ds-small-derivative}
+ P_i\leq\frac{H_i^3E_i}{D}.
+\end{equation}
+Let $n$ be the center of an independent triple.  The determinant with
+rows
+\[
+ ((v_i)_1,P(v_i),L(v_i)),\qquad i=n-1,n,n+1,
+\]
+equals the determinant with rows $v_i$: the triangular transformation
+from $(a,b,c)$ to $(a,2\eta a+b,\eta^2a+\eta b+c)$ has determinant one.
+It is thus a nonzero integer and has absolute value at least one.
+
+Expand along the middle column.  The term involving $P_{n-1}$ has absolute
+value at most
+\[
+ P_{n-1}(H_nE_{n+1}+H_{n+1}E_n)
+ <\frac{2}{D}H_{n+1}H_{n-1}^3E_{n-1}E_n
+ <\frac{2K^2}{D}=\frac18.
+\]
+Here the last inequality follows from
+$E_{n-1}<K/H_n^2$, $E_n<K/H_{n+1}^2$, and
+$H_{n-1}<H_n<H_{n+1}$.  The term involving $P_n$ is similarly less than
+\[
+ \frac{2}{D}H_{n+1}H_n^3E_{n-1}E_n
+ <\frac{2K^2}{D}=\frac18.
+\]
+The remaining cofactor has absolute value at most $2H_nE_{n-1}$.
+Therefore
+\begin{equation}\label{eq:ds-derivative-lower}
+ P_{n+1}H_nE_{n-1}>\frac38,
+ \qquad P_{n+1}>\frac{3H_n}{128}.
+\end{equation}
+The second inequality follows again from $E_{n-1}<16/H_n^2$.
+
+Let $m<n$ be consecutive centers of independent triples.  The intervening
+triples are dependent, so the integral-plane lemma gives
+\begin{align*}
+ \Omega&=|P(v_m)E_{m+1}-P(v_{m+1})E_m|\\
+  &=|P(v_{n-1})E_n-P(v_n)E_{n-1}|.
+\end{align*}
+The latter expression is bounded above by
+\[
+ \frac1D(H_{n-1}^3+H_n^3)E_{n-1}E_n
+ <\frac{2K}{D}H_nE_n=\frac{2}{256}H_nE_n.
+\]
+The former, by \eqref{eq:ds-derivative-lower}, is bounded below by
+\[
+ \frac{3}{128}H_mE_m-\frac1D H_m^3E_mE_{m+1}
+ >\left(\frac{3}{128}-\frac{K}{D}\right)H_mE_m
+ =\frac{5}{256}H_mE_m.
+\]
+We used $E_{m+1}<E_m<K/H_m^2$, so this estimate does not need a further
+successor beyond $v_{m+1}$.  Combining the two bounds gives
+\begin{equation}\label{eq:ds-growth}
+ H_nE_n>\frac52 H_mE_m.
+\end{equation}
+This is a finite growth invariant, stronger than the monotonicity needed
+below.
+
+\subsection{An explicit height bound for a large derivative}
+
+Let $T\geq16385$.  Define, in the following order,
+\begin{equation}\label{eq:ds-final-bound}
+\begin{aligned}
+ A&=J(T),& A'&=J(A),& U&=J(G(A')),\\
+ R&=\max\{U+1,16\cdot2^{\rho(U)}+1\},\\
+ V&=J(R),& V'&=J(V),& B&=J(G(V')).
+\end{aligned}
+\end{equation}
+All of these are primitive recursive functions of $T$ for the fixed
+primitive recursive function $\rho$.
+
+\begin{lemma}\label{lem:ds-large-derivative}
+Among the primitive nonzero integer triples with $T<\|v\|\leq B$ there is
+one satisfying
+\begin{equation}\label{eq:ds-large-derivative}
+ \|v\|^3|L(v)|<D|P(v)|.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Assume the finite, decidable search for such a triple returns no match.
+Then \eqref{eq:ds-small-derivative} holds for every record of height
+strictly between $T$ and $B$.
+
+The first record above $T$ has height below $A$; its successor has height
+below $A'$.  The finite independence lemma supplies an independent triple
+whose center $m$ is after that pair's first point and has $H_m<U$.
+In particular, all three points involved have height greater than $T$.
+The separation hypothesis and monotonicity of $\rho$ give
+\[
+ H_mE_m\geq E_m\geq2^{-\rho(U)}.
+\]
+Likewise the first record above $R$ and its successor have heights below
+$V$ and $V'$.  Applying the finite independence lemma again supplies an
+independent center $n$ with
+\[
+ R<H_n<B,
+\]
+whose successor is also within the searched range.  Apply
+\eqref{eq:ds-growth} successively to the finite list of independent
+centers from $m$ to $n$.  It follows that
+$H_nE_n>2^{-\rho(U)}$.  But
+\[
+ H_nE_n<\frac{16}{H_n}
+ <2^{-\rho(U)}
+\]
+by \eqref{eq:ds-record-estimate} and the definition of $R$.  This is a
+contradiction.
+
+The search is over a finite decidable list.  Its failure leads to a
+contradiction, so its other, explicitly recorded outcome supplies a
+witness.  This last step is finite decidable case analysis, not an
+application of double-negation elimination for an unbounded existential.
+\end{proof}
+
+\subsection{Turning the large derivative into a nearby algebraic number}
+
+Let $f=aX^2+bX+c$ be the primitive polynomial supplied by
+Lemma~\ref{lem:ds-large-derivative}, and write $H=\|f\|$,
+$L=f(\eta)$, $P=f'(\eta)$.  Then $L\ne0$, $P\ne0$, $H>4D$, and
+\[
+ |L|<D|P|H^{-3}.
+\]
+We claim that $f$ has a real root $\alpha$ with
+\begin{equation}\label{eq:ds-root-distance}
+ |\eta-\alpha|<2DH^{-3}.
+\end{equation}
+
+If $|P|\geq H^{-1}$, put $t=2DH^{-3}$ and choose
+$s=-\operatorname{sgn}(LP)t$.  The exact quadratic Taylor identity gives
+\[
+ \operatorname{sgn}(L)f(\eta+s)
+ \leq |L|-|P|t+H t^2
+ <-D|P|H^{-3}+4D^2H^{-5}<0.
+\]
+The last inequality uses $H>4D$.  Thus the values of $f$ at $\eta$ and
+$\eta+s$ have opposite signs, and its explicit linear or quadratic root
+formula supplies a root strictly between them.  This use of a sign
+change needs no general intermediate-value principle: it is just the
+elementary quadratic formula, or equivalently its elementary algebraic
+sign verification.  Indeed, throughout $|z|\leq t$,
+\[
+ |f'(\eta+z)-P|\leq2Ht=4D/H^2<1/H\leq|P|,
+\]
+so the derivative keeps the sign of $P$.  If $a\ne0$, the discriminant
+$\Delta=b^2-4ac$ is positive, and the selected root is explicitly
+\[
+ \alpha=\frac{-b+\operatorname{sgn}(P)\sqrt{\Delta}}{2a}.
+\]
+
+If $|P|<H^{-1}$, the integer discriminant satisfies
+\[
+ |b^2-4ac|=|P^2-4aL|
+ <H^{-2}+4DH^{-3}<1.
+\]
+Hence it is zero.  Here $a\ne0$, since otherwise $P=b=0$.
+Primitivity implies
+\[
+ f(X)=\pm(uX+v)^2
+\]
+for coprime integers $u,v$ with $u\ne0$.  To see this, put the repeated
+rational root in lowest terms $-v/u$.  Then
+$f=a(X+v/u)^2$.  Since $c=av^2/u^2$ is an integer and
+$\gcd(u^2,v^2)=1$, we have $a=ku^2$ for an integer $k$.  Thus the
+coefficients are $ku^2,2kuv,kv^2$.  The three numbers
+$u^2,2uv,v^2$ have greatest common divisor one, so primitivity forces
+$k=\pm1$.  Since $u\eta+v\ne0$, the
+large-derivative inequality reduces to
+\[
+ |u\eta+v|<2D|u|H^{-3}.
+\]
+The rational root $\alpha=-v/u$ again satisfies
+\eqref{eq:ds-root-distance}.
+
+In both cases $H(\alpha)\leq H$.  For an irreducible quadratic this is
+equality.  For a rational root in lowest terms $p/q$, the rational-root
+divisibility relations give $|p|\leq|c|$, $q\leq|a|$ when $ac\ne0$;
+the cases of a zero constant coefficient and a linear polynomial are immediate.  Consequently
+\[
+ |\eta-\alpha|<8192H(\alpha)^{-3}.
+\]
+
+\subsection{Forcing the output height to exceed a prescribed height}
+
+Fix $h\geq1$.  If $\beta$ has degree at most two and $H(\beta)\leq h$,
+let $g$ be its primitive minimal polynomial.  For
+$|\eta-\beta|<1$ we have $|\beta|<2$, and
+\[
+ |g(\eta)|
+ =|\eta-\beta|\,|a(\eta+\beta)+b|
+ \leq4h|\eta-\beta|.
+\]
+The same formula covers a linear $g$ by setting $a=0$.  Therefore
+\begin{equation}\label{eq:ds-small-height-separation}
+ |\eta-\beta|\geq\frac{2^{-\rho(h)}}{4h}.
+\end{equation}
+Set
+\begin{equation}\label{eq:ds-threshold}
+ T=\max\{16385,\,32768h\cdot2^{\rho(h)}+1\}.
+\end{equation}
+For every $H>T$, the root distance in
+\eqref{eq:ds-root-distance} is less than both $1$ and the right hand side
+of \eqref{eq:ds-small-height-separation}.  The produced root must therefore
+have height greater than $h$.  Equations
+\eqref{eq:ds-jump}, \eqref{eq:ds-gap}, \eqref{eq:ds-final-bound}, and
+\eqref{eq:ds-threshold} are the promised explicit height-search bound.
+
+\subsection{Freezing one rational sample: the strict iPRA version}
+
+We now distinguish the given real $x\in(0,1)$ from the rational working
+point $\eta$.  Let $\rho$ be the supplied separation exponent for $x$.
+Put
+\[
+ \sigma(H)=\rho(H)+1.
+\]
+Compute $T,J,G,B$ from
+\eqref{eq:ds-jump}, \eqref{eq:ds-gap}, \eqref{eq:ds-final-bound}, and
+\eqref{eq:ds-threshold}, using $\sigma$ everywhere in those formulas.
+Set $W=2B^2$.  Take one rational sample $\eta$ of the given name such that
+\begin{equation}\label{eq:ds-freeze}
+ |\eta-x|\leq
+ \min\left\{\frac{2^{-\rho(W)}}{8W},\,B^{-3}\right\}.
+\end{equation}
+This is a primitive recursive precision request.  For example, a name
+whose $s$th rational has error at most $2^{-s}$ can be sampled at
+\[
+ s=\rho(W)+8W+3B+10.
+\]
+The deliberately excessive additions avoid any need to compute logarithms.
+
+The inequalities $x\geq2^{-\rho(1)}$ and
+$1-x\geq2^{-\rho(1)}$ follow by applying separation to $X$ and $X-1$.
+Consequently \eqref{eq:ds-freeze} ensures $0<\eta<1$.  For any polynomial
+$f$ of height at most $H\leq W$, the elementary estimate
+\[
+ |f(\eta)-f(x)|\leq4H|\eta-x|
+ \leq\tfrac12 2^{-\rho(W)}
+ \leq\tfrac12 2^{-\rho(H)}
+\]
+shows
+\begin{equation}\label{eq:ds-local-separation}
+ |f(\eta)|\geq2^{-\sigma(H)}
+ \quad(0<\|f\|\leq H\leq W).
+\end{equation}
+Thus the entire finite core can be run at this one rational $\eta$.
+All of its separation uses lie inside this local range: differences of
+searched triples have height at most $2B$; the integer vectors in the
+independence lemma have height at most $2R^2$ with $R<B$; the next-record
+and small-output-height arguments use heights below $B$.
+
+The core gives a root $\alpha$ of a primitive polynomial of height
+$H\leq B$, with $H(\alpha)>h$ and
+$|\eta-\alpha|<8192H^{-3}$.  Therefore
+\[
+ |x-\alpha|
+ \leq|x-\eta|+|\eta-\alpha|
+ <B^{-3}+8192H^{-3}
+ \leq8193H(\alpha)^{-3}
+ <16384H(\alpha)^{-3}.
+\]
+The output-height exclusion was already proved for the rational working
+point, so no separate limiting argument is needed.
+
+This freezing step is also the foundation audit.  Every induction in
+the core concerns finite integer or rational codes at the single rational
+input $\eta$.  Values such as $P_iE_j-P_jE_i$ and $H_iE_i$ are rational
+numbers, so their signs and inequalities are decidable by cross
+multiplication; no hidden separation modulus for quartic expressions is
+required.  Local condition \eqref{eq:ds-local-separation} is one bounded
+primitive recursive predicate on the finite input.  Quantifier-free
+induction is sufficient for the finite list invariants and bounded
+searches.  Only the final error estimate refers back to the given name.
+
+\subsection{Removing the normalization}
+
+The separation modulus decides the signs of $\xi$, $\xi-1$, and
+$\xi+1$; none is zero.  Reflection preserves algebraic heights.  Thus
+if $0<|\xi|<1$, apply the normalized theorem to $x=|\xi|$ and then
+reflect the output when necessary.
+
+If $|\xi|>1$, put $x=1/|\xi|\in(0,1)$.  Reversal of the three
+coefficients and multiplication by $\xi^2$ show that
+\[
+ |ax^2+bx+c|
+ \geq M^{-2}2^{-\rho(H)}
+ \geq2^{-(\rho(H)+2M)}.
+\]
+Thus $\rho_x(H)=\rho(H)+2M$ is an admissible primitive recursive
+separation exponent for $x$.  A primitive recursive rational name
+for $x$ is obtained by division, using $|\xi|>1$ as the denominator
+bound.  Run the normalized construction with requested minimum height
+\[
+ h'=\max\{h,32768M\}.
+\]
+Its output $\beta$ satisfies
+$|x-\beta|<16384H(\beta)^{-3}<1/(2M)$, so
+$|\beta|>1/(2|\xi|)>0$.  Let $\alpha$ be the signed reciprocal of
+$\beta$.  Reversal of a primitive minimal polynomial preserves its
+height, and hence $H(\alpha)=H(\beta)>h$.  Finally
+\[
+ |\xi-\alpha|
+ =\frac{|x-\beta|}{x|\beta|}
+ <2\xi^2|x-\beta|
+ <32768\xi^2H(\alpha)^{-3}.
+\]
+This completes the constructive proof of
+Theorem~\ref{thm:ds-constructive}.
+
+\subsection{Why the construction is primitive recursive}
+
+Here are details that prevent the phrase ``effective'' from concealing
+an unbounded search.  For the fixed primitive recursive $\rho$, all of
+$T,J,G,B,W,s$ are explicit finite compositions of primitive recursive
+functions.  After sampling once at precision $s$, enumerate the triples
+in $[-B,B]^3$, test their content by Euclid's algorithm, and retain those
+in the specified height range.  At this rational input every value,
+minimum, comparison, record, and large-derivative test is exact rational
+arithmetic.  No further refinement loop or sign oracle is used.
+
+Quadratic root output requires only an integer square-root test and a
+choice between two explicit roots.  The square root of a positive integer
+has a primitive recursive rational name obtained by a prescribed number
+of rational bisections.  Reduction of a rational root to lowest terms is
+primitive recursive.  The root's primitive polynomial and sign selector
+are finite data; approximation of its value to any requested precision
+is a separate bounded primitive recursive calculation.
+
+The iPRA proof of the rational core uses the following finite invariants:
+the smallest positive value seen so far; the height and value ordering
+of records; the integral-plane relation and its preserved two-by-two
+minors; and the growth inequality \eqref{eq:ds-growth} on a finite list.
+After multiplying by positive denominators, each is a predicate on
+integer codes.  Bounded quantifiers are compiled into Boolean primitive
+recursive tests before quantifier-free induction is applied.  The local
+separation predicate is an explicit premise of this finite rational
+theorem, and \eqref{eq:ds-freeze}--\eqref{eq:ds-local-separation} explain
+how the fixed real name and modulus supply it.  The mere existence of a
+terminating program would not, by itself, establish this translation;
+the rational freezing is what makes its induction formulas explicit.
+
+\subsection{An explicit separation modulus for algebraic inputs}
+
+Suppose $\xi$ is a specified real root of an irreducible integer
+polynomial $F$ of degree $d\geq3$, with coefficient height $A\geq1$ and
+$|\xi|\leq R$, where $R\geq1$ is an integer.  For any nonzero integer
+polynomial $g$ of degree $e\leq2$ and height at most $H$, its resultant
+with $F$ is a nonzero integer.  The Sylvester-matrix adjugate supplies
+integer polynomials $U,V$ with
+\[
+ UF+Vg=\operatorname{Res}(F,g),\qquad \deg V<d.
+\]
+Writing $M_H=\max(A,H,1)$, the Leibniz determinant formula bounds every
+coefficient of $V$ by
+\[
+ (d+1)!M_H^{d+1}.
+\]
+Indeed the Sylvester matrix has size at most $d+2$, and its cofactors
+are determinants of size at most $d+1$ with entries bounded by $M_H$.
+For constant $g$, the direct lower bound $|g(\xi)|\geq1$ is even simpler.
+Evaluation at $\xi$ yields
+\[
+ 1\leq|\operatorname{Res}(F,g)|
+ \leq|g(\xi)|\,d(d+1)!M_H^{d+1}(R+1)^{d-1}.
+\]
+Define
+\[
+ Q(H)=d(d+1)!\max(A,H,1)^{d+1}(R+1)^{d-1}.
+\]
+Then $|g(\xi)|\geq Q(H)^{-1}\geq2^{-Q(H)}$.
+Thus $\rho(H)=Q(H)$ is an explicit nondecreasing primitive recursive
+separation exponent.  The estimate is deliberately coarse.
+
+For a fixed algebraic root one may use its usual primitive recursive
+isolating-interval name.  To avoid concealing a termination assertion,
+the input can instead include a rational interval whose endpoint
+values of $F$ have opposite signs, together with a positive lower bound
+on $|F'|$ throughout the interval; sufficiently small such intervals
+exist for a simple algebraic root, and once supplied, bisection has an
+explicit precision bound.  These finite certificates are checkable by
+rational polynomial estimates.  Uniform construction of all algebraic
+root data can be treated separately by a bounded root-isolation algorithm.
+
+\subsection{Lean implementation plan and the remaining formal work}
+
+The mathematical proof above is complete for the stated positive
+hypotheses; no assertion is made that the entire iPRA derivation has
+already been machine checked.  A suitable Lean development has these
+modules, in dependency order:
+\begin{enumerate}
+ \item Integer triples, content, height, $L$, $P$, polynomial reversal,
+       and finite list enumeration.  State the separation hypothesis for
+       fixed encoded primitive recursive functions, and the bounded
+       local separation predicate for a rational working point.
+ \item One rational freezing operation with the explicit precision $s$,
+       proving the bounded local separation predicate.  All later
+       decisions use exact rational arithmetic.
+ \item The finite pigeonhole lemma and the record algorithm, proving
+       \eqref{eq:ds-record-estimate} and the next-record bound $J$.
+ \item The integral-plane lemma using two-by-two minors and rational
+       coordinate reduction; then the finite independence bound $G$.
+ \item The determinant identity and the rational inequalities leading
+       to \eqref{eq:ds-growth}.  These are fixed-degree polynomial
+       identities and ordered rational arithmetic after denominators
+       are cleared.
+ \item The finite search bound $B$, proved by the two bounded
+       applications of the independence lemma and finite induction over
+       the list of independent centers.
+ \item Linear/quadratic root certificates, the discriminant-zero
+       factorization, minimal-polynomial height comparison, and the
+       exclusion of heights at most $h$.
+ \item Reflection and reciprocal transformations, and optionally the
+       Sylvester-adjugate separation bound for algebraic inputs.
+\end{enumerate}
+Proving the corresponding assertions over Lean's real numbers is useful
+for checking the mathematics, but it is not the final foundation audit.
+The iPRA layer must prove the bounded algorithms' rational certificate
+properties in the repository's syntax and exhibit the relevant
+quantifier-free induction instances.  This is a clear, finite proof
+engineering task; an appeal to classical real-number minimum selection
+would lose the constructive content established here.

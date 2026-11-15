@@ -1,0 +1,238 @@
+\section{Why the proof belongs to iPRA}
+\label{sec:ipra}
+
+The mathematical argument above uses only rational arithmetic and finite
+combinatorics. That observation alone would not establish a weak-theory
+result: a true statement about a terminating computation can require a
+stronger theory to prove uniformly. We now specify the definitions and
+induction invariants that justify the iPRA claim.
+
+\subsection{The underlying theory}
+
+Use ordinary first-order intuitionistic logic with equality and one
+function symbol for each primitive recursive definition. The arithmetic
+axioms are the defining equations for zero, successor, projections,
+composition and primitive recursion, successor injectivity,
+\(Sx\ne0\), and induction restricted to quantifier-free formulas.
+Parameters are allowed in the induction schema.
+
+This is exactly the presentation defined by \code{PRAAx} in the inspected
+ConciseIPRA source \cite{proveit}; \code{PRA.qfInd} exposes its induction
+rule. Thus we do not silently replace the requested theory by Heyting
+arithmetic with induction for all formulas.
+
+\subsection{Arithmetic and rational codes}
+
+Addition and multiplication are defined by primitive recursion.
+Truncated subtraction, comparison, parity, bounded quotient and remainder,
+finite sums, products, factorial, and exponentiation are primitive recursive.
+The usual ordered semiring identities follow by quantifier-free induction
+on their defining recursions. For instance, distributivity is proved by
+induction on the recursion argument of multiplication, with the other
+arguments as free parameters.
+
+An integer can be represented by a pair \((a,b)\) denoting \(a-b\).
+Equality is \(a+d=c+b\) for \((a,b)\) and \((c,d)\).
+Addition and multiplication have polynomial definitions:
+\[
+ (a,b)+(c,d)=(a+c,b+d),\qquad
+ (a,b)(c,d)=(ac+bd,ad+bc).
+\]
+Negation swaps the entries. Order is expressed by a natural-number
+comparison. This permits all signed calculations involving \(\mu\),
+\(\lambda_d\), and the errors \(E_v\) without adjoining negative numbers
+as a new domain.
+
+A rational is an integer numerator code and a positive natural denominator.
+Reduction to lowest terms is unnecessary. For denominators \(b,d>0\),
+\[
+ \frac ab+\frac cd=\frac{ad+bc}{bd},\qquad
+ \frac ab\frac cd=\frac{ac}{bd},\qquad
+ \frac ab\le\frac cd\ \Longleftrightarrow\ ad\le cb.
+\]
+Inverting a nonzero rational swaps the absolute numerator and denominator
+and retains its sign. The proof uses inverses only with a separately proved
+positive input. In particular \(g(d)>0\), \(h(d)>0\), \(G(z)\ge1\);
+the factors \(p-\rho(p)\) are positive.
+All denominator clearing is therefore legitimate in the integer coding.
+Rational squares are nonnegative by a decidable sign comparison followed
+by the integer multiplication identities.
+
+Finite rational sums are recursive folds of these explicit operations.
+Their algebraic rules are proved by induction on fold length.
+For example, double-sum interchange is obtained by induction on one
+length and then on the other, using distributivity and associativity at
+each step. Nonnegative-term comparison is a fold induction on the
+partial-sum inequality. These induction formulas compare particular
+integer codes, and are quantifier-free.
+
+\subsection{Bounded conditions can be put into induction invariants}
+
+For a primitive recursive Boolean predicate \(P(i,\vec a)\), define
+\[
+ \operatorname{All}_P(0,\vec a)=1,\qquad
+ \operatorname{All}_P(n+1,\vec a)
+   =\operatorname{All}_P(n,\vec a)\cdot P(n,\vec a).
+\]
+Its value is \(1\) exactly when all entries \(i<n\) pass the test.
+The analogous bounded existential test is obtained by testing whether the
+sum of the Boolean entries is positive. Bounded searches and bounded
+maxima are defined by folds with a success flag. For an existential test,
+the fold also records the first successful index. Its invariant says that
+if the flag is \(1\), the stored index is below the processed bound and
+passes \(P\). This supplies the witness constructively.
+
+The facts required to use these encodings are themselves proved by
+quantifier-free induction. A useful explicit strengthened invariant for
+recovering entries is
+\[
+ \operatorname{All}_P(n,\vec a)=1\ \wedge\ i<n
+       \ \Longrightarrow\ P(i,\vec a)=1,
+\]
+with \(i,\vec a\) as free parameters; the induction step splits the
+decidable cases \(i<n\), \(i=n\), and \(i>n\).
+In the other direction, under assumptions supplying the bounded entries,
+the defining multiplication recurrence proves that the aggregate is \(1\):
+with the final bound \(b\) fixed, induct on the quantifier-free assertion
+\(j\le b\Rightarrow\operatorname{All}_P(j,\vec a)=1\).
+This establishes the familiar bounded-quantifier notation without
+induction on an unbounded universal formula.
+
+For a nested bounded formula, apply this construction from the innermost
+test outward. Its characteristic function remains primitive recursive,
+and its use inside an induction can be replaced by equality of that
+function to \(1\). The finite assertions in the present proof involve
+only such bounded conditions and coded arithmetic equalities or
+inequalities.
+
+\subsection{Explicit bounds for the finite objects}
+
+Here are bounds sufficient to make the construction literal.
+They need not be efficient.
+\begin{itemize}
+\item The least-divisor search on \(n>1\) tests at most \(n\) candidates.
+Factorization at \(0\) is assigned a fixed default, and its correctness
+claims concern positive inputs. The factorization loop has \(n\) stages.
+A padded factor trace has length
+\(n\), and entries at most \(n\); it can be stored as digits in base \(n+1\),
+together with the length \(\ell\le n\) of its active prefix. Explicitly,
+the code is \(\operatorname{digits}+\ell(n+1)^n\), with
+\(\operatorname{digits}<(n+1)^n\), hence is below \((n+1)^{n+1}\).
+\item The subtraction Euclidean algorithm has at most \(a+b\) active
+stages. Its Bezout coefficients start with absolute value at most \(1\)
+and at each stage are copied or subtracted. Their absolute values are
+bounded by \(2^{a+b+1}\). Sign and magnitude codes give a bounded trace.
+\item Residue tables modulo \(v\) have \(v\) entries. In the sieve,
+\(d,e\le z\) and \(\lcm(d,e)\le z^2\), so all such tables have at most
+\(z^2\) entries. Their truth values are computed by remainder tests.
+\item Divisor and squarefree tests at \(d\le z\) use ranges bounded by
+\(z\). The sums defining \(G,W_d,\lambda_d\) have at most \(z\) terms.
+The quadratic form has at most \(z^2\) terms.
+\item In the harmonic comparison, \(ab\le s^2\).
+For each \(d\le s^2\), there are at most \(s^2\) prime slots and
+two exponents in \(\{0,\ldots,s\}\) at each slot.
+Thus \((s+1)^{2s^2}\) bounds the number of padded exponent codes.
+Their products and weights are computed by bounded folds.
+\item A dyadic shell index for the tail below \(L\) is found in the
+explicit range \(m,\ldots,m+L\). No logarithm function or unbounded
+least-witness principle is required.
+\end{itemize}
+The coding of an entire rational computation is likewise a primitive
+recursive trace: each next numerator and denominator is computed by the
+displayed operations. If a bound on trace entries is wanted in an
+invariant, compute the maximum along that same finite trace by a fold.
+There is no existentially postulated sequence of intermediate rationals.
+
+\subsection{The induction audit}
+
+Every induction used in the proof can be organized as one of the following
+finite invariant checks. Ambient bounds such as \(n,z,s,X,m,L\) are fixed
+parameters during the relevant induction.
+
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{@{}p{0.21\textwidth}p{0.28\textwidth}p{0.44\textwidth}@{}}
+\toprule
+Part of proof & Induction variable & Quantifier-free invariant after coding\\
+\midrule
+\endhead
+Division & Number of processed increments &
+Dividend \(=\) divisor \(\times\) quotient \(+\) remainder, with remainder
+below divisor.\\
+Factorization & Bounded stage counter &
+Original number \(=\) remaining factor \(\times\) recorded product;
+the recorded factors pass a bounded primality test; active steps decrease
+the remaining factor.\\
+Bezout and gcd & Bounded stage counter &
+The two stored coordinates have the stored linear-combination
+representations; common divisors up to \(a+b\) agree with the initial
+pair; either the computation has stopped or its sum has decreased.\\
+Factor uniqueness & Length of cancelled prefix &
+Matching prime factors have been removed, and the two remaining
+products agree; all residual factors are prime.\\
+Chinese remainders & Length of prime prefix &
+The computed reconstruction and residue projection are inverse on their
+bounded domains; the product of root counts equals the root-table count.\\
+Mobius cancellation & Length of prime prefix &
+The partial subset sum equals the corresponding product of local
+\((1-1)\) factors.\\
+Finite algebra & Sum/product length &
+The two accumulated rational codes are equal, or one accumulated code
+is at most the other.\\
+Selberg transform & Divisor-sum length &
+The accumulated reindexed sums agree; the interval cancellation identity
+holds for indices bounded by \(z\).\\
+Quadratic identity & Bounded sum lengths &
+The partial quadratic expansion equals its reindexed divisor expression;
+the completed expansion equals \(1/G\).\\
+Harmonic comparison & Prime-prefix and box counters &
+Partial exponent-box sums factor; original pair codes map injectively to
+box codes; all weights are nonnegative.\\
+Dyadic estimates & \(t\) or shell counter &
+\(H_{2^t}\ge1+t/2\), \((t+1)^2\le4^t\), or the displayed finite
+telescoping inequality.\\
+\bottomrule
+\end{longtable}
+
+For the termination statements in this table, a numerical strengthening
+removes any unbounded termination assertion. For the factor loop at stage
+\(i\le n\), either it has reached \(1\), or its remaining factor plus \(i\)
+is at most \(n\). At stage \(n\) the latter case contradicts positivity.
+For the subtraction Euclidean loop, either it has stopped, or the
+coordinate sum plus the stage counter is at most the initial \(a+b\).
+At stage \(a+b\) two positive coordinates are impossible.
+Both strengthened assertions are quantifier-free after the state is coded.
+
+In the factor-uniqueness and CRT rows, statements about all entries are
+bounded by the fixed input products or trace lengths. Their bounded
+Boolean aggregates can be carried in the invariant. The elementary
+preservation calculations are those already given in
+Section~\ref{sec:finite}; no induction over all arbitrary formulas or all
+unbounded witnesses is needed.
+
+\subsection{The resulting derivability claim}
+
+Expand the finite definitions using their primitive recursive symbols,
+interpret integer and rational notation by the preceding codes, and
+replace bounded conditions in induction invariants by their characteristic
+functions. The proofs in Sections~\ref{sec:finite}--\ref{sec:convergence}
+then use the defining equations, intuitionistic reasoning with decidable
+arithmetic cases, and the quantifier-free inductions just listed.
+After the final denominator multiplication they derive
+\eqref{eq:ipra-target}; universal introduction closes the free parameters
+\(q,U,V\).
+
+Only the finitely many specific primitive recursive definitions used by
+this proof are involved. No primitive recursive universal interpreter for
+all primitive recursive programs is assumed.
+
+This is a human-readable proof of the iPRA theorem, together with its
+translation discipline. It is not a claim that a formal derivation
+certificate has already been generated. Producing that certificate is
+the object-theory stage of the Lean plan below.
+
+In particular, the proof requires neither an infinite Euler product,
+a prime-distribution asymptotic, a compactness or completeness principle,
+nor a choice of an unknown convergence threshold. All numerical case
+splits concern decidable tests. There is no use of excluded middle for an
+arbitrary proposition, Markov's principle, or a decision about infinitely
+many twin primes.

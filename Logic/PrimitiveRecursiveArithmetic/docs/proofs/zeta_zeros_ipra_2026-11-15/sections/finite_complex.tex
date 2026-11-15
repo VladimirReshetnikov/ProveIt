@@ -1,0 +1,117 @@
+\input{sections/polynomial_algebra.tex}
+
+\section{Finite winding, stability, and analytic zero counts}
+\label{sec:finite-winding}
+
+The polynomial algebra just established is used as a finite intermediate
+calculus. It is not a claim that general computable complex numbers have
+decidable equality. In particular, the algorithm below never asks whether
+an unrepresented analytic zero is exactly on a boundary.
+
+\subsection{Rational polygons and their winding}
+Let $w_0,\ldots,w_n=w_0$ be a rational polygon which avoids the origin,
+with explicit separation bounds on its edges. Its integer winding number
+can be computed without logarithms. Choose a rational ray from zero that
+contains no vertex and is parallel to no edge. Among more than twice the
+number of vertices and edges, distinct rational slopes, at least one
+avoids every forbidden direction. Test each by rational determinants.
+Count oriented crossings of that ray, using the sign of a determinant
+and a rational intersection parameter. Upward and downward crossings
+contribute opposite signs; the orientation is fixed so a positively
+oriented square about zero has winding one.
+
+The elementary invariance rules have finite proofs. Inserting a vertex
+on an edge preserves the crossing sum. Reversing an edge negates its
+contribution. If a small triangular boundary stays in an open half-plane
+through the origin, its sum is zero. Triangulate a supplied homotopy
+whose images stay a positive distance from zero, and refine until each
+small triangle has that property. Interior edges cancel. The derivative
+bound and positive margin give the number of subdivisions before the
+calculation starts. Thus homotopy invariance is an identity of finite
+integer sums, with a quantitative refinement bound.
+
+For two nonzero polygonal paths, winding is additive under pointwise
+multiplication. This follows by subdividing until each image lies in a
+disk of radius less than half its centre's distance from zero. On each
+such disk the logarithm of $1+z$ is its explicit convergent series, and
+argument increments add. Equivalently one can verify the corresponding
+crossing identity on a finite triangulation. The same argument proves
+additivity under concatenation and subdivision of a domain polygon.
+
+\subsection{Passing from a fixed analytic function to a polygon}
+Let a rational domain polygon $\gamma$ have segment length at most $h$,
+and suppose the fixed function $f$ has derivative bounded by $B$ on
+each segment. Suppose also $|f|\ge\mu>0$ on the entire boundary.
+At its vertices compute rational values $w_j$ with
+$|w_j-f(\gamma_j)|\le e$. Linear interpolation $W$ between the $w_j$
+has error at most
+\begin{equation}
+ |W(t)-f(\gamma(t))|\le Bh/2+e.
+ \label{eq:winding-interpolation}
+\end{equation}
+Indeed at a relative position $a\in[0,1]$ the two endpoint errors
+contribute $e$, and the Lipschitz errors contribute
+$2a(1-a)Bh\le Bh/2$. If $Bh/2+e<\mu$, the straight homotopy avoids
+zero. Define the certified count to be $\wind(W,0)$.
+
+This number is independent of any further certified refinement. For two
+certificates use a common refinement and their error budgets to construct
+the zero-free homotopy between their polygons. A certificate can also
+verify a margin from its samples: if
+$|w_j|\ge\mu+e+Bh$, every point on the corresponding edge has modulus
+at least $\mu$. Squared Euclidean norms of rational samples are
+decidable; every use of a non-rational norm in this argument is backed
+by a rational upper or lower bound.
+
+\subsection{The polynomial argument principle and Rouch\'e stability}
+For a rational complex polynomial $P$, factorization in the finite
+algebraic calculus gives
+$P(z)=a\prod_j(z-\alpha_j)$. If a rational rectangle avoids the
+algebraic roots, the multiplication rule for winding gives
+\[
+ \wind(P\circ\partial R,0)
+ =\sum_j\wind(\partial R-\alpha_j,0).
+\]
+A translated rectangle has winding one around an interior point and
+zero around an exterior point. These alternatives are decidable for
+the algebraic roots and are proved by the crossing definition. Hence
+the winding equals the number of roots in $R$, with multiplicities.
+In particular it is nonnegative, is additive under domain subdivision,
+and cannot exceed the degree.
+
+Now approximate the fixed analytic $f$ by a rational polynomial $P$
+on a neighborhood of a certified boundary, with error less than half
+its clearance. The homotopy $(1-t)f+tP$ avoids zero on that boundary,
+so its count is the polynomial count. The same holds simultaneously
+for any finite family of certified subregions by taking the minimum
+of their finitely many rational margins. This proves additivity,
+nonnegativity and all counting comparisons used below.
+
+In the usual analytic interpretation, this is the argument principle.
+For an isolated zero with a supplied local factorization
+$f(z)=(z-\rho)^m g(z)$ and an apartness bound for $g$, a small
+surrounding contour has count $m$. Conversely positive count is the
+constructive assertion that the region contains a zero cluster. Finer
+certified grids localize such clusters. No use of the later counting
+formula depends on selecting an exact zero or its exact multiplicity.
+Section~\ref{sec:zero-extraction} gives a uniform point-name extraction
+from positive count. The explicit simple-zero example in
+Section~\ref{sec:example} also supplies its own direct contraction,
+independent of that general construction.
+
+Rouch\'e's theorem in the form used here is just the same homotopy
+estimate. If $|g-f|<|f|$ on a boundary with a supplied positive
+difference margin, $f$ and $g$ have the same integer winding. Quantify
+the inequality first, choose the rational mesh second, and prove the
+finite homotopy third. No choice of a ``sufficiently fine'' mesh is
+left without a bound.
+
+\subsection{Induction discipline}
+The algebraic factorization, vertex enumeration, ray selection, crossing
+sum, polynomial approximation and refinement are bounded programs.
+For fixed requested precision, their correctness invariants are finite
+polynomial identities, rational inequalities, or equations for integer
+partial sums. A bounded list of inequalities is represented by its
+Boolean conjunction. These are exactly the quantifier-free invariants
+needed by $\ipra$. Analytic notation is eliminated by the schedules of
+Section~\ref{sec:analytic} before induction is applied.

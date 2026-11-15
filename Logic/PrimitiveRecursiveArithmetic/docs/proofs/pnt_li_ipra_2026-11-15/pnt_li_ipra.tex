@@ -1,0 +1,228 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,breaklinks=true]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Logarithmic-integral strengthenings of the prime number theorem in iPRA},pdfauthor={Research note prepared for Vladimir Reshetnikov}}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Logarithmic-integral PNT in iPRA}
+\fancyhead[R]{\small Explicit finite proofs}
+\fancyfoot[C]{\thepage}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newcommand{\ipra}{\ensuremath{\mathrm{iPRA}}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.6in}
+{\color{MidnightBlue}\Large Constructive analytic number theory\par}
+\vspace{0.35in}
+{\huge\bfseries Logarithmic-integral strengthenings\par
+of the prime number theorem\par}
+\vspace{0.18in}
+{\LARGE Explicit finite proofs for intuitionistic\par
+primitive recursive arithmetic\par}
+\vspace{0.5in}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large November 15, 2026\par}
+\vspace{0.45in}
+\begin{abstract}
+We give a quantitative constructive proof of
+\[
+ \pi(n)-\Li_2(n)
+ =O\!\left(\frac n{\log n}\exp[-c(\log n)^{1/10}]\right)
+\]
+with an explicit positive constant and primitive recursive thresholds.
+It follows that the error is smaller than every fixed inverse power of
+$\log n$, that the full factorial asymptotic expansion holds with an
+explicit remainder, and that every fixed truncation has an effectively
+controlled positive first-omitted-term error. We also obtain a bounded
+search procedure finding a prime in a specified relative interval.
+
+The proof replaces nonvanishing by numerical apartness, uses rational
+contours and a finite smoothed Perron kernel, and provides explicit
+truncation and rounding schedules. Its main first-order statement is an
+integer inequality involving a fixed rational algorithm for $\Li_2$.
+The article includes the human proof, a quantifier-free induction audit,
+and a detailed route to an embedded Lean proof in the ProveIt presentation
+of iPRA. The included Lean sources are uncompiled outlines; no completed
+mechanized PNT proof is claimed.
+\end{abstract}
+\vfill
+\fbox{\begin{minipage}{0.92\textwidth}
+\textbf{Scope.} The error exponent proved here is $1/10$. The classical
+square-root-logarithm and Vinogradov--Korobov rates, and conditional
+Riemann-hypothesis bounds, are discussed for comparison and are not
+claimed as results of this package.
+\end{minipage}}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+\pagenumbering{arabic}
+
+\section{Results and proof strategy}
+
+The ordinary prime number theorem is
+$\pi(x)\sim x/\log x$, equivalently $\pi(x)\sim\Li_2(x)$.
+An estimate for the \emph{difference} $\pi(x)-\Li_2(x)$ supplies
+substantially more information. The question asks for such strengthenings
+with the logical resources restricted to intuitionistic primitive recursive
+arithmetic. We interpret the abbreviation ``PNM'' in the question as PNT.
+
+The exact target is Theorem~\ref{thm:object}. In conventional notation,
+write $C=2^{240}$ and $D=2C$. The following are consequences proved below:
+\begin{align*}
+ n\ge2^{D(m+5)^{10}}
+ &\ \Longrightarrow\
+ |\pi(n)-\Li_2(n)|\le2^{-m}\frac n{\log n},\\
+ n\ge2^{D6^{10}}
+ &\ \Longrightarrow\
+ |\pi(n)-\Li_2(n)|\le
+ 64\frac n{\log n}\exp\!\left(-2^{-26}(\log n)^{1/10}\right).
+\end{align*}
+For every $k\ge0$, define
+\[
+ M(k)=1+6400C^2k^2+48C.
+\]
+Then the fully specified threshold
+$n\ge2^{2M(k)^{10}}$ implies
+\[
+ |\pi(n)-\Li_2(n)|\le \frac n{(\log n)^{k+1}}.
+\]
+The constants are deliberately coarse so that their proofs and arithmetic
+representations stay transparent. The exponent $1/10$ is a classical
+nonoptimal exponent; this note does not claim a new classical exponent.
+
+For $r\ge1$, put
+\[
+ S_r(n)=n\sum_{j=0}^{r-1}\frac{j!}{(\log n)^{j+1}},
+ \qquad B_r=1+r!(1+2^{r+2}).
+\]
+An explicit PR threshold in $r$ gives
+\[
+ |\pi(n)-S_r(n)|\le B_r\frac n{(\log n)^{r+1}},
+\]
+and a further explicit threshold gives
+\[
+ \frac{r!}{2}\frac n{(\log n)^{r+1}}
+ \le\pi(n)-S_r(n)
+ \le\frac{3r!}{2}\frac n{(\log n)^{r+1}}.
+\]
+This is a statement about each fixed finite truncation. The factorial
+series is an asymptotic expansion; we make no convergence assertion for
+it at a fixed argument.
+
+\begin{center}
+\begin{tabular}{@{}p{0.55\textwidth}p{0.37\textwidth}@{}}
+\toprule
+Estimate or consequence & Status in this package\\
+\midrule
+Explicit stretched exponential with exponent $1/10$ & Proved, with arithmetic modulus\\
+Every inverse-logarithmic order & Proved, with uniform PR thresholds\\
+Factorial expansion and first omitted term & Proved, with boundary terms retained\\
+Prime in a prescribed relative interval & Proved, with bounded search witness\\
+Classical $e^{-c\sqrt{\log x}}$ error & Stronger benchmark; not proved here\\
+Vinogradov--Korobov error & Stronger benchmark; not proved here\\
+$O(\sqrt x\log x)$ and Schoenfeld's bound & Require their RH assumption; not proved here\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The hard step is an explicitly apart zero-free strip. For a positive
+integer $Q\ge\log(|t|+3)$ and $|t|\ge1/64$, we prove
+\[
+ \sigma\ge1-\frac{2^{-88}}{Q^9},\quad \sigma\le2
+ \quad\Longrightarrow\quad
+ |\zeta(\sigma+it)|\ge2^{-71}Q^{-7}.
+\]
+The lower bound licenses division by $\zeta$ at a known precision.
+It comes from a finite Euler-product inequality and a horizontal
+derivative bound, so no search for zeros or compactness argument is used.
+
+Next, integrate the prime-power counting function once. The kernel
+$1/(s(s+1))$ gives an absolutely convergent vertical integral with a
+numerical tail bound. A finite rectangle calculation moves the contour
+past the single explicitly isolated pole at $s=1$. Monotonicity then
+removes the smoothing. Finally, exact finite Abel summation transfers
+the resulting estimate from $\vartheta$ to $\pi-\Li_2$.
+
+The conventional analytic method is familiar from classical accounts
+\cite{Kontorovich,Tao}. The work required by the present setting lies
+in its lower bounds, finite precisions, and quantifier-free induction
+invariants. These are included as part of the proof, rather than delegated
+to a general claim about computable analysis.
+
+\input{tex/foundations}
+\input{tex/analytic}
+\input{tex/theta_bridge}
+\input{tex/transfer}
+\input{tex/finite_contour}
+\input{tex/formalization}
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{ProveIt}
+Vladimir Reshetnikov, \emph{ProveIt}, especially the
+\texttt{ConciseIPRA} development,
+revision \texttt{b5a3ad037723c44d69a3d5b28a950c554327a989}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/b5a3ad037723c44d69a3d5b28a950c554327a989/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}{Pinned ConciseIPRA source tree}.
+Relevant source paths and blob hashes appear in the archive's evidence manifest.
+
+\bibitem{Kontorovich}
+Alex Kontorovich and contributors, \emph{Prime Number Theorem And\ldots},
+project blueprint, inspected November 15, 2026, especially the second
+analytic approach and the $\log^{-9}$ zero-free region.
+\url{https://alexkontorovich.github.io/PrimeNumberTheoremAnd/blueprint.pdf}.
+
+\bibitem{Tao}
+Terence Tao, \emph{254A, Notes 2: Complex-analytic multiplicative number theory},
+December 9, 2014.
+\href{https://terrytao.wordpress.com/2014/12/09/254a-notes-2-complex-analytic-multiplicative-number-theory/}{Lecture notes on the author's website}.
+
+\bibitem{Trudgian}
+Tim Trudgian, \emph{Updating the error term in the prime number theorem},
+arXiv:1401.2689, version 2, 2014.
+\url{https://arxiv.org/abs/1401.2689}.
+Used to distinguish sharper classical numerical estimates from the
+finite constructive estimates proved here.
+
+\bibitem{Avigad}
+Jeremy Avigad, \emph{Number theory and elementary arithmetic},
+Philosophia Mathematica (3) 11 (2003), 257--284, especially footnote 14.
+\url{https://www.andrew.cmu.edu/user/avigad/Papers/elementary.pdf}.
+
+\bibitem{Question}
+\emph{Prime number theorem: Prime-counting function in terms of the
+logarithmic integral}, Wikipedia, the section supplied in the question,
+inspected November 15, 2026.
+\url{https://en.wikipedia.org/wiki/Prime_number_theorem}.
+This identifies the requested comparison family; the proofs above do not
+use it as a source of unproved analytic inputs.
+\end{thebibliography}
+\end{document}

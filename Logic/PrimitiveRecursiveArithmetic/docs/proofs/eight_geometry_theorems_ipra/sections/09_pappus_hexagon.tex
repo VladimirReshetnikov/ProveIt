@@ -1,0 +1,70 @@
+\section{Pappus's hexagon theorem}
+
+\subsection{Statement}
+
+Let $A,B,C$ be three points on one projective line and $D,E,F$ three points on
+another.  Suppose the two base lines are distinct and all indicated joins and
+meets are defined.  Put
+\[
+ X=AE\cap BD,
+ \qquad Y=AF\cap CD,
+ \qquad Z=BF\cap CE.
+\]
+Then $X,Y,Z$ are collinear.
+
+\subsection{Constructive projective normalization}
+
+Let $O$ be the intersection of the two base lines.  Choose one of the named
+points on each line away from $O$; the three resulting noncollinear vectors
+form a projective basis.  A fixed finite case split selects such points under
+the stated nondegeneracy hypotheses.  In this basis the lines are $z=0$ and
+$y=0$, and we may write
+\[
+ A=(a,1,0),\quad B=(b,1,0),\quad C=(c,1,0),
+\]
+\[
+ D=(d,0,1),\quad E=(e,0,1),\quad F=(f,0,1).
+\]
+The change of basis is an explicit adjugate divided by a nonzero determinant,
+so this normalization is available constructively and is primitive recursive
+on rational codes.
+
+\subsection{The three intersections}
+
+Cross products give
+\begin{align*}
+ X&=(A\join E)\meet(B\join D)
+   =\bigl(ad-be,\ d-e,\ a-b\bigr),\\
+ Y&=(A\join F)\meet(C\join D)
+   =\bigl(ad-cf,\ d-f,\ a-c\bigr),\\
+ Z&=(B\join F)\meet(C\join E)
+   =\bigl(be-cf,\ e-f,\ b-c\bigr).
+\end{align*}
+The decisive certificate is not even a determinant expansion:
+\begin{equation}\label{eq:pappus-linear-relation}
+ X-Y+Z=0.
+\end{equation}
+Indeed, each of the three coordinates cancels term by term.  Equation
+\eqref{eq:pappus-linear-relation} makes $X,Y,Z$ linearly dependent; therefore
+\[
+ \det(X,Y,Z)=0,
+\]
+which is exactly their collinearity.
+
+If, for example, $X$ and $Y$ are distinct, the explicit line witness is
+$\ell=X\cross Y$.  The first two incidences are cross-product identities and
+\[
+ \ell\cdot Z=\det(X,Y,Z)=0.
+\]
+Thus the proof also supplies the line containing the three points.
+
+\subsection{Degeneracies and the polynomial closure}
+
+The vector identity remains true without dividing by any coordinate.  If one
+of the displayed intersections is the zero cross product, the usual geometric
+point is undefined; that case is excluded by the theorem's incidence
+hypotheses.  Coincidences among $X,Y,Z$ cause no difficulty: the determinant
+conclusion still holds, and a containing line can be taken from any distinct
+pair supplied by the configuration.  The generic proof therefore extends to
+all legitimate specializations by the same polynomial identity, not by a
+classical continuity argument.

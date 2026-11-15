@@ -1,0 +1,109 @@
+\section{Artifacts, verification, and scope of the result}
+\label{sec:artifacts}
+
+\subsection{What is in the archive}
+
+The package contains this article in LaTeX source and compiled PDF, the
+Lean specification and implementation plan, and exact-arithmetic Python
+diagnostics. It also records the inspected repository snapshot and
+reproduction commands. The proof does not depend on an unrecorded
+calculation or a numerical table.
+
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.40\textwidth}>{\raggedright\arraybackslash}p{0.52\textwidth}@{}}
+\toprule
+File or directory & Purpose\\
+\midrule
+\code{brun\_ipra.tex}, \code{sections/} &
+Complete human-readable argument and the iPRA induction audit.\\
+\code{brun\_ipra.pdf} &
+Compiled article.\\
+\code{lean/BrunSpecification.lean} &
+Uncompiled specification and candidate conditional assembly proofs.\\
+\code{lean/FORMALIZATION\_PLAN.md} &
+Detailed semantic and object-theory implementation route.\\
+\code{lean/SOURCE\_LEDGER.md} &
+Exact source paths, commit and blob identifiers, toolchain and status.\\
+\code{artifacts/finite\_sieve.py} &
+Exact finite calculations of the coefficients, quadratic form,
+prime-support grouping and partial sums.\\
+\code{tests/test\_finite\_sieve.py} &
+Ten unit tests checking the implemented finite identities.\\
+\code{artifacts/verification.json} &
+Reproducible diagnostic results: 1,730 exact arithmetic assertions.\\
+\code{README.md}, \code{Makefile} &
+Reading guide and reproduction commands.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{What the diagnostics check}
+
+The program uses Python integers and \code{fractions.Fraction}; it uses no
+floating-point comparisons. The checks include:
+\begin{itemize}
+\item prime-factor reconstruction, Mobius cancellation, and root-residue
+counts for squarefree moduli;
+\item the counting error, \(\lambda_1=1\), the Mobius transform,
+\(Q=1/G\), and the bound \(|\lambda_d|\rho(d)\le d\);
+\item the partition of \(H_s^2\) by \(\rad(ab)\), and the individual
+prime-support group bounds;
+\item the square majorant, total sieve error, and twin-prime inclusion;
+\item the harmonic and elementary exponential inequalities on sample
+parameters;
+\item agreement of exact finite Brun sums with factorial-denominator
+integer codes, including the double occurrence of \(5\).
+\end{itemize}
+
+All ten unit tests passed. The separate JSON diagnostic records 1,730
+assertions. These are finite consistency checks on the transcription and
+implementation. The universal statements are proved by the argument in
+this article; the finite tests do not certify those universal statements,
+and do not constitute a Lean proof.
+
+For example, at \(z=5\),
+\[
+ \sfD_5=\{1,2,3,5\},\qquad G(5)=\frac{14}{3},
+\]
+and the coefficients are
+\[
+ \lambda_1=1,\quad
+ \lambda_2=-\frac37,\quad
+ \lambda_3=-\frac9{14},\quad
+ \lambda_5=-\frac5{14}.
+\]
+The program evaluates the quadratic form exactly as \(3/14=1/G(5)\).
+These modest examples are useful checks of signs and normalization,
+where a transcription error could invalidate the sieve.
+
+\subsection{Reproduction}
+
+From the extracted package root:
+\begin{lstlisting}
+python3 -m unittest discover -s tests -v
+python3 artifacts/finite_sieve.py --json artifacts/verification.json
+latexmk -pdf -interaction=nonstopmode -halt-on-error brun_ipra.tex
+\end{lstlisting}
+The Python code needs only the standard library.
+The PDF build needs a usual LaTeX installation with the packages listed
+in the preamble.
+Lean compilation must be performed in a workspace providing the pinned
+Lean/Mathlib environment, for example:
+\begin{lstlisting}
+lake env lean /absolute/path/to/lean/BrunSpecification.lean
+\end{lstlisting}
+That command is a reproduction instruction, not a record of a build
+performed here.
+
+\subsection{Final mathematical and formal status}
+
+The completed result is the finite theorem
+\eqref{eq:ipra-target}, with its full human-readable sieve proof,
+an explicit primitive recursive Cauchy modulus, and a detailed audit of
+the permitted induction. It expresses constructive convergence of the
+original pair reciprocal series.
+
+The implementation work still needed for a full machine-checked result is
+precisely the finite sieve library and the object-language derivation
+described in Section~\ref{sec:lean}. The archive does not present that
+work as already completed.

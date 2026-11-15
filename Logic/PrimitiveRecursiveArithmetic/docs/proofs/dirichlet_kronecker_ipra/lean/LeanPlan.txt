@@ -1,0 +1,440 @@
+DIRICHLET AND KRONECKER IN iPRA: LEAN IMPLEMENTATION PLAN
+======================================================
+
+Status: this is an implementation specification and a list of outstanding
+proof obligations. It is not compiled Lean and it does not claim that an
+object-iPRA proof of either approximation theorem has been completed.
+Source interfaces were checked against ProveIt commit
+6ad3d9f37184ac242a8946f1c5d45a5603cf57f2, Lean/mathlib v4.32.0.
+
+1. TWO DISTINCT PROOF TARGETS
+----------------------------
+
+Layer S (semantic): exact rational data, bounded algorithms, correctness
+theorems. Lean's Nat/Int/Rat may be convenient here. An auxiliary proof over
+real names explains the finite estimates, but no black-box theorem about
+Mathlib Real is an object-iPRA derivation.
+
+Layer O (object theory): definitions of the same numerical algorithms as
+ConciseIPRA.PR symbols; formulas in Fm PTm n; derivations using Prf PRAAx.
+The actual endpoint is
+
+  Prf PRAAx [] finiteDirichletFormula
+  Prf PRAAx [] finiteKroneckerFormula.
+
+Only after these derivations exist can the verified repository theorem
+pra_iff_native transport them to NPrf [] (NFm.ofPRA ...). The existing
+research/NativeBridge.lean illustrates this final interface only.
+
+The presentation should report all unimplemented Layer O steps explicitly.
+
+2. NUMERICAL REPRESENTATION AND BOOLEAN PREDICATES
+------------------------------------------------
+
+Encode an integer by a sign-and-magnitude natural code (or an equivalent
+standard pairing). Encode a rational as (signed numerator, denominator-1),
+so the represented denominator is always positive. Reduction to lowest
+terms is unnecessary. Compare rationals by cross-multiplication.
+
+Required PR symbols: signed addition/multiplication/absolute value; positive
+integer division and remainder; rational operations and comparisons;
+pairing/unpairing and arrays; bounded sums/products/min/max; integer powers;
+binomial coefficients; bounded first-success search. Define all edge cases
+(dimension zero, zero precision parameter, malformed arrays) by harmless
+defaults; correctness predicates impose the relevant positive hypotheses.
+
+rhoRat(a/b) is exact distance to the nearest integer. With b>0 and
+r = a mod b in [0,b), rhoRat(a/b)=min(r,b-r)/b. There is no real floor.
+
+Replace every bounded quantifier in the algorithm invariant by a Boolean
+fold: allB(L,P), anyB(L,P). Their defining equations and correctness are
+proved by QF induction. A statement such as 'all previously tested entries
+failed' must appear internally as one equality allB(...)=1, not as an
+unbounded universally quantified formula in an induction hypothesis.
+
+3. SCALAR DIRICHLET: EXACT FINITE SPECIFICATION
+---------------------------------------------
+
+Rational theorem D0:
+
+  Input: integer a, positive b,N. Set x=a/b.
+  Output: integers q,p with 1<=q<=N and
+          (N+1)*abs(q*a-p*b)<=b.
+
+The output bound can include abs(p)<=N*(abs(a)+b)+1; this loose integer
+bound is sufficient for an entirely bounded search. A faster algorithm
+sorts the N+1 rational residues {k*x}, k=0,...,N, retaining their indices.
+Sorting uses exact integer comparisons. Include the circular last-to-first
+gap. The sum of the N+1 gaps is 1, hence at least one gap is <=1/(N+1).
+The endpoint indices differ; their absolute difference is q in [1,N].
+The residue identity supplies p and the displayed inequality.
+
+Suggested lemmas and exact obligations:
+
+  divMod_signed: a = b*quotient(a,b)+remainder(a,b), 0<=remainder<b.
+  insertSort_permutation: sorting preserves every indexed residue.
+  insertSort_nondecreasing: successive sorted numerators are ordered.
+  circleGaps_nonneg: every circular gap is nonnegative.
+  circleGaps_sum: sum gaps=b when numerators use common denominator b.
+  circleGap_small: some indexed gap g satisfies (N+1)*g<=b.
+  circularGap_witness: convert the selected gap to signed index difference.
+  dirichletQ_correct: D0 for the bounded algorithm.
+
+For circleGap_small, a Boolean search over gaps either succeeds or has every
+(N+1)*g>b. Summing the latter rational/integer strict inequalities contradicts
+the exact sum. This uses decidability of integer comparison, not excluded
+middle about a real limit.
+
+Real-name transfer D1:
+
+  N>=1, eta=1/(2*N^2*(N+1)), |alpha-r|<=eta.
+  Apply D0 to rational r. Then
+  |q*alpha-p| <= 1/(N+1)+N*eta
+               = (2N+1)/(2N(N+1)) < 1/N.
+
+The finite output certificate should record r, eta, q,p, and the rational
+inequality |q*r-p|+q*eta<1/N. The statement about alpha is then an error
+transfer, represented internally by a schema for each fixed PR name and
+its Cauchy bound. No exact nearest-integer selection for arbitrary real
+numbers is used or claimed.
+
+Arbitrarily large UNREDUCED denominators require no irrationality or
+apartness hypothesis. Given B>=0, set N=(B+1)^3, obtain (p0,q0) from D1,
+and put v=floor(B/q0)+1, (p,q)=(v*p0,v*q0). Then B<q<=N and
+v^2*q0<=N, so |alpha-p/q|<1/q^2. This applies also to rational alpha:
+the rational value may be unchanged while its displayed denominator grows.
+Suggested lemmas: padding_gt, padding_le_cube, padding_square_le_cube,
+and padded_dirichlet_correct. Every invariant is a numerical inequality.
+
+For arbitrarily large REDUCED denominators (hence distinct rational
+approximants), explicit apartness data suffice: given B and positive
+rational delta with rho(q*alpha)>=delta for every 1<=q<=B, choose N with
+1/N<=delta, apply D1, and reduce the returned pair by its gcd. A reduced
+denominator <=B would have residual no larger than the original residual
+<1/N<=delta, a contradiction. A PR modulus supplying delta from B makes
+this a PR procedure. Negative irrationality alone must not silently be
+treated as such a modulus.
+
+3A. FULL SIMULTANEOUS DIRICHLET FOR ARBITRARY INTEGER N
+-----------------------------------------------------
+
+This proves the strict bound with 1<=q<=N in every dimension d>=1, without
+restricting N to a perfect d-th power or introducing a real root function.
+
+Numerical parameters:
+
+  X=(2N+1)/2, g=1/[N(2N+1)], H=4dN(2N+1),
+  T=1/X+g/4,
+  k=min {j in 0,...,H : (j/H)^d>=T},
+  R=k/H, S=(k+1)/H, M=16Nd(N+1),
+  A=M*X, B=floor(M*R).
+
+Finite rational lemmas:
+
+  threshold_hit: k exists, 1<=k<H.
+    H works; H-1 already works by Bernoulli
+    ((H-1)/H)^d>=1-d/H=1-g/4>T.
+
+  rational_surplus: 0<R<S<=1, N*S^d<1,
+                    X*R^d>=1+1/(8N).
+    Minimality gives ((k-1)/H)^d<T. The factorization of b^d-a^d
+    bounds this difference by d(b-a) on [0,1]. Thus
+    S^d<T+2d/H=1/N-g/4.
+
+  grid_surplus: A,B are integers, B>=1, and A*B^d>M^(d+1).
+    Write z=B/M. Then R^d-z^d<d/M and
+    X*z^d>1+1/(8N)-X*d/M>1+1/(16N)>1.
+
+Grid construction:
+
+  Enumerate e=0,...,M^(d+1),
+  a=floor(e/B^d), (t_1,...,t_d)=base-B digits of e mod B^d,
+  b_i=ceil(r_i*a)+t_i.
+
+Because of grid_surplus, 0<=a<A and 0<=t_i<B. The integer vectors
+(a,b_1,...,b_d) are distinct and their scaled coordinates obey
+
+  0<=a/M<X, 0<=(b_i-r_i*a)/M<R.
+
+Reduce all d+1 coordinates modulo M. A Boolean collision finder on the
+first M^(d+1)+1 points and M^(d+1) labels produces two equal residues.
+Their difference divided by M gives an integer vector (q0,p01,...,p0d)
+with |q0|<X and |q0*r_i-p0i|<R. If q0=0, each integer p0i has
+absolute value <R<1, so all are zero; this contradicts distinctness.
+Change all signs if necessary to make q=abs(q0)>0. Then q<X=N+1/2
+implies q<=N. All ceilings and residues are exact rational computations.
+
+Real-name transfer uses |alpha_i-r_i|<=1/(N*H):
+
+  |q*alpha_i-p_i|<R+1/H=S, and N*S^d<1.
+
+Internal conclusion: the positive rational S and witness q,p_i satisfy
+the displayed rational inequalities; equivalently
+N*|q*alpha_i-p_i|^d<1 in real-name notation.
+
+The reference code uses this proof to justify the much shorter bounded
+search q=1,...,N, rounding q*r_i exactly and accepting if all residuals
+are <R. It records the grid counting inequality but does not materialize
+the large auxiliary grid. Formalization may likewise separate the grid
+existence proof from the efficient search-correctness lemma.
+
+Specific object lemmas: power_difference, bernoulli_finite,
+threshold_minimality, floor_error, mixed_radix_digits, grid_injective,
+grid_shear_bounds, residue_collision, nonzero_first_difference,
+simultaneous_rational_correct, and simultaneous_error_transfer. Their
+finite arithmetic assertions admit Boolean QF invariants.
+
+4. KRONECKER: THE FINITE RATIONAL THEOREM
+---------------------------------------
+
+Matrix orientation: m generator rows a_i in Q^d; target beta in Q^d.
+Choose integer s>=2 for final accuracy 1/s and integer C>=1.
+Set
+
+  t = 2*s,
+  r = 4 * 3^d * (d+1)^(d+1) * t^(2*d+2),
+  A = (2*r+1)^d,
+  a = 1/A,
+  N = 32*C*A.
+
+For an integer h with |h_j|<=r put
+
+  D(h) = max_i rhoRat(sum_j h_j*a_ij).
+
+Finite compatibility condition KCert:
+
+  For every h in the finite box [-r,r]^d,
+  rhoRat(sum_j h_j*beta_j) <= 1/8 + C*D(h).
+
+This is a decidable rational predicate, represented by one Boolean fold.
+The h=0 entry is harmless. For m=0 one can make a separate elementary
+branch; the main development assumes m,d>=1.
+
+Finite theorem K0:
+
+  If KCert holds, the bounded search over
+       q in [-N+1,N-1]^m
+  finds a q with
+       max_j rhoRat(sum_i q_i*a_ij-beta_j) < 1/s.
+
+To match the real-name algorithm with explicit margin, prefer the stronger
+finite checker that accepts when all these rational distances are
+<3/(4*s). The kernel argument with inner radius 1/t=1/(2*s) ensures such
+a point exists already for exact rational data.
+
+Implement the search lexicographically over (2*N-1)^m encodings. Each q_j
+is obtained by subtracting N-1 from a base-(2*N-1) digit. The default return
+on failure is explicit; correctness proves that this branch is unreachable
+under KCert. Compute p_j by exact rational nearest-integer rounding of
+sum_i q_i*a_ij-beta_j. Then p_j supplies the requested ordinary inequality.
+
+5. FINITE POSITIVE-FOURIER PROOF OBLIGATIONS
+------------------------------------------
+
+The algorithm evaluates no trigonometric functions. They occur solely in
+the proof that the finite rational search succeeds. All proof estimates
+have an explicit positive gap, so they can be reduced to sufficiently
+accurate rational polynomial estimates.
+
+Define, in the explanatory real-name layer,
+
+  e(x) = exp(2*pi*i*x),
+  F(x) = product_j cos(pi*x_j)^(2*r),
+  c_h = 4^(-r*d) * product_j binom(2*r,r+h_j),
+  S_N(u) = (1/N) * sum_(k=0)^(N-1) e(k*u),
+  P_h = product_i |S_N(h dot a_i)|^2.
+
+Required finite identities/inequalities:
+
+  fourier_expand: F(x)=sum_(h in [-r,r]^d) c_h*e(h dot x).
+  coefficient_nonneg: c_h>=0.
+  coefficient_total: sum_h c_h=1.
+  central_coefficient: c_0>=1/(2*r+1)^d=a.
+  kernel_tail: if some rho(x_j)>=1/t then F(x)<=a/4.
+  geometric_identity: (1-e(u))*sum_(k<N)e(k*u)=1-e(N*u).
+  geometric_norm: rho(u)^2*|S_N(u)|^2<=1/N^2.
+  average_factorization: the uniform average of
+       F(sum_i (u_i-v_i)*a_i-beta)
+       over u,v in {0,...,N-1}^m
+       equals sum_h c_h*cos(2*pi*(h dot beta))*P_h.
+
+The relaxed elementary chord estimate is |1-e(u)|>=2*rho(u).
+It follows from sin z>=z-z^3/6 on [0,pi/2] and 3<pi<4.
+The upper chord bound is |1-e(u)|<=8*rho(u).
+Thus cos(2*pi*(h dot beta)) >= 1-8*rho(h dot beta)
+                                     >= -8*C*D(h).
+
+Avoid division by D(h), testing D(h)=0, or choosing a maximizing real:
+let z_i=|S_N(h dot a_i)|^2. Then 0<=z_i<=1 and P_h^2<=z_i.
+The geometric estimate gives (N*rho(h dot a_i)*P_h)^2<=1.
+Use 2*x<=1+x^2 (equivalent to (x-1)^2>=0), obtaining
+rho(h dot a_i)*P_h<=1/N, hence D(h)*P_h<=1/N. The maximum
+is over a finite array; alternatively multiply out all coordinate bounds.
+
+Consequently the average is at least
+
+  c_0 - 8*C/N >= a - a/4 = 3*a/4.
+
+The finite no-success branch has each candidate failing a decidable
+rational inequality. For exact rational data, some coordinate has distance
+>=3/(4*s)>1/t; kernel_tail bounds each term in the average by a/4.
+This contradicts average>=3*a/4. No real-valued argmax, sign test, or
+unbounded search is necessary.
+
+6. REAL-NAME EXTRACTION WITH FINITE RATIONAL TESTS
+------------------------------------------------
+
+Apply the preceding real-name kernel estimate to exact named coefficients,
+assuming the displayed finite compatibility inequality for those names.
+For every candidate q, use common rational input approximations whose
+coordinate orbit errors satisfy
+
+  |xhat_j(q) - (sum_i q_i*alpha_ij-beta_j)| <= 1/(8*s).
+
+For example it is enough that every input coordinate has error at most
+
+  eta = 1/(8*s*(m*(N-1)+1)).
+
+Accept q iff all exact rational tests rhoRat(xhat_j(q))<3/(4*s).
+If accepted, the true distances are <7/(8*s)<1/s.
+If no q is accepted, each q has a rationally identified failed coordinate;
+its true distance is >=5/(8*s)>1/(2*s), so every F term is <=a/4.
+The average lower bound contradicts this. Thus the bounded search succeeds.
+
+The output p_j is the exact nearest integer to xhat_j(q), so the same
+triangle inequality proves |sum_i q_i*alpha_ij-p_j-beta_j|<1/s.
+
+Be precise about the compatibility input. A real inequality itself is not
+a decidable numerical certificate. One option is to provide rational upper
+bounds for rho(h dot beta) and rational lower bounds for D(h) that satisfy
+KCert. Another is to retain KCert as a proved hypothesis of the fixed-name
+schema. If extracting a finite check from a supplied modulus, introduce
+explicit extra slack (for example establish 1/16 before checking against
+1/8). Do not claim that equality-boundary tests can always be decided.
+
+Concrete interval-certificate family (final recommended interface):
+
+  H>=1, C>=1; choose rational input errors
+  delta<=1/(64*d*H*(C+1)); write e=d*H*delta.
+  For every h in [-H,H]^d compute
+
+    U_h = rhoRat(h dot betahat)+e,
+    L_h = max_i max(0, rhoRat(h dot ahat_i)-e).
+
+  The exact rational checker requires U_h<=1/8+C*L_h.
+
+This implies the true finite compatibility inequality. Conversely, if the
+true values satisfy rho(h dot beta)<=1/16+C*D(h), then
+U_h<=rho(h dot beta)+2e and L_h>=D(h)-2e. Hence the finite checker passes,
+with at least 1/32 slack after the worst-case error is subtracted.
+
+Necessity module: request an approximation with maximum residual
+<=1/(16*d*H), and set C=1+sum_i abs(q_i). For every h in the finite box,
+the triangle inequality gives rho(h dot beta)<=1/16+C*D(h).
+Thus the approximation procedure supplies the certificate family.
+
+Sufficiency module: given the finite certificate family at the explicit
+H=r(s,d), run the bounded search with N=32*C*(2*r+1)^d.
+Consequently the useful constructive characterization is an equivalence
+between a PR approximation procedure and a PR family of finite interval
+certificates. These procedures are schemas for fixed PR data, with all
+requested precisions and finite array loops explicitly numerical.
+
+7. HOW TO ELIMINATE ANALYSIS FROM THE INTERNAL DERIVATION
+-------------------------------------------------------
+
+The positive Fourier proof must be translated to rational estimates; merely
+writing Mathlib trigonometric lemmas in the semantic layer is insufficient.
+
+Suggested split:
+
+  FiniteKernelArithmetic:
+    Input finite rational tables approximating the finitely many circle
+    values appearing in the proof, together with checked error bounds.
+    Prove the weighted-sum contradiction using only rational arithmetic,
+    finite sums/products, binomial coefficients, and square inequalities.
+
+  FiniteTrigBuilder:
+    Give a fixed PR rational approximator for the needed circle values.
+    Prove the addition/periodicity/norm and chord/tail estimates to an
+    explicitly requested error using finite polynomial expansions and
+    explicit remainder bounds. The report's elementary-trigonometry
+    appendix must supply the exact definitions and constants used here.
+    Each induction is on finite sums or coefficients with a QF invariant.
+
+There is an exact gap a/2 between the lower average bound 3*a/4 and the
+upper no-success bound a/4. Reserve at most a/8 for the TOTAL rational
+approximation error across all identity/inequality blocks. For example,
+four independently verified blocks may each receive a/32. The total budget
+must be propagated through products and sums; a per-entry tolerance must
+be divided by the explicit number of entries whenever coefficients do not
+already form a nonnegative normalized sum. A bound labelled 'sufficiently
+accurate' without this propagation is not a completed internalization.
+
+After FiniteTrigBuilder constructs and verifies the required tables, apply
+FiniteKernelArithmetic and discard the tables. The final K0 statement
+quantifies only over rational numerical inputs and has no trigonometric
+symbols or additional analytical axioms.
+
+8. OBJECT-LEVEL EMBEDDING CHECKLIST
+---------------------------------
+
+(a) Give each fixed integer/rational/table algorithm a concrete PR arity and
+    PR syntax tree. Do not assume a uniformly PR evaluator for arbitrary PR
+    program codes. A schema externally indexed by fixed definitions is fine.
+
+(b) Build a library of object derivations for their defining equations,
+    denominator positivity, signed-ring identities, division/remainder,
+    array indexing, finite sums/products, and comparison Booleans.
+
+(c) Reify D0 and K0 as implications between equalities involving validity,
+    compatibility and witness-checker Booleans. The principal correctness
+    assertion can have form Valid(input)=1 -> Check(input,search(input))=1.
+    This is quantifier-free before universal closure.
+
+(d) Prove the loop invariants directly with PRA.qfInd. Case splits use only
+    proved decidability of equality/comparison on the numerical codes.
+    Prove the rational finite Fourier estimates in the same way after
+    denominators are cleared. The explicit precision parameter is a number.
+
+(e) Close the parameters with Prf.allI to obtain the first-order object
+    theorem. Existential outputs can be introduced with Prf.exI using the
+    already defined PR witness terms; a separate choice principle is not
+    needed.
+
+(f) For fixed PR Cauchy names, instantiate the finite numerical theorem at
+    the prescribed approximation terms. Discharge only their explicit
+    Cauchy/error and compatibility hypotheses. Do not substitute a statement
+    of bare negative irrationality for an apartness/modulus hypothesis.
+
+(g) Apply pra_iff_native and inspect resulting theorem dependencies. Test
+    object formulas and target definitions for accidental strengthening.
+    #print axioms concerns Lean's ambient metatheory; the indispensable
+    check is that the result actually inhabits Prf PRAAx or NPrf.
+
+9. PRIMARY REFERENCE FOR THE LOGICAL OBSTRUCTION
+----------------------------------------------
+
+Hugo Herbelin, An Intuitionistic Logic That Proves Markov's Principle,
+LICS 2010, pp. 50-56. Author-hosted full text:
+https://pauillac.inria.fr/~herbelin/articles/lics-Her10-markov.pdf
+
+The first paragraph explicitly distinguishes the MP implication schema,
+not derivable in Heyting arithmetic, from the admissible Markov rule.
+Its bibliography identifies the original result:
+
+G. Kreisel, The non-derivability of not-(x) A(x) -> (Ex) not-A(x),
+A primitive recursive, in intuitionistic formal systems (abstract),
+Journal of Symbolic Logic 23(4), 1958 issue (published 1959), pp. 456-457.
+Herbelin cites the meeting-abstract grouping pp. 456-461; the exact 456-457
+pagination is independently given in the primary research paper
+Separating Markov's Principles, LICS 2024, reference [25]:
+https://vrahli.github.io/articles/mps-lics24.pdf
+
+Therefore an explicit reduction of a proposed uniform theorem for PR names
+to MP for primitive-recursive predicates rules out its derivability in
+iPRA: iPRA embeds in HA with definitional symbols for PR functions. This is
+a nonderivability argument, not merely a statement that MP is absent from
+the listed axioms. In the report distinguish an implication schema from
+the admissibility of an inference rule.
+

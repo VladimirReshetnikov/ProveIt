@@ -1,0 +1,110 @@
+\section{Ceva's theorem and Menelaus' theorem}
+
+Both theorems become one-line determinant criteria in barycentric coordinates.  This is preferable to proofs by areas because the converses and all signs are automatic.
+
+\subsection{Barycentric setup}
+
+Normalize the reference triangle projectively as
+\[
+A=(1,0,0),\qquad B=(0,1,0),\qquad C=(0,0,1).
+\]
+Let
+\[
+D=(0,d_B,d_C)\in BC,\quad
+E=(e_A,0,e_C)\in CA,\quad
+F=(f_A,f_B,0)\in AB,
+\]
+where every displayed coordinate is nonzero.  Then the directed side ratios are
+\[
+\frac{BD}{DC}=\frac{d_C}{d_B},\qquad
+\frac{CE}{EA}=\frac{e_A}{e_C},\qquad
+\frac{AF}{FB}=\frac{f_B}{f_A}.
+\]
+These equalities are definitions of barycentric side coordinates and can be kept cross-multiplied.
+
+\subsection{Ceva}
+
+\begin{theorem}[Constructive Ceva]
+The cevians $AD,BE,CF$ are concurrent if and only if
+\[
+d_Ce_Af_B=d_Be_Cf_A.
+\]
+Equivalently,
+\[
+\frac{BD}{DC}\frac{CE}{EA}\frac{AF}{FB}=1.
+\]
+\end{theorem}
+
+\begin{proof}
+The three cevian lines have covectors
+\[
+AD=(0,-d_C,d_B),\qquad
+BE=(e_C,0,-e_A),\qquad
+CF=(-f_B,f_A,0).
+\]
+Their determinant is
+\[
+\det\begin{pmatrix}
+0&-d_C&d_B\\
+e_C&0&-e_A\\
+-f_B&f_A&0
+\end{pmatrix}
+=d_Be_Cf_A-d_Ce_Af_B.
+\]
+Thus concurrency implies the displayed product identity.
+
+For the converse, assume the identity and define the explicit point
+\[
+P=(e_Ad_C,\;d_Be_C,\;d_Ce_C).
+\]
+It is nonzero.  Direct substitution gives
+\begin{align*}
+AD\cdot P&=-d_Cd_Be_C+d_Bd_Ce_C=0,\\
+BE\cdot P&=e_Ce_Ad_C-e_Ad_Ce_C=0,\\
+CF\cdot P&=-f_Be_Ad_C+f_Ad_Be_C=0,
+\end{align*}
+where the final equality is exactly the hypothesis.  Hence all three cevians pass through $P$.
+\end{proof}
+
+This proof supplies the concurrency witness rather than deriving its existence indirectly.  It is therefore intuitionistically stronger than a bare determinant-zero argument.
+
+\subsection{Menelaus}
+
+\begin{theorem}[Constructive Menelaus]
+The points $D,E,F$ are collinear if and only if
+\[
+d_Be_Cf_A+d_Ce_Af_B=0.
+\]
+Equivalently, in directed ratios,
+\[
+\frac{BD}{DC}\frac{CE}{EA}\frac{AF}{FB}=-1.
+\]
+When exactly one of $D,E,F$ lies on an extended side outside the triangle, taking ordinary positive lengths removes the minus sign and gives the customary MathWorld equality of the two triple products.
+\end{theorem}
+
+\begin{proof}
+The determinant of the three point vectors is
+\[
+\det\begin{pmatrix}
+0&e_A&f_A\\
+d_B&0&f_B\\
+d_C&e_C&0
+\end{pmatrix}
+=d_Be_Cf_A+d_Ce_Af_B.
+\]
+Hence collinearity is equivalent to the stated polynomial equation.
+
+For a completely explicit converse, the line through $D$ and $E$ is
+\[
+D\join E=(d_Be_C,\;d_Ce_A,\;-d_Be_A).
+\]
+Its value at $F$ is
+\[
+(d_Be_C)f_A+(d_Ce_A)f_B,
+\]
+which vanishes precisely under the Menelaus identity.  Thus $F$ lies on $DE$.
+\end{proof}
+
+\subsection{Relation between the two signs}
+
+Ceva and Menelaus differ only in whether the relevant $3\times3$ matrix contains line covectors or point vectors.  In the first determinant the two contributing monomials have opposite signs; in the second they have the same sign.  This is the coordinate source of the familiar $+1$ versus $-1$ distinction in directed-ratio formulations.

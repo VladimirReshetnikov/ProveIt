@@ -1,0 +1,86 @@
+\section{The precise result and its scope}
+
+The usual Desargues theorem says that two nondegenerate triangles are
+perspective from a point if and only if they are perspective from a line.
+Pascal says that the three intersections of opposite sides of a hexagon
+inscribed in a conic are collinear. Homogeneous coordinates include points
+at infinity, so parallel affine lines require no exceptional case.
+The statements in the question provide the geometric motivation
+\cite{desargues,pascal}; all proofs below are supplied explicitly.
+
+Three levels of statement must be distinguished in a first-order arithmetic
+treatment.
+\begin{enumerate}
+\item \textbf{Internal arithmetic theorems.} For arbitrary integer-coded
+coordinates and coefficients, iPRA proves the incidence implications and
+the correctness of the displayed line and center algorithms. This is
+the entire rational projective plane $\mathbb P^2(\Q)$, rather than a
+finite numerical sample.
+\item \textbf{Universal algebraic certificates.} The two main identities
+hold in every commutative ring. Their geometric consequences hold over
+commutative fields with the requisite nonzero, or constructive apartness,
+witnesses. The proofs use no order or analytic structure.
+\item \textbf{A real-coordinate arithmetic schema.}
+Section~\ref{sec:real} states the same conclusions for each fixed finite
+family of primitive-recursive rational approximation functions satisfying
+explicit arithmetic regularity and apartness premises. This is an iPRA
+schema, not quantification over a completed set of all real numbers.
+\end{enumerate}
+No assertion is made that Desargues follows from the incidence axioms of
+an arbitrary abstract projective plane: coordinates are part of the
+interpretation. Nor is an ambient Lean theorem about a ring automatically
+identified with a derivation in the object theory iPRA.
+
+Here are the principal statements; their notation and witness algorithms
+are developed below. A triple is \emph{nonzero} when at least one of its
+integer components is nonzero.
+
+\begin{theorem}[Internal Desargues, in both directions]\label{thm:des-summary}
+Let $a,b,c,A,B,C$ be integer triples with
+$\br a b c\ne0$ and $\br A B C\ne0$. Put
+\[
+ j_1=a\times A,\quad j_2=b\times B,\quad j_3=c\times C,
+\]
+\[
+ X=(a\times b)\times(A\times B),\quad
+ Y=(b\times c)\times(B\times C),\quad
+ Z=(c\times a)\times(C\times A).
+\]
+Suppose all $j_i$ and $X,Y,Z$ are nonzero. Then iPRA proves
+\begin{align*}
+ &\exists o\,[\nz(o)\land o\cdot j_1=o\cdot j_2=o\cdot j_3=0]\\
+ &\qquad\longleftrightarrow
+ \exists h\,[\nz(h)\land h\cdot X=h\cdot Y=h\cdot Z=0].
+\end{align*}
+In the forward direction choose $h=\axis(X,Y,Z)$; in the reverse
+direction choose $o=\axis(j_1,j_2,j_3)$. The forward implication does not
+need the two triangle determinant assumptions.
+\end{theorem}
+
+\begin{theorem}[Internal Pascal]\label{thm:pas-summary}
+Let $P_1,\ldots,P_6$ be nonzero integer triples and let
+\[
+ Q(x,y,z)=q_1x^2+q_2y^2+q_3z^2+q_4xy+q_5xz+q_6yz
+\]
+have an integer coefficient vector $q\ne0$. Suppose $Q(P_i)=0$ for every
+$i$. Define
+\[
+ X=(P_1\times P_2)\times(P_4\times P_5),\quad
+ Y=(P_2\times P_3)\times(P_5\times P_6),
+\]
+\[
+ Z=(P_3\times P_4)\times(P_6\times P_1).
+\]
+Then iPRA proves $\br X Y Z=0$. If $X,Y,Z$ are nonzero, it additionally
+proves that $h=\axis(X,Y,Z)$ is nonzero and satisfies
+$h\cdot X=h\cdot Y=h\cdot Z=0$.
+\end{theorem}
+
+The nonzero double cross products ensure that the side lines and their
+specified intersections really exist. The determinant conclusion remains
+true even when such objects degenerate, but the zero vector is never
+treated as a projective point. Coincident intersections are allowed; a
+common line is then constructed, although it need not be unique.
+Replacing a repeated vertex by a tangent is a different construction and
+is not silently included in the cross-product convention.
+

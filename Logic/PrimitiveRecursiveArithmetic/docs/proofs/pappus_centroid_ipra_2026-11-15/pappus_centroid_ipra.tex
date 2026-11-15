@@ -1,0 +1,1620 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=blue!55!black,
+  urlcolor=blue!55!black,
+  pdftitle={Pappus's centroid theorem in intuitionistic primitive recursive arithmetic},
+  pdfauthor={OpenAI}
+}
+
+\pagestyle{fancy}
+\setlength{\headheight}{14pt}
+\fancyhf{}
+\lhead{Pappus's centroid theorem in iPRA}
+\rhead{Constructive proof package}
+\cfoot{\thepage}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\D}{\mathbb D}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\Eq}{\mathrel{=_{\!\mathsf R}}}
+\newcommand{\Le}{\mathrel{\le_{\!\mathsf R}}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\Area}{\operatorname{Area}}
+\newcommand{\Vol}{\operatorname{Vol}}
+\newcommand{\Len}{\operatorname{Len}}
+\newcommand{\Mom}{\operatorname{Mom}}
+\newcommand{\Surf}{\operatorname{Surf}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\brak}[1]{\left[#1\right]}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+
+\lstdefinelanguage{Lean}{
+  morekeywords={def,theorem,lemma,namespace,end,by,have,show,from,import,open,section,variable,where,if,then,else,let,in,match,with,case,induction,exact,refine,simp,rw,constructor,structure,noncomputable,axiom},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[s]{/-}{-/},
+  morestring=[b]"
+}
+\lstset{
+  language=Lean,
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  breaklines=true,
+  frame=single,
+  showstringspaces=false,
+  backgroundcolor=\color{black!2}
+}
+
+\title{\textbf{Pappus's Centroid Theorem in Intuitionistic Primitive Recursive Arithmetic}\\
+       \large Exact polygonal and grid-cell identities, explicit constructive limits, and a Lean formalization route}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Pappus's two centroid theorems assert that a surface of revolution has area
+``generating arc length times the distance traveled by the arc centroid,'' and
+that a solid of revolution has volume ``generating area times the distance
+traveled by the lamina centroid.''  An unrestricted statement about arbitrary
+real curves, arbitrary measurable laminas, and completed real integrals is not
+a first-order sentence of intuitionistic primitive recursive arithmetic
+(\(\ipra\)).  We therefore give an exact represented-data formulation and a
+fully constructive proof.
+
+The proof has a finite core.  For one meridional line segment, an explicit squeeze by inscribed and
+circumscribed polyhedral frusta gives
+\[
+  S=\tau\,\frac{r_0+r_1}{2}\,\ell,
+\]
+where \(\tau=2\pi\), \(r_0,r_1\) are the endpoint radii, and \(\ell\) is the
+segment length.  The factor multiplying \(\tau\) is exactly the radial first
+moment of the segment.  For one rectangular grid cell
+\([a,b]\times[c,d]\), rotation gives an annular cylinder and
+\[
+  V=\frac{\tau}{2}(b^2-a^2)(d-c)
+   =\tau\,\frac{a+b}{2}(b-a)(d-c),
+\]
+the latter factor being the cell's radial first moment.  Finite additivity
+proves both theorems for polygonal chains and finite grid laminas.
+
+General constructive curves and laminas are presented by primitive-recursive
+polygonal approximants or nested inner/outer dyadic cell unions, together with
+explicit Cauchy or boundary-cover moduli.  The exact finite identities pass to
+the represented-real limits with an explicit precision shift.  Division by
+arc length or area is used only with a supplied positive lower witness.  The
+circle constant is itself given by a primitive-recursive regular-polygon
+presentation; no least-upper-bound axiom, measure-theoretic change of
+variables, countable choice, or excluded middle for arbitrary propositions is
+used.  Every induction reduces to quantifier-free induction on coded finite
+objects.  We conclude with a module-by-module Lean plan tied to the current
+\code{ConciseIPRA} development, a no-\code{sorry} Lean finite-algebra scaffold (not locally kernel-checked), and
+an executable exact-rational checker.
+\end{abstract}
+
+\tableofcontents
+
+\section{The exact constructive claim}
+\label{sec:claim}
+
+The expository statement normally called Pappus's centroid theorem has two
+parts.  In coordinates where the rotation axis is the \(z\)-axis and the
+meridional half-plane is \(r\geq0\), write \(\tau=2\pi\).
+
+\begin{enumerate}[label=\textbf{(S\arabic*)},leftmargin=2.7em]
+\item If a curve of length \(L\) has radial centroid coordinate \(\bar r\),
+then the area of the swept surface is
+\[
+  S=\tau L\bar r.
+\]
+The centroid travels a circle of length \(d=\tau\bar r\), so \(S=Ld\).
+
+\item If a lamina of area \(A\) has radial centroid coordinate \(\bar r\),
+then the volume of the swept solid is
+\[
+  V=\tau A\bar r.
+\]
+Again \(d=\tau\bar r\), so \(V=Ad\).
+\end{enumerate}
+
+The usual hypotheses are that the generator lies on one side of the axis and
+that the rotation does not cover a two-dimensional or three-dimensional part
+more than once.  Contact with the axis on a zero-content boundary set is
+harmless; this includes the usual cone, cylinder, and sphere examples.
+
+The phrase ``prove this in \(\ipra\)'' needs a precise first-order reading.
+The theory has natural numbers and a symbol for every fixed primitive-recursive
+function; it does not quantify over arbitrary functions \(\R\to\R^2\),
+arbitrary subsets of the plane, or an impredicative completed real field.
+The correct formulation is therefore a theorem schema for each fixed
+primitive-recursive presentation.
+
+\begin{theorem}[Constructive Pappus theorem: surface version]
+\label{thm:surface-main}
+Let \(\mathcal C\) be a fixed primitive-recursive polygonal presentation of a
+rectifiable meridional curve.  At stage \(n\), it produces a finite rational
+polygonal chain \(P_n\) in \(r\geq0\).  Suppose the presentation supplies:
+\begin{enumerate}[label=(\roman*),leftmargin=2.3em]
+\item regular real names for the polygonal length \(L_n\) and radial first
+moment \(M_n\);
+\item a primitive-recursive Cauchy modulus for \((L_n)\) and \((M_n)\);
+\item a positive rational lower witness for the limiting length \(L\);
+\item a finite certificate excluding nontrivial retracing, or else the
+interpretation of area with multiplicity.
+\end{enumerate}
+Let \(L=\lim_nL_n\), \(M=\lim_nM_n\), let
+\(\bar r=M/L\), and define the swept surface area \(S\) as the limit of the
+areas of the revolved polygonal chains.  Then \(\ipra\) proves equality of the
+corresponding regular real names:
+\[
+  S\Eq \tau M\Eq \tau L\bar r.
+\]
+Consequently, with \(d=\tau\bar r\), \(S\Eq Ld\).
+\end{theorem}
+
+\begin{theorem}[Constructive Pappus theorem: volume version]
+\label{thm:volume-main}
+Let \(\mathcal D\) be a fixed primitive-recursive Jordan-lamina presentation
+in a bounded rectangle \(0\leq r\leq R\).  At precision stage \(n\), it
+produces finite unions \(I_n\subseteq O_n\) of pairwise interior-disjoint
+dyadic grid cells, interpreted as inner and outer approximants, such that
+\[
+ I_n\subseteq I_{n+1}\subseteq O_{n+1}\subseteq O_n,
+ \qquad
+ \Area(O_n\setminus I_n)\leq2^{-n}.
+\]
+Suppose also that the limiting area has a supplied positive rational lower
+witness.  Let \(A\), \(M\), and \(V\) be the common limits of area, radial
+first moment, and swept volume; define \(\bar r=M/A\).  Then \(\ipra\) proves
+\[
+  V\Eq \tau M\Eq \tau A\bar r.
+\]
+Consequently, with \(d=\tau\bar r\), \(V\Eq Ad\).
+\end{theorem}
+
+\begin{corollary}[Classical reading]
+\label{cor:classical-reading}
+In ordinary constructive analysis, a simple piecewise \(C^1\) curve with an
+explicit modulus of differentiability produces a presentation satisfying
+\cref{thm:surface-main}.  A bounded Jordan lamina with an explicit
+primitive-recursive boundary-cover modulus produces a presentation satisfying
+\cref{thm:volume-main}.  Under classical logic, the represented quantities
+coincide with the usual arc length, line centroid, area centroid, surface area,
+and volume.  Hence the two theorems recover the customary Pappus formulas for
+all such effective data.
+\end{corollary}
+
+\begin{remark}[What is and is not being restricted]
+The mathematical identity is not weakened to rational polygons only.  The
+finite polygon and grid identities are the exact kernel; explicit limits then
+cover regular curves and regions.  The genuine restriction is proof-theoretic:
+a curve or lamina must be supplied by algorithms and moduli.  An assertion
+about an arbitrary, unnamed, noncomputable set of reals has no direct
+first-order meaning in \(\ipra\).
+\end{remark}
+
+\section{Arithmetic coding and regular real names}
+\label{sec:reals}
+
+\subsection{Rational and finite-object codes}
+
+A signed rational is coded by a sign bit and a pair \((a,b)\) with
+\(a\in\N\), \(b>0\).  Equality and order are decided by cross multiplication.
+Dyadics use denominators \(2^e\).  Finite lists are coded by a standard pairing
+function together with primitive-recursive length and projection functions.
+The following operations are primitive recursive:
+\begin{itemize}[leftmargin=2em]
+\item rational addition, multiplication, negation, comparison, and reciprocal
+with a supplied positive-denominator witness;
+\item bounded sums and products, finite maxima and minima, list maps and folds;
+\item integer square, absolute difference, bounded division and remainder;
+\item decoding polygon vertices and finite sets of dyadic grid cells.
+\end{itemize}
+Every rational identity below expands to an integer identity.  Every rational
+inequality expands to an integer inequality after multiplying by explicitly
+positive denominators.
+
+\subsection{Regular interval names}
+
+\begin{definition}[Regular real name]
+A regular real name \(X\) is a pair of primitive-recursive rational functions
+\(L_X,U_X:\N\to\Q\) satisfying, for every \(k\),
+\begin{align*}
+ L_X(k)&\leq L_X(k+1)\leq U_X(k+1)\leq U_X(k),\\
+ U_X(k)-L_X(k)&\leq2^{-k}.
+\end{align*}
+Write \(c_X(k)=(L_X(k)+U_X(k))/2\).
+\end{definition}
+
+We use the arithmetic equality convention
+\begin{equation}
+ X\Eq Y
+ \quad:\Longleftrightarrow\quad
+ \forall k\;\abs{c_X(k+3)-c_Y(k+3)}\leq2^{-k}.
+ \label{eq:real-eq}
+\end{equation}
+The three-place precision shift makes reflexivity, symmetry, transitivity, and
+compatibility with interval arithmetic immediate.  Order is defined similarly:
+\begin{equation}
+ X\Le Y
+ \quad:\Longleftrightarrow\quad
+ \forall k\;c_X(k+3)\leq c_Y(k+3)+2^{-k}.
+ \label{eq:real-le}
+\end{equation}
+At each fixed precision these are decidable rational inequalities.
+
+\begin{definition}[Positive lower witness]
+A name \(X\) is strongly positive when its data include rational
+\(q>0\) and an index \(p\) such that \(q\leq L_X(p)\).  Nesting makes \(q\) a
+permanent lower bound.  Reciprocals and cancellation are used only with such a
+witness.
+\end{definition}
+
+Addition and multiplication are performed by interval arithmetic and a
+precision shift large enough to absorb known magnitude bounds.  A compatible
+but nonnested family of intervals is normalized by
+\[
+ \widehat L(k)=\max_{i\leq k}L(i),
+ \qquad
+ \widehat U(k)=\min_{i\leq k}U(i).
+\]
+All these transformations are primitive recursive.
+
+\subsection{Square roots by bounded bisection}
+
+For a nonnegative rational \(q\), choose an integer bound \(B\geq1+q\).
+Starting with \([0,B]\), perform a predetermined number of bisection steps.
+At a midpoint \(m\), the comparison \(m^2\leq q\) is decidable, so one retains
+\([m,u]\) or \([\ell,m]\).  After
+\[
+ N(k,B)=k+2+\min\set{j:B\leq2^j}
+\]
+steps the width is at most \(2^{-k-2}\).  The least \(j\leq B+1\) with the
+displayed property is obtained by bounded search.  Thus \(\sqrt q\) has a
+primitive-recursive regular interval name, and \(\ipra\) proves the invariant
+\[
+ 0\leq\ell_N\leq\sqrt q\leq u_N,
+ \qquad
+ u_N-\ell_N\leq2^{-k-2},
+\]
+using quantifier-free induction on the fixed bisection counter.  Segment
+lengths of rational polygonal chains therefore have uniform regular names.
+
+\subsection{Explicit limits}
+
+\begin{lemma}[Primitive-recursive Cauchy completion]
+\label{lem:pr-limit}
+Suppose \(X_n\) is a primitive-recursive family of regular names and a
+primitive-recursive function \(\mu\) satisfies
+\[
+ m,n\geq\mu(k)\quad\Longrightarrow\quad
+ \abs{X_m-X_n}\leq2^{-k}
+\]
+in the represented-real sense.  Then the diagonal construction
+\[
+ c_X(k)=c_{X_{\mu(k+4)}}(k+4)
+\]
+with interval radius \(2^{-k-1}\), followed by running intersection, is a
+regular name for a limit \(X\).  If \(Y_n\Eq X_n\) at every stage and
+\(Y_n\to Y\) with an explicit modulus, then \(X\Eq Y\).
+\end{lemma}
+
+\begin{proof}
+Given precision \(k\), every two selected diagonal stages lie beyond
+\(\mu(k+4)\), and the internal approximation error of each selected name is at
+most \(2^{-k-4}\).  Three applications of the triangle inequality give a
+total error below \(2^{-k-1}\).  All indices are explicit primitive-recursive
+terms.  The uniqueness assertion uses the same calculation with the exact
+stagewise equality inserted in the middle.  At fixed \(k\), the calculation is
+a finite rational inequality; the only iteration is over the coded finite
+sum of error terms.
+\end{proof}
+
+\begin{lemma}[Compatibility with a bounded factor]
+\label{lem:bounded-factor}
+If \(X_n\to X\) with modulus \(\mu\), and \(C\) is a regular name with a
+known bound \(\abs C\leq B\), then \(CX_n\to CX\) with modulus
+\(k\mapsto\mu(k+\ceil{\log_2(B+1)}+3)\).  The logarithm notation denotes a
+bounded integer search, not a real logarithm.
+\end{lemma}
+
+\begin{proof}
+Choose the stage so that \(\abs{X_n-X}\leq2^{-k}/(B+1)\).  Interval-product
+rounding consumes two additional bits.  Multiplying the rational inequalities
+and clearing positive denominators proves the claim.
+\end{proof}
+
+\section{A primitive-recursive circle constant package}
+\label{sec:circle}
+
+The Pappus identities use one geometric constant: the length of a full turn
+at unit radius.  We denote it by \(\tau\); later \(\pi=\tau/2\).  It is useful
+to construct \(\tau\) directly rather than assume a completed transcendental
+real.
+
+\subsection{Regular polygon brackets}
+
+Let \(N_m=2^{m+2}\).  Define regular real names
+\begin{align*}
+ c_0&=\sqrt{\tfrac12},
+ &c_{m+1}&=\sqrt{\frac{1+c_m}{2}},\\
+ s_m&=\sqrt{1-c_m^2},
+ &p_m&=2N_ms_m,
+ &q_m&=\frac{p_m}{c_m}.
+\end{align*}
+Geometrically, \(c_m\) is the apothem of an inscribed regular \(N_m\)-gon in
+the unit circle, \(p_m\) is its perimeter, and \(q_m\) is the perimeter of
+the corresponding circumscribed polygon.  The reciprocal is constructive
+because \(c_m\geq c_0>1/2\).
+
+\begin{lemma}[Elementary polygon estimates]
+\label{lem:polygon-estimates}
+For every \(m\),
+\begin{align}
+ \tfrac12&\leq c_m\leq1,
+ &1-c_m&\leq2^{-m},\label{eq:c-bound}\\
+ p_m&\leq p_{m+1}\leq q_{m+1}\leq q_m\leq8,
+ &q_m-p_m&\leq8\cdot2^{-m}.
+ \label{eq:perim-gap}
+\end{align}
+If
+\[
+ a_m=\frac12p_mc_m,
+ \qquad
+ b_m=\frac12q_m,
+\]
+are the inscribed and circumscribed polygon areas, then
+\begin{equation}
+ a_m\leq a_{m+1}\leq b_{m+1}\leq b_m,
+ \qquad
+ b_m-a_m\leq8\cdot2^{-m}.
+ \label{eq:area-gap}
+\end{equation}
+Moreover the common perimeter limit is twice the common area limit.
+\end{lemma}
+
+\begin{proof}
+From \(c_{m+1}^2=(1+c_m)/2\),
+\[
+ 1-c_{m+1}
+ =\frac{1-c_m}{2(1+c_{m+1})}
+ \leq\frac{1-c_m}{2},
+\]
+which proves \eqref{eq:c-bound} by induction.  Half-angle similarity gives
+\(p_m=q_mc_m\).  The doubled polygon satisfies
+\[
+ \frac{p_{m+1}}{p_m}=\frac1{c_{m+1}}\geq1,
+ \qquad
+ \frac{q_{m+1}}{q_m}=\frac{2c_m}{1+c_m}\leq1.
+\]
+The circumscribed square has perimeter \(q_0=8\), hence \(q_m\leq8\), and
+\[
+ q_m-p_m=q_m(1-c_m)\leq8\cdot2^{-m}.
+\]
+The area formula is the finite sum of triangle areas, so
+\(a_m=p_mc_m/2\) and \(b_m=q_m/2\).  In fact
+\[
+ a_{m+1}=\frac{p_m}{2}\geq\frac{p_mc_m}{2}=a_m,
+ \qquad b_{m+1}\leq b_m,
+ \qquad a_{m+1}\leq b_{m+1}.
+\]
+Therefore
+\[
+ b_m-a_m=\frac{q_m(1-c_m^2)}2
+ \leq q_m(1-c_m)
+ \leq8\cdot2^{-m}.
+\]
+Finally
+\[
+ \abs{p_m-2a_m}=p_m(1-c_m)\leq8\cdot2^{-m},
+ \qquad 2b_m=q_m.
+\]
+Both perimeter brackets and area brackets have vanishing explicit gaps, so
+\cref{lem:pr-limit} gives common limits \(\tau\) and \(\pi\), and the last two
+relations give \(\tau=2\pi\).  Every displayed comparison is algebraic in
+square-root names and is proved at fixed precision by denominator clearing.
+\end{proof}
+
+\begin{definition}[Circle package]
+Let \(\tau\) be the regular real defined by the nested perimeter brackets
+\([p_m,q_m]\), after the precision shift \(m=k+4\).  Define
+\(\pi=\tau/2\).  A circle of radius \(r\geq0\) has circumference \(\tau r\),
+and a disk of radius \(r\) has area \(\tau r^2/2\), by scaling the polygon
+approximants.
+\end{definition}
+
+The package proves \(5<\tau<8\), more than enough for every later error budget.
+No trigonometric function is needed in the object theory.
+
+
+\section{The finite surface identity}
+\label{sec:finite-surface}
+
+This section proves the geometric kernel of the first theorem.  Everything is
+reduced to finite Euclidean algebra and the regular-polygon brackets of
+\cref{sec:circle}.  In particular, the proof does not assume a pre-existing
+surface integral.
+
+\subsection{The first moment of one segment}
+
+Let
+\[
+ u_0=(r_0,z_0),\qquad u_1=(r_1,z_1),\qquad r_0,r_1\geq0,
+\]
+and put
+\[
+ \Delta r=r_1-r_0,\qquad \Delta z=z_1-z_0,
+ \qquad \ell=\sqrt{(\Delta r)^2+(\Delta z)^2}.
+\]
+The segment is parametrized affinely by
+\[
+ u(t)=((1-t)r_0+tr_1,(1-t)z_0+tz_1),\qquad0\leq t\leq1.
+\]
+
+\begin{lemma}[Finite midpoint moment]
+\label{lem:segment-moment}
+For every positive integer $N$, divide the segment into $N$ equal pieces and
+place the mass of each piece at its midpoint.  The radial first moment of this
+finite mass distribution is exactly
+\[
+ M_N=\ell\,\frac{r_0+r_1}{2}.
+\]
+It is independent of $N$.  Hence the constructive line moment and radial
+centroid of the nondegenerate segment are
+\[
+ M_\sigma=\ell\,\frac{r_0+r_1}{2},
+ \qquad
+ \bar r_\sigma=\frac{r_0+r_1}{2}.
+\]
+\end{lemma}
+
+\begin{proof}
+The $j$th midpoint, for $0\leq j<N$, has parameter
+$t_j=(2j+1)/(2N)$ and radial coordinate
+$r_j=r_0+t_j(r_1-r_0)$.  Each piece has length $\ell/N$.  Thus
+\begin{align*}
+ M_N
+ &=\frac{\ell}{N}\sum_{j=0}^{N-1}
+   \left(r_0+\frac{2j+1}{2N}(r_1-r_0)\right)\\
+ &=\ell r_0+\frac{\ell(r_1-r_0)}{2N^2}
+   \sum_{j=0}^{N-1}(2j+1).
+\end{align*}
+The finite odd-number identity
+$\sum_{j<N}(2j+1)=N^2$ gives the result.  That identity is proved by
+quantifier-free induction.  No limiting argument is needed for the affine
+function $r(t)$.
+\end{proof}
+
+\subsection{Polyhedral brackets for the revolved segment}
+
+Rotate the segment about the $z$-axis.  The familiar picture is a conical
+frustum, with the cylinder and cone as limiting cases.  To define its area
+constructively, use the same regular $N_m$-gons as in the circle package.
+Write $c_m$ and $s_m$ for their half-angle cosine and sine, and $p_m,q_m$ for
+the unit-circle inscribed and circumscribed perimeters.
+
+For the inner approximation, put an inscribed regular $N_m$-gon in each
+endpoint circle and join corresponding vertices.  One face has parallel base
+lengths $2r_0s_m$ and $2r_1s_m$.  In coordinates centered on the midpoint of
+one polygon edge, the perpendicular displacement between the two base lines
+is
+\[
+ h_m=\sqrt{(\Delta z)^2+c_m^2(\Delta r)^2}.
+\]
+The face is an ordinary planar trapezoid.  Summing its area over the $N_m$
+faces gives
+\begin{equation}
+ S_m^-=\frac{p_m}{2}(r_0+r_1)h_m.
+ \label{eq:inner-frustum}
+\end{equation}
+
+For the outer approximation, put a circumscribed regular $N_m$-gon around each
+endpoint circle and again join corresponding vertices.  A tangent side at
+radius $r$ has length $2r\,s_m/c_m$.  The perpendicular displacement between
+corresponding tangent sides is exactly $\ell$.  Hence
+\begin{equation}
+ S_m^+=\frac{q_m}{2}(r_0+r_1)\ell.
+ \label{eq:outer-frustum}
+\end{equation}
+All coordinates involved here are obtained from rational input by the square
+root and field operations already represented in \cref{sec:reals}.
+
+\begin{lemma}[Effective frustum squeeze]
+\label{lem:frustum-squeeze}
+The inner areas increase, the outer areas decrease, and
+\[
+ S_m^-\leq S_{m+1}^-\leq S_{m+1}^+\leq S_m^+.
+\]
+Moreover
+\begin{equation}
+ 0\leq S_m^+-S_m^-
+ \leq4(r_0+r_1)(\ell+\abs{\Delta r})2^{-m}.
+ \label{eq:frustum-gap}
+\end{equation}
+The two sequences therefore define one regular real, and that real is
+\begin{equation}
+ \Surf(\sigma)=\tau\,\frac{r_0+r_1}{2}\,\ell.
+ \label{eq:segment-surface}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The sequences $p_m,c_m$ increase and $q_m$ decreases.  Since
+$h_m^2=(\Delta z)^2+c_m^2(\Delta r)^2$, the sequence $h_m$ also increases and
+never exceeds $\ell$.  This proves the nesting.
+
+The reverse triangle inequality, applied to the two vectors
+$(\Delta z,c_m\Delta r)$ and $(\Delta z,\Delta r)$, gives the division-free
+bound
+\[
+ 0\leq\ell-h_m\leq(1-c_m)\abs{\Delta r}
+ \leq2^{-m}\abs{\Delta r}.
+\]
+Using $p_m\leq q_m\leq8$ and $q_m-p_m\leq8\cdot2^{-m}$,
+\begin{align*}
+ S_m^+-S_m^-
+ &=\frac{r_0+r_1}{2}\bigl(q_m\ell-p_mh_m\bigr)\\
+ &=\frac{r_0+r_1}{2}
+   \bigl((q_m-p_m)\ell+p_m(\ell-h_m)\bigr)\\
+ &\leq4(r_0+r_1)(\ell+\abs{\Delta r})2^{-m}.
+\end{align*}
+A rational upper bound for the constant in front is computable from the input
+codes, so a primitive-recursive precision shift turns these brackets into a
+regular name.
+
+Finally $p_m\to\tau$ and $h_m\to\ell$ with the displayed moduli.  Passing to
+the common limit in \eqref{eq:inner-frustum} gives
+\eqref{eq:segment-surface}.  More explicitly, for every requested $k$, choose
+$m$ so that the right side of \eqref{eq:frustum-gap} is at most $2^{-(k+2)}$
+and use either bracket; this is the object-theoretic proof of real equality.
+\end{proof}
+
+\begin{remark}[All degeneracies are covered]
+No division by $\Delta r$ occurred.  Thus the same proof includes a cylinder
+($\Delta r=0$), a cone ($r_0=0$ or $r_1=0$), a segment on the axis
+($r_0=r_1=0$, giving zero swept area), and an endpoint touching the axis.
+This is one reason the polygonal squeeze is preferable to the customary proof
+that extends the sloping side to the cone apex and unrolls an annular sector.
+The latter is valid intuition, but it introduces a case split and an implicit
+sector-area theorem that would itself need constructive justification.
+\end{remark}
+
+Combining \cref{lem:segment-moment,lem:frustum-squeeze} immediately yields the
+one-segment form of Pappus's theorem.
+
+\begin{proposition}[Segment Pappus identity]
+\label{prop:segment-pappus}
+For every meridional segment in $r\geq0$,
+\[
+ \Surf(\sigma)=\tau M_\sigma.
+\]
+If $\ell>0$, this is
+\[
+ \Surf(\sigma)=\tau\ell\bar r_\sigma.
+\]
+\end{proposition}
+
+\subsection{Finite polygonal chains}
+
+Let $P=(u_0,\ldots,u_s)$ be a finite polygonal chain in $r\geq0$.  For its
+$j$th segment write $\ell_j$ for its length and $r_j,r_{j+1}$ for its endpoint
+radii.  Define
+\begin{align}
+ L(P)&=\sum_{j<s}\ell_j,\label{eq:poly-length}\\
+ M(P)&=\sum_{j<s}\frac{r_j+r_{j+1}}2\ell_j,
+ \label{eq:poly-moment}\\
+ S(P)&=\sum_{j<s}\Surf([u_j,u_{j+1}]).
+ \label{eq:poly-surface}
+\end{align}
+The last definition counts area with multiplicity.  It is always meaningful,
+even for a self-intersecting chain.
+
+\begin{theorem}[Finite polygonal Pappus theorem]
+\label{thm:polygon-pappus}
+For every finite polygonal chain $P$ in $r\geq0$,
+\begin{equation}
+ S(P)=\tau M(P).
+ \label{eq:polygon-pappus}
+\end{equation}
+If $L(P)>0$ and $\bar r(P)=M(P)/L(P)$, then
+\begin{equation}
+ S(P)=\tau L(P)\bar r(P).
+ \label{eq:polygon-centroid}
+\end{equation}
+If the chain is simple away from possible axis endpoints, then $S(P)$ is the
+ordinary geometric area of its surface of revolution; otherwise it is the
+ordinary area counted with multiplicity.
+\end{theorem}
+
+\begin{proof}
+Sum \cref{prop:segment-pappus} over the finitely many segments and distribute
+multiplication by $\tau$ over the finite sum.  This proves
+\eqref{eq:polygon-pappus}.  When $L(P)>0$, the positive reciprocal construction
+gives $L(P)\bar r(P)=M(P)$, and \eqref{eq:polygon-centroid} follows.
+
+For the final assertion, a point of a revolved segment with positive radius is
+determined by its meridional pair $(r,z)$ and its angular position.  Two
+nonadjacent pieces can therefore overlap on a surface patch only if their
+meridional segments overlap on a nontrivial subsegment.  Simplicity excludes
+this.  Adjacent pieces share only an endpoint circle, and points on the axis
+collapse only a one-dimensional angular fiber to a point; both have zero
+surface content by explicit polygonal covers.  Finite additivity therefore
+identifies the sum with geometric area.  No quotient by an undecidable
+``almost everywhere'' relation is required.
+\end{proof}
+
+\section{The finite volume identity}
+\label{sec:finite-volume}
+
+The volume theorem has an even simpler finite kernel.  Let
+\[
+ C=[a,b]\times[c,d],\qquad0\leq a\leq b,\qquad c\leq d,
+\]
+be one meridional rectangle.  Its area and radial first moment are
+\begin{equation}
+ A(C)=(b-a)(d-c),
+ \qquad
+ M(C)=\frac{a+b}{2}(b-a)(d-c).
+ \label{eq:cell-area-moment}
+\end{equation}
+The moment formula can again be proved by finite midpoint sums: on every
+uniform radial subdivision the average of the cell-center radii is
+$(a+b)/2$.
+
+Rotating $C$ gives an annular cylinder.  By the circle package, its volume is
+\begin{equation}
+ V(C)=\frac{\tau}{2}(b^2-a^2)(d-c).
+ \label{eq:cell-volume}
+\end{equation}
+Internally this is defined by subtracting the regular polygonal-prism names
+for the two cylinders.  Thus \eqref{eq:cell-volume} is not an appeal to
+Cavalieri's principle over arbitrary sets; it is a limit of finite prism
+identities with the modulus inherited from \eqref{eq:area-gap}.
+
+\begin{proposition}[Cell Pappus identity]
+\label{prop:cell-pappus}
+For every such cell,
+\[
+ V(C)=\tau M(C).
+\]
+\end{proposition}
+
+\begin{proof}
+The denominator-cleared calculation is finite:
+\begin{align*}
+ V(C)
+ &=\frac{\tau}{2}(b-a)(b+a)(d-c)\\
+ &=\tau\frac{a+b}{2}(b-a)(d-c)
+ =\tau M(C).
+\end{align*}
+The only division by $2$ is multiplication by the fixed rational $1/2$.
+\end{proof}
+
+Let $G=(C_0,\ldots,C_{t-1})$ be a finite list of grid cells with pairwise
+disjoint interiors.  Define
+\[
+ A(G)=\sum_{i<t}A(C_i),\qquad
+ M(G)=\sum_{i<t}M(C_i),\qquad
+ V(G)=\sum_{i<t}V(C_i).
+\]
+
+\begin{theorem}[Finite grid-lamina Pappus theorem]
+\label{thm:grid-pappus}
+For every finite grid lamina $G$,
+\[
+ V(G)=\tau M(G).
+\]
+If $A(G)>0$ and $\bar r(G)=M(G)/A(G)$, then
+\[
+ V(G)=\tau A(G)\bar r(G).
+\]
+The sum is the geometric volume of the rotated union, not merely a volume with
+multiplicity.
+\end{theorem}
+
+\begin{proof}
+Sum \cref{prop:cell-pappus}.  Interior-disjoint meridional cells rotate to
+interior-disjoint annular cylinders: equality of a rotated point with positive
+radius forces equality of its $(r,z)$ pair.  Shared faces and circular edges
+have zero volume, witnessed by boxes of arbitrarily small total rational
+volume.  Hence finite additivity applies.  The centroid formula follows from
+$A(G)\bar r(G)=M(G)$ using the supplied positivity of $A(G)$.
+\end{proof}
+
+\section{Explicit limits and proof of the two main theorems}
+\label{sec:limits}
+
+We now pass from finite generators to the represented objects of
+\cref{thm:surface-main,thm:volume-main}.  The passage is constructive because
+all rates are part of the input.
+
+\subsection{A uniform limit-transfer lemma}
+
+The following elementary lemma is used repeatedly.  Its formulation is chosen
+so that every witness is a primitive-recursive term.
+
+\begin{lemma}[Transfer of a finite identity through explicit limits]
+\label{lem:identity-limit}
+Let $x_n,y_n$ be sequences of regular reals with fixed primitive-recursive
+Cauchy moduli, and suppose $x_n=c\,y_n$ for every $n$, where $c$ is a fixed
+regular real with a rational bound $\abs c\leq C$.  Let $x=\lim x_n$ and
+$y=\lim y_n$ be the diagonal regular names of \cref{lem:pr-limit}.  Then
+$x=c\,y$.
+
+More quantitatively, if
+\[
+ \abs{x-x_n}\leq2^{-(k+2)},\qquad
+ \abs{y-y_n}\leq2^{-(k+2+B)}
+\]
+and $C\leq2^B$, then $\abs{x-cy}\leq2^{-k}$.
+\end{lemma}
+
+\begin{proof}
+For the chosen $n$,
+\[
+ \abs{x-cy}
+ \leq\abs{x-x_n}+\abs{x_n-cy_n}+\abs c\,\abs{y_n-y}
+ \leq2^{-(k+2)}+0+2^B2^{-(k+2+B)}
+ \leq2^{-(k+1)}.
+\]
+The remaining slack pays for extracting rational endpoints from the regular
+names.  All comparisons are decidable rational inequalities after a fixed
+precision shift.  The stage $n$ is the maximum of the two supplied moduli, so
+it is primitive recursive.
+\end{proof}
+
+\begin{lemma}[Positive division]
+\label{lem:positive-division}
+Let $X,Y$ be regular reals, and suppose the data include a positive rational
+$\lambda$ and a stage after which $L_X(k)\geq\lambda$.  Then the reciprocal
+$1/X$ and quotient $Y/X$ have primitive-recursive regular names.  They satisfy
+$X(Y/X)=Y$.  No disjunction $X=0\vee X\neq0$ is used.
+\end{lemma}
+
+\begin{proof}
+On the compact rational interval $[\lambda,U_X(0)]$, reciprocal has the
+explicit modulus
+\[
+ \abs{u^{-1}-v^{-1}}=\frac{\abs{u-v}}{uv}
+ \leq\lambda^{-2}\abs{u-v}.
+\]
+Choose a power of two exceeding $\lambda^{-2}$, refine the input name by the
+corresponding precision shift, and reverse the interval endpoints.  The field
+identity follows at every requested precision by cross multiplication.  The
+construction is primitive recursive because $\lambda$ is supplied, rather
+than found by an unbounded search.
+\end{proof}
+
+\subsection{Surface presentations}
+
+For a polygonal presentation $n\mapsto P_n$, let
+\[
+ L_n=L(P_n),\qquad M_n=M(P_n),\qquad S_n=S(P_n).
+\]
+By \cref{thm:polygon-pappus},
+\begin{equation}
+ S_n=\tau M_n
+ \qquad\text{for every }n.
+ \label{eq:stage-surface}
+\end{equation}
+The presentation supplies Cauchy moduli for $L_n$ and $M_n$.  Since
+$\abs\tau<8$, equation \eqref{eq:stage-surface} itself gives a Cauchy modulus
+for $S_n$: a modulus for $M_n$ at precision $k+4$ is one for $S_n$ at
+precision $k$.  Thus all three diagonal limits are regular names.
+
+\begin{proof}[Proof of \cref{thm:surface-main}]
+Apply \cref{lem:identity-limit} to \eqref{eq:stage-surface}, with $c=\tau$ and
+$C=8$.  This gives
+\[
+ S=\tau M.
+\]
+The positive lower witness for $L$ permits the definition
+$\bar r=M/L$ by \cref{lem:positive-division}; hence $L\bar r=M$.  Associativity
+of represented-real multiplication gives
+\[
+ S=\tau M=\tau(L\bar r)=\tau L\bar r.
+\]
+With $d=\tau\bar r$, this is $S=Ld$.
+
+At the object-theory level, the phrase ``apply the limit lemma'' expands as
+follows.  Given a precision variable $k$, compute
+\[
+ n=\max\{\mu_S(k+3),\mu_M(k+7)\}.
+\]
+Open the finite certificate for $P_n$, invoke the segment identities, fold the
+finite sum, and use the two Cauchy bounds and $\tau<8$.  After denominators are
+cleared, the goal is a quantifier-free numerical inequality.  Its universal
+closure in $k$ is therefore an ordinary sentence of $\ipra$.
+
+If the presentation certifies simplicity, the stage areas and their limit are
+the geometric surface area by \cref{thm:polygon-pappus}.  Without that
+certificate the same proof yields area with multiplicity, which is often the
+more stable constructive notion.
+\end{proof}
+
+\subsection{Lamina presentations}
+
+For a finite cell union $E$, write $A(E),M(E),V(E)$ for the quantities of
+\cref{sec:finite-volume}.  For the nested inner and outer approximants put
+\begin{align*}
+ A_n^-&=A(I_n),& A_n^+&=A(O_n),\\
+ M_n^-&=M(I_n),& M_n^+&=M(O_n),\\
+ V_n^-&=V(I_n),& V_n^+&=V(O_n).
+\end{align*}
+Monotonicity of finite sums and $0\leq r\leq R$ give
+\begin{align}
+ 0&\leq A_n^+-A_n^-\leq2^{-n},
+ \label{eq:area-bracket-gap}\\
+ 0&\leq M_n^+-M_n^-\leq R2^{-n},
+ \label{eq:moment-bracket-gap}\\
+ 0&\leq V_n^+-V_n^-
+   =\tau(M_n^+-M_n^-)
+   \leq8R2^{-n}.
+ \label{eq:volume-bracket-gap}
+\end{align}
+The equality in \eqref{eq:volume-bracket-gap} is the finite grid theorem
+applied to the cell difference after refining both unions to a common grid.
+
+Choose a natural number $B_R$ with $R\leq2^{B_R}$; it can be supplied with the
+bounding box or computed once from its rational code.  Then
+$n=k+B_R+4$ makes the moment and volume gaps at most $2^{-k}$.  Therefore the
+three pairs of brackets define regular names $A,M,V$.
+
+\begin{proof}[Proof of \cref{thm:volume-main}]
+For each stage, \cref{thm:grid-pappus} gives both
+\[
+ V_n^-=\tau M_n^-,\qquad V_n^+=\tau M_n^+.
+\]
+The nested brackets and \cref{eq:moment-bracket-gap,eq:volume-bracket-gap}
+therefore squeeze their common limits to
+\[
+ V=\tau M.
+\]
+The supplied positive lower witness for $A$ defines
+$\bar r=M/A$ and proves $A\bar r=M$.  Hence
+\[
+ V=\tau M=\tau A\bar r.
+\]
+Putting $d=\tau\bar r$ gives $V=Ad$.
+
+For a requested precision $k$, the object proof uses the single explicit
+stage $n=k+B_R+7$, refines $I_n,O_n$ to a common dyadic grid, checks the cell
+identities by polynomial normalization, and applies
+\eqref{eq:area-bracket-gap}--\eqref{eq:volume-bracket-gap}.  There is no
+quantification over subsets of the plane and no use of a measure-completion
+principle.
+\end{proof}
+
+\section{Recovery of the familiar analytic theorem}
+\label{sec:bridges}
+
+The main theorems deliberately take effective approximation data as their
+hypotheses.  This section explains in detail how standard smooth curves and
+Jordan laminas provide those data.  These are bridge theorems: the finite
+identities above are the proof-theoretic core, while the bridges identify the
+represented limits with customary analytic quantities.
+
+\subsection{Piecewise \texorpdfstring{$C^1$}{C1} curves with explicit moduli}
+
+Consider one parameter interval $[0,1]$ and a curve
+\[
+ \gamma(t)=(r(t),z(t)),\qquad0\leq r(t)\leq R.
+\]
+For a direct arithmetization, assume the presentation provides:
+\begin{enumerate}[label=(\alph*),leftmargin=2.3em]
+\item regular names for $\gamma$ and a derivative candidate
+$D\gamma(t)$ at dyadic $t$;
+\item rational bounds $\norm{D\gamma(t)}\leq B$ and $0\leq r(t)\leq R$;
+\item a primitive-recursive function $\eta(n)$ tending to $0$ with a known
+modulus, such that for dyadic $t,h\geq0$ with $t+h\leq1$ and $h\leq2^{-n}$,
+\begin{equation}
+ \norm{\gamma(t+h)-\gamma(t)-hD\gamma(t)}\leq h\eta(n);
+ \label{eq:taylor-modulus}
+\end{equation}
+\item moduli $\omega_v,\omega_r,\omega_{rv}$ for the bounded functions
+$v(t)=\norm{D\gamma(t)}$, $r(t)$, and $r(t)v(t)$.
+\end{enumerate}
+A usual effectively $C^1$ curve supplies these data: uniform continuity of the
+derivative gives \eqref{eq:taylor-modulus}, with the integral remainder proved
+by finite Riemann sums.  Stating the remainder estimate directly is more
+faithful to first-order arithmetic than treating ``$C^1$'' as an unanalyzed
+higher-type predicate.
+
+Take the uniform mesh $t_i=i2^{-n}$ and first use the exact points
+$\gamma(t_i)$.  Let $h=2^{-n}$, let $\ell_i$ be the $i$th chord length, and
+put $v_i=v(t_i)$.  The reverse triangle inequality applied to
+\eqref{eq:taylor-modulus} yields
+\begin{equation}
+ \abs{\ell_i-hv_i}\leq h\eta(n).
+ \label{eq:chord-speed}
+\end{equation}
+Summing over $2^n$ intervals gives
+\begin{equation}
+ \left|\sum_i\ell_i-h\sum_i v_i\right|\leq\eta(n).
+ \label{eq:length-rsum}
+\end{equation}
+The Riemann-sum modulus for $v$ then gives
+\begin{equation}
+ \abs{L(P_n)-L}\leq\eta(n)+\omega_v(n),
+ \qquad L=\int_0^1v(t)\,dt,
+ \label{eq:length-convergence}
+\end{equation}
+where the integral notation abbreviates the regular real defined by these
+finite sums.
+
+For the moment, write
+\[
+ m_i=\frac{r(t_i)+r(t_{i+1})}{2}\ell_i.
+\]
+Using $r\leq R$, $v\leq B$, \eqref{eq:chord-speed}, and
+$\abs{r(t_{i+1})-r(t_i)}\leq\omega_r(n)$, one obtains
+\begin{align}
+ \abs{m_i-hr(t_i)v_i}
+ &\leq R\abs{\ell_i-hv_i}
+   +hv_i\frac{\abs{r(t_{i+1})-r(t_i)}}2
+   +\eta(n)h\frac{\omega_r(n)}2\notag\\
+ &\leq h\left(R\eta(n)+\frac{B\omega_r(n)}2
+   +\frac{\eta(n)\omega_r(n)}2\right).
+ \label{eq:moment-cell-error}
+\end{align}
+After summation and comparison with the Riemann sum for $rv$,
+\begin{equation}
+ \abs{M(P_n)-M}
+ \leq R\eta(n)+\frac{B\omega_r(n)}2
+      +\frac{\eta(n)\omega_r(n)}2+\omega_{rv}(n),
+ \qquad M=\int_0^1r(t)v(t)\,dt.
+ \label{eq:moment-convergence}
+\end{equation}
+Every term on the right has a supplied primitive-recursive convergence
+modulus.  Hence the polygonal presentation satisfies the surface theorem's
+hypotheses.
+
+The vertices used internally must have rational coordinates.  At mesh level
+$n$, approximate each coordinate of $\gamma(t_i)$ within
+$\delta_n=2^{-(3n+C)}$, where the fixed $C$ dominates $R+B+1$.  Perturbing one
+chord length changes it by at most $2\sqrt2\delta_n$; over $2^n$ chords the
+total length error is at most $2^{n+2}\delta_n$.  The moment error has the
+same form with a fixed factor depending on $R$ and $B$.  These errors are
+bounded by $2^{-n}$ after increasing $C$.  Thus rationalization preserves the
+explicit Cauchy moduli.
+
+For a finite piecewise-$C^1$ curve, apply the construction on each patch and
+concatenate the finite chains.  A fixed finite maximum of the patch moduli is
+primitive recursive.  Equations \eqref{eq:length-convergence} and
+\eqref{eq:moment-convergence}, followed by the surface theorem, give
+\begin{equation}
+ S=\tau\int_0^1r(t)\norm{\gamma'(t)}\,dt
+  =\tau L\bar r.
+ \label{eq:analytic-surface}
+\end{equation}
+Under the usual injectivity hypothesis this parametric area is the geometric
+surface area.  Constructively, that last identification is proved by the same
+inner/outer polyhedral squeeze, not by invoking a general area formula as an
+axiom.
+
+\subsection{Jordan laminas with a boundary-cover modulus}
+
+Let $D$ lie in a rational box $[0,R]\times[-H,H]$.  The effective datum needed
+by \cref{thm:volume-main} is the following.
+
+\begin{definition}[Boundary-cover presentation]
+\label{def:boundary-cover}
+A primitive-recursive boundary-cover presentation of $D$ consists, for each
+$n$, of:
+\begin{enumerate}[label=(\roman*),leftmargin=2.3em]
+\item a dyadic mesh size and a finite list $B_n$ of mesh squares covering the
+boundary, with total area at most $2^{-n}$;
+\item for every mesh square not in $B_n$, a decidable label
+\code{inside} or \code{outside};
+\item coherence certificates saying that an inside square is contained in
+$D$, an outside square is disjoint from the interior of $D$, and the labels
+are preserved by refinement away from later boundary covers.
+\end{enumerate}
+\end{definition}
+
+Let $I_n$ be the union of inside squares and let $O_n$ be $I_n$ together with
+the boundary-cover squares.  After replacing stage $n$ by the common
+refinement of stages $0,\ldots,n$, which is a bounded finite operation, one
+gets
+\[
+ I_n\subseteq I_{n+1}\subseteq O_{n+1}\subseteq O_n,
+ \qquad A(O_n\setminus I_n)\leq2^{-n}.
+\]
+Thus \cref{def:boundary-cover} produces exactly the presentation used in the
+volume theorem.
+
+A piecewise-$C^1$ Jordan boundary with effective data supplies such covers.
+For example, if a parametrization has speed at most $B$, choose a parameter
+mesh fine enough that each image piece has diameter at most $\delta$.  Each
+piece meets at most a fixed number of dyadic squares of side comparable to
+$\delta$, while the number of pieces is at most a fixed multiple of
+$B/\delta+1$.  The total cover area is therefore bounded by
+$C(B+1)\delta$.  Choosing
+\[
+ \delta\leq\frac{2^{-n}}{C(B+1)}
+\]
+gives the required area bound.  An effective separation or winding-number
+certificate labels every square outside the cover.  For polygonal Jordan
+curves the label is the parity of a rational ray-crossing count, with all
+boundary cases already removed by $B_n$.  For smooth effective Jordan curves,
+a polygonal approximation and a supplied separation modulus transfer the same
+label.
+
+The inner/outer moment and volume gaps are then exactly
+\cref{eq:moment-bracket-gap,eq:volume-bracket-gap}.  In ordinary notation,
+\[
+ A=\iint_D1\,dr\,dz,
+ \qquad
+ M=\iint_Dr\,dr\,dz,
+ \qquad
+ V=\tau M,
+\]
+but the double integrals here denote the common limits of explicit cell sums.
+No Fubini theorem or general change-of-variables theorem is needed for the
+proof.
+
+\subsection{Choice of coordinates}
+
+The axis is not selected by a nonconstructive existence argument.  It is part
+of the input: an origin point on the axis and an explicit orthonormal frame are
+given.  Rational or regular-real coordinate transformations then reduce the
+problem to the meridional coordinates $(r,z)$.  The radial coordinate is
+nonnegative by a supplied half-plane certificate.  Consequently all later
+uses of ``distance from the axis'' are fixed primitive-recursive operations on
+presented coordinates.
+
+\section{Formal status inside intuitionistic primitive recursive arithmetic}
+\label{sec:ipra-audit}
+
+This section records why the preceding proof is genuinely available in
+$\ipra$, rather than merely constructive in an informal sense.
+
+\subsection{The first-order theorem schema}
+
+Fix one surface or lamina presentation.  Its algorithms are named by function
+symbols introduced through primitive-recursive definitions.  The assumptions
+about those functions are universal closures of equations and decidable
+inequalities.  For example, real equality is represented by
+\begin{equation}
+ X\Eq Y
+ \quad:\Longleftrightarrow\quad
+ \forall k\;
+ \abs{m_X(k+3)-m_Y(k+3)}\leq2^{-k},
+ \label{eq:real-equality-code}
+\end{equation}
+where $m_X(k)$ is a rational midpoint code and the displayed inequality is
+implemented by cross multiplication.  Equivalent overlap formulations using
+$L_X,U_X,L_Y,U_Y$ are interchangeable with a fixed precision shift.
+
+Thus the final surface sentence has the form
+\[
+ \forall k\;E_{\mathcal C}(k),
+\]
+where $E_{\mathcal C}$ is a quantifier-free formula asserting the precision
+$k$ instance of
+$S=\tau M=\tau L(M/L)$.  The volume sentence is analogous.  There is one such
+sentence for each fixed primitive-recursive presentation.  This is exactly how
+ordinary $\ipra$ handles any theorem about an algorithm: it quantifies over
+natural-number inputs, not over a completed function space.
+
+\subsection{Inventory of primitive-recursive constructions}
+
+The proof uses only the following closure properties.
+\begin{longtable}{@{}p{0.28\textwidth}p{0.66\textwidth}@{}}
+\toprule
+Construction & Primitive-recursive realization \\
+\midrule
+Rationals and dyadics & Signed numerator, positive denominator, and exponent
+codes; all order tests by cross multiplication.\\
+Finite sequences & Pairing code, bounded length, projection, map, fold, sum,
+product, maximum, and common-grid refinement.\\
+Square root & Bounded bisection in a supplied rational interval; the number of
+steps is the requested precision plus a fixed magnitude bound.\\
+Circle constants & The recurrence for $c_m$, bounded square roots, and finite
+field operations; all error estimates are explicit in $m$.\\
+Segment lengths & Square root of the rational sum of two squares, represented
+by bisection intervals.\\
+Polyhedral areas & Finite sums of trapezoid areas from
+\cref{eq:inner-frustum,eq:outer-frustum}.\\
+Grid areas and moments & Bounded folds of rational polynomial expressions.\\
+Limits & Diagonal selection at a stage computed from the supplied Cauchy
+modulus.\\
+Reciprocal & Interval reversal after a supplied positive lower witness and a
+fixed precision shift.\\
+Boundary approximants & Bounded decoding, sorting, duplicate removal, cell
+classification, and finite union refinement.\\
+\bottomrule
+\end{longtable}
+
+Each item is built from composition and primitive recursion.  Any bounded
+search appearing in bisection or cell processing has a numerical bound
+computed before the search begins.
+
+\subsection{Induction ledger}
+
+Only quantifier-free induction is required.
+\begin{enumerate}[leftmargin=2.2em]
+\item Induction on a list length proves correctness of finite sums, moments,
+and the additivity identities.
+\item Induction on the bisection count proves the square-root interval
+invariant.
+\item Induction on $m$ proves the circle recurrences and the estimates
+\eqref{eq:c-bound}--\eqref{eq:area-gap}.
+\item Induction on the number of polygon segments proves
+\cref{thm:polygon-pappus}; induction on the number of cells proves
+\cref{thm:grid-pappus}.
+\item Induction on refinement depth proves nesting of the inner and outer
+lamina codes.
+\end{enumerate}
+All predicates in these inductions are Boolean combinations of equalities and
+orders of coded integers.  Existential witnesses such as a bisection midpoint,
+a precision stage, or a common refinement are given by primitive-recursive
+terms before induction begins.
+
+\subsection{Principles not used}
+
+The proof does not use:
+\begin{itemize}[leftmargin=2em]
+\item excluded middle for arbitrary formulas or double-negation elimination;
+\item countable, dependent, or unique choice;
+\item an axiom asserting that every Cauchy sequence has a real limit;
+\item arbitrary suprema, infima, measurable-set completion, or sigma-additivity;
+\item a general Fubini, Tonelli, coarea, or change-of-variables theorem;
+\item a nonconstructive theorem choosing an arc-length parametrization;
+\item a decision procedure for equality of arbitrary represented reals.
+\end{itemize}
+Every limit used is a particular diagonal sequence whose modulus is already
+known.  Every division is accompanied by a positive lower witness.
+
+\begin{remark}[Why positivity is explicit]
+Classically, a nonzero compact curve has positive length and a nonempty Jordan
+region has positive area under familiar hypotheses.  Constructively, a proof
+of $X\neq0$ does not in general compute a rational $\lambda>0$ with
+$X\geq\lambda$.  The latter is what reciprocal formation needs.  Requiring the
+witness is therefore substantive and mathematically honest.  Standard
+polygonal, smooth, and Jordan inputs normally provide it directly.
+\end{remark}
+
+\section{Lean formalization plan}
+\label{sec:lean}
+
+The repository snapshot used for this plan is
+\[
+ \code{VladimirReshetnikov/ProveIt@8c135f6f2a9d041cde785a1a632c44ad98065b20}.
+\]
+The existing development already supplies two complementary layers.
+
+\begin{itemize}[leftmargin=2em]
+\item \code{ConciseIPRA.PR} defines primitive-recursive symbols
+\code{PR}, ordinary $\ipra$ terms \code{PTm}, the axiom theory
+\code{PRAAx}, its recursion equations, and the theorem \code{PRA.qfInd}.
+\item \code{ConciseIPRA.PRAToScalar} compiles every \code{PR} symbol to the
+native iterator term language and packages the result as
+\code{FromPRA.interp : Interp PRAAx TeqAx}.
+\item \code{ConciseIPRA.Interpretation} proves \code{Interp.sound}, so an
+ordinary $\ipra$ derivation transports to the concise scalar theory.
+\item \code{ConciseIPRA.BiInterpretation} exposes
+\code{pra_iff_teq} and \code{pra_theorem_iff}; these can be used as the final
+faithfulness bridge.
+\end{itemize}
+
+The recommended strategy separates semantic mathematics from object-theory
+arithmetization.  This makes every intermediate theorem testable in ordinary
+Lean while keeping the final claim genuinely about derivability in $\ipra$.
+
+\subsection{Phase I: executable semantic library}
+
+Create the following modules under a new \code{Pappus} application directory.
+
+\begin{longtable}{@{}p{0.31\textwidth}p{0.63\textwidth}@{}}
+\toprule
+Module & Main content and terminal lemmas \\
+\midrule
+\code{Code.lean} & Signed rationals, dyadics, bounded lists, cell and vertex
+codes, decoding correctness.\\
+\code{IntervalReal.lean} & Regular interval names, equality, bounded
+arithmetic, diagonal limits, and positive reciprocal.\\
+\code{Sqrt.lean} & Rational bisection and proofs of nesting, width, and
+$s^2=x$ at represented-real precision.\\
+\code{Circle.lean} & $c_m,s_m,p_m,q_m,a_m,b_m$ and the estimates of
+\cref{lem:polygon-estimates}; definitions of \code{tau} and \code{pi}.\\
+\code{Segment.lean} & Segment length and midpoint moment; inner and outer
+polyhedral frustum brackets; \code{segmentSweep_eq_tau_mul_moment}.\\
+\code{Polygon.lean} & Finite folds for length, moment, and sweep;
+\code{polygonSweep_eq_tau_mul_moment}; simplicity certificate interface.\\
+\code{Cell.lean} & Rectangle area, moment, annular-cylinder volume, and
+\code{cellVolume_eq_tau_mul_moment}.\\
+\code{GridLamina.lean} & Common-grid refinement, disjointness, finite
+additivity, and \code{gridVolume_eq_tau_mul_moment}.\\
+\code{LimitTransfer.lean} & The quantitative identity-transfer lemma and
+precision-shift combinators.\\
+\code{Surface.lean} & Presented polygonal sequences and the semantic theorem
+\code{surface_pappus}.\\
+\code{Volume.lean} & Nested inner/outer cell presentations and the semantic
+theorem \code{volume_pappus}.\\
+\code{SmoothBridge.lean} & Chord and moment estimates
+\eqref{eq:chord-speed}--\eqref{eq:moment-convergence}.\\
+\code{JordanBridge.lean} & Boundary-cover presentations and construction of
+nested cell unions.\\
+\bottomrule
+\end{longtable}
+
+The finite algebra file included in this archive, \path{PappusFinite.lean}, is
+the first slice of \path{Segment.lean}, \path{Polygon.lean}, \path{Cell.lean},
+and \path{GridLamina.lean}.  It proves the list-level Pappus identities over
+an arbitrary linear ordered field.  It intentionally treats the segment sweep
+formula as the semantic result supplied by the later frustum-bracket module;
+the nontrivial next step is to connect that formula to the inner and outer
+polyhedra.
+
+A representative semantic theorem will have a shape close to:
+\begin{lstlisting}
+theorem polygon_pappus
+    (P : List (SegmentDatum K)) :
+    polySweep tau P = tau * polyMoment P := by
+  induction P with
+  | nil => simp [polySweep, polyMoment]
+  | cons s P ih =>
+      simp [polySweep, polyMoment, SegmentDatum.sweep, ih, mul_add]
+\end{lstlisting}
+The actual represented-real version replaces field equality by
+\code{RealName.Eq} and invokes the segment bracket theorem.
+
+\subsection{Phase II: primitive-recursive definitions}
+
+For every executable operation used by the fixed presentation, define a symbol
+of the inductive family \code{PR k}.  Composition and primitive recursion are
+already constructors, so this is mostly a library of named abbreviations.
+Suggested modules are:
+\begin{itemize}[leftmargin=2em]
+\item \code{PRCode.lean}: pairing, signed integers, rationals, dyadics, lists;
+\item \code{PRBisection.lean}: bounded square-root bisection;
+\item \code{PRGeometry.lean}: segment, cell, polygon, and grid folds;
+\item \code{PRPresentations.lean}: the particular surface and lamina
+presentation symbols and their moduli.
+\end{itemize}
+For example, a list fold is a \code{PR.prec} whose base is zero and whose step
+adds the decoded next contribution.  The equations needed later are direct
+instances of \code{PRA.precZero} and \code{PRA.precSucc}.
+
+\subsection{Phase III: object-level proof graphs}
+
+Define quantifier-free graph formulas for the coded operations.  Prove, in
+\code{PRAAx}, the following families.
+\begin{enumerate}[leftmargin=2.2em]
+\item Functionality and defining equations of rational arithmetic and finite
+folds.
+\item Bisection invariants and the square-root width theorem.
+\item Circle polygon estimates and the bound $\tau<8$.
+\item Denominator-cleared segment and cell identities.
+\item Cauchy and nesting invariants supplied by each fixed presentation.
+\item Precision-level versions of the two limit-transfer arguments.
+\end{enumerate}
+Use \code{PRA.qfInd} whenever an index is inductive.  Since all graph formulas
+are quantifier-free after witnesses have been named by terms, no stronger
+induction is required.
+
+A schematic final object theorem is:
+\begin{lstlisting}
+def SurfacePappusQF (k : PTm n) : Fm PTm n :=
+  -- denominator-cleared precision-k overlap of
+  -- S, tau * M, and tau * L * (M / L)
+
+ theorem surface_pappus_pra :
+   [] |-[PRAAx] Fm.all SurfacePappusQF := by
+   apply PRA.qfInd SurfacePappusQF (by decide)
+   case zero => exact surface_base
+   case succ => exact surface_step
+\end{lstlisting}
+The archive roadmap replaces the ASCII turnstile by the actual notation
+imported from \path{ConciseIPRA.PR}; the display above emphasizes the proof
+shape rather than committing this report to a parser-sensitive glyph.
+
+\subsection{Phase IV: transport to the concise scalar theory}
+
+Once \code{surface_pappus_pra} and \code{volume_pappus_pra} are complete,
+transport them with
+\begin{lstlisting}
+def surface_pappus_teq :=
+  FromPRA.interp.sound surface_pappus_pra
+
+def volume_pappus_teq :=
+  FromPRA.interp.sound volume_pappus_pra
+\end{lstlisting}
+or obtain the equivalent statements using \code{pra_theorem_iff}.  This step
+is small because the repository already proves that the interpretations
+preserve derivability and that the two theories are bi-interpretable.
+
+\subsection{Completion criteria}
+
+A complete Lean formalization should satisfy all of the following.
+\begin{enumerate}[leftmargin=2.2em]
+\item The semantic modules compile without \code{sorry}, classical choice, or
+noncomputable definitions in the theorem dependency cone.
+\item \code{#print axioms} for the semantic Pappus theorems shows only Lean's
+constructive kernel and the explicitly chosen quotient infrastructure, if any.
+A quotient-free interval-name implementation is preferable.
+\item The object-level theorems are terms of
+\code{[] |-[PRAAx] ...}; they are not merely semantic theorems about
+\code{Nat}.
+\item Translation to \code{TeqAx} is checked through the existing
+interpretation API.
+\item Executable tests compare the object-level functions with the independent
+Python checker on many small polygon and cell certificates.
+\end{enumerate}
+
+\section{Worked finite examples}
+\label{sec:examples}
+
+\subsection{A polygonal generator}
+
+Take the chain
+\[
+ (1,0)\longrightarrow(4,4)\longrightarrow(4,7).
+\]
+The segment lengths are $5$ and $3$.  Hence
+\[
+ L=8,
+ \qquad
+ M=5\frac{1+4}{2}+3\frac{4+4}{2}
+   =\frac{49}{2},
+ \qquad
+ \bar r=\frac{49}{16}.
+\]
+The swept surface area is therefore
+\[
+ S=\frac{49}{2}\tau=8\tau\frac{49}{16}.
+\]
+The accompanying JSON certificate contains these data.  The Python checker
+verifies the two Pythagorean length equations and every rational identity
+exactly, using \code{fractions.Fraction}.
+
+\subsection{An L-shaped grid lamina}
+
+Take the two cells
+\[
+ [1,3]\times[0,2],
+ \qquad
+ [3,4]\times[0,1].
+\]
+They have disjoint interiors.  Their total area and moment are
+\[
+ A=4+1=5,
+ \qquad
+ M=2\cdot4+\frac72\cdot1=\frac{23}{2},
+ \qquad
+ \bar r=\frac{23}{10}.
+\]
+The rotated volume is
+\[
+ V=\frac{23}{2}\tau=5\tau\frac{23}{10}.
+\]
+Again the checker verifies both the shell formula and the centroid identity by
+integer cross multiplication.
+
+\subsection{The torus as a limit example}
+
+Let a circle of radius $a$ have center at radial distance $R>a$ from the axis.
+Its polygonal circle presentations satisfy the hypotheses of both main
+theorems.  The generating circumference is $\tau a$ and its centroid has
+radius $R$, so the surface formula gives
+\[
+ S=\tau^2Ra=4\pi^2Ra.
+\]
+The disk has area $\pi a^2$ and the same centroid radius, so the volume formula
+gives
+\[
+ V=\tau\pi Ra^2=2\pi^2Ra^2.
+\]
+These equalities are corollaries of the same regular-polygon circle package;
+no independent transcendental theory of $\pi$ is required.
+
+\section{Scope, variants, and edge cases}
+\label{sec:scope}
+
+\begin{enumerate}[leftmargin=2.2em]
+\item \textbf{Axis contact.}  The classical statement often says that the
+axis is external.  The proofs above need only $r\geq0$ and permit contact on
+boundary pieces of zero relevant content.  A generator segment lying along
+the axis contributes zero surface area.  A lamina cell of zero radial width
+contributes zero volume.
+
+\item \textbf{Self-overlap.}  For arbitrary polygonal chains the surface
+identity is exact with multiplicity.  For an ordinary geometric-area statement,
+a simplicity or no-retracing certificate is necessary.  The volume theorem's
+nested cell unions are sets by construction and therefore need no multiplicity
+convention.
+
+\item \textbf{Density.}  A weighted version follows immediately.  Replace
+length or area by a nonnegative primitive-recursive density and define the
+corresponding weighted radial moment.  Rotating each infinitesimal mass does
+not by itself yield unweighted surface area or volume, but it yields the
+Pappus identity for the swept weighted content.  For piecewise-constant
+densities the finite proof is literal; general presented densities follow by
+explicit limits.
+
+\item \textbf{Signed and oriented forms.}  If one allows signed radial
+coordinates and signed cell multiplicities, the algebraic identities remain
+valid without the half-plane restriction.  They then compute oriented surface
+or volume moments and automatically cancel overlaps.  Recovering unsigned
+geometric content requires positivity and nonoverlap information.
+
+\item \textbf{Zero length or area.}  The identities $S=\tau M$ and
+$V=\tau M$ remain valid.  Only the centroid quotients $M/L$ and $M/A$ are
+undefined without positive lower witnesses.
+\end{enumerate}
+
+\section{Further research questions}
+\label{sec:further}
+
+\begin{enumerate}[leftmargin=2.2em]
+\item Can the effective Jordan-curve bridge be fully internalized in the
+current \code{ConciseIPRA} library, including a compact primitive-recursive
+winding-parity classifier and a quantitative separation theorem?
+
+\item What is the smallest object-language circle package sufficient for the
+proof?  The regular-polygon construction is transparent, but a Machin-type
+rational series might produce shorter certificates even though it obscures
+the geometry.
+
+\item Can one prove, in $\ipra$, equivalence between the polygonal-squeeze
+surface content used here and a suitably coded two-dimensional Hausdorff
+content for every effective simple surface of revolution?
+
+\item How much of the semantic-to-object translation can be automated?  A
+verified compiler from equations proved over executable natural-number
+functions to \code{PRAAx} derivations would make applications of
+\code{PRA.qfInd} substantially shorter.
+
+\item Is there a useful centroid-free formulation that also covers vanishing
+length or area uniformly, taking $M$ rather than $\bar r$ as the primitive
+quantity?  The proof suggests that $S=\tau M$ and $V=\tau M$ are the logically
+stronger and constructively cleaner statements.
+
+\item Can the no-retracing certificate for surfaces be weakened to an
+explicit overlap multiplicity bound, producing a constructive area formula
+with a computable multiplicity correction?
+\end{enumerate}
+
+\section{Conclusion}
+
+Pappus's theorem is often presented as a one-line consequence of surface and
+volume integrals.  In the restricted constructive setting, the direction of
+explanation reverses.  The primitive facts are finite: a regular polygon, a
+planar trapezoid, an annular prism, a midpoint sum, and a bounded list fold.
+Those facts prove
+\[
+ \Surf(\text{segment})=\tau\Mom(\text{segment}),
+ \qquad
+ \Vol(\text{cell})=\tau\Mom(\text{cell}).
+\]
+Finite additivity gives the polygonal and grid theorems.  Explicit Cauchy and
+boundary-cover moduli then pass the identities to regular real limits.  The
+centroid formulas are obtained only at the final step, by dividing the first
+moment by a positively witnessed length or area.
+
+This organization exposes exactly what $\ipra$ must prove and exactly where
+effective data are required.  It also yields a direct Lean development path:
+complete the regular-real and polygon-squeeze semantic modules, arithmetize
+their primitive-recursive algorithms, prove the precision-level formulas by
+quantifier-free induction, and invoke the existing
+\code{ConciseIPRA} interpretation and bi-interpretation machinery.
+
+\appendix
+
+\section{A precision ledger}
+\label{app:precision}
+
+The following conservative shifts suffice; sharper constants are unnecessary.
+Assume all fixed magnitude constants have been bounded by powers of two in a
+preprocessing certificate.
+
+\begin{longtable}{@{}p{0.34\textwidth}p{0.58\textwidth}@{}}
+\toprule
+Target at precision $2^{-k}$ & Sufficient input precision/stage \\
+\midrule
+Sum of at most $2^e$ terms & Each term at precision $k+e+2$.\\
+Product $XY$, $\abs X,\abs Y\leq2^b$ & Inputs at precision $k+b+3$.\\
+Multiplication by $\tau$ & Input at precision $k+4$, using $\tau<8$.\\
+Square root on $[0,2^{2b}]$ & Bisection interval width at most
+$2^{-(k+b+3)}$; compare squares to maintain nesting.\\
+Segment frustum brackets & Choose $m\geq k+B_\sigma+3$, where
+$2^{B_\sigma}$ bounds
+$4(r_0+r_1)(\ell+\abs{\Delta r})$.\\
+Cell-union moment brackets & Choose $n\geq k+B_R+1$ with $R\leq2^{B_R}$.\\
+Cell-union volume brackets & Choose $n\geq k+B_R+4$.\\
+Positive reciprocal $1/X$, $X\geq2^{-b}$ & Read $X$ at precision
+$k+2b+3$.\\
+Diagonal limit of $x_n$ & Evaluate $x_{\mu(k+3)}$ at precision $k+3$.\\
+Rationalized mesh with $2^n$ vertices & Coordinate error
+$2^{-(3n+C)}$, where $C$ bounds the fixed geometry constants.\\
+\bottomrule
+\end{longtable}
+
+Every row is a primitive-recursive expression in $k$ and the fixed
+certificate parameters.  These shifts can therefore be inserted literally in
+the object-level formulas, avoiding all metatheoretic phrases such as
+``take $n$ sufficiently large.''
+
+\section{Archive contents and reproducibility}
+\label{app:archive}
+
+The accompanying archive contains:
+\begin{itemize}[leftmargin=2em]
+\item \code{pappus_centroid_ipra.tex} and the compiled
+\code{pappus_centroid_ipra.pdf};
+\item \code{lean/PappusFinite.lean}, a no-\code{sorry} finite algebra scaffold
+(not locally kernel-checked);
+\item \code{lean/PappusRoadmap.lean}, parser-oriented declarations and theorem
+stubs marking the remaining semantic and object-theory obligations;
+\item \code{FORMALIZATION_PLAN.md}, an obligation-by-obligation Lean roadmap;
+\item \code{code/pappus_checker.py} and
+\code{certificates/sample_certificate.json};
+\item \code{verification_output.txt}, the checker's recorded output;
+\item \code{SOURCE_PROVENANCE.md}, \code{MANIFEST.txt}, and
+\code{SHA256SUMS};
+\item a \code{Makefile} and \code{build.sh} for rebuilding the PDF, running
+the checker, and recreating the checksums.
+\end{itemize}
+
+The Python checker is not a substitute for the planned Lean proof.  It is an
+independent executable audit of the exact rational finite identities and the
+sample certificates.  The Lean scaffold likewise does not claim that the
+full represented-real or $\ipra$ derivation is already complete; its purpose
+is to make the next formal steps explicit and type-directed.
+
+\begingroup
+\small
+\begin{thebibliography}{9}
+
+\bibitem{MathWorldPappus}
+Eric W. Weisstein,
+``Pappus's Centroid Theorem,'' \emph{MathWorld---A Wolfram Web Resource},
+\href{https://mathworld.wolfram.com/PappussCentroidTheorem.html}{MathWorld entry}.
+
+\bibitem{ProveItConciseIPRA}
+Vladimir Reshetnikov,
+\emph{ProveIt: Concise presentations of intuitionistic primitive recursive
+arithmetic}, commit
+\code{8c135f6f2a9d041cde785a1a632c44ad98065b20}, 15 November 2026,
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}{ProveIt ConciseIPRA directory}.
+
+\end{thebibliography}
+\endgroup
+
+\end{document}

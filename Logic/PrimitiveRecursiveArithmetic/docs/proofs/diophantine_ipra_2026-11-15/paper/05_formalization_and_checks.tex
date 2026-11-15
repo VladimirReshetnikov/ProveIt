@@ -1,0 +1,165 @@
+\section{Formalization milestones and computational evidence}
+\label{sec:formalization}
+
+\subsection{A route to actual iPRA derivations}
+
+The supplied Lean files are deliberately explicit about their status.
+\path{FiniteSpecifications.lean} gives concrete numerical bounds, rational
+predicates, a finite Davenport--Schmidt target, and several elementary ring
+identities.  \texttt{ObjectTargets.lean} gives the scoped first-order shape of
+St\o rmer completeness and applies the repository's existing transport to an
+already supplied derivation.  Neither file supplies the main missing
+Diophantine derivations.  The environment had no Lean executable, so the files
+have not been elaborated or kernel checked.  They target the inspected
+repository toolchain, \texttt{leanprover/lean4:v4.32.0}.
+
+The following milestones specify the work required to complete the
+formalization.  They are ordered so that each has a concrete, independently
+reviewable output.
+
+\begin{enumerate}
+\item \textbf{Arithmetic definitions and characteristic predicates.}
+Choose the numerical codec.  Give actual \texttt{PR} syntax trees for signed
+arithmetic, rational operations, finite lists, bounded search, powers, gcd,
+integer square root, and polynomial evaluation.  Prove their defining
+equations and arithmetic invariants in \texttt{Prf PRAAx}.  Bound the
+Euclidean algorithm by its initial input and then present it as a clocked
+primitive recursion.  Compile every bounded quantifier into a Boolean fold.
+
+\item \textbf{Finite counting and finite selection.}
+Formalize the occupancy-table proof of pigeonhole, with a returned pair of
+indices.  Formalize bounded minima, records, and prime-divisor search.  Each
+search returns both a result and the finite certificate needed by the next
+lemma; the proof of totality uses the exact bound from the article.
+
+\item \textbf{The Roth fragment.}
+Formalize rational reduction, the rational-root divisibility theorem, the
+finite no-root test, polynomial differences, and bisection.  Prove the finite
+separation inequality directly at precision $k$.  The cutoff then follows
+by exponent arithmetic.  The object statement is conditional only on the
+finite input checks and a positive integer $a-(d-2)b$.  Do not declare a
+general effective-Roth axiom to fill the missing higher-degree result.
+
+\item \textbf{St\o rmer.}
+Build the exact ordered quadratic-pair arithmetic.  Prove both pigeonhole
+constructions for Pell, the quotient's integrality and positivity, and its
+explicit bound.  Prove bounded generation by the fundamental solution.
+Formalize the binomial identity and its three prime-index cases.  Finish
+with the coefficient enumeration, smoothness filter, completeness, cardinality,
+and height bounds.  No external finiteness theorem is required.
+
+\item \textbf{The finite Davenport--Schmidt core.}
+Start with a rational working point and a finite local-separation predicate
+through height $2B^2$.  Formalize the pigeonhole estimate, exact rational
+minimal records, integral-plane lemma, independence bound, determinant
+identity, and finite growth contradiction.  Prove the existence of a triple
+inside the explicit box.  The two-by-two minor coordinate reduction and
+the six-term determinant expansion are finite polynomial calculations.
+
+\item \textbf{Root certificates and the represented-real schema.}
+For a linear or quadratic polynomial, define its finite root code, reduce a
+rational root, and prove the height comparison and distance estimate.  Add
+the single-sample precision lemma and the error transfer.  State this as a
+schema for each fixed \texttt{PR} name and separation modulus, together with
+their arithmetic correctness premises.  Add reflection and reciprocal
+normalization.  The algebraic specialization needs the finite Sylvester
+adjugate identity and its coefficient bound.
+
+\item \textbf{Assemble and transport.}
+Construct the final \texttt{Prf PRAAx} derivations.  Apply
+\texttt{pra\_theorem\_iff} to transfer them to the concise presentation.
+Check the resulting declarations and their dependencies in Lean.  A
+metatheoretic theorem about \texttt{Rat}, \texttt{Int}, or \texttt{Real} is
+only an intermediate validation milestone.
+\end{enumerate}
+
+The finiteness bounds in the positive proofs are intentionally generous.
+Their role is to make every primitive recursion and every induction invariant
+explicit.  Optimizing them is a separate project and is not needed for the
+claimed proof-theoretic result.
+
+\subsection{Exact computations supplied with the report}
+
+The Python reference code uses only integers, fractions, and integer square
+roots.  It has no third-party dependency.  The verification run performs the
+following genuinely different checks.
+
+First, the St\o rmer enumerator is compared with independent multiplicative
+generation of smooth integers up to $100000$, for the empty prime set and
+the sets $\{3,5\}$, $\{2\}$, $\{2,3\}$, and $\{2,3,5\}$.  The complete
+enumeration theorem is proved above; the finite comparison checks that the
+implementation produces the expected values.  Pell identities and the key
+smooth-coordinate property are also checked for every nonsquare
+$2\leq D\leq50$, at the first ten powers of the fundamental solution.
+
+For $S=\{2,3,5\}$, the result is exactly
+\[
+ 1,2,3,4,5,8,9,15,24,80
+\]
+as the smaller entries of the neighbor pairs.  The JSON evidence lists every
+Pell coefficient and every retained or rejected candidate.  The implementation
+does not allocate $B(D)$: it decides $y<\mathrm{base}^{\mathrm{exponent}}$
+by a bounded number of divisions of $y$ by the base.  This is an exact
+comparison, not a smaller heuristic search cutoff.
+
+Second, the quadratic Roth example uses an independent exact decision
+procedure in $\mathbb Q(\sqrt2)$.  For $\delta=1/2$, the proved cutoff is
+$q<36$.  The independent check through $q=72$ finds the reduced exceptional
+fractions
+\[
+ 1,\quad 2,\quad \frac32,\quad\frac75.
+\]
+Each has a separate rational bisection certificate.  Because the theorem
+excludes every $q\geq36$ and the numerator range is exhaustive, these are
+all the exceptional reduced fractions for this example.  The larger
+computational range is a regression check, not the reason completeness holds.
+
+Third, bounded searches find the following real quadratic approximants to
+$\sqrt[3]{2}$.  The displayed decimals are explanatory rounded values; the
+JSON file stores the exact rational isolating intervals and exact rational
+upper bounds.
+
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+Minimal polynomial & Height & Error upper bound & $H^3$ times error\\
+\midrule
+$6X^2-2X-7$ & 7 & $3.480\cdot10^{-4}$ & $0.120$\\
+$13X^2-14X-3$ & 14 & $1.430\cdot10^{-4}$ & $0.393$\\
+$27X^2-11X-29$ & 29 & $1.222\cdot10^{-5}$ & $0.298$\\
+$59X^2-41X-42$ & 59 & $9.379\cdot10^{-7}$ & $0.193$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Each polynomial is primitive with positive nonsquare discriminant; its
+reported height is therefore its actual algebraic height.  Opposite rational
+endpoint signs certify its real root, and a separate cubic interval certifies
+the target.  These examples illustrate the exponent-three phenomenon; they
+do not execute the enormous general height bound.
+
+For this target, the algebraic modulus construction is concrete.  With
+$F(X)=X^3-2$, $d=3$, $A=2$, and $R=2$, it gives
+\[
+ \rho(H)=648\max(2,H)^4.
+\]
+The polynomial is irreducible by the elementary Eisenstein argument at $2$,
+and bisection on $[1,2]$ supplies its real root name.  Thus the theorem applies
+with explicit arithmetic data, despite the intentionally impractical general
+bound.
+
+\subsection{Reproduction and honest completion criteria}
+
+Run \texttt{python3 code/verify.py} from the archive directory to regenerate
+the exact computational evidence.  Run \texttt{./build.sh} to compile the
+LaTeX article twice.  The build uses ordinary \texttt{pdflatex} and standard
+LaTeX packages.  The archived PDF has been compiled and visually inspected.
+
+The file \texttt{lean/FORMALIZATION\_STATUS.txt} lists the exact unexecuted
+Lean build commands and the pending object-theory work.  No completion claim
+for a machine-checked iPRA proof is made.  Likewise, no mathematical claim is
+made that full effective Roth has been resolved.  A future completion of
+that part would need either a specified weaker constructive conclusion with
+its full arithmetic proof, or a new effective-height theorem.  Merely
+rephrasing classical finiteness or importing it as a hypothesis would not
+complete that task.

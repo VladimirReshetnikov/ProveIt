@@ -1,0 +1,146 @@
+\section{Brianchon's theorem}
+
+\subsection{Statement and strategy}
+
+Let a hexagon $V_1\ldots V_6$ be circumscribed about a nondegenerate projective
+conic: its six sides are tangent to the conic.  Then the three diagonals
+joining opposite vertices,
+\[
+ V_1V_4,\qquad V_2V_5,\qquad V_3V_6,
+\]
+are concurrent.  We prove this as the exact point--line dual of Pascal's
+theorem, but we also give the polynomial certificate for Pascal so that no
+unproved invocation of a general duality principle remains.
+
+\subsection{Pascal on a standard conic}
+
+Work first with the parametrized conic
+\[
+ p(t)=(t^2,t,1),
+ \qquad xz-y^2=0.
+\]
+The secant through $p(s)$ and $p(t)$ has line covector
+\begin{equation}\label{eq:secant-line}
+ L(s,t)=(1,-(s+t),st),
+\end{equation}
+up to the harmless scalar $s-t$.  For six parameters $a,b,c,d,e,f$, define
+the three Pascal points
+\[
+ X=L(a,b)\meet L(d,e),
+ \quad Y=L(b,c)\meet L(e,f),
+ \quad Z=L(c,d)\meet L(f,a).
+\]
+Direct cross products give
+\begin{align*}
+ X={}&\bigl(ab(d+e)-de(a+b),\ ab-de,\ a+b-d-e\bigr),\\
+ Y={}&\bigl(bc(e+f)-ef(b+c),\ bc-ef,\ b+c-e-f\bigr),\\
+ Z={}&\bigl(cd(f+a)-fa(c+d),\ cd-fa,\ c+d-f-a\bigr).
+\end{align*}
+The complete Pascal certificate is the vector identity
+\begin{equation}\label{eq:pascal-certificate}
+ (c-f)X+(d-a)Y+(e-b)Z=0.
+\end{equation}
+Every coordinate of the left side expands to zero.  Hence $X,Y,Z$ are
+linearly dependent and therefore collinear.  Repeated parameters are allowed
+whenever the limiting secant is interpreted as the tangent; alternatively,
+for the present Brianchon application we use six tangent lines directly and
+need no limiting argument.
+
+\subsection{The dual conic of tangent lines}
+
+The tangent to $xz-y^2=0$ at $p(t)$ is
+\begin{equation}\label{eq:tangent-line}
+ \tau(t)=(1,-2t,t^2),
+\end{equation}
+because the gradient at $(t^2,t,1)$ is $(1,-2t,t^2)$.  Regard a line covector
+as a point of the dual projective plane.  The six tangents
+\[
+ \ell_1=\tau(a),\ \ell_2=\tau(b),\ldots,\ell_6=\tau(f)
+\]
+are six points on a dual conic, projectively equivalent to the conic used in
+the Pascal calculation.
+
+The vertices of the circumscribed hexagon are
+\[
+ V_i=\ell_i\meet\ell_{i+1}
+ \quad(i\bmod 6).
+\]
+The first opposite-vertex diagonal has covector
+\begin{align*}
+ d_1
+  &=V_1\join V_4\\
+  &=(\ell_1\cross\ell_2)\cross(\ell_4\cross\ell_5).
+\end{align*}
+In the dual plane this same triple is the intersection of the dual secants
+$\ell_1\ell_2$ and $\ell_4\ell_5$, i.e. the first Pascal point.  Similarly,
+\[
+ d_2=V_2\join V_5,
+ \qquad d_3=V_3\join V_6
+\]
+are the second and third Pascal points.  Therefore
+\[
+ \det(d_1,d_2,d_3)=0
+\]
+by \eqref{eq:pascal-certificate}.  But a determinant of three line covectors
+vanishes exactly when the three lines are concurrent.  If $d_1,d_2$ are
+distinct, the explicit concurrency point is
+\[
+ P=d_1\meet d_2=d_1\cross d_2,
+\]
+and $d_3\cdot P=\det(d_3,d_1,d_2)=0$.
+
+\subsection{Reduction of a general conic}
+
+Represent a nondegenerate rational conic by an invertible symmetric matrix
+$S$, after multiplying the equation by $2$ to remove half-coefficients.  A
+rational tangent covector $\ell$ is a point of the dual conic, and its contact
+point is represented by
+\[
+ p=\operatorname{adj}(S)\ell.
+\]
+Indeed $Sp=\det(S)\ell$, so the tangent at $p$ is $\ell$; the dual-conic
+equation ensures that $p$ lies on the original conic.  Thus one of the six
+supplied tangents gives a rational contact point without solving a quadratic.
+
+Using bounded search through the coordinates and $2\times2$ minors, choose a
+projective frame that sends this contact point to $(0:0:1)$ and its tangent to
+$x=0$.  In that frame the conic equation has the form
+\[
+ xz+A x^2+Bxy+C y^2=0.
+\]
+The coefficient of $xz$ is nonzero because $x=0$ is the tangent, and $C\ne0$
+because the conic is nondegenerate.  The explicit substitutions
+\[
+ z'=z+Ax+By,
+ \qquad z''=-z'/C
+\]
+carry the equation to $xz''-y^2=0$.  All transformations are rational
+adjugate-and-rescaling operations under named nonzero minors; no square root
+or choice principle is involved.
+
+The tangent covectors of the standard conic have homogeneous parameterization
+\[
+ \tau(s:t)=(s^2,-2st,t^2).
+\]
+If a finite-parameter chart is desired for the polynomial identity
+\eqref{eq:pascal-certificate}, choose a rational M\"obius change of parameter
+whose point at infinity is not one of the six supplied parameters.  Seven
+fixed candidates suffice: each of the six points forbids at most one
+candidate.  This is a bounded decidable search.  Alternatively, homogenize
+the three coordinates of \eqref{eq:pascal-certificate} in the six parameter
+pairs.
+
+Projective transformations preserve incidence and multiply cross products and
+determinants only by explicit nonzero scalar factors.  Applying the standard
+certificate in the transformed dual plane and transporting it back proves
+Brianchon's theorem for the original conic.  For Lean, a useful intermediate
+interface takes the normalizing matrix and six homogeneous parameters as a
+certificate; a separate lemma implements the intrinsic construction above.
+
+\subsection{Constructive content}
+
+Brianchon's theorem uses no topological limiting argument and no appeal to a
+semantic ``principle of duality.''  The dualization is the syntactic exchange
+of point triples and line triples, while join and meet are both the same cross
+product.  The proof is a fixed polynomial identity followed by the explicit
+witness $d_1\cross d_2$ under a nonparallelity hypothesis.

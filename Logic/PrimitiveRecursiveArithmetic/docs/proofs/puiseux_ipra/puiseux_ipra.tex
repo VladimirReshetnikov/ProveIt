@@ -1,0 +1,708 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor,listings}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Puiseux Expansions in Intuitionistic Primitive Recursive Arithmetic},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{3em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\A}{\overline{\mathbb Q}}
+\newcommand{\ipra}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\disc}{\operatorname{Disc}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\coeff}{\operatorname{coeff}}
+\newcommand{\trunc}{\operatorname{trunc}}
+\newcommand{\PR}{\operatorname{PR}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\repo}{\texttt{ProveIt}}
+\newcommand{\pin}{\texttt{d851229c33ef395db8dc04baf28c6a291073f61e}}
+\pdfstringdefDisableCommands{\def\ipra{iPRA}}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{black!20},showstringspaces=false}
+\title{\textbf{Puiseux Expansions in Intuitionistic\\
+Primitive Recursive Arithmetic}\\[6pt]
+\large A complete bounded proof for exact algebraic data,\\
+constructive convergence, and a Lean formalization blueprint}
+\author{Prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For a polynomial supplied by exact complex-algebraic coefficient codes and an
+exact algebraic expansion point, we construct all Puiseux branches with their
+multiplicities by primitive recursive operations whose correctness is proved
+by quantifier-free induction. The output includes a common ramification
+\((d!)^d\), finite negative parts, and rational convergence radii and tail bounds.
+The proof uses a discriminant to bound every coefficient search in a
+degree-decreasing Newton--Hensel construction. Only one finite root jet is
+needed: it yields a polynomial simple-root equation, after which a coefficient
+recurrence and finite majorants produce all coefficients and prove convergence.
+
+The input qualification is essential. A uniform procedure taking arbitrary
+primitive recursive Cauchy coefficient names and returning exact Puiseux
+coefficient names would decide halting, already for a monic quadratic. We prove
+this obstruction and state the correct first-order arithmetical result.
+An explicit exact-algebraic backend is supplied; its one root-existence
+dependency is the human-readable constructive FTA proof in \repo, frozen in
+this archive. The Lean deliverable specifies a deeply embedded \ipra\ target
+and the remaining implementation obligations. It is an uncompiled outline,
+not a completed Lean proof.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\section{The theorem being proved, and its constructive boundary}
+\label{sec:scope}
+The linked MathWorld statement concerns \emph{convergent} fractional-power
+expansions of local algebraic functions, including Laurent expansions for
+branches tending to infinity \cite{mathworld}. A formal splitting theorem
+alone does not establish that analytic conclusion.
+
+First-order \ipra\ has numerical variables and primitive recursive function
+symbols, intuitionistic first-order logic, and quantifier-free induction.
+It does not quantify over all complex numbers or all infinite sequences.
+A precise result must specify the finite input, the functions producing
+coefficients, and the finite identities and estimates expressing the theorem.
+
+\subsection{Exact input and the main result}
+An \emph{exact algebraic code} represents a complex algebraic number by a
+pair of real-algebraic codes. A real code consists of a rational polynomial,
+a rational isolating interval, and finite rational certificates under which
+bisection names its unique root. Rational values also have direct codes.
+Section~\ref{sec:backend} constructs all operations and certificates.
+Equality of codes means decidable equality of the represented values.
+
+\begin{theorem}[Effective convergent Puiseux theorem in \ipra]
+\label{thm:main}
+Let \(P(Z,Y)\in\A[Z,Y]\), \(d=\deg_Y P>0\), and \(z_0\in\A\) be supplied
+by exact algebraic codes. Write
+\[
+ P(z_0+X,Y)=\sum_{r=0}^d a_r(X)Y^r.
+\]
+Fixed primitive recursive procedures return:
+\begin{enumerate}
+\item \(N=(d!)^d\), a pole bound \(p\in\N\), distinct branch indices
+      \(1\le i\le n\), and positive multiplicities \(m_i\) with
+      \(\sum_i m_i=d\);
+\item primitive recursive exact algebraic coefficient functions
+      \(w_{i,k}\), with notation
+      \[
+      W_i(T)=\sum_{k\ge0}w_{i,k}T^k,\qquad Y_i(T)=T^{-p}W_i(T);
+      \]
+\item positive rational numbers \(\eta,M_i\) such that, for every finite \(L\),
+      \begin{equation}
+       \sum_{k=0}^L |w_{i,k}|\eta^k\le M_i;
+       \label{eq:main-weight}
+      \end{equation}
+\item certificates for the coefficientwise identity
+      \begin{equation}
+       \sum_{r=0}^d T^{(d-r)p}a_r(T^N)V^r
+       =a_d(T^N)\prod_{i=1}^n(V-W_i(T))^{m_i}.
+       \label{eq:main-cleared}
+      \end{equation}
+\end{enumerate}
+For \(|t|\le q\eta\), \(0\le q<1\), and \(K>L\), the finite tail estimate is
+\begin{equation}
+ \left|\sum_{k=L+1}^K w_{i,k}t^k\right|\le M_iq^{L+1}.
+ \label{eq:main-tail}
+\end{equation}
+The series consequently converge with explicit moduli and, on a sufficiently
+small punctured disc,
+\[
+ P(z_0+t^N,Y)=a_d(t^N)\prod_i(Y-Y_i(t))^{m_i}.
+\]
+The finite coefficient identities and rational versions of the displayed
+estimates are theorems of ordinary first-order \ipra.
+\end{theorem}
+
+The coefficient functions are coherent: later precision requests do not
+change earlier coefficients. All coefficients lie in a single finite
+algebraic extension of the field generated by the input. Only finitely many
+root adjunctions occur in the initial construction; later recurrences use
+field arithmetic alone.
+
+Singular points, repeated factors, and poles are included. A branch has a
+finite limit exactly when its first \(p\) numerator coefficients vanish,
+a finite decidable test. Its limit is \(w_{i,p}\), and
+\[
+ Z=z_0+t^N,\qquad Y=w_{i,p}+\sum_{k\ge1}w_{i,p+k}t^k.
+\]
+The formulation concerns branches over a punctured \(X\)-disc. A component
+contained entirely in \(X=0\) is not a graph of an algebraic function of \(X\);
+polynomial content in \(X\) does not create another punctured-disc branch.
+
+\subsection{Why arbitrary Cauchy coefficient names do not suffice}
+\label{subsec:obstruction}
+\begin{proposition}[Uniform coefficient-name obstruction]
+\label{prop:obstruction}
+No uniform computable procedure takes arbitrary primitive recursive Cauchy
+coefficient names of a monic polynomial and always returns a positive
+ramification and computable names for the coefficients of even one exact
+Puiseux root.
+\end{proposition}
+\begin{proof}
+Consider \(P_a(X,Y)=Y^2-X^2-a\), \(a\ge0\). A returned root after \(X=T^e\)
+satisfies \(y(T)^2=T^{2e}+a\).
+If \(a=0\), finite coefficient induction gives \(y_j=0\) for \(j<e\) and
+\(y_e^2=1\), so \(|y_e|=1\). Any finite negative Laurent part first vanishes
+by the same coefficient induction.
+If \(a>0\), the constant coefficient satisfies \(y_0^2=a\) and is apart
+from zero. Coefficient induction gives \(y_j=0\) for \(1\le j<2e\), so
+\(y_e=0\).
+Approximating \(y_e\) within \(1/8\) distinguishes the cases by a rational
+comparison of the squared modulus with \(1/4\).
+
+For a machine index \(v\), let \(H(v,k)\) indicate that the machine halts
+by step \(k\). The one fixed primitive recursive family
+\[
+ A(v,s)=\sum_{k<s}2^{-k-1}H(v,k)
+\]
+names a nonnegative real \(a_v\), with tail at most \(2^{-s}\).
+It is zero exactly when the machine does not halt. The purported Puiseux
+procedure would decide halting.
+\end{proof}
+
+This obstruction already concerns formal coefficients. Arbitrary choices of
+ramification or convergence radius do not help. Every \(a_v\) is in fact a
+dyadic rational; the missing information is its \emph{exact presentation}.
+Merely knowing that Cauchy-named values happen to be algebraic is insufficient.
+The proposition is a computational obstruction to the stated uniform output,
+not a claim of unprovability for every possible statement called Puiseux's
+theorem.
+
+The proof below also works over another fixed effectively presented
+characteristic-zero coefficient field if the exact decisions, splitting
+operations, and quantitative bounds used below are provided with their
+\ipra\ correctness proofs. This certificate-relative extension does not
+assert that arbitrary complex names automatically supply those data.
+
+\section{Arithmetic conventions and logical discipline}
+\label{sec:arithmetic}
+We use intuitionistic logic with equality, all primitive recursive defining
+equations, successor separation and injectivity, and quantifier-free
+induction. Integers, rationals, arrays, polynomials, and matrices are coded
+by natural numbers. Every finite search has a bound supplied before it runs.
+A bounded conjunction is a primitive recursive Boolean fold, whose assertion
+is an equation such as \(b=1\). Fixing a finite horizon and proving its
+table invariant therefore uses only quantifier-free induction; the horizon
+is universally generalized afterwards.
+
+Congruence modulo \(T^L\) means equality of coefficients
+\(0,\ldots,L-1\). It is a finite decidable predicate.
+Equality of series abbreviates the family of these predicates for all \(L\),
+and is never used as a decidable test.
+A \emph{witnessed valuation} is a verified zero prefix and a displayed
+nonzero coefficient. We never search indefinitely for such a coefficient.
+
+The discriminant and resultant are finite determinant polynomials. For
+monic polynomials we use
+\begin{align}
+ \disc(G(Y+c))&=\disc(G(Y)),\label{eq:disc-translation}\\
+ \disc(T^{-pr}G(T^q,T^pY))
+   &=T^{-pr(r-1)}\disc(G)(T^q),\label{eq:disc-scale}\\
+ \disc\Bigl(\prod_jG_j\Bigr)
+   &=\prod_j\disc(G_j)\prod_{i<j}\Res(G_i,G_j)^2.
+   \label{eq:disc-product}
+\end{align}
+These are universal finite polynomial identities. One proof expands them
+with finitely many indeterminate roots and then eliminates symmetric
+monomials by the elementary symmetric-polynomial algorithm; degrees bound
+the finite monomial list. Equivalently use the determinant identities.
+Neither proof assumes a splitting theorem for power series.
+
+\section{Squarefree reduction and one polynomial denominator}
+\label{sec:reduction}
+Translate the exact centre to \(X=0\), and put \(K=\A\) with the fixed
+effective presentation proved in Section~\ref{sec:backend}.
+Arithmetic in \(K(X)\) is finite rational-function arithmetic.
+Compute the characteristic-zero squarefree decomposition
+\begin{equation}
+ \frac{P(z_0+X,Y)}{a_d(X)}=\prod_{m=1}^d Q_m(X,Y)^m.
+ \label{eq:squarefree}
+\end{equation}
+Nonconstant \(Q_m\) are monic, squarefree, and pairwise coprime in \(K(X)[Y]\).
+Empty factors are \(1\).
+
+Here is a gcd-only algorithm and its verification. For a nonconstant monic
+\(Q\), put \(G=\gcd(Q,Q_Y)\), \(S=Q/G\). Then \(S\) is squarefree.
+To prove this without irreducible factorization, set
+\(A=\gcd(S,S_Y)\), \(D=\gcd(A,A_Y)\), and write
+\(A=uD\), \(A_Y=vD\), \(S=wA\). Since \(A\mid S_Y\),
+coprimality of \(u,v\) implies \(u\mid w\).
+Also \(A\mid Q,Q_Y\), hence \(A\mid G\).
+If \(A^k\mid G\), differentiation gives
+\(DA^{k-1}\mid G_Y\), and therefore \(A^{k+1}\mid SG_Y\).
+Since \(A\mid S_Y\), we also have \(A^{k+1}\mid S_YG\).
+Thus \(A^{k+1}\mid Q_Y\) and \(A^{k+1}\mid Q=SG\), so
+\(A^{k+1}\mid G\). Induction only through \(\deg G+1\) forces \(\deg A=0\).
+This proves the squarefreeness assertion by bounded finite algebra.
+
+Repeatedly output \(S=Q/\gcd(Q,Q_Y)\) and replace \(Q\) by its gcd.
+In characteristic zero the gcd degree is strictly smaller than that of a
+nonconstant \(Q\), so after at most \(d\) stages this expresses the original
+monic polynomial as a product of squarefree factors. To group their
+overlaps, maintain pairwise coprime squarefree factors with multiplicities.
+When inserting a new squarefree factor \(S\), scan the pre-insertion list.
+For each factor \(A\)
+of multiplicity \(m\), set \(D=\gcd(A,S)\), replace \(A\) by \(A/D\)
+with multiplicity \(m\) and \(D\) with multiplicity \(m+1\), and replace
+\(S\) by \(S/D\). After that scan, append the remaining \(S\), if nonconstant,
+with multiplicity \(1\). Ignore factors equal to \(1\). Squarefreeness implies
+\(\gcd(D,A/D)=\gcd(D,S/D)=1\); Bezout identities preserve coprimality with
+the other factors. The product with multiplicities is preserved at every
+step. The list has at most \(d\) nonconstant entries, so at most \(d^2\)
+such refinements suffice. Group entries of the same multiplicity to obtain
+the \(Q_m\). All squarefreeness and coprimality claims follow by the displayed
+gcd argument and finite Bezout calculations.
+
+Choose a nonzero polynomial \(C(X)\) divisible by every coefficient
+denominator in every \(Q_m\), for instance their product.
+If \(n_m=\deg_YQ_m\), put
+\[
+ F_m(X,Z)=C(X)^{n_m}Q_m(X,Z/C(X)),\qquad F(X,Z)=\prod_mF_m(X,Z).
+\]
+The coefficient at \(Z^{n_m-i}\) is \(C^i\) times the corresponding
+coefficient of \(Q_m\), hence is polynomial. Thus the \(F_m\) are monic
+polynomials in \(K[X,Z]\), squarefree and pairwise coprime over \(K(X)\).
+Their product \(F\) is monic and squarefree. Define
+\[
+ n=\deg_ZF=\sum_m n_m\le d,\qquad \delta=\ord_X\disc_Z(F).
+\]
+The discriminant is a nonzero finite polynomial; its valuation is a finite
+scan. A monic linear polynomial has discriminant \(1\).
+By \eqref{eq:disc-product}, \(\ord\disc(F_m)\le\delta\), since all
+discriminants and resultants here have nonnegative valuations.
+
+Write
+\begin{equation}
+ C(X)=X^vU(X),\qquad U(0)\ne0.
+ \label{eq:C-unit}
+\end{equation}
+A root \(Z_i(T)\) of \(F_m(T^N,Z)\) yields
+\[
+ Y_i(T)=T^{-Nv}Z_i(T)/U(T^N).
+\]
+Thus \(p=Nv\) is a common pole bound. The reciprocal of the polynomial
+unit will be constructed explicitly.
+
+\section{A bounded Newton--Hensel construction}
+\label{sec:newton}
+The degree-decreasing splitting idea has a constructive precedent in
+Mannaa--Coquand \cite{mannaa}. We give the necessary bounded coefficient
+searches and finite precision bookkeeping explicitly: constructivity alone
+would not prove a primitive recursive bound.
+Set
+\begin{equation}
+ N=(d!)^d,\qquad \Delta=N\delta,\qquad B=dN(\delta+1).
+ \label{eq:budgets}
+\end{equation}
+For explanatory notation we describe coefficient streams, but the algorithm
+will operate only on finite arrays.
+
+\subsection{Coprime Hensel lifting is a finite recurrence}
+\begin{lemma}[Coprime lifting]
+\label{lem:hensel}
+Suppose \(G(T,Z)\) is monic of degree \(r\) and
+\(G(0,Z)=\prod_{j=1}^s C_j(Z)\), with pairwise coprime monic \(C_j\)
+of degrees \(r_j\).
+There are unique coefficients \(V_{j,\ell}\), \(\deg_ZV_{j,\ell}<r_j\), in
+\[
+ G_j(T,Z)=C_j(Z)+\sum_{\ell\ge1}T^\ell V_{j,\ell}(Z)
+\]
+whose product is \(G\) at every finite precision.
+They are given by a primitive recursive coefficient recurrence.
+\end{lemma}
+\begin{proof}
+Set \(D_j=\prod_{k\ne j}C_k\). Extended Euclid returns \(E_j\) with
+\(E_jD_j\equiv1\pmod{C_j}\).
+After computing all orders below \(\ell\), let \(R_\ell\) be the
+coefficient of \(T^\ell\) in \(G-\prod_jG_j^{<\ell}\). It has degree
+less than \(r\). Define
+\[
+ V_{j,\ell}=\operatorname{rem}(E_jR_\ell,C_j).
+\]
+The polynomial \(\sum_j V_{j,\ell}D_j-R_\ell\) has zero remainder modulo
+each \(C_j\). Bezout identities imply divisibility by their product.
+Its degree is less than \(r\), so it is zero.
+This proves correctness at order \(\ell\); the same remainder calculation
+proves uniqueness. No coefficient beyond order \(\ell\) is used.
+\end{proof}
+
+\subsection{Bounded slope selection and strict degree decrease}
+At a node, \(G(X,Y)\) is monic integral of degree \(r\ge2\), with
+witnessed discriminant valuation at most \(e\delta\), where \(e\) is
+the product of earlier ramifications. Translate
+\(Y=Z-a_1(X)/r\) to remove the next-to-leading coefficient:
+\[
+ \widetilde G(X,Z)=Z^r+\sum_{i=2}^r b_i(X)Z^{r-i}.
+\]
+Some \(b_i\) has a nonzero coefficient at index at most \(e\delta\).
+Otherwise \(\widetilde G\equiv Z^r\pmod{X^{e\delta+1}}\); the discriminant
+polynomial would vanish through that index, a contradiction.
+
+Inspect every \(b_i\) through index \(B\), and choose the least ratio \(j/i\)
+among discovered first nonzero coefficients. This is the true least slope:
+a known ratio is at most \(e\delta\le\Delta\), whereas any undiscovered
+coefficient has every index at most \(B\) zero and any later ratio exceeds
+\(B/r\ge N(\delta+1)>\Delta\).
+No test of infinite-series zero is being made.
+Write the ratio as \(p_0/q\) in lowest terms. Then
+\[
+ 0\le p_0\le B,\quad 1\le q\le r,\quad q\mid d!.
+\]
+The transform
+\begin{equation}
+ G^*(T,W)=T^{-p_0r}\widetilde G(T^q,T^{p_0}W)
+ \label{eq:newton-transform}
+\end{equation}
+is monic integral. Its coefficient of \(W^{r-1}\) is zero; its
+specialization \(D(W)=G^*(0,W)\) has a nonzero lower coefficient, because
+a slope minimizer attains equality.
+
+It is not \((W-c)^r\): the next coefficient would give \(-rc=0\), hence
+\(c=0\), contrary to \(D\ne W^r\).
+The exact splitting algorithm of Section~\ref{sec:backend} gives
+\[
+ D(W)=\prod_c(W-c)^{r_c},
+ \quad \#\{c\}\ge2,\quad 1\le r_c<r,\quad \sum_c r_c=r.
+\]
+Apply Lemma~\ref{lem:hensel} to these coprime groups and recurse on their
+factors. At degree one the root is the negative constant coefficient.
+
+\subsection{Discriminant invariant, ramification, and termination}
+Degree strictly decreases along each path. The forest has at most \(d-1\)
+internal nodes and at most \(2d-1\) nodes altogether.
+Each local \(q\) divides \(d!\); there are at most \(d-1\) such steps per
+path, so each accumulated ramification divides \(N=(d!)^d\).
+This divisibility justifies replacing every leaf parameter by a power of
+one common \(T\) with \(X=T^N\).
+
+Translation leaves the discriminant unchanged, while
+\[
+ \ord\disc(G^*)=q\ord\disc(G)-p_0r(r-1)\le qe\delta.
+\]
+The Hensel factors have pairwise resultants with nonzero constant terms.
+Their discriminant valuations therefore add to that of \(G^*\), by
+\eqref{eq:disc-product}. Each child has a witnessed valuation at most
+\(qe\delta\), which is exactly the invariant with the new path
+ramification. The existence of these witnesses follows by a finite product
+scan through the known bound. We do not decide whether a child
+discriminant stream is zero.
+
+Reconstructing a parent root uses the inverse affine transformation.
+If the child parameter has \(T=S^f\), then
+\[
+ X=S^{qf},\qquad
+ Y=-a_1(S^{qf})/r+S^{p_0f}Z_{\rm child}(S).
+\]
+All exponents remain nonnegative. The child degrees sum to the parent
+degree, so the leaf count for \(F_m\) is \(n_m\).
+
+\begin{remark}
+The common denominator is deliberately generous. The tempting bound
+\(q r_c\le r\) fails for a zero characteristic root:
+\(W^3(W^2+1)\) has \(r=5,q=2,r_0=3\).
+The proof does not use that claim. Smaller certified common ramifications
+can be used in examples without improving the universal bound.
+\end{remark}
+
+\subsection{An explicit global precision budget}
+\label{subsec:precision}
+For output precision \(L\), begin with input arrays through
+\begin{equation}
+ J(L)=\max(L,B)+d^2B+2.
+ \label{eq:lookahead}
+\end{equation}
+Translation and Hensel lifting consume no extra coefficient positions.
+In \eqref{eq:newton-transform}, an output coefficient of index \(k\)
+requires an input coefficient of index at most \(k+p_0r\le k+dB\).
+Fewer than \(d\) levels consume at most \(d^2B\); the maximum with \(B\)
+covers each slope scan.
+
+Run the forest in at most \(d\) rounds, splitting all nonterminal nodes,
+with the remaining array length reduced by \(dB\) per level.
+Node counts, coefficient loops, and all polynomial and exact-field
+operations are explicitly bounded.
+Reconstruction and \(T\mapsto T^{N/e}\) require no larger index.
+This gives a finite-array primitive recursive program, rather than an
+unsupported assertion about nested recursion on arbitrary series evaluators.
+Deterministic splitting choices and Hensel uniqueness give compatible
+prefixes when the requested precision is increased.
+
+\section{One finite jet gives polynomial simple-root equations}
+\label{sec:bootstrap}
+Define
+\begin{equation}
+ h=\Delta+1,\qquad M=2h+1.
+ \label{eq:bootstrap-budget}
+\end{equation}
+Run the finite construction once, at precision \(M\). Its output polynomials
+\(b_i(T)\), truncated below \(M\), satisfy
+\begin{equation}
+ F_m(T^N,Z)\equiv\prod_{i\in I_m}(Z-b_i(T))\pmod{T^M}.
+ \label{eq:jet-splitting}
+\end{equation}
+The group \(I_m\) retains the multiplicity label \(m\).
+
+\subsection{Finite discriminant congruence gives every needed witness}
+Multiply the group identities and apply the discriminant polynomial:
+\begin{equation}
+ \disc(F)(T^N)\equiv\prod_{i<j}(b_i-b_j)^2\pmod{T^M}.
+ \label{eq:finite-disc}
+\end{equation}
+Its left side has witnessed leading index \(\Delta<M\).
+Each difference consequently has a first nonzero coefficient at an index
+\(k_{ij}\le\Delta\). Otherwise the product would vanish through \(\Delta\).
+Multiplication of the leading terms gives
+\[
+ 2\sum_{i<j}k_{ij}=\Delta.
+\]
+For \(n=1\) the product is empty and \(\Delta=0\).
+Differentiating the group identity and evaluating at \(b_i\) gives
+a witnessed derivative order
+\[
+ s_i=\ord F_{m,Z}(T^N,b_i)
+     =\sum_{\substack{j\in I_m\\j\ne i}}k_{ij}\le\Delta<h.
+\]
+All of these numbers are obtained from finite arrays.
+
+\subsection{Desingularization by a finite polynomial shift}
+Let \(a_i(T)\) be the truncation of \(b_i\) \emph{through degree \(h\)};
+then \(T^{h+1}\mid(b_i-a_i)\). Put
+\begin{equation}
+ H_i(T,V)=T^{-(h+s_i)}
+       F_m(T^N,a_i(T)+T^hV).
+ \label{eq:H}
+\end{equation}
+\begin{lemma}[Finite desingularization]
+\label{lem:desingularization}
+This expression is a polynomial, with
+\(H_i(0,0)=0\) and \(H_{i,V}(0,0)\ne0\).
+\end{lemma}
+\begin{proof}
+The root jet gives \(T^M\mid F_m(T^N,b_i)\).
+Finite Taylor expansion shows that the derivative at \(a_i\) differs from
+the derivative at \(b_i\) by a multiple of \(T^{h+1}\), preserving its
+leading order \(s_i\). The same expansion gives
+\[
+ T^{h+s_i+1}\mid F_m(T^N,a_i):
+\]
+the linear correction has that divisibility, the higher corrections have
+order at least \(2h+2\), and \(M=2h+1\ge h+s_i+1\).
+
+After division in \eqref{eq:H}, the constant-in-\(V\) term is divisible
+by \(T\). The linear coefficient is
+\(T^{-s_i}F_{m,Z}(T^N,a_i)\), with a nonzero constant term.
+For degree \(j\ge2\) in \(V\), the remaining factor is
+\(T^{(j-1)h-s_i}\), a positive power. Hence all exponents are nonnegative
+and both conclusions hold.
+\end{proof}
+The truncation convention matters: cutting only below \(h\) could leave a
+nonzero value \(H_i(0,0)\). Including the coefficient of degree \(h\)
+avoids a further constant translation.
+The Newton forest is now finished. All later coefficients will be produced
+from these finitely many polynomial simple-root equations.
+
+\input{convergence}
+
+\section{The precise first-order \ipra\ conclusion}
+\label{sec:internal}
+The internal assertion does not quantify over an infinite set of series.
+Let \(\operatorname{Valid}(p)\) check the exact finite input.
+The fixed program \(\operatorname{Build}(p)\) returns the finite packet
+\[
+ (N,p_{\rm pole},\{m_i,a_i,h,s_i,H_i\}_i,
+ U,u_0,\eta,\{M_i\}_i,\text{finite certificates}).
+\]
+The fixed program \(\operatorname{Jets}(p,L)\) uses the simple-root
+recurrence, the unit reciprocal recurrence, and finite convolution to return
+the numerator coefficients through \(L\). Malformed inputs have specified
+default outputs; validity proofs show that the defaults are not used.
+
+\begin{center}
+\small
+\begin{tabular}{p{.24\linewidth}p{.34\linewidth}p{.31\linewidth}}
+\toprule
+Operation & Finite budget & Invariant\\
+\midrule
+Squarefree reduction & \(d\) stripping stages, at most \(d^2\) refinements & Quotients and Bezout identities\\
+Newton forest & At most \(d\) rounds, \(2d-1\) nodes & Degree sums, path ramification\\
+Slope scan & Indices through \(B\) & Discriminant witness at most \(e\delta\)\\
+Initial jets & \(M=2(N\delta+1)+1\), input \(J(M)\) & Complete splitting congruences\\
+Simple coefficients & Requested degree & Zero residual coefficients\\
+Factorization & Residual horizon \(K+\Delta+1\) & Vandermonde and leading cancellation\\
+Convergence & Picard iterates through a finite horizon & Weighted coefficient bounds\\
+Numerical values & Explicit tail and evaluation precisions & Cauchy and residual estimates\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Finite sums of exact algebraic moduli have exact algebraic order tests.
+Alternatively all majorants may use rational coordinate upper bounds.
+An inequality at a represented complex argument denotes its rational
+approximation version with a specified error budget.
+A limiting equality denotes error bounds by \(2^{-k}\) for every
+natural precision \(k\).
+
+The actual formulas include
+\[
+ \forall p,L\;\bigl(\operatorname{Valid}(p)=1\ \longrightarrow\
+ \operatorname{FactorCheck}(p,\operatorname{Build}(p),L,
+                         \operatorname{Jets}(p,L))=1\bigr),
+\]
+and analogous finite prefix, weighted-bound, and tail assertions.
+Their checkers are defined by the identities and inequalities proved in
+this report, not by predicates whose mathematical meaning is assumed.
+All existential outputs are witnessed by the displayed fixed procedures.
+
+For each induction, fix a horizon and collect all already established
+bounded coefficient identities and code bounds into a Boolean table
+predicate. Its equation is a quantifier-free induction formula.
+This applies to Euclidean division, determinant expansion, Hensel
+corrections, stabilization, convolution bounds, and leading cancellation.
+Afterwards universally generalize over the horizon.
+This is the promised nonformal proof in \ipra; constructing its explicit
+object derivation in Lean is a separate task described below.
+
+No universal primitive recursive evaluator for arbitrary primitive
+recursive programs is assumed. The backend, constructor, and jet evaluator
+are fixed programs, with finite codes as numerical parameters.
+The reused FTA theorem is instantiated with one fixed coefficient evaluator
+for the exact algebraic code representation.
+
+\section{Exact examples and executable evidence}
+\label{sec:examples}
+The Python program \texttt{code/check\_examples.py} uses Gaussian rationals
+as pairs of exact \texttt{Fraction}s and only the standard library.
+It implements the simple-root recurrence, finite bivariate polynomial
+arithmetic, weighted bounds, and complete products with multiplicities.
+It is a finite-jet checker and illustration, not a general Puiseux solver
+or a formal proof of the theorem.
+
+\begin{center}
+\small
+\begin{tabular}{p{.35\linewidth}p{.10\linewidth}p{.44\linewidth}}
+\toprule
+Polynomial & \(X=t^e\) & Branches or leading terms\\
+\midrule
+\(Y^2-X^3\) & \(e=2\) & \(\pm t^3\)\\
+\((Y^2-X^3)^2-X^7Y\) & \(e=4\) &
+\(s t^6+s c t^{11}-s c^3t^{21}/8+\cdots,\quad c^2=s/4\)\\
+\((Y^2-X^3)^3(Y-X^2)\) & \(e=2\) &
+\(\pm t^3\) each with multiplicity \(3\); \(t^4\) with multiplicity \(1\)\\
+\(XY^2-(1+X)\) & \(e=2\) &
+\(\pm t^{-1}(1+t^2/2-t^4/8+\cdots)\)\\
+\((Y-X^{20})^2-X^{41}\) & \(e=2\) &
+\(t^{40}\pm t^{41}\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+In row two take \(s=1,c=\pm1/2\) and \(s=-1,c=\pm i/2\). The exact equation
+for the correction is
+\[
+ (2V+t^5V^2)^2-s(1+t^5V)=0,\qquad V(0)=c.
+\]
+Its derivative is \(8c\ne0\). The exponents \(6\) and \(11\) give genuine
+fourth-root ramification. The last example has degree two but discriminant
+\(4X^{41}\); degree alone cannot bound the initial singularity scan.
+
+The recorded run checks through degree \(96\). It checks all five complete
+factorizations, implicit residuals and weighted bounds where an infinite
+series is used, and multiplicities. Laurent products retain extra high
+coefficients before truncation to protect against negative powers.
+The output is \texttt{evidence/example\_checks.json}.
+
+\input{lean_plan}
+
+\appendix
+\input{algebraic_backend}
+
+\section{The reused FTA result and source accounting}
+\label{sec:fta}
+The pinned \repo\ archive \texttt{docs/drafts/FTA\_iPRA.zip} supplies a
+human-readable one-root theorem with this specialization:
+
+\begin{quote}
+For one fixed primitive recursive program giving coherent fast
+Gaussian-rational coefficient names, a degree bound and positive evidence
+that some nonconstant coefficient is apart from zero suffice to construct
+a primitive recursive root name, with explicit Cauchy and residual moduli.
+\end{quote}
+
+For monic algebraic input the nonconstant coefficient witness is \(1\).
+The program is the single fixed bisection-and-code evaluator constructed
+in Section~\ref{sec:backend}. Polynomial codes and degrees are numerical
+parameters, precisely as required by the dependency's schema.
+
+That proof uses bounded rational descent: a direction routine from
+square-root bisection and finite binomial identities; a finite comparison
+of Taylor scales producing residual decrease; finite product estimates for
+total travel; and an explicit sampling schedule for Cauchy and residual
+moduli. The complete proof is frozen unchanged under
+\texttt{dependencies/FTA\_iPRA/}, including its \texttt{.tex} and compiled
+\texttt{.pdf}. The central one-root estimates were reviewed for this
+application; \texttt{evidence/fta\_dependency\_audit.md} records that review.
+This is mathematical review, not kernel verification.
+
+The dependency's repeated numerical factorization discussion is only for
+fixed degree and is not used as a uniform splitting algorithm.
+Section~\ref{sec:backend} supplies the uniform exact construction.
+The FTA draft's Lean source is an uncompiled specification; formalizing its
+deep object derivation is an explicit remaining Lean dependency.
+
+\subsection*{Provenance}
+The repository sources were read at the following pinned commit:
+\begin{center}\pin\end{center}
+The precise record is \texttt{SOURCE\_MANIFEST.md}.
+The FTA archive's Git blob identifier is
+\texttt{60f15e1faa33b18ebbcb0a61f7fcccaa8b36aaf5}, and its size is
+\(413411\) bytes.
+
+The main report gives its own bounded algebraic reductions and analytic
+estimates. The references identify the requested result, its constructive
+context, and the reused foundation. They do not replace the finite
+precision and logical-strength arguments.
+
+\begin{thebibliography}{9}
+\bibitem{mathworld}
+E. W. Weisstein, \emph{Puiseux's Theorem}, MathWorld.
+\url{https://mathworld.wolfram.com/PuiseuxsTheorem.html}.
+Accessed 15 November 2026.
+\bibitem{mannaa}
+B. Mannaa and T. Coquand, Dynamic Newton--Puiseux theorem,
+\emph{Journal of Logic and Analysis} \textbf{5}:5 (2013), 1--22.
+\url{https://doi.org/10.4115/jla.2013.5.5}.
+Open text: \url{https://math.hawaii.edu/home/jla/152-672-1-PB.pdf}.
+\bibitem{mcmullen}
+C. T. McMullen, \emph{Riemann Surfaces}, Harvard Math 213b course notes,
+28 April 2026, Puiseux discussion, pp.~44--45.
+\url{https://abel.math.harvard.edu/~ctm/math213b/home/course/course.pdf}.
+Used for context and formulation, not as a constructive proof dependency.
+\bibitem{proveit}
+V. Reshetnikov and contributors, \emph{ProveIt}, snapshot
+\texttt{d851229c33ef} (full commit in the source manifest).
+Relevant paths:
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/} and
+\path{docs/drafts/FTA_iPRA.zip}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+The FTA source is a research draft with a human-readable proof and an
+uncompiled Lean specification.
+\end{thebibliography}
+\end{document}

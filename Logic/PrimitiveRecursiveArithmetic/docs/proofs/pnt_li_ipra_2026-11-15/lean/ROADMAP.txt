@@ -1,0 +1,109 @@
+FORMALIZATION ROADMAP AND ACCEPTANCE GATES
+========================================
+
+1. Compile and validate the arithmetic specification
+---------------------------------------------------
+Compile ArithmeticTarget.lean using the pinned toolchain. Prove primeFlag
+equals the characteristic function of Nat.Prime and primeCount counts
+primes <= n. Prove bitLength 0 = 0 and, for n > 0,
+  2^(bitLength n - 1) <= n < 2^(bitLength n).
+Deduce that bitLength n > K is equivalent to n >= 2^K.
+
+For u >= 1, prove the numerator search bound in rationalBinaryExponent
+is adequate, and that e is characterized by 2^e <= u < 2^(e+1).
+Prove the recurrence definitions equal the exact finite sums in the report.
+
+2. Prove the rational logarithm and integration estimates
+--------------------------------------------------------
+For 1 <= r <= 2, set z=(r-1)/(r+1), so 0 <= z <= 1/3. Prove the finite
+atanh expansion and its positive tail estimate. With N=v+e+2 obtain
+  0 <= log(u) - logLower(u,v) <= (e+1)*9^(-N) <= 2^(-v).
+For u >= 2 show logLower(u,v) >= 2/3. This is the concrete apartness
+bound needed for every reciprocal in liApprox; reciprocal at zero is
+only a totalization and is never used in a valid integration interval.
+
+For n >= 2, h=2^(-(v+3)), J=(n-2)*2^(v+3), P=v+bitLength(n)+6,
+prove the left Riemann sum enclosure with the stated reciprocal error.
+Conclude |liApprox(n,v) - Li_2(n)| <= 2^(-v).
+Every interval endpoint is rational, every iteration bound is explicit,
+and the proof uses finite mesh sums with explicit truncation errors.
+
+3. Prove the full analytic input with finite certificates
+--------------------------------------------------------
+Implement the manuscript's particular finite approximations and bounds
+for zeta, its derivative, the truncated Euler product, the reciprocal
+apartness estimate, truncated Perron kernels, and finite rectangular
+contour sums. Use supplied explicit error budgets; do not appeal to an
+unquantified existence of a mesh, a truncation, or a zero-free neighborhood.
+
+Prove the exact finite form of the theta estimate with C=2^240. The
+ThetaModulusHypothesis type in ArithmeticTarget.lean is only the target
+contract for this work. It is not an accepted assumption for a final
+unconditional theorem.
+
+4. Prove the elementary finite transfer
+---------------------------------------
+Compile FiniteAbel.lean. Instantiate the finite identity with positive
+rational logarithm approximations and their matching reciprocals. Prove
+the reference sum identity, Riemann discrepancy bound <=4, the finite
+square-root split, and the explicit modulus transfer. Track the available
+17/32 coefficient and allocate its remaining slack to approximation errors.
+
+Prove the bound bitLength(n) <= 4*log(n), use precision m+2, and combine
+with the liApprox enclosure. Prove the denominator-clearing equivalence
+for integerMatrix using positivity of Rat.den and bitLength(n).
+This establishes the ambient Lean ArithmeticTarget, but not yet its
+provability in iPRA.
+
+5. Construct actual object-language PR codes
+--------------------------------------------
+Use ConciseIPRA.PR.zero, succ, proj, comp, and prec. The recursion argument
+of prec comes first. Build named codes for addition, multiplication,
+truncated subtraction, comparison, Boolean case distinction, powers,
+bounded sums, bounded search, integer sign/absolute value, and sequence
+encodings. Signed rationals can use a signed numerator and a positive
+denominator. Unreduced fractions avoid a gcd subroutine; alternatively
+compile a bounded gcd calculation and prove normalization preserves value.
+
+Construct codes for primeFlag, primeCount, bitLength, exponentScan,
+atanhLogSum, logLower, liApprox, and the exact liPntCheck. Every loop already
+has an explicit PR bound. Prove a semantic correspondence for each named
+code. There is no assumption of a primitive recursive universal evaluator
+for all PR programs; only these fixed syntax trees are being constructed.
+
+Replace the parameter check in NativeBridge.lean by the resulting concrete
+PR 3 term. Verify its argument convention is (m,n,v) and that the three
+universal binders map to de Bruijn indices (2,1,0).
+
+6. Construct the iPRA derivation
+-------------------------------
+Build explicit Prf PRAAx derivations of the defining arithmetic lemmas,
+finite rational estimates, and bounded error-budget calculations. Use
+PRA.qfInd only with a demonstrated quantifier-free formula. Bounded
+conjunctions are computed Boolean folds; all required bounding functions
+must already have named PR codes.
+
+An inequality about all real approximation precisions is not itself a
+quantifier-free induction formula. Fix the input precision first, prove
+the finite rational matrix with its explicit allowance, and universally
+generalize after applying quantifier-free induction. This distinction is
+part of the object proof obligations, not a claim discharged merely by
+inspecting an algorithm's termination.
+
+The principal completion criterion is a closed term inhabiting
+  Prf PRAAx [] (targetSentence concreteCheck).
+Do not replace that criterion with an ambient Nat/Rat theorem or with a
+structure whose theorem is assumed as one of its fields.
+
+7. Transfer to the concise native theory and record validation
+--------------------------------------------------------------
+Only after step 6, apply the already proved pra_iff_native bridge.
+Record compilation logs and #print axioms for the exported derivation and
+all newly introduced foundations. Search the completed source for proof
+placeholders and extra arithmetic axioms. Verify the semantic reading of
+the sentence independently, including the threshold and denominator
+clearing. State which final corollaries are object-theory derivations and
+which are ambient presentations using Real.log.
+
+The bridge establishes preservation of existing derivations. It does not
+convert arbitrary metatheoretic Lean proofs into iPRA automatically.

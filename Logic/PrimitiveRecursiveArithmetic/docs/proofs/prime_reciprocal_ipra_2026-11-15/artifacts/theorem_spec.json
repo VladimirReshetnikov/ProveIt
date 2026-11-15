@@ -1,0 +1,35 @@
+{
+  "title": "Constructive divergence of the reciprocal-prime sum in iPRA",
+  "date": "2026-11-15",
+  "repository_snapshot": {
+    "repository": "VladimirReshetnikov/ProveIt",
+    "branch": "main",
+    "commit": "0e834f7851375f4b22ae8892000495cb6fa9eee8"
+  },
+  "witness": "W(k) = 2^(2*4^k)",
+  "definitions": {
+    "Q(n)": "product of primes p <= n",
+    "R(n)": "sum over primes p <= n of Q(n)/p",
+    "D(n)": "product over primes p <= n of (p-1)",
+    "F(n)": "n!",
+    "T(n)": "sum from m=1 to n of F(n)/m"
+  },
+  "internal_target": "forall k, R(W(k)) > k*Q(W(k))",
+  "equivalent_rational_target": "forall k, sum_{p <= W(k), prime p} 1/p > k",
+  "core_lemmas": [
+    "T(n)*D(n) <= F(n)*Q(n)",
+    "p^p <= 4*(p-1)^p for p >= 2",
+    "Q(n)^Q(n) <= 4^R(n)*D(n)^Q(n)",
+    "R(n) <= k*Q(n) implies T(n) <= 4^k*F(n)",
+    "T(2^(2*t)) >= (1+t)*F(2^(2*t))"
+  ],
+  "logic_constraints": {
+    "logic": "intuitionistic first-order logic",
+    "induction": "quantifier-free induction only",
+    "choice": false,
+    "nondecidable_excluded_middle": false,
+    "real_analysis": false,
+    "infinite_series_or_products": false
+  },
+  "lean_status": "outline only; contains sorry placeholders"
+}

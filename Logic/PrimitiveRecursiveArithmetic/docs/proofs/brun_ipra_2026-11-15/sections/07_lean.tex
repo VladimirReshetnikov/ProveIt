@@ -1,0 +1,192 @@
+\section{Repository reuse and Lean formalization}
+\label{sec:lean}
+
+\subsection{The inspected foundation}
+
+The ProveIt repository was inspected at the fixed commit
+\[
+ \texttt{\small 8c135f6f2a9d041cde785a1a632c44ad98065b20}.
+\]
+The snapshot's toolchain and Mathlib dependency are both pinned to
+version \(4.32.0\). The relevant source directory is
+\begin{center}
+\code{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/}.
+\end{center}
+The following declarations were read in source, rather than inferred
+from file names or an informal summary:
+\begin{itemize}
+\item \code{PR.lean}: the types \code{PR} and \code{PTm}, the axiom
+family \code{PRAAx}, and the rule \code{PRA.qfInd}.
+\item \code{PRAToScalar.lean}: \code{FromPRA.code},
+\code{FromPRA.interp}, and proofs translating every arithmetic axiom,
+including the quantifier-free induction axiom.
+\item \code{BiInterpretation.lean}: \code{biInterp},
+\code{pra\_iff\_teq}, \code{teq\_iff\_pra}, and the round-trip theorems.
+\item \code{NativeBiInterpretation.lean}: \code{NFm.ofPRA},
+\code{pra\_iff\_native}, and \code{native\_iff\_pra}.
+\end{itemize}
+These sources establish the existing syntactic translation interfaces
+\cite{proveit}. They do not already provide the finite sieve proved here.
+The foundation was not rebuilt locally in producing this package.
+
+The inspected draft
+\code{docs/drafts/prime\_reciprocal\_ipra\_2026-11-15.zip}
+contains useful bounded-factorization and harmonic-sum methodology
+\cite{prime-draft}. Its Lean scaffold contains explicit unproved
+placeholders. It is therefore background for the proof design, not an
+importable completed number-theory proof. The present argument proves
+all of its required arithmetic facts independently.
+
+\subsection{Two distinct formalization goals}
+
+There are two layers to complete.
+
+\paragraph{Finite mathematical layer.}
+Prove the rational finite theorems in Lean, using computable finite lists
+or finite sets. The primary targets are the quadratic identity, the
+harmonic comparison, the dyadic count, and the finite tail bound.
+Lean's rational numbers are convenient for checking these identities.
+No infinite sums or real analysis are needed.
+
+\paragraph{Object-theory layer.}
+Build actual primitive recursive syntax codes for the displayed numerical
+functions and a derivation in the deeply embedded theory \code{PRAAx}.
+The final target has the form
+\[
+ []\ \vdash_{\mathsf{PRAAx}}\ \mathrm{BrunFormula}.
+\]
+A Lean theorem asserting the ordinary truth of
+\eqref{eq:ipra-target} is valuable, but it does not on its own establish
+that iPRA proves it. The additional syntactic derivation is essential.
+
+\subsection{Recommended modules and interfaces}
+
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{@{}p{0.30\textwidth}p{0.63\textwidth}@{}}
+\toprule
+Proposed module & Completion target\\
+\midrule
+\endhead
+\code{Brun/FiniteArithmetic} &
+Prove correctness of the bounded prime test; construct the factor trace,
+squarefree support, divisor list and rational codes.\\
+\code{Brun/Residues} &
+Prove the explicit CRT reconstruction, \(\rho(d)=\prod_{p\mid d}\rho(p)\),
+and the rational error bound for \(A_d(X)\).\\
+\code{Brun/SelbergIdentity} &
+Define \(G,W,\lambda\); prove \(\lambda_1=1\),
+\(|\lambda_d|\rho(d)\le d\), the transform, and \(Q=1/G\).
+Then derive \(T(X)\le z+X/G+z^4\).\\
+\code{Brun/DenominatorLower} &
+Construct the injection from bounded pairs into prime exponent boxes;
+prove finite product factorization and \(H_s^2\le3G(s^2)\).\\
+\code{Brun/DyadicCount} &
+Prove the harmonic and polynomial inequalities and instantiate
+\(t=k\mathbin{\mathrm{div}}10\), obtaining \(k^2T(2^k)\le2048\,2^k\).\\
+\code{Brun/Tail} &
+Construct the bounded shell index, bound each shell, telescope the
+finite sum, and prove \eqref{eq:main-tail}.\\
+\code{Brun/Cauchy} &
+Finish the supplied conditional assembly, and prove equivalence with
+the factorial-denominator integer statement.\\
+\code{Brun/IPRA/Codes} &
+Construct explicit \code{PR} syntax trees and defining-equation
+derivations for all operations used by the proof.\\
+\code{Brun/IPRA/Derivation} &
+Internalize the lemmas using \code{PRA.qfInd}, with a quantifier-free
+syntactic witness at every arithmetic induction, and derive the closed
+formula.\\
+\code{Brun/IPRA/Native} &
+Apply the existing faithful interpretations to the completed
+\code{PRAAx} derivation.\\
+\bottomrule
+\end{longtable}
+
+The most substantial new tasks are the finite prime-support injection and
+the syntactic arithmetic library. The number-theoretic bottleneck is
+specified by Theorem~\ref{thm:harmonic}; no unknown analytic estimate is
+left for the formalization to discover.
+
+\subsection{A concrete semantic specification}
+
+The supplied \code{lean/BrunSpecification.lean} defines:
+\begin{itemize}
+\item \code{primeB} and \code{twinB} by bounded list scans;
+\item \code{brunPartial}, with the strict endpoint \(p<N\);
+\item \code{sieveConstant}, \code{exponentIndex}, and \code{cutoff},
+with constants exactly as in this article;
+\item \code{tailNumerator} and \code{ArithmeticBrunClaim},
+which encode \eqref{eq:integer-tail} and \eqref{eq:ipra-target};
+\item \code{DyadicTailClaim} and \code{BrunCauchyClaim};
+\item candidate conditional assembly proofs showing how a proof of the
+finite tail bound yields the stated Cauchy estimate.
+\end{itemize}
+There are no newly declared axioms or \code{sorry} placeholders in that
+file. The missing sieve theorem is a named proposition supplied as an
+\emph{explicit hypothesis} to the assembly lemma; it is not asserted as
+proved. The source has not been compiled because a Lean/Lake executable
+was unavailable in the authoring environment.
+
+The crucial assembly principle is elementary. Suppose every \(a(n)\)
+beyond a cutoff lies in the same interval
+\([a(N),a(N)+\epsilon]\). Then any two such values differ in absolute value
+by at most \(\epsilon\), not \(2\epsilon\). This explains why the tail
+bound produces the stated modulus without an additional factor of two.
+
+\subsection{Building the object-language formula}
+
+The existing \code{PR} syntax is generated by zero, successor,
+projections, composition and primitive recursion. Define within this syntax
+the fixed operations needed for the proof: comparison, quotient,
+remainder, exponentiation, factorial, bounded folds, twin testing,
+the cutoff, and the integer tail numerator.
+
+For each function, prove its computation equations in \code{PRAAx}.
+For each finite lemma, prove the corresponding coded statement by the
+specific invariant in Section~\ref{sec:ipra}. Algebraic normalization can
+be automated by a proof-producing macro that emits uses of the semiring
+and rational-code lemmas. A computation that merely reports a true
+Boolean is not a substitute for a uniform derivation.
+
+With variables ordered as \(q,U,V\), form a primitive recursive Boolean
+\(b(q,U,V)\) that is \(1\) precisely when the antecedent of
+\eqref{eq:ipra-target} is false or its conclusion is true.
+Both tests are decidable. The equality \(b(q,U,V)=1\) is an atomic
+formula \code{brunMatrix : Fm PTm 3}; its \code{Fm.QF} evidence is immediate.
+Universally close the three variables to obtain
+\code{brunFormula : Fm PTm 0}.
+
+The final task is to construct a term of
+\[
+ \code{Prf}\ \mathsf{PRAAx}\ []\ \mathrm{brunFormula},
+\]
+using the repository's exact notation and parameter order.
+All arithmetic induction applications must go through
+\code{PRA.qfInd} or a derived macro that supplies the required
+\code{Fm.QF} witness.
+Structural induction in Lean on a syntax tree or on a derivation is
+metatheory; it does not grant unrestricted numerical induction in the
+object theory.
+
+\subsection{Transfer and verification gates}
+
+After a derivation \code{brunPRA} is constructed, its scalar translation
+is obtained through \code{FromPRA.interp.sound}; the native translation is
+available through \code{pra\_iff\_native}. Thus there is no additional
+bi-interpretability theorem to prove for this number-theory application.
+
+Completion should be checked in the pinned ProveIt environment:
+\begin{enumerate}
+\item Compile the finite arithmetic modules and the supplied specification.
+\item Compile the \code{PR} codes and the actual
+\code{PRAAx} derivation.
+\item Compile the scalar and native corollaries.
+\item Inspect \code{\#print axioms} for the final declarations and verify
+that there is no \code{sorryAx} or assumption standing for Brun's theorem.
+\item Check that the final result is a derivation in \code{PRAAx}, not
+only a theorem about standard natural numbers.
+\item Review the \code{Fm.QF} witness at every object-level induction.
+\end{enumerate}
+The accompanying \code{FORMALIZATION\_PLAN.md} gives the same route in a
+form convenient for implementation. No successful Lean build is claimed
+for this package.

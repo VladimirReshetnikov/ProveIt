@@ -1,0 +1,119 @@
+\section{Carnot's polygon theorem}
+
+\subsection{A formulation that is genuinely constructive}
+
+Let $V_1,\ldots,V_m$ be an affine polygon, with $V_{m+1}=V_1$, and let
+$F(x,y)$ be a polynomial of total degree at most $n$.  Assume $F(V_i)\ne0$
+for every vertex.  On the extended side $V_iV_{i+1}$ put
+\[
+  g_i(T):=F\bigl((1-T)V_i+T V_{i+1}\bigr).
+\]
+For each $i$, suppose we are given parameters $t_{i1},\ldots,t_{in}$ and a
+nonzero leading factor $c_i$ together with the coefficient certificate
+\begin{equation}\label{eq:side-factor-certificate}
+  g_i(T)=c_i\prod_{j=1}^{n}(T-t_{ij}).
+\end{equation}
+Thus $X_{ij}=(1-t_{ij})V_i+t_{ij}V_{i+1}$ is an intersection of the curve
+$F=0$ with the extended side, and repetitions in the list express
+multiplicity.  Then
+\begin{equation}\label{eq:carnot-polygon}
+ \prod_{i=1}^{m}\prod_{j=1}^{n}
+ \frac{V_iX_{ij}}{X_{ij}V_{i+1}}
+ =(-1)^{mn},
+\end{equation}
+where every quotient is directed and all denominators are nonzero.
+
+This is the appropriate literal theorem for $\ipra$.  In classical algebraic
+geometry, the assumptions that the side is not a component and that it meets a
+degree-$n$ curve in $n$ finite points counted with multiplicity are used to
+produce \eqref{eq:side-factor-certificate}.  Constructively, the finite list
+and the factorization are data.  They can be verified by comparing
+coefficient lists, a primitive-recursive operation.  No theorem asserting that
+an arbitrary polynomial splits is needed.
+
+\subsection{Proof}
+
+On the oriented line from $V_i$ to $V_{i+1}$, the directed ratio attached to
+$X_{ij}$ is
+\[
+ \frac{V_iX_{ij}}{X_{ij}V_{i+1}}=\frac{t_{ij}}{1-t_{ij}}.
+\]
+Evaluate the certified factorization at the endpoints:
+\[
+ F(V_i)=g_i(0)=c_i(-1)^n\prod_{j=1}^{n}t_{ij},
+ \qquad
+ F(V_{i+1})=g_i(1)=c_i\prod_{j=1}^{n}(1-t_{ij}).
+\]
+Because the curve avoids the vertices, both endpoint values are nonzero; in
+particular every $t_{ij}$ and $1-t_{ij}$ occurring in the product is nonzero.
+The certified-side-product lemma gives
+\begin{equation}\label{eq:one-side-product}
+ \prod_{j=1}^{n}\frac{t_{ij}}{1-t_{ij}}
+ =(-1)^n\frac{F(V_i)}{F(V_{i+1})}.
+\end{equation}
+Multiplying \eqref{eq:one-side-product} for $i=1,\ldots,m$ gives
+\[
+ \prod_{i,j}\frac{t_{ij}}{1-t_{ij}}
+ =(-1)^{mn}
+   \frac{F(V_1)}{F(V_2)}
+   \frac{F(V_2)}{F(V_3)}\cdots
+   \frac{F(V_m)}{F(V_1)}
+ =(-1)^{mn}.
+\]
+This is \eqref{eq:carnot-polygon}.
+
+A division-free proof is obtained by multiplying all endpoint equalities before
+cancelling.  If
+\[
+ T_i=\prod_j t_{ij},\qquad U_i=\prod_j(1-t_{ij}),
+\]
+then the one-side assertion is
+\[
+ F(V_{i+1})T_i=(-1)^nF(V_i)U_i.
+\]
+Primitive recursion on $i$ telescopes these equations and gives
+\[
+ \prod_iT_i=(-1)^{mn}\prod_iU_i.
+\]
+The quotient statement follows only after the listed nonzero hypotheses are
+used.  Hence the logical core is quantifier-free induction over finite
+products.
+
+\subsection{The spatial skew-quadrilateral form}
+
+Let $A,B,C,D$ be a skew quadrilateral in affine $3$-space.  Let a plane
+$L(X)=0$, with affine-linear functional $L$, meet the four extended sides at
+finite points
+\[
+ P\in AB,
+ \quad Q\in BC,
+ \quad R\in CD,
+ \quad S\in DA,
+\]
+and suppose that no vertex lies on the plane.  Write
+\[
+ P=(1-p)A+pB.
+\]
+Since $L(P)=0$,
+\[
+ (1-p)L(A)+pL(B)=0,
+ \qquad
+ \frac{AP}{PB}=\frac p{1-p}=-\frac{L(A)}{L(B)}.
+\]
+The same calculation on the other three sides gives
+\[
+ \frac{BQ}{QC}=-\frac{L(B)}{L(C)},\quad
+ \frac{CR}{RD}=-\frac{L(C)}{L(D)},\quad
+ \frac{DS}{SA}=-\frac{L(D)}{L(A)}.
+\]
+Their product is $(-1)^4=1$.  This is the spatial form quoted with Carnot's
+polygon theorem.  It uses exactly the same telescoping mechanism as the planar
+theorem, with $n=1$ and $F=L$.
+
+\subsection{Menelaus and Carnot conic as instances}
+
+For a triangle, $m=3$.  When $n=1$, \eqref{eq:carnot-polygon} gives the
+directed Menelaus product $-1$.  When $n=2$, it gives the Carnot conic product
+$+1$.  The earlier sections prove the corresponding converses as well; the
+general polygon theorem itself is a necessary product relation and does not
+assert that arbitrary side data are interpolated by a degree-$n$ curve.

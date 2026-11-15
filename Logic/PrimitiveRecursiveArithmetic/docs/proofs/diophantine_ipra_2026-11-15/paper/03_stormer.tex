@@ -1,0 +1,356 @@
+\section{St\o rmer's theorem: a complete primitive recursive proof}
+\label{sec:stormer}
+
+This section proves the full finiteness-and-enumeration conclusion for consecutive
+smooth integers.  The original St\o rmer method, described in the introduction to
+Lehmer's paper~\cite{Lehmer1964}, uses coefficients whose prime exponents belong to
+$\{0,1,2\}$.  Keeping the exponent $2$, rather than insisting on squarefree
+coefficients, is decisive: it makes every prime in the Pell solution's second
+coordinate divide the coefficient.  We give the elementary argument and a very
+coarse explicit bound on the requisite fundamental solutions.  The bound is chosen
+for a transparent proof in finite arithmetic, not for efficient numerical work.
+
+\subsection{Statement and conventions}
+
+Let $S=\{p_1,\ldots,p_k\}$ be a finite set of distinct primes.  A positive integer
+is \emph{$S$-smooth} if all its prime factors belong to $S$; thus $1$ is smooth.
+By convention $0$ is not smooth.
+Put $R=\prod_{p\in S}p$, with the empty product equal to $1$, and define
+\begin{equation}\label{eq:stormer-B}
+ B(D)=(2D+2)^{\,2(2D+1)^3+2}\qquad(D\ge1).
+\end{equation}
+All exponents in this formula are natural-number exponents.
+
+\begin{theorem}[Primitive recursive St\o rmer theorem]
+\label{thm:stormer-pr}
+There is a primitive recursive procedure which, from a finite list of distinct
+primes $S$, returns precisely all positive integers $n$ for which $n$ and $n+1$
+are both $S$-smooth.  Its output has at most $3^k-2^k$ entries.  Every output
+satisfies
+\[
+             2n+1<B(R^2).
+\]
+If $2\notin S$, the output is empty.
+\end{theorem}
+
+We will explicitly prove every ingredient needed for this statement.  Square-root
+notation in the proof is shorthand for exact arithmetic with pairs
+$a+b\sqrt D$.  For nonsquare natural $D$, the sign of such a pair with rational
+coefficients is decided by the signs of $a,b$ and a comparison of $a^2$ with
+$Db^2$.  Alternatively, all occurrences of $\lfloor\sqrt m\rfloor$ are the
+bounded-search function
+\[
+ \operatorname{isqrt}(m)=\max\{r\le m:r^2\le m\}.
+\]
+There is no real-number oracle or appeal to completeness.
+
+\subsection{A bounded Pell construction}
+
+\begin{lemma}[Finite approximation of a quadratic radical]
+\label{lem:stormer-dirichlet}
+For nonsquare $D\ge2$ and natural $N\ge1$, bounded search constructs positive
+integers $p,q$, with $1\le q\le N$, such that
+\[
+                 |p-q\sqrt D|<1/N.
+\]
+\end{lemma}
+
+\begin{proof}
+For $0\le h\le N$ put
+\[
+ a_h=\operatorname{isqrt}(Dh^2),\qquad
+ b_h=\operatorname{isqrt}(DN^2h^2)-Na_h.
+\]
+These integers satisfy
+\[
+ a_h\le h\sqrt D<a_h+1,
+ \qquad
+ b_h\le N(h\sqrt D-a_h)<b_h+1,
+\]
+so $0\le b_h<N$.  Among $N+1$ entries taking $N$ possible values, bounded
+search finds $i<j\le N$ with $b_i=b_j$.  Set $q=j-i$ and $p=a_j-a_i$.
+The difference of the two fractional parts has absolute value less than $1/N$,
+which gives the required approximation.  Since $\sqrt D>1$ and $q\ge1$, the
+integer $p$ is positive.  Finite pigeonhole here is the elementary counting fact
+for bounded lists, proved by induction on the number of boxes.
+\end{proof}
+
+\begin{lemma}[An explicit bounded Pell solution]
+\label{lem:stormer-pell-bound}
+If $D\ge2$ is nonsquare, then bounded search finds positive integers $x,y$ such
+that
+\[
+ x^2-Dy^2=1,
+ \qquad x<B(D),\quad y<B(D).
+\]
+\end{lemma}
+
+\begin{proof}
+Write
+\[
+ C=2D+1,\quad L=C+1,\quad K=2C^3,\quad N_j=L^{j+1}
+                    \quad(0\le j\le K).
+\]
+Apply Lemma~\ref{lem:stormer-dirichlet} with $N=N_j$ and denote its output by
+$(p_j,q_j)$.  Put
+\[
+ t_j=p_j^2-Dq_j^2,\qquad U_j=p_j+q_j\sqrt D.
+\]
+The integer $t_j$ is nonzero: otherwise $D$ would be a square, by unique
+factorization applied to $p_j^2=Dq_j^2$.  Moreover
+\[
+ U_j<2Dq_j+1\le Cq_j,
+ \qquad
+ 0<|t_j|=|p_j-q_j\sqrt D|\,U_j<C.
+\]
+The displayed strict upper estimate for $U_j$ follows from $\sqrt D<D$ and
+$|p_j-q_j\sqrt D|<1/N_j\le1$.
+Because $|t_j|\ge1$, the same estimates give
+\[
+ \frac1{Cq_j}<\frac1{N_j},\qquad q_j>N_j/C.
+\]
+Consequently $q_{j+1}>N_{j+1}/C>N_j\ge q_j$.
+
+Color the $K+1$ pairs by
+\[
+       \bigl(t_j,\ p_j\bmod |t_j|,\ q_j\bmod |t_j|\bigr).
+\]
+There are at most
+$2\sum_{t=1}^{C-1}t^2\le2C^3=K$ colors.  A second finite pigeonhole search
+therefore gives $i<j$ with the same color.  Write their common nonzero norm as
+$t$.  Define
+\[
+ x=\frac{p_jp_i-Dq_jq_i}{t},\qquad
+ y=\frac{q_jp_i-p_jq_i}{t}.
+\]
+Both quotients are integers: the first numerator is congruent modulo $|t|$ to
+$p_i^2-Dq_i^2=t$, and the second is congruent to zero.  Multiplication in the
+quadratic ring gives
+\[
+ x+y\sqrt D=\frac{U_j}{U_i},\qquad x^2-Dy^2=1.
+\]
+Since $q_j>q_i$ and the norms agree, $p_j>p_i$, so $U_j>U_i>1$.
+For a norm-one number $V=U_j/U_i>1$,
+\[
+ x=\frac{V+V^{-1}}2>1,\qquad
+ y=\frac{V-V^{-1}}{2\sqrt D}>0.
+\]
+Thus $x,y$ are positive integers, and
+\[
+ x<V<U_j<CN_j\le C L^{K+1}<L^{K+2}=B(D),
+ \qquad y<V<B(D).
+\]
+All searches just specified have explicit natural-number bounds.
+\end{proof}
+
+\subsection{The structure of the positive Pell solutions}
+
+Let $(u,v)$ be the positive solution of $u^2-Dv^2=1$ with least $u$; it can be
+found by searching $1\le y<B(D)$, setting $x=\operatorname{isqrt}(Dy^2+1)$,
+and taking the first exact solution.  Minimizing $y$ is equivalent to minimizing
+$x$.  Set $\varepsilon=u+v\sqrt D$ and define integer pairs recursively by
+\begin{align*}
+ x_0&=1,&y_0&=0,\\
+ x_{m+1}&=ux_m+Dvy_m,&y_{m+1}&=vx_m+uy_m.
+\end{align*}
+Then $x_m+y_m\sqrt D=\varepsilon^m$, and each pair has norm one.
+
+\begin{lemma}[Bounded generation by the fundamental solution]
+\label{lem:stormer-pell-powers}
+Every positive solution $(x,y)$ of $x^2-Dy^2=1$ equals $(x_m,y_m)$ for a unique
+positive index $m\le x$.
+\end{lemma}
+
+\begin{proof}
+The coordinates of positive norm-one solutions are ordered together:
+$x'<x$ if and only if $y'<y$, and then
+$x'+y'\sqrt D<x+y\sqrt D$.  Since $u\ge2$, the recursion shows that
+$x_m\ge m+1$ and that $x_m$ is strictly increasing.  Bounded search therefore
+finds the largest $m\le x$ such that $x_m\le x$; necessarily $m<x$, and
+\[
+     \varepsilon^m\le x+y\sqrt D<\varepsilon^{m+1}.
+\]
+The quotient
+\[
+ \gamma=(x+y\sqrt D)(x_m-y_m\sqrt D)
+\]
+has integer coordinates, norm one, and $1\le\gamma<\varepsilon$.
+If $\gamma>1$, both its norm-one coordinates are positive, and its first
+coordinate is smaller than $u$, contrary to the definition of $(u,v)$.
+Indeed, a first coordinate at least $u$ would force its positive second
+coordinate to be at least $v$ by the norm equation, and hence force
+$\gamma\geq\varepsilon$.
+The decidable alternative is $\gamma=1$, yielding $(x,y)=(x_m,y_m)$.
+The strict increase of $x_m$ proves uniqueness.  The index cannot be zero
+because $y>0$.
+\end{proof}
+
+\subsection{St\o rmer's key divisibility lemma}
+
+\begin{lemma}[Smooth second coordinate forces the fundamental solution]
+\label{lem:stormer-key}
+Suppose $x^2-Dy^2=1$ with $x,y>0$ and every prime divisor of $y$ divides $D$.
+Then $(x,y)$ is the fundamental positive Pell solution for $D$.
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:stormer-pell-powers}, write $(x,y)=(x_m,y_m)$.
+We show $m=1$.  Suppose $m>1$ and choose a prime $\ell\mid m$, by bounded
+trial division.  The binomial expansion of
+$(x_\ell+y_\ell\sqrt D)^{m/\ell}$ shows that $y_\ell\mid y_m$.
+Another binomial expansion gives $y_\ell=vC_\ell$, where
+\begin{equation}\label{eq:stormer-binomial}
+ C_\ell=\sum_{j=0}^{\lfloor(\ell-1)/2\rfloor}
+  {\ell\choose 2j+1}u^{\ell-2j-1}v^{2j}D^j.
+\end{equation}
+Thus every prime dividing $C_\ell$ divides $D$.
+The Pell identity gives $\gcd(u,D)=1$.
+For any prime $r\mid C_\ell$, reduction of
+\eqref{eq:stormer-binomial} modulo $r\mid D$ gives
+\[
+                   0\equiv\ell u^{\ell-1}\pmod r.
+\]
+Therefore $r=\ell$.  Since $C_\ell>1$, unique factorization yields
+$C_\ell=\ell^e$ for some $e\ge1$ and also $\ell\mid D$.
+We now examine the three decidable cases.
+
+If $\ell=2$, then $C_2=2u$.  As $u>1$, a prime divisor of $u$ divides $C_2$
+and hence $D$, contradicting $\gcd(u,D)=1$.
+
+If $\ell=3$, the Pell identity reduces the expression to
+\[
+ C_3=3u^2+Dv^2=4u^2-1=(2u-1)(2u+1).
+\]
+Both factors exceed one, both are odd, and their greatest common divisor is one
+because their difference is two.  They therefore cannot both be powers of
+three, contradicting $C_3=3^e$.
+
+Finally let $\ell\ge5$.  In \eqref{eq:stormer-binomial}, every term after the
+first is divisible by $\ell^2$.  Indeed, the $j=1$ term contains both $D$ and
+${\ell\choose3}$, each divisible by $\ell$; every term with $j\ge2$ contains
+$D^2$.  Thus
+\[
+              C_\ell\equiv\ell u^{\ell-1}\pmod{\ell^2}.
+\]
+Since $\ell\mid D$ and $\gcd(u,D)=1$, the right-hand side is not divisible
+by $\ell^2$.  Hence $e=1$ and $C_\ell=\ell$.
+But the first, positive summand of \eqref{eq:stormer-binomial} is
+$\ell u^{\ell-1}>\ell$, a contradiction.  Each possible prime divisor of
+$m>1$ has been excluded, so $m=1$.
+\end{proof}
+
+Notice the special treatment of $\ell=3$.  A claim that the same valuation-one
+argument works for every odd prime would be false: the binomial coefficient
+${3\choose3}$ contributes no extra factor of three.
+
+\subsection{Reduction of smooth neighbors and the finite algorithm}
+
+\begin{proof}[Proof of Theorem~\ref{thm:stormer-pr}]
+If $2\notin S$, every $S$-smooth number is odd, so there are no consecutive
+pairs.  Assume henceforth that $2\in S$ and that $n,n+1$ are $S$-smooth.
+Factor
+\[
+             (2n+1)^2-1=4n(n+1)=\prod_{i=1}^k p_i^{a_i}.
+\]
+Define
+\[
+ e_i=\begin{cases}
+ 0,&a_i=0,\\
+ 1,&a_i\text{ is odd},\\
+ 2,&a_i>0\text{ is even},
+ \end{cases}
+ \qquad
+ D=\prod_i p_i^{e_i},\qquad
+ y=\prod_i p_i^{(a_i-e_i)/2}.
+\]
+Each exponent is a nonnegative integer.  We have
+\[
+ (2n+1)^2-Dy^2=1,
+\]
+and every prime dividing $y$ divides $D$, since positive $a_i$ always gives
+positive $e_i$.  The coefficient $D$ is nonsquare: if $D=d^2$, then
+\[
+ (2n+1-dy)(2n+1+dy)=1
+\]
+would force $dy=0$, impossible.  Lemma~\ref{lem:stormer-key} now says that
+$(2n+1,y)$ is the fundamental solution for $D$.
+
+There are exactly $3^k$ possible coefficient vectors $(e_1,\ldots,e_k)$.
+Exactly $2^k$ give squares, namely those with every $e_i\in\{0,2\}$.
+A nonsquare coefficient has only one fundamental solution and therefore yields
+at most one neighbor pair.  This proves the bound $3^k-2^k$.
+Also $D\le R^2$ and $B$ is increasing, so
+\[
+                 2n+1<B(D)\le B(R^2).
+\]
+
+Here is a complete algorithm.  Enumerate all vectors in $\{0,1,2\}^k$ and
+form their coefficients $D$.  Discard squares.  For each remaining $D$, search
+$1\le y<B(D)$ until $x=\operatorname{isqrt}(Dy^2+1)$ satisfies
+$x^2-Dy^2=1$.  The preceding bounded Pell lemma guarantees success.
+If $x$ is odd, set $n=(x-1)/2$ and retain it precisely when both $n$ and $n+1$
+are positive and $S$-smooth.  Remove duplicate entries and sort.
+The construction just proved shows that every required pair occurs;
+the final tests show that every returned pair is correct.  The loops are bounded
+by explicitly primitive recursive functions.  No stopping test for an infinite
+search is being assumed.
+\end{proof}
+
+For $S=\{2,3,5\}$ this returns
+\[
+ (1,2),\ (2,3),\ (3,4),\ (4,5),\ (5,6),\ (8,9),\ (9,10),
+ \ (15,16),\ (24,25),\ (80,81).
+\]
+The accompanying program can compute such small examples while retaining the
+proved bound as a totality bound.  The large value of $B(D)$ affects the worst
+case bound, not the early return when the fundamental solution is small.
+
+\subsection{Why the proof is available in iPRA}
+
+The mathematical content above reduces to a uniform assertion about finite
+codes.  Trial division, primality testing, integer square root, signed integer
+arithmetic, exponentiation, binomial coefficients, finite list coding, and
+bounded minimization are primitive recursive.  A $D$-smoothness assertion is a
+bounded divisibility test.  Algebraic comparisons in $\mathbb Q(\sqrt D)$ are
+decidable by integer squaring and sign cases.  The two pigeonhole applications
+are finite counting identities.  The power-sequence identities follow by
+quantifier-free induction on the index; binomial divisibility follows by the
+usual integer product identities and Euclid's lemma.  The apparent universal
+properties of lists are bounded predicates and can be replaced by their
+primitive recursive Boolean characteristic functions.
+
+For complete proof-theoretic precision, the iPRA assertion can be stated as a
+schema for fixed choices of these primitive recursive symbols, with free
+natural-number inputs coding $S$ and $n$:
+\[
+ \operatorname{PrimeList}(S)\ \Longrightarrow\
+ \Bigl[\bigl(\operatorname{Smooth}(S,n)\wedge
+       \operatorname{Smooth}(S,n+1)\bigr)
+ \ \Longleftrightarrow\ n\in\operatorname{Neighbors}(S)\Bigr].
+\]
+The membership predicate on the right is bounded in the explicitly constructed
+output list.  The auxiliary cardinality and height statements are likewise
+finite arithmetic statements.  A fully verified implementation must still
+supply the iPRA derivations of the lemmas; an ordinary Lean proof over natural
+numbers alone is not automatically such a derivation.
+
+\subsection{Lean implementation path}
+
+An implementation can be divided into the following independently checkable
+parts.  First encode ordered quadratic pairs and prove the integer sign test,
+ring identities, norm identities, and the formulas used by the quotient
+construction.  Next formalize the two bounded pigeonhole searches and prove the
+output specification of the Pell constructor.  Then prove generation by the
+fundamental solution, the displayed binomial formula, and the three prime-index
+cases.  Finally define the coefficient enumeration and smoothness filters,
+and prove soundness, completeness, the cardinal bound, and the explicit height
+bound.  Every unbounded-looking existential in this route has already been
+replaced above by a stated finite search bound.
+
+For an iPRA certificate rather than only a metatheoretic Lean proof, use the
+repository's primitive recursive syntax and derivation infrastructure to
+represent those definitions, and translate the displayed bounded induction
+invariants into characteristic-function equations.  The substantive remaining
+formalization work is the checked translation and arithmetic infrastructure;
+there is no omitted Diophantine estimate or primitive-divisor theorem in this
+St\o rmer argument.

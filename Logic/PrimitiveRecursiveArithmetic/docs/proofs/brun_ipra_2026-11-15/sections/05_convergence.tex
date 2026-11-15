@@ -1,0 +1,161 @@
+\section{The dyadic count and the explicit Cauchy modulus}
+\label{sec:convergence}
+
+\subsection{A uniform numerical bound}
+
+\begin{lemma}
+\label{lem:polynomial}
+For every \(t\ge0\), \((t+1)^2\le2^{2t}\).
+\end{lemma}
+
+\begin{proof}
+At \(t=0\) both sides are \(1\).
+Since \(t+2\le2(t+1)\), squaring and using the induction hypothesis gives
+\[
+ (t+2)^2\le4(t+1)^2\le4\cdot2^{2t}=2^{2(t+1)}.
+\]
+This is induction on a quantifier-free numerical inequality.
+\end{proof}
+
+\begin{proposition}[Explicit dyadic counting theorem]
+\label{prop:dyadic-count}
+For every \(k\ge0\),
+\[
+ k^2T(2^k)\le1400\,2^k\le2048\,2^k.
+\]
+\end{proposition}
+
+\begin{proof}
+Put
+\[
+ X=2^k,\qquad t=k\mathbin{\mathrm{div}}10,\qquad z=2^{2t}.
+\]
+Division with remainder gives
+\[
+ 10t\le k<10(t+1),\qquad
+ k^2\le100(t+1)^2.
+\]
+Lemma~\ref{lem:harmonic-dyadic} shows that the main term in
+Proposition~\ref{prop:finite-sieve} satisfies
+\[
+ \frac{k^2X}{G(z)}
+ \le\frac{12k^2X}{(t+2)^2}
+ \le1200\,\frac{(t+1)^2}{(t+2)^2}\,X
+ \le1200X.
+\]
+For the error, Lemma~\ref{lem:polynomial} gives
+\[
+ k^2z^4\le100(t+1)^2\,2^{8t}
+          \le100\,2^{10t}
+          \le100\,2^k=100X.
+\]
+Since \(z\ge1\), also \(z\le z^4\), and so \(k^2z\le100X\).
+Multiply \eqref{eq:finite-sieve} by \(k^2\) and add the three bounds:
+\[
+ k^2T(2^k)
+ \le k^2z+\frac{k^2X}{G(z)}+k^2z^4
+ \le(100+1200+100)X=1400X.
+\]
+Finally \(1400\le2048=2^{11}\).
+This proof includes \(t=0\), and even \(k=0\); it never divides by \(k\).
+For \(k\ge1\), division by \(k^2\) yields the familiar form
+\[
+ T(2^k)\le2048\,\frac{2^k}{k^2}.
+\]
+\end{proof}
+
+\subsection{A finite tail estimate}
+
+Write \(C=2048\). For a dyadic shell indexed by \(j\ge1\), put
+\[
+ V_j=\sum_{\substack{2^j\le p<2^{j+1}\\\Twin(p)}}
+              \left(\frac1p+\frac1{p+2}\right).
+\]
+Each summand is at most \(2/p\le2/2^j\).
+The number of summands is at most \(T(2^{j+1})\). The inclusive endpoint
+in \(T\) only enlarges this bound. Proposition~\ref{prop:dyadic-count}
+therefore gives
+\begin{equation}
+ V_j\le\frac2{2^j}T(2^{j+1})
+       \le\frac{4C}{(j+1)^2}.
+ \label{eq:shell}
+\end{equation}
+
+For \(j\ge1\), all denominators below are positive, and
+\begin{equation}
+ \frac1{(j+1)^2}\le\frac1{j(j+1)}
+  =\frac1j-\frac1{j+1}.
+ \label{eq:telescope-step}
+\end{equation}
+Summing only from \(j=m\) to a finite \(K\ge m\) gives
+\begin{equation}
+ \sum_{j=m}^{K}\frac1{(j+1)^2}
+ \le\frac1m-\frac1{K+1}\le\frac1m.
+ \label{eq:telescope}
+\end{equation}
+This uses no assertion about the convergence of an auxiliary infinite
+series.
+
+\begin{proposition}[Finite reciprocal tail]
+\label{prop:tail}
+For \(m\ge1\) and \(L\ge0\),
+\[
+ \sum_{\substack{2^m\le p<L\\\Twin(p)}}
+          \left(\frac1p+\frac1{p+2}\right)
+ \le\frac{4C}{m}=\frac{8192}{m}.
+\]
+\end{proposition}
+
+\begin{proof}
+If \(L\le2^m\), the sum is empty. Otherwise choose, for instance,
+\(K=m+L\). The elementary inequality \(L<2^{K+1}\) follows from
+\(u<2^{u+1}\), proved by quantifier-free induction.
+Every integer \(p\) with \(2^m\le p<L\) lies in a unique shell
+\([2^j,2^{j+1})\) with \(m\le j\le K\).
+To find its index, use the bounded search for the first
+\(j\in\{m,\ldots,K\}\) with \(p<2^{j+1}\); the previous endpoint,
+or \(p\ge2^m\) in the first case, gives \(2^j\le p\).
+Thus the original sum is at most \(\sum_{j=m}^K V_j\).
+Equations~\eqref{eq:shell} and \eqref{eq:telescope} give the claimed bound.
+\end{proof}
+
+\subsection{Convergence with a primitive recursive modulus}
+
+Fix \(q\ge0\), and set
+\[
+ m=2^{q+13},\qquad N(q)=2^m.
+\]
+Then \(m\ge1\) and
+\begin{equation}
+ \frac{8192}{m}
+ =\frac{2^{13}}{2^{q+13}}
+ =2^{-q}.
+ \label{eq:modulus-arithmetic}
+\end{equation}
+Let \(M,L\ge N(q)\). By decidable comparison, assume first that \(L\le M\).
+Nonnegativity of the summands and Proposition~\ref{prop:tail} give
+\[
+ 0\le B(M)-B(L)
+ =\sum_{\substack{L\le p<M\\\Twin(p)}}
+       \left(\frac1p+\frac1{p+2}\right)
+ \le\sum_{\substack{2^m\le p<M\\\Twin(p)}}
+       \left(\frac1p+\frac1{p+2}\right)
+ \le2^{-q}.
+\]
+If \(M<L\), apply the same calculation with the names interchanged.
+This proves Theorem~\ref{thm:main}(iii).
+
+For the precise integer version, take \(N(q)\le U\le V\), use
+\eqref{eq:tail-code}, and multiply the tail inequality by
+\(2^qD(V)>0\). The result is exactly \eqref{eq:ipra-target}.
+This completes the finite mathematical argument.
+
+\begin{remark}[Effectivity and numerical usefulness]
+The formula \(N(q)=2^{2^{q+13}}\) is a composition of primitive recursive
+exponentiation functions. Composing it with bounded primality testing,
+factorial, and finite summation remains primitive recursive.
+Its size is immaterial to primitive recursiveness, although it makes this
+particular approximation algorithm impractical.
+The theorem supplies a certified convergence rate, not a competitive
+method for computing many digits of Brun's constant.
+\end{remark}

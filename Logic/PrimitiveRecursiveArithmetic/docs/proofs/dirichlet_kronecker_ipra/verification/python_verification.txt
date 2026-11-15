@@ -1,0 +1,71 @@
+EXECUTED VERIFICATION OF approximation.py
+========================================
+
+Command:
+  python3 test_approximation.py --report verification.json
+
+Result: 9 test methods passed; 0 failures; 0 errors.
+Observed runtime in this environment: 0.761 seconds.
+
+All numerical checks used Python integers and fractions.Fraction.
+No floating-point or trigonometric approximation was used in the tests.
+
+Coverage actually executed:
+
+* 7,548 sharp scalar rational inputs, including negative rationals and
+  N=1,...,12; plus 4 explicit last-to-first circular-wrap cases.
+* 30 scalar real-name error-budget transfers on exact rational names.
+* 144 simultaneous rational vectors in dimensions 1,...,4 with
+  N in {1,2,3,4,5,8,12,17,24}; plus 20 simultaneous square-root vectors.
+  These checked q<=N, the strict rational power bound N*error^d<1,
+  the R/S precision budget, and the exact auxiliary grid-count surplus.
+* 24 large unreduced-denominator outputs for rational names. An explicit
+  check at alpha=1/2 and B=17 confirms that the displayed denominator grows
+  while reduction returns denominator 2. Thus the tests do not conflate
+  denominator padding with distinct reduced approximants.
+* 8 full rational compatibility checks: 4 passing inputs and 4 failing
+  inputs. Each reported obstruction was checked directly to annihilate
+  the generator rows while failing to annihilate the target.
+* 12 interval certificates for compatible rational data, 1 deliberately
+  failing interval certificate, and 12 rational Kronecker witnesses.
+* 345 finite separation inequalities for sqrt(2), using the proposed
+  modulus separation(H)=4H, for H in {1,2,5,16,64,257}; 6 associated
+  interval certificates; and 60 positive Kronecker witnesses above B,
+  for B in {0,1,7,25}, s in {2,3,5,9,16}, and three rational targets.
+  The returned approximation bounds were independently checked with
+  more accurate exact rational square-root intervals.
+* 257 precision bounds, 56 exact square-root-name enclosures,
+  1,539 nearest-integer cases including negative half-integer ties,
+  and 12 checks that bounded box enumeration has exactly the promised
+  points with no duplicates.
+
+Manual correspondence audit:
+
+* The circular-gap sign and wrap formulas agree with the proof.
+* nearest_integer is used only on rational samples; its tie convention
+  does not decide the sign or nearest integer of an arbitrary real.
+* simultaneous_parameters uses the arbitrary-N construction and records
+  the exact counting inequality. The search is a justified shorter
+  enumeration of q=1,...,N.
+* unbounded_denominator multiplies both numerator and denominator and
+  implements the unconditional unreduced-denominator theorem.
+* The Kronecker routines use the agreed N=32*C*(2*r+1)^d bound and
+  preserve the 3/(4s) acceptance and 7/(8s) output-error budgets.
+* rational_compatibility checks a complete finite residue system modulo
+  a common denominator. Its returned C=D is a valid sufficient modulus
+  on compatible rational inputs.
+
+No mathematical correctness bug was found in the inspected implementation
+for inputs satisfying its stated hypotheses. No change to approximation.py
+was made during this independent audit.
+
+Scope and limits:
+
+These are executed reference-implementation checks, not a formal proof.
+The tests do not exhaust the large theoretical Kronecker search boxes;
+successful witnesses are found near the beginning of their enumerations.
+The Kronecker search functions assume their stated compatibility/separation
+hypotheses; they do not themselves prove these hypotheses for arbitrary
+callable real names. Finite checks of the sqrt(2) modulus are evidence for
+the implementation; the universal separation proof belongs to the paper.
+No Lean compilation or object-iPRA derivation was executed.

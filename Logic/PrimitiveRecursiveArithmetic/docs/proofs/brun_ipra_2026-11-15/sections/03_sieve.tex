@@ -1,0 +1,178 @@
+\section{A finite quadratic sieve with explicit coefficients}
+\label{sec:sieve}
+
+Fix \(z\ge1\), and put
+\[
+ \sfD_z=\{d:1\le d\le z,\ d\text{ squarefree}\}.
+\]
+This set contains \(1\) and is closed under taking positive divisors.
+For any squarefree \(d\), define the positive rationals
+\begin{equation}
+ g(d)=\frac{\rho(d)}d,\qquad
+ h(d)=\prod_{p\mid d}\frac{\rho(p)}{p-\rho(p)}.
+ \label{eq:gh}
+\end{equation}
+The prime denominators are positive: \(2-\rho(2)=1\), and
+\(p-\rho(p)=p-2\ge1\) for odd primes.
+By the empty-product convention \(g(1)=h(1)=1\).
+Set
+\[
+ G=G(z)=\sum_{r\in\sfD_z}h(r)\ge1,\qquad
+ W_d=\sum_{\substack{r\in\sfD_z\\d\mid r}}h(r).
+\]
+For \(d\in\sfD_z\), choose
+\begin{equation}
+ \boxed{\qquad
+ \lambda_d=\frac{\mu(d)W_d}{g(d)G}.
+ \qquad}
+ \label{eq:weights}
+\end{equation}
+These are explicit finite rational expressions. There is no minimization
+over real vectors in their definition.
+
+\begin{lemma}[Normalization and coefficient bound]
+\label{lem:weights}
+The coefficients satisfy
+\begin{equation}
+ \lambda_1=1,\qquad
+ |\lambda_d|g(d)=\frac{W_d}G\le1,\qquad
+ |\lambda_d|\rho(d)\le d.
+ \label{eq:coefficient-bound}
+\end{equation}
+For every \(r\in\sfD_z\),
+\begin{equation}
+ \sum_{\substack{d\in\sfD_z\\r\mid d}}\lambda_dg(d)
+   =\frac{\mu(r)h(r)}G.
+ \label{eq:transform}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The normalization follows from \(W_1=G\).
+Since \(d\) is squarefree, \(|\mu(d)|=1\), and \(0<W_d\le G\);
+this proves the bounds. For the transform, expand \(W_d\) and change the
+order of two finite sums:
+\begin{align*}
+ \sum_{\substack{d\in\sfD_z\\r\mid d}}\lambda_dg(d)
+ &=\frac1G
+   \sum_{\substack{v\in\sfD_z\\r\mid v}}
+          h(v)\sum_{r\mid d\mid v}\mu(d)\\
+ &=\frac{\mu(r)h(r)}G.
+\end{align*}
+The last equality is Lemma~\ref{lem:mobius}. All divisors occurring in the
+inner sum belong to \(\sfD_z\), because \(v\le z\).
+\end{proof}
+
+\begin{lemma}[Quadratic identity]
+\label{lem:quadratic}
+The coefficients in \eqref{eq:weights} satisfy
+\begin{equation}
+ Q:=\sum_{d,e\in\sfD_z}\lambda_d\lambda_e
+             g(\lcm(d,e))=\frac1{G(z)}.
+ \label{eq:quadratic}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For a prime \(p\), the definition of \(h\) gives
+\[
+ 1+\frac1{h(p)}=\frac1{g(p)}.
+\]
+Expanding a finite product over the primes dividing a squarefree integer
+\(v\) yields
+\[
+ \frac1{g(v)}
+   =\prod_{p\mid v}\left(1+\frac1{h(p)}\right)
+   =\sum_{r\mid v}\frac1{h(r)}.
+\]
+Multiplicativity on squarefree prime supports also gives
+\[
+ g(\lcm(d,e))=\frac{g(d)g(e)}{g(\gcd(d,e))}
+   =g(d)g(e)\sum_{r\mid\gcd(d,e)}\frac1{h(r)}.
+\]
+Insert this into \(Q\) and interchange finite sums:
+\begin{align*}
+ Q
+ &=\sum_{r\in\sfD_z}\frac1{h(r)}
+       \left(\sum_{\substack{d\in\sfD_z\\r\mid d}}
+                     \lambda_dg(d)\right)^2\\
+ &=\sum_{r\in\sfD_z}\frac1{h(r)}
+                 \left(\frac{\mu(r)h(r)}G\right)^2
+   =\frac1{G^2}\sum_{r\in\sfD_z}h(r)
+   =\frac1G.
+\end{align*}
+Here \(\mu(r)^2=1\) on \(\sfD_z\), and the transform is
+\eqref{eq:transform}. This is an equality of finite rational expressions.
+\end{proof}
+
+\subsection{The sieve majorant and its error}
+
+Let \(S(X,z)\) count integers \(1\le n\le X\) for which no prime at most
+\(z\) divides \(n(n+2)\). This is a bounded condition.
+For such an \(n\), the only member \(d\in\sfD_z\) dividing \(n(n+2)\)
+is \(1\): any \(d>1\) has a prime divisor at most \(d\le z\).
+Thus the following pointwise inequality holds for every \(n\):
+\begin{equation}
+ \mathbf 1_{\{n\text{ survives}\}}
+ \le
+ \left(\sum_{\substack{d\in\sfD_z\\d\mid n(n+2)}}\lambda_d\right)^2.
+ \label{eq:majorant}
+\end{equation}
+If \(n\) survives, the right side is \(\lambda_1^2=1\); otherwise the
+left side is \(0\) and a rational square is nonnegative.
+
+Sum over \(1\le n\le X\), expand the square, and use the equivalence
+\[
+ d\mid n(n+2)\ \wedge\ e\mid n(n+2)
+ \quad\Longleftrightarrow\quad
+ \lcm(d,e)\mid n(n+2).
+\]
+We obtain
+\[
+ S(X,z)\le
+ \sum_{d,e\in\sfD_z}\lambda_d\lambda_e A_{\lcm(d,e)}(X).
+\]
+By Lemma~\ref{lem:count-error}, write
+\[
+ A_v(X)=Xg(v)+E_v,\qquad |E_v|\le\rho(v)
+\]
+for the squarefree numbers \(v=\lcm(d,e)\).
+There is no restriction \(v\le z\) here; indeed \(v\le z^2\).
+Lemma~\ref{lem:quadratic} gives the main term \(X/G(z)\).
+For the error, \eqref{eq:rho-lcm} and
+\eqref{eq:coefficient-bound} give
+\begin{align}
+ \left|\sum_{d,e\in\sfD_z}\lambda_d\lambda_e E_{\lcm(d,e)}\right|
+ &\le
+ \sum_{d,e\in\sfD_z}|\lambda_d||\lambda_e|
+                   \rho(d)\rho(e)\notag\\
+ &=\left(\sum_{d\in\sfD_z}|\lambda_d|\rho(d)\right)^2
+ \le\left(\sum_{d=1}^z d\right)^2
+ \le z^4.
+ \label{eq:sieve-error}
+\end{align}
+The final inequality uses \(z\) terms, each at most \(z\).
+Consequently,
+\begin{equation}
+ S(X,z)\le\frac{X}{G(z)}+z^4.
+ \label{eq:sifted}
+\end{equation}
+
+\begin{proposition}[Finite twin-prime bound]
+\label{prop:finite-sieve}
+For every \(X\ge0\) and \(z\ge1\),
+\begin{equation}
+ \boxed{\qquad
+ T(X)\le z+\frac{X}{G(z)}+z^4.
+ \qquad}
+ \label{eq:finite-sieve}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+At most \(z\) pairs counted by \(T(X)\) have their smaller prime at most
+\(z\). Every remaining pair has both primes greater than \(z\).
+No prime at most \(z\) can divide either of those primes, and therefore
+none divides their product. Its smaller member is counted by \(S(X,z)\).
+Thus \(T(X)\le z+S(X,z)\), and \eqref{eq:sifted} proves the result.
+\end{proof}

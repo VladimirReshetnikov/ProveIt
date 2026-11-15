@@ -1,0 +1,892 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=blue!55!black,
+  urlcolor=blue!60!black,
+  pdftitle={The Goldbach--Euler Theorem in Intuitionistic Primitive Recursive Arithmetic},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov}
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  frame=single,
+  breaklines=true,
+  backgroundcolor=\color{black!2},
+  keywordstyle=\color{blue!55!black},
+  commentstyle=\color{green!40!black}
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{construction}[theorem]{Construction}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\PP}{\mathsf{PP}}
+\newcommand{\RF}{\mathsf{RF}}
+\newcommand{\Can}{\mathsf{Can}}
+\newcommand{\GE}{\mathsf{GE}}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+
+\title{\textbf{The Goldbach--Euler Theorem in Intuitionistic Primitive Recursive Arithmetic}\\[4pt]
+\large A finite rational proof with an explicit primitive-recursive modulus and a Lean formalization roadmap}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The Goldbach--Euler theorem says that the reciprocals of one less than the
+\emph{distinct} perfect powers sum to one:
+\[
+  \frac13+\frac17+\frac18+\frac1{15}+\frac1{24}+\frac1{26}+\cdots=1.
+\]
+The usual short proof expands each summand as a geometric series, changes the
+order of two infinite sums, and telescopes.  Those analytic operations are not
+appropriate as primitive steps inside intuitionistic primitive recursive
+arithmetic (iPRA).  This report replaces them by a wholly finite argument over
+nonnegative rational numbers.  If
+\[
+ S_N:=\sum_{\substack{2\le p\le N\\ p\text{ a perfect power}}}\frac1{p-1},
+\]
+where every value $p$ is counted once, then iPRA proves the effective estimate
+\[
+  0\le 1-S_N\le 2^{-k}
+  \qquad\text{whenever}\qquad
+  N\ge B(k):=2^{2(k+1)^2}.
+\]
+Thus the series converges constructively to one with an explicit
+primitive-recursive modulus.  The proof uses only bounded perfect-power tests,
+finite prime factorization, finite geometric identities, finite sums and
+products, and quantifier-free induction.  A staged Lean plan is given for both
+a Mathlib-level proof and an internal derivation in the current
+\texttt{ConciseIPRA} development.  The archive also includes exact finite
+Python checks; these are reproducibility aids and are not presented as formal
+verification.
+\end{abstract}
+
+\tableofcontents
+
+\section{The theorem and its constructive reading}
+
+The historical theorem is commonly written
+\begin{equation}\label{eq:classical-ge}
+  \sum_{p}\frac1{p-1}=1,
+\end{equation}
+where $p$ ranges over perfect powers larger than one, with repetitions omitted.
+Thus $16=2^4=4^2$ contributes the single term $1/15$.  Euler published the
+identity in 1737 and attributed it to Goldbach; the historical proof manipulated
+the divergent harmonic series.  Modern expositions replace that manipulation
+by an absolutely convergent geometric-series argument
+\cite{viader2006,zeilberger2006}.
+
+For weak constructive arithmetic, the right statement is not an assertion
+about a completed set of real numbers.  It is a uniform family of rational
+inequalities.
+
+\begin{definition}[Perfect power]\label{def:pp}
+For $n\in\N$, let $\PP(n)$ mean
+\[
+  \exists a,e\le n\;
+  \bigl(2\le a\wedge 2\le e\wedge a^e=n\bigr).
+\]
+This is a bounded, hence decidable, predicate.  Define
+\[
+  S_N:=\sum_{n=2}^{N}\frac{\one_{\PP(n)}}{n-1}.
+\]
+The sum is indexed by the value $n$, so duplicate presentations are omitted by
+definition.
+\end{definition}
+
+\begin{theorem}[Effective Goldbach--Euler theorem]\label{thm:effective}
+Let
+\[
+  B(k):=2^{2(k+1)^2}.
+\]
+For all $k,N\in\N$,
+\[
+  B(k)\le N
+  \quad\Longrightarrow\quad
+  0\le 1-S_N\le 2^{-k}.
+\]
+Every function and relation in this assertion is primitive recursive, and the
+assertion is provable in iPRA.
+\end{theorem}
+
+The ordinary theorem follows immediately: the sequence $(S_N)$ has limit one,
+with $B$ as a dyadic modulus.  More importantly, \cref{thm:effective} itself is
+the internal constructive content.  It is stronger than a bare convergence
+claim because it computes a sufficient cutoff from the requested accuracy.
+
+\subsection{A quotient-free arithmetical formulation}
+
+No quotient type for rational numbers is required.  Define primitive-recursive
+natural numbers $A(N),D(N)$ by accumulating the finite sum.  Start with
+$A(1)=0$, $D(1)=1$.  On passing from $n$ to $n+1$, leave the pair unchanged if
+$\neg\PP(n+1)$; if $\PP(n+1)$, put
+\[
+  A(n+1)=nA(n)+D(n),\qquad D(n+1)=nD(n).
+\]
+Then $D(N)>0$ and $S_N=A(N)/D(N)$.  The conclusion of
+\cref{thm:effective} is equivalent to the natural-number formula
+\begin{equation}\label{eq:natural-formula}
+  A(N)\le D(N)
+  \quad\wedge\quad
+  (2^k-1)D(N)\le 2^k A(N).
+\end{equation}
+Both inequalities are expressed using addition and multiplication only.  This
+is the version to be represented by a closed formula of the ordinary
+\texttt{PRAAx} language in the Lean development.
+
+\section{Why the short analytic proof must be finitized}
+
+Let $R$ be the integers $r\ge2$ that are not themselves perfect powers.  The
+standard short proof observes that every integer $m\ge2$ has a unique
+representation $m=r^i$ with $r\in R$ and $i\ge1$, and computes
+\[
+\begin{aligned}
+ \sum_{r\in R}\sum_{s\ge2}\frac1{r^s-1}
+ &=\sum_{r\in R}\sum_{s\ge2}\sum_{i\ge1}r^{-si}\\
+ &=\sum_{r\in R}\sum_{i\ge1}\sum_{s\ge2}(r^i)^{-s}\\
+ &=\sum_{m\ge2}\frac1{m(m-1)}=1.
+\end{aligned}
+\]
+This is mathematically sound in ordinary analysis because every term is
+nonnegative.  It is nevertheless an inconvenient proof object for iPRA: it
+mentions completed infinite sums, invokes an infinite reindexing, and silently
+uses convergence theorems about rational or real sequences.
+
+The argument below keeps the same combinatorial insight but uses it only on
+finite rectangles.  The upper bound is proved by taking a sufficiently long
+\emph{finite} prefix of each geometric expansion and deriving a contradiction
+from a finite telescoping sum.  The lower bound embeds a finite telescoping
+rectangle into $S_{B(k)}$.  No limit theorem is used inside the arithmetic.
+
+\section{Canonical roots of integers}
+
+\begin{definition}[Root-free base]\label{def:rootfree}
+For $r\ge2$, write $\RF(r)$ if $r$ is not a perfect power.  A
+\emph{canonical representation} of $n\ge2$ is an equality
+\[
+  n=r^e
+\]
+with $\RF(r)$ and $e\ge1$.
+\end{definition}
+
+\begin{lemma}[Canonical root decomposition]\label{lem:canonical}
+Every $n\ge2$ has exactly one canonical representation $n=r^e$.
+Moreover, $r$ and $e$ are primitive-recursive functions of $n$.
+\end{lemma}
+
+\begin{proof}
+Write the finite prime factorization
+\[
+  n=\prod_{j<t}q_j^{\alpha_j},
+\]
+where the $q_j$ are distinct primes and every $\alpha_j>0$.  Let
+\[
+  e:=\gcd(\alpha_0,\ldots,\alpha_{t-1}),
+  \qquad
+  r:=\prod_{j<t}q_j^{\alpha_j/e}.
+\]
+Then $n=r^e$.  The exponents in the prime factorization of $r$ have greatest
+common divisor one.  Hence $r$ cannot equal $u^d$ with $d\ge2$, because then
+every prime exponent of $r$ would be divisible by $d$.  Thus $\RF(r)$.
+
+For uniqueness, suppose also $n=u^d$ with $\RF(u)$.  Write
+$u=\prod q_j^{\beta_j}$, inserting zero exponents if necessary.  Unique
+factorization gives $\alpha_j=d\beta_j$ for every $j$.  Since $u$ is root-free,
+the positive $\beta_j$ have gcd one; otherwise their common divisor would
+exhibit $u$ as a nontrivial power.  Consequently
+\[
+  d=\gcd_j\alpha_j=e,
+\]
+and then $\beta_j=\alpha_j/e$, so $u=r$.
+
+Everything in the construction is bounded.  Trial division computes the prime
+factorization; bounded valuation, finite gcd and finite product are primitive
+recursive.  Their correctness is proved by quantifier-free induction.  Thus
+this is not a use of nonconstructive factor selection.
+\end{proof}
+
+\begin{corollary}[Injectivity of canonical powering]\label{cor:injective}
+If $\RF(r)$, $\RF(u)$, $i,j\ge1$, and $r^i=u^j$, then $r=u$ and $i=j$.
+\end{corollary}
+
+\begin{proof}
+Both pairs are canonical representations of their common value, so apply
+\cref{lem:canonical}.
+\end{proof}
+
+\begin{corollary}[Canonical indexing of perfect powers]\label{cor:perfect-bij}
+The map $(r,s)\mapsto r^s$ is a bijection from pairs satisfying
+$\RF(r)$ and $s\ge2$ to distinct perfect-power values.
+\end{corollary}
+
+\section{Three finite rational identities}
+
+All divisions below are merely notation for nonnegative rational pairs.  Each
+identity can be verified after multiplying by a positive common denominator.
+
+\begin{lemma}[Finite denominator expansion]\label{lem:geom-den}
+For $r\ge2$, $s\ge1$ and $I\ge1$,
+\begin{equation}\label{eq:geom-den}
+  \frac1{r^s-1}
+  =\sum_{i=1}^{I}\frac1{r^{si}}
+   +\frac1{r^{sI}(r^s-1)}.
+\end{equation}
+In particular, when $s\ge2$ the remainder is at most $2^{-2I}$.
+\end{lemma}
+
+\begin{proof}
+Put $x=r^s$.  Multiplying the proposed identity by $x^I(x-1)$ reduces it to
+\[
+  x^I=(x-1)(x^{I-1}+\cdots+1)+1,
+\]
+the finite geometric identity.  If $r,s\ge2$, then $r^{sI}\ge2^{2I}$ and
+$r^s-1\ge1$.
+\end{proof}
+
+\begin{lemma}[Finite exponent expansion]\label{lem:geom-exp}
+For $m\ge2$ and $T\ge2$,
+\begin{equation}\label{eq:geom-exp}
+  \sum_{s=2}^{T}\frac1{m^s}
+  =\frac1{m(m-1)}-\frac1{m^T(m-1)}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Multiply by $m^T(m-1)$ and telescope, or apply the finite geometric identity
+to $m^{-1}$ and then clear denominators.
+\end{proof}
+
+\begin{lemma}[Finite telescoping]\label{lem:telescoping}
+For $M\ge2$,
+\begin{equation}\label{eq:telescoping}
+  \sum_{m=2}^{M}\frac1{m(m-1)}=1-\frac1M.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Use $1/[m(m-1)]=1/(m-1)-1/m$ and cancel adjacent terms in the finite sum.
+\end{proof}
+
+These lemmas are elementary enough to be proved in iPRA by induction on the
+finite upper bound.  No appeal to an infinite geometric series has occurred.
+
+\section{The uniform upper bound \texorpdfstring{$S_N\le1$}{S(N) <= 1}}
+
+This is the part of the proof where a careless presentation most easily
+reintroduces an infinite sum.  We therefore give the finite argument in full.
+
+For fixed $N$, define the finite canonical index set
+\[
+  C_N:=\set{(r,s):\RF(r),\ s\ge2,\ r^s\le N}.
+\]
+By \cref{cor:perfect-bij},
+\begin{equation}\label{eq:SN-canonical}
+  S_N=\sum_{(r,s)\in C_N}\frac1{r^s-1}.
+\end{equation}
+Also $|C_N|\le N$.
+
+\begin{proposition}[Finite upper bound]\label{prop:upper}
+For every $N$, one has $S_N\le1$.
+\end{proposition}
+
+\begin{proof}
+The claim is immediate when $C_N$ is empty.  Otherwise choose a positive common
+denominator $Q$ for the finite sum in \eqref{eq:SN-canonical}; for example,
+\[
+  Q:=\prod_{(r,s)\in C_N}(r^s-1).
+\]
+Write $S_N=P/Q$ with $P\in\N$.  Rational comparison is decidable.  We split on
+whether $P\le Q$.  The first case is the desired conclusion.  Suppose instead
+that $P>Q$.  Then
+\begin{equation}\label{eq:positive-gap}
+  S_N\ge1+\frac1Q.
+\end{equation}
+
+Set
+\[
+  I:=NQ+1
+\]
+and truncate every denominator expansion after $I$ terms:
+\[
+  A_{N,I}:=
+  \sum_{(r,s)\in C_N}\sum_{i=1}^{I}\frac1{r^{si}}.
+\]
+By \cref{lem:geom-den},
+\[
+\begin{aligned}
+  0\le S_N-A_{N,I}
+   &=\sum_{(r,s)\in C_N}
+     \frac1{r^{sI}(r^s-1)}\\
+   &\le \frac{|C_N|}{2^{2I}}
+    \le \frac{N}{2^{2I}}.
+\end{aligned}
+\]
+For every positive integer $x$, $x<2^{2(x+1)}$; this follows by elementary
+induction.  With $x=NQ$, we obtain
+\[
+  \frac{N}{2^{2I}}<\frac1Q.
+\]
+Combining this with \eqref{eq:positive-gap} gives
+\begin{equation}\label{eq:trunc-above-one}
+  A_{N,I}>1.
+\end{equation}
+
+We now derive the opposite inequality using only a finite regrouping.  For a
+fixed root-free $r$ occurring in $C_N$ and a fixed $1\le i\le I$, put
+$m=r^i$.  The contribution associated with this pair $(r,i)$ is
+\[
+  \sum_{\substack{s:(r,s)\in C_N}}\frac1{m^s}.
+\]
+Every such exponent satisfies $2\le s\le N$: indeed,
+$s\le2^s\le r^s\le N$.  Therefore, by the finite geometric identity,
+\begin{equation}\label{eq:group-weight}
+  \sum_{\substack{s:(r,s)\in C_N}}\frac1{m^s}
+  \le\sum_{s=2}^{N}\frac1{m^s}
+  <\frac1{m(m-1)}.
+\end{equation}
+The map $(r,i)\mapsto r^i$ is injective by
+\cref{cor:injective}.  Moreover $r\le N$, so $m\le N^I$.  Summing
+\eqref{eq:group-weight} over the finitely many pairs $(r,i)$ gives
+\[
+  A_{N,I}
+  <\sum_{m=2}^{N^I}\frac1{m(m-1)}
+  =1-\frac1{N^I}<1,
+\]
+where \cref{lem:telescoping} was used.  This contradicts
+\eqref{eq:trunc-above-one}.  Hence the decidable alternative $P>Q$ is
+impossible, and $P\le Q$.
+\end{proof}
+
+\begin{remark}[Why this reductio is intuitionistically harmless]
+The proof does not infer an arbitrary proposition from its double negation.
+It computes natural numbers $P,Q$ and performs a decidable comparison.  In the
+branch $P>Q$ it derives a contradiction.  Therefore the other branch $P\le Q$
+holds.  This is ordinary constructive case analysis on a decidable relation.
+\end{remark}
+
+\section{The lower bound and the explicit modulus}
+
+The lower estimate is simpler and exhibits the constructive content directly.
+Fix an accuracy parameter $k$ and define
+\begin{equation}\label{eq:R-T-B}
+  R:=2^{k+1},
+  \qquad
+  T:=2k+2,
+  \qquad
+  B:=R^T=2^{2(k+1)^2}.
+\end{equation}
+
+For every root-free $r\le R$, let $L_r$ be the largest $i\ge1$ such that
+$r^i\le R$.  This is a bounded maximum.  For each $2\le s\le T$,
+\cref{lem:geom-den} gives
+\[
+  \frac1{r^s-1}\ge\sum_{i=1}^{L_r}\frac1{r^{si}}.
+\]
+Also $r^s\le R^T=B$; by canonical-power injectivity these values are
+pairwise distinct, so every term on the left occurs once in $S_B$.  Summing
+and then reindexing the finite set by $m=r^i$ yields
+\begin{equation}\label{eq:rectangle-embed}
+\begin{aligned}
+  S_B
+  &\ge
+  \sum_{\substack{2\le r\le R\\\RF(r)}}
+  \sum_{s=2}^{T}\frac1{r^s-1}\\
+  &\ge
+  \sum_{\substack{2\le r\le R\\\RF(r)}}
+  \sum_{s=2}^{T}\sum_{i=1}^{L_r}\frac1{r^{si}}\\
+  &=\sum_{m=2}^{R}\sum_{s=2}^{T}\frac1{m^s}.
+\end{aligned}
+\end{equation}
+The last equality is exactly the canonical decomposition lemma: every
+$2\le m\le R$ has one and only one form $m=r^i$ with $\RF(r)$.
+
+Now apply \cref{lem:geom-exp,lem:telescoping}:
+\begin{align}
+ \sum_{m=2}^{R}\sum_{s=2}^{T}\frac1{m^s}
+ &=\sum_{m=2}^{R}
+   \left(\frac1{m(m-1)}-\frac1{m^T(m-1)}\right)\notag\\
+ &=1-\frac1R-E(R,T),\label{eq:lower-exact}
+\end{align}
+where
+\[
+  E(R,T):=\sum_{m=2}^{R}\frac1{m^T(m-1)}.
+\]
+Since $m\ge2$ and $m-1\ge1$,
+\begin{equation}\label{eq:E-bound}
+  E(R,T)\le\frac{R-1}{2^T}\le\frac{R}{2^T}.
+\end{equation}
+The choices \eqref{eq:R-T-B} make the two errors equal:
+\[
+  \frac1R=2^{-k-1},
+  \qquad
+  \frac{R}{2^T}=2^{k+1-(2k+2)}=2^{-k-1}.
+\]
+Thus \eqref{eq:rectangle-embed}--\eqref{eq:E-bound} imply
+\begin{equation}\label{eq:lower-final}
+  S_{B(k)}\ge1-2^{-k}.
+\end{equation}
+
+\begin{proof}[Proof of \cref{thm:effective}]
+Every summand in $S_N$ is nonnegative, so $S_N$ is monotone in $N$.
+By \cref{prop:upper}, $S_N\le1$.  If $N\ge B(k)$, monotonicity and
+\eqref{eq:lower-final} give
+\[
+  1-2^{-k}\le S_{B(k)}\le S_N\le1.
+\]
+This is exactly the asserted pair of inequalities.
+\end{proof}
+
+\section{Formalizability in iPRA}
+
+We now audit every ingredient against the intended foundational system.  Here
+iPRA means the ordinary first-order intuitionistic theory whose function
+symbols are all primitive-recursive functions and whose induction scheme is
+restricted to quantifier-free formulas.  This is the ordinary presentation
+implemented by \texttt{PRAAx} in the current ConciseIPRA Lean development
+\cite{proveit-pr}.
+
+\subsection{Primitive-recursive data}
+
+The following functions are primitive recursive.
+\begin{enumerate}[label=(\arabic*)]
+\item Bounded exponentiation, divisibility and equality tests.
+\item The Boolean characteristic function of $\PP(n)$, using bounded loops
+      over $2\le a,e\le n$.
+\item Bounded sums and products, hence the pair $A(N),D(N)$ representing
+      $S_N$.
+\item Trial-division factorization, or equivalently the bounded prime
+      valuation $v_p(n)$ for $p\le n$.
+\item Finite gcd of the nonzero valuations and the corresponding canonical
+      root and exponent.
+\item The bounded maxima $L_r$, finite canonical index sets, and cardinality
+      bounds used in the proof.
+\item The modulus $B(k)=2^{2(k+1)^2}$.
+\end{enumerate}
+All loops have explicit input bounds.  No unbounded minimization is present.
+
+\subsection{Induction strength}
+
+The finite geometric and telescoping identities are proved by induction on a
+natural upper bound, with all displayed equalities converted to polynomial
+identities after clearing positive denominators.  Correctness of trial division,
+valuation, finite gcd and finite products is likewise proved by
+quantifier-free induction.  More complicated statements are obtained by
+universal closure after the relevant quantifier-free inductions have been
+performed.
+
+In particular, the proof does not require induction over arbitrary formulas.
+The existential content of factorization is supplied by explicit
+primitive-recursive output functions, not by an abstract existence theorem.
+
+\subsection{Rational arithmetic is eliminable}
+
+A nonnegative rational is represented by a pair $(a,b)$ with $b>0$.
+Equality and order are cross-multiplication:
+\[
+  (a,b)=(c,d)\iff ad=bc,
+  \qquad
+  (a,b)\le(c,d)\iff ad\le cb.
+\]
+Addition and multiplication are primitive recursive on pairs.  Reduction by a
+gcd is optional and is not used.  Consequently every line of the proof expands
+to a statement about natural numbers.  Formula \eqref{eq:natural-formula} is
+the final quotient-free form.
+
+\subsection{Intuitionistic audit}
+
+The proof uses none of the following principles:
+\begin{itemize}
+\item law of excluded middle for arbitrary propositions;
+\item double-negation elimination for an undecidable statement;
+\item countable choice;
+\item completeness of the real numbers;
+\item monotone convergence or Tonelli/Fubini for infinite series;
+\item a permutation or regrouping of a completed infinite sum;
+\item Markov's principle.
+\end{itemize}
+Every case distinction is on a bounded Boolean predicate or a natural-number
+comparison.  Every reindexing is a bijection between explicitly finite sets.
+The only contradiction argument occurs inside a decidable comparison of two
+natural numbers representing a rational partial sum.
+
+\subsection{Relation to the current ConciseIPRA repository}
+
+At the inspected ProveIt revision, \texttt{PR.lean} defines primitive-recursive
+function symbols \texttt{PR}, terms \texttt{PTm}, and the ordinary iPRA axiom
+family \texttt{PRAAx}, including defining equations and quantifier-free
+induction.  The file \texttt{NativeBiInterpretation.lean} proves
+\texttt{pra\_iff\_native}: an ordinary iPRA derivation is equivalent to a
+derivation of its native reading in the scalar Eq/Q/D calculus
+\cite{proveit-native}.
+
+Therefore the internal Lean endpoint should have the form
+\begin{lstlisting}[language={}] 
+theorem goldbachEuler_iPRA :
+  ([] : List (Fm PTm 0)) \vdash[PRAAx] goldbachEulerFormula
+\end{lstlisting}
+followed by
+\begin{lstlisting}[language={}] 
+(pra_iff_native (Gamma := []) (phi := goldbachEulerFormula)).mp
+  goldbachEuler_iPRA
+\end{lstlisting}
+(up to the repository's Unicode notation).  No new bi-interpretation proof is
+needed.
+
+\section{Lean formalization roadmap}
+
+The archive contains two Lean-oriented files and a more detailed roadmap in
+\texttt{FORMALIZATION.md}.  They deliberately distinguish a proposed interface
+from completed verification.
+
+\subsection{Layer 1: Mathlib theorem}
+
+The first layer should define the bounded perfect-power test and a rational
+partial sum indexed by values.  The principal theorem statement is
+schematically
+\begin{lstlisting}[language={}] 
+def modulus (k : Nat) : Nat := 2 ^ (2 * (k + 1)^2)
+
+theorem goldbachEuler_effective (k N : Nat)
+    (hN : modulus k <= N) :
+    0 <= 1 - partial N /\
+    1 - partial N <= (1 : Rat) / (2^k : Nat) := by
+  ...
+\end{lstlisting}
+The proof should be split into the named lemmas already mirrored in
+\path{lean/GoldbachEulerOutline.lean}:
+canonical decomposition, canonical-power injectivity, two finite geometric
+identities, telescoping, the finite upper bound, the modulus lower bound, and
+monotonicity.
+
+For the canonical decomposition there are two reasonable implementation
+routes.
+\begin{enumerate}[label=(\alph*)]
+\item Use Mathlib's natural factorization and finitely supported prime
+      exponent functions, then prove the gcd characterization of the
+      canonical exponent.
+\item Implement bounded trial division directly.  This is longer at the
+      Mathlib level but aligns almost line by line with the later iPRA coding.
+\end{enumerate}
+Route (a) is preferable for the semantic theorem; route (b) is preferable for
+the internal proof object.  A refinement theorem can connect them.
+
+\subsection{Layer 2: primitive-recursive codes}
+
+Construct \texttt{PR} codes for all arithmetic used in
+\eqref{eq:natural-formula}.  It is useful to organize these as a small library:
+Boolean choice, bounded folds, exact division under a divisibility premise,
+prime valuation, factor-vector gcd, and rational-pair accumulation.
+
+Each code should come with a graph or evaluation theorem.  The graph formulas
+remain quantifier-free when output witnesses are supplied by terms.  This is
+the form best suited to \texttt{PRA.qfInd}.
+
+\subsection{Layer 3: internal proof}
+
+Prove the natural-number analogue of each finite lemma.  The upper-bound proof
+should use the explicit index
+\[
+  I=N D(N)+1,
+\]
+so that no existential search for a sufficiently large truncation is needed.
+The lower-bound proof uses exactly
+\[
+  R=2^{k+1},\qquad T=2k+2.
+\]
+Thus the formal proof can be a direct composition of named estimates rather
+than a general development of infinite series.
+
+\subsection{Layer 4: native transfer}
+
+Apply \texttt{pra\_iff\_native}.  The included file
+\texttt{lean/ConciseIPRABridge.lean} gives the generic closed-formula transfer
+lemma.  This final step is already supported by the current repository; the
+substantial remaining work is the arithmetic derivation in \texttt{PRAAx}.
+
+\section{Exact finite validation artifacts}
+
+The accompanying program \texttt{checks/finite\_check.py} uses only the Python
+standard library and exact \texttt{Fraction} arithmetic.  It performs the
+following audits.
+\begin{enumerate}[label=(\arabic*)]
+\item It computes the canonical root by prime-exponent gcd and brute-force
+      checks uniqueness through $n=3000$.
+\item It checks the finite denominator and exponent identities and the
+      telescoping formula exactly.
+\item For $0\le k\le7$, it checks the finite rectangle inequality
+      $T(R,T)\ge U(R,T)\ge1-2^{-k}$.
+\item It checks sample upper truncations and direct modulus instances for
+      $k=0,1,2$.
+\end{enumerate}
+A sample from the generated report is shown in \cref{tab:checks}.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{rrrrr}
+\toprule
+$k$ & $R$ & $T$ & finite lower rectangle $U(R,T)$ & $1-2^{-k}$\\
+\midrule
+0 & 2   & 2  & 0.2500000000 & 0.0000000000\\
+1 & 4   & 4  & 0.6800250772 & 0.5000000000\\
+2 & 8   & 6  & 0.8585855004 & 0.7500000000\\
+3 & 16  & 8  & 0.9335116545 & 0.8750000000\\
+4 & 32  & 10 & 0.9677646224 & 0.9375000000\\
+5 & 64  & 12 & 0.9841298975 & 0.9687500000\\
+6 & 128 & 14 & 0.9921263590 & 0.9843750000\\
+7 & 256 & 16 & 0.9960784795 & 0.9921875000\\
+\bottomrule
+\end{tabular}
+\caption{Exact checks are performed with rational arithmetic; decimals are
+shown only for readability.}
+\label{tab:checks}
+\end{table}
+
+These computations are not part of the logical proof.  They detect indexing,
+off-by-one and duplicate-counting errors, and they provide reproducible test
+vectors for a future Lean implementation.
+
+\section{Comparison with the familiar proof}
+
+The classical one-line argument and the present proof share one decisive idea:
+canonical roots convert the two-dimensional family of geometric terms into the
+one-dimensional telescoping kernel $1/[m(m-1)]$.  The difference is logical
+packaging.
+
+\begin{center}
+\begin{tabular}{p{0.42\linewidth}p{0.48\linewidth}}
+\toprule
+Familiar analytic presentation & Present iPRA presentation\\
+\midrule
+Infinite geometric expansion & Finite identity with an explicit remainder\\
+Interchange of nonnegative sums & Reindexing of an explicitly finite set\\
+Infinite telescoping limit & Finite telescoping identity plus a rational error\\
+Existence of a sufficiently large cutoff & Closed primitive-recursive formula $B(k)$\\
+Real convergence & Natural-number inequalities for numerator/denominator pairs\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The explicit modulus is not merely an accommodation to weak arithmetic.  It
+reveals a quantitative statement hidden by the standard proof.  The bound is
+not optimized, but its simple square exponent makes the formal proof short.
+
+\section{Further research questions}
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=*]
+\item \textbf{Sharper primitive-recursive modulus.}
+Can one retain a comparably short iPRA proof while replacing
+$2^{2(k+1)^2}$ by a substantially smaller cutoff?  The proof deliberately
+uses very crude bounds $m^T(m-1)\ge2^T$ and $|C_N|\le N$.
+
+\item \textbf{Proof without prime factorization.}
+Can canonical roots be developed in iPRA from a direct common-base lemma for
+$r^i=u^j$, avoiding an explicit factorization library?  Such a proof might be
+shorter in the native iterator language even if it is longer mathematically.
+
+\item \textbf{Direct native proof.}
+Is it more economical to prove \eqref{eq:natural-formula} first in
+\texttt{PRAAx} and transfer it, or to construct the proof directly in one of
+the smaller native clause calculi?  The latter could provide a useful
+benchmark for the practical proof complexity of ConciseIPRA.
+
+\item \textbf{Reusable finite-series library.}
+The pattern ``finite geometric expansion + explicit remainder + finite
+reindexing'' applies to many elementary series identities.  A library of such
+lemmas could support constructive formalizations of Euler products, Lambert
+series and elementary generating-function arguments without developing real
+analysis.
+
+\item \textbf{Certificate extraction.}
+Can the eventual Lean proof export a compact ConciseIPRA certificate checked by
+one of the repository's small standalone proof checkers?  This would connect a
+substantive number-theoretic theorem with the project's proof-checker-size
+metric.
+\end{enumerate}
+
+\appendix
+
+\section{Detailed primitive-recursive implementation sketch}
+
+This appendix records one concrete coding route.  It is not needed for the
+human proof, but it removes ambiguity from the claim of iPRA formalizability.
+
+\subsection{Bounded arithmetic primitives}
+
+Use primitive recursion to define addition, multiplication, exponentiation,
+truncated subtraction, sign, comparison, Boolean conjunction and conditional
+selection.  For a Boolean predicate $b(i,\vec x)$, define bounded sums and
+products by
+\[
+\begin{aligned}
+ \operatorname{sum}(0,\vec x)&=0,
+ &\operatorname{sum}(n+1,\vec x)&=\operatorname{sum}(n,\vec x)+f(n,\vec x),\\
+ \operatorname{prod}(0,\vec x)&=1,
+ &\operatorname{prod}(n+1,\vec x)&=\operatorname{prod}(n,\vec x)f(n,\vec x).
+\end{aligned}
+\]
+Bounded existential and universal tests are folds of Boolean disjunction and
+conjunction.
+
+\subsection{Perfect powers}
+
+Define
+\[
+ \chi_{\PP}(n)=
+ \bigvee_{a=2}^{n}\bigvee_{e=2}^{n}[a^e=n].
+\]
+This is primitive recursive and extensionally equivalent to
+\cref{def:pp}.  No logarithm is required; the wasteful bound $e\le n$ is
+convenient in weak arithmetic.
+
+\subsection{Prime valuations and canonical roots}
+
+Define primality by bounded trial division.  Define $v_p(n)$ as the largest
+$e\le n$ with $p^e\mid n$, using a bounded maximum.  Let
+\[
+  g(n)=\gcd\set{v_p(n):2\le p\le n,\ p\text{ prime},\ v_p(n)>0}.
+\]
+The set is nonempty for $n\ge2$.  A fold with the convention
+$\gcd(0,a)=a$ computes $g(n)$.  Then define
+\[
+  \operatorname{root}(n)=
+  \prod_{\substack{2\le p\le n\\p\text{ prime}}}
+  p^{v_p(n)/g(n)}.
+\]
+The quotient is exact.  Bounded division is primitive recursive even without
+an exactness premise; correctness supplies the premise in the theorem.
+
+An alternative implementation repeatedly divides by the least divisor and
+stores exponents in a bounded sequence code.  The valuation version is simpler
+to state, while the repeated-division version may generate smaller terms.
+
+\subsection{Rational-pair accumulation}
+
+Use the recurrence preceding \eqref{eq:natural-formula}.  Its invariant is
+proved by induction:
+\[
+  \frac{A(N)}{D(N)}=
+  \sum_{n=2}^{N}\frac{\chi_{\PP}(n)}{n-1}.
+\]
+Internally, state the invariant after clearing all denominators.  Positivity of
+$D(N)$ follows simultaneously.
+
+\subsection{Encoding the main theorem}
+
+Let $\operatorname{le}(x,y)$ abbreviate a formula asserting
+$\exists z\,x+z=y$, or use a primitive-recursive Boolean comparison and its
+graph.  The closed theorem is the universal closure of
+\[
+  B(k)\le N\to
+  \left(A(N)\le D(N)\wedge
+  (2^k-1)D(N)\le2^kA(N)\right).
+\]
+Although this formula has quantifiers and connectives, each induction used in
+its proof is on a quantifier-free invariant.  This is exactly the division of
+labor supported by ordinary iPRA.
+
+\section{Proof dependency graph}
+
+\begin{center}
+\begin{tabular}{p{0.27\linewidth}p{0.65\linewidth}}
+\toprule
+Node & Depends on / supplies\\
+\midrule
+Bounded arithmetic & primitive recursion; supplies powers, folds, comparisons\\
+Finite factorization & bounded arithmetic; supplies valuations and unique factor data\\
+Canonical root lemma & factorization and finite gcd; supplies injective map $(r,i)\mapsto r^i$\\
+Finite geometric lemmas & bounded arithmetic; supplies exact prefix/remainder formulas\\
+Finite telescoping & bounded arithmetic; supplies $1-1/M$ identity\\
+Upper bound & canonical injectivity, denominator expansion, telescoping\\
+Lower rectangle & canonical bijection, both geometric identities, telescoping\\
+Effective theorem & upper bound, lower rectangle, monotonicity\\
+Natural-pair theorem & rational elimination and primitive-recursive coding\\
+Native ConciseIPRA theorem & \texttt{pra\_iff\_native}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Status ledger}
+
+\begin{itemize}
+\item \textbf{Human mathematics:} complete proof of the effective theorem,
+      including explicit constants and a constructive audit.
+\item \textbf{iPRA reduction:} detailed primitive-recursive encoding and a
+      closed quotient-free target formula; no principle beyond iPRA is used.
+\item \textbf{Lean:} theorem interfaces and a dependency-complete roadmap are
+      supplied.  The Mathlib outline contains \texttt{sorry} and is not
+      claimed to compile or to be verified.
+\item \textbf{ConciseIPRA bridge:} the final generic transfer uses the existing
+      proved theorem \path{pra_iff_native}; construction of the full
+      internal arithmetic derivation remains to be implemented.
+\item \textbf{Executable checks:} exact finite audits pass, but they are not a
+      substitute for formal proof.
+\end{itemize}
+
+\begin{thebibliography}{9}
+
+\bibitem{viader2006}
+Pelegr\'i Viader, Llu\'is Bibiloni, and Jaume Parad\'is,
+\emph{On a Series of Goldbach and Euler},
+American Mathematical Monthly \textbf{113} (2006), 206--220.
+\href{https://doi.org/10.2307/27641889}{doi:10.2307/27641889}.
+
+\bibitem{zeilberger2006}
+Doron Zeilberger,
+\emph{A Proof of the Celebrated Goldbach's Theorem}, 2006.
+\url{https://sites.math.rutgers.edu/~zeilberg/goldbach.pdf}.
+
+\bibitem{wikipedia-ge}
+\emph{Goldbach--Euler theorem}, Wikipedia.
+\href{https://en.wikipedia.org/wiki/Goldbach\%E2\%80\%93Euler_theorem}{Wikipedia article}
+(accessed 15 November 2026).
+
+\bibitem{proveit-readme}
+Vladimir Reshetnikov,
+\emph{Concise presentations of intuitionistic primitive recursive arithmetic},
+ProveIt repository, revision
+\texttt{a85c645dd7213a1adbe35b0965d1e44e06c942be}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}{ConciseIPRA project directory}.
+
+\bibitem{proveit-pr}
+Vladimir Reshetnikov,
+\texttt{ConciseIPRA/PR.lean}: primitive-recursive function symbols, terms and
+\texttt{PRAAx}, same repository revision.
+
+\bibitem{proveit-native}
+Vladimir Reshetnikov,
+\texttt{NativeBiInterpretation.lean}: faithfulness,
+bi-interpretation and \texttt{pra\_iff\_native}, same repository revision.
+
+\end{thebibliography}
+
+\end{document}

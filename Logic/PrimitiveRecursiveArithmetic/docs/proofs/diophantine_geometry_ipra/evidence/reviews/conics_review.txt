@@ -1,0 +1,81 @@
+Independent audit of sections/04_conics.tex
+Reviewer: descent agent
+Status: PASS, no material mathematical correction identified.
+
+1. Coordinate change and discriminant
+M has determinant p0 and the displayed adjugate really is
+[[1,0,0],[-p1,p0,0],[-p2,0,p0]].  The transformed form is
+U(ell V+mW)+aV²+bVW+cW² with the stated coefficients.  Its polar determinant
+is -2(am²-b ell m+c ell²), and also p0² det(S_q); thus r!=0 follows.
+The input hypothesis is explicitly a supplied rational point, so seed
+existence is not smuggled into an unbounded search.
+
+2. Certificate identities
+Both identities were expanded independently.  In the first, the s²
+coefficient is am²-b ell m+c ell² and the st,t² coefficients cancel.
+In the second, the t² coefficient is r and the s²,st coefficients cancel.
+They correctly exclude simultaneous projective zeros of L and R, including
+ell=0 or m=0.
+
+3. Parametrization and tangent
+F=(-R,sL,tL) is nonzero on every nonzero parameter.  Substitution in UL+R
+is exactly zero.  When the inverse-transformed point has (v,w)!=0, the
+identity F(v,w)=L(v,w)(u,v,w) is valid and L(v,w)!=0 follows from r!=0.
+The exceptional point has inverse [-m:ell], which is nonzero and maps to
+[-r:0:0].  The recovery of all parameters with L=0 handles ell=0 explicitly;
+there is no lost direction or duplicate tangent.  The stated tangent is
+correct because the gradient at [1:0:0] is (0,ell,m).
+
+4. Heights and gcd cancellation
+The bound |ell|+|m| <= 2CP follows termwise from the original coefficients;
+therefore the raw image coordinates are <=3CP S².  The subtle lower bound
+is sound: primitive (s,t) gives gcd(sL,tL)=|L| (also for L=0), hence the
+content g of F equals gcd(|R|,|L|).  The certificate identities imply
+g|r s² and g|r t², so Bezout for coprime s²,t² yields g|r.  With
+T0=max(|R|,S|L|), either certificate gives |r|S²<=D T0; substituting
+T0=g H([F]) and g<=|r| permits cancellation of positive |r|.  Applying
+the adjugate to a primitive representative of the final image gives
+H([F])<=2P H(Phi(T)), proving the displayed K=2PD lower bound.
+No assumption that projective coordinates remain primitive is made.
+D>=1, A>=1, K>=2 follow from the hypotheses.
+
+5. Counts
+For N>=2, the union bound over ALL d=2,...,N is valid (overcounting is harmless).
+The finite rational sum bound 1/4 + sum_{d=3}^N 1/[d(d-1)]
+=3/4-1/N is correct even for N=2.  It implies G(N)>=N²/4+N, hence
+4G(N)>=N².  N=1 is correctly separated.
+The upper parameter-box count is ((2S+1)²-1)/2=2S²+2S<=4S² for S>=1.
+Here S=floor sqrt(KB)>=1 when B>=1.  Thus N_q(B)<=4KB.
+For the lower bound, maximal N with AN²<=B satisfies N>=1 for B>=A,
+and B<A(N+1)²<=4AN²<=16A N_q(B).  The claimed weak inequality follows.
+The n+1 parameters [k:1], k=0,...,n, are distinct and have height <=n
+for n>=1.  Quantitative infinitude is therefore proved by an explicit list.
+
+6. Examples
+The circle inverse [Z+X:Y] gives the original point multiplied by
+2(Z+X); the only zero inverse pair is [-1:0:1].  Content of the
+quadratic triple divides 2 and is exactly 2 for both-odd parameters,
+otherwise 1.  The height formula (s²+t²)/epsilon is correct.
+The conic X²+Y²=3Z² is obstructed by two modulo-3 deductions, equivalently
+by lack of a unimodular solution modulo 9.  The text correctly warns that
+it DOES have an F3 projective point, so a mod-3 no-point certificate is
+not being asserted.
+
+7. iPRA strength
+All algorithms use fixed-degree polynomial operations, bounded loops,
+gcd/Bezout, finite counts, and characteristic functions of bounded
+predicates.  The supplied formulas avoid universal PR evaluation, real
+analysis, choice, algebraic closure, and arbitrary formula induction.
+The current text sufficiently identifies count/union-bound/telescoping
+invariants as quantifier-free after coding.  An eventual object-theory
+formalization must still provide the indicated arithmetic infrastructure;
+this chapter's mathematical proof does not by itself establish an already
+kernel-checked iPRA derivation.  The parent report's status distinction
+should make that explicit, as planned.
+
+Minor editorial observations only:
+- The bibliography must contain the key sutherland2025.
+- H(Phi^{-1}(X))<=floor sqrt(K H(X)) is indeed stronger than the direct
+  adjugate bound, so this is a useful feature worth retaining.
+- The chapter overlaps the descent chapter in Pythagorean examples, but
+  the overlap is explanatory and mathematically consistent.

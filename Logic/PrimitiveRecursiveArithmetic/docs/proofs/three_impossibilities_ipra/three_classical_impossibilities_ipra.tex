@@ -1,0 +1,1277 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+\usepackage{tikz-cd}
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black,pdftitle={Three classical construction impossibilities in iPRA}}
+\setlist{nosep,leftmargin=2em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Three classical impossibilities in iPRA}
+\rhead{Constructive proof and Lean roadmap}
+\cfoot{\thepage}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{audit}[theorem]{Constructive audit}
+
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\SC}{\mathsf{SC}}
+\newcommand{\Trace}{\mathsf{Trace}}
+\newcommand{\Pow}{\mathsf{Pow2Tower}}
+\newcommand{\eval}{\operatorname{eval}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\atan}{\operatorname{atan}}
+\newcommand{\cis}{\operatorname{cis}}
+\newcommand{\poly}{\mathsf{Poly}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+
+\lstdefinestyle{leanstyle}{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue!60!black},
+  commentstyle=\color{green!40!black},
+  frame=single,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false
+}
+\lstset{style=leanstyle}
+
+\title{Three Classical Straightedge-and-Compass Impossibilities\\
+       in Intuitionistic Primitive Recursive Arithmetic}
+\author{A constructive, finitistic proof architecture with a Lean formalization roadmap}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We give a single constructive proof architecture for the three classical negative results about straightedge-and-compass construction: a general angle cannot be trisected, the volume of a cube cannot in general be doubled, and a circle cannot be squared.  The first statement is made precise by exhibiting the constructible angle of $60^\circ$ as a counterexample.  Every geometric construction is represented by a finite trace.  From such a trace one extracts, without choice, a finite tower of quadratic field extensions.  Constructive finite-dimensional linear algebra then proves that an element whose irreducible polynomial has degree $3$ cannot occur in that tower.  This immediately disposes of cube doubling and the trisection of $60^\circ$.
+
+For circle squaring the same trace analysis says that every output coordinate is algebraic.  We therefore develop a finitistic Hermite--Lindemann contradiction proving that the fixed primitive-recursive Cauchy real $\pi$ is not a zero of any nonzero integer polynomial.  The proof uses only finite polynomial manipulation, constructive complex-root isolation with an explicit separation bound, symmetric-polynomial elimination, a finite Hermite auxiliary polynomial, a primitive-recursively selected prime, rational interval estimates for exponential series and integrals, and a final nonzero integer of absolute value less than $1$.  All searches are bounded and every induction can be reduced to quantifier-free induction over a primitive-recursive definition.  Consequently the argument has a direct arithmetization in intuitionistic primitive recursive arithmetic, $\ipra$.
+
+The paper also specifies an implementation-level Lean module graph.  It distinguishes three things carefully: the ordinary mathematical argument; its intended object-level derivation in the existing \texttt{ConciseIPRA} calculus; and a conventional Mathlib formalization that may be used only as a cross-check, not as the proof that the weak theory itself proves the result.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{The exact statements}
+
+The informal slogans hide three different logical forms.  We use the following precise versions.
+
+\begin{theorem}[Cube doubling]
+Starting from a unit segment, no finite straightedge-and-compass trace constructs the side of a cube of volume $2$.  Equivalently, no such trace produces a positive real $x$ with $x^3=2$.
+\end{theorem}
+
+\begin{theorem}[Angle trisection]
+There is no finite straightedge-and-compass trace which, starting from a unit segment and a constructed $60^\circ$ angle, produces an interior ray making $20^\circ$ with either side.  Thus there is no uniform construction trisecting every given angle.
+\end{theorem}
+
+\begin{theorem}[Circle squaring]
+Starting from a unit segment and the unit circle, no finite straightedge-and-compass trace constructs a square having the same area as the circle.
+\end{theorem}
+
+The angle theorem does \emph{not} say that no angle is trisectable.  Many are.  It supplies one constructible input angle for which trisection is impossible, and that is exactly what is required to refute a universal trisection procedure.
+
+\subsection{What ``proved in $\ipra$'' means}
+
+A Euclidean picture and a real number are not primitive objects of $\ipra$.  The formal theorem is therefore stated about natural-number codes.
+
+\begin{itemize}
+\item A construction trace is a finite list of instructions, each instruction naming earlier points and selecting one of the finitely many intersections permitted by the straightedge-and-compass rules.
+\item Integers, rationals, finite lists, matrices, polynomials, algebraic numbers and isolating rectangles are represented by canonical natural-number codes.
+\item A fixed real such as $\pi$ is represented by a primitive-recursive rational Cauchy name with a displayed modulus.  Equality with an algebraic expression is an arithmetical formula asserting agreement at every requested precision.
+\item ``Impossible'' is a negation.  The proof accepts a purported trace and the equation certifying its advertised output, performs primitive-recursive transformations, and reaches $0=1$.
+\end{itemize}
+
+This formulation is important constructively.  We do not silently replace $\neg(x=0)$ by a positive rational lower bound on $|x|$.  Such a replacement is not intuitionistically valid for an arbitrary Cauchy real.  What we prove is exactly the negation needed for impossibility: from an assumed exact equality we compute a contradiction.
+
+\begin{audit}[Logical discipline]
+The proof uses neither excluded middle for arbitrary propositions nor countable choice.  It does use case distinctions on decidable finite data: equality of integers and rationals, divisibility, polynomial degree, rank of a finite matrix, membership in a finite list, and equality of canonically isolated algebraic numbers.  Those are constructive operations and are primitive recursive in the chosen codes.
+\end{audit}
+
+\section{The finite mathematics available in $\ipra$}
+
+The usual first-order presentation of $\ipra$ has one symbol for each primitive-recursive function, defining equations for composition and primitive recursion, intuitionistic logic, and quantifier-free induction.  This is enough for the entire proof because every potentially open-ended process below is supplied with a primitive-recursive stopping bound.
+
+\subsection{Exact finite data}
+
+We use the following standard encodings.
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Object & Canonical code & Primitive-recursive operations \\
+\midrule
+Integer & sign and magnitude & $+,-,\cdot,|\cdot|$, divisibility \\
+Rational & reduced pair $(a,b)$, $b>0$ & field operations, order \\
+Finite list & length plus pairing code & map, fold, bounded search \\
+Polynomial & trimmed coefficient list & $+,-,\cdot$, derivative, resultant \\
+Matrix & dimensions and entry list & row reduction, rank, determinant \\
+Complex rational & pair of rationals & ring operations, norm bounds \\
+Algebraic complex & polynomial plus isolating box & equality, arithmetic, conjugates \\
+Construction trace & typed instruction list & replay and coordinate extraction \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The word ``canonical'' removes a common constructive nuisance.  Rational equality is equality of reduced pairs.  Algebraic equality is decided by refining disjoint isolating boxes and, when two descriptions may share a root, by a gcd/resultant computation.  No choice of an unspecified representative is required.
+
+\subsection{Finite linear algebra}
+
+Gaussian elimination over $\Q$ is primitive recursive: the matrix has a known finite size; at each column a bounded scan finds the first nonzero pivot; and all arithmetic is exact.  The same algorithm works over a coded finite algebraic extension because field operations and zero testing there are decidable.
+
+We shall repeatedly use the following finite form of the basis theorem.
+
+\begin{lemma}[Greedy basis lemma]
+Let $V$ be given by a finite spanning list over a coded decidable field $K$.  Scanning the list from left to right and retaining a vector exactly when it increases the row rank produces a basis of $V$.
+\end{lemma}
+
+\begin{proof}
+Rank increase is decided by Gaussian elimination.  Every retained vector is independent of its predecessors by construction.  Every rejected vector is in the span of the retained predecessors, as witnessed by the row-reduction coefficients.  Induction on the finite input list proves that the retained list is independent and spans the processed prefix.  This is quantifier-free induction after all lists and coefficient vectors have been coded.
+\end{proof}
+
+\subsection{Primitive-recursive Cauchy reals}
+
+A fixed real is represented by a rational sequence $q(n)$ together with a theorem
+\[
+  |q(n)-q(m)|\le 2^{-n}+2^{-m}.
+\]
+For uniform algorithms on real inputs one includes an input code and an explicit modulus.  Addition and multiplication of such names are primitive recursive after a coarse integer bound is carried alongside the name.  The exponential, sine, cosine and arctangent names used later are obtained from rational power series with factorial or alternating-series error bounds.
+
+The proof never quantifies over an arbitrary completed real-number structure.  It reasons about the finite rational approximations produced by named algorithms.  That is the appropriate interpretation of elementary analysis in $\ipra$.
+
+\section{Straightedge-and-compass traces}
+
+\subsection{Trace syntax}
+
+Fix two initial points $O=(0,0)$ and $U=(1,0)$.  A trace is a finite sequence of commands of the following forms.
+
+\begin{enumerate}
+\item Draw the line through two previously constructed distinct points.
+\item Draw the circle with a previously constructed center and radius equal to the distance between two previously constructed points.
+\item Add one selected intersection of two previously drawn lines or circles, together with a certificate that the selected intersection exists and is the indicated branch.
+\end{enumerate}
+
+The branch certificate is not extra geometric power.  It merely makes a successful finite construction deterministic as a coded object.  An impossibility proof may assume the full successful trace and show that no code can satisfy all its verification equations.
+
+Degenerate cases are handled explicitly.  A command that asks for the line through equal points, a nonexistent intersection, or an ambiguous branch without a certificate is invalid.  Validity is a decidable relation on the trace code and exact algebraic coordinates accumulated so far.
+
+\subsection{One instruction adds at most one square root}
+
+\begin{lemma}[Coordinate lemma]
+Suppose all coordinates constructed so far belong to a subfield $K\subseteq\C$.  The coordinates of one additional straightedge-and-compass intersection lie either in $K$ or in $K(\sqrt{\Delta})$ for an explicitly computed $\Delta\in K$.
+\end{lemma}
+
+\begin{proof}
+A line through $P=(p_1,p_2)$ and $Q=(q_1,q_2)$ has an equation
+\[
+  a x+b y=c
+\]
+with $a,b,c\in K$.  Two nonparallel lines are solved by Cramer's rule, so their intersection remains in $K$.
+
+A circle with center $(u,v)$ and transferred squared radius $\rho$ has equation
+\[
+  (x-u)^2+(y-v)^2=\rho,
+\]
+where $u,v,\rho\in K$.  For a line-circle intersection parameterize the line as
+\[
+  (x,y)=P+tD,
+\]
+with $P,D\in K^2$.  Substitution gives
+\[
+  A t^2+B t+C=0,\qquad A,B,C\in K.
+\]
+If $A\ne0$, the selected solution is
+\[
+  t=\frac{-B\pm\sqrt{B^2-4AC}}{2A}.
+\]
+The branch bit in the trace selects the sign.  If $A=0$, the remaining equation is linear and no square root is needed.
+
+For two circles, subtract their equations.  The quadratic terms cancel, leaving a line with coefficients in $K$; the problem then reduces to the preceding line-circle case.  All exceptional cases are finite equalities in $K$ and are decidable from its code.
+\end{proof}
+
+\begin{theorem}[Quadratic-tower extraction]
+From every valid trace of length $n$ one can primitive-recursively compute fields
+\[
+  \Q=K_0\subseteq K_1\subseteq\cdots\subseteq K_n
+\]
+and elements $\Delta_j\in K_j$ such that
+\[
+  K_{j+1}=K_j\quad\text{or}\quad K_{j+1}=K_j(\sqrt{\Delta_j}),
+\]
+and every coordinate appearing after instruction $j$ lies in $K_j$.
+\end{theorem}
+
+\begin{proof}
+Replay the trace.  At each instruction use the formulas in the coordinate lemma and append the relevant quadratic generator only when it is not already represented in the current field.  A field element is stored as a coefficient vector in the standard tower basis.  Arithmetic is recursive down the tower.  Zero testing is performed by reducing the coefficient vector.  The invariant on all earlier coordinates is proved by induction on the trace length.
+\end{proof}
+
+\begin{corollary}[Power-of-two dimension]
+For the final field $K_n$ there is an $e\le n$ such that
+\[
+  [K_n:\Q]=2^e.
+\]
+\end{corollary}
+
+\begin{proof}
+For one step, either the new generator is already in the old field and the degree is $1$, or its polynomial $X^2-\Delta_j$ has no root in the old field and $1,\sqrt{\Delta_j}$ is a basis, so the degree is $2$.  Concatenating the displayed bases gives an explicit basis of the tower.  Thus the dimension is a product of $1$'s and $2$'s.
+\end{proof}
+
+\section{The constructive degree obstruction}
+
+The familiar statement that the degree of a constructible number is a power of two is often proved with abstract field-extension theory.  For $\ipra$ we use a finite algorithmic version.
+
+\begin{lemma}[Irreducible powers are independent]
+Let $p\in\Q[X]$ be monic and irreducible of degree $m$, and let $\alpha$ be a root in a field $L$.  Then
+\[
+  1,\alpha,\ldots,\alpha^{m-1}
+\]
+are linearly independent over $\Q$.
+\end{lemma}
+
+\begin{proof}
+A dependence would give a nonzero polynomial $q$ of degree less than $m$ with $q(\alpha)=0$.  Euclidean division of $p$ by $q$ and the usual gcd algorithm, all carried out over $\Q$, would then produce a nonconstant proper divisor of $p$.  This contradicts the finite certificate of irreducibility.  No maximal ideal or choice principle is involved.
+\end{proof}
+
+\begin{lemma}[Constructive tower law in the needed case]
+Let $L/\Q$ be a finite coded field with a displayed $\Q$-basis of length $N$.  If $\alpha\in L$ has irreducible polynomial of degree $m$, then $m$ divides $N$.
+\end{lemma}
+
+\begin{proof}
+The preceding lemma gives a displayed basis of $E=\Q[\alpha]$ of length $m$.  Regard $L$ as an $E$-vector space.  Starting with the displayed $\Q$-basis of $L$, apply the greedy basis lemma over $E$: retain an element exactly when it is not in the $E$-span of the previously retained elements.  The procedure terminates after $N$ tests and returns an $E$-basis $v_1,\ldots,v_r$.
+
+The $mr$ products
+\[
+  \alpha^i v_j\qquad(0\le i<m,\ 1\le j\le r)
+\]
+form a $\Q$-basis of $L$.  Spanning follows by first expanding over the $E$-basis and then expanding each coefficient in $1,\alpha,\ldots,\alpha^{m-1}$.  Independence follows by grouping a rational dependence by $v_j$ and using independence first over $E$ and then over $\Q$.  Hence $N=mr$.
+\end{proof}
+
+\begin{theorem}[Odd-degree obstruction]
+No element of irreducible odd degree greater than $1$ over $\Q$ belongs to a quadratic tower over $\Q$.
+\end{theorem}
+
+\begin{proof}
+If such an element of degree $m$ belonged to the final tower field, the constructive tower law would make $m$ divide $2^e$.  For odd $m>1$ this is impossible.  In particular, $3\nmid 2^e$.  The latter is proved in $\ipra$ by primitive recursion on $e$, observing that every divisor $3$ of $2^{e+1}=2\cdot2^e$ would, since $3$ is prime and does not divide $2$, divide $2^e$.
+\end{proof}
+
+\begin{remark}
+The proof establishes only the necessary direction needed here: every constructible coordinate lies in a quadratic tower.  The converse, that every element of a real quadratic tower is constructible, is true but not needed for any impossibility result.
+\end{remark}
+
+\section{Doubling the cube}
+
+Suppose a successful trace constructs a positive side length $x$ whose cube has twice the volume of the unit cube.  Then
+\[
+  x^3=2,
+\]
+so $x$ is a root of
+\[
+  f(X)=X^3-2.
+\]
+
+\begin{lemma}
+The polynomial $X^3-2$ is irreducible over $\Q$.
+\end{lemma}
+
+\begin{proof}
+A reducible cubic over a field has a linear factor and therefore a rational root.  If $a/b$ in lowest terms is a root of the monic integer polynomial $X^3-2$, the rational-root calculation gives $b=1$ and $a\mid2$.  Thus $a\in\{\pm1,\pm2\}$.  Direct evaluation gives
+\[
+  f(1)=-1,\quad f(-1)=-3,\quad f(2)=6,\quad f(-2)=-10.
+\]
+None is zero.  Every step is a bounded integer calculation.
+\end{proof}
+
+\begin{proof}[Constructive proof of cube-doubling impossibility]
+By quadratic-tower extraction, a coordinate produced by the trace belongs to a field of degree $2^e$ over $\Q$.  The constructed $x$ would have irreducible degree $3$.  This contradicts the odd-degree obstruction.
+\end{proof}
+
+At the object level, the $\ipra$ proof is a program transforming a trace code into a tower-basis code, the equation $x^3=2$ into a root certificate, and then the two dimension certificates into the false divisibility $3\mid2^e$.
+
+\section{Trisecting the $60^\circ$ angle}
+
+Construct an equilateral triangle on the unit segment.  Its upper vertex has coordinates
+\[
+  \left(\frac12,\frac{\sqrt3}{2}\right),
+\]
+so the $60^\circ$ ray itself is constructible and merely introduces one quadratic generator.
+
+Assume that a later trace constructs the interior trisecting ray.  Intersect that ray with the already available unit circle.  Let $(x,y)$ be the selected point and put
+\[
+  z=x+iy,\qquad t=2x.
+\]
+Then $z$ has unit modulus and is the unit complex number at one third of the $60^\circ$ turn.  Complex multiplication, rather than any appeal to an unformalized angle measure, gives
+\[
+  z^3=\frac12+i\frac{\sqrt3}{2}.
+\]
+Taking real parts yields
+\[
+  x^3-3xy^2=\frac12.
+\]
+Since $x^2+y^2=1$, this simplifies to
+\[
+  4x^3-3x=\frac12.
+\]
+After multiplying by $2$ and setting $t=2x$ we obtain
+\[
+  t^3-3t-1=0.
+\]
+
+\begin{lemma}
+The polynomial
+\[
+  g(T)=T^3-3T-1
+\]
+is irreducible over $\Q$.
+\end{lemma}
+
+\begin{proof}
+Again, a reducible cubic has a rational root.  A rational root of this monic polynomial is an integer dividing $1$, hence is $1$ or $-1$.  But
+\[
+  g(1)=-3,\qquad g(-1)=1.
+\]
+Thus there is no rational root and the cubic is irreducible.
+\end{proof}
+
+\begin{proof}[Constructive proof of trisection impossibility]
+The point $(x,y)$ and the number $t=2x$ belong to the final quadratic tower generated by the construction.  The initial equilateral-triangle step is itself quadratic, so the final degree over $\Q$ remains a power of two.  But $t$ has irreducible degree $3$.  The odd-degree obstruction gives a contradiction.
+\end{proof}
+
+\begin{remark}[No hidden uniqueness principle]
+The trace claims an \emph{interior} trisector, so its selected unit point lies on the ray between the two given sides.  The algebraic equation above is a necessary condition for that point.  We do not need to choose one of the three roots of $g$ or prove a classical existence-and-uniqueness theorem for $20^\circ$; the purported trace itself supplies the point whose existence is refuted.
+\end{remark}
+
+\section{A constructive $\pi$ and the area of the unit disk}
+
+Circle squaring requires one analytic constant.  We now specify it in a way suitable for $\ipra$ and prove that it is both the area constant and the half-turn constant used in Euler's identity.
+
+\subsection{Arctangent as a primitive-recursive Cauchy real}
+
+For $0\le x\le1$, define
+\[
+  \atan(x)=\sum_{k=0}^{\infty}(-1)^k\frac{x^{2k+1}}{2k+1}.
+\]
+At rational $x<1$ this is geometrically convergent.  At $x=1$ the alternating-series remainder after $N$ terms is at most $1/(2N+3)$.  Therefore the choice $N=2^{m+1}$ gives a primitive-recursive rational approximation with error less than $2^{-m}$.
+
+Define
+\[
+  \vartheta=\atan(1),\qquad \pi=4\vartheta.
+\]
+Sine, cosine and complex exponential are defined by their factorial series.  For a rational or algebraic input with a known integer bound $R$, truncation after a primitive-recursively found $N$ has tail bounded by
+\[
+  3^R\frac{R^{N+1}}{(N+1)!}.
+\]
+The block estimate for factorials in Appendix~\ref{app:factorial} proves that bounded search always finds an adequate $N$.
+
+\subsection{The quarter-turn identity}
+
+For every rational $0<\rho<1$, termwise differentiation of the power series, with the displayed uniform tail bounds, proves on $[-\rho,\rho]$ that
+\[
+  \frac{d}{dx}\atan(x)=\frac{1}{1+x^2}.
+\]
+The identity at the endpoints $x=\pm1$ is obtained by the explicit continuity moduli for the series and for $1/(1+x^2)$; we do not differentiate the geometric derivative series at an endpoint where it is not uniformly convergent.
+The same finite estimates prove the addition laws for sine and cosine and the identity
+\[
+  \tan(\atan x)=x\qquad(0\le x\le1),
+\]
+where tangent is used only after positivity of the cosine has been established.
+
+For $0<\vartheta<1$, the elementary bound
+\[
+  \cos u\ge1-\frac{u^2}{2}>0
+\]
+applies.  Since $\tan\vartheta=1$, we have $\sin\vartheta=\cos\vartheta$.  The addition formulas now give
+\[
+  \cos(2\vartheta)=0,
+\]
+and hence
+\[
+  \cos(4\vartheta)=-1,\qquad \sin(4\vartheta)=0.
+\]
+Consequently
+\[
+  \exp(i\pi)=\cos\pi+i\sin\pi=-1.
+\]
+This is the exact Euler identity needed by the transcendence argument.
+
+For efficient computation one may use Machin's identity
+\[
+  \vartheta=4\atan\frac15-\atan\frac1{239}.
+\]
+It has an entirely rational verification.  Repeated use of
+\[
+  \tan(2u)=\frac{2\tan u}{1-\tan^2u}
+\]
+gives
+\[
+  \tan\left(4\atan\frac15\right)=\frac{120}{119},
+\]
+and then
+\[
+  \tan\left(4\atan\frac15-\atan\frac1{239}\right)
+  =\frac{120/119-1/239}{1+(120/119)(1/239)}=1.
+\]
+Simple alternating-series bounds put the displayed angle in $(0,1)$, where tangent is injective by its positive derivative.  Thus it equals $\atan(1)$.  The two small arguments give a very fast primitive-recursive Cauchy name for $\pi$.
+
+\subsection{The disk-area identity}
+
+Define the area of the quarter unit disk by rational lower and upper Riemann sums for
+\[
+  I=\int_0^1\sqrt{1-x^2}\,dx.
+\]
+The square root is the nonnegative one, computed by bisection with a rational interval.  Uniform continuity on $[0,1]$ has the explicit modulus
+\[
+  |\sqrt{u}-\sqrt{v}|\le\sqrt{|u-v|};
+\]
+therefore dyadic partitions give primitive-recursive Cauchy bounds for the area.
+
+Use the rational substitution
+\[
+  x=\frac{2t}{1+t^2},\qquad 0\le t\le1.
+\]
+Then
+\[
+  \sqrt{1-x^2}=\frac{1-t^2}{1+t^2},\qquad
+  \frac{dx}{dt}=\frac{2(1-t^2)}{(1+t^2)^2}.
+\]
+Hence
+\[
+  I=\int_0^1\frac{2(1-t^2)^2}{(1+t^2)^3}\,dt.
+\]
+A direct quotient-rule calculation shows that
+\[
+  \frac{d}{dt}\left(
+    \frac{t(1-t^2)}{(1+t^2)^2}+\atan t
+  \right)
+  =\frac{2(1-t^2)^2}{(1+t^2)^3}.
+\]
+The constructive fundamental theorem required here is only for a rational function with denominator at least $1$ plus the already defined arctangent.  It follows by telescoping rational Riemann sums; a bound on the second derivative supplies a primitive-recursive error modulus.  Evaluating at $0$ and $1$ gives
+\[
+  I=\atan(1)=\vartheta.
+\]
+The whole disk consists of four congruent quarters, so its area is
+\[
+  4I=4\vartheta=\pi.
+\]
+
+\begin{audit}[Why this is not impredicative analysis]
+Every function in the preceding argument is a fixed primitive-recursive rational approximation procedure.  Every limiting statement is accompanied by a factorial, alternating-series or Lipschitz modulus.  The substitution theorem and the fundamental theorem are proved for the displayed functions by finite estimates, not imported as principles quantifying over arbitrary functions.
+\end{audit}
+
+\section{A finitistic Hermite--Lindemann theorem for $\pi$}
+
+We prove the exact statement needed for circle squaring.
+
+\begin{theorem}[Constructive transcendence statement]\label{thm:pi-trans}
+For every nonzero polynomial $P\in\Z[X]$, the equality $P(\pi)=0$ leads intuitionistically to a contradiction.  Here $\pi$ is the primitive-recursive Cauchy real defined in the preceding section.
+\end{theorem}
+
+The proof is organized so that every infinitary-looking ingredient is replaced by a finite certificate with an explicit primitive-recursive bound.
+
+\subsection{From a polynomial relation for $\pi$ to one for $i\pi$}
+
+Assume, for contradiction, that $P(\pi)=0$ for a nonzero $P\in\Z[X]$.  Split $P$ into its even and odd parts:
+\[
+  P(T)=E(T^2)+T O(T^2),\qquad E,O\in\Z[T].
+\]
+Put
+\[
+  G(Y)=E(-Y^2)^2+Y^2 O(-Y^2)^2\in\Z[Y].
+\]
+Since
+\[
+  P(-iY)=E(-Y^2)-iY O(-Y^2),
+\]
+we have
+\[
+  G(Y)=P(-iY)P(iY).
+\]
+Thus $G(i\pi)=0$.  Moreover $G$ is nonzero: in the integral domain $\C[Y]$, a zero product would force $P(-iY)=0$ or $P(iY)=0$, and comparing even and odd coefficients would then force $E=O=0$, contrary to $P\ne0$.  This argument is an explicit coefficient calculation and does not require a minimal polynomial.
+
+Set
+\[
+  \alpha=i\pi.
+\]
+Then $\alpha$ is a nonzero complex root of the explicitly computed nonzero integer polynomial $G$, and
+\[
+  e^\alpha=-1.
+\]
+
+\subsection{Constructive enumeration of the roots}
+
+We need all conjugates of $\alpha$, but we do not invoke an abstract algebraic closure.
+
+\begin{lemma}[Uniform complex-root isolation]\label{lem:root-isolation}
+There is a primitive-recursive procedure which, from a nonzero $F\in\Z[X]$, produces:
+\begin{enumerate}
+\item the square-free factorization of $F$ and the multiplicity of each factor;
+\item a rational integer $R$ containing every complex root in the square $[-R,R]^2$;
+\item a positive rational separation bound $\delta$ for distinct roots of each square-free factor;
+\item finitely many pairwise disjoint rational rectangles, each of diameter less than $\delta/4$, together with an exact root count, such that every rectangle contains one root and every root occurs with its multiplicity.
+\end{enumerate}
+The output certificates are verifiable using integer and rational arithmetic.
+\end{lemma}
+
+\begin{proof}[Constructive implementation]
+First compute $\gcd(F,F')$ by the subresultant Euclidean algorithm and recurse to obtain a square-free factorization.  A Cauchy root bound such as
+\[
+  R=1+\sum_{j<d}|a_j|
+\]
+for $F(X)=a_dX^d+\cdots+a_0$, $a_d\ne0$, contains every root.
+
+For a square-free integer polynomial, a standard resultant/discriminant estimate gives a positive lower bound for the distance between two distinct roots.  One may use any explicit Mignotte-type bound; its numerator and denominator are obtained from $d$ and the coefficient height by exponentiation and factorials, hence primitive recursively.  The formalization needs the inequality, not an asymptotically sharp constant.
+
+Subdivide the bounding square into a dyadic grid finer than the separation bound.  For each rectangle, count roots by a constructive argument-principle computation: replace its boundary, if necessary, by a nearby rational boundary on which $F$ has no zero; evaluate the signed Cauchy index of $\operatorname{Re}F/\operatorname{Im}F$ on the four rational segments using subresultant Sturm chains.  The resulting winding number is an integer and equals the number of roots inside by the Sturm--Cauchy theorem.  In the required polynomial case that theorem is proved by induction on the signed subresultant chain and local sign changes; no general contour-integration principle is needed.  Because the grid is finer than the separation bound, every nonzero count is $1$.  Repeating rectangles according to square-free multiplicity gives the required multiset.
+
+All loops have bounds computed before the loop begins: the factor degree, coefficient height, root radius, separation denominator and number of grid cells.  Correctness is proved by quantifier-free induction over the Euclidean algorithm, Sturm sequence and finite grid traversal.  This is the form of the constructive fundamental theorem of algebra needed here.
+\end{proof}
+
+Apply the procedure to $G$ and write the resulting root multiset as
+\[
+  \Theta=(\theta_1,\ldots,\theta_n).
+\]
+Because $\alpha$ is a root, one of the isolating rectangles contains it.  To find its index, refine the primitive-recursive Cauchy name for $\alpha$ until its rational error box has diameter less than the separation bound and meets exactly one root rectangle.  This bounded refinement identifies an index $j_0$ satisfying
+\[
+  \theta_{j_0}=\alpha,
+  \qquad e^{\theta_{j_0}}=-1.
+\]
+Repeated roots cause no difficulty: the root list is a multiset, and one occurrence may be selected.
+
+\subsection{Subset sums and a rational polynomial}
+
+For every subset $T\subseteq\{1,\ldots,n\}$ define
+\[
+  \sigma_T=\sum_{j\in T}\theta_j.
+\]
+Finite distributivity and $e^{u+v}=e^u e^v$ give
+\[
+  \prod_{j=1}^n(1+e^{\theta_j})
+   =\sum_{T\subseteq\{1,\ldots,n\}}e^{\sigma_T}.
+\]
+The factor indexed by $j_0$ is $1+e^\alpha=0$, so
+\[
+  \sum_T e^{\sigma_T}=0.                                    \tag{8.1}
+\]
+
+Equality of two algebraic numbers represented by isolating data is decidable.  We may therefore partition the finite subset list into those with $\sigma_T=0$ and those with $\sigma_T\ne0$.  Let
+\[
+  K=\#\{T:\sigma_T=0\}.
+\]
+The empty subset is counted, so $K\ge1$.  Equation (8.1) becomes
+\[
+  K+\sum_{\sigma_T\ne0}e^{\sigma_T}=0.                     \tag{8.2}
+\]
+
+The remaining subset sums must be realized as the roots of an integer polynomial.  Begin with
+\[
+  Q(Y)=\prod_{T\subseteq\{1,\ldots,n\}}(Y-\sigma_T).
+\]
+Its coefficients are symmetric polynomials, with integer coefficients, in the root variables $\theta_1,\ldots,\theta_n$.  Indeed, permuting the $\theta_j$ merely permutes the subsets and therefore the factors.
+
+\begin{lemma}[Effective symmetric reduction]\label{lem:symmetric}
+Given a symmetric polynomial $S\in\Z[X_1,\ldots,X_n]$, a primitive-recursive algorithm produces a polynomial $H\in\Z[U_1,\ldots,U_n]$ such that
+\[
+  S(X_1,\ldots,X_n)=H(e_1(X),\ldots,e_n(X)),
+\]
+where $e_j$ is the $j$th elementary symmetric polynomial.
+\end{lemma}
+
+\begin{proof}
+Order monomials lexicographically.  The leading monomial of a symmetric polynomial has weakly decreasing exponents.  A unique product of powers of $e_1,\ldots,e_n$ has the same leading monomial.  Subtract the appropriate integer multiple, strictly reducing the leading monomial, and iterate.  The total degree and finite monomial set give a primitive-recursive bound on the number of reductions.  Coefficient comparison verifies the final identity.
+\end{proof}
+
+By Vieta's formulas, each $e_j(\theta_1,\ldots,\theta_n)$ is a rational number determined by the coefficients and leading coefficient of $G$.  Applying effective symmetric reduction to every coefficient of $Q$ shows
+\[
+  Q\in\Q[Y].
+\]
+Since exactly $K$ of its roots are zero, exact polynomial division gives
+\[
+  Q(Y)=Y^K Q_0(Y),\qquad Q_0(0)\ne0.
+\]
+Clear denominators and remove a common coefficient gcd.  We obtain a nonzero
+\[
+  F\in\Z[Y],\qquad F(0)\ne0,                               \tag{8.3}
+\]
+whose complex roots, with multiplicity, are precisely the nonzero subset sums in (8.2).  Thus, writing $\mathcal R(F)$ for the root multiset,
+\[
+  K+\sum_{r\in\mathcal R(F)}e^r=0.                         \tag{8.4}
+\]
+
+Everything up to (8.4) is finite algebra.  The sole remaining task is to rule out an integer exponential relation of this form.
+
+\section{The Hermite integer contradiction}
+
+Fix a nonzero polynomial
+\[
+  F(X)=\ell X^d+a_{d-1}X^{d-1}+\cdots+a_0\in\Z[X]
+\]
+with $a_0\ne0$, and a positive integer $K$.  If $d=0$, the root multiset is empty and the asserted relation below is simply $K=0$, already impossible.  We may therefore assume $d\ge1$ and hence $\ell\ne0$.  Assume
+\[
+  K+\sum_{r\in\mathcal R(F)}e^r=0.                         \tag{9.1}
+\]
+We derive a contradiction by constructing an integer $N$ which is simultaneously zero and nonzero.
+
+\subsection{Integral symmetric root sums}
+
+\begin{lemma}[Scaled root-sum integrality]\label{lem:rootsum}
+Let $g\in\Z[X]$ and let $m\ge\deg g$.  Then
+\[
+  \ell^m\sum_{r\in\mathcal R(F)}g(r)\in\Z.
+\]
+Moreover the integer is computable primitive-recursively from $F,g,m$.
+\end{lemma}
+
+\begin{proof}
+For every root $r$ put $\beta=\ell r$.  The $\beta$'s are the roots of the monic integer polynomial
+\[
+  \widetilde F(Y)=\ell^{d-1}F(Y/\ell)
+  =Y^d+a_{d-1}Y^{d-1}+a_{d-2}\ell Y^{d-2}+\cdots+a_0\ell^{d-1}.
+\]
+Vieta's formulas make the elementary symmetric functions of the $\beta$'s integers.  Newton's recurrence
+\[
+  s_k+c_1s_{k-1}+\cdots+c_{k-1}s_1+k c_k=0
+  \quad(1\le k\le d)
+\]
+and its homogeneous continuation for $k>d$ compute every power sum
+\[
+  s_k=\sum\beta^k
+\]
+as an integer.  If $g(X)=\sum_{k=0}^m b_kX^k$, then
+\[
+  \ell^m\sum_r g(r)
+   =\sum_{k=0}^m b_k\ell^{m-k}\sum_r(\ell r)^k,
+\]
+which is an integer.  The displayed recurrence is finite and uses only primitive recursion on $k$.
+\end{proof}
+
+\subsection{The auxiliary polynomial}
+
+Let $p$ be a prime to be selected later and define
+\[
+  h_p(X)=X^{p-1}F(X)^p.
+\]
+If $D=\deg h_p$, put
+\[
+  A_p(X)=\sum_{j=0}^{D}h_p^{(j)}(X).
+\]
+Since $h_p^{(D+1)}=0$,
+\[
+  A_p'(X)=A_p(X)-h_p(X).                                   \tag{9.2}
+\]
+
+Every derivative value $h_p^{(j)}(0)$ is divisible by $(p-1)!$: it vanishes for $j<p-1$, and for $j\ge p-1$ it is $j!$ times an integer coefficient.  Define
+\[
+  n_p=\frac{A_p(0)}{(p-1)!}\in\Z.                          \tag{9.3}
+\]
+
+At every root $r$ of $F$, counted with multiplicity, the polynomial $h_p$ has a zero of multiplicity at least $p$.  Hence $h_p^{(j)}(r)=0$ for $j<p$.  For $j\ge p$, the polynomial $h_p^{(j)}$ has every coefficient divisible by $j!$, hence by $p!$.  Therefore the integer polynomial
+\[
+  g_p(X)=\sum_{j=p}^{D}\frac{h_p^{(j)}(X)}{p!}\in\Z[X]
+\]
+satisfies
+\[
+  A_p(r)=(p-1)!\,p\,g_p(r)                                \tag{9.4}
+\]
+for every root $r$.  Differentiating at least $p$ times also gives
+\[
+  \deg g_p\le pd-1.                                       \tag{9.5}
+\]
+
+Finally, if $p>|F(0)|$, then $p\nmid n_p$.  Modulo $p$, all terms in (9.3) with derivative order $j\ge p$ vanish after division by $(p-1)!$.  The only surviving term is $j=p-1$, so
+\[
+  n_p\equiv [X^{p-1}]h_p(X)=F(0)^p\pmod p.                \tag{9.6}
+\]
+Since $p$ does not divide the nonzero integer $F(0)$, Euclid's lemma gives $p\nmid F(0)^p$ and hence $p\nmid n_p$.
+
+\subsection{The approximation identity}
+
+Equation (9.2) implies, for each complex number $r$,
+\[
+  \frac{d}{dt}\left(e^{-tr}A_p(tr)\right)
+     =-r e^{-tr}h_p(tr).
+\]
+Integrating from $0$ to $1$ and multiplying by $e^r$ gives the exact identity
+\[
+  e^r A_p(0)-A_p(r)
+   =e^r r\int_0^1e^{-tr}h_p(tr)\,dt.                       \tag{9.7}
+\]
+Using (9.3) and (9.4), divide by $(p-1)!$:
+\[
+  n_p e^r-pg_p(r)
+   =\frac{e^r r}{(p-1)!}
+      \int_0^1e^{-tr}h_p(tr)\,dt.                         \tag{9.8}
+\]
+
+The integral is not an appeal to a completed classical continuum.  Expand $e^{-tr}$ by its factorial series, multiply by the polynomial $h_p(tr)$, and integrate rational monomials term by term.  The exponential tail estimate supplies a primitive-recursive uniform modulus.  Equation (9.7) can equivalently be proved by comparing the two power series coefficientwise.  Thus (9.8) is a theorem about explicitly coded rational Cauchy sequences.
+
+\subsection{A uniform integer bound}
+
+Set
+\[
+  R=1+\sum_{j=0}^{d}|a_j|.
+\]
+Every root $r$ of $F$ satisfies $|r|\le R$.  For $0\le t\le1$,
+\[
+  |F(tr)|\le M:=\sum_{j=0}^{d}|a_j|R^j.
+\]
+Also
+\[
+  |e^{(1-t)r}|\le e^{|r|}<3^R.
+\]
+Let
+\[
+  B=RM,
+  \qquad C=3^R R\max(1,B).
+\]
+Then (9.8) gives, for every root $r$,
+\[
+  |n_p e^r-pg_p(r)|
+  \le\frac{C^p}{(p-1)!}.                                  \tag{9.9}
+\]
+Indeed, $|h_p(tr)|\le R^{p-1}M^p\le\max(1,B)^p$, and the extra factor $3^R R$ is absorbed into $C^p$ for $p\ge1$.
+
+All constants in this estimate are integers computed from the coefficient list of $F$.  No maximum over an unspecified compact set appears.
+
+\subsection{An explicit prime with a small error}
+
+Put
+\[
+  A=|\ell|^d C,
+  \qquad q=\max(1,2A^2,d),
+  \qquad T=2q.
+\]
+For every $p\ge T$,
+\[
+  d\frac{A^p}{(p-1)!}<1.                                  \tag{9.10}
+\]
+To see this first take $p=T=2q$.  The $q$ factors $q,q+1,\ldots,2q-1$ show
+\[
+  (2q-1)!\ge q^q.
+\]
+Since $q\ge2A^2$,
+\[
+  A^{2q}=(A^2)^q\le(q/2)^q.
+\]
+And since $q\ge d$, the elementary induction $2^q\ge q+1>d$ gives
+\[
+  dA^{2q}<q^q\le(2q-1)!.
+\]
+For successive $p$, the ratio of the left side of (9.10) at $p+1$ to that at $p$ is $A/p\le1$, so the inequality persists.
+
+Now let
+\[
+  H=\max(T,|\ell|,K,|F(0)|,2).
+\]
+Compute $H!+1$ and choose its least divisor $p>1$.  Bounded search up to $H!+1$ is primitive recursive.  The least divisor is prime, and no integer $2\le s\le H$ divides $H!+1$, so
+\[
+  p>H.                                                     \tag{9.11}
+\]
+Thus $p$ satisfies the analytic smallness condition, does not divide $\ell$, $K$, or $F(0)$, and makes (9.6) applicable.
+
+\subsection{The impossible integer}
+
+By the scaled root-sum lemma and (9.5),
+\[
+  S=\ell^{pd}\sum_{r\in\mathcal R(F)}g_p(r)\in\Z.
+\]
+Define
+\[
+  N=\ell^{pd}K n_p+pS\in\Z.                               \tag{9.12}
+\]
+Multiply the assumed relation (9.1) by $\ell^{pd}n_p$ and use the definition of $S$:
+\[
+\begin{aligned}
+  N
+  &= -\ell^{pd}\sum_{r\in\mathcal R(F)}
+       \bigl(n_p e^r-pg_p(r)\bigr).
+\end{aligned}
+\]
+There are $d$ roots with multiplicity.  From (9.9), (9.10) and $p>T$,
+\[
+  |N|
+  \le d\,|\ell|^{pd}\frac{C^p}{(p-1)!}
+  =d\frac{A^p}{(p-1)!}<1.
+\]
+An integer of absolute value less than $1$ is zero, so
+\[
+  N=0.                                                     \tag{9.13}
+\]
+
+On the other hand, reducing (9.12) modulo $p$ gives
+\[
+  N\equiv \ell^{pd}K n_p\pmod p.
+\]
+The prime $p$ divides none of $\ell$, $K$, and $n_p$ by (9.11) and (9.6).  Euclid's lemma, proved by the integer gcd algorithm, shows
+\[
+  p\nmid\ell^{pd}K n_p.
+\]
+Therefore $N\ne0$, contradicting (9.13).
+
+\begin{theorem}[No positive-integer exponential relation]\label{thm:no-exp-relation}
+For every nonzero $F\in\Z[X]$ with $F(0)\ne0$ and every $K>0$,
+\[
+  K+\sum_{r\in\mathcal R(F)}e^r\ne0.
+\]
+The negation is provable in $\ipra$ from the displayed finite algorithms and bounds.
+\end{theorem}
+
+\begin{proof}
+If $F$ is constant, its root multiset is empty and the alleged relation is $K=0$, contradicting $K>0$.  If $F$ is nonconstant, the preceding construction takes an assumed equality and computes the contradictory integer $N$.  Each object in the construction is primitive recursive in the codes of $F$ and $K$; each estimate is an integer or rational inequality proved by quantifier-free induction.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:pi-trans}]
+An assumed nonzero polynomial relation $P(\pi)=0$ produced the polynomial $G$ with root $i\pi$, then the root multiset $\Theta$, the subset-sum relation (8.2), and the integer polynomial $F$ satisfying (8.3) and (8.4).  Since $K>0$, Theorem~\ref{thm:no-exp-relation} contradicts (8.4).  Hence $P(\pi)=0$ is impossible.
+\end{proof}
+
+\begin{audit}[Where constructivity matters]
+The argument never says ``choose a minimal polynomial'' or ``choose an embedding into an algebraic closure.''  It computes a nonzero annihilating polynomial $G$, isolates all its roots by a finite algorithm, identifies the already supplied root $i\pi$ by separation, and performs all symmetric operations on the resulting finite multiset.  The prime is not obtained from an unbounded infinitude theorem; it is a least divisor of $H!+1$ found by bounded search.  The analytic limit is not used as an existential convergence assertion; the explicit threshold $T=2\max(1,2A^2,d)$ is sufficient.
+\end{audit}
+
+\section{Squaring the circle}
+
+Assume a trace constructs a square with the same area as the unit disk.  Let $s>0$ be its side.  By the disk-area theorem,
+\[
+  s^2=\pi.                                                  \tag{10.1}
+\]
+The quadratic-tower extraction gives a final number field $L$ containing $s$.  In particular $s$ is algebraic over $\Q$.
+
+To avoid any abstract appeal to closure of algebraic numbers, compute an annihilating polynomial for $s^2$ directly.  Let $p(X)\in\Z[X]$ be a nonzero polynomial with $p(s)=0$, obtained by multiplying the quadratic defining equations down the tower or by taking the determinant of multiplication by $X-s$ in the displayed tower basis.  Form the resultant
+\[
+  R(Y)=\Res_X\bigl(p(X),Y-X^2\bigr)\in\Z[Y].
+\]
+The Sylvester determinant computes $R$ primitive-recursively.  The standard Bezout identity for the resultant shows
+\[
+  R(s^2)=0.
+\]
+The polynomial $R$ is nonzero: over a splitting field it is, up to a nonzero leading factor,
+\[
+  \prod_{p(r)=0}(Y-r^2),
+\]
+which is visibly nonzero as a polynomial in $Y$; alternatively its leading coefficient is a positive power of the leading coefficient of $p$.
+
+Equation (10.1) therefore yields a nonzero integer polynomial $R$ with
+\[
+  R(\pi)=0,
+\]
+contradicting Theorem~\ref{thm:pi-trans}.
+
+\begin{theorem}[Circle-squaring impossibility]
+There is no valid straightedge-and-compass trace constructing a square equal in area to the unit circle.
+\end{theorem}
+
+\begin{proof}
+The preceding transformation maps a purported trace and area certificate to a nonzero polynomial relation for $\pi$, and the finitistic Hermite--Lindemann proof maps that relation to $0=1$.
+\end{proof}
+
+\section{Why the whole proof fits $\ipra$}
+
+This section records the arithmetization obligations explicitly.  It is not enough to say that a classical proof is ``elementary.''  The relevant question is whether every construction and termination argument is primitive recursive and whether its correctness is provable using intuitionistic logic plus quantifier-free induction.
+
+\begin{longtable}{@{}p{0.24\textwidth}p{0.34\textwidth}p{0.34\textwidth}@{}}
+\toprule
+Component & Primitive-recursive data/program & Induction or bound used \\
+\midrule
+\endhead
+Trace replay & finite instruction list, branch bits, exact field vectors & induction on trace length \\
+Quadratic tower & coefficient vectors in nested bases & induction on tower depth \\
+Gaussian elimination & bounded pivot scan and row operations & induction on rows/columns \\
+Irreducibility of cubics & rational-root candidates & fixed finite checking \\
+Tower-law divisibility & greedy basis over $\Q[\alpha]$ & induction on a finite spanning list \\
+Polynomial algebra & coefficient lists, derivative, gcd, resultant & primitive recursion on degree \\
+Square-free factorization & subresultant Euclidean algorithm & degree decreases at each step \\
+Root bound/separation & integer formulas in degree and height & exponentiation and factorial recursion \\
+Root isolation & bounded dyadic grid and Cauchy-index count & predetermined grid-cell bound \\
+Symmetric reduction & leading-monomial cancellation & finite monomial-order bound \\
+Algebraic equality & gcd plus isolating-box refinement & separation-bound stopping index \\
+$\atan,\exp,\sin,\cos$ & rational series partial sums & alternating/factorial remainder bounds \\
+Riemann integrals used here & dyadic sums of fixed functions & explicit Lipschitz or derivative modulus \\
+Newton sums & integer recurrence & induction on power $k$ \\
+Hermite polynomial & finite derivative list & induction on derivative order \\
+Smallness estimate & explicit $T=2\max(1,2A^2,d)$ & factorial block inequality \\
+Prime selection & least divisor of $H!+1$ & bounded search up to $H!+1$ \\
+Final contradiction & exact integer and modular arithmetic & Euclidean algorithm/prime divisibility \\
+\bottomrule
+\end{longtable}
+
+\subsection{Quantifiers and real equality}
+
+The formal transcendence formula can be written schematically as
+\[
+  \forall P\,\bigl(\poly_{\Z}(P)\wedge P\ne0
+       \to \neg\mathsf{ZeroAtPi}(P)\bigr).
+\]
+Here $\mathsf{ZeroAtPi}(P)$ says that the interval evaluation of $P$ at the $n$th rational enclosure of $\pi$ contains $0$ for every requested precision, with the enclosure error tending to zero by the fixed modulus.  The proof assumes this formula and uses it to justify exact identities in the Cauchy-real calculus.  It does not infer a witness precision from its negation.
+
+Similarly, the geometric statements quantify only over trace codes.  For example,
+\[
+  \forall t\,\neg\mathsf{CubeDoubleTrace}(t),
+\]
+where the predicate checks every line, circle, intersection, tower coordinate and final equation.  The proof is uniform in $t$.
+
+\subsection{No use of classical choice}
+
+The following apparently classical phrases have been eliminated.
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Classical phrase & Constructive replacement \\
+\midrule
+``Take a basis'' & greedy basis from a displayed finite spanning list \\
+``Take the minimal polynomial'' & use an explicit annihilator; irreducibility only for two cubics \\
+``Choose all conjugates'' & certified complex-root isolation \\
+``Choose a nonzero subset sum'' & decide equality in a finite algebraic list \\
+``Choose a sufficiently large prime'' & least divisor of $H!+1$ \\
+``For large enough $p$'' & the displayed threshold $T$ \\
+``By compactness'' & coefficient/root bounds $R,M,C$ \\
+``By convergence'' & a primitive-recursive remainder modulus \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Lean formalization roadmap}
+
+There are two formalization layers, and conflating them would overstate the result.
+
+\begin{enumerate}
+\item A conventional Lean/Mathlib development is useful for checking the algebraic and analytic mathematics.  It may use Mathlib's fields, real and complex numbers, finite-dimensional vector spaces and existing Lindemann analytical infrastructure.
+\item The target theorem ``$\ipra$ proves the impossibilities'' requires an \emph{object-level} derivation in the syntax and proof predicate of the \texttt{ConciseIPRA} development.  The ordinary Lean theorem is not, by itself, a proof in the weak theory.
+\end{enumerate}
+
+The existing \texttt{ConciseIPRA} repository provides the intended foundation: primitive-recursive function symbols, terms, the $\mathsf{PRAAx}$ axioms, quantifier-free induction, and proved translations between the ordinary $\ipra$ presentation and the native scalar core.  The final project should build its arithmetic libraries over those definitions and then transport the closed theorem through the established bi-interpretation.
+
+\subsection{Proposed module graph}
+
+\begin{center}
+\begin{tikzcd}[column sep=small,row sep=small]
+\code{Coding.Basic} \arrow[r] \arrow[d] & \code{Coding.Polynomial} \arrow[r] \arrow[d] & \code{Algebra.RootIsolation} \arrow[d] \\
+\code{Coding.Matrix} \arrow[r] & \code{Algebra.QuadraticTower} \arrow[r] & \code{Geometry.Trace} \\
+\code{Analysis.PRReal} \arrow[r] \arrow[d] & \code{Analysis.ExpTrigPi} \arrow[r] \arrow[d] & \code{Geometry.CircleArea} \arrow[d] \\
+\code{Transcendence.Hermite} \arrow[r] & \code{Transcendence.SubsetSums} \arrow[r] & \code{Transcendence.Pi} \\
+& \code{Geometry.CubicObstructions} \arrow[ur] & \code{Geometry.Impossibilities}
+\end{tikzcd}
+\end{center}
+
+A practical file-by-file plan follows.
+
+\begin{description}[style=nextline,leftmargin=0pt]
+\item[\code{Coding/IntRatList.lean}]
+Canonical codes for integers, reduced rationals, finite vectors and lists; correctness of map/fold/bounded minimization; binary-size-independent mathematical specifications.
+
+\item[\code{Coding/Polynomial.lean}]
+Trimmed integer/rational polynomials, evaluation, derivative, pseudo-division, subresultants, gcd, Sylvester resultants, coefficient height and Cauchy root bounds.
+
+\item[\code{Coding/Matrix.lean}]
+Fraction-free Gaussian elimination, rank, determinant, solution certificates and the greedy-basis theorem.
+
+\item[\code{Algebra/QuadraticTower.lean}]
+Tower codes, normalized coefficient vectors, arithmetic, zero testing, displayed bases, dimension $2^e$, and the constructive divisibility theorem for a subfield generated by an irreducible root.
+
+\item[\code{Geometry/ConstructionTrace.lean}]
+Syntax and verifier for points, lines, circles and branch-selected intersections.  Main theorem:
+\begin{lstlisting}
+theorem trace_to_quadraticTower
+    (h : ValidTrace t) :
+    Exists fun T => TowerRealizesTrace T t /\ IsPowerOfTwo (Tower.dim T)
+\end{lstlisting}
+The actual object-level statement should use the repository's coded existential and conjunction formulas rather than Lean's meta-level \code{Exists} and \code{/\\}.
+
+\item[\code{Geometry/CubicObstructions.lean}]
+Rational-root theorem for monic cubics, irreducibility of $X^3-2$ and $X^3-3X-1$, triple-angle polynomial identity, and the two short impossibility derivations.
+
+\item[\code{Analysis/PRReal.lean}]
+Rational interval names with moduli, exact equality predicate, ring operations, factorial-series exponential, sine and cosine, alternating-series arctangent, dyadic Riemann sums, and the fixed-function fundamental theorem used in the area and Hermite arguments.
+
+\item[\code{Analysis/ExpTrigPi.lean}]
+Definition $\pi=4\atan(1)$; Machin identity as an efficiency theorem; $e^{i\pi}=-1$; explicit interval bounds such as $3<\pi<4$ if useful for diagnostics.
+
+\item[\code{Geometry/CircleArea.lean}]
+Rational substitution $x=2t/(1+t^2)$, antiderivative verification, and the theorem that the coded unit-disk area equals the coded $\pi$.
+
+\item[\code{Algebra/RootIsolation.lean}]
+Square-free factorization, root radius, explicit separation, Sturm--Cauchy root count on rational rectangles, arithmetic on algebraic codes and exact equality.  The repository's \code{FTA_iPRA} draft is the natural candidate for reuse after its statements and trust boundary are audited.
+
+\item[\code{Transcendence/SymmetricSubsetSums.lean}]
+Effective fundamental theorem of symmetric polynomials, Vieta substitution, construction of $Q$, zero-root removal and denominator clearing.
+
+\item[\code{Transcendence/HermiteApprox.lean}]
+Definitions of $h_p,A_p,n_p,g_p$; derivative divisibility; congruence $n_p\equiv F(0)^p\pmod p$; the series proof of (9.7); root-sum integrality; explicit factorial threshold; Euclid-prime search; final integer contradiction.
+
+\item[\code{Transcendence/Pi.lean}]
+Even/odd transform from $P(\pi)=0$ to $G(i\pi)=0$, root enumeration, subset-sum exponential relation, and the closed theorem \code{pi_transcendental_ipra}.
+
+\item[\code{Geometry/ThreeImpossibilities.lean}]
+The three final closed $\mathsf{PRAAx}$ derivations.
+
+\item[\code{Bridge/Native.lean}]
+Transport the closed theorems using the already proved equivalence between $\mathsf{PRAAx}$ derivability and the native calculus.  The target shape is schematically
+\begin{lstlisting}
+theorem all_three_native :
+    NPrf [] (NFm.ofPRA allThreeFormula) :=
+  (pra_iff_native.mp all_three_pra)
+\end{lstlisting}
+with the precise direction chosen to match the library theorem.
+\end{description}
+
+\subsection{Milestone theorem interfaces}
+
+The following interfaces make the path to completion explicit.  Names are schematic, but their inputs and outputs should remain stable.
+
+\begin{lstlisting}
+-- Finite geometry to finite algebra
+theorem construction_coordinates_in_tower :
+  ValidTrace t -> Exists fun T => Realizes T t /\ QuadraticTower T
+
+theorem quadraticTower_dim_pow_two :
+  QuadraticTower T -> Exists fun e => dimQ T = 2 ^ e
+
+theorem irreducible_degree_dvd_ambient_dim :
+  IrreducibleQ p -> EvalInField p a L = 0 -> degree p | dimQ L
+
+-- The two cubic obstructions
+theorem cube_polynomial_irreducible : IrreducibleZ (X^3 - 2)
+theorem trisect_polynomial_irreducible : IrreducibleZ (X^3 - 3*X - 1)
+
+-- Fixed constructive analysis
+theorem exp_i_pi : CExp (I * pi) = -1
+theorem unitDiskArea_eq_pi : UnitDiskArea = pi
+
+-- Finitistic Lindemann assembly
+theorem root_isolation_correct : RootIsolationSpec isolateRoots
+theorem subsetSum_integer_polynomial : SubsetSumPolynomialSpec
+ntheorem hermite_no_exp_relation : NoPositiveIntegerExpRelation
+ntheorem pi_transcendental_ipra : ForallNonzeroIntPolyNotZeroAt pi
+
+-- Final theorems
+theorem cube_doubling_impossible_pra : DerivablePRA cubeFormula
+theorem angle_trisection_impossible_pra : DerivablePRA trisectFormula
+theorem circle_squaring_impossible_pra : DerivablePRA squareCircleFormula
+\end{lstlisting}
+
+The two occurrences of \code{ntheorem} in this schematic block deliberately signal modules whose implementation is not present in this archive; they are not copy-paste-ready Lean.  The accompanying \code{IPRAFormalizationBlueprint.lean} is a compile-oriented interface mock with each missing milestone exposed as an axiom, so that dependencies are visible without pretending the formalization is complete.
+
+\subsection{Verification strategy}
+
+A robust implementation should maintain three independent checks.
+
+\begin{enumerate}
+\item \textbf{Executable certificate checking.}  Root boxes, Sturm--Cauchy counts, symmetric reductions, Hermite coefficient divisibility and final integer arithmetic should be exportable as finite certificates checked by a small program.
+\item \textbf{Conventional Lean cross-check.}  Reprove the main algebraic and analytic lemmas over Mathlib's standard structures.  A current external Lean development already contains an axiom-clean theorem \code{Transcendental Q Real.pi}; its module decomposition is a useful comparison for the Lindemann part, but it does not replace the $\ipra$ arithmetization.
+\item \textbf{Object-level proof.}  Every theorem used by the final result must ultimately be represented as a derivation under \code{PRAAx}, then transported to the native scalar core.  Meta-level Lean automation is trusted only to construct and kernel-check that derivation object.
+\end{enumerate}
+
+\section{Status and trust boundary}
+
+This archive contains a fully developed human-readable constructive proof architecture and a precise path to a complete Lean formalization.  It does \emph{not} contain the completed object-level Lean derivation in \texttt{ConciseIPRA}.  In particular:
+
+\begin{itemize}
+\item the quadratic-tower and cubic arguments are elementary enough that their Lean implementation is direct;
+\item the finite Hermite integer contradiction is given with explicit formulas and bounds;
+\item the largest implementation task is the certified complex-root isolation and its integration with the fixed Cauchy-real library;
+\item the supplied Python checks validate selected exact identities and bounds, not the full theorem;
+\item the external conventional Lean proof of $\pi$ transcendence is recorded only as provenance and a cross-check.
+\end{itemize}
+
+These distinctions are essential.  A theorem in ordinary Lean about Mathlib's real numbers and a theorem saying that $\ipra$ proves a coded formula are different deliverables.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item Can the root-isolation layer be avoided by phrasing the conjugate argument in a finite splitting algebra equipped with a constructive trace, thereby reducing the analytic interface to finitely many certified embeddings only at the last step?
+\item What is the smallest library of fixed-function analysis sufficient for the Hermite identity and disk-area calculation in \texttt{ConciseIPRA}?  In particular, can both be reduced to one generic theorem for solutions of first-order polynomial differential equations with explicit majorants?
+\item Can the effective symmetric-polynomial reduction be replaced by a direct resultant construction for the subset sums, producing a smaller proof term and checker?
+\item Is there a version of the $\pi$ argument that avoids the full constructive fundamental theorem of algebra by using resultants and power sums throughout?
+\item What is the smallest native-calculus certificate, measured by the existing ConciseIPRA proof-checker metrics, for each of the three final impossibility formulas?
+\item Can one extract from the $\ipra$ proof an explicit primitive-recursive upper bound on the size of the final contradictory integer certificate as a function of the assumed polynomial relation for $\pi$?
+\item Which other classical non-constructibility results, such as construction of a regular $n$-gon, can be added with almost no new analytic infrastructure once the tower library exists?
+\end{enumerate}
+
+\appendix
+
+\section{Coordinate formulas for construction traces}
+
+For formalization it is convenient to avoid slopes, since vertical lines would require a special case.  Represent a line by a normalized triple $(a,b,c)$ with
+\[
+  ax+by=c,
+\]
+and a circle by $(u,v,\rho)$ with
+\[
+  (x-u)^2+(y-v)^2=\rho.
+\]
+Normalization chooses the first nonzero coefficient and divides by it; over a tower field this is decidable.
+
+For two lines $(a,b,c)$ and $(a',b',c')$, put $D=ab'-a'b$.  If $D\ne0$ then
+\[
+  x=\frac{cb'-c'b}{D},\qquad
+  y=\frac{ac'-a'c}{D}.
+\]
+For a line through a point $P=(p,q)$ with direction $D=(r,s)$ and a circle $(u,v,\rho)$, substitution gives
+\[
+  (r^2+s^2)t^2
+ +2\bigl(r(p-u)+s(q-v)\bigr)t
+ +(p-u)^2+(q-v)^2-\rho=0.
+\]
+The discriminant is
+\[
+  \Delta=4\bigl(r(p-u)+s(q-v)\bigr)^2
+          -4(r^2+s^2)\bigl((p-u)^2+(q-v)^2-\rho\bigr).
+\]
+One square-root generator suffices for both coordinates.
+
+For circles $(u,v,\rho)$ and $(u',v',\rho')$, subtraction gives the radical axis
+\[
+  2(u'-u)x+2(v'-v)y
+   =\rho-\rho'+u'^2+v'^2-u^2-v^2.
+\]
+This reduces circle-circle intersection to line-circle intersection.
+
+\section{The factorial threshold}\label{app:factorial}
+
+Here is the smallness lemma in a form directly suitable for a coded proof.
+
+\begin{lemma}
+Let $A,d\ge1$ and
+\[
+  q=\max(1,2A^2,d),\qquad T=2q.
+\]
+Then for every $p\ge T$,
+\[
+  dA^p<(p-1)!.
+\]
+\end{lemma}
+
+\begin{proof}
+At $p=2q$, retain only the factors from $q$ through $2q-1$:
+\[
+  (2q-1)!\ge\prod_{j=q}^{2q-1}j\ge q^q.
+\]
+Because $q\ge2A^2$,
+\[
+  A^{2q}=(A^2)^q\le(q/2)^q.
+\]
+The induction $2^q\ge q+1$ and $q\ge d$ give $2^q>d$.  Therefore
+\[
+  dA^{2q}<2^qA^{2q}\le q^q\le(2q-1)!.
+\]
+If $dA^p<(p-1)!$ and $p\ge T>A$, then
+\[
+  dA^{p+1}=A(dA^p)<A(p-1)!\le p!.
+\]
+Induction on $p-T$ completes the proof.
+\end{proof}
+
+\section{Derivative divisibility in the Hermite construction}
+
+Write $h(X)=\sum_{k=0}^{D}c_kX^k$.  Then
+\[
+  h^{(j)}(0)=j!c_j.
+\]
+For $h_p=X^{p-1}F^p$, $c_j=0$ for $j<p-1$.  Hence
+\[
+  \frac{A_p(0)}{(p-1)!}
+  =\sum_{j=p-1}^{D}\frac{j!}{(p-1)!}c_j\in\Z.
+\]
+Modulo $p$, every quotient $j!/(p-1)!$ with $j\ge p$ vanishes, leaving $c_{p-1}=F(0)^p$.
+
+For the root identity, the formal polynomial divisibility
+\[
+  F^p\mid h_p
+\]
+implies that if $F(r)=0$, then $h_p^{(j)}(r)=0$ for $j<p$.  For $j\ge p$, the coefficient of $X^k$ in $h_p^{(j)}$ is
+\[
+  \frac{(k+j)!}{k!}c_{k+j},
+\]
+which is divisible by $j!$ and hence by $p!$.  Thus $h_p^{(j)}/p!\in\Z[X]$, giving the explicit $g_p$ used in the main proof.
+
+\section{Suggested object-level formula packaging}
+
+A convenient closed formula is the conjunction
+\[
+  \mathsf{AllThree}:=
+  \mathsf{NoCubeDouble}\wedge
+  \mathsf{NoTrisect60}\wedge
+  \mathsf{NoSquareCircle}.
+\]
+In the native scalar core, conjunction is a macro and can be eliminated from the final stored syntax if desired.  Each component should be a universal negation over a natural-number trace code.  For example, after expanding abbreviations,
+\[
+  \mathsf{NoCubeDouble}
+   :=\forall t\bigl(\mathsf{ValidCubeTrace}(t)\to\bot\bigr).
+\]
+The trace verifier itself is a primitive-recursive characteristic function, so its graph is represented by equations.  The proof transformer from a validity certificate to contradiction is also primitive recursive and can be reflected as a derivation-producing function.  This suggests a compact proof-carrying implementation: the external generator emits the tower and rank certificates, while the small native checker verifies them.
+
+\section{Provenance and comparison points}
+
+The formalization plan is designed to sit on the \texttt{ConciseIPRA} development in the ProveIt repository, pinned in the accompanying provenance file.  In particular, the repository already contains:
+
+\begin{itemize}
+\item the inductive type of primitive-recursive symbols and the ordinary $\ipra$ axiom system;
+\item the theorem implementing quantifier-free induction;
+\item a native scalar proof system;
+\item proved translations and round trips between the native system and the ordinary $\mathsf{PRAAx}$ presentation.
+\end{itemize}
+
+For the conventional Lean cross-check, the archive records two relevant upstream facts: Mathlib contains the analytic approximation theorem used in Lindemann--Weierstrass arguments, and an external Lean development assembles an axiom-clean proof of $\operatorname{Transcendental}_{\Q}(\pi)$.  Those sources support the mathematical feasibility of the analytic route.  They are not counted as an $\ipra$ formalization, because their ambient foundations and representations are much stronger than the target object theory.
+
+\begin{thebibliography}{9}
+
+\bibitem{Wantzel1837}
+P.-L. Wantzel,
+\emph{Recherches sur les moyens de reconnaitre si un probleme de geometrie peut se resoudre avec la regle et le compas},
+Journal de mathematiques pures et appliquees 2 (1837), 366--372.
+
+\bibitem{Lindemann1882}
+F. Lindemann,
+\emph{Uber die Zahl $\pi$},
+Mathematische Annalen 20 (1882), 213--225.
+
+\bibitem{Jacobson}
+N. Jacobson,
+\emph{Basic Algebra I}, second edition,
+W. H. Freeman, 1985, Section 4.12.
+
+\bibitem{ProveIt}
+V. Reshetnikov,
+\emph{ProveIt: Concise presentations of intuitionistic primitive recursive arithmetic},
+Git repository, pinned revision recorded in \code{provenance/SOURCES.md}.
+
+\bibitem{MathlibLindemann}
+Y. Zhao and Mathlib contributors,
+\emph{Analytic part of the Lindemann--Weierstrass theorem},
+\code{Mathlib/NumberTheory/Transcendental/Lindemann/AnalyticalPart.lean},
+pinned revision recorded in \code{provenance/SOURCES.md}.
+
+\bibitem{LeanPi}
+T. Morris,
+\emph{Transcendence of $\pi$ -- unconditional, fully machine checked},
+\code{PiTranscendental.lean}, pinned revision recorded in \code{provenance/SOURCES.md}.
+
+\end{thebibliography}
+
+\end{document}

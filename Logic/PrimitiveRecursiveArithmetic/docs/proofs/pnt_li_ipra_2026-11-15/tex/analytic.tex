@@ -1,0 +1,424 @@
+% Complete quantitative analytic core; included by the main manuscript.
+\section{Finite analytic constructions used below}
+The complex notation in this section abbreviates pairs of rational
+approximation procedures with certified errors. It does not quantify over
+arbitrary real numbers or arbitrary functions. All final inputs $x,y$ are
+positive rationals, all vertical contour sides used in the final estimate
+are rational, and every infinite expression below is accompanied by a
+tail bound. The proof only needs finite sums, products, powers, rational
+division with a supplied positive denominator bound, and rational
+approximations to the elementary exponential, sine, cosine and logarithm.
+The latter can be obtained from their power series after range reduction.
+For example, $\log u$ on a positive rational interval follows from
+$\log u=2\sum_{j\ge0}z^{2j+1}/(2j+1)$, $z=(u-1)/(u+1)$;
+binary range reduction puts $|z|\le1/3$, and the geometric tail is
+explicit. Thus every expression used here has a primitive recursive
+approximation at a requested precision.
+
+\paragraph{Finite Euler summation.}
+Let $s=\sigma+it$, $\sigma>0$, and let $1\le N<M$ be integers.
+Integration by parts on each interval $[n,n+1]$ and telescoping gives
+\[
+ \sum_{n\le M}n^{-s}=\sum_{n\le N}n^{-s}
+ +\frac{N^{1-s}-M^{1-s}}{s-1}
+ -s\int_N^M\{u\}u^{-s-1}\,du.                              \tag{E1}
+\]
+For $s=1$ the quotient means its explicit logarithmic limit; later we
+separate this point algebraically. One can verify (E1) without integration
+notation: on $[n,n+1]$, replace $\{u\}$ by $u-n$, use the elementary
+antiderivatives of $u^{-s}$ and $u^{-s-1}$, and sum. Both endpoint sums
+telescope. The displayed integrals are therefore finite elementary
+expressions before any limiting operation.
+
+For $\sigma>1$ the term $M^{1-s}$ and the tail integral have explicit
+limits, so (E1) agrees with the Dirichlet series definition of $\zeta$.
+For $\sigma>0$, $s\ne1$, define instead
+\[
+ Z(s)=\sum_{n\le N}n^{-s}+\frac{N^{1-s}}{s-1}
+       -s\int_N^\infty\{u\}u^{-s-1}\,du.                   \tag{E2}
+\]
+Equation (E1) proves that this does not depend on $N$. The tail after $V$
+is at most $|s|V^{-\sigma}/\sigma$. This is the only continuation of
+$\zeta$ used in this proof; no analytic-continuation uniqueness theorem is
+needed. Differentiating the finite expression and its explicitly bounded
+tails is legitimate, since for $j\ge0$
+\[
+ \int_V^\infty (\log u)^j u^{-\sigma-1}\,du
+ =V^{-\sigma}\sum_{r=0}^j
+     \frac{j!}{(j-r)!}\frac{(\log V)^{j-r}}{\sigma^{r+1}}.    \tag{E3}
+\]
+This identity follows by $j$ integrations by parts; in the application
+$j\le3$ and $\sigma\ge1/2$. Taking $V=2^v$ with a sufficiently large
+explicit integer $v$ makes each tail as small as requested. For instance,
+one may start with $v=2^{q+10}(T+4)^4$ when $|t|\le T$ and the desired
+error is $2^{-q}$; the exponential decay $2^{-v/2}$ dominates the degree
+three polynomial in $v$ appearing in (E3). Every such comparison reduces
+to the elementary inequalities $n\le2^n$ and finite multiplication.
+
+Writing $\zeta$ for $Z$, the $N=1$ formula is
+\[
+ \zeta(s)=\frac1{s-1}+h(s),\qquad
+ h(s)=1-s\int_1^\infty\{u\}u^{-s-1}\,du.                   \tag{E4}
+\]
+Formula (E3) proves directly that $h$ has three controlled complex
+derivatives on every rectangle used below. The pole at $1$ is therefore
+isolated by an explicit algebraic expression, rather than detected by a
+zero or pole enumeration.
+
+\paragraph{Finite Euler products and their tails.}
+For $\sigma=1+\eta>1$ put
+$P_N(s)=\prod_{p\le N}(1-p^{-s})^{-1}$. Every factor has a supplied
+apartness bound $|1-p^{-s}|\ge1-p^{-\sigma}\ge1/2$.
+Expand each factor as a geometric series. Unique prime factorization
+identifies the resulting product with the sum of $n^{-s}$ over integers
+whose prime factors are at most $N$. This assertion can be checked first
+with all exponents bounded and then with geometric tails; no infinite
+choice is involved. Every integer $n\le N$ has all its prime factors at
+most $N$, and consequently
+\[
+        |\zeta(s)-P_N(s)|\le \sum_{n>N}n^{-\sigma}
+                    \le N^{-\eta}/\eta.                   \tag{E5}
+\]
+The last inequality is comparison with $\int_N^\infty u^{-1-\eta}du$.
+If $\eta\ge1/B$, the explicit choice
+$N=2^{B(q+B+2)}$ makes the right-hand side at most $2^{-q-2}$:
+$N^{-\eta}/\eta\le B2^{-q-B-2}\le2^{-q-2}$.
+For a finite verification of the geometric expansion, truncate each prime
+exponent at $J\ge q+2N+10$. The product error is bounded by
+$N2^N2^{-J}$, because there are at most $N$ factors, each complete factor
+has modulus at most $2$, and each geometric tail is at most $2^{-J}$.
+This supplies a literal finite expansion with a primitive recursive size.
+
+The elementary logarithm identity
+\[
+ -\log|1-z|=\mathop{\rm Re}\sum_{j\ge1}z^j/j,
+                  \qquad |z|\le1/2,
+\]
+follows by integrating the finite geometric series for
+$z/(1-uz)$ from $u=0$ to $1$. Its tail after $J$ has modulus at most
+$2|z|^{J+1}/(J+1)\le2^{-J}$. Apply it to
+$z=p^{-\sigma}\exp(-it\log p)$ and add with coefficients $3,4,1$ at
+ordinates $0,t,2t$. The summand is
+\[
+ \frac{p^{-j\sigma}}j
+ [3+4\cos(jt\log p)+\cos(2jt\log p)]
+ =\frac{2p^{-j\sigma}}j[1+\cos(jt\log p)]^2\ge0.
+\]
+For the product over $p\le N$, truncation at
+$J\ge q+\lceil\log_2N\rceil+10$ has total logarithmic error below
+$2^{-q-7}$. The identity $\exp(u+v)=\exp(u)\exp(v)$, proved from its
+absolutely convergent power series, now yields the positive product
+inequality used below.
+
+One does not have to infer apartness from an exact limiting inequality.
+For a direct finite version sufficient for the constants below, suppose
+$0<\eta\le1$, choose $B$ with $\eta\ge1/B$, put $q=20+8B$, and use (E5).
+Then each of $\zeta(\sigma)$, $\zeta(\sigma+it)$ and
+$\zeta(\sigma+2it)$ differs from its finite Euler product by at most
+$\varepsilon=2^{-20}B^{-8}$. All six quantities have modulus at most
+$4/\eta$. The change in a product of the eight factors, counted with
+multiplicity, is at most
+\[
+ 8\varepsilon(4/\eta)^7
+ \le2^{17}2^{-20}B^{-8}\eta^{-7}\le1/8.
+\]
+The finite logarithmic calculation gives its Euler-product side at least
+$7/8$ after allowing another explicit $1/8$ approximation error. Hence
+the product of the zeta moduli is at least $3/4$, and in particular at
+least $1/2$. This weaker numerical version already proves the rounded
+$2^{-4}$ lower bound used below. Thus the lower bound has a finite
+positive certificate; the argument does not use a principle converting
+double-negated nonvanishing into apartness.
+
+\paragraph{The logarithmic derivative series.}
+Differentiate the finite Euler product and expand its geometric factors:
+\[
+ -P_N'(s)/P_N(s)
+ =\sum_{p\le N}\frac{(\log p)p^{-s}}{1-p^{-s}}
+ =\sum_{p\le N}\sum_{j\ge1}(\log p)p^{-js}.
+\]
+The unique factorization identification of prime powers gives
+\[
+ F(s):=-\zeta'(s)/\zeta(s)
+              =\sum_{n\ge1}\Lambda(n)n^{-s},\quad\sigma>1. \tag{E6}
+\]
+This differentiation and limiting step is quantitative. The difference
+$\zeta-P_N$ has the omitted-integer expansion used to prove (E5), and
+the derivative of that expansion is controlled by the majorant
+$\sum_{n>N}(\log n)n^{-\sigma}$; this does not differentiate an
+inequality. The reciprocal of $\zeta$ on
+$\sigma>1$ has the finite Euler-product bound
+$|1/\zeta(s)|\le\prod_p(1+p^{-\sigma})\le\zeta(\sigma)$.
+For $c=1+1/b$, $b\ge1$, comparison on each interval $[n-1,n]$ yields
+\[
+ \sum_{n\ge2}(\log n)n^{-c}
+ \le\int_1^\infty\log(2u)u^{-c}du
+ =b^2+b\log2\le2b^2.                                     \tag{E7}
+\]
+The tail after $N$ is at most
+$N^{-1/b}[b\log(2N)+b^2]$. For any requested $2^{-q}$, the explicit
+choice $N=2^{b^2(q+b+10)^2}$ makes this tail smaller than $2^{-q}$.
+To check this, bound the logarithm of the polynomial factor by
+$2q+6b+23$ using $\log_2r\le r$, and compare it with
+$b(q+b+10)^2$. Enlarging $q$ by the binary length of a preceding
+multiplier supplies any desired error budget after multiplication.
+
+\paragraph{A finite scalar Perron kernel.}
+For positive rational $v$ and $c\in[1,2]$, define the integral over a
+finite vertical segment in the usual parametrized sense. Its integrand
+$v^s/(s(s+1))$ has scalar poles at $0,-1$, with residues respectively
+$1,-v^{-1}$. We claim
+\[
+ \frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}
+            \frac{v^s}{s(s+1)}ds=(1-v^{-1})_+.              \tag{E8}
+\]
+Here is a complete finite contour verification. If $v\ge1$, close the
+segment on the line $\Re s=-M$, $M\ge2$. Its left edge has absolute
+contribution at most $1/(2(M-1))$, because $v^{-M}\le1$ and
+\[
+ \int_{-\infty}^{\infty}
+ \frac{dt}{(M-1)^2+t^2}=\frac\pi{M-1}.
+\]
+The two horizontal edges at height $U$ have combined contribution at
+most $(M+2)\max(1,v^2)/U^2$, using $|s(s+1)|\ge U^2$.
+The closed rectangle contains exactly the two displayed scalar poles,
+so its integral is $1-v^{-1}$. If $0<v<1$, close instead on
+$\Re s=M$, $M>2$. There are no poles; the right-edge and horizontal
+bounds are no larger, since $v^M\le1$ and $v^\sigma\le1$ there.
+At $v=1$, either closure gives zero, so no apartness from $1$ is needed.
+The decision $v\ge1$ is an exact rational comparison.
+
+For a requested error $2^{-q}$ and a rational bound $v\le Y$, the explicit
+choices
+\[
+ M=2^{q+6},\qquad U=2^{q+6}(M+3)(Y+1)^2
+\]
+make all closing-edge errors below $2^{-q-3}$. The omitted tails on the
+original line are bounded by $v^c/(\pi U)$ and satisfy the same bound.
+Every contour here is finite and rational. The residue calculation can
+be expressed by subtracting the two rational poles and applying the
+finite rectangle lemma; the integral of $1/(s-a)$ is evaluated directly
+on the four sides by logarithms and arctangents. Alternatively, the same
+calculation follows from integrating its elementary derivative away
+from $a$ on four rational subrectangles. In either case only the two
+explicit real poles occur, and their winding is fixed by the inequalities
+$-M<-1<0<c$.
+
+Multiplying (E8) by $y\Lambda(n)$ with $v=y/n$, summing, and using
+(E6)--(E7) proves the smoothed Perron formula below. To make every step
+finite at accuracy $2^{-q}$, first truncate the Dirichlet series using
+the cutoff after (E7), with $q$ enlarged to absorb $3y^2$; then use
+(E8) at accuracy $2^{-q}/(1+yN\log N)$ for each of the at most $N$
+terms. The order matters: first choose $N$, then the kernel accuracy,
+then its auxiliary rectangle sizes. There is no circular choice of
+cutoffs. Absolute values and the majorants above account for both
+discarded tails. The later PNT contour height $T$ is an independent,
+much smaller explicit number.
+
+\section{An explicitly apart zero-free strip}
+Put $H=|t|+3$, $L=\log H$, and $a=2^{-88}$. For
+$|t|\ge 1/64$, $1-1/(2L)\le\sigma\le2$, Euler summation gives
+\[
+ \zeta(s)=\sum_{n\le N}n^{-s}+\frac{N^{1-s}}{s-1}
+ -s\int_N^\infty\{u\}u^{-s-1}\,du,\qquad N=\lceil H^2\rceil.
+\]
+Here $L>1$, $\sigma>1/2$, $\log N\le3L$, $N^{1-\sigma}\le4$,
+and $|s|\le H$. Consequently
+\[
+ |\zeta(s)|\le 2^9L,\qquad |\zeta'(s)|\le2^{15}L^2.                 \tag{A1}
+\]
+For completeness, the finite sum in the first estimate is at most $13L$;
+the pole term is at most $256$; the integral term is at most $8/H<3$.
+For the derivative, the three contributions are respectively at most
+$39L^2$, $768L+16384$, and $8/N+40L/H$. Their sum is below $2^{15}L^2$.
+The formula and its derivatives have effective tails: after truncating the
+integral at $V$, the zeroth tail is at most $|s|V^{-\sigma}/\sigma$;
+the first derivative tail is bounded by
+$V^{-\sigma}/\sigma+|s|V^{-\sigma}(\log V/\sigma+1/\sigma^2)$.
+The analogous $j$th derivatives have the explicit bound obtained by
+integrating $u^{-\sigma-1}(\log u)^j$ by parts $j$ times.
+For the bound $N^{1-\sigma}\le4$, use $N\le(10/9)H^2$, hence
+$\log N\le(5/2)L$, and $e^{5/4}<4$ (since $e<3$ and $3^5<4^4$).
+
+For $1<\sigma\le2$, the Euler product and
+$3+4\cos v+\cos(2v)=2(1+\cos v)^2\ge0$ give
+\[
+ \zeta(\sigma)^3|\zeta(\sigma+it)|^4
+ |\zeta(\sigma+2it)|\ge1.                                      \tag{A2}
+\]
+This identity requires no choice of a complex logarithm: apply the real
+logarithm to the moduli of finite Euler factors, expand their absolutely
+convergent real series, and use the displayed nonnegative summands. Pass to
+finite approximations with the explicit $\sum_{n>N}n^{-\sigma}$ tail.
+Using $\zeta(\sigma)\le2/(\sigma-1)$ and
+$|\zeta(\sigma+2it)|\le 2^{10}L$ gives
+\[
+ |\zeta(\sigma+it)|\ge2^{-4}(\sigma-1)^{3/4}L^{-1/4}.
+\]
+Set $\delta=aL^{-9}$ and $\sigma_0=1+\delta$.
+At $\sigma_0$ this lower bound is $2^{-70}L^{-7}$.
+Moving horizontally from $\sigma_0$ by at most $2\delta$ changes $\zeta$
+by at most $2^{16}aL^{-7}=2^{-72}L^{-7}$, by (A1).
+For $\sigma\ge\sigma_0$ the direct product bound is at least as strong.
+Thus, on the whole region
+\[
+ 1-2^{-88}L^{-9}\le\sigma\le2,\quad |t|\ge1/64,
+\]
+we have the positive, numerical apartness estimates
+\[
+ |\zeta(s)|\ge2^{-71}L^{-7},\qquad
+ \left|\frac{\zeta'(s)}{\zeta(s)}\right|\le2^{86}L^9.             \tag{A3}
+\]
+In particular this is stronger constructively than merely asserting that
+$\zeta(s)\ne0$.
+
+For the finite arithmetization, use the following rational-parameter
+version of exactly the same argument. Let $Q$ be a positive integer with
+$Q\ge\log(|t|+3)$; take $\delta=2^{-88}Q^{-9}$ and the rational base
+point $\sigma_0=1+\delta$. Estimates (A1) hold with $Q$ in place of $L$
+on $\sigma\ge1-1/(2Q)$. At $\sigma_0$ the product inequality, even in
+its finite $1/2$ version above, gives
+$|\zeta(\sigma_0+it)|\ge2^{-4}\delta^{3/4}Q^{-1/4}
+=2^{-70}Q^{-7}$. The travel loss is at most $2^{-72}Q^{-7}$.
+Thus, throughout $1-2^{-88}Q^{-9}\le\sigma\le2$,
+\[
+ |\zeta(\sigma+it)|\ge2^{-71}Q^{-7},\qquad
+ |\zeta'/\zeta(\sigma+it)|\le2^{86}Q^9.                    \tag{A3r}
+\]
+The fractional powers in this explanation can be eliminated by fourth
+powers: the product lower bound is at least
+$2^{-14}\delta^3/Q$, whereas $(2^{-4}\delta^{3/4}Q^{-1/4})^4
+=2^{-16}\delta^3/Q$. At the chosen $\delta$, the latter is the fourth
+power of the rational number $2^{-70}Q^{-7}$. No irrational sample
+point or root-selection operation enters the numerical proof.
+
+\paragraph{The pole neighbourhood.}
+Write $\zeta(s)=1/(s-1)+h(s)$, where
+$h(s)=1-s\int_1^\infty\{u\}u^{-s-1}\,du$.
+If $|\sigma-1|\le1/64$ and $|t|\le1/64$, then $|h|\le4$, $|h'|\le10$,
+and $|s-1|\le1/32$. Consequently
+$w(s)=(s-1)\zeta(s)=1+(s-1)h(s)$ satisfies $|w|\ge7/8$ and
+$|w'|\le5$. Thus
+\[
+ -\zeta'(s)/\zeta(s)=1/(s-1)+g(s),\qquad |g(s)|\le10,            \tag{A4}
+\]
+with explicitly computable holomorphic $g=-w'/w$.
+For an integer $k\ge2$, set $T=2^k$, $Q=k+2$, $\delta_T=2^{-88}Q^{-9}$,
+$\alpha=1-\delta_T$. On the vertical edge $s=\alpha+it$, $|t|\le T$,
+(A3)--(A4) and $\log(T+3)\le Q$ imply $|\zeta'/\zeta|\le2^{90}Q^9$.
+On the top and bottom horizontal edges, $|\zeta'/\zeta|\le2^{86}Q^9$.
+There is exactly the explicitly isolated pole at $s=1$ in the rectangle
+$\alpha\le\sigma\le1+1/64$, $|t|\le T$; no zero enumeration is used.
+
+\section{Smoothed Perron and error estimates}
+For rational $y\ge e^{64}$ put $R=\log y$. Let $b$ be the least integer
+with $y\le2^b$, and put $c=1+1/b$. Then $R\le b\le3R$,
+$c\le1+1/64$, and $y^{c+1}\le3y^2$. Define
+\[
+ \Psi_1(y)=\sum_{n\le y}(y-n)\Lambda(n),\qquad F=-\zeta'/\zeta.
+\]
+The one-smoothed Perron identity is
+\[
+ \Psi_1(y)=\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}
+ F(s)\frac{y^{s+1}}{s(s+1)}\,ds.                              \tag{A5}
+\]
+To prove it, expand $F(s)=\sum\Lambda(n)n^{-s}$ using the absolutely
+convergent Euler product and evaluate
+$\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}v^s/(s(s+1))\,ds$
+as $(1-v^{-1})_+$, by closing left or right. The only scalar poles are
+$0,-1$. At $v=1$ close right; its integral tends to zero like $1/M$ on
+$\Re s=M$. When $v\ne1$ is rational, the sign of $v-1$ is decidable and
+its distance from $1$ has an explicit rational lower bound. Therefore the
+auxiliary rectangle sizes can all be chosen by primitive recursion.
+All interchanges are justified by the numerical majorant
+$\sum\log(n)n^{-c}\le2b^2\le18R^2$ and $\int(1+t^2)^{-1}dt<4$.
+
+Truncating (A5) at $T$ costs at most $54y^2R^2/T$.
+Shift the finite contour to $\alpha=1-\delta_T$. The residue is $y^2/2$.
+Since $\int_{-T}^T|s(s+1)|^{-1}dt\le\pi/\alpha\le2\pi$,
+the vertical edge costs at most $2^{91}y^2Q^9e^{-\delta_TR}$.
+The two horizontal edges cost at most $2^{88}y^2Q^9/T^2$.
+Hence
+\[
+ \left|\Psi_1(y)-\frac{y^2}2\right|
+ \le y^2\left(2^{91}Q^9e^{-\delta_TR}
+      +2^{88}Q^9/T^2+54R^2/T\right).                       \tag{A6}
+\]
+The contour step uses the strictly finite rectangle identity proved in Section~\ref{sec:finite-contour-audit}.
+Subtract $y^2/(2(s-1))$ from the integrand. In the pole neighbourhood,
+write its apparent divided difference as
+$\int_0^1 A'(1+u(s-1))du$, with $A(s)=y^{s+1}/(s(s+1))$.
+Away from that neighbourhood use (A3). The resulting analytic function
+and its first two derivatives have the explicit integer bound
+\[
+ M=2^{512}(\lceil y\rceil+1)^8(\lceil T\rceil+4)^{40}.
+\]
+Indeed $|h^{(j)}|\le2^{10}(T+3)$ for $j\le3$, by
+$\int_1^\infty(\log u)^ju^{-\sigma-1}du=j!\sigma^{-j-1}$.
+For $|t|\ge1/64$, the zeta derivatives through order $3$ are at most
+$2^{28}(T+3)$, its reciprocal is at most $2^{71}(T+3)^7$, and the
+logarithmic derivative and its first two derivatives are at most
+$2^{400}(T+3)^{32}$. For $|t|\le1/64$, use $|w|\ge7/8$ and the
+integral divided-difference formula above; derivatives through order $3$
+of $A(s)$ are at most $2^{12}y^6$. These bounds are all below $M$.
+All contour corners are rational. A rectangular
+mesh of side at most $2^{-q}/(100(M+1)(T+1)^2)$, where $M$ bounds the
+second derivative, makes the sum of cell-boundary errors below $2^{-q}$.
+Each cell uses the first-order Taylor polynomial, whose contour integral
+is exactly zero; the $O(M\,\text{side}^3)$ errors sum to the asserted bound.
+This is finite telescoping and does not invoke a general compactness theorem.
+
+\section{A convenient all-integer scale}
+Let $D_0=2^{100}$ and suppose $k\ge8192$ and
+\[
+ D_0 k^{10}\le\log_2x<D_0(k+1)^{10}.
+\]
+Choose $T=2^k$ and use the same $T$ for $y\in[x/2,2x]$.
+Then $Q\le2k$, $\delta_T\ge2^{-97}k^{-9}$, and
+\[
+ \log y\ge2^{98}k^{10},\qquad \log y\le2^{111}k^{10}.
+\]
+Thus $\delta_T\log y\ge2k$.
+For $k\ge8192$, $\log_2k\le k/256$. Here is a wholly integer proof.
+Put $j=\lfloor k/256\rfloor\ge32$. At $j=32$ one has
+$256(j+1)\le2^j$; the same inequality follows for $j+1$ from
+$256(j+2)\le2\cdot256(j+1)$. Quantifier-free induction therefore gives
+$k<256(j+1)\le2^j$, whence $k^{256}\le2^{256j}\le2^k$.
+Thus the needed polynomial absorptions can be proved without real
+differentiation: their $256$th powers are bounded respectively by
+$2^{25600+9k}\le2^{32k}$ and
+$2^{58368+20k}\le2^{64k}$. Consequently
+$2^{100}k^9\le2^{k/8}$ and $54\cdot2^{222}k^{20}\le2^{k/4}$.
+The three terms in (A6) are bounded respectively by
+$2^{-15k/8}$, $2^{-15k/8}$, and $2^{-3k/4}$.
+Their sum is at most $2^{-k/2}$.
+Consequently, uniformly for $y\in[x/2,2x]$,
+\[
+ \left|\Psi_1(y)-y^2/2\right|\le y^2 2^{-k/2}
+ \le4x^2 2^{-k/2}.                                         \tag{A7}
+\]
+Take $h=x2^{-\lfloor k/4\rfloor}$. Since $\psi$ is nondecreasing,
+\[
+ \frac{\Psi_1(x)-\Psi_1(x-h)}h\le\psi(x)
+ \le\frac{\Psi_1(x+h)-\Psi_1(x)}h.
+\]
+It follows from (A7) that
+$|\psi(x)-x|\le h/2+8x^2 2^{-k/2}/h\le9x2^{-k/4}$.
+Since $9\le2^{k/8}$, this yields
+\[
+                    |\psi(x)-x|\le x2^{-k/8}.               \tag{A8}
+\]
+The $h/2$ estimate is valid because
+$h/2\le x2^{-k/4}$ and $2^{\lfloor k/4\rfloor-k/2}\le2^{-k/4}$.
+For integer $x$, $k$ is obtained by bounded search from its binary length:
+choose the largest $j$ with $D_0 j^{10}\le\lfloor\log_2x\rfloor$.
+Thus all rate functions displayed here are primitive recursive.
+
+\paragraph{Status of the analytic estimate.}
+The analytic estimates prove an explicit nonoptimal stretched-exponential
+PNT error, equivalent to $O(x\exp(-c(\log x)^{1/10}))$ with a positive
+explicit $c$. The classical square-root logarithmic rate needs a stronger
+zero-free strip and is not proved by these notes. An iPRA formalization
+still has to instantiate the indicated finite rational complex-arithmetic
+identities and their error budgets; the fact that the numerical bounds are
+primitive recursive is not, by itself, a proof that the argument is in iPRA.

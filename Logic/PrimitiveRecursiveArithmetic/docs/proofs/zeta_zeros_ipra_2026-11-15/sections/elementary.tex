@@ -1,0 +1,504 @@
+\section{Zero exclusion with explicit positive margins}
+\label{sec:elementary-zero-exclusion}
+
+The distinction between a negative statement and a positive numerical
+estimate matters here.  A proof of $\zeta(s)\ne0$ obtained by contradiction
+does not, by itself, supply a primitive recursive precision at which a
+numerical computation will certify nonvanishing.  We shall prove positive
+rational lower bounds.  They are much weaker than the best analytic
+bounds, but their role in the arithmetic construction is transparent.
+
+We use the continuation formula
+\begin{equation}
+ I(s)=\int_1^\infty\{x\}x^{-s-1}\,dx,
+ \qquad \zeta(s)=\frac{s}{s-1}-sI(s)
+ \quad(\Re s>0,\ s\ne1).
+ \label{eq:elem-euler-integral}
+\end{equation}
+Here and below an integral is shorthand for its finite quadrature
+approximants and their stated tail estimates.  The braces in the
+integrand cause no problem: split the integral at integer endpoints,
+where its pieces are the smooth functions $(x-n)x^{-s-1}$.
+For $\Re s\ge a>0$,
+\begin{equation}
+ |I(s)|\le a^{-1},\qquad |I'(s)|\le a^{-2},\qquad
+ \left|\int_X^\infty\{x\}x^{-s-1}\,dx\right|
+ \le \frac{X^{-a}}a .
+ \label{eq:elem-I-bounds}
+\end{equation}
+The derivative estimate follows by inserting $\log x$ and using
+$\int_1^\infty (\log x)x^{-a-1}dx=a^{-2}$; finite integration by parts
+proves this last identity with its exponentially decreasing remainder.
+Differentiating the finite approximants and their remainder bounds gives
+\begin{equation}
+ \zeta'(s)=-\frac1{(s-1)^2}-I(s)-sI'(s).
+ \label{eq:elem-zeta-derivative}
+\end{equation}
+
+\subsection{The Euler region}
+
+\begin{theorem}[Positive Euler-region nonvanishing]
+\label{thm:elem-euler}
+For $s=\sigma+it$ with $\sigma>1$,
+\begin{equation}
+ |\zeta(s)|\ge\frac{\sigma-1}{\sigma}.
+ \label{eq:elem-euler-apartness}
+\end{equation}
+In particular, a supplied rational gap $\sigma\ge1+1/q$, $q\ge1$,
+gives the rational lower bound $1/(q+1)$.
+\end{theorem}
+
+\begin{proof}
+Define $D(s)=\sum_{n\ge1}\mu(n)n^{-s}$.  Trial division computes
+$\mu(n)$ by primitive recursion.  Expanding the product over the distinct
+prime divisors of $n$ gives the finite identity
+$\sum_{d\mid n}\mu(d)=[n=1]$.  Consequently
+\[
+ \zeta(s)D(s)=1.
+\]
+For clarity, the passage from the finite convolution to this equality
+has an explicit bound.  A product tail with $ab>N^2$ is contained in the
+union $a>N$ or $b>N$.  Its absolute value is at most
+\[
+ 2\zeta(\sigma)\frac{N^{1-\sigma}}{\sigma-1}.
+\]
+Thus the divisor calculation and this estimate prove the asserted
+identity at every requested precision.  Since
+\[
+ |D(s)|\le\zeta(\sigma)
+ \le1+\int_1^\infty x^{-\sigma}\,dx
+ =\frac{\sigma}{\sigma-1},
+\]
+the result follows by multiplying the two norms.  No test for equality
+of a complex number to zero is involved.
+\end{proof}
+
+\subsection{The finite 3--4--1 inequality}
+
+\begin{lemma}[Euler positivity]
+\label{lem:elem-341}
+For $\sigma>1$ and real $t$,
+\begin{equation}
+ \zeta(\sigma)^3\,|\zeta(\sigma+it)|^4
+                 |\zeta(\sigma+2it)|\ge1.
+ \label{eq:elem-341}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Put
+\[
+ L(s)=\sum_p\sum_{k\ge1}\frac{p^{-ks}}k.
+\]
+The sum restricted by $p^k\le N$ has error at most
+$N^{1-\sigma}/(\sigma-1)$: each prime power is a distinct integer, and
+its coefficient $1/k$ is at most one.  The power series for
+$-\log(1-z)$, applied to finite Euler products, gives
+$\exp L(s)=\zeta(s)$.  This equality also has an elementary tail proof:
+expand each finite geometric product, and observe that the omitted
+integers have a prime divisor beyond the included prime bound and hence
+exceed that bound.
+
+For every finite prime-power sum, use
+\[
+ 3+4\cos u+\cos(2u)=2(1+\cos u)^2\ge0
+\]
+with $u=kt\log p$, multiplied by $p^{-k\sigma}/k$.  Summing and then
+using the explicit tails gives
+\[
+ 3L(\sigma)+4\Re L(\sigma+it)+\Re L(\sigma+2it)\ge0.
+\]
+Exponentiation proves \eqref{eq:elem-341}.  Equivalently, at precision
+$2^{-m}$ the finite statement has lower bound $1-2^{-m}$ after the
+error budget for exponentiation and multiplication is included.  For a
+supplied gap $\sigma-1\ge1/q$, the choice
+$N=2^{q(m+q)}$ already bounds the logarithm tail by $2^{-m}$, because
+$q2^{-q}\le1$.  Enlarging $m$ by the explicitly computed multiplication
+budget completes the finite version.
+\end{proof}
+
+\subsection{A uniform zero-free neighborhood of the one-line}
+
+Let $F(s)=(s-1)\zeta(s)$, with the removable value $F(1)=1$.
+
+\begin{theorem}[A rational uniform clearance bound]
+\label{thm:elem-F-clearance}
+For every integer $H\ge1$, put
+\[
+ \varepsilon_H=2^{-40}(H+1)^{-5},\qquad
+ b_H=2^{-36}(H+1)^{-4}.
+\]
+Then
+\begin{equation}
+ |F(\sigma+it)|\ge b_H
+ \quad\text{if}\quad |t|\le H,\quad
+ |\sigma-1|\le\varepsilon_H.
+ \label{eq:elem-F-clearance}
+\end{equation}
+In particular $\zeta$ has no zero on $\Re s=1$, and has no zero in
+the displayed neighborhood of that line; its pole is represented by
+the nonzero removable value of $F$.
+\end{theorem}
+
+\begin{proof}
+First suppose $1/8\le|t|\le H$.  Set
+\[
+ M=128(H+1),\qquad B=16(H+1),\qquad
+ h=(128BM^4)^{-1},\qquad\delta=Mh.
+\]
+For $1/2\le\sigma\le2$,
+\eqref{eq:elem-I-bounds}--\eqref{eq:elem-zeta-derivative} give
+\[
+ |\zeta'(\sigma+it)|
+ \le64+2+4(H+2)=4H+74\le M.
+\]
+For $1\le\sigma\le2$, the same integral formula gives
+\[
+ |\zeta(\sigma+2it)|
+ \le(2+2H)(4+1)=10(H+1)\le B.
+\]
+Indeed $|\sigma+2it-1|\ge1/4$ and $|I(\sigma+2it)|\le1$.
+Also $0<h\le1$ and
+$\zeta(1+h)\le1+1/h\le2/h$.  Apply
+Lemma~\ref{lem:elem-341} at $\sigma=1+h$ to obtain
+\[
+ |\zeta(1+h+it)|^4
+ \ge\frac{h^3}{8B}=16M^4h^4=16\delta^4.
+\]
+The fourth power is increasing on nonnegative quantities, so
+$|\zeta(1+h+it)|\ge2\delta$.  The derivative bound along the
+horizontal segment now gives
+\[
+ |\zeta(1+it)|\ge2\delta-Mh=\delta.
+\]
+On the larger segment $|\sigma-1|\le h/2$ it gives
+\begin{equation}
+ |\zeta(\sigma+it)|\ge\delta-Mh/2=\delta/2.
+ \label{eq:elem-zeta-near-one}
+\end{equation}
+The constants simplify to
+\[
+ \delta=2^{-32}(H+1)^{-4},\qquad h/2=\varepsilon_H.
+\]
+
+We next handle the pole and small ordinates directly.  From
+\eqref{eq:elem-euler-integral},
+\[
+ F(s)=s-s(s-1)I(s).
+\]
+If $|s-1|\le r<1$, then
+\[
+ |F(s)-1|\le r+\frac{r(1+r)}{1-r}
+ =\frac{2r}{1-r}.
+\]
+In particular
+\begin{equation}
+ |F(s)|\ge1/3\qquad (|s-1|\le1/4).
+ \label{eq:elem-pole-disk}
+\end{equation}
+For $|t|\le3/16$ and $|\sigma-1|\le\varepsilon_H$, we have
+$|s-1|\le1/4$, since $\varepsilon_H\le1/16$.  For
+$|t|\ge1/8$, \eqref{eq:elem-zeta-near-one} instead gives
+\[
+ |F(s)|\ge\tfrac18\,\tfrac\delta2
+ =\delta/16=b_H.
+\]
+These two alternatives overlap.  They can be selected constructively:
+approximate $|t|$ with error at most $1/64$, and compare the rational
+answer with $5/32$.  The smaller alternative implies $|t|<3/16$;
+the larger implies $|t|>1/8$.  This is a bounded rational comparison,
+not an invocation of trichotomy for arbitrary reals.  Both alternatives
+give \eqref{eq:elem-F-clearance}.
+\end{proof}
+
+This theorem supplies an elementary polynomial-width zero-free region.
+It does not assert the stronger classical width $c/\log(|t|+2)$.
+The numerical constants were chosen to expose the arithmetic witnesses,
+not to optimize the region.  On the simpler band $1\le|t|\le H$, the
+same proof with $M=16(H+1)$ and $B=4(H+1)$ gives the better bounds
+\[
+ |\zeta(1+it)|\ge2^{-21}(H+1)^{-4},\qquad
+ |\zeta(\sigma+it)|\ge2^{-22}(H+1)^{-4}
+\]
+whenever $|\sigma-1|\le2^{-26}(H+1)^{-5}$.
+
+\section{Trivial zeros, the critical strip, and symmetry}
+\label{sec:elementary-location}
+
+We use the entire completion in its explicitly convergent form
+\begin{align}
+ \psi(u)&=\sum_{n\ge1}e^{-\pi n^2u},\notag\\
+ J(s)&=\int_1^\infty\psi(u)
+       \bigl(u^{s/2-1}+u^{-(s+1)/2}\bigr)\,du,\notag\\
+ \xi(s)&=\frac12+\frac{s(s-1)}2J(s).
+ \label{eq:elem-xi-integral}
+\end{align}
+The effective Gaussian identity and its Mellin calculation, established
+in the analytic setup, identify this with
+$\tfrac12s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s)$ in $\Re s>1$.
+The displayed integral itself gives
+\begin{equation}
+ \xi(s)=\xi(1-s),\qquad
+ \xi(\bar s)=\overline{\xi(s)},\qquad
+ \xi(0)=\xi(1)=1/2.
+ \label{eq:elem-xi-symmetries}
+\end{equation}
+These identities hold between the explicit approximants with their
+error bounds, so an abstract identity theorem is unnecessary.
+
+\subsection{Reciprocal gamma factors and their zeros}
+
+\begin{lemma}[Constructive reciprocal gamma zero classification]
+\label{lem:elem-gamma}
+The entire reciprocal gamma function
+\begin{equation}
+ G(z)=z e^{\gamma z}\prod_{n=1}^\infty(1+z/n)e^{-z/n}
+ \label{eq:elem-gamma-product}
+\end{equation}
+has precisely the simple zeros $0,-1,-2,\ldots$, and
+$G'(-n)=(-1)^n n!$.  On a rational bounded region with supplied positive
+separations from these integers, the product supplies an explicit
+positive lower bound for $|G|$.
+\end{lemma}
+
+\begin{proof}
+For $|z|\le R$ and an integer $N>2R$, the logarithm of the tail of
+\eqref{eq:elem-gamma-product} satisfies
+\begin{equation}
+ \left|\sum_{n>N}\bigl(\log(1+z/n)-z/n\bigr)\right|
+ \le2R^2\sum_{n>N}n^{-2}\le2R^2/N.
+ \label{eq:elem-gamma-tail}
+\end{equation}
+This uses only the power series for the logarithm in $|z/n|\le1/2$;
+there is no choice of a global logarithm branch.  The tail is the
+exponential of a number of bounded modulus and is therefore apart from
+zero.  Every finite initial factor whose linear term is separated from
+zero is apart from zero as well.
+
+The classification does not infer a disjunction from a product being
+zero.  Here is a bounded procedure which avoids that invalid general
+constructive inference.  Approximate $z$ by a rational complex number
+$z_0$ with error at most $1/100$.  Search the finite list
+$0,-1,\ldots,-N$, where $N>2R$, for a center $-n$ with
+$|z_0+n|\le1/4$, using squared distances.  If there is no such center,
+every relevant factor has modulus at least $1/5$, after its explicit
+integer denominator is included.  The finite product and
+\eqref{eq:elem-gamma-tail} then certify $G(z)$ apart from zero.  If
+there is such a center, it is unique, and $|z+n|<1/3$.  All other
+linear factors are separated from zero by at least $2/3$ before their
+integer denominators are included.  Thus
+$G(z)=(z+n)H_n(z)$ on this disk, where $H_n$ has an explicit positive
+lower bound.  Consequently $G(z)=0$ implies $z=-n$.
+
+For example, off all the disks, the lower bound is a finite product of
+$1/5$, the numbers $1/(5j)$ for $1\le j\le N$, and a rational lower
+bound for $\exp(-R(N+1)-2R^2/N)$.  Such a lower bound follows from
+$e<4$ by an integer power of $1/4$.  The disk case omits the one
+distinguished factor and is otherwise identical.
+
+For completeness, these normalizations are obtained directly from the
+finite products.  Put $H_N=\sum_{j=1}^N1/j$.  At $z=1$ the finite
+product is $e^\gamma(N+1)e^{-H_N}$, which tends to one with the
+explicit harmonic-sum estimate
+$|H_N-\log N-\gamma|\le1/N$.  If $G_N$ denotes the finite product,
+cancellation after multiplication, as a polynomial identity, gives
+\[
+ zG_N(z+1)=(N+z+1)e^{\gamma-H_N}G_N(z).
+\]
+The factor on the right tends to one with a uniform error on every
+supplied bounded region.  Passing to the explicit limits gives the
+entire identity $G(z)=zG(z+1)$ without dividing by a possibly zero
+factor.
+Thus $G(1)=1$ and the shift identity have explicit finite proofs.
+Iterating the shift through the finitely many factors gives
+\[
+ G(z)=z(z+1)\cdots(z+n)G(z+n+1).
+\]
+At $z=-n$, the derivative is $(-1)^n n!$.  Its positive magnitude
+proves simplicity.
+\end{proof}
+
+Away from $s=0,1$ the continuation is equivalently
+\begin{equation}
+ \zeta(s)=\frac{2\pi^{s/2}\xi(s)G(s/2)}{s(s-1)}.
+ \label{eq:elem-zeta-from-xi}
+\end{equation}
+This identity agrees with the right-half-plane definition and extends
+it by the effective constructions.  In particular it is not an
+additional nonvanishing assumption about gamma.
+
+\subsection{Trivial zeros and strip localization}
+
+\begin{theorem}[The trivial zeros are simple]
+\label{thm:elem-trivial}
+In $\Re s<0$, the zeros of $\zeta$ are exactly $s=-2n$, $n\ge1$.
+They are simple, with
+\begin{equation}
+ \zeta'(-2n)=(-1)^n
+ \frac{(2n)!}{2(2\pi)^{2n}}\zeta(2n+1),\qquad
+ |\zeta'(-2n)|\ge\frac{(2n)!}{2\,8^{2n}}>0.
+ \label{eq:elem-trivial-derivative}
+\end{equation}
+The disk $|s+2n|\le1/4$ contains no other zero.
+\end{theorem}
+
+\begin{proof}
+For $\Re s<0$, the point $1-s$ lies in $\Re s>1$.
+Theorem~\ref{thm:elem-euler}, the gamma bounds, and
+\eqref{eq:elem-xi-symmetries} show that $\xi(s)=\xi(1-s)$ is apart
+from zero.  Every other factor in \eqref{eq:elem-zeta-from-xi} except
+$G(s/2)$ is apart from zero.  Lemma~\ref{lem:elem-gamma} therefore
+gives precisely the listed zeros, and its local factorization gives
+their simplicity and isolation on the stated disks.
+
+For the derivative, differentiate just the vanishing factor in
+\eqref{eq:elem-zeta-from-xi}.  Since $G'(-n)=(-1)^n n!$,
+\[
+ \zeta'(-2n)
+ =\frac{(-1)^n n!\,\pi^{-n}\xi(1+2n)}{2n(2n+1)}.
+\]
+Substitute the right-half-plane expression for $\xi(1+2n)$ and use
+\[
+ \Gamma(n+1/2)=\frac{(2n)!}{4^n n!}\sqrt\pi.
+\]
+This last identity is obtained by $n$ applications of the gamma
+recurrence to $\Gamma(1/2)=\sqrt\pi$; a general gamma reflection
+formula is unnecessary.  The resulting expression is
+\eqref{eq:elem-trivial-derivative}.  Finally $2\pi<8$ and
+$\zeta(2n+1)\ge1$ give its rational positive lower bound.
+\end{proof}
+
+At $s=0$, the cancellation $G(s/2)/s\longrightarrow1/2$ in
+\eqref{eq:elem-zeta-from-xi} gives $\zeta(0)=-1/2$.
+Theorem~\ref{thm:elem-F-clearance} and reflection show that $\xi$ is
+apart from zero on the imaginary axis as well as on the one-line.
+The reciprocal gamma factor has no additional zero there.  These
+observations exclude the boundary from the nontrivial zero set.
+
+\begin{theorem}[Quantitative critical-strip localization]
+\label{thm:elem-strip}
+Define a nontrivial zero as a zero of the entire completion $\xi$.
+If $\xi(s)=0$ and a supplied integer $H\ge1$ satisfies $|\Im s|\le H$,
+then, with $\varepsilon_H=2^{-40}(H+1)^{-5}$,
+\begin{equation}
+ \frac{\varepsilon_H}{2}<\Re s
+ <1-\frac{\varepsilon_H}{2}.
+ \label{eq:elem-quantitative-strip}
+\end{equation}
+Inside this strip, the zeros and multiplicities of $\xi$ and $\zeta$
+coincide.
+\end{theorem}
+
+\begin{proof}
+In the band $|\Re s-1|\le\varepsilon_H$, write
+\[
+ \xi(s)=\tfrac12s\pi^{-s/2}\Gamma(s/2)F(s).
+\]
+The factors are apart from zero by the gamma product bounds and
+Theorem~\ref{thm:elem-F-clearance}.  In the remaining right-hand
+region $\Re s\ge1+\varepsilon_H/2$, the Euler lower bound applies,
+again with apartness of every other factor.  The overlapping regions
+thus give apartness whenever $\Re s\ge1-\varepsilon_H$.
+
+To obtain the strict conclusion rather than only its double negation,
+approximate $\Re s$ within $\varepsilon_H/8$ and compare the rational
+answer with $1-3\varepsilon_H/4$.  The larger alternative places $s$
+in the certified nonzero region and contradicts $\xi(s)=0$.  The
+smaller alternative supplies $\Re s<1-\varepsilon_H/2$ directly.
+Reflection $s\mapsto1-s$ gives the lower bound.  Finally
+\eqref{eq:elem-zeta-from-xi} has an analytic invertible factor on
+$0<\Re s<1$, proving the multiplicity assertion.
+\end{proof}
+
+\subsection{The real axis and an explicit initial zero-free rectangle}
+
+\begin{lemma}[Positive real-axis completion]
+\label{lem:elem-real-positive}
+For every real $x$, $\xi(x)\ge3/8$.  For a positive integer $R$ and
+$|s|\le R$,
+\begin{equation}
+ |\xi'(s)|\le D_R
+ :=2(2R+1)R!+R(R+1)(R+1)!.
+ \label{eq:elem-xi-derivative-bound}
+\end{equation}
+In particular $D_2=56$ and
+\begin{equation}
+ |\xi(s)|\ge1/4\quad
+ (0\le\Re s\le1,\quad |\Im s|\le1/448).
+ \label{eq:elem-initial-rectangle}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For $u\ge1$, $\pi>3$ and $n^2\ge n$ give
+\[
+ 0\le\psi(u)\le\sum_{n\ge1}e^{-3nu}
+ =\frac{e^{-3u}}{1-e^{-3u}}\le2e^{-3u}.
+\]
+For real $x$ outside $(0,1)$, the correction in
+\eqref{eq:elem-xi-integral} is nonnegative, so $\xi(x)\ge1/2$.
+For $0\le x\le1$, each of the two powers of $u$ in $J(x)$ is at
+most one.  Hence
+\[
+ 0\le J(x)\le4\int_1^\infty e^{-3u}\,du
+ =\tfrac43e^{-3}<1.
+\]
+Since $x(x-1)\ge-1/4$, we obtain $\xi(x)\ge1/2-1/8=3/8$.
+These inequalities can first be checked for rational $x$, where the
+case distinction is decidable, and then passed with their uniform
+continuity estimates to a named real.  No decision about the sign of
+an arbitrary real is required.
+
+For $|s|\le R$, both complex powers in $J(s)$ have modulus at most
+$u^R$.  Using $e^{-3u}\le e^{-u}$ and $\log u\le u$ gives
+\[
+ |J(s)|\le4\int_0^\infty u^Re^{-u}\,du=4R!,
+ \qquad |J'(s)|\le2(R+1)!.
+\]
+Differentiate \eqref{eq:elem-xi-integral} and use
+$|2s-1|\le2R+1$ and $|s(s-1)|\le R(R+1)$ to obtain
+\eqref{eq:elem-xi-derivative-bound}.  The factorial integrals are
+proved by a finite number of integrations by parts with an explicit
+tail.
+
+The vertical segment from $\sigma$ to $\sigma+it$, for
+$0\le\sigma\le1$ and $|t|\le1/448$, stays inside $|s|\le2$.
+The derivative bound therefore yields
+\[
+ |\xi(\sigma+it)|\ge\xi(\sigma)-56|t|
+ \ge3/8-56/448=1/4.
+\]
+This proves \eqref{eq:elem-initial-rectangle}.
+\end{proof}
+
+\begin{corollary}[Symmetry, with multiplicity]
+\label{cor:elem-symmetry}
+If $\rho$ is a nontrivial zero of multiplicity $m$, then
+$\bar\rho$, $1-\rho$, and $1-\bar\rho$ are zeros of the same
+multiplicity.  There are no nontrivial real zeros.
+\end{corollary}
+
+\begin{proof}
+The two identities in \eqref{eq:elem-xi-symmetries} carry the local
+Taylor expansion at $\rho$ to those at the three listed points and
+preserve the first nonzero coefficient.  Equivalently they carry the
+local factorization and its positive leading-coefficient margin to the
+reflected factorizations.  The real-axis assertion is
+Lemma~\ref{lem:elem-real-positive}.  Some of the listed points may
+coincide; the conclusion does not assume four distinct zeros.
+\end{proof}
+
+\subsection{Arithmetic content of the estimates}
+
+For each supplied integer height bound, all constants above are
+rational expressions in integer powers and factorials.  The Euler,
+prime-power, and gamma products have explicit primitive recursive
+truncation lengths.  The horizontal and vertical integral bounds use
+finite quadrature estimates, not a choice of an intermediate point.
+The few distinctions involving named reals are implemented by
+overlapping rational comparisons.  Thus the statements have finite
+arithmetical versions with no hidden unbounded search.  Their full
+object-theory formalization still requires the derivations of the
+finite analytic identities and error bounds in the chosen iPRA
+calculus; an ambient Lean theorem about classical complex numbers is
+not a substitute for those derivations.

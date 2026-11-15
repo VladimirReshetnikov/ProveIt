@@ -1,0 +1,161 @@
+\section{Lean formalization and the remaining work}\label{sec:lean}
+
+\subsection{The repository interface actually inspected}
+The repository was inspected at commit
+\texttt{0bba41d70f061442357cae0f6de055434a33fb09}.
+Its root toolchain is Lean \texttt{v4.32.0}, and its Lake configuration
+pins Mathlib \texttt{v4.32.0}. Relevant inspected modules include
+\texttt{PR.lean}, \texttt{Syntax.lean}, \texttt{TeqReflect.lean}, and
+\texttt{NativeBiInterpretation.lean}, together with the ConciseIPRA
+README. The \texttt{docs/drafts} listing was inspected; none of its listed
+archives was needed as an additional premise for these proofs.
+
+The existing bridge is the following theorem, shown with ASCII
+renderings of the repository notation:
+\begin{lstlisting}
+theorem pra_iff_native
+  {Gamma : List (Fm PTm n)} {phi : Fm PTm n} :
+  (Gamma |- [PRAAx] phi) <->
+  NPrf (Gamma.map NFm.ofPRA) (NFm.ofPRA phi)
+\end{lstlisting}
+Its namespace is \texttt{LeanProofs.ConciseIPRA}. The theorem and formula
+translations are in \texttt{NativeBiInterpretation.lean}
+\cite{repo-bridge}. Thus an object-iPRA derivation, once constructed,
+already has a route into the concise native calculus. A new proof of
+bi-interpretability is unnecessary.
+
+\subsection{What the supplied Lean sources contain}
+The archive has two concrete source candidates for the ambient algebra:
+\texttt{GeometryCore.lean} and \texttt{PascalConic.lean}. They use
+explicit three- and six-component structures, dot and cross products,
+a six-term $3\times3$ determinant, and a 20-term Laplace expansion of
+the six-row determinant. The main equalities have \texttt{ring} proof
+scripts; this is Mathlib's commutative ring normalization tactic
+\cite{mathlib-ring}.
+
+The source includes the full universal Desargues identity, its
+center-to-collinearity implication and converse determinant implication,
+the explicit-axis incidence lemma for an apart pair, the Pascal bracket
+and quadratic-evaluation determinant identities, and the general-conic
+Pascal implication. The last uses six column-replacement identities:
+replacing column $j$ of $M$ by $Mq$ gives determinant $q_j\det M$.
+The six conic equations make that replaced column zero; cancellation
+then gives $\det M=0$. This is the same adjugate argument as the paper,
+written without depending on a high-level matrix or geometry API.
+
+\textbf{Validation status.} No Lean or Lake executable was available
+in the execution environment. These new sources have \emph{not} been
+compiled or kernel-checked. They contain no proof holes or added axiom
+declarations, but that is not a substitute for compilation. Elaboration,
+API, or performance repairs may still be needed. In particular, no new
+object-theory theorem of the form $[]\vdash[\mathrm{PRAAx}]\varphi$ is
+claimed as an already checked artifact. The written mathematics and
+executed exact polynomial certificates have a separate status.
+
+\subsection{A concrete path to a complete Lean proof}
+The following milestones specify the remaining obligations.
+\begin{enumerate}
+\item \textbf{Compile the ambient algebra.} In a Lean/Mathlib
+\texttt{v4.32.0} environment, compile the supplied files and repair any
+elaboration issues. Audit the resulting theorems with
+\texttt{\#print axioms}, rejecting \texttt{sorryAx}. This checks the
+algebra but does not yet construct an iPRA derivation.
+
+\item \textbf{Implement the numerical codes in the object language.}
+Using \texttt{PR.zero}, \texttt{PR.succ}, \texttt{PR.proj},
+\texttt{PR.comp}, and \texttt{PR.prec}, define the symbols for addition,
+multiplication, monus, equality tests, signed pairs, fixed tuples, and
+the four-branch axis function. The inspected proof interface provides
+\texttt{PRA.proj}, \texttt{PRA.comp}, \texttt{PRA.precZero},
+\texttt{PRA.precSucc}, and \texttt{PRA.qfInd}.
+
+\item \textbf{Prove the arithmetic library internally.}
+Construct \texttt{Prf PRAAx} derivations of the lemmas in
+Section~\ref{sec:arith}, including signed-ring laws, decidability, and
+no-zero-divisors. These are derivations with arbitrary object variables;
+correctness only in the standard model would not suffice.
+
+\item \textbf{Replay finite algebra in the object theory.}
+Either implement a derivation-producing normalizer for finite polynomial
+expressions or generate the fixed distributivity, associativity,
+commutativity, and cancellation chains used here. A reflective route
+must prove its normalizer sound for \texttt{Prf PRAAx}; an ambient
+\texttt{ring} proof does not automatically translate itself. The exact
+coefficient checks fix the identities and signs to be replayed.
+
+\item \textbf{Construct the geometric derivations.}
+Encode the formulas of Section~\ref{sec:internal} as \texttt{Fm PTm}.
+Replay the incidence lemmas, finite coefficient selection, cancellation,
+and four axis branches. The existing intuitionistic deduction
+constructors handle universal closure and explicit existential witnesses.
+This gives the actual target objects
+\texttt{Prf PRAAx [] desarguesSentence} and
+\texttt{Prf PRAAx [] pascalSentence}, where the two sentences are to
+be defined by the encoding just described.
+
+\item \textbf{Translate to the native calculus.}
+Apply \texttt{pra\_iff\_native.mp} to those object-theory derivations.
+The output is a native \texttt{NPrf} derivation of each translated sentence.
+
+\item \textbf{Optional real schema.}
+For a fixed PR coordinate family, encode the regularity, zero, and
+apartness formulas and prove the finite threshold calculations in
+Section~\ref{sec:real}. Reuse the same polynomial certificates. This
+extension is separate from the exact rational theorem.
+\end{enumerate}
+
+The substantial remaining implementation is the object-arithmetic
+library and replay of finite ring-equation derivations. There is no
+unresolved geometric lemma in this plan. It would nevertheless be
+inaccurate to call the ambient Lean candidate a completed formal proof
+in the deeply embedded iPRA.
+
+\section{Executable evidence and reproducibility}\label{sec:evidence}
+
+The archive contains three complementary checks of the formulas.
+\begin{enumerate}
+\item The dependency-free sparse-polynomial verifier checks Pascal's
+identity, its two-product bracket form, the four bracket relations, and
+all six conic cofactor certificates. Variables are indeterminates;
+coefficients are exact integers. The Pascal polynomial has exactly
+$720$ nonzero monomials, with coefficients $+1$ or $-1$.
+
+\item A second symbolic verifier checks the complete Desargues identity
+and all three coordinates of the adjugate identity
+\eqref{eq:adj3}. The Desargues polynomial has $1{,}290$ nonzero monomials.
+A supplementary checker verifies the six generic column-replacement
+identities used by the Lean candidate.
+
+\item The integer geometry program checks the explicit examples and
+the common-kernel algorithm on the cube $\{-1,0,1\}^3$.
+Of $18{,}954$ input triples with $u\ne0$, exactly $7{,}146$ have zero
+determinant; all returned vectors are nonzero and orthogonal to all
+three inputs. The four branches are used $5{,}040$, $1{,}872$, $216$,
+and $18$ times. This finite check exercises the implementation; the
+universal proof is Lemma~\ref{lem:axis}.
+\end{enumerate}
+The logs and polynomial fingerprints are included. These computations
+verify exact formulas; they are not emitted iPRA proofs or substitutes
+for Lean kernel checking. The source code uses the Python standard
+library only.
+
+Run the checks using the commands in \texttt{README.txt}. Rebuild the
+paper from \texttt{paper.tex} with \texttt{pdflatex} twice, or run
+\texttt{build.sh}. The archive includes the uncompiled Lean sources,
+pinned build metadata, a detailed formalization roadmap, and source
+URLs with hashes for the repository audit.
+
+\section{Conclusions}
+Both theorems have proofs whose arithmetic core is finite
+commutative-ring algebra. Desargues is governed by the product of the
+two triangle determinants and the determinant of the vertex-joining
+lines. Pascal is governed by the determinant of the six quadratic
+evaluation rows, with a nonzero conic coefficient canceled through an
+explicit cofactor certificate. These calculations give complete iPRA
+proofs for integer-coded rational configurations, including primitive
+recursive witnesses for their geometric conclusions. The real-name
+schema makes the extra apartness information explicit. The Lean plan
+preserves the distinction between checking the algebra in Lean and
+constructing derivations inside intuitionistic primitive recursive
+arithmetic.
+

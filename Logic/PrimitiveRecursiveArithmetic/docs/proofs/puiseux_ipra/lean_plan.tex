@@ -1,0 +1,134 @@
+\section{A clear path to complete Lean formalization}\label{sec:lean}
+
+\subsection{The object-theory target}
+
+The inspected ProveIt snapshot is \texttt{\pin}, using Lean~4.32.0.
+Its \href{https://github.com/VladimirReshetnikov/ProveIt/tree/d851229c33ef395db8dc04baf28c6a291073f61e/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA}{\texttt{ConciseIPRA} sources}
+already supply scoped syntax (\texttt{Syntax}), intuitionistic derivability
+(\texttt{Deduction}), primitive-recursive function symbols and
+quantifier-free induction (\texttt{PR}), and transport to the concise
+native calculus (\texttt{NativeBiInterpretation}).
+The required endpoint is a derivation \emph{inside that encoded theory}:
+\begin{lstlisting}
+open LeanProofs.ConciseIPRA
+Prf PRAAx ([] : List (Fm PTm 0))
+  (PuiseuxIPRA.PuiseuxSentence concretePrograms)
+\end{lstlisting}
+Here \texttt{concretePrograms} must contain the actual \texttt{PR} syntax
+trees for input validation, packet construction, coefficient generation,
+and the finite predicates of Section~\ref{sec:internal}.  Their decoding
+theorems must establish the intended meanings; naming a Boolean program
+\texttt{factorJet} does not establish its correctness.
+
+The supplied \texttt{lean/PuiseuxTarget.lean} writes the closed formula
+explicitly using \texttt{Fm.eq}, \texttt{Fm.and}, \texttt{Fm.imp}, and
+\texttt{Fm.all}.  Its matrix asserts packet validity, the complete
+denominator-cleared factorization identity, prefix compatibility, and
+finite coefficient bounds; a second universally quantified matrix asserts
+the rational tail estimate.  It also gives the type of the required
+derivation and conditional transport of an already supplied derivation
+through \texttt{pra\_iff\_native}.  This last transport does not construct
+the missing derivation.
+
+\subsection{Dependency contracts and implementation order}
+
+The following sequence specifies concrete completion targets.  Every
+algorithm operates on natural-number codes, with default outputs on
+malformed data; valid-input proofs exclude those defaults.
+
+\begin{enumerate}
+\setlength{\itemsep}{3pt}
+\item \textbf{Coded arithmetic.}
+Implement signed integers, rational numbers with positive denominators,
+finite lists, polynomial arrays, bounded scans and Boolean folds.
+Prove decoding equations for addition, multiplication, comparison,
+coefficient access and finite convolution.
+
+\item \textbf{Exact algebraic coefficients.}
+Formalize Section~\ref{sec:backend}: real-root isolation, algebraic
+arithmetic, equality and order, resultant elimination and finite splitting.
+The reused constructive FTA root-name construction requires its own
+deep arithmetic derivation; the existing draft is not a compiled
+FTA theorem.
+
+\item \textbf{Squarefree preprocessing.}
+Prove the degree-decreasing Euclidean algorithm and its product and
+B\'ezout invariants.  Verify the multiplicities, common denominator \(C\),
+monic polynomial factors \(F_m\), and the denominator-cleared identity
+relating them to the original polynomial.
+
+\item \textbf{Truncated polynomial algebra.}
+Prove congruence preservation for multiplication, substitution,
+ramification, translation and discriminants.  Prove the finite
+Hasse--Taylor identity and guarded division by a monomial.
+These identities determine the exact precision losses.
+
+\item \textbf{Coprime Hensel recursion.}
+Implement the correction
+\(U_{j,k}=\operatorname{rem}(E_jR_k,C_j)\).
+Prove the product identity through the next coefficient, uniqueness
+at the current precision, and compatibility when the requested
+precision is increased.
+
+\item \textbf{Bounded Newton tree.}
+Implement Section~\ref{sec:newton} as a bounded stack or \(d\) rounds,
+with at most \(2d-1\) nodes.  Maintain degree accounting,
+\(e\mid N\), the discriminant bound \(e\delta\), and the precision reserve.
+The scan bound \(B\) and lookahead \(J(M)\) are part of the program.
+
+\item \textbf{Finite discriminant separation.}
+From the factorization modulo \(T^M\), prove the discriminant congruence,
+find every first difference by a scan through \(\Delta\), and establish
+\(2\sum_{i<j}w_{ij}=\Delta\).
+Only equality of finite algebraic coefficients is tested.
+
+\item \textbf{Simple polynomial leaves.}
+Formalize Section~\ref{sec:bootstrap} with \(a_i\) through degree \(h\)
+and \(M=2h+1\).  Prove \(s_i\le\Delta\), the divisibility defining \(H_i\),
+\(H_i(0,0)=0\), and \(H_{i,U}(0,0)\ne0\).
+All four conclusions are finite polynomial assertions.
+
+\item \textbf{Coherent coefficients and complete factorization.}
+Implement the simple coefficient recurrence and prove its finite
+correctness and uniqueness.  Synthetic division and cancellation by
+the recorded leading differences recover every factor \(F_m\).
+Use residual congruences modulo \(T^{L+\Delta+1}\) when establishing
+factorization through degree \(L\).
+
+\item \textbf{Rational majorants and evaluation.}
+Formalize Section~\ref{sec:analytic} with truncated positive Picard
+polynomials, rational coefficient majorants and finite weighted sums.
+Add unit inversion and convolution to obtain the common radius and
+Laurent tail bound, including the supplied positive lower bound
+for a nonzero argument.
+
+\item \textbf{Internal proof assembly.}
+Construct the programs from \texttt{PR.comp} and \texttt{PR.prec}.
+For each loop, use \texttt{PRA.qfInd} on its finite Boolean invariant
+with the horizon held as a parameter.  Universally generalize afterward
+and assemble the displayed \texttt{Prf PRAAx} endpoint.
+
+\item \textbf{Semantic interpretation and audit.}
+Interpret the coherent coefficient and tail statements as convergent
+Puiseux expansions.  Transfer the object derivation to the native
+calculus if desired, inspect its type and \texttt{\#print axioms},
+and rebuild its complete dependency closure from the pinned sources.
+\end{enumerate}
+
+\subsection{Current status and the remaining work}
+
+No Lean executable was available in this run.  The supplied Lean source
+is therefore an \emph{uncompiled interface and outline}, including its
+small structural proof terms.  It contains no omitted proof term or
+postulated Puiseux theorem, and supplies no inhabitant of the final
+derivation type.  The exact-algebraic backend, quantitative FTA dependency,
+Newton--Hensel invariants, majorant bounds and their object-theory
+derivations remain substantial formalization tasks.
+
+The accompanying \texttt{lean/LEAN\_PLAN.md} expands the contracts above,
+including the exact original-polynomial identity checked by
+\texttt{factorJet}.  The reference computations provide finite evidence
+for executable components.  A conventional Lean theorem about
+\texttt{Complex} or \texttt{PowerSeries} may help organize the mathematics,
+but it does not replace the encoded \(\ipra\) derivation required here.
+

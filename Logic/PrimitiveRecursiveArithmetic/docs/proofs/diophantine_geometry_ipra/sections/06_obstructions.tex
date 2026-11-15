@@ -1,0 +1,154 @@
+\section{Local obstructions and denominators on cubic curves}
+\label{sec:local}
+
+The previous sections give both positive descriptions and a global negative
+result. Two further tools make the interface between geometry and finite
+arithmetic explicit: reduction modulo a supplied integer, and the special
+denominator structure of points on an integral Weierstrass equation.
+
+\subsection{Finite congruence certificates}
+
+For $m\ge2$, call a residue vector
+$\bar x=(\bar x_0,\ldots,\bar x_n)\in\{0,\ldots,m-1\}^{n+1}$
+\emph{unimodular modulo $m$} when
+$\gcd(m,\bar x_0,\ldots,\bar x_n)=1$. For prime $m$, this means exactly
+that not all coordinates are zero. For composite $m$, nonzeroness alone
+is insufficient.
+
+\begin{theorem}[A checkable certificate of no rational point]
+\label{thm:modular}
+Let $F_1,\ldots,F_s$ be homogeneous integer polynomials. If none of the
+unimodular residue vectors modulo $m$ satisfies all equations
+$F_i(\bar x)\equiv0\pmod m$, their projective zero locus has no rational
+point. The premise is a primitive recursive test of at most $m^{n+1}$
+vectors, and $\iPRA$ proves the implication.
+\end{theorem}
+\begin{proof}
+A rational point has a primitive integral representative $x$. Reduce every
+coordinate to $\bar x_i$ in $[0,m-1]$. Any common divisor of $m$ and all
+$\bar x_i$ divides every $x_i$, so it is one; hence the residue vector is
+unimodular. Polynomial evaluation respects congruence: each product does,
+by induction on its number of factors, and a finite sum does as well.
+Thus $F_i(x)=0$ implies $F_i(\bar x)\equiv0\pmod m$, contradicting the
+tested premise. This is an intuitionistic proof of a negation from an
+assumed point, not an appeal to a converse local--global principle.
+\end{proof}
+
+The empty conic $X^2+Y^2=3Z^2$ of Section~\ref{sec:conics} illustrates
+why the modulus matters. Modulo three it has the nonzero vectors
+$(0,0,1)$ and $(0,0,2)$. Modulo nine it has no unimodular solution: reduction
+modulo three forces $3\mid X,Y$, and the original congruence modulo nine
+then forces $3\mid Z$. The exact companion reproduces both residue counts.
+Testing just the affine chart $Z=1$ would not be a valid general method
+for excluding projective points, since a rational point may reduce to a
+different chart.
+
+The theorem is a one-way certificate. Failure to find an obstruction among
+the tested moduli supplies no global existence conclusion. There is no
+unbounded search for a successful modulus in any result here.
+
+\subsection{Denominators on integral Weierstrass equations}
+
+Consider
+\[
+      E_{A,B}:\quad y^2=x^3+Ax+B,\qquad A,B\in\Z.
+\]
+If $4A^3+27B^2\ne0$, its projective closure
+$Y^2Z=X^3+AXZ^2+BZ^3$ is nonsingular. This can be checked directly.
+At infinity the equation forces $X=0$, and the derivative with respect to
+$Z$ at $[0:1:0]$ is $1$. At an affine singular point, the derivatives give
+$y=0$ and $3x^2+A=0$, while the equation gives $x^3+Ax+B=0$.
+Elimination gives $A=-3x^2$, $B=2x^3$ and therefore
+$4A^3+27B^2=0$, contrary to the hypothesis. These arguments are polynomial
+identities over characteristic zero. We need no group law for the results
+of this section. Indeed their denominator assertions remain valid even
+when the cubic is singular.
+
+\begin{theorem}[Square and cube denominators]\label{thm:denominators}
+Every rational affine point on $E_{A,B}$ has a unique expression
+\[
+        x=\frac a{d^2},\qquad y=\frac b{d^3},\qquad
+        d>0,\quad\gcd(a,d)=\gcd(b,d)=1,
+\]
+with $a,b\in\Z$. These integers satisfy
+\begin{equation}\label{eq:elliptic-integral}
+             b^2=a^3+Aad^4+Bd^6.
+\end{equation}
+Conversely, integers with these conditions give a rational point. The
+conversion in both directions is primitive recursive.
+\end{theorem}
+\begin{proof}
+Write $x=a/q$ and $y=c/e$ in reduced form, with $q,e>0$. Let
+\[
+             T=a^3+Aaq^2+Bq^3.
+\]
+Then $y^2=T/q^3$. Since $T\equiv a^3\pmod q$ and $\gcd(a,q)=1$,
+we have $\gcd(T,q)=1$, hence $\gcd(T,q^3)=1$. Also
+$c^2/e^2$ is a reduced fraction. Uniqueness of reduced fractions therefore
+gives
+\[
+                         e^2=q^3,\qquad c^2=T.
+\]
+For clarity, the uniqueness assertion follows from cross multiplication
+and Bezout: $u/v=u'/v'$ with both denominators positive and both fractions
+coprime implies $v\mid v'$ and $v'\mid v$, then $v=v'$ and $u=u'$.
+It remains valid when a numerator is zero, since its reduced denominator
+must then be one.
+
+In the factorization of $q,e$, every prime exponent satisfies $2v=3u$.
+Thus $u$ is even and $v$ is three times its half. The finite factorization
+of Lemma~\ref{lem:arithmetic} constructs $d>0$ with $q=d^2$, $e=d^3$.
+Equivalently the algorithm may take $d=\lfloor\sqrt q\rfloor$, since the
+proof has established that $q$ is a square. Put $b=c$. Coprimality and
+\eqref{eq:elliptic-integral} now follow from the reduced fractions.
+The converse is obtained by dividing the integer equation by $d^6$.
+For uniqueness, the reduced denominator of $x$ is $d^2$, so $d$ is its
+unique positive square root and both numerators are determined.
+\end{proof}
+
+\begin{theorem}[Complete elliptic search at a given $x$-height]
+\label{thm:elliptic-search}
+Let $T\ge1$. All rational affine points on $E_{A,B}$ with
+$\Ht(x)\le T$ are obtained by the following finite procedure:
+\begin{enumerate}
+\item Visit $1\le d\le\lfloor\sqrt T\rfloor$ and $-T\le a\le T$
+with $\gcd(a,d)=1$.
+\item Compute $W=a^3+Aad^4+Bd^6$. If $W\ge0$, compute its integer
+square root $b_0$. Retain $(a/d^2,\pm b_0/d^3)$ exactly when $b_0^2=W$,
+counting the two signs only once if $b_0=0$.
+\end{enumerate}
+The list is duplicate-free and has at most
+$2(2T+1)\lfloor\sqrt T\rfloor$ points. Adjoining $[0:1:0]$ accounts
+for the only point at infinity. This construction and its correctness are
+provable in $\iPRA$.
+\end{theorem}
+\begin{proof}
+Every retained pair satisfies the equation by direct substitution.
+Coprimality of $a,d$ implies that $a/d^2$ is reduced. It also forces
+$\gcd(b_0,d)=1$: a common prime would divide $a^3$ after reducing
+\eqref{eq:elliptic-integral} modulo that prime, and hence would divide
+$a$, a contradiction. Thus the displayed pairs are canonical, and the
+uniqueness in the denominator theorem excludes duplicates beyond the
+explicit zero-sign case.
+
+Conversely the denominator theorem puts every point of the required height
+in the form $a/d^2,b/d^3$ with $|a|\le T$ and $d^2\le T$. That pair
+$(a,d)$ is visited and its value $W=b^2$ passes the square test. The sign
+of $b$ is included. This proves completeness and the count bound.
+For an explicit bound on the square-root search,
+\[
+      0\le W\le(1+|A|+|B|)T^3
+\]
+whenever $W\ge0$. If $C=1+|A|+|B|$, its square root is at most $CT^2$,
+since $CT^3\le C^2T^4$. All loops and stored integers are therefore
+explicitly bounded. At infinity, $Z=0$ forces $X=0$ and leaves the single
+projective point $[0:1:0]$.
+\end{proof}
+
+This makes the familiar denominator geometry an actual bounded algorithm.
+It does not provide a global height bound for all points on an arbitrary
+cubic. For $E_1$, that global problem was already settled by the descent
+proof: the affine list is exactly $(-1,0),(0,0),(1,0)$. For
+$y^2=x^3-36x$, the point $(12,36)$ gives the rational right triangle
+$(3,4,5)$ through the formulas in Section~\ref{sec:descent}. Thus the
+same equations support both obstructed and solvable examples.

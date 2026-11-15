@@ -1,0 +1,264 @@
+\section{The finite parity calculus}\label{sec:parity}
+
+\subsection{A definition that requires only rational comparisons}
+
+Let $P=(v_0,\ldots,v_{s-1},v_s=v_0)$ be a rational polygonal
+closed walk. Repetitions, backtracking, and self-intersections are allowed.
+Let $p\in\Q^2$ be off every edge. For the edge $[a,b]$, put
+\[
+ \sigma_p(a,b)=[a_y>p_y]\xor[b_y>p_y].
+\]
+Here brackets turn a decidable statement into a bit. If $\sigma_p=0$,
+give the edge contribution zero. If $\sigma_p=1$, the denominator
+$b_y-a_y$ is nonzero and the horizontal intersection coordinate is
+\[
+ x_* = a_x+(p_y-a_y)\frac{b_x-a_x}{b_y-a_y}.
+\]
+Give the edge contribution $c_p(a,b)=[x_*>p_x]$. Define
+\begin{equation}
+ \parity(P,p)=\bigoplus_{i<s}c_p(v_i,v_{i+1})\in\F.
+ \label{eq:parity}
+\end{equation}
+Division can be removed by multiplying the comparison by the denominator
+and inspecting its sign. The half-open height convention deals with a
+ray passing exactly through a vertex. No test of equality of real
+numbers is present.
+
+The following facts are immediate from the definition: contributions
+are unchanged by reversing an edge; the xor over concatenated edge
+lists is the xor of their values; and two copies of the same edge cancel.
+In particular, we may work with finite edge chains modulo two. A chain
+may consist of several closed walks, and its parity is their xor.
+
+\begin{lemma}[The triangle calculation]\label{lem:triangle}
+If $p$ is outside the closed convex hull of a rational triangle, the
+parity of its boundary about $p$ is zero. If $Q$ is a nondegenerate
+convex rational square or parallelogram, its parity is one at any
+interior point and zero at any point outside its closed region.
+\end{lemma}
+
+\begin{proof}
+Intersect the horizontal line through $p$ with the triangle.
+Using the three linear edge equations, this intersection is empty,
+a point, or an interval. If $p$ is outside the triangle, all the
+intersection coordinates lie on the same side of $p_x$, or there
+are no intersection coordinates. If they are all left, every
+contribution is zero. If all are right, the xor of the contributions is
+\[
+ ([v_{0y}>p_y]\xor[v_{1y}>p_y])
+ \xor([v_{1y}>p_y]\xor[v_{2y}>p_y])
+ \xor([v_{2y}>p_y]\xor[v_{0y}>p_y])=0.
+\]
+At a lowest vertex the two incident straddles are both counted; at a
+highest vertex neither is counted; at a middle-height vertex exactly
+one is counted. Thus the same calculation covers height ties and
+horizontal edges. Degenerate triangles are covered too: the horizontal
+slice is still an interval or a point, and the same xor cancels.
+
+For a convex square or parallelogram and an interior point, the
+horizontal slice has one endpoint strictly to the left and one strictly
+to the right. At each endpoint the half-open rule counts one incident
+edge modulo two. Precisely the right endpoint contributes to the ray,
+so the answer is one. At an exterior point the preceding all-left or
+all-right argument gives zero. These assertions can equivalently be
+checked by ordering the finitely many vertex heights and solving
+linear inequalities; they invoke no theorem about arbitrary polygons.
+\end{proof}
+
+\begin{lemma}[Finite replacement]\label{lem:replacement}
+Suppose two rational closed edge chains differ, modulo two, by the
+boundaries of finitely many triangles whose closed convex hulls avoid
+$p$. Their parities about $p$ are equal.
+\end{lemma}
+
+\begin{proof}
+Take the xor of the triangle identities in Lemma~\ref{lem:triangle}.
+Every internal edge occurs twice and cancels. What remains is the
+two stated boundary chains. This is a finite sum identity.
+\end{proof}
+
+An important special case replaces an edge $[u,v]$ by $[u,w],[w,v]$
+when the triangle $uvw$ avoids the query. Collinear subdivision is
+another special case.
+
+\begin{lemma}[Moving the query]\label{lem:moving}
+If the segment $[p,q]$ avoids every edge of a rational closed walk $P$,
+then $\parity(P,p)=\parity(P,q)$. The same holds when $p,q$ are joined
+by a finite polygonal path avoiding $P$.
+\end{lemma}
+
+\begin{proof}
+Translation changes neither the rational crossing test nor its parity:
+$\parity(P,p)=\parity(P-p,0)$. For each edge $[u,v]$ of $P$, compare
+the edges $[u-p,v-p]$ and $[u-q,v-q]$. The quadrilateral between them
+consists of the points
+\[
+           z-w,\qquad z\in[u,v],\quad w\in[p,q].
+\]
+It misses zero, since the two segments do not meet. Its two
+triangles therefore miss zero. Applying
+Lemma~\ref{lem:replacement} to all these quadrilaterals cancels the
+connecting edges at consecutive vertices and proves the equality.
+For a polygonal query path, repeat the equality for its successive
+segments.
+\end{proof}
+
+For rational finite segments, disjointness in this lemma has a rational
+positive-distance certificate: minimize the relevant piecewise-linear
+distance by finite rational arithmetic. In its later applications,
+the certificate also follows directly from the displayed geometric
+margins.
+
+\subsection{Stable parity of a named closed curve}
+
+\begin{proposition}[Sampling and local constancy]\label{prop:stable}
+Let a named closed curve have a forward modulus, and let $x$ have
+clearance at least $r=2^{-k}$. With
+\[
+ \ell=k+5,\quad
+ P_\ell=(G(j/N(\ell),\ell))_{j<N(\ell)},\quad
+ x_\ell=X(\ell),
+\]
+define
+\begin{equation}
+ b_\Gamma(x)=\parity(P_\ell,x_\ell).
+ \label{eq:curvebit}
+\end{equation}
+This definition is independent of the clearance certificate, sufficiently
+fine meshes, and approximation choices. If
+$\norm{x-y}<r/4$, then $y$ is off the curve and
+$b_\Gamma(y)=b_\Gamma(x)$. More generally, a uniformly continuous
+named query path with a supplied positive clearance from the curve
+has equal endpoint bits.
+\end{proposition}
+
+\begin{proof}
+On a parameter mesh interval the curve moves by at most $r/32$,
+and each vertex approximation costs at most $r/32$.
+Each polygon edge is therefore in the maximum-norm ball of radius
+$r/16$ around the curve value at the interval's left endpoint.
+The query approximation has error at most $r/32$, so it is off all
+the polygon edges.
+
+First compare two meshes both satisfying these error bounds.
+Interleave their rational parameter lists. Inserting an intermediate
+vertex changes the closed edge list by a triangle. All its vertices
+are in a ball of radius at most $r/8$ about one curve value,
+after allowing for the errors in both lists. This ball avoids the
+query approximation. Matching two approximations at a common
+parameter also gives triangles in the same ball. Finite replacement
+proves that the parities coincide.
+
+If a coarser valid certificate uses a different $r$, compare both
+calculations with one mesh fine enough for the smaller margin.
+The same refinement argument applies to each. Query approximations
+are compared by a short query segment, which is separated from the
+sampled curve; use Lemma~\ref{lem:moving}.
+
+When $\norm{x-y}<r/4$, the segment from $x$ to $y$ stays at least
+$3r/4$ from every curve point. Approximate it and the curve at a
+precision less than $r/32$ and use Lemma~\ref{lem:moving}. This
+also proves the explicit local constancy assertion.
+
+Finally, suppose a path $\alpha$ has clearance $\rho>0$. Its supplied
+modulus gives a finite parameter subdivision on which the image
+diameter is below $\rho/16$. Approximate its vertices, and the curve,
+within $\rho/16$. The polygonal path so obtained stays positively
+away from the sampled closed curve. Apply the finite lemma along its
+edges, then the already proved independence of approximations at
+its endpoints. Every subdivision length was chosen from the
+specified modulus and clearance.
+\end{proof}
+
+The proposition applies with any fixed rational closed walk in place
+of $\Gamma$, and a named path moving the query. This observation will
+be used for curve half-arcs and for a rational square. It only needs
+forward continuity and clearance; injectivity is not used.
+
+\subsection{A short-loop factorization lemma}
+\label{sec:factor}
+
+The inverse modulus enters at exactly this point. It turns geometric
+closeness into closeness on the parameter circle.
+
+\begin{lemma}[Parity factors through the parameter circle]\label{lem:factor}
+Fix $\delta=2^{-k}$, and put
+\begin{equation}
+ r=U(k+4),\qquad
+ \eta=2^{-V(r)},\qquad H=V(r)+10,\qquad h=2^{-H}=\eta/1024.
+ \label{eq:scale}
+\end{equation}
+Let $P=(x_0,\ldots,x_{s-1},x_s=x_0)$ be a rational closed walk
+whose edges have maximum-norm length at most $2h$, and whose
+vertices are each within $16h$ of $\Gamma$, with the near points
+available by finite sampling. There is one bit $m_P$ such that
+\begin{equation}
+ \parity(P,a)=m_P\,b_\Gamma(a)
+ \label{eq:factor}
+\end{equation}
+for every $a$ of clearance at least $2\delta$ from $\Gamma$.
+The bit is independent of $a$. Simplicity of $P$ is not required.
+\end{lemma}
+
+\begin{proof}
+Use the uniform cyclic mesh with $N=N(H+4)$ and
+$Y_j=G(j/N,H+4)$. Its net error is at most $h/8$ and its evaluation
+error is at most $h/16$. For each $x_i$, choose the nearest $Y_j$,
+breaking ties by the least index, and call that index $j_i$.
+The assumed nearby curve point and the net estimate show
+\[
+ \norm{x_i-\gamma(j_i/N)}<20h.
+\]
+This deliberately generous inequality leaves room for all
+approximations. Hence
+\begin{equation}
+ \norm{\gamma(j_i/N)-\gamma(j_{i+1}/N)}
+        <20h+2h+20h=42h<\eta.
+ \label{eq:42h}
+\end{equation}
+By the inverse condition and the decidability of the rational parameter
+comparison,
+\[
+ d_\T(j_i/N,j_{i+1}/N)<2^{-r}<1/4.
+\]
+There is consequently a unique shorter arc between these mesh
+parameters, obtainable by comparing their integer indices modulo $N$.
+Every intermediate parameter on this arc is at circular distance
+less than $2^{-r}$ from its starting parameter. By the forward modulus,
+its curve value is within $\delta/16$ of the starting curve value.
+
+Replace $[x_i,x_{i+1}]$ first by the chain through
+$Y_{j_i},Y_{j_{i+1}}$, then by the consecutive mesh edges on the
+short parameter arc. All replacement triangles lie within
+$\delta/8$ of $\gamma(j_i/N)$: their vertices cost at most
+$20h$, $\delta/16$, and $h/16$, and
+\[
+             20h+\delta/16+h/16<\delta/8
+\]
+by the normalization of $U,V$ in \eqref{eq:scale}.
+They avoid every query with clearance $2\delta$.
+Finite replacement therefore preserves parity simultaneously for
+all the queries in the statement.
+
+After the replacements, we have a closed walk $W$ on the finite
+cycle with vertices $0,\ldots,N-1$. Count each undirected cycle edge
+modulo two, and write its usage bit as $e_j$. At vertex $j$,
+the number of occurrences of entering or leaving is even, because
+the walk is closed. Thus
+\[
+                  e_{j-1}\xor e_j=0.
+\]
+Following the cyclic indices gives $e_0=e_1=\cdots=e_{N-1}=m_P$.
+The parity sum for $W$ is accordingly $m_P$ times the parity sum
+for the full sample cycle. The latter is $b_\Gamma(a)$ by
+Proposition~\ref{prop:stable}, proving \eqref{eq:factor}.
+
+All counts are finite. Each replaced short arc has at most $N$
+edges, so the expanded walk has at most $sN$ edges. The edge-usage
+bits depend on $P$ and its selected mesh labels, not on the query.
+\end{proof}
+
+This is the decisive arithmetic mechanism: a loop following the curve
+closely cannot have arbitrary unrelated parities at distant points.
+Its parity pattern is either zero everywhere under consideration or
+the curve's own pattern.

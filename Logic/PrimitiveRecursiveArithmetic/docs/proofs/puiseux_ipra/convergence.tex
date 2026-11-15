@@ -1,0 +1,318 @@
+\section{A coefficient recurrence and an explicit convergence proof}
+\label{sec:analytic}
+
+The finite algebraic preparation has supplied polynomial equations with a
+simple root at the origin. We now construct their entire coefficient sequences
+and prove convergence by estimates on finite polynomials. In particular, no
+analytic implicit-function theorem is being assumed.
+
+\begin{lemma}[A quantitative simple-root construction]\label{lem:analytic}
+Let $H(T,V)\in\A[T,V]$ satisfy
+$H(0,0)=0$ and $\lambda=H_V(0,0)\ne0$. Put
+\[
+ \Phi(T,V)=V-\lambda^{-1}H(T,V)=\sum_{i,j}b_{ij}T^iV^j.
+\]
+Choose rational bounds $\beta_{ij}\ge\abs{b_{ij}}$, with
+$\beta_{00}=\beta_{01}=0$, and a rational $S$ such that
+\begin{equation}
+ S\ge1,\qquad S\ge\sum_{i,j}(j+1)\beta_{ij},\qquad
+ r=\frac1{4S},\qquad \rho=r^2=\frac1{16S^2}.
+ \label{eq:radius}
+\end{equation}
+There is a unique zero-constant formal solution
+$u(T)=\sum_{n\ge1}u_nT^n$ of $H(T,u(T))=0$. Its coefficients are given by
+\begin{equation}
+ u_n=[T^n]\Phi\left(T,\sum_{k=1}^{n-1}u_kT^k\right)
+ \qquad(n\ge1).
+ \label{eq:implicit-recursion}
+\end{equation}
+For every finite $L$,
+\begin{equation}
+ \sum_{n=1}^{L}\abs{u_n}\rho^n\le r.
+ \label{eq:weighted}
+\end{equation}
+Consequently the series converges for $\abs t<\rho$. If
+$u_L(t)=\sum_{n=1}^{L}u_nt^n$ and $\abs t\le q\rho$, $0\le q<1$, then
+\begin{align}
+ \abs{u_M(t)-u_L(t)}&\le r q^{L+1} &&(M>L),\\
+ \abs{\lambda^{-1}H(t,u_L(t))}
+       &\le\frac{5r}{4}q^{L+1}.\label{eq:residual}
+\end{align}
+For $\abs t\le\rho$, there is at most one root $v$ of $H(t,v)=0$
+with $\abs v\le r$.
+\end{lemma}
+
+\begin{proof}
+Normalization gives $b_{00}=b_{01}=0$. Thus every monomial of $\Phi$
+has either $i\ge1$ or $j\ge2$. When a zero-constant polynomial is
+substituted for $V$, its coefficient of degree $n$ uses only coefficients
+of that polynomial of degrees less than $n$. This proves that
+\eqref{eq:implicit-recursion} is well defined and uniquely forces every
+coefficient of the required identity. It is a primitive recursion with
+finite coefficient convolutions.
+
+Here is a finite proof of the bound. Define the nonnegative rational
+polynomial $\Phi_+(T,W)=\sum\beta_{ij}T^iW^j$ and the Picard polynomials
+\[
+ X_0=W_0=0,\qquad X_{j+1}=\Phi(T,X_j),\qquad
+ W_{j+1}=\Phi_+(T,W_j).
+\]
+Finite convolution inequalities show coefficientwise that
+$\abs{[T^n]X_j}\le[T^n]W_j$. For $0\le w\le r$, every allowed
+monomial $\rho^iw^j$ is at most $\rho$: use $\rho,w\le1$ when
+$i\ge1$, and $w^j\le r^2=\rho$ when $i=0$, $j\ge2$. Therefore
+\[
+ \Phi_+(\rho,w)\le\rho\sum\beta_{ij}\le S\rho=r/4.
+\]
+Induction gives $W_j(\rho)\le r$ for every finite $j$.
+
+If two zero-constant polynomials agree modulo $T^k$, $k\ge1$,
+their images under $\Phi$ agree modulo $T^{k+1}$. Indeed, factor
+$V^j-W^j=(V-W)\sum_{\ell<j}V^\ell W^{j-1-\ell}$: either the
+factor $T^i$ or one of the additional zero-constant factors supplies the
+extra power of $T$. Consequently $X_{j+1}-X_j$ is divisible by
+$T^{j+1}$, and the first $L$ coefficients of $X_L$ are exactly the
+coefficients in \eqref{eq:implicit-recursion}. Their weighted absolute
+sum is at most $W_L(\rho)\le r$, proving \eqref{eq:weighted}.
+All Picard calculations may be truncated modulo $T^{L+1}$.
+
+For $M>L$ and $\abs t\le q\rho$, the finite tail is bounded by
+\[
+ \sum_{n=L+1}^{M}\abs{u_n}\rho^n q^n
+ \le q^{L+1}\sum_{n=L+1}^{M}\abs{u_n}\rho^n
+ \le r q^{L+1}.
+\]
+This proves the Cauchy estimate without first assuming the existence of
+an infinite sum. In particular, on $\abs t\le\rho/2$, truncation at
+$L$ has error at most $r2^{-L-1}$.
+
+For a finite polynomial $A$, write
+$\norm A_\rho=\sum_n\abs{[T^n]A}\rho^n$.
+Finite convolution gives $\norm{AB}_\rho\le\norm A_\rho\norm B_\rho$.
+The polynomial
+$R_L=u_L-\Phi(T,u_L)=\lambda^{-1}H(T,u_L)$ is divisible by
+$T^{L+1}$ and satisfies
+\[
+ \norm{R_L}_\rho
+ \le\norm{u_L}_\rho+\Phi_+(\rho,\norm{u_L}_\rho)
+ \le r+r/4.
+\]
+Factoring $q^{L+1}$ from its finite coefficient sum proves
+\eqref{eq:residual}. Thus the limit solves the equation with an explicit
+residual modulus.
+
+Finally, for $\abs u,\abs v\le r$ and $\abs t\le\rho$,
+\[
+ \abs{\Phi(t,u)-\Phi(t,v)}
+ \le\sum_{\substack{i\ge0\\j\ge1}}\beta_{ij}\rho^i j r^{j-1}\abs{u-v}
+ \le Sr\abs{u-v}=\tfrac14\abs{u-v}.
+\]
+In this sum, $\rho^ir^{j-1}\le r$: either $i\ge1$, or $i=0$
+and $j\ge2$. Two fixed points are therefore equal. More quantitatively,
+\[
+ \abs{u-v}\le\tfrac43\left(
+ \abs{\lambda^{-1}H(t,u)}+\abs{\lambda^{-1}H(t,v)}\right).
+\]
+This also gives uniqueness directly in terms of rational approximation
+bounds, without a decision procedure for equality of represented complex
+numbers.
+\end{proof}
+
+The infinite-series notation in this lemma has a precise arithmetic
+meaning: the coefficient program is \eqref{eq:implicit-recursion}, and
+its asserted properties are the displayed finite inequalities for arbitrary
+finite indices. Each coefficient has a finite exact algebraic code.
+Evaluation to a requested precision uses certified rational approximations
+and a finite error budget for the finitely many terms. No completeness or
+choice axiom is added to $\ipra$.
+
+\subsection{Recovering the full factorization with a finite precision budget}
+
+Apply the lemma to every prepared polynomial $H_i$. Write
+\[
+ Z_i(T)=a_i(T)+T^h u_i(T)
+\]
+for the resulting formal root of the corresponding
+$F_m(T^N,Z)$. The finite construction gave jets $b_i$ modulo $T^M$,
+where $M=2h+1$ and $h=\Delta+1$, together with witnessed first
+differences
+\[
+ k_{ij}=\ord_T(b_i-b_j),\qquad
+ 2\sum_{i<j}k_{ij}=\Delta.
+\]
+The new root agrees with $b_i$ through degree $h$, because $u_i(0)=0$.
+It therefore preserves the known nonzero coefficient at degree $k_{ij}$.
+This proves distinctness by finite witnesses, rather than by searching
+indefinitely for a nonzero difference.
+
+For completeness, the following argument supplies an explicit precision
+budget for recovering the splitting identity. Fix one squarefree group,
+let $I_m$ index its $n_m$ roots, and set
+\[
+ R(T,Z)=F_m(T^N,Z)-\prod_{i\in I_m}(Z-Z_i(T)).
+\]
+Both polynomials are monic of degree $n_m$, so $\deg_ZR<n_m$.
+The Vandermonde matrix with rows
+$(1,Z_i,\ldots,Z_i^{n_m-1})$ has determinant
+$\prod_{i<j,\ i,j\in I_m}(Z_j-Z_i)$, with a witnessed nonzero
+leading coefficient at degree
+$v_m=\sum_{i<j,\ i,j\in I_m}k_{ij}\le\Delta$.
+The adjugate identity expresses this determinant times each coefficient
+of $R$ as a finite linear combination of the values $R(T,Z_i(T))$.
+
+We use only a finite cancellation lemma. If $A$ has a nonzero leading
+coefficient $a_v$ at degree $v$ and $AB\equiv0\pmod{T^L}$, then
+$B\equiv0\pmod{T^{L-v}}$. At degree $v+k$, previous vanishing
+coefficients of $B$ leave just $a_vb_k=0$; multiply by $a_v^{-1}$
+and induct on $k$. Thus, to prove factorization through degree $K$, it
+suffices to compute the root identities modulo $T^L$ for
+$L=K+\Delta+1$. The adjugate identity and finite cancellation then
+make every coefficient of $R$ vanish through degree $K$. Since $K$
+was arbitrary, we obtain
+\begin{equation}
+ F_m(T^N,Z)=\prod_{i\in I_m}(Z-Z_i(T)).
+ \label{eq:exact-factor}
+\end{equation}
+This proves the formal identity and its finite certificate requirements.
+The convergence estimates just proved also justify its evaluated version:
+the finite identity
+\[
+ \prod_j a_j-\prod_j b_j
+ =\sum_j(a_j-b_j)\prod_{\ell<j}a_\ell\prod_{\ell>j}b_\ell
+\]
+bounds the difference of two products of $n$ factors of magnitude at most
+$B$ by $nB^{n-1}\max_j\abs{a_j-b_j}$. Apply this with the explicit
+branch bounds and tail moduli. Thus every evaluated truncation error has
+a stated finite bound tending to zero.
+
+\section{Units, poles, and all branches}
+\label{sec:laurent}
+
+\subsection{An explicit reciprocal and one common radius}
+
+Recall the common denominator $C(X)=X^vU(X)$, where $U(0)\ne0$,
+and put $p=Nv$. Division by $C(T^N)$ introduces only the finite pole
+$T^{-p}$ and the reciprocal of a polynomial with nonzero constant term.
+Here is a direct coefficient construction of that reciprocal.
+
+Write $B(T)=U(T^N)=b_0(1+V(T))$, where $V(0)=0$.
+Choose rational numbers $A\ge\max(1,\abs{b_0^{-1}})$ and
+$L\ge1+\sum_{j\ge1}\abs{[T^j]V}$, using rational upper bounds
+for the finitely many algebraic coefficients, and set $R_u=1/(2L)$.
+Then $\norm V_{R_u}\le1/2$. Define
+\[
+ d_0=b_0^{-1},\qquad
+ d_n=-b_0^{-1}\sum_{j=1}^{\min(n,\deg B)}b_jd_{n-j}.
+\]
+The first $K+1$ coefficients of this reciprocal agree with those of
+$b_0^{-1}\sum_{j=0}^{K}(-V)^j$, because $V$ has zero constant term.
+Hence, for every finite $K$,
+\[
+ \sum_{n=0}^{K}\abs{d_n}R_u^n
+ \le A\sum_{j=0}^{K}(1/2)^j\le2A.
+\]
+Coefficient comparison proves
+$B(T)\sum_{n\ge0}d_nT^n=1$, and the same finite tail argument as
+before proves convergence on $\abs T<R_u$. On the smaller disc
+$\abs T\le R_u/2$, the tail beyond $K$ is at most $2A2^{-K-1}$.
+Also $\abs{V(T)}\le1/2$ for $\abs T\le R_u$, so
+$\abs{B(T)}\ge\abs{b_0}/2$: the reciprocal is an actual local
+inverse, with an explicit apartness bound.
+
+Choose a positive rational $\eta\le1$ no larger than $R_u$ and all
+the implicit-equation radii $\rho_i$. If needed, shrink it by the same
+unit estimate for the original leading coefficient $a_d(T^N)$ after
+removing its initial power of $T$. Thus this coefficient is apart from
+zero at every punctured argument under consideration.
+Choose rational $\alpha_{ik}\ge\abs{[T^k]a_i}$ and put
+\[
+ B_i=1+\sum_k\alpha_{ik}\eta^k+\eta^h r_i,
+ \qquad M_i=2AB_i.
+\]
+The preceding estimates give finite weighted bounds $B_i$ for $Z_i$
+and $2A$ for $B^{-1}$. Finite convolution therefore gives, for
+\[
+ W_i(T)=\frac{Z_i(T)}{U(T^N)}=\sum_{n\ge0}w_{i,n}T^n,
+ \qquad Y_i(T)=T^{-p}W_i(T),
+\]
+the estimate $\sum_{n=0}^{K}\abs{w_{i,n}}\eta^n\le M_i$ for every
+finite $K$. All $w_{i,n}$ are obtained by the displayed primitive
+recursions and finite convolutions.
+
+On a rationally specified annulus
+$0<\sigma\le\abs T\le\eta/2$, we consequently have
+\begin{equation}
+ \left|Y_i(T)-T^{-p}\sum_{n=0}^{K}w_{i,n}T^n\right|
+ \le \sigma^{-p}M_i\,2^{-K-1}.
+ \label{eq:annulus-tail}
+\end{equation}
+For example, $K=k+\lceil\sigma^{-p}M_i\rceil+1$ more than suffices
+for truncation error $2^{-k}$. This is a primitive recursive modulus;
+finite coefficient-evaluation errors receive an additional explicit portion
+of the error budget. The positive lower bound $\sigma$ is the constructive
+information needed to evaluate negative powers.
+With dyadic input bounds \(2^{-b}\le\abs T\) and \(M_i\le2^{\mu_i}\),
+the sharper choice \(K=k+bp+\mu_i+2\) gives truncation error at most
+\(2^{-k-3}\). The integer \(\mu_i\) is computed from a rational numerator
+bit bound; no logarithm or unbounded search is needed.
+
+If $w_{i,0},\ldots,w_{i,p-1}$ all vanish, the branch has a finite
+limit $w_{i,p}$ and an ordinary power-series parametrization after
+$X=T^N$. Otherwise the first nonzero coefficient among these finitely
+many gives its pole. Exact algebraic equality makes this a bounded test.
+No decision about whether an entire infinite series vanishes is required.
+
+\subsection{Exhaustiveness, multiplicities, and constructive root selection}
+
+Undoing the monic denominator substitution in
+\eqref{eq:exact-factor} and restoring multiplicities gives
+\[
+ P(z_0+T^N,Y)=a_d(T^N)\prod_i\bigl(Y-Y_i(T)\bigr)^{m_i}.
+\]
+This is the complete factorization, including multiplicities, on the
+punctured disc. Together with \eqref{eq:annulus-tail} it supplies the
+required convergent Puiseux expansions at the original base point \(z_0\).
+
+A pointwise statement selecting the index of a represented root needs one
+more argument. Constructively, a zero product of arbitrary represented
+complex numbers does not by itself justify a disjunction of zero factors.
+Here the finite preparation supplies the missing separation information.
+For two distinct branches, multiplication by the common reciprocal unit
+preserves the known first difference $k_{ij}$. Choose a positive rational
+$\ell_{ij}$ below the magnitude of that coefficient in $W_i-W_j$.
+The weighted bound gives, for $\abs T\le\eta$,
+\[
+ \left|\sum_{n>k_{ij}}(w_{i,n}-w_{j,n})T^{n-k_{ij}}\right|
+ \le(M_i+M_j)\abs T\,\eta^{-k_{ij}-1}.
+\]
+Shrink the radius to the positive rational
+\[
+ \eta_* =\min\left(\frac\eta2,
+  \min_{i<j}\frac{\ell_{ij}\eta^{k_{ij}+1}}{2(M_i+M_j)}\right),
+\]
+omitting the pairwise minimum when there is only one distinct branch.
+Then
+\[
+ \abs{Y_i(T)-Y_j(T)}
+ \ge\frac{\ell_{ij}}2\abs T^{k_{ij}-p}
+ \qquad(0<\abs T\le\eta_*).
+\]
+On $\sigma\le\abs T\le\eta_*\le1$, a positive rational lower
+bound for this distance is
+$(\ell_{ij}/2)\sigma^{\max(k_{ij}-p,0)}$.
+Take the minimum of these finitely many lower bounds and call it $\delta$.
+
+Given a represented root $y$, approximate each $y-Y_i(T)$ with error
+at most $\delta/16$, and test whether the squared norm of its rational
+approximation is less than $\delta^2/9$. Some test must succeed:
+otherwise every exact factor has magnitude at least $13\delta/48$,
+contradicting the factorization and the apart leading coefficient.
+There is at most one successful test, since two corresponding exact
+distances would have sum less than $38\delta/48<\delta$.
+For the selected index all other factors are bounded away from zero
+by $29\delta/48$. Cancel them; the remaining equation
+$(y-Y_i(T))^{m_i}=0$ implies $y=Y_i(T)$ by the norm identity.
+Thus root selection is a bounded rational approximation procedure.
+With a single distinct branch, the final power equation gives the same
+conclusion directly. This establishes pointwise exhaustiveness without
+excluded middle for complex equality.

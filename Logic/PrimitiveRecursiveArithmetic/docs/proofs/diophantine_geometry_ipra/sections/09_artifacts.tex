@@ -1,0 +1,84 @@
+\section{Executable artifacts and reproducibility}
+\label{sec:artifacts}
+
+The archive is self-contained for reading the report, rebuilding the PDF,
+running the exact arithmetic examples, and compiling the standalone Lean
+core. It does not contain a duplicate checkout of ProveIt or a bundled Lean
+toolchain. The pinned upstream revision and file blob identifiers are
+recorded in \texttt{evidence/source\_manifest.json}.
+
+\begin{center}
+\begin{tabular}{p{0.32\textwidth}p{0.59\textwidth}}
+\toprule
+Path & Content \\
+\midrule
+\path{diophantine_geometry_ipra.tex}, \texttt{sections/}
+& Complete LaTeX source of the human-readable argument \\
+\path{diophantine_geometry_ipra.pdf}
+& Compiled report \\
+\texttt{code/geometry.py}
+& Canonical points, height boxes, rational roots, congruence tests,
+resultant certificates, preperiodic-point enumeration, and cubic searches \\
+\texttt{code/conics.py}
+& General pointed-conic parametrization, inverse, and explicit height constants \\
+\texttt{code/descent.py}
+& Pythagorean extraction, square-factor arithmetic, the descent map,
+and signed triangle--cubic transformations \\
+\texttt{code/check\_all.py}
+& Reproducible exact verification of the executable companions \\
+\texttt{lean/}
+& Standalone Lean source, toolchain declaration, and Lake project \\
+\texttt{evidence/}
+& Compiler output, source provenance, exact computation results,
+and the verification summary \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The Python programs use only the standard library, including exact integer
+arithmetic and \texttt{fractions.Fraction}. They are reference implementations,
+not a proof checker for all the claims in this paper. On malformed inputs
+they may raise \texttt{ValueError}; their object-theory versions use an
+explicit validity flag and a fixed default value instead. This distinction
+does not affect the valid-input statements proved above.
+
+Run the exact verification from the package root with
+\begin{verbatim}
+python3 code/check_all.py
+python3 code/geometry.py
+\end{verbatim}
+The first command writes \texttt{evidence/validation.json}. It checks 729
+ordered quadratic coefficient pairs with entries in $\{-1,0,1\}$, including
+480 nonzero-resultant pairs and 11,520 exact height comparisons. It also
+checks 25 elliptic point lists against an independent rational-square
+enumerator, 4,800 general-conic parameter cases, 20 independent conic
+point-list comparisons, 3,931 coprime square extractions, 1,474 Pythagorean
+parameter cases, and 5,896 signed rational correspondences. These finite
+checks are useful for detecting implementation errors. Completeness of the
+mathematical theorems comes from their proofs, not the number of examples.
+
+With Lean 4.32.0 available, the checked core is rebuilt by
+\begin{verbatim}
+cd lean
+lake build
+\end{verbatim}
+Alternatively, running \texttt{lean DiophantineCore.lean} directly prints
+the axiom reports for all thirteen named theorems. There is no package
+download or Mathlib dependency. The relevant source hash and actual
+compiler output accompany the report.
+
+The PDF is rebuilt from the root by
+\begin{verbatim}
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  diophantine_geometry_ipra.tex
+\end{verbatim}
+The build requires an ordinary LaTeX installation with the packages listed
+in the main source. A supplied \texttt{Makefile} provides the targets
+\texttt{pdf}, \texttt{check}, and \texttt{lean}.
+
+Independent reviews of the arithmetic foundations, conic height estimates,
+finite descent, and resultant dynamics informed the final text. The
+remaining formalization boundary is explicit: constructing all closed
+\texttt{Prf PRAAx} values described in Section~\ref{sec:lean} is future
+implementation work. No unchecked placeholder is presented as a completed
+formal theorem.

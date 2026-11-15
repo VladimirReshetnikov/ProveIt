@@ -1,0 +1,113 @@
+Independent review of the finite-descent chapter
+================================================
+
+Reviewed:
+  output/diophantine_geometry_ipra/sections/05_descent.tex
+  output/diophantine_geometry_ipra/code/descent.py
+  output/diophantine_geometry_ipra/sections/01_foundations.tex
+
+Overall conclusion
+------------------
+I found no material mathematical error or missing unbounded principle in the
+descent, rational correspondence, or complete E1 classification. The argument
+is suitable for the stated iPRA base after the indicated primitive-recursive
+arithmetic infrastructure is formalized. No edits were made to the reviewed
+chapter or program.
+
+Arithmetic and descent checks
+-----------------------------
+1. Finite descent is genuinely a bounded primitive-recursive iteration. Its
+   induction invariant G(s_j) AND rho(s_j)+j <= rho(s) is quantifier-free after
+   Boolean compilation. Evaluating at j=rho(s) gives zero measure while the
+   preserved validity predicate gives positive measure. The conclusion is
+   obtained by implication to False, with no double-negation elimination,
+   least-number principle, or induction on an unbounded formula.
+
+2. The gcd square-splitting proof is correct. With h=gcd(a,c), a=hu, c=hv,
+   the equation ub=hv^2 and gcd(u,v)=1 imply u|h. Writing h=ue gives
+   a=eu^2, b=ev^2; gcd(a,b)=1 forces e=1. Thus the code's returned roots
+   (a//h,c//h) are exactly (u,v). No prime factorization is needed.
+
+3. Normalizing a square-area triangle preserves the square-area root:
+   after a=gA,b=gB and parity yields AB=2K, s^2=g^2K forces g|s.
+   The normalization therefore does not silently assume that a rational
+   square root of an integer is integral.
+
+4. The primitive Pythagorean parameter extraction is complete. U=(C+B)/2
+   and V=(C-B)/2 are positive coprime integers, and UV=(A/2)^2. The parity,
+   uniqueness, and bounds for the extracted m,n are all justified.
+
+5. In the main descent, m,n,m+n,m-n really are pairwise coprime: the only
+   potentially exceptional pair is m+n,m-n, whose common divisor divides 2
+   and is odd. Splitting their product produces the four squares claimed.
+   If m were even, m=r^2 and n=s^2 would give m-n=3 mod 4, impossible;
+   hence s is a positive even integer. Thus every division in (6) is exact
+   and S'=s/2 is positive.
+
+6. The new triangle identities are correct:
+      A'^2+B'^2=(t^2+u^2)/2=r^2,
+      A'B'=(t^2-u^2)/4=s^2/2=2(s/2)^2.
+   Coprimality follows from gcd(t,u)=1. Its hypotenuse r is strictly smaller
+   than C=m^2+n^2. The contradiction is obtained from a total specified D,
+   rather than from a nonconstructive existence statement about a smaller
+   state.
+
+7. Clearing the product of denominators of a,b,c,q gives the integer
+   square-area state (La,Lb,Lc,L|q|). Both the Pythagorean identity and
+   ab=2q^2 scale by L^2, so the rational corollary has no denominator gap.
+
+8. The quartic and three-squares corollaries have the correct side lengths
+   and area factors, including the case r=0 in the latter. T>R ensures
+   both constructed legs remain strictly positive.
+
+Rational maps, signs, and projective classification
+--------------------------------------------------
+9. The signed triangle correspondence is an actual bijection on its stated
+   domains. Writing delta=c-a, the identities
+      x^2-n^2=ay, x^2+n^2=cy, 2nx=by, ax=y
+   hold for x=nb/delta, y=2n^2/delta. Delta cannot vanish because ab=2n!=0.
+   Conversely y!=0 on E_n forces x and x^2-n^2 nonzero, gives ab=2n, and
+   gives c-a=2n^2/y!=0. The inverse identities are correct.
+
+10. The treatment of signs is adequate. It does not assume x>0 on E_n:
+    points with -n<x<0 are handled by signed legs, and taking absolute
+    values subsequently preserves ab=2n>0 and the right-triangle equation.
+    A nonzero y is allowed to have either sign, and c may have either sign
+    in the actual bijection.
+
+11. The projective E1 proof accounts for the unique point at infinity and
+    all affine cases. The y!=0 branch contradicts the area-one theorem;
+    y=0 gives x=0,1,-1 by decidable field equality and cancellation.
+    The four listed projective points are distinct and satisfy the equation.
+    The smoothness check is also valid over an arbitrary characteristic-zero
+    field; no elliptic group-law theorem is being used to prove the list.
+
+Minor clarifications worth considering, not blockers
+----------------------------------------------------
+A. Lemma descent-gcd(3) permits c=0, while its proof immediately uses
+   gcd(c,d) and the earlier item is stated for positive inputs. Section 1
+   already says the zero-input gcd cases are handled separately, so this is
+   covered by the shared infrastructure. Adding the sentence "If c=0 the
+   assertion is immediate; otherwise ..." would make this local proof
+   entirely self-contained.
+
+B. The point [-1:0:1] is a projective representative rather than the
+   canonical primitive tuple whose first nonzero coordinate is positive.
+   The corresponding canonical tuple is (1,0,-1). This is normal projective
+   notation and is not an error, but any explicit internal four-code list
+   should normalize this representative (as the package's convention says).
+
+Executable check
+----------------
+I independently ran python3 code/descent.py. It exited successfully with:
+  3,931 coprime square-splitting cases;
+  1,474 Pythagorean parameter cases;
+  5,896 signed rational correspondence cases;
+  four additional named examples, including negative x on E_5;
+  33,489 rational pairs in the bounded E1 sanity check.
+
+The program correctly labels these checks as finite arithmetic validation.
+It also correctly states that no valid input to the square-area descent can
+exist, so the main valid branch cannot be empirically exercised and its
+preservation must be established symbolically. This distinction is important
+and is maintained consistently in the chapter and code.

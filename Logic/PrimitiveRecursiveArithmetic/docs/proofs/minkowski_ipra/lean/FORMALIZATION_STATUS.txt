@@ -1,0 +1,149 @@
+MINKOWSKI IN iPRA: LEAN STATUS AND IMPLEMENTATION ROADMAP
+
+Status of this delivery
+-----------------------
+The human proof in the accompanying paper is the mathematical result.
+The Lean files are an explicit formalization outline, NOT a completed Lean
+formalization. They were not compiled in this environment: no Lean or Lake
+executable was available. They contain no `sorry` placeholders and no new
+axiom declarations, but absence of those strings is not a proof of the
+missing results. In particular, no meshCorrect derivation is supplied.
+
+FiniteKernel.lean:
+  executable total candidate-pair enumeration and collision search;
+  exact finite input and output relations;
+  explicit list of unimplemented correctness obligations.
+GeometricBridge.lean:
+  symmetry/midpoint interfaces and two elementary host-Lean proof scripts;
+  centered-mesh point definition;
+  explicit algebraic and representation bridge obligations.
+ObjectTarget.lean:
+  exact object-language iPRA target using the actual repository API;
+  quantifier-free status of that target;
+  conditional transport to the concise scalar theory.
+
+Repository inspected
+--------------------
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+Commit: 329161f8da0b319d51ba9f6246c4b19d243f7193
+Root toolchain: leanprover/lean4:v4.32.0
+All module paths below are beneath:
+  Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/
+The relevant namespace is LeanProofs.ConciseIPRA.
+
+Syntax.lean
+  Syn, Fm, Fm.QF, substitution and variable scoping.
+Deduction.lean
+  Theory, Prf, scoped derivability notation;
+  intuitionistic natural-deduction constructors;
+  Prf.subst, Prf.weaken, Prf.trans.
+PR.lean
+  PR k: zero, succ, proj, comp, prec;
+  PTm n;
+  PRAAx: defining equations, successor separation/injectivity,
+         quantifier-free induction;
+  PRA.proj, PRA.comp, PRA.precZero, PRA.precSucc, PRA.qfInd.
+Interpretation.lean
+  Interp, Interp.sound, BiInterp, BiInterp.iff.
+BiInterpretation.lean
+  biInterp, pra_iff_teq, pra_theorem_iff, FromPRA.sigma.
+Term.lean and Native.lean
+  Tm iterator terms; NFm; NPrf; NPrf.sound.
+EqArith.lean and EqCompare.lean
+  useful arithmetic infrastructure for the concise equational route;
+  not required if the initial development targets PRAAx directly.
+
+A practical completion sequence
+------------------------------
+1. Compile and adjust the host-level definitions against the pinned checkout.
+   Inspect the existing lakefile before selecting target paths. This package
+   deliberately does not alter the user's lakefile or invent a new dependency
+   installation. Run the files within a checkout that already builds
+   ConciseIPRA, with that library on LEAN_PATH.
+
+2. Implement one concrete natural-number codec.
+   Encode signed integers by 2z for z>=0 and -2z-1 for z<0. Encode rational
+   numbers by numerator plus a positive denominator, and vectors/lists by an
+   elementary pairing/list codec. Unreduced fractions are fine internally for
+   fixed arithmetic checkers. For the arbitrary-formula membership scheme,
+   normalize every rational argument and vector to a unique canonical code
+   (positive denominator, coprime pair, zero=0/1); otherwise add an explicit
+   extensionality premise. Decode malformed input to fixed default values.
+   This makes every function total without weakening valid-input correctness.
+
+3. Give explicit PR syntax trees for the codec and arithmetic.
+   Addition, multiplication, exponentiation, bounded sums/products, natural
+   comparison, truncated subtraction, bounded minimization, Euclidean quotient
+   and remainder, signed operations, and fixed-width list access are all built
+   from PR.comp and PR.prec. Prove their defining behavior using PRA.precZero
+   and PRA.precSucc. The closure under primitive recursion is a syntax fact,
+   not a claim that Lean's arbitrary recursive definitions are automatically
+   in iPRA.
+
+4. Formalize bounded Boolean quantification.
+   A bounded universal is a finite product/conjunction of characteristic
+   values; a bounded existential is a finite maximum/disjunction. Establish
+   these by quantifier-free induction. Replace every bounded invariant by its
+   characteristic equation before invoking PRA.qfInd. Invariants with free
+   parameters remain quantifier-free; genuinely unbounded quantified induction
+   is never used.
+
+5. Prove the finite color collision theorem in the object theory.
+   Maintain the table of colors already seen and its occupancy count. With no
+   collision, each new input increases occupancy by one. Occupancy is at most
+   the number M of colors. At M+1 inputs, the Boolean 'no collision' branch
+   therefore yields M+1<=M. Because the search and its branches are decidable,
+   infer the successful branch constructively. Encode all table entries and
+   counts by bounded characteristic equations. One can also formalize an
+   equivalent bounded counting proof; avoid extracting an existential from a
+   bare double-negated infinite assertion.
+
+6. Prove base-m color coding and the signed-division facts.
+   A vector of residues r_k in [0,m) is coded by sum r_k*m^k, below m^n.
+   Equality of codes implies equality of residues by repeated division.
+   Equal remainders imply a-b=m*((a-b)/m). Distinct input vectors force the
+   quotient vector to be nonzero. Combine this with step 5 into the pure mesh
+   object derivation.
+
+7. Formalize box refinement and the finite geometry checker.
+   For rational endpoints, choose m as the product of all positive
+   denominators (or any certified common multiple). Convert boxes to integer
+   endpoint ranges. Finite sums/products compute cell count exactly. Interiors
+   of the boxes being disjoint makes their integer cell-index sets disjoint.
+   Cell centers lie strictly inside their boxes, so no real boundary test or
+   choice of a point on a face is needed. Select the first m^n+1 cells.
+
+8. Formalize the midpoint identity.
+   If a-b=mz, then
+      ((2a+1)/m - (2b+1)/m)/2 = z
+   coordinatewise. Rational denominator clearing reduces it to integer ring
+   identities. A basis map commutes with this identity; its injectivity makes
+   Bz nonzero. Symmetry and midpoint closure establish membership. Rational
+   halfspace input admits a complete finite membership checker; a more general
+   represented body needs its own fixed inclusion-evidence relation and proof.
+
+9. Assemble the actual derivability judgment.
+   Instantiate CertificateSymbols by the concrete PR definitions and prove
+      Prf PRAAx [] (correctness meshSymbols).
+   This is the decisive deliverable. An ordinary Lean theorem about Nat,
+   Finset, Rat, or Real is not a substitute for it.
+
+10. Transport and audit.
+   Apply pra_theorem_iff to obtain the concise scalar derivation. The derived
+   native calculus translation can be added if desired, using the repository's
+   appropriate equivalence theorem after checking its exact hypotheses.
+   Inspect the completed declaration's dependency/axiom report and ensure that
+   the claimed result is an actual derivation for PRAAx or its translated
+   concise counterpart. Kernel checking of semantic geometry alone does not
+   establish its first-order proof-theoretic strength.
+
+No hidden total evaluator
+-------------------------
+The geometric representation is fixed before its PR relation is defined.
+There is no uniform total primitive-recursive evaluation function for all
+arbitrary PR programs supplied as unbounded input. A fixed certificate checker
+can check bounded computation traces if a representation requires them; the
+trace bounds and validation then become explicit finite data. Alternatively,
+the body theorem is a schema for each fixed PR representation and its
+soundness derivation. The finite mesh lemma itself is fully uniform in coded
+n, m, and the finite list of cell indices.

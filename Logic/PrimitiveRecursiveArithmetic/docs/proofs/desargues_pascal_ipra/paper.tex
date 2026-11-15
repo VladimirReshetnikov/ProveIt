@@ -1,0 +1,111 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array}
+\usepackage{xcolor,listings,fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!50!black]{hyperref}
+\hypersetup{pdftitle={Desargues and Pascal in intuitionistic primitive recursive arithmetic},
+pdfauthor={Prepared for Vladimir Reshetnikov},
+pdfsubject={Complete constructive coordinate proofs, iPRA interpretation, and Lean formalization plan},
+pdfkeywords={Desargues, Pascal, projective geometry, iPRA, constructive mathematics, Lean}}
+\definecolor{ink}{RGB}{24,47,71}
+\definecolor{codebg}{RGB}{247,248,250}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Desargues and Pascal in iPRA}
+\fancyhead[R]{\small Constructive proof package}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\lstset{basicstyle=\ttfamily\small,backgroundcolor=\color{codebg},frame=single,
+breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\nz}{\operatorname{NZ}}
+\newcommand{\br}[3]{[#1\,#2\,#3]}
+\newcommand{\axis}{\operatorname{axis}}
+\newcommand{\Zero}{\operatorname{Zero}}
+\newcommand{\Apart}{\operatorname{Apart}}
+\title{\color{ink}\textbf{Desargues and Pascal in intuitionistic\\
+primitive recursive arithmetic}\\[0.5em]
+\large Exact polynomial certificates, constructive geometry,\\
+and a Lean formalization plan}
+\author{Prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give complete algebraic proofs of Desargues's theorem, including its
+converse, and Pascal's theorem, and explain their derivation in first-order
+intuitionistic primitive recursive arithmetic. The literal arithmetic
+theorems concern the rational projective plane, represented by nonzero
+integer triples. Their conclusions include explicit primitive recursive
+functions producing a common line or center. The principal certificates
+are identities of integer polynomials: a factorization of the Desargues
+determinant and an equality of the Pascal determinant with a six-by-six
+quadratic evaluation determinant. The Pascal proof covers every nonzero
+homogeneous quadratic, including singular conics, without a
+general-position argument or a limiting argument. A further conditional
+first-order schema covers primitive-recursive real coordinate names with
+explicit apartness assumptions. The archive contains exact executable
+polynomial checks and concrete Lean source candidates. The new Lean
+sources have not been compiled, and a native iPRA derivation object has
+not been emitted; the remaining formalization steps are specified
+separately from the completed written proofs.
+\end{abstract}
+\clearpage
+{\small\tableofcontents}
+\newpage
+\input{sections/01_scope}
+\input{sections/02_arithmetic}
+\input{sections/03_geometry}
+\input{sections/04_desargues}
+\input{sections/05_pascal}
+\input{sections/06_internal}
+\input{sections/07_reals}
+\input{sections/08_lean}
+\begin{thebibliography}{9}
+\bibitem{desargues}
+\emph{Desargues's theorem}. Statement and geometric conventions supplied
+in the task. \url{https://en.wikipedia.org/wiki/Desargues%27s_theorem}.
+Accessed 15 November 2026. Used for the requested statement, not as a
+premise of the proof.
+\bibitem{pascal}
+\emph{Pascal's theorem}. Statement supplied in the task.
+\url{https://en.wikipedia.org/wiki/Pascal%27s_theorem}.
+Accessed 15 November 2026. Used for the requested statement, not as a
+premise of the proof.
+\bibitem{repo-pr}
+Vladimir Reshetnikov, \emph{ProveIt: ConciseIPRA, PR.lean}, commit
+\texttt{0bba41d70f061442357cae0f6de055434a33fb09}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/0bba41d70f061442357cae0f6de055434a33fb09/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean}{Pinned source: primitive-recursive symbols, terms, axioms, and quantifier-free induction}.
+Inspected through the GitHub connector.
+\bibitem{repo-bridge}
+Vladimir Reshetnikov, \emph{ProveIt: ConciseIPRA,
+NativeBiInterpretation.lean}, same commit.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/0bba41d70f061442357cae0f6de055434a33fb09/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}{Pinned source: the faithful iPRA/native translation}.
+Also inspected: \texttt{Syntax.lean}, \texttt{TeqReflect.lean}, the
+ConciseIPRA README, root \texttt{lean-toolchain}, and root
+\texttt{lakefile.toml} at the same commit.
+\bibitem{mathlib-ring}
+The Mathlib contributors, \emph{Mathlib.Tactic.Ring}, official
+documentation and source.
+\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/Tactic/Ring.html}.
+The package targets the repository-pinned Mathlib version \texttt{v4.32.0}.
+\end{thebibliography}
+\end{document}
+

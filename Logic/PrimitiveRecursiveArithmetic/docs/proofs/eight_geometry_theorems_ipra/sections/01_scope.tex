@@ -1,0 +1,55 @@
+\section{Scope, exact meaning, and theorem inventory}
+
+\subsection{What ``proved in \texorpdfstring{$\ipra$}{iPRA}'' means here}
+
+A literal theorem of first-order arithmetic cannot quantify over an unstructured continuum of Euclidean points.  We therefore use the standard arithmetized reading:
+
+\begin{quote}
+A point, line, conic, polynomial, or finite polygon is represented by a natural-number code.  The field operations, tuple projections, determinants, cross products, polynomial composition, and finite products are primitive-recursive functions of those codes.  The geometric theorem is the corresponding arithmetical implication between code predicates.
+\end{quote}
+
+The canonical field is $\Q$.  The same proof is uniform for any fixed field whose carrier and operations are primitively presented and whose field laws have been verified in $\ipra$.  This includes fixed number fields, so the restriction to rational coordinates is not a restriction to ruler-only configurations; it is the cleanest literal internal model.  Externally, every proof below is a field identity and hence remains valid over any characteristic-zero field and over constructive real-number structures whenever the named denominators are apart from zero.
+
+The projective theorems are stated with homogeneous coordinates.  The affine ratio theorems are first stated with \emph{directed} ratios.  For an ordered convex configuration, the directed factors have the signs shown in the diagram, and the displayed MathWorld formulas with ordinary positive lengths follow immediately.  This separation is important constructively: order and absolute value are not needed for the algebraic core.
+
+\subsection{Status table}
+
+\begin{longtable}{p{0.19\textwidth}p{0.23\textwidth}p{0.25\textwidth}p{0.23\textwidth}}
+\toprule
+Theorem & Constructive internal form & Main certificate & Existential witness \\
+\midrule
+\endhead
+Pappus harmonic & Four collinear projective points have cross-ratio $-1$ & A three-cross-product coordinate calculation & The harmonic point $W\sim(t,0,2t-1)$ \\
+Ceva & Three rational cevians are concurrent iff a cross-multiplied product identity holds & Determinant of three line covectors & Explicit common point $P$ \\
+Menelaus & Three side points are collinear iff the directed product is $-1$ & Determinant of their three point vectors & Explicit line $D\join E$ \\
+Carnot conic & Six side points lie on a conic iff the product condition holds & Three binary-quadratic factorizations & Six explicit conic coefficients \\
+Carnot polygon & A certified degree-$n$ restriction on every side gives the circular product $(-1)^{mn}$ & Endpoint evaluation of a supplied factorization & The intersection parameters are input data \\
+Hoehn & Two pentagram products of five signed ratios are $1$ & Cyclic determinant cancellation & Each $W_i$ is a cross product of two joins \\
+Pappus hexagon & Three opposite-side intersections are collinear & The vector identity $X-Y+Z=0$ & All three intersections are explicit cross products \\
+Brianchon & Three opposite-vertex diagonals of a circumscribed hexagon are concurrent & Pascal's polynomial identity in the dual plane & The concurrency point is the meet of two diagonals \\
+\bottomrule
+\end{longtable}
+
+\subsection{Constructive strength actually used}
+
+The fixed-size theorems use only:
+\begin{enumerate}
+\item equations in a commutative field;
+\item cancellation under an explicit nonzero hypothesis;
+\item finite tuple manipulation; and
+\item explicit construction of intersections, joins, and coefficients.
+\end{enumerate}
+Carnot's polygon theorem additionally uses primitive recursion on the two finite indices and quantifier-free induction for the telescoping product.  Thus the arguments fit not merely classical PRA but intuitionistic PRA.  No step invokes $P\lor\neg P$ for an arbitrary formula.  Equality and order of rational codes are decidable, but that is a primitive-recursive fact about the chosen data type, not an appeal to global excluded middle.
+
+\subsection{Nondegeneracy discipline}
+
+Every quotient in an informal geometry book hides a nonzero premise.  We expose those premises.  Typical examples are:
+\begin{itemize}
+\item a projective point or line vector is nonzero;
+\item two points used to define a line are distinct;
+\item two lines used to define an intersection are distinct;
+\item a side point is not a triangle vertex, so both of its nonzero barycentric coordinates are apart from zero;
+\item a curve avoids every polygon vertex, so no side parameter is $0$ or $1$; and
+\item in the affine Hoehn theorem, the relevant diagonal intersections are finite.
+\end{itemize}
+The division-free equalities remain meaningful in some degenerate cases, but the named geometric ratios do not.  The report proves the strongest clean theorem with all ratios defined, and records where the polynomial identity itself survives beyond that domain.

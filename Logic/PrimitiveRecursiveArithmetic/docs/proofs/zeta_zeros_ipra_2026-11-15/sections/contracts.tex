@@ -1,0 +1,132 @@
+\section{Concrete finite arithmetic sentences}
+\label{sec:contracts}
+
+This section fixes representative internal statements rather than leaving
+``formalize the analytic theorem'' as an unspecified goal. Integer and
+rational coding conventions can be chosen freely, provided their
+operations are compiled to the repository's primitive-recursive syntax.
+Invalid numerical codes are assigned fixed default values. A conditional
+Boolean checker returns one on an invalid hypothesis code; a constructor's
+separate validity theorem ensures that its own outputs are genuine
+certificates.
+
+\subsection{The primary counting sentence}
+Fix the deterministic height selector and contour constructor of
+Section~\ref{sec:regular-heights}. For integer $n\ge8$ let
+$\mathsf{Gen}(n)$ be its complete rational certificate and
+$C(n)$ its crossing-sum integer. Return zero for $n<8$ in the
+definition of $C$. Let $\mathsf{Valid}$ recompute the specified xi
+approximants, verify the contour mesh, prescribed error bounds and
+positive sample margins, and recompute the crossing sum. Two separate
+internal theorems are required:
+\begin{equation}
+ \ipra\vdash\forall n\ge8\quad
+            \mathsf{Valid}(\mathsf{Gen}(n))=1,
+ \label{eq:generator-sentence}
+\end{equation}
+and the numerical estimate below. The first is supplied by the
+minimum-modulus and finite pigeonhole argument, including the other
+three edges of the rectangle.
+
+Let $m(n,p)$ and $\ell(n,p)$ be the fixed rational approximants, with
+error at most $2^{-p}$, to
+\[
+ \mathcal M(n)=\frac{n}{2\pi}\log\frac{n}{2\pi}-\frac{n}{2\pi},
+ \qquad \log(n+5),
+\]
+respectively. Their definitions use the log and exponential routines
+and extra working precision sufficient for multiplication by $n$ and
+division by $2\pi\ge6$. Define a Boolean function
+$\mathsf{CountCheck}(n,p)$ to return one if $n<8$, and otherwise to
+test the exact rational inequality
+\begin{equation}
+ |C(n)-m(n,p)|\le9\ell(n,p)+40+10\,2^{-p}.
+ \label{eq:count-matrix}
+\end{equation}
+Then the intended object sentence is precisely
+\begin{equation}
+       \ipra\vdash\forall n\,\forall p\quad
+                   \mathsf{CountCheck}(n,p)=1.
+ \label{eq:count-sentence}
+\end{equation}
+The $10\,2^{-p}$ budget is the sum of the error in $m$ and nine
+times the error in $\ell$. The proof of (RVM-PR) establishes this
+inequality with $n,p$ free. For a supplied regular contour, the analogous
+checker uses $8\log(U+4)+40$ and a $9\,2^{-p}$ budget.
+
+\subsection{Representative zero-exclusion and identity sentences}
+For integer $H\ge1$ and a rational input $s$ in the rectangle
+$|\Im s|\le H$, $|\Re s-1|\le\varepsilon_H$, the lower bound
+$b_H$ in Theorem~\ref{thm:elem-F-clearance} is rational. Compute the
+symbolically pole-removed numerator $F$ with error at most $b_H/8$.
+The returned rational $v$ must satisfy
+\[
+                         |v|^2\ge(7b_H/8)^2.
+\]
+The checker tests the input inequalities, recomputes $v$, and performs
+this squared-norm comparison. The working precision is the bounded
+binary logarithm of $8/b_H$ plus the stated arithmetic error budget.
+Thus this is one uniform finite test at an explicit precision, rather
+than a negation of an undecidable equality.
+
+For $\xi$ symmetry, use one common box and the same theta summation
+parameters at $s,1-s,\bar s$. The rational expression for the completion
+then satisfies the reflection identity exactly. The conjugation identity
+is also exact if the elementary evaluator treats conjugate inputs by
+conjugating its rational Taylor polynomial and the chosen real constants.
+The Mellin identification remains a separate, substantive finite theorem.
+
+For trivial zeros and their derivative formula, compile the finite gamma
+shift identity and the Taylor coefficient identity at the integer input
+$-2n$. At precision $p$ the equality checker compares the two prescribed
+rational approximants with the sum of their proved error budgets. The
+strict simplicity assertion uses the rational lower bound
+$(2n)!/(2\,8^{2n})$ to select a fixed successful derivative precision.
+No equality test on an arbitrary real or complex input is part of this
+checker.
+
+\subsection{Reciprocal sums as Cauchy names}
+For each integer $m\ge2$, define $A_m(p)$ by a weighted finite contour
+integral at a selected regular height above $T_{p+3}$, using both
+upper and lower rectangles. Compute the quadrature and function values
+to total Euclidean error at most $2^{-p-3}$. The tail has the same
+bound by~\eqref{eq:reciprocal-modulus}. After conversion to the
+rational L1 norm, the error is at most $2^{-p-1}$. The internal
+statement can therefore be the exact rational inequality
+\begin{equation}
+ \normone{A_m(p)-A_m(q)}\le2^{-p}+2^{-q}
+       \qquad(m\ge2).
+ \label{eq:cauchy-sentence}
+\end{equation}
+All loop bounds remain primitive recursive when $m$ is a numerical
+parameter: the weight and its derivatives involve finite powers, and
+the lower contour has the fixed rational height $\eta=1/4096$.
+For the paired reciprocal sum use its upper-contour weight
+$1/[s(1-s)]$ instead. The same sentence and budgets apply.
+
+\subsection{Why these are uniform proofs}
+The proof uses several nested loops, but every nesting has a numerical
+bound supplied before execution. Examples are the degree-bounded gcd,
+finite determinant permutation list, bounded algebraic root grid,
+fixed-precision bisections, Euler--Maclaurin truncations, candidate-height
+list, contour mesh and crossing sum. Their state is a finite numerical
+array. At each loop, all later precision demands are already numerical
+parameters. Identities and rational error inequalities about that state
+are quantifier-free invariants.
+
+For a bounded family of such inequalities, use the Boolean product of
+their characteristic functions. Induction applies to the equation that
+this product equals one, with the bound as a free parameter. It does
+not apply to a statement quantifying over every precision or asserting
+existence of an unspecified real object. Polynomial root names in the
+finite algebraic intermediate calculus have one fixed bounded
+evaluation routine on their finite codes, so no universal evaluator for
+arbitrary primitive recursive programs is being assumed.
+
+These details specify the arithmetic claims and the human proofs of
+their uniform bounds. The remaining Lean implementation work is to
+compile the fixed programs, prove the indicated invariants in the deeply
+embedded theory, and build the actual derivations of
+\eqref{eq:generator-sentence}, \eqref{eq:count-sentence}, and
+\eqref{eq:cauchy-sentence}. A theorem about their truth in ambient Lean's
+standard natural numbers is a different endpoint.

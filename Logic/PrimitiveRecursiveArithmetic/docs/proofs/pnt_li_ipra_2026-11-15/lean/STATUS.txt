@@ -1,0 +1,56 @@
+LEAN STATUS
+===========
+
+All three .lean files in this directory are UNCOMPILED OUTLINES.
+No Lean executable is available in the construction environment.
+They must not be described as kernel-verified or as a completed formal proof.
+
+ArithmeticTarget.lean
+--------------------
+An exact Nat/Rat specification of the prime count, binary length, lower
+logarithm approximation, logarithmic-integral approximation, giant threshold,
+and final denominator-cleared arithmetic checker. There is no proof of
+ArithmeticTarget. The hard theta estimate appears only as an explicitly
+parameterized contract; this file supplies no inhabitant of that contract.
+
+The target threshold is
+  2 ^ ((2 * 2^240) * (m+7)^10).
+The checker compares its exponent to binary length and never attempts to
+construct that entire giant integer just to reject a small numerical input.
+
+FiniteAbel.lean
+--------------
+A small complete proof candidate for a genuine finite summation-by-parts
+identity, plus its one-step recurrence. No analytic theorem is assumed.
+It is an ambient Mathlib rational-arithmetic proof, not an iPRA proof object.
+
+NativeBridge.lean
+-----------------
+The closed object-language target and generic transport of a SUPPLIED iPRA
+derivation through ConciseIPRA.pra_iff_native. Neither the compiled PR 3
+checker nor its required object derivation has been constructed here.
+
+Verified source interface
+-------------------------
+ProveIt revision: b5a3ad037723c44d69a3d5b28a950c554327a989
+Toolchain declared by that revision: leanprover/lean4:v4.32.0
+Mathlib requirement: v4.32.0
+Import: ConciseIPRA.NativeBiInterpretation
+Namespace: LeanProofs.ConciseIPRA
+Object arithmetic symbols: PR, PTm, PRAAx, Prf, PRA.qfInd
+Native bridge: pra_iff_native, NFm.ofPRA, NPrf
+
+The source declarations were inspected. The repository build was not rerun.
+
+First compilation commands
+--------------------------
+Run these in a Mathlib/ConciseIPRA Lake workspace, after placing the files
+at a visible path:
+  lake env lean PATH/ArithmeticTarget.lean
+  lake env lean PATH/FiniteAbel.lean
+  lake env lean PATH/NativeBridge.lean
+
+The plain Mathlib files may be compiled independently of ConciseIPRA.
+NativeBridge.lean requires the ConciseIPRA module search path.
+
+See ROADMAP.txt for concrete remaining proof obligations.

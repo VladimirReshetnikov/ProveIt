@@ -1,0 +1,249 @@
+% Independently derived finite-arithmetic appendix, prepared by repo_foundations.
+% Intended as an input section, not a standalone document.
+\section{Finite contour cancellation and uniform arithmetic schedules}
+\label{sec:finite-contour-audit}
+
+This section records concrete replacements for the analytic notation used
+in the contour argument. In particular, it does not infer provability from
+the mere existence of a primitive recursive approximation algorithm.
+
+\subsection{A strictly finite Cauchy lemma}
+
+Use the taxicab norm $\lVert u+iv\rVert_1=|u|+|v|$ on rational complex
+numbers. Let a rational rectangle have width $W$ and height $H$, and fix
+an integer $R\ge W+H$. Suppose that, on the rectangle, a function $G$
+has rational approximation procedures for $G$ and $G'$ with error at most
+$\eta$, and a proved uniform Taylor inequality
+\[
+ \lVert G(z)-G(a)-G'(a)(z-a)\rVert_1
+       \le M\lVert z-a\rVert_1^2
+\]
+whenever the segment from $a$ to $z$ stays in the rectangle. The displayed
+inequality means its finite rational enclosure version with the indicated
+evaluation errors. Here $M\ge1$ is an integer bound, obtained from the
+concrete formula for $G$; it is not selected by compactness.
+
+Divide each side into $N$ equal parts. Each of the $N^2$ small rectangles
+has taxicab diameter $d=(W+H)/N$ and perimeter $2d$. On each cell choose
+its lower left vertex $a$ and the rational affine function
+\[
+ A_a(z)=G_\eta(a)+G'_\eta(a)(z-a).
+\]
+For every cell vertex $v$ the rational residual satisfies
+\[
+ \lVert G_\eta(v)-A_a(v)\rVert_1
+       \le Md^2+\eta(2+d).
+\]
+The trapezoidal boundary sum of an affine complex function is exactly
+zero: the constant part telescopes, while the linear part uses
+$(u+v)(v-u)=v^2-u^2$. Hence the cell boundary sum is at most
+$2d[Md^2+\eta(2+d)]$. Every internal edge is used twice with opposite
+orientations and the same rational vertex values. It cancels exactly.
+The remaining outer boundary trapezoidal sum $C_{N,\eta}$ therefore obeys
+\begin{equation}\label{eq:finite-rectangle}
+ \lVert C_{N,\eta}\rVert_1
+ \le \frac{2MR^3}{N}+4RN\eta+2R^2\eta.
+\end{equation}
+This proves the finite lemma using only distributivity, the triangle
+inequality, finite summation, and exact incidence cancellation. In
+particular the evaluation allowance includes the growing internal
+perimeter; omitting its factor $N$ would be incorrect.
+
+For requested error $2^{-q}$ take
+\[
+ N=2^{q+6}(M+1)(R+1)^3,
+ \qquad
+ \eta\le\frac{2^{-q-8}}{(R+1)^2(N+1)}.
+\]
+The three terms of \eqref{eq:finite-rectangle} are respectively at most
+$2^{-q-5},2^{-q-6},2^{-q-7}$, so their sum is smaller than $2^{-q-4}$.
+If $b(u)$ is the least integer with $u\le2^{b(u)}$, a sufficient sample
+precision is
+\[
+ q_{\rm ev}=q+8+2b(R+1)+b(N+1).
+\]
+The search for $b(u)$ is bounded by $u$. Enlarge $M$, if needed, to also bound $|G'|$. This gives the usual
+finite rectangle-refinement estimate for the contour integral name; its
+mesh error is at most a constant times $MR^2/N$. Increasing $q$ by four
+at the start absorbs this additional comparison. Thus the integral
+notation abbreviates a theorem about finite rational tables at every
+requested precision, rather than an appeal to a general integration
+theorem.
+
+\subsection{A concrete derivative bound after pole subtraction}
+
+For the PNT contour put
+\[
+ A(s)=\frac{y^{s+1}}{s(s+1)},\qquad
+ G(s)=-\frac{\zeta'(s)}{\zeta(s)}A(s)-\frac{y^2}{2(s-1)}.
+\]
+The removable value at $s=1$ is evaluated by its regular expression below.
+One deliberately generous usable bound, in the taxicab norm, is
+\[
+ M=2^{512}(\lceil y\rceil+1)^8(T+4)^{40}.
+\]
+It bounds the magnitudes of $G,G',G''$ and therefore its Taylor remainder,
+with room for fixed norm-conversion factors. Here is a direct check.
+
+Outside $|s-1|<1/128$, Euler summation with lower cutoff $1$ gives,
+for $0\le j\le3$, bounds for $\zeta^{(j)}$ using
+\[
+ \left|\int_1^\infty\{u\}u^{-s-1}(\log u)^j\,du\right|
+       \le\frac{j!}{\sigma^{j+1}}\le j!2^{j+1}.
+\]
+The pole derivatives are at most $j!128^{j+1}$. Thus each
+$|\zeta^{(j)}|$ is bounded by $Z=2^{40}(T+3)$.
+The proved strip apartness gives
+$|1/\zeta|\le J=2^{71}(T+3)^7$. On the remaining low-ordinate band the same reciprocal bound follows from
+$|1/\zeta|=|s-1|/|w|\le(1/32)/(7/8)<1\le J$.
+With $U=ZJ$, ordinary quotient
+identities bound $|F|,|F'|,|F''|$, for $F=-\zeta'/\zeta$, respectively
+by $U,2U^2,6U^3$. The identities
+\[
+ \frac1{s(s+1)}=\frac1s-\frac1{s+1},\qquad
+ \frac{d^j}{ds^j}y^{s+1}=(\log y)^j y^{s+1}
+\]
+show that $|A^{(j)}|\le2^6 y^6$ for $0\le j\le3$ on
+$1/2\le\sigma\le2$, since $\log y\le y$ and $y\ge2$.
+Expanding $G''$ by the product rule gives a bound smaller than
+$2^{360}(T+3)^{24}y^6$.
+
+Near the pole write $w=(s-1)\zeta=1+(s-1)h$ and
+$g=-w'/w$. On the rational band
+$|\sigma-1|\le1/64$, $|t|\le1/64$, the previously proved estimates
+give $|w|\ge7/8$. Euler's formula bounds the first three derivatives
+of $h$ by $5,10,40,240$, respectively. Hence the first three
+derivatives of $w$ are bounded by $6,22,128$, and
+$|g|,|g'|,|g''|\le2^{13}$. On this band use the stable expression
+\[
+ G(s)=\int_0^1 A'(1+u(s-1))\,du+g(s)A(s).
+\]
+Its second derivative is bounded directly by the displayed bounds for
+$A^{(j)}$ and $g^{(j)}$; it is much smaller than the proposed $M$.
+The contour can be partitioned at the rational lines $t=\pm1/64$.
+Thus choosing between the two formulas requires only rational comparisons,
+not a decision about an unknown complex zero. The tiny horizontal
+distance $\delta_T$ from the pole causes no numerical instability in
+the regular expression.
+
+The simple-pole integral is also finite. Excise a rational square centred
+at $1$ of half-side $\rho=\tfrac12\min\{\delta_T,c-1,1/64\}$,
+which is positive and fits inside both vertical sides; cancel the rational grid between it
+and the outer rectangle, and compute its four sides. Their real parts
+cancel in pairs and their imaginary parts add to
+$8i\int_0^1du/(1+u^2)=2\pi i$, where this identity defines the same
+explicit rational integral name of $\pi$ as usual. In particular
+$2\le\pi\le4$, directly from the integrand bounds. This proves the
+residue calculation without an additional infinitary residue theorem.
+
+\subsection{Fixed rational logarithm and exponential algorithms}
+
+For a rational $u\in[1,2]$, put $z=(u-1)/(u+1)\in[0,1/3]$.
+The finite sum
+\[
+ \ell_N(u)=2\sum_{j=0}^{N-1}\frac{z^{2j+1}}{2j+1}
+\]
+has tail at most $9^{-N}$, since
+$2\sum_{j\ge N}|z|^{2j+1}\le(3/4)9^{-N}$.
+For any positive rational $a/b\ge1$, bounded integer search finds
+$j$ with $2^j\le a/b<2^{j+1}$. Write $a/b=2^ju$ and approximate
+its logarithm by $j\ell_N(2)+\ell_N(u)$. The error is at most
+$(j+1)9^{-N}$. For example $N=p+j+2$ gives error smaller than
+$2^{-p}$; for $a/b<1$ use its reciprocal and change sign.
+The identities for these names follow from finite geometric-series
+identities or rational rectangle refinements, with these same tails.
+
+For a rational complex $z$ with $\lVert z\rVert_1\le B$, where $B\ge1$ is an integer,
+use the Taylor polynomial $\sum_{j<N}z^j/j!$. At index $2B$ its
+absolute coefficient is at most $B^B\le2^{B^2}$, since the last $B$
+factors of $(2B)!$ are at least $B$. Every subsequent ratio is at most
+$1/2$. Thus
+\[
+ \sum_{j\ge N}\frac{B^j}{j!}
+       \le2^{1+B^2+2B-N}\qquad(N\ge2B).
+\]
+Taking $N=B^2+2B+p+2$ gives error at most $2^{-p-1}$.
+The case $B=0$ is exact. The derivative and multiplication identities
+are obtained by differentiating the finite polynomial and applying the
+same explicit tails. When the input itself is approximate, the series
+gives the Lipschitz bound $4^{B+1}$ on the ball of radius $B$; the
+input precision is chosen first to absorb this displayed factor.
+
+For Euler summation and its first three derivatives, truncation at
+$V=2^{2v}$ has a bound of the form
+\[
+ 2^{12}(T+3)(v+1)^3 2^{-v}.
+\]
+Repeated integration by parts gives this explicitly from
+\[
+ \int_V^\infty u^{-\sigma-1}(\log u)^jdu
+ =V^{-\sigma}\sum_{h=0}^j
+    \frac{j!}{(j-h)!}\frac{(\log V)^{j-h}}{\sigma^{h+1}}.
+\]
+For instance $v=4(p+T+32)^2$ is sufficient for error $2^{-p}$.
+The inequality $(v+1)^3\le2^{v/2}$ used here holds for $v\ge64$
+and has an elementary finite-induction proof. Split the remaining
+integral at all integers up to $V$. On each interval its fractional-part
+factor is affine, and a crude derivative bound is
+$K=2^{16}(T+3)(V+1)^4$. A rational mesh of step $1/Q$ with
+$Q\ge2^{p+4}K(V+1)$ therefore has total quadrature error at most
+$2^{-p-4}$. Evaluate its exponential and logarithm terms with enough
+additional precision to absorb its finite coefficient sum. All cutoffs
+are displayed bounded arithmetic constructions.
+
+For a finite Euler product at real part $1+d$, $d>0$ rational, its
+distance from the Dirichlet series is at most $P^{-d}/d$ when all
+primes up to the integer $P$ are used. Choose
+$P=2^V$ with $V\ge(p+d^{-1}+10)/d$. Then this tail is below $2^{-p}$.
+Each factor has denominator apartness at least $1/2$. The real
+logarithm of its squared modulus may be expanded with the elementary
+geometric tail, and the identity
+$3+4\cos v+\cos2v=2(1+\cos v)^2$ applies to every finite summand.
+Choose each factor's input evaluation tolerance smaller than the desired
+final error divided by $8P4^P[2+2/d]^{16}$. Reciprocal evaluation loses
+at most a factor $8$, and a product of at most $P$ factors of magnitude
+at most $2$ has error at most $P4^P$ times the factor error when all
+factor errors are at most $1$. The remaining displayed multiplier
+absorbs the eight-factor positivity comparison. This gives the finite version of the Euler-product
+positivity inequality with explicit slack.
+
+\subsection{Uniform expansion order and the induction discipline}
+
+The factorial expansion need not be proved by induction on a statement
+quantifying over real precisions. For the requested integer order $r$,
+form the single finite expression
+\[
+ S_r(t)=t\sum_{j<r}\frac{j!}{(\log t)^{j+1}}.
+\]
+The derivative identity
+\[
+ S'_r(t)=\frac1{\log t}-\frac{r!}{(\log t)^{r+1}}
+\]
+is exact finite telescoping: the terms with adjacent indices cancel.
+On $2\le t\le n$, an integer bound for $|S''_r|$ is
+$B_r^*=2^{r+4}(r+2)^4r!$. Telescope over a rational mesh of step
+at most $2^{-m}$, with $m=p+B_r^*+n+4$. Its total Taylor error is
+at most $B_r^*n2^{-m}<2^{-p-3}$.
+On $t\ge2$ clip each rational logarithm sample upward to $1/2$;
+the true value is at least $1/2$, so clipping cannot increase its error.
+Consequently every sampled reciprocal has the same positive lower
+denominator bound used in the derivative estimates.
+All logarithm powers and factorials are evaluated by fixed PR programs
+with the parameter $r$; no universal evaluator for arbitrary PR codes
+is being assumed. Logarithm evaluation tolerances can, for example,
+be taken below $2^{-p-10}/[(n+1)(B_r^*+1)]$ to absorb the finite
+coefficient derivatives. This yields the expansion identity uniformly
+in $r$ after denominators are cleared.
+
+In every application, fix the outer numerical parameters, the requested
+precision, all cutoffs, and all rational denominator bounds before
+induction. A loop invariant is an equality or inequality between
+primitive recursive integer expressions, or the Boolean conjunction of
+such checks over the already processed prefix. Quantifier-free induction
+proves the row invariant and its finite fold. Universal introduction is
+used only after that derivation. In particular, there is no induction on
+``all precisions are correct'', ``the function is holomorphic'', or
+``all sufficiently large arguments satisfy the estimate''. The analytic
+notation is justified by the proved finite identities and their explicit
+error budgets, rather than by a generic assertion that computability
+implies arithmetic provability.

@@ -1,0 +1,137 @@
+\section{The theorem and its constructive meaning}
+\label{sec:statement}
+
+Brun's theorem asserts that the reciprocals in all twin-prime pairs have
+a finite sum. We index a pair by its smaller member. Write
+\[
+ \Twin(p)\quad\Longleftrightarrow\quad
+ p\text{ and }p+2\text{ are prime},
+\]
+and define, for natural numbers \(X,N\),
+\[
+ T(X)=\#\{p:1\le p\le X,\ \Twin(p)\},\qquad
+ B(N)=\sum_{\substack{1\le p<N\\\Twin(p)}}
+       \left(\frac1p+\frac1{p+2}\right).
+\]
+The convention deliberately counts \(5\) twice: once in \((3,5)\) and once
+in \((5,7)\). Thus \(B(4)=8/15\) and \(B(6)=92/105\).
+The endpoint in \(T\) is inclusive; the endpoint in \(B\) is strict.
+The condition \(p+2\le X\) is \emph{not} imposed in the definition of \(T(X)\).
+
+\begin{theorem}[Finite quantitative Brun theorem]
+\label{thm:main}
+The following assertions have proofs in intuitionistic primitive recursive
+arithmetic, when rational notation is read through positive-denominator
+integer codes.
+\begin{enumerate}[label=(\roman*)]
+\item For every \(k\ge0\),
+\begin{equation}
+ k^2T(2^k)\le 1400\,2^k\le 2^{11}2^k.
+ \label{eq:main-count}
+\end{equation}
+\item For all \(m\ge1\) and \(L\ge0\),
+\begin{equation}
+ \sum_{\substack{2^m\le p<L\\\Twin(p)}}
+ \left(\frac1p+\frac1{p+2}\right)
+ \le \frac{2^{13}}m.
+ \label{eq:main-tail}
+\end{equation}
+\item Define \(N(q)=2^{\,2^{q+13}}\). For all \(q,M,L\in\N\),
+\begin{equation}
+ M,L\ge N(q)\quad\Longrightarrow\quad
+ \lvert B(M)-B(L)\rvert\le 2^{-q}.
+ \label{eq:main-cauchy}
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+The constants are intentionally generous. They simplify the arithmetic
+proof and give a completely specified modulus; they are not intended for
+efficient numerical evaluation of Brun's constant. In particular, even the
+cutoff at \(q=0\) is \(2^{8192}\).
+
+\subsection{A statement literally in the language of iPRA}
+
+There are no real-number variables in first-order iPRA. Accordingly, the
+primary conclusion is a theorem about finite integer computations. Here is
+one exact version.
+
+Let \(\chi(p)\in\{0,1\}\) be the primitive recursive characteristic function
+of \(\Twin(p)\). Primality requires \(p\ge2\) and is tested by trial division
+over the explicitly bounded range \(2,\ldots,p-1\). Put
+\[
+ D(V)=(V+1)!,
+\]
+and define the integer
+\begin{equation}
+ R(U,V)=
+ \sum_{U\le p<V}\chi(p)
+ \left(D(V)\mathbin{\mathrm{div}}p+
+       D(V)\mathbin{\mathrm{div}}(p+2)\right).
+ \label{eq:integer-tail}
+\end{equation}
+Use total division, with a fixed value such as \(0\) at divisor \(0\).
+The terms at \(p=0,1\) have coefficient \(0\). Every active denominator is
+positive and at most \(V+1\), and hence divides \(D(V)\).
+It follows exactly, without rounding, that for \(U\le V\),
+\begin{equation}
+ B(V)-B(U)=\frac{R(U,V)}{D(V)}.
+ \label{eq:tail-code}
+\end{equation}
+
+The arithmetical theorem to be proved is the universal closure of
+\begin{equation}
+ \boxed{\quad
+ N(q)\le U\ \wedge\ U\le V
+ \quad\Longrightarrow\quad
+ 2^qR(U,V)\le D(V).
+ \quad}
+ \label{eq:ipra-target}
+\end{equation}
+All symbols in its matrix denote primitive recursive functions or
+relations with primitive recursive characteristic functions. In particular,
+its matrix is a quantifier-free formula after replacing order and bounded
+tests by those characteristic functions. Formula~\eqref{eq:ipra-target}
+therefore does not mean an informal quantification over infinite sums.
+
+The order on natural numbers is decidable. Applying
+\eqref{eq:ipra-target} to the smaller and larger of \(M,L\) gives
+\eqref{eq:main-cauchy}. Conversely, the finite rational tail estimate proves
+\eqref{eq:ipra-target} by multiplying by the positive integer \(2^qD(V)\).
+
+\subsection{What convergence means here}
+
+The sequence
+\[
+ b(q)=B\!\left(2^{\,2^{q+13}}\right)
+\]
+is a specified primitive recursive rational name. For \(r\ge q\),
+\(\lvert b(r)-b(q)\rvert\le2^{-q}\).
+In a constructive development of Cauchy reals, this name represents Brun's
+constant. Its equivalence to the original sequence of partial sums follows
+from the estimate for \emph{all} \(M,L\) beyond the cutoff, not merely for
+the selected subsequence.
+
+If the convention for a Cauchy modulus requires a strict inequality
+\(<2^{-q}\), replace \(N(q)\) by \(N(q+1)\).
+The proof never needs to decide whether there are finitely many or infinitely
+many twin-prime pairs. A convergent series of nonnegative terms is compatible
+with either possibility.
+
+\subsection{Proof architecture}
+
+The classical Selberg sieve provides the organizing idea
+\cite{kedlaya,tau}, but we will prove the particular finite identity needed.
+The steps are:
+\begin{enumerate}
+\item Count the forbidden residues of \(n(n+2)\) modulo squarefree integers.
+\item Construct explicit rational coefficients \(\lambda_d\) whose squared
+divisor sum majorizes the indicator of surviving the sieve.
+\item Evaluate its main quadratic form as \(1/G(z)\), and bound the total
+counting error by \(z^4\).
+\item Prove \(G(s^2)\ge H_s^2/3\) by a finite prime-factor grouping.
+\item Choose dyadic parameters and telescope a finite rational majorant
+for the reciprocal tail.
+\end{enumerate}
+Sections~\ref{sec:finite}--\ref{sec:convergence} carry out these steps.
+Section~\ref{sec:ipra} checks their induction and coding requirements.

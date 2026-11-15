@@ -1,0 +1,197 @@
+\section{Represented real bodies and the strict volume premise}\label{sec:real}
+
+\subsection{Positive lower volume as evidence}
+
+A useful constructive convention defines the strict lower
+volume assertion by its finite witnesses:
+\begin{equation}\label{eq:lower-content}
+ \Vol_-(D)>q
+ \quad:\Longleftrightarrow\quad
+ \begin{array}{l}
+ \text{there is a finite family of rational boxes in \(D\),}\\[-.1em]
+ \text{with disjoint interiors and total content greater than \(q\).}
+ \end{array}
+\end{equation}
+For the arithmetic proof, containment refers to the
+represented membership predicate on rational points.
+For a real interpretation one uses actual certified
+inclusion of the corresponding boxes.
+This is a positive assertion: its witness contains
+endpoints and inclusion evidence.
+
+With this representation the strict theorem says exactly
+\[
+ \Sym(P)\wedge\Mid(P)\wedge\Vol_-(P/2)>1
+ \ \Longrightarrow\
+ \exists z\in\Z^n\setminus\{0\}\ (z\in P).
+\]
+It is the formula scheme of \cref{thm:main}, obtained by
+existentially eliminating the supplied box certificate.
+No supremum object or real-number completeness axiom
+is needed.
+
+For ordinary bounded convex bodies with nonempty interior,
+lower box content agrees with the usual volume. The
+relevant direction is visible in the shrink estimate:
+an inradius absorbs the mesh error, and the content of
+the shrink approaches that of the body. For rational
+polytopes the preceding section has already replaced
+this limiting sentence by one explicit mesh and finite
+rational volume arithmetic.
+
+For a different effective presentation of a real body,
+the representation theorem connecting its volume to
+\cref{eq:lower-content} must be proved. It is not
+automatic for an opaque description of a measurable set.
+For example, suppose a fixed approximation procedure
+supplies certified inner unions \(U_t\) and a known
+primitive recursive error bound. Given a rational
+\(V_0>1\) below \(\Vol(D)\), a supplied or explicitly
+computed \(t\) making the error smaller than
+\((V_0-1)/2\) yields a union of content greater than
+\(1\), hence a certificate. Merely knowing that some
+unknown mesh eventually works does not give a
+primitive recursive search bound.
+
+An unbounded body is handled by the same certificate:
+its positive lower volume witness is already a finite
+bounded family of boxes. If one instead starts from
+bounded intersections, the radius where the strict
+threshold is exceeded must be part of the positive
+evidence or supplied by a proved primitive recursive
+bound.
+
+\subsection{Real lattice bases}
+
+For a real lattice \(L=B\Z^n\), the numerical output
+remains the integer coefficient vector \(z\).
+To interpret it as a nonzero real vector \(Bz\), use
+constructive nonsingularity data: an explicitly
+represented inverse, or a rational lower bound \(d>0\)
+with \(|\det B|\geq d\), together with the arithmetic
+of the fixed regular names. The bare negative
+assertion \(\det B\neq0\) must not be silently treated
+as such positive apartness data.
+
+The predicate \(\Phi(q)\equiv Bq\in K\) can then be
+expressed arithmetically for the fixed representation.
+The box-collision proof is unchanged. It reads only the
+finite coordinate certificate and uses \(\Phi\) in
+its last three logical steps.
+
+One may take \cref{eq:lower-content} in normalized
+coordinates as the positive hypothesis corresponding
+to \(\Vol(K)>2^n|\det B|\).
+Alternatively, a separately proved volume-change rule
+and positive inner approximation theorem connect it
+with an existing volume representation. This makes
+explicit where geometry is encoded, instead of
+adding unrepresented real sets to a first-order
+arithmetic theorem.
+
+\section{Why unrestricted real equality is different}\label{sec:obstruction}
+
+The rational equality argument depends on a discrete
+integer-facet gap. It does not extend to arbitrary real
+widths. The following complete reduction shows the
+issue already for rectangles in dimension two.
+
+\begin{proposition}[Equality gives weak real sign choice]\label{prop:llpo}
+If the compact exact-threshold theorem produces a nonzero
+integer point for every represented real symmetric
+rectangle of area \(4\), then for every represented real
+\(t\) with \(|t|\leq1/2\) one can produce a branch of
+\[
+                              t\geq0\ \vee\ t\leq0.
+\]
+\end{proposition}
+
+\begin{proof}
+Use
+\[
+ K_t=[-(1+t),1+t]\times
+             [-(1+t)^{-1},(1+t)^{-1}].
+\]
+Since \(1+t\geq1/2\), the reciprocal is constructively
+defined. The rectangle is bounded, closed, symmetric,
+convex, and has area exactly \(4\).
+Let \((u,v)\) be a nonzero integer point in it.
+Integer equality is decidable.
+
+If \(u\neq0\), then \(1\leq|u|\leq1+t\), so \(t\geq0\).
+If \(u=0\), then \(v\neq0\) and
+\(1\leq|v|\leq(1+t)^{-1}\). Multiplication by the
+positive number \(1+t\) gives \(t\leq0\).
+\end{proof}
+
+Here is the direct LLPO reduction. Let \((\beta_k)\)
+be a binary sequence with at most one term equal to
+\(1\), and form the regular rational name
+\[
+                  t_s=\sum_{k<s}(-1)^k\beta_k2^{-(k+3)}.
+\]
+For \(v\geq s\),
+\[
+ |t_v-t_s|\leq\sum_{k\geq s}2^{-(k+3)}=2^{-(s+2)}.
+\]
+The modulus is explicit and \(|t|\leq1/4\).
+If \(t\geq0\), no odd-indexed bit can equal \(1\):
+such a bit would force all the other bits to be zero,
+making \(t\) strictly negative. Hence all odd bits
+are zero. Similarly \(t\leq0\) implies all even bits
+are zero. The resulting disjunction is the lesser
+limited principle of omniscience, LLPO.
+The equivalence of weak real sign choice with LLPO
+is discussed by Bridges and Richman
+\cite{bridges-richman}.
+
+This obstructs an unrestricted constructive
+real-body extension. It does not contradict the finite
+strict theorem or the rational equality theorem.
+We do not claim to supply a Lean formalization of
+LLPO independence from a particular coding of \(\ipra\).
+The reduction is explicit, and the computational
+obstruction can already be made first-order in one
+fixed primitive recursive family.
+
+\subsection{A uniform recursive selector is impossible}
+
+Fix an effective enumeration \(\varphi_e\) of partial
+recursive functions. The disjoint computably enumerable
+sets
+\[
+ A=\{e:\varphi_e(e)\downarrow=0\},\qquad
+ C=\{e:\varphi_e(e)\downarrow=1\}
+\]
+have no total recursive binary separator that is \(0\)
+on \(A\) and \(1\) on \(C\). If \(f\) were such a
+separator, let \(e\) be an index of the total function
+\(x\mapsto1-f(x)\). If \(f(e)=0\), then \(e\in C\);
+if \(f(e)=1\), then \(e\in A\). Each case contradicts
+the required value of \(f(e)\).
+
+For the parameter \(e\), define a rational approximation
+\(t_e(s)\) by simulation for \(s\) steps. If
+\(\varphi_e(e)\) first halts at step \(j\leq s\) with
+output \(0\), use \(2^{-(j+3)}\); if it first halts
+with output \(1\), use \(-2^{-(j+3)}\); otherwise use
+\(0\). This is one fixed primitive recursive function
+of \(e,s\), with an immediate geometric Cauchy modulus.
+Its real value is positive on \(A\), negative on \(C\),
+and zero otherwise.
+
+A recursive selector for a nonzero integer point of
+\(K_{t_e}\) would give the forbidden separator:
+output \(0\) when the selected point has nonzero first
+coordinate and \(1\) otherwise. For positive \(t_e\),
+the second alternative is impossible; for negative
+\(t_e\), the first is impossible.
+This argument uses bounded universal Turing simulation,
+not a total universal primitive recursive evaluator.
+
+Under a realizability-sound first-order encoding, a
+uniform constructive derivation producing these integer
+witnesses would yield such a selector.
+The package establishes the explicit reduction and
+selector obstruction; it does not promote them to
+an unimplemented syntactic independence theorem.

@@ -1,0 +1,405 @@
+% Standalone section fragment. Uses amsmath, amsthm, amssymb only.
+\section{Bounded selection of regular heights}
+\label{sec:regular-heights}
+
+A sentence such as ``move the horizontal edge a little until it misses all
+zeros'' is not an algorithm with a primitive recursive bound.  This section
+supplies that bound.  All the constants are intentionally generous.
+The polynomial facts used below concern rational complex polynomials; their
+algebraic roots are represented by finite real-algebraic data.  In particular,
+root multiplicities and comparisons with a rational circle are decidable by
+bounded algebraic algorithms.  The uniform, variable-degree version of this
+finite polynomial lemma is required here, not merely a separate theorem for
+each fixed degree.
+
+\subsection{A finite polynomial substitute for Jensen's inequality}
+
+Let $P$ be a polynomial, $P(0)\ne0$, and suppose $|P(z)|\le B$ on
+$|z|=R$.  If $a_1,\ldots,a_q$ are any of its roots in $|z|\le r<R$,
+repeated according to multiplicity, put
+\[
+ B_a(z)=\frac{R(z-a)}{R^2-\overline a z},\qquad
+ H(z)=P(z)\prod_{j=1}^q B_{a_j}(z)^{-1}.
+\]
+The apparent divisions cancel polynomial factors, so $H$ is a polynomial.
+On $|z|=R$ each $|B_a(z)|=1$.  The constant-coefficient mean identity for a
+polynomial therefore gives
+\[
+ |P(0)|\prod_{j=1}^q\frac R{|a_j|}=|H(0)|\le B,
+ \qquad
+ |P(0)|(R/r)^q\le B.                         \tag{J}
+\]
+There is no assumption that the outer circle avoids roots.  The mean identity
+is verified by integrating the finitely many monomials, or by a sufficiently
+fine finite Fourier sum.  Thus (J), unlike a qualitative invocation of
+Jensen's formula, is already a finite algebraic inequality with explicit
+approximation margins.
+
+\subsection{A minimum-modulus estimate independent of the degree}
+
+Suppose $P\in\mathbb Q(i)[z]$ satisfies
+\[
+ |P(0)|\ge\tfrac18,\qquad |P(z)|\le2M\quad(|z|\le4),\qquad M\ge1.
+\]
+Let $k$ be the least integer for which $2^k\ge16M$, and put $Q=4k$.
+By (J), the number $q$ of roots in $|z|\le3$ is at most $Q$:
+indeed $(4/3)^q\le16M\le2^k$, whereas $(4/3)^4>2$.
+Remove exactly these roots with the radius-four factors $B_a$ above.
+The resulting polynomial $H$ has no root in $|z|<3$, satisfies
+$|H|\le2M$ on $|z|\le4$, and $|H(0)|\ge1/8$.
+
+For completeness, the only harmonic estimate needed is the following
+explicit version of Harnack's inequality.  On $|z|\le11/4$ the function
+\[
+ u(z)=\log\frac{2M}{|H(z)|}
+\]
+is nonnegative and harmonic.  The Poisson kernel at $|z|\le5/2$, relative to
+the circle of radius $11/4$, lies between positive bounds and is at most
+\[
+ \frac{11/4+5/2}{11/4-5/2}=21.
+\]
+Consequently $u(z)\le21u(0)$ and
+\[
+ |H(z)|\ge \frac{1}{2^{83}M^{20}}\quad(|z|\le5/2).       \tag{H}
+\]
+This use of Poisson integration has a finite implementation.  If $d=\deg H$,
+all roots of $H$ have modulus greater than three, whence its factorization
+already gives
+\[
+ |H(z)|\ge |H(0)|\,12^{-d}\quad (|z|\le11/4).
+\]
+That inferior but explicit lower bound controls the quadrature and logarithm
+errors while proving the much stronger bound (H).  More concretely, write
+$H(z)=H(0)\prod_{\nu=1}^d(1-z/b_\nu)$, where $|b_\nu|>3$.
+On the radius-$11/4$ circle the logarithm series
+$\log(1-z/b_\nu)=-\sum_{j\ge1}(z/b_\nu)^j/j$ has ratio at most $11/12$.
+Truncation after $K$ terms has total error at most
+$12d(11/12)^{K+1}$, and the angular derivative of $\log|H|$ is at most
+$11d$.  Finite Fourier identities prove the mean and Poisson identities
+for the truncated sums; the displayed geometric tail and the positive
+lower bound permit passage to any requested rational error.
+Their dependence on $d$ is harmless: the approximation degree has already
+been chosen.  They do not enter the approximation tolerance used to choose
+that degree.
+
+If $|z-a_j|\ge\delta$ for every removed root and $|z|\le5/2$, then
+\[
+ |B_{a_j}(z)|\ge\frac{4\delta}{16+3(5/2)}>\frac\delta6.
+\]
+For $0<\delta\le1$ this proves
+\[
+ |P(z)|\ge \frac{1}{2^{83}M^{20}}(\delta/6)^Q
+                                                        \tag{MM}
+\]
+outside at most $Q$ disks of radius $\delta$.  The exponent is controlled by
+$\log M$, not by the approximation degree.  This distinction eliminates
+an otherwise circular choice of precision.
+
+\subsection{The regular-height algorithm}
+
+Take rational $T\ge8$, write $A=\lceil T\rceil$, and define
+\[
+ \begin{aligned}
+ c&=2+i(T+\tfrac12),& M&=4(A+10)^4,\\
+ k&=\min\{j:2^j\ge16M\},& Q&=4k,\\
+ \delta&=\frac1{3(Q+2)},&
+ L&=\frac1{2^{83}M^{20}[18(Q+2)]^Q}.
+ \end{aligned}                                             \tag{RH1}
+\]
+Every operation in (RH1), including the bounded search for $k$, is primitive
+recursive.  Euler--Maclaurin with two correction terms gives
+\[
+ |\zeta(c+z)|\le M\quad(|z|\le4),\qquad
+ |\zeta(c)|\ge\Re\zeta(c)\ge\tfrac14.                    \tag{RH2}
+\]
+Here the second inequality follows directly from
+$\sum_{n\ge2}n^{-2}\le1/4+\int_2^\infty x^{-2}dx=3/4$.
+For the first, $\Re(c+z)\ge-2$, $|c+z+j|\le A+10$ for $0\le j\le3$,
+and the fourth Bernoulli remainder is bounded by
+$|(c+z)_4|/[24(\Re(c+z)+3)]$ after using $|\widetilde B_4|\le1$.
+The pole is outside the disk and its distance is bounded below.
+These estimates are much smaller than the displayed value of $M$.
+
+Construct a rational complex polynomial $P$ such that
+\[
+ \sup_{|z|\le4}|P(z)-\zeta(c+z)|\le L/4.                 \tag{RH3}
+\]
+This is a bounded construction.  One possible recipe uses the Taylor series
+at $c$ and the radius-five bound $M_5=8(A+14)^6$, obtained by
+Euler--Maclaurin with three correction terms.  Choose $p,b$ with
+$2^{-p}\le L/4$ and $M_5\le2^b$, and take
+\[
+ D=5(p+b+4).
+\]
+Since $(4/5)^5<1/2$, the Taylor tail beyond degree $D$, on radius four,
+is less than $2^{-p}/2$.  Approximating each coefficient to
+$2^{-p}/[2(D+1)4^D]$ contributes at most the other half.
+Cauchy coefficient integrals can themselves be computed by bounded
+quadrature on radius five; the radius-six bound
+$M_6=32(A+16)^6$ supplies derivative bounds.  For the $j$th coefficient the
+integrand, parametrized on $[0,1]$, has derivative at most
+$8(5M_6+jM_5)$ before division by $5^j$.  These explicit bounds give a
+primitive recursive sample count.  Thus (RH3) does not invoke an unbounded
+search for a successful approximant.
+
+Apply (MM) to $P$.  The possible bad disks have radius $\delta$, and there
+are at most $Q$ of them.  Consider the $Q+1$ rational heights
+\[
+ U_j=T+\frac{j+1}{Q+2},\qquad 0\le j\le Q.              \tag{RH4}
+\]
+Their spacing is $1/(Q+2)>2\delta$.  Each bad disk can meet at most one of
+the horizontal segments $[1/2,2]+iU_j$.  The finite pigeonhole principle
+therefore supplies a segment meeting no bad disk.  That entire segment lies
+within distance $5/2$ of $c$, so (RH3) and (MM) imply
+\[
+ |\zeta(\sigma+iU_j)|\ge3L/4\quad(1/2\le\sigma\le2).
+                                                               \tag{RH5}
+\]
+
+The algorithm need not compute the algebraic roots of $P$.  It simply tests
+all the heights (RH4), using a fixed finite mesh.  Let
+$J=\lceil12M/L\rceil$ and sample
+$\sigma_\ell=1/2+3\ell/(2J)$, $0\le\ell\le J$.
+At every sample compute a rational complex value $w_\ell$ with error at most
+$L/16$.  Accept a height if
+\[
+ |w_\ell|^2\ge(5L/8)^2\quad\hbox{for every }\ell.        \tag{RH6}
+\]
+This is a decidable rational test.  A height satisfying (RH5) passes (RH6).
+Conversely, Cauchy's estimate gives $|\zeta'|\le M$ on every candidate
+segment, and the mesh spacing is at most $L/(8M)$.  An accepted height has
+\[
+ |\zeta(\sigma+iU)|\ge7L/16>L/4
+ \quad(1/2\le\sigma\le2).                               \tag{RH7}
+\]
+Return the first accepted height, its mesh, and the margin $L/4$.
+There are exactly $Q+1$ candidates and $J+1$ samples per candidate; all
+precision and summation bounds have been specified in advance.
+This proves a uniform primitive recursive regular-height construction.
+
+\subsection{An explicit certificate for the complete rectangle}
+\label{sec:complete-contour}
+
+The accepted horizontal segment is enough to construct every part of the
+zero-counting contour with a predetermined precision.  Let its height be
+$U\ge8$, and let $L\le1$ be the rational number from the regular-height
+construction, so that
+$|\zeta(\sigma+iU)|\ge L/4$ for $1/2\le\sigma\le2$.
+Put
+\[
+ \begin{aligned}
+ D&=\lceil U\rceil+2,
+ & M_\Gamma&=D\,4^{D+D^2},\\
+ R&=\lceil U\rceil+3,
+ & B&=2(2R+1)R!+R(R+1)(R+1)!,\\
+ \mu&=\frac{L}{32M_\Gamma}.
+ \end{aligned}                                             \tag{FC1}
+\]
+The reciprocal-gamma estimate from the analytic foundation gives
+$|\Gamma(z)|\ge M_\Gamma^{-1}$ whenever
+$\Re z>0$ and $|z|\le D$.
+The derivative estimate for the entire completed function gives
+$|\xi'(s)|\le B$ on $|s|\le R$.
+
+On the top half-edge $s=\sigma+iU$, $1/2\le\sigma\le2$, we have
+$|s(s-1)|\ge1$, $\pi^{-\sigma/2}\ge1/4$, and $|s/2|\le D$.
+The defining product therefore gives
+\[
+ |\xi(s)|\ge \tfrac12\cdot1\cdot\tfrac14
+                 \cdot M_\Gamma^{-1}\cdot\tfrac L4=\mu.
+\]
+On the right edge $s=2+it$, $0\le t\le U$, one has
+$|s(s-1)|\ge2$ and $|\zeta(s)|\ge\Re\zeta(s)\ge1/4$.
+Consequently $|\xi(s)|\ge1/(16M_\Gamma)\ge\mu$ there.
+On the bottom edge $\xi(s)\ge3/8\ge\mu$.
+Finally the identity
+$\xi(1-\overline s)=\overline{\xi(s)}$
+reflects the right edge to the left and the top half-edge to the remaining
+top half.  It follows that the complete rectangle has the uniform rational
+margin
+\[
+ |\xi(s)|\ge\mu
+ \quad\bigl(s\in\partial([-1,2]+i[0,U])\bigr).          \tag{FC2}
+\]
+The gamma estimate was used only where $\Re(s/2)>0$; no division by a gamma
+value at a pole is hidden in the reflected half.
+
+Divide each horizontal edge into
+\[
+ J_x=\left\lceil\frac{24B}{\mu}\right\rceil
+\]
+subintervals and each vertical edge into
+\[
+ J_y=\left\lceil\frac{8UB}{\mu}\right\rceil
+\]
+subintervals.  Each segment length is at most $h=\mu/(8B)$.
+At every contour vertex $s_j$, evaluate $\xi(s_j)$ by the entire theta
+representation to a rational complex number $v_j$ with error at most
+$\mu/16$.  The required binary precision is the least $p$ with
+$2^{-p}\le\mu/16$; the analytic approximation routine supplies its already
+proved primitive recursive tail and quadrature bounds.  Use the same
+approximation at the repeated initial/final vertex.
+
+For a contour segment parametrized by
+$s(t)=(1-t)s_j+ts_{j+1}$, let
+$v(t)=(1-t)v_j+tv_{j+1}$.
+The derivative bound implies
+\[
+ \begin{aligned}
+ |\xi(s(t))-v(t)|
+ &\le (1-t)Bt|s_{j+1}-s_j|
+       +tB(1-t)|s_{j+1}-s_j|+\mu/16\\
+ &\le Bh/2+\mu/16\le\mu/8.
+ \end{aligned}
+\]
+The straight homotopy between the analytic image and this rational polygon
+therefore has modulus at least $7\mu/8$ everywhere.
+The polygon has exactly $2(J_x+J_y)$ segments; its winding integer is
+computed by finite rational arithmetic and equals the analytic contour
+count.
+
+For example, no trigonometric or branch computation is needed to find that
+integer.  For each oriented edge from $a$ to $b$, add one if
+$\Im a\le0<\Im b$ and $\det(a,b)>0$; subtract one if
+$\Im b\le0<\Im a$ and $\det(a,b)<0$; add zero otherwise.
+Here $\det(a,b)=\Re a\Im b-\Im a\Re b$.
+The half-open conventions handle vertices on the real axis.
+If an edge straddles that axis and its determinant vanishes, it would pass
+through the origin, which (FC2) and the homotopy bound exclude.
+Thus all branches are decidable exact rational comparisons.
+This completes the primitive recursive contour constructor, rather than
+merely assuming the existence of the other three zero-free edges.
+
+\section{The zero-counting argument}
+\label{sec:counting}
+
+Let
+\[
+ \xi(s)=\tfrac12s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s).
+\]
+The analytic foundation supplies its entire continuation and the identities
+$\xi(1-s)=\xi(s)$ and $\xi(\overline s)=\overline{\xi(s)}$.
+For a rational regular height $U\ge8$ equipped with a positive margin on
+$[1/2,2]+iU$, let $N(U)$ denote the winding count of $\xi$ on the
+positively oriented rectangle $[-1,2]+i[0,U]$.  Its classical interpretation
+is the number of nontrivial zeros with $0<\Im\rho<U$, counted with
+multiplicity.  The supplied margin, the functional equation, and the
+explicit nonvanishing bounds on the other edges turn this contour into a
+finite rational winding certificate.
+
+\subsection{The exact argument identity}
+
+The function $\xi$ is positive on the real interval $[-1,2]$.
+An explicit lower bound $1/4$ follows from the theta integral
+\[
+ \xi(s)=\frac12+\frac{s(s-1)}2
+ \int_1^\infty \Bigl(\sum_{n\ge1}e^{-\pi n^2x}\Bigr)
+       (x^{s/2}+x^{(1-s)/2})\,\frac{dx}{x}.
+\]
+For $s\in[0,1]$ the integral is at most one: use
+$\sum_{n\ge1}e^{-\pi n^2x}\le2e^{-3x}$ and
+$x^{s/2}+x^{(1-s)/2}\le2x$.
+Thus $\xi(s)\ge3/8$ there; outside $[0,1]$ the integral term is
+nonnegative.
+
+Start the continuous argument at zero at $s=2$, and follow the path
+$2\to2+iU\to1/2+iU$.  Reflection
+$s\mapsto1-\overline s$ and conjugation show that the change of argument
+on the whole rectangle is twice the change on this path.  The latter is
+\[
+ \pi+\vartheta(U)+\arg\zeta(1/2+iU),
+\]
+where
+\[
+ \vartheta(U)=\Im\log\Gamma(1/4+iU/2)-\tfrac U2\log\pi
+\]
+uses the logarithm of gamma continuous in the right half-plane, real on the
+positive real axis.  In particular, it is not a repeatedly reset principal
+argument.  The factor $s(s-1)$ contributes exactly $\pi$: at the endpoint
+its value is $-U^2-1/4$, and both individual arguments were continued through
+the upper half-plane.  Therefore
+\[
+ N(U)=1+\frac{\vartheta(U)}\pi+S(U),\qquad
+ S(U)=\frac1\pi\arg\zeta(1/2+iU).                       \tag{C1}
+\]
+All argument identities can equivalently be read as identities of the
+integer winding numbers of rational polygonal approximations, whose
+homotopies have the supplied positive margins.
+
+\subsection{Backlund's estimate with a finite polynomial crossing count}
+
+Euler summation gives, for $\Re s>0$,
+\[
+ \zeta(s)=\frac{s}{s-1}-s\int_1^\infty\{x\}x^{-s-1}\,dx.
+\]
+Consequently, if $U\ge8$ and $|z-2|\le7/4$, then
+\[
+ |\zeta(z\pm iU)|\le5(U+4).
+\]
+Indeed $\Re z\ge1/4$, $|z\pm iU|\le U+4$, and
+$|z\pm iU-1|\ge U-7/4>2$.
+At $z=2$, the real part of $\zeta(2+iU)$ is at least $1/4$.
+
+Approximate $w\mapsto\zeta(2+w+iU)$ by a rational polynomial $P(w)$
+on $|w|\le7/4$, with error less than both $1/8$ and one quarter of the
+supplied horizontal nonvanishing margin.  Let
+\[
+ Q(w)=\tfrac12\bigl(P(w)+\overline{P(\overline w)}\bigr).
+\]
+This is a real polynomial, $Q(0)\ge1/8$, and
+$|Q(w)|\le6(U+4)$ on the outer disk.  By (J), the number $q$ of its
+roots in $|w|\le3/2$, counted with multiplicity, satisfies
+\[
+ q\log(7/6)\le\log(48(U+4)),\qquad
+ q\le7\log(48(U+4)),                                   \tag{C2}
+\]
+because $\log(7/6)\ge1/7$.
+The real roots of $Q$ partition the segment $[-3/2,0]$ into at most
+$q+1$ intervals.  On each interval $P$ stays in one open half-plane, so its
+continuous argument changes by less than $\pi$.
+Homotopy from $P$ to $\zeta$ changes only the endpoint arguments, by a
+total of less than $\pi$; the vertical path at real part two stays in the
+right half-plane.  Allowing an extra unit for all endpoint conventions gives
+\[
+ |S(U)|\le7\log(48(U+4))+4.                             \tag{C3}
+\]
+This proof uses only the finitely many roots of a rational real polynomial,
+not a procedure deciding the zeros of the real part of an analytic
+function.  Multiple roots cause no problem and only enlarge the estimate.
+
+\subsection{Riemann--von Mangoldt with an explicit error}
+
+The explicit complex Stirling estimate proved in the analytic foundation is
+\[
+ \left|\vartheta(U)-\left(\frac U2\log\frac U{2\pi}
+                    -\frac U2-\frac\pi8\right)\right|
+ \le1\qquad(U\ge8).
+\]
+Combining this with (C1)--(C3), and using $\log48<4$, gives the deliberately
+coarse but uniform statement
+\[
+ \boxed{\quad
+ \left|N(U)-\frac U{2\pi}\log\frac U{2\pi}
+                 +\frac U{2\pi}\right|
+ \le8\log(U+4)+40.
+ \quad}                                                 \tag{RVM}
+\]
+The quantifiers are important: $U$ is supplied with a finite nonvanishing
+certificate, or is returned by the bounded regular-height algorithm.
+No exact decision whether an arbitrary real height is a zero ordinate is
+used.
+
+For an integer $n\ge8$, let $U_n\in(n,n+1)$ be the deterministically
+selected height and let $C(n)=N(U_n)$.  The contour construction and winding
+computation make $C$ a total primitive recursive integer function.
+Moreover $C(n+1)\ge C(n)$ and, with
+$\mathcal M(t)=t\log(t/(2\pi))/(2\pi)-t/(2\pi)$,
+\[
+ |C(n)-\mathcal M(n)|\le9\log(n+5)+40.                           \tag{RVM-PR}
+\]
+This is one particularly simple arithmetical formulation of the classical
+asymptotic.  In the classical interpretation, zero counts at any intermediate
+height are bracketed by the adjacent certified counts.  A finite-precision
+constructive statement uses those brackets rather than a discontinuous
+real-to-integer counting function.
+

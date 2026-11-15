@@ -1,0 +1,430 @@
+% Standalone section body. Requires amsmath, amssymb, hyperref only.
+\section{Hurwitz approximation with a finite witness}
+\label{sec:constructive-hurwitz}
+
+The classical constant is retained exactly.  The constructive change is to
+replace an unqualified irrational real by a fast rational name together with a
+quantitative certificate that it stays away from rationals.  The output is a
+rationally checkable strict inequality, not a double-negated existence claim.
+
+\subsection{The input and the exact statement}
+
+Fix primitive recursive functions \(s\mapsto x_s\in\mathbb Q\) and
+\(Q\mapsto I(Q)\in\mathbb N\).  In the readable notation below, they name a
+real \(x\) and satisfy
+\begin{equation}\label{eq:hw-name}
+ |x-x_s|\le 2^{-s},\qquad
+ |x-p/q|\ge 2^{-I(Q)}
+ \quad(p\in\mathbb Z,\ 1\le q\le Q).
+\end{equation}
+We take \(I\) nondecreasing, replacing it by
+\(\max_{1\le j\le Q}I(j)\) when necessary.  This replacement is primitive
+recursive.  ``Real'' here is explanatory notation: the first-order formulation
+uses rational Cauchy inequalities and, for example, the rational separation
+conditions
+\[
+ |x_s-p/q|+2^{-s}\ge2^{-I(Q)}
+ \qquad(1\le q\le Q)
+\]
+for every indicated index.  Only finitely many instances are used for each
+output.  There is no sort of arbitrary real numbers in iPRA.
+
+\paragraph{Constructive Hurwitz theorem.}
+For every \(B\in\mathbb N\), a primitive recursive computation from the fixed
+functions \(x_s,I\) produces \(p\in\mathbb Z\), \(q,s\in\mathbb N\) such that
+\begin{equation}\label{eq:hw-certificate}
+ B<q,\qquad \gcd(p,q)=1,\qquad
+ 5q^4\bigl(|x_s-p/q|+2^{-s}\bigr)^2<1.
+\end{equation}
+In particular,
+\[
+ |x-p/q|<\frac1{\sqrt5\,q^2}.
+\]
+Thus the theorem provides approximants beyond every prescribed denominator,
+and therefore an explicitly generated sequence of distinct approximants.
+One denominator bound is
+\begin{equation}\label{eq:hw-R}
+ R_0=1,\qquad R_{j+1}=\max\{R_j,2^{I(R_j)}\},\qquad
+ q\le R_{B+3}.
+\end{equation}
+No useful efficiency is claimed for this bound; its purpose is to make the
+primitive recursive character explicit.
+
+As usual for a first-order theory, this is a theorem schema for fixed primitive
+recursive definitions of the name and modulus.  It is not an assertion that
+iPRA contains a total universal evaluator for all primitive recursive programs.
+An arbitrary computable irrational need not supply primitive recursive data
+of the required kind.  Dropping the quantitative separation hypothesis would
+change the constructive content of the statement.
+
+\subsection{Finite continued fractions and their identities}
+
+Take integers \(a_0\) and \(a_j\ge1\) for \(j\ge1\), and put
+\[
+ p_{-1}=1,\quad p_0=a_0,\qquad q_{-1}=0,\quad q_0=1,
+\]
+\[
+ p_j=a_jp_{j-1}+p_{j-2},\qquad
+ q_j=a_jq_{j-1}+q_{j-2}\quad(j\ge1),
+\]
+where the recurrence at \(j=1\) uses the displayed initial values in the
+usual way (equivalently start with \(p_{-2}=0,q_{-2}=1\)).
+Induction on the finite recurrence gives
+\begin{equation}\label{eq:hw-det}
+ p_jq_{j-1}-p_{j-1}q_j=(-1)^{j-1}\quad(j\ge1).
+\end{equation}
+Consequently \(p_j,q_j\) are coprime, and so are \(q_j,q_{j-1}\).
+Also \(q_1\ge1\), \(q_2\ge2\), and
+\begin{equation}\label{eq:hw-growth}
+ q_j\ge j\quad(j\ge1),\qquad q_{j+1}\ge q_j+q_{j-1}.
+\end{equation}
+For the determinant identity, substituting the recurrence changes its sign;
+its first value is \(1\).  For the growth bound, \(q_2\ge2\) starts the
+induction and the recurrence adds at least one at each later step.
+
+Suppose these are successive digits of the continued fraction of \(x\).
+The complete quotient \(t_{j+1}>1\) satisfies
+\[
+ x=\frac{p_jt_{j+1}+p_{j-1}}{q_jt_{j+1}+q_{j-1}},\qquad
+ t_{j+1}>a_{j+1}.
+\]
+This identity follows by substituting \(t_j=a_j+1/t_{j+1}\) repeatedly;
+only a finite number of substitutions is needed.  Subtracting \(p_j/q_j\)
+and using \eqref{eq:hw-det} gives
+\begin{equation}\label{eq:hw-error}
+ \left|x-\frac{p_j}{q_j}\right|
+ =\frac1{q_j(q_jt_{j+1}+q_{j-1})}
+ <\frac1{q_jq_{j+1}}.
+\end{equation}
+The sign alternates, so \(x\) lies strictly between consecutive convergents.
+For adjacent denominators \(u,v\) and their corresponding numerators \(r,t\),
+\begin{equation}\label{eq:hw-bracket}
+ \left|x-\frac r u\right|+
+ \left|x-\frac t v\right|=\frac1{uv}.
+\end{equation}
+These are identities about finitely many rational fractional-linear
+transformations, with a positive remainder.  They do not require a theorem
+about the existence of an infinite continued fraction.
+
+Combining the separation assumption with \eqref{eq:hw-error} yields
+\[
+ 2^{-I(q_j)}\le |x-p_j/q_j|<\frac1{q_jq_{j+1}},
+ \qquad q_{j+1}<2^{I(q_j)}.
+\]
+This proves \eqref{eq:hw-R} by finite induction once the necessary prefix
+has been constructed.
+
+\subsection{A rational replacement for the three-convergent argument}
+
+The next lemma is the key to retaining the sharp constant without deciding
+comparisons between arbitrary reals.
+
+\paragraph{Denominator lemma.}
+Let \(1\le u\le v\), \(w\ge u+v\), and \(\gcd(u,v)=1\).
+At least one of the two rational numbers
+\[
+ S_0=\frac{u^2+v^2}{uv},\qquad
+ S_1=\frac{v^2+w^2}{vw}
+\]
+has square strictly greater than \(5\).  A suitable one is selected by an
+integer comparison.
+
+\paragraph{Proof.}
+Set \(h=v^2-uv-u^2\).  It cannot vanish.  Indeed, if it did then
+\(u\mid v^2\); coprimality implies \(u=1\), and \(v^2=v+1\) has no
+positive integral solution: it fails at \(v=1\), while \(v\ge2\) implies
+\(v^2\ge v+2\).
+If \(h>0\), then
+\[
+ (u^2+v^2)^2-5u^2v^2
+ =(v^2-uv-u^2)(v^2+uv-u^2)>0,
+\]
+since \(v^2+uv-u^2\ge uv>0\).  Choose \(S_0\).
+If \(h<0\), then
+\[
+ w^2-vw-v^2\ge(u+v)^2-v(u+v)-v^2=-h>0.
+\]
+The inequality follows either by expansion or from the exact nonnegative
+remainder \((w-u-v)(w+u)\).  Applying the preceding factorization to
+\(v,w\) gives \(S_1^2>5\).  Choose \(S_1\).
+All comparisons in this proof are integer comparisons. \hfill\(\square\)
+
+Apply the lemma to
+\[
+ (u,v,w)=(q_{B+1},q_{B+2},q_{B+3}).
+\]
+Every denominator in this triple exceeds \(B\).  Denote the selected pair
+again by \(u,v\), and its numerators by \(r,t\).  Put
+\begin{equation}\label{eq:hw-margin}
+ C=\frac{uv}{u^2+v^2},\qquad d=1-5C^2>0.
+\end{equation}
+In particular \(0<C\le1/2\), \(0<d<1\), and \(C<1/\sqrt5\).
+The familiar classical proof now says that one of the two normalized
+errors is at most \(C\).  We instead give a finite selection procedure
+that includes a margin certificate.
+
+Let \(Q=\max(u,v)\) and choose a precision \(s\) satisfying
+\begin{equation}\label{eq:hw-precision}
+ Q^2 2^{-s}\le d/100.
+\end{equation}
+This need not be found by an unbounded search.  Since
+\[
+ d=\frac{(u^2+v^2)^2-5u^2v^2}{(u^2+v^2)^2}
+ \ge\frac1{(u^2+v^2)^2},
+\]
+the explicit integer
+\[
+ s=100Q^2(u^2+v^2)^2
+\]
+suffices, using \(2^s\ge s\).
+Compute the two rational numbers
+\[
+ A=u^2|x_s-r/u|,\qquad D=v^2|x_s-t/v|
+\]
+and choose the smaller (with a fixed tie rule).  The triangle inequality
+and \eqref{eq:hw-bracket} give
+\[
+ \frac A{u^2}+\frac D{v^2}
+ \le\frac1{uv}+2\cdot2^{-s}.
+\]
+Therefore their smaller value is at most
+\[
+ \frac{1/(uv)+2\cdot2^{-s}}{1/u^2+1/v^2}
+ =C+2\cdot2^{-s}\frac{u^2v^2}{u^2+v^2}
+ \le C+Q^2 2^{-s}.
+\]
+For the selected numerator and denominator \(p,q\), it follows that
+\begin{equation}\label{eq:hw-cert-bound}
+ q^2\bigl(|x_s-p/q|+2^{-s}\bigr)
+ \le C+2Q^2 2^{-s}\le C+d/50.
+\end{equation}
+Finally,
+\[
+ 5(C+d/50)^2
+ =1-d+Cd/5+d^2/500
+ \le1-d+d/10+d/500<1.
+\]
+Together with \eqref{eq:hw-cert-bound}, this is exactly the rational
+certificate \eqref{eq:hw-certificate}.  In particular the proof produces
+one of every three indicated convergents and does not use excluded middle
+for the real errors.  The constant \(\sqrt5\) disappears entirely from
+the certificate checker.
+
+\subsection{Why the continued-fraction prefix can be obtained primitively recursively}
+
+For completeness we give an explicit bounded-precision extraction method.
+This is the point at which qualitative irrationality would be insufficient.
+Let \(X=\lceil|x_0|\rceil+2\), so \(|x|<X\).
+To find \(a_0=\lfloor x\rfloor\), take
+\(s_0=I(1)+3\) and compute \(a_0=\lfloor x_{s_0}\rfloor\).
+No integer lies within \(2^{-I(1)}\) of \(x\), whereas
+\(|x-x_{s_0}|\le2^{-I(1)}/8\).  Thus these two points have the same
+integer part.  This also certifies \(0<x-a_0<1\).
+
+Assume the prefix through \(a_{n-1}\) has been obtained, where \(n\ge1\),
+and write
+\[
+ P=p_{n-1},\ Q=q_{n-1},\quad P'=p_{n-2},\ Q'=q_{n-2}.
+\]
+Here \(Q>0\); for \(n=1\) we use \(P'=1,Q'=0\).
+The next complete quotient is
+\begin{equation}\label{eq:hw-mobius}
+ t_n=\frac{P'-Q'x}{Qx-P}>1.
+\end{equation}
+Its denominator is nonzero, with the known lower bound
+\[
+ |Qx-P|\ge D_0:=Q2^{-I(Q)}>0.
+\]
+Set
+\[
+ E=\max(1,QX+|P|),\qquad
+ U=\left\lceil\frac{|P'|+Q'X}{D_0}\right\rceil+2.
+\]
+Then \(|Qx-P|\le E\) and \(1<t_n<U-1\).
+For every integer \(k\) with \(0\le k\le U\),
+\[
+ t_n-k=\frac{(P'+kP)-(Q'+kQ)x}{Qx-P}.
+\]
+Put \(H=Q'+UQ\) and \(L=2^{-I(H)}/E\).
+If \(Q'+kQ>0\), irrational separation shows that the absolute value
+of the numerator is at least \(2^{-I(H)}\).
+The only possible zero-denominator coefficient is \(Q'=k=0\), when
+\(|P'|=1\) by the determinant identity, giving the same lower bound.
+Consequently
+\begin{equation}\label{eq:hw-floor-gap}
+ |t_n-k|\ge L>0\qquad(0\le k\le U).
+\end{equation}
+
+Choose a rational precision bound
+\[
+ \delta=\min\{D_0/(4Q),\ LD_0^2/8\}>0,
+\]
+and choose \(s\) with \(2^{-s}\le\delta\) by a bounded rational computation.
+For instance, if \(\delta=a/b>0\) in integer form, \(s=b+1\) suffices;
+no reduction of the fraction is necessary.  Put \(y=x_s\).
+The first bound gives \(|Qy-P|\ge3D_0/4\).  The determinant identity gives
+the exact difference formula
+\[
+ \left|
+ \frac{P'-Q'y}{Qy-P}-\frac{P'-Q'x}{Qx-P}
+ \right|
+ =\frac{|x-y|}{|Qy-P|\,|Qx-P|}
+ \le\frac{4\delta}{3D_0^2}\le L/6.
+\]
+Here $L\le1$, and $1<t_n<U-1$ ensures that only the integers in
+$[0,U]$ can matter.  By \eqref{eq:hw-floor-gap}, the two quotients have the same integer part.
+Thus exact rational division and flooring of the quotient at \(y\) gives
+\(a_n\), and the associated inequalities certify
+\(a_n<t_n<a_n+1\).  Set \(t_{n+1}=1/(t_n-a_n)\) in the explanatory
+notation and update the integer convergents by their recurrences.
+
+Iterating this finite procedure through \(a_{B+3}\) supplies the prefix
+used above.  Every operation is integer or rational arithmetic, a bounded
+maximum, fixed-length primitive recursion, or evaluation of the fixed
+primitive recursive input functions.  Each claimed real inequality has a
+strict rational margin and can be replaced by inequalities between sufficiently
+accurate rational names.  The loop invariants consist of determinant,
+positivity, and rational enclosure certificates; they are decidable finite
+conditions.  This is the promised path to a quantifier-free induction proof.
+
+An alternative interface accepts a primitive recursive sequence of positive
+continued-fraction digits directly.  Its convergents give a primitive recursive
+Cauchy name (the denominators grow at least as Fibonacci numbers).  A
+quantitative irrationality witness also follows: for \(1\le q\le B\), choose
+an explicitly indexed convergent with \(q_n>B\) and \(q_{n+1}\ge2B\).
+Then, unless the rational equals that convergent (which is impossible in
+lowest terms),
+\[
+ |x-p/q|\ge\frac1{Bq_n}-\frac1{q_nq_{n+1}}
+ \ge\frac1{2Bq_n}.
+\]
+A later index such as \(n=2B+2\) suffices by \eqref{eq:hw-growth}.
+This explains the equivalence of the two useful input interfaces without
+postulating an unbounded continued-fraction oracle.
+For example, $I(B)=2Bq_{2B+2}$, for $B\ge1$, is an explicit sufficient
+modulus for the digit interface, since $2^r\ge r$; it may be replaced
+by its bounded running maximum.
+
+\subsection{An entirely finite certificate interface}
+
+The use of $x$ above is eliminable at the main arithmetic step.
+Supply the triple of integer convergents and a rational interval
+$[\ell,h]$ contained in both adjacent-convergent brackets.  Its midpoint
+$y$ and half-width $e$ satisfy $|z-y|\le e$ for every $z$ in that interval.
+For the pair selected by the denominator lemma, require the rational
+test $Q^2e\le d/100$.  The same weighted-error calculation, now entirely
+over rational endpoints, selects $p/q$ and proves
+\[
+ 5q^4\max\{|\ell-p/q|,|h-p/q|\}^2<1.
+\]
+The convexity inequality for absolute value on an interval follows by
+the three rational cases $p/q\le\ell$, $\ell<p/q<h$, and $h\le p/q$.
+Consequently this is a finite rational theorem with no real parameters.
+
+In the name interface, refine the final precision further so that
+$2^{-s}\le2^{-I(Q_*)-3}$, where $Q_*$ is the largest denominator of
+the triple.  Each convergent endpoint stays at least $2^{-I(Q_*)}$
+from the named value.  Thus $[x_s-2^{-s},x_s+2^{-s}]$ lies inside both
+adjacent-convergent brackets, and the enclosure checks are finite rational
+checks.  The added precision is a primitive recursive maximum of the
+two prescribed bounds and does not change the denominator bound.
+
+The same enclosure discipline applies during digit extraction.  With
+the displayed choice of $\delta$, every rational $z$ in
+$[y-2^{-s},y+2^{-s}]$ has $|z-x|\le2\delta$ in the explanatory
+notation, hence $|Qz-P|\ge D_0/2$.  The fractional-linear value changes
+by at most $4\delta/D_0^2\le L/2$, so the rational image interval
+crosses no integer.  Its two endpoint floors certify the next digit.
+Coherence of the name supplies compatible later refinements.  This
+gives the concrete finite-enclosure invariant to be implemented in
+the object-theory formalization.
+
+\subsection{Optimality, with an explicit finite denominator bound}
+
+Let \(\phi=(1+\sqrt5)/2\) and \(\phi'=(1-\sqrt5)/2\).
+These numbers have primitive recursive rational names by bisection of
+\(z^2-5\) on \([2,3]\), using a prescribed finite number of bisections.
+For every \(p\in\mathbb Z,q\ge1\),
+\begin{equation}\label{eq:hw-norm}
+ N=p^2-pq-q^2\ne0,\qquad
+ 1\le|N|=q^2|p/q-\phi|\,|p/q-\phi'|.
+\end{equation}
+To verify that \(N\ne0\), divide \(p,q\) by their greatest common divisor.
+If \(N=0\), coprimality would force the reduced denominator to be one,
+and an integer \(z\) would satisfy \(z(z-1)=1\).  The product is zero
+at \(z=0,1\), and at least two for every other integer, a contradiction.
+This proof uses only integer arithmetic.
+
+The same identity supplies the required irrationality modulus.  If
+\(0\le p/q\le3\), then \(|p/q-\phi'|<4\), whence
+\(|\phi-p/q|>1/(4q^2)\).  Outside that rationally decidable range the
+distance is greater than one.  Hence
+\[
+ |\phi-p/q|\ge\frac1{4Q^2}\ge2^{-4Q^2}
+ \qquad(1\le q\le Q),
+\]
+so \(I(Q)=4Q^2\) is a valid elementary modulus.
+
+Now let \(c>0\) be rational with \(5c^2<1\), and put
+\(d=1-5c^2>0\).  Suppose
+\[
+ |\phi-p/q|<c/q^2.
+\]
+Since \(|\phi-\phi'|=\sqrt5\), \eqref{eq:hw-norm} gives
+\[
+ 1<c\sqrt5+c^2/q^2.
+\]
+But
+\[
+ 1-c\sqrt5=\frac{1-5c^2}{1+c\sqrt5}>d/2.
+\]
+Therefore
+\begin{equation}\label{eq:hw-optimal-bound}
+ q^2<\frac{2c^2}{1-5c^2}.
+\end{equation}
+Only finitely many denominators are possible; for each denominator the
+approximation inequality also bounds the numerator.  Every proposed rational
+coefficient strictly smaller than \(1/\sqrt5\) therefore fails to give
+approximants beyond every denominator for this explicitly presented irrational.
+The argument proves optimality constructively, with the explicit bound
+\eqref{eq:hw-optimal-bound}, rather than merely by a limiting statement about
+Fibonacci ratios.
+
+\subsection{Lean implementation plan for this part}
+
+The arithmetic core should be formalized over \(\mathbb Z\) and a rational
+number representation, not by importing a classical real-number Hurwitz
+theorem.  A useful dependency order is:
+\begin{enumerate}
+\item finite signed-integer and rational arithmetic, powers of two, bounded
+      maxima, and exact rational comparison;
+\item convergent recurrences and the determinant, coprimality, and growth
+      identities;
+\item the denominator lemma, using its two displayed polynomial
+      factorizations and the decidable sign of \(h\);
+\item a rational bracketing lemma: a point in an interval of length \(1/(uv)\)
+      and its \(\varepsilon\)-approximation satisfy the weighted-error bound;
+\item the selector and rational certificate \eqref{eq:hw-certificate}, with
+      \(C,d,s\) exactly as above;
+\item bounded-precision prefix extraction from a name and a separation
+      modulus, maintaining finite interval and determinant certificates;
+\item the integer norm argument for the golden ratio and its bounded
+      bisection name.
+\end{enumerate}
+The main internal statement can use the rational inequality
+\(5q^4(|x_s-p/q|+2^{-s})^2<1\) directly.  A separate interpretation lemma
+then reads this as the familiar real inequality.  Lean's ambient logic does
+not by itself certify an iPRA derivation: the extraction functions need
+primitive-recursion certificates, and their arithmetic proofs need to be
+compiled into the chosen iPRA syntax or checked against its induction
+restrictions.  The finite identities and invariants above make those
+obligations explicit.
+
+\paragraph{Classical reference.}
+For the classical three-convergent theorem and the sharp constant, see
+Michael Filaseta, \emph{Math 784: Algebraic Number Theory, Instructor's Notes},
+Theorem 25, printed pages 20--21,
+\url{https://people.math.sc.edu/filaseta/gradcourses/TheMath784Notes.pdf}.
+The rational pair selector, explicit margins, certificate interface, and
+bounded-precision extraction above give the constructive implementation
+needed here; the classical statement alone would not supply it.

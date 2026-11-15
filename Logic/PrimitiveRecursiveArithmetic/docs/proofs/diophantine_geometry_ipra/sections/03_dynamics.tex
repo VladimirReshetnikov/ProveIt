@@ -1,0 +1,212 @@
+\section{Explicit height functoriality and complete arithmetic dynamics}
+\label{sec:dynamics}
+
+A lower height bound must account for common factors removed from the image
+coordinates. Bounding the displayed coordinates alone would not suffice.
+The following determinant construction controls those factors and supplies
+an effective finiteness theorem. Its classical setting is the height theory
+of arithmetic dynamics \cite{silverman,silverman2011}; the proof here is
+entirely in integer arithmetic.
+
+\subsection{Two finite polynomial certificates}
+
+Let
+\[
+ F(X,Y)=\sum_{i=0}^d f_iX^{d-i}Y^i,\qquad
+ G(X,Y)=\sum_{i=0}^d g_iX^{d-i}Y^i,\qquad d\ge1.
+\]
+For a nonnegative integer $r$, a homogeneous binary form of degree $r$ is
+represented by its $r+1$ coefficient list. Multiplication is finite
+convolution. Form the $2d\times2d$ integer matrix $S$ of the map
+\[
+   (A,B)\longmapsto AF+BG,
+\]
+where $A,B$ have degree $d-1$ and the output has degree $2d-1$.
+Use the ordered monomial basis $X^r,X^{r-1}Y,\ldots,Y^r$ in every space.
+Let $R=\det S$. The nondegeneracy hypothesis for this section is the
+decidable arithmetic condition $R\ne0$. This is the homogeneous resultant
+condition, defined here by its matrix rather than by an algebraic-closure
+criterion.
+
+\begin{lemma}[Computed Bezout certificates]\label{lem:resultant}
+The first and last columns of $\operatorname{adj}S$ provide forms
+$A_X,B_X,A_Y,B_Y$ of degree $d-1$ with
+\begin{align}
+ A_XF+B_XG&=R X^{2d-1},\label{eq:bezout-X}\\
+ A_YF+B_YG&=R Y^{2d-1}.\label{eq:bezout-Y}
+\end{align}
+These identities are provable in $\iPRA$ and are checked coefficientwise.
+If
+\[
+ M=\max(1,|f_0|,\ldots,|f_d|,|g_0|,\ldots,|g_d|),
+ \quad K=(2d-1)!M^{2d-1},
+\]
+every coefficient of the four certificate forms has absolute value at most
+$K$.
+\end{lemma}
+\begin{proof}
+The adjugate identity gives $S\operatorname{adj}S=RI$; its first and last
+columns are precisely the two coefficient identities. Each cofactor is a
+sum of $(2d-1)!$ signed products of $2d-1$ entries of $S$. Every entry of
+$S$ is a coefficient of $F$ or $G$, or zero. Bounding each product by
+$M^{2d-1}$ proves the claim. Determinants, permutations, signs and coefficient
+convolution are finite sums and products with the displayed bounds; the
+finite proof of the adjugate identity was given in
+Section~\ref{sec:heights}.
+\end{proof}
+
+Set
+\[
+ L=\max\bigl(\|A_X\|_1+\|B_X\|_1,
+             \|A_Y\|_1+\|B_Y\|_1\bigr),\qquad U=(d+1)M.
+\]
+Since $R\ne0$, $L\ge1$. The coarse bound
+\begin{equation}\label{eq:coarse-L}
+                L\le 2d(2d-1)!M^{2d-1}
+\end{equation}
+is useful if one does not wish to keep the smaller computed constant.
+
+\begin{theorem}[Two-sided height functoriality on $\PP^1$]
+\label{thm:height-map}
+If $R\ne0$, the rule $f([x:y])=[F(x,y):G(x,y)]$ is a total map on
+$\PP^1(\Q)$. For every rational projective point $P$,
+\begin{equation}\label{eq:height-map}
+              \Ht(P)^d\le L\Ht(f(P)),\qquad
+              \Ht(f(P))\le U\Ht(P)^d.
+\end{equation}
+The map, constants, and proofs are uniform primitive recursive constructions
+from the finite coefficient lists.
+\end{theorem}
+\begin{proof}
+Take a primitive integral pair $(x,y)$ and put $H=\max(|x|,|y|)\ge1$.
+If $F(x,y)=G(x,y)=0$, the two identities imply
+$R x^{2d-1}=R y^{2d-1}=0$. Since $R\ne0$ and $2d-1>0$, this would give
+$x=y=0$. Thus the image is nonzero. Homogeneity establishes that its
+projective class is independent of the chosen representative.
+
+Put $T=\max(|F(x,y)|,|G(x,y)|)$ and
+$g=\gcd(|F(x,y)|,|G(x,y)|)\ge1$. The identities show that $g$ divides
+both $R x^{2d-1}$ and $R y^{2d-1}$. The two powers are coprime; multiplying
+their Bezout identity by $R$ shows $g\mid R$. Consequently $g\le|R|$.
+This is the required control of projective cancellation.
+
+Choose a coordinate of absolute value $H$ and use the corresponding
+certificate. Each coefficient form has degree $d-1$, so
+\[
+ |R|H^{2d-1}\le L H^{d-1}T.
+\]
+Cancel the positive integer $H^{d-1}$ to obtain
+$|R|H^d\le LT$. Since $T=g\Ht(f(P))$ and $g\le|R|$, we have
+\[
+ |R|H^d\le Lg\Ht(f(P))\le L|R|\Ht(f(P)).
+\]
+Cancellation of $|R|>0$ proves the lower bound. For the upper bound,
+$T\le(d+1)MH^d=UH^d$, and division by $g$ cannot increase height.
+All case distinctions here concern integer comparisons or finite lists.
+\end{proof}
+
+The proof also works with any supplied forms satisfying
+\eqref{eq:bezout-X}--\eqref{eq:bezout-Y} and any nonzero $R$; it need not
+recompute the adjugate. The same two finite identities prove nonvanishing,
+bound the gcd, and give the lower height estimate. This is a useful
+certificate interface for formalization.
+
+\subsection{A global finiteness theorem with an actual decision procedure}
+
+Define the iterate by $f^0(P)=P$ and $f^{n+1}(P)=f(f^n(P))$. A point is
+\emph{preperiodic} if
+\[
+             \exists i\,\exists j\ (i<j\ \wedge\ f^i(P)=f^j(P)).
+\]
+This is initially an unbounded existential statement. The next theorem
+reduces it to a bounded computation.
+
+\begin{theorem}[Primitive recursive Northcott theorem for rational dynamics]
+\label{thm:preperiodic}
+Suppose $d\ge2$ and $R\ne0$. Every rational preperiodic point of $f$ has
+height at most $L$. There is a primitive recursive algorithm that returns
+\emph{all} rational preperiodic points, together with a repetition witness
+for each, and whose correctness is provable in $\iPRA$.
+In particular there are at most $(2L+1)^2$ such points.
+\end{theorem}
+\begin{proof}
+If $H=\Ht(P)>L$, then
+$H^d\ge H^2>LH$. By \eqref{eq:height-map}, $L\Ht(f(P))\ge H^d>LH$,
+so $\Ht(f(P))>H$. Induction on a numerical iteration counter therefore
+shows that all subsequent heights strictly increase. Given $i<j$, a
+finite induction from $i$ through $j$ proves
+$\Ht(f^i(P))<\Ht(f^j(P))$. Such a point cannot have a repetition witness.
+Thus any preperiodic point has height at most $L$.
+
+Every iterate of a preperiodic point is preperiodic: apply $f^t$ to a
+witness equality and use $f^i(f^t(P))=f^t(f^i(P))$, an identity proved by
+finite recursion. It follows that its entire forward orbit remains in
+the explicit finite list
+\[
+             S=\mathcal L(1,L),\qquad N=|S|\le(2L+1)^2.
+\]
+
+The algorithm first constructs $S$. For each $P\in S$, start an empty
+visited list and follow its orbit for at most $N+1$ inspected states. If
+the current height exceeds $L$, reject $P$. If the current state equals
+a previously visited state, retain $P$ and the two visit indices. Otherwise
+append it and continue. The transition can be made a map on the bounded
+set $S$ plus one escape flag: after escape, keep the flag unchanged.
+
+No candidate can remain unclassified. If $N+1$ states were inspected
+without escape or repetition, they would be $N+1$ different members of an
+$N$-element list. Here is a finite arithmetic proof of the contradiction.
+Find each state's index in $S$ by bounded search. For every $r<N$, let
+$c_r$ count the occurrences of that index among the $N+1$ visits. Absence
+of repetitions gives $c_r\le1$, hence $\sum_{r<N}c_r\le N$. On the
+other hand each visit has exactly one index, so summing the same incidence
+table by visits gives $\sum_{r<N}c_r=N+1$. Both equalities are bounded
+double-sum identities.
+
+Soundness of retention is the returned equality with two distinct indices.
+If a candidate is preperiodic, all its iterates lie in $S$, so rejection
+by escape cannot occur; the preceding pigeonhole argument then retains it.
+The earlier height bound proves that no preperiodic point was omitted from
+the candidate list.
+
+The certificate construction, construction of $S$, and the loop counts are
+bounded by primitive recursive functions of the coefficient lists. Before
+escape, raw image coordinates are at most $UL^d$. Keeping the escape flag
+prevents uncontrolled growth of the stored states. Thus the whole procedure
+is a fixed primitive recursive algorithm, not a merely terminating search
+whose running time has been left unspecified. Its invariants are Boolean
+tests, list membership, and bounded counting equations.
+\end{proof}
+
+One may use the coarser right side of \eqref{eq:coarse-L} everywhere in
+place of $L$ and still obtain a primitive recursive bound depending only
+on $d,M$. The bound is usually far too large for practical computation.
+Primitive recursive totality and computational efficiency are separate issues.
+
+\subsection{Two complete examples}
+
+For $f(t)=t^2$, use $F=X^2$, $G=Y^2$ and the identities
+$XF=X^3$, $YG=Y^3$. Here $R=1$ and $L=1$.
+The rational projective points of height at most one are
+$\infty,0,1,-1$. Their images are respectively $\infty,0,1,1$.
+All four are preperiodic, and Theorem~\ref{thm:preperiodic} proves that
+there are no others.
+
+For $f(t)=t^2-1$, use $F=X^2-Y^2$, $G=Y^2$ and
+\[
+                 XF+XG=X^3,\qquad YG=Y^3.
+\]
+Thus $R=1$ and $L=2$. The complete height-two list is
+\[
+             \infty,\ 0,\ \pm1,\ \pm2,\ \pm\tfrac12.
+\]
+The four points $\infty,0,1,-1$ are retained: $\infty$ is fixed,
+$0\leftrightarrow-1$ is a cycle, and $1\mapsto0$.
+Both $2$ and $-2$ map to $3$, whose height exceeds two. Both
+$1/2$ and $-1/2$ map to $-3/4$, whose height exceeds two.
+They cannot be preperiodic by the proven escape bound. Consequently
+\[
+          \operatorname{PrePer}(t^2-1,\Q)=\{\infty,0,1,-1\}.
+\]
+These calculations are reproduced by the exact Python companion. Their
+completeness comes from the height proof, not from a numerical search cutoff.

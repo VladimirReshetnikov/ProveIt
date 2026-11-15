@@ -1,0 +1,1641 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor,listings,fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{3pt}
+\setcounter{tocdepth}{1}
+\setlist{itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Pell equations in iPRA}
+\fancyhead[R]{\small Explicit finite constructions}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\isqrt}{\operatorname{isqrt}}
+\newcommand{\Nm}{\operatorname{N}}
+\newcommand{\CFB}{\mathcal B}
+\newcommand{\collB}{\mathcal H}
+\newcommand{\pair}[2]{(#1,#2)}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\code}[1]{\texttt{#1}}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,breaklines=true,
+  frame=single,rulecolor=\color{black!20},backgroundcolor=\color{black!2},
+  showstringspaces=false,keepspaces=true}
+\hypersetup{pdftitle={Pell Equations in Intuitionistic Primitive Recursive Arithmetic},
+  pdfauthor={OpenAI},pdfsubject={Constructive number theory with explicit primitive recursive bounds}}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{1.1cm}
+{\Large\color{blue!45!black} Constructive number theory\par}
+\vspace{0.5cm}
+{\huge\bfseries\raggedright Pell Equations in\\
+Intuitionistic Primitive\\
+Recursive Arithmetic\par}
+\vspace{0.7cm}
+{\Large\raggedright Explicit finite constructions, complete solution theory,\\
+and a Lean formalization roadmap\par}
+\vspace{1cm}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large November 15, 2026\par}
+\vfill
+\begin{abstract}
+We develop the ordinary and generalized Pell equations using only intuitionistic
+logic, primitive recursive functions, and quantifier-free induction. For every
+nonsquare integer $D\ge2$, we construct its fundamental positive solution,
+classify all solutions, decide the negative equation and every equation
+$x^2-Dy^2=N$, and prove divisibility, congruence, and approximation theorems.
+The existence argument is given twice: first by two explicitly finite
+pigeonhole arguments, then by a reduced continued-fraction algorithm with at
+most $4a(a+1)$ convergents, where $a=\isqrt(D)$. A finite proof of Legendre's
+criterion establishes the familiar period-parity rule and minimality.
+All searches, descents, and approximation moduli have stated bounds.
+Radical notation denotes a decidable ordered field of rational pairs, not an
+assumed real-number continuum. The accompanying code exercises the exact
+arithmetic constructions. A detailed plan connects the proofs to the actual
+embedded iPRA theory and native-calculus bridge in ProveIt.
+\end{abstract}
+\vspace{0.4cm}
+\noindent\textbf{Formalization status.} This is a fully developed human-readable
+mathematical argument with an explicit iPRA induction audit. It is not a
+completed machine-checked iPRA proof. The supplied Lean algebraic starting
+point and transfer example were not compiled in this environment. The
+remaining object-theory proof obligations are listed explicitly.
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Scope and principal results}\label{sec:scope}
+
+Throughout the main development, $D$ is a natural number satisfying
+\begin{equation}\label{eq:guard}
+ D\ge2,\qquad \isqrt(D)^2\ne D.
+\end{equation}
+The integer $D$ need not be squarefree. This matters for both the negative
+equation and the choice of quadratic order: the coefficients of our solutions
+are integers in $\Z[\sqrt D]$, and we do not replace this order by the ring of
+integers of a quadratic number field.
+
+The following is a precise finite form of the theory developed below.
+
+\begin{theorem}[Constructive Pell theory]\label{thm:main}
+There are fixed primitive recursive algorithms with the following properties,
+whose correctness has proofs using intuitionistic logic and quantifier-free
+induction. Put
+\[
+ a=\isqrt(D),\qquad S=2a(a+1),\qquad
+ \CFB(D)=(2a+1)^{2S}.
+\]
+\begin{enumerate}
+\item The algorithm for the fundamental solution returns positive integers
+$(A,B)$ with $A^2-DB^2=1$, $A,B\le\CFB(D)$, and $B$ least among positive
+second coordinates of solutions. It examines at most $2S=4a(a+1)$ continued-
+fraction convergents.
+\item Define $(X_0,Y_0)=(1,0)$ and
+\[
+ (X_{n+1},Y_{n+1})=(AX_n+DBY_n,\ BX_n+AY_n).
+\]
+Every nonnegative norm-one solution is exactly one $(X_n,Y_n)$. Its exponent is
+computed by a descent with at most its input second coordinate many active
+steps. Independent changes of coordinate signs give every integer solution.
+\item The continued-fraction period $\ell$ is at most $S$. Negative Pell is
+solvable exactly when $\ell$ is odd. In that case a computed positive solution
+$v$ of norm $-1$ satisfies $v^2=(A,B)$, and all positive negative-Pell
+solutions are $v(A,B)^n=v^{2n+1}$.
+\item For any nonzero integer $N$, let $K=\abs N$. Solvability of
+$x^2-Dy^2=N$ is equivalent to the existence of a solution in the finite box
+\[
+ 0\le y\le AK,\qquad 0\le x\le(DA+1)K.
+\]
+Every nonnegative solution is a member of this box multiplied by a power of
+$(A,B)$. Thus generalized Pell solvability is uniformly primitive recursive.
+For $N=0$, the only solution is $(0,0)$.
+\item The power sequence satisfies
+\[
+ \gcd(Y_m,Y_n)=Y_{\gcd(m,n)}.
+\]
+For each $h\ge1$ a return to $(1,0)$ modulo $h$ is computable within $h^2$
+steps, and the residue sequence is periodic from its first term.
+\item The rational intervals
+\[
+ \left[\frac{DY_n}{X_n},\frac{X_n}{Y_n}\right]\quad(n\ge1)
+\]
+are nested, straddle the positive square root in the sense of squared
+inequalities, and have width at most $2^{-2n+2}$. The upper endpoints are
+one-sided best approximants among rational upper approximations with no
+larger denominator.
+\end{enumerate}
+\end{theorem}
+
+``Primitive recursive'' describes a uniform arithmetic construction, not a
+claim of practical speed in the binary length of $D$. The bound $\CFB(D)$ is
+deliberately loose; its role is to make totality explicit. The continued-
+fraction implementation is far more useful computationally than scanning the
+whole coordinate box.
+
+The standard number-theoretic background is discussed in Conrad's two
+expositions \cite{conrad1,conrad2}. Our purpose is to give all the finite
+proofs and the arithmetic bounds needed for the requested foundation. No
+result from those expositions is used as an unproved mathematical premise.
+
+\section{The arithmetic setting}\label{sec:arithmetic}
+
+\subsection{Exactly which theory is being used}
+
+We use first-order intuitionistic primitive recursive arithmetic: natural
+numbers, function symbols for primitive recursive functions, their defining
+equations, successor separation and injectivity, and induction restricted to
+quantifier-free formulas. Ordinary first-order intuitionistic inference rules
+are available. In particular, we do not assume induction for arbitrary
+formulas containing unbounded quantifiers.
+
+Integer and rational notation is an abbreviation for numerical codes.
+For example, $2n$ codes $n\ge0$ and $2n-1$ codes $-n$ for $n\ge1$.
+Rationals are signed numerators with positive denominators; cross
+multiplication suffices for equality and order. Finite sequences can be
+encoded by pairing or by positional notation with a sufficiently large
+explicit base. Their access, update, and finite folds are primitive recursive.
+No arbitrary sequence is quantified over as a second-order object.
+
+For a fixed primitive recursive Boolean predicate $P(i,\vec z)$, the bounded
+conjunction
+\[
+ \bigwedge_{i<t}P(i,\vec z)
+\]
+is represented by an iterated Boolean product. Its assertion is an equation
+between primitive recursive terms. Bounded search is implemented by a
+recursion that stores the first successful index and a success flag; it is
+total even when no index succeeds. These devices explain the bounded
+quantifiers used in the prose. The compilation and induction audit in
+\cref{sec:audit} specifies their use in each substantial proof.
+
+\subsection{Square roots, gcd, and rational irrationality}
+
+Define $\isqrt(t)$ by testing the integers $0,\ldots,t$ and retaining the
+largest whose square is at most $t$. The defining property is
+\begin{equation}\label{eq:isqrt}
+ \isqrt(t)^2\le t<(\isqrt(t)+1)^2.
+\end{equation}
+The upper inequality follows because the next trial would otherwise have
+been accepted; the case $t=0$ is immediate. This is a bounded-search proof.
+An optimized integer-square-root implementation is an implementation choice,
+not an additional mathematical principle.
+
+We will also use the Euclidean algorithm with a fixed supply of steps.
+For nonnegative input $(r,s)$, a nonterminal remainder step strictly decreases
+the second coordinate, since $r\bmod s<s$ when $s>0$.
+Consequently $r+s+1$ stages suffice if the
+terminal state is held fixed. The invariants
+\[
+ \gcd(r,s)=\gcd(s,r\bmod s)
+\]
+and the usual two accumulated linear combinations prove gcd and Bezout's
+identity by quantifier-free induction. For clarity, the coprimality
+consequence we need can be proved directly: if $ur+vs=1$, squaring the
+identity gives
+\[
+ u^2r^2+s(2uvr+v^2s)=1.
+\]
+Thus a positive $s$ dividing $r^2$ must be $1$ whenever $r,s$ are coprime.
+
+\begin{lemma}[No rational square root]\label{lem:irrational}
+Under \eqref{eq:guard}, $p^2-Dq^2\ne0$ for integers $p$ and $q\ne0$.
+\end{lemma}
+\begin{proof}
+Reduce $\abs p/\abs q$ by their gcd to $r/s$ with $s>0$ and
+$\gcd(r,s)=1$. If $r^2=Ds^2$, then $s\mid r^2$, so the preceding Bezout
+calculation gives $s=1$. It follows that $D=r^2$, contradicting
+\eqref{eq:guard}. Every reduction and divisibility check here has the
+fixed-fuel Euclidean implementation just described.
+\end{proof}
+
+\subsection{Radical notation without real numbers}\label{sec:quadraticorder}
+
+It is convenient to write $s=\sqrt D$. This notation will refer to the
+formal pair $(0,1)$ in a field of rational pairs, not to a real-number object.
+Define
+\[
+ (u,v)+(r,t)=(u+r,v+t),\qquad
+ (u,v)(r,t)=(ur+Dvt,ut+vr).
+\]
+Identify $(u,v)$ with $u+vs$, so $s^2=D$. Conjugation sends $u+vs$ to
+$u-vs$, and the norm is $u^2-Dv^2$. By \cref{lem:irrational}, a nonzero
+pair has nonzero norm after clearing rational denominators. Its inverse is
+\[
+ (u+vs)^{-1}=\frac{u-vs}{u^2-Dv^2}.
+\]
+The field identities follow by expansion of rational polynomials.
+
+Here is a fully algebraic construction of its order. Let $\mathcal A$
+consist of pairs with nonnegative rational coefficients, not both zero.
+The set $\mathcal A$ is closed under addition and multiplication, and does
+not contain zero. Declare $z>0$ when $z=P/Q$ for some $P,Q\in\mathcal A$.
+This positive cone is closed under sums and products, using
+\[
+ \frac P Q+\frac R T=\frac{PT+RQ}{QT},\qquad
+ \frac P Q\frac R T=\frac{PR}{QT}.
+\]
+The number $-1$ cannot lie in it: $P/Q=-1$ would imply $P+Q=0$, impossible
+for $P,Q\in\mathcal A$.
+The cone is also closed under inversion, by interchanging $P$ and $Q$.
+
+The definition is decidable, with explicit witnesses rather than an
+unbounded search for $P,Q$. If the two coefficients of a nonzero $u+vs$
+have the same sign, the sign is immediate. For opposite signs, write for
+example $u-bs$ with $u,b>0$ and use
+\begin{equation}\label{eq:signformula}
+ u-bs=\frac{u^2-Db^2}{u+bs}.
+\end{equation}
+The denominator belongs to $\mathcal A$, and the numerator is a nonzero
+rational. This explicitly places exactly one of $u-bs$ and its negative
+in the positive cone. The case $-u+bs$ is the negative of this case.
+Zero coefficients are handled directly. If both $z$ and $-z$ were positive,
+their quotient would make $-1$ positive, which was excluded. Thus this gives
+a decidable total ordered field with $s>0$.
+
+All the witnesses and sign cases above are rational arithmetic formulas.
+Consequently this order construction can be compiled into iPRA using
+finite sign distinctions and the norm calculation. It does not assert the
+existence of an arbitrary ordered field as a set inside iPRA. In particular,
+for $r\ge0$,
+\[
+ r<s\ \Longleftrightarrow\ r^2<D,
+\]
+and \eqref{eq:isqrt} gives $a<s<a+1$ when $a=\isqrt(D)$.
+Every subsequent calculation involving $s$ takes place in this coded field.
+
+\subsection{A witness-producing finite pigeonhole lemma}\label{sec:pigeonhole}
+
+\begin{lemma}\label{lem:pigeonhole}
+Given a coded list $v_0,\ldots,v_R$ whose entries are less than $R$, with
+$R\ge1$, a bounded scan returns indices $i<j\le R$ with $v_i=v_j$.
+Its correctness is provable with quantifier-free induction.
+\end{lemma}
+\begin{proof}
+Keep an array of $R$ occupancy bits, initially zero, together with the first
+index stored at each occupied position. Scan the list. On an unoccupied
+position set its bit to one; on an occupied position return the stored index
+and the current index. A success flag freezes an already returned answer.
+After $t$ unsuccessful entries the sum of the occupancy bits is $t$:
+each step changes exactly one zero bit to one. This sum is at most $R$
+because each of its $R$ summands is at most one. Therefore $R+1$
+unsuccessful entries would imply $R+1\le R$.
+
+The last argument is constructive. The scan's success flag is decidable.
+Its zero case gives the displayed arithmetic contradiction; its nonzero
+case supplies the stored witnesses. The bit sum, the statement that all
+bits are zero or one, and the stored-index invariants are primitive
+recursive finite folds. Induction is applied to equations asserting these
+invariants, not to a formula with an unbounded quantifier.
+\end{proof}
+
+\section{Existence from two finite collisions}\label{sec:collision}
+
+This first proof makes the elimination of an infinite pigeonhole argument
+particularly transparent. The subsequent continued-fraction proof gives a
+better numerical procedure and a smaller bound.
+
+\subsection{Exact finite rational approximation}
+
+\begin{lemma}[Finite Dirichlet construction]\label{lem:dirichlet}
+For $Q\ge1$ a bounded algorithm produces positive integers $p,q$ with
+\begin{equation}\label{eq:dirichlet}
+ 1\le q\le Q,\qquad 1\le p\le Dq,\qquad
+ \abs{p-qs}<\frac1Q.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $0\le j\le Q$ compute
+\[
+ t_j=\isqrt(Dj^2),\quad
+ w_j=\isqrt(DQ^2j^2),\quad
+ b_j=w_j-Qt_j.
+\]
+These are exact integer computations. The square-root inequalities give
+$Qt_j\le w_j<Q(t_j+1)$, so $0\le b_j<Q$.
+By \cref{lem:pigeonhole}, choose $i<j$ with $b_i=b_j$ and set
+$q=j-i$, $p=t_j-t_i$.
+
+To check the error, put $e_j=js-t_j$ in the coded ordered field. We have
+$0\le e_j<1$ and $b_j\le Qe_j<b_j+1$. Equal bins therefore give
+\[
+ \abs{qs-p}=\abs{e_j-e_i}<1/Q.
+\]
+Because $q\ge1$ and $s>1$, $p>qs-1>0$. Also $s<D$, so
+$p<qs+1\le Dq+1$, whence the integer $p$ is at most $Dq$.
+This proves all of \eqref{eq:dirichlet}. The apparent fractional parts in
+the verification are abbreviations for the two displayed integer square
+roots; the algorithm never operates on an arbitrary real number.
+\end{proof}
+
+\subsection{Separated approximants and signatures}
+
+Set
+\begin{equation}\label{eq:collisionconstants}
+ C=2D+1,\qquad M=2C^3,\qquad Q_i=C^{i+1}\quad(0\le i\le M).
+\end{equation}
+For each of these $M+1$ explicitly specified inputs run
+\cref{lem:dirichlet}, obtaining $p_i,q_i$, and define
+$k_i=p_i^2-Dq_i^2$. By \cref{lem:irrational}, $k_i\ne0$. Moreover,
+\begin{equation}\label{eq:smallnorm}
+ \abs{k_i}=\abs{p_i-q_is}(p_i+q_is)
+ <\frac{Cq_i}{Q_i}\le C.
+\end{equation}
+Here $p_i\le Dq_i$ and $s<D$ give $p_i+q_is<Cq_i$.
+The weaker integral bound $1\le\abs{k_i}\le C$ is sufficient below.
+
+The denominators are separated by the known scales. If
+$q_{i+1}\le Q_i$, then \eqref{eq:smallnorm} at $i+1$ would give
+\[
+ 1\le\abs{k_{i+1}}<\frac{CQ_i}{CQ_i}=1.
+\]
+Thus
+\begin{equation}\label{eq:separated}
+ q_{i+1}>Q_i\ge q_i.
+\end{equation}
+This replaces an assertion about infinitely many distinct approximations by
+a specific finite list with an explicit growth schedule.
+
+For $m_i=\abs{k_i}$, let $\epsilon_i\in\{0,1\}$ record the sign of $k_i$.
+Encode its signature by
+\begin{equation}\label{eq:signature}
+ \epsilon_iC^3+(m_i-1)C^2
+ +(p_i\bmod m_i)C+(q_i\bmod m_i).
+\end{equation}
+Each of the last three digits is less than $C$, so the code is less than
+$2C^3=M$. A second application of \cref{lem:pigeonhole} produces $i<j$
+with equal signatures. Radix uniqueness, proved by division and remainder,
+then gives
+\[
+ k_i=k_j=k\ne0,\qquad
+ p_i\equiv p_j\pmod{\abs k},\qquad
+ q_i\equiv q_j\pmod{\abs k}.
+\]
+
+\subsection{The quotient is an integral nontrivial unit}
+
+Define
+\[
+ U=p_ip_j-Dq_iq_j,\qquad V=q_ip_j-p_iq_j.
+\]
+The congruences imply $\abs k\mid U,V$, since modulo $\abs k$ the first
+quantity is $p_j^2-Dq_j^2=k$ and the second is zero. Thus $U/k,V/k$ are
+integers. Expanding the products gives Brahmagupta's norm identity,
+\begin{equation}\label{eq:quotientnorm}
+ U^2-DV^2=(p_i^2-Dq_i^2)(p_j^2-Dq_j^2)=k^2.
+\end{equation}
+Consequently $(U/k)^2-D(V/k)^2=1$.
+
+If $V=0$, then $p_iq_j=p_jq_i$. Squaring and substituting the two
+equal-norm equations yields $k(q_j^2-q_i^2)=0$. Since $k\ne0$ and the
+denominators are positive, $q_i=q_j$, contradicting \eqref{eq:separated}.
+Therefore
+\[
+ x=\abs{U/k},\qquad y=\abs{V/k}
+\]
+satisfy $x^2-Dy^2=1$ and $y\ge1$; hence $x\ge2$.
+
+For an explicit coordinate bound put $Q=C^{M+1}$. Every sample has
+$q_i\le Q$ and $p_i\le DQ$. Even using the looser bound
+$p_i\le(D+1)Q$ gives
+\[
+ \abs U\le(D^2+3D+1)Q^2,
+ \qquad \abs V\le2(D+1)Q^2.
+\]
+Since $\abs k\ge1$, both output coordinates are at most
+\begin{equation}\label{eq:H}
+ \boxed{\collB(D)=(D+2)^2(2D+1)^{\,2(2(2D+1)^3+1)}.}
+\end{equation}
+This completes a uniform primitive recursive existence proof independently
+of any continued-fraction theory. It also supplies a simple alternative
+definition of the fundamental solution: scan $1\le y\le\collB(D)$ for
+the first square $1+Dy^2$. The next section proves a much better algorithm.
+
+\section{A finite continued-fraction theory}\label{sec:cf}
+
+We construct finite integer recurrences and prove their properties. An
+infinite continued fraction and a theorem about its convergence are not
+prerequisites. Put $a=\isqrt(D)$ and retain the coded positive root $s$.
+
+\subsection{Reduced states and a reversible transition}
+
+\begin{definition}
+A reduced state is a pair $(m,d)$ of integers with
+\begin{equation}\label{eq:reduced}
+ 0\le m\le a,\quad 1\le d\le2a,\quad d\mid D-m^2,
+ \qquad s-m<d<s+m.
+\end{equation}
+Its digit and successor are
+\begin{equation}\label{eq:cfstep}
+ c=\left\lfloor\frac{a+m}{d}\right\rfloor,
+ \qquad m'=dc-m,
+ \qquad d'=\frac{D-m'^2}{d}.
+\end{equation}
+The displayed floor is ordinary integer division.
+\end{definition}
+
+For the connection with ordinary continued-fraction notation, put
+$\alpha_n=(s+m_n)/d_n$. Rationalizing the denominator in
+\eqref{eq:cfstep} gives
+\[
+ \alpha_{n+1}=\frac1{\alpha_n-c_n}.
+\]
+Starting with $\alpha_0=s$, finite substitution therefore yields
+$s=[c_0;c_1,\ldots,c_n,\alpha_{n+1}]$. This is an identity of finitely
+many coded field operations; it requires no infinite-limit theorem.
+
+The inequalities in \eqref{eq:reduced} are decidable arithmetic conditions.
+For example, since $d+m>0$, $s-m<d$ means $D<(d+m)^2$;
+$d<s+m$ is automatic for $d\le m$ and otherwise means
+$(d-m)^2<D$. Thus the reduced-state test can be implemented without field
+objects or floating-point calculations.
+
+\begin{lemma}[Closure and injectivity]\label{lem:reduced}
+The transition \eqref{eq:cfstep} maps reduced states to reduced states and
+is injective on them.
+\end{lemma}
+\begin{proof}
+Writing $a+m=dc+t$ with $0\le t<d$ and using $0<s-a<1$ shows
+\[
+ c=\left\lfloor\frac{s+m}{d}\right\rfloor.
+\]
+The upper reduced inequality gives $c\ge1$, and the floor inequalities give
+\begin{equation}\label{eq:mprime}
+ s-d<m'<s.
+\end{equation}
+Also $m'\ge0$. If $d\ge m$, use $dc-m\ge d-m$; if $d<m$, then
+$d<m<s$ and $dc>s+m-d>m$.
+Thus $0\le m'\le a$. Since $m'\equiv-m\pmod d$, $d$ divides
+$D-m'^2$, which is positive. Therefore $d'$ is a positive integer.
+
+We have $m'\ge d-m$ because $c\ge1$, so $s+m'>d$; and
+\eqref{eq:mprime} says $s-m'<d$. In
+\[
+ d'=\frac{(s-m')(s+m')}{d}
+\]
+these two inequalities imply
+$s-m'<d'<s+m'$. Finally $d'<s+a<2a+1$, so $d'\le2a$.
+The relation $dd'=D-m'^2$ also gives the required divisibility by $d'$.
+All reduced conditions are preserved.
+
+For injectivity, a reduced predecessor $(m,d)$ of $(m',d')$ must have
+\[
+ d=(D-m'^2)/d'.
+\]
+The old inequalities imply $s-d<m<s$. With $m=dc-m'$ this gives
+\[
+ \frac{s+m'}d-1<c<\frac{s+m'}d.
+\]
+The upper endpoint is not an integer by \cref{lem:irrational}; hence
+$c=\lfloor(s+m')/d\rfloor=\lfloor(a+m')/d\rfloor$. This recovers $c$
+and then $m$ uniquely. Thus two reduced predecessors cannot differ.
+\end{proof}
+
+\subsection{The period has an explicit bound}
+
+Start with
+\[
+ (m_0,d_0)=(0,1),\quad c_0=a,
+ \qquad (m_1,d_1)=(a,D-a^2).
+\]
+The state at index $1$ is reduced: $D-a^2=(s-a)(s+a)$ and
+$0<s-a<1<s+a$ imply $s-a<d_1<s+a$, and $d_1\le2a$ follows from
+$a^2<D<(a+1)^2$.
+There are at most
+\begin{equation}\label{eq:S}
+ S=2a(a+1)
+\end{equation}
+possible reduced states, counted by the rectangle in \eqref{eq:reduced}.
+Construct exactly $S+1$ states starting with state $1$. The finite
+pigeonhole lemma gives two equal states at indices $i<j$. Injectivity lets
+us cancel $i-1$ transitions and obtain equality of state $1$ and state
+$j-i+1$. Therefore a positive return time at most $S$ exists.
+
+Let $\ell$ be the first return time, found by scanning $1,\ldots,S$.
+All subsequent state equalities of period $\ell$ follow by induction on
+the explicit recurrence. This is a finite induction at any requested
+index, not an appeal to an infinite combinatorial principle.
+The state $(a,1)$ is reduced, has digit $2a$, and maps to
+$(a,D-a^2)$. By uniqueness of reduced predecessors,
+\begin{equation}\label{eq:endpoint}
+ (m_\ell,d_\ell)=(a,1),\qquad c_\ell=2a.
+\end{equation}
+The digit $2a$ occurs only at this state: $c=2a$ implies
+$2ad\le a+m\le2a$, whence $d=1$ and $m=a$.
+Thus the least state period is also the least repeating digit-block length.
+Indeed, a shorter digit period would repeat the digit at index $\ell$ at
+an earlier positive index, contradicting the first return.
+
+More precisely, for every $k\ge1$,
+\begin{equation}\label{eq:unitdenom}
+ d_k=1\quad\Longleftrightarrow\quad\ell\mid k.
+\end{equation}
+Indeed, reducedness with $d_k=1$ gives $s-1<m_k<s$, so $m_k=a$ and
+the next state is state $1$. Conversely a return at state $k+1$ has
+predecessor $(a,1)$. Divide $k$ by $\ell$; recurrence periodicity reduces
+the return to its remainder, which is zero by minimality of $\ell$.
+This proves \eqref{eq:unitdenom} with finite division and finite induction.
+
+\subsection{Convergents and an exact norm identity}
+
+Define integers by
+\begin{equation}\label{eq:convergents}
+\begin{aligned}
+ p_{-2}=0,&\quad p_{-1}=1,& p_n&=c_np_{n-1}+p_{n-2},\\
+ q_{-2}=1,&\quad q_{-1}=0,& q_n&=c_nq_{n-1}+q_{n-2}.
+\end{aligned}
+\end{equation}
+Negative subscripts name the four initial values; an implementation stores
+them as two registers, so no negative recursion parameter is involved.
+For $n\ge0$, $p_n,q_n$ are positive. The $p_n$ strictly increase,
+$q_0=1$, $q_1=c_1\ge1$, and $q_{n+1}>q_n$ for $n\ge1$.
+In particular $q_n\ge n$ for $n\ge1$.
+
+\begin{lemma}[Simultaneous integer invariants]\label{lem:cfinvariants}
+For every $n\ge0$,
+\begin{align}
+ p_{n-1}&=m_nq_{n-1}+d_nq_{n-2},\label{eq:inv1}\\
+ Dq_{n-1}&=m_np_{n-1}+d_np_{n-2},\label{eq:inv2}\\
+ p_{n-1}q_{n-2}-p_{n-2}q_{n-1}&=(-1)^n.\label{eq:det}
+\end{align}
+Consequently
+\begin{equation}\label{eq:cfnorm}
+ \boxed{p_{n-1}^2-Dq_{n-1}^2=(-1)^n d_n.}
+\end{equation}
+\end{lemma}
+\begin{proof}
+At $n=0$ substitute the four initial values and $(m_0,d_0)=(0,1)$.
+For the induction step write $(m,d,c)=(m_n,d_n,c_n)$ and
+$m'=dc-m$, $d'=(D-m'^2)/d$. The old identities and the recurrences give
+\[
+ dp_n=m'p_{n-1}+Dq_{n-1},\qquad
+ dq_n=p_{n-1}+m'q_{n-1}.
+\]
+Subtract $m'$ times the second equation from the first:
+\[
+ d(p_n-m'q_n)=(D-m'^2)q_{n-1}=dd'q_{n-1}.
+\]
+Cancel the positive $d$ to obtain \eqref{eq:inv1} at the next index.
+Similarly,
+\[
+ d(Dq_n-m'p_n)=(D-m'^2)p_{n-1}=dd'p_{n-1}
+\]
+gives \eqref{eq:inv2}. The determinant changes sign under
+\eqref{eq:convergents}, proving \eqref{eq:det}.
+Finally eliminate $m_n$ between \eqref{eq:inv1} and \eqref{eq:inv2}:
+\[
+ p_{n-1}^2-Dq_{n-1}^2
+ =d_n(p_{n-1}q_{n-2}-p_{n-2}q_{n-1}).
+\]
+This is \eqref{eq:cfnorm}. The whole simultaneous invariant consists of
+three polynomial equalities.
+\end{proof}
+
+At $n=\ell$, \eqref{eq:cfnorm} has right side $(-1)^\ell$.
+If $\ell$ is even, it already supplies a positive norm-one solution.
+If $\ell$ is odd, use $n=2\ell$, for which $d_{2\ell}=1$.
+Thus at most $2S$ convergents suffice for existence.
+
+All digits are at most $2a$. The recurrence gives, by elementary induction,
+\begin{equation}\label{eq:convbound}
+ p_n,q_n\le(2a+1)^{n+1}\qquad(n\ge0).
+\end{equation}
+For the induction step, with $K=2a+1$, use
+$2aK^{n+1}+K^n\le K^{n+2}$; the initial two registers are checked directly.
+We obtain the smaller explicit bound
+\begin{equation}\label{eq:B}
+ \boxed{\CFB(D)=(2\isqrt(D)+1)^{4\isqrt(D)(\isqrt(D)+1)}.}
+\end{equation}
+
+\subsection{A finite proof of Legendre's criterion}\label{sec:legendre}
+
+To establish minimality and the converse of the negative-Pell criterion,
+we need to show that an arbitrary sufficiently accurate rational
+approximation occurs in the recurrence. This can also be done finitely.
+Put $\varepsilon_n=q_ns-p_n$. The norm identity shows that consecutive
+$\varepsilon_n$ have opposite signs: since $p_n+q_ns>0$, the sign of
+$p_n-q_ns$ is $(-1)^{n+1}$.
+
+\begin{lemma}[Finite best approximation of the second kind]\label{lem:bestsecond}
+Let $q\ge1$ and choose $n$ so $q_n\le q<q_{n+1}$.
+For every integer $p$,
+\[
+ \abs{qs-p}\ge\abs{q_ns-p_n}.
+\]
+Such an $n$ can be found by examining the indices $0,\ldots,q+1$.
+\end{lemma}
+\begin{proof}
+We have $q_0=1\le q$ and $q_{q+1}\ge q+1>q$, so take the last index
+with $q_n\le q$. This handles the possible equality $q_0=q_1$.
+The determinant of $(p_n,q_n)$ and $(p_{n+1},q_{n+1})$ is $\pm1$.
+Its inverse integer matrix therefore gives integers $h,k$ with
+\[
+ (p,q)=h(p_n,q_n)+k(p_{n+1},q_{n+1}).
+\]
+If $k=0$, then $h\ge1$, and the required error comparison is immediate.
+If $k\ge1$, the inequality $q<q_{n+1}$ forces $h<0$.
+If $k\le-1$, positivity of $q$ forces $h>0$.
+Thus for $k\ne0$ the coefficients have opposite signs, with $\abs h\ge1$.
+Since the two convergent errors also have opposite signs, the summands in
+\[
+ qs-p=h\varepsilon_n+k\varepsilon_{n+1}
+\]
+have the same sign. Its absolute value is therefore at least
+$\abs h\abs{\varepsilon_n}\ge\abs{\varepsilon_n}$.
+\end{proof}
+
+\begin{theorem}[Legendre, in finite form]\label{thm:legendre}
+If $p\in\Z$, $q\ge1$, and
+\[
+ \abs{s-p/q}<\frac1{2q^2},
+\]
+then $p/q=p_n/q_n$ for an index $n\le q$.
+\end{theorem}
+\begin{proof}
+Choose $n$ as in \cref{lem:bestsecond} and put $E=\abs{qs-p}$.
+If the two rational numbers differed, their nonzero integer determinant
+would satisfy
+\[
+\begin{aligned}
+ 1&\le\abs{pq_n-qp_n}\\
+  &\le q_n\abs{p-qs}+q\abs{q_ns-p_n}\\
+  &\le(q_n+q)E\le2qE<1,
+\end{aligned}
+\]
+which is impossible. The test whether the determinant is zero is decidable,
+so the argument yields its equality to zero intuitionistically.
+\end{proof}
+
+\subsection{Fundamental solutions and period parity}\label{sec:cfclassification}
+
+Suppose $p,q>0$ and $p^2-Dq^2=\pm1$. A common divisor of $p,q$ has
+square dividing $1$, so the pair is coprime. Also
+$p^2\ge Dq^2-1\ge q^2$, hence $p\ge q$. Therefore
+\[
+ \abs{s-p/q}=\frac1{q(p+qs)}<\frac1{2q^2}
+\]
+because $s>1$. By \cref{thm:legendre}, $p/q$ is a convergent.
+The convergent pair is coprime by its determinant identity, so equality of
+the positive reduced fractions implies $(p,q)=(p_n,q_n)$ exactly.
+
+By \eqref{eq:cfnorm} and \eqref{eq:unitdenom}, the convergents of norm
+$\pm1$ are precisely those at indices $k-1$ with $k$ a positive multiple
+of $\ell$, and their norm is $(-1)^k$. We have proved both directions of
+the classical criterion:
+\begin{theorem}\label{thm:parity}
+Negative Pell is solvable if and only if $\ell$ is odd. The fundamental
+positive norm-one solution is
+\begin{equation}\label{eq:fundCF}
+ (A,B)=
+ \begin{cases}
+ (p_{\ell-1},q_{\ell-1}),&\ell\text{ even},\\
+ (p_{2\ell-1},q_{2\ell-1}),&\ell\text{ odd}.
+ \end{cases}
+\end{equation}
+When $\ell$ is odd, the least positive negative-Pell solution is
+$(p_{\ell-1},q_{\ell-1})$.
+\end{theorem}
+\begin{proof}
+If $\ell$ is even, all its multiples are even, so no convergent has norm
+$-1$; the preceding paragraph excludes every other positive solution too.
+If $\ell$ is odd, $k=\ell$ supplies a negative solution, and the first
+even multiple is $2\ell$. In each case \eqref{eq:fundCF} is the first
+norm-one convergent. The numerators $p_n$ strictly increase. Within either
+fixed norm, $x^2=Dy^2\pm1$ shows that ordering positive $x$ is equivalent
+to ordering positive $y$. Thus the first eligible convergent is fundamental.
+For integer solutions, absolute values reduce to the positive case.
+\end{proof}
+
+This proof supplies a total bounded numerical algorithm, the exact
+period-parity theorem, and a uniform size bound. It does not appeal to
+Lagrange's periodicity theorem, Legendre's theorem, or a general theorem
+about irrational reals as an external premise; the needed finite versions
+have all been proved above.
+
+\section{Fundamental units and every norm-one solution}\label{sec:units}
+
+\subsection{Pair multiplication and the power sequence}
+
+For integer pairs write
+\[
+ (x,y)(r,t)=(xr+Dyt,xt+yr),\qquad
+ \overline{(x,y)}=(x,-y),\qquad
+ \Nm(x,y)=x^2-Dy^2.
+\]
+Expansion proves commutativity, associativity, identity $(1,0)$, and
+\begin{equation}\label{eq:normmul}
+ \Nm(zw)=\Nm(z)\Nm(w),\qquad z\bar z=(\Nm(z),0).
+\end{equation}
+Thus a norm-one pair has inverse its conjugate. This is the same arithmetic
+as the rational-pair field, restricted to integer coordinates.
+
+Let $u=(A,B)$ be the fundamental solution from \cref{thm:parity}.
+Alternatively choose the least successful $y$ in the bounded search
+$1\le y\le\collB(D)$ from \cref{sec:collision}; the definition is the
+same by minimality. In either construction
+\[
+ A\ge2,\qquad B\ge1,\qquad B<A,\qquad A^2-DB^2=1.
+\]
+Define $u^n=(X_n,Y_n)$ by the two recurrences in \cref{thm:main}.
+Quantifier-free induction using \eqref{eq:normmul} gives
+\begin{equation}\label{eq:powerfacts}
+ X_n^2-DY_n^2=1,\qquad X_n\ge1,\qquad Y_n\ge0.
+\end{equation}
+Furthermore
+\[
+ Y_{n+1}=BX_n+AY_n\ge2Y_n+1,
+\]
+so $Y_n\ge2^n-1\ge n$ and the $Y_n$ strictly increase.
+For an upper growth bound put $G=A+DB$. Both coefficients in
+\[
+ X_{n+1}+Y_{n+1}=(A+B)X_n+(DB+A)Y_n
+\]
+are at most $G$, hence $X_n+Y_n\le G^n$.
+
+For fixed $m$, induction on $n$ or pair associativity proves
+\begin{equation}\label{eq:addition}
+\begin{aligned}
+ X_{m+n}&=X_mX_n+DY_mY_n,\\
+ Y_{m+n}&=X_mY_n+Y_mX_n.
+\end{aligned}
+\end{equation}
+All occurrences of powers below can be read as these explicit recurrences.
+
+\subsection{A fixed-fuel descent proves completeness}
+
+\begin{lemma}[Positive unit descent]\label{lem:unitdescent}
+If $x,y\ge0$, $x^2-Dy^2=1$, and $y>0$, then
+\[
+ r=Ax-DBy,\qquad t=Ay-Bx
+\]
+satisfy $r>0$, $0\le t<y$, $r^2-Dt^2=1$, and
+$(x,y)=u(r,t)$.
+\end{lemma}
+\begin{proof}
+Fundamental minimality gives $y\ge B$. Compare squares of the indicated
+nonnegative quantities:
+\begin{align*}
+ (Ax)^2-(DBy)^2&=Dy^2+A^2>0,\\
+ (Ay)^2-(Bx)^2&=y^2-B^2\ge0,\\
+ (Bx)^2-((A-1)y)^2&=B^2+2(A-1)y^2>0.
+\end{align*}
+The first line gives $r>0$, the second $t\ge0$, and the third
+$Bx>(A-1)y$, or $t<y$. Norm preservation and the reconstruction equation
+follow by multiplication by $u^{-1}=(A,-B)$ and then by $u$.
+\end{proof}
+
+\begin{theorem}[All solutions, with a bounded exponent algorithm]\label{thm:powers}
+For every nonnegative norm-one solution $(x,y)$ there is a unique $n\le y$
+with $(x,y)=(X_n,Y_n)$. The exponent is primitive recursively computable
+from $D,x,y$.
+\end{theorem}
+\begin{proof}
+Run exactly the input $y$ stages. The state stores a residual pair and a
+counter $c$, initially $(x,y)$ and $0$. When the residual second
+coordinate is positive, apply \cref{lem:unitdescent} and increment $c$;
+when it is zero, leave the whole state fixed.
+After $j$ stages the quantifier-free invariant is
+\[
+ (x,y)=u^c(\text{residual pair}),\quad
+ \Nm(\text{residual pair})=1,
+\]
+together with nonnegative residual coordinates, $c\le j$, and residual
+second coordinate at most $\max(y-j,0)$.
+The descent lemma proves its preservation. At stage $y$ the residual second
+coordinate is zero, so its first coordinate is $1$. Thus the stored counter
+is the desired $n\le y$. Strict growth of $Y_n$ proves uniqueness.
+\end{proof}
+
+In particular, ``infinitely many solutions'' has the stronger constructive
+meaning of an explicit injective primitive recursive sequence of solutions.
+For arbitrary integer solutions, take $(\abs x,\abs y)$ and then restore
+the independent signs. Equivalently the norm-one group is
+\[
+ \{\,\pm u^k:k\in\Z\,\},
+\]
+where $u^{-n}=(X_n,-Y_n)$. This set notation abbreviates the coordinate
+classification, rather than an additional set-existence assumption in iPRA.
+
+\section{Negative Pell and square roots of the fundamental unit}\label{sec:negative}
+
+The period criterion already decides the equation. A second proof by
+integer descent gives a useful bounded test and explains its structure.
+
+\begin{lemma}[Negative descent]\label{lem:negdescent}
+Suppose $x,y\ge0$, $x^2-Dy^2=-1$, and $y>B$. Then
+$(r,t)=(Ax-DBy,Ay-Bx)$ has positive coordinates, norm $-1$, and $t<y$.
+\end{lemma}
+\begin{proof}
+First $x,y\ge1$, since $D\ge2$. The square comparisons now are
+\begin{align*}
+ (Ax)^2-(DBy)^2&=D(y^2-B^2)-1>0,\\
+ (Ay)^2-(Bx)^2&=y^2+B^2>0,\\
+ (Bx)^2-((A-1)y)^2&=2(A-1)y^2-B^2>0.
+\end{align*}
+The first inequality uses $y\ge B+1$ and $D\ge2$; the third follows from
+$A\ge2$ and $y>B$. The same comparisons as before give $r,t>0$ and
+$t<y$. Norm preservation follows from \eqref{eq:normmul}.
+\end{proof}
+
+The descent with the original $y$ as fuel reaches a positive solution
+$(R,T)$ with $1\le T\le B$. Conversely such a pair is itself a solution.
+Thus
+\begin{equation}\label{eq:negativefinite}
+ x^2-Dy^2=-1\text{ is solvable}
+ \quad\Longleftrightarrow\quad
+ \exists\,1\le T\le B:\ DT^2-1\text{ is a square}.
+\end{equation}
+This is a bounded decision rule; no undecided negative case is left to an
+unbounded search.
+
+\begin{theorem}[Negative units]\label{thm:negativeunits}
+There is at most one positive solution $v=(R,T)$ with $T\le B$.
+If it exists, $v^2=u$, and all positive negative-Pell solutions are
+$vu^n=v^{2n+1}$ for $n\ge0$.
+\end{theorem}
+\begin{proof}
+For such a solution,
+$R^2=DT^2-1\le DB^2-1=A^2-2$, so $R<A$.
+Its square is a positive norm-one solution. By \cref{thm:powers},
+$v^2=u^k$ for some $k\ge1$. Its second coordinate satisfies
+\[
+ 0<2RT<2AB=Y_2.
+\]
+Strict growth of $Y_k$ forces $k=1$. In coordinates this gives
+\begin{equation}\label{eq:negativesquare}
+ A=2R^2+1,\qquad B=2RT,\qquad DT^2=R^2+1.
+\end{equation}
+These equations determine $R>0$ uniquely from $A$, and then $T>0$
+uniquely from $B$, proving uniqueness of the bounded seed.
+Reverse the fixed-fuel descent in \cref{lem:negdescent}: every positive
+negative solution is $vu^n$. Conversely each such product has positive
+coordinates and norm $-1$. Since $u=v^2$, it is also $v^{2n+1}$.
+\end{proof}
+
+Equations \eqref{eq:negativesquare} give a further finite test: check for
+positive integers $R,T$ satisfying all three equalities. Testing only that
+$(A-1)/2$ is an integer square is insufficient for general nonsquare $D$.
+For example $D=20$ has fundamental solution $(A,B)=(9,2)$ and
+$(A-1)/2=4$, but $20T^2=5$ has no integer solution. This example also
+shows why keeping the actual order $\Z[\sqrt D]$ is important.
+
+For cheap preliminary obstructions, $D\equiv0$ or $3\pmod4$ rules out
+negative Pell by the two square residues modulo $4$. These tests are
+optional optimizations; the period test and \eqref{eq:negativefinite}
+are complete for every allowed $D$.
+
+\section{Every generalized Pell equation has a finite decision procedure}\label{sec:general}
+
+Fix a nonzero integer $N$ and put
+\begin{equation}\label{eq:seedbounds}
+ K=\abs N\ge1,\qquad T=AK,\qquad R=(DA+1)K=DT+K.
+\end{equation}
+Here $A,B$ are the fundamental norm-one coordinates. In fact any explicitly
+given positive norm-one unit would suffice for the following reduction;
+using the fundamental one usually makes the seed box smaller.
+
+\begin{lemma}[Uniform reduction for either sign of $N$]\label{lem:generaldescent}
+Suppose $x,y\ge0$, $x^2-Dy^2=N$, and $y>T$. Then multiplication by
+$(A,-B)$ produces a pair with positive coordinates, norm $N$, and second
+coordinate strictly less than $y$.
+\end{lemma}
+\begin{proof}
+The three square differences are
+\begin{align*}
+ (Ay)^2-(Bx)^2&=y^2-B^2N\ge y^2-B^2K>0,\\
+ (Ax)^2-(DBy)^2&=Dy^2+A^2N\ge Dy^2-A^2K>0,\\
+ (Bx)^2-((A-1)y)^2
+   &=2(A-1)y^2+B^2N\ge2(A-1)y^2-B^2K>0.
+\end{align*}
+For the strict inequalities use $y>AK$, $A>B$, $K\ge1$, and $A\ge2$.
+In particular $y^2>A^2K^2\ge A^2K>B^2K$. The comparisons give
+$Ay-Bx>0$, $Ax-DBy>0$, and $Ay-Bx<y$, respectively.
+The norm is preserved by \eqref{eq:normmul}.
+\end{proof}
+
+Apply this step while the second coordinate exceeds $T$, with exactly the
+original $y$ stages of fuel and a stationary final state. The terminal pair
+$(r,t)$ satisfies $0\le t\le T$ and
+\[
+ r^2=Dt^2+N\le DT^2+K\le(DT+K)^2=R^2.
+\]
+The last inequality follows from
+\[
+ (DT+K)^2-(DT^2+K)
+ =D(D-1)T^2+2DTK+K(K-1)\ge0.
+\]
+Thus $0\le r\le R$.
+
+Define the finite seed list
+\begin{equation}\label{eq:seedset}
+ \mathcal S_{D,N}=\{(r,t):0\le r\le R,\ 0\le t\le T,
+                         \ r^2-Dt^2=N\}.
+\end{equation}
+This notation means a bounded scan and a coded output list. One may scan
+just $t=0,\ldots,T$: if $Dt^2+N$ is nonnegative, compute its integer
+square root and test its square. The bound on $r$ has already been proved.
+
+\begin{theorem}[Finite seeds and uniform decision]\label{thm:general}
+For $N\ne0$, integer solvability of $x^2-Dy^2=N$ is equivalent to
+nonemptiness of \eqref{eq:seedset}. Every nonnegative solution has a
+representation
+\[
+ (x,y)=(r,t)u^n,\qquad (r,t)\in\mathcal S_{D,N},\quad n\le y,
+\]
+computed by fixed-fuel descent. Conversely every such product is a
+nonnegative solution. Independent signs on the two coordinates give every
+integer solution.
+\end{theorem}
+\begin{proof}
+Taking absolute values preserves $x^2-Dy^2$, so consider nonnegative inputs.
+The preceding descent and a counter yield a seed. The reconstruction
+invariant is the same as in \cref{thm:powers}, with the threshold $T$ in
+place of zero: the input equals $u^c$ times the current pair.
+If the state were still active after $y$ stages, its positive second
+coordinate would have decreased at least $y$ times from $y$, which is
+impossible. Equivalently the positive excess above $T$ decreases at every
+active stage and is zero at the final stage. Thus the seed is in the stated
+box and reversing the steps proves the representation.
+Conversely the seed norm is $N$, the power norm is one, and their
+nonnegative coordinates multiply to nonnegative coordinates. This proves
+all claims.
+\end{proof}
+
+The finite list need not have one seed per orbit: distinct seeds can belong
+to the same unit orbit. The theorem claims a finite, complete covering by
+explicitly generated families. This suffices for decision and exhaustive
+enumeration. For the full signed unit action, adjoin signs and conjugates
+to the list if a set of covering representatives is desired.
+
+When $N=0$, \cref{lem:irrational} excludes any $y\ne0$; then $x=0$.
+Thus the decision algorithm treats zero separately and terminates for every
+integer $N$. The explicit function $A(D)$ makes the bounds in
+\eqref{eq:seedbounds} primitive recursive jointly in $D$ and a signed code
+for $N$. This is stronger than a procedure that merely keeps searching until
+a solution happens to appear.
+
+\subsection{Degenerate discriminants}
+
+The nonsquare guard is decidable by $a=\isqrt(D)$. For positive square
+$D=c^2$, the ordinary equation factors as
+$(x-cy)(x+cy)=1$, giving only $(x,y)=(\pm1,0)$.
+For $D=0$, the ordinary equation has $x=\pm1$ and arbitrary $y$.
+Our algorithms return a designated invalid-input result on these excluded
+discriminants; they do not execute a search justified only for nonsquares.
+The main generalized theorem concerns \eqref{eq:guard}, so no exceptional
+square-discriminant factorization cases are hidden in its statement.
+
+\section{Recurrences, divisibility, and finite congruence periods}\label{sec:arithmeticstructure}
+
+\subsection{Useful identities}
+
+The addition formulas and $A^2-DB^2=1$ give
+\begin{align}
+ X_{n+2}+X_n&=2AX_{n+1},&
+ Y_{n+2}+Y_n&=2AY_{n+1},\label{eq:secondorder}\\
+ X_{2n}&=2X_n^2-1=1+2DY_n^2,&
+ Y_{2n}&=2X_nY_n.\label{eq:doubling}
+\end{align}
+For example, substituting the first-order recurrences twice makes the
+coefficient of $X_n$ in $X_{n+2}$ equal to
+$A^2+DB^2=2A^2-1$, and that of $Y_n$ equal to $2ADB$;
+this is $2AX_{n+1}-X_n$. The second-coordinate calculation is identical
+in form. The doubling identities follow directly from \eqref{eq:addition}.
+Writing the second-order recurrences additively avoids truncated subtraction
+when they are encoded as equations of natural-number terms.
+
+Another useful determinant identity is
+\begin{equation}\label{eq:powerdet}
+ X_mY_{m+k}-X_{m+k}Y_m=Y_k.
+\end{equation}
+Substitute \eqref{eq:addition}; the remaining coefficient is
+$X_m^2-DY_m^2=1$. In particular the determinant between consecutive
+power pairs is $B$.
+
+\subsection{Strong divisibility}
+
+\begin{theorem}\label{thm:gcd}
+For all $m,n\ge0$,
+\[
+ \gcd(Y_m,Y_n)=Y_{\gcd(m,n)}.
+\]
+For $m\ge1$ and $n\ge0$,
+\[
+ Y_m\mid Y_n\quad\Longleftrightarrow\quad m\mid n.
+\]
+\end{theorem}
+\begin{proof}
+A common divisor of $X_m,Y_m$ has square dividing
+$X_m^2-DY_m^2=1$, so $\gcd(X_m,Y_m)=1$. The addition formula gives
+\[
+\begin{aligned}
+ \gcd(Y_m,Y_{m+k})
+ &=\gcd(Y_m,X_mY_k+X_kY_m)\\
+ &=\gcd(Y_m,X_mY_k)\\
+ &=\gcd(Y_m,Y_k).
+\end{aligned}
+\]
+The last cancellation follows from a Bezout identity for $X_m,Y_m$:
+any divisor of $Y_m$ and $X_mY_k$ also divides $Y_k$, and the converse
+divisibility is immediate.
+
+Run the subtraction Euclidean algorithm on $(m,n)$, swapping as needed,
+with at most $m+n$ nonterminal steps. The displayed equality preserves
+the gcd of the corresponding $Y$ coordinates at every subtraction.
+At the terminal index pair $(g,0)$ or $(0,g)$, where $g=\gcd(m,n)$,
+the gcd is $Y_g$, since $Y_0=0$. If $m=n=0$, both sides are zero.
+This proves the first assertion by a bounded loop invariant.
+
+If $m\mid n$, then $\gcd(m,n)=m$, so $Y_m\mid Y_n$.
+Conversely, because $m\ge1$ and $Y_m>0$, divisibility gives
+$Y_m=\gcd(Y_m,Y_n)=Y_{\gcd(m,n)}$. Strict growth of the sequence implies
+$m=\gcd(m,n)$, and hence $m\mid n$.
+\end{proof}
+
+The second coordinates used here are the actual Pell coordinates, without
+normalizing by $B$. Since $Y_1=B$, the theorem in particular proves
+$B\mid Y_n$ for every $n$.
+
+\subsection{A finite replacement for infinite-domain pigeonhole}
+
+\begin{theorem}\label{thm:modular}
+For every $h\ge1$ one can compute $t$ with $1\le t\le h^2$ such that
+\[
+ X_t\equiv1\pmod h,\qquad Y_t\equiv0\pmod h.
+\]
+Consequently $(X_{n+t},Y_{n+t})\equiv(X_n,Y_n)\pmod h$ for every $n$.
+\end{theorem}
+\begin{proof}
+Encode the residue pair at index $j$ by
+$h(X_j\bmod h)+(Y_j\bmod h)<h^2$.
+Among the first $h^2+1$ indices $0,\ldots,h^2$, the finite pigeonhole
+lemma gives equal states at $i<j$. Multiplication by $u$ on residue pairs
+is invertible: its matrix is
+\[
+ \begin{pmatrix}A&DB\\B&A\end{pmatrix},\qquad
+ \det=A^2-DB^2=1,
+\]
+and multiplication by $(A,-B)$ is its inverse, also modulo $h$.
+Cancel $i$ multiplications to get the identity state at $t=j-i$.
+The addition formula then proves the asserted period at every index.
+
+For a direct implementation, simply scan $1,\ldots,h^2$ for the first
+identity state. The collision proof guarantees success of that bounded
+scan. It includes $h=1$: every residue is zero and $t=1$ is valid.
+\end{proof}
+
+This is the appropriate arithmetic substitute for a theorem that a map from
+an infinite domain to a finite set repeats. It returns an explicit finite
+period bound and a specific exponent. In particular it proves, with a
+primitive recursive witness, that some positive $Y_t$ is divisible by any
+given positive modulus.
+
+\section{Rational approximation with a primitive recursive modulus}\label{sec:approximation}
+
+\subsection{Nested enclosures}
+
+For $n\ge1$ define positive rationals
+\[
+ L_n=\frac{DY_n}{X_n},\qquad U_n=\frac{X_n}{Y_n}.
+\]
+The norm identity proves
+\begin{equation}\label{eq:enclosure}
+ L_n^2<D<U_n^2,\qquad U_n-L_n=\frac1{X_nY_n}.
+\end{equation}
+These are statements about integer cross products. In particular they have
+meaning before constructing any notion of a completed real line.
+Using \eqref{eq:powerdet} with $k=1$ gives
+\begin{equation}\label{eq:nesting}
+ U_n-U_{n+1}=\frac B{Y_nY_{n+1}}>0,\qquad
+ L_{n+1}-L_n=\frac{DB}{X_nX_{n+1}}>0.
+\end{equation}
+The intervals are therefore nested. Since $X_n\ge Y_n$ and
+$Y_n\ge2^n-1\ge2^{n-1}$,
+\begin{equation}\label{eq:modulus}
+ U_n-L_n\le2^{-2n+2}.
+\end{equation}
+For accuracy $2^{-k}$, the explicit choice $n=k+1$ suffices, and even
+gives width at most $2^{-2k}$.
+
+If desired, the sequence $U_{k+1}$ is a constructive Cauchy presentation of
+the positive root. For $j\ge k$, nesting bounds the difference between
+its $j$th and $k$th values by $2^{-2k}$. Its squares approach $D$ with
+an explicit modulus as well: from $U_n^2-D=1/Y_n^2$ and the same growth
+bound, the error is at most $2^{-2n+2}$. Internally, the theorem is this
+family of rational inequalities and the named modulus. No principle
+asserting limits for arbitrary Cauchy sequences is used.
+
+\subsection{One-sided best approximation}
+
+\begin{theorem}\label{thm:onesided}
+Let $n\ge1$. If $p\ge0$, $1\le q\le Y_n$, and $p^2>Dq^2$, then
+\[
+ \frac pq\ge\frac{X_n}{Y_n},
+\]
+with strict inequality if $q<Y_n$. If $R,T>0$ satisfy
+$R^2-DT^2=-1$, then for $p\ge0$, $1\le q\le T$, and $p^2<Dq^2$,
+\[
+ \frac pq\le\frac RT,
+\]
+again strictly when $q<T$.
+\end{theorem}
+\begin{proof}
+In the upper case $p^2-Dq^2$ is an integer at least $1$, so
+\[
+ (pY_n)^2-(X_nq)^2
+ =(p^2-Dq^2)Y_n^2-q^2\ge Y_n^2-q^2\ge0.
+\]
+All factors are nonnegative; comparison of squares gives the assertion,
+and $q<Y_n$ makes it strict.
+In the lower case $Dq^2-p^2\ge1$, and
+\[
+ (Rq)^2-(pT)^2=(Dq^2-p^2)T^2-q^2\ge T^2-q^2\ge0.
+\]
+The same square comparison proves the lower statement.
+\end{proof}
+
+These are one-sided optimality statements. They do not assert that a Pell
+approximant is closest among rationals on both sides of the root. Their
+precise inequalities are particularly simple to encode in the base theory.
+
+\section{Examples and exact certificates}\label{sec:examples}
+
+The reference implementation produces the following values using exact
+integer arithmetic. The period is the first return of the reduced state.
+The dash means that the complete parity test rules out negative Pell.
+
+\begin{center}
+\small
+\begin{tabular}{rrrrr}
+\toprule
+$D$ & $\ell$ & $A$ & $B$ & Least positive norm $-1$ pair\\
+\midrule
+2 & 1 & 3 & 2 & $(1,1)$\\
+3 & 2 & 2 & 1 & ---\\
+7 & 4 & 8 & 3 & ---\\
+12 & 2 & 7 & 2 & ---\\
+13 & 5 & 649 & 180 & $(18,5)$\\
+34 & 4 & 35 & 6 & ---\\
+61 & 11 & 1\,766\,319\,049 & 226\,153\,980 & $(29\,718,3\,805)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For $D=13$, $a=3$, the reduced states during one period are
+\[
+ (3,4),\ (1,3),\ (2,3),\ (1,4),\ (3,1),
+\]
+with digits $1,1,1,1,6$. The initial digit is $3$.
+The convergent before the terminal digit is $18/5$, with
+$18^2-13\cdot5^2=-1$. Its pair square is
+\[
+ (18,5)^2=(18^2+13\cdot5^2,\,2\cdot18\cdot5)=(649,180),
+\]
+the fundamental positive unit. The recurrence begins
+$(1,0),(649,180),\ldots$ and generates all positive norm-one solutions.
+
+As a generalized example, $D=2$, $N=-7$, and $u=(3,2)$ give
+$T=21$, $R=49$. The pairs $(1,2)$ and $(5,4)$ are seeds because their
+norms are $-7$, and each generates a family by multiplication by $(3,2)$.
+For example
+\[
+ (1,2)(3,2)=(11,8),\qquad 11^2-2\cdot8^2=-7.
+\]
+The complete seed scan may include further members of these same families;
+it is intentionally a complete finite covering, not a minimal orbit list.
+
+For $D=2$ and $n=1$, the enclosure is $[4/3,3/2]$, of width $1/6$.
+At $n=2$, it is $[24/17,17/12]$, of width $1/204$.
+Both are obtained by cross multiplication of Pell coordinates, with no
+floating-point square root.
+
+\section{Why the proofs fit iPRA}\label{sec:audit}
+
+\subsection{Fixed programs and totalized operations}
+
+The relevant function symbols form a fixed finite collection: signed
+arithmetic, rational-pair arithmetic, pairing and finite arrays, division
+with remainder, square root by bounded search, finite Boolean folds,
+bounded collision selection, the two Pell algorithms, and the various
+power and descent recurrences. Each is built from zero, successor,
+projections, composition, and primitive recursion.
+
+All functions must have values on all numerical inputs. Define division by
+zero, unsuccessful selectors, and invalid-discriminant solver calls to
+return designated default codes. The correctness theorem has the guard
+\eqref{eq:guard}, and its invariants prove that the defaults for invalid
+intermediate states are never used on guarded inputs. Python's validation
+exceptions in the reference implementation serve as diagnostics; the
+object-level functions use default natural values instead.
+
+The term ``fixed'' is essential. We are not assuming a primitive recursive
+universal evaluator for arbitrary primitive recursive program codes.
+The metatheory constructs a particular syntax tree of primitive recursive
+definitions for each program used here. Parameters $D,N,x,y,h,k$ are
+ordinary numerical inputs to those fixed programs.
+
+\subsection{Induction invariants and finite quantifiers}
+
+The main induction instances can be arranged as follows. Every entry in
+the third column is a quantifier-free combination of equations and
+inequalities between primitive recursive terms. A bounded assertion about
+a trace is replaced by its characteristic Boolean fold.
+
+\begin{longtable}{p{0.23\textwidth}p{0.22\textwidth}p{0.46\textwidth}}
+\toprule
+Construction & Induction counter & Invariant and witness data\\
+\midrule
+\endhead
+Integer square root & Trial index, at most input & Current accepted square,
+maximal accepted trial, finite-prefix test.\\
+Euclid and Bezout & At most input sum plus one & Preserved gcd condition,
+two linear combinations, decrease of second coordinate while active.\\
+Finite collision & At most list length & Occupancy bits and count, success
+flag, stored first indices, equality at a returned pair.\\
+Dirichlet bins & At most $Q+1$ & Exact floor-square inequalities, bin in
+$[0,Q)$, computed collision and cross-multiplied error tests.\\
+Norm signatures & At most $M+1$ & Nonzero bounded norm, denominator
+separation, radix code below $M$, selected matching indices.\\
+Reduced CF states & At most requested index & Conditions
+\eqref{eq:reduced}; exact divisibility; predecessor recovery equation.\\
+CF convergents & At most requested index & The three simultaneous
+identities \eqref{eq:inv1}--\eqref{eq:det}, positivity, coordinate bounds.\\
+Period cancellation & At most $S$ or a given index & Explicit equality of
+two states moved backwards, or equality after a period shift.\\
+Legendre bracketing & At most $q+1$ & Last denominator no larger than $q$;
+determinant and error-sign identities.\\
+Power sequence & Exponent & Norm one, growth, addition and determinant
+identities with other indices as free parameters.\\
+Unit descent & Original second coordinate & Preserved norm and signs,
+strict decrease while active, input equals accumulated power times residual.\\
+General-norm descent & Original second coordinate & The same reconstruction;
+positive excess above $A\abs N$ decreases while active.\\
+Strong divisibility & At most $m+n$ & Gcd of the two current Pell
+coordinates unchanged during index Euclid.\\
+Residue period & At most $h^2+1$ & Pair residue code, collision witnesses,
+inverse multiplication and reconstruction of the difference exponent.\\
+Rational enclosure & Precision or exponent & Cross-multiplied identities,
+growth $Y_n\ge2^n-1$, and the named width bound.\\
+\bottomrule
+\end{longtable}
+
+For an example of the Boolean translation, let
+$F(t)=\prod_{i<t}\chi(i)$ with $\chi(i)\in\{0,1\}$.
+The implication $F(t)=1\Rightarrow\chi(i)=1$ for $i<t$ is proved by
+quantifier-free induction with $i$ as a free parameter. Conversely, a
+bounded scan storing the first zero proves, again by a quantifier-free
+invariant, that $F(t)=0$ supplies an index $i<t$ with $\chi(i)=0$.
+If every bounded instance equals one, this alternative is contradictory;
+the decidability of $F(t)$ gives $F(t)=1$. Thus translating a finite
+universal assertion does not quietly grant induction on that assertion
+in a stronger language.
+
+For the descending algorithms, the loop itself is a primitive recursion
+with a supplied fuel value. Completeness is proved from the residual
+coordinate bound, so no induction on a statement of the form ``all smaller
+solutions are classified'' is needed. For the Legendre argument, the
+only additional case distinctions are signs of computed integers and
+whether a determinant is zero.
+
+These details establish a finite syntactic route from the displayed
+mathematics to iPRA proofs. They do not assert that the correctness of
+every primitive recursive program follows automatically from its
+definition: the specific preservation identities and decreasing measures
+proved in this article are the required proof content.
+
+\subsection{The constructive content of the quantifiers}
+
+Pell existence has a particularly strong Skolemized form. There are fixed
+primitive recursive $A(D),B(D)$ such that iPRA proves the universal closure
+of the quantifier-free implication
+\begin{equation}\label{eq:skolem}
+\begin{split}
+ D\ge2\ \wedge\ \isqrt(D)^2\ne D\quad\Longrightarrow\quad
+ &0<B(D)\le\CFB(D),\\[-2pt]
+ &A(D)\le\CFB(D),\\[-2pt]
+ &A(D)^2=DB(D)^2+1.
+\end{split}
+\end{equation}
+The last line is written additively so it has a literal natural-number
+interpretation. The universal quantifier is introduced after the
+quantifier-free induction arguments; it is not part of an induction formula.
+Existential introduction then gives the ordinary existence theorem.
+
+For negative Pell, the Boolean oddness of the computed period produces
+either the explicit negative solution or a proof excluding any proposed
+integer pair. For generalized Pell, the Boolean nonemptiness of the computed
+seed list similarly gives either a seed or the implication that every
+proposed solution would descend to a nonexistent seed. Thus the negative
+answers are also proved constructively. No double-negation extraction,
+Markov principle, excluded middle for arbitrary formulas, choice principle,
+infinite pigeonhole principle, or real completeness principle is needed.
+
+\section{A clear path to a complete Lean formalization}\label{sec:lean}
+
+\subsection{Repository revision and inspected foundations}
+
+The ProveIt snapshot inspected for this work is
+\begin{center}
+\small\ttfamily f1b0582aada7262b10924ea1ba12e2e490d2934b.
+\end{center}
+This pins the discussion to a concrete revision rather than to the moving
+\code{main} branch. The main foundation is
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/}.
+Its actual source, not just its project description, provides the following
+objects \cite{proveit-pr,proveit-native}:
+\begin{itemize}
+\item \code{PR.lean}: the syntax \code{PR} of primitive recursive function
+symbols, the term language \code{PTm}, the theory \code{PRAAx}, and the
+derived rule \code{PRA.qfInd}. The induction constructor requires a proof
+that its formula is quantifier-free.
+\item \code{TeqReflect.lean}: characteristic-term reflection, including
+\code{chi}, \code{chi\_iff}, and the derived quantifier-free induction rule
+\code{Teq.qfInd}.
+\item \code{TeqRec.lean}: the pair-accumulator implementation of primitive
+recursion, useful for the several registers of a bounded algorithm.
+\item \code{NativeBiInterpretation.lean}: the exact faithful translation
+\code{pra\_iff\_native} from embedded iPRA derivability to native scalar
+derivability, and its converse.
+\end{itemize}
+The pinned repository toolchain and Mathlib tag are both version
+\code{v4.32.0}. The accompanying roadmap records the inspected blob SHAs,
+full paths, and API names for reproducibility.
+
+We also inspected the draft directory listing. It contains other recent
+arithmetic and analysis packages, but no theorem from those ZIP archives is
+assumed here. The argument is self-contained and needs no extraction or
+trust in an unpublished proof inside another archive.
+
+\subsection{Useful existing Pell files and their limits}
+
+The repository file
+\path{Computability/HilbertTenthProblem/Lean/Diophantine/Common/Pell.lean}
+develops the special discriminants $a^2-1$, importing Mathlib's
+\code{PellMatiyasevic}. Its recurrence, growth, and congruence formulas are
+useful comparison material. This does not by itself prove existence for
+every nonsquare $D$ in the embedded arithmetic theory.
+
+The adjacent \code{PellMod.lean} contains a theorem
+\code{exists\_dvd\_yn} whose proof uses
+\code{Finite.exists\_ne\_map\_eq\_of\_infinite}. For the present
+formalization, \cref{thm:modular} supplies the finite replacement with
+$h^2+1$ states and a computed return exponent.
+
+Similarly,
+\path{Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellBootstrap.lean}
+uses ordinary Lean/Mathlib Pell propositions. A filename containing
+\code{Native} does not make its theorems derivations in \code{PRAAx}.
+The theorem's type determines that distinction.
+
+Mathlib's \code{NumberTheory.Pell} supplies an ordinary Lean existence
+theorem and a fundamental-unit classification; its documentation lists
+continued fractions and the negative equation as further development
+topics at the inspected source \cite{mathlib-pell}. Those host-theory
+results can check mathematical compatibility, but importing them is not
+a proof that iPRA derives \eqref{eq:skolem}.
+
+\subsection{Two layers, with an explicit bridge}
+
+The first layer proves the arithmetic algorithms and identities as ordinary
+Lean statements about \code{Nat}, \code{Int}, and finite records.
+The included \code{PellCore.lean} provides a starting point: quadratic-pair
+multiplication and norm, associativity and conjugation, power recursion,
+norm preservation, power addition, and the numerical bounds and solver
+specification.
+
+The second layer constructs the actual \code{PR} syntax for the fixed
+functions, constructs a formula expressing \eqref{eq:skolem}, and produces
+a proof term in the repository's derivability relation. The target has the
+following shape; the formula name here denotes work still to be completed:
+\begin{lstlisting}
+-- PellCorrect : Fm PTm 1 is a quantifier-free formula.
+-- It mentions explicit PR function symbols for the solver and bound.
+-- Required final target:
+-- ([] : List (Fm PTm 0)) |- [PRAAx] (Fm.all PellCorrect)
+\end{lstlisting}
+The ASCII turnstile in this display is explanatory notation. The supplied
+\code{Transfer.lean} uses the repository's actual scoped turnstile notation
+and the exact theorem \code{pra\_iff\_native}. Once an embedded derivation
+$h$ exists, its translation is
+\begin{lstlisting}
+  (pra_iff_native).mp h
+\end{lstlisting}
+with simplification of the empty context. This step does not create the
+missing embedded arithmetic proof; it transports that proof after it has
+been constructed.
+
+\subsection{Implementation modules and precise proof obligations}
+
+The following order is a concrete completion plan.
+\begin{enumerate}
+\item \textbf{Arithmetic coding.} Implement signed integers, rational pairs,
+finite vectors, total division, square-root search, bounded selectors, and
+fixed-fuel Euclid as \code{PR} terms. Prove their defining laws and numerical
+invariants using \code{PRA.qfInd}. Record the translation between these
+codes and the ordinary Lean structures.
+\item \textbf{Quadratic order.} Implement the sign test from
+\eqref{eq:signformula}. Prove the rational-root lemma and the positive-
+coefficient fraction witnesses. Derive the ordered-field calculations used
+for the error estimates. All sign splits are decidable arithmetic splits.
+\item \textbf{Finite collision.} Formalize the occupancy scan with its
+success flag and stored indices. Compile the occupancy-count invariant to
+an equation of a Boolean characteristic term. This one module supports
+state periods, residue periods, and the alternative existence proof.
+\item \textbf{Reduced states.} Encode the triple $(m,d,c)$ and prove
+\cref{lem:reduced}. The exact division and the predecessor reconstruction
+are the central obligations. Use the state count $S$ and bounded collision
+to produce $\ell$ and prove \eqref{eq:unitdenom}.
+\item \textbf{Convergents.} Store the last two numerator and denominator
+values. Prove \eqref{eq:inv1}--\eqref{eq:det} by one simultaneous
+quantifier-free induction, then derive \eqref{eq:cfnorm} and
+\eqref{eq:convbound} by polynomial identities.
+\item \textbf{Minimality and negative parity.} Implement denominator
+bracketing with fuel $q+1$. The integral inverse of the consecutive-
+convergent matrix is explicit, so the best-approximation and Legendre
+proofs reduce to sign cases and determinant estimates. Combine these with
+the period characterization to prove \cref{thm:parity} and
+\eqref{eq:skolem}.
+\item \textbf{Structure.} Formalize the three square-difference lemmas
+for each descent. The fixed-fuel reconstruction invariant proves the
+classification, negative square-root theorem, and generalized finite seed
+theorem. No well-founded recursion is required in the object language.
+\item \textbf{Arithmetic consequences.} Formalize the bounded Euclidean
+trace for strong divisibility and the $h^2$ residue return. Encode rational
+enclosures by cross products and their precision by the function $k+1$.
+\item \textbf{Native translation and checking.} Apply the existing
+\code{pra\_iff\_native} theorem. Compile the finished project, inspect
+\code{\#print axioms} for the final declarations, and retain fresh build
+logs. If generating a standalone checker certificate is added, replay it
+with the appropriate ConciseIPRA checker as a separate final step.
+\end{enumerate}
+
+The alternative norm-collision proof can be formalized after the finite
+collision module and before continued fractions. It provides an independent
+route to general existence with bound \eqref{eq:H}, and can be useful while
+the faster continued-fraction modules are under construction.
+
+At the host layer, Lean's \code{ring} tactic can discharge polynomial
+identities. For embedded iPRA, one must instead construct the corresponding
+arithmetic derivations from the defining equations and proved ring laws,
+or implement and prove sound a suitable reflection procedure. A successful
+host-level \code{ring} call is not itself the embedded derivation. The
+few displayed identities can also be expanded by direct rewrite proofs,
+which avoids making a general reflection engine a prerequisite.
+
+\subsection{What is supplied and what is not claimed}
+
+The included Lean sources contain no admitted theorem placeholders and no
+added axioms, but they have not been compiled: no Lean or Lake executable
+was available in the delivery environment. Accordingly, even those short
+source proofs are supplied as an unverified starting point. The complete
+embedded iPRA derivation, a machine-checked general Pell theorem, and a
+native proof-checker certificate remain formalization work. The human
+proofs and the explicit module plan are the requested non-formalized
+argument and outline, respectively.
+
+The ordinary Lean starting point can be checked in the supplied standalone
+project with the pinned toolchain:
+\begin{lstlisting}
+lake update
+lake exe cache get
+lake env lean PellCore.lean
+\end{lstlisting}
+The transfer example is checked inside the pinned ProveIt workspace after
+building \code{ConciseIPRA.NativeBiInterpretation}; it is intentionally not
+a standalone Lake target. A separate host axiom audit and an object-theory
+derivation audit answer different questions and should both be retained
+when the formalization is completed.
+
+\section{Executable validation and reproducibility}\label{sec:validation}
+
+The archive includes a Python standard-library implementation with exact
+integer arithmetic, a deterministic test suite, seven worked
+continued-fraction traces, Lean source outlines, and a provenance record.
+All source-level loops have a stated finite range. An early return or break
+is an optimization of a loop that holds its state fixed after success.
+The integer-square-root implementation uses a finite binary-digit scan;
+its results are checked against the square-root inequalities.
+
+The executed suite passed all 12 test methods, with zero failures and
+zero errors. The saved \code{test-results.json} records the scope:
+\begin{center}
+\small
+\begin{tabular}{lr}
+\toprule
+Check & Number checked\\
+\midrule
+Nonsquare discriminants $2\le D\le500$ & 478\\
+Reduced states over their first periods & 3\,879\\
+Convergent norm identities & 7\,758\\
+Independent bounded minimality cases & 116\\
+Denominators in those minimality scans & 19\,212\\
+Finite Dirichlet bin certificates & 750\\
+Equal-signature integral quotients & 5\\
+Norm-one descent reconstructions & 72\\
+Negative descent reconstructions & 30\\
+Generalized norm families & 175\\
+Generalized seed-power reductions & 772\\
+Independently enumerated generalized solutions & 232\\
+Finite modular periods & 180\\
+Strong divisibility comparisons & 1\,014\\
+Rational enclosures & 77\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These finite computations support the implementation and check indexing
+and sign conventions. They are not substitutes for the universal proofs,
+and the JSON traces are arithmetic certificates rather than derivations in
+the embedded iPRA checker. The enormous two-collision existence algorithm
+is not run in full; its finite Dirichlet component and quotient identities
+are exercised separately, while the efficient continued-fraction algorithm
+is run over the stated discriminant range.
+
+To reproduce the executable checks from the archive's \code{code} directory:
+\begin{lstlisting}
+python3 test_pell.py
+python3 pell_reference.py
+python3 export_certificates.py
+\end{lstlisting}
+To rebuild this PDF, run \code{python3 build.py} from the archive root;
+it invokes \code{pdflatex} repeatedly to resolve references. The manifest
+records SHA-256 hashes of the delivered files. The source material reused
+from ProveIt is identified by repository revision and file blob SHA in
+\code{lean/ROADMAP.md} and \code{evidence/provenance.json}.
+
+\section{Conclusion}
+
+Pell's equation admits a particularly direct development in the requested
+weak constructive arithmetic. The apparent infinitary steps have finite
+arithmetic replacements: a finite state space forces the continued-fraction
+period; a unimodular two-vector calculation gives Legendre's criterion;
+and integer inverse multiplication gives the complete solution
+classification with a fixed descent budget. The same unit reduces every
+generalized norm equation to a finite seed scan.
+
+The resulting proofs supply explicit primitive recursive witnesses for
+existence, periods, exponents, seed reductions, and approximation precision.
+They also give constructive negative answers when negative or generalized
+Pell has no solution. The formalization route preserves this content by
+targeting an actual iPRA derivation and only then applying ProveIt's native
+translation.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{conrad1}
+Keith Conrad, \emph{Pell's Equation, I}, author-hosted expository notes.
+\url{https://kconrad.math.uconn.edu/blurbs/ugradnumthy/pelleqn1.pdf}.
+
+\bibitem{conrad2}
+Keith Conrad, \emph{Pell's Equation, II}, author-hosted expository notes.
+\url{https://kconrad.math.uconn.edu/blurbs/ugradnumthy/pelleqn2.pdf}.
+
+\bibitem{lynn}
+Ben Lynn, \emph{Continued Fractions: The Pell Equation}, Stanford-hosted notes.
+\url{https://crypto.stanford.edu/pbc/notes/contfrac/pell.html}.
+
+\bibitem{mathlib-pell}
+The Mathlib community, \emph{Mathlib.NumberTheory.Pell}, official
+documentation and linked source.
+\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/Pell.html}.
+
+\bibitem{proveit-pr}
+Vladimir Reshetnikov et al., \emph{ProveIt: ConciseIPRA, PR.lean},
+revision \texttt{f1b0582aada7262b10924ea1ba12e2e490d2934b}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/f1b0582aada7262b10924ea1ba12e2e490d2934b/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean}.
+
+\bibitem{proveit-native}
+Vladimir Reshetnikov et al., \emph{ProveIt: ConciseIPRA,
+NativeBiInterpretation.lean}, same revision.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/f1b0582aada7262b10924ea1ba12e2e490d2934b/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}.
+
+\bibitem{pellpage}
+\emph{Pell's equation}, the encyclopedia page specified in the task;
+used for orientation and scope.
+\url{https://en.wikipedia.org/wiki/Pell\%27s_equation}.
+\end{thebibliography}
+
+\end{document}
+
+
+

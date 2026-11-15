@@ -1,0 +1,80 @@
+\section{Why these proofs are in iPRA}\label{sec:internal}
+
+\subsection{Explicit formulas and witnesses}
+Every vector or coefficient is a fixed tuple of signed-integer pairs.
+Addition, multiplication, equality, cross products, fixed-size
+determinants, and $\axis$ are primitive recursive. Removing the
+existential line from Pascal gives the following universally closed
+formula:
+\begin{align*}
+ &\left(q\ne0\land\bigwedge_{i=1}^6Q(P_i)=0
+             \land\nz(X)\land\nz(Y)\land\nz(Z)\right)\\
+ &\quad\longrightarrow
+ \left(\nz(h)\land h\cdot X=0\land h\cdot Y=0\land h\cdot Z=0\right),
+ \qquad h=\axis(X,Y,Z).
+\end{align*}
+Here $h$ is an abbreviation for the displayed term, not an additional
+existential quantifier. After expanding the abbreviations, the matrix
+is quantifier free. The Desargues forward and reverse constructions
+have the same form, with the supplied center or axis among the inputs.
+The existential equivalence follows by ordinary intuitionistic
+introduction and elimination of those witnesses.
+
+All branch tests are decidable numerical predicates. An index $j<6$ is
+selected by at most six tests, and a coordinate $i<3$ by at most three.
+Alternatively the index can be supplied as a witness and its finitely
+many possible values considered separately. No minimization over an
+unbounded domain is used.
+
+\subsection{Turning the algebra into actual derivations}
+An equality of integer polynomials is an equality of finite coefficient
+tables. Expanding both sides by distributivity and commutativity yields
+the same signed monomial sum. This expansion is a finite derivation
+from commutative-ring equations, not a semantic appeal to truth in the
+standard natural numbers. Substitute signed-pair terms for the variables.
+Section~\ref{sec:arith} supplies iPRA derivations of the ring equations,
+so the finite derivation becomes an iPRA derivation.
+
+This applies to the Desargues identity, the bracket identities, the
+Pascal identity, and each of the six cofactor certificates. The
+coefficient argument in Section~\ref{sec:pascal} explains Pascal's
+identity to a human reader; direct expansion provides a fully finite
+route for the formal proof as well. The supplied programs check this
+coefficient equality with symbolic coordinates, rather than merely
+checking numerical examples.
+
+One may formalize a general compiler from polynomial identities to
+object-theory derivations. That compiler is not logically necessary for
+these fixed theorems: their fixed expansions can instead be generated
+and replayed directly. In either case the formal target is
+object-theory derivability, not merely acceptance by a Python program.
+
+\subsection{Induction and logical resource audit}
+\begin{center}
+\begin{tabular}{p{0.30\linewidth}p{0.60\linewidth}}
+\toprule
+Component & Resources needed\\
+\midrule
+Natural and signed arithmetic & Defining equations and quantifier-free induction with parameters\\
+Fixed determinant identities & Finite ring-equation derivations; no geometric induction\\
+Selecting a nonzero entry & At most three or six decidable tests\\
+Constructing a common line & The four branches of \eqref{eq:axis}\\
+Integer cancellation & Decidable sign normalization and successor separation\\
+Existential conclusions & Introduction of explicit primitive-recursive terms\\
+PR real-name extension & First-order intuitionistic reasoning with quantified premises; no induction on those premises\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+No compactness theorem, algebraic closure, root-finding principle, or
+choice principle is required. In particular, this is not an argument
+that all computable mathematical theorems must belong to iPRA: the actual
+permitted derivation steps have been specified.
+
+The coordinate bounds are also explicit. If the input point coordinates
+have absolute value at most $H\ge1$, a cross product has coordinates at
+most $2H^2$, and a double cross product at most $8H^4$. The first two
+axis branches, applied to those double cross products, are bounded by
+$128H^8$, and the other branches by $8H^4$. These coarse bounds are
+primitive recursive and require no search for an output bound.
+

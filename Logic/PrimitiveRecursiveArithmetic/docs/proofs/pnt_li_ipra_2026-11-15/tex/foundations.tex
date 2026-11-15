@@ -1,0 +1,254 @@
+\section{The precise arithmetic meaning of the result}
+\label{sec:foundations}
+
+We use first-order intuitionistic primitive recursive arithmetic, abbreviated
+\ipra. Its language contains a symbol for every primitive recursive function,
+with its defining equations; its logic is intuitionistic first-order logic
+with equality, and its induction schema is restricted to quantifier-free
+formulas. Natural numbers are the only objects. Integers, positive-denominator
+rationals, Gaussian rationals, and finite lists are coded by natural numbers.
+No quantification over a completed space of real or complex numbers is added.
+
+The corresponding presentation in the inspected repository is
+\texttt{PRAAx} in \texttt{ConciseIPRA/PR.lean}; despite its identifier, the
+ambient deduction system is intuitionistic. Its induction interface is
+\texttt{PRA.qfInd}. The theorem \texttt{pra\_iff\_native} transports a
+\emph{derivation already constructed in this theory} to the native scalar
+calculus. It does not turn an arbitrary theorem of ambient Lean into a
+theorem of \ipra. All repository references in this package are pinned to
+commit \texttt{b5a3ad037723c44d69a3d5b28a950c554327a989}; see
+\cite{ProveIt} and the evidence manifest.
+
+\subsection{Fixed algorithms, rather than a universal real-number sort}
+
+An expression such as $\log u$, $e^z$, or $\zeta(s)$ below abbreviates
+one specified family of rational computations, together with an error
+bound. A finite assertion with requested error $2^{-v}$ is proved using
+the finite computation at a prescribed finer precision. The notation for
+the limiting value helps the reader see the mathematics; the arithmetic
+claim is about those finite enclosures. In particular, we never postulate
+a primitive recursive evaluator for all primitive recursive program codes.
+The small, fixed collection of algorithms used here is compiled separately.
+
+Bounded quantifiers cause no increase of the induction schema. For example,
+if $R(i,\mathbf a)$ is a decidable primitive recursive predicate, then
+``$R(i,\mathbf a)$ for all $i< B$'' is represented by the equation
+\[
+ \prod_{i<B}\chi_R(i,\mathbf a)=1.
+\]
+Products, sums, maximum, finite search with a supplied upper bound, and
+the characteristic function in this equation are primitive recursive.
+Induction applies to this single equation with all other parameters free.
+The proof may universally generalize those parameters afterwards.
+
+\subsection{A concrete logarithm algorithm}
+
+For a positive rational $u\ge1$, find, by bounded integer search, the unique
+$e\ge0$ with $2^e\le u<2^{e+1}$ and put $r=u/2^e$. Define
+\[
+ A_j(r)=2\sum_{i=0}^{j-1}\frac{z^{2i+1}}{2i+1},
+ \qquad z=\frac{r-1}{r+1},\qquad 1\le r\le2.
+\]
+The finite geometric identity, integrated on $[0,z]$, gives
+\[
+ 0\le \log r-A_j(r)
+ =2\int_0^z\frac{t^{2j}}{1-t^2}\,dt
+ \le\frac{2z^{2j+1}}{(2j+1)(1-z^2)}\le9^{-j}.
+\]
+This also proves convergence with an explicit bound, without invoking a
+monotone-convergence principle. Set
+\begin{equation}\label{eq:log-algorithm}
+ \lambda(u,v)=eA_{v+e+2}(2)+A_{v+e+2}(r).
+\end{equation}
+Then
+\begin{equation}\label{eq:log-error}
+ 0\le\log u-\lambda(u,v)\le(e+1)9^{-(v+e+2)}\le2^{-v}.
+\end{equation}
+The last inequality follows from $e+1\le2^{e+1}$ and $9\ge 2^3$.
+For $u\ge2$, the initial term of $A_j(2)$ also gives
+$\lambda(u,v)\ge2/3$. Rational inputs below $1$ are handled by
+$\log u=-\log(1/u)$. Every loop has a bound supplied by the numerator,
+denominator, and requested precision.
+
+The ordinary logarithm identities used later can be proved directly for
+these computations. One convenient common reference is
+$\log u=\int_1^u dt/t$: the geometric identity above evaluates this
+integral, substitution in finite Riemann sums proves
+$\log(ab)=\log a+\log b$, and the derivative and monotonicity follow from
+the explicit rational identity for $1/(u+h)-1/u$. The needed error bounds
+on an interval with $u\ge a>0$ use only $a^{-1}$ and $a^{-2}$.
+This gives finite rational proofs of these identities at every prescribed
+precision; it does not appeal to an unspecified construction of real analysis.
+
+\subsection{An explicit rational approximation to the offset integral}
+
+We use the convention
+\[
+ \Li_2(x)=\int_2^x\frac{dt}{\log t}.
+\]
+It has no singular endpoint. Let $b(n)$ be the binary length of the
+integer $n\ge2$, so $2^{b(n)-1}\le n<2^{b(n)}$. For $v\ge0$ set
+\[
+ h=2^{-(v+3)},\quad J=(n-2)2^{v+3},\quad
+ P=v+b(n)+6,
+\]
+and define the nonnegative rational number
+\begin{equation}\label{eq:Li-algorithm}
+ \mathcal A(n,v)=h\sum_{j=0}^{J-1}
+       \frac1{\lambda(2+jh,P)}.
+\end{equation}
+An empty sum, in particular at $n=2$, is zero. For $n<2$ we define the
+algorithm to return zero, thereby making it total on all natural inputs.
+
+Here is a complete error estimate. The function $f(t)=1/\log t$ is
+positive and decreasing on $[2,n]$. The left and right Riemann sums on
+this uniform mesh differ by $h(f(2)-f(n))\le2h$. Thus the exact left
+sum exceeds the integral by at most $2h$. Since both logarithm
+denominators are at least $2/3$, replacing $\log t$ by its lower
+approximation increases its reciprocal by at most $3\cdot2^{-P}$.
+Summing this error and using $n<2^{b(n)}$ gives
+\begin{equation}\label{eq:Li-error}
+ 0\le\mathcal A(n,v)-\Li_2(n)
+ \le 2h+3n2^{-P}
+ <\left(\frac14+\frac3{64}\right)2^{-v}<2^{-v}.
+\end{equation}
+The executable reference implementation in the archive computes this
+same rational sum. It is intended to specify a transparent algorithm,
+not to provide an efficient way to evaluate the integral for very large $n$.
+
+\subsection{The main first-order theorem}
+
+Write $\Pi(n)$ for the number of integers $p\le n$ satisfying
+$p\ge2$ and having no proper divisor between $2$ and $p-1$.
+This definition uses only bounded divisibility tests and finite summation.
+Set
+\[
+ C=2^{240},\qquad D=2C=2^{241},\qquad
+ \mathcal N(m)=2^{D(m+7)^{10}}.
+\]
+The principal arithmetic conclusion of the argument is
+\begin{theorem}[Finite logarithmic-integral strengthening]\label{thm:object}
+In \ipra, for all natural $m,v,n$,
+\begin{equation}\label{eq:object-target}
+ n\ge\mathcal N(m)\quad\Longrightarrow\quad
+ \left|\Pi(n)-\mathcal A(n,v)\right|
+ \le \frac{n}{2^m b(n)}+2^{-v}.
+\end{equation}
+All functions and comparisons in this statement are primitive recursive.
+After clearing the positive denominators, its matrix is quantifier-free.
+\end{theorem}
+
+For example, write $\mathcal A=a/d$ with $d>0$, without requiring the
+fraction to be reduced, and let $z=|d\Pi(n)-a|$. The consequent is exactly
+the integer comparison
+\begin{equation}\label{eq:integer-matrix}
+ z\,2^{m+v}b(n)
+ \le d\bigl(n2^v+2^m b(n)\bigr).
+\end{equation}
+Thus the displayed theorem does not quantify over real numbers and does
+not use an undecidable comparison between real-number codes.
+
+The constants are chosen for simple verifiable estimates. They are
+enormously larger than constants useful for numerical prime counting.
+No claim of numerical optimization or a new classical error exponent is made.
+
+\subsection{Elementary complex computations and their resource bounds}
+
+For a Gaussian rational $z$ with $|z|\le B$, evaluate the exponential by
+its Taylor polynomial. If $J$ is even and
+$J\ge\max\{4\lceil B\rceil^2,2v+4\}$, then
+\[
+ \left|e^z-\sum_{j<J}\frac{z^j}{j!}\right|\le2^{-v}.
+\]
+Indeed, $J!\ge(J/2)^{J/2}$ gives $B^J/J!\le2^{-J/2}$.
+Successive omitted terms then decrease by a factor at most $1/2$,
+so their sum is at most $2^{1-J/2}\le2^{-v}$.
+We always use the unambiguous safe choice
+\begin{equation}\label{eq:exp-cutoff}
+ J=4\lceil B\rceil^2+2v+4.
+\end{equation}
+Sine and cosine are the imaginary and real parts at $iz$; powers
+$u^{-s}$ are evaluated as $e^{-s\log u}$. When the logarithm is also
+approximated, a bound on the exponential derivative prescribes its
+input precision. For $|z|\le B$ one may use the rational bound
+$|e^z|\le3^{\lceil B\rceil+1}$, and ask for an input error at most
+$2^{-v}/(3^{\lceil B\rceil+2}+1)$. Bit lengths turn this into a
+natural-number precision by a bounded calculation.
+
+Division is used only with a displayed lower bound. If $|w|\ge a>0$
+and $|w-\widetilde w|\le\eta\le a/2$, then
+\[
+ |\widetilde w|\ge a/2,
+ \qquad |w^{-1}-\widetilde w^{-1}|\le2\eta/a^2.
+\]
+The same estimate is obtained using squared norms and rational
+arithmetic; square roots need not be decided. The zeta lower bounds
+proved below are exactly what makes this operation legitimate.
+
+For a real-parameter integral on a rational interval of length $\ell$,
+a derivative bound $M$ makes a uniform mesh of width $h$ incur an error
+at most $M\ell h$. A finite sum of $J$ terms is evaluated with
+per-term error at most $2^{-v}/(J+1)$, adjusted for rational coefficients.
+Products use their explicit magnitude bounds. These prescriptions give
+precision bounds by addition, multiplication, exponentiation, and binary
+length; no search for a successful accuracy is required.
+
+There is a useful explicit rule for composing these estimates. Consider
+the bounded table of $J$ rational arithmetic gates used in one calculation.
+Let an integer $B\ge1$ bound the magnitudes of all exact intermediate
+values and let every inverted denominator have modulus at least $1/B$.
+Addition, multiplication, absolute value, and guarded inversion amplify
+an input error at most $\epsilon\le1/(2B)$ by at most $8B^3$, including
+one further local rounding error. Set the initial tolerance to
+\[
+ \epsilon_0=\frac{2^{-p}}{2B(8B^3)^{J+1}}.
+\]
+Quantifier-free induction on the number of evaluated rows proves that
+the row-$j$ error is at most $(8B^3)^j\epsilon_0$ and that every guard
+remains valid. The final error is less than $2^{-p}$. The bounds $J,B$
+come from the displayed cutoffs and magnitude estimates. This is an
+error-propagation lemma for a bounded arithmetic table with the specified
+analytic macros, not a universal evaluator for primitive recursive codes.
+
+\subsection{Why the proof uses only quantifier-free induction}
+
+Every analytic operation used in the number-theoretic proof is reduced
+below to these operations and two explicit tail estimates. The finite
+contour lemma uses a predetermined rectangular grid, and its proof is
+exact cancellation of internal edges plus a rational error sum. Euler
+products are cut off by a supplied integer bound. The Perron integral
+has a numerical truncation bound and an explicit finite scalar-kernel
+calculation. No enumeration of zeta zeros, compactness of a continuum,
+unbounded minimization, or principle of choice occurs.
+
+Here is the induction discipline, which is essential to the claim of
+Theorem~\ref{thm:object}. Fix the input numbers and the final accuracy.
+Compute all resource bounds first. For a loop with counter $j\le J$,
+the induction invariant is a finite list of rational identities and
+inequalities for the first $j$ terms, with their accumulated error
+allowances. Replace that list by the conjunction of its decidable
+characteristic equations. Induct on this quantifier-free formula.
+Induction never asserts ``the identity holds at every precision'' or
+``every point of an infinite contour has the desired property''.
+A claimed uniform analytic bound is instantiated at the finitely many
+mesh points and at the finitely many interval bounds required by the
+Taylor estimate.
+
+For rational statements with positive slack, all apparent passages to
+a limit are eliminated by choosing one sufficiently fine approximation
+from the displayed bounds. For an exact identity in the expository
+notation, use the finite version with an arbitrary prescribed error.
+At the last step the spare margin in the prime-counting estimate and
+\eqref{eq:Li-error} absorb these errors. Universal generalization over
+the original inputs is made only after these finite proofs. This is a
+description of the specific proof translation used here, not the false
+general principle that every computable inequality is provable in \ipra.
+
+\paragraph{Mechanization status.}
+Theorem~\ref{thm:object} is established here at the level requested: a
+human proof with its finite arithmetic interpretation. The archive does
+\emph{not} contain a completed Lean proof term for it. The Lean files are
+explicitly marked interfaces and outlines, and the final section lists
+the proof objects still to be constructed. In particular, a successful
+test of a rational evaluation program would not establish the universal
+number-theoretic theorem.

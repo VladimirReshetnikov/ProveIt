@@ -1,0 +1,77 @@
+{
+  "format": "morley-ipra-certificate-schema",
+  "version": 1,
+  "purpose": "Machine-readable contract for the witness-parametric iPRA formulation of Morley's trisector theorem.",
+  "scalar_representation": {
+    "modulus": "A monic square-free p in Z[X].",
+    "selected_root": "A rational interval plus a finite Sturm/Thom or signed-subresultant trace isolating one real root theta of p.",
+    "scalar": "A normalized pair (q,d), q in Z[X] reduced modulo p and d a positive integer, denoting q(theta)/d.",
+    "equality": "Cross-multiply denominators, reduce modulo p, and require the zero residue.",
+    "cancellation": "Every canceled factor has an explicit scalar inverse whose product normalizes to one.",
+    "sign": "Internal-branch claims carry independently checkable finite sign traces."
+  },
+  "orientation": {
+    "values": ["counterclockwise", "clockwise"],
+    "clockwise_normalization": "Conjugate every rotation pair and use the counterclockwise equations."
+  },
+  "points": ["A", "B", "C", "P", "Q", "R"],
+  "positive_scalars": [
+    "ellAB", "ellBC", "ellCA", "lambda",
+    "rA", "rB", "qA", "qC", "pB", "pC"
+  ],
+  "unit_pairs": ["eAB", "eBC", "eCA", "a", "b", "g", "u"],
+  "derived_pairs": {
+    "eBA": "-eAB",
+    "eCB": "-eBC",
+    "eAC": "-eCA",
+    "dAR": "eAB * a",
+    "dAQ": "eAB * a^2",
+    "dBP": "eBC * b",
+    "dBR": "eBC * b^2",
+    "dCQ": "eCA * g",
+    "dCP": "eCA * g^2"
+  },
+  "required_equations": [
+    "B-A = ellAB*eAB",
+    "C-B = ellBC*eBC",
+    "A-C = ellCA*eCA",
+    "eAC = eAB*a^3",
+    "eBA = eBC*b^3",
+    "eCB = eCA*g^3",
+    "a*b*g = u",
+    "2*Re(u) = 1",
+    "u*conj(u) = (1,0)",
+    "ellBC = lambda*Im(a^3)",
+    "ellCA = lambda*Im(b^3)",
+    "ellAB = lambda*Im(g^3)",
+    "R = A+rA*dAR",
+    "R = B+rB*dBR",
+    "Q = A+qA*dAQ",
+    "Q = C+qC*dCQ",
+    "P = B+pB*dBP",
+    "P = C+pC*dCP"
+  ],
+  "required_positive_claims": [
+    "Im(u)", "Im(a)", "Im(b)", "Im(g)",
+    "Im(a*u)", "Im(b*u)", "Im(g*u)",
+    "Im(a*u^2)", "Im(b*u^2)", "Im(g*u^2)"
+  ],
+  "required_inverse_claims": [
+    "inverse(Im(a*u^2))",
+    "inverse(Im(b*u^2))",
+    "inverse(Im(g*u^2))"
+  ],
+  "conclusion": [
+    "sqDist(P,Q) = sqDist(Q,R)",
+    "sqDist(Q,R) = sqDist(R,P)"
+  ],
+  "proof_kernel": [
+    "shifted triple-angle ideal-membership certificate",
+    "60-degree pair coordinate-shift identities",
+    "determinant extraction from ray incidence",
+    "algebraic angle-sum pair identity",
+    "two-ray squared-distance expansion",
+    "Morley bracket ideal-membership certificate",
+    "three cyclic instantiations"
+  ]
+}

@@ -1,0 +1,308 @@
+\section{A finite contraction with an explicit modulus}
+\label{con:section}
+
+This section uses the estimates proved above, with deliberately generous
+constants.  Put
+\[
+ r(t)=e^{-t}\bigl(\psi(e^t)-e^t\bigr),\qquad S=2^{18}.
+\]
+The hypotheses needed here are
+\begin{align}
+ |r(t)|&\leq 4 &&(t\geq0),\label{con:global}\\
+ \left|\int_u^v r(w)\,dw\right|&\leq20
+       &&(0\leq u\leq v),\label{con:signed}\\
+ |r(t)|&\leq \frac{2}{t^2}\int_0^t(t-u)|r(u)|\,du+\frac{S}{t}
+       &&(t\geq2).\label{con:weighted}
+\end{align}
+There is also a useful one-sided regularity estimate.  Monotonicity of
+$\psi$ gives, for $v\geq u$,
+\[
+ r(v)+1\geq e^{u-v}(r(u)+1).
+\]
+Since $0\leq\psi(e^u)e^{-u}\leq4$ and $1-e^{-h}\leq h$, it follows that
+\begin{equation}
+ r(v)\geq r(u)-5(v-u).\label{con:decline}
+\end{equation}
+The extra unit in the constant is harmless.  In particular, no two-sided
+continuity assumption is being made: $r$ has upward jumps.
+At rational spatial points $x\le y$, the same calculation is simply
+$\psi(y)/y\ge\psi(x)/y$ together with $1-x/y\le\log(y/x)$;
+no exponential evaluation is needed in its arithmetic implementation.
+
+\subsection{A deficit detected by finitely many rational tests}
+
+Fix an integer $q\geq1$, and define
+\begin{equation}
+ \varepsilon=\frac1q,\quad D=2^{20}q^3,\quad
+ \delta=\frac1D,\quad \overline H=1024q,\quad
+ Q=1+\frac1{320q},\quad m=327680q^2,\quad
+ \sigma=\frac1{64q}.
+ \label{con:parameters}
+\end{equation}
+Both $m$ and $m/2$ are integers.  Write $\lambda=\log Q$ and
+$H=m\lambda$.  The elementary inequalities
+\[
+ \frac{z}{1+z}\leq\log(1+z)\leq z\qquad(z\geq0)
+\]
+imply
+\begin{equation}
+ \frac1{640q}\leq\lambda\leq\frac1{320q},
+ \qquad 512q\leq H\leq1024q=\overline H.
+ \label{con:block-length}
+\end{equation}
+
+\begin{lemma}[Finite block deficit]\label{con:deficit}
+Suppose $\varepsilon\leq a\leq4$ and $|r(t)|\leq a$ throughout a
+block $[s,s+H]$, where $e^s$ is rational.  Then
+\begin{equation}
+ \int_s^{s+H}\bigl(a-|r(t)|\bigr)\,dt
+       \geq\frac1{64q^2}.
+ \label{con:deficit-bound}
+\end{equation}
+The proof needs only finitely many comparisons of rational numbers.
+\end{lemma}
+
+\begin{proof}
+The nodes
+\[
+ x_i=e^sQ^i,\qquad t_i=\log x_i=s+i\lambda,
+       \qquad 0\leq i\leq m,
+\]
+have rational $x_i$.  Compute rational numbers $b_i$ satisfying
+\begin{equation}
+ |b_i-r(t_i)|\leq\sigma.\label{con:sample-error}
+\end{equation}
+Such numbers are obtained by a bounded prime-power sum and rational
+logarithm enclosures.  Indeed, approximating each nonzero $\Lambda(n)$
+with absolute error at most $\sigma$ produces an error at most
+$\sigma\lfloor x_i\rfloor/x_i\leq\sigma$ after division by $x_i$.
+All tests below concern the rational numbers $b_i$ and $a/4$.
+
+Set $d(t)=a-|r(t)|$.  First suppose that
+$b_i<a/4$ for all $0\leq i\leq m/2$.
+For $t\in[t_i,t_{i+1}]$ in the first half of the block,
+\eqref{con:decline}, applied from $t$ to $t_{i+1}$, gives
+\[
+ r(t)\leq r(t_{i+1})+5\lambda
+       \leq a/4+\sigma+5\lambda
+       \leq 9a/32<a/2.
+\]
+For $-a\leq z\leq a/2$ one has
+$a-|z|\geq(a+z)/3$.  Therefore \eqref{con:signed} and
+\eqref{con:block-length} imply
+\[
+ \int_s^{s+H/2}d(t)\,dt
+ \geq\frac{aH/2-20}{3}
+ \geq\frac{256-20}{3}
+ \geq\frac1{64q^2}.
+\]
+This proves the claim in the first case.
+
+Second, suppose that $b_i>-a/4$ for all $m/2\leq i\leq m$.
+For each interval in the second half, apply \eqref{con:decline}
+from its left endpoint to obtain
+$r(t)\geq-a/4-\sigma-5\lambda\geq-9a/32>-a/2$.
+The inequality $a-|z|\geq(a-z)/3$ for $-a/2\leq z\leq a$
+gives the same lower bound for the integral of $d$ on this half.
+
+If neither case applies, a bounded search finds an index $i_0$ in the
+first half with $b_{i_0}\geq a/4$ and an index in the second half with
+$b_i\leq-a/4$.  Let $v$ be the first index after $i_0$ with
+$b_v\leq-a/4$, and let $u<v$ be the last index at or after $i_0$
+with $b_u\geq a/4$.  These are minima and maxima of finite decidable
+sets.  For $u<i<v$,
+\[
+ -a/4<b_i<a/4.
+\]
+For each $i$ from $u$ through $v-1$, the left sample is at least
+$-a/4$ and the right sample is at most $a/4$.  Thus the two applications
+of \eqref{con:decline} used in the preceding cases yield
+\[
+ |r(t)|\leq a/4+\sigma+5\lambda\leq9a/32<a/2
+       \qquad(t_u\leq t\leq t_v).
+\]
+At the outer samples,
+\[
+ r(t_u)-r(t_v)\geq a/2-2\sigma\geq15a/32.
+\]
+Another application of \eqref{con:decline} gives
+$t_v-t_u\geq15a/(32\cdot5)$.  Consequently
+\[
+ \int_{t_u}^{t_v}d(t)\,dt
+ \geq\frac a2\frac{15a}{32\cdot5}
+ =\frac{3a^2}{64}\geq\frac1{64q^2}.
+\]
+All three cases prove \eqref{con:deficit-bound}.  No sign decision for
+an arbitrary real number and no intermediate-value principle occurs.
+\end{proof}
+
+\subsection{Using the deficit in the weighted inequality}
+
+\begin{lemma}[One finite contraction]\label{con:one-step}
+Let $s,t\geq0$ with $e^s$ and $e^t$ rational, and suppose
+$\varepsilon\leq a\leq4$ and $|r(u)|\leq a$ for $s\leq u\leq t$.
+If
+\begin{equation}
+ t\geq8(s+\overline H),\qquad
+ t\geq D(8s+S),\qquad t\geq2,
+ \label{con:step-threshold}
+\end{equation}
+then
+\begin{equation}
+ |r(t)|\leq a-3\delta.\label{con:step-margin}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Place consecutive full blocks of length $H$ starting at $s$ and ending
+no later than $t/2$.  Their number $b$ satisfies
+\[
+ b\geq \frac{t/2-s}{H}-1
+   \geq\frac{3t}{8H}-1
+   \geq\frac{t}{4H}
+   \geq\frac{t}{4\overline H}.
+\]
+Here $s\leq t/8$ and $t\geq8\overline H\geq8H$ were used.
+There is no need to decide a floor of a real number: when $x=e^t$ is
+rational, the permitted blocks are found by the rational test
+\[
+ \bigl(e^s Q^{m i}\bigr)^2\leq x.
+\]
+The number of candidates can be bounded by $\lceil x\rceil+1$:
+Bernoulli's finite inequality gives
+$Q^{mi}\geq1+mi/(320q)=1+1024qi>i$.
+
+On all these blocks the weight $t-u$ is at least $t/2$.
+By Lemma~\ref{con:deficit},
+\begin{align*}
+ \int_0^t(t-u)|r(u)|\,du
+ &\leq\frac{at^2}{2}+4st
+      -b\frac{t}{2}\frac1{64q^2}\\
+ &\leq\frac{at^2}{2}+4st
+      -\frac{t^2}{8\overline H}\frac1{64q^2}.
+\end{align*}
+The term $4st$ bounds the possible excess above the baseline $a$
+on $[0,s]$, using \eqref{con:global}.
+Substitution in \eqref{con:weighted} gives
+\[
+ |r(t)|\leq a
+    -\frac1{4\overline H\cdot64q^2}
+    +\frac{8s+S}{t}
+ =a-4\delta+\frac{8s+S}{t}
+ \leq a-3\delta.
+\]
+This proves the stated, deliberately stronger, decrement.
+\end{proof}
+
+Every part of this argument refers only to arguments no larger than $x$.
+This finite dependence is essential in the induction below.  The surplus
+$2\delta$ in \eqref{con:step-margin}, beyond the decrement $\delta$
+that will actually be used, also provides room for certified numerical
+enclosures.  The rational-arithmetic implementation assigns an explicit
+error budget to the compound expressions; the coarse sample precision
+$\sigma$ in Lemma~\ref{con:deficit} is not the precision used for those
+compound expressions.
+
+\subsection{Integer thresholds and the modulus}
+
+Set
+\begin{equation}
+ J=4D-D/q,\qquad a_j=4-j/D\quad(0\leq j\leq J),
+ \label{con:levels}
+\end{equation}
+so that $J$ is an integer and $a_J=1/q$.  Define, by primitive recursion,
+\begin{align}
+ T_0&=2,\notag\\
+ T_{j+1}&=16(T_j+\overline H)+D(16T_j+S)+1,\label{con:recurrence}\\
+ P_j&=2^{2T_j}.\notag
+\end{align}
+These are integers.  Since $1/2\leq\log2\leq1$,
+\begin{equation}
+ T_j\leq\log P_j\leq2T_j.\label{con:dyadic-threshold}
+\end{equation}
+Starting at the rational point $P_j$, the hypotheses of
+Lemma~\ref{con:one-step} are therefore met at every rational
+$x\geq P_{j+1}$.  Indeed, putting $s=\log P_j$ and $t=\log x$,
+\eqref{con:recurrence} bounds both $8(s+\overline H)$ and
+$D(8s+S)$ from above, with a spare unit.
+We retain only a decrement $\delta$ at each step.  After $J$ steps,
+\begin{equation}
+ |\psi(x)-x|\leq x/q\qquad(x\geq P_J).
+ \label{con:psi-at-recursive-threshold}
+\end{equation}
+The arithmetic justification of this finite induction is given in the
+next subsection.
+
+The recurrence admits a simple closed upper bound.  Put $F=2^{20}D$.
+From \eqref{con:recurrence} and $D=2^{20}q^3$ one checks
+\[
+ T_{j+1}+1\leq F(T_j+1),\qquad
+ T_J+1\leq3F^J.
+\]
+For example, the coefficient of $T_j$ in the recurrence is
+$16+16D<F$, and its constant term plus one is
+$2^{14}q+2^{18}D+2<F$.
+The elementary inequality $2^n\geq n^2$ for $n\geq4$ gives
+$D\leq2^{D/16}$, because $D\geq2^{20}$.  Hence
+\[
+ F=2^{20}D\leq2^{D/8},\qquad
+ 3F^J\leq3\,2^{D^2/2}\leq2^{D^2},
+\]
+where $J\leq4D$ was used.  Thus $T_J\leq2^{D^2}$ and
+\begin{equation}
+ P_J\leq N_\psi(q):=2^{\,2^{D^2+1}},
+       \qquad D=2^{20}q^3.
+ \label{con:closed-modulus}
+\end{equation}
+In particular, the modulus is elementary, and therefore primitive
+recursive.  No claim of numerical usefulness is intended.
+
+\subsection{The induction predicate is a bounded finite check}
+\label{con:bounded-induction}
+
+Induction on the assertion ``for every $x\geq P_j$'' would not be an
+instance of quantifier-free induction.  Instead, fix a final integer
+ceiling $X$, as well as $q$, before starting the induction.  Form
+rational lower and upper enclosures
+$\underline\psi(n)\leq\psi(n)\leq\overline\psi(n)$
+for $0\leq n\leq X$.  The stage predicate is the Boolean conjunction,
+over the finite set of integers $P_j\leq n\leq X$, of
+\begin{equation}
+ \overline\psi(n)\leq(1+a_j)n,
+ \qquad
+ \underline\psi(n)\geq(1-a_j)(n+1).
+ \label{con:endpoint-predicate}
+\end{equation}
+Denominators are cleared, so this is a primitive-recursive Boolean
+function of its integer arguments.  Its equality to $1$ is a
+quantifier-free formula.
+
+The two checks enclose the value at the left of the cell $[n,n+1)$
+and its limit at the right. Between consecutive integers, $\psi(x)$ is
+constant and $\psi(x)/x-1$ decreases. When $a_j>1$ the lower bound
+is also immediate from positivity. Therefore
+\eqref{con:endpoint-predicate} controls every rational argument needed
+in the next contraction whose value is less than $X+1$.
+All mesh coordinates in Lemma~\ref{con:deficit} are rational, and their
+indices and denominators have explicit primitive-recursive bounds.
+An empty range in \eqref{con:endpoint-predicate} is checked as true.
+
+The base envelope $a_0=4$ has slack: $0\leq\psi(x)\leq4x$ implies
+$-1\leq r(t)\leq3$.  For the step, the analytic bound improves $a_j$
+by $3\delta$, whereas the new check asks for improvement only by
+$\delta$. In particular, each normalized logarithm enclosure may be
+required to have error at most $\delta/8$. The lower end-of-cell
+condition is tested at $z=n+1-\delta/64$, where $\psi(z)=\psi(n)$.
+This point is at least $n$ and less than $X+1$, so both its threshold
+and the finite ceiling are preserved. Section~\ref{sec:arithmetic}
+gives the explicit algebra recovering the end-of-cell condition.
+The remaining compound-expression errors are assigned a total budget
+at most $\delta/4$ by the finite arithmetic compilation described
+elsewhere in this report.  The surplus in
+\eqref{con:step-margin} exceeds all these allowances.
+
+Thus the stage implication is a finite arithmetic calculation with
+parameters $q$ and $X$, and quantifier-free induction applies to its
+Boolean check.  Only after the $J$ stages have been completed is the
+arbitrary ceiling $X$ generalized.  This is the reason the proof does
+not use an induction hypothesis with an unbounded universal quantifier.

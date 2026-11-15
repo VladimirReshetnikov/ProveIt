@@ -1,0 +1,146 @@
+\section{Scope, results, and the arithmetic framework}
+\label{sec:framework}
+
+The three requested theorems do not have the same constructive status.  A
+finite list of smooth neighbors can be computed; the existence of good
+quadratic approximants can be made quantitative when nonquadraticity is
+supplied as positive separation data; and a general denominator cutoff in
+Roth's theorem remains an outstanding effectivity problem.  These distinctions
+are mathematical requirements, rather than limitations of a particular proof
+assistant.  We therefore state precisely what has been established.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.19\textwidth}X@{}}
+\toprule
+Requested result & Result established in this report\\
+\midrule
+St\o rmer & A complete primitive recursive enumeration, with at most
+$3^k-2^k$ neighbors and an explicit bound on every entry.\\[3pt]
+Davenport--Schmidt & Exponent $3$, a larger absolute constant, and an
+explicit height search bound, for a fixed primitive recursive real name
+with a fixed primitive recursive quadratic separation modulus.
+Algebraic inputs of degree at least three have an explicit such modulus.\\[3pt]
+Roth & A complete cutoff proof for every quadratic algebraic irrational
+and every positive rational exponent increment; a complete all-degree
+Liouville bound; an exact account of the unresolved general cutoff.\\[3pt]
+Lean & Concrete arithmetic specifications, an actual repository transport
+interface, and a dependency-by-dependency plan.  The new Diophantine
+derivations have not been completed or kernel checked.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+In particular, this is \emph{not a proof of all three requested full theorems}.
+Calling a number-of-solutions estimate an enumeration algorithm would conceal
+the central difficulty in Roth's theorem.  Section~\ref{sec:roth} explains the
+distinction and proves the fragment that is actually claimed.
+
+\subsection{The inspected object theory}
+
+We use the first-order intuitionistic primitive recursive arithmetic defined
+in \path{ConciseIPRA/PR.lean}, at ProveIt commit
+\begin{center}
+\texttt{b33ee1acb02b7619dfef419e61c3e343735a7bc4}.
+\end{center}
+The inspected source defines the primitive recursive function symbols
+\texttt{PR} by zero, successor, projections, composition, and primitive
+recursion.  Its terms are \texttt{PTm}; its axioms \texttt{PRAAx} are their
+defining equations, successor nonzero and injectivity, and induction for
+quantifier-free formulas.  The underlying derivations are the intuitionistic
+natural-deduction relation \texttt{Prf} in \texttt{Deduction.lean}, with
+equality and all first-order connectives and quantifiers
+\cite{ProveItPR,ProveItDeduction}.
+
+Thus ``in iPRA'' has a specific meaning.  A final formalization must construct
+an inhabitant of
+\[
+ \texttt{Prf PRAAx [] statement},
+\]
+where \texttt{statement} is an encoded first-order formula.  A Lean theorem
+about the standard natural numbers or real numbers is a useful intermediate
+result, but is not that object-theory derivation.  The inspected
+\texttt{BiInterpretation.lean} proves \texttt{pra\_theorem\_iff}, which transfers
+such a derivation to the concise scalar theory by its existing translation
+\cite{ProveItBi}.  This transfer does not create a missing arithmetic proof.
+
+We also inspected the Dirichlet--Kronecker and Minkowski archives in
+\texttt{docs/drafts} at the same commit.  Their finite arithmetic perspective
+is relevant; their own status files identify their approximation artifacts as
+specifications or unfinished formalization work.  No theorem from those
+archives is assumed here.  In particular, the two pigeonhole constructions
+and every Diophantine estimate needed below are proved in this report.
+
+\subsection{Finite codes and quantifier-free induction}
+
+Signed integers are pairs of natural numbers, or a sign bit and a magnitude;
+rationals are signed numerators with positive denominators.  Finite vectors,
+polynomials, and lists are encoded by elementary pairing and list operations.
+The choice of codec has no bearing on the estimates.  Malformed codes receive
+fixed default outputs; correctness statements include a decidable input
+validity hypothesis.
+
+Addition, multiplication, natural powers, quotient and remainder, absolute
+value, gcd, integer square root, factorials, bounded sums and products,
+and bounded minimization have primitive recursive definitions.  A bounded
+universal condition is a finite Boolean conjunction and a bounded existential
+condition a finite Boolean disjunction.  In this expanded language, each is
+represented by an equation between primitive recursive terms.  We use
+quantifier-free induction on these characteristic equations, with numerical
+parameters allowed.
+
+For example, finite pigeonhole is not an infinite combinatorial principle.
+Given $N+1$ colors in $\{0,\ldots,N-1\}$, scan the list and maintain a finite
+occupancy table.  Either a repeated color is returned with its two indices,
+or each new item increases the number of occupied entries by one.  That number
+is at most $N$, so the latter branch is impossible after $N+1$ steps.  The
+table invariant and count identity are bounded Boolean assertions.  The
+algorithm's final success flag is decidable; eliminating its false branch is
+intuitionistically legitimate.
+
+The same discipline applies to a ``least'' object.  We only select least
+elements of explicitly bounded finite collections.  No unrestricted
+least-number principle, unbounded minimization, compactness theorem, or
+choice of an infinite subsequence is used in the positive results.
+
+\subsection{Real notation and positive input information}
+
+A fast rational name is a fixed primitive recursive definition $r(k)$,
+with arithmetic correctness conditions expressing an error at most $2^{-k}$.
+Notation such as $|\xi-r(k)|\leq2^{-k}$ abbreviates those conditions; it does
+not add a completed real-number sort to first-order iPRA.  Strict inequalities
+must have positive rational error allowances.  Closed inequalities are read
+through their rational error estimates and used at explicitly chosen finite
+precisions.
+
+There are two equivalent ways to organize the resulting mathematics.  One
+can state a theorem schema for each fixed choice of primitive recursive name
+and modulus.  Alternatively, one can state a single finite theorem about
+rational approximations, finite tables, and rational certificates, then apply
+it to the fixed name.  The Davenport--Schmidt proof makes this second route
+explicit by reducing its argument to a single rational approximation at a
+specified precision.  This matters because induction on arbitrary assertions
+about real limits would exceed the stated induction scheme.
+
+There is no total primitive recursive evaluator for every primitive recursive
+program supplied as unrestricted input.  The schemas used here neither
+postulate nor need such an evaluator.  Polynomial evaluation and finite-table
+checking, by contrast, are particular fixed primitive recursive algorithms.
+
+For St\o rmer's theorem even a real-name schema is unnecessary: all radicals
+are elements of an explicitly coded ordered quadratic field, with sign
+decided by integer squaring.  For Roth's proved fragment the algebraic name is
+produced by a fixed rational bisection algorithm.  For Davenport--Schmidt the
+separation modulus is additional positive input, and its necessity is not
+hidden under the phrase ``not rational or quadratic.''
+
+\subsection{Status of the proofs and of their implementation}
+
+The positive results below have complete human-readable finite mathematical
+proofs, including explicit bounds.  Their proposed iPRA formalizations use
+only the described arithmetic definitions and finite induction invariants.
+The remaining Lean work is substantial: it must encode the arithmetic,
+establish each invariant in \texttt{Prf PRAAx}, and assemble the derivations.
+The included code tests computations and certificates, not the existence of
+those derivations.  Neither successful Python examples nor an absence of
+\texttt{sorry} in a specification file is presented as a completed
+formalization.

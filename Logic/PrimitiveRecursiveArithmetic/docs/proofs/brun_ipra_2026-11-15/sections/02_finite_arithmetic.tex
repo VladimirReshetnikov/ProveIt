@@ -1,0 +1,160 @@
+\section{Elementary finite arithmetic}
+\label{sec:finite}
+
+We work with ordinary finite sets, sums and products as readable notation
+for bounded loops. Empty sums are \(0\), empty products are \(1\), and
+squarefreeness always refers to a \emph{positive} integer.
+All rational denominators used below are proved positive.
+
+\subsection{Division, prime factors, and finite coding}
+
+For \(d>0\), division with remainder is obtained by a loop on the dividend.
+Starting from quotient and remainder \((0,0)\), increase the remainder by
+one at each step; when it reaches \(d\), reset it to \(0\) and increase
+the quotient. Induction proves
+\[
+ n=dq+r,\qquad 0\le r<d.
+\]
+The stored pair can be coded by a primitive recursive pairing function.
+No unbounded search is involved.
+
+For \(n>1\), search the finite list \(2,\ldots,n\) for its first divisor.
+The search succeeds because \(n\) is on the list. Its first result \(p\)
+is prime: a divisor \(a\) of \(p\) with \(1<a<p\) would also divide \(n\)
+and would have been found first. Divide out \(p\) and repeat, leaving the
+state unchanged once the remaining factor is \(1\). Every successful step
+strictly reduces that positive remaining factor, so a loop of \(n\) steps
+suffices. Its invariant is
+\[
+ n=(\hbox{current remaining factor})
+       \prod(\hbox{prime factors already recorded}).
+\]
+This constructs a prime-factor list, including multiplicities, by primitive
+recursion.
+
+For completeness, the divisibility fact used to prove uniqueness is
+constructive. The subtraction version of the Euclidean algorithm maintains
+the common divisors of a pair of nonnegative integers; whenever both
+coordinates are positive, subtract the smaller from the larger. Their sum
+strictly decreases, so a fixed loop of \(a+b\) steps, frozen at termination,
+computes \(\gcd(a,b)\). Maintaining integer linear-combination coefficients
+at the same time gives a Bezout identity. If \(p\) is prime and \(p\nmid a\),
+then \(\gcd(p,a)=1\), so some explicitly computed integers \(u,v\) satisfy
+\(up+va=1\). Multiplying by \(b\) shows
+\[
+ p\mid ab\quad\Longrightarrow\quad p\mid a\ \hbox{or}\ p\mid b.
+\]
+Here the case split \(p\mid a\) is a decidable divisibility test. Repeatedly
+remove a matching prime from two factor lists to obtain uniqueness.
+All the lists and coefficient traces have fixed finite bounds; a more
+explicit coding audit is given in Section~\ref{sec:ipra}.
+
+We may consequently use:
+\[
+ \rad(n)=\prod_{p\mid n}p,\qquad
+ \omega(n)=\#\{p:p\mid n\}
+ \quad(n\ge1),
+\]
+with \(\rad(1)=1\), and the Mobius function
+\[
+ \mu(n)=
+ \begin{cases}
+ (-1)^{\omega(n)},&n\text{ squarefree},\\
+ 0,&n\text{ not squarefree}.
+ \end{cases}
+\]
+These are all obtained from bounded factorization. In particular,
+\(\rad(n)\mid n\), and \(1\le\rad(n)\le n\).
+
+\subsection{The residue counts}
+
+For squarefree \(d\), define
+\[
+ \rho(d)=\#\{a:0\le a<d,\ d\mid a(a+2)\}.
+\]
+For a prime \(p\), the preceding divisibility fact gives the two possible
+root residues \(0\) and \(-2\). They coincide exactly when \(p=2\).
+Thus
+\begin{equation}
+ \rho(2)=1,\qquad
+ \rho(p)=2\quad(p\text{ odd prime}),\qquad
+ \rho(1)=1.
+ \label{eq:local-rho}
+\end{equation}
+
+We recall the finite Chinese remainder bijection rather than treating it
+as an existence principle. If \(a,b>0\) are coprime, compute an inverse
+\(u\) of \(a\) modulo \(b\) from a Bezout identity. Given residues
+\(0\le r<a\), \(0\le s<b\), set
+\[
+ x=r+a\bigl((s-r)u\bmod b\bigr).
+\]
+The remainder is read as its representative in \(\{0,\ldots,b-1\}\);
+signed integers can be coded by pairs of natural numbers.
+Then \(0\le x<ab\), \(x\equiv r\pmod a\), and \(x\equiv s\pmod b\).
+If two representatives have these properties, their difference is
+divisible by \(a\) and \(b\), hence by \(ab\): if the difference is \(ak\),
+then \(b\mid ak\), and a Bezout identity for \(a,b\) implies \(b\mid k\).
+Its absolute value is below \(ab\), so it is zero. This proves the bijection.
+
+Applying the bijection successively to the distinct prime factors of \(d\)
+gives
+\begin{equation}
+ \rho(d)=\prod_{p\mid d}\rho(p).
+ \label{eq:rho-product}
+\end{equation}
+For squarefree \(d,e\), the local factors are at least \(1\), so
+\begin{equation}
+ \rho(\lcm(d,e))\le\rho(d)\rho(e).
+ \label{eq:rho-lcm}
+\end{equation}
+
+\begin{lemma}[Finite counting error]
+\label{lem:count-error}
+For \(X\ge0\) and squarefree \(d\), let
+\[
+ A_d(X)=\#\{n:1\le n\le X,\ d\mid n(n+2)\}.
+\]
+Then
+\begin{equation}
+ \left|A_d(X)-X\frac{\rho(d)}d\right|\le\rho(d).
+ \label{eq:count-error}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Write \(X=qd+r\), \(0\le r<d\). The interval \(1,\ldots,X\)
+consists of \(q\) complete consecutive blocks of \(d\) integers and a
+remaining block of \(r\) integers. Each complete block contains exactly
+one representative of each residue. A fixed root residue therefore occurs
+either \(q\) or \(q+1\) times. Its difference from \(X/d=q+r/d\)
+has absolute value at most \(1\). Sum this estimate over the
+\(\rho(d)\) root residues and use the finite triangle inequality.
+For \(d=1\) the error is exactly \(0\).
+\end{proof}
+
+\subsection{The cancellation identity}
+
+\begin{lemma}[Squarefree Mobius cancellation]
+\label{lem:mobius}
+For squarefree \(v\),
+\[
+ \sum_{a\mid v}\mu(a)=
+ \begin{cases}1,&v=1,\\0,&v>1.\end{cases}
+\]
+If \(r\mid v\) and \(v\) is squarefree, then
+\begin{equation}
+ \sum_{r\mid d\mid v}\mu(d)=
+ \begin{cases}\mu(r),&v=r,\\0,&v\ne r.\end{cases}
+ \label{eq:interval-mobius}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Divisors of \(v\) correspond to subsets of its finite list of prime factors.
+Expanding \(\prod_{p\mid v}(1-1)\) gives the first sum. For the second,
+write \(d=ra\). Since \(v\) is squarefree, \(r\) and \(v/r\) are coprime,
+so \(\mu(ra)=\mu(r)\mu(a)\) for \(a\mid v/r\). Apply the first identity.
+The product expansion can also be proved directly by induction on the
+length of the prime-factor list.
+\end{proof}

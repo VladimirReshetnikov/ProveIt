@@ -1,0 +1,263 @@
+\section{A concrete Lean formalization route}\label{sec:lean}
+
+\subsection{Repository alignment}
+
+The inspected repository snapshot is
+\[
+             \code{329161f8da0b319d51ba9f6246c4b19d243f7193}.
+\]
+The root toolchain is Lean \(4.32.0\); its Lake file
+declares the \code{ConciseIPRA} library.
+The source namespace is \code{LeanProofs.ConciseIPRA}.
+Exact immutable paths and content hashes are recorded
+in \code{lean/sources.json}.
+
+The shortest direct route targets the ordinary
+iPRA presentation first, then uses its established
+translation to the concise scalar presentation.
+The inspected interfaces are:
+\begin{center}
+\begin{tabular}{p{.29\textwidth}p{.62\textwidth}}
+\toprule
+Purpose & Existing interface\\
+\midrule
+PR definitions&
+\code{PR k}, with \code{zero}, \code{succ}, \code{proj},
+\code{comp}, \code{prec}\\
+Terms and formulas&
+\code{PTm n}, \code{Fm PTm n}, \code{Fm.QF}\\
+Object derivability&\code{Prf PRAAx Gamma phi}\\
+Restricted induction&\code{PRA.qfInd}\\
+Interpretation transport&
+\code{pra_theorem_iff}, \code{FromPRA.sigma}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The file \code{PR.lean} supplies the language and
+induction rule. Interpretation transport comes from
+the equivalence in \code{BiInterpretation.lean}
+\cite{proveit-pr,proveit-bi}.
+The separate DiophantineConsistency axiomatization
+was inspected for its explicit distinction between
+semantic truth and object-theory provability
+\cite{proveit-dioph}. No Busy Beaver or consistency
+theorem is needed as a mathematical premise.
+
+\subsection{The three source outlines}
+
+\code{FiniteKernel.lean} defines integer vectors,
+residue maps, a finite list of candidate pairs,
+a total collision search, and precise input and
+output predicates. The decisive host-level target,
+still to be proved, says
+\[
+ \forall c,\ c.\Valid\longrightarrow
+ \exists ij,\ 
+ \operatorname{collision?}(c)=\operatorname{some}(ij)
+ \ \wedge\ c.\operatorname{GoodPair}(ij).
+\]
+The output relation includes bounds on the two
+indices, nonzeroness, and each coordinate of
+\(a-b=mz\).
+
+\code{GeometricBridge.lean} supplies symmetry and
+midpoint interfaces, with short scripts for the
+last logical step and preservation of nonzeroness
+by an injective linear map.
+The centered-mesh identity is an explicit remaining
+algebraic obligation.
+
+\code{ObjectTarget.lean} uses the actual repository
+syntax. It packages three function codes of arities
+\(1,1,2\), for validation, extraction, and checking,
+and forms the quantifier-free formula
+\[
+                         V(c)=1\longrightarrow G(c,E(c))=1.
+\]
+It gives only a conditional transport: if a
+\code{Prf PRAAx} derivation is provided,
+\code{pra_theorem_iff} transports it to the scalar
+presentation. The missing derivation is not
+postulated as an axiom.
+
+\subsection{Seven completion milestones}
+
+\begin{enumerate}
+\item \textbf{Compile against the pinned checkout.}
+Resolve elaboration details and inspect dependencies.
+The present environment had no Lean or Lake executable;
+the files are uncompiled source outlines.
+\item \textbf{Implement numerical codecs and PR syntax.}
+Give explicit \code{PR.comp} and \code{PR.prec} trees
+for signed arithmetic, rational pairs, lists,
+finite sums/products, quotient/remainder,
+Boolean folds, and bounded search. Prove their
+equations in \code{Prf PRAAx}.
+\item \textbf{Prove finite pigeonhole in the object theory.}
+Formalize the count conservation and no-repeat
+invariant of \cref{lem:php}. Convert bounded
+checks into bits before using \code{PRA.qfInd}.
+\item \textbf{Prove the mesh arithmetic.}
+Verify base-\(m\) coding, negative-coordinate
+remainders, exact division, and the nonzero
+coordinate witness.
+\item \textbf{Verify the fixed rational input checker.}
+Formalize matrix nonsingularity, slab support tests,
+box-interior disjointness, common-denominator
+refinement, and extraction of the first \(m^n+1\)
+distinct cells.
+\item \textbf{Assemble the object derivation.}
+Prove the centered-cell identity, basis-map
+compatibility, and slab membership. Instantiate
+the concrete function symbols and construct
+\[
+                   \code{Prf PRAAx [] (correctness symbols)}.
+\]
+The general formula scheme uses the same two
+containment instantiations and one midpoint step.
+\item \textbf{Transport and audit.}
+Apply the repository equivalence, inspect the final
+derivation type and dependencies, and record a
+reproducible build. Add the finite-volume frontend
+and integer-facet enlargement as separate extensions
+if the formal target includes
+\cref{cor:poly,thm:equality}.
+\end{enumerate}
+
+A completed box theorem is already the strict
+positive-evidence theorem. A completed formal
+theorem starting from a computed polytope volume
+must additionally implement the finite-volume
+development in \cref{app:volume}.
+
+\subsection{Host-library comparisons}
+
+Mathlib's \code{MeasureTheory} namespace provides
+the classical theorem
+\begin{lstlisting}
+exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure
+\end{lstlisting}
+and a compact weak-inequality version
+\cite{mathlib-minkowski}. They help compare the
+external statement, but do not discharge the
+\code{Prf PRAAx} goal.
+Similarly, \code{Fintype.exists_ne_map_eq_of_card_lt}
+can prove a host-level collision statement
+\cite{mathlib-pigeonhole}; the restricted arithmetic
+proof still needs the explicit induction audit.
+
+Suggested commands, from the pinned ProveIt checkout
+with its dependencies installed, are:
+\begin{lstlisting}
+lake build ConciseIPRA.BiInterpretation
+lake env lean /absolute/path/to/lean/FiniteKernel.lean
+lake env lean /absolute/path/to/lean/GeometricBridge.lean
+lake env lean /absolute/path/to/lean/ObjectTarget.lean
+\end{lstlisting}
+These are a completion route, not a build log.
+The included Lean directory is not a standalone
+Lake project.
+
+\section{Executable artifacts and exact examples}\label{sec:artifacts}
+
+\code{code/minkowski.py} implements the fixed rational
+matrix/slab/box format. It checks every input
+condition, constructs the mesh, and maintains a
+residue table. Arithmetic uses Python integers
+and exact \code{fractions.Fraction}; floating-point
+input is rejected.
+The witness contains the integer vector, a nonzero
+coordinate, both cells, their centers, their
+physical body points, and the returned lattice
+point.
+
+\code{verify_witness} independently checks the
+arithmetic relations and body membership.
+It verifies enumeration indices by a mixed-radix
+rank formula without rerunning the search, and
+checks size and volume metadata.
+This validates a particular finite witness;
+it does not replace the general proof.
+
+\code{code/grid_certificate.py} is an optional
+bounded frontend. At a specified mesh and search
+radius it enumerates cells, performs exact support
+tests, combines adjacent cells into boxes, and
+calls the full checker. It trusts no asserted
+volume lower bound. Its radius is a search window,
+not a verified enclosure: too small a window can
+fail to produce a certificate, but cannot certify
+an invalid one. The completeness guarantee uses
+the independently justified radius and mesh in
+\cref{eq:mesh-bound,eq:excess}.
+
+\begin{center}
+\begin{tabular}{lrrrrl}
+\toprule
+Example & \(m\) & Cells & Colors & Examined & Output \(Bz\)\\
+\midrule
+Square &4&36&16&5&\((0,1)\)\\
+Skew lattice &4&36&16&5&\((1,1)\)\\
+Diamond &16&264&256&89&\((1,0)\)\\
+Three-dimensional cube &4&216&64&5&\((0,0,1)\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For the square, \(K=[-3/2,3/2]^2\), the normalized
+box is \([-3/4,3/4]^2\) of content \(9/4\).
+The selected cells are \(b=(-3,-3)\) and \(a=(-3,1)\);
+their centers are \((-5/8,-5/8)\) and \((-5/8,3/8)\).
+Their difference is \((0,1)\), as in
+\cref{fig:example}.
+
+For the skew example,
+\[
+ B=\begin{pmatrix}2&1\\0&1\end{pmatrix},\qquad
+ K=\{(x,y):|x-y|\leq3,\ |y|\leq3/2\}.
+\]
+The same coefficient vector \(z=(0,1)\) maps to
+\((1,1)\). The covolume is \(2\) and the body
+has area \(18>8\).
+
+For the diamond,
+\[
+ K=\{(x,y):|x+y|\leq3/2,\ |x-y|\leq3/2\}
+   =\{(x,y):|x|+|y|\leq3/2\},
+\]
+the area is \(9/2>4\). The exact inner grid has
+content \(264/256=33/32>1\), an example where a
+single large interior rectangle would not suffice.
+
+The rational equality record checks the closed
+square \([-1,1]^2\) of area \(4\). Its maximum
+integer facet bound is \(1\), so the enlargement
+factor is \(3/2\). The strict square witness
+\((0,1)\) lies in the original square too.
+This extra membership calculation is checked by
+\code{make_examples.py}; the equality JSON is
+a recorded example, not another input schema for
+\code{verify_witness}.
+
+The tests cover exact examples, diamond content,
+negative coordinates and quotients, fractional
+bases, boxes touching along faces, rejection of
+insufficient volume, invalid containment and
+singular bases, corrupted witnesses, and
+noninteger metadata. Nine test methods pass;
+the log is included. These are implementation
+checks, not a proof of the unbounded theorem by
+testing.
+
+From the package root:
+\begin{lstlisting}
+python3 code/make_examples.py
+python3 code/test_minkowski.py
+python3 code/minkowski.py examples/diamond.json \
+  --verify examples/diamond.witness.json
+\end{lstlisting}
+Run \code{make} in \code{paper/} to rebuild the
+article. The figure PDF is included, so LaTeX
+does not require plotting libraries.
+Regenerating the figure uses
+\code{code/make_figure.py} and Matplotlib.

@@ -1,0 +1,343 @@
+\section{Both sides at every curve point}\label{sec:boundary}
+
+Routing alone would allow the possibility that every off-curve point
+has bit zero. We must construct bit-one points, and we must do so
+arbitrarily near every curve point. This is the remaining geometric
+part of the theorem.
+
+\subsection{A small rational square and two parameter half-arcs}
+
+First let $t_0$ be rational modulo one, and write
+\[
+ c=\gamma(t_0),\qquad d=\gamma(t_0+1/2),\qquad
+ D=2^{-V(1)}.
+\]
+The inverse separation assumption gives $\norm{c-d}\ge D$.
+For a requested radius $2^{-n}$, put
+\begin{equation}
+ m=\max(n+4,V(1)+4,4),\qquad e=2^{-m},\qquad
+ q=G(t_0,m+4).
+ \label{eq:localsquare}
+\end{equation}
+The rational center $q$ satisfies $\norm{q-c}\le e/16$.
+Let $Q$ be the boundary of the rational square
+$q+[-e,e]^2$. We have
+\begin{align}
+ \dist(c,Q)&\ge15e/16,\label{eq:insideq}\\
+ \dist(d,Q)&\ge D-17e/16\ge239e/16,\label{eq:outsideq}\\
+ \norm{z-c}&\le17e/16<2^{-n}\quad(z\in Q).\label{eq:qnear}
+\end{align}
+The point $c$ is strictly inside this square; $d$ is strictly outside.
+Thus
+\begin{equation}
+                      \parity(Q,c)=1,\qquad \parity(Q,d)=0.
+ \label{eq:qvalues}
+\end{equation}
+These parities at named real points are calculated through rational
+approximations using their displayed clearances.
+
+Split the parameter circle into the two closed half-intervals with
+endpoints $t_0,t_0+1/2$. Let their images be $A$ and $B$.
+Each is a uniformly continuous path from $c$ to $d$,
+with direction irrelevant to parity.
+Set
+\begin{equation}
+ r=U(m+4),\qquad K=V(r),\qquad \eta=2^{-K}.
+ \label{eq:localscale}
+\end{equation}
+Subdivide every side of $Q$ into
+\begin{equation}
+                     T=2^{K-m+7}
+ \label{eq:Tsquare}
+\end{equation}
+equal segments. The exponent is nonnegative by the normalization
+of the moduli, and every segment has length exactly $\eta/64$.
+There are $4T$ segments, all specified before any color decision.
+
+\subsection{A finite color test with a genuine overlap margin}
+
+\begin{lemma}[The two half-arcs cannot both be close]\label{lem:arcs}
+For each short square segment $E$,
+\[
+       \dist(E,A)<\eta/4\quad\Longrightarrow\quad
+       \dist(E,B)\ge\eta/4.
+\]
+\end{lemma}
+
+\begin{proof}
+If a point $a\in A$ and a point $b\in B$ were each within
+$\eta/4$ of $E$, then
+\[
+                  \norm{a-b}<\eta/4+\eta/64+\eta/4<\eta.
+\]
+For rational parameters the inverse condition forces their circular
+distance below $2^{-r}$. Two parameters in opposite half-intervals
+that are this close must both be within $2^{-r}$ of the same
+endpoint, either $t_0$ or $t_0+1/2$. This is an interval calculation:
+after translating $t_0$ to zero, the parameters lie in
+$[0,1/2]$ and $[1/2,1]$, and the short gap is either across
+$1/2$ or across $0=1$.
+The forward modulus puts $a$ within $e/16$ of $c$ or $d$.
+It follows that the square is within $e/16+\eta/4$ of that
+endpoint, contradicting \eqref{eq:insideq} or \eqref{eq:outsideq}.
+
+All positive closeness witnesses used in the algorithm come from
+rational parameter samples. The conclusion for an arbitrary named
+parameter follows by approximation. Equivalently, the weak lower
+bound on the distance to $B$ means its rational approximations
+satisfy the corresponding lower bounds at every precision.
+If any such bound failed with positive slack, the preceding
+finite rational contradiction would apply. No decision of
+real equality or real trichotomy is involved.
+\end{proof}
+
+Approximate $\dist(E,A)$ by a rational number $D_E$ with error
+at most $\eta/256$. To be explicit, use a mesh of the half-interval
+with $2^{U(K+9)+1}$ subdivisions and evaluate at precision $K+9$.
+Oscillation and evaluation together cost at most
+$2\cdot2^{-(K+9)}=\eta/256$. Minimize the exact rational
+point-to-segment distances as in Section~\ref{sec:nets}.
+Color the segment by
+\begin{equation}
+ \begin{array}{lll}
+ \text{red}&\text{if }D_E\ge\eta/8,&
+       \dist(E,A)\ge31\eta/256>\eta/16,\\
+ \text{blue}&\text{if }D_E<\eta/8,&
+       \dist(E,B)\ge\eta/4.
+ \end{array}
+ \label{eq:squarecolors}
+\end{equation}
+For the blue case,
+$\dist(E,A)<33\eta/256<\eta/4$, so
+Lemma~\ref{lem:arcs} applies. The estimates leave a specified
+rational gap on both branches.
+
+A vertex common to segments of different colors has distance at least
+$\eta/16$ from $A$ by its red segment, and at least $\eta/4$
+from $B$ by its blue segment. It is therefore off the entire
+curve with clearance at least $\eta/16$.
+
+The coloring cannot be monochrome. If all segments were red,
+the arc $A$ would be separated from $Q$ by $\eta/16$; if all
+were blue, the arc $B$ would be separated from $Q$ by $\eta/4$.
+In either case that arc joins $c$ to $d$ while avoiding the
+closed walk $Q$, so Proposition~\ref{prop:stable} would give
+$\parity(Q,c)=\parity(Q,d)$, contradicting \eqref{eq:qvalues}.
+Since the $4T$ colors form a finite cyclic list, there are
+at least two color-change vertices.
+
+\subsection{The transition vertices cannot all have one curve bit}
+
+List the transition vertices in cyclic order as
+$w_0,\ldots,w_{s-1}$, and let $Q_j$ be the monochromatic
+run from $w_j$ to $w_{j+1}$, with subscripts modulo $s$.
+These are rational polygonal paths along the square, and their
+concatenation is $Q$.
+Each $w_j$ has the clearance $\eta/16$, so its curve bit is
+a bounded calculation.
+
+Suppose all these bits were equal. The connection theorem supplies
+for each $j$ a rational polygonal route $P_j$ from $w_j$ to
+$w_{j+1}$, with positive clearance from the entire curve.
+Let $R$ be the closed walk obtained by concatenating all $P_j$,
+and let $L_j$ be the closed walk following $P_j$ and then
+the reverse of $Q_j$.
+
+The walk $R$ avoids $A$, and $A$ joins $c$ to $d$; hence
+\[
+                         \parity(R,c)=\parity(R,d).
+\]
+If $Q_j$ is red, $L_j$ avoids $A$; if it is blue, $L_j$ avoids
+$B$. In both cases the appropriate half-arc joins $c$ to $d$,
+so
+\[
+                         \parity(L_j,c)=\parity(L_j,d).
+\]
+The finite chain identity modulo two is
+\[
+                         \sum_{j<s}L_j=R+Q.
+\]
+Taking parity at $c$ and at $d$, then xoring the preceding
+equalities, forces $\parity(Q,c)=\parity(Q,d)$.
+This again contradicts \eqref{eq:qvalues}.
+
+The assertion that all transition bits are equal is decidable.
+The contradiction therefore proves that a bounded scan of the
+at most $4T$ vertices finds one with bit zero and one with bit one.
+Both have clearance at least $\eta/16$ and both are within
+$2^{-n}$ of $c$ by \eqref{eq:qnear}.
+The auxiliary routes $P_j$ in the contradiction do not need to
+stay in the small square or near $c$.
+
+\begin{proposition}[Local witnesses with explicit bounds]\label{prop:local}
+For rational $t_0$ and target precision $n$, the construction
+\eqref{eq:localsquare}--\eqref{eq:Tsquare} returns rational
+points of both curve bits, each within $2^{-n}$ of
+$\gamma(t_0)$ and each with clearance at least
+$2^{-K-4}=\eta/16$. Its candidate list has at most
+$4\cdot2^{K-m+7}$ elements.
+\end{proposition}
+
+For a named parameter $t$, first take a rational parameter $t_0$
+with $d_\T(t,t_0)\le2^{-U(n+2)}$. Such a parameter is obtained
+by reading the parameter name at the specified precision.
+Then $\norm{\gamma(t)-\gamma(t_0)}\le2^{-(n+2)}$.
+Apply Proposition~\ref{prop:local} with target $n+2$ at
+$t_0$. Its two outputs are within $2^{-(n+1)}<2^{-n}$ of
+$\gamma(t)$. This proves the both-sides clause for arbitrary
+named curve points without choosing an irrational split parameter.
+
+\section{Completing the theorem}\label{sec:completion}
+
+\subsection{The two regions and their sizes}
+
+Define $I$ and $O$ to be the off-curve points with bits one and
+zero, respectively. The classification calculation places every
+off-curve point in exactly one of them. Local constancy makes
+both quantitatively open: a point with clearance $r$ has a
+ball of radius $r/4$ of its own bit. The connection theorem
+joins any two points of either region by a positive-clearance
+polygonal route. Conversely, Proposition~\ref{prop:stable}
+prevents such a route between different regions.
+
+If a closed polygonal walk lies in a convex box and the query is
+outside that box, its parity is zero: join each edge to the first
+vertex to form a triangle fan. Every triangle avoids the query,
+and its two radial edges cancel with its neighbors.
+Fine approximations of $\Gamma$ lie in the box used in
+\eqref{eq:R}; hence every point outside that box has curve bit zero.
+If the gap from the box is given by a positive rational number,
+the required precision is specified by that gap.
+For a merely asserted strict gap, instantiate its positive
+rational witness; no unbounded search is required for the proof.
+
+Thus $I\subset[-R,R]^2$. It is inhabited by
+Proposition~\ref{prop:local} at $t_0=0$.
+The points $(R+j+2,0)$, for $j\in\N$, have bit zero and
+clearance at least $j+2$; this proves the asserted constructive
+unboundedness of $O$. This also fixes the names: bit one is
+inside and bit zero is outside.
+
+\subsection{Approximate intersections of crossing paths}
+
+Let a named uniformly continuous path $\alpha:[0,1]\to\R^2$
+have endpoints of different bits, and fix $\eps=2^{-n}$.
+Using its modulus and $U$, construct finite rational nets
+$X_i$ and $Y_j$ for the path and the curve, respectively,
+each with total net error at most $\eps/8$ and individual
+evaluation error at most $\eps/8$. These nets include the
+appropriate endpoint samples. Compute the rational number
+\[
+                         D=\min_{i,j}\norm{X_i-Y_j}.
+\]
+If $D\ge\eps/2$, then for arbitrary path and curve parameters,
+the net estimates give distance at least
+$D-\eps/8-\eps/8\ge\eps/4$.
+The whole path would have positive clearance, contradicting
+the endpoint bits and Proposition~\ref{prop:stable}.
+The comparison is rational and decidable, so $D<\eps/2$.
+A least minimizing pair of indices supplies rational parameters
+$s_i,t_j$ with
+\[
+ \norm{\alpha(s_i)-\gamma(t_j)}
+      \le D+\eps/8+\eps/8<3\eps/4<\eps.
+\]
+The algorithm has a completely specified finite product of meshes
+as its search space. It proves approximate contact at each
+requested precision. It does not choose an exact zero of a
+continuous real function.
+
+\subsection{The exact common-boundary converse by Cauchy names}
+\label{sec:boundary-converse}
+
+We have already constructed both bits in every neighborhood of every
+curve point. For completeness, we prove the converse in the precise
+positive-neighborhood sense stated in Theorem~\ref{thm:main}.
+Suppose a named point $x$ has the property that, for every positive
+dyadic radius, its neighborhood contains a \emph{rational}
+off-curve point of each bit. More precisely, its arithmetic
+premise is: for every $n$ there exist rational point codes
+$a_0,a_1$ and natural clearance exponents $k_0,k_1$ such that
+$\operatorname{Off}(a_i,k_i)$, $b_\Gamma(a_i)=i$, and
+$\norm{a_i-x}<2^{-n}$. Strict closeness is expressed by a
+finite precision witness in the name of $x$.
+These are ordinary number-coded existential witnesses;
+a separate choice sequence is not needed.
+
+This rational formulation does not weaken the neighborhood
+condition for named points. Given a named off-curve point,
+approximate it rationally within a quarter of its positive
+clearance and within a quarter of the remaining neighborhood
+margin. Local constancy preserves its bit, and the approximation
+has a positive clearance. Thus arbitrary named witnesses can
+always be replaced by rational ones.
+
+For any dyadic $\tau>0$, sample the curve and $x$ sufficiently
+accurately that the combined net and query error is at most
+$\tau/8$. Let $D$ be the minimum rational query-to-sample
+distance. If $D\ge\tau/2$, every curve point is at least
+$3\tau/8$ from $x$. Choose, from the neighborhood premise,
+points of both bits within $\tau/16$ of $x$. The segment
+joining them lies in that ball and has clearance at least
+$3\tau/8-\tau/16>0$. Its endpoint bits must be equal,
+a contradiction. Therefore $D<\tau/2$.
+The bounded argmin returns a rational parameter $s(\tau)$ such that
+\begin{equation}
+                     \norm{\gamma(s(\tau))-x}<\tau.
+ \label{eq:nearparameter}
+\end{equation}
+Notice that this parameter is computed just from the point and
+curve names. The neighborhood premise is used to prove the
+calculation succeeds, not to select an infinite family of data.
+
+Now set
+\[
+ \tau_n=2^{-V(n+4)-3},\qquad t_n=s(\tau_n).
+\]
+For $j\ge n$, monotonicity of $V$ and \eqref{eq:nearparameter}
+give
+\[
+ \norm{\gamma(t_j)-\gamma(t_n)}
+    <\tau_j+\tau_n\le 2^{-V(n+4)-2}<2^{-V(n+4)}.
+\]
+The inverse condition, applied to the rational parameters,
+therefore yields
+\begin{equation}
+                         d_\T(t_j,t_n)<2^{-(n+4)}.
+ \label{eq:circlecauchy}
+\end{equation}
+This is already a primitive recursive fast name in the completed
+parameter circle.
+
+One may make it a conventional real Cauchy name explicitly.
+Choose the representative $t_0\in[0,1)$ and put $z_0=t_0$.
+For each $n$, select the unique member
+\[
+ \Delta_n\in\{t_{n+1}-t_n-1,\ t_{n+1}-t_n,\ t_{n+1}-t_n+1\}
+\]
+of absolute value below $1/4$, and set $z_{n+1}=z_n+\Delta_n$.
+The choice is a three-way rational comparison justified by
+\eqref{eq:circlecauchy}. Moreover
+$|\Delta_n|<2^{-(n+4)}$, so
+\[
+              |z_j-z_n|\le\sum_{i=n}^{j-1}2^{-(i+4)}
+                         <2^{-(n+3)}\qquad(j>n).
+\]
+Thus $z_n$ is an explicitly primitive recursive Cauchy name;
+its residue modulo one has name $t_n$. Let $t$ denote this
+circle name. Forward continuity makes $\gamma(t_n)$ converge
+to $\gamma(t)$ with an explicit rate, while
+\eqref{eq:nearparameter} makes it converge to $x$.
+For any required error choose
+$n\ge\max(U(k+2),k+2)$ and combine the two bounds.
+They show $\gamma(t)=x$ in the equality-of-names sense.
+
+This constructs a preimage without compactness, an infinite
+subsequence selection, or an unbounded search. Consequently
+\[
+ \Gamma=\{x:\text{every neighborhood of }x
+                    \text{ contains rational points of }I\text{ and }O\}.
+\]
+Together with the local constancy and both-sides results, this
+is the asserted constructive common-boundary statement.
+All parts of Theorem~\ref{thm:main} are now proved.

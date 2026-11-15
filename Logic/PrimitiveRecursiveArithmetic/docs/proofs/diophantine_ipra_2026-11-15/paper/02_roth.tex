@@ -1,0 +1,309 @@
+\section{Roth: the effective boundary and a complete quadratic theorem}
+\label{sec:roth}
+
+\subsection{Three different meanings of finiteness}
+
+For a real algebraic irrational $\alpha$ and rational $\delta=a/b>0$, where
+$a,b\geq1$ are integers, Roth's theorem says that the reduced fractions
+$p/q$ satisfying
+\begin{equation}\label{eq:roth-inequality}
+  \left|\alpha-\frac pq\right|<q^{-2-a/b},\qquad q\geq1,
+\end{equation}
+form a finite set.  A constructive formulation must specify the data meant by
+``finite.''  The following are different assertions.
+\begin{enumerate}
+\item A \emph{cutoff}: produce an integer $Q$ such that every solution has
+$q<Q$.  This permits a finite exhaustive search.
+\item A \emph{cardinality bound}: produce $N$ and prove that no list of $N+1$
+distinct reduced fractions consists entirely of solutions.
+\item A \emph{finite obstruction}: for every supplied finite list satisfying
+specified growth conditions, locate a member that is not a solution.
+\end{enumerate}
+A cutoff is not supplied by an upper bound on cardinality.  Indeed, let
+$P_e(n)$ say that program $e$ halts for the first time at step $n$.  This is a
+primitive recursive predicate, and for every $e$ there is at most one $n$
+with $P_e(n)$.  A computable function $B(e)$ bounding all such $n$ would
+solve the halting problem by simulating $e$ for $B(e)$ steps.  Thus no general
+algorithm converts cardinality bounds into cutoffs.
+
+Roth's theorem is known to have effective cardinality estimates; Luckhardt's
+analysis of the Roth and Esnault--Viehweg proofs is a particularly relevant
+example \cite{Luckhardt1989,KohlenbachHerbrand}.  The general cutoff problem
+is a different, unresolved effectivity problem.  The introduction of
+Adiceam and Shirandami's 2026 paper explicitly describes the corresponding
+height problem for the Subspace Theorem, including Roth's case, as open
+\cite{AdiceamShirandami2026}.  Their probabilistic results do not provide a
+cutoff for each specified algebraic number.
+
+Consequently, a uniform witness-producing proof of
+\begin{equation}\label{eq:effective-roth-target}
+ \forall A,a,b\ \exists Q\ \forall p,q\quad
+ \bigl(\operatorname{Valid}(A)\wedge a,b,q\geq1
+       \wedge\operatorname{Good}_{A,a,b}(p,q)\bigr)\Longrightarrow q<Q
+\end{equation}
+would settle the effective Roth problem, if $A$ ranges over finite algebraic
+number codes and the premise is arranged in the usual decidable-input form.
+Here and below one can equivalently move the input validity premises outside
+the existential quantifier.  A constructive proof in the intended arithmetic
+would supply a computable bound; under the explicit primitive recursive
+interpretation required in this report it must supply a primitive recursive
+one.  This observation is a barrier to claiming the requested full theorem,
+\emph{not} a proof that no such proof exists.  Nor does it rule out an iPRA
+proof of a suitable quantitative finite-obstruction version.  Such a proof
+would require a complete arithmetic treatment of Roth's auxiliary-polynomial
+and index estimates.  Those estimates are not proved in this report and are
+not smuggled into an axiom named ``effective Roth.''
+
+We next prove an unconditional theorem that does have the required explicit
+arithmetic content: the full Roth cutoff for quadratic algebraic irrationals,
+and the Liouville range for every degree.  We give both the familiar
+human-readable argument and its entirely rational, finitely checkable form.
+
+\subsection{Finite input data and the separation constant}
+
+Let
+\[
+ f(X)=\sum_{i=0}^{d}c_iX^i\in\mathbb Z[X],\qquad d\geq2,\quad c_d\ne0.
+\]
+Assume $f$ has no rational root.  This assumption admits a finite certificate.
+Require $c_0\ne0$ and check
+\begin{equation}\label{eq:no-root-certificate}
+ \sum_{i=0}^{d}c_i u^i v^{d-i}\ne0
+ \quad\text{for every } |u|\leq |c_0|,\quad 1\leq v\leq |c_d|.
+\end{equation}
+There is no need to restrict the finite check to coprime pairs.  The
+rational-root theorem proves its sufficiency: if a reduced $p/q$ is a root,
+reduction of $q^df(p/q)=0$ modulo $p$ and modulo $q$, followed by Euclid's
+lemma, gives $p\mid c_0$ and $q\mid c_d$.  The case $p=0$ is excluded by
+$c_0\ne0$.  Therefore $|p|\leq|c_0|$ and $q\leq|c_d|$, contradicting the
+check.  The same conclusion then holds for unreduced fractions by reducing
+them.  Euclid's lemma here follows from the integer extended Euclidean
+algorithm, or directly from its finite Bezout certificate.
+
+Take rational numbers $u_0<v_0$ with $f(u_0)f(v_0)<0$, and an integer $R\geq1$
+with $|u_0|,|v_0|\leq R$.  These are all decidable rational conditions.  Put
+\begin{equation}\label{eq:roth-K}
+ K=\max\left(1,\sum_{i=1}^{d} i|c_i|(R+1)^{i-1}\right).
+\end{equation}
+For rational or real $x,y$ with $|x|,|y|\leq R+1$, the identity
+\[
+ x^i-y^i=(x-y)\sum_{j=0}^{i-1}x^{i-1-j}y^j
+\]
+gives
+\begin{equation}\label{eq:polynomial-lipschitz}
+ |f(x)-f(y)|\leq K|x-y|.
+\end{equation}
+This proof uses only finite sums, the triangle inequality, and multiplication;
+no derivative, mean-value theorem, compactness principle, or maximum is
+needed.
+
+The input defines a primitive recursive rational name $r_k$.  Starting from
+$[u_0,v_0]$, bisect $2R+k$ times, retaining the half whose endpoint values
+have opposite signs, and let $r_k$ be the left endpoint.  Every midpoint is
+rational and cannot be a root by \eqref{eq:no-root-certificate}, so the
+branch is decided by an integer sign computation.  Write $s_k$ for the right
+endpoint after the same number of steps.  Since
+$v_0-u_0\leq2R\leq2^{2R}$, the construction gives
+\begin{equation}\label{eq:root-name-properties}
+ \begin{split}
+ &|r_k|,|s_k|\leq R,\qquad 0<s_k-r_k\leq2^{-k},\\
+ &|r_k-r_l|\leq2^{-k}+2^{-l},\qquad |f(r_k)|\leq K2^{-k}.
+ \end{split}
+\end{equation}
+For the last inequality, opposite signs imply
+$|f(r_k)|\leq|f(r_k)-f(s_k)|$, and then
+\eqref{eq:polynomial-lipschitz} applies.  For the Cauchy inequality, when
+$k\leq l$ the later interval lies inside the earlier one, so the difference
+between left endpoints is at most $2^{-k}$; the other order is symmetric.
+These are finite induction arguments about a bounded bisection computation.
+The symbol $\alpha$ below denotes the real described by this name; the
+arithmetic proof itself needs only \eqref{eq:root-name-properties}.
+
+\subsection{Liouville separation without limits}
+
+\begin{theorem}[Explicit algebraic separation]\label{thm:liouville-explicit}
+For every integer $p$, positive integer $q$, and $k\geq0$,
+\begin{equation}\label{eq:finite-separation}
+ \left|\frac pq-r_k\right|+2^{-k}\ \geq\ \frac1{Kq^d}.
+\end{equation}
+In the conventional real notation this implies
+\begin{equation}\label{eq:liouville-real}
+ \left|\frac pq-\alpha\right|\geq\frac1{Kq^d}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $t=p/q$.  The number
+\[
+ N_f(p,q)=q^df(p/q)=\sum_{i=0}^{d}c_i p^i q^{d-i}
+\]
+is a nonzero integer, and therefore
+\begin{equation}\label{eq:integer-gap}
+ |f(t)|\geq q^{-d}.
+\end{equation}
+The rational comparison $|p|>(R+1)q$ is decidable.  If it holds, then
+$|t-r_k|>1$, while $1/(Kq^d)\leq1$, so the assertion follows.
+In the remaining case $|t|\leq R+1$.  For any $l$, equations
+\eqref{eq:polynomial-lipschitz}, \eqref{eq:root-name-properties}, and
+\eqref{eq:integer-gap} give
+\[
+ q^{-d}\leq|f(t)|
+ \leq |f(t)-f(r_l)|+|f(r_l)|
+ \leq K|t-r_l|+K2^{-l}.
+\]
+Taking $l=k$ and dividing by the positive integer $K$ proves
+\eqref{eq:finite-separation} immediately.  Every comparison in this
+argument is rational and decidable.
+The real formulation is its usual Cauchy-name interpretation.
+\end{proof}
+
+For a reader working directly with real algebraic numbers, there is a shorter
+presentation of the same argument.  If $|p|\leq(R+1)q$, then $f(\alpha)=0$
+and \eqref{eq:polynomial-lipschitz} imply
+$q^{-d}\leq|f(p/q)|\leq K|p/q-\alpha|$; the complementary rational branch
+again gives an error exceeding $1$.  The expanded proof above explains why
+this familiar argument does not conceal an infinitary principle.
+
+\subsection{An explicit Roth cutoff for every quadratic input}
+
+Fractional powers need not appear in the arithmetic language.  Define a
+\emph{positive certificate of Roth approximation} to be a triple $(p,q,k)$
+with $p\in\mathbb Z$, $q\geq1$, and
+\begin{equation}\label{eq:good-certificate}
+ q^{2b+a}\left(\left|\frac pq-r_k\right|+2^{-k}\right)^b<1.
+\end{equation}
+This is a decidable rational inequality, and clearing denominators makes it
+an integer inequality.  It asserts a strict upper bound with an explicit
+error allowance.  Conversely, a strict real inequality
+\eqref{eq:roth-inequality} supplies such a certificate once a positive
+rational gap and a sufficient Cauchy precision are given.  No trichotomy
+principle for arbitrary real numbers is being assumed.
+
+\begin{theorem}[Primitive recursive cutoff in the Liouville range]
+\label{thm:quadratic-roth}
+Let $a,b\geq1$ and suppose the integer
+\[
+ c=a-(d-2)b
+\]
+is positive.  Every certificate \eqref{eq:good-certificate} satisfies
+\begin{equation}\label{eq:cutoff-explicit}
+ q^c<K^b,\qquad\text{and hence}\qquad q<K^b.
+\end{equation}
+In particular, when $d=2$, this proves the full Roth finiteness conclusion
+with the explicit cutoff $Q=K^b$ for every positive rational $\delta=a/b$.
+\end{theorem}
+
+\begin{proof}
+Write $E=|p/q-r_k|+2^{-k}$.  The preceding theorem gives
+$E\geq1/(Kq^d)$.  Thus \eqref{eq:good-certificate} implies
+\[
+ 1>q^{2b+a}E^b
+   \geq\frac{q^{2b+a}}{K^bq^{db}}
+   =\frac{q^c}{K^b}.
+\]
+As $c\geq1$ and $q\geq1$, finite induction gives $q\leq q^c$.
+This proves both inequalities.  For $d=2$, $c=a\geq1$ automatically.
+\end{proof}
+
+All approximants are therefore found among the finite pairs
+\[
+ 1\leq q<K^b,\qquad |p|\leq (R+1)q.
+\]
+The numerator bound follows because a good approximation has error less
+than $1$.  Exact membership can be decided from the algebraic input by
+sign determination, but even without implementing sign determination the
+finite rectangle is already the promised cutoff certificate.  Coprimality
+can be checked by the Euclidean algorithm; the proof of the bound did not
+require it.
+
+For degree $d\geq3$, the hypothesis is precisely
+$\delta>d-2$.  It is essential to identify this as the Liouville range,
+rather than to call it general Roth.  The difficult range
+$0<\delta\leq d-2$ is not settled by this argument.  For example, the input
+$f(X)=X^3-2$ with $0<\delta\leq1$ is outside the theorem's scope.
+
+\paragraph{Concrete example.}
+For $f(X)=X^2-2$, take $[u_0,v_0]=[1,2]$ and $R=2$.
+The finite rational-root check succeeds, and \eqref{eq:roth-K} gives $K=6$.
+Thus every fraction satisfying
+$|\sqrt2-p/q|<q^{-2-a/b}$ has $q<6^b$.
+For $\delta=1/2$, the explicit cutoff is $q<36$.
+These deliberately generous constants make the complete arithmetic proof
+transparent; sharper quadratic constants are unnecessary for the theorem.
+
+\subsection{What the elementary gap principle does and does not give}
+
+Suppose two distinct reduced fractions $p/q$ and $r/s$, with $1\leq q\leq s$,
+both satisfy \eqref{eq:roth-inequality}.  Since $ps-rq$ is a nonzero integer,
+\[
+ \frac1{qs}\leq\left|\frac pq-\frac rs\right|
+ <q^{-2-\delta}+s^{-2-\delta}\leq2q^{-2-\delta},
+\]
+and hence
+\begin{equation}\label{eq:gap-principle}
+ s>\tfrac12q^{1+\delta}.
+\end{equation}
+For $\delta=a/b>0$ and $q\geq4^b$, this implies $s>2q$.
+The identical argument can be conducted with rational positive certificates
+and integer powers.  The gap principle forbids clustering and makes the
+first successive denominators grow rapidly.  It does not exclude an
+arbitrarily sparse infinite sequence; a global finite bound requires the
+additional Roth estimates.
+
+There is nevertheless useful constructive content in a certified
+cardinality bound.  Suppose a decidable predicate $G(n)$ has at most $N$
+solutions, and let $F$ be a supplied primitive recursive function with
+$F(t)\geq t$.  Define
+\[
+ B_0=1,\qquad B_{i+1}=F(B_i)+1\quad(0\leq i\leq N).
+\]
+The $N+1$ disjoint finite intervals $[B_i,B_{i+1})$ cannot each contain a
+solution.  Bounded searches find an empty one.  Thus there is an explicit
+primitive recursive bound, depending on the supplied $F$, on a location of
+a finite window with no solutions.  This is a valid route from a
+quantitative Roth theorem to a metastable formulation, provided the
+cardinality theorem and its arithmetic proof are actually supplied.
+It still supplies no final cutoff valid for all later denominators.
+
+\subsection{Lean and object-theory proof obligations}
+
+The proved fragment can be organized into the following modules.
+\begin{enumerate}
+\item \texttt{RationalArithmetic}: signed integer and positive-denominator
+codes; addition, multiplication, absolute value, powers, and decidable order.
+Expose the cleared-denominator correctness lemmas.
+\item \texttt{PolynomialDifference}: prove the finite factorization of
+$x^i-y^i$ by induction on $i$, then
+\eqref{eq:polynomial-lipschitz} by induction over the coefficient list.
+\item \texttt{NoRationalRoot}: verify \eqref{eq:no-root-certificate}; prove
+that $N_f(p,q)\ne0$ for arbitrary $p,q$ by rational reduction and the
+rational-root argument.  The Euclidean algorithm needs a declared bounded
+implementation or an explicit primitive recursive majorant.
+\item \texttt{RootBisection}: define the bounded bisection loop on rational
+endpoints and prove nesting, sign preservation, width, and residual bounds.
+\item \texttt{LiouvilleFinite}: prove \eqref{eq:finite-separation} directly from the integer gap,
+the difference bound, and the bisection residual bound at the same precision.
+\item \texttt{QuadraticRoth}: define \eqref{eq:good-certificate} and prove
+\eqref{eq:cutoff-explicit} by integer power arithmetic.
+\end{enumerate}
+
+The object-theoretic statements are schemes for fixed primitive recursive
+operations, or use one fixed primitive recursive evaluator for the stated
+finite polynomial and bisection data.  They do not posit a primitive
+recursive evaluator for arbitrary primitive recursive programs.  Bounded
+quantifiers in the input checks are implemented by Boolean folds; induction
+in the argument is on explicit finite loops and can be presented as
+quantifier-free induction on their invariants after coding finite records.
+One must still translate the resulting derivations into the repository's
+chosen iPRA calculus.  A Lean theorem over \texttt{Real} or a successful
+\texttt{ring}/\texttt{norm\_num} invocation, by itself, would not accomplish
+that translation.
+
+For the full Roth target, a formalization plan must list the auxiliary
+polynomial construction, coefficient estimates, index bounds, quantitative
+selection of approximants, and extraction of the selected constructive
+conclusion as separate proof obligations.  Calling any one of these an
+unproved axiom would produce a conditional development.  A complete Lean
+proof of the cutoff version would first require solving the mathematical
+effectivity problem; the present report claims neither that result nor its
+formalization.

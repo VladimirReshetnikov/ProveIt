@@ -1,0 +1,167 @@
+% Section source for the main manuscript; uses standard AMS math commands.
+\section{The exact arithmetic foundation and the Lean endpoint}
+\label{sec:foundation-audit}
+
+\subsection{What the repository supplies}
+We inspected ProveIt at the following commit:
+\begin{center}\small\ttfamily
+b5a3ad037723c44d69a3d5b28a950c554327a989.
+\end{center}
+The file \texttt{ConciseIPRA/PR.lean} defines a deeply embedded first-order
+theory: its function symbols are syntax trees built from zero, successor,
+projections, composition, and primitive recursion. Its nonlogical axioms
+are the defining equations, separation and injectivity of successor, and
+induction for quantifier-free formulas. The deduction rules in
+\texttt{Deduction.lean} are intuitionistic natural deduction with equality.
+The notation
+\[
+       \Gamma\vdash[\mathsf{PRAAx}]\varphi
+\]
+denotes a derivation in that object theory; it does not merely assert that
+the standard natural numbers satisfy~$\varphi$.
+
+The native scalar calculus uses iterator terms and formulas consisting
+only of equations and two binding constructions. Its ordinary readings are
+\[
+ Q_yB(y)\;\equiv\;B(0)\to\forall y\,B(y),\qquad
+ D_{x,y}B(x,y)\;\equiv\;
+     \exists x\bigl(B(x,0)\to\forall y\,B(x,y)\bigr).
+\]
+The inspected theorem \texttt{pra\_iff\_native}, in
+\texttt{NativeBiInterpretation.lean}, says exactly that
+\[
+ (\Gamma\vdash[\mathsf{PRAAx}]\varphi)
+ \quad\Longleftrightarrow\quad
+ \mathsf{NPrf}\bigl(\Gamma.\mathsf{map}\,\mathsf{NFm.ofPRA}\bigr)
+                   (\mathsf{NFm.ofPRA}\,\varphi).
+\]
+Both interpretations preserve the whole numerical domain and the
+repository also proves both formula round trips. Consequently the natural
+formalization route is to prove the finite arithmetic estimates in the
+ordinary iPRA presentation, then apply this established bridge. Rebuilding
+the smallest native proof checker is not a prerequisite for this work.
+
+\subsection{Finite statements rather than hidden higher-order quantifiers}
+Every rational is coded by a signed numerator and a positive denominator;
+complex rationals are pairs of rationals. Finite lists, polynomial
+coefficients, meshes, contour samples, and finite certificates are numerical
+codes. Their comparisons are decidable by integer arithmetic. Malformed
+codes receive a fixed default output, so each implementation is a total
+primitive recursive function. Formula quantifiers range over such natural
+codes, not over arbitrary real numbers, analytic functions, or primitive
+recursive programs.
+
+For a fixed Boolean checker $C$ with $r$ numerical inputs, its internal
+correctness statement is
+\[
+         \forall x_1\cdots\forall x_r\;C(x_1,\ldots,x_r)=1.
+\]
+The quantifier-free matrix is an equation in the language of iPRA. A
+conditional checker returns $1$ when its finite input hypotheses are false
+and otherwise checks the asserted rational conclusion. This convention
+does not dispense with hypotheses: the report must specify exactly which
+hypotheses the finite checker recognizes.
+
+Statements for a primitive recursive Cauchy name are schemas in a
+\emph{fixed definition} of that name. Its regularity hypotheses may remain
+universally quantified assumptions. No step evaluates all primitive
+recursive program codes by a single total primitive recursive function.
+That distinction is essential: a universal evaluator of that kind is not
+available.
+
+At each use of induction the requested precision and all size parameters
+are fixed first. The invariant is an equation or inequality about rational
+partial sums, products, mesh-cell errors, or a bounded Boolean fold. A
+bounded conjunction $\bigwedge_{j<n}P(j)$ is represented by the product of
+the characteristic values of the fixed predicate~$P$. An induction over
+such a fold is quantifier-free induction. This does not authorize induction
+over an assertion such as ``the analytic equality holds at every
+precision'', or over the existence of an unspecified zero. Those larger
+claims are assembled only after the finite inductions have finished.
+
+\subsection{What a contour certificate certifies}
+A finite contour certificate records a rational polygon in the domain,
+rational samples of the fixed analytic approximation, a numerical sample
+precision, a derivative or continuity bound, a positive rational margin,
+and an integer winding count. Its checker recomputes the samples and tests
+the error and separation inequalities. Sample values are not trusted
+merely because the certificate contains them.
+
+For example, if the approximation error is at most $e$, each domain edge
+has length at most $h$, and the derivative bound is~$L$, then an inequality
+of the form
+\[
+            |w_j|_\infty>4e+4Lh
+\]
+at every sample gives a zero-free homotopy from the actual boundary image
+to its polygonal approximation, after including the corresponding
+successive-sample bounds. All tests can use rational norms; no square-root
+oracle is required. The winding of the rational polygon is computed by
+oriented ray crossings. A transverse rational ray can be selected by a
+finite search which excludes the finitely many vertex directions.
+
+There are two separate formal obligations. First, a valid contour has the
+claimed count and obeys the distribution estimate. Second, the specified
+primitive recursive construction produces valid contours at the stated
+heights. The first obligation alone is insufficient for unconditional
+unboundedness of the zero count. The minimum-modulus and regular-height
+construction in the counting argument exists precisely to supply the
+second obligation. Nor is a certified count the same as an algorithm that
+sorts exact zeros by ordinate or decides equal ordinates.
+
+\subsection{The inspected analytic drafts and their status}
+The repository's archived functional-equation draft supplies a quantitative
+human proof of the theta transformation, reciprocal gamma products,
+reflection and duplication, and the Mellin identification with the zeta
+Dirichlet series. Its finite xi approximation has exact algebraic symmetry;
+its identification with the analytic zeta function requires the substantive
+Mellin proof. The archive explicitly says that its Lean interfaces are
+uncompiled and incomplete. We reuse its written estimates at that stated
+level, not as a kernel-checked theorem.
+
+The Cauchy--residue draft gives finite triangulation cancellation,
+quantitative Laurent expansions and rational contour winding calculations.
+Its core singularity locations are supplied rational centres. A generic
+argument principle for unknown zeta zeros does not follow merely by citing
+that theorem: the local factorization, counting and approximation work
+must also be supplied. Similarly, the Stirling draft proves the real
+factorial formula with explicit remainders; it is not a proof of complex
+log-gamma asymptotics. The complex estimate used in zero counting needs its
+own proof. The FTA draft provides a written quantitative construction of
+primitive recursive root names, but also explicitly lacks a completed
+object-language Lean derivation.
+
+\subsection{A concrete completion order}
+The accompanying \texttt{ObjectTargets.lean} is an uncompiled interface.
+It adds no analytic axiom and supplies no instance of its final obligation
+structure. The implementation sequence is as follows.
+\begin{enumerate}
+\item Compile integer, rational, list, bounded-search and polynomial
+      operations to the repository's \texttt{PR} syntax. Prove defining
+      equations and the required arithmetic lemmas inside
+      \texttt{Prf PRAAx}; semantic Lean calculations alone do not suffice.
+\item Compile the fixed elementary and zeta/xi approximation programs.
+      Formalize their rational error budgets, input sensitivities and
+      derivative bounds with the displayed quantifier-free invariants.
+\item Prove the finite functional-equation, Euler-product, and gamma
+      identities. Keep numerical division guarded by an explicit positive
+      lower bound. Prove the positive nonvanishing estimates.
+\item Implement rational contour certification and winding. Prove
+      finite homotopy invariance and the counting statements, including
+      the multiplicity convention.
+\item Formalize the quantitative Jensen, minimum-modulus, complex
+      Stirling and argument-variation estimates. Compile the bounded
+      regular-height generator and prove that its output passes the
+      certificate checker.
+\item Construct the internal derivations of the rational zero-counting
+      and reciprocal-tail sentences. Derive unboundedness and the stated
+      distribution corollaries from these internal finite estimates.
+\item Apply \texttt{pra\_iff\_native} to each completed derivation.
+      Kernel-check all resulting proof terms at the pinned toolchain,
+      and audit dependencies for \texttt{sorryAx} and additional axioms.
+\end{enumerate}
+The inspected repository requests Lean and mathlib \texttt{v4.32.0}.
+Those versions identify a proposed build environment; this package does not
+claim that its new analytic development has been compiled there. A proof
+about \texttt{Complex} in ambient Lean can be used as an independent
+semantic comparison, but does not establish the restriction to iPRA.

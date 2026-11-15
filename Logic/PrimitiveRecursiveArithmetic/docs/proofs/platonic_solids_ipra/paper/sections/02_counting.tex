@@ -1,0 +1,185 @@
+\section{Finite convex geometry and Euler's identity}\label{sec:euler}
+
+We first record the finite geometric facts used in the proof. A line
+intersects a convex polygon in an interval: substitute its affine
+parameter into the finitely many half-plane inequalities and take the
+largest lower bound and the smallest upper bound. A convex polygon is
+triangulated by the diagonals from any one vertex. A point in the polygon
+is located in one of those triangles by finitely many determinant signs,
+and its barycentric coefficients are obtained by a $2\times2$ inverse.
+These statements use exact arithmetic and finite minimum selection.
+
+At a vertex $v$ of a three-dimensional convex polyhedron, intersect its
+tangent cone with a plane strictly separating $v$ from the other
+vertices. Such a plane is explicit: add the inward deficits of the
+incident supporting planes, which vanish simultaneously only at $v$,
+and choose a positive level smaller than all the finitely many values
+at other vertices. The section is a convex polygon. Its vertices are
+the intersections with the edge rays, in their cyclic order. A direction
+from $v$ into the polyhedron is a nonnegative combination of edge rays:
+intersect it with the section and use the preceding polygon triangulation.
+Inserting diagonals in facets merely subdivides edges of this vertex
+figure. These observations prove the local cyclic-link properties used
+below directly from the finite supporting inequalities.
+
+\begin{lemma}[Generic finite height]\label{lem:height}
+For $V$ distinct exactly represented points in three dimensions one can
+construct a linear functional taking distinct values on all the points
+by trying at most $2\binom V2+1$ integer candidates.
+\end{lemma}
+\begin{proof}
+Try $h_t(x,y,z)=x+ty+t^2z$ for integers
+$0\leq t\leq2\binom V2$. For any distinct pair of points, equality of
+their heights is a nonzero polynomial equation of degree at most two
+in $t$. Such a polynomial has at most two distinct roots, by division
+by linear factors. There are at most $2\binom V2$ forbidden values.
+Testing the displayed list therefore returns a valid candidate.
+This is the finite pigeonhole argument on decidable lists.
+\end{proof}
+
+\begin{lemma}[Euler by lower-neighbor counting]\label{lem:euler}
+For a finite full-dimensional convex polyhedron,
+\[
+ V+F=E+2.
+\]
+\end{lemma}
+\begin{proof}
+Triangulate each facet by a fan without adding vertices. Each diagonal
+adds one edge and one face, so the value of $V-E+F$ is unchanged.
+Choose the generic height of Lemma~\ref{lem:height}. Assign every edge
+and every triangle to its highest vertex. At a vertex $v$ let $d_v$
+count its lower neighbors and $t_v$ its incident triangles whose other
+two vertices are lower. Its contribution to $V-E+F$ is
+\[
+ 1-d_v+t_v.
+\]
+In the convex vertex figure, being lower is an affine half-plane
+condition. The lower neighbors therefore form a consecutive block
+in the cyclic order, unless all or none of them are lower. For a
+nonempty proper block, $t_v=d_v-1$, and the contribution is zero.
+If all neighbors are lower, the edge-ray combination property proves
+that $v$ is the unique global maximum; its full cyclic link gives
+$t_v=d_v$, so its contribution is one. If none is lower, the same
+argument makes $v$ the unique global minimum; its contribution is one.
+There are no other local extrema. Summing gives two. Remove the added
+facet diagonals to obtain the stated identity.
+\end{proof}
+
+No spherical topology theorem has been used here. For an internal
+arithmetic proof write the contribution calculation as an equality of
+two accumulated natural-number counts, avoiding truncated subtraction.
+
+\subsection{A finite planar drawing}
+
+Some later arguments use triangular regions in a planar drawing.
+Here is a construction of that drawing, including the separation it
+requires. Choose a facet $F_0$ and average its vertices to obtain $c$.
+This average lies strictly inside every other facet half-space: another
+facet cannot contain all of $F_0$, and every coefficient in the average
+is positive. Move a small distance outward from $c$ across $F_0$,
+obtaining a point $o$ still strictly inside all the other half-spaces.
+The distance can be chosen by taking the minimum of their positive
+slacks divided by twice a bound on the change of their linear forms.
+
+We may additionally require that $o$ lie in no plane through any
+noncollinear triple of vertices. To see that this is a bounded choice,
+take an exact box around the first choice still satisfying all its
+strict inequalities. If there are $m$ forbidden planes, a Cartesian
+grid of $m+1$ values in each coordinate has $(m+1)^3$ points. Each
+plane meets at most $(m+1)^2$ grid points, so at least one avoids all
+the planes. All tests are finite exact determinant comparisons.
+
+Project centrally from $o$ onto the plane of $F_0$. Every vertex not on
+$F_0$ projects strictly inside $F_0$: its projection is a proper convex combination
+of that vertex and $o$, and hence satisfies all the other supporting
+inequalities strictly. For a ray through a point of $F_0$, intersection
+with the polyhedron is an interval. Its far endpoint is the minimum
+of the finitely many exit parameters supplied by the facet inequalities.
+Thus the remaining facets tile $F_0$ under projection, with disjoint
+relative interiors and no crossing edges. This is a Schlegel drawing,
+obtained without compactness, an intermediate value theorem, or a
+topological sphere axiom.
+
+In a triangular-face polyhedron every graph three-cycle is a
+nondegenerate geometric triangle in this generic drawing. Its inside
+is given by its three half-plane tests. No edge can cross from that
+inside to the outside without meeting the boundary. Consequently a
+three-cycle which is not a facet has vertices on both sides. If a
+side had no vertex, the triangle on that side could have neither an
+internal edge nor a subdivision and would be a facet. Either side
+can be made the bounded triangle by choosing a facet on the other
+side as the outer facet. This requires only the separation property
+of an ordinary triangle, not a general Jordan curve theorem.
+
+\begin{lemma}[Triangular disk count]\label{lem:disk}
+Suppose a geometric triangle is tiled by a finite straight-line
+triangulation with $k$ interior vertices and no extra boundary vertices.
+Let $e_{II}$ and $e_{IB}$ count edges with respectively two and one
+interior endpoints. If every interior vertex has degree five in the
+triangulation, then $e_{II}=2k$.
+\end{lemma}
+\begin{proof}
+Write $E_D,T_D$ for all edges and small triangles. A generic planar
+height gives
+\[
+ (k+3)-E_D+T_D=1.
+\]
+Indeed, use the same assignment to highest vertices as before.
+An interior vertex has a nonempty proper block of lower neighbors
+in its circular link, contributing zero. At a boundary vertex the
+link is a path in the convex triangular corner. All vertices except
+the unique minimum have a nonempty consecutive block of lower
+neighbors and contribute $1-d+(d-1)=0$; the minimum contributes one.
+Counting triangle-edge incidences also gives $3T_D=2E_D-3$.
+Eliminating $T_D$ yields $E_D=3k+3$, so
+\[
+ e_{II}+e_{IB}=3k.
+\]
+Counting edges incident to the $k$ interior vertices gives
+$2e_{II}+e_{IB}=5k$. Subtract the preceding equality, or cancel common
+summands in natural numbers, to obtain $e_{II}=2k$.
+\end{proof}
+
+\section{The numerical classification}\label{sec:numerical}
+
+Every edge has two endpoints and belongs to exactly two faces. Counting
+vertex-edge and face-edge incidences therefore gives
+\begin{equation}\label{eq:incidence}
+ qV=2E=pF.
+\end{equation}
+There is at least one edge, and $p,q\geq3$. Put
+$p=a+2$, $q=b+2$, so $a,b\geq1$. Multiply Euler's identity by $pq$
+and use~\eqref{eq:incidence}. Expanding and cancelling gives the
+subtraction-free identity
+\begin{equation}\label{eq:core}
+ Eab+2pq=4E.
+\end{equation}
+If $ab\geq4$, then $Eab\geq4E$, contradicting the positive summand
+$2pq$. Hence
+\begin{equation}\label{eq:small}
+ (p-2)(q-2)=ab<4.
+\end{equation}
+For positive integers $a,b$, either $a=1$ and $b=1,2,3$, or
+$b=1$ and $a=2,3$. If both were at least two their product would be
+at least four. These are decidable arithmetic cases, not a
+nonconstructive dichotomy.
+
+Substitution into~\eqref{eq:core} and~\eqref{eq:incidence} gives the
+complete table:
+\begin{center}
+\begin{tabular}{lrrrrr}
+\toprule
+Name & $p$ & $q$ & $V$ & $E$ & $F$\\
+\midrule
+Tetrahedron & 3 & 3 & 4 & 6 & 4\\
+Cube & 4 & 3 & 8 & 12 & 6\\
+Octahedron & 3 & 4 & 6 & 12 & 8\\
+Dodecahedron & 5 & 3 & 20 & 30 & 12\\
+Icosahedron & 3 & 5 & 12 & 30 & 20\\
+\bottomrule
+\end{tabular}
+\end{center}
+At this point the names are labels for possible cases. Existence and
+uniqueness have not been inferred just from this table. In particular,
+the calculation alone would not exclude two different solids with the
+same $(p,q)$. The next two sections supply both missing parts.

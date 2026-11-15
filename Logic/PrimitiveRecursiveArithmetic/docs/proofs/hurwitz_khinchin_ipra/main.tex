@@ -1,0 +1,77 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{listings}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,frame=single,rulecolor=\color{black!15},xleftmargin=3pt,xrightmargin=3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Constructive Diophantine approximation in iPRA}
+\fancyhead[R]{\small Hurwitz and Khinchin}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\len}{\operatorname{len}}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\repo}{\texttt{ProveIt}}
+\title{\vspace{-12mm}\textbf{Constructive Hurwitz and Khinchin theorems\\in intuitionistic primitive recursive arithmetic}\\[5pt]\large Finite witnesses, rational interval covers, and a Lean formalization route}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give fully developed finite proofs of constructive versions of two
+Diophantine approximation theorems.  Hurwitz's sharp coefficient
+$1/\sqrt5$ is retained: from a primitive recursive rational name and an
+explicit rational-apartness modulus, a primitive recursive procedure
+returns a reduced approximation beyond any prescribed denominator,
+together with a strict rational certificate.  For Khinchin's theorem,
+convergence with a supplied tail modulus gives explicit small tail covers.
+Divergence with a supplied unit-tail modulus gives a finite denominator
+cutoff whose approximation intervals cover all but any prescribed dyadic
+tolerance of $[0,1]$.  The divergence proof uses elementary rational-point
+counting, a finite second-moment inequality, and a fixed number of rounds
+of filling residual gaps.  An explicit null-test interpretation preserves
+positive approximation witnesses without a classical quantifier-negation
+step.  We explain why all finite assertions and algorithms admit proofs
+using quantifier-free induction in $\ipra$, and give a module-by-module
+route to Lean and the deeply embedded \repo{} iPRA calculus.
+\end{abstract}
+
+\paragraph{Status of this package.}
+The mathematical arguments are supplied below.  The Python artifacts are
+exact-arithmetic implementations and finite checks of the certificate
+interfaces and principal finite estimates.  The Lean artifact is an
+implementation scaffold and an explicit list of proof obligations; it is
+\emph{not} a completed Lean formalization of either theorem, nor an
+embedded iPRA proof certificate.  No Lean compiler was available in the
+execution environment, so the scaffold has not been compiled.  These
+boundaries are part of the deliverable, not assumptions used in the proofs.
+
+\clearpage
+\tableofcontents
+\clearpage
+\input{foundations.tex}
+\input{hurwitz.tex}
+\input{khinchin.tex}
+\input{extensions.tex}
+\input{formalization.tex}
+\input{references.tex}
+\end{document}

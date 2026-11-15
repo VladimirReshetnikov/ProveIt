@@ -1,0 +1,181 @@
+\section{What the development proves, and the arithmetic it uses}
+\label{sec:foundations}
+
+Diophantine geometry studies polynomial equations through their rational or
+integral points, coordinate changes, heights, and descent. A first-order
+arithmetic can express a substantial part of this subject if these objects are
+represented by finite data. This paper develops that part over $\Q$. The central
+results are an exact bounded-height point enumerator; explicit height distortion
+under a nondegenerate map of $\PP^1$; a complete algorithm for its rational
+preperiodic points; parametrization and quantitative point counts for a conic
+with a supplied point; and the complete calculation
+\[
+   \{(x,y)\in\Q^2:y^2=x^3-x\}
+       =\{(-1,0),(0,0),(1,0)\}.
+\]
+The last result follows from a fully specified finite descent. We also develop
+congruence certificates, rational-root bounds, denominators on integral
+Weierstrass equations, and a constructive finite-generation descent interface.
+
+These are a selected theory, not a claim to reproduce the entire subject.
+In particular the paper does not prove the general Mordell--Weil, Roth, Siegel,
+or Faltings theorems. It does not assert their unprovability in $\iPRA$ either.
+Each positive theorem below has its own finite arithmetic proof. Classical
+background and terminology may be compared with Milne \cite{milne}, Sutherland
+\cite{sutherland2013,sutherland2025}, and Silverman \cite{silverman}.
+
+\subsection{The precise base theory}
+
+We use first-order intuitionistic primitive recursive arithmetic, with one
+sort $\N$ and equality. There is a symbol for each fixed primitive recursive
+definition: zero, successor, projections, composition, and primitive recursion.
+The projection symbols satisfy $\pi_i^k(x_0,\ldots,x_{k-1})=x_i$;
+the composition symbol for $f$ and $g_1,\ldots,g_r$ satisfies
+$c(\vec x)=f(g_1(\vec x),\ldots,g_r(\vec x))$.
+For $h(0,\vec x)=f(\vec x)$ and
+$h(n+1,\vec x)=g(n,h(n,\vec x),\vec x)$, these two equations are axioms.
+The nonlogical axioms also include successor injectivity and $Sx\ne0$.
+Induction is the rule
+\[
+ \frac{\Gamma\vdash A(0,\vec u)\qquad
+       \Gamma,A(n,\vec u)\vdash A(n+1,\vec u)}
+      {\Gamma\vdash A(t,\vec u)},
+ \qquad A\text{ quantifier-free},
+\]
+with the usual freshness condition on $n$. The logical rules are intuitionistic
+natural deduction: introduction and elimination for $\wedge,\vee,\to,\forall,
+\exists$, equality substitution, and elimination of $\bot$. There is no
+excluded-middle axiom for arbitrary formulas and no induction on arbitrary
+formulas. Quantifier-free formulas are decidable because their atomic
+equalities have primitive recursive characteristic functions.
+
+Integers, rationals, vectors and polynomial lists are definitional encodings
+in this single numerical sort. For example encode $z\ge0$ by $2z$ and
+$z<0$ by $-2z-1$. A rational is a pair $(a,b)$ with $a\in\Z$, $b\ge1$,
+$\gcd(|a|,b)=1$; addition and multiplication reduce by gcd. Finite sequences
+can be encoded by a length and an iterated pairing, with primitive recursive
+access functions. Invalid codes have fixed default outputs. Every geometric
+assertion carries the corresponding validity predicate.
+
+\subsection{Bounded quantifiers and explicit witnesses}
+
+A bounded search is a recursion through $0,\ldots,B$. It retains the first
+successful index and a flag, or reports failure after exactly $B+1$ tests.
+A bounded conjunction is computed by Boolean multiplication. Thus a formula
+whose quantifiers are all explicitly bounded has a primitive recursive
+characteristic function. Its induction is an instance of quantifier-free
+induction applied to that function.
+
+Here is the usual elementary justification, including the point relevant to
+weak arithmetic. A search state stores either no successful index, or an
+index $j\le i$ for which the tested equality is true. The invariant that the
+stored index is valid is quantifier-free. For each additional parameter $k$,
+the invariant that a successful test at $k\le i$ has set the flag is also
+quantifier-free. Induction on $i$, followed by universal introduction on $k$,
+proves success and failure correctness. Bounded conjunction is handled by
+searching for the first failed test. Nested bounded quantifiers are compiled
+one layer at a time. This explains the use of finite maxima, finite
+pigeonhole, and bounded lists later without strengthening induction.
+
+There is an essential distinction between a fixed primitive recursive
+definition and a variable code for an arbitrary primitive recursive program.
+We use fixed algorithms with numerical inputs, including variable dimensions,
+degrees and coefficient lists. We do \emph{not} assume a primitive recursive
+universal evaluator for all primitive recursive programs.
+
+\subsection{Elementary arithmetic infrastructure}
+
+\begin{lemma}[Finite arithmetic operations]\label{lem:arithmetic}
+The following operations and their stated elementary properties are available
+in $\iPRA$: integer arithmetic and order; division with remainder by a positive
+integer; gcd and Bezout coefficients; bounded divisibility tests; integer
+square root; finite products; and prime factorization of a positive integer
+by trial division. Coprime factors of a square are squares. If $a,b$ are
+coprime, so are $a^r,b^s$ for positive $r,s$.
+\end{lemma}
+\begin{proof}
+Division of $n$ by $d>0$ searches $q\le n$ for the largest $dq\le n$ and sets
+$r=n-dq$. Maximality gives $r<d$. The equations $n=dq+r$ and $0\le r<d$
+give uniqueness by subtraction. The square-root algorithm searches
+$s\le n$ for the largest $s^2\le n$; it gives
+$s^2\le n<(s+1)^2$.
+
+Euclid's remainder algorithm can be run for $a+b+1$ stages, keeping the state
+unchanged after a zero remainder. Every active stage strictly reduces the
+positive second entry, so it stops in this bound. Maintaining two integer
+linear-combination rows proves that the terminal positive entry $g$ is an
+integer combination of $a,b$. The identity
+$\gcd(a,b)=\gcd(b,a-qb)$ follows directly from the two divisibility
+implications. It proves that $g$ divides both inputs and every common divisor
+divides $g$. Iterating this construction gives Bezout coefficients for a
+nonzero finite vector. The case of zero inputs is handled separately.
+
+For factorization, visit the integers $p=2,\ldots,n$, repeatedly divide the
+current residual by $p$ for at most $n$ stages, and record the exponent.
+The residual-product invariant is an equation. After processing $p$, no
+prime at most $p$ divides the residual: a nontrivial repeated division
+strictly decreases it, so $n$ stages suffice to remove that divisor.
+This invariant is a bounded test. An active divisor is prime:
+if it had a smaller prime divisor, that divisor would already have been
+removed. Existence of a prime divisor of a number $>1$ is obtained by its
+least divisor in the bounded interval $[2,n]$; a factorization of that divisor
+would contradict minimality. Euclid's prime-divisor lemma follows from
+Bezout: if $p\nmid a$ then $up+va=1$, and multiplication by $b$ shows
+$p\mid ab\Rightarrow p\mid b$. This also proves uniqueness of the exponent
+of each prime in a product. If coprime $a,b>0$ have square product, each prime
+occurs in just one of them, with even exponent; multiplying the corresponding
+half powers constructs their square roots. The same argument proves
+coprimality of powers. All divisions, trial indices and exponents are bounded
+by the input integer or its explicitly given product. All loop invariants
+just used are equations or bounded divisibility assertions, hence Boolean
+quantifier-free invariants as above.
+\end{proof}
+
+\begin{lemma}[Primitive representatives]\label{lem:normalize}
+Every nonzero integral vector $v=(v_0,\ldots,v_n)$ has a primitive
+representative $\operatorname{norm}(v)$, obtained by dividing by
+$g=\gcd(|v_0|,\ldots,|v_n|)$ and choosing the sign so the first nonzero
+coordinate is positive. Two such representatives of the same rational
+projective point are equal. Normalization is primitive recursive and never
+increases the maximum absolute coordinate.
+\end{lemma}
+\begin{proof}
+The construction and the bound follow from $g\ge1$. Suppose primitive
+vectors $v,w$ satisfy $v_iw_j=v_jw_i$ for all $i,j$. Choose an index $j$
+with $v_j\ne0$, and Bezout coefficients $c_i$ with $\sum_i c_iv_i=1$.
+Set $a=\sum_i c_iw_i$. The proportionality equations give $v_ja=w_j$ and
+then $v_jw_i=v_ja v_i$, so cancellation gives $w_i=av_i$ for every $i$.
+As $w$ is primitive, $|a|=1$. The sign convention forces $a=1$.
+Clearing the finitely many denominators of any nonzero rational vector
+reduces to the integral case. Choosing $j$ and summing the Bezout equations
+are bounded operations.
+\end{proof}
+
+We therefore use canonical primitive vectors as the actual codes for
+$\PP^n(\Q)$. Quotient types and choices of representatives are unnecessary
+in the object theory. A homogeneous polynomial is a finite list of integer
+coefficients and exponent vectors of one declared total degree. The zero
+polynomial is allowed with any declared degree; subsequent degree bounds
+refer to that declared degree. Its value is computed
+by bounded products and sums. Homogeneity shows that its zero locus is
+unchanged by scaling and normalization.
+
+\subsection{Relation to the inspected ProveIt foundation}
+
+The inspected repository revision is
+\texttt{b5a3ad037723c44d69a3d5b28a950c554327a989}.
+The files \texttt{PR.lean}, \texttt{BiInterpretation.lean}, and
+\texttt{NativeBiInterpretation.lean} were read at that revision, together
+with the ConciseIPRA README. The first defines the first-order theory just
+described, with function-symbol type \texttt{PR}, term type \texttt{PTm},
+and axiom family \texttt{PRAAx}. The other two expose the translation to the
+scalar and native presentations. In particular
+\texttt{pra\_iff\_native} transfers a derivation of an iPRA formula to a
+derivation of its native reading \cite{proveit}.
+
+This is the appropriate foundation to reuse. The new geometry has not yet
+been turned into values of its derivation type. The standalone Lean core in
+this package verifies selected arithmetic lemmas; Section~\ref{sec:lean}
+specifies the additional work needed for deeply embedded derivations. The
+repository's archived-draft index was inspected, but no theorem from an
+unread archive is used as a proof dependency.

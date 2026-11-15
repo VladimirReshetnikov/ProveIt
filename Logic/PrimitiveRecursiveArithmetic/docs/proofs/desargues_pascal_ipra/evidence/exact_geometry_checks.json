@@ -1,0 +1,333 @@
+{
+  "arithmetic": "Exact unbounded Python integers; standard library only",
+  "exhaustive_kernel_test": {
+    "domain": "u != 0, and u,v,w in {-1,0,1}^3",
+    "candidate_triples": 18954,
+    "determinant_zero_triples_checked": 7146,
+    "nonzero_determinant_triples_excluded": 11808,
+    "branch_counts": {
+      "coordinate_01": 216,
+      "coordinate_2": 18,
+      "cross_u_v": 5040,
+      "cross_u_w": 1872
+    },
+    "all_four_branches_exercised": true,
+    "every_output_nonzero_and_orthogonal": true,
+    "limitation": "Finite execution check, not the universal mathematical proof"
+  },
+  "desargues_example": {
+    "first_triangle": [
+      [
+        1,
+        0,
+        1
+      ],
+      [
+        0,
+        1,
+        1
+      ],
+      [
+        -1,
+        -1,
+        1
+      ]
+    ],
+    "second_triangle": [
+      [
+        1,
+        0,
+        2
+      ],
+      [
+        0,
+        1,
+        3
+      ],
+      [
+        -1,
+        -1,
+        4
+      ]
+    ],
+    "triangle_determinants": [
+      3,
+      9
+    ],
+    "joining_lines": [
+      [
+        0,
+        -1,
+        0
+      ],
+      [
+        2,
+        0,
+        0
+      ],
+      [
+        -3,
+        3,
+        0
+      ]
+    ],
+    "center": [
+      0,
+      0,
+      1
+    ],
+    "side_meets": [
+      [
+        2,
+        -1,
+        1
+      ],
+      [
+        2,
+        5,
+        1
+      ],
+      [
+        -4,
+        -1,
+        -2
+      ]
+    ],
+    "axis": [
+      1,
+      0,
+      -2
+    ],
+    "axis_construction_branch": "cross_u_v",
+    "recovered_center": [
+      0,
+      0,
+      1
+    ],
+    "all_incidences_checked": true
+  },
+  "desargues_converse_counterexample": {
+    "description": "Dropping triangle nondegeneracy breaks the converse",
+    "first_triangle": [
+      [
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0
+      ],
+      [
+        1,
+        1,
+        0
+      ]
+    ],
+    "second_triangle": [
+      [
+        0,
+        0,
+        1
+      ],
+      [
+        1,
+        0,
+        1
+      ],
+      [
+        0,
+        1,
+        1
+      ]
+    ],
+    "triangle_determinants": [
+      0,
+      1
+    ],
+    "joining_lines": [
+      [
+        0,
+        -1,
+        0
+      ],
+      [
+        1,
+        0,
+        -1
+      ],
+      [
+        1,
+        -1,
+        1
+      ]
+    ],
+    "joining_lines_determinant": 2,
+    "side_meets": [
+      [
+        -1,
+        0,
+        0
+      ],
+      [
+        -1,
+        1,
+        0
+      ],
+      [
+        0,
+        -1,
+        0
+      ]
+    ],
+    "axis": [
+      0,
+      0,
+      1
+    ],
+    "all_auxiliary_vectors_nonzero": true,
+    "nonconcurrency_certificate": "Joining-line determinant is the nonzero integer 2"
+  },
+  "pascal_examples": [
+    {
+      "name": "Six parameters t=0,1,2,3,4,5 on xz-y^2=0",
+      "vertices": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          4,
+          2,
+          1
+        ],
+        [
+          9,
+          3,
+          1
+        ],
+        [
+          16,
+          4,
+          1
+        ],
+        [
+          25,
+          5,
+          1
+        ]
+      ],
+      "conic_coefficients_xx_yy_zz_xy_xz_yz": [
+        0,
+        -1,
+        0,
+        0,
+        1,
+        0
+      ],
+      "side_meets": [
+        [
+          -12,
+          -12,
+          -6
+        ],
+        [
+          -42,
+          -18,
+          -6
+        ],
+        [
+          -150,
+          -30,
+          0
+        ]
+      ],
+      "axis": [
+        1,
+        -5,
+        8
+      ],
+      "axis_construction_branch": "cross_u_v",
+      "points_on_conic_checked": true,
+      "side_and_axis_incidences_checked": true,
+      "all_auxiliary_vectors_nonzero": true
+    },
+    {
+      "name": "Alternating vertices on the degenerate conic xy=0",
+      "vertices": [
+        [
+          1,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          1
+        ],
+        [
+          2,
+          0,
+          1
+        ],
+        [
+          0,
+          2,
+          1
+        ],
+        [
+          3,
+          0,
+          1
+        ],
+        [
+          0,
+          3,
+          1
+        ]
+      ],
+      "conic_coefficients_xx_yy_zz_xy_xz_yz": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "side_meets": [
+        [
+          3,
+          -4,
+          -1
+        ],
+        [
+          12,
+          -3,
+          3
+        ],
+        [
+          2,
+          6,
+          4
+        ]
+      ],
+      "axis": [
+        5,
+        7,
+        -13
+      ],
+      "axis_construction_branch": "cross_u_v",
+      "points_on_conic_checked": true,
+      "side_and_axis_incidences_checked": true,
+      "all_auxiliary_vectors_nonzero": true
+    }
+  ],
+  "status": "all checks passed"
+}

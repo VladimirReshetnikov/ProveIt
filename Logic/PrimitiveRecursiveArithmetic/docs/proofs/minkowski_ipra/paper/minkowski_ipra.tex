@@ -1,0 +1,108 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,graphicx,booktabs,longtable,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr,listings}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{18364C}
+\definecolor{accent}{HTML}{147D92}
+\definecolor{light}{HTML}{EEF5F8}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Minkowski's theorem in iPRA}
+\fancyhead[R]{\small\color{ink}Finite constructive proof}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{.35em}
+\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=.2em,topsep=.3em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\Vol}{\operatorname{vol}}
+\newcommand{\Valid}{\operatorname{Valid}}
+\newcommand{\Good}{\operatorname{Good}}
+\newcommand{\BoxOK}{\operatorname{BoxOK}}
+\newcommand{\Inside}{\operatorname{Inside}}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\Mid}{\operatorname{Mid}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\norminf}[1]{\lVert #1\rVert_\infty}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\lstset{basicstyle=\ttfamily\footnotesize,columns=fullflexible,breaklines=true,
+  frame=single,rulecolor=\color{black!15},backgroundcolor=\color{light},
+  keepspaces=true,showstringspaces=false}
+\begin{document}
+\hypersetup{pdftitle={Minkowski's convex-body theorem in intuitionistic primitive recursive arithmetic},
+ pdfsubject={A constructive certificate proof and Lean formalization outline},
+ pdfkeywords={Minkowski, iPRA, primitive recursive arithmetic, constructive mathematics, Lean}}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{.45in}
+{\color{accent}\sffamily\bfseries RESEARCH NOTE}\par
+\vspace{.22in}
+{\color{ink}\LARGE\bfseries Minkowski's convex-body theorem\\[.18em]
+in intuitionistic primitive\\[.18em] recursive arithmetic\par}
+\vspace{.3in}
+{\large A finite certificate proof, an explicit rational-polytope\\
+construction, and a path to Lean formalization\par}
+\vspace{.45in}
+Prepared for Vladimir Reshetnikov\\
+14 November 2026
+\vspace{.5in}
+\begin{abstract}
+The strict form of Minkowski's theorem admits a direct proof in
+intuitionistic primitive recursive arithmetic once its positive volume
+premise is expressed by finite inner-volume evidence. Rational boxes in
+half the lattice-normalized body are refined to a common mesh. Their
+volume forces more cells than residue classes. An explicitly bounded
+collision search returns a nonzero integer vector, and symmetry together
+with one midpoint puts the associated lattice vector in the body.
+
+We give the complete written proof, a quantifier-free induction audit,
+and a quantitative construction of the volume certificate for bounded
+rational polytopes. We also prove the exact-threshold theorem for rational
+polytopes by an integer-facet dilation argument. For arbitrary represented
+real bodies the exact-threshold extension entails LLPO; a rectangle
+example isolates that obstruction.
+
+The accompanying exact Python implementation produces and independently
+checks witnesses. The Lean sources are an explicitly uncompiled
+formalization outline based on the inspected \code{ConciseIPRA} interfaces
+in ProveIt. They do not constitute a completed Lean proof or a completed
+object-language derivation.
+\end{abstract}
+\vfill
+{\small
+Repository snapshot used for the formalization plan:\par
+\code{329161f8da0b319d51ba9f6246c4b19d243f7193}\par
+Recorded toolchain: \code{leanprover/lean4:v4.32.0}.
+}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+\pagenumbering{arabic}
+\input{01_foundations.tex}
+\input{02_finite_proof.tex}
+\input{03_polytopes.tex}
+\input{04_represented_reals.tex}
+\input{05_lean_artifacts.tex}
+\appendix
+\input{06_finite_volume.tex}
+\input{references.tex}
+\end{document}

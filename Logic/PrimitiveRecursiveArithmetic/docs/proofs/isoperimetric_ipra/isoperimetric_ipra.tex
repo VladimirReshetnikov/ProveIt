@@ -1,0 +1,1576 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor,microtype,enumitem,fancyhdr,hyperref,listings}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!50!black,
+ citecolor=blue!45!black,pdftitle={The planar isoperimetric inequality in iPRA},
+ pdfauthor={Research note prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Isoperimetry in intuitionistic PRA}
+\fancyhead[R]{\small Finitary proof and Lean blueprint}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\Area}{\mathcal A}
+\newcommand{\len}{\mathcal L}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\sd}{\operatorname{sd}}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\dH}{d_{\mathrm H}}
+\newcommand{\PR}{\mathsf{PR}}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+ keepspaces=true,frame=single,rulecolor=\color{black!20},
+ backgroundcolor=\color{black!2}}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{12mm}
+{\Large\bfseries The sharp planar isoperimetric inequality\\[3mm]
+in intuitionistic primitive recursive arithmetic\par}
+\vspace{8mm}
+{\large A complete finitary human proof, effective equality analysis,\\
+and a path to an internal Lean formalization\par}
+\vspace{10mm}
+Prepared for Vladimir Reshetnikov\\
+14 November 2026
+\vspace{10mm}
+\begin{abstract}
+We give an arithmetic proof of the classical planar inequality
+\(L^2\ge4\pi A\). Its uniform finite core is a theorem about rational
+polygons: if \(u_i\) are certified rational upper bounds on the side
+lengths, \(S=\sum_i u_i\), and \(k\in\N\), then
+\[
+ 4\pi_k\,|\Area(P)|\le S^2+2^{-k}.
+\]
+The numbers \(\pi_k\) are explicitly defined rationals satisfying
+\(0\le\pi-\pi_k<2^{-k}\). The proof uses finite Fourier sums on
+dyadic regular polygons, positive quadratic radicals, and a bounded
+rational subdivision. All analytic limiting language is replaced by
+precision estimates.
+
+The finite theorem extends to polygonally presented rectifiable
+boundaries. A lower-real formulation of perimeter avoids assuming that
+the length of a computable curve is computable. An explicit Fourier
+stability estimate proves that equality forces the boundary to be a
+circle; its center and radius are extracted without compactness or a
+choice of subsequence.
+
+The formalization target is an actual derivation in ProveIt's embedded
+intuitionistic PRA, not merely a Lean theorem about real numbers.
+The included Lean files specify the finite data, numerical coding,
+and internal target. They are an uncompiled blueprint, not a completed
+machine-checked proof.
+\end{abstract}
+\vfill
+\begin{tabular}{@{}p{0.23\textwidth}p{0.70\textwidth}@{}}
+\toprule
+Scope & The classical \emph{planar} inequality, its sharp constant,
+and circle rigidity for the stated effective geometric presentations.\\
+Human argument & Complete finite proof with explicit approximation
+bounds and an induction audit for \(\ipra\).\\
+Lean status & Concrete definitions and proof obligations; internal
+derivation not yet constructed or compiled.\\
+Other dimensions & Higher-dimensional, spherical, and metric-space
+generalizations are outside this note.\\
+\bottomrule
+\end{tabular}
+\end{titlepage}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{What it means to prove this theorem in \texorpdfstring{\(\ipra\)}{iPRA}}
+
+The usual planar theorem says that a rectifiable Jordan curve of
+length \(L\), enclosing area \(A\), satisfies
+\[
+ L^2\ge4\pi A,
+\]
+with equality exactly for circles. This is the classical form discussed
+by Osserman \cite{osserman}. The referenced encyclopedia page also
+discusses many other inequalities; we address this planar theorem.
+
+First-order arithmetic does not quantify over arbitrary subsets of
+\(\mathbb R^2\). Therefore a claim of a proof in \(\ipra\)
+must state how the geometry is represented. We first prove one uniform
+first-order theorem about finite numerical codes. Curves are then
+precision-indexed abbreviations for arithmetic statements about those
+codes. No axiom asserting the existence of a completion of the rationals
+is used.
+
+\subsection{The uniform arithmetic theorem}
+For a nonempty rational polygon
+\(P=(v_0,\ldots,v_{m-1})\), put \(v_m=v_0\), \(e_i=v_{i+1}-v_i\), and
+\[
+ \Area(P)=\frac12\sum_{i<m}\det(v_i,v_{i+1}).
+\]
+Simplicity is not required: this is signed shoelace area.
+An admissible upper-length list is a rational list
+\(u=(u_0,\ldots,u_{m-1})\) satisfying
+\[
+ u_i\ge0,\qquad \norm{e_i}^2\le u_i^2.
+ \tag{1.1}\label{eq:input}
+\]
+Thus \(u_i\) bounds a \emph{length}; its square bounds squared length.
+Let \(S=\sum_{i<m}u_i\).
+
+\begin{theorem}[Uniform finite isoperimetry]\label{thm:finite}
+There is a fixed primitive recursive rational function \(k\mapsto\pi_k\),
+defined in Section~\ref{sec:pi}, for which \(\ipra\) proves
+\[
+ \boxed{4\pi_k\,|\Area(P)|\le S^2+2^{-k}}
+ \tag{1.2}\label{eq:finite}
+\]
+for every natural \(k\), every nonempty rational polygon code \(P\),
+and every admissible upper-length code \(u\).
+In the circle interpretation,
+\[
+ 0\le\pi-\pi_k<2^{-k}.
+ \tag{1.3}\label{eq:piaccuracy}
+\]
+\end{theorem}
+After denominators have been cleared, the hypotheses and conclusion of
+\eqref{eq:finite} are primitive recursive Boolean predicates of three
+natural-number inputs. Its universal closure is an ordinary first-order
+arithmetical sentence. Degenerate, repeated-vertex, clockwise, and
+self-intersecting polygons are all included.
+
+\subsection{Geometric interpretation and its precise scope}
+A convenient effective boundary presentation consists of rational
+polygonal approximations, explicit uniform or Hausdorff error bounds,
+an area approximation modulus, and, when a Cauchy-real perimeter is used,
+a perimeter approximation modulus. Such data turn the classical
+inequality into a schema of arithmetic inequalities. We prove that
+schema, including rigidity.
+
+There is a more general formulation. A primitive recursive presentation
+of a continuous closed curve, with a supplied uniform continuity modulus
+and a variation bound, has a computable signed-area name. Its length may
+be represented by the lower cut generated by the lengths of finite
+inscribed polygons; no length convergence modulus is then required.
+Section~\ref{sec:lower} proves the inequality in this representation.
+
+For an \emph{effective Jordan domain}, ordinary enclosed area is supplied
+by compatible simple polygonal domain approximations. Shoelace area is
+then its area name. One may equivalently use a separately justified
+effective Jordan/Green representation bridge. This note does not claim
+that bare pointwise injectivity automatically supplies all such
+computational data, nor that every classically specified curve has a
+primitive recursive name. That assertion is neither the language nor
+the content of the arithmetic theorem.
+
+These distinctions matter. Computable simple rectifiable curves can
+fail to have computable constant-speed parametrizations
+\cite{gu-lutz-mayordomo}. The proof below never extracts a general
+arclength parametrization from bare rectifiability.
+
+\subsection{What is established, and what remains for Lean}
+The human proof gives the finite identities, all mesh and precision
+bounds, and the bounded induction invariants used to read the argument
+in \(\ipra\). It does not provide a fully expanded natural-deduction
+proof term. That syntactic task is the remaining Lean formalization.
+In particular, the absence of classical choice from an external Lean
+theorem would not by itself establish provability in \(\ipra\).
+
+\section{Finite arithmetic and positive radicals}\label{sec:arithmetic}
+\subsection{The arithmetic substrate}
+Use intuitionistic first-order logic with equality, symbols for
+primitive recursive functions, their defining equations, the successor
+axioms, and quantifier-free induction. This is the ordinary
+\(\ipra\) presentation implemented in \texttt{ConciseIPRA.PR}
+\cite{proveit-pr}.
+
+Integers are coded by signs and magnitudes, rationals by an integer
+numerator and a positive denominator, and finite lists by natural
+numbers. Rational addition, multiplication, comparison, and floor are
+primitive recursive. Comparisons are decidable because they reduce to
+integer comparisons after multiplication by positive denominators.
+No decision procedure for arbitrary real numbers is being assumed.
+
+A bounded conjunction
+\(\bigwedge_{i<n}R(i)\), with primitive recursive Boolean \(R\), is
+represented by the value of a Boolean fold. It is therefore a
+quantifier-free assertion in the language with those primitive recursive
+symbols. The same observation applies to bounds on every entry of a
+finite table. Section~\ref{sec:audit} identifies the actual invariants;
+the fact that a computation is primitive recursive alone does not prove
+its correctness in \(\ipra\).
+
+\subsection{Square-root intervals}
+For rational \(x\ge0\) and \(t\in\N\), define
+\[
+ \sd(x,t)=2^{-t}\max\{j\le M:j^2\le2^{2t}x\},
+ \tag{2.1}\label{eq:sd}
+\]
+where any explicit integer bound \(M>2^t\sqrt{x}\) may be used.
+For \(0\le x\le1\), \(M=2^t\) suffices, allowing the endpoint.
+For arbitrary \(x=a/b\ge0\), \(M=2^t(a+1)\) suffices.
+The maximum is computed by bounded search, and
+\[
+ \sd(x,t)^2\le x<\bigl(\sd(x,t)+2^{-t}\bigr)^2.
+ \tag{2.2}\label{eq:sdbracket}
+\]
+The proof is the loop invariant that the stored index is the greatest
+accepted index seen so far, together with monotonicity of integer squares.
+
+The reference Python uses integer square root to compute the same
+maximum efficiently. The Lean blueprint uses a literal bounded maximum,
+so its primitive recursive character is visible.
+
+\subsection{Exact radical notation is finite algebra}
+For readability, the finite proof uses positive square roots such as
+\(\sqrt{(1+c)/2}\). They need not be treated as arbitrary real numbers.
+They can be coded in a finite tower of positive quadratic radicals.
+At one level an expression has the form \(a+b\sqrt d\), where \(a,b,d\)
+belong to the preceding level and \(d\ge0\).
+
+Addition and multiplication are finite coefficient-array operations.
+Its sign is determined recursively. If \(d=0\), use the sign of \(a\).
+Handle zero coefficients directly. If the nonzero coefficients \(a,b\)
+have the same sign, their sum has that sign. If they have opposite signs,
+\[
+ \sgn(a+b\sqrt d)
+   =\sgn(a)\,\sgn(a^2-b^2d).
+ \tag{2.3}\label{eq:sign}
+\]
+Indeed, compare the two nonnegative magnitudes
+\(|a|\) and \(|b|\sqrt d\) by comparing their squares.
+Every recursive sign call in \eqref{eq:sign} drops one tower level.
+
+This also handles redundant extensions: equality is determined by
+sign zero, not by equality of coefficient arrays. One must not blindly
+invert a formal element by its conjugate; the associated formal norm
+can vanish in a redundant extension. The main Fourier identity avoids
+algebraic division altogether, apart from rational scalar division.
+For the rigidity argument, divisions are by quantities already proved
+strictly positive, and may be represented as numerator/positive-denominator
+pairs.
+
+The algorithms are fixed recursions on finite arrays. Array lengths
+double at each radical level; coefficient growth is bounded by iterating
+the explicit integer bounds for addition and multiplication.
+Nested loops can be unrolled to a bound obtained by primitive recursion.
+There is no invocation of a universal evaluator for arbitrary primitive
+recursive programs.
+
+The next lemma proves the order laws behind this recursion, rather than
+assuming that a terminating sign program automatically has them.
+
+\subsection{A constructive ordered-extension lemma}
+\begin{lemma}[Positive quadratic extension by finite certificates]
+\label{lem:orderedextension}
+Let \(K\) be a decidably linearly ordered commutative integral domain,
+and let \(d\ge0\) belong to \(K\). Pairs \((a,b)\) with
+\[
+ (a,b)(c,e)=(ac+bed,\,ae+bc)
+\]
+admit the recursive sign rule \eqref{eq:sign}. Equality defined by sign
+zero of the difference is a congruence. On the resulting classes it
+defines a linearly ordered integral domain extending \(K\), and
+\((0,1)\) is the nonnegative square root of \(d\).
+All witnesses in the proof below are explicit finite expressions.
+\end{lemma}
+\begin{proof}
+If \(d=0\), assign \((a,b)\) the sign of \(a\). The projection
+\((a,b)\mapsto a\) proves every assertion. Hence suppose \(d>0\).
+Let \(R\) be the pair ring; it is \emph{not} assumed to be a domain.
+Define
+\[
+ T=\{(a,b):a\ge0,\ b\ge0,\ a+b>0\}.
+\]
+It contains \(1=(1,0)\) and \(r=(0,1)\), excludes zero, and is closed
+under addition and multiplication. For multiplication, all coefficients
+are nonnegative. Choose a positive coefficient in each factor; the
+four possibilities give a positive contribution to \(ac+bed\) or
+\(ae+bc\), using \(d>0\) in the \(be\) case.
+These choices are decisions on two finite pairs.
+
+For every \(x=(a,b)\), explicitly compute \(w(x)\in T\) and
+\(\sigma(x)\in\{-1,0,1\}\) with one of the following certificates:
+\[
+ \begin{array}{c|c}
+ \sigma(x)=1&w(x)x\in T\\
+ \sigma(x)=-1&-w(x)x\in T\\
+ \sigma(x)=0&w(x)x=0.
+ \end{array}
+ \tag{2.4}\label{eq:signcertificate}
+\]
+When the coefficients have the same weak sign, take \(w=1\) and
+that sign, with the zero pair assigned sign zero. When \(a,b\) have
+opposite nonzero signs, take \(w=(|a|,|b|)\). Direct multiplication gives
+\[
+ wx=\bigl(\sgn(a)(a^2-b^2d),\,0\bigr).
+ \tag{2.5}\label{eq:conecertificate}
+\]
+The sign of this scalar is exactly \eqref{eq:sign}. Thus the
+certificates always exist by a fixed finite calculation.
+
+Certificates of different signs cannot coexist. For example, if
+\(ux\in T\) and \(vx=0\), with \(u,v\in T\), then \(v(ux)\in T\)
+but equals zero, a contradiction. If \(ux\in T\) and \(-vx\in T\),
+then
+\[
+ v(ux)+u(-vx)=0
+\]
+is a sum of two elements of \(T\), again impossible. The other
+conflicts follow by negation. Consequently any certificate of the
+forms \eqref{eq:signcertificate} has the computed sign; there is no
+search over possible multipliers.
+
+Write \(P=\{x:\sigma(x)=1\}\) and \(Z=\{x:\sigma(x)=0\}\).
+If \(x,y\in P\), with witnesses \(u,v\), then
+\[
+ uv(x+y)=v(ux)+u(vy)\in T,\qquad
+ uvxy=(ux)(vy)\in T.
+\]
+Thus \(P\) is closed under addition and multiplication.
+If \(x,y\in Z\), then \(uv(x+y)=0\); if \(x\in Z\), then
+\(u(xz)=z(ux)=0\) for every \(z\). Negation preserves \(Z\).
+Hence \(Z\) is an ideal. Finally, if \(x\in P\) and \(z\in Z\),
+\[
+ uv(x+z)=v(ux)\in T,
+\]
+so \(P+Z\subseteq P\). Negation reverses nonzero signs.
+
+These explicit certificates prove that sign is well defined modulo
+\(Z\), that its trichotomy is total, and that the order is compatible
+with addition and multiplication. Nonzero factors have nonzero product,
+so the ordered quotient is an integral domain. Scalars \((a,0)\)
+have exactly the sign of \(a\), proving that the embedding of \(K\)
+is injective and order preserving. The class of \(r\) is positive
+and \(r^2=d\). If \(d=e^2\) for some \(e\ge0\) already in \(K\),
+the same sign test gives \(\sigma(r-e)=0\), selecting the positive
+branch even in a redundant extension.
+\end{proof}
+
+Nonnegative square roots are unique in this order: if \(x,y\ge0\)
+and \(x^2=y^2\), then \((x-y)(x+y)=0\). Either \(x+y=0\), forcing
+both to be zero, or the integral-domain law gives \(x=y\).
+
+In the numerical implementation no set-theoretic quotient is formed:
+retain the pairs and use \(\sigma(x-y)=0\) as equality.
+The lemma supplies its congruence and order laws.
+Starting from \(\Q\), iterate this construction along the finite
+radical tower. Every multiplier, norm comparison, and closure
+certificate is given by the displayed formulas.
+
+If a field implementation is wanted, it too is explicit. For a
+nonzero class \(x=a+br\), put \(n=a^2-b^2d\). If \(n\ne0\),
+the conjugate divided by \(n\) is an inverse. If \(n=0\),
+nonzeroness forces \(a,b\) to be nonzero with the same sign.
+Then \(\sigma(x-2a)=0\) by the opposite-sign case, so the scalar
+\(1/(2a)\) is an inverse of \(x\) in the quotient. This handles the
+case in which blind conjugate inversion would fail. The main
+inequality needs only the ordered-domain laws and positive
+denominator pairs.
+
+\section{Dyadic regular polygons and the circle constant}\label{sec:roots}
+Define
+\[
+ c_1=0,\quad s_1=1,\quad \eta_1=i,
+\]
+and, for \(r\ge1\),
+\[
+ c_{r+1}=\sqrt{\frac{1+c_r}{2}},\qquad
+ s_{r+1}=\sqrt{\frac{1-c_r}{2}},\qquad
+ \eta_{r+1}=c_{r+1}+is_{r+1}.
+ \tag{3.1}\label{eq:halfangle}
+\]
+Direct calculation, with positive roots, gives
+\[
+ c_r^2+s_r^2=1,\qquad
+ \eta_{r+1}^2=\eta_r,\qquad
+ \eta_r^{\,2^r}=-1.
+ \tag{3.2}\label{eq:rootfacts}
+\]
+For example \(2c_{r+1}s_{r+1}=s_r\), because both sides are
+nonnegative and their squares agree. For \(r\ge2\),
+\(0<c_r<1\), \(s_r>0\), and \(c_r\ge1/2\).
+For \(N=2^r\), \(\eta_r\) is the half-step root and
+\(\zeta_r=\eta_r^2\) is the step of the regular \(N\)-gon.
+The usual notation would be \(c_r=\cos(\pi/N)\) and
+\(s_r=\sin(\pi/N)\), but trigonometric analysis is unnecessary.
+
+\begin{lemma}[Order on the upper half-polygon]\label{lem:semicircle}
+For \(N=2^r\), put \(y_j=\Ima(\eta_r^j)\). Then
+\[
+ y_0=y_N=0,\qquad y_j>0\quad(0<j<N).
+ \tag{3.3}\label{eq:upper}
+\]
+\end{lemma}
+\begin{proof}
+For \(r=1\), the list is \(1,i,-1\).
+The even powers at the next stage are the old powers. Moreover,
+\[
+ \eta_{r+1}^{\,2j+1}
+   =\frac{\eta_r^j+\eta_r^{j+1}}{2c_{r+1}}.
+ \tag{3.4}\label{eq:midpoints}
+\]
+To verify this, use
+\(1+\eta_r=2c_{r+1}\eta_{r+1}\) and
+\(\eta_{r+1}^2=\eta_r\). The imaginary part of an odd power
+is a positive multiple of the sum of two adjacent old imaginary
+parts. They are nonnegative, and for each interior odd power at least
+one is positive. This proves the finite sign table by induction.
+\end{proof}
+
+\subsection{Explicit lower and upper polygonal constants}
+For \(r\ge2\), \(N=2^r\), set
+\[
+ p_r=Ns_r,\qquad q_r=\frac{Ns_r}{c_r}.
+ \tag{3.5}\label{eq:pq}
+\]
+These are half the perimeters of the inscribed and circumscribed
+regular \(N\)-gons of the unit circle. The half-angle identities give
+\[
+ p_{r+1}=\frac{p_r}{c_{r+1}},\qquad
+ q_{r+1}=\frac{2p_r}{1+c_r}.
+ \tag{3.6}\label{eq:pqrec}
+\]
+Consequently \(p_r\) increases, \(q_r\) decreases, and
+\[
+ 2\le p_r\le q_r\le q_2=4.
+ \tag{3.7}\label{eq:pqbound}
+\]
+For the upper monotonicity, use
+\(2c_r\le1+c_r\); for the lower monotonicity use \(c_{r+1}\le1\).
+The bounds at the next stage stay nested, so every later lower bound
+lies below every earlier upper bound.
+
+Since \(s_r=p_r/N\le4/N\),
+\[
+ \begin{split}
+ 0\le q_r-p_r
+ &=\frac{p_r(1-c_r)}{c_r}
+  =\frac{p_rs_r^2}{c_r(1+c_r)}
+ \le \frac{128}{N^2}.
+ \end{split}
+ \tag{3.8}\label{eq:pqgap}
+\]
+Thus the nested intervals \([p_r,q_r]\) have an explicit Cauchy
+modulus. Their common named value is denoted by \(\pi\).
+This phrase is an abbreviation for the interval inequalities; it does
+not use a completeness axiom inside arithmetic.
+
+\subsection{Why this is the ordinary \texorpdfstring{\(\pi\)}{pi}}
+Let \(U_N\) be the polygonal interpolation of
+\(1,\zeta_r,\ldots,\zeta_r^{N-1},1\), on the uniform parameter grid.
+Its speed on each segment is \(2Ns_r=2p_r\le8\).
+Normalized midpoint insertion gives
+\[
+ \norm{U_{2N}-U_N}_\infty=1-c_r
+ \le s_r^2\le16/N^2.
+ \tag{3.9}\label{eq:circlemesh}
+\]
+The dyadic tail is at most
+\(16N^{-2}\sum_{j\ge0}4^{-j}<32/N^2\), where the geometric
+tail has a finite rational bound at every requested precision.
+This defines a primitive recursive uniform circle name \(U\).
+Its norm is one, its dyadic vertices occur in circular order by
+Lemma~\ref{lem:semicircle}, and their mesh tends explicitly to zero.
+Equivalently, the polygonal sets converge in Hausdorff distance to
+the unit circle.
+
+The inscribed perimeter is \(2p_r\). The limiting map is
+\(2\pi\)-Lipschitz, since every \(U_N\) is, while its inscribed
+perimeters approach \(2\pi\). Its length is therefore \(2\pi\).
+Its inscribed area is \(p_rc_r\), and the circumscribed polygon
+has area \(q_r\). Their difference is at most \(192/N^2\),
+by \eqref{eq:pqgap} and \(p_r(1-c_r)\le64/N^2\).
+They bound the unit disk from inside and outside, so its area is
+\(\pi\). This identifies the named value with the usual circle constant
+without using isoperimetry.
+
+\section{A rational \texorpdfstring{\(\pi\)}{pi}-name with a primitive recursive modulus}
+\label{sec:pi}
+For \(k\ge0\), set
+\[
+ r=k+4,\qquad t=4k+16,\qquad h=2^{-t}.
+\]
+Starting from \(\widehat c_1=0\), perform exactly \(r-1\) steps
+\[
+ \widehat c_{j+1}
+  =\sd\left(\frac{1+\widehat c_j}{2},t\right).
+ \tag{4.1}\label{eq:chat}
+\]
+Then define
+\[
+ \bar c=\min(1,\widehat c_r+2h),\qquad
+ \boxed{\pi_k=2^r\,\sd(1-\bar c^2,t).}
+ \tag{4.2}\label{eq:pilower}
+\]
+All entries here are rational. Every square-root search is bounded,
+so this is a fixed primitive recursive function.
+
+\begin{lemma}\label{lem:pilower}
+For every \(k\ge0\),
+\[
+ \pi_k\le p_{k+4},\qquad
+ 0\le\pi-\pi_k<2^{-k}.
+ \tag{4.3}\label{eq:pilowerbounds}
+\]
+\end{lemma}
+\begin{proof}
+For \(0\le y\le x\le1\), the function
+\(f(x)=\sqrt{(1+x)/2}\) satisfies the algebraic estimate
+\[
+ 0\le f(x)-f(y)
+ =\frac{x-y}{2(f(x)+f(y))}\le\frac{x-y}{2}.
+ \tag{4.4}\label{eq:rootcontract}
+\]
+The denominator estimate follows from
+\(f(x),f(y)\ge\sqrt{1/2}\).
+Combining \eqref{eq:sdbracket} and \eqref{eq:rootcontract}, induction gives
+\[
+ 0\le c_j-\widehat c_j\le2h.
+\]
+Hence \(c_r\le\bar c\le1\), \(\bar c-c_r\le2h\), and
+\[
+ 0\le(1-c_r^2)-(1-\bar c^2)\le4h.
+\]
+For \(a\ge b\ge0\),
+\(\sqrt a-\sqrt b\le\sqrt{a-b}\), as is seen by squaring.
+Therefore
+\[
+ 0\le p_r-\pi_k
+ \le2^r(2\sqrt h+h)
+ =2^{-k-3}+2^{-3k-12}.
+ \tag{4.5}\label{eq:raderror}
+\]
+Together with \eqref{eq:pqgap},
+\[
+ 0\le\pi-\pi_k
+ \le 2^{-2k-1}+2^{-k-3}+2^{-3k-12}<2^{-k}.
+ \tag{4.6}\label{eq:pierror}
+\]
+The final inequality already holds at \(k=0\), and each ratio to
+\(2^{-k}\) is nonincreasing thereafter. Every estimate is an
+inequality between finitely coded radicals or rationals.
+\end{proof}
+
+The sequence \(\pi_k\) need not be proved monotone. We only use
+\[
+ \pi_k\le p_{k+4}\le p_R\qquad(R\ge k+4).
+ \tag{4.7}\label{eq:pimonouse}
+\]
+
+\section{The finite Fourier area--energy identity}\label{sec:fourier}
+Fix \(N=2^R\ge4\), and abbreviate
+\[
+ \eta=\eta_R=c+is,\qquad \zeta=\eta^2,\qquad
+ x_k=\Rea(\eta^k),\quad y_k=\Ima(\eta^k).
+\]
+Let \(z_0,\ldots,z_{N-1}\) be any complex coordinates of a closed
+polygon. Real and imaginary parts may be rational or belong to the
+finite radical tower already constructed. Set
+\[
+ E=\sum_{j<N}|z_{j+1}-z_j|^2,\qquad
+ A=\frac12\sum_{j<N}\Ima(\overline{z_j}z_{j+1}),
+ \tag{5.1}\label{eq:EA}
+\]
+where indices are cyclic, and define the finite Fourier coefficients
+\[
+ a_k=\frac1N\sum_{j<N}z_j\zeta^{-jk}.
+ \tag{5.2}\label{eq:DFT}
+\]
+These are finite sums. The only scalar denominator is the positive
+integer \(N\).
+
+\begin{lemma}[Finite orthogonality]\label{lem:ortho}
+\[
+ \sum_{j<N}\zeta^{hj}=
+ \begin{cases}
+ N,&N\mid h,\\
+ 0,&N\nmid h.
+ \end{cases}
+ \tag{5.3}\label{eq:ortho}
+\]
+\end{lemma}
+\begin{proof}
+Reduce \(h\) modulo \(N\). If \(0<h<N\), write \(h=2^vb\)
+with \(b\) odd and \(v<R\), using a bounded scan of the binary digits.
+Put \(M=N/2^{v+1}\). Then
+\(\zeta^{hM}=\zeta^{bN/2}=-1\).
+In every consecutive block of \(2M\) indices, the second half cancels
+the first. This is a finite pairing argument; no algebraic inverse
+or analytic geometric-series limit occurs.
+\end{proof}
+
+Expansion and \eqref{eq:ortho} yield the inverse formula
+\(z_j=\sum_{k<N}a_k\zeta^{jk}\). Applying the same orthogonality after
+expanding the quadratic expressions gives
+\[
+ \begin{aligned}
+ E&=N\sum_{k<N}|a_k|^2|\zeta^k-1|^2
+   =4N\sum_{k<N}|a_k|^2y_k^2,\\
+ A&=\frac N2\sum_{k<N}|a_k|^2\Ima(\zeta^k)
+   =N\sum_{k<N}|a_k|^2x_ky_k.
+ \end{aligned}
+ \tag{5.4}\label{eq:parsevalfinite}
+\]
+For clarity, all off-diagonal terms contain
+\(\sum_{j<N}\zeta^{(k-\ell)j}\) and vanish; the diagonal terms
+give exactly the displayed factors of \(N\).
+
+\begin{theorem}[Exact nonnegative decomposition]\label{thm:spectral}
+\[
+ \boxed{cE-4sA
+   =4N\sum_{k=1}^{N-1}|a_k|^2y_ky_{k-1}\ge0.}
+ \tag{5.5}\label{eq:positiveidentity}
+\]
+Consequently
+\[
+ 4Ns\,|A|\le NE.
+ \tag{5.6}\label{eq:energy}
+\]
+\end{theorem}
+\begin{proof}
+The identity
+\[
+ cy_k-sx_k=\Ima(\eta^{k-1})=y_{k-1}
+\]
+turns the difference in \eqref{eq:parsevalfinite} into
+\eqref{eq:positiveidentity}. The \(k=0\) term is zero.
+For \(1\le k<N\), both \(y_k\) and \(y_{k-1}\) are nonnegative
+by Lemma~\ref{lem:semicircle}. Thus \(cE\ge4sA\).
+Since \(0<c\le1\), \(E\ge cE\ge4sA\).
+Conjugating all \(z_j\) negates area and preserves energy, so the
+same estimate holds with \(-A\). This gives \eqref{eq:energy}.
+\end{proof}
+
+The stronger conclusion \(4N(s/c)|A|\le NE\) is also available.
+For the finite arithmetic theorem, \eqref{eq:energy} is sufficient
+and avoids an algebraic denominator. Finite Fourier methods in
+polygonal isoperimetry have classical antecedents and modern
+extensions \cite{kwong}; no novelty claim for the Fourier method
+itself is intended here.
+
+\section{An explicit subdivision proves the arithmetic theorem}
+\label{sec:subdivision}
+Return to the rational polygon \(P\) and upper lengths \(u_i\).
+If \(S=0\), each \(u_i=0\), hence each edge is zero and
+\(\Area(P)=0\). Thus assume \(S>0\).
+
+Choose an integer
+\[
+ B\ge\max(1,S)
+\]
+and a power of two \(N=2^R\) such that
+\[
+ R\ge k+4,\qquad N\ge m(1+2^kB^2).
+ \tag{6.1}\label{eq:meshthreshold}
+\]
+The least adequate exponent is found by a bounded binary-length
+calculation. An explicit, very wasteful alternative is
+\(R=k+4+m(1+2^kB^2)\); thus no unbounded minimization is hidden.
+Put \(T=N-m>0\), and for each edge set
+\[
+ k_i=1+\left\lfloor\frac{Tu_i}{S}\right\rfloor.
+ \tag{6.2}\label{eq:subcount}
+\]
+Then \(k_i\ge1\), \(k_iS\ge Tu_i\), and
+\[
+ \sum_{i<m}k_i
+ \le m+\sum_{i<m}\frac{Tu_i}{S}=m+T=N.
+ \tag{6.3}\label{eq:subbudget}
+\]
+Subdivide edge \(i\) into \(k_i\) equal segments. Append repeated
+copies of a vertex until the polygon has exactly \(N\) vertices.
+Repeated vertices contribute zero edges and zero area. All new
+coordinates are rational.
+
+\begin{lemma}[Area and energy under subdivision]\label{lem:refinement}
+The new polygon has the same signed area as \(P\), and its energy obeys
+\[
+ E=\sum_{i<m}\frac{\norm{e_i}^2}{k_i}
+ \le\frac{S^2}{N-m}.
+ \tag{6.4}\label{eq:subenergy}
+\]
+\end{lemma}
+\begin{proof}
+The vertices on edge \(i\) are \(v_i+je_i/k_i\).
+Bilinearity and \(\det(e_i,e_i)=0\) show that every successive
+determinant is \(\det(v_i,e_i)/k_i\). Summing \(k_i\) of them
+gives the original determinant. Thus area is unchanged.
+
+The squared lengths of these subedges sum to
+\(\norm{e_i}^2/k_i\). By \eqref{eq:input} and \(k_iS\ge Tu_i\),
+\[
+ \frac{\norm{e_i}^2}{k_i}
+ \le\frac{u_i^2}{k_i}
+ \le\frac{S}{T}u_i.
+\]
+This includes \(u_i=0\), without division by \(u_i\).
+Summing proves \eqref{eq:subenergy}.
+\end{proof}
+
+Applying \eqref{eq:energy}, with \(p_R=Ns_R\), gives
+\[
+ \begin{aligned}
+ 4p_R|\Area(P)|
+ &\le NE
+ \le\frac{N}{N-m}S^2\\
+ &=S^2+\frac{mS^2}{N-m}
+ \le S^2+2^{-k}.
+ \end{aligned}
+ \tag{6.5}\label{eq:finitechain}
+\]
+The last step uses \eqref{eq:meshthreshold}:
+\(N-m\ge m2^kB^2\) and \(S\le B\).
+Finally \(\pi_k\le p_{k+4}\le p_R\), so
+\eqref{eq:finitechain} proves Theorem~\ref{thm:finite}.
+
+This is the entire core proof. There is no search for a maximizing
+polygon, no claim that a maximizer exists, and no passage to an
+infinite Fourier expansion.
+
+\section{The sharp polygon inequality as precision arithmetic}
+\label{sec:polygonlimit}
+Write
+\[
+ L(P)=\sum_{i<m}\sqrt{\norm{e_i}^2}
+\]
+for its explicitly computable length name. Let
+\(B\ge\max(1,L(P))\) be a rational or integer bound obtained, for
+example, by summing the coordinatewise absolute edge increments.
+Translation of the first vertex to zero shows that every vertex is
+within \(L(P)/2\) of zero: either of the two polygonal routes to
+it bounds the distance. Therefore
+\[
+ |\Area(P)|\le L(P)^2/4\le B^2/4.
+ \tag{7.1}\label{eq:crudear}
+\]
+The determinant estimate used here,
+\(|\det(v,w)|\le\norm v\norm w\), follows by expanding
+\((v\cdot w)^2+\det(v,w)^2=\norm v^2\norm w^2\).
+
+Choose rational upper lengths by \eqref{eq:sdbracket}, with errors
+at most \(2^{-t}\). Then
+\[
+ L(P)\le S_t\le L(P)+m2^{-t}.
+\]
+Put \(d=m2^{-t}\). Theorem~\ref{thm:finite} and
+Lemma~\ref{lem:pilower} give the explicit estimate
+\[
+ 4\pi|\Area(P)|
+ \le L(P)^2+2Bd+d^2+(1+B^2)2^{-k}.
+ \tag{7.2}\label{eq:polygonerror}
+\]
+For any rational \(0<\eps\le1\), choose \(t,k\) so that
+\[
+ d\le\frac{\eps}{4(B+1)},\qquad
+ 2^{-k}\le\frac{\eps}{2(1+B^2)}.
+ \tag{7.3}\label{eq:polygonprecision}
+\]
+Then \(d\le1\), and the last three terms in
+\eqref{eq:polygonerror} sum to at most \(\eps\).
+
+\begin{corollary}[Sharp polygon inequality]\label{cor:polygon}
+In represented-real order,
+\[
+ 4\pi|\Area(P)|\le L(P)^2.
+ \tag{7.4}\label{eq:polygonsharp}
+\]
+\end{corollary}
+Here represented-real order means that the displayed inequality
+has been proved with an arbitrarily prescribed rational error, with
+the choices \eqref{eq:polygonprecision} supplied explicitly.
+The proof does not infer a real inequality by a new completeness
+or compactness principle.
+
+\section{Area continuity and represented boundaries}\label{sec:curves}
+\subsection{A finite area-continuity estimate}
+\begin{lemma}\label{lem:areacontinuity}
+Let \(P=(p_i)\) and \(Q=(q_i)\) be closed polygons expressed on a
+common parameter subdivision, and suppose
+\(\norm{p_i-q_i}\le\delta\) at every common vertex. Then
+\[
+ |\Area(P)-\Area(Q)|
+ \le\frac{\delta}{2}\bigl(L(P)+L(Q)\bigr).
+ \tag{8.1}\label{eq:areacontinuity}
+\]
+\end{lemma}
+\begin{proof}
+Put \(d_i=p_i-q_i\), \(\Delta p_i=p_{i+1}-p_i\), and similarly
+for \(q\). Expanding, and shifting the index of a finite cyclic sum,
+gives
+\[
+ 2(\Area(P)-\Area(Q))
+ =\sum_i\det(d_i,\Delta p_i)
+   +\sum_i\det(d_{i+1},\Delta q_i).
+ \tag{8.2}\label{eq:areaidentity}
+\]
+Use the determinant bound term by term, followed by the triangle
+inequality. Common subdivision does not change either area or length.
+\end{proof}
+
+In particular, a uniformly Cauchy family of polygonal maps with
+perimeters bounded by \(B\) has an explicit signed-area Cauchy
+modulus: uniform error \(\delta\) gives area error at most \(B\delta\).
+If an exact \(m\)-vertex polygon is approximated at its vertices
+within \(\eta\), its perimeter changes by at most \(2m\eta\), and
+its area changes by at most
+\[
+ B\eta+m\eta^2
+ \tag{8.3}\label{eq:vertexerror}
+\]
+when the exact perimeter is at most \(B\).
+Thus the finite radical or Cauchy-real coordinates used in geometric
+explanations can always be replaced by rational coordinates at an
+explicitly chosen precision.
+
+\subsection{Polygonal boundary and domain names}
+Suppose \(P_n\) is a fixed primitive recursive family of rational
+closed polygons, with supplied moduli ensuring
+\[
+ |\Area(P_n)|\longrightarrow A,\qquad L(P_n)\longrightarrow L.
+ \tag{8.4}\label{eq:APnames}
+\]
+The limits here are names and precision conditions, not new objects
+whose existence arithmetic must prove. Let
+\(A,L\ge0\), and suppose \(L(P_n),L\le B\).
+For a requested error \(\eps\), use the moduli to arrange
+\[
+ \bigl||\Area(P_n)|-A\bigr|\le\delta,\qquad
+ |L(P_n)-L|\le\delta.
+\]
+Then Corollary~\ref{cor:polygon} gives
+\[
+ 4\pi A\le L^2+(16+2B)\delta
+ \tag{8.5}\label{eq:curvetransfer}
+\]
+as a precision inequality. Choosing
+\(\delta\le\eps/(16+2B)\), and allocating an additional arbitrarily
+small error to \eqref{eq:polygonsharp} if working entirely with
+rational representatives, proves
+\[
+ \boxed{4\pi A\le L^2.}
+ \tag{8.6}\label{eq:curveiso}
+\]
+
+For a Jordan-domain name, the polygons are simple domain boundaries
+and the presentation specifies their area and perimeter convergence.
+Equation \eqref{eq:curveiso} is therefore the ordinary enclosed-area
+inequality for that domain. The finite polygon proof never needed
+to decide membership of an arbitrary point in an arbitrary real curve.
+
+For this last geometric reading, the presentation must also certify
+that \(L\) is the \emph{actual perimeter of the limiting boundary}.
+One precise certificate uses the variation lower cut of a boundary
+parametrization: every finite inscribed length is at most \(L\), and
+specified inscribed lengths approach \(L\) with the supplied modulus.
+Hausdorff convergence and convergence of approximating polygon
+perimeters alone do not certify this: increasingly fine corrugations
+can retain excess length. Without length correctness,
+\eqref{eq:curvetransfer} still proves an inequality for the numerical
+polygon limits, and equality still forces a circular boundary, but
+the converse need not hold for an artificially enlarged length.
+
+To add the rigidity conclusion, also supply a Hausdorff convergence
+modulus from the boundaries of \(P_n\) to the represented boundary
+\(\Gamma\), and a positive separation of two boundary points in the
+nondegenerate case. Section~\ref{sec:shape} proves that equality forces
+a circle; with the length-correctness condition just specified, circles
+also attain equality.
+
+\subsection{A direct Lipschitz-curve version}\label{sec:lipschitz}
+Suppose \(\gamma:[0,1]\to\C\) is closed and \(L\)-Lipschitz,
+with a primitive recursive sampling presentation. Let \(P_N\)
+interpolate its values at \(j/N\), \(N\) dyadic.
+For \(t=(j+u)/N\), \(0\le u\le1\), convex interpolation gives
+\[
+ \begin{aligned}
+ |\gamma(t)-P_N(t)|
+ &\le(1-u)\frac{Lu}{N}
+       +u\frac{L(1-u)}{N}\\
+ &\le \frac{L}{2N}.
+ \end{aligned}
+ \tag{8.7}\label{eq:lipschitzinterp}
+\]
+Also \(L(P_N)\le L\). Comparing coarse and refined interpolants
+in Lemma~\ref{lem:areacontinuity} supplies the signed-area name \(A\)
+and the explicit bound
+\[
+ |A-\Area(P_N)|\le\frac{L^2}{2N}.
+ \tag{8.8}\label{eq:lipschitzarea}
+\]
+The finite energy obeys \(NE_N\le L^2\).
+Thus \eqref{eq:energy} and \(p_R\to\pi\) directly prove
+\(4\pi|A|\le L^2\), with explicit precision choices.
+If \(L\) is the actual perimeter and the supplied parametrization is
+normalized arclength, this is the usual curve statement.
+
+\section{Perimeter as a lower real: no length oracle}\label{sec:lower}
+One can avoid a general perimeter convergence modulus. Suppose a
+fixed primitive recursive curve presentation supplies rational samples,
+a uniform continuity modulus, closure, and an integer variation bound
+\(B\ge1\). The bound means that every finite inscribed polygon has
+perimeter at most \(B\).
+
+The continuity modulus gives polygonal interpolants with explicit
+uniform error, and Lemma~\ref{lem:areacontinuity} gives a signed-area
+name \(A\). Define the \emph{lower-real perimeter} by the rational
+lower bounds of finite inscribed polygon lengths. Its square has the
+analogous lower cut.
+
+The statement \(4\pi|A|\le L^2\) means:
+given a rational \(q<4\pi|A|\) and a finite positive-margin certificate,
+construct an inscribed polygon and a rational lower bound on its
+squared perimeter that is greater than \(q\).
+
+Here is a bounded witness construction. A certificate supplies a
+rational \(g>0\) with
+\[
+ q+g\le4\pi|A|.
+ \tag{9.1}\label{eq:gapcert}
+\]
+Concretely, if \(a_r\) is a rational area approximation with certified
+error \(\eps_r\), a rational comparison
+\[
+ q+g\le4\pi_j\max(0,|a_r|-\eps_r)
+\]
+is such a finite certificate. The explicit approximation moduli make
+these certificates adequate for every strict rational lower bound.
+If \(q<0\), any polygon suffices. Otherwise choose the area
+approximation so that
+\[
+ |A-\Area(P_n)|\le g/64.
+\]
+Since \(4\pi\le16\),
+\[
+ 4\pi|\Area(P_n)|\ge q+3g/4.
+ \tag{9.2}\label{eq:marginremain}
+\]
+The exact inscribed vertices may be Cauchy names. Write \(P=P_n\),
+let \(m\) be its number of vertices, and approximate them by a rational
+polygon \(Q\) within \(\eta\), chosen so that, for \(d=2m\eta\),
+\[
+ d\le1,\qquad
+ 16(B\eta+m\eta^2)\le g/16,\qquad
+ 2(B+1)d\le g/16.
+ \tag{9.3}\label{eq:lengthinterval}
+\]
+These are explicit rational thresholds; decreasing \(\eta\) to a
+dyadic number satisfying them is bounded. Then
+\(L(Q)\le B+1\), and \eqref{eq:vertexerror} gives
+\[
+ 4\pi|\Area(Q)|\ge q+11g/16.
+\]
+Choose \(k\) with
+\((1+(B+1)^2)2^{-k}\le g/16\).
+Compute rational edge-length intervals for \(Q\) of total width \(e\),
+with \(e\le1\) and \(e(2B+3)\le g/16\), and let their totals be
+\(R_Q\le L(Q)\le S_Q\). Then
+\(S_Q^2-R_Q^2\le g/16\). The finite theorem gives
+\[
+ \begin{aligned}
+ S_Q^2
+ &\ge4\pi_k|\Area(Q)|-2^{-k}\\
+ &\ge4\pi|\Area(Q)|-(1+(B+1)^2)2^{-k}
+ \ge q+10g/16.
+ \end{aligned}
+\]
+Hence \(R_Q^2\ge q+9g/16\).
+
+The approximating polygon \(Q\) need not itself be inscribed.
+To produce a valid member of the curve's length lower cut, output
+\[
+ R=\max(0,R_Q-d).
+\]
+The perimeter perturbation bound proves \(R\le L(P)\), and
+\[
+ R_Q^2-R^2\le2(B+1)d\le g/16.
+\]
+Thus \(R^2\ge q+g/2>q\), now for a genuinely inscribed polygon.
+Every index and precision has been bounded by the supplied continuity
+modulus, \(B\), the vertex count, and the rational gap \(g\).
+
+Dyadic partitions suffice to generate the usual variation lower cut.
+For a given finite partition, round its parameters to a sufficiently
+fine dyadic grid using the uniform continuity modulus. The corresponding
+finite length sum changes by at most twice the number of sample points
+times their pointwise error. Passing to the full dyadic refinement
+only increases length. This is a finite triangle-inequality argument.
+
+Thus the inequality itself does not require computability of the
+length or extraction of an arclength parametrization.
+
+\section{An explicit stability estimate and circle rigidity}
+\label{sec:rigidity}
+\subsection{The two surviving Fourier modes}
+Retain the notation of Section~\ref{sec:fourier}, and put
+\[
+ q_R=\frac{Ns}{c},\qquad
+ D=NE-4q_RA.
+\]
+Multiplying \eqref{eq:positiveidentity} by \(N/c\) yields
+\[
+ D=\sum_{k=2}^{N-1}\mu_k|a_k|^2,\qquad
+ \mu_k=\frac{4N^2}{c}\,y_ky_{k-1}>0.
+ \tag{10.1}\label{eq:stabilityspectral}
+\]
+The modes \(k=0,1\) vanish. For the remainder
+\(R_j=z_j-a_0-a_1\zeta^j\), finite weighted Cauchy--Schwarz gives
+\[
+ |R_j|^2\le D\sum_{k=2}^{N-1}\frac1{\mu_k}.
+ \tag{10.2}\label{eq:weightedcauchy}
+\]
+This is a finite algebraic inequality: apply the usual finite
+sum-of-squares proof of Cauchy--Schwarz to
+\(\sqrt{\mu_k}a_k\zeta^{jk}\) and \(1/\sqrt{\mu_k}\).
+All denominators are positive by Lemma~\ref{lem:semicircle}.
+
+The reciprocal sum telescopes exactly. Namely
+\[
+ \frac{x_{k-1}}{y_{k-1}}-\frac{x_k}{y_k}
+ =\frac{s}{y_ky_{k-1}},
+\]
+because the numerator is the imaginary part of \(\eta\).
+The endpoints are \(x_1/y_1=c/s\) and
+\(x_{N-1}/y_{N-1}=-c/s\). Hence
+\[
+ \sum_{k=2}^{N-1}\frac1{\mu_k}
+ =\frac{c^2}{2N^2s^2}\le\frac18,
+ \tag{10.3}\label{eq:reciprocal}
+\]
+using \(Ns=p_R\ge2\). We have proved the finite quantitative statement
+\[
+ \boxed{\max_j|z_j-a_0-a_1\zeta^j|^2\le D/8.}
+ \tag{10.4}\label{eq:stability}
+\]
+The maximum here is simply a bounded list assertion. This estimate is
+strong enough to prove rigidity without selecting subsequences.
+
+\subsection{Explicit passage to a Lipschitz curve}
+For a closed \(L\)-Lipschitz curve, translate so that \(\gamma(0)=0\).
+Closure gives \(|\gamma(t)|\le L\min(t,1-t)\le L/2\), and so
+\[
+ |\Area(P_N)|\le L^2/4.
+ \tag{10.5}\label{eq:areaboundlip}
+\]
+The slightly improved version of \eqref{eq:pqgap} is
+\[
+ 0\le q_R-\pi\le q_R-p_R\le64/N^2.
+ \tag{10.6}\label{eq:gap64}
+\]
+Indeed \(c^2\ge1/2\), \(c\ge1/2\), hence
+\(c(1+c)=c+c^2\ge1\), and \(p_Rs^2\le64/N^2\).
+
+Put \(\Delta=L^2-4\pi A\ge0\), using signed area; reverse
+orientation when applying the result to positive geometric area.
+Using \(NE\le L^2\), \eqref{eq:lipschitzarea},
+\eqref{eq:areaboundlip}, and \eqref{eq:gap64}, we obtain
+\[
+ \begin{aligned}
+ D
+ &\le\Delta+4\pi|A-\Area(P_N)|
+       +4(q_R-\pi)|\Area(P_N)|\\
+ &\le\Delta+\frac{8L^2}{N}+\frac{64L^2}{N^2}
+ \le\Delta+\frac{24L^2}{N}.
+ \end{aligned}
+ \tag{10.7}\label{eq:Derror}
+\]
+This argument does not decide the sign of the finite area approximation.
+Equation \eqref{eq:stability} consequently gives
+\[
+ \max_j|\gamma(j/N)-b_N-a_NU(j/N)|^2
+ \le\Delta/8+3L^2/N,
+ \tag{10.8}\label{eq:gridstability}
+\]
+where
+\[
+ b_N=\frac1N\sum_{j<N}\gamma(j/N),\qquad
+ a_N=\frac1N\sum_{j<N}\gamma(j/N)\overline{U(j/N)}.
+ \tag{10.9}\label{eq:means}
+\]
+
+For any \(K\)-Lipschitz function \(f\), its successive dyadic left-endpoint
+averages differ by at most \(K/(4N)\). This follows by pairing each
+old sample with its new midpoint, whose distance is at most \(K/(2N)\).
+Summing the dyadic geometric tail gives an error at most \(K/(2N)\).
+The functions \(\gamma\) and \(\gamma\overline U\) have Lipschitz
+constants \(L\) and \(5L\), respectively, since \(U\) is
+\(8\)-Lipschitz and \(|\gamma|\le L/2\).
+Thus the means define explicit names \(b,a\) satisfying
+\[
+ |b-b_N|\le L/(2N),\qquad
+ |a-a_N|\le5L/(2N),\qquad |a|\le L/2.
+ \tag{10.10}\label{eq:meanerror}
+\]
+
+For a represented parameter \(t\), choose a rational \(t'\) within
+\(1/(2N)\) of \(t\), and round \(t'\) to the nearest grid point
+\(j/N\), clamping at the endpoints. Then \(|t-j/N|\le1/N\).
+This uses only rational rounding, not a floor operation on an
+arbitrary real. Combine the sample estimate, the two
+mean errors, and
+\(|\gamma(t)-\gamma(j/N)|\le L/N\),
+\(|U(t)-U(j/N)|\le8/N\). The result is
+\[
+ \boxed{|\gamma(t)-b-aU(t)|
+ \le\sqrt{\Delta/8+3L^2/N}+8L/N.}
+ \tag{10.11}\label{eq:uniformstability}
+\]
+The coefficients and all bounds have primitive recursive names.
+
+\begin{theorem}[Effective equality for a Lipschitz presentation]
+\label{thm:equalitylip}
+If \(L^2=4\pi A\), then
+\[
+ \gamma(t)=b+aU(t)
+\]
+in uniform represented equality. Given an integer bound \(B\ge L\)
+and a rational \(\eps>0\), it is enough to take a dyadic
+\[
+ N\ge\max\left(4,\frac{48B^2}{\eps^2},\frac{16B}{\eps}\right)
+ \tag{10.12}\label{eq:rigiditymodulus}
+\]
+to make the right side of \eqref{eq:uniformstability} at most \(\eps\).
+\end{theorem}
+
+Indeed the square-root term is at most \(\eps/4\), and the last
+term at most \(\eps/2\). A supplied positive separation of two curve
+points implies \(|a|>0\), since their distance is at most \(2|a|\).
+The boundary is therefore a nondegenerate circle.
+
+\subsection{Equality for general polygonal boundary names}
+\label{sec:shape}
+The preceding proof does not force us to extract an arclength
+parametrization of the limiting curve. Apply it separately to each
+rational polygon \(P_n\).
+
+Choose rational edge upper bounds \(u_i>0\) so accurately that
+\[
+ 0\le S_n-L(P_n)\le2^{-n},\qquad S_n=\sum_i u_i.
+\]
+Traverse edge \(i\) during the rational time interval of length
+\(u_i/S_n\). The resulting polygonal map is \(S_n\)-Lipschitz.
+Zero edges cause no difficulty. Reverse the traversal when its rational
+signed area is negative. Its deficit is
+\[
+ \Delta_n=S_n^2-4\pi|\Area(P_n)|\ge0.
+\]
+By \eqref{eq:uniformstability}, it lies, in uniform distance and hence
+Hausdorff distance, within \(\sqrt{\Delta_n/8}\) of an explicit
+possibly degenerate circle \(C_n\). The precise reading is that for
+every additional rational error the finite bound in
+\eqref{eq:uniformstability} supplies an adequate sample size.
+
+Now suppose the boundary name satisfies
+\[
+ \dH(P_n,\Gamma)\to0,\quad
+ |\Area(P_n)|\to A,\quad S_n\to L
+\]
+with supplied moduli, and \(L^2=4\pi A\).
+The deficits then tend to zero effectively. For example, if
+\(S_n,L\le B\), both numerical errors are at most \(\delta\), then
+\(\Delta_n\le(2B+16)\delta\).
+Thus we have explicit \(\tau_n\to0\) such that
+\[
+ \dH(\Gamma,C_n)\le\tau_n.
+ \tag{10.13}\label{eq:circlehausdorff}
+\]
+
+No subsequence is selected. Compute the coordinate extrema of each
+rational polygon by finite minima and maxima. Hausdorff convergence
+makes these extrema Cauchy with the same error modulus.
+Let \(x_{\min},x_{\max},y_{\min},y_{\max}\) be their names, and define
+\[
+ b_*=\left(\frac{x_{\max}+x_{\min}}2,
+            \frac{y_{\max}+y_{\min}}2\right),\qquad
+ \rho=\frac{x_{\max}-x_{\min}}2.
+ \tag{10.14}\label{eq:canonicalcircle}
+\]
+If \(C_n\) has center \(b_n\) and radius \(\rho_n\),
+\eqref{eq:circlehausdorff} implies
+\[
+ |b_*-b_n|\le2\tau_n,\qquad |\rho-\rho_n|\le\tau_n.
+\]
+Circles whose centers and radii differ by these amounts have
+Hausdorff distance at most \(3\tau_n\): pair points with the same
+unit-circle parameter. Hence
+\[
+ \dH\bigl(\Gamma,C(b_*,\rho)\bigr)\le4\tau_n.
+ \tag{10.15}\label{eq:finalrigidity}
+\]
+This proves represented equality of the boundary with that circle.
+A positive two-point separation excludes \(\rho=0\).
+
+In the lower-real setting of Section~\ref{sec:lower}, equality supplies
+the missing perimeter modulus. It identifies the length cut with the
+name \(L=\sqrt{4\pi|A|}\). For an inscribed \(P_n\), write
+\(\ell_n=L(P_n)\le L\). The polygon inequality gives
+\[
+ (L-\ell_n)^2\le L^2-\ell_n^2
+ \le4\pi\bigl||A|-|\Area(P_n)|\bigr|
+ \le16|A-\Area(P_n)|.
+ \tag{10.16}\label{eq:equalitylengthmod}
+\]
+Thus the area modulus yields a perimeter modulus under equality,
+without dividing by \(L\) or deciding whether \(L=0\).
+The preceding polygon-by-polygon rigidity argument applies.
+
+\subsection{Circles attain equality}
+For a circle of radius \(\rho\), the regular dyadic polygon has
+perimeter \(2p_R\rho\) and area \(p_Rc_R\rho^2\).
+Section~\ref{sec:roots} therefore gives
+\[
+ L=2\pi\rho,\qquad A=\pi\rho^2,\qquad L^2=4\pi A.
+\]
+If any larger constant replaced \(4\pi\), this circle would violate
+the inequality; the regular polygon approximations already provide
+finite violations once their explicit errors are smaller than the
+proposed positive improvement.
+
+\section{Why the human proof stays within \texorpdfstring{\(\ipra\)}{iPRA}}
+\label{sec:audit}
+The restriction to quantifier-free induction must be audited explicitly.
+The following are the finite assertions used in the proof.
+
+\begin{longtable}{@{}p{0.22\textwidth}p{0.70\textwidth}@{}}
+\toprule
+Construction & Quantifier-free invariant after numerical coding\\
+\midrule
+\endhead
+Rational operations &
+The represented denominator is positive; cross-multiplied identities
+and inequalities agree with the encoded integer calculations.\\
+Square-root scan &
+The stored index is accepted and no larger scanned index is accepted.
+The latter is a bounded Boolean conjunction.\\
+Half-angle table &
+Each stored \(c_j,s_j\) satisfies the square identities, the stated
+signs, and the displayed rational error bound when approximated.\\
+Upper semicircle &
+The Boolean conjunction of the sign statements for the finite power
+table, propagated by \eqref{eq:midpoints}.\\
+Finite orthogonality &
+The partial sum over each paired block cancels; multiplication of the
+specified powers has the stated exponent.\\
+Fourier expansions &
+The running finite sums equal their expanded double sums, with the
+off-diagonal terms cancelled by the finite orthogonality table.\\
+Subdivision &
+The accumulated segment count stays within its rational floor bound;
+the accumulated area is unchanged and the energy is bounded by the
+corresponding partial sum of \(Su_i/T\).\\
+Precision selection &
+The powers of two satisfy the explicit numerical thresholds in
+\eqref{eq:meshthreshold}, \eqref{eq:polygonprecision}, and
+\eqref{eq:rigiditymodulus}.\\
+Curve comparison &
+For the finitely selected samples, the assumed name/modulus conditions
+give the required rational error bounds; the remaining calculation is
+a finite inequality.\\
+\bottomrule
+\end{longtable}
+
+Each indexed conjunction or double sum is a primitive recursive fold
+over an explicitly bounded list. Induction is applied to equality or
+order statements about those fold values, not directly to a formula
+quantifying over arbitrary curves or all real numbers. When a
+recursion argument needs bounds on several entries at once, store the
+bounded table and use its Boolean conjunction as the invariant.
+Increasing the coefficient bound or table size is done by an explicit
+primitive recursive majorant before the induction.
+
+For completeness, the radical-order induction can be bounded as follows.
+Fix the final tower height \(H\), the tower itself, and a bound \(M\ge2\)
+on all scalar numerators and denominators in the relevant arrays and
+radicands. A height-\(j\) multiplication uses fewer than \(2\cdot5^j\)
+rational operations; its recursive splitting has five multiplications
+one level lower plus coefficient additions. The sign calculation uses
+fewer than \(10\cdot5^j\) rational operations, since it makes at most
+three lower sign calls and three lower multiplications.
+The fixed finite list of order-law certificate calculations above is
+therefore bounded conservatively by
+\[
+ Q(j)=1000\cdot8^{j+1}.
+\]
+One unnormalized rational operation changes a scalar magnitude and
+denominator bound \(B\) to at most \(2B^2\). Consequently
+\[
+ F(j,M)=(2M+2)^{\,2^{Q(j)}}
+ \tag{11.1}\label{eq:majorant}
+\]
+is a deliberately generous bound for all coefficients used in those
+calculations at height \(j\).
+
+Precompute a backward budget table
+\(M_H=M\), \(M_j=F(j+1,M_{j+1})\). Induct upward on \(j\) using the
+Boolean conjunction of the sign and order-law instances for all
+height-\(j\) arrays with scalar numerators and denominators bounded by
+\(M_j\). The explicit next-level certificate invokes only lower-level
+instances inside the preceding budget. Array dimension is \(2^j\),
+so the enumeration is bounded by an explicit power of a finite
+scalar-code bound. The invariant is quantifier free.
+This fixes the final height and coefficient bound as parameters;
+it does not use induction on the unbounded assertion that every
+element of every tower satisfies the ordered-field axioms.
+Afterward the arbitrary finite bounds may be universally introduced.
+
+The algebraic sign recursion from Section~\ref{sec:arithmetic} reduces
+to comparisons one tower level lower. Lemma~\ref{lem:orderedextension}
+proves its order laws by the explicit multipliers
+\eqref{eq:signcertificate}--\eqref{eq:conecertificate}; it does not
+appeal to an ambient real field. To internalize a finite calculation,
+store its operand arrays and these witnesses, including the
+lower-level comparisons required by each witness. Their size bounds
+are computed by the same fixed recursion. Checking the table in
+dependency order is a bounded Boolean invariant.
+All elementary order arguments in the spectral proof are thus
+statements about finite coefficient codes. Positive
+denominators may be cleared, so no order axiom for an unrepresented
+real field is added.
+
+There is no induction over a genuinely analytic predicate. In
+particular, \emph{taking a limit} means: given a precision input,
+compute the finite indices displayed in the proof and obtain the
+corresponding rational inequality. Likewise, equality of two represented
+curves is the assertion of all such precision inequalities, proved by
+introducing the precision variable and performing the finite argument.
+Universal introduction is allowed in intuitionistic logic; it is
+unrestricted induction that is unavailable.
+
+The curve statement is a schema for each fixed family of primitive
+recursive sample functions and moduli, using their defining equations
+and the stated name hypotheses. It is not a purported single
+primitive recursive evaluation function for all primitive recursive
+program codes. An alternative formulation can carry finite computation
+traces with an explicitly supplied primitive recursive time bound.
+
+The proof uses no excluded middle for undecidable statements, no
+Markov principle, no countable choice, no Bolzano--Weierstrass principle,
+and no variational existence theorem. Decisions about signs of the
+finite rational or radical expressions are supplied by terminating
+primitive recursive comparisons. This list describes the actual proof,
+not a claim that every finite-looking argument automatically belongs
+to \(\ipra\).
+
+\section{A concrete path to complete Lean formalization}
+\label{sec:lean}
+\subsection{Repository snapshot and reusable infrastructure}
+The inspected ProveIt snapshot is
+\begin{center}\small\ttfamily
+329161f8da0b319d51ba9f6246c4b19d243f7193.
+\end{center}
+Its root configuration pins Lean \texttt{v4.32.0}, with Mathlib revision
+\begin{center}\small\ttfamily
+81a5d257c8e410db227a6665ed08f64fea08e997.
+\end{center}
+These are source observations, not a claim to have rebuilt the
+repository. The source directory of the Lake library
+\texttt{ConciseIPRA} is
+\begin{center}\small\ttfamily
+Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean.
+\end{center}
+
+\texttt{ConciseIPRA.PR} defines primitive recursive function symbols
+\texttt{PR}, terms \texttt{PTm}, the theory \texttt{PRAAx}, and the
+derived rule \texttt{PRA.qfInd}. Its quantifier-free restriction is
+expressed by an explicit \texttt{Fm.QF} premise
+\cite{proveit-pr}. \texttt{ConciseIPRA.Deduction} defines the embedded
+intuitionistic derivability judgment \texttt{Prf Ax Gamma phi}
+\cite{proveit-deduction}. Thus the actual completion criterion is
+\begin{lstlisting}
+Prf PRAAx [] (finiteFormula checkCode)
+\end{lstlisting}
+for the compiled checker code, not an external theorem whose type
+merely mentions Lean's \texttt{Rat} or \texttt{Real}.
+
+The existing theorem \texttt{pra\_iff\_native} can subsequently
+transfer the result to the concise native calculus
+\cite{proveit-native}. No dependency on the Busy Beaver or
+Diophantine-consistency developments is needed.
+
+\subsection{Files supplied in this archive}
+\texttt{FiniteData.lean} defines rational points, cyclic edges, signed
+area, the bounded square-root approximation, the exact \(\pi_k\)
+algorithm, validity of an upper-length list, and the finite target.
+
+\texttt{PrimitiveCoding.lean} specifies concrete natural encodings of
+integers, rationals, points, and finite lists, and a total three-input
+checker. Malformed data are accepted vacuously, so the target can be
+a universal equation. On valid input, acceptance means exactly
+\eqref{eq:finite}.
+
+\texttt{InternalGoal.lean} constructs the first-order formula
+\[
+ \forall p\,\forall u\,\forall k\;
+   \operatorname{check}(p,u,k)=0,
+ \tag{12.1}\label{eq:internal}
+\]
+where zero is the success code. The argument
+\texttt{checkCode : PR 3} is explicitly required to be the compilation
+of that checker. The file does not substitute an arbitrary constantly
+successful program. Its only theorem transfers an \emph{already
+supplied} internal proof to the native calculus; the premise of this
+conditional theorem is the entire unfinished proof obligation.
+
+The files contain no \texttt{sorry}, \texttt{admit}, or added axiom
+declarations. They are nevertheless \emph{uncompiled blueprints}:
+no Lean or Lake executable was available in this environment.
+Absence of placeholders must not be confused with completion of the
+main theorem.
+
+\subsection{Implementation sequence and acceptance criteria}
+\begin{enumerate}
+\item \textbf{Compile the finite codecs and arithmetic.}
+Construct fixed \texttt{PR} codes for natural-list decoding, signed
+integer arithmetic, rational operations, bounded scans, and Boolean
+folds. Prove their equations internally. The mathematical integers
+and rationals in the explanatory layer are specifications of these
+codes.
+
+\item \textbf{Prove the root approximation library.}
+Formalize \eqref{eq:sdbracket}, the half-angle error invariant, and
+\eqref{eq:pierror}. This gives a concrete internal correctness theorem
+for the code computing \(\pi_k\).
+
+\item \textbf{Formalize the finite positive-radical calculation.}
+Implement coefficient-array addition and multiplication and the
+sign recursion. Prove the sign and square identities used by
+\eqref{eq:halfangle}. Begin with the restricted fixed towers of this
+proof; a general real-algebraic-number package is unnecessary.
+
+\item \textbf{Prove the dyadic root table and finite DFT lemmas.}
+Establish \eqref{eq:upper}, \eqref{eq:ortho}, and
+\eqref{eq:parsevalfinite}. Keep bounded index conjunctions as Boolean
+folds so that each invocation of \texttt{PRA.qfInd} has an actual
+\texttt{Fm.QF} witness.
+
+\item \textbf{Formalize subdivision and close the finite theorem.}
+Prove the rational floor budget, area preservation, and
+\eqref{eq:subenergy}; combine with the spectral identity and the mesh
+threshold. Produce a derivation of the matrix in \eqref{eq:internal},
+then apply universal introduction three times.
+
+\item \textbf{Add precision-indexed geometric corollaries.}
+For fixed PR sample families, formalize the finite determinant
+identity \eqref{eq:areaidentity}, the error budgets, the lower-real
+witness procedure, and the stability telescope. The curve and circle
+names should remain first-order formulas with explicit moduli.
+
+\item \textbf{Optionally connect to Mathlib geometry.}
+In the external metatheory, prove that the selected effective
+Jordan-domain representation agrees with conventional enclosed area
+and perimeter. This interpretation layer can use existing analysis
+infrastructure, but it must be kept logically distinct from the
+internal derivation.
+\end{enumerate}
+
+The first meaningful gate is the checked internal finite theorem,
+with the checker compilation fixed and its equation audited.
+The second is the represented-domain corollary, and the third the
+rigidity statement. A separate classical Lean proof, such as the
+analytic route described by Samarakkody \cite{samarakkody}, can inform
+the interpretation layer; it does not certify the arithmetic strength
+of this argument.
+
+\section{Artifact verification and reproducibility}
+The archive includes exact rational reference code, an exact radical
+Fourier diagnostic, the Lean blueprint, and machine-readable check
+reports. The rational checks cover:
+\begin{itemize}
+\item 25 \(\pi_k\) intervals, compared using an independent rational
+Machin-series enclosure;
+\item 2,160 rational square-root interval cases;
+\item 845 finite polygon instances, including degeneracies, repeated
+vertices, orientation reversal, self-intersection, and very large
+translations;
+\item six expanded subdivisions, checking area preservation and the
+energy identity exactly.
+\end{itemize}
+The radical diagnostic verifies the root and sign tables,
+orthogonality, the separate Fourier area and energy formulas, and
+\eqref{eq:positiveidentity} for four examples of sizes
+\(4,4,8,16\), using exact fractions and recursively represented
+radicals. It uses no floating-point mathematics or trigonometric
+library.
+
+These are implementation and formula checks, not a replacement for
+the universal proof and not an internal \(\ipra\) derivation.
+The Machin comparison is an independent diagnostic only; the proof
+of the constant in this note is the polygonal construction in
+Sections~\ref{sec:roots}--\ref{sec:pi}.
+
+From the archive root, run:
+\begin{lstlisting}
+python3 code/verify.py
+python3 code/dyadic_spectral_check.py
+sh build.sh
+\end{lstlisting}
+The Python scripts require only the standard library.
+The build script requires a LaTeX installation with the packages
+listed in the source preamble. The compiled PDF is supplied so that
+rebuilding is optional.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{osserman}
+R. Osserman, \emph{The isoperimetric inequality},
+Bulletin of the American Mathematical Society 84 (1978), 1182--1238.
+\href{https://doi.org/10.1090/S0002-9904-1978-14553-4}{DOI}.
+\href{https://metaphor.ethz.ch/x/2021/fs/401-3462-00L/sc/extras/Osserman.pdf}{Accessible primary-paper copy}.
+
+\bibitem{kwong}
+K.-K. Kwong, \emph{A unified approach to higher order discrete and
+smooth isoperimetric inequalities}, Mathematika,
+\href{https://doi.org/10.1112/mtk.12238}{doi:10.1112/mtk.12238}.
+\href{https://arxiv.org/abs/2111.13352}{arXiv:2111.13352}, version 2,
+26 December 2023.
+
+\bibitem{gu-lutz-mayordomo}
+X. Gu, J. H. Lutz, and E. Mayordomo,
+\emph{Curves That Must Be Retraced}, Sixth International Conference
+on Computability and Complexity in Analysis, 2009.
+\href{https://drops.dagstuhl.de/entities/document/10.4230/OASIcs.CCA.2009.2267}{Primary publication and paper}.
+
+\bibitem{proveit-pr}
+V. Reshetnikov, ProveIt repository,
+\texttt{ConciseIPRA/PR.lean}, inspected at commit
+\texttt{329161f8da0b319d51ba9f6246c4b19d243f7193}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/329161f8da0b319d51ba9f6246c4b19d243f7193/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean}{Pinned source}.
+The root \texttt{lean-toolchain}, \texttt{lakefile.toml}, and
+\texttt{lake-manifest.json} at this commit supply the configuration
+reported in Section~\ref{sec:lean}.
+
+\bibitem{proveit-deduction}
+ProveIt, \texttt{ConciseIPRA/Deduction.lean}, same pinned commit.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/329161f8da0b319d51ba9f6246c4b19d243f7193/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/Deduction.lean}{Pinned intuitionistic deduction source}.
+
+\bibitem{proveit-native}
+ProveIt, \texttt{ConciseIPRA/NativeBiInterpretation.lean},
+same pinned commit.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/329161f8da0b319d51ba9f6246c4b19d243f7193/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}{Pinned native-calculus transfer source}.
+
+\bibitem{samarakkody}
+M. Samarakkody, \emph{Formalizing the Classical Isoperimetric
+Inequality in the Two-Dimensional Case},
+\href{https://arxiv.org/abs/2603.14663}{arXiv:2603.14663},
+15 March 2026. Cited as a comparison of formalization approaches;
+its proof is not a dependency of this note.
+\end{thebibliography}
+\end{document}

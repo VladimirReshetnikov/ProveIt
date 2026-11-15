@@ -1,0 +1,1258 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage{microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem,xcolor}
+\usepackage{listings}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!55!black,citecolor=blue!45!black]{hyperref}
+\usepackage{fancyhdr}
+\hypersetup{pdftitle={Stirling formula in intuitionistic primitive recursive arithmetic},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={Finite rational proof, explicit error bounds, and Lean formalization plan}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Stirling's formula in iPRA}
+\fancyhead[R]{\small A finite rational proof}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\eps}[1]{2^{-{#1}}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\At}{\operatorname{At}}
+\newcommand{\bit}{\operatorname{bit}}
+\newcommand{\Rat}{\operatorname{Rat}}
+\newcommand{\ArithCheck}{\operatorname{Check}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\lmargin}{\lambda}
+\newcommand{\umargin}{\mu}
+\newcommand{\repo}{\texttt{329161f8da0b319d51ba9f6246c4b19d243f7193}}
+\title{\textbf{Stirling's formula in intuitionistic\protect\\primitive recursive arithmetic}\\[6pt]
+\large A complete finite rational argument, explicit error moduli,\\and a concrete path to Lean formalization}
+\author{Prepared for Vladimir Reshetnikov}
+\date{November 14, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a finitary proof of Stirling's formula in intuitionistic primitive
+recursive arithmetic. Its numerical conclusion is stronger than the usual
+asymptotic statement: for every integer $n\ge1$,
+\[
+ n!=\sqrt{2\pi n}\,(n/e)^n e^{r_n},
+ \qquad \frac1{12n+1}<r_n<\frac1{12n}.
+\]
+The literal arithmetic theorem is an explicitly specified rational
+inequality with a universally quantified precision parameter. Logarithms,
+$\pi$, $e$, square roots, and the displayed real notation are interpreted by
+fixed primitive recursive rational approximation algorithms. A rational
+parametrization of the circle replaces trigonometric integrals, and finite
+telescoping estimates replace integration by parts and convergence
+principles. In particular, no completeness, choice, unbounded search, or
+induction on a formula with an unbounded quantifier is used.
+
+The written argument and its arithmetic reduction are supplied in full.
+The accompanying Lean file is explicitly uncompiled scaffolding: it gives
+concrete rational programs, the exact object-language target in ProveIt's
+\texttt{ConciseIPRA}, and the transfer to its native calculus, but does not
+claim a completed machine-checked derivation. Executable exact-rational
+checks accompany the proof and serve only as supplementary validation.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\section{The result and its precise foundational meaning}
+\label{sec:statement}
+
+The familiar statement is
+\begin{equation}\label{eq:stirling}
+ \frac{n!}{\sqrt{2\pi n}(n/e)^n}\longrightarrow1.
+\end{equation}
+An arithmetic theory has natural-number variables, not a sort of arbitrary
+real numbers. Consequently, saying that \eqref{eq:stirling} is provable in
+$\ipra$ requires both a representation and an effective assertion about it.
+Here every analytic expression names a particular rational algorithm with
+proved error bounds. Nothing asserts that all real numbers or all
+convergent sequences exist in the theory.
+
+\begin{theorem}[Quantitative Stirling formula]\label{thm:main}
+In the interpretation by explicit primitive recursive rational names
+developed below, $\ipra$ proves the following for every $n\ge1$.
+Put
+\begin{align}
+ a_n&=\sum_{j=1}^n\log j-(n+\tfrac12)\log n+n,\label{eq:a}\\
+ C&=\tfrac12\log(2\pi),\qquad r_n=a_n-C,\label{eq:r}\\
+ R_n&=\frac{n!e^n}{n^n\sqrt{2\pi n}}.\label{eq:R}
+\end{align}
+Then
+\begin{equation}\label{eq:robbins}
+ \frac1{12n+1}<r_n<\frac1{12n},\qquad \log R_n=r_n,
+\end{equation}
+and, in particular,
+\begin{equation}\label{eq:relative}
+ 0<R_n-1<\frac1{12n-1}.
+\end{equation}
+The function $N(p)=2^p$ is a primitive recursive modulus for
+\eqref{eq:stirling}: $n\ge2^p$ implies $\abs{R_n-1}<2^{-p}$.
+\end{theorem}
+
+The constants in \eqref{eq:robbins} are the classical Robbins bounds
+\cite{Robbins}. The purpose here is their explicit realization in the
+restricted intuitionistic arithmetic, including a finite proof of the
+normalizing constant. There is no claim of a new numerical bound.
+
+For clarity, here is the exact arithmetic endpoint. Sections
+\ref{sec:log} and \ref{sec:pi} define rational primitive recursive functions
+$L(q,t)$ and $P(t)$ approximating $\log q$ and $\pi$. For $n\ge1$ set
+\begin{align}
+ b(n)&=\min\{b\le n+1:n<2^b\},& t(n,p)&=p+b(n)+4,\label{eq:precision}\\
+ Q(n,p)&=\sum_{j=1}^nL(j,t(n,p))
+ -(n+\tfrac12)L(n,t(n,p))+n\notag\\
+ &\hspace{25mm}-\tfrac12 L(2P(t(n,p)),t(n,p)).\label{eq:Q}
+\end{align}
+Put $Q(0,p)=0$ to make the function total. A rational is represented by
+signed integer numerator and positive integer denominator, so the following
+is an ordinary first-order arithmetic sentence, with a quantifier-free
+matrix after the indicated primitive recursive definitions are expanded:
+\begin{equation}\label{eq:internal}
+ \boxed{\quad
+ \forall n,p\quad n\ge1\ \Longrightarrow\
+ \frac1{12n+1}-2^{-p}\le Q(n,p)
+ \le\frac1{12n}+2^{-p}.\quad}
+\end{equation}
+The comparisons mean cross-multiplied integer comparisons, not real-order
+predicates. We prove this sentence and, more strongly, its version with
+the positive margins in \eqref{eq:margins} below. This is the literal
+$\ipra$ theorem behind \eqref{eq:robbins}.
+
+\paragraph{What is finished.}
+This manuscript provides a human-readable proof, explicit definitions,
+finite estimates for every analytic step, and the induction audit. The
+archive also contains executable rational algorithms and a Lean plan tied
+to inspected repository APIs. It does \emph{not} contain a completed Lean
+term inhabiting the new object-language derivability judgment. A precise
+description of that remaining implementation appears in
+Section~\ref{sec:lean}.
+
+\section{Arithmetic conventions and finite notation}
+\label{sec:arith}
+
+We use the usual first-order presentation of $\ipra$: intuitionistic
+predicate logic with equality, symbols for primitive recursive functions,
+their defining equations, successor separation and injectivity, and
+induction for quantifier-free formulas. This is the presentation in
+ProveIt's \texttt{ConciseIPRA/PR.lean} \cite{ProveItPR}.
+
+Integers can be pairs of naturals, with $(u,v)$ representing $u-v$.
+Rationals can be triples $(u,v,d)$ representing $(u-v)/d$, with $d>0$.
+Addition and multiplication use cross products, and order uses integer
+cross multiplication. Lowest-term normalization is unnecessary. Every
+function is made total by assigning a fixed default on malformed inputs;
+the proofs maintain validity of the inputs actually used.
+
+Finite sums, products, exponentiation, factorials, bounded maxima, and
+bounded searches are primitive recursive. All rational comparisons used in
+searches are decidable integer comparisons. Finite lists of partition
+points can be encoded by primitive recursive pairing or list encodings;
+insertion sort uses a loop bounded by the list length. These are finite
+algorithms with quantifier-free correctness invariants.
+
+\paragraph{Named quantities.}
+The notation $x=\log q$, for example, abbreviates a specified sequence of
+rational enclosures. Equality of two such names means that any prescribed
+rational error tolerance is met by explicit finite approximations. We
+never introduce a new existentially chosen limit. To combine a finite
+number of estimates, choose all precisions at the start and add their
+error budgets. For a bounded sum with $s$ summands, a summand error
+$\delta/(s+1)$ gives total error at most $\delta$.
+
+This notation must not be confused with permission to induct on
+``the equality holds at every precision.'' In every inductive argument
+below, the precision and final finite bounds are fixed parameters. The
+induction predicate is a rational identity or inequality at those fixed
+parameters. A bounded conjunction can be encoded by a primitive recursive
+Boolean product. Section~\ref{sec:elimination} gives a more explicit audit.
+
+\section{Finite rational sums in place of integration}
+\label{sec:sums}
+
+Only a small amount of elementary ``calculus'' is needed. We derive its
+finite content now. An integral symbol below is an abbreviation for these
+sums and their error estimates.
+
+\subsection{Refinement, concatenation, and a modulus}
+
+For a rational partition $a=t_0<\cdots<t_N=b$ with $0<a<b$, define
+\[
+ U(\mathcal P)=\sum_{i<N}\frac{t_{i+1}-t_i}{t_i},\qquad
+ D(\mathcal P)=\sum_{i<N}\frac{t_{i+1}-t_i}{t_{i+1}}.
+\]
+Splitting a cell at $w\in[u,v]$ increases $D$ and decreases $U$:
+this follows by multiplying through by the positive denominators and
+using $u\le w\le v$. Induction on the number of added points proves the
+same for any refinement. Two finite rational partitions have their sorted
+union as a common refinement. Their intervals $[D,U]$ therefore overlap.
+
+For the uniform partition with $h=(b-a)/N$, the width is exactly
+\begin{equation}\label{eq:logwidth}
+ U-D=h\left(\frac1a-\frac1b\right).
+\end{equation}
+Thus, for a positive rational $x=A/B$, with $H=A+B$, the uniform
+partition of $[\min(1,x),\max(1,x)]$ into $N=2^rH^4$ pieces has
+width at most $2^{-r}$: use $b-a\le H$, $a\ge1/H$, and
+$U-D\le(b-a)^2/(Na^2)$.
+
+Oriented partitions handle a reversed interval by changing its sign.
+Concatenating two partitions adds their sums. When the middle endpoint
+lies outside the other two, the overlap cancels after a common refinement.
+There are only finitely many rational endpoint orderings, each decidable.
+No assertion about an infinite collection of partitions is required.
+
+More generally, for any of the explicitly given rational functions $f$
+used here, suppose a proved rational bound is
+$\abs{f(u)-f(v)}\le B\abs{u-v}$ on a rational interval of length $d$.
+The left sum $S_N$ on a uniform partition and its refinement $S_{NM}$
+satisfy
+\begin{equation}\label{eq:refine}
+ \abs{S_N-S_{NM}}\le\frac{Bd^2}{N},\qquad
+ \abs{S_N-S_M}\le Bd^2\left(\frac1N+\frac1M\right).
+\end{equation}
+Indeed, each sample point moves by at most $d/N$ inside its original cell;
+multiply this variation bound by the cell length and sum. This is a finite
+double-sum proof. It supplies a primitive recursive modulus whenever we
+write an integral of one of these functions.
+
+\subsection{Polynomial sums and finite telescoping}
+
+For $m\ge0$ and $0\le u\le v$, factorization gives
+\[
+ v^{m+1}-u^{m+1}=(v-u)\sum_{j=0}^m v^{m-j}u^j.
+\]
+Each summand lies between $u^m$ and $v^m$. Apply this on every partition
+cell and telescope. The lower and upper sums for $t^m$ enclose
+$(b^{m+1}-a^{m+1})/(m+1)$. On $[0,x]$ with a uniform partition their
+difference is at most $x^{m+1}/N$. In the sum notation this proves
+\begin{equation}\label{eq:monomial}
+ \int_0^x t^m\,dt=\frac{x^{m+1}}{m+1},
+\end{equation}
+including its explicit rational error. Finite linear combinations give the
+same statement for every particular polynomial used in the argument.
+
+Another frequently used finite principle is the following. If rational
+functions $G,F$ satisfy
+\[
+ \abs{G(v)-G(u)-(v-u)F(u)}\le B(v-u)^2
+ \quad(a\le u\le v\le b),
+\]
+then summation over a uniform mesh yields
+\begin{equation}\label{eq:FTCfinite}
+ \abs{\frac{b-a}{N}\sum_{j<N}F(a+j(b-a)/N)
+       -(G(b)-G(a))}\le\frac{B(b-a)^2}{N}.
+\end{equation}
+This is merely the triangle inequality and telescoping; a fundamental
+theorem of calculus is not assumed. We will exhibit the rational
+increment identities needed to apply it.
+
+\section{Logarithms as explicit rational algorithms}
+\label{sec:log}
+
+\subsection{The logarithm laws}
+
+For rational $x>0$, let $\log x$ name the oriented enclosures from
+Section~\ref{sec:sums} on the interval from $1$ to $x$. Scaling every
+partition point by a positive rational $x$ preserves each summand:
+\[
+ \frac{xu_{i+1}-xu_i}{xu_i}
+ =\frac{u_{i+1}-u_i}{u_i}.
+\]
+Concatenation at $x$ therefore proves
+\begin{equation}\label{eq:loglaws}
+ \log(xy)=\log x+\log y,\quad \log1=0,\quad
+ \log(1/x)=-\log x.
+\end{equation}
+More explicitly, refine the three partitions involved to common scaled
+partitions. The discrepancy of their original sums is at most the sum of
+their three enclosure widths. This proves every prescribed finite-
+precision instance of \eqref{eq:loglaws}.
+
+Bounding $1/t$ by its endpoint values gives, for $0<x<y$,
+\begin{equation}\label{eq:loglip}
+ \frac{y-x}{y}\le\log y-\log x\le\frac{y-x}{x}.
+\end{equation}
+In particular, with the orientation treated correctly on either side of
+$1$, for all $x>0$ one has
+\begin{equation}\label{eq:logglobal}
+ 1-\frac1x\le\log x\le x-1.
+\end{equation}
+For rational endpoints these are finite-sum comparisons. For a particular
+named positive argument bounded away from zero, the same inequalities
+follow with its explicit input error added. The Lipschitz estimate in
+\eqref{eq:loglip} controls that addition. No case split on an undecidable
+comparison of real numbers is needed.
+
+\subsection{A finite positive series and its tail}
+
+For rational $0\le z<1$, translation of partitions and
+\eqref{eq:loglaws} give
+\[
+ \log\frac{1+z}{1-z}
+ =\int_0^z\left(\frac1{1+t}+\frac1{1-t}\right)dt
+ =2\int_0^z\frac{dt}{1-t^2}.
+\]
+For each finite $K$, the exact geometric identity is
+\[
+ \frac1{1-t^2}=\sum_{j<K}t^{2j}+\frac{t^{2K}}{1-t^2}.
+\]
+On $[0,z]$ the last term is nonnegative and at most
+$t^{2K}/(1-z^2)$. Multiply by partition widths, sum, and use
+\eqref{eq:monomial}. We obtain the explicit enclosure
+\begin{equation}\label{eq:atanh}
+ 0\le\log\frac{1+z}{1-z}-2\sum_{j<K}\frac{z^{2j+1}}{2j+1}
+ \le\frac{2z^{2K+1}}{(2K+1)(1-z^2)}.
+\end{equation}
+This is a finite geometric calculation with a tail bound, not an appeal
+to an infinite-series theorem.
+
+\subsection{The algorithm \texorpdfstring{$L(q,r)$}{L(q,r)} used in the arithmetic statement}
+
+For $q=A/B\ge1$, find by bounded search the largest $k\le A$ with
+$2^kB\le A$. Then $2^k\le q<2^{k+1}$. Define
+\[
+ y=q/2^k,\quad z=(y-1)/(y+1),\quad K=r+k+4,
+\]
+so $1\le y<2$ and $0\le z<1/3$. Put
+\begin{equation}\label{eq:L}
+ L(q,r)=2k\sum_{j<K}\frac{3^{-(2j+1)}}{2j+1}
+       +2\sum_{j<K}\frac{z^{2j+1}}{2j+1}.
+\end{equation}
+For $0<q<1$, set $L(q,r)=-L(1/q,r)$, and set $L(q,r)=0$ on
+invalid nonpositive input. The latter case will never be used in a valid
+logarithmic calculation.
+
+By \eqref{eq:atanh}, each of the two unweighted tails in
+\eqref{eq:L} is at most $(3/4)9^{-K}$. Therefore
+\begin{equation}\label{eq:Lerr}
+ \abs{L(q,r)-\log q}
+ \le\tfrac34(k+1)9^{-(r+k+4)}\le2^{-r}.
+\end{equation}
+For example, the last inequality follows from $k+1\le9^k$ and
+$2^r\le9^r$, both proved by quantifier-free induction. There is large
+slack in this estimate. The actual geometric tail can be retained until
+the last comparison with a rational enclosure, so no exact rational
+inequality is obtained by an illicit limit argument.
+
+The search bound is legitimate: $2^A>A\ge q$ for positive integer $A$
+unless the result already occurs earlier, so the maximal exponent is
+found within the declared finite range. All operations in \eqref{eq:L}
+are primitive recursive.
+
+\section{An independent primitive recursive name for \texorpdfstring{$\pi$}{pi}}
+\label{sec:pi}
+
+First define $\At(x)$, for rational $0\le x\le1$, by the finite sums
+\[
+ A_N(x)=\frac{x}{N}\sum_{j<N}\frac1{1+(xj/N)^2}.
+\]
+The summand decreases. The corresponding left-right gap is
+$\frac{x}{N}(1-1/(1+x^2))\le1/N$. Thus these are explicitly
+compatible rational enclosures. Define $\pi=4\At(1)$. This definition
+does not use factorials or Stirling's formula; a direct geometric
+identification is given below.
+
+The finite identity
+\[
+ \frac1{1+t^2}=\sum_{j<K}(-1)^jt^{2j}
+                +\frac{(-1)^Kt^{2K}}{1+t^2}
+\]
+and \eqref{eq:monomial} imply
+\begin{equation}\label{eq:atan}
+ S_K(x)=\sum_{j<K}\frac{(-1)^jx^{2j+1}}{2j+1},\qquad
+ \abs{\At(x)-S_K(x)}\le\frac{x^{2K+1}}{2K+1}.
+\end{equation}
+
+\subsection{A fast formula, proved by finite substitution}
+
+We need only the particular addition law
+$\At(1)=\At(1/2)+\At(1/3)$. Here is its finite proof. Put
+$a=1/2$, $b=1/3$, $h=b/N$ and
+\[
+ \phi(u)=\frac{a+u}{1-au},\qquad t_j=\phi(jh),\qquad
+ f(t)=\frac1{1+t^2}.
+\]
+Then $\phi(0)=a$, $\phi(b)=1$, and direct rational algebra gives
+\[
+ \phi(v)-\phi(u)=\frac{(1+a^2)(v-u)}{(1-au)(1-av)},\qquad
+ f(\phi(u))=\frac{(1-au)^2}{(1+a^2)(1+u^2)}.
+\]
+Consequently the left sum $T_N$ on the partition $t_j$ of $[a,1]$
+satisfies
+\[
+ (t_{j+1}-t_j)f(t_j)
+ =h f(jh)\frac{1-ajh}{1-a(j+1)h}.
+\]
+Its difference from the corresponding summand of $A_N(b)$ is between
+$0$ and $(3/5)h^2$. Thus $0\le T_N-A_N(b)\le1/(15N)$.
+Also $\max_j(t_{j+1}-t_j)\le3/(5N)$, so the left-right gap of
+$T_N$ is at most $9/(50N)$. The quantity
+$A_{2N}(1)-A_N(a)$ is exactly the uniform left sum on $[a,1]$ and
+has gap $3/(20N)$. Compare the partitions by their finite common
+refinement. Adding the three displayed errors gives
+\begin{equation}\label{eq:atanaddfinite}
+ \abs{A_{2N}(1)-A_N(1/2)-A_N(1/3)}\le\frac1N.
+\end{equation}
+This establishes the named equality with an explicit modulus.
+
+We use the following efficient rational code for $\pi$:
+\begin{equation}\label{eq:Pi}
+ P(r)=4\bigl(S_{r+4}(1/2)+S_{r+4}(1/3)\bigr).
+\end{equation}
+If $K=r+4$, its error is at most
+\begin{equation}\label{eq:Pierr}
+ \frac{4(2^{-2K-1}+3^{-2K-1})}{2K+1}
+ \le2^{2-2K}\le2^{-r-6}<2^{-r}.
+\end{equation}
+Alternating finite sums, grouped into successive pairs, give for $K\ge2$
+\[
+ \frac{505}{162}
+ =4\left(\frac12-\frac1{24}+\frac13-\frac1{81}\right)
+ \le4(S_K(1/2)+S_K(1/3))\le\frac{10}{3}.
+\]
+Hence $3<P(r)<4$ and $3<\pi<4$. These explicit bounds will keep
+denominators and logarithmic arguments safely positive.
+
+\subsection{Why this is the ordinary circle constant}
+\label{sec:circle}
+
+For $0\le t\le1$, define rational functions
+\begin{equation}\label{eq:scw}
+ s(t)=\frac{2t}{1+t^2},\quad
+ c(t)=\frac{1-t^2}{1+t^2},\quad
+ w(t)=\frac2{1+t^2}.
+\end{equation}
+Then $c(t)^2+s(t)^2=1$, and $X(t)=(c(t),s(t))$ parametrizes the
+first quadrant of the unit circle; its inverse is $t=y/(1+x)$.
+The exact chord identity is
+\[
+ \abs{X(v)-X(u)}^2
+ =\frac{4(v-u)^2}{(1+u^2)(1+v^2)}.
+\]
+Since $1+u^2\le1+v^2$, its nonnegative square root lies between
+$(v-u)w(v)$ and $(v-u)w(u)$. Therefore the polygonal quarter-circle
+length on the grid $j/N$ lies between
+\[
+ J_0(N)-\frac1N\quad\hbox{and}\quad J_0(N),\qquad
+ J_0(N)=\frac1N\sum_{j<N}w(j/N)=2A_N(1).
+\]
+These bounds also apply after common refinements, giving the usual arc
+length with an explicit modulus. The circumference divided by the
+diameter is therefore $2\lim J_0(N)=4\At(1)=\pi$.
+Square roots in the chord lengths can themselves be approximated by
+bounded dyadic searches as in Section~\ref{sec:exp}. This paragraph
+identifies the familiar constant; the arithmetic proof itself needs only
+the rational sums and brackets just displayed.
+
+\section{Wallis' inequality with a completely finite error term}
+\label{sec:wallis}
+
+The classical use of Wallis' product to determine the Stirling constant is
+standard \cite{Bruin}. We need a version whose proof is a rational
+calculation. The functions in \eqref{eq:scw} provide it.
+
+Put $F_k(t)=w(t)s(t)^k$ and, for $N\ge1$,
+\begin{equation}\label{eq:J}
+ J_k(N)=\frac1N\sum_{j<N}F_k(j/N).
+\end{equation}
+We have $0\le s,c\le1$, $1\le w\le2$, and $c^2+s^2=1$.
+For $0\le u\le v\le1$, with $h=v-u$ and $D(t)=1+t^2$,
+\begin{align}
+ s(v)-s(u)&=\frac{2h(1-uv)}{D(u)D(v)},\label{eq:sinc}\\
+ c(v)-c(u)=w(v)-w(u)&=\frac{-2h(u+v)}{D(u)D(v)}.\label{eq:cinc}
+\end{align}
+In particular $s$ increases, $c,w$ decrease, $\abs{s(v)-s(u)}\le2h$,
+and $\abs{c(v)-c(u)}\le4h$. Factoring powers gives
+$\abs{b^k-a^k}\le k\abs{b-a}$ for $a,b\in[0,1]$, and consequently
+\[
+ \abs{F_k(v)-F_k(u)}\le4(k+1)h.
+\]
+Thus \eqref{eq:refine} supplies explicit moduli for every $J_k$.
+We may write $I_k$ for these names; in particular $I_0=\pi/2$.
+
+\subsection{The finite recurrence}
+
+We will prove, entirely over the rationals,
+\begin{equation}\label{eq:Jrec}
+ \abs{(k-1)J_{k-2}(N)-kJ_k(N)}\le\frac{8k^2}{N}\quad(k\ge2),
+ \qquad \abs{J_1(N)-1}\le\frac{12}{N}.
+\end{equation}
+
+Subtract the proposed linear increments from
+\eqref{eq:sinc}--\eqref{eq:cinc}. Direct denominator clearing gives
+\begin{align*}
+ s(v)-s(u)-hc(u)w(u)
+ &=\frac{-2h^2[u(3-u^2)+(1-u^2)h]}{D(u)^2D(v)},\\
+ c(v)-c(u)+hs(u)w(u)
+ &=\frac{h^2[-2+6u^2+4uh]}{D(u)^2D(v)}.
+\end{align*}
+Since all denominators are at least $1$ and $u,h\in[0,1]$, the
+absolute values are at most $8h^2$ and $12h^2$, respectively.
+
+For $0\le a\le b\le1$ and integer $m\ge1$, telescoping powers
+twice gives
+\begin{equation}\label{eq:powerr}
+ 0\le b^m-a^m-ma^{m-1}(b-a)
+ \le\frac{m(m-1)}2(b-a)^2.
+\end{equation}
+To see the upper bound, factor $b^m-a^m$ once, subtract its $m$
+copies of $a^{m-1}$, and apply
+$b^j-a^j\le j(b-a)$ to each remaining term. Summing the integers
+$0,1,\ldots,m-1$ proves \eqref{eq:powerr}; this also handles $m=1$.
+
+Apply it to $a=s(u)$, $b=s(v)$. The error on replacing
+$s(v)^m-s(u)^m$ by $hm s(u)^{m-1}c(u)w(u)$ is at most
+$(2m^2+6m)h^2$. Set
+\[
+ G_k(t)=c(t)s(t)^{k-1},\qquad
+ H_k(t)=(k-1)F_{k-2}(t)-kF_k(t).
+\]
+The product increment for $G_k$ has three error terms: the power error
+$2m^2+6m$, the $c$ error $12$, and the cross term $8m$, all
+multiplied by $h^2$, with $m=k-1$. Its linear term is $hH_k(u)$,
+by $c^2+s^2=1$. Therefore
+\[
+ \abs{G_k(v)-G_k(u)-hH_k(u)}
+ \le2k(k+5)h^2\le8k^2h^2\qquad(k\ge2).
+\]
+Now telescope on the grid $j/N$. Since $G_k(0)=G_k(1)=0$,
+\eqref{eq:FTCfinite} proves the first assertion of
+\eqref{eq:Jrec}. Telescoping the increment for $c$, using $c(0)=1$
+and $c(1)=0$, proves the second. These calculations contain the full
+finite replacement for integration by parts.
+
+\subsection{The rational Wallis bounds}
+
+Define rational products
+\begin{align}
+ p_m&=\prod_{j=1}^m\frac{2j-1}{2j}
+     =\frac{\binom{2m}{m}}{4^m},&
+ q_m&=\prod_{j=1}^m\frac{2j}{2j+1},\notag\\
+ W_m&=\frac{q_m}{p_m}
+     =\prod_{j=1}^m\frac{4j^2}{4j^2-1}
+     =\frac1{(2m+1)p_m^2}.\label{eq:W}
+\end{align}
+The displayed equalities are factorial cancellations, proved by finite
+product induction. Divide the recurrence error in \eqref{eq:Jrec} by
+$k$ and iterate it. The multiplicative coefficients $(k-1)/k$ are at
+most $1$, so the errors accumulate to give
+\begin{align}
+ \abs{J_{2m}(N)-p_mJ_0(N)}&\le\frac{8m(m+1)}N,\label{eq:evenerr}\\
+ \abs{J_{2m+1}(N)-q_m}&\le\frac{8m^2+16m+12}N.\label{eq:odderr}
+\end{align}
+For example the first error is $\sum_{j=1}^m16j/N$; the second
+starts with $12/N$ and adds $\sum_{j=1}^m8(2j+1)/N$.
+These are quantifier-free inductions with $N$ retained as a parameter.
+
+Termwise $0\le s\le1$ gives
+\[
+ J_{2m+1}(N)\le J_{2m}(N)\le J_{2m-1}(N).
+\]
+Also $p_m\ge2^{-m}$, because every factor is at least $1/2$.
+Combining these inequalities with \eqref{eq:evenerr}--\eqref{eq:odderr}
+proves the following wholly rational theorem.
+
+\begin{theorem}[Finite Wallis inequality]\label{thm:finitewallis}
+For every $m,N\ge1$, put $D_m=16\,2^m(m+1)^2$. Then
+\begin{equation}\label{eq:finitewallis}
+ \boxed{\quad W_m-\frac{D_m}N\le J_0(N)
+ \le\frac{2m+1}{2m}W_m+\frac{D_m}N.\quad}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For the lower bound, the sum of the two errors before division by $p_m$
+is $(16m^2+24m+12)/N\le16(m+1)^2/N$. For the upper bound, use
+the odd estimate with index $m-1$. The error sum is
+$(16m^2+8m+4)/N\le16(m+1)^2/N$; its main term is
+$q_{m-1}/p_m=((2m+1)/(2m))W_m$. Divide by $p_m\ge2^{-m}$.
+\end{proof}
+
+Since $J_0(N)$ names $\pi/2$ with a left-right gap $1/N$,
+the named-code reading is
+\begin{equation}\label{eq:wallis}
+ W_m\le\frac\pi2\le\frac{2m+1}{2m}W_m.
+\end{equation}
+This notation hides no convergence principle: at tolerance $2^{-r}$,
+choose, for example, $N=2^{r+2}(D_m+1)$ in
+\eqref{eq:finitewallis}. All errors are then explicitly bounded.
+
+One useful strictly rational bound is $W_m\le2$. Write $W_m=A/B$
+with $B\ge1$, use $J_0(N)\le2$, and substitute $N=2D_mB$ in
+\eqref{eq:finitewallis}. Then $2A\le4B+1$; discreteness of
+integers gives $A\le2B$. This illustrates how an exact rational
+conclusion is obtained by a finite substitution, without taking an
+unjustified limit.
+
+\section{The logarithmic factorial estimate}
+\label{sec:factorial}
+
+We now prove the numerical core of the theorem. In this section all named
+equalities are the finite-precision identities established above. Their
+elimination to \eqref{eq:internal} is made explicit in
+Section~\ref{sec:elimination}.
+
+\subsection{A positive difference with two rational telescopers}
+
+For $n\ge1$ let $a_n$ be as in \eqref{eq:a}. Cancellation and the
+logarithm addition law give
+\begin{equation}\label{eq:d}
+ d_n:=a_n-a_{n+1}
+ =\left(n+\tfrac12\right)\log(1+1/n)-1.
+\end{equation}
+Put $z=1/(2n+1)$. Then $(1+z)/(1-z)=(n+1)/n$ and
+$n+1/2=1/(2z)$. Dividing the finite formula \eqref{eq:atanh} by
+$2z$ and subtracting its first term gives
+\begin{equation}\label{eq:dseries}
+ d_n=\sum_{j\ge1}\frac{z^{2j}}{2j+1}.
+\end{equation}
+The sum symbol denotes finite partial sums and their geometric tails.
+For example, after $j=K$ the tail is at most
+$z^{2K+2}/((2K+3)(1-z^2))$.
+
+Its first term is $z^2/3$. Comparing every denominator with $3$ and
+retaining the improvement at $j=2$ gives
+\begin{equation}\label{eq:dcompare}
+ \frac1{3(2n+1)^2}\le d_n
+ \le\frac{z^2}{3(1-z^2)}-\frac{2z^4}{15}
+ =\frac1{12n(n+1)}-\frac{2}{15(2n+1)^4}.
+\end{equation}
+For completeness, the coefficient gap at $j=2$ is
+$1/3-1/5=2/15$; every later gap is nonnegative. This proves the
+upper inequality at every finite precision.
+
+Define
+\begin{align}
+ g_n&=\frac1{12n+1},& h_n&=\frac1{12n},\notag\\
+ \lmargin_n&=\frac{24n-23}{3(2n+1)^2(12n+1)(12n+13)},&
+ \umargin_n&=\frac{2}{15(2n+1)^4}.\label{eq:margins}
+\end{align}
+Both margins are positive for $n\ge1$. The exact polynomial identity
+\[
+ (12n+1)(12n+13)-36(2n+1)^2=24n-23
+\]
+shows that
+\[
+ \frac1{3(2n+1)^2}=g_n-g_{n+1}+\lmargin_n.
+\]
+Thus \eqref{eq:dcompare} becomes
+\begin{equation}\label{eq:telescopers}
+ g_n-g_{n+1}+\lmargin_n\le d_n
+ \le h_n-h_{n+1}-\umargin_n.
+\end{equation}
+
+For any finite $m>n$, sum these inequalities. The logarithmic differences
+telescope; discard all positive margins except the first:
+\begin{equation}\label{eq:strongtel}
+ g_n-g_m+\lmargin_n\le a_n-a_m
+ \le h_n-h_m-\umargin_n.
+\end{equation}
+In particular, including $m=n$ separately,
+\begin{equation}\label{eq:weaktel}
+ 0\le a_n-a_m\le\frac1{12n}-\frac1{12m}\qquad(m\ge n).
+\end{equation}
+This is finite telescoping, proved by quantifier-free induction after a
+common precision is fixed. It does not assert convergence of an
+arbitrary bounded monotone sequence.
+
+\subsection{Determining the constant without choosing a limit}
+
+Recall the independently defined $C=\frac12\log(2\pi)$.
+The factorial identity in \eqref{eq:W}, together with logarithm addition,
+gives
+\begin{equation}\label{eq:F}
+ F_m:=2a_m-a_{2m}
+ =\frac12\log\left[(4+2/m)W_m\right].
+\end{equation}
+For a direct check, twice the expression on the left is
+\[
+ 4\log(m!)-2\log((2m)!)+(4m+1)\log2-\log m,
+\]
+and $W_m=16^m(m!)^4/((2m+1)((2m)!)^2)$.
+
+Wallis' bounds \eqref{eq:wallis} imply
+\[
+ 2\pi\le(4+2/m)W_m\le2\pi\left(1+\frac1{2m}\right).
+\]
+Use the increasing logarithm and $\log(1+x)\le x$ to obtain
+\begin{equation}\label{eq:Fbound}
+ C\le F_m\le C+\frac1{4m}.
+\end{equation}
+On the other hand \eqref{eq:weaktel}, with endpoints $m,2m$, gives
+$0\le a_m-a_{2m}\le1/(24m)$. Since
+$a_m=F_m-(a_m-a_{2m})$, we have the explicit terminal estimate
+\begin{equation}\label{eq:terminal}
+ \boxed{\qquad -\frac1{24m}\le a_m-C\le\frac1{4m}.\qquad}
+\end{equation}
+No unknown constant or unspecified stage has been introduced.
+
+Combining \eqref{eq:strongtel} with \eqref{eq:terminal}, for every
+$m>n$, yields
+\begin{equation}\label{eq:finitefinal}
+ g_n+\lmargin_n-\frac1{8m}\le a_n-C
+ \le h_n-\umargin_n+\frac1{6m}.
+\end{equation}
+For the lower error use $g_m\le1/(12m)$; the upper error is
+$1/(4m)-1/(12m)=1/(6m)$. Given any requested tolerance, set
+$m=\max(n+1,2^{p+8})$. The two residual errors are then smaller
+than that tolerance by a known factor. In the rational-name notation this
+proves
+\begin{equation}\label{eq:strongrobbins}
+ g_n+\lmargin_n\le r_n\le h_n-\umargin_n.
+\end{equation}
+Because the margins in \eqref{eq:margins} are explicit positive
+rationals, this proves the strict Robbins inequalities
+\eqref{eq:robbins} constructively. Strictness is not inferred merely
+from a sequence of strict inequalities whose limit might be an equality.
+
+\section{Returning to the usual factorial ratio}
+\label{sec:exp}
+
+It is possible to finish without developing a general exponential
+function. We need only the ordinary constant $e$, square roots of a
+specified positive name, and the global logarithm inequalities.
+
+\subsection{A finite proof that \texorpdfstring{$\log e=1$}{log e = 1}}
+
+For $m\ge1$ set
+\[
+ E_m=\sum_{j=0}^m\frac1{j!},\qquad
+ B_m=(1+1/m)^m.
+\]
+Factorial comparison and a geometric sum give
+\begin{equation}\label{eq:etail}
+ 0\le e-E_m\le\frac1{m\,m!}\le2^{1-m},
+ \qquad 2\le E_m\le3.
+\end{equation}
+Here $e$ is the name supplied by this explicit tail estimate. To prove
+the first bound, each successive term after $1/(m+1)!$ has ratio
+at most $1/(m+1)$, so its geometric majorant sums to $1/(m\,m!)$.
+The inequality $E_m\le3$ follows from $j!\ge2^{j-1}$ for $j\ge1$.
+All these bounds hold already for finite tails.
+
+The finite binomial theorem gives
+\[
+ B_m=\sum_{j=0}^m\frac1{j!}
+             \prod_{i=0}^{j-1}(1-i/m).
+\]
+For $u_i\in[0,1]$, finite induction proves
+$1-\sum_i u_i\le\prod_i(1-u_i)\le1$. Therefore
+\begin{equation}\label{eq:EB}
+ 0\le E_m-B_m\le\frac1{2m}\sum_{j=2}^m\frac1{(j-2)!}
+ \le\frac3{2m},\qquad 2\le B_m\le E_m\le3.
+\end{equation}
+The finite binomial theorem itself follows by multiplication and Pascal's
+identity, using quantifier-free induction on its finite coefficient
+array; no assertion about infinite power series occurs here.
+
+Apply \eqref{eq:logglobal} to $1+1/m$ and multiply by $m$:
+\[
+ \frac{m}{m+1}\le\log B_m\le1.
+\]
+By \eqref{eq:loglip} and $B_m\ge2$,
+$0\le\log E_m-\log B_m\le3/(4m)$. Hence
+\begin{equation}\label{eq:loge}
+ 1-\frac1{m+1}\le\log E_m\le1+\frac3{4m}.
+\end{equation}
+Equations \eqref{eq:etail} and \eqref{eq:loge}, with a chosen
+$m\ge2^{p+2}$ if tolerance $2^{-p}$ is wanted, prove
+$\log e=1$ by explicit rational approximation. The series definition
+identifies this with the usual Euler constant.
+
+\subsection{Square roots and a direct rational ratio algorithm}
+
+For a positive rational $a\ge1$ and integer $t\ge0$, define
+\begin{equation}\label{eq:sqrtcode}
+ T(a,t)=2^{-t}\left\lfloor\sqrt{\lfloor a2^{2t}\rfloor}\right\rfloor.
+\end{equation}
+The integer square root means the largest integer $j$ in a specified
+finite range with $j^2\le\lfloor a2^{2t}\rfloor$. Searching up to
+$\lfloor a2^{2t}\rfloor+1$ is a primitive recursive implementation.
+Then the exact certificates are
+\[
+ T(a,t)^2\le a<(T(a,t)+2^{-t})^2.
+\]
+So \eqref{eq:sqrtcode} is a square-root approximation without a search
+over real comparisons. Factoring $u^2-v^2=(u-v)(u+v)$ proves stability:
+on inputs at least $1$, a change of at most $\delta$ in the input changes
+the positive root by at most $\delta$.
+
+For an explicit approximation of $R_n$ itself, set
+\begin{align}
+ t&=p+4n+2,& a&=2nP(t),& S&=T(a,t),\notag\\
+ H(n,p)&=\frac{n!\,E_{t+2}^{\,n}}{n^nS}\qquad(n\ge1),
+ &H(0,p)&=1.\label{eq:H}
+\end{align}
+Since $a>6n$, $S\ge1$; no division by zero occurs. From
+\eqref{eq:Pierr} and the square-root certificates,
+\[
+ \abs{S-\sqrt{2\pi n}}\le(2n+1)2^{-t}.
+\]
+The power factorization and $E_{t+2},e\le3$ give
+$\abs{E_{t+2}^n-e^n}\le n3^{n-1}2^{-t}$.
+Also $n!\le n^n$, and reciprocals of quantities at least $1$ have
+Lipschitz constant at most $1$. Consequently
+\begin{equation}\label{eq:Herr}
+ \abs{H(n,p)-R_n}
+ \le3^n(3n+1)2^{-t}\le2^{-p-2}.
+\end{equation}
+The last step uses $3^n\le2^{2n}$ and $3n+1\le2^{2n}$ for $n\ge1$,
+each a quantifier-free induction. This proves directly that the usual
+factorial ratio has a primitive recursive rational name.
+
+\subsection{The relative error and its modulus}
+
+Logarithm addition, $\log e=1$, and
+$2\log\sqrt{2\pi n}=\log(2\pi n)$ give
+\[
+ \log R_n
+ =\log(n!)+n-n\log n-\tfrac12\log(2\pi n)=r_n.
+\]
+Apply the global inequalities \eqref{eq:logglobal} to $R_n$:
+\[
+ 1-1/R_n\le r_n\le R_n-1.
+\]
+Together with \eqref{eq:strongrobbins}, these imply
+\begin{equation}\label{eq:relativeboth}
+ \frac1{12n+1}<R_n-1<\frac1{12n-1}.
+\end{equation}
+For the upper bound, $1-1/R_n<1/(12n)$ and positive-denominator
+algebra give $R_n<12n/(12n-1)$. The lower bound follows from
+$R_n-1\ge r_n>1/(12n+1)$.
+Thus $n\ge2^p$ implies
+\[
+ \abs{R_n-1}<\frac1{12n-1}\le\frac1n\le2^{-p}.
+\]
+This completes the proof of Theorem~\ref{thm:main}. The notation
+$e^{r_n}$ in the usual logarithmic form of Stirling is the standard
+exponential reading of $\log R_n=r_n$; no general exponential function
+was needed as an internal premise.
+
+Equations \eqref{eq:Herr} and \eqref{eq:relativeboth} also give the
+direct rational arithmetic statement
+\begin{equation}\label{eq:Hinternal}
+ 1+\frac1{12n+1}-2^{-p}\le H(n,p)
+ \le1+\frac1{12n-1}+2^{-p}\qquad(n\ge1).
+\end{equation}
+For $n\ge2^k$, its asymptotic version is
+$\abs{H(n,p)-1}\le2^{-k}+2^{-p}$. These are again universal closures
+of decidable rational inequalities.
+
+\section{Eliminating the analytic notation inside \texorpdfstring{$\ipra$}{iPRA}}
+\label{sec:elimination}
+
+This section records why the proof belongs to the stated arithmetic
+theory. Merely having primitive recursive approximants would not establish
+provability in $\ipra$; the induction and precision arguments matter.
+
+\subsection{The error of the fixed endpoint \texorpdfstring{$Q(n,p)$}{Q(n,p)}}
+
+Fix $n\ge1,p\ge0$ and abbreviate $b=b(n)$, $t=p+b+4$,
+$\delta=2^{-t}$. Every logarithm approximation in \eqref{eq:Q} has
+error at most $\delta$. Moreover $2P(t),2\pi>6$, so
+\eqref{eq:loglip} and \eqref{eq:Pierr} give
+\[
+ \tfrac12\abs{\log(2P(t))-\log(2\pi)}\le\delta/6.
+\]
+The sum of all errors in \eqref{eq:Q} is therefore at most
+\begin{align}
+ \abs{Q(n,p)-r_n}
+ &\le\bigl(n+(n+\tfrac12)+\tfrac12+\tfrac16\bigr)\delta\notag\\
+ &= (2n+7/6)\delta
+ \le(2n+2)\delta\le2^{-p-3}.\label{eq:Qerr}
+\end{align}
+The final inequality uses $n+1\le2^b$. This establishes the claimed
+name for the logarithmic remainder with considerable slack.
+
+Combining \eqref{eq:finitefinal} with \eqref{eq:Qerr}, for any
+$m>n$, gives the rational bounds
+\begin{equation}\label{eq:Qfinite}
+ g_n+\lmargin_n-\frac1{8m}-2^{-p-3}
+ \le Q(n,p)
+ \le h_n-\umargin_n+\frac1{6m}+2^{-p-3}.
+\end{equation}
+Here both endpoints and $Q(n,p)$ are explicit rationals. Choose
+$m=\max(n+1,2^{p+8})$. Each total error in \eqref{eq:Qfinite} is
+less than $2^{-p}$. We have proved the strengthened arithmetic theorem
+\begin{equation}\label{eq:Qstrong}
+ \boxed{\quad
+ g_n+\lmargin_n-2^{-p}\le Q(n,p)
+ \le h_n-\umargin_n+2^{-p}\qquad(n\ge1).
+ \quad}
+\end{equation}
+Dropping the positive margins proves \eqref{eq:internal}.
+
+\subsection{What a finite-precision reading of the proof does}
+
+The preceding named notation is a convenient way of organizing finite
+lemmas, not an extra axiom. The following procedure removes it.
+
+\begin{enumerate}
+\item Fix the outer parameters $n,p$, the terminal index
+$m=\max(n+1,2^{p+8})$, and the tolerances. Do not perform induction
+on these choices or on a formula saying an estimate holds at all
+precisions.
+
+\item Replace every logarithmic identity by its rational partition proof
+from Section~\ref{sec:log}, every series by its displayed finite tail
+bound, and every Wallis step by \eqref{eq:finitewallis}. For an auxiliary
+tolerance $\eta>0$, a Wallis mesh
+$N\ge(D_m+1)/\eta$ suffices. For a logarithm argument $A/B$, a
+mesh $N\ge(A+B)^4/\eta$ suffices. Round these bounds up to
+integers. For each fixed positive power-series ratio at most $1/3$,
+the specified geometric tail gives an equally explicit truncation.
+
+\item Finite sums and products are treated by rational loop invariants.
+For example, a sum of $s$ inequalities each with error at most
+$\eta/(s+1)$ has total error at most $\eta$. Multiplication by a
+rational coefficient $c$ multiplies the error bound by $|c|$.
+Division uses its previously proved positive lower bound on the
+denominator. All coefficient bounds are rational expressions or finite
+sums/products of the parameters already fixed. They are themselves
+primitive recursive. Choose the local tolerances by these rules before
+starting the corresponding loop.
+
+\item Prove the resulting finite inequalities by quantifier-free
+induction, with those tolerances and final loop lengths as parameters.
+The finite Wallis induction is explicitly
+\eqref{eq:evenerr}--\eqref{eq:odderr}. For logarithmic telescoping use
+a common precision: if each instance of \eqref{eq:telescopers} has
+error $\eta/(m+1)$, summing at most $m$ instances adds at most
+$\eta$. Exact finite-sum cancellation of the chosen rational
+approximants is an equation. This proves the finite version of
+\eqref{eq:strongtel} without induction on a named-real statement.
+
+\item Allow an extra total error of, say, $2^{-p-4}$ for these
+auxiliary replacements. The residual error in \eqref{eq:Qfinite}
+is already below $(1/8+1/1536)2^{-p}$, leaving ample room before
+$2^{-p}$. Thus one explicit finite precision suffices for
+\eqref{eq:Qstrong}. If an intermediate exact rational inequality is
+preferred, the elementary lemma below removes its remaining
+arbitrarily small auxiliary error.
+\end{enumerate}
+
+There is no unbounded search for an adequate stage in this procedure.
+Every mesh bound, truncation length, partition refinement, and number of
+steps is built from the displayed arithmetic functions and finite sums
+or products. A smaller error requirement only changes an explicit natural
+parameter.
+
+\begin{lemma}[Removing auxiliary error from a rational comparison]
+\label{lem:gap}
+Suppose $u,v$ are rational numbers, $D>0$ is a common denominator,
+and $B\ge0$ is rational. If finite arithmetic proves
+$u\le v+B2^{-k}$ for each natural parameter $k$, then $\ipra$
+proves $u\le v$ without a limit principle.
+\end{lemma}
+
+\begin{proof}
+Choose an integer $M\ge BD$ and put $k=M+1$. The elementary
+induction $2^{M+1}>M$ gives $B2^{-k}<1/D$ (the case $B=0$
+is immediate). The rational comparison $u\le v$ is decidable. If
+it fails, the integer numerator of $u-v$ is positive, so
+$u-v\ge1/D$, contradicting this particular finite instance.
+This is an intuitionistically valid case split on integers, with an
+explicit witness $k$; it is neither Markov's principle nor a use of
+real-number trichotomy.
+\end{proof}
+
+This lemma justifies, for instance, passing from the finite partition
+proofs of logarithm addition to the rational approximation inequalities
+used in \eqref{eq:Qfinite}. It never authorizes induction on a
+formula quantified over $k$: the finite proof is first carried out with
+$k$ as a free parameter, and universal generalization occurs only
+afterward.
+
+\subsection{Induction audit}
+
+The relevant invariant types are collected below. In the second column,
+all parameters other than the displayed loop index are fixed. Positive
+denominators are cleared, and a bounded conjunction is replaced, when
+necessary, by a primitive recursive Boolean test.
+
+\begin{longtable}{@{}p{0.28\textwidth}p{0.66\textwidth}@{}}
+\toprule
+Operation & Quantifier-free invariant used in its proof\\
+\midrule
+\endhead
+Powers, factorials, binomial coefficients & Defining equations and
+cross-multiplied finite identities, including Pascal's recurrence.\\[4pt]
+Rational partition refinement & Current lower sum does not decrease,
+upper sum does not increase; accumulated width is at most the declared
+rational budget.\\[4pt]
+Geometric and polynomial sums & The finite geometric identity and the
+factorization of successive powers, with a finite remainder bound.\\[4pt]
+Wallis recurrence & The explicit rational inequalities
+\eqref{eq:evenerr}--\eqref{eq:odderr}, with mesh $N$ fixed.\\[4pt]
+Logarithmic telescoping & Partial rational sum lies between the two
+rational telescopers plus its accumulated precision error.\\[4pt]
+Bit length and range reduction & Current largest index within the bounded
+scan satisfies the defining power-of-two inequality.\\[4pt]
+Square-root search & Current candidate has square at most the fixed
+rational input; all previously scanned larger candidates fail. The latter
+is a bounded Boolean assertion.\\[4pt]
+Precision allocation & A finite sum of local rational errors does not
+exceed the assigned total.\\
+\bottomrule
+\end{longtable}
+
+The only unbounded quantifiers in the final theorem are universal
+closures over input and precision variables. The proof does not use
+induction on any formula containing those quantifiers. It does not assume
+a uniform primitive recursive evaluator for arbitrary primitive recursive
+programs: only the finitely many fixed function symbols constructed here
+are used. These distinctions explain both the strength and the limits of
+the claim that the theorem is proved in $\ipra$.
+
+\section{A concrete path to a complete Lean formalization}
+\label{sec:lean}
+
+\subsection{The inspected repository interface}
+
+The following observations refer to the inspected ProveIt revision
+\begin{center}\small\repo\end{center}
+whose root toolchain and Mathlib dependency are both pinned to version
+\texttt{v4.32.0}. The exact source links and inspection scope are in
+\texttt{provenance/repository.txt}. The useful part is
+\texttt{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA}.
+No result from the Busy Beaver or Diophantine consistency directories is
+needed for the numerical proof.
+
+\begin{center}
+\begin{tabular}{@{}p{0.40\textwidth}p{0.54\textwidth}@{}}
+\toprule
+Repository module & Relevant verified declaration or purpose\\
+\midrule
+\texttt{PR.lean} & Syntax \texttt{PR k}, terms \texttt{PTm n}, axioms
+\texttt{PRAAx}, and the rule \texttt{PRA.qfInd}.\\[4pt]
+\texttt{Syntax.lean} & First-order formulas \texttt{Fm T n} and their
+quantifier-free predicate \texttt{Fm.QF}.\\[4pt]
+\texttt{Deduction.lean} & Intuitionistic object-language derivability
+\texttt{Prf Ax Gamma phi}.\\[4pt]
+\texttt{PRAToScalar.lean} & \texttt{FromPRA.code}, compiling genuine
+primitive recursive syntax to scalar iterator terms.\\[4pt]
+\texttt{TeqReflect.lean} & Characteristic terms for quantifier-free
+formulas and derived quantifier-free induction.\\[4pt]
+\texttt{NativeBiInterpretation.lean} & The theorem
+\texttt{pra\_iff\_native}, translating an actual iPRA derivation to
+the native calculus and back.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These interfaces are read from the source, not inferred from filenames
+\cite{ProveItPR,ProveItNative}. The archive's Lean scaffold uses them
+directly. No Lean or Lake executable was available in the authoring
+environment, so the newly supplied Lean source has not been compiled.
+
+\subsection{The mathematical program and the internal theorem differ}
+
+A Lean theorem about \texttt{Rat} or \texttt{Real} is a semantic
+mathematical theorem. The requested restriction is an assertion about what
+the \emph{object theory} $\ipra$ proves. The final target must therefore
+be a derivation with axiom theory \texttt{PRAAx}.
+
+Define a fixed two-input primitive recursive checker that returns $0$
+exactly when $n=0$ or the two comparisons in \eqref{eq:internal}
+hold. Its object-language open formula is literally
+\[
+ \ArithCheck(n,p)=0.
+\]
+The desired closed sentence universally quantifies $p$ and $n$.
+The included source defines the formula from a value of type
+\texttt{PR 2}; using de Bruijn index $0$ for the innermost variable,
+it writes the outer quantifiers in the order $\forall p\,\forall n$.
+The order is immaterial to the numerical statement but explicit in the
+syntax.
+
+The scaffold separates these two obligations:
+\begin{lstlisting}
+Representation stirlingApprox
+  -- concrete PR syntax and its agreement with the rational algorithm
+
+InternalProof stirlingApprox
+  -- the representation plus an actual derivation under PRAAx
+\end{lstlisting}
+In particular, its \texttt{InternalProof} record has a field of the
+object-language derivability type, not merely a field asserting the
+standard-model truth of the rational inequality. Constructing this field
+is the substantive remaining formalization work. The record is not
+instantiated in the delivered scaffold.
+
+Once the derivation exists, universal introduction closes it, and the
+existing repository theorem has exactly the required shape:
+\begin{lstlisting}
+pra_iff_native :
+  (Gamma |- [PRAAx] phi) <->
+  NPrf (Gamma.map NFm.ofPRA) (NFm.ofPRA phi)
+\end{lstlisting}
+The ASCII display here is schematic typography. The accompanying Lean
+source contains the actual notation and conditional wrapper proofs.
+
+\subsection{Implementation stages and concrete proof obligations}
+
+\paragraph{1. Rational arithmetic in the object language.}
+Implement unreduced signed numerator/positive denominator triples as
+natural-number codes. Build \texttt{PR} syntax for addition,
+multiplication, order, finite sums, powers, and bounded search. Prove the
+defining equations and validity invariants under \texttt{PRAAx}.
+Use a separate semantic refinement map to Lean's \texttt{Rat} for
+readability. Its correctness is useful, but does not replace the internal
+arithmetic proofs.
+
+\paragraph{2. A small library of derived quantifier-free proof rules.}
+Provide object-language lemmas for transitivity of rational order,
+positive cross multiplication, finite sum bounds, product bounds, and
+telescoping. Compile bounded universal assertions to Boolean recursors.
+Each induction application must display its \texttt{Fm.QF} witness.
+For polynomial identities, a normalization procedure should return an
+object-language equality derivation, not just a Boolean answer about a
+closed numerical example.
+
+\paragraph{3. Finite logarithms.}
+Formalize partition refinement and the width
+\eqref{eq:logwidth}; prove finite logarithm addition with the sum of
+the three enclosure widths. Prove \eqref{eq:monomial} and the
+finite geometric remainder \eqref{eq:atanh}. Construct the actual
+\texttt{PR} code for \eqref{eq:L}, and derive \eqref{eq:Lerr}
+as a family of finite rational comparisons. The supplied source already
+defines the corresponding mathematical algorithm over \texttt{Rat}.
+
+\paragraph{4. Finite $\pi$ and Wallis.}
+Formalize \eqref{eq:atanaddfinite}, the finite alternating remainder,
+and the algorithm \eqref{eq:Pi}. For Wallis, the particularly useful
+first machine-checked milestones are \eqref{eq:Jrec},
+\eqref{eq:evenerr}, \eqref{eq:odderr}, and
+Theorem~\ref{thm:finitewallis}. Their statements involve only
+rationals and naturals; their proofs consist of the displayed polynomial
+identities, positive denominators, and fixed-precision finite sums.
+
+\paragraph{5. The normalized factorial theorem.}
+Prove the coefficient comparisons \eqref{eq:dcompare} and the two
+telescopers \eqref{eq:telescopers}. Combine their finite-precision
+versions with the factorial identity \eqref{eq:F} and finite Wallis.
+Implement the precision schedule of Section~\ref{sec:elimination}.
+This produces the open derivation of \eqref{eq:internal}; proving the
+stronger \eqref{eq:Qstrong} at the same time records constructive
+strictness. Build the \texttt{InternalProof stirlingApprox} value.
+
+\paragraph{6. The direct ratio, if desired.}
+Implement the factorial-series and integer-square-root algorithms of
+Section~\ref{sec:exp}. Derive \eqref{eq:Hinternal} and its
+three-parameter asymptotic version. This optional extension gives a
+literal arithmetic approximation to the ratio in the usual formulation,
+in addition to the already sufficient logarithmic version.
+
+\paragraph{7. Native transfer and external interpretation.}
+Apply the supplied closure and native-transfer wrappers. In a separate
+module, interpret the rational names in the ordinary Lean real numbers
+and identify them with \texttt{Real.pi}, \texttt{Real.exp 1}, and
+the positive square root. This module may use standard real analysis;
+the object-language derivation must not depend on it.
+
+Mathlib already contains an ordinary real-analytic Stirling theorem,
+including \texttt{Stirling.factorial\_isEquivalent\_stirling}
+\cite{MathlibStirling}. It is useful for comparison of statements. Merely
+importing that theorem would not demonstrate provability in $\ipra$.
+
+\paragraph{Completion criteria.}
+The formalization is complete only when the concrete checker code, its
+refinement proof, and its actual \texttt{PRAAx} derivation have been
+constructed and checked by Lean. Audit the dependency of the final
+derivation on the chosen object theory, and use \texttt{\#print axioms}
+on the final Lean declarations as an additional metatheoretic check.
+Absence of \texttt{sorry} in a file of definitions and conditional
+wrappers is not, by itself, evidence that Stirling has been formalized.
+
+\section{Artifacts, reproducibility, and validation scope}
+\label{sec:artifacts}
+
+The archive contains:
+\begin{itemize}
+\item this LaTeX source and its compiled PDF;
+\item \texttt{code/stirling\_rational.py}, an exact-rational reference
+implementation of $L$, $P$, $Q$, the finite Wallis sums, and $H$;
+\item \texttt{code/run\_checks.py} and
+\texttt{validation/checks.json}, recording independently propagated
+rational enclosures and finite regression checks;
+\item \texttt{lean/ObjectLanguageTarget.lean}, the explicitly
+uncompiled concrete algorithms, object-language target, and conditional
+native-transfer scaffold;
+\item \texttt{provenance/repository.txt}, exact repository references,
+and a README with reproduction instructions.
+\end{itemize}
+
+The validation run passed \textbf{10,974 exact-rational assertions}.
+It includes $Q(n,p)$ for $1\le n\le25$, $0\le p\le12$; direct
+ratio cases for $1\le n\le10$, $0\le p\le6$; finite Wallis
+recurrences and increment bounds; independently propagated intervals for
+logarithms and $\pi$; rational square-root certificates; and
+coefficient checks of the proof's polynomial identities. Decimal output
+is only for display. These checks helped detect arithmetic or indexing
+errors; they do not prove the universal theorem and are not a Lean or
+internal-$\ipra$ verification.
+
+To reproduce them from the archive directory, run
+\begin{lstlisting}
+python3 code/run_checks.py
+python3 code/stirling_rational.py 25 12
+python3 code/build_pdf.py
+\end{lstlisting}
+The build helper uses installed TeX files and can generate a private format
+and font map when needed. Only the Python standard library is needed for
+the numerical checks.
+The proof's primitive recursive implementation can use unreduced rational
+pairs and bounded integer-square-root search; the reference program uses
+Python's exact \texttt{Fraction} and integer arithmetic for convenience.
+
+\begin{thebibliography}{9}
+\bibitem{Robbins}
+Herbert Robbins, \emph{A remark on Stirling's formula},
+The American Mathematical Monthly \textbf{62} (1955), 26--29.
+\href{https://heuklyd.github.io/papers/pdf/Robbins-1955.pdf}{Accessible transcription of the paper}.
+The classical numerical bounds are attributed to this source; the
+finite-rational realization is developed explicitly in this manuscript.
+
+\bibitem{Bruin}
+Henk Bruin, \emph{Wallis' Product and Stirling's Formula}, lecture notes.
+\url{https://www.mat.univie.ac.at/~bruin/Stirling.pdf}.
+Background for the classical relationship between the product and the
+normalizing constant.
+
+\bibitem{ProveItPR}
+Vladimir Reshetnikov et al., ProveIt, \texttt{ConciseIPRA/PR.lean},
+revision \repo.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/329161f8da0b319d51ba9f6246c4b19d243f7193/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean}{Pinned source: primitive recursive syntax and iPRA axioms}.
+
+\bibitem{ProveItNative}
+ProveIt, \texttt{ConciseIPRA/NativeBiInterpretation.lean}, same revision.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/329161f8da0b319d51ba9f6246c4b19d243f7193/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}{Pinned source: native bi-interpretation and transfer theorems}.
+
+\bibitem{MathlibStirling}
+The Mathlib contributors, \texttt{Mathlib.Analysis.SpecialFunctions.Stirling},
+official documentation, inspected for comparison of the usual real-valued
+statement.
+\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/SpecialFunctions/Stirling.html}.
+The evolving online documentation is not a dependency of the internal
+proof; the inspected ProveIt toolchain pin is recorded separately.
+\end{thebibliography}
+\end{document}
+
+

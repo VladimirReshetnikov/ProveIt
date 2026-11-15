@@ -1,0 +1,221 @@
+\section{An explicit radian-angle bridge using finite sums}
+\label{sec:finite-trig}
+
+The circle parameters $c,s$ in the algebraic theorem can be replaced by a
+real angle $\theta$ with $\cos\theta=c$ and $\sin\theta=s$.  Here is a
+construction with primitive recursive precision bounds.  It does not invoke
+the fundamental theorem of calculus.  Absolute values of complex numbers
+are shorthand for the elementary Euclidean norm; all the estimates below
+can equivalently be checked after squaring and clearing positive rational
+denominators.
+
+\subsection{Sine and cosine from finite Taylor polynomials}
+
+Put
+\[
+ T_m(t)=\sum_{k=0}^{m}\frac{(\mathrm i t)^k}{k!}.
+\]
+For an integer $B\geq1$, $|t|\leq B$, and $m\geq2B$, the tail bound is
+\[
+ \sum_{k=m+1}^{\infty}\frac{B^k}{k!}
+ \leq 2\frac{B^{m+1}}{(m+1)!}
+ \leq 2^{\,2B^2+2B-m}.                                      \tag{T1}
+\]
+Indeed, after index $2B$ successive terms have ratio at most $1/2$,
+$B^{2B}\leq2^{2B^2}$, and a finite geometric-sum bound gives the displayed
+inequality before taking any limit.  Thus
+$m=2B^2+2B+n+4$ already makes the rational tail at most $2^{-n-4}$.
+The resulting rapid Cauchy name defines
+\[
+ E(t)=\cos t+\mathrm i\sin t.
+\]
+
+For completeness, this definition also gives a uniform algorithm when
+$t$ is supplied by a real name, not a rational number.  Suppose
+$|t|\leq M$, where $M\geq1$ is an integer, and set $B=M+1$.
+Evaluate the input name at precision
+$n+2B^2+2B+8$, obtaining a rational $q$; evaluate $T_m(q)$ with
+$m=2B^2+2B+n+6$.  The error in a polynomial value caused by changing
+$t$ to $q$ is at most
+\[
+ |t-q|\sum_{j\geq0}\frac{B^j}{j!}
+ \leq |t-q|\,2^{2B^2+2B+2}.
+\]
+This and (T1) give an error smaller than $2^{-n}$.  Factorials, finite
+sums, and the displayed precision transformers are primitive recursive.
+
+We record the elementary identities needed below.  The finite Cauchy
+product and the binomial theorem give
+\[
+ E(t+u)=E(t)E(u),\qquad E(-t)=\overline{E(t)},\qquad E(0)=1.   \tag{T2}
+\]
+There is no appeal to a theorem about infinite series hidden here: if
+$|t|,|u|\leq B$, all terms of total degree at most $m$ agree exactly in
+$T_m(t)T_m(u)$ and $T_m(t+u)$.  The absolute sum of the remaining terms is
+at most the tail in (T1) with $2B$ in place of $B$.  For example,
+$m=8B^2+4B+n+4$ suffices: using the preceding bound on the exponential
+sum, the errors from replacing each factor by its Taylor polynomial,
+the finite Cauchy-product remainder, and the tail for $t+u$ together
+are at most $3\cdot2^{-n-4}$.  This proves (T2) at any requested
+precision.  Consequently
+$E(t)\overline{E(t)}=1$, so $|E(t)|=1$.
+
+For $|a|\leq1$, the same finite-series estimates give
+\[
+ |E(a)-1|\leq 2|a|,\qquad
+ |E(a)-1-\mathrm ia|\leq |a|^2,                             \tag{T3}
+\]
+because $\sum_{k\geq1}1/k!\leq2$ and
+$\sum_{k\geq2}1/k!\leq1$.  Factoring $E(h)$ as a product of $K$ copies
+of $E(h/K)$, with a supplied integer $K\geq\max(1,|h|)$, and telescoping
+the product yields the convenient uniform bound
+\[
+ |E(a)-E(b)|\leq 3|a-b|.                                   \tag{T4}
+\]
+The harmless constant $3$ leaves slack for rational approximations.
+
+\subsection{Arctangent from dyadic rational sums}
+
+For a positive integer $N$, define
+\[
+ A_N(t)=\frac{t}{N}\sum_{j=0}^{N-1}
+                  \frac{1}{1+(tj/N)^2}.                    \tag{T5}
+\]
+These are finite rational expressions for rational $t$; all denominators
+are at least one.  Suppose $|t|\leq M$, $M\geq1$.  The exact rational
+identity for $f(x)=1/(1+x^2)$ gives, for $|x|,|y|\leq M$,
+\[
+ |f(x)-f(y)|
+ =\frac{|x-y|\,|x+y|}{(1+x^2)(1+y^2)}
+ \leq2M|x-y|.
+\]
+Write $h=t/N$.  Their difference is exactly
+\[
+ A_N(t)-A_{2N}(t)
+ =\frac h2\sum_{j<N}\bigl(f(jh)-f(jh+h/2)\bigr).
+\]
+The preceding bound therefore gives
+\[
+ |A_N(t)-A_{2N}(t)|\leq\frac{M^3}{2N}.
+\]
+Summing the finite geometric progression proves that the dyadic sums
+define a rapid Cauchy real $A(t)$, with
+\[
+ |A(t)-A_N(t)|\leq\frac{M^3}{N}
+ \quad\hbox{when $N$ is a power of two}.                    \tag{T6}
+\]
+The notation $A$ is the usual arctangent: (T5) is also a direct
+constructive definition by rational integration.  No integration theorem
+is required for the identities used here.
+
+Input error is especially easy to control.  For $0\leq r\leq1$, put
+$g(t,r)=t/(1+t^2r^2)$.  Direct subtraction gives
+\[
+ g(t,r)-g(u,r)
+ =\frac{(t-u)(1-tu r^2)}{(1+t^2r^2)(1+u^2r^2)},
+\]
+and $(t^2+u^2)r^2\geq2|tu|r^2$ shows that its absolute value is at most
+$|t-u|$.  Hence every $A_N$, and then $A$, is $1$-Lipschitz.
+For a real input satisfying $|t|\leq M$, obtain a rational $q$ at
+precision $n+3$, set $B=M+1$, and use the dyadic mesh
+\[
+ N=2^{n+3B+4}.
+\]
+Since $B^3\leq2^{3B}$, (T6) and the input-error estimate give an
+approximation to $A(t)$ with error less than $2^{-n}$.  This is an
+explicit primitive recursive name transformer.
+
+\subsection{The Cayley identity without differentiation}
+
+Define the unit complex rational function
+\[
+ w(x)=\frac{1+\mathrm ix}{1-\mathrm ix}
+     =\frac{1-x^2+2\mathrm ix}{1+x^2}.
+\]
+We prove
+\[
+                     E(2A(t))=w(t).                        \tag{T7}
+\]
+Fix a dyadic $N\geq2M$, put $h=t/N$, and $x_j=jh$.
+Because $x_jh\geq0$, the number
+$D_j=1+x_j^2+x_jh$ is at least one.  Exact multiplication gives
+\[
+ \frac{w(x_j+h)}{w(x_j)}
+       =\frac{D_j+\mathrm ih}{D_j-\mathrm ih}.
+\]
+Writing $r_j=h/D_j$, the difference of the right side from
+$1+2\mathrm ir_j$ has norm at most $2h^2$.
+Also
+\[
+ \left|r_j-\frac{h}{1+x_j^2}\right|
+ =\frac{|x_j|h^2}{D_j(1+x_j^2)}\leq Mh^2.
+\]
+Thus its difference from $1+2\mathrm i h/(1+x_j^2)$ is at most
+$2(M+1)h^2$.  Since $|2h/(1+x_j^2)|\leq1$, (T3) shows that
+\[
+ \left|\frac{w(x_j+h)}{w(x_j)}
+       -E\!\left(\frac{2h}{1+x_j^2}\right)\right|
+ \leq(2M+6)h^2.                                            \tag{T8}
+\]
+
+All factors in the two products have norm one.  Telescoping the products
+in (T8), using $w(0)=1$ and (T2), gives
+\[
+ |w(t)-E(2A_N(t))|
+ \leq \frac{(2M+6)M^2}{N}.
+\]
+By (T4) and (T6),
+\[
+ |w(t)-E(2A(t))|
+ \leq\frac{8M^3+6M^2}{N}
+ \leq\frac{16(M+1)^3}{N}.                                  \tag{T9}
+\]
+For example, $N=2^{n+3(M+1)+5}$ makes this error at most $2^{-n-1}$
+and ensures $N\geq2M$.  In the later uniform case $M=2$, the smaller
+choice $N=2^{n+9}$ already makes it less than $2^{-n}$.
+Thus an explicit finite estimate at any requested precision proves (T7).
+This is a finite error argument throughout, not an application of the
+fundamental theorem of calculus or an existence theorem for differential
+equations.
+
+Define $\pi=4A(1)$, the standard arctangent normalization of the radian
+constant.  Equation (T7) gives $E(2A(1))=\mathrm i$, so (T2) gives
+\[
+                           E(\pi)=-1.                       \tag{T10}
+\]
+
+\subsection{A finite chart choice produces an angle}
+
+Let $c^2+s^2=1$.  Compute once a rational $q$ with
+$|q-c|\leq1/4$, and make the decidable rational comparison $q\geq0$.
+If this holds, $1+c\geq3/4$; set
+\[
+             t=\frac{s}{1+c},\qquad \theta=2A(t).
+\]
+If $q<0$, then $1-c>3/4$; set
+\[
+             t=\frac{s}{1-c},\qquad \theta=\pi-2A(t).
+\]
+In either case $|t|\leq4/3$, so one may use the uniform bound $M=2$
+in all computations.  In the first chart, $w(t)=c+\mathrm is$; in the
+second, $-\overline{w(t)}=c+\mathrm is$.  These follow by multiplying
+through by $(1+c)^2+s^2=2(1+c)$ or
+$(1-c)^2+s^2=2(1-c)$, respectively.  Equations (T2), (T7), and (T10)
+therefore give $E(\theta)=c+\mathrm is$ in both charts.
+
+This is a valid existential angle constructor.  Its selected angle may
+depend on the supplied name and need not be a globally continuous
+single-valued principal argument on the circle.  Both chart formulas
+produce a correct angle wherever that chart is selected.  The chart is
+chosen once at a fixed input precision and retained at every later
+output precision.
+
+\paragraph{Arithmetic audit.}
+Every sum, product, dyadic precision, and number of iterations appearing
+above has a displayed primitive recursive bound.  The finite binomial,
+geometric-sum, and telescoping identities use quantifier-free induction
+after rational denominators have been cleared.  The output precision is
+a free natural parameter in those induction arguments.  Universal
+quantification over precision is introduced after each finite estimate
+has been proved; induction on a Cauchy statement containing such a
+quantifier is not used.

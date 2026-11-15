@@ -1,0 +1,70 @@
+\appendix
+\section{Executable certificates and reproducibility}
+
+\subsection{Contents of the archive}
+
+\begin{longtable}{p{0.36\textwidth}p{0.56\textwidth}}
+\toprule
+Path & Purpose \\
+\midrule
+\endhead
+\path{main.tex}, \path{sections/*.tex} & Complete source of this report. \\
+\path{constructive_geometry_ipra.pdf} & Compiled report. \\
+\path{verification/check_identities.py} & Exact SymPy checks of the fixed coordinate and factorization certificates. \\
+\path{generated/certificate_report.txt} & Captured output of the checker used for this delivery. \\
+\path{lean/FieldCertificates.lean} & Mathlib-oriented scalar certificate proofs and interfaces. \\
+\path{lean/IPRAFormalizationPlan.lean} & Repository-facing outline using \code{ConciseIPRA.BiInterpretation}. \\
+\path{README.md} & Build, verification, and status instructions. \\
+\path{dependencies.json} & Source revisions and tool versions recorded for the package. \\
+\bottomrule
+\end{longtable}
+
+Run the independent algebra audit with
+\begin{lstlisting}[language={}]
+python3 verification/check_identities.py
+\end{lstlisting}
+A successful run ends with \code{ALL CERTIFICATES PASS}.  The checker performs
+exact symbolic arithmetic; it uses no floating-point sampling.
+
+\subsection{What is checked}
+
+The script verifies:
+\begin{enumerate}
+\item the three nested intersections and harmonic bracket equation for
+Pappus's harmonic theorem;
+\item the Ceva and Menelaus determinant expansions and explicit witnesses;
+\item the binary-quadratic subtraction identity and all three Carnot conic
+factorizations;
+\item endpoint factorization for representative finite root lists in Carnot's
+polygon theorem;
+\item the determinant relabellings and cyclic telescoping identities for
+Hoehn;
+\item the vector dependence for Pappus's hexagon theorem;
+\item Pascal's weighted vector identity; and
+\item the dual tangent-line determinant giving Brianchon on the standard
+conic.
+\end{enumerate}
+The variable-length Carnot proof itself is mathematical induction, not a
+finite computer expansion; the script checks its one-side algebra while the
+report gives the induction.
+
+\subsection{Verification status}
+
+\begin{longtable}{p{0.35\textwidth}p{0.55\textwidth}}
+\toprule
+Layer & Status in this archive \\
+\midrule
+\endhead
+Human constructive proofs & Complete for the explicit coded-field formulations stated here. \\
+Exact symbolic algebra audit & Complete when the captured report says \code{PASS}. \\
+Lean field-level files & Detailed source outline supplied; not build-tested in this execution environment. \\
+Native \code{PRAAx} derivations & Not yet implemented. \\
+Transport to \code{TeqAx} & Existing repository theorem identified; not instantiated here for the eight formulas. \\
+Compressed native checker certificates & Not yet implemented. \\
+\bottomrule
+\end{longtable}
+
+This distinction is essential.  The report proves that every step is of the
+primitive-recursive, intuitionistically valid kind and exhibits all geometric
+witnesses.  It does not mislabel a formalization plan as a completed Lean
+kernel proof.

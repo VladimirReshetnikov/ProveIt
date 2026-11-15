@@ -1,0 +1,109 @@
+\subsection{Extracting an actual zero name from a positive count}
+\label{sec:zero-extraction}
+
+A positive contour count contains more constructive information than an
+unrelated sequence of small residuals. Here is a coherent root extraction,
+using only the quantitative minimum-modulus construction and the finite
+winding rules already proved.
+
+Fix one rational rectangle $Q_0$ with a certified zero-free boundary and
+positive xi winding. Choose an integer $A\ge1$ so that
+$|s-2|\le A$ throughout $Q_0$, and use $f(z)=\xi(2+Az)$. The entire
+theta-integral construction gives, with $R=4A+2$,
+\[
+        |f(z)|\le M:=1+2R(R+1)R!\quad(|z|\le4),
+             \qquad f(0)=\xi(2)=\zeta(2)/\pi\ge1/4.
+\]
+The same expression with $R=5A+2$ bounds the larger disk used for Taylor
+approximation. The minimum-modulus lemma therefore applies with the fixed
+integer $K=4\lceil\log_2(16M)\rceil$. In its notation one may take
+\[
+       L_\delta=2^{-83}M^{-20}(\delta/6)^K,
+\]
+so that outside at most $K$ disks of radius $\delta$ the normalized
+function has modulus at least $3L_\delta/4$. The global derivative on
+$Q_0$ is bounded by a fixed primitive recursive integer $D\ge1$; for
+example the Cauchy bound from the displayed disk estimate permits $D=M$.
+These constants may be very large, but none is obtained by an unbounded
+search.
+
+For a current rectangle $[a,a+w]\times[b,b+h]$, use the $K+1$ candidates
+\[
+ x_j=a+w/3+\frac{(j+1)w}{3(K+2)},\qquad
+ y_j=b+h/3+\frac{(j+1)h}{3(K+2)}\quad(0\le j\le K),
+\]
+and put $\delta=\min(w,h)/(9A(K+2))$. Twice this radius is smaller
+than either candidate spacing in normalized coordinates, so each exceptional
+disk excludes at most one vertical candidate and at most one horizontal
+candidate. There is therefore a safe full segment in each direction.
+On every candidate segment evaluate $\xi$ to error $L_\delta/16$ on a
+mesh of physical width at most $L_\delta/(8D)$. Choose the first segment
+whose rational samples have modulus at least $L_\delta/2$, tested by
+squaring. A safe candidate passes this test, and every passing candidate
+has true modulus at least $5L_\delta/16$ on the entire segment. Record
+the smaller margin $L_\delta/4$ for each of the two chosen cuts.
+
+If the parent's recorded margin is $m$, give every child the common margin
+\[
+                         m'=\tfrac12\min(m,L_\delta/4).
+\]
+Every child edge then has true
+modulus at least $2m'$. Restrict the inherited boundary certificates
+to the child edges, and refine both inherited edges and the two cuts to
+a common mesh of width at most $m'/(8D)$, with sample error at most $m'/8$.
+The resulting Lipschitz certificates verify the claimed margin $m'$.
+Reuse
+identical samples with opposite orientations on shared child edges. This
+constructs full closed-boundary certificates for all four children, not
+just certificates for their new cuts. Each side length lies between
+$1/3$ and $2/3$ of the corresponding parent side length.
+
+Each child winding is nonnegative. To see this without already assuming
+analytic root existence, approximate $\xi$ on that child's boundary by a
+rational complex polynomial to less than half the certified boundary
+margin. The finite zero-free homotopy identifies the two windings. The
+polynomial engine of Section~\ref{sec:polynomial-algebra} factors that
+polynomial, so its winding is the sum of the nonnegative indices of its
+linear factors. Cancellation of the new internal edges makes the four
+child windings sum to the parent's winding. At least one is consequently
+positive; choose the first such child in a fixed ordering.
+
+Iterating this procedure gives nested rational rectangles $Q_j$ with
+positive winding and diameter at most $D_0(2/3)^j$, for a supplied
+$D_0\ge1$. All searches are bounded, and the bounds are recomputed by
+primitive recursion from the current rational rectangle and its inherited
+boundary margin. In particular this is not a search that waits until a
+possibly vanishing sample becomes visibly nonzero.
+
+Let $c_j$ be the centre of $Q_j$. Then
+\[
+                        |\xi(c_j)|\le D\,\operatorname{diam}(Q_j).
+\]
+Indeed, a strict violation would put the entire boundary image in a disk
+centred at $\xi(c_j)$ which misses zero; its winding would be zero. The
+finite-precision version proves the displayed weak inequality by ruling
+out every rationally witnessed violation, using the same derivative bound.
+
+Choose an integer $L$ with $2^L\ge4DD_0$, and set
+\[
+                         \alpha(k)=c_{\,2(k+L)}.
+\]
+Since $(2/3)^2<1/2$, nestedness gives, for $\ell\ge k$,
+\[
+       |\alpha(\ell)-\alpha(k)|\le2^{-k-2},\qquad
+       |\xi(\alpha(k))|\le2^{-k-2}.
+\]
+The centres therefore form one primitive recursive fast Cauchy name for an
+actual zero. The initial positive boundary margin and derivative bound
+also keep this zero positively separated from $\partial Q_0$, so it lies
+inside the original rectangle. Every recurrence invariant used to obtain these inequalities
+concerns finite rational rectangles, contour certificates, signed integer
+counts and fixed-precision approximation errors. No countable choice or
+decision of exact zero ordinates is involved.
+
+For rectangles above the real axis, the explicitly nonvanishing factors
+relating $\xi$ and $\zeta$ identify the extracted point as a nontrivial
+zeta zero. Applying the construction to disjoint certified height bands
+gives pairwise apart zero names. This proves constructive infinitude when
+the counting estimate makes those band counts positive; it does not supply
+a procedure for deciding equal ordinates or sorting all exact zeros.

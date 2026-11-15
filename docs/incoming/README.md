@@ -143,6 +143,23 @@ from the history.
 | `pa194_joint_forest_research.zip` | 2026-11-14 | [pa194_joint_forest_research](../../Computability/BusyBeaver/Research/PA/docs/pa194_joint_forest_research/) |
 | `pa194_orhf_research.zip` | 2026-11-14 | [pa194_orhf_research](../../Computability/BusyBeaver/Research/PA/docs/pa194_orhf_research/) |
 
+## iPRA proof packets from `docs/drafts`
+
+Thirty-three archives committed to [`docs/drafts`](../drafts/) on 14 and 15 November 2026
+give finitary proofs of classical theorems in intuitionistic primitive recursive arithmetic.
+They are placed, as delivered and without a write, in
+[`Logic/PrimitiveRecursiveArithmetic/docs/proofs`](../../Logic/PrimitiveRecursiveArithmetic/docs/proofs/README.md),
+one directory per archive, named after the archive with its wrapper directory removed.
+They were placed on Vladimir's instruction of 15 November 2026, which asked for no
+verification and no Lean compilation. Nothing was rerun or checked. That README lists each
+archive with its arrival commit. It also lists the members that are not placed:
+- 29 files matched by `.gitignore`;
+- a byte-identical copy of the FTA packet, bundled in `puiseux_ipra`;
+- a nested copy of the `zeta_functional_equation_ipra` archive, together with three copies
+  of `ConciseIPRA` Lean sources, all bundled in `zeta_zeros_ipra_2026-11-15`.
+
+All 33 archives are removed from `docs/drafts`, and that directory's `.gitkeep` is kept.
+
 ## Sub-exponential 3-SAT (ETH) reports
 
 Forty-three arrivals of 26–27 October 2026 about sub-exponential 3-SAT, that
