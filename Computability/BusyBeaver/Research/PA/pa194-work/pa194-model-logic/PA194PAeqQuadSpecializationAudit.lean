@@ -1,0 +1,4 @@
+import PA194PAeqQuadSpecialization
+#print axioms PA194PAeqQuadSpecialization.paeqQuadGraph_defined
+#print axioms PA194PAeqQuadSpecialization.paeqQuadProof
+#print axioms PA194PAeqQuadSpecialization.paeqQuadProof_val
