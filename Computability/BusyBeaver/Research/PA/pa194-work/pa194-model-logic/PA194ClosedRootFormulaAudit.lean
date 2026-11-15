@@ -1,0 +1,10 @@
+import PA194ClosedRootFormula
+#print axioms PA194FormulaDispatcher.rootParameters_graph
+#print axioms PA194FormulaDispatcher.rootParameters_valid
+#print axioms PA194FormulaDispatcher.rootParameters_length
+#print axioms PA194FormulaDispatcher.rootFormula_graph
+#print axioms PA194FormulaDispatcher.rootFormula_valid
+#print axioms PA194FormulaDispatcher.rootFormula_falsum
+#print axioms PA194FormulaDispatcher.closedRootFormula_defined
+#print axioms PA194FormulaDispatcher.closedRootFormula_sentence
+#print axioms PA194FormulaDispatcher.closedRootFormula_falsum
