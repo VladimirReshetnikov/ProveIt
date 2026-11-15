@@ -109,8 +109,9 @@ The [reflexivity](pa194-work/pa194-model-logic/FORWARD-REFL-ROOT.md),
 [multiplication-by-zero](pa194-work/pa194-model-logic/FORWARD-MUL-ZERO.md),
 and [symmetry](pa194-work/pa194-model-logic/FORWARD-SYMMETRY.md) suppliers
 prove the root-packet translations of those fixed axioms in the source theory
-under the stated code bounds. Their correspondence with the identity packets
-of the newer guarded compiler remains open. The other fixed
+under the stated code bounds. A [normalized identity-packet bridge](pa194-work/pa194-model-logic/IDENTITY-FIXED.md)
+now supplies these five fixed translations for the guarded route; the guarded
+endpoint still needs to be specialized to those packets. The other fixed
 axioms, induction and rule suppliers are still open; so is the unconditional
 PAeq-to-source compiler. The [universal formula replacement theorem](pa194-work/pa194-model-logic/PAEQ-UNIVERSAL-FORMULA-CONGRUENCE.md)
 supplies modeled PAeq proof existence for arbitrary internally valid arity-one

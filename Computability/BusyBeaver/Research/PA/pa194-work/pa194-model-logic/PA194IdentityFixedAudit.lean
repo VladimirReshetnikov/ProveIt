@@ -1,0 +1,9 @@
+import PA194IdentityFixedSuppliers
+#print axioms PA194ForwardIdentityQuote.normalizedIdentityPacket_exists
+#print axioms PA194ForwardIdentityQuote.identity_aligned
+#print axioms PA194ForwardIdentityQuote.identity_translate_quote
+#print axioms PA194IdentityFixedSuppliers.identity_reflexivity_provable
+#print axioms PA194IdentityFixedSuppliers.identity_zeroNotSucc_provable
+#print axioms PA194IdentityFixedSuppliers.identity_addZero_provable
+#print axioms PA194IdentityFixedSuppliers.identity_mulZero_provable
+#print axioms PA194IdentityFixedSuppliers.identity_symmetry_provable

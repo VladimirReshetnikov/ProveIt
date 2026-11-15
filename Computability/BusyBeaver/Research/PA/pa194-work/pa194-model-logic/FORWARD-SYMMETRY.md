@@ -12,4 +12,4 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check-for
 
 The checker rebuilds nine source modules and an eleven-report audit using the separately replayed full-source inverse-isomorphism result and other explicitly listed retained prebuilt overlays. It does not rebuild the full import closure.
 
-The [guarded compiler](../pa194-guarded-compiler/README.md) uses identity packets rather than `rootParameters`; the correspondence of this closed axiom translation across those packets remains to be proved.
+The [normalized identity-packet bridge](IDENTITY-FIXED.md) now supplies this closed fixed axiom for the guarded route. Specializing the guarded endpoint to normalized packets remains a separate step.
