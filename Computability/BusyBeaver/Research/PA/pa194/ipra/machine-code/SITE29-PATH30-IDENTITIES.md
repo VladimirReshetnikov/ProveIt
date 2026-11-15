@@ -1,0 +1,9 @@
+# PA194 site-29/site-30 path and file identities
+
+`PA194Path29Input.site29Input` identifies the numeric site-29 input used by the physical run with the actual source-program path 29 and its padding. `PA194Path30Header.resultIsPath30` identifies the numeric returned header with actual path 30 and two padding cells. `PA194Site29ReturnPath30.returnPath30` applies the latter identity to the checked state-3-to-root return.
+
+`PA194Site29SeedOutput.seedReturnFile` proves that the exact 26-block seed-suffix carry yields a further one-valued spare block. `PA194Site29OutputWithCarry.outputWithCarry` identifies the resulting source file: logical register 6 is incremented, all other logical registers and the physical spare are unchanged, and the suffix is `block(1, block(1, seedTail))`. It uses an externally fixed natural-number induction for the finite file length; the file values are arbitrary model values. The source input and output identities are proved separately here; their composition with the state-24-to-state-3 physical run into one complete site-29 source-step theorem remains to be checked.
+
+`check-site29-path30-identities.sh` recompiles these five sources in a fresh output against retained stages. Invoke with `REPO SITE27_BASELINE SITE28_STAGE CODE_STAGE ROUND_STAGE SELECTED29_STAGE FINISH_STAGE INCREMENT29_STAGE COMPLETE28_STAGE RETURN29_STAGE PROJECT_FOUNDATION PACKAGE_FOUNDATION SOURCE_DIR NEW_OUTPUT`. It pins sources and selected direct-object hashes, checks specified axiom reports for `sorryAx`, rejects overlapping machine objects and machine-specific fallback roots, and records all input object hashes before the build and verifies them afterward. Earlier stages and general foundations require their preceding replays or independent provenance.
+
+These are finite all-model facts, not a native iPRA sentence, arbitrary-length simulation, or a consistency implication.
