@@ -1,0 +1,16 @@
+import PA194ModelSeedEnvironment
+#print axioms PA194ModelLogic.sigmaFunction_boundedRange
+#print axioms PA194ModelLogic.linearSeed_function_definable
+#print axioms PA194ModelLogic.linearSeed_boundedRange
+#print axioms PA194ModelLogic.seedEnvironmentStage_definable
+#print axioms PA194ModelLogic.seedEnvironment_definable
+#print axioms PA194ModelLogic.seedEnvironment_seed
+#print axioms PA194ModelLogic.seedEnvironment_linear
+#print axioms PA194ModelLogic.seedEnvironment_push
+#print axioms PA194ModelLogic.seedEnvironment_pop
+#print axioms PA194ModelLogic.seedAdmission_definable
+#print axioms PA194ModelLogic.seedAdmission_initial
+#print axioms PA194ModelLogic.seedAdmission_child
+#print axioms PA194ModelLogic.seedAdmission_push_child
+#print axioms PA194ModelLogic.seedAdmission_pop_child
+#print axioms PA194ModelLogic.seedAdmission_uniformBound

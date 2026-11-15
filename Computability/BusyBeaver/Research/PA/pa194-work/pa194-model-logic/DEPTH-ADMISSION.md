@@ -63,3 +63,11 @@ The ranked and linear environment invariants apply in an arbitrary model of cand
 This is not a compiler instance: the work has not proved a single uniform bound on all environment codes, nor all simulation fields for shift, substitution, freshness, and theory axioms. The seed supplies depth but does not by itself supply those properties.
 
 Run `bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check-depth-admission.sh --out DIR` with matching retained prerequisites.
+
+In an arbitrary candidate-PRA + IΣ₁ model, `sigmaFunction_boundedRange` proves that any Σ₁-definable total unary function has a common bound on a model-valued initial segment. Its Σ₁-induction step takes a common bound for the previous values and adds the new value. Applied to the internally coded environment function, `linearSeed_boundedRange` bounds the complete seed codes for each fixed bound-stack field and reserve, over any specified model-valued index range.
+
+`SeedEnvironment e` states that `e` equals its canonical `linearSeed` at the length of its free stack. It is Π₁-definable, holds for every seed, implies the linear invariant, and is preserved by push and, under `DepthAdmission`, by pop. For fixed `bound` and `reserve`, `SeedAdmission bound reserve e d` combines that invariant, `DepthAdmission e d`, and equality of those two fixed fields. It is Π₁-definable; an explicit seed is initially admitted; and admission is inherited by every strictly smaller child in the unchanged, pushed, and popped environment. `seedAdmission_uniformBound` obtains one model-valued code bound for all `e,d` satisfying the same fixed-parameter admission: the reserve bounds the stack length, and the bounded-range theorem bounds the corresponding seed codes.
+
+These results provide the structural and environment-bound ingredients for a concrete compiler admission. No complete compiler or consistency implication follows here: general target logical and source-theory axiom simulation fields remain to be proved. In particular the finite equality-theory supplier does not supply all PA axioms.
+
+Run `bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check-seed-admission.sh --out DIR` with matching retained prerequisites.
