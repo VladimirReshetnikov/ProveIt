@@ -1,0 +1,7 @@
+# Successor-variable value normalization at model-valued indices
+
+`PA194ForwardSuccValueAt.lean` specializes the fixed universal source theorem for the translated value of `succ (.bvar 0)` at arbitrary model-valued free-variable indices x and z. Given an explicit proof of that universal theorem and a proof of either side under a common source context, it constructs a proof of the other side. The left side is a literal two-template substitution of the typed forward-translation value; the right side is a literal substitution of `domain(x) ∧ domain(z) ∧ successor(x,z)`.
+
+`succValueForwardProof_val` and `succValueBackwardProof_val` give exact proof codes, with fixed Σ₁ graphs for both directions, in every candidate-PRA model with IΣ₁ arithmetic reduct. The universal theorem proof is an explicit input. The syntactic identification of the left template with the numerical dispatcher at model-valued indices remains separate, as do arbitrary internal formula substitution and the translated PA induction bridge. This is not a native iPRA or machine-correctness theorem.
+
+Run `bash check-forward-succ-value-at.sh REPO NEW_OUTPUT`. The new module is rebuilt in a fresh output against pinned prebuilt inputs, including all four exact repository universal-theorem objects, the unified forward translator, and the contextual equivalence application. The complete transitive source closure is not rebuilt. Success reports five axiom audits without `sorryAx`.
