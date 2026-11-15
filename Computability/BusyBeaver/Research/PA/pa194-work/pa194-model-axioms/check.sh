@@ -13,3 +13,5 @@ if command -v py >/dev/null 2>&1; then py=py; else py=python3; fi
   --top "$here/PA194ModelWeakAdjunctionAxiom.lean" --reports 7 "$@"
 "$py" -X utf8 -B "$here/../pa194-model-fairness/check_bridge.py" \
   --top "$here/PA194ModelAdjunctiveTheory.lean" --reports 6 "$@"
+"$py" -X utf8 -B "$here/../pa194-model-fairness/check_bridge.py" \
+  --top "$here/PA194ModelSeparation.lean" --reports 5 "$@"
