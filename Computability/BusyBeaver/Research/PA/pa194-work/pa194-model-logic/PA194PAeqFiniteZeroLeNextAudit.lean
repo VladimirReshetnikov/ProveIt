@@ -1,0 +1,8 @@
+import PA194PAeqFiniteRemainingNext5
+#print axioms PA194PAeq.ZeroLe.theoryProof
+#print axioms PA194PAeq.ZeroLe.source_formula
+#print axioms PA194PAeq.ZeroLe.internal_zeroLe_proof
+#print axioms PA194PAeq.InductionReopen.equality_supplier_next5
+#print axioms PA194PAeq.InductionReopen.finite_cases_next5
+#print axioms PA194PAeq.InductionReopen.finite_supplier_of_remaining_next5
+#print axioms PA194PAeq.InductionReopen.pa_refutation_of_remaining_next5
