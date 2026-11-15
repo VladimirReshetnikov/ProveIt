@@ -1,0 +1,3 @@
+import PA194OrdinarySourceCompiler
+#print axioms PA194FullSepIPRA.internalCompiler_of_ordinaryCompiler
+#print axioms PA194FullSepIPRA.physical_nonhalt_consistency_of_ordinaryCompiler
