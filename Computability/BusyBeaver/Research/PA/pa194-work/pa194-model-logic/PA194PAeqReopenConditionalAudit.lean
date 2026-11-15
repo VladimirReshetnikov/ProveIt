@@ -1,0 +1,9 @@
+import PA194PAeqReopenConditional
+import PA194PAeqInductionZeroFree
+#print axioms PA194PAeq.InductionReopen.reopen
+#print axioms PA194PAeq.InductionReopen.reopen_iterated
+#print axioms PA194PAeq.InductionReopen.primitiveBody
+#print axioms PA194PAeq.InductionReopen.addOneBody
+#print axioms PA194PAeq.InductionReopen.arithmeticInductionBody
+#print axioms PA194PAeq.InductionAddOne.primitiveBody_provable_if_zero_free
+#print axioms PA194PAeq.InductionAddOne.addOneBody_provable_if_zero_free
