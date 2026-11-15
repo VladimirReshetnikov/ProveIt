@@ -1,0 +1,137 @@
+import PA194Site32CarryFileIdentity
+import PA194Site32To1
+import PA194Site32RootWord
+import PA194Site32SecondRoot
+import PA194Site32To17
+import PA194Site29ScanRewind
+import PA194Site32HeaderPass
+import PA194Site32SecondTo71
+import PA194Site29ScanTo71
+import PA194SecondHeaderFile
+set_option autoImplicit false
+set_option maxRecDepth 10000
+set_option maxHeartbeats 8000000
+namespace PA194Site32To4
+open DiophantineConsistency
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open PRAFiniteFunctionCodes PRALanguage PRATheory PRAAddOne PRAHistoryPairCode
+open TableDispatch PA194Site32SecondTo71 PA194Path27Header PA194Site29ScanTo71 PA194RegisterPermutation PA194RegisterFile PA194UnaryRuns PA194ZeroRuns PA194FiniteControls PA194StateOne PRAModelIOpenPairing
+section models
+variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M] [M↓[language] ⊧* PRA]
+local instance : Zero M := ⟨Structure.func (L := language) (Code.zero 0) Fin.elim0⟩
+local instance : One M := ⟨Structure.func (L := language) oneCode Fin.elim0⟩
+local instance : Add M := ⟨fun x y => Structure.func (L := language) addCode ![x,y]⟩
+local instance : Mul M := ⟨fun x y => Structure.func (L := language) mulCode ![x,y]⟩
+local instance : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
+local notation "F" => Structure.func (L := language)
+theorem to4 (k : M) (args : Fin 11 → M) :
+    let v := physicalArgs args
+    let b := F ones ![v 1+1,F (fileCode 8) (fun i => v i.succ.succ)]
+    let p := F ones ![v 0+1,b+b]
+    let t := (1 : M)+(1+1)+((p+p)+(p+p))+((p+p)+(p+p))
+    let r := F ones ![k,t]
+    let w := r+r+1
+    let a0 := (1 : M)+(1 : M)+1
+    let a1 := a0+a0
+    let a2 := a1+a1
+    let a3 := a2+a2
+    let a4 := a3+a3+1
+    let a5 := a4+a4+1
+    let a6 := a5+a5+1
+    let l := (a6+a6)+(a6+a6)
+    let tail := F ones ![v 2+1,F (fileCode 7) (fun i => v i.succ.succ.succ)]
+    let l0 := F ones ![k,l]
+    let l1 := l0+l0+1
+    let l2 := l1+l1+1
+    let l3 := l2+l2
+    let l4 := F ones ![v 0+1,l3]
+    let l5 := l4+l4
+    let l6 := F ones ![v 1+1,l5]
+    let cscan := ((k+modelNumeral M 3)+((v 0+1)+1))+((v 1+1)+1)
+    let f := F sourceFileCode args
+    let z := F zeros ![k,f+f+1]
+    let rc := modelNumeral M 4+(((modelNumeral M 5+modelNumeral M 6)+modelNumeral M 2)+1)
+    let c := (((((k+1)+1)+1)+1)+((k+1)+1))
+    let c12 := F addCode ![F addCode ![modelNumeral M 8,modelNumeral M 3],(1 : M)]
+    let firstClock := F addCode ![F addCode ![F addCode ![c12,modelNumeral M 2],c],F addCode ![modelNumeral M 3,modelNumeral M 3+rc]]
+    let c13 := F addCode ![c12,(1 : M)]
+    let b0 := F ones ![v 1,l5]
+    let e : Fin 9 → M := fun i => v i.succ.succ
+    let e6 : Fin 3 → M := fun i => e i.succ.succ.succ.succ.succ.succ
+    let f6 := F (fileCode 1) (fun i => e6 i.succ)
+    let q := F ones ![e6 0,f6]
+    let out := F (fileCode 6) ![e 0,e 1,e 2,e 3,e 4,e 5,(q+q)+(q+q)]
+    let base := (b0+b0+1)+(b0+b0+1)
+    let rev : Fin 6 → M := ![e 4,e 3,e 2,e 1,e 0,base]
+    let t1 := (e 0+1)+1
+    let t2 := (e 1+1)+1
+    let t3 := (e 2+1)+1
+    let t4 := (e 3+1)+1
+    let t5 := (e 4+1)+1
+    let t6 := (e 5+1)+1
+    let c6 := (((((t1+t2)+t3)+t4)+t5)+t6)
+    let cr := (modelNumeral M 2+((e 5+1)+1))+F (PA194CarryFile.costCode 5) rev
+    let aR1 := F ones ![v 1,(1 : M)+out+out]
+    let aR2 := F ones ![v 0,(1 : M)+(aR1+aR1)+(aR1+aR1)]
+    let aR3 := F ones ![k+1,(1 : M)+(aR2+aR2)+(aR2+aR2)]
+    let ct := (((v 1+1)+1)+((v 0+1)+1))+(((k+1)+1)+1)
+    let cR := F addCode ![modelNumeral M 4,modelNumeral M 3+rc]
+    let c14 := F addCode ![c12,modelNumeral M 2]
+    let vec : Fin 9 → M := ![v 0,v 1,v 2,v 3,v 4,v 5,v 6,v 7,(q+q)+(q+q)]
+    let leftStart := ((a6+a6)+(a6+a6))+((a6+a6)+(a6+a6))
+    let before := F ones ![k+1,leftStart]
+    let carried := F (PA194CarryFile.leftCode 8) (Fin.cases before vec)
+    let selectedLeft := carried+carried+1
+    let carryClock := ((k+1)+F (PA194CarryFile.costCode 8) vec)+modelNumeral M 2
+    F PA194Stepper.stepper ![F addCode ![F addCode ![F addCode ![F addCode ![F addCode ![F addCode ![firstClock,F addCode ![c13,cscan]],c6+cr],ct],cR],c14],carryClock],
+      F pairCode ![modelNumeral M 24,F pairCode ![(1 : M),modelWord (PA194SourceProgram.path 32) ((z+z)+(z+z))]]] =
+    F pairCode ![modelNumeral M 4,F pairCode ![selectedLeft+selectedLeft,q]] := by
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := standardModelIOpen
+  dsimp only
+  let v := physicalArgs args
+  let f := F sourceFileCode args
+  let z := F zeros ![k,f+f+1]
+  let a0 := (1 : M)+(1 : M)+1
+  let a1 := a0+a0
+  let a2 := a1+a1
+  let a3 := a2+a2
+  let a4 := a3+a3+1
+  let a5 := a4+a4+1
+  let a6 := a5+a5+1
+  let l := (a6+a6)+(a6+a6)
+  let l0 := F ones ![k,l]
+  let l1 := l0+l0+1
+  let l2 := l1+l1+1
+  let l3 := l2+l2
+  let l4 := F ones ![v 0+1,l3]
+  let l5 := l4+l4
+  let b0 := F ones ![v 1,l5]
+  let e : Fin 9 → M := fun i => v i.succ.succ
+  let e6 : Fin 3 → M := fun i => e i.succ.succ.succ.succ.succ.succ
+  let f6 := F (fileCode 1) (fun i => e6 i.succ)
+  let q := F ones ![e6 0,f6]
+  let out := F (fileCode 6) ![e 0,e 1,e 2,e 3,e 4,e 5,(q+q)+(q+q)]
+  let aR1 := F ones ![v 1,(1 : M)+out+out]
+  let aR2 := F ones ![v 0,(1 : M)+(aR1+aR1)+(aR1+aR1)]
+  let aR3 := F ones ![k+1,(1 : M)+(aR2+aR2)+(aR2+aR2)]
+  let vec : Fin 9 → M := ![v 0,v 1,v 2,v 3,v 4,v 5,v 6,v 7,(q+q)+(q+q)]
+  let file := F (fileCode 8) vec
+  let leftStart := ((a6+a6)+(a6+a6))+((a6+a6)+(a6+a6))
+  let before := F ones ![k+1,leftStart]
+  let carried := F (PA194CarryFile.leftCode 8) (Fin.cases before vec)
+  have hf := PA194Site32CarryFileIdentity.carryFile v q
+  dsimp only at hf
+  change file = aR2+aR2 at hf
+  have heq : (1 : M)+(aR2+aR2)+(aR2+aR2) = file+file+1 := by rw [hf]; ac_rfl
+  have h := PA194Site32To1.to1 k args
+  dsimp only at h
+  rw [heq] at h
+  have hc := PA194Site32CarryTo4.carryTo4 k leftStart v
+  dsimp only at hc
+  change F PA194Stepper.stepper ![((k+1)+F (PA194CarryFile.costCode 8) vec)+modelNumeral M 2,F pairCode ![modelNumeral M 1,F pairCode ![leftStart,F ones ![k,file+file+1]]]] =
+    F pairCode ![modelNumeral M 4,F pairCode ![(carried+carried+1)+(carried+carried+1),q]] at hc
+  rw [PA194StepperCompose.modelStepperCompose,h,hc]
+#print axioms to4
+end models
+end PA194Site32To4
