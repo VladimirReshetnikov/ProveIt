@@ -1,0 +1,11 @@
+import PA194TypedSchema
+#print axioms PA194TypedSeparation.liftMember_quote
+#print axioms PA194TypedSeparation.separationFormula_quote
+#print axioms PA194TypedFix.bindTerm_quote_fix
+#print axioms PA194TypedFix.bindPair_quote_fix
+#print axioms PA194TypedFix.bindFormula_quote_fix
+#print axioms PA194TypedClosure.modelClose_quote
+#print axioms PA194TypedClosure.typedCloseIter_eq_fixitr
+#print axioms PA194TypedClosure.modelClose_quote_univCl
+#print axioms PA194TypedBound.formulaFreeBound_quote_fvSup
+#print axioms PA194TypedSchema.fullyClosedSeparation_quote
