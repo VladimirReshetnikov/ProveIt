@@ -40,11 +40,24 @@ agree under the embedding of sentences is not proved here.
 
 ## What is open
 
-- A source theory whose internal axiom class contains the separation instances
-  (`∃ φ, IsSemiformula 1 φ ∧ p = sepRoot φ`, a `Δ₁` condition), with its axiom rule. The
-  instances may have free variables, so the leaf has a hypothesis on the free stack
-  (no entry up to index `φ` is the label `base+1`); a simulation has to supply it from its
-  admission invariant.
+- A source theory whose internal axiom class contains the separation instances, with its
+  axiom rule. The obstacle is the parameters. `simRuleSeparation` allows free variables in
+  `φ` (under a hypothesis on the free stack: no entry up to index `φ` is the label
+  `base+1`), but a Foundation theory is a set of sentences, and `Theory.Δ₁.mem_iff` lets
+  the class accept a standard formula only if it is a sentence of the theory. So an
+  instance with parameters has to be an axiom in universally closed form, `∀…∀ (instance)`.
+  Under the closure the parameters are bound variables with indices `3, 4, …` inside the
+  property (the indices `1` and `2` are the output set and the given set), so the property
+  is no longer a formula of arity one used unchanged: it is a formula of arity `m+1`
+  shifted past two binders. The leaf then needs either the translation of a formula under
+  such a renaming of bound variables, or the relation between a body with bound parameters
+  and the open instance with free parameters. The second relation is also what the
+  universal rule of a simulation is about (`pa194-model-logic` has its quantifier rules
+  for atoms only). The class restricted to closed `φ`
+  (`IsSemiformula 1 φ ∧ shift φ = φ ∧ p = sepRoot φ`) is covered by the leaf as it stands,
+  but the standard development uses separation with parameters (for example
+  `intersectionAxiomSupplier`), so no theory with only the closed instances is defined
+  here.
 - `sepRoot φ` is not compared with `separationFormula` of `pa194-source-separation`, which
   lifts the property by a rewriting map instead of using its code unchanged.
 - The other fixed sentences that the standard development supplies in the calculus: the
