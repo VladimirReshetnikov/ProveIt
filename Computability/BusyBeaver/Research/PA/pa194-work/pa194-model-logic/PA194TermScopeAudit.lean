@@ -1,0 +1,4 @@
+import PA194TermScope
+#print axioms PA194TermDispatcher.translate_defined
+#print axioms PA194TermDispatcher.ScopeProperty_definable
+#print axioms PA194TermDispatcher.scope_translate
