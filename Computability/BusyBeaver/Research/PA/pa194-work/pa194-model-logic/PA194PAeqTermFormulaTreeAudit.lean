@@ -1,0 +1,7 @@
+import PA194PAeqTermFormulaTree
+#print axioms PA194PAeqTermFormulaTree.termTree_defined
+#print axioms PA194PAeqTermFormulaTree.termTree_bvar
+#print axioms PA194PAeqTermFormulaTree.termTree_fvar
+#print axioms PA194PAeqTermFormulaTree.termTree_func
+#print axioms PA194PAeqTermFormulaTree.termTreeVec_nth
+#print axioms PA194PAeqTermFormulaTree.termTree_valid
