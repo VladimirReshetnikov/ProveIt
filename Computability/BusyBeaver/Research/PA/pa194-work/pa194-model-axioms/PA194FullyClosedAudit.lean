@@ -1,0 +1,13 @@
+import PA194FullyClosedSeparation
+#print axioms PA194BindSource.termFreeBoundGraph_iff
+#print axioms PA194BindSource.termFreeBound_bind
+#print axioms PA194BindSource.termFreeBound_zero_iff
+#print axioms PA194BindSource.formulaFreeBound_definable
+#print axioms PA194BindSource.pairFreeBound_bind
+#print axioms PA194BindSource.bindFormula_freeBound
+#print axioms PA194BindSource.closeOne_freeBound
+#print axioms PA194BindSource.modelClose_freeBound
+#print axioms PA194BindSource.formulaFreeBound_zero_shift
+#print axioms PA194BindSource.modelClose_FVFree
+#print axioms PA194BindSource.fullyClosedSeparation_sentence
+#print axioms PA194BindSource.fullyClosedSeparation_leaf
