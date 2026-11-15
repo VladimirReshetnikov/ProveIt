@@ -1,0 +1,3 @@
+import PA194PAeqSuccessorMismatch
+#print axioms PA194PAeqBind.arithmeticSuccVariable_code
+#print axioms PA194PAeqBind.arithmeticSuccVariable_ne_primitive
