@@ -49,3 +49,11 @@ source-controller equality at site 27 after `4*r0` steps in the native iPRA
 theory. `check-actual-source-native.sh` rebuilds and audits both additions; its
 independent and repository-source staged replays passed. These statements do
 not establish physical-machine iteration or either consistency direction.
+
+`PA194ActualSourceExitSentence.nativeIPRA` additionally proves the universally
+closed source-controller equality at site 31 after `4*r0+1` steps.
+`PA194ActualLoopOrbit.frameOrbit` identifies the coded site-27 physical frame
+along the packed source-state orbit up to the initial `r0`; it is a frame
+identity rather than a physical execution theorem. Independent and
+repository-source replays of `check-actual-loop-orbit.sh` passed using the
+same retained machine, graph and foundation stages.
