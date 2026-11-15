@@ -1,0 +1,14 @@
+import PA194PAeqFiniteRemaining
+#print axioms PA194PAeq.AddRightZero.addRightZeroTheoryProof
+#print axioms PA194PAeq.AddRightZero.addRightZero_formula
+#print axioms PA194PAeq.AddRightZero.internal_addRightZero_proof
+#print axioms PA194PAeq.MulRightZero.mulRightZeroTheoryProof
+#print axioms PA194PAeq.MulRightZero.mulRightZero_formula
+#print axioms PA194PAeq.MulRightZero.internal_mulRightZero_proof
+#print axioms PA194PAeq.AddCongrTyped.addCongrAt
+#print axioms PA194PAeq.MulRightOne.mulRightOneTheoryProof
+#print axioms PA194PAeq.MulRightOne.mulRightOne_formula
+#print axioms PA194PAeq.MulRightOne.internal_mulRightOne_proof
+#print axioms PA194PAeq.InductionReopen.finite_cases
+#print axioms PA194PAeq.InductionReopen.finite_supplier_of_remaining
+#print axioms PA194PAeq.InductionReopen.pa_refutation_of_remaining
