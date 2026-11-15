@@ -65,9 +65,9 @@ and both [zero](pa194/ipra/machine-code/SITE45-ZERO-PHYSICAL.md) and
 and [one positive 45→46→47→45 transfer iteration](pa194/ipra/machine-code/SITE45-TRANSFER-STEP.md)
 in PRA models; the [site-45](pa194/ipra/machine-code/SITE45-POSITIVE-CLOCK-CODE.md) and
 [site-46](pa194/ipra/machine-code/SITE46-CLOCK-CODE.md) segment clocks have
-primitive-recursive codes. The [site-45 transfer orbit](pa194/ipra/machine-code/SITE45-NATIVE-ORBIT.md)
-now has a native iPRA sentence covering all positive iterations. Its zero exit
-and a complete reachable-state simulation remain open. Other native iPRA
+primitive-recursive codes. The [site-45 transfer and zero exit](pa194/ipra/machine-code/SITE45-NATIVE-EXIT.md)
+now have a native iPRA sentence covering the full transfer to site 48. A
+complete reachable-state simulation remains open. Other native iPRA
 clocked equalities cover the [physical positive loop](pa194/ipra/machine-code/ACTUAL-PHYSICAL-NATIVE.md),
 [source fetch](pa194/ipra/machine-code/UNIFIED-FETCH-NATIVE.md),
 [decoder](pa194/ipra/machine-code/DECODER-NATIVE.md),
@@ -107,8 +107,8 @@ assumes the quantifier, shift, and theory-axiom suppliers. Its original
 root-packet invariant collapses distinct variables and does not supply the
 needed domain guards, as explained in the guarded compiler notes. The [guarded calculus and compiler](pa194-work/pa194-guarded-compiler/README.md)
 retain those distinctions and use existential guard bounds. Their interpretation
-interface has no packet-length condition, but still requires nonvariable
-existential, axiom and domain-inhabitation suppliers. Identity translation is
+interface has no packet-length condition; the [domain-inhabitation supplier](pa194-work/pa194-model-logic/SOURCE-INHABITED.md)
+is proved, while the term facts and remaining axiom suppliers are still open. Identity translation is
 independent of packet length for valid internal formulas. The
 [ordinary PAeq theory now has a uniform classifier](pa194-work/pa194-model-logic/PAEQ-ORDINARY-CLASS.md),
 and the [arithmetic induction-axiom supplier](pa194-work/pa194-model-logic/PAEQ-INDUCTION-SUPPLIER.md)
