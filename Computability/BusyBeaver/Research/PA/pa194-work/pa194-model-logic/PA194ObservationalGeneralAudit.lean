@@ -1,0 +1,6 @@
+import PA194ModelObsGeneral
+#print axioms PA194ModelLogic.depthObsRewrite_definable
+#print axioms PA194ModelLogic.depthObsRewrite_atom
+#print axioms PA194ModelLogic.depthObsRewrite_all
+#print axioms PA194ModelLogic.depthObsRewrite_ex
+#print axioms PA194ModelLogic.observationalRewrite_all_codes

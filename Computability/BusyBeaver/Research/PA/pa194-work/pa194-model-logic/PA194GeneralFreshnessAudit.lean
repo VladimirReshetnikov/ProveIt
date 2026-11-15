@@ -1,0 +1,10 @@
+import PA194ModelBaseFreshGeneral
+#print axioms PA194ModelLogic.allocatedBound_beforeCurrent
+#print axioms PA194ModelLogic.crossBinder_all
+#print axioms PA194ModelLogic.crossBinder_ex
+#print axioms PA194ModelLogic.depthBaseShift_definable
+#print axioms PA194ModelLogic.baseShift_binderBodies
+#print axioms PA194ModelLogic.generalBaseShift_all_codes
+#print axioms PA194ModelLogic.allIntro_generalBaseSlack
+#print axioms PA194ModelLogic.simRuleAllFresh_generalRanked
+#print axioms PA194ModelLogic.simRuleAllFresh_generalSeed
