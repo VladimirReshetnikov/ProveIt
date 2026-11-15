@@ -1,0 +1,9 @@
+import PA194TypedTheory
+#print axioms PA194NatQuoteBridge.eval_bridge
+#print axioms PA194NatQuoteBridge.quote_congr
+#print axioms PA194NatQuoteBridge.quote_bridge
+#print axioms PA194NatQuoteBridge.semiQuote_congr
+#print axioms PA194NatQuoteBridge.semiValidity_congr
+#print axioms PA194TypedSchema.fullSepTheory_eval_induced
+#print axioms PA194TypedSchema.standard_sourceFormula_quote_surjective_induced
+#print axioms PA194TypedSchema.fullSepTheory_mem_iff_typed
