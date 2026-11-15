@@ -1,0 +1,2 @@
+import PA194SuccInjectiveAnyPacket
+#print axioms PA194SuccInjectiveAnyPacket.succInjective_any_packet
