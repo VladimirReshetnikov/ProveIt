@@ -57,10 +57,15 @@ are also proved as native iPRA equalities; see the
 for each physical position, and the
 [marked increment](pa194/ipra/machine-code/INCREMENT-SOURCE.md) and
 [marked decrement](pa194/ipra/machine-code/DECREMENT-SOURCE.md) boxes have
-them for each logical register. The controller
-transitions into these boxes and the layout invariants between them remain
-open. In standard
-Lean semantics, [the calculus/clock composition](pa194-work/pa194-calculus-clock/README.md)
+them for each logical register. The controller and physical-frame transitions have also been connected for selected
+source sites; a complete reachable-state simulation remains open. The
+[source decoder](pa194/ipra/machine-code/DECODER-NATIVE.md) has a native iPRA
+clocked equality, while the
+[fetch/decode/dispatch prefix](pa194/ipra/machine-code/SCHEDULER-BRANCHES.md)
+is proved model-theoretically under the documented hypotheses. The general
+[seeded freshness compiler rule](pa194-work/pa194-model-logic/GENERAL-FRESHNESS.md)
+has been verified in models of PRA plus IΣ₁; it is one field, not a complete
+compiler or a native iPRA consistency proof. In standard Lean semantics, [the calculus/clock composition](pa194-work/pa194-calculus-clock/README.md)
 proves that either clock reaches 1 exactly when the displayed separate-diagonal
 numerical calculus has a finite derivation of contradiction. Its calibration
 to PA and its internalization in iPRA remain open, as do both machine-specific
