@@ -1,0 +1,10 @@
+import PA194ModelExEqualityDiagonal
+#print axioms PA194ModelLogic.targetExists_of_bodyTheorem
+#print axioms PA194ModelLogic.substs1_equalityBoundDiagonal
+#print axioms PA194ModelLogic.substs1_negativeEqualityBoundDiagonal
+#print axioms PA194ModelLogic.fixedTranslation_equalityBoundDiagonal
+#print axioms PA194ModelLogic.fixedTranslation_equalityFreeDiagonal
+#print axioms PA194ModelLogic.simRuleExs_equalityBoundDiagonal
+#print axioms PA194ModelLogic.simRuleExs_negativeEqualityBoundDiagonal
+#print axioms PA194ModelLogic.simRuleExs_equalityBoundDiagonal_term
+#print axioms PA194ModelLogic.simRuleExs_negativeEqualityBoundDiagonal_term
