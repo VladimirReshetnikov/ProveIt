@@ -242,3 +242,11 @@ simulation and derivation induction remain open.
 The [finite equality-axiom sequent](EQ-SEQUENT.md) connects an explicit coded
 axiom predicate to target sequents; its identity with an existing internal
 source-theory predicate and general proof compilation remain open.
+
+The [equality-theory axiom rule](SIM-AXIOM.md) uses an explicit Foundation
+Δ₁ presentation and discharges the corresponding abstract compiler field under
+a reserve bound; the remaining compiler rules and admissibility remain open.
+
+The [sequent truth and weakening lemmas](SEQUENT-TRUTH.md) handle two source
+rules for model-valued finite sets; the general initial axiom and remaining
+rules still require additional translation facts.

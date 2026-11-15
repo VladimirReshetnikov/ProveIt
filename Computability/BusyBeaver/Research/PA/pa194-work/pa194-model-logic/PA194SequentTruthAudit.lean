@@ -1,0 +1,7 @@
+import PA194ModelSequentTruth
+#print axioms PA194ModelLogic.sequentTruth_zero
+#print axioms PA194ModelLogic.fixedFormulaTranslation_verum
+#print axioms PA194ModelLogic.verumIntro_sseq
+#print axioms PA194ModelLogic.weakening_sseq
+#print axioms PA194ModelLogic.complementary_sseq
+#print axioms PA194ModelLogic.translatedAxiom_sseq
