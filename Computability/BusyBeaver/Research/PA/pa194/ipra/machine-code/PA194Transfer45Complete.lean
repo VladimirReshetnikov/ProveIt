@@ -1,0 +1,47 @@
+import PA194Transfer45Model
+import PA194SourceFetchModel
+set_option autoImplicit false
+set_option maxRecDepth 65536
+set_option maxHeartbeats 8000000
+namespace PA194Transfer45Complete
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency PRAFiniteFunctionCodes PRALanguage PRATheory PRAAddOne PRASubAddition
+open PRAHistoryPairCode PRAModelIOpenPairing PRAExhaustion TableDispatch
+open PA194SourceControllerCode PA194SourceRegisters PA194SourceRegisterRelation PA194SchedulerFetchPositive
+open PA194IteratedSimulation PA194SourceFetchModel PA194Transfer45Loop PA194Transfer45Invariant PA194Transfer45Model
+section models
+variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M] [M↓[language] ⊧* PRA]
+local notation "F" => Structure.func (L := language) (M := M)
+local instance : Zero M := ⟨F (Code.zero 0) Fin.elim0⟩
+local instance : One M := ⟨F oneCode Fin.elim0⟩
+local instance : Add M := ⟨fun x y => F addCode ![x,y]⟩
+local instance : Mul M := ⟨fun x y => F mulCode ![x,y]⟩
+local instance : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
+local instance : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := standardModelIOpen
+variable [M↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem transferComplete (args : Fin 11 → M) (tail : M) :
+    let n := args 6
+    let out := PA194Transfer45Invariant.argsAt args n
+    F PA194SourceControllerCode.run ![PA194Transfer45Invariant.three n+1,sourceState 45 args tail] = sourceState 48 out tail ∧
+    out 6 = 0 ∧ out 3 = args 3+args 6 ∧
+    ∀ i : Fin 11, i ≠ 6 → i ≠ 3 → out i = args i := by
+  let n := args 6
+  let out := PA194Transfer45Invariant.argsAt args n
+  have hz : out 6 = (0 : M) := by simp [out,n,PA194Transfer45Invariant.argsAt,subSelf]
+  have hrun := PA194Transfer45Model.runDrain args tail n (le_refl n)
+  rw [PA194Transfer45Invariant.frameCorrect] at hrun
+  change F PA194SourceControllerCode.run ![PA194Transfer45Invariant.three n,sourceState 45 args tail] = sourceState 45 out tail at hrun
+  have hexit := transferExit out tail hz
+  refine ⟨?_,hz,?_,?_⟩
+  · change F (iterate PA194SourceControllerCode.step) ![PA194Transfer45Invariant.three n+1,sourceState 45 args tail] = _
+    rw [iterateSucc]
+    change F PA194SourceControllerCode.step ![F PA194SourceControllerCode.run ![PA194Transfer45Invariant.three n,sourceState 45 args tail]] = _
+    rw [hrun,hexit]
+  · simp [out,n,PA194Transfer45Invariant.argsAt]
+  · intro i h6 h3
+    simp [out,PA194Transfer45Invariant.argsAt,Function.update_of_ne h6,Function.update_of_ne h3]
+#print axioms transferComplete
+end models
+end PA194Transfer45Complete
