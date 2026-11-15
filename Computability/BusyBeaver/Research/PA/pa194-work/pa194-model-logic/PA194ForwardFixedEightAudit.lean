@@ -1,0 +1,5 @@
+import PA194ForwardFixedEight
+#print axioms PA194ForwardReflProof.remainingFixedAfterMulZero_length
+#print axioms PA194ForwardReflProof.remainingFixedAfterAddZero_split
+#print axioms PA194ForwardReflProof.fixed_typed_supplier_of_eight
+#print axioms PA194ForwardReflProof.root_theoryAxiom_of_eight_and_induction
