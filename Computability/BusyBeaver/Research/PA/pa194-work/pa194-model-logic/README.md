@@ -253,3 +253,7 @@ rules still require additional translation facts.
 
 The [propositional compiler rules](SIM-PROPOSITIONAL.md) discharge the actual
 conjunction and disjunction Sim conclusions; other rules remain open.
+
+The [binder context translation](BINDER-CONTEXT.md) derives exact quantified
+constructor equations in candidate models; freshness, substitution, and the
+compiler quantifier rules remain separate.

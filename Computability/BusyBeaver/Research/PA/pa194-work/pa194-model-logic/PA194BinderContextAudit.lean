@@ -1,0 +1,9 @@
+import PA194ModelBinderAllocationShift
+#print axioms PA194ModelLogic.fixedFormulaTranslation_all
+#print axioms PA194ModelLogic.fixedFormulaTranslation_ex
+#print axioms PA194ModelLogic.formulaReference_binder_context
+#print axioms PA194ModelLogic.binderContext_bound
+#print axioms PA194ModelLogic.binderContext_label
+#print axioms PA194ModelLogic.binderContext_atom
+#print axioms PA194ModelLogic.allocateBound_push_shift
+#print axioms PA194ModelLogic.formulaReference_budget_shift
