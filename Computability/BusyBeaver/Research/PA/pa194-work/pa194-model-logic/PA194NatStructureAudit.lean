@@ -1,0 +1,4 @@
+import PA194NatStructureBridge
+#print axioms PA194NatStructureBridge.induced_eq_canonical
+#print axioms PA194NatStructureBridge.fullSep_eval_bridge
+#print axioms PA194NatStructureBridge.sigma_model_transport
