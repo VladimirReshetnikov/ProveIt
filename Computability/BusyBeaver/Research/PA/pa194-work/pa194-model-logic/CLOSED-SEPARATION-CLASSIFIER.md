@@ -1,0 +1,15 @@
+# Model-level closed-separation classifier bridge
+
+`closedSepCode q` is the model-internal predicate `∃ p ≤ q, IsSemiformula SourceL 1 p ∧ shift SourceL p = p ∧ sepRoot p = q`. The fixed-shift requirement is explicit; this module does not prove that it is equivalent to parameter-freeness for nonstandard codes. `sepRoot_arg_le` proves the bound needed for the full implication: every one-bound-variable shift-invariant p gives `closedSepCode (sepRoot p)`. `closedSepCode_sigma` and `closedSepCode_pi` prove that the predicate is separately Σ₁ and Π₁ definable in each candidate model of PRA plus IΣ₁, including nonstandard arguments. These are model-relative definability results, not yet a single parameter-free Δ₁ arithmetic classifier with the `Theory.Δ₁` standard-quotation correspondence and provable properness.
+
+`closedSepCode_axiom_seed` supplies the seeded compiler axiom leaf for every code satisfying that predicate, using the separately checked ranked separation-instance theorem. `closedSepClassification_axiom_seed` and `closedSepClassification_refutation_target` show that for any already Δ₁ relational source theory T, if its *entire model-internal axiom class* is contained in `adjunctiveTheory.Δ₁Class ∪ closedSepCode`, then every internal T-refutation translates to `TargetProvable 1`. The class inclusion is a substantive explicit hypothesis, not established for PA or even for a newly defined separation theory.
+
+The module does not construct an actual `Theory.Δ₁` instance for closed separation, identify the internal class with a standard sentence scheme, handle universally closed parameters, identify PA, or prove physical-machine/PA consistency equivalence. It is model-uniform Lean over PRA plus IΣ₁, not a native iPRA theorem.
+
+The incremental replay rebuilt the source and a combined-QF-import audit top against separately source-replayed ranked open separation, generic compiler and all prerequisite baselines. Seven principal axiom reports are free of `sorryAx`; remaining workspace and baseline objects are prebuilt. Run `check-closed-sep-classifier.sh` with the staged baselines listed by its arguments to reproduce the source-suffix audit. This is not a clean whole-workspace build.
+
+Example from the repository root, using the independently source-replayed baselines and a fresh output:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check-closed-sep-classifier.sh "$PWD" /dev/shm/pa194-generic-sim-replay /dev/shm/pa194-adjunctive-sim-v2-replay /dev/shm/pa194-shift-interface-replay /dev/shm/pa194-unrestricted-existential-v2-replay /dev/shm/pa194-qf-ranked-existential-audit /dev/shm/pa194-ranked-open-separation-replay-v2 /dev/shm/pa194-adjunctive-admission-audit /dev/shm/pa194-general-shift-replay /dev/shm/pa194-general-reverse-shift-replay /dev/shm/pa194-unrestricted-all-replay /dev/shm/pa194-general-freshness-audit /dev/shm/pa194-observational-general-audit /dev/shm/pa194-full-one-level-audit /dev/shm/pa194-closed-sep-classifier-repo
+```

@@ -1,0 +1,9 @@
+import PA194ModelClosedSepClassifier
+import PA194ModelQFTail
+#print axioms PA194ModelLogic.closedSepCode_sigma
+#print axioms PA194ModelLogic.closedSepCode_pi
+#print axioms PA194ModelLogic.sepRoot_arg_le
+#print axioms PA194ModelLogic.closedSepCode_root
+#print axioms PA194ModelLogic.closedSepCode_axiom_seed
+#print axioms PA194ModelLogic.closedSepClassification_axiom_seed
+#print axioms PA194ModelLogic.closedSepClassification_refutation_target
