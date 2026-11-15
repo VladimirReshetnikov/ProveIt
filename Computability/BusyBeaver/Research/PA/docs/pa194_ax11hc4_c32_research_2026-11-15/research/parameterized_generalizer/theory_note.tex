@@ -1,0 +1,195 @@
+\section{A source experiment with an independent generalization operand}
+\label{sec:parameterized-generalizer}
+
+This experiment gives a concrete new command interface and a fully specified
+196-state implementation.  It does not improve the 194-state frontier.
+Its value is diagnostic: the AX word decreases from 190 macro tokens to
+189, while its chosen shared reader graph becomes larger.  Source length
+and final Turing-machine state count must be measured separately.
+
+\paragraph{The change.}
+Write \(\pi(a,b)=(a+b)(a+b+1)/2+b\), and use the inherited numerical
+constructors \(I(A,B)=4\pi(A,B)\) and \(U(i,A)=I(A,i)+2\).
+The existing AX command begins with
+\[
+  \mathsf{copyH};\mathsf{copyD};\mathsf{cons};\mathsf{inc};
+  \mathsf{inc}.
+\]
+These tokens are respectively \texttt{node58}, \texttt{node55},
+\texttt{node65}, and two \texttt{inc1} leaves.  The command's stored
+generalization is \(U(d,h)\), where \(d\) is its incoming numerical offset
+and \(h\) its incoming cached theorem.  Replace just that occurrence of
+the prefix by
+\[
+  \mathsf{copyH};\texttt{node75};\mathsf{inc};\mathsf{inc}.
+\]
+The fixed macro \texttt{node75} already reads one continuation field,
+adds it to \(d\), and constructs the implication of the old current
+formula with the resulting offset.  Its exact source decomposition is
+\[
+ \texttt{node75}
+  =(\texttt{node74},\texttt{node65}),\quad
+ \texttt{node74}=(\texttt{node32},\texttt{node73}),\quad
+ \texttt{node73}=(\texttt{node53},\texttt{node55}).
+\]
+Here \texttt{node32} unpairs the continuation and \texttt{node53}
+transfers its head into the offset.  The new word reuses that existing
+physical entry and all its arithmetic rows.
+
+\paragraph{Exact command identity.}
+The state \((t,w,d,h)\) contains the current theorem, Cantor stack,
+numerical offset, and cached theorem.  Write the new AX command as
+\(\mathsf{AX}'_{c,a,x,y}\), with physical operand order \(a,y,x\) after
+the command tag \(c+2\).  Its exact effect is
+\[
+ \boxed{\quad
+ \mathsf{AX}'_{c,a,x,y}(t,w,d,h)
+   =\mathsf{AX}_{c,x,y}(t,w,d+a,h).
+ \quad}
+\]
+Indeed, after \(\mathsf{copyH}\) the old top has been pushed and the
+current value is \(h\).  The new reader consumes \(a\), changes the
+offset to \(d+a\), and constructs \(I(h,d+a)\); the two increments
+produce \(U(d+a,h)\).  The remaining suffix is literally the old AX
+macro word.  In particular it subsequently forms the usual
+\(D=d+a+x\) and \(H=h+y\), with the dominated propositional parameter
+\(u=d+a\).  Its required inequality \(u\leq D\) is automatic.
+There is no assumption that the extra field is zero in the soundness
+direction.
+
+The independent source comparison locates exactly fourteen inserted
+primitive instructions, new ordinals \(76,\ldots,89\).  Every old
+instruction and successor agrees under the shift by fourteen after
+that interval, except that the zero branch of old ordinal \(73\)
+now enters the inserted block at \(76\), instead of its relocated
+old target \(90\).  No exterior edge enters an interior site, and
+the block's only exit is \(90\).
+Thus the source difference is an actual operand-reader insertion,
+rather than an assertion that two flattened token strings have the
+same control flow.
+
+\paragraph{Proof preservation.}
+For soundness, the offset is not a theorem register.  Replacing \(d\)
+by \(d+a\) preserves every annotated-store invariant of the original
+AX command: the saved generalization is still a generalization of
+the proved formula \(h\); the other heads are instances of the
+same calculus; the guard and dominated side condition are unchanged
+in form.  MP and Shift are unchanged.
+
+For completeness, replace every old command
+\(\mathsf{AX}_{c,x,y}\) by
+\(\mathsf{AX}'_{c,0,x,y}\).  The boxed equation gives exactly the
+same command-state trace from every carried store, including the
+Cantor-stack zero aliases.  Every old all-store halting command word
+therefore has a new all-store halting counterpart.
+
+The scheduler must use the new four-field encoding.  If \(E(v)\)
+is the positive-continuation encoding of the suffix, its new AX
+payload is
+\[
+ \pi(c+2,\pi(a,\pi(y,\pi(x,E(v))))).
+\]
+As before, prepend one when embedding a payload in a nonempty
+continuation.  The new fields are successively Cantor projections,
+so each nonzero continuation decreases.  If \(V\) is an all-store
+halting word, prefixing \(\mathsf{AX}'_{k,0,0,0}\) gives the cofinal
+fresh-candidate family
+\[
+ \pi(k+2,\pi(0,\pi(0,\pi(0,E(V))))).
+\]
+The prefix terminates and leaves a store to which \(V\) applies.
+The inherited bounded fairness argument therefore still works.
+The proof uses a new command encoding; silently reusing the original
+three-field encoding would be incorrect.
+
+These proof operations are primitive recursive.  In the weak-base
+route, use the inherited written numerical-calculus calibration,
+the Boolean annotated-store induction, the explicit all-store word
+translation, bounded scheduling, and positive physical segment clocks.
+This gives the same relative consistency reduction as for the
+parent calculus.  It is not a new compiled Lean endpoint or an
+independent reconstruction of every arithmetic-block lemma.
+
+\paragraph{Literal implementation and actual replay.}
+The delivered table has start state \(0\), working states
+\(0,\ldots,195\), and separate halt label \(196\).  It has 392 binary
+left/right rows and starts on the entirely blank two-way tape.
+The count is
+\[
+  134\text{ fixed controls}+69\text{ AX readers}
+       -7\text{ contextual folds}=196.
+\]
+All twenty-eight predecessor-bit fold cases close on the final
+simultaneous table.  The source has 3,687 primitive sites and 4,799
+outcome contracts.  The construction-time symbolic replay passes
+all 4,799, with 1,484,676 symbolic operations and maximum 497 per
+outcome.  Its register excursions use the inherited symbolic
+arithmetic interfaces; this experiment has not rerun the separate
+independent literal-tape arithmetic checker.
+
+The exact complete-tape startup reaches native state \(84\), head
+\(-2\), the clean source entry, and logical registers
+\((2,0,\ldots,0)\) after 58,154 transitions.  It also checks the
+entire finite nonzero tape support, including the 26 spare unit
+registers.  There is no nonblank input supplied externally.
+The dense table SHA-256 is
+\begin{quote}\small
+\texttt{ca44252ab21560889a4bccb05cd68a7c07f319a7292609e3c4250e80dac06190}.
+\end{quote}
+
+A reproducible 15,000-attempt association search, seed 20261116,
+retained a best matching score of 196.  It used occurrence rotations
+and the inherited predecessor-bit fold matching score.  This is
+a bounded search result, not a lower bound on this source word,
+and still less on PA consistency machines generally.
+The delivered endpoint itself was subsequently checked by the
+full symbolic source contracts.
+
+\paragraph{Why the shorter macro word did not win.}
+The original generalizer's small fragments occur repeatedly in the
+axiom emitter.  Replacing only its first occurrence breaks two of
+those shared-reader coincidences; seven contextual folds remain.
+The new operand therefore reduces the token count but increases
+the retained reader count.  A useful next search is a joint
+reassociation and operand protocol search which permits parameter
+fields to move between command blocks while preserving a complete
+all-store proof compiler.
+
+\paragraph{Other evaluated directions.}
+A two-generalization interface which saves both \(U(d,h)\) and
+\(U(c,h)\) was also considered.  Its extra head is sound and preserves
+the old generalization interface.  The exploratory association
+search and insertion screen did not produce fewer than 195 states.
+Those intermediate search files were lost when the executor
+restarted; their outcomes are recorded as exploratory observations,
+and are not included among the reproducible acceptance checks.
+Removing the initial \(\mathsf{copyH}\) from the new prefix would
+give an 188-token candidate which generalizes the current top
+directly and no longer saves that top.  Its initial matching score
+is 195; a further 15,000-attempt association search, seed 20261117,
+also retains 195.  Its proof-stack completeness protocol remains open.
+It is not an accepted consistency machine.
+
+\paragraph{Relation to the requested adjacent projects.}
+The ZFC project demonstrates the usefulness of command-local field
+readers and exact physical sharing, while its README explicitly
+counts the complete blank-start machine.  That is the applicable
+idea in the new prefix above.  Its other savings cannot be added
+to PA's count without checking that the same source roles remain.
+
+The DiophantineConsistency project contributes all-model witness
+translations and explicit weak-base proof boundaries.  A polynomial's
+variable count, degree, or arithmetic-operation count is not a count
+of binary one-tape states: a new machine would still have to enumerate
+tuples, implement arithmetic, encode its fixed constants, and verify
+the exact PA refutation predicate.  Its maintained ZFC equations
+also have a different consistency target.
+
+ConciseIPRA supplies small, bi-interpretable presentations of iPRA
+and examples of reducing a proof interface before implementation.
+Its proof-checker byte count does not directly price a PA-refutation
+searcher, and replacing the searched PA calculus by iPRA would
+change the consistency target.  Its useful role here is the weak
+base and the organization of primitive-recursive certificate
+transformations, not an unsupported identification of the two
+consistency assertions.

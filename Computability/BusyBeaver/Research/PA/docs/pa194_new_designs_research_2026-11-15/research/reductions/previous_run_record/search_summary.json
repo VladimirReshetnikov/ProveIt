@@ -1,0 +1,50 @@
+{
+  "evidence_status": "Previous-run counts retained in conversation summary; original raw receipts and search scripts were lost with tmpfs; these exhaustive searches were not rerun after recovery",
+  "baseline_native_sha256": "e0a7397cf2134e8e7f58a8b1de2f7ff90b74ededd54c912f6ba5b7db48dabe54",
+  "box_controls": [0,1,2,3,16,22,25,32,33,36,40,48,51,54,55,60,64,66,74,94,97,113,198],
+  "dispatcher": 84,
+  "local_offset_search": {
+    "scope": "Pairs touch at least one box control or dispatcher84; head offsets -2,0,+2; arbitrary retained transition rows; local radius4; local duration at most160; exact projected tape/head/control endpoint; repeated retained-state visits permitted",
+    "context_prefix_sites": 301,
+    "context_prefix_outcomes": 398,
+    "box_windows": 3265,
+    "combined_windows": 11604,
+    "context_sha256_recorded": "1925a0c35380acbbe52b3051eb5688540019cd1ac811118ff4f2e7be0d3873a1",
+    "per_offset": [
+      {"offset": -2, "pairs": 6307, "single_proposals": 6896312, "joint_proposals": 29267, "accepted": 0},
+      {"offset": 0, "pairs": 4356, "single_proposals": 4884144, "joint_proposals": 16529, "accepted": 0},
+      {"offset": 2, "pairs": 1624, "single_proposals": 2214704, "joint_proposals": 34377, "accepted": 0}
+    ],
+    "total_pairs": 12287,
+    "total_single_proposals": 13995160,
+    "total_joint_proposals": 80173,
+    "accepted": 0
+  },
+  "whole_source_row_choice_screen": {
+    "scope": "4356 unordered pairs touching box/dispatcher; retain the larger control; choose each retained read row from either original control; redirect smaller control to larger; four row choices per pair",
+    "proposals": 17424,
+    "concrete_bound": 5000,
+    "concrete_stops": 17418,
+    "inconclusive_bound_exits": 11812,
+    "early_halts": 1577,
+    "detected_complete_configuration_cycles": 4029,
+    "concrete_survivors": 6,
+    "list_lemma_survivors": 6,
+    "accepted_after_symbolic_check": 0,
+    "surviving_row_choices": [
+      {"remove": 36, "keep": 164, "row0_from": 164, "row1_from": 36},
+      {"remove": 36, "keep": 196, "row0_from": 196, "row1_from": 36},
+      {"remove": 51, "keep": 88, "row0_from": 88, "row1_from": 51},
+      {"remove": 84, "keep": 164, "row0_from": 84, "row1_from": 84},
+      {"remove": 84, "keep": 2020, "row0_from": 84, "row1_from": 84},
+      {"remove": 84, "keep": 2066, "row0_from": 84, "row1_from": 84}
+    ],
+    "longer_symbolic_screens": [
+      {"remove": 51, "keep": 88, "passed_outcomes": 36, "first_failure_site": 7, "positive": false},
+      {"remove": 84, "keep": 2020, "passed_outcomes": 641, "first_failure_site": 487, "positive": false},
+      {"remove": 84, "keep": 2066, "passed_outcomes": 4593, "first_failure_site": 3533, "positive": false}
+    ],
+    "warning": "Bound exits and symbolic-checker failures are not proofs of semantic inequivalence. Individual old rejection records are unavailable after temporary storage loss."
+  },
+  "logical_scope": "No global lower bound or impossibility theorem is asserted. These were scoped unsuccessful searches; only separately supplied exact cycle witnesses have been freshly replayed."
+}

@@ -1,0 +1,52 @@
+{
+  "status": "COMPLETE_BOUNDED_SEMANTIC_REVIEW",
+  "new_head": "99f17206a77a04d36a9bb7dd04ce2e5d0360cf7d",
+  "original_snapshot": "793c68737d94bffa4e32a75bce6cc8058d6d22f0",
+  "archive": "docs/incoming/pa194_marker_separation_2026-11-14.zip",
+  "archive_sha256": "606a802ecd17b47a193548c1f3b582bda90a93a3b06177ae31f2db39d5b93b44",
+  "examined_members_sha256": {
+    "README.txt": "1bf6dec16265cf9feb4dcec74f8375bf19c6f19ad9949b999add6fbf9a6cfc9e",
+    "RESULTS.json": "2d5da17fd6d3016ae7ce2454540189b4857b322e9c5b212b7f6062a2409c3454",
+    "proof/relative_proof.tex": "57a690a87cb9067827f9f271cf13ff6e608bf14e6a88f2bacc1c2aa5276008dd",
+    "build.py": "73c92febf1218a7ff124a2a47f18cd9ff55432c7384174ca8fc065c3726451b0",
+    "machines/receipts.json": "8f684c66384534c202e2eb2bf7a14fa265123139c60f8d871f0c52f9214fbd4a",
+    "research/logical/README.md": "7728de712d085fb456247d202a0e5645fc9ca6bfe1ec00abdfaa076be017c72f",
+    "research/logical/finite_summary.json": "a09503e9fb347169270c81792d2dee9b1b8e66aebe8d63932e4decdf0664d98b",
+    "research/logical/timed_summary.json": "f96f40eb7e3fdf7a9206ddeff2cf31b206ede965c865334f715e78f3e70a0418",
+    "report/physical_search.tex": "54dc0397c56f273395f731295d32ff0f2c90c0e911eb3e79fbf85deb4adaeadd",
+    "comparison/diagnosis193_summary.md": "8dc2d45554d1e43a20454cc633fdb41180052f4e98127225191a5e68c3d82109"
+  },
+  "sub194_claim": false,
+  "named_positive_designs": [
+    "PA194LCGMS",
+    "PA194LCGSMS"
+  ],
+  "mechanism": "Compose the existing PA194B marker/selector split with LCG or LCGS. Merge old301 into88, rename marker51 to fresh400, and reuse51 for a distinct selector. One working control removed and one added; net194.",
+  "relative_proof_review": {
+    "incoming_invariants": "Only 87/0 enters301 (writes0,R), and only77/1 enters88 (writes1,R). Neither is initial.",
+    "four_local_durations": [
+      5,
+      1,
+      3,
+      1
+    ],
+    "local_scope": "Both affected cells and arbitrary untouched tape exterior are checked.",
+    "clock": "t<=theta(t)<=5t, with increments1,3,5; quantifier-free induction gives the synchronized configuration identity.",
+    "transfers": [
+      "H_parent(t)->H_child(5t)",
+      "H_child(t)->H_parent(t)"
+    ],
+    "assessment": "No concrete issue found in the new relative proof. Absolute Con(PA) calibration is inherited; no completed Lean endpoint."
+  },
+  "fresh_composition_check": "latest_marker_composition.json",
+  "fresh_composition_findings": "The same local rule is compatible with both delivered machines, but each composition retains194 working controls and194 exact deterministic-action congruence classes.",
+  "bounded_search_findings_from_archive": {
+    "logical_price_cases": 4222,
+    "timed_grammar_proposals": 42111449,
+    "physical_pair_examinations": 93605,
+    "single_control_deletion_targets": 965,
+    "hits": 0,
+    "status": "Read from archive receipts; not rerun in this focused review."
+  },
+  "scope": "Focused mechanism/proof and compatibility review, not a fresh full proof of every inherited calibration or a general lower bound on193-state constructions."
+}

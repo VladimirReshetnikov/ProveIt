@@ -1,0 +1,59 @@
+\subsection{Physical reduction attempts and a complete rejection certificate}
+The physical search produced no accepted machine below 194 states. Two
+restricted searches were completed before a loss of temporary research
+storage: a box-inclusive offset search, and a source-macro row-choice screen.
+Their raw search receipts did not survive. The accompanying JSON therefore
+labels their counts as a retained previous-run record, rather than a newly
+replayed exhaustive-search certificate.
+
+The offset search considered offsets $-2,0,+2$, required at least one of the
+two controls to belong to a designated arithmetic box or the dispatcher, and
+allowed arbitrary replacement rows at the retained control. Its finite model
+used radius-four tape windows and at most 160 microsteps per local comparison.
+The recorded counts are:
+\begin{center}
+\begin{tabular}{r|r|r|r|r}
+Offset & Pairs & Single proposals & Joint proposals & Accepted\\\hline
+$-2$ & 6307 & 6896312 & 29267 & 0\\
+$0$ & 4356 & 4884144 & 16529 & 0\\
+$2$ & 1624 & 2214704 & 34377 & 0\\\hline
+Total & 12287 & 13995160 & 80173 & 0
+\end{tabular}
+\end{center}
+The constraint windows included 398 outcomes from the first 301 source sites,
+not a claimed complete source-context characterization. A separate 17424-proposal
+row-choice screen recorded 11812 inconclusive exits at its 5000-step bound,
+1577 early halts, and 4029 exact configuration cycles. Six candidates survived
+that concrete screen and the four list lemmas, but none passed the subsequent
+symbolic source check. A bounded exit or a symbolic-checker failure is not, by
+itself, a proof of inequivalence. These counts establish no global lower bound.
+
+One rejected proposal has been reconstructed and freshly checked in full.
+Starting from the primary 194-state native table, delete control 16, redirect
+all targets 16 to 38, and replace both rows at 38 by the old rows at 16:
+\[
+(38,0)\mapsto(1,L,1),\qquad
+(38,1)\mapsto(0,L,1).
+\]
+Its 193-state native table has SHA-256
+\texttt{cb53ad33e8812dc2ebfb6a1a1b452962eeba0cf6b851d398d403a192ea0e6b80}.
+The blank run from control 74 and head 0 reaches a repeated complete
+configuration at time 28217 and repeats after 52 further steps. The repeated
+control is 1, the head is 1, and the tape has 46 ones. A canonical positive branch
+frame at source site 3661 (path \texttt{101100}, logical $T=1$, other primary
+registers zero, spare values $[0,1]$, header distance 48) repeats after 52 steps
+with no preperiod.
+
+The two certificates contain every literal transition, the complete finite
+support of each entry tape, and an explicit declaration that the exterior tape
+is zero. A second script independently reconstructs the mutated table and
+checks both the prefix and the complete configuration equality after the
+cycle. Thus this candidate is conclusively rejected; it is included only as a
+diagnostic artifact, conspicuously marked \textbf{REJECTED}.
+
+A separate source interval invariant was also freshly reconstructed and
+checked after recovery. From source site 25 with logical register vector
+$(2,0,0,0,0,0,0,0,0)$, all 4774 abstract successor edges are included in the
+invariant. It excludes source sites 8,3635,3636 and forces the zero branch at
+site 7 (register 6) and site 3634 (register 1). This is a sound source-execution
+invariant and does not establish the missing proof-theoretic calibration.

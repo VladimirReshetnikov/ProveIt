@@ -1,0 +1,270 @@
+{
+  "status": "PASS",
+  "certificate_checks": [
+    {
+      "file": "old_to_BA.json",
+      "status": "PASS",
+      "proof_steps": 180,
+      "rules": {
+        "Gen": 1,
+        "K": 45,
+        "MP": 89,
+        "Peirce": 1,
+        "S": 40,
+        "h1": 3,
+        "h6Q": 1
+      },
+      "assumptions": 0,
+      "truth_table_oracles": 0,
+      "kernel_checked": false
+    },
+    {
+      "file": "BA_to_old.json",
+      "status": "PASS",
+      "proof_steps": 204,
+      "rules": {
+        "BA": 1,
+        "Gamma": 1,
+        "Gen": 1,
+        "K": 50,
+        "MP": 101,
+        "Peirce": 1,
+        "S": 47,
+        "h5X": 1,
+        "h6Q": 1
+      },
+      "assumptions": 0,
+      "truth_table_oracles": 0,
+      "kernel_checked": false
+    },
+    {
+      "file": "old_to_BP.json",
+      "status": "PASS",
+      "proof_steps": 220,
+      "rules": {
+        "Gen": 1,
+        "K": 56,
+        "MP": 109,
+        "Peirce": 1,
+        "S": 49,
+        "h1": 3,
+        "h6Q": 1
+      },
+      "assumptions": 0,
+      "truth_table_oracles": 0,
+      "kernel_checked": false
+    },
+    {
+      "file": "BP_to_old.json",
+      "status": "PASS",
+      "proof_steps": 382,
+      "rules": {
+        "BP": 1,
+        "Gamma": 1,
+        "Gen": 3,
+        "K": 95,
+        "MP": 189,
+        "Peirce": 1,
+        "S": 88,
+        "h5X": 1,
+        "h6Q": 3
+      },
+      "assumptions": 0,
+      "truth_table_oracles": 0,
+      "kernel_checked": false
+    },
+    {
+      "file": "H5_to_H5X.json",
+      "status": "PASS",
+      "proof_steps": 13,
+      "rules": {
+        "K": 3,
+        "MP": 6,
+        "S": 2,
+        "h1": 1,
+        "h5": 1
+      },
+      "assumptions": 0,
+      "truth_table_oracles": 0,
+      "kernel_checked": false
+    },
+    {
+      "file": "H5X_to_H5.json",
+      "status": "PASS",
+      "proof_steps": 1,
+      "rules": {
+        "h5X": 1
+      },
+      "assumptions": 0,
+      "truth_table_oracles": 0,
+      "kernel_checked": false
+    }
+  ],
+  "emitters": [
+    {
+      "status": "PASS",
+      "macro_tokens": 188,
+      "schema_order": [
+        "BA",
+        "h2",
+        "h3",
+        "h4",
+        "h5X",
+        "h6"
+      ],
+      "schema_matches": [
+        [
+          {
+            "schema": "BA",
+            "DAH_argument_indices": [
+              0,
+              2,
+              1
+            ]
+          }
+        ],
+        [
+          {
+            "schema": "h2",
+            "DAH_argument_indices": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        [
+          {
+            "schema": "h3",
+            "DAH_argument_indices": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        [
+          {
+            "schema": "h4",
+            "DAH_argument_indices": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        [
+          {
+            "schema": "h5X",
+            "DAH_argument_indices": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        [
+          {
+            "schema": "h6",
+            "DAH_argument_indices": [
+              0,
+              1,
+              2
+            ]
+          }
+        ]
+      ],
+      "generalization": "U(c,h)",
+      "rho": "((H->d)->D)->((D->H)->(A->H)), D=d+x",
+      "diagonal": "Gamma(A)",
+      "gate_unchanged": true,
+      "final_suffix": "copyGuard; compareGuard; push",
+      "logical_claim": "Exact source term identity only; logical equivalence uses separate iPRA proof constructors.",
+      "input_sha256": "d2c30fd6fd75608f2cfbac7e359ff1da8b296d62988946b3a6839f3491d5cbd6"
+    },
+    {
+      "status": "PASS",
+      "macro_tokens": 188,
+      "schema_order": [
+        "BP",
+        "h2",
+        "h3",
+        "h4",
+        "h5X",
+        "h6"
+      ],
+      "schema_matches": [
+        [
+          {
+            "schema": "BP",
+            "DAH_argument_indices": [
+              0,
+              2,
+              1
+            ]
+          }
+        ],
+        [
+          {
+            "schema": "h2",
+            "DAH_argument_indices": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        [
+          {
+            "schema": "h3",
+            "DAH_argument_indices": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        [
+          {
+            "schema": "h4",
+            "DAH_argument_indices": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        [
+          {
+            "schema": "h5X",
+            "DAH_argument_indices": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        [
+          {
+            "schema": "h6",
+            "DAH_argument_indices": [
+              0,
+              1,
+              2
+            ]
+          }
+        ]
+      ],
+      "generalization": "U(c,h)",
+      "rho": "((H->d)->D)->((D->H)->(A->H)), D=d+x",
+      "diagonal": "Gamma(A)",
+      "gate_unchanged": true,
+      "final_suffix": "copyGuard; compareGuard; push",
+      "logical_claim": "Exact source term identity only; logical equivalence uses separate iPRA proof constructors.",
+      "input_sha256": "fb221e7f7411c4aeda576f423d011f7fc8c45752e721ab75c0f3e16dd40d89a6"
+    }
+  ],
+  "search_records_verified": 2,
+  "searches_rerun": false,
+  "physical_source_contracts_claimed": false
+}

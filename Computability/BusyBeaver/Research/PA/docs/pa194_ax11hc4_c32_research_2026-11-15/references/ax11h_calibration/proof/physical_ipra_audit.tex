@@ -1,0 +1,621 @@
+\pdfmapfile{+cm.map}
+\pdfmapfile{+lm.map}
+\pdfmapfile{+symbols.map}
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,longtable,array}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,xurl}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\Run}{\operatorname{Run}}
+\newcommand{\enc}{\operatorname{enc}}
+\newcommand{\rev}{\operatorname{rev}}
+\newcommand{\Val}{\operatorname{Val}}
+\newcommand{\Valid}{\operatorname{Valid}}
+\title{The literal physical/source bridge for PA194AX11H and PA194QAX11H}
+\author{Independent arithmetic audit}
+\date{14 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The literal symbolic certificates for these two machines have a sound
+interpretation in intuitionistic primitive recursive arithmetic.  This note
+gives the required arithmetic semantics and proves each rule of the actual
+interpreter, including its four list traversals, its normalization rules,
+and its variable-duration composition.  Together with the finite literal
+replays, these proofs establish in $\ipra$ that each machine halts on the
+blank tape exactly when its supplied register program halts from its stated
+initial store.  This is a physical/source theorem.  It does not identify the
+register program with a PA proof enumerator, and it does not by itself prove
+an equivalence with $\operatorname{Con}(\mathsf{PA})$.
+\end{abstract}
+
+\section{Objects, finite facts, and the precise conclusion}
+
+The objects audited are the files under
+\path{machines/PA194AX11H} and \path{machines/PA194QAX11H} in the
+accompanying research bundle.  The implementation is
+\path{verification/check_literal.py}, with
+\path{verification/reference/symbolic_runtime.py},
+\path{independent_runtime.py}, and \path{source_language.py}.
+The first of these selects \path{HEADER_BASE=48}; the larger default in
+the retained reference module is not the value used here.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Finite fact & AX11H & QAX11H\\
+\midrule
+Working controls / literal rows & 194 / 388 & 194 / 388\\
+Source sites & 3671 & 3671\\
+Increment / decrement sites & 1456 / 1107 & 1456 / 1107\\
+Continue / break / halt sites & 1032 / 75 / 1 & 1032 / 75 / 1\\
+Contracts (two per decrement) & 4778 & 4778\\
+Nonhalting endpoint checks & 4777 & 4777\\
+Maximum address length & 37 & 36\\
+Symbolic interpreter events & 1101836 & 1130254\\
+Maximum events in one contract & 403 & 403\\
+Minimum constant in a duration & 3 & 3\\
+Blank startup transitions & 57922 & 57922\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These are finite closed facts, not induction principles or assumptions about
+large register values.  The full literal replay derives every contract from
+the corresponding literal transition table.  The additional executable
+\path{physical_ipra_audit.py} checks the complete contract index, all
+4778 affine durations, and all 4777 nonhalting endpoints against both
+independently resolved source graphs.  It also rederives the four block
+traversals and checks their equality with the stored data.  Its receipt
+records hashes of all inputs and of the verifier modules.
+
+The dense tables are conjugate, by the supplied injective label map, to
+the native tables.  The native blank start is 74, the native source boundary
+is 84, and the native halting control is 254.  The symbolic interpreter
+renames the boundary to 96 and retains 254 for halt.  These are names of
+existing controls; no extra physical control is introduced by this proof.
+
+Write $M$ for either literal table and $P$ for its own
+\texttt{instructions.json}.  The program's initial ordinal site is 25 and
+its initial logical store is $(2,0,\ldots,0)$.  We prove
+\[
+ \ipra\ \vdash\
+ \bigl(\exists t\; M\text{ has halted on blank tape by }t\bigr)
+ \ \longleftrightarrow\
+ \bigl(\exists k\; P\text{ has halted from that store by }k\bigr).
+ \tag{1}
+\]
+The theorem refers to the exact low-level register program, not an
+unidentified high-level scheduler.  Its negated version follows
+intuitionistically as well.
+
+\section{Primitive recursive arithmetization}
+
+We use the usual language of $\ipra$ with symbols for primitive recursive
+functions.  All auxiliary predicates below are characteristic functions of
+primitive recursive tests.  Thus an equality, implication, or Boolean
+combination involving them is quantifier free.  Definitions by primitive
+recursion and quantifier-free induction suffice throughout.
+
+\subsection{Tape configurations and the halting code}
+
+A finite-support binary tape at a scanned cell is represented by two
+natural numbers $L,R$.  The low bit of $R$ is the scanned symbol; the low bit
+of $L$ is the symbol immediately to its left.  Successive higher bits give
+successively more distant cells.  These numbers represent the complete
+infinite tape with zero exteriors: extra exterior zeros do not change a
+number.  If desired, retain a signed head coordinate $h$ using any fixed
+primitive recursive integer coding.  We retain it below to express exact
+head displacement.
+
+For a nonhalting configuration $(q,h,L,R)$ and a row
+$\delta(q,R\bmod 2)=(w,d,q')$, the update before canonicalizing halt is
+\[
+\begin{array}{ll}
+d=+1:&(q',h+1,\;2L+w,\;\lfloor R/2\rfloor),\\[2pt]
+d=-1:&(q',h-1,\;\lfloor L/2\rfloor,\;
+       (L\bmod 2)+2w+4\lfloor R/2\rfloor).
+\end{array}                                                    \tag{2}
+\]
+If $q'$ is the native halt control, replace this configuration by the single
+arithmetic code $H$.  Put $\Delta(H)=H$.  This discards tape and head only
+after physical halt.  It is an arithmetic convention, not an additional
+physical transition or working state.  Its halting predicate is exactly
+that of the uncollapsed literal machine, by induction on the number of
+literal transitions.  In particular, the CH contract need only establish
+the halt control; it need not establish a particular halted tape.
+
+Let $\Run(0,c)=c$ and
+$\Run(t+1,c)=\Delta(\Run(t,c))$.  This is primitive recursive.  Induction
+on $v$ gives the quantifier-free semigroup identity
+\[
+ \Run(u+v,c)=\Run(v,\Run(u,c)).                                  \tag{3}
+\]
+Induction also gives absorption of $H$ for any further number of steps.
+An injective renaming of the finitely many control labels commutes with
+(2); induction on time proves that the dense, native, and symbolic labels
+have the same behavior.
+
+\subsection{Finite words and arbitrary finite spare lists}
+
+A finite binary word is coded by its length $\ell$ and its low-bit-first
+integer value.  Concatenation satisfies
+\[
+ |uv|=|u|+|v|,\qquad
+ \enc(uv)=\enc(u)+2^{|u|}\enc(v).                                 \tag{4}
+\]
+The usual recursion defining exponentiation and word append proves (4),
+associativity, and reversal of concatenation by quantifier-free induction.
+Appending an infinite zero exterior simply uses the same integer
+$\enc(u)$, without its finite length.  This is why the interpreter's
+exterior-zero absorption is exact equality of configurations, rather than
+an unjustified equality of raw untrimmed word lists.
+
+For an explicit coding of arbitrary lists of natural numbers, use a triple
+$(\ell,b,N)$ with $b\geq3$, $N<b^\ell$, and all the base-$b$ digits
+$d_j$ for $j<\ell$ in $\{1,\ldots,b-1\}$.  The list entries are
+$v_j=d_j-1$.  Validity is a bounded primitive recursive test; an arbitrary
+finite list has such a code by choosing a sufficiently large base.  Prefix,
+suffix, reversal, and the values $v_j$ are primitive recursive.  Appending
+the entry 1 replaces $(\ell,b,N)$ by
+$(\ell+1,b,N+2b^\ell)$ and preserves validity.  The empty list has
+$\ell=N=0$.
+
+Define the block families and their list concatenations by
+\[
+ B(v)=0\,1^{v+1},\qquad C(v)=1\,0\,1^v,\qquad
+ B(X)=\prod_{v\in X}B(v),\quad C(X)=\prod_{v\in X}C(v),
+\]
+and put
+\[
+ W(X)=\sum_{v\in X}(v+2)=|B(X)|=|C(X)|.                          \tag{5}
+\]
+These are primitive recursive functions of the list code.  All inductions
+on lists in this note mean quantifier-free induction on the prefix length,
+with the full list code, the base, and all outside contexts as free
+parameters.  Prefix lengths can be clamped to $\ell$, so the asserted
+equation remains unchanged beyond the end of the list.  This requires no
+induction on formulas with an unbounded quantifier.
+
+\section{Interpretation of the actual symbolic interpreter}
+
+The coefficient vectors have thirteen slots.  For a valuation
+\[
+ (1,n,x_0,\ldots,x_8,s,W(X)),                                    \tag{6}
+\]
+evaluate a vector by its scalar product with (6).  The entries are natural
+except that signed coefficients are allowed for the motion vector.
+Crucially, slot 12 is \emph{the width of the same list $X$ occurring in the
+tape atoms}.  Treating it as an unrelated independent number would be
+unsound.  All actual traces use the single identifier
+\path{spare_tail}, which is preserved when a list atom moves or changes
+family.  The separate one-block derivation reuses slot 2 for a natural $v$.
+
+A run atom $(\texttt{run},b,a)$ denotes $b^{\langle a,\Val\rangle}$.
+A list atom denotes $B(X)$ or $C(X)$, with reversal if its flag is set.
+The blank atom denotes an infinite zero exterior.  The opaque atoms in a
+one-block derivation denote arbitrary outside tape contexts; the
+interpreter rejects any attempt to inspect one of them.
+
+A symbolic state contains a control, a left stream $U$, a right stream
+$V$, and direction $d\in\{-1,1\}$.  Both streams are listed outward from
+a cut.  When $d=1$, the head scans the first cell of $V$; when $d=-1$, it
+scans the first cell of $U$.  For a current head coordinate $h$, its
+concrete pair of tape halves is
+\[
+\begin{cases}
+(\enc U,\enc V),&d=1,\\
+(\lfloor\enc U/2\rfloor,
+ (\enc U\bmod2)+2\enc V),&d=-1.
+\end{cases}                                                    \tag{7}
+\]
+If its control is halt, its concrete interpretation is $H$ regardless of
+streams.  Let $\Phi$ denote this interpretation.
+
+\paragraph{Well-formed streams.}
+The restricted traces in this proof have the following explicit syntactic
+invariant.  Each side consists of finitely many run or list atoms followed
+by exactly one exterior atom, either blank or one opaque outside context.
+An exterior never occurs internally.  Run bits are 0 or 1, their vectors
+have thirteen nonnegative integer coefficients, list families are B or C,
+and reversal flags are Boolean.  Every list identifier denotes the same
+fixed $X$ of (6).  The direction is $+1$ or $-1$.  In a one-block proof
+the two exterior contexts may differ and no list atom is needed.
+All initial states generated by \path{prove_blocks} and
+\texttt{case} have this form.  Normalization only merges or removes
+finite atoms or performs (8); it never moves an exterior.  Literal,
+unary, and list events remove or transfer finite prefixes and retain
+both exteriors.  Expanding a blank inserts a finite 0 before that same
+trailing blank.  An attempt to inspect an opaque exterior fails.
+Consequently every generated successful trace preserves this invariant.
+The soundness proposition below includes it as a hypothesis; it makes
+no assertion about malformed arbitrary Python atom lists.
+
+\subsection{Every normalization rule}
+
+Checking a run's bit and nonnegative coefficients ensures that its
+valuation is a finite binary run for every valuation (6).  Removing a run
+whose entire coefficient vector is zero preserves the word.  A nonzero
+vector may still evaluate to zero; retaining that empty run is harmless.
+Merging adjacent equal-bit runs uses $b^a b^c=b^{a+c}$.  A finite zero run
+beside the infinite zero exterior changes neither binary tape half.
+Expanding the blank exterior to $0$ followed by the blank exterior also
+changes neither half.  These facts follow directly from (4), or by
+induction on the run length.
+
+The only remaining normalization rules use
+\[
+ C(X)1=1B(X),\qquad 1\rev(C(X))=\rev(B(X))1.                     \tag{8}
+\]
+Here is the uniform proof, not just a test of short lists.  The empty-list
+case is $1=1$.  For one entry,
+$C(v)1=10\,1^{v+1}=1B(v)$, using the recursion for a unary run.  For an
+appended entry, assuming the identity for a prefix $Y$,
+\[
+ C(Y)C(v)1=C(Y)1B(v)=1B(Y)B(v).
+\]
+This is a quantifier-free induction on prefix length using (4).  Reversing
+the equality proves the second identity in (8), with reversal proved by
+its length recursion.  The interpreter peels one 1 only when the adjoining
+run has constant coefficient at least 1, so the remainder is nonnegative
+at every valuation.  Each recursive normalization of this kind replaces
+one C-list atom by a B-list atom.  Thus at most the initial number of
+C-list atoms plus one passes are needed, providing a primitive recursive
+bound for normalization itself.
+
+It follows that every call of \texttt{normal} preserves $\Phi$, head
+coordinate, and physical time.  This conclusion includes empty lists and
+zero-valued symbolic runs.
+
+\subsection{Literal and unary transitions}
+
+For a literal event the interpreter checks a literal row and requires
+the run's constant coefficient to be at least 1.  Hence the first bit
+exists at every valuation.  Removing it, writing the row's output bit,
+and either keeping or reversing direction has exactly the four cases
+given by (2) and (7).  Time increases by 1 and head coordinate by $d$.
+The proof is substitution in those equations; it requires no induction.
+
+For a unary event the checked row has the same entry and exit control
+and moves in the current direction.  For either bit written by that row,
+crossing a run of length $a$ in that direction takes exactly $a$ literal
+steps, writes a run of the output bit, and transfers it to the opposite
+stream.  The induction assertion after $j\leq a$ steps is that the
+unprocessed source suffix has length $a-j$, the written destination
+prefix has length $j$, the control is unchanged, and the head displacement
+is $dj$.  For the next step this assertion follows from (2); for $a=0$
+it is the identity.  All quantities and the assertion are primitive
+recursive and quantifier free.  Substituting an affine run length for
+$a$ proves exactly the interpreter's unary rule.
+
+\section{The four block and list traversal lemmas}
+
+The following are the actual literal rows used by the four one-block
+derivations.  Labels are the interpreter's symbolic labels, not an
+additional machine.
+
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+Entry / direction / action & First row & Second row & Loop row\\
+\midrule
+73 / R / B to B & $73,0\mapsto0R83$ & $83,1\mapsto1R73$
+ & $73,1\mapsto1R73$\\
+95 / R / B to C & $95,0\mapsto1R109$ & $109,1\mapsto0R95$
+ & $95,1\mapsto1R95$\\
+48 / L / B to B & $48,1\mapsto1L63$ & $63,0\mapsto0L48$
+ & $63,1\mapsto1L63$\\
+112 / L / C to B & $112,0\mapsto1L131$ & $131,1\mapsto0L112$
+ & $112,1\mapsto1L112$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For entry 73 from the left, two literal steps cross the initial 0 and
+first 1 of $B(v)$; the loop crosses the remaining $v$ ones.  The block is
+unchanged.  For entry 95, the first two steps write 1 and 0 instead, and
+the $v$ remaining ones are unchanged, giving $C(v)$.  For entry 48 from
+the right, one step crosses the last 1, the loop crosses the other $v$
+ones, and the final step crosses the 0; the result is $B(v)$.  For entry
+112 from the right of $C(v)$, the loop crosses the $v$ terminal ones;
+two steps then replace the 0 by 1 and the initial 1 by 0, giving $B(v)$.
+The unary lemma proves the loop in each description for every natural
+$v$, including zero.
+
+In all four cases the exact duration is $v+2$, the exit control equals
+the entry control, and the direction is unchanged.  The displacement is
+$d(v+2)$.  No cell outside the block is inspected or written: the last
+step merely moves onto the next outside cell.  These statements hold for
+arbitrary left and right contexts, because every read has been accounted
+for within the displayed block.  They are the four generic derivations
+in \path{list_lemmas.json}; \path{prove_blocks} rederives them
+from the current literal table rather than trusting state names.
+
+\begin{lemma}[Uniform list traversal]
+For each of these four entries, replace the single block by a finite list
+of blocks, read in the specified direction.  The machine crosses the
+whole list, replaces each block by the displayed output family, returns
+to the same control and direction, takes exactly $W(X)$ steps, and has
+displacement $dW(X)$.  It leaves both outside contexts unchanged.
+\end{lemma}
+
+\begin{proof}
+For rightward traversal, after $j$ blocks the processed prefix is the
+output-family word for the first $j$ entries, the unprocessed suffix is
+the input-family word for the remaining entries, the control is the
+entry control, and the elapsed time is
+$\sum_{i<j}(v_i+2)$.  This is an equality of encoded complete
+configurations with the untouched contexts as free parameters.  The
+one-block calculation and (3) establish the next case.  The case $j=0$
+is the identity.  Quantifier-free induction on $j$, clamped to the list
+length as above, proves the claim.  For leftward traversal use the same
+invariant with entries in reverse order.  The total is still $W(X)$.
+Each step preserves both outside contexts, so the final equality does
+also.  No bound on the list entries or the number of entries is used.
+\end{proof}
+
+This lemma proves exactly the symbolic list event: transfer the opaque
+list atom to the other side of the cut, toggle its reversal flag,
+replace its family as specified, add slot 12 to the clock, and add
+$d$ times slot 12 to the motion.  It also proves the zero-duration
+empty-list case.  A whole source instruction has positive duration
+independently of this possible zero-duration event.
+
+\section{Certificate soundness inside \texorpdfstring{$\ipra$}{iPRA}}
+
+The restricted certificate interpreter has a primitive recursive coding.
+Atoms, affine coefficient vectors, and finite event lists are finite
+codes.  Literal row lookup is finite.  Coefficient arithmetic, sign tests,
+and comparisons are primitive recursive.  Normalization has the bound
+proved above.  The one-block derivation is bounded by 50 symbolic events;
+a source case is bounded by 4000 events.  A failed check returns a
+distinguished failure code.  A successful event checks precisely one
+of the rules just proved.  The sole list identifier is bound to the same
+list code throughout, and its width is defined by (5), not supplied as
+an unconstrained oracle.
+
+\begin{proposition}[Soundness of the implemented event calculus]
+For any successful restricted trace with well-formed symbolic start $A$
+as above, end $B$, clock vector $a$, and motion vector $m$, and any
+valuation (6) with a valid finite list code, the literal machine satisfies
+\[
+ \Run(\langle a,\Val\rangle,\Phi(A,h))
+   =\Phi(B,h+\langle m,\Val\rangle).                             \tag{9}
+\]
+This proposition is provable in $\ipra$.
+\end{proposition}
+
+\begin{proof}
+Use quantifier-free induction on the trace prefix length.  The induction
+formula is the implication from successful-prefix checking, the initial
+well-formedness test, and valid parameters to well-formedness and the
+configuration equality (9) for that prefix.  All its tests and
+configurations are primitive recursive.  The empty prefix
+uses $\Run(0,c)=c$.  Normalization preserves interpretation by (8) and
+the preceding elementary rules.  A literal event uses (2), a unary event
+uses the unary induction, and a list event uses the proved list lemma.
+Equation (3) composes the new segment with the prior prefix, while
+coefficient addition gives exactly the new clock and displacement.
+The syntactic preservation argument above proves the well-formedness
+part of the induction step.
+Thus the induction step proves (9) for every type of event accepted by
+the interpreter.  There is no additional symbolic execution rule.
+\end{proof}
+
+For these machines the successful restricted checks are concrete finite
+computations.  Their closed arithmetic instances are provable by
+unfolding the defining primitive recursions on numerals.  Applying the
+proposition gives their universal instances; the parameters remain free
+throughout the derivation.  This is the precise division of labor:
+the finite computations decide which literal derivations were accepted,
+and the arithmetic proofs above make each accepted derivation valid for
+arbitrary natural registers, gap, and finite list.  The stored
+\texttt{contracts.json} contains the durations and event counts, not
+the entire event traces; the bounded literal replay regenerates the
+traces, and its \path{keep_trace} option can expose them.  A receipt
+alone, without that replay and the rule proofs, is not a universal
+simulation theorem.
+
+No proof-assistant kernel has checked this derivation.  The claim here
+is an ordinary written proof of an $\ipra$ theorem using the accompanying
+finite computations.  The uniform arguments are actual quantifier-free
+induction arguments; they do not assume that a computer-tested property
+extends to arbitrary inputs.
+
+\section{All source frames and their closure}
+
+Let the logical registers be $R_0,\ldots,R_8$.  The physical permutation
+is
+\[
+ \pi=(6,2,0,4,3,7,8,5,1),\qquad V_{\pi(i)}=R_i.                 \tag{10}
+\]
+Let $p$ be the binary address of a source site, let $n\geq0$, and let
+$Q=[s]X$ be an arbitrary nonempty finite list.  At the boundary control
+84 (96 in the symbolic names), with head at $h=-2$, the canonical frame
+has outward left stream $1$ followed by blank zeros and right stream
+\[
+ p\;0^{48+n-|p|}\;1\;
+ B(V_0)\cdots B(V_8)\; B(s)B(X)\;0^\infty.                     \tag{11}
+\]
+This is an exact complete tape, including both infinite exteriors.
+The maximum address length is 37 or 36, so every initial zero-gap
+exponent in (11) is nonnegative for every $n$.
+
+For an increment the target register is increased by 1 and the spare
+list becomes $Q[1]$.  For a positive decrement the target register is
+decreased by 1 and $n$ becomes $n+1$.  A zero decrement, break, or
+continue leaves registers, $n$, and $Q$ unchanged.  Halting yields $H$.
+The nonempty-list invariant is preserved, and the explicit base-$b$
+encoding supports $Q[1]$ without recoding the other entries.
+
+The source case splits a decrement into its zero case and its positive
+case $R_i=x_i+1$.  Every natural input is covered: decidability of zero
+and the identity $R_i>0\Rightarrow R_i=\operatorname{pred}(R_i)+1$
+are quantifier-free arithmetic facts.  Other registers are independent
+arbitrary naturals.  In a positive case the corresponding valuation
+slot is $\operatorname{pred}(R_i)$; the other logical slots have their
+register values.  In the zero case that register is literally zero in
+the symbolic frame.
+
+The interpreter computes a binary successor prefix using increment
+and cut operations.  A priori this prefix need not itself be a source
+leaf.  The necessary endpoint assertion is equality after padding with
+zeros, not an unproved identification of prefixes.  For every one of
+the 4777 nonhalting outcomes in each machine, the additional finite audit
+checks
+\[
+ p_{\rm computed}\,0^{48-|p_{\rm computed}|}
+  =p_{\rm actual\ successor}\,0^{48-|p_{\rm actual\ successor}|},
+ \qquad \mathrm{overflow}=0.                                    \tag{12}
+\]
+The actual successor comes from the graph that agrees with
+\texttt{instructions.json}; the arithmetic and interval resolvers agree
+on all edges.  The full prefix-tree syntax is checked too.  Appending
+the same extra $n$ or $n+1$ zeros preserves (12), so it proves closure
+of the universal target frame (11).  The literal certificates give zero
+motion in all these 4777 cases.  Thus the boundary head remains at
+$h=-2$; there is no unaccounted head translation.
+
+Each duration vector has nonnegative coefficients, with constant at
+least 3.  The componentwise maximum of the vectors in either machine is
+\[
+ (534,8,4,4,4,4,4,4,2,4,4,2,2).                                \tag{13}
+\]
+Consequently the exact duration $D$ selected by a source state is
+primitive recursive and, before halt, satisfies
+\[
+ 3\leq D\leq534+8n+4\sum_{i=0}^{8}R_i+2W(Q).                  \tag{14}
+\]
+For a positive decrement its slot value is at most $R_i$; for the spare
+slots, $2s+2W(X)\leq2W(Q)$.  These observations justify (14) directly
+from (13).  The exact duration, not this upper bound, is used in the
+simulation.  The sole halt contract has constant duration 3 and reaches
+native control 254.  Its halted tape is not required by (11).
+
+\begin{proposition}[Universal local contracts]
+Let $F$ be the extended source step just described, including the gap
+and spare-list bookkeeping, and let $E$ map a nonhalting source state
+to (11), with $E(H)=H$.  Put $D(H)=0$.  For every valid extended source
+state $z$, $\ipra$ proves
+\[
+ \Run(D(z),E(z))=E(F(z)).                                       \tag{15}
+\]
+Moreover $F$ preserves validity, fixes $H$, and $D(z)\geq3$ for
+$z\neq H$.
+\end{proposition}
+
+\begin{proof}
+For each valid program counter choose its fixed contract, splitting
+decrement by its decidable zero test.  Apply (9), (10)--(12), and the
+observed coefficient facts (13).  These are finitely many cases, covering
+all 3671 program counters and 4778 outcomes.  The halt case uses the
+canonical physical halt code, so it also has exact endpoint equality.
+For $H$, (15) is $\Run(0,H)=H$.  The register changes preserve natural
+values, the gap stays nonnegative, and append preserves nonempty valid
+spare lists.  This proves every assertion.
+\end{proof}
+
+\section{Startup and composition with primitive recursive clocks}
+
+The independent startup simulation uses the literal native rows, a
+20,000-cell zero array, and origin 10,000.  It checks at every one of
+57922 transitions that the head is in the array and the control is
+nonhalting.  At the endpoint the control is 84, the head coordinate is
+$-2$, and the \emph{entire} array equals (11) for site 25, $n=0$,
+logical registers $(2,0,\ldots,0)$, and 26 spare entries all equal to 1.
+Outside the array no cell was visited and the tape remains zero.
+Hence this finite computation establishes the whole-tape equality
+\[
+ \Run(T_0,c_{\rm blank})=E(z_0),\qquad T_0=57922.                \tag{16}
+\]
+This closed computation is an arithmetic numeral fact.  The nonhalting
+endpoint and absorbing-halt convention also imply that no earlier
+startup configuration was halted.
+
+Define, by primitive recursion,
+\[
+ z_k=F^k(z_0),\qquad
+ \tau(0)=0,\qquad \tau(k+1)=\tau(k)+D(z_k).                      \tag{17}
+\]
+The source machine has a fixed finite instruction array, primitive
+recursive register updates, and the explicit list operations above.
+Thus $z_k$ and $\tau(k)$ are primitive recursive functions of $k$.
+There is no minimization or appeal to termination of an unbounded search.
+
+Equations (3), (15), and (16) give, by quantifier-free induction on $k$,
+\[
+ \Run(T_0+\tau(k),c_{\rm blank})=E(z_k).                         \tag{18}
+\]
+The induction formula includes the characteristic validity test for
+$z_k$, which is preserved by (15).  If $z_k=H$, then $z_{k+1}=H$ and
+$D(z_k)=0$; (18) is still exact.  This explicitly handles all times
+after source halt.
+
+A second quantifier-free induction proves
+\[
+ z_k\neq H\ \Longrightarrow\ \tau(k)\geq3k.                    \tag{19}
+\]
+Indeed, if $z_{k+1}\neq H$, absorption of the source halt code implies
+$z_k\neq H$, and (14) increases the clock by at least 3.  The base case
+is immediate.
+
+If the source is halted at $k$, (18) gives physical halt at the explicit
+primitive recursive time $T_0+\tau(k)$.  Conversely suppose physical
+halt has occurred at time $t$, and set $k=t+1$.  If $z_k\neq H$, then
+(19) gives $T_0+\tau(k)>t$.  Absorption of physical halt would make the
+left side of (18) equal to $H$, whereas its right side is a nonhalting
+boundary frame at control 84, a contradiction.  Equality with the fixed
+halt code is decidable in $\ipra$, so this proves $z_{t+1}=H$
+intuitionistically.  It supplies the explicit reverse witness $t+1$;
+no Markov principle, excluded middle for arbitrary formulas, or
+unbounded least-time principle is used.
+
+Finally, erasing $n$ and $Q$ from the extended state gives exactly the
+ordinary program state $(\text{site},R_0,\ldots,R_8)$ in
+\texttt{instructions.json}.  The erasure commutes with one source step,
+including its canonical halt code.  Quantifier-free induction on $k$
+therefore equates the projected extended run with the ordinary register
+run.  This proves (1).
+
+\section{Scope of the physical audit and its composition}
+
+The actual interpreter has no additional unproved all-input abstraction:
+normalization is finite-word equality; unary execution is length
+induction; the four opaque-list events are the exact block calculations
+and prefix inductions above; literal events are literal transitions.
+Every segment duration is an explicit primitive recursive affine
+expression with the stated list-width interpretation.  The complete
+source-frame equality, positive-duration facts, exact startup, and
+composition close the physical/source bridge.
+
+Because the proofs are $\ipra$ derivations with arbitrary parameters,
+their universal conclusions apply within every model of $\ipra$.
+They are not limited to standard finite values sampled by Python.
+The code evaluates the fixed symbolic certificates; induction supplies
+their interpretation at arbitrary values, including model-internal
+finite lists.
+
+The physical certificate alone does not identify its register program
+with a PA proof search. The companion sections in the complete report
+supply the exact source-to-command implementation, the command compiler,
+the current Foundation PA adapter, and the numerical soundness and
+completeness constructions. They compose the requested
+$\operatorname{Con}(\mathsf{PA})$ equivalence in iPRA using the stated
+weak-arithmetic transfer theorems. The present note proves the physical
+interface used by that composition. It is a written arithmetic proof,
+not a claim that a new end-to-end Lean theorem has been built.
+
+\paragraph{Reproduction.}
+Run \path{verification/check_literal.py} on each machine directory for
+full literal replay. Run \path{verification/physical_ipra_audit.py}
+with \texttt{--bundle PATH --output FILE} for this note's additional
+checks. Keep Python assertions enabled. The delivered audit receipt,
+including input hashes, is
+\path{verification/physical_ipra_audit_receipt.json}.
+
+\end{document}

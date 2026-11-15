@@ -1,0 +1,9 @@
+Review of the new relative proof, 15 November 2026 UTC
+
+Reviewed /tmp/pa194_deliverable/proof/relative_proof.tex and the main report before final packaging.
+
+No mathematical error was found in the displayed row proof. The acceleration invariants (A), (B), (C) cover both changed rows; the one-step incoming-row arguments and the two three-step local detours establish exact complete-tape equality. The marker simulation accounts for both old controls and both scanned symbols. Its noninjective map f does not identify any working control with halt. The four marker cases preserve the entire tape and have positive lengths bounded by five. The old-marker control is correctly retained as control 400, so the state count does not omit the startup resource.
+
+The clocks s and u are primitive recursive and satisfy n<=s(n)<=3n and n<=u(n)<=5n. The reverse implications at arbitrary physical times correctly use the absorbing totalization and positivity rather than presuming a synchronization boundary. Composition gives H_parent(t)->H_child(5t) and H_child(t)->H_parent(3t). Both nonhalting implications follow intuitionistically. A short explicit natural-number tape encoding and Boolean form of quantifier-free induction makes the metatheory presentation fully explicit; the root author is adding it.
+
+This review checks the proof structure and displayed equations, not a duplicate execution of the independent row verifier. The complete literal row identities and incoming-edge sets are separately replayed by that verifier. The inherited absolute PA calibration remains the clearly identified large dependency described in logic_audit.txt.

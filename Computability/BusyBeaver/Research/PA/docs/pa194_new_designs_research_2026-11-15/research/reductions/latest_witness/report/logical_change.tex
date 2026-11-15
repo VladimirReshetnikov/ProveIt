@@ -1,0 +1,245 @@
+\section{A new axiom interface: an independent witness consequent}
+\label{sec:witness}
+
+The main logical experiment in this investigation changes an actual axiom
+family, rather than merely the association of its emitter.  It also explains
+how two individually unsafe-looking simplifications can be made compatible.
+All the equivalences in this section concern finite numerical derivations;
+they do not presuppose the consistency or the soundness of PA.
+
+Let
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,\quad
+ I(a,b)=4p(a,b),\quad M(a,b)=I(a,b)+1,
+\]
+\[
+ U(d,B)=I(B,d)+2,\qquad E(a,b)=I(a,b)+3.
+\]
+The distinguished contradiction is the numerical code $f=1$.  Write
+$A\to B=I(A,B)$ and $\neg A=I(A,1)$.  In particular, zero is a real
+constructor alias: $I(0,0)=0$.  It is not legitimate to treat all these
+constructors as disjoint free syntax after numerical interpretation.
+
+The inherited calculus has modus ponens, theorem generalization
+$B\mapsto U(d,B)$, the dominated implicational family
+\[
+ \rho_8(D,A,H,u)=((H\to u)\to D)\to((D\to H)\to(A\to H)),
+ \qquad u\leq D,
+\]
+and the six heads
+\begin{align*}
+ O(D,H)&=\bigl(U(D,U(D,H)\to1)\to1\bigr)\to H,\\
+ h_2(D,A,H)&=U(D,U(A,H))\to U(A,U(D,H)),\\
+ h_3(D,A,H)&=M(H,D)\to(E(H,A)\to M(A,D)),\\
+ h_4(D,A,H)&=E(H,D)\to(M(A,H)\to M(A,D)),\\
+ h_5(D,H)&=U(D,E(H,D)\to1)\to1,\\
+ h_6^Q(D,A,H)&=U(D,A\to H)\to(U(D,A)\to U(D,H)).
+\end{align*}
+It also retains the diagonal schema $\Gamma(B)=B\to U(B,B)$ and the
+guarded pointed-separation head of the baseline.  Those two families,
+their guards, and all inference rules are unchanged in the first variant.
+The inherited restricted-$\rho_8$ development supplies uniform derived
+$K$, $S$, and Peirce schemas before any appeal to $O$ or explosion.
+
+Put $W(D,H)=U(D,E(H,D)\to1)$.  Replace the old fifth head $W(D,H)\to1$
+by
+\begin{equation}
+             h_5^X(D,A,H)=W(D,H)\to A. \label{eq:h5X}
+\end{equation}
+Here $D,A,H$ range independently over all natural numbers.  The fact that
+$A$ is independent of the equality label $H$ is essential.  The previously
+investigated replacement $W(D,H)\to H$ does not provide the same
+specialization argument for arbitrary $D,H$.
+
+\begin{theorem}[Witness-consequent equivalence]
+The old calculus and the calculus with \eqref{eq:h5X} in place of its fifth
+head derive exactly the same numerical conclusions.  There are
+primitive-recursive proof translations in both directions whose
+correctness is provable in iPRA.
+\end{theorem}
+
+\begin{proof}
+First recall why the old first head supplies explosion without assuming
+that numerical code $1$ is already an available falsity rule.  For any
+$A$, put $Y=U(0,U(0,A)\to1)$.  An instance of $K$ gives
+$1\to(Y\to1)$, while $O(0,A)$ is $(Y\to1)\to A$.  Composition gives
+$1\to A$.  Thus $W(D,H)\to1$ and $1\to A$ compose to give
+\eqref{eq:h5X}.  In the reverse direction, specialize the independent
+parameter to $A=1$.  The result is literally the old fifth-head code,
+with no renaming of $D,H$ and no change to a quantifier binder.
+
+Replace each changed axiom leaf by this fixed derivation and relocate
+the indices of subsequent modus-ponens and generalization steps.  All
+other leaves are copied.  Formula construction, finite concatenation,
+index relocation and case distinction on a proof tag are primitive
+recursive.  Correctness is quantifier-free induction on the Boolean
+predicate saying that the finite output prefix checks and has the
+specified last conclusion.  The output proof is a syntactic witness;
+no reflection principle occurs.
+\end{proof}
+
+The delivered independent checker verifies a 13-step old-to-new template
+and the one-step reverse specialization over the explicitly retained
+derived $K,S$ basis.  The formulas are schematic terms with arbitrary
+natural-number parameters.  Substituting their numerical meanings
+preserves every checked modus-ponens equality, even when two distinct
+schematic terms denote the same number.  This is stronger than testing
+a finite range of parameter values, and weaker than a new proof-assistant
+kernel verification of the entire inherited calculus.
+
+\subsection{Explosion can move out of the first head}
+
+The new witness family has a second useful property.  It supplies
+explosion using only retained diagonal and quantifier-distribution
+axioms, so the first head need not carry that job.
+
+\begin{lemma}[Witness bootstrap]
+The schemas $\Gamma,h_6^Q,h_5^X$, together with $K,S$, modus ponens and
+closed generalization, uniformly derive $1\to A$.  Neither the old first
+head nor Peirce's law is used.
+\end{lemma}
+
+\begin{proof}
+Let $e=E(0,1)$ and $B=e\to1$.  The following are the significant
+boundaries of the finite proof:
+\begin{align*}
+ &1\to U(1,1) &&\text{by }\Gamma(1),\\
+ &1\to(e\to1) &&\text{by }K,\\
+ &U(1,1\to B) &&\text{by theorem generalization},\\
+ &U(1,1)\to U(1,B) &&\text{by }h_6^Q(1,1,B),\\
+ &U(1,B)\to A &&\text{by }h_5^X(1,A,0).
+\end{align*}
+Compose the first, fourth and fifth lines.  The result is $1\to A$.
+The only generalized formula is the unconditional $K$ theorem in the
+second line; no generalization under an undischarged assumption occurs.
+\end{proof}
+
+The serialized certificate has 16 steps: one $\Gamma$ instance, one
+generalization, one $h_6^Q$ instance, one $h_5^X$ instance, three $K$
+instances, two $S$ instances and seven modus-ponens steps.  An independent
+review replayed every line and checked that no $O$, old $h_5$, Peirce,
+open assumption or propositional-tautology oracle is admitted.
+
+\subsection{A coupled reduction of the quantifier head}
+
+Set $X=U(D,U(D,H)\to1)$.  The old first head is
+$O=(X\to1)\to H$.  Consider the join-shaped head
+\begin{equation}
+                   J(D,H)=(X\to H)\to H. \label{eq:J}
+\end{equation}
+Replacing $O$ by $J$ in isolation would not justify importing the old
+calibration: the bootstrap of explosion has changed.  Replacing $O,h_5$
+\emph{together} by $J,h_5^X$ does preserve the calculus.
+
+\begin{theorem}[Coupled presentation]
+The original numerical calculus and the calculus obtained by the two
+replacements $O\rightsquigarrow J$ and $h_5\rightsquigarrow h_5^X$ are
+uniformly interderivable in iPRA, with all other families and rules fixed.
+\end{theorem}
+
+\begin{proof}
+For the new-to-old direction, the preceding lemma supplies $1\to H$.
+Under the assumption $X\to1$, composition gives $X\to H$, and $J$ gives
+$H$.  Discharge the assumption by the positive $K,S$ deduction
+transformation.  This is exactly $O$.
+
+For the old-to-new direction, assume $p:X\to H$.  Under the further
+assumption $n:H\to1$, composition produces $X\to1$; $O$ then produces
+$H$.  Discharge $n$ to obtain $(H\to1)\to H$ and apply Peirce's law
+with $(P,Q)=(H,1)$.  Discharging $p$ gives $J$.  This direction does
+not require a separate explosion lemma.  The old and new fifth heads
+are translated as above.  Both transformations again replace leaves
+by fixed templates and use Boolean induction on the coded proof list.
+\end{proof}
+
+The independently replayed $J$ certificates contain 95 steps for
+$O\vdash J$ and 72 for the new calculus's derivation of $O$.  The latter
+uses no old $O$, old $h_5$ or Peirce.  Their nonminimal sizes are
+certificate sizes, not estimates of the size of a Turing-machine
+implementation.
+
+\subsection{Removing the remaining false constant from the first head}
+
+There is a further conservative generalization:
+\begin{equation}
+ J^A(D,A,H)=\bigl(U(D,U(D,H)\to A)\to H\bigr)\to H.
+ \label{eq:JA}
+\end{equation}
+Again $A$ is independent of $D,H$.  Specializing $A=1$ gives $J$ exactly.
+Conversely put $X_1=U(D,U(D,H)\to1)$ and
+$X_A=U(D,U(D,H)\to A)$.  Old explosion gives $1\to A$.
+Positive composition, theorem generalization at $D$ and $h_6^Q$ give
+$X_1\to X_A$.  Under the assumption $X_A\to H$, compose to get
+$X_1\to H$ and apply $J$ to get $H$.  Discharging that assumption
+gives \eqref{eq:JA}.  Thus replacing $O,h_5$ by $J^A,h_5^X$ again
+preserves every numerical theorem, by primitive-recursive proof
+translations verified in iPRA.  Its independently checked templates
+have 358 steps from the old calculus to $J^A$ and 72 steps back to $O$.
+
+This extra generalization does not invoke vacuity of $A$ at $D$.
+It uses a generalized \emph{theorem} about implication and the retained
+quantifier-distribution schema.  That distinction prevents a tempting
+but invalid further shortcut: $U(D,E(H,D)\to A)\to A$ is not sound
+for arbitrary $A$ that may contain the quantified variable.  For example,
+take $D=0$, $H=1$, and $A=M(0,2)$ in the arithmetic bit interpretation,
+with $x_0=1,x_1=0,x_2=1$.  Its antecedent holds because the only relevant
+equality witness is zero and zero is a bit member of one, whereas its
+consequent is false because one is not a bit member of itself.
+
+There is a second coupled presentation using the already known
+contraposed head $(H\to1)\to X$.  Its recovery of $O$ now has a valid
+explosion premise, supplied by the 16-step bootstrap rather than by
+adding another axiom head.  The delivered certificates have 204 and 131
+steps for the two directions.  The contraposed head itself is prior
+work; the witness bootstrap that makes the coupled replacement
+legitimate is the new part of this construction.
+
+\subsection{Consequences for source compilation}
+
+In the AX11GH command, the independent parameters are
+$A=c$, $D=d+x$ and $H=h+y$.  A selector invoked on a normalized store
+has $d=h=0$, so all three parameters of \eqref{eq:h5X} can be selected
+independently.  The old witness is selected by $c=1$, leaving $x=D$
+and $y=H$ unrestricted.  Changing neighboring generated heads during
+that selection is harmless: the selector preserves the desired head
+and removes the others using its certified stack operations.
+
+Both $h_5^X$ and $J$ have outer constructor $I$, so their codes are
+divisible by four and cannot equal the halting code $1$.  The number
+and order of emitted stack entries can therefore be retained.  In the
+unpermuted form, replacing the fifth head's final
+\texttt{push; incT; cons} by \texttt{copyA; cons} changes the AX word
+from 190 to 189 macro tokens.  Replacing the corresponding false
+consequent in $O$ by \texttt{copyH} changes the coupled word to 188.
+Replacing the remaining inner false constant in that head by
+\texttt{copyA} gives the $J^A,h_5^X$ word with 187 tokens.
+These identities are checked in a free algebra against the complete
+emitter, not just against the changed local token interval.
+
+A smaller macro word is not a smaller Turing machine.  In particular,
+removing a literal false constant can destroy a shared binary subtree
+that formerly served several heads.  The physical compiler prices
+shared reader controls and compatible history folds, and its entire
+primitive control-flow graph still has to match the intended source
+program.  The construction and search chapters state the exact
+achieved state counts separately from these logical theorems.
+
+\subsection{A family of further safe consequents}
+
+The same proof gives a useful search principle.  Let $F$ be a fixed
+primitive-recursive numerical expression, independent of $D,H$, and
+suppose a fixed value $a_0$ has a retained derivation of
+$F(a_0)\to1$.  Replacing the witness by $W(D,H)\to F(A)$ is
+conservative when the old first head is retained: old explosion gives
+every new instance, and specializing $A=a_0$ and composing with the
+fixed refutation gives the old witness.
+
+For $F(A)=A+1$, take $a_0=0$ and recover the old witness literally.
+For $F(A)=A+k$ with $2\leq k\leq8$, choose $a_0=8-k$.
+Here $8=I(0,1)$, and the retained theorem $0=\rho_8(0,0,0,0)$ supplies
+$8\to1$ by positive implicational deduction.  Likewise
+$F(A)=I(0,A)$ admits $a_0=1$, and $F(A)=M(A,A)$ admits $a_0=0$.
+These provide justified emitter experiments, not automatic state-count
+improvements.  The separate question of removing $O$ at the same time
+requires an explosion proof for the chosen $F$; it must not be inferred
+solely from this conservative-extension argument.

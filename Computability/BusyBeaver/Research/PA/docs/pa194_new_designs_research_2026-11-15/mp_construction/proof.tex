@@ -1,0 +1,48 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,booktabs,longtable,hyperref}
+\title{PA194AX11HMP: a 194-state MP source reassociation}
+\author{Construction and verification supplement}
+\date{November 2026}
+\begin{document}
+\maketitle
+\section{Exact construction}
+The machine has 194 working states and 388 binary rows, with a bidirectional
+tape, blank symbol 0 and only L/R moves. In canonical labels the start is 0
+and the excluded halt control is 194; native labels are 74 and 254.
+Its canonical SHA-256 is
+\begin{center}\small\ttfamily
+b634f75f4969a68513c5460a2e6bf8fd9bb0a72ab1f3dd03ec88b348ce2c6272.
+\end{center}
+Put $(A,B,C,D)=(\texttt{node75},\texttt{node37},\texttt{node6},\texttt{node54})$.
+At the MP block replace $((A,B),(C,D))$ by $(A,(B,(C,D)))$.
+All 3671 resolved instructions remain byte-identical; 87 addresses change.
+Four native transition rows change:
+\begin{center}\begin{tabular}{lll}\toprule
+Row&Parent&New\\\midrule
+$100/0$&$0R174$&$0R213$\\
+$100/1$&$1R164$&$1R174$\\
+$174/0$&$0R213$&$0R28$\\
+$174/1$&$1R28$&$1R164$\\\bottomrule
+\end{tabular}\end{center}
+The seven inherited AX folds remain simultaneously valid, giving 194 states
+from the raw 201-state allocation. A direct final-table replay checks all 4778
+outcomes and four arbitrary-list lemmas. Exact blank startup takes 58,066
+steps to the same logical seed as the parent's 57,922-step prefix.
+This changes the recurring MP dispatcher and source encoding. It is not a
+sub-194 construction; no global lower bound is claimed.
+\section{Relative theorem}
+\input{relative_proof.tex}
+\section{Reproduction and proof boundary}
+The exact table, source, driver, unchanged reference symbolic runtime,
+4778 contracts, startup check and clock audit are included. Run
+\begin{quote}\ttfamily
+python reproduce.py --output /absolute/path/to/new/directory
+\end{quote}
+to rebuild and replay the component. The optional\texttt{ --quick} mode
+reuses the supplied direct-runtime certificate. The uniform mathematical
+audit and exact parent's written iPRA calibration are identified inherited
+dependencies; no new kernel-completed Lean endpoint is asserted.
+\end{document}

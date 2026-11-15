@@ -1,0 +1,148 @@
+\section{Two new generalized quantifier heads}
+\label{sec:generalized-modal-heads}
+This section gives two axiom presentations uniformly interderivable with the
+existing numerical calculus. It does not claim a smaller physical machine.
+The subsequent compilation experiment records the attained compiler scores.
+
+Use the inherited constructors
+\[
+ I(A,B)=4p(A,B),\qquad U(d,A)=4p(A,d)+2,\qquad E(a,b)=4p(a,b)+3,
+ \quad N(A)=I(A,1),
+\]
+where $p$ is Cantor pairing. We write arrows for $I$. The old first head is
+\[
+ O(d,H)=N\bigl(U(d,N(U(d,H)))\bigr)\to H.
+\]
+Retain the independent-consequent witness schema from the incoming witness
+packet,
+\[
+ W(d,h)=U(d,N(E(h,d))),\qquad W(d,h)\to A.                 \tag{W}
+\]
+All three parameters of (W) are independent. The two new candidate first
+heads, also with three independent parameters, are
+\begin{align*}
+ B_A(d,H)&=N(H)\to U(d,I(U(d,H),A)),\\
+ B_A^+(d,H)&=H\to U(d,I(U(d,N(H)),A)).
+\end{align*}
+Thus the new freedom occurs inside the quantified implication. The earlier
+modal-B head fixes its consequent to code $1$; the earlier $J_A$ head
+instead is $\bigl(U(d,I(U(d,H),A))\to H\bigr)\to H$.
+These are distinct literal axiom presentations. The other rules are
+modus ponens and generalization of theorems. The proof below uses only the
+retained diagonal and distribution heads
+\[
+ \Gamma(B)=B\to U(B,B),\qquad
+ U(d,A\to H)\to(U(d,A)\to U(d,H)),
+\]
+and the restricted propositional schema
+\[
+ ((H\to u)\to D)\to((D\to H)\to(A\to H)),\qquad u\le D.
+\]
+Its inherited uniform derivations supply $K$, $S$, and Peirce. No extra
+substitution or freshness rule is assumed.
+
+\paragraph{An explosion bootstrap independent of the first head.}
+The retained diagonal head at $1$ gives $1\to U(1,1)$.
+Generalize the propositional theorem
+$1\to(E(0,1)\to1)$ at label $1$ and use universal distribution to obtain
+\[
+ U(1,1)\to U(1,E(0,1)\to1)=W(1,0).
+\]
+Compose with the instance $W(1,0)\to A$ of (W). This gives $1\to A$.
+Every step uses only the retained $K,S$ implication basis, diagonal head,
+distribution, theorem generalization, and (W). Neither old $O$ nor either
+new quantifier head is used in this bootstrap.
+
+\paragraph{Old to $B_A$.}
+Write $P=U(d,H)$ and $X=U(d,N(P))$.
+The old first head is $N(X)\to H$. Old explosion is available
+explicitly: $K$ gives $1\to (X'\to1)$ for
+$X'=U(0,N(U(0,A)))$, and composition with $O(0,A)$ gives $1\to A$.
+Classical contraposition, justified
+in the unchanged restricted implication basis together with its old
+explosion construction, gives
+\[
+ N(H)\to X.
+\]
+Explosion supplies $N(P)\to(P\to A)$. Generalization and distribution
+lift this to
+\[
+ X\to U(d,P\to A).
+\]
+Composition gives $B_A(d,H)$. The old fifth head is $W(d,h)\to1$;
+composition with old explosion gives (W). Conversely, (W) at $A=1$
+recovers the old fifth head. These two additional witness translations are
+also supplied as finite certificates.
+
+\paragraph{$B_A$ to old.}
+Set $A=1$ in $B_A$. It becomes $N(H)\to X$. Under assumptions
+$N(X)$ and $N(H)$, modus ponens gives code $1$. The independent
+explosion bootstrap gives $H$. Deduct $N(H)$ and apply Peirce's law
+at $(H,1)$; then deduct $N(X)$. The conclusion is exactly $O(d,H)$.
+
+\paragraph{The positive variant.}
+There is a fixed implicational proof of $H\to N(N(H))$. Compose it
+with $B_A(d,N(H))$ to obtain $B_A^+(d,H)$, so the old calculus proves
+every positive instance as well.
+
+For the reverse direction, set $A=1$ and substitute $N(H)$ for the
+positive schema's property. This gives
+\[
+ N(H)\to U(d,N(U(d,N(N(H))))).
+\]
+Lift the double-negation-introduction theorem through $U(d,-)$.
+Contraposition gives
+\[
+ N(U(d,N(N(H))))\to N(U(d,H)).
+\]
+Lift this second theorem once more through $U(d,-)$ and compose.
+The result is
+\[
+ N(H)\to U(d,N(U(d,H))),
+\]
+the modal-B instance used in
+the preceding reverse proof. Hence the old first head follows.
+
+\paragraph{Uniformity and arithmetic strength.}
+The four derivations are supplied as universal Hilbert templates over
+free terms, with an independent syntactic replay checker. Their respective
+lengths are $180,204,220,382$ proof rows. Their only propositional basis
+rules are $K,S,$ and Peirce, all derived uniformly from the retained
+restricted $\rho_8$ schema; universal distribution is used in its exchanged
+orientation, connected to the ordinary orientation by the inherited
+$K/S$ exchange template. There are no undischarged assumptions or
+truth-table oracles.
+
+Replacing each axiom row of a derivation by the appropriate fixed template,
+relocating indices, and preserving MP and generalization defines primitive
+recursive proof-list translations. Quantifier-free induction on the
+original proof-list length proves preservation of the list-checking
+predicate and final numerical formula. Numerical constructor aliasing at
+$I(0,0)=0$ causes no difficulty: equality of the free terms implies equality
+of their numerical values, and the checker never requires syntactic
+injectivity of $I$. Thus these translations are formalizable in iPRA.
+They establish equivalence of the three numerical refutation predicates;
+their usefulness for state reduction still depends on a concrete compiler
+realization and its physical proof.
+
+\paragraph{Compilation experiment.}
+Both new first heads have sixteen macro tokens in the inherited emitter,
+so with the H5X witness and AX11/G/H/N command protocol the whole AX word
+has $188$ tokens. This matches the size of the delivered JH5X word but
+changes its repeated subexpressions. The experiment explores reader-DAG
+associations, independent per-head parameter permutations, and all six-head
+orders, while retaining the guarded separation tail. A favorable macro
+count is not a state-count result: each reported physical nomination must
+also pass the full source, simultaneous-fold, and literal-row checks.
+The accompanying search receipts report the actual attained scores and do
+not present a failed or oversized nomination as a qualifying machine.
+
+
+Each of two runs was allotted $600$ seconds. The negative and positive
+variants respectively attempted $3{,}578{,}046$ and $4{,}088{,}745$
+mutations. The best negative reader had $76$ nodes and $11$ compatible
+folds; the best positive reader had $75$ nodes and $10$ folds. Both have
+effective score $65$, hence nominal cost $134+65=199$ controls. Neither
+run produced a score at most $60$, the threshold for $194$ controls.
+These are grammar nominations only: no sub-$195$ physical machine is
+claimed from this experiment, and the finite search proves no lower bound.

@@ -1,0 +1,483 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[margin=0.85in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,longtable,array,enumitem}
+\usepackage{xcolor,microtype,fancyhdr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,pdftitle={Two symmetric witness machines for PA consistency},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\PA}{\mathsf{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\NH}{\operatorname{NH}}
+\newcommand{\file}[1]{\path{#1}}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.1em}
+\setlist{nosep,leftmargin=*}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small PA consistency: symmetric witness machines}
+\fancyhead[R]{\small 14 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\title{Two symmetric witness machines for PA consistency\\[5pt]
+\large A comparison of the supplied designs and a further search below 194 states}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{14 November 2026, Pacific time}
+\begin{document}
+\maketitle
+\begin{abstract}
+No justified machine with fewer than 194 working states was obtained.
+The positive result is two new complete blank-start machines,
+\textbf{PA194H5XS} and \textbf{PA194JH5XS}, each with 194 working states,
+a binary alphabet, and one two-way infinite tape.  They combine the
+recent independent-consequent equality-witness presentations with a
+symmetric destructive cache comparison, removing a register-restoration
+loop.  The new tables are distinct from each other and from all 528
+recognized prior spanning 194-state action graphs in the pinned corpus,
+even under enlarged structural symmetries.  A complete new relative
+mathematical proof over intuitionistic primitive recursive arithmetic
+preserves blank-start halting.  Composition with the explicitly retained
+written witness/AX11H calibration gives
+\(\ipra\vdash\Con(\PA)\leftrightarrow\NH(M)\).
+The absolute calibration is inherited written mathematics; an
+end-to-end Lean or Rocq theorem is not claimed.  Both new literal tables
+have fresh universal symbolic physical checks, full source/command
+bindings, exact blank startup checks, and reproducible generators.
+The comparison covers 100 delivered packets and records every recognized
+table occurrence, every named positive-claim graph, and the failed or
+diagnostic smaller tables separately.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{Result, specification and evidence boundary}
+
+The requested strict state reduction remains open in this work.  The
+two delivered alternatives implement a recurring change to execution:
+the old comparison restores a copied cache register and then destroys it
+again, whereas the new comparison uses the copy already available and
+interchanges the two destructive comparison arguments.  This preserves
+the abstract command, saves a nonconstant number of source steps, and
+changes the physical control graph.  The extra physical control is paid
+for by an additional checked context fold.  These are new combinations
+of existing, attributed ingredients, rather than new equality-witness
+axioms or a new discovery of comparison symmetry.
+
+The corpus is pinned to ProveIt revision
+\begin{center}\small\ttfamily
+3c3bf00e3132d31d328a7bcfe79761ef238eced3.
+\end{center}
+The branch head was rechecked during preparation and still had this
+identity.  Dates ending in 15 November in incoming archive names reflect
+the supplied names; the report date uses the user's Pacific time zone.
+
+\begin{table}[h]
+\centering\small
+\begin{tabular}{lrr}
+\toprule
+Quantity & PA194H5XS & PA194JH5XS\\
+\midrule
+Working states &194&194\\
+Transition rows &388&388\\
+Dense initial / terminal label &0 / 194&0 / 194\\
+Fixed controls + readers $-$ folds & $135+69-10$ & $135+69-10$\\
+AX macro tokens &189&188\\
+Primitive source sites &3,674&3,680\\
+Guarded source outcomes &4,782&4,790\\
+Complete blank startup steps &57,768&57,768\\
+Independent symbolic rule applications &1,114,125&1,101,231\\
+Least affine physical duration constant &3&3\\
+\bottomrule
+\end{tabular}
+\caption{Fresh checks of the exact delivered tables.  Symbolic rule applications are verification work, not a runtime bound for arbitrary inputs.}
+\end{table}
+
+The tape is indexed by the integers, all cells initially contain zero,
+and the initial head position is zero.  There are no stationary moves.
+Each row \file{q b w D r} reads \(b\), writes \(w\), moves one square
+in direction \(D\in\{L,R\}\), and enters \(r\).  The terminal label
+has no rows and is excluded from the state count.  The dense labels
+0 through 193 are all reachable in the finite transition graph, which
+does not imply that they all occur on the actual blank run.  Native
+labels are a separate presentation: initial 74, dispatcher 84, terminal
+254.  Native label 194 is a working label; it is not the dense halt.
+
+Four kinds of evidence must remain separate:
+\begin{enumerate}
+\item Fresh finite checks bind source files, rows, label bijections,
+      simultaneous folds, startup tape and source instructions.
+\item Fresh symbolic physical checks cover arbitrary registers and
+      spare lists using literal transitions and induction rules.
+\item The new relative proof explains how those certificates and the
+      source transformation yield iPRA-provable positive halting
+      equivalences with primitive-recursive witness maps.
+\item The absolute connection to PA refutations uses the identified
+      revised written calibration, including its finite-demand proof
+      compiler.  It is not newly kernel-checked by these scripts.
+\end{enumerate}
+This respects the repository's unfinished machine-specific Lean
+development without discarding the stronger written arguments present
+in later packets.
+
+\section{Comparison of the supplied designs}
+\label{sec:comparison}
+
+\subsection{Coverage and exact identities}
+
+The pinned tree contains 93 filed research packets under the PA
+\file{docs/} directory and seven further archives under
+\file{docs/incoming}.
+The census checks 12,031 selected tracked Git blobs, with no missing
+selected blob, and recursively inspects 23 distinct ZIP payloads.
+Recognizers accept complete five-column binary tables and four explicit
+JSON table encodings.  They find 5,686 table occurrences, 1,338
+normalized labeled tables and 1,125 spanning action-graph classes
+over all sizes.  Twenty-two parser exclusions are audited separately;
+they are small or partial fixtures with at most 139 working labels and
+cannot hide a 194-state isomorphic table.  These are scope-bounded
+mechanical counts, not counts of consistency theorems.
+
+For a spanning graph, a traversal from a chosen root gives an exact
+ordered action tuple.  Minimizing that tuple over all spanning roots
+removes dependence on the start label and state names.  The novelty
+test additionally allows global tape reflection, global bit exchange,
+and erasure of the write/move decoration on a final transition to halt.
+It compares full tuples; hashes are only convenient identities.
+Bit exchange is used as a stronger structural exclusion, not asserted
+as a zero-blank equivalence.  Nonspanning tables cannot be isomorphic
+to the new spanning tables and are recorded separately.
+
+There are 528 prior spanning 194-state graph classes and 55 spanning
+193-state research classes.  The 528 divide, by attributed report role,
+into 84 principal constructions, seven supplements, 419 research
+auxiliaries, 14 rejected tables and four seeds.  Thus there are
+\emph{91 named positive-claim graphs}, not 528 independently proved
+consistency machines.  The growth from the filed catalog's 139 classes
+is explained exactly by 17 newly proposed graphs and 372 incoming
+research auxiliaries.  In particular, 370 of those auxiliaries occur
+in one physical-search corpus.  The comparison does not mistake that
+large research corpus for hundreds of new positive theorems.
+
+The complete ledgers are \file{comparison/frontier194_current.csv},
+\file{comparison/named_designs_current.csv},
+\file{comparison/families_current.csv}, and
+\file{comparison/packet_ledger_current.csv}.  The occurrence ledger
+retains precise repository or nested-archive origins.  Every named
+positive-claim graph has been reconciled against literal table identity.
+All 528 prior 194-state graphs, and the two new graphs, have 194 classes
+under immediate-action bisimulation: no ordinary identical-action state
+quotient gives a free saving.  This says nothing about context-sensitive
+or variable-length simulations.
+
+\subsection{The main architectural choices}
+
+All small accepted candidates in this lineage retain a common basic
+architecture: enumerate encoded command words; maintain a stack and
+cached formula; construct numerical axioms; apply modus ponens and
+generalization; and halt when a contradiction code is exposed.  Their
+differences occur at three mathematically distinct levels.
+
+At the \emph{calculus} level, constructor coefficients, quantifier
+argument order, premise exchange in distribution, diagonal parameter
+choice, and the equality-witness head change which numerical formulas
+are generated.  These changes require proof translations that respect
+the guarded separation gate, the self-indexed diagonal and the
+restricted propositional axiom.  A shorter emitter is useful only if
+its resulting calculus still has both directions of the PA-refutation
+translation.
+
+At the \emph{command} level, cached-head MP, visible no-push MP,
+sum-versus-cache halt tests, the eleven-entry AX interface and explicit
+generalization binders change the representation and stack protocol.
+Their proofs must cover an arbitrary carried store, canonical zero
+stack aliases, all consumed fields, and the exact selector words.
+Testing a command only on an empty stack or forgetting a fourth AX
+field would not establish its invariant.
+
+At the \emph{physical} level, reader-tree sharing, contextual folds,
+register allocation, loop reassociation, marker separation and return
+shortcuts change the literal table.  They require whole-tape simulation
+and a genuine blank startup.  A fold score, a successful source-level
+run, or a runtime core with an uninitialized tape is insufficient.
+
+The familiar letters therefore do not encode a linear sequence of
+improvements.  For example, Q is a distribution-premise change; N
+removes an MP dummy push; H tests the cache; S rearranges a destructive
+comparison; G exposes a generalization binder; LC changes a constructor
+loop layout; and F or SF denotes particular guarded physical shortcuts.
+Some names are reused in the delivered material: a sum-guard NS and a
+cache-guard NS are distinct.  Exact graph keys and source semantics,
+rather than names alone, identify the comparison records.
+
+Appendix~\ref{app:families} compares all 35 annotated families by
+semantics, physical implementation and required preservation argument.
+The CSV ledgers are the exhaustive, searchable per-design and per-packet
+comparison; the family table does not replace those identities.
+
+\subsection{Why the new pair is material}
+
+The incoming witness packet supplies two new numerical presentations,
+H5X and JH5X, but only their asymmetric cached comparison implementations.
+The present pair preserves those exact emitters and changes their
+recurring Shift implementation.  It deletes three primitive source
+instructions, removes a restoration loop, changes raw controller
+transitions and adds a non-reader context fold.  The exact step saving
+depends on the unbounded cache value, as proved below.  Both tables
+are absent from all 528 prior action classes and are mutually distinct.
+Their novelty is a compatible, fully checked composition in this
+pinned recognized corpus, not a claim that their component ideas or
+all possible equivalent algorithms are new.
+
+\input{../symmetric_preservation.tex}
+
+\section{The absolute calibration and its review}
+
+The proof dependency is deliberately concrete.  The immediate source is
+the exact incoming witness archive with SHA-256
+\begin{center}\small\path{cc51ef4f2858e37cc72c5079bb6f8b0d86ce0ed9eae1aed428c1bd69baffb4cc}.\end{center}
+It contains the H5X and JH5X proof translations and the unchanged revised
+AX11H calibration archive, whose SHA-256 is
+\begin{center}\small\path{93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075}.\end{center}
+The latter corresponds to the filed directory
+\file{pa194_ax11h_research_2026-11-14_2}, not the older same-name packet.
+The consistency endpoint is
+\file{DiophantineConsistency.IPRAPA196Consistency.nativePAConsistency},
+the negation of the native reading of the mapped Foundation PA-refutation
+predicate.  The retained Foundation gitlink is
+\path{32e1a0956a8622fad067328ca1959729a7634428}.
+
+An independent review for this work read the three completion fragments
+on the Foundation adapter, term leaves and forward calibration, totaling
+2,384 source lines, together with their concluding equivalence and
+soundness fragments.  It also checked sensitive claims against the
+actual imported Lean logical and arithmetic-certificate sources.
+The full review and its limits are in
+\file{references/written_calibration_review.md}.
+
+The central weak-arithmetic issue is whether proof-producing recursion
+has actually been bounded before its recursive outputs are used.
+The completion fragments organize a request by a numerical rank and
+finite environment.  Child queries are computed first; same-family
+ranks strictly decrease and there are at most two such children.
+A complete binary request tree to the bounded depth is generated with
+inactive placeholders and evaluated backwards.  Forward and backward
+Boolean invariants express query validity and proof correctness.
+These are primitive-recursive computations with quantifier-free
+induction, rather than an invocation of induction over all possible
+environments.  Calls into an already completed stratum can increase
+syntax size without forming a recursive cycle.
+
+A second sensitive point is removal of primitive equality vacuity.
+The source check locates its two consumers: reverse membership rewriting
+and the neighborhood-equality interface.  The new written construction
+uses the diagonal clause at the code of the negation of the entire
+desired reverse implication, and at the code of the desired equality,
+respectively.  The old reverse-proof constructor cannot simply be
+reused verbatim: one of its converse property premises would fail.
+The written completion reconstructs the needed argument instead.  The
+review found no concrete defect in these checked replacements.
+
+Fixed arithmetic leaves are actual finite derivation recipes, not a
+postulated calibration axiom.  Supplying those leaves alone would not
+give arbitrary PA induction.  The completion separately supplies
+arbitrary-property separation, the ordinal induction template,
+arithmetic formula realization, and canonical matrix/closure loops.
+This dependency order is part of the inherited written theorem.
+
+This focused review is not an independent reconstruction of every
+transitive lemma, an execution of the enormous PA proof compiler, or a
+new end-to-end Lean build.  It is sufficient to identify what theorem
+is being imported and why the newer written claim should not be
+confused with the older PA-only reports.  The new relative theorem is
+valid independently of accepting that absolute imported theorem; the
+displayed absolute Con(PA) corollary explicitly composes with it.
+No consistency assumption or PA reflection principle enters that
+composition.
+
+\section{Further attempts to obtain 193 states}
+\label{sec:search}
+
+\input{search_results.tex}
+
+\subsection{What the failed cores establish}
+
+A previously supplied 193-control core folds native 301 into 88 and
+changes a marker route through native 51 and 122.  Its canonical
+instruction contracts can succeed while its blank startup fails: the
+initialization reaches a context where the first marker must create a
+delimiter that the runtime-only replacement does not create.  This
+demonstrates a real distinction between an initialized interpreter and
+a complete blank-start machine.
+
+The direct application of that core deletion to each new witness
+machine was also tested here.  Each of its 193 possible initial controls
+was classified: two halt and 191 reach certified outward rays, with no
+bounded-limit case.  The intended native initial control 74 reaches
+its ray certificate after 92 steps.  These two exact fixed-table
+transplants are therefore not positive 193-state deliverables.
+
+The outward-ray certificate is stronger than a finite timeout.  At a
+certified configuration the zero transition returns to the same state,
+moves outward, and every nonzero cell lies strictly behind the head.
+Induction shows that the machine continues into untouched blank cells
+forever.  A capped run in a larger mutation screen has no such conclusion
+and remains explicitly unresolved.
+
+A tempting engine deletion was also examined conceptually.  Native
+198 distinguishes spare-tail extension from zero decrement; its
+one-input branch is actively used during zero decrement and startup.
+Replacing native 66's zero action by a direct return can remove the
+spare-appending state but loses this other branch.  A proof of the
+increment excursion alone would therefore not validate the reduction.
+This is one reason the retained searches check both decrement cases
+and the entire source contract set before testing startup.
+
+\subsection{No lower-bound claim}
+
+Neither absence of a hit in the grammar search, immediate-action
+bisimulation rigidity, nor failure of these startup transplants proves
+that 194 states are necessary.  The searches keep a particular numerical
+calculus family, interpreter architecture, or finite local replacement
+language fixed.  A smaller machine may change a global representation,
+use a stronger reachable-state invariant, or reorganize source and
+startup together.  The next state saving must be checked against all
+three interfaces: calculus calibration, command semantics, and complete
+blank physical execution.
+
+\section{Use of the three related research areas}
+
+The ZFC work supplies useful engineering principles: optimize the
+source tree and available physical helper states together, and prove
+a quantitative protection invariant when startup leaves an unsafe
+stack suffix.  Its zero-spare Z215 example changes a single write bit
+and initial state, then proves a debt-two protection theorem for the
+exact scheduler.  For the PA family, the direct zero-spare transplant
+already has an all-start halt/ray obstruction.  Physical spare blocks
+and logical stack entries are distinct resources; the ZFC debt bound
+cannot be transferred by matching their counts.  The present work
+retains a fully clean startup and uses the physical-fold principle.
+
+DiophantineConsistency is useful for its exact native iPRA consistency
+endpoints, bounded coded computations and model-uniform proof methods.
+However, the small published equations target the repository's ZFC
+refutation predicate, and their circuit-operation counts are not binary
+TM state counts.  Compiling an equation requires enumeration,
+integer arithmetic, coefficient construction and comparison, as well
+as a new PA calibration if the refutation target changes.  No verified
+state price below 194 follows from the displayed small equation alone.
+
+ConciseIPRA demonstrates that logical rules can sometimes be derived
+from a much smaller native calculus and that a complete checker should
+be optimized rather than only its axiom list.  Its target theory is
+iPRA itself, whereas the machine must search for a PA refutation.
+Replacing the searched PA-strength calculus by an iPRA-equiconsistent
+calculus would change the consistency problem.  Its methodology helps
+organize bounded primitive-recursive proof transformations, but its
+Python byte count does not supply a smaller PA-consistency TM.
+
+There is a concrete warning already in the PA corpus: the equality-free
+radix-three deletion and deletion of the equality-witness head admit a
+primitive-recursive Boolean valuation that validates the retained
+calculus while falsifying contradiction.  Those deletions can make the
+theory weaker enough that iPRA proves its consistency.  They are not
+valid routes to the requested PA-refutation problem.  The generalized
+witness presentations used here avoid that error through explicit
+two-way proof translations.
+
+\section{Reproduction and deliverables}
+
+The archive is self-contained for positive machine reconstruction,
+source binding, symbolic physical verification and novelty replay.
+Python 3.10 or later with its standard library suffices.  Assertions
+must remain enabled.  From the archive root, use a new output directory:
+\begin{verbatim}
+python3 -B verify_release.py --work /absolute/path/new-replay
+\end{verbatim}
+The driver checks integrity, invokes the independent machine replay,
+rebuilds the two tables from frozen grammar/fold data, compares exact
+bytes, rechecks source commands and affine frame closure, and compares
+the new graphs with all frozen prior representatives.  It also checks
+the exact imported witness archive identity.  Full physical replay is
+deliberately included; stochastic discovery is not needed to recreate
+the machines.
+
+The deterministic generator is \file{construction/build_symmetric.py}.
+Each directory under \file{machines/} contains the dense and native
+tables, label map, grammar, source sites and resolved instructions,
+folds and their local traces, source/command checks, full symbolic
+contracts and receipts.  The independent checker reads literal rows;
+it does not call the construction compiler's arithmetic-box oracle.
+Its four generic finite-list traversals are rederived from the new
+table before the site checks run.
+
+\file{comparison/} contains the exhaustive ledgers, source/census
+identities, prior representatives, exact novelty checker and a prose
+comparison.  Rebuilding the complete corpus scan additionally requires
+the pinned ProveIt source; the offline novelty check does not.
+\file{research/} retains the new bounded searches, reproducible inputs,
+programs and receipts.  These records distinguish completed results
+from time-capped runs.
+
+\file{references/} preserves the original witness ZIP unchanged,
+including its proof-calibration ancestry, together with the focused
+review.  The report's absolute theorem invokes that written ancestry;
+the replay driver does not pretend to kernel-check it.  Original
+licenses and attribution are retained.  No upstream GitHub file was
+modified by this work.
+
+The report is built by running pdfLaTeX twice in \file{report/}:
+\begin{verbatim}
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+The machine appendices are generated from the delivered row files, so
+their labels and actions are bound to the same exact artifacts as the
+verification receipts.
+
+\appendix
+\clearpage
+\section{Complete PA194H5XS transition table}
+\label{app:h5xs}
+The initial control is 0; H denotes terminal label 194.  Each action
+is write-bit, direction, next-control.  All 194 working controls and
+their two input actions are displayed.
+\input{table_h5xs.tex}
+
+\clearpage
+\section{Complete PA194JH5XS transition table}
+The specification and table conventions are the same as in
+Appendix~\ref{app:h5xs}.
+\input{table_jh5xs.tex}
+
+\clearpage
+\section{All annotated design families}
+\label{app:families}
+The entries summarize attributed construction claims and their proof
+obligations.  They do not certify every historical absolute theorem.
+The 91 named positive-claim graphs and every auxiliary/rejected graph
+are separately identified by the supplied CSV ledgers.
+\input{families.tex}
+
+\section{Sources and provenance}
+\begin{enumerate}
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/3c3bf00e3132d31d328a7bcfe79761ef238eced3/Computability/BusyBeaver/Research/PA}{Pinned PA research tree}, including the principal README, filed packet catalog, machine catalog and the imported James Chang source.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/3c3bf00e3132d31d328a7bcfe79761ef238eced3/docs/incoming}{The seven incoming archives at the same revision}.  The exact source manifest and packet ledger preserve their Git identities.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/3c3bf00e3132d31d328a7bcfe79761ef238eced3/docs/incoming/pa194_witness_research_2026-11-15.zip}{The immediate H5X/JH5X witness packet}, retained unchanged in this archive.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/3c3bf00e3132d31d328a7bcfe79761ef238eced3/Computability/BusyBeaver/Research/PA/docs/pa194_ax11h_research_2026-11-14_2}{The revised AX11H written iPRA calibration}.  The older same-name package is not substituted for this dependency.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/3c3bf00e3132d31d328a7bcfe79761ef238eced3/Computability/BusyBeaver/Research/ZFC/candidate-k215/alternatives/zero-spare}{The ZFC zero-spare Z215 construction and its protection invariant}.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/3c3bf00e3132d31d328a7bcfe79761ef238eced3/Computability/DiophantineConsistency/README.md}{DiophantineConsistency: current goals, endpoints and proof boundaries}.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/3c3bf00e3132d31d328a7bcfe79761ef238eced3/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md}{ConciseIPRA: native calculus and complete-checker objective}.
+\end{enumerate}
+The new contribution is the two symmetric witness implementations,
+their fresh source/physical verification and relative preservation
+argument, the refreshed complete recognized-corpus comparison, and the
+documented further reduction searches.  The numerical proof calculi,
+interpreter lineage, compiler, symbolic checker and absolute calibration
+retain their original provenance, including the contributions of
+James Chang, Andrew James Wade, Elliot Glazer, Vladimir Reshetnikov and
+the other contributors credited in the source packets.
+\end{document}

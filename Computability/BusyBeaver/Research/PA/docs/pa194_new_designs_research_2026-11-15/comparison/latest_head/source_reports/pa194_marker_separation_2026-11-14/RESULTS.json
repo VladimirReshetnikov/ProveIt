@@ -1,0 +1,98 @@
+{
+  "result": "fallback: two new 194-state compositions; no justified machine below 194",
+  "snapshot": "793c68737d94bffa4e32a75bce6cc8058d6d22f0",
+  "model": {
+    "tapes": 1,
+    "infinite_in_both_directions": true,
+    "alphabet": [
+      0,
+      1
+    ],
+    "blank": 0,
+    "initial_head": 0,
+    "moves": [
+      "L",
+      "R"
+    ],
+    "dense_start": 0,
+    "dense_halt": 194,
+    "count_halt_as_working_state": false
+  },
+  "machines": [
+    {
+      "name": "PA194LCGMS",
+      "parent": "PA194LCG",
+      "working_states": 194,
+      "rows": 388,
+      "dense_sha256": "a168e6264a3963dec96a5f6f5dffd75d9f45cc4ed4cb31c80f3d2e8f23bcc312",
+      "parent_native_sha256": "bdbfb392b408dd729899f07ad38de92b86f5d76bbdb87e7a12e5f1137f3d8047",
+      "parent_initialization_steps": 57870,
+      "initialization_steps": 57970
+    },
+    {
+      "name": "PA194LCGSMS",
+      "parent": "PA194LCGS",
+      "working_states": 194,
+      "rows": 388,
+      "dense_sha256": "cdaa8211a08619263a0dc3cd5a6a3a62a02f506b360d738d20b25975246badf6",
+      "parent_native_sha256": "137359a2ee40b81c994903589b68f34c4d47cb97f8600c86016094f637a4f25a",
+      "parent_initialization_steps": 57712,
+      "initialization_steps": 57812
+    }
+  ],
+  "new_relative_written_theorem": {
+    "base": "intuitionistic primitive recursive arithmetic",
+    "equations": [
+      "H_parent(t) implies H_child(5*t)",
+      "H_child(t) implies H_parent(t)",
+      "NH_parent iff NH_child"
+    ],
+    "calibration_independent": true
+  },
+  "absolute_written_conclusion": "iPRA proves NH_child iff Con(PA), by composition with the identified revised AX11H written calibration and GH/GHS then LCG/LCGS transfers.",
+  "proof_status": "Complete new relative written proof; executable checks bind its exact finite table premises. The absolute theorem has an inherited written calibration dependency. No new end-to-end Lean/Rocq kernel endpoint.",
+  "comparison": {
+    "snapshot": "793c68737d94bffa4e32a75bce6cc8058d6d22f0",
+    "filed_packets": 93,
+    "current_incoming_packets": 4,
+    "total_delivery_records": 97,
+    "named_design_records": 83,
+    "named_tables_recovered": 83,
+    "named_action_classes": 83,
+    "mechanism_families": 29,
+    "missing_named_tables": []
+  },
+  "novelty": {
+    "prior_spanning_194_graph_classes": 520,
+    "both_new_in_recognized_pinned_corpus": true,
+    "mutually_distinct": true,
+    "transformations_tested": [
+      "state relabeling",
+      "arbitrary spanning root",
+      "reflection",
+      "global symbol complement (structural only)",
+      "ignored final halt-entry write and move"
+    ]
+  },
+  "searches": {
+    "timed_grammar_proposals": 42111449,
+    "frozen_price_cases": 4222,
+    "physical_pair_examinations_across_five_table_envelopes": 93605,
+    "physical_deletion_target_examinations": 965,
+    "scoped_search_hits": 0,
+    "no_unrestricted_lower_bound": true
+  },
+  "parent_full_replay": {
+    "status": "PASS",
+    "machines": [
+      "PA194LCG",
+      "PA194LCGS"
+    ],
+    "full_independent_contract_replay": true,
+    "all_parent_child_duration_contracts_checked": 19104,
+    "source_preserved": true,
+    "startup_and_all_local_premises_replayed": true,
+    "artifact_manifest_verified": true,
+    "scope": "Finite bindings and new relative-theorem premises; not a proof-assistant or full inherited PA-calibration check."
+  }
+}
