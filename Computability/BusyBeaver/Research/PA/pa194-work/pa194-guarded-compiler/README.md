@@ -159,3 +159,12 @@ is not a full transitive rebuild. Reproduce with a fresh output directory:
 ```sh
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-term-names.sh "$PWD" NEW_EMPTY_OUTPUT
 ```
+
+A separate incremental repository-source replay of `PA194ValueBody` against the
+checked calculus and naming modules passed with six axiom reports and no
+`sorryAx`. Earlier source and dispatcher dependencies were prebuilt; this is not
+a full transitive rebuild. Reproduce with a fresh output directory:
+
+```sh
+bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-value-body.sh "$PWD" NEW_EMPTY_OUTPUT
+```
