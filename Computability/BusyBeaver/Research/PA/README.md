@@ -95,8 +95,9 @@ still assumes the quantifier, shift, and theory-axiom suppliers. The
 [ordinary PAeq theory now has a uniform classifier](pa194-work/pa194-model-logic/PAEQ-ORDINARY-CLASS.md),
 and the [arithmetic induction-axiom supplier](pa194-work/pa194-model-logic/PAEQ-INDUCTION-SUPPLIER.md)
 establishes modeled PAeq proof existence for every internal arithmetic induction
-axiom, including nonstandard codes. The finite arithmetic axiom supplier and
-unconditional source compiler remain open. The [universal formula replacement theorem](pa194-work/pa194-model-logic/PAEQ-UNIVERSAL-FORMULA-CONGRUENCE.md)
+axiom, including nonstandard codes. The [finite arithmetic supplier and PA-refutation transport](pa194-work/pa194-model-logic/PAEQ-FINITE-SUPPLIER.md)
+are also proved in every arithmetic IΣ₁ model, including for nonstandard proof
+codes. The unconditional PAeq-to-source compiler remains open. The [universal formula replacement theorem](pa194-work/pa194-model-logic/PAEQ-UNIVERSAL-FORMULA-CONGRUENCE.md)
 supplies modeled PAeq proof existence for arbitrary internally valid arity-one
 formulas, including nonstandard codes and nested quantifiers. These existence
 results do not supply fixed proof-code transformers.
