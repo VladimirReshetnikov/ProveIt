@@ -68,9 +68,10 @@ is proved model-theoretically under the documented hypotheses. The general
 [compiler](pa194-work/pa194-model-logic/FULL-SEPARATION-THEORY.md)
 translates refutations of the finite equality-plus-weak-adjunction theory
 combined with its classifier-defined parameter-closed separation theory into
-modeled scheduler halting in PRA + IΣ₁ models. Correspondence with the typed
-Foundation separation scheme, PA calibration and the connection to the physical
-machine remain open. In standard Lean semantics, [the calculus/clock composition](pa194-work/pa194-calculus-clock/README.md)
+modeled scheduler halting in PRA + IΣ₁ models. The classifier-defined standard
+separation theory is [identified with the typed Foundation scheme](pa194-work/pa194-model-axioms/TYPED-THEORY.md).
+A proof-code interpretation of PA and the connection to the physical machine
+remain open. In standard Lean semantics, [the calculus/clock composition](pa194-work/pa194-calculus-clock/README.md)
 proves that either clock reaches 1 exactly when the displayed separate-diagonal
 numerical calculus has a finite derivation of contradiction. Its calibration
 to PA and its internalization in iPRA remain open, as do both machine-specific
