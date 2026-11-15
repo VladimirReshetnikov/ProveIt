@@ -1,0 +1,15 @@
+import PA194BoundSeparation
+#print axioms PA194BindSource.bindTerm_definable
+#print axioms PA194BindSource.opening_bindTerm
+#print axioms PA194BindSource.bindPair_definable
+#print axioms PA194BindSource.opening_bind_positiveAtom
+#print axioms PA194BindSource.opening_bind_negativeAtom
+#print axioms PA194BindSource.bindTermGraph_iff
+#print axioms PA194BindSource.bindPairGraph_iff
+#print axioms PA194BindSource.bindFormula_definable
+#print axioms PA194BindSource.bindFormula_rel
+#print axioms PA194BindSource.bindFormula_all
+#print axioms PA194BindSource.bindFormula_scope_open
+#print axioms PA194ModelLogic.simRuleSeparation_closedOnce_ranked
+#print axioms PA194BindSource.sepRoot_scoped
+#print axioms PA194BindSource.oneBoundSeparation_leaf
