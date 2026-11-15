@@ -1,0 +1,10 @@
+import PA194RelExtTypedTranslation
+import PA194ModelBinaryRelationSubstitution
+#print axioms PA194RelExtTypedTranslation.relExt_toNamed
+#print axioms PA194RelExtTypedTranslation.relExt_relationalCode
+#print axioms PA194RelExtTypedTranslation.relExt_numeric_expanded
+#print axioms PA194ModelLogic.neighborhoodBothCongruence_target
+#print axioms PA194ModelLogic.sourceAtom_binaryRelationSubstitution
+#print axioms PA194ModelLogic.binaryRelationSubstitution_supplier
+#print axioms PA194ModelLogic.relExtNNFBody_target
+#print axioms PA194ModelLogic.relExtNNF_supplier

@@ -53,6 +53,7 @@ sequents of nonstandard length, remain open. Nothing here yields a consistency i
 | `PA194ModelPathReferenceStep` | Every path step from valid syntax is either a stationary leaf or a reference edge with actual graph entries at both ends. |
 | `PA194ModelEqualityObservations` | Translated equality atoms derive four quantified neighborhood observations in the target calculus. |
 | `PA194ModelPathAtomSubstitution` and dependencies | [Target membership substitution](SUBSTITUTION.md) follows for suitably bounded equal-depth source paths with explicit environment bounds. |
+| `PA194RelExtTypedTranslation`, `PA194ModelBinaryRelationSubstitution` | [Foundation relation extensionality](REL-EXT.md) has an exact standard syntax translation and a matching model-uniform target proof shape. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed
