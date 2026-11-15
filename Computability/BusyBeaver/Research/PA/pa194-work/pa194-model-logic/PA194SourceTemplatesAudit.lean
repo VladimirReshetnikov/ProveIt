@@ -1,0 +1,7 @@
+import PA194SourceTemplates
+#print axioms PA194SourceTemplates.templateOne_graph
+#print axioms PA194SourceTemplates.templateOne_valid
+#print axioms PA194SourceTemplates.templateOne_quote
+#print axioms PA194SourceTemplates.templateTwo_graph
+#print axioms PA194SourceTemplates.templateTwo_valid
+#print axioms PA194SourceTemplates.templateTwo_quote
