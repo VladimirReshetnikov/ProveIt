@@ -265,3 +265,7 @@ derivation simulation.
 The [universal-rule atom fragments](UNIVERSAL-ATOM.md) cover both atom
 polarities under explicit environment bounds, but nested binders and full
 quantifier rules remain open.
+
+The [depth-admission candidate](DEPTH-ADMISSION.md) supplies a model-valued
+linear-stack seed and local preservation but does not yet bound environment
+codes or construct a complete derivation simulation.
