@@ -238,3 +238,7 @@ prerequisites; these were suffix checks, not empty-overlay replays.
 The [numerical target sequent instance](SEQUENT-INSTANCE.md) connects the actual
 fixed formula translation to nonstandard finite source sets; source proof-rule
 simulation and derivation induction remain open.
+
+The [finite equality-axiom sequent](EQ-SEQUENT.md) connects an explicit coded
+axiom predicate to target sequents; its identity with an existing internal
+source-theory predicate and general proof compilation remain open.
