@@ -261,3 +261,7 @@ compiler quantifier rules remain separate.
 The [negation duality and refined cut interface](REFINED-CUT.md) handle
 arbitrary internally valid formulas, but do not construct the complete
 derivation simulation.
+
+The [universal-rule atom fragments](UNIVERSAL-ATOM.md) cover both atom
+polarities under explicit environment bounds, but nested binders and full
+quantifier rules remain open.

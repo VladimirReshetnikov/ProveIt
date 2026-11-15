@@ -1,0 +1,14 @@
+import PA194ModelFreshAtom
+#print axioms PA194ModelLogic.simRuleAllShift_positiveAtom
+#print axioms PA194ModelLogic.simRuleAllShift_negativeAtom
+#print axioms PA194ModelLogic.simRuleAllShift_of_bridge
+#print axioms PA194ModelLogic.shiftBridge_and
+#print axioms PA194ModelLogic.shiftBridge_or
+#print axioms PA194ModelLogic.shift_positiveAtom_translation
+#print axioms PA194ModelLogic.shift_negativeAtom_translation
+#print axioms PA194ModelLogic.simRuleAllFresh_closedPositiveAtom
+#print axioms PA194ModelLogic.simRuleAllFresh_closedNegativeAtom
+#print axioms PA194ModelLogic.closedTerm_label_lt
+#print axioms PA194ModelLogic.neighborhoodVacuity_target
+#print axioms PA194ModelLogic.simRuleAll_positiveAtom
+#print axioms PA194ModelLogic.simRuleAll_negativeAtom
