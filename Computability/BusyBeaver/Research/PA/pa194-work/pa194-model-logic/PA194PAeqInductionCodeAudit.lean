@@ -1,0 +1,7 @@
+import PA194PAeqClosedInduction
+#print axioms PA194PAeqBind.inductionBody_graph
+#print axioms PA194PAeqBind.inductionBody_scope
+#print axioms PA194PAeqBind.inductionBody_quote
+#print axioms PA194PAeqBind.closedInduction_graph
+#print axioms PA194PAeqBind.closedInduction_sentence
+#print axioms PA194PAeqBind.closedInduction_quote
