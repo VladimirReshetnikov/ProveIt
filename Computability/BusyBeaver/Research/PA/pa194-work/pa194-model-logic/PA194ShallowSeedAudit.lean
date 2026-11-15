@@ -1,0 +1,13 @@
+import PA194ModelShallowFresh
+#print axioms PA194ModelLogic.simRuleAllFresh_allMembershipCode
+#print axioms PA194ModelLogic.simRuleAllFresh_allNegativeMembershipCode
+#print axioms PA194ModelLogic.simRuleAllFresh_exMembershipCode
+#print axioms PA194ModelLogic.simRuleAllFresh_exNegativeMembershipCode
+#print axioms PA194ModelLogic.shallowMembership_definable
+#print axioms PA194ModelLogic.internalQuantifierFree_implies_shallow
+#print axioms PA194ModelLogic.shallowMembership_and_iff
+#print axioms PA194ModelLogic.shallowMembership_or_iff
+#print axioms PA194ModelLogic.shallowMembership_all_iff
+#print axioms PA194ModelLogic.shallowMembership_ex_iff
+#print axioms PA194ModelLogic.shallowFresh_all_codes
+#print axioms PA194ModelLogic.simRuleAllFresh_shallowSeed
