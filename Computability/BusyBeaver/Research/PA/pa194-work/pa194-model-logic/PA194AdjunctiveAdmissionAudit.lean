@@ -1,0 +1,4 @@
+import PA194ModelAdjunctiveAdmission
+
+#print axioms PA194ModelLogic.simRuleAdjunctiveAxiom_ranked
+#print axioms PA194ModelLogic.simRuleAdjunctiveAxiom_seed
