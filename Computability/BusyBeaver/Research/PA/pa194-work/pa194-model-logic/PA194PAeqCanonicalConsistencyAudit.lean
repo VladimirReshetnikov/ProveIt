@@ -1,0 +1,4 @@
+import PA194PAeqCanonicalConsistency
+#print axioms PA194PAeq.InductionReopen.isigma1_proves_consistency_transfer
+#print axioms PA194PAeq.InductionReopen.isigma1_proves_foundation_consistency_transfer
+#print axioms PA194PAeq.InductionReopen.isigma1_proves_canonical_consistency_transfer
