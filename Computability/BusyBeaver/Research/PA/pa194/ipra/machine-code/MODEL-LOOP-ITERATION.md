@@ -34,6 +34,13 @@ suffix and the path prefix. Specializing the readers to the actual controller
 and proving a coded physical cost and guarded one-step match remain separate.
 `check-model-loop-frame.sh` replays this extension with the same staged roots.
 
+`PA194ModelSourceLoop.sourceIteration` proves the closed-form register update
+for a model-valued number of loops under an explicit uniform one-loop source
+premise. `PA194ModelLoopFour.groupFour` groups `4*i` iterations of an arbitrary
+primitive-recursive step into `i` iterations of its fourfold composition.
+These model theorems use open induction; the actual-controller specialization
+and physical clock remain separate. `check-model-loop-four.sh` replays both.
+
 Replay with `check-model-loop-iteration.sh` into a fresh output directory;
 the usage lists its roots. `ROUNDTRIP_STAGE` is the successfully audited
 `check-one-spare-file-roundtrip.sh` output. It pins the existing iterator
