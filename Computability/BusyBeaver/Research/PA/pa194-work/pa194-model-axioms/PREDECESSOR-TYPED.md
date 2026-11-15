@@ -1,0 +1,7 @@
+# Strict-cut edges and predecessor typing
+
+These modules adapt the vendored PA196 strict-graph-restriction proofs to the unified local Foundation syntax. Given an actual strict graph cut, `strictCutEdges` proves that its edges are exactly the original graph's edges whose input belongs to the cut domain, while `strictCutEntries` preserves genuine ordered-pair object witnesses. Given the original graph's order clause and an edge from displayed predecessor p to displayed predecessor q, `predecessorGraphTyped` and `predecessorGraphEntries` prove the cut is typed by p and q and that all of its actual entries have those types.
+
+The cut, original graph clauses, endpoint edge, and where needed equality principles are explicit premises. Separation, left/right totality, and the final predecessor isomorphism have not been discharged by these modules. These are Foundation natural-deduction derivations, not a native iPRA proof or machine-equivalence result.
+
+Run `bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-axioms/check-predecessor-typed.sh "$PWD" /dev/shm/pa194-predecessor-typed-repo-NEW` from the repository root. The checker builds all four adapted modules in one fresh output against hash-pinned dependencies, including the repository-replayed strict-cut base and prebuilt pair-decoding/entry modules from the documented probes. It does not rebuild the latter transitive closure. The successful output is `/dev/shm/pa194-predecessor-typed-replay`.
