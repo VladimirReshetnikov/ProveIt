@@ -1,0 +1,22 @@
+import PA194ModelReflexiveExamples
+#print axioms PA194ModelLogic.internalReflexiveQF_definable
+#print axioms PA194ModelLogic.internalReflexiveQF_eq_arguments
+#print axioms PA194ModelLogic.equalityDiagonal_binderRewrite
+#print axioms PA194ModelLogic.negativeEqualityDiagonal_binderRewrite
+#print axioms PA194ModelLogic.reflexiveQF_binderRewrite
+#print axioms PA194ModelLogic.reflexiveQF_allAlpha
+#print axioms PA194ModelLogic.reflexiveQF_allNegAlpha
+#print axioms PA194ModelLogic.reflexiveQF_exAlpha
+#print axioms PA194ModelLogic.simRuleAllFresh_allReflexiveQFSeed
+#print axioms PA194ModelLogic.simRuleAllFresh_exReflexiveQFSeed
+#print axioms PA194ModelLogic.oneLevelReflexive_definable
+#print axioms PA194ModelLogic.oneLevelReflexiveFresh_all_codes
+#print axioms PA194ModelLogic.simRuleAllFresh_oneLevelReflexiveSeed
+#print axioms PA194ModelLogic.oneLevelMembership_implies_reflexive
+#print axioms PA194ModelLogic.internalReflexiveQF_positiveDiagonal
+#print axioms PA194ModelLogic.internalReflexiveQF_negativeDiagonal
+#print axioms PA194ModelLogic.internalReflexiveQF_and_iff
+#print axioms PA194ModelLogic.internalReflexiveQF_or_iff
+#print axioms PA194ModelLogic.oneLevelReflexive_all_iff
+#print axioms PA194ModelLogic.oneLevelReflexive_ex_iff
+#print axioms PA194ModelLogic.reflexiveEquality_strictExample
