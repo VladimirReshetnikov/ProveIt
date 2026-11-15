@@ -1,0 +1,16 @@
+import PA194ModelExAtomWitness
+#print axioms PA194ModelLogic.primitiveToNeighborhood_target
+#print axioms PA194ModelLogic.targetExistsNeighborhoodLeft
+#print axioms PA194ModelLogic.targetExistsNegNeighborhoodLeft
+#print axioms PA194ModelLogic.targetExistsNeighborhoodRight
+#print axioms PA194ModelLogic.targetExistsNegNeighborhoodRight
+#print axioms PA194ModelLogic.simRuleExs_equalityBoundLeft_fresh
+#print axioms PA194ModelLogic.simRuleExs_negativeEqualityBoundLeft_fresh
+#print axioms PA194ModelLogic.simRuleExs_equalityBoundRight_fresh
+#print axioms PA194ModelLogic.simRuleExs_negativeEqualityBoundRight_fresh
+#print axioms PA194ModelLogic.simRuleExs_equalityCode_fresh
+#print axioms PA194ModelLogic.simRuleExs_negativeEqualityCode_fresh
+#print axioms PA194ModelLogic.simRuleExs_positiveAtomCode_fresh
+#print axioms PA194ModelLogic.simRuleExs_negativeAtomCode_fresh
+#print axioms PA194ModelLogic.simRuleExs_positiveRelation_fresh
+#print axioms PA194ModelLogic.simRuleExs_negativeRelation_fresh
