@@ -1,0 +1,9 @@
+import PA194ForwardSuccCongruenceRoot
+#print axioms PA194SuccExtensionInputs.Inputs.successorExists
+#print axioms PA194SuccExtensionInputs.Inputs.extend
+#print axioms PA194SuccInjective.succValueIntro
+#print axioms PA194SuccInjective.succCongruenceValue
+#print axioms PA194ForwardSuccCongruence.target_eq
+#print axioms PA194ForwardSuccCongruence.proof
+#print axioms PA194ForwardSuccCongruence.sourceProof
+#print axioms PA194ForwardSuccCongruence.root_succCongruence_provable
