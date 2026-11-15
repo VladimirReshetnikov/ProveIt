@@ -1,0 +1,11 @@
+import PA194ModelLinearSeed
+#print axioms PA194ModelLogic.linearSeed_succ
+#print axioms PA194ModelLogic.linearSeedInvariant_definable
+#print axioms PA194ModelLogic.linearSeed_properties
+#print axioms PA194ModelLogic.depthAdmission_definable
+#print axioms PA194ModelLogic.depthAdmission_ranked
+#print axioms PA194ModelLogic.depthAdmission_initial
+#print axioms PA194ModelLogic.depthAdmission_child
+#print axioms PA194ModelLogic.depthAdmission_push_child
+#print axioms PA194ModelLogic.depthAdmission_nonempty
+#print axioms PA194ModelLogic.depthAdmission_pop_child
