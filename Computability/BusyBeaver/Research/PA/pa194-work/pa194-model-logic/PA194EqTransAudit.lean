@@ -1,0 +1,7 @@
+import PA194ModelEqTrans
+#print axioms PA194ModelLogic.fixedFormulaTranslation_eqTrans_target
+#print axioms PA194ModelLogic.eqTrans_reference_complete
+#print axioms PA194ModelLogic.eqTransRoot_budget_shape
+#print axioms PA194ModelLogic.eqTransRoot_quote
+#print axioms PA194ModelLogic.eqTransRoot_valid
+#print axioms PA194ModelLogic.eqTransCore_valid
