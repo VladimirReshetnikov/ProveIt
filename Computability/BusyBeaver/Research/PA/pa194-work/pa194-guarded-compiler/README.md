@@ -110,3 +110,14 @@ prebuilt, so this is not a clean transitive build. From the repository root:
 ```sh
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-incremental.sh "$PWD" NEW_EMPTY_OUTPUT
 ```
+
+`PA194TranslateExt` additionally proves that the translation with identity
+packets is independent of packet length for well-formed internal terms and
+formulas. This does not establish independence of arbitrary environments or
+supply the remaining guarded rules. Its seven axiom reports passed a fresh
+incremental replay against the previously rebuilt guarded compiler, with no
+`sorryAx`; transitive dependencies were prebuilt:
+
+```sh
+bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-translate-ext.sh "$PWD" NEW_EMPTY_OUTPUT
+```
