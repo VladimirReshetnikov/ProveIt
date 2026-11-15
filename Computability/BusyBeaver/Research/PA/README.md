@@ -263,6 +263,10 @@ contradiction code (`halts_iff_provable`). This concerns the modeled scheduler, 
 physical table. The translation of an internal PAeq or source-language proof into the
 numerical calculus (the model-level counterpart of
 [`pa194-foundation-lk`](pa194-work/pa194-foundation-lk/README.md)) has no model-level result.
+[`pa194-model-sequent`](pa194-work/pa194-model-sequent/README.md) supplies its sequent layer for
+an abstract calculus in a model of `𝗜𝚺₁`: hypothesis lists and hypothesis sets that are
+elements of the model, with the deduction theorem, cut, the structural rules and
+generalization. Its instance for the numerical calculus and the compiler itself are open.
 
 [`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
