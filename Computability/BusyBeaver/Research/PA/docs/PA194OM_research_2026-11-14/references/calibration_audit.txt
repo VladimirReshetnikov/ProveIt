@@ -1,0 +1,122 @@
+CALIBRATION AUDIT AT PROVEIT 883da8d55452ea097910ed2509a1eefc833ce292
+
+Outcome
+-------
+The current root PA README describes the unfinished machine-specific Lean/iPRA
+formalization. It should not be used to erase the newer packet's separate written
+mathematical result. The revised packet
+  Computability/BusyBeaver/Research/PA/docs/pa194_ax11h_research_2026-11-14_2/
+supplies a detailed ordinary mathematical proof of
+  iPRA |- Con(PA) <-> not Halt_blank(M)
+for AX11H and QAX11H. It is substantially stronger than the older reports that
+state only PA-provable equivalence. It is not an end-to-end Lean or Rocq build.
+
+Parent identities
+-----------------
+AX11H dense table SHA256:
+c5dfe1026d077d3e062eca11edb789597bfbbced4f6040f8828ae5d467b1167a
+QAX11H dense table SHA256:
+19e215df20429fa6a35f0a99ba0dcfcb40893a6e4b9a4ae6e450b0225f110e50
+Both have 194 nonhalting controls, 388 rows, binary blank tape, start 0,
+separate halt 194. Their ordinary native table uses start 74/halt 254.
+
+Exact proof chain read
+---------------------
+1. proof/physical_ipra_audit.tex: entire literal tape frames and four generic
+   list traversals, frame closure, positive primitive-recursive durations,
+   exact 57,922-step blank initialization. The written theorem is iPRA.
+2. proof/source_command_completion.tex: complete primitive register program
+   bound to the command scheduler via arithmetic templates, with explicit
+   clocks and scratch preconditions. Written theorem in iPRA.
+3. proof/ax11h_preservation.tex: AX11 has a real fourth parameter and eleven
+   entries; H halts on cached h=1, not on arbitrary visible t=1. The all-store
+   refutation word is A0; W_e; Pop. Proof-list to command-word translations,
+   selector words, early halts, and carried stores are handled explicitly.
+4. proof/q_exchange_ipra.tex: uniform positive derivation-list translations
+   between the ordinary and premise-exchanged sixth head, over iPRA.
+5. proof/consistency_implies_nonhalting.tex: numerical derivations map to
+   current PA refutations in all candidate-PRA models whose arithmetic reduct
+   satisfies I-Sigma-1. The Good-formula invariant has existential vectors of
+   proof witnesses; it is correctly called Sigma-1, not quantifier-free.
+   Existing distinct/equal-label gate suppliers discharge the gate premise.
+6. proof/foundation_paeq_completion.tex: current Foundation PA to ordinary
+   PAeq adapter. It fixes the exact constructors, ten proof rules, open/close
+   operations, unrestricted induction matrix recognition, changed addEqOfLt
+   axiom, and the historical/current arithmetic metatheory inclusion.
+7. proof/term_leaf_completion.tex and proof/forward_calibration_completion.tex:
+   ordinary PAeq refutations map to numerical C4 refutations. The new written
+   construction uses finite demand trees of actual recursive requests and
+   bounded Boolean/witness-table invariants. It does not incorrectly import
+   the upstream full-PA induction over all parameter environments as an
+   I-Sigma-1 theorem. Same-stratum ranks decrease; other calls go to an already
+   completed stratum. Arbitrary induction matrices and all proof rules are
+   included. The large translator is specified mathematically, not supplied
+   as a completely executable Python/Lean program.
+8. proof/consistency_equivalence.tex: combines this all-model calibration with
+   the checked machine-independent one-way transfer endpoints. Explicit
+   forward time is 57922 + tau(B(K(e))), where K(e)=(N_e+2)^2 and N_e encodes
+   a cofinal all-store halting command word. No least successful candidate or
+   unbounded search enters the definition.
+
+Transfer endpoints inspected directly
+-------------------------------------
+Current repository files:
+  Computability/BusyBeaver/Research/PA/isigma1-machine/
+      ConPAISigma1Directions.lean
+      ConPAUnconditional.lean
+  Computability/BusyBeaver/Research/PA/isigma1-transfer/
+      ConPAISigma1Transfer.lean
+
+ConPA.Directions.ipra_nonhalt_implies_consistency requires an open bounded
+halting matrix and the all-model refutation-to-halting implication.
+ConPA.Directions.ipra_consistency_implies_nonhalt requires an open matrix
+and the all-model halting-to-refutation implication. Atomic chi_M(t)=1 meets
+the matrix requirements. ConPA.Unconditional.certificate supplies the PA
+witness certificate via PA196PACertificateComplete.certificate; it is not an
+additional unproved machine-specific assumption. The transfer proofs preserve
+negative conclusions. They never obtain a positive existential by deleting
+double negation, so no Markov principle is used.
+
+Trusted dependencies and limits of this audit
+--------------------------------------------
+The cited mathematical calibration relies on the pinned upstream proof
+constructors, source numerical calculus, current Foundation PA predicate,
+and the machine-independent conservation/negative-translation chain. Current
+Foundation gitlink is 32e1a0956a8622fad067328ca1959729a7634428 as documented by
+the packet. This audit read the new TeX arguments and the main transfer Lean
+interfaces; it did not independently rebuild every fixed derivation recipe,
+the transitive Lean dependency closure, or the entire forward compiler. No
+concrete logical gap was found in the examined chain. That is a review of an
+inherited proof, not an independent kernel certification of that proof.
+
+What a new candidate must supply
+--------------------------------
+An explicit iPRA finite-trace/halting equivalence with one of those exact
+parents suffices to transport its written consistency theorem. If source
+commands change, also give their all-store soundness and a cofinal compiler of
+every numerical refutation. If only the physical implementation changes,
+prove complete frame preservation, exact local endpoints, primitive-recursive
+durations, and blank startup. Finite sample simulations alone do not supply
+any of these uniform proofs. One-step state-graph isomorphism is not enough
+to identify a materially different implementation.
+
+Useful cross-project ideas
+--------------------------
+ZFC: contextual state sharing, retained finite history, and separated proof
+roles are applicable only with whole-frame contracts and an independent blank
+startup. Equivalent presentations and shared roles cannot have their savings
+counted twice. K215's external Lean/Rocq success does not itself supply a PA
+or iPRA internal endpoint for an unrelated table.
+DiophantineConsistency: the decisive reusable contribution is the existing
+model-uniform I-Sigma-1 to iPRA transfer machinery and primitive recursive
+witness interfaces. A lower polynomial operation count does not imply a lower
+blank-start binary TM state count: constants, arithmetic evaluation, tuple
+enumeration, and initialization must all be compiled.
+ConciseIPRA: replace expensive primitive logical interfaces by interderivable
+smaller ones and expose proof witnesses rather than semantic truth tests.
+Searching for an iPRA contradiction cannot replace searching for a PA
+contradiction; the consistency target must remain PA.
+
+Sources are exact pinned GitHub paths. ax11h_audit/source_manifest.json binds
+the downloaded proof fragments to local SHA256 values. All original credits
+and licenses must be retained if the full inherited proof is redistributed.

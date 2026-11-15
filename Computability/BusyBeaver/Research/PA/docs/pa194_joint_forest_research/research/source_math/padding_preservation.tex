@@ -1,0 +1,110 @@
+\section{A general theorem for redundant truth entries}
+\label{sec:truth-padding}
+The following lemma justified the source-level search in this packet. It
+is a theorem about the explicitly displayed command functions. A candidate
+transition table must additionally satisfy its own physical/source contracts;
+no state-count conclusion follows from this lemma alone.
+
+Write $[a;w]=p(a,w)$ for Cantor pairing, and use its total projections,
+including $\operatorname{hd}(0)=\operatorname{tl}(0)=0$. The H command
+interface is
+\[
+ S(t,w,d,h)=\begin{cases}\mathsf{halt},&h=1,\\
+ (h,\operatorname{tl}(w),d,\operatorname{hd}(w)),&h\ne1,
+ \end{cases}
+\]
+and, with $b=d+x$,
+\[
+ M_x(t,w,d,h)=\begin{cases}(b,w,b,0),&I(t,b)=h,\\
+ (0,w,b,0),&I(t,b)\ne h.
+ \end{cases}
+\]
+Consider any AX implementation of the form
+\[
+ A_{c,x,y,z}(t,w,d,h)
+  =(0,[r_0,\ldots,r_{L-1},t;w],z,0),                 \tag{P-A}
+\]
+where $L\ge2$ is fixed. Assume (i) no $r_j$ is one; (ii) $r_{L-1}=U(d,h)$
+has residue two modulo four; (iii) all the original nine axiom entries
+occur among $r_0,\ldots,r_{L-2}$ with their original parameter maps; and
+(iv) every additional entry is numerical truth zero. The original AX11H
+interface has $L=10$. Inserting $n$ redundant truth entries gives $L=10+n$.
+
+Let $A_0=A_{0,0,0,0}$ and define
+\[
+ \mathsf{Push}=A_0S^L M_0,\qquad
+ \mathsf{Pop}=A_0S^{L+2},\qquad
+ \mathsf{Discard}=M_0,\qquad \mathsf{Offset}_i=M_i.
+\]
+Then, for arbitrary natural stores, the exact contracts are
+\begin{align*}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Pop}(t,[a;w],d,h)&=
+  \begin{cases}\mathsf{halt},&t=1,\\(t,w,0,a),&t\ne1,\end{cases}\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0),\\
+ \mathsf{Offset}_i(0,w,0,0)&=(0,w,i,0).
+\end{align*}
+Indeed, the first $L$ Shifts return
+$(r_{L-2},[t;w],0,r_{L-1})$; the next returns
+$(r_{L-1},w,0,t)$. No test has yet seen the saved top. The subsequent
+Shift halts precisely for $t=1$ and otherwise pops one entry. The final
+MP of Push necessarily fails, since its tested implication has residue
+zero while the cache $r_{L-1}$ has residue two. The projections justify
+these identities even when $[0;0]=0$; no free-list assumption is used.
+
+For any old axiom entry at index $j<L-1$, its selector becomes
+\[
+ \mathsf{Discard}\;A_{A,D,H,0}\;S^{j+2}\;
+                    \mathsf{Pop}^{L-1-j}.             \tag{P-Sel}
+\]
+It sends $(t,w,0,0)$ to $(r_j,w,0,0)$. The last popped entry is the saved
+zero. Every intermediate Pop preserves the selected $r_j\ne1$, so no
+new early halt is possible. For the retained restricted-rho entry, let
+$j_\rho<L-1$ denote its index in the padded list. Its word is
+\[
+ \mathsf{Discard}\;\mathsf{Offset}_u\;
+ A_{A,D\mathbin{\dot{-}}u,H,0}\;S^{j_\rho+2}\;
+ \mathsf{Pop}^{L-1-j_\rho}
+ \qquad(u\le D).
+\]
+Only when $j_\rho=L-2$ does this specialize to $S^L\mathsf{Pop}$.
+The general form accommodates padding on either side of this entry,
+including zeros prepended by padding at the terminal Push boundary.
+The generalization word is
+\[
+ \mathsf{Push}\;\mathsf{Offset}_i\;S\;
+ A_{i,0,0,0}\;S^{L+1}.
+\]
+It sends $(a,w,0,0)$ to $(U(i,a),w,0,0)$, also when $a=1$.
+The old MP compiler uses the unchanged Push, Pop, Discard and Offset
+contracts, and hence carries over verbatim after these macro definitions
+are replaced. If a Pop halts early, it has already exposed code one.
+For soundness, annotate each extra zero entry with the fixed proof of
+zero, obtained from $\rho_8(0,0,0,0)=0$. Every other annotation is
+unchanged. For completeness, use (P-Sel) at the new indices and the
+same derivation-tree recursion. These transformations are primitive
+recursive. Their correctness uses only the displayed command equations,
+fixed residue facts, Cantor projections and quantifier-free induction on
+finite command/proof codes. Thus the relative command-level halting
+and numerical-refutation equivalence is provable in iPRA.
+
+\paragraph{Why a source Push inserts a truth entry.}
+At the end of a completed AX head, let the top be its theorem $F$ and
+the stack be $w$. The source macro \texttt{node49} changes this to
+$(0,[F;w])$. The next formula's first variable-load macro ordinarily
+pushes the current top. It now pushes zero, while $F$ has already been
+saved. Consequently the final AX list retains every old theorem and
+has one additional zero between the two adjacent heads. At the end of
+the emitter, an extra Push immediately before the existing terminal
+Push instead prepends zero to the final list. These assertions require
+that the inserted macro be at a completed-head boundary: arbitrary
+insertion inside a postfix formula is not semantics preserving.
+
+\paragraph{Search boundaries.}
+In the canonical 190-token AX11H word, zero padding was inserted at
+positions $18,35,54,70,86,102,121,128,189,190$. Positions count tokens
+from zero. The first eight are boundaries of completed ordinary heads
+and the separate diagonal head. The last two give the same postfix
+word when only one Push is inserted, but different parenthesizations
+can give different compiled tables. The separately retained raw-input
+files determine the exact finite source syntax used for each score.

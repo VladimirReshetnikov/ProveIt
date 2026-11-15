@@ -1,0 +1,224 @@
+\section{Exact iPRA proof for the simultaneous two-row shortcuts}
+\label{sec:shortcut-stuttering}
+
+Let $P$ be either native PA194ORH or native PA194ORHB.  Both have initial
+control~74, halt label~254, and the same rows used below.  Let $F(P)$ be the
+machine obtained by replacing exactly
+\[
+\begin{array}{c|c|c}
+\text{row}&P&F(P)\\\hline
+(26,1)&1\,R\,42&1\,R\,91\\
+(101,0)&0\,L\,26&0\,R\,17.
+\end{array}
+\]
+All other 386 transition rows remain identical.  The new machines are called
+PA194ORHF and PA194ORHBF, respectively.  These are compositions of supplied
+physical mechanisms; no claim that the shortcut mechanisms themselves are
+new is needed for the theorem.
+
+The proof below establishes exact relative halting equivalence in iPRA.
+It applies to every finitely supported initial tape in control~74, hence
+in particular to the specified blank tape.  It does not depend on a bounded
+sample of source executions or on the PA-calibration argument.
+
+\subsection{A three-clause inductive tape invariant}
+
+Write $C=(q,h,T)$ for a configuration, with $T(i)\in\{0,1\}$, and define
+\[
+\begin{split}
+ \mathcal I(C)\quad\Longleftrightarrow\quad
+ &(q=101\ \Rightarrow\ T(h-1)=0)\\
+ {}\land{}&(q=11\ \Rightarrow\ [T(h-1)=0\ \lor\ T(h+1)=0])\\
+ {}\land{}&(q=26\ \Rightarrow\
+       [T(h+1)=0\ \land\ (T(h)=0\ \lor\ T(h+2)=0)]).
+\end{split}                                                    \tag{S1}
+\]
+The position notation is only a convenient presentation.  In arithmetic,
+a configuration is a control and two finite binary tape halves, so the
+fixed-offset bit accesses in (S1) are primitive recursive functions.
+The displayed predicate is quantifier-free, or equivalently a Boolean
+primitive recursive test.  Control~74 satisfies it on every initial tape.
+
+The complete incoming-edge facts in both parents are
+\[
+\begin{array}{c|l}
+\text{target}&\text{all incoming rows, with write and movement}\\\hline
+101&(96,0):0R\\
+11&(14,0):0L,\ (38,0):0R,\ (39,0):0L,\ (56,0):0L\\
+26&(11,0):0L,\ (101,0):0L.
+\end{array}                                                    \tag{S2}
+\]
+These are exhaustively checked facts about the complete finite tables.
+For a child $F(P)$, the first two lists are unchanged and the last becomes
+just $(11,0):0L$.
+
+We check preservation of (S1), covering all possible next controls.
+An entry into 101 writes zero immediately to the left of the new head,
+proving its clause.  An entry into 11 either writes zero to its new left
+neighbor (the row from 38), or writes zero to its new right neighbor
+(the rows from 14, 39 and 56).  Thus its disjunctive clause is preserved.
+An entry into 26 from $(11,0)$ writes zero to its new right neighbor.
+The old state-11 clause then says that the new current cell is zero or
+its second right neighbor is zero, exactly the remaining state-26 clause.
+In a parent, the additional entry from $(101,0)$ writes zero to the new
+right neighbor, while the old state-101 clause says that the new current
+cell is zero.  No other row enters any of these three controls.  These
+arguments prove preservation for both parents and both simultaneous-patch
+children.  Quantifier-free induction on time proves (S1) for their complete
+runs from control~74.
+
+In particular, reaching control~26 while reading~1 forces
+\[
+                  T(h+1)=T(h+2)=0.                           \tag{S3}
+\]
+The second zero is essential.  The immediate predecessor alone does not
+justify it: it follows from the state-11 clause and the exclusion of the
+state-101 predecessor when the current bit is~1.
+
+\subsection{Two exact three-to-one identities}
+
+The unchanged rows needed for the first shortcut are
+\[
+ (42,0):0R13,\qquad (13,0):0L91.
+\]
+If $q=26$ and $T(h)=1$, condition (S3) gives the complete parent path
+\[
+ (26,h,T)\longmapsto(42,h+1,T)
+   \longmapsto(13,h+2,T)\longmapsto(91,h+1,T).
+                                                               \tag{S4}
+\]
+Every write preserves the bit already present.  The child reaches precisely
+the last configuration of (S4) in one transition.
+
+For the second shortcut the unchanged rows are
+\[
+ (26,0):0R194,\qquad(194,0):0R17.
+\]
+If $q=101$ and $T(h)=0$, (S1) supplies $T(h-1)=0$, giving
+\[
+ (101,h,T)\longmapsto(26,h-1,T)
+   \longmapsto(194,h,T)\longmapsto(17,h+1,T).
+                                                               \tag{S5}
+\]
+Again every write preserves its bit, and the child reaches precisely the
+last configuration in one transition.  Native control~194 in (S5) is a
+working control; the native halt label is~254.  None of the intermediate
+controls in (S4) or (S5) is a halt control.
+
+Both identities hold for arbitrary tape contents outside the explicitly
+listed cells.  They are exact equalities of complete configurations,
+including state, head and all tape cells.  Applying the two patches
+simultaneously does not interfere with either argument: the second patch
+removes one predecessor of 26 without weakening (S1); the first patch
+changes the successor of 26, not an incoming edge used in (S2).  The child
+is not required to execute the skipped intermediate controls.
+
+\subsection{A primitive recursive stuttering clock}
+
+Use the usual semantic totalization at the halt label: after halting, the
+run remains halted.  This adds no working control to the literal machine.
+Let $C_n$ be the child configuration after $n$ transitions from the common
+initial configuration $C_0$.  Define
+\[
+ \epsilon(C)=
+  \begin{cases}
+   1,&q=26\text{ and the scanned bit is }1,\text{ or }q=101
+                         \text{ and the scanned bit is }0,\\
+   0,&\text{otherwise},
+  \end{cases}
+\]
+with $\epsilon=0$ at halt, and put
+\[
+ A(n)=\sum_{j<n}\epsilon(C_j),\qquad
+             \Theta(n)=n+2A(n).                             \tag{S6}
+\]
+These are primitive recursive functions.  Equations (S4)--(S5), ordinary
+row equality, and the halt totalization prove in iPRA that, whenever
+$\mathcal I(C)$ holds,
+\[
+ \operatorname{step}_{F(P)}(C)
+       =\operatorname{Run}_P(1+2\epsilon(C),C).              \tag{S7}
+\]
+Every local duration is either one or three.  Quantifier-free induction,
+using (S1), (S7), and the elementary iterated-run composition equation,
+gives the exact complete-configuration identity
+\[
+ \boxed{\quad
+    \operatorname{Run}_P(\Theta(n),C_0)
+       =\operatorname{Run}_{F(P)}(n,C_0),\qquad
+       n\le\Theta(n)\le3n.\quad}                           \tag{S8}
+\]
+Thus the cumulative speed difference is exactly twice the number of
+shortcut occurrences along the child run, not merely an unspecified
+simulation overhead.
+
+If the child halts at time $n$, the parent halts at the explicit time
+$\Theta(n)$.  Conversely, if the parent is halted at time $m$, then
+$\Theta(m)\ge m$ and absorption implies that the left side of (S8), with
+$n=m$, is halted.  The right side is therefore halted too.  The reverse
+halting-witness transformation is simply $m\mapsto m$; no least-time
+search, classical existential principle, or Markov principle is used.
+Consequently
+\[
+ \mathrm{iPRA}\vdash
+ \operatorname{Halt}(F(P),C_0)\longleftrightarrow
+ \operatorname{Halt}(P,C_0),
+\]
+and intuitionistic logic alone gives the equivalence of their nonhalting
+sentences.  For first halting times, when they exist, (S4)--(S5) also show
+that no halt is concealed inside a skipped segment.
+
+\subsection{Compatibility with the B history selector}
+
+PA194ORHB differs from PA194ORH in exactly four native rows:
+\[
+\begin{array}{c|c|c}
+\text{row}&\text{ORH}&\text{ORHB}\\\hline
+(87,0)&0R301&0R88\\
+(88,0)&0R122&0L301\\
+(301,0)&0R45&0R122\\
+(301,1)&1R103&1R301.
+\end{array}                                                    \tag{S9}
+\]
+None is a row used in (S4)--(S5), and none changes an incoming edge into
+11, 26 or 101.  Therefore the entire proof (S1)--(S8) applies to ORHB
+without an additional history assumption.  The B transformation has its
+own separately checked relative simulation; composing that theorem with
+(S8) is legitimate.  In particular, the F proof covers B's interior
+configurations as well as its simulation boundaries.
+
+For blank input we obtain both relative iPRA results
+\[
+ \neg\operatorname{Halt}(\mathrm{ORHF})
+       \longleftrightarrow\neg\operatorname{Halt}(\mathrm{ORH}),
+\]
+\[
+ \neg\operatorname{Halt}(\mathrm{ORHBF})
+       \longleftrightarrow\neg\operatorname{Halt}(\mathrm{ORHB}).
+\]
+Composing with the B relative theorem, the ORH relative theorem, and the
+explicitly inherited revised AX11H written calibration yields the same
+$iPRA$ equivalence with the fixed PA-consistency predicate.  This uses
+ordinary mathematical proofs and finite certificates; no new completed
+end-to-end Lean or Rocq theorem is claimed.
+
+\subsection{The independent finite certificate}
+
+The accompanying \texttt{verify\_shortcuts.py} reads both complete parents,
+checks all incoming-edge sets in (S2), checks the exact B difference (S9),
+and constructs the two F children by exactly the specified rows.  For each
+of the four tables it checks preservation of (S1) over every control and
+every assignment to the seven local cells $[-3,3]$ satisfying (S1): 24,656
+cases per table.  This is exhaustive for the formula because after a
+one-cell move every cell it mentions is still in that window.  It also
+checks (S4) on all 16 compatible seven-cell assignments and (S5) on all
+32 compatible assignments, preserving the entire local tape and never
+reading outside the window.  The other 386 rows are identical.
+
+These finite checks establish the candidate-specific closed Boolean
+facts.  The induction and clock construction above explain why those
+facts prove a uniform iPRA theorem, including for model-internal run
+lengths.  The certificate is not used as a simulation sample standing
+in for that argument.  Optional child-table arguments make the checker
+compare the complete delivered child bytes after parsing, rather than
+only reconstructing a proposed child in memory.

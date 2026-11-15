@@ -1,0 +1,99 @@
+\subsection{Additional physical reduction work}
+The additional low-level work produced no accepted blank-start machine with
+fewer than 194 working states. It is included as reproducible negative and
+diagnostic evidence; none of the following finite searches proves a lower
+bound on the required number of states.
+
+All physical experiments in this subsection use the original PA194 input
+from the \texttt{pa194\_conpa\_2026-11-13} package, reconstructed from its
+201-state raw table and seven folds. They do not use the new PA194FW
+transition table. The supplement records this input's full native-table
+hash and the exact source files.
+
+The arithmetic-state merge screen examines 253 unordered pairs among 23
+designated arithmetic controls, with four choices of retained transition
+rows for each pair. Sixteen of these 1,012 proposals pass 135 explicit
+arithmetic excursions. None passes the subsequent affine source check.
+A failed checker run is not by itself a semantic counterexample. One
+proposal, however, admits a short, complete rejection certificate.
+
+Identify native control 1 with 3 and use the old 1-row on symbol 0. The
+retained rows are
+\[
+ (3,0)\longmapsto(0,L,3),\qquad
+ (3,1)\longmapsto(1,L,2).
+\]
+From the actual blank configuration with native start 74, exactly 23
+transitions lead to control 3, head position $-5$, and complete nonzero
+support $\{-3,1,3,4\}$. Every scanned cell on the subsequent leftward
+ray is zero. Induction therefore proves that the tape is unchanged and
+the head moves left forever. The literal prefix and a replay checker
+are supplied. This is a finite-prefix-plus-invariant proof, not an
+inference from a long finite run.
+
+The prefix and ray invariant admit formalization by quantifier-free
+induction in iPRA. Assuming PA is consistent, the rejected machine
+therefore cannot satisfy the requested iPRA-provable consistency
+equivalence: that equivalence would yield an iPRA proof of
+$\operatorname{Con}(\mathrm{PA})$, hence a PA proof, contradicting
+the second incompleteness theorem. This is a conditional rejection
+of the requested provability property, not a proof of PA consistency.
+
+The same quotient also fails the uniform source simulation. On source
+site 0 with path $000000$, head 0, and complete support
+\[
+ \{-1,48\}\cup\{50,52,\ldots,68\},
+\]
+the original PA194 input table halts after 1,003 steps, while the quotient reaches
+a leftward zero ray after 101 steps. This is a generic source-frame
+counterexample; no claim is made that this all-zero register frame
+occurs on the original PA194 blank execution.
+
+The inherited 193-state runtime core merges 301 into 88 and sets
+$(88,0)\mapsto(0,L,51)$ and $(51,0)\mapsto(0,R,122)$.
+Its missing blank initializer remains essential. The original PA194 startup
+uses an otherwise constrained write-one branch on a still-blank cell;
+the shared runtime redirects that branch into a source-selector route.
+
+The present search refines the earlier arithmetic-box partition. It
+adds 18 transition proposals to an inherited 346-proposal bootstrap pool,
+after affected-source checks and physical boundary probes. These are
+research proposals, not an assertion that their arbitrary combinations
+preserve runtime semantics. The new two-edit screen considers only
+pairs containing at least one new proposal. It tests 6,312 pairs at all 193
+working initial controls, for 1,218,216 runs and 17,287,738 literal
+transitions. It records 10,161 halts, 1,208,018 outward-ray classifications,
+37 bounded runs, and no complete scheduler frame.
+
+A causal search of up to three edits was then run. An additional edit
+is considered only at a row encountered by the current partial machine;
+all rows of a detected monotone zero-reading escape cycle are included.
+The completed search from native 74 examines 24,839 proposals and
+998,488,305 transitions. The extension to all 193 initial controls gives
+the following totals:
+\begin{center}
+\begin{tabular}{lr}
+Quantity & Count\\\hline
+Edited-machine runs &49,454\\
+Literal transitions &1,892,213,633\\
+Halts &484\\
+Outward-ray classifications &39,309\\
+Bounded runs &9,661\\
+Complete frame hits &0\\
+Starts reaching their search allocation &177
+\end{tabular}
+\end{center}
+Each run has fuel 200,000 and absolute head bound 20,000. The 192 starts
+other than 74 receive a 5,000,000-transition search allocation each;
+one executing run may overshoot that allocation. The frame predicate
+compares the entire finite tape against 20 templates at source sites 25
+through 44, permitting arbitrary register values, a translated head,
+padding at least 48, and a nonempty spare list. Even a frame hit would
+need a source-seed proof and verification of every edit. The bounded
+runs and capped searches remain unresolved. These experiments establish
+neither global minimality nor the impossibility of a 193-state machine
+with a different architecture.
+
+All tables, scripts, input pools, exact rejection traces, and per-start
+receipts are in the accompanying physical-reduction supplement. The
+input revision is \texttt{883da8d55452ea097910ed2509a1eefc833ce292}.

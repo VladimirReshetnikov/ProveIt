@@ -1,0 +1,214 @@
+% Written composition of pinned model-uniform source soundness results.
+% This is not a new Lean build.  The companion manifest binds the cited files.
+\section{The consistency-to-nonhalting direction}
+\label{sec:consistency-nonhalting}
+
+The completed source binding allows one machine-specific consistency
+direction to be obtained from existing logical soundness results in the
+pinned repository.  This section states the composition precisely.  It
+uses soundness independently of the forward compiler from arbitrary PA
+refutations to numerical proofs, which is constructed later.  It uses the repository's already established
+one-way transfer from candidate-PRA models with an $\mathrm I\Sigma_1$
+arithmetic reduct.  All uses of those existing results are mathematical
+citations; no new Lean build or fresh rebuild of their entire dependency
+chain is claimed.
+
+\subsection{The exact numerical soundness interface}
+
+Work in an arbitrary model $V$ of candidate PRA whose arithmetic reduct
+satisfies $\mathrm I\Sigma_1$.  The fixed source translation in the
+repository assigns an internal PA formula $\operatorname{Tr}(a)$ to
+every numerical code $a$, including nonstandard codes.  Define
+\[
+ \operatorname{Good}(a)\quad\Longleftrightarrow\quad
+ V\models\operatorname{Prov}_{\PA}(\operatorname{Tr}(a)).
+\]
+The source translation has a $\Sigma_1$ graph in the reduct, its output
+is an internal well-formed formula, and Good is a $\Sigma_1$ predicate.
+These are the interfaces used in
+\file{pa195-calibration/PA194SourceLineSoundness.lean} and
+\file{pa194-target-source/PA194TargetSource.lean}; the latter's
+\file{target_sound} proof lists the individual seed and rule
+preservation results explicitly\cite{reverse-source}.
+
+The numerical constructor identities match those in
+Section~\ref{sec:ax11h-preservation} exactly:
+\[
+ I(a,b)=4p(a,b),\quad M(a,b)=I(a,b)+1,\quad
+ U(a,b)=I(b,a)+2,\quad E(a,b)=I(a,b)+3.
+\]
+Here the source's Cantor function is the same triangle-plus-second-
+argument function $p$.  The repository identifiers correspond as follows.
+\begin{center}\small
+\begin{tabular}{ll}
+\toprule
+This report & Pinned model-valued constructor or seed\\
+\midrule
+$I,U,M,E$ & \file{impValue, allValue, memValue, eqValue}\\
+$h_1(D,H)$ & \file{head1Value D H}\\
+$h_i(D,A,H)$, $i=2,3,4,6$ & \texttt{head\{i\}Value D A H}\\
+$h_5(D,H)$ & \file{head5Value D H}\\
+$\rho_8(D,A,H,u)$ & \file{rho8Value D A H u}\\
+$\Gamma(A)$ & \file{diagonalValue A}\\
+$G(a,b,c)$, when $c\ne a,b$ & \file{oldBundleValue a b c}\\
+\bottomrule
+\end{tabular}
+\end{center}\normalsize
+These are equality of displayed arithmetic expressions, with no change
+of diagonal argument, radix, gate guard, or premise order.  In particular,
+the AX gate is the substitution $(a,b,c)=(H,D,A)$.
+
+The six ordinary seeds, restricted rho seed, and diagonal are Good by the
+individual preservation lemmas invoked in \file{target_sound}.
+The restriction $u\le D$ is respected.  The zero alias is also covered:
+$\rho_8(0,0,0,0)=0$, so Good$(0)$ follows from the same seed supplier.
+The two inference rules preserve Good by the source MP and universal
+preservation theorems.  MP includes its zero implication case:
+$I(a,b)=0$ forces $a=b=0$, rather than requiring an incorrect nonzero
+constructor equation\cite{reverse-source,reverse-mp}.
+
+The guarded gate is unconditional at this pinned snapshot.  More
+precisely, \file{PA194DistinctGateNumeric.distinct_gate_tail}
+supplies the required translated separation tail when $a\ne b$ and
+$c\ne a,b$.  The existing equal-label result handles $a=b$.
+\file{PA194DistinctGateEndpoint.all_tail_from_distinct}
+combines them, and
+\file{PA194TargetSource.gate_from_separation_tail}
+turns the tail into Good$(G(a,b,c))$ for all guarded parameters.
+If the machine's guard fails it emits zero, which was already covered.
+Thus no separate gate-soundness hypothesis remains\cite{reverse-gate}.
+
+\subsection{The exchanged sixth head}
+
+The Q case needs a small additional argument, because the pinned target
+seed table uses the original sixth head.  Put
+\[
+ a=U(D,A),\qquad b=U(D,I(A,H)),\qquad c=U(D,H).
+\]
+All three codes are at least two.  Consequently every outer implication
+in $I(a,I(b,c))$ and $I(b,I(a,c))$ is nonzero.
+The model-uniform \file{implication_code} theorem identifies their
+positive translations with
+\[
+ \operatorname{Tr}(a)\to
+      (\operatorname{Tr}(b)\to\operatorname{Tr}(c)),
+ \qquad
+ \operatorname{Tr}(b)\to
+      (\operatorname{Tr}(a)\to\operatorname{Tr}(c)),
+\]
+respectively\cite{reverse-mp}.
+
+The first has an internal PA proof by ordinary sixth-head preservation.
+A fixed propositional deduction yields the second: assume
+$\operatorname{Tr}(b)$, assume $\operatorname{Tr}(a)$, use the given
+implication and these two assumptions by MP, then discharge the two
+assumptions in reverse order.  This is one fixed proof template with
+three formula holes.  Substituting arbitrary internal formula codes and
+concatenating its fixed inference pieces are primitive recursive proof
+operations; checking this template does not invoke induction on an
+arbitrary PA induction formula.  Equivalently, it is the internal
+propositional premise-exchange theorem applied to three well-formed
+formula objects.  Therefore Good holds for $h_6^Q(D,A,H)$ uniformly
+in every such model.  This argument does not assume an iPRA calibration
+of the Q numerical calculus or import the Q machine's different MP
+interface.
+
+\subsection{From a numerical refutation to an internal PA refutation}
+
+Let $e$ be an internal valid derivation list in $\mathcal C_4$ or
+$\mathcal C_4^Q$, in exactly the line format of the abstract compiler.
+Induct over its line number using the cumulative invariant that every
+earlier conclusion is Good.  This induction is allowed in
+$\mathrm I\Sigma_1$: explicitly, the invariant asserts the existence
+of a finite vector of internal PA proof witnesses for those earlier
+conclusions.  Its verification is bounded once that vector and the
+translation computations are given, so it is a $\Sigma_1$ assertion.
+Bounded $\Sigma_1$ collection, available in $\mathrm I\Sigma_1$, gives
+the equivalent bounded conjunction formulation.  At an axiom line use
+the seed supplier just listed; at MP or generalization use the respective
+uniform preservation theorem.  Append the resulting PA proof witness to
+the vector.  Premise indices are strictly earlier, so the cumulative
+invariant contains both witnesses needed by MP.
+
+This establishes, for arbitrary internal proof codes,
+\[
+ \operatorname{Prf}_{\mathcal C_4}(e,1)
+ \ \lor\ \operatorname{Prf}_{\mathcal C_4^Q}(e,1)
+ \quad\Longrightarrow\quad \operatorname{Good}(1).
+\]
+The existing contradiction translation and internal refutation lemma
+turn Good$(1)$ into internal PA provability of falsum.  This is exactly
+the final step of \file{PA194TargetSource.target_refutes_PA};
+it does not identify code 1 with the raw PA falsum code by fiat.
+Hence either numerical calculus refutation yields an internal PA
+refutation in every candidate-PRA model with an $\mathrm I\Sigma_1$
+reduct\cite{reverse-source}.
+
+Notice the strength being used.  This section permits $\Sigma_1$
+induction in those models, rather than calling an unbounded provability
+invariant quantifier-free.  The following independent transfer theorem
+is what supplies the desired intuitionistic PRA consequence.
+
+\subsection{The literal machines and the one-way iPRA transfer}
+
+For either delivered dense table $M$, define the primitive recursive
+function
+\[
+ \chi_M(t)=\mathbf 1\{\operatorname{Run}_M(t,\mathrm{blank})
+                         \text{ is halted}\}.
+\]
+The complete binary-tape representation and step equations are those
+already proved in Section~\ref{sec:physical-ipra}.  Thus
+$h_M(t)\equiv(\chi_M(t)=1)$ is an open atomic formula of the usual PRA
+language with primitive recursive function symbols.  Its function code
+is the fixed composition and primitive recursion specified there;
+no unbounded termination search defines it.
+
+The written iPRA physical/source and source/command theorems are valid
+also in every classical model of candidate PRA.  The former may use a
+single absorbing halt code, while the latter retains the halted register
+file.  The primitive recursive map which forgets that file only at halt
+commutes with every source step and preserves the halt bit.  Therefore
+the two source representations have identical finite halting sentences.
+Composing the two simulations with abstract soundness gives
+\[
+ \exists t\,h_M(t)\quad\Longrightarrow\quad
+ \exists e\,\operatorname{Prf}_{\mathcal C}(e,1),
+\]
+where $\mathcal C$ is the appropriate one of the two calculi.
+The preceding subsection then gives an internal PA refutation in every
+candidate-PRA model whose reduct satisfies $\mathrm I\Sigma_1$.
+The fixed refutation bridge identifies this with the mapped PA-refutation
+sentence used by the repository's consistency endpoint.
+
+Apply
+\file{ConPA.Directions.ipra_consistency_implies_nonhalt}
+to the open matrix $h_M$.  Its two hypotheses are precisely openness and
+the all-model halting-to-refutation implication just proved.
+Its PA witness certificate is already supplied by the unconditional
+transfer chain, rather than being a new machine-specific assumption.
+The theorem uses the established conservation and negative-translation
+results to conclude the intuitionistic implication\cite{one-way-transfer}.
+
+\begin{theorem}[One completed consistency direction]
+For each of the two literal binary blank-start tables supplied here,
+\[
+ \mathrm{iPRA}\ \vdash\
+ \operatorname{Con}(\PA)\ \longrightarrow\
+                   \neg\operatorname{Halt}_{\rm blank}(M).
+\]
+\end{theorem}
+\begin{proof}
+The complete chain of verified arithmetic interfaces, numerical seed
+soundness, internal proof-list induction, and the cited one-way transfer
+is the argument above.  Every hypothesis of that transfer has been
+identified.  The reasoning does not use PA consistency as a metatheoretic
+assumption, and it does not use Markov's principle.
+\end{proof}
+
+This is a written theorem obtained by composing the new simulation proofs
+with the explicitly cited existing model-uniform logical results.  A fresh
+proof-assistant build of this composition is not supplied.  The following
+sections construct the forward PA-refutation compiler and the current
+Foundation adapter.  Section~\ref{sec:complete-equivalence} uses them
+to prove the converse and the full equivalence.

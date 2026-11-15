@@ -1,0 +1,145 @@
+PA194FW independent mathematical audit
+======================================
+
+Source pin: VladimirReshetnikov/ProveIt,
+883da8d55452ea097910ed2509a1eefc833ce292.
+
+Audited written proof: proof/fused_preservation.tex
+SHA256: 23a54db63b29727c745d177e34cf87e2f7c88c892573ea4a35a51949d44a071f
+Audited dense machine SHA256:
+8bc9eb53be619a30b37fbd40f47484045245b40fd04aa5f79763848c1ebc1224
+Audited native machine SHA256:
+716d31a1839b237a6a240a6c54adf895ed9ac7909e6ccb99e7e214c3f1729055
+Serialized fusion certificate SHA256:
+615b49a45fd328a29aabb861d1718c3d9dfa611d1ac72a81ca8ba09a245de0e4
+
+Result and scope
+----------------
+No mathematical defect was found in the new relative preservation
+argument, its AX10 command interface, its proof-to-word compiler, or its
+use of the inherited calibration.  This is an independent mathematical
+review and a separate check of the serialized finite formula proofs; it
+is not an end-to-end Lean verification.  It does not independently
+reprove the inherited absolute calibration of Foundation PA in iPRA.
+That earlier written theorem and the general physical sweep/clock
+lemmas remain explicitly named dependencies.
+
+Final proofreading clarified that the STEP INCREMENT of the cumulative
+physical clock is zero at the absorbing halt and positive at each live
+source step.  The cumulative clock itself stays constant after halt.
+This correction accurately states the existing proof; no mathematical
+issue, code change, table change, or additional replay results from it.
+
+1. Literal fusion and noncircular proof basis
+---------------------------------------------
+The actual new axiom is F = N(I(h4,V)), where
+V = U(D,N(E(H,D))) and the ordinary fifth axiom is N(V).  It is not
+the superficially similar abbreviation C(h4,h5), which would insert
+another double negation.  The supplied proof uses the literal term.
+
+The three fixed certificates prove
+ A -> (N(B) -> N(I(A,B))),
+ N(I(A,B)) -> A,
+ N(I(A,B)) -> N(B).
+An independently written checker, which does not import the certificate
+generator, checked all 419 serialized proof lines: 161 for fusion,
+205 for the left projection, and 53 for the right projection.  It checks
+the exact K/S/Peirce/h1 schemas and every earlier-premise MP index and
+formula equation.  The attached fusion_audit.json records the result.
+
+The use of explosion is justified by the retained ordinary h1:
+put Y = U(0,N(U(0,A))); h1(0,A) is (Y -> 1) -> A, while K gives
+1 -> (Y -> 1).  Deduction therefore yields 1 -> A.  The left projection
+then uses Peirce.  The pinned RestrictedImplication.lean derivations
+of K, S and Peirce use only the restricted rho row, MP, and constructor
+bound facts.  They do not use h4, h5, the fused axiom, or a quantifier
+axiom.  The numerical constructor dominates both arguments even at its
+zero alias.  Thus the new proof does not assume what it is proving.
+Object-calculus Peirce does not require excluded middle in iPRA.
+
+Every old h4 instance is recovered by its corresponding left projection;
+every old h5(D,H) is recovered using the right projection with A=0.
+Conversely h4 and h5 derive the fused axiom.  Fixed proof substitution
+and proof-list concatenation give primitive recursive transformations;
+a bounded Boolean prefix/index-map invariant suffices for QF induction.
+
+2. Exact ten-entry interface and word compiler
+----------------------------------------------
+The new source emits U(A,h), with explicit command binder A and incoming
+cache h.  This differs from the calibrated AX11H entry U(d,h).  The
+written proof now states this change explicitly and proves a new Gen
+word; it does not infer command-stream identity from the fusion alone.
+
+The source and command checkers were inspected for all selector entries,
+residue-zero q0 through q7, residue-two q8, the guard, the restricted
+rho bound u <= D, and the fourth-field MP fallthrough.  The Push, Pop,
+Discard, Offset, eight selector words, restricted-row selector, and Gen
+word have the claimed interfaces.  The MP compiler correctly reserves a
+zero stack cell before evaluating its two premises.  Its early halts
+when the minor or conclusion is 1 are valid refutation outcomes.
+Generalization of 1 does not halt prematurely: AX consumes that cache
+before another Shift tests it.  The final refutation suffix uses Pop,
+which tests the saved top; plain Shift would not suffice.
+
+All arguments retain total Cantor projections and p(0,0)=0.  They do
+not assume a freely injective list syntax or that all implication codes
+are nonzero.  The residue facts used to exclude 1 are valid for every
+natural substitution.  The initial AX normalizes arbitrary stores, so
+the refutation suffix works without resetting stores between candidates.
+
+3. Weak arithmetic, scheduling, and transport
+---------------------------------------------
+The proof explicitly avoids induction on an unbounded universal
+quantifier over base stacks.  Its primitive recursive majorant Phi_K,
+word-length bound L, and decreasing bounds
+ B(j) = Phi_K^[L(N-1-j)](s0)
+allow every call to an earlier compiled word to use a previously proved
+bounded domain.  The conjunction over earlier proof lines and bounded
+store codes is a primitive recursive Boolean predicate.  The parameter
+s0 is generalized only after QF induction.  This supplies the required
+uniform compiler invariant.
+
+The command encoding, residual decrease, initial fresh seed 2, and
+explicit padded candidate N_e >= 3 are consistent with the interface.
+The square bound (N_e+2)^2 safely dominates the candidate-draining sum.
+The command soundness invariant supplies proofs of the top, cache, and
+canonical stack entries, including virtual zeros at stack code zero.
+It gives a positive numerical-refutation equivalence, not merely a
+metatheoretic consistency argument.
+
+The source-clock formulas agree with the retained template lemmas.
+Their exact composition is primitive recursive.  The physical transport
+uses the inherited arbitrary-gap, arbitrary-finite-spare-list sweep
+lemmas and positive live durations, with new finite bindings explicitly
+identified.  This audit did not duplicate the completed full physical
+replay.  The general positive-clock converse uses finite decidable halt
+flags, not an unbounded minimization or a classical existence principle.
+
+4. Final calibration and limitations
+-------------------------------------
+The final chain is
+ Halt(PA194FW) <-> existence of a CF numerical refutation
+               <-> existence of a C4 numerical refutation
+               <-> Halt(PA194AX11H),
+followed by the inherited written equivalence between Con(PA) and the
+negation of AX11H halting.  Intuitionistic logic transports negation
+across the positive halting equivalence.  No Markov principle,
+PA-consistency assumption, or double-negation elimination of an
+existential is used.  In particular the proof does not claim an
+unsupported positive iPRA equivalence between numerical refutations and
+Foundation PA refutations.
+
+The result is a materially changed, explicitly specified 194-state
+machine supported by a written preservation proof and finite executable
+bindings.  This review establishes no smaller-state machine, no state
+lower bound, and no completed kernel formalization.
+
+Recheck the independent finite audit
+-----------------------------------
+With Python 3 and the packaged serialized certificate, run:
+ python independent_fusion_audit.py PATH/TO/fusion_certificates.json \
+   --output fusion_audit.rechecked.json
+The checker uses only the Python standard library.  Its output scope is
+the fixed K/S/Peirce/h1 formula certificates; the restricted-rho expansion
+and arithmetic internalization are the written mathematical dependencies
+reviewed above.

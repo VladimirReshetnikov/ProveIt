@@ -1,0 +1,432 @@
+\pdfmapfile{+cm.map}
+\pdfmapfile{+lm.map}
+\pdfmapfile{+symbols.map}
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,array,microtype,xurl}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\Run}{\operatorname{Run}}
+\newcommand{\Halt}{\operatorname{Halt}_{\mathrm{blank}}}
+\title{Two joint 194-state designs:\\a direct relative proof in intuitionistic primitive recursive arithmetic}
+\author{Research construction and verification note}
+\date{14 November 2026, Pacific time}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct PA194ORMP by jointly reassociating the operand and modus-ponens
+decoders of the revised PA194AX11H machine. A second construction,
+PA194ORMPLC3, adds a loop-continuation reassociation, a history selector, and
+three local accelerations. Both have 194 working states and preserve the
+parent's complete 3,671-instruction register program. Their literal source
+simulations have been rederived for all 4,778 arbitrary-register outcomes,
+including arbitrary header slack and a nonempty finite spare list. We prove
+directly in iPRA that each new blank-input machine has the same halting
+predicate as the exact revised AX11H parent, with explicit primitive
+recursive witness maps. The consistency calibration is inherited from its
+specified written theorem; an end-to-end Lean formalization is not claimed.
+No justified construction below 194 states was obtained.
+\end{abstract}
+
+\section{Literal objects and the exact parent}
+
+Let $M_0$ be revised PA194AX11H, $M_1$ be PA194ORMP, and $M_2$ be
+PA194ORMPLC3. Every machine has alphabet $\{0,1\}$, one two-way infinite
+tape, an all-zero initial tape, and initial head position zero. Dense
+working controls are $0,\ldots,193$, start is 0, and terminal control 194
+has no row. Each of the 388 rows writes one bit and moves one cell left
+or right. Initialization is included in the working-state count.
+
+The corresponding native labels are 74 for start, 84 for the source
+boundary, and 254 for halt. The supplied label arrays are injective
+conjugacies; they add no working states. The dense tables have SHA-256:
+\begin{center}\small
+\begin{tabular}{p{12mm}p{135mm}}
+\toprule
+Machine & SHA-256\\
+\midrule
+$M_0$ & \path{c5dfe1026d077d3e062eca11edb789597bfbbced4f6040f8828ae5d467b1167a}\\
+$M_1$ & \path{a0473681d6d5fb68e5fccfc473f35bc67aa48083d847e349ba3c52865f293629}\\
+$M_2$ & \path{6d8a8cf2f5578ccdc28dd7025bc41a7c279dfbc09c5d3893cb965d70292d10f4}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The parent artifacts are extracted unchanged from
+\path{calibration_AX11H.zip}, whose SHA-256 is
+\begin{center}\small
+\path{93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075}.
+\end{center}
+The binding checks the literal table, label map, source sites, complete
+instruction array, and original contract data against that archive.
+A fresh parent replay additionally agrees with every inherited affine
+duration, motion, source index, branch, and symbolic-event count.
+
+The source material is pinned to ProveIt commit
+\path{7c0bb454cf73c29ca1c385f9fec856ddd236a7cb}.
+The operand transformation is adapted from the incoming
+\path{PA194ORH_research_2026-11-15.zip}; the MP and accelerated
+loop transformations are adapted from
+\path{pa194_new_designs_research_2026-11-15.zip}. Their individual
+correctness results are credited to those packets. The present proof uses
+fresh contracts for the joint literal tables rather than assuming that
+individually valid edits automatically compose.
+
+\section{The joint source transformations}
+
+For the operand routine put
+$A=\texttt{node32}$, $B=\texttt{node53}$,
+$C=\texttt{node55}$, and $D=\texttt{node65}$.
+Both new machines replace
+\[
+ ((A,(B,C)),D)\quad\hbox{by}\quad(A,(B,(C,D))).
+\]
+The resulting prefix-reader codes are
+\begin{center}
+\begin{tabular}{c@{\qquad}cc@{\qquad}c}
+\toprule
+Routine & Old word & New word & Native target\\
+\midrule
+$A$ & 00 & 0 & 104\\
+$B$ & 010 & 10 & 107\\
+$C$ & 011 & 110 & 98\\
+$D$ & 1 & 111 & 90\\
+\bottomrule
+\end{tabular}
+\end{center}
+Each reader preserves every consumed tape bit. The prefix families are
+complete and prefix-free.
+
+Native control 213 also had a backward history-selector use. Omitting
+that use produces an incorrect nominal 193-state table in the supplied
+research. The present construction preserves it. If control 69 scans zero
+with history bit $b$ immediately to its left, then
+\begin{center}\small
+\begin{tabular}{ccllc}
+\toprule
+$b$ & Steps & Parent path & New path & Common endpoint\\
+\midrule
+0 & 3 & $69\to213\to92\to104$ & $69\to92\to111\to104$ & $(104,h+1)$\\
+1 & 2 & $69\to213\to90$ & $69\to92\to90$ & $(90,h)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Both cells are unchanged, and no exterior cell is inspected.
+
+For the MP routine put
+$E=\texttt{node75}$, $F=\texttt{node37}$,
+$G=\texttt{node6}$, and $H=\texttt{node54}$.
+Replace $((E,F),(G,H))$ by $(E,(F,(G,H)))$.
+From control 100 the words $00,01,10,11$ are replaced respectively by
+$0,10,110,111$, reaching controls $213,28,77,114$.
+This reassociation contains an occurrence of the operand routine, so the
+address changes of the two transformations overlap. Direct comparison
+with the parent finds 154 changed addresses: ordinal intervals 224--290
+and 3572--3658, inclusive. All 3,671 resolved instructions are identical.
+The count is
+\[
+ 135\text{ fixed controls}+66\text{ raw AX readers}
+ -7\text{ simultaneous folds}=194.
+\]
+
+For $M_2$, the four-increment loop tail is also reassociated. Its 61
+counted continuations change from depth 2 to depth 3. A caller-sensitive
+124/127 selector is substituted, followed by the rows
+\[
+ \delta(26,1)=1R91,\qquad
+ \delta(101,0)=0R17,\qquad
+ \delta(190,1)=0L42.
+\]
+The complete final table is what the independent verifier checks.
+There are 449 changed addresses relative to $M_0$. The counted-return
+syntax changes at 61 sites, but every resolved target remains identical.
+The argument never assumes that reassociation alone preserves counted
+returns: two independent source resolvers check their actual targets.
+
+\section{Primitive recursive configurations and complete frames}
+
+Use a natural-number coding of finite tuples, finite lists, and signed
+integers. A live source state is
+\[
+ z=(i,R_0,\ldots,R_8,g,Q),
+\]
+where $i<3671$, the registers and slack $g$ are natural numbers, and
+$Q=[s]X$ is a nonempty finite list of natural numbers. A distinguished
+source halt code $\dagger$ is absorbing. The source function $F$ is the
+common resolved instruction array, with these auxiliary updates:
+an increment appends the spare value 1 to $Q$, and a positive decrement
+increases $g$ by one. Other live instructions preserve $g,Q$.
+A halt instruction yields $\dagger$, and $F(\dagger)=\dagger$.
+These are primitive recursive operations on valid codes. Define their
+values arbitrarily, for example as $\dagger$, on malformed codes.
+
+Let $p_j(i)$ be the finite lookup of site $i$'s address for machine $M_j$.
+All three maximum address lengths are at most 37. Put
+\[
+ \pi=(6,2,0,4,3,7,8,5,1),\qquad V_{\pi(a)}=R_a,\qquad
+ B(v)=0\,1^{v+1}.
+\]
+The complete frame $E_j(z)$ has control 84, head $-2$, outward left
+stream $1\,0^\infty$, and right stream
+\[
+ p_j(i)\,0^{48+g-|p_j(i)|}\,1\,
+ B(V_0)\cdots B(V_8)B(s)B(X)\,0^\infty.                 \tag{1}
+\]
+Set $E_j(\dagger)=\dagger$. The physical tape halves are coded by two
+natural numbers $L,R$, with the low bit of $R$ scanned and the low bit of
+$L$ immediately to its left. Writing $w$ and moving right sends
+\[
+ (L,R)\longmapsto(2L+w,\lfloor R/2\rfloor),
+\]
+whereas moving left sends
+\[
+ (L,R)\longmapsto
+ (\lfloor L/2\rfloor,(L\bmod2)+2w+4\lfloor R/2\rfloor).
+\]
+Retain the signed head coordinate and update it by one. These equations
+describe the complete tape, including the zero exteriors.
+
+On reaching native halt 254, replace the arithmetic configuration code
+by $\dagger$ and keep it fixed. This is a totalization of the arithmetic
+run, not an extra physical state. Induction on literal time shows that it
+has the same halting predicate as the given machine. Write
+$\Run_j(t,c)$ for its primitive recursive iterate. Quantifier-free
+induction proves the semigroup identity
+\[
+ \Run_j(u+v,c)=\Run_j(v,\Run_j(u,c))                       \tag{2}
+\]
+and absorption of $\dagger$.
+
+\section{The universal physical certificates}
+
+Each outcome duration is the scalar product of a thirteen-entry
+nonnegative integer vector with
+\[
+ (1,g,x_0,\ldots,x_8,s,W(X)),\qquad
+ W(X)=\sum_{v\in X}(v+2).                                \tag{3}
+\]
+For a positive decrement of register $a$, its slot represents
+$x_a=R_a-1$, with $R_a=x_a+1$; other slots represent the actual
+register values. Zero-decrement certificates specialize the corresponding
+slot to zero. The last slot is the width of the same finite list $X$
+that occurs in the frame, not an unrelated parameter.
+
+The independent literal checker imports no arithmetic-box oracle. It
+rederives four generic one-block traversals from the actual table, then
+checks all 4,778 source outcomes. The observed finite data are:
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Quantity & $M_0$ & $M_1$ & $M_2$\\
+\midrule
+Source sites & 3671 & 3671 & 3671\\
+Outcome certificates & 4778 & 4778 & 4778\\
+Symbolic events & 1101836 & 1101819 & 1100304\\
+Maximum events in one outcome & 403 & 403 & 403\\
+Minimum positive constant & 3 & 3 & 3\\
+Complete blank startup & 57922 & 58014 & 58010\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Here is the uniform arithmetic interpretation of those finite
+certificates. A literal event is a substitution into the displayed
+tape equations. A unary self-loop over a word of length $m$ follows by
+quantifier-free induction on the processed prefix, with the untouched
+contexts as parameters. A single generic block traversal has duration
+$v+2$; induction on the prefix length of a fixed finite list gives
+duration $W(X)$ for the concatenation. All four one-block proofs inspect
+no opaque exterior context. Word normalization uses concatenation,
+reversal, and the identities
+\[
+ C(X)1=1B(X),\qquad
+ 1\operatorname{rev}(C(X))=\operatorname{rev}(B(X))1,
+ \qquad C(v)=10\,1^v.
+\]
+Their proofs are again induction on the finite list's prefix length.
+The imported \path{calibration/physical_ipra_audit.tex} supplies the
+full interpretation of precisely these event rules, including the
+cut orientation of the left and right streams. The same rules and four
+list schemas are used in the new replays. Each changed decoder row is
+handled as a literal event, so no additional abstract transformation rule
+is trusted.
+
+Composition using (2) proves each successful trace uniformly in its
+natural parameters and exterior list code. These induction invariants
+are equalities and characteristic functions of primitive recursive
+tests, with the arbitrary parameters free. No induction on a formula
+with an unbounded environment quantifier is used.
+
+The extra endpoint inspector checks every one of the 4,777 nonhalting
+outcomes against both source resolvers. It verifies zero address
+overflow, zero head displacement, and the literal padded-word equation
+\[
+ p_{\rm computed}\,0^{48-|p_{\rm computed}|}
+   =p_j(i')\,0^{48-|p_j(i')|}.                             \tag{4}
+\]
+Appending the same $g$ slack zeros closes (1). Thus a local result for
+an unnormalized address cannot be mistaken for arrival at a different
+source site. The inspector checks all recorded literal and unary rows
+for the absence of a transition to halt in a nonhalting outcome, and
+expands each list lemma into its checked one-block rows for the same
+purpose. The unique halt outcome has duration 3. The fresh parent's
+row records are additionally compared with all fields of its inherited
+compact contracts.
+
+Select the relevant affine duration by the site and decidable branch,
+and call it $D_j(z)$. Put $D_j(\dagger)=0$.
+The certificate interpretation and (4) prove in iPRA
+\[
+ \Run_j(D_j(z),E_j(z))=E_j(F(z)),\qquad
+ z\ne\dagger\ \Longrightarrow\ D_j(z)\ge3.               \tag{5}
+\]
+Source validity is preserved. The first equation remains true at
+$\dagger$; the positive lower bound is deliberately restricted to live
+states.
+
+\section{Clocks, bounds, and constructive reflection}
+
+The common initial source state is
+\[
+ z_*=(25,2,0,\ldots,0,0,[1]^{26}).
+\]
+The three independent startup checks compare the whole tape and head,
+with zero exterior, and establish
+\[
+ \Run_j(T_j,\mathrm{blank})=E_j(z_*),\qquad
+ (T_0,T_1,T_2)=(57922,58014,58010).                         \tag{6}
+\]
+No startup run reaches halt or leaves its checked finite tape window.
+
+Define by primitive recursion
+\[
+ z_k=F^k(z_*),\qquad
+ \tau_j(0)=0,\qquad
+ \tau_j(k+1)=\tau_j(k)+D_j(z_k).
+\]
+Quantifier-free induction using (2), (5), and (6) proves
+\[
+ \Run_j(T_j+\tau_j(k),\mathrm{blank})=E_j(z_k).             \tag{7}
+\]
+
+For all three machines the exact coordinatewise maximum of the duration
+vectors is
+\[
+ (534,8,4,4,4,4,4,4,2,4,4,2,2).
+\]
+Since each variable register slot is at most its register value, and
+$s+W(X)\le W(Q)=s+2+W(X)$, this gives the safe bound
+\[
+ 3\le D_j(z)\le534+8g+4\sum_{a<9}R_a+2W(Q)
+ \quad(z\ne\dagger).                                    \tag{8}
+\]
+Along the run from $z_*$, primitive recursive bookkeeping and
+quantifier-free induction give
+\[
+ g_k\le k,\qquad \sum_{a<9}R_{a,k}\le2+k,
+ \qquad |Q_k|\le26+k,\qquad W(Q_k)\le78+3k.              \tag{9}
+\]
+Indeed, only a positive decrement increases slack, by one; each source
+step increments at most one register; and only an increment appends one
+spare entry, equal to 1. Initially the 26 spare blocks each have width
+3. No source step removes the first spare or changes a spare value.
+The width bound follows directly, and is valid independently of the
+list coding. Define these selectors to be zero at $\dagger$ to extend
+the inequalities beyond source halt.
+
+Substituting (9) in (8), and using $D_j(\dagger)=0$, gives
+\[
+ 0\le D_j(z_k)\le
+ 534+8k+4(2+k)+2(78+3k)=698+18k.
+\]
+Consequently
+\[
+ \tau_j(k)\le698k+18\frac{k(k-1)}2=9k^2+689k.             \tag{10}
+\]
+Thus 689 is $698-9$, not an empirically fitted constant. This bound
+is deliberately conservative: replacing $s+W(X)$ by $W(Q)$ loses
+four units in the duration bound. Put
+\[
+ P_j(k)=T_j+9k^2+689k.                                    \tag{11}
+\]
+After a halt already reached by (7), absorption gives a halt also
+at the upper-bound time $P_j(k)$.
+
+For reflection, induction on $k$ using source absorption and (5) proves
+\[
+ z_k\ne\dagger\quad\Longrightarrow\quad\tau_j(k)\ge3k.
+                                                               \tag{12}
+\]
+Suppose the physical machine has halted by time $t$, and set $k=t+1$.
+If $z_k\ne\dagger$, then $T_j+\tau_j(k)>t$, so physical absorption
+would make the left side of (7) halted while its right side is a live
+frame at control 84. This is impossible. Equality of a coded source
+state with $\dagger$ is decidable, so intuitionistic reasoning gives
+$z_{t+1}=\dagger$. No Markov principle or unbounded least-time search
+is used. Conversely, $z_k=\dagger$ implies a physical halt by $P_j(k)$.
+
+Write $h_j(t)$ for the primitive recursive assertion that $M_j$ is
+halted by time $t$ from blank. We have proved the explicit witness
+transports, for $j=1,2$,
+\begin{align*}
+ \ipra&\vdash h_0(t)\longrightarrow h_j(P_j(t+1)),\\
+ \ipra&\vdash h_j(t)\longrightarrow h_0(P_0(t+1)).        \tag{13}
+\end{align*}
+The same argument even permits $\lfloor t/3\rfloor+1$ in place of
+$t+1$, but that sharper bound is unnecessary for the stated theorem.
+
+\begin{theorem}[Direct relative equivalence]
+For the literal tables bound above and each $j\in\{1,2\}$,
+\[
+ \ipra\vdash\Halt(M_j)\leftrightarrow\Halt(M_0),
+ \qquad
+ \ipra\vdash\neg\Halt(M_j)\leftrightarrow\neg\Halt(M_0).
+\]
+\end{theorem}
+\begin{proof}
+Existential introduction and elimination applied to (13) give the
+positive equivalence. For either negative implication, assume a halt
+witness on the opposite side, transport it by (13), and contradict the
+assumed nonhalting. This is intuitionistic logic. All witness functions
+displayed in (11)--(13) are primitive recursive.
+\end{proof}
+
+\section{The consistency corollary and formalization boundary}
+
+The retained revised AX11H written calibration gives
+\[
+ \ipra\vdash\operatorname{Con}(\mathsf{PA})
+              \leftrightarrow\neg\Halt(M_0),             \tag{14}
+\]
+for its explicitly mapped current Foundation PA-refutation predicate.
+The archive identifies the numerical calculus, the source-command
+theorem, proof translation, weak-arithmetic transfer, and literal
+simulation. Those are mathematical dependencies of (14), credited
+to the supplied work. The present relative theorem does not silently
+replace a PA-level theorem by an iPRA theorem.
+
+\begin{theorem}[Consistency corollary using the revised calibration]
+Using the exact written calibration (14), for $j=1,2$,
+\[
+ \boxed{\ipra\vdash\neg\Halt(M_j)
+                       \leftrightarrow\operatorname{Con}(\mathsf{PA}).}
+\]
+\end{theorem}
+\begin{proof}
+Compose the negative relative equivalence with (14). This composition
+does not assume the consistency of PA and uses no new arithmetic
+principle.
+\end{proof}
+
+The new executable evidence checks finite bindings, whole-tape symbolic
+contracts, frame closure, literal startup, and the stated clock bounds.
+The written induction arguments supply their uniform iPRA meaning.
+Neither component is represented as a completed Lean kernel theorem.
+The explicit tables and reconstruction are unconditional artifacts;
+the absolute consistency endpoint retains the identified written
+calibration dependency. No bounded negative search establishes a
+lower bound of 194 states.
+\end{document}

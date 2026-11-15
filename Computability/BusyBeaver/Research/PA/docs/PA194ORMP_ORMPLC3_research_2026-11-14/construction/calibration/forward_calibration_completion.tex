@@ -1,0 +1,1042 @@
+% Written weak-base construction, pinned 2026-11-14 source snapshot.
+% This fragment is designed to be included after term_leaf_completion.tex.
+\section{A direct weak-base compiler from ordinary PA equality proofs}
+\label{sec:forward-calibration-completion}
+
+\paragraph{Statement and scope.}
+Let $\mathcal C_4$ be the numerical calculus with the six unchanged
+heads, the separate diagonal head $\Gamma(B)=I(B,U(B,B))$, the retained
+guarded old gate, the dominated $\rho _8$ head, modus ponens, and theorem
+generalization.  Use the exact numerical constructors and guard of the
+machine, specified below.  There is a primitive recursive function $F$
+such that
+\begin{equation}
+ \mathsf I\Sigma _1\ \vdash\quad
+ \operatorname{OrdinaryPAeqProof}(d,\bot)\ \longrightarrow\
+ \operatorname{C4Proof}(F(d),1).
+ \tag{F1}
+\end{equation}
+Here the predicate on the left is the pinned upstream
+\file{Presentation.ordinaryPAeq} proof predicate.  It is not an
+unidentified substitute for the current Foundation PA predicate.  The
+separate Foundation adapter must identify that endpoint before (F1) is
+composed with the machine theorem.  The companion Foundation completion
+provides that adapter; the present section supplies the ordinary-PAeq
+to numerical-calculus part.
+
+The proof below constructs direct derivation lists.  It neither invokes
+the full-PA correctness theorem for the upstream \file{verifyValue}
+checker nor asserts that that theorem has been weakened in Lean.
+Source references specify finite constructor recipes and their displayed
+formula equations.  We replace the upstream existential supplier
+interfaces by the explicit finite-demand algorithms below.  This is a
+written arithmetized proof, not a newly kernel-checked development.
+
+All source paths in this section are relative to
+\file{Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/}
+at commit
+\file{1c9524d8bf2e0a27b9a16ff622359927f536e663}.
+The accompanying source manifest records the exact blob identifiers.
+Except where a longer prefix is shown, a filename in this section is
+in \file{PA196/Arithmetic/Transport/}.
+
+\subsection{The target and its primitive proof constructors}
+
+Put
+\[
+ \pi(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad
+ I(a,b)=4\pi(a,b),\quad M(a,b)=I(a,b)+1,
+\]
+\[
+ U(a,b)=I(b,a)+2,\qquad E(a,b)=I(a,b)+3,
+ \quad N(A)=I(A,1).
+\]
+Numerical conjunction is $N(I(A,N(B)))$ and
+$\exists_a A=N(U(a,N(A)))$.  Code $0$ is truth and code $1$ is false;
+in particular $I(0,0)=0$ is retained literally.  The six heads are
+\begin{align*}
+ h_1(D,H)&=I(\exists_D U(D,H),H),\\
+ h_2(D,A,H)&=I(U(D,U(A,H)),U(A,U(D,H))),\\
+ h_3(D,A,H)&=I(M(H,D),I(E(H,A),M(A,D))),\\
+ h_4(D,A,H)&=I(E(H,D),I(M(A,H),M(A,D))),\\
+ h_5(D,H)&=\exists_D E(H,D),\\
+ h_6(D,A,H)&=I(U(D,A),I(U(D,I(A,H)),U(D,H))).
+\end{align*}
+The propositional head is
+\[
+ \rho _8(D,A,H,u)=I(I(I(H,u),D),I(I(D,H),I(A,H))),
+ \qquad u\le D.
+\]
+For the old gate put
+\[
+ \begin{split}
+ V&=I(M(a,b),U(c,M(a,b))),\qquad P=I(c,M(c,b)),\\
+ S&=U(b,(I(M(a,b),P))\mathbin\wedge(I(M(c,b),c))),\\
+ Q&=U(c,I(S,N(P))),\qquad G(a,b,c)=N(I(V,Q)).
+ \end{split}
+\]
+It is a head when $c\ne a,b$; the machine's failed guard supplies
+$0$.  The separate $\Gamma(B)=I(B,U(B,B))$ is always available.
+
+A direct proof list records each numerical formula together with one
+of: its head name and parameters, two earlier indices for MP, or one
+earlier index and a label for Gen.  Checking a row uses only numerical
+equalities, inequalities, and bounded earlier-index lookups.  The check
+of the whole list is therefore primitive recursive.  Concatenation
+with index relocation, appending MP or Gen, and a one-row head proof
+are primitive recursive operations.  Their correctness is a bounded
+Boolean induction on the list length.  These operations interpret the
+upstream \file{Certificate} and \file{Context} recipes; no
+\file{verifyValue} certificate code occurs in this interpretation.
+
+The restricted propositional basis is sufficient.  Interpret
+\file{M6/Logic/RestrictedImplication.lean}'s
+\file{Rules}, \file{rho8All}, \file{composition},
+\file{exchange}, \file{k}, \file{peirce}, and \file{s}
+with the preceding list operations.  Every supplied restricted row
+has its actual side condition $u\le D$: the only bound constructors
+used by that recipe are reflexivity and
+\[
+ u\le x\Longrightarrow u\le I(x,y),\qquad
+ u\le y\Longrightarrow u\le I(x,y).
+\]
+They follow from $x,y\le\pi(x,y)\le4\pi(x,y)$, including the
+zero case.  These are the exact instances in
+\file{PA196/Logic/ImplicationBasis.lean} and
+\file{PA196/Arithmetic/Certificates/ImplicationBasis.lean}.
+Thus identity, deduction, composition, exchange, contraposition,
+double-negation elimination, and the finite classical connective
+templates are uniform primitive recursive proof constructors.
+Deduction itself traverses a supplied finite assumption/closed/MP
+tree, using identity, $K$, and $S$.  Its correctness is induction on
+that finite tree, not an assumption of a semantic deduction theorem.
+
+\subsection{Replacing primitive equality vacuity at the exact boundary}
+
+This replacement is necessary: $\mathcal C_4$ does not contain the old
+primitive equality-vacuity axiom.  The old gate directly gives
+membership vacuity and pointed separation by the fixed negated-
+implication projections.  Generalized implication, negation, and
+universal vacuity then use only those inputs and $h_1,h_2,h_6$.
+
+Here are the finite replacement recipes, as written in the pinned
+\file{PA/docs/pa194q_conpa_2026-11-13/references/calibration/}
+files \file{diagonal_calculus.tex},
+\file{separate_head_calculus.tex}, and
+\file{original_pa195_calibration.tex}; these three paths are
+relative to the repository root rather than the upstream prefix.
+For $a\ne b$ let $\chi(t)$ be $M(d,t)$ or $M(t,d)$, with
+$d\ne a$ in both of these fixed-label cases, or let it be $M(t,t)$.
+Form
+\[
+ C=I(E(a,b),I(\chi(b),\chi(a))),\qquad \varphi=N(C),
+ \qquad c=\varphi.
+ \tag{F2}
+\]
+The label $c$ is the code of the complete negated conclusion, not a
+label chosen by an unbounded freshness search.  Constructor
+inequalities give $c>a,b$ and, in the first two cases, $c>d$.
+Consequently the old gate at $(a,a,c)$ is licensed.  Its separation
+matrix implies
+\[
+ S\longrightarrow U(a,I(M(c,a),N(\chi(a)))).
+\]
+The retained \file{negativeSpecialization} recipe uses only the
+unchanged witness head, direct membership rewrites, and membership
+vacuity, to obtain
+\[
+ S\longrightarrow I(M(c,b),N(\chi(b))).
+\]
+Under $\varphi$, the point condition gives $M(c,a)$, direct rewriting
+gives $M(c,b)$, and this contradicts $\chi(b)$.  Hence
+$\varphi\to(S\to\neg P)$.  Gen at $c$, distribution, and the
+literal diagonal head $\Gamma(\varphi)$ give $\varphi\to Q$;
+the same gate gives $\neg Q$.  Double-negation elimination proves
+$C$.  There is no step generalizing an equality-containing assumption
+at an arbitrary fresh label.  The cases $a=b$ are propositional; the
+cases $d=a$ use the diagonal $\chi(t)=M(t,t)$ case and the two direct
+rewrites.  This supplies both reverse membership directions uniformly
+for every coincidence pattern of labels.
+
+Define the neighborhood equality
+\[
+ R(a,b,z)=U(z,M(a,z)\leftrightarrow M(b,z))
+          \wedge U(z,M(z,a)\leftrightarrow M(z,b)).
+\]
+Set $z_0=E(a,b)>a,b$.  The head $\Gamma(E(a,b))$ and the preceding
+two-direction rewrites give $E(a,b)\to R(a,b,z_0)$.  For
+$z\ne a,b,z_0$, change each neighborhood binder from $z_0$ to $z$
+using the unchanged equality witness, both membership rewrites, and
+membership-only vacuity.  If $z=z_0$, use identity.  This yields
+\[
+ E(a,b)\to R(a,b,z)\quad(z\ne a,b),\qquad
+ \exists_a R(a,b,z)\quad(z\ne a,b).
+ \tag{F3}
+\]
+All operations in (F2)--(F3) are fixed proof concatenations and
+numerical label tests.  Their fresh-label inequalities are quantifier-
+free constructor inequalities, so their uniform correctness is
+available in the weak base.
+
+The inspected logical dependency boundary is exact.
+In the 60 files of \file{PA196/Logic/}, primitive
+\file{equalityVacuity} is consumed by
+\file{Reverse.reverseChi} and
+\file{Neighborhood.primitiveToNeighborhood}.  Replace the resulting
+\file{reverseRight}, \file{reverseLeft}, and
+\file{primitiveToNeighborhood} interfaces by (F2)--(F3).
+\file{neighborhoodWitness} then uses (F3) and the unchanged witness.
+The mirrored arithmetic certificate files have the same two consumers.
+Other occurrences of \file{neighborhoodEqualityVacuity} in the
+relational interface are derived from membership vacuity for the
+defined relation $R$, as displayed in
+\file{PA196/Logic/Relational/Interface.lean}; they are not primitive
+equality-vacuity axioms.  The forward relational recipes above that
+boundary consequently have exactly the required $\mathcal C_4$
+implementations.  This is an interface replacement, not a purported
+translation of arbitrary proofs using the obsolete axiom.
+
+\subsection{Finite demand instead of induction over all environments}
+
+For clarity the induction method is made explicit.  A request has a
+rank $r$ and a finite parameter packet $x$.  Its finite child-query
+list $Q(r,x)$ is computed before any child proof values are returned.
+Same-stratum children have smaller rank.  A constructor $K$ combines
+the supplied child lists, lower-stratum calls, and fixed leaves.
+All validity and conclusion tests are primitive recursive.
+
+For the binary structural recursions below, generate the complete
+binary demand tree to depth $r+1$, retaining inactive placeholders.
+There are at most $2^{r+2}-1$ slots.  A bounded forward loop computes
+each active query from its parent; strict rank decrease proves that
+all deepest active nodes are leaves.  Evaluate in reverse slot order.
+This is primitive recursion, although individual parameter codes and
+proof outputs can grow.  The output of the reverse loop itself gives
+a primitive recursive bound on its intermediate outputs; no
+preassigned small certificate bound is necessary.
+
+The proof uses two finite Boolean invariants.  The first says that
+all generated children of valid queries satisfy the stated local
+validity and coverage tests.  The second says that every already
+evaluated valid slot contains a checked list of its specified
+conclusion.  Bounded conjunctions implement both as primitive
+recursive Boolean equalities.  Quantifier-free induction proves them
+with the root parameters free.  In $\mathsf I\Sigma _1$, the same
+argument can equivalently use an existential finite witness table
+with a bounded checking matrix.  It never induces on
+$\forall\text{ environments}\,\exists\text{ proof}$.
+
+Finite scans over an HFS set use an explicit supplied array of leaf
+proofs, or a previously completed primitive recursive leaf function.
+They do not turn an arbitrary $\forall i<k\,\exists e$ premise into
+a primitive recursive selector.  Where a stratum calls a completed
+lower stratum, the lower input rank may increase: this causes no
+recursion cycle.  In particular vector-variable realization calls
+term uniqueness on a replacement term which may be larger than the
+original variable code; the companion term construction completes
+uniqueness first.
+
+\subsection{Coverage and the generic relational compiler}
+
+Let $T_{b,n,\ell,z}(p)$ be the source relational translation, with
+bound-label vector $b$, free-label vector $n$, allocator $\ell$, and
+reserve $z$.  Its source constructors are translated to the displayed
+numerical connectives; a quantifier has the child parameter map
+\[
+ A(b,n,\ell,z)=(\ell::b,n,\ell+1,z).
+ \tag{F4}
+\]
+An equality atom is the defined relation $R$, with binder $z$;
+a membership atom is $M$.  Function-free relational terms are bound
+or free variables, so their atom labels are finite vector lookups.
+This defines a primitive recursive translation by the finite-demand
+construction.  It also supplies the same constructor equations as
+the uniquely characterized upstream translation.
+
+Write $\operatorname{Env}(b,n,\ell,z)$ for
+$0<\ell\le z$ and every entry of $b,n$ being $<\ell$.
+The exact coverage test is
+\[
+ \operatorname{Cov}(b,n,\ell,z,p)\ \equiv\
+ \operatorname{Env}(b,n,\ell,z)\ \land\ \ell+p\le z
+ \ \land\ \operatorname{IsSemiformula}_{|b|}(p)
+ \ \land\ p\le|n|.
+ \tag{F5}
+\]
+It implies coverage of conjunctive and disjunctive children at the
+same parameters, and quantified children at (F4), because each child
+code is strictly smaller than its parent.  The source lemmas are in
+\file{FoundationRelationalCodeCoverage.lean} and already assume
+only $\mathsf I\Sigma _1$.
+
+For requested labels $\lambda=(n,\ell,z)$, abbreviate
+$T_\lambda=T_{0,n,\ell,z}$ and put
+\[
+ P_d(\lambda)=(\operatorname{padEnvironment}(n,d),\ell,z+\ell+d).
+ \tag{F6}
+\]
+Padding appends $d$ zero labels.  It preserves the entire old prefix,
+has length $|n|+d$, and satisfies the same entry bound because
+$0<\ell$.  For every source formula $q\le d$, (F6) supplies (F5)
+whenever its syntactic arity is correct.  A finite vector loop proves
+these facts with $n$ fixed.  Thus the full-PA induction over all
+vectors in \file{FoundationRelationalSequentPadEnvironment.lean}
+is replaced by this explicit loop.
+
+The remaining generic relational operations have the following exact
+same-family child queries.  Binary source connectives always have
+their two children at unchanged ancillary parameters unless shown
+otherwise; atoms and truth/false have no such child.
+\begin{center}\small
+\begin{tabular}{p{0.25\linewidth}p{0.64\linewidth}}
+Operation & Quantifier child query for body $q$\\ \hline
+NNF/native-negation comparison & $(q,A(b,n,\ell,z))$.\\
+Low fresh-label vacuity & $(q,c,\ell::b,n,\ell+1,z)$, with $c<\ell$, $c\ne z$, and $c$ absent from $b,n$.\\
+High-label vacuity & $(q,c,\ell::b,n,\ell+1,z)$, with $z<c$.\\
+Conditional label renaming & $(q,x,y,\ell::b,\ell::\bar b,n,\bar n,\ell+1,z)$; corresponding vectors replace $x$ by $y$.\\
+Reserve relocation & $(q,\ell::b,n,\ell+1,z,z')$.\\
+Allocator relocation & With $m=\max(\ell,\ell')+1$, the two queries are $(q,\ell::b,n,\ell+1,m,z)$ and $(q,\ell'::b,n,\ell'+1,m,z)$.\\
+Free-prefix agreement & $(q,\ell::b,n,n',\ell+1,z)$.\\
+Free-variable shift agreement & $(q,A(b,n,\ell,z),x)$, where the other translation prepends $x$ to the free vector.\\
+Bound substitution agreement & $(q,\operatorname{qVec}(w),\ell::a,\ell::b,n,\ell+1,z)$, starting from a label-substitution packet $(w,a,b,n)$.\\
+\end{tabular}
+\end{center}
+
+For allocator relocation, the middle comparison is the already
+completed conditional-renaming/binder-alpha constructor at allocator
+$m$.  The two input coverage assumptions give $m+q\le z$; entries of
+$\ell::b$ and $\ell'::b$ are $<m$.  The new eigenlabels are absent
+from the old vectors because those entries were below both original
+allocators.  No relocation call recurs through its output code.
+For reserve relocation, the equality-atom case uses the finite
+neighborhood binder-change recipe, and both reserves are distinct
+from the atomic labels by (F5).  Membership atoms are unchanged.
+Vacuity leaves use membership vacuity or the membership-derived
+vacuity of $R$; the latter's reserve must also differ from the new
+vacuity label, exactly as stated above.
+
+The substitution packet condition is
+$|w|=|a|$ and the label of $w_i$ in $(b,n)$ equals $a_i$ for every
+$i<|w|$.  Under a binder it is preserved by
+$(w,a,b)\mapsto(\operatorname{qVec}(w),\ell::a,\ell::b)$;
+this is the exact \file{LabelSubstitution.qVec} calculation in
+\file{FoundationRelationalSequentSubstitutionLabels.lean}.
+Free-variable shift commutes with (F4), as recorded in
+\file{FoundationRelationalSequentShiftLabels.lean}.
+Prefix agreement assumes equality of entries at every $i<p$,
+which covers all free indices occurring in $p$ and is inherited by
+every smaller child.  Closed-environment independence can be proved
+by a loop removing one free-vector entry at a time using the shift
+equation and $\operatorname{shift}(p)=p$; it has fixed $p,b,\ell,z$
+and a decreasing vector tail.  These are all Boolean syntax
+equations.  The finite-demand invariant proves their uniform weak-
+base versions even where an upstream theorem used an unbounded
+all-environments induction.
+
+The precise finite parent recipes are
+\file{ActualCertificateEquivalenceInduction.source_step};
+\file{FoundationRelationalSequentVacuity},
+\file{HighVacuity}, \file{Rename}, \file{BinderAlpha},
+\file{Allocator}, \file{Reserve}, \file{PrefixAgreement},
+\file{Shift}, \file{Substitution}, and
+\file{ClosedEnvironment}.  In this sentence the repeated prefix
+\file{FoundationRelationalSequent} applies to each short name.
+The proof uses their displayed case recipes with direct lists,
+not their full-PA induction conclusions.
+
+For an HFS sequent $s$, scan the numerical indices $i<s$ in ascending
+order; membership is a bit test.  Start the disjunction fold at false.
+At a member $i$, prepend the translated formula by disjunction;
+at a nonmember, copy the previous result.  To eliminate the fold to
+$C$, start with explosion $1\to C$ and at each member combine the
+supplied arrow $T(i)\to C$ with the preceding arrow by the fixed
+disjunction elimination recipe.  A member injection starts at its
+own index using left injection and then uses right injection at each
+later member.  Singleton, weakening, insertion, cut, and finite
+premise discharge are these loops followed by fixed propositional
+operations.  The arithmetic-formula sequent fold is identical with
+leaf $T_\lambda(\operatorname{formulaSyntax}(e,i))$.
+Target shift is a loop over the same HFS index set and the completed
+formula-shift identity.  No identification of differently ordered
+source-shifted scans is assumed; those are related by member
+injection and fold elimination.
+
+The generic relational LK compiler is now a finite-demand recursion
+on its supplied derivation code $d$.  Its validity budget is
+\[
+ \operatorname{Env}(0,n,\ell,z),\qquad d\le|n|,
+ \qquad \ell+d\le z.
+ \tag{F7}
+\]
+The immediate proof children are strictly smaller than $d$.
+Conjunction, disjunction, cut, and weakening pass $(n,\ell,z)$
+unchanged; the universal rule passes $(\ell::n,\ell+1,z)$;
+the existential rule passes $(n,\ell+1,z)$;
+the shift rule passes $(\operatorname{tail}(n),\ell,z)$.
+The last case is valid because $d>0$ and the child is $<d\le|n|$.
+Identity and truth are fixed sequent constructors.
+The axiom case calls the stated axiom supplier at the actual source
+axiom and the current labels.  Formula coverage and the budgets for
+the two raised-allocator rules follow from strict child inequalities
+and (F7), exactly as in
+\file{FoundationRelationalSequentDerivationStep.lean} and
+\file{FoundationRelationalSequentProofBudget.lean}.
+
+The universal parent recipe uses free-opening, allocator relocation,
+and vacuity already completed above.  The existential parent recipe
+uses covered term-label substitution, conditional renaming,
+allocator relocation, and NNF comparison, as displayed in
+\file{FoundationRelationalSequentExistentialInstance.lean} and
+\file{FoundationRelationalSequentExsRule.lean}.
+Thus this compiler depends only on lower relational strata and its
+explicit axiom callback.  For the fixed-template uses below its
+theory is empty, so that callback has no valid input.
+
+\subsection{The nonrecursive leaves are supplied}
+
+\paragraph{Fixed ND proof templates.}
+An arbitrary formula hole in a fixed syntactic proof does not require
+an arbitrary proof supplier.  In
+\file{M6PA/Calibration/RelationalPredicateTemplateLKBounded.lean},
+\file{template_lk_sound_of_bound} already assumes only
+$\mathsf I\Sigma _1$.  The proof tree of each template is a fixed
+finite host object.  Instantiate its formula holes, terms, shifts,
+and binder extensions by primitive recursive code operations.  This
+produces a source proof code $w$ without inspecting a numerical
+certificate.  The fixed source-proof constructors are validated at
+each host node; no induction over all internal formulas is used.
+
+For a template with finite premises $\Delta$ and conclusion $q$,
+let $s$ be its instantiated premise-set code and put
+$b=\max(w,\max(s,q))$.  Compile $w$ by the generic relational
+compiler at $P_b(\lambda)$, obtain each of the finitely many premise
+proofs at that same label tuple, eliminate the negative-premise
+sequent by the finite fold, and read $q$ back to $\lambda$ by
+prefix agreement and reserve relocation.  The singleton form has
+$b=\max(w,\max(a,q))$ for its premise $a$; the empty-premise form
+uses the fixed truth proof.  These are exactly the budget formulas
+in \file{RelationalPredicateTemplateNDPadded.lean},
+\file{RelationalPredicateBinaryRequested.lean}, and
+\file{RelationalPredicateBinaryEmptyRequested.lean}.
+The child query labels depend on $w,a,q$, all computed from syntax,
+and not on the returned premise-proof values.
+
+This construction supplies the parameterized lower templates needed
+by the companion term section: variable totality and coherence;
+duplicate-domain and duplicate-both-domain; successor totality and
+coherence; addition/multiplication totality and coherence;
+substitution-variable coherence; the logical curry, pairing,
+comparison, quantifier, and induction-combination templates.
+Each is one of these fixed ND proof recipes, not a request to prove
+an arbitrary formula.  Their only nonlogical premises are the
+closed leaves in the next paragraph or the explicitly listed
+callback supplies of the higher construction.
+
+\paragraph{Closed relational leaves.}
+The finite constant derivations needed here are the exact
+\file{*NativeProof} definitions in the following files:
+\begin{center}\small
+\begin{tabular}{p{0.44\linewidth}p{0.45\linewidth}}
+File & Supplied fixed conclusions\\ \hline
+\file{RelationalClosedCertificateSeeds.lean} & inhabited zero, successor totality, addition totality, multiplication totality.\\
+\file{RelationalClosedCertificateOrdinalSeeds.lean} & reflexivity, symmetry, congruence, transitivity, intersection, adjunction.\\
+\file{RelationalClosedCertificateCoherenceSeeds.lean} & isomorphism reflexivity, symmetry, transitivity, addition coherence, multiplication coherence.\\
+\file{RelationalClosedCertificateCoherenceZeroSeed.lean} & zero-isomorphism compatibility.\\
+\file{RelationalClosedCertificateCoherenceTransportSeed.lean} & isomorphism transport.\\
+\file{NumericPAeqSubstitutionVariableSeed.lean} & isomorphism right transport, from the explicit fixed \file{isoRightTransportDerivation}.\\
+\file{RelationalClosedCertificateCoherenceSuccessorSeed.lean} & successor-isomorphism compatibility.\\
+\file{PAInterpretedFixedCertificateSeeds.lean} & the twelve fixed ordinary-PAeq axiom images.\\
+\end{tabular}
+\end{center}
+These are finite source proof recipes at fixed standard reserves,
+with numerical reserves explicitly larger than every listed code and
+LK budget.  For example
+\begin{align*}
+ \operatorname{primitiveReserve}(q)
+  ={}&\operatorname{functionBudgetBound}(1)\\
+     &{}+(1+\operatorname{lkBudget}(\mathrm{mulUniversalOutputDerivation}))\\
+     &{}+(1+\operatorname{encode}(q)),
+\end{align*}
+and \file{coherenceReserve} is the displayed maximum of its
+thirteen local budgets plus $1+\operatorname{encode}(q)$.
+The remaining fixed reserves use
+\file{certificateReserve} with the displayed two inputs.  There
+is consequently no search for a sufficient reserve.
+
+Reinterpret these finite derivation recipes through the logical
+interface (F2)--(F3).  The native relational source compiler occurring
+inside them traverses a fixed host proof tree; its finite
+separation calls are instances of the retained gate construction.
+All numerical side conditions are the explicit budget inequalities
+in the definitions.  This gives a fixed $\mathcal C_4$ proof list
+for each closed conclusion.  Its validity is a finite arithmetic
+calculation.  We have inspected the definitions and their interface
+boundary; we do not claim to have evaluated their very large
+numeral codes or replayed a new Lean build.
+
+To supply such a closed conclusion at arbitrary covered requested
+labels, start at its recorded zero-label environment, allocator $1$,
+and fixed reserve; use closed-environment independence, allocator
+relocation, and reserve relocation proved above.  This is the direct
+list interpretation of
+\file{RelationalClosedCertificate.relocated_certificate}.
+For the twelve ordinary fixed axioms, use the finite case split of
+\file{PAInterpretedFixedNumericClass.lean}; its conclusion is the
+literal two-stage \file{formulaSyntax} image, whose identity with
+the closed fixed source formula is the displayed constructor
+calculation in the seed-calibration/relocation files.  No arithmetic
+soundness or truth of PA is being assumed by these fixed leaves.
+
+\paragraph{The arbitrary-property separation leaf.}
+This is the only nonconstant axiom supplier required by the ordinal
+induction template.  For a valid relational one-variable formula
+$p$, the requested source separation formula has property
+translation
+\[
+ B=T_{(\ell+2)::0,n,\ell+3,z}(p).
+\]
+Let $a=\ell$, $d=\ell+2$, and $c=\ell+1$.  Coverage of the source
+separation formula gives the stated property coverage, makes $c$
+fresh for its vectors, and puts all three labels below $z$.
+Put
+\[
+ q=U(z+1,M(a,d)\wedge B)>z.
+ \tag{F8}
+\]
+High-label vacuity of $B$ at $z+1$, and membership vacuity of
+$M(a,d)$ there, give the padding equivalence used by
+\file{paddedSeparationAbove}.  Pointed separation and the old gate
+give the raw separation conclusion with output name $q$.
+The already supplied high vacuity at $q$ and low fresh vacuity at
+$c$ feed \file{separationOutputAlpha}; (F3), membership rewrites,
+and its explicit inequalities change the output name to $c$.
+Gen at $\ell$ and the fixed three-quantifier normalization read this
+as the exact source separation schema.  The source equations and
+recipes are in
+\file{FoundationRelationalSequentSeparationSupplier.lean},
+\file{SeparationAtName.lean}, \file{SeparationReadback.lean},
+\file{RawSeparation.lean}, and
+\file{ActualCertificateSeparationRaw.lean}/
+\file{ActualCertificateSeparationRelocation.lean}
+(with the full prefix on the four shortened sequent filenames).
+Only the already completed structural vacuity and syntax algorithms
+recurse on $p$.  No PA formula-realization or PA-proof compiler is
+called here.
+
+\subsection{Requested-label composition and the arithmetic syntax}
+
+To avoid confusing source codes with the numerical implication $I$,
+write $[A\Rightarrow B]$ for the source code
+\file{imp language A B}, and $A\mathbin\&B$ for source conjunction.
+The exact padding budgets are
+\begin{align*}
+ \kappa(A,B,C)&=\max([A\Rightarrow B],
+                         \max([B\Rightarrow C],[A\Rightarrow C])),\\
+ \eta(A,B,C)&=\max([A\Rightarrow B],
+                         \max([A\Rightarrow C],[A\Rightarrow B\mathbin\&C])),\\
+ \mu(A,B)&=\max(A,\max([A\Rightarrow B],B)).
+ \tag{F9}
+\end{align*}
+Requested composition and pairing query their children at
+$P_\kappa(\lambda)$ and $P_\eta(\lambda)$ respectively.
+Requested MP queries both inputs at $P_\mu(\lambda)$.
+Native logical composition is followed by source/native connective
+normalization and padding readback.  All three intermediate source
+formula codes are bounded by the displayed maximum, so (F5)--(F6)
+prove every child coverage requirement.
+
+For a one-variable source formula $p$, requested universal closure
+asks for its opened formula at
+\[
+ O_p(\lambda)=
+ (\ell::\operatorname{padEnvironment}(n,d),\ell+1,z+\ell+d),
+ \qquad d=\operatorname{Free}(p)+1.
+ \tag{F10}
+\]
+The source equations for \file{Free} proved above identify the
+body at allocator $\ell+1$ exactly.  It is not identified at the
+parent allocator.  Gen, allocator relocation, and readback finish
+the requested universal formula.  The budget and query are exactly
+\file{FoundationRelationalSequentRequestedUniversal.lean}.
+
+Two derived opening operations used below are specified by these
+same maps.  Guarded universal closure of $[H\Rightarrow\forall P]$
+is MP with antecedent $\forall[H\Rightarrow P]$, whose first input
+is requested universal closure of $[H\Rightarrow P]$ and whose
+second is the fixed universal-curry template.  Its child is therefore
+queried at
+$O_{[H\Rightarrow P]}(P_{\mu(\forall[H\Rightarrow P],
+ [H\Rightarrow\forall P])}(\lambda))$.
+Double universal closure of $\forall\forall P$ is two requested
+universal operations, with child labels
+$O_{\operatorname{openOuter}(P)}(O_{\forall P}(\lambda))$,
+where
+$\operatorname{openOuter}(P)=
+ \operatorname{subst}(\operatorname{qVec}(\operatorname{fvar}(0)::0),
+                      \operatorname{shift}(P))$.
+The exact identities are
+$\operatorname{Free}(\forall P)=\forall\operatorname{openOuter}(P)$
+and its once-more opened body, as displayed in
+\file{NumericPAeqFormulaDoubleUniversal.lean}.
+
+The arithmetic value-syntax construction and its substitution,
+shift, validity, and support joins are supplied by the companion
+term section.  Arithmetic \file{formulaSyntax} is then another
+finite-demand syntax construction: constants are unchanged;
+positive/negative equality atoms use the two value-syntax outputs;
+binary connectives recurse on the two children with unchanged
+parameters; an arithmetic quantifier recurses on its body at
+\file{binderParameters} and wraps the result with the fixed
+domain-guarded universal/existential constructor.  These are the
+literal cells of
+\file{M6PA/Calibration/NumericPAeqFormulaConstruction.lean}.
+The term isomorphism/domain formulas in these fixed constructors
+are relational syntax, not numerical proof oracles.
+
+The formula support and substitution joins are proved by the same
+finite-demand tree: binary cases use unchanged parameters,
+quantifiers use \file{binderParameters} and lifted substitution
+$\operatorname{qVec}$, atoms use the completed term substitution
+join.  In the target-substitution join, a binder increments both
+target arities and lifts the target vector by $\operatorname{qVec}$;
+its two parameter packets agree by the explicit shift/substitution
+commutation.  Closed free-environment independence follows because
+the support bound is zero.  Thus the following uses of
+\file{formulaSyntax} have actual primitive recursive meanings and
+weak-base constructor equations; they do not inherit a
+\file{Classical.choose} totality premise from a stronger model.
+
+\subsection{Arithmetic formula realization: the actual child requests}
+
+Let $e=(s,r,b,f,a,w)$ satisfy the exact
+\file{FormulaEnvironment} conditions: $b$ has $r$ valid relational
+terms of arity zero; $a$ has $s$; $f$ has $|f|$; the arithmetic source
+formula $p$ has arity $s$; $w$ is a source term vector of length $s$
+and target arity $r$; $p$ and every entry of $w$ have free support
+below $|f|$.  These are all bounded syntactic tests.  Define
+\[
+ H_e=\operatorname{vectorInput}(s,r,b,f,a,w),
+\]
+\[
+ C_e(p)=\operatorname{Bi}\bigl(
+ \operatorname{formulaSyntax}(b,f,\operatorname{subst}(w,p)),
+ \operatorname{formulaSyntax}(a,f,p)\bigr),\qquad
+ L_e(p)=[H_e\Rightarrow C_e(p)].
+\]
+Here $\operatorname{Bi}(A,B)=[A\Rightarrow B]\mathbin\&[B\Rightarrow A]$.
+The requested realization builder returns a proof of
+$T_\lambda(L_e(p))$ under its coverage test.
+
+For an atomic equality of terms $t,u$, put $H=H_e$ and let the six
+conclusions be the two vector comparisons for $t,u$, followed by
+the four totality formulas for the substituted $t,u$ and original
+$t,u$, in that order.  Call them $B_1,\ldots,B_6$ and set
+$R_i=B_i\mathbin\&R_{i+1}$, with $R_6=B_6$.
+The atom-input supplier is the right-nested
+$\operatorname{Pair}(H,B_1,R_2;\ldots)$ through
+$\operatorname{Pair}(H,B_5,B_6;\ldots)$.
+Compose it with the fixed equality-transport template using
+$\operatorname{Comp}(H,R_1,C_e(t=u);\ldots)$.
+This specifies all six query labels by (F9).
+The first two leaves invoke completed vector realization.  Each
+substituted totality leaf is
+$\operatorname{Comp}(H,\operatorname{inputDomain}(r,b,f),B_i;
+ \operatorname{LeftProjection},\operatorname{Tot}(\operatorname{subst}(w,t)))$
+(or $u$); each original totality leaf uses
+$\operatorname{inputDomain}(s,a,f)$ and original $t$ or $u$.
+That domain projection is itself the two fixed conjunction
+projections displayed in
+\file{NumericPAeqSupportedVectorRealizationTotality.lean}.
+Thus all six leaves belong to completed term strata even if a
+substituted term is large.
+Negative equality is composition of this positive-atom helper with
+the fixed negated-comparison template, at its $P_\kappa$ labels;
+it makes no recursive formula-supply query.  Truth and false are
+fixed logical templates.  The exact recipes are
+\file{NumericPAeqFormulaRealizationAtomInput.lean},
+\file{NumericPAeqFormulaRealizationAtomTransport.lean}, and
+\file{NumericPAeqFormulaRealizationNegativeAtom.lean}.
+
+For a binary parent $p\circ q$, with $\circ$ either source
+conjunction or disjunction, set
+$A=C_e(p)$, $B=C_e(q)$, $C=C_e(p\circ q)$.
+The two recursive requests are exactly
+\[
+ (p,e,\lambda_2),\quad(q,e,\lambda_2),\qquad
+ \lambda_1=P_{\kappa(H_e,A\mathbin\&B,C)}(\lambda),\quad
+ \lambda_2=P_{\eta(H_e,A,B)}(\lambda_1).
+ \tag{F11}
+\]
+Pair the two arrows and compose with the fixed conjunction/disjunction
+comparison template.  These are the case recipes of
+\file{NumericPAeqFormulaRealizationConnectives.lean}.
+
+For a universal or existential parent with body $p$, define the
+source one-variable matrix
+\[
+ W=[H_e\Rightarrow[D_0\Rightarrow
+            \operatorname{Bi}(\operatorname{binderLeft}(b,f,w,p),
+                              \operatorname{binderRight}(a,f,p))]],
+\]
+where $D_0$ is the fixed domain template.  Let
+$J=L_e(\forall p)$ or $L_e(\exists p)$ as appropriate, and
+$x=\operatorname{fvar}(0)$.  Put
+\[
+ e^+=(s+1,r+1,x::\operatorname{sh}(b),\operatorname{sh}(f),
+                   x::\operatorname{sh}(a),\operatorname{qVec}(w)),
+\]
+where $\operatorname{sh}$ shifts each relational target term.
+Also put
+\[
+ H=\operatorname{vectorInput}(s,r,\operatorname{sh}(b),
+       \operatorname{sh}(f),\operatorname{sh}(a),w),\quad
+ D=\operatorname{domainCode}(x),\quad I_0=H_{e^+},\quad C=C_{e^+}(p).
+\]
+The sole recursive formula request is $(p,e^+,\lambda_4)$, with
+\begin{align*}
+ \lambda_1&=P_{\mu(\forall W,J)}(\lambda),&
+ \lambda_2&=O_W(\lambda_1),\\
+ \lambda_3&=P_{\mu([H\mathbin\&D\Rightarrow C],
+                           [H\Rightarrow[D\Rightarrow C]])}(\lambda_2),&
+ \lambda_4&=P_{\kappa(H\mathbin\&D,I_0,C)}(\lambda_3).
+ \tag{F12}
+\end{align*}
+At the last line use the companion term builder's explicit
+\file{vector_qVec_input_requested_certificate} for
+$H\mathbin\&D\to I_0$, then the recursive formula child,
+then the fixed curry, universal-closure, and universal/existential
+comparison templates.  The literal opening identity is
+\[
+ \operatorname{Free}(W)=[H\Rightarrow[D\Rightarrow C]].
+\]
+It is exactly \file{uniformMatrix_free} in the binder-opening
+file, obtained from the completed source and target substitution
+joins.  The environment conditions for $e^+$ follow by lifting
+$w$, shifting the three target vectors, and prepending $x$ to $a,b$.
+They are the explicit bounded checks of
+\file{environment_targetShift} and
+\file{environment_all_body}; (F9)--(F10) supply all coverage
+checks.  Since $p$ is smaller than either quantified parent,
+(F11)--(F12) and the supplied leaves close the finite-demand
+construction for \emph{every} arithmetic formula.
+
+\subsection{The arbitrary induction-matrix supplier}
+
+For a relational predicate code $P$ of arity one, the fixed ordinal
+induction proof template has exactly seven premises.  Their precise
+dispatch is \file{RelationalPredicateTemplateOrdinalCertificate.}
+\file{induction_axiom_certificate}: reflexivity, symmetry,
+congruence, transitivity, intersection, adjunction, and source
+separation for $\neg P$.  The first six are the fixed closed leaves
+above; the seventh is (F8).  The template compiler has already been
+constructed.  Thus the ordinal-induction supplier is total with
+primitive recursive witnesses for arbitrary $P$, and it has no
+call back to arithmetic formula realization or PA-proof transport.
+
+For an arithmetic induction property $p$ and target free-term vector
+$f$, the canonical induction-body constructor is the exact finite
+composition in \file{NumericPAeqInductionBodyCertificate.lean}.
+Using its displayed formulas $F,B,S,A,T,C$, define
+\[
+ X=[F\mathbin\&B\Rightarrow A],\quad
+ Y=[F\mathbin\&S\Rightarrow T],\quad
+ Z=[A\mathbin\&T\Rightarrow C],\quad
+ R=[F\Rightarrow[B\Rightarrow[S\Rightarrow C]]].
+\]
+Its request tree, naming the two inner subexpressions, is
+\begin{align*}
+ C_X&=\operatorname{MP}(X,[Y\Rightarrow[Z\Rightarrow R]];
+          \operatorname{BaseCompatibility},\operatorname{Combine}),\\
+ C_Y&=\operatorname{MP}(Y,[Z\Rightarrow R];
+          \operatorname{StepCompatibility},C_X),\\
+ C_Z&=\operatorname{MP}(Z,R;\operatorname{OrdinalInduction},C_Y).
+ \tag{F13}
+\end{align*}
+Each MP includes exactly its $P_\mu$ query from (F9).
+Base compatibility is a requested guarded universal closure,
+followed by MP of the zero-instance formula comparison and the fixed
+instance-forward template.  Step compatibility is MP of a double
+requested universal closure of the successor comparison and the
+fixed step template.  Zero-instance and successor comparison invoke
+the already completed formula-realization builder and term
+suppliers.  The finite recipe files are
+\file{NumericPAeqInductionBaseCompatibility.lean},
+\file{NumericPAeqInductionStepCompatibility.lean},
+\file{NumericPAeqInductionSuccessorComparison.lean},
+\file{NumericPAeqFormulaZeroInstance.lean}, and
+\file{NumericPAeqFormulaSuccessorInstance.lean}.
+Their parameters are source formula/term codes and the displayed
+shifted vectors; none is a returned numerical proof value.
+
+For a canonical matrix $b$ with $m$ bound variables and witness
+$\operatorname{subst}(\operatorname{fvarVec}(m),b)
+ =\operatorname{targetIndBody}(p)$, let $B$ be an arbitrary valid
+target-term vector of length $m$.  Use the notation of
+\file{NumericPAeqCanonicalMatrixCertificate.lean}:
+\[
+ G=\operatorname{guard}(B,m),\quad
+ I_0=\operatorname{vectorInput}(m,0,0,B,B,\operatorname{fvarVec}(m)),
+\]
+\[
+ A=\operatorname{substitutedFormula}(0,B,\operatorname{fvarVec}(m),b),
+ \qquad R=\operatorname{originalFormula}(B,B,b).
+\]
+The actual constructor, naming its inner subexpressions, is
+\begin{align*}
+ C_0&=\operatorname{Comp}(G,I_0,\operatorname{Bi}(A,R);
+                 \operatorname{CanonicalInput},\operatorname{FormulaRealization}),\\
+ C_1&=\operatorname{Pair}(G,A,\operatorname{Bi}(A,R);
+                 \operatorname{InductionBody},C_0),\\
+ C_2&=\operatorname{Comp}(G,A\mathbin\&\operatorname{Bi}(A,R),R;
+                 C_1,\operatorname{UseBi}).
+ \tag{F14}
+\end{align*}
+All queries in (F14) include their (F9) label maps.  The canonical
+input proof uses the completed explicit vector/guard construction.
+The source identity of the induction-body antecedent follows from
+the supplied substitution equation; closed free-support identifies
+$R$ with the desired matrix.  Projecting
+$\operatorname{inputDomain}(m,B,f)$ to $G$ supplies arbitrary $f$.
+This is a completed supplier for $b$, not an induction hypothesis
+asserting supplies for all environments.
+
+For universal closure first fix a canonical witness packet
+$(m,p,K)$ with
+\begin{gather*}
+ \operatorname{IsSemiformula}_m(p),\quad
+ \operatorname{shift}(p)=p,\quad \operatorname{bv}(p)=m,\quad
+ \operatorname{IsSemiformula}_1(K),\\
+ \operatorname{subst}(\operatorname{fvarVec}(m),p)
+        =\operatorname{targetIndBody}(K).
+\end{gather*}
+Every request carries this entire packet unchanged.  Define a
+request $\mathcal M(m,p,K;k,s,b,f,\lambda)$, whose validity test
+also requires $s+k=m$, and whose output is a proof of
+\[
+ T_\lambda\bigl(\operatorname{matrixCode}
+                   (s,b,f,\operatorname{Alls}(p,k))\bigr).
+\]
+The packet gives source arity $s+k$ and no free variables.  At
+$k=0$ the invariant gives $s=m$, and (F14) applies with the
+recorded witness $K$.  This base case does not supply arbitrary
+closed matrices.
+For the $k+1$ case put $q=\operatorname{Alls}(p,k)$,
+$H_0=\operatorname{inputDomain}(s,b,f)$,
+\[
+ P_0=[D_0\Rightarrow
+       \operatorname{formulaSyntax}(\operatorname{binderParameters}(b,f),q)],
+ \quad A_0=\forall[H_0\Rightarrow P_0],\quad
+ B_0=[H_0\Rightarrow\forall P_0].
+\]
+Let $x=\operatorname{fvar}(0)$, $b'=x::\operatorname{sh}(b)$,
+$f'=\operatorname{sh}(f)$, and
+\begin{align*}
+ H&=\operatorname{inputDomain}(s,\operatorname{sh}(b),f'),&
+ D&=\operatorname{domainCode}(x),\\
+ I_0&=\operatorname{inputDomain}(s+1,b',f'),&
+ Q&=\operatorname{formulaSyntax}(b',f',q).
+\end{align*}
+The only same-family child is
+$\mathcal M(m,p,K;k,s+1,b',f',\lambda_4)$, where
+\begin{align*}
+ \lambda_1&=P_{\mu(A_0,B_0)}(\lambda),&
+ \lambda_2&=O_{[H_0\Rightarrow P_0]}(\lambda_1),\\
+ \lambda_3&=P_{\mu([H\mathbin\&D\Rightarrow Q],
+                         [H\Rightarrow[D\Rightarrow Q]])}(\lambda_2),&
+ \lambda_4&=P_{\kappa(H\mathbin\&D,I_0,Q)}(\lambda_3).
+ \tag{F15}
+\end{align*}
+The unchanged witness packet and $s+1+k=m$ validate this child.
+The other inputs are the fixed input-prepend, curry, and universal-
+curry templates.  These are the displayed cases of
+\file{NumericPAeqGuardedUniversalCertificate.lean} and
+\file{NumericPAeqGuardedAlls.lean}.  Rank $k$ strictly decreases
+and every parameter is calculated before the child proof is returned.
+The finite-demand proof therefore supplies the exact replacement
+for \file{matrixSupply_alls}.
+
+Finally, \file{targetInductionR}(q) has bounded witnesses
+$m,b\le q$ and an induction property
+$p\le\operatorname{subst}(\operatorname{fvarVec}(m),b)$.
+The remaining tests are source syntax, $q=\operatorname{Alls}(b,m)$,
+$\operatorname{shift}(b)=b$, $\operatorname{bv}(b)=m$, and the
+displayed opened-body equality.  Decode it by bounded search over
+these bounds.  The last bound is on the computed opened-body code;
+it is not silently replaced by $q$.  Thus the induction-axiom
+dispatcher has a primitive recursive witness extractor.
+Apply (F15) at $k=m,s=0$ and then MP with the fixed proof of
+$\operatorname{inputDomain}(0,0,0)=\top\mathbin\&\top$.
+Closed free-support removes the arbitrary vector $f$.  This supplies
+the literal \file{formulaSyntax} image of every ordinary induction
+axiom at every covered requested label tuple.
+
+\subsection{The outer ordinary-PAeq proof compiler}
+
+Write $S_f(s)$ for the arithmetic-formula sequent fold at source
+term environment $f$ and
+$J_f(s)=[\operatorname{freeDomain}(f)\Rightarrow S_f(s)]$.
+A request $(d,f,\lambda)$ assumes that $d$ is a valid ordinary-PAeq
+derivation, $f$ is a vector of valid arity-zero relational terms,
+$d\le|f|$, and $J_f(\operatorname{fstIdx}(d))$ is covered at
+$\lambda$.  The output is a direct proof of that translated
+guarded sequent.  The proof-child code is the recursion rank.
+
+The exact requested-child maps are as follows.  Here $t,u$ denote
+the actual child sequents; they are read from the proof node, not
+chosen by proof search.
+\begin{center}\small
+\begin{tabular}{p{0.18\linewidth}p{0.71\linewidth}}
+Rule & Recursive request(s)\\ \hline
+Identity or truth & None; NNF normalization and the finite sequent member templates.\\
+Conjunction or cut & The two actual proof children, with the same $f$, at $P_{\max(J_f(t),J_f(u))}(\lambda)$.\\
+Disjunction or weakening & Its single proof child at $P_{J_f(t)}(\lambda)$; the binary-lift recipe can reuse that one output.\\
+Existential & Its actual proof child with $f$ unchanged at $P_{\max(J_f(t),\operatorname{existentialRuleCode}(f,p,v))}(\lambda)$.\\
+Shift & Write $f=x::f_0$; request the proof child with $f_0$ at $P_{J_{f_0}(t)}(\lambda)$.\\
+Axiom & No proof child; request the fixed/induction axiom supplier at $P_{\operatorname{formulaSyntax}(0,f,p)}(\lambda)$.\\
+Universal & The single proof child with $f'=x::\operatorname{sh}(f)$ at $\lambda_6$ defined below.\\
+\end{tabular}
+\end{center}
+These are the literal rules in
+\file{NumericPAeqSequentDerivationStep.lean},
+\file{RequestedLift.lean}, \file{RequestedLeaves.lean},
+\file{ExsRule.lean}, and \file{ShiftRule.lean}, with the prefix
+\file{NumericPAeqSequent} on each shortened filename.
+
+For the universal rule let $p$ be its body, $s$ its parent sequent,
+$H_0=\operatorname{freeDomain}(f)$, $S=S_f(s)$,
+$A=\operatorname{formulaSyntax}(0,f,\forall p)$,
+$J=A\lor S$, and
+\[
+ W=[H_0\Rightarrow[D_0\Rightarrow
+          (\operatorname{property}(f,p)\lor S)]],\qquad
+ R=[H_0\Rightarrow J].
+\]
+Put $x=\operatorname{fvar}(0)$, $f'=x::\operatorname{sh}(f)$,
+$H=\operatorname{freeDomain}(\operatorname{sh}(f))$,
+$D=\operatorname{domainCode}(x)$,
+$I_0=\operatorname{freeDomain}(f')$, and
+\[
+ C=\operatorname{Free}(\operatorname{property}(f,p))
+                   \lor\operatorname{shift}(S).
+\]
+Then the actual child labels are
+\begin{align*}
+ \lambda_1&=P_{\kappa(H_0,J,S)}(\lambda),\\
+ \lambda_2&=P_{\mu(\forall W,R)}(\lambda_1),\\
+ \lambda_3&=O_W(\lambda_2),\\
+ \lambda_4&=P_{\mu([H\mathbin\&D\Rightarrow C],
+                       [H\Rightarrow[D\Rightarrow C]])}(\lambda_3),\\
+ \lambda_5&=P_{\kappa(H\mathbin\&D,I_0,C)}(\lambda_4),\\
+ \lambda_6&=P_{J_{f'}(\{\operatorname{Free}(p)\}\cup
+                          \operatorname{setShift}(s))}(\lambda_5).
+ \tag{F16}
+\end{align*}
+The finite source-sequent shift/fold templates identify the actual
+child context with this formula.  The universal-context recipe then
+uses input-prepend, curry, and its fixed uniform template.  This is
+\file{NumericPAeqUniversalContextCertificate.lean},
+\file{NumericPAeqUniversalContextOpening.lean}, and
+\file{NumericPAeqSequentAllRule.lean}.
+
+All proof children are $<d$.  The source proof-budget conditions
+descend because the unchanged vector has length at least $d$;
+the eigenvector gains one entry; the shift tail loses one entry
+but its child is strictly smaller.  A source term in an existential
+node has code below its parent proof code, so its free support is
+covered.  Every requested native formula has its needed code bound
+from (F9), (F10), or the explicit maxima in the table.  The target
+syntax/support identities are the completed finite syntax
+constructions.  These facts prove the local coverage invariant
+without an all-environments induction.
+
+The existential parent uses an arbitrary-term totality proof and
+the completed formula realization for its source substitution,
+then its fixed existential template.  The axiom parent invokes the
+finite fixed-axiom case split or the completed (F13)--(F15) induction
+supplier.  Neither calls this ordinary-proof compiler.  Thus the
+finite-demand algorithm on $d$, using the exact table and (F16),
+defines a total primitive recursive requested-sequent translator.
+The reverse evaluation invariant proves its correctness in the
+weak base.
+
+\subsection{Discharging the domain guard and proving (F1)}
+
+Given an ordinary-PAeq refutation code $d$, choose the relational
+source environment $f$ of length $d$ all of whose entries are
+$x=\operatorname{fvar}(0)$.  It satisfies the source proof budget.
+The outer compiler supplies the guarded singleton-false sequent.
+The explicit repeated-domain loop in the companion term section
+gives
+$\operatorname{domainCode}(x)\to\operatorname{freeDomain}(f)$:
+its zero case is truth weakening and its successor case pairs the
+previous arrow with identity.  Thus it does not need an unspecified
+array of domain witnesses.
+
+The singleton sequent fold and requested composition give
+$\operatorname{domainCode}(x)\to\bot$.
+Requested universal closure gives
+$\forall x(\operatorname{domainCode}(x)\to\bot)$.
+The fixed closed inhabited-zero leaf is
+$\exists x(\operatorname{domainCode}(x)\land\operatorname{zeroCode}(x))$.
+The finite \file{domainContradiction} template and two requested
+MP operations yield the source false formula, whose numerical
+translation is literally $1$.
+These are the exact joins in
+\file{NumericPAeqBottomGuardDischarge.lean},
+\file{NumericPAeqBottomDomainCertificate.lean}, and
+\file{NumericPAeqRefutationTransport.lean}.
+Start the requested final false formula at a zero-label vector of
+length its source code, allocator $1$, and reserve one plus that
+code; all (F5) conditions hold.  Expanding the displayed requested
+composition/MP/universal operations fixes every upstream request
+label by (F6), (F9), and (F10).  No choice is left to a proof oracle.
+
+Define $F(d)$ to be this composition of the finite-demand builders,
+with zero as its arbitrary default output when an input validity
+test fails.  Its complete stratum order is:
+\begin{enumerate}
+\item primitive source syntax, list checking, and the finite logical
+      recipes including (F2)--(F3);
+\item source translation, syntax joins, NNF, vacuity, renaming,
+      binder alpha, allocator/reserve relocation, and finite HFS folds;
+\item generic relational LK, finite template instantiation/discharge,
+      the fixed closed seeds, and arbitrary-property separation;
+\item arithmetic value/formula syntax and its finite substitution
+      joins; term projections, totality, coherence, uniqueness, and
+      vector realization as in the companion term section;
+\item arithmetic formula realization (F11)--(F12);
+\item ordinal induction, canonical induction body and matrix
+      (F13)--(F14), universal matrix closure (F15), and ordinary
+      axiom dispatch;
+\item the ordinary proof compiler and its universal child map (F16),
+      followed by the explicit bottom/domain discharge.
+\end{enumerate}
+The few syntax constructions used in an earlier item can be moved
+before all proof strata: their recursive calls are entirely on
+syntax and have no certificate supplier.  Within every genuine
+proof recursion the rank decreases along the displayed same-family
+edges; every other edge goes to a previously completed stratum.
+All variable-length leaves are bounded scans or term/formula
+recursions already listed.  The remaining leaves are fixed recipes,
+with all their assumptions supplied above.  This proves (F1).
+
+\paragraph{What is and is not imported from the stronger development.}
+The original arbitrary-formula realization theorem and
+\file{matrixSupply_alls} used full-PA induction on unbounded
+families of environments; other source relocation and sequent
+theorems did likewise.  The proof here imports their explicit
+constructor equations and finite parent proof recipes, replaces
+their noncomputable witness interfaces by the displayed algorithms,
+and proves correctness on finite query tables.  It does not cite
+those stronger induction conclusions as weak-base lemmas.  The
+fixed standard native proofs are cited as finite derivation data
+after the exact diagonal-interface replacement.  That distinction
+is what permits a weak-base calibration while leaving the upstream
+Lean status unchanged.
+
+For $\mathcal C_{4Q}$ replace $h_6$ by its antecedent-exchanged head.
+The finite restricted-propositional exchange constructor above
+recovers either order from the other.  Replacing each such head
+row by that finite proof-list expansion gives the corresponding
+primitive recursive translator and the same theorem (F1) with
+$\operatorname{C4QProof}$.

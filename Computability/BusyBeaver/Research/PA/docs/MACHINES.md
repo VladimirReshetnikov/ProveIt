@@ -1,6 +1,6 @@
 # Machines in the delivered packets
 
-The packets of this directory contain 22,028 machine tables in files named `*.tm`. Most of
+The packets of this directory contain 26,242 machine tables in files named `*.tm`. Most of
 them repeat a machine that another file already gives: packets quote one another, keep
 censuses of earlier tables, and ship the same machine under several state numberings.
 This page lists the distinct machines. A table that repeats a kept machine is removed
@@ -46,18 +46,18 @@ in another encoding, for example inside a JSON file, are not examined.
 
 | | |
 |---|---:|
-| Table files in the 106 packets | 22,028 |
-| Distinct file contents | 1,617 |
-| Classes | 1192 |
-| Classes whose kept file has a start | 579 |
-| Classes whose kept file declares no start | 613 |
-| Files kept here | 1191 |
+| Table files in the 112 packets | 26,242 |
+| Distinct file contents | 1,739 |
+| Classes | 1295 |
+| Classes whose kept file has a start | 655 |
+| Classes whose kept file declares no start | 640 |
+| Files kept here | 1294 |
 | Classes kept in the upstream snapshot instead | 1 |
-| Files removed: same bytes as the kept file | 16,102 |
+| Files removed: same bytes as the kept file | 19,945 |
 | Files removed: states renamed, same start | 1,606 |
-| Files removed: states renamed, the file declares no start | 2,835 |
-| Files removed: states renamed, the kept file declares no start | 199 |
-| Files removed: states renamed, state 0 of the file is not the start of the kept file | 95 |
+| Files removed: states renamed, the file declares no start | 3,090 |
+| Files removed: states renamed, the kept file declares no start | 204 |
+| Files removed: states renamed, state 0 of the file is not the start of the kept file | 103 |
 
 The kept file of a class is one with a start if there is one, from the packet that
 arrived first; among several, a file outside census, reference and input directories is
@@ -69,14 +69,14 @@ Classes by number of states reachable from the start:
 
 | States | 1 | 2 | 3 | 4 | 8 | 13 | 130 | 131 | 132 | 193 | 194 | 195 | 196 | 197 | 198 | 199 | 200 | 201 | 202 | 203 | 204 | 205 | 206 | 207 | 208 | 209 | 210 | 211 | 212 | 213 | 214 | 215 | 217 | 218 | 219 | 220 | 221 | 222 |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Classes | 15 | 7 | 6 | 6 | 1 | 1 | 1 | 3 | 1 | 61 | 548 | 31 | 106 | 16 | 5 | 4 | 3 | 23 | 45 | 16 | 5 | 1 | 2 | 58 | 142 | 13 | 19 | 12 | 14 | 9 | 4 | 3 | 2 | 1 | 3 | 3 | 1 | 1 |
+| Classes | 15 | 7 | 6 | 6 | 1 | 1 | 3 | 6 | 1 | 67 | 624 | 31 | 106 | 16 | 6 | 4 | 4 | 30 | 49 | 17 | 7 | 1 | 2 | 58 | 142 | 13 | 19 | 12 | 14 | 9 | 4 | 3 | 2 | 1 | 3 | 3 | 1 | 1 |
 
 ## Tables that the packets' READMEs name
 
-A packet usually names its proposed tables in its README. The 152 table files named in the
-READMEs of 80 packets are 113 distinct classes. This is the closest mechanical reading of
+A packet usually names its proposed tables in its README. The 159 table files named in the
+READMEs of 83 packets are 120 distinct classes. This is the closest mechanical reading of
 "the machines the packets propose"; a README also names tables that the packet rejects or
-only compares, and the names of the files show most of those. The other 26 packets name no
+only compares, and the names of the files show most of those. The other 29 packets name no
 table file in their README.
 
 | States | Class | Kept file | Named by |
@@ -161,6 +161,13 @@ table file in their README.
 | 194 | `91b032a43f98` | [`pa194_ax11hc4_c32_research_2026-11-15/construction/cycle32/pa194_cycle32.tm`](pa194_ax11hc4_c32_research_2026-11-15/construction/cycle32/pa194_cycle32.tm) | `pa194_ax11hc4_c32_research_2026-11-15`: `construction/cycle32/pa194_cycle32.tm` |
 | 194 | `bbd2e4784203` | [`pa194_research_2026-11-14_1/machines/PA194GD_SF/machine.tm`](pa194_research_2026-11-14_1/machines/PA194GD_SF/machine.tm) | `pa194_research_2026-11-14_1`: `machines/PA194GD_SF/machine.tm` |
 | 194 | `e333e572ddfd` | [`PA194ORH_research_2026-11-15/machines/PA194ORH/machine.tm`](PA194ORH_research_2026-11-15/machines/PA194ORH/machine.tm) | `PA194ORH_research_2026-11-15`: `machines/PA194ORH/machine.tm` |
+| 194 | `1219042e685c` | [`PA194ORMP_ORMPLC3_research_2026-11-14/PA194ORMP.tm`](PA194ORMP_ORMPLC3_research_2026-11-14/PA194ORMP.tm) | `PA194ORMP_ORMPLC3_research_2026-11-14`: `PA194ORMP.tm` |
+| 194 | `1cc0b167b1db` | [`pa194_fused_witness_research_2026-11-15/companions/machines/PA194FW_MF/machine.tm`](pa194_fused_witness_research_2026-11-15/companions/machines/PA194FW_MF/machine.tm) | `pa194_fused_witness_research_2026-11-15`: `companions/machines/PA194FW_MF/machine.tm` |
+| 194 | `2c169c80ba75` | [`PA194ORMP_ORMPLC3_research_2026-11-14/PA194ORMPLC3.tm`](PA194ORMP_ORMPLC3_research_2026-11-14/PA194ORMPLC3.tm) | `PA194ORMP_ORMPLC3_research_2026-11-14`: `PA194ORMPLC3.tm` |
+| 194 | `4c4bec344603` | [`pa194_fused_witness_research_2026-11-15/companions/machines/PA194JH5XS_MF/machine.tm`](pa194_fused_witness_research_2026-11-15/companions/machines/PA194JH5XS_MF/machine.tm) | `pa194_fused_witness_research_2026-11-15`: `companions/machines/PA194JH5XS_MF/machine.tm` |
+| 194 | `94f0b2e30a4d` | [`PA194GS_research_2026-11-15/machine/machine.tm`](PA194GS_research_2026-11-15/machine/machine.tm) | `PA194GS_research_2026-11-15`: `machine/machine.tm` |
+| 194 | `96e9e6a81ad7` | [`pa194_fused_witness_research_2026-11-15/companions/machines/PA194H5XS_MF/machine.tm`](pa194_fused_witness_research_2026-11-15/companions/machines/PA194H5XS_MF/machine.tm) | `pa194_fused_witness_research_2026-11-15`: `companions/machines/PA194H5XS_MF/machine.tm` |
+| 194 | `ac808994cb36` | [`pa194_fused_witness_research_2026-11-15/primary/machines/PA194FW/machine.tm`](pa194_fused_witness_research_2026-11-15/primary/machines/PA194FW/machine.tm) | `pa194_fused_witness_research_2026-11-15`: `primary/machines/PA194FW/machine.tm` |
 | 195 | `654ddcd43007` | [`pa_consistency_research/data/rejected195.native.tm`](pa_consistency_research/data/rejected195.native.tm) | `pa_consistency_research`: `data/rejected195.native.tm` |
 | 195 | `a76ce33e76ac` | [`pa195_conpa_2026-11-13/pa195/pa195.tm`](pa195_conpa_2026-11-13/pa195/pa195.tm) | `pa195_conpa_2026-11-13`: `pa195/pa195.tm` |
 | 195 | `4f5d8b016ec2` | [`PA195_ConPA_research_2026-11-14/machine_195C.tm`](PA195_ConPA_research_2026-11-14/machine_195C.tm) | `PA195_ConPA_research_2026-11-14`: `machine_195C.tm` |
@@ -212,11 +219,11 @@ table file in their README.
 
 ## Files
 
-- [`MACHINES.tsv`](MACHINES.tsv): one row for each of the 1192 classes, with the number of states, the
+- [`MACHINES.tsv`](MACHINES.tsv): one row for each of the 1295 classes, with the number of states, the
   packet that delivered it first, the kept file, in how many packets and files it occurred,
   the file names it had, files of the research tree with the same table, and the hash
   that does not depend on the start (`table_class`).
-- [`MACHINE_FILES.tsv`](MACHINE_FILES.tsv): one row for each of the 22,028 table files as delivered, with its
+- [`MACHINE_FILES.tsv`](MACHINE_FILES.tsv): one row for each of the 26,242 table files as delivered, with its
   SHA-256, its class, its start and whether it is kept.
 - [`machine_classes.py`](machine_classes.py): prints the hashes of a table.
 

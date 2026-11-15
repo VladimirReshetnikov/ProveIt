@@ -1,0 +1,44 @@
+{
+  "reviewed_package": "pa194_om_research_2026-11-14",
+  "review_scope": "Read-only inspection of construction/build.py, vendor/support.py, vendor/source.py, and verification/check_physical.py, with separate comparisons of delivered data. This is a focused construction review, not a second end-to-end arithmetic calibration or a replay of all physical source contracts.",
+  "status": "PASS_WITH_MINOR_WORDING_NOTE",
+  "source_binding": {
+    "parent_sites": 3671,
+    "orh_sites": 3671,
+    "om_sites": 3671,
+    "all_resolved_primitive_instructions_identical_to_ax11h": true,
+    "all_source_operations_and_arguments_identical": true,
+    "orh_address_changes_against_ax11h": 134,
+    "om_address_changes_against_orh": 87,
+    "om_address_changes_against_ax11h": 154,
+    "overlap_of_address_changes": 67,
+    "maximum_address_length": 37,
+    "initial_source_site_25_unchanged": true
+  },
+  "physical_binding": {
+    "native_start": 74,
+    "source_boundary_state": 84,
+    "native_terminal": 254,
+    "dense_start": 0,
+    "dense_terminal": 194,
+    "raw_states_per_machine": 201,
+    "fixed_raw_controls": 135,
+    "axiom_reader_controls": 66,
+    "disjoint_history_folds": 7,
+    "final_states_per_machine": 194,
+    "final_rows_per_machine": 388,
+    "both_raw_tables_fold_to_their_exact_delivered_native_tables": true,
+    "sf_edits_present_in_omf_raw_table_before_fold_application": true,
+    "omf_raw_differences_against_om": [
+      {"row":[26,1],"old":[1,"R",42],"new":[1,"R",91]},
+      {"row":[101,0],"old":[0,"L",26],"new":[0,"R",17]},
+      {"row":[104,1],"old":[1,"R",124],"new":[1,"R",127]},
+      {"row":[124,0],"old":[0,"R",62],"new":[0,"R",8]},
+      {"row":[124,1],"old":[1,"R",138],"new":[1,"R",59]},
+      {"row":[127,0],"old":[0,"R",14],"new":[0,"L",124]}
+    ]
+  },
+  "startup_review": "The builder starts from an empty finite-support set and requires literal equality of the whole tape, control84 and head-2 with the canonical site25 frame. The dense-label generator begins at native74 and verifies all194 working controls are graph-reachable. The independent checker separately binds dense and native tables and reconstructs the exact full startup frame.",
+  "proof_boundary_review": "Builder receipts correctly distinguish finite reconstruction/source binding/local folds/startup from uniform physical simulation and arithmetic calibration. No newly completed Lean endpoint is claimed by the inspected builder.",
+  "minor_wording_note": "The opening docstring of verification/check_physical.py still calls the candidates loop-continuation outputs; update it to OM/OMF outputs."
+}

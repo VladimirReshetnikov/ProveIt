@@ -1,0 +1,228 @@
+{
+  "batches": [
+    {
+      "family": "noncircular_r7_f31_batch",
+      "machines": 13,
+      "all_successful_runs": true,
+      "merge_hits": 0,
+      "seconds": 2.228097142993647,
+      "enumeration": "All parameter choices admitted by the named finite search and its prefilter; not all possible machine transformations.",
+      "row_actions_screened_per_machine": 302640,
+      "row_actions_screened_total": 3934320
+    },
+    {
+      "family": "noncircular_r9_f129_batch",
+      "machines": 13,
+      "all_successful_runs": true,
+      "merge_hits": 0,
+      "seconds": 12.251743450011418,
+      "enumeration": "All parameter choices admitted by the named finite search and its prefilter; not all possible machine transformations.",
+      "row_actions_screened_per_machine": 302640,
+      "row_actions_screened_total": 3934320
+    },
+    {
+      "family": "recursive_folds_r8_f31_batch",
+      "machines": 13,
+      "all_successful_runs": true,
+      "merge_hits": 0,
+      "seconds": 762.863621362987,
+      "enumeration": "All parameter choices admitted by the named finite search and its prefilter; not all possible machine transformations.",
+      "unordered_control_pairs_per_machine": 18721,
+      "joint_action_pairs_checked": 15181260
+    }
+  ],
+  "additional_runs": [
+    {
+      "family": "AX11H_raw201_positive",
+      "input": "inputs/AX11H_raw201.native.tm",
+      "input_sha256": "60a560a90db1b698ba8b1456917dc4fd3c5156901e2b90f3ab0262c50010aa3b",
+      "engine": "noncircular",
+      "radius": 7,
+      "fuel": 31,
+      "matches": [
+        "MERGE 2014 2060 -> 0 -1 2050 ; 1 -1 2064 maxsteps 3 start 74",
+        "MERGE 2015 2037 -> 0 -1 2044 ; 1 1 2017 maxsteps 3 start 74",
+        "MERGE 2016 2052 -> 0 1 166 ; 1 -1 2005 maxsteps 3 start 74",
+        "MERGE 2018 2027 -> 0 1 90 ; 1 -1 2020 maxsteps 3 start 74",
+        "MERGE 2019 2055 -> 0 -1 2059 ; 1 -1 2056 maxsteps 3 start 74",
+        "MERGE 2022 2032 -> 0 -1 2002 ; 1 1 61 maxsteps 3 start 74",
+        "MERGE 2022 2032 -> 0 -1 2002 ; 1 -1 190 maxsteps 3 start 74",
+        "MERGE 2024 2046 -> 0 -1 2033 ; 1 1 2028 maxsteps 3 start 74"
+      ],
+      "stderr": "N 201 radius 7 contexts 883959\nrow_candidates 324816 valid_options 872 merges 8 elapsed 0.0618365\n"
+    },
+    {
+      "family": "Gate194_r9_f129",
+      "input": "inputs/Gate194.native.tm",
+      "input_sha256": "adef88c26ecaa0ab570e10a915fdf2e22a7c0b546fdac9deb1be9427350e60ee",
+      "engine": "noncircular",
+      "radius": 9,
+      "fuel": 129,
+      "matches": [],
+      "stderr": "N 194 radius 9 contexts 10650383\nrow_candidates 302640 valid_options 739 merges 0 elapsed 1.43561\n"
+    },
+    {
+      "family": "H5XS_cf_r7_o3_n15",
+      "input": "inputs/PA194H5XS.native.tm",
+      "input_sha256": "1070c2f4fd14a5d07ec258c3fa547a3114fe348fb6d65ae114e21c16c456866b",
+      "engine": "commonfuture",
+      "radius": 7,
+      "oldfuel": 3,
+      "newfuel": 15,
+      "matches": [],
+      "stderr": "N 194 radius 7 contexts 945146 oldfuel 3 newfuel 15\njoint_actions_tested 1133377 merges 0 elapsed 69.7623\n"
+    },
+    {
+      "family": "Gate194_cf_r7_o3_n15",
+      "input": "inputs/Gate194.native.tm",
+      "input_sha256": "adef88c26ecaa0ab570e10a915fdf2e22a7c0b546fdac9deb1be9427350e60ee",
+      "engine": "commonfuture",
+      "radius": 7,
+      "oldfuel": 3,
+      "newfuel": 15,
+      "matches": [],
+      "stderr": "N 194 radius 7 contexts 904001 oldfuel 3 newfuel 15\njoint_actions_tested 1202033 merges 0 elapsed 50.3527\n"
+    }
+  ],
+  "iterated_closures": [
+    {
+      "input": "inputs/ORH201.native.tm",
+      "input_sha256": "c0b3b43ead2560ccd900bc26d2470fd076794f7dfe5bba2e42b73d30df07fda0",
+      "name": "ORH201",
+      "radius": 7,
+      "fuel": 31,
+      "max_nodes": 5000,
+      "processed": 192,
+      "unique_rooted_graphs": 192,
+      "remaining_queue": 0,
+      "minimum_states": 194,
+      "sub194_found": false,
+      "exhausted": true,
+      "processed_by_states": {
+        "201": 1,
+        "200": 8,
+        "199": 27,
+        "198": 50,
+        "197": 55,
+        "196": 36,
+        "195": 13,
+        "194": 2
+      },
+      "elapsed_seconds": 11.675694611003564,
+      "strategy": "bfs",
+      "scope": "Iterated noncircular folds at the recorded bounds, with rooted graph deduplication and native start74 retained.",
+      "classification": "exhausted this finite search closure",
+      "omitted_graph_ledger": {
+        "entries": 192,
+        "original_full_receipt_sha256": "99bef957cde6cd8d114279c276d936a63ee8aefbde6bc1f1aaf232c28d0f762c",
+        "reason": "Intermediate tables and full parent ledger omitted for compactness; reproduce with fold_closure.py."
+      }
+    },
+    {
+      "input": "inputs/MP201.native.tm",
+      "input_sha256": "acd2bdc0026d66b9b69b7b9dbd477a546e2d6a321c0671c2296e77e679b1b5e9",
+      "name": "MP201",
+      "radius": 7,
+      "fuel": 31,
+      "max_nodes": 5000,
+      "processed": 192,
+      "unique_rooted_graphs": 192,
+      "remaining_queue": 0,
+      "minimum_states": 194,
+      "sub194_found": false,
+      "exhausted": true,
+      "processed_by_states": {
+        "201": 1,
+        "200": 8,
+        "199": 27,
+        "198": 50,
+        "197": 55,
+        "196": 36,
+        "195": 13,
+        "194": 2
+      },
+      "elapsed_seconds": 29.516118434003147,
+      "strategy": "bfs",
+      "scope": "Iterated noncircular folds at the recorded bounds, with rooted graph deduplication and native start74 retained.",
+      "classification": "exhausted this finite search closure",
+      "omitted_graph_ledger": {
+        "entries": 192,
+        "original_full_receipt_sha256": "ffa763ae665c9263ed4298807f985e945872d9512f174f2ca4427086bdbd1e90",
+        "reason": "Intermediate tables and full parent ledger omitted for compactness; reproduce with fold_closure.py."
+      }
+    },
+    {
+      "input": "inputs/H5XS204.native.tm",
+      "input_sha256": "3871cab38077e8ad84fa960f0db5382b42de2ad53f8b9bfcb38277fced2df69b",
+      "name": "H5XS204",
+      "radius": 7,
+      "fuel": 31,
+      "max_nodes": 5000,
+      "processed": 5000,
+      "unique_rooted_graphs": 6600,
+      "remaining_queue": 1600,
+      "minimum_states": 197,
+      "sub194_found": false,
+      "exhausted": false,
+      "processed_by_states": {
+        "204": 1,
+        "203": 17,
+        "202": 120,
+        "201": 471,
+        "200": 1148,
+        "199": 1823,
+        "198": 1420
+      },
+      "elapsed_seconds": 783.9025625130016,
+      "strategy": "bfs",
+      "scope": "Iterated noncircular folds at the recorded bounds, with rooted graph deduplication and native start74 retained.",
+      "classification": "budget-limited; unprocessed queue remains",
+      "omitted_graph_ledger": {
+        "entries": 6600,
+        "original_full_receipt_sha256": "b03171c0e2c2848bd903965948d13e05bc5beb57d2b7b4bb496130339d2c4403",
+        "reason": "Intermediate tables and full parent ledger omitted for compactness; reproduce with fold_closure.py."
+      }
+    },
+    {
+      "input": "inputs/H5XS204.native.tm",
+      "input_sha256": "3871cab38077e8ad84fa960f0db5382b42de2ad53f8b9bfcb38277fced2df69b",
+      "name": "H5XS204_DFS",
+      "radius": 7,
+      "fuel": 31,
+      "max_nodes": 5000,
+      "strategy": "dfs",
+      "processed": 5000,
+      "unique_rooted_graphs": 5045,
+      "remaining_queue": 45,
+      "minimum_states": 194,
+      "sub194_found": false,
+      "exhausted": false,
+      "processed_by_states": {
+        "204": 1,
+        "203": 2,
+        "202": 20,
+        "201": 135,
+        "200": 494,
+        "199": 1073,
+        "198": 1435,
+        "197": 1161,
+        "196": 539,
+        "195": 128,
+        "194": 12
+      },
+      "elapsed_seconds": 738.697701416997,
+      "scope": "Iterated noncircular folds at the recorded bounds, with rooted graph deduplication and native start74 retained.",
+      "classification": "budget-limited; unprocessed queue remains",
+      "omitted_graph_ledger": {
+        "entries": 5045,
+        "original_full_receipt_sha256": "5daa9c6247f0524eda642eb7e31b2c16a4618c80560d49bfac956623189a9b89",
+        "reason": "Intermediate tables and full parent ledger omitted for compactness; reproduce with fold_closure.py."
+      }
+    }
+  ],
+  "outcome": "No machine below194 or additional reduction of a completed194-state input was found. AX11H201 is a positive control recovering seven known merge pairs (eight action choices).",
+  "scope": "Exhaustive only for stated parameter families after their explicit prefilters; finite negative results are not state-count lower bounds. The H5XS204 BFS and DFS closures each stopped after5000 processed graphs and are not exhaustive.",
+  "corpus_overlap": "The two noncircular batches and circular batch use the same13 inputs; do not add their case counts as distinct machines.",
+  "portable_recheck": "receipts/portable_rechecks.json",
+  "positive_control_rechecked_at_radius7_fuel31": true
+}

@@ -1,0 +1,112 @@
+\subsection{Independent audit of the explicit witness polynomial}
+\label{sec:polynomial-witness-audit}
+
+For the two delivered literal tables, the common bound and its
+time-witness substitution are
+\[
+ \mathcal B(k)=57922+698k+9k(k-1)=57922+9k^2+689k,
+ \qquad
+ P(t)=\mathcal B(t+1)=9t^2+707t+58620.                         \tag{W1}
+\]
+The expanded forms in (W1) have only nonnegative integer coefficients;
+they therefore define primitive recursive natural-number functions
+without subtraction, division, or a rounding convention.  The
+unexpanded $k(k-1)$ notation at $k=0$ can equivalently use truncated
+predecessor, since it is multiplied by zero.
+
+Here is the complete arithmetic justification and halting convention.
+Let $z_k=F^k(z_*)$ be the common extended source run.  Executing the
+\texttt{CH} instruction produces the absorbing state $H$; a live state
+whose next instruction is \texttt{CH} is not yet $H$.  The literal
+\texttt{CH} contract has duration exactly three.  Use the stopped-clock
+convention $D_j(H)=0$, and let
+\[
+ \tau_j(0)=0,\qquad
+ \tau_j(k+1)=\tau_j(k)+D_j(z_k).
+                                                               \tag{W2}
+\]
+For a live state $z=(i,R_0,\ldots,R_8,n,Q)$ with $Q=[s]X$, the
+13 affine variables have values
+\[
+                   (1,n,x_0,\ldots,x_8,s,W(X)).
+\]
+For a positive decrement, the affected variable is $R_a-1$;
+every register-variable slot is consequently at most its corresponding
+$R_a$.  The recorded coefficient maximum
+\[
+ (534,8,4,4,4,4,4,4,2,4,4,2,2)
+\]
+and $s+W(X)\le W(Q)=s+2+W(X)$ give
+\[
+ 3\le D_j(z)\le534+8n+4\sum_{a<9}R_a+2W(Q).          \tag{W3}
+\]
+The initial register sum is two, initial slack is zero, and the 26
+initial spare entries each have width three.  An instruction increases
+the register sum by at most one; only a positive decrement increases
+slack, by one; and only an increment appends a spare entry of width
+three.  Quantifier-free induction therefore gives, while live,
+\[
+ n_k\le k,\qquad \sum_aR_{a,k}\le2+k,
+ \qquad W(Q_k)\le78+3k.
+\]
+Set the auxiliary selectors to zero at $H$.  Equations (W2)--(W3)
+then yield for all $k$
+\[
+ 0\le D_j(z_k)\le698+18k,\qquad
+ \tau_j(k)\le9k^2+689k.                              \tag{W4}
+\]
+For the latter induction one can use directly the identity
+\[
+ [9(k+1)^2+689(k+1)]-[9k^2+689k]=698+18k,
+\]
+or its subtraction-free rearrangement.  Thus no summation with an
+ambiguous division by two is needed.
+
+The exact literal contracts, complete source-frame closure, and exact
+57922-step startups prove by quantifier-free induction
+\[
+ \operatorname{Run}_j(57922+\tau_j(k),\mathrm{blank})=E_j(z_k).
+                                                               \tag{W5}
+\]
+The physical run is arithmetically made absorbing after the separate
+halt control is first entered.  This defines the same literal halting
+predicate and adds no working control to the machine.  As a second
+quantifier-free invariant, source absorption and positive live durations
+give
+\[
+                 z_k\ne H\quad\Longrightarrow\quad
+                 \tau_j(k)\ge3k.                    \tag{W6}
+\]
+There is no assertion that the stopped clock remains unbounded after
+source halt.
+
+Let $h_j(t)$ mean that the absorbing literal run is halted after $t$
+transitions from blank.  If $h_j(t)$ and $z_{t+1}\ne H$, (W6) puts
+the time on the left of (W5) strictly after $t$.  Absorption makes
+that side halted, whereas the right side is a live frame at control
+84, a contradiction.  Equality with the source halt code is decidable,
+so intuitionistic logic concludes $z_{t+1}=H$.  Applying (W5) to the
+other machine and then (W4) and absorption proves
+\[
+ \mathsf{iPRA}\vdash
+ h_0(t)\longrightarrow h_1(P(t)),
+ \qquad
+ \mathsf{iPRA}\vdash
+ h_1(t)\longrightarrow h_0(P(t)).                    \tag{W7}
+\]
+The extra source step in $t+1$ safely covers the transition from the
+live \texttt{CH} site to $H$.  The proof uses a decidable case split,
+not double-negation elimination for an arbitrary proposition, Markov's
+principle, or an unbounded search for a source boundary.
+
+\paragraph{Integer and address arithmetic.}
+The finite inspectors use Python's arbitrary-precision integers;
+the coefficient and polynomial calculations contain no floating-point
+arithmetic or fixed-width numerical overflow.  The source-address
+increment deliberately reduces modulo $2^{|p|}$ and returns a separate
+overflow flag.  This is a different issue: the inspector checks that
+flag is zero for every nonhalting outcome, checks zero net head motion,
+and checks equality of the complete padded successor address with the
+target source address.  Those finite checks justify the ordinary
+slack update used above.  They do not assume a finite bound on any
+register value, list value, or physical running time.

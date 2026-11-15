@@ -1,0 +1,212 @@
+\section{A uniform relative theorem in iPRA}
+\label{sec:relative}
+This section proves the new mathematical obligation directly from literal
+rows. It does not assume any consistency statement or any theorem about the
+register-program compiler. Let $P$ be either supplied witness-calculus parent,
+$F$ its accelerated table, and $M$ the delivered marker-separated table.
+Native start is 74 and native halt is 254 throughout. In particular, native
+label 194 is an ordinary working control; it is not the halt label.
+
+\subsection{The two accelerations}
+The first transformation changes precisely
+\[
+ (26,1):1R42\longmapsto1R91,
+ \qquad (101,0):0L26\longmapsto0R17.
+\]
+All other rows are copied. Here $wDq$ means write $w$, move in direction
+$D$, and enter $q$. The unchanged old detours are
+\[
+\begin{array}{c|c}
+\text{row}&\text{old action}\\\hline
+(42,0)&0R13\\
+(13,0)&0L91\\
+(26,0)&0R194\\
+(194,0)&0R17.
+\end{array}
+\]
+We must justify the bits read on those detours, not just their control names.
+For a configuration with head $h$, write $b_j$ for its bit at $h+j$.
+The following three invariants suffice:
+\begin{align*}
+ q=101&\ \Longrightarrow\ b_{-1}=0,\tag{A}\\
+ q=11&\ \Longrightarrow\ (b_{-1}=0\ \lor\ b_1=0),\tag{B}\\
+ q=26&\ \Longrightarrow\
+       \bigl(b_0=0\ \lor\ (b_1=0\land b_2=0)\bigr).\tag{C}
+\end{align*}
+They hold for both $P$ and $F$, starting in control 74 on any complete tape.
+Indeed, the only incoming row to 101 is $(96,0):0R101$, proving (A).
+Every incoming row to 11 writes zero: a right move gives the first
+disjunct of (B), and a left move gives the second.
+In $P$, the incoming rows to 26 are $(11,0):0L26$ and
+$(101,0):0L26$; in $F$ only the former remains.
+A 101 predecessor gives $b_0=0$ by (A).
+At an 11 predecessor, the scanned zero becomes the new $b_1$; (B)
+says either the new $b_0$ is zero or the new $b_2$ is zero.
+This proves (C). Since 74 is none of these controls, the initial conditions
+are vacuous. This is a one-step inductive argument over the actual rows.
+
+The independent verifier also checks this induction step directly. It adds
+both reader-history guards used below, examines every one of the 194
+working controls and all $2^7$ radius-three binary windows, and tests
+preservation whenever the guards hold. Current guards inspect radius two;
+a single head move enlarges the needed window to radius three, so no
+unexamined exterior bit affects the conclusion. For each parent and each
+accelerated table this gives 24,832 examined state/window pairs, of which
+24,560 satisfy the hypotheses, with every such successor satisfying the
+guards. The receipt is \path{verification/independent.json}. This finite
+certificate checks the one-step implication used by the induction; it
+is not an extrapolation from a sampled execution.
+
+At $(26,1)$, (C) provides two zeros immediately right of the head.
+The parent takes the three moves $R,R,L$ through 42 and 13; the child
+moves directly right into 91. Both tapes and heads agree exactly.
+At $(101,0)$, (A) provides a zero to the left. The parent takes $L,R,R$
+through 26 and 194; the child moves directly right into 17. Again the
+complete tape agrees. Neither three-step segment visits halt.
+The independent checker enumerates the 12 compatible radius-two windows,
+checking all cells and every read location. Arbitrary exterior tape is
+untouched. The invariants, rather than this window enumeration alone,
+establish that these cases cover executions.
+
+For the arithmetic formalization, encode each finite-support tape by its
+canonical left and right binary integers relative to the head, together
+with the control and an integer head coordinate. Blank suffixes are
+implicit. For a fixed head position, two coded tapes agree at every cell
+if and only if their two binary integers agree. Configuration equality and the update of these
+codes are primitive recursive. The arbitrary-exterior local arguments
+above specialize to these encodings, including nonstandard coded values.
+
+Totalize halting by an absorbing configuration, without adding a working
+state to the literal table. Let $C_T(n)$ denote the configuration of table
+$T$ after $n$ totalized steps. Define a primitive-recursive duration $a(c)$
+to be 3 at either accelerated row and 1 otherwise, including at halt, and
+\[
+ s(0)=0,\qquad s(n+1)=s(n)+a(C_F(n)).
+\]
+The preceding local identities prove
+\[
+ C_P(s(n))=C_F(n),\qquad n\le s(n)\le3n.\tag{1}
+\]
+The induction predicate consists of primitive-recursive equalities,
+inequalities, and finite Boolean conditions. It is therefore available in
+iPRA; if a chosen presentation permits only equations in its induction
+schema, encode the displayed finite conjunctions and disjunctions by their
+primitive-recursive Boolean characteristic functions.
+
+\subsection{Separating the marker from the history selector}
+Define the control map
+\[
+ f(51)=400,\qquad f(301)=88,\qquad
+ f(q)=q\quad(q\notin\{51,301\}).
+\]
+The parent does not contain 400. Copy every row of $F$ except the two rows
+at 301, applying $f$ to its source and destination controls. Then install
+\[
+\begin{array}{c|cc}
+ &\text{read 0}&\text{read 1}\\\hline
+88&0L51&1R103\\
+51&0R122&1R51\\
+400&0R16&1R400.
+\end{array}\tag{2}
+\]
+Control 400 now performs the original register-marking scan. Control 51
+is a dedicated history selector. All genuine old marker-entry edges point
+to 400. Thus the erroneous blank-initialization behavior of the older
+193-state core is not inherited.
+
+Exactly one old working control, 301, is removed and one new control,
+400, is added. The literal count remains 194. Every one of the 384 rows
+of $F$ outside controls 301 and 88 commutes with $f$ in one step.
+The remaining rows of $F$ needed for the four exceptional cases are
+\[
+\begin{array}{c|cc}
+ &0&1\\\hline
+301&0R45&1R103\\
+88&0R122&1R103\\
+122&0L137&0L1\\
+137&0R30&1R70\\
+30&0R45&1R46.
+\end{array}
+\]
+Every incoming edge to 301 writes zero and moves right; every incoming edge
+to 88 writes one and moves right. Neither is the initial control.
+Consequently, at a parent occurrence of 301 the preceding bit is zero,
+and at an occurrence of 88 it is one. This invariant is valid for every
+complete initial tape, independently of source reachability.
+
+Put the current head at coordinate zero. The four cases are
+\[
+\begin{array}{cccrl}
+\text{old control}&b_{-1}&b_0&\text{child steps}&\text{common exit}\\\hline
+301&0&0&5&(45,1)\\
+301&0&1&1&(103,1)\\
+88&1&0&3&(122,1)\\
+88&1&1&1&(103,1).
+\end{array}\tag{3}
+\]
+Both bits are preserved; all other cells are untouched. For the two longer
+cases, the control/head trajectories are
+\begin{align*}
+(88,0)&\to(51,-1)\to(122,0)\to(137,-1)
+             \to(30,0)\to(45,1),\\
+(88,0)&\to(51,-1)\to(51,0)\to(122,1).
+\end{align*}
+Every read is at $-1$ or zero. No intermediate state is halt. This explicit
+check against the final table also rules out an interaction between the
+simultaneously installed changes.
+
+Extend $f$ to a configuration map $\widehat f$ by leaving tape and head
+unchanged. On a configuration of $F$, let $r$ be 5 at $(301,0)$, 3 at
+$(88,0)$, and 1 otherwise, including at halt. Set
+\[
+ u(0)=0,\qquad u(n+1)=u(n)+r(C_F(n)).
+\]
+The incoming-history invariant and (3) give the iPRA induction
+\[
+ C_M(u(n))=\widehat f(C_F(n)),\qquad
+ n\le u(n)\le5n.\tag{4}
+\]
+The map $f$ sends no working control to halt. Its noninjectivity at
+301 and 88 causes no difficulty: the old run and its incoming-history
+invariant determine the appropriate local case.
+
+\subsection{Bounds at every time, including intermediate child times}
+Let $H_T(t)$ mean that $T$ has halted by time $t$ in its totalized blank
+execution. Totalization makes $H_T$ monotone. From (1),
+\[
+ H_P(t)\to H_F(t),\qquad H_F(t)\to H_P(3t).
+\]
+For the first implication, $t\le s(t)$ gives $H_P(s(t))$, and then (1)
+gives $H_F(t)$. For the second, use (1) and $s(t)\le3t$.
+Similarly, (4) gives
+\[
+ H_F(t)\to H_M(5t),\qquad H_M(t)\to H_F(t).
+\]
+In particular, the reverse implication covers a halt at an arbitrary
+intermediate child time. It does not assume that the alleged halt is a
+synchronization boundary: $t\le u(t)$ and absorption transport it to one.
+No inverse of a clock or unbounded least-time search is needed.
+
+\begin{theorem}[New bounded witness transport]
+\label{thm:relative}
+For each exact parent-child pair in this archive,
+\[
+ \boxed{\quad
+ \ipra\vdash H_P(t)\to H_M(5t),\qquad
+ \ipra\vdash H_M(t)\to H_P(3t).
+ \quad}
+\]
+Consequently
+\[
+ \ipra\vdash\NH(P)\leftrightarrow\NH(M),
+ \qquad\NH(T):=\forall t\,\neg H_T(t).
+\]
+\end{theorem}
+\begin{proof}
+Compose the four bounded implications. To obtain either nonhalting
+implication, assume a halting witness for the other machine and apply its
+explicit witness bound. This is intuitionistically valid implication
+reasoning. The construction and proof use primitive recursion and
+quantifier-free induction; they use neither reflection for PA nor an
+assumption that PA is consistent.
+\end{proof}

@@ -1,0 +1,367 @@
+% Requires amsmath, amssymb, amsthm, booktabs, xurl.
+% This is a source-level alternative, not a claim of a 194-state realization.
+\section{An arbitrary-consequent gate and a ten-entry four-field interface}
+\label{sec:gate-x}
+
+This section gives a different numerical calculus and an exact source program
+for it.  The source has 3,666 primitive sites and 4,772 branch outcomes.
+Its first binary realization has 198 working states; a smaller grammar is a
+separate optimization problem.  Thus the construction below is not counted as
+a solution of the requested 194-state bound.  It records a mathematically
+validated semantic alternative, including the source arithmetic and the
+all-store proof compiler, so that future physical compression can reuse it.
+
+\subsection{A conservative change to the numerical calculus}
+
+Retain Cantor pairing and the original numerical constructors
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad I(a,b)=4p(a,b),
+\]
+\[
+ M(a,b)=I(a,b)+1,\quad U(a,B)=I(B,a)+2,\quad E(a,b)=I(a,b)+3.
+\]
+Write $A\to B=I(A,B)$, $N(A)=A\to1$,
+$A\wedge B=N(A\to N(B))$, and $\exists_a B=N(U(a,N(B)))$.
+The distinguished contradiction is 1; the truth code 0 satisfies
+$I(0,0)=0$ literally.  The six ordinary axiom heads are
+\begin{align*}
+ h_1(D,H)&=(\exists_D U(D,H))\to H,\\
+ h_2(D,A,H)&=U(D,U(A,H))\to U(A,U(D,H)),\\
+ h_3(D,A,H)&=M(H,D)\to(E(H,A)\to M(A,D)),\\
+ h_4(D,A,H)&=E(H,D)\to(M(A,H)\to M(A,D)),\\
+ h_5(D,H)&=\exists_D E(H,D),\\
+ h_6(D,A,H)&=U(D,A)\to(U(D,A\to H)\to U(D,H)).
+\end{align*}
+The additional unchanged heads are
+\[
+ \begin{aligned}
+ \Gamma(B)&=B\to U(B,B),\\
+ \rho_8(D,A,H,u)&=((H\to u)\to D)\to((D\to H)\to(A\to H)),
+ \qquad u\le D.
+\end{aligned}
+\]
+The inherited restricted implicational basis uniformly derives $K$, $S$,
+identity, composition, and deduction by primitive recursive proof recipes.
+No gate axiom is used in those recipes.
+
+For $c\ne a,b$, put
+\begin{align*}
+ V(a,b,c)&=M(a,b)\to U(c,M(a,b)),\\
+ P(a,b,c)&=c\to M(c,b),\\
+ S(a,b,c)&=U\bigl(b,(M(a,b)\to P(a,b,c))\wedge(M(c,b)\to c)\bigr),\\
+ Q(a,b,c)&=U(c,S(a,b,c)\to N(P(a,b,c))),\\
+ B(a,b,c)&=V(a,b,c)\to Q(a,b,c).
+\end{align*}
+Replace the old gate $G(a,b,c)=B(a,b,c)\to1$ by the family
+\[
+                 G_z(a,b,c)=B(a,b,c)\to z,
+                 \qquad z\in\mathbb N.                  \tag{GX1}
+\]
+Keep both inference rules, modus ponens and theorem generalization.
+Call the resulting numerical calculus $\mathcal C_X$; call the original
+one $\mathcal C_4$.  The failed-guard output remains 0, whose fixed proof is
+$\rho_8(0,0,0,0)$.
+
+\paragraph{Interderivability lemma.}
+There are uniform primitive recursive proof translations in both directions
+between $\mathcal C_4$ and $\mathcal C_X$, preserving the exact numerical
+conclusion.  Their correctness is provable in iPRA.
+\begin{proof}
+The original gate is the $z=1$ instance of (GX1), so one translation merely
+changes the gate-leaf tag and adds the parameter 1.  For the converse, first
+derive explosion using only $h_1$ and propositional logic.  Put
+$F=U(0,N(U(0,z)))$.  Then
+\[
+ h_1(0,z)=(F\to1)\to z,\qquad K(1,F)=1\to(F\to1).
+\]
+Their composition proves $1\to z$.  A second composition with
+$G(a,b,c)=B(a,b,c)\to1$ proves $G_z(a,b,c)$.
+Every displayed derivation is a fixed finite $K,S$, MP recipe parameterized
+by $a,b,c,z$.  In particular it neither invokes semantic validity nor depends
+on a decision procedure for numerical theoremhood.  The unchanged guard
+$c\ne a,b$ licenses the old gate used in that recipe.
+
+Translate a finite proof list in order, replacing only its gate rows and
+relocating earlier indices after concatenation.  The finite recipes and
+index operations are primitive recursive.  A bounded Boolean invariant
+checks every translated row and its conclusion; quantifier-free induction
+on the input-list length proves the two translation theorems.  This also
+handles the numerical zero alias, since the constructors in the recipes
+are interpreted by their literal numerical equations.
+\end{proof}
+
+Consequently iPRA proves equality of the two numerical refutability
+predicates.  The change is conservative even though its emitter accepts a
+new independent formula parameter.
+
+\subsection{An exact ten-entry AX command}
+
+Use the store $(t,w,d,h)$ and the total Cantor stack notation
+$[a;w]=p(a,w)$.  Its projections satisfy
+$\operatorname{hd}[a;w]=a$ and $\operatorname{tl}[a;w]=w$, including
+$[0;0]=0$.  Set $D=d+x$, $H=h+y$, $A=c$ and define
+\[
+\begin{array}{c|l}
+ j&q_j\\\hline
+ 0&G_z(H,D,A),\ \text{or }0\text{ if }A=D\text{ or }A=H\\
+ 1&\Gamma(A)\\
+ 2&h_6(D,A,H)\\
+ 3&h_5(D,H)\\
+ 4&h_4(D,A,H)\\
+ 5&h_3(D,A,H)\\
+ 6&h_2(D,A,H)\\
+ 7&h_1(D,H)\\
+ 8&\rho_8(D,A,H,d)\\
+ 9&U(d,h).
+\end{array}
+\]
+The proposed AX interface is
+\[
+ \mathsf A_{c,x,y,z}(t,w,d,h)
+       =(q_0,[q_1,\ldots,q_9,t;w],0,0).                 \tag{GX2}
+\]
+It has four actual fields.  The fourth field becomes the gate consequent;
+it does not become the offset and does not cause a fallthrough MP.
+All $q_0,\ldots,q_8$ are congruent to 0 modulo 4, and $q_9$ is congruent
+to 2 modulo 4 and at least 2.  Thus none is 1, for any fourth field.
+
+Retain the cached-only Shift and the no-push MP:
+\[
+ \mathsf S(t,w,d,h)=
+ \begin{cases}\mathsf{halt},&h=1,\\
+ (h,\operatorname{tl}w,d,\operatorname{hd}w),&h\ne1,
+ \end{cases}                                           \tag{GX3}
+\]
+\[
+ \mathsf{MP}_x(t,w,d,h)=
+ \begin{cases}(b,w,b,0),&I(t,b)=h,\\
+ (0,w,b,0),&I(t,b)\ne h,
+ \end{cases}\qquad b=d+x.                              \tag{GX4}
+\]
+Only Shift can halt.
+
+\subsection{Source realization and exact control flow}
+
+The source register order is $(N,T,W,A,D,H,X,Y,L)$.
+At AX entry, the last register is $p(y,p(x,p(z,\ell)))$.
+The unchanged prefix constructs the nine stack heads, the old gate's
+antecedent $B(H,D,A)$, and retains the guard parameters $A,D,H$.
+In the final negation macro, replace its single increment of $T$ by
+the two existing arithmetic macros
+\[
+             \mathcal U_L\ ;\ (X\longrightarrow T).     \tag{GX5}
+\]
+Here $\mathcal U_L$ unpairs $L$ into $X$ and $L$ and restores $Y=0$.
+The preceding Push gives $T=X=Y=0$; thus (GX5) changes
+\[
+ (T,X,Y,L)=(0,0,0,p(z,\ell))
+            \longmapsto(z,0,0,\ell).
+\]
+It leaves $A,D,H$ intact.  The following Cons pops $B(H,D,A)$ and
+constructs $I(B(H,D,A),z)$.  The existing CopyGuard and CompareGuard
+then apply both original tests and clear the guard and scratch registers.
+An ordinary BREAK ends AX without pushing its visible result.
+
+The tree token replacement is
+\[
+ \text{leaf ordinal }185:\qquad
+  (\texttt{leaf},\texttt{inc},1)
+      \longmapsto(\texttt{node32},\texttt{node42}).
+\]
+Parenthesizing that pair supplies the existing native macro entry contexts:
+$\texttt{node32}$ enters native control 104 after a 0; $\texttt{node42}$
+enters native control 81 after a 1.  These entry contexts are physical
+requirements, rather than consequences of the arithmetic macro equations.
+
+The independent checker \path{check_gate_x.py} assembles every primitive
+template and compares the complete graph with a second resolution of the
+source tree.  It establishes all 3,666 instruction rows and their outgoing
+edges, with the following ports:
+\[
+\begin{array}{c|rrrrrrrr}
+ &\mathrm{fetch}&\mathrm{decode}&\mathrm{AX}&\mathrm{AXbreak}
+ &\mathrm{MP}&\mathrm{MPcompare}&\mathrm{return}&\mathrm{Shift}\\\hline
+ \mathrm{site}&25&34&50&3566&3567&3637&3654&3655.
+\end{array}
+\]
+In particular site 3566 jumps to 3654, which jumps to 25.  The path skips
+the MP block beginning at 3567.  Independent free-algebra substitution
+through the complete AX word verifies the exact nine-register endpoint
+\[
+ (n,q_0,[q_1,\ldots,q_9,t;w],0,0,0,0,0,\ell).         \tag{GX6}
+\]
+Both equality guards remain symbolic, and every intermediate scratch
+precondition is checked.  This is an expression identity using pairing
+projections, rather than a test on finitely many formula codes.
+
+The inherited written arithmetic-template proofs supply exact primitive
+recursive clocks.  The new two-macro clock is
+\[
+           K_{\mathcal U}(p(z,\ell))+3z+1,
+\]
+where $K_{\mathcal U}$ is the inherited total unpair clock.  The terminal
+AX break and return together add two primitive steps.  Composing the
+fixed macro clocks at their successive arithmetic endpoints proves (GX6)
+at an explicit PR duration.  The Shift, MP, fetch and decode arguments are
+unchanged except for their finite site relocation.  Consequently the
+source-to-command simulation is a uniform iPRA proof once those inherited
+template lemmas are used.  A binary realization additionally requires its
+own literal contracts, frame closure and complete blank initialization.
+
+\subsection{All-store instruction words}
+
+Commands execute from left to right.  Put $A_0=\mathsf A_{0,0,0,0}$.
+From (GX2)--(GX3), for every store and all four fields,
+\begin{align*}
+ \mathsf A_{c,x,y,z};\mathsf S^9(t,w,d,h)
+       &=(q_8,[t;w],0,q_9),\\
+ \mathsf A_{c,x,y,z};\mathsf S^{10}(t,w,d,h)
+       &=(q_9,w,0,t).
+\end{align*}
+These executions never test the saved top; their tested generated values
+are different from 1.  Define
+\[
+ \mathsf{Push}=A_0;\mathsf S^9;\mathsf{MP}_0,\qquad
+ \mathsf{Pop}=A_0;\mathsf S^{11},\qquad
+ \mathsf{Discard}=\mathsf{MP}_0,\qquad
+ \mathsf{Offset}_i=\mathsf{MP}_i.
+\]
+Their exact contracts are
+\begin{align*}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Pop}(t,[a;w],d,h)
+   &=\begin{cases}\mathsf{halt},&t=1,\\(t,w,0,a),&t\ne1,\end{cases}\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0),\\
+ \mathsf{Offset}_i(0,w,0,0)&=(0,w,i,0).
+\end{align*}
+The Push comparison fails by residues: an implication cannot equal $q_9$.
+The eleventh Shift in Pop tests the saved top.  Discard's two branches
+have the same zero result, and $I(0,i)>0$ for $i>0$ proves Offset.
+All statements include the total stack's zero aliases.
+
+For the gate $q_0$, the selector is
+\[
+        \mathsf{Discard};\mathsf A_{A,D,H,z};\mathsf{Pop}^{10}.
+                                                               \tag{GX7}
+\]
+For $1\le j\le8$, the selectors are
+\[
+ \mathsf{Discard};\mathsf A_{A,D,H,z};
+                    \mathsf S^{j+1};\mathsf{Pop}^{9-j}.        \tag{GX8}
+\]
+From every $(t,w,0,0)$, these words return $(q_j,w,0,0)$.
+For (GX7) the ten popped entries are $q_1,\ldots,q_9,0$; for (GX8)
+the remaining entries are $q_{j+2},\ldots,q_9,0$.
+Pop preserves the selected $q_j\ne1$, and its last removed entry is 0,
+so its final cache is 0.  The restricted head with $u\le D$ is selected by
+\[
+ \mathsf{Discard};\mathsf{Offset}_u;
+ \mathsf A_{A,D\mathbin{\dot-}u,H,0};\mathsf S^9;\mathsf{Pop}.
+                                                               \tag{GX9}
+\]
+The old offset is exactly $u$, the accumulated parameter is $D$, and AX
+itself clears the offset.  The generalization word is
+\[
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf{Offset}_i;\mathsf S;
+                  \mathsf A_{i,0,0,0};\mathsf S^{10}.           \tag{GX10}
+\]
+It maps $(a,w,0,0)$ to $(U(i,a),w,0,0)$ even when $a=1$:
+the only Shift before AX sees cache 0, and AX clears the cache containing
+$a$ before another Shift tests it.
+
+From $(0,[a,I(a,b),0;w],0,0)$ the suffix
+\[
+                    \mathsf S;\mathsf S;\mathsf{MP}_b;\mathsf{Pop}
+\]
+halts if $a=1$ or $b=1$ and otherwise returns $(b,w,0,0)$.
+As in AX11H, the reserved zero protects the base stack.  Compile an MP
+node, with major proof $e_1$ and minor proof $e_0$, by
+\[
+ W_e=\mathsf{Discard};\mathsf{Push};W_{e_1};\mathsf{Push};
+ W_{e_0};\mathsf{Push};\mathsf S;\mathsf S;\mathsf{MP}_b;\mathsf{Pop}.
+\]
+Axiom rows use (GX7)--(GX9); generalization appends (GX10).  The exact
+compiler invariant is
+\[
+ W_e(t,w,0,0)=\mathsf{halt}\quad\text{or}\quad
+ W_e(t,w,0,0)=(\operatorname{concl}(e),w,0,0).            \tag{GX11}
+\]
+Therefore $A_0;W_e;\mathsf{Pop}$ halts from every store when $e$ is a
+refutation.  Its prefix normalizes the offset and cache without assuming
+that the incoming store is empty.
+
+\paragraph{Induction strength.}
+For completeness, the usual phrase ``induct on proofs for every base
+store'' can be replaced by a quantifier-free induction.  Encode a proof
+as $N$ ordered lines; let $L$ bound all its compiled word lengths and $K$
+all command codes.  Define the monotone PR function
+\[
+ \Phi_K(s)=1+\max\bigl(s,\max_{c\le K,\ u\le s}\operatorname{next}(c,u)\bigr).
+\]
+For an arbitrary input bound $s_0$, set
+$B(j)=\Phi_K^{L(N-1-j)}(s_0)$.  Prove successively that (GX11) holds
+for every earlier line $i$ and every normalized store code at most
+$B(i)$.  This is a bounded Boolean conjunction, hence an allowed
+quantifier-free induction predicate.  Every recursive premise call from
+line $j$ is preceded by at most $L$ commands and has input at most
+$\Phi_K^L(B(j))\le B(i)$ for $i<j$.  The local contracts above complete
+the induction step.  At $j=N-1$ the original arbitrary bound is $s_0$;
+universal generalization yields (GX11).  No induction over an unbounded
+universal environment predicate is needed.
+
+\subsection{Scheduler completeness and soundness}
+
+Use the same actual field order as AX11H:
+\[
+ e(\epsilon)=0,\quad e(c::w)=1+b_c(e(w)),
+\]
+\[
+ b_{\mathsf S}(r)=p(0,r),\quad
+ b_{\mathsf{MP}_x}(r)=p(1,p(x,r)),\quad
+ b_{\mathsf A_{c,x,y,z}}(r)=p(c+2,p(y,p(x,p(z,r)))).       \tag{GX12}
+\]
+The numerical meaning of the fourth field changed; its position did not.
+Fetch uses raw seed $n$ and increments $n$ when the continuation is zero;
+otherwise it uses continuation minus one and leaves $n$ unchanged.
+Every residual continuation is a nested Cantor component of that raw
+seed, so each positive continuation strictly decreases.  Candidate $n$
+therefore drains in at most $n+1$ commands unless it halts.  A candidate
+$N\ge2$ is reached within the loose PR bound $(N+1)^2$ from the initial
+next-unused counter 2, unless a prior halt has already occurred.
+
+Prefix the all-store refutation word by $\mathsf A_{k,0,0,0}$.
+Its raw seed is
+\[
+     p(k+2,p(0,p(0,p(0,e(\text{refutation suffix}))))).
+\]
+These seeds are cofinal, since they are at least $k+2$; the suffix works
+for every carried store.  Thus the scheduler halts from its clean start
+whenever $\mathcal C_X$ has a finite refutation.  The projection equations,
+draining bound and fixed clocks give explicit primitive recursive witnesses
+and quantifier-free induction proofs of this direction.
+
+Conversely, annotate the visible top, cache and canonical Cantor-stack
+entries by indices in a finite valid $\mathcal C_X$ proof list.  The virtual
+zero entries of numerical stack 0 use the fixed zero proof.  AX appends
+the head proofs in (GX2); $q_9$ is generalized from the old cache,
+$q_8$ obeys its actual guard $d\le d+x$, and $q_0$ is its new gate axiom
+or zero.  The saved top already has a proof.  Successful MP combines the
+two indicated proofs; failed MP produces zero.  Shift moves annotations,
+and a halting Shift exposes an annotated proof of 1 in its cache.
+The annotation updates and their finite validity checker are PR, so
+quantifier-free induction on command time extracts a numerical refutation
+from every scheduler halt.
+
+Writing $R_X$ for this exact scheduler, we have an ordinary written iPRA
+proof of
+\[
+ \operatorname{Halt}(R_X)
+  \longleftrightarrow \exists e\,\operatorname{Prf}_{\mathcal C_X}(e,1)
+  \longleftrightarrow \exists e\,\operatorname{Prf}_{\mathcal C_4}(e,1).
+                                                               \tag{GX13}
+\]
+Together with the source binding and the inherited PA calibration, this
+establishes the intended source-level nonhalting/consistency equivalence.
+A claim about a specified literal binary table still requires successful
+physical certificates for that exact table.  Neither (GX13) nor the source
+site reduction alone establishes a smaller binary state count.

@@ -1,0 +1,67 @@
+\subsection{Corpus and recognition boundary}
+The comparison is pinned to ProveIt commit
+\texttt{883da8d55452ea097910ed2509a1eefc833ce292}.  It covers the current
+PA research tree and \texttt{docs/incoming}: 100 filed research packets
+and six current incoming archives.  Every one of the 13,524 tracked
+\texttt{.tm}, \texttt{.json}, and \texttt{.zip} paths selected under those
+two roots was read from its pinned Git blob and checked against its Git
+content identity.  There are zero missing selected blobs.  Nested archives
+were inspected recursively, with identical archive payloads deduplicated.
+
+The recognizer accepts complete numeric five-column tables and four
+explicit JSON representations: whole multiline table strings, lists of
+five-field rows, lists of row strings, and state/read-keyed dictionaries
+of three-field actions.  It does not execute generators or infer machines
+from prose, Lean source, compressed opaque objects, or unrecognized
+encodings.  Within this stated recognition scope the inventory has 7,328
+table occurrences, 1,380 distinct normalized labeled tables, and 1,164
+spanning transition-graph classes across all state counts.
+
+The current 194-control comparison contains 548 spanning graph classes
+and two nonspanning diagnostic literal forms.  Every one of the 528 older
+194-state classes in the maintained packet catalogue has a byte-identical
+representative in the fresh census.  All 55 older 193-state catalogue
+classes are likewise covered; with the latest incoming experiments the
+fresh census has 61 spanning 193-control classes.  These numbers include
+rejected candidates, runtime cores and experimental tables.  None is
+promoted to a consistency machine solely from its number of rows or a
+bounded execution.  The source-attributed roster separately identifies
+104 distinct existing named positive-claim graphs.  Each is bound to a
+freshly parsed literal graph and a recorded mechanism description.
+
+Exactly 22 additional \texttt{.tm} fragments fail the unique external-halt
+condition.  A separate audit finds that they have between two and 139
+controls, with either no external halt or multiple unresolved external
+targets; none has 194 controls.  Seven recognized tables have no spanning
+root, including the two 194-control diagnostics.  Their lack of a spanning
+root is invariant under control renaming, reflection and symbol exchange,
+so they cannot be isomorphic to any of the four new spanning constructions.
+
+\subsection{Comparison equivalence and restricted negative result}
+For a spanning table, an ordered breadth-first traversal reads the zero
+transition before the one transition and renumbers controls by discovery
+order.  The lexicographically least resulting action tuple over all
+spanning roots is a canonical form for the unpointed labeled transition
+graph.  The novelty test further minimizes over tape reflection and global
+symbol exchange and erases write/move decorations on transitions into
+halt.  Thus absence of a match is stronger than nonidentity under an
+initial-state-preserving renaming.  Global bit exchange is used only for
+structural comparison, not as a claimed semantic equivalence on blank zero
+tape.  Exact lexicographic prefix pruning speeds the computation without
+changing the minimum.  The offline verifier recomputes all canonical forms
+and checks transformed positive controls.
+
+All four new tables are absent from this entire recognized corpus and
+are mutually different under that broader comparison.  The same verifier
+checks the greatest immediate-action congruence of every one of the 548
+existing 194-control spanning graphs.  Each has 194 congruence classes.
+This excludes an ordinary action-preserving quotient of those tables;
+it is not a lower bound against contextual folds, positive stuttering,
+changes of source program, or other machine architectures.
+
+The ledgers retain exact source locations, byte hashes, graph classes,
+reported mechanism and proof boundary.  A source report's positive claim
+is not an independent audit of its entire PA calibration, and structural
+novelty is not by itself a proof of consistency equivalence.  The new
+source argument, literal physical certificates and explicit inherited
+written calibration dependencies supply those separate obligations.

@@ -1,0 +1,587 @@
+% PA194FW mathematical proof fragment.  Requires only amsmath, amssymb,
+% amsthm and booktabs; all additional notation is local to this fragment.
+% The stack-compiler/QF-induction organization is adapted, with attribution,
+% from references/AX11H/ax11h_preservation.tex.  The fused axiom, ten-entry
+% interface, explicit-binder generalization and associated certificates are new.
+\section{PA194FW: a fused negative-implication axiom}
+\label{sec:pa194fw}
+\providecommand{\FWI}{\mathsf I}
+\providecommand{\FWU}{\mathsf U}
+\providecommand{\FWM}{\mathsf M}
+\providecommand{\FWE}{\mathsf E}
+\providecommand{\FWN}{\mathsf N}
+\providecommand{\FWC}{\mathcal C}
+\providecommand{\FWPRA}{\mathrm{iPRA}}
+\newtheorem{fwtheorem}{Theorem}[section]
+\newtheorem{fwlemma}[fwtheorem]{Lemma}
+
+PA194FW has 194 working states, two tape symbols, one tape and a separate
+halt state.  Its source changes the axiom interface itself: two previously
+separate axiom heads become one negative-implication head.  This reduces
+the number of entries produced by AX from eleven to ten.  A new grammar
+and ten checked state identifications retain a total of 194 states.  The
+search did not produce a 193-state machine and provides no lower bound.
+
+There are two distinct ancestors.  The implementation starts with the
+symmetrically cached controller of PA194H5XS, whose fifth head is
+$\FWI(\FWU(D,\FWN(\FWE(H,D))),A)$.  The preservation argument
+below compares directly with the already calibrated ordinary calculus
+$\FWC_4$ of PA194AX11H, whose fifth head is
+$\FWN(\FWU(D,\FWN(\FWE(H,D))))$.  A replacement of one arbitrary
+source word by another would not establish that comparison; both the
+formula translation and the exact ten-entry source interface are proved.
+
+\subsection{Numerical formulas and the exact change}
+
+Use the inherited total numerical constructors
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad
+ \FWI(a,b)=4p(a,b),\qquad \FWM(a,b)=4p(a,b)+1,
+\]
+\[
+ \FWU(i,a)=4p(a,i)+2,\qquad \FWE(a,b)=4p(a,b)+3,
+ \qquad \FWN(a)=\FWI(a,1).
+\]
+Write $a\to b$ for $\FWI(a,b)$, with right-associated arrows.  Code 1
+is contradiction.  The numerical alias $\FWI(0,0)=0$ is retained.
+Define $C(a,b)=\FWN(\FWI(a,\FWN(b)))$ and
+$\exists_i a=\FWN(\FWU(i,\FWN(a)))$.  The ordinary heads are
+\begin{align*}
+ h_1(D,H)&=\FWI(\exists_D\FWU(D,H),H),\\
+ h_2(D,A,H)&=\FWI(\FWU(D,\FWU(A,H)),\FWU(A,\FWU(D,H))),\\
+ h_3(D,A,H)&=\FWI(\FWM(H,D),\FWI(\FWE(H,A),\FWM(A,D))),\\
+ h_4(D,A,H)&=\FWI(\FWE(H,D),\FWI(\FWM(A,H),\FWM(A,D))),\\
+ V(D,H)&=\FWU(D,\FWN(\FWE(H,D))),\qquad h_5(D,H)=\FWN(V(D,H)),\\
+ h_6(D,A,H)&=\FWI(\FWU(D,A),
+                   \FWI(\FWU(D,\FWI(A,H)),\FWU(D,H))).
+\end{align*}
+The new head is the literal numerical term
+\[
+ \boxed{F_{45}(D,A,H)=
+       \FWN\bigl(\FWI(h_4(D,A,H),V(D,H))\bigr).}       \tag{FW-F}
+\]
+It is classically equivalent to the conjunction of $h_4$ and $h_5$.
+It is \emph{not} literally $C(h_4,h_5)$: that abbreviation would put
+$\FWN(\FWN(V))$, rather than $V$, in the second argument of the inner
+implication.  All source and proof certificates use (FW-F) literally.
+
+Let $\FWC_F$ replace the two families $h_4,h_5$ in $\FWC_4$ by the one
+family $F_{45}$.  It retains $h_1,h_2,h_3,h_6$ and
+\[
+ \Gamma(A)=\FWI(A,\FWU(A,A)),\qquad
+ \rho(D,A,H,u)=((H\to u)\to D)\to((D\to H)\to(A\to H)),
+ \quad u\le D.
+\]
+It also retains the guarded gate, defined without any semantic shorthand by
+\begin{align*}
+ P(H,D,A)&=\FWI(A,\FWM(A,D)),\\
+ V_g(H,D,A)&=\FWI(\FWM(H,D),\FWU(A,\FWM(H,D))),\\
+ S_g(H,D,A)&=\FWU\bigl(D,C(\FWI(\FWM(H,D),P(H,D,A)),
+                              \FWI(\FWM(A,D),A))\bigr),\\
+ Q_g(H,D,A)&=\FWU(A,\FWI(S_g(H,D,A),\FWN(P(H,D,A)))),\\
+ G(H,D,A)&=\FWN(\FWI(V_g(H,D,A),Q_g(H,D,A))),
+                  \qquad A\ne H,\ A\ne D.
+\end{align*}
+The inference rules are modus ponens and theorem generalization
+$a\mapsto\FWU(i,a)$.  A failed gate guard emits the provable code zero;
+indeed $\rho(0,0,0,0)=0$.  These are numerical proof systems over all
+natural codes, not a free syntactic datatype with a forbidden zero alias.
+
+\subsection{Noncircular fusion and projection proofs}
+
+The implicational schemas $K$, $S$ and Peirce used in the following
+certificates are derived rules, not new primitive axioms.  The pinned file
+\nolinkurl{references/logic/RestrictedImplication.lean} contains explicit
+finite derivations \texttt{k}, \texttt{s} and \texttt{peirce}.  Its
+\texttt{Rules} interface uses only MP, the restricted $\rho$ row,
+reflexivity of the parameter bound, and the two implications
+\[
+ u\le a\ \Longrightarrow\ u\le\FWI(a,b),\qquad
+ u\le b\ \Longrightarrow\ u\le\FWI(a,b).
+\]
+The numerical constructor dominates both arguments, so these side
+conditions hold in $\FWPRA$.  Neither $h_4$, $h_5$, $F_{45}$ nor any
+quantifier axiom occurs in that interface.  Substituting natural codes
+in these fixed derivations gives primitive recursive proof constructors;
+checking their finitely many equations and bound implications uses
+quantifier-free induction only.  Thus using $K,S,$ and Peirce below
+does not assume the desired calibration.
+
+The retained first head is also essential to the particular proof given
+here.  For arbitrary $a$, put $Y=\FWU(0,\FWN(\FWU(0,a)))$.
+Then $h_1(0,a)$ is $(Y\to1)\to a$.  The $K$ instance
+$1\to(Y\to1)$, followed by that head and the usual $K,S$ deduction
+transformation, proves
+\[
+                         1\to a.                         \tag{FW-Ex}
+\]
+No extra explosion axiom is silently inserted.  In particular, replacing
+the ordinary first head by the joined first head from the J-family is
+not justified by this argument.
+
+\begin{fwlemma}[Fixed syntactic certificates]
+In both calculi the following formulas have uniform finite derivations:
+\[
+ a\to\bigl(\FWN(b)\to\FWN(\FWI(a,b))\bigr),\qquad
+ \FWN(\FWI(a,b))\to a,\qquad
+ \FWN(\FWI(a,b))\to\FWN(b).                              \tag{FW-Cert}
+\]
+Their proof-list constructors and checkers are primitive recursive and
+their validity is provable in $\FWPRA$.
+\end{fwlemma}
+\begin{proof}
+For the first formula, under assumptions $a$, $b\to1$, and $a\to b$,
+two applications of MP yield 1; discharge the three assumptions using
+$K,S$.  For the third, assumptions $b$ and $(a\to b)\to1$ yield 1
+using $K$ to obtain $a\to b$; discharge both assumptions.  For the
+second, assume $(a\to b)\to1$.  Under the additional assumption
+$a\to b$, MP followed by (FW-Ex) gives $a$.  Discharge that additional
+assumption, apply Peirce $((a\to b)\to a)\to a$, and discharge the
+original assumption.  These arguments are expanded by the delivered
+checker into proof lists of respectively 161, 205 and 53 lines.  It
+checks every axiom substitution, every earlier-premise index and every
+MP equality; it uses no truth-table oracle.  Expansion of the derived
+$K,S,$ Peirce schemas into restricted-$\rho$ proofs gives proofs in the
+stated primitive calculus.  Each expansion is a fixed finite expression,
+so uniform numerical substitution and proof concatenation have the
+claimed primitive recursive and quantifier-free verification properties.
+\end{proof}
+
+\begin{fwlemma}[Equivalence of the numerical proof systems]
+There are primitive recursive proof transformations in both directions
+between $\FWC_4$ and $\FWC_F$, preserving the conclusion.  $\FWPRA$
+proves their correctness for every internally checked finite proof.
+\end{fwlemma}
+\begin{proof}
+Translate a $\FWC_4$ leaf $h_4(D,A,H)$ by the left projection of
+$F_{45}(D,A,H)$.  Translate $h_5(D,H)$ by the right projection of
+$F_{45}(D,0,H)$.  Thus sharing the three parameters within the fused
+head causes no loss of instances: every desired old fourth-head instance
+has its own left projection, and every fifth-head instance has a right
+projection with, for example, $A=0$.  In the opposite direction, use
+the old $h_4(D,A,H)$ and $h_5(D,H)$ in the first certificate of
+(FW-Cert).  All other leaves and both inference rules are retained.
+
+For a proof represented as a finite sequence with earlier premise
+indices, scan its lines and append the indicated finite replacement
+proof, recording the output index for each original line.  Replace MP
+and generalization indices by these recorded indices.  This is a
+primitive recursion on the input length.  Validity of the translated
+prefix and its index map is a bounded, hence primitive recursive Boolean
+predicate.  Quantifier-free induction proves the invariant; numerical
+substitution in the fixed certificates supplies the leaf cases.  This
+proves preservation for arbitrary natural proof codes and yields, in
+$\FWPRA$,
+\[
+ \exists e\,\operatorname{Prf}_{\FWC_4}(e,1)
+ \quad\longleftrightarrow\quad
+ \exists f\,\operatorname{Prf}_{\FWC_F}(f,1).             \tag{FW-Logic}
+\]
+\end{proof}
+
+\subsection{The exact ten-entry command interface}
+
+Write $[a;w]=p(a,w)$ and extend this notation by repeated pairing with
+the first displayed item outermost.  The projections are total, with
+$\operatorname{hd}(0)=\operatorname{tl}(0)=0$ and $[0;0]=0$.
+Let the store be $(t,w,d,h)$.  With $A=c$, $D=d+x$, $H=h+y$, the new
+AX command is
+\[
+ \mathsf A_{c,x,y,z}(t,w,d,h)
+       =(0,[q_0,q_1,\ldots,q_8,t;w],z,0),               \tag{FW-AX}
+\]
+where the exact top-to-bottom entries are
+\[
+\begin{array}{c|l}
+ j&q_j\\\hline
+ 0&G(H,D,A),\text{ or zero if }A=H\text{ or }A=D\\
+ 1&\Gamma(A)\\
+ 2&h_6(D,A,H)\\
+ 3&F_{45}(D,A,H)\\
+ 4&h_3(D,A,H)\\
+ 5&h_2(D,A,H)\\
+ 6&h_1(D,H)\\
+ 7&\rho(D,A,H,d)\\
+ 8&\FWU(A,h).
+\end{array}
+\]
+The ninth generated entry has the explicit command binder $A=c$ and
+the \emph{incoming} cache $h$.  Substituting $\FWU(d,h)$ here would
+give the older AX11H interface and would be incorrect for this source.
+All $q_0,\ldots,q_7$ have residue zero modulo four; $q_8$ has residue
+two and is at least two.  No generated entry equals 1.
+
+The other commands, unchanged from the cached-test interpreter, are
+\[
+ \mathsf S(t,w,d,h)=
+ \begin{cases}\mathsf{halt},&h=1,\\
+ (h,\operatorname{tl}w,d,\operatorname{hd}w),&h\ne1,
+ \end{cases}                                             \tag{FW-S}
+\]
+and, for $b=d+x$,
+\[
+ \mathsf{MP}_x(t,w,d,h)=
+ \begin{cases}(b,w,b,0),&\FWI(t,b)=h,\\
+ (0,w,b,0),&\FWI(t,b)\ne h.
+ \end{cases}                                             \tag{FW-MP}
+\]
+Only $\mathsf S$ halts.  The fourth AX field is consumed by its
+fallthrough through the complete MP reader: after the gate has been
+pushed, $t=d=h=0$, so comparing $\FWI(0,z)$ with zero leaves $t=h=0$
+on both branches and sets $d=z$.  Thus (FW-AX) holds for every fourth
+field, not just the zero fields used below.
+
+\subsection{Stack words and their early-halting cases}
+
+Composition is from left to right.  Put $A_0=\mathsf A_{0,0,0,0}$ and
+define
+\begin{align*}
+ \mathsf{Push}&=A_0;\mathsf S^9;\mathsf{MP}_0,&
+ \mathsf{Pop}&=A_0;\mathsf S^{11},\\
+ \mathsf{Discard}&=\mathsf{MP}_0,&
+ \mathsf{Offset}_i&=\mathsf{MP}_i.
+\end{align*}
+The exact contracts are
+\begin{align*}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Pop}(t,[a;w],d,h)&=
+   \begin{cases}\mathsf{halt},&t=1,\\(t,w,0,a),&t\ne1,\end{cases}\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0),\\
+ \mathsf{Offset}_i(0,w,0,0)&=(0,w,i,0).                 \tag{FW-Words}
+\end{align*}
+For example, after $A_0;\mathsf S^9$ the top is $q_7$, the cache is
+$q_8$, and the stack is $[t;w]$; the test for successful MP cannot
+confuse a residue-zero implication with the residue-two cache.  In any
+case the consequent is zero, so Push has the displayed result.  After
+$A_0;\mathsf S^{10}$ the top is $q_8$ and the cache is the saved $t$;
+the next Shift tests precisely that saved value.  These observations
+also cover $t=1$ and the zero stack alias.
+
+For $0\le j\le7$, let
+\[
+ \mathsf{Sel}_j(A,D,H)=\mathsf{Discard};
+ \mathsf A_{A,D,H,0};\mathsf S^{j+2};\mathsf{Pop}^{8-j}.
+                                                               \tag{FW-Sel}
+\]
+From $(t,w,0,0)$ it returns $(q_j,w,0,0)$, with the indicated
+parameters and incoming offset zero.  After the initial shifts the
+selected head is top; repeated Pop discards the remaining generated
+entries and finally the saved zero.  The selected head is not 1, so
+those Pops cannot halt.  For the restricted row $\rho(D,A,H,u)$,
+$u\le D$, use instead
+\[
+ \mathsf{Discard};\mathsf{Offset}_u;
+ \mathsf A_{A,D\mathbin{\dot-}u,H,0};\mathsf S^9;\mathsf{Pop}.
+                                                               \tag{FW-Rho}
+\]
+The truncated subtraction is legitimate because
+$u+(D\mathbin{\dot-}u)=D$ under the displayed bound.
+
+The explicit binder in $q_8$ gives a shorter generalization recipe:
+\[
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf S;
+             \mathsf A_{i,0,0,0};\mathsf S^{10},
+ \qquad
+ \mathsf{Gen}_i(a,w,0,0)=(\FWU(i,a),w,0,0).              \tag{FW-Gen}
+\]
+This also holds when $a=1$: the only time 1 is cached is immediately
+before AX clears the cache, so it is not tested by Shift at that point.
+
+The MP suffix is
+\[
+ \mathsf S;\mathsf S;\mathsf{MP}_b;\mathsf{Pop}.          \tag{FW-MPS}
+\]
+On $(0,[a,\FWI(a,b),0;w],0,0)$ it halts if $a=1$ or $b=1$,
+and otherwise returns $(b,w,0,0)$.  The two Shifts expose $a$ and
+$\FWI(a,b)$; MP obtains $b$; Pop removes the reserved zero and tests
+the saved conclusion.  The reserved zero is necessary.  All these
+word identities are checked symbolically in
+\nolinkurl{verification/check_command_algebra.py}; its 19 contracts
+include the unit-minor and unit-conclusion cases.  The checker uses total
+Cantor projection identities, not an injective free-list representation.
+
+\subsection{A uniform proof-to-word compiler in iPRA}
+
+A numerical proof is a finite sequence with earlier premise indices.
+Compile its lines to words $W_j$ by primitive recursion.  Use (FW-Sel)
+and (FW-Rho) for axiom leaves.  Append (FW-Gen) to the premise word for
+generalization.  For MP with major $e_1$ proving $\FWI(a,b)$ and minor
+$e_0$ proving $a$, use
+\[
+ W_e=\mathsf{Discard};\mathsf{Push};W_{e_1};\mathsf{Push};
+ W_{e_0};\mathsf{Push};\mathsf S;\mathsf S;
+ \mathsf{MP}_b;\mathsf{Pop}.                             \tag{FW-Compile}
+\]
+The invariant is
+\[
+ W_e(t,w,0,0)=\mathsf{halt}\quad\hbox{or}\quad
+ W_e(t,w,0,0)=(\operatorname{concl}(e),w,0,0).            \tag{FW-Cmp}
+\]
+The initial Discard and Push reserve a zero; the two premise computations
+and their Pushes produce exactly the precondition of (FW-MPS).  An earlier
+halt remains a valid outcome of every extension.  For a refutation $e$,
+\[
+                          A_0;W_e;\mathsf{Pop}             \tag{FW-Ref}
+\]
+therefore halts from every incoming store.  The first AX normalizes the
+offset and cache; the final Pop tests the returned contradiction.  A
+terminal plain Shift would test zero and would not suffice.
+
+The arbitrary-base-stack quantifier in (FW-Cmp) must not be smuggled into
+an induction formula of iPRA.  Here is a bounded verification.  For a
+proof of $N>0$ lines let $L$ bound all compiled word lengths and $K$ bound
+their command codes.  For a total coded command step $\operatorname{next}$
+with an absorbing halt flag, put
+\[
+ \Phi_K(s)=1+\max\left(s,
+       \max_{c\le K,\ v\le s}\operatorname{next}(c,v)\right).
+\]
+It is a monotone primitive recursive majorant.  Quantifier-free induction
+proves that every prefix of at most $L$ commands, started below $s$,
+remains below $\Phi_K^L(s)$.  For an arbitrary normalized input code
+$s_0$ define $B(j)=\Phi_K^{L(N-1-j)}(s_0)$.  If $i<j$ then
+$\Phi_K^L(B(j))\le B(i)$.  Induct on the Boolean conjunction asserting
+(FW-Cmp) for every previous line $i<j$ on every normalized store code
+at most $B(i)$.  This is a primitive recursive Boolean test, since each
+word evaluation and every quantifier is bounded.  In the MP and
+generalization cases, each call to an earlier word follows a prefix of
+at most $L$ commands, so its actual input lies in the corresponding
+earlier bounded domain.  The local contracts prove the new line.  At
+the last line $B(N-1)=s_0$; generalizing the arbitrary parameter $s_0$
+proves (FW-Cmp) without strengthening the induction schema.  This is the
+bounded-input method of the attributed AX11H proof, with every word and
+entry count changed to the explicit ten-entry interface above.
+
+\subsection{Exhaustive scheduling and syntactic soundness}
+
+Let $e(\epsilon)=0$ and $e(c::w)=1+b_c(e(w))$, where
+\begin{align*}
+ b_{\mathsf S}(z)&=p(0,z),\\
+ b_{\mathsf{MP}_x}(z)&=p(1,p(x,z)),\\
+ b_{\mathsf A_{c,x,y,u}}(z)&=p(c+2,p(y,p(x,p(u,z)))).      \tag{FW-Code}
+\end{align*}
+The exact field order is $y,x,u$.  A live scheduler state is
+$(n,\ell,t,w,d,h)$, starting at $(2,0,0,0,0,0)$.  It selects seed $n$
+and advances the fresh counter to $n+1$ if $\ell=0$; otherwise it selects
+$\ell-1$ and leaves the fresh counter alone.  It executes one decoded
+command and sets the continuation to the residual after all command
+fields.  Stores are carried between candidates.
+
+Every residual is a nested Cantor component and is at most the raw seed.
+Positive continuations strictly decrease, so a fresh candidate $N$ drains
+in at most $N+1$ command invocations, unless it halts first.  Given the
+all-store halting suffix $V_e$ of (FW-Ref), prefix another $A_0$.
+Its fresh raw seed is
+\[
+ N_e=p\bigl(2,p(0,p(0,p(0,e(V_e))))\bigr)\ge3.
+\]
+This candidate executes the prefix and then the exact suffix; the prefix
+may alter the store because the suffix works from every store.  The
+absorbing scheduler has halted by $K(e)=(N_e+2)^2$ commands.  The
+decoding identities and draining bound are primitive recursive arithmetic
+statements with quantifier-free induction proofs.  No reset of a failed
+candidate and no least-successful-candidate search is assumed.
+
+For soundness maintain a finite valid $\FWC_F$ derivation list and
+indices proving the top, cache and canonical stack entries.  For
+$w>0$, $\operatorname{tl}(w)<w$, so decoding the canonical stack takes
+at most $w$ iterations.  The zero stack supplies virtual zero entries
+using $\rho(0,0,0,0)$.  AX appends proofs of its eight axiom heads, of
+$\FWU(A,h)$ by generalization of the incoming cache proof, and of the
+saved top.  Its restricted row satisfies $d\le d+x$; a failed gate
+uses the fixed zero proof.  MP combines the existing top and cache
+proofs when the comparison succeeds and otherwise returns zero.  A
+nonhalting Shift transports existing proof indices.  A halting Shift
+exposes a proof of the cache value 1.  All updates and validity tests are
+primitive recursive; a Boolean quantifier-free induction on the command
+count extracts a refutation from every scheduler halt.  Consequently
+\[
+ \FWPRA\vdash\operatorname{Halt}(R_F)
+       \longleftrightarrow
+       \exists e\,\operatorname{Prf}_{\FWC_F}(e,1).      \tag{FW-Scheduler}
+\]
+
+\subsection{Binding the source and its clocks}
+
+The grammar has 191 macro tokens.  In the H5XS emitter the end of the
+old fifth-head block was \texttt{copyA;cons}, which constructs
+$\FWI(V(D,H),A)$.  Replace it by
+\texttt{cons;push;incT;cons}.  At that point the top is $V(D,H)$
+and the saved stack head is $h_4(D,A,H)$, so the first cons makes
+$\FWI(h_4,V)$; push followed by incT and cons negates it.  This
+consumes the separate fourth head and leaves exactly (FW-F).
+
+This local explanation is accompanied by a complete free-term check of
+the entire source word.  The checker verifies all intermediate scratch
+preconditions, every final register, both failed-gate cases and the
+unconsumed fourth field $p(z,\mathrm{tail})$ before the MP tail.  In
+particular it verifies the explicit-binder entry $\FWU(A,h)$.  An
+independent arithmetic-template construction matches all 3,695 primitive
+instruction rows, arguments and both outgoing branches, and a separately
+resolved named binary source tree matches the same graph.  Its ports are
+\[
+\begin{array}{c|rrrrrrrr}
+ &\mathrm{fetch}&\mathrm{decode}&\mathrm{AX}&\mathrm{MP}&
+ \mathrm{compare}&\mathrm{success}&\mathrm{return}&\mathrm{Shift}\\\hline
+ \mathrm{site}&25&34&50&3599&3669&3679&3686&3687.
+\end{array}
+\]
+The result binds (FW-AX)--(FW-MP) to the delivered source, not merely to
+a proposed abstract interpreter.
+
+For completeness, the source clock is an actual primitive recursive
+function.  The retained arithmetic templates have exact durations
+\[
+\begin{array}{c|c}
+ \mathrm{template}&\mathrm{duration}\\\hline
+ \mathrm{increment}&1\\
+ \mathrm{clear}(r)&2r+1\\
+ \mathrm{transfer}(r,s)&3r+1\\
+ \mathrm{duplicate}(r,s,t)&4r+1\\
+ \mathrm{copy}(r)&7r+2\\
+ \mathrm{times4}(y)&6y+1\\
+ \mathrm{pair}(t,a)&4t+2+7(a+t)(a+t-1)/2+5(a+t).
+\end{array}
+\]
+The subtraction in the polynomial is interpreted at zero by its natural
+value zero.  Define $(a_0,b_0)=(0,0)$ and
+$(a_{j+1},b_{j+1})=(a_j-1,b_j+1)$ when $a_j>0$, and
+$(b_j+1,0)$ otherwise.  For unpairing input $n$, the exact duration is
+\[
+ 2+3b_n+\sum_{j<n}
+       \begin{cases}5,&a_j>0,\\3b_j+8,&a_j=0.\end{cases}
+\]
+The comparison duration is $3h+2$ for $h=x$, $3x+2$ for $h<x$,
+and $2h+x+4$ for $h>x$.  Fetch costs 2 for a continuation and
+$7n+4$ for a fresh seed.  Compose these functions in literal source
+order, updating their register arguments after each template.  This is
+exactly \texttt{Arithmetic} and \nolinkurl{command_clock} in the source
+checker.  Summing the resulting positive duration along the coded
+scheduler recursion defines its cumulative clock $B(k)$.
+
+The uniform proofs are ordinary counter inductions: transfer and
+duplicate decrease the source counter; the pairing loop uses the
+triangular sum; the unpairing recurrence proves its pair index equals
+$j$ and sums the displayed step costs; comparison decreases both
+counters until one is exhausted.  Frame preservation is part of each
+template's register equation.  The complete proofs and precise loop
+equations are retained with attribution in
+\nolinkurl{references/AX11H/source_command_completion.tex}.
+They apply unchanged to these templates and to any finite macro word;
+only the checked literal composition is new.  The 882 local numerical
+tests and 324 composed Shift/MP tests are additional regression evidence,
+not replacements for these uniform induction arguments.
+
+\subsection{The literal machine and physical transport}
+
+Construction first builds 135 fixed states and 69 reader states.  It
+then performs one fixed-controller identification and nine simultaneous
+reader identifications, with all 40 local predecessor-marker contexts
+checked on the relevant final stage of the table.  Thus the delivered
+table has $135+69-1-9=194$ working states.  The complete literal
+verifier is independent of the construction compiler and arithmetic-box
+oracle.  It reconstructs four generic unary/list sweep lemmas from the
+literal rows, then replays every one of the 4,809 source outcomes over
+nine arbitrary natural registers, arbitrary affine nonnegative gap and
+an arbitrary nonempty finite spare list.  It checks the complete tape
+frame, including both blank exteriors.  The replay takes 1,130,294
+symbolic steps; the largest contract takes 403 such steps.
+
+Every nonhalting outcome has zero net frame motion and the independently
+resolved successor address after padding to 48 bits.  There is no
+address overflow; the longest source path has length 38.  Every affine
+duration has nonnegative coefficients and constant at least 3.  The
+unique halt instruction has duration 3.  These are exhaustive finite
+bindings to the generic literal-row induction lemmas, not a finite
+sample of register values or a tape-window simulation.
+
+From the blank tape, native state 74 and head position zero, the machine
+reaches source entry 25 in exactly 57,768 physical steps, in native
+state 84 with head at $-2$, logical registers $(2,0,\ldots,0)$, and 26
+unit spares.  The startup checker compares the whole finite support of
+the tape with the exact source-frame encoding.  Dense renaming sends
+the initial state to 0 and the separate halt state to 194.  All 194
+working states are reachable in the directed transition graph; this is
+a graph claim, not a claim that every state is visited from the blank
+tape under the actual run.
+
+To internalize the physical argument, encode the full finite tape
+support, head, control, frame gap and spare list by natural numbers.
+Each of the four sweep lemmas has a counter/list induction proof with
+a primitive recursive Boolean frame invariant.  Instantiate them in
+the finite replayed contracts and compose by quantifier-free induction
+on source steps.  The resulting cumulative physical clock $\tau(j)$
+includes the changing gap, list width and spare values; they are not
+held fixed.  Its step increment is zero at the canonical absorbing halt and positive
+at every live source step.  The supplied
+\nolinkurl{references/AX11H/physical_ipra_audit.tex} and
+\nolinkurl{ipra_simulation_theorem.tex} give these general frame and
+positive-clock transport proofs.  Their finite premises are precisely
+the source and physical certificates just checked for PA194FW.
+
+For example, a numerical refutation $e$ has the explicit physical
+halting bound
+\[
+                 57768+\tau\bigl(B((N_e+2)^2)\bigr).      \tag{FW-Time}
+\]
+Conversely, if the physical run halts at time $t$, positive live
+durations ensure that the simulated source reaches its absorbing halt
+within at most $t+1$ source steps after initialization; otherwise its
+positive cumulative clock would outrun $t$ while still being live.
+The same argument applies to the positive source-command clocks.
+Decidability of the coded halt flag handles these finite alternatives
+intuitionistically.  This proves in $\FWPRA$
+\[
+ \operatorname{Halt}_{\rm blank}(\mathrm{PA194FW})
+ \longleftrightarrow\operatorname{Halt}(R_F).           \tag{FW-Physical}
+\]
+
+\subsection{Composition with the inherited PA calibration}
+
+The inherited theorem is the \emph{written} AX11H calibration in
+\nolinkurl{references/AX11H/consistency_equivalence.tex}, with its
+Foundation adapter, finite-demand logical compiler, model-uniform seed
+soundness and two one-way intuitionistic transfer endpoints.  It
+concerns the same fixed Foundation PA-refutation predicate as the pinned
+repository.  It supplies
+\[
+ \FWPRA\vdash
+ \operatorname{Con}(\mathrm{PA})\longleftrightarrow
+ \neg\operatorname{Halt}_{\rm blank}(\mathrm{PA194AX11H}).
+                                                               \tag{FW-Cal}
+\]
+The inherited abstract and physical proofs also identify AX11H halting
+with $\exists e\,\operatorname{Prf}_{\FWC_4}(e,1)$ in iPRA.
+Combining (FW-Physical), (FW-Scheduler), (FW-Logic) and that execution
+equivalence gives a positive halting equivalence between the two
+machines, entirely through their numerical proof systems.
+
+\begin{fwtheorem}[PA194FW preservation]
+With the literal binary transition table and blank-start convention
+specified here, the inherited written PA calibration and the new
+proofs above yield
+\[
+ \boxed{\FWPRA\vdash
+    \neg\operatorname{Halt}_{\rm blank}(\mathrm{PA194FW})
+        \longleftrightarrow\operatorname{Con}(\mathrm{PA}).}
+\]
+\end{fwtheorem}
+\begin{proof}
+Intuitionistic logic transports negation across the just-proved halting
+equivalence; compose with (FW-Cal).  No PA-consistency assumption,
+Markov principle or inference of an existential from its double
+negation is used.  In particular this composition does not claim a
+new positive iPRA equivalence between numerical refutation existence
+and Foundation PA-refutation existence.  The inherited calibration
+uses its stated model-uniform and negative-transfer route.
+\end{proof}
+
+The new claim is a written mathematical preservation proof with
+explicit primitive recursive constructions and fully replayed finite
+machine bindings.  It is relative to the identified inherited written
+absolute calibration in the ordinary sense that a new mathematical
+result uses an earlier theorem.  The available Lean infrastructure and
+the supplied execution checkers do not amount to an end-to-end Lean
+proof of this machine's PA-consistency equivalence.  No such completed
+kernel proof is claimed.  The source files, exact hashes and recorded
+verification outcomes make the remaining formalization target concrete.

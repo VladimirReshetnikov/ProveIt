@@ -1,0 +1,228 @@
+\section{Audit of the inherited weak-arithmetic calibration}
+\label{sec:inherited-calibration-audit}
+
+\paragraph{What the current corpus actually claims.}
+The main PA README says that the machine-specific end-to-end Lean
+calibration of the original primary PA194 table is still open.  That
+statement must not be read as saying that every later packet lacks an
+ordinary mathematical proof in iPRA.  The revised
+\texttt{pa194\_ax11h\_research\_2026-11-14\_2} packet supplies a substantial
+written weak-base calibration for AX11H and QAX11H~\cite{ax11h}.  The newer AX11HC4 and
+ORH packets explicitly preserve that calibrated source and cite its theorem.
+An incomplete formalization and an absent written argument are different
+claims.
+
+We inspected the ten proof manuscripts retained with their source identities
+by the AX11HC4 packet, including the physical simulation, exact command
+binding, all-store proof compiler, source soundness, finite-demand forward
+compiler, term suppliers, and current Foundation adapter.  We independently
+checked the key induction-rank, finite-budget, cumulative-clock, and endpoint
+arguments described below.  No concrete flaw was found in those inspected
+arguments.  This review does not claim a new Lean/Rocq build or an independent
+verification of every finite native proof template cited in those manuscripts.
+Their full mathematical theorem is an explicit inherited dependency of any
+new physical variant that preserves their exact source.
+
+\subsection{Exact source interface}
+
+The calibrated AX11H source uses Cantor pairing
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,
+\]
+with numerical implication, membership, universal quantification and equality
+\[
+ I(A,B)=4p(A,B),\quad M(a,b)=4p(a,b)+1,\quad
+ U(a,B)=4p(B,a)+2,\quad E(a,b)=4p(a,b)+3.
+\]
+The designated contradiction is code~1 and truth is code~0, including the
+literal alias $I(0,0)=0$.  Cantor-coded stacks also have the alias $[0;0]=0$.
+Neither alias can be ignored in a command transformation.
+
+The store is $(t,w,d,h)$, with current formula $t$, stack $w$, offset $d$,
+and cached formula $h$.  AX has four real parameters.  With $D=d+x$, $H=h+y$
+and $A=c$, its exact effect is
+\[
+ \mathsf A_{c,x,y,z}(t,w,d,h)
+   =(0,[q_0,q_1,\ldots,q_9,t;w],z,0).
+\]
+The ten generated entries, from the top downward, are the guarded old gate,
+separate diagonal clause, sixth logical head, heads five through one,
+dominated $\rho_8$, and $U(d,h)$.  The fourth field $z$ is consumed by a
+real fallthrough through the full MP field reader.  After AX emits its
+heads the visible MP operands are already zero, so this fallthrough cannot
+replace an arbitrary standalone MP call.
+
+Shift and MP are
+\[
+ \mathsf S(t,w,d,h)=
+ \begin{cases}
+  \mathsf{halt},&h=1,\\
+  (h,\operatorname{tl}(w),d,\operatorname{hd}(w)),&h\ne1,
+ \end{cases}
+\]
+\[
+ \mathsf{MP}_x(t,w,d,h)=
+ \begin{cases}
+   (d+x,w,d+x,0),&I(t,d+x)=h,\\
+   (0,w,d+x,0),&I(t,d+x)\ne h.
+ \end{cases}
+\]
+In particular, the calibrated source uses a cached-only halt test and an MP
+return in the current formula without a dummy push.  An older source with
+sum-based testing or cache-return MP is a different command system.
+
+\subsection{Why the written proof is a weak-base argument}
+
+The inherited argument supplies the following chain.
+\begin{enumerate}
+\item A uniform literal tape/source simulation.  The finite certificate
+checks source-specific rows and affine clocks; separate quantifier-free
+induction proves the unary and finite-list traversal rules for arbitrary
+register values, gap, and spare lists.  Complete successor-frame closure
+and a complete blank-tape initialization are included.
+\item Exact arithmetic source/command equations and primitive recursive
+clocks for pairing, unpairing, copying, comparison and command parsing.
+The parser consumes all four AX fields and carries its store between
+candidate words.  It is not silently reset at each new candidate.
+\item A proof-to-word compiler correct for every carried store.  The
+potentially impermissible induction over ``all environments'' is replaced
+by a bounded Boolean invariant.  For a proof with $N$ lines, word-length
+bound $L$, and command-code bound $K$, choose a primitive recursive monotone
+majorant $\Phi_K$ for one command step and use
+\[
+ B(j)=\Phi_K^{L(N-1-j)}(s_0).
+\]
+If $i<j$, then $\Phi_K^L(B(j))\le B(i)$.  The induction retains the
+correctness statements for all earlier lines and all stores up to their
+respective bounds.  Bounded conjunction has a primitive recursive
+characteristic function, so the actual induction is quantifier-free.
+\item Numerical soundness in arbitrary candidate-PRA models with an
+$I\Sigma_1$ arithmetic reduct.  The six seeds, diagonal and restricted
+propositional seed have model-uniform PA-proof suppliers; the guarded
+separation gate has its distinct-label and equal-label cases supplied.
+A finite vector of PA-proof witnesses makes the line-history invariant
+$\Sigma_1$.  This is an allowed $I\Sigma_1$ induction, rather than an
+unjustified claim that the unbounded provability predicate is open.
+\item An explicit current-Foundation-to-ordinary-PAeq proof adapter,
+followed by an ordinary-PAeq-to-numerical-calculus compiler.  The former
+handles the changed finite arithmetic axiom and the exact bounded
+induction recognizer.  It keeps Foundation falsity code~13 distinct from
+numerical falsity code~1.
+\item An acyclic finite-demand construction replaces the old forward
+compiler's full-PA inductions.  Child requests are computed before their
+answers; every same-family child decreases a numerical source rank;
+larger replacement terms are handled in already completed lower strata.
+The finite query table and bottom-up answer table have bounded Boolean
+correctness invariants.  Every remaining leaf is either a listed fixed
+proof recipe or a separately specified lower-stratum supplier.
+\item The existing conservation and negative-translation endpoints turn
+the two model-uniform reductions into the intended iPRA equivalence for
+the fixed native PA-consistency sentence.  The argument does not infer an
+arbitrary positive existential from its double negation.
+\end{enumerate}
+
+For example, the forward compiler's allocator-relocation budget is sound:
+from $\ell+p\le z$, $\ell'+p\le z$ and $q<p$, setting
+$m=\max(\ell,\ell')+1$ gives $m+q\le z$.  Its enlarged middle allocator
+therefore does not exceed the reserve.  In the term supplier, a replacement
+term $w_i$ may exceed the bound-variable code being processed; its uniqueness
+call goes to an earlier stratum, so no false decreasing-rank assertion is
+needed.  These two points are explicit parts of the revised argument.
+
+\subsection{The inherited explicit halting witness}
+
+Let $d$ be a current Foundation PA refutation, let $A(d)$ be its ordinary
+PAeq translation, and let $F$ be the numerical proof compiler.  For AX11H
+put $e=F(A(d))$; QAX11H applies the additional fixed premise-exchange
+translation.  The all-store command word is
+\[
+ V_e=A_0;W_e;\mathsf{Pop}.
+\]
+Using the four-field encoder, a fresh raw candidate for an extra AX prefix
+and this word is
+\[
+ N_e=p\bigl(2,p(0,p(0,p(0,e_{\rm word}(V_e))))\bigr).
+\]
+The scheduler reaches and drains that candidate, or has already halted,
+within $K(e)=(N_e+2)^2$ abstract commands.  If $B$ is the exact cumulative
+source clock and $\tau$ the exact cumulative physical clock, the AX11H
+parent's displayed physical witness is
+\[
+ 57922+\tau\bigl(B(K(e))\bigr).
+\]
+Every function here is given by composition and primitive recursion.  The
+large size of this bound is harmless for primitive recursiveness.  A new
+physical allocation must substitute its own complete blank-start prefix
+and its own physical clock; copying 57922 without checking startup would
+be incorrect.
+
+\subsection{A safe relative theorem for a new physical machine}
+
+Suppose a proposed child machine has a primitive recursive frame map $E$,
+extended source step $F$, absorbing halt representation $H$, and duration
+$D$.  The needed theorem is an exact configuration equality
+\[
+ \operatorname{Run}_{M'}(D(z),E(z))=E(F(z)),
+\]
+proved in iPRA for every valid source frame.  Require preservation of frame
+validity, a complete blank-start equation
+$\operatorname{Run}_{M'}(d_0,\mathrm{blank})=E(z_0)$, and
+$D(z)\ge1$ before source halt.  Setting $D(H)=0$ is allowed.
+Define $z_k=F^k(z_0)$ and
+$T(k+1)=T(k)+D(z_k)$.  Quantifier-free induction gives
+\[
+ \operatorname{Run}_{M'}(d_0+T(k),\mathrm{blank})=E(z_k).
+\]
+Before source halt, $T(k)\ge k$.  If the target has halted by time $t$,
+put $k=t+1$.  Were $z_k\ne H$, the corresponding boundary would occur
+after $t$ and would be nonhalting, contrary to absorption of the target
+halt.  Equality with $H$ is decidable, so this reasoning is intuitionistically
+valid and gives the explicit reverse witness $t+1$.
+
+Consequently the child and the calibrated AX11H source have equivalent
+positive halting sentences in iPRA, and hence equivalent nonhalting
+sentences.  Composing this relative theorem with the revised AX11H written
+calibration preserves the same PA-consistency predicate.  A finite sample
+of machine executions, a grammar score, or an external standard-model
+simulation alone does not supply this theorem.
+
+\subsection{What the suggested related programs contribute}
+
+The suggested related programs~\cite{related} inform three different layers. The ZFC program supplies useful physical techniques: contextual decoder
+folds, source reassociation, partial selectors, command scheduling and
+register allocation.  Their applicability has to be checked against the
+new source frames and complete bootstrap; saved states do not automatically
+add when the same control is used twice.
+The DiophantineConsistency development supplies the already used
+$I\Sigma_1$-to-iPRA conservation, native consistency predicates and witness
+bounds.  A compact polynomial does not by itself give a compact blank-start
+binary machine: arithmetic evaluation, enumeration and coefficient loading
+still have to be compiled and counted.
+ConciseIPRA supplies a useful design method---replace primitive rules by
+smaller interfaces with explicit proof translations---but changing the
+searched proof system from PA to iPRA would change the required consistency
+statement.  A small proof checker for a different theory is not sufficient.
+
+The proposed removal of standalone MP from the current AX11H source fails
+at the interface level: its AX fallthrough MP compares $I(0,z)$ with zero,
+so it never detaches an arbitrary saved implication.  Reordering genuine
+MP before AX would be a different program and would need a new all-store
+completeness argument; the existing proof cannot be invoked for that
+reordering without such an argument.
+
+\paragraph{The fused MP--AX experiment remains unproved.}
+For clarity, consider a hypothetical command $J=\mathsf{MP};\mathsf{AX}$,
+with the final AX field zero.  The ten AX seed heads lie above the MP
+result.  After ten Shifts they have been discarded, leaving the result
+on the physical stack, with the last two seed heads as visible junk.
+Thus two more Shifts can load the next two stack entries for another
+binary MP, and a subsequent $J;\mathsf S^{10}$ saves its result.
+This calculation suggests a stack-oriented two-command machine.
+It is not a completeness proof.  Selecting one AX head $q_j$ leaves the
+later heads $q_{j+1},\ldots,q_9$ and the saved MP result below it; these
+intervene between that theorem and previously saved premises.  The clean
+Push/Pop operations used by the calibrated all-store compiler are no
+longer supplied.  No uniform way of removing this intervening stack
+material while retaining the chosen arbitrary theorem was established.
+Consequently this is retained only as an unproved source experiment,
+with neither a state-saving claim nor a transferred consistency theorem.

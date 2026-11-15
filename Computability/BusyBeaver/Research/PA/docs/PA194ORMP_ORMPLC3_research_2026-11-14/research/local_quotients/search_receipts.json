@@ -1,0 +1,51 @@
+{
+  "scope": "Bounded local state-fold investigations; no general lower bound and no sub-194 correctness result.",
+  "primary_two_cell_search": {
+    "source": "search_local.cpp",
+    "states": 194,
+    "noninitial_state_pairs": 18528,
+    "first_transition_candidates_tested": 14309567,
+    "maximum_replacement_steps": 32,
+    "successful_pairs": 0,
+    "restrictions": "Known incoming write/direction supplies a two-cell context. Replacement may flip bits temporarily but may not revisit the merged control before its endpoint. Candidate moves and writes range over binary single-step transitions to working controls, plus original rows. Endpoints are exact one-old-step configurations under the alias."
+  },
+  "coupled_two_cell_searches": [
+    {
+      "name": "PA194",
+      "table_path": "primary.native.tm",
+      "table_sha256": "e0a7397cf2134e8e7f58a8b1de2f7ff90b74ededd54c912f6ba5b7db48dabe54",
+      "source": "search_coupled.cpp",
+      "states": 194,
+      "noninitial_state_pairs": 18528,
+      "partial_candidates": 10476040,
+      "complete_joint_assignments": 40,
+      "maximum_replacement_steps": 64,
+      "successful_pairs": 0
+    },
+    {
+      "name": "PA194ORMP",
+      "table_path": "ormp/machine/machine.native.tm",
+      "table_sha256": "97d87de64d86089ab320440091010abf8cedb6ebbeffdac22ca968449ed4bb6a",
+      "source": "search_coupled.cpp",
+      "states": 194,
+      "noninitial_state_pairs": 18528,
+      "partial_candidates": 10636616,
+      "complete_joint_assignments": 40,
+      "maximum_replacement_steps": 64,
+      "successful_pairs": 0
+    },
+    {
+      "name": "PA194ORMPLC3",
+      "table_path": "ormp/accelerated/machine.native.tm",
+      "table_sha256": "3addd89693fcc8b893d3d363ed1ea9c95665a68dc3cb446f98230c2ee831fb04",
+      "source": "search_coupled.cpp",
+      "states": 194,
+      "noninitial_state_pairs": 18528,
+      "partial_candidates": 10472952,
+      "complete_joint_assignments": 39,
+      "maximum_replacement_steps": 64,
+      "successful_pairs": 0
+    }
+  ],
+  "coupled_restrictions": "Only working-state transition targets are synthesized; the start state is never merged. Incoming write/direction cylinders provide the known predecessor cell. Pairs with an overlapping incoming cylinder and different immediate aliased transitions are excluded. Each replacement stays inside that two-cell cylinder and must reproduce one old transition exactly, up to the state alias. The two modified rows may call each other recursively. These restrictions define the searched family and are not completeness claims for all two-state quotients."
+}

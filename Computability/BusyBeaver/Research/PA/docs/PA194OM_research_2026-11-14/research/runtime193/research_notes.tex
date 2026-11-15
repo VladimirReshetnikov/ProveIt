@@ -1,0 +1,175 @@
+\section{A precise obstruction for the inherited 193-control runtime}
+
+The supplied \texttt{pa\_sub194\_research\_2026-11-13} packet already contains
+an interesting 193-control runtime.  It identifies native control 301 with
+88, deletes 301, and replaces two rows of the primary 194-control table by
+\[
+ (88,0)\mapsto(0,L,51),\qquad (51,0)\mapsto(0,R,122).
+\]
+Its native table has 386 rows and SHA-256
+\begin{quote}\small\ttfamily
+50f7be44afb63293365270a83111299247d12d140614e4b4c9a52786163acb53.
+\end{quote}
+This is an inherited runtime construction, not a new blank-start consistency
+machine.  Its 4,780 source outcomes have an inherited symbolic verification;
+its initialized source frame must still be supplied.  The changed register
+marker is justified by the following precise identity: after the unmarked
+register delimiter, the next bit is 1, and the rows $(16,1)$ and $(122,1)$
+both equal $0L1$.  This identity does not apply to a missing register during
+blank initialization.
+
+A prior supplied obstruction fixes native start 74 and permits all
+permutations of the physical register selectors.  The following result
+extends that obstruction to \emph{every existing initial control}.
+
+\paragraph{Theorem (all starts, all physical allocations).}
+Let $R$ be exactly the 193-control runtime just specified.  Put
+\[
+ K=(51,36,25,48,32,33,22,55,60).
+\]
+For a permutation $\pi$ of $\{0,\ldots,8\}$, replace every external selector
+edge with target $K_i$ by an edge with target $K_{\pi(i)}$.  The eleven changed
+edge positions are
+\[
+ (14,1),(17,1),(21,1),(39,1),(41,1),(45,1),
+ (56,1),(61,1),(82,1),(144,1),(161,1).
+\]
+Leave all other rows fixed, in particular $(88,0)$ and the internal skip
+chain.  For each of the $193\cdot9!=70{,}035{,}840$ choices of initial
+control and allocation, its blank computation has an elementary finite
+certificate of one of the following behaviors:
+\begin{center}
+\begin{tabular}{lr}
+\hline
+Behavior & Number of choices\\\hline
+Finite halt & 725,760\\
+An all-zero control cycle, never writing 1 & 3,628,800\\
+An outward monotone zero-reading ray & 65,681,280\\\hline
+Total & 70,035,840\\\hline
+\end{tabular}
+\end{center}
+The certificate is reached by at most 94 transitions.  No choice reaches a
+complete source frame with nine primary registers and a nonempty spare file.
+
+\paragraph{Proof.}
+All permuted edges are read-1 edges.  Until the first write of 1, the tape
+therefore remains blank and the control trajectory is independent of the
+allocation.  Enumerating the fixed read-0 graph partitions the 193 starts
+into the following classes; the listed multiplicity is the number of
+initial controls whose first write of 1 occurs at that control:
+\begin{center}
+\begin{tabular}{c|rrrrrrrr|r}
+First writer &0&4&16&35&66&74&97&198&No first write\\\hline
+Multiplicity&1&5&2&169&2&2&1&1&10
+\end{tabular}
+\end{center}
+Before the first write, the computation merely translates the blank head.
+Consequently each finite-prefix class reduces to its displayed writer as
+initial control, with the same tape and a shifted origin.  The ten remaining
+starts enter closed read-0 control cycles that write only 0.
+
+Seven of the eight first-writer computations inspect no selector edge before
+halting or entering a certified outward ray.  Start 0 halts after 37 steps;
+start 97 halts after 31.  Starts 4, 16 and 35 already satisfy an outward-ray
+certificate.  Starts 66 and 198 reach the control-35 ray after 44 and 38
+steps respectively.  Only writer 74 depends on the allocation.  Before its
+ray certificate, the only selector used is $(45,1)$, originally directed to
+$K_7$.  If $\pi(7)=j$, it reaches native control 35 at head coordinate $7+j$
+after $85+j$ steps, with precisely the one-cells $\{-3,1\}$.  Its row
+$(35,0)=1R35$ then writes 1 indefinitely on fresh cells to the right.
+There are thus seven allocation-independent leaves and nine leaves indexed
+by $j$, only sixteen finite cases altogether.
+
+Each one-cell support before the certified tail has size at most five.
+A full source frame requires at least twelve one-cells: the left marker,
+the register-file header, nine primary unary blocks, and one spare block.
+No such frame occurs in a finite prefix.  Every certified rightward ray
+has all cells to the right of its head zero, whereas a source frame requires
+a header and register blocks there.  Every certified leftward ray has
+the cell immediately left of its head still zero, whereas a source frame
+requires that cell to be the one-valued left marker.
+The all-zero cycles never write 1.  Weighting each partial allocation by its factorial
+number of completions and each first-writer class by its multiplicity gives
+the displayed counts.  The longest fixed prefix to writer 74 has length one,
+so the maximum certificate clock is $1+93=94$.
+
+The finite prefix and cycle/ray assertions are replayed by
+\texttt{allocation\_all\_starts.py}.  For a monotone ray the finite
+certificate lists a read-0 path, its closed control cycle, and its common
+move direction.  Induction repeats this cycle on fresh zero cells, even
+when 1s are written behind the head.  For a zero cycle, the tape stays
+identically zero.  These inductions and the finite prefix computations are
+primitive recursive and admit the usual quantifier-free internalization in
+\(\mathrm{iPRA}\).  No newly compiled Lean theorem is asserted.
+
+\paragraph{Scope.}
+The theorem fixes the table except for the eleven selector targets.  It
+makes no statement about changing other bootstrap rows, changing the tape
+representation, altering the source program, or designing a different
+193-control machine.  In particular it is not a state-count lower bound.
+
+\section{A broader finite search for a one-row bootstrap repair}
+
+The investigation also tested every replacement of a single transition of
+$R$ by an action whose destination is one of its 193 working controls.
+This gives 297,607 nontrivial edits.  The baseline was included, for 297,608
+tables.  An action that instead enters the halt label cannot repair this
+bootstrap: if the changed row is not used, the original rejected prefix is
+unchanged; if it is used, the run halts immediately before a new source
+frame can be reached.  The remaining 1,543 terminal-target edits are
+therefore excluded by this simple observation, not by an unreported search.
+
+Every possible initial control was covered by the first-write reduction.
+For each mutant it suffices to start at every control whose read-0 row
+writes 1; an earlier all-zero prefix is immaterial up to translation.  This
+is complete for finding a source frame at any searched clock from any
+initial control.  It reduces the number of literal simulations to
+2,449,186.
+
+The detector accepts \emph{any} of the 3,673 source sites, with arbitrary
+values of all nine primary registers, any nonempty finite spare list,
+any translation, and padding $48+n$ for $n\geq0$.  It checks the entire tape
+support.  This extends the prior startup screens that accepted only sites
+25--44.  It does not treat a physical frame as a valid logical seed.
+For example, the detector finds the original 194-control machine's first
+complete frame at source site 3625 after 56,366 transitions, before its
+usual advertised seed at site 25.
+
+\begin{center}
+\begin{tabular}{lr}
+\hline
+Quantity & Recorded value\\\hline
+Single edits with a working-control destination &297,607\\
+Tables including the unchanged runtime &297,608\\
+Essential blank-start simulations &2,449,186\\
+Literal transitions executed &3,932,685,131\\
+Terminated at halt &564,780\\
+Certified outward rays &1,850,115\\
+Clock/head/support cutoffs &34,093\\
+Complete physical source-frame hits &198\\
+Distinct edited tables among those hits &163\\\hline
+\end{tabular}
+\end{center}
+
+The clock checkpoints satisfy $0\leq t<200{,}000$; a nonmatching run also
+stops when the head displacement or the number of one-cells exceeds 20,000.
+These limits are search limits, not divergence certificates.  Exact hit
+replay checks all 198 entire tapes, totaling 10,049,719 transitions.
+
+None of the 163 hit tables was validated as a repair of the inherited
+source implementation.  Of these, 97 fail the stated finite register-marker
+test; the other 66 fail the existing universal symbolic source-contract
+checker.  For the latter 66, literal complete-frame tests at padding values
+$0,1,10$ produce 93 unintended halts, 33 wrong clean source successors, and
+72 runs that do not close within the separate 20,000-step countercheck
+bound.  The bounded cases are recorded as unresolved, not as proofs of
+permanent nonclosure.  The first two counts give explicit discrepancies from the prescribed
+clean source-step interface; no correctness transfer is obtained.  They are
+not arguments that
+every differently interpreted program with the same table is impossible.
+
+Thus this broader search supplies new reproducible exclusions and diagnostic
+counterexamples, but no accepted 193-state blank-start consistency machine.
+The 34,093 bounded bootstrap outcomes, changes to two or more unrestricted
+rows, different arithmetic encodings, and different source programs remain
+outside any claimed negative theorem.

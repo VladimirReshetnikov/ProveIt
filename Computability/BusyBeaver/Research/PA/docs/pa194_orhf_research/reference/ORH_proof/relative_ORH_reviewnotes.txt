@@ -1,0 +1,99 @@
+Independent relative ORH proof review
+====================================
+
+The fragment relative_ORH.tex proves a relative theorem for the exact dense
+tables with SHA256 identities:
+  Parent AX11H: c5dfe1026d077d3e062eca11edb789597bfbbced4f6040f8828ae5d467b1167a
+  PA194ORH:    c16bef7a1587e31adaae747d5bad26721f30bb5c6c33dd4b798be95f5141f1d4
+It is an ordinary written iPRA proof, not a new Lean development. It defines
+no LaTeX macros or theorem environments. Required packages are amsmath,
+amssymb, amsthm, booktabs, and xurl.
+
+Actual changed reader
+---------------------
+
+A=node32, B=node53, C=node55, D=node65. Node75 changes from
+((A,(B,C)),D) to (A,(B,(C,D))). Starting at native control 213:
+
+  Operand   Parent code   ORH code   Exit
+  A         00            0          104
+  B         010           10         107
+  C         011           110        98
+  D         1             111        90
+
+Every reader row preserves the bit and moves right. The parent reader
+controls are 213,92,185. ORH uses 213,185,333, sharing (C,D) at 333.
+The new fixed portion has 135 controls and 66 generated readers; seven
+proved folds leave 194 working controls.
+
+The hidden entry is separate: old 69/0 enters 213 while new 69/0 enters 92.
+When the scanned zero has history bit zero on its left, both machines take
+three steps, leave both cells unchanged, and exit at control 104 one cell
+right of the original head. The paths are old 69,213,92,104 and
+new 69,92,111,104. When the history bit is one, both take two steps, leave
+both cells unchanged, and exit at control 90 at the original head position.
+Their paths are old 69,213,90 and new 69,92,90. No outside cell is read.
+Thus the history helper is an exact all-context local identity.
+
+This identity does not itself prove whole-machine equivalence. The latter
+uses each machine's complete source-frame certificates, with different
+address encodings of the same numeric source program. The 3,671 resolved
+primitive instructions, including every outgoing edge, are identical;
+134 addresses change. Both address resolvers were checked independently.
+
+Clocks and intuitionistic reasoning
+----------------------------------
+
+The complete positive local durations have the same componentwise maximum
+in both machines: (534,8,4,4,4,4,4,4,2,4,4,2,2). They are at least 3 on
+every live source state, and equal zero on the canonical stopped state.
+
+On the common source run from site25, register sum 2, slack 0, and 26 spare
+entries equal to 1, after k source instructions:
+  slack <= k;
+  register sum <= 2+k;
+  spare width <= 78+3k.
+Hence each local duration <= 698+18k, and cumulative duration <= 9k^2+689k.
+The exact startup durations are 57922 and 57942 respectively.
+
+Consequently explicit physical halting-witness transports are:
+  parent time t -> ORH time 57942+9(t+1)^2+689(t+1);
+  ORH time t -> parent time 57922+9(t+1)^2+689(t+1).
+
+The reflection step uses conditional progress: if the common source is
+still live after k steps, its physical clock is at least 3k. A physical
+halt by time t therefore forces the source halted by source index t+1.
+This uses decidability of equality with the fixed halt code and absorption.
+It never assumes positive elapsed time after the source has stopped, never
+searches for a least synchronization boundary, and does not use Markov's
+principle. Negated halting equivalence follows by intuitionistic
+contraposition of the two explicit witness implications.
+
+Absolute endpoint
+-----------------
+
+The corollary composes the relative theorem with the revised AX11H written
+calibration in reference/calibration_AX11H.zip. Its SHA256 is
+93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075.
+The theorem uses that calibration's exact mapped native Foundation PA
+consistency sentence. See reference/AX11H_written/WRITTEN_PROOF_AUDIT.txt for the
+independent review and its formalization boundary.
+
+Portable replay
+---------------
+
+From the delivery root:
+  python3 -B reference/ORH_proof/relative_ORH_check.py --output /tmp/orh_binding.json
+
+Defaults are resolved relative to the script's own location. The required
+small parent snapshot is in reference/AX11H_runtime/. It contains only
+tables, source arrays, and the parent literal contracts/receipt; the full
+calibration remains in the separate frozen archive. The candidate literal
+replay is in reference/PA194ORH/independent/. The inspector checks hashes,
+complete outcome coverage, all padded endpoints and zero head displacements,
+the two history cases, both operand prefix readers, and the clock maxima.
+It reuses attributed source-language helpers in verification/vendor/ and
+records their hashes. It does not replace the full literal replay or the
+written induction proof.
+
+Fresh portable result: PASS. See relative_ORH_inspection.json.

@@ -1,0 +1,1 @@
+Inherited validation from the supplied ORH/OR packet, retained for provenance. These receipts describe that packet, not PA194ORHF or PA194ORHBF. New checks are in the package verification/ directory and each new machine's independent/ directory.

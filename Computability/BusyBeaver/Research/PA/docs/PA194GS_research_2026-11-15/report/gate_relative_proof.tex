@@ -1,0 +1,186 @@
+% ALTERNATIVE CLOCK CONVENTION: this supplemental proof sets d(H)=1.
+% The main report uses the equally valid stopped convention D(H)=0.
+% Do not mix their lower-clock invariants. This fragment is not included in report.pdf.
+\section{A source-preserving change of the gate macro interface}
+\label{sec:gate-relative}
+
+This section gives the relative theorem needed for the split-gate
+construction.  It does not introduce a new logical axiom or a new
+freshness convention.  In particular, both numerical guard comparisons
+are retained.  The inherited AX11H source program, including its actual
+fourth AX operand, is unchanged as a resolved register program.
+
+\subsection{The finite source identity}
+
+Write $A=\mathtt{node146}$, $B=\mathtt{node149}$ and
+$C=\mathtt{node49}$ for the three fixed source subtrees in the frozen
+AX11H node dictionary.  That dictionary contains the literal definition
+\[
+ \mathtt{node150}=(A,B).
+\]
+At its single AX occurrence the old grammar contains
+$((A,B),C)$, using the atomic macro name \texttt{node150} for $(A,B)$.
+The new grammar contains
+\[
+                  (A,(B,C)).                                  \tag{G1}
+\]
+The first and second comparison routines therefore become separately
+addressable leaves of the AX grammar.  The push operation $C$ remains
+after both comparisons.  No register instruction is removed or added.
+
+For the initial 194-state witness, the altered interval consists of the
+49 ordinal source sites $3523,\ldots,3571$.  Its subdivision is
+\[
+\begin{array}{c|r|r|l}
+\text{subtree}&\text{first site}&\text{site count}&
+ \text{targets outside its own interval}\\ \hline
+A&3523&12&3532\mapsto3535,\quad3533\mapsto3535\\
+B&3535&18&3550\mapsto3553,\quad3551\mapsto3553\\
+C&3553&19&3569\mapsto3572.
+\end{array}                                                    \tag{G2}
+\]
+All other targets of these three subtrees lie in their own interval.
+Thus each subtree is closed except for its ordinary continuation to the
+next subtree.  This finite fact explains why the reassociation is safe
+despite the language's counted \texttt{breakTo} and
+\texttt{continueTo} instructions.  Arbitrary reassociation of this
+language would not be justified.
+
+For completeness, the supplied verifier resolves \emph{every} source
+branch, rather than relying only on (G2).  It obtains equality of all
+3671 resolved instructions, including register indices, decrement
+branches, and jump destinations.  The maximum source-address length
+is 37 in both trees, and the initial site is 25 with unchanged address
+\texttt{1000000}.  Exactly 49 address strings change.  A second
+interval-based source resolver checks the same instruction graph.
+Equality of the resulting finite instruction lists is an arithmetic
+identity between explicit numerals, and hence needs no induction
+principle beyond that already available in $\mathsf{iPRA}$.
+
+The literal native entries used for the two newly exposed macros are
+196 and 217, respectively.  They already occur in the original fixed
+reader.  The separate entry 221 for \texttt{node150} becomes unreachable
+and is deleted.  In the initial witness there are 133 reachable fixed
+controls and 68 additional grammar controls before seven contextual
+folds, giving
+\[
+                         133+68-7=194.                         \tag{G3}
+\]
+This is a change of the interface between the fixed reader and the
+compressed grammar.  Further grammar optimization may change the last
+two numbers; each delivered table must have its own literal state
+count and certificate.  Graph distinctness by itself is not a semantic
+proof, and the source equality above by itself is not a physical
+simulation proof.
+
+\subsection{What must be certified about the literal table}
+
+Let $P$ be the common resolved source program, $M_0$ the calibrated AX11H
+machine, and $M_1$ the delivered split-gate machine.  For each $j\in
+\{0,1\}$, let $E_j(s)$ encode a source configuration $s$ as a complete
+binary tape configuration at native control 84.  The source
+configuration includes the ordinal instruction, all nine natural-valued
+registers, the nonnegative gap, and an arbitrary nonempty finite spare
+list.  Halt is represented by a separate absorbing code $\mathsf H$.
+The different source-address strings occur only in $E_j$.
+
+For every source instruction and both branches of every decrement, the
+literal-row verifier supplies a positive duration $d_j(s)$ and proves
+\[
+ \operatorname{Run}_{M_j}(d_j(s),E_j(s))=E_j(\operatorname{next}_P(s)).
+                                                               \tag{G4}
+\]
+This is an equation about all represented register values, gaps, spare
+lists, and their complete blank exteriors.  A finite sample of concrete
+register values would not establish (G4).  The applicable independent
+verifier derives the four list traversal lemmas from the actual rows,
+then records all 4778 symbolic instruction outcomes, including the
+halting outcome.  The affine duration coefficients and all 4777
+nonhalting endpoints are checked against the independently resolved
+source graph.  The inherited arithmetic soundness argument interprets
+each symbolic rule by quantifier-free induction over unary blocks or
+finite-list prefixes.  Replaying those rules is therefore sufficient
+to instantiate (G4) for the new literal table; an unverified arithmetic
+box oracle is not sufficient.
+
+There is also an exact finite-support startup calculation
+\[
+ \operatorname{Run}_{M_j}(b_j,\mathsf{Blank})=E_j(s_0),            \tag{G5}
+\]
+with no earlier halt, where $s_0$ has source site 25, logical register
+tuple $(2,0,\ldots,0)$, gap zero, and 26 spare entries equal to one.
+For the initial split-gate witness $b_1=57922$.  The startup check
+compares the entire set of nonzero tape cells, not a fixed tape window.
+The dense/native label bijection and all contextual folds are checked
+against the emitted literal rows.  These finite bindings prevent a
+proof for one grammar or one table from being silently applied to
+another.
+
+\subsection{Primitive recursive clocks and the relative theorem}
+
+Extend $P$ and $M_j$ by absorbing halt, and put
+$d_j(\mathsf H)=1$.  Define by primitive recursion
+\[
+ s(0)=s_0,\qquad s(n+1)=\operatorname{next}_P(s(n)),\qquad
+ T_j(0)=0,\qquad T_j(n+1)=T_j(n)+d_j(s(n)).                       \tag{G6}
+\]
+All functions in (G6) are primitive recursive.  In particular, the
+certificate durations are explicit affine functions of the current
+frame parameters; the source register updates and list operations are
+primitive recursive as well.  Quantifier-free induction using (G4)
+and the semigroup law for literal runs gives
+\[
+ \operatorname{Run}_{M_j}(b_j+T_j(n),\mathsf{Blank})=E_j(s(n)).    \tag{G7}
+\]
+The positive duration certificate gives $T_j(n)\geq n$ by the same
+kind of induction.  Positivity matters: it permits a physical time
+bound to be converted back to a source time bound without an unbounded
+search for a boundary.
+
+If $P$ has halted by source step $n$, equation (G7) witnesses physical
+halt by $b_j+T_j(n)$.  Conversely, suppose the physical machine has
+halted by time $t$.  Since $b_j+T_j(t)\geq t$, absorption of halt makes
+the left side of (G7), with $n=t$, equal to $\mathsf H$.  A nonhalting
+source boundary has control 84 and is distinct from $\mathsf H$;
+hence the decidable source configuration $s(t)$ must be halted.  This
+argument is intuitionistically valid and uses no least-boundary
+principle and no induction over formulas with unbounded quantifiers.
+It proves
+\[
+ \mathsf{iPRA}\ \vdash\quad
+ \operatorname{Halt}(M_j,\mathsf{Blank})
+ \ \longleftrightarrow\ \operatorname{Halt}(P,s_0).              \tag{G8}
+\]
+Consequently (G4)--(G5) for both literal machines and the finite source
+identity establish
+\[
+ \mathsf{iPRA}\ \vdash\quad
+ \operatorname{Halt}(M_1,\mathsf{Blank})
+ \ \longleftrightarrow\ \operatorname{Halt}(M_0,\mathsf{Blank}).  \tag{G9}
+\]
+Explicit primitive recursive witness transformations are
+$t\mapsto b_0+T_0(t)$ in one direction and
+$t\mapsto b_1+T_1(t)$ in the other.  Negating (G9) is valid in
+intuitionistic logic.  Combining it with the inherited written AX11H
+calibration yields the corresponding written theorem
+\[
+ \mathsf{iPRA}\ \vdash\quad
+ \neg\operatorname{Halt}(M_1,\mathsf{Blank})
+ \ \longleftrightarrow\ \operatorname{Con}(\mathsf{PA}).         \tag{G10}
+\]
+The additional relative argument changes neither PA's proof predicate
+nor the logical completeness argument.  It does not complete the
+repository's unfinished end-to-end Lean formalization: that is a
+separate claim, and no such claim is made here.
+
+\paragraph{Provenance and audit boundary.}
+The source node dictionary, AX11H grammar, and literal register-frame
+lemmas come from ProveIt commit
+\texttt{7c0bb454cf73c29ca1c385f9fec856ddd236a7cb} and its frozen incoming
+AX11H/ORH research packets.  The new work is the split interface (G1),
+the resulting grammar/table, its own finite literal bindings, and the
+relative instantiation (G9).  The source identity and state accounting
+for the initial witness were independently recomputed from the saved
+files, rather than inferred from a state-count receipt.  Each final
+optimized witness must replace the initial-witness numerical data with
+its own regenerated certificates before (G10) is attached to it.
