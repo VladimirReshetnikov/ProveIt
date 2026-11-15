@@ -1,0 +1,7 @@
+import PA194PAeqOneLevelCongruence
+#print axioms PA194PAeqOneLevelCongruence.oneLevelOpenedQF_definable
+#print axioms PA194PAeqOneLevelCongruence.quantifierFree_implies_oneLevelOpenedQF
+#print axioms PA194PAeqOneLevelCongruence.oneLevelOpenedQF_child
+#print axioms PA194PAeqOneLevelCongruence.oneLevelOpenedQF_all
+#print axioms PA194PAeqOneLevelCongruence.oneLevelOpenedQF_ex
+#print axioms PA194PAeqOneLevelCongruence.replace
