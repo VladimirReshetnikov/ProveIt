@@ -201,6 +201,16 @@ theorem sseq_insert_iff (e p s a : V) :
       have := sseq_mem C T e hmem
       simpa [sseq, hq'] using this
 
+/-- Generalization under a set whose translated members are closed under the quantifier. -/
+theorem sseq_gen (Q : Quant V) {e s a : V} (x : V) (ha : Q.Pr (sseq Q.toCalc T e s a))
+    (hv : ∀ p ∈ s, Q.Pr (Q.imp (T.tr e p) (Q.all x (T.tr e p)))) :
+    Q.Pr (sseq Q.toCalc T e s (Q.all x a)) :=
+  seq_gen Q x ha (fun i hi => by
+    obtain ⟨p, hp, h⟩ := setList_sound T e s i hi
+    rw [h]
+    exact hv p hp)
+
+#print axioms sseq_gen
 #print axioms enumL_sound
 #print axioms enumL_complete
 #print axioms sseq_mem
