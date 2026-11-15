@@ -224,8 +224,9 @@ For the direction `Con(PA) → ¬Halt(M₁₉₄)`, a
 turns an internally valid numerical derivation of code 1 into an internal PA
 refutation, provided its seed translations are PA-provable. Model-uniform
 proofs cover the six numbered seeds, rho8 and diagonal, as well as modus
-ponens and generalization. The guarded gate and the connection from the
-physical machine to such line histories are open. Separately, the
+ponens and generalization. The guarded gate has since been discharged as
+described below; the connection from the physical machine to such line histories
+remains open. Separately, the
 [machine-store invariant](pa194-work/pa194-machine-store-invariant/README.md) covers the
 mathematical command effects using an independent target proof encoding; it
 has not been identified with PA provability or the physical controller trace.
@@ -270,8 +271,9 @@ assumptions. For the first non-first marker, a further
 [combined return](pa194/ipra/machine-code/FIRST-ALL-TO24.md)
 covers arbitrary first-register and selected-register values,
 under the explicit eight-block blank-tail layout. These are model-uniform
-conditional traces. A complete source-frame correspondence and blank-tape
-reachability are open.
+conditional traces. A [seed-derived initial run](pa194/ipra/machine-code/SEED-FIRST-SITE38.md)
+reaches the first site-38 physical frame from blank tape in every PRA model.
+A complete source-frame correspondence and reachability invariant remain open.
 The other direction, `¬Halt(M₁₉₄) → Con(PA)`, also needs an internal
 translation of arbitrary PA refutations into the machine's numerical calculus.
 The [model-level calculus logic](pa194-work/pa194-model-logic/README.md)
