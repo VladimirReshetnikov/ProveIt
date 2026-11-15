@@ -63,7 +63,8 @@ in PRA models; a complete reachable-state simulation remains open. Native iPRA
 clocked equalities cover the [physical positive loop](pa194/ipra/machine-code/ACTUAL-PHYSICAL-NATIVE.md),
 [source fetch](pa194/ipra/machine-code/UNIFIED-FETCH-NATIVE.md),
 [decoder](pa194/ipra/machine-code/DECODER-NATIVE.md), and
-[tag dispatch](pa194/ipra/machine-code/DISPATCH-TAG-NATIVE.md). The complete
+[tag dispatch](pa194/ipra/machine-code/DISPATCH-TAG-NATIVE.md), and the
+[site-31 physical increment](pa194/ipra/machine-code/SITE31-NATIVE.md). The complete
 [fetch/decode/dispatch prefix](pa194/ipra/machine-code/SCHEDULER-BRANCHES-OPEN.md)
 is proved model-theoretically under the documented hypotheses. The general
 [compiler](pa194-work/pa194-model-logic/FULL-SEPARATION-THEORY.md)
