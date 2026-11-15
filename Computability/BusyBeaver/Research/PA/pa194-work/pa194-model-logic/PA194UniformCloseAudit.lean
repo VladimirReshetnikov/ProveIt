@@ -1,0 +1,5 @@
+import PA194UniformCloseModel
+#print axioms PA194BindSource.pureBindTermGraph_iff
+#print axioms PA194BindSource.pureBindPairGraph_iff
+#print axioms PA194BindSource.pureModelClose_defined
+#print axioms PA194BindSource.pureModelClose_model
