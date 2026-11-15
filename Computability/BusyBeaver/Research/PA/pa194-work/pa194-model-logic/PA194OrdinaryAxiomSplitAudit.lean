@@ -1,0 +1,3 @@
+import PA194OrdinaryAxiomSingleton
+#print axioms PA194FormulaDispatcher.theoryAxiom_of_singletons
+#print axioms PA194FormulaDispatcher.ordinaryTheoryAxiom_of_fixed_and_induction
