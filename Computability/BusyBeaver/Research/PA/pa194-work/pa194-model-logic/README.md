@@ -14,9 +14,11 @@ are checked, including for nonstandard codes. The
 [general shift rules](SHIFT-INTERFACE.md) are proved in PRA models with an IΣ₁
 arithmetic reduct. The [unrestricted universal-introduction rule](UNRESTRICTED-ALL.md)
 has passed a repository source-closure replay for arbitrary internal formula depth.
-The unrestricted existential rule and finite-adjunctive compiler simulation have
-independent replays and await repository integration. Identification of the source
-theory with PA remains open. None of these results is a native iPRA consistency implication. The detailed
+The [unrestricted existential rule](UNRESTRICTED-EXISTENTIAL.md),
+[finite-adjunctive simulation](ADJUNCTIVE-SIM.md), and
+[generic compiler with an axiom supplier](GENERIC-SIM.md) also passed a combined
+repository source-closure replay. Identification of the source theory with PA and
+the required PA axiom supplier remain open. None of these results is a native iPRA consistency implication. The detailed
 module descriptions below include earlier stages of the development; consult the
 linked individual status notes for later results and their audit provenance.
 

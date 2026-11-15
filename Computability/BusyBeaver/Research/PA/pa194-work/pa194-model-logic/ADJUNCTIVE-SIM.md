@@ -1,0 +1,11 @@
+# Finite adjunctive-source compiler simulation
+
+`finiteAdjunctiveSim reserve C` constructs every field of `ConPA.Sequent.ShiftValidity.Sim` for the numerical target calculus and the finite relational source theory `adjunctiveTheory` (the five equality axioms plus weak adjunction), using a supplied `SeedCompilerAdmission 0 reserve` bundle. `finiteAdjunctiveSim_exists` proves such a simulation exists for each model-valued reserve, using the already proved admission bound. The source model satisfies PRA and IΣ₁; the compiler and rules cover nonstandard internal syntax and derivations. Its falsum is code 1 and its admission predicate is `SeedAdmission 0 reserve`.
+
+The structure fields use the corrected general seeded existential rule, unrestricted universal introduction, general eigenvariable freshness, both general shift directions with validity exposed for the reverse direction, propositional rules, negation/cut, and the finite-adjunctive axiom supplier. The audit additionally imports the earlier QF existential module to check namespace compatibility.
+
+This is a complete simulation only for the explicitly defined finite adjunctive source theory, which has not been identified with PA. It does not itself provide an admissible initial environment for a particular derivation, connect to scheduler or physical machine halting, or establish any PA/194-machine consistency equivalence. It is a model-uniform Lean theorem over PRA + IΣ₁, not a native iPRA derivation.
+
+The incremental replay rebuilt the simulation source and combined audit top against previously source-replayed interface, corrected existential, QF existential, finite axiom supplier, shift, universal-opening, freshness, observational and 328-module full-one-level baselines. Three main reports are free of `sorryAx`; workspace dependencies remain prebuilt. This is not a clean whole-workspace build.
+
+The independent incremental replay passed with a combined import of the earlier QF existential module, against separately source-replayed interface, corrected existential, finite axiom, shift, opening and freshness baselines. Other workspace dependencies remain prebuilt. Run `check-adjunctive-sim.sh --out OUTPUT` for the repository source-closure audit and three axiom reports; `check_bridge.py` documents retained workspace foundations.

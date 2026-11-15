@@ -1,0 +1,4 @@
+import PA194ModelAdjunctiveRefutation
+import PA194ModelQFTail
+#print axioms PA194ModelLogic.finiteAdjunctiveSim
+#print axioms PA194ModelLogic.finiteAdjunctive_refutation_target

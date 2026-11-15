@@ -1,0 +1,5 @@
+import PA194ModelAdjunctiveSim
+import PA194ModelQFTail
+#print axioms PA194ModelLogic.finiteAdjunctiveSim
+#print axioms PA194ModelLogic.finiteAdjunctiveSim_exists
+#print axioms PA194ModelLogic.simRuleExs_quantifierFreeRankedFull

@@ -1,0 +1,15 @@
+import PA194AdjunctiveSimAudit
+import PA194AdjunctiveRefutationAudit
+import PA194GenericSimAudit
+import PA194UnrestrictedAllAudit
+import PA194UnrestrictedExistentialAudit
+#print axioms PA194ModelLogic.sourceOpening_freeBridge
+#print axioms PA194ModelLogic.simRuleAll_general
+#print axioms PA194ModelLogic.sourceSubst_translation
+#print axioms PA194ModelLogic.simRuleExs_generalSeed
+#print axioms PA194ModelLogic.simRuleExs_quantifierFreeRankedFull
+#print axioms PA194ModelLogic.finiteAdjunctiveSim
+#print axioms PA194ModelLogic.finiteAdjunctiveSim_exists
+#print axioms PA194ModelLogic.finiteAdjunctive_refutation_target
+#print axioms PA194ModelLogic.numericalSeedSim
+#print axioms PA194ModelLogic.numericalSeed_refutation_target

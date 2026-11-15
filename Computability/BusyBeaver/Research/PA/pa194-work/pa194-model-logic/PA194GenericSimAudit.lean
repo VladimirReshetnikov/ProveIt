@@ -1,0 +1,4 @@
+import PA194ModelNumericalSeedRefutation
+import PA194ModelQFTail
+#print axioms PA194ModelLogic.numericalSeedSim
+#print axioms PA194ModelLogic.numericalSeed_refutation_target
