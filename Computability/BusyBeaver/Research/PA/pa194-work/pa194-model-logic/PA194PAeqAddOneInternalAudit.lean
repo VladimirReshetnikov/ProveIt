@@ -1,0 +1,2 @@
+import PA194PAeqAddOneProofInternal
+#print axioms PA194PAeq.AddOne.addOneProof_internal
