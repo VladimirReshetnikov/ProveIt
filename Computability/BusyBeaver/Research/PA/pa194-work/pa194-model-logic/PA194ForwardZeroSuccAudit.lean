@@ -1,0 +1,12 @@
+import PA194ForwardZeroNotSuccRoot
+#print axioms PA194ForwardZeroSucc.zeroSuccFalse
+#print axioms PA194ForwardZeroSucc.zeroIsoSuccFalse
+#print axioms PA194ForwardZeroSucc.existsSuccFalse
+#print axioms PA194ForwardZeroSucc.equalityFalse
+#print axioms PA194ForwardZeroSucc.notEqualityAt
+#print axioms PA194ForwardZeroSucc.proof
+#print axioms PA194ForwardZeroSucc.contextDerivation
+#print axioms PA194ForwardZeroSucc.sourceProof
+#print axioms PA194ForwardZeroSucc.source_provable
+#print axioms PA194ForwardZeroSucc.typed_zeroNotSucc_closed
+#print axioms PA194ForwardZeroSucc.root_zeroNotSucc_provable
