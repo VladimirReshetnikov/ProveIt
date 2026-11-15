@@ -1,0 +1,2 @@
+import PA194GuardedAxiomReduction
+#print axioms PA194GuardedAxiomReduction.packet_axiom_supplier_of_five_and_induction
