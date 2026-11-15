@@ -1,0 +1,4 @@
+import PA194OrdinaryNativeConsistency
+#print axioms PA194OrdinaryNativeConsistency.ordinaryRefutation_sigma
+#print axioms PA194OrdinaryNativeConsistency.ordinaryBound_sigma
+#print axioms PA194OrdinaryNativeConsistency.ordinary_matrix_exists
