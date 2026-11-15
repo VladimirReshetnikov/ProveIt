@@ -58,8 +58,10 @@ for each physical position, and the
 [marked increment](pa194/ipra/machine-code/INCREMENT-SOURCE.md) and
 [marked decrement](pa194/ipra/machine-code/DECREMENT-SOURCE.md) boxes have
 them for each logical register. The controller and physical-frame transitions have also been connected for selected
-source sites, including a [matched loop through both site-32 branches](pa194/ipra/machine-code/LOOP-AFTER32.md)
-and the [site-38 zero branch](pa194/ipra/machine-code/SITE38-ZERO-PHYSICAL.md)
+source sites, including a [matched loop through both site-32 branches](pa194/ipra/machine-code/LOOP-AFTER32.md),
+the [site-38 zero branch](pa194/ipra/machine-code/SITE38-ZERO-PHYSICAL.md),
+and both [zero](pa194/ipra/machine-code/SITE45-ZERO-PHYSICAL.md) and
+[positive](pa194/ipra/machine-code/SITE45-POSITIVE-PHYSICAL.md) site-45 branches
 in PRA models; a complete reachable-state simulation remains open. Native iPRA
 clocked equalities cover the [physical positive loop](pa194/ipra/machine-code/ACTUAL-PHYSICAL-NATIVE.md),
 [source fetch](pa194/ipra/machine-code/UNIFIED-FETCH-NATIVE.md),
@@ -96,7 +98,12 @@ code graphs establish syntax. Recursive PAeq [term](pa194-work/pa194-model-logic
 and [formula](pa194-work/pa194-model-logic/PAEQ-FORMULA-DISPATCHER.md)
 dispatchers have scope preservation under an explicit environment bound. A
 [conditional internal refutation compiler](pa194-work/pa194-model-logic/PAEQ-CONDITIONAL-REFUTATION.md)
-still assumes the quantifier, shift, and theory-axiom suppliers. The
+assumes the quantifier, shift, and theory-axiom suppliers. Its original
+root-packet invariant collapses distinct variables and does not supply the
+needed domain guards, as explained in the guarded compiler notes. The [guarded identity-packet compiler](pa194-work/pa194-guarded-compiler/README.md)
+retains those distinctions; it still requires the nonvariable existential
+rule, axiom suppliers and domain inhabitation. Its identity translation is
+independent of packet length for valid internal formulas. The
 [ordinary PAeq theory now has a uniform classifier](pa194-work/pa194-model-logic/PAEQ-ORDINARY-CLASS.md),
 and the [arithmetic induction-axiom supplier](pa194-work/pa194-model-logic/PAEQ-INDUCTION-SUPPLIER.md)
 establishes modeled PAeq proof existence for every internal arithmetic induction
