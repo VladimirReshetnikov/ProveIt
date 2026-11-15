@@ -1,0 +1,2 @@
+import PA194TransitivityAnyPacket
+#print axioms PA194TransitivityAnyPacket.transitivity_any_packet
