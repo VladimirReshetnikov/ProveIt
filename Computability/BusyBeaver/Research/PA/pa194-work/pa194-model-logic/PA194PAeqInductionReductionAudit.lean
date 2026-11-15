@@ -1,0 +1,3 @@
+import PA194PAeqInductionSupplierReduction
+#print axioms PA194PAeqBind.induction_image_scoped
+#print axioms PA194PAeqBind.induction_supplier_reduced
