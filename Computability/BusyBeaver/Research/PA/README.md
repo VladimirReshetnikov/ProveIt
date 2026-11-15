@@ -62,6 +62,7 @@ source sites, including a [matched loop through both site-32 branches](pa194/ipr
 the [site-38 zero branch](pa194/ipra/machine-code/SITE38-ZERO-PHYSICAL.md),
 and both [zero](pa194/ipra/machine-code/SITE45-ZERO-PHYSICAL.md) and
 [positive](pa194/ipra/machine-code/SITE45-POSITIVE-PHYSICAL.md) site-45 branches
+and [one positive 45→46→47→45 transfer iteration](pa194/ipra/machine-code/SITE45-TRANSFER-STEP.md)
 in PRA models; a complete reachable-state simulation remains open. Native iPRA
 clocked equalities cover the [physical positive loop](pa194/ipra/machine-code/ACTUAL-PHYSICAL-NATIVE.md),
 [source fetch](pa194/ipra/machine-code/UNIFIED-FETCH-NATIVE.md),
@@ -118,9 +119,11 @@ and [symmetry](pa194-work/pa194-model-logic/FORWARD-SYMMETRY.md) suppliers
 prove the root-packet translations of those fixed axioms in the source theory
 under the stated code bounds. A [normalized identity-packet bridge](pa194-work/pa194-model-logic/IDENTITY-FIXED.md)
 now supplies these five fixed translations for the guarded route; the guarded
-endpoint still needs to be specialized to those packets. The other fixed
-axioms, induction and rule suppliers are still open; so is the unconditional
-PAeq-to-source compiler. The [universal formula replacement theorem](pa194-work/pa194-model-logic/PAEQ-UNIVERSAL-FORMULA-CONGRUENCE.md)
+endpoint still needs to be specialized to those packets. [Transitivity](pa194-work/pa194-model-logic/TRANSITIVITY-PACKET.md)
+is also supplied for every valid arity-zero packet. The [remaining source
+axiom reduction](pa194-work/pa194-model-logic/FORWARD-FIXED-SIX.md) assumes six
+fixed axioms and arbitrary induction instances. Other rule suppliers and the
+unconditional PAeq-to-source compiler are still open. The [universal formula replacement theorem](pa194-work/pa194-model-logic/PAEQ-UNIVERSAL-FORMULA-CONGRUENCE.md)
 supplies modeled PAeq proof existence for arbitrary internally valid arity-one
 formulas, including nonstandard codes and nested quantifiers. These existence
 results do not supply fixed proof-code transformers.

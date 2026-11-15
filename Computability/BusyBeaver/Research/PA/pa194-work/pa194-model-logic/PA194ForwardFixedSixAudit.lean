@@ -1,0 +1,5 @@
+import PA194ForwardFixedSix
+#print axioms PA194ForwardReflProof.remainingFixedAfterTransitivity_length
+#print axioms PA194ForwardReflProof.remainingFixedAfterSymmetry_split
+#print axioms PA194ForwardReflProof.fixed_typed_supplier_of_six
+#print axioms PA194ForwardReflProof.root_theoryAxiom_of_six_and_induction
