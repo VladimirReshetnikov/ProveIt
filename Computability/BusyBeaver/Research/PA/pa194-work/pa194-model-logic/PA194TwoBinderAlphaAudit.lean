@@ -1,0 +1,5 @@
+import PA194ModelTwoBinderAlpha
+#print axioms PA194ModelLogic.targetTwoAllMembershipAlpha
+#print axioms PA194ModelLogic.targetTwoAllMembershipAlpha_reverse
+#print axioms PA194ModelLogic.fixedTranslation_twoAllMembership
+#print axioms PA194ModelLogic.simRuleAllFresh_twoAllMembership
