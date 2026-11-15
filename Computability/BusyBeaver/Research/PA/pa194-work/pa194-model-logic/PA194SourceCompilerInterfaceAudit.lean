@@ -1,0 +1,3 @@
+import PA194SourceCompilerInterface
+#print axioms PA194FullSepIPRA.sourceCalibration_of_internalCompiler
+#print axioms PA194FullSepIPRA.physical_nonhalt_consistency_of_internalCompiler
