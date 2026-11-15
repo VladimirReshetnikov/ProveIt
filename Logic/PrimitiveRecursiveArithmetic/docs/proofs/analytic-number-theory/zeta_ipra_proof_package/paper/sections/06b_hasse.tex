@@ -1,0 +1,199 @@
+\section{A globally convergent Euler--Hasse series}
+\label{sec:hasse}
+
+A further representation from the reference pages is available as an everywhere convergent series
+of finite differences.  For $n\ge0$, define the entire finite sum
+\[
+ D_n(s)=\sum_{k=0}^n(-1)^k\binom nk(k+1)^{-s},\qquad
+ \mathcal{E}_N(s)=\sum_{n=0}^N2^{-n-1}D_n(s).
+\]
+The point is to bound $D_n$ by a polynomial in $n$ on each bounded
+complex region; the naive bound $2^n(n+1)^{|s|}$ would not suffice.
+
+\subsection{A shifted finite Mellin identity}
+
+Put $f_n(t)=e^{-t}(1-e^{-t})^n$ for $t\ge0$.  In the basis
+\[
+ g_{n,j}(t)=e^{-(j+1)t}(1-e^{-t})^{n-j},\qquad 0\le j\le n,
+\]
+finite differentiation gives
+\[
+ g_{n,j}'=-(j+1)g_{n,j}+(n-j)g_{n,j+1}.
+ \tag{EH1}
+\]
+At $j=n$ the second term is zero and is omitted.  The sum of the
+absolute values of the two displayed coefficients is $n+1$.
+Since $f_n=g_{n,0}$, induction on $m$ proves that the absolute
+coefficient sum of $f_n^{(m)}$ in this basis is at most $(n+1)^m$.
+Each basis function has modulus at most $e^{-t}$; consequently
+\[
+ |f_n^{(m)}(t)|\le(n+1)^m e^{-t}\qquad(n,m\ge0).       \tag{EH2}
+\]
+This includes $n<m$; no exceptional initial terms are needed.
+
+Let $P(z)=1/\Gamma(z)$ denote the entire reciprocal gamma construction.
+For $\Re(s+m)>0$, positive scaling in Euler's integral gives
+\begin{equation}
+ \boxed{\displaystyle
+ D_n(s)=(-1)^m P(s+m)
+       \int_0^\infty t^{s+m-1}f_n^{(m)}(t)\,dt.}
+ \label{eq:hasse-shifted-mellin}
+\end{equation}
+There is a direct finite proof, without analytic continuation: expand
+\[
+ f_n^{(m)}(t)=(-1)^m\sum_{k=0}^n
+            (-1)^k\binom nk(k+1)^m e^{-(k+1)t}.
+\]
+Integrate this finite sum.  Its $k$th integral is
+$\Gamma(s+m)(k+1)^{-s-m}$, and multiplication by $(k+1)^m$ and
+$P(s+m)$ gives \eqref{eq:hasse-shifted-mellin}.
+If instead one derives the identity by $m$ integrations by parts on
+$\Re s>0$, the boundary terms are $t^{s+j}f_n^{(j)}(t)$.
+At zero their moduli are at most $(n+1)^j t^{\Re s+j}$; at infinity
+(EH2) bounds them by a polynomial times $e^{-t}$.  Thus all boundary
+terms vanish with the gamma gateway's explicit cutoffs.
+
+For actual evaluation of the integral, suppose
+$\Re s\ge-A$, $|s|\le R$, where $A\ge0$ and $R\ge1$ are integers.
+Choose $m=A+2$ and $S=R+m$.  At a lower endpoint $0<\epsilon\le1$
+and an upper endpoint $T\ge1$, (EH2) gives
+\[
+ \int_0^\epsilon|t^{s+m-1}f_n^{(m)}(t)|\,dt
+       \le(n+1)^m\epsilon^2/2,
+\]
+\[
+ \int_T^\infty|t^{s+m-1}f_n^{(m)}(t)|\,dt
+       \le(n+1)^m2^{S+1}S!e^{-T/2}.                 \tag{EH3}
+\]
+On the remaining finite interval an explicit Lipschitz bound is
+\[
+ (n+1)^mT^S\bigl((S+1)/\epsilon+n+1\bigr),
+\]
+by (EH1) and the product rule.  Apply the finite quadrature rule with
+this bound.  These are endpoint and mesh certificates, not an appeal
+to a qualitative improper integral.
+
+Let $M_S$ be the explicit integer bound for $|P(z)|$ on $|z|\le S$
+from the gamma gateway.  Since $2\le\Re s+m\le S$, the Euler
+integral gives $\Gamma(\Re s+m)\le1+2^{S+1}S!$.  It follows that
+\begin{equation}
+ |D_n(s)|\le C_{A,R}(n+1)^m,
+ \qquad C_{A,R}=M_S(1+2^{S+1}S!).
+ \label{eq:hasse-polynomial-bound}
+\end{equation}
+
+\subsection{Global convergence and local power series}
+
+The elementary factorial estimate
+\[
+ (n+1)^m\le m!8^m2^{n/2}
+\]
+holds for all $n,m\ge0$.  For $n\ge1$, use $n+1\le2n$,
+$e^{n/4}\ge(n/4)^m/m!$, and $e\le4$; the case $n=0$ is immediate.
+Geometric summation therefore proves
+\begin{equation}
+ \boxed{\displaystyle
+ |\mathcal{E}(s)-\mathcal{E}_N(s)|\le 2C_{A,R}m!8^m\,2^{-N/2},
+ \quad \mathcal{E}(s)=\sum_{n=0}^{\infty}2^{-n-1}D_n(s).}
+ \label{eq:hasse-tail}
+\end{equation}
+Every inequality is first applied to a finite tail.  For example,
+with $D=2C_{A,R}m!8^m$ and desired precision $2^{-p}$, take
+$N=2(p+D+4)$.  The omitted tail is at most $2^{-p-4}$.
+Evaluate each elementary number $(k+1)^{-s}$ to error at most
+$2^{-p-4}/(N+1)$.  The binomial coefficient sum is $2^n$, so the
+outer weight $2^{-n-1}$ makes the total evaluation error at most
+$2^{-p-5}$.  Final rational rounding supplies the remaining error
+reserve.  This is a fixed primitive recursive algorithm, although the
+safe cutoffs are deliberately large.
+
+For completeness, entireness also has a finite certificate.  Fix
+$|s_0|\le R$ and use \eqref{eq:hasse-polynomial-bound} on
+$|s|\le R+2$, taking $A=R+2$ there.  Write its constants as $C,m$.
+The coefficient of $h^j$ in the finite entire function $D_n(s_0+h)$
+is obtained by integrating its finite exponential Taylor polynomials
+around $|h|=2$.  Fourier orthogonality and the factorial remainders give
+coefficient modulus at most $C(n+1)^m2^{-j}$, by the finite circle
+extraction already proved in the continuation argument.
+Its weighted sum over $n$ therefore converges with the tail
+\eqref{eq:hasse-tail} times $2^{-j}$.  The resulting $j$th Taylor
+coefficient of $\mathcal{E}$ has modulus at most $2Cm!8^m2^{-j}$; on
+$|h|\le1$ its degree-$J$ remainder is at most
+$2Cm!8^m2^{-J}$.  Finite rectangles in $(n,j)$, with these two tail
+bounds, prove equality with $\mathcal{E}(s_0+h)$.  Thus $\mathcal{E}$ is entire with
+explicit Taylor data, rather than only a pointwise limit of entire
+functions.
+
+\subsection{Identification with eta and zeta}
+
+For $\sigma=\Re s>0$, use the shifted integral with $m=0$ and sum
+finitely over $n$.  The geometric identity is
+\[
+ \sum_{n=0}^N2^{-n-1}f_n(t)
+ =\frac1{e^t+1}\left[1-
+                  \left(\frac{1-e^{-t}}2\right)^{N+1}\right].
+\tag{EH4}
+\]
+Therefore, if $I(s)=\int_0^\infty t^{s-1}/(e^t+1)\,dt$,
+\[
+ |\mathcal{E}_N(s)-P(s)I(s)|
+       \le |P(s)|\Gamma(\sigma)2^{-N-1}.            \tag{EH5}
+\]
+Here $1/(e^t+1)\le e^{-t}$ gives the upper-endpoint estimate;
+at zero one has the bound $\epsilon^\sigma/(2\sigma)$.
+A supplied margin $\sigma\ge1/A$ makes both endpoints effective.
+The finite alternating geometric identity also gives
+\[
+ \left|P(s)I(s)-\sum_{k=1}^K(-1)^{k-1}k^{-s}\right|
+       \le |P(s)|\Gamma(\sigma)(K+1)^{-\sigma}.     \tag{EH6}
+\]
+Indeed the omitted kernel is $(-1)^K e^{-Kt}/(e^t+1)$, whose
+absolute integral is at most
+$\Gamma(\sigma)(K+1)^{-\sigma}$.  Both right sides have primitive
+recursive moduli on the supplied positive half-plane chart.  Thus
+$\mathcal{E}(s)=\eta(s)$ there.
+
+To state the global identity without hiding a removable pole, put
+$E(s)=(s-1)\zeta(s)$ with its entire Euler--Maclaurin definition, and
+\[
+ B(s)=\sum_{j=0}^{\infty}
+       \frac{(-1)^j(\log2)^{j+1}(s-1)^j}{(j+1)!}.
+\]
+The factorial tail proves that $B$ is entire, and finite exponential
+identities give $(s-1)B(s)=1-2^{1-s}$ and $B(1)=\log2$.
+The entire functions $\mathcal{E}$ and $BE$ agree on $\Re s>1$, by the already
+proved eta identity.  Apply the finite disk-propagation estimate to
+their difference, using the explicit Taylor bounds above and those
+for $B,E$.  It gives the entire identity
+\begin{equation}
+ \boxed{\displaystyle
+ \mathcal{E}(s)=B(s)E(s),\qquad
+ \eta(s)=(1-2^{1-s})\zeta(s),\qquad \eta(1)=\log2.}
+ \label{eq:hasse-entire-eta}
+\end{equation}
+The middle expression means the entire continuation just defined,
+including its removable value at $s=1$.
+
+In particular, on every chart where $1-2^{1-s}$ has a supplied
+positive rational modulus bound,
+\[
+ \boxed{\displaystyle
+ \zeta(s)=\frac1{1-2^{1-s}}
+ \sum_{n=0}^{\infty}\frac1{2^{n+1}}
+       \sum_{k=0}^n(-1)^k\binom nk(k+1)^{-s}.}
+\]
+The numerator series converges everywhere.  The displayed quotient
+is not used at its exceptional points
+$s=1+2\pi i k/\log2$; at $k\ne0$ the entire numerator vanishes
+and Euler--Maclaurin supplies the regularized zeta value.  This domain
+qualification is essential for a constructive evaluation algorithm.
+
+For completeness, the exceptional points also have a derivative formula.
+For a nonzero integer $k$, put $s_k=1+2\pi i k/\log2$.
+Differentiate the entire identity at $s_k$, where $s_k\mathrel\#1$.
+The derivative of $1-2^{1-s}$ is $\log2$ there, so
+\[
+ \zeta(s_k)=\frac{\mathcal{E}'(s_k)}{\log2}.
+\]
+This is a licensed division by a positive constant and gives the same
+regular value as the Euler--Maclaurin construction.

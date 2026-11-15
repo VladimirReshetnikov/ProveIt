@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives on 14 and
-15 November 2026: 33 to `docs/drafts`, and 5 to
+15 November 2026: 33 to `docs/drafts`, and 8 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -32,10 +32,10 @@ reason. Its directory column gives `<area>/<directory>`.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `ignored` | 41 | The member matches the repository's `.gitignore`: 29 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests and 12 `.log` files from LaTeX and Lean builds. It is available only from the delivered archive. |
+| `ignored` | 43 | The member matches the repository's `.gitignore`: 31 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests and 12 `.log` files from LaTeX and Lean builds. It is available only from the delivered archive. |
 | `sibling-packet` | 13 | `puiseux_ipra` bundles `dependencies/FTA_iPRA/`, a byte-identical copy of the packet filed in [`algebra/FTA_iPRA`](algebra/FTA_iPRA/). The reference column gives the placed file, except for the copy of `SHA256SUMS`, which is ignored in both. |
 | `sibling-archive` | 1 | `zeta_zeros_ipra_2026-11-15` bundles `dependencies/zeta_functional_equation_ipra.zip`, a byte-identical copy of the delivered archive filed in [`analytic-number-theory/zeta_functional_equation_ipra`](analytic-number-theory/zeta_functional_equation_ipra/). |
-| `repository-copy` | 3 | `zeta_zeros_ipra_2026-11-15` bundles `sources/Deduction.lean`, `sources/NativeBiInterpretation.lean` and `sources/PR.lean`, byte-identical to the files of the same names in [`ConciseIPRA/Lean/ConciseIPRA`](../../ConciseIPRA/Lean/ConciseIPRA/). The reference column gives that file, relative to the repository root. |
+| `repository-copy` | 17 | `zeta_zeros_ipra_2026-11-15` bundles `sources/Deduction.lean`, `sources/NativeBiInterpretation.lean` and `sources/PR.lean`, byte-identical to the files of the same names in [`ConciseIPRA/Lean/ConciseIPRA`](../../ConciseIPRA/Lean/ConciseIPRA/). `isoperimetric_ipra_constructive_2026-11-15` bundles, under `reused/`, the earlier packet [`geometry/isoperimetric_ipra`](geometry/isoperimetric_ipra/) as filed here at `22afac4c9d`; 14 of its files are byte-identical to that packet. The reference column gives that file, relative to the repository root. |
 
 Other checksum manifests (`MANIFEST.sha256`, `manifest.sha256`, `MANIFEST.txt`) are not
 matched by `.gitignore` and are placed. None of them was verified. The README,
@@ -47,7 +47,11 @@ directory. Its files are in [`algebra/FTA_iPRA`](algebra/FTA_iPRA/). Likewise, `
 To recover an omitted member, restore the archive from the commit that added it
 (the Arrival column). For `apery_ipra`, `faltings_ipra`, `gamma_ipra`,
 `ipra_polynomial_formulas_abel_ruffini` and `mollweide_circle_ipra`, replace `docs/drafts` with
-`Logic/PrimitiveRecursiveArithmetic/docs/incoming`:
+`Logic/PrimitiveRecursiveArithmetic/docs/incoming`. The archives of
+`isoperimetric_ipra_constructive_2026-11-15`, `mordell_weil_ipra` and `zeta_ipra_proof_package`
+were not committed, on Vladimir's instruction, so they cannot be restored from the history.
+The only omitted members of the first are its `reused/` copies, which are the files of
+`geometry/isoperimetric_ipra`. The other two omit only their ignored checksum manifests:
 
 ```bash
 git show <arrival>:docs/drafts/<archive>.zip > <scratch>/<archive>.zip
@@ -55,10 +59,10 @@ git show <arrival>:docs/drafts/<archive>.zip > <scratch>/<archive>.zip
 
 ## Packets
 
-The 38 archives hold 806 members: 748 placed here, 41 ignored, 13 in the bundled copy of
-a sibling packet, 1 nested copy of a sibling archive and 3 copies of repository files.
+The 41 archives hold 911 members: 837 placed here, 43 ignored, 13 in the bundled copy of
+a sibling packet, 1 nested copy of a sibling archive and 17 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
-of each packet. Arrival is the commit that added the archive to its drop directory.
+of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
 
 ### Algebra
 
@@ -97,6 +101,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | [`pnt_li_ipra_2026-11-15`](analytic-number-theory/pnt_li_ipra_2026-11-15/) | `d72c8b2463` 2026-11-15 | `pnt_li_ipra` | Logarithmic-integral strengthenings of the prime number theorem: an explicit stretched-exponential bound on π(n) − Li₂(n), and the full asymptotic expansion with explicit remainders. | 23 | 0 |
 | [`prime_reciprocal_ipra_2026-11-15`](analytic-number-theory/prime_reciprocal_ipra_2026-11-15/) | `52eb7d907b` 2026-11-15 | `prime_reciprocal_ipra_2026-11-15` | Divergence of the reciprocal-prime sum in the explicit form ∑_{p ≤ 2^(2·4^k)} 1/p > k. | 11 | 0 |
 | [`zeta_functional_equation_ipra`](analytic-number-theory/zeta_functional_equation_ipra/) | `db4b793b19` 2026-11-14 | `zeta_ipra` | Riemann's functional equation for ζ in quantitative form, with a formalization plan for its finite arithmetic content. | 31 | 0 |
+| [`zeta_ipra_proof_package`](analytic-number-theory/zeta_ipra_proof_package/) | *not committed* 2026-11-15 | `zeta_ipra` | Constructive zeta theory in 33 result families: Dirichlet convergence, Euler products, the entire regular part and Stieltjes constants, special values, both functional equations and ξ, the Euler–Hasse series, and an explicit lower bound on the modulus of ζ(1+it). Its Lean files are uncompiled candidates. | 26 | 1 |
 | [`zeta_zeros_ipra_2026-11-15`](analytic-number-theory/zeta_zeros_ipra_2026-11-15/) | `d72c8b2463` 2026-11-15 | `zeta_zeros_ipra` | Quantitative zero distribution of ζ: nonvanishing regions, trivial zeros, the Riemann–von Mangoldt estimate and local counts. It also certifies one critical-line zero near 1/2 + 14.1347i. | 25 | 5 |
 
 ### Diophantine number theory
@@ -112,6 +117,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | [`faltings_ipra`](diophantine-number-theory/faltings_ipra/) | `12ab5b00c1` 2026-11-15 | `faltings_ipra` | Faltings' theorem: it says it does not prove the general theorem in iPRA. It analyses the missing height bound and proves special cases, among them the rational points of the Fermat quartic. It states that its three Lean modules compile. | 20 | 8 |
 | [`hurwitz_khinchin_ipra`](diophantine-number-theory/hurwitz_khinchin_ipra/) | `b5a3ad0377` 2026-11-15 | `hurwitz_khinchin_ipra` | Sharp constructive Hurwitz approximation and quantitative constructive Khinchin approximation. | 18 | 1 |
 | [`minkowski_ipra`](diophantine-number-theory/minkowski_ipra/) | `057b790401` 2026-11-14 | `minkowski_ipra` | Minkowski's convex-body theorem. | 37 | 1 |
+| [`mordell_weil_ipra`](diophantine-number-theory/mordell_weil_ipra/) | *not committed* 2026-11-15 | `mordell_weil_ipra` | Constructive Mordell–Weil descent: a general primitive-recursive finite-descent theorem, generators for an elliptic curve relative to a supplied covering list, and an unconditional computation of E(Q) for y² = x³ − u⁴x and products of these. It says it does not give a uniform generator algorithm for arbitrary elliptic curves. | 33 | 1 |
 | [`pell_ipra_2026-11-15`](diophantine-number-theory/pell_ipra_2026-11-15/) | `b5a3ad0377` 2026-11-15 | `pell_ipra` | Pell equations for every nonsquare D ≥ 2, with an audit of their algorithms and induction invariants in iPRA. | 18 | 1 |
 | [`transcendence_ipra`](diophantine-number-theory/transcendence_ipra/) | `c5093c20b5` 2026-11-14 | `transcendence_ipra` | Transcendence of e and π as explicit apartness bounds for nonzero integer polynomials. | 18 | 1 |
 
@@ -125,6 +131,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | [`eight_geometry_theorems_ipra`](geometry/eight_geometry_theorems_ipra/) | `390098877e` 2026-11-15 | `eight_geometry_theorems_ipra` | Constructive coordinate proofs of eight theorems: Pappus's harmonic theorem, Ceva, Menelaus, Carnot's conic and polygon theorems, Hoehn, Pappus's hexagon theorem and Brianchon. | 31 | 0 |
 | [`euler_rodrigues_ipra`](geometry/euler_rodrigues_ipra/) | `db4b793b19` 2026-11-14 | `euler_rodrigues_ipra` | Euler's rotation theorem and Rodrigues' formula. It says the unrestricted exact-axis form is not constructively provable (LLPO reduction) and proves constructive replacements. | 21 | 2 |
 | [`isoperimetric_ipra`](geometry/isoperimetric_ipra/) | `0bf379a842` 2026-11-14 | `isoperimetric_ipra` | The sharp planar isoperimetric inequality L² ≥ 4πA, with its equality characterization, for effective presentations. | 16 | 0 |
+| [`isoperimetric_ipra_constructive_2026-11-15`](geometry/isoperimetric_ipra_constructive_2026-11-15/) | *not committed* 2026-11-15 | `isoperimetric_ipra` | Constructive isoperimetry, broadening [`isoperimetric_ipra`](geometry/isoperimetric_ipra/) (which it carries under `reused/` and as an appendix): planar and Dido problems, triangle inequalities, a rational Brunn–Minkowski theorem for box unions, the sharp n-dimensional inequality from outer-volume data, finite Sobolev/BV, spherical caps, and the hypercube edge and Harper vertex theorems. Its Lean files are uncompiled outlines. | 30 | 14 |
 | [`mollweide_circle_ipra`](geometry/mollweide_circle_ipra/) | `349481d51f` 2026-11-15 | `mollweide_circle_ipra` | Mollweide's formulas, the laws of tangents and cotangents with the inradius formula, and the power-of-a-point, tangent-secant, intersecting-chords and intersecting-secants theorems. Its Lean files are not compiled. | 25 | 1 |
 | [`morley_ipra_constructive`](geometry/morley_ipra_constructive/) | `58087eb241` 2026-11-15 | `morley_ipra_constructive` | Morley's trisector theorem, stated over finite exact certificates. | 13 | 1 |
 | [`pappus_centroid_ipra_2026-11-15`](geometry/pappus_centroid_ipra_2026-11-15/) | `7b3c755844` 2026-11-15 | `pappus_centroid_ipra` | Pappus's surface and volume centroid theorems, with τ = 2π presented by nested regular polygons. | 16 | 1 |

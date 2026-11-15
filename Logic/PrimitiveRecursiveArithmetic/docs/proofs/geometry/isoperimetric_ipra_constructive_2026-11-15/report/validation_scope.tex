@@ -1,0 +1,106 @@
+\section{Verification, remaining formal work, and excluded claims}
+\label{sec:validation}
+
+\subsection{What the executable artifacts establish}
+
+The exact reference programs in \texttt{code/} use Python's standard
+library and integer or rational arithmetic. They test the finite identities
+and the algorithms used in the human arguments. Their results are recorded
+in \texttt{audit/}. They are deliberately not called a proof checker for
+\(\ipra\): no complete stream of first-order derivation steps is generated
+and checked by these programs.
+
+\begin{itemize}
+\item The hypercube program exhaustively checks all 65,814 families in
+dimensions zero through four. It verifies the edge and vertex inequalities,
+the binomial thresholds, and the subcube equality count \(3^d\) for
+nonempty edge-equality sets. Selected compression traces check the
+potential decrease and the exceptional final configurations.
+\item The support-function program checks 104 exact Laurent-polynomial
+examples of the area, Wigner area, and even/odd deficit identities, and
+200 exact instances of the reciprocal telescopes used in the stability
+bounds. In particular it checks the one-pass Wigner area normalization.
+\item The Brunn--Minkowski reference implementation checks 29 deterministic
+cases, including randomized two- and three-dimensional box families with
+a recorded seed. Across these examples it checks 195 tree nodes, 112
+leaves, 83 volume-matching cuts, and 166 strict decreases of the child
+recursion measure. It independently computes the actual Minkowski-union
+volume on a common grid and verifies containment and disjointness of the
+leaf sum boxes.
+\item The triangle program checks the two radical-free targets, the
+Heron expansion, the product-of-sides derivation, and the distinction
+between nondegenerate and degenerate equality cases. Its complete counts
+are recorded in its JSON output.
+\end{itemize}
+
+For illustration, one box example has \(V(X)=V(Y)=3\) and \(q=1\).
+Matching a volume fraction \(1/3\) requires the rational cut \(2/3\)
+in the other input. The three independently checked quantities are
+\[
+ \underbrace{12}_{V(X)(1+q)^2}
+ \ \leq\
+ \underbrace{25/2}_{\text{sum of disjoint leaf sum-box volumes}}
+ \ \leq\
+ \underbrace{15}_{V(X+Y)}.
+\]
+This demonstrates the actual cut construction, rather than only testing
+the final numerical inequality.
+
+The source was compiled to PDF, references and mathematical displays were
+checked for layout problems, and representative pages were rendered for
+visual inspection. The archive includes build instructions and file
+hashes. The original planar source is retained separately with its source
+commit and blob identifier.
+
+\subsection{What remains for complete Lean formalization}
+
+The task requested at least an outline, and the supplied files meet that
+level: they provide definitions, specifications, internal targets, the
+actual ProveIt interfaces, and a module-by-module plan. The remaining work
+is substantial but identified. It includes the verified natural-number
+codecs, the internal arithmetic library for the finite proofs, compilation
+of the fixed algorithms into \texttt{PR} symbols, all internal
+quantifier-free induction invariants, and the construction of the closed
+\texttt{Prf PRAAx} derivations. The presentation transfer theorems then
+require their explicit moduli and representation laws to be carried
+through each theorem, rather than erased when moving to geometric notation.
+
+No completed internal derivation is claimed merely because the outline
+uses no \texttt{sorry} or added axioms. A definition of a proposition is
+not a proof of it. No Lean toolchain was available for compiling these
+outlines in this session. The archive's build and test successes refer
+to the PDF and the finite Python diagnostics, not to a Lean build.
+
+\subsection{Scope that should not be silently enlarged}
+
+\begin{enumerate}
+\item \textbf{All real curves or sets.} Theorems about supplied primitive
+recursive names and moduli do not quantify over every abstract classical
+curve or measurable set. The compatibility of enclosed area, boundary
+perimeter, and the approximation data is part of the presentation.
+\item \textbf{Spherical rigidity.} Cap equalities and the finite cap-union
+inequality do not prove the spherical theorem for every simple closed
+curve. That general theorem requires a separate effective proof.
+\item \textbf{Higher-dimensional equality.} Balls attain the sharp
+constant. A classification of arbitrary extremal sets, including possible
+null additions under particular boundary conventions, is not derived.
+\item \textbf{Hausdorff and Minkowski boundary measures.} The report uses
+an explicit one-sided outer-volume modulus. General identification with
+Hausdorff measure, or the existence and effectiveness of a liminf
+boundary measure, is not built into that definition.
+\item \textbf{Sobolev spaces.} The finite layered theorem is proved in
+full. The analytic extension has an explicit coarea/norm approximation
+contract. A general effective construction of that contract for every
+\(W^{1,1}\) element remains separate.
+\item \textbf{Hadamard manifolds and arbitrary metric spaces.} No
+conversion of their general isoperimetric problems to \(\ipra\) is
+asserted here. The scope decision does not depend on calling any
+contemporary classical conjecture solved or unsolved; even a classical
+proof would require its own constructive and arithmetic analysis.
+\end{enumerate}
+
+The new work is the explicit arithmetic packaging, proof details,
+quantitative presentation contracts, and expanded coverage. The classical
+inequalities themselves are established results. No claim of priority
+for their underlying geometric or combinatorial ideas is intended.
+

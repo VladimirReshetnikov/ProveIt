@@ -1,0 +1,260 @@
+MATHEMATICAL AUDIT: CONSTRUCTIVE MORDELL-WEIL IN iPRA
+Date: 2026-11-15
+
+1. Scope and status
+
+The general Mordell-Weil theorem states finite generation of A(K) for an
+abelian variety A over a number field K. A uniform constructive theorem that
+produces a finite generating list from arbitrary elliptic-curve coefficients
+would solve the currently open general algorithmic Mordell-Weil problem.
+No impossibility or independence theorem is asserted here. The defensible
+general result in this package is relative to explicit descent-cover data,
+together with unconditional special examples proved separately.
+
+Current official source:
+Magma Handbook, Mordell-Weil Groups and Descent Methods,
+https://docs.magma-maths.org/v2.30-1/ArithmeticGeometry/EllipticCurvesOverQAndNumberFields/mordell-weil.html
+The introductory paragraphs explicitly state the open algorithmic problem.
+The rank/group commands report booleans distinguishing proved results from
+lower bounds or potentially incomplete subgroups. Retrieved 2026-11-15.
+
+Primary explanatory source:
+Andrew V. Sutherland, MIT 18.782, Lecture 25 (2013), pp. 1-2,
+https://www.ocw.mit.edu/courses/18-782-introduction-to-arithmetic-geometry-fall-2013/e011c006f6aeb95083197457da90598d_MIT18_782F13_lec25.pdf
+The notes identify the ineffective bound on the heights of quotient
+representatives as the reason the ordinary descent proof is not an algorithm.
+
+2. Finite ambient labels do not produce a representative list
+
+An injection E(Q)/2E(Q) into a finite explicitly computed group provides a
+bound on the possible number of classes. It does not automatically decide
+which labels are attained. Selmer elements may describe locally soluble
+coverings without rational points. Actual rational representatives must be
+supplied or their existence established by a separate constructive argument.
+
+A general computability illustration is decisive. Let f_e(t) be 1 if machine
+e halts within t steps and 0 otherwise. This is primitive recursive in e,t,
+and its image is contained in {0,1}. A uniform algorithm returning finitely
+many input times whose values cover its entire image would decide halting:
+simulate through the largest returned time. Thus subfiniteness of an
+enumerable image is not uniform listability of that image.
+
+3. Exact abstract finite descent
+
+For a fixed PR-presented commutative group, let h(P) be a natural-valued
+height and L(B) a PR finite list covering all points of height at most B.
+Suppose a finite list R and a PR selector return i,Q with
+
+    P = R_i + 2Q,       2 h(Q) <= h(P) + C.
+
+Take the final generating list R ++ L(C). Whenever h(P)>C the excess
+e(P)=h(P)-C satisfies e(Q)<=floor(e(P)/2); in particular h(Q)<h(P).
+Stopped descent using h(P)+1 units of fuel terminates within that fuel.
+An optimized bound is bitlength(max(h(P)-C,0)). A t-step trace gives
+
+    P = sum_{j=0}^{t-1} 2^j R_{i_j} + 2^t Q_t,
+    h(Q_t) <= C.
+
+The total digit coefficient sum is 2^t-1, and the terminal coefficient is
+2^t. Encoding the finite state, its trace, and this equality uses PR
+operations and quantifier-free induction. No minimal counterexample,
+unbounded search, excluded middle for a nondecidable predicate, or real
+number completeness is needed.
+
+4. Verified elliptic height bounds
+
+Let E: y^2=x^3+A x+B with A,B integers and nonzero discriminant. Put
+S=1+|A|+|B|. Write affine points in normalized denominator form
+
+    P=(a/d^2,b/d^3),       R=(c/e^2,w/e^3),
+    d,e>=1, gcd(a,d)=gcd(c,e)=1.
+
+Define H(P)=max(|a|,d^2), H(O)=1. The denominator-square/cube normal form
+follows prime by prime: a negative valuation of x forces 2v(y)=3v(x),
+so v(x) is even and v(y) is three times half v(x).
+
+The curve equation gives |b|d <= sqrt(S) H(P)^2 and
+|w|e <= sqrt(S) H(R)^2. The proof can avoid square roots by squaring
+both nonnegative sides and using integer comparisons.
+
+For x(P) != x(R), x(P-R) is represented by N/D, where
+
+ N = a^2 c e^2 + a c^2 d^2
+     + A(a d^2 e^4 + c d^4 e^2)
+     + 2B d^4 e^4 + 2b w d e,
+ D = (a e^2-c d^2)^2.
+
+Each of the first two terms is at most H(P)^2 H(R)^2 in absolute value.
+The two A terms contribute 2|A| times that product, the B term contributes
+2|B|, and the last term contributes at most 2S. Consequently
+
+ max(|N|,|D|) <= 4S H(P)^2 H(R)^2.
+
+The package's larger constant K=4S^2 is therefore valid. The exceptional
+cases P=O, P=R, P=-R are handled by
+
+ T_R = max(K H(R)^2, H(2R), 1),
+ H(P-R) <= T_R H(P)^2.
+
+If R=O, the same inequality is immediate (choose T_O>=1). If y(R)=0,
+the two coincident-x exceptional cases coincide and the same bound applies.
+
+For duplication, use homogeneous binary forms
+
+ F(X,Z)=X^4-2A X^2 Z^2-8B X Z^3+A^2 Z^4,
+ G(X,Z)=4X^3 Z+4A X Z^3+4B Z^4.
+
+The Sylvester determinant is nonzero for nonsingular E. It equals Delta^2
+with Delta=-16(4A^3+27B^2), though the explicit determinant formula is not
+needed if the nonzero resultant and Bezout identities are supplied.
+The adjugate gives degree-three integral forms U,V,U',V' satisfying
+
+ UF+VG = R0 X^7,       U'F+V'G = R0 Z^7,      R0 != 0.
+
+Let L>=1 bound both sums of absolute coefficients appearing on the left.
+For primitive X,Z, the common divisor g=gcd(F(X,Z),G(X,Z)) divides |R0|.
+The identities give max(|F|,|G|)>=|R0| max(|X|,|Z|)^4/L. Therefore
+
+    H(P)^4 <= L H(2P).
+
+The formulas include O and 2-torsion: evaluate them on projective x
+coordinates, so x(O)=(1:0). There is no need to divide by y at these points.
+Dividing both identities, their four coefficient vectors and R0 by any
+common positive divisor preserves the proof and can substantially reduce
+L. The paper uses this optional normalization. For E1, its displayed
+normalized identities have R0=16 and L=36; the resulting T=16 and C=12
+are correct.
+
+5. Verified bit-height conversion and bounded selector
+
+Let h(P) be the least n with H(P)<=2^n. Thus h(P)=0 when H(P)=1.
+For a supplied finite list R, put
+
+ D0 = L max_i T_{R_i} >= 1,
+ d0 = least n with D0<=2^n,
+ C = d0+2.
+
+If P=R_i+2Q, the preceding inequalities imply
+
+    H(Q)^4 <= D0 H(P)^2.
+
+For h(Q)>0, H(Q)>2^(h(Q)-1), whence
+
+    4h(Q) <= d0+2h(P)+3 <= 2h(P)+2d0+4,
+    2h(Q) <= h(P)+C.
+
+The case h(Q)=0 is immediate. All these conclusions can be proved with
+integer exponent comparisons; real logarithms are only mnemonic notation.
+
+In particular h(Q)<=h(P)+C. Consequently any existential cover witness Q
+can be found by bounded search through the complete finite list of points
+with H(Q)<=2^(h(P)+C). This turns a proved actual-cover assertion into a
+PR selector. It does not establish the actual-cover assertion itself.
+
+An improved selector does not need the height search. If T is affine with
+reduced rational x-coordinate u/v (v>0), the x-coordinate X of any Q with
+2Q=T is a root of
+
+ v X^4 - 4u X^3 - 2A v X^2 - (8Bv+4Au) X + (A^2 v-4Bu).
+
+This is exactly vF(X,1)-uG(X,1). Include X=0 if the original constant is
+zero, and strip all factors X^k. For each nonzero reduced rational root
+m/n of the remaining polynomial, the rational-root theorem gives
+
+    |m| divides |c_k|,       n divides v,
+
+where c_k is its nonzero constant and n>0. Enumerate the finitely many
+signed m and positive n within these bounds, test coprimality and the
+polynomial equation, then test whether X^3+A X+B is a rational square.
+A reduced nonnegative rational is a square iff its numerator and
+denominator are integer squares; both square tests admit bounded PR
+search. Try both y signs and verify the full group equation 2Q=T.
+If stripping leaves a nonzero constant polynomial, there are simply no
+nonzero roots. Nonsingularity prevents a common zero of F and G, but the
+final group-equation check also protects soundness at exceptional points.
+
+For T=O, enumerate O and the points (x,0) where x is a rational root of
+the monic cubic x^3+A x+B; its rational roots are integral, and the same
+zero-stripping and divisor enumeration handles B=0. This yields an exact
+PR list of all halves of T, and a PR decision procedure for T in 2E(Q).
+The procedure for a supplied representative list checks the finitely many
+targets P-R_i and returns the first successful half. Its failure value is
+allowed for arbitrary input lists; the proved cover hypothesis excludes
+failure on the lists to which the theorem is applied. Pointwise
+2-divisibility is decidable, while universal coverage remains an additional
+obligation.
+
+6. Logical and formalization cautions
+
+(a) Generic algorithms must be treated as a schema for fixed PR function
+symbols. There is no total universal PR evaluator for all PR program codes.
+For elliptic curves, use fixed programs with numeric A,B and list parameters.
+
+(b) A finite tuple of data is not automatically a decidable certificate of
+all its universal correctness, coverage, or height properties. Those
+properties must be hypotheses or must have separate mathematical proofs.
+
+(c) If the tuple includes iPRA proof codes, checking a derivation is PR and
+combining accepted derivations into a new derivation can be PR. This is a
+syntactic metatheorem. It does not justify an internal iPRA principle
+'checker accepts an arbitrary proof => the proved universal statement is
+true'; that would require a reflection principle.
+
+(d) A Lean theorem about mathematical groups or a Lean proof of PR
+algorithms is not automatically an object-language iPRA derivation. Keep
+the distinction between Lean metatheory, exact algebraic lemmas, and the
+qf-induction arithmetic translation visible. A completed Lean outline is
+not a claim that all arithmetic-geometry dependencies are formalized.
+
+(e) General rank/group algorithm status is not an unprovability statement.
+Do not assert that Mordell-Weil is known independent of iPRA or that an
+unconditional constructive proof is impossible.
+
+Audit conclusion: the supplied-cover elliptic corollary, with the explicit
+height constants above and bounded extraction, is mathematically coherent.
+The unresolved general step is producing actual rational quotient
+representatives uniformly from arbitrary curve data.
+
+FINAL MATHEMATICAL REVIEW
+
+Sections 1-6 (files 01_foundations, 02_descent, 03_elliptic,
+04_unconditional) were reviewed. The frozen excess invariant, bit-length
+fuel, coefficient bounds, denominator normalization, inverse translation,
+resultant cancellation, rational halving and supplied-cover theorem were
+checked. Two minor preliminary proof slips were reported and verified
+corrected: Euclid now initializes with ordered arguments; the Z^r test
+uses the exact odd-coordinate identity
+(2q+1)^2+1-2q^2=2(q+1)^2. The equation label and Sha macro issues were
+also corrected.
+
+The unconditional square-area argument was checked in full. Primitive
+normalization preserves square area; the Pythagorean parametrization
+uses only coprime square splitting; the four factors
+m,n,m+n,m-n are pairwise coprime. With their roots r,s,t,u,
+the actual paper's simpler descending triangle
+
+    ((t+u)/2, (t-u)/2, r, s/2)
+
+is integral because t,u are odd and s is even. Its area and Pythagorean
+equations expand exactly, its legs are coprime, and its hypotenuse r is
+strictly smaller than the original m^2+n^2. The validity-plus-decreasing-
+hypotenuse invariant is quantifier-free and reaches contradiction after
+exactly the initial hypotenuse, without least-counterexample reasoning.
+
+The rational-point-to-area-one triangle map is correct for every y!=0,
+including negative rational coordinates, because absolute values make
+the side lengths positive while preserving area 1. Denominator clearing
+produces an integral square-area triangle. The remaining four points,
+their Klein-four table, rational scalings by u!=0 and coordinatewise
+finite products are correct. The paper accurately says that these
+scaled products are powers of one rational isomorphism class and do not
+settle arbitrary twists, positive rank or general number fields.
+
+No remaining mathematical error was found in the reviewed written
+arguments. This is a written mathematical review, not a claim that the entire paper is
+already formalized. The native Lean files prove their explicitly stated
+interfaces; the full object-language iPRA derivation and elliptic
+classification bridge remain the formalization work described by the
+paper. In particular the compiled native descent theorem's axiom report
+includes propext and Quot.sound, and should not be described as an
+axiom-free object-language iPRA proof.

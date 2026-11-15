@@ -1,0 +1,259 @@
+\section{The gamma and sine tools used by the functional equation}
+\label{sec:gamma-gateway}
+
+We give the finite constructions needed by the next section, so that the
+functional equation has no unmentioned dependence on a classical gamma
+theory. These arguments also explain exactly which human-readable results
+from the repository's \texttt{gamma\_ipra} package are reused~\cite{GammaRepo}.
+They are not represented as existing kernel-checked analytic theorems.
+
+\subsection{Reciprocal gamma from a convergent tail}
+Let $\gamma$ have the name in \eqref{em:gamma-name}, and put
+\[
+ \ell(w)=\sum_{j=2}^{\infty}\frac{(-1)^{j+1}w^j}{j}
+ \quad(|w|\le1/2).
+\]
+The tail after degree $d$ is at most
+$|w|^{d+1}/((d+1)(1-|w|))$, and $|\ell(w)|\le |w|^2$.
+The identity $e^{w+\ell(w)}=1+w$ follows from finite coefficient
+comparison: the formal derivative equation is $(1+w)F'=F$, $F(0)=1$,
+so $F_1=1$ and $(j+1)F_{j+1}=(1-j)F_j$. Every later coefficient is
+zero. The geometric and factorial tails justify each coefficient
+calculation at finite precision.
+
+For an integer $R\ge1$, $|z|\le R$, and $K=2R$, define
+\[
+ P(z)=z\prod_{j=1}^{K}(1+z/j)
+ \exp\left((\gamma-H_K)z+\sum_{j>K}\ell(z/j)\right).
+ \tag{G1}\label{eq:recip-gamma}
+\]
+The last sum has tail bounded by $R^2/N$ after index $N\ge K$, because
+$\sum_{j>N}j^{-2}\le1/N$, a telescoping finite rational inequality.
+Increasing $K$ leaves (G1) unchanged, by the identity for $\ell$.
+Define the finite expression
+\[
+ Q_N(z)=zN^{-z}\prod_{j=1}^N(1+z/j).
+\]
+With
+\[
+ M_R=R(1+R)^{2R}3^{2R^2+2R},\qquad D_R=R^2+R,
+\]
+the bounds $0\le\gamma\le1$ and $H_K\le K$ give
+\[
+ |P(z)|\le M_R,\qquad
+ |Q_N(z)-P(z)|\le\frac{3M_RD_R}{N}
+ \quad(N\ge\max(2R,D_R)).                      \tag{G2}\label{eq:gamma-product-rate}
+\]
+Indeed the exponent difference between $Q_N$ and (G1), after the first
+$N$ factors have been aligned, has modulus at most
+$R|H_N-\log N-\gamma|+R^2/N\le D_R/N$. The exponential difference
+bound $|e^u-1|\le3|u|$ for $|u|\le1$ proves (G2).
+
+If $|z+j|\ge\delta>0$ for $0\le j\le2R$, with $\delta\le1$, the
+same product gives, for $N\ge2R$,
+\[
+ |P(z)|,|Q_N(z)|\ge
+ \lambda_{R,\delta}:=
+ \frac{\delta^{2R+1}}{(2R)!\,3^{2R^2+2R}}.
+ \tag{G3}\label{eq:gamma-lower}
+\]
+Define $\Gamma(z)=1/P(z)$ on such certified charts. The approximants
+\[
+ \Gamma_N(z)=\frac{N!N^z}{z(z+1)\cdots(z+N)}
+\]
+then have error at most $3M_RD_R/(\lambda_{R,\delta}^2N)$.
+Moreover $|\Gamma(z)|\ge1/M_R$: gamma is quantitatively nonzero there.
+
+For local power series, rearrange the last sum in (G1) at a larger disk:
+\[
+ \sum_{j>K}\ell(z/j)
+ =\sum_{r=2}^{\infty}\frac{(-1)^{r+1}z^r}{r}
+                 \left(\zeta(r)-\sum_{j=1}^Kj^{-r}\right).
+\]
+On $|z|\le R$, $K=2R$, the tail after degree $d$ is bounded by
+$(R^2/K)2^{1-d}$. Finite convolutions with the exponential series give
+an entire name $P$ with local coefficient majorants. In particular,
+the finite prefactor has coefficient absolute sum at radius $R$ at
+most $R(1+R)^{2R}$, and the exponent's corresponding sum is at most
+$2R^2+2R$. Finite convolution and the exponential majorant therefore
+bound the coefficient absolute sum directly by $M_R$; this is not
+inferred from a supremum norm. Constructing on $|z|\le2R$ gives the
+coefficient bound $M_{2R}$ and its degree-$d$ error on $|z|\le R$ by
+$M_{2R}2^{-d-1}$. Geometric inversion using (G3) gives local power
+series for gamma wherever it is defined.
+
+Finite cancellation gives
+\[
+ zQ_N(z+1)=\left(1+\frac{z+1}{N}\right)Q_N(z).
+\]
+Together with $Q_N(1)=(N+1)/N$, this proves
+\[
+ P(z)=zP(z+1),\qquad P(1)=1,
+ \quad\Gamma(z+1)=z\Gamma(z),\quad\Gamma(n+1)=n!.
+ \tag{G4}\label{eq:gamma-recurrence}
+\]
+The entire recurrence also gives
+$P(z)=z(z+1)\cdots(z+n)P(z+n+1)$ and
+$P'(-n)=(-1)^n n!$. Thus gamma's poles at the nonpositive integers are
+simple, with residues $(-1)^n/n!$; this is a statement about a punctured
+local expression, not a value assigned at the pole.
+
+\subsection{Euler's integral from finite beta integrals}
+Suppose $\Re z\ge1/A$ and $|z|\le R$, with positive integers $A,R$.
+Finite integration by parts gives
+\[
+ \int_0^1t^{z-1}(1-t)^N\,dt
+       =\frac{N!}{z(z+1)\cdots(z+N)}.
+ \tag{G5}\label{eq:finite-beta}
+\]
+To verify this before taking endpoints, integrate on $[\epsilon,1]$.
+An antiderivative of $t^{z-1}$ is $t^z/z$, and the lower endpoint has
+bound $A\epsilon^{1/A}$. Each integration by parts reduces $N$ by one
+and increases $z$ by one. The finite recurrence ends at $N=0$.
+The error for all these steps is assigned before induction on $N$.
+
+Multiply (G5) by $N^z$ and substitute $u=Nt$. The result is the integral of
+$u^{z-1}(1-u/N)^N$ on $[0,N]$. For $0\le u\le N/2$, the logarithm
+series gives
+\[
+ 0\le -N\log(1-u/N)-u\le u^2/N,
+ \quad
+ 0\le e^{-u}-(1-u/N)^N\le e^{-u}u^2/N.
+\]
+For the rest of $[0,N]$, both kernels lie between zero and $e^{-u}$.
+Also
+\[
+ \int_0^\epsilon |u^{z-1}e^{-u}|\,du\le A\epsilon^{1/A},\qquad
+ \int_T^\infty |u^{z-1}e^{-u}|\,du
+       \le2^{R+1}R!e^{-T/2}.                   \tag{G6}\label{eq:gamma-integral-tails}
+\]
+For the second inequality use $u^R e^{-u}\le2^RR!e^{-u/2}$ on
+$u\ge1$, obtained from one term of the exponential series. Splitting the
+kernel comparison at $1$ and $N/2$ now yields
+\[
+ \left|\Gamma_N(z)-\int_0^\infty u^{z-1}e^{-u}\,du\right|
+ \le\frac{1+2^{R+3}(R+2)!}{N}+2^{R+1}R!e^{-N/4}.
+\]
+For this comparison take $N\ge2$. Together with (G2)--(G3), this proves the Euler integral representation.
+Every integral here means a finite sum with the tails (G6); on the
+remaining compact interval its derivative supplies a rational Lipschitz
+bound. Differentiation with respect to $z$ introduces $(\log u)^j$.
+Near zero use
+$|\log u|^j\le j!(2A)^j u^{-1/(2A)}$, and at infinity use
+$(\log u)^j\le u^j$. These give explicit PR derivative and Taylor
+bounds by the same argument.
+For real $x>0$ the integral is positive; the interval $[1,2]$ alone
+gives $\Gamma(x)\ge1/18$.
+
+\subsection{Reflection and duplication with finite product estimates}
+For clarity we include the constructive sine-product step. For
+$m=2J+1$ the multiple-angle recurrence gives a degree-$J$ polynomial in
+$\sin^2u$ for $\sin(mu)/(m\sin u)$. Its $J$ known roots are
+$\sin^2(k\pi/m)$, $1\le k\le J$, and its constant term is one.
+They are apart: on this interval the complementary-angle chord bound
+\eqref{eq:sine-chord} gives $\cos v\ge1/m$, so consecutive sine
+values differ by at least $\pi/m^2$. Polynomial division by these
+known roots proves the finite identity
+\[
+ \operatorname{sinc}(mu)=\operatorname{sinc}(u)
+       \prod_{k=1}^{J}\left(1-\frac{\sin^2u}{\sin^2(k\pi/m)}\right),
+ \qquad \operatorname{sinc}(u)=\sum_{j\ge0}\frac{(-1)^ju^{2j}}{(2j+1)!}.
+ \tag{G7}\label{eq:finite-sine-product}
+\]
+Multiplying through by the indicated sinc avoids division by $\sin u$.
+
+Here is a sufficient quantitative passage to Euler's product. For
+$|z|\le R$, set $m=8K^2R^2+1$, $u=\pi z/m$, $v_k=\pi k/m$.
+By the chord bound and factorial series,
+\[
+ a_k:=\frac{\sin^2u}{\sin^2v_k},\quad
+ |a_k|\le16R^2/k^2,\quad
+ \left|a_k-z^2/k^2\right|
+ \le\frac{96R^2}{m^2}\left(\frac{R^2}{k^2}+1\right)\quad(k\le K).
+\]
+For the second estimate write sine as its argument times sinc; on
+$|w|\le1$, $|\operatorname{sinc}w-1|\le |w|^2/2$, and
+$\operatorname{sinc}v_k>1/2$. A common denominator and
+$\pi^2<16$ give the displayed constant. The omitted factors have
+$\sum_{k>K}|a_k|\le16R^2/K$.
+Replacing factors one at a time bounds the resulting product difference
+by $e^{34R^2}$ times the sum of these discrepancies. The prefactor sinc
+in (G7) contributes at most $8R^2e^{32R^2}/m^2$.
+Thus, for example, the generous rational bound
+\[
+ \left|\operatorname{sinc}(\pi z)
+        -\prod_{k=1}^K(1-z^2/k^2)\right|
+ \le\frac{2^{100(R+1)^2}}{K}                    \tag{G8}\label{eq:sine-rate}
+\]
+is valid. This is a PR product modulus proved from a finite polynomial
+identity.
+
+Exact cancellation in the Euler gamma approximants gives
+\[
+ \Gamma_N(z)\Gamma_N(-z)
+       =-\frac1{z^2\prod_{k=1}^N(1-z^2/k^2)}.
+\]
+Use (G8), (G2)--(G4) to obtain
+\[
+ \Gamma(z)\Gamma(1-z)=\frac{\pi}{\sin\pi z}.
+ \tag{G9}\label{eq:gamma-reflection}
+\]
+Division is licensed by a supplied separation $\delta$ from the finitely
+many integers in the relevant bounded disk. One explicit bound, for an
+integer $L\ge2R$, is
+\[
+ |\sin\pi z|\ge
+       \frac{\delta^{2L+1}2^{-4R^2}}{(L!)^2}.
+ \tag{G10}\label{eq:sine-apartness}
+\]
+Indeed the first $L$ factors of (G8) have product at least
+$\delta^{2L}/(L!)^2$; for the rest use
+$\log(1-t)\ge-2t$ on $0\le t\le1/4$ and
+$\sum_{k>L}R^2/k^2\le R^2/L$. Multiply by $|\pi z|\ge\delta$.
+At $z=1/2$, positivity of the Euler integral selects
+$\Gamma(1/2)=\sqrt\pi$, where the positive square root is computed
+by bounded rational bisection.
+
+Duplication needs no asymptotic normalization. Let
+$U_N(z)=\Gamma_N(z)\Gamma_N(z+1/2)/\Gamma_{2N+1}(2z)$.
+Grouping its even and odd denominator factors gives exactly
+\[
+ \frac{U_N(z)}{U_N(1/2)}
+       =\left(\frac{N}{2N+1}\right)^{2z-1}.
+\]
+Since $|\log(2N/(2N+1))|\le1/N$, the right side converges to
+$2^{1-2z}$ with a PR modulus on each bounded disk. The gamma convergence
+bounds and $\Gamma(1/2)=\sqrt\pi$ give
+\[
+ \Gamma(z)\Gamma(z+1/2)=2^{1-2z}\sqrt\pi\,\Gamma(2z).
+ \tag{G11}\label{eq:gamma-duplication}
+\]
+First this is proved on charts separated from all displayed poles;
+cleared local expressions give its meromorphic reading elsewhere.
+
+\subsection{A zeta generating series and the derivative at one}
+For $|z|\le r<1$, expansion of (G1) after the recurrence (G4) gives
+\[
+ \log\Gamma(1+z)
+   =-\gamma z+\sum_{k=2}^{\infty}
+                    \frac{(-1)^k\zeta(k)}{k}z^k.
+ \tag{G12}\label{eq:log-gamma-zeta}
+\]
+Here the left side is the particular analytic logarithm with value zero
+at $z=0$: exponentiating the right side equals $\Gamma(1+z)$.
+For a proof, expand each local $\log(1+z/n)$ and rearrange finite
+rectangles; the absolute double tail is bounded by
+$\sum_{k>d}2r^k/k\le2r^{d+1}/((d+1)(1-r))$ because $\zeta(k)\le2$
+for $k\ge2$. The remaining finite $n$-tails are bounded by the Dirichlet
+estimates. Thus no rearrangement without a modulus occurs.
+This proves $\Gamma'(1)=-\gamma$ and, on $|z|<1$,
+\[
+ \frac{\Gamma'(1+z)}{\Gamma(1+z)}
+   =-\gamma+\sum_{k=2}^{\infty}(-1)^k\zeta(k)z^{k-1},
+ \qquad
+ \left(\frac{d}{dz}\right)^j\!\log\Gamma(1+z)\bigg|_{z=0}
+ =(-1)^j(j-1)!\zeta(j)\quad(j\ge2).
+\]
+For derivatives, shrink the displayed radius from $r$ to any certified
+smaller radius and bound $k^j(r'/r)^k$ by a factorial-exponential
+estimate. This supplies a PR modulus for every fixed derivative order.

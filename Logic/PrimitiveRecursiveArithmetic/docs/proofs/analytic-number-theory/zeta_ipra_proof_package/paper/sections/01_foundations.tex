@@ -1,0 +1,281 @@
+\section{What is asserted in intuitionistic primitive recursive arithmetic}
+\label{sec:foundations}
+
+The natural numbers are the only object-theoretic domain. We use the
+ordinary first-order presentation of $\ipra$: a symbol for each primitive
+recursive definition; its defining equations; $Sx\ne0$ and
+$Sx=Sy\Rightarrow x=y$; intuitionistic predicate logic with equality; and
+induction for quantifier-free formulas. Concretely, a primitive recursive
+symbol has an arity and is generated from zero, successor, projections,
+composition, and
+\[
+ R(f,g)(0,\mathbf x)=f(\mathbf x),\qquad
+ R(f,g)(n+1,\mathbf x)=g(n,R(f,g)(n,\mathbf x),\mathbf x).
+\]
+Induction is
+\[
+ A(0,\mathbf u)\wedge
+ \forall n\,[A(n,\mathbf u)\Rightarrow A(n+1,\mathbf u)]
+ \ \Rightarrow\ \forall n\,A(n,\mathbf u),
+ \qquad A\text{ quantifier-free}.
+\]
+The logical rules are hypothesis, substitution of terms, equality
+reflexivity and Leibniz substitution, explosion from $\bot$, introduction
+and elimination for $\wedge,\vee,\to,\forall,\exists$, with the usual
+fresh-variable conditions on $\forall$-introduction and
+$\exists$-elimination. Neither excluded middle for arbitrary formulas nor
+double-negation elimination is added. Decidable comparisons of integer
+codes do admit case analysis, proved by their defining equations.
+
+This is precisely the intended arithmetic interface of
+\texttt{ConciseIPRA/PR.lean} and \texttt{Deduction.lean} at the repository
+revision recorded in Section~\ref{sec:lean}. The inspected theorem
+\texttt{pra\_iff\_native} transfers a completed derivation to the native
+concise calculus. It does not automatically produce a derivation of an
+analytic statement~\cite{ProveIt}.
+
+\subsection{Arithmetic meaning of real and complex notation}
+An integer is a sign and a magnitude; a rational is an integer numerator
+and a positive natural denominator. Reduction to lowest terms is optional.
+Rational equality and order use cross multiplication. Pairing, finite
+lists, bounded search, factorials, binomial coefficients, and finite sums
+and products are primitive recursive. For example a bounded universal
+statement about a decidable predicate $P$ is the equation
+$\prod_{j<b}\chi_P(j)=1$. Thus bounded induction invariants can be
+written without bounded quantifiers.
+
+The elementary factorization facts used later have the same finite
+status. Trial division is bounded by the integer being factored, and
+its loop invariant is ``the original integer is the product of the
+recorded factors and the current remainder.'' Extended Euclid can be
+run for at most $a+b+1$ steps on positive inputs $a,b$, leaving a fixed
+state once a remainder is zero. Its invariant records both the gcd and
+the integer linear combination for each remainder. Remainders strictly
+decrease until zero. If a prime $p$ does not divide $a$, its gcd with
+$a$ is one, so the recorded Bezout equality proves that $p\mid ab$
+implies $p\mid b$. Repeated application gives uniqueness of the finite
+factorization. The sequence entries, coefficient bounds obtained by
+iterating the elementary update, and loop invariants are all coded
+primitive recursively. This supplies the finite arithmetic behind the
+Euler product and divisor identities.
+
+A \emph{name} is a fixed primitive recursive rational evaluator
+$a(\mathbf u,k)$, together with arithmetic hypotheses or proofs of
+\[
+ |a(\mathbf u,k)-a(\mathbf u,l)|\le2^{-k}+2^{-l}.
+ \tag{F1}\label{eq:regular}
+\]
+Complex names use pairs of rationals and the norm
+$\|x+iy\|_1=|x|+|y|$. We omit $\mathbf u$ from the notation.
+Two names are equal when
+\[
+ \forall k,l\quad \|a(k)-b(l)\|_1\le2^{-k}+2^{-l}.
+ \tag{F2}\label{eq:name-equality}
+\]
+The name $a$ is real and at least $d\in\Q$ when
+$a(k)\ge d-2^{-k}$ for every $k$. Complex apartness is a supplied rational
+$d>0$ with $|a|\ge d$, expressed by rational squared-modulus inequalities
+with the corresponding approximation error. A convenient equivalent
+implementation works with rectangular rational balls.
+
+The Euclidean modulus in estimates has
+$|z|\le\|z\|_1\le2|z|$. To implement a Euclidean error bound as a
+$1$-norm bound, multiply it by two, or decrease the error budget by one
+bit. Squared-modulus comparisons avoid square roots altogether.
+
+These definitions involve only number quantifiers after the fixed
+functions have been named. They do \emph{not} quantify over all functions
+$\N\to\Q$, or assert a total primitive recursive evaluator for arbitrary
+primitive recursive program codes. Such a universal evaluator would give
+the diagonal primitive recursive function $n\mapsto U(n,n)+1$, an
+immediate contradiction. Statements for general named inputs are therefore
+\emph{schemas in a fixed evaluator}, whereas statements for rational
+inputs and numerical parameters are single uniform first-order statements.
+
+To check transitivity of (F2), compare $a(k)$ to $c(l)$ through $b(j)$.
+The upper bound is $2^{-k}+2^{-l}+2^{1-j}$. A positive rational gap from
+$2^{-k}+2^{-l}$, if present, has a dyadic below it found from its numerator
+and denominator lengths. Choosing that $j$ contradicts the bound.
+Only a rational comparison is used. The same argument removes every
+``arbitrarily small error'' in this article.
+
+\subsection{The finite-precision proof discipline}
+All limiting notation below abbreviates a construction. For example, if
+finite expressions $F_N$ obey
+\[
+ \|F_M-F_N\|_1\le C/N\quad(M\ge N\ge N_0),
+\]
+choose $N(k)=N_0+(1+\lceil C\rceil)2^{k+4}$ and evaluate $F_{N(k)}$
+within $2^{-k-4}$. A fixed shift gives a regular name. There is no appeal
+to unrestricted Cauchy completeness or monotone convergence.
+
+The elementary error rules are
+\begin{align}
+ \left\|\sum_{j<v}a_j-\sum_{j<v}b_j\right\|_1&\le v\epsilon,
+       \label{eq:f-sum}\\
+ \left\|\prod_{j<v}a_j-\prod_{j<v}b_j\right\|_1
+       &\le vM^{v-1}\epsilon
+       \quad(\|a_j\|_1,\|b_j\|_1\le M),\label{eq:f-prod}\\
+ |a^{-1}-b^{-1}|&\le2\epsilon/d^2
+       \quad(|a|\ge d,\ |a-b|\le\epsilon\le d/2).
+       \label{eq:f-inv}
+\end{align}
+The second follows by replacing one factor at a time; the third follows
+from $(b-a)/(ab)$. In the $1$-norm, harmless additional factors of two
+are included in the precision budget. Integer majorants suffice. An error
+coefficient $C\ge1$ can always be absorbed by the deliberately excessive
+precision shift $C+k+5$, since $C2^{-C-k-5}<2^{-k-4}$.
+
+\begin{proposition}[Arithmetic reading of the proofs]\label{prop:arithmetic-reading}
+For each displayed fixed family of input names, the finite estimates and
+algorithms in this article are proofs in $\ipra$ under their stated name
+and domain certificates. The quantifiers over precision are introduced
+only after the finite rational calculation has been proved.
+\end{proposition}
+\begin{proof}
+Fix the desired precision $k$, all truncation lengths, and all numerical
+domain parameters. Expand rational operations into operations on integer
+codes. Use the displayed bounds to assign a smaller rational error to
+each of the finitely many evaluations. The invariant in a sum, product,
+recursion, or mesh calculation is then a finite rational identity or
+inequality, equivalently an equation for a primitive recursive Boolean
+checker. Apply quantifier-free induction to that invariant. If a finite
+list of assertions is needed, use a running conjunction coded by a
+Boolean product. Hypotheses on input names are instantiated only at the
+finitely many stages used by this calculation. Introduce $k$ universally
+at the end and apply (F2) or its inequality version.
+
+This argument is a translation of the particular finite proofs given
+below. It is not the false general principle that every true statement
+about primitive recursive functions is provable in $\ipra$. In particular,
+we never induct on an unbounded-precision assertion such as ``these two
+names are equal.'' The quantitative continuation proof later explicitly
+keeps its precision losses inside a finite induction.
+\end{proof}
+
+\subsection{Elementary functions}
+For an integer $B\ge1$, $|z|\le B$, and $m+1\ge2B$, the finite
+exponential polynomial satisfies
+\[
+ \left|e^z-\sum_{j=0}^m\frac{z^j}{j!}\right|
+ \le\frac{2B^{m+1}}{(m+1)!}.                     \tag{F3}\label{eq:exp-tail}
+\]
+Here the left side is initially notation for the difference of two finite
+polynomials, with the same bound uniformly in the larger length. The
+ratios beyond degree $m$ are at most $1/2$. The sum of the absolute terms
+at radius $B$ is at most $3^B$: first $\sum1/j!<3$ follows from the
+factorial recurrence, then finite multinomial multiplication gives the
+integer-$B$ bound. Thus $m=4B+k+6$ suffices for error $2^{-k}$.
+Finite binomial convolution, with (F3), proves $e^{z+w}=e^ze^w$.
+For $|z|\le B$, $e^z e^{-z}=1$ gives $|e^z|\ge3^{-B}$.
+
+For positive $q$ define, with $v=(q-1)/(q+1)$,
+\[
+ \log q=2\sum_{j\ge0}\frac{v^{2j+1}}{2j+1},\qquad
+ |\text{tail after }L\text{ terms}|
+ \le\frac{2|v|^{2L+1}}{(2L+1)(1-v^2)}.          \tag{F4}\label{eq:log-tail}
+\]
+On $B^{-1}\le q\le B$, $|v|\le1-1/B$, so
+$L=B(k+2B+4)$ suffices. The inequality
+$(1-1/B)^B\le1/2$ for $B>1$ follows from
+$(1+1/(B-1))^{B-1}\ge2$, with an extra factor if necessary; the case
+$B=1$ is immediate. Alternatively binary range reduction gives the
+faster algorithm in the code. Formal differentiation of the finite sums
+and their geometric derivative tails proves $(\log q)'=1/q$.
+The addition law for the logarithm follows by differentiating
+$\log(ab)-\log a$ in $a$ and evaluating at $a=1$, with the finite
+fundamental theorem below. Thus positive-real powers mean
+\[
+ x^s=\exp(s\log x),\qquad x>0.
+\]
+All powers in this article use this convention; a global complex logarithm
+is unnecessary.
+For explicit verification, the $L$-term logarithm polynomial satisfies
+$\ell_L'(q)=(1-v^{2L})/q$, so its derivative error is at most
+$B|v|^{2L}$ on $[B^{-1},B]$. Differentiating
+$\exp(\log q)/q$ gives zero and its value at one is one; the finite
+fundamental theorem therefore proves $\exp(\log q)=q$.
+Conjugation and the exponential product law give
+$|e^z|^2=e^{2\Re z}$. For real $x$, $e^x=(e^{x/2})^2$ is positive
+by its explicit nonzero lower bound, so $|e^z|=e^{\Re z}$.
+
+
+Sine is the odd factorial series and cosine is the even factorial series. Their addition
+laws follow from the exponential product identity. Put
+\[
+ A(u)=\int_0^u\frac{dt}{1+t^2},\qquad \pi=4A(1).
+\]
+Integrating a finite geometric identity gives the alternating arctangent
+sum with error $1/(2L+1)$. Thus $\pi$ has a PR name, and finite rational
+bounds give $3<\pi<4$. Direct differentiation shows
+\[
+ e^{2iA(u)}=\frac{1+iu}{1-iu},\quad
+ \sin(2A(u))=\frac{2u}{1+u^2},\quad
+ \cos(2A(u))=\frac{1-u^2}{1+u^2}.                \tag{F5}\label{eq:trig-param}
+\]
+For example the derivative of $e^{-2iA(u)}(1+iu)/(1-iu)$ is zero
+and its initial value is one. At $u=1$ this gives $e^{i\pi/2}=i$.
+On $0\le u\le1$, $(2A)'\ge1$. Its inverse is constructed by bounded
+approximate-sign bisection: on a bracket of width $w$, evaluate the
+midpoint discrepancy within $w/16$; a discrepancy outside $[-w/8,w/8]$
+selects a half bracket, and otherwise the inverse is within $w/4$ of the
+midpoint. The bracket width halves in either case. This proves sine
+positivity on the first quadrant without an unrestricted intermediate
+value theorem. Since $\sin''=-\sin$, finite mesh comparison with the
+endpoint chord gives
+\[
+ \sin t\ge 2t/\pi\quad(0\le t\le\pi/2).       \tag{F6}\label{eq:sine-chord}
+\]
+One proof of the chord comparison sums the fact that successive secant
+slopes decrease, itself obtained by integrating the nonpositive second
+derivative on a finite mesh. Periodicity and reflection extend the
+bounds to the other quadrants.
+
+\subsection{Finite calculus and local analyticity}
+For a function given by fixed rational evaluations on a rational interval
+$[a,b]$, with supplied Lipschitz bound $L$, use the left mesh sum
+\[
+ I_M=\frac{b-a}{M}\sum_{j=0}^{M-1}
+ f\!\left(a+\frac{j(b-a)}M\right).
+\]
+Comparison on a common refinement gives
+\[
+ |I_M-I_{M'}|\le L(b-a)^2(1/M+1/M').             \tag{F7}\label{eq:quad}
+\]
+An evaluation error $\epsilon$ per summand adds $(b-a)\epsilon$.
+Consequently this is an actual PR integral name. On finitely many smooth
+cells, apply the estimate on each cell separately; discontinuities at
+integer cell endpoints cause no difficulty.
+
+Suppose a supplied derivative $g$, with a supplied Lipschitz bound on the
+interval, obeys the local estimate
+\[
+ |f(x+h)-f(x)-hg(x)|\le |h|\omega(|h|),
+\]
+with an explicit PR modulus $\omega$. Summing over the mesh telescopes,
+so $|f(b)-f(a)-I_M(g)|\le(b-a)\omega((b-a)/M)$. This is the
+fundamental theorem needed here. For powers and exponentials the local
+estimate follows by subtracting the first two terms of their factorial
+series; for rational functions it follows by multiplying out the exact
+rational difference. Product differentiation and integration by parts
+follow from their finite difference identity, whose additional defect is
+bounded by the product of the increments. Repeated integration by parts
+therefore means a finite repetition with its error allocated in advance.
+Changes of variable used below follow by comparing images of mesh cells,
+using the explicit derivative and second-order remainder of the given
+substitution. Double integrals are finite double sums with uniform error
+bounds before the order of summation is changed.
+
+An assertion of holomorphy means more than pointwise evaluation: on each
+specified disk there are PR Taylor coefficient names and a bound
+$\sum |a_j|r^j\le M$ at a larger radius $r$. On $|h|\le r/2$ the
+Taylor tail is at most $M2^{-d-1}$ after degree $d$, and
+\[
+ |f(c+h)-f(c)-a_1h|\le M|h|^2/r^2.
+\]
+These are finite geometric estimates. Products use finite convolution;
+translation of center uses the binomial formula on a larger disk.
+Inversion uses an apartness witness $d$ and a disk on which the
+nonconstant part has size at most $d/2$, followed by a geometric series.
+These rules, not an unqualified uniform-limit theorem, justify all
+analytic language in the sequel.

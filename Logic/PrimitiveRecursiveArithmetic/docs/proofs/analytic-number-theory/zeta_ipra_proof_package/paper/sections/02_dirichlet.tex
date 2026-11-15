@@ -1,0 +1,530 @@
+\section{The Dirichlet half-plane and its quantitative algebra}
+\label{sec:dirichlet}
+
+The classical formulas in this section are recorded in
+\cite[\S\S25.2,25.8]{DLMF}. Their proofs below use finite sums, explicit
+majorants, and elementary exponential and logarithm constructions.
+Complex parameters have certified primitive recursive names, together
+with the indicated rational bounds. No search for a distance from a
+boundary is implicit.
+
+\subsection{A single tail estimate}
+
+Put \(n^{-s}=\exp(-s\log n)\), using the real logarithm of a positive
+integer, and write \(\sigma=\operatorname{Re}s\).
+Fix \(D\geq1\) and suppose \(\sigma\geq1+1/D\).
+Let \(Z_N(s)=\sum_{n=1}^N n^{-s}\).
+
+\begin{lemma}[Dyadic tail]\label{lem:d-tail}
+If \(N=2^{DL}\), \(L\geq0\), and \(M\geq N\), then
+\[
+ \sum_{n=N+1}^{M}|n^{-s}|\leq2D\,2^{-L}.                 \tag{D1}\label{eq:d-tail}
+\]
+These finite sums therefore define a primitive recursively approximable
+complex number \(\zeta(s)\), with the same tail bound.
+\end{lemma}
+\begin{proof}
+On the block \(2^a\leq n<2^{a+1}\), the sum is at most
+\(2^a2^{-a(1+1/D)}=2^{-a/D}\).
+Group \(D\) consecutive blocks, writing \(a=D(L+r)+b\), \(0\leq b<D\).
+Their sum is at most \(D2^{-L-r}\). The finite geometric identity bounds
+any finite collection of groups by \(2D2^{-L}\). Including extra terms
+at the endpoints only increases this nonnegative majorant.
+
+For precision \(2^{-k}\), take \(L=k+2D+4\), evaluate each of the
+\(N=2^{DL}\) summands with error at most \(2^{-k-3}/N\), and round the
+sum to a dyadic number with error at most \(2^{-k-2}\).
+Since \(2D\leq2^{2D}\), the truncation error is at most \(2^{-k-4}\).
+All lengths and arithmetic accuracies are given in advance by primitive
+recursive functions. The finite tail inequality supplies the common
+modulus for these approximations.
+\end{proof}
+
+Finite triangle inequalities and termwise conjugation yield
+\[
+ |\zeta(s)|\leq\zeta(\sigma)\leq1+2D,\qquad
+ \zeta(\overline s)=\overline{\zeta(s)}.                 \tag{D2}\label{eq:d-bound}
+\]
+Conversely, if \(\sigma\leq1\), each block
+\(2^{a-1}<n\leq2^a\) contributes at least \(1/2\) to the sum of absolute
+values. Thus absolute convergence holds exactly when \(\sigma>1\).
+This statement concerns absolute convergence, and makes no inference
+from its failure to failure of ordinary convergence.
+
+\subsection{Derivatives and a local analytic expansion}
+
+\begin{lemma}[Logarithmic weights]\label{lem:d-derivative-tail}
+For \(j\geq0\), at the cutoff \(N=2^{2DL}\),
+\[
+ \sum_{n>N}(\log n)^j n^{-\sigma}
+       \leq4D\,j!(2D)^j2^{-L}.                         \tag{D3}\label{eq:d-derivative-tail}
+\]
+Moreover
+\(\zeta^{(j)}(s)=\sum_{n\geq1}(-\log n)^j n^{-s}\).
+\end{lemma}
+\begin{proof}
+The positive exponential series gives \(y^j\leq j!e^y\).
+With \(y=(\log n)/(2D)\),
+\[
+ (\log n)^j n^{-\sigma}
+       \leq j!(2D)^j n^{-1-1/(2D)}.
+\]
+Apply Lemma~\ref{lem:d-tail} with \(2D\) in place of \(D\).
+
+Here is also a quantitative justification of differentiability.
+The finite exponential remainder obeys
+\[
+ \left|e^z-\sum_{j=0}^r z^j/j!\right|
+       \leq |z|^{r+1}e^{|z|}/(r+1)! .
+\]
+For \(|h|\leq1/(8D)\), put \(z=-h\log n\) and use
+\((\log n)^{r+1}\leq(r+1)!(4D)^{r+1}n^{1/(4D)}\).
+The remaining nonnegative series is bounded by
+\(\sum n^{-1-1/(4D)}\leq1+8D\). Consequently, with
+\(c_j(s)=\sum_{n\geq1}(-\log n)^j n^{-s}/j!\),
+\[
+ \left|\zeta(s+h)-\sum_{j=0}^{r}c_j(s)h^j\right|
+       \leq(1+8D)(4D|h|)^{r+1}.                       \tag{D4}\label{eq:d-taylor}
+\]
+Every passage from finite sums is controlled by \eqref{eq:d-derivative-tail}.
+The right side is at most \((1+8D)2^{-r-1}\) on this disk.
+Thus this is a local power series with an explicit radius and remainder,
+not an appeal to an abstract uniform-limit theorem.
+Finite Taylor coefficient identities, or the same estimate for the
+differentiated series, establish the asserted derivatives.
+\end{proof}
+
+\subsection{Finite convolution and arithmetic coefficients}
+
+Suppose two series have absolute masses at most \(A_0,B_0\) and absolute
+tail bounds \(A(M),B(M)\). For their Dirichlet convolution
+\(c(n)=\sum_{d\mid n}a(d)b(n/d)\), the triangular sum through \(M^2\)
+differs from the product of the full sums by at most
+\[
+                         A(M)B_0+A_0B(M).             \tag{D5}\label{eq:d-convolution}
+\]
+Indeed, expand finite rectangular sums. If a pair \((u,v)\) is omitted
+by \(uv\leq M^2\), then \(u>M\) or \(v>M\). Sum these two nonnegative
+majorants, allowing double counting, and enlarge the outer rectangle
+using the given tails. This proves the rearrangement and its modulus.
+For logarithmic or polynomial weights, use
+\eqref{eq:d-derivative-tail} or the corresponding shifted half-plane.
+
+All coefficient functions below are primitive recursive. Primality and
+divisibility are decided by trial division bounded by the input.
+Factorizations are finite lists of primes and exponents, obtained by
+bounded division. The identities below are finite product expansions
+and bounded divisor sums; their inductions can be expressed with
+quantifier-free invariants.
+
+Define \(\mu(1)=1\), let \(\mu(n)=0\) if a prime square divides \(n\),
+and otherwise put \(\mu(n)=(-1)^r\), where \(r\) is its number of prime
+divisors. For \(n>1\), with distinct prime divisors \(p_1,\ldots,p_r\),
+\[
+ \sum_{d\mid n}\mu(d)
+   =\sum_{S\subseteq\{1,\ldots,r\}}(-1)^{|S|}
+   =(1-1)^r=0.                                       \tag{D6}\label{eq:d-mu}
+\]
+For \(n=1\), the sum is \(1\). Since \(|\mu(n)|\leq1\),
+\(M(s)=\sum_{n\geq1}\mu(n)n^{-s}\) has tail \eqref{eq:d-tail}.
+Finite convolution now gives
+\[
+                         \zeta(s)M(s)=1.              \tag{D7}\label{eq:d-reciprocal}
+\]
+As \(|M(s)|\leq1+2D\), we get actual apartness:
+\[
+                \boxed{|\zeta(s)|\geq(1+2D)^{-1}.}    \tag{D8}\label{eq:d-nonzero}
+\]
+This supplies the data needed to compute the reciprocal.
+
+\subsection{Euler product with a prime-cutoff modulus}
+
+For \(y\geq2\), let
+\(P_y(s)=\prod_{p\leq y,\ p\ {\rm prime}}(1-p^{-s})^{-1}\).
+Each denominator satisfies \(|1-p^{-s}|\geq1/2\).
+
+\begin{theorem}[Euler product]\label{thm:d-euler-product}
+If \(y\geq2^{DL}\), then
+\[
+                         |\zeta(s)-P_y(s)|\leq2D2^{-L}.
+                                                               \tag{D9}\label{eq:d-product-tail}
+\]
+\end{theorem}
+\begin{proof}
+List the primes at most \(y\) as \(p_1,\ldots,p_m\). For a finite \(K\),
+\[
+ \prod_{i=1}^m\sum_{e=0}^Kp_i^{-es}
+ =\sum_{0\leq e_1,\ldots,e_m\leq K}
+                    (p_1^{e_1}\cdots p_m^{e_m})^{-s}.
+\]
+Unique factorization says that no integer on the right occurs twice.
+Each geometric factor differs from its full value by at most \(2^{-K}\);
+all factors have absolute value at most \(2\).
+The finite telescoping product identity bounds the error by
+\(m2^{m-1}2^{-K}\).
+
+Fix a further finite cutoff \(T\). Once \(K\geq T\), all integers at most
+\(T\) whose prime factors are at most \(y\) occur in the displayed
+product. Remaining terms have absolute sum at most the tail of
+\(\sum n^{-\sigma}\) beyond \(T\).
+These two explicit bounds prove
+\[
+ P_y(s)=\sum_{\substack{n\geq1\\p\mid n\Rightarrow p\leq y}}n^{-s}.
+\]
+In particular \(|P_y(s)|\leq\zeta(\sigma)\).
+Every \(n\leq y\) has only prime factors at most \(y\); hence the
+difference from \(\zeta\) is a subseries indexed by \(n>y\), and
+\eqref{eq:d-tail} proves the result.
+\end{proof}
+
+The reciprocal product has the finite expansion
+\[
+ \prod_{p\leq y}(1-p^{-s})
+       =\sum_{d\mid\prod_{p\leq y}p}\mu(d)d^{-s}.
+\]
+Its difference from \(M(s)\) is supported on squarefree integers having
+a prime factor greater than \(y\); it has the same tail bound.
+
+\subsection{Euler's logarithm and the \(3\)--\(4\)--\(1\) inequality}
+
+Let \(b(p^a)=1/a\) for prime powers, \(a\geq1\), and \(b(n)=0\) otherwise.
+Prime-power recognition is a bounded calculation. The absolutely
+convergent series
+\[
+ \mathcal L(s)=\sum_{n\geq2}b(n)n^{-s}
+             =\sum_p\sum_{a\geq1}p^{-as}/a             \tag{D10}\label{eq:d-log-series}
+\]
+has tail \eqref{eq:d-tail}, and
+\[
+                         e^{\mathcal L(s)}=\zeta(s).  \tag{D11}\label{eq:d-log-zeta}
+\]
+This is the logarithm tending to \(0\) along the positive real axis.
+It is not asserted to be the principal complex logarithm everywhere.
+
+For completeness, put \(\ell(z)=\sum_{a\geq1}z^a/a\), \(|z|\leq1/2\).
+Its tail after \(K\) is at most \(2|z|^{K+1}\).
+The finite-coefficient power-series calculation for
+\(F(z)=\exp(\ell(z))\) gives \((1-z)F'(z)=F(z)\), \(F(0)=1\).
+Writing \(F(z)=\sum c_mz^m\), coefficient comparison gives
+\((m+1)c_{m+1}=(m+1)c_m\), so \(c_m=1\) by induction.
+The geometric and exponential tails justify evaluation and prove
+\(e^{\ell(z)}=(1-z)^{-1}\).
+Apply this to each \(z=p^{-s}\) in a finite prime product.
+Omitted prime powers have indices greater than the prime cutoff.
+Moreover, on \(|u|,|v|\leq2D\),
+\[
+                    |e^u-e^v|\leq3^{2D}|u-v|.
+\]
+This follows from the exponential series along the line segment, using
+\(e\leq3\). Combine this modulus with \eqref{eq:d-product-tail} to
+obtain \eqref{eq:d-log-zeta}.
+
+For real \(\sigma>1,t\), put \(\theta=at\log p\). Then
+\[
+\begin{split}
+3\mathcal L(\sigma)+4\operatorname{Re}\mathcal L(\sigma+it)
+             +\operatorname{Re}\mathcal L(\sigma+2it)
+ &=\sum_{p,a}\frac{p^{-a\sigma}}a
+                  (3+4\cos\theta+\cos2\theta)\\
+ &=\sum_{p,a}\frac{2p^{-a\sigma}}a(1+\cos\theta)^2\geq0 .
+\end{split}
+\]
+Finite partial sums are nonnegative, and the absolute tail preserves the
+inequality. Exponentiation therefore gives
+\[
+ \boxed{1\leq\zeta(\sigma)^3|\zeta(\sigma+it)|^4
+                                  |\zeta(\sigma+2it)|.}
+                                                               \tag{D12}\label{eq:d-341}
+\]
+This is the inequality used in the separate boundary-line argument.
+
+\subsection{The von Mangoldt series}
+
+Set \(\Lambda(p^a)=\log p\) for prime powers, and \(0\) otherwise.
+Then \(0\leq\Lambda(n)\leq\log n\).
+The factorization of \(n\) gives the finite identity
+\[
+                    \sum_{d\mid n}\Lambda(d)=\log n,  \tag{D13}\label{eq:d-mangoldt-conv}
+\]
+because a prime of exponent \(e\) contributes \(e\log p\).
+Convolution and the derivative tail give
+\(\zeta(s)\sum\Lambda(n)n^{-s}=-\zeta'(s)\).
+Using \eqref{eq:d-nonzero},
+\[
+ -\frac{\zeta'(s)}{\zeta(s)}
+   =\sum_{n\geq1}\frac{\Lambda(n)}{n^s}
+   =\sum_p\frac{\log p}{p^s-1}.                        \tag{D14}\label{eq:d-log-derivative}
+\]
+The last equality expands geometric series and is controlled by
+\(\sum(\log n)n^{-\sigma}\).
+Also \(\mathcal L'(s)=-\sum\Lambda(n)n^{-s}\), since
+\(b(p^a)\log(p^a)=\log p\).
+
+\subsection{Divisor functions, totients, squarefree integers, and Liouville's function}
+
+With a supplied rational gap from each boundary, one has
+\[
+\begin{array}{c|c|c}
+\text{coefficient}&\text{Dirichlet series}&\text{domain}\\ \hline
+\tau(n)=\sum_{d\mid n}1
+ &\displaystyle\sum_{n\geq1}\tau(n)n^{-s}=\zeta(s)^2&\sigma>1\\[3pt]
+\sigma_r(n)=\sum_{d\mid n}d^r,\ r\in\mathbb N
+ &\displaystyle\sum_{n\geq1}\sigma_r(n)n^{-s}=\zeta(s)\zeta(s-r)&\sigma>r+1\\[3pt]
+\varphi(n)=\#\{1\leq a\leq n:(a,n)=1\}
+ &\displaystyle\sum_{n\geq1}\varphi(n)n^{-s}=\zeta(s-1)/\zeta(s)&\sigma>2\\[3pt]
+\mu(n)^2
+ &\displaystyle\sum_{n\geq1}\mu(n)^2n^{-s}=\zeta(s)/\zeta(2s)&\sigma>1\\[3pt]
+\lambda(n)=(-1)^{\sum_p e_p(n)}
+ &\displaystyle\sum_{n\geq1}\lambda(n)n^{-s}=\zeta(2s)/\zeta(s)&\sigma>1 .
+\end{array}                                                   \tag{D15}\label{eq:d-arithmetic-series}
+\]
+For \(\tau,\sigma_r\), their defining finite divisor sums are the
+required convolutions. For the totient, use the M\"obius identity for
+the gcd and exchange finite sums:
+\[
+ \varphi(n)=\sum_{a=1}^n\sum_{d\mid(a,n)}\mu(d)
+           =\sum_{d\mid n}\mu(d)n/d.
+\]
+There are exactly \(n/d\) multiples of \(d\) among \(1,\ldots,n\).
+Also \(\varphi(n)\leq n\), supplying the stated convergence domain.
+For the squarefree coefficient,
+\[
+                         \mu(n)^2=\sum_{d^2\mid n}\mu(d).
+\]
+Indeed the right side factors into \(1-1\) for each prime whose exponent
+in \(n\) is at least \(2\), and equals \(1\) if there is no such prime.
+Convolution with the coefficient supported on squares gives
+\(\sum\mu(n)^2n^{-s}=\zeta(s)M(2s)\).
+Finally,
+\[
+ \sum_{d\mid n}\lambda(d)
+     =\prod_{p\mid n}\sum_{j=0}^{e_p(n)}(-1)^j
+     =
+     \begin{cases}1,&n\text{ is a square},\\0,&\text{otherwise}.\end{cases}
+\]
+Thus \(\zeta(s)\sum\lambda(n)n^{-s}=\zeta(2s)\).
+All infinite operations use \eqref{eq:d-convolution}; every division
+uses the quantitative apartness \eqref{eq:d-nonzero}.
+
+\subsection{Odd terms and the alternating series}
+
+Deleting multiples of \(2\) in finite sums gives
+\[
+ \sum_{j\geq0}(2j+1)^{-s}=(1-2^{-s})\zeta(s),
+              \qquad \sigma>1.                       \tag{D16}\label{eq:d-odd}
+\]
+Here \(1-2^{-s}\) is apart from zero.
+For the alternating series, assume instead
+\(\sigma\geq1/D,\ |s|\leq B,\ D,B\geq1\), and put
+\(\eta_N(s)=\sum_{n=1}^N(-1)^{n-1}n^{-s}\).
+Finite summation by parts, with partial sums of the alternating signs
+bounded by \(1\), gives
+\[
+ \left|\sum_{n=N+1}^M(-1)^{n-1}n^{-s}\right|
+ \leq M^{-\sigma}+|s|\int_{N+1}^{M}x^{-\sigma-1}\,dx
+ \leq(1+BD)N^{-\sigma}.                               \tag{D17}\label{eq:d-eta-tail}
+\]
+The bound on consecutive differences used here is
+\[
+ |n^{-s}-(n+1)^{-s}|
+     \leq |s|\int_n^{n+1}x^{-\sigma-1}\,dx.
+\]
+This is the finite-interval fundamental theorem for the explicitly
+differentiated \(x^{-s}\), equivalently its rational Riemann-sum
+estimate. At \(N=2^{DL}\), the tail is at most \((1+BD)2^{-L}\).
+It defines \(\eta(s)\) primitively recursively throughout \(\sigma>0\).
+
+The exact identity
+\(\eta_{2N}(s)=Z_{2N}(s)-2^{1-s}Z_N(s)\) gives
+\[
+                       \eta(s)=(1-2^{1-s})\zeta(s)    \tag{D18}\label{eq:d-eta-relation}
+\]
+first on \(\sigma>1\), and also for Euler--Maclaurin continuation on
+\(\sigma>0\), \(s\) apart from \(1\). To prove the latter directly, use
+that continuation's compatibility estimate
+\[
+ Z_N(s)=\zeta(s)+\frac{N^{1-s}}{1-s}+E_N(s),\qquad
+ |E_N(s)|\leq
+ \left(\frac12+\frac B{12}+\frac{B(B+1)}{12}\right)N^{-\sigma}.
+                                                               \tag{D19}\label{eq:d-eta-em}
+\]
+The terms containing \(N^{1-s}\) cancel exactly. Both remaining errors
+have the displayed primitive recursive decay.
+No identity theorem is needed.
+
+The quotient \(\eta(s)/(1-2^{1-s})\) requires an apartness witness for
+its denominator. This factor also vanishes at
+\(s=1+2\pi i k/\log2\), \(k\ne0\). At those points
+\eqref{eq:d-eta-relation} says \(\eta(s)=0\); quotient notation alone
+does not define \(\zeta(s)\). Euler--Maclaurin continuation does.
+
+At \(s=1\), integrate the finite geometric identity:
+\[
+ \eta_N(1)=\int_0^1\frac{1-(-x)^N}{1+x}\,dx,\qquad
+ |\eta_N(1)-\log2|\leq1/(N+1).
+\]
+Thus
+\[
+                              \eta(1)=\log2.          \tag{D20}\label{eq:d-eta-one}
+\]
+For a real \(x>0\), grouping consecutive pairs gives
+\(\eta(x)\geq1-2^{-x}>0\).
+More explicitly, if \(x\geq1/D\), Bernoulli's finite inequality
+\((1-1/(2D))^D\geq1/2\) implies
+\(2^{-1/D}\leq1-1/(2D)\), so \(\eta(x)\geq1/(2D)\).
+For \(0<x<1\), the factor \(1-2^{1-x}\) is strictly negative.
+With supplied rational gaps from both endpoints its inverse is
+computable, and therefore
+\[
+                         \zeta(x)<0\quad(0<x<1).      \tag{D21}\label{eq:d-real-negative}
+\]
+In particular this real interval contains no zeta zero.
+
+\subsection{Real monotonicity, convexity, and asymptotics}
+
+For real \(x>1\), the derivative formulas give
+\[
+ (-1)^j\zeta^{(j)}(x)
+       =\sum_{n\geq1}(\log n)^j n^{-x}>0\quad(j\geq1).
+                                                               \tag{D22}\label{eq:d-complete-monotone}
+\]
+The \(n=2\) term gives the lower bound \((\log2)^j2^{-x}\).
+Together with \(\zeta(x)-1>0\), this proves strict complete monotonicity
+of \(\zeta-1\), and hence strict decrease and strict convexity of \(\zeta\).
+Without derivatives, for \(h>0\),
+\(\zeta(x)-\zeta(x+h)\geq2^{-x}(1-2^{-h})>0\).
+Finite expansion of a square gives
+\[
+ \zeta(x)\zeta''(x)-\zeta'(x)^2
+   =\frac12\sum_{m,n\geq1}m^{-x}n^{-x}(\log m-\log n)^2
+   \geq2^{-x}(\log2)^2>0.                             \tag{D23}\label{eq:d-logconvex}
+\]
+The pairs \((1,2),(2,1)\) supply the lower bound; derivative tails
+authorize the double sum. Division by \(\zeta(x)^2>0\) proves strict
+logarithmic convexity.
+
+Comparing the decreasing \(t^{-x}\) with its endpoint sums gives
+\[
+ \frac1{x-1}\leq\zeta(x)\leq1+\frac1{x-1},\qquad
+ 2^{-x}\leq\zeta(x)-1\leq2^{-x}+\frac{2^{1-x}}{x-1}.   \tag{D24}\label{eq:d-real-bounds}
+\]
+These comparisons are first made on finite intervals; their omitted
+integral is \(T^{1-x}/(x-1)\), with explicit dyadic decay.
+In particular \(1\leq\delta\zeta(1+\delta)\leq1+\delta\), \(\delta>0\).
+For \(x\geq2\) one also has the fully discrete bound
+\[
+                2^{-x}\leq\zeta(x)-1\leq3\cdot2^{-x}. \tag{D25}\label{eq:d-three}
+\]
+Indeed \(\sum_{n\geq2}n^{-2}\leq1/4+
+\sum_{n\geq3}1/(n(n-1))=3/4\); multiply by \(2^{2-x}\).
+Hence \(\zeta(x)\to1\) with an explicit exponential modulus.
+The \(n\geq3\) terms, bounded by their first term plus
+\(\int_3^\infty t^{-x}dt\), give
+\[
+ 0\leq2^x(\zeta(x)-1)-1
+       \leq(2/3)^x\left(1+\frac3{x-1}\right).           \tag{D26}\label{eq:d-leading-asymptotic}
+\]
+This proves effectively that \(2^x(\zeta(x)-1)\to1\).
+
+\subsection{Sums of zeta values and a generating function}
+
+\begin{theorem}\label{thm:d-zeta-sums}
+With primitive recursive moduli,
+\[
+\begin{aligned}
+ \sum_{k=2}^{\infty}(\zeta(k)-1)&=1,&
+ \sum_{j=1}^{\infty}(\zeta(2j)-1)&=\tfrac34,\\
+ \sum_{j=1}^{\infty}(\zeta(2j+1)-1)&=\tfrac14,&
+ \sum_{k=2}^{\infty}(-1)^k(\zeta(k)-1)&=\tfrac12.
+\end{aligned}                                                   \tag{D27}\label{eq:d-zeta-sums}
+\]
+\end{theorem}
+\begin{proof}
+Finite geometric summation gives
+\[
+ \sum_{k=2}^K(\zeta(k)-1)
+  =\sum_{n\geq2}\left(\frac1{n(n-1)}-\frac1{(n-1)n^K}\right).
+\]
+The first series telescopes to \(1\); the remainder is at most
+\(\zeta(K)-1\leq3\cdot2^{-K}\).
+The \(n\)-series has its own telescoping tail \(1/N\), so this is a
+finite rearrangement with two supplied truncation parameters.
+
+For the even exponents the geometric sum is
+\(\sum_{n\geq2}1/(n^2-1)\), and
+\[
+ \frac1{n^2-1}=\frac12\left(\frac1{n-1}-\frac1{n+1}\right)
+\]
+telescopes to \(3/4\). The error after \(j=K\) is at most
+\((3/4)4^{-K}\).
+For odd exponents starting with \(3\), use
+\[
+ \frac1{n(n^2-1)}
+   =\frac12\left(\frac1{n-1}+\frac1{n+1}-\frac2n\right)
+\]
+to obtain \(1/4\), with error at most \((1/4)4^{-K}\).
+The alternating geometric sum is
+\(\sum_{n\geq2}1/(n(n+1))=1/2\). Its error after \(k=K\) is at most
+\(3\cdot2^{-K}\), by \eqref{eq:d-three} and a geometric tail.
+\end{proof}
+
+For \(|z|\leq\rho<2\), with rational \(\rho\) supplied,
+\[
+ \sum_{k=2}^{\infty}(\zeta(k)-1)z^k
+       =\sum_{n=2}^{\infty}\frac{z^2}{n(n-z)}.          \tag{D28}\label{eq:d-generating}
+\]
+Finite geometric identities prove this with tails
+\[
+ \frac{3(\rho/2)^{K+1}}{1-\rho/2}\quad\hbox{and}\quad
+ \frac{\rho^2}{(1-\rho/2)N}
+\]
+beyond \(k=K\) and \(n=N\), respectively.
+The given positive rational margin \(2-\rho\) yields primitive
+recursive decay, so no unlicensed infinite-sum interchange occurs.
+
+\subsection{A finite arithmetic interpretation: coprime tuples}
+
+For \(r\geq2,N\geq1\), let \(C_r(N)\) count tuples in
+\(\{1,\ldots,N\}^r\) with gcd \(1\). M\"obius inversion of their gcd
+gives the exact integer identity
+\[
+                  C_r(N)=\sum_{d=1}^{N}\mu(d)\lfloor N/d\rfloor^r.
+                                                               \tag{D29}\label{eq:d-coprime-count}
+\]
+For \(0\leq v\leq u\), factoring \(u^r-v^r\) gives
+\(u^r-v^r\leq r(u-v)u^{r-1}\).
+Set \(u=1/d\), \(v=\lfloor N/d\rfloor/N\), and sum:
+\[
+ \left|\frac{C_r(N)}{N^r}-\sum_{d=1}^N\mu(d)d^{-r}\right|
+       \leq\frac rN\sum_{d=1}^Nd^{-(r-1)}.
+\]
+Let \(\ell(N)\) be the binary length. Dyadic grouping gives
+\(\sum_{d\leq N}1/d\leq1+\ell(N)\).
+The omitted reciprocal series has tail at most
+\(\sum_{d>N}d^{-2}\leq1/N\), by telescoping. Therefore
+\[
+ \boxed{\left|\frac{C_r(N)}{N^r}-\frac1{\zeta(r)}\right|
+          \leq\frac{r(1+\ell(N))+1}{N}.}              \tag{D30}\label{eq:d-coprime-density}
+\]
+This is the precise finite meaning of the coprime-tuple density.
+For instance, if \(b=\ell(r)\), then
+\(N=2^{\,2(k+b+8)}\) makes the right side at most \(2^{-k}\);
+the verification is an elementary exponential-versus-linear inequality.
+
+\subsection{Arithmetic strength of the arguments}
+
+All truncations are fixed combinations of addition, multiplication,
+factorial, integer exponentiation, bounded factorization, finite sums,
+and the elementary-function approximators. Series products reduce to
+\eqref{eq:d-convolution}, differentiation to
+\eqref{eq:d-derivative-tail}, and prime products to finite geometric
+expansions. There is no unbounded search for a prime, a modulus, or a
+nonzero value.
+
+In the object theory the analytic notation abbreviates families of
+finite rational error inequalities. The inductions concern finite
+blocks, products, factorizations, and explicit recurrences, and can be
+expressed as quantifier-free invariants on encoded data. The statements
+are schematic in any fixed certified primitive recursive parameter name.
+They do not postulate a universal primitive recursive evaluator for all
+codes of primitive recursive programs.

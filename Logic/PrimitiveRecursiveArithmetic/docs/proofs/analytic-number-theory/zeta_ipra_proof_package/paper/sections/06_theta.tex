@@ -1,0 +1,472 @@
+\section{Theta transformation and the functional equation}
+\label{sec:theta-functional}
+
+This section uses the gamma gateway proved in the preceding material:
+Euler's integral on a half-plane with a supplied positive margin,
+$\Gamma(z+1)=z\Gamma(z)$, $\Gamma(1/2)=\sqrt\pi$, reflection,
+and duplication.  These are dependencies on human-readable finite
+proofs, not assertions that the corresponding Lean development has
+already been checked.  All integrals below denote prescribed rational
+quadrature algorithms with the displayed endpoint estimates.
+
+\subsection{An effective Fourier uniqueness lemma}
+
+For an integer $N\ge1$, define the finite trigonometric polynomial
+\[
+ K_N(u)=\frac1N\left|\sum_{j=0}^{N-1}e^{2\pi iju}\right|^2
+       =\sum_{|j|<N}\left(1-\frac{|j|}N\right)e^{2\pi iju}.
+\]
+The second equality follows by multiplying two finite sums and counting
+pairs with difference $j$.  Consequently $K_N\ge0$ and
+$\int_0^1K_N(u)\,du=1$: integrate each exponential, using
+$e^{2\pi ij}=1$ and its elementary antiderivative when $j\ne0$.
+For $0<\delta\le1/2$ and
+$\operatorname{dist}(u,\mathbb Z)\ge\delta$, finite geometric summation
+and $\sin(\pi v)\ge2v$ on $[0,1/2]$ give
+\[
+ K_N(u)=\frac{\sin^2(\pi Nu)}{N\sin^2(\pi u)}
+             \le\frac1{4N\delta^2}.                 \tag{TF1}
+\]
+The sine inequality is the finite second-derivative comparison with the
+chord from $0$ to $\pi/2$; the trigonometric gateway proves it by rational
+meshes.  No exact comparison with a zero of sine occurs in (TF1), since
+its denominator has the displayed positive lower bound.
+
+Let $f$ be a one-periodic function with $|f|\le M$ and Lipschitz
+constant $L$ for circular distance, both rational bounds.  Splitting
+its convolution with $K_N$ at circular distance $\delta$ proves
+\[
+ \left|\int_0^1K_N(u)f(x-u)\,du-f(x)\right|
+       \le L\delta+\frac{M}{2N\delta^2}.             \tag{TF2}
+\]
+On the near part use $L\delta$ and mass at most one; on the remaining
+part use $2M$, (TF1), and length at most one.  Thus, to obtain error
+$2^{-q}$, it suffices to take
+\[
+ \delta=\frac{2^{-q-1}}{L+1},\qquad
+ N\ge M(L+1)^2 2^{3q+2}.                             \tag{TF3}
+\]
+Integrating the finite expression for $K_N$ shows that the convolution
+is the finite weighted Fourier sum
+\[
+ \sum_{|j|<N}\left(1-\frac{|j|}N\right)\widehat f(j)e^{2\pi ijx},
+ \qquad \widehat f(j)=\int_0^1f(u)e^{-2\pi iju}\,du.
+                                                               \tag{TF4}
+\]
+Equations (TF1)--(TF4), including each integral error, are finite
+certificates.  They replace any appeal to a general Fourier-series
+convergence theorem.  In particular two such functions with the same
+Fourier coefficients are equal, by evaluating (TF2) at an arbitrary
+precision.
+
+\subsection{The Gaussian transform without complex contour integration}
+
+Fix $t$ with $1/A\le t\le A$, where $A\ge1$ is an integer.  Put
+\[
+ G_t(b)=\int_{-\infty}^{\infty}
+              e^{-\pi t x^2}e^{-2\pi ibx}\,dx \qquad(b\in\mathbb R).
+\]
+For every integer $m\ge0$ and $T\ge1$,
+\[
+ \int_{|x|\ge T}|x|^m e^{-\pi t x^2}\,dx
+       \le 2m!(2A)^{m+1}e^{-T/(2A)}.                \tag{TG1}
+\]
+Indeed $\pi t x^2\ge |x|/A$ there, and
+$|x|^m\le m!(2A)^m e^{|x|/(2A)}$.  Integrating the resulting
+exponential on each half-line gives (TG1).  The extra constant is
+harmless.  It provides primitive recursive cutoffs for differentiation
+in $b$ and for every integration by parts used below.
+
+Positive-real substitution in the gamma integral, together with
+$\Gamma(1/2)=\sqrt\pi$, gives $G_t(0)=t^{-1/2}$.  Differentiate the
+finite integral and then apply (TG1) with $m=1,2$ to its remainder.
+Integration by parts in $x$ gives
+\[
+ G_t'(b)=-\frac{2\pi b}{t}G_t(b).
+\]
+For clarity, if $f(x)=e^{-\pi t x^2}$, then
+$f'(x)=-2\pi txf(x)$ and
+$\int f'(x)e^{-2\pi ibx}\,dx=2\pi ibG_t(b)$;
+the boundary is bounded by (TG1).  Differentiating
+$e^{\pi b^2/t}G_t(b)$ therefore gives zero.  The finite fundamental
+theorem of calculus on the bounded segment from $0$ to $b$ proves
+\[
+ \boxed{G_t(b)=t^{-1/2}e^{-\pi b^2/t}.}             \tag{TG2}
+\]
+All frequency and exponential factors have rational bounds once a
+bound for $|b|$ is supplied.  Thus this argument contains an algorithm
+for every precision; it does not invoke an existence theorem for ODEs.
+
+\subsection{Poisson summation for the one Gaussian that is needed}
+
+Consider the one-periodic function
+\[
+ P_t(x)=\sum_{n\in\mathbb Z}e^{-\pi t(x+n)^2}.
+\]
+Uniformly for $0\le x\le1$, the omitted terms with $|n|>N$, $N\ge2$,
+have total at most
+\[
+ 8A e^{-N/(2A)}.                                    \tag{TG3}
+\]
+For such $n$, $|x+n|\ge |n|/2$, so a geometric series with ratio
+$e^{-1/(2A)}$ suffices; use
+$1-e^{-1/(2A)}\ge1/(4A)$.  The same estimate with a factor $2|n|$
+proves convergence of the differentiated series.  In particular the
+safe global bounds
+\[
+ |P_t(x)|\le16A,\qquad |P_t'(x)|\le1024A^3           \tag{TG4}
+\]
+follow from
+$\sum_{n\ge1}nq^n=q/(1-q)^2$ and $\pi<4$.
+These identities for the geometric series follow first for finite sums,
+with their explicit geometric remainders.
+
+Integrate a finite periodization against $e^{-2\pi ikx}$, substitute
+$u=x+n$ in its $n$th term, and use $e^{2\pi ikn}=1$.  Its intervals
+join to $[-N,N+1]$.  Estimates (TG1) and (TG3) therefore identify the
+Fourier coefficient with (TG2):
+\[
+ \widehat P_t(k)=t^{-1/2}e^{-\pi k^2/t}.
+\]
+The coefficients have the useful bound
+\[
+ \sum_{k\in\mathbb Z}|k|\,|\widehat P_t(k)|\le8A^3. \tag{TG5}
+\]
+To check it, use $t^{-1/2}\le A$,
+$e^{-\pi k^2/t}\le e^{-|k|/A}$ for $|k|\ge1$, and
+$1-e^{-1/A}\ge1/(2A)$.  The difference between the full coefficient
+sum and its Fej\'er weighted sum is consequently at most $8A^3/N$:
+for $|k|\ge N$ the missing weight $1$ is still at most $|k|/N$.
+Combining this bound with (TF2)--(TF3), at $x=0$, proves
+\begin{equation}
+ \boxed{\displaystyle
+ \theta(t):=\sum_{n\in\mathbb Z}e^{-\pi n^2t}
+       =t^{-1/2}\theta(1/t)\qquad(t>0).}
+ \label{eq:theta-transformation}
+\end{equation}
+This is the required Poisson summation formula.  Its proof used only
+finite Fourier polynomials, one explicitly normalized Gaussian
+integral, and specified error bounds.
+
+\subsection{An entire integral and the completed zeta function}
+
+Write $\psi(t)=(\theta(t)-1)/2=\sum_{n\ge1}e^{-\pi n^2t}$.
+For $t\ge1$, elementary geometric summation gives
+\[
+ 0<\psi(t)\le2e^{-3t},\qquad
+ \sum_{n>N}e^{-\pi n^2t}\le2e^{-3(N+1)t}.            \tag{TH1}
+\]
+Define
+\begin{equation}
+ A(s)=\int_1^\infty\psi(t)
+             \bigl(t^{s/2}+t^{(1-s)/2}\bigr)\,\frac{dt}{t}.
+ \label{eq:theta-entire-integral}
+\end{equation}
+For an integer $R\ge1$, $|s|\le R$, and every derivative order $j$,
+its tail after $T\ge1$ is bounded by
+\[
+ \int_T^\infty\left|
+ \frac{\partial^j}{\partial s^j}
+ \left[\psi(t)(t^{s/2}+t^{(1-s)/2})/t\right]\right|dt
+       \le2(R+j)!e^{-2T}.                           \tag{TH2}
+\]
+Indeed the integrand is at most
+$4t^{R+j}e^{-3t}$, since $\log t\le t$, and
+$t^{R+j}\le(R+j)!e^t$.  On $[1,T]$ use the finite theta sum and a
+uniform mesh.  A deliberately generous Lipschitz bound for the
+$j$th integrand is
+\[
+ C_{R,j,T}=2^{R+j+10}(R+j+2)!(T+1)^{R+j+4}.          \tag{TH3}
+\]
+It follows by the product rule, $|\psi'|\le8$, and the same geometric
+majorants; it also bounds the finite theta approximants.
+For precision $p$, one can take
+$T=p+2(R+j)!+R+j+10$, take the theta cutoff sufficiently large that
+$4(T+1)^{R+j+2}e^{-3N}\le2^{-p-6}$, and use at least
+$2^{p+6}C_{R,j,T}(T+1)^2$ mesh intervals.  The theta cutoff can be
+chosen explicitly as
+$N=p+(R+j+4)(T+1)+10$; no unbounded search is needed.  Elementary
+function evaluations are made to error at most
+$2^{-p-6}/(T+1)$ per integrand value.
+
+The integral has an everywhere convergent Taylor representation.
+At a center $s_0$ its $j$th Taylor coefficient is
+\[
+ \frac1{2^j j!}\int_1^\infty\psi(t)
+ \bigl(t^{s_0/2}+(-1)^jt^{(1-s_0)/2}\bigr)
+          (\log t)^j\,\frac{dt}{t}.                 \tag{TH4}
+\]
+For any prescribed radius $r>0$, sum the absolute integrands with
+weights $(2r)^j$.  The result is bounded by the same integrand with
+an extra factor $t^r$, hence by (TH2) with a larger integer $R$.
+If $C$ is that explicit integral majorant, the Taylor tail for
+$|s-s_0|\le r$ after degree $J$ is at most $C2^{-J}$.
+Expanding a finite exponential polynomial and adding this tail proves
+(TH4) and termwise differentiation.  This proves the effective
+entireness assertion, with a modulus, without a general theorem about
+locally uniform limits.
+
+For $\Re s>1$ the gamma substitution gives
+\[
+ \int_0^\infty\psi(t)t^{s/2-1}\,dt
+        =\pi^{-s/2}\Gamma(s/2)\zeta(s).             \tag{TH5}
+\]
+Here the interchange is justified before taking any limit: after
+summing $n\le N$, the absolute integral of the omitted sum is at most
+\[
+ \pi^{-\sigma/2}\Gamma(\sigma/2)
+                       \frac{N^{1-\sigma}}{\sigma-1},
+ \qquad \sigma=\Re s>1.                            \tag{TH6}
+\]
+This follows by the positive-real substitution in each term and the
+already proved Dirichlet tail estimate.  Gamma bounds and a supplied
+margin $\sigma-1\ge1/A$ make (TH6) an explicit primitive recursive
+cutoff.
+
+Split (TH5) at $1$.  The transformation
+\eqref{eq:theta-transformation} says
+\[
+ \psi(t)=t^{-1/2}\psi(1/t)+(t^{-1/2}-1)/2.
+\]
+In the first term substitute $u=1/t$; integrate the two remaining
+powers by their elementary antiderivatives.  Endpoint removal is
+justified by (TH6) and the supplied margin.  The result is
+\begin{equation}
+ \pi^{-s/2}\Gamma(s/2)\zeta(s)
+       =\frac1{s(s-1)}+A(s)\qquad(\Re s>1).
+ \label{eq:theta-completion-initial}
+\end{equation}
+Define the meromorphic completion and its pole-free form by
+\begin{align}
+ \Lambda_\theta(s)&=\frac1{s(s-1)}+A(s),\label{eq:theta-lambda}\\
+ \xi(s)&=\frac12+\frac12s(s-1)A(s).\label{eq:theta-xi}
+\end{align}
+The first formula is evaluated only when both denominators have
+positive rational separation; the second is an entire name on every
+bounded disk, including $0$ and $1$.
+
+\subsection{Quantitative continuation, with a finite induction invariant}
+\label{subsec:theta-overlap}
+
+The equality on the initial half-plane must be identified with the
+Euler--Maclaurin continuation already constructed.  Merely saying
+``by the identity theorem'' would conceal the main weak-arithmetic
+issue.  The following finite estimate supplies the needed replacement.
+
+Suppose a function has convergent Taylor series on a disk of radius
+slightly greater than $R$, is bounded by $H\le2^h$ on the disk of
+radius $R$, and is bounded by $\varepsilon$ on the concentric disk of
+radius $R/4$.  Integrating its Taylor polynomials around circles,
+with their explicit tails, extracts each coefficient by finite Fourier
+orthogonality.  Hence its $j$th coefficient has both bounds
+$H/R^j$ and $\varepsilon(4/R)^j$.  Split its series after degree $J$.
+On the disk of radius $R/2$ this proves
+\begin{equation}
+ |F|\le 2^{J+1}\varepsilon+2H\,2^{-(J+1)}.
+ \label{eq:analytic-propagation}
+\end{equation}
+Circle integration here is just integration over $0\le u\le1$ of
+$F(c+re^{2\pi iu})e^{-2\pi iju}$; the coefficient formula follows by
+integrating finite power polynomials.  No Cauchy integral theorem or
+choice of an unspecified zero is involved.
+
+Take $T$ disks whose successive centers are separated by at most
+$R/4$, with the same bound $H\le2^h$.  To achieve final error
+$2^{-q}$, prescribe integers backwards by
+\[
+ a_T=q,\qquad a_j=2a_{j+1}+h+8,
+ \qquad J_j+1=h+a_{j+1}+4.                          \tag{TH7}
+\]
+Then \eqref{eq:analytic-propagation} carries error $2^{-a_j}$ to
+error at most $2^{-a_{j+1}}$.  Each next disk of radius $R/4$ lies
+inside the previous disk of radius $R/2$.  Explicitly,
+\[
+ a_0=2^T(q+h+8)-h-8.
+\]
+The induction invariant is a bound on finite approximations at
+specified precisions, not the quantified statement that all
+coefficients vanish.  The two analytic errors sum to at most
+$(3/16)2^{-a_{j+1}}$, leaving a reserve for numerical errors.
+The outer coefficient bound gives
+$|F'|\le16H/(9R)$ on the radius-$R/4$ disk. Consequently the coefficient
+integrand
+$F(c+(R/4)e^{2\pi iu})e^{-2\pi iju}$ has Lipschitz bound
+$8(j+1)H$. A left mesh with at least $8(j+1)H2^b$ intervals gives
+quadrature error at most $2^{-b}$. Take
+$b=a_{j+1}+J_j+8$ and assign the same bound to function and circle-point
+evaluation errors; their finite sum, including amplification by
+$\sum_{j\le J_j}2^j<2^{J_j+1}$, fits inside the reserve.
+All indices are primitive recursive. More explicitly, for a desired
+endpoint approximation form the finite tree of circle sample points
+needed by the successive coefficient extractions.  The mesh sizes and
+Taylor degrees are fixed backwards by (TH7); a bounded scan of this
+finite tree carries all local rational error bounds.  This is the
+quantifier-free induction invariant used internally.  If $F$ is zero on the
+initial disk at every prescribed precision, (TH7) makes it zero at
+the endpoint at every prescribed precision.
+
+Here is the application, including removal of possible poles.
+Let $\zeta_{\rm EM}$ denote the Euler--Maclaurin construction, and
+let $E(s)=(s-1)\zeta_{\rm EM}(s)$, evaluated at $1$ by its explicit
+removable-pole formula.  For an integer $r\ge1$ put
+\[
+ P_r(s)=\prod_{j=0}^{r-1}(s/2+j),
+\]
+\[
+ F_r(s)=s\pi^{-s/2}\Gamma(s/2+r)E(s)
+            -P_r(s)\{1+s(s-1)A(s)\}.              \tag{TH8}
+\]
+Every factor is effectively analytic on the convex half-plane
+$\Re s>-2r$.  For gamma this follows by its integral Taylor expansion;
+for $E$ it follows by the Euler--Maclaurin Taylor bounds; for $A$ it
+is (TH4).  The gamma recurrence and
+\eqref{eq:theta-completion-initial} make $F_r=0$ on $\Re s>1$.
+
+To reach a target $s$ with a rational certificate
+$\Re s+2r\ge a>0$, join $2$ to $s$ by a straight segment.  Set
+$R=\min(1,a)/4$ and choose
+$T\ge4D/R$, where $D\ge|s-2|$ is a supplied rational bound.
+All radius-$R$ disks stay in the half-plane, and the initial
+radius-$R/4$ disk lies in $\Re s>1$.  A uniform rational bound $H$
+for (TH8) is obtained directly from its displayed factors.  For
+example, if $B\ge1$ is an integer with $|z|\le B$ on the disks and $|E(z)|\le E_B$, one may use
+\[
+ \begin{split}
+ G&=\lceil4/a\rceil+1+2^{B+r+2}(B+r+1)!,\\
+ H&=1+B4^BGE_B+(B+r)^r\{1+2B(B+1)B!\}.
+ \end{split}                                                   \tag{TH9}
+\]
+Here $|A(z)|\le2B!$ follows from (TH2), and $E_B$ is the finite
+Euler--Maclaurin bound obtained by taking its truncation point $1$
+and order $m=B+2$.  In particular $E_B$ is computed by finite sums
+of absolute Bernoulli coefficients, products bounded by
+$(B+2m)^{2m}$, and an integral remainder bounded by the sum of those
+coefficients.  One can take the integer $h=\lceil H\rceil$.
+Formula (TH7) now proves $F_r(s)=0$ by an explicit finite error budget.
+
+Consequently the two continuations agree.  On any chart where the
+ordinary factors are defined this yields
+\[
+ \pi^{-s/2}\Gamma(s/2)\zeta_{\rm EM}(s)=\Lambda_\theta(s).
+                                                               \tag{TH10}
+\]
+At gamma poles one uses (TH8), rather than dividing by a zero of
+$P_r$.  This is a divisor-free statement valid across those points.
+It is exactly the regularized meaning of (TH10).
+
+\subsection{Functional equations and consequences}
+
+Interchanging the two summands in \eqref{eq:theta-entire-integral}
+gives $A(s)=A(1-s)$ at every precision.  The formulas above prove
+\begin{equation}
+ \boxed{\Lambda(s)=\Lambda(1-s),\qquad \xi(s)=\xi(1-s).}
+ \label{eq:completed-functional-equation}
+\end{equation}
+Moreover
+\[
+ \xi(0)=\xi(1)=\tfrac12,\qquad
+ \xi(\overline s)=\overline{\xi(s)}.
+\]
+The second identity follows term by term from real quadrature weights
+and conjugation of exponentials.  Thus $\xi(1/2+it)$ is real for
+real $t$, and every odd Taylor coefficient of $\xi$ at $1/2$ is zero.
+Indeed substitute $s=1/2+h$ in the symmetry and compare coefficients
+by the finite circle-extraction argument.  In derivative notation,
+$\xi^{(2j+1)}(1/2)=0$ for all $j\ge0$.
+
+On a closed substrip of $0<\Re s<1$, the gamma reflection and
+ duplication identities are valid with supplied positive margins.
+The completed equation, multiplied by $\Gamma(1-s/2)$, gives
+\[
+ \Gamma(s/2)\Gamma(1-s/2)=\frac\pi{\sin(\pi s/2)},
+\]
+\[
+ \Gamma((1-s)/2)\Gamma(1-s/2)
+                       =2^s\sqrt\pi\,\Gamma(1-s).
+\]
+Substitution proves
+\begin{equation}
+ \boxed{\displaystyle
+ \zeta(s)=2^s\pi^{s-1}\sin(\pi s/2)
+                        \Gamma(1-s)\zeta(1-s).}
+ \label{eq:zeta-sine-functional}
+\end{equation}
+To extend this formula into $\Re s<1$, multiply its difference by
+$s$.  The pole of $\zeta(1-s)$ at zero is then removed, and every
+factor is analytic on this half-plane.  Apply exactly the finite
+disk propagation (TH7), starting at $1/2$.  On arbitrary other bounded
+charts use gamma recurrence to remove its finitely many possible
+poles, and apply the same argument.  Thus
+\eqref{eq:zeta-sine-functional} is a meromorphic identity, evaluated
+without division at removable points.  Replacing $s$ by $1-s$ also
+gives
+\[
+ \zeta(1-s)=2(2\pi)^{-s}\cos(\pi s/2)\Gamma(s)\zeta(s).
+\]
+
+For $m\ge1$, all factors on the right side of
+\eqref{eq:zeta-sine-functional} are analytic near $s=-2m$, and the
+sine factor vanishes.  Therefore $\zeta(-2m)=0$.  Differentiate the
+finite Taylor identity once; only the derivative of sine survives:
+\begin{equation}
+ \boxed{\displaystyle
+ \zeta'(-2m)=(-1)^m\frac{(2m)!}{2^{2m+1}\pi^{2m}}
+                              \zeta(2m+1).}
+ \label{eq:trivial-zero-derivative}
+\end{equation}
+Since $\zeta(2m+1)>1$ and $\pi<4$,
+\[
+ |\zeta'(-2m)|\ge2^{-6m-1}.                         \tag{TH11}
+\]
+This is an explicit apartness certificate.  Each negative even zero
+is simple; the assertion is stronger than a bare negation that its
+derivative equals zero.  On any compact part of $\Re s<0$ with a
+positive separation from the negative even integers, the sine product,
+the nonvanishing gamma product, and the right-half-plane lower bound
+for $\zeta(1-s)$ similarly give a positive lower bound for $|\zeta(s)|$.
+Consequently there are no further zeros on those apartness charts.
+For real $x<0$ away from even integers, all factors other than sine in
+\eqref{eq:zeta-sine-functional} are positive, so
+$\operatorname{sign}\zeta(x)=\operatorname{sign}\sin(\pi x/2)$.
+
+Finally let $\gamma$ denote Euler's constant.  The gamma product
+and the Laurent construction already proved give, with effective
+Taylor remainders,
+\[
+ \Gamma(1-s)=1+\gamma s+O(s^2),\qquad
+ \zeta(1-s)=-1/s+\gamma+O(s).
+\]
+Their constant terms cancel in the product:
+$\Gamma(1-s)\zeta(1-s)=-1/s+O(s)$.
+Also
+$2^s\pi^{s-1}=\pi^{-1}(1+s\log(2\pi)+O(s^2))$ and
+$\sin(\pi s/2)=\pi s/2+O(s^3)$.  Multiply these finite
+polynomials with their explicit remainders in
+\eqref{eq:zeta-sine-functional}; at $s=0$ this gives
+\[
+ \boxed{\zeta(0)=-\tfrac12,\qquad
+             \zeta'(0)=-\tfrac12\log(2\pi).}
+\]
+Here each $O(s^j)$ abbreviates a rational bound $C|s|^j$ on a fixed
+small disk obtained from the cited Taylor majorants; it is not an
+additional asymptotic assumption.
+
+\subsection{Formalization interface for this section}
+
+The Lean development should first formalize the finite lemmas:
+weighted Fourier convolution (TF4), its error (TF2), the Gaussian tail
+(TG1), periodization tail (TG3), and finite circle coefficient extraction.
+The theta identity then becomes equality of two approximation programs
+with the combined (TF2), (TG3), and (TG5) error budget.  Define $A$ by the
+cutoffs following (TH3), define $\xi$ by
+\eqref{eq:theta-xi}, and prove its Taylor coefficients using (TH4).
+The most important reusable lemma is
+\eqref{eq:analytic-propagation}, with its finite-list iteration (TH7).
+It should be stated as a quantitative lemma for certified Taylor
+charts, not imported as the classical analytic identity theorem.
+Apply it to the explicit expression (TH8), then prove the symmetric
+functional equation by the two-term interchange.  Gamma identities
+supply the sine conversion, and finite Taylor coefficient arithmetic
+supplies \eqref{eq:trivial-zero-derivative} and the values at zero.
+These are precise proof obligations for a future full formalization;
+this section does not claim an existing kernel-checked proof of them.

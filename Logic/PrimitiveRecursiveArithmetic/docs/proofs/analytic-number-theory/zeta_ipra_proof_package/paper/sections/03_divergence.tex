@@ -1,0 +1,90 @@
+\section{Exact convergence boundary of the defining Dirichlet series}
+\label{sec:dirichlet-divergence}
+
+The convergence theorem for $\Re s>1$ has a constructive converse.
+This converse concerns the defining series $\sum n^{-s}$, not the
+continued function $\zeta(s)$.  A short finite argument treats the
+whole complementary half-plane, including its boundary, without
+asking whether the imaginary part equals zero.
+
+Write $s=\sigma+it$, and suppose that $\sigma\le1$ and
+$|t|\le B$, where $B\ge1$ is an integer.  For an arbitrary starting
+index $N$, set
+\[
+ q=2B,\qquad K=\max(N,1),\qquad
+ M=qK,\qquad L=(q+1)K.
+\]
+Both $M$ and $L$ are at least $N$.  For each integer $M<n\le L$,
+\[
+ 0\le\log(n/M)\le\log(1+1/q)\le1/q,
+ \qquad |t\log(n/M)|\le\tfrac12.                  \tag{V1}
+\]
+The logarithmic inequality follows by integrating
+$(1+u)^{-1}\le1$ on $[0,1/q]$.  The finite cosine series, grouped
+into alternating pairs, gives
+$\cos v\ge1-v^2/2\ge7/8$ for $|v|\le1/2$; we use the weaker
+bound $1/2$.
+
+Multiply the finite block by the unit complex number $M^{it}$.
+By the elementary exponential addition law,
+\[
+ \Re\left(M^{it}\sum_{n=M+1}^{L}n^{-s}\right)
+   =\sum_{n=M+1}^{L}n^{-\sigma}\cos\bigl(t\log(n/M)\bigr).
+\]
+Since $\sigma\le1$ and $n\ge1$,
+$n^{-\sigma}=n^{-1}e^{(1-\sigma)\log n}\ge n^{-1}$.
+There are exactly $K=L-M$ terms.  Therefore
+\begin{equation}
+ \boxed{\displaystyle
+ \left|\sum_{n=M+1}^{L}n^{-s}\right|
+ \ge\frac12\sum_{n=M+1}^{L}\frac1n
+ \ge\frac{K}{2L}=\frac1{2(2B+1)}.}
+ \label{eq:uniform-dirichlet-noncauchy}
+\end{equation}
+The first inequality uses only that multiplication by $M^{it}$
+preserves modulus and modulus is at least real part.  Thus the
+partial sums are not Cauchy, with the explicit witnesses
+\[
+ \varepsilon_B=\frac1{4(2B+1)},\qquad
+ (M,L)=\bigl(2B\max(N,1),(2B+1)\max(N,1)\bigr).
+\tag{V2}
+\]
+In particular one may fix the dyadic accuracy index $p_0=2B+4$:
+for every $N$, the displayed block has modulus greater than
+$2^{-p_0}$.  These witnesses are primitive recursive even before any
+transcendental function is evaluated.
+
+This uniform statement includes all of the usual cases.  When
+$\sigma\le0$, there is also the still simpler term test:
+$|n^{-s}|=n^{-\sigma}\ge1$ for every $n\ge1$.  For
+$0<\sigma<1$, no lower bound for $\sigma$ or for $1-\sigma$ is
+needed in \eqref{eq:uniform-dirichlet-noncauchy}; the supplied
+inequality $\sigma\le1$ suffices.  On $\sigma=1$ the same blocks
+work both for $t$ apart from zero and for $t=0$.  In the latter case,
+the usual dyadic harmonic block has the stronger bound
+$\sum_{n=K+1}^{2K}1/n\ge1/2$.  These are separately stated
+consequences, not an appeal to a decidable trichotomy for arbitrary
+real names.
+
+For the arithmetical reading, choose in addition an integer
+$R\ge|s|$ to bound evaluations.  On the displayed finite block,
+$n^{-\sigma}\le L^R$.  Evaluate each positive amplitude and each
+cosine to rational error at most
+\[
+ \eta=\frac1{128(2B+1)K(1+L^R)}.
+\]
+The finite product-and-sum error is then smaller than
+$1/[16(2B+1)]$.  Argument errors in the elementary evaluations are
+reduced by their already supplied exponential and logarithmic
+Lipschitz bounds.  The resulting finite rational inequality
+certifies a positive real part exceeding
+$1/[4(2B+1)]$.  A bounded sum of these rational error checks is a
+quantifier-free induction invariant.  No decision about equality of
+real numbers and no search for a favorable oscillation is needed.
+
+Together with the explicit tail estimate in $\Re s>1$, this proves
+the stated exact boundary: the Dirichlet series defines zeta on the
+certified right half-plane, and is constructively non-Cauchy on the
+certified closed half-plane $\Re s\le1$.  It does not license an
+undecidable case distinction for an arbitrary input whose position
+relative to the boundary has not been supplied.

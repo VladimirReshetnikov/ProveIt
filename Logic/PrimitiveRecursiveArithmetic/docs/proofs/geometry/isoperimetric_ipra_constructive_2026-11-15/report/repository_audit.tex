@@ -1,0 +1,168 @@
+\section{Repository audit and a path to Lean formalization}
+\label{sec:repository-audit}
+
+\subsection{The exact first-order theory already available}
+
+The repository was inspected at the immutable commit
+\begin{center}
+\texttt{22afac4c9db7a0e060c081cc11db0dc96fe59e93}.
+\end{center}
+The toolchain specifies Lean~4.32.0. Its Mathlib revision is
+\begin{center}
+\texttt{81a5d257c8e410db227a6665ed08f64fea08e997}.
+\end{center}
+The root Lake configuration declares the library \texttt{ConciseIPRA}
+with source directory
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean}.
+These are observations of the files, not claims that this session rebuilt
+the repository.\footnote{\href{https://github.com/VladimirReshetnikov/ProveIt/tree/22afac4c9db7a0e060c081cc11db0dc96fe59e93/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}{Pinned ConciseIPRA source tree}; the same commit's root
+\texttt{lean-toolchain}, \texttt{lake-manifest.json}, and
+\texttt{lakefile.toml} supply the toolchain and build configuration.}
+
+The inspected source files supply the following interfaces.
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.38\linewidth}>{\raggedright\arraybackslash}p{0.56\linewidth}@{}}
+\hline
+Lean module & Relevant definitions and results\\
+\hline
+\texttt{Syntax.lean} & Scoped first-order formulas \texttt{Fm}; the predicate
+\texttt{Fm.QF} for formulas with no quantifiers.\\
+\texttt{Deduction.lean} & The intuitionistic natural-deduction judgment
+\texttt{Prf Ax Gamma phi}, including equality, substitution, and weakening.\\
+\texttt{PR.lean} & Primitive-recursive symbols \texttt{PR}, terms
+\texttt{PTm}, axioms \texttt{PRAAx}, and the internal quantifier-free
+induction rule \texttt{PRA.qfInd}.\\
+\texttt{TeqRec.lean} & Primitive recursion derived from the scalar
+iterator by a paired counter-and-value accumulator.\\
+\texttt{NativeBiInterpretation.lean} & Faithful translations
+\texttt{pra\_iff\_native} and \texttt{native\_iff\_pra}, both round trips,
+and equiconsistency.\\
+\hline
+\end{tabular}
+\end{center}
+All references in this subsection are to the source tree at the pinned
+commit; the accompanying \texttt{lean/README.md} provides its direct URL.
+
+The symbol constructors are zero, successor, projections, composition,
+and primitive recursion.  The axioms are their defining equations,
+successor separation from zero, successor injectivity, and quantifier-free
+induction.  The deduction system has the introduction and elimination
+rules for intuitionistic conjunction, disjunction, implication, and both
+quantifiers, together with equality and elimination of falsehood.  Thus the
+target theory has a concrete representation; there is no need to substitute
+an informal appeal to ``constructive Lean'' for an internal arithmetic
+derivation.
+
+\subsection{What can be reused, and what still has to be constructed}
+
+The repository already contains a package at
+\begin{center}
+\texttt{docs/proofs/geometry/isoperimetric\_ipra/}
+\end{center}
+under \texttt{Logic/PrimitiveRecursiveArithmetic}.  Its README describes
+a sharp planar argument based on dyadic roots of unity, finite Fourier
+identities, explicitly bounded polygonal refinement, and effective limit
+presentations.  It also expressly labels its Lean files an uncompiled
+blueprint and identifies the internal proof as unfinished.  Its presence
+therefore supplies prior mathematics and specifications, not an already
+available Lean theorem proving the inequality in iPRA.  The present report
+states and proves the finite lemmas it uses, and keeps the same distinction
+between a human proof, an executable diagnostic, and a completed internal
+formal derivation.
+
+The bridge \texttt{pra\_iff\_native} has the logical form
+\[
+ \operatorname{Prf}(\mathrm{PRAAx},\Gamma,\varphi)
+ \quad\longleftrightarrow\quad
+ \operatorname{NPrf}(\Gamma^{\mathrm{native}},
+                         \varphi^{\mathrm{native}}).
+\]
+It transfers an \emph{already constructed} arithmetic derivation.  It does
+not turn a Mathlib theorem about real numbers, an externally proved Boolean
+specification, or a passing Python computation into that derivation.
+This distinction is essential for the constrained-foundation requirement.
+
+\subsection{Finite encodings and theorem specifications}
+
+The supplied \texttt{lean/Outline.lean} defines rational polygon vertices,
+shoelace area, edge energy, rational upper bounds on edge lengths,
+radical-free triangle targets, the even and odd Fourier deficits of support
+functions, rational boxes and their Minkowski sums, cube vertex masks,
+internal and boundary edge counts, and closed neighborhoods.  It exposes
+the one-sided parallel-volume modulus needed for the higher-dimensional
+consequence.  A supplied modulus is not a theorem asserting that an
+arbitrary set has such a modulus.
+
+For internalization, encode signed integers by parity and rationals by a
+signed numerator and a positive denominator.  Rational order is checked
+by cross multiplication.  One concrete injective pairing is
+\[
+ \langle a,b\rangle=(a+b)^2+a.
+\]
+Its inverse on its image is found by a bounded scan over pairs at most
+the input code.  Use code~$0$ for the empty list and
+$1+\langle a,w\rangle$ for a list with head~$a$ and tail code~$w$.
+Every tail code is smaller; bounded decoding with fuel equal to the input
+code is primitive recursive.  Arrays of rationals, polygons, coefficient
+lists, and box lists thereby have explicit finite numerical codes.
+Cube sets are natural-number bit masks, read only at vertices below $2^d$.
+
+For each theorem, let $C$ be its fixed primitive-recursive checker, returning
+zero when the stated implication holds.  Invalid inputs or false hypotheses
+return zero.  The actual internal goal is
+\[
+ \operatorname{Prf}\bigl(\mathrm{PRAAx},\varnothing,
+                         \forall z\,[C(z)=0]\bigr).
+\]
+The compiler must produce a particular symbol of type \texttt{PR 1},
+prove its agreement with the specified checker, and supply its defining
+equations for use inside the theory.  Returning a constant zero function
+does not meet the specification.  The external semantics of \texttt{PR}
+syntax used in the outline is a Lean definition; it is not asserted to be
+a primitive-recursive universal interpreter for every primitive-recursive
+program.
+
+\subsection{The induction obligations}
+
+Every use of \texttt{PRA.qfInd} must include a proof that its formula is
+quantifier-free.  A bounded universal is replaced by a primitive-recursive
+Boolean fold; a bounded existential is replaced by bounded search with
+a success flag and a witness.  Prefix tables provide the finite conjunction
+of earlier stages when a proof is presented as strong induction.  These
+tables have explicit bounds.  The induction invariant becomes an equation
+between primitive-recursive terms.  Unbounded universal closure is introduced
+only after the parameterized internal derivation is complete.
+
+For example, the cube proof at dimension~$d$ can enumerate every mask below
+$2^{2^d}$ within a Boolean fold.  Compression is iterated for the stated
+rank-potential bound, with identity steps after saturation.  For the box
+proof, the finite cut tree must carry the box-count measure that decreases
+in each child, and the volume-ratio and disjointness invariants.  Record the
+actual cut tree by a bounded queue loop and traverse it bottom-up; the
+invariant is the Boolean conjunction of the inequalities at its processed
+nodes.  There is no induction formula quantifying over all unbounded
+rational input codes.  For polygons, all refinement
+counts, interval precisions, and coefficient-error bounds must be retained.
+Merely observing that a numerical routine terminates does not prove the
+invariant required of it.
+
+\subsection{Completion order and verification standard}
+
+An implementable module order is: numerical codecs; internal ordered
+arithmetic; the fixed constant-enclosure algorithms actually used; polygon
+identities and finite spectral estimates; triangle and support-function
+identities; box dissection and matched-cut Brunn--Minkowski; cube counting
+and compressions; and finally the transfer lemmas for each fixed effective
+curve or region presentation.  Every fixed presentation carries its own
+primitive-recursive moduli and validity proofs.  No theorem is inferred
+about all real sets or all rectifiable curves from the existence of those
+particular data.
+
+The last stage is to construct the internal checker theorems and then apply
+\texttt{pra\_iff\_native}.  The formalization should publish the actual
+closed \texttt{Prf PRAAx} targets, successful build output, and
+\texttt{\#print axioms} reports for the ambient Lean declarations.  Neither
+the target definitions nor the conditional translation theorem are reported
+as completed proofs here.  No Lean or Lake executable was available on the
+execution path, so the included outline has not been compiled.

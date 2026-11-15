@@ -1,0 +1,588 @@
+\section{The plane: an audited finite proof and its constructive scope}
+\label{sec:plane-new}
+
+The repository already contains a substantial planar development
+\cite{prior-planar}.  The
+unchanged source is included as \texttt{reused/isoperimetric\_ipra.tex},
+and its complete compiled paper accompanies this report.  It was retrieved
+at ProveIt commit
+\texttt{22afac4c9db7a0e060c081cc11db0dc96fe59e93}; the source itself
+records the older foundation snapshot on which it was originally based.
+The discussion below gives the decisive finite proof and the audited
+equality estimate, so the dependence is mathematical and explicit.
+The original paper supplies the detailed positive-radical coding,
+lower-real perimeter construction, and the remaining coding details.
+Its status is a human proof with a Lean outline, not a completed
+internal Lean derivation.
+
+\subsection{A theorem about rational polygons}
+For a cyclic list of rational points \(P=(v_0,\ldots,v_{m-1})\), put
+\[
+ A(P)=\frac12\sum_{j<m}\det(v_j,v_{j+1}),\qquad
+ e_j=v_{j+1}-v_j,
+\]
+with cyclic subscripts.  Let rational \(u_j\ge0\) satisfy
+\(\lVert e_j\rVert^2\le u_j^2\), and put \(S=\sum_j u_j\).
+The previously developed finite theorem is
+\begin{equation}\label{eq:plane-finite}
+ 4\pi_k |A(P)|\le S^2+2^{-k},
+ \qquad 0\le\pi-\pi_k<2^{-k},
+\end{equation}
+where \(\pi_k\) is a specified primitive recursive rational function.
+After clearing denominators, this is a universal assertion about
+primitive recursive integer calculations.  No simplicity, orientation,
+convexity, or nondegeneracy hypothesis is necessary.
+
+Here is the finite reason for the sharp constant.  Let \(N=2^R\ge4\),
+\(\eta=c+is\) be the positive half-angle root corresponding to
+\(\pi/N\), and \(\zeta=\eta^2\).  These are constructed by the finite
+recursion
+\[
+ c_1=0,\quad s_1=1,\qquad
+ c_{r+1}=\sqrt{(1+c_r)/2},\quad
+ s_{r+1}=\sqrt{(1-c_r)/2}.
+\]
+All square roots are positive roots in finite coded quadratic towers.
+Their signs and order laws are proved arithmetically in the companion
+paper; they are not appeals to an unspecified real-number model.
+Write \(x_j+iy_j=\eta^j\).  The upper-half-circle sign table
+\[
+ y_0=y_N=0,\qquad y_j>0\quad(0<j<N)
+\]
+has a finite inductive proof: the even powers at the next stage are
+the old powers, while each odd power is a positive multiple of the
+sum of two adjacent old powers.
+
+For any \(N\)-vertex polygon with complex coordinates \(z_j\), set
+\[
+ a_h=N^{-1}\sum_{j<N}z_j\zeta^{-jh},\qquad
+ E=\sum_{j<N}|z_{j+1}-z_j|^2.
+\]
+Finite orthogonality gives
+\[
+ E=4N\sum_{h<N}|a_h|^2 y_h^2,
+ \qquad A=N\sum_{h<N}|a_h|^2x_hy_h.
+\]
+For dyadic \(N\), orthogonality itself is proved by pairing opposite
+terms after removing the power of two dividing the frequency.  Thus
+neither convergence of a Fourier series nor a geometric-series limit
+is involved.  The identity \(cy_h-sx_h=y_{h-1}\) now gives
+\begin{equation}\label{eq:plane-dft-positive}
+ cE-4sA=4N\sum_{h=1}^{N-1}|a_h|^2y_hy_{h-1}\ge0.
+\end{equation}
+Conjugating all coordinates reverses the area, and \(c\le1\), so
+\(4Ns|A|\le NE\).
+
+To apply this to an arbitrary rational polygon, choose a dyadic
+\(N>m\), put \(T=N-m\), and replace edge \(j\) by
+\[
+ k_j=1+\left\lfloor Tu_j/S\right\rfloor
+\]
+equal segments; the case \(S=0\) is immediate.  The number of
+resulting edges is at most \(N\), so zero-length edges complete the
+list to length \(N\).  Bilinearity of the determinant proves that
+subdivision preserves area.  Moreover,
+\[
+ E=\sum_j\frac{\lVert e_j\rVert^2}{k_j}
+ \le\sum_j\frac{S u_j}{T}=\frac{S^2}{N-m}.
+\]
+The inequality includes \(u_j=0\) without dividing by it.
+If \(B\ge\max(1,S)\) and
+\[
+ R\ge k+4,\qquad N\ge m(1+2^kB^2),
+\]
+the preceding finite identity yields
+\[
+ 4Ns_R|A(P)|\le\frac{N}{N-m}S^2\le S^2+2^{-k}.
+\]
+The explicit rational lower approximation satisfies
+\(\pi_k\le2^{k+4}s_{k+4}\le Ns_R\), proving
+\eqref{eq:plane-finite}.  This argument was independently checked
+for the present report.
+
+\subsection{Represented boundaries and the equality case}
+For closed polygonal maps on a common subdivision, the elementary
+determinant identity gives
+\begin{equation}\label{eq:plane-area-continuity}
+ |A(P)-A(Q)|\le\frac{\|P-Q\|_\infty}{2}
+                 \bigl(L(P)+L(Q)\bigr).
+\end{equation}
+Indeed, if \(d_j=p_j-q_j\), the doubled area difference is
+\[
+ \sum_j\det(d_j,p_{j+1}-p_j)
+ +\sum_j\det(d_{j+1},q_{j+1}-q_j),
+\]
+and \(|\det(v,w)|\le\|v\|\|w\|\) follows by expanding a
+sum-of-squares identity.  Consequently a primitive recursive family
+of polygonal approximations, with explicit uniform, area, and length
+moduli, satisfies
+\[
+                 4\pi |A|\le L^2.
+\]
+For a Jordan-domain presentation, positive enclosed area is supplied
+by compatible simple polygonal domain approximations; its name agrees
+with the signed-area name after fixing orientation.  This representation
+condition is not inferred from bare pointwise injectivity.
+
+The perimeter need not even be a Cauchy real.  With an explicit
+variation bound and a uniform-continuity modulus, it can be represented
+by the lower cut generated by all inscribed polygon lengths.  A strict
+rational lower bound \(q<4\pi|A|\), supplied with a positive rational
+margin, determines a sufficiently accurate inscribed polygon by
+\eqref{eq:plane-area-continuity}.  Its finite inequality then supplies
+a rational lower bound greater than \(q\) for its squared perimeter.
+The full margin budget and the conversion of approximating vertices
+back to a genuinely inscribed polygon are provided in the companion
+paper.  This avoids assuming that the length of every computable
+rectifiable curve is computable.
+
+For completeness, the key equality argument is quantitative.  Put
+\(q_R=Ns/c\).  The nonzero spectral weights in
+\eqref{eq:plane-dft-positive} are
+\[
+ \mu_h=\frac{4N^2}{c}y_hy_{h-1}\quad(2\le h<N).
+\]
+They satisfy the exact finite telescope
+\[
+ \sum_{h=2}^{N-1}\frac1{\mu_h}
+ =\frac{c^2}{2N^2s^2}\le\frac18.
+\]
+To verify it, sum
+\(x_{h-1}/y_{h-1}-x_h/y_h=s/(y_hy_{h-1})\)
+and use the endpoint values \(c/s\) and \(-c/s\).
+Finite weighted Cauchy--Schwarz therefore proves
+\begin{equation}\label{eq:plane-finite-stability}
+ \max_j|z_j-a_0-a_1\zeta^j|^2
+ \le\frac18\bigl(NE-4q_RA\bigr).
+\end{equation}
+The two unpenalized modes are exactly translation and a positively
+oriented regular polygon.
+
+For a closed \(L\)-Lipschitz presentation
+\(\gamma:[0,1]\to\mathbb C\), set
+\(\Delta=L^2-4\pi A\).  Uniform samples, the area estimate above,
+and \(0\le q_R-\pi\le64/N^2\) give
+\[
+ NE-4q_RA(P_N)\le\Delta+24L^2/N.
+\]
+The discrete means
+\[
+ b_N=N^{-1}\sum_j\gamma(j/N),\qquad
+ a_N=N^{-1}\sum_j\gamma(j/N)\overline{U(j/N)}
+\]
+have explicit Cauchy moduli, where \(U\) is the unit-circle
+parametrization obtained from the dyadic polygons.  Their limits
+\(b,a\) satisfy
+\begin{equation}\label{eq:plane-uniform-stability}
+ \sup_t|\gamma(t)-b-aU(t)|
+ \le\sqrt{\Delta/8+3L^2/N}+8L/N.
+\end{equation}
+For example, after translating \(\gamma(0)=0\), one has
+\(|\gamma|\le L/2\), the functions \(\gamma\) and
+\(\gamma\overline U\) have Lipschitz bounds \(L\) and \(5L\),
+and dyadic left-endpoint means have error at most half the Lipschitz
+bound divided by \(N\).  These facts give precisely the displayed
+error budget.  Thus this is a finite quantitative argument, not a
+compactness argument about a sequence of nearly circular curves.
+
+If \(\Delta=0\), a dyadic
+\[
+ N\ge\max(4,48B^2\varepsilon^{-2},16B\varepsilon^{-1}),\quad B\ge L,
+\]
+makes the error smaller than \(\varepsilon\).  Hence
+\(\gamma(t)=b+aU(t)\) in represented equality.  A positive
+separation of two boundary points forces \(|a|>0\).
+For a general polygonal boundary presentation, apply this argument
+to each polygon using rational upper bounds for its edge lengths.
+When its deficits tend to zero, the resulting circles converge
+without choosing a subsequence: their centers and radii are recovered
+from the four coordinate extrema of the limiting boundary.  Thus
+equality forces a circle for precisely the effective boundary
+representations stated above.  Conversely the dyadic regular polygons
+give \(L=2\pi r\), \(A=\pi r^2\) for a circle, so equality holds.
+
+\subsection{Quotients, the two optimization problems, and Dido's problem}
+If a positive lower bound for \(L\) is supplied, division is a
+primitive recursive operation on the represented names, and
+\[
+ Q=\frac{4\pi A}{L^2}\le1.
+\]
+If \(A\) is positively separated from zero, the equivalent ratio
+inequality is \(L^2/A\ge4\pi\).  The positivity data avoid an
+unbounded search for a nonzero denominator.
+
+A homothety by \(t\ge0\) multiplies the shoelace area by \(t^2\)
+and every edge length by \(t\); the same identities hold for the
+represented limits.  Therefore a disk attains the maximum area at
+fixed positive perimeter and the minimum perimeter at fixed positive
+area.  The bounds and their attainment prove these extremal assertions
+directly; no separate assertion that an optimizer exists is required.
+
+For Dido's problem, suppose a represented arc of length \(\ell\)
+has its endpoints on a line, lies on one side of that line, and,
+together with the segment joining its endpoints, presents a domain
+of area \(A\).  Reflect the arc across the line.  The resulting
+closed boundary has length \(2\ell\) and area \(2A\); the common
+straight segment is internal and cancels in the signed-area sum.
+Hence
+\[
+                       A\le\frac{\ell^2}{2\pi}.
+\]
+Equality implies that the doubled boundary is a circle.  Reflection
+invariance puts its center on the given line, and the original arc
+is a semicircle.  A semicircle attains equality.  Here the fixed
+length is the curved part of the boundary; the endpoints are free
+on the line, as in the usual Dido formulation.
+
+\section{Regular polygons: exact quotients and an explicit limit}
+\label{sec:regular-new}
+For a regular \(n\)-gon, \(n\ge3\), with circumradius \(r>0\), put
+\(\alpha=\pi/n\).  Splitting into \(n\) isosceles triangles gives
+\[
+ L=2nr\sin\alpha,\qquad A=nr^2\sin\alpha\cos\alpha.
+\]
+Consequently
+\begin{equation}\label{eq:regular-quotient}
+             Q_n=\frac{\pi}{n\tan(\pi/n)}.
+\end{equation}
+The cancellation is legitimate because \(0<\alpha<\pi/2\).
+For example \(Q_3=\pi/(3\sqrt3)\) and \(Q_4=\pi/4\).
+
+These formulas require only elementary computable trigonometry.  One
+may evaluate sine and cosine by their finite Taylor sums on
+\([-4,4]\), or use the dyadic unit-circle name from the companion
+paper.  For the Taylor route, once the degree exceeds eight the
+absolute terms decrease by a factor at most \(1/2\).  The tail after
+degree \(M\) is therefore at most \(2^{10-M}\).  Taking degree
+\(k+16\), with the argument known within \(2^{-k-16}\), gives a
+uniform error below \(2^{-k}\): the derivative sum is bounded by
+\(\sum_{j\ge0}4^j/j!<64\).  All assertions are bounds on finite
+sums plus a geometric tail estimate.  Addition identities, the
+orthogonality integrals used below, and differentiation formulas are
+proved by the corresponding finite polynomial identities with these
+error bounds; their use does not require an axiom of analytic
+completeness.
+
+For \(0<x<\pi/2\),
+\[
+ \sin x-x\cos x=\int_0^x t\sin t\,dt>0,
+\]
+so \(Q_n<1\).  The positivity can be given a rational margin:
+on \([0,4/3]\), \(\sin t\ge t-t^3/6\ge t/2\), and hence
+\(\sin x-x\cos x\ge x^3/6\).
+The inequalities \(\sin x\le x\) and
+\(\cos x\ge1-x^2/2\) also give
+\begin{equation}\label{eq:regular-rate}
+             0<1-Q_n\le\frac{\pi^2}{2n^2}\le\frac8{n^2}.
+\end{equation}
+In particular \(n\ge2^{k+4}\) is an explicit primitive recursive
+choice ensuring \(|Q_n-1|\le2^{-k}\).
+Moreover \(Q_n\) increases strictly with \(n\):
+\[
+ \frac{d}{dx}(x\cot x)
+   =\frac{\sin x\cos x-x}{\sin^2x}<0,
+ \qquad
+ x-\sin x\cos x=\int_0^x2\sin^2t\,dt>0.
+\]
+Each integral inequality here has a precision version proved by
+finite Riemann sums and the explicit Taylor bounds.  We use these
+identities to prove the elementary statements, not as unexamined
+appeals to general real analysis.
+
+\section{The Wigner-caustic improvement as a finite sum of squares}
+\label{sec:wigner-new}
+The refined planar theorem on the requested page has a particularly
+transparent arithmetic form.  We first prove it for a finite
+trigonometric support polynomial, then give all approximation data
+needed to extend it to effectively presented smooth convex curves.
+The coefficient calculation is also the central idea in
+Zwierzy\'nski's original paper \cite{zwierzynski}; the treatment below isolates its
+finite rational content and its error budget.
+
+\subsection{Support data and the geometric quantities}
+Let
+\begin{equation}\label{eq:support-polynomial}
+ p(\theta)=a_0+\sum_{n=1}^m
+                 (a_n\cos n\theta+b_n\sin n\theta),
+ \qquad a_n,b_n\in\mathbb Q.
+\end{equation}
+Write \(u(\theta)=(\cos\theta,\sin\theta)\),
+\(v(\theta)=(-\sin\theta,\cos\theta)\), and define
+\[
+ \gamma(\theta)=p(\theta)u(\theta)+p'(\theta)v(\theta),
+ \qquad \rho=p+p''.
+\]
+For the geometric interpretation assume a supplied positive rational
+\(r\) with \(\rho(\theta)\ge r\).  This condition can itself have a
+finite certificate.  For example, the sufficient coefficient
+condition
+\[
+ a_0-\sum_{n=2}^m(n^2-1)(|a_n|+|b_n|)\ge r
+\]
+is rational.  More generally, a rational mesh, interval evaluations,
+and a derivative bound for \(\rho\) certify any stated positive
+margin.  The theorem does not assert that strict positivity of an
+arbitrary represented real function is decidable.
+
+Differentiating the finite expression gives \(\gamma'=\rho v\).
+The curve is regular, and it is the positively oriented boundary
+of a strictly convex body.  To see this directly, fix \(\theta\).
+For \(\theta<\phi\le\theta+\pi\),
+\[
+ (\gamma(\phi)-\gamma(\theta))\mathbin{\cdot}u(\theta)
+   =-\int_\theta^\phi\rho(t)\sin(t-\theta)\,dt
+   \le-r\bigl(1-\cos(\phi-\theta)\bigr)<0.
+\]
+For \(\theta+\pi\le\phi<\theta+2\pi\), integrate backwards
+from \(\theta+2\pi\) to obtain the same estimate.  Thus each
+tangent line is a supporting line and touches at just its stated
+point.  The curve is injective modulo its period, with an explicit
+separation bound away from equal parameters.  Inscribed polygons
+give the enclosed-area name without requiring an existence theorem
+for maximizing convex bodies.
+
+Its length and area are
+\begin{equation}\label{eq:support-LA}
+ L=\int_0^{2\pi}\rho=\int_0^{2\pi}p,
+ \qquad
+ A=\frac12\int_0^{2\pi}\det(\gamma,\gamma')
+  =\frac12\int_0^{2\pi}(p^2-p'^2).
+\end{equation}
+For the last equality, expand \(\det(pu+p'v,\rho v)=p\rho\)
+and integrate \(pp''\) by parts.  All boundary terms cancel by
+periodicity.  These are finite trigonometric calculations; they
+also follow by taking polygonal shoelace sums with their explicit
+uniform error.  Finite orthogonality now gives
+\begin{equation}\label{eq:support-fourier-LA}
+ L=2\pi a_0,\qquad
+ A=\pi a_0^2-\frac\pi2
+       \sum_{n=2}^m(n^2-1)(a_n^2+b_n^2).
+\end{equation}
+Indeed all mixed-frequency terms integrate to zero,
+\(\int\sin^2n\theta=\int\cos^2n\theta=\pi\), and the derivative
+multiplies the squared contribution of frequency \(n\) by \(n^2\).
+
+\subsection{The double-cover factor and the exact deficit}
+Opposite normal directions give the parallel-tangent pair
+\(\gamma(\theta),\gamma(\theta+\pi)\).  Its midpoint is
+\[
+ w(\theta)=\frac{\gamma(\theta)+\gamma(\theta+\pi)}2
+          =f(\theta)u(\theta)+f'(\theta)v(\theta),
+ \qquad f(\theta)=\frac{p(\theta)-p(\theta+\pi)}2.
+\]
+The function \(f\) contains exactly the odd harmonics of \(p\),
+and \(w(\theta+\pi)=w(\theta)\).  Thus \([0,2\pi]\) traces
+the midpoint curve twice.  The one-pass oriented area appearing in
+the Wigner theorem is therefore
+\begin{equation}\label{eq:wigner-area}
+ \widetilde A_W
+  =\frac14\int_0^{2\pi}\det(w,w')
+  =\frac14\int_0^{2\pi}(f^2-f'^2)
+  =-\frac\pi4
+       \sum_{\substack{3\le n\le m\\n\ \text{odd}}}
+        (n^2-1)(a_n^2+b_n^2)\le0.
+\end{equation}
+The factor \(1/4\), rather than \(1/2\), is essential.
+Possible cusps or self-intersections cause no ambiguity: this is
+signed parametric area, not the unsigned area of the caustic's image.
+The original paper likewise counts the double cover in this way.
+
+Subtracting \eqref{eq:wigner-area} from
+\eqref{eq:support-fourier-LA} gives the finite identity
+\begin{equation}\label{eq:wigner-sos}
+ \boxed{L^2-4\pi A-8\pi|\widetilde A_W|
+   =2\pi^2
+       \sum_{\substack{2\le n\le m\\n\ \text{even}}}
+        (n^2-1)(a_n^2+b_n^2)\ge0.}
+\end{equation}
+In particular the improved inequality is proved, and the ordinary
+planar inequality follows by dropping its nonnegative extra term.
+The arithmetic heart of \eqref{eq:wigner-sos}, after division by
+the known positive constant \(2\pi^2\), is simply nonnegativity
+of a finite rational sum of weighted squares.  The displayed
+geometric constants are not hiding any nonconstructive step.
+
+\subsection{Equality and a useful quantitative form}
+The width in normal direction \(\theta\) is
+\[
+ W(\theta)=p(\theta)+p(\theta+\pi)
+ =2a_0+2\sum_{\substack{2\le n\le m\\n\ \text{even}}}
+                   (a_n\cos n\theta+b_n\sin n\theta).
+\]
+For finite polynomials the following equivalences are immediate and
+constructive:
+\[
+ \begin{split}
+ L^2=4\pi A+8\pi|\widetilde A_W|
+ &\ \Longleftrightarrow\ a_n=b_n=0\text{ for each even }n\ge2\\
+ &\ \Longleftrightarrow\ W(\theta)\text{ is constant}.
+ \end{split}
+\]
+The forward direction uses that a finite sum of nonnegative rational
+terms can vanish only if every term vanishes.  The converse direction
+can either read the formula or multiply the constant-width identity
+by \(\cos n\theta\) and \(\sin n\theta\) and use orthogonality.
+The permitted odd harmonics explain why equality in the improved
+inequality is much less restrictive than circularity.
+
+There is also a direct estimate that makes the equality argument
+survive effective approximation.  Put
+\(D_W=L^2-4\pi A-8\pi|\widetilde A_W|\).  Weighted
+Cauchy--Schwarz and the finite telescope
+\[
+ \sum_{j=1}^{M}\frac1{(2j)^2-1}
+ =\frac12\left(1-\frac1{2M+1}\right)\le\frac12
+\]
+give
+\begin{equation}\label{eq:width-stability}
+       \sup_\theta|W(\theta)-2a_0|^2\le\frac{D_W}{\pi^2}.
+\end{equation}
+Indeed, for each frequency use
+\(|a_n\cos n\theta+b_n\sin n\theta|
+ \le\sqrt{a_n^2+b_n^2}\), then apply Cauchy--Schwarz to the
+weights \(n^2-1\).  This proves near-constant width from a small
+improved deficit with no selection of a minimizing shape.
+
+Similarly the ordinary deficit
+\(D=L^2-4\pi A\) satisfies
+\[
+ \sup_\theta
+ |p(\theta)-a_0-a_1\cos\theta-b_1\sin\theta|^2
+ \le\frac{3D}{8\pi^2},
+\]
+because
+\(\sum_{n=2}^{M}(n^2-1)^{-1}\le3/4\).
+Thus ordinary equality forces
+\(p=a_0+a_1\cos\theta+b_1\sin\theta\), and substituting in
+\(\gamma=pu+p'v\) gives the circle with center \((a_1,b_1)\)
+and radius \(a_0\).  The positive curvature-radius margin implies
+\(a_0\ge r>0\).
+
+\subsection{Extension to effective smooth convex support functions}
+Here is an explicit representation under which the entire improved
+theorem, including its equality characterization, is proved in the
+same precision sense as the planar theorem.  The input consists of
+a fixed primitive recursive family \(p_j\) of rational
+trigonometric polynomials, a bound \(B\ge1\), and a primitive
+recursive modulus with
+\[
+ \|p_j-p\|_\infty,
+ \|p'_j-p'\|_\infty,
+ \|p''_j-p''\|_\infty\le2^{-j},
+\]
+after reindexing by that modulus, and with all the displayed
+functions bounded in absolute value by \(B\).  In addition supply
+a rational \(r>0\) and the inequality \(p+p''\ge r\).
+After a prescribed finite initial index, the approximants have
+\(p_j+p_j''\ge r/2\), so they represent convex curves as above.
+This directly covers ovals with the stated effective normal-angle
+support data.  Extracting those data from an arbitrary smooth convex
+parametrization, particularly one with vanishing curvature, is an
+additional representation problem and is not claimed here.
+This is a first-order schema for fixed primitive recursive names;
+it is not a universal evaluator of arbitrary primitive recursive
+programs.
+
+If two such support data differ in \(C^1\) norm by at most
+\(\delta\), with the bound \(B\), direct use of
+\(|x^2-y^2|\le2B|x-y|\) gives
+\begin{equation}\label{eq:wigner-error-budget}
+ |L_p-L_q|\le8\delta,\qquad
+ |A_p-A_q|\le16B\delta,\qquad
+ |\widetilde A_{W,p}-\widetilde A_{W,q}|\le8B\delta.
+\end{equation}
+Here \(\pi\le4\); the factor for the last term is half the
+area factor because the midpoint curve has the one-pass convention
+of \eqref{eq:wigner-area}.  Since \(|L_p|,|L_q|\le8B\),
+\[
+                         |D_{W,p}-D_{W,q}|\le640B\delta.
+\]
+Choosing \(\delta\le2^{-k}/(1024B)\), and increasing the rational
+precision for the finite coefficient calculations, gives the
+requested precision inequality.  Thus \eqref{eq:wigner-sos}
+passes to the represented limit with an explicit primitive recursive
+error budget.  So does \eqref{eq:width-stability}, since the widths
+and their means have the same supplied convergence modulus.
+If \(D_W=0\), it follows directly that \(W\) is constant.
+
+Conversely, put \(q=(p(\theta)+p(\theta+\pi))/2\).  The
+finite-polynomial formula for the improved deficit can also be written
+\[
+ D_W=2\pi\int_0^{2\pi}
+                 \bigl(q'^2-(q-a_0)^2\bigr)\,d\theta,
+ \qquad a_0=(2\pi)^{-1}\int_0^{2\pi}p.
+\]
+It remains valid by \eqref{eq:wigner-error-budget}.  If the width
+is constant, \(q=a_0\) and \(q'=0\), so \(D_W=0\).
+Derivative uniqueness here is effective: for a function whose
+derivative has modulus \(\omega\), its difference quotient over
+an explicitly small positive \(h\) differs from its derivative
+by the corresponding modulus error.  For a constant function the
+difference quotient is exactly zero.  This argument uses no
+principle that a real number is either zero or positively separated
+from zero.
+
+The representation is not confined to preassigned Fourier series.
+For a primitive-recursively evaluable periodic \(C^2\) function
+with named derivatives, a common uniform-continuity modulus and
+a bound \(B\) for \(p,p',p''\), a suitable polynomial family
+can be constructed by the following finite Fej\'er procedure.
+Define
+\[
+ F_N(t)=N^{-1}\left|\sum_{h=0}^{N-1}e^{iht}\right|^2.
+\]
+This is a nonnegative trigonometric polynomial and has integral
+\(2\pi\), by finite orthogonality.  For circular distance
+\(|t|\ge\delta\), \(0<\delta\le1\), the finite geometric-sum
+identity and \(\sin(|t|/2)\ge|t|/\pi\ge\delta/4\) give
+\(F_N(t)\le16/(N\delta^2)\).
+If the common modulus gives oscillation at most \(2^{-k-1}\)
+within \(\delta=2^{-\omega(k+1)}\), then convolution satisfies
+\[
+ \left\|\frac1{2\pi}\int_0^{2\pi}F_N(t)p(\,\cdot-t)\,dt-p
+          \right\|_{C^2}
+ \le2^{-k-1}+\frac{32B}{N\delta^2}.
+\]
+Take \(N\ge64B\,2^k\delta^{-2}\).
+Differentiation commutes with this finite-kernel convolution by
+periodic integration by parts; the identity is also obtained by
+finite summation by parts with a modulus error tending to zero.
+Approximate its finitely many Fourier coefficients rationally.
+An error at most \(\tau\) in each coefficient changes the
+\(C^2\) norm by at most \(6N^3\tau\).  Taking the Fej\'er
+target one bit more accurate and
+\(\tau\le2^{-k-1}/(6N^3)\) yields the required rational
+polynomial at accuracy \(2^{-k}\).
+The Fourier integrals are computed by uniform Riemann sums using
+the given modulus, the frequency bound, and the elementary
+trigonometric error bound.  Every loop count is specified before
+the loop starts.  Thus smoothness with effective moduli supplies
+the representation; bare classical smoothness without those data
+is not being claimed to do so.
+
+\subsection{Arithmetic and formalization boundary}
+For finite rational coefficients introduce the rational sums
+\[
+ E=\sum_{n=2}^m(n^2-1)(a_n^2+b_n^2),\quad
+ O=\sum_{\substack{3\le n\le m\\n\ \text{odd}}}
+          (n^2-1)(a_n^2+b_n^2),\quad H=E-O.
+\]
+The internal finite theorem is \(H\ge0\), together with the
+explicit identities \(L^2-4\pi A=2\pi^2E\) and
+\(-\widetilde A_W=\pi O/4\), understood through rational
+names for \(\pi\).  The partition \(E=O+H\), nonnegativity,
+and the zero-sum characterization are proved by induction on the
+finite coefficient list.  After coding rational arithmetic, the
+invariants are quantifier-free equalities or inequalities between
+primitive recursive folds.  The infinite-looking statements above
+mean that a requested precision selects the finite index in
+\eqref{eq:wigner-error-budget}; no induction over an analytic
+predicate is used.
+
+The Lean development should first formalize these finite rational
+folds, then the finite trigonometric identities and explicit Riemann
+sum estimates, and finally the represented support-function schema.
+The finite sum-of-squares certificate and the complete modulus budget
+are essential: a theorem about Mathlib's real numbers alone would
+not establish derivability in the repository's embedded
+\(\mathsf{iPRA}\).

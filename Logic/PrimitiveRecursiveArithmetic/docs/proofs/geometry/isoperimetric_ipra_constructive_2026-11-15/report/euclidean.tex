@@ -1,0 +1,422 @@
+\section{Rational boxes and the sharp inequality in every dimension}
+\label{sec:euclidean}
+
+The passage from Brunn--Minkowski to isoperimetry is familiar in classical
+geometry \cite{Gardner2002}. Here the central theorem is instead formulated
+entirely with rational volumes and an extra rational parameter. This removes
+all roots from the finite statement and allows the geometric cuts to be
+implemented by bounded rational arithmetic.
+
+\subsection{Finite volume and the box inequality}
+
+A rational box in dimension \(n\geq1\) is a product
+\(\prod_{i=1}^n[a_i,b_i]\) with rational \(a_i<b_i\). A box union is
+a finite list whose boxes have pairwise disjoint interiors. Its volume
+is the sum of their products of side lengths. Boundary conventions do not
+affect this volume. To compute the volume of an arbitrary finite union,
+sort the endpoints in each coordinate and test the elementary cells of
+the resulting grid for inclusion. This is a finite rational procedure.
+Inclusion of two unions can be checked on the same common grid.
+
+For two box unions \(X,Y\), their vector sum \(X+Y\) is the union of
+all pairwise box sums: add the lower endpoints and the upper endpoints
+coordinate by coordinate. These boxes may overlap, so use the preceding
+grid procedure to compute \(V(X+Y)\).
+
+\begin{lemma}[A rational product inequality]\label{lem:box-product}
+If \(t_1,\ldots,t_n,q\) are nonnegative rationals and
+\(\prod_i t_i\geq q^n\), then
+\[
+ \prod_{i=1}^n(1+t_i)\geq(1+q)^n.
+\]
+\end{lemma}
+\begin{proof}
+For \(1\leq j\leq n\), let \(C=\binom nj\) and let \(e_j\)
+be the sum of the \(C\) products \(\prod_{i\in J}t_i\), where
+\(|J|=j\). Each \(t_i\) occurs in exactly
+\(\binom{n-1}{j-1}\) of these products. Thus their product is
+\[
+ \left(\prod_i t_i\right)^{\binom{n-1}{j-1}}
+ \geq q^{n\binom{n-1}{j-1}}=q^{jC}.
+\]
+Finite arithmetic--geometric mean gives
+\((e_j/C)^C\geq q^{jC}\). Since nonnegative rational powers are
+order-reflecting, \(e_j\geq Cq^j\). With \(e_0=1\), expand the
+left side and sum these inequalities; the binomial theorem gives the
+right side. Every exponent, list and subset in this proof is finite.
+\end{proof}
+
+If \(X,Y\) are single boxes with side lengths \(a_i,b_i>0\), put
+\(t_i=b_i/a_i\). Whenever \(q^n V(X)\leq V(Y)\), the lemma gives
+\begin{equation}\label{eq:box-base}
+ V(X+Y)\geq V(X)(1+q)^n.
+\end{equation}
+This is the only numerical inequality needed for the general finite case.
+
+\subsection{Matching rational fractions by explicit cuts}
+
+\begin{lemma}[Rational volume cut]\label{lem:rational-cut}
+Let \(Y\) be a nonempty box union, fix a coordinate \(i\), and let
+\(0<\lambda<1\) be rational. A rational \(t\) can be computed such
+that the pieces \(Y^- =Y\cap\{x_i\leq t\}\) and
+\(Y^+=Y\cap\{x_i\geq t\}\) have volumes
+\(\lambda V(Y)\) and \((1-\lambda)V(Y)\).
+Each list contains at most as many boxes as the original list.
+\end{lemma}
+\begin{proof}
+Sort the finitely many endpoints in coordinate \(i\).
+Between two consecutive endpoints \(u<v\), the cross-sectional
+\((n-1)\)-volume is a constant rational \(A\geq0\); for \(n=1\)
+the empty product used here is one. Scan these intervals, adding
+\(A(v-u)\), until the target \(\lambda V(Y)\) is reached or crossed.
+If it is reached at an endpoint, use that endpoint. Otherwise the target
+lies strictly inside an interval with \(A>0\); if the volume accumulated
+at its left endpoint is \(F\), choose
+\(t=u+(\lambda V(Y)-F)/A\).
+All operations are rational and the scan length is bounded by the number
+of endpoints. Clipping each original box produces at most one nonempty
+box in either specified half-space. It does not subdivide a box into
+two pieces \emph{within the same child list}.
+\end{proof}
+
+\begin{theorem}[Brunn--Minkowski with a rational parameter]
+\label{thm:rational-bm}
+Let \(X,Y\) be nonempty finite unions of rational boxes with disjoint
+interiors, in dimension \(n\geq1\), and let \(q\geq0\) be rational.
+Then
+\begin{equation}\label{eq:rational-bm}
+ q^n V(X)\leq V(Y)
+ \quad\Longrightarrow\quad
+ V(X+Y)\geq V(X)(1+q)^n.
+\end{equation}
+\end{theorem}
+\begin{proof}
+We describe a recursion on \(N\), the sum of the two list lengths.
+When both lists have length one, use \eqref{eq:box-base}.
+Suppose first that \(X\) has at least two boxes. Because their interiors
+are disjoint, two selected boxes have disjoint open coordinate intervals
+in some coordinate \(i\). Choose a rational hyperplane \(x_i=s\)
+between them, so one whole selected box is on each side. Clip every box
+of \(X\) at this hyperplane, discard zero-width pieces, and call the
+results \(X^-,X^+\). Both have positive volume. Put
+\(\lambda=V(X^-)/V(X)\), so \(0<\lambda<1\).
+Use Lemma~\ref{lem:rational-cut} to cut \(Y\) at \(x_i=t\) with
+the same volume fraction. The identities are
+\[
+ V(X^-)=\lambda V(X),\quad V(Y^-)=\lambda V(Y),\qquad
+ V(X^+)=(1-\lambda)V(X),\quad V(Y^+)=(1-\lambda)V(Y).
+\]
+Hence the same hypothesis \(q^nV(X^\pm)\leq V(Y^\pm)\) holds
+in both children.
+
+If \(X\) originally had \(m\) boxes and \(Y\) had \(r\), each
+\(X\) child has at most \(m-1\) boxes: the selected whole box on
+the other side is absent, and each remaining original contributes at
+most one piece. Each \(Y\) child has at most \(r\) boxes.
+Thus the sum of list lengths in \emph{each recursive call} is at most
+\(N-1\). The sum of the sizes of both calls need not decrease, and is
+not used as the induction measure.
+
+The induction hypotheses give
+\[
+ V(X^-+Y^-)\geq V(X^-)(1+q)^n,
+ \qquad V(X^++Y^+)\geq V(X^+)(1+q)^n.
+\]
+The first sum is in \(\{x_i\leq s+t\}\), the second in
+\(\{x_i\geq s+t\}\). Their interiors are disjoint and both lie in
+\(X+Y\), so finite additivity of box volume allows their lower bounds
+to be added. This proves \eqref{eq:rational-bm}.
+
+If \(X\) has one box but \(Y\) has several, choose the separating cut
+in \(Y\) and match its volume fraction in \(X\). The same equations
+and the same decrease of \(N\) apply. This exhausts the cases without
+ever changing the direction of the hypothesis involving \(q\).
+\end{proof}
+
+\paragraph{Explicit arithmetic bound.}
+The recursion has depth at most \(N-2\) and fewer than \(2^{N+1}\)
+nodes. It must retain the clipped lists, rather than replacing each child
+by a fresh grid decomposition. Suppose endpoint numerators and positive
+denominators initially have absolute value at most \(2^B\).
+Taking an unnecessarily large bound, set
+\[
+ B_0=B+2,\qquad
+ B_{j+1}=2^{\,100(n+1)(N+1)^2(B_j+1)^2}.
+\]
+After \(j\) levels, all endpoint numerators and denominators are bounded
+by \(2^{B_j}\). To verify this, note that a cut requires only products
+of at most \(n\) endpoint differences, sums of at most \(N\) such
+products, and a fixed number of rational divisions; forming a common
+denominator multiplies at most this many previous denominators. The
+displayed bound dominates these elementary bit-length bounds, even
+without cancellation. Evaluation of the sum volume at the root uses
+at most \((2mr)^n\) elementary grid cells. These are primitive recursive
+bounds uniform in all the inputs. A postorder traversal with these bounds
+gives a bounded Boolean induction invariant, as specified in
+Section~\ref{sec:foundations}.
+
+\subsection{Recovering the conventional sharp statement}
+
+Let \(a=V(X)>0\), \(b=V(Y)>0\). By prescribed bisection choose
+\(q_j\geq0\) rational with
+\(q_j^na\leq b\) and \(0\leq(b/a)^{1/n}-q_j\leq2^{-j}\).
+Theorem~\ref{thm:rational-bm} holds for every \(q_j\).
+The factorization bound for powers supplies an explicit error budget
+for \(a(1+q_j)^n\); therefore the order definition gives
+\[
+ V(X+Y)\geq(a^{1/n}+b^{1/n})^n,
+ \qquad V(X+Y)^{1/n}\geq a^{1/n}+b^{1/n}.
+\]
+Replacing \(X,Y\) by positive rational dilates proves the weighted
+version. Named positive dilation factors follow by their rational error
+bounds. This passage uses no convergence theorem without a modulus.
+
+\subsection{A primitive recursive volume name for the unit ball}
+
+We need a named constant \(\omega_n\), not a postulated Lebesgue measure
+of an unencoded set. Take the grid of side \(h=2^{-m}\) in \([-2,2]^n\).
+Let \(B_m^-\) be the union of cells whose farthest corner from the origin
+has squared norm at most one. Let \(B_m^+\) be the union of cells whose
+minimum squared norm is at most one. In the latter test, the minimizing
+coordinate is the endpoint nearest zero, or zero if the coordinate
+interval contains zero. Both tests are rational. The unions enclose
+the unit ball from inside and outside, respectively, and refine
+monotonically under dyadic subdivision, up to their shared boundaries.
+
+Here is an explicit estimate independent of integration. Suppose
+\(nh\leq1/4\), and put
+\(c=(1-2nh)/(1+nh)>0\).
+Every point of \(B_m^+\) has norm at most \(1+nh\), since a cell has
+diameter at most \(nh\). Thus every point of \(cB_m^+\) has norm at
+most \(1-2nh\). The grid cell containing such a point has every corner
+of norm at most \(1-nh\), so it belongs to \(B_m^-\). Hence
+\[
+ cB_m^+\subseteq B_m^-\subseteq B_m^+,
+ \qquad
+ 0\leq V(B_m^+)-V(B_m^-)
+ \leq (1-c^n)4^n\leq3n^2 4^n h.
+\]
+The last inequality uses \(1-c^n\leq n(1-c)\) and
+\(1-c\leq3nh\). All volume comparisons are comparisons of finite
+rational box unions; the norm estimates use the finite Cauchy--Schwarz
+inequality.
+
+Define \(\omega_n\) by these nested intervals. For example
+\(m=k+3n^24^n+4n+4\) is more than enough for interval width at most
+\(2^{-k}\). The contained cube \([-1/n,1/n]^n\) and the bounding cube
+give positive numerical bounds
+\[
+ (2/n)^n\leq\omega_n\leq 2^n.
+\]
+The latter upper bound follows directly from
+\(B_m^+\subseteq[-1-h,1+h]^n\), hence
+\(V(B_m^+)\leq(2+2h)^n\); the binomial theorem gives the explicit
+vanishing error as \(h\) decreases. Rational dilation of the
+finite approximants proves that a ball of radius \(R>0\) has volume
+\(\omega_nR^n\). In dimension two the disk area calculation in the
+planar appendix identifies \(\omega_2=\pi\).
+
+\subsection{Precisely stated regularity data for outer volume}
+
+An \emph{effective outer-volume presentation} of a region consists of
+the following data, all supplied by fixed primitive recursive families.
+\begin{enumerate}
+\item Named nonnegative numbers \(V,P\), an integer bound \(M\geq1\)
+with \(V,P\leq M\), and a positive rational \(v_0\leq V\).
+\item Inner rational box unions \(X_k\) with
+\(0\leq V-V(X_k)\leq2^{-k}\).
+\item For rational \(t>0\) and precision \(k\), rational box unions
+\(Z_{t,k}\) which contain
+\(X_k+tB_k^-\), and a named outer volume \(W(t)\) with
+\(V(Z_{t,k})\leq W(t)+2^{-k}\).
+Here and below \(B_k^-\) abbreviates the unit-ball approximant at the
+mesh index \(m(k)=k+3n^24^n+4n+4\), so its volume error is at most
+\(2^{-k}\). A larger explicitly prescribed mesh index is also allowed.
+\item A primitive recursive modulus \(\nu\) such that
+\begin{equation}\label{eq:tube-modulus}
+ 0<t\leq2^{-\nu(j)}\quad\Longrightarrow\quad
+ W(t)\leq V+t(P+2^{-j}).
+\end{equation}
+\end{enumerate}
+The containments can be supplied as finite common-grid certificates.
+If an underlying geometric set \(S\) is also specified, the intended
+meaning is \(X_k\subseteq S\),
+\(W(t)=V(S+tB_1)\), and \(P\) is its boundary area or its outer
+Minkowski perimeter. The finite-data theorem only uses the displayed
+volume and containment requirements. In particular it never assumes an
+isoperimetric inequality in the input.
+
+Condition \eqref{eq:tube-modulus} supplies the rate of the one-sided
+derivative calculation. It is extra constructive regularity data. The
+report does not assert that an arbitrary classical \(C^1\) boundary,
+given without any effective presentation, automatically supplies it.
+
+\begin{theorem}[Sharp Euclidean isoperimetry with outer-volume data]
+\label{thm:euclidean-isoperimetry}
+For every presentation just specified, in every \(n\geq2\),
+\[
+ P\geq n\omega_n^{1/n}V^{(n-1)/n},
+ \qquad
+ P^n\geq n^n\omega_n V^{n-1}.
+\]
+\end{theorem}
+\begin{proof}
+First fix rational \(t>0\). Apply the finite box theorem to
+\(X_k,tB_k^-\) and use their inclusion in \(Z_{t,k}\).
+For sufficiently large prescribed \(k\), \(V(X_k)\geq v_0/2>0\).
+The preceding root estimates give, at every requested precision,
+\[
+ W(t)\geq\bigl(V^{1/n}+t\omega_n^{1/n}\bigr)^n.
+\]
+For clarity, this is a finite error calculation: if both input volume
+errors are at most \(\eta\), their root errors are at most
+\(\eta^{1/n}\); if all roots and their sums are bounded by \(D\),
+the error in their \(n\)-th powers is at most
+\(nD^{n-1}(1+t)\eta^{1/n}\), plus the outer-volume error \(\eta\).
+Use \(D=2(M+4^n+1)(1+t)\), for example, and choose a dyadic
+\(\eta\) making this expression smaller than the desired tolerance.
+All choices are primitive recursive in the numerical data and precision.
+
+Discarding the nonnegative terms of degree at least two in the binomial
+expansion now gives
+\[
+ W(t)\geq V+tn\omega_n^{1/n}V^{(n-1)/n}.
+\]
+For an arbitrary \(j\), choose the specific rational
+\(t=2^{-\nu(j)-1}>0\) and compare with
+\eqref{eq:tube-modulus}. Subtract \(V\), divide by this known positive
+rational, and obtain
+\[
+ n\omega_n^{1/n}V^{(n-1)/n}\leq P+2^{-j}.
+\]
+Because this holds at every precision, it is the asserted order
+inequality. Raising to the positive integer power \(n\) gives the
+second form. This proves the theorem without an unbounded selection of
+small radii or an unquantified limiting argument.
+\end{proof}
+
+There is also a particularly useful finite numerical trace of this proof.
+Suppose the box data have volumes \(a,b,c\), \(q^na\leq b\),
+\(X+tB\subseteq Z\), and
+\[
+ c\leq v+t(p+\varepsilon),\qquad 0\leq v-a\leq t\varepsilon.
+\]
+Then the rational box theorem gives
+\(c\geq a(1+tq)^n\geq a+ntaq\), and therefore
+\begin{equation}\label{eq:finite-isop-trace}
+ p+2\varepsilon\geq naq.
+\end{equation}
+This is a convenient certificate target for a proof checker.
+
+\subsection{Examples verifying the regularity contract}
+
+\paragraph{Balls and sharpness.}
+For a ball of radius \(R>0\), the parallel set is the ball of radius
+\(R+t\). Therefore
+\[
+ V=\omega_nR^n,\qquad P=n\omega_nR^{n-1},\qquad
+ W(t)=\omega_n(R+t)^n.
+\]
+For \(0<t\leq1\), the remaining terms of the binomial expansion are
+at most
+\[
+ t^2\,\omega_n\sum_{j=2}^n\binom nj(R+1)^{n-j}.
+\]
+A rational upper bound on this coefficient gives a modulus \(\nu\)
+by direct dyadic comparison. Inner and outer grid approximants were
+constructed above. Substitution gives
+\(P^n=n^n\omega_nV^{n-1}\), proving the sharpness of the universal
+constant. This establishes that balls attain equality; it does not claim
+a complete higher-dimensional classification of every equality set.
+
+\paragraph{A rational rectangular box.}
+For side lengths \(a_1,\ldots,a_n>0\), take
+\[
+ V=\prod_i a_i,\qquad P=2\sum_i\prod_{j\ne i}a_j.
+\]
+The Euclidean \(t\)-parallel set is contained in the rectangular box
+with sides \(a_i+2t\). Thus it is enough to take
+\(W(t)=\prod_i(a_i+2t)\), even though this is only an upper envelope
+for the actual Euclidean parallel volume. For \(0<t\leq1\),
+\[
+ W(t)\leq V+tP+t^2K,\qquad
+ K=\sum_{\substack{J\subseteq[n]\\|J|\geq2}}
+ 2^{|J|}\prod_{i\notin J}a_i.
+\]
+Choose \(\nu(j)\) so that \(K2^{-\nu(j)}\leq2^{-j}\).
+The inner box can be the box itself and the required outer boxes are
+explicit. This verifies the full contract without differential geometry.
+
+\paragraph{Every finite rational box union.}
+The same conclusion holds for a nonempty finite union \(X\) of rational
+boxes. Here \(P\) is the total area of its exposed coordinate faces,
+computed after subdividing into a common endpoint grid. Each face between
+an occupied and an unoccupied grid cell is counted once; shared faces of
+two occupied cells are not counted. This is a nonnegative rational number.
+
+For a direct finite proof of the tube bound, expand each box by
+\([-t,t]^n\) and take the union. This contains the Euclidean
+\(t\)-parallel set. If the original boxes have lower and upper endpoints
+\(a_{ji},b_{ji}\), finite inclusion--exclusion gives its exact volume
+\[
+ W(t)=\sum_{\varnothing\ne J\subseteq\{1,\ldots,m\}}
+ (-1)^{|J|+1}
+ \prod_{i=1}^n
+ \max\!\left(0,\min_{j\in J}b_{ji}-\max_{j\in J}a_{ji}+2t\right).
+\]
+Let \(\delta>0\) be the least nonzero distance between two distinct
+endpoints in the same coordinate, found by a finite rational scan, and
+put \(t_0=\min(1,\delta/4)\). Such a gap exists because every box has
+positive side lengths. For \(0<t\leq t_0\), every strictly negative
+gap in the displayed formula stays negative, while each zero gap
+contributes \(2t\). Thus this formula is one explicitly computable
+polynomial in \(t\) throughout that interval.
+
+Its constant coefficient is \(V(X)\), and its linear coefficient is
+exactly \(P\). To verify the latter assertion without a differential
+argument, first replace the boxes by their occupied common-grid cells;
+Minkowski addition distributes over the finite union, so the expanded
+union is unchanged. The expansion of one cell contributes its total
+face area to the linear coefficient. Two cells sharing a face of area
+\(F\) have an expanded intersection of volume \(2tF+O(t^2)\), so
+their inclusion--exclusion term cancels the two copies of that internal
+face. Any other nonempty intersection involves at least two independent
+zero coordinate gaps, and therefore has no constant or linear term.
+Intersections across a positive grid gap are empty for \(t\leq t_0\).
+These assertions follow by multiplying the interval-length factors in
+the same finite formula. Only the exposed faces remain.
+
+Write the resulting polynomial as
+\(W(t)=V(X)+tP+\sum_{j=2}^n c_jt^j\), and compute the rational
+\(K=\sum_{j=2}^n|c_j|\). Then
+\[
+ W(t)\leq V(X)+tP+Kt^2\qquad(0<t\leq t_0).
+\]
+For example, take an integer \(C\geq1+K+t_0^{-1}\) and set
+\(\nu(j)=j+C+2\). Since \(2^C\geq C\), this guarantees both
+\(2^{-\nu(j)}\leq t_0\) and
+\(K2^{-\nu(j)}\leq2^{-j}\).
+Use \(X_k=X\) for every \(k\), and take \(Z_{t,k}\) to be the
+explicit expanded box union, subdivided into a disjoint grid if needed.
+The four regularity conditions follow. Consequently the Euclidean
+isoperimetric inequality in Theorem~\ref{thm:euclidean-isoperimetry}
+is unconditional for these finite rational box unions with their
+exposed-face perimeter.
+
+\paragraph{The zero-volume case.}
+If a presentation comes with a proof \(V=0\), the polynomial inequality
+for \(n\geq2\) follows from \(P\geq0\). We did not decide whether
+an arbitrary named real volume is zero. The positive-volume theorem uses
+the supplied lower bound, as a constructive presentation of a nonempty
+open region normally does.
+
+\paragraph{What is and is not covered.}
+The theorem applies to effective smooth or polyhedral domains whenever
+the four listed approximation and tube requirements have been proved
+for their presentation. It is a fully proved implication from explicit
+geometric regularity data. A general construction of those data from
+arbitrary \(C^1\) charts, and equivalence with every classical definition
+of perimeter or Hausdorff measure, are separate tasks not concealed in
+this implication. The article's assertion for arbitrary sets with a
+liminf Minkowski boundary is not claimed in that unrestricted form here.
+

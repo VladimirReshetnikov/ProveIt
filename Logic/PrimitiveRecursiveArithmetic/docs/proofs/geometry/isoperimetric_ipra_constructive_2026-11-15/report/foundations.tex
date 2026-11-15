@@ -1,0 +1,131 @@
+\section{What an isoperimetric theorem means in intuitionistic PRA}
+\label{sec:foundations}
+
+The first-order language of \(\ipra\) has natural-number variables, symbols
+for primitive recursive functions, and intuitionistic logical operations.
+It does not have a sort containing all subsets of \(\mathbb R^n\), all
+continuous functions, or all real numbers. Accordingly, there are two
+precise kinds of result in this report.
+
+\begin{enumerate}
+\item A \emph{uniform finite theorem} has arbitrary natural-number inputs
+encoding rational numbers, finite lists, graphs, or boxes. Its hypotheses
+and conclusion are decidable comparisons, or explicitly displayed
+first-order formulas built from them.
+\item An \emph{effective geometric theorem schema} fixes primitive
+recursive names and moduli, possibly with additional numerical parameters.
+The theorem then concerns all those parameters and all requested
+precisions. A name is never evaluated by a supposed universal total
+evaluator for arbitrary primitive recursive programs.
+\end{enumerate}
+
+This distinction is essential. There is no primitive recursive universal
+evaluator for all primitive recursive programs: a diagonal program would
+contradict its universality. Fixing a family of programs, or accepting
+bounded computation traces, is legitimate; silently quantifying over
+arbitrary functions and evaluating them is not.
+
+\subsection{Coding and order}
+
+Encode an integer by its sign and magnitude and a rational by an integer
+numerator and a positive denominator. Comparisons use cross products;
+normalization by the Euclidean algorithm is optional. Finite lists have
+a length and bounded access functions. Products, sums, bit operations,
+bounded minimization, and finite sorting are primitive recursive.
+The displayed rational inequalities can therefore be cleared of positive
+denominators and read as integer inequalities.
+
+A named real \(x\) is a fixed primitive recursive rational sequence
+\(x[k]\) with a proved Cauchy estimate, for example
+\[
+ |x[j]-x[k]|\leq 2^{-j}+2^{-k}\quad(j,k\in\mathbb N).
+\]
+The intended value satisfies \(|x-x[k]|\leq2^{-k}\). This latter notation
+is explanatory shorthand: every argument can instead use the preceding
+rational comparisons. Define
+\[
+ x\leq y\quad:\Longleftrightarrow\quad
+ (\forall k)\ x[k]\leq y[k]+2^{1-k},
+\]
+after adopting synchronized error bounds. Equality means both orders,
+or an equivalent zero-distance condition. A positive real used as a
+denominator is accompanied by a rational lower bound \(0<c\leq x\).
+There is no case distinction between \(x=0\) and \(x>0\) for an arbitrary
+named real. All case distinctions below concern integers, rational numbers,
+or supplied positive-apartness evidence.
+
+If an argument proves \(x\leq y+2^{-k}\) for every \(k\), then it proves
+\(x\leq y\) by this definition of order. It does not invoke a compactness
+or least-upper-bound principle. The zero conclusions used in the equality
+proofs have the same form: a nonnegative term bounded by arbitrarily small
+dyadics is equal to zero in the representation.
+
+\subsection{Elementary numerical operations with bounds}
+
+For rational \(0\leq x\leq M\) and \(m\geq1\), bisection on
+\([0,M+1]\), comparing rational \(m\)-th powers, produces lower and
+upper bounds on \(x^{1/m}\). Bisection a prescribed number of times is
+primitive recursion. On nonnegative inputs,
+\[
+ |x^{1/m}-y^{1/m}|\leq |x-y|^{1/m};
+\]
+indeed \((a+b)^m\geq a^m+b^m\) for \(a,b\geq0\). For a named
+nonnegative input, first obtain a rational enclosure of width at most
+\(2^{-m(k+3)}\), truncating its lower endpoint at zero. Apply the
+rational bisection routine separately to its two endpoints, with endpoint
+root errors at most \(2^{-k-3}\). The displayed inequality bounds the
+gap between the exact endpoint roots by \(2^{-k-3}\), so the resulting
+rational interval gives the required root precision. Every branching
+comparison is rational; one never compares a rational midpoint with an
+arbitrary named real by a supposedly decidable order test.
+For \(0\leq x,y\leq B\),
+\[
+ |x^m-y^m|\leq mB^{m-1}|x-y|
+\]
+follows by factoring the difference. These two estimates give explicit
+precision budgets for every fractional power in the report.
+
+The reused planar appendix constructs \(\pi\), sine and cosine from
+dyadic regular polygons and positive quadratic radicals, with quantitative
+estimates. Alternatively, rational Taylor sums on a prescribed bounded
+interval, with the factorial tail bounded in advance, give the same
+primitive recursive names. Only those named constants and operations are
+needed here. No unrestricted theory of real analysis is assumed.
+
+\subsection{Why the finite inductions stay inside \(\ipra\)}
+
+\(\ipra\) permits induction for quantifier-free formulas. A bounded
+universal statement \(\forall i<B\,R(i)\), with primitive recursive
+decidable \(R\), is equivalent to the equation saying that the product
+of its Boolean characteristic values is one. Bounded existential
+statements are handled by a bounded sum or scan. Their elementary
+equivalences are themselves proved by quantifier-free induction.
+
+This observation is used with actual bounds, not as a substitute for them.
+The graph proof supplies bounds on masks and on the number of compression
+steps. The box proof supplies a decreasing fuel and a primitive recursive
+bound on every intermediate rational. The planar appendix bounds the
+number of subdivisions, Fourier terms, and radical approximations. A
+finite proof tree can consequently be traversed in postorder; induction
+asserts that every previously processed node has the claimed rational
+inequality. This is a bounded Boolean invariant.
+
+There is a further logical restriction. Proving a comparison about a
+\emph{particular} rational input by computation is not a proof of the
+uniform theorem. The human arguments below prove preservation of these
+invariants for arbitrary numerical inputs. The executable examples are
+regression checks for the formulas and algorithms; they are not the
+justification for their universality.
+
+\subsection{How to read the formalization status}
+
+The mathematical arguments here are non-formalized proofs of the stated
+finite theorems and effective schemas, with their arithmetic compilation
+explained. The accompanying Lean material is a development blueprint.
+No claim is made that the present archive contains completed Lean terms
+of all the relevant internal provability types. In particular, a Mathlib
+proof using \(\mathbb R\), choice, or general measure theory would not
+by itself establish a theorem in \(\ipra\). The repository audit in
+Section~\ref{sec:repository-audit} records the actual bridge that must
+be used after an internal derivation has been constructed.
+
