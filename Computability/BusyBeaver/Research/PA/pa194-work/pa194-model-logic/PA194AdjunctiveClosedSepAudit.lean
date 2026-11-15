@@ -1,0 +1,6 @@
+import PA194AdjunctiveClosedSep
+#print axioms PA194ModelLogic.adjunctiveClosedSepTheoryDelta
+#print axioms PA194ModelLogic.adjunctiveClosedSepTheory_class
+#print axioms PA194ModelLogic.adjunctiveClosedSep_refutation_target
+#print axioms PA194ModelLogic.adjunctiveClosedSep_provable_halts
+#print axioms PA194ModelLogic.adjunctiveClosedSep_consistent_of_nonhalting
