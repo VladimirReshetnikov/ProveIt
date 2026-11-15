@@ -1,0 +1,4 @@
+import PA194PAeqTripleSpecialization
+#print axioms PA194PAeqTripleSpecialization.paeqTripleGraph_defined
+#print axioms PA194PAeqTripleSpecialization.paeqTripleProof
+#print axioms PA194PAeqTripleSpecialization.paeqTripleProof_val
