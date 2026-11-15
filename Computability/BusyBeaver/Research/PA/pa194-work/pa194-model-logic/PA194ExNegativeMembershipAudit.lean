@@ -1,0 +1,11 @@
+import PA194ModelExNegativeMembership
+#print axioms PA194ModelLogic.targetExistsNeg_of_specialize
+#print axioms PA194ModelLogic.targetExistsNegMembershipLeft
+#print axioms PA194ModelLogic.targetExistsNegMembershipRight
+#print axioms PA194ModelLogic.targetExistsNegMembershipDiagonal
+#print axioms PA194ModelLogic.simRuleExs_negativeMembershipBoundLeft
+#print axioms PA194ModelLogic.simRuleExs_negativeMembershipBoundRight
+#print axioms PA194ModelLogic.simRuleExs_negativeMembershipBoundDiagonal_term
+#print axioms PA194ModelLogic.simRuleExs_negativeMembershipBoundLeft_term
+#print axioms PA194ModelLogic.simRuleExs_negativeMembershipBoundRight_term
+#print axioms PA194ModelLogic.simRuleExs_negativeMembershipAtom
