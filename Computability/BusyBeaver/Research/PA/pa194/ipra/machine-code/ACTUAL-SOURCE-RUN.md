@@ -41,3 +41,11 @@ their entire transitive source closure. The wider replay passed with exit 0 in `
 
 The repository-source replay also passed using this directory for the source
 arguments and the same retained staged roots.
+
+`PA194ActualSourceExit.exitsAt31` extends the model theorem through the
+zero branch after `4*r0+1` controller steps. Separately,
+`PA194ActualSourceRunSentence.nativeIPRA` proves the universally closed
+source-controller equality at site 27 after `4*r0` steps in the native iPRA
+theory. `check-actual-source-native.sh` rebuilds and audits both additions; its
+independent and repository-source staged replays passed. These statements do
+not establish physical-machine iteration or either consistency direction.
