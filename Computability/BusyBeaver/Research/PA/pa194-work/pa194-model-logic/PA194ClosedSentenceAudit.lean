@@ -1,0 +1,3 @@
+import PA194ClosedSentenceEnvironment
+#print axioms PA194ClosedEnvironment.sentenceTranslate_packets
+#print axioms PA194ClosedEnvironment.sentence_root_packet
