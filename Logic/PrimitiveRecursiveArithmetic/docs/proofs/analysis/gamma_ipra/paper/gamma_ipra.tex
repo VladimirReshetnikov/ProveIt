@@ -1,0 +1,74 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={The Gamma Function in Intuitionistic Primitive Recursive Arithmetic},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={Constructive finite-precision proofs and a Lean formalization roadmap}}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{RGB}{24,48,70}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Gamma in intuitionistic primitive recursive arithmetic}\fancyhead[R]{\small\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}\newcommand{\Q}{\mathbb Q}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
+\newcommand{\ipra}{\ensuremath{\mathsf{iPRA}}}\newcommand{\PR}{\ensuremath{\mathsf{PR}}}
+\newcommand{\abs}[1]{\left|#1\right|}\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\e}{\mathrm e}
+\newcommand{\Rea}{\operatorname{Re}}\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\Res}{\operatorname{Res}}\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\Rising}[2]{(#1)_{#2}}
+\title{\color{ink}The Gamma Function in\, Intuitionistic\, Primitive Recursive Arithmetic\\[0.5em]\large Finite products, effective integrals, functional identities,\newline derivatives, convexity, and asymptotic estimates}
+\author{A research development prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a constructive arithmetic development of a substantial collection of
+gamma-function statements appearing in the two requested reference articles.
+The main objects are fixed primitive recursive rational approximations with
+explicit error certificates. Euler's finite products, rather than an
+unrestricted real-completeness axiom, construct the function. We prove its
+integral representation, functional equation, factorial and half-integer
+values, entire reciprocal and simple poles, reflection and multiplication
+formulas, beta identities, differential and local power-series formulas,
+log-convexity and effective Bohr--Mollerup uniqueness, real Stirling estimates,
+and several further integral and special-value consequences. Each infinite
+notation has a finite-precision interpretation. The report distinguishes
+these human-readable arithmetic proofs from the accompanying Lean work:
+the executable definitions and elementary finite lemmas are checked, while
+the full deep embedding of the analytic estimates remains a specified
+formalization project. No completed Lean proof of the gamma theory is claimed.
+\end{abstract}
+\tableofcontents
+\newpage
+\input{sections/01_foundations}
+\input{sections/02_products}
+\input{sections/03_integrals}
+\input{sections/04_identities}
+\input{sections/05_differential}
+\input{sections/06_asymptotics}
+\input{sections/07_further}
+\input{sections/08_formalization}
+\input{sections/09_inventory}
+\begin{thebibliography}{99}
+\bibitem{wiki} Wikipedia contributors, \emph{Gamma function}, accessed 15 November 2026. \url{https://en.wikipedia.org/wiki/Gamma_function}. Used to delimit the requested coverage.
+\bibitem{mathworld} E. W. Weisstein, \emph{Gamma Function}, MathWorld, accessed 15 November 2026. \url{https://mathworld.wolfram.com/GammaFunction.html}. Used to delimit the requested coverage.
+\bibitem{dlmf} R. A. Askey and R. Roy, \emph{Gamma Function}, Chapter 5 of the NIST Digital Library of Mathematical Functions, especially \S\S5.2, 5.5--5.9, 5.11--5.12, and 5.15. \url{https://dlmf.nist.gov/5}. Formula comparison; the proofs in this report supply their own finite estimates.
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt: ConciseIPRA}, repository snapshot \texttt{94a4713736d281e1bfcd0b54e0acb6410136971c}, inspected 15 November 2026. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/94a4713736d281e1bfcd0b54e0acb6410136971c/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+\bibitem{bmrepo} \emph{A Finitary Constructive Bohr--Mollerup Theorem in Intuitionistic Primitive Recursive Arithmetic}, ProveIt draft \texttt{docs/drafts/bohr\_mollerup\_ipra\_2026-11-15.zip}, blob \texttt{55a972a2cd46f9b4a5edd70b79598cca3413ccd7}. Its finite strip brackets and representation discipline inform this development.
+\bibitem{stirrepo} \emph{Stirling's formula in intuitionistic primitive recursive arithmetic}, ProveIt draft \texttt{docs/drafts/stirling\_ipra.zip}, blob \texttt{6c6f8e17747d567b426b19f0cb2678cba303457f}. Its finite-difference method is extended here to positive real arguments.
+\end{thebibliography}
+\end{document}

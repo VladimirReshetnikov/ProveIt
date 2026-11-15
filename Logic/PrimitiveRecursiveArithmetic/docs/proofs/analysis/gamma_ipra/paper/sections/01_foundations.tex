@@ -1,0 +1,230 @@
+\section{The precise constructive claim}
+\label{sec:foundations}
+
+The setting is first-order intuitionistic primitive recursive arithmetic,
+with a symbol for each primitive recursive definition, its defining
+equations, successor separation and injectivity, intuitionistic predicate
+logic with equality, and induction for quantifier-free formulas. This is
+the system \code{PRAAx} in the inspected \code{ConciseIPRA/PR.lean}.
+Its arithmetic interpretation in the native concise calculus is supplied by
+\code{pra\_iff\_native} in \code{NativeBiInterpretation.lean}~\cite{repo}.
+We work in this ordinary presentation to make the mathematics readable.
+
+There is no sort of arbitrary real numbers or arbitrary real functions in
+this theory. Accordingly, an assertion about a real or complex argument
+means a theorem schema for \emph{each fixed primitive recursive name}, with
+the displayed numerical domain information and error certificates. The
+rational-argument estimates are uniform first-order statements about
+rational codes and precisions. Substituting a fixed name and its modulus
+gives the corresponding theorem about that name. We do not postulate a
+primitive recursive universal evaluator for all primitive recursive
+programs; no such evaluator exists.
+
+\subsection{Finite arithmetic and names}
+
+Integers are sign-and-magnitude codes, and a rational is a pair $(u,v)$
+with $u\in\Z$ and $v\in\N_{>0}$. Equality and order are cross-multiplication
+tests. Reduction by gcd is convenient but unnecessary. Finite lists,
+factorials, powers, sums, products, finite differences, and bounded search
+are primitive recursive. Complex rationals are pairs of rationals. For
+coding we use $\norm{x+iy}_1=|x|+|y|$; estimates written with the ordinary
+complex modulus can instead be checked after squaring, or transferred with
+$|z|\le\norm z_1\le2|z|$. Enlarge a disk radius by a factor of two when
+using the latter convention.
+
+\begin{definition}[Names and equality]
+A regular real name is a fixed primitive recursive map $a:\N\to\Q$
+satisfying
+\[
+ |a(p)-a(q)|\le2^{-p}+2^{-q}\qquad(p,q\in\N).
+\]
+A complex name is a pair of such names; alternatively use this inequality
+in the $1$-norm. Equality of names is
+\[
+ a\simeq b\quad\Longleftrightarrow\quad
+ \forall p\; |a(p+2)-b(p+2)|\le2^{-p}.
+\]
+An inequality $a\le b$ means the analogous comparison with error
+$2^{-p}$. Positive separation from zero is supplied as a rational number
+$d>0$ and the certificate $a\ge d$. Complex apartness is supplied as
+$|a|\ge d$; it is not inferred from $\neg(a=0)$.
+\end{definition}
+
+These equalities are equivalence relations. For example, to prove
+transitivity at precision $p$, use the hypotheses at precision $p+r$,
+regularity to compare stages, and take $r\ge4$; to remove a residual
+positive rational error, assume the desired rational inequality fails and
+choose a precision bounded by the binary length of its positive gap.
+This is a bounded rational argument, not excluded middle for equality of
+names. Equivalently, one may define equality by
+$\forall p,q\;|a(p)-b(q)|\le2^{-p}+2^{-q}$; the same refinement argument
+proves the equivalence of the conventions.
+
+A uniformly convergent finite expression $F_N$ is represented by
+\emph{substitution of a modulus}: if
+$|F_M-F_N|\le C/N$ for $M\ge N\ge N_0$, use
+$N(p)=N_0+\ceil C\,2^{p+4}$ and evaluate $F_{N(p)}$ to error
+$2^{-p-4}$. The output is a regular name after a fixed precision shift.
+This defines an actual primitive recursive function. It does not invoke
+a principle saying that an arbitrary Cauchy sequence has a limit.
+
+\subsection{How the displayed proofs become arithmetic proofs}
+
+Every finite sum identity is proved by induction on its finite length.
+Every denominator has a displayed positive lower bound. A bounded
+quantifier over a decidable predicate is represented by a finite Boolean
+product or sum, hence by a primitive recursive characteristic function.
+Thus the invariant to which induction is applied can be an equation
+between primitive recursive terms. When several variables or derivative
+orders are present, they remain parameters of this quantifier-free
+induction.
+
+There is one essential discipline. We never use induction on a statement
+such as ``two names are equal,'' which already contains an unbounded
+precision quantifier. We first fix the requested precision, replace every
+name in the finite calculation by a rational approximation, and allocate
+its error budget using the following elementary estimates:
+\begin{align}
+ \left|\sum_{j<s}a_j-\sum_{j<s}b_j\right|&\le s\varepsilon,
+ \label{eq:sum-budget}\\
+ \left|\prod_{j<s}a_j-\prod_{j<s}b_j\right|
+ &\le sM^{s-1}\varepsilon,
+ \quad |a_j|,|b_j|\le M,
+ \label{eq:product-budget}\\
+ |a^{-1}-b^{-1}|&\le\varepsilon/d^2,
+ \quad |a|,|b|\ge d.\label{eq:inverse-budget}
+\end{align}
+Here $|a_j-b_j|\le\varepsilon$. The product estimate follows by replacing
+one factor at a time, so its proof is a finite telescoping identity. When
+only $|a|\ge d$ is known, evaluate $b$ with error at most $d/2$ and use
+$2\varepsilon/d^2$ instead. Integer upper bounds for all constants suffice.
+For an integer $C\ge1$, the unnecessarily large shift $C+k+3$ makes
+$C2^{-(C+k+3)}<2^{-k}$, eliminating any need for logarithmic search.
+
+\begin{proposition}[Finite-precision reading]
+The proofs below give, for each fixed tuple of names and each requested
+precision, finite rational identities or inequalities with primitive
+recursive lengths, cutoffs, and precision shifts. Their induction
+invariants are quantifier-free. Consequently their displayed equality,
+inequality, derivative, and integral conclusions have derivations in
+$\ipra$ under the stated certificates.
+\end{proposition}
+
+\begin{proof}
+Expand rational operations into integer operations, replace finite sums
+and products by their recursors, and use
+\eqref{eq:sum-budget}--\eqref{eq:inverse-budget} after each arithmetic
+operation. All searches in the constructions have an explicit finite
+length. The only case distinctions are on integers or rational
+comparisons. A series tail is always replaced by a displayed bound before
+the target precision is chosen. An integral is always replaced by a
+finite sum before invoking a calculus identity. The specific invariants
+and moduli are collected in \cref{sec:formalization}; the estimates are
+proved in their mathematical sections. Finally discharge the precision
+parameter by intuitionistic universal introduction. This is a proof
+translation recipe for these concrete arguments, not a claim that
+primitive recursiveness alone implies provability of arbitrary statements.
+\end{proof}
+
+\subsection{Elementary functions with explicit algorithms}
+
+For $|w|\le B$, $B\ge1$ an integer, define $\exp w$ by the finite Taylor
+polynomials. If $m+1\ge2B$, the remaining terms have successive absolute
+ratios at most $1/2$, and therefore
+\begin{equation}
+ \left|\exp w-\sum_{j=0}^{m}\frac{w^j}{j!}\right|
+ \le\frac{2B^{m+1}}{(m+1)!}.\label{eq:exp-tail}
+\end{equation}
+For example $m=4B+p+6$ makes this less than $2^{-p}$: the term at
+$2B$ is at most $3^B$, since finite multinomial expansion and
+$\sum_{j\ge0}1/j!<3$ give $\sum B^j/j!\le3^B$, and the subsequent
+ratios are at most $1/2$. The bound $\sum1/j!<3$ itself follows from
+$j!\ge2^{j-1}$ for $j\ge1$. All these are finite inequalities with
+geometric remainder bounds. Finite binomial convolution proves
+$\exp(u+v)=\exp u\exp v$. In particular $\exp u\ne0$ with explicit
+lower bound $3^{-B}$ for $|u|\le B$.
+
+For $q>0$, put $v=(q-1)/(q+1)$. Define
+\begin{equation}
+ \log q=2\sum_{j\ge0}\frac{v^{2j+1}}{2j+1},\qquad
+ |\text{tail after }j<L|\le
+ \frac{2|v|^{2L+1}}{(2L+1)(1-v^2)}.\label{eq:log-alg}
+\end{equation}
+If $B^{-1}\le q\le B$, then $|v|\le1-1/B$ and
+$(1-1/B)^B\le1/2$ (use the finite binomial inequality on the
+reciprocal). Thus $L=B(p+2B+4)$ is a safe primitive recursive cutoff.
+Finite differentiation of these series gives $(\log q)'=1/q$,
+$(\exp q)'=\exp q$; the derivative tails are geometric on slightly
+smaller intervals. The product and inverse identities, and
+$\log(ab)=\log a+\log b$ for positive $a,b$, follow either by finite
+series convolution or by integrating their zero derivative on a compact
+interval. Rational or complex powers of a \emph{positive real} $t$ mean
+$t^z=\exp(z\log t)$. This convention has no complex branch ambiguity.
+
+Define sine and cosine by their Taylor series, equivalently by
+$(\exp(iw)-\exp(-iw))/(2i)$ and
+$(\exp(iw)+\exp(-iw))/2$. The addition identities follow from the
+exponential identity. Define
+$\pi=4\int_0^1(1+t^2)^{-1}\dd t$; the alternating arctangent sum has
+error at most $4/(2L+1)$, so $L=2^{p+4}$ suffices.
+For completeness the identification with trigonometric period is finite:
+write $a(u)=\int_0^u(1+t^2)^{-1}\dd t$, differentiate and check
+\[
+ \sin(2a(u))=\frac{2u}{1+u^2},\qquad
+ \cos(2a(u))=\frac{1-u^2}{1+u^2}.
+\]
+Both pairs have the same initial values and satisfy the same two first
+order equations. Uniqueness here requires no general differential
+equation theorem: the squared difference has zero derivative, and the
+finite fundamental theorem described below makes it zero. At $u=1$ this
+gives $\sin(\pi/2)=1$, $\cos(\pi/2)=0$ and then
+$\sin\pi=0$, $\cos\pi=-1$. The map $u\mapsto2a(u)$ has derivative
+at least one on $[0,1]$. The approximate-sign rational bisection described
+in the trigonometric section therefore constructs its inverse on
+$[0,\pi/2]$ with a prescribed rate. Positivity on the first quadrant
+follows from this parametrization. Concavity, $\sin''=-\sin\le0$, gives
+\begin{equation}
+ \sin v\ge2v/\pi\quad(0\le v\le\pi/2).\label{eq:sine-chord}
+\end{equation}
+These facts, addition and periodicity give the needed finite lists of
+trigonometric roots. The coarse rational bounds $2<\pi<4$ follow directly
+from the defining integral.
+
+\subsection{The finite calculus convention}
+\label{sec:finite-calculus}
+
+For a function on a rational interval $[a,b]$ with a supplied Lipschitz
+constant $L$, the left sum on $m$ equal subintervals has error at most
+$L(b-a)^2/m$ against any refinement. Use
+$m\ge2^{p+4}(1+\ceil{L(b-a)^2})$ and evaluate each summand with
+error $2^{-p-4}/(1+b-a)$. The resulting diagonal sequence defines
+$\int_a^b f$ as a name.
+
+The finite fundamental theorem follows by telescoping
+$F(t_{j+1})-F(t_j)$. If a derivative approximation satisfies
+\[
+ |F(t+h)-F(t)-h f(t)|\le C h^2,
+\]
+the sum of its errors is at most $C(b-a)^2/m$. This proves
+$\int_a^b f=F(b)-F(a)$ when such a quadratic remainder is supplied.
+It applies to our elementary expressions by the finite Taylor series
+bounds, and to the gamma expressions by the derivative estimates below.
+The product rule with its quadratic remainder proves integration by
+parts. Applying this telescoping argument to $F(\phi(t))$, with
+explicit bounds for $\phi'$ and its remainder, proves substitution.
+
+Multiple integrals over rectangles are iterated finite sums; changing
+their order is a finite rearrangement. We do not need a general
+multidimensional change-of-variables theorem: the beta--gamma identity
+below is proved by a one-dimensional shift and a finite-product limit.
+Singular edges and infinite tails are cut off first using the estimates
+in \cref{sec:integrals}. Thus no use is made of Fubini or dominated
+convergence for arbitrary functions.
+
+Derivatives of order $r$ mean local polynomial expansions with a
+primitive recursive remainder bound. Holomorphic means the corresponding
+complex power expansions on every certified disk; entire means that
+these bounds are available for every integer radius. Meromorphic means
+that on a certified neighborhood a fixed finite power of $(z-z_0)$ times
+the function has such an analytic presentation. These are constructive
+data, not tests for deciding analyticity of an arbitrary program.

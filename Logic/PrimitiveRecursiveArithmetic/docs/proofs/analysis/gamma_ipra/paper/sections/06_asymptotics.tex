@@ -1,0 +1,544 @@
+% LaTeX fragment.  Uses standard theorem/lemma/proof environments.
+% Prepared independently, with the finite telescoper in the repository's
+% Stirling draft checked and extended from integers to positive real names.
+\section{Real convexity, effective uniqueness, and gamma inequalities}
+\label{sec:real-convexity}
+
+Throughout this section an argument $x>0$ is supplied with rational bounds
+$0<a\le x\le b$.  Every real-valued expression denotes its fixed primitive
+recursive rational approximation procedure.  An assertion with arbitrary
+such procedures is a theorem schema, not quantification over an internally
+available universe of real functions.  Integral notation below abbreviates
+finite rational quadrature with the indicated error estimates.
+
+\subsection{Digamma estimates and strong log-convexity}
+
+Put $g(x)=\log\Gamma(x)$ and $\psi(x)=g'(x)$.  Differentiating the finite
+Euler approximants gives
+\[
+ g_N'(x)=\log N-\sum_{k=0}^{N}\frac1{x+k},\qquad
+ g_N''(x)=\sum_{k=0}^{N}\frac1{(x+k)^2}.
+\]
+The product construction supplies their uniform convergence on $[a,b]$.
+For the second derivatives a sufficient tail estimate is
+\[
+ 0\le\sum_{k=N+1}^{M}\frac1{(x+k)^2}
+ \le\int_N^M\frac{dt}{(x+t)^2}\le\frac1{x+N}.
+\]
+Consequently
+\begin{equation}\label{eq:psi-prime-positive}
+ \psi'(x)=\sum_{k=0}^{\infty}\frac1{(x+k)^2},\qquad
+ \frac1{b^2}\le\psi'(x)\le\frac1{a^2}+\frac1a
+ \quad(a\le x\le b).
+\end{equation}
+To justify differentiation without a general interchange theorem, apply
+the finite fundamental theorem to $g_N'$ on a rational segment, replace its
+second derivative by a partial sum, and use the displayed uniform tail.
+The resulting finite increment identities have an error tending to zero
+at the displayed primitive recursive rate.  The same argument for $g_N$
+identifies its first derivative.
+
+For completeness, comparison of $t\mapsto(x+t)^{-1}$ with its upper and
+lower rectangle sums gives
+\[
+ \log x-\frac1x\le\psi(x)\le\log x.
+\]
+The upper bound can be sharpened.  Convexity of this reciprocal function
+gives, on each unit interval, that its integral is at most its trapezoidal
+sum.  Summing and substituting in the formula for $g_N'$ yields
+\begin{equation}\label{eq:digamma-elementary-bounds}
+ \log x-\frac1x\le\psi(x)\le\log x-\frac1{2x}.
+\end{equation}
+All discarded terminal terms are bounded by rational multiples of $1/N$;
+for example $0\le\log(1+x/N)\le b/N$.
+
+Let $a\le x,y\le b$ and $0\le s\le1$.  The function
+$g(t)-t^2/(2b^2)$ has nonnegative second derivative.  Integrating its
+nondecreasing first derivative on the two sides of a division point proves
+the secant inequality, giving
+\begin{equation}\label{eq:strong-log-convexity}
+ g((1-s)x+sy)
+ \le(1-s)g(x)+sg(y)-\frac{s(1-s)(x-y)^2}{2b^2}.
+\end{equation}
+One can derive the same conclusion directly by adding finite interval
+increments; no mean-value point is chosen.  Exponentiating proves
+log-convexity of gamma.  The explicit last term proves strictness whenever
+$s$, $1-s$, and $|x-y|$ have positive rational lower bounds.
+
+In particular gamma is strictly convex as well: differentiating once more
+gives $\Gamma''=\Gamma(\psi^2+\psi')>0$.  This conclusion has an explicit
+positive gap on each interval $[a,b]$, using a positive lower bound for
+$\Gamma$ there and \eqref{eq:psi-prime-positive}.
+
+\subsection{A Bohr--Mollerup squeeze which needs no floor of a real}
+
+Let $F$ be a fixed positive primitive recursive presentation satisfying
+$F(1)=1$, $F(x+1)=xF(x)$, and log-convexity, with local positive bounds so
+that $f=\log F$ is defined.  Choose an integer $B\ge\max(1,b)$ and an
+integer $n\ge2$.  Convexity, first using the points $n-1,n,n+x$, and then
+the points $n,n+x,n+B$, gives
+\[
+ f(n)+x\log(n-1)
+ \le f(n+x)
+ \le f(n)+\frac{x}{B}\sum_{j=0}^{B-1}\log(n+j)
+ \le f(n)+x\log(n+B-1).
+\]
+Here $f(n)=\log((n-1)!)$, and the recurrence gives
+$f(n+x)=f(x)+\sum_{k=0}^{n-1}\log(x+k)$.  Therefore $f(x)$ belongs to
+the explicit interval
+\begin{align*}
+ L_n(x)&=\log((n-1)!)+x\log(n-1)
+              -\sum_{k=0}^{n-1}\log(x+k),\\
+ U_n(x)&=\log((n-1)!)+x\log(n+B-1)
+              -\sum_{k=0}^{n-1}\log(x+k).
+\end{align*}
+Its width satisfies
+\begin{equation}\label{eq:bm-width-general}
+ 0\le U_n(x)-L_n(x)
+ =x\log\left(1+\frac{B}{n-1}\right)
+ \le\frac{B^2}{n-1}.
+\end{equation}
+The already constructed gamma presentation satisfies the same hypotheses,
+so both $f(x)$ and $g(x)$ lie in this interval.  Choosing
+$n=1+B^2 2^{p+2}$ proves $|f(x)-g(x)|\le2^{-p-2}$, apart from elementary
+function approximation errors which are assigned the remaining budget.
+Thus $F(x)=\Gamma(x)$ as equality of names.  Exponentiation is legitimate
+with the explicit local bound supplied either in the presentation of $F$
+or by the displayed squeeze at $n=2$.
+
+This proof uses only two convexity instances and $n+B$ recurrence instances
+at each requested precision.  It does not find the integer part of an
+arbitrary real, nor use a completeness principle for arbitrary functions.
+For rational arguments, log-convexity may equivalently be supplied by the
+integer-power inequality
+$F((u x+v y)/(u+v))^{u+v}\le F(x)^uF(y)^v$.
+
+\subsection{Wendel, Gautschi, and effective gamma-ratio asymptotics}
+
+For $x>0$ and $0\le s\le1$, log-convexity between $x$ and $x+1$ gives
+$\Gamma(x+s)\le x^s\Gamma(x)$.  Applying the same inequality to $x+s$
+with increment $1-s$ gives
+$x\Gamma(x)\le(x+s)^{1-s}\Gamma(x+s)$.  Thus
+\begin{equation}\label{eq:wendel-constructive}
+ \left(\frac{x}{x+s}\right)^{1-s}
+ \le\frac{\Gamma(x+s)}{x^s\Gamma(x)}\le1.
+\end{equation}
+For $0<s<1$ both inequalities are strict, with gaps obtainable from
+\eqref{eq:strong-log-convexity}.  This also gives Gautschi's inequalities
+\begin{equation}\label{eq:gautschi-constructive}
+ x^{1-s}<\frac{\Gamma(x+1)}{\Gamma(x+s)}<(x+1)^{1-s}
+ \qquad(0<s<1).
+\end{equation}
+Indeed the first follows from the preceding upper bound for
+$\Gamma(x+s)$; the preceding second application gives the stronger upper
+bound $(x+s)^{1-s}<(x+1)^{1-s}$.
+
+Writing the middle expression of \eqref{eq:wendel-constructive} as $Q$,
+\[
+ -\frac{s(1-s)}x\le\log Q\le0,
+ \qquad 0\le1-Q\le\frac{s(1-s)}x\le\frac1{4x}.
+\]
+This is an explicit uniform gamma-ratio asymptotic, not just a limit
+assertion.  More generally, let $|\alpha|,|\beta|\le A$ with $A\ge1$ and
+$x\ge2A+1$.  On the segment joining $x+\alpha$ to $x+\beta$,
+\eqref{eq:digamma-elementary-bounds} implies
+\[
+ |\psi(x+t)-\log x|
+ \le\frac{2(A+1)}x\quad(|t|\le A).
+\]
+Integration over this finite segment gives
+\begin{equation}\label{eq:general-gamma-ratio}
+ \left|\log\frac{\Gamma(x+\alpha)}{\Gamma(x+\beta)x^{\alpha-\beta}}\right|
+ \le\frac{4A(A+1)}x.
+\end{equation}
+If $C=4A(A+1)$ and $x\ge\max(2A+1,C)$, the relative error is at most
+$2C/x$, since $|e^u-1|\le2|u|$ for $|u|\le1$.
+
+\section{Critical points, including every negative interval}
+\label{sec:gamma-critical-points}
+
+The standard harmonic approximation to Euler's constant satisfies
+\[
+ H_N-\log(N+1)\le\gamma\le H_N-\log N,
+\]
+with bracket width at most $1/N$.  The elementary series
+$\log2=2\sum_{j\ge0}3^{-2j-1}/(2j+1)$ gives
+$2/3<\log2<3/4$.  Taking $N=1$ in the lower bracket and $N=4$ in the
+upper bracket proves
+\[
+ \frac14<\gamma<\frac34.
+\]
+The digamma series therefore gives
+$\psi(1)=-\gamma<-1/4$ and $\psi(2)=1-\gamma>1/4$.
+Moreover $1/4\le\psi'(x)\le2$ on $[1,2]$.
+
+Here is an explicit construction of the zero, avoiding a decision whether
+an arbitrary computable real is positive.  Maintain rational endpoints
+$l,u$ with $\psi(l)\le0\le\psi(u)$ and let $w=u-l$, $m=(l+u)/2$.
+Compute a rational $q$ with $|q-\psi(m)|\le\varepsilon=w/64$.
+If $q>\varepsilon$, replace $u$ by $m$; if $q<-\varepsilon$, replace $l$
+by $m$.  In the remaining, decidable rational case, $|\psi(m)|\le2\varepsilon$.
+The derivative lower bound shows that the interval
+\[
+ [l,u]\cap[m-8\varepsilon,m+8\varepsilon]
+\]
+still has the required endpoint signs.  Replace $[l,u]$ by that interval.
+The width decreases by at least a factor of two each time.  All tests
+are rational, all approximations have predetermined error budgets, and
+iteration is primitive recursion.  The nested midpoints consequently give
+a primitive recursive name $\alpha$ with $1<\alpha<2$ and $\psi(\alpha)=0$.
+For the last equality, the bound $\psi'\le2$ bounds the value error by
+twice the interval width.  Strict monotonicity of $\psi$ proves uniqueness.
+Since $\Gamma'=\Gamma\psi$ and gamma is positive, this point is its unique
+global minimum on the positive half-line.  To make this last conclusion
+without real-order trichotomy, use the integrated tangent inequality
+\[
+ g(y)-g(v)-g'(v)(y-v)
+ =(y-v)^2\int_0^1(1-t)g''(v+t(y-v))\,dt
+ \ge\frac{(y-v)^2}{2b^2}
+\]
+on any positive bounded interval containing $y$ and $v$.  Substitute
+$v=\alpha$ and $g'(\alpha)=0$.  The explicit square gives strictness when
+$|y-\alpha|$ has a positive rational lower bound.
+
+The same construction works on every interval $(-n-1,-n)$, $n\ge0$.
+For $x$ in that interval, recurrence gives
+\begin{equation}\label{eq:negative-digamma}
+ \psi(x)=\psi(x+n+2)-\sum_{k=0}^{n+1}\frac1{x+k},\qquad
+ \psi'(x)=\psi'(x+n+2)+\sum_{k=0}^{n+1}\frac1{(x+k)^2}>\frac14.
+\end{equation}
+Take $\delta=1/(4(n+2))$, $l=-n-1+\delta$, and $u=-n-\delta$.
+At $l$ the singular term is $-1/\delta$ and at $u$ it is $+1/\delta$.
+All other reciprocal terms have absolute value at most $2$; the remaining
+digamma term has absolute value at most $1$.  Therefore
+\[
+ \psi(l)\le-1/\delta+(2n+3)<0,
+ \qquad\psi(u)\ge1/\delta-(2n+3)>0.
+\]
+On $[l,u]$, an upper derivative bound is $2+(n+2)\delta^{-2}$.
+The preceding rational algorithm constructs the unique zero $\alpha_n$.
+The sign of gamma on the whole interval is $(-1)^{n+1}$, by its recurrence
+to the positive interval $(1,2)$.  Thus $\alpha_n$ is a local maximum on
+each negative-sign interval and a local minimum on each positive-sign
+interval.  In fact these are extrema on the entire indicated intervals:
+apply the same tangent inequality to $\log|\Gamma|$, whose second
+derivative is $\psi'>0$, and then use the fixed sign of gamma.  This
+again avoids splitting an arbitrary real according to its order relative
+to the critical point.  No other real critical points exist away from
+the poles.
+
+\section{Stirling's formula from finite differences}
+\label{sec:stirling-differences}
+
+Define
+\[
+ A(x)=\log\Gamma(x)-(x-\tfrac12)\log x+x,\qquad
+ C=\tfrac12\log(2\pi).
+\]
+The recurrence for gamma gives the exact finite-difference identity
+\[
+ d(x):=A(x)-A(x+1)
+ =(x+\tfrac12)\log(1+1/x)-1.
+\]
+With $z=(2x+1)^{-1}\in(0,1)$, the finite geometric expansion for the
+logarithm gives
+\begin{equation}\label{eq:stirling-d-series}
+ d(x)=\sum_{j=1}^{\infty}\frac{z^{2j}}{2j+1}.
+\end{equation}
+After $j=K$, the error is at most
+$z^{2K+2}/((2K+3)(1-z^2))$.  In particular, retaining the improvement in
+the coefficient at $j=2$,
+\begin{equation}\label{eq:stirling-d-telescoper}
+ \frac1{3(2x+1)^2}\le d(x)
+ \le\frac1{12x(x+1)}-\frac2{15(2x+1)^4}.
+\end{equation}
+The upper main term is the difference $1/(12x)-1/(12(x+1))$.
+Hence for integers $M>N\ge1$,
+\[
+ 0\le A(N)-A(M)\le\frac1{12N}-\frac1{12M}.
+\]
+This is a finite sum of inequalities.  It constructs, for example by
+sampling $N=2^{p+4}$, a regular primitive recursive name $c$ with
+$|A(N)-c|\le1/(12N)$.  No arbitrary monotone-convergence theorem is used.
+
+From \eqref{eq:digamma-elementary-bounds},
+\[
+ -\frac1{2x}\le A'(x)=\psi(x)-\log x+\frac1{2x}\le0.
+\]
+Thus for $0\le v\le b$, $|A(N+v)-A(N)|\le b/(2N)$.  In particular the
+same $c$ is approached along every fixed translated sequence $N+x$,
+with an explicit rational rate.
+
+The duplication formula, proved independently from the finite gamma
+products and reflection, gives
+\begin{equation}\label{eq:constant-by-duplication}
+ A(x)+A(x+\tfrac12)-A(2x)
+ =C+\tfrac12-x\log(1+1/(2x)).
+\end{equation}
+The last two terms lie between $0$ and $1/(8x)$, by
+$u-u^2/2\le\log(1+u)\le u$.  Setting $x=N$ and using the preceding
+Cauchy estimates proves $|c-C|\le7/(12N)$ for every $N$.  Substituting a
+sufficiently large explicit power of two for $N$ proves equality of the
+two names.  This determines the constant without choosing a subsequence
+or an unknown limiting value.
+
+We now have
+\begin{equation}\label{eq:stirling-positive-remainder}
+ R(x):=A(x)-C=\sum_{k=0}^{\infty}d(x+k),\qquad
+ 0\le\sum_{k=N}^{\infty}d(x+k)\le\frac1{12(x+N)}.
+\end{equation}
+The equality means that for a requested precision the two finite
+expressions differ by the displayed tail.  Keeping the first positive
+margin in \eqref{eq:stirling-d-telescoper} proves
+\begin{equation}\label{eq:stirling-first-bound}
+ \frac1{3(2x+1)^2}\le R(x)
+ \le\frac1{12x}-\frac2{15(2x+1)^4}<\frac1{12x}
+ \qquad(x>0).
+\end{equation}
+In particular
+\begin{equation}\label{eq:stirling-multiplicative-bound}
+ 1<\frac{\Gamma(x)}{\sqrt{2\pi}\,x^{x-1/2}e^{-x}}<e^{1/(12x)}.
+\end{equation}
+For $x\ge1$, the relative error is at most $1/(6x)$, since
+$e^u-1\le2u$ when $0\le u\le1$.
+
+The sharper Robbins lower bound also follows by rational telescoping.
+For $x\ge1$ put
+\[
+ q(x)=\frac1{12x+1},\qquad
+ \lambda(x)=\frac{24x-23}
+ {3(2x+1)^2(12x+1)(12x+13)}>0.
+\]
+The polynomial identity
+$(12x+1)(12x+13)-36(2x+1)^2=24x-23$ gives
+$d(x)\ge q(x)-q(x+1)+\lambda(x)$.  Summing finitely and using
+\eqref{eq:stirling-positive-remainder} proves
+\begin{equation}\label{eq:robbins-real}
+ \frac1{12x+1}+\lambda(x)\le R(x)
+ \le\frac1{12x}-\frac2{15(2x+1)^4}\qquad(x\ge1).
+\end{equation}
+Taking $x=n$ and using $\Gamma(n+1)=n!$ gives the usual strict factorial
+Robbins inequalities.  This argument is the real-variable extension of
+the checked finite telescoper in the repository's Stirling draft.
+
+\section{All orders of Stirling's expansion with the sharp signed bound}
+\label{sec:all-order-stirling}
+
+The order $m\ge1$ may be fixed externally; the following is then a family
+of arithmetic theorems with primitive recursive precision parameters.
+Bernoulli polynomials have rational coefficients and are defined without
+any analytic generating function: $B_0(t)=1$, $B_r'=rB_{r-1}$, and
+$\int_0^1 B_r(t)\,dt=0$ for $r\ge1$.  Antidifferentiating a polynomial
+and subtracting its mean is a finite rational algorithm.  Write
+$b_r=B_r(0)$.  Uniqueness of these elementary polynomial conditions gives
+\[
+ B_r(1-t)=(-1)^r B_r(t),\qquad
+ B_r(1)=B_r(0)\quad(r\ge2),\qquad b_{2j+1}=0\quad(j\ge1).
+\]
+For example $B_1=t-1/2$, $B_2=t^2-t+1/6$,
+$B_4=t^4-2t^3+t^2-1/30$, and $b_6=1/42$.
+
+\subsection{Finite Euler--Maclaurin, derived rather than assumed}
+
+On $[k,k+1]$ set $\widetilde B_r(t)=B_r(t-k)$, using the common endpoint
+value for even $r$.  Integration by parts on that interval gives
+\[
+ \int_k^{k+1}\widetilde B_1(t)f'(t)\,dt
+ =\frac{f(k)+f(k+1)}2-\int_k^{k+1}f(t)\,dt.
+\]
+Sum over $k=0,\ldots,N-1$ and integrate the last term successively using
+$B_r'=rB_{r-1}$.  Odd endpoint contributions vanish and even endpoint
+contributions telescope.  One obtains the finite identity
+\begin{align}
+ \sum_{k=0}^{N}f(k)
+ ={}&\int_0^N f(t)\,dt+\frac{f(0)+f(N)}2\notag\\
+ &+\sum_{r=1}^{m}\frac{b_{2r}}{(2r)!}
+       \bigl(f^{(2r-1)}(N)-f^{(2r-1)}(0)\bigr)
+ -\frac1{(2m)!}\int_0^N\widetilde B_{2m}(t)f^{(2m)}(t)\,dt.
+ \label{eq:finite-em-gamma}
+\end{align}
+For the functions used here, integration by parts itself follows by
+finite telescoping product increments; derivatives and continuity bounds
+are explicit rational functions on a compact interval.  Thus this
+identity introduces no nonconstructive calculus principle.
+
+Apply \eqref{eq:finite-em-gamma} to $f(t)=(x+t)^{-1}$ and use the finite
+Euler expression for $\psi$.  Since
+$f^{(j)}(t)=(-1)^j j!(x+t)^{-j-1}$, all terminal errors vanish with
+explicit bounds.  The resulting identity is
+\begin{equation}\label{eq:psi-em-exact}
+ \psi(x)=\log x-\frac1{2x}
+ -\sum_{r=1}^{m}\frac{b_{2r}}{2r x^{2r}}
+ +\int_0^\infty\frac{\widetilde B_{2m}(t)}{(x+t)^{2m+1}}\,dt.
+\end{equation}
+If $M_m$ is the sum of the absolute values of the coefficients of
+$B_{2m}$, the last integral after a cutoff $T$ has tail at most
+$M_m/(2m(x+T)^{2m})$.  All terminal logarithms are bounded using
+$\log(1+x/N)\le b/N$.
+
+Integrate \eqref{eq:psi-em-exact} from $x$ to a finite $Y$, use
+$A(Y)-C\to0$ from the preceding explicit Stirling bound, and regroup the
+finite double sums.  Integrating the rational kernel gives
+\begin{equation}\label{eq:loggamma-em-exact}
+ R(x)=\sum_{r=1}^{m}\frac{b_{2r}}{2r(2r-1)x^{2r-1}}
+ -\frac1{2m}\int_0^\infty
+             \frac{\widetilde B_{2m}(t)}{(x+t)^{2m}}\,dt.
+\end{equation}
+The omitted rectangular tails in this double-sum argument are at most
+$M_m/[2m(2m-1)(x+T)^{2m-1}]$ and
+$M_m/[2m(2m-1)Y^{2m-1}]$, respectively.  Thus a general Fubini theorem
+is unnecessary.
+
+\subsection{The Bernoulli sign and a finite reverse-Chebyshev argument}
+
+We prove the elementary shape fact needed for the sharp remainder.
+On $0<t<1/2$, $B_1(t)<0$.  For $j\ge1$ the polynomial $B_{2j+1}$ vanishes
+at $0$ and $1/2$, and
+$B_{2j+1}''=(2j+1)(2j)B_{2j-1}$.  Induction therefore proves
+\[
+ (-1)^jB_{2j-1}(t)>0\qquad(0<t<1/2).
+\]
+Indeed a function with positive second derivative and zero endpoints is
+negative between them, and with negative second derivative it is
+positive; for these polynomials this statement follows from the finite
+secant inequality proved by integrating derivative increments.
+
+It follows that
+\[
+ H_m(t)=(-1)^m(B_{2m}(t)-b_{2m})
+\]
+is symmetric about $1/2$, is zero at $0$ and $1$, is positive in between,
+and is strictly increasing on $[0,1/2]$.  Its mean is
+\[
+ \int_0^1H_m(t)\,dt=(-1)^{m+1}b_{2m}=|b_{2m}|>0.
+\]
+This also proves the alternating signs of the nonzero even Bernoulli
+numbers.
+
+Fix $A>0$ and $q>0$, and put $w(t)=(A+t)^{-q}$.  The paired weight
+$W(t)=w(t)+w(1-t)$ is decreasing for $0\le t\le1/2$, since
+\[
+ W'(t)=-q(A+t)^{-q-1}+q(A+1-t)^{-q-1}\le0.
+\]
+For an increasing function $H$ and decreasing function $W$ on an interval
+of length $L$, the finite double-sum identity for
+$(H(u)-H(v))(W(u)-W(v))\le0$ gives
+\[
+ \int HW\le L^{-1}\left(\int H\right)\left(\int W\right).
+\]
+Passing from the finite sums uses only their uniform moduli.  Apply this
+on $[0,1/2]$ to $H_m$ and the paired weight.  Symmetry yields
+\begin{equation}\label{eq:bernoulli-weight-bound}
+ 0<\int_0^1H_m(t)(A+t)^{-q}\,dt
+ <|b_{2m}|\int_0^1(A+t)^{-q}\,dt.
+\end{equation}
+Strictness has constructive content: $H_m$ is strictly increasing and
+$W$ strictly decreasing on the interior, so two disjoint rational
+subintervals give an explicit negative margin in the double-sum
+identity.  Their rational centers can be fixed, for example at $1/8$
+and $3/8$, and continuity bounds shrink the intervals to preserve the
+strict gap.  The coefficients of $H_m$ and bounds for $A$ compute the
+required widths; no unbounded search is involved.
+For an explicit weight gap, if $A\le B$ and $t\in[1/8,3/8]$, then
+\[
+ -W'(t)\ge\frac{q(q+1)}{4(B+1)^{q+2}},\qquad
+ W(1/8)-W(3/8)\ge\frac{q(q+1)}{16(B+1)^{q+2}}.
+\]
+The other gap, $H_m(3/8)-H_m(1/8)>0$, is an exactly computed rational.
+
+Subtract the first $m-1$ correction terms in
+\eqref{eq:loggamma-em-exact}.  Since
+$\int_0^\infty(x+t)^{-2m}\,dt=x^{1-2m}/(2m-1)$, the result is
+\begin{equation}\label{eq:stirling-remainder-positive-integral}
+ E_m(x):=R(x)-\sum_{r=1}^{m-1}
+            \frac{b_{2r}}{2r(2r-1)x^{2r-1}}
+ =\frac{(-1)^{m+1}}{2m}
+       \int_0^\infty\frac{H_m(\{t\})}{(x+t)^{2m}}\,dt.
+\end{equation}
+Here $H_m(\{t\})$ is implemented piecewise on explicitly indexed unit
+intervals; computing the floor of an arbitrary real is not required.
+Apply \eqref{eq:bernoulli-weight-bound} on each unit interval and add the
+finite inequalities.  The integral tail is explicit.  Keeping the
+positive gap from the first interval proves the sharp signed bound
+\begin{equation}\label{eq:sharp-stirling-remainder}
+ \boxed{\quad
+ 0<(-1)^{m+1}E_m(x)
+ <\frac{|b_{2m}|}{2m(2m-1)x^{2m-1}}
+ \quad(x>0).\quad}
+\end{equation}
+Consequently
+\[
+ \log\Gamma(x)\sim
+ (x-\tfrac12)\log x-x+\tfrac12\log(2\pi)
+ +\frac1{12x}-\frac1{360x^3}+\frac1{1260x^5}-\cdots,
+\]
+where the meaning of every truncation is precisely
+\eqref{eq:sharp-stirling-remainder}.  For example,
+\[
+ \frac1{12x}-\frac1{360x^3}<R(x)<\frac1{12x},\qquad
+ 0<R(x)-\frac1{12x}+\frac1{360x^3}<\frac1{1260x^5}.
+\]
+
+The same argument applied to \eqref{eq:psi-em-exact} gives, if
+\[
+ D_m(x)=\psi(x)-\log x+\frac1{2x}
+             +\sum_{r=1}^{m-1}\frac{b_{2r}}{2r x^{2r}},
+\]
+the derivative expansion with the sharp signed bound
+\begin{equation}\label{eq:sharp-digamma-remainder}
+ 0<(-1)^mD_m(x)<\frac{|b_{2m}|}{2m x^{2m}}.
+\end{equation}
+
+Exponentiating finite truncations gives the multiplicative Stirling
+expansion.  Its rational coefficients are determined primitively by
+$c_0=1$ and
+\[
+ n c_n=\sum_{j=1}^{n}j\ell_jc_{n-j},\qquad
+ \ell_{2r-1}=\frac{b_{2r}}{2r(2r-1)},\quad \ell_{2r}=0.
+\]
+Thus the first terms are
+\[
+ \frac{\Gamma(x)}{\sqrt{2\pi}\,x^{x-1/2}e^{-x}}
+ \sim1+\frac1{12x}+\frac1{288x^2}
+          -\frac{139}{51840x^3}-\frac{571}{2488320x^4}+\cdots.
+\]
+For any requested fixed truncation order, choose a log-gamma truncation
+with error of higher degree, substitute its finite polynomial into the
+finite exponential sum, and bound the two remainders with
+$|e^u-e^v|\le e^{\max(|u|,|v|)}|u-v|$ and the geometric majorant for the
+exponential Taylor tail.  This is an explicit finite procedure for the
+error constant, not an appeal to closure properties of an undefined
+asymptotic notation.
+
+\subsection{Primitive recursive quadrature budgets}
+
+Here are sufficient budgets for every improper integral introduced in
+this section.  If $P(t)$ is one of the fixed periodic Bernoulli
+polynomials, let $M$ be the sum of its absolute coefficient values and
+$L$ the sum of the absolute coefficient values of its derivative.  For
+$q\ge2$ and $x\ge a>0$, the function
+$P(\{t\})(x+t)^{-q}$ is globally Lipschitz on $[0,T]$ with constant
+\[
+ K=L a^{-q}+qM a^{-q-1}.
+\]
+The pieces join continuously because the endpoint values of the even
+Bernoulli polynomials agree.  A left sum with $J$ equal subintervals has
+error at most $KT^2/(2J)$.  Its tail after $T\ge1$ is at most
+$M/((q-1)(x+T)^{q-1})\le M/T$.
+For target error $2^{-p}$ one may therefore take
+\[
+ T=\max(1,\lceil 2^{p+3}M\rceil),\qquad
+ J=\max(1,\lceil 2^{p+3}KT^2\rceil),
+\]
+and allocate the remaining error to approximating $x$ in the summands.
+The floor symbols in the notation are computed only for rational mesh
+points, by integer division.  All loops are bounded, all coefficients
+are rational, and all required sums and products are primitive recursive.
+For each fixed derivative or asymptotic order, these give the explicit
+finite rational identities and inequalities to be formalized inside iPRA.
+
+% Sources for root's bibliography:
+% NIST DLMF §§5.5(iv), 5.6(i), 5.11(i)-(iii).
+% Repository commit 94a4713736d281e1bfcd0b54e0acb6410136971c:
+% bohr_mollerup blob 55a972a2cd46f9b4a5edd70b79598cca3413ccd7;
+% stirling blob 6c6f8e17747d567b426b19f0cb2678cba303457f.

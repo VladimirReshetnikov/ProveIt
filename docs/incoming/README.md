@@ -165,7 +165,9 @@ Two further archives, `apery_ipra.zip` and `faltings_ipra.zip`, were committed t
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming` in `12ab5b00c1` on 15 November 2026.
 They were placed the same way, under `diophantine-number-theory/`. Their 9 members matched
 by `.gitignore` are not placed. Both archives are removed from that directory, and its
-`.gitkeep` is kept.
+`.gitkeep` is kept. A third archive there, `gamma_ipra.zip` (arrival `7e8e6aad97`), was
+placed the same way, under `analysis/`. Its one ignored `SHA256SUMS.txt` is not placed,
+and the archive is removed.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

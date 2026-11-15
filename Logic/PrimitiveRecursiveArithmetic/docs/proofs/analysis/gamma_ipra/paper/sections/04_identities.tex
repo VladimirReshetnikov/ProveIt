@@ -1,0 +1,611 @@
+% Research contribution: constructive gamma identities.
+% This is a section fragment, to be incorporated into the main article.
+% All limiting language below abbreviates the displayed finite error estimates.
+
+\section{Finite trigonometry and Euler's reflection formula}
+
+\subsection{The elementary trigonometric foundation}
+
+Here \(\exp\), \(\sin\), and \(\cos\) are the functions given by their
+factorial power series, with the explicitly bounded tails described earlier.
+Put
+\[
+ A(t)=\int_0^t\frac{du}{1+u^2},\qquad \pi=4A(1).
+\]
+The alternating expansion
+\[
+ A(1)=\sum_{j=0}^{L-1}\frac{(-1)^j}{2j+1}+r_L,
+ \qquad |r_L|\le\frac1{2L+1}
+\]
+is obtained by integrating the finite geometric identity for
+\((1+u^2)^{-1}\). Thus \(\pi\) has a primitive recursive rational name.
+Finite rational comparisons of the first eight terms give \(3<\pi<4\).
+Multiplication of finite exponential series, followed by their factorial
+tail bounds, proves the addition laws and
+\(\exp(it)=\cos t+i\sin t\).
+
+There is no hidden appeal here to the qualitative theory of trigonometric
+functions. For \(0\le t\le1\), differentiate
+\[
+ e^{-2iA(t)}\frac{1+it}{1-it}.
+\]
+The two terms cancel exactly. The finite fundamental theorem of calculus
+therefore gives
+\[
+ e^{2iA(t)}=\frac{1+it}{1-it},\qquad
+ \sin(2A(t))=\frac{2t}{1+t^2},\qquad
+ \cos(2A(t))=\frac{1-t^2}{1+t^2}.                 \tag{T1}
+\]
+In particular, \(e^{i\pi/2}=i\), \(e^{i\pi}=-1\), and
+\(e^{2\pi i}=1\). Since \((2A)'(t)=2/(1+t^2)\ge1\), bounded
+bisection constructs its inverse on \([0,\pi/2]\), with an explicit
+linear modulus. Formula (T1) proves positivity of sine there. Its second
+derivative is \(-\sin\), so the finite second-derivative comparison with
+the chord joining the endpoints gives
+\[
+ \sin v\ge\frac{2v}{\pi}\quad(0\le v\le\pi/2).
+                                                        \tag{T2}
+\]
+For completeness, the chord comparison follows by applying the finite
+mean-value inequality to the derivative: a differentiable function with
+nonpositive second derivative has decreasing secant slopes. Both this
+assertion and (T1) can instead be checked on rational meshes; their
+derivative bounds give an explicit mesh error. No unrestricted intermediate
+value theorem is used: the only inverse just mentioned has slope at least
+one and is obtained by a prescribed bisection program. This program does
+not compare exact real values. If the current bracket has width \(w\),
+approximate the midpoint value minus the target to error \(w/16\).
+When the rational approximation exceeds \(w/8\) in absolute value,
+its sign selects a half bracket. Otherwise the slope bound puts the
+inverse in the interval of radius \(w/4\) about the midpoint. Intersect
+this interval with the old bracket. In every case the width halves, and
+every decision is a rational comparison.
+
+\subsection{A finite sine factorization}
+
+Define the entire function
+\[
+ \operatorname{sinc}(w)=\sum_{j=0}^{\infty}
+                \frac{(-1)^jw^{2j}}{(2j+1)!}.
+\]
+Thus \(\sin w=w\operatorname{sinc}(w)\), including at \(w=0\).
+For an odd integer \(m=2J+1\), repeated use of the addition law writes
+\(\sin(mu)/(m\sin u)\) as a polynomial of degree \(J\) in
+\(\sin^2u\), with constant term one. Its explicitly given distinct roots
+are \(\sin^2(k\pi/m)\), \(1\le k\le J\). Consequently the following is
+a finite polynomial identity, not an identity obtained by analytic
+continuation:
+\[
+ \operatorname{sinc}(mu)=\operatorname{sinc}(u)
+ \prod_{k=1}^{J}
+ \left(1-\frac{\sin^2u}{\sin^2(k\pi/m)}\right).           \tag{T3}
+\]
+To justify the polynomial argument constructively, use the standard
+multiple-angle recurrence (equivalently, the recurrence for the
+polynomials \(U_j\)). For odd \(m\), \(U_{m-1}(\cos u)\) is a polynomial
+in \(1-\sin^2u\). The listed roots are obtained by substituting the
+angles \(k\pi/m\), and their distinctness follows from positivity of
+cosine on this finite interval. More quantitatively,
+\(\cos v\ge1/m\) for
+\(0\le v\le(m-1)\pi/(2m)\), by (T2) applied to the complementary
+angle. Consecutive sine values therefore differ by at least
+\(\pi/m^2\). Repeated monic polynomial division by the known linear
+factors proves the factorization; no fundamental theorem of algebra is
+needed. Multiplication by \(\operatorname{sinc}(u)\) removes all
+division by a possibly zero \(\sin u\).
+
+\subsection{An explicit sine-product error bound}
+
+Let \(R\ge1\) and \(K\ge1\) be integers, let \(|z|\le R\), and put
+\[
+ m=8K^2R^2+1,\quad J=(m-1)/2,\quad
+ S_K(z)=\prod_{k=1}^K\left(1-\frac{z^2}{k^2}\right).
+\]
+Then
+\[
+ \left|\operatorname{sinc}(\pi z)-S_K(z)\right|
+ \le\frac{2^{74R^2}(R+1)^2}{K}.                         \tag{T4}
+\]
+Here is a complete estimate. Write
+\(u=\pi z/m\), \(v_k=\pi k/m\), and
+\(a_k=\sin^2u/\sin^2v_k\). Since
+\(\sin v_k\ge2k/m\) and \(|\sin u|\le2|u|\),
+\[
+ |a_k|\le\frac{16R^2}{k^2},\qquad
+ \sum_{k=1}^J|a_k|\le32R^2,
+ \qquad \sum_{k=1}^K|z^2/k^2|\le2R^2.                  \tag{T5}
+\]
+For \(|w|\le1\), the factorial series gives
+\(|\operatorname{sinc}(w)-1|\le|w|^2/2\) and
+\(|\operatorname{sinc}(w)|\le2\). For \(k\le K\), (T2) also gives
+\(\operatorname{sinc}(v_k)>1/2\). Thus
+\[
+ \left|a_k-\frac{z^2}{k^2}\right|
+ \le\frac{96R^2}{m^2}\left(\frac{R^2}{k^2}+1\right).
+\]
+Indeed, \(|\operatorname{sinc}(u)^2-1|\le3|u|^2/2\), while
+\(0<\operatorname{sinc}(v_k)\le1\) implies
+\(|1-\operatorname{sinc}(v_k)^2|\le v_k^2\). Dividing their sum by
+\(\operatorname{sinc}(v_k)^2>1/4\) bounds the ratio difference by
+\(6(|u|^2+v_k^2)\); now use \(\pi^2<16\).
+The tail satisfies \(\sum_{k>K}|a_k|\le16R^2/K\). The finite
+telescoping identity for a difference of products, together with
+\(1+t\le e^t\), therefore yields
+\[
+ \left|\prod_{k=1}^J(1-a_k)-S_K(z)\right|
+ \le e^{34R^2}\left\{\frac{16R^2}{K}
+       +\frac{96R^2(2R^2+K)}{m^2}\right\}.              \tag{T6}
+\]
+By (T3), one must add at most
+\(8R^2e^{32R^2}/m^2\) to account for the prefactor
+\(\operatorname{sinc}(u)\). Substituting the displayed value of \(m\)
+bounds the braces, including this extra term, by \(32R^2/K\).
+Finally \(e^{34R^2}\le2^{68R^2}\), which proves the deliberately
+generous bound (T4).
+
+This proves, in the precise effective sense needed here,
+\[
+ \frac{\sin\pi z}{\pi z}
+       =\prod_{k=1}^{\infty}\left(1-\frac{z^2}{k^2}\right),             \tag{T7}
+\]
+where the left side means \(\operatorname{sinc}(\pi z)\) at every
+point. For an error \(2^{-p}\), it is enough to take
+\(K\ge2^{p+74R^2}(R+1)^2\). Every product and every trigonometric
+value occurring in this argument is evaluated to a prescribed rational
+precision; its finite error budget is obtained from (T5)--(T6).
+
+\subsection{Reflection and constructive division}
+
+Use the Euler approximants
+\[
+ \Gamma_N(z)=\frac{N!\,N^z}{z(z+1)\cdots(z+N)}.
+\]
+At points with the displayed denominator factors apart from zero, exact
+finite cancellation gives
+\[
+ \Gamma_N(z)\Gamma_N(-z)
+       =-\frac1{z^2S_N(z)}.                              \tag{R1}
+\]
+The established convergence of these approximants, the recurrence
+\(\Gamma(1-z)=-z\Gamma(-z)\), and (T4) therefore prove
+\[
+ \boxed{\ \Gamma(z)\Gamma(1-z)=\frac\pi{\sin\pi z}\ }.              \tag{R2}
+\]
+The domain assertion is constructive: supply a radius \(|z|\le R\)
+and a positive rational \(\delta\le1\) separating \(z\) from the
+finitely many integers in \([-2R-1,2R+1]\). Integers farther away have
+an automatic separation. This is stronger information than the bare
+negation ``\(z\) is not an integer,'' and it is exactly what division
+requires.
+
+One may extract an explicit lower bound for the sine denominator.
+Choose an integer \(L\ge2R\). The first \(L\) factors in (T7) have
+product of moduli at least \(\delta^{2L}/(L!)^2\). For the remaining
+factors, \(|z^2/k^2|\le1/4\), and the real inequality
+\(\log(1-t)\ge-2t\) gives a product lower bound
+\(e^{-2R^2/L}\ge2^{-4R^2}\). Hence
+\[
+ |\sin\pi z|\ge
+       \frac{\delta^{2L+1}2^{-4R^2}}{(L!)^2}.             \tag{R3}
+\]
+This coarse rational bound makes every passage to a reciprocal in (R2)
+primitive recursive. Alternatively, the cleared identity
+\(\sin(\pi z)\Gamma(z)\Gamma(1-z)=\pi\) can be proved first.
+
+At \(z=1/2\), positivity of the defining gamma integral selects the
+positive root and gives
+\[
+ \boxed{\Gamma(1/2)=\sqrt\pi}.                           \tag{R4}
+\]
+The square root here is the positive one, computed by bounded rational
+bisection. No version of Stirling's formula has been used.
+
+\section{Gauss multiplication without an asymptotic normalization}
+
+\subsection{A second finite sine identity}
+
+For every integer \(m\ge1\),
+\[
+ \prod_{r=1}^{m-1}\sin\frac{\pi r}{m}
+                 =\frac{m}{2^{m-1}}.                    \tag{M1}
+\]
+For \(m>1\), put \(\omega=e^{2\pi i/m}\). The explicitly known
+numbers \(1,\omega,\ldots,\omega^{m-1}\) are pairwise apart: (T2)
+gives \(|\omega^r-\omega^s|\ge4/m\) when \(r\ne s\) in this range.
+Polynomial division by these known roots proves
+\(X^m-1=\prod_{r=0}^{m-1}(X-\omega^r)\). Divide out \(X-1\) and
+substitute \(X=1\). Taking squared moduli gives
+\[
+ m^2=\prod_{r=1}^{m-1}4\sin^2(\pi r/m).
+\]
+Every sine factor is positive, by (T1), reflection about \(\pi/2\),
+and (T2); positive square-root cancellation proves (M1). For \(m=1\)
+the empty product is one.
+
+\subsection{Exact grouping of Euler approximants}
+
+Fix \(m\ge1\), set \(a=1/m\), and for \(n\ge1\) set
+\(L=m(n+1)-1\). Denominator grouping gives the exact identity
+\[
+ U_n(z):=\frac{\prod_{r=0}^{m-1}\Gamma_n(z+r/m)}{\Gamma_L(mz)}
+   =\frac{(n!)^m m^{m(n+1)}}{L!}\,
+       n^{(m-1)/2}\left(\frac nL\right)^{mz}.
+\]
+All factors independent of \(z\) disappear when this expression is
+divided by its value at \(a\):
+\[
+ \frac{U_n(z)}{U_n(a)}
+                 =\left(\frac nL\right)^{m(z-a)}.        \tag{M2}
+\]
+Only powers of positive real numbers occur, so no branch choice is
+implicit. Moreover,
+\[
+ \left|\log\frac{mn}{L}\right|
+   =\log\left(1+\frac{m-1}{mn}\right)\le\frac1n.
+\]
+For \(|z|\le R\) and \(n\ge m(R+1)\), this proves the explicit
+estimate
+\[
+ \left|\left(\frac nL\right)^{m(z-a)}
+           -m^{-m(z-a)}\right|
+ \le\frac{2m(R+1)m^{m(R+1)}}n.                           \tag{M3}
+\]
+Consequently convergence of the gamma approximants proves
+\[
+ \frac{\prod_{r=0}^{m-1}\Gamma(z+r/m)}{\Gamma(mz)}
+   = m^{1-mz} P_m,
+ \qquad P_m=\prod_{r=1}^{m-1}\Gamma(r/m).                \tag{M4}
+\]
+One supplies a positive rational separation of \(mz\) from the
+nonpositive integers in the relevant finite disk. This also supplies
+separations for all \(z+r/m\): multiplication by \(m\) sends their
+possible poles to nonpositive integers. The reciprocal-product bounds
+for gamma handle the divisions in (M2)--(M4).
+
+The constant is found without any asymptotic theorem. Reflection and
+(M1) give
+\[
+ P_m^2=\prod_{r=1}^{m-1}
+          \Gamma(r/m)\Gamma(1-r/m)
+       =\frac{\pi^{m-1}}{\prod_{r=1}^{m-1}\sin(\pi r/m)}
+       =\frac{(2\pi)^{m-1}}m.
+\]
+Since \(P_m>0\), substitution in (M4) proves
+\[
+ \boxed{\ \prod_{r=0}^{m-1}\Gamma(z+r/m)
+       =(2\pi)^{(m-1)/2}m^{1/2-mz}\Gamma(mz)\ }.        \tag{M5}
+\]
+In particular,
+\[
+ \Gamma(z)\Gamma(z+1/2)
+       =2^{1-2z}\sqrt\pi\,\Gamma(2z),                   \tag{M6}
+\]
+and
+\[
+ \Gamma(z)\Gamma(z+1/3)\Gamma(z+2/3)
+       =2\pi\,3^{1/2-3z}\Gamma(3z).                    \tag{M7}
+\]
+Thus duplication is available to determine the constant in Stirling's
+formula without circular reasoning.
+
+\section{Beta integrals from one-dimensional finite estimates}
+
+\subsection{Definition, tails, and recurrences}
+
+For certified \(\Re a\ge\alpha>0\), \(\Re b\ge\beta>0\), define
+\[
+ B(a,b)=\int_0^1t^{a-1}(1-t)^{b-1}\,dt.                 \tag{B1}
+\]
+All powers use the real logarithm of the positive variable. On
+\([\epsilon,1-\epsilon]\), compute a finite rational Riemann sum,
+with the explicit derivative bound obtained by differentiating the
+integrand. For \(0<\epsilon\le1/2\), the omitted endpoints have
+absolute integral at most
+\[
+ \frac{2\epsilon^\alpha}{\alpha}
+       +\frac{2\epsilon^\beta}{\beta}.                  \tag{B2}
+\]
+This defines a primitive recursive name and a Cauchy modulus; small
+rational \(\epsilon=2^{-h}\) is chosen with the displayed bound below
+the requested error. Symmetry is the finite substitution \(t\mapsto1-t\).
+The identity \(1=t+(1-t)\), and integration of the derivative of
+\(t^a(1-t)^b\), give
+\[
+ B(a,b)=B(a+1,b)+B(a,b+1),\qquad
+ aB(a,b+1)=bB(a+1,b).
+\]
+Indeed, on the truncated interval these are finite integration-by-parts
+identities up to the mesh error; the boundary terms have modulus at most
+\(\epsilon^\alpha+\epsilon^\beta\). Hence
+\[
+ B(a+1,b)=\frac a{a+b}B(a,b),\qquad
+ B(a,b+1)=\frac b{a+b}B(a,b).                            \tag{B3}
+\]
+The denominator has real part at least \(\alpha+\beta\), so division
+has a supplied margin. Iterating gives
+\[
+ B(a,b+N)=\frac{(b)_N}{(a+b)_N}B(a,b),                  \tag{B4}
+\]
+where \((w)_N=\prod_{j=0}^{N-1}(w+j)\). In particular,
+\[
+ B(a,N+1)=\frac{N!}{a(a+1)\cdots(a+N)}.                \tag{B5}
+\]
+
+\subsection{An effective beta-to-gamma limit}
+
+For fixed bounded \(a,b\) as above,
+\[
+ N^aB(a,b+N)\longrightarrow\Gamma(a).                   \tag{B6}
+\]
+Here is an estimate sufficient to implement the assertion. Choose
+integers \(d\ge\max(1,\Re a)\) and \(C\ge|b-1|\), and write
+\(H=1/\alpha+d!\). For \(T\ge1\),
+\(N\ge\max(2T,2,T^2+2CT)\), one has
+\[
+ |N^aB(a,b+N)-\Gamma(a)|
+ \le \frac{2H(T^2+2CT)}N
+         +2\,4^{d+1}d!\,e^{-T/4}.                     \tag{B7}
+\]
+To prove it, put \(t=s/N\) in (B1), obtaining an integral on
+\([0,N]\). On \([0,T]\), set
+\[
+ D(s)=(N+b-1)\log(1-s/N)+s.
+\]
+The elementary inequalities
+\(-\log(1-u)-u\le u^2\) and \(|\log(1-u)|\le2u\) for
+\(0\le u\le1/2\) yield
+\(|D(s)|\le(T^2+2CT)/N\le1\). Therefore
+\(|e^{D(s)}-1|\le2|D(s)|\). Since
+\(\int_0^\infty s^{\Re a-1}e^{-s}\,ds\le H\), this proves the first
+term in (B7). On the remaining interval, \(N+\Re b-1\ge N/2\), so
+\[
+ |(1-s/N)^{N+b-1}|\le e^{-s/2}.
+\]
+For \(s\ge T\ge1\), use
+\(s^{\Re a-1}\le s^d\) and
+\(s^de^{-s/2}\le4^dd!e^{-s/4}\). Integration bounds each of the two
+tails by \(4^{d+1}d!e^{-T/4}\), proving (B7).
+
+For example, for requested error \(2^{-p}\), one may choose
+\[
+ T=4(p+d^2+2d+5),\quad
+ N\ge\max\{2T,2,T^2+2CT,
+       2^{p+3}(T^2+2CT)\lceil H\rceil\}.
+\]
+The elementary estimates \(d!\le2^{d^2}\) and \(e\ge2\) verify the
+error directly. There is no invocation of dominated convergence.
+
+For \(N\ge2\), the exact Euler-approximant relation is
+\[
+ N^a\frac{(b)_N}{(a+b)_N}
+   =\left(\frac N{N-1}\right)^a
+                 \frac{\Gamma_{N-1}(a+b)}{\Gamma_{N-1}(b)}.
+\]
+Use this in (B4), then apply (B7) and the effective convergence of
+\(\Gamma_N\). One obtains first the cleared identity, and then, by the
+known nonvanishing margin for gamma,
+\[
+ \boxed{\ B(a,b)=\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}\ }.          \tag{B8}
+\]
+This proof uses only one-dimensional substitutions and finite products;
+a general change-of-variables theorem for improper double integrals is
+unnecessary.
+
+\subsection{Consequences and integral evaluations}
+
+The substitution \(t=u/(1+u)\) in truncated intervals proves
+\[
+ \int_0^\infty\frac{u^{a-1}}{(1+u)^{a+b}}\,du=B(a,b). \tag{B9}
+\]
+The omitted tails have bounds \(\epsilon^\alpha/\alpha\) at zero and
+\(R^{-\beta}/\beta\) at infinity. The substitution
+\(t=\sin^2\theta\), again first on a closed subinterval, gives
+\[
+ \int_0^{\pi/2}\sin^{2a-1}\theta\cos^{2b-1}\theta\,d\theta
+                     =\tfrac12 B(a,b).                \tag{B10}
+\]
+The beta endpoint estimates (B2) control the removed angular intervals.
+For natural numbers \(j,k\),
+\[
+ B(j+1,k+1)=\frac{j!k!}{(j+k+1)!}.                      \tag{B11}
+\]
+Combining (B8)--(B9) with reflection gives, for certified
+\(0<\Re a<1\),
+\[
+ \int_0^\infty\frac{t^{a-1}}{1+t}\,dt
+       =\frac\pi{\sin\pi a}.                          \tag{B12}
+\]
+For positive rational \(q\) and \(0<\Re a<q\), replacing \(t\) by
+\(u^{1/q}\) gives
+\[
+ \int_0^\infty\frac{t^{a-1}}{1+t^q}\,dt
+       =\frac\pi{q\sin(\pi a/q)}.                     \tag{B13}
+\]
+Similarly, for positive rationals \(c,q\),
+\[
+ \int_0^\infty t^{a-1}e^{-ct^q}\,dt
+       =\frac{\Gamma(a/q)}{q\,c^{a/q}},\qquad \Re a>0. \tag{B14}
+\]
+All substitutions are between explicitly truncated intervals; their
+endpoint errors follow from (B2), (B7), or the gamma tail estimates.
+
+\section{Special values and exact rational-argument relations}
+
+Recurrence and (R4) give, for \(n\ge0\),
+\[
+ \Gamma(n+1/2)=\frac{(2n)!}{4^n n!}\sqrt\pi,\qquad
+ \Gamma(1/2-n)=\frac{(-4)^n n!}{(2n)!}\sqrt\pi.          \tag{V1}
+\]
+The finite verification is induction: each additional factor is
+\(n+1/2\) in the first formula and \(1/2-n\) in the second.
+Thus, for example, \(\Gamma(-1/2)=-2\sqrt\pi\) and
+\(\Gamma(-3/2)=4\sqrt\pi/3\).
+
+Reflection supplies
+\[
+ \Gamma(1/3)\Gamma(2/3)=\frac{2\pi}{\sqrt3},\quad
+ \Gamma(1/4)\Gamma(3/4)=\pi\sqrt2,\quad
+ \Gamma(1/6)\Gamma(5/6)=2\pi.                           \tag{V2}
+\]
+Let \(A=\Gamma(1/3)\), \(D=\Gamma(1/4)\), both positive. Duplication
+at \(1/6\), followed by (V2), gives
+\[
+ \Gamma(1/6)=\frac{2^{-1/3}\sqrt3}{\sqrt\pi}A^2,
+ \qquad
+ \Gamma(5/6)=\frac{2^{4/3}\pi^{3/2}}{\sqrt3\,A^2}.     \tag{V3}
+\]
+Duplication and triplication also give the useful twelfth-argument
+relations
+\[
+ \Gamma(1/12)\Gamma(7/12)=\sqrt6\,A^2,
+ \qquad
+ \Gamma(1/12)\Gamma(5/12)=\sqrt2\,3^{1/4}D^2.           \tag{V4}
+\]
+Combining these with reflection proves the explicit positive-square
+identities
+\[
+ \Gamma(1/12)^2
+   =\frac{3^{3/4}(\sqrt6+\sqrt2)}{2\pi}A^2D^2,
+ \qquad
+ \Gamma(5/12)^2
+   =\frac{\pi(\sqrt6-\sqrt2)}{3^{1/4}}\frac{D^2}{A^2}. \tag{V5}
+\]
+All roots in these expressions are positive roots. They are computed by
+bounded bisection, and their algebraic identities are verified by
+polynomial multiplication together with positive lower bounds.
+
+For fifths, reflection yields
+\[
+ \Gamma(1/5)\Gamma(4/5)
+       =\frac{4\pi}{\sqrt{10-2\sqrt5}},\qquad
+ \Gamma(2/5)\Gamma(3/5)
+       =\frac{4\pi}{\sqrt{10+2\sqrt5}}.                 \tag{V6}
+\]
+More generally, the finite normalization computation already proved
+\[
+ \prod_{r=1}^{m-1}\Gamma(r/m)
+          =\frac{(2\pi)^{(m-1)/2}}{\sqrt m}.             \tag{V7}
+\]
+These are relations among values, not claims that all rational-argument
+gamma values reduce to elementary constants. A finite certificate for a
+proposed relation can consist of applications of recurrence, reflection,
+and multiplication, followed by exact rational and algebraic arithmetic.
+
+For the rising factorial, the recurrence also proves
+\[
+ \Gamma(z+n)=(z)_n\Gamma(z),                            \tag{V8}
+\]
+at arguments with the requisite pole margins. For integer \(n\ge0\),
+the generalized binomial polynomial satisfies
+\[
+ \binom zn=\frac{\Gamma(z+1)}{n!\,\Gamma(z-n+1)}        \tag{V9}
+\]
+whenever the displayed gamma values are defined. The left side is the
+finite polynomial \(z(z-1)\cdots(z-n+1)/n!\). At an apparent cancelled
+pole, use this polynomial or a reciprocal-gamma version, rather than
+performing undefined division.
+
+\section{Modulus formulas on vertical lines}
+
+Complex conjugation commutes with every Euler approximant and hence
+with gamma. Apply reflection to \(z=iy\), with real \(y\) apart from
+zero, and use \(\sin(i\pi y)=i\sinh(\pi y)\). Recurrence gives
+\[
+ |\Gamma(iy)|^2=\frac\pi{y\sinh(\pi y)},\qquad
+ |\Gamma(1+iy)|^2=\frac{\pi y}{\sinh(\pi y)}.           \tag{VM1}
+\]
+For all real \(y\), including zero, a uniformly constructive version is
+\[
+ |\Gamma(1+iy)|^2
+  =\left(\sum_{j=0}^{\infty}
+                \frac{(\pi y)^{2j}}{(2j+1)!}\right)^{-1}.             \tag{VM2}
+\]
+The denominator is at least one. To verify (VM2) without cancelling
+\(y\), use the exact finite identity
+\[
+ \Gamma_N(1+iy)\Gamma_N(1-iy)
+   =\frac{N^2}{(N+1)^2}
+     \left(\prod_{k=1}^{N+1}(1+y^2/k^2)\right)^{-1}.
+\]
+The entire sine product at \(z=iy\) identifies the limit of this
+positive product with the denominator in (VM2). Every reciprocal has
+lower bound one before inversion, so no decision whether \(y=0\) is
+required.
+At \(z=1/2+iy\), reflection instead gives
+\[
+ |\Gamma(1/2+iy)|^2=\frac\pi{\cosh(\pi y)}              \tag{VM3}
+\]
+for every real \(y\); this denominator too is bounded below by one.
+Repeated recurrence yields
+\[
+ |\Gamma(n+iy)|^2
+  =\prod_{k=1}^{n-1}(k^2+y^2)\,|\Gamma(1+iy)|^2
+       \quad(n\ge1),                                  \tag{VM4}
+\]
+and
+\[
+ |\Gamma(n+1/2+iy)|^2
+  =\prod_{k=0}^{n-1}((k+1/2)^2+y^2)
+                   \frac\pi{\cosh(\pi y)}\quad(n\ge0). \tag{VM5}
+\]
+
+\section{Differentiated functional identities}
+
+The derivative estimates for the reciprocal product justify
+differentiating the finite identities above with their controlled
+remainders. With \(\psi=\Gamma'/\Gamma\), one obtains
+\[
+ \psi(1-z)-\psi(z)=\pi\cot(\pi z),\qquad
+ \psi'(1-z)+\psi'(z)=\pi^2\csc^2(\pi z),                \tag{D1}
+\]
+and
+\[
+ \sum_{r=0}^{m-1}\psi(z+r/m)=m\psi(mz)-m\log m.         \tag{D2}
+\]
+For \(j\ge1\), further differentiation gives
+\[
+ \sum_{r=0}^{m-1}\psi^{(j)}(z+r/m)
+                         =m^{j+1}\psi^{(j)}(mz).        \tag{D3}
+\]
+Combining these with \(\psi(1)=-\gamma\) yields
+\[
+ \begin{aligned}
+ \psi(1/2)&=-\gamma-2\log2,\\
+ \psi(1/3)&=-\gamma-\frac{\pi}{2\sqrt3}-\frac32\log3,\quad
+ \psi(2/3)=-\gamma+\frac{\pi}{2\sqrt3}-\frac32\log3,\\
+ \psi(1/4)&=-\gamma-\frac\pi2-3\log2,\quad
+ \psi(3/4)=-\gamma+\frac\pi2-3\log2,\\
+ \psi(1/6)&=-\gamma-\frac{\pi\sqrt3}{2}-\frac32\log3-2\log2,\\
+ \psi(5/6)&=-\gamma+\frac{\pi\sqrt3}{2}-\frac32\log3-2\log2.
+ \end{aligned}                                        \tag{D4}
+\]
+For example, reflection at \(1/3\) determines the difference of the
+two third-argument values, while (D2) with \(m=3,z=1/3\) determines
+their sum. The quarter- and sixth-argument formulas follow in exactly
+the same finite way from duplication and reflection. Thus (D4) involves
+only solving two linear equations with nonzero integer coefficients.
+At \(z=1/2\), (D1) gives \(\psi'(1/2)=\pi^2/2\).
+
+\subsection{How the identities are read in iPRA}
+
+For each fixed collection of primitive recursive input names and
+certificates, the identities in this section mean equality of their
+rational approximants at every prescribed accuracy. Bounds (T4), (R3),
+(M3), (B2), and (B7), together with the gamma-product bounds, determine
+all truncation lengths and arithmetic precisions by primitive recursive
+formulas. Product regrouping, polynomial division by the explicitly
+given roots, integration by parts on a finite mesh, and all endpoint
+comparisons have finite coded invariants. Quantifier-free induction
+proves those invariants. The language does not quantify over an
+uncertified universal evaluator for arbitrary primitive recursive
+programs. The claims are uniform finite arithmetic lemmas and their
+instances for the stated names, rather than an implicit appeal to a
+higher-order theory of all continuous functions.
+
+% Primary formula references, checked 2026-11-15:
+% NIST DLMF 5.5, https://dlmf.nist.gov/5.5 : recurrence, reflection,
+% duplication, multiplication. Retrieval reference turn3view0.
+% NIST DLMF 5.12, https://dlmf.nist.gov/5.12 : beta integrals.
+% Retrieval reference turn3view1.
+% The finite proofs and intentionally coarse moduli above are supplied
+% here independently; citations identify the standard identities only.

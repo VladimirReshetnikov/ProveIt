@@ -1,0 +1,220 @@
+\section{Euler's integral and its effective calculus}
+\label{sec:integrals}
+
+\subsection{The improper integral is an algorithm}
+
+Fix integers $A,R\ge1$ and a complex input with
+\[
+ \Rea z\ge1/A,
+ \qquad |z|\le R.
+\]
+For positive $t$ use $t^{z-1}=\exp((z-1)\log t)$. Its modulus is
+$t^{\Rea z-1}$, by the finite exponential identities. For
+$0<\eta\le1$ and $T\ge1$,
+\begin{align}
+ \int_0^\eta |t^{z-1}e^{-t}|\dd t
+   &\le A\eta^{1/A},\label{eq:gamma-low-tail}\\
+ \int_T^\infty |t^{z-1}e^{-t}|\dd t
+   &\le 2^{R+1}R!e^{-T/2}.\label{eq:gamma-high-tail}
+\end{align}
+The first inequality follows by integrating $t^{1/A-1}$. For the
+second, $t^{\Rea z-1}\le t^R$ and the single term
+$e^{t/2}\ge(t/2)^R/R!$ gives
+$t^Re^{-t}\le2^RR!e^{-t/2}$. Initially these arguments apply between
+finite positive endpoints; the displayed expressions are the certificates
+for removing those endpoints.
+
+Here are actual cutoffs for precision $p$. Put
+\[
+ D_R=2^{R+1}R!,\quad
+ L=p+A+D_R+10,\quad
+ \eta=2^{-AL},\quad T=2L.
+\]
+Then the sum of the two omitted tails is at most
+$(A+D_R)2^{-L}<2^{-p-6}$. On $[\eta,T]$ a rational Lipschitz
+majorant for the integrand is
+\[
+ C=(\eta^{-1}+T^R)\bigl((R+1)/\eta+1\bigr).
+\]
+Indeed its derivative is
+$t^{z-1}e^{-t}((z-1)/t-1)$. The finite-calculus mesh of
+\cref{sec:finite-calculus}, with $m\ge2^{p+6}(1+CT^2)$,
+now specifies every evaluation. This gives a fixed primitive recursive
+name $I(z)$ for the Euler integral.
+
+\subsection{Identification with the finite-product gamma function}
+
+For $N\in\N$, integration by parts on $[\eta,1]$ gives
+\begin{equation}
+ \int_0^1t^{z-1}(1-t)^N\dd t
+ =\frac{N!}{z(z+1)\cdots(z+N)}.\label{eq:beta-polynomial}
+\end{equation}
+In detail, the $N=0$ antiderivative is $t^z/z$ and its lower boundary
+has modulus at most $A\eta^{1/A}$. For $N>0$ integration by parts,
+with antiderivative $t^z/z$, changes the integral to
+$N/z$ times the same integral with $(z,N)$ replaced by $(z+1,N-1)$;
+the boundary at $1$ is zero and the lower boundary tends to zero by
+the same estimate. Iterating this finite relation proves
+\eqref{eq:beta-polynomial}. To read the induction in $\ipra$, carry
+the finite mesh and endpoint errors as parameters and decrease each
+local error by the product bound \eqref{eq:product-budget}.
+
+The substitution $t=s/N$ gives, for $N\ge1$,
+\begin{equation}
+ \Gamma_N(z)=\int_0^N s^{z-1}(1-s/N)^N\dd s.
+ \label{eq:gamma-euler-integral}
+\end{equation}
+This formula directly identifies the two constructions with an explicit
+rate. If $0\le s\le N/2$, the logarithm series proves
+\[
+ 0\le-N\log(1-s/N)-s\le s^2/N,
+\]
+and hence
+\[
+ 0\le e^{-s}-(1-s/N)^N\le e^{-s}s^2/N.
+\]
+On $[N/2,N]$ both kernels are ordered between $0$ and $e^{-s}$;
+above $N$ only $e^{-s}$ remains. With
+$C_R=1+2^{R+3}(R+2)!$, the elementary monomial bound used for
+\eqref{eq:gamma-high-tail} therefore gives
+\begin{equation}
+ \boxed{\displaystyle
+ |\Gamma_N(z)-I(z)|
+ \le\frac{C_R}{N}+2^{R+1}R!e^{-N/4}\qquad(N\ge2).}
+ \label{eq:integral-product-error}
+\end{equation}
+For the first term, split its integral at $1$: below $1$,
+$s^{\Rea z+1}\le s$, and above $1$ it is at most $s^{R+2}$.
+The resulting integral is bounded by $C_R$. The large tail begins at
+$N/2$, proving the second term. For an entirely explicit choice set
+$N=4(C_R+D_R+p+10)2^{p+4}$. Then each term in
+\eqref{eq:integral-product-error} is below $2^{-p-3}$.
+
+Both $I$ and $\Gamma$ are consequently equal to the same effective
+Euler limit. We have proved
+\begin{theorem}[Euler integral]
+For a complex name with a supplied positive lower bound for its real part,
+\[
+ \boxed{\displaystyle\Gamma(z)=\int_0^\infty t^{z-1}e^{-t}\dd t.}
+\]
+The integral is absolutely convergent in the finite-tail sense of
+\eqref{eq:gamma-low-tail}--\eqref{eq:gamma-high-tail}; it is not an
+additional definition requiring an abstract completeness theorem.
+\end{theorem}
+
+\subsection{Positivity, modulus, and changes of variable}
+
+For $x>0$, every finite integral summand is nonnegative and the interval
+$1\le t\le2$ alone gives
+\begin{equation}
+ \Gamma(x)\ge1/18>0.\label{eq:gamma-positive}
+\end{equation}
+Here $t^{x-1}\ge1/2$ and $e^{-t}\ge e^{-2}>1/9$.
+On $1/A\le x\le R$ we also have the useful upper bound
+\begin{equation}
+ \Gamma(x)\le A+2^{R+1}R!.\label{eq:gamma-real-bound}
+\end{equation}
+The triangle inequality on finite sums, followed by their tails, gives
+$|\Gamma(\sigma+iy)|\le\Gamma(\sigma)$ for $\sigma>0$.
+There is a stronger vertical-line product formula later in the report.
+
+Integration by parts gives a second proof of
+$\Gamma(z+1)=z\Gamma(z)$: the boundary $t^ze^{-t}$ has the same
+explicit vanishing estimates. Also $\Gamma(1)=1$ follows from the
+antiderivative $-e^{-t}$, so the factorial normalization can be proved
+entirely from the integral as well.
+
+Substitution on the truncated interval, followed by the already proved
+endpoint bounds, gives
+\begin{align}
+ \Gamma(z)&=\int_{-\infty}^{\infty}e^{zu-e^u}\dd u,
+ \label{eq:exponential-substitution}\\
+ \Gamma(z)&=\int_0^1(-\log u)^{z-1}\dd u,
+ \label{eq:unit-substitution}\\
+ \Gamma(z)&=2c^z\int_0^\infty u^{2z-1}e^{-cu^2}\dd u
+ \quad(c>0).\label{eq:quadratic-substitution}
+\end{align}
+For example \eqref{eq:exponential-substitution} uses
+$t=e^u$ and the finite endpoints $u=\log\eta,\log T$;
+\eqref{eq:unit-substitution} uses $t=-\log u$ and endpoints
+$e^{-T},e^{-\eta}$; \eqref{eq:quadratic-substitution} uses
+$t=cu^2$. Nonrational endpoints are evaluated with the local Lipschitz
+budget. Thus the substitutions introduce no new convergence principle.
+The more general positive-real scaling law is
+\begin{equation}
+ \int_0^\infty t^{z-1}e^{-ct^r}\dd t
+ =\frac{\Gamma(z/r)}{r c^{z/r}}\quad(c,r>0,\ \Rea z>0),
+ \label{eq:general-scaling}
+\end{equation}
+with rational lower and upper bounds for the positive parameters.
+It follows from $u=ct^r$, whose derivative is explicit on every
+truncated interval. Complex values of $c$ are not included in this
+statement; they would require a specified complex power convention and
+an additional argument.
+
+\subsection{Differentiation under the integral, with tails}
+
+For every natural number $j$, define the prospective derivative by
+\[
+ I_j(z)=\int_0^\infty
+         t^{z-1}e^{-t}(\log t)^j\dd t.
+\]
+The additional logarithmic factors have explicit bounds. For
+$0<t\le1$,
+\[
+ |\log t|^j\le j!(2A)^j t^{-1/(2A)},
+\]
+because $e^{v/(2A)}\ge(v/(2A))^j/j!$ for $v=-\log t$.
+For $t\ge1$ use $(\log t)^j\le t^j$. Consequently
+\begin{align}
+ \int_0^\eta|t^{z-1}e^{-t}(\log t)^j|\dd t
+ &\le j!(2A)^{j+1}\eta^{1/(2A)},\label{eq:derivative-low-tail}\\
+ \int_T^\infty|t^{z-1}e^{-t}(\log t)^j|\dd t
+ &\le2^{R+j+1}(R+j)!e^{-T/2}.\label{eq:derivative-high-tail}
+\end{align}
+These formulas give primitive recursive cutoff lengths uniformly in $j$.
+On the remaining compact interval expand $e^{h\log t}$ to any fixed
+degree, using \eqref{eq:exp-tail}. For example the first-order
+remainder is at most
+\[
+ \tfrac12 |h|^2|\log t|^2e^{|h\log t|}.
+\]
+For $|h|\le1/(4A)$ this is integrable with exactly the same kind of
+explicit bounds, using the smaller half-plane margin $1/(2A)$ and
+radius $R+1$. Integrating the finite Taylor remainder proves
+$I_j'=I_{j+1}$. Thus
+\begin{theorem}[All integral derivatives]
+For every $j\in\N$ and every certified input in the right half-plane,
+\[
+ \Gamma^{(j)}(z)
+   =\int_0^\infty t^{z-1}e^{-t}(\log t)^j\dd t.
+\]
+The finite degree and integration errors are controlled by
+\eqref{eq:derivative-low-tail}--\eqref{eq:derivative-high-tail} and
+the compact Taylor remainder. In particular the statement is not an
+unqualified exchange of an infinite limit with differentiation.
+\end{theorem}
+
+\subsection{Incomplete gamma as an additional finite-integral consequence}
+
+For $x>0$ and $\Rea z>0$, put
+\[
+ \gamma_{\ell}(z,x)=\int_0^x t^{z-1}e^{-t}\dd t,
+ \qquad \Gamma_u(z,x)=\int_x^\infty t^{z-1}e^{-t}\dd t.
+\]
+The subscript distinguishes the lower function from Euler's constant.
+Additivity of finite sums and integration by parts prove
+\begin{align*}
+ \gamma_{\ell}(z,x)+\Gamma_u(z,x)&=\Gamma(z),\\
+ \gamma_{\ell}(z+1,x)&=z\gamma_{\ell}(z,x)-x^ze^{-x},\\
+ \Gamma_u(z+1,x)&=z\Gamma_u(z,x)+x^ze^{-x}.
+\end{align*}
+For a natural number $n$, induction from $\Gamma_u(1,x)=e^{-x}$ gives
+\[
+ \boxed{\displaystyle
+ \Gamma_u(n+1,x)=n!e^{-x}\sum_{j=0}^n\frac{x^j}{j!}.}
+\]
+The lower function is $n!$ minus this expression. These formulas extend
+to $x=0$ by the explicit small-endpoint estimate, with values $0$ and
+$\Gamma(z)$ respectively; no decision whether a general name is zero
+is needed in the continuity statement.
