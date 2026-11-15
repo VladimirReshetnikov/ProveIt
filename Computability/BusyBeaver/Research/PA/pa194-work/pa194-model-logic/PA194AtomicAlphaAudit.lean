@@ -1,0 +1,11 @@
+import PA194ModelAtomicAlpha
+#print axioms PA194ModelLogic.targetMembershipAllAlphaRight
+#print axioms PA194ModelLogic.targetMembershipAllAlphaLeft
+#print axioms PA194ModelLogic.targetMembershipAllAlphaDiagonal
+#print axioms PA194ModelLogic.targetNegMembershipAllAlphaRight
+#print axioms PA194ModelLogic.targetNegMembershipAllAlphaLeft
+#print axioms PA194ModelLogic.targetNegMembershipAllAlphaDiagonal
+#print axioms PA194ModelLogic.simRuleAllFresh_allMembershipCode
+#print axioms PA194ModelLogic.simRuleAllFresh_allNegativeMembershipCode
+#print axioms PA194ModelLogic.simRuleAllFresh_exMembershipCode
+#print axioms PA194ModelLogic.simRuleAllFresh_exNegativeMembershipCode
