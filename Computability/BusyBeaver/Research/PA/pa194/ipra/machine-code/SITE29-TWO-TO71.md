@@ -1,0 +1,9 @@
+# PA194 site-29 two controller passes to state 71
+
+`PA194Site29TwoPassesTo71.twoPassesTo71` follows the literal state-24 site-29 entry through the full first controller pass, the next 18-step dispatch, and model-uniform scans of the first two physical register blocks. It ends in state 71, with the exact left and right numeric tape expressions and combined clock given in the theorem. The input requires a zero run of length `k+2` after path `100010110`. All eleven model-valued logical-file arguments, including the spare and the complete encoded suffix, remain arbitrary. The proved blank-to-site-29 execution has sufficient padding.
+
+The four additional source modules expose the 18-step dispatch, arbitrary-length scan to state 71, composition of those two segments, and their composition with the first pass. Their clock and tape terms include the actual register values; they do not assume a blank suffix. State 71 is an intermediate point: this does not yet prove the selected-register increment or return to the next source frame.
+
+`check-site29-two-to71.sh` recompiles all nine first-pass and continuation modules in a fresh output against the pinned site-27 coherent baseline, retained site-28 carry stage, and retained site-28 finish-return stage. Its arguments are `REPO SITE27_BASELINE SITE28_STAGE FINISH_STAGE PROJECT_FOUNDATION PACKAGE_FOUNDATION SOURCE_DIR NEW_OUTPUT`. It pins the source and selected direct objects, checks the axiom reports for `sorryAx`, rejects overlapping machine objects and machine-specific fallback roots, and verifies input objects unchanged. The retained stage and general foundation objects require their preceding replays or independent provenance.
+
+The theorem is an all-model finite physical-run segment, not a native iPRA sentence, an arbitrary-length source simulation, or a consistency implication.
