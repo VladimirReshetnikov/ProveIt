@@ -1,0 +1,5 @@
+import PA194ClosedSepTheoryModel
+#print axioms PA194ModelLogic.sepRootPure_shift_fixed
+#print axioms PA194ModelLogic.closedSepTheoryDelta
+#print axioms PA194ModelLogic.closedSepTheory_class
+#print axioms PA194ModelLogic.closedSepTheory_refutation_target
