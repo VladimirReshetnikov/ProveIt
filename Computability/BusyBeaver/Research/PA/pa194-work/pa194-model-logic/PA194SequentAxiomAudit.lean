@@ -1,0 +1,10 @@
+import PA194TranslatedSequent
+#print axioms PA194FormulaDispatcher.contextAxiomDerivation_graph
+#print axioms PA194FormulaDispatcher.contextAxiomDerivation_valid
+#print axioms PA194FormulaDispatcher.translatedSequent_graph
+#print axioms PA194FormulaDispatcher.translatedSequent_mem
+#print axioms PA194FormulaDispatcher.translatedSequent_valid
+#print axioms PA194FormulaDispatcher.compileAxiom_graph
+#print axioms PA194FormulaDispatcher.compileAxiom_defined
+#print axioms PA194FormulaDispatcher.compileAxiom_valid
+#print axioms PA194FormulaDispatcher.compileAxiom_sequent
