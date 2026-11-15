@@ -1,0 +1,8 @@
+import PA194ModelExEqualityDiagonal
+#print axioms PA194ModelLogic.targetEq_to_neighborhood_of_vacuity
+#print axioms PA194ModelLogic.targetExistsNeighborhoodLeft_of_eqVacuity
+#print axioms PA194ModelLogic.targetExistsNegNeighborhoodLeft_of_eqVacuity
+#print axioms PA194ModelLogic.targetExistsNeighborhoodRight_of_eqVacuity
+#print axioms PA194ModelLogic.targetExistsNegNeighborhoodRight_of_eqVacuity
+#print axioms PA194ModelLogic.simRuleExs_equalityCode_of_eqVacuity
+#print axioms PA194ModelLogic.simRuleExs_negativeEqualityCode_of_eqVacuity
