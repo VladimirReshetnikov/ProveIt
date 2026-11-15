@@ -9,3 +9,5 @@ Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-axioms/check-bad-ord
 ```
 
 Choose a fresh output for another run.
+
+The source has since been strengthened with a uniform proof-code graph. The checker above now runs the [stronger audit](BAD-ORDINAL-ELIMINATE-UNIFORM.md).
