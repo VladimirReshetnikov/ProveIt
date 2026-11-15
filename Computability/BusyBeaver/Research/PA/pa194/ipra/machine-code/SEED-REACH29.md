@@ -1,0 +1,7 @@
+# PA194 blank tape to the site-29 source frame
+
+`PA194SeedReach29.blankToSite29` composes the kernel-certified 58,154-step blank-tape startup with the site-25 zero branch, the site-27 positive decrement, and the complete site-28 increment. It proves the resulting state-24 frame uses the actual site-29 path, with exact nested stepper clocks and the startup's complete 25-spare suffix extended by the one new spare written during increment. The auxiliary theorems `site29Register0` and `site29Register8` prove that the resulting logical registers 0 and 8 both equal 1 in every candidate PRA model.
+
+`check-seed-reach29.sh` recompiles the composition against the retained coherent site-27 baseline, the documented site-28 stages, the completed site-28 instruction stage, and the separately verified blank-to-site-28 seed stage. It pins direct imported objects and source, checks required axiom reports for `sorryAx`, rejects overlapping machine objects and machine-specific fallback roots, and checks all input objects remain unchanged. Invoke with `REPO SITE27_BASELINE SITE28_STAGE CODE_STAGE ROUND_STAGE SEED_STAGE FINISH_STAGE COMPLETE_STAGE PRIOR_SEED_STAGE PROJECT_FOUNDATION PACKAGE_FOUNDATION SOURCE_DIR NEW_OUTPUT`. Every prior stage and the general foundation objects must independently be reproduced or trusted.
+
+This is an all-model finite execution. It does not itself prove a native iPRA sentence, a general source-run simulation, or either direction of the desired consistency/nonhalting equivalence.
