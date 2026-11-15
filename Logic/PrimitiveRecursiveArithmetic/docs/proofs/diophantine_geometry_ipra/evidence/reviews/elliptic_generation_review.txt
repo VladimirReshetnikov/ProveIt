@@ -1,0 +1,103 @@
+Independent audit of sections/06_obstructions.tex and 07_generation.tex
+Reviewer: descent agent
+Status: Mathematical arguments PASS. One explicit validity hypothesis and
+one update-order clarification are requested in Section 07 (communicated
+to root; not independently edited here).
+
+A. Local congruence certificates
+A primitive integral vector reduces to a unimodular residue vector:
+a common divisor of m and all residues divides all original coordinates.
+This works for composite m and is stronger than merely requiring a nonzero
+residue vector. Polynomial congruence preservation is finite arithmetic.
+The mod-9 obstruction for X²+Y²=3Z² is correct: mod 3 first forces X,Y
+to be multiples of 3; then 3Z²=0 mod 9 forces Z a multiple of 3. The
+stated two nonzero mod-3 vectors are exactly (0,0,1),(0,0,2).
+No local-to-global converse is assumed.
+
+B. Smoothness condition
+For the homogeneous cubic Y²Z-X³-AXZ²-BZ³, the Z derivative at [0:1:0]
+is 1. In the affine chart, singularity gives y=0, A=-3x² and B=2x³,
+so 4A³+27B²=0. The stated nonzero condition therefore suffices for
+nonsingularity. The denominator and enumeration theorems correctly
+remain valid without the nonsingularity hypothesis.
+
+C. Square/cube denominators
+With x=a/q reduced and q>0, T=a³+Aaq²+Bq³ satisfies gcd(T,q)=1
+because T=a³ modulo q and gcd(a,q)=1. Consequently T/q³ is reduced.
+For reduced y=c/e, c²/e² is also reduced. Cross multiplication plus
+coprimality gives e²=q³ and c²=T. This conclusion is valid also for
+y=0: a zero reduced numerator forces denominator 1, hence q=e=1.
+The positive-integer factorization lemma then proves q=d²,e=d³
+from 2 v_p(e)=3 v_p(q): every exponent in q is even and the exponent
+in e is three times its half. All factorization inputs are positive,
+all loops are bounded, and the code's d=isqrt(q) is justified by the
+proved perfect-square property. Taking b=c preserves the sign of y.
+Uniqueness follows from uniqueness of the reduced denominator of x
+and the positive square root d; it is not merely uniqueness up to sign.
+
+D. Bounded elliptic search
+H(x)=max(|a|,d²) because gcd(a,d)=1. Thus the loops
+1<=d<=floor sqrt(T), -T<=a<=T are complete. A square root b0 of W
+must be coprime to d: any prime common to them divides a³ modulo p,
+then divides a, contradicting gcd(a,d)=1. This also handles b0=0,
+which forces d=1. Different (a,d) give different reduced x coordinates,
+and the only sign duplicate is b0=0, explicitly handled.
+The upper bound W<=(1+|A|+|B|)T³ and root bound CT² for T>=1,C>=1
+are correct. The stated output count is an upper bound even after
+filters and zero-sign deduplication. The only point at infinity is O.
+
+Independent executable comparison: for all 49 coefficient pairs
+A,B in {-3,-2,-1,0,1,2,3}, enumerated all 799 rational x values of
+height <=25 directly using ordinary reduced denominators q<=25,
+without assuming those denominators are squares. Tested whether the
+reduced rational x³+Ax+B has square numerator AND square denominator,
+and formed the exact rational roots. This independent list agreed
+with geometry.elliptic_points_xheight on every curve, for 239 affine
+points counted across the 49 curves. Every retained x denominator
+was d² and its corresponding y denominator was d³. No duplicate
+output appeared. These are implementation checks, not a substitute
+for the denominator proof.
+
+E. Finite generation
+The descent rank r(Q)=h(Q) dotminus T is nonnegative. In every active
+step h(Q)>T and h(D(Q))<h(Q), so r decreases by at least 1; once it is
+zero the stopped state remains fixed. Therefore exactly
+h(P) dotminus T stages suffice, including the zero-fuel case. The
+invariant P=m^k Q+sum_i a_i r_i is preserved when the OLD state's
+index i(Q) receives the increment m^k and then k increases. Final Q
+has height <=T and is found in the supplied S by bounded equality
+search. Coefficients are indeed nonnegative, and their stated bound
+sum_{j<=h(P)}m^j also bounds the coefficient m^k of the terminal
+small point. D, i and all group operations are fixed primitive
+recursive functions, so their numerically fuelled iteration is
+primitive recursive even if code lengths grow. The argument does
+not choose preimages from an unspecified quotient.
+The sufficient inequality 2h(D(P))<=h(P)+T correctly implies strict
+decrease when h(P)>T.
+
+Requested precise clarifications in the theorem/pseudocode:
+1. Change 'finite lists R=..., S=...' to 'finite lists OF VALID GROUP
+   ELEMENTS'. This matters formally: group identities can only be
+   applied to valid r_i, and all output generators must lie in the
+   represented group. Completeness of S alone does not explicitly
+   assert validity of every element of R. The intended meaning is
+   clear, but it should be a written hypothesis.
+2. In an active step first save j=i(Q) and Q'=D(Q) from the old Q;
+   then update a_j by m^k, replace Q by Q', and increase k. Current
+   prose can be read as replacing Q before computing i(Q), which
+   would use the wrong representative. The displayed invariant
+   unambiguously uses the old index, so this is a wording fix.
+Optional precision: item 2's selector condition should say 'for a
+VALID P with h(P)>T', since validity is the actual induction invariant.
+
+F. Foundational strength
+Section 01's trial-division infrastructure is sufficient for the
+square/cube exponent argument. Prime-divisor existence is a bounded
+least-divisor calculation; exponent counts and product uniqueness
+are bounded finite statements with Boolean characteristic functions.
+The descent proof uses quantifier-free state identities and rank
+inequalities. No unrestricted induction, minimization, choice, real
+height, general Mordell-Weil theorem, or universal PR evaluation is
+used. The manuscript correctly separates this supplied-data
+finite-generation theorem from a construction of such data for all
+elliptic curves.

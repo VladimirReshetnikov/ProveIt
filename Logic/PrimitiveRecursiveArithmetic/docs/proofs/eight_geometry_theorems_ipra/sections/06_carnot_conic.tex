@@ -1,0 +1,116 @@
+\section{Carnot's conic theorem}
+
+\subsection{Constructive statement}
+
+Use the same barycentric triangle $A=(1,0,0)$, $B=(0,1,0)$, $C=(0,0,1)$.  Let
+\begin{align*}
+D_i&=(0,d_i,e_i)\in BC,\\
+E_i&=(a_i,0,c_i)\in CA,\\
+F_i&=(p_i,q_i,0)\in AB,
+\end{align*}
+for $i=1,2$.  Assume all twelve displayed coordinates are nonzero and each pair on a side consists of distinct projective points.  Then the six points lie on one possibly degenerate conic avoiding $A,B,C$ if and only if
+\[
+\prod_{i=1}^{2}
+\frac{BD_i}{D_iC}
+\frac{CE_i}{E_iA}
+\frac{AF_i}{F_iB}=1.
+\]
+In division-free form this is
+\begin{equation}\label{eq:carnot-condition}
+(e_1e_2)(a_1a_2)(q_1q_2)
+=(d_1d_2)(c_1c_2)(p_1p_2).
+\end{equation}
+
+The qualification ``avoiding the vertices'' is not an artificial strengthening.  Under the usual hypotheses of two distinct nonvertex points on every side, a conic through all six cannot contain a side as a component, and hence cannot pass through a triangle vertex: its restriction to that side would otherwise have three distinct projective roots.  For the arithmetized theorem it is cleaner to include the equivalent nonzero diagonal-coefficient condition explicitly.
+
+\subsection{Forward implication}
+
+Let
+\[
+Q(x,y,z)=ux^2+vy^2+wz^2+s yz+t zx+r xy
+\]
+be a conic through all six points, with $u,v,w\ne0$.
+
+On $BC$ the restriction is
+\[
+h_D(y,z)=vy^2+s yz+wz^2.
+\]
+Apply the binary quadratic lemma to $D_1,D_2$.  Their distinctness gives
+\[
+v(d_1d_2)=w(e_1e_2),
+\qquad
+\frac{e_1e_2}{d_1d_2}=\frac vw.
+\]
+On $CA$, the restriction is
+\[
+h_E(x,z)=ux^2+t zx+wz^2,
+\]
+and the same calculation, now viewing $x/z$ as the side parameter, gives
+\[
+u(a_1a_2)=w(c_1c_2),
+\qquad
+\frac{a_1a_2}{c_1c_2}=\frac wu.
+\]
+On $AB$,
+\[
+h_F(x,y)=ux^2+rxy+vy^2,
+\]
+so
+\[
+v(q_1q_2)=u(p_1p_2),
+\qquad
+\frac{q_1q_2}{p_1p_2}=\frac uv.
+\]
+Multiplying the three ratios yields
+\[
+\frac vw\frac wu\frac uv=1.
+\]
+This proves \eqref{eq:carnot-condition} without invoking Vieta's formulas as a black box.  The only cancellation is by explicitly nonzero projective determinants and diagonal coefficients.
+
+\subsection{Converse: an explicit conic witness}
+
+The converse is often presented as ``choose compatible diagonal coefficients, then recover the mixed coefficients from the root sums.''  The following construction is stronger: it uses no division at all.
+
+Set
+\[
+D_y=d_1d_2,\quad D_z=e_1e_2,
+\qquad E_x=a_1a_2,\quad E_z=c_1c_2,
+\qquad F_x=p_1p_2,\quad F_y=q_1q_2.
+\]
+Assume
+\[
+D_zE_xF_y=D_yE_zF_x.
+\]
+Define
+\begin{align*}
+u&=D_yE_zF_y,\\
+v&=D_zE_xF_y,\\
+w&=D_yE_xF_y,\\
+s&=-E_xF_y(e_1d_2+d_1e_2),\\
+t&=-D_yF_y(c_1a_2+a_1c_2),\\
+r&=-D_yE_z(q_1p_2+p_1q_2).
+\end{align*}
+All of $u,v,w$ are nonzero.  Consider the quadratic $Q$ with these coefficients.  Its restriction to $BC$ factors identically as
+\begin{align*}
+Q(0,y,z)
+&=E_xF_y(e_1y-d_1z)(e_2y-d_2z).
+\end{align*}
+Therefore $Q(D_1)=Q(D_2)=0$.  Likewise
+\[
+Q(x,0,z)=D_yF_y(c_1x-a_1z)(c_2x-a_2z),
+\]
+so $Q(E_1)=Q(E_2)=0$.
+
+Finally, the product condition rewrites the coefficient $v$ as
+\[
+v=D_yE_zF_x.
+\]
+Hence
+\[
+Q(x,y,0)=D_yE_z(q_1x-p_1y)(q_2x-p_2y),
+\]
+and $Q(F_1)=Q(F_2)=0$.  Thus the displayed coefficients are a concrete conic witness through all six points.  Since $Q(A)=u$, $Q(B)=v$, and $Q(C)=w$, the conic avoids the vertices.
+
+\subsection{Why this proof is especially suitable for \texorpdfstring{$\ipra$}{iPRA}}
+
+The converse does not search a six-dimensional coefficient space and does not solve a linear system by Gaussian elimination.  It computes six coefficients by fixed polynomial terms.  Verification consists of three factorization identities and one use of the input product equality.  The witness term is therefore primitive recursive and small enough to be checked directly by the native equational calculus of \texttt{ConciseIPRA}.

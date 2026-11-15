@@ -1,0 +1,134 @@
+\section{Heights, finite point lists, and rational roots}
+\label{sec:heights}
+
+\subsection{An exact arithmetic form of Northcott finiteness over \texorpdfstring{$\Q$}{Q}}
+
+For a canonical primitive vector $x$, define the multiplicative height
+\[
+                 \Ht([x_0:\cdots:x_n])=\max_i |x_i|.
+\]
+It is a positive integer. For $r=a/b$ in lowest terms with $b>0$,
+$\Ht(r)=\max(|a|,b)$, by identifying $r$ with $[a:b]$.
+We use no logarithms or real-valued heights.
+
+\begin{theorem}[Bounded-height enumeration]\label{thm:northcott}
+There is a primitive recursive algorithm $\mathcal L(n,B,F_1,\ldots,F_s)$
+whose output is a duplicate-free list of exactly the points
+\[
+ \{P\in\PP^n(\Q):\Ht(P)\le B,\ F_1(P)=\cdots=F_s(P)=0\},
+\]
+for homogeneous integral input polynomials. Its length is at most
+$(2B+1)^{n+1}$. Its correctness is provable in $\iPRA$.
+\end{theorem}
+\begin{proof}
+Visit each vector in $[-B,B]^{n+1}$ in a fixed lexicographic order. Retain
+it exactly when its gcd is one, its first nonzero entry is positive, and all
+polynomial values vanish. There are precisely $(2B+1)^{n+1}$ visits. Every
+retained vector is a point of the required height on the locus. Conversely
+the canonical vector of any required point belongs to this box and passes
+every test. Uniqueness is Lemma~\ref{lem:normalize}.
+
+For $B=0$ the only visited vector is zero, which is rejected. For $B\ge1$,
+an explicit numerical implementation uses a visit counter with base
+$(2B+1)$ digits of length $n+1$; subtract $B$ from each digit. The output
+list and its length are maintained by a bounded recursion. Polynomial
+evaluation on the box satisfies
+\[
+    |F(x)|\le \|F\|_1\max(1,B)^{\deg F},\qquad
+    \|F\|_1=\sum_{\alpha}|c_\alpha|,
+\]
+because each monomial is bounded by the corresponding power. This estimate
+also bounds coefficient-weighted monomials and their partial sums. A raw
+monomial computation is bounded by $\max(1,B)^{\deg F}$; list codes are
+bounded separately by iterating the fixed pairing function for the stated
+number of visits. With the input point as an extra parameter,
+the invariant ``if its visit has occurred and it passes the tests, it is in
+the retained list'' is bounded. This proves completeness using the Boolean
+induction of Section~\ref{sec:foundations}.
+\end{proof}
+
+The theorem is the rational, fixed-field form of the height finiteness
+principle. It supplies a complete list below a \emph{given} height, not an
+upper bound for all points of every variety. Those are different assertions.
+When $B=0$ the list is empty, as it must be.
+
+\begin{corollary}[Effective use of a global height bound]\label{cor:heightbound}
+For a homogeneous projective polynomial system $V$, suppose an integer $B$ and a proof of
+$P\in V(\Q)\Rightarrow\Ht(P)\le B$ are supplied. Then
+$\mathcal L(n,B,V)$ is the complete rational-point list. In particular,
+its emptiness decides whether $V$ has a rational point.
+\end{corollary}
+\begin{proof}
+Soundness is the previous theorem. The supplied implication reduces every
+point to its completeness clause. No search for $B$ is part of the argument.
+\end{proof}
+
+\subsection{Heights under displayed coordinate maps}
+
+\begin{proposition}[Upper height bounds]\label{prop:upperheight}
+Let $F=(F_0,\ldots,F_m)$ be homogeneous forms of degree $d$ and suppose
+the evaluated vector is nonzero at $P$. Put
+$A=\max_i\|F_i\|_1$. Then
+\[
+                 \Ht(F(P))\le A\Ht(P)^d.
+\]
+If an integral square matrix $M$ has nonzero determinant and row norm
+$\|M\|_\infty=\max_i\sum_j|M_{ij}|$, then
+\[
+ \Ht(MP)\le\|M\|_\infty\Ht(P),\qquad
+ \Ht(P)\le\|\operatorname{adj}M\|_\infty\Ht(MP).
+\]
+\end{proposition}
+\begin{proof}
+The monomial estimate above bounds the unnormalized image coordinates.
+Normalization only decreases them. For the inverse bound, apply the first
+inequality to the integral adjugate and use
+$\operatorname{adj}(M)M=\det(M)I$. Multiplication by the nonzero scalar
+$\det(M)$ fixes the projective point. The adjugate entries are finite
+determinant sums, so the constants are explicit primitive recursive data.
+\end{proof}
+
+For completeness, the adjugate identity has an elementary finite proof.
+The diagonal entry is a cofactor expansion of the determinant. An off-diagonal
+entry is a determinant with two equal rows, which is zero: pair each
+permutation summand with the summand obtained by exchanging the two row
+assignments. Their products agree and their signs are opposite. This is a
+bounded involution on a list of at most $k!$ permutations for a $k\times k$
+matrix, so its proof is available in $\iPRA$ by finite sums. This is also the
+determinant fact used in the next section.
+
+\subsection{A complete zero-dimensional example: rational roots}
+
+\begin{theorem}[Rational-root bounds and a complete list]\label{thm:roots}
+Let $f(T)=a_0+\cdots+a_dT^d$ be nonzero, with $a_d\ne0$, and let
+$k$ be the least index with $a_k\ne0$. Every nonzero rational root $p/q$
+in lowest terms, $q>0$, satisfies
+\[
+                  p\mid a_k,\qquad q\mid a_d.
+\]
+It therefore has height at most $\max(|a_k|,|a_d|)$. All rational roots
+are obtained by the finite divisor search, with $0$ included exactly when
+$a_0=0$. This search and its correctness are primitive recursive and
+provable in $\iPRA$.
+\end{theorem}
+\begin{proof}
+Remove the factor $T^k$ and write $g(T)=b_0+\cdots+b_eT^e$ with
+$b_0=a_k\ne0$ and $b_e=a_d\ne0$. For $e=0$ there is no nonzero root.
+For $e>0$, clear denominators in $g(p/q)=0$:
+\[
+       b_0q^e+b_1pq^{e-1}+\cdots+b_ep^e=0.
+\]
+All but the first summand are divisible by $p$, so $p\mid b_0q^e$.
+Coprimality of $p,q^e$ and Bezout give $p\mid b_0$. Likewise reducing
+the equality modulo $q$ yields $q\mid b_ep^e$ and hence $q\mid b_e$.
+The divisibility bounds follow because both coefficients are nonzero.
+Enumerate $-|b_0|\le p\le|b_0|$, $p\ne0$, and
+$1\le q\le|b_e|$, retain coprime pairs with these divisibilities, and
+evaluate $f(p/q)$ exactly. Soundness is the test and completeness is the
+argument just given. Finally $f(0)=a_0$ decides the zero root separately.
+\end{proof}
+
+For example $T^3-5T^2+6T$ has the complete list $0,2,3$. The zero
+polynomial is deliberately excluded: every rational would be a root. A
+nonzero constant has the empty list. These cases matter for a total
+certificate checker.

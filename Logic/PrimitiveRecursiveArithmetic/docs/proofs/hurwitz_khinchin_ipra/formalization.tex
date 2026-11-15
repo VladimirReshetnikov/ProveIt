@@ -1,0 +1,261 @@
+\section{iPRA adequacy and a clear route to complete Lean formalization}
+\label{sec:formalization}
+
+\subsection{The internal statements}
+
+Write $\operatorname{HurCert}(B,p,q,s)$ for the conjunction of the
+positive-denominator, coprimality, threshold and strict rational tests in
+\eqref{eq:hw-certificate}.  After rational arithmetic has been replaced
+by its integer-code operations, this is a quantifier-free predicate.
+For each fixed pair of primitive recursive definitions $x_s,I$, the
+argument constructs primitive recursive output terms $p(B),q(B),s(B)$.
+Its arithmetic conclusion is the iPRA sequent
+\[
+ \operatorname{Name}(x)\wedge\operatorname{Apart}(x,I)
+ \ \longrightarrow\
+ \forall B\;\operatorname{HurCert}(B,p(B),q(B),s(B)).
+\]
+Here $\operatorname{Name}$ and $\operatorname{Apart}$ are ordinary
+first-order universal formulas about the fixed rational-name functions;
+the symbols $x,I$ in this display name those definitions and are not
+variables of a new function sort.  The monotonic running maximum for $I$
+is part of the primitive recursive construction.
+
+For each fixed rational $\psi,D$, let
+$\operatorname{Mon}(\psi)$ express nonnegative monotonic values and let
+$\operatorname{Div}(\psi,D)$ be (K-D).  The metric construction supplies
+primitive recursive terms $U(N,m),M(N,m)$ and the sequent
+\[
+ \operatorname{Mon}(\psi)\wedge\operatorname{Div}(\psi,D)
+ \ \longrightarrow\
+ \forall N,m\,[N\ge1\to\operatorname{Cover}(N,m,U(N,m),M(N,m))].
+\]
+The predicate $\operatorname{Cover}$ tests that the interval list is
+correctly labelled by reduced fractions, every label has $N<q\le M$,
+each radius fits the target radius, and its rational residual length is
+less than $2^{-m}$.  Each finite-list universal condition is a Boolean
+fold, so the final predicate is quantifier-free.  The convergence
+sequent similarly asserts the finite length bound under (K-C).
+
+One can first state these as unconditional finite-transcript theorems:
+all name evaluations, modulus evaluations and algebraic checks used by a
+run are supplied as a finite table; if the table passes the requisite
+tests, the output passes the stated certificate test.  Instantiating
+the table entries with fixed primitive recursive definitions gives the
+schemata above.  This separates arithmetic correctness from any
+assumption about the source of the data.
+
+Every code operation must be total on natural numbers.  On malformed
+fractions or lists, use a designated default value and a validity bit.
+The proofs show that such defaults are never used under the hypotheses.
+The reference Python code raises exceptions on invalid inputs for
+readability; a literal compilation into PR syntax instead uses these
+totalized operations.
+
+\subsection{The induction audit}
+
+The following table gives the finite invariants needed to implement the
+human proof.  All comparisons are integer comparisons after clearing
+known positive denominators.  Bounded quantifiers in the middle column
+are to be compiled into Boolean folds as in Section~\ref{sec:foundations}.
+
+\begin{longtable}{p{0.20\textwidth}p{0.47\textwidth}p{0.23\textwidth}}
+\toprule
+Computation & Invariant & Induction index\\
+\midrule
+\endhead
+Integer and fraction routines & Sign/denominator validity; cross-product
+identities; bounded division remainder and gcd witnesses & Explicit
+arithmetic loop counter\\
+Convergents & Determinant $\pm1$; positive denominators; growth; stored
+rational enclosure has the indicated finite prefix & Prefix length\\
+Digit extraction & Fractional-linear denominator bounded away from zero;
+image enclosure avoids every relevant integer; endpoint floors agree &
+Prefix length and bounded comparison list\\
+Hurwitz selection & Chosen pair has $5C^2<1$; precision has its prescribed
+margin; selected rational error satisfies the weighted bound & Finite
+candidate scan; algebraic identities\\
+Counting rational centers & The accumulated count equals the number of
+accepted pairs; common-divisor indicators dominate the bad-pair bit &
+Bounds on $p,q,d$\\
+Dyadic estimates & Running harmonic block sum and telescoping
+inverse-square sum have the displayed bounds; $2^k\ge k^2$ for $k\ge4$ &
+Integer bound and dyadic exponent\\
+Endpoint partition & Sorted endpoints preserve the multiset; each cell
+has the correct coverage and incidence bits & Sort and finite cell index\\
+Second moment & Accumulated first and second moments satisfy the finite
+incidence identities; sum of squares is nonnegative & Cell and pair indices\\
+Mass block & Finite grouping of the original tail into dyadic blocks;
+capped partial sum dominates the capped total & Dyadic block index\\
+Gap filling & Old gaps are processed once; added intervals lie inside
+their parent gap and have correct labels; total residual length contracts &
+Frozen gap list length, then fixed round count\\
+Null covers & Padded list length obeys its geometric budget; finite
+rational locator chooses a good interval or a forbidden padded interval &
+Finite list and cover enumeration index\\
+\bottomrule
+\end{longtable}
+
+This table is not a claim that an arbitrary algorithm with a bounded
+loop automatically has an iPRA proof.  The algebraic identities,
+indicator inequalities, and preservation arguments proving these
+particular invariants are given in the preceding sections.  Their
+quantifier-free forms are precisely the instances of induction needed.
+The finite sums, products and list transformations are primitive
+recursive by their displayed recurrences and bounded enumerations.
+The large number $16384(m+1)$ of outer rounds is prescribed before the
+run.  A round is a fixed primitive recursive transformation of a finite
+state; iterating it that many times is again primitive recursion.
+New gaps are not processed by an uncontrolled recursive call in the
+same round.
+
+The real-number shorthand in the Hurwitz proof has a finite rational
+interface, as shown at the end of its extraction argument.  A formal
+implementation should prove that interface first and use name coherence
+only to supply its enclosures.  It should not build a general classical
+real-number theory inside the object language.
+
+\subsection{What was verified in the repository}
+
+The inspected repository snapshot is
+\begin{center}
+\texttt{34c4c35edc8e648e57587c6faf3a5cfdd7879777}.
+\end{center}
+Its toolchain is Lean \texttt{v4.32.0}; the mathlib manifest resolves
+\texttt{v4.32.0} to the following revision:
+\begin{center}
+\texttt{81a5d257c8e410db227a6665ed08f64fea08e997}.
+\end{center}
+The relevant namespace is \texttt{LeanProofs.ConciseIPRA}.  Its source
+directory is
+\begin{quote}\small
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/}.
+\end{quote}
+The source inspection and exact pinned URLs are recorded in
+\path{sources/repository_audit.txt} and \path{sources/source_manifest.json}.
+
+The useful existing interfaces are concrete:\begin{itemize}
+\item \texttt{PR.lean} defines the primitive recursive syntax
+\texttt{PR}, term syntax \texttt{PTm}, axiom family \texttt{PRAAx}, and
+the actual object-theory derived rule \texttt{PRA.qfInd}.
+\item \texttt{TeqReflect.lean} supplies characteristic terms
+\texttt{chi}, the reflection result \texttt{chi\_iff}, and
+\texttt{Teq.qfInd}.  Its quantified formula cases have dummy
+characteristic values, so it must not be applied directly to bounded
+quantified formulas.  The bounded-fold compiler described above is needed.
+\item \texttt{TeqPair.lean} and \texttt{TeqRec.lean} provide pairing and
+primitive-recursion machinery, including \texttt{Tm.prc},
+\texttt{Q.prc\_zero} and \texttt{Q.prc\_succ}.
+\item \texttt{BiInterpretation.lean} proves actual proof translations
+between \texttt{TeqAx} and \texttt{PRAAx}.
+\item \texttt{NativeBiInterpretation.lean} provides
+\texttt{pra\_iff\_native}, translating a \texttt{PRAAx} derivation to
+the concise native presentation.
+\end{itemize}
+
+The last bridge has the following source-level shape, with its printed
+notation expanded informally:
+\begin{lstlisting}
+(Gamma proves phi in PRAAx) <->
+  NPrf (Gamma.map NFm.ofPRA) (NFm.ofPRA phi)
+\end{lstlisting}
+It can be applied after an actual object-theory proof has been built;
+it does not turn an arbitrary ambient Lean theorem into such a proof.
+The repository README reports completed foundations without additional
+axioms or \texttt{sorry}, with metatheoretic dependencies including
+\texttt{propext}, \texttt{Quot.sound}, and, in part of the native chain,
+\texttt{Classical.choice}.  Those are dependencies of the Lean
+metatheory; the embedded iPRA derivations still use their explicitly
+defined intuitionistic rules.  We inspected the relevant source and did
+not replay repository builds in this environment.
+
+The \path{docs/drafts/} listing contains a Dirichlet/Kronecker archive,
+but its binary contents were not inspected, so no theorem from it is
+assumed.  An inspected ordinary Lean finite simultaneous-Dirichlet
+module gives a useful pigeonhole pattern; it uses a classical block and
+is not itself an embedded iPRA derivation.  Neither main proof in this
+report depends on that module.
+
+\subsection{Formalization milestones and completion criteria}
+
+\paragraph{Milestone 1: executable finite arithmetic.}
+Implement signed integer and fraction codes, finite list operations,
+bounded search, gcd, sorting and interval content.  Prove the primitive
+recursive closure certificates as well as their semantic correctness.
+The Python artifact gives an executable reference for endpoint behavior
+and certificate values; the Lean code should have independent proofs.
+
+\paragraph{Milestone 2: reference Lean theorems.}
+Prove the denominator polynomial lemma and weighted-error selector over
+$\Z$ and $\Q$.  Prove the finite center-count, overlap and second-moment
+lemmas using finite sets or lists and exact rational sums.  Polynomial
+normalization tactics can discharge the displayed identities; all
+inequalities must be proved from the explicit sign hypotheses.  Build
+the rational-enclosure version of the continued-fraction extractor.
+Do not use an imported real Hurwitz or metric approximation theorem to
+replace these finite lemmas.
+
+\paragraph{Milestone 3: the constructive algorithms.}
+Formalize the fixed-round metric state transformation, its local
+coverage invariant and contraction.  Formalize the name/modulus
+interfaces and the padded-cover locator.  At this point an ambient Lean
+theorem proves each finite specification.  This is a substantial useful
+checkpoint, but is still separate from the iPRA certification.
+
+\paragraph{Milestone 4: actual iPRA derivations.}
+Compile each fixed arithmetic definition to \texttt{PR}/\texttt{PTm}.
+Prove bounded-fold reflection inside \texttt{PRAAx}; then implement
+the invariants in the table using \texttt{PRA.qfInd}, substitution,
+equality and intuitionistic natural deduction.  The final deliverable
+for this milestone is a Lean term whose type is an actual
+\texttt{Prf PRAAx} sequent for the two displayed schemata (or a
+metatheorem generating that term from the fixed primitive recursive
+definitions and their hypotheses).  An abstract record assuming these
+derivations would only name the remaining task.
+
+\paragraph{Milestone 5: concise native presentation.}
+Apply \texttt{pra\_iff\_native} to the constructed derivation.  This uses
+the already implemented bridge and introduces no additional number
+theory.  Optional classical-comparison modules may interpret the finite
+bounds as Lebesgue statements over $\mathbb R$; keep their dependencies
+separate from the iPRA result.
+
+The included \path{lean/Blueprint.lean} records finite interfaces and
+explicit obligations.  \path{lean/FORMALIZATION_PLAN.txt} describes the
+implementation order and repository integration points.  These files
+do not claim completion of any of the above milestones beyond their
+stated definitions.  On a machine with the pinned repository environment,
+the appropriate first check is
+\begin{lstlisting}
+lake env lean /absolute/path/to/lean/Blueprint.lean
+\end{lstlisting}
+followed by the separate module builds as the obligations are discharged.
+
+\subsection{Executable checks supplied with this report}
+
+The command \texttt{python3 code/verify.py} regenerates the exact
+\path{code/verification.json} record.  Its checks include 9,830 denominator
+triples; six Hurwitz certificates for the golden ratio and $\sqrt2$;
+1,000 seeded union comparisons against an independent endpoint-cell
+calculation; 1,000 intersection comparisons; 1,000 cap inequalities;
+90 local overlap estimates; and explicit endpoint edge cases.  All
+calculations use integers and exact fractions.  These computations
+check implementations and examples; they do not replace the general
+proofs.
+
+For instance the golden-ratio example with threshold $B=10$ returns
+$p/q=233/144$ and a precision-$39$ rational certificate whose left side is
+\[
+ \frac{18446391806604141645}{18446744073709551616}<1.
+\]
+This tests a case close to the sharp constant.  The finite reduced union
+for $\psi(q)=1/q$ and $5\le q\le80$ has 1,960 labelled intervals and
+exact covered length
+\[
+ \frac{55336826409}{59204622400}.
+\]
+Neither this sample denominator cutoff nor the moderate local tests are
+claimed to instantiate the astronomical worst-case cutoff in the proof.
+The full general residual-gap algorithm and the general modulus-based
+continued-fraction extractor are specified in the manuscript; they have
+not been executed end to end by the sample program.

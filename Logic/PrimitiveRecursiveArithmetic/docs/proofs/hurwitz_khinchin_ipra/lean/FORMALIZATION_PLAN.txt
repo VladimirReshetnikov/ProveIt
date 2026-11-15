@@ -1,0 +1,174 @@
+FORMALIZATION PLAN
+Constructive Hurwitz and Khintchine in intuitionistic primitive recursive arithmetic
+
+STATUS
+Blueprint.lean is an UNCOMPILED specification scaffold. It has not been checked
+by Lean in this environment: no Lean or Lake executable was available. It
+defines finite data and records of proof obligations. None of those records
+has been instantiated; there is no completed formal proof of either main
+theorem. The file contains no axiom declarations and no sorry declarations.
+Its intended dependency is Lean 4.32.0 with mathlib v4.32.0.
+
+REPOSITORY SNAPSHOT
+ProveIt commit: 34c4c35edc8e648e57587c6faf3a5cfdd7879777.
+Mathlib resolved revision: 81a5d257c8e410db227a6665ed08f64fea08e997.
+ProveIt Lake library: ConciseIPRA.
+Sources: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA.
+Namespace: LeanProofs.ConciseIPRA.
+
+WHAT THE BLUEPRINT DEFINES
+- RatInterval: rational endpoints; reversed endpoints represent an empty cell
+  contribution in unionLength. No analytic measure object is used.
+- unionLength: sort all rational endpoints, inspect every adjacent endpoint
+  cell, and add its length exactly when some input interval covers the cell.
+  Endpoint inclusion or exclusion does not affect this finite content.
+- HurwitzCertificate B: integer p, natural q>B, coprimality, a rational
+  enclosure, and a positive rational margin in both endpoint checks
+       5 q^2 (q x - p)^2 <= 1-margin.
+  Convexity of the squared affine function is an explicit proof obligation.
+- IrrationalName: a fast coherent rational approximation sequence and a
+  supplied separation index for every rational p/q. This is a host-language
+  interface. It is not first-order quantification over functions in iPRA.
+- HurwitzExtraction: the missing certificate-producing construction and its
+  finite enclosure guarantee.
+- centers, scaleIntervals, blockIntervals: explicit finite enumerations of the
+  reduced rational centers and their small approximation intervals.
+- approximationIntervals: the entire finite target family, clipped to [0,1].
+- FiniteKernelObligations: exact mathematical statements of the missing
+  finite interval, denominator-counting, local-coverage, and convergence lemmas.
+- CoverageObligations: the missing primitive-recursion-based construction
+  expressed first as an ordinary Lean cutoff and correctness specification.
+- allBelow: a prototype Boolean bounded conjunction. Its correctness,
+  primitive recursive coding, and syntax-level reflection remain to be proved.
+
+MILESTONE 1: FINITE RATIONAL INFRASTRUCTURE
+Prove sorting preserves the endpoint multiset and produces ordered cells.
+Prove that unionLength is nonnegative, invariant under permutation/duplication,
+subadditive, and additive on families with disjoint interiors. Prove exact
+finite difference bookkeeping. Empty intervals and zero-length cells must be
+handled explicitly. Establish the finite weighted identity
+  (sum w_i)(sum w_i f_i^2) - (sum w_i f_i)^2
+    = sum_{i<j} w_i w_j (f_i-f_j)^2.
+This gives every use of Cauchy-Schwarz without invoking real integration.
+No arbitrary real-order trichotomy belongs in this layer.
+
+MILESTONE 2: HURWITZ
+Translate the article's finite continued-fraction construction into exact
+integer recurrences and rational interval propagation. Prove determinant
+identities, coprimality, denominator growth, and the sharp local inequality.
+Construct HurwitzExtraction from the supplied apartness indices, with explicit
+bounds for every digit/sign decision and every precision request.
+Prove certificate_valid by a finite algebraic convexity argument.
+For optimality, formalize the nonzero integer norm p^2-pq-q^2 and rational
+enclosures of the golden ratio; produce the explicit denominator threshold
+for every rational constant c satisfying 5*c^2<1.
+A theorem about the irrational input should expose a finite certificate and
+an explicit output bound, not merely a nonconstructive existential over reals.
+
+MILESTONE 3: KHINTCHINE
+Prove denominator_count with all rounding errors:
+  #centers >= 3LQ^2/64 - Q - (5/4)Qk,
+  sum_{d=2}^Q d^(-2) <= 3/4,
+  sum_{d=2}^{2^k} d^(-1) <= k,
+  2^k >= k^2 for k>=4.
+The conservative hypotheses 512<=k and 512<=(k:Rat)*L imply the displayed count bounds.
+Prove rational separation by Q^(-2), disjointness within a scale, and the
+pairwise overlap estimate
+  length(A_j intersect A_k)
+    <= L*t_j*t_k/16 + (5/16)*L*t_k*4^(j-k).
+Prove local_coverage by the finite moment identity and blockMass>=1.
+Use the supplied tail witness D(2^K) to obtain the dyadic block mass by
+finite condensation; capping masses at 1 preserves a total mass of at least 1.
+Enforce 2^K/4>=N as well as the gap-length condition.
+Implement one round by freezing its initial residual-gap list, processing
+each positive gap once, and then computing the new residual list.
+Iterate exactly 16384*(m+1) rounds. Verify the QF rational contraction
+invariant and the elementary bound (1-1/16384)^16384<=1/2.
+Instantiate CoverageObligations and prove finite_convergence separately.
+
+MILESTONE 4: PRIMITIVE RECURSIVENESS
+Host-language structural recursion or termination is insufficient.
+Give explicit PR codes for fixed input functions and every operation:
+signed integers, positive-denominator fractions, list coding, endpoint sorting,
+finite sums, gcd, bounded search, rational comparisons, powers, bitlength,
+interval unions/differences, each frozen-gap fold, and the fixed-round iterate.
+The mathematical schema is for each fixed PR psi and fixed PR modulus D.
+There is no primitive recursive universal evaluator for arbitrary PR syntax.
+The host function fields in the blueprint must therefore be instantiated with
+fixed definitions, or replaced by finite input tables and checked evaluations.
+The supplied tail modulus is an assumption; bare divergence does not itself
+supply a primitive recursive modulus.
+
+MILESTONE 5: ACTUAL EMBEDDED iPRA DERIVATIONS
+This is a separate milestone from ordinary Lean proofs over Nat or Rat.
+
+Verified repository APIs:
+- PR.lean defines PR k (zero/successor/projection/composition/primitive recursion),
+  PTm n, PRAAx, and PRA.qfInd.
+- Deduction.lean defines the intuitionistic derivation relation Prf and its
+  substitution, weakening, implication, quantifier, and equality rules.
+- TeqReflect.lean defines chi, chi_iff and Teq.qfInd for quantifier-free formulas.
+  WARNING: chi's quantified cases are dummy values. It is not already a
+  compiler for bounded quantified formulas.
+- TeqPair.lean and TeqRec.lean provide scalar pairing and counter-aware recursion
+  when choosing the Teq route instead of direct PR syntax.
+
+For each fixed finite predicate:
+1. Build its characteristic PR term.
+2. Replace bounded universal/existential quantifiers by bounded Boolean folds
+   or bounded first-witness functions.
+3. Prove the fold's object-theory specification by PRA.qfInd.
+4. Express every algorithm invariant as a QF formula, or one Boolean equation.
+5. Construct an actual Prf PRAAx derivation using those invariants.
+6. Clear positive rational denominators in emitted formulas.
+7. Keep universally quantified monotonicity and modulus assertions in the
+   context; instantiate them at computed terms. The QF restriction applies
+   to induction formulas, not to every hypothesis in the context.
+
+The required terminal statement has the form
+  iPRA |- (Mon(psi) and Div(psi,D)) ->
+    forall N,m, N>=1 ->
+      finiteUnionLength(N,H(N,m)) >= 1-2^(-m),
+with rational arithmetic expanded into its numerical coding.
+The Hurwitz terminal statement similarly returns a coded finite certificate.
+Do not assert that the truth of an ordinary Lean theorem has automatically
+produced either of these derivations.
+
+MILESTONE 6: EXISTING CONCISE PRESENTATION BRIDGE
+The following exact theorem was inspected in
+ConciseIPRA.NativeBiInterpretation:
+
+namespace LeanProofs.ConciseIPRA
+theorem pra_iff_native {Gamma : List (Fm PTm n)} {phi : Fm PTm n} :
+    (Gamma |- [PRAAx] phi) <->
+      NPrf (Gamma.map NFm.ofPRA) (NFm.ofPRA phi)
+
+Here the ASCII turnstile is explanatory notation for the source's Unicode
+notation. The actual Lean declaration name is
+  LeanProofs.ConciseIPRA.pra_iff_native.
+After obtaining an embedded PRAAx derivation, apply the forward direction.
+For a closed statement, the destination is
+  NPrf [] (NFm.ofPRA statement).
+The alternative verified route is an actual TeqAx derivation followed by
+teq_iff_pra and then pra_iff_native.
+No new number theory is required for this last translation.
+
+MILESTONE 7: OPTIONAL EXTERNAL ANALYTIC INTERPRETATION
+Interpret the finite-content estimates as the conventional Lebesgue
+null/full-measure assertions in a separate module. A constructive positive
+infinitely-many corollary should take an explicit avoidance index for padded
+finite bad covers and extract witnesses by rational approximation.
+Do not remove double negations with Markov's principle, and do not equate
+negative membership outside a countable null set with a supplied avoidance
+index. The collection of PR real names is not itself a measure-one universe.
+
+VALIDATION GATES
+- First elaborate and repair this uncompiled scaffold against the pinned
+  Lean/mathlib versions.
+- Build one narrowly scoped module at a time.
+- Separate the ordinary Lean theorem list from the embedded PRAAx theorem list.
+- Inspect #print axioms for completed end theorems; keep any meta-level
+  dependency distinct from the rules of the embedded intuitionistic theory.
+- Report exactly which obligation records have been instantiated.
+No completion claim is justified by this blueprint alone.
+

@@ -1,0 +1,437 @@
+REPOSITORY AUDIT AND LEAN ROADMAP
+Task: constructive Hurwitz and Khintchine in intuitionistic PRA
+Inspection date: 2026-11-15
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+Pinned commit: 34c4c35edc8e648e57587c6faf3a5cfdd7879777
+Commit timestamp: 2026-11-15T20:46:32Z
+Commit title: Prove strict-cut edges and predecessor typing
+
+SCOPE AND VERIFIED INPUTS
+I inspected the ConciseIPRA directory, its README, the full source files PR.lean,
+Scalar.lean, BiInterpretation.lean, NativeBiInterpretation.lean, TeqReflect.lean,
+TeqRec.lean, TeqOrder.lean, TeqPair.lean, and Deduction.lean. I also inspected
+the root lean-toolchain, lakefile.toml, lake-manifest.json, the docs/drafts
+directory listing, and a finite simultaneous Dirichlet module. I did not
+compile these repository modules in this host. No lean or lake executable was
+available when checked. A search is not an exhaustive proof of absence.
+
+CURRENT BUILD
+lean-toolchain: leanprover/lean4:v4.32.0
+lakefile.toml: mathlib rev v4.32.0
+lake-manifest.json: mathlib resolved revision
+81a5d257c8e410db227a6665ed08f64fea08e997
+Lake library: ConciseIPRA
+Source directory: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean
+Namespace: LeanProofs.ConciseIPRA
+The README recommends one module per build invocation; the exact intended
+target is lake build +ConciseIPRA.NativeBiInterpretation.
+
+ACTUAL FOUNDATION, NOT JUST A README CLAIM
+PR.lean defines:
+  inductive PR : Nat -> Type
+    zero, succ, proj, comp, prec
+  inductive PTm (n : Nat)
+    var, app
+  inductive PRAAx : Theory PTm
+    defining equations for proj/comp/prec;
+    successor nonzero and injectivity;
+    induction for Fm.QF formulas.
+The natural-deduction derivability relation is Prf, not Lean's own implication.
+PRA.qfInd has the actual signature
+  theorem qfInd (phi : Fm PTm (n + 1)) (hphi : phi.QF)
+    (h0 : Gamma |- [PRAAx] phi[0])
+    (hS : phi :: shift Gamma |- [PRAAx] phi[S(var 0)])
+    : Gamma |- [PRAAx] all phi.
+(The displayed ASCII substitution abbreviations are explanatory; use the source
+for elaborating Lean syntax.)
+
+Scalar.lean defines TeqAx over iterator terms Tm, with the two iterator
+computation equations, numerical coverage, 0 != 1, and equation induction.
+Teq.eqInd and Teq.casesOn are concrete derived-rule APIs.
+
+BiInterpretation.lean proves:
+  biInterp : BiInterp TeqAx PRAAx
+  teq_iff_pra
+  pra_iff_teq
+  teq_roundTrip
+  pra_roundTrip
+  teq_consistent_iff.
+For example:
+  theorem teq_iff_pra {Gamma : List (Fm Tm n)} {phi : Fm Tm n} :
+    (Gamma |- [TeqAx] phi) <->
+    (Gamma.map (Fm.map fun _ => ToPRA.tau) |- [PRAAx]
+       phi.map fun _ => ToPRA.tau)
+
+NativeBiInterpretation.lean defines NFm.toPRA and NFm.ofPRA and proves:
+  native_iff_pra
+  pra_iff_native
+  native_roundTrip
+  pra_native_roundTrip
+  native_inconsistent_iff.
+The exact important route is:
+  theorem pra_iff_native {Gamma : List (Fm PTm n)} {phi : Fm PTm n} :
+    (Gamma |- [PRAAx] phi) <->
+      NPrf (Gamma.map NFm.ofPRA) (NFm.ofPRA phi).
+Thus once an actual PRAAx derivation has been constructed, it can be translated
+to the concise native presentation without reproving the number theory.
+
+USEFUL VERIFIED ARITHMETIC APIS
+TeqReflect.lean:
+  Tm.eqt is a primitive equality test.
+  chi : Fm Tm n -> Tm n is the characteristic term for a QF formula.
+  chi_zero_iff relates vanishing of chi in the Lindenbaum algebra to derivability.
+  chi_iff proves the object-theory equivalence chi(phi)=0 <-> phi.
+  Teq.qfInd derives QF induction from equation induction.
+Do not apply chi blindly to bounded quantified formulas: its quantified cases
+are deliberately dummy values. A separate bounded-fold compiler must first be
+proved correct.
+
+TeqPair.lean:
+  Tm.pair a b = 2^(a+b)+a; Tm.pfst; Tm.psnd.
+  Pairing/projection facts are proved in the Q quotient algebra.
+  This supplies one starting point for coding finite lists and machine states,
+  although a purpose-built standard PR code may be more convenient.
+
+TeqRec.lean:
+  Tm.prc, Tm.recAcc, Tm.recStep;
+  Q.prc_zero and Q.prc_succ.
+These compile counter-aware primitive recursion into the scalar iterator.
+Deduction.lean:
+  Prf.substWeaken, weaken, subst, shift, trans;
+  hyp0, hyp1, wk, ofNil;
+  implication/iff/equality derived rules and substitution.
+
+FORMAL STATUS CAVEAT
+The README reports that its own modules build without sorry or added axioms.
+It reports dependency on propext, Quot.sound, and (for part of the native
+bridge) Classical.choice; the Teq/iPRA synonymy itself is reported to use
+propext and Quot.sound only. This is the Lean metatheory's dependency list,
+not a license to add excluded middle to the embedded iPRA derivations.
+I inspected theorem source but did not independently replay those builds.
+
+OTHER REPOSITORY MATERIAL
+docs/drafts contains dirichlet_kronecker_ipra.zip (478117 bytes;
+blob SHA e28dddec250d6c146b8da349a8440ecba5b34fd5) and numerous
+other constructive-analysis archives. Their names alone do not verify their
+contents. I have not treated any theorem from an uninspected ZIP as established.
+The public GitHub file tools reject binary resources; no ZIP was downloaded
+for this audit.
+
+The module
+Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05SimultaneousDirichlet.lean
+was read in full. It proves:
+  simultaneous_small_multiplier
+    {N K M : Nat} [NeZero N] [NeZero M] (a : Fin K -> ZMod N) :
+    exists u, 0 < u and u <= M^K and
+      forall i, centeredAbs ((u : ZMod N) * a i) * M < N.
+It uses Finset.exists_ne_map_eq_of_card_lt_of_maps_to and finite-cell counting.
+This is ordinary Lean, includes a classical block, and is not an embedded
+iPRA derivation. It is a useful proof pattern, not an iPRA bridge.
+
+PROPOSED FORMALIZATION: TWO SEPARATE DELIVERABLE LAYERS
+A. Ordinary Lean reference proof of the explicitly finite theorem.
+B. Actual syntax-level derivation in PRAAx (or TeqAx followed by teq_iff_pra).
+Do not label A alone a formalization in iPRA. The user's requested outline
+can describe both and clearly identify B as remaining work.
+
+Suggested module dependency chain:
+  FiniteCodes
+    PR encodings of signed integers, positive-denominator fractions, finite
+    lists and bounded loops; executable ordering by cross multiplication.
+  RationalIntervals
+    endpoint sorting and finite interval union/difference length;
+    positivity, exact total length, finite subadditivity, atom partition.
+  FiniteArithmetic
+    bounded sums/products, gcd/reduction, determinant identities,
+    finite pigeonhole, rational finite Cauchy-Schwarz.
+  ContinuedFractions
+    convergent recursion, determinant, positive denominators, alternation,
+    rational Möbius interval propagation.
+  HurwitzFinite
+    exact polynomial three-convergent inequality; finite witness extraction;
+    golden-ratio polynomial norm lower bound.
+  KhintchineFinite
+    the supplied finite rational distribution lemma, overlap bounds,
+    finite second moment, condensation, residual-gap iteration.
+  RepresentedInput
+    certified PR fast Cauchy names plus quantitative rational apartness;
+    rational-valued monotone PR psi with convergence/divergence moduli.
+  CompilePRA
+    compile each fixed PR operation and its defining equations to PR/PTm;
+    compile each invariant to a QF equation or Boolean term;
+    build actual Prf PRAAx proofs by PRA.qfInd and natural deduction.
+  NativeBridge
+    apply pra_iff_native; no new mathematical content.
+  ClassicalComparison (optional, separate)
+    interpret the finite estimates in real/Lebesgue language to recover
+    the conventional external statements.
+
+CRITICAL FINITE-COMPILATION DETAILS
+1. Encode a bounded universal test as a PR fold of Boolean conjunctions and a
+bounded existential as a bounded least-witness search returning an option code.
+Prove the fold specification using QF induction for each fixed predicate.
+2. Rational comparisons have explicit positive denominators. Cross-multiply
+before emitting a PRA formula, so no field-division or quotient axiom is hidden.
+3. Finite measure is a sum of lengths of sorted endpoint cells. The second
+moment identity follows by counting incidences on those cells; no sigma
+algebra, integral, countable additivity, or density theorem occurs internally.
+4. All recursive algorithm invariants should be equations in a Boolean state
+test, with parameters. If a mathematical invariant is stated with bounded
+quantifiers, replace them by its proved bounded-fold characteristic function.
+5. A proof of termination of arbitrary Lean code is not a proof that the code
+is primitive recursive. Supply a syntactic PR code or an explicit closure proof
+using composition and primitive recursion.
+6. There is no primitive recursive universal evaluator for all PR functions.
+Quantification over an arbitrary syntactic PR program cannot be silently
+replaced with total primitive recursive evaluation. Use theorem schemata for
+each fixed PR psi and fixed moduli, or a finite table theorem with all queried
+values supplied as data. For external-input variants, state explicitly that
+they are oracle-relative finite proofs, not first-order quantification over
+functions inside iPRA.
+7. A proof in Lean of a theorem over Nat/Rat—even with no sorry and no
+Classical.choice—is not automatically a Prf PRAAx derivation. The QF induction
+audit and the syntax-level derivation are a distinct required final milestone.
+8. A list of unproved Lean theorem declarations or axioms only names tasks.
+If providing a scaffold, use a record of explicit lemma obligations or comments,
+and do not mark it as a completed proof.
+
+SUGGESTED EXACT FINITE SPECIFICATIONS
+For Hurwitz:
+  Inputs: finite CF digits, rational bounding interval for the complete
+  quotient/real, positive denominators, determinant and recurrence invariants.
+  Output: one candidate p/q with a rational interval certificate showing
+  5*q^4*(x-p/q)^2 < 1 throughout that interval.
+The inequality uses only rational arithmetic; sqrt(5) is an external notation.
+The productive-infinite conclusion is a separate schema extracting such
+certificates beyond every supplied denominator threshold.
+
+For Khintchine:
+  Inputs: a finite nonincreasing table of nonnegative rational psi values,
+  natural starting denominator N, rational epsilon > 0, and a finite explicit
+  mass/block witness guaranteed by the divergence modulus.
+  Output: exact rational union length of the approximation intervals for
+  N <= q <= M is at least 1-epsilon (or corresponding local interval estimate).
+The convergence half instead proves the finite-union upper bound from any
+tail N..M and a certified tail-sum estimate. The infinite null/full assertion
+is the interpretation of a family of these finite estimates.
+
+SOURCE URLS (PINNED)
+Prefix P =
+https://github.com/VladimirReshetnikov/ProveIt/blob/34c4c35edc8e648e57587c6faf3a5cfdd7879777/
+P + lean-toolchain
+P + lakefile.toml
+P + lake-manifest.json
+P + Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md
+P + Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean
+P + Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/Scalar.lean
+P + Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/TeqReflect.lean
+P + Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/TeqRec.lean
+P + Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/TeqPair.lean
+P + Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/BiInterpretation.lean
+P + Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean
+P + Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05SimultaneousDirichlet.lean
+
+No remote state was changed.
+
+
+ADVERSARIAL FOLLOW-UP AUDIT: FINITE KHINTCHINE DESIGN
+
+ASSUMPTIONS CHECKED
+For fixed primitive recursive rational psi and D:
+  psi(q) >= 0;
+  psi(q+1) <= psi(q) for q >= 1;
+  D(n) >= n and sum(q=n..D(n)) psi(q) >= 1 for n >= 1.
+The positive divergence witness is an explicit additional constructive input.
+Do not infer a primitive recursive D from the bare statement that a primitive
+recursive series diverges.
+
+LOCAL ESTIMATES
+Write Q_k = 2^k, S = sum t_k, t_k = min(Q_k psi(Q_k),1), and
+r_k = t_k/(8 Q_k^2). Suppose that in the middle half of a gap J of length L
+the selected reduced fractions with Q_k/4 < q <= Q_k number m_k, where
+  L Q_k^2/32 <= m_k <= L Q_k^2.
+Distinct reduced fractions of denominator <= Q_k are separated by 1/Q_k^2.
+Their radius-r_k intervals are pairwise disjoint and lie inside J when k
+satisfies the stated large lower bound. Let A_k be their union. Then
+  L t_k/128 <= length(A_k) <= L t_k/4.
+
+For j < k, an interval of length ell contains at most ell Q_k^2 + 1
+of the k-th scale centers. Expanding each j-th interval by r_k and multiplying
+the count by 2r_k gives
+  length(A_j intersection A_k)
+    <= m_j ((2r_j+2r_k)Q_k^2+1) 2r_k
+    <= L t_j t_k/16 + (5/16) L t_k 4^(j-k).
+This includes the t_k^2 <= t_k bound and m_j <= L Q_j^2.
+
+Finite endpoint-cell summation consequently gives, for F = sum 1_(A_k),
+  integral F >= L S/128,
+  integral F^2 <= L S^2/16 + (11/24) L S.
+When S >= 1 this is at most (25/48)L S^2.
+The finite weighted Cauchy-Schwarz identity therefore gives
+  length(union A_k) >= 48 L/(25 * 2^14) > 2^(-14)L.
+Thus the proposed local contraction constant 2^-14 has slack.
+
+DYADIC MASS
+Put n=2^K and M=D(n). Partition n..M into dyadic pieces
+[2^k,2^(k+1)-1]. Nonincrease gives each piece's sum at most
+2^k psi(2^k). Therefore the uncapped dyadic masses from K through floor(log2 M)
+sum to at least 1. Capping at 1 preserves this: if any mass is at least 1,
+that term suffices, and otherwise all terms are unchanged. These are finite
+rational cases. Going through bitlength(M) adds one harmless scale.
+
+STARTING DENOMINATOR
+The choice of K must also enforce Q_K/4 >= N, if the intended output has
+q >= N. The length condition K >= 256 ceil(1/L) alone does not enforce this
+for arbitrary N. For example impose
+  K >= max(256 ceil(1/L), N+3).
+A logarithmic bound is more efficient, but this linear bound is primitive
+recursive and more than sufficient. The selected denominators then exceed N.
+
+COUNTING LEMMA: FULL ROUNDING CHECK
+Let ell=L/2 be the middle-half length and Q=2^k, k>=256 ceil(1/L).
+For any open interval of length ell*q the number of integers in it is
+between ell*q-1 and ell*q+1. Hence the number of all pairs with
+Q/4<q<=Q and p/q in that middle half is at least
+  ell * (15Q^2/32 + 3Q/8) - 3Q/4 >= 15 ell Q^2/32 - Q.
+For each possible common divisor 2<=d<=Q, ignore the lower q bound and
+write q=dv, p=du. The number of these pairs is at most
+  ell * Q^2/(2d^2) + (ell/2+1)*Q/d.
+The union bound covers every noncoprime pair, even if it counts some twice.
+The finite identities
+  sum(d=2..Q) 1/d^2 <= 1/4 + sum(d=3..Q) 1/[d(d-1)] <= 3/4,
+  sum(d=2..2^k) 1/d <= k
+follow respectively by telescoping and dyadic grouping. Since ell<=1/2,
+the bad count is at most 3 ell Q^2/8 + (5/4)Qk. Therefore
+  m >= 3LQ^2/64 - Q - (5/4)Qk.
+For k>=4, 2^k>=k^2 by a one-step polynomial induction. The assumed
+k>=256 ceil(1/L) gives Lk>=256, so LQ>=256k>=64+80k. The rounding error
+Q+(5/4)Qk is consequently at most LQ^2/64, proving m>=LQ^2/32.
+For the upper bound, count all q<=Q and use
+  m <= ell Q^2+Q <= LQ^2,
+because LQ>=2. The middle-half interval lies strictly inside (0,1), so
+the p enumeration 0<=p<=q omits nothing. Reduced fractions are unique.
+
+GLOBAL ITERATION
+Freeze the finite list of residual gaps at the beginning of each round.
+Process each positive-length gap once, aggregate all newly selected intervals,
+then compute the new residual list. Do not recursively process newly generated
+gaps within the same round until a stopping condition happens; that would lose
+the displayed primitive recursive bound.
+With a = 2^14 and residual length R_j, each round proves
+  a R_(j+1) <= (a-1) R_j.
+After a(m+1) rounds, R <= 2^(-(m+1)).
+A QF proof of (1-c)^a <= 1/2 for c=1/a follows from the invariant
+  (1+j c)(1-c)^j <= 1
+and its one-step polynomial verification. Apply it by blocks of a rounds.
+No analytic exponential/logarithm estimate is needed.
+
+PRIMITIVE RECURSIVENESS
+Each round is a composition of PR operations:
+endpoint sorting; finite interval difference; rational arithmetic; extraction
+of all positive gaps; ceil(1/L) for a positive rational; powers of two;
+one fixed D evaluation per gap; finite enumeration of q,p; gcd tests; finite
+union of the output lists. The lists' lengths may grow enormously, but this
+does not leave primitive recursion. A fold over the list frozen at round start
+is a bounded recursion up to its computed length. The outer round count is
+the fixed PR function a(m+1).
+
+A PRECISE THEOREM SCHEMA
+For each fixed pair of PR definitions psi and D, construct a PR term H(N,m).
+After expanding rational encodings, iPRA proves the conditional sentence
+  Mon(psi) and Div(psi,D) ->
+    forall N>=1,m,
+      length(union_{N<=q<=H(N,m)}
+        union_{0<=p<=q} ((p/q-psi(q)/q,p/q+psi(q)/q) intersect [0,1]))
+        >= 1-2^-m.
+The algorithm can return selected reduced p/q intervals and a maximum
+denominator as a certificate. Inclusion in the full target family then gives
+the displayed statement.
+Mon and Div may be unbounded universally quantified hypotheses. The restriction
+to QF induction concerns the induction formula, not all formulas allowed in its
+context. Each use of Div is universal elimination at a term already computed.
+
+This is a schema over fixed definitions, not first-order quantification over
+functions and not a total evaluator for arbitrary PR syntax. Alternatively,
+state a finite-table certificate theorem whose checked queried values and
+local divergence premises are supplied in the finite input.
+
+INDUCTION AUDIT CHECKLIST WITH ACTUAL INVARIANTS
+- Sums/products/powers: equations for the partial accumulators.
+- Monotonicity along a finite range: psi(n+t) <= psi(n), QF in n,t.
+- Gcd and quotient: Boolean checks of finite division recurrences.
+- Coprime counting: finite counts and divisor-sum bounds, QF arithmetic.
+- Pairwise separation/disjointness/sortedness: bounded conjunctions over
+  finite-list indices, compiled to a Boolean equality.
+- Interval length: accumulated lengths after sorting each endpoint, with the
+  incidence pattern on every already processed cell.
+- Second moment: finite polynomial identity
+    W B - A^2 = sum_{i<j} w_i w_j (f_i-f_j)^2,
+  where W=sum w_i, A=sum w_i f_i, B=sum w_i f_i^2.
+  All weights are rational and nonnegative; clear positive denominators.
+- Bounded witness selection: first-success index or a sentinel, with an
+  invariant recording that earlier tested positions failed.
+- Dyadic condensation: bounded blocks and partial rational mass sums.
+- Local-to-global coverage: the Boolean conjunction of all frozen-gap
+  certificates plus the accumulated exact rational length.
+- Repetition: a^j R_j <= (a-1)^j, or a rescaled equivalent; QF once R_j
+  is the PR state-output term.
+Every bounded quantifier in these descriptions must actually be replaced by
+a proved PR-fold characteristic function before invoking PRA.qfInd.
+Do not induct on an arbitrary real parameter; all internal geometry is on
+finite rational endpoint cells.
+
+EFFECTIVE NULLNESS VERSUS POSITIVE INFINITELY-MANY WITNESSES
+Let A_q(x) be the strict target approximation predicate.
+The classical exceptional set is
+  E = exists N, forall q>=N, not A_q(x).
+Knowing merely not E intuitionistically gives
+  forall N, not not (exists q>=N, A_q(x)),
+not actual witnesses. Removing these double negations requires a principle
+such as Markov's principle in the relevant semidecidable setting. It is not
+an axiom of iPRA. The report should not silently identify the two conclusions.
+
+A stronger and useful constructive corollary CAN be obtained from the finite
+coverage algorithm:
+1. For each m,N, choose a finite approximating block with uncovered length
+   at most 2^(-(m+N+c)), where c is a fixed slack constant.
+2. Compute its finite closed complement B_(m,N), adding the two endpoints
+   {0,1} if convenient. Cover each closed component by a rational open
+   interval with a positive rational padding delta_(m,N). Choose the total
+   added length at most the same budget. Let V_(m,N) be this finite open cover.
+3. Define U_m as the effectively enumerated union over N>=1 of V_(m,N).
+   Finite partial-union length estimates and a geometric series give
+   length(U_m) <= 2^-m externally. Internally the code enumerates rational
+   intervals and proves all its finite length budgets.
+4. GIVEN an explicit m and the avoidance premise x notin U_m, one can find
+   a positive approximation witness for every N by a bounded computation.
+   Approximate x to error < delta_(m,N)/4. If that rational approximation
+   fell within the delta/2-padded finite bad cover, then x would lie in V,
+   contradicting avoidance. The rational approximation therefore lies away
+   from every bad component, and a finite rational scan finds one of the
+   good target intervals with a strict margin. This uses only decidable
+   rational comparisons and the supplied Cauchy modulus, not Markov.
+   Equivalently, implement a finite rational cover by bad padded intervals
+   and strictly good intervals and compute its positive rational mesh bound.
+
+Two distinctions are essential:
+- An explicit m with x notin U_m is stronger constructively than the negative
+  statement x notin intersection_m U_m.
+- The metric theorem is a theorem about finite interval content. Interpreting
+  it as a Lebesgue theorem about all real numbers is external. One should not
+  speak as if the collection of PR Cauchy names itself carried Lebesgue
+  measure one; externally that collection is countable.
+The positive corollary is uniform relative to a real's supplied approximation
+oracle. If that name is a fixed PR function, the witness operation is PR as well.
+
+CONSTRUCTIVE-REAL COMPLEMENT CAUTION
+For arbitrary constructive reals, not(a<x<b) does not by itself give the
+disjunction x<=a or x>=b. Thus compute the finite bad-interval list by rational
+endpoint arithmetic, and avoid relying on a case split asserting exact real-set
+complement equality. Positive padding makes the required assertion robust:
+a sufficiently accurate rational approximation falls in one member of a finite
+rational cover by good intervals and padded bad intervals; this is a decidable
+finite scan. A failure premise excludes good intervals; an avoidance premise
+excludes padded bad intervals. Both desired directions then follow without
+any nonconstructive real-order trichotomy.
+
+

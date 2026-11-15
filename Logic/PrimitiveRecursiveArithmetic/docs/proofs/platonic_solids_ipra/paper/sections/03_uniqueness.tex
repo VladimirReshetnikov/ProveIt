@@ -1,0 +1,411 @@
+\section{Uniqueness of the five incidence patterns}\label{sec:maps}
+
+The graph of a convex polyhedron is simple: there are no loops or
+multiple edges. Two distinct facets share at most one edge, since
+their intersection is a convex subset of their common line. We use
+the cyclic order at each vertex, supplied by its convex vertex figure.
+
+For $(p,q)=(3,3)$, there are four vertices of degree three. The graph
+is $K_4$, and its four triples are precisely the four faces. This is
+the tetrahedral pattern.
+
+For $(p,q)=(3,4)$, there are six vertices of degree four. Each vertex
+has exactly one nonneighbor among the other five vertices, so
+nonadjacency pairs the vertices into three disjoint pairs. The graph
+is $K_{2,2,2}$. Its triangular cliques choose one vertex from each
+pair, giving eight triples. There are eight faces, so all these
+triples are faces. This is the octahedral pattern.
+
+\subsection{The twelve-vertex, valence-five case}
+
+Here all faces are triangles, every vertex has degree five, and
+$V=12$. We first show that \emph{every three-cycle is a face}.
+Otherwise choose a nonfacial three-cycle. By the triangular separation
+argument of Section~\ref{sec:euler}, it has $k>0$ vertices on one side
+and $l>0$ on the other, with $k+l=9$. No edge crosses its boundary,
+so interior vertices retain their full degree five. Applying
+Lemma~\ref{lem:disk} on either side gives $e_{II}=2k$. Simplicity gives
+\[
+ 2k\leq\binom k2.
+\]
+The four cases $k=1,2,3,4$ violate this inequality; hence $k\geq5$.
+Similarly $l\geq5$, contradicting $k+l=9$.
+
+Fix a vertex $A$, with cyclic neighbors $v_0,\ldots,v_4$, subscripts
+read modulo five. Consecutive neighbors are joined. Nonconsecutive
+neighbors cannot be joined, since that would form a nonfacial
+three-cycle with $A$. Thus the neighbors induce exactly a five-cycle.
+Across the edge $v_iv_{i+1}$ from the face $Av_iv_{i+1}$, let the other
+face have third vertex $w_i$. Each $w_i$ lies outside
+$\{A,v_0,\ldots,v_4\}$: otherwise that face supplies a forbidden
+chord of the five-cycle.
+
+Adjacent $w_i$ are distinct. If $w_i=w_{i+1}=w$, the link of
+$v_{i+1}$ is already the closed four-cycle
+$A,v_i,w,v_{i+2}$, contradicting its degree five. Nonadjacent $w_i$
+are also distinct. After reversing the indexing if necessary, a
+nonadjacent coincidence is $w_i=w_{i+2}=w$. Then
+$wv_{i+1}v_{i+2}$ is a three-cycle. It is not a face, because the two
+faces on $v_{i+1}v_{i+2}$ have third vertices $A$ and $w_{i+1}$,
+both different from $w$. This is again impossible.
+
+We now have eleven distinct vertices $A,v_0,\ldots,v_4,w_0,\ldots,w_4$;
+call the remaining vertex $B$. At $v_i$, the five already known
+neighbors are
+\[
+ A,\ v_{i-1},\ v_{i+1},\ w_{i-1},\ w_i.
+\]
+The cyclic link is exhausted, forcing the face $v_iw_{i-1}w_i$ and
+the edge $w_{i-1}w_i$. Neither $A$ nor any $v_i$ can have another
+neighbor. Therefore the five neighbors of $B$ must be the five
+$w_i$. Each $w_i$ has now acquired precisely five neighbors, and
+the full list of twenty faces is
+\[
+ Av_iv_{i+1},\quad v_iv_{i+1}w_i,\quad
+ v_iw_{i-1}w_i,\quad Bw_{i-1}w_i\qquad(0\leq i<5).
+\]
+This determines the icosahedral pattern, including its face cycles.
+
+\subsection{Duality supplies the other two cases}
+
+Interchange vertices and facets, keeping an edge for each old edge.
+The new cyclic incidences are the old facet boundaries and vertex
+links. This finite dual map is simple and is again a spherical
+polyhedral map. One can draw it explicitly by joining each facet
+center to its edge midpoints on the old surface; the two halves
+through each old edge form a new edge. The local polygons fill the
+vertex stars, with no crossing. Equivalently, translate an interior
+point to zero and write the facet inequalities as $a_f\cdot x\leq1$;
+the polar polyhedron has vertices $a_f$ and these reversed incidences.
+Here is a finite verification of the latter assertion. Define $Q$ by
+$v\cdot y\leq1$ for every old vertex $v$. An explicit small cube around
+zero lies in the original polyhedron, so these inequalities bound all
+coordinates of $Q$; conversely a sufficiently small cube lies in $Q$.
+A vertex $y$ of $Q$ has three linearly independent tight old vertices:
+otherwise a nonzero null direction and the finite list of strict slacks
+give two opposite feasible perturbations, contradicting extremality.
+Those vertices are affinely independent on the support plane
+$y\cdot x=1$, so that plane is an old facet and $y=a_f$.
+Conversely three affinely independent vertices of an old facet make
+$a_f$ a vertex of $Q$. At an old vertex $v$, its incident facet normals
+span three dimensions by the same perturbation test; their normalized
+points span the facet $v\cdot y=1$ of $Q$. Tight-incidence equations
+therefore reverse all incidences, including edges. This proves duality
+using finite rank and slack computations.
+
+The dual of the $(4,3)$ case is the already classified $(3,4)$ case,
+so its map is the cube. The dual of the $(5,3)$ case is the already
+classified $(3,5)$ case, so its map is the dodecahedron. Notice that
+we only use \emph{combinatorial} duality here; we do not assume in
+advance that the metric dual has regular faces.
+
+\section{Finite geometric rigidity}\label{sec:rigidity}
+
+Incidence uniqueness alone does not establish uniqueness of shape.
+We now prove the needed version of Cauchy's rigidity theorem. The
+argument is expressed using exact scalar comparisons. The corrected
+arm induction is the one of Schoenberg--Zaremba~\cite{sz}; we supply
+the finite arithmetic interpretation of its geometric constructions.
+The overall sign argument is the classical Cauchy method, also
+reviewed in~\cite{bowers}.
+
+\subsection{Elementary spherical comparisons}
+
+At a vertex, normalize the outgoing edge vectors to unit vectors.
+They lie in an open hemisphere and bound a convex spherical polygon.
+The sides encode the face angles and its angles encode the dihedral
+angles. These are finite vectors obtained by adjoining positive
+square roots. An angle or spherical distance is represented by its
+cosine, together with the sign of its positive sine when needed.
+On the interval from zero to a straight angle, comparison of angles
+is the reversed comparison of their cosines. ``Angle'' notation in
+this proof abbreviates these ordered unit-circle data, not an appeal
+to an analytic inverse cosine function.
+
+Resolving two unit vectors into their components parallel and
+perpendicular to a third gives the spherical hinge identity
+\begin{equation}\label{eq:hinge}
+ \cos c=\cos a\cos b+\sin a\sin b\cos\gamma.
+\end{equation}
+Here $a,b\in(0,\pi)$ are the fixed incident short sides, $c$ the
+opposite short side, and $\gamma\in(0,\pi)$ the included angle.
+Since $\sin a\sin b>0$, increasing $\gamma$ strictly increases $c$.
+This is an ordered-field dot-product calculation.
+
+The short-arc triangle inequality has an equally algebraic proof.
+For unit $u,v,w$, put $a=d(u,v)$, $b=d(v,w)$. Splitting $u,w$ into
+their components along $v$ yields
+\[
+ u\cdot w\geq\cos a\cos b-\sin a\sin b=\cos(a+b).
+\]
+If $a+b\leq\pi$, the reversed cosine order gives
+$d(u,w)\leq a+b$; if $a+b\geq\pi$, this is immediate from the
+definition of short distance. The required dot-product inequality
+follows from the nonnegativity of a squared norm. Angle addition is
+the multiplication law for pairs $(\cos a,\sin a)$, with finite
+sign cases selecting the half-circle. Thus these facts do not need
+real completeness or calculus.
+
+\begin{lemma}[Spherical arm comparison]\label{lem:arm}
+Let $P_1,\ldots,P_n$ and $Q_1,\ldots,Q_n$ be strictly convex spherical
+polygons in open hemispheres. Suppose the successive sides for
+$1\leq i<n$ have equal corresponding lengths, and every internal
+chain angle at $P_i$, $2\leq i<n$, is at most that at $Q_i$.
+Then $d(P_1,P_n)\leq d(Q_1,Q_n)$, strictly if any internal angle
+increases.
+\end{lemma}
+\begin{proof}
+The case $n=3$ is~\eqref{eq:hinge}. Induct on $n$. If an internal
+angle agrees, cut off the triangle at that vertex in both polygons.
+The removed triangles are congruent by two sides and the included
+angle. The new corresponding diagonal lengths agree, and identical
+triangle angles are subtracted from the neighboring polygon angles.
+All remaining inequalities, including any strict one, are preserved.
+Apply induction to the remaining convex polygons.
+
+Otherwise all internal angles increase strictly. Keep
+$P_1,\ldots,P_{n-1}$ fixed and open only the angle at $P_{n-1}$,
+preserving its distance to the moving last endpoint. Stop at its
+target angle or the first flat corner. The following paragraph
+specifies this stop by a finite calculation. Before it, the angle
+at $P_{n-1}$ in the triangle $P_1P_{n-1}P_n$ increases by the same
+amount, since the fixed diagonal lies inside the polygon wedge.
+The hinge identity therefore strictly increases the endpoint distance.
+
+Only the corners at $P_1$, $P_{n-1}$, and the endpoint can change.
+The angle at $P_{n-1}$ remains below $\pi$, as does its target.
+The endpoint cannot flatten: it would lie between $P_1$ and
+$P_{n-1}$ on their short arc, making the angle at $P_{n-1}$ in that
+triangle zero, although it has increased from a positive value.
+Thus an earlier flat corner must be $P_1$.
+
+If the target is reached without a flat corner, cut off the now
+congruent last triangles and apply the equal-angle reduction. If a
+flat corner is reached, write $X$ for the endpoint. Its great-circle
+order is $P_2,P_1,X$, so
+\[
+ d(P_2,X)=d(P_2,P_1)+d(P_1,X).
+\]
+Remove $P_1$ and apply induction to the smaller convex polygons
+$P_2,\ldots,P_{n-1},X$ and $Q_2,\ldots,Q_n$. Their chain sides agree
+and their internal angles have the required inequalities. By the
+triangle inequality,
+\begin{align*}
+ d(Q_1,Q_n)&\geq d(Q_2,Q_n)-d(Q_1,Q_2)\\
+ &\geq d(P_2,X)-d(P_1,P_2)\\
+ &=d(P_1,X)>d(P_1,P_n).
+\end{align*}
+The last strict inequality was obtained before the flat-corner
+reduction. It also handles a target and flat-corner event occurring
+simultaneously. Flat auxiliary corners are removed immediately, so
+induction is applied to strictly convex polygons.
+\end{proof}
+
+\paragraph{How to compute the first event.}
+Let $u=P_{n-1}$ and $x_0=P_n$ be unit vectors. Put
+\[
+ c=u\cdot x_0,\quad s=\sqrt{1-c^2}>0,\quad
+ e=(x_0-cu)/s,\quad f=\pm(u\times e),
+\]
+choosing the sign of $f$ that opens the angle. The relevant arc of the
+endpoint circle is parametrized by
+\begin{equation}\label{eq:circleparam}
+ x(t)=cu+s\frac{(1-t^2)e+2tf}{1+t^2}.
+\end{equation}
+For initial and target pivot angles $\alpha_0<\alpha_1<\pi$, put
+\[
+ C=\cos\alpha_1\cos\alpha_0+\sin\alpha_1\sin\alpha_0,
+ \qquad
+ S=\sin\alpha_1\cos\alpha_0-\cos\alpha_1\sin\alpha_0.
+\]
+The target is $t_*=S/(1+C)>0$, a finite constructible scalar.
+Every supporting-side determinant is
+a polynomial of degree at most two in $t$, divided by the positive
+$1+t^2$. Solve the finitely many linear or quadratic equations,
+retain roots on the directed target interval, and choose the first,
+or the target if it is earlier. Positivity before this event follows
+from factoring these polynomials and testing their signs; no infimum
+or intermediate value theorem is being invoked.
+
+For completeness, the boundary check used in the proof is finite as
+well. At a convex polygon, the vertices on one supporting great
+circle form a consecutive boundary interval. A first support equality
+at a nonconsecutive vertex would therefore flatten an intermediate
+corner. All such fixed internal corners are strictly below $\pi$.
+Coincidence of the two endpoints is excluded by the strictly increasing
+positive endpoint distance. An open hemisphere persists even at the
+first event. To verify this without a limiting argument, let $h$ be
+the sum of the inward oriented side normals at that event. All their
+vertex dot products are nonnegative. For $n\geq5$, every fixed vertex
+has a nonincident fixed side with strictly positive support. Moreover
+the three fixed normals $P_1\times P_2$, $P_2\times P_3$,
+$P_3\times P_4$ span three dimensions: the first two span
+$P_2^\perp$, while the third has positive dot product with $P_2$.
+The moving endpoint therefore cannot have zero dot product with all
+the fixed normals. Hence $h$ has positive dot product with every
+vertex. For $n=4$, the two fixed normals have common kernel
+$\operatorname{span}(P_2)$. Failure of positivity at $P_2$ or at the
+endpoint would force the endpoint to be $P_2$ or $-P_2$, making the
+opened pivot angle zero or $\pi$, both excluded. The other fixed
+vertices already have a strictly positive fixed-side support.
+
+Projection $x\mapsto x/(h\cdot x)$ thus identifies the event polygon
+with a weakly convex ordinary polygon in the plane $h\cdot x=1$.
+An extra support equality makes a consecutive boundary chain flat.
+A repeated non-end vertex would collapse such a chain and also
+flatten a fixed internal corner. Thus one of the three changing
+corners must flatten; the preceding exclusions leave only $P_1$.
+This finite boundary analysis justifies the alternative used in the
+arm proof and prevents a loss of the hemisphere condition from being
+hidden in the geometric wording.
+
+\begin{lemma}[Four sign changes]\label{lem:four}
+For two convex spherical polygons with equal corresponding sides,
+label each vertex by the sign of the difference of corresponding
+angles. Either every sign is zero, or the cyclic sequence obtained
+by deleting zeros has at least four sign changes.
+\end{lemma}
+\begin{proof}
+A cyclic sign sequence has an even number of changes. If all nonzero
+signs agree, cut the polygon at an edge not incident to a chosen
+strictly changed vertex. Lemma~\ref{lem:arm} makes the distance
+between its endpoints change strictly, although that edge length
+is fixed. If there are exactly two changes, choose corresponding
+midpoints on edges in the two transition gaps. The diagonal between
+them splits each polygon into two convex chains. On one chain the
+angle comparisons all have one sign, with a strict comparison; on
+the other they have the opposite sign. The arm lemma makes the
+same diagonal both longer and shorter. Both alternatives are
+impossible. Midpoints are normalized sums of unit vectors, so this
+construction also uses only square roots and field operations.
+\end{proof}
+
+\subsection{A sign-count argument using finite permutations}
+
+We give the combinatorial ingredient without a hidden planar
+separation theorem. A \emph{rotation graph} consists of its directed
+edges, the reversal involution, and the permutation giving the cyclic
+order at each vertex. The cycles obtained by turning at each vertex
+and traversing the next edge are the face walks. An isolated vertex
+is assigned one empty face walk. All these data are finite lists and
+permutations. For the polyhedral rotation graph they are the actual
+facet boundaries, and Euler's identity has already been proved.
+
+\begin{lemma}[Euler inheritance under edge deletion]\label{lem:rotation}
+Every connected finite rotation graph has $V-E+F\leq2$. If equality
+holds, deleting any collection of edges leaves each nonempty connected
+component, with its induced cyclic orders, satisfying $V-E+F=2$.
+\end{lemma}
+\begin{proof}
+Contract a spanning tree. A nonloop contraction merges its two vertex
+cycles and preserves face walks, while reducing both $V$ and $E$ by
+one. The result is one vertex with $m=E-V+1$ loops. Start with one
+vertex and its empty face, and insert these loops successively.
+Each insertion either merges two face cycles or splits one, so the
+final face count is at most $m+1$. Therefore $V-E+F\leq2$.
+
+Now start with equality and delete one edge. If it is not a bridge,
+the result is connected. The face-cycle splice changes $F$ by $-1$
+or $+1$, making its Euler value two or four. The bound just proved
+excludes four. If the edge is a bridge, its two directions lie on
+the same face walk: after entering the separated component that walk
+must eventually leave across the reverse direction. Deletion splits
+this walk into one in each component, with the empty-face convention
+covering isolated vertices. The sum of the two Euler values is four.
+Each is at most two, so each is two. Iterate these finite operations;
+discarding isolated components does not affect the others.
+\end{proof}
+
+\begin{lemma}[No everywhere-four-change labeling]\label{lem:signcount}
+A nonempty subgraph of a simple polyhedral graph cannot have signed
+edges with at least four cyclic sign changes at every vertex incident
+to an edge.
+\end{lemma}
+\begin{proof}
+Choose a connected component of the signed graph and delete everything
+else. By Lemma~\ref{lem:rotation}, $V-E+F=2$ for its face walks.
+Every vertex has degree at least four. Each face walk has length
+$d\geq3$: length one requires a loop, and length two in a simple
+connected graph requires the single-edge component, whose endpoints
+have degree one. A face walk of length three has at most two sign
+changes. For $d\geq4$, it has at most $d\leq2d-4$. Count changes
+at the corners, either by vertices or by face walks. Since the total
+face-walk length is $2E$, the resulting count $S$ satisfies
+\[
+ 4V\leq S\leq\sum_f(2d_f-4)=4E-4F=4V-8,
+\]
+a contradiction. Bridges and repeated vertices in face walks cause
+no difficulty: the corner count is on directed-edge occurrences.
+\end{proof}
+
+\begin{theorem}[Finite Cauchy rigidity]\label{thm:cauchy}
+Two full-dimensional convex polyhedra with isomorphic face incidences
+and congruent corresponding facets are congruent.
+\end{theorem}
+\begin{proof}
+For each corresponding edge, compare its two interior dihedral
+angles and assign $+,0,-$. This comparison is decidable: the cosine
+of an interior dihedral angle is
+$-n_1\cdot n_2/(\lVert n_1\rVert\lVert n_2\rVert)$ for outward
+facet normals. At corresponding vertices the spherical links have
+equal side lengths, namely the corresponding facet angles.
+Lemma~\ref{lem:four} therefore says that any vertex incident to a
+nonzero sign has at least four cyclic sign changes after zeros are
+omitted. Delete the zero edges. Lemma~\ref{lem:signcount} forces the
+remaining graph to be empty. All corresponding dihedral angles agree.
+
+Align one pair of congruent facets and place both polyhedron interiors
+on the same side of their plane. A neighboring facet is determined
+by its common edge, its dihedral angle, and the side prescribed by
+convexity. It must align too. Traverse a finite spanning tree of the
+face adjacency graph. Every facet and hence every vertex aligns.
+The resulting Euclidean isometry is the required congruence.
+\end{proof}
+
+\paragraph{Uniqueness of the small regular face metrics.}
+One may verify the remaining elementary polygon fact without
+trigonometric functions. Center a regular face and let $R$ be its
+cyclic rotation. In oriented orthonormal coordinates,
+$R=\left(\begin{smallmatrix}c&-s\\s&c\end{smallmatrix}\right)$,
+$c^2+s^2=1$, $s>0$, and its order is exactly $p$. Put $t=2c$;
+then $R^2-tR+I=0$. For $p=3$, the identity
+$I+R+R^2=0$ gives $t=-1$. For $p=4$, exact order four gives
+$R^2=-I$, hence $t=0$. These calculations take place in the
+two-dimensional algebra of rotation matrices, where a nonzero
+element $aI+bJ$, $J^2=-I$, is invertible by its positive norm.
+For $p=5$, divide $R^5-I$ by the invertible $R-I$ and multiply
+by $R^{-2}$. Since $R+R^{-1}=tI$, the result is
+\[
+ t^2+t-1=0.
+\]
+The negative root is less than $-1$ and violates convex order:
+for unit centered vertices $u_i=R^iu_0$,
+\[
+ \det(u_1-u_0,u_3-u_0)=2s(1-c)(t+1)>0
+\]
+is a supporting-side condition. Thus
+$t=(\sqrt5-1)/2$. In each of the three cases the edge square $L$
+fixes the circumradius square $L/(2-t)$, and $R$ fixes every remaining
+dot product. This proves uniqueness of the face distance matrix up
+to cyclic order and reflection. In particular for a pentagon the
+diagonal-square to side-square ratio is $2+t=(1+\sqrt5)^2/4$.
+
+\begin{corollary}[One shape per row of the table]\label{cor:unique}
+For each of the five pairs in Section~\ref{sec:numerical}, at most
+one similarity class of Platonic polyhedra exists.
+\end{corollary}
+\begin{proof}
+Section~\ref{sec:maps} gives a face-incidence isomorphism between
+any two members of the same case. Rescale one common edge length
+to match. The preceding calculation shows that a convex regular
+$p$-gon, for $p=3,4,5$, is determined by its side length and number
+of sides. Corresponding facets are therefore congruent, and
+Theorem~\ref{thm:cauchy} applies.
+\end{proof}
+
+The arm induction above is finite in general. For this application
+its original links have at most five sides, and the midpoint cuts
+introduce at most two more vertices. It can therefore be unrolled
+into finitely many small cases if that is preferable in a proof
+checker. The important point is that rigidity has been proved, not
+silently assumed from the five numerical patterns.

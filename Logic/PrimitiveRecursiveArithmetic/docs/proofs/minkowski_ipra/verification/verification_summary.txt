@@ -1,0 +1,58 @@
+VERIFICATION RECORD
+===================
+
+Mathematical manuscript
+----------------------
+Complete written proof of the finite inner-volume certificate theorem,
+including canonical rational/vector coding and the quantifier-free induction
+audit. The rational-polytope reduction includes a direct outer-radius bound,
+explicit shrink/mesh parameters, and an elementary finite-volume appendix.
+The closed rational equality theorem and the unrestricted-real LLPO
+obstruction are treated separately.
+
+Independent mathematical reviews covered the finite pigeonhole argument,
+mesh estimate, canonical coding interface, polytope enclosure and volume
+construction, integer-facet dilation, and real sign-choice reduction.
+
+Executable implementation
+-------------------------
+Runtime: Python 3.12.14.
+Command: python3 code/test_minkowski.py
+Result: all 9 test methods passed. Full output: python_tests.txt.
+The tests include exact examples, malformed inputs, corrupt witness metadata,
+touching box faces, negative coordinates/quotients, a fractional basis with
+negative orientation, and the smallest residue space.
+
+The certificate extractor and supplied-mesh frontend use exact integer and
+rational arithmetic. The independent checker verifies witness data without
+replaying the collision search. These tests do not replace the written proof.
+
+PDF and source build
+--------------------
+Command: make -B -C paper (three pdflatex passes).
+Result: 22-page letter-size PDF with embedded text and internal links.
+Final LaTeX log: no warnings, unresolved references, overfull boxes, or
+underfull boxes. Full build output: latex_build.txt.
+All pages were rendered and visually inspected in contact sheets; the final
+cover, single-page contents, and proof illustration were inspected at larger
+resolution. No clipped mathematical displays or unreadable figure labels
+were observed.
+
+The delivery environment lacked a prebuilt pdflatex format/font map, so they
+were generated from its installed TeX files in a temporary directory and
+selected using TEXFORMATS and TEXFONTMAPS. This is an environment setup detail;
+the supplied Makefile uses ordinary pdflatex and needs no modification on a
+normally configured TeX installation.
+
+Lean formalization status
+-------------------------
+The three Lean files are UNCOMPILED OUTLINES. No Lean/Lake executable was
+available. No completed object-language derivation Prf PRAAx [] (...) is
+claimed. The exact pinned repository interfaces, missing proof obligations,
+and completion sequence are recorded in lean/README.txt,
+lean/FORMALIZATION_STATUS.txt, and lean/sources.json.
+
+Packaging
+---------
+SHA256SUMS.txt lists the digest of every packaged file except itself.
+Temporary TeX auxiliary files and Python bytecode are excluded.

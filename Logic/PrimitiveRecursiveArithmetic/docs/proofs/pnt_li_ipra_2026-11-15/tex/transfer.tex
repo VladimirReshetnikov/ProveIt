@@ -1,0 +1,414 @@
+% Finite transfer theorems; included by the main manuscript.
+% This file deliberately has no preamble, and can be \input into the main report.
+% All prime-number information is isolated in hypothesis (H_theta).
+
+\section{A finite transfer theorem for the logarithmic integral}
+\label{sec:finite-transfer}
+
+Put
+\[
+ \vartheta(n)=\sum_{\substack{p\le n\\p\text{ prime}}}\log p,
+ \qquad \pi(n)=\#\{p\le n:p\text{ prime}\},
+ \qquad \operatorname{Li}_2(x)=\int_2^x\frac{dt}{\log t}.
+\]
+The lower limit $2$ removes the singularity at $1$.  Changing to the
+principal-value convention $\operatorname{li}(x)$ changes the answer by a
+fixed computable constant; it changes none of the error classes below.
+All statements about $n$ in this section concern integers $n\ge2$.
+The integrals and logarithms are abbreviations for their explicit rational
+approximations, as described in the foundational section.
+
+\subsection{The exact finite identity}
+
+For any finite sequence $a_2,\ldots,a_n$, let
+$A_k=\sum_{j=2}^k a_j$.  For any $b_2,\ldots,b_n$, distributivity and
+telescoping give
+\begin{equation}\label{eq:finite-abel}
+ \sum_{j=2}^n a_jb_j
+   =A_nb_n+\sum_{k=2}^{n-1}A_k(b_k-b_{k+1}).
+\end{equation}
+Indeed, the coefficient of $a_j$ on the right is
+$b_n+\sum_{k=j}^{n-1}(b_k-b_{k+1})=b_j$.
+This is an identity of finite sums over an arbitrary commutative ring;
+its proof uses only induction on the length of the sum.
+
+Set $a_j=\log j$ when $j$ is prime and $a_j=0$ otherwise, and set
+$b_j=1/\log j$.  Write
+\[
+ E_k=\vartheta(k)-k,\qquad
+ \Delta_k=\frac1{\log k}-\frac1{\log(k+1)},\qquad
+ J_n=\frac n{\log n}+\sum_{k=2}^{n-1}k\Delta_k.
+\]
+Then \eqref{eq:finite-abel} is exactly
+\begin{equation}\label{eq:pi-discrete-transfer}
+ \pi(n)-J_n=\frac{E_n}{\log n}
+                  +\sum_{k=2}^{n-1}E_k\Delta_k.
+\end{equation}
+Telescoping the definition of $J_n$ also gives
+\begin{equation}\label{eq:discrete-reference}
+ J_n=\frac2{\log2}+\sum_{k=3}^n\frac1{\log k}.
+\end{equation}
+Since $t\mapsto1/\log t$ is decreasing on $[2,n]$, the right and left
+Riemann sums on the unit partition imply
+\[
+ \sum_{k=3}^n\frac1{\log k}
+ \le \operatorname{Li}_2(n)
+ \le \sum_{k=2}^{n-1}\frac1{\log k}.
+\]
+Consequently,
+\begin{equation}\label{eq:discrete-Li-error}
+ 0\le J_n-\operatorname{Li}_2(n)\le\frac2{\log2}\le4.
+\end{equation}
+The estimates $1/2\le\log2\le3/4$ suffice everywhere below.  They follow,
+for example, by integrating $1/t$ on $[1,2]$, with the upper bound supplied
+by the trapezoid inequality for the convex function $1/t$.
+
+Two further bounds will be used:
+\begin{equation}\label{eq:delta-and-trivial}
+ 0\le\Delta_k\le\frac1{k(\log k)^2},
+ \qquad |E_k|\le3k\log k.
+\end{equation}
+For the first, use $\log(1+1/k)\le1/k$ and
+$\log(k+1)\ge\log k$.
+For the second, $0\le\vartheta(k)\le k\log k$ and
+$k\le2k\log k$ imply
+$|\vartheta(k)-k|\le\vartheta(k)+k\le3k\log k$.
+No theorem about the density of primes is used here.
+
+\subsection{Transfer of an arbitrary explicit modulus}
+
+Suppose $T:\mathbb N\to\mathbb N$ is a primitive recursive function,
+$T(r)\ge2$, and the following prime-number estimate has been established:
+\begin{equation}\tag{$H_\vartheta$}\label{hyp:theta-modulus}
+ k\ge T(r)\quad\Longrightarrow\quad
+ |\vartheta(k)-k|\le2^{-r}k
+ \qquad(r\in\mathbb N).
+\end{equation}
+This is a hypothesis of the abstract transfer lemma. In the application here
+it is supplied by Theorem~\ref{thm:theta-modulus-established}; it is not an
+extra assumption of the final theorem.
+
+\paragraph{Theorem (explicit logarithmic-integral transfer).}
+Define
+\[
+ T_\pi(m)=\max\left\{T(m+4)^2,\ 2^{16(m+5)}\right\}.
+\]
+Then
+\begin{equation}\label{eq:pi-modulus}
+ n\ge T_\pi(m)\quad\Longrightarrow\quad
+ |\pi(n)-\operatorname{Li}_2(n)|
+       \le 2^{-m}\frac n{\log n}.
+\end{equation}
+
+\paragraph{Proof.}
+Let $L=\log n$, $\delta=2^{-(m+4)}$, and
+$q=\lceil\sqrt n\rceil$.  The integer $q$ is obtained by bounded search
+for the least $q\le n$ satisfying $n\le q^2$.
+The hypothesis on $n$ gives $q\ge T(m+4)$.
+For $2\le k<q$, \eqref{eq:delta-and-trivial} gives
+$|E_k|\Delta_k\le3/\log k\le6$.
+There are at most $\sqrt n$ such indices, so their total is at most
+$6\sqrt n$.
+For $q\le k<n$, hypothesis \eqref{hyp:theta-modulus} and
+$\log k\ge L/2$ give
+\[
+ |E_k|\Delta_k\le\frac\delta{(\log k)^2}
+                         \le\frac{4\delta}{L^2}.
+\]
+There are fewer than $n$ such indices.  Applying
+\eqref{eq:pi-discrete-transfer} and \eqref{eq:discrete-Li-error},
+\begin{equation}\label{eq:raw-transfer}
+ |\pi(n)-\operatorname{Li}_2(n)|
+ \le\delta\frac nL+4\delta\frac n{L^2}+6\sqrt n+4.
+\end{equation}
+We now check the numerical margins explicitly.  The condition
+$n\ge2^{16(m+5)}$ implies $L\ge8(m+5)\ge40$.
+For $L\ge16$, $\log L\le\sqrt L\le L/4$; hence
+\[
+ \frac{\sqrt n}{L}
+   =\exp(L/2-\log L)
+   \ge\exp(L/4)
+   \ge\exp(2(m+5))\ge2^{m+5}.
+\]
+Also $4\le\sqrt n$ and $L\ge1$.  Thus the right side of
+\eqref{eq:raw-transfer} is at most
+\[
+ \left(\frac5{16}+\frac7{32}\right)2^{-m}\frac nL
+ =\frac{17}{32}\,2^{-m}\frac nL
+ \le2^{-m}\frac nL.
+\]
+The unused margin $15/32$ is helpful when replacing the analytic notation
+by rational enclosures.  This proves the theorem.
+
+\paragraph{Why the elementary logarithmic inequality is legitimate.}
+For completeness, $\log L\le\sqrt L$ for $L\ge1$ follows on writing
+$v=\sqrt L$: the function $v-2\log v$ decreases on $[1,2]$ and increases
+on $[2,\infty)$, and its value at $2$ is positive because $\log2<1$.
+Equivalently, the same assertion follows from the corresponding finite
+integral bounds; no compactness or choice is involved.
+
+\subsection{A useful stretched-exponential specialization}
+
+Suppose, for fixed positive integers $C,d$, that
+\begin{equation}\label{eq:theta-power-modulus}
+ n\ge2^{C(r+1)^d}\quad\Longrightarrow\quad
+ |\vartheta(n)-n|\le2^{-r}n.
+\end{equation}
+Take $D=\max(2C,16)$.  The transfer theorem immediately gives
+\begin{equation}\label{eq:pi-power-modulus}
+ n\ge2^{D(m+5)^d}\quad\Longrightarrow\quad
+ |\pi(n)-\operatorname{Li}_2(n)|\le2^{-m}\frac n{\log n}.
+\end{equation}
+For $d\ge3$ one may take the smaller $D=2C$, since
+$2C(m+5)^d\ge16(m+5)$.  In particular this simplification applies to
+$d=10$.
+
+The usual analytic notation for the same conclusion is
+\begin{equation}\label{eq:pi-stretched}
+ |\pi(n)-\operatorname{Li}_2(n)|
+ \le64\,\frac n{\log n}
+       \exp\left(-\frac{(\log n)^{1/d}}{2D}\right)
+ \qquad(n\ge2^{D6^d}).
+\end{equation}
+Here is a constructive derivation that does not select an integer by an
+undecidable comparison of real numbers.  Let $\ell$ be the unique integer
+with $2^\ell\le n<2^{\ell+1}$, and let $q$ be the largest integer with
+$Dq^d\le\ell$.  Both are obtained by bounded integer search.  Then
+$q\ge6$, and \eqref{eq:pi-power-modulus} applies with $m=q-5$.
+Moreover, $\ell\ge6$ and $\log2\le3/4$ give
+\[
+ \log n<(\ell+1)\log2\le\tfrac34(\ell+1)\le\ell.
+\]
+Thus
+\[
+ q> (\ell/D)^{1/d}-1
+      \ge(\log n)^{1/d}/D-1,
+\]
+where $D^{1/d}\le D$ was used.  Therefore
+\[
+ 2^{-(q-5)}\le64\exp\bigl(-(\log2)(\log n)^{1/d}/D\bigr)
+       \le64\exp\bigl(-(\log n)^{1/d}/(2D)\bigr),
+\]
+which proves \eqref{eq:pi-stretched}.
+For the intended $d=10$ and $D=2C$, the exponential coefficient is
+$1/(4C)$.
+For the specific constant $D=2^{241}$ we can retain the tenth root
+instead of replacing it by $D$. Since $D^{1/10}<2^{25}$ and
+$\log2\ge1/2$, the same calculation gives the stronger explicit form
+\begin{equation}\label{eq:fixed-stretched}
+ |\pi(n)-\operatorname{Li}_2(n)|
+ \le64\frac n{\log n}
+       \exp\!\left(-2^{-26}(\log n)^{1/10}\right),
+ \qquad n\ge2^{D6^{10}}.
+\end{equation}
+All thresholds derived below from the weaker generic coefficient remain
+valid. This modest simplification changes no arithmetic construction.
+
+
+\subsection{Every inverse-logarithmic order, with a primitive recursive threshold}
+
+The stretched-exponential estimate implies much more than
+$\pi(n)\sim\operatorname{Li}_2(n)$.  For $k\in\mathbb N$ set
+\[
+ M(k)=1+16D^2d^2k^2+24D,
+ \qquad N(k)=2^{2M(k)^d}.
+\]
+Then
+\begin{equation}\label{eq:all-log-orders}
+ n\ge N(k)\quad\Longrightarrow\quad
+ |\pi(n)-\operatorname{Li}_2(n)|
+        \le\frac n{(\log n)^{k+1}}.
+\end{equation}
+To verify this, put $L=\log n$ and $u=L^{1/d}$.
+The lower bound on $n$ gives $u\ge M(k)$.  In particular,
+$u\ge24D$ and $u\ge16D^2d^2k^2$.
+Since $\log u\le\sqrt u$ for $u\ge1$,
+\[
+ \log64+kd\log u
+ \le6+kd\sqrt u
+ \le\frac{u}{4D}+\frac{u}{4D}
+ =\frac{u}{2D}.
+\]
+Exponentiating yields
+$64\exp(-u/(2D))\le u^{-kd}=L^{-k}$.
+The same lower bound on $n$ is stronger than $n\ge2^{D6^d}$, because
+$M(k)\ge24D$.  Combining with \eqref{eq:pi-stretched} proves
+\eqref{eq:all-log-orders}.
+When $d=10$ and $D=2C$, this is the explicit formula
+\[
+ M(k)=1+6400C^2k^2+48C.
+\]
+The thresholds are intentionally coarse.  Their purpose is to be
+transparent, uniform primitive recursive witnesses.
+
+\subsection{The full factorial asymptotic expansion}
+
+For an integer $r\ge1$ define
+\[
+ S_r(n)=n\sum_{j=0}^{r-1}\frac{j!}{(\log n)^{j+1}},
+ \qquad B_r=1+r!\bigl(1+2^{r+2}\bigr).
+\]
+Repeated integration by parts, with every boundary term retained, gives
+\begin{equation}\label{eq:Li-expansion-exact}
+ \operatorname{Li}_2(n)
+  =S_r(n)
+   -2\sum_{j=0}^{r-1}\frac{j!}{(\log2)^{j+1}}
+   +r!\int_2^n\frac{dt}{(\log t)^{r+1}}.
+\end{equation}
+For clarity, the one-step identity behind this formula is
+\[
+ \int_2^n\frac{dt}{(\log t)^s}
+ =\frac n{(\log n)^s}-\frac2{(\log2)^s}
+       +s\int_2^n\frac{dt}{(\log t)^{s+1}}.
+\]
+It follows by integrating the explicit derivative of
+$t/(\log t)^s$; induction on $s$ yields
+\eqref{eq:Li-expansion-exact}.
+
+Suppose $L=\log n\ge16(r+2)^2$.  Splitting the remaining integral at
+$\sqrt n$ gives
+\[
+ \int_2^n\frac{dt}{(\log t)^{r+1}}
+ \le 2^{r+1}\sqrt n+\frac{2^{r+1}n}{L^{r+1}}
+ \le\bigl(1+2^{r+1}\bigr)\frac n{L^{r+1}}.
+\]
+For the second inequality it is enough that
+$(r+1)(\log2+\log L)\le L/2$.
+Writing $v=\sqrt L\ge4(r+2)$, the left side is at most
+$(r+1)(1+v)\le(v/4)(2v)=L/2$.
+The boundary constant satisfies
+\[
+ 2\sum_{j=0}^{r-1}\frac{j!}{(\log2)^{j+1}}
+ \le2\sum_{j=0}^{r-1}j!2^{j+1}
+ \le2^{r+1}r!.
+\]
+Also $n/L^{r+1}\ge1$ under the same lower bound on $L$.
+It follows that
+\begin{equation}\label{eq:Li-expansion-bound}
+ |\operatorname{Li}_2(n)-S_r(n)|
+ \le r!\bigl(1+2^{r+2}\bigr)\frac n{L^{r+1}}.
+\end{equation}
+Combining with \eqref{eq:all-log-orders}, we obtain the explicit theorem
+\begin{equation}\label{eq:pi-expansion-bound}
+ \begin{split}
+ n&\ge2^{\max\{2M(r)^d,\,32(r+2)^2\}}\\
+ &\Longrightarrow\quad
+ \left|\pi(n)-n\sum_{j=0}^{r-1}\frac{j!}{(\log n)^{j+1}}\right|
+ \le B_r\frac n{(\log n)^{r+1}}.
+ \end{split}
+\end{equation}
+Thus every fixed number of terms of the usual factorial expansion is
+valid, and both the coefficient and the threshold are given by primitive
+recursive expressions in the requested order.
+
+There are also effective one-sided statements.  Apply
+\eqref{eq:pi-expansion-bound} with $r+1$ terms and additionally require
+$\log n\ge2B_{r+1}/r!$.  Since
+$S_{r+1}(n)-S_r(n)=r!n/(\log n)^{r+1}$, this gives
+\[
+ \frac{r!}{2}\frac n{(\log n)^{r+1}}
+ \le\pi(n)-S_r(n)
+ \le\frac{3r!}{2}\frac n{(\log n)^{r+1}}.
+\]
+For example, the extra natural-number condition
+$n\ge2^{4B_{r+1}}$ is sufficient.  Consequently every fixed truncation
+$S_r$ eventually underestimates $\pi$, and its first omitted term gives
+the leading size of the error.  This assertion is about fixed
+truncation order; it does not assert convergence of the factorial series.
+
+\subsection{A constructive prime-in-an-interval consequence}
+
+Under \eqref{eq:pi-power-modulus}, let $m\in\mathbb N$ and
+$n\ge2^{D(m+9)^d}$.  Put $h=\lceil n/2^m\rceil$ and
+$\delta=2^{-(m+4)}$.  Both $n$ and $n+h$ satisfy the estimate with
+precision $m+4$, and $1\le h\le n$.
+The logarithmic-integral increment satisfies
+\[
+ \operatorname{Li}_2(n+h)-\operatorname{Li}_2(n)
+ \ge\frac h{\log(n+h)}\ge\frac h{2\log n}.
+\]
+The sum of the two endpoint error bounds is at most
+$3\delta n/\log n$, because $n+h\le2n$ and
+$\log(n+h)\ge\log n$.
+As $h\ge n/2^m=16\delta n$, we conclude
+\[
+ \pi(n+h)-\pi(n)
+ \ge\frac{h/2-3\delta n}{\log n}
+ \ge\frac{5\delta n}{\log n}>0.
+\]
+Therefore a prime exists in $(n,n+\lceil n/2^m\rceil]$.
+It is found by bounded search in that explicitly given interval.
+This is a witness-producing consequence, not merely a negated
+statement about empty intervals.  There is no hidden search for a
+precision at which strict positivity becomes visible: since
+$\log n\le n$, the displayed lower bound is at least $5\delta$.
+A predetermined precision larger than $m+10$ therefore suffices to
+certify positivity with rational enclosures.
+
+\subsection{What the transfer does and does not prove about iPRA}
+
+The prime-number hypothesis must itself be proved in iPRA; ordinary
+computability of $T$ is not a substitute for such a proof.
+The present section supplies the following concrete reduction.
+
+\begin{enumerate}
+ \item Equation \eqref{eq:finite-abel} is proved for coded finite rational
+ lists by quantifier-free induction on list length.  It remains exact if
+ the $\log j$ are replaced by positive rational approximations and each
+ $b_j$ is defined as the reciprocal of that same approximation.
+ \item Primality, $\pi(n)$, finite sums, integer square roots, binary
+ length, fixed integer powers, and the thresholds displayed above are
+ primitive recursive.  Bounded search is always given an explicit
+ natural-number upper bound.
+ \item The bounds for logarithms follow from finite rational sums and
+ geometric-series tails.  Riemann-sum inequalities for $\operatorname{Li}_2$
+ are finite inequalities with an explicit mesh error.  On $[2,n]$,
+ $1/\log t\le2$ and $|\frac{d}{dt}(1/\log t)|\le2$ suffice for a uniform
+ rational integration modulus.
+ \item Each displayed real inequality can be replaced by the assertion
+ that every precision-$s$ rational enclosure satisfies the desired
+ inequality with an additional explicit $2^{-s}$ allowance.
+ For a given $n,m,s$, all sums and all enclosures involved have
+ primitive recursive bounds.  One first proves the corresponding
+ bounded rational inequality by quantifier-free induction, and only
+ then universally generalizes $n,m,s$.  One does not apply induction
+ to a formula containing a quantifier over all approximation precisions.
+ \item The integration-by-parts identity for the factorial expansion is
+ established by the finite telescoping identity for the explicit
+ derivatives, together with a Taylor-remainder bound for each rational
+ mesh interval.  The derivative bounds involve only rational powers
+ of a positive lower bound for $\log t$; the mesh can therefore be
+ chosen by a primitive recursive formula.  Induction in the expansion
+ order is again performed on the finite rational identity with its
+ explicit error allowance.
+\end{enumerate}
+
+For a particularly simple all-arithmetic conclusion, let $b(n)$ be the
+binary length of $n$, and let $A(n,s)\in\mathbb Q$ be an explicitly
+constructed approximation to $\operatorname{Li}_2(n)$ with
+$|A(n,s)-\operatorname{Li}_2(n)|\le2^{-s}$.
+Since $b(n)\le4\log n$, \eqref{eq:pi-modulus} at precision $m+2$ implies
+\[
+ n\ge T_\pi(m+2)\quad\Longrightarrow\quad
+ |\pi(n)-A(n,s)|
+       \le\frac{n}{2^m b(n)}+2^{-s}.
+\]
+After clearing positive integer denominators this is a decidable
+arithmetical inequality.  This is the recommended final object-language
+statement for the Lean-to-iPRA development.
+
+\paragraph{Lean dependency outline.}
+First implement finite Abel summation over coded rational lists and
+prove its coefficient-telescoping identity.  Next prove the prime
+specialization, the discrete-reference formula, and the three bounds
+\eqref{eq:discrete-Li-error}--\eqref{eq:delta-and-trivial}.  The proof of
+\eqref{eq:raw-transfer} then consists only of splitting a finite sum at
+the bounded integer square root.  The remaining modulus calculations
+are elementary natural-number and rational inequalities.  The logical
+separation should be reflected in Lean: the input theorem about
+$\vartheta$ is an explicit hypothesis or an imported proved theorem;
+it must not be hidden behind an axiom named as though it were already
+established.  Proving the corresponding theorem using Mathlib's real
+numbers is a useful reference development, but a separate derivation
+or checked translation into the object theory is required before
+claiming an iPRA theorem.

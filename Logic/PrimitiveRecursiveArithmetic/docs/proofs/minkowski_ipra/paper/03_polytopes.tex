@@ -1,0 +1,199 @@
+\section{From rational polytope volume to a certificate}\label{sec:polytope}
+
+The box theorem does not hide the geometric volume premise.
+We now derive its certificate, with a known mesh, from the
+usual volume of a rational polytope. The volume facts needed
+are finite rational dissection, covering monotonicity,
+box content, and determinant scaling. A complete finite
+justification is given in \cref{app:volume}.
+
+\subsection{Input and normalization}
+
+Normalize a rational lattice \(B\Z^n\) by \(x=Bq\).
+A rational symmetric polytope becomes
+\begin{equation}\label{eq:int-poly}
+ P=\{q\in\Q^n:\ |a_j\cdot q|\leq b_j\ (j<s)\},
+ \qquad a_j\in\Z^n,\quad b_j\in\N_{>0},
+\end{equation}
+after clearing row denominators. Assume it is bounded and
+has positive full-dimensional volume.
+Positive volume gives nonemptiness; symmetry and
+convexity then put the origin in the body, so every
+halfspace right side is nonnegative. A general
+symmetric rational halfspace presentation can therefore
+be put into this paired form: symmetry supplies each
+negative row. A nonzero row with right side \(0\) forces
+a hyperplane and zero volume; a zero row is redundant
+and can be removed.
+
+Obtain positive rational numbers \(r,R\) with
+\begin{equation}\label{eq:radii}
+                  [-r,r]^n\subseteq P\subseteq[-R,R]^n.
+\end{equation}
+The inradius is explicit:
+\[
+ r=\min\left(1,\ \min_{\sum_k|a_{jk}|>0}
+                  \frac{b_j}{\sum_k|a_{jk}|}\right).
+\]
+An outer radius is computable before vertex enumeration.
+For this slab representation boundedness is equivalent
+to row rank \(n\). If the rank is smaller, a nonzero
+rational vector in the common kernel generates an
+unbounded line in \(P\). If the rank is \(n\), choose
+\(n\) independent rows to form an invertible matrix
+\(A_0\), and let \(\beta_j\) be their associated bounds.
+Then one may set
+\[
+              R=1+\max_{i<n}\sum_{j<n}|(A_0^{-1})_{ij}|\beta_j.
+\]
+Indeed, \(|(A_0q)_j|\leq\beta_j\) implies
+\(|q_i|\leq R\). Rank, row selection, and inversion are
+finite rational computations. Explicit box bounds can
+now be included before applying \cref{app:volume};
+the resulting vertex list can give a sharper radius.
+Positive right sides alone do not imply boundedness.
+
+Let \(V_0\) be a rational lower bound with
+\[
+                           \Vol(P)\geq V_0>2^n.
+\]
+One may compute the exact rational volume and use it as
+\(V_0\). Define
+\begin{equation}\label{eq:mesh-bound}
+ \varepsilon=V_0-2^n,\quad
+ \eta=\frac{\varepsilon}{2nV_0},\quad
+ m=\left\lceil\frac{2}{\eta r}\right\rceil,\quad
+ T=\left\lceil\frac{mR}{2}\right\rceil+1.
+\end{equation}
+Then \(0<\eta<1\), \(m\geq1\), and
+\(1/m\leq\eta r/2\).
+
+\subsection{A completely bounded construction}
+
+Enumerate all \(a\in[-T,T]^n\cap\Z^n\).
+Keep \(a\) precisely when
+\[
+                          C_a=a/m+[0,1/m]^n
+\]
+is contained in \(P/2\). This is a decidable finite test:
+check the \(2^n\) rational vertices against the linear
+inequalities. Equivalently, for every row compute
+the minimum and maximum of \(2a_j\cdot(a+v)\) for
+\(v\in\{0,1\}^n\) and compare with \(\pm mb_j\).
+The endpoint support formula from
+\cref{sec:certificate} avoids enumerating every vertex.
+
+There are at most \((2T+1)^n\) candidate cells.
+Let \(N\) be the number retained. Their interiors are
+disjoint, and their union has rational content \(N/m^n\).
+We prove \(N>m^n\).
+
+\begin{lemma}[The inner grid covers a shrink]\label{lem:shrink}
+Every rational point of \((1-\eta)P/2\) belongs to a retained cell.
+\end{lemma}
+
+\begin{proof}
+Write \(x=(1-\eta)p/2\) with \(p\in P\), all rational.
+Set \(a_k=\lfloor mx_k\rfloor\). Then \(x\in C_a\),
+and \(|a_k|\leq T\) follows from \(|x_k|\leq R/2\).
+For any rational \(y\in C_a\),
+\(\norminf{y-x}\leq1/m\leq\eta r/2\).
+Consequently
+\[
+ q=2(y-x)/\eta\in[-r,r]^n\subseteq P,\qquad
+ 2y=(1-\eta)p+\eta q\in P
+\]
+by convexity. Thus \(C_a\subseteq P/2\) on rational
+points. In particular its vertices pass the finite
+containment test, so it is retained.
+\end{proof}
+
+Finite covering monotonicity and homogeneity give
+\[
+ \frac{N}{m^n}\geq\Vol((1-\eta)P/2)
+   =\frac{(1-\eta)^n}{2^n}\Vol(P)
+   \geq\frac{(1-\eta)^n}{2^n}V_0.
+\]
+The rational Bernoulli inequality
+\((1-\eta)^n\geq1-n\eta\) has a quantifier-free induction
+proof: multiply the preceding inequality by
+\(1-\eta\geq0\), expand, and discard the nonnegative term
+\(n\eta^2\). Therefore
+\begin{equation}\label{eq:excess}
+ \frac{N}{m^n}\geq
+ \frac{V_0-n\eta V_0}{2^n}
+ =\frac{2^n+\varepsilon/2}{2^n}
+ =1+\frac{\varepsilon}{2^{n+1}}>1.
+\end{equation}
+The retained cells are now a box certificate. Applying
+\cref{thm:main} proves:
+
+\begin{corollary}[Strict rational-polytope theorem]\label{cor:poly}
+For \(n\geq1\), an invertible rational basis \(B\), and a
+bounded rational centrally symmetric convex polytope \(K\),
+\[
+ \Vol(K)>2^n|\det B|
+ \quad\Longrightarrow\quad
+ \exists z\in\Z^n\setminus\{0\}\ (Bz\in K)
+\]
+is provable in \(\ipra\) under the finite rational encodings.
+The witness is produced by a primitive recursive algorithm.
+\end{corollary}
+
+The normalization of volume is the finite determinant
+identity \(\Vol(B^{-1}K)=\Vol(K)/|\det B|\).
+The proof uses neither a real limit nor a search for an
+unspecified sufficiently fine mesh. The bounds in
+\cref{eq:mesh-bound} specify the mesh before the geometric
+search starts.
+
+\section{The exact threshold for rational polytopes}\label{sec:equality}
+
+A short integer-facet argument obtains the closed rational
+case with \(\geq\). It avoids choosing a repeatedly
+occurring point from an infinite sequence of dilations.
+
+\begin{theorem}[Integer-facet enlargement]\label{thm:equality}
+Let \(P\) be the bounded symmetric integer-facet polytope
+\cref{eq:int-poly}. If \(n\geq1\) and \(\Vol(P)\geq2^n\),
+the preceding primitive recursive construction can produce
+a nonzero integer point of \(P\).
+\end{theorem}
+
+\begin{proof}
+Put \(b_*=\max_jb_j\) and
+\[
+                         \lambda=1+\frac1{b_*+1}>1.
+\]
+For every \(j\),
+\[
+                 \lambda b_j=b_j+\frac{b_j}{b_*+1}<b_j+1.
+\]
+If \(z\in\Z^n\cap\lambda P\), then \(|a_j\cdot z|\)
+is an integer at most \(\lambda b_j\), hence at most
+\(b_j\). Thus \(z\in P\). Conversely
+\(P\subseteq\lambda P\), so
+\begin{equation}\label{eq:same-lattice}
+                        \lambda P\cap\Z^n=P\cap\Z^n.
+\end{equation}
+But
+\[
+       \Vol(\lambda P)=\lambda^n\Vol(P)
+                    \geq\lambda^n2^n>2^n.
+\]
+Apply the strict construction to \(\lambda P\), clearing
+its facet denominators if needed, and return the same
+nonzero integer point in \(P\).
+\end{proof}
+
+The proof also works for individual inequalities
+\(a_j\cdot x\leq b_j\) with nonnegative integer right
+sides and the required symmetry.
+For a rational lattice, normalize first and clear
+denominators afterward. This proves the exact closed
+rational theorem for the original \(K\) and \(B\).
+
+For an open body equality is insufficient even classically:
+\((-1,1)^n\) has volume \(2^n\) and no nonzero integer
+point. For arbitrary real closed bodies equality poses
+the different issue described next.

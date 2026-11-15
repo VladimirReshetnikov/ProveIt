@@ -1,0 +1,67 @@
+FORMALIZATION STATUS
+====================
+
+These files are specifications, an interface scaffold, and a detailed
+completion plan. They do not constitute a completed Lean formalization of
+Dirichlet's or Kronecker's approximation theorem.
+
+No Lean compilation or Lake build was run in this environment. No Lean
+executable was available in the checked runtime locations. Therefore no
+claim is made that these newly written .lean files have been elaborated or
+kernel checked. Syntax and interfaces were inspected manually.
+
+Files:
+
+* FiniteSpecifications.lean
+  Concrete Rat/Int input and witness structures and predicates describing
+  sharp rational scalar approximation, scalar error transfer, simultaneous
+  approximation, finite compatibility certificates, Kronecker witnesses,
+  and exact or near relation obstructions. It supplies no existence theorem
+  and no proof of algorithm correctness. These are semantic specifications,
+  not yet reified formulas or derivations in ConciseIPRA.
+
+* NativeBridge.lean
+  A small transport interface for an already supplied derivation of type
+  Prf PRAAx [] formula. It uses the inspected repository's pra_iff_native
+  theorem. It does not construct the missing approximation derivations.
+
+* LeanPlan.txt
+  Exact finite theorem specifications, arithmetic lemmas, Fourier proof
+  obligations, precision margins, and steps needed to construct the actual
+  object-level derivations. It separates an ambient Lean correctness proof
+  from an inhabitant of Prf PRAAx.
+
+* lean-toolchain
+  Matches the inspected ProveIt toolchain, leanprover/lean4:v4.32.0.
+
+Repository baseline:
+
+  https://github.com/VladimirReshetnikov/ProveIt
+  commit 6ad3d9f37184ac242a8946f1c5d45a5603cf57f2
+  mathlib v4.32.0
+  ConciseIPRA source directory:
+    Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean
+
+Verified source interfaces:
+
+  PR.lean: PR, PTm, PRAAx, PRA.qfInd
+  Deduction.lean: Prf and intuitionistic/equality/structural rules
+  NativeBiInterpretation.lean: NFm.ofPRA, pra_iff_native
+
+No new axiom declaration or unfinished proof placeholder is introduced in
+the supplied .lean files. The absence of such declarations is not evidence
+that the intended approximation theorems have been proved: no such theorem
+is asserted by these specifications.
+
+Proposed first build commands, to be run from an appropriately configured
+checkout of the pinned ProveIt repository (NOT EXECUTED HERE):
+
+  lake build +ConciseIPRA.NativeBiInterpretation
+  lake env lean /absolute/path/to/lean/FiniteSpecifications.lean
+  lake env lean /absolute/path/to/lean/NativeBridge.lean
+
+The first proof milestones are the rational scalar and simultaneous
+Dirichlet algorithms with object-iPRA derivations. Kronecker additionally
+requires the finite phase library, the positive kernel estimates, and the
+rational error audit. The report supplies the human proofs and the explicit
+construction; encoding and checking those derivations remains future work.

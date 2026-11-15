@@ -1,0 +1,96 @@
+\section{Primitive-recursive coordinate framework}
+
+\subsection{Integer and rational codes}
+
+One convenient implementation avoids quotient types.  An integer is a signed natural pair, or equivalently the usual even--odd code.  A rational is a pair $(a,b)$ with $a\in\Z$ and $b\in\N_{>0}$, read as $a/b$.  Equality is
+\[
+(a,b)\equiv(c,d)\quad:\Longleftrightarrow\quad ad=cb.
+\]
+Addition and multiplication are
+\[
+(a,b)+(c,d)=(ad+cb,bd),\qquad (a,b)(c,d)=(ac,bd).
+\]
+For $a\ne0$, the inverse is obtained by swapping numerator and denominator and moving the sign to the numerator.  Normalization by a gcd is optional; none of the proofs requires canonical representatives.  All operations, predicates, and denominator-positivity checks are primitive recursive.  Field equality is a polynomial equality over signed integers.
+
+Fixed-length tuples are encoded by any standard primitive-recursive pairing function.  Consequently vectors in $\Q^2$ or $\Q^3$, $3\times3$ matrices, and finite coefficient lists are all natural-number objects inside $\ipra$.
+
+\subsection{Projective points and lines}
+
+A projective point is a nonzero vector $P=(p_0,p_1,p_2)\in\F^3$, modulo nonzero scalar multiplication.  A projective line is a nonzero covector $\ell=(\ell_0,\ell_1,\ell_2)$, also modulo scale.  Incidence is the equation
+\[
+\Inc(P,\ell):\quad \ell\cdot P=0.
+\]
+Because points and lines are both represented by triples, duality is literal syntax.  Define
+\[
+P\join Q:=P\cross Q,\qquad \ell\meet m:=\ell\cross m,
+\]
+where
+\[
+(u_0,u_1,u_2)\cross(v_0,v_1,v_2)
+=(u_1v_2-u_2v_1,\;u_2v_0-u_0v_2,\;u_0v_1-u_1v_0).
+\]
+The cross product is a fixed polynomial map.  The determinant bracket is
+\[
+\br{P}{Q}{R}:=\det(P,Q,R)=P\cdot(Q\cross R).
+\]
+Then
+\[
+\Col(P,Q,R)\Longleftrightarrow\br{P}{Q}{R}=0,
+\qquad
+\Con(\ell,m,n)\Longleftrightarrow\det(\ell,m,n)=0.
+\]
+Whenever the two inputs are distinct, $P\join Q$ is a nonzero line and $\ell\meet m$ is a nonzero point.  The proof that each input is incident with its join or meet is a direct ring identity.
+
+\subsection{Affine points, signed area, and directed ratios}
+
+An affine point $(x,y)$ is embedded as $\widetilde P=(x,y,1)$.  For affine points $A,B,C$, write
+\[
+[ABC]:=\det(\widetilde A,\widetilde B,\widetilde C)
+       =\det(B-A,C-A).
+\]
+This is twice the oriented Euclidean area, but only its algebraic properties matter.
+
+For distinct affine points $U,V$, a point $X$ on their line has a parameter $t$ when
+\[
+X=(1-t)U+tV.
+\]
+The directed ratio is
+\[
+\frac{UX}{XV}:=\frac{t}{1-t}.
+\]
+A quotient-free version stores a numerator--denominator pair $(t,1-t)$.  In all theorem statements, the nonzero premises $t\ne0$ and $1-t\ne0$ are explicit when the ratio is used.
+
+If $X$ is given projectively as
+\[
+\widetilde X\sim \alpha\widetilde U+\beta\widetilde V,
+\qquad \alpha+\beta\ne0,
+\]
+then $t=\beta/(\alpha+\beta)$ and $UX/XV=\beta/\alpha$.  This observation converts cross-product intersection formulas directly into segment ratios.
+
+\subsection{Conics and polynomial curves}
+
+A projective conic is represented by the homogeneous quadratic
+\[
+Q(x,y,z)=ux^2+vy^2+wz^2+p yz+q zx+r xy.
+\]
+We do not divide the mixed coefficients by $2$; this keeps every formula integral and also avoids an irrelevant characteristic-$2$ convention.  A conic may be degenerate.  It avoids the coordinate vertices exactly when $u,v,w$ are nonzero.
+
+A plane polynomial curve is represented by a finite coefficient list.  If $F(x,y)$ has total degree at most $n$ and $U,V$ are affine points, the side restriction
+\[
+g(T)=F((1-T)U+TV)
+\]
+is computed by a primitive-recursive coefficient transformation.  Equality of two restrictions means equality of their coefficient lists, not an extensional quantification over all field elements.
+
+\subsection{Projective and affine normalization are constructive}
+
+The coordinate normalizations used below are explicit inverses of small matrices.
+
+For an affine frame $A,B,Z$ with $[ABZ]\ne0$, the map
+\[
+P\longmapsto \begin{pmatrix}B-A&Z-A\end{pmatrix}^{-1}(P-A)
+\]
+sends $A$ to $(0,0)$, $B$ to $(1,0)$, and $Z$ to $(0,1)$.  The inverse is the adjugate divided by the nonzero determinant.
+
+For two distinct projective lines, choose their intersection $O$ and one named point away from $O$ on each line.  These three noncollinear vectors form a basis.  In that basis the two lines are coordinate lines, and any other named point on either line has the form used in the Pappus calculation.  Again the transformation is an explicit matrix inverse.
+
+Thus normalization introduces no choice principle.  It is a primitive-recursive term under the displayed determinant-apartness assumptions.

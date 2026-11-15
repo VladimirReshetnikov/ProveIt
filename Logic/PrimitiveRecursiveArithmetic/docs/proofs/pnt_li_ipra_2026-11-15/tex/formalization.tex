@@ -1,0 +1,188 @@
+\section{Lean formalization: exact targets and a completion route}
+\label{sec:formalization}
+
+\subsection{Two different correctness questions}
+
+There are two tasks. The first is to formalize the mathematical inequalities
+using Lean's natural numbers, rationals, and, if convenient for a reference
+development, Mathlib's real and complex numbers. The second is to construct
+an object-language derivation in \ipra. The first task does not entail the
+second. Classical tactics in a reference development must not be silently
+exported to the object theory.
+
+The repository provides the syntax \texttt{PR}, \texttt{PTm},
+\texttt{Fm}, the intuitionistic proof relation \texttt{Prf}, and the
+axioms \texttt{PRAAx}. The required final expression has the shape
+\[
+ \texttt{Prf PRAAx [] mainFormula},
+\]
+where \texttt{mainFormula} is the universal closure of
+\eqref{eq:integer-matrix} under the threshold antecedent.
+Only after constructing that proof may one apply
+\texttt{pra\_iff\_native} to obtain its native-calculus counterpart.
+The separate bridge file in the archive demonstrates this use with an
+\emph{explicitly supplied proof argument}; it does not supply the PNT proof.
+
+\subsection{The implementation sequence}
+
+\begin{longtable}{@{}p{0.19\textwidth}p{0.73\textwidth}@{}}
+\toprule
+Stage & Concrete proof obligation and endpoint\\
+\midrule
+\endhead
+Arithmetic coding & Define signed integers and positive-denominator rationals;
+prove cross-multiplication order, absolute value, finite summation, powers,
+factorial, binary length, and bounded search by quantifier-free induction.
+Represent every function by a fixed \texttt{PR} expression.\\[3pt]
+Primes & Define bounded divisibility and primality, the count $\Pi$,
+prime-power detection, and rational approximations to $\psi,\vartheta$.
+Verify bounded factorization by the invariant that the product already
+extracted times the residual is the original integer. Prove the elementary
+unique-factorization identities used in finite Euler products.\\[3pt]
+Elementary names & Implement \eqref{eq:log-algorithm}, the finite exponential,
+and \eqref{eq:Li-algorithm}. Prove their displayed rational enclosure bounds.
+Use explicit positive lower bounds for every reciprocal.\\[3pt]
+Finite calculus & Prove interval telescoping with Taylor remainders, the
+rectangle identity \eqref{eq:finite-rectangle}, and the explicit square
+integral for a simple pole. All mesh sizes and sample accuracies are inputs
+or prescribed PR terms.\\[3pt]
+Zeta construction & Implement finite Euler summation, with (E3) as its
+error budget, and the finite Euler products. Prove (E5)--(E7) with their
+cutoffs. This includes the logarithmic derivative identity, not an axiom
+asserting it.\\[3pt]
+Apartness & Prove the polynomial cosine identity and the finite product
+bound $\ge1/2$. Derive the rational-parameter inequalities (A3r), and
+the regular expression (A4) on the small-height band.\\[3pt]
+Counting formula & Prove the scalar kernel (E8), then its finite-sum
+specialization (A5). Apply finite contour cancellation after subtracting the
+known pole and obtain (A6) with the stated constants.\\[3pt]
+Dyadic estimate & Derive (A7), the two finite-difference inequalities,
+(A8), and Theorem~\ref{thm:theta-modulus-established}. Integer roots and
+floor divisions are implemented by bounded search.\\[3pt]
+Transfer & Instantiate finite Abel summation, use the split at the bounded
+integer square root, and prove the factor $17/32$ estimate. Combine with
+the error of $\mathcal A$ and clear denominators.\\[3pt]
+Export & Universally close the quantifier-free matrix, obtain the actual
+\texttt{Prf PRAAx [] mainFormula}, then use the repository's proved
+native translation. Audit the dependency tree for added object axioms.\\
+\bottomrule
+\end{longtable}
+
+This order is a dependency order. It does not require formalizing the
+functional equation of $\zeta$, Hadamard factorization, an argument principle
+for arbitrary holomorphic functions, an enumeration of zeros, or a general
+Tauberian theorem. The main estimate uses one explicitly given pole and
+one finite rectangle identity. Existing work on PNT in other proof
+assistants or classical Lean blueprints can guide a reference proof, but
+their proof-theoretic strength is not automatically that of \ipra.
+
+\subsection{A specific error-budget convention}
+
+It is useful to make the intended compilation mechanically checkable.
+An arithmetic lemma carries the precision request and a rational error
+allowance as explicit parameters. When a derived expression has a known
+Lipschitz multiplier $K$ and uses at most $J$ input samples, evaluate
+each sample with error at most
+\[
+ \frac{2^{-v}}{16(J+1)(K+1)}.
+\]
+The required number of bits is
+$v+4+b(J+1)+b(K+1)$, increased by two if the input interval itself is
+rounded. For products, $K$ is obtained from the known magnitude bounds
+and the product rule. For the contour lemma, use its more precise
+allowance, which accounts for the internal perimeter.
+
+For the last inference of Theorem~\ref{thm:object}, the transfer proof
+leaves $15/32$ of the prime-counting allowance, and the Li algorithm
+uses less than $19/64$ of the allowance $2^{-v}$. Allocate at most
+$2^{-v-4}$ to the auxiliary analytic computations after their displayed
+amplification factors. Every cutoff is then a concrete PR expression in
+$n,m,v$. The finite invariants establish the remaining integer inequality;
+they are not tests of finitely many small instances of that inequality.
+
+\subsection{What the included Lean files establish}
+
+The included source files give precise target definitions, small finite
+algebraic proof candidates, and the existing-library bridge. They use no
+new axiom called ``PNT'' and do not conceal the analytic input in an
+assumption presented as a theorem. They have \emph{not been compiled in
+this workspace}: a Lean toolchain was not available. Consequently no
+kernel-checking claim is made for these new files. The pinned repository
+declares Lean and Mathlib version \texttt{v4.32.0}; the checked build of
+that repository was not rerun here.
+
+The completion criterion is stronger than ``the files contain no
+\texttt{sorry}''. A finished development must define the PR codes for
+the arithmetic programs, identify \texttt{mainFormula} with the actual
+matrix, construct its \texttt{Prf PRAAx} derivation, and audit all
+dependencies. The present archive supplies a developed mathematical proof
+and a concrete route to those objects, as requested, rather than asserting
+that this work is already mechanized.
+
+\section{Comparison with the linked strengthenings and inspected drafts}
+\label{sec:scope}
+
+The logarithmic integral has two common normalizations:
+$\Li_2(x)=\int_2^xdt/\log t$ and the principal-value $\operatorname{li}(x)$.
+They differ by $\operatorname{li}(2)$, a fixed computable real. The explicit
+arithmetic target in this note uses only $\Li_2$. All asymptotic error
+classes asserted here are unchanged by a fixed additive constant;
+their numerical thresholds need enlargement if a different normalization
+is substituted. We do not transfer a small-argument numerical constant
+between the two normalizations without accounting for this difference.
+
+The standard $\log^{-9}T$ argument used here is an established analytic
+method; a corresponding classical proof is discussed in the
+Kontorovich project blueprint \cite{Kontorovich}. The contribution of this
+note is its explicit rational apartness bounds, coarse integer moduli,
+finite error accounting, and the specified weak-arithmetic target. The
+classical square-root-logarithm estimate requires a stronger zero-free
+region; the Vinogradov--Korobov error requires stronger analytic estimates
+again. Neither stronger input is proved in this package. The bounds
+$O(\sqrt x\log x)$ and Schoenfeld's sharp conditional inequality also
+must retain their Riemann-hypothesis assumption. The introductory scope
+table is therefore part of the statement of the result, not an omitted
+technical qualification. See \cite{Tao,Trudgian} for stronger classical
+estimates and their analytic dependencies.
+
+The inspected archive
+\texttt{docs/drafts/pnt\_ipra\_constructive\_2026-11-14.zip}
+claims a modulus of the shape
+\[
+ \left|\frac{\psi(x)}x-1\right|\le\frac1q
+ \quad\text{for }x\ge2^{\,2^{(2^{20}q^3)^2+1}}.
+\]
+That stated modulus alone does not yield an error smaller than every
+inverse power of $\log x$. The new proof therefore does not assume that
+draft as its analytic input. Its Lean artifacts, and the inspected Cauchy
+and zeta drafts, explicitly describe themselves as uncompiled outlines.
+Their finite-contour ideas are compatible with the independently detailed
+rectangle argument here. The evidence file records exactly what was
+inspected; it does not claim an exhaustive audit of the whole repository.
+
+There is a related proof-theoretic pitfall in the literature. Avigad
+explains that an appeal to conservation of $I\Sigma_1$ over PRA does not
+by itself establish the usual quantifier-alternating statement of the
+PNT \cite[footnote 14]{Avigad}. Our arithmetic target has a prescribed
+modulus and a quantifier-free matrix, and our argument describes its
+finite proof directly. We make no blanket conservation claim for arbitrary
+analytic theorems.
+
+\section{Reproduction and verification record}
+
+The archive contains the complete LaTeX sources, the compiled PDF,
+the finite rational algorithms, Lean outlines, source provenance, and a
+machine-readable verification record. The Python checks verify finite
+Abel identities exactly, check the cleared-denominator matrix against
+the equivalent rational inequality, and compare a small set of logarithm
+and Li enclosures with an independent 100-digit calculation. They also
+check representative integer prefactor inequalities. These are useful
+implementation checks; none is represented as a computational proof of
+the universal PNT or of the zero-free strip.
+
+Rebuild the document with two runs of \texttt{pdflatex} from the package
+directory. Run \texttt{python3 code/check\_arithmetic.py} for the finite
+checks; this requires \texttt{mpmath} only for the independent numerical
+comparisons. The arithmetic specification itself uses Python's standard
+library. The final PDF was rendered for layout inspection. Detailed
+status and commands are in \texttt{README.txt}.

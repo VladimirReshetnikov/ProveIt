@@ -1,0 +1,111 @@
+\section{Hoehn's theorem for the pentagram}
+
+\subsection{Configuration and directed form}
+
+Let $V_1,\ldots,V_5$ be five affine points in general position, with indices
+read modulo $5$.  Define the pentagram intersections
+\begin{equation}\label{eq:hoehn-W}
+ W_i=(V_{i-1}V_{i+1})\cap(V_iV_{i+2}).
+\end{equation}
+Thus both $W_i$ and $W_{i+1}$ lie on the same diagonal $V_iV_{i+2}$.  Assume
+all these intersections are finite and distinct from the relevant endpoints.
+Hoehn's two identities, in a uniform directed notation, are
+\begin{align}
+ \prod_{i=1}^{5}
+ \frac{V_iW_i}{W_{i+1}V_{i+2}}&=1,
+ \label{eq:hoehn-one}\\
+ \prod_{i=1}^{5}
+ \frac{V_iW_{i+1}}{W_iV_{i+2}}&=1.
+ \label{eq:hoehn-two}
+\end{align}
+For a convex pentagon, all ten factors are positive, so these are exactly the
+ordinary-length formulas in the usual statement.
+
+\subsection{Parameters on the five diagonals}
+
+Write affine homogeneous representatives as
+$\widetilde V_i=(x_i,y_i,1)$ and set
+\[
+ \Delta_{ijk}:=\det(\widetilde V_i,\widetilde V_j,\widetilde V_k).
+\]
+On the oriented diagonal $V_iV_{i+2}$ define parameters $a_i,b_i$ by
+\[
+ W_i=(1-a_i)V_i+a_iV_{i+2},
+ \qquad
+ W_{i+1}=(1-b_i)V_i+b_iV_{i+2}.
+\]
+Then
+\[
+ \frac{V_iW_i}{W_{i+1}V_{i+2}}=\frac{a_i}{1-b_i},
+ \qquad
+ \frac{V_iW_{i+1}}{W_iV_{i+2}}=\frac{b_i}{1-a_i}.
+\]
+
+The condition $W_i\in V_{i-1}V_{i+1}$ is
+\[
+ (1-a_i)\Delta_{i-1,i+1,i}
+ +a_i\Delta_{i-1,i+1,i+2}=0.
+\]
+Introduce
+\begin{align*}
+ A_i&=\Delta_{i-1,i+1,i},
+ &B_i&=-\Delta_{i-1,i+1,i+2},
+ &S_i&=A_i+B_i,\\
+ C_i&=\Delta_{i+1,i+3,i},
+ &D_i&=-\Delta_{i+1,i+3,i+2},
+ &T_i&=C_i+D_i.
+\end{align*}
+The nondegeneracy hypotheses say, in particular, that the denominators below
+are nonzero.  Solving the two linear equations gives
+\begin{equation}\label{eq:hoehn-parameters}
+ a_i=\frac{A_i}{S_i},
+ \quad 1-a_i=\frac{B_i}{S_i},
+ \qquad
+ b_i=\frac{C_i}{T_i},
+ \quad 1-b_i=\frac{D_i}{T_i}.
+\end{equation}
+These formulas can be read entirely cross-multiplied.
+
+\subsection{The cyclic cancellations}
+
+There are three elementary identities:
+\begin{equation}\label{eq:hoehn-cyclic}
+ D_i=-A_{i+2},
+ \qquad C_i=-B_{i-1},
+ \qquad T_i=-S_{i+1}.
+\end{equation}
+The first two are only relabellings, using the alternating and cyclic
+symmetries of a determinant.  The third is the four-point affine identity
+\begin{multline*}
+ \Delta_{i+1,i+3,i}-\Delta_{i+1,i+3,i+2}\\
+ +\Delta_{i,i+2,i+1}-\Delta_{i,i+2,i+3}=0.
+\end{multline*}
+It follows by expanding each determinant, or more conceptually by using the
+affine relation among four vectors with final coordinate $1$.  It is a
+six-term polynomial identity and requires no area ordering.
+
+Now use \eqref{eq:hoehn-parameters} and \eqref{eq:hoehn-cyclic}:
+\begin{align*}
+ \frac{a_i}{1-b_i}
+ &=\frac{A_iT_i}{S_iD_i}
+ =\frac{A_iS_{i+1}}{S_iA_{i+2}},\\
+ \frac{b_i}{1-a_i}
+ &=\frac{C_iS_i}{T_iB_i}
+ =\frac{B_{i-1}S_i}{S_{i+1}B_i}.
+\end{align*}
+On multiplying for $i=1,\ldots,5$, every $S_i$, every $A_i$, and every $B_i$
+appears once in the numerator and once in the denominator.  Both products are
+therefore $1$, proving \eqref{eq:hoehn-one} and \eqref{eq:hoehn-two}.
+
+\subsection{A quotient-free certificate}
+
+The two conclusions can be certified without field division as
+\begin{align*}
+ \prod_i A_iT_i&=\prod_i S_iD_i,\\
+ \prod_i C_iS_i&=\prod_i T_iB_i.
+\end{align*}
+Substitution of \eqref{eq:hoehn-cyclic} turns each side into the same product,
+up to ten minus signs.  The ordinary ratio identities follow after cancelling
+the explicitly nonzero factors.  Consequently Hoehn's theorem is a fixed-size
+ring certificate plus nonzero bookkeeping, and is particularly light for
+$\ipra$.

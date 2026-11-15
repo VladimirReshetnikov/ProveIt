@@ -1,0 +1,253 @@
+\section{The result and its precise scope}\label{sec:scope}
+
+The theorem requested is the strict convex-body theorem:
+if \(n\geq1\), \(L=B\Z^n\) is a full-rank lattice, \(K\subseteq\R^n\)
+is convex and symmetric about the origin, and
+\begin{equation}\label{eq:classical}
+   \Vol(K)>2^n|\det B|,
+\end{equation}
+then \(K\) contains a nonzero point of \(L\).
+The familiar proof uses Blichfeldt's principle on \(K/2\), followed by
+symmetry and convexity; see the primary exposition \cite{gorodnik}.
+The same geometric last step survives here. We replace the continuous
+pigeonhole argument by a finite one whose witness is explicitly computed.
+
+There is a necessary language issue. First-order \(\ipra\) quantifies
+over natural numbers. It does not literally quantify over arbitrary
+subsets of \(\R^n\), real matrices, or Lebesgue measures. An assertion
+that a geometric theorem is \emph{in \(\ipra\)} must specify its arithmetic
+representation. The following three results do so.
+
+\begin{enumerate}
+\item \textbf{Uniform finite arithmetic theorem.}
+There is a fixed primitive recursive extractor for rational box
+certificates. Its correctness is provable in \(\ipra\). With a rational
+basis and a body given by rational symmetric linear inequalities, both
+the input checker and the output checker are fixed primitive recursive
+functions, uniformly in the dimension.
+\item \textbf{Geometric theorem scheme.}
+For each arithmetic formula describing membership of rational
+lattice-coordinate points, symmetry, midpoint closure, and a finite
+inner-volume witness imply a nonzero integer point. Membership need not
+be decidable. The arithmetic extractor does not inspect that formula.
+\item \textbf{Rational-polytope theorem.}
+For bounded rational symmetric polytopes, the usual finite rational
+volume inequality produces the required box certificate with an
+explicit primitive recursive mesh bound. The weak inequality
+\(\Vol(K)\geq2^n|\det B|\) is also sufficient for these closed rational
+polytopes.
+\end{enumerate}
+
+For represented real bodies, the strict theorem has the same meaning
+when positive volume is supplied as effective inner evidence, or by a
+representation with a proved procedure that supplies that evidence.
+The exact-threshold theorem for arbitrary real bodies is a different
+constructive assertion; \cref{sec:obstruction} proves that it entails
+weak sign choice.
+
+\subsection{What is proved and what is implemented}
+\begin{center}
+\begin{tabular}{p{.48\textwidth}p{.43\textwidth}}
+\toprule
+Deliverable & Status\\
+\midrule
+Finite certificate theorem and its iPRA induction audit&
+Complete human-readable proof below\\
+Quantitative rational-polytope reduction and rational equality case&
+Complete written argument, including finite volume lemmas\\
+Exact rational extraction and witness validation&
+Implemented and exercised on the supplied examples\\
+Lean data, targets, and completion plan&
+Provided as uncompiled source outlines\\
+Final Lean term of type \code{Prf PRAAx [] ...}&
+Not supplied; an explicit remaining formalization task\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These distinctions matter. A correct theorem about Lean's \(\R\) or
+\(\N\) does not, merely by being accepted by Lean, establish that
+\(\ipra\) proves its arithmetic translation. The final formalization
+target must assert object-theory derivability.
+
+\section{The base theory and finite coding}\label{sec:arithmetic}
+
+We use first-order intuitionistic logic with equality. Its nonlogical
+language contains \(0,S\), and a function symbol for every finite
+primitive recursive definition: zero, successor, projections,
+composition, and primitive recursion. There are defining equations for
+these symbols, successor separation \(Sx\neq0\), successor injectivity,
+and induction
+\begin{equation}\label{eq:qfind}
+ A(0,\vec p)\ \wedge\
+ \forall t\bigl(A(t,\vec p)\to A(St,\vec p)\bigr)
+ \ \longrightarrow\ \forall t\,A(t,\vec p)
+\end{equation}
+only when \(A\) is quantifier-free. All parameters \(\vec p\) are allowed.
+This is the presentation explicitly defined by \code{PRAAx} in the
+inspected \code{ConciseIPRA/PR.lean} \cite{proveit-pr}; compare also
+Moschovakis's discussion of the quantifier-free and first-order
+presentations \cite{moschovakis}.
+
+Integers are signed natural-number codes. One possible encoding is
+\[
+ \iota(z)=
+ \begin{cases}2z,&z\geq0,\\-2z-1,&z<0.\end{cases}
+\]
+A rational is an integer numerator and a positive natural denominator.
+Internal numerical calculations may use unreduced pairs and compare
+them by cross multiplication. For the formula scheme, however, every
+rational argument is in \emph{canonical reduced form}: positive
+denominator, coprime numerator and denominator, and \(0=0/1\).
+All operations feeding that scheme normalize their results.
+Reduction is primitive recursive: compute a gcd by bounded divisor
+search and divide exactly. The uniqueness of this normal form follows
+from the elementary integer divisibility identities in iPRA.
+Finite lists use a fixed canonical sequence coding, so equality of
+rational vectors gives equality of their codes.
+Malformed codes receive designated default decodings, so every function
+is total.
+
+\subsection{Bounded statements are Boolean equations}
+
+It is not legitimate to call a formula quantifier-free merely because
+all its quantifiers are bounded. Instead, introduce each finite
+arithmetic test \(R(i,\vec p)\) by an explicit primitive recursive
+characteristic function, or prove in iPRA that \(R\) is equivalent
+to that function equaling \(1\). Denote its bit by \([R(i,\vec p)]\).
+Then
+\[
+ \forall i<t\,R(i,\vec p)
+ \quad\hbox{is represented by}\quad
+ \prod_{i<t}[R(i,\vec p)]=1.
+\]
+Bounded existentials use finite maxima or a bounded first-witness
+function. A finite conjunction of equations and inequalities is likewise
+a Boolean equation. All inductions used below are on such equations or
+quantifier-free combinations of them.
+
+Natural equality, order, and their finite Boolean combinations are
+decidable in this theory. Using a case split on a computed bit therefore
+does not introduce unrestricted excluded middle. In particular, a
+failed bounded search can be ruled out by arithmetic contradiction,
+leaving its successful Boolean branch and its stored witness.
+
+\subsection{The meaning of primitive recursive uniformity}
+
+Our uniform algorithm takes \emph{finite numerical data}: dimensions,
+matrices, rational endpoints, and finite lists. No total primitive
+recursive interpreter for arbitrary primitive recursive programs is
+assumed. Such an interpreter is unavailable. When an application uses
+primitive recursive real approximation functions, those functions are
+fixed in advance, or their finite computations are supplied as bounded
+traces checked by a fixed verifier.
+
+This distinction also prevents a false inference from eventual
+termination to availability in \(\ipra\).
+Every search in the main theorem has a displayed bound obtained from
+its finite input.
+
+\section{Finite inner-volume certificates}\label{sec:certificate}
+
+First work in lattice coordinates. Write
+\[
+ P=B^{-1}K,\qquad D=\tfrac12P.
+\]
+Convexity and symmetry are preserved by this linear change of
+coordinates, and the desired output is \(z\in\Z^n\setminus\{0\}\)
+with \(z\in P\). Its physical lattice vector is \(Bz\).
+
+\begin{definition}[A box certificate]\label{def:cert}
+A finite inner-volume certificate for \(D\) is a nonempty finite list
+of rational boxes
+\[
+ Q_j=\prod_{k=0}^{n-1}[\ell_{jk},u_{jk}]
+ \quad(0\leq j<s)
+\]
+such that:
+\begin{enumerate}
+\item every side length is positive;
+\item the interiors of distinct boxes are disjoint;
+\item every box is contained in \(D\);
+\item their total rational content satisfies
+\begin{equation}\label{eq:box-volume}
+ W:=\sum_{j<s}\prod_{k<n}(u_{jk}-\ell_{jk})>1.
+\end{equation}
+\end{enumerate}
+\end{definition}
+
+Here containment can mean containment of all rational points; that is
+all the arithmetic proof will use. When the boxes are genuinely
+contained in a real body, this rational containment follows immediately.
+Interiors may be disjoint while boundaries touch. A cell center will be
+used so that no choice on a shared boundary is needed.
+
+The certificate gives positive volumetric evidence, not a lattice point:
+it consists only of rational endpoints and inclusion facts.
+It need not enumerate all points in the body, decide the body's
+boundary, or supply the eventual collision.
+
+\subsection{A pure arithmetic checker and a membership scheme}
+
+Let \(\BoxOK(n,c)\) check the numerical parts of
+\cref{def:cert}: correct rational codes, positive sides, disjoint
+interiors, and \(W>1\). Disjointness is decidable by
+\begin{equation}\label{eq:box-disjoint}
+ \forall i<j<s\ \exists k<n\
+ \bigl(u_{ik}\leq\ell_{jk}\ \vee\
+       u_{jk}\leq\ell_{ik}\bigr).
+\end{equation}
+Every quantifier here is a finite loop compiled into a bit.
+
+Let \(\Phi(q)\) be any fixed arithmetic formula on canonically coded rational
+\(n\)-vectors. Additional numerical parameters are suppressed.
+Write \(\widehat z\) for the canonical rational embedding of a coded
+integer vector \(z\).
+Define
+\begin{align*}
+ \Sym_\Phi&:\quad
+   \forall q\,(\Phi(q)\to\Phi(-q)),\\
+ \Mid_\Phi&:\quad
+   \forall q,r\,\bigl(\Phi(q)\wedge\Phi(r)
+       \to\Phi((q+r)/2)\bigr),\\
+ \Inside_\Phi(c)&:\quad
+   \forall j<s\ \forall q\in Q_j\ \Phi(2q).
+\end{align*}
+The usual well-formed vector guards are implicit in these displayed
+abbreviations and are explicit in a coded version. The interpretation
+is \(\Phi(q)\equiv Bq\in K\).
+
+\begin{theorem}[Certificate form of Minkowski in iPRA]\label{thm:main}
+There is a fixed primitive recursive function \(F\) such that, for every
+formula \(\Phi\) as above, \(\ipra\) proves
+\[
+\begin{split}
+ n\geq1\ \wedge\ \BoxOK(n,c)\ \wedge\
+ \Inside_\Phi(c)\ \wedge\ \Sym_\Phi\ \wedge\ \Mid_\Phi\\
+ \longrightarrow\
+ \bigl(F(n,c)\in\Z^n\ \wedge\ F(n,c)\neq0\
+      \wedge\Phi(\widehat{F(n,c)})\bigr).
+\end{split}
+\]
+The output can include an index of a nonzero coordinate and the two
+cell indices that justify membership. No induction on \(\Phi\) is used.
+Canonical rational operations are essential here: arbitrary formulas
+on unreduced fraction codes need not respect equality of rational values.
+\end{theorem}
+
+When \(B\) is rational and
+\begin{equation}\label{eq:slab}
+ K=\{x:\ |a_j\cdot x|\leq b_j\quad(j<t)\}
+\end{equation}
+has rational rows and bounds, all certificate conditions, including
+containment, have one fixed primitive recursive checker.
+For a row \(a_j\), put \(\alpha=2a_jB\). Its range on a box is exactly
+the interval with endpoints
+\[
+ \sum_k\min(\alpha_k\ell_k,\alpha_k u_k),
+ \qquad
+ \sum_k\max(\alpha_k\ell_k,\alpha_k u_k).
+\]
+Checking that this interval lies in \([-b_j,b_j]\) proves containment.
+This yields a single uniform theorem about coded rational data,
+as well as the abstract formula scheme.

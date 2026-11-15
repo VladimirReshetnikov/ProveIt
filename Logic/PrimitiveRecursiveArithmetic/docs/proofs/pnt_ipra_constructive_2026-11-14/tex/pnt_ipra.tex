@@ -1,0 +1,705 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!60!black,
+  citecolor=blue!50!black,pdftitle={An explicit prime number theorem in intuitionistic primitive recursive arithmetic}}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=6pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\dotminus}{\dot{-}}
+\title{An explicit prime number theorem in\\
+intuitionistic primitive recursive arithmetic}
+\author{Prepared for Vladimir Reshetnikov}
+\date{November 14, 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a finite, quantitative elementary proof of the prime number theorem
+and explain its interpretation in first-order intuitionistic primitive
+recursive arithmetic, with induction restricted to quantifier-free formulas.
+The actual arithmetic conclusion uses no real numbers: it compares the
+prime-counting function with the rational number $H_{n^2}-H_n$, and clears
+denominators with $(n^2)!$. An explicit double-exponential convergence modulus
+is supplied. The central argument combines a finite harmonic substitute for
+Euler's constant, Selberg's symmetry identity, and a contraction established
+by a finite geometric mesh with rational comparisons. We give the full
+human-readable argument, including the bounded induction and numerical
+enclosure bookkeeping needed for the weak constructive setting. The
+accompanying Lean files specify the arithmetic statement and the required
+deeply embedded proof endpoint; they are an uncompiled formalization outline,
+not a completed Lean proof.
+\end{abstract}
+
+\paragraph{Reading guide.}
+The main arithmetic theorem is stated in Section~\ref{sec:statement}.
+The estimates and the contraction are proved in full in the middle sections.
+Section~\ref{sec:arithmetic} explains why the displayed analytic notation
+denotes finite arithmetic calculations and why the induction is permitted in
+$\ipra$. The final section gives a concrete Lean implementation route and
+states exactly which files remain to be formalized.
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{The exact theorem and the theory}\label{sec:statement}
+
+\subsection{An entirely arithmetical statement}
+
+Let $\pi(n)$ count the primes at most $n$, with primality decided by trial
+division through the bounded interval $2\le d<n$. Put
+\[
+ F(n)=(n^2)!,\qquad
+ A(n)=\sum_{j=n+1}^{n^2}\frac{F(n)}{j},\qquad
+ L(n)=\frac{A(n)}{F(n)}=H_{n^2}-H_n.
+\]
+Every division in $A(n)$ is exact when $n\ge1$. The empty sum is zero.
+The symbol $F$ here is a denominator; it is unrelated to any analytic
+function. For natural numbers, write
+\[
+ \dist(a,b)=(a\mathbin{\dotminus}b)+(b\mathbin{\dotminus}a),
+\]
+where $\dotminus$ denotes truncated subtraction. Thus $\dist(a,b)=|a-b|$.
+
+For $k\ge1$, define
+\begin{equation}\label{eq:modulus}
+ q=8k,\qquad D=2^{20}q^3,\qquad
+ N(k)=2^{\,2^{D^2+2}},
+\end{equation}
+and set $N(0)=2$.
+
+\begin{theorem}[Arithmetic prime number theorem]\label{thm:main}
+The following sentence is provable in first-order $\ipra$:
+\begin{equation}\label{eq:arith-pnt}
+ \forall k\,\forall n\;
+ \bigl(k\ge1\;\wedge\; n\ge N(k)\bigr)
+ \ \longrightarrow\ 
+ k\,\dist\bigl(\pi(n)A(n),nF(n)\bigr)\le nF(n).
+\end{equation}
+All functions occurring in this formula are explicitly primitive recursive.
+Its matrix, including its antecedent, can be expressed as one Boolean
+primitive-recursive function equalling $1$.
+\end{theorem}
+
+The modulus is intentionally coarse. It is a closed elementary function;
+we use no unbounded search to obtain a threshold. The factorial denominator
+is similarly chosen for transparency, not numerical efficiency. Neither
+the proof nor the companion programs attempt to evaluate $N(1)$ in full.
+
+For $n\ge1$ we will prove
+\begin{equation}\label{eq:log-surrogate}
+ 0\le \log n-L(n)\le\frac1n.
+\end{equation}
+Consequently \eqref{eq:arith-pnt}, applied with $2k$ and with
+$n\ge\max\{N(2k),2k,2\}$, implies
+\[
+ \abs{\frac{\pi(n)\log n}{n}-1}
+ \le\frac1{2k}+\frac1n\le\frac1k.
+\]
+This is the usual prime number theorem. Conversely, the same error estimate
+shows that the rational formulation expresses the same asymptotic assertion.
+The explicit modulus is additional information.
+
+\subsection{Which intuitionistic primitive recursive arithmetic?}
+
+We use first-order intuitionistic logic with equality and a symbol for every
+finite primitive-recursive construction: zero, successor, projections,
+composition, and primitive recursion. Different construction codes may name
+extensionally equal functions without being identified syntactically.
+The nonlogical axioms are the defining equations for these constructions,
+$Sx\ne0$, injectivity of $S$, and the induction schema
+\begin{equation}\label{eq:qfind}
+ \varphi(0,\vec z)\to
+ \bigl(\forall u\,[\varphi(u,\vec z)\to\varphi(Su,\vec z)]\bigr)
+ \to\forall u\,\varphi(u,\vec z),
+\end{equation}
+where $\varphi$ is quantifier-free. Order and all other arithmetic notation
+are definable by primitive-recursive characteristic functions.
+
+The logical rules are the intuitionistic introduction and elimination rules
+for $\wedge,\vee,\to,\forall,\exists$, elimination of falsity, and equality
+reflexivity and substitution. Universal introduction and existential
+elimination have their usual fresh-variable conditions; implication
+introduction discharges its hypothesis. General excluded middle and
+double-negation elimination are not rules. Equality, order, primality and
+every other bounded arithmetic test used below are decidable by their
+explicit Boolean algorithms. Case distinctions about these tests are
+therefore intuitionistically valid.
+
+This is exactly the presentation called \texttt{PRAAx} in the inspected
+\texttt{ConciseIPRA/PR.lean} source, whose logic is the intuitionistic
+deduction system in \texttt{Deduction.lean}; the name \texttt{PRAAx} should
+not be mistaken for classical PRA. The repository provenance and the
+formalization endpoint are recorded later.
+
+\subsection{What must not be inferred just from a classical proof}
+
+The usual assertion
+$\forall k\,\exists b\,\forall n\ge b\;\text{error}(k,n)$ is not made
+intuitionistically provable merely by calling its proof elementary.
+Nor does $\Pi_2$ conservativity of $I\Sigma_1$ over classical PRA settle
+this $\Pi_3$ assertion. Avigad explicitly identifies this problem with the
+conservativity claim in Sudac's paper~\cite{avigad,sudac}. The classical
+weak-arithmetic result of Cornaros and Dimitracopoulos~\cite{cd} is valuable
+background, but we do not use it as a black-box replacement for the proof.
+
+Here the threshold is a displayed function. More importantly, the proof
+of its correctness uses bounded arithmetic calculations and quantifier-free
+induction directly. We do not invoke a conservation theorem, Markov's
+principle, a least real zero, a limsup, or a compactness argument.
+
+\section{Finite logarithms and the meaning of the notation}\label{sec:log}
+
+\subsection{Rational logarithm intervals}
+
+For positive integers $a\ge b$ and $M\ge1$, define
+\[
+ \lambda_M(a/b)=H_{Ma}-H_{Mb}.
+\]
+All of these are rational numbers obtained by bounded sums. The elementary
+harmonic comparison gives
+\begin{equation}\label{eq:harmonic-log}
+ 0\le\log(a/b)-\lambda_M(a/b)
+ \le \frac1{Mb}-\frac1{Ma}\le\frac1M.
+\end{equation}
+For a rational below $1$, use the negative of the interval for its reciprocal.
+Reducing the fraction is optional. All endpoints, including their common
+denominators, are primitive recursive.
+
+For completeness, write $h_j=H_j-\log j$. The rectangle inequality
+\[
+ \frac1{j+1}\le\log\left(1+\frac1j\right)\le\frac1j
+\]
+implies
+\[
+ 0\le h_j-h_{j+1}\le\frac1j-\frac1{j+1}.
+\]
+Summation from $Mb$ to $Ma-1$ proves \eqref{eq:harmonic-log}.
+Taking $M=n$, $a=n$, $b=1$ proves \eqref{eq:log-surrogate}.
+No limit of $h_j$ is needed.
+
+There is also a formulation entirely inside rational arithmetic.
+$\lambda_M(a/b)$ is the right rectangle sum for $1/t$ on $[b,a]$
+with mesh $1/M$; its upper rectangle sum is
+$\lambda_M(a/b)+1/(Mb)-1/(Ma)$. Refinement nests these intervals.
+For two unrelated mesh sizes, use their product as a common refinement.
+Thus their consistency and width are bounded rational inequalities,
+proved without presupposing a real logarithm. Additivity is witnessed by
+the exact telescoping identity
+\[
+ H_{Mac}-H_{Mbd}
+ =(H_{Mad}-H_{Mbd})+(H_{Mac}-H_{Mad}).
+\]
+The two summands are logarithm approximants at the refined mesh sizes
+$Md$ and $Ma$. Comparing them with the original intervals gives the
+stated finite error form of logarithm additivity.
+
+\subsection{Finite rectangle calculus}
+
+Throughout the argument, integrals over a bounded interval are convenient
+notation for finite calculations with these logarithm intervals. Here is
+the concrete justification. For positive rational endpoints $a<b$ and a
+partition $a=t_0<\cdots<t_m=b$, the lower and upper rectangle sums for
+$1/t$ differ by at most
+\[
+ \max_i(t_i-t_{i-1})\left(\frac1a-\frac1b\right).
+\]
+This follows by bounding each cell with its endpoint values and telescoping.
+Partitions can be concatenated or rescaled using exact rational arithmetic.
+Their refinement gives additivity and the identity
+$\log(xy)=\log x+\log y$, with an explicit enclosure error at every finite
+precision. This is also a direct construction of the logarithm notation
+without assuming a real-number domain in $\ipra$.
+
+The only other calculus rules used below are finite summation by parts,
+rectangle comparison, and antiderivatives of powers and products of
+logarithms. They can be obtained by telescoping on a rational mesh.
+For example, on $a\le u\le v\le b$,
+\[
+ \frac{v-u}{v}\le\log v-\log u\le\frac{v-u}{u},
+\]
+so replacing the logarithmic increment by $(v-u)/u$ has error at most
+$(v-u)^2/a^2$. The algebraic identity
+$z^2-w^2=2w(z-w)+(z-w)^2$ then gives the rule for $(\log u)^2$ with an
+explicit quadratic cell error. The product identity
+\[
+ f(v)g(v)-f(u)g(u)
+ = f(u)\bigl(g(v)-g(u)\bigr)
+  +g(u)\bigl(f(v)-f(u)\bigr)
+  +\bigl(f(v)-f(u)\bigr)\bigl(g(v)-g(u)\bigr)
+\]
+gives the remaining product and integration-by-parts rules. Summing the cell
+errors costs at most a constant times the mesh width. Rational enclosures
+for square and fourth roots are obtained by bounded bisection; their
+properties also follow from polynomial identities. Thus the appearances of
+$\sqrt{x}$ and $x^{1/4}$ below require no root-existence axiom.
+
+For a step function $B(u)=\sum_{n\le u}b_n$, the identity
+\begin{equation}\label{eq:abel}
+ \sum_{n\le x}b_n g(n)
+ =B(x)g(x)-\int_1^x B(u)g'(u)\,du
+\end{equation}
+is simply telescoping on the finitely many intervals between integers.
+When $g(1)\ne0$, the convention $B(1^-)=0$ is understood. There is no
+improper integral in this paper. The later error budget makes explicit why
+these finite translations are sufficient for the arithmetic conclusion.
+
+\input{selberg}
+\input{contraction}
+
+\section{From the Chebyshev estimate to prime counting}\label{sec:pi}
+
+Let $\vartheta(x)=\sum_{p\le x}\log p$. The preceding sections prove, for
+each integer $q\ge1$,
+\begin{equation}\label{eq:psi-modulus}
+ \abs{\frac{\psi(x)}x-1}\le\frac1q
+ \quad\text{when}\quad
+ x\ge N_\psi(q):=2^{\,2^{(2^{20}q^3)^2+1}}.
+\end{equation}
+We now prove the conversion with constants; it uses only finite sums and
+the global bound $\vartheta(u)\le\psi(u)\le4u$.
+
+\begin{lemma}\label{lem:pi-conversion}
+For $x\ge4$ satisfying \eqref{eq:psi-modulus},
+\begin{equation}\label{eq:pi-error}
+ \abs{\frac{\pi(x)\log x}{x}-1}
+ \le \frac1q+\frac{24\log x}{\sqrt{x}}+\frac{16}{\log x}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Prime powers of exponent at least two contribute
+\[
+ 0\le\psi(x)-\vartheta(x)
+ =\sum_{a=2}^{\floor{\log x/\log2}}\vartheta(x^{1/a})
+ \le4\sqrt{x}\frac{\log x}{\log2}
+ \le8\sqrt{x}\log x,
+\]
+since $\log2\ge1/2$. Summation by parts gives the exact finite identity
+\[
+ \pi(x)=\frac{\vartheta(x)}{\log x}
+       +\int_2^x\frac{\vartheta(u)}{u(\log u)^2}\,du.
+\]
+On $[2,\sqrt{x}]$ the integrand is at most
+$4/(\log2)^2\le16$. On $[\sqrt{x},x]$ it is at most
+$16/(\log x)^2$. Thus
+\[
+ 0\le\pi(x)\log x-\vartheta(x)
+ \le16\sqrt{x}\log x+\frac{16x}{\log x}.
+\]
+Adding the two displayed bounds to the error for $\psi$ proves the claim.
+The integral here can also be written as a finite telescoping sum, since
+the antiderivative of $1/(u\log^2u)$ is $-1/\log u$.
+\end{proof}
+
+The already proved inequality $\log x\le4x^{1/4}$ gives
+$(\log x)^2\le16\sqrt{x}$. Thus, with $u=\log x$, the last two terms
+of \eqref{eq:pi-error} are at most $400/u$.
+With $q=8k$ and $u\ge4096k$, this gives
+\begin{equation}\label{eq:pi-quarter}
+ \abs{\frac{\pi(x)\log x}{x}-1}
+ \le\frac1{8k}+\frac{400}{4096k}
+ =\frac{57}{256k}<\frac1{4k}.
+\end{equation}
+
+For $n\ge N(k)$ from \eqref{eq:modulus}, we have
+$n\ge N_\psi(8k)$, $\log n\ge4096k$, and $n\ge4k$.
+For example,
+$\log N(k)\ge 2^{D^2+1}\ge4096k$ follows from
+$\log2\ge1/2$ and $D=2^{20}(8k)^3$.
+Since $\pi(n)\le n$, replacing $\log n$ by $L(n)$ costs at most $1/n$:
+\begin{equation}\label{eq:rational-half}
+ \abs{\frac{\pi(n)L(n)}n-1}
+ <\frac1{4k}+\frac1n\le\frac1{2k}.
+\end{equation}
+Clearing the positive denominator $nF(n)$ proves the stronger inequality
+\[
+ 2k\,\dist(\pi(n)A(n),nF(n))\le nF(n)
+ \qquad(n\ge N(k)).
+\]
+In particular, it proves the announced matrix with coefficient $k$.
+The factor-two surplus is useful for the finite numerical enclosures below.
+
+\section{Why this is a proof in iPRA}\label{sec:arithmetic}
+
+This section supplies the logical bookkeeping. Merely knowing that a modulus
+is primitive recursive would not suffice. We must show that its correctness
+is established with the induction and logic actually available in $\ipra$.
+
+\subsection{Bounded tests and finite arithmetic}
+
+Represent integers by a sign and a natural magnitude, and rationals by
+integer numerator and positive natural denominator. Addition, multiplication,
+comparison and exact division are primitive recursive by their elementary
+bounded algorithms. Canonical reduction of a fraction is optional. Factorials,
+finite sums and products, bounded division, powers, prime factorization by
+successive bounded trial division, and the functions $\mu,\tau,\pi$ are all
+primitive recursive. Their identities used above are proved by induction on
+bounded lists of factors, sums or products.
+
+For any fixed primitive-recursive Boolean $b(i,\vec z)$, define
+\[
+ \operatorname{All}(0,\vec z)=b(0,\vec z),\qquad
+ \operatorname{All}(u+1,\vec z)
+ =\operatorname{All}(u,\vec z)\mathbin{\&}b(u+1,\vec z).
+\]
+Quantifier-free induction proves that $\operatorname{All}(u,\vec z)=1$
+is equivalent to the bounded assertion that $b(i,\vec z)=1$ for every
+$i\le u$. In the extraction direction, keep the queried index $i$ as a
+free parameter and induct on the quantifier-free implication
+$i\le u\to(\operatorname{All}(u,\vec z)=1\to b(i,\vec z)=1)$;
+generalize $i$ only afterward. Bounded existential tests use the
+corresponding Boolean disjunction and bounded witness search.
+This applies also to nested bounded quantifiers after their inner tests have
+been compiled. Every induction over a table in this proof is induction on
+such a Boolean equation. It is not induction on a formula with an unbounded
+quantifier hidden inside it.
+
+\subsection{A common rational table for the entire finite argument}
+
+Fix integers $k\ge1$ and $X\ge2$, and take $q=8k$.
+For a precision parameter $M$ define, for every prime $p\le X+1$,
+\[
+ \ell_p=H_{Mp}-H_M,\qquad u_p=\ell_p+\frac1M.
+\]
+For integers $n\le X+1$, let $c(n)$ be the number of prime powers at most
+$n$, counted once for each pair $(p,a)$ with $p$ prime and $p^a\le n$.
+Set
+\[
+ L_\psi(n)=\sum_{p^a\le n}\ell_p,\qquad
+ U_\psi(n)=L_\psi(n)+\frac{c(n)}M.
+\]
+There are at most $n$ such prime powers, so
+\begin{equation}\label{eq:psi-table}
+ L_\psi(n)\le\psi(n)\le U_\psi(n),\qquad
+ U_\psi(n)-L_\psi(n)\le n/M.
+\end{equation}
+All sums in this display are bounded; the displayed real $\psi$ is only
+the explanatory reading of its rational enclosures.
+
+With $D,\delta=1/D,a_j,P_j,J$ as in the contraction section, the stage
+predicate is the single Boolean conjunction, over $P_j\le n\le X$, of
+\begin{equation}\label{eq:stage-table}
+ U_\psi(n)\le(1+a_j)n,
+ \qquad L_\psi(n)\ge(1-a_j)(n+1).
+\end{equation}
+Clear the denominators to make both tests comparisons of integers. On each
+cell $n\le y<n+1$, $\psi(y)=\psi(n)$, and $\psi(n)/y$ is decreasing.
+Thus \eqref{eq:stage-table} controls the entire cell, including its two
+one-sided endpoint values. When $a_j>1$, the lower estimate is automatic
+from positivity; otherwise it follows by dividing by $n+1$.
+No quantification over arbitrary real numbers or rational denominators is
+needed in the induction predicate.
+
+At stage zero $a_0=4$. The global estimate $\psi(n)\le4n$ and $M\ge1$
+give $U_\psi(n)\le5n$, and the lower inequality is immediate. Hence the
+base of induction holds with room to spare.
+
+\subsection{How the finite stage implication preserves the table}
+
+The contraction calculation gives the exact improvement $a_j-3\delta$,
+while the next predicate claims only $a_{j+1}=a_j-\delta$.
+Its proof uses only arguments in the cells already controlled by the table.
+For the upper endpoint take $x=n$. For the lower endpoint take the rational
+number
+\[
+ z=n+1-\tau,\qquad \tau=\delta/64.
+\]
+Then $\psi(z)=\psi(n)$ and $z<X+1$ even when $n=X$.
+There is no appeal to a limit at an integer discontinuity.
+
+Suppose first that the exact contraction inequalities are used. If
+$1/M\le\delta$, then the upper estimate gives
+\[
+ U_\psi(n)\le(1+a_j-3\delta)n+n/M
+ \le(1+a_j-2\delta)n.
+\]
+The lower estimate gives
+\[
+ L_\psi(n)\ge(1-a_j+3\delta)(n+1-\tau)-n/M.
+\]
+After subtracting $(1-a_j+\delta)(n+1)$, its surplus is at least
+\[
+ 2\delta(n+1)-2\tau-\delta n>0,
+\]
+because the positive part of $1-a_j+3\delta$ is at most $2$.
+Thus both comparisons in the next table follow.
+The same calculation remains valid if the finite numerical reconstruction
+costs at most $\delta/4$ in the normalized contraction estimate and if
+$1/M\le\delta/4$; for example the upper error then totals at most
+$\delta/2$, well below the $2\delta$ reserve. This is the tolerance used next.
+
+\subsection{Explicit finite precision and quadrature budget}\label{sec:budget}
+
+Here are concrete bounds showing that the tolerance can be met by primitive
+recursion. They also specify a straightforward route for the Lean arithmetic
+library. A sharper numerical implementation is unnecessary.
+
+Let $S=2^{18}$, $J=4D-D/q$, and put
+\begin{equation}\label{eq:precision}
+ W=X+q+D+S+J+16,\qquad B=2^{W^4},\qquad
+ Q_{\rm quad}=2^{B^3},\qquad M=2^{Q_{\rm quad}^3}.
+\end{equation}
+Use the harmonic intervals of width at most $1/M$ for every logarithm and
+the rational spatial mesh of width at most $1/Q_{\rm quad}$ for every finite integral.
+Include all integer breakpoints and rational endpoints in that mesh. The
+geometric mesh used for the deficit argument is a different, exact rational
+mesh; its sample values use the same harmonic intervals.
+
+We justify a generous uniform error bound rather than suppressing the
+numerical reconstruction behind the word ``computable.'' On $[1,Y]$, with
+$Y=X+1$, the total variation of $R$ is at most $5Y$ and $|R|\le4Y$.
+For a decreasing nonnegative function $w$, the elementary product estimate
+\[
+ \operatorname{Var}(w|R|)
+ \le \sup w\,\operatorname{Var}(R)
+       +\sup|R|\,\operatorname{Var}(w)
+\]
+follows from the triangle inequality on each finite partition. Here a
+variation bound means a bound on every finite partition sum; no supremum
+object is introduced. In particular,
+for $w(u)=\log(Y/u)/u^2$,
+\begin{equation}\label{eq:var}
+ \operatorname{Var}_{[1,Y]}(w|R|)\le9Y^2.
+\end{equation}
+A rectangle sum on mesh $1/Q_{\rm quad}$ therefore differs from its finite integral
+by at most $10Y^2/Q_{\rm quad}$, including a final partial cell. This follows by summing
+the cell oscillations times their widths. It does not assume an ineffective
+Riemann-integrability theorem.
+
+All the other integral expressions in the proof are simpler: sums of a
+step function times $1/u$, $1/u^2$, $\log u$, $1/(u\log^2u)$, or a
+polynomial in $\log u$ of degree at most two. The interval with
+$1/\log u$ begins at $2$. Split at integer breakpoints, use
+$\log2\ge1/2$, and apply the same finite product estimate. Their variation,
+normalized coefficient sums, and the reciprocals of their nonzero
+denominators are each bounded by $W^{12}<B$. For the signed integrals one
+can instead use their exact finite Abel sums, eliminating quadrature there.
+The substitution $t=\log y$ in the contraction uses only rational spatial
+endpoints: $r(t)\,dt=R(y)\,dy/y^2$. Likewise, its weighted integral is
+\[
+ \int_0^{\log x}(\log x-t)|r(t)|\,dt
+ =\int_1^x\frac{\log(x/y)|R(y)|}{y^2}\,dy.
+\]
+Thus it requires neither the computation of $\floor{e^t}$ nor decisions
+at a numerically uncertain discontinuity.
+
+For clarity, the coarse operation and size audit behind $W^{12}$ is as follows.
+One divisor or prime-power table uses at most $(Y+1)^2$ entries; a double
+convolution uses at most $(Y+1)^3$ elementary table accesses. A geometric
+block uses $327680q^2$ samples and there are at most $Y+1$ relevant blocks.
+There are at most $X+1$ cell checks at each of at most $J+1$ stages.
+The remaining finite algebra has fixed degree. Logs have magnitude at most
+$2(Y+1)^2$, including factorial and binomial intermediates and log ratios;
+division by a block
+step costs at most $640q$. These bounds are all dominated by $W^{12}$.
+Thresholds exceeding $X+1$ require no analytic evaluation: their table
+conditions are empty, decided by integer comparison. Large numerators and
+denominators of exact rational coordinates affect running time, but not
+the magnitudes or the enclosure error estimates.
+
+Treat exact rational arithmetic as exact, and each logarithm or finite
+integral evaluation as an interval operation with its proved error bound.
+Across an addition, multiplication, absolute value or reciprocal whose
+arguments have magnitude at most $B$ and whose required divisor has
+absolute value at least $1/B$, an accumulated error is multiplied by at
+most $8B^3$, provided the input error is at most $1/(2B)$.
+The reciprocal estimate is
+\[
+ \abs{\frac1u-\frac1v}
+ \le 2B^2|u-v|\qquad
+ (|u|\ge1/B,\ |u-v|\le1/(2B)).
+\]
+Finite summation uses the sum of the coefficient bounds. A quadrature
+operation has coefficient sum at most its interval length; consequently its
+error bound does not grow with the number of mesh cells. It may be
+treated as one proved bounded-sum operation in this audit.
+There are fewer than $B$ such error-bearing operations along the complete
+finite argument. The exact internal summands of a harmonic or quadrature
+macro are accounted for by that macro's separately proved bound.
+The total propagated error is therefore bounded by
+\begin{equation}\label{eq:budget-bound}
+ 2B(8B^3)^B\left(\frac1{Q_{\rm quad}}+\frac1M\right)
+ \le\frac{4B(8B^3)^B}{Q_{\rm quad}}
+ <\min\left\{\frac1{64D},\frac1{2B}\right\}.
+\end{equation}
+Indeed $B\ge16$, $D<W<B$, and the base-two logarithm of the numerator is
+less than $6B^2$, whereas $\log_2 Q_{\rm quad}=B^3$. The choice of $B$ is enormously
+larger than needed. It also ensures the reciprocal side condition and the
+sample tolerance $1/(64q)$ used in the deficit lemma.
+
+This argument is a finite error propagation calculation: its invariant is
+the rational bound on each entry of a finite computation table. Its induction
+is an equation or inequality between primitive-recursive terms. The log and
+quadrature macros themselves are bounded sums with the rectangle estimates
+proved above. The long harmonic sums are exact rational computations; we
+do not add a rounding error for each of their summands. The quadrature mesh
+is chosen first; the precision of logarithm evaluations is chosen afterward.
+This distinction prevents a circular precision estimate.
+
+In particular, every occurrence of analytic notation in the stage implication
+can be replaced by rational intervals with total loss less than
+$\delta/64$. This is smaller than the $\delta/4$ allowed in the preceding
+endpoint calculation. The decisions in the deficit lemma are made on the
+rational sample approximations, with separated thresholds, so they remain
+valid at this precision. The displayed Selberg constants also have ample
+reserve from their preceding sharper inequalities. Thus the implication
+between consecutive Boolean stage tables is a derivation in $\ipra$,
+using only the stated defining equations and quantifier-free induction.
+
+\begin{lemma}[Translation of the finite calculation schema]\label{lem:translation}
+The finite calculation rules used here have uniform $\ipra$ derivations.
+In particular, replacing their displayed logarithms and integrals by the
+specified rational intervals produces a derivation of the implication
+between consecutive stage tables, not merely an algorithm that computes
+the two tables.
+\end{lemma}
+\begin{proof}
+For exact arithmetic, prove the ring and order identities by induction on
+the defining primitive recursions; represent signed and rational identities
+by natural-number identities after clearing positive denominators.
+The identity for a finite sum, and an inequality obtained by summing its
+termwise inequalities, are proved by induction on the number of summands.
+For a bounded search, induction on the scanned prefix proves the invariant
+that it contains the first, or last, successful test, if one has occurred.
+These are Boolean invariants and require no unbounded least-number rule.
+
+The rectangle, refinement, finite Abel and error-propagation rules are also
+finite-sum rules. Their proofs have been given by termwise inequalities and
+telescoping; apply the same bounded-sum induction to those proofs. For a
+loop, conjoin the row invariants through its prescribed finite bound,
+using $\operatorname{All}$, and apply quantifier-free induction to that
+conjunction. Nested loops are handled from the inside outward. All bounds
+are displayed primitive-recursive terms or compositions of them. Ordinary
+intuitionistic implication and universal introduction retain their free
+integer parameters throughout.
+
+Finally, the three cases in the deficit proof are exhaustive Boolean
+alternatives. Their exhaustive character is proved by the bounded-search
+invariant, not by excluded middle for a real predicate. Each branch was
+proved by the above termwise rules, with positive margins larger than the
+enclosure losses. The threshold and endpoint calculations are exact
+rational inequalities. Composing these finitely many rule derivations
+therefore gives the required stage implication in $\ipra$.
+This translation uses the proofs of the rows and loop invariants; it does
+not infer the correctness of an arbitrary primitive-recursive program from
+its computability or from tests in the standard model.
+\end{proof}
+
+\subsection{The final induction and conclusion}
+
+Fix $k,X$ and the parameters in \eqref{eq:precision} before applying
+induction. Use the stage predicate \eqref{eq:stage-table}, with the stage
+index truncated at $J$. The base and the implication to the next stage have
+just been proved. Schema~\eqref{eq:qfind} therefore proves the stage-$J$
+table, whose envelope is $a_J=1/q$.
+Only after this finite induction do we generalize $X$. For the final target
+integer $n$, take $X=n$; all subarguments used in its proof are below $n+1$.
+Section~\ref{sec:pi} then yields \eqref{eq:rational-half}. Its margin over
+the claimed arithmetic bound is at least $1/(2k)$, much larger than the
+finite numerical error in \eqref{eq:budget-bound}. After clearing denominators,
+the resulting statement is exactly \eqref{eq:arith-pnt}.
+
+We have consequently described a derivation in the stipulated object theory,
+not merely a proof in a stronger theory that the modulus is total.
+There is no induction on
+$\forall x\ge P_j\,\bigl(|R(x)|\le a_jx\bigr)$; that unbounded
+formula was used only as readable notation before its finite-table
+implementation was supplied. No assertion about arbitrary functions or
+arbitrary reals enters the object-language statement.
+
+\input{lean_plan}
+
+\section{Provenance, scope, and reproducibility}
+
+The elementary strategy originates in Selberg's work~\cite{selberg}.
+The logarithmic-square comparison with a divisor sum is discussed in
+Kane's notes~\cite{kane}. Here the constants are derived explicitly,
+Euler's constant is replaced by a finite harmonic parameter, and the
+contraction is carried out with a rational geometric mesh and a fixed
+finite arithmetic table. These details are needed for this constructive
+weak-arithmetic presentation. No novelty claim about the prime number
+theorem or its provability in classical elementary arithmetic is made.
+
+The ProveIt source was inspected at commit
+\begin{quote}\small\ttfamily
+b03925cccc76d55b9dc2a00864a5e0544b64aa7f.
+\end{quote}
+The useful component for the requested Lean endpoint is the
+\texttt{ConciseIPRA} project under
+\texttt{Logic/PrimitiveRecursiveArithmetic/}.
+The supplied Busy Beaver/ZFC and DiophantineConsistency directories were
+also inspected for their scope and arithmetic infrastructure. Their
+consistency theorems are not assumptions in this proof. In particular,
+no consistency statement for ZFC or stronger arithmetic is used to obtain
+a number-theoretic estimate. A bounded-characteristic construction found
+in the DiophantineConsistency project is a useful implementation pattern,
+but its classical completeness argument is not silently imported as an
+intuitionistic derivation.
+
+The archive contains the full LaTeX source, the compiled PDF, the Lean
+outline, and Python programs implementing the exact arithmetic predicate
+and checking finite identities and arithmetic bookkeeping. Those finite
+checks do not prove the universal theorem; the mathematical proof is the
+argument above. The Lean outline was not compiled because the preparation
+environment had no Lean executable. A completed deeply embedded Lean
+derivation remains the formalization work described in the preceding section.
+
+\begin{thebibliography}{9}
+\bibitem{selberg}
+Atle Selberg, \emph{An elementary proof of the prime-number theorem},
+Annals of Mathematics (2) \textbf{50} (1949), 305--313.
+\url{https://www.math.lsu.edu/~mahlburg/teaching/handouts/2014-7230/Selberg-ElemPNT1949.pdf}.
+
+\bibitem{kane}
+Daniel Kane, \emph{Notes on Selberg's proof of the prime number theorem},
+Winter 2025.
+\url{https://cseweb.ucsd.edu/~dakane/Math104B/SelbergNotes.pdf}.
+
+\bibitem{cd}
+C. Cornaros and C. Dimitracopoulos,
+\emph{The prime number theorem and fragments of PA},
+Archive for Mathematical Logic \textbf{33} (1994), 265--281.
+\url{https://doi.org/10.1007/BF01270626}.
+The publisher's abstract was accessible; its full proof is not used here.
+
+\bibitem{avigad}
+Jeremy Avigad, \emph{Number theory and elementary arithmetic},
+Philosophia Mathematica (3) \textbf{11} (2003), 257--284,
+especially p.~269, footnote~14.
+\url{https://www.andrew.cmu.edu/user/avigad/Papers/elementary.pdf}.
+
+\bibitem{sudac}
+Olivier Sudac, \emph{The prime number theorem is PRA-provable},
+Theoretical Computer Science \textbf{257} (2001), 185--239.
+\url{https://doi.org/10.1016/S0304-3975(00)00116-X}.
+Cited for the logical issue explained by Avigad, not as a proof of the
+intuitionistic conclusion.
+
+\bibitem{proveit}
+Vladimir Reshetnikov et al., \emph{ProveIt},
+\texttt{ConciseIPRA}, inspected commit \texttt{b03925cccc76}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/b03925cccc76d55b9dc2a00864a5e0544b64aa7f/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}{Pinned repository source}.
+\end{thebibliography}
+\end{document}

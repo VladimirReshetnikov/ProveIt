@@ -1,0 +1,118 @@
+\section{The complex gamma estimate needed for counting}
+\label{sec:stirling}
+
+The real factorial Stirling estimate alone is insufficient for the
+argument of $\Gamma(1/4+\ii T/2)$. We derive the needed complex estimate
+directly. Let $\Log z$ be the branch with argument in
+$(-\pi/2,\pi/2)$ on $\Re z>0$, and let $\log\Gamma z$ denote its
+analytic logarithm which is real on the positive real axis. It can be
+defined by the logarithm of the finite products in
+\eqref{eq:gamma-product}; all factors have positive real part after
+the initial $z$ factor.
+
+\begin{lemma}[Complex Euler--Maclaurin remainder]
+For $\Re z>0$,
+\begin{equation}
+ \log\Gamma z=(z-\tfrac12)\Log z-z+C+R(z),\qquad C\in\R,
+ \label{eq:complex-stirling}
+\end{equation}
+where
+\begin{equation}
+ R(z)=\frac1{12z}-\frac12\int_0^\infty
+          \frac{B_2(\{x\})}{(z+x)^2}\,dx,
+ \qquad |R(z)|<\frac1{4|z|}.
+ \label{eq:gamma-remainder}
+\end{equation}
+The constant is $C=\tfrac12\log(2\pi)$, but its value is not required
+in this argument.
+\end{lemma}
+
+\begin{proof}
+Apply two integrations by parts on each unit interval to
+$f(x)=\Log(z+x)$. Since $f'=1/(z+x)$ and $f''=-1/(z+x)^2$, the finite
+Euler--Maclaurin identity on $[0,n]$ is
+\begin{align*}
+ \sum_{j=0}^{n-1}\Log(z+j)
+ ={}&\int_0^n\Log(z+x)\,dx
+     +\frac{\Log z-\Log(z+n)}2\\
+ &+\frac1{12}\left(\frac1{z+n}-\frac1z\right)
+   +\frac12\int_0^n\frac{B_2(\{x\})}{(z+x)^2}\,dx.
+\end{align*}
+Insert this equality into
+\[
+ \log\Gamma z=
+ \lim_{n\to\infty}\left(\log((n-1)!)+z\log n
+                 -\sum_{j=0}^{n-1}\Log(z+j)\right).
+\]
+The elementary antiderivative of $\Log(z+x)$ yields
+\eqref{eq:complex-stirling}--\eqref{eq:gamma-remainder}; the
+remaining constant is the real limit of
+$\log((n-1)!)-(n-1/2)\log n+n$. Existence with an $O(1/n)$ modulus
+follows by the same finite formula at $z=1$. No complex limiting
+constant has to be selected. The upper-endpoint errors are bounded
+uniformly on $|z|\le D$, $\Re z\ge a>0$ by a rational multiple of
+$(D+1)^2/n$, using the finite series for $\Log(1+z/n)$ when $n\ge2D$.
+
+Since $|B_2(x)|\le1/6$ on $[0,1]$, it remains to bound a real
+integral. Write $z=|z|e^{\ii\theta}$, $|\theta|<\pi/2$. Direct
+integration gives, including the limiting case $\theta=0$,
+\[
+ \int_0^\infty\frac{dx}{|z+x|^2}
+ =\frac{|\theta|}{|z|\sin|\theta|}
+ \le\frac{\pi}{2|z|}.
+\]
+Therefore
+\[
+ |R(z)|\le\frac1{12|z|}+\frac{\pi}{24|z|}
+       =\frac{2+\pi}{24|z|}<\frac1{4|z|}.
+\]
+All divisions are bounded away from zero on the stated half-plane
+boxes. For the integral tail beyond $X$ one may use
+$1/[12(X+a)]$. On each unit interval, the derivative of its integrand
+is bounded by a rational expression in $a^{-1}$ and $|z|$; splitting
+at the integer endpoints and taking a fixed rational mesh bounds
+quadrature error. Thus the displayed proof has explicit primitive
+recursive cutoff and mesh choices. It does not require an unspecified
+asymptotic expansion.
+\end{proof}
+
+Define the continuous gamma argument
+\begin{equation}
+ \vartheta(T)=\Im\log\Gamma(\tfrac14+\tfrac{\ii T}2)
+               -\frac T2\log\pi,
+ \label{eq:theta-definition}
+\end{equation}
+with the branch just fixed. In particular $\vartheta(0)=0$.
+The distinction between this continuous logarithm and the principal
+argument of the gamma value matters: reducing modulo $2\pi$ would
+destroy a zero-counting formula. The normalization agrees with the
+standard Riemann--Siegel theta function; see
+\cite{DLMFgamma,DLMFzeros}.
+
+\begin{lemma}[Explicit theta estimate]
+For $T\ge1$,
+\begin{equation}
+ \left|\vartheta(T)-
+ \left(\frac T2\log\frac{T}{2\pi}-\frac T2-\frac\pi8\right)\right|
+ <\frac1T.
+ \label{eq:theta-bound}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Put $a=1/4$, $b=T/2$, $r=(a^2+b^2)^{1/2}$ and
+$\theta=\arg(a+\ii b)$. The imaginary part of the main expression
+in~\eqref{eq:complex-stirling} is
+\[
+ b\log r-\tfrac14\theta-b.
+\]
+The replacement of $\log r$ by $\log b$ costs at most
+\[
+ \frac b2\log(1+a^2/b^2)\le\frac{a^2}{2b}=\frac1{16T}.
+\]
+The replacement of $\theta$ by $\pi/2$ costs at most
+$\tfrac14\arctan(a/b)\le1/(8T)$. Finally
+$|R(a+\ii b)|<1/(4b)=1/(2T)$. The total is less than
+$11/(16T)<1/T$, and the real constant $C$ contributes no imaginary
+part.
+\end{proof}

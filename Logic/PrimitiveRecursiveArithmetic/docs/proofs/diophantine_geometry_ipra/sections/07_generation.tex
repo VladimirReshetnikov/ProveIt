@@ -1,0 +1,125 @@
+\section{A constructive interface for height descent and finite generation}
+\label{sec:generation}
+
+An important role of height in Diophantine geometry is to reduce all points
+to finitely many small ones. The following theorem isolates a version of
+that argument in which the required witnesses are supplied by actual
+primitive recursive functions. It is a theorem about explicitly encoded
+groups, not an assertion that every elliptic curve already comes equipped
+with these data.
+
+\begin{theorem}[Finite generation from a computable reducing step]
+\label{thm:generation}
+Fix an abelian group represented by natural-number codes, with primitive
+recursive operations, equality and a validity predicate. Suppose $\iPRA$
+proves its group identities on valid codes. Let $h$ be a primitive recursive
+natural-valued height. Fix $m\ge2$, a threshold $T$, and finite lists of valid group elements
+\[
+      R=(r_0,\ldots,r_{s-1}),\qquad S=(s_0,\ldots,s_{t-1}).
+\]
+Suppose the following data and their correctness proofs are given:
+\begin{enumerate}
+\item $S$ lists all valid group elements of height at most $T$;
+\item primitive recursive functions $D(P)$ and $i(P)$ such that, for every
+valid $P$ with $h(P)>T$, the point $D(P)$ is valid, $i(P)<s$, and
+\[
+               P=mD(P)+r_{i(P)},\qquad h(D(P))<h(P).
+\]
+\end{enumerate}
+Then $R\cup S$ generates the group. More precisely, a primitive recursive
+algorithm produces, for each valid $P$, explicit integer coefficients
+expressing $P$ in these generators. Its correctness is provable in $\iPRA$.
+\end{theorem}
+\begin{proof}
+Keep a current point, an active-step count $k$, and a coefficient vector
+$(a_0,\ldots,a_{s-1})$. Start at $P$, $k=0$, and all coefficients zero.
+When the current point $Q$ has height at most $T$, keep the whole state
+unchanged. Otherwise first save $i=i(Q)$ and $D(Q)$ from the old point,
+then replace $Q$ by $D(Q)$, add $m^k$ to $a_i$, and increase $k$ by one.
+Run this stopped iteration for exactly
+$h(P)\mathbin{\dotminus}T$ stages, where $\dotminus$ is truncated
+subtraction.
+
+The rank $h(Q)\mathbin{\dotminus}T$ is zero precisely in the stopped
+case. In an active step it decreases by at least one; in a stopped step
+it remains zero. Quantifier-free induction therefore proves that after
+$j$ stages it is at most
+$(h(P)\mathbin{\dotminus}T)\mathbin{\dotminus}j$. The final point has
+height at most $T$ and hence is some $s_\ell$ in the supplied list. Its
+index is found by bounded equality search.
+
+Throughout the iteration the following group identity is maintained:
+\begin{equation}\label{eq:descent-expansion}
+                   P=m^k Q+\sum_{i<s}a_i r_i.
+\end{equation}
+It holds initially. An active step substitutes
+$Q=mD(Q)+r_{i(Q)}$ into the right side and uses distributivity of
+integer multiplication in an abelian group. The result is exactly the
+coefficient update. A stopped step changes nothing. At the final state,
+replace $Q$ by $s_\ell$ in \eqref{eq:descent-expansion}; this is the
+promised expression. All coefficients can even be chosen nonnegative
+with this particular supplied reduction.
+
+The loops have the given numerical fuel. Scalar multiplication is repeated
+group addition, so its definition is primitive recursive. Every exponent
+is at most $h(P)\dotminus T$, and every coefficient is bounded by
+$\sum_{j\le h(P)}m^j$. Equation \eqref{eq:descent-expansion} and the rank
+inequality are quantifier-free statements about the coded operations, so
+their inductions are instances of the permitted rule. No choices from an
+unspecified finite quotient are made.
+\end{proof}
+
+A commonly useful sufficient numerical condition for strict decrease is
+\[
+              2h(D(P))\le h(P)+T\qquad(h(P)>T).
+\]
+Indeed $h(P)+T<2h(P)$ implies $h(D(P))<h(P)$ by integer arithmetic.
+This avoids real logarithms and limit-defined canonical heights in the
+interface. Constructing such a height and a reducing selector for a
+particular group is an additional mathematical obligation.
+
+\subsection{What this does and does not establish about larger theorems}
+
+Theorem~\ref{thm:generation} captures the final reduction step of a
+Mordell--Weil-style proof. A statement that a quotient group is finite is
+not, on its own, the supplied primitive recursive selector required here.
+One must provide representatives, produce the corresponding preimages,
+and prove the height decrease in the chosen arithmetic. Likewise a proof
+of finiteness of rational points is not automatically an explicit global
+height bound to which Corollary~\ref{cor:heightbound} applies.
+
+The results actually completed in this paper need none of those additional
+inputs: pointed conics come with explicit formulas, rational preperiodic
+points have the resultant-derived height bound, and the curve $E_1$ is
+settled by its concrete decreasing transformation. The broad classical
+theorems are valuable targets for further work, but they are not hidden
+premises in these arguments. No inference here rests on an assertion that
+an unexamined classical proof must formalize in weak arithmetic.
+
+\subsection{Logical inventory of the completed proofs}
+
+The paper uses first-order numerical quantification to state its theorems,
+including unbounded universal claims about all rational points. Their
+proofs use the following finite mechanisms:
+\begin{center}
+\begin{tabular}{p{0.31\textwidth}p{0.60\textwidth}}
+\toprule
+Mathematical operation & Arithmetic implementation \\
+\midrule
+Projective equivalence & Gcd normalization and Bezout uniqueness \\
+Finite point loci & Explicit coordinate boxes and polynomial tests \\
+Coordinate morphisms & Integral homogeneous formulas and nonvanishing guards \\
+Height lower bounds & Polynomial certificates and bounds on their common divisors \\
+Infinite families & An injective formula evaluated on a supplied finite initial segment \\
+Preperiodicity & A proved height cutoff and a finite repeated-state search \\
+Nonexistence by descent & Iteration for the initial integer rank \\
+Local impossibility & Exhaustive residue tests for a supplied modulus \\
+Finite generation & A supplied reducing selector and a telescoping group identity \\
+\bottomrule
+\end{tabular}
+\end{center}
+Each induction has an equation, a Boolean invariant, or a bounded
+arithmetical invariant. There is no quantification over arbitrary sets of
+natural numbers, no completeness principle for $\R$, and no appeal to an
+unspecified unbounded search. This is the substantive reason the development
+fits the chosen constructive arithmetic.

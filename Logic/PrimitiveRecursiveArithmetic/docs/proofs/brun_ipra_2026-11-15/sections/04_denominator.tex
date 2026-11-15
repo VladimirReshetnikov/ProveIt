@@ -1,0 +1,116 @@
+\section{The denominator estimate from a finite harmonic square}
+\label{sec:denominator}
+
+It remains to lower-bound \(G(z)\). This is the part where a standard
+analytic presentation may invoke asymptotics for multiplicative sums.
+The following direct inequality is sufficient here.
+
+\begin{theorem}[Prime-support comparison]
+\label{thm:harmonic}
+For every \(s\ge1\), let \(H_s=\sum_{a=1}^s1/a\). Then
+\begin{equation}
+ \boxed{\qquad H_s^2\le3G(s^2).\qquad}
+ \label{eq:harmonic-G}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Expand the finite square:
+\[
+ H_s^2=\sum_{1\le a,b\le s}\frac1{ab}.
+\]
+Each ordered pair has the uniquely determined prime support
+\(d=\rad(ab)\), which is squarefree and at most \(ab\le s^2\).
+For \(d\in\sfD_{s^2}\), let
+\[
+ F_d(s)=
+ \sum_{\substack{1\le a,b\le s\\\rad(ab)=d}}\frac1{ab}.
+\]
+We will show \(F_d(s)\le3h(d)\).
+
+Write \(a=\prod_{p\mid d}p^{e_p}\),
+\(b=\prod_{p\mid d}p^{f_p}\).
+The exponents are nonnegative, and for each \(p\mid d\) they are not both
+zero. Every exponent is at most \(s\): if \(p^e\mid a\le s\) with
+\(e>0\), then \(e\le p^e\le s\); likewise for \(b\).
+Uniqueness of factorization makes the map to the collection of exponent
+pairs injective.
+
+Enlarge the permitted exponent collections to the entire finite box
+\[
+ 0\le e_p,f_p\le s,\qquad (e_p,f_p)\ne(0,0)
+ \quad(p\mid d).
+\]
+This forgets the constraints \(a,b\le s\) and can only increase the sum
+of nonnegative weights. Finite distributivity then gives
+\begin{equation}
+ F_d(s)\le
+ \prod_{p\mid d}
+ \left(
+ \sum_{\substack{0\le e,f\le s\\(e,f)\ne(0,0)}}p^{-(e+f)}
+ \right)
+ =\prod_{p\mid d}\bigl(2A_p+A_p^2\bigr),
+ \label{eq:box}
+\end{equation}
+where \(A_p=\sum_{e=1}^s p^{-e}\).
+No infinite geometric series occurs in this step.
+
+For the finite geometric sum, cancellation of consecutive terms gives
+\[
+ (p-1)A_p=1-p^{-s}\le1,\qquad
+ 0\le A_p\le\frac1{p-1}.
+\]
+If \(p\) is odd, hence \(p\ge3\), it follows that
+\[
+ 2A_p+A_p^2
+ \le\frac{2}{p-1}+\frac1{(p-1)^2}
+ =\frac{2p-1}{(p-1)^2}
+ \le\frac2{p-2}=h(p).
+\]
+The last inequality has positive denominators and reduces exactly to
+\[
+ 2(p-1)^2-(2p-1)(p-2)=p\ge0.
+\]
+At \(p=2\), we instead have
+\[
+ 2A_2+A_2^2\le3=3h(2).
+\]
+There is only one prime \(2\) in a squarefree support. Thus the product in
+\eqref{eq:box} is at most \(h(d)\) when \(d\) is odd and at most
+\(3h(d)\) when \(d\) is even. For \(d=1\), the product is empty and equals
+\(1\), agreeing with the sole pair \(a=b=1\).
+Hence in every case \(F_d(s)\le3h(d)\).
+
+Finally partition the original finite pair set by \(d=\rad(ab)\):
+\[
+ H_s^2=\sum_{d\in\sfD_{s^2}}F_d(s)
+       \le3\sum_{d\in\sfD_{s^2}}h(d)=3G(s^2).
+\]
+Every group with no original pair simply contributes \(0\).
+\end{proof}
+
+\begin{lemma}[Dyadic harmonic bound]
+\label{lem:harmonic-dyadic}
+For every \(t\ge0\),
+\[
+ H_{2^t}\ge1+\frac t2,\qquad
+ G(2^{2t})\ge\frac{(t+2)^2}{12}.
+\]
+\end{lemma}
+
+\begin{proof}
+Separate the term \(1\) and the \(t\) blocks
+\[
+ 2^{j-1}<a\le2^j,\qquad 1\le j\le t.
+\]
+The \(j\)-th block has \(2^{j-1}\) terms, each at least \(2^{-j}\);
+its sum is at least \(1/2\). This proves the harmonic inequality by a
+finite sum. Applying Theorem~\ref{thm:harmonic} with \(s=2^t\)
+gives
+\[
+ G(2^{2t})\ge\frac{H_{2^t}^2}{3}
+ \ge\frac{(1+t/2)^2}{3}
+ =\frac{(t+2)^2}{12}.
+\]
+For \(t=0\), the calculation uses \(H_1=G(1)=1\), and remains valid.
+\end{proof}

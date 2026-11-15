@@ -1,0 +1,110 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem,graphicx,xcolor}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Exactly Five Platonic Solids},
+ pdfauthor={Prepared for Vladimir Reshetnikov},
+ pdfsubject={A finite constructive classification in intuitionistic primitive recursive arithmetic},
+ pdfkeywords={Platonic solids, iPRA, constructive geometry, Lean}}
+\usepackage{fancyhdr}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Exactly five Platonic solids}
+\fancyhead[R]{\small Constructive arithmetic}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\K}{\mathbb K}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\cyc}{\operatorname{cyc}}
+\newcommand{\Valid}{\operatorname{Valid}}
+\newcommand{\Class}{\operatorname{Class}}
+\newcommand{\Witness}{\operatorname{Witness}}
+\newcommand{\Similar}{\operatorname{Similar}}
+\newcommand{\Model}{\operatorname{Model}}
+\newcommand{\code}[1]{\texttt{#1}}
+\title{\textbf{Exactly Five Platonic Solids}\\[6pt]
+\large A finite constructive classification in\\intuitionistic primitive recursive arithmetic}
+\author{Prepared for Vladimir Reshetnikov}
+\date{November 15, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+There are exactly five similarity classes of convex regular polyhedra:
+the tetrahedron, cube, octahedron, dodecahedron, and icosahedron.
+We give a human-readable proof with an explicit interpretation in
+intuitionistic primitive recursive arithmetic. Inputs are finite polyhedra
+with exactly represented constructible coordinates, congruent regular
+polygonal facets, and a common vertex valence. The proof establishes
+Euler's identity by finite counting, classifies the five numerical and
+combinatorial cases, proves the necessary finite rigidity result, and
+constructs all five examples in $\Q(\sqrt5)$. Every search has a finite
+bound; no real-number completeness, choice principle, or undecidable
+real comparison is used. A primitive recursive classifier returns a
+similarity certificate. The archive includes exact executable certificates
+and a Lean roadmap tied to ProveIt's existing embedded $\ipra$ syntax.
+The supplied Lean source is an \emph{uncompiled arithmetic prototype};
+the complete geometric derivation has not been kernel-checked.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+\input{sections/01_foundations}
+\input{sections/02_counting}
+\input{sections/03_uniqueness}
+\input{sections/04_existence}
+\input{sections/05_formalization}
+\clearpage
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{euclid}
+Euclid, \emph{Elements}, Book XIII, constructions in Propositions 13--17
+and classification remark following Proposition 18.
+Clay Mathematics Institute historical edition,
+\url{https://www.claymath.org/library/historical/euclid/files/elem.13.18.html}.
+
+\bibitem{sz}
+I. J. Schoenberg and S. K. Zaremba,
+\emph{On Cauchy's lemma concerning convex polygons},
+Canadian Journal of Mathematics \textbf{19} (1967), 1062--1071.
+Corrected short induction: Section 3, pp.\ 1070--1071.
+\url{https://doi.org/10.4153/CJM-1967-096-4}.
+
+\bibitem{bowers}
+J. C. Bowers, P. L. Bowers, and K. Pratt,
+\emph{Cauchy rigidity of c-polyhedra}, preprint, April 3, 2017,
+Section 2 (review of classical Cauchy rigidity).
+\url{https://www.math.fsu.edu/~aluffi/archive/paper518.old.pdf}.
+
+\bibitem{proveit}
+V. Reshetnikov and contributors, \emph{ProveIt},
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA},
+snapshot \code{2811f73af20330d04bf3dae8428f87f7efa6580d}.
+Files inspected include \code{PR.lean}, \code{Deduction.lean},
+\code{NativeBiInterpretation.lean}, and the directory README.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/2811f73af20330d04bf3dae8428f87f7efa6580d/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+
+\bibitem{wiki}
+\emph{Platonic solid}, Wikipedia, the reference specified in the task,
+consulted November 15, 2026. Used to fix the usual local definition and
+classical target; the arguments in this article supply the proof.
+\url{https://en.wikipedia.org/wiki/Platonic_solid}.
+\end{thebibliography}
+\end{document}

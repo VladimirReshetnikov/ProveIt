@@ -1,0 +1,190 @@
+Independent audit of foundations and heights
+==========================================
+
+Reviewed:
+  output/diophantine_geometry_ipra/sections/01_foundations.tex
+  output/diophantine_geometry_ipra/sections/02_heights.tex
+  work/sources/PR.lean
+  work/sources/NativeBiInterpretation.lean
+
+Overall finding
+---------------
+
+The mathematical content of the two chapters is sound. The proposed
+algorithms are primitive recursive even when dimension, polynomial degree,
+coefficient lists, and the number of equations are numerical inputs. Their
+loops have fixed program structure; exponentiation, coordinate evaluation,
+and list traversal are fixed primitive recursive subroutines. This does not
+amount to a primitive recursive universal interpreter for arbitrary PR
+programs. The chapter correctly distinguishes those assertions.
+
+The bounded-quantifier argument gives an appropriate route to iPRA rather
+than silently using arbitrary-formula induction. In particular, fixing a
+successful index as a numerical parameter before induction on the scan
+bound is the right way to establish completeness. The normalized projective
+representative proof, upper/inverse linear height estimates, and rational
+root theorem all check out.
+
+I did not find a result requiring stronger arithmetic than claimed. There
+are several exposition/totality fixes worth making before delivery, listed
+below. The manuscript appropriately says that object-language iPRA proof
+terms are not supplied; this status should remain explicit.
+
+Recommended corrections
+-----------------------
+
+1. Explicit defining equations for projection and composition.
+
+The subsection called "The precise base theory" explicitly writes only
+the two primitive recursion equations. The actual inspected PRAAx also
+contains projection and composition equations. For a fully specified
+theory, add:
+
+  pi_i^k(x_0,...,x_(k-1)) = x_i,
+  c(x) = f(g_0(x),...,g_(m-1)(x))
+
+when c is the symbol for that composition. The existing statement "a
+symbol for each fixed primitive recursive definition" is suggestive but
+does not, by itself, explicitly postulate these equations. This is a
+precision correction to the definition, not a failure of any geometric
+proof.
+
+2. Radix enumeration when B = 0.
+
+The heights proof describes a base-(2B+1) digit expansion. Positional
+base-1 digit decoding is not the ordinary algorithm being invoked. Split
+the description: when B=0 visit the single zero vector and reject it;
+when B>=1 use radix 2B+1. Alternatively return the empty list immediately
+at B=0 and reserve the exact-visit-count statement for the generic
+enumeration. The mathematical list theorem already treats this case
+correctly; the fix makes the program description total without an
+implicit exceptional convention.
+
+3. Narrow "This estimate also bounds all accumulators."
+
+The polynomial bound ||F||_1 max(1,B)^degree bounds the absolute values of
+the running polynomial sum and coefficient-weighted monomials. It does
+not bound the encoded output list, visit counters, or every auxiliary
+power-computation state. For a zero polynomial the bound is zero, while
+an unweighted product accumulator may start at 1. Suggested replacement:
+
+  "This bounds the running polynomial sum and each coefficient-weighted
+  monomial. Auxiliary data and output-list codes have separate primitive
+  recursive bounds determined by the input and the displayed scan length."
+
+No global primitive recursive storage bound is difficult here. If needed,
+iterate the chosen list-constructor bound for at most (2B+1)^(n+1)
+append operations, using the fixed bound on each point code.
+
+4. Specify the domain in the global-height-bound corollary.
+
+The enumerator accepts homogeneous projective equations. The corollary
+currently says "For a polynomial system V" without repeating that
+restriction. Change this to "For a homogeneous system V in P^n".
+For affine systems, homogenize, retain an affine chart, and explicitly
+filter the distinguished coordinate to be nonzero; otherwise the
+projective closure's points at infinity would be included. A short
+affine-chart sentence would be useful if the corollary is intended to
+cover both domains.
+
+5. Give the zero polynomial a numerical degree convention.
+
+The estimate is written with deg F, although zero input equations should
+be admitted by the enumeration theorem. State that the code carries a
+declared homogeneous degree (zero forms are allowed in each degree), or
+set deg 0=0 for the computational estimate. This removes a minor
+undefined-expression edge case without changing the theorem.
+
+6. State the second factorization invariant explicitly.
+
+The residual-product invariant proves the product equation. The sentence
+that an active divisor is prime also uses the invariant that no previously
+processed prime divides the residual. It is straightforward and bounded:
+after processing stage p, test every prime q<=p and maintain q does not
+divide the residual. Once removed, such a divisor cannot reappear under
+later exact division, because q | (r/d) would imply q | r. Each inner
+division loop terminates within n stages since active division by p>=2
+strictly decreases the positive residual. Adding these two sentences
+makes the advertised factorization proof fully explicit and shows exactly
+why its induction remains Boolean/quantifier-free.
+
+Other checks and qualifications
+------------------------------
+
+- Bounded formulas: the claim is for each fixed formula in the PR language,
+  not a uniform truth predicate over arbitrary formulas. The text's later
+  universal-evaluator caveat is consistent with this. It could say "each
+  fixed bounded formula" once to preempt an unintended stronger reading.
+
+- PR coding: a precise pairing function is not specified, but any standard
+  pairing with bounded primitive recursive decoding suffices. This is an
+  implementation choice left to the formalization module, not a missing
+  mathematical theorem. An iterated-pairing representation can be very
+  large; size efficiency is not claimed.
+
+- Euclid: a+b+1 stages suffice. Extended coefficient rows are primitive
+  recursive and the separate descent chapter supplies the useful bound
+  (max(a,b)+1)^(a+b+2). The all-zero input is explicitly excluded from
+  nonzero-vector Bezout and handled separately for binary gcd.
+
+- Prime factorization: least-prime-divisor existence is itself a bounded
+  search with a direct minimal-divisor proof. Thus the argument is not
+  circular. The prime-divisor lemma and uniqueness of exponents can be
+  proved by bounded induction and cancellation. Coprimality of arbitrary
+  positive powers is uniform in both exponents, because their numerical
+  products are still primitive recursive bounds.
+
+- Primitive normalization: from cross-product equalities and sum c_i v_i=1,
+  defining a=sum c_i w_i really gives w=a v. Primitivity of w then gives
+  |a|=1 and the first-nonzero-positive rule fixes a=1. This handles vectors
+  with zero coordinates. Clearing rational denominators uses an explicit
+  product and does not need a chosen least common denominator.
+
+- Variable dimension: evaluating one polynomial has a fixed nesting of
+  loops over monomials and coordinates, with a call to fixed PR
+  exponentiation. Variable dimension therefore causes no higher-type or
+  unbounded-recursion issue.
+
+- Upper map-height estimate: normalization may only decrease height, so
+  A H(P)^d is valid. The inverse linear bound is also correct: apply the
+  upper bound to adj(M) acting on the canonical image point, then use the
+  adjugate identity projectively. No missing determinant denominator
+  factor is needed in this direction.
+
+- Adjugate: the finite sign-reversing permutation argument is sufficient
+  over iPRA when implemented with bounded sums. For a completely explicit
+  brute-force implementation one can enumerate k^k coordinate strings and
+  retain permutations; one need not presuppose an efficient factorial-size
+  generator. The involution acts on the retained list.
+
+- Rational roots: extracting T^k, treating degree-zero g separately, and
+  bounding signed p by |a_k| and positive q by |a_d| are correct. Monomials,
+  nonzero constants, and the zero root are handled. The zero polynomial is
+  deliberately excluded from this theorem.
+
+Exact ProveIt declaration verification
+--------------------------------------
+
+The saved PR.lean confirms the following exact names and namespaces:
+
+  namespace LeanProofs.ConciseIPRA
+  inductive PR : Nat -> Type
+  inductive PTm (n : Nat) : Type
+  inductive PRAAx : Theory PTm
+  namespace PRA
+  theorem qfInd
+
+The fully qualified induction name is therefore
+LeanProofs.ConciseIPRA.PRA.qfInd, abbreviated PRA.qfInd after opening or
+entering LeanProofs.ConciseIPRA. Its arguments include a formula
+phi : Fm PTm (n+1), hphi : phi.QF, a base derivation, and a successor
+derivation; its conclusion is a derivation of Fm.all phi.
+
+NativeBiInterpretation.lean confirms:
+
+  pra_iff_native :
+    (Gamma |- [PRAAx] phi) <->
+    NPrf (Gamma.map NFm.ofPRA) (NFm.ofPRA phi).
+
+These declarations justify the roadmap's stated integration interface.
+They do not by themselves establish the new geometric theorem objects.

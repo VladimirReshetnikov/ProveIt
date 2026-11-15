@@ -1,0 +1,269 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage{xcolor,fancyhdr,xurl,hyperref,listings}
+\definecolor{ink}{RGB}{26,48,71}
+\definecolor{blue}{RGB}{22,76,119}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue,
+ pdftitle={Distribution of zeta zeros in intuitionistic primitive recursive arithmetic},
+ pdfauthor={ChatGPT, prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Zeta zeros in iPRA}
+\fancyhead[R]{\small Quantitative constructive proofs}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}\setlength{\parskip}{.35em}
+\setlist{itemsep=.25em,topsep=.4em}
+\allowdisplaybreaks[2]\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
+\newcommand{\ii}{\mathrm i}\newcommand{\ee}{\mathrm e}
+\newcommand{\normone}[1]{\lVert #1\rVert_1}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\DeclareMathOperator{\wind}{wind}
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\Ree}{Re}\DeclareMathOperator{\Imm}{Im}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ keepspaces=true,frame=single,rulecolor=\color{black!20},showstringspaces=false}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{.55in}
+{\color{ink}\Huge\bfseries Distribution of the zeros\\[.15em]of the Riemann zeta function\par}
+\vspace{.35in}
+{\LARGE in intuitionistic primitive recursive arithmetic\par}
+\vspace{.35in}
+{\large Quantitative human proofs, finite arithmetic certificates,\\
+and a Lean formalization roadmap\par}
+\vspace{.25in}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large 15 November 2026\par}
+\vspace{.25in}
+\begin{abstract}
+We give constructive versions of the classical location, symmetry and
+counting theorems for zeta zeros. The main distribution estimate is the
+Riemann--von Mangoldt formula with an explicit logarithmic error. A
+quantitative minimum-modulus argument supplies a primitive recursive
+choice of regular contour heights. Thus the zero count is a usable
+finite object, rather than a count conditional on an unspecified
+zero-free boundary.
+
+Additional results include simple trivial zeros, positive nonvanishing
+bounds at the edges of the critical strip, a small explicit zero-free
+neighborhood of those edges, unbounded nontrivial zero counts, logarithmic
+local multiplicity bounds, mesoscopic density, and effective convergence
+of reciprocal-zero sums. Exact rational arithmetic certifies one simple
+critical-line zero as a worked example.
+
+The first-order statements concern specified rational approximants,
+bounded searches and winding certificates. Complex analytic notation is
+a readable interpretation of those statements. The Lean deliverable is
+an explicit roadmap and object-theory interface, not a completed or
+compiled Lean formalization. The reusable functional-equation draft is
+included with its original proof-status qualifications.
+\end{abstract}
+\vfill
+{\small Repository snapshot:
+\code{VladimirReshetnikov/ProveIt} at\\
+\code{b5a3ad037723c44d69a3d5b28a950c554327a989}.\\
+Constants are deliberately coarse. No optimal zero-free region, critical-line
+proportion, or Riemann hypothesis is asserted.}
+\end{titlepage}
+\clearpage\pagenumbering{roman}\hypersetup{pageanchor=true}
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage\pagenumbering{arabic}
+
+\section{Results and the meaning of a constructive zero count}
+\label{sec:results}
+
+Write $s=\sigma+\ii t$ and use the normalization
+\begin{equation}
+ \xi(s)=\frac12s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s).
+ \label{eq:xi-definition}
+\end{equation}
+The completed function is entire, satisfies
+$\xi(s)=\xi(1-s)$ and $\xi(\bar s)=\overline{\xi(s)}$, and has
+$\xi(0)=\xi(1)=1/2$. Its zeros are exactly the nontrivial zeros of zeta,
+with the same multiplicities. These standard normalizations agree with
+\cite{DLMFreflection,DLMFzeros}. The functional equation is reused from
+the quantitative human proof in \cite{RepoFE}; its complete archive is
+included among the dependencies.
+
+\subsection{The theorem inventory}
+The following statements are established in their finite arithmetic
+versions. Their usual complex-analytic readings are recorded here to make
+the mathematical content immediately recognizable.
+
+\begin{enumerate}
+\item For rational $a>0$ and $\sigma\ge1+a$,
+      $\abs{\zeta(\sigma+\ii t)}\ge a/(1+a)$.
+      On the line $\sigma=1$ there are explicit positive lower bounds
+      away from the pole. A uniform positive lower bound for
+      $(s-1)\zeta(s)$ also covers a narrow neighborhood of that line.
+\item The zeros in $\sigma\le0$ are exactly $-2,-4,-6,\ldots$.
+      They are simple, and
+      \[
+       \zeta'(-2n)=
+       \frac{(-1)^n(2n)!}{2(2\pi)^{2n}}\zeta(2n+1).
+      \]
+      All other zeros lie in $0<\sigma<1$; none is real.
+\item Nontrivial zeros and their multiplicities are preserved by
+      $s\mapsto\bar s$, $s\mapsto1-s$, and
+      $s\mapsto1-\bar s$.
+\item There is a fixed primitive recursive procedure which, on rational
+      input $T\ge8$, returns a rational $U$ with $T<U<T+1$ and
+      a certified zero-free boundary for
+      $[-1,2]+\ii[0,U]$.
+\item If $N(U)$ is the integer winding count on that boundary and
+      \[
+       \mathcal M(U)=\frac{U}{2\pi}\log\frac{U}{2\pi}-\frac{U}{2\pi},
+      \]
+      then
+      \begin{equation}
+       \boxed{\abs{N(U)-\mathcal M(U)}\le 8\log(U+4)+40.}
+       \label{eq:main-rvm}
+      \end{equation}
+      The same estimate holds at every supplied regular height $U\ge8$.
+\item The zero counts are unbounded with an explicit primitive recursive
+      witness function. A bounded subdivision procedure also extracts
+      a uniform sequence of pairwise apart primitive recursive zero names.
+      The number of zeros in a unit-height strip and
+      the multiplicity of any individual zero at height $T$ are
+      $O(\log(T+4))$. Windows of length $\sqrt T$ have the expected
+      asymptotic density $\log T/(2\pi)$.
+\item For every integer $m\ge2$, the sum
+      $\sum_\rho\rho^{-m}$ converges absolutely with an explicit
+      primitive recursive tail bound. Pairing $\rho$ with $1-\rho$
+      also makes the reciprocal sum converge absolutely in pairs.
+\end{enumerate}
+These are selected classical theorems about zero distribution; the
+quantitative construction and arithmetic interpretation are the subject
+of this report. Hardy's theorem on infinitely many critical-line zeros,
+positive proportions on that line, sharp logarithmic zero-free regions,
+and pair correlation are outside the theorem inventory.
+
+\subsection{Why a count needs a certificate}
+The predicate ``$\zeta(a+\ii b)=0$'' is not a decidable test on general
+computable inputs. Nor may one silently search until a rational horizontal
+line is found to avoid all zeros. The appropriate finite object is a
+\emph{contour certificate}: rational domain vertices, rational
+approximations to function values, a derivative bound, a strictly positive
+separation margin, and the winding number of an associated rational
+polygon. A checker recomputes the samples and verifies rational
+inequalities.
+
+The count means the total analytic multiplicity inside the contour.
+It does not require choosing, ordering, or deciding equality of individual
+zeros. Refinement produces certified clusters. In the ordinary complex
+interpretation these counts equal the usual zero counts by the argument
+principle, proved here through polynomial approximation.
+
+Statements at arbitrary exact heights have a useful weaker representation.
+For an integer $T\ge9$, construct regular heights
+\[
+ U_-\in(T-1,T),\qquad U_+\in(T,T+1).
+\]
+The two certified integers $N(U_-),N(U_+)$ bracket the count at $T$,
+regardless of whether there is a zero exactly at $T$. Their difference is
+bounded logarithmically. No convention for an undecidable boundary equality
+is needed inside arithmetic.
+
+\subsection{The first-order reading}
+In this report $\ipra$ is first-order intuitionistic primitive recursive
+arithmetic with all primitive recursive function symbols and
+quantifier-free induction. Rational numbers, polynomials and certificates
+are natural-number codes. Statements about fixed real or complex names
+are schemas in specified primitive recursive definitions. They are not
+quantification over a universe of arbitrary real numbers or over a
+universal evaluator for all primitive recursive programs.
+
+An estimate with error $\varepsilon$ means that every requested rational
+precision admits the explicitly given approximants and rational error
+budget. Precision and size parameters remain free during the finite
+induction. The induction invariant is an equation, inequality, or Boolean
+fold over bounded lists. Only after these inductions are complete are the
+parameters universally generalized. Section~\ref{sec:foundation-audit}
+identifies the exact repository proof type required by the Lean roadmap.
+
+\input{sections/analytic.tex}
+\input{sections/elementary.tex}
+\input{sections/finite_complex.tex}
+\input{sections/stirling.tex}
+\input{sections/counting.tex}
+\input{sections/consequences.tex}
+\input{sections/certificate.tex}
+\input{sections/contracts.tex}
+\input{sections/foundations.tex}
+\input{sections/status.tex}
+
+\begin{thebibliography}{99}
+\bibitem{MathWorld}
+E. W. Weisstein, \emph{Riemann Zeta Function Zeros}, Wolfram MathWorld.
+\url{https://mathworld.wolfram.com/RiemannZetaFunctionZeros.html}.
+Consulted 15 November 2026; used to identify the requested subject.
+
+\bibitem{DLMFreflection}
+NIST Digital Library of Mathematical Functions, \S25.4,
+\emph{Reflection Formulas}.
+\url{https://dlmf.nist.gov/25.4}.
+
+\bibitem{DLMFzeros}
+NIST Digital Library of Mathematical Functions, \S25.10,
+\emph{Zeros}.
+\url{https://dlmf.nist.gov/25.10}.
+
+\bibitem{DLMFgamma}
+NIST Digital Library of Mathematical Functions, \S5.11,
+\emph{Asymptotic Expansions}, and \S5.9, \emph{Integral Representations}.
+\url{https://dlmf.nist.gov/5.11}; \url{https://dlmf.nist.gov/5.9}.
+
+\bibitem{Backlund}
+R. J. Backlund, \emph{\"Uber die Nullstellen der Riemannschen Zetafunktion},
+Acta Mathematica \textbf{41}, 345--375 (1918 printing).
+\url{https://archive.ymsc.tsinghua.edu.cn/pacm_download/117/5290-11511_2006_Article_BF02422950.pdf}.
+The argument-variation and Jensen strategy is classical; the bounds and
+bounded contour selection here are worked out explicitly.
+
+\bibitem{FLINT}
+FLINT documentation, \emph{Zeta functions, polylogarithms and L-functions}.
+\url{https://flintlib.org/doc/algorithms/special-functions/zeta.html}.
+Consulted for the Euler--Maclaurin representation; the remainder estimate
+used in the executable is derived in this report.
+
+\bibitem{Repo}
+V. Reshetnikov, \emph{ProveIt}, snapshot
+\code{b5a3ad037723},
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/b5a3ad037723c44d69a3d5b28a950c554327a989/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+
+\bibitem{RepoFE}
+\emph{Riemann's functional equation in intuitionistic primitive recursive
+arithmetic}, archived research draft in ProveIt,
+\code{docs/drafts/zeta_functional_equation_ipra.zip}, at the snapshot
+in~\cite{Repo}. Human proof and finite contracts; Lean development
+explicitly incomplete.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/b5a3ad037723c44d69a3d5b28a950c554327a989/docs/drafts/zeta_functional_equation_ipra.zip}.
+
+\bibitem{RepoAnalytic}
+ProveIt archived research drafts,
+\code{cauchy_residue_ipra.zip}, \code{stirling_ipra.zip}, and
+\code{FTA_iPRA.zip}, at the snapshot in~\cite{Repo}.
+Inspected for scope and proof status; not used as a blanket formal
+analytic library. See the source manifest and
+Section~\ref{sec:foundation-audit}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,107 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,array}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{bookmark}
+\usepackage{xurl}
+\definecolor{ink}{HTML}{17384A}
+\definecolor{accent}{HTML}{256477}
+\hypersetup{pdftitle={Constructive Diophantine Theorems in iPRA},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov},
+  pdfsubject={Størmer, quantitative Davenport--Schmidt, and the effective boundary for Roth}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\ensuremath{\mathrm{iPRA}}}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\setlist{itemsep=4pt,topsep=6pt}
+\setlength{\parskip}{4pt plus 1pt}
+\setlength{\parindent}{0pt}
+\emergencystretch=2em
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Constructive Diophantine theorems in iPRA}
+\fancyhead[R]{\small 15 November 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{16mm}
+{\large\color{accent}\sffamily RESEARCH REPORT}\par
+\vspace{8mm}
+{\Huge\color{ink}\bfseries Constructive Diophantine\\[3pt]
+Theorems in iPRA}\par
+\vspace{9mm}
+{\Large St\o rmer, quantitative Davenport--Schmidt,\\[4pt]
+and the effective boundary for Roth}\par
+\vspace{12mm}
+{\large Prepared for Vladimir Reshetnikov}\par
+{\large 15 November 2026}\par
+\vspace{15mm}
+\hrule
+\vspace{5mm}
+\textbf{What is proved.}
+A complete finite enumeration theorem for consecutive smooth integers;
+a complete exponent-three approximation theorem with explicit primitive
+recursive bounds and positive separation data; and a complete effective
+Roth theorem for quadratic algebraic inputs, with a general Liouville bound.
+\vspace{5mm}
+
+\textbf{What remains unresolved.}
+The general effective Roth cutoff is not proved.  It would resolve a major
+open effectivity problem.  The new Lean files are specifications and a
+formalization route, not completed machine-checked iPRA derivations.
+\vspace{5mm}
+\hrule
+\vfill
+{\small Based on ProveIt commit
+\texttt{b33ee1acb02b7619dfef419e61c3e343735a7bc4}.\\
+The archive contains this article, its LaTeX source, exact reference
+computations, verification evidence, and Lean specifications.}
+\end{titlepage}
+
+\begin{abstract}
+We develop finite constructive versions of three Diophantine statements
+in the setting of first-order intuitionistic primitive recursive arithmetic.
+For St\o rmer's theorem, a cubic-free coefficient reduction and an elementary
+Pell argument give a complete primitive recursive enumeration of all
+consecutive smooth pairs, together with explicit cardinality and size bounds.
+For Davenport--Schmidt approximation, we reconstruct the minimal-point proof
+with explicit finite search bounds and a single rational sample.  Given a
+primitive recursive real name and a primitive recursive quadratic separation
+modulus, the construction produces arbitrarily high rational or quadratic
+approximants with error less than
+$32768\max(1,\xi^2)H^{-3}$.  Resultants provide the required modulus for
+algebraic inputs of degree at least three.  For Roth, we explain why a general
+witness-producing cutoff would solve the unresolved effective Roth problem,
+and prove instead the full quadratic case and the all-degree Liouville range.
+Every positive result is accompanied by a finite arithmetic proof and a
+specific path to object-level Lean derivations in ConciseIPRA.  Those new
+derivations are not claimed to be completed.
+\end{abstract}
+\tableofcontents
+\clearpage
+\input{01_foundations}
+\input{02_roth}
+\input{03_stormer}
+\input{04_davenport_schmidt}
+\input{05_formalization_and_checks}
+\clearpage
+\input{references}
+\end{document}

@@ -1,0 +1,250 @@
+LEAN FORMALIZATION STATUS AND COMPLETION PLAN
+============================================
+
+1. What is supplied, and what has actually been checked
+------------------------------------------------------
+
+GeometryCore.lean and PascalConic.lean are concrete candidate Lean source.
+They contain proofs written with ordinary Mathlib tactics, without proof
+holes or new axiom declarations. They have NOT been compiled: no Lean or
+Lake executable was present in the authoring environment. They must not be
+described as kernel-checked files or as completed formalizations.
+
+The mathematical coordinate identities are established in the accompanying
+paper and checked independently by the package's exact polynomial verifier.
+The 20 signs in the fixed six-by-six determinant's Laplace expansion were
+also compared with the Leibniz determinant on ten exact integer matrices.
+These checks do not replace a Lean compilation.
+
+The build metadata targets Lean/mathlib v4.32.0, the versions declared by
+the inspected ProveIt revision
+0bba41d70f061442357cae0f6de055434a33fb09.
+
+With an installed Lean toolchain, run from this directory:
+
+    lake update
+    lake build
+
+The first command downloads dependencies. The build may need generous
+memory for the six generic column-replacement ring proofs. Heartbeat and
+recursion limits are explicitly raised in the source. If normalization is
+too costly, replace these six flat proofs by shared determinant
+multilinearity and alternating-column lemmas, or by a proof-producing sparse
+polynomial normalization tactic. This is an implementation change, not a
+change in mathematical assumptions.
+
+2. Scope of the candidate Lean layer
+-----------------------------------
+
+The code proves algebraic statements in Lean's ambient logic over a
+commutative ring. Cancellation theorems additionally assume NoZeroDivisors.
+The intended arithmetical instance is the integer ring.
+
+The main declarations are:
+
+  DesarguesPascal.desargues_identity:
+    the universal degree-twelve identity.
+
+  DesarguesPascal.det_zero_of_kernel:
+    the three scalar adjugate identities and a supplied nonzero coordinate
+    imply vanishing of a three-by-three determinant.
+
+  DesarguesPascal.desargues_of_center:
+    a supplied nonzero center incident with the three vertex joins implies
+    the determinant collinearity of the three side-intersection vectors.
+
+  DesarguesPascal.desargues_converse_det:
+    nonzero triangle determinants and determinant collinearity imply the
+    determinant concurrence of the three vertex joins.
+
+  DesarguesPascal.explicit_axis:
+    the cross product of an apart pair of output points is a nonzero line
+    incident with all three output points.
+
+  DesarguesPascal.pascal_bracket_identity:
+    the Pascal determinant equals the difference of the two bracket
+    products printed in the paper.
+
+  DesarguesPascal.pascal_veronese_identity:
+    the Pascal determinant equals the six-by-six Veronese determinant,
+    with row order (x^2,y^2,z^2,xy,xz,yz).
+
+  DesarguesPascal.column_identity0 through column_identity5:
+    replacing column j by the linear combination of all columns with
+    coefficients q multiplies the determinant by q_j.
+
+  DesarguesPascal.det6_zero_of_kernel:
+    a supplied nonzero coefficient of q and the six equations Mq=0 imply
+    det(M)=0. This is the fixed-dimensional adjugate argument expressed
+    through determinant multilinearity.
+
+  DesarguesPascal.pascal_of_conic:
+    six points on an arbitrary nonzero homogeneous quadratic have Pascal
+    determinant zero. Smoothness, irreducibility, a rational
+    parametrization, and any nonzero coordinate minor are unnecessary.
+
+The namespace is DesarguesPascal for every declaration above; the file
+names specify organization, not additional namespaces.
+
+Apart and Apart6 carry finite disjunctions identifying a nonzero coordinate.
+No excluded-middle step is used to manufacture those witnesses in the
+generic-ring theorems. For integers the required finite tests are decidable
+and primitive recursive.
+
+These algebraic theorems permit zero join/meet vectors. A zero vector is
+not a projective point or line. The geometric wrapper must include the
+nonzero and apartness hypotheses stated in the paper; it must not silently
+interpret every cross product as a projective object.
+
+3. An ambient Lean theorem is not an iPRA derivation
+--------------------------------------------------
+
+The files do not yet construct terms of the form
+
+    Gamma |- [PRAAx] phi
+
+in ProveIt's object-language deduction type. An ordinary Lean theorem over
+Int, even one proved by `ring`, is not by itself a proof that iPRA derives
+its arithmetization. The remaining work is to formalize the elementary
+translation supplied in the paper. It requires no new mathematical
+principle; it does require explicit syntactic proof terms.
+
+The repository files inspected for the bridge are:
+
+  Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean
+  Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/Syntax.lean
+  Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/
+      NativeBiInterpretation.lean
+  Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/
+      TeqReflect.lean
+
+In namespace LeanProofs.ConciseIPRA, PR.lean defines:
+
+  PR       primitive-recursive function symbols of a fixed arity;
+  PTm      first-order terms;
+  PRAAx    their defining equations, successor axioms, and quantifier-free
+           induction;
+  PRA.qfInd  the derived proof constructor for quantifier-free induction.
+
+PR is generated by zero, successor, projections, composition and primitive
+recursion. This is a first-order theory of natural numbers, not a theory
+quantifying over arbitrary real coordinates, arbitrary rings, or arbitrary
+functions.
+
+4. Concrete object-theory implementation tasks
+---------------------------------------------
+
+Task A: implement the finitely many arithmetical terms.
+
+Define addition, multiplication, truncated subtraction, integer comparison,
+and the fixed finite tuple operations as PR symbols. The usual pair coding
+is optional: keeping every signed integer as two separate natural variables
+is particularly simple here. There is no need for a universal evaluator for
+arbitrary PR programs.
+
+Represent the integer p-n by (p,n). Define:
+
+  (p,n) + (q,m) = (p+q,n+m)
+  -(p,n)       = (n,p)
+  (p,n)(q,m)   = (pq+nm,pm+nq)
+  (p,n) =Z (q,m)  iff  p+m=q+n.
+
+Every equality displayed here is a quantifier-free formula of PRAAx.
+No quotient type is needed inside the object theory. Prove congruence for
+=Z directly from natural addition and multiplication.
+
+Task B: derive the needed arithmetic laws within PRAAx.
+
+Use PRA.qfInd for natural addition and multiplication laws, together with
+the elementary comparison and cancellation laws. All induction formulas
+can remain quantifier-free: auxiliary parameters are free variables, and
+fixed finite conjunctions of invariants are quantifier-free. This gives
+the commutative-ring identities for the signed-pair operations and the
+integer cancellation rule
+
+  a !=Z 0,  a*b =Z 0  |-  b =Z 0.
+
+Do not import Int.mul_eq_zero from the ambient library as an object-theory
+axiom. Its arithmetical counterpart must be derived from PRAAx. One direct
+proof normalizes each pair by truncated subtraction, splits the decidable
+sign cases, and uses cancellation/positivity for natural products. The
+necessary sign comparisons are primitive recursive.
+
+Task C: reify the fixed coordinate formulas.
+
+Build PTm terms for dot, cross, the 3-by-3 determinant, the six monomials
+of the Veronese map, the 6-by-6 determinant, and the three side meets.
+All dimensions are fixed. The 6-by-6 determinant is a fixed sum of 720
+signed monomials, or the fixed 20-term block expansion used in the code.
+
+Desargues with a supplied center has 42 natural coordinate variables:
+seven vectors, three signed coordinates each, two naturals per coordinate.
+Pascal with a supplied quadratic has 48 natural coordinate variables:
+six point vectors and six signed coefficients. Form the corresponding
+quantifier-free implications and then universally close them.
+
+Task D: produce syntactic equality derivations.
+
+There are two clear implementation routes.
+
+  D1. Reify the short algebraic proof in the paper. Derive the cross-product
+      identities and determinant identities by repeated substitution of
+      the signed-ring laws, then compose them with equality transitivity.
+      Every derivation is finite and has the fixed coordinate terms as
+      parameters.
+
+  D2. Implement a proof-producing polynomial normalizer. The input language
+      only needs integer constants, variables, addition, subtraction and
+      multiplication. It is much smaller than PR itself. For each rewrite,
+      return a PRAAx proof built from the already proved signed-ring laws.
+      Normalize both sides of the identities and compose the results.
+
+For D2, mere equality of coefficient arrays in ambient Lean is insufficient:
+the output must be a Prf term proving the signed-pair equality. Polynomial
+evaluation and normalization are primitive recursive, but this does not
+authorize a reflection principle for the whole object theory. No such
+reflection or consistency principle is needed.
+
+Task E: add the finite logical and cancellation steps.
+
+For Desargues, introduce the coordinate witness for the center, use the
+three scalar adjugate equalities to derive det(J)*o_i=0, cancel o_i, and
+substitute in the Desargues identity. For Pascal, use the supplied nonzero
+coefficient q_j. The six conic equations make the column-replaced
+determinant zero; its column identity gives q_j*det(M)=0; cancellation and
+the Pascal identity conclude the theorem. This is intuitionistic reasoning
+with finite disjunction elimination only.
+
+Task F: construct the projective outputs.
+
+Cross products already give explicit integer representatives of every
+join and meet. Nonzero tests and comparisons of the three candidate
+pairwise crosses give a primitive-recursive choice of an axis. When all
+pairwise crosses vanish, choose a perpendicular to a supplied nonzero
+point as described in the paper. Include all input validity predicates
+in the object-language statement. Do not use an unspecified projective
+quotient or an existential choice of a representative.
+
+Task G: transport to the native ConciseIPRA calculus.
+
+Once the ordinary object-theory derivations h have been constructed,
+NativeBiInterpretation.lean supplies the exact bridge:
+
+  (Gamma |- [PRAAx] phi)
+      <-> NPrf (Gamma.map NFm.ofPRA) (NFm.ofPRA phi).
+
+Thus apply pra_iff_native.mp to h. Its hypotheses are the actual
+object-theory proof, not an ambient assertion that phi is true. No new
+semantic completeness or reflection theorem is necessary.
+
+5. Verification gates for a completed formalization
+--------------------------------------------------
+
+First compile both candidate files and address any elaboration or performance
+issue. Inspect the dependency axioms of the principal theorems with
+`#print axioms`. Next compile Tasks A--F in a new namespace imported from
+ConciseIPRA.PR, checking the final types are Prf/PRAAx statements. Finally
+apply the native translation in Task G and build against the recorded
+ProveIt revision. At that point one can accurately claim a completed Lean
+formalization of the iPRA derivations. This package does not claim that
+these gates have already been passed.

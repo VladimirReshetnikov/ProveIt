@@ -1,0 +1,311 @@
+\section{Lean formalization: a concrete completion route}\label{sec:lean}
+
+\subsection{What can be reused from ProveIt}
+
+The repository was inspected at the immutable commit
+\[
+ \texttt{620f5e3b959c3a4284060ada5efb651812612319}.
+\]
+Its root toolchain specifies Lean \texttt{v4.32.0} and the
+matching Mathlib tag. The relevant existing development is
+\texttt{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+The following are actual declarations in the inspected sources
+\cite{ProveIt}, not proposed names.
+
+\begin{center}
+\begin{tabular}{@{}p{0.38\textwidth}p{0.54\textwidth}@{}}
+\toprule
+Existing interface & Use in this project\\
+\midrule
+\code{PR}, \code{PTm} in \code{PR.lean} &
+Primitive recursive function symbols and first-order terms.
+The constructors of \code{PR} are zero, successor,
+projection, composition, and primitive recursion.\\[3pt]
+\code{PRAAx} &
+Defining equations, successor nonzero and injectivity,
+and the quantifier-free induction schema.\\[3pt]
+\code{PRA.qfInd} &
+Build an object-level induction derivation from a QF formula
+and derivations of its base and successor cases.\\[3pt]
+\code{Prf} in \code{Deduction.lean} &
+The intuitionistic first-order derivation type.\\[3pt]
+\code{NFm.ofPRA}, \code{pra\_iff\_native} &
+Translate a completed iPRA derivation into the native
+ConciseIPRA calculus.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The repository's native/scalar equivalence does not automatically
+turn a Mathlib theorem about real curves into an iPRA derivation.
+Its use here is precise: after constructing the arithmetic
+derivation, apply the existing theorem
+\[
+ (\Gamma\vdash[\mathsf{PRAAx}]\varphi)
+   \ \longleftrightarrow\
+ \mathsf{NPrf}\,(\Gamma.\mathsf{map}\,\mathsf{NFm.ofPRA})\,
+                   (\mathsf{NFm.ofPRA}\,\varphi).
+\]
+The accompanying \code{NativeTransfer.lean} contains exactly
+this generic wrapper with the real repository API.
+
+The supplied draft directory was inspected for context. It contains
+other constructive-analysis archives, but this proof needs none
+of their claimed analytic results. In particular there is no
+dependency on a formalized fundamental theorem of algebra,
+an integral winding number, or an existing Jordan theorem.
+
+\subsection{Three deliverable layers}
+
+The completion should keep three layers distinct.
+
+\begin{enumerate}
+\item \textbf{Executable finite mathematics.}
+Define rational points, half-open ray parity, meshes, distance
+certificates, the finite honeycomb, reachability, boundary
+traversal, and the numerical procedures from the bound ledger.
+The Python implementation is a reference for this layer.
+\item \textbf{Lean semantic verification.}
+Prove the finite algorithms correct for their explicit data
+structures. Named-curve theorems can then be stated using
+fast Cauchy names, supplied moduli, and finite certificates.
+This checks the mathematical construction.
+\item \textbf{Object-level iPRA derivations.}
+Represent the finite routines by \code{PR} expressions,
+their Boolean invariants by equations of \code{PTm}, and
+their proofs by \code{Prf PRAAx}. Use \code{PRA.qfInd}
+for every loop invariant. Finally translate with
+\code{pra\_iff\_native}.
+\end{enumerate}
+
+A proof in layer 2 alone is not a substitute for layer 3.
+Conversely, once layer 3 produces a derivation in the explicit
+intuitionistic calculus, a general analytic theorem from Mathlib
+is unnecessary as a trusted premise.
+
+\subsection{Module order and exact proof obligations}
+
+\begin{longtable}{@{}p{0.20\textwidth}p{0.73\textwidth}@{}}
+\toprule
+Proposed module & Required results\\
+\midrule
+\endhead
+\code{Coding} &
+Integer/rational/list codes, bounded folds and scans, finite
+minimum, powers and moduli composition. Supply \code{PR}
+terms and defining-equation proofs.\\[3pt]
+\code{Geometry} &
+Rational segment membership and intersections; the
+at-most-eight-candidate maximum-norm distance algorithm;
+convex-combination norm inequalities.\\[3pt]
+\code{Parity} &
+The half-open edge test, xor additivity, reversal,
+triangle parity outside its hull, convex-square and
+parallelogram values. All cases are rational sign cases.\\[3pt]
+\code{Replacement} &
+Finite triangle-boundary cancellation, query-translation
+parallelograms, mesh refinement, and stable curve parity
+with explicit rational-margin certificates.\\[3pt]
+\code{CycleWalk} &
+Short-arc selection in a cyclic array; usage-bit incidence
+at each vertex; constancy of all edge-usage bits;
+Lemma~\ref{lem:factor} with the bound $sN$.\\[3pt]
+\code{Honeycomb} &
+The six vertices and neighbor table, vertical-slice
+coverage, shared-edge identities, three-cell vertices,
+and the center-link crossing and detour calculations.\\[3pt]
+\code{FiniteGraph} &
+$M$-round reachability, parent paths, stabilization,
+monochromatic outer ring, degree-two cycle extraction
+with at most $6M$ steps.\\[3pt]
+\code{Connection} &
+Near/safe link certificates; cycle proximity; local
+parity jump; product-bit contradiction; route validity
+and clearance at least $h$.\\[3pt]
+\code{BothSides} &
+The local square, half-arc nets, color certificates,
+transition clearance, and the finite chain contradiction.
+Produce rational witnesses with clearance $2^{-K-4}$.\\[3pt]
+\code{Names} &
+Cauchy names, padded moduli, finite distance nets,
+completed evaluation, and the explicit circle-name lift.
+Universal estimates are derived after finite certificates.\\[3pt]
+\code{JordanSchema} &
+Classification, route theorem, both-sides theorem,
+size bounds, approximate intersection, and the
+rational-witness common-boundary characterization.\\[3pt]
+\code{NativeJordan} &
+Assemble the closed arithmetic formulas and object-level
+proofs; apply the existing native translation.\\
+\bottomrule
+\end{longtable}
+
+The practical first milestone is \code{Parity} plus
+\code{FiniteGraph}. It isolates the finite proof without
+introducing a real-number library. The next milestone is
+the factorization and routing theorem for finite sample
+certificates. Only afterward should the names and moduli
+interface connect those certificates to continuous curves.
+
+There is no unknown topological lemma left in this plan.
+The substantial work is formalizing the stated rational sign
+lemmas, array invariants, and their object-theory derivations.
+
+\subsection{Suggested statement and derivation interfaces}
+
+The semantic layer should make certificates explicit. Suitable
+structures include the following fields (this is an interface
+specification, not a claim that these complete structures have
+already been implemented).
+
+\begin{description}[leftmargin=0pt,labelindent=0pt]
+\item[\texttt{CurvePresentation}]
+Fixed rational approximation routines, $U,V$, and the
+arithmetic Cauchy/continuity/separation predicates.
+\item[\texttt{OffCertificate}]
+A dyadic clearance exponent and the corresponding
+universal rational-name inequalities.
+\item[\texttt{NetCertificate}]
+The finite sample list, its parameter mesh and evaluation
+precision, and the rational constants in its error bound.
+\item[\texttt{RouteCertificate}]
+Finite rational intermediate vertices, parent indices,
+safe-link checks against a certified net, and a dyadic
+clearance exponent.
+\item[\texttt{BoundaryWitnesses}]
+Two rational points, their clearance exponents, their
+finite bit calculations, and finite precision witnesses
+to the requested proximity.
+\end{description}
+
+The statement for routing should return actual data, for example
+a route certificate satisfying the endpoint and clearance
+predicates, rather than only a proposition asserting that two
+points are in one connected component. The approximate crossing
+statement should return the two rational sample parameters.
+The reverse-boundary statement should return the displayed
+primitive recursive circle-name construction.
+
+For object-level proof assembly, the recurring pattern is:
+\begin{enumerate}
+\item Express a finite invariant as a Boolean equation
+$I(s,\vec z)=1$, where $I$ is a fixed \code{PR} expression.
+\item Prove its zero equation from the defining equations.
+\item From $I(s,\vec z)=1$, prove $I(s+1,\vec z)=1$ using
+the rational sign lemmas and Boolean equations.
+\item Apply \code{PRA.qfInd}; only then introduce the
+desired universal quantifiers or replace a Boolean fold
+by its bounded mathematical reading.
+\end{enumerate}
+The final target is an actual object-level value of the schematic
+type
+\begin{lstlisting}
+[] |- [PRAAx] jordanSentence
+\end{lstlisting}
+with the repository's notation and all the primitive recursive
+witness terms substituted. Here \code{jordanSentence} is a
+project-specific encoded sentence to be defined; the line is
+not a completed declaration in this archive.
+The supplied native wrapper takes such a derivation as an input.
+
+The semantic definitions and the \code{PR} expressions should
+be connected by evaluation lemmas. This prevents a discrepancy
+between the executable reference algorithm and the routine
+whose correctness is proved inside iPRA. A small library of
+verified constructors for bounded scans and array iterations
+will amortize most of the proof-term bookkeeping.
+
+\subsection{Verification gates and honest status}
+
+For a completed formalization:
+\begin{enumerate}
+\item Build against the pinned repository toolchain, then run
+\code{lake env lean} on each module and the library build.
+\item Check the semantic finite lemmas on the same exact
+fixtures as the Python reference.
+\item Audit every induction formula used in the object
+derivations and inspect the generated \code{PR} expressions.
+\item Inspect \code{\#print axioms} for the final semantic
+and proof-construction theorems, and inspect their imports.
+An object-level derivation of the specified arithmetic
+sentence is the final iPRA gate.
+\end{enumerate}
+
+The environment used for this package did not contain Lean.
+The files \code{lean/FiniteKernel.lean} and
+\code{lean/NativeTransfer.lean} are therefore explicitly marked
+\emph{uncompiled scaffolds}. They contain executable definitions
+and a generic existing-API transfer wrapper, no added
+\code{axiom} declarations and no \code{sorry} proofs.
+They do not state that Jordan's theorem has already been
+machine-checked. The complete dependency and invariant plan
+is also in \code{lean/ROADMAP.md}.
+
+\section{Executable artifacts and reproducibility}\label{sec:artifacts}
+
+The archive includes an exact rational finite kernel, tests, and
+machine-readable results. Its geometry uses Python's
+\code{fractions.Fraction}; no floating-point tolerances occur in
+the assertions. Plotting converts coordinates to floating point
+only after the exact checks.
+
+The kernel implements:
+\begin{itemize}
+\item the half-open ray index and its parity;
+\item exact rational segment intersections and maximum-norm
+clearances;
+\item the rational honeycomb and bounded flood fill;
+\item finite parent routes and separating cycles;
+\item cyclic-mesh labeling and both integer and mod-two
+factorization checks.
+\end{itemize}
+The signed integer index is an optional stronger helper in the
+reference program. The proof in this article only trusts the
+parity calculation.
+
+The delivered run passed \textbf{142 exact checks}. Its concrete
+connection examples are:
+
+\begin{center}
+\begin{tabular}{@{}p{0.47\textwidth}p{0.17\textwidth}rr@{}}
+\toprule
+Example & Outcome & Segments & Clearance\\
+\midrule
+Square: inside to inside & route & 3 & $11/8$\\
+Square: inside to outside & bits $1,0$ & -- & --\\
+Concave U: one arm to the other & route & 24 & $1/8$\\
+Concave U: notch to far exterior & route & 25 & $3/16$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The square separator has 106 edges. An additional annular
+cell-coloring fixture produces two separating cycles, with
+54 and 18 edges. This checks a particularly relevant case:
+the finite boundary need not be a single cycle.
+Other assertions cover vertex-height degeneracies, collinear
+subdivision, reversal, repeated traversal, affine coordinate
+changes, triangle replacement, all six neighbor identities,
+and cyclic-mesh parity multiplication.
+
+These checks validate the executable finite examples. They
+are not an exhaustive check of the general theorem or a
+substitute for its proof, and the reference implementation
+uses polygons as finite distance oracles. The paper supplies
+the certified net replacement for a general curve. The
+Python program is not advertised as a completed extraction
+of every continuous-name procedure in the paper.
+
+To reproduce the finite checks and figures from the archive root:
+\begin{lstlisting}
+python3 artifacts/test_kernel.py
+python3 artifacts/make_figures.py
+\end{lstlisting}
+The tests use only the Python standard library. The figure
+script additionally needs Matplotlib. To compile the article:
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error jordan_ipra.tex
+\end{lstlisting}
+All textual proof sections and the vector figure are included.
+The README records the file layout and the verification
+status in one place.

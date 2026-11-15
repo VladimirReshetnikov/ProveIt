@@ -1,0 +1,1019 @@
+{
+  "e": {
+    "constant": "e",
+    "coefficients": [
+      -3,
+      1
+    ],
+    "stripped_power": 0,
+    "core": [
+      -3,
+      1
+    ],
+    "equation_references": [
+      "4.1",
+      "4.8",
+      "4.11",
+      "1.5"
+    ],
+    "name": "e_s = sum_(j=0)^(s+1) 1/j!",
+    "initial_values": {
+      "n": 1,
+      "S": 4,
+      "M": 3,
+      "lambda": 2
+    },
+    "steps": [
+      {
+        "name": "R",
+        "expression": {
+          "op": "pow",
+          "args": [
+            {
+              "op": "mul",
+              "args": [
+                2,
+                {
+                  "ref": "n"
+                }
+              ]
+            },
+            {
+              "op": "add",
+              "args": [
+                {
+                  "ref": "n"
+                },
+                1
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "A",
+        "expression": {
+          "op": "mul",
+          "args": [
+            {
+              "ref": "n"
+            },
+            {
+              "op": "pow",
+              "args": [
+                3,
+                {
+                  "op": "mul",
+                  "args": [
+                    2,
+                    {
+                      "ref": "n"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "ref": "S"
+            }
+          ]
+        }
+      },
+      {
+        "name": "L",
+        "expression": {
+          "op": "add",
+          "args": [
+            {
+              "op": "mul",
+              "args": [
+                4,
+                {
+                  "op": "pow",
+                  "args": [
+                    {
+                      "ref": "R"
+                    },
+                    2
+                  ]
+                }
+              ]
+            },
+            {
+              "op": "mul",
+              "args": [
+                4,
+                {
+                  "ref": "A"
+                },
+                {
+                  "ref": "R"
+                }
+              ]
+            },
+            1
+          ]
+        }
+      },
+      {
+        "name": "q",
+        "expression": {
+          "op": "mul",
+          "args": [
+            {
+              "ref": "M"
+            },
+            {
+              "ref": "L"
+            }
+          ]
+        }
+      },
+      {
+        "name": "p",
+        "expression": {
+          "op": "add",
+          "args": [
+            {
+              "op": "mul",
+              "args": [
+                2,
+                {
+                  "ref": "q"
+                }
+              ]
+            },
+            1
+          ]
+        }
+      },
+      {
+        "name": "ell",
+        "expression": {
+          "op": "sub",
+          "args": [
+            {
+              "op": "mul",
+              "args": [
+                {
+                  "op": "add",
+                  "args": [
+                    {
+                      "ref": "n"
+                    },
+                    1
+                  ]
+                },
+                {
+                  "ref": "p"
+                }
+              ]
+            },
+            1
+          ]
+        }
+      },
+      {
+        "name": "D",
+        "expression": {
+          "op": "mul",
+          "args": [
+            {
+              "op": "factorial",
+              "args": [
+                {
+                  "ref": "ell"
+                }
+              ]
+            },
+            {
+              "op": "pow",
+              "args": [
+                {
+                  "op": "factorial",
+                  "args": [
+                    {
+                      "op": "add",
+                      "args": [
+                        {
+                          "ref": "n"
+                        },
+                        1
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "ref": "p"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "B",
+        "expression": {
+          "op": "mul",
+          "args": [
+            2,
+            {
+              "ref": "D"
+            }
+          ]
+        }
+      },
+      {
+        "name": "N",
+        "expression": {
+          "op": "add",
+          "args": [
+            {
+              "op": "mul",
+              "args": [
+                4,
+                {
+                  "ref": "B"
+                },
+                {
+                  "ref": "lambda"
+                }
+              ]
+            },
+            1
+          ]
+        }
+      },
+      {
+        "name": "H_F",
+        "expression": {
+          "op": "mul",
+          "args": [
+            {
+              "op": "add",
+              "args": [
+                {
+                  "ref": "ell"
+                },
+                1
+              ]
+            },
+            {
+              "ref": "D"
+            },
+            {
+              "op": "pow",
+              "args": [
+                {
+                  "ref": "n"
+                },
+                {
+                  "ref": "ell"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "W",
+        "expression": {
+          "op": "mul",
+          "args": [
+            {
+              "ref": "S"
+            },
+            {
+              "ref": "n"
+            },
+            {
+              "op": "add",
+              "args": [
+                {
+                  "ref": "H_F"
+                },
+                {
+                  "op": "mul",
+                  "args": [
+                    2,
+                    {
+                      "ref": "D"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "R_1",
+        "expression": {
+          "op": "mul",
+          "args": [
+            2,
+            {
+              "ref": "n"
+            }
+          ]
+        }
+      },
+      {
+        "name": "t_0",
+        "expression": {
+          "op": "add",
+          "args": [
+            {
+              "op": "mul",
+              "args": [
+                4,
+                {
+                  "op": "pow",
+                  "args": [
+                    {
+                      "ref": "R_1"
+                    },
+                    2
+                  ]
+                }
+              ]
+            },
+            {
+              "op": "mul",
+              "args": [
+                4,
+                {
+                  "ref": "W"
+                }
+              ]
+            },
+            1
+          ]
+        }
+      },
+      {
+        "name": "direct_threshold",
+        "expression": {
+          "op": "mul",
+          "args": [
+            2,
+            {
+              "ref": "t_0"
+            }
+          ]
+        }
+      }
+    ],
+    "outputs": [
+      "B",
+      "N",
+      "direct_threshold"
+    ],
+    "operation_semantics": {
+      "add": "sum of arguments",
+      "mul": "product of arguments",
+      "pow": "natural exponentiation",
+      "factorial": "natural factorial",
+      "sub": "natural subtraction (all used differences nonnegative)",
+      "max": "maximum of finite argument list"
+    },
+    "status": "exact bound specification; large outputs not evaluated"
+  },
+  "pi": {
+    "constant": "pi",
+    "coefficients": [
+      -3,
+      1
+    ],
+    "stripped_power": 0,
+    "core": [
+      -3,
+      1
+    ],
+    "transformed_polynomial_low_to_high": [
+      9,
+      0,
+      1
+    ],
+    "characteristic_polynomial": "X**4 + 9*X**2",
+    "nonzero_factor_low_to_high": [
+      9,
+      0,
+      1
+    ],
+    "equation_references": [
+      "6.1",
+      "7.3",
+      "7.7",
+      "7.9",
+      "7.10",
+      "1.5"
+    ],
+    "name": "pi_s = 16*A_s(1/5) - 4*A_s(1/239)",
+    "initial_values": {
+      "n": 2,
+      "c": 1,
+      "L": 9,
+      "D_0": 4,
+      "m": 2,
+      "r": 2,
+      "H_G": 10,
+      "abs_G_0": 9,
+      "H": 7,
+      "lambda": 2
+    },
+    "steps": [
+      {
+        "name": "b",
+        "expression": {
+          "op": "mul",
+          "args": [
+            {
+              "ref": "n"
+            },
+            {
+              "ref": "L"
+            }
+          ]
+        }
+      },
+      {
+        "name": "V",
+        "expression": {
+          "op": "mul",
+          "args": [
+            {
+              "ref": "c"
+            },
+            {
+              "ref": "b"
+            }
+          ]
+        }
+      },
+      {
+        "name": "R",
+        "expression": {
+          "op": "mul",
+          "args": [
+            {
+              "ref": "H_G"
+            },
+            {
+              "op": "pow",
+              "args": [
+                {
+                  "ref": "V"
+                },
+                {
+                  "op": "add",
+                  "args": [
+                    {
+                      "ref": "r"
+                    },
+                    1
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "A_0",
+        "expression": {
+          "op": "mul",
+          "args": [
+            {
+              "ref": "D_0"
+            },
+            {
+              "ref": "b"
+            },
+            {
+              "op": "pow",
+              "args": [
+                3,
+                {
+                  "ref": "b"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "M_0",
+        "expression": {
+          "op": "mul",
+          "args": [
+            {
+              "ref": "m"
+            },
+            {
+              "ref": "c"
+            },
+            {
+              "ref": "abs_G_0"
+            }
+          ]
+        }
+      },
+      {
+        "name": "L_0",
+        "expression": {
+          "op": "add",
+          "args": [
+            {
+              "op": "mul",
+              "args": [
+                4,
+                {
+                  "op": "pow",
+                  "args": [
+                    {
+                      "ref": "R"
+                    },
+                    2
+                  ]
+                }
+              ]
+            },
+            {
+              "op": "mul",
+              "args": [
+                4,
+                {
+                  "ref": "A_0"
+                },
+                {
+                  "ref": "R"
+                }
+              ]
+            },
+            1
+          ]
+        }
+      },
+      {
+        "name": "q_0",
+        "expression": {
+          "op": "mul",
+          "args": [
+            {
+              "ref": "M_0"
+            },
+            {
+              "ref": "L_0"
+            }
+          ]
+        }
+      },
+      {
+        "name": "p",
+        "expression": {
+          "op": "add",
+          "args": [
+            {
+              "op": "mul",
+              "args": [
+                2,
+                {
+                  "ref": "q_0"
+                }
+              ]
+            },
+            1
+          ]
+        }
+      },
+      {
+        "name": "ell",
+        "expression": {
+          "op": "sub",
+          "args": [
+            {
+              "op": "mul",
+              "args": [
+                {
+                  "op": "add",
+                  "args": [
+                    {
+                      "ref": "r"
+                    },
+                    1
+                  ]
+                },
+                {
+                  "ref": "p"
+                }
+              ]
+            },
+            1
+          ]
+        }
+      },
+      {
+        "name": "U",
+        "expression": {
+          "op": "mul",
+          "args": [
+            {
+              "op": "factorial",
+              "args": [
+                {
+                  "ref": "ell"
+                }
+              ]
+            },
+            {
+              "op": "pow",
+              "args": [
+                {
+                  "ref": "c"
+                },
+                {
+                  "ref": "ell"
+                }
+              ]
+            },
+            {
+              "op": "pow",
+              "args": [
+                {
+                  "ref": "H_G"
+                },
+                {
+                  "ref": "p"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "T_0",
+        "expression": {
+          "op": "add",
+          "args": [
+            1,
+            {
+              "op": "pow",
+              "args": [
+                3,
+                {
+                  "ref": "L"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "K_adj",
+        "expression": {
+          "op": "mul",
+          "args": [
+            {
+              "op": "factorial",
+              "args": [
+                {
+                  "ref": "n"
+                }
+              ]
+            },
+            {
+              "op": "pow",
+              "args": [
+                {
+                  "ref": "T_0"
+                },
+                {
+                  "op": "sub",
+                  "args": [
+                    {
+                      "ref": "n"
+                    },
+                    1
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "K",
+        "expression": {
+          "op": "mul",
+          "args": [
+            {
+              "ref": "K_adj"
+            },
+            {
+              "op": "pow",
+              "args": [
+                3,
+                {
+                  "op": "add",
+                  "args": [
+                    {
+                      "ref": "L"
+                    },
+                    4
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "B",
+        "expression": {
+          "op": "mul",
+          "args": [
+            2,
+            {
+              "ref": "U"
+            },
+            {
+              "ref": "K"
+            },
+            {
+              "ref": "H"
+            }
+          ]
+        }
+      },
+      {
+        "name": "N",
+        "expression": {
+          "op": "add",
+          "args": [
+            {
+              "op": "mul",
+              "args": [
+                4,
+                {
+                  "ref": "B"
+                },
+                {
+                  "ref": "lambda"
+                }
+              ]
+            },
+            1
+          ]
+        }
+      },
+      {
+        "name": "V_F",
+        "expression": {
+          "op": "mul",
+          "args": [
+            {
+              "op": "add",
+              "args": [
+                {
+                  "ref": "ell"
+                },
+                1
+              ]
+            },
+            {
+              "ref": "U"
+            },
+            {
+              "op": "pow",
+              "args": [
+                {
+                  "ref": "b"
+                },
+                {
+                  "ref": "ell"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "k_H",
+        "expression": {
+          "op": "add",
+          "args": [
+            {
+              "op": "mul",
+              "args": [
+                16,
+                {
+                  "ref": "D_0"
+                },
+                {
+                  "ref": "b"
+                },
+                {
+                  "ref": "V_F"
+                }
+              ]
+            },
+            1
+          ]
+        }
+      },
+      {
+        "name": "k_E",
+        "expression": {
+          "op": "add",
+          "args": [
+            {
+              "op": "mul",
+              "args": [
+                16,
+                {
+                  "ref": "U"
+                },
+                {
+                  "ref": "K_adj"
+                },
+                {
+                  "op": "pow",
+                  "args": [
+                    4,
+                    {
+                      "op": "sub",
+                      "args": [
+                        {
+                          "ref": "n"
+                        },
+                        1
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            1
+          ]
+        }
+      },
+      {
+        "name": "direct_threshold",
+        "expression": {
+          "op": "add",
+          "args": [
+            {
+              "ref": "k_E"
+            },
+            30
+          ]
+        }
+      },
+      {
+        "name": "C_ext",
+        "expression": {
+          "op": "mul",
+          "args": [
+            {
+              "op": "factorial",
+              "args": [
+                {
+                  "ref": "n"
+                }
+              ]
+            },
+            {
+              "op": "pow",
+              "args": [
+                {
+                  "op": "add",
+                  "args": [
+                    1,
+                    {
+                      "op": "pow",
+                      "args": [
+                        3,
+                        {
+                          "op": "mul",
+                          "args": [
+                            2,
+                            {
+                              "ref": "L"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "ref": "n"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "h_H",
+        "expression": {
+          "op": "add",
+          "args": [
+            {
+              "op": "mul",
+              "args": [
+                4,
+                {
+                  "op": "pow",
+                  "args": [
+                    {
+                      "op": "add",
+                      "args": [
+                        {
+                          "ref": "b"
+                        },
+                        1
+                      ]
+                    },
+                    2
+                  ]
+                }
+              ]
+            },
+            {
+              "ref": "k_H"
+            },
+            4
+          ]
+        }
+      },
+      {
+        "name": "h_ext",
+        "expression": {
+          "op": "add",
+          "args": [
+            {
+              "op": "mul",
+              "args": [
+                16,
+                {
+                  "ref": "U"
+                },
+                {
+                  "ref": "C_ext"
+                }
+              ]
+            },
+            1
+          ]
+        }
+      },
+      {
+        "name": "h_Euler",
+        "expression": {
+          "op": "add",
+          "args": [
+            100,
+            {
+              "ref": "k_E"
+            },
+            30,
+            4
+          ]
+        }
+      },
+      {
+        "name": "h",
+        "expression": {
+          "op": "max",
+          "args": [
+            {
+              "ref": "h_H"
+            },
+            {
+              "ref": "h_ext"
+            },
+            {
+              "ref": "h_Euler"
+            }
+          ]
+        }
+      }
+    ],
+    "outputs": [
+      "B",
+      "N",
+      "direct_threshold"
+    ],
+    "operation_semantics": {
+      "add": "sum of arguments",
+      "mul": "product of arguments",
+      "pow": "natural exponentiation",
+      "factorial": "natural factorial",
+      "sub": "natural subtraction (all used differences nonnegative)",
+      "max": "maximum of finite argument list"
+    },
+    "status": "exact bound specification; large outputs not evaluated"
+  }
+}

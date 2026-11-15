@@ -1,0 +1,1230 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue,
+ pdftitle={The fundamental theorem of algebra in intuitionistic primitive recursive arithmetic},
+ pdfauthor={Prepared for Vladimir Reshetnikov}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Constructive FTA in iPRA}
+\fancyhead[R]{\small Explicit rational construction}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{black!20},showstringspaces=false}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\N}{\mathbb N}\newcommand{\Q}{\mathbb Q}
+\newcommand{\GQ}{\mathbb Q(i)}\newcommand{\C}{\mathbb C}
+\newcommand{\nn}[1]{\mathcal N(#1)}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\bl}{\operatorname{bl}}
+\newcommand{\PR}{\mathrm{PR}}
+\newcommand{\re}{\operatorname{Re}}\newcommand{\im}{\operatorname{Im}}
+\newcommand{\Coeff}{\mathsf{Coeff}}
+\newcommand{\Name}{\mathsf{Name}}
+\newcommand{\Apart}{\mathsf{Apart}}
+\newcommand{\Root}{\mathsf{Root}}
+
+\title{\textbf{The fundamental theorem of algebra\\in intuitionistic primitive recursive arithmetic}\\[5pt]
+\large A complete human-readable proof by bounded rational descent\\and a blueprint for a deep Lean formalization}
+\author{Prepared for Vladimir Reshetnikov}
+\date{November 14, 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We give an explicit primitive recursive construction of a complex root of a
+positively nonconstant polynomial whose coefficients are specified by primitive
+recursive fast Cauchy names. The upper bound on the degree is arbitrary. A
+positive lower-bound certificate for any nonconstant coefficient suffices;
+the highest listed coefficient need not be known to be nonzero.
+
+The proof works with rational polynomials at every iteration. A finite
+comparison of $2n+1$ scales isolates a Taylor term, and a bounded rational
+direction calculation produces a uniform decrease in the residual. A separate
+finite product estimate bounds all iterates. Sampling them at an explicit
+primitive recursive schedule gives a coherent fast Cauchy root name, rather
+than merely unrelated approximate zeros. Every induction can be applied to
+a quantifier-free predicate on finite numerical data.
+
+The theorem inside first-order $\ipra$ is stated precisely as a schema for
+fixed primitive recursive coefficient programs, with a uniform finite-code
+special case for rational polynomials. We distinguish this from a second-order
+assertion about all complex numbers. The accompanying Lean file is an
+\emph{uncompiled specification and formalization interface}, not a completed
+formal proof. Its intended endpoint is a derivation in ProveIt's deeply
+embedded \texttt{PRAAx} theory. Exact rational reference programs and test
+results accompany the proof.
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{What the assertion means inside \texorpdfstring{$\ipra$}{iPRA}}
+\label{sec:statement}
+
+The usual fundamental theorem of algebra says that a nonconstant complex
+polynomial has a complex root. Two points must be made explicit before asking
+for a proof in intuitionistic primitive recursive arithmetic.
+
+First, $\ipra$ is first-order arithmetic. Its variables range over natural
+numbers, not over arbitrary functions or complex numbers. We therefore work
+with numerical codes for rational approximations, supplied by fixed primitive
+recursive functions. Second, constructive nonconstancy requires positive
+information. We supply a rational certificate that a positive-degree
+coefficient is apart from zero. We do not decide equality of complex numbers.
+
+\subsection{The underlying arithmetic and its representations}
+
+Use intuitionistic first-order logic with equality, the defining equations
+for all primitive recursive functions, successor separation and injectivity,
+and induction for quantifier-free formulas. This is the presentation of
+$\ipra$ in the inspected \texttt{ConciseIPRA/PR.lean} source~\cite{proveit-pr}.
+Integers, rationals with positive denominator, Gaussian rationals, finite
+tuples, and finite sequences have their usual natural-number encodings.
+Their arithmetic and comparisons are primitive recursive. A bounded
+quantifier is an abbreviation for a primitive recursive Boolean fold, so
+induction on such a bounded numerical assertion is available as
+quantifier-free induction in the full primitive recursive language.
+
+For $z=x+iy\in\GQ$, put
+\[
+ \nn z=x^2+y^2.
+\]
+All executed tests use this rational squared norm. In the explanatory proof,
+$|z|$ denotes its nonnegative square root. For example,
+$|z|\le r$ with rational $r\ge0$ means exactly $\nn z\le r^2$.
+No comparison of arbitrary real numbers is used by the algorithm.
+
+\begin{definition}[Coefficient names and a finite apartness certificate]
+Fix a primitive recursive function $A(i,s,\mathbf p)$ with Gaussian-rational
+values. The natural tuple $\mathbf p$ denotes ordinary numerical parameters.
+Write $a_i(s)=A(i,s,\mathbf p)$. For an integer $n\ge1$, the name hypothesis is
+\begin{equation}
+ |a_i(u)-a_i(v)|\le 2^{-u}+2^{-v}
+ \quad(0\le i\le n;\ u,v\in\N).
+ \tag{N}\label{eq:names}
+\end{equation}
+The input includes $k,h\in\N$ with $1\le k\le n$ and
+\begin{equation}
+ |a_k(h+2)|\ge 2^{-h}.
+ \tag{A}\label{eq:apart}
+\end{equation}
+Condition \eqref{eq:apart} is a single rational comparison, namely
+$\nn{a_k(h+2)}\ge 2^{-2h}$.
+\end{definition}
+
+The hypotheses imply, for every $s\ge h+2$,
+\begin{equation}
+ |a_k(s)|\ge 2^{-h}-2^{-h-2}-2^{-s}
+                 \ge 2^{-h-1}=:\lambda.
+ \label{eq:apart-tail}
+\end{equation}
+Thus all sufficiently precise sampled polynomials are nonconstant.
+The index $n$ is only an upper bound on the degree. In particular, the
+argument allows a polynomial with a certified linear coefficient and an
+undecided quadratic coefficient.
+
+\begin{theorem}[Arithmetized constructive FTA]
+\label{thm:main}
+For every fixed primitive recursive coefficient program $A$, there are
+explicit primitive recursive functions
+\[
+ \alpha(n,k,h,\mathbf p,t)\in\GQ,
+ \qquad M(n,k,h,\mathbf p,t)\in\N
+\]
+whose defining construction is given below. In $\ipra$, from
+\eqref{eq:names}, \eqref{eq:apart}, and $1\le k\le n$, one can prove
+\begin{align}
+ |\alpha(u)-\alpha(t)|&\le 2^{-t-2} &&(u\ge t),
+ \label{eq:main-cauchy}\\
+ \left|\sum_{i=0}^n a_i(s)\alpha(t)^i\right|&\le 2^{-t}
+                   &&(s\ge M(t)).
+ \label{eq:main-root}
+\end{align}
+The suppressed arguments of $\alpha$ and $M$ are unchanged. Consequently
+$\alpha$ is an explicit fast Cauchy name for a root of the polynomial with
+the given coefficient names.
+\end{theorem}
+
+This is a genuine $\ipra$ theorem schema: after a fixed primitive recursive
+program $A$ is substituted, every expression in the assertion is a
+first-order arithmetic expression. The construction is uniform in
+$n,k,h,\mathbf p,t$. It does \emph{not} use a total primitive recursive
+universal evaluator for arbitrary primitive recursive program codes; such an
+evaluator is not available. The proof also gives an oracle-relative finite
+algorithm, but this does not add function quantification to $\ipra$.
+
+For a finite code of a rational polynomial, use constant names. Its
+nonconstant coefficient and a suitable $h$ can be found by bounded numerical
+operations. This gives one uniform first-order theorem for all nonconstant
+rational polynomials. For complex coefficients the displayed schema is the
+precise internal replacement for unrestricted quantification over $\C$.
+
+\subsection{Why mere negated constancy is not silently assumed}
+
+An explicit positive lower bound for a coefficient produces
+\eqref{eq:apart} after a known precision shift. Mere
+$\neg(a_k=0)$ need not produce such a bound intuitionistically. The issue is
+already present in $az-1$: a root gives a bound on $|z|$ and therefore a
+positive lower bound on $|a|$. An assertion producing this root from only
+$\neg(a=0)$ would supply a nonzero-to-apartness principle; applied to the
+usual real coding of a binary sequence, it yields a Markov-type principle.
+No such principle is among our axioms.
+
+The positive formulation above is stronger than a monic-only theorem: any
+positive-degree coefficient can carry the certificate, with no prior
+determination of the exact degree.
+
+\section{Finite arithmetic tools and radical notation}
+\label{sec:finite}
+
+We record the elementary tools used throughout. They require only finite
+calculations and quantifier-free induction on coded finite data.
+
+\begin{enumerate}
+\item Gaussian-rational arithmetic gives
+\[
+ \nn{zw}=\nn z\,\nn w,
+ \qquad
+ \nn z\,\nn w-(\re z\re w+\im z\im w)^2
+       =(\re z\im w-\im z\re w)^2.
+\]
+The second identity gives Cauchy--Schwarz and the triangle inequality.
+In particular,
+\[
+ \nn{\sum_{r<m}v_r}\le m\sum_{r<m}\nn{v_r}.
+\]
+Bounds with rational nonnegative right-hand sides can be checked by squaring.
+
+\item Finite powers, sums, products, binomial coefficients, polynomial
+translation, and polynomial evaluation are primitive recursive. Their
+identities are proved by induction on finite indices. For example,
+\begin{equation}
+ x^i-y^i=(x-y)\sum_{r<i}x^{i-1-r}y^r
+ \label{eq:power-diff}
+\end{equation}
+supplies every polynomial continuity estimate needed later.
+
+\item For $x\ge-1$, finite Bernoulli induction gives
+$(1+x)^m\ge1+mx$ in the instances used below. Finite geometric sums are
+evaluated by multiplication and cancellation; no infinite series theorem
+is needed.
+
+\item If $r\in[0,1]\cap\Q$, $t$ ordinary rational bisections on $[0,1]$
+give a lower endpoint $\operatorname{SQ}_t(r)$ within $2^{-t}$ of $\sqrt r$.
+For $r\in[1,2]$, use $[1,2]$. The invariant is
+$\ell^2\le r\le u^2$, $\ell\ge0$, and $u-\ell=2^{-t}$.
+The decision is the rational comparison of the midpoint's square with $r$.
+These bisections define the square-root names used as explanatory notation.
+Also
+\begin{equation}
+ |\sqrt r-\sqrt s|\le\sqrt{|r-s|}\qquad(r,s\ge0)
+ \label{eq:sqrt-holder}
+\end{equation}
+follows by squaring and using the nonnegative cross term.
+\end{enumerate}
+
+Nested radicals in the next section abbreviate explicitly approximable
+algebraic quantities. They do not assert a completeness axiom. Bisection
+with the displayed precision bounds replaces them by rational intervals.
+Identities about these quantities mean identities of their explicit names.
+At any finite target accuracy they follow from finite squaring identities
+and interval bounds.
+
+For completeness, precision propagation through any finite radical
+expression used here has an explicit rational algorithm. Suppose rational
+bounds $|x|,|y|\le B$ and a reciprocal lower bound $|x|\ge m>0$ are
+available. To obtain output error at most $\varepsilon\le1$, it suffices
+to demand the following input errors (and, for a square root, the stated
+additional local bisection error):
+\begin{center}
+\begin{tabular}{@{}ll@{}}\toprule
+Operation & Sufficient error budget \\
+\midrule
+$x\pm y$ & Each input error $\le\varepsilon/2$ \\
+$xy$ & Each input error $\le\min(1,\varepsilon/(2B+1))$ \\
+$1/x$ & Input error $\le\min(m/2,\varepsilon m^2/2)$ \\
+$\sqrt x$ & Input error $\le\varepsilon^2/4$; local error
+$\le\varepsilon/2$ \\
+\bottomrule\end{tabular}
+\end{center}
+For a square-root input, clamp its rational approximation to the known
+nonnegative interval; this cannot increase its error. The multiplication
+bound follows from $|xy-x'y'|\le(2B+1)\delta$ for input errors at most
+$\delta\le1$, and the reciprocal bound from
+$|x^{-1}-(x')^{-1}|\le2\delta/m^2$. The square-root rule follows from
+\eqref{eq:sqrt-holder}. Propagate these budgets backwards through the
+finite expression tree, then evaluate forwards. The required bisection
+count is bounded by a binary digit count of the rational interval width
+divided by the target error. Both passes are finite primitive recursive
+calculations. Magnitude bounds and reciprocal lower bounds are explicit
+in every use below: for example, the normalized denominator is at least
+$1$, and a nonzero rational norm is bounded below by the reciprocal of a
+power of two computed from its component denominators. Thus
+``approximate the radicals'' never conceals an unbounded precision search.
+
+There is a useful last step when an intermediate argument uses arbitrarily
+accurate radical bounds but its conclusion is rational. If $r\in\Q$ and
+$r\le 2^{-m}$ has been proved for every $m$ by such finite bounds, then
+$r\le0$ follows constructively. Decide the rational comparison $r\le0$.
+In the other case, writing $r=a/b$ with positive integers gives $r\ge1/b$;
+the explicit choice $m=\bl(b)+1$ contradicts $r\le2^{-m}$.
+This is bounded arithmetic and rational decidability, not Markov's
+principle. It eliminates the radical shorthand at the rational endpoints
+of the lemmas below.
+
+\section{A bounded rational direction algorithm}
+\label{sec:direction}
+
+The descent step needs an approximate $k$th root of a unit direction. Using
+FTA for this would be circular. We instead give a finite algebraic
+construction from square-root bisection and a truncated binomial polynomial.
+
+\begin{lemma}[Direction]
+\label{lem:direction}
+Given $c\in\GQ\setminus\{0\}$, $k\ge1$, and rational
+$0<\varepsilon\le1/16$, a bounded primitive recursive procedure constructs
+$w\in\GQ$ such that
+\[
+ |w|\le1,\qquad
+ \left|w^k-\frac{c}{|c|}\right|\le\varepsilon.
+\]
+\end{lemma}
+
+\subsection{Three square roots move the target near \texorpdfstring{$1$}{1}}
+
+Write $c=x+iy$, let $m=\max(|x|,|y|)>0$, and set
+\[
+ X=x/m,\quad Y=y/m,\quad
+ a=\frac{X}{\sqrt{X^2+Y^2}}.
+\]
+Here $1\le X^2+Y^2\le2$ and $-1\le a\le1$.
+Let $\sigma=-1$ if $y<0$ and $\sigma=1$ otherwise, a rational decision.
+Define
+\begin{align*}
+ s_1&=\sqrt{(1+a)/2},&
+ s_2&=\sqrt{(1+s_1)/2},\\
+ s_3&=\sqrt{(1+s_2)/2},&
+ t_3&=\sqrt{(1-s_2)/2},\qquad v=s_3+i\sigma t_3.
+\end{align*}
+Direct squaring, with the nonnegative square roots, shows
+\[
+ |v|=1,\qquad v^8=c/|c|.
+\]
+For detail, put
+$v_1=s_1+i\sigma\sqrt{(1-a)/2}$ and
+$v_2=s_2+i\sigma\sqrt{(1-s_1)/2}$.
+Then $v^2=v_2$, $v_2^2=v_1$, and $v_1^2=c/|c|$.
+The sign of $y$ verifies the imaginary part in the last equality. For
+$y=0$, the convention selects a half-angle with nonnegative real part,
+taking the positive imaginary sign on the negative real axis.
+
+Since $s_1\ge0$, $s_2\ge2/3$, and $s_3\ge9/10$ (square these rational
+lower bounds),
+\begin{equation}
+ |v-1|^2=2-2s_3\le1/5<1/4.
+ \label{eq:v-near-one}
+\end{equation}
+
+\subsection{Computing a rational approximation}
+
+Choose $\ell\ge3$, put $t=8\ell+16$ and $\delta=2^{-t}$, and compute
+only the following rational quantities:
+\begin{align*}
+ S&=\operatorname{SQ}_t(X^2+Y^2) &&\text{on }[1,2],\\
+ a'&=X/S,\\
+ S_1&=\operatorname{SQ}_t((1+a')/2),&
+ S_2&=\operatorname{SQ}_t((1+S_1)/2),\\
+ S_3&=\operatorname{SQ}_t((1+S_2)/2),&
+ T_3&=\operatorname{SQ}_t((1-S_2)/2),\\
+ q_0&=S_3+i\sigma T_3.
+\end{align*}
+The last four square-root inputs lie in $[0,1]$. Because $S\ge1$,
+$|a'-a|\le\delta$. Equation~\eqref{eq:sqrt-holder}, including the bisection
+error at each stage, gives successive errors at most
+$2\delta^{1/2}$, $2\delta^{1/4}$, and $2\delta^{1/8}$.
+Both final coordinates have the last bound. Hence
+\begin{equation}
+ |q_0-v|\le4\delta^{1/8}=2^{-\ell},
+ \qquad |q_0-1|\le5/8.
+ \label{eq:q-close}
+\end{equation}
+The fractional powers in these error estimates are shorthand for repeated
+square roots of the dyadic bound; the algorithm itself only performed the
+five fixed-length rational bisections.
+
+\subsection{A finite binomial identity}
+
+Let $N\ge1$ and $\alpha_0=1/k$, and define rational numbers
+\[
+ c_0=1,\qquad c_{j+1}=c_j\frac{\alpha_0-j}{j+1},
+ \qquad P_N(T)=\sum_{j=0}^N c_jT^j.
+\]
+Induction gives $|c_j|\le1$. A coefficient calculation gives
+\begin{equation}
+ (1+T)P_N'(T)-\alpha_0P_N(T)=(N-\alpha_0)c_NT^N.
+ \label{eq:binomial-ode}
+\end{equation}
+Set $H(T)=P_N(T)^k=\sum_j d_jT^j$.
+Since $k\alpha_0=1$, equation~\eqref{eq:binomial-ode} implies that
+$(1+T)H'-H$ is divisible by $T^N$. Thus, for $j<N$,
+\[
+ (j+1)d_{j+1}=(1-j)d_j.
+\]
+It follows that $d_0=d_1=1$ and $d_j=0$ for $2\le j\le N$.
+Therefore $H-(1+T)$ is divisible by $T^{N+1}$.
+
+For $|T|\le5/8$, finite coefficient majorization now gives
+\begin{align*}
+ |P_N(T)^k-(1+T)|
+ &\le (5/6)^{N+1}\sum_j|d_j|(3/4)^j\\
+ &\le (5/6)^{N+1}
+       \left(\sum_{j=0}^N|c_j|(3/4)^j\right)^k
+ \le 4^k(5/6)^{N+1}.
+\end{align*}
+Take $N=8k+4\ell$. Since $(5/6)^4<1/2$, the last quantity is at most
+$2^{-\ell}$. This argument uses finite polynomials and finite sums only;
+it is not an invocation of an infinite binomial series.
+
+\subsection{The output and its exact rational certificate}
+
+Put $\eta=\varepsilon/(k+1)$. Choose
+\[
+ \ell=12+\bl\bigl(\ceil{(k+1)/\varepsilon}\bigr),
+ \qquad N=8k+4\ell.
+\]
+For positive integers $m$, $\bl(m)$ is their binary digit count, so
+$2^{\bl(m)}>m$. These choices ensure $\ell\ge3$ and
+$2048\,2^{-\ell}\le\eta$.
+Compute $q_0$ above and set
+\begin{equation}
+ u=P_N(q_0-1)^8,\qquad w=\frac{u}{1+\eta}.
+ \label{eq:direction-output}
+\end{equation}
+Write $e=2^{-\ell}$ and $b=P_N(q_0-1)^k$.
+Then $|b-q_0|\le e$, $|q_0-v|\le e$, and $|b|,|v|\le2$.
+Equation~\eqref{eq:power-diff} for exponent $8$ gives
+\[
+ |u^k-c/|c||=|b^8-v^8|\le8\cdot2^7\cdot2e
+                  =2048e\le\eta.
+\]
+Thus $|u|^k\le1+\eta$, and consequently $|u|\le1+\eta$.
+For the latter implication, split the decidable comparison $|u|^2\le1$;
+if it fails, $|u|\le|u|^k$. Hence $|w|\le1$.
+Finally, with $r=(1+\eta)^{-1}$,
+\[
+ |w^k-c/|c||\le\eta r^k+(1-r^k)
+       \le\eta+k(1-r)\le(k+1)\eta=\varepsilon.
+\]
+This proves Lemma~\ref{lem:direction}.
+
+For clarity about arithmetization, put
+\[
+ A_c=\nn c,\quad b_c=\nn{w^k}+1-\varepsilon^2,
+ \quad d_c=2\re(w^k\overline c).
+\]
+Here $b_c>0$. The output satisfies the \emph{purely rational} certificate
+\begin{equation}
+ \nn w\le1,\qquad d_c\ge0,\qquad d_c^2\ge A_cb_c^2.
+ \label{eq:direction-certificate}
+\end{equation}
+Indeed the directional error bound is equivalent to
+$b_c\sqrt{A_c}\le d_c$. Squaring positive sides gives
+\eqref{eq:direction-certificate}; the finite bisection reasoning of
+Section~\ref{sec:finite} removes the remaining radical notation.
+The companion reference program checks precisely this certificate.
+
+\section{Uniform descent for a rational polynomial}
+\label{sec:descent}
+
+\begin{lemma}[Rational descent with a radius certificate]
+\label{lem:descent}
+Let $n\ge1$, let $P\in\GQ[X]$ have degree at most $n$ and at least one
+nonzero positive-degree coefficient, and let $z\in\GQ$. Put
+\[
+ D=2^n4^{2n^2},\qquad q=1-\frac1{4D}.
+\]
+A primitive recursive procedure returns $\Delta\in\GQ$ and rational
+$r_0\ge0$ such that, writing $P(z+W)=\sum_{i=0}^n b_iW^i$,
+\begin{align}
+ |P(z+\Delta)|&\le q|P(z)|,\label{eq:descent-contraction}\\
+ |\Delta|&\le r_0,\label{eq:descent-radius}\\
+ |b_i|r_0^i&\le|b_0| \quad(1\le i\le n).
+ \label{eq:radius-cert}
+\end{align}
+Every comparison in the procedure is rational and every search is bounded.
+\end{lemma}
+
+\begin{proof}
+Translation uses only the finite binomial identity. If $b_0=0$, return
+$(\Delta,r_0)=(0,0)$. Otherwise let $A=|b_0|>0$ and
+\[
+ M(r)=\max_{1\le i\le n}|b_i|r^i\quad(r>0).
+\]
+There is a nonzero $b_i$ with $i\ge1$, because inverse translation recovers
+the positive-degree coefficients of $P$ from these coefficients.
+
+\paragraph{A balanced starting radius.}
+Let $b\ge1$ be the largest binary digit count of the absolute numerators and
+positive denominators of all components of all $b_i$. Thus every coefficient
+has norm at most $2^{b+1}$, and every nonzero coefficient has norm at least
+$2^{-b}$. Set $E=2b+3$. At $r=2^{-E}$,
+\[
+ M(r)\le2^{b+1-E}=2^{-b-2}<A.
+\]
+At $r=2^E$, a nonzero positive-degree coefficient gives
+$M(r)\ge2^{E-b}>A$. Choose the largest integer $e\in[-E,E]$ such that
+$M(2^e)\le A$, and set $r_0=2^e$. This is a bounded search and $e<E$.
+Since $M(2r_0)>A$ and $M(2r_0)\le2^nM(r_0)$,
+\begin{equation}
+ A/2^n<M(r_0)\le A.
+ \label{eq:balanced}
+\end{equation}
+The right inequality proves \eqref{eq:radius-cert}. Tests use
+$\nn{b_i}r^{2i}\le\nn{b_0}$; no square roots are computed.
+
+\paragraph{A term dominant at three consecutive scales.}
+For $j=0,\ldots,2n$, put $r_j=4^{-j}r_0$, and let $k_j$ be the least
+index maximizing $|b_i|r_j^i$. The sequence $k_j$ is nonincreasing.
+Indeed, if $k$ maximizes at $r$, an index $i>k$ has at $r/4$ a value at
+most $4^{-i}|b_k|r^k<4^{-k}|b_k|r^k$, and cannot maximize there.
+The strict inequality holds because the maximum is positive.
+
+Some $j\in\{1,\ldots,2n-1\}$ satisfies
+$k_{j-1}=k_j=k_{j+1}$. To see this by finite arithmetic, examine the odd
+centers. If all $n$ odd-centered triples failed, monotonicity would give
+$k_{2s+2}<k_{2s}$ for $s=0,\ldots,n-1$, hence
+$k_{2n}\le k_0-n\le0$, a contradiction. Bounded search finds such a $j$.
+
+Set $r=r_j$, $k=k_j$, and $V=|b_k|r^k$. Dominance at $r/4$ gives, for
+$i<k$, $|b_i|r^i\le4^{-(k-i)}V$; dominance at $4r$ gives the analogous
+$4^{-(i-k)}V$ bound for $i>k$. Therefore
+\begin{equation}
+ \sum_{\substack{1\le i\le n\\i\ne k}}|b_i|r^i\le\frac23V.
+ \label{eq:other-terms}
+\end{equation}
+Each of the two finite geometric sums is at most $1/3$.
+Also $0<V\le A$. A term maximizing at $r_0$ loses a factor of at most
+$4^{jn}$ by radius $r_j$. Since $j<2n$, \eqref{eq:balanced} gives
+\begin{equation}
+ V>A/(2^n4^{2n^2})=A/D.
+ \label{eq:dominant-lower}
+\end{equation}
+
+\paragraph{The direction and the decrease.}
+Apply Lemma~\ref{lem:direction} with
+$c=-b_0\overline{b_k}\ne0$, exponent $k$, and $\varepsilon=1/16$.
+Its unit target is
+$u=-b_0\overline{b_k}/(A|b_k|)$.
+Return $\Delta=rw$, where $w$ is the rational direction output.
+Then $|\Delta|\le r\le r_0$ and
+$b_kr^ku=-b_0V/A$. Using the weaker bound $1/12$ for the direction error,
+\[
+ |b_0+b_k\Delta^k|\le A-V+V/12.
+\]
+The other terms have total norm at most $2V/3$ by
+\eqref{eq:other-terms} and $|w|\le1$. Hence
+\[
+ |P(z+\Delta)|\le A-\frac14V
+       \le\left(1-\frac1{4D}\right)A.
+\]
+This proves all claims. The actual $1/16$ direction estimate leaves a
+strict margin in this calculation.
+\end{proof}
+
+The lemma does not rely on monicity or on the existence of any root. Its
+conclusion is a finite rational statement. It is the key replacement for
+an appeal to a minimum of $|P|$ on a compact set.
+
+\section{A bound on travel from any nonconstant coefficient}
+\label{sec:travel}
+
+The residual contraction alone does not make the iterates a Cauchy sequence.
+We next extract a step bound from the supplied nonconstant coefficient. This
+also avoids any need to determine the exact degree.
+
+\begin{lemma}[Step bound]
+\label{lem:step-bound}
+Suppose $P(X)=\sum_{i=0}^n p_iX^i$, $|p_k|\ge\lambda>0$ for
+$1\le k\le n$, and $|z|\le U-1$ for rational $U\ge1$.
+Let the descent lemma return $(\Delta,r_0)$. If
+\[
+ |P(z)|\le BQ^j,\qquad B\ge1,\qquad 0<\rho<1,
+ \qquad Q\le\rho^n,
+\]
+and $C=Bn2^n/\lambda\ge1$, then
+\[
+ |\Delta|\le r_0\le UC\rho^j.
+\]
+\end{lemma}
+
+\begin{proof}
+The case $P(z)=0$ has zero step. Otherwise use inverse translation:
+\begin{equation}
+ p_k=\sum_{i=k}^n\binom ik b_i(-z)^{i-k}.
+ \label{eq:inverse-translation}
+\end{equation}
+There are at most $n$ terms, $\binom ik\le2^n$, and
+$|z|^{i-k}\le U^i$. Put $F=n2^n$. The triangle inequality gives
+\begin{equation}
+ |p_k|\le F\max_{1\le i\le n}|b_i|U^i.
+ \label{eq:translate-lower}
+\end{equation}
+Equivalently, a completely rational consequence of finite Cauchy--Schwarz is
+\begin{equation}
+ \nn{p_k}\le F^2\max_{1\le i\le n}\nn{b_i}U^{2i}.
+ \label{eq:translate-lower-squared}
+\end{equation}
+Choose an index maximizing the displayed rational expression. It has
+$|b_i|U^i\ge\lambda/F>0$. The radius certificate gives
+\[
+ (r_0/U)^i\le(F/\lambda)|P(z)|
+       \le C\rho^{nj}\le(C\rho^j)^i.
+\]
+The last inequality uses $i\le n$, $C\ge1$, and $0<\rho<1$.
+Positive integer powers reflect order on nonnegative rationals, proving
+the claim. Alternatively, use \eqref{eq:translate-lower-squared} and the
+squares of the radius and residual bounds to obtain the same rational
+comparison. No operation taking an $i$th root is needed here.
+\end{proof}
+
+\section{All constants and the primitive recursive iteration}
+\label{sec:iteration}
+
+Return to the input of Theorem~\ref{thm:main}. Define the positive integers
+and positive rationals
+\begin{align}
+ B&=2+\ceil{|\re a_0(0)|+|\im a_0(0)|},
+ &D&=2^n4^{2n^2},\nonumber\\
+ q&=1-\frac1{4D},&Q&=1-\frac1{8D},\nonumber\\
+ K&=8nD,&\rho&=1-\frac1K,\nonumber\\
+ C&=Bn2^{n+h+1}.&&
+ \label{eq:constants}
+\end{align}
+In particular $B\ge2$, $C\ge B$, and $K\ge2$.
+Finite Bernoulli arithmetic gives
+\begin{equation}
+ \rho^n\ge1-n/K=Q.
+ \label{eq:rho-q}
+\end{equation}
+
+The following choices make every bound explicit; binary digit counts are
+primitive recursive:
+\begin{align}
+ A_0&=\bl(2CK),&T&=KA_0,&R&=2(1+C)^T,
+ \label{eq:radius-global}\\
+ L&=\max\{h+2,\bl(16D(n+1)R^n)\},&&&
+ \label{eq:precision-global}\\
+ H&=\bl(RCK).&&&
+ \label{eq:H}
+\end{align}
+Thus
+\[
+ 2^{A_0}\ge2CK,\quad 2^L\ge16D(n+1)R^n,
+ \quad L\ge h+2,\quad 2^H\ge RCK.
+\]
+The numbers are intentionally generous. Small asymptotic complexity is not
+needed for primitive recursiveness.
+
+Set
+\begin{equation}
+ N_j=j+L,\qquad P_j(X)=\sum_{i=0}^n a_i(N_j)X^i.
+ \label{eq:sample-polynomial}
+\end{equation}
+Every $P_j$ is a rational nonconstant polynomial, since
+$|a_k(N_j)|\ge\lambda=2^{-h-1}$ by \eqref{eq:apart-tail}.
+Starting at $z_0=0$, define
+\begin{equation}
+ (\Delta_j,r_j^*)=\operatorname{Descent}(P_j,z_j),
+ \qquad z_{j+1}=z_j+\Delta_j.
+ \label{eq:iteration}
+\end{equation}
+The superscript on $r_j^*$ distinguishes the returned starting radius from
+the local scale indices used in the proof of the descent lemma.
+Equation~\eqref{eq:iteration} is one ordinary primitive recursion on $j$,
+with a primitive recursive body. The coefficient program is fixed, so calls
+to it are ordinary primitive recursive compositions.
+
+For the proof, also define the rational sequence
+\begin{equation}
+ U_0=1,\qquad U_{j+1}=U_j(1+C\rho^j).
+ \label{eq:U}
+\end{equation}
+It is an auxiliary bound, not a new infinite object assumed to exist.
+
+\subsection{The auxiliary products are bounded}
+
+First observe the useful block inequality
+\begin{equation}
+ \rho^K\le\frac12.
+ \label{eq:block}
+\end{equation}
+Indeed,
+\[
+ \rho^{-K}=\left(1+\frac1{K-1}\right)^K
+     \ge1+\frac K{K-1}\ge2,
+\]
+by finite Bernoulli arithmetic; all denominators are positive.
+For every finite $\ell\ge T$, the geometric sum gives
+\begin{equation}
+ \sum_{j=T}^{\ell-1}C\rho^j
+       \le CK\rho^T\le CK2^{-A_0}\le\frac12.
+ \label{eq:tail-sum}
+\end{equation}
+
+For nonnegative rational $x_1,\ldots,x_m$ with $S=\sum x_i<1$,
+\begin{equation}
+ \prod_{i=1}^m(1+x_i)\le\frac1{1-S}.
+ \label{eq:finite-product}
+\end{equation}
+To prove this, induct on the finite list. If the previous sum is $s$ and
+the next term is $x$, then
+\[
+ (1+x)(1-s-x)=1-s-sx-x^2\le1-s.
+\]
+Multiplying the previous product bound by $1+x$ proves the new one.
+Applying \eqref{eq:finite-product} to \eqref{eq:tail-sum} bounds every
+tail product by $2$. The first $T$ factors are each at most $1+C$.
+Consequently, for every $j$, including $j<T$,
+\begin{equation}
+ 1\le U_j\le2(1+C)^T=R.
+ \label{eq:U-bound}
+\end{equation}
+This is a theorem about finite products only. No existence or convergence
+of an infinite product has been used.
+
+\section{The rational induction invariant}
+\label{sec:invariant}
+
+\begin{proposition}
+\label{prop:invariant}
+For every $j\in\N$,
+\begin{align}
+ |P_j(z_j)|&\le E_j:=BQ^j,\label{eq:residual-invariant}\\
+ |z_j|&\le U_j-1<R,\label{eq:position-invariant}\\
+ |\Delta_j|&\le U_jC\rho^j\le RC\rho^j.
+ \label{eq:step-invariant}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+We induct on the first two inequalities. The third is a consequence used
+in the induction step. At $j=0$, $z_0=0=U_0-1$, and the name hypothesis
+gives
+\[
+ |P_0(0)|=|a_0(L)|\le|a_0(0)|+1+2^{-L}\le B.
+\]
+
+Suppose the first two inequalities hold at $j$. The sampled coefficient
+$a_k(N_j)$ has norm at least $\lambda=2^{-h-1}$.
+Equations~\eqref{eq:rho-q} and \eqref{eq:constants} make
+Lemma~\ref{lem:step-bound} applicable with $U=U_j$ and
+$C=Bn2^n/\lambda$. It gives \eqref{eq:step-invariant}. Therefore
+\[
+ |z_{j+1}|\le U_j-1+U_jC\rho^j=U_{j+1}-1<R.
+\]
+
+It remains to control the change of coefficient approximations.
+For any rational $x$ with $|x|\le R$, since $R\ge1$ and $N_{j+1}=N_j+1$,
+\begin{align}
+ |P_{j+1}(x)-P_j(x)|
+ &\le\frac32(n+1)R^n2^{-N_j}\nonumber\\
+ &\le\frac3{32D}2^{-j}
+ \le\frac1{8D}BQ^j.
+ \label{eq:drift}
+\end{align}
+The first inequality uses the coefficient-name hypothesis, the second
+uses the choice of $L$, and the last uses $B\ge1$, $Q\ge1/2$, and
+$3/32\le1/8$. The descent contraction at $z_j$, followed by
+\eqref{eq:drift} at the already bounded point $z_{j+1}$, yields
+\[
+ |P_{j+1}(z_{j+1})|
+ \le qE_j+\frac1{8D}E_j
+ =QE_j=E_{j+1}.
+\]
+This completes the induction.
+\end{proof}
+
+The important logical feature is the use of $P_j(z_j)$, which is an actual
+Gaussian rational. The invariant is \emph{not} an assertion about the value
+of a completed complex polynomial at every possible precision. Its squared
+form is simply
+\begin{equation}
+ \nn{P_j(z_j)}\le B^2Q^{2j},\qquad
+ \nn{z_j}\le(U_j-1)^2.
+ \label{eq:qf-invariant}
+\end{equation}
+These are quantifier-free numerical comparisons once the primitive
+recursive operations have been named. The global name assumptions remain
+in the context; they are instantiated at finite indices during the proof.
+Section~\ref{sec:ipra-audit} gives an entirely finite-table formulation.
+
+\section{The exact root and its explicit modulus}
+\label{sec:root}
+
+For $\ell\ge j$, finite telescoping and \eqref{eq:step-invariant} give
+\begin{equation}
+ |z_\ell-z_j|\le RC\sum_{r=j}^{\ell-1}\rho^r
+                         \le RCK\rho^j.
+ \label{eq:iterate-tail}
+\end{equation}
+Define the promised functions
+\begin{equation}
+ J(t)=K(t+H+2),\qquad
+ \alpha(t)=z_{J(t)},\qquad M(t)=J(t)+L.
+ \label{eq:root-output}
+\end{equation}
+All constants are fixed by the input and all three functions are primitive
+recursive. For $u\ge t$, \eqref{eq:block}, \eqref{eq:H}, and
+\eqref{eq:iterate-tail} give
+\begin{equation}
+ |\alpha(u)-\alpha(t)|\le RCK\rho^{J(t)}
+      \le RCK2^{-t-H-2}\le2^{-t-2}.
+ \label{eq:root-cauchy}
+\end{equation}
+This proves the fast Cauchy assertion, with a displayed modulus.
+
+Let $\beta(t)=P_{J(t)}(\alpha(t))$. Since $C\ge B$, $R,K\ge1$, and
+$Q\le\rho^n\le\rho$, the residual invariant gives
+\begin{equation}
+ |\beta(t)|\le BQ^{J(t)}
+     \le B\rho^{J(t)}\le2^{-t-2}.
+ \label{eq:beta-zero}
+\end{equation}
+For every $s\ge M(t)=J(t)+L$, the coefficient-name hypothesis gives
+\begin{align*}
+ \left|\sum_{i=0}^n a_i(s)\alpha(t)^i-\beta(t)\right|
+ &\le2(n+1)R^n2^{-J(t)-L}\\
+ &\le\frac1{8D}2^{-J(t)}\le2^{-t-3}.
+\end{align*}
+Adding \eqref{eq:beta-zero} proves \eqref{eq:main-root}, in fact with
+$3\cdot2^{-t-3}$ in place of $2^{-t}$. This establishes both assertions of
+Theorem~\ref{thm:main} using only finite rational estimates.
+
+\subsection{Why this is an exact zero, not just approximate solvability}
+
+A complex number in this representation is a fast Cauchy name up to the
+usual vanishing-error equivalence. The object $\alpha$ is the specific
+primitive recursive name \eqref{eq:root-output}. We do not infer its
+existence by extracting a subsequence or choosing compatible approximate
+roots.
+
+The construction acts on the coefficient names themselves. Equivalent
+names can cause it to select different valid roots. Constructive root
+existence does not require an extensional single-valued selection of a
+root from every complex polynomial, and no such selection is asserted.
+
+To connect the residual calculation explicitly with ordinary name
+arithmetic, set
+\[
+ V(t)=\sum_{i=0}^n a_i(t)\alpha(t)^i,
+ \qquad S=(n+1)R^n.
+\]
+The input name estimate and $M(t)\ge t$ imply
+\[
+ |V(t)-\beta(t)|\le2S2^{-t},\qquad
+ |V(t)|\le(2S+1/4)2^{-t}.
+\]
+Choose a fixed integer $d$ with $2^d\ge4S+1$.
+Then $|V(t+d)|\le2^{-t-1}$. Thus this normalized evaluation sequence
+represents zero and satisfies the usual fast Cauchy condition as well.
+
+For extensionality, a bound for all coefficient samples is
+\[
+ B_* =2+\ceil{\max_{0\le i\le n}
+        (|\re a_i(0)|+|\im a_i(0)|)}.
+\]
+For $|x|,|y|\le R$, finite identity~\eqref{eq:power-diff} gives
+\begin{equation}
+ \left|\sum_{i=0}^n a_i(s)(x^i-y^i)\right|
+       \le B_*\left(\sum_{i=1}^n iR^{i-1}\right)|x-y|.
+ \label{eq:poly-lipschitz}
+\end{equation}
+Changing coefficient samples changes a value by at most the corresponding
+coefficient error times $\sum_{i=0}^nR^i\le S$.
+These two explicit estimates show that replacing either the coefficient
+names or the root name by equivalent names preserves the evaluation class.
+They also give a fixed primitive recursive precision shift for any of the
+standard conventions for addition and multiplication of fast names.
+Consequently \eqref{eq:beta-zero} is exactly $p(\alpha)=0$ in the
+represented complex numbers. No real or complex completeness principle is
+being inserted at this final step.
+
+\section{Why the proof belongs to \texorpdfstring{$\ipra$}{iPRA}}
+\label{sec:ipra-audit}
+
+The size of the numerical bounds is immaterial to membership in the
+primitive recursive class. Their \emph{form} and the induction formulas
+are what matter. We make both explicit.
+
+\subsection{Total primitive recursive definitions}
+
+Every object used by the root program is obtained by the following
+operations: natural and integer arithmetic; rational arithmetic with
+positive denominators; finite tuple coding; bounded maxima and bounded
+search; binary digit count; finite exponentiation; finite polynomial
+operations; fixed-length rational bisection; and one primitive recursion
+forming the iterates. If reduced fractions are used, gcd can itself be
+defined by a bounded search. Reduced fractions are not required for the
+arithmetical proof.
+
+The local radius search has at most $2E+1$ candidate exponents. The scale
+search uses $2n+1$ maxima and at most $2n-1$ possible centers. The direction
+routine has five bisection loops of length $8\ell+16$, a binomial recurrence
+of length $8k+4\ell$, and finite Horner evaluation. The complete root program
+runs the local recursion exactly $J(t)$ times. Dependence of a local loop
+bound on its current rational input is harmless: it is a primitive
+recursive function forming part of the fixed recursion body.
+
+For total definitions on all natural codes, assign a fixed default output
+to malformed rational encodings, $n=0$, a missing nonconstant coefficient,
+or a failed bounded search. The hypotheses and lemmas prove that these
+default branches are never used on valid inputs. This supplies total PR
+function symbols without presupposing their correctness.
+
+\subsection{The finite-table theorem}
+
+Fix a finite iteration horizon $m$. Form a finite table containing
+$a_i(0)$, $a_i(h+2)$, and $a_i(L+j)$ for $0\le i\le n$ and $0\le j\le m$.
+The table conditions needed for Proposition~\ref{prop:invariant} are only:
+\begin{enumerate}
+\item the finite apartness comparison at $(k,h+2)$;
+\item the comparisons of that row with the rows $L+j$;
+\item the comparison of the constant coefficient at $0$ with the row $L$;
+\item the comparisons of adjacent rows $L+j$ and $L+j+1$.
+\end{enumerate}
+All are rational inequalities. Their conjunction over finite index ranges
+is a primitive recursive Boolean $\mathsf{GoodTable}$.
+Keep this table and $m$ as parameters. Induct on a numerical assertion of
+the form
+\[
+ j\le m\ \longrightarrow\
+ (\mathsf{GoodTable}=1\ \longrightarrow\ \mathsf{Inv}(j)=1),
+\]
+where $\mathsf{Inv}$ checks \eqref{eq:qf-invariant} and any accumulated
+finite bounds. This is a quantifier-free formula in the full primitive
+recursive language. The descent lemma and the preceding arithmetic lemmas
+supply the step. The finite tail estimates and the arbitrary-precision
+residual comparison are treated with extra finite indices as parameters.
+
+When the table is generated by the fixed PR function $A$, the global
+name hypothesis proves these finite table conditions by instantiation and
+bounded Boolean-fold induction. The hypotheses themselves need not be
+quantifier-free: they remain assumptions in the context. It is the
+\emph{formula to which induction is applied} that must be quantifier-free.
+After the finite proof, ordinary intuitionistic universal introduction
+quantifies over the arbitrary horizons and precisions.
+
+\subsection{An induction and logical-principle audit}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.39\textwidth}>{\raggedright\arraybackslash}p{0.29\textwidth}@{}}
+\toprule
+Part & Finite invariant or calculation & Induction parameter \\
+\midrule
+\endhead
+Square-root bounds & Nonnegative rational endpoints, squared bracketing,
+interval length & Bisection count \\
+Binomial truncation & Coefficient recurrence and vanishing coefficients
+through degree $N$ & Finite coefficient index \\
+Radius and scale selection & Rational squared maxima; decreasing
+maximizer indices & Bounded scan index \\
+Direction output & Certificate \eqref{eq:direction-certificate} after
+finite arithmetic and bisection bounds & Fixed finite precision loops \\
+Translation bound & Finite polynomial identity and squared
+Cauchy--Schwarz estimate & Degree or list index \\
+Auxiliary product & Rational partial sum and partial product inequalities
+& Product length \\
+Iteration & Two rational inequalities \eqref{eq:qf-invariant} under a
+fixed good-table condition & Iteration index \\
+Root name & Finite telescoping and finite geometric bounds
+& Finite interval length \\
+\bottomrule
+\end{longtable}
+
+The proof uses no excluded middle for real equality, unbounded minimization,
+compactness, infinite path principle, general intermediate value theorem,
+countable choice, Markov principle, or induction on an unbounded
+existential or universal formula. Rational case distinctions are justified
+by decidability derived in arithmetic. The few contradiction arguments
+prove decidable rational or finite combinatorial assertions and are
+intuitionistically valid.
+
+It would be insufficient to say only that a numerical algorithm appears
+computable, or that Lean accepts a theorem about standard $\C$.
+The finite bounds and the quantifier-free invariants above are the
+additional content establishing the $\ipra$ claim.
+
+\section{Familiar corollaries and the exact scope}
+\label{sec:corollaries}
+
+\subsection{Monic and specified-degree polynomials}
+
+For a monic polynomial, the top coefficient is the constant name $1$, so
+$(k,h)=(n,0)$ supplies the required certificate. All lower coefficients may
+be arbitrary fixed PR fast names. A polynomial with a supplied apart
+leading coefficient is already covered by the general theorem, without
+normalization.
+
+There is a shorter bound in the monic case. The local radius certificate
+then gives $r_0^n\le|P_j(z_j)|$, so the step bound improves to
+$|\Delta_j|\le B\rho^j$. One may take $R=BK+1$ and omit the auxiliary
+product argument. The general construction was retained in the main proof
+to handle any positively nonconstant coefficient.
+
+\subsection{Complete factorization for every fixed degree}
+
+Suppose a monic polynomial has fixed degree $n$ and let $\alpha$ be the
+constructed root. Synthetic division over the represented complex numbers
+is finite algebra. Define
+\[
+ q_{n-1}=1,\qquad q_{j-1}=a_j+\alpha q_j
+       \quad(j=n-1,n-2,\ldots,1).
+\]
+Then direct coefficient comparison gives
+\[
+ p(X)=(X-\alpha)\sum_{j=0}^{n-1}q_jX^j+p(\alpha)
+      =(X-\alpha)\sum_{j=0}^{n-1}q_jX^j.
+\]
+The quotient is monic. The finite arithmetic of PR names, with the explicit
+bounded-domain precision shifts from \eqref{eq:poly-lipschitz}, makes each
+$q_j$ a PR name. Repeat the root construction $n-1$ times. For each fixed
+$n$ this is a finite composition of the preceding program constructions
+and yields
+\[
+ p(X)=\prod_{j=1}^n(X-\alpha_j).
+\]
+With a specified apart leading coefficient, division by that coefficient
+first gives the usual leading scalar times the product. Inversion has a
+PR modulus: if $|a|\ge2^{-h}$, sufficiently accurate samples have norm
+at least $2^{-h-1}$, and
+\[
+ |a(s)^{-1}-a^{-1}|\le2^{2h+1}|a(s)-a|.
+\]
+A fixed precision shift therefore suffices.
+
+This paragraph claims a \emph{fixed-degree factorization schema}. It does
+not assert, without a further compiler-size argument, that evaluating the
+nested factorization uniformly over arbitrary degree and arbitrary PR
+program codes is itself PR. The single-root theorem proved above is
+already uniform in the numerical degree bound and is the FTA formulation
+requested here.
+
+\subsection{What has and has not been proved}
+
+The mathematical result is an explicit arithmetized FTA for PR Cauchy
+coefficients, including the full positive-nonconstancy formulation. It is
+not a claim that first-order arithmetic literally quantifies over all
+uncountably many ordinary complex numbers. It is not an assertion that weak
+negated equality supplies positive apartness. It is also not yet a
+machine-checked Lean derivation. These distinctions specify the theorem's
+content; none is filled by an extra axiom.
+
+\section{A concrete path to complete Lean formalization}
+\label{sec:lean}
+
+\subsection{Inspected repository foundation}
+
+The repository inspection was pinned to ProveIt commit
+\begin{center}
+\texttt{b03925cccc76d55b9dc2a00864a5e0544b64aa7f}.
+\end{center}
+The source uses Lean and mathlib \texttt{v4.32.0}. These were inspected, not
+rebuilt in this environment. The small \texttt{ConciseIPRA} foundation is
+the recommended dependency. In namespace \texttt{LeanProofs.ConciseIPRA},
+the relevant actual names are:
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}\toprule
+Repository object & Role \\
+\midrule
+\texttt{PR k} & Primitive recursive function syntax \\
+\texttt{PTm n} & Arithmetic terms with $n$ variables \\
+\texttt{PRAAx} & Defining equations and QF induction \\
+\texttt{Prf Ax Gamma phi} & Intuitionistic object-theory derivability \\
+\texttt{PRA.qfInd} & Derived quantifier-free induction rule \\
+\texttt{PRA.precZero}, \texttt{PRA.precSucc} & Recursion equations \\
+\texttt{pra\_iff\_teq}, \texttt{pra\_iff\_native} & Transfers to concise presentations \\
+\bottomrule\end{tabular}
+\end{center}
+
+The decisive endpoint, after closing the schema instance, is
+\begin{lstlisting}
+Prf PRAAx [] sentence
+\end{lstlisting}
+where \texttt{sentence} is the actual arithmetical encoding of the input
+hypotheses implying the two output bounds. An ordinary Lean proof of
+\texttt{Complex} algebraic closedness is a different result.
+
+The inspected DiophantineConsistency development supplies another
+embedded iPRA presentation and finite PR syntax, but is unnecessary for
+this proof. The inspected Busy Beaver/ZFC entry points concern machine
+and consistency constructions; no theorem from them is used as an FTA
+premise. Avoiding those larger dependencies makes the logical strength of
+the present proof easier to audit.
+
+\subsection{Modules, exact obligations, and proof strategies}
+
+The included \texttt{LEAN\_PLAN.md} gives the implementation plan in more
+detail. The essential milestones are as follows.
+
+\begin{enumerate}
+\item \textbf{Numerical codes.} Define total integer, rational, Gaussian
+rational, and finite-list operations as \texttt{PR} codes. Define the
+Boolean predicates for well-formedness, rational order, and squared-norm
+bounds. Prove their equations and basic arithmetic internally using
+\texttt{PRA.precZero}, \texttt{PRA.precSucc}, and \texttt{PRA.qfInd}.
+
+\item \textbf{Finite algebra.} Prove polynomial translation and inverse
+translation, \eqref{eq:power-diff}, finite sums and products, binomial
+identities, and squared Cauchy--Schwarz. Every sequence is explicitly coded,
+and every induction invariant is a Boolean-coded finite check.
+
+\item \textbf{Direction.} Implement the five bisections, rational binomial
+recurrence, and Horner evaluation. Prove the polynomial cancellation in
+\eqref{eq:binomial-ode} coefficient by coefficient, then the finite
+weighted coefficient bound. End with the rational certificate
+\eqref{eq:direction-certificate}; do not import FTA to choose a root.
+
+\item \textbf{Descent.} Define the bounded radius search and scale maxima.
+Prove their certificates, monotonicity of the maximizing indices, the
+odd-center triple argument, and \eqref{eq:descent-contraction}--
+\eqref{eq:radius-cert} as squared-rational formulas. Include the
+$b_0=0$ branch explicitly.
+
+\item \textbf{Iteration.} Define all constants as PR programs. Prove
+\eqref{eq:translate-lower-squared}, the product bound, and the finite-table
+version of \eqref{eq:qf-invariant}. This is the central internal
+\texttt{PRA.qfInd} application.
+
+\item \textbf{Name theorem.} Prove finite telescoping, substitute
+$J(t)=K(t+H+2)$, and derive the two rational output assertions. Generate
+the finite coefficient table from a fixed \texttt{PR} coefficient program.
+Use first-order quantifier introduction to obtain each closed schema
+instance. Produce a term of \texttt{Prf PRAAx [] sentence}.
+
+\item \textbf{Optional presentation transfer.} Only after obtaining that
+object-level derivation, use \texttt{pra\_iff\_teq} or
+\texttt{pra\_iff\_native} to transfer it to the concise presentation.
+An external interpretation by fast Cauchy names then gives the familiar
+complex-root reading.
+\end{enumerate}
+
+Lean's ordinary rational arithmetic can be used first as a development and
+testing layer. It does not replace the internal proof. Reification or a
+small checked proof-producing arithmetic library can share much of the
+work: each numerical transformation should return an object-theory proof
+of its corresponding equation or implication. Neither \texttt{norm\_num}
+on a single example nor a general theorem in Lean's metatheory alone
+establishes the universal iPRA derivation.
+
+\subsection{Delivered formalization status}
+
+\texttt{lean/Specification.lean} is explicitly labeled an uncompiled
+interface and blueprint. It contains specifications and types for the
+eventual certificates, with no claimed completed FTA proof. There was no
+Lean executable in the working environment, so no claim is made that the
+file has passed Lean's elaborator. The archive does not turn missing
+formal proofs into axioms asserting the theorem.
+
+The handwritten proof above supplies the mathematical content of all the
+listed obligations, including the direction construction, explicit
+precision shifts, and finite induction audit. The remaining work is
+formal implementation of the numerical coding library and its object-level
+derivations, followed by their assembly. This is a substantial formalization
+project, but it does not leave a missing mathematical existence lemma or
+an unspecified termination argument.
+
+\section{Reproducible artifacts and validation}
+
+The archive contains this LaTeX source and its compiled PDF; the Lean
+specification and module plan; exact rational implementations of the
+direction routine and one descent step; and recorded test results.
+From the \texttt{code} directory, run
+\begin{lstlisting}
+python3 test_direction.py
+python3 test_descent.py
+\end{lstlisting}
+The construction and checks use Python's exact rational arithmetic, not
+floating-point approximations. Direction tests cover several quadrants,
+exponents $1,2,3,5$, and a target with irrational absolute value; their
+certificate is the rational inequality
+\eqref{eq:direction-certificate}. Descent tests include a quadratic, a
+zero highest coefficient, an already reached root, and translation away
+from zero. They check the squared residual contraction and the returned
+radius certificates exactly.
+
+These computations check the reference implementations on the listed
+inputs. They are not a proof of the universal theorem and are not a Lean
+verification. The deliberately large worst-case schedule $J(t)$ is given
+mathematically; the code does not claim to run that entire schedule as a
+practical root solver. Its purpose is to make the finite constructions
+concrete and independently inspectable.
+
+\section*{Provenance}
+\addcontentsline{toc}{section}{Provenance}
+
+The local descent idea belongs to the Kneser constructive tradition.
+Geuvers, Wiedijk, and Zwanenburg give a primary account of a constructive
+FTA proof and its Coq formalization~\cite{kneser}. The bounded rational
+direction construction, explicit constants, general coefficient travel
+bound, and finite-table iPRA organization presented here are developed
+in full above. The proof is not obtained by importing the Coq theorem or
+by appealing to ordinary Lean/mathlib FTA.
+
+The user's cited Wikipedia page~\cite{wikipedia} fixes the usual theorem
+being addressed. The ProveIt sources~\cite{proveit-pr,proveit-deduction,
+proveit-bi,proveit-native} fix the recommended object-theory and translation
+interfaces. No consistency assertion from the Busy Beaver or
+DiophantineConsistency developments is a premise of the argument.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{kneser}
+Herman Geuvers, Freek Wiedijk, and Jan Zwanenburg,
+\emph{A Constructive Proof of the Fundamental Theorem of Algebra without
+using the Rationals}, author-hosted paper.
+\url{https://www.cs.ru.nl/~freek/pubs/kneser.pdf}.
+
+\bibitem{wikipedia}
+\emph{Fundamental theorem of algebra}, Wikipedia, the page specified in
+the request.
+\url{https://en.wikipedia.org/wiki/Fundamental_theorem_of_algebra}.
+
+\bibitem{proveit-pr}
+Vladimir Reshetnikov, ProveIt,
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean},
+commit \texttt{b03925cccc76d55b9dc2a00864a5e0544b64aa7f}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b03925cccc76d55b9dc2a00864a5e0544b64aa7f/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean}{Pinned source}.
+
+\bibitem{proveit-deduction}
+Same repository and commit, \texttt{ConciseIPRA/Deduction.lean}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b03925cccc76d55b9dc2a00864a5e0544b64aa7f/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/Deduction.lean}{Pinned source}.
+
+\bibitem{proveit-bi}
+Same repository and commit, \texttt{ConciseIPRA/BiInterpretation.lean}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b03925cccc76d55b9dc2a00864a5e0544b64aa7f/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/BiInterpretation.lean}{Pinned source}.
+
+\bibitem{proveit-native}
+Same repository and commit, \texttt{ConciseIPRA/NativeBiInterpretation.lean}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b03925cccc76d55b9dc2a00864a5e0544b64aa7f/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}{Pinned source}.
+\end{thebibliography}
+\end{document}
+

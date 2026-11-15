@@ -1,0 +1,1246 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,hyperref,fancyhdr,listings}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!55!black,citecolor=blue!45!black,
+pdftitle={Transcendence of e and pi in intuitionistic primitive recursive arithmetic},
+pdfauthor={Research proof package},pdfsubject={Finite Hermite proofs and Lean blueprint}}
+\definecolor{navy}{RGB}{26,48,76}
+\definecolor{light}{RGB}{243,246,249}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Transcendence in intuitionistic PRA}
+\fancyhead[R]{\small Finite Hermite proofs}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,backgroundcolor=\color{light},frame=single,rulecolor=\color{black!15},columns=fullflexible}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\Exp}{\mathcal E}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\FPint}{\mathcal I}
+\newcommand{\cut}{\operatorname{cut}}
+\title{\color{navy}\bfseries Transcendence of \(e\) and \(\pi\)\\
+in intuitionistic primitive recursive arithmetic}
+\author{A constructive proof and a Lean implementation blueprint}
+\date{14 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give uniform, quantitative proofs of the transcendence of \(e\) and
+\(\pi\) whose content is finite rational arithmetic with primitive recursive
+bounds. For each nonzero integer polynomial \(P\), we explicitly construct a
+positive integer \(B(P)\) and a precision \(N(P)\) such that the standard
+primitive recursive rational names \(c_s\) of either constant satisfy
+\(2B(P)|P(c_s)|>1\) whenever \(s\ge N(P)\).
+This is stronger than the negative assertion that no polynomial vanishes.
+
+The proof for \(e\) is Hermite's auxiliary-polynomial argument. The proof
+for \(\pi\) replaces algebraic conjugates by a rational companion matrix and
+its additive exterior powers. Newton identities replace the passage to a
+splitting field. Both proofs use an explicitly chosen composite-allowed
+integer in place of a prime. Polynomial integration is a finite coefficient
+operation; the apparent analytic identities have exact truncated versions
+and explicit remainder bounds. We give the induction audit needed to read
+the argument in first-order \(\ipra\), inspect the actual ConciseIPRA
+interfaces in ProveIt, and specify the remaining Lean implementation.
+The accompanying Lean file is an uncompiled blueprint, not a completed
+machine-checked proof.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{The precise assertion and its constructive meaning}
+
+\subsection{The theory}
+
+We use full first-order intuitionistic logic with equality, a function
+symbol for each primitive recursive function, its defining equations,
+successor injectivity, \(Sx\ne0\), and induction for quantifier-free formulas.
+This is the \(\ipra\) presentation implemented by
+\texttt{PRAAx} in the inspected ConciseIPRA development
+\cite{repoPR}. It is not Heyting arithmetic with unrestricted induction.
+
+Integers are signed natural-number codes. Rationals are pairs consisting
+of an integer numerator and a positive denominator; reduction to lowest
+terms is unnecessary. Finite lists, polynomials and matrices are natural
+number codes. Their equality, rational order, divisibility and all searches
+used below are decidable primitive recursive operations.
+
+\subsection{Names for the two constants}
+
+Put
+\[
+ \Exp_s(z)=\sum_{j=0}^s\frac{z^j}{j!},\qquad
+ e_s=\Exp_{s+1}(1),
+\]
+and put
+\[
+ A_s(x)=\sum_{j=0}^s\frac{(-1)^j x^{2j+1}}{2j+1},
+ \qquad
+ \pi_s=16A_s(1/5)-4A_s(1/239).
+ \tag{1.1}
+\]
+All these are rational when their arguments are rational. The estimates
+proved below give
+\[
+ |e-e_s|\le 2^{-s},\quad |\pi-\pi_s|\le 2^{-s},
+ \qquad 2\le e_s\le3,\quad 3<\pi_s<4.
+ \tag{1.2}
+\]
+Here and throughout, a real or complex expression denotes its explicitly
+regulated rational approximations. There is no sort of arbitrary real
+numbers in the object theory. More precisely, the finite Cauchy estimates
+\(|e_t-e_s|,|\pi_t-\pi_s|\le2^{-s}\) hold for all \(t\ge s\).
+These finite versions will suffice for the internal proof.
+
+For \(P(X)=\sum_{j=0}^d a_jX^j\in\Z[X]\), define the positive integer
+\[
+ \lambda(P)=1+\sum_{j=1}^d j|a_j|4^{j-1}.
+ \tag{1.3}
+\]
+Factoring \(x^j-y^j\) shows, by a finite sum, that
+\[
+ |P(x)-P(y)|\le \lambda(P)|x-y|\qquad (|x|,|y|\le4).
+ \tag{1.4}
+\]
+
+\begin{theorem}[Uniform finite transcendence]\label{thm:main}
+There are explicitly specified primitive recursive functions
+\(B_e,B_\pi:\text{polynomial codes}\to\N_{>0}\). If \(P\ne0\), \(c=e\)
+or \(c=\pi\), and
+\[
+ B=B_c(P),\qquad N_c(P)=4B\lambda(P)+1,
+ \tag{1.5}
+\]
+then \(\ipra\) proves the rational inequality
+\[
+ \forall s\ge N_c(P)\qquad 2B\,|P(c_s)|>1.
+ \tag{1.6}
+\]
+The theorem is uniform in the code of \(P\); it is not merely a family of
+separate arguments for externally fixed polynomials.
+\end{theorem}
+
+The algorithms for \(B_e\) and \(B_\pi\) appear in
+Sections~\ref{sec:e} and~\ref{sec:pi}. Their numerical size is deliberately
+generous. Efficiency is not needed for primitive recursiveness.
+
+An entirely first-order rendering of \(P(c)=0\) is
+\[
+ \forall s\quad |P(c_s)|\le\lambda(P)2^{-s}.
+ \tag{1.7}
+\]
+For the named Cauchy sequence this says exactly that the polynomial value
+is zero. Equation (1.6), instantiated at (1.5), refutes (1.7), since
+\(2^N\ge N+1>4B\lambda(P)\).
+Thus the constructive conclusion is an explicit rational separation
+witness, and hence the negation of polynomial vanishing. Clearing a common
+positive denominator extends the conclusion from integer to rational
+polynomials.
+
+\subsection{Removal of zero coefficients}
+
+Trim trailing zeros by a scan through the input list. If the list is not
+identically zero, find its first nonzero coefficient by another bounded
+scan and write
+\[
+ P(X)=X^vQ(X),\qquad Q(0)\ne0.
+\]
+If \(Q\) is constant, set \(B_c(P)=1\): all our named values are at least
+\(2\), so \(|P(c_s)|\ge1\), which directly implies (1.6).
+Otherwise run the construction below on \(Q\)
+and use the resulting \(B\) also for \(P\). Multiplication by \(c^v\)
+or \(c_s^v\) cannot weaken a lower bound. In (1.5), use \(\lambda(P)\)
+of the original input. No test of equality of arbitrary real numbers
+occurs.
+
+\section{Finite arithmetic tools}\label{sec:finite}
+
+\subsection{The common factorial estimate}
+
+\begin{lemma}[A prescribed coprime modulus]\label{lem:modulus}
+Let \(M,A,R\ge1\) be integers. Set
+\[
+ L=4R^2+4AR+1,\quad q=ML,\quad p=2q+1.
+ \tag{2.1}
+\]
+Then \(p>1\), \(p\) is coprime to \(M\), and
+\[
+ \frac{AR^p}{(p-1)!}<\frac14.
+ \tag{2.2}
+\]
+There is no primality requirement on \(p\).
+\end{lemma}
+\begin{proof}
+The equality \(p-2LM=1\) supplies an explicit inverse of \(M\) modulo
+\(p\). The last \(q\) factors in \((2q)!\) are at least \(q\), so
+\[
+ (2q)!\ge q^q,\qquad
+ \frac{AR^{2q+1}}{(2q)!}
+ \le AR\left(\frac{R^2}{q}\right)^q
+ \le \frac{AR}{4^q}.
+\]
+Induction gives \(4^q\ge q+1\). Since \(q>4AR\), the last quantity
+is less than \(1/4\). Each displayed inequality is an integer inequality
+after multiplication by positive denominators.
+\end{proof}
+
+A repeated arithmetic fact will be useful. For \(h\in\Z[X]\),
+expansion at an integer \(j\) gives
+\[
+ h^{(r)}(j)=r!\,[X^r]h(j+X).
+ \tag{2.3}
+\]
+Consequently \(h^{(r)}(j)/(p-1)!\) is an integer for \(r\ge p-1\),
+and a multiple of \(p\) for \(r\ge p\).
+This uses the factor \(p\) in \(r!/(p-1)!\), not the primality of \(p\).
+
+\subsection{Complex arithmetic without square roots}
+
+A Gaussian rational is a pair \(a+\ii b\), \(a,b\in\Q\). Use
+\[
+ |a+\ii b|_1=|a|+|b|.
+\]
+It is subadditive and submultiplicative. For a finite matrix use the maximum
+row sum with these entry norms, denoted \(\|\cdot\|\).
+Then
+\[
+ \|UV\|\le\|U\|\|V\|,\qquad |\tr U|_1\le D\|U\|
+ \tag{2.4}
+\]
+for \(D\) rows. Maximum, row sums, and absolute values are rational
+operations. On real scalars the norm is ordinary absolute value.
+
+\subsection{Exponential bounds with a primitive recursive cutoff}
+
+For an integer \(R\ge1\), if \(s+2\ge2R\), comparison of consecutive
+terms gives, for every finite \(t>s\),
+\[
+ \sum_{j=s+1}^t\frac{R^j}{j!}
+ \le \frac{2R^{s+1}}{(s+1)!}.
+ \tag{2.5}
+\]
+Every subsequent ratio is at most \(1/2\), and the finite
+geometric sum is at most \(2\). Also
+\[
+ \Exp_s(R)\le3^R. \tag{2.6}
+\]
+Indeed, \(j!\ge2^{j-1}\) for \(j\ge1\) gives
+\(\Exp_s(1)\le3\), and the multinomial expansion of
+\(\Exp_s(1)^R\) contains every term of \(\Exp_s(R)\).
+
+A convenient, intentionally loose cutoff is
+\[
+ \cut(R,k)=4(R+1)^2+k+4. \tag{2.7}
+\]
+For \(s\ge\cut(R,k)\), both \(R^s/s!\) and the right side of (2.5)
+are at most \(2^{-k}\). Let \(K=4(R+1)^2\).
+Then \(K!\ge(K/2)^{K/2}\), so
+\(R^K/K!\le(2R^2/K)^{K/2}\le1\); all later ratios are at most
+\(1/2\). This proves the claim with spare powers of \(2\).
+The same inequalities apply to matrices of norm at most \(R\).
+
+We write \(\exp U\) for this regulated sequence of matrix polynomials.
+Multiplication and addition identities are proved from finite coefficient
+identities followed by (2.5). For commuting \(U,V\), the binomial
+coefficient identity gives \(\exp(U+V)=\exp U\exp V\).
+No completeness theorem supplies an unspecified limit.
+
+\subsection{Integration means a rational coefficient operation}
+
+For a polynomial \(h(t)=\sum h_jt^j\) with scalar or matrix rational
+coefficients, define
+\[
+ \FPint(h)=\sum_j\frac{h_j}{j+1}.
+ \tag{2.8}
+\]
+This is what \(\int_0^1h(t)\,dt\) will mean. Direct differentiation of
+monomials proves
+\(\FPint(h')=h(1)-h(0)\) and polynomial integration by parts.
+In particular,
+\[
+ \FPint\bigl(t^u(1-t)^v\bigr)=\frac{u!\,v!}{(u+v+1)!}
+ \quad(u,v\in\N).
+ \tag{2.9}
+\]
+The case \(v=0\) is (2.8); integration by parts gives
+\(I_{u,v}=vI_{u+1,v-1}/(u+1)\) for \(v>0\).
+Thus (2.9) is an equality of rationals proved by induction.
+Its value lies in \([0,1]\). Expanding in the basis
+\(t^u(1-t)^v\) therefore justifies all integral estimates below by a
+finite triangle inequality.
+
+\subsection{The exact finite Hermite identity}\label{sec:finitehermite}
+
+Let \(f\in\Q[X]\) have degree at most \(\ell\), and put
+\[
+ F=f+f'+\cdots+f^{(\ell)}.
+\]
+Then \(F-F'=f\). If \(B\) is a rational matrix, define
+\[
+ \begin{split}
+ J_s(B)&=\FPint\!\left(B\Exp_s((1-t)B)f(tB)\right),\\
+ K_s(B)&=\FPint\!\left(
+       \frac{(1-t)^sB^{s+1}}{s!}F(tB)\right).
+ \end{split}
+\]
+Polynomial differentiation gives the exact identity
+\[
+ F(0)\Exp_s(B)-F(B)=J_s(B)-K_s(B). \tag{2.10}
+\]
+In detail, the derivative of
+\(\Exp_s((1-t)B)F(tB)\) is
+\[
+ -B\Exp_s((1-t)B)f(tB)
+ +\frac{(1-t)^sB^{s+1}}{s!}F(tB);
+\]
+all factors commute because they are polynomials in \(B\).
+Equation (2.8) proves (2.10).
+
+Write \(|h|_b=\sum|h_j|b^j\). If \(\|B\|\le b\), (2.9) implies
+\[
+ \|J_s(B)\|\le b\,3^b|f|_b,\qquad
+ \|K_s(B)\|\le\frac{b^{s+1}}{s!}|F|_b. \tag{2.11}
+\]
+More precisely, if \(F(X)=\sum F_jX^j\), then
+\[
+ K_s(B)=\sum_j F_j B^{s+1+j}\frac{j!}{(s+j+1)!};
+\]
+this also yields the stronger denominator \((s+1)!\) in (2.11).
+The weaker displayed bound is sufficient.
+Consequently the customary shorthand
+\[
+ F(0)\exp B-F(B)
+ =\int_0^1B\exp((1-t)B)f(tB)\,dt
+ \tag{2.12}
+\]
+has a specified finite meaning. It is not an appeal to a general
+fundamental theorem of calculus in \(\ipra\).
+
+\section{The constant \texorpdfstring{\(\pi\)}{pi} and Euler's identity}\label{sec:pi-name}
+
+The alternating terms defining \(A_s(x)\) decrease for \(0\le x\le1/5\).
+Grouping adjacent terms in a finite tail gives
+\[
+ |A(x)-A_s(x)|\le\frac{x^{2s+3}}{2s+3}.
+\]
+Hence
+\[
+ |\pi-\pi_s|
+ \le\frac{20}{(2s+3)5^{2s+3}}\le2^{-s}. \tag{3.1}
+\]
+The same bound holds between stages \(t\ge s\).
+The elementary inequalities \(x-x^3/3\le A_s(x)\le x\)
+give \(3<\pi_s<4\) by rational arithmetic. Similarly
+\(|e-e_s|\le2/(s+2)!\le2^{-s}\).
+
+We give the algebra behind Euler's identity.
+For the formal coefficient list
+\(A(X)=X-X^3/3+X^5/5-\cdots\), put
+\[
+ R(X)=\frac{1+\ii X}{1-\ii X}.
+\]
+The identity
+\[
+ \exp(2\ii A(X))=R(X) \tag{3.2}
+\]
+is a coefficient identity. Both sides have constant coefficient \(1\) and
+satisfy \((1+X^2)Y'=2\ii Y\).
+If \(Y=\sum y_jX^j\), its coefficients are uniquely determined by
+\[
+ y_1=2\ii,\qquad
+ (j+1)y_{j+1}=2\ii y_j-(j-1)y_{j-1}\quad(j\ge1).
+ \tag{3.3}
+\]
+Thus (3.2) to any specified degree follows by finite rational induction.
+
+Here is an explicit justification for evaluation. At \(\rho=1/2\),
+\[
+ \sum_{j=0}^s\frac{\rho^{2j+1}}{2j+1}\le\frac23.
+\]
+The absolute coefficient sum of
+\(\Exp_L(2\ii A_s(X))\), weighted by \(\rho^j\), is at most
+\(\Exp_L(4/3)\le9\). If \(J\le\min(L,2s+1)\), its coefficients through
+degree \(J\) equal those of \(R(X)\). For \(0\le x\le1/5\),
+\[
+ \left|\Exp_L(2\ii A_s(x))-R(x)\right|_1
+ \le 12(2/5)^{J+1}. \tag{3.4}
+\]
+The polynomial tail is at most \(9(2x)^{J+1}\); the geometric
+tail of \(R(X)=1+2\sum_{j\ge1}(\ii X)^j\) is at most
+\(2x^{J+1}/(1-x)\). This proves (3.4) by finite majorants.
+The same reasoning applies with \(-\ii\).
+
+The exact Gaussian rational identity
+\[
+ (12+5\ii)^4=\ii(28560+239\ii),\qquad 13^4=28561
+ \tag{3.5}
+\]
+implies
+\[
+ R(1/5)^4R(1/239)^{-1}=\ii.
+\]
+Square and use exponential addition:
+\[
+ \exp(\ii\pi)=R(1/5)^8R(1/239)^{-2}=-1.
+ \tag{3.6}
+\]
+In completely finite form, for every \(k\),
+\[
+ t\ge k+30,\quad h\ge\cut(4,k+30)
+ \quad\Longrightarrow\quad
+ |\Exp_h(\ii\pi_t)+1|_1\le2^{-k}. \tag{3.7}
+\]
+Here is a completely finite error calculation.
+Take \(m=\max(h,2t+2)\), \(z_1=2\ii A_t(1/5)\), and
+\(z_2=-2\ii A_t(1/239)\).
+Apply (3.4) with \(L=m\), \(J=2t+1\), to the eight factors
+\(\Exp_m(z_1)\) and the two factors \(\Exp_m(z_2)\).
+Each factor and its rational target have norm at most \(3\).
+A telescoping product bounds the error by
+\(120\,3^9(2/5)^{2t+2}\).
+The finite multinomial expansion of
+\(\Exp_m(z_1)^8\Exp_m(z_2)^2\) agrees through total degree \(m\)
+with \(\Exp_m(8z_1+2z_2)=\Exp_m(\ii\pi_t)\).
+Since \(8|z_1|_1+2|z_2|_1\le16/5+4/239<4\), its remaining
+terms have absolute sum at most \(2^{-k-30}\), by (2.5)--(2.7).
+The difference between \(\Exp_m(\ii\pi_t)\) and
+\(\Exp_h(\ii\pi_t)\) is at most another \(2^{-k-30}\).
+Thus the total bound is
+\[
+ 120\,3^9(2/5)^{2t+2}+2\cdot2^{-k-30}<2^{-k}.
+\]
+This proves (3.7) with finite operations, uniformly in \(t,k\).
+
+For identification with the conventional circle constant, (1.1) is
+Machin's formula. Its elementary verification uses
+\(\tan(2\arctan(1/5))=5/12\),
+\(\tan(4\arctan(1/5))=120/119\), and
+\(\tan(4\arctan(1/5)-\arctan(1/239))=1\).
+The resulting angle lies in the principal arctangent interval, so it
+equals \(\arctan1=\pi/4\).
+This identifies the name with ordinary \(\pi\); internally only the
+rational definition, (3.1) and (3.7) are used.
+
+
+
+\section{Transcendence of \texorpdfstring{\(e\)}{e}}\label{sec:e}
+
+After the reduction in Section 1, write
+\[
+ Q(X)=\sum_{j=0}^n a_jX^j,\qquad n\ge1,\quad a_0a_n\ne0,
+ \qquad S=\sum_{j=0}^n|a_j|.
+\]
+Use the following positive integers:
+\[
+ \begin{gathered}
+ R=(2n)^{n+1},\quad A=n3^{2n}S,\quad M=|a_0|n!,\\
+ L=4R^2+4AR+1,\quad q=ML,\quad p=2q+1,\\
+ \ell=(n+1)p-1,\qquad
+ D=\ell!\bigl((n+1)!\bigr)^p.
+ \end{gathered} \tag{4.1}
+\]
+Define
+\[
+ h(X)=X^{p-1}\prod_{j=1}^n(X-j)^p,\qquad
+ f(X)=\frac{h(X)}{(p-1)!},\qquad F=\sum_{r=0}^{\ell}f^{(r)}.
+ \tag{4.2}
+\]
+
+\subsection{A nonzero integer}
+
+At \(j=1,\ldots,n\), derivatives of order \(r<p\) vanish, and all
+higher derivatives are divisible by \(p\) after division by \((p-1)!\).
+At zero, derivatives below \(p-1\) vanish and
+\[
+ f^{(p-1)}(0)=(-1)^{np}(n!)^p.
+\]
+Thus all \(F(j)\) are integers and
+\[
+ F(j)\equiv0\pmod p\ (1\le j\le n),\qquad
+ F(0)\equiv(-1)^{np}(n!)^p\pmod p. \tag{4.3}
+\]
+Therefore
+\[
+ T=\sum_{j=0}^na_jF(j)
+ \equiv a_0(-1)^{np}(n!)^p\pmod p
+\]
+is a nonzero integer. To justify this even for composite \(p\), the
+product on the right divides \(M^p\) up to sign, while
+\(M\) has the explicit inverse \(-2L\) modulo \(p\).
+Hence it is invertible modulo \(p\). In particular \(|T|\ge1\).
+
+\subsection{A small error}
+
+The scalar instance of (2.12), rescaled to \([0,j]\), is
+\[
+ e^jF(0)-F(j)=J(j),\qquad
+ J(j)=\int_0^j e^{j-t}f(t)\,dt. \tag{4.4}
+\]
+For a coefficient bound, evaluate absolute coefficients of \(h\) at \(n\):
+\[
+ |h|_n=n^{p-1}\prod_{j=1}^n(n+j)^p\le R^p.
+\]
+Expanding in \(t^u(j-t)^v\), the rational beta-integral estimate gives
+\[
+ |J(j)|\le n3^n\frac{R^p}{(p-1)!}.
+\]
+Consequently Lemma~\ref{lem:modulus}, with the slightly larger \(A\)
+chosen in (4.1), gives
+\[
+ \left|\sum_{j=0}^na_jJ(j)\right|<\frac14. \tag{4.5}
+\]
+Multiplying (4.4) by \(a_j\) and summing yields
+\[
+ F(0)Q(e)=T+\sum_j a_jJ(j),\qquad
+ |F(0)Q(e)|>\frac34. \tag{4.6}
+\]
+The sum of the absolute coefficients of \(h\) is
+\(\bigl((n+1)!\bigr)^p\). Each contribution to \(F(0)\) is
+a coefficient multiplied by \(r!/(p-1)!\), whence
+\[
+ |F(0)|\le D,\qquad
+ |Q(e)|>\frac{3}{4D}>\frac1{2D}. \tag{4.7}
+\]
+Set
+\[
+ \boxed{B_e(P)=2D}. \tag{4.8}
+\]
+
+\subsection{The complete finite version}
+
+Write \(u_s=\Exp_s(1)\) and define the rational coefficient integrals
+\[
+ \begin{split}
+ J_s(j)&=\int_0^j \Exp_s(j-t)f(t)\,dt,\\
+ K_s(j)&=\int_0^j (j-t)^sF(t)/s!\,dt.
+ \end{split}
+\]
+Polynomial differentiation gives
+\[
+ F(0)\Exp_s(j)-F(j)=J_s(j)-K_s(j). \tag{4.9}
+\]
+The multinomial expansion gives, for \(j\le n\), \(s+2\ge2n\),
+\[
+ 0\le u_s^j-\Exp_s(j)\le\frac{2n^{s+1}}{(s+1)!}.
+ \tag{4.10}
+\]
+The terms of total degree at most \(s\) agree; the remaining positive
+terms are bounded by the finite exponential tail at \(j\).
+
+Put
+\[
+ H_F=(\ell+1)Dn^\ell,\quad W=Sn(H_F+2D),\quad R_1=2n,\quad
+ t_0=4R_1^2+4W+1,\quad s_0=2t_0. \tag{4.11}
+\]
+Each coefficient of \(F\) has absolute value at most \(D\):
+for \(h(X)=\sum h_aX^a\), a coefficient of \(f^{(r)}\)
+has multiplier \(a!/((a-r)!(p-1)!)\le\ell!\), and the contributions
+to a fixed coefficient sum over distinct \(a\).
+Consequently \(|F|_n\le H_F\).
+The coefficient triangle inequality or the beta-integral formula gives
+\[
+ \left|\sum a_jJ_s(j)\right|<\frac14,
+\]
+and
+\[
+ \left|\sum a_jK_s(j)\right|
+ +\left|F(0)\sum a_j(u_s^j-\Exp_s(j))\right|
+ \le W\frac{R_1^s}{s!}<\frac14
+ \qquad(s\ge s_0). \tag{4.12}
+\]
+For the last strict inequality, at \(s=2t_0\) use
+\((2t_0)!\ge t_0^{t_0}\), giving
+\(W(R_1^2/t_0)^{t_0}\le W4^{-t_0}<1/4\).
+The ratio of successive terms is at most \(1/2\) thereafter.
+Equations (4.9)--(4.12) put \(F(0)Q(u_s)\) within \(1/2\)
+of \(T\). Thus
+\[
+ s\ge s_0\ \Longrightarrow\ |Q(u_s)|>\frac1{2D}.
+ \tag{4.13}
+\]
+Since our name is \(e_t=u_{t+1}\), the safe threshold \(t\ge s_0\)
+suffices. This establishes the separation using only finite rational
+arithmetic; Section~\ref{sec:arithmetization} transfers it to the common
+precision (1.5).
+
+\section{Finite linear algebra for the \texorpdfstring{\(\pi\)}{pi} proof}\label{sec:linear}
+
+\subsection{Companion matrices and approximate eigenvectors}
+
+For \(q(X)=cX^n+b_{n-1}X^{n-1}+\cdots+b_0\), \(c>0\), take
+\[
+ A=\begin{pmatrix}
+ 0&1&0&\cdots&0\\
+ 0&0&1&\cdots&0\\
+ \vdots&&&\ddots&\vdots\\
+ 0&0&0&\cdots&1\\
+ -b_0/c&-b_1/c&-b_2/c&\cdots&-b_{n-1}/c
+ \end{pmatrix}.
+ \tag{5.1}
+\]
+For \(v(z)=(1,z,\ldots,z^{n-1})^T\),
+\[
+ (A-zI)v(z)=-\frac{q(z)}c\,e_n. \tag{5.2}
+\]
+This exact identity holds for every Gaussian rational \(z\); it does
+not assume that a root exists.
+
+\subsection{Additive exterior powers}
+
+Index the basis of the \(k\)-th exterior power by increasing \(k\)-element
+subsets of \(\{1,\ldots,n\}\). Define \(A^{[k]}\) by
+\[
+ A^{[k]}(v_1\wedge\cdots\wedge v_k)
+  =\sum_{j=1}^k v_1\wedge\cdots\wedge Av_j
+                       \wedge\cdots\wedge v_k.
+ \tag{5.3}
+\]
+For \(k=0\), this is the \(1\)-by-\(1\) zero matrix.
+Entries are integer linear combinations of entries of \(A\);
+wedge signs are finite permutation parities. If \(\|A\|\le L\),
+\[
+ \|A^{[k]}\|\le kL. \tag{5.4}
+\]
+For a fixed row subset, its off-diagonal entries replace one selected
+index, and its diagonal is the sum of the selected diagonal entries.
+The row sum is bounded by the sum of the corresponding \(k\) row sums
+of \(A\). Define
+\[
+ B=\bigoplus_{k=0}^n A^{[k]},\qquad D_0=2^n. \tag{5.5}
+\]
+In particular \(B\) has a specified zero block.
+
+\begin{lemma}[Exterior exponential identity]\label{lem:exterior}
+For the regulated matrix exponential,
+\[
+ \tr(\exp B)=\det(I+\exp A). \tag{5.6}
+\]
+\end{lemma}
+\begin{proof}
+Finite multinomial induction on \(r\) gives
+\[
+ (A^{[k]})^r(v_1\wedge\cdots\wedge v_k)
+ =\sum_{r_1+\cdots+r_k=r}
+ \frac{r!}{r_1!\cdots r_k!}
+ A^{r_1}v_1\wedge\cdots\wedge A^{r_k}v_k.
+\]
+Divide by \(r!\) and compare coefficients to obtain
+\(\exp(A^{[k]})=\bigwedge^k(\exp A)\).
+For any matrix \(U\), the trace of \(\bigwedge^k U\) is the sum of its
+principal \(k\)-minors. Expanding the determinant by selecting an identity
+entry or a \(U\) entry in each row gives
+\(\det(I+U)=\sum_{k=0}^n\tr(\bigwedge^k U)\).
+Combine these finite coefficient identities and the tail bound (2.5).
+\end{proof}
+
+For later use, an especially simple fully finite error bound is
+\[
+ \left|\det(I+\Exp_s(A))-\tr(\Exp_s(B))\right|
+ \le C_{\rm ext}2^{-s-1},\qquad
+ C_{\rm ext}=n!\bigl(1+3^{2L}\bigr)^n. \tag{5.7}
+\]
+Indeed the two polynomials in an extra parameter \(z\),
+\(\det(I+\Exp_s(zA))\) and \(\tr(\Exp_s(zB))\), agree through degree
+\(s\). The second has no terms of higher degree.
+The absolute coefficient majorant of the first, evaluated at \(z=2\),
+is at most \(C_{\rm ext}\): use the determinant's \(n!\) signed
+products and \(\Exp_s(2L)\le3^{2L}\).
+Every term of degree exceeding \(s\) is smaller at \(z=1\) by at
+least \(2^{-s-1}\). This proves (5.7) directly.
+
+\subsection{A trace identity replacing algebraic conjugates}
+
+\begin{lemma}[Removing the zero factor]\label{lem:newton}
+Let \(M\) be a \(D_0\)-by-\(D_0\) integer matrix. Write, by scanning
+its characteristic coefficients,
+\[
+ \chi_M(X)=X^mG(X),\qquad G\in\Z[X]\ \hbox{monic},\quad G(0)\ne0.
+\]
+Let \(C_G\) be the integer companion matrix of \(G\), including the empty
+matrix if \(G=1\). Every rational polynomial \(u\) satisfies
+\[
+ \tr u(M)=m\,u(0)+\tr u(C_G). \tag{5.8}
+\]
+\end{lemma}
+\begin{proof}
+For \(r\ge1\), Newton's coefficient recurrence gives
+\(\tr M^r=\tr C_G^r\); the traces at degree zero differ by \(m\).
+Here is a derivation of that recurrence needing no roots.
+The polynomials \(d_M(t)=\det(I-tM)\) and
+\(d_C(t)=\det(I-tC_G)\) are equal because \(\chi_M=X^mG\).
+Differentiate the Leibniz determinant formula and use the adjugate
+identity and
+\[
+ (I-tM)\sum_{j=0}^r t^jM^j=I-t^{r+1}M^{r+1}.
+\]
+To every prescribed degree this gives
+\[
+ -t\,d_M'(t)=d_M(t)\sum_{j\ge1}\tr(M^j)t^j.
+\]
+The constant coefficient of \(d_M\) is \(1\); coefficient comparison
+recursively determines each trace without division by an unknown
+quantity. The same recurrence holds for \(C_G\). Linear combination
+proves (5.8). All calculations are truncated polynomial identities.
+\end{proof}
+
+The companion identity \(G(C_G)=0\) follows by multiplying out the
+companion matrix, or by coefficient comparison in the adjugate identity.
+Thus this section uses neither a splitting field nor any theorem
+asserting the existence of complex roots.
+
+\section{The matrix Hermite lemma}\label{sec:matrix-hermite}
+
+\begin{theorem}[Effective nonvanishing of an exponential trace]
+\label{thm:matrix}
+Let \(B\) be a rational \(D_0\)-by-\(D_0\) matrix, \(D_0\ge1\).
+Suppose \(c\ge1\) is an integer, \(M=cB\) has integer entries, and
+\[
+ \chi_M=X^mG,\qquad m\ge1,\quad G(0)\ne0.
+\]
+Let \(r=\deg G\), \(H_G=\sum_{j=0}^r|g_j|\), and choose an integer
+\(b\ge\max(1,\|B\|)\). Define
+\[
+ \begin{gathered}
+ V=cb,\quad R=H_GV^{r+1},\quad A_0=D_0b3^b,\quad
+ M_0=mc|G(0)|,\\
+ L_0=4R^2+4A_0R+1,\quad q_0=M_0L_0,\quad p=2q_0+1,\\
+ \ell=(r+1)p-1,\qquad U=\ell!\,c^\ell H_G^p.
+ \end{gathered} \tag{6.1}
+\]
+Then
+\[
+ \left|\tr(\exp B)\right|>\frac{3}{4U}. \tag{6.2}
+\]
+\end{theorem}
+\begin{proof}
+Put
+\[
+ h(Y)=Y^{p-1}G(Y)^p,\qquad
+ f(X)=\frac{h(cX)}{(p-1)!},\qquad F=\sum_{j=0}^{\ell}f^{(j)}.
+ \tag{6.3}
+\]
+For \(j<p\), \(h^{(j)}\) is divisible by \(G\): differentiating
+\(G^p\) fewer than \(p\) times leaves at least one of its \(p\) factors
+undifferentiated in each product-rule term.
+Thus \(h^{(j)}(C_G)=0\).
+
+For \(j\ge p\), all coefficients of
+\(h^{(j)}/(p-1)!\) are integer multiples of \(p\).
+At a coefficient of degree \(a-j\), the multiplier is
+\[
+ \frac{a!}{(a-j)!(p-1)!}
+ =\binom aj\frac{j!}{(p-1)!},
+\]
+which is integral and divisible by \(p\). Since
+\[
+ f^{(j)}(C_G/c)=\frac{c^j h^{(j)}(C_G)}{(p-1)!},
+\]
+\(\tr F(C_G/c)\) is an integer divisible by \(p\).
+At zero the only possible nonzero derivative below \(p\) is
+\(f^{(p-1)}(0)=c^{p-1}G(0)^p\); all later contributions
+are integer multiples of \(p\).
+Apply (5.8) to \(u(Y)=F(Y/c)\). It follows that
+\[
+ T=\tr F(B)\in\Z,\qquad
+ T\equiv m c^{p-1}G(0)^p\pmod p. \tag{6.4}
+\]
+The right side divides \(M_0^p\) up to sign.
+Since \(p-2L_0M_0=1\), it is invertible modulo \(p\).
+Hence \(T\ne0\) and \(|T|\ge1\).
+This argument includes \(G=1\), using the empty companion matrix.
+
+For the estimate,
+\[
+ |f|_b
+ =\frac{|h|_{cb}}{(p-1)!}
+ \le\frac{V^{p-1}(H_GV^r)^p}{(p-1)!}
+ \le\frac{R^p}{(p-1)!}.
+\]
+Take the trace in (2.12). By (2.4), (2.11) and
+Lemma~\ref{lem:modulus},
+\[
+ F(0)\tr(\exp B)=T+J,\qquad
+ |J|\le\frac{A_0R^p}{(p-1)!}<\frac14. \tag{6.5}
+\]
+Thus \(|F(0)\tr(\exp B)|>3/4\).
+The absolute coefficient sum of \(h(cX)\) is at most \(c^\ell H_G^p\),
+so \(|F(0)|\le\ell!c^\ell H_G^p=U\).
+This proves (6.2).
+\end{proof}
+
+\begin{remark}
+The integer \(m\) is a multiplicity read from an integer polynomial.
+It is not a number of roots obtained by deciding equality of complex
+numbers. No eigenvalue or algebraic conjugate is selected.
+\end{remark}
+
+\section{Transcendence of \texorpdfstring{\(\pi\)}{pi}}\label{sec:pi}
+
+Let the stripped input be
+\[
+ P_0(X)=\sum_{j=0}^d a_jX^j,\qquad d\ge1,\quad a_0a_d\ne0.
+\]
+Define
+\[
+ q(Z)=P_0(-\ii Z)P_0(\ii Z). \tag{7.1}
+\]
+This belongs to \(\Z[Z]\): odd coefficients cancel; each even
+coefficient is a sum of integer products with signs.
+Its degree is \(n=2d\), its leading coefficient is \(c=a_d^2>0\), and
+\[
+ q(\ii x)=P_0(x)P_0(-x). \tag{7.2}
+\]
+No vanishing equation is assumed.
+
+Let \(A\) be (5.1) for \(q\). Use the explicit integer bound
+\[
+ L=\max\left(1,\sum_{j=0}^{n-1}|[Z^j]q|\right). \tag{7.3}
+\]
+Then \(\|A\|\le L\). Form \(B\) by (5.5), let \(D_0=2^n\), and
+take \(b=nL\). The matrix \(cB\) is integral and \(\|B\|\le b\).
+Its specified zero block makes the coefficient scan in
+\(\chi_{cB}=X^mG\) return \(m\ge1\).
+Compute \(U\) from (6.1). Equations (5.6) and (6.2) give
+\[
+ |\det(I+\exp A)|>\frac{3}{4U}. \tag{7.4}
+\]
+
+\subsection{Relating the determinant to the polynomial value}
+
+Put \(\alpha=\ii\pi\), \(v=(1,\alpha,\ldots,\alpha^{n-1})^T\),
+and \(W=I+\exp A\). The difference-of-powers identity yields
+\[
+ (\exp A-\exp\alpha\,I)v
+ =\int_0^1\exp((1-t)A)\exp(t\alpha)(A-\alpha I)v\,dt.
+ \tag{7.5}
+\]
+One may verify this by comparing coefficients in
+\(A^j-\alpha^jI=(A-\alpha I)\sum_{u=0}^{j-1}A^u\alpha^{j-1-u}\);
+the beta-integral formula gives the coefficients \(1/j!\).
+The finite exponential calculus therefore justifies (7.5).
+
+Using (3.6), (5.2), \(|\alpha|_1\le4\), and \(c\ge1\), we obtain
+\[
+ \|Wv\|\le3^{L+4}|q(\alpha)|_1. \tag{7.6}
+\]
+Also \(\|W\|\le T_0=1+3^L\).
+Each cofactor of \(W\) is a signed sum of \((n-1)!\) products,
+so a row sum of \(\adj W\) is at most
+\[
+ K_{\rm adj}=n!T_0^{n-1}.
+\]
+The first coordinate of \(v\) is \(1\). Taking that coordinate in
+\(\adj W\,Wv=(\det W)v\) gives
+\[
+ |\det W|\le K|q(\alpha)|_1,\qquad
+ K=K_{\rm adj}3^{L+4}. \tag{7.7}
+\]
+No inverse of \(W\) is assumed.
+
+Finally let \(H=\sum_{j=0}^d|a_j|4^j\).
+Equation (7.2) gives
+\(|q(\alpha)|_1=|P_0(\pi)P_0(-\pi)|\le H|P_0(\pi)|\).
+Combining with (7.4),
+\[
+ |P_0(\pi)|>\frac{3}{4UKH}>\frac1{2UKH}.
+ \tag{7.8}
+\]
+For the original input put
+\[
+ \boxed{B_\pi(P)=2UKH}. \tag{7.9}
+\]
+These are explicitly given primitive recursive integers.
+
+\subsection{A direct finite separation threshold}\label{sec:pi-finite}
+
+We now supply all cutoffs needed to prove the rational version directly.
+In addition to the constants above, put
+\[
+ \begin{aligned}
+ V_F&=(\ell+1)U b^\ell,&
+ k_H&=16D_0bV_F+1,\\
+ k_E&=16U K_{\rm adj}4^{n-1}+1,&
+ t_\pi&=k_E+30,\\
+ h&=\max\{\cut(b,k_H),\,16UC_{\rm ext}+1,\,
+                       \cut(4,k_E+30)\}.
+ \end{aligned} \tag{7.10}
+\]
+Each coefficient of \(F\) is at most \(U\) in absolute value, by the
+same factorial-coefficient argument used for (4.11), so
+\(|F|_b\le V_F\).
+Equations (2.10)--(2.11) give
+\[
+ |F(0)\tr\Exp_h(B)-T|
+ \le|\tr J_h|+|\tr K_h|
+ <\frac14+\frac1{16}=\frac5{16}.
+\]
+Indeed \(|\tr K_h|\le D_0bV_F\,2^{-k_H}<1/16\).
+As \(|T|\ge1\) and \(|F(0)|\le U\),
+\[
+ |\tr\Exp_h(B)|>\frac{11}{16U}.
+\]
+By (5.7) and \(h\ge16UC_{\rm ext}+1\),
+\[
+ |\det(I+\Exp_h(A))|>\frac{10}{16U}. \tag{7.11}
+\]
+
+Take any \(t\ge t_\pi\), and set \(z=\ii\pi_t\).
+The exact finite identity
+\[
+ (\Exp_h(A)-\Exp_h(z)I)v(z)
+ =\left(\sum_{j=1}^h\frac1{j!}
+                    \sum_{u=0}^{j-1}A^uz^{j-1-u}\right)
+                    (A-zI)v(z)
+ \tag{7.12}
+\]
+has norm at most \(3^{L+4}|q(z)|_1\).
+For completeness, each term with \(u+v=j-1\) has
+\(1/j!\le1/(u!v!)\); summing is bounded by
+\(\Exp_h(L)\Exp_h(4)\le3^{L+4}\).
+The extra term \((1+\Exp_h(z))v(z)\) has norm at most
+\(4^{n-1}2^{-k_E}\), by (3.7).
+The adjugate estimate therefore gives
+\[
+ |\det(I+\Exp_h(A))|
+ \le K H|P_0(\pi_t)|+K_{\rm adj}4^{n-1}2^{-k_E}.
+\]
+Its last term is less than \(1/(16U)\).
+Subtract it from (7.11):
+\[
+ KH|P_0(\pi_t)|>\frac9{16U}>\frac1{2U},
+ \qquad
+ t\ge t_\pi\Longrightarrow
+ |P_0(\pi_t)|>\frac1{B_\pi(P)}.
+ \tag{7.13}
+\]
+This is a proof involving only rational matrices, polynomials and
+finite coefficient sums. It closes the analytic shorthand in (7.8)
+without any appeal to an unspecified limit.
+
+
+
+\section{Reading the argument inside \texorpdfstring{\(\ipra\)}{iPRA}}
+\label{sec:arithmetization}
+
+\subsection{A purely finite proof of the main theorem}
+
+The direct finite statements (4.13) and (7.13) have already proved
+\[
+ t\ge t_c(P)\quad\Longrightarrow\quad
+ |P(c_t)|>1/B_c(P), \tag{8.1}
+\]
+where \(t_e=s_0\) and \(t_\pi=k_E+30\).
+The reduction \(P=X^vP_0\) preserves the inequality because
+\(c_t\ge2\). Constant monomials were handled directly in Section 1.
+
+Fix \(s\ge N=4B\lambda(P)+1\), and choose the explicit integer
+\[
+ t=\max(s,t_c(P)).
+\]
+Finite Cauchy comparison of the names and the polynomial Lipschitz
+identity give
+\[
+ |P(c_s)|\ge |P(c_t)|-\lambda(P)|c_t-c_s|
+ >\frac1B-\lambda(P)2^{-s}>\frac{3}{4B}>\frac1{2B}. \tag{8.2}
+\]
+For the penultimate step use \(2^s\ge s+1>4B\lambda(P)\).
+This proves Theorem~\ref{thm:main} directly, without a real-number
+quantifier, a completeness principle, or a convergence search.
+
+If \(c_s=u/v\), with \(v>0\), its conclusion is the integer inequality
+\[
+ 2B\left|\sum_{j=0}^d a_j u^jv^{d-j}\right|>v^d.
+ \tag{8.3}
+\]
+For the pi name, \(u,v\) are computed by the two finite rational sums
+in (1.1). Internally no quotient type of rationals is necessary.
+
+\subsection{Why the bounds are primitive recursive}
+
+All programs are fixed and uniform in the input polynomial code.
+They use addition, multiplication, integer comparison, bounded scans,
+factorial, exponentiation, finite list operations, coefficient convolution,
+and matrix operations of a prescribed dimension.
+The characteristic polynomial may be computed directly by the determinant
+formula, enumerating permutations with a bound such as \(D_0^{D_0}\).
+The exterior basis consists of masks below \(2^n\). The zero
+multiplicity is a scan of at most \(D_0+1\) integer coefficients.
+Every dimension, loop count, derivative order and Taylor length is a
+displayed primitive recursive function of the input.
+
+A symbolic expression for a very large factorial is only a readable
+description of the corresponding ordinary integer. It does not change
+the mathematical definition of \(B\) or \(N\).
+The proof makes no claim that these deliberately loose bounds are
+practical for numerical computation.
+
+\subsection{The induction audit}
+
+Primitive recursiveness of an algorithm alone does not prove its
+correctness in \(\ipra\). Here the actual correctness arguments have
+quantifier-free invariants, summarized below. Bounded families of
+equalities or inequalities are represented by one primitive recursive
+Boolean check. Induction on that check is quantifier-free induction;
+entries, dimensions and finite bounds are free numerical parameters.
+
+\small
+\begin{longtable}{@{}p{.28\textwidth}p{.28\textwidth}p{.37\textwidth}@{}}
+\toprule
+Construction & Finite bound & Quantifier-free invariant\\\midrule
+\endhead
+List/rational arithmetic &
+Input lengths and explicit codes &
+Cross-multiplied numerator/denominator equations; positive denominators\\
+Polynomial products and derivatives &
+Coefficient degree and derivative order &
+Coefficient arrays equal convolution or factorial formulas\\
+Factorial domination &
+The chosen \(q\), then a free finite tail endpoint &
+Integer products and cross-multiplied inequalities in (2.2), (2.5)\\
+Exponential products &
+Taylor order and bounded compositions of that order &
+Coefficientwise binomial/multinomial equality\\
+Polynomial integration &
+Degree and exponents \(u,v\) &
+Rational beta-integral recurrence (2.9)\\
+Machin identity &
+Taylor order and \(\cut(R,k)\) &
+Coefficient recurrence (3.3) and positive majorant bound\\
+Exterior matrices &
+Subsets below \(2^n\); tuples below \((r+1)^k\) &
+Multinomial expansion of the \(r\)-th power\\
+Determinants and adjugates &
+Permutations of the fixed finite dimension &
+Partial signed permutation sums and cancellation identities\\
+Newton recurrence &
+Characteristic degree and requested power &
+Bounded prefix of coefficient equations of the formal logarithmic derivative\\
+Zero multiplicity &
+At most \(D_0+1\) coefficients &
+Earlier coefficients vanish; the first retained coefficient does not\\
+Hermite congruences &
+Degree \(\ell\) and matrix dimension &
+Each derivative coefficient has its asserted factorial divisor\\
+Final separation &
+The explicit \(h,t_c,N\) &
+Cross-multiplied accumulated error inequality\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+The Newton argument does not require strong induction: retain the
+bounded prefix of earlier trace equalities in one array check.
+The same device handles the coefficient recurrences and partial
+sums. Nested loops do not introduce induction on an unbounded
+existential or universal formula. One proves the arrays' defining
+recurrences and the stated Boolean invariants. Universally quantified
+theorem parameters are introduced after those derivations.
+
+In particular there is no induction on a formula asserting that all
+polynomials possess witnesses, and no use of
+\(\neg\neg\exists n\,R(n)\Rightarrow\exists n\,R(n)\).
+All witnesses are terms given in advance. Branches concern only
+decidable integer and finite-array tests. The proof therefore uses
+intuitionistic reasoning and quantifier-free arithmetic induction
+throughout.
+
+One must also avoid a different hidden strengthening: a universal
+evaluator for arbitrary primitive recursive program codes is not
+itself a primitive recursive function. Nothing here assumes one.
+The required arithmetic functions are a fixed finite collection of
+programs compiled from composition and primitive recursion.
+
+\section{Lean formalization: a concrete completion path}\label{sec:lean}
+
+\subsection{The repository interfaces actually inspected}
+
+The repository snapshot is
+\[
+ \texttt{0bf379a84212abd05e9a3f0b1320a3d7da509cf9}.
+\]
+Its toolchain file specifies Lean \texttt{v4.32.0}.
+We inspected the ConciseIPRA README and four source files
+\cite{repoPR,repoDeduction,repoNative}:
+\begin{itemize}[nosep]
+\item \texttt{PR.lean} and \texttt{Deduction.lean};
+\item \texttt{PRAToScalar.lean} and \texttt{NativeBiInterpretation.lean}.
+\end{itemize}
+The shared namespace is \texttt{LeanProofs.ConciseIPRA}.
+The relevant interfaces are:
+
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+API & Role\\\midrule
+\texttt{PR k} & Syntax of primitive recursive symbols of arity \(k\)\\
+\texttt{PTm n} & Terms over \(n\) free variables\\
+\texttt{PRAAx} & Defining equations and quantifier-free induction\\
+\texttt{Prf PRAAx} & Intuitionistic object-theory derivations\\
+\texttt{PRA.qfInd} & Induction requiring an explicit \texttt{QF} proof\\
+\texttt{NFm.ofPRA} & Translation to native ConciseIPRA formulas\\
+\texttt{pra\_iff\_native} & Faithful transfer of iPRA derivations\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The directory \texttt{docs/drafts} was also inventoried. It contains
+related analysis packages, including an FTA draft, but the present proof
+does not depend on their claims: the matrix argument removes any need
+for an effective FTA. No repository change or remote commit is part of
+this delivery.
+
+\subsection{The actual formal target}
+
+The accompanying \texttt{lean/Blueprint.lean} defines finite rational
+names, a separation predicate, and interfaces for the missing programs
+and derivations. At the object level the goal is a closed statement
+of the form
+\begin{lstlisting}
+Prf PRAAx [] (AllAccepted concretePrograms.piTest)
+\end{lstlisting}
+and the analogous statement for \(e\).
+The test returns \(1\) on the zero polynomial, and otherwise checks
+the rational separation at the explicit precision index.
+The stronger all-later-precisions theorem (1.6) can be added with a
+second numerical parameter; one precision already proves transcendence.
+
+An ambient Lean theorem
+\(\texttt{Transcendental}\ \Q\ \texttt{Real.pi}\), however correctly
+proved, would not establish that \(\ipra\) proves the assertion.
+Avoiding a \texttt{Classical} command would not suffice either.
+The object derivations must use the specified quantifier-free
+induction rule. Evaluating a Python program on examples also supplies
+no universal derivation.
+
+\subsection{Module order and mathematical obligations}
+
+\begin{enumerate}
+\item \textbf{Codec and elementary arithmetic.}
+Build fixed PR codes for signed integers, positive-denominator rationals,
+lists, polynomial arrays and matrices. Prove defining equations,
+cross-multiplication, bounded conjunction and comparison lemmas.
+
+\item \textbf{Finite polynomial calculus.}
+Implement convolution, derivative, formal integration, coefficient
+norms and factorial bounds. Prove (2.3), (2.9), (2.10) internally.
+This supplies the main common infrastructure.
+
+\item \textbf{Finite exponential and Machin calculations.}
+Prove (2.5)--(2.7), the coefficient product identities, the arctangent
+recurrence (3.3), and the rational Euler bound (3.7).
+The internal proof needs no general real or complex integration library.
+
+\item \textbf{Companion and exterior matrices.}
+Use bit masks for subsets and inversion parity for wedge signs.
+Prove (5.2), the multinomial formula in
+Lemma~\ref{lem:exterior}, principal-minor expansion, and (5.7).
+
+\item \textbf{Trace algebra.}
+Prove the adjugate identity by the finite determinant formula, the
+Newton recurrence, (5.8), and the companion annihilation identity.
+This avoids formalizing an algebraic closure.
+
+\item \textbf{The two Hermite arguments.}
+Prove the derivative congruences and the explicit composite-parameter
+lemma. Instantiate them for \(e\) and the integer matrix \(cB\).
+Carry the magnitude bounds through the exact finite formulas,
+including (4.13) and (7.13).
+
+\item \textbf{Final arithmetic theorems.}
+Define the programs computing \(B_c(P)\), \(\lambda(P)\), \(N_c(P)\)
+and the rational test (8.3). Build internal proofs with
+\texttt{Prf} constructors and \texttt{PRA.qfInd}. Prove the encoding
+specifications as well as the external mathematical statements.
+
+\item \textbf{Transport and verification.}
+Apply \texttt{pra\_iff\_native.mp} to the completed iPRA derivations.
+Print the axioms of the final Lean declarations. Serialization into a
+repository Python checker format, if wanted, is a separately verified
+last step; the existing interpretation theorem does not provide that
+serializer automatically.
+\end{enumerate}
+
+The blueprint supplies no \texttt{axiom} or \texttt{sorry}-based
+transcendence theorem. Its \texttt{Programs} and \texttt{Derivations}
+records are explicit obligations to instantiate.
+No Lean executable was available in this environment, so the blueprint
+has not been compiled. The human mathematical proof and the exact Python
+checks have different, expressly stated statuses.
+
+\section{Artifacts, validation and scope}
+
+The archive contains this source and compiled PDF, the Lean blueprint and
+a detailed roadmap, exact-arithmetic Python checks, an executable
+description of the bound construction, and a verification log.
+
+The \(e\) checks exercise the exact polynomial identity, integer
+congruences, a composite modulus \(p=25\), and finite rational separation
+examples. The matrix checks exercise exterior-power coefficient
+identities, the polynomial transformation, companion residuals,
+Newton traces, and Hermite congruences for rational and nilpotent matrices,
+including composite moduli \(9\) and \(25\).
+Additional finite-analysis checks verify the Gaussian Machin identities,
+Cauchy estimates on representative indices, and exact scalar and matrix
+Hermite truncation defects. These are implementation checks of finite
+identities, not universal iPRA proof certificates.
+
+The bound-construction artifact keeps enormous final factorials and
+powers in a symbolic arithmetic expression tree. This is a presentation
+choice: the formulas define ordinary primitive recursive integers.
+Example outputs do not claim that those astronomical integers or their
+corresponding Taylor expansions were materialized.
+
+The mathematical machinery is the Hermite method, organized to make
+its finite arithmetic content explicit. Existing Coq and Isabelle
+formalizations provide useful comparisons and implementation experience
+\cite{bernard,eberl}. Their completed proofs are not imported as proofs
+of internal \(\ipra\)-derivability. No historical novelty claim is made
+for the matrix organization.
+
+\begin{thebibliography}{9}
+\bibitem{repoPR}
+Vladimir Reshetnikov, \emph{ProveIt: ConciseIPRA, PR.lean}.
+Snapshot \texttt{0bf379a84212abd05e9a3f0b1320a3d7da509cf9}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/0bf379a84212abd05e9a3f0b1320a3d7da509cf9/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean}{Pinned source on GitHub}.
+
+\bibitem{repoDeduction}
+Vladimir Reshetnikov, \emph{ConciseIPRA, Deduction.lean}, same snapshot.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/0bf379a84212abd05e9a3f0b1320a3d7da509cf9/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/Deduction.lean}{Pinned source on GitHub}.
+
+\bibitem{repoNative}
+Vladimir Reshetnikov, \emph{ConciseIPRA, NativeBiInterpretation.lean},
+same snapshot.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/0bf379a84212abd05e9a3f0b1320a3d7da509cf9/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}{Pinned source on GitHub}.
+
+\bibitem{bernard}
+S. Bernard, Y. Bertot, L. Rideau and P.-Y. Strub,
+\emph{Formal Proofs of Transcendence for \(e\) and \(\pi\) as an
+Application of Multivariate and Symmetric Polynomials}.
+Certified Programs and Proofs, 2016; preprint, 2015.
+\url{https://arxiv.org/abs/1512.02791}.
+
+\bibitem{eberl}
+M. Eberl, \emph{The Hermite--Lindemann--Weierstrass Transcendence
+Theorem}. Archive of Formal Proofs, 2021.
+\url{https://isa-afp.org/entries/Hermite_Lindemann.html}.
+\end{thebibliography}
+\end{document}
+

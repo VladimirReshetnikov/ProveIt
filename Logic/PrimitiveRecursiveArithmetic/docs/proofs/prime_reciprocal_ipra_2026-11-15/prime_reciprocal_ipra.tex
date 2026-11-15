@@ -1,0 +1,917 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=blue!55!black,
+  urlcolor=blue!55!black,
+  pdftitle={Constructive divergence of the sum of reciprocal primes in iPRA},
+  pdfauthor={OpenAI}
+}
+
+\pagestyle{fancy}
+\setlength{\headheight}{14pt}
+\fancyhf{}
+\lhead{Prime reciprocal divergence in iPRA}
+\rhead{Research note}
+\cfoot{\thepage}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\Prime}{\operatorname{Prime}}
+\newcommand{\ProdP}{Q}
+\newcommand{\NumP}{R}
+\newcommand{\DenE}{D}
+\newcommand{\Fact}{F}
+\newcommand{\NumH}{T}
+\newcommand{\Wit}{W}
+\newcommand{\code}[1]{\texttt{#1}}
+
+\lstdefinelanguage{Lean}{
+  morekeywords={def,theorem,lemma,namespace,end,by,have,show,from,import,open,section,variable,where,if,then,else,let,in,match,with,case,induction,exact,refine,simp,rw,constructor},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[s]{/-}{-/},
+  morestring=[b]"
+}
+\lstset{
+  language=Lean,
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  breaklines=true,
+  frame=single,
+  showstringspaces=false,
+  backgroundcolor=\color{black!2}
+}
+
+\title{\textbf{Constructive Divergence of the Sum of Reciprocal Primes}\\
+       \large A quantitative proof in intuitionistic primitive recursive arithmetic}
+\author{Research note prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We give a completely finite and constructive proof, formalizable in
+intuitionistic primitive recursive arithmetic (\(\ipra\)), that the partial
+sums of the reciprocals of the primes are unbounded.  The proof establishes
+the explicit quantitative statement
+\[
+  \sum_{\substack{p\leq \Wit(k)\\p\ \mathrm{prime}}}\frac1p>k,
+  \qquad
+  \Wit(k)=2^{\,2\cdot 4^k}
+  \quad(k\in\N).
+\]
+There are no limits, logarithms, real exponentials, infinite products,
+impredicative definitions, choice principles, or uses of excluded middle for
+non-decidable propositions.  The argument uses only finite products and sums,
+a bounded factorization algorithm, binomial estimates, and quantifier-free
+induction.  We also give a denominator-cleared internal formulation, a
+detailed audit showing that every construction is primitive recursive, and a
+Lean formalization plan tied to the current \code{ConciseIPRA} infrastructure
+in the ProveIt repository.  The accompanying archive contains this source and
+PDF, a Lean scaffold, an obligation-by-obligation formalization plan, and an
+executable finite sanity checker.
+\end{abstract}
+
+\tableofcontents
+
+\section{The constructive statement}
+
+The usual analytic notation
+\(
+  \sum_p 1/p=+\infty
+\)
+is stronger-looking than what is actually needed.  Since every partial sum is
+rational and the partial sums are increasing, the appropriate finitistic
+statement is the following explicit unboundedness theorem.
+
+\begin{theorem}[Quantitative prime-reciprocal divergence]\label{thm:main}
+Let
+\[
+  \Wit(k):=2^{\,2\cdot 4^k}.
+\]
+For every natural number \(k\),
+\[
+  \sum_{\substack{p\leq \Wit(k)\\p\ \mathrm{prime}}}\frac1p>k.
+\]
+Moreover, the universal closure of a denominator-cleared version of this
+inequality is provable in \(\ipra\).
+\end{theorem}
+
+The bound is intentionally elementary rather than sharp.  Its role is to make
+the witness a single primitive recursive term and to make all proof
+obligations quantifier-free after bounded searches have been compiled into
+primitive recursive characteristic functions.
+
+\subsection{Natural-number coding of the target}
+
+For \(n\geq 2\), define
+\begin{align*}
+  \ProdP_n &:= \prod_{\substack{p\leq n\\p\ \mathrm{prime}}}p,\\
+  \NumP_n &:= \sum_{\substack{p\leq n\\p\ \mathrm{prime}}}\frac{\ProdP_n}{p}.
+\end{align*}
+Every displayed quotient is exact.  Hence
+\[
+  \sum_{\substack{p\leq n\\p\ \mathrm{prime}}}\frac1p
+  =\frac{\NumP_n}{\ProdP_n}.
+\]
+Consequently Theorem~\ref{thm:main} is exactly the natural-number assertion
+\begin{equation}\label{eq:internal-target}
+  \NumP_{\Wit(k)}>k\ProdP_{\Wit(k)}.
+\end{equation}
+No rational-number sort is required inside arithmetic.
+
+The functions \(\ProdP\), \(\NumP\), and \(\Wit\) are primitive recursive.
+For example, with \(\chi_{\Prime}(p)\in\{0,1\}\) the primitive recursive
+primality characteristic,
+\begin{align*}
+ \ProdP(n)&=\prod_{p=2}^{n}
+    \begin{cases}p,&\chi_{\Prime}(p)=1,\\1,&\chi_{\Prime}(p)=0,\end{cases}\\
+ \NumP(n)&=\sum_{p=2}^{n}
+    \begin{cases}\ProdP(n)\mathbin{\mathrm{div}}p,&\chi_{\Prime}(p)=1,\\0,&\chi_{\Prime}(p)=0.
+    \end{cases}
+\end{align*}
+Bounded products, bounded sums, totalized division, exponentiation, and the
+primality test are all primitive recursive.  Thus
+\eqref{eq:internal-target} can be represented by a quantifier-free equation
+between primitive recursive terms, for instance by applying a Boolean
+less-than characteristic function and asserting that its value is \(1\).
+
+\section{Finite auxiliary quantities}
+
+We use two more finite rational quantities, always understood through their
+natural numerators and denominators.
+
+\begin{definition}[Harmonic numerator]\label{def:harmonic}
+Let
+\[
+  \Fact_n:=n!,\qquad
+  \NumH_n:=\sum_{m=1}^{n}\frac{\Fact_n}{m},\qquad
+  H_n:=\frac{\NumH_n}{\Fact_n}=\sum_{m=1}^{n}\frac1m.
+\]
+Each \(m\leq n\) divides \(n!\), so the defining quotients are exact.
+\end{definition}
+
+\begin{definition}[Finite Euler product]\label{def:euler}
+Let
+\[
+  \DenE_n:=\prod_{\substack{p\leq n\\p\ \mathrm{prime}}}(p-1),
+  \qquad
+  E_n:=\frac{\ProdP_n}{\DenE_n}
+      =\prod_{\substack{p\leq n\\p\ \mathrm{prime}}}\frac{p}{p-1}.
+\]
+\end{definition}
+
+All four functions \(\Fact,\NumH,\DenE,E\) are given by bounded primitive
+recursion.  In the formal proof, statements about \(H_n\) and \(E_n\) are
+replaced by cross-multiplied inequalities.  For example,
+\[
+ H_n\leq E_n
+ \quad\Longleftrightarrow\quad
+ \NumH_n\DenE_n\leq \Fact_n\ProdP_n.
+\]
+
+\section{A bounded constructive factorization lemma}
+
+The Euler comparison below needs only finite factorization of the integers
+\(1,\ldots,n\).  We record an explicitly primitive recursive construction so
+that no appeal to an infinitary or classical form of unique factorization is
+hidden in the proof.
+
+\subsection{The factor trace}
+
+For \(x>1\), let \(\ell(x)\) be the least divisor of \(x\) in the interval
+\([2,x]\); set \(\ell(0)=\ell(1)=1\).  The function \(\ell\) is primitive
+recursive: scan the bounded interval and retain the first divisor.  If
+\(x>1\), then \(\ell(x)\) is prime.  Indeed, if
+\(\ell(x)=ab\) with \(1<a<\ell(x)\), then \(a\mid x\), contradicting the
+minimality of \(\ell(x)\).
+
+Given \(m\), define a trace of length \(m+1\) by bounded iteration:
+\[
+ x_0=m,
+ \qquad
+ x_{i+1}=
+ \begin{cases}
+  1,&x_i\leq 1,\\
+  x_i/\ell(x_i),&x_i>1.
+ \end{cases}
+\]
+Whenever \(x_i>1\), one has \(x_{i+1}<x_i\).  Quantifier-free induction on
+\(i\) proves that the trace reaches \(1\) by time \(m\).  Record each selected
+prime \(\ell(x_i)\), and for every \(p\leq m\) let \(e_p(m)\) be the number of
+occurrences of \(p\) in this record.  A second induction on the trace gives
+\begin{equation}\label{eq:reconstruct}
+  m=\prod_{\substack{p\leq m\\p\ \mathrm{prime}}}p^{e_p(m)}.
+\end{equation}
+All functions in this paragraph are primitive recursive.  A finite vector
+\((e_2,\ldots,e_n)\) can, if desired, be encoded in base \(n+1\); digit
+extraction is bounded division and remainder.
+
+\begin{lemma}[Finite factor-vector injection]\label{lem:factor-injection}
+Fix \(n\).  The map
+\[
+  m\longmapsto (e_p(m))_{\substack{p\leq n\\p\ \mathrm{prime}}}
+  \qquad(1\leq m\leq n)
+\]
+is injective, every coordinate is at most \(n\), and
+\[
+  m=\prod_{\substack{p\leq n\\p\ \mathrm{prime}}}p^{e_p(m)}.
+\]
+\end{lemma}
+
+\begin{proof}
+For \(p>m\), the trace cannot select \(p\), so extending
+\eqref{eq:reconstruct} from \(p\leq m\) to \(p\leq n\) only inserts factors
+\(p^0=1\).  Each coordinate counts at most the \(m\) trace positions, hence is
+at most \(n\).  If two integers give the same vector, reconstruction gives the
+same product and therefore the integers are equal.  This proof is entirely
+constructive; the only case distinctions concern decidable equality,
+order, and divisibility of natural numbers.
+\end{proof}
+
+\begin{remark}[Why this is an \(\ipra\) proof]
+The assertion that the trace has reached \(1\), the reconstruction invariant,
+and the injectivity conclusion can all be written as equations between
+primitive recursive terms.  The induction formulas are therefore
+quantifier-free.  Course-of-values recursion is unnecessary: the trace is an
+ordinary primitive recursion on a fuel parameter bounded by \(m\).
+\end{remark}
+
+\section{The harmonic sum is below a finite Euler product}
+
+\begin{lemma}[Finite Euler domination]\label{lem:euler-domination}
+For every \(n\geq 2\),
+\[
+  H_n\leq E_n.
+\]
+Equivalently,
+\[
+  \NumH_n\DenE_n\leq \Fact_n\ProdP_n.
+\]
+\end{lemma}
+
+\begin{proof}
+For each prime \(p\leq n\), consider the finite geometric sum
+\[
+  G_{p,n}:=1+\frac1p+\frac1{p^2}+\cdots+\frac1{p^n}.
+\]
+Expand the finite product
+\[
+  G_n:=\prod_{\substack{p\leq n\\p\ \mathrm{prime}}}G_{p,n}.
+\]
+Its terms are indexed by exponent vectors \((a_p)_p\) with
+\(0\leq a_p\leq n\), and the term indexed by such a vector is
+\(\prod_p p^{-a_p}\).  By Lemma~\ref{lem:factor-injection}, each
+\(m\in\{1,\ldots,n\}\) determines a distinct exponent vector and contributes
+the term
+\[
+  \prod_p p^{-e_p(m)}=\frac1m.
+\]
+All terms are nonnegative, so
+\begin{equation}\label{eq:harmonic-truncated-euler}
+  H_n\leq G_n.
+\end{equation}
+
+For each prime \(p\leq n\), finite geometric summation gives
+\[
+ G_{p,n}
+ =\frac{p^{n+1}-1}{p^n(p-1)}
+ \leq\frac{p^{n+1}}{p^n(p-1)}
+ =\frac{p}{p-1}.
+\]
+Multiplying these finitely many inequalities and using
+\eqref{eq:harmonic-truncated-euler} yields
+\[
+  H_n\leq
+  \prod_{\substack{p\leq n\\p\ \mathrm{prime}}}\frac{p}{p-1}
+  =E_n.
+\]
+Every displayed rational inequality is shorthand for a natural-number
+inequality obtained by multiplying by a positive common denominator.
+\end{proof}
+
+\subsection{Internal proof shape}
+
+For a literal \(\ipra\) derivation, the expansion can be organized by
+induction on \(q=2,\ldots,n\), inserting the factor
+\(1+p^{-1}+\cdots+p^{-n}\) when \(q=p\) is prime and inserting \(1\) when
+\(q\) is composite.  Alternatively, encode exponent vectors in base
+\(n+1\) and prove the finite distributive-law identity by induction on the
+number of coordinates.  Both methods use only bounded sums/products and
+quantifier-free induction.  No set-valued object is needed.
+
+\section{A uniform bound for one Euler factor}
+
+The next estimate replaces analytic inequalities such as
+\(1+x\leq e^x\) by a finite binomial argument.
+
+\begin{lemma}[Binomial bound]\label{lem:binomial-three}
+For every integer \(a\geq 1\),
+\[
+  \left(1+\frac1a\right)^a\leq 3,
+  \qquad\text{equivalently}\qquad
+  (a+1)^a\leq 3a^a.
+\]
+\end{lemma}
+
+\begin{proof}
+By the binomial theorem,
+\[
+ \left(1+\frac1a\right)^a
+ =\sum_{j=0}^{a}\binom aj\frac1{a^j}.
+\]
+For each \(j\),
+\[
+  \binom aj
+  =\frac{a(a-1)\cdots(a-j+1)}{j!}
+  \leq\frac{a^j}{j!},
+\]
+so the preceding sum is at most \(\sum_{j=0}^{a}1/j!\).  For \(j\geq1\),
+quantifier-free induction gives \(j!\geq2^{j-1}\).  Hence
+\[
+ \sum_{j=0}^{a}\frac1{j!}
+ \leq 1+\sum_{j=1}^{a}\frac1{2^{j-1}}
+ < 1+2=3.
+\]
+Replacing the last strict inequality by a weak one proves the stated bound.
+All denominators can be cleared; factorial, binomial coefficients, and the
+finite geometric sum are primitive recursive.
+\end{proof}
+
+\begin{lemma}[Local Euler-factor bound]\label{lem:local-factor}
+For every integer \(p\geq2\),
+\begin{equation}\label{eq:local-factor-rational}
+  \left(\frac{p}{p-1}\right)^p\leq4,
+\end{equation}
+or, equivalently,
+\begin{equation}\label{eq:local-factor-integer}
+  p^p\leq4(p-1)^p.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For \(p=2\), equality holds.  For \(p=3\), the integer inequality is
+\(27\leq32\).  Suppose \(p\geq4\), and put \(a=p-1\), so \(a\geq3\).
+Lemma~\ref{lem:binomial-three} gives
+\[
+  (a+1)^a\leq3a^a.
+\]
+Multiplying by \(a+1\) and using \(3(a+1)\leq4a\), valid for \(a\geq3\),
+we obtain
+\[
+  (a+1)^{a+1}\leq3a^a(a+1)\leq4a^{a+1}.
+\]
+Substituting \(p=a+1\) proves \eqref{eq:local-factor-integer}.
+\end{proof}
+
+\section{The Euler product is controlled by the prime reciprocal sum}
+
+The crucial device is to raise the finite Euler product to the integer
+\(\ProdP_n\).  This removes every fractional exponent that would appear in a
+usual exponential estimate.
+
+\begin{lemma}[Power-cleared product estimate]\label{lem:power-cleared}
+For every \(n\geq2\),
+\begin{equation}\label{eq:power-cleared-rational}
+  E_n^{\ProdP_n}\leq4^{\NumP_n}.
+\end{equation}
+Equivalently, in natural-number form,
+\begin{equation}\label{eq:power-cleared-integer}
+  \ProdP_n^{\ProdP_n}
+  \leq 4^{\NumP_n}\DenE_n^{\ProdP_n}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Every prime \(p\leq n\) divides \(\ProdP_n\).  Therefore
+\begin{align*}
+ E_n^{\ProdP_n}
+ &=\prod_{\substack{p\leq n\\p\ \mathrm{prime}}}
+      \left(\frac{p}{p-1}\right)^{\ProdP_n}\\
+ &=\prod_{\substack{p\leq n\\p\ \mathrm{prime}}}
+      \left[\left(\frac{p}{p-1}\right)^p\right]^{\ProdP_n/p}\\
+ &\leq\prod_{\substack{p\leq n\\p\ \mathrm{prime}}}
+      4^{\ProdP_n/p}\\
+ &=4^{\sum_{p\leq n,\,p\ \mathrm{prime}}\ProdP_n/p}
+ =4^{\NumP_n},
+\end{align*}
+where Lemma~\ref{lem:local-factor} supplies the inequality.  Clearing the
+positive denominator \(\DenE_n^{\ProdP_n}\) gives
+\eqref{eq:power-cleared-integer}.
+\end{proof}
+
+\begin{lemma}[A bounded prime sum bounds the Euler product]\label{lem:sum-bounds-product}
+Let \(n\geq2\) and \(k\in\N\).  If
+\[
+  \NumP_n\leq k\ProdP_n,
+\]
+then
+\begin{equation}\label{eq:Q-D-bound}
+  \ProdP_n\leq4^k\DenE_n,
+\end{equation}
+and hence \(E_n\leq4^k\).
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:power-cleared}, the hypothesis, and monotonicity of natural
+exponentiation,
+\[
+ \ProdP_n^{\ProdP_n}
+ \leq4^{\NumP_n}\DenE_n^{\ProdP_n}
+ \leq4^{k\ProdP_n}\DenE_n^{\ProdP_n}
+ =(4^k\DenE_n)^{\ProdP_n}.
+\]
+The exponent \(\ProdP_n\) is positive.  The map \(x\mapsto x^{\ProdP_n}\)
+is strictly increasing on \(\N\), a fact proved by quantifier-free induction.
+It follows that \(\ProdP_n\leq4^k\DenE_n\), which is
+\eqref{eq:Q-D-bound}.  Dividing by the positive \(\DenE_n\) is merely
+rational shorthand for the same cross-multiplied inequality.
+\end{proof}
+
+\begin{corollary}[Bounded prime sum bounds the harmonic sum]\label{cor:harmonic-upper}
+If \(n\geq2\) and \(\NumP_n\leq k\ProdP_n\), then
+\begin{equation}\label{eq:harmonic-upper-integer}
+  \NumH_n\leq4^k\Fact_n,
+\end{equation}
+that is, \(H_n\leq4^k\).
+\end{corollary}
+
+\begin{proof}
+Lemma~\ref{lem:euler-domination} gives
+\(
+ \NumH_n\DenE_n\leq\Fact_n\ProdP_n.
+\)
+Lemma~\ref{lem:sum-bounds-product} gives
+\(
+ \ProdP_n\leq4^k\DenE_n.
+\)
+Thus
+\[
+ \NumH_n\DenE_n
+ \leq\Fact_n\ProdP_n
+ \leq4^k\Fact_n\DenE_n.
+\]
+Since \(\DenE_n>0\), cancellation yields
+\eqref{eq:harmonic-upper-integer}.
+\end{proof}
+
+\section{A dyadic lower bound for the harmonic sum}
+
+\begin{lemma}[Dyadic harmonic lower bound]\label{lem:dyadic}
+For every \(t\in\N\),
+\begin{equation}\label{eq:dyadic-rational}
+  H_{2^{2t}}\geq1+t.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:dyadic-integer}
+  \NumH_{2^{2t}}\geq(1+t)\Fact_{2^{2t}}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For an arbitrary \(r\), partition the terms of \(H_{2^r}\) after the initial
+term \(1\) into the \(r\) blocks
+\[
+  2^j<m\leq2^{j+1}\qquad(0\leq j<r).
+\]
+The \(j\)-th block contains \(2^j\) terms.  Every denominator in it is at most
+\(2^{j+1}\), so every reciprocal is at least \(2^{-(j+1)}\).  Therefore each
+block has sum at least
+\[
+  2^j\cdot2^{-(j+1)}=\frac12.
+\]
+Consequently
+\[
+  H_{2^r}\geq1+\frac r2.
+\]
+Taking \(r=2t\) gives \eqref{eq:dyadic-rational}.  Multiplication by the
+positive factorial denominator gives \eqref{eq:dyadic-integer}.  Formally, the
+block estimate is a bounded-sum inequality, and the accumulation of the
+blocks is proved by quantifier-free induction on \(j\).
+\end{proof}
+
+\section{Proof of the main theorem}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Fix \(k\in\N\), put
+\[
+  t:=4^k,
+  \qquad
+  n:=2^{2t}=\Wit(k).
+\]
+Assume, for contradiction, that the prime reciprocal partial sum is at most
+\(k\).  In denominator-cleared form this is
+\begin{equation}\label{eq:contra-assumption}
+  \NumP_n\leq k\ProdP_n.
+\end{equation}
+By Corollary~\ref{cor:harmonic-upper},
+\begin{equation}\label{eq:upper-final}
+  \NumH_n\leq4^k\Fact_n=t\Fact_n.
+\end{equation}
+On the other hand, Lemma~\ref{lem:dyadic} gives
+\begin{equation}\label{eq:lower-final}
+  \NumH_n\geq(1+t)\Fact_n>t\Fact_n,
+\end{equation}
+contradicting \eqref{eq:upper-final}.  Hence
+\(
+ \neg(\NumP_n\leq k\ProdP_n).
+\)
+Order on natural numbers is decidable, so intuitionistically this implies
+\(
+ \NumP_n>k\ProdP_n.
+\)
+Equivalently,
+\[
+  \sum_{\substack{p\leq n\\p\ \mathrm{prime}}}\frac1p>k.
+\]
+The witness \(n=\Wit(k)\) is primitive recursive and was fixed before the
+contradiction argument; no choice principle is used.
+\end{proof}
+
+\begin{corollary}[Constructive divergence]\label{cor:divergence}
+The monotone sequence of rational partial sums
+\(
+ S_n=\sum_{p\leq n}1/p
+\)
+diverges to \(+\infty\) in the constructive sense
+\[
+  \forall k\in\N\;\exists n\in\N\;(S_n>k),
+\]
+and in fact the witness can be chosen as \(n=\Wit(k)\).
+\end{corollary}
+
+For a rational bound \(a/b\), choose any natural \(k>a/b\), for example
+\(k=a+1\).  Then the same explicit partial sum exceeds \(a/b\).  Thus the
+natural-bound formulation loses no ordinary content.
+
+\section{Formalizability in intuitionistic PRA}
+
+This section audits the proof against the restrictions of \(\ipra\).  The
+point is not merely that every computation is finite; the proof must be
+arranged so that every induction instance has a quantifier-free matrix.
+
+\subsection{The presentation of iPRA}
+
+The ProveIt \code{ConciseIPRA} development contains the usual first-order
+presentation \code{PRAAx}: one function symbol for every primitive recursive
+function, defining equations for zero, successor, projection, composition,
+and primitive recursion, successor separation and injectivity, and induction
+for quantifier-free formulas.  Its theorem \code{PRA.qfInd} exposes the
+quantifier-free induction rule.  The file \code{PRAToScalar.lean} defines a
+translation \code{FromPRA.code} of every primitive recursive symbol to the
+scalar iterator language and proves that every \code{PRAAx} axiom is a theorem
+of the concise scalar theory.  The general preservation theorem is
+\code{Interp.sound}.
+
+Accordingly, a clean formalization has two layers:
+\begin{enumerate}[label=\arabic*.]
+\item derive the denominator-cleared theorem in \code{PRAAx};
+\item apply \code{FromPRA.interp.sound} to obtain its translation in the
+      concise scalar core.
+\end{enumerate}
+This avoids reproving elementary number theory directly in the smallest
+seven-, six-, or five-rule presentation.
+
+\subsection{Primitive recursive inventory}
+
+The following functions are needed, all by ordinary primitive recursion and
+composition:
+\begin{center}
+\begin{tabular}{p{0.29\textwidth}p{0.62\textwidth}}
+\toprule
+Function or predicate & Primitive recursive construction \\
+\midrule
+Equality, order, sign, conditional & Standard recursion on natural numbers. \\
+Divisibility and remainder & Bounded subtraction/scan, or the usual primitive recursive division algorithm. \\
+Primality characteristic & Check \(2\leq p\) and scan the bounded divisors \(2,\ldots,p-1\). \\
+Bounded sum and product & Primitive recursion on the upper bound. \\
+Power, factorial, binomial & Primitive recursion; binomial may use Pascal recursion or factorial identities with exact division. \\
+Least divisor \(\ell(x)\) & Bounded scan retaining the first divisor. \\
+Factor trace and exponent counts & Primitive recursion on a fuel parameter; each update is bounded arithmetic. \\
+Finite-vector coding & Base-\((n+1)\) coding, with bounded quotient and remainder for digits. \\
+\(\ProdP,\NumP,\DenE,\Fact,\NumH,\Wit\) & Composition of the preceding bounded folds and arithmetic functions. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Bounded logical quantifiers occurring in an informal definition are not left
+as quantifiers in an induction formula.  If \(b(i)\in\{0,1\}\) is a
+characteristic function, then
+\[
+  \forall i\leq n\;P(i)
+  \quad\text{is represented by}\quad
+  \prod_{i=0}^{n}b(i)=1,
+\]
+and bounded existence can be represented by the sign of
+\(\sum_{i=0}^{n}b(i)\).  Therefore every loop invariant used above has a
+quantifier-free representation.
+
+\subsection{Induction audit}
+
+\begin{longtable}{p{0.24\textwidth}p{0.29\textwidth}p{0.38\textwidth}}
+\toprule
+Proof component & Induction parameter & Quantifier-free invariant \\
+\midrule
+\endfirsthead
+\toprule
+Proof component & Induction parameter & Quantifier-free invariant \\
+\midrule
+\endhead
+Least-divisor trace terminates & Fuel \(i\leq m\) & Current value decreases when above \(1\); bounded comparisons are Boolean PR terms. \\
+Factor reconstruction & Trace length & Accumulated selected-prime product times current quotient equals \(m\). \\
+Finite-product expansion & Number of prime coordinates & Equality of denominator-cleared bounded sums indexed by base-coded vectors. \\
+Geometric-factor estimate & Exponent bound & Standard finite geometric identity after cross multiplication. \\
+Factorial lower bound & \(j\) & \(2^{j-1}\leq j!\) for \(j\geq1\), written with a conditional at \(j=0\). \\
+Binomial theorem and estimate & \(a\) or binomial row index & Polynomial identity and termwise integer inequalities. \\
+Power monotonicity & Positive exponent & \(x<y\Rightarrow x^r<y^r\), with order represented by a Boolean term. \\
+Dyadic block estimate & Block index & Denominator-cleared lower bound for the accumulated bounded sum. \\
+Main theorem & No induction needed at the final step & A decidable inequality contradiction with explicit \(n=\Wit(k)\). \\
+\bottomrule
+\end{longtable}
+
+\subsection{Intuitionistic audit}
+
+Only decidable numerical propositions are split into cases: equality, order,
+divisibility, primality, and membership in explicitly bounded ranges.  The
+last step uses
+\[
+ \neg(a\leq b)\Longrightarrow b<a,
+\]
+which is intuitionistically valid because natural order is decidable.  The
+factorization witness is computed by a fixed bounded program.  No arbitrary
+prime factor, subsequence, limit, or infinite product is selected.  Thus the
+argument does not conceal an appeal to excluded middle or choice.
+
+\section{Exact internal theorem for Lean}
+
+Let \code{ltB : PR 2} be a primitive recursive Boolean less-than symbol, and
+let \code{qPR}, \code{rPR}, and \code{wPR} be the symbols representing
+\(\ProdP\), \(\NumP\), and \(\Wit\).  With \(x\) the sole free variable, the
+quantifier-free target body is schematically
+\[
+ \varphi(x)\;:\equiv\;
+ \operatorname{ltB}\bigl(x\cdot \ProdP(\Wit(x)),\,
+                          \NumP(\Wit(x))\bigr)=1.
+\]
+The desired standard-iPRA theorem has the Lean type
+\begin{lstlisting}
+[] \vdash[PRAAx] Fm.all phi
+\end{lstlisting}
+where \code{phi : Fm PTm 1} and \code{phi.QF}.  Once this is established, the
+concise-core theorem is obtained with the existing interpretation:
+\begin{lstlisting}
+FromPRA.interp.sound primeReciprocalDivergencePRA
+\end{lstlisting}
+Its conclusion maps every primitive recursive term through the morphism
+\code{FromPRA.morph.f}.  The compiler \code{FromPRA.code} sends composition to
+substitution and primitive recursion to the derived scalar recursion binder.
+
+\section{Lean formalization roadmap}
+
+The archive includes \code{lean/PrimeReciprocalIPRA.lean}, a theorem-signature
+scaffold.  A complete formalization can be built in the following modules.
+
+\subsection{Phase I: semantic finite mathematics in Mathlib}
+
+\begin{enumerate}[label=I.\arabic*.]
+\item \textbf{Definitions.}  Define the six finite functions listed in the
+      accompanying scaffold: the prime set, its product and reciprocal-sum
+      numerator, the Euler denominator, the harmonic numerator, and the
+      witness.
+\item \textbf{Factorization injection.}  For the first semantic proof, use
+      Mathlib's finite factorization API or an explicit least-factor trace.
+      State an injective map from \(m\leq n\) to bounded exponent vectors.
+\item \textbf{Euler domination.}  Prove \(H_n\leq E_n\), then prove the
+      cross-multiplied integer theorem used by the internal layer.
+\item \textbf{Local factor.}  Prove
+      \(p^p\leq4(p-1)^p\) for \(2\leq p\), with the binomial lemma separated
+      out.
+\item \textbf{Product control.}  Prove
+      \[
+      \ProdP_n^{\ProdP_n}\leq
+      4^{\NumP_n}\DenE_n^{\ProdP_n}.
+      \]
+\item \textbf{Dyadic harmonic bound.}  Prove the integer statement
+      \[
+        (1+t)(2^{2t})!\leq \NumH_{2^{2t}}.
+      \]
+\item \textbf{Semantic main theorem.}  Combine the integer inequalities to
+      obtain \(k\ProdP_{\Wit(k)}<\NumP_{\Wit(k)}\), and then derive the rational
+      corollary.
+\end{enumerate}
+
+\subsection{Phase II: primitive recursive codes}
+
+Build a small reusable library of \code{PR} terms for Boolean arithmetic,
+bounded folds, quotient/remainder, and base-coded finite vectors.  Each
+semantic function from Phase I receives:
+\begin{enumerate}[label=II.\arabic*.]
+\item a symbol \code{fPR : PR arity};
+\item an evaluation theorem identifying its standard-natural semantics;
+\item its defining equations as derivations from \code{PRAAx}.
+\end{enumerate}
+Because \code{PRAAx} already contains the defining equations for every
+\code{PR} symbol, the main work is a library of derived equational and order
+lemmas, not re-establishing computability.
+
+\subsection{Phase III: syntactic iPRA derivation}
+
+Mirror the mathematical dependency graph:
+\begin{lstlisting}
+factorTrace_correct
+  -> factorVector_injective
+  -> harmonic_le_euler_cross
+
+factorial_ge_pow_two
+  -> binomial_three_bound
+  -> local_factor_bound
+  -> euler_power_bound
+
+harmonic_le_euler_cross + euler_power_bound
+  -> harmonic_upper_of_prime_sum_upper
+
+dyadic_harmonic_lower + harmonic_upper_of_prime_sum_upper
+  -> primeReciprocalDivergencePRA
+\end{lstlisting}
+Every induction call should go through \code{PRA.qfInd}; the proof should not
+use a semantic soundness argument to jump from truth in \(\N\) to derivability.
+The semantic layer is a specification and debugging aid, while Phase III is
+the actual formal proof in \(\ipra\).
+
+\subsection{Phase IV: compilation to ConciseIPRA}
+
+Apply \code{FromPRA.interp.sound}.  The current repository already proves that
+projection and composition translate to reflexivity, primitive recursion to
+the scalar recursion equations, and quantifier-free induction to the derived
+scalar induction theorem.  Therefore no new metatheory is required for the
+final transfer.
+
+\section{Potential simplifications and improvements}
+
+\begin{enumerate}
+\item The witness \(2^{2\cdot4^k}\) is chosen for proof transparency.  A
+      better local constant than \(4\), or a sharper harmonic block estimate,
+      immediately improves it.
+\item One may replace the full factor-vector expansion by an induction over
+      \(q\leq n\) that groups integers according to their \(q\)-adic
+      valuation.  This may shorten the syntactic Lean proof because it avoids
+      an explicit finite-vector injection theorem.
+\item A direct proof in the scalar iterator calculus could share iteration
+      terms between primality testing, bounded products, and the factor trace.
+      That is likely smaller as a certificate but considerably harder to
+      maintain than the \code{PRAAx}-then-interpret route.
+\item The denominator \(n!\) is deliberately simple.  Replacing it by
+      \(\operatorname{lcm}(1,\ldots,n)\) reduces numeral growth but introduces
+      gcd/lcm lemmas.  It is unlikely to reduce proof complexity in the first
+      formalization.
+\end{enumerate}
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item What is the smallest elementary witness function \(W(k)\) obtainable
+      from a proof using only bounded products, qf induction, and no analytic
+      functions?
+\item Can the entire proof be organized around a single valuation recursion,
+      eliminating the separately coded factor-vector expansion?
+\item How small is the resulting proof certificate after translation to the
+      current five- or six-rule ConciseIPRA kernels?
+\item Is there a materially shorter proof in \(\ipra\) based on the Erdos
+      counting argument, once convergence is replaced by an explicit bounded
+      partial-sum hypothesis?
+\item Can the method be generalized in \(\ipra\) to divergent reciprocal sums
+      over primes in selected arithmetic progressions without importing
+      analytic number theory?
+\end{enumerate}
+
+\section*{Repository and source notes}
+\addcontentsline{toc}{section}{Repository and source notes}
+
+The target theorem was taken from the expository page ``Divergence of the sum
+of the reciprocals of the primes.''  The formalization plan was matched to the
+ProveIt repository on its \code{main} branch at commit
+\code{0e834f7851375f4b22ae8892000495cb6fa9eee8}, dated 15 November 2026.
+In particular, the plan uses:
+\begin{itemize}
+\item \code{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean};
+\item \code{.../PRAToScalar.lean};
+\item \code{.../Interpretation.lean};
+\item the root \code{lakefile.toml}, which registers the \code{ConciseIPRA}
+      Lean library and pins Mathlib \code{v4.32.0}.
+\end{itemize}
+
+\begin{thebibliography}{9}
+\bibitem{wiki}
+Wikipedia contributors,
+\emph{Divergence of the sum of the reciprocals of the primes},
+\url{https://en.wikipedia.org/wiki/Divergence_of_the_sum_of_the_reciprocals_of_the_primes},
+accessed 15 November 2026.
+
+\bibitem{concise}
+V. Reshetnikov,
+\emph{Concise presentations of intuitionistic primitive recursive arithmetic},
+ProveIt repository,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA},
+repository snapshot noted above.
+
+\bibitem{prlean}
+V. Reshetnikov,
+\code{ConciseIPRA/PR.lean}, standard first-order presentation of \(\ipra\),
+ProveIt repository.
+
+\bibitem{pratoscalar}
+V. Reshetnikov,
+\code{ConciseIPRA/PRAToScalar.lean}, interpretation of standard \(\ipra\) in
+the scalar theory, ProveIt repository.
+
+\bibitem{interpretation}
+V. Reshetnikov,
+\code{ConciseIPRA/Interpretation.lean}, derivability preservation for term
+interpretations, ProveIt repository.
+\end{thebibliography}
+
+\appendix
+
+\section{Denominator-cleared dependency list}
+
+For a kernel-oriented implementation, the complete numerical core can be
+stated without rational notation as follows.  For \(n\geq2\):
+\begin{align*}
+\text{(E1)}\quad& \NumH_n\DenE_n\leq\Fact_n\ProdP_n,\\
+\text{(E2)}\quad& p^p\leq4(p-1)^p\quad(2\leq p),\\
+\text{(E3)}\quad& \ProdP_n^{\ProdP_n}
+                   \leq4^{\NumP_n}\DenE_n^{\ProdP_n},\\
+\text{(E4)}\quad& \NumP_n\leq k\ProdP_n
+                   \Longrightarrow \ProdP_n\leq4^k\DenE_n,\\
+\text{(E5)}\quad& \NumP_n\leq k\ProdP_n
+                   \Longrightarrow \NumH_n\leq4^k\Fact_n,\\
+\text{(E6)}\quad& \NumH_{2^{2t}}\geq(1+t)\Fact_{2^{2t}}.
+\end{align*}
+Substitute \(t=4^k\), \(n=2^{2t}\).  If
+\(\NumP_n\leq k\ProdP_n\), (E5) gives
+\(\NumH_n\leq t\Fact_n\), while (E6) gives
+\(\NumH_n\geq(1+t)\Fact_n>t\Fact_n\).  Decidable order yields
+\(\NumP_n>k\ProdP_n\).
+
+\section{Suggested Lean theorem signatures}
+
+The accompanying scaffold contains these signatures in context.  The central
+integer theorems should look essentially as follows:
+\begin{lstlisting}
+theorem localFactorBound (p : Nat) (hp : 2 <= p) :
+    p ^ p <= 4 * (p - 1) ^ p
+
+theorem harmonicLeEulerCross (n : Nat) :
+    harmonicNumerator n * eulerDenominator n <=
+      Nat.factorial n * primeProduct n
+
+theorem eulerPowerBound (n : Nat) :
+    primeProduct n ^ primeProduct n <=
+      4 ^ primeNumerator n *
+        eulerDenominator n ^ primeProduct n
+
+theorem dyadicHarmonicLower (t : Nat) :
+    (1 + t) * Nat.factorial (2 ^ (2 * t)) <=
+      harmonicNumerator (2 ^ (2 * t))
+
+theorem quantitativeDivergenceNat (k : Nat) :
+    k * primeProduct (witness k) <
+      primeNumerator (witness k)
+\end{lstlisting}
+
+\section{What the archive does and does not claim}
+
+The paper supplies a fully developed human-readable proof and a detailed
+formalizability argument.  The Lean file is an outline with explicit theorem
+signatures and \code{sorry} placeholders; it is not represented as a completed
+kernel-checked formalization.  The Python checker is only a finite sanity
+check of the arithmetic identities and inequalities on sample ranges.  The
+proof of Theorem~\ref{thm:main} is mathematical and does not depend on those
+computations.
+
+\end{document}

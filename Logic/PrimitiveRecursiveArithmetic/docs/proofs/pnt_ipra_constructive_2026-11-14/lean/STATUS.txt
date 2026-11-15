@@ -1,0 +1,19 @@
+Lean artifact status
+===================
+
+RationalPNT.lean contains executable exact arithmetic definitions, a proposed
+arithmetical PNT specification, and generic finite-ceiling helper proofs.
+ObjectTarget.lean gives the exact deeply embedded endpoint and generic proof
+transport into ProveIt's concise iPRA calculus.
+
+These files were not compiled. The preparation environment had no Lean,
+Lake, or Elan binary on PATH or in the usual local toolchain locations.
+They contain no sorry/admit/PNT axiom, but that does not make the PNT proved:
+the number-theoretic estimates, concrete modulus proof, PR-code compiler,
+and object-level certificate remain to be formalized.
+
+To integrate with ProveIt, place these files in a Lake library whose search
+path includes ConciseIPRA. The inspected repository commit is
+b03925cccc76d55b9dc2a00864a5e0544b64aa7f. Compile RationalPNT.lean, then
+ObjectTarget.lean with `lake env lean`, adapting minor API details if needed.
+No compilation success is claimed in this package.

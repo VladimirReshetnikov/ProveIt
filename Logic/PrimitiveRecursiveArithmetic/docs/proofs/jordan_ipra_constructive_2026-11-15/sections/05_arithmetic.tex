@@ -1,0 +1,344 @@
+\section{Why this proof fits iPRA}\label{sec:arithmetic}
+
+There are two distinct obligations. The output procedures must be
+primitive recursive, and their correctness must be provable with the
+induction permitted in iPRA. The first alone does not imply the
+second. We give the bookkeeping for both.
+
+\subsection{Coding and the exact logical form}
+
+Use a signed-integer code, positive-denominator rational pairs,
+and a primitive recursive pairing function. A list can be a length
+together with iterated pairs; lookup is bounded iteration of the
+projection. For lists whose entries are below $M$, one may instead
+use base $M+1$ digits and a length. Lists of length at most $M$
+then have a primitive recursive code bound, for example a pairing
+of $M$ with $(M+1)^{M+1}$. Thus even a phrase quantifying over
+all paths of length at most $M$ is a bounded arithmetic phrase
+after this coding.
+
+Rational arithmetic uses cross multiplication and signed arithmetic.
+Normalization by a gcd is optional; equality can always be tested by
+cross multiplication. If a total routine encounters an invalid code
+or a zero denominator outside its intended domain, give it a fixed
+default value. Correctness is conditional on the explicit domain
+predicates. Division with remainder, bounded minimum, maximum,
+finite xor, and finite sorting all have standard bounded-loop
+definitions using primitive recursion.
+
+Write $\Reg_G(\vec a)$ for the universal arithmetic presentation
+conditions of Section~\ref{sec:names}, with the primitive recursive
+definitions fixed. For fixed point names $X,Y$, write
+$\operatorname{Off}(X,k)$ for the universal clearance formula
+there. The classification is a numerical primitive recursive term
+$\operatorname{Bit}(\vec a,\vec x,k)$.
+The router is another such term that returns a tag, a finite route
+code, the exponent $H$ of its clearance, and finite parent and
+distance certificates. Its output terms have total default branches.
+The useful assertion has the form
+\begin{gather*}
+ \Reg_G(\vec a)\wedge
+ \operatorname{Off}(X,k_x)\wedge\operatorname{Off}(Y,k_y)
+ \\[1mm]
+ \longrightarrow\ \bigl(\operatorname{Bit}(X,k_x)=\operatorname{Bit}(Y,k_y)
+       \\[-1mm]\hspace{18mm}\longrightarrow\
+       \operatorname{RouteCorrect}
+          (X,Y,\operatorname{Route}(X,Y,k_x,k_y))\bigr).
+\end{gather*}
+This is an ordinary first-order formula after expanding the
+notations. A route's rational intermediate vertices are finite codes.
+Its first and last vertices use the fixed input names.
+Their segment interpolations are primitive recursive combinations
+of these names and rational coefficients, rather than calls to an
+interpreter for arbitrary programs.
+
+The finite part of route correctness can be particularly concrete.
+The stored curve net has error at most $h/8$, and every used
+center link $S$ satisfies the rational check
+\[
+                \min_j\dist(S,Y_j)\ge3h/2.
+\]
+This finite check, the net correctness theorem, and the short-endpoint
+inequalities imply the universal clearance conclusion. The output
+does not consist merely of a search claim; its finite route and
+the data certifying each link are the numerical witnesses.
+
+For the local-boundary procedure the output is a pair of rational
+point codes, two finite parity calculations, and the common
+clearance exponent $K+4$. Its correctness is an analogous formula
+from $\Reg_G$ to the two bit values, the dyadic distance bounds,
+and the universal clearance assertions.
+
+Uniformity is by substitution of fixed primitive recursive
+definitions into these constructions. A family with additional
+number parameters is still one schema instance. We make no
+claim that validity of an arbitrary presentation is decidable,
+or that iPRA proves the regularity premises of every true
+presentation.
+
+\subsection{Padding from rational conditions to completed names}
+\label{sec:padding}
+
+To remove a minor convention issue about endpoints of modulus
+inequalities, one can begin with rational-parameter moduli
+$U_0,V_0$ satisfying \eqref{eq:arithU}--\eqref{eq:arithV}
+on rational parameters. Normalize them by finite maxima.
+For the completed names use the more generous moduli
+\begin{equation}
+        U(k)=U_0(k+2)+2,\qquad V(k)=V_0(k+2)+2,
+ \label{eq:padded}
+\end{equation}
+and normalize again if needed.
+
+For example, if completed parameters have distance
+at most $2^{-U(k)}$, sufficiently accurate rational approximations
+have distance strictly below $2^{-U_0(k+2)}$. Their images
+are within $2^{-(k+2)}$ up to the specified approximation
+errors, hence within $2^{-k}$ in the limit-name inequalities.
+If the completed parameters have distance at least $2^{-k}$,
+their sufficiently accurate rational approximations have distance
+at least $2^{-(k+2)}$. Their image separation is at least
+$2^{-V_0(k+2)}$ up to arbitrarily small errors, and therefore
+at least $2^{-V(k)}$.
+
+This passage is an estimate at each requested precision.
+It is not an application of compactness or of real-number
+trichotomy. All the proof's named constants refer to the padded
+$U,V$ if the input was originally given only in rational form.
+
+Evaluation on a completed parameter is explicit as well.
+If $q_j$ is a fixed fast circle name for $t$ with
+$d_\T(q_j,t)\le2^{-j}$, use
+\[
+                    G(q_{U(k+2)},k+2)
+\]
+as an approximation to $\gamma(t)$ at target precision $k$.
+Forward continuity and evaluation contribute at most
+$2^{-(k+2)}$ each. This is a primitive recursive composition
+for the fixed name; an unnamed extension operator is unnecessary.
+
+\subsection{An explicit bound ledger}
+\label{sec:bounds}
+
+The following are deliberately generous bounds. They are intended
+to demonstrate primitive recursiveness, not practical efficiency.
+Let the routing parameters be those of
+\eqref{eq:route-scale}--\eqref{eq:board}, and put
+$N=2^{U(H+4)+1}$.
+
+\begin{center}
+\begin{tabular}{@{}p{0.59\textwidth}p{0.33\textwidth}@{}}
+\toprule
+Operation & A priori bound\\
+\midrule
+Curve samples used for link tests & $N$\\
+Rational point-to-segment minimization & at most $8$ candidates\\
+Board cells & $M=(2L+1)^2$\\
+Neighbor-link tests, allowing duplicates & $6M$\\
+Reachability propagation & $M$ rounds\\
+Parent route in the board & $M-1$ links\\
+Route with original endpoint connectors & $M+1$ segments\\
+Separating-cycle trace & $6M$ edges\\
+Expanded cyclic-mesh walk in factorization & $6MN$ edges\\
+Edge-usage bit table & $N$ entries\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+A direct implementation can use $M$ rounds, each scanning all
+$M$ cells and six neighbors. This gives at most $6M^2$
+Boolean propagation tests after the geometric link table has
+been calculated. A queue implementation improves this bound,
+but the proof does not need the improvement.
+The shortest-coordinate path used to find a separating edge
+has at most $4L$ links.
+
+For the local-square argument, use $m,K,T$ from
+\eqref{eq:localsquare}--\eqref{eq:Tsquare}. There are
+$4T$ segments and no more than $4T$ transition vertices.
+One half-arc net with at most
+$2^{U(K+9)+1}+1$ samples is sufficient for all color tests.
+Every transition vertex has clearance $2^{-(K+4)}$,
+so the hypothetical same-bit routes in the contradiction
+can all use
+\[
+ k_{\mathrm{local}}=K+7,\qquad
+ H_{\mathrm{local}}=V(U(K+11))+10
+\]
+and a common board based, for example, on $B=R+8$.
+All square vertices have norm below $R+1$ with the generous
+bound \eqref{eq:R}. Thus the finite family of at most $4T$
+auxiliary route calculations also has a displayed primitive
+recursive bound. The witness-finding procedure itself only
+needs to compute the transition bits and select the two values.
+
+For approximate intersection at precision $n$, one may use
+$2^{W(n+4)+1}+1$ path samples, where $W$ is the path's forward
+modulus, and $2^{U(n+4)+1}$ curve samples. The product of
+these two finite numbers bounds the pair search.
+
+Every function in this ledger is obtained from supplied fixed
+primitive recursive functions by composition, arithmetic,
+exponentiation, finite maxima, and bounded iteration. A call
+to $U$ or $V$ at a computed argument is just composition.
+No step increases its precision until some undecidable
+condition happens to become true.
+
+\subsection{Quantifier-free induction, step by step}
+\label{sec:qfind}
+
+For a primitive recursive Boolean predicate $A(i,\vec z)$, define its
+Boolean fold
+\[
+ C_A(0,\vec z)=1,\qquad
+ C_A(s+1,\vec z)=
+     C_A(s,\vec z)\,[A(s,\vec z)].
+\]
+The finite universal statement
+$\forall i<s\,A(i,\vec z)$ is represented by the equation
+$C_A(s,\vec z)=1$. Finite existential statements use the
+corresponding or-fold; least witnesses are bounded scans.
+Hence the induction invariants below are quantifier-free
+equations or Boolean combinations of equations in the
+language containing the relevant primitive recursive functions.
+
+\begin{longtable}{@{}p{0.24\textwidth}p{0.69\textwidth}@{}}
+\toprule
+Construction & Induction invariant and step justification\\
+\midrule
+\endhead
+Finite minima &
+The stored candidate is among the processed candidates and has
+value no larger than each of them. The new candidate is compared
+by decidable rational order. A bounded fold records all preceding
+comparisons.\\[3pt]
+Ray parity &
+The accumulator is the xor of the processed edge contributions.
+For a triangle the calculation is a fixed finite case analysis;
+for a list of triangles, adding the next triangle cancels its
+twice-occurring internal edges.\\[3pt]
+Mesh refinement &
+The current edge chain is the original chain plus the boundaries
+of the triangles already inserted. Each new triangle has its
+specified margin from the query, so its parity is zero.\\[3pt]
+Reachability &
+Every discovered cell has a recorded safe path of length at
+most the current round. After round $s$, every safe path of at
+most $s$ links ends in the reached set. Path codes of these
+lengths have an explicit finite bound.\\[3pt]
+Parent extraction &
+The current parent has strictly smaller discovery rank.
+Each chosen parent link is safe and the current reversed list
+has no repeated cell. At most $M$ parent lookups suffice.\\[3pt]
+Stabilization &
+If a reached set has not stabilized, the next round adds a
+new cell. A bounded count of distinct reached cells increases
+and cannot exceed $M$. Equivalently, bounded loop deletion
+shortens every walk to at most $M-1$ links.\\[3pt]
+Boundary traversal &
+Orient separating edges with green on the left. This table has
+one successor and one predecessor at each used vertex. Its current orbit has no
+repetition before its return. The local degree statement is
+the eight-case calculation for three cell colors.\\[3pt]
+Cycle factorization &
+At each sample vertex, the xor of the two incident usage bits
+is zero. Induction on the cyclic vertex index makes every
+usage bit equal to the initial one. The total parity is the
+corresponding finite xor identity.\\[3pt]
+Square contradiction &
+After $j$ monochromatic runs, the xor of the $j$ loop chains
+equals the xor of their routes and their square runs.
+The equalities at $c,d$ telescope by adding one run.\\[3pt]
+Circle-name lift &
+After $j$ increments the lift projects to the selected
+circle residue, and the absolute accumulated increment is
+bounded by the finite geometric sum. Its bound is proved
+by rational arithmetic induction.\\
+\bottomrule
+\end{longtable}
+
+Some invariants are naturally first expressed as bounded
+quantification over arrays or lists. The fold translation just
+described is part of the proof, so those do not become new
+unbounded induction instances. The natural induction counters
+are list lengths, board rounds, or positions in finite sums.
+
+The universal presentation hypotheses remain assumptions in
+the deduction context. During a step they are instantiated at
+the rational parameters and precisions occurring in that step.
+Safe-edge and replacement-triangle margins are recorded as finite
+rational certificate predicates. Induction verifies those
+predicates; the general net lemma then gives the universal
+clearance conclusion with an arbitrary curve parameter held fixed.
+One does not induct on the unbounded assertion that all
+previous paths avoid the named curve.
+We do not induct on the assertion that a real-valued function
+is continuous, that an arbitrary point belongs to a component,
+or that a formula holds for every real point. For a geometric
+estimate with an arbitrary query or precision, hold those
+number parameters fixed, perform the finite calculation and
+its quantifier-free induction, and generalize afterward.
+
+This also explains why the exact common-boundary converse does
+not require stronger induction. For fixed $n,j$ the closeness
+of the two selected parameters follows directly from their
+two distance bounds and the separation condition. Only the
+finite sum of lifted increments uses induction, and its
+invariant is a rational inequality.
+
+\subsection{Where intuitionistic reasoning matters}
+
+The proof uses case distinctions only on coded rational
+comparisons, finite lists, or bits. In the routing argument,
+reachability is one such finite Boolean value. In the local
+square argument, the assertions that all segment colors agree
+and that all transition bits agree are finite Boolean tests.
+In the approximate intersection and boundary converse,
+the test $D\ge\eps/2$ is a rational comparison.
+Showing one branch contradictory therefore permits selection
+of the other branch intuitionistically.
+
+The use of a positive inverse modulus is also precise.
+Given two rational parameters, compare their distance with
+$2^{-r}$. The greater-or-equal case contradicts the
+strictly smaller image-distance estimate, so the strict
+parameter-distance bound follows. This is not the
+contrapositive of mere negative injectivity.
+
+We have used neither unrestricted excluded middle nor
+Markov's principle, neither a fan theorem nor weak
+K\"onig's lemma, and neither a general extremum theorem
+nor an intermediate value selection principle.
+The completed-name language packages explicit rational
+estimates; it is not an additional axiom asserting the
+existence of arbitrary infinite objects.
+
+\begin{corollary}[First-order iPRA reading]\label{cor:ipra}
+For every fixed tuple of primitive recursive definitions
+for the presentation and any required point and path names,
+the arithmetic versions of Theorem~\ref{thm:main} are
+derivable in intuitionistic primitive recursive arithmetic.
+Their witness procedures are the primitive recursive
+constructions above. The derivations are conditional on
+the stated arithmetic regularity and clearance premises.
+\end{corollary}
+
+\begin{proof}
+Introduce the finitely many required primitive recursive
+function symbols with their defining equations. Prove the
+bounded arithmetic and finite geometry lemmas by the
+quantifier-free invariants just listed. Substitute them
+into the proofs of Sections~\ref{sec:parity}--\ref{sec:completion}.
+All other logical steps are first-order intuitionistic
+introduction and elimination rules. Existential output
+claims are introduced with the already specified witness
+terms. The arbitrary requested precision is then universally
+generalized. The construction uses exactly the defining
+equations and quantifier-free induction available in iPRA.
+\end{proof}
+
+This corollary is a human proof of formalizability with an
+explicit induction audit. It is not a claim that the many
+object-theory proof terms have already been generated and
+checked by Lean. The next section identifies that remaining
+mechanical task and the exact existing repository interface.

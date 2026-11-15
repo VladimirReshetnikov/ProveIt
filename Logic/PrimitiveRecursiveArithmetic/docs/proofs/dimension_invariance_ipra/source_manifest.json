@@ -1,0 +1,143 @@
+{
+  "title": "Dimension invariance in intuitionistic primitive recursive arithmetic",
+  "subtitle": "A finite proof using staggered rational grids",
+  "prepared_for": "Vladimir Reshetnikov",
+  "date": "2026-11-15",
+  "deliverable_status": {
+    "human_readable_mathematical_proof": "complete argument in dimension_invariance.tex and its compiled PDF",
+    "lean_formalization": "unfinished documentation-only blueprint; proposed declarations are comments, not proved theorems",
+    "lean_blueprint_compiled": false,
+    "lean_compiler_available_during_delivery": false,
+    "upstream_repository_build_performed": false,
+    "python_status": "exact-rational executable witness extraction and finite validation; not an iPRA or Lean proof certificate"
+  },
+  "theorem_scope": {
+    "finite_theorem": "For d>0, N>=1, h>0, a rational table F:{0,...,N}^d->Q^m with opposite-face distances at least h and each Kuhn-simplex image diameter strictly below h/d satisfies d<=m. The d=0 conclusion is immediate.",
+    "positive_alternative": "For d>m, bounded extraction returns either an opposite-face pair with image distance below h or a Kuhn-simplex pair with image distance at least h/d.",
+    "map_corollary": "Approximate opposite-face collisions and dimension invariance for fixed primitive-recursive rational evaluators with the explicitly supplied uniformity and inverse data.",
+    "arithmetic_boundary": "The finite assertion is a first-order numerical theorem. Infinite map presentations are treated as a schema for fixed primitive-recursive procedures, not as unrestricted function quantification or a universal primitive-recursive evaluator."
+  },
+  "repository": {
+    "url": "https://github.com/VladimirReshetnikov/ProveIt",
+    "commit": "daade0300022828cdba33a324d987997fee9fa08",
+    "commit_time_utc": "2026-11-15T20:26:07Z",
+    "inspection_method": "GitHub plugin read-only repository metadata, file reads, directory listings, and searches",
+    "lean_toolchain": "leanprover/lean4:v4.32.0",
+    "mathlib_revision": "v4.32.0",
+    "namespace": "LeanProofs.ConciseIPRA",
+    "configuration_files_read": [
+      "lean-toolchain",
+      "lakefile.toml"
+    ],
+    "source_files_read": [
+      {
+        "path": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md",
+        "use": "Foundational presentation, module map, reported formalization status, and scope of existing results"
+      },
+      {
+        "path": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean",
+        "use": "PR and PTm syntax, PRAAx, and explicit quantifier-free PRA.qfInd"
+      },
+      {
+        "path": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/Deduction.lean",
+        "use": "Object-language intuitionistic first-order natural deduction Prf"
+      },
+      {
+        "path": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/TeqReflect.lean",
+        "use": "Characteristic-term reflection and quantifier-free induction interface"
+      },
+      {
+        "path": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/TeqRec.lean",
+        "use": "Primitive-recursion implementation from scalar iteration"
+      },
+      {
+        "path": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/BiInterpretation.lean",
+        "use": "Faithful translations between the scalar theory and iPRA"
+      },
+      {
+        "path": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean",
+        "use": "Verified pra_iff_native and native_iff_pra interfaces and round trips"
+      }
+    ],
+    "additional_interface_reference": {
+      "path": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/TeqPair.lean",
+      "inspection": "Present in the inspected module listing; pairing role documented by the read README and TeqRec import"
+    },
+    "drafts": {
+      "path": "docs/drafts",
+      "inspection": "Directory metadata inspected; binary ZIP contents were not read or imported as proof ingredients"
+    },
+    "search_scope_note": "No suitable topological Sperner implementation was located in the inspected ConciseIPRA sources and repository searches. This is not a proof of repository-wide absence; search index and binary-archive coverage are limited.",
+    "reported_upstream_build_status": "The upstream README reports no sorry or warnings and describes Lean host-metatheoretic dependencies. Those reports were not independently reproduced by a full build.",
+    "object_theory_note": "Host Lean metatheoretic dependencies are distinguished from the axioms and inference rules of the represented intuitionistic arithmetic."
+  },
+  "external_references": [
+    {
+      "key": "mathworld",
+      "author": "Eric W. Weisstein",
+      "title": "Dimension Invariance Theorem",
+      "url": "https://mathworld.wolfram.com/DimensionInvarianceTheorem.html",
+      "role": "User-specified classical target statement"
+    },
+    {
+      "key": "muger",
+      "author": "Michael Müger",
+      "title": "A remark on the invariance of dimension",
+      "identifier": "arXiv:1310.8090",
+      "url": "https://arxiv.org/abs/1310.8090",
+      "author_manuscript": "https://www.math.ru.nl/~mueger/PDF/remark.pdf",
+      "role": "Primary mathematical reference for the cubical Sperner convention and related dimension argument; the report supplies the needed finite proof"
+    },
+    {
+      "key": "kihara",
+      "author": "Takayuki Kihara",
+      "title": "The Brouwer invariance theorems in reverse mathematics",
+      "publication": "Forum of Mathematics, Sigma 8 (2020), e51, 1-12",
+      "doi": "10.1017/fms.2020.52",
+      "url": "https://doi.org/10.1017/fms.2020.52",
+      "role": "Primary source for reverse-mathematical context; not an imported proof ingredient",
+      "scope_note": "The unrestricted embedding/injection equivalences are distinguished from the homeomorphism-only question."
+    }
+  ],
+  "implementation_validation": {
+    "result_file": "code/validation.json",
+    "status": "passed",
+    "random_seed": 20261115,
+    "arithmetic": "Python fractions.Fraction; no floating-point coordinates",
+    "exhaustive_admissible_colorings": 5223,
+    "further_admissible_colorings": 160,
+    "exhaustive_rational_tables": 625,
+    "further_rational_tables": 132,
+    "exact_cell_boundary_cases": 756,
+    "staggered_lattice_separation_cases": 4116,
+    "zero_target_dimension_cases": 8,
+    "invalid_or_inapplicable_inputs_rejected": 6,
+    "invalid_certificates_rejected": 7,
+    "scope": "Finite executable audits and independent checks of returned rational witnesses. These do not constitute a general Lean proof or an iPRA derivation certificate."
+  },
+  "build": {
+    "script": "build.sh",
+    "engine": "pdflatex",
+    "passes": 3,
+    "python": "Python 3.10 or later, standard library only",
+    "environment_specific_setup_included": false,
+    "compiled_pdf_pages": 18,
+    "final_compilation_warnings": 0
+  },
+  "artifacts": [
+    "dimension_invariance.tex",
+    "dimension_invariance.pdf",
+    "README.md",
+    "source_manifest.json",
+    "build.sh",
+    "lean/Blueprint.lean",
+    "lean/README.md",
+    "code/finite_dimension.py",
+    "code/validate.py",
+    "code/validation.json",
+    "code/example_input.json",
+    "code/example_certificate.json",
+    "verification_summary.json",
+    "SHA256SUMS"
+  ]
+}

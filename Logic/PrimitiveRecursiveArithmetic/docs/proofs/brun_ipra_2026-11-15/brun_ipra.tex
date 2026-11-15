@@ -1,0 +1,142 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage{xcolor,fancyhdr}
+\usepackage[hidelinks,breaklinks]{hyperref}
+\usepackage{listings}
+\definecolor{ink}{HTML}{19344D}
+\definecolor{muted}{HTML}{56626B}
+\hypersetup{pdftitle={Brun's theorem in intuitionistic primitive recursive arithmetic},
+ pdfauthor={Research prepared for Vladimir Reshetnikov},
+ pdfsubject={Finite Selberg sieve, primitive-recursive Cauchy modulus, Lean roadmap}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Brun's theorem in iPRA}
+\fancyhead[R]{\small\color{muted}Finite proof and formalization plan}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\emergencystretch=2em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\Twin}{\operatorname{Twin}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\sfD}{\mathcal D}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+ keepspaces=true,frame=single,rulecolor=\color{muted},
+ backgroundcolor=\color{black!2},showstringspaces=false}
+
+\title{\color{ink}\bfseries Brun's theorem in intuitionistic\\
+primitive recursive arithmetic\\[5pt]
+\large A finite sieve proof with an explicit Cauchy modulus}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a fully developed finite-arithmetic proof of the convergence of the
+twin-prime reciprocal series in intuitionistic primitive recursive arithmetic.
+If \(T(X)\) counts primes \(p\le X\) for which \(p+2\) is prime, we prove
+\[
+ k^2T(2^k)\le 1400\,2^k\le 2048\,2^k.
+\]
+Consequently every finite reciprocal tail with smaller prime at least \(2^m\)
+is at most \(8192/m\). For the rational partial sums \(B(N)\), indexed by
+the smaller prime \(p<N\), the primitive recursive function
+\[
+ N(q)=2^{\,2^{q+13}}
+\]
+is a Cauchy modulus: \(M,L\ge N(q)\) implies
+\(\lvert B(M)-B(L)\rvert\le2^{-q}\).
+
+The proof constructs rational Selberg weights and proves their quadratic
+identity directly. Its denominator estimate follows by grouping a finite
+square of a harmonic sum according to prime support. All summations,
+factorizations and searches are bounded; the induction invariants admit
+primitive recursive Boolean encodings. A denominator-cleared first-order
+statement makes the precise iPRA conclusion explicit. No analytic limit
+theorem is used to obtain convergence.
+
+The archive includes exact-arithmetic diagnostics, a Lean specification
+with conditional assembly proofs, and a detailed route to a complete Lean
+derivation in the existing ConciseIPRA object theory. The human proof is
+complete; the full Lean sieve proof and object-theory derivation remain
+to be implemented. The supplied Lean source has not been compiled.
+\end{abstract}
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\input{sections/01_statement}
+\input{sections/02_finite_arithmetic}
+\input{sections/03_sieve}
+\input{sections/04_denominator}
+\input{sections/05_convergence}
+\input{sections/06_ipra}
+\input{sections/07_lean}
+\input{sections/08_artifacts}
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{brun}
+V.~Brun, \emph{La s\'erie \(1/5+1/7+1/11+1/13+\cdots\), o\`u les
+d\'enominateurs sont nombres premiers jumeaux est convergente ou finie},
+Bulletin des Sciences Math\'ematiques 43 (1919), 100--104, 124--128.
+Historical reference; the proof in this article is supplied independently.
+
+\bibitem{kedlaya}
+K.~S.~Kedlaya, \emph{Notes on analytic number theory}, Sections 13 and 14,
+\emph{The Selberg sieve} and \emph{Applying the Selberg sieve}.
+\url{https://kskedlaya.org/ant/chap-selberg.html};
+\url{https://kskedlaya.org/ant/chap-selberg2.html}.
+Accessed 15 November 2026.
+
+\bibitem{tau}
+Tel Aviv University sieve theory course, \emph{Selberg's sieve:
+bounding the number of twin primes}, course notes dated 7 May 2015,
+hosted by Z.~Rudnick.
+\url{https://www.math.tau.ac.il/~rudnick/courses/sieves2015/selberg%20sieve%20twin%20primes.pdf}.
+The finite prime-support argument here is a direct replacement for the
+infinite geometric expansions appearing in standard presentations.
+
+\bibitem{proveit}
+V.~Reshetnikov and contributors, \emph{ProveIt: ConciseIPRA},
+repository snapshot
+\texttt{8c135f6f2a9d041cde785a1a632c44ad98065b20},
+15 November 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/8c135f6f2a9d041cde785a1a632c44ad98065b20/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+Exact source paths, blob identifiers and inspection status are recorded in
+\code{lean/SOURCE\_LEDGER.md}.
+
+\bibitem{prime-draft}
+\emph{Primitive-recursive divergence of the prime reciprocal series},
+research package \code{prime\_reciprocal\_ipra\_2026-11-15.zip},
+in \code{ProveIt/docs/drafts}, at the same snapshot.
+Used as methodological background for bounded factor traces and arithmetic
+encodings, not as an already completed Lean theorem.
+\end{thebibliography}
+\end{document}

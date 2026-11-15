@@ -1,0 +1,63 @@
+FORMALIZATION STATUS
+====================
+
+These files are an outline, concrete specifications, and a transport
+interface.  They are NOT a completed Lean formalization of the principal
+Diophantine results, and are NOT a completed object-iPRA derivation.
+
+No Lean executable was available in the delivery environment.  No Lean
+elaboration, Lake build, or kernel verification was executed.  The intended
+toolchain matches the inspected ProveIt repository: v4.32.0.
+
+FiniteSpecifications.lean
+-------------------------
+Defines the explicit Pell bound, a finite bounded Pell search, smoothness,
+the full Størmer specification, integer quadratic polynomials, all numerical
+Davenport–Schmidt bounds, the finite local-separation predicate, the finite
+large-derivative target, and the finite Roth certificate predicates.
+
+It includes short intended complete proofs of three ring identities.  They
+have not been compiled here.  It does not declare the main existence or
+correctness targets as proved theorems.
+
+Its higher-order rho parameter is a metatheoretic convenience in Lean.
+Inside first-order iPRA, instantiate it by a fixed PR definition; do not
+mistake it for an object-level function quantifier.
+
+ObjectTargets.lean
+------------------
+Gives the actual scoped formula shape of Størmer completeness from a pack of
+fixed PR symbols.  Concrete PR syntax trees still need to be constructed.
+The toConcise function uses the inspected pra_theorem_iff theorem to
+transport an already supplied Prf PRAAx derivation.  It does not produce
+the missing Diophantine proof.  This distinction is intentional.
+
+Required work
+-------------
+1. Supply codecs and concrete PR syntax trees.
+2. Prove arithmetic, list, bounded-search, and finite-counting invariants.
+3. Complete the finite Liouville/quadratic-Roth derivation.
+4. Complete both finite Pell constructions, generation, and Størmer lemma.
+5. Complete the rational frozen Davenport–Schmidt core, with all separation
+   uses bounded by W=2B^2 and all searches bounded by B.
+6. Add linear/quadratic root certificates, name error transfer, normalization,
+   and the optional algebraic resultant specialization.
+7. Construct actual Prf PRAAx proofs, transport them, and audit dependencies.
+
+The article states and proves each mathematical lemma needed for these
+positive results.  There is no omitted primitive-divisor theorem or Roth
+auxiliary-polynomial theorem hidden in their hypotheses.  The full general
+Roth cutoff is outside the proved scope and has no claimed path to completion
+without new mathematics or a weaker explicitly chosen constructive target.
+
+Suggested commands in a configured checkout of the pinned ProveIt commit
+(NOT EXECUTED HERE):
+
+  lake build +ConciseIPRA.BiInterpretation
+  lake env lean /absolute/path/to/lean/FiniteSpecifications.lean
+  lake env lean /absolute/path/to/lean/ObjectTargets.lean
+
+Any elaboration issue in these outline files must be resolved before making
+a kernel-checking claim.  Even after that, the missing main derivations must
+be implemented; successfully elaborating specifications is not a proof of
+their targets.

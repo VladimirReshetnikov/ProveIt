@@ -1,0 +1,199 @@
+\section{Pascal: the universal identity and its constructive consequence}\label{sec:pascal}
+Write $[ijk]=\det(P_i,P_j,P_k)$, with vectors as columns, and put
+\[
+ X=(P_1\times P_2)\times(P_4\times P_5),\quad
+ Y=(P_2\times P_3)\times(P_5\times P_6),\quad
+ Z=(P_3\times P_4)\times(P_6\times P_1).
+\]
+For $P=(x,y,z)$ let
+$\nu(P)=(x^2,y^2,z^2,xy,xz,yz)$.  The universal identity is
+\begin{equation}\label{eq:pascal-universal}
+ \det(X,Y,Z)=\det\begin{pmatrix}
+ \nu(P_1)\\\nu(P_2)\\\nu(P_3)\\
+ \nu(P_4)\\\nu(P_5)\\\nu(P_6)
+ \end{pmatrix}.
+\end{equation}
+This is an identity over $\mathbb Z$ in eighteen indeterminates.  Consequently
+it remains valid after substitution into every commutative ring, including
+rings of characteristic two.  The following proof never assumes that a
+particular triple of input points is independent.
+
+\subsection{The determinant relations used in the proof}
+For five vectors $r,s,t,u,v$, the bracket relation is
+\begin{equation}\label{eq:basic-plucker}
+ [rst][ruv]-[rsu][rtv]+[rsv][rtu]=0.
+\end{equation}
+Here the letter bracket denotes the same three-column determinant.
+To prove it without a nondegeneracy hypothesis, first expand the determinant
+of the four-by-four matrix whose last three rows are the coordinates of
+$r,s,t,u$ and whose first row repeats any one of those three rows.  Since
+the matrix has a repeated row, its determinant is zero.  Expansion in the
+first row, for each of its three possible choices, gives the vector identity
+\[
+ [stu]r-[rtu]s+[rsu]t-[rst]u=0.
+\]
+Taking its scalar product with $r\times v$ proves
+\eqref{eq:basic-plucker}.  This proves the relation over every commutative
+ring by finite determinant algebra.
+
+The four particular instances needed below, with their signs displayed, are
+\begin{align}
+ [125][146]-[124][156]&=[126][145],\\
+ [126][235]-[125][236]&=-[123][256],\\
+ [134][236]-[234][136]&=[123][346],\\
+ [245][156]-[145][256]&=-[125][456].
+\end{align}
+They result from taking respectively the common first vector in
+\eqref{eq:basic-plucker} to be $P_1,P_2,P_3,P_5$ and reordering the other
+arguments.  No division is involved.
+
+\subsection{A two-term bracket expression}
+The double-cross-product identity gives
+\[
+ X=[125]P_4-[124]P_5,\quad
+ Y=[236]P_5-[235]P_6,\quad
+ Z=[134]P_6-[346]P_1.
+\]
+On expanding the determinant, four of its eight terms vanish because they
+have repeated columns.  Thus, writing $F=\det(X,Y,Z)$,
+\begin{align*}
+ F={}&[125][236][134][456]
+       -[125][236][346][145]\\
+    &+[125][235][346][146]
+       -[124][235][346][156].
+\end{align*}
+The last two terms combine, by the first displayed bracket relation, to
+$[235][346][126][145]$.  Combining that result with the second term and
+using the second bracket relation yields
+\begin{equation}\label{eq:pascal-two-term}
+ F=[125][134][236][456]-[123][145][256][346].
+\end{equation}
+
+\subsection{Why the polynomial is alternating}
+Interchanging $P_1$ and $P_2$ in \eqref{eq:pascal-two-term} and adding the
+result to the original polynomial gives
+\begin{align*}
+ F+F_{(12)}={}&[125][456]\bigl([134][236]-[234][136]\bigr)\\
+ &+[123][346]\bigl([245][156]-[145][256]\bigr)=0,
+\end{align*}
+by the third and fourth bracket relations.  Therefore $F$ changes sign
+under the transposition $(12)$.
+
+A cyclic shift of the six labels sends $(X,Y,Z)$ to $(Y,Z,-X)$.
+Its effect on $F$ is consequently multiplication by $-1$.
+Conjugating $(12)$ by powers of this cycle gives every adjacent
+transposition; the two signs contributed by the conjugating powers cancel.
+Thus $F$ changes sign under each adjacent transposition, and hence under any
+permutation by that permutation's sign.  This is an exact polynomial
+argument, with no appeal to a dense set or to a limiting configuration.
+
+Each vertex occurs twice in every term of $F$.  Hence $F$ is homogeneous of
+degree two in the three coordinates of each $P_i$ separately.  Each such
+block has exactly the six possible monomials listed in $\nu(P_i)$.
+Expand $F$ in products
+\[
+ \prod_{i=1}^6 \nu(P_i)_{k_i},\qquad k_i\in\{1,\ldots,6\}.
+\]
+If two indices $k_i,k_j$ are equal, swapping those two vertex blocks leaves
+this monomial unchanged, whereas it negates its coefficient.  An integer
+coefficient equal to its own negative is zero.  Thus every surviving tuple
+$(k_1,\ldots,k_6)$ is a permutation of $(1,\ldots,6)$.
+Antisymmetry further shows that its coefficient is the coefficient for
+$(1,\ldots,6)$ multiplied by the sign of that permutation.  This is exactly
+the determinant expansion.  Therefore $F=c\det(\nu(P_i))$ for one integer
+$c$.
+
+To determine $c$, specialize
+\[
+ P_1=(1,0,0),\quad P_2=(0,1,0),\quad P_3=(0,0,1),
+\]
+\[
+ P_4=(u,v,w),\quad P_5=(x,y,z),\quad P_6=(p,q,r).
+\]
+Then
+\[
+ X=(uz-wx,vz-wy,0),\quad
+ Y=(0,py-qx,pz-rx),\quad
+ Z=(-qu,-qv,-rv).
+\]
+Their determinant is the following six-term polynomial:
+\begin{align*}
+ F={}&pquwyz-pqvwxz-pruvyz\\
+     &+prvwxy+qruvxz-qruwxy.
+\end{align*}
+The coefficient of $(uv)(xz)(qr)$ is $+1$.
+In the Veronese determinant the first three rows are the first three basis
+rows, and its remaining minor has rows
+$(uv,uw,vw)$, $(xy,xz,yz)$, $(pq,pr,qr)$; the same monomial is its diagonal
+term, also of coefficient $+1$.  Hence $c=1$, proving
+\eqref{eq:pascal-universal}.
+
+The temporary cancellation of $2c=0$ in this proof occurs only in the
+integer coefficient ring.  Once the resulting polynomial identity is
+proved over $\mathbb Z$, specialization proves it in arbitrary commutative
+rings.  In particular, this argument has not imposed a characteristic
+restriction on the identity itself.
+
+\subsection{From a conic equation to Pascal collinearity}
+Let the six integer vectors satisfy
+\[
+ Q(P_i)=0\quad(1\leq i\leq6),\qquad
+ Q(x,y,z)=q_1x^2+q_2y^2+q_3z^2+q_4xy+q_5xz+q_6yz,
+\]
+and suppose one specified coefficient $q_j$ is nonzero.  Put
+$M_{ik}=\nu(P_i)_k$ and let $C_{ij}$ be its $(i,j)$ cofactor.
+For each $j$ the completely explicit identity
+\begin{equation}\label{eq:conic-certificate}
+ q_j\det M=\sum_{i=1}^6 C_{ij}Q(P_i)
+\end{equation}
+holds.  Indeed, expand the right side in the coefficients $q_k$.
+The coefficient of $q_k$ is $\sum_i C_{ij}M_{ik}$: this is $\det M$ when
+$k=j$, by expansion down column $j$, and zero otherwise, by expansion of
+the determinant obtained by replacing column $j$ with column $k$, which
+has two identical columns.  The hypotheses make the right side zero.
+Since $q_j\ne0$ and integer multiplication has no zero divisors,
+$\det M=0$.  Equation~\eqref{eq:pascal-universal} gives
+$\det(X,Y,Z)=0$.
+
+This proves the finite-coordinate Pascal theorem even for a nonzero
+singular conic.  Nonsingularity is not needed for the determinant
+conclusion.  To read $X,Y,Z$ as actual projective intersection points,
+the relevant adjacent vertices must define nonzero side lines and the
+opposite side pairs must be distinct, so that the three double cross
+products are nonzero.  The determinant statement remains valid when
+these geometric objects degenerate, but the zero vector is not a
+projective point. When $X,Y,Z$ are nonzero, Lemma~\ref{lem:axis}
+constructs the actual nonzero common line $\axis(X,Y,Z)$. This completes
+the proof of Theorem~\ref{thm:pas-summary}, including its witness.
+
+Every rational configuration has integer homogeneous representatives:
+multiply each point and the conic coefficients by the product of its
+finitely many positive denominators.  This is a primitive-recursive
+operation; no gcd, search for a root, or limiting process is required.
+The same proof applies over a commutative integral domain, and over a
+constructive field when the selected coefficient has an apartness witness.
+For the literal first-order iPRA theorem, however, the integer-coded
+formulation above is the one being asserted.
+
+\subsection{An exact example with a point at infinity}
+For the conic $xz-y^2=0$, take $P(t)=(t^2,t,1)$ for
+$t=0,1,2,3,4,5$ in that order.  A chord through parameters $s,t$ has
+representative $(1,-(s+t),st)$.  The three opposite-side intersections have
+representatives
+\[
+ (2,2,1),\qquad(7,3,1),\qquad(5,1,0).
+\]
+They all satisfy the line equation $-x+5y-8z=0$.
+The last point lies at infinity, which illustrates why homogeneous
+coordinates remove any need for an exceptional ``parallel lines'' case.
+
+\subsection{Verification artifact}
+The dependency-free program \texttt{verify\_pascal.py} implements finite
+integer-coefficient polynomials as dictionaries of sorted monomials.
+It checks the universal determinant identity, the two-term bracket
+formula, all four displayed Pluecker instances, and all six cofactor
+certificates \eqref{eq:conic-certificate} with indeterminate conic
+coefficients.  The Pascal polynomial has exactly $720$ nonzero monomials,
+each with coefficient $+1$ or $-1$.  The program performs exact polynomial
+normalization, not random sampling.  This is exact computational evidence; it is not a compiled Lean proof or
+an emitted iPRA proof object.

@@ -1,0 +1,301 @@
+\section{What is being counted, and what is proved internally}
+
+The number is \textbf{five}, where position, orientation, and positive scale
+are disregarded. There are of course infinitely many placed or scaled
+tetrahedra. Reflections are allowed in the equivalence relation.
+
+\begin{definition}[Geometric input]
+A Platonic polyhedron is a bounded, full-dimensional convex polyhedron
+whose maximal two-dimensional faces are congruent convex regular polygons,
+and for which the same number of faces meets at every vertex. If each
+face has $p$ sides and each vertex has valence $q$, its type is $(p,q)$.
+Faces are maximal facets: an artificial subdivision does not create new
+faces for this definition.
+\end{definition}
+
+We retain this usual local definition. In particular we do not assume
+flag transitivity, or assume that the type already determines the shape.
+Those shortcuts would hide part of the classification problem.
+
+\subsection{The finite coordinate domain}
+
+First-order arithmetic has natural numbers as its objects. A sentence
+about all unspecified set-theoretic real polyhedra is not literally a
+sentence of $\ipra$. Our internal objects therefore have the following
+explicit representation.
+
+A scalar is a finite expression obtained from rational numbers by
+addition, subtraction, multiplication, division by a nonzero scalar,
+and the nonnegative square root of a nonnegative scalar. Equivalently,
+place a finite collection of such expressions in a common tower
+\[
+ \Q=K_0\subseteq K_1\subseteq\cdots\subseteq K_n,
+ \qquad K_j=K_{j-1}(s_j),\quad s_j^2=r_j\geq0.
+\]
+The extensions need not have degree two: $r_j$ may be zero or a square
+already in $K_{j-1}$. This redundancy must be respected by equality.
+All points of the input use one common finite tower. New auxiliary square
+roots are appended to it. This is the field of real constructible scalars,
+presented by finite codes; it is not a representation of arbitrary
+computable real numbers.
+
+A polyhedron code lists distinct vertices, its facet cycles, and their
+incidences. Face cycles have distinct vertices, and duplicate facet
+vertex sets are forbidden. The validator checks the following finite conditions:
+\begin{enumerate}
+\item Four listed vertices are affinely independent. Each listed vertex
+is an extreme point, and every facet is a convex planar cycle.
+\item For each facet an oriented cross-product normal gives a supporting
+plane. Its equality set among the vertices is exactly the facet's vertex
+set; all other vertices lie strictly on the inner side.
+\item All facets occur. This is checked by examining every noncollinear
+vertex triple: whenever its plane is supporting, its full equality set
+must be one of the listed facets.
+\item Edges are the consecutive vertex pairs on facet boundaries.
+Every edge belongs to two facets; each vertex link is one cyclic list;
+the face adjacency graph is connected. These are also consequences of
+the convex hull description, but checking them makes the data interface
+particularly transparent.
+\item The facets have common size $p\geq3$, are regular and congruent,
+and the vertex links have common length $q\geq3$.
+\end{enumerate}
+Extreme-point status can be checked without linear programming: the
+normals of the incident supporting planes must span three dimensions.
+For a supporting-plane intersection this is equivalent to a zero-dimensional
+face. Completeness of the facet list follows from the elementary fact
+that every facet of a full-dimensional finite hull contains three
+affinely independent vertices. Conversely the equality set of every
+supporting noncollinear triple is exactly the vertex set of a facet,
+so the test adds no extraneous facets.
+
+Regularity has a convenient exact test. Center the ordered vertices
+$x_0,\ldots,x_{p-1}$ of a face at their average. Require its Gram matrix
+to be invariant under $(i,j)\mapsto(i+1,j+1)$ modulo $p$. Cyclic shift
+then extends to an isometry of the face plane. Since it preserves the
+convex cyclic order, it is a rotation carrying each vertex to its
+successor. This is exactly a convex regular polygon. Equality of the
+corresponding face Gram matrices tests congruence. Thus no trigonometric
+function is needed even to state regularity.
+
+\begin{theorem}[Internal finite classification]\label{thm:main}
+There are fixed primitive recursive functions $\Valid$, $\Class$, $\Witness$,
+and $\Similar$, and five fixed model codes $\Model(0),\ldots,\Model(4)$,
+for which $\ipra$ proves
+\begin{align*}
+ \Valid(c)=1\ \Longrightarrow\ &\Class(c)<5\ \wedge\\[-4pt]
+ &\Similar(c,\Model(\Class(c)),\Witness(c))=1.
+\end{align*}
+It also proves that the five model codes are valid and pairwise
+non-similar. The similarity certificate contains a vertex bijection
+and an affine map $x\mapsto Ax+b$ satisfying
+$A^{\mathsf T}A=\lambda I$ for a positive scalar $\lambda$.
+\end{theorem}
+
+This is a theorem with a constructive witness, rather than an appeal to
+a quotient whose number of elements is assumed to exist. The proof of
+the theorem is the mathematical argument below, together with its
+explicit primitive recursive implementation described in
+Section~\ref{sec:internal}. A machine-checked derivation in the embedded
+syntax remains a formalization task.
+
+\begin{remark}[Relation to the ordinary theorem]
+All five representatives have coordinates in $\Q(\sqrt5)$. The same
+geometric proof, interpreted externally over ordinary $\R$, gives the
+usual unrestricted classical classification. Thus the finite theorem
+captures all five shapes. It does not assert that arbitrary real-number
+names can be compared or normalized by a primitive recursive program.
+\end{remark}
+
+\subsection{Exact order and why the scalar algorithms are primitive recursive}
+
+The only potentially delicate computational ingredient is exact sign.
+Here are explicit algorithms, including redundant tower stages.
+At one stage write $x=a+bs$, where $s^2=r\geq0$ and all of $a,b,r$
+belong to the preceding stage. If $r=0$, return the sign of $a$.
+Otherwise handle $a=0$ or $b=0$ directly. If $a,b$ have the same sign,
+that is the sign of $x$. If their signs are opposite, then
+\begin{equation}\label{eq:towersign}
+ \sgn(a+b\sqrt r)=\sgn(a)\,\sgn(a^2-b^2r).
+\end{equation}
+Indeed, when $a>0>b$, comparison with zero is precisely the comparison
+of the two positive quantities $a$ and $(-b)\sqrt r$; squaring preserves
+that comparison. The other case follows by negation. Every comparison
+on the right is in a strictly shorter tower.
+
+Addition and multiplication are
+\[
+ (a,b)+(c,d)=(a+c,b+d),\qquad
+ (a,b)(c,d)=(ac+bd r,ad+bc).
+\]
+For inversion put $N=a^2-b^2r$. If $N\ne0$, use
+\[
+ (a+bs)^{-1}=(a-bs)/N.
+\]
+If $N=0$ and $r>0$, then $a$ and $bs$ have equal absolute value.
+If $a=0$ or the signs of $a,b$ are opposite, the element is zero;
+otherwise $a+bs=2a\ne0$, and its inverse is $1/(2a)$ in the preceding
+stage. For $r=0$ invert $a$ directly. Define the inverse of zero to be
+zero as a totalization, and reject a division by zero when validating
+an expression. Equality is sign zero, \emph{not} coefficientwise equality
+at a possibly redundant stage. The following lemma proves the required
+ordered-field laws; quotient notation is only shorthand for the
+decidable equality relation on codes.
+
+\begin{lemma}[One ordered quadratic stage]\label{lem:orderedstage}
+Let $K$ be a decidably ordered field and $r\geq0$ in $K$. On formal
+pairs $a+bs$ use the displayed addition, multiplication, and sign
+algorithms, with $s^2=r$. Define $x\sim y$ when $\sgn(x-y)=0$.
+Then $\sim$ is a ring congruence, sign is well-defined modulo $\sim$,
+and the represented structure is an ordered field with $s\geq0$
+and $s^2=r$.
+\end{lemma}
+\begin{proof}
+If $r=0$, operations and sign reduce to evaluation $a+bs\mapsto a$.
+Assume $r>0$. First, whenever $t>0$ in $K$ satisfies $t^2=r$, the
+prescribed sign of every $c+ds$ equals $\sgn_K(c+dt)$. In the
+opposite-sign case this is precisely comparison by squaring the
+two nonnegative quantities; all other cases are immediate.
+Evaluation at such a $t$ respects addition and multiplication.
+
+This observation handles redundant representations without a test
+for whether $r$ has a square root in $K$. If $\sgn(a+bs)=0$ but
+$(a,b)\ne(0,0)$, the sign cases give $b\ne0$ and the explicit root
+$t=-a/b>0$, $t^2=r$. Whenever an equality premise has a nontrivial
+zero difference, this $t$ reduces sign invariance, transitivity,
+and compatibility with operations to the corresponding facts in $K$.
+If every zero difference in the premises is the literal coefficient-zero
+pair, the facts hold coefficientwise. Hence $\sim$ is an equivalence
+and ring congruence, and sign is invariant under $\sim$.
+The ring identities themselves follow by expanding coefficients
+using $s^2=r$. Directly from the sign rule,
+$\sgn(-x)=-\sgn(x)$, and multiplication by a positive scalar from
+$K$ preserves sign.
+
+We explicitly prove the two order-closure properties. Define predicates
+solely in the base field:
+\[
+ L(u)\ \Longleftrightarrow\ u<0\ \text{or}\ (u\geq0\ \text{and}\ u^2<r),
+ \qquad
+ U(u)\ \Longleftrightarrow\ u>0\ \text{and}\ u^2>r.
+\]
+$L$ is downward closed, $U$ is upward closed, and $L(l),U(u)$ imply
+$l<u$, by monotonicity of squaring on nonnegative elements.
+Every positive pair has exactly one of these three forms: a positive
+scalar; $b(s-l)$ with $b>0$ and $L(l)$; or $e(u-s)$ with $e>0$ and
+$U(u)$. This rewrites the sign rule according to the sign of the
+$s$ coefficient.
+
+Two lower forms add to a lower form whose threshold is the positive
+weighted average of their thresholds. This is no greater than their
+maximum, so $L$ holds. Two upper forms use the corresponding minimum
+and $U$. Adding a positive scalar lowers a lower threshold or raises
+an upper threshold. For the remaining case add
+$b(s-l)+e(u-s)$, where $l<u$. If $b=e$ the sum is $b(u-l)>0$.
+If $b>e$, it is $(b-e)(s-l')$, with
+\[
+ l'=l-\frac{e(u-l)}{b-e}<l,
+\]
+so $L(l')$ holds. If $b<e$, it is $(e-b)(u'-s)$, with
+\[
+ u'=u+\frac{b(u-l)}{e-b}>u,
+\]
+so $U(u')$ holds. Thus the sum of two positive pairs is positive,
+without presupposing an order on the extension.
+
+For multiplication put $N(a,b)=a^2-b^2r$. Expansion gives
+$N(xy)=N(x)N(y)$. If a positive $x=a+bs$ has $N(x)=0$, its
+coefficients $a,b$ are both positive. The explicit root $t=a/b$
+and the evaluation observation reduce positivity of its product
+with any positive pair to positivity in $K$. The same applies to $y$.
+Otherwise, positivity and $N(x)>0$ imply $a>0$, $a^2>b^2r$;
+positivity and $N(x)<0$ imply $b>0$, $b^2r>a^2$.
+Write $y=c+ds$ and $xy=A+Bs$, where
+$A=ac+bdr$, $B=ad+bc$. The four possibilities are
+\[
+\begin{array}{ccl}
+ N(x)>0,\ N(y)>0 &: & ac>|bd|r,\quad A>0,\quad N(xy)>0;\\
+ N(x)<0,\ N(y)<0 &: & bdr>|ac|,\quad A>0,\quad N(xy)>0;\\
+ N(x)>0,\ N(y)<0 &: & ad>|bc|,\quad B>0,\quad N(xy)<0;\\
+ N(x)<0,\ N(y)>0 &: & bc>|ad|,\quad B>0,\quad N(xy)<0.
+\end{array}
+\]
+Each first inequality follows by squaring its positive left side
+and multiplying the preceding nonnegative inequalities, cancelling
+$r>0$ in the mixed cases. For example, in the third case
+\[
+ (a^2-b^2r)d^2r+b^2r(d^2r-c^2)>0
+\]
+is exactly $r((ad)^2-(bc)^2)>0$. The first summand is strictly
+positive, since $d>0$. The sign algorithm therefore declares the
+product positive in all four cases.
+
+Sign trichotomy, negation, congruence, and the two closure results
+give a translation-invariant linear order compatible with
+multiplication. For inverses, when $N(x)\ne0$ the conjugate formula
+multiplies to one coefficientwise. When $N(x)=0$ but $x$ is nonzero
+modulo $\sim$, $a,b$ have the same nonzero sign; $t=a/b>0$ satisfies
+$t^2=r$, evaluation sends $x$ to $2a$, and the scalar $1/(2a)$
+multiplies with $x$ to one modulo $\sim$. This proves the field
+assertion. The element $(0,1)$ is positive and squares to $(r,0)$.
+
+This proof supplies a fixed finite family of base-field templates:
+the equivalence and congruence laws, commutative-ring identities,
+sign trichotomy and negation, closure of positivity under addition
+and multiplication, and the nonzero-inverse identity. Every division
+has an explicit nonzero premise; every split is a decidable scalar
+comparison. These are the templates used in the bounded law-table
+induction below.
+\end{proof}
+
+For clarity, a size bound accompanies this recursive description.
+Store a level-$n$ element as a dense binary tree of rational coefficient
+pairs, and let $H\geq1$ bound the binary lengths of all input and tower
+radicand numerators and denominators. Addition, multiplication, sign,
+and the displayed inversion algorithm make at most sixteen calls to
+strictly lower-level routines at any node. Scalar multiplication here
+is a lower-level multiplication, not an additional same-level call.
+There are therefore fewer than $16^{n+1}$ nodes in an operation's
+expanded call tree. A deliberately larger bound, allowing validation
+and bookkeeping, is
+\[
+ L(n)=2^{16(n+1)}.
+\]
+Unnormalized rational operations change a coefficient length bound $B$
+to at most $2B+1$. Consequently
+\begin{equation}\label{eq:bitbound}
+ B(n,H)=(H+2)\,2^{L(n)}
+\end{equation}
+bounds the intermediate coefficient lengths. Standard binary coding of
+the finite coefficient arrays and an explicit stack now implement the
+algorithms by bounded loops. Long integer arithmetic also has bounded
+loops. Both bounds are primitive recursive. Finite sequences of these
+operations use primitive recursion on their length, updating the bound
+at each step. Appending a root increases the tower depth by one.
+
+These are bounds for computations of the basic operations. A sequence
+of $K$ operations is bounded by replacing $L(n)$ with $K L(n)$, or by
+iterating the one-operation bound. The ordered-field laws for
+represented equality require the bounded law-table construction in
+Section~\ref{sec:internal}: fix the final height and coefficient budget,
+propagate larger budgets to shorter prefixes, and induct on equations
+asserting correctness of the finite tables. Thus no induction on an
+unbounded universally quantified field-law assertion is required.
+Both the size bounds and the correctness argument matter; mere
+termination of an unspecified symbolic procedure would not suffice.
+
+\subsection{The arithmetic theory being used}
+
+We use intuitionistic first-order logic with equality, symbols for
+primitive recursive functions, their defining equations, the successor
+axioms, and induction for quantifier-free formulas. This is the
+presentation in ProveIt's \code{ConciseIPRA/PR.lean}~\cite{proveit}.
+We do not add induction for arbitrary formulas.
+
+A bounded assertion over a coded list is represented by a primitive
+recursive Boolean fold. An induction invariant is an equation saying
+that this fold equals one, together with equations for the accumulated
+counts and witnesses. Thus bounded universal checks do not require
+stronger induction. All case splits below are on natural-number or exact
+scalar comparisons whose decisions were just constructed. We use neither
+excluded middle for arbitrary propositions, Markov's principle, choice,
+nor a universal evaluator for arbitrary primitive recursive programs.

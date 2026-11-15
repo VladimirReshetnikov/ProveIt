@@ -1,0 +1,224 @@
+\section{Finite analytic representations and reusable identities}
+\label{sec:analytic}
+
+\subsection{Rational enclosures and elementary operations}
+For $z=x+\ii y$ use
+$\normone z=|x|+|y|$ and $|z|_\infty=\max(|x|,|y|)$.
+These rational norms satisfy
+\[
+ |z|_\infty\le |z|\le\normone z\le2|z|,
+ \qquad \normone{zw}\le\normone z\,\normone w.
+\]
+A complex ball is a rational centre $c$ and a rational error $r\ge0$,
+with meaning $\normone{z-c}\le r$. For addition the radii add. For
+multiplication an admissible radius is
+\begin{equation}
+ \normone c\,r_d+\normone d\,r_c+r_cr_d.
+ \label{eq:ballproduct}
+\end{equation}
+Unless an estimate is explicitly in $\normone{\cdot}$, analytic
+absolute-value bounds below use the complex Euclidean modulus. An
+implementation that inserts one of them into an L1 radius first
+multiplies it by two. The logarithm and exponential error estimates
+used by the ball evaluator are direct L1 estimates.
+If a centre is rounded to a dyadic rational, add its exact rational
+rounding distance to the radius. Division is used only with a supplied
+positive lower bound, or with an exactly nonzero rational denominator.
+
+For rational $v>0$, reduce $v$ to $2^ku$, $1\le u<2$. The number of
+reductions is bounded by the bit lengths of the numerator and denominator.
+With $y=(u-1)/(u+1)$,
+\begin{equation}
+ \log u=2\sum_{j=0}^{L-1}\frac{y^{2j+1}}{2j+1}+r_L,
+ \quad
+ |r_L|\le\frac{2|y|^{2L+1}}{(2L+1)(1-y^2)}.
+ \label{eq:log-series}
+\end{equation}
+Here $|y|\le1/3$. A linear bound on $L$ in the requested precision,
+plus the bit length of $k$, therefore suffices. For a complex rational
+$z$ of norm at most an integer $S\ge1$, the exponential series through
+degree $d\ge2S$ has error
+\begin{equation}
+ \normone{\exp z-\sum_{j=0}^d z^j/j!}\le 2^{4S-d}.
+ \label{eq:exp-series}
+\end{equation}
+Indeed the $2S$th term is at most $\exp S\le4^S$, and the subsequent
+term ratios are at most $1/2$. Input perturbation of norm $r\le1$
+costs at most $r4^{S+1}$. Both estimates are finite geometric-series
+inequalities with their numerical parameters fixed.
+
+The identity $\pi=4\arctan1$ with $2^{p+3}$ alternating terms is one
+deliberately slow primitive recursive approximation to error $2^{-p}$.
+Faster familiar formulas may be substituted after proving their error
+contract. These choices make every displayed expression involving
+$\pi$, real logarithms, exponentials, sine or cosine a specified
+primitive recursive rational approximation.
+
+\subsection{Euler summation and continuation}
+Let $\{x\}=x-\lfloor x\rfloor$. Integrating on each interval
+$[n,n+1]$ and summing gives, initially for $\sigma>1$,
+\begin{equation}
+ \zeta(s)=\frac{s}{s-1}
+       -s\int_1^\infty\{x\}x^{-s-1}\,dx,
+ \qquad \sigma>0,\quad s\ne1.
+ \label{eq:euler-basic}
+\end{equation}
+The integral on the right has tail at most
+$X^{-\sigma}/\sigma$. It consequently supplies a continuation with
+an explicit convergence modulus on every region
+$\sigma\ge a>0$, $|s|\le H$, $|s-1|\ge b>0$.
+Differentiating $j$ times is justified by the bound
+\begin{equation}
+ \int_1^\infty(\log x)^j x^{-a-1}\,dx=\frac{j!}{a^{j+1}}.
+ \label{eq:logmoments}
+\end{equation}
+One can avoid the word differentiation in the arithmetic proof:
+expand $\exp(-h\log x)$ to the required finite degree, bound its
+remainder, and integrate the resulting finite identities.
+
+For wider disks and for the executable example we need the full finite
+Euler--Maclaurin expression. Put
+$(s)_j=s(s+1)\cdots(s+j-1)$ and let
+$\widetilde B_j(x)=B_j(\{x\})$ denote the periodic Bernoulli polynomial.
+For integers $N,m\ge1$ and $\sigma+2m>1$,
+\begin{align}
+ \zeta(s)={}&\sum_{n=1}^{N-1}n^{-s}
+       +\frac{N^{1-s}}{s-1}+\frac12N^{-s}\notag\\
+ &+\sum_{j=1}^m\frac{B_{2j}}{(2j)!}(s)_{2j-1}N^{1-s-2j}
+       +R_{m,N}(s),\label{eq:em}\\
+ R_{m,N}(s)={}&-\frac{(s)_{2m}}{(2m)!}
+       \int_N^\infty\widetilde B_{2m}(x)x^{-s-2m}\,dx.
+ \label{eq:em-remainder}
+\end{align}
+To prove this, integrate by parts on each unit interval, using
+$B_j'=jB_{j-1}$ and $B_j(1)=B_j(0)$ for $j\ne1$. All inner endpoint
+terms cancel. Repeat $2m$ times and then take a finite upper endpoint
+to its explicitly bounded tail. This is a finite induction on the
+number of integrations and on the number of unit cells.
+
+The Bernoulli numbers are computed by
+\[
+ B_0=1,\qquad
+ B_n=-\frac1{n+1}\sum_{j<n}\binom{n+1}{j}B_j.
+\]
+Thus
+\begin{equation}
+ C_m=\frac1{(2m)!}\sum_{j=0}^{2m}\binom{2m}{j}|B_j|
+ \label{eq:bernoulli-bound}
+\end{equation}
+is a rational upper bound for
+$\sup_{0\le x\le1}|B_{2m}(x)|/(2m)!$, obtained simply by bounding
+each monomial. Consequently
+\begin{equation}
+ |R_{m,N}(s)|\le
+ C_m\prod_{j<2m}(|\sigma+j|+|t|)
+ \frac{N^{1-\sigma-2m}}{\sigma+2m-1}.
+ \label{eq:em-bound}
+\end{equation}
+For the rational $\normone{\cdot}$-ball implementation, multiply the
+right side by two. The rotation in $x^{-it}$ need not preserve the
+$\normone{\cdot}$ norm, although it preserves the complex modulus.
+For $\sigma\ge0$, replace the final factor by
+$N^{1-2m}/(2m-1)$. This wholly rational bound is the one implemented in
+\code{code/rational_zeta.py}. It requires no numerical library value of
+zeta and no assumed Riemann hypothesis.
+
+On a bounded rational box with $\sigma\ge-A$, choose $m=A+2$.
+Then the exponent in the tail is at most $-A-3$. A power of two larger
+than the rational coefficient bound times $2^{p+10}$ is already a
+sufficient $N$ for error $2^{-p-10}$. Approximate the finite elementary
+terms with a further budget for their rational coefficient magnitudes.
+This gives a fixed primitive recursive approximation on every compact
+box apart from $s=1$. To approximate the entire numerator everywhere,
+multiply the finite formula symbolically by $s-1$ and cancel the
+explicit pole term before evaluation. In particular, no evaluation of
+an undefined zeta value at $s=1$ is performed.
+
+\subsection{The functional-equation dependency}
+For completeness we spell out the precise identities and quantitative
+content reused from the included proof~\cite{RepoFE}. Define
+\begin{align}
+ \psi(x)&=\sum_{n\ge1}\exp(-\pi n^2x),\notag\\
+ J(s)&=\int_1^\infty\psi(x)x^{s/2-1}\,dx,\notag\\
+ \xi(s)&=\frac12+\frac{s(s-1)}2\bigl(J(s)+J(1-s)\bigr).
+ \label{eq:theta-xi}
+\end{align}
+The theta relation
+$1+2\psi(x)=x^{-1/2}(1+2\psi(1/x))$ follows there from a finite
+Fej\'er calculation for the Gaussian, with Gaussian and Fourier tails
+bounded before a limit is taken. Splitting the Mellin integral at $1$
+gives~\eqref{eq:xi-definition} on $\sigma>1$ and its continuation.
+Equation~\eqref{eq:theta-xi} gives both symmetries directly, with no
+choice of a branch of the logarithm.
+
+Here is a useful part of its explicit approximation schedule. On
+$|\Re s|,|\Im s|\le B$, $B\ge2$, write
+$\lambda(n)=\min\{j\le n:n\le2^j\}$ for $n\ge1$. Given $p$, put
+\begin{align*}
+ X&=p+\lambda(B!)+4,& K&=p+(B+1)\lambda(X)+4,\\
+ D&=2(B+2)X^B,& q&=p+\lambda(XD)+4,&
+ r&=p+\lambda(X)+4.
+\end{align*}
+Truncate the $x$ integral at $X$, the theta sum at $K$, use a left
+mesh of width $2^{-q}$, and evaluate its finite summands so that the
+error of their entire sum is at most $2^{-r}$ at each sample.
+The four error bounds are
+\begin{equation}
+ 2B!2^{-2X},\quad
+ 4X^{B+1}2^{-3(K+1)^2},\quad
+ XD2^{-q},\quad X2^{-r}.
+ \label{eq:theta-errors}
+\end{equation}
+Their sum is less than $2^{-p}$. These bounds follow respectively
+from $\psi(x)\le2e^{-3x}$, a geometric estimate in the theta index,
+a derivative bound for the integrand, and the sum of sample errors.
+For example, $\psi\le1$ and
+$|\psi'|\le4\sum_{n\ge1}n^2 8^{-n}=288/343<1$ justify the
+displayed derivative budget. To obtain error $2^{-p}$ for $\xi$ itself,
+first enclose both $s$ and $1-s$ in one common integer box of radius $B$,
+and apply the integral schedule at precision
+$p+\lambda(4B^2)+3$. This absorbs the two integral errors and the
+multiplication by $s(s-1)/2$.
+The same approximation parameters used for $s$ and $1-s$ make the
+finite xi expression exactly symmetric.
+
+The reciprocal gamma function is represented by
+\begin{equation}
+ G_N(z)=zN^{-z}\prod_{n=1}^N(1+z/n),\qquad G(z)=1/\Gamma(z).
+ \label{eq:gamma-product}
+\end{equation}
+For integer $D\ge1$, $|z|\le D$, the included proof supplies
+\begin{align}
+ |G_N(z)|,|G(z)|&\le M_D:=D4^{D+D^2},\notag\\
+ |G_N(z)-G(z)|&\le C_D/N,
+ \quad C_D=2M_D(D+D^2),\quad N\ge2(D+D^2).
+ \label{eq:gamma-modulus}
+\end{align}
+Away from the nonpositive integers it also gives a positive product
+lower bound. The shift identity is $G(z)=zG(z+1)$.
+These statements, their theta/Mellin identification, and the Gaussian
+normalization $\Gamma(1/2)=\sqrt\pi$ are the reusable premises.
+They are written proofs with finite numerical contracts, not completed
+Lean theorems. Their source archive is preserved unchanged.
+
+\subsection{From analytic formulas to rational polynomials}
+Every use of a polynomial approximation below has a numerical error
+requested in advance. On a closed disk strictly inside a domain of
+holomorphy, a Taylor truncation is one construction: a bound $M_*$ on
+a concentric radius $R_*$ gives
+\[
+ \sup_{|z-c|\le r}\left|f(z)-\sum_{j=0}^d a_j(z-c)^j\right|
+ \le\frac{M_* (r/R_*)^{d+1}}{1-r/R_*}.
+\]
+The coefficients are obtained by finite Cauchy quadrature with an
+explicit derivative bound. Alternatively one can use the fixed finite
+Euler--Maclaurin or theta expressions above and replace each exponential
+by its Taylor polynomial after approximating its real constants.
+This second route avoids importing a general Taylor theorem: its degree,
+coefficients and error budget follow by finite sum and product estimates.
+
+All required disk sizes, larger-box bounds, degrees and working
+precisions are fixed primitive recursive expressions in the input data.
+The choice may be extremely inefficient. Efficiency is not used to
+infer provability; the finite error estimates and induction invariants
+are the reason this representation is suitable for $\ipra$.

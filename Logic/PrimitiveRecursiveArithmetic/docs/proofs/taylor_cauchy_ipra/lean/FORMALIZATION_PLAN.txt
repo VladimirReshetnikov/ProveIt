@@ -1,0 +1,180 @@
+FORMALIZATION PLAN AND REPOSITORY AUDIT
+======================================
+
+Audited commit: 876ef598f674759da5f084dc34f63ca4e182aae0
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+Base directory: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA
+Namespace: LeanProofs.ConciseIPRA
+
+1. EXACT EXISTING API
+
+PR.lean
+  PR : Nat -> Type
+    constructors zero, succ, proj, comp, prec.
+  PTm n
+    numerical terms with n free variables.
+  PRAAx
+    defining equations for these symbols, successor axioms, and induction
+    for syntactically quantifier-free formulas only.
+  PRA.qfInd
+    builds an object iPRA derivation from an object base derivation and an
+    object successor-step derivation for a syntactically QF formula.
+
+Deduction.lean
+  Prf Ax Gamma phi
+    an inductive derivability predicate for intuitionistic first-order
+    natural deduction with equality. All logical constructors are explicit.
+  Prf.subst, Prf.weaken, Prf.trans
+    substitution, weakening, and cut helpers.
+  Prf.eqSubst1, Prf.eqCongr1, Prf.eqSymm, Prf.eqTrans
+    equality reasoning within the object calculus.
+
+PRAToScalar.lean
+  FromPRA.code : PR k -> Tm k
+    compiles each primitive recursive function symbol to an iterator term.
+  FromPRA.sigma : PTm n -> Tm n
+    term translation.
+  FromPRA.interp : Interp PRAAx TeqAx
+    derivation-preserving interpretation.
+
+TeqReflect.lean
+  chi, chi_iff, Teq.qfInd
+    reflection of each quantifier-free formula into a characteristic term;
+    quantified formulas are deliberately excluded from this theorem.
+
+BiInterpretation.lean
+  pra_iff_teq, teq_iff_pra
+    derivability equivalences for iPRA and the scalar presentation.
+
+NativeBiInterpretation.lean
+  NFm.ofPRA : Fm PTm n -> NFm n
+  pra_iff_native :
+    (Prf PRAAx Gamma phi) <->
+      NPrf (Gamma.map NFm.ofPRA) (NFm.ofPRA phi)
+  native_iff_pra, native_roundTrip, pra_native_roundTrip
+    the opposite translation and round-trip derivability results.
+
+These are precise source-level facts, not claims that the entire pinned
+checkout or its dependency closure was rebuilt during this task.
+
+2. CORRECT FIRST-ORDER TARGET
+
+For each fixed primitive recursive presentation of the input functions,
+moduli, and numerical bounds, construct formulas H and E in Fm PTm. H
+expresses the Cauchy-name, modulus, and differentiability assumptions by
+universal closures of finite rational inequalities. E(p) states the desired
+rational error bound at requested precision p. The final target is an
+inhabitant of
+
+  Prf PRAAx [H] (Fm.all E)
+
+with any remaining numerical parameters represented by free variables, or
+equivalently an implication with a universal precision conclusion. Feed
+that derivation to pra_iff_native.mp.
+
+No quantifier over arbitrary Lean functions belongs in this object formula.
+Each particular evaluator is a fixed symbol PR k; it is not a numerical
+code interpreted by an assumed primitive recursive evaluator for all PR
+programs. A universal total evaluator for all primitive recursive programs
+cannot itself be primitive recursive. Lean's metatheory may quantify over
+PR syntax while constructing a schema of object derivations.
+
+3. LAYERED IMPLEMENTATION
+
+A. Codes and finite arithmetic
+  Define signed integers and rational pairs with positive denominators by
+  PR symbols. Intermediate fractions need not be in lowest terms, but all
+  rational arguments passed to an evaluator must be normalized to a unique
+  code. A bounded gcd algorithm suffices. Give PR cross multiplication
+  comparison, absolute value, complex rational operations, finite sequence
+  access, powers, factorial, prefix sum, and dyadic precision functions.
+  Prove their defining equations as Prf PRAAx statements.
+
+B. Quantifier-free arithmetic library
+  Prove ring and order identities by PRA.qfInd, using characteristic
+  functions for bounded conjunctions. A bounded universal numerical test is
+  an explicit Boolean fold, not an induction formula containing a hidden
+  first-order quantifier. Denominator positivity is an explicit hypothesis.
+  FiniteCore.lean gives semantic reference identities for this layer;
+  replay them in Prf PRAAx after signed/rational coding.
+
+C. Approximation operations
+  Build rational algorithms for addition, multiplication, reciprocal with
+  a supplied apartness margin, and composition with a supplied modulus.
+  For each, prove a finite rational error propagation estimate. All input
+  bounds and requested output precisions remain numerical parameters.
+  Implement a normalized rational integral name from dyadic sums.
+
+D. Integration lemmas
+  Prove comparison of a Riemann sum with a common refinement, finite
+  telescoping, finite summation by parts, and the fundamental theorem's
+  quantitative error estimate. Every claim used in an induction is a
+  rational inequality at a fixed precision with an accumulated error bound.
+  The statement of equality between names is a final universal closure.
+
+E. Taylor
+  Compile the finite product/derivative calculation for the Taylor jet,
+  the fundamental theorem estimate, and polynomial kernel integration.
+  Prove the integral remainder and its bound at precision p. If the order
+  n is to be a uniform numerical variable, the entire derivative tower and
+  its moduli must have one fixed joint PR evaluator. Otherwise state one
+  theorem schema for each fixed n and fixed finite tuple of evaluators.
+
+F. Cauchy
+  Compile the exact cancellation of affine complex integrands on a cell,
+  the explicit error estimate using the derivative remainder modulus,
+  finite interior-edge cancellation, and the rational-circle homotopy grid.
+  For the quotient f(z)/(z-w), prove its derivative remainder by the exact
+  algebraic identity in FiniteCore.lean and the supplied distance margin.
+  Prove the small-circle error and rational normalization of the kernel.
+  The proof uses only image-triangle vertex values; no analytic collar or
+  validity assumption on image-triangle interiors is needed. Use the exact
+  constants and precision schedules in report.tex, Sections 6.5-6.6.
+  Uniformity in output precision then gives the formula as name equality.
+
+G. Derivatives and power series
+  Use the finite geometric identity, Cauchy's positive boundary-distance
+  bound, and explicit geometric-tail inequalities. No differentiation under
+  an unevaluated infinite integral or power-series convergence theorem is
+  needed. A direct primitive recursive truncation bound suffices.
+
+H. Native export
+  Build the formulas and derivations in standard object iPRA first. Only
+  then apply NFm.ofPRA and pra_iff_native.mp. Add named #print axioms audits
+  to the resulting Lean constants and preserve the exact source revision.
+
+4. INDUCTION AUDIT
+
+Allowed induction subjects:
+  - equality of finite integer/rational computations;
+  - finite-sum identities;
+  - a rational accumulated-error inequality;
+  - a Boolean fold verifying finitely many local inequalities;
+  - bounded index and denominator invariants.
+
+Not directly allowed as induction subjects:
+  - equality of real or complex Cauchy names (a universal formula);
+  - 'all later approximants have this property';
+  - existence of an arbitrary completion or derivative function;
+  - unrestricted semantic assertions about all functions or all models.
+
+Universal input hypotheses can stay in the object context during QF
+induction. They are instantiated at the currently needed numerical values.
+The extra hypothesis is not silently conjoined into the induction formula.
+Finite collections of approximation premises are packed as bounded Boolean
+tests, which have PR characteristic functions.
+
+5. WHAT REMAINS TO BE FORMALIZED
+
+The algebra scripts and the final translation bridge do not implement
+layers A-H. In particular, no object formula for Taylor or Cauchy, no object
+analytic derivation, and no checked error-bound library are delivered as
+finished Lean results. The human paper must carry the complete mathematical
+argument and the finite-precision proof analysis; the files give a concrete
+route and small reference kernels. Compilation of the supplied files itself
+is also outstanding in the producing environment.
+
+A proof in Mathlib about Real, Complex, intervalIntegral, or circleIntegral
+would be valuable as a semantic comparison, but would not by itself prove
+that the corresponding statement has an iPRA derivation. The target Prf
+PRAAx ... is essential to the user's foundational requirement.

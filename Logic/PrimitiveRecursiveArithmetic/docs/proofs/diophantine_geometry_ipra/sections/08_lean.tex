@@ -1,0 +1,286 @@
+\section{Lean verification and a path to complete internalization}
+\label{sec:lean}
+
+\subsection{What has actually been checked}
+
+The archive contains an arithmetic core whose source was successfully
+compiled. The file \texttt{lean/DiophantineCore.lean} was checked
+with Lean 4.32.0, commit
+\nolinkurl{8c9756b28d64dab099da31a4c09229a9e6a2ef35}. Its only import is
+\texttt{Std}; it has no Mathlib dependency, no added axioms, no unfinished
+proofs, and no use of \texttt{native\_decide}.  The complete compiler output
+and a source hash are in \texttt{evidence/lean-build.txt} and
+\texttt{evidence/lean-build.json}.
+
+Thirteen named theorems have been checked:
+\begin{enumerate}
+\item \texttt{anyLE\_correct}: a Boolean scan of $0,\ldots,n$ succeeds
+  exactly when a successful index exists in that interval.
+\item \texttt{findLE\_sound} and \texttt{findLE\_none\_iff}: the bounded
+  witness search returns a valid index, and reports failure exactly when
+  the Boolean scan reports failure.
+\item \texttt{noBooleanDescent}: an explicitly iterated Boolean condition
+  cannot persist under a strict decrease of a natural-number rank.
+\item \texttt{quadratic\_expansion}, \texttt{second\_identity}, and
+  \texttt{second\_on\_conic}: the quadratic expansion and second-intersection
+  identities for an arbitrary integral ternary quadratic form.
+\item \texttt{circle\_identity} and \texttt{circle\_inverse\_identity}:
+  the polynomial identities underlying the circle parametrization.
+\item \texttt{elliptic\_triangle\_identity},
+  \texttt{elliptic\_triangle\_area},
+  \texttt{triangle\_curve\_certificate}, and
+  \texttt{triangle\_on\_curve}: the cleared-denominator identities relating
+  a rational right triangle of area $n$ to $y^2=x^3-n^2x$.
+\end{enumerate}
+
+The output of \texttt{\#print axioms} lists only
+\texttt{propext} and \texttt{Quot.sound}; for
+\texttt{elliptic\_triangle\_area} it lists only \texttt{propext}.
+In particular, \texttt{Classical.choice} and \texttt{sorryAx} do not occur
+in any of the thirteen reports.  The polynomial proofs use a short local
+tactic which expands integer powers and products by ring laws, puts
+monomials into a fixed order, and asks \texttt{omega} to check the resulting
+linear integer identity.  This avoids importing a classical polynomial
+normalization theorem merely for the sake of convenient automation.
+
+These are \emph{ordinary Lean theorems about integers and natural numbers}.
+They are not yet proof objects of the deeply embedded theory \iPRA.
+For example, the source proof of \texttt{anyLE\_correct} uses an ambient
+induction whose displayed proposition contains an existential quantifier.
+Its object-theory version must instead use the quantifier-free scan
+invariants described below.  The absence of classical choice in the
+ambient proofs is useful evidence, but does not by itself establish the
+induction restriction or produce an \iPRA\ derivation.
+
+\subsection{The existing ProveIt interface}
+
+The inspected ProveIt snapshot is commit
+\texttt{b5a3ad037723c44d69a3d5b28a950c554327a989}.
+The relevant declarations are in the namespace
+\texttt{LeanProofs.ConciseIPRA}.  The file \texttt{PR.lean} defines:
+\begin{itemize}
+\item \texttt{PR k}, the syntax of $k$-ary primitive recursive function
+  symbols, with zero, successor, projections, composition, and primitive
+  recursion;
+\item \texttt{PTm n}, terms in $n$ free variables;
+\item \texttt{Fm PTm n}, first-order intuitionistic formulas;
+\item \texttt{PRAAx}, the defining equations, successor axioms, and
+  induction for formulas certified quantifier-free;
+\item \texttt{PRA.qfInd}, the derived rule that constructs precisely such
+  an induction proof.
+\end{itemize}
+The theorem \texttt{pra\_iff\_native} in
+\texttt{NativeBiInterpretation.lean} has the exact form
+\[
+ (\Gamma\vdash[\mathtt{PRAAx}]\varphi)
+ \quad\longleftrightarrow\quad
+ \mathtt{NPrf}\bigl(\Gamma.\mathtt{map}\ \mathtt{NFm.ofPRA}\bigr)
+                     (\mathtt{NFm.ofPRA}\ \varphi).
+\]
+Thus the principal completion target for each theorem of this article is
+an actual term of
+\[
+ []\vdash[\mathtt{PRAAx}]\varphi_G,
+ \qquad \varphi_G:\mathtt{Fm}\ \mathtt{PTm}\ 0,
+\]
+where $\varphi_G$ is its explicitly encoded arithmetic statement.
+Once that term is constructed, applying the forward direction of
+\texttt{pra\_iff\_native} produces the corresponding native-scalar proof.
+The bridge is not a rule turning any true theorem of Lean into a theorem
+of \iPRA; it takes an \iPRA\ derivation as its input.
+
+\subsection{A concrete module plan}
+
+The following dependency order separates implementation work from
+mathematical gaps.  The human proofs of the requisite lemmas are given in
+the preceding chapters; the tasks here are their syntactic realization.
+
+\paragraph{1. Encodings and primitive recursive symbols.}
+Create \path{DG/Encoding.lean} and \path{DG/PRSymbols.lean}.
+Use the signed-integer, rational, vector, polynomial, and finite-list
+encodings fixed in the foundations chapter.  Every externally visible
+operation must return a total code, with an explicit failure flag where
+an input condition fails.  In particular, division by zero, a zero
+projective tuple, and a malformed certificate must not produce an
+unproved obligation in the implementation.  Define bounded division,
+bounded gcd search, exact quotient tests, integer square-root search,
+finite products, and coordinate scans as explicit combinations of
+\texttt{PR.comp} and \texttt{PR.prec}.
+
+The required interface is not merely a Lean function
+\texttt{Nat -> Nat}; it consists of a code in \texttt{PR k}, its defining
+equations as terms, and derivations of the equations used by subsequent
+proofs.  Each fixed algorithm has such a code.  No universal total
+primitive recursive evaluator for arbitrary primitive recursive programs
+is assumed.  The uniform algorithms used here evaluate bounded polynomial
+data and finite certificates, which is a different and much weaker task.
+
+\paragraph{2. Elementary integer arithmetic inside the theory.}
+Create \path{DG/Arithmetic.lean}.  Derive addition, multiplication,
+order, and signed arithmetic laws from the defining equations, using
+\texttt{PRA.qfInd}.  Prove the bounded division invariants
+$a=qb+r$ and $r<b$ for $b>0$, Euclid's divisibility lemma, and the gcd and
+coprime square-product lemmas used in descent.  Prime factorization can
+be implemented by trial division through the input bound; it needs no
+unbounded least-prime operator.  Whenever a proof is phrased with bounded
+universal quantification, replace it by the equality-to-$1$ of its
+primitive recursive Boolean product before invoking induction.
+
+Create \path{DG/PolynomialCertificates.lean} next.  A reflected
+polynomial normalizer should return both a coefficient array and an
+object-theory equality proof.  Its soundness is proved by structural
+recursion on the polynomial expression and the already derived ring
+laws.  This reconstructs the role of the checked Lean identities without
+treating an ambient \texttt{Int} identity as an object-theory axiom.
+The relatively small identities in \texttt{DiophantineCore.lean} are
+regression targets for this compiler.
+
+\paragraph{3. Bounded scans and projective normalization.}
+Create \path{DG/FiniteSearch.lean} and \path{DG/Projective.lean}.
+For witness search, keep a flag and a candidate index in the recursive
+state.  The soundness invariant says that either the flag is false or the
+candidate is in the scanned interval and satisfies the Boolean test.
+For completeness, fix a proposed successful index $j$ as a numerical
+parameter and induct on the scan bound $i$ in the quantifier-free
+statement
+\[
+ j\leq i\ \wedge\ p(j)=1\quad\Longrightarrow\quad
+ \operatorname{anyLE}(p,i)=1.
+\]
+Here $p$ denotes a fixed primitive recursive symbol, not a quantified
+function variable of the object language.  Universal generalization over
+$j$ is performed after the induction.  Alternatively, maintain the
+Boolean product of all failed tests as one additional state component.
+
+Prove canonical projective normalization and uniqueness by gcd
+divisibility and a fixed sign convention.  The projective point code
+then has literal equality, so searches do not need a quotient type in
+the object theory.  Instantiate the scan theorem with the explicit box
+size $(2B+1)^{n+1}$ to obtain the constructive Northcott enumeration,
+membership correctness, and finite cardinality bound.
+
+\paragraph{4. Heights and polynomial-map certificates.}
+Create \path{DG/Height.lean} and \path{DG/Resultant.lean}.
+The upper height estimate follows by summing bounded monomial estimates.
+For the lower estimate, formalize the two homogeneous B\'ezout
+identities supplied by the Sylvester adjugate.  A certificate checker
+first compares polynomial coefficients.  A separate soundness theorem
+then shows that the common divisor of the two evaluated forms divides
+the resultant constant, and combines the certificate's coefficient
+bounds with the triangle inequality.
+
+All determinant computations can use finite sums over coded
+permutations, with inversion parity computed by bounded loops.
+The adjugate identity is a finite polynomial identity, so its proof can
+be produced by the same certificate mechanism.  This route does not
+require an imported, unbounded algebraic-closure or Nullstellensatz
+theorem.  The nonzero determinant test is an integer comparison and the
+certificate coefficients are obtained by a finite explicit algorithm.
+For a theorem uniform in the matrix size, also formalize cofactor expansion
+and the sign-reversing permutation pairing as bounded-sum identities with
+quantifier-free induction. Checking a numerical certificate verifies an
+instance; it must not be substituted for this uniform arithmetic lemma.
+
+\paragraph{5. Conic charts.}
+Create \path{DG/Conics.lean}.  The checked second-intersection identity
+settles only incidence.  The remaining formal lemmas must establish that
+the produced tuple is nonzero under the nonsingularity and direction
+hypotheses, handle the tangent parameter, prove the inverse chart
+equations, and establish projective uniqueness and the stated height
+bounds.  Work first with cleared integer coordinates and determinants.
+Introduce normalized rational/projective codes only after these
+polynomial equalities and nonvanishing guards have been proved.
+In this way every division in the geometric prose has an explicit
+arithmetical justification.
+
+\paragraph{6. Descent and the elliptic example.}
+Create \path{DG/FermatDescent.lean} and
+\path{DG/CongruentNumber.lean}. Encode the positive integer solution
+data as one natural number and define the descent step by the bounded
+gcd, quotient, parity, and square-root operations.  Check separately
+that it preserves the solution equations and decreases the displayed
+rank.  These are quantifier-free implications about fixed primitive
+recursive functions.
+
+The generic descent argument is then compiled from the invariant
+\[
+ \operatorname{Good}(s_k)=1\quad\wedge\quad
+ \operatorname{rank}(s_k)+k\leq\operatorname{rank}(s_0),
+ \qquad s_{k+1}=\operatorname{Step}(s_k),
+\]
+at $k=\operatorname{rank}(s_0)+1$.  This is the exact invariant of the
+checked \texttt{noBooleanDescent} theorem.  It uses no minimal
+counterexample principle and no induction over an unbounded existential
+formula.  Finally compile the rational triangle--elliptic-curve
+transformations, including the nonzero-denominator and sign conditions,
+and deduce the complete rational-point list for $y^2=x^3-x$.
+
+\paragraph{7. Arithmetic dynamics.}
+Create \path{DG/Dynamics.lean}.  Starting from the certified two-sided
+height estimate, formalize strict height growth outside the explicit
+threshold.  Above that threshold, iterate for a specified number of
+steps and use quantifier-free arithmetic invariants to rule out a repeat.
+Inside the height box, use the complete projective list and a bounded
+orbit table.  Equality and membership are Boolean tests on normalized
+codes, so the finite repeat test is primitive recursive.  This proves
+both soundness and completeness of the algorithm listing all rational
+preperiodic points.  It is important to prove the escape lemma before
+discarding an orbit that leaves the box; finite search by itself would
+not justify that exclusion.
+
+\paragraph{8. Rational roots, local certificates, and denominator geometry.}
+Create \path{DG/RationalRoots.lean} and
+\path{DG/LocalObstructions.lean}.  The former needs only denominator
+clearing, coprimality of powers, and the bounded divisor enumerator.
+The latter proves reduction of polynomial evaluation modulo a supplied
+modulus and preservation of unimodularity of a primitive integer tuple.
+Its finite negative residue certificate is a Boolean conjunction, not a
+local-to-global existence principle.
+
+Create \path{DG/WeierstrassDenominators.lean}.  Prove reduced-fraction
+uniqueness and the equation $e^2=q^3$ first.  The bounded factorization
+module gives the exponent equality $2v=3u$ for each prime, hence the
+square/cube denominator form.  Compile the independent square-test
+enumerator and prove its list equivalence to the height predicate.
+Finally \path{DG/HeightDescent.lean} can express
+Theorem~\ref{thm:generation} as a schema for fixed group operations with
+supplied object-theory derivations of the group laws, representative
+coverage, and reducing-selector properties.  Its two induction invariants
+are the truncated height rank and equation~\eqref{eq:descent-expansion}.
+This conditional module must retain those hypotheses rather than silently
+instantiating them for an arbitrary elliptic curve.
+
+\paragraph{9. Object-theory theorem objects and native transfer.}
+Create \path{DG/Statements.lean}, \path{DG/Proofs.lean}, and
+\path{DG/NativeTransfer.lean}.  Write each theorem as a closed formula
+over the preceding primitive recursive symbols.  Instantiate the
+derived arithmetic and search lemmas to obtain
+$[]\vdash[\mathtt{PRAAx}]\varphi_G$.  Run an audit recording every use
+of \texttt{PRA.qfInd} and the associated proof of
+\texttt{Fm.QF}.  Only then apply \texttt{pra\_iff\_native}.
+The final integration test should print the axioms of the object-theory
+proof terms and ensure that no claimed geometric conclusion has entered
+as an extra axiom or as an assumption to a conditional transfer theorem.
+
+\subsection{Completion criteria}
+
+The ordinary Lean arithmetic core is complete and compiled.  The
+projective normalization, full conic bijection, Fermat descent step,
+resultant-height argument, and preperiodic-point enumeration have full
+human proofs in this article but are not fully formalized in Lean here.
+The deeply embedded \iPRA\ derivations of the geometric theorems are
+also not supplied.  Their completion requires the modules just listed,
+with the explicit encodings and induction invariants given here; it does
+not require a new mathematical finiteness theorem.
+
+To reproduce the completed part on a machine with the pinned Lean
+toolchain, run
+\begin{verbatim}
+cd lean
+lake build
+\end{verbatim}
+or run \texttt{lean DiophantineCore.lean} directly.  No network fetch of
+Mathlib is needed for this core.  Integration with the ProveIt proof
+syntax should use the pinned repository snapshot and its own build
+configuration, rather than copying the standalone build's dependency
+assumptions to the entire repository.

@@ -1,0 +1,148 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.93in,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable,enumitem}
+\usepackage{xcolor}
+\definecolor{inkblue}{RGB}{27,62,94}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Diophantine geometry in iPRA}
+\fancyhead[R]{\small Explicit arithmetic proofs}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2.5em}
+\setlist{itemsep=0.25em,topsep=0.4em}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\iPRA}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\Ht}{\mathrm H}
+\newcommand{\dotminus}{\mathbin{\dot{-}}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\pdfstringdefDisableCommands{\def\iPRA{iPRA}\def\Q{Q}\def\PP{P}\def\N{N}}
+\hypersetup{pdftitle={Diophantine geometry in intuitionistic primitive recursive arithmetic},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov},
+ pdfsubject={Heights, conics, explicit descent, arithmetic dynamics, and Lean formalization}}
+
+\title{\textbf{Diophantine geometry in intuitionistic\\primitive recursive arithmetic}\\[0.65em]
+ \large Heights, rational conics, explicit descent, and finite point algorithms}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{November 15, 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}
+We develop a finite-data theory of rational Diophantine geometry in
+first-order intuitionistic primitive recursive arithmetic. Rational projective
+points are canonical primitive integer vectors. We prove exact bounded-height
+enumeration, rational-root bounds, and two-sided height inequalities for
+nondegenerate maps of the projective line using explicit Sylvester-adjugate
+identities. These give a primitive recursive algorithm listing every rational
+preperiodic point of a map of degree at least two. For a nonsingular conic
+with a supplied rational point, we construct a total parametrization,
+including the tangent parameter, and prove quadratic height comparison and
+linear point-count bounds. A fully specified finite descent proves Fermat's
+square-area theorem and determines all rational points of
+$y^2=x^3-x$. Further results give congruence certificates, square and cube
+denominators on Weierstrass equations, and a constructive finite-generation
+interface with an explicit reducing selector.
+
+All the stated arithmetic results have human-readable proofs with bounded
+searches or specified primitive recursions and quantifier-free induction
+invariants. Thirteen arithmetic-core theorems are checked in Lean 4.32.0
+using only \texttt{Std}. The package includes exact executable companions,
+validation evidence, and a detailed dependency plan for constructing the
+remaining deeply embedded iPRA derivations in ProveIt. No complete
+object-theory Lean formalization of the geometry is claimed.
+\end{abstract}
+
+\vfill
+\begin{center}
+\small\textbf{Verification status:} full written proofs for the stated scope;
+checked Lean arithmetic core; explicit plan for object-theory completion.
+\end{center}
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\input{sections/01_foundations}
+\input{sections/02_heights}
+\input{sections/03_dynamics}
+\input{sections/04_conics}
+\input{sections/05_descent}
+\input{sections/06_obstructions}
+\input{sections/07_generation}
+\input{sections/08_lean}
+\input{sections/09_artifacts}
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{proveit}
+Vladimir Reshetnikov and contributors,
+\emph{ProveIt: Concise presentations of intuitionistic primitive recursive arithmetic},
+revision \texttt{b5a3ad037723c44d69a3d5b28a950c554327a989}, inspected November 15, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/b5a3ad037723c44d69a3d5b28a950c554327a989/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+Specific source files and blob identifiers appear in \texttt{evidence/source\_manifest.json}.
+
+\bibitem{milne}
+J. S. Milne, \emph{Elliptic Curves}, second edition, World Scientific, 2021.
+Author's online version, especially Chapter I, \S2, and Chapter IV.
+\url{https://jmilne.org/math/Books/EC2.pdf}.
+
+\bibitem{sutherland2013}
+Andrew V. Sutherland, \emph{18.782 Introduction to Arithmetic Geometry,
+Lecture 2}, MIT, Fall 2013.
+\url{https://ocw.mit.edu/courses/18-782-introduction-to-arithmetic-geometry-fall-2013/}.
+
+\bibitem{sutherland2025}
+Andrew V. Sutherland, \emph{18.783 Elliptic Curves, Lecture 1},
+MIT, September 4, 2025, especially the discussion of rational points in genus zero.
+\url{https://math.mit.edu/classes/18.783/2025/LectureSlides1.pdf}.
+
+\bibitem{silverman}
+Joseph H. Silverman, \emph{The Arithmetic of Dynamical Systems},
+Graduate Texts in Mathematics 241, Springer, 2007.
+Author's book page: \url{https://www.math.brown.edu/johsilve/ADSHome.html}.
+
+\bibitem{silverman2011}
+Joseph H. Silverman, \emph{Geometry and Arithmetic of Dominant Rational
+Self-Maps of Projective Space}, Shirahama lecture slides, December 2011,
+slides on height functoriality and preperiodic points.
+\url{https://www.math.brown.edu/johsilve/Presentations/Japan2011.pdf}.
+
+\bibitem{ConradCongruent}
+Keith Conrad, \emph{The Congruent Number Problem}, author's expository notes.
+\url{https://kconrad.math.uconn.edu/blurbs/ugradnumthy/congnumber.pdf}.
+
+\bibitem{DelahayeMayero}
+David Delahaye and Micaela Mayero,
+\emph{Diophantus' 20th Problem and Fermat's Last Theorem for $n=4$:
+Formalization of Fermat's Proofs in the Coq Proof Assistant}, 2005.
+\url{https://arxiv.org/abs/cs/0510011}.
+\end{thebibliography}
+\end{document}

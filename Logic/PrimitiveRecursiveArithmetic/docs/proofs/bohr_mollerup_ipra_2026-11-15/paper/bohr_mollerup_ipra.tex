@@ -1,0 +1,1082 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{construction}[theorem]{Construction}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\Gam}{\boldsymbol\Gamma}
+\newcommand{\Eq}{\mathrel{=_{\!\mathsf R}}}
+\newcommand{\Le}{\mathrel{\le_{\!\mathsf R}}}
+\newcommand{\Pos}{\mathsf{Pos}}
+\newcommand{\RLC}{\mathsf{RLC}}
+\newcommand{\BM}{\mathsf{BM}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\prodj}[2]{\prod_{j=#1}^{#2}}
+
+\title{A Finitary Constructive Bohr--Mollerup Theorem in Intuitionistic Primitive Recursive Arithmetic}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The classical Bohr--Mollerup theorem characterizes the gamma function as the
+unique positive log-convex function satisfying $f(1)=1$ and
+$f(x+1)=x f(x)$.  Neither arbitrary functions on the real line nor an
+unqualified real-completeness principle are objects of first-order
+intuitionistic primitive recursive arithmetic.  We therefore give a precise
+finitary reformulation.  Reals are primitive-recursively generated nested
+rational intervals with an explicit rate, functions on positive rationals are
+fixed primitive-recursive interval presentations with local moduli, and
+log-convexity is replaced by an algebraic rational-weight condition
+\[
+ F\!\left(\frac{(s-j)x+jy}{s}\right)^s
+ \le F(x)^{s-j}F(y)^j.
+\]
+A gamma presentation is constructed directly from Euler's finite products.
+On the fundamental strip $0<q\le1$ the two brackets
+\[
+ A_n(q)=\frac{n!\,n^q}{q(q+1)\cdots(q+n)},\qquad
+ B_n(q)=\frac{(n-1)!\,n^q}{q(q+1)\cdots(q+n-1)}
+\]
+are nested and satisfy $0\le B_n(q)-A_n(q)\le1/n$.  Rational powers are
+implemented by bounded bisection of integer roots, so these brackets yield an
+explicit primitive-recursive real name.  The recurrence extends the name to
+all positive arguments.  A finite two-sided squeeze proves uniqueness, with
+an explicit value of $n$ for every requested precision.  Every witness and
+modulus is primitive recursive; all induction can be reduced to
+quantifier-free induction.  No logarithm, integral, unbounded search,
+countable choice, excluded middle for arbitrary propositions, or general
+Cauchy-completeness axiom is used.  The report ends with a module-by-module
+Lean formalization plan tied to the existing \code{ConciseIPRA} development.
+\end{abstract}
+
+\tableofcontents
+
+\section{What is proved}
+
+The exact classical statement quantifies over arbitrary functions
+$F:(0,\infty)\to(0,\infty)$.  Such a higher-type quantifier is not part of the
+first-order language of $\ipra$.  A mathematically honest formulation must
+therefore say how a real and a function are presented, and it must distinguish
+an internal arithmetic theorem from the external notation used to read a
+regular Cauchy presentation as a real number.
+
+This report proves two closely related results.
+
+\begin{enumerate}[label=\textbf{(\Alph*)},leftmargin=2.5em]
+\item \emph{Internal rational-core theorem schema.}  There is a fixed
+primitive-recursive interval presentation $\Gam_{\Q}$ on positive rational
+codes.  For every fixed primitive-recursive presentation $F$ satisfying the
+constructive Bohr--Mollerup hypotheses, $\ipra$ proves, for every positive
+rational code $q$ and precision $k$, that $F(q)$ and $\Gam_{\Q}(q)$ agree to
+precision $2^{-k}$.  ``For every fixed presentation'' is a theorem schema,
+which is the appropriate first-order reading: the defining primitive-recursive
+functions of $F$ are function symbols of the particular definitional
+extension.
+
+\item \emph{Completion corollary.}  If the presentation of $F$ also supplies
+a primitive-recursive local uniform-continuity modulus, then both $F$ and
+$\Gam_{\Q}$ extend canonically from positive rationals to regular positive
+reals, and the extensions are equal.  This is again witnessed precision by
+precision, not by an appeal to an impredicative set of all real numbers.
+\end{enumerate}
+
+The algebraic convexity hypothesis is equivalent to ordinary log-convexity in
+classical analysis once positivity and continuity are available, but it is
+substantially better suited to $\ipra$: its individual instances contain only
+finite products, integer powers, rational arithmetic, and order.
+
+\section{Arithmetic coding and regular real names}
+\label{sec:coding}
+
+\subsection{Rationals}
+
+A nonnegative rational is coded by a pair $(a,b)$ with $a\in\N$ and
+$0<b\in\N$; signed rationals add a sign bit.  Equality and order are decided
+by cross multiplication.  Addition, multiplication, reciprocal on a supplied
+positive denominator, finite products, factorial, powers, reduction by a
+bounded gcd computation, and maximum or minimum of a finite list are all
+primitive recursive.  No appeal to a field object is needed inside the
+arithmetic theory.
+
+We write rational notation in the paper.  Every displayed rational identity
+can be expanded into an integer identity, and every rational inequality into
+an integer inequality after multiplication by explicitly positive
+denominators.
+
+\subsection{Nested interval names}
+
+\begin{definition}[regular interval name]
+A \emph{regular interval name} is a pair of primitive-recursive rational
+functions $L_X,U_X:\N\to\Q$ such that, for every $k$,
+\begin{align*}
+ L_X(k)&\le L_X(k+1)\le U_X(k+1)\le U_X(k),\\
+ U_X(k)-L_X(k)&\le2^{-k}.
+\end{align*}
+Its center is $c_X(k)=(L_X(k)+U_X(k))/2$.
+\end{definition}
+
+A convenient arithmetic equality predicate is
+\begin{equation}
+ X\Eq Y\quad:\Longleftrightarrow\quad
+ \forall k\;\abs{c_X(k+2)-c_Y(k+2)}\le2^{-k}.
+ \label{eq:real-equality}
+\end{equation}
+Shifting the precision by two makes reflexivity, symmetry, and transitivity
+immediate from the triangle inequality and regularity.  Other standard regular
+Cauchy conventions are definitionally interchangeable with this one.  The
+order relation is treated similarly:
+\begin{equation}
+ X\Le Y\quad:\Longleftrightarrow\quad
+ \forall k\; c_X(k+2)\le c_Y(k+2)+2^{-k}.
+ \label{eq:real-order}
+\end{equation}
+All predicates at a fixed precision are decidable rational inequalities.
+
+\begin{definition}[strong positivity]
+A name $X$ is \emph{strongly positive} if its data include integers $p,s$ with
+$2^{-s}\le L_X(p)$.  By nesting, this is then a permanent positive lower
+bound.  We write $\Pos(X)$.
+\end{definition}
+
+This is the constructive meaning of ``positive'' used below.  It is stronger
+than merely denying $X\le0$, and it supplies exactly the witness required to
+form reciprocals and cancel a positive factor.
+
+The usual arithmetic operations on regular names are obtained by interval
+arithmetic followed by a precision shift.  For example, if $X,Y$ have known
+bounds on the precision range in use, the product interval is the minimum and
+maximum of the four endpoint products.  A running-intersection normalization
+\[
+ \widehat L(k)=\max_{i\le k}L(i),\qquad
+ \widehat U(k)=\min_{i\le k}U(i)
+\]
+turns any compatible sequence of shrinking enclosures into a nested one.  All
+of these transformations are primitive recursive.
+
+\subsection{Presented functions and the first-order status}
+
+For the internal theorem, a candidate function on positive rationals is a
+fixed tuple of primitive-recursive functions
+\[
+ L_F(q,k),\quad U_F(q,k),\quad P_F(q),\quad M_F(\alpha,\beta,k),
+\]
+where $q,\alpha,\beta$ are rational codes.  The first two give a regular name,
+$P_F$ gives a strong-positivity witness, and $M_F$ is a local modulus:
+whenever $\alpha\le x,y\le\beta$ and
+$\abs{x-y}\le2^{-M_F(\alpha,\beta,k)}$, the values agree within $2^{-k}$.
+The theorem on rational arguments does not need $M_F$; it is needed only for
+the completion corollary.
+
+Because $F$ is fixed, its primitive-recursive algorithms occur as ordinary
+function symbols in a definitional extension of $\ipra$.  The theorem has the
+form
+\[
+ \BM(F)\longrightarrow
+ \forall q\,\forall k\,
+ \bigl(q>0\longrightarrow \mathsf{EqAt}_k(F(q),\Gam_{\Q}(q))\bigr).
+ \label{eq:schema-shape}
+\]
+There is no hidden quantification over all functions.  Uniformity is supplied
+metatheoretically by a primitive-recursive proof constructor taking the fixed
+syntax of the presentation and its hypothesis proofs to the syntax of the
+conclusion proof.
+
+\section{The constructive convexity condition}
+
+\begin{definition}[rational multiplicative convexity]
+A strongly positive presented function $F$ satisfies $\RLC$ if for all
+positive rational $x,y$, all $s\ge1$, and all $0\le j\le s$, with
+\[
+ z=\frac{(s-j)x+jy}{s},
+\]
+one has
+\begin{equation}
+ F(z)^s\Le F(x)^{s-j}F(y)^j.
+ \label{eq:rlc}
+\end{equation}
+\end{definition}
+
+The condition contains no logarithm and no irrational scalar.  Classically,
+for positive continuous functions, it is equivalent to convexity of
+$\log F$: one direction follows by exponentiating Jensen's inequality; the
+other follows first at rational weights from \eqref{eq:rlc} and then at real
+weights by density and continuity.
+
+\begin{definition}[constructive Bohr--Mollerup data]
+The assertion $\BM(F)$ consists of regularity and strong positivity of every
+$F(q)$, together with
+\begin{align}
+ F(1)&\Eq1, \label{eq:normalization}\\
+ F(x+1)&\Eq xF(x) \qquad(x>0), \label{eq:recurrence}\\
+ \RLC(F)&. \label{eq:convexity-assumption}
+\end{align}
+For the real-domain corollary, the local modulus $M_F$ is also included.
+\end{definition}
+
+\section{Finite weighted arithmetic--geometric mean}
+\label{sec:amgm}
+
+The only convexity inequality needed for constructing gamma is a finite
+weighted AM--GM inequality.
+
+\begin{lemma}[finite AM--GM, constructive form]
+For positive rationals $u_1,\dots,u_r$,
+\[
+ \left(\frac{u_1+\cdots+u_r}{r}\right)^r
+ \ge u_1\cdots u_r.
+\]
+There is a primitive-recursive algebraic certificate of this inequality from
+the input rational codes.
+\end{lemma}
+
+\begin{proof}
+The two-variable case is the identity
+\[
+ \left(\frac{u-v}{2}\right)^2\ge0.
+\]
+If the result is known for $r$ entries, splitting $2r$ entries into two blocks,
+applying the $r$-entry result to each block, and then the two-entry result to
+their two means proves the $2r$-entry result.  Conversely, the $r$-entry result
+implies the $(r-1)$-entry result: append the mean
+$A=(u_1+\cdots+u_{r-1})/(r-1)$ as the last entry.  AM--GM for $r$ entries gives
+$A^r\ge A u_1\cdots u_{r-1}$; the supplied positive lower bound for $A$ permits
+cancellation.  To handle arbitrary $r$, choose the least power of two at least
+$r$, prove that case by repeated doubling, and descend one step at a time.
+
+Every loop is bounded by $r$ or by the binary length of $r$.  The certificate
+consists only of additions, multiplications, squares, substitutions, and
+cancellation by explicitly positive rationals.  Its correctness is proved by
+quantifier-free induction on the finite construction tree.
+\end{proof}
+
+\begin{corollary}[two-point rational weight]
+For $u,v>0$, $0\le a\le b$, and $b>0$,
+\begin{equation}
+ \left(\frac{(b-a)u+av}{b}\right)^b\ge u^{b-a}v^a.
+ \label{eq:weighted-amgm}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Apply finite AM--GM to a list containing $b-a$ copies of $u$ and $a$ copies
+of $v$.
+\end{proof}
+
+When $t>0$ and $r=a/b\in[0,1]$, \eqref{eq:weighted-amgm} says, in the notation
+of positive $b$th roots,
+\begin{equation}
+ t^r\le (1-r)+rt.
+ \label{eq:concave-power}
+\end{equation}
+The notation $t^{a/b}$ is constructive: for rational $t$, it denotes the
+unique positive $b$th root of $t^a$, represented by bounded bisection.  The
+comparison in \eqref{eq:concave-power} can equivalently be checked after
+raising both sides to the $b$th power, so no analytic root theorem is required
+in the proof checker.
+
+\section{Primitive-recursive rational powers}
+\label{sec:roots}
+
+For the Euler products below, only $n^{a/b}$ with $n\in\N_{>0}$ and
+$0<a\le b$ is needed.  Put $T=n^a$.  The positive $b$th root lies in $[1,n]$.
+At each bisection step, for a rational midpoint $m$, the decidable integer
+comparison
+\[
+ \operatorname{num}(m)^b
+ \le T\,\operatorname{den}(m)^b
+\]
+selects the lower or upper half.  After $h$ steps, the width is at most
+$n2^{-h}$.  Thus, for any positive rational $\delta$, choosing the first
+$h$ with $2^h\ge n/\delta$ gives bounds
+\[
+ \rho^-\le n^{a/b}\le\rho^+,
+ \qquad \rho^+-\rho^-\le\delta.
+\]
+The search for $h$ is bounded by the bit lengths of the numerator and
+denominator of $n/\delta$, hence is primitive recursive.  This construction
+also proves monotonicity and uniqueness of positive integer roots by finite
+integer-power comparisons.
+
+\section{Euler brackets on the fundamental strip}
+\label{sec:strip}
+
+Fix a rational $q=a/b$ in lowest terms with $0<q\le1$.  For $n\ge1$ define
+\begin{align}
+ A_n(q)&=\frac{n!\,n^q}{q(q+1)\cdots(q+n)},
+ \label{eq:An}\\
+ B_n(q)&=\frac{(n-1)!\,n^q}{q(q+1)\cdots(q+n-1)}.
+ \label{eq:Bn}
+\end{align}
+The relation between them is
+\begin{equation}
+ B_n(q)=\left(1+\frac qn\right)A_n(q).
+ \label{eq:BoverA}
+\end{equation}
+
+\begin{lemma}[nested Euler brackets]
+For $0<q\le1$ and $n\ge1$,
+\begin{equation}
+ A_n(q)\le A_{n+1}(q)\le B_{n+1}(q)\le B_n(q),
+ \label{eq:nesting}
+\end{equation}
+and
+\begin{equation}
+ 0\le B_n(q)-A_n(q)\le\frac1n.
+ \label{eq:width}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Direct cancellation gives
+\begin{align*}
+ \frac{A_{n+1}(q)}{A_n(q)}
+ &=\frac{n+1}{n+1+q}\left(1+\frac1n\right)^q,\\
+ \frac{B_{n+1}(q)}{B_n(q)}
+ &=\frac{n}{n+q}\left(1+\frac1n\right)^q.
+\end{align*}
+Apply \eqref{eq:concave-power} first to $t=n/(n+1)$:
+\[
+ \left(\frac n{n+1}\right)^q\le1-\frac q{n+1}.
+\]
+Taking positive reciprocals and using the elementary identity
+$(1-s)^{-1}\ge1+s$ for $0\le s<1$ gives
+\[
+ \left(1+\frac1n\right)^q
+ \ge1+\frac q{n+1}=\frac{n+1+q}{n+1},
+\]
+so $A_{n+1}\ge A_n$.  Applying \eqref{eq:concave-power} to
+$t=1+1/n$ gives
+\[
+ \left(1+\frac1n\right)^q\le1+\frac qn=\frac{n+q}{n},
+\]
+so $B_{n+1}\le B_n$.  The middle inequality in \eqref{eq:nesting} is
+immediate from \eqref{eq:BoverA}.
+
+Now $B_n\le B_1=1/q$, and hence $A_n\le1/q$.  From
+\eqref{eq:BoverA},
+\[
+ B_n-A_n=\frac qn A_n\le\frac1n.
+\]
+Every step is an inequality between positive rationals after taking the
+$b$th power; no limiting argument has occurred.
+\end{proof}
+
+\subsection{An explicit rational interval name}
+
+Although $A_n(q)$ and $B_n(q)$ contain the algebraic number $n^q$, rational
+endpoints are obtained by the bisection construction of \cref{sec:roots}.
+Write
+\[
+ A_n=c_A n^q,\qquad B_n=c_B n^q,
+\]
+where $c_A,c_B$ are positive rationals.  Since $n^q\ge1$ and
+$A_n,B_n\le1/q$, one has $c_A,c_B\le1/q$.
+
+At requested precision $k$, take
+\[
+ n_k=2^{k+2},\qquad
+ \delta_k=q\,2^{-k-3}.
+\]
+Compute rational root bounds $\rho_k^-\le n_k^q\le\rho_k^+$ with width at
+most $\delta_k$, and put
+\[
+ \ell_k=c_A\rho_k^-,\qquad u_k=c_B\rho_k^+.
+\]
+Then
+\begin{align*}
+ u_k-\ell_k
+ &\le (B_{n_k}-A_{n_k})+(c_A+c_B)\delta_k\\
+ &\le2^{-k-2}+2\delta_k/q
+ =2^{-k-1}.
+ \label{eq:raw-width}
+\end{align*}
+For $i\le j$, nesting gives
+$\ell_i\le A_{n_i}\le A_{n_j}\le B_{n_j}\le u_j$; by the same chain with
+the indices reversed at the outer endpoints, every $\ell_i$ is below every
+$u_j$.  Therefore
+\[
+ L_0(k)=\max_{i\le k}\ell_i,
+ \qquad U_0(k)=\min_{i\le k}u_i
+ \label{eq:strip-name}
+\]
+is a nested nonempty rational interval of width at most $2^{-k-1}$.  This is
+our primitive-recursive name $\Gam_0(q)$ on $0<q\le1$.
+
+By construction,
+\begin{equation}
+ A_n(q)\Le\Gam_0(q)\Le B_n(q)
+ \qquad(n\ge1).
+ \label{eq:gamma-strip-squeeze}
+\end{equation}
+Here an algebraic endpoint is itself read through its bisection name; all
+precision instances reduce to rational inequalities.
+
+\section{Extension to all positive rationals}
+\label{sec:extension}
+
+Every positive rational has a canonical decomposition
+\[
+ x=m+r,
+ \qquad m=\ceil{x}-1\in\N,
+ \qquad 0<r\le1.
+\]
+Let
+\[
+ P_m(r)=\prod_{j=0}^{m-1}(r+j),\qquad P_0(r)=1,
+\]
+and define
+\begin{equation}
+ \Gam_{\Q}(x)=P_m(r)\Gam_0(r).
+ \label{eq:global-gamma}
+\end{equation}
+This is a primitive-recursive interval presentation: $m,r$, the finite
+product, and the required precision shift for multiplication are all explicit.
+
+\begin{proposition}[normalization, recurrence, and positivity]
+For positive rational $x$,
+\begin{align*}
+ \Gam_{\Q}(1)&\Eq1,\\
+ \Gam_{\Q}(x+1)&\Eq x\Gam_{\Q}(x),\\
+ \Pos(\Gam_{\Q}(x))&.
+\end{align*}
+\end{proposition}
+
+\begin{proof}
+For $q=1$, the strip brackets are
+$A_n(1)=n/(n+1)$ and $B_n(1)=1$, so
+\eqref{eq:gamma-strip-squeeze} and the explicit width force
+$\Gam_0(1)=1$.  The recurrence is immediate from
+$P_{m+1}(r)=(m+r)P_m(r)$; the boundary case $r=1$ is the same factorial
+identity.  Strong positivity follows from the explicit positive lower
+endpoint of any one strip bracket and the positive finite product $P_m(r)$.
+\end{proof}
+
+\section{Convexity of the constructed gamma presentation}
+\label{sec:gamma-convexity}
+
+For $x>0$ rational and $n\ge1$, define the global Euler approximant
+\begin{equation}
+ E_n(x)=\frac{n!\,n^x}{x(x+1)\cdots(x+n)}.
+ \label{eq:En}
+\end{equation}
+
+\begin{lemma}[explicit convergence from below]
+Write $x=m+r$ with $0<r\le1$, and set
+\[
+ C_m=m!\left(1+m+\frac{m(m+1)}2\right).
+\]
+Then
+\begin{equation}
+ 0\Le \Gam_{\Q}(x)-E_n(x)\Le\frac{C_m}{n}.
+ \label{eq:En-tail}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+A direct rearrangement gives
+\begin{equation}
+ E_n(m+r)=P_m(r)A_n(r)
+ \prod_{s=1}^{m}\frac{n}{n+r+s}.
+ \label{eq:En-factor}
+\end{equation}
+The empty product is $1$.  Hence $E_n\le P_mA_n\le\Gam_{\Q}$.
+Moreover,
+\begin{align*}
+ \Gam_{\Q}-E_n
+ &=P_m(\Gam_0-A_n)
+   +P_mA_n\left(1-\prod_{s=1}^{m}\frac{n}{n+r+s}\right).
+\end{align*}
+The first term is at most $P_m/n\le m!/n$.  For the second, use
+$A_n\le1/r$, $P_m/r\le m!$, and the finite product inequality
+$1-\prod_s(1-d_s)\le\sum_s d_s$:
+\begin{align*}
+ 1-\prod_{s=1}^{m}\frac{n}{n+r+s}
+ &\le\sum_{s=1}^{m}\frac{r+s}{n+r+s}\\
+ &\le\frac{mr+m(m+1)/2}{n}\\
+ &\le\frac{m+m(m+1)/2}{n}.
+\end{align*}
+Combining the two estimates gives \eqref{eq:En-tail}.  This is a finite
+calculation with an explicit error term.
+\end{proof}
+
+\begin{lemma}[each Euler approximant is rationally log-convex]
+If $z=((s-j)x+jy)/s$, then
+\begin{equation}
+ E_n(z)^s\le E_n(x)^{s-j}E_n(y)^j.
+ \label{eq:En-rlc}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The numerator factors cancel because $sz=(s-j)x+jy$.  For every
+$h=0,\dots,n$, weighted AM--GM gives
+\[
+ (z+h)^s\ge(x+h)^{s-j}(y+h)^j.
+\]
+Multiplying these finitely many inequalities makes the denominator on the
+left at least the corresponding denominator on the right, which reverses in
+the quotient and yields \eqref{eq:En-rlc}.
+\end{proof}
+
+\begin{proposition}[constructive rational multiplicative convexity]
+The presentation $\Gam_{\Q}$ satisfies $\RLC$.
+\end{proposition}
+
+\begin{proof}
+Fix $x,y,s,j$ and $z=((s-j)x+jy)/s$.  By \eqref{eq:En-tail}, each of
+$E_n(x),E_n(y),E_n(z)$ approaches the corresponding gamma name with a stated
+$C/n$ error.  Choose an explicit rational upper bound $H\ge1$ for all six
+quantities; for example, use the strip bound $\Gam_0(r)\le1/r$, the finite
+shift products, and then enlarge to cover the finitely many $E_n$.
+For $0\le u,v\le H$,
+\begin{equation}
+ \abs{u^d-v^d}\le dH^{d-1}\abs{u-v}
+ \label{eq:power-lipschitz}
+\end{equation}
+follows from factorization of $u^d-v^d$.  A second telescoping factorization
+gives an explicit analogous bound for $u^{s-j}v^j$.
+
+Given precision $2^{-k}$, take $n$ larger than the maximum of the three tail
+constants times the resulting integer-power Lipschitz constant times
+$2^{k+2}$.  Then \eqref{eq:En-rlc} implies
+\[
+ \Gam_{\Q}(z)^s
+ \le \Gam_{\Q}(x)^{s-j}\Gam_{\Q}(y)^j+2^{-k}.
+\]
+Since $k$ was arbitrary, this is exactly the regular-name order
+\eqref{eq:real-order}.  The choice of $n$ is an explicit primitive-recursive
+expression in the input codes and $k$.
+\end{proof}
+
+\section{The finite uniqueness squeeze}
+\label{sec:uniqueness}
+
+Let $F$ be any presented positive function satisfying $\BM(F)$.  Fix
+$q=a/b$ in lowest terms with $0<q\le1$, and write
+\[
+ P_n(q)=q(q+1)\cdots(q+n-1).
+\]
+Repeated use of normalization and recurrence gives
+\begin{equation}
+ F(n)=(n-1)!,\qquad F(n+1)=n!,\qquad
+ F(n+q)=P_n(q)F(q).
+ \label{eq:recurrence-iterated}
+\end{equation}
+
+\begin{lemma}[upper squeeze]
+For every $n\ge1$,
+\begin{equation}
+ F(q)^b\Le B_n(q)^b.
+ \label{eq:upper-squeeze}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Because
+\[
+ n+q=\frac{(b-a)n+a(n+1)}b,
+\]
+rational multiplicative convexity and \eqref{eq:recurrence-iterated} give
+\begin{align*}
+ P_n(q)^bF(q)^b
+ &=F(n+q)^b\\
+ &\le F(n)^{b-a}F(n+1)^a\\
+ &=((n-1)!)^b n^a.
+\end{align*}
+Division by the explicitly positive $P_n(q)^b$ gives exactly
+\eqref{eq:upper-squeeze}, because
+$B_n(q)^b=((n-1)!)^b n^a/P_n(q)^b$.
+\end{proof}
+
+\begin{lemma}[lower squeeze]
+For every $n\ge1$,
+\begin{equation}
+ A_n(q)^b\Le F(q)^b.
+ \label{eq:lower-squeeze}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The identity
+\[
+ n+1=\frac{a(n+q)+(b-a)(n+q+1)}b
+\]
+and $\RLC$ yield
+\begin{align*}
+ (n!)^b=F(n+1)^b
+ &\le F(n+q)^aF(n+q+1)^{b-a}\\
+ &=F(n+q)^b(n+q)^{b-a}\\
+ &=P_n(q)^bF(q)^b(n+q)^{b-a}.
+\end{align*}
+Thus
+\[
+ F(q)^b\ge\frac{(n!)^b}{P_n(q)^b(n+q)^{b-a}}.
+\]
+Since $n^a\le(n+q)^a$, the right side is at least
+\[
+ \frac{(n!)^b n^a}{P_n(q)^b(n+q)^b}=A_n(q)^b.
+\]
+\end{proof}
+
+The constructed gamma value satisfies the same squeeze by
+\eqref{eq:gamma-strip-squeeze}.  The interval for the $b$th powers shrinks at
+an explicit rate:
+\begin{lemma}[power-gap bound]
+\begin{equation}
+ 0\le B_n(q)^b-A_n(q)^b
+ \le \frac{b}{nq^{b-1}}.
+ \label{eq:power-gap}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Factor the difference:
+\[
+ B_n^b-A_n^b=(B_n-A_n)
+ \sum_{i=0}^{b-1}B_n^{b-1-i}A_n^i.
+\]
+By \eqref{eq:width}, $B_n-A_n\le1/n$, and by the proof of that lemma,
+$0\le A_n\le B_n\le1/q$.  There are $b$ summands, each at most
+$q^{1-b}$.
+\end{proof}
+
+\begin{theorem}[constructive Bohr--Mollerup theorem on positive rationals]
+Let $F$ be a fixed primitive-recursive regular interval presentation on
+positive rationals satisfying $\BM(F)$.  Then
+\[
+ \forall q\in\Q_{>0}\qquad F(q)\Eq\Gam_{\Q}(q).
+\]
+For every $q$ and precision $k$, a witnessing derivation uses only finitely
+many recurrence instances and two instances of $\RLC$, at a value of $n$
+computed primitively from $q$ and $k$.
+\end{theorem}
+
+\begin{proof}
+First let $0<q=a/b\le1$.  The upper and lower squeeze lemmas show that both
+$F(q)^b$ and $\Gam_0(q)^b$ lie between $A_n(q)^b$ and $B_n(q)^b$ for every
+$n$.  Given precision $2^{-k}$, choose, for example,
+\[
+ n\ge 2^{k+2}\,b\,q^{1-b}.
+ \label{eq:explicit-n-unique}
+\]
+Then \eqref{eq:power-gap} proves that the two $b$th powers agree to the
+required precision.  Hence
+$F(q)^b\Eq\Gam_0(q)^b$.
+
+Positive integer powers are injective on strongly positive regular names.
+Indeed,
+\[
+ F(q)^b-\Gam_0(q)^b
+ =(F(q)-\Gam_0(q))
+ \sum_{i=0}^{b-1}F(q)^{b-1-i}\Gam_0(q)^i.
+\]
+The second factor has an explicit positive lower bound from the supplied
+positivity witnesses, so it has a constructively defined reciprocal and can
+be cancelled.  Thus $F(q)\Eq\Gam_0(q)$.
+
+For arbitrary $x=m+r>0$ with $0<r\le1$, iterate the recurrence finitely:
+\[
+ F(x)=P_m(r)F(r)=P_m(r)\Gam_0(r)=\Gam_{\Q}(x).
+\]
+All choices made in this proof are displayed bounded computations.  In
+particular, no proof by contradiction or nonconstructive extraction of a
+limit is used.
+\end{proof}
+
+\section{A primitive-recursive local modulus and the real-domain corollary}
+\label{sec:completion}
+
+It remains to justify that the rational presentation extends canonically to
+regular positive reals.  We give an explicit local modulus rather than
+invoking a general continuity theorem.
+
+Fix positive rationals $0<\alpha\le\beta$, let
+$M=\ceil{\beta}$, and put $C=C_M$.  For rational
+$x,y\in[\alpha,\beta]$, choose $n$ so that $2C/n\le\varepsilon/3$.
+The denominator
+\[
+ D_n(x)=\prod_{j=0}^{n}(x+j)
+\]
+satisfies $D_n(x)\ge\alpha n!$, and a telescoping product estimate gives
+\begin{equation}
+ \abs{D_n(x)-D_n(y)}
+ \le(n+1)(\beta+n)^n\abs{x-y}.
+ \label{eq:den-lipschitz}
+\end{equation}
+For an integer $T\ge1$, Bernoulli's finite inequality gives
+\[
+ \left(1+\frac{n-1}{T}\right)^T\ge n,
+\]
+so $n^{1/T}\le1+(n-1)/T$.  Consequently, if
+$\abs{x-y}\le1/T$, then, using $n^t\le n^{\ceil\beta}$ on the interval,
+\begin{equation}
+ \abs{n^x-n^y}
+ \le n^{\ceil\beta}\frac{n-1}{T}.
+ \label{eq:power-modulus}
+\end{equation}
+Combining \eqref{eq:den-lipschitz}, \eqref{eq:power-modulus}, and the lower
+bound for $D_n$ yields
+\begin{equation}
+ \abs{E_n(x)-E_n(y)}\le\frac{K_{\alpha,\beta,n}}{T},
+ \label{eq:En-modulus}
+\end{equation}
+where the rational constant
+\begin{equation}
+ K_{\alpha,\beta,n}
+ =n^{\ceil\beta}
+ \left(
+   \frac{n-1}{\alpha}
+   +\frac{(n+1)(\beta+n)^n}{\alpha^2 n!}
+ \right)
+ \label{eq:Kconstant}
+\end{equation}
+is primitive recursively computable.  Choose $T$ with
+$K_{\alpha,\beta,n}/T\le\varepsilon/3$.  By the two tail estimates,
+\[
+ \abs{\Gam_{\Q}(x)-\Gam_{\Q}(y)}\le\varepsilon.
+\]
+Setting $\varepsilon=2^{-k}$ and replacing $1/T$ by the next smaller dyadic
+produces a primitive-recursive local modulus
+$M_{\Gam}(\alpha,\beta,k)$.
+
+\begin{corollary}[regular-real Bohr--Mollerup theorem]
+The rational presentation $\Gam_{\Q}$ has a canonical extension $\Gam$ to
+strongly positive regular real names.  If a presented function $F$ has a
+primitive-recursive local modulus and satisfies normalization, recurrence, and
+rational multiplicative convexity, then
+\[
+ \forall X>0\qquad F(X)\Eq\Gam(X).
+\]
+Moreover $\Gam$ itself satisfies the three conditions.
+\end{corollary}
+
+\begin{proof}
+Given a regular name $X$ and a compact positive rational interval known to
+contain it, take the canonical rational center $x_t=c_X(t)$ at a precision
+selected by $M_{\Gam}$.  The values $\Gam_{\Q}(x_t)$ form a regular name by
+the modulus; this defines $\Gam(X)$ without choice.  Independence of the
+chosen approximation follows from the same modulus.  Normalization,
+recurrence, and $\RLC$ pass from rational approximants to real names using
+finite product moduli.
+
+For uniqueness, select $t$ large enough for both the modulus of $F$ and that
+of $\Gam$.  Then
+\[
+ F(X)\approx F(x_t)=\Gam_{\Q}(x_t)\approx\Gam(X)
+\]
+with each outer error below one third of the requested precision.  Since the
+rational-core equality is already proved and every precision is explicit, the
+regular names are equal.
+\end{proof}
+
+\section{Why the proof belongs to \texorpdfstring{$\ipra$}{iPRA}}
+\label{sec:ipra-audit}
+
+The preceding argument is constructive in a stronger sense than merely
+avoiding an obvious appeal to excluded middle.  Its computational inventory
+is as follows.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.30\textwidth}
+                  >{\raggedright\arraybackslash}p{0.63\textwidth}}
+\toprule
+Component & Primitive-recursive realization and induction used \\
+\midrule
+\endhead
+Rational arithmetic & Integer pairs, cross multiplication, bounded gcd,
+finite sums and products; all equations and inequalities are decidable.\\
+Regular real name & Two PR endpoint functions; regularity and equality are
+universal closures of quantifier-free endpoint inequalities.\\
+Finite AM--GM & A bounded proof tree built by doubling and descent; correctness
+by quantifier-free induction on its code.\\
+Rational powers & A prescribed number of dyadic bisection steps; branch choice
+is a decidable integer-power comparison.\\
+Euler brackets & Factorial, powers, rising products, and rational arithmetic;
+monotonicity is checked after a finite integer power.\\
+Gamma name & Running maximum and minimum of finitely many rational endpoints;
+no completeness axiom.\\
+Convexity & A finite AM--GM product for each $E_n$, followed by an explicitly
+chosen tail index.\\
+Uniqueness & Two convexity instances, finitely many recurrence instances, and
+the explicit bound \eqref{eq:explicit-n-unique}.\\
+Real extension & Canonical rational centers and the explicit local modulus
+\eqref{eq:Kconstant}; no choice sequence.\\
+\bottomrule
+\end{longtable}
+
+The induction axioms of the usual first-order presentation of $\ipra$ apply to
+quantifier-free formulas.  This suffices because every invariant above is a
+primitive-recursive equality or inequality on codes.  Universal statements
+are obtained by generalizing a free numerical parameter after the
+quantifier-free induction has been performed.  Finite sequences are decoded
+by primitive-recursive projections, so their correctness predicates are also
+decidable.
+
+No step uses any of the following:
+\begin{itemize}[leftmargin=2em]
+\item a logarithm or exponential function on arbitrary reals;
+\item an integral representation of gamma;
+\item a least-upper-bound or general Cauchy-completeness axiom;
+\item countable or dependent choice;
+\item an unbounded search for a convergence stage;
+\item excluded middle for an arbitrary proposition;
+\item a nonconstructive claim that every positive real has a chosen root.
+\end{itemize}
+Only decidable case distinctions on integer comparisons occur.
+
+\section{Lean formalization roadmap}
+\label{sec:lean}
+
+The repository's existing \code{ConciseIPRA} development already supplies the
+right object theory.  In particular, its usual presentation has a type
+\code{PR k} of primitive-recursive function symbols, terms \code{PTm}, axioms
+\code{PRAAx}, and the theorem \code{PRA.qfInd} for quantifier-free induction.
+The file \code{BiInterpretation.lean} supplies
+\code{pra\_theorem\_iff}, translating closed theorems between the usual
+presentation and the concise scalar theory.  The cleanest formalization has
+two layers.
+
+\subsection{Layer I: executable arithmetic and semantic correctness}
+
+The following modules are proposed.
+
+\begin{description}[style=nextline,leftmargin=2.7cm]
+\item[\code{BM/Code.lean}]
+Pairing, finite sequences, signed rational codes, cross-multiplied equality and
+order, dyadics, factorial, rising products, bounded maxima/minima.
+
+\item[\code{BM/IntervalReal.lean}]
+Regular interval names, equality/order at a precision, strong positivity,
+interval arithmetic, running-intersection normalization, and precision-shift
+lemmas.
+
+\item[\code{BM/AMGM.lean}]
+The proof-tree datatype for finite AM--GM, its evaluator, and correctness of
+the two-point weighted instance.
+
+\item[\code{BM/Root.lean}]
+Bounded bisection for positive integer roots, invariants, width bound, and
+rational-power comparisons after clearing the root by an integer power.
+
+\item[\code{BM/EulerBracket.lean}]
+Definitions of $A_n,B_n$, exact ratio identities, monotonicity, the $1/n$
+width theorem, and rational endpoint generation.
+
+\item[\code{BM/GammaQ.lean}]
+The strip name, running intersection, shift decomposition $x=m+r$, global
+gamma name, normalization, recurrence, and positivity.
+
+\item[\code{BM/EulerConvex.lean}]
+$E_n$, the factorization \eqref{eq:En-factor}, tail bound, finite weighted
+convexity, and passage to gamma with explicit power-error bounds.
+
+\item[\code{BM/Squeeze.lean}]
+The two finite convexity applications, power-gap bound, positive-power
+cancellation, and rational-core uniqueness.
+
+\item[\code{BM/Completion.lean}]
+The explicit modulus \eqref{eq:Kconstant}, extension from rational centers, and
+real-domain uniqueness.
+\end{description}
+
+These modules may use Lean's ordinary natural-number semantics to debug the
+algorithms and prove their external correctness.  The supplied Python program
+\code{code/bm\_bounds.py} is a small independent executable model of the same
+finite arithmetic.
+
+\subsection{Layer II: object-level \texorpdfstring{$\ipra$}{iPRA} proofs}
+
+\begin{description}[style=nextline,leftmargin=2.7cm]
+\item[\code{BM/PRDefs.lean}]
+Compile every algorithm from Layer I into a value of the existing
+\code{PR k} syntax.  Prove its defining equations using
+\code{PRA.precZero}, \code{PRA.precSucc}, composition, and projection.
+
+\item[\code{BM/QFGraphs.lean}]
+Define quantifier-free graph formulas for rational operations, bisection,
+finite products, and interval predicates.  Prove functionality and totality
+for the fixed PR terms.
+
+\item[\code{BM/ObjectLemmas.lean}]
+Mirror the finite algebra lemmas as derivations
+$\Gamma \vdash[\mathsf{PRAAx}] \varphi$.  Use \code{PRA.qfInd}; avoid importing any
+classical real-analysis theorem.
+
+\item[\code{BM/ObjectTheorem.lean}]
+Assemble the closed formula expressing \eqref{eq:schema-shape} for a fixed
+candidate presentation and build the derivation of every precision instance.
+At this layer, the candidate hypotheses are formulas in the context, not
+meta-level assumptions silently discharged.
+
+\item[\code{BM/Translate.lean}]
+Apply \code{pra\_theorem\_iff} to transport the final closed theorem to the
+concise native scalar theory.  Add \code{\#print axioms} checks and a no-
+\code{sorryAx} audit script.
+\end{description}
+
+\subsection{Suggested milestone order}
+
+A low-risk route to a complete formalization is:
+\begin{enumerate}
+\item certify rational coding and $A_n,B_n$ numerically;
+\item formalize the nesting and width theorem;
+\item obtain the strip and global gamma names;
+\item prove the two uniqueness squeezes, initially as an abstract ordered
+semiring theorem;
+\item instantiate that theorem for interval names;
+\item prove convexity of the constructed gamma using $E_n$;
+\item add the local modulus and completion layer;
+\item compile the PR algorithms and replay the proof inside \code{PRAAx};
+\item translate through the existing bi-interpretation and audit axioms.
+\end{enumerate}
+The archive contains a commented Lean scaffold with the intended declarations
+and dependency graph.  It is an outline, not a completed machine-checked
+formalization.
+
+\section{Constructive-content audit of the classical proof}
+
+The familiar textbook proof contains a genuinely finitary core.  The present
+reformulation isolates it:
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Classical presentation & Constructive replacement \\
+\midrule
+$\log F$ is convex & integer-power inequality \eqref{eq:rlc} \\
+real interpolation parameter & rational pair $(j,s)$ \\
+Euler limit exists & explicit nested rational brackets \\
+general completeness of $\R$ & a named PR interval algorithm \\
+``let $n\to\infty$'' & choose the displayed $n(q,k)$ \\
+continuity inferred abstractly & supplied or derived PR local modulus \\
+positive real & positive name with a rational lower witness \\
+function quantifier & schema for each fixed PR presentation \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+This is not merely the classical proof with intuitionistic vocabulary.  The
+change from logarithmic convexity to rational multiplicative convexity, and
+the replacement of an unnamed limit by the $A_n$--$B_n$ interval algorithm,
+are the two essential proof-theoretic modifications.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item Can the local-modulus hypothesis on a candidate be derived inside the
+chosen real representation from recurrence and $\RLC$, with a uniform
+primitive-recursive bound, rather than supplied as part of the presentation?
+
+\item What is the smallest fragment of the \code{ConciseIPRA} native scalar
+calculus needed for the finite squeeze?  The uniqueness proof itself appears
+to need substantially less machinery than the construction and completion
+parts.
+
+\item Can the finite AM--GM certificate generator be replaced by a shorter
+binomial or sum-of-squares certificate that materially reduces the final
+object-level proof term?
+
+\item Is there a direct gamma presentation whose rational endpoint sequence is
+already nested, eliminating the running maximum/minimum normalization and
+thereby simplifying the Lean object proof?
+
+\item Can one characterize a wider class of factorial-like functions in
+$\ipra$ by replacing $x$ in the recurrence with a fixed positive
+primitive-recursive coefficient function and adapting the same finite squeeze?
+
+\item How small can a standalone proof checker and certificate for a fixed
+precision instance of the theorem be made under the code-size metrics used in
+the \code{ConciseIPRA} project?
+\end{enumerate}
+
+\appendix
+\section{Exact certificate checked by the companion program}
+
+The companion program accepts a positive rational $x$ and a requested number
+of bits $k$.  It performs the canonical decomposition $x=m+r$, chooses an
+internal strip precision, computes $n=2^{K+2}$, bisects the integer root
+$n^{\operatorname{num}(r)}$ to bound $n^r$, and emits rational endpoints.
+The verifier recomputes:
+\begin{itemize}
+\item the root-power inequalities;
+\item the exact $c_A,c_B$ coefficients;
+\item the shifted interval endpoints;
+\item the requested width bound;
+\item the two integer-power inequalities certifying $A_n\le A_{n+1}$ and
+$B_{n+1}\le B_n$ at the selected $n$.
+\end{itemize}
+Verification uses Python's exact \code{Fraction} arithmetic only.  Decimal
+numbers printed by the command-line interface are display-only.
+
+\section{Dependency map to the existing repository}
+
+The proposed object-level development imports only the syntactic and proof
+infrastructure already present in the \code{ConciseIPRA} tree:
+\[
+ \code{ConciseIPRA.PR}
+ \longrightarrow \code{BM.ObjectLemmas}
+ \longrightarrow \code{BM.ObjectTheorem},
+\]
+followed by
+\[
+ \code{ConciseIPRA.BiInterpretation}
+ \longrightarrow \code{BM.Translate}.
+\]
+The existing usual presentation provides a symbol for every primitive
+recursive definition, its defining equations, successor axioms, and
+quantifier-free induction.  The existing bi-interpretation proves that closed
+theorems of this presentation are exactly the translations of closed theorems
+of the concise scalar theory.  Thus the mathematical work in this report can
+be formalized first in the more readable usual language without losing the
+connection to the constrained native calculus.
+
+\begin{thebibliography}{9}
+\bibitem{DLMF}
+NIST Digital Library of Mathematical Functions,
+\emph{Chapter 5: Gamma Function}, especially the Bohr--Mollerup
+characterization in Section 5.5(iv).
+
+\bibitem{BishopBridges}
+Errett Bishop and Douglas Bridges,
+\emph{Constructive Analysis}, Springer, 1985.
+
+\bibitem{MathlibGamma}
+The mathlib community,
+\emph{Mathlib.Analysis.SpecialFunctions.Gamma.BohrMollerup}, Lean source and
+API documentation.  The present proof does not depend on its classical real
+analysis; it is useful as a theorem-name and regression reference.
+
+\bibitem{ConciseIPRA}
+Vladimir Reshetnikov,
+\emph{Concise presentations of intuitionistic primitive recursive
+arithmetic}, the \code{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}
+subtree of the ProveIt repository, including \code{PR.lean} and
+\code{BiInterpretation.lean}.
+\end{thebibliography}
+
+\end{document}

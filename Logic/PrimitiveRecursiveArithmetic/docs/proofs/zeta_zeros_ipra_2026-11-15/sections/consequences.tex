@@ -1,0 +1,180 @@
+\section{Distribution consequences}
+\label{sec:consequences}
+
+\subsection{Local counts and multiplicities}
+
+All zeros in the slab $0<\Re s<1$, $T\le\Im s\le T+1$ lie in the disk
+of radius $5/2$ around $2+i(T+1/2)$.  Apply (J) with outer radius four and
+inner radius $5/2$.  Approximating $\zeta$ by a rational polynomial closely
+enough to preserve any supplied finite family of zero-cluster certificates
+gives
+\[
+ \sum_j \operatorname{count}(\mathcal B_j)
+ \le\frac{\log(16M)}{\log(8/5)}
+ \le12\log(T+11)+12,\qquad T\ge8.                       \tag{LC}
+\]
+Here the $\mathcal B_j$ are disjoint certified clusters in the slab and
+$M=4(\lceil T\rceil+10)^4$.
+The inequalities $\log(8/5)\ge3/8$ and $\log64<9/2$ suffice for the last
+estimate.  This proves the usual $O(\log T)$ local zero-count bound and the
+same bound on the multiplicity of an individual zero.  The certificate
+form does not require a decision procedure for exact equality of ordinates.
+
+\subsection{Infinitely many zeros, with a bounded witness}
+
+Take an integer $T\ge2^{16}$ and choose regular heights
+$U\in(T,T+1)$ and $V\in(2T,2T+1)$.  For $x\in[T+1,2T]$,
+\[
+ \mathcal M'(x)=\frac1{2\pi}\log\frac{x}{2\pi}
+       \ge\frac1{16}\log T,
+\]
+since $2\pi<8$, $\log(2\pi)<3$, and $\log T\ge8$.
+Thus $\mathcal M(V)-\mathcal M(U)\ge T\log T/32$.
+The sum of the two errors in (RVM) is at most $30\log T$.
+As $T\ge2^{16}>1920$,
+\[
+ N(V)-N(U)\ge\frac{T\log T}{64}\ge\frac T8.            \tag{AB}
+\]
+The two contour certificates therefore give a positive-count rectangle
+strictly above height $T$, and indeed a count at least $T/8$.
+Using $T=4^{m+8}$ gives disjoint such height ranges for successive $m$.
+This is a bounded constructive witness for unboundedly many nontrivial
+zero clusters in disjoint regions. The following construction extracts
+a primitive recursive point name from each such cluster, yielding
+a uniform sequence of pairwise apart nontrivial zeros. It does not
+order all exact zero ordinates.
+
+\input{sections/zero_extraction.tex}
+
+\subsection{Average density in growing windows}
+
+From (RVM), for $T\le U<T+1$ and
+$T+H\le V<T+H+1$, where $1\le H\le T$, one obtains
+\[
+ N(V)-N(U)=\frac{H}{2\pi}\log\frac T{2\pi}
+          +O\left(\frac{H^2}{T}+\log(T+H+4)\right).
+\]
+The constants here can be read directly from (RVM) and the derivative of
+$\mathcal M$; alternatively one retains the exact difference $\mathcal M(V)-\mathcal M(U)$ and the
+explicit error sum.  Hence when $H\to\infty$ and $H=o(T)$, the mean density
+in such a window is asymptotic to $\log T/(2\pi)$.
+For a unit window the error is the same order as the main term; the correct
+consequence of this proof is only $N(T+1)-N(T)=O(\log T)$, not an
+asymptotic equivalent.  Similarly, the usual inverse relation
+$\gamma_n\sim2\pi n/\log n$ is a classical consequence of the count
+asymptotic.  Its constructive reading is via inverse count brackets and
+does not silently posit a uniformly decidable ordering of equal zero
+ordinates.
+
+\subsection{An explicit growing-window estimate}
+The asymptotic just stated can be given a convenient numerical form.
+Let $T\ge8$, $1\le H\le T$, and choose the certified heights
+$U\in(T,T+1)$ and $V\in(T+H,T+H+1)$. By
+\eqref{eq:main-rvm},
+\begin{equation}
+ \left|N(V)-N(U)-\frac{H}{2\pi}\log\frac{T}{2\pi}\right|
+ \le\frac{H^2}{12T}+18\log(T+H+5)+80.
+ \label{eq:window-explicit}
+\end{equation}
+Indeed the change from $U,V$ to $T,T+H$ in the main-term difference
+is at most $2\log(T+H+5)$. The change of the logarithm inside
+$\int_T^{T+H}\mathcal M'(x)dx$ contributes at most
+$H^2/(4\pi T)\le H^2/(12T)$. Finally the two counting errors are
+at most $16\log(T+H+5)+80$.
+
+For a particularly simple arithmetic specialization take $T=n^2$,
+$H=n$, with integer $n\ge3$. The right side becomes
+$1/12+18\log(n^2+n+5)+80$, while the leading term is
+$n\log(n^2/(2\pi))/(2\pi)$. Dividing proves the claimed mean density
+with a primitive recursive convergence modulus. One need not introduce
+an irrational square-root input into the checker.
+
+\subsection{Effective tails of reciprocal-zero sums}
+\label{sec:zero-sums}
+
+For every certified height $u\ge8$, the coarse consequence
+\begin{equation}
+                    N(u)\le64u\log(u+2)
+ \label{eq:coarse-count}
+\end{equation}
+follows immediately from~\eqref{eq:main-rvm}. For example, the main
+term is at most $u\log(u+2)/6$, and its remaining error is at most
+$36\log(u+2)\le(9u/2)\log(u+2)$. The factor $64$ leaves ample
+slack for rational endpoint adjustments.
+
+\begin{theorem}[Uniform reciprocal-square tail]
+For every integer $T\ge8$, every finite collection of zeros with
+$|\Im\rho|>T$, counted with multiplicity, satisfies
+\begin{equation}
+       \sum |\rho|^{-2}
+       \le\frac{2048(\log(T+2)+1)}{T}.
+ \label{eq:reciprocal-tail}
+\end{equation}
+The finite constructive formulation uses disjoint certified clusters
+and the lower bound $|\rho|\ge|\Im\rho|$ in each height band.
+\end{theorem}
+
+\begin{proof}
+Partition positive ordinates into the dyadic bands
+$(2^jT,2^{j+1}T]$. To include a possible zero at the upper endpoint,
+choose a certified height $u_j\in(2^{j+1}T,2^{j+1}T+1)$.
+By~\eqref{eq:coarse-count}, the count of positive ordinates in that
+band is at most
+\[
+ 144\,2^jT\bigl(\log(T+2)+(j+1)\log2\bigr).
+\]
+Here $2^{j+1}T+1\le(9/8)2^{j+1}T$ and
+$2^{j+1}T+3\le2^{j+1}(T+2)$ suffice. Conjugation doubles this
+bound for both signs. Division by $(2^jT)^2$ and summation give
+\[
+ \frac{288}{T}\sum_{j\ge0}2^{-j}
+       \bigl(\log(T+2)+(j+1)\log2\bigr)
+ =\frac{576\log(T+2)+1152\log2}{T},
+\]
+which is smaller than~\eqref{eq:reciprocal-tail}.
+The actual arithmetic argument uses a finite geometric sum and its
+explicit remainder. It proves the same bound for every finite number
+of bands, so no induction over a quantified convergence assertion is
+being used.
+\end{proof}
+
+It follows that $\sum_\rho\rho^{-m}$ is absolutely convergent for
+each integer $m\ge2$. For $m=1$, pair each positive-height zero
+$\rho$ with the negative-height zero $1-\rho$. The identity
+\begin{equation}
+ \frac1\rho+\frac1{1-\rho}
+       =\frac1{\rho(1-\rho)}
+ \label{eq:paired-reciprocals}
+\end{equation}
+gives modulus at most $1/(\Im\rho)^2$. Hence this paired reciprocal
+series is absolutely convergent as a series of pairs, without a
+Riemann-hypothesis assumption. This is not a claim of absolute
+convergence of the unpaired series $\sum_\rho1/\rho$.
+
+An explicit uniform tail choice for either assertion is
+\begin{equation}
+                         T_p=2^{2p+32}.
+ \label{eq:reciprocal-modulus}
+\end{equation}
+Since $\log(T_p+2)+1\le2p+34$ and
+$p+17\le2^{p+5}$, the right side of
+\eqref{eq:reciprocal-tail} is less than $2^{-p}$.
+
+The finite partial sums also have a constructive representation which
+does not list exact zeros. Put $\eta=1/4096$. The derivative bound for
+$\xi$ with $R=3$ is $D_3=372$, so its positive real-axis bound gives
+$|\xi(x+\ii\eta)|>1/4$ for $-1\le x\le2$.
+On the certified rectangle $[-1,2]+\ii[\eta,U]$, integrate
+\[
+ \frac{1}{2\pi\ii}\frac{\xi'(s)}{\xi(s)}w(s),
+ \quad w(s)=s^{-m}\quad\hbox{or}\quad w(s)=\frac1{s(1-s)}.
+\]
+The weights have no pole in this rectangle. Division has a positive
+boundary clearance; derivatives and quadrature have the explicit bounds
+already established. Polynomial factorization and the elementary
+one-factor residue calculation identify this integral with the
+corresponding finite zero sum, counting multiplicity. For $m\ge2$
+include the reflected lower rectangle as well; for the paired sum the
+upper rectangle alone suffices. Approximate these contour integrals at
+precision $p+2$ and use~\eqref{eq:reciprocal-modulus} for the tail.
+This supplies primitive recursive Cauchy names for the stated sums.

@@ -1,0 +1,763 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage{microtype,booktabs,array,longtable,enumitem,xcolor}
+\usepackage{hyperref,listings,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black,
+pdftitle={Euler's rotation theorem and Rodrigues' formula in iPRA},
+pdfauthor={Research note prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Euler and Rodrigues in iPRA}\fancyhead[R]{\small Constructive scope and proofs}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\setlist{topsep=4pt,itemsep=3pt}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\Q}{\mathbb Q}\newcommand{\N}{\mathbb N}\newcommand{\R}{\mathbb R}
+\newcommand{\tr}{\operatorname{tr}}\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\Id}{I}\newcommand{\SO}{\operatorname{SO}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\crossmat}[1]{[#1]_{\times}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\PR}{\mathsf{PR}}
+\title{\textbf{Euler's rotation theorem and Rodrigues' formula\\in intuitionistic primitive recursive arithmetic}\\[8pt]
+\large Exact constructions, finite precision, and the obstruction to selecting an axis}
+\author{Research note prepared for Vladimir Reshetnikov}
+\date{November 14, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Rodrigues' formula has a direct constructive proof using fixed-size polynomial
+identities. Euler's theorem needs a more careful statement. We prove an
+unconditional exact theorem for rational proper orthogonal matrices, and an
+exact theorem for primitive-recursive Cauchy matrices supplied with a numerical
+bound separating them from the identity. Both constructions give the complete
+Rodrigues normal form, including half-turns, and use only bounded arithmetic,
+square roots with explicit moduli, and divisions with positive lower bounds.
+For arbitrary represented real rotations we prove an unconditional
+finite-precision axis theorem and an unconditional exact unit-quaternion
+representation. We also give a complete obstruction: a uniform exact unit-axis
+theorem for all such real rotations implies LLPO; a specific primitive-recursive
+input family yields a non-realizable first-order arithmetic consequence.
+Thus the unrestricted classical exact-axis assertion cannot be honestly
+claimed as a theorem of the requested constructive theory.
+The proofs are human-readable; the accompanying Lean files are an uncompiled
+prototype and a detailed plan, not a completed formalization. Executable
+supplements check exact rational certificates and polynomial identities.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{What can, and cannot, be proved}
+\label{sec:scope}
+
+We use the standard matrix formulation of an orientation-preserving rigid
+motion fixing the origin:
+\begin{equation}\label{eq:so}
+ R^T R=I,\qquad \det R=1,\qquad R\in\R^{3\times3}.
+\end{equation}
+A fixed point other than the origin is handled by replacing $x$ with $x-p$.
+The orientation assumption matters: an arbitrary distance-preserving map
+fixing a point can include a reflection. The classical Euler assertion is that
+there is a unit vector $u$ with $Ru=u$, and that the restriction to its
+perpendicular plane is a planar rotation. The requested Wikipedia pages
+describe this assertion and the associated Rodrigues formula
+\cite{eulerwiki,rodrigueswiki}; no proof step below depends on those expositions.
+
+The matrix formulation itself is constructive. If a distance-preserving
+map $F$ fixes $p$, put $g_i=F(p+e_i)-p$. Expanding the distances between
+$p,p+e_1,p+e_2,p+e_3$ shows $g_i\cdot g_j=I_{ij}$. For
+$y=F(p+x)-p$, the distances to $p$ and to $p+e_i$ give
+$y\cdot g_i=x_i$ by the identity
+$2a\cdot b=|a|^2+|b|^2-|a-b|^2$. Consequently
+$|y-\sum_i x_i g_i|^2=0$, so $y=\sum_i x_i g_i$.
+Thus $F(p+x)=p+Rx$ with columns $g_i$. Orientation preservation is
+exactly $\det R=1$. Only the elementary sum-of-squares inference is used.
+
+The phrase ``in $\ipra$'' requires a representation. First-order arithmetic has
+natural-number variables, not an unrestricted type of real numbers. Throughout,
+a represented real is a rational approximation program with a specified error
+modulus. This distinction changes the exact existence theorem.
+
+\begin{theorem}[Positive results proved in this note]\label{thm:results}
+The following statements admit the primitive-recursive constructions and
+intuitionistic arithmetic proofs described below.
+\begin{enumerate}[label=(\roman*)]
+\item \textbf{Rodrigues, without an extra hypothesis.} Given a unit vector
+$u$ and real numbers $c,s$ satisfying $c^2+s^2=1$, the map
+\begin{equation}\label{eq:rodmain}
+ \mathcal R(u,c,s)x=cx+s(u\times x)+(1-c)(u\cdot x)u
+\end{equation}
+is a proper orthogonal map fixing $u$. On $u^\perp$ it is the planar rotation
+specified by $(c,s)$. Taking $c=\cos\theta$, $s=\sin\theta$ gives the usual
+formula, with primitive-recursive names for the trigonometric functions.
+\item \textbf{Exact Euler for rational input.} From any rational matrix
+satisfying \eqref{eq:so}, a primitive-recursive procedure constructs a nonzero
+rational fixed vector $v$. Normalizing it gives a represented unit axis and
+exact Rodrigues parameters. No nonidentity promise is required.
+\item \textbf{Exact Euler for separated real input.} Put
+$d=(3-\tr R)/2$. If an integer $h$ is supplied with $d\ge2^{-h}$, an explicit
+primitive-recursive procedure constructs $u,c,s$ with
+$u\cdot u=1$, $c^2+s^2=1$, and $R=\mathcal R(u,c,s)$. The fixed space is
+exactly $\{tu:t\in\R\}$. A supplied proof $R=I$ handles the identity case.
+\item \textbf{Approximate Euler for arbitrary real input.} Given $n$, one can
+construct an exactly unit axis $u^{[n]}$ and a circle pair $(c^{[n]},s^{[n]})$
+whose Rodrigues matrix $P_n$ satisfies
+$\norm{R-P_n}_F\le2^{-n}$ and
+$\norm{Ru^{[n]}-u^{[n]}}\le2^{-n}$. The axes need not form a Cauchy sequence.
+\item \textbf{An exact all-input representation.} Every represented real
+$R$ satisfying \eqref{eq:so} has primitive-recursively constructed unit
+quaternion data $(a,v)$ satisfying
+\begin{equation}\label{eq:quaternion}
+ a^2+v\cdot v=1,\qquad
+ R=(a^2-v\cdot v)I+2vv^T+2a\crossmat v.
+\end{equation}
+The vector part $v$ is allowed to vanish.
+\end{enumerate}
+For represented inputs, each assertion is a schema for each fixed
+primitive-recursive input approximation program, uniformly in its numerical
+parameters. The rational-input assertion is a single ordinary arithmetic
+construction on finite codes.
+\end{theorem}
+
+\begin{theorem}[Boundary of the requested exact-axis theorem]\label{thm:boundary}
+There is a fixed primitive-recursive family of rational approximation
+programs for matrices $R_e\in\SO(3)$ for which no total computable procedure
+can select an exact unit fixed axis uniformly in $e$. More generally,
+exact unit-axis existence for all represented real rotations implies LLPO.
+The resulting uniform first-order arithmetic disjunction is not provable
+in $\ipra$.
+\end{theorem}
+
+Section~\ref{sec:obstruction} proves the boundary theorem in detail. It does
+not assert that a particular computable rotation lacks every computable
+axis. Classically each individual nonidentity matrix has a finite
+nonidentity witness that can be built into an axis program. It is the
+\emph{uniform constructive theorem} that fails.
+
+\section{Arithmetic meaning of the real notation}\label{sec:arithmetic}
+
+\subsection{The base theory and the schema convention}
+We use first-order intuitionistic logic, equality, a function symbol for each
+primitive-recursive definition, its defining equations, successor separation
+and injectivity, and induction for quantifier-free formulas. This is the
+presentation implemented as \texttt{PRAAx} in the inspected
+\texttt{ConciseIPRA/PR.lean} file \cite{proveit}. Bounded quantifiers over
+primitive-recursive predicates can be replaced by Boolean folds, so a
+bounded finite search or a finite conjunction does not require a stronger
+induction schema.
+
+Integers are encoded by signed natural numbers; a rational is an integer
+numerator and a positive denominator. Finite tuples and lists are encoded
+by standard primitive-recursive pairing. Equality and order on rationals
+are decided by cross multiplication. Addition, multiplication, powers,
+factorials, maximum, and bounded search are primitive recursive. All
+definitions can be totalized by returning a fixed default on malformed
+codes or failed denominator guards. Their correctness theorems have the
+appropriate well-formedness hypotheses.
+
+Fix a primitive-recursive rational program $A(\mathbf p,k)$, where
+$\mathbf p$ is a tuple of numerical parameters. A convenient regular-name
+condition is
+\begin{equation}\label{eq:regular}
+ \abs{A(\mathbf p,k)-A(\mathbf p,l)}\le2^{-k}+2^{-l}
+ \quad\text{for all }k,l.
+\end{equation}
+In the usual interpretation, it names a real $a$ with
+$\abs{A(\mathbf p,k)-a}\le2^{-k}$. Internally, no limit object is needed:
+equality, order, and algebraic equations mean their rational approximation
+predicates at every precision. For example equality of regular names $A,B$
+can be written $\forall k\,\abs{A(k)-B(k)}\le2^{1-k}$; nonnegative order
+is expressed with the corresponding tolerances. Equivalent shifts of
+precision give the same represented relation.
+
+Every input family is fixed before forming its arithmetic formula. The
+output approximation programs are explicitly composed from that fixed
+program. We do \emph{not} postulate a total primitive-recursive evaluator
+for arbitrary primitive-recursive program codes: diagonalization rules out
+such an evaluator. A formal Lean development may manipulate PR syntax in
+its metatheory, but its semantic evaluator is not thereby an object-language
+PR function. This same schema distinction is made in the inspected FTA and
+triangle-formula drafts \cite{drafts}. We reuse this representation
+discipline, not any unverified geometric theorem from those drafts.
+
+\subsection{Quantitative arithmetic on names}
+Here are elementary constructions sufficient for all the algebraic parts.
+They also make the resource bounds explicit.
+
+\begin{lemma}[Name operations]\label{lem:operations}
+The following operations have primitive-recursive rational approximations
+with a prescribed error $2^{-k}$: sums and products of bounded names;
+reciprocal and division given a positive rational lower bound for the
+absolute denominator; and square root of a nonnegative bounded name.
+\end{lemma}
+\begin{proof}
+For sums, request one additional bit per binary addition. If $|x|,|y|\le B$
+and rational samples $a,b$ have errors at most $\eta\le1$, then
+\[
+ |ab-xy|\le(2B+1)\eta.
+\]
+An explicit precision shift makes this at most the requested error.
+For a quotient, assume $|y|\ge L>0$, $|x|\le B$, and samples satisfy
+$|a-x|,|b-y|\le\eta\le\min(1,L/2)$. Then $|b|\ge L/2$ and
+\begin{equation}\label{eq:division-error}
+ \left|\frac ab-\frac xy\right|
+ \le\frac\eta L+\frac{2(B+1)\eta}{L^2}.
+\end{equation}
+All shifts can be found by a bounded scan: for any positive rational
+$r$, an integer explicitly larger than its numerator and denominator is
+enough to bound the number of doublings needed to make $2^{-m}\le r$.
+There is no unbounded search for a nonzero denominator.
+
+For square root at precision $k$, take a rational sample $b$ of $x\ge0$
+with error at most $2^{-2k-4}$, replace $b$ by $\max(b,0)$, and set
+$N=2^{k+2}$. Find the greatest integer $j$ in a fixed bounded range with
+$j^2\le N^2b$. If $0\le x\le B$, the range
+$0\le j\le (\lceil B\rceil+2)N$ suffices. The result $j/N$ differs from
+$\sqrt b$ by less than $1/N$. The elementary inequality
+\[
+ |\sqrt x-\sqrt b|\le\sqrt{|x-b|}
+\]
+follows by squaring after ordering the two nonnegative rational
+approximants. Hence the total error is at most $2^{-k-1}$.
+This describes the square-root name directly. Alternatively the defining
+property is that its nonnegative approximants have squares converging to
+$x$ at the indicated rate. Uniqueness follows from
+$|r-t|^2\le|r^2-t^2|$ for $r,t\ge0$.
+
+The integer scan has a quantifier-free invariant: the current answer lies
+within the processed range, its square is admissible, and every processed
+larger index is inadmissible. The last finite conjunction is a Boolean
+fold. Its proof uses only quantifier-free induction.
+\end{proof}
+
+The usual sum-of-squares inference is constructive: from
+$x_1^2+\cdots+x_m^2=0$ one obtains each $x_i=0$ by applying the finite
+inequality $x_i^2\le\sum_j x_j^2$ at an error smaller than the square of
+the target precision. No trichotomy of real equality is involved.
+
+A statement such as $x\ne0$ will not be used as a division certificate.
+We use \emph{apartness}: a supplied positive rational $L$ with $|x|\ge L$.
+In particular, $R\ne I$ and an explicit nonidentity bound are different
+hypotheses in intuitionistic arithmetic.
+
+\section{The finite vector and matrix identities}\label{sec:finite}
+
+Coordinates are numbered $1,2,3$, and vectors are columns. Set
+\[
+ u\cdot x=u_1x_1+u_2x_2+u_3x_3,\qquad
+ u\times x=(u_2x_3-u_3x_2,\ u_3x_1-u_1x_3,\ u_1x_2-u_2x_1)^T.
+\]
+Thus
+\begin{equation}\label{eq:crossmatrix}
+ \crossmat u=\begin{pmatrix}0&-u_3&u_2\\u_3&0&-u_1\\-u_2&u_1&0\end{pmatrix},
+ \qquad \crossmat u x=u\times x.
+\end{equation}
+Expanding the coordinates gives
+\begin{align}
+ \crossmat u^T&=-\crossmat u,&
+ \crossmat u u&=0,\label{eq:k-basic}\\
+ u\times(v\times x)&=v(u\cdot x)-x(u\cdot v),\label{eq:triple}\\
+ \crossmat u^2&=uu^T-(u\cdot u)I,\label{eq:k-square}\\
+ \norm{u\times x}^2&=(u\cdot u)(x\cdot x)-(u\cdot x)^2.\label{eq:lagrange}
+\end{align}
+For example, the first coordinate of \eqref{eq:triple} expands to
+$u_2(v_1x_2-v_2x_1)-u_3(v_3x_1-v_1x_3)$, which is
+$v_1(u\cdot x)-x_1(u\cdot v)$ after cancelling $u_1v_1x_1$.
+The other coordinates are cyclic permutations. Equation~\eqref{eq:lagrange}
+is the sum of the three squared $2\times2$ minors. These are polynomial
+identities over the integers, not uses of a spectral theorem.
+
+For a $3\times3$ matrix $B$, its determinant is the signed six-term sum and
+its adjugate is the transpose of the matrix of signed $2\times2$ minors.
+Expanding those definitions proves
+\begin{align}
+ B\adj B=\adj B B&=(\det B)I,\label{eq:adjproduct}\\
+ \adj(I-B)&=(1-\tr B)I+B+\adj B,\label{eq:adjshift}\\
+ \det(I-B)&=1-\tr B+\tr(\adj B)-\det B,\label{eq:detshift}\\
+ \adj(\adj B)&=(\det B)B.\label{eq:adjadj}
+\end{align}
+One way to check \eqref{eq:adjshift} is to examine a diagonal cofactor,
+$(1-b_{jj})(1-b_{kk})-b_{jk}b_{kj}$: it is
+$1-\tr B+b_{ii}+(\adj B)_{ii}$. An off-diagonal cofactor gives
+$b_{ij}+(\adj B)_{ij}$. The determinant identity follows by collecting
+the degrees $0,1,2,3$ in the six-term expansion. The two product identities
+follow by the same expansions, with repeated-column terms cancelling.
+All four identities also appear in the exact symbolic supplement.
+
+\section{What orthogonality already proves without choosing an axis}
+\label{sec:universal}
+Suppose \eqref{eq:so}. Define
+\begin{equation}\label{eq:definitions}
+\begin{aligned}
+ t&=\tr R,&c&=\frac{t-1}{2},&d&=1-c=\frac{3-t}{2},\\
+ S&=\frac{R+R^T}{2}-cI,&T&=\frac{R-R^T}{2}=\crossmat w,\\
+ w&=\frac12(R_{32}-R_{23},\ R_{13}-R_{31},\ R_{21}-R_{12})^T.
+\end{aligned}
+\end{equation}
+In particular $R=cI+S+T$, $S$ is symmetric, and $T$ is skew-symmetric.
+
+\begin{lemma}[Universal axis identities]\label{lem:universal}
+Without any nonidentity test,
+\begin{gather}
+ \det(I-R)=0,\qquad \adj(I-R)=2S,\label{eq:axis-adj}\\
+ RS=R^TS=S,\quad S^2=dS,\quad\tr S=d,\quad TS=ST=0,\quad\adj S=0,
+ \label{eq:s-identities}\\
+ \norm{R-I}_F^2=4d,\qquad c^2+w\cdot w=1,\qquad ww^T=(1+c)S.
+ \label{eq:scalar-identities}
+\end{gather}
+Consequently $-1\le c\le1$ and $0\le d\le2$.
+\end{lemma}
+\begin{proof}
+By \eqref{eq:adjproduct}, $R\adj R=I$. Multiplying by $R^T$ on the left
+and using $R^TR=I$ gives $\adj R=R^T$, and hence also $RR^T=I$.
+Equations~\eqref{eq:adjshift} and \eqref{eq:detshift} give
+$\adj(I-R)=(1-t)I+R+R^T=2S$ and
+$\det(I-R)=1-t+t-1=0$.
+The adjugate product now gives $RS=SR=S$; multiplication by $R^T$
+gives $R^TS=S$. Therefore
+\[
+ S^2=\left(\frac{R+R^T}{2}-cI\right)S=(1-c)S=dS.
+\]
+The trace identity is $t-3c=d$. The two products with $T$ vanish.
+Finally \eqref{eq:adjadj} gives $\adj(2S)=0$, and since each cofactor
+is homogeneous of degree two, $4\adj S=0$.
+
+Expanding the nine squares yields
+$\norm{R-I}_F^2=\tr(R^TR)-2\tr R+3=6-2t=4d$.
+The entrywise inner product of a symmetric matrix with a skew-symmetric
+matrix is zero, by pairing entries $(i,j)$ and $(j,i)$. Hence
+\begin{align*}
+ 3=\norm R_F^2
+ &=3c^2+2c\tr S+\tr(S^2)+2w\cdot w\\
+ &=3c^2+2cd+d^2+2w\cdot w
+ =1+2c^2+2w\cdot w.
+\end{align*}
+This proves the scalar circle identity and the stated bounds.
+Using $ST=TS=0$ and \eqref{eq:k-square} in $RR^T=I$ gives
+\[
+ I=(c^2+w\cdot w)I+(2c+d)S-ww^T
+   =I+(1+c)S-ww^T,
+\]
+which proves the final identity.
+\end{proof}
+
+Every column of $S$ is already an exact fixed vector. The issue at the
+identity is that all three columns then vanish. Determinant zero by itself
+does not construct a nonzero vector in a kernel over represented reals.
+The quantitative construction below supplies precisely the missing step.
+
+\section{Exact Euler with a supplied gap, including half-turns}
+\label{sec:gap}
+
+\begin{theorem}[Explicit unit-axis extraction]\label{thm:gap}
+Suppose $d\ge\delta>0$, where $\delta$ is a supplied rational.
+Approximate $S_{11},S_{22},S_{33}$ by rationals $a_1,a_2,a_3$ with error
+at most $\delta/12$. Choose the least index $j$ maximizing these three
+rationals, and put
+\begin{equation}\label{eq:axis-construction}
+ p=S_{jj},\qquad v=Se_j,\qquad q=d p,\qquad
+ u=\frac{v}{\sqrt q},\qquad s=w\cdot u.
+\end{equation}
+Then $p\ge\delta/6$, $q\ge\delta^2/6$, and
+\begin{equation}\label{eq:exactnormal}
+ u\cdot u=1,\qquad Ru=u,\qquad
+ c^2+s^2=1,\qquad R=cI+(1-c)uu^T+s\crossmat u.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For every $i$, maximality of the rational sample gives
+$S_{ii}\le S_{jj}+\delta/6$. Summing and using $\tr S=d\ge\delta$
+gives $\delta\le3p+\delta/2$, so $p\ge\delta/6$.
+Symmetry and $S^2=dS$ give
+\[
+ v\cdot v=(S^2)_{jj}=dp=q\ge\delta^2/6.
+\]
+Thus $\sqrt q$ has a positive numerical lower bound (for instance
+$\delta/3$), and Lemma~\ref{lem:operations} applies. It follows that
+$u\cdot u=1$, and $Ru=u$ follows from $RS=S$.
+
+Since every $2\times2$ minor of $S$ vanishes, for all $i,k$,
+\[
+ S_{ik}S_{jj}=S_{ij}S_{jk}=v_i v_k.
+\]
+The cases of repeated row or column are the same equality trivially;
+the other cases are cofactors. Division by $p>0$ now proves
+\begin{equation}\label{eq:projector}
+ S=\frac{vv^T}{p}=d uu^T.
+\end{equation}
+Since $TS=0$, $Tu=0$, or $w\times u=0$. The vector triple-product identity
+therefore gives
+\[
+ 0=u\times(w\times u)=w-(u\cdot w)u,
+\]
+so $w=su$. Substituting in $R=cI+S+\crossmat w$ gives its normal form.
+Finally $c^2+w\cdot w=1$ and $u\cdot u=1$ imply $c^2+s^2=1$.
+\end{proof}
+
+\begin{corollary}[The axis is the whole fixed line]\label{cor:fixedline}
+Under the gap hypothesis, $Rx=x$ if and only if $x=(u\cdot x)u$.
+\end{corollary}
+\begin{proof}
+If $Rx=x$, multiplication by $R^T$ gives $R^Tx=x$ and hence $Sx=dx$.
+Equation~\eqref{eq:projector} and $d>0$ give the conclusion. The converse
+follows from $Ru=u$. Equivalently,
+$(R-I)^T(R-I)=2d(I-uu^T)$.
+\end{proof}
+
+For a half-turn, $c=-1$, $d=2$, and $w=s=0$; the construction uses
+$S=(R+I)$ and remains valid. A method that normalizes $w$ alone would fail
+here. For the identity, $c=1$, $d=0$, and $S=w=0$; use $u=e_1$, $s=0$
+when a proof of identity is supplied. There is no implicit case split
+between these possibilities for arbitrary real inputs.
+
+A particularly concrete gap certificate is
+$|R_{ab}-I_{ab}|\ge\eta>0$. Equation~\eqref{eq:scalar-identities} gives
+$d\ge\eta^2/4$. If $\eta$ is dyadic, so is this displayed lower bound.
+The selected index $j$ is computed once from the coarse samples and then
+held fixed at all output precisions. Reselecting it at each precision
+would not by itself give a coherent name for one oriented axis.
+
+\section{The unconditional exact theorem for rational matrices}
+\label{sec:rational}
+
+For rational $R$, all nine identity comparisons are decidable. If $R=I$,
+take $v=e_1$, $q=1$, $c=1$, $d=b=0$. Otherwise the rational identity
+$4d=\sum_{i,j}(R_{ij}-I_{ij})^2$ proves $d>0$. Choose $j$ maximizing
+the \emph{exact} rational diagonal entries of $S$, so $p=S_{jj}\ge d/3$,
+and set
+\begin{equation}\label{eq:rationalcertificate}
+ v=Se_j,\quad q=v\cdot v=dp>0,\quad b=w\cdot v.
+\end{equation}
+Theorem~\ref{thm:gap} now gives the entirely rational certificate
+\begin{equation}\label{eq:ratcert}
+ Rv=v,\qquad c^2+\frac{b^2}{q}=1,\qquad
+ R=cI+\frac{d}{q}vv^T+\frac{b}{q}\crossmat v.
+\end{equation}
+With $u=v/\sqrt q$ and $s=b/\sqrt q$, this is exactly Rodrigues' formula.
+The axis and sine coordinates lie in one quadratic extension of $\Q$;
+$c$ is rational. An explicit name for the positive square root avoids
+introducing an abstract algebraic closure.
+
+All loops in the rational extraction have fixed length three or nine.
+For the normalization, write $q=A/B>0$ with positive integers $A,B$.
+Then $\sqrt q\ge1/B$. At requested precision $k$, set
+\[
+ m=k+\operatorname{bitlength}(2B),\qquad
+ j=\left\lfloor\sqrt{\left\lfloor A2^{2m}/B\right\rfloor}\right\rfloor,
+ \qquad r=j2^{-m}.
+\]
+The integer square root is obtained by a bounded scan or binary search.
+It satisfies $r^2\le q<(r+2^{-m})^2$ and $r\ge1/(2B)$.
+Since $|v_i|,|b|\le\sqrt q$, replacing $\sqrt q$ by $r$ in the
+normalized coordinates makes an error at most
+$2B2^{-m}<2^{-k}$. The exact implementation checks this interval using
+rational squares. The rational approximants themselves are not claimed
+to have exactly unit norm.
+
+\paragraph{Example: a quarter-turn.}
+For
+\[
+ R=\begin{pmatrix}0&-1&0\\1&0&0\\0&0&1\end{pmatrix}
+\]
+we get $c=0$, $d=1$, $S=\operatorname{diag}(0,0,1)$, $w=e_3$.
+Thus $u=e_3$, $s=1$, and $Rx=u\times x+(u\cdot x)u$.
+
+\paragraph{Example: a non-coordinate half-turn.}
+Let $u=(1,2,2)^T/3$. Then
+\[
+ R=2uu^T-I=\frac19
+ \begin{pmatrix}-7&4&4\\4&-1&8\\4&8&-1\end{pmatrix}.
+\]
+Here $S=2uu^T$, $c=-1$, and $w=0$. The second column is selected
+by the least-index tie rule; normalizing it returns $u$. The Rodrigues
+formula is $Rx=-x+2(u\cdot x)u$.
+
+\section{Rodrigues' formula: full algebraic and geometric proof}
+\label{sec:rodrigues}
+Let $u\cdot u=1$ and $c^2+s^2=1$. Put $P=uu^T$, $Q=I-P$,
+$K=\crossmat u$. Equations~\eqref{eq:k-basic}--\eqref{eq:k-square} give
+\[
+ P^2=P,\ Q^2=Q,\ PQ=QP=0,\ KP=PK=0,\ KQ=QK=K,\ K^2=-Q.
+\]
+The Rodrigues matrix has the useful equivalent forms
+\begin{equation}\label{eq:rodrigues-forms}
+ \mathcal R=P+cQ+sK
+ =cI+(1-c)uu^T+sK
+ =I+sK+(1-c)K^2.
+\end{equation}
+It fixes $u$. Since $K^T=-K$,
+\[
+ \mathcal R^T\mathcal R
+ =(P+cQ-sK)(P+cQ+sK)
+ =P+(c^2+s^2)Q=I.
+\]
+To check the determinant without a sign choice, direct expansion gives,
+for arbitrary scalars $c,h,s$ and $n=u\cdot u$,
+\begin{equation}\label{eq:det-rodrigues}
+ \det(cI+h uu^T+sK)=(c+hn)(c^2+s^2n).
+\end{equation}
+For completeness, expand the determinant of $A+h uu^T$ by columns.
+Terms using two columns from $h uu^T$ vanish because those columns are
+proportional. The result is $\det A+h u^T\adj(A)u$. For $A=cI+sK$,
+the six determinant terms give $\det A=c(c^2+s^2n)$, while its cofactors
+give
+$\adj A=c^2I-csK+s^2uu^T$. Thus
+$u^T\adj A u=n(c^2+s^2n)$, proving \eqref{eq:det-rodrigues}.
+Set $n=1$ and $h=1-c$ to obtain determinant one.
+
+Every vector decomposes, without choosing a basis, as
+$x=(u\cdot x)u+x_\perp$, where $u\cdot x_\perp=0$.
+On this perpendicular plane, $K^2=-I$, $K$ preserves length, and
+$x_\perp\cdot Kx_\perp=0$. Therefore
+\[
+ \mathcal R x=(u\cdot x)u+cx_\perp+s(u\times x_\perp),
+\]
+which is the planar rotation with oriented cosine $c$ and sine $s$.
+Substituting $x_\perp=x-(u\cdot x)u$ is precisely
+\eqref{eq:rodmain}. This proves the geometric meaning as well as the
+matrix identity. It remains valid for $x_\perp=0$, without a division
+by its length.
+
+The same multiplication table shows
+\[
+ \mathcal R(u,c,s)^{-1}=\mathcal R(u,c,-s),\qquad
+ \mathcal R(u,c,s)\mathcal R(u,c',s')
+ =\mathcal R(u,cc'-ss',sc'+cs').
+\]
+These identities explain the angle addition law. The next section
+connects the circle-pair formulation with ordinary radian angles by
+explicit rational estimates.
+
+% The trigonometric bridge is inserted here during assembly.
+\input{trigonometric_bridge.tex}
+
+\section{An unconditional exact quaternion representation}
+\label{sec:quaternion}
+
+This section gives a stronger all-input exact conclusion than determinant
+zero, while respecting the axis obstruction. Approximate $c$ by a rational
+$z$ with $|z-c|\le1/4$, and perform the decidable rational test $z\ge0$.
+
+If $z\ge0$, then $1+c\ge3/4$. Set
+\[
+ a=\sqrt{(1+c)/2},\qquad v=w/(2a).
+\]
+Every denominator is bounded away from zero. From
+$w\cdot w=1-c^2$ and $ww^T=(1+c)S$,
+\[
+ v\cdot v=(1-c)/2,\qquad 2vv^T=S,\qquad 2av=w.
+\]
+Hence $a^2+v\cdot v=1$, and the right side of
+\eqref{eq:quaternion} is $cI+S+\crossmat w=R$.
+
+If $z<0$, then $c<1/4$, so $d>3/4$. Apply the exact-axis construction
+with, for example, $\delta=1/2$, obtaining $u,s$. Set
+\[
+ v=\sqrt{d/2}\,u,\qquad a=s/\sqrt{2d}.
+\]
+The identity $s^2=1-c^2=d(1+c)$ gives $a^2=(1+c)/2$.
+Again $v\cdot v=d/2$, $2vv^T=S$, and $2av=su=w$, proving
+\eqref{eq:quaternion}.
+
+Both branches are primitive recursive on names and use fixed positive
+denominator bounds. This is a construction of a representative quaternion;
+it is not a claim of a globally continuous, extensional sign choice on
+$\SO(3)$. Different sufficiently close input names may select different
+valid signs. At the identity the first branch gives $(1,0)$.
+Normalizing the vector part there would reintroduce the forbidden exact
+axis selection. This is why the quaternion theorem and
+Theorem~\ref{thm:boundary} are compatible.
+
+\section{Uniform finite-precision Euler theorem}
+\label{sec:approximate}
+
+\begin{theorem}[A quantitative approximation without a gap promise]
+For every integer $n\ge0$, let $\eps=2^{-n}$. Obtain a rational $a$ with
+$|a-d|\le\eps^2/32$ and decide whether $a\le\eps^2/8$.
+\begin{enumerate}[label=(\alph*)]
+\item If yes, return $u^{[n]}=e_1$, $c^{[n]}=1$, $s^{[n]}=0$ and $P_n=I$.
+\item If no, apply Theorem~\ref{thm:gap} with
+$\delta=\eps^2/16=2^{-(2n+4)}$, and return its exact data and $P_n=R$.
+\end{enumerate}
+Then $u^{[n]}$ is exactly unit, $(c^{[n]})^2+(s^{[n]})^2=1$, and
+\[
+ \norm{R-P_n}_F\le\eps,\qquad
+ \norm{Ru^{[n]}-u^{[n]}}\le\eps.
+\]
+\end{theorem}
+\begin{proof}
+In the first branch $d\le5\eps^2/32$, and therefore
+\[
+ \norm{R-I}_F^2=4d\le5\eps^2/8<\eps^2.
+\]
+The residual bound follows either from Cauchy--Schwarz applied row by row
+or by observing that $(R-I)e_1$ is one column of $R-I$.
+In the second branch $d>3\eps^2/32\ge\eps^2/16$, so the exact theorem
+applies. Its residual and reconstruction errors are zero.
+\end{proof}
+
+The branch tolerance is quadratic in the requested matrix error. The
+two branches overlap in a safe tolerance region; no exact comparison of
+a real with zero occurs. For every fixed $n$, the resulting axis is
+represented by one coherent PR name. Across different $n$, neither the
+chosen direction nor its orientation is required to converge. Such a
+requirement would be a different theorem.
+
+\subsection{A completely finite rational output version}
+In the large branch, approximate the exact $u,c,s$ coordinatewise with
+error $\eta=2^{-n-5}$, obtaining rational $U,C,V$. Since
+$|u_i|,|c|,|s|\le1$ and $\eta\le1$, elementary expansion gives
+\begin{align}
+ |U\cdot U-1|&\le9\eta,&|C^2+V^2-1|&\le6\eta,\label{eq:finite-unit}\\
+ \max_i|(RU-U)_i|&\le4\eta,\label{eq:finite-resid}\\
+ \max_{i,j}|\mathcal R(U,C,V)_{ij}-R_{ij}|&\le14\eta.\label{eq:finite-rod}
+\end{align}
+Here $\mathcal R(U,C,V)$ means the polynomial expression, even if the
+rational samples are not exactly normalized. To verify the constant
+$14$, the $C I$ term costs at most $\eta$; the term
+$(1-C)U_iU_j$ costs at most $3(3\eta)+\eta=10\eta$; and the
+skew term costs at most $3\eta$. The diagonal cross term is zero,
+so the same bound covers every entry. Norm and circle bounds use
+$|a^2-b^2|\le3\eta$ when $|b|\le1$, $|a-b|\le\eta\le1$.
+Every right side is at most $2^{-n}$. If the input matrix is also
+replaced by rational samples of error $\eta$, the reconstruction bound
+becomes $15\eta$, still at most $2^{-n}$.
+
+In the small branch the exact rational output $(e_1,1,0)$ already has
+zero normalization errors and the previously proved residual and
+reconstruction bounds. Thus the approximate theorem has a purely finite
+arithmetic endpoint, not only an informal claim about real limits.
+
+\section{Why unrestricted exact axis selection is not an iPRA theorem}
+\label{sec:obstruction}
+
+\subsection{A self-contained reduction to LLPO}
+Let $(\alpha_m)$ be a binary sequence containing at most one $1$.
+The lesser limited principle of omniscience, LLPO, asserts the disjunction
+\begin{equation}\label{eq:llpo}
+ (\forall k\,\alpha_{2k}=0)\ \vee\ (\forall k\,\alpha_{2k+1}=0).
+\end{equation}
+This is an additional constructive principle, not a permitted real
+equality case split; see \cite{bridgesrichman} for the standard terminology.
+Define
+\[
+ x=\sum_{k=0}^\infty 2^{-k-2}\alpha_{2k},\qquad
+ y=\sum_{k=0}^\infty 2^{-k-2}\alpha_{2k+1},\qquad D=1+x^2+y^2.
+\]
+The tails after $k<N$ are bounded by $2^{-N-1}$. If the sequence is
+primitive recursive in parameters, so are these real names. In particular
+$D\ge1$ gives a uniform division bound. Form
+\begin{equation}\label{eq:cayley}
+ R=\frac1D\begin{pmatrix}
+ 1+x^2-y^2&2xy&2y\\
+ 2xy&1-x^2+y^2&-2x\\
+ -2y&2x&1-x^2-y^2
+ \end{pmatrix}.
+\end{equation}
+For every $x,y$, this is a proper orthogonal matrix. One verification is
+\eqref{eq:quaternion} with the unnormalized quaternion $(1,x,y,0)$ and
+division by its squared norm $D$. Alternatively, if
+$K=\crossmat{(x,y,0)^T}$, direct expansion gives
+\[
+ R=I+\frac{2(K+K^2)}D,\qquad (I-K)R=I+K,
+\]
+using $K^3=-(x^2+y^2)K$. These identities and their determinant
+expansions are finite rational identities.
+
+Suppose an exact unit fixed vector $u$ is supplied. The last identity
+and $Ru=u$ imply $(I-K)u=(I+K)u$, hence $Ku=0$.
+If $\alpha_{2k}=1$, the at-most-one condition gives
+$x=2^{-k-2}>0$ and $y=0$, so $u_2=u_3=0$.
+If $\alpha_{2k+1}=1$, it gives $y=2^{-k-2}>0$ and $x=0$, so
+$u_1=u_3=0$. Each division used in these implications has the
+displayed dyadic lower bound.
+
+Take rational samples $q_i$ of the three $u_i$ with error at most $1/16$.
+Some $|q_i|>1/2$. Indeed, if all three rational comparisons failed,
+each $|u_i|\le9/16$, and
+$u\cdot u\le243/256<1$, a contradiction. The finite comparisons
+are decidable, so choose the least such $i$; then $|u_i|>7/16$.
+If $i=1$, no odd-indexed $1$ is possible, so all odd terms are zero.
+If $i=2$ or $3$, no even-indexed $1$ is possible, so all even terms
+are zero. Decidability of each binary term turns these exclusions into
+the respective universal equalities. This constructs \eqref{eq:llpo}.
+
+This proves a lower bound on the logical strength of axis selection.
+It does not claim that LLPO alone is an exact classification of every
+possible arithmetization of the problem.
+
+\subsection{A precise first-order arithmetic obstruction}
+To avoid quantification over arbitrary real programs, fix an ordinary
+effective enumeration $(\varphi_e)$ of partial computable unary functions.
+Let $E(e,k)$ be the primitive-recursive predicate that $\varphi_e(e)$
+first halts at step $k$ with output $0$, and let $O(e,k)$ be the analogous
+predicate for output $1$. Only a bounded simulation is required.
+Put $\alpha_{2k}=E(e,k)$ and $\alpha_{2k+1}=O(e,k)$ in the preceding
+construction. At most one term is $1$, uniformly provably by the
+deterministic simulation. This produces one fixed PR matrix-name family
+$R_e(n)$.
+
+The arithmetic consequence of exact axis selection for this family is
+\begin{equation}\label{eq:H}
+ H:\quad\forall e\bigl[(\forall k\ E(e,k)=0)\ \vee\
+                          (\forall k\ O(e,k)=0)\bigr].
+\end{equation}
+This formula has no real variables and no universal PR evaluator.
+It is not number-realizable. A realizer would compute, for each $e$, a
+disjunction tag $b(e)\in\{0,1\}$ selecting a bit that
+$\varphi_e(e)$ cannot output. Specifically the first disjunct forbids
+output $0$, and the second forbids output $1$. The tag is a total
+computable function. Let $k$ be an index for that function. Then
+$\varphi_k(k)=b(k)$, contradicting the bit forbidden by its own tag.
+
+Every theorem of intuitionistic arithmetic with the stated PR symbols
+is number-realizable; in particular this holds for $\ipra$. The soundness
+proof interprets a disjunction by a tag and a realizer of the selected
+side, an existential by a witness and a realizer, and a universal by an
+effective operation on inputs. Logical rules preserve these clauses.
+The PR defining equations are true decidable equations, and induction
+is realized by finite iteration. This is the usual Kleene--Nelson
+realizability argument \cite{kleene,moschovakis}. Consequently $H$ is
+not provable in $\ipra$.
+
+Any exact-axis assertion in the schema interpretation of
+Section~\ref{sec:arithmetic}, with uniformly constructed output names,
+would prove $H$ by the finite-coordinate argument above. The same
+holds for an explicit first-order coding of output names that permits
+their claimed effective evaluation. Therefore such an assertion cannot
+be proved. Even allowing arbitrary computable, rather than merely PR,
+uniform output procedures would not help.
+
+\subsection{Two distinctions that prevent misleading conclusions}
+The obstruction is not the demand for an extensional or continuous
+\emph{canonical} axis. The argument permits either orientation and any
+name-dependent choice. It rules out every uniform computable choice
+with the exact fixed-axis property.
+
+Nor is it a counterexample to the classical theorem. Each individual
+computable matrix has a computable axis classically: the identity has
+$e_1$, and a nonidentity matrix has some finite nonidentity witness
+that can be hardcoded in Theorem~\ref{thm:gap}. The unavailable operation
+is finding the appropriate case or witness uniformly.
+
+There is also a constructive double-negation statement, when axis
+existence is expressed in a setting with the indicated names:
+$\neg\neg\exists u\,(u\cdot u=1\wedge Ru=u)$.
+If no axis existed, no entry of $R-I$ could be apart from zero, because
+an apart entry yields an axis. Located rational approximation then
+forces every entry to be zero. But $I$ has the axis $e_1$, a contradiction.
+This supplies no exact axis program, and is not substituted for the
+witness-producing theorem.
+
+% The proof audit, Lean plan, and bibliography are inserted during assembly.
+\input{formalization_and_audit.tex}
+\end{document}

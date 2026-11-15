@@ -1,0 +1,147 @@
+\section{Lean 4 formalization outline and completion path}
+
+The formalization should be layered.  This keeps ordinary algebraic geometry
+separate from the final arithmetization and permits the field-level statements
+to be reused independently.
+
+\subsection{Layer A: generic field geometry}
+
+Create the following modules under a new library, for example
+\code{ConstructiveGeometryIPRA}.
+\begin{description}
+\item[\code{Vec3.lean}] triples, dot product, cross product, determinant,
+  scalar proportionality, and the join--meet identities;
+\item[\code{Projective.lean}] coded projective points and lines with explicit
+  nonzero fields, incidence, collinearity, concurrency, and transport under
+  invertible matrices;
+\item[\code{Affine.lean}] the embedding $(x,y)\mapsto(x,y,1)$, affine
+  combinations, signed brackets, line parameters, and directed ratios;
+\item[\code{Conic.lean}] homogeneous quadratics, restrictions to coordinate
+  sides, tangent covectors, the dual conic, and rational normalization;
+\item[\code{PolynomialSide.lean}] univariate coefficient lists, evaluation,
+  products of linear factors, and the certified-side-product lemma.
+\end{description}
+
+A representative kernel definition is:
+\begin{lstlisting}[language={},caption={Suggested field-level kernel}]
+structure V3 (K : Type*) where
+  x : K
+  y : K
+  z : K
+
+def cross [CommRing K] (u v : V3 K) : V3 K :=
+  V3.mk (u.y*v.z-u.z*v.y)
+        (u.z*v.x-u.x*v.z)
+        (u.x*v.y-u.y*v.x)
+
+def dot [CommRing K] (u v : V3 K) : K :=
+  u.x*v.x + u.y*v.y + u.z*v.z
+
+def det [CommRing K] (u v w : V3 K) : K := dot u (cross v w)
+\end{lstlisting}
+The core identities close with \code{ring}; nonzero and cancellation steps
+remain explicit hypotheses.
+
+\subsection{Layer B: one theorem module per certificate}
+
+The suggested modules and decisive lemmas are:
+\begin{longtable}{p{0.27\textwidth}p{0.63\textwidth}}
+\toprule
+Module & Main theorem or certificate \\
+\midrule
+\endhead
+\code{PappusHarmonic.lean} & Compute $C,X,W$ after affine normalization and prove the bracket harmonic equation. \\
+\code{CevaMenelaus.lean} & Expand the two determinants; for Ceva verify the explicit point, and for Menelaus verify the explicit line. \\
+\code{CarnotConic.lean} & Prove the binary-quadratic lemma and the three explicit factorization identities for the converse witness. \\
+\code{CarnotPolygon.lean} & Prove endpoint evaluation for a list product and telescope by induction over the polygon list. \\
+\code{Hoehn.lean} & Derive the four-point determinant identity, the three cyclic relabellings, and the two five-factor cancellations. \\
+\code{PappusHexagon.lean} & Prove the coordinatewise identity $X-Y+Z=0$. \\
+\code{PascalBrianchon.lean} & Prove Pascal's weighted vector identity, dualize it syntactically, and verify the explicit concurrency point. \\
+\bottomrule
+\end{longtable}
+
+The archive includes \code{lean/FieldCertificates.lean}, a Mathlib-oriented
+source file containing the most compact scalar identities with \code{ring}
+proofs.  It is a starting point, not claimed here as a build-tested module.
+
+\subsection{Layer C: primitive-recursive rational codes}
+
+Define code-level structures without quotient types:
+\begin{lstlisting}[language={}]
+structure RatCode where
+  num : IntCode
+  den : Nat
+  den_pos : den > 0
+
+def RatEq (a b : RatCode) : Prop :=
+  intMul a.num (ofNat b.den) = intMul b.num (ofNat a.den)
+\end{lstlisting}
+Implement code operations and prove congruence with respect to
+\code{RatEq}.  Then define coded triples, matrices, coefficient lists, cross
+products, determinants, and finite products.  Each operation must be connected
+to an explicit primitive-recursive symbol of the existing \code{PRAAx}
+language.  A sparse-polynomial datatype with normalization is useful, but not
+strictly required: because every fixed identity is small, direct equational
+derivations are also viable.
+
+\subsection{Layer D: syntactic \texorpdfstring{$\ipra$}{iPRA} proofs}
+
+For each theorem:
+\begin{enumerate}
+\item write the exact \code{Fm PTm n} formula, including all well-formedness
+and apartness premises;
+\item construct the witness terms before proving the implication;
+\item compile the field-level polynomial certificate into a derivation under
+\code{PRAAx};
+\item use quantifier-free induction only for list products and bounded-search
+correctness; and
+\item close existential conclusions by introduction with the explicit term.
+\end{enumerate}
+
+The final bridge already has the required shape:
+\begin{lstlisting}[language={}]
+import ConciseIPRA.BiInterpretation
+
+open LeanProofs.ConciseIPRA
+
+-- Given h : [] |-[PRAAx] phi,
+-- (pra_theorem_iff phi).mp h has type
+-- [] |-[TeqAx] phi.map (fun _ => FromPRA.sigma).
+\end{lstlisting}
+The archive's \code{lean/IPRAFormalizationPlan.lean} records the intended
+module interfaces next to this import.
+
+\subsection{Recommended implementation order}
+
+The shortest dependency path is:
+\begin{enumerate}
+\item \code{Vec3}, then Pappus hexagon, Ceva, and Menelaus;
+\item Pappus harmonic and Hoehn;
+\item binary quadratics and Carnot conic;
+\item polynomial lists and Carnot polygon;
+\item Pascal on the standard conic, then dual Brianchon;
+\item rational code correctness and the fixed-identity compiler;
+\item theorem-by-theorem \code{PRAAx} derivations; and
+\item transport to \code{TeqAx} and, optionally, to a smaller native calculus.
+\end{enumerate}
+This order gives useful completed milestones early and postpones only the
+unavoidably variable list infrastructure.
+
+\subsection{Completion criteria}
+
+A complete formalization must satisfy all of the following:
+\begin{itemize}
+\item no \code{sorry}, \code{admit}, unproved axiom, or semantic appeal to a
+field tactic inside the final arithmetic derivation;
+\item successful build with the repository's pinned Lean and Mathlib versions;
+\item explicit formulas for all eight arithmetized statements;
+\item kernel-checked \code{PRAAx} derivations, including Carnot's list
+inductions and the bounded searches used by normalization;
+\item an application of the existing bi-interpretation theorem to each final
+statement; and
+\item acceptance by the chosen native proof checker if a compressed
+certificate is exported.
+\end{itemize}
+The present package reaches the human-proof and executable-algebra stages and
+specifies this remaining path without claiming that those final criteria have
+already been met.

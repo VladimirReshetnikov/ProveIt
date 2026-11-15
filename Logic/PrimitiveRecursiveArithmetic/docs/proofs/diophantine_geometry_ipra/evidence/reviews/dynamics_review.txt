@@ -1,0 +1,93 @@
+Independent audit of sections/03_dynamics.tex and code/geometry.py
+Reviewer: descent agent
+Status: PASS for the stated valid-input contracts. No mathematical edit needed.
+
+1. Resultant construction
+The matrix represents the map (A,B)->AF+BG, with 2d input and output
+coefficients. The column convention is consistent: the first/last columns
+of adj(S), not its rows, supply certificates for R X^(2d-1) and
+R Y^(2d-1). The Python sylvester and adjugate functions use exactly this
+orientation. The cofactor estimate (2d-1)! M^(2d-1) is correct. Each
+certificate has 2d coefficients, so L<=2d(2d-1)! M^(2d-1).
+R!=0 forces L>=1. The d=1 case of height functoriality is covered correctly;
+the global preperiodic theorem explicitly requires d>=2.
+
+2. Lower height bound
+For primitive (x,y), the gcd g of F(x,y),G(x,y) divides R times both
+x^(2d-1) and y^(2d-1). The two powers are coprime, also when one coordinate
+is zero; the other coordinate is then +/-1. Thus g|R. Choosing the larger
+input coordinate yields |R|H^(2d-1)<=L H^(d-1) T. Since H>=1, division by
+H^(d-1) is valid. T=g H(f(P)) and g<=|R| then give H^d<=L H(f(P)).
+This accounts for projective gcd cancellation; there is no hidden
+primitivity assumption on the raw image. The upper estimate U=(d+1)M
+is immediate and sound.
+
+3. Global preperiodicity bound
+If H>L, then H^d>=H²>LH and hence H(f(P))>H. Strict increase propagates
+through all later iterates and excludes every supplied repetition pair i<j.
+This proves the unbounded statement 'preperiodic implies H<=L' without
+inducting on a formula containing unbounded existential quantifiers.
+Every iterate of a point with a repetition witness is again preperiodic:
+applying an iterate to the witness equality preserves its two indices.
+Thus the entire orbit of a preperiodic point stays in the height-L list.
+
+4. Finite algorithm and pigeonhole
+The candidate list S is exhaustive and has no duplicates. On each candidate,
+inspecting indices j=0,...,N (N=|S|) is enough: either escape occurs, an
+already visited state is found, or there would be N+1 distinct members of S.
+The text's incidence-table proof of the last contradiction is a valid finite
+pigeonhole proof. The sum of occurrence counts is at most N if every count
+is <=1, but is exactly N+1 because every visit has one unique index.
+The Python loop range(len(candidates)+1) has the correct endpoint. It checks
+escape and repeat before appending, so there is no off-by-one failure.
+An unclassified fall-through would contradict the proven invariant.
+Soundness has explicit i<j repetition witnesses; completeness uses the
+height bound, not a heuristic numerical cutoff.
+
+5. Primitive recursive resources
+Dimension is fixed at 1 for dynamics but degree and coefficients vary.
+The determinant, adjugate, coefficient sums, list S, orbit loops and the
+pigeonhole incidence table all have primitive recursive bounds. Before
+escape the current canonical state has height <=L, and one raw transition
+has coordinates <=UL^d. The implementation breaks immediately upon escape,
+which is equivalent to the text's absorbing escape flag. Therefore it does
+not accidentally iterate an already escaped orbit to uncontrolled heights.
+All relevant induction invariants are inequalities, Boolean flags and
+bounded list/count identities. The chapter does not assume a universal
+primitive-recursive evaluator.
+
+6. Examples
+For t² the explicit certificates have R=1,L=1. For t²-1 they have R=1,L=2.
+The height-1 list has four points and the height-2 list has eight points,
+as stated. At height 2, +/-2 escape to 3 and +/-1/2 escape to -3/4.
+Both exact complete outputs are {infinity,0,1,-1}. Each output repetition
+witness was independently replayed and verified.
+
+7. Executable cross-checks performed
+Exhaustively considered all 729 ordered pairs of quadratic coefficient
+lists with entries in {-1,0,1}. 480 had nonzero resultant. For each, the
+computed certificates passed coefficient comparison, L>=1 and the coarse
+bound passed, and both height inequalities passed on all 24 rational
+projective points with height <=4. Total: 11,520 independent exact height
+checks. These tests support the implementation, while the polynomial
+identities and gcd proof establish the theorem.
+
+8. Other geometry.py functions
+Canonical normalization and projective_points use consistent first-nonzero
+positive signs. The gcd_all(v)==1 short-circuit safely excludes the zero
+vector before next(...) is called. residue_solutions correctly tests
+unimodularity using gcd(modulus,coordinates)=1, which is needed for
+composite moduli. The circle inverse handles the tangent/exceptional point.
+The elliptic x-height enumerator uses denominator d², |numerator|<=B,
+d<=floor sqrt(B), and exact square testing of the cubic numerator, matching
+the intended denominator theorem. rational_roots correctly strips zero
+leading terms, handles the root zero separately and applies the rational
+root divisibility bounds to the first nonzero and final coefficients.
+
+Minor API note (not a theorem error): eval_polynomial uses zip(v,exponents)
+and assumes that exponent tuples have the right length and nonnegative
+entries. Malformed input is not actively rejected there, despite the module
+header saying invalid mathematical preconditions raise ValueError. Either
+retain a valid-encoded-polynomial contract explicitly or add basic shape
+checks if broad untrusted-input use is intended. This does not affect any
+paper theorem or current experiment.

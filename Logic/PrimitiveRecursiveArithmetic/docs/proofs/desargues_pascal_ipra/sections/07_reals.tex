@@ -1,0 +1,142 @@
+\section{A constructive real-coordinate schema}\label{sec:real}
+
+The rational theorem already gives a literal iPRA interpretation of the
+geometry. This extension explains precisely how the same proofs apply
+to constructively given real coordinates, without adding a second-order
+domain of arbitrary real numbers.
+
+\subsection{Fixed primitive-recursive names and arithmetic predicates}
+Fix, externally, finitely many primitive-recursive rational sequences
+$a_i(n)$ with positive denominator functions. Positivity is either built
+into the coding, as a denominator of the form $d_i(n)+1$, or included as
+an explicit arithmetic premise. Their definitions may have numerical
+parameters. Include as hypotheses, or prove in iPRA,
+the regularity conditions
+\begin{equation}\label{eq:regular}
+ |a_i(m)-a_i(n)|\le2^{-m}+2^{-n}\qquad(m,n\in\N).
+\end{equation}
+Rational inequalities are interpreted by integer cross multiplication of
+positive denominators, so these are first-order arithmetic formulas.
+The instance at $m=0$ gives $|a_i(n)|\le|a_i(0)|+2$. For example,
+$2$ plus the sum of the absolute initial numerators is an integer
+bound $B\ge1$ for all the coordinates.
+
+For each fixed integer polynomial $P$ in this finite tuple, write
+$P_n=P(a_1(n),\ldots,a_d(n))$ and define
+\begin{align}
+ \Zero(P)&:\Longleftrightarrow
+ \forall k\,\exists N\,\forall n\ge N\ (|P_n|\le2^{-k}),\label{eq:zero-real}\\
+ \Apart(P)&:\Longleftrightarrow
+ \exists r\,\exists N\,\forall n\ge N\ (|P_n|\ge2^{-r}).\label{eq:apart-real}
+\end{align}
+In the usual real interpretation, these mean that the polynomial value
+is zero, or is positively apart from zero. More fundamentally here, they
+are explicit arithmetic formulas. The statement is a schema for each
+fixed finite list of PR definitions. It does not quantify over arbitrary
+function codes or posit a total universal primitive-recursive evaluator.
+
+\subsection{The estimates replacing exact cancellation}
+If $P=\sum_\alpha c_\alpha x^\alpha$, set
+\[
+ M_P(B)=\sum_\alpha |c_\alpha|B^{|\alpha|}.
+\]
+Then $|P_n|\le M_P(B)$, term by term. All polynomials in use are fixed
+and finite. iPRA proves the following rules from the regularity premises:
+\begin{align}
+ \Zero(P)\land\Zero(Q)&\Longrightarrow\Zero(P+Q),\label{eq:z-add}\\
+ \Zero(P)&\Longrightarrow\Zero(SP),\label{eq:z-mul}\\
+ \Apart(C)\land\Zero(CP)&\Longrightarrow\Zero(P).\label{eq:z-cancel}
+\end{align}
+For \eqref{eq:z-add}, given $k$, use both zero hypotheses at precision
+$k+1$ and take the maximum of their supplied thresholds. The triangle
+inequality gives $2^{-(k+1)}+2^{-(k+1)}=2^{-k}$.
+For \eqref{eq:z-mul}, choose an explicit $t$ with $M_S(B)\le2^t$,
+for example $t=M_S(B)+1$, and use the zero hypothesis at precision
+$k+t$. The bound on $S$ gives the result.
+For \eqref{eq:z-cancel}, open the witnesses $r,N_0$ of apartness.
+Use $\Zero(CP)$ at precision $k+r$ and take the maximum of $N_0$ and
+the resulting threshold. For every subsequent $n$,
+\[
+ 2^{-r}|P_n|\le|C_nP_n|\le2^{-(k+r)},
+\]
+hence $|P_n|\le2^{-k}$. This is rational arithmetic with a positive dyadic
+factor. Negation preserves $\Zero$, and fixed finite sums are obtained
+by finitely many applications of \eqref{eq:z-add}. Apartness of two
+factors gives apartness of their product by adding the exponents and
+taking the maximum of the thresholds.
+
+Each witness comes from a specified existential premise or a
+primitive-recursive operation on finitely many witnesses. No sequence
+of witnesses is chosen, and no induction is performed on $\Zero$ or
+$\Apart$. Quantifier-free induction suffices for the elementary power
+and rational-arithmetic bounds. These are consequently conditional
+first-order iPRA derivations even though their hypotheses are quantified.
+
+\subsection{Transferring the geometric proofs}
+All polynomial identities hold exactly at every approximation index.
+For Desargues, replace incidence through a center by
+$\Zero(o\cdot j_i)$ and require $\Apart(o_j)$ for a designated center
+coordinate. Equation~\eqref{eq:adj3}, finite sums, bounded multipliers,
+and \eqref{eq:z-cancel} give $\Zero(\br{j_1}{j_2}{j_3})$.
+The Desargues identity gives $\Zero(\br X Y Z)$.
+To produce an actual nonzero line, require apartness of a designated
+coordinate of $X\times Y$ and choose $h=X\times Y$. Its first two
+incidences are polynomial identities; its third is the zero determinant.
+
+For the converse, the supplied axis satisfies $\Zero(h\cdot X)$,
+$\Zero(h\cdot Y)$, and $\Zero(h\cdot Z)$. Require apartness of both
+triangle determinants and of a designated coordinate of this axis. The same argument
+gives the zero joining-line determinant. Apartness of a designated
+coordinate of $j_1\times j_2$ produces the nonzero center
+$o=j_1\times j_2$.
+
+For Pascal, assume $\Zero(Q(P_i))$ for all six vertices and
+$\Apart(q_j)$ for a designated coefficient. The cofactor identity
+\eqref{eq:conic-certificate} gives $\Zero(q_j\det M)$ by finite sums
+and bounded multipliers. Cancellation yields $\Zero(\det M)$ and
+therefore $\Zero(\br X Y Z)$. A designated apart nonzero coordinate
+of $X\times Y$ again gives the Pascal line $h=X\times Y$.
+The side and meet vectors have supplied apartness witnesses whenever
+they are to denote projective objects.
+
+The rational branch algorithm \eqref{eq:axis} is deliberately not used
+on arbitrary real names: exact real equality is not being decided.
+For this schema, apartness of a selected pair supplies the pivot.
+These are explicit quantitative nondegeneracy assumptions for the
+constructive real version; they are stronger than merely negating
+equality to zero.
+
+\subsection{Producing regular output names}
+A raw polynomial sequence $P_n$ need not satisfy the unit modulus
+\eqref{eq:regular}. The repair is explicit. Put
+\[
+ L_P(B)=\sum_{|\alpha|>0}|c_\alpha|\,|\alpha|B^{|\alpha|-1}.
+\]
+The telescoping product identity applied to each monomial proves
+\[
+ |P_m-P_n|\le L_P(B)(2^{-m}+2^{-n}).
+\]
+Choose $s$ with $L_P(B)\le2^s$, for example $s=L_P(B)+1$.
+Then $\widetilde P(n)=P_{n+s}$ is regular in the sense of
+\eqref{eq:regular}. For a vector use a common shift for its components.
+
+The same arithmetic formulas $\Zero$ and $\Apart$ also apply to the
+derived PR rational sequences below, including shifted differences;
+equivalently, enlarge the fixed finite family of names to include their
+specified shifts. To see that resampling does not change any incidence, first note
+that $P_n-P_{n+s}$ tends to zero with the displayed explicit bound.
+For several output components, their respective shifts give
+coordinate differences tending to zero; telescoping products and
+bounded multipliers then show that every fixed polynomial in the
+original outputs and the corresponding polynomial in the resampled
+outputs differ by a $\Zero$ sequence. Thus all proven zero equations
+transfer. Apartness transfers as well: if $|P_n|\ge2^{-r}$ eventually,
+use $|P_n-\widetilde P(n)|\le2^{-(r+1)}$ eventually to obtain
+$|\widetilde P(n)|\ge2^{-(r+1)}$. Thresholds are combined by maxima.
+Consequently the constructed line or center can be represented by
+regular primitive-recursive real names without changing the conclusion.
+
+This extension is a completed conditional proof, not a claim that every
+classical real configuration has a primitive-recursive presentation or
+that iPRA contains an unrestricted real-number sort.
+

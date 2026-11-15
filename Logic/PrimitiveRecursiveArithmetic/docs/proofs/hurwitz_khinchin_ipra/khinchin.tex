@@ -1,0 +1,352 @@
+% Integration notes: finite constructive Khintchine theorem.
+% This file has no preamble; the root manuscript may import or adapt it.
+\section{A finite quantitative Khintchine theorem}
+\label{sec:finite-khintchine}
+
+We use the normalization
+\[
+ \left|x-\frac pq\right|<\frac{\psi(q)}q,
+ \qquad q\geq1,
+\]
+so that the critical series is $\sum_q\psi(q)$.  In the normalization
+$|x-p/q|<\Psi(q)$, put $\psi(q)=q\Psi(q)$: the monotonicity hypothesis is
+that $q\Psi(q)$ is nonincreasing and the critical series is
+$\sum_q q\Psi(q)$.  All approximation functions in the finite theorem
+are nonnegative rational valued.  A primitive recursive approximation
+function and primitive recursive modulus give a primitive recursive
+construction; no uniform evaluator for all primitive recursive programs
+is presupposed.
+
+For a finite union of intervals with rational endpoints, write $|U|$ for
+its exact rational length.  It is computed by sorting endpoints and adding
+lengths of the covered elementary segments.  Single endpoints have length
+zero.  Every measure argument below is an identity or inequality about
+these finite rational sums.
+
+\subsection{The hypotheses and conclusions}
+
+For $q\geq1$, let $A_q$ be the relatively open subset of $[0,1]$ consisting
+of the points satisfying the displayed approximation inequality for some
+integer $p$.  Numerators $0\leq p\leq q$ suffice on $[0,1]$.
+
+\paragraph{Convergent version.}
+Suppose a function $C$ satisfies $C(s)\ge1$ and
+\[
+ \sum_{q=C(s)}^R\psi(q)\leq2^{-s}
+ \quad\hbox{for every }s\hbox{ and every }R\geq C(s).
+ \tag{K-C}
+\]
+Then, for every $m$ and $R\geq C(m+1)$,
+\[
+ \left|\bigcup_{q=C(m+1)}^R A_q\right|\leq2^{-m}.
+ \tag{K1}
+\]
+Monotonicity of $\psi$ is not needed here.
+
+\paragraph{Divergent version.}
+Suppose $\psi$ is nonincreasing and a unit-tail modulus $D$ satisfies
+\[
+ D(s)\geq s,\qquad
+ \sum_{q=s}^{D(s)}\psi(q)\geq1 \quad(s\geq1).
+ \tag{K-D}
+\]
+There is a primitive recursive construction, relative to the fixed
+primitive recursive functions $\psi,D$, that takes $N\geq1$ and $m\geq0$
+and returns a finite list $U(N,m)$ of rational open intervals and an integer
+$M(N,m)$ such that
+\[
+ U(N,m)\subseteq\bigcup_{q=N}^{M(N,m)}A_q,
+ \qquad |[0,1]\setminus U(N,m)|<2^{-m}.
+ \tag{K2}
+\]
+Every interval in the returned list is labelled by a reduced fraction
+$p/q$ with $q>N$, and is contained in its approximation interval.  Thus the
+construction also proves the version requiring coprime numerators and
+denominators.
+
+A usual primitive recursive initial-sum divergence rate $H$, with
+$\sum_{q=1}^{H(t)}\psi(q)\geq t$, supplies (K-D): take
+\[
+ D(s)=\max\left(s,H\left(1+\left\lceil
+       \sum_{q=1}^{s-1}\psi(q)\right\rceil\right)\right).
+\]
+All quantities in this formula are rational or natural numbers, and its
+verification uses only nonnegativity and subtraction of finite sums.
+
+\subsection{Convergence: the complete estimate}
+
+Put $r=\psi(q)/q$.  The intervals centered at $p/q$, $1\leq p\leq q-1$,
+have clipped length at most $2r$; the two intervals at $0$ and $1$ have
+clipped length at most $r$ each.  Therefore
+\[
+ |A_q|\leq2qr=2\psi(q).
+\]
+Finite subadditivity and (K-C) immediately give (K1).  The same calculation
+bounds every finite initial portion of the countable tail cover, which is
+the constructive null-cover meaning of the convergence conclusion.  If
+one insists on intervals open in all of $\mathbb R$ and counts their
+unclipped lengths, the simpler bound $4\psi(q)$ applies; replace
+$C(m+1)$ by $C(m+2)$.
+
+\subsection{Enough separated reduced fractions in every interval}
+
+Let $J=(a,b)\subseteq(0,1)$, allowing $a=0$ or $b=1$, and put $L=b-a>0$.
+Its middle half is
+\[
+ J^*=(a+L/4,b-L/4),\qquad \lambda=|J^*|=L/2.
+\]
+For $Q=2^k$, $k\geq2$, let $\mathcal R_k(J)$ be the reduced fractions
+$p/q\in J^*$ with $Q/4<q\leq Q$.  We prove that
+\[
+ \frac{LQ^2}{32}\leq\#\mathcal R_k(J)\leq LQ^2
+ \tag{K3}
+\]
+whenever
+\[
+ k\geq K(J,N):=
+ \max\left(4,512\lceil1/L\rceil,2+\lceil\log_2N\rceil\right).
+ \tag{K4}
+\]
+Here $\lceil\log_2N\rceil$ is only notation for the least $j\leq N$
+with $2^j\geq N$; it is a bounded search.  Its presence also ensures
+$q>Q/4\geq N$ for the fractions used below.
+
+Let $A(X)$ count all integer pairs $(p,q)$ with $1\leq q\leq X$ and
+$p/q\in J^*$, without requiring coprimality.  An open interval of length
+$t$ contains between $t-1$ and $t+1$ integers.  Consequently
+\[
+ \frac{\lambda X^2}{2}-X\leq A(X)
+ \leq\frac{\lambda X^2}{2}+\left(\frac\lambda2+1\right)X.
+ \tag{K5}
+\]
+Every noncoprime pair counted by $A(Q)$ is divisible by some integer
+$d\in\{2,\ldots,Q\}$.  Dividing both coordinates by $d$ and applying
+(K5) bounds the number of bad pairs by
+\[
+ \sum_{d=2}^Q A(\lfloor Q/d\rfloor)
+ \leq\frac{\lambda Q^2}{2}\sum_{d=2}^Q\frac1{d^2}
+      +\left(\frac\lambda2+1\right)Q\sum_{d=2}^Q\frac1d.
+\]
+No prime-number theorem, totient asymptotic, or inversion formula occurs
+in this estimate.  The required elementary inequalities are
+\[
+ \sum_{d=2}^Q\frac1{d^2}\leq\frac14+
+       \sum_{d=3}^Q\frac1{d(d-1)}\leq\frac34,
+ \qquad
+ \sum_{d=2}^{2^k}\frac1d\leq k.
+ \tag{K6}
+\]
+The first telescopes, and the second splits the sum into the $k$ blocks
+$(2^{j-1},2^j]$, each of sum at most one.  Subtracting the bad pairs and
+then all pairs with denominator at most $Q/4$ gives
+\begin{align*}
+ \#\mathcal R_k(J)
+ &\geq \frac{3\lambda Q^2}{32}
+ -Q\left(1+\frac\lambda8+\frac14+
+                 \left(\frac\lambda2+1\right)k\right)\\
+ &\geq\frac{3LQ^2}{64}-3Q(k+1).
+ \tag{K7}
+\end{align*}
+For $k\geq4$, induction gives $2^k\geq k^2$.  Condition (K4) gives
+$Lk\geq512$, so
+\[
+ LQ\geq Lk^2\geq256(k+1)\geq192(k+1).
+\]
+The last term in (K7) is therefore at most $LQ^2/64$, proving the lower
+bound in (K3).
+
+Distinct reduced fractions with denominators at most $Q$ are separated
+by at least $Q^{-2}$: their difference has a nonzero integer numerator
+over a denominator at most $Q^2$.  In an interval of length $L/2$ this
+gives at most $LQ^2/2+1$ fractions.  Our bounds imply $LQ^2\geq2$, so
+this is at most $LQ^2$, proving the upper bound in (K3).
+
+\subsection{Small approximation intervals and their intersections}
+
+For $k\geq K(J,N)$ put
+\[
+ t_k=\min\{2^k\psi(2^k),1\},\qquad
+ r_k=\frac{t_k}{8\,4^k},
+\]
+and let $E_k(J)$ be the union of the intervals of radius $r_k$ centered
+at the fractions in $\mathcal R_k(J)$.  An interval with radius zero is
+understood as empty.  All these intervals lie in $J$, since their centers
+lie in $J^*$ and $r_k\leq1/(8Q^2)\leq L/4$.  They are pairwise disjoint
+at each fixed scale, by the separation just proved.  Moreover, for their
+labels $p/q$,
+\[
+ r_k\leq\frac{\psi(Q)}{8Q}\leq\frac{\psi(q)}q,
+\]
+where the last inequality uses $q\leq Q$ and monotonicity.  Thus every
+$E_k(J)$ consists of valid approximations with denominators $q>N$.
+Using (K3) and $2r_k=t_k/(4Q^2)$ yields
+\[
+ \frac{Lt_k}{128}\leq |E_k(J)|\leq\frac{Lt_k}{4}.
+ \tag{K8}
+\]
+
+Here is the complete overlap estimate.  Fix $k<\ell$ and one interval
+$I$ of $E_k(J)$.  A radius-$r_\ell$ interval meeting $I$ has its center
+in an interval of length $|I|+2r_\ell$.  Separation at scale $\ell$
+bounds the number of such centers by
+$(|I|+2r_\ell)4^\ell+1$.  Multiplying by $2r_\ell$ gives
+\[
+ |I\cap E_\ell(J)|
+ \leq\frac{t_\ell}{4}|I|
+       +\left(\frac{t_\ell}{4}+1\right)2r_\ell
+ \leq\frac{t_\ell}{4}|I|+\frac54(2r_\ell).
+\]
+Sum this over the disjoint intervals of $E_k(J)$, use (K8), and use
+$\#\mathcal R_k(J)\leq L4^k$.  The result is
+\[
+ |E_k(J)\cap E_\ell(J)|
+ \leq\frac L{16}t_kt_\ell
+       +\frac{5L}{16}4^{k-\ell}t_\ell.
+ \tag{K9}
+\]
+This is the sole correlation estimate needed.
+
+\subsection{A finite block covers a fixed fraction of every interval}
+
+Take any finite block $k=K,\ldots,B$ of admissible scales and write
+$S=\sum_{k=K}^B t_k$.  On the finite partition by all interval endpoints,
+let $F=\sum_{k=K}^B\mathbf1_{E_k(J)}$.  The integral signs in what follows
+are abbreviations for finite rational sums of segment lengths times
+integer values.  Equations (K8)--(K9) give
+\[
+ \int F\geq LS/128
+\]
+and
+\begin{align*}
+ \int F^2
+ &=\sum_k|E_k|+2\sum_{k<\ell}|E_k\cap E_\ell|\\
+ &\leq L\left(\frac S4+\frac{S^2}{16}+\frac{5S}{24}\right)
+  =L\left(\frac{S^2}{16}+\frac{11S}{24}\right).
+ \tag{K10}
+\end{align*}
+We used only $2\sum_{k<\ell}t_kt_\ell\leq S^2$ and the finite geometric
+sum $\sum_{k<\ell}4^{k-\ell}\leq1/3$.  When $S\geq1$, the right side
+of (K10) is at most $LS^2$.
+
+For completeness, finite weighted Cauchy--Schwarz says
+\[
+ (\int F)^2\leq |\{F>0\}|\int F^2.
+\]
+On the endpoint partition this is the elementary identity that the
+difference between the right and left sides is
+$\sum_{i<j}w_iw_j(v_i-v_j)^2\geq0$, after omitting the cells with value
+zero.  Therefore, if $S\geq1$,
+\[
+ \left|\bigcup_{k=K}^B E_k(J)\right|\geq\frac{L}{16384}.
+ \tag{K11}
+\]
+All divisions have explicitly positive rational denominators.
+
+\subsection{One call to the divergence modulus supplies the block}
+
+Let $K=K(J,N)$, let $s=2^K$, and put
+\[
+ B=\lceil\log_2D(s)\rceil.
+\]
+The dyadic blocks $[2^k,2^{k+1}-1]$, $K\leq k\leq B$, include every
+integer from $s$ to $D(s)$.  Monotonicity gives
+\[
+ 1\leq\sum_{q=s}^{D(s)}\psi(q)
+ \leq\sum_{k=K}^B 2^k\psi(2^k).
+\]
+For any finite nonnegative rational list $(a_k)$,
+\[
+ \sum_k\min(a_k,1)\geq\min\left(\sum_k a_k,1\right).
+\]
+This follows by induction from its two-term version, or by a bounded
+case distinction according as some $a_k\geq1$.  Hence $S\geq1$, as
+required for (K11).  The cap at one and the factor eight in the radii
+are useful: one unit of tail mass suffices, even if concentrated at one
+dyadic scale.
+
+\subsection{Amplification by the finitely many residual gaps}
+
+Set $b_0=16384$.  Start with the empty union $U_0$.  At each stage, write
+$[0,1]\setminus U_j$ as a finite list of closed rational gaps.  For each
+gap of positive length, apply the block construction to its interior
+$J$ and add its block union to $U_j$.  Leave singleton gaps in the
+complement list.  Freeze the old gap list at the beginning of the round:
+process each old gap once, aggregate the new intervals, and only then
+compute the next gap list.  All added intervals are inside the gap in which they
+were constructed.  If $R_j=|[0,1]\setminus U_j|$, (K11) gives
+\[
+ R_{j+1}\leq(1-1/b_0)R_j.
+\]
+The rational binomial inequality
+$\bigl(b_0/(b_0-1)\bigr)^{b_0}\geq1+b_0/(b_0-1)>2$
+implies $(1-1/b_0)^{b_0}<1/2$.  After
+\[
+ T=b_0(m+1)
+\]
+stages we therefore have $R_T\leq2^{-(m+1)}<2^{-m}$.  The maximum of
+the finitely many denominator bounds $2^B$ is $M(N,m)$.  This proves
+(K2), with a fully specified finite algorithm.
+
+Every loop has an explicit finite bound.  At a scale $k$, enumerate
+$1\leq q\leq2^k$ and $0\leq p\leq q$, test coprimality and interval
+membership by rational comparisons, and retain the required fractions.
+The number of stages is prescribed in advance.  The finite endpoint
+sort, gap construction, block endpoint, and new denominator maximum are
+primitive recursive in the finite data.  The bounds are intentionally
+enormous; efficiency is not the claim.
+
+For membership-sensitive uses, open components that merely touch must
+not be merged across their common endpoint.  Merge strict overlaps,
+and retain every closed residual gap, including singleton gaps.  Their
+zero length may be ignored only in the length calculation.
+
+\subsection{What ``almost every'' means constructively}
+
+The intrinsic iPRA result is (K1) or (K2), expressed in codes for finite
+rational data.  Ordinary Lebesgue measure is an external interpretation:
+(K1) makes the limsup null in the convergent case, and (K2) makes every
+tail union conull, hence their countable intersection conull in the
+divergent case.  No countable additivity, density theorem, or zero--one
+law was used to prove the finite bounds.
+
+There is also a useful constructive null-test presentation of the
+divergent conclusion.  Fix $m$, and for each $n\geq0$ construct
+$U(n+1,m+n+3)$.  Its finite closed residual-gap list has total length
+less than $\eta_n=2^{-(m+n+3)}$.  If the list has $r_n\geq1$ entries,
+enlarge every gap $(a,b)$, including singleton gaps, to
+\[
+ (a-\delta_n,b+\delta_n),\qquad
+ \delta_n=\eta_n/(2r_n).
+\]
+The total length of this finite list is less than $2\eta_n$.  Concatenate
+these lists, or use a primitive recursive pairing of the two list
+indices with empty entries for invalid inner indices.  This produces a
+primitive recursive open cover $V_m$ whose every finite sublist has
+length sum bounded by
+\[
+ \sum_{n\geq0}2\eta_n=2^{-(m+1)}<2^{-m};
+\]
+the displayed infinite sum is shorthand for its geometric finite-prefix
+bound.
+
+If a represented real avoids $V_m$ for some $m$, it has, for every $N$,
+a rational approximation with denominator greater than $N$.  Indeed the
+positive rational enlargement margin separates it from every residual
+gap of the relevant finite union.  A sufficiently precise rational
+approximation to the real therefore locates it inside that union, and
+finite interval searching supplies one of the labelled approximation
+intervals.  This uses only finite rational case distinctions.  For a
+completely explicit extraction bound, subdivide by the finitely many
+endpoints, compute the least positive gap between distinct endpoints,
+and use a real-name accuracy smaller than one quarter of that gap and
+one quarter of the enlargement margin; finite local cases then choose
+an original interval with positive slack.  Zero-width endpoint cells
+inside the union are covered by an interval crossing the endpoint;
+those outside the union belong to the enlarged residual list.
+
+One must not intuitionistically identify the negation of
+$\forall N\,\exists q\geq N$ with $\exists N\,\forall q\geq N$.
+The finite-coverage statement and the null-test avoidance implication
+make no such inference.  Nor do we infer a primitive recursive modulus
+from bare convergence or divergence: the relevant modulus is supplied
+as part of the constructive input.

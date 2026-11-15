@@ -1,0 +1,896 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=27mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor,xurl,hyperref,enumitem,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!55!black,
+ citecolor=blue!45!black,pdftitle={The Basel identity in intuitionistic primitive recursive arithmetic},
+ pdfauthor={Prepared for Vladimir Reshetnikov}}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small The Basel identity in iPRA}
+\fancyhead[R]{\small A finite rational proof}
+\fancyfoot[C]{\thepage}\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\cut}{\mathcal N}
+\newcommand{\dm}{\mathbin{\dot{-}}}
+\DeclareMathOperator{\Prf}{Prf}
+
+\title{\textbf{The Basel identity in intuitionistic\\
+primitive recursive arithmetic}\\[5pt]
+\large A complete finite rational argument and a Lean formalization blueprint}
+\author{Prepared for Vladimir Reshetnikov}
+\date{November 14, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We prove Euler's identity $\sum_{j\ge1}j^{-2}=\pi^2/6$ in its explicit
+first-order arithmetical form. Put
+$A_N=\sum_{j<N}(-1)^j/(2j+1)$ and $S_n=\sum_{j=1}^n j^{-2}$.
+The central result is the finite, uniform inequality
+\[
+ n\ge2^r\quad\Longrightarrow\quad
+ \abs{6S_n-16A_{2^r}^{\,2}}\le\frac{8r+20}{2^r}.
+\]
+Consequently, with $\cut(k)=2^{2k+7}$ and $P_k=4A_{\cut(k)}$,
+$n\ge\cut(k)$ implies $\abs{6S_n-P_k^2}\le2^{-k}$.
+All sums are finite, all arithmetic is rational, and all inductions can
+be performed on quantifier-free formulas. The proof compares two
+decompositions of the same finite square and bounds both boundary
+terms. A separate finite Riemann-sum calculation identifies the
+chosen $\pi$ code with the usual arctangent definition. We supply
+natural-number encodings, an induction audit, exact computational
+checks, and a concrete path to an object-theory derivation using
+ConciseIPRA. The mathematical argument is complete. The Lean files
+are an explicitly unfinished, uncompiled formalization blueprint,
+not a claimed machine-checked iPRA proof.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\begingroup\small\tableofcontents\endgroup
+\newpage
+
+\section{The precise theorem and its interpretation}\label{sec:statement}
+
+The first-order language of $\ipra$ has no variables for real numbers,
+infinite sequences, or sets. Its internal Basel statement must concern
+specified primitive recursive programs returning rational
+approximations. This is a change of representation, not a weakening to
+numerical evidence.
+
+For $N,n\in\N$, define the finite rational sums
+\begin{align}
+ A_N&=\sum_{j=0}^{N-1}\frac{(-1)^j}{2j+1},&
+ H_N&=\sum_{j=0}^{N-1}\frac1{2j+1},\label{eq:AH}\\
+ O_N&=\sum_{j=0}^{N-1}\frac1{(2j+1)^2},&
+ S_n&=\sum_{j=1}^{n}\frac1{j^2}.\label{eq:OS}
+\end{align}
+An empty sum is zero. The following result is proved entirely by
+finite rational arithmetic.
+
+\begin{theorem}[Uniform finite Basel estimate]\label{thm:uniform}
+For all natural numbers $n\ge N\ge1$,
+\begin{equation}\label{eq:uniform}
+ \boxed{\displaystyle\abs{6S_n-16A_N^2}\le\frac{16H_N+4}{N}.}
+\end{equation}
+For all $r,n\in\N$ with $n\ge2^r$,
+\begin{equation}\label{eq:dyadic}
+ \boxed{\displaystyle\abs{6S_n-16A_{2^r}^{\,2}}\le\frac{8r+20}{2^r}.}
+\end{equation}
+\end{theorem}
+
+\begin{theorem}[An explicit first-order precision statement]\label{thm:main}
+Set
+\begin{equation}\label{eq:cutoff}
+ \cut(k)=2^{2k+7},\qquad P_k=4A_{\cut(k)}.
+\end{equation}
+Then $\ipra$ proves the universal closure of
+\begin{equation}\label{eq:main}
+ \boxed{\displaystyle n\ge\cut(k)\ \longrightarrow\
+ \abs{6S_n-P_k^2}\le2^{-k}.}
+\end{equation}
+Rational notation abbreviates a quantifier-free natural-number
+formula specified in Section~\ref{sec:encoding}.
+\end{theorem}
+
+The ordinary interpretation of $P_k$ converges to $\pi$. We prove its
+finite Cauchy estimate and its agreement with an independent rational
+Riemann-sum code in Section~\ref{sec:pi}. Thus \eqref{eq:main} is a
+constructive arithmetical form of the exact Basel identity, with a
+primitive recursive precision witness already supplied.
+
+Squaring Gregory's series belongs to a historical family of proofs.
+Campbell and Levrie discuss that family, including Euler's 1742
+correspondence with Goldbach~\cite{CampbellLevrie}. The point here is
+the explicit finite error control and proof-theoretic accounting.
+No claim of historical novelty is needed.
+
+\section{Elementary finite arithmetic}\label{sec:elementary}
+
+Through Section~\ref{sec:modulus}, every quantity is a rational number
+computed by a finite expression or bounded loop. Absolute value is
+decidable rational absolute value. All denominators used to multiply
+inequalities are positive.
+
+\begin{lemma}[Decreasing alternating terms]\label{lem:decreasing}
+If $w_0,\ldots,w_{m-1}$ are nonnegative and decreasing, then
+\[
+ 0\le w_0-w_1+w_2-\cdots+(-1)^{m-1}w_{m-1}\le w_0
+ \quad(m\ge1).
+\]
+An alternating sum over any finite interval therefore has absolute
+value at most its first, largest term.
+\end{lemma}
+\begin{proof}
+Process the list backwards. Set $R_0=0$ and
+$R_{j+1}=w_{m-1-j}-R_j$ for $0\le j<m$. The first step gives
+$0\le R_1\le w_{m-1}$. If $0\le R_j\le w_{m-j}$ and $j<m$,
+then $w_{m-j}\le w_{m-1-j}$ and consequently
+$0\le R_{j+1}\le w_{m-1-j}$. Finally $R_m$ is the displayed
+alternating sum. Multiplication by the sign of the first term
+handles an interval beginning at an odd index.
+\end{proof}
+
+\begin{lemma}[Increasing alternating terms]\label{lem:increasing}
+If $0\le b_1\le\cdots\le b_m$, then
+\[
+ \abs{\sum_{d=1}^m(-1)^{d-1}b_d}\le b_m.
+\]
+\end{lemma}
+\begin{proof}
+Set $U_0=0$ and $U_d=b_d-U_{d-1}$. Induction gives
+$0\le U_d\le b_d$, since $0\le U_{d-1}\le b_{d-1}\le b_d$.
+The recurrence also gives
+$\sum_{j=1}^d(-1)^{j-1}b_j=(-1)^{d-1}U_d$.
+Both invariants are equalities or inequalities of finite rational
+terms.
+\end{proof}
+
+These are finite lemmas, not convergence theorems. In their
+applications the lists are explicit functions of natural-number
+parameters, not function variables in the language of $\ipra$.
+
+The partial-fraction calculations needed below are
+\begin{align}
+ \frac1{ab}&=\frac{1/a+1/b}{a+b}\quad(a,b>0),\label{eq:pfplus}\\
+ \frac2{(2i+1)(2i+2d+1)}
+ &=\frac1d\left(\frac1{2i+1}-\frac1{2i+2d+1}\right)
+ \quad(d\ge1).\label{eq:pfminus}
+\end{align}
+They follow by cross-multiplication. Every subsequent reindexing is
+finite and can be checked by adding a row, column, or diagonal.
+
+\section{The first decomposition: sum diagonals}\label{sec:triangle}
+
+Fix $N\ge1$ and put
+\begin{equation}\label{eq:TN}
+ T_N=\sum_{d=1}^{N-1}\frac{(-1)^{d-1}H_d}{d}.
+\end{equation}
+\begin{lemma}[A finite convolution identity]\label{lem:diagonal}
+For $d\ge1$,
+\begin{equation}\label{eq:diagonal}
+ \sum_{i=0}^{d-1}\frac1{(2i+1)(2d-2i-1)}=\frac{H_d}{d}.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:triangle}
+ T_N=\sum_{\substack{0\le i,j<N\\i+j\le N-2}}
+       \frac{(-1)^{i+j}}{(2i+1)(2j+1)}.
+\end{equation}
+For $N=1$, the last sum is empty.
+\end{lemma}
+\begin{proof}
+The two denominators in \eqref{eq:diagonal} add to $2d$, so its
+summand is
+\[
+ \frac1{2d}\left(\frac1{2i+1}+\frac1{2d-2i-1}\right).
+\]
+Both sums in parentheses enumerate the same $d$ odd reciprocals,
+one in reverse order. This proves \eqref{eq:diagonal}.
+In \eqref{eq:triangle}, collect the terms with $i+j=d-1$.
+Their sign is $(-1)^{d-1}$ and their unsigned sum is $H_d/d$.
+The permitted values are exactly $d=1,\ldots,N-1$.
+\end{proof}
+
+The square $A_N^2$ is the sum over the full $N$ by $N$ square.
+Write $D_N=A_N^2-T_N$ for its complementary triangular part.
+
+\begin{lemma}[The omitted triangle]\label{lem:D}
+For every $N\ge1$,
+\begin{equation}\label{eq:D}
+ \abs{D_N}\le\frac{H_N}{N}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+In row $i$, the omitted indices are $j=N-1-i,\ldots,N-1$.
+Hence
+\[
+ D_N=\sum_{i=0}^{N-1}\frac{(-1)^i}{2i+1}
+       \sum_{j=N-1-i}^{N-1}\frac{(-1)^j}{2j+1}.
+\]
+Lemma~\ref{lem:decreasing} bounds the inner absolute value by
+$1/(2N-2i-1)$. The finite triangle inequality and
+\eqref{eq:diagonal}, with $d=N$, give
+\[
+ \abs{D_N}\le
+ \sum_{i=0}^{N-1}\frac1{(2i+1)(2N-2i-1)}=\frac{H_N}{N}.
+\]
+\end{proof}
+
+\section{The second decomposition: difference diagonals}\label{sec:difference}
+
+Split the same square into its main diagonal and pairs above and below
+it. If $j=i+d$, then $(-1)^{i+j}=(-1)^d$, so
+\begin{equation}\label{eq:square}
+ A_N^2=O_N+
+ 2\sum_{d=1}^{N-1}(-1)^d
+ \sum_{i=0}^{N-d-1}\frac1{(2i+1)(2i+2d+1)}.
+\end{equation}
+For fixed $d$, equation \eqref{eq:pfminus} yields
+\begin{align}
+ 2\sum_{i=0}^{N-d-1}\frac1{(2i+1)(2i+2d+1)}
+ &=\frac{H_{N-d}-(H_N-H_d)}d\notag\\
+ &=\frac{H_d}d-\frac{H_N-H_{N-d}}d.\label{eq:difference}
+\end{align}
+Define
+\begin{equation}\label{eq:bE}
+ b_d=\frac{H_N-H_{N-d}}d\quad(1\le d<N),\qquad
+ E_N=\sum_{d=1}^{N-1}(-1)^{d-1}b_d.
+\end{equation}
+Then \eqref{eq:TN}--\eqref{eq:difference} give the exact equality
+\begin{equation}\label{eq:second}
+ \boxed{A_N^2=O_N-T_N+E_N.}
+\end{equation}
+
+\begin{lemma}[Increasing tail averages]\label{lem:average}
+For fixed $N\ge2$, the $b_1,\ldots,b_{N-1}$ are nonnegative and
+increasing.
+\end{lemma}
+\begin{proof}
+Let $C_d=H_N-H_{N-d}$. For $1\le d<N-1$, set
+$t=1/(2(N-d-1)+1)$. Then $C_{d+1}=C_d+t$.
+Each of the $d$ summands in $C_d$ has a larger denominator than
+$t$ does, so $C_d\le dt$. Therefore
+\[
+ b_{d+1}-b_d
+ =\frac{C_d+t}{d+1}-\frac{C_d}{d}
+ =\frac{dt-C_d}{d(d+1)}\ge0.
+\]
+Nonnegativity follows from the defining sum.
+\end{proof}
+
+\begin{lemma}[The second boundary term]\label{lem:E}
+For every $N\ge1$,
+\begin{equation}\label{eq:E}
+ \abs{E_N}\le\frac{H_N}{N}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $N=1$, the sum is empty. For $N\ge2$, the preceding lemma and
+Lemma~\ref{lem:increasing} imply
+\[
+ \abs{E_N}\le b_{N-1}=\frac{H_N-1}{N-1}.
+\]
+Every summand of $H_N$ is at most one, so $H_N\le N$.
+After multiplication by $N(N-1)>0$, the inequality
+$(H_N-1)/(N-1)\le H_N/N$ is exactly $H_N\le N$.
+\end{proof}
+
+\begin{proposition}[The crucial finite comparison]\label{prop:core}
+For every $N\ge1$,
+\begin{equation}\label{eq:core}
+ \boxed{\displaystyle\abs{2A_N^2-O_N}\le\frac{2H_N}{N}.}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Since $D_N=A_N^2-T_N$, equation \eqref{eq:second} implies
+$2A_N^2-O_N=D_N+E_N$. Apply \eqref{eq:D} and \eqref{eq:E}.
+\end{proof}
+
+This step evaluates the series. It compares two finite decompositions
+and retains both boundary errors. Formally squaring an infinite
+conditionally convergent series would not justify dropping those
+errors.
+
+\section{From odd squares to all squares}\label{sec:allsquares}
+
+\begin{lemma}[Finite square tails]\label{lem:tail}
+For $m\ge N\ge1$,
+\begin{equation}\label{eq:tail}
+ 0\le S_m-S_N\le\frac1N-\frac1m\le\frac1N,
+\end{equation}
+and
+\begin{equation}\label{eq:annulus}
+ \frac1{4N}\le S_{2N}-S_N\le\frac1{2N}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $j\ge2$,
+$1/j^2\le1/(j(j-1))=1/(j-1)-1/j$.
+Sum from $N+1$ to $m$ to get \eqref{eq:tail}.
+Its case $m=2N$ is the upper bound in \eqref{eq:annulus}.
+For the lower bound there are $N$ terms, each at least
+$1/(2N)^2$.
+\end{proof}
+
+Separating the even and odd denominators gives
+\begin{equation}\label{eq:oddeven}
+ O_N=S_{2N}-\frac14S_N.
+\end{equation}
+
+\begin{lemma}[Uniform comparison]\label{lem:compare}
+For $n\ge N\ge1$,
+\begin{equation}\label{eq:compare}
+ \abs{O_N-\frac34S_n}\le\frac1{2N}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $R=S_{2N}-S_N$ and $V=S_n-S_N$. The previous lemma says
+\[
+ \frac1{4N}\le R\le\frac1{2N},\qquad 0\le V\le\frac1N.
+\]
+By \eqref{eq:oddeven}, $O_N-\frac34S_n=R-\frac34V$.
+Its upper bound is $1/(2N)$ and its lower bound is
+$1/(4N)-3/(4N)=-1/(2N)$.
+\end{proof}
+
+\begin{proof}[Proof of \eqref{eq:uniform}]
+The core comparison and \eqref{eq:compare} imply
+\[
+ \abs{\frac34S_n-2A_N^2}
+ \le\abs{\frac34S_n-O_N}+\abs{O_N-2A_N^2}
+ \le\frac1{2N}+\frac{2H_N}{N}.
+\]
+Multiply by eight.
+\end{proof}
+
+\section{The primitive recursive precision witness}\label{sec:modulus}
+
+\begin{lemma}[Dyadic harmonic bound]\label{lem:harmonic}
+For every $r\in\N$,
+\begin{equation}\label{eq:harmonic}
+ H_{2^r}\le1+\frac r2.
+\end{equation}
+\end{lemma}
+\begin{proof}
+$H_1=1$. Moreover,
+\[
+ H_{2^{r+1}}-H_{2^r}
+ =\sum_{j=2^r}^{2^{r+1}-1}\frac1{2j+1}
+ \le2^r\cdot2^{-r-1}=\frac12.
+\]
+Induction proves the claim; after clearing denominators the invariant
+is $2H_{2^r}\le r+2$.
+\end{proof}
+
+Substitution in \eqref{eq:uniform} proves \eqref{eq:dyadic}.
+Next,
+\begin{equation}\label{eq:growth}
+ 16k+76\le128\cdot2^k\quad(k\in\N).
+\end{equation}
+The base case is $76\le128$. At the successor,
+$16(k+1)+76\le2(16k+76)\le128\cdot2^{k+1}$.
+This is quantifier-free induction on a natural-number inequality.
+
+Take $r=2k+7$ in \eqref{eq:dyadic}. Its numerator is $16k+76$,
+so \eqref{eq:growth} gives
+\[
+ \frac{8r+20}{2^r}
+ \le\frac{128\cdot2^k}{2^{2k+7}}=2^{-k}.
+\]
+This proves the rational assertion \eqref{eq:main}. Section
+\ref{sec:encoding} spells out its availability in $\ipra$.
+
+\section{What the \texorpdfstring{$\pi$}{pi} code means}\label{sec:pi}
+
+\subsection{Finite Cauchy estimates}
+
+Lemma~\ref{lem:decreasing} gives, for $M\ge N\ge1$,
+\begin{equation}\label{eq:gregorytail}
+ 0\le A_N\le1,\qquad
+ \abs{A_M-A_N}\le\frac1{2N+1}.
+\end{equation}
+Thus $P_k=4A_{\cut(k)}$ has an explicit Cauchy modulus: for
+$\ell\ge k$,
+\[
+ \abs{P_\ell-P_k}\le\frac4{2\cut(k)+1}<\frac2{\cut(k)}.
+\]
+Likewise
+$\abs{S_{\cut(\ell)}-S_{\cut(k)}}\le1/\cut(k)$
+by \eqref{eq:tail}. These are statements about specified arithmetic
+programs. They do not assert that every Cauchy sequence has a limit.
+
+In the usual real interpretation, $A_N\to\pi/4$. The next calculation
+identifies the code with a rational Riemann-sum definition, without
+using calculus inside the arithmetic proof.
+
+\subsection{A finite arctangent bridge}\label{sec:riemann}
+
+For $M\ge1$ define
+\begin{equation}\label{eq:QM}
+ Q_M=\frac1M\sum_{i=0}^{M-1}\frac1{1+(i/M)^2}
+     =M\sum_{i=0}^{M-1}\frac1{M^2+i^2}.
+\end{equation}
+This rational program is independent of the Basel sums.
+
+\begin{lemma}[Power-sum quadrature]\label{lem:moment}
+For $p\in\N$, $M\ge1$, and $0^0=1$,
+\[
+ 0\le\frac1{p+1}
+       -\frac1M\sum_{i=0}^{M-1}(i/M)^p\le\frac1M.
+\]
+\end{lemma}
+\begin{proof}
+For $p=0$ there is equality. For $p\ge1$, the finite factorization
+of a difference of powers gives
+\[
+ (p+1)i^p\le(i+1)^{p+1}-i^{p+1}\le(p+1)(i+1)^p.
+\]
+Each of the $p+1$ terms in that factorization is between $i^p$
+and $(i+1)^p$. Sum over $i=0,\ldots,M-1$ and divide by
+$(p+1)M^{p+1}$. The two endpoint sums differ by $1/M$,
+which proves the bound.
+\end{proof}
+
+\begin{proposition}[Rational identification]\label{prop:quadrature}
+For $N,M\ge1$,
+\begin{equation}\label{eq:quadrature}
+ \abs{Q_M-A_N}\le\frac NM+\frac1{2N+1}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+For rational $x\in[0,1]$, multiplication by $1+x^2$ proves
+the finite geometric identity
+\begin{equation}\label{eq:geometric}
+ \frac1{1+x^2}
+ =\sum_{j=0}^{N-1}(-1)^j x^{2j}
+  +(-1)^N\frac{x^{2N}}{1+x^2}.
+\end{equation}
+Substitute $x=i/M$ and average over $i<M$.
+Replacing each power average by $1/(2j+1)$ costs at most $1/M$
+by Lemma~\ref{lem:moment}, for a total cost at most $N/M$.
+The remainder average has absolute value at most
+\[
+ \frac1M\sum_{i=0}^{M-1}(i/M)^{2N}\le\frac1{2N+1}.
+\]
+Add the two bounds.
+\end{proof}
+
+The $Q_M$ also have their own finite Cauchy estimate. The rational
+function $f(x)=1/(1+x^2)$ is decreasing on $[0,1]$ by
+cross-multiplication. Its lower and upper rectangular sums differ
+by $(f(0)-f(1))/M=1/(2M)$. Refinement into $ML$ pieces keeps a
+rectangular sum between the original lower and upper sums.
+Grouping the $ML$ summands into $M$ blocks and then into $L$ blocks
+therefore gives
+\begin{equation}\label{eq:Qmodulus}
+ \abs{Q_M-Q_L}\le\frac1{2M}+\frac1{2L}.
+\end{equation}
+This is a finite comparison of sums, not an appeal to existence of
+an integral.
+
+With $M=N^2$, \eqref{eq:quadrature} yields
+$\abs{4Q_{N^2}-4A_N}\le6/N$. Thus the two explicit arithmetic
+codes name the same constant, with an explicit comparison modulus.
+
+\begin{corollary}[An independent code works as well]\label{cor:riemann}
+Set $\widetilde P_k=4Q_{\cut(k)^2}$. Then $\ipra$ proves
+\[
+ n\ge\cut(k)\quad\Longrightarrow\quad
+ \abs{6S_n-\widetilde P_k^{\,2}}\le2^{-k}.
+\]
+\end{corollary}
+\begin{proof}
+Since $0\le Q_M,A_N\le1$,
+\[
+ \abs{16Q_{N^2}^{\,2}-16A_N^2}
+ \le32\left(\frac1N+\frac1{2N+1}\right)\le\frac{48}{N}.
+\]
+For $N=2^r$, combine this with \eqref{eq:dyadic}, obtaining
+$(8r+68)/2^r$. At $r=2k+7$ the numerator is $16k+124$.
+The inequality $16k+124\le128\cdot2^k$ follows by the same
+quantifier-free induction as \eqref{eq:growth}.
+\end{proof}
+
+\subsection{The conventional geometric interpretation}
+
+Externally, \eqref{eq:QM} is the left rectangular sum for
+$\int_0^1(1+x^2)^{-1}\,dx=\arctan(1)=\pi/4$.
+The unit-circle interpretation can also be seen from the rational
+parametrization
+\[
+ \left(\frac{1-t^2}{1+t^2},\frac{2t}{1+t^2}\right),
+ \qquad 0\le t\le1.
+\]
+It traverses a quarter circle and has speed $2/(1+t^2)$, giving
+arc length $2\arctan(1)=\pi/2$. This identifies the standard meaning
+of the constant. It is not a use of calculus inside $\ipra$:
+the internal relation between the rational codes was already proved
+in Proposition~\ref{prop:quadrature}.
+
+In that usual interpretation,
+$\abs{4A_N-\pi}\le4/(2N+1)$ and $0\le\pi\le4$, whence
+$\abs{16A_N^2-\pi^2}\le16/N$. Consequently
+\begin{equation}\label{eq:realmodulus}
+ n\ge2^r\quad\Longrightarrow\quad
+ \abs{6S_n-\pi^2}\le\frac{8r+36}{2^r}.
+\end{equation}
+The same cutoff $\cut(k)$ works, since
+$16k+92\le128\cdot2^k$. In particular,
+\[
+ \boxed{\displaystyle \sum_{j=1}^{\infty}\frac1{j^2}=\frac{\pi^2}{6}.}
+\]
+The internal assertion consists of the finite estimates, so it does
+not require the general completeness of any real-number system.
+
+\section{Why the proof is available in iPRA}\label{sec:encoding}
+
+\subsection{The theory}
+
+We use intuitionistic first-order logic with equality; primitive
+recursive function symbols and their defining equations; successor
+injectivity and nonzeroness; and induction for quantifier-free
+formulas with parameters.
+This is the presentation in the inspected
+\texttt{ConciseIPRA/PR.lean} and \texttt{Deduction.lean}, at
+repository commit
+\begin{center}\small
+\texttt{b03925cccc76d55b9dc2a00864a5e0544b64aa7f}.
+\end{center}
+The source references and transfer theorem are recorded below
+\cite{ProveItPR,ProveItNative}.
+
+Only decidable integer or rational comparisons are split into cases.
+Such case splits are constructively provable. There is no excluded
+middle for an arbitrary formula, choice principle, or minimization
+without an explicit bound.
+
+\subsection{Rational codes}
+
+Represent a signed rational by $(a,b,d)\in\N^3$, $d>0$, with value
+$(a-b)/d$. No greatest-common-divisor reduction is needed.
+For example,
+\begin{align*}
+ (a,b,d)+(c,e,f)&=(af+cd,\;bf+ed,\;df),\\
+ (a,b,d)(c,e,f)&=(ac+be,\;ae+bc,\;df).
+\end{align*}
+Negation swaps the first two components. Equality and order are
+natural-number tests:
+\begin{align*}
+ (a-b)/d=(c-e)/f&\ \Longleftrightarrow\ af+ed=bf+cd,\\
+ (a-b)/d\le(c-e)/f&\ \Longleftrightarrow\ af+ed\le bf+cd.
+\end{align*}
+Division by a positive natural $t$ multiplies the denominator by $t$.
+Absolute value uses a decidable comparison of numerator components.
+Definitions can be totalized on invalid inputs; the proof uses valid
+codes and proves denominator positivity along with its invariants.
+
+Addition, multiplication, truncated subtraction, order tests, parity,
+powers, factorials, bounded sums, bounded products, and bounded
+division are primitive recursive. Their required elementary laws
+are proved using defining equations and quantifier-free induction.
+For example, quotient and remainder can be computed by a loop of
+length at most the dividend, preserving $a=qd+r$ and $r<d$ when
+$d>0$. None of the definitions relies on general recursion.
+
+\subsection{An explicit natural-number final formula}
+
+Define a natural fraction sum by
+\[
+ (u,v)\oplus(a,b)=(ub+av,vb),
+ \qquad(0,1)\text{ for the empty sum}.
+\]
+Let $(s_{\rm num}(n),s_{\rm den}(n))$ be the fold of $(1,j^2)$,
+$1\le j\le n$. Let $(p_{\rm num}(k),p_{\rm den}(k))$ be the fold of
+\[
+ \left(8,(4j+1)(4j+3)\right),\qquad0\le j<\cut(k)/2.
+\]
+Each component is primitive recursive. As $\cut(k)$ is even,
+pairing adjacent terms and using
+$4(1/(4j+1)-1/(4j+3))=8/((4j+1)(4j+3))$ proves
+\[
+ S_n=\frac{s_{\rm num}(n)}{s_{\rm den}(n)},\qquad
+ P_k=\frac{p_{\rm num}(k)}{p_{\rm den}(k)}.
+\]
+The denominators are positive by product induction.
+
+Write $\Delta(x,y)=(x\dm y)+(y\dm x)$.
+Abbreviate $u=s_{\rm num}(n)$, $v=s_{\rm den}(n)$,
+$a=p_{\rm num}(k)$, $b=p_{\rm den}(k)$.
+Formula \eqref{eq:main} is precisely
+\begin{equation}\label{eq:natmain}
+ \boxed{\displaystyle
+ \cut(k)\le n\ \longrightarrow\
+ 2^k\Delta(6ub^2,a^2v)\le vb^2.}
+\end{equation}
+Its universal closure has a quantifier-free matrix and only
+primitive recursive function symbols.
+\texttt{code/arithmetic\_spec.py} evaluates this representation.
+The Lean specification additionally uses signed rational triples
+for the intermediate lemmas.
+
+Appendix~\ref{app:factorial} gives an alternative formula with one
+factorial denominator. It is the recommended final checker target in
+the supplied Lean outline. Either formula represents the same
+finite theorem.
+
+\subsection{The induction audit}\label{sec:induction}
+
+Primitive recursive computability by itself does not imply
+provability of correctness in $\ipra$. Here correctness comes from
+the displayed elementary inductions. The table records their
+invariants.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.23\textwidth}
+>{\raggedright\arraybackslash}p{.46\textwidth}
+>{\raggedright\arraybackslash}p{.24\textwidth}@{}}
+\toprule
+Calculation&Invariant or local identity&Fixed parameters\\
+\midrule\endfirsthead
+\toprule Calculation&Invariant or local identity&Fixed parameters\\
+\midrule\endhead
+Rational arithmetic&Cross-multiplied identities; denominator positivity&All operands\\
+Finite sum algebra&Equality of the two sums after a specified number of terms&Endpoints and summand parameters\\
+Decreasing alternating row&$0\le R_j\le w_{m-j}$ in the backward recurrence&Row endpoints and $N$\\
+Increasing alternating list&$0\le U_d\le b_d$ and the parity identity&$N$\\
+Sum diagonals&Processed triangle equals its processed diagonal sum&Outer square size\\
+Difference diagonals&Processed off-diagonal pairs equal their partial-fraction sum&Outer square size\\
+Increasing averages&$C_d\le dt$ from the $d$ termwise bounds&$N,d,t$\\
+Square tails&Partial tail is at most the telescoping expression&Starting index $N$\\
+Dyadic blocks&$2H_{2^r}\le r+2$&None\\
+Precision witness&$16k+c\le128\cdot2^k$ for $c=76,92,124$&Chosen constant\\
+Finite quadrature&Telescoping power identity and endpoint bounds&$p,M$\\
+\bottomrule
+\end{longtable}
+
+After rational coding, each invariant is quantifier-free. A finite
+sum is a primitive recursive term, not an unbounded existential
+assertion. Reindexing can be implemented by a rectangular loop
+with a primitive recursive $0/1$ test for membership in a triangle.
+The row and diagonal identities then follow from the loop
+recurrences. A bounded collection of already checked entries may,
+if useful, be represented by a Boolean fold; the induction formula
+is equality of the fold to one.
+
+Keep $n,N,k$ free while performing these inductions. Do not induct
+on a statement that quantifies over every later partial sum or
+every precision. Prove the quantifier-free statement for the fixed
+parameters first, then universally generalize. This distinction
+eliminates a common hidden increase in induction strength.
+
+Consequently every lemma is derivable in the definitional extension
+of $\ipra$ by the specified primitive recursive functions.
+Replacing the defined symbols by their primitive recursive syntax
+gives a derivation in the original language. Positive
+cross-multiplication and universal introduction give
+\eqref{eq:natmain}, proving Theorem~\ref{thm:main}.
+There is no appeal to the soundness or consistency of $\ipra$.
+
+\section{A concrete Lean formalization path}\label{sec:lean}
+
+\subsection{The certification boundary}
+
+A Lean theorem about \texttt{Rat} or \texttt{Real} does not itself
+prove derivability in $\ipra$. The two distinct tasks are:
+\begin{enumerate}
+\item formalize the finite identities and estimates;
+\item construct an object-theory proof term
+$\Prf(\mathrm{PRAAx},[],\mathrm{BaselFormula})$.
+\end{enumerate}
+The second certifies the weak-arithmetic claim. The first is useful
+for checking mathematics, but cannot be substituted for the second.
+
+\subsection{Inspected repository support}
+
+The namespace is \texttt{LeanProofs.ConciseIPRA}. At the pinned
+revision the relevant interfaces are:
+\begin{itemize}
+\item \texttt{PR.lean}: \texttt{PR.zero}, \texttt{PR.succ},
+\texttt{PR.proj}, \texttt{PR.comp}, \texttt{PR.prec},
+terms \texttt{PTm}, axioms \texttt{PRAAx}, and
+\texttt{PRA.qfInd}.
+\item \texttt{Deduction.lean}: intuitionistic natural deduction
+\texttt{Prf Ax Gamma phi}.
+\item \texttt{Lindenbaum.lean}: terms modulo provable equality,
+with \texttt{Q.eqInd} and \texttt{Q.exact}.
+\item \texttt{TeqArith.lean}, \texttt{TeqOrder.lean},
+\texttt{TeqPair.lean}, \texttt{TeqRec.lean}, and
+\texttt{TeqReflect.lean}: arithmetic, pairing, recursion, and
+quantifier-free reflection infrastructure.
+\item \texttt{NativeBiInterpretation.lean}: the existing
+\texttt{pra\_iff\_native} theorem.
+\end{itemize}
+The root toolchain is \texttt{leanprover/lean4:v4.32.0}.
+This infrastructure is useful, but is not already a rational-analysis
+library containing the present finite lemmas.
+
+The final goal is
+\begin{quote}\small
+\texttt{([] : List (Fm PTm 0))} $\vdash$[\texttt{PRAAx}]
+\texttt{baselFormula}.
+\end{quote}
+The native concise-core theorem follows by
+\texttt{pra\_iff\_native.mp}. No new bi-interpretation is required.
+
+\subsection{Implementation order}
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=*]
+\item \textbf{Compile the concrete programs.}
+Implement powers, parity, truncated subtraction, distance,
+comparison, the fraction folds, and, for the recommended target,
+factorials and bounded division in \texttt{PR} syntax.
+Prove defining equations and representation lemmas inside the
+object theory. Merely proving a Boolean checker true in the Lean
+metatheory does not supply the internal derivation.
+
+\item \textbf{Build arithmetic support.}
+Prove the required ordered semiring identities and rational
+cross-multiplication lemmas by quantifier-free induction.
+An alternative is to extend the existing \texttt{Q Gamma}
+arithmetic and export equalities using \texttt{Q.exact}.
+Because that quotient is defined from provability, this can preserve
+the certification boundary. Its algebraic instances must themselves
+be established.
+
+\item \textbf{Implement alternating cancellation.}
+Use the two recurrences in Section~\ref{sec:elementary}, instantiated
+with the explicit odd reciprocals and tail averages. No object-level
+function variables are required.
+
+\item \textbf{Prove the two finite decompositions.}
+Represent triangles by bounded double sums. Prove
+\eqref{eq:diagonal} and \eqref{eq:difference} by partial fractions,
+reversal, and telescoping. Establish \eqref{eq:triangle},
+\eqref{eq:square}, and \eqref{eq:second} by row and diagonal
+recurrences. This is the main finite combinatorial implementation
+work.
+
+\item \textbf{Assemble the inequalities.}
+Follow Lemmas~\ref{lem:D}--\ref{lem:E},
+Proposition~\ref{prop:core}, and
+Lemmas~\ref{lem:tail}--\ref{lem:compare}.
+After positivity is recorded, the remaining calculations are
+finite-sum inequalities and polynomial arithmetic.
+
+\item \textbf{Prove the modulus and close the sentence.}
+Use \eqref{eq:harmonic} and \eqref{eq:growth}, instantiate
+$N=2^{2k+7}$, cross-multiply, and universally generalize.
+Construct the actual \texttt{PRAAx} proof term, then apply the
+existing native bridge.
+
+\item \textbf{Add the interpretation separately.}
+Formalize Section~\ref{sec:riemann} if the independent integral
+code is desired. An optional external mathlib proof identifies
+either code with \texttt{Real.pi} and states the usual infinite
+sum. That external interpretation is not a premise of the
+arithmetical proof.
+\end{enumerate}
+
+This path leaves no unspecified analytic result to prove. It does
+leave substantial formal work on arithmetic coding, reindexing,
+and object-theory derivations.
+
+\subsection{Status of the supplied source}
+
+The files in the \texttt{lean} directory have distinct roles:
+\begin{itemize}
+\item \texttt{BaselSpec.lean} specifies the sums and remaining
+finite proof obligations.
+\item \texttt{ObjectTheoryTarget.lean} uses the repository interfaces
+and supplies only conditional assembly and transfer.
+\item \texttt{ROADMAP.md} records the exact remaining tasks.
+\end{itemize}
+
+No completed proof of the finite Basel estimate, compiled
+\texttt{PR} checker, or completed \texttt{PRAAx} derivation is
+claimed. The Lean files have not been compiled here: Lean and
+Lake are unavailable in this environment. They contain no
+\texttt{sorry} or \texttt{axiom} declarations, but that is not
+evidence of completeness; remaining obligations are explicit,
+uninhabited specifications or assumptions to conditional results.
+
+\section{Reproducibility and validation}
+
+The archive contains this source and PDF, exact rational checks,
+natural-number specifications, finite-quadrature checks, the Lean
+outline, provenance, and build instructions.
+
+The main exact checks cover $N=1,\ldots,80$ and dyadic $N$ through
+$4096$. They include $3240$ omitted-row checks, $6320$ diagonal
+checks, $428$ uniform-bound samples, and $256$ integer-modulus
+samples. Every mathematical comparison uses exact rational or
+integer arithmetic. These checks catch signs, endpoint mistakes,
+and transcription errors. They are not the proof of the universal
+theorem; that proof is the preceding finite argument.
+
+The repository revision and inspected paths are recorded in
+\texttt{validation/provenance.json}. No remote repository changes
+are part of the package.
+
+\appendix
+\section{A common-denominator natural-number sentence}\label{app:factorial}
+
+Define
+\[
+ F(n)=(2n)!,\qquad
+ B(n)=\sum_{j=1}^{n}\bigl(F(n)\mathbin{\mathrm{div}}j\bigr)^2,
+\]
+and, with $N=\cut(k)$,
+\[
+ C(k,n)=\sum_{j=0}^{N/2-1}
+ \left[
+   \bigl(F(n)\mathbin{\mathrm{div}}(4j+1)\bigr)
+   \dm
+   \bigl(F(n)\mathbin{\mathrm{div}}(4j+3)\bigr)
+ \right].
+\]
+These are total natural-number functions. All displayed divisors
+are positive. If $n\ge N$, every divisor is at most $2n$, hence
+divides $F(n)$. The quotient by $4j+1$ is at least the quotient
+by $4j+3$, so truncated subtraction is exact. Therefore
+\[
+ \frac{B(n)}{F(n)^2}=S_n,\qquad
+ \frac{C(k,n)}{F(n)}=A_{\cut(k)}.
+\]
+The first identity is termwise and the second pairs adjacent
+Gregory terms. Factorial divisibility follows by finite product
+factorization.
+
+Theorem~\ref{thm:main} is thus equivalently
+\begin{equation}\label{eq:factorialmain}
+ \boxed{\displaystyle
+ \forall k\,\forall n\
+ \left(\cut(k)\le n\ \longrightarrow\
+ 2^k\Delta(6B(n),16C(k,n)^2)\le F(n)^2\right).}
+\end{equation}
+Only powers, factorials, bounded division, bounded sums, truncated
+subtraction, and order occur. The large intermediate integers do not
+affect primitive recursiveness.
+
+\section{A small exact example}
+
+For $N=2$,
+\[
+ A_2=\frac23,\quad H_2=\frac43,\quad O_2=\frac{10}{9},
+ \quad T_2=1,\quad D_2=-\frac59,\quad E_2=\frac13.
+\]
+The core identity is
+$2A_2^2-O_2=-2/9=D_2+E_2$.
+This shows explicitly how both boundary terms enter the calculation.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{CampbellLevrie}
+John M. Campbell and Paul Levrie,
+\emph{On the Basel Problem and the Square of Gregory's Series},
+Mathematics Magazine \textbf{97}(2) (2024), 181--186.
+\url{https://doi.org/10.1080/0025570X.2024.2312093}.
+Used for historical context; the finite proof and bounds are
+provided in full above.
+
+\bibitem{ProveItPR}
+Vladimir Reshetnikov, \emph{ProveIt: ConciseIPRA},
+revision \texttt{b03925cccc76d55b9dc2a00864a5e0544b64aa7f},
+\texttt{PR.lean} and \texttt{Deduction.lean}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/b03925cccc76d55b9dc2a00864a5e0544b64aa7f/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean}.
+
+\bibitem{ProveItNative}
+Vladimir Reshetnikov, \emph{NativeBiInterpretation.lean},
+same revision, theorem \texttt{pra\_iff\_native}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/b03925cccc76d55b9dc2a00864a5e0544b64aa7f/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}.
+
+\bibitem{BaselProblem}
+\emph{Basel problem}, user-supplied problem reference.
+\url{https://en.wikipedia.org/wiki/Basel_problem}.
+The requested theorem is Euler's value $\zeta(2)=\pi^2/6$;
+the argument here is self-contained.
+\end{thebibliography}
+\end{document}

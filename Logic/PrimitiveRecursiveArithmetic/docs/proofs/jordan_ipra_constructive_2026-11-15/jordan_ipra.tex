@@ -1,0 +1,142 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor,graphicx}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{listings}
+\definecolor{ink}{HTML}{15364A}
+\definecolor{accent}{HTML}{126C75}
+\definecolor{pale}{HTML}{EDF4F6}
+\hypersetup{pdftitle={A quantitative Jordan curve theorem in intuitionistic primitive recursive arithmetic},
+ pdfauthor={Research prepared for Vladimir Reshetnikov},
+ pdfsubject={Constructive topology; primitive recursive arithmetic; Lean formalization plan}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Constructive Jordan theorem in iPRA}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\T}{\mathbb T}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert_\infty}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\parity}{\operatorname{par}}
+\newcommand{\Reg}{\operatorname{Reg}}
+\newcommand{\xor}{\mathbin{\oplus}}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\repo}{\texttt{ConciseIPRA}}
+\newcommand{\eps}{\varepsilon}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{pale},backgroundcolor=\color{pale},
+ keepspaces=true,showstringspaces=false}
+\begin{document}
+\begin{titlepage}
+\vspace*{12mm}
+{\large\color{accent}CONSTRUCTIVE TOPOLOGY / PROOF THEORY\par}
+\vspace{9mm}
+{\huge\bfseries\color{ink}A quantitative Jordan curve theorem\par}
+\vspace{4mm}
+{\LARGE in intuitionistic primitive recursive arithmetic\par}
+\vspace{8mm}
+{\large Finite parity, bounded routing, and a constructive common boundary\par}
+\vspace{13mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+{15 November 2026\par}
+\vspace{10mm}
+\begin{abstract}
+We give a complete constructive proof of a quantitative Jordan curve theorem
+for a circle embedding supplied by primitive recursive rational names, a
+forward continuity modulus, and a positive inverse separation modulus.
+For every point with certified positive distance from the curve, a finite
+calculation returns its inside/outside bit. Equal bits yield a polygonal
+connecting path with an explicit positive clearance. Both bits occur
+arbitrarily near every curve point, with primitive recursive witnesses.
+Every uniformly continuous path between different bits has approximate
+intersections with the curve at every requested precision.
+
+The proof uses rational arithmetic and crossing parity, not analytic winding
+numbers. A bounded honeycomb search either finds a route or constructs a
+boundary cycle whose parity factors through the original parameter circle.
+A finite square-coloring argument supplies both sides. All search bounds
+and the quantifier-free induction discipline are made explicit.
+The first-order conclusion is a schema for fixed primitive recursive
+presentations, not a quantification over arbitrary real functions.
+\end{abstract}
+\vfill
+\colorbox{pale}{\parbox{\dimexpr\textwidth-2\fboxsep\relax}{
+\textbf{Verification status.}
+The human argument and its arithmetic interpretation are supplied in full.
+The accompanying exact rational Python kernel was executed.
+The Lean files are uncompiled implementation scaffolds and a detailed
+completion plan; this package does not claim a completed Lean proof or an
+already generated object-level iPRA derivation.}}
+\end{titlepage}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+\input{sections/01_statement}
+\input{sections/02_parity}
+\input{sections/03_connection}
+\input{sections/04_boundary}
+\input{sections/05_arithmetic}
+\input{sections/06_formalization}
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{BJMR}
+G. Berg, W. Julian, R. Mines, and F. Richman,
+\emph{The constructive Jordan curve theorem},
+Rocky Mountain Journal of Mathematics \textbf{5} (1975), 225--236.
+\href{https://doi.org/10.1216/RMJ-1975-5-2-225}{doi:10.1216/RMJ-1975-5-2-225}.
+Primary-paper text inspected through
+\url{https://paperzz.com/doc/6807670/the-constructive-jordan-curve-theorem}.
+
+\bibitem{NC}
+P. Nguyen and S. Cook,
+\emph{The Complexity of Proving the Discrete Jordan Curve Theorem},
+\href{https://arxiv.org/abs/1002.2954}{arXiv:1002.2954} (2010).
+
+\bibitem{Bridges}
+D. S. Bridges,
+\emph{On the Constructive Theory of Jordan Curves},
+\href{https://arxiv.org/abs/2502.09784}{arXiv:2502.09784} (2025).
+
+\bibitem{ProveIt}
+V. Reshetnikov, \emph{ProveIt}, repository snapshot\\
+\texttt{620f5e3b959c3a4284060ada5efb651812612319}, inspected
+15 November 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+In \path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/},
+the files \texttt{PR.lean}, \texttt{Deduction.lean}, and
+\texttt{NativeBiInterpretation.lean} specify the arithmetic calculus and
+the translation used in Section~\ref{sec:lean}.
+
+\bibitem{JCT}
+\emph{Jordan curve theorem}, the statement identified in the request,
+\url{https://en.wikipedia.org/wiki/Jordan_curve_theorem},
+accessed 15 November 2026.
+This is used to identify the classical target, not as a proof dependency.
+\end{thebibliography}
+\end{document}

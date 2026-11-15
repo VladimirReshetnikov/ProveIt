@@ -1,0 +1,369 @@
+\section{Why the positive proofs stay inside iPRA}\label{sec:proof-audit}
+
+The claim of an $\ipra$ proof is more specific than the claim that the
+displayed numerical algorithms are primitive recursive. The arithmetic
+must also prove their correctness with its permitted induction. We give
+the reduction explicitly, so that an analytic-looking intermediate line
+does not silently introduce stronger induction or a completeness axiom.
+
+\subsection{Finite algebra certificates and approximation}
+An integer polynomial identity in a fixed finite number of variables is
+proved by expanding, collecting like monomials, and applying the
+commutative-ring laws. These laws for encoded integers and rationals
+follow by quantifier-free induction from the PR equations for addition
+and multiplication. A finite list of coefficients is itself a PR object.
+If one wants a uniform identity-checking procedure, polynomial addition,
+multiplication and evaluation are PR finite-list operations; the proof
+that evaluation respects them is a quantifier-free induction after the
+finite lists are coded.
+
+Every use of an orthogonality hypothesis in
+Section~\ref{sec:universal} has an explicit polynomial residual identity.
+For example, for an arbitrary matrix $A$, put
+$E=A^TA-I$ and $D=\det A-1$. The exact identity
+\begin{equation}\label{eq:adj-residual}
+ \adj A-A^T=D A^T-E\adj A
+\end{equation}
+follows from $A\adj A=(\det A)I$ by multiplication with $A^T$.
+Thus approximate orthogonality and determinant one imply approximate
+cofactor inversion with a finite, computable error bound. The remaining
+universal identities are obtained by the displayed additions and
+multiplications, so the same argument applies to each one. There is no
+step that converts determinant zero into a nonzero kernel vector by a
+classical rank theorem.
+
+Here is a general bound that makes this elimination of real notation
+mechanical. If $P(X)=\sum_\alpha a_\alpha X^\alpha$, $B\ge1$,
+$|x_i|,|y_i|\le B$, and $\max_i|x_i-y_i|\le\eta$, then
+\begin{equation}\label{eq:poly-lipschitz}
+ |P(x)-P(y)|\le L(P,B)\eta,\qquad
+ L(P,B)=\sum_\alpha |a_\alpha|\,|\alpha|\,B^{|\alpha|-1},
+\end{equation}
+where constant monomials contribute zero. To prove this, write the
+difference of a product of $m$ factors as a sum of $m$ products with one
+difference factor. Each such term is bounded by $B^{m-1}\eta$.
+Sum over the monomials. This is finite telescoping and finite summation.
+Rational coefficients cause no difficulty after positive denominators
+are cleared.
+
+For products, quotients with a displayed lower bound, and square roots,
+use Lemma~\ref{lem:operations}. Reading an expression tree from its root
+to its inputs assigns an explicit required input precision at each
+node. A product multiplies its error budget by the displayed magnitude
+bound; a quotient uses \eqref{eq:division-error}; a square root requests
+twice the precision plus a fixed shift. All expression trees in the
+matrix proof have fixed finite size. Their resulting precision
+transformers are PR in $n,h$ and the finite magnitude bounds.
+
+For instance, after clipping the nine rotation-entry approximants to
+$[-1,1]$, entry error $\eta$ gives error at most $3\eta$ in every entry
+of $S$, at most $2\eta$ in $d$, and at most $\eta$ in every component
+of $w$. With $\delta=2^{-h}$, sample the input at precision $h+6$.
+Then $3\eta\le3\delta/64<\delta/12$, as required by the pivot proof.
+Clipping is a rational min/max operation and does not increase error
+when the represented entry lies in $[-1,1]$. Orthogonality proves that
+entry bound by a sum of squares.
+
+The chosen column has $q=v\cdot v=dp\ge\delta^2/6$ and
+$\sqrt q\ge\delta/3$. Thus every later precision is bounded before
+execution. The stored index $j$, obtained by three rational comparisons,
+is independent of the requested output precision. This proves the
+regularity of the output name as well as its algebraic properties.
+
+\subsection{Where induction occurs}
+The following table lists the induction tasks. ``Finite'' means a
+primitive-recursive bound is part of the construction.
+
+\begin{longtable}{@{}p{0.27\textwidth}p{0.64\textwidth}@{}}
+\toprule
+Task & Quantifier-free invariant or identity \\
+\midrule
+\endhead
+Integer and rational arithmetic & Defining equations for addition,
+multiplication and comparison; denominator positivity and the cleared
+integer equality or inequality.\\[3pt]
+Finite sums and products & Equality between the accumulator and the
+finite folded expression; triangle or product error bounded by the
+corresponding finite error sum.\\[3pt]
+Maximum and pivot & The selected rational sample dominates every sample
+already processed. There are only three axis samples.\\[3pt]
+Integer square root & Current candidate is in range and has admissible
+square; every larger processed candidate is inadmissible, encoded by
+a bounded Boolean fold.\\[3pt]
+Taylor estimates & Factorial-ratio bounds, the finite geometric-sum
+bound, and the finite binomial convolution at the requested degree.\\[3pt]
+Arctangent mesh comparison & The finite rational difference between
+two adjacent dyadic meshes has the displayed bound.\\[3pt]
+Cayley product & The difference of the two products of the first $j$
+factors is bounded by the sum of their first $j$ errors.\\[3pt]
+PR input simulation in the obstruction & Deterministic bounded
+simulation has at most one first halting step and one output.\\
+\bottomrule
+\end{longtable}
+
+When an invariant contains a bounded ``for every processed index'',
+replace it with its PR Boolean fold. The induction formula is then
+quantifier free in the full PR language. Its context may contain
+universally quantified assumptions about the input names; the
+quantifier-free restriction is on the induction formula, not on the
+whole context.
+
+For additional precision, fix a requested output precision $n$ before
+performing an induction. The finitely many input samples needed by that
+calculation form a coded finite table. Its regularity and polynomial
+residual bounds, at the sampled indices, are decidable rational
+conditions. Let $\mathsf{GoodTable}$ be their Boolean conjunction. The
+actual induction can be applied to a formula of the form
+\[
+ \mathsf{GoodTable}=1\ \longrightarrow\
+ \mathsf{AccumulatorBound}(j,n,h,\mathsf{table})=1.
+\]
+All quantities and loop bounds are PR. Instantiate the input's
+universally quantified premises at those indices to establish
+$\mathsf{GoodTable}=1$. Only after finishing the finite calculation do
+we universally quantify over $n$. We never apply induction to a
+statement asserting a Cauchy property at all precisions.
+
+\subsection{The actual arithmetic conclusions}
+For rational input the first endpoint is particularly simple. Encode a
+rational matrix by a natural number. Let $\mathsf{RatSO3}(r)$ be the
+decidable test of its nine orthogonality equations and its determinant.
+Let $V(r),Q(r),C(r),D(r),B(r)$ be the totalized PR extraction functions.
+The statement
+\[
+ \forall r\bigl(\mathsf{RatSO3}(r)\longrightarrow
+   \mathsf{RatCertificate}(r,V(r),Q(r),C(r),D(r),B(r))\bigr)
+\]
+is an ordinary arithmetic theorem, with a quantifier-free matrix of
+decoded rational equalities and inequalities. The predicate
+$\mathsf{RatCertificate}$ is exactly \eqref{eq:ratcert}, together with
+$Q=V\cdot V>0$ and $D=1-C$. The normalization program adds universal
+finite-precision bounds; interpreting its explicit regular names gives
+the exact unit-axis assertion.
+
+For each fixed PR real-matrix family $A$, the separated result has the
+form
+\begin{equation}\label{eq:object-schema}
+\begin{split}
+ \forall\mathbf p\,\forall h\bigl(&\mathsf{Regular}(A,\mathbf p)
+ \wedge\mathsf{Orthogonal}(A,\mathbf p)
+ \wedge\mathsf{DetOne}(A,\mathbf p)
+ \wedge\mathsf{Gap}(A,\mathbf p,h)\\
+ &\longrightarrow\mathsf{UnitAxisAndRodrigues}
+       (A,U_A,C_A,S_A,\mathbf p,h)\bigr).
+\end{split}
+\end{equation}
+Each displayed predicate abbreviates its first-order rational
+approximation formula; its unbounded quantifiers range over numerical
+precisions. The output symbols are the concrete PR definitions already
+constructed. There is no existential quantifier ranging over an
+unspecified function space. The finite proof described above is a
+derivation of each such schema instance. The unconditional approximation
+and quaternion statements have the same form, with the gap replaced by
+the robust finite branch supplying it where needed.
+
+This explains both parts of the logical status. The positive proofs
+translate into the stipulated arithmetic because every computational
+loop and invariant is explicit. The unrestricted exact unit-axis claim
+does not become true by calling it a schema: the fixed PR family in
+Section~\ref{sec:obstruction} is already a forbidden instance.
+
+\section{Lean formalization: existing interfaces and a completion path}
+\label{sec:lean}
+
+\subsection{Pinned repository and reusable infrastructure}
+The repository was inspected at commit
+\begin{center}\small\ttfamily
+c1bda76f7f86d2ade505355980826f625e36fff3.
+\end{center}
+The root toolchain and Mathlib dependency both specify version
+\texttt{v4.32.0}. The relevant source names and their roles are:
+\begin{center}
+\begin{tabular}{@{}p{0.40\textwidth}p{0.52\textwidth}@{}}
+\toprule
+Interface & Role \\
+\midrule
+\texttt{PR}, \texttt{PTm} & PR function symbols and first-order terms.\\
+\texttt{Fm}, \texttt{Prf} & Formulas and intuitionistic derivations.\\
+\texttt{PRAAx.ind}, \texttt{PRA.qfInd} & Induction with an explicit
+\texttt{QF} side condition.\\
+\texttt{pra\_theorem\_iff} & Transport from iPRA to the scalar theory
+$T_{\rm eq}$.\\
+\texttt{pra\_iff\_native} & Transport from iPRA to the native concise
+calculus.\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are actual inspected declarations \cite{proveit}. They transport
+an existing object-language proof. They do not translate an arbitrary
+theorem about Mathlib's real numbers into an iPRA derivation.
+
+\subsection{Artifacts supplied now}
+\texttt{lean/RodriguesKernel.lean} contains substantive algebraic proof
+scripts over an arbitrary commutative ring. They cover dot and cross
+identities, the vector triple product, Lagrange's identity, fixation of
+the unit axis, preservation of dot products, and determinant one. The
+scripts use explicit coordinates and \texttt{ring}. They contain no
+\texttt{sorry} declaration or added axiom, but they have \emph{not} been
+run through Lean in this environment.
+
+\texttt{lean/ObjectLanguageBoundary.lean} uses the repository's actual
+\texttt{PR} type to specify rational-name symbols. It also gives a small
+transport lemma taking an already supplied iPRA derivation to the
+native calculus. This is explicitly an interface example, not the
+missing geometry derivation.
+
+The environment had no \texttt{lean} or \texttt{lake} executable.
+Accordingly no claim is made that these source files elaborate, that
+their dependencies have passed a kernel audit, or that the entire
+theorem is formalized. The supplied detailed plan identifies the
+remaining work; this is the requested outline with a concrete path to
+completion.
+
+\subsection{A clear sequence of formalization milestones}
+\begin{enumerate}
+\item \textbf{Compile the finite algebra prototype.} In the pinned
+ProveIt environment, compile \texttt{RodriguesKernel.lean}; resolve any
+syntax or simplifier differences. Inspect \texttt{\#print axioms} for
+the final declarations. This checks the algebra specification but does
+not yet establish object-language derivability.
+\item \textbf{Implement encoded rational arithmetic.} Construct
+\texttt{PR} definitions for signed integers, positive-denominator
+rationals, comparison, powers, finite folds and bounded search. Prove
+their arithmetic and order properties as \texttt{Prf PRAAx} terms,
+using \texttt{PRA.qfInd} for the displayed finite invariants.
+\item \textbf{Turn fixed polynomial identities into derivations.}
+Either write direct ring-law derivations for the finite collection here,
+or implement a certificate elaborator for coefficient normalization.
+Its output must be an actual object-language derivation. A Python
+symbolic success message and a semantic Lean \texttt{ring} proof are
+independent checks, not substitutes for that output.
+\item \textbf{Finish the rational theorem first.} Its input predicate,
+identity test, pivot, and certificate are all finite and rational.
+Prove the totalized extractor correct, then prove the dyadic-root
+normalization interval and the precision bounds of
+Section~\ref{sec:rational}. This gives a compact exact initial target.
+\item \textbf{Formalize regular-name arithmetic.} Encode the predicates
+of Section~\ref{sec:arithmetic} and prove the explicit operation
+transformers. Instantiate universal input premises at the finitely
+needed precision indices. Keep target precision free throughout every
+induction, and universally introduce it afterward.
+\item \textbf{Formalize the gap construction.} Prove the universal
+cofactor identities, the three-sample pivot bound, and the selected
+column's positive norm. Compose the name operations to obtain
+$U_A,C_A,S_A$, then build \eqref{eq:object-schema}. The rank-one
+argument is the vanishing-minor proof given above; no rank API or
+eigenvector choice is needed.
+\item \textbf{Add the robust branches.} Formalize the small/large
+$d$ comparison for finite-precision Euler and the two $c$ charts for
+the exact quaternion theorem. Their decisions are rational and their
+proofs use the displayed overlapping thresholds.
+\item \textbf{Add radian angles.} Define finite Taylor polynomials and
+dyadic arctangent sums as PR functions. Prove (T1)--(T9) at fixed
+precision using the listed invariants; add the two circle charts. This
+proves both the given-angle version of Rodrigues and reconstruction
+of a radian angle from the extracted circle pair.
+\item \textbf{Transport only the finished derivation.} Close the
+arithmetic schema instance, construct its actual
+\texttt{[] $\vdash$[PRAAx] formula} proof term, and apply
+\texttt{pra\_theorem\_iff} or \texttt{pra\_iff\_native}. Audit the
+induction side conditions and ensure there is no new arithmetic axiom.
+\end{enumerate}
+
+The nonprovability theorem is a separate metamathematical development:
+formalize bounded universal simulation and its unique first halt,
+the Cayley reduction, and the realizability soundness theorem. It is
+not needed to validate any positive algorithm. Its explicit arithmetic
+target is \eqref{eq:H}; the note does not pretend that the concise
+repository already contains its formal nonprovability proof.
+
+\section{Verification, scope of evidence, and reproducibility}
+\label{sec:verification}
+
+The executable certificate module uses exact rational arithmetic.
+It accepts rational $R$, verifies \eqref{eq:so}, extracts
+$(v,q,c,d,b)$, and checks every equality in \eqref{eq:ratcert} exactly.
+The normalization routine returns rational lower and upper square-root
+bounds and a rational coordinate error certificate. It never treats
+a floating-point tolerance as exact equality.
+
+The test suite includes every nonzero integer quaternion in
+$\{-2,-1,0,1,2\}^4$: 624 input quaternions, including four identity
+inputs and 124 half-turn inputs. There are 31 additional edge inputs,
+including small-angle and near-half-turn scales through $2^{128}$.
+The initial normalization suite checks 1,965 combinations of those
+inputs with requested precisions $0,8,32$, and rejects three invalid
+matrices. The JSON reports record the final exact counts, including
+the additional finite-precision branch checks.
+
+The symbolic supplement checks the finite adjugate, dot/cross,
+Rodrigues, Cayley and quaternion numerator identities by exact polynomial
+arithmetic. These checks provide useful independent evidence for the
+finite calculations. They do not prove the quantified $\ipra$ theorem,
+certify the analytic estimates automatically, or establish Lean
+elaboration. Those limits are stated in the source files and the
+formalization status file.
+
+To reproduce the computational evidence and PDF, from the package root:
+\begin{lstlisting}
+python3 python/verify.py
+python3 python/verify_polynomials.py
+pdflatex -interaction=nonstopmode -halt-on-error euler_rodrigues_ipra.tex
+pdflatex -interaction=nonstopmode -halt-on-error euler_rodrigues_ipra.tex
+\end{lstlisting}
+The symbolic checker needs SymPy; the rational certificate checker uses
+only Python's standard library. The package includes the LaTeX sources,
+compiled PDF, Lean prototype and plan, exact-arithmetic scripts,
+verification reports, and a source manifest. The manifest pins the
+inspected repository files and the two relevant drafts. The repository
+was read, not modified.
+
+\begin{thebibliography}{9}
+\raggedright
+\small
+\bibitem{eulerwiki}
+Wikipedia contributors, \emph{Euler's rotation theorem}, user-specified
+statement, accessed November 14, 2026.
+\url{https://en.wikipedia.org/wiki/Euler%27s_rotation_theorem}.
+
+\bibitem{rodrigueswiki}
+Wikipedia contributors, \emph{Rodrigues' rotation formula}, user-specified
+statement, accessed November 14, 2026.
+\url{https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula}.
+
+\bibitem{proveit}
+Vladimir Reshetnikov, \emph{ProveIt: ConciseIPRA}, repository snapshot
+\texttt{c1bda76f7f86d2ade505355980826f625e36fff3}.
+Inspected \texttt{README.md}, \texttt{PR.lean}, \texttt{Syntax.lean},
+\texttt{BiInterpretation.lean}, \texttt{NativeBiInterpretation.lean},
+and the root toolchain/build configuration.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/c1bda76f7f86d2ade505355980826f625e36fff3/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+
+\bibitem{drafts}
+ProveIt research drafts, \texttt{docs/drafts/FTA\_iPRA.zip} and
+\texttt{docs/drafts/triangle\_formulas\_ipra.zip}, at the same pinned
+snapshot. Inspected their source discussions of PR-name schemas,
+quantifier-free induction and formalization status. No geometric
+result from these drafts is assumed here.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/c1bda76f7f86d2ade505355980826f625e36fff3/docs/drafts}.
+
+\bibitem{bridgesrichman}
+Douglas Bridges and Fred Richman, \emph{Varieties of Constructive
+Mathematics}, London Mathematical Society Lecture Note Series 97,
+Cambridge University Press, 1987, Chapter 1 (LLPO and constructive
+existence). Publisher's excerpt:
+\url{https://assets.cambridge.org/97805213/18020/excerpt/9780521318020_excerpt.pdf}.
+
+\bibitem{kleene}
+S.~C.~Kleene, ``On the interpretation of intuitionistic number theory,''
+\emph{Journal of Symbolic Logic} \textbf{10}(4) (1945), 109--124.
+\url{https://doi.org/10.2307/2269016}.
+Author's article in an academic course archive:
+\url{https://webspace.science.uu.nl/~ooste110/studsemIntMod/Kleene45.pdf}.
+
+\bibitem{moschovakis}
+Joan Rand Moschovakis and Garyfallia Vafeiadou, \emph{Intuitionistic
+Mathematics and Logic}, authors' English translation of their 2009
+chapter, section on number realizability and Nelson's theorem.
+\url{https://nuprl-web.cs.cornell.edu/documents/Rand/intuitionistic-math2.pdf}.
+\end{thebibliography}

@@ -1,0 +1,144 @@
+\section{Internalization in intuitionistic primitive recursive arithmetic}
+
+\subsection{The arithmetic data types}
+
+Fix once and for all a primitive-recursive coding of finite tuples and finite
+lists by natural numbers.  Integers are represented by signed pairs and a
+rational by a pair $(a,b)$ with $b>0$, modulo the decidable relation
+$ad=cb$.  We do not need to form a quotient inside arithmetic: every theorem
+is phrased in terms of representatives, and invariance under replacement by
+an equivalent representative is proved by cross multiplication.  Addition,
+multiplication, negation, conditional inversion, tuple projection, list
+folds, and coefficient evaluation are primitive-recursive operations.
+
+The following predicates are therefore quantifier-free after the defining
+primitive-recursive functions have been named:
+\begin{align*}
+ \Rat(r)&: \text{$r$ is a rational code with positive denominator},\\
+ \operatorname{Pt}(P)&: \text{$P$ is a nonzero rational triple},\\
+ \operatorname{Ln}(\ell)&: \text{$\ell$ is a nonzero rational triple},\\
+ \Inc(P,\ell)&: \ell\mathbin{\cdot}P=0,\\
+ \Col(P,Q,R)&: \det(P,Q,R)=0,\\
+ \Con(\ell,m,n)&: \det(\ell,m,n)=0.
+\end{align*}
+Apartness $x\mathrel{\#}y$ is the decidable assertion that the
+cross-multiplied numerators differ.  This is the positive nondegeneracy notion
+used before cancellation.  For rational codes, $x\#0$ computes a numerator
+that is nonzero; multiplication cancellation reduces to the corresponding
+integer lemma, which is proved in primitive recursive arithmetic by
+quantifier-free induction.
+
+\subsection{Shape of the eight arithmetical theorems}
+
+For each fixed-size theorem, collect all input coordinates into one code
+$d$.  Its internal statement has the form
+\begin{equation}\label{eq:internal-fixed-shape}
+ \forall d\;\bigl(\operatorname{WF}(d)\wedge
+                    \operatorname{ND}(d)\wedge
+                    \operatorname{Hyp}(d)
+             \to \operatorname{Conclusion}(d)\bigr).
+\end{equation}
+Here $\operatorname{WF}$ checks rational and tuple codes,
+$\operatorname{ND}$ is the finite conjunction of the explicit apartness
+hypotheses, and every remaining atom is an equality of primitive-recursive
+integer terms.  When the conclusion is existential, the proof supplies a
+primitive-recursive witness function $w(d)$ and verifies its graph.  Examples
+are the Ceva point, the Carnot conic coefficients, the Pappus line, and the
+Brianchon concurrency point.
+
+Carnot's polygon theorem has variable finite input.  Its internal statement
+also receives the lists of side parameters and the coefficient-list
+certificates
+\[
+ g_i(T)=c_i\prod_j(T-t_{ij}).
+\]
+The equality here means equality of finite coefficient lists.  The proof is
+two nested primitive recursions: one evaluates the root product on a side and
+the other telescopes the endpoint values around the polygon.  The induction
+formula is an equality of coded integers, so it lies exactly in the
+quantifier-free induction fragment of $\ipra$.
+
+\subsection{Why fixed polynomial certificates are available in \texorpdfstring{$\ipra$}{iPRA}}
+
+A fixed multivariate polynomial identity over $\Z$ can be verified by a
+finite sequence of associativity, commutativity, distributivity, and numeral
+computations.  Such a sequence is itself a finite derivation.  Equivalently,
+one may implement a sparse polynomial normalizer by primitive recursion on
+syntax and prove, by quantifier-free induction on that syntax, that evaluation
+is preserved.  Applying the normalizer to the finitely many identities in
+this report gives derivations of:
+\begin{itemize}
+\item all cross-product incidence equations;
+\item the Pappus harmonic coordinates and bracket equation;
+\item the Ceva and Menelaus determinants;
+\item the three Carnot conic factorizations;
+\item the affine four-point identity used by Hoehn;
+\item the Pappus linear dependence; and
+\item Pascal's three-coordinate identity.
+\end{itemize}
+The accompanying Python checker is not part of the logical proof.  It is an
+independent way to detect transcription errors in precisely those fixed
+identities.  A native formalization replaces each successful check by the
+normalizer's proof object.
+
+\subsection{Constructive normalizations}
+
+The normalizations used in the human proofs do not conceal choice.  An
+inverse of a $2\times2$ or $3\times3$ rational matrix is computed from its
+adjugate once a named determinant is apart from zero.  When one of finitely
+many minors must be nonzero, bounded search tests them in a fixed order.
+Decidable bounded search and case analysis are intuitionistically valid and
+primitive recursive.
+
+For Brianchon, a fully intrinsic implementation can proceed as follows.  Code
+the nondegenerate conic by a symmetric matrix $S$ (after clearing the factor
+$2$ in mixed terms).  A tangent covector $\ell$ has contact point
+$\operatorname{adj}(S)\ell$, up to a nonzero scalar.  From one contact point
+and its tangent, bounded minor search constructs a rational projective frame
+in which the point is $(0:0:1)$ and the tangent is $x=0$.  The conic then has
+form
+\[
+ xz+A x^2+Bxy+C y^2=0,
+\]
+with $C\#0$ by nondegeneracy.  Replacing $z$ by $z+Ax+By$ and rescaling $z$
+transforms it to $xz-y^2=0$.  These are explicit rational matrix operations;
+no square root is used.  If one of the six tangent parameters is the point at
+infinity of the chosen chart, a bounded search through seven rational
+M\"obius transformations chooses a chart avoiding all six.  Each point excludes
+at most one candidate, so the finite search is certified by a seven-case
+pigeonhole argument formalizable in $\ipra$.  A still cleaner Lean interface
+may take the projective matrix and six homogeneous parameters as a supplied
+certificate and prove separately that the intrinsic algorithm produces one.
+
+\subsection{No hidden classical principles}
+
+The proofs never infer a witness from a double negation.  Every construction
+is a term, a bounded search over decidable tests, or input certificate data.
+The distinction matters most for Carnot's polygon theorem: an arbitrary
+rational polynomial need not come with a rational splitting list, and
+$\ipra$ should not be asked to prove such a list exists.  Instead, the theorem
+states exactly what classical ``finite intersections counted with
+multiplicity'' means computationally: a list and a verifiable factorization.
+Likewise, ratios are concluded only after their denominators have been shown
+apart from zero; the underlying polynomial equality is proved first.
+
+\subsection{Transfer through \texttt{ConciseIPRA}}
+
+The current ProveIt development contains a Lean theorem
+\code{pra\_iff\_teq} and its theorem-level specialization
+\code{pra\_theorem\_iff}.  They express that the ordinary $\ipra$ theory
+\code{PRAAx} and the scalar equational theory \code{TeqAx} are
+bi-interpretable, with both term round trips provably equal to the original
+term.  Consequently the recommended completion route is:
+\begin{enumerate}
+\item construct each coded geometry derivation in \code{PRAAx};
+\item apply \code{pra\_theorem\_iff} to transport it to \code{TeqAx}; and
+\item if desired, continue through the proved equivalences from
+      \code{TeqAx} to the smallest native \texttt{ConciseIPRA} checker
+      calculus.
+\end{enumerate}
+This avoids re-proving field algebra directly in every compressed native
+syntax.  The mathematical content of the present report is therefore a
+finite family of explicit $\ipra$ derivations plus one primitive-recursive
+list induction; the remaining work is proof-object engineering, not a new
+geometric argument.

@@ -1,0 +1,126 @@
+\section{An exact-rational certificate for a simple critical-line zero}
+\label{sec:example}
+
+The preceding general contour bounds establish totality but are far too
+large for a practical run. The archive therefore also contains a small
+independent calculation using much sharper local information. This is a
+worked arithmetic certificate, with its analytic interpretation proved
+below. It illustrates the distinction between executing a calculation
+and formalizing that calculation's soundness in the object theory.
+
+Take the exact rational data
+\begin{equation}
+ c=\frac12+14.1347251417347\,\ii,
+ \qquad r=h=10^{-6},\qquad B_2=4096.
+ \label{eq:example-data}
+\end{equation}
+The decimal in this display is a terminating rational, not an assumed
+exact zeta ordinate. Use~\eqref{eq:em} with $N=64$ and $m=10$ to
+enclose $f(c)$, $f(c-h)$ and $f(c+h)$, where $f=\zeta$. The
+implementation uses exact rational arithmetic, 384-bit dyadic centres,
+outward-rounded radii, the atanh logarithm series, and the exponential
+Taylor series. The Bernoulli numbers are computed by their rational
+recurrence. The remainder is bounded by
+\eqref{eq:em-bound}, multiplied by two for the $\normone{\cdot}$ radius.
+
+Let $d$ be the rational centre of
+$(f(c+h)-f(c-h))/(2h)$, and let $e_d$ be its evaluation error plus
+$B_2h/2$. Then
+\begin{equation}
+ |f'(c)-d|\le e_d.
+ \label{eq:example-derivative}
+\end{equation}
+To see this, integrate $f'$ over the real segment $[c-h,c+h]$.
+The mean error from replacing $f'(c+x)$ by $f'(c)$ is at most
+$(2h)^{-1}\int_{-h}^h B_2|x|\,dx=B_2h/2$.
+
+Here is a completely elementary justification of the second-derivative
+bound. On the disk and the finite-difference segment,
+$\sigma\ge1/4$, $|s|\le16$ and $|s-1|\ge1$.
+Differentiating~\eqref{eq:euler-basic} twice and using
+\eqref{eq:logmoments} gives
+\[
+ |\zeta''(s)|\le 2+2\cdot16+16\cdot128=2082<4096.
+\]
+The same inequalities hold throughout a neighborhood of these sets,
+as can be checked directly from~\eqref{eq:example-data}.
+
+The script verifies, as exact rational comparisons,
+\begin{align}
+ A_0+e_dr+\tfrac12B_2r^2&< |d|_\infty r,
+       \label{eq:example-rouche}\\
+ |d|_\infty-e_d-B_2r&>0,
+       \label{eq:example-simple}
+\end{align}
+where $A_0$ is the certified upper bound for $|f(c)|$.
+Some outward numerical summaries of the exact inequalities are
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Quantity & Conservative decimal summary\\
+\midrule
+$A_0$ & less than $5.639\times10^{-15}$\\
+$\Re d$ & between $0.78329651186710$ and $0.78329651186712$\\
+$\Im d$ & between $0.12469982974821$ and $0.12469982974823$\\
+Left side of~\eqref{eq:example-rouche}
+  & less than $4.097\times10^{-9}$\\
+Right side of~\eqref{eq:example-rouche}
+  & greater than $7.832\times10^{-7}$\\
+Lower bound in~\eqref{eq:example-simple}
+  & greater than $0.77715$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The JSON file retains the exact rational values; these displayed
+decimals are not used to make the decisions.
+
+Taylor's formula with the explicit integral remainder gives, on
+$|z-c|=r$,
+\[
+ |f(z)-d(z-c)|\le A_0+e_dr+B_2r^2/2<|d(z-c)|.
+\]
+Rouch\'e stability therefore gives count one in the disk. Also
+$|f'(z)|\ge |d|_\infty-e_d-B_2r>0$ throughout the disk, so its
+zero is simple.
+
+\subsection{A primitive recursive point name}
+There is an even more explicit constructive existence argument here.
+Use the fixed rational $d\ne0$ and the map
+\[
+             \Phi(z)=z-f(z)/d.
+\]
+The rational certificate checks
+\begin{equation}
+ \kappa:=\frac{e_d+B_2r}{|d|_\infty}<\frac1{64},\qquad
+ \frac{A_0}{|d|_\infty}<\frac r{64}.
+ \label{eq:example-contraction}
+\end{equation}
+Thus $\Phi$ maps the closed disk into the concentric disk of radius
+$r/32$ and is a contraction of factor at most $1/64$.
+Starting at $c$, $n$ exact iterations have successive errors bounded
+geometrically, so their distance from the root is at most
+$2r64^{-n}$. For a requested precision, perform a predetermined
+number of iterations and evaluate each operation with a predetermined
+rounding budget; the geometric stability bound controls the sum of
+rounding errors. For example, use $n=p+30$ iterations and a per-step
+error at most $2^{-p-40}r$, increasing the elementary working precision
+by the explicit division bound $|d|>1/2$. The final error is less
+than $2^{-p}$. This is a primitive recursive Cauchy name. The same
+contraction estimate proves uniqueness.
+
+The disk is invariant under $z\mapsto1-\bar z$. The completed
+functional equation sends its root to another root in the same disk;
+uniqueness implies $\rho=1-\bar\rho$, hence $\Re\rho=1/2$.
+The certificate therefore proves one simple critical-line zero in
+the disk~\eqref{eq:example-data}. It does not claim that this is the
+lowest positive zero; that extra statement would require a count in
+the entire lower region.
+
+\subsection{What was executed}
+\code{python3 code/rational_zeta.py} recomputes all three zeta
+enclosures and all displayed strict rational tests. It writes
+\code{verification/simple_zero.json}. No floating-point special-function
+evaluation, zero table or root finder is used by this program.
+Its correctness is justified by the mathematical estimates just given.
+The program is not a proof checker for full $\ipra$, and its successful
+execution is not reported as a Lean kernel proof.

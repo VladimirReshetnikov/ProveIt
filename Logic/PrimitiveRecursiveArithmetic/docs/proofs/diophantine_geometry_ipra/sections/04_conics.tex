@@ -1,0 +1,452 @@
+\section{Conics: complete parametrization and explicit height growth}
+\label{sec:conics}
+
+The first substantial geometric application is a complete description of
+the rational points on a nonsingular conic \emph{with a supplied rational
+point}.  The geometric idea is projection from that point: a line through
+it has one other intersection with the conic, with the tangent line
+returning the original point.  This is the usual presentation of rational
+points on a conic; see, for example, \cite{sutherland2025}.  We give all the
+formulas, handle the tangent case explicitly, and derive quantitative
+height estimates by integer identities.  Consequently neither a theorem
+about algebraically closed fields nor an intersection-multiplicity
+formalism is needed.
+
+\subsection{A normal form that preserves explicit information}
+
+Let
+\[
+ q(X_0,X_1,X_2)=\sum_{0\leq i\leq j\leq2}a_{ij}X_iX_j,
+ \qquad a_{ij}\in\Z,
+\]
+and let
+\[
+ S_q=\begin{pmatrix}
+ 2a_{00}&a_{01}&a_{02}\\
+ a_{01}&2a_{11}&a_{12}\\
+ a_{02}&a_{12}&2a_{22}
+ \end{pmatrix}.
+\]
+We use the decidable nonsingularity condition $\det S_q\ne0$.
+It implies the usual assertion that the projective conic has no singular
+point: its gradient at a vector $x$ is $S_qx$, and multiplication by the
+adjugate matrix shows that $S_qx=0$ implies $x=0$.  All matrices here have
+the fixed size three, so this argument is an identity of integer
+polynomials.  Put
+\[
+ C=\sum_{i\leq j}|a_{ij}|.
+\]
+Nonsingularity implies $C\geq1$.
+
+Suppose that a nonzero primitive integer vector
+$p=(p_0,p_1,p_2)$ with $q(p)=0$ is given, and write
+$P=\max_i|p_i|\geq1$.  A permutation of coordinates makes $p_0\ne0$.
+This permutation is found by checking the three coordinates; it preserves
+$C$ and $P$.  Define
+\[
+ M=\begin{pmatrix}p_0&0&0\\p_1&1&0\\p_2&0&1\end{pmatrix}.
+\]
+Since $\det M=p_0\ne0$, it induces a bijection of rational projective
+planes.  Its inverse can be evaluated without rational division:
+\begin{equation}\label{eq:conic-adjugate}
+ \operatorname{adj}(M)x
+ =(x_0,\ p_0x_1-p_1x_0,\ p_0x_2-p_2x_0).
+\end{equation}
+Indeed $M\operatorname{adj}(M)=p_0I$.
+
+The coefficient of $U^2$ in $q(M(U,V,W))$ is $q(p)=0$.
+Write the remaining coefficients as
+\begin{equation}\label{eq:conic-normal}
+ q(M(U,V,W))=U L(V,W)+R(V,W),
+ \qquad
+ L(V,W)=\ell V+mW,\quad R(V,W)=aV^2+bVW+cW^2.
+\end{equation}
+Explicitly,
+\[
+\begin{split}
+ \ell&=a_{01}p_0+2a_{11}p_1+a_{12}p_2,\\
+ m&=a_{02}p_0+a_{12}p_1+2a_{22}p_2,\\
+ a&=a_{11},\qquad b=a_{12},\qquad c=a_{22}.
+\end{split}
+\]
+The polar matrix of the transformed form is $M^{\mathsf T}S_qM$.
+Expansion of its determinant gives
+\begin{equation}\label{eq:conic-r}
+ \det(M^{\mathsf T}S_qM)
+ =\det\begin{pmatrix}0&\ell&m\\\ell&2a&b\\m&b&2c\end{pmatrix}
+ =-2r,
+ \qquad r=am^2-b\ell m+c\ell^2=R(-m,\ell).
+\end{equation}
+Since this determinant also equals $p_0^2\det S_q$, we have $r\ne0$.
+In particular $(\ell,m)\ne(0,0)$.
+
+The following two identities will serve both to exclude undefined cases
+and to control the cancellation in projective coordinates:
+\begin{align}
+ rs^2&=m^2R(s,t)
+   -L(s,t)\bigl((bm-c\ell)s+cmt\bigr),\label{eq:conic-identity-s}\\
+ rt^2&=\ell^2R(s,t)
+   -L(s,t)\bigl(a\ell s+(b\ell-am)t\bigr).
+   \label{eq:conic-identity-t}
+\end{align}
+For example, expansion of the right side of
+\eqref{eq:conic-identity-s} cancels its $st$ and $t^2$ terms and leaves
+$(am^2-b\ell m+c\ell^2)s^2$.  Expanding the other identity gives the
+same verification.  If $L(s,t)=R(s,t)=0$, these identities and $r\ne0$
+imply $s=t=0$.  Thus $L$ and $R$ have no common projective zero over
+$\Q$; this conclusion has been obtained without a resultant theorem.
+
+\subsection{The parametrization, including its tangent value}
+
+Write $C_q(\Q)$ for the rational projective points satisfying $q=0$.
+For $(s,t)\ne(0,0)$ define
+\begin{equation}\label{eq:conic-param}
+ F(s,t)=\bigl(-R(s,t),\ sL(s,t),\ tL(s,t)\bigr),
+ \qquad
+ \Phi([s:t])=[M F(s,t)].
+\end{equation}
+All projective vectors are normalized by the primitive normalization
+procedure when a canonical point code is required.
+
+\begin{theorem}[Effective parametrization of a pointed conic]
+\label{thm:conic-param}
+Under the hypotheses above, $\Phi$ is a bijection
+\[
+ \Phi:\PP^1(\Q)\longrightarrow C_q(\Q).
+\]
+It and its inverse are primitive recursive on canonical point codes,
+uniformly in the six coefficients and the supplied point $p$.
+The parameter $[-m:\ell]$ maps to $[p]$.
+\end{theorem}
+
+\begin{proof}
+First, $F(s,t)\ne0$.  If $L(s,t)\ne0$, at least one of its last two
+coordinates is nonzero.  If $L(s,t)=0$, then $R(s,t)\ne0$ by
+\eqref{eq:conic-identity-s}--\eqref{eq:conic-identity-t}.
+Since $M$ is invertible, $MF(s,t)\ne0$ as well.  All coordinates of $F$
+are homogeneous of degree two.  Rescaling $(s,t)$ by a nonzero rational
+number rescales $F$ by its square; hence the formula is well defined
+on projective points.
+
+Substitution in \eqref{eq:conic-normal}, using homogeneity of $L$ and
+$R$, gives
+\[
+\begin{aligned}
+ q(MF(s,t))&=(-R(s,t))L(sL(s,t),tL(s,t))\\
+           &\qquad+R(sL(s,t),tL(s,t))\\
+           &=-R(s,t)L(s,t)^2+R(s,t)L(s,t)^2=0.
+\end{aligned}
+\]
+Thus the image lies on the conic.
+
+To construct the inverse, first transform a conic point $[x]$ by
+\eqref{eq:conic-adjugate}, obtaining $[u:v:w]$ satisfying
+\[
+ uL(v,w)+R(v,w)=0.
+\]
+If $(v,w)\ne(0,0)$, then $L(v,w)\ne0$: otherwise this equation would
+also give $R(v,w)=0$, contrary to the two identities above.  Therefore
+\[
+ F(v,w)=(-R(v,w),vL(v,w),wL(v,w))
+       =L(v,w)(u,v,w).
+\]
+In this case the inverse parameter is exactly $[v:w]$.
+If $(v,w)=(0,0)$, the point is $[u:0:0]=[1:0:0]$ in the transformed
+coordinates, and hence $[x]=[p]$.  Its inverse parameter is defined to
+be $[-m:\ell]$.  This pair is nonzero, its $L$-value is zero, and its
+$R$-value is $r\ne0$, so it indeed maps to $[1:0:0]$.
+
+It remains to check that the inverse just specified recovers every
+parameter.  When $L(s,t)\ne0$, the last two coordinates of $F(s,t)$
+recover $[sL:tL]=[s:t]$.  When $L(s,t)=0$, the nonzero vector $(s,t)$
+is proportional to $(-m,\ell)$.  For completeness, if $\ell\ne0$,
+the equation $\ell s=-mt$ gives
+$(s,t)=(t/\ell)(-m,\ell)$ and forces $t\ne0$; if $\ell=0$, then
+$m\ne0$, $t=0$, and both projective pairs equal $[1:0]$.
+Thus this exceptional case also recovers the original parameter.
+
+Every branch tests an integer equality or inequality.  Matrix products,
+polynomial values, signed integer arithmetic, gcd, and exact division
+are primitive recursive.  The displayed inverse uses integer adjugate
+coordinates followed by normalization, so rational division in the
+explanatory proportionality check is not an operation required by the
+algorithm.  The formulas define total programs by returning a fixed
+default value on inputs failing the decidable hypotheses.  The theorem
+asserts their correctness on valid inputs.
+\end{proof}
+
+The exceptional value has a geometric interpretation that is already
+visible in the arithmetic.  At $(U,V,W)=(1,0,0)$ the gradient of the
+transformed conic is $(0,\ell,m)$, so its tangent is
+$\ell V+mW=0$.  This is exactly the line represented by $[-m:\ell]$.
+Thus the tangent is included in the bijection rather than discarded as
+an undefined slope.
+
+\subsection{Quadratic height comparison with computable constants}
+
+For a rational projective point, $\Ht$ denotes the maximum absolute
+coordinate of its primitive integer representative.  Define the
+following positive integers from the coefficients and the seed:
+\begin{equation}\label{eq:conic-height-constants}
+\begin{split}
+ D_s&=m^2+|bm-c\ell|+|cm|,\\
+ D_t&=\ell^2+|a\ell|+|b\ell-am|,\\
+ D&=\max(D_s,D_t),\qquad A=3CP,\qquad K=2PD.
+\end{split}
+\end{equation}
+Here $D\geq1$ because $(\ell,m)\ne(0,0)$.
+
+\begin{theorem}[Height of a conic parametrization]
+\label{thm:conic-height}
+For every $T\in\PP^1(\Q)$,
+\begin{equation}\label{eq:conic-height}
+ \Ht(T)^2\leq K\Ht(\Phi(T)),
+ \qquad
+ \Ht(\Phi(T))\leq A\Ht(T)^2.
+\end{equation}
+In particular, a complete list of conic points of height at most $B$
+is obtained by evaluating $\Phi$ at all canonical parameters of height
+at most $\lfloor\sqrt{KB}\rfloor$ and retaining exactly those images
+of height at most $B$.
+\end{theorem}
+
+\begin{proof}
+Take a primitive integer pair $(s,t)$ representing $T$, and put
+$S=\max(|s|,|t|)\geq1$.
+The coefficient formulas give
+\[
+ |R(s,t)|\leq CS^2,
+ \qquad |\ell|+|m|\leq2CP,
+ \qquad |L(s,t)|\leq2CPS.
+\]
+The coordinates of $MF$ are
+\[
+ -p_0R,\qquad -p_1R+sL,\qquad -p_2R+tL.
+\]
+Their absolute values are at most $3CPS^2=AS^2$.  Primitive
+normalization cannot increase that maximum.  This proves the upper
+inequality.
+
+For the lower inequality it is essential to control cancellation of
+common factors.  Let
+\[
+ g=\gcd\bigl(|R(s,t)|,|sL(s,t)|,|tL(s,t)|\bigr).
+\]
+This integer is positive because $F\ne0$.
+Since $\gcd(s,t)=1$, a B\'ezout identity for $s,t$ shows
+$\gcd(sL,tL)=|L|$, including the case $L=0$.  Consequently
+$g=\gcd(|R|,|L|)$.  The identities
+\eqref{eq:conic-identity-s}--\eqref{eq:conic-identity-t} show that
+$g$ divides $rs^2$ and $rt^2$.  Since $s^2,t^2$ are coprime, another
+B\'ezout identity yields $g\mid r$.  Hence $g\leq|r|$.
+
+Put $T_0=\max(|R|,S|L|)=\max_i|F_i|$.
+If $|s|=S$, \eqref{eq:conic-identity-s} gives
+\[
+ |r|S^2\leq m^2|R|+
+ (|bm-c\ell|+|cm|)S|L|\leq D_sT_0\leq DT_0.
+\]
+If $|t|=S$, the same conclusion follows from
+\eqref{eq:conic-identity-t} and $D_t$.
+Since $T_0=g\Ht([F])$ and $g\leq|r|$, cancellation of the positive
+integer $|r|$ gives
+\begin{equation}\label{eq:conic-intermediate-height}
+ S^2\leq D\Ht([F]).
+\end{equation}
+Now let $x$ be the primitive representative of $\Phi(T)=[MF]$.
+The integer vector $\operatorname{adj}(M)x$ is nonzero and represents
+$[F]$.  Formula \eqref{eq:conic-adjugate} bounds each of its
+coordinates by $2P\Ht(\Phi(T))$.  Normalizing it and substituting in
+\eqref{eq:conic-intermediate-height} yields
+$S^2\leq2PD\Ht(\Phi(T))=K\Ht(\Phi(T))$.
+
+For the last assertion, any image of height at most $B$ has inverse
+parameter with squared height at most $KB$.  The parameter box is
+therefore complete, and its final height filter removes exactly the
+unwanted images.  The integer square root is obtained by a bounded
+search through $0,\ldots,KB$.
+\end{proof}
+
+The theorem also supplies an inverse height estimate in its strongest
+useful elementary form:
+\[
+ \Ht(\Phi^{-1}(X))\leq\lfloor\sqrt{K\Ht(X)}\rfloor.
+\]
+The linear bound obtained directly from the adjugate is easier, but
+would lose the correct quadratic relation between the parameter
+height and the conic height.
+
+\subsection{A finite counting theorem and constructive infinitude}
+
+Let $N_q(B)$ be the number of canonical points of $C_q(\Q)$ with
+height at most $B$.  This is a primitive recursive finite count.  In
+the next theorem, inequalities with rational-looking constants are
+stated after clearing denominators.
+
+\begin{lemma}[Many coprime pairs in a square]
+\label{lem:conic-coprime-count}
+Let $G(N)$ count pairs $(s,t)$ with $1\leq s,t\leq N$ and
+$\gcd(s,t)=1$.  For every $N\geq1$,
+\[
+ 4G(N)\geq N^2.
+\]
+\end{lemma}
+
+\begin{proof}
+For $N=1$ the assertion is immediate.  For $N\geq2$, every pair
+with gcd greater than one belongs to at least one of the sets
+\[
+ E_d=\{(s,t):1\leq s,t\leq N,\ d\mid s,\ d\mid t\},
+ \qquad 2\leq d\leq N.
+\]
+The finite union bound and $\#E_d=\lfloor N/d\rfloor^2$ give
+\[
+ N^2-G(N)\leq\sum_{d=2}^N\lfloor N/d\rfloor^2
+ \leq N^2\sum_{d=2}^N\frac1{d^2}.
+\]
+There is no infinite series in this argument.  For $d\geq3$,
+$1/d^2\leq1/(d(d-1))$, and the finite telescoping identity gives
+\[
+ \sum_{d=2}^N\frac1{d^2}
+ \leq\frac14+\sum_{d=3}^N\left(\frac1{d-1}-\frac1d\right)
+ =\frac34-\frac1N.
+\]
+Thus $G(N)\geq N^2/4+N$, which in particular proves the stated
+inequality.  Every displayed rational comparison can equivalently
+be multiplied by the positive product of its denominators.
+\end{proof}
+
+\begin{theorem}[Explicit linear growth of the point count]
+\label{thm:conic-count}
+With $A,K$ from \eqref{eq:conic-height-constants},
+\[
+ N_q(B)\leq4KB\quad(B\geq1),
+ \qquad
+ B\leq16A N_q(B)\quad(B\geq A).
+\]
+For each $n\geq1$ one can also produce $n+1$ distinct points on
+the conic, each of height at most $An^2$.
+\end{theorem}
+
+\begin{proof}
+For the upper bound put $S=\lfloor\sqrt{KB}\rfloor\geq1$.
+The inverse of every point counted by $N_q(B)$ is a parameter of
+height at most $S$.  The number of all nonzero integer pairs in the
+box $[-S,S]^2$ is $4S^2+4S$.  Exactly one element in each pair
+$\{v,-v\}$ has its first nonzero coordinate positive.  Thus there
+are at most $2S^2+2S\leq4S^2$ canonical primitive pairs in this box.
+The bijection and $S^2\leq KB$ imply $N_q(B)\leq4KB$.
+
+For the lower bound choose the largest integer $N$ with $AN^2\leq B$.
+The condition $B\geq A$ ensures $N\geq1$.
+Every positive coprime pair in $[1,N]^2$ gives a different
+projective parameter: two primitive positive integer pairs that
+are rational multiples of one another are equal.  Their images
+are distinct by Theorem~\ref{thm:conic-param} and have height at
+most $AN^2\leq B$.  Hence
+\[
+ 4N_q(B)\geq4G(N)\geq N^2.
+\]
+Maximality of $N$ gives
+$B<A(N+1)^2\leq4AN^2\leq16AN_q(B)$, proving the assertion.
+
+For the last statement use the pairwise distinct parameters
+$[k:1]$ for $k=0,1,\ldots,n$.  Their heights are at most $n$ when
+$n\geq1$, and Theorem~\ref{thm:conic-height} supplies the stated
+bound.  This yields an explicit list for each $n$ and therefore
+the constructive content of infinitude.
+\end{proof}
+
+This is a height-counting result rather than an appeal to an
+asymptotic counting theorem.  Both constants and the enumerating
+algorithm are given by fixed primitive recursive expressions.
+The lower estimate already captures the linear order of growth
+of the number of rational points on a pointed conic with respect
+to its projective height.
+
+\subsection{Two fully arithmetic examples}
+
+\paragraph{The unit circle.}
+For $X^2+Y^2=Z^2$, the preceding construction has the familiar form
+\begin{equation}\label{eq:circle-param}
+ [s:t]\longmapsto[s^2-t^2:2st:s^2+t^2].
+\end{equation}
+Its defining identity is
+$(s^2-t^2)^2+(2st)^2=(s^2+t^2)^2$.
+An inverse is $[Z+X:Y]$ unless $(X:Y:Z)=(-1:0:1)$; that point has
+inverse $[0:1]$.  Indeed if $Z+X=0$, the conic equation gives
+$Y^2=0$ and hence $Y=0$, so the exceptional point is the only
+undefined value of the displayed inverse pair.  Otherwise
+substitution into \eqref{eq:circle-param}, followed by use of
+$X^2+Y^2=Z^2$, recovers $[X:Y:Z]$.
+
+If $\gcd(s,t)=1$, the common divisor of the three coordinates in
+\eqref{eq:circle-param} is exactly
+\[
+ \epsilon=\begin{cases}2,&s,t\text{ both odd},\\1,&s,t\text{ of opposite parity}.
+ \end{cases}
+\]
+To see this, any common divisor divides $2s^2$ and $2t^2$, and
+$\gcd(s^2,t^2)=1$ therefore makes it divide $2$.  If the inputs
+are both odd, all three coordinates are even; if their parities
+differ, the first and third are odd.  They cannot both be even
+because they are coprime.  Since
+$|s^2-t^2|\leq s^2+t^2$ and $|2st|\leq s^2+t^2$, we obtain the
+exact height formula
+\begin{equation}\label{eq:circle-exact-height}
+ \Ht(\Phi([s:t]))=\frac{s^2+t^2}{\epsilon}.
+\end{equation}
+For example $[2:1]$ yields $[3:4:5]$, while $[1:1]$ yields
+$[0:1:1]$ after dividing the displayed coordinates by $2$.
+The same identity is the elementary connection between rational
+points on a conic and primitive Pythagorean triples.
+
+\paragraph{An empty conic detected by a prime-power obstruction.}
+The nonsingular conic
+\[
+ X^2+Y^2=3Z^2
+\]
+has no rational projective point.  Suppose it had one and choose
+a primitive integer representative $(x,y,z)$.  The only square
+residues modulo $3$ are $0$ and $1$, so $x^2+y^2\equiv0\pmod3$
+forces $3\mid x$ and $3\mid y$.  Write $x=3u,y=3v$ and cancel
+$3$ from the equation to obtain $z^2=3(u^2+v^2)$.  The same
+square-residue table gives $3\mid z$, contradicting primitivity.
+Every step is a finite divisibility calculation.
+
+There \emph{are} projective points of this equation over the
+field with three elements, for example $(0:0:1)$.  The obstruction
+is the failure of such a residue class to lift to a solution modulo
+$9$ with at least one coordinate not divisible by $3$.  Equivalently,
+it is the two successive modulo-$3$ deductions just given.  This
+distinction matters when formulating a correct finite local
+certificate.
+
+\subsection{Why these arguments fit the weak constructive theory}
+
+No existence claim above asks for an unbounded search.  A seed point
+is part of the hypotheses of the parametrization theorem; the
+theorem does not search indefinitely for one.  A conic with no
+supplied seed still has the bounded point enumerator, and a
+specific local obstruction may certify emptiness as in the second
+example.  A general local-to-global theorem for conics is a further
+theorem, not an unstated step of this chapter.
+
+The algebraic parts use fixed polynomial identities, gcd and
+B\'ezout algorithms, and decidable branches.  The counting parts
+only use bounded ranges.  Their induction invariants are equalities
+and inequalities of primitive recursive counting functions; a
+bounded finite-union assertion is represented by its primitive
+recursive characteristic function.  Finite telescoping is proved
+by quantifier-free induction, after clearing the positive
+denominators or maintaining a rational pair code.  Distinctness of
+the produced list is also a bounded predicate.
+
+Thus the internal assertion of constructive infinitude is the
+explicit arithmetic statement that for every input $n$, a specified
+primitive recursive list has length $n+1$, distinct valid entries,
+and the displayed height bound.  It does not quantify over an
+infinite set, invoke a choice principle, or require induction on
+an arbitrary formula.  The bijection and the counting estimates
+are uniform first-order arithmetic theorems about the supplied
+coefficient and point codes.

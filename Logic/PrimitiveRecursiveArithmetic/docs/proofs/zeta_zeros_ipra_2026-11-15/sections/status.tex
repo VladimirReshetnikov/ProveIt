@@ -1,0 +1,77 @@
+\section{Proof status, archive contents, and reproducibility}
+\label{sec:status}
+
+\subsection{The three evidence levels}
+The mathematical deliverable is the human argument in this report,
+including its numerical bounds and finite-arithmetic interpretation.
+The functional-equation foundation is reused as a written proof from
+the included upstream archive. The uniform rational-polynomial and
+winding arguments supply the finite infrastructure required by the
+counting proof; no fixed-degree FTA schema is silently substituted for
+the variable-degree construction.
+
+The executable evidence consists of exact rational comparisons for the
+worked simple zero and exact integer calculations of the regular-height
+bounds. The latter program computes cutoff sizes and verifies their
+elementary inequalities; it does not execute the enormous general
+height search. A finite run is evidence about that run. The uniform
+mathematical proof is the reason the algorithm has the stated behavior
+on all inputs.
+
+The Lean deliverable is a concrete interface and a module-by-module
+completion plan. No new analytic Lean theorem has been kernel-checked
+in this package. The interface has no \code{sorry} proof and adds no
+analytic axiom, but no instance of its structure of final obligations
+is constructed. A specification without a supplied proof is not a proof. The essential
+completion target is an actual term of
+\code{Prf PRAAx [] phi}; only then does
+\code{pra_iff_native} transfer it to the concise native calculus.
+
+\subsection{Files}
+\begin{center}
+\begin{tabular}{p{.43\textwidth}p{.49\textwidth}}
+\toprule
+Path & Purpose\\
+\midrule
+\code{zeta_zeros_ipra.tex}, \code{sections/}
+ & Complete source of this report.\\
+\code{zeta_zeros_ipra.pdf}
+ & Compiled, visually inspected report.\\
+\code{lean/ObjectTargets.lean}
+ & Object-language sentence constructors, the verified repository bridge
+   as an interface, and explicit final proof obligations.\\
+\code{lean/README.md}
+ & Proposed build location, dependency versions and completion gates.\\
+\code{code/rational_zeta.py}
+ & Exact rational zeta enclosures and the simple-zero certificate.\\
+\code{code/good_height_bounds.py}
+ & Exact integer size calculations for the theoretical regular-height
+   construction.\\
+\code{verification/}
+ & Actual computation outputs and verification notes.\\
+\code{sources/}
+ & Pinned repository source snapshots and provenance manifest.\\
+\path{dependencies/zeta_functional_equation_ipra.zip}
+ & Unchanged upstream functional-equation proof, finite contracts and
+   explicitly incomplete Lean outline.\\
+\code{SHA256SUMS}
+ & Hashes for the files in this archive.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Reproduction}
+With Python 3.12 or a compatible later Python, the two scripts require
+only the standard library. The main report uses ordinary LaTeX packages.
+Run the supplied \code{build.sh} from the archive root to regenerate
+the computation outputs and compile the PDF. The exact build used for
+this delivery and the observed results are recorded in
+\code{verification/STATUS.md}.
+
+The repository snapshot is read-only in this work. Source files copied
+from it were checked against their Git blob hashes, and their SHA-256
+hashes are recorded. The included functional-equation ZIP has SHA-256
+\begin{center}\small\ttfamily
+78ddf1de0c4c5fc3e6a553efdeda96e617a646f7a02e62f84481d57c8691e4de.
+\end{center}
+No claim about newer repository revisions is needed for the argument.

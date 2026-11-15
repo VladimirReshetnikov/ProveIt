@@ -1,0 +1,93 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=0.82in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{calc,intersections,arrows.meta,positioning}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalize,noabbrev]{cleveref}
+\usepackage{bookmark}
+\usepackage{url}
+
+\definecolor{linkblue}{RGB}{25,75,140}
+\definecolor{codegray}{RGB}{245,245,245}
+\hypersetup{colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,pdfauthor={OpenAI},pdftitle={Eight classical geometry theorems in intuitionistic primitive recursive arithmetic}}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Constructive projective and affine geometry in iPRA}
+\rhead{\thepage}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlist{nosep,leftmargin=1.6em}
+\lstset{basicstyle=\ttfamily\small,backgroundcolor=\color{codegray},frame=single,breaklines=true,columns=fullflexible,keepspaces=true}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{construction}[theorem]{Construction}
+
+\newcommand{\F}{\mathbb F}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\br}[3]{[\,#1\,#2\,#3\,]}
+\newcommand{\crat}[4]{(#1,#2;#3,#4)}
+\newcommand{\join}{\mathbin{\vee}}
+\newcommand{\meet}{\mathbin{\wedge}}
+\newcommand{\cross}{\mathbin{\times}}
+\newcommand{\Rat}{\operatorname{Rat}}
+\newcommand{\Inc}{\operatorname{Inc}}
+\newcommand{\Col}{\operatorname{Col}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Area}{\operatorname{Area}}
+\newcommand{\poly}{\operatorname{Poly}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\todoFormal}{\textsf{formalization obligation}}
+
+\title{Eight Classical Geometry Theorems in Intuitionistic Primitive Recursive Arithmetic\\
+\large Pappus harmonic, Ceva, Menelaus, Carnot conic and polygon, Hoehn, Pappus hexagon, and Brianchon}
+\author{Constructive proof development and Lean formalization plan}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We give constructive, division-controlled proofs of eight classical incidence and ratio theorems in a form that is directly arithmetizable in intuitionistic primitive recursive arithmetic.  The internal universe is the rational affine or projective plane, more generally any fixed primitively presented field of characteristic zero.  Every geometric object is a finite tuple of number codes; every incidence assertion is a polynomial equality; every nondegeneracy assumption is an explicit apartness hypothesis; and every existential conclusion is accompanied by a primitive-recursive witness.  The only unbounded family, Carnot's polygon theorem, is formulated with explicit side-factorization certificates and proved by quantifier-free induction on finite products.  No appeal is made to excluded middle for arbitrary propositions, choice, completeness of the reals, or the fundamental theorem of algebra.
+
+The coordinate kernels are independently checked by the accompanying SymPy script.  A Lean 4 outline isolates the generic field-level geometry from the final arithmetization through the current \texttt{ConciseIPRA} bi-interpretation.  The document is intentionally honest about status: it contains complete human proofs and executable algebra certificates, while the final native \texttt{ConciseIPRA} derivation files remain a clear, finite implementation task rather than a completed formalization.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{sections/01_scope}
+\input{sections/02_framework}
+\input{sections/03_core_lemmas}
+\input{sections/04_pappus_harmonic}
+\input{sections/05_ceva_menelaus}
+\input{sections/06_carnot_conic}
+\input{sections/07_carnot_polygon}
+\input{sections/08_hoehn}
+\input{sections/09_pappus_hexagon}
+\input{sections/10_brianchon}
+\input{sections/11_ipra_audit}
+\input{sections/12_lean_plan}
+\input{sections/13_further_questions}
+\input{sections/appendix_certificates}
+\input{sections/references}
+
+\end{document}

@@ -1,0 +1,242 @@
+\section{The theorem and its precise constructive meaning}\label{sec:statement}
+
+\subsection{What is proved}
+
+The usual Jordan theorem says that the complement of a simple closed plane
+curve has exactly two connected components, one bounded and one unbounded,
+and that the curve is their common boundary. In constructive arithmetic,
+both the input and the conclusion must say what information is available.
+In particular, a negative assertion that a point is not on the curve does
+not supply a positive distance bound.
+
+Our input is a quantitatively presented embedding
+\[
+ \gamma:\T\longrightarrow\R^2,\qquad \T=\R/\mathbb Z,
+\]
+where the circle distance is
+\[
+ d_\T(s,t)=\min(|s-t|,\,1-|s-t|)
+ \quad(0\le s,t<1),
+\]
+and the plane uses the maximum norm. Rational coordinates, rational
+parameters modulo one, and this norm make all finite computations exact.
+
+\begin{definition}[Quantitative presentation]\label{def:presentation}
+A presentation consists of a rational approximation routine
+$G(q,n)\in\Q^2$, for $q\in\Q/\mathbb Z$, and nondecreasing functions
+$U,V:\N\to\N$ with $U(k),V(k)\ge k+8$. Its associated curve has
+\begin{align}
+ \norm{G(q,n)-\gamma(q)}&\le 2^{-n},\label{eq:name}\\
+ d_\T(s,t)\le 2^{-U(k)}
+   &\ \Longrightarrow\
+       \norm{\gamma(s)-\gamma(t)}\le 2^{-k},\label{eq:forward}\\
+ d_\T(s,t)\ge 2^{-k}
+   &\ \Longrightarrow\
+       \norm{\gamma(s)-\gamma(t)}\ge 2^{-V(k)}.\label{eq:inverse}
+\end{align}
+All three routines are primitive recursive for an iPRA instance.
+The second modulus is supplied data.
+\end{definition}
+
+The normalization of the moduli loses nothing: replace a modulus by the
+maximum of its preceding values and $k+8$. The inverse condition is a
+positive quantitative injectivity assertion. For rational $s,t$ it also
+gives the usable implication
+\[
+ \norm{\gamma(s)-\gamma(t)}<2^{-V(k)}
+ \ \Longrightarrow\ d_\T(s,t)<2^{-k};
+\]
+the comparison of the rational parameter distances is decidable.
+The conditions extend to fast Cauchy parameter names by rational
+approximation; the explicit padding used when the input assumptions
+are stated only on rational parameters is given in
+Section~\ref{sec:padding}.
+
+Write $\Gamma$ for the image of the completed parameter circle.
+An \emph{off-curve point} is a named point $x$ together with a natural
+number $k_x$ certifying
+\begin{equation}
+ \norm{x-\gamma(t)}\ge 2^{-k_x}\quad\hbox{for every }t\in\T.
+ \label{eq:off}
+\end{equation}
+The \emph{apartness complement} is the collection of points with such a
+witness. A polygonal route has a finite list of vertices and a positive
+rational lower bound for the distance of every one of its segments from
+$\Gamma$. Its intermediate vertices can be rational even when its two
+endpoints are named real points.
+
+\begin{theorem}[Quantitative constructive Jordan theorem]\label{thm:main}
+For a presentation as in Definition~\ref{def:presentation}, there are
+primitive recursive procedures, relative to its fixed routines, with the
+following properties.
+\begin{enumerate}[label=\textnormal{(\arabic*)}]
+\item \textbf{Classification.} Every off-curve point has a bit
+$b_\Gamma(x)\in\{0,1\}$, independent of the chosen clearance certificate
+and sufficiently accurate approximations. The bit is locally constant
+on the apartness complement.
+\item \textbf{Routing.} Given two off-curve points with equal bits, the
+procedures return a polygonal route between them and a positive rational
+clearance for that route.
+\item \textbf{Separation.} A path with a supplied uniform continuity
+modulus and positive clearance from $\Gamma$ has equal endpoint bits.
+If instead its endpoints have different bits, then for every $n$ a
+bounded calculation returns rational parameters $s,t$ such that
+\[
+       \norm{\alpha(s)-\gamma(t)}<2^{-n}.
+\]
+\item \textbf{Both sides.} Given a named parameter $t$ and $n$, the
+procedures return rational points $a_0,a_1$ with explicit positive
+clearances, with
+\[
+ b_\Gamma(a_0)=0,\qquad b_\Gamma(a_1)=1,\qquad
+ \norm{a_i-\gamma(t)}<2^{-n}.
+\]
+\item \textbf{Size of the regions.} A primitive recursive bound $R$
+for $\Gamma$ can be calculated. Every point with
+$\norm{x}>R$ has bit zero. Thus the bit-one region is bounded and
+inhabited, and the bit-zero region is unbounded and inhabited.
+\item \textbf{Common boundary.} The image $\Gamma$ is exactly the set
+of named points every neighborhood of which contains a rational
+off-curve point of each bit. In the reverse direction a primitive recursive
+circle name for a preimage is reconstructed from the point name.
+\end{enumerate}
+Consequently the apartness complement has exactly two classes under
+the relation of being joined by a polygonal route with positive
+clearance. Each class is open in the quantitative sense, and every
+curve point is approached from both classes.
+\end{theorem}
+
+The term \emph{component} in this constructive conclusion has the explicitly
+stated path-and-clearance meaning. We do not infer a uniform lower bound
+from a merely pointwise claim that a continuous path misses the curve.
+Nor do we replace the approximate intersection conclusion by the choice
+of an exact zero or an exact crossing parameter. Those are different
+selection assertions.
+
+There is no rectifiability, differentiability, curvature, polygonality,
+or supplied extension to a plane homeomorphism assumption. Classically,
+continuous circle embeddings have forward and inverse moduli by
+compactness. Here the moduli are part of the constructive presentation;
+for the first-order iPRA claim they must be primitive recursive.
+
+\subsection{How a first-order arithmetic theory speaks about these objects}
+\label{sec:names}
+
+iPRA has natural-number variables, function symbols for primitive recursive
+functions, intuitionistic first-order logic, and quantifier-free induction.
+It does not have a sort containing all real functions.
+The preceding notation is an economical way to describe an
+\emph{arithmetical theorem schema}.
+
+Fix a finite collection of primitive recursive definitions for $G,U_0,V_0$
+and, where needed, point and path names, possibly with number parameters
+$\vec a$. Signed integers, positive-denominator rational pairs, finite
+lists, and pairs of coordinates are coded by natural numbers.
+All rational comparisons become decidable integer comparisons.
+The public moduli $U,V$ are obtained by the explicit padding in
+Section~\ref{sec:padding}. The assertion that the raw presentation
+is valid can be written using the universal closures of the
+following rational inequalities:
+\begin{align}
+\norm{G(s,n)-G(s,m)}
+ &\le 2^{-n}+2^{-m},\label{eq:arithC}\\
+d_\T(s,t)\le 2^{-U_0(k)}
+ &\ \Longrightarrow\
+ \norm{G(s,n)-G(t,n)}\le 2^{-k}+2^{1-n},\label{eq:arithU}\\
+d_\T(s,t)\ge 2^{-k}
+ &\ \Longrightarrow\
+ \norm{G(s,n)-G(t,n)}\ge 2^{-V_0(k)}-2^{1-n}.
+ \label{eq:arithV}
+\end{align}
+Variables $s,t$ range over codes of rational residues; invalid codes can
+be sent to a fixed default. A rational name for a point satisfies the
+analogous Cauchy inequalities. For a point name $X(n)$, condition
+\eqref{eq:off} is expressed by
+\[
+ \forall q,n\quad
+ \norm{X(n)-G(q,n)}\ge 2^{-k_x}-2^{1-n}.
+\]
+Only natural-number quantifiers occur. The limiting notation in
+\eqref{eq:name}--\eqref{eq:inverse} abbreviates these inequalities and
+their consequences at arbitrary requested precision.
+
+For each fixed tuple of definitions, our conclusion is an iPRA proof of
+the corresponding first-order implications from these regularity
+premises to the correctness of explicitly described primitive recursive
+outputs. We do not assume a primitive recursive universal evaluator
+for arbitrary primitive recursive program codes. There is no such
+uniform shortcut in this proof.
+
+The distinction between a name and a real-function quantifier is
+substantive. For example, a primitive recursive rational approximation
+routine can have a useful continuity modulus whose computational
+complexity is not primitive recursive. The theorem does not silently
+manufacture the missing primitive recursive modulus.
+
+\subsection{Finite nets and rational distance calculations}
+\label{sec:nets}
+
+For an integer $\ell$, set
+\begin{equation}
+ N(\ell)=2^{\,U(\ell)+1},\qquad
+ t_j=j/N(\ell),\qquad Y_j=G(t_j,\ell).
+ \label{eq:net}
+\end{equation}
+Every curve point is within $2^{1-\ell}$ of some $Y_j$:
+the parameter mesh costs at most $2^{-\ell}$ and evaluation costs
+another $2^{-\ell}$. Every $Y_j$ is within $2^{-\ell}$ of the
+corresponding curve point. Both directions are proved by choosing the
+appropriate mesh interval and applying \eqref{eq:arithU}.
+The same construction works on a rational parameter interval, including
+either half of the circle.
+
+For a rational segment $L=[a,b]$, its distance to a rational point $y$
+in the maximum norm is rational and is found by a bounded calculation.
+Indeed, put
+\[
+ f(t)=\max\{|a_x+t(b_x-a_x)-y_x|,
+             |a_y+t(b_y-a_y)-y_y|\},\qquad 0\le t\le1.
+\]
+It is the maximum of four affine functions. Its minimum is attained at
+an endpoint or an intersection of two of the four affine functions;
+retain only intersections with nonzero denominator and parameter in
+$[0,1]$. There are at most eight candidates, including the two
+endpoints. On each interval between consecutive candidates one affine
+function gives the maximum, so its minimum is at an endpoint (or it is
+constant). This proves the formula without an extremum theorem.
+
+Consequently
+\[
+ D_L=\min_j\dist(L,Y_j)
+\]
+is a rational number. If the net error is at most $\rho$, then
+\begin{equation}
+  \big|D_L-\dist(L,\Gamma)\big|\le\rho.
+  \label{eq:distance-net}
+\end{equation}
+One need not introduce an infimum as a new object: the two inequalities
+mean that every segment--curve pair is at least $D_L-\rho$ apart, and
+that a boundedly selected mesh parameter and segment parameter give
+distance at most $D_L+\rho$. The same observation applies to a point
+or a finite polygonal route.
+
+A curve bound is also available by a finite calculation. For example,
+sample with $N(0)$ and precision $2$, and take
+\begin{equation}
+ R=3+\max_{j<N(0)}\ceil{\norm{G(j/N(0),2)}}.
+ \label{eq:R}
+\end{equation}
+Then $\Gamma\subset[-R,R]^2$. These nets and distance estimates are the
+only approximation apparatus used below.
+
+\subsection{Origin of the method}
+
+The continuous constructive routing and local-boundary strategy is due
+to Berg, Julian, Mines, and Richman \cite{BJMR}. Our presentation develops
+its finite arithmetic content: a rational affine honeycomb, parity in
+place of angles, a cycle-edge multiplicity proof of factorization,
+explicit dyadic scales, and a symmetric chain calculation for the
+boundary argument. The broader constructive setting is discussed by
+Bridges \cite{Bridges}. Nguyen and Cook \cite{NC} give an independent
+weak-arithmetic treatment of discrete Jordan principles; their theorem
+is context, not an unproved lemma imported into the argument here.

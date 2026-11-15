@@ -1,0 +1,908 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,etoolbox}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue,pdftitle={Dirichlet and Kronecker Approximation in Intuitionistic Primitive Recursive Arithmetic},pdfauthor={Research report prepared for Vladimir Reshetnikov},pdfsubject={Constructive finite proofs, logical limits, and Lean formalization roadmap}}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,frame=single,rulecolor=\color{gray!35}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}\newcommand{\Q}{\mathbb Q}
+\newcommand{\ipra}{\mathsf{iPRA}}\newcommand{\HA}{\mathsf{HA}}
+\newcommand{\abs}[1]{\left|#1\right|}\newcommand{\rhoT}{\rho}
+\newcommand{\e}{\mathrm e}\newcommand{\PR}{\mathrm{PR}}
+\newcommand{\norminf}[1]{\left\|#1\right\|_{\infty}}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\DeclareMathOperator{\Rea}{Re}
+\setlength{\emergencystretch}{3em}
+\makeatletter
+\patchcmd{\l@section}{1.0em}{0.35em}{}{}
+\makeatother
+\setlist{itemsep=3pt,topsep=5pt}
+\title{Dirichlet and Kronecker Approximation\protect\\in Intuitionistic Primitive Recursive Arithmetic\protect\\[5pt]\large Complete finite constructions, logical limits, and a Lean roadmap}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{November 14, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The literal classical statements in the requested sources do not both admit proofs in plain intuitionistic primitive recursive arithmetic. The sharp closed scalar Dirichlet bound implies a form of LLPO; allowing its denominator bound to be an arbitrary represented real already makes even a weaker strict version imply LPO. The general exact-relation formulation of Kronecker implies Markov's principle, including when restricted to primitive recursive fast Cauchy names. We prove these reductions rather than silently adding a nonconstructive principle.
+
+The positive results are substantial. We give a uniform primitive recursive construction of scalar Dirichlet approximation with explicit slack, and of the full simultaneous bound for every integer denominator limit. We prove a quantitative matrix Kronecker theorem using a finite positive Fourier polynomial, with explicit coefficient and precision bounds, a rational certificate for near integer relations, and an unconditional finite approximation-or-obstruction alternative. The exact classical compatibility criterion suffices for rational generator matrices; positive rational independence with a primitive recursive separation modulus yields density for general named inputs. All arguments are reduced to finite rational arithmetic with quantifier-free induction. The archive supplies executable exact-rational reference algorithms and a detailed path to object-level Lean proofs in ProveIt's ConciseIPRA. The supplied Lean files are interfaces and specifications, not completed formal proofs.
+\end{abstract}
+\clearpage
+{\small\tableofcontents}
+\clearpage
+
+\section{What is proved, and why the formulation matters}
+
+The linked Dirichlet statement asks, for real $\alpha$ and real $N\ge1$, for integers $p,q$ satisfying
+\begin{equation}\label{eq:classical-dir}
+ 1\le q\le N,\qquad |q\alpha-p|\le\frac1{\floor N+1}<\frac1N.
+\end{equation}
+Its simultaneous statement has integer $N$ and asks for
+\begin{equation}\label{eq:sim-classical}
+ 1\le q\le N,\qquad
+ |q\alpha_j-p_j|\le N^{-1/d}\quad(1\le j\le d).
+\end{equation}
+The linked Kronecker statement has generator rows $a_1,\ldots,a_m\in\mathbb R^d$ and a target $\beta\in\mathbb R^d$. It asserts that
+\begin{equation}\label{eq:approx-classical}
+ \forall\varepsilon>0\ \exists q\in\Z^m\ \exists p\in\Z^d\quad
+ \norminf{\textstyle\sum_iq_i a_i-p-\beta}<\varepsilon
+\end{equation}
+is equivalent to
+\begin{equation}\label{eq:exact-compat}
+ \forall h\in\Z^d\quad
+ \bigl(\forall i\ h\cdot a_i\in\Z\bigr)\ \longrightarrow\ h\cdot\beta\in\Z.
+\end{equation}
+These are the formulations checked in the supplied sources \cite{dirichlet-wiki,kronecker-wiki}; the matrix criterion and quantitative approaches also appear in the research literature \cite{gonek-montgomery}.
+
+In $\ipra$, there is no primitive sort of arbitrary real numbers. A meaningful constructive interpretation uses named rational approximations, explicit error estimates, and arithmetic schemas. That interpretation also exposes genuine logical differences between a strict approximation and a closed optimum, and between negative absence of a relation and positive separation from it.
+
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{.46\textwidth}>{\raggedright\arraybackslash}p{.44\textwidth}}
+\toprule
+Statement & Result in this report\\
+\midrule
+Rational scalar input, integer $N$ & Sharp $1/(N+1)$ bound, constructive.\\
+Named real input, integer $N$ & Strict $1/N$ bound with a fixed surplus.\\
+Named real vector, integer $N$ & Full simultaneous strict $N^{-1/d}$ bound.\\
+Sharp scalar closed bound for all names & Implies LLPO; unavailable uniformly in plain $\ipra$.\\
+Strict scalar version with arbitrary real $N$ & Implies LPO; integer $N$ is an essential restriction.\\
+General exact Kronecker criterion & Implies primitive recursive Markov's principle.\\
+Finite quantitative Kronecker & Explicit primitive recursive witnesses and rational certificates.\\
+Rational generator matrices & Exact compatibility suffices, without an extra modulus.\\
+Positive rational independence & Density with a supplied primitive recursive separation modulus.\\
+Lean status & Concrete specifications and object-proof roadmap; no completed approximation formalization claimed.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Arithmetic foundation and represented quantities}\label{sec:foundation}
+
+\subsection{The object theory}
+
+We use intuitionistic first-order logic with equality, symbols for primitive recursive functions, their defining equations, successor nonzero and injectivity, and induction for quantifier-free formulas. Parameters are allowed. This matches the inspected \texttt{PRAAx} presentation of ConciseIPRA at commit
+\begin{center}\small\texttt{6ad3d9f37184ac242a8946f1c5d45a5603cf57f2}.\end{center}
+Its \texttt{Prf} type is an actual intuitionistic natural-deduction derivability relation. The source defines primitive recursive syntax by zero, successor, projection, composition, and primitive recursion, and provides the transfer theorem \texttt{pra\_iff\_native} \cite{proveit-pr,proveit-deduction,proveit-native}. The inspected draft directory contains a recent finite Minkowski report, whose rational-grid perspective is related to our simultaneous construction; our proof below is self-contained and does not assume that draft's conclusions \cite{proveit-drafts}.
+
+Integers are signed natural-number codes. Rationals are pairs of a signed numerator and a positive denominator; normalization by a bounded Euclidean algorithm is optional. Finite lists, tuples, sums, products, powers, factorials, binomial coefficients, rational comparisons, integer division, rational floor and ceiling, and bounded search are primitive recursive. Every floor or rounding operation in this report is applied to rational data.
+
+A bounded assertion is represented by a Boolean fold. For instance, instead of inducting on an unbounded formula about a list, we induct on an equation saying that the running finite conjunction of its rational checks is $1$. The elementary counting and algebraic invariants used below are therefore legitimate quantifier-free induction instances.
+
+\subsection{What a real name means}
+
+A fixed primitive recursive real name is a rational sequence $x[k]$ with a supplied fast Cauchy correctness proof; we write
+\[
+ |x-x[k]|\le2^{-k}
+\]
+as an abbreviation for the associated arithmetic error relations. No completed continuum is an object of $\ipra$. A closed inequality is interpreted by all rational error tolerances; a strict inequality is accompanied by a positive rational surplus. A request for rational error $\eta>0$ is implemented by a bounded search for $k$ with $2^{-k}\le\eta$. For example, searching through $\ceil{1/\eta}+1$ is ample.
+
+The schemas are indexed externally by fixed primitive recursive definitions, with natural parameters. Alternatively, the uniform finite theorems take rational tables and certificates as their numerical inputs. We do \emph{not} add a universal primitive recursive evaluator for arbitrary primitive recursive program codes. Such an evaluator is not primitive recursive uniformly in program and input.
+
+The distinction is relevant to both existence and complexity. A program may be primitive recursive relative to specified real-name and modulus definitions. Mere computability of unspecified input reals is not a claim that those definitions exist in $\ipra$.
+
+\subsection{Distance modulo integers}
+
+For rational $x$, define
+\[
+ \rho(x)=\min\bigl(x-\floor x,\,1-x+\floor x\bigr).
+\]
+The minimum is a rational operation, and ties may be resolved in either direction. Elementary integer arithmetic proves
+\begin{align}
+ 0\le\rho(x)&\le\tfrac12, & \rho(x+n)&=\rho(x),\label{eq:rho}\\
+ |\rho(x)-\rho(y)|&\le|x-y|,&
+ \rho(x+y)&\le\rho(x)+\rho(y).
+\end{align}
+For the triangle inequality, choose minimizing integers for the two rational inputs and add them. For the Lipschitz inequality, use the same minimizing integer for one input as a candidate for the other, and then reverse the roles.
+
+Thus $\rho(x[k])$ defines a fast Cauchy name for $\rho(x)$ with the same error bound. This defines distance without choosing a nearest integer to an arbitrary real. Finite maxima are likewise computable from the identity $\max(u,v)=(u+v+|u-v|)/2$; their use does not select a maximizing real index.
+
+If $\rho(x)=0$, an actual integer equal to $x$ can be recovered. Approximate $x$ to error $1/8$ and round that rational approximation to an integer $n$. Its rational distance is at most $1/8$, hence $|x-n|\le1/4$. Every other integer is at distance at least $3/4$. At all finer precisions the minimizing integer is therefore $n$, and $\rho(x)=0$ gives $x=n$. This observation justifies the use of $\rho(h\beta)=0$ for exact integrality.
+
+\subsection{The finite pigeonhole lemma}
+
+\begin{lemma}\label{lem:php}
+For an explicitly given list of $K+1$ integers in $\{0,\ldots,K-1\}$, a bounded primitive recursive search finds equal entries at different indices. Its correctness is provable in $\ipra$.
+\end{lemma}
+\begin{proof}
+Search the at most $(K+1)^2$ pairs. If no collision has been found in a prefix of length $t$, each color count $c_j(t)$ is at most one. On the other hand,
+\[
+ \sum_{j<K}c_j(t)=t,
+\]
+because each new entry increments exactly one count. Both invariants are Boolean equations over finite arrays and follow by quantifier-free induction. At $t=K+1$, failure would give $K+1\le K$. The failure flag is decidable, so the successful branch, with its stored pair of indices, follows intuitionistically.
+\end{proof}
+
+\section{Scalar Dirichlet approximation}\label{sec:scalar}
+
+\begin{theorem}[Sharp rational form]\label{thm:dir-rational}
+Given $r\in\Q$ and an integer $N\ge1$, a primitive recursive algorithm produces $p\in\Z$ and $1\le q\le N$ such that
+\[
+ |qr-p|\le\frac1{N+1}.
+\]
+\end{theorem}
+\begin{proof}
+For $k=0,\ldots,N$, compute $m_k=\floor{kr}$ and $u_k=kr-m_k\in[0,1)$. Sort the indexed residues by the rational pair $(u_k,k)$, obtaining a permutation $\sigma$. There are $N+1$ circular gaps:
+\[
+ u_{\sigma(j+1)}-u_{\sigma(j)}\ (j<N),\qquad
+ 1+u_{\sigma(0)}-u_{\sigma(N)}.
+\]
+They are nonnegative and sum to one. A finite rational search therefore finds a gap $g\le1/(N+1)$: if every gap were larger, their sum would exceed one.
+
+For an ordinary adjacent gap set $v=\sigma(j+1)-\sigma(j)$ and $w=m_{\sigma(j+1)}-m_{\sigma(j)}$. For the wraparound gap set $v=\sigma(0)-\sigma(N)$ and $w=m_{\sigma(0)}-m_{\sigma(N)}-1$. In either case $vr-w=g$. The two indices are different, even when residues coincide, so $1\le|v|\le N$. Set $q=|v|$ and $p=\operatorname{sign}(v)w$. Then $|qr-p|=g$.
+\end{proof}
+
+\begin{theorem}[Unconditional strict real-name form]\label{thm:dir-real}
+For a named real $\alpha$ and an integer $N\ge1$, one can primitively recursively produce $p,q$ with $1\le q\le N$ and
+\begin{equation}\label{eq:dir-surplus}
+ |q\alpha-p|\le\frac1N-\frac1{2N(N+1)}<\frac1N.
+\end{equation}
+Consequently $|\alpha-p/q|<1/(qN)\le1/q^2$.
+\end{theorem}
+\begin{proof}
+Request a rational approximation $r$ to error
+\[
+ \eta=\frac1{2N^2(N+1)}.
+\]
+Apply Theorem~\ref{thm:dir-rational}. Since $q\le N$,
+\[
+ |q\alpha-p|\le |qr-p|+q\eta
+ \le\frac1{N+1}+\frac1{2N(N+1)}
+ =\frac1N-\frac1{2N(N+1)}.
+\]
+Every choice in the algorithm depends on a single finite rational approximation. The last inequality has a displayed positive rational surplus.
+\end{proof}
+
+For any supplied rational $\varepsilon>0$, using input error $\varepsilon/N$ instead gives the constructive approximate sharp bound
+\[
+ 1\le q\le N,\qquad |q\alpha-p|\le\frac1{N+1}+\varepsilon.
+\]
+Here the pair may depend on $\varepsilon$; selecting one pair that attains the closed optimum is a different assertion.
+
+\section{The full simultaneous theorem for every integer bound}\label{sec:simultaneous}
+
+\begin{theorem}\label{thm:simultaneous}
+Let $d,N\ge1$ be integers and let $\alpha_1,\ldots,\alpha_d$ be fixed primitive recursive real names. There is a uniform primitive recursive procedure returning integers $1\le q\le N$, $p_1,\ldots,p_d$, and a positive rational $S$ such that
+\[
+ |q\alpha_j-p_j|<S\quad(j\le d),\qquad NS^d<1.
+\]
+In conventional real notation this proves the strict form
+\[
+ |q\alpha_j-p_j|<N^{-1/d}
+\]
+of the entire simultaneous statement, with no restriction that $N$ be a perfect $d$th power.
+\end{theorem}
+
+\subsection{Choose rational widths with a surplus}
+
+Put
+\begin{equation}\label{eq:sim-constants}
+ X=N+\tfrac12,\qquad
+ g=\frac1{N(2N+1)}=\frac1N-\frac1X,\qquad
+ H=4dN(2N+1),\qquad T=\frac1X+\frac g4.
+\end{equation}
+Let $k$ be the least integer in $\{0,\ldots,H\}$ with $(k/H)^d\ge T$. This is a bounded rational search; $H$ qualifies and $0$ does not. In fact $H-1$ qualifies, because the finite Bernoulli inequality gives
+\[
+ \left(1-\frac1H\right)^d\ge1-\frac dH=1-\frac g4
+ >\frac1N-\frac{3g}4=T.
+\]
+Thus $1\le k\le H-1$. Set $R=k/H$ and $S=(k+1)/H$.
+
+For $0\le a\le b\le1$, the finite factorization
+\[
+ b^d-a^d=(b-a)\sum_{j=0}^{d-1}b^{d-1-j}a^j\le d(b-a)
+\]
+and minimality of $k$ yield
+\begin{align}
+ XR^d&\ge1+\frac1{8N},\label{eq:sim-volume}\\
+ S^d&<T+\frac{2d}H=\frac1N-\frac g4<\frac1N.\label{eq:sim-S}
+\end{align}
+In particular $R<S<1$; no real root has been calculated.
+
+\subsection{Count a finite skew grid}
+
+Request rational $r_j$ with $|\alpha_j-r_j|\le1/(NH)$. Define integers
+\[
+ M=16Nd(N+1),\qquad A=MX,\qquad B=\floor{MR}.
+\]
+The integer $M$ is even, so $A$ is an integer. Also $1\le B<M$: since $R\ge R^d>1/X$ and $M>X$, we have $MR>1$.
+
+Write $z=B/M$. Then $0\le z\le R<1$ and $R-z<1/M$. The same power factorization gives $R^d-z^d<d/M$. Therefore
+\begin{align*}
+ \frac{AB^d}{M^{d+1}}
+ &=Xz^d>XR^d-\frac{Xd}M\\
+ &\ge1+\frac1{8N}-\frac{Xd}M
+ >1+\frac1{8N}-\frac1{16N}>1,
+\end{align*}
+where $X<N+1$ was used. Hence $AB^d\ge M^{d+1}+1$.
+
+For each $a\in\{0,\ldots,A-1\}$ and digits $t_j\in\{0,\ldots,B-1\}$ form the distinct integer vectors
+\[
+ (a,b_1,\ldots,b_d),\qquad b_j=\ceil{r_j a}+t_j.
+\]
+Their scaled points $(x,y)=(a/M,b/M)$ satisfy
+\begin{equation}\label{eq:skew-box}
+ 0\le x<X,\qquad 0\le y_j-r_jx<R.
+\end{equation}
+Indeed $0\le\ceil{r_j a}-r_j a<1$, and adding $t_j\le B-1$ gives a quantity strictly below $B\le MR$.
+
+Only the first $M^{d+1}+1$ vectors are needed. For an index $e$ in this range, set $a=\floor{e/B^d}$ and decode $e\bmod B^d$ into $d$ base-$B$ digits. If $B=1$, all digits are zero, and $a=e$. The preceding count ensures $a<A$.
+
+Color these vectors by their $d+1$ nonnegative coordinate remainders modulo $M$. There are $M^{d+1}$ colors. Lemma~\ref{lem:php} gives two distinct vectors with equal colors, so their scaled difference is an integer vector $(q,p_1,\ldots,p_d)$. Subtracting \eqref{eq:skew-box} gives
+\[
+ |q|<X=N+\tfrac12,\qquad |p_j-r_jq|<R<1.
+\]
+If $q=0$, every integer $p_j$ has absolute value below one, hence all $p_j=0$, contradicting distinctness. Change the sign of the whole difference when necessary. The integer inequalities then give $1\le q\le N$.
+
+\subsection{Transfer to the named inputs}
+
+For each coordinate,
+\[
+ |q\alpha_j-p_j|
+ \le |qr_j-p_j|+q|\alpha_j-r_j|
+ <R+\frac q{NH}\le R+\frac1H=S.
+\]
+Equation~\eqref{eq:sim-S} finishes the proof of Theorem~\ref{thm:simultaneous}.
+
+This argument uses a grid count, not a volume theorem or an appeal to compactness. The grid is only a correctness proof. The reference program uses a faster, still bounded implementation: scan $q=1,\ldots,N$, rationally round each $qr_j$ to its nearest integer, and accept when every rational residual is below $R$. The grid proof guarantees that such a $q$ exists; rounding can only decrease the rational residual.
+
+\section{Infinitely many approximants: two different meanings}\label{sec:infinite}
+
+\begin{theorem}[Unbounded integer denominators without irrationality]\label{thm:padding}
+For every named real $\alpha$ and integer $B\ge0$, a primitive recursive procedure produces
+\[
+ B<q\le(B+1)^3,\qquad |\alpha-p/q|<1/q^2.
+\]
+The fractions need not be reduced or distinct as rational numbers.
+\end{theorem}
+\begin{proof}
+Set $N=(B+1)^3$ and obtain $(p_0,q_0)$ from Theorem~\ref{thm:dir-real}. Set $v=\floor{B/q_0}+1$, $q=vq_0$, and $p=vp_0$. Then $q>B$. If $q_0>B$, $v=1$ and $q=q_0\le N$. Otherwise $q_0\le B$, $v\le B+1$, and $q\le B+q_0\le2B\le N$. In either case $v^2q_0\le N$: in the second case use $v^2q_0\le B(B+1)^2<N$.
+Consequently
+\[
+ |\alpha-p/q|=|\alpha-p_0/q_0|
+ <\frac1{Nq_0}\le\frac1{v^2q_0^2}=\frac1{q^2}.
+\]
+\end{proof}
+
+For infinitely many \emph{distinct reduced} rational approximants, quantitative irrationality is appropriate. Suppose a primitive recursive modulus supplies $\mu(B)>0$ rational with
+\[
+ \rho(q\alpha)\ge\mu(B)\quad(1\le q\le B).
+\]
+Choose an integer $N>B$ with $1/N<\mu(B)$ and apply scalar Dirichlet. Reduce its fraction by $p=gp'$, $q=gq'$. Then
+\[
+ |q'\alpha-p'|=|q\alpha-p|/g<1/N<\mu(B),
+\]
+so $q'>B$. Moreover the original estimate $|\alpha-p/q|<1/q^2$ implies $|\alpha-p'/q'|<1/(q')^2$. Repeating with the preceding reduced denominator gives a primitive recursive sequence of distinct reduced approximants. A negative assertion $\alpha\notin\Q$ must not silently be used as a supplied modulus.
+
+\section{Why the literal formulations are too strong}\label{sec:obstructions}
+
+\subsection{The sharp closed scalar endpoint implies LLPO}
+
+Take $N=1$ in \eqref{eq:classical-dir} and put $\alpha=1/2+x$, where $|x|\le1/4$. Then $q=1$, and only $p=0$ or $p=1$ can satisfy $|\alpha-p|\le1/2$. The first case gives $x\le0$ and the second gives $x\ge0$. Thus the sharp witness principle implies
+\begin{equation}\label{eq:weak-linearity}
+ x\le0\ \vee\ x\ge0
+\end{equation}
+for every such represented real.
+
+To see the omniscience content directly, let a primitive recursive binary sequence $(b_n)$ have at most one nonzero term and form the fast Cauchy name
+\[
+ x=\sum_{n\ge0}(-1)^n b_n2^{-(n+3)}.
+\]
+This notation means its finite partial sums with the displayed geometric tail bound. If $x\le0$, every even-indexed $b_n$ is zero; if $x\ge0$, every odd-indexed $b_n$ is zero. Indeed a nonzero entry of the forbidden parity would, by the at-most-one premise, make $x$ a nonzero rational with the opposite sign. Equation~\eqref{eq:weak-linearity} therefore yields LLPO for these arithmetic sequences. The first-order arithmetic formulation of LLPO is discussed in \cite{berardi-steila}; it is not an intuitionistic arithmetic theorem. Equivalently, applying this construction to two recursively inseparable enumerable sets would give a total effective separator. This is why the strict surplus in Theorem~\ref{thm:dir-real} is necessary for a uniform construction, rather than a technical loss in a proof.
+
+\subsection{An arbitrary real denominator limit implies LPO}
+
+Even the weaker strict assertion $|q\alpha-p|<1/N$ with $1\le q\le N$ cannot hold uniformly for arbitrary represented real $N\ge1$. Set $\alpha=1/2$ and $N=2-x$, where $0\le x\le1/4$. An output has $q=1$ or $q=2$. If $q=2$, then $2\le N\le2$, so $x=0$. If $q=1$, the fact that $|1/2-p|\ge1/2$ gives $1/2<1/N$, hence $N<2$ and $x>0$.
+
+Let $x$ have value $2^{-(j+2)}$ if $j$ is the first nonzero term of a given primitive recursive binary sequence, and value zero if no term is nonzero. Its name is defined entirely by bounded search; this description is not a case definition requiring a decision whether an event ever occurs. Then $x=0$ implies that every term is zero, whereas $x>0$ supplies a finite precision at which a bounded search must find an event. The proposed theorem decides these two cases and hence implies LPO. Integer $N$ in our positive theorem is therefore a substantive and standard arithmetical formulation.
+
+\subsection{Exact Kronecker compatibility implies Markov's principle}\label{sec:mp}
+
+Let $b(n)\in\{0,1\}$ be primitive recursive, with natural parameters allowed. Write $E$ for $\exists n\ b(n)=1$, and assume $\neg\neg E$. Define a fast Cauchy name by bounded search:
+\[
+ \alpha[k]=
+ \begin{cases}
+ 2^{-(j+2)},&j\le k\text{ is the first index with }b(j)=1,\\
+ 0,&\text{there is no such index at most }k.
+ \end{cases}
+\]
+If a later first event occurs, its size is at most $2^{-(k+3)}$, so this is a valid primitive recursive fast name. Set $\beta=1/2$.
+
+We can prove the exact compatibility condition
+\[
+ \forall h\in\Z\quad h\alpha\in\Z\ \longrightarrow\ h\beta\in\Z
+\]
+under $\neg\neg E$. Integer parity is decidable. For even $h$ the conclusion is immediate. If $h$ is odd and $h\alpha$ is an integer, any first event at $j$ would give $h\alpha=h/2^{j+2}$, which is not an integer. Thus the odd case implies $\neg E$, contradicting the premise. This proves compatibility without finding an event.
+
+If the unrestricted Kronecker implication were available, use precision $1/4$ to obtain integers $p,q$ with
+\[
+ |q\alpha-p-\tfrac12|<\tfrac14.
+\]
+Since $|p+1/2|\ge1/2$, this entails $|q\alpha|>1/4$. In particular $Q=|q|\ge1$. Search the finitely many indices through $4Q$. If none is an event, then $\alpha\le2^{-(4Q+3)}\le1/(4Q)$, contradicting $|q\alpha|>1/4$. Hence the search finds an event, proving
+\[
+ \neg\neg\exists n\ b(n)=1\ \longrightarrow\ \exists n\ b(n)=1.
+\]
+This is the primitive recursive Markov schema. Its nonderivability in the stronger theory $\HA$ is a standard metamathematical result, explicitly discussed in the primary references \cite{herbelin,moschovakis}. It therefore cannot be introduced by a uniform proof in the weaker $\ipra$.
+
+Even the one-dimensional density statement with merely \emph{negative} irrationality has the same problem: replace the eventual value at the first event by $2^{-(j+2)}\sqrt2$. Under $\neg\neg E$, any rational equality for $\alpha$ would imply $\neg E$, so negative irrationality holds. A density witness near $1/2$ again forces $\alpha$ positively away from zero and extracts an event by a finite search.
+
+These are reductions for parameterized arithmetic families of names. They do not rely on a universal primitive recursive evaluator. They also do not assert that adding Markov's principle alone supplies primitive recursive bounds for every classical instance; that would be a separate and stronger uniformity claim.
+
+\section{A quantitative matrix Kronecker theorem}\label{sec:kronecker}
+
+For generator rows $a_1,\ldots,a_m$ and target $\beta$, put
+\[
+ D(h)=\max_{1\le i\le m}\rho(h\cdot a_i),\qquad h\in\Z^d.
+\]
+Fix integers $d,m\ge1$, $s\ge2$, and $C\ge1$. Define
+\begin{equation}\label{eq:k-constants}
+ t=2s,\qquad
+ r=4\,3^d(d+1)^{d+1}t^{2d+2},\qquad
+ A=(2r+1)^d,\qquad N=32CA.
+\end{equation}
+Assume the following finite quantitative compatibility condition:
+\begin{equation}\label{eq:k-condition}
+ \rho(h\cdot\beta)\le\frac18+C D(h)
+ \quad\text{for all }h\in\Z^d\text{ with }|h_j|\le r.
+\end{equation}
+Section~\ref{sec:certificates} turns this hypothesis into a finite list of rational interval checks. No equality test on a real number is being assumed.
+
+\begin{theorem}[Finite quantitative Kronecker]\label{thm:kronecker}
+Under \eqref{eq:k-condition}, a bounded primitive recursive search produces $q\in\Z^m$ and $p\in\Z^d$ with
+\[
+ |q_i|<N,\qquad
+ \left|\sum_iq_i a_{ij}-p_j-\beta_j\right|<\frac7{8s}<\frac1s
+ \quad(1\le j\le d).
+\]
+The search uses only rational approximations and comparisons; it evaluates no trigonometric functions.
+\end{theorem}
+
+\subsection{Elementary auxiliary phases}
+
+Write $\e(x)=\cos(2\pi x)+i\sin(2\pi x)$. This is explanatory notation for primitive recursive rational approximations. Appendix~\ref{app:trig} constructs the constant and phases, proves the identities used here, and explains how their finite error estimates are internalized.
+
+For every named real $x$ we need only
+\begin{equation}\label{eq:phase-estimates}
+ |1-\e(x)|^2\ge4\rho(x)^2,
+ \qquad \cos(2\pi x)\ge1-8\rho(x).
+\end{equation}
+For a rational argument choose $u=\rho(x)\in[0,1/2]$. Alternating Taylor bounds give $z-z^3/6\le\sin z\le z$ for $0\le z\le2$. Since $3<\pi<4$,
+\[
+ \sin(\pi u)\ge\pi u/3\ge u.
+\]
+Thus $|1-\e(x)|^2=4\sin^2(\pi u)\ge4u^2$. Also $0\le\sin(\pi u)\le1$ and $\sin(\pi u)\le4u$, whence
+\[
+ \cos(2\pi x)=1-2\sin^2(\pi u)\ge1-8u.
+\]
+The same closed inequalities for names follow at every rational tolerance by the explicit approximation bounds. This passage makes no real-floor selection.
+
+\subsection{A positive finite Fourier polynomial}
+
+Define
+\[
+ F(x)=\prod_{j=1}^d\cos^{2r}(\pi x_j).
+\]
+The binomial theorem and the addition law for phases give the finite identity
+\begin{equation}\label{eq:fourier}
+ F(x)=\sum_{h\in[-r,r]^d}c_h\e(h\cdot x),\qquad
+ c_h=4^{-rd}\prod_{j=1}^d\binom{2r}{r+h_j}.
+\end{equation}
+All coefficients are nonnegative and sum to one. The central binomial coefficient is maximal among its $2r+1$ coefficients: comparison of consecutive terms uses
+\[
+ (j+1)\binom{2r}{j+1}=(2r-j)\binom{2r}{j}.
+\]
+Since their sum is $4^r$, the constant coefficient obeys
+\begin{equation}\label{eq:constant}
+ c_0\ge(2r+1)^{-d}=A^{-1}.
+\end{equation}
+
+If any coordinate satisfies $\rho(x_j)\ge1/t$, then \eqref{eq:phase-estimates} gives
+\[
+ 0\le F(x)\le(1-t^{-2})^r\le\frac1{4A}.
+\]
+Here is the complete rational estimate for the last step. Put $k=d+1$ and $\delta=t^{-2}$. Since $r\ge k$,
+\[
+ (1-\delta)^r\le(1+\delta)^{-r}
+ \le\left(\binom rk\delta^k\right)^{-1}
+ \le\left(\frac{k}{r\delta}\right)^k.
+\]
+Indeed
+\[
+ \binom rk=\prod_{j=0}^{k-1}\frac{r-j}{k-j}\ge(r/k)^k,
+\]
+because $r\ge k$ makes each factor at least $r/k$. By the definition of $r$,
+\begin{equation}\label{eq:kernel-tail}
+ \left(\frac{kt^2}{r}\right)^k
+ =\frac1{4(3r)^d}\le\frac1{4(2r+1)^d}=\frac1{4A}.
+\end{equation}
+This bound is intentionally coarse. Its purpose is a transparent primitive recursive construction.
+
+\subsection{A finite average that does not divide by a resonance}
+
+Put
+\[
+ S_N(u)=\frac1N\sum_{k=0}^{N-1}\e(ku),\quad
+ z_i(h)=|S_N(h\cdot a_i)|^2,\quad P_h=\prod_{i=1}^m z_i(h).
+\]
+We have $0\le z_i(h)\le1$. To prove the upper bound without square roots, expand the squared modulus as $N^{-2}$ times a sum of $N^2$ cosine terms, each at most one.
+
+The finite geometric identity
+\[
+ (1-\e(u))S_N(u)=\frac{1-\e(Nu)}N
+\]
+holds whether or not $\e(u)=1$. Its squared modulus, \eqref{eq:phase-estimates}, and $|1-\e(Nu)|^2\le4$ imply
+\[
+ \rho(u)^2|S_N(u)|^2\le N^{-2}.
+\]
+Since $0\le z_i\le1$, we have $P_h^2\le z_i(h)$ for every $i$. Therefore
+\[
+ \bigl(N\rho(h\cdot a_i)P_h\bigr)^2\le1.
+\]
+The polynomial identity $(x-1)^2\ge0$ gives $2x\le1+x^2$. Applied to the preceding expression it yields
+\begin{equation}\label{eq:DP}
+ \rho(h\cdot a_i)P_h\le1/N,
+ \qquad D(h)P_h\le1/N.
+\end{equation}
+This step makes no decision whether a generator relation is zero, no division by a possibly zero distance, and no selection of a maximizing real index.
+
+Consider the uniform finite average
+\[
+ \mathcal M=\frac1{N^{2m}}
+ \sum_{u,v\in\{0,\ldots,N-1\}^m}
+ F\left(\sum_i(u_i-v_i)a_i-\beta\right).
+\]
+Insert \eqref{eq:fourier}, distribute the finite sums, and use the product of a phase sum with its conjugate. Taking real parts gives the exact identity
+\[
+ \mathcal M=\sum_hc_h\cos(2\pi h\cdot\beta)P_h.
+\]
+By \eqref{eq:k-condition}, \eqref{eq:phase-estimates}, and \eqref{eq:DP},
+\[
+ \cos(2\pi h\cdot\beta)P_h
+ \ge-8CD(h)P_h\ge-8C/N.
+\]
+The $h=0$ term is exactly $c_0$. The remaining nonnegative coefficients sum to at most one. Hence
+\begin{equation}\label{eq:average-lower}
+ \mathcal M\ge c_0-8C/N\ge\frac1A-\frac1{4A}=\frac3{4A}.
+\end{equation}
+
+\subsection{Extract an actual witness by rational tests}
+
+Enumerate the integer box $|q_i|<N$. Approximate each input coordinate to a common error
+\begin{equation}\label{eq:output-precision}
+ \delta_{\rm out}\le\frac1{8s\bigl(m(N-1)+1\bigr)}.
+\end{equation}
+Then the computed rational residuals
+\[
+ \widehat x_j(q)=\sum_iq_i\widehat a_{ij}-\widehat\beta_j
+\]
+are within $1/(8s)$ of the true residuals $x_j(q)$. Accept a candidate exactly when all rational checks
+\begin{equation}\label{eq:accept}
+ \rho(\widehat x_j(q))<\frac3{4s}
+\end{equation}
+hold. This is a bounded decidable search.
+
+If the search fails, each candidate has an explicitly identified failed coordinate, whose true distance is at least
+\[
+ \frac3{4s}-\frac1{8s}=\frac5{8s}>\frac1{2s}=\frac1t.
+\]
+Thus every summand in $\mathcal M$ is at most $1/(4A)$ by \eqref{eq:kernel-tail}, so $\mathcal M\le1/(4A)$, contradicting \eqref{eq:average-lower}. As the failure flag is decidable, the successful branch follows intuitionistically with its stored candidate. This is not an application of Markov's principle to an unbounded search.
+
+Round each accepted rational residual to an integer $p_j$. Then
+\[
+ |x_j(q)-p_j|<\frac3{4s}+\frac1{8s}=\frac7{8s}<\frac1s.
+\]
+This completes the proof of Theorem~\ref{thm:kronecker}.
+
+\section{Rational certificates and a finite Kronecker alternative}\label{sec:certificates}
+
+\subsection{A decidable certificate}
+
+For integers $H,C\ge1$, sample every coordinate of the generators and target to error
+\[
+ \delta\le\frac1{64dH(C+1)},\qquad e_0=dH\delta.
+\]
+For each integer vector $|h_j|\le H$, compute the rational numbers
+\begin{align*}
+ U_h&=\rho(h\cdot\widehat\beta)+e_0,\\
+ L_h&=\max_i\max\bigl(0,\rho(h\cdot\widehat a_i)-e_0\bigr).
+\end{align*}
+The certificate is the finite collection of checks
+\begin{equation}\label{eq:interval-cert}
+ U_h\le\frac18+C L_h.
+\end{equation}
+The Lipschitz property of $\rho$ gives
+\[
+ \rho(h\beta)\le U_h,\qquad L_h\le D(h),
+\]
+so the certificate implies \eqref{eq:k-condition} when $H=r$.
+
+Conversely, suppose the stronger inequality
+\begin{equation}\label{eq:strong-compat}
+ \rho(h\beta)\le\frac1{16}+C D(h)
+\end{equation}
+holds throughout the box. Since
+\[
+ U_h\le\rho(h\beta)+2e_0,\qquad L_h\ge D(h)-2e_0,
+\]
+the check has surplus at least
+\[
+ \frac1{16}-2(C+1)e_0\ge\frac1{32}.
+\]
+Thus a strong quantitative modulus generates decidable interval certificates at a specified precision, including at exact integer relations.
+
+\subsection{An unconditional finite approximation-or-obstruction theorem}
+
+\begin{theorem}\label{thm:alternative}
+For any named input matrix and target, integers $s\ge2$, $C\ge1$, and the constants \eqref{eq:k-constants}, a primitive recursive procedure returns either:
+\begin{enumerate}
+\item an approximation as in Theorem~\ref{thm:kronecker}; or
+\item a nonzero $h\in\Z^d$ with
+\[
+ |h_j|\le r,\qquad D(h)<1/C,\qquad \rho(h\beta)>1/16.
+\]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Run the finite interval checks at $H=r$. If all pass, use Theorem~\ref{thm:kronecker}. Otherwise return the first failed $h$. Failure means $U_h>1/8+C L_h$. Since $e_0\le1/[64(C+1)]$,
+\[
+ \rho(h\beta)\ge U_h-2e_0>\frac18-2e_0>\frac1{16}.
+\]
+Moreover $U_h\le1/2+e_0$ and $D(h)\le L_h+2e_0$, so
+\[
+ D(h)<\frac{3/8+e_0}{C}+2e_0
+ =\frac{3/8+(2C+1)e_0}{C}<\frac1C.
+\]
+The zero vector cannot fail: there $U_0=e_0<1/8$ and $L_0=0$. All decisions are rational and bounded.
+\end{proof}
+
+The obstruction here is a \emph{near} integer relation, with an explicit target discrepancy. Exact classical compatibility alone does not tell a primitive recursive procedure when all such obstructions have disappeared.
+
+\subsection{The quantitative hypothesis is also necessary}
+
+There is a precise equivalence at the level of primitive recursive data. Suppose a primitive recursive operator supplies approximation witnesses for every requested accuracy. Given $H\ge1$, ask it for error below $1/(16dH)$, obtaining $q,p$, and put
+\[
+ C(H)=1+\sum_i|q_i|.
+\]
+For $|h_j|\le H$, the torus triangle inequality gives
+\begin{align*}
+ \rho(h\beta)
+ &\le\left|h\cdot\left(\beta-\sum_iq_i a_i+p\right)\right|
+      +\rho\left(\sum_iq_i(h\cdot a_i)\right)\\
+ &<\frac1{16}+\left(\sum_i|q_i|\right)D(h)
+ \le\frac1{16}+C(H)D(h).
+\end{align*}
+The preceding sampling rule constructs the interval certificate. Conversely, a primitive recursive family of valid certificates gives approximation witnesses by Theorem~\ref{thm:kronecker}. Thus an effective approximation operator and an effective quantitative relation modulus are interconvertible by explicit primitive recursive transformations. This is a constructive dual characterization, not just an unexplained sufficient assumption.
+
+\section{Exact-form corollaries and a concrete irrational example}\label{sec:corollaries}
+
+\subsection{Necessity of the classical relation condition}
+
+Approximation implies \eqref{eq:exact-compat} constructively. Fix $h$ with every $h\cdot a_i$ integral. Apply an approximation with error below $2^{-k}/(1+\sum_j|h_j|)$. Taking its scalar product with $h$ shows that $\rho(h\beta)\le2^{-k}$. This is true at every precision, hence $\rho(h\beta)=0$. Section~\ref{sec:foundation} recovers an integer equal to $h\beta$.
+
+This direction needs no separation modulus. The failure of the unrestricted classical equivalence lies in obtaining positive witnesses from the exact negative compatibility condition.
+
+\subsection{Rational generator matrices}
+
+\begin{corollary}\label{cor:rational}
+If the generator entries are rational with a known common positive denominator $D$, the exact classical compatibility condition \eqref{eq:exact-compat} implies arbitrarily accurate approximation by a primitive recursive construction, even when $\beta$ is a named real vector.
+\end{corollary}
+\begin{proof}
+For each integer $h$, all generator residues are rational multiples of $1/D$. Their finite rational maximum is decidably either zero or at least $1/D$. In the zero case exact compatibility gives $\rho(h\beta)=0$. In the other case $D\,D(h)\ge1\ge\rho(h\beta)$. Hence \eqref{eq:strong-compat} holds with $C(H)=D$ for every height. The finite certificates and Theorem~\ref{thm:kronecker} apply.
+\end{proof}
+
+If the target is also rational and a common denominator $D$ is chosen for all data, exact compatibility itself is a finite rational test: it is enough to inspect $h\in\{0,\ldots,D-1\}^d$. All phases are unchanged when a coordinate of $h$ is increased by $D$. The reference program implements this check and returns an exact obstructing relation on failure.
+
+\subsection{Positive rational independence}
+
+Suppose a supplied primitive recursive function $\Lambda(H)\ge1$ certifies
+\begin{equation}\label{eq:independence}
+ D(h)\ge1/\Lambda(H)
+ \quad\text{whenever }0\ne h\in\Z^d,\ |h_j|\le H.
+\end{equation}
+Then $C=\Lambda(r)$ satisfies \eqref{eq:strong-compat} for every target, because $\rho(h\beta)\le1/2$ and the zero vector causes no difficulty. Theorem~\ref{thm:kronecker} gives the usual density conclusion in a quantitatively constructive form.
+
+For one generator, the coefficients may be required to be positive and arbitrarily large. Given $B\ge0$, apply the symmetric theorem to the shifted target $\beta' = \beta-(B+N)a_1$. Its same independence modulus makes the same $N$ available. If the returned coefficient is $q'$ with $|q'|<N$, set $q=B+N+q'$. Then
+\begin{equation}\label{eq:positiveq}
+ B+1\le q\le B+2N-1
+\end{equation}
+and the original target has the required error. A direct positive-coefficient search in this interval is therefore justified.
+
+\subsection{The example \texorpdfstring{$\alpha=\sqrt2$}{alpha = square root of 2}}
+
+The lower dyadic approximations
+\[
+ \alpha[k]=2^{-k}\floor{\sqrt{2^{2k+1}}}
+\]
+are obtained by bounded integer square-root search and have error below $2^{-k}$. The internal operation is integer square root, not an oracle for a real square root.
+
+For $h\ne0$ and any integer $p$, the integer $2h^2-p^2$ is nonzero: otherwise its power of two would have both odd and even parity. The valuation of a nonzero integer is found by a bounded divisibility scan, so this is a finite arithmetic proof. Therefore $|2h^2-p^2|\ge1$.
+
+If $|p|\ge2|h|$, use $\sqrt2<3/2$ to obtain $|h\sqrt2-p|\ge|h|/2\ge1/(4|h|)$. Otherwise
+\[
+ 1\le |h\sqrt2-p|\,|h\sqrt2+p|,
+ \qquad |h\sqrt2+p|<4|h|,
+\]
+so the same lower bound follows. It holds for every integer $p$, and hence
+\[
+ \rho(h\sqrt2)\ge\frac1{4|h|}\ge\frac1{4H}
+ \quad(1\le|h|\le H).
+\]
+Thus $\Lambda(H)=4H$ is a primitive recursive separation modulus. For $d=m=1$, \eqref{eq:k-constants} becomes
+\[
+ r=768s^4,\qquad N=128r(2r+1).
+\]
+For any primitive recursive target $\beta$ and $B\ge0$, a bounded search finds $B<q\le B+2N-1$ and an integer $p$ with $|q\sqrt2-p-\beta|<1/s$. The coarse bound is polynomial in $s$; the reference program usually finds a witness far earlier.
+
+\section{Why the proofs belong to iPRA}\label{sec:internalization}
+
+\subsection{Finite numerical statements first}
+
+The rational Dirichlet theorem has, for integer numerator $a$ and denominator $b>0$, the form
+\[
+ \forall a,b,N\quad bN>0\ \longrightarrow\\
+ (N+1)|q(a,b,N)a-p(a,b,N)b|\le b,
+\]
+with $1\le q(a,b,N)\le N$ and fixed primitive recursive output functions. The simultaneous theorem is likewise a rational-table theorem: the computed $S$ satisfies $NS^d<1$, and the output table verifies its residual inequalities. Clearing positive denominators produces integer inequalities, hence Boolean equations in the primitive recursive language.
+
+For Kronecker, take rational matrix and target entries as finite numerical inputs. The finite hypothesis \eqref{eq:k-condition} is then one primitive recursive Boolean check over $(2r+1)^d$ integer vectors. The output search is over $(2N-1)^m$ candidates, with integer numerators bounded by the magnitudes of the sampled inputs. The finite theorem says that its failure flag is zero under the certificate. The named-real version uses the explicit error transfers \eqref{eq:output-precision} and \eqref{eq:interval-cert}, instantiated for each fixed collection of primitive recursive names.
+
+The trigonometric notation in the human proof does not add an analytic axiom. Appendix~\ref{app:trig} gives rational approximation procedures and finite algebraic derivations of the phase identities. The crucial contradiction has surplus
+\[
+ \frac3{4A}-\frac1{4A}=\frac1{2A}.
+\]
+It can therefore be executed at a preassigned finite rational precision. There is no appeal to a limit to select a witness, no compactness argument, and no invocation of excluded middle for real equality.
+
+\subsection{Induction audit}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{.28\textwidth}>{\raggedright\arraybackslash}p{.63\textwidth}}
+\toprule
+Construction & Quantifier-free invariant or identity\\
+\midrule\endhead
+Signed division and rational arithmetic & Quotient--remainder identity, positive denominator, cross-multiplied comparisons.\\
+Sorting and circular gaps & Permutation bit, adjacent-order bit, telescoping finite sum equal to one.\\
+Finite pigeonhole & Sum of prefix counts equals prefix length; no-repeat bit bounds each count by one.\\
+Simultaneous widths & Finite power factorization; Bernoulli inequality; least successful index in a bounded rational scan.\\
+Skew grid & Mixed-radix index reconstruction, coordinate bounds, residue encoding and exact division.\\
+Fourier expansion & Binomial and finite distributivity identities over rational or complex-pair polynomials.\\
+Kernel decay & Rational binomial inequalities and positive cross-multiplication; no logarithm or convergence rate is suppressed.\\
+Phase construction & Finite Taylor identities and the explicit factorial or geometric tail estimates of Appendix~\ref{app:trig}.\\
+Finite averaging & Reindexing finite products of sums, conjugate multiplication, squared-norm identities.\\
+Certificate and output search & Boolean conjunction of rational inequalities; a stored failed or accepted index.\\
+Error propagation & A primitive recursive bound on a finite expression's operation count and intermediate magnitudes.\\
+\bottomrule
+\end{longtable}
+
+Each bounded universal condition in this table is first replaced by its Boolean fold. The elementary algebraic proof is then an induction on finite arrays, products, or polynomial degree with a quantifier-free invariant. Generalization over an arbitrary requested precision comes after that finite proof. It is not induction on a formula containing an unbounded quantifier over real precision.
+
+This establishes the human proof-theoretic route to $\ipra$. It does not claim that the much larger explicit object derivation has already been generated and checked by Lean.
+
+\section{Lean formalization: concrete targets and completion path}\label{sec:lean}
+
+\subsection{The three layers must remain separate}
+
+The inspected ProveIt source uses namespace \texttt{LeanProofs.ConciseIPRA}. Its primitive recursive syntax is \texttt{PR k}; arithmetic terms are \texttt{PTm n}; formulas are \texttt{Fm PTm n}. The intended final result is an inhabitant of
+\begin{lstlisting}
+Prf PRAAx [] encodedFiniteClaim
+\end{lstlisting}
+or the repository notation for that sequent. An ambient Lean theorem about \texttt{Nat}, \texttt{Int}, \texttt{Rat}, or Mathlib's \texttt{Real} is a semantic verification and is not automatically this object-theory result.
+
+The archive separates:
+\begin{enumerate}
+\item executable exact-rational reference algorithms and their tests;
+\item Lean specification/interface files and a lemma-by-lemma plan;
+\item the intended syntactic internalization, followed by the existing native-calculus bridge.
+\end{enumerate}
+The supplied Lean files have no theorem asserting that Dirichlet or Kronecker is already formalized. They have not been compiled in this environment, where no Lean executable was available. The pinned repository specifies Lean and Mathlib \texttt{v4.32.0}; its own build claims were inspected but not independently rerun.
+
+\subsection{Recommended modules and exact obligations}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{.25\textwidth}>{\raggedright\arraybackslash}p{.66\textwidth}}
+\toprule
+Module & Required output\\
+\midrule\endhead
+\texttt{CodedArithmetic} & Signed integers, rational codes, finite-array operations, division and Boolean comparison correctness as PR definitions.\\
+\texttt{FinitePigeonhole} & A collision-producing bounded search and an object proof of its correctness from prefix-count invariants.\\
+\texttt{DirichletQ} & Indexed rational residues, circular gap sum, small-gap selection, and the cross-multiplied sharp inequality.\\
+\texttt{SimultaneousQ} & Constants $H,R,S,M,A,B$, count $AB^d>M^{d+1}$, skew-grid enumeration, residue collision, and $q=0$ exclusion.\\
+\texttt{NameTransfer} & Arithmetic predicates for approximation tables and the displayed scalar, simultaneous, and orbit error budgets.\\
+\texttt{FinitePhase} & Machin constant, rational Taylor sums, coefficient identities, explicit tails, and finite phase estimates. This is a substantive formalization task.\\
+\texttt{PositiveKernel} & Coefficients $c_h$, sum one, central coefficient bound, finite kernel expansion and tail.\\
+\texttt{KroneckerQ} & Squared geometric-sum estimate, average factorization, lower bound, rational failed-search contradiction, and witness extraction.\\
+\texttt{CompatibilityCert} & Rational interval checker, soundness, the strong-modulus margin, and the failed-check alternative.\\
+\texttt{Internalization} & Reify each finite numerical claim and build its \texttt{Prf PRAAx []} derivation using the repository's actual rules.\\
+\texttt{NativeBridge} & Apply \texttt{pra\_iff\_native} to the completed object proof.\\
+\bottomrule
+\end{longtable}
+
+The safest development order completes scalar rational Dirichlet and its object proof first. Next complete simultaneous rational Dirichlet, which introduces no analysis. Then formalize the finite phase library and quantitative Kronecker. This sequence yields useful checked milestones before the most labor-intensive component.
+
+\subsection{Object derivations and the native bridge}
+
+For each loop, write a Boolean invariant before proving a semantic theorem. Reify its primitive recursive operations into \texttt{PR}, translate the invariant into \texttt{Fm PTm}, and apply the repository's quantifier-free induction rule \texttt{PRA.qfInd}. Logical assembly uses the constructors of \texttt{Prf}; it must not use an unproved ``all true PR equations have proofs'' principle.
+
+Once $d:\texttt{Prf PRAAx [] phi}$ has actually been constructed, the inspected theorem supplies
+\begin{lstlisting}
+(pra_iff_native).mp d
+\end{lstlisting}
+of type \texttt{NPrf [] (NFm.ofPRA phi)}. The archive's \texttt{NativeBridge.lean} records exactly this interface. It transports an existing proof and does not create the missing approximation proof.
+
+The separately included \texttt{LeanPlan.txt} lists precise arithmetic theorem specifications, proof obligations, and source interfaces. The document's appendix gives the extra phase estimates needed to turn that plan into a complete proof rather than relying on a classical Mathlib theorem as a black box.
+
+\section{Executable artifacts and verification scope}\label{sec:artifacts}
+
+The Python reference uses only exact integer arithmetic and \texttt{Fraction}. It implements:
+\begin{itemize}
+\item sharp rational scalar Dirichlet and the strict name transfer;
+\item the arbitrary-$N$ simultaneous construction, with its grid count recorded and a shorter guaranteed witness search;
+\item denominator padding;
+\item the quantitative Kronecker bound and bounded symmetric search;
+\item the positive one-generator search with a supplied separation modulus;
+\item exact rational compatibility checking and the finite interval checker.
+\end{itemize}
+The code deliberately distinguishes a conditional Kronecker search from validation of its modulus. For rational data the modular checker supplies an independently checked certificate. For $\sqrt2$, the mathematical proof above supplies the modulus $4H$. A caller-provided modulus is not validated merely because an example search succeeds.
+
+The example files include rational compatible and incompatible systems, scalar and simultaneous irrational approximations, and positive approximation of a target by multiples of $\sqrt2$. Exact rational tests check the returned residual upper bounds, denominator limits, simultaneous inequality $NS^d<1$, and the auxiliary integer count. These tests verify the reference implementation on the listed cases; they are not substitutes for the universal proofs or for Lean kernel checking. The verification directory records the actual executions and the formalization status.
+
+\appendix
+\section{Constructing the auxiliary phases by finite rational arithmetic}\label{app:trig}
+
+This appendix supplies the analytic base of the Kronecker argument. The purpose is to make its arithmetic meaning explicit. It is not necessary to formalize integration, measure theory, compact groups, or Pontryagin duality.
+
+\subsection{Exponential, sine, and cosine as fast names}
+
+For rational $x$, use finite sums of
+\[
+ E(ix)=\sum_{j\ge0}\frac{(ix)^j}{j!}.
+\]
+Real and imaginary parts are the cosine and sine series. The notation denotes a family of rational complex-pair approximations with the following elementary tail bound. If $|x|\le B$ with integer $B\ge1$, and $J$ is even with $J\ge4B^2$, then
+\[
+ J!\ge(J/2)^{J/2},\qquad
+ \frac{B^J}{J!}\le2^{-J/2}.
+\]
+For subsequent terms the ratio is at most $1/2$, so
+\begin{equation}\label{eq:exp-tail}
+ \left|E(ix)-\sum_{j<J}\frac{(ix)^j}{j!}\right|
+ \le2^{1-J/2}.
+\end{equation}
+Thus $J=4B^2+2k+4$ gives error below $2^{-k}$. All inequalities follow from finite product and geometric-sum identities; the tail statement means that any further finite truncation differs by at most this rational amount.
+
+The finite binomial theorem identifies coefficients in the product of two exponential series and proves
+\[
+ E(i(x+y))=E(ix)E(iy).
+\]
+To make this an arithmetic identity, compare finite truncations, retain coefficients through a requested degree, and use \eqref{eq:exp-tail} with bounds for $|x|$, $|y|$, and $|x+y|$. The resulting error can be made below any specified rational tolerance by the displayed primitive recursive truncation. Conjugating term by term and taking $y=-x$ gives $|E(ix)|^2=1$. Addition laws for sine and cosine follow by taking real and imaginary parts. No equality of arbitrary reals is decided. The same finite-binomial proof applies to real or complex exponential arguments with the corresponding absolute-value bound; in particular it applies to the positive majorant series used below.
+
+For argument errors $|u|\le1$, the series and $\sum_{j\ge1}1/j!<2$ give $|E(iu)-1|\le2|u|$. The addition law therefore bounds the effect of changing an argument by $u$. This provides explicit rates for evaluating the functions on named inputs, using a coarse bound $|x|\le|x[0]|+1$.
+
+\subsection{A rational-series definition of the period}
+
+Define, for $|z|\le1/5$,
+\[
+ A(z)=\sum_{j\ge0}\frac{(-1)^jz^{2j+1}}{2j+1},\qquad
+ \pi=16A(1/5)-4A(1/239).
+\]
+The alternating remainder after $n$ terms is at most $|z|^{2n+1}/(2n+1)$. Hence $n=k+4$ is more than enough to approximate $\pi$ to error $2^{-k}$. The first two alternating bounds give
+\[
+ 16\left(\frac15-\frac1{375}\right)-\frac4{239}<\pi<\frac{16}5,
+\]
+and the left expression exceeds $3$, while the right is below $4$.
+
+The exact Cayley identity
+\begin{equation}\label{eq:cayley}
+ E(2iA(z))=\frac{1+iz}{1-iz}
+\end{equation}
+can be proved entirely by finite coefficient computations. In formal power-series notation both sides have constant coefficient one and satisfy
+\[
+ (1+z^2)F'(z)=2iF(z).
+\]
+If $F(z)=\sum c_nz^n$, its coefficients obey
+\[
+ (n+1)c_{n+1}+(n-1)c_{n-1}=2ic_n,
+\]
+with the absent low-index terms omitted. Thus the coefficients coincide by ordinary finite induction. The derivative and chain rules here are identities of coefficients of finite polynomials up to a chosen degree, not analytic inference rules.
+
+For completeness, coefficient agreement implies agreement of the evaluated names with an explicit rate. The absolute coefficient series of $E(2iA(z))$ is majorized at radius $1/2$ by
+\[
+ \exp\left(2\sum_{j\ge0}\frac{(1/2)^{2j+1}}{2j+1}\right)
+ \le\exp(4/3)<9.
+\]
+The bound $\exp(2)<9$ follows from $\sum1/j!<3$ and the addition identity. Therefore the tail of the composed coefficient series after degree $J-1$, at $|z|\le1/5$, is at most $9(2/5)^J$. The rational function on the right of \eqref{eq:cayley} has the geometric expansion $1+2\sum_{n\ge1}i^nz^n$ and tail at most $(5/2)5^{-J}$. Each majorization is proved first for finite sums; these geometric bounds are uniform in all later truncations. Taking, for example, $J=2k+10$ proves equality at precision $2^{-k}$. To make substitution explicit, first replace $A$ by a truncation $A_M$ with $2M+1\ge J$, and truncate the outer exponential at a length at least $J$. Their coefficients through degree $J-1$ are unchanged because $A$ has zero constant coefficient. Increase $M$ and the outer cutoff as necessary to meet their geometric and factorial evaluation error budgets. The radius-$1/2$ majorant bounds all resulting polynomial tails uniformly. This supplies a finite justification of substitution into the coefficient identity.
+
+Now compute exactly
+\[
+ c=\frac{1+i/5}{1-i/5}=\frac{12+5i}{13},\qquad
+ d=\frac{1+i/239}{1-i/239}=\frac{28560+239i}{28561}.
+\]
+Rational multiplication gives
+\[
+ c^4=\frac{-239+28560i}{28561}=id.
+\]
+Using \eqref{eq:cayley} and the addition identity, this proves
+\[
+ E(i\pi/2)=i,\qquad E(i\pi)=-1,\qquad E(2\pi i)=1.
+\]
+Thus $\e(x)=E(2\pi ix)$ has period one, and all periodic and half-angle identities used in the main proof follow from finite algebra. This is the familiar Machin representation, but its required properties have been proved here.
+
+\subsection{The sine inequalities}
+
+For $0\le z\le2$, successive absolute terms of the sine series decrease, because
+\[
+ \frac{z^2}{(2j+2)(2j+3)}\le\frac46<1.
+\]
+Pairing its finite alternating terms, then using the explicit tail, yields
+\[
+ z-z^3/6\le\sin z\le z.
+\]
+In particular the lower bound is nonnegative on this interval. The identity $\sin^2z+\cos^2z=1$ follows from $|E(iz)|^2=1$, so $|\sin z|\le1$. These facts prove all inequalities in \eqref{eq:phase-estimates}, first for rational representatives modulo integers and then for named arguments at arbitrary precision.
+
+\subsection{Eliminating auxiliary real notation from the finite contradiction}
+
+Here is an explicit method to replace the phase notation by a finite rational calculation. Expand the particular finite identities and inequalities used in the proof into a straight-line expression list. Its length $L$ is primitive recursively computable from $d,m,r,N$ and the finite rational input. Exact rational constants, including their required reciprocals, are part of the list. Let $B_0\ge2$ bound their absolute values and the unit phase components, and set
+\[
+ B_{j+1}=4(B_j+1)^2\quad(j<L),\qquad B=B_L.
+\]
+This bounds every exact arithmetic intermediate in a list using addition, subtraction, multiplication, and multiplication by a specified rational reciprocal. The inputs of transcendental evaluations are rational expressions and are evaluated by the preceding finite series procedures. Such evaluations are leaves with individually assigned rational error bounds.
+
+If the leaves and any rounded operations have error at most $\eta$, elementary error propagation bounds the error after the whole list by
+\[
+ \eta(4B+4)^{L+1},
+\]
+as long as that number is at most one. This follows by induction on the list: addition adds errors, and multiplication has error at most $(2B+1)e$ when the preceding errors are at most $e\le1$. Division here is only by an explicitly nonzero rational constant, whose reciprocal was included in $B_0$.
+
+Include in the expression list every substitution and inequality inference, together with a separate residual variable for each use of an approximate phase identity or inequality. Let $K\ge1$ be one plus the number of these residual occurrences and numerical approximation leaves. Both $K$ and the expanded length $L$ are obtained by a finite scan of the proof-expression list; they are primitive recursively bounded in the input. For an inequality, its residual is a nonnegative error allowance, propagated with the absolute value of any multiplier. The corresponding multiplier bounds and additions are included in the list. This prevents errors in premises from being mistaken for mere evaluation errors.
+
+Choose
+\[
+ \eta\le\frac1{64AK(4B+4)^{L+1}}.
+\]
+For identities justified by coefficient agreement, choose their truncation degrees to achieve this same local error budget, using the factorial or geometric bounds above. The finite error-propagation induction, applied to the expanded list, bounds the sum of all propagated local uncertainties by
+\[
+ K\eta(4B+4)^{L+1}\le\frac1{64A}.
+\]
+The failed-search contradiction has surplus $1/(2A)$, so it remains a strict rational contradiction. All precision choices, occurrence counts, multiplier bounds, and truncation bounds are primitive recursive in the finite input.
+
+The proof of each finite coefficient identity, tail estimate, and propagation bound uses a quantifier-free invariant. This is the promised elimination of the auxiliary real notation: the arithmetic theorem does not assume the existence of an analytic limit, a choice of a nearest integer to a real, or a real order decision. The finite phase library remains to be encoded and kernel checked in Lean; the human argument and explicit construction do not hide that formalization work.
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{dirichlet-wiki} Wikipedia, \emph{Dirichlet's approximation theorem}, statement inspected November 14, 2026. \url{https://en.wikipedia.org/wiki/Dirichlet%27s_approximation_theorem}. Used to identify the requested formulation, not as a proof-theoretic foundation.
+\bibitem{kronecker-wiki} Wikipedia, \emph{Kronecker's theorem}, statement inspected November 14, 2026. \url{https://en.wikipedia.org/wiki/Kronecker%27s_theorem}.
+\bibitem{gonek-montgomery} S. M. Gonek and H. L. Montgomery, \emph{Kronecker's approximation theorem}, Indagationes Mathematicae 27 (2016), 506--523. \url{https://doi.org/10.1016/j.indag.2016.02.002}. Context for finite trigonometric methods; the constants and complete quantitative argument used here are proved in this report.
+\bibitem{berardi-steila} S. Berardi and S. Steila, \emph{Ramsey's Theorem for Pairs and $k$ Colors as a Sub-Classical Principle of Arithmetic}, author manuscript, 2016, especially the introduction and Section 2. \url{https://home.inf.unibe.ch/ltg/publications/2016/best16.pdf}.
+\bibitem{herbelin} H. Herbelin, \emph{An Intuitionistic Logic That Proves Markov's Principle}, LICS 2010, 50--56. Author manuscript: \url{https://pauillac.inria.fr/~herbelin/articles/lics-Her10-markov.pdf}. The introduction distinguishes the nonderivable MP schema from the admissible Markov rule.
+\bibitem{moschovakis} J. R. Moschovakis, \emph{Markov's Principle, Markov's Rule and the Notion of Constructive Proof}, corrected final draft, August 2, 2018, especially Section 2.1. \url{https://www.math.ucla.edu/~joan/kreiselmarkovcorr.pdf}.
+\bibitem{proveit-pr} V. Reshetnikov, ProveIt, \texttt{ConciseIPRA/PR.lean}, inspected commit \texttt{6ad3d9f37184ac242a8946f1c5d45a5603cf57f2}. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/6ad3d9f37184ac242a8946f1c5d45a5603cf57f2/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean}.
+\bibitem{proveit-deduction} Same repository and commit, \texttt{ConciseIPRA/Deduction.lean}, including \texttt{Prf} and the intuitionistic, equality, and structural rules; \texttt{PRAAx} and the arithmetic induction interfaces are in \texttt{PR.lean}. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/6ad3d9f37184ac242a8946f1c5d45a5603cf57f2/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/Deduction.lean}.
+\bibitem{proveit-native} Same repository and commit, \texttt{ConciseIPRA/NativeBiInterpretation.lean}, including \texttt{pra\_iff\_native}. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/6ad3d9f37184ac242a8946f1c5d45a5603cf57f2/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}.
+\bibitem{proveit-drafts} Same repository and commit, \texttt{docs/drafts/minkowski\_ipra.zip}; inspected its finite grid proof and arithmetic audit. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/6ad3d9f37184ac242a8946f1c5d45a5603cf57f2/docs/drafts/minkowski_ipra.zip}.
+\end{thebibliography}
+\end{document}

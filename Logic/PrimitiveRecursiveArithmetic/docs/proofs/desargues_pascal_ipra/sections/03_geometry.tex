@@ -1,0 +1,105 @@
+\section{Projective geometry as finite algebra}\label{sec:geometry}
+
+\subsection{Conventions and elementary identities}
+Vectors are columns, and coordinates are numbered $0,1,2$ in algorithms.
+Set
+\[
+ u\cdot v=u_0v_0+u_1v_1+u_2v_2,
+\]
+\[
+ u\times v=(u_1v_2-u_2v_1,\ u_2v_0-u_0v_2,\ u_0v_1-u_1v_0),
+ \qquad \br u v w=u\cdot(v\times w)=\det(u,v,w).
+\]
+Two nonzero triples represent the same projective point when their cross
+product is zero; lines have the same representation convention. Over
+$\Q$ this agrees with equality up to nonzero scalar multiplication:
+choose a nonzero coordinate of the first triple, and the cross-product
+equations give the scalar ratio in every coordinate. The relation and
+all incidences are invariant under changing representatives.
+
+A point $p$ lies on a line $\ell$ precisely when $\ell\cdot p=0$.
+The line joining distinct points $p,q$ is $p\times q$; the point where
+distinct lines $\ell,m$ meet is $\ell\times m$. Orthogonality verifies
+both incidences. For uniqueness, if $\ell\cdot p=\ell\cdot q=0$, then
+\[
+ \ell\times(p\times q)=p(\ell\cdot q)-q(\ell\cdot p)=0.
+\]
+Any nonzero such $\ell$ therefore represents the same line as $p\times q$.
+The same identity proves the dual assertion for intersections.
+
+We use determinant multilinearity, sign change on swapping columns,
+zero with a repeated column, multiplicativity, and cofactor expansion.
+There is no unbounded linear-algebra theorem hidden here. For the fixed
+sizes $3,4,5,6$, define
+\begin{equation}\label{eq:detperm}
+ \det M=\sum_{\sigma\in S_n}\operatorname{sgn}(\sigma)
+                   \prod_{i=1}^n M_{i,\sigma(i)}.
+\end{equation}
+The sum has at most $720$ terms. Multilinearity follows by distributivity.
+Swapping columns pairs permutation terms with opposite signs; with equal
+columns these terms cancel. Grouping terms by the selected entry in a
+row or column gives cofactor expansion. Expanding $\det(UV)$, terms with
+repeated selected indices cancel by the same pairing; the remaining
+selections are permutations, giving $\det(UV)=\det U\det V$.
+These are finite polynomial calculations over any commutative ring.
+
+Two useful consequences, also checked directly from the coordinates, are
+\begin{equation}\label{eq:doublecross}
+ (u\times v)\times(r\times s)=\br u v s\,r-\br u v r\,s
+\end{equation}
+and the adjugate identity
+\begin{equation}\label{eq:adj3}
+ \br u v w\,o
+ =(o\cdot u)(v\times w)+(o\cdot v)(w\times u)
+                         +(o\cdot w)(u\times v).
+\end{equation}
+For the latter, the coefficient of each coordinate of $o$ is a cofactor
+expansion; off-diagonal coefficients are determinants with a repeated
+row. Thus its verification is the fixed-size argument just given.
+
+\begin{lemma}[Incidence gives determinant zero]\label{lem:inc-det}
+If $o$ is a nonzero integer triple and
+$o\cdot u=o\cdot v=o\cdot w=0$, then $\br u v w=0$.
+\end{lemma}
+\begin{proof}
+The right side of \eqref{eq:adj3} is zero. Select a nonzero coordinate
+$o_i$ by testing the three coordinates. Its left coordinate is
+$\br u v w\,o_i=0$. Apply \eqref{eq:cancel}.
+\end{proof}
+
+\subsection{An actual common line, not just a determinant test}
+Define the total function
+\begin{equation}\label{eq:axis}
+\axis(u,v,w)=
+\begin{cases}
+ u\times v,&\nz(u\times v),\\
+ u\times w,&\neg\nz(u\times v)\text{ and }\nz(u\times w),\\
+ (-u_1,u_0,0),&\text{both crosses zero and }(u_0\ne0\text{ or }u_1\ne0),\\
+ (u_2,0,0),&\text{otherwise}.
+\end{cases}
+\end{equation}
+Here $\nz(u)$ abbreviates $u_0\ne0\lor u_1\ne0\lor u_2\ne0$.
+Each branch uses only integer arithmetic and a fixed number of equality
+tests, so this function is primitive recursive.
+
+\begin{lemma}[Constructive common-kernel lemma]\label{lem:axis}
+If $u\ne0$ and $\br u v w=0$, then $h=\axis(u,v,w)$ is nonzero and
+$h\cdot u=h\cdot v=h\cdot w=0$.
+\end{lemma}
+\begin{proof}
+In the first branch, orthogonality gives the first two equations and
+$h\cdot w=\br u v w=0$. In the second, the analogous remaining equation
+is $h\cdot v=-\br u v w=0$. Nonzeroness is the respective branch test.
+In the third, $h\cdot u=0$, while
+$h\cdot v=(u\times v)_2=0$ and
+$h\cdot w=(u\times w)_2=0$; the test on $u_0,u_1$ proves $h\ne0$.
+In the last branch, $u_0=u_1=0$ and $u_2\ne0$, because $u\ne0$.
+Then $h\cdot u=0$ and
+$h\cdot v=u_2v_0=(u\times v)_1=0$, with the same argument for $w$.
+The component $u_2$ proves $h\ne0$.
+\end{proof}
+Applied to points, this constructs a common line; applied to lines, it
+constructs a common point. It handles repeated nonzero inputs. Thus a
+vanishing determinant is not being used as a definition that conceals the
+existence assertion in either geometric theorem.
+

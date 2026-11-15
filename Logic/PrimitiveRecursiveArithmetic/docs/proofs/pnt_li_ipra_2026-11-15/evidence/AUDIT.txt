@@ -1,0 +1,96 @@
+Repository audit for logarithmic-integral PNT project
+===================================================
+
+Pinned repository: VladimirReshetnikov/ProveIt
+Branch main at inspection: b5a3ad037723c44d69a3d5b28a950c554327a989
+Commit timestamp: 2026-11-15T21:35:04Z
+Current toolchain: leanprover/lean4:v4.32.0
+Current mathlib requirement: v4.32.0
+
+Inspected foundations
+---------------------
+Base path: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/
+PR.lean defines PR function symbols by zero, successor, projection,
+composition, and primitive recursion. PTm is scoped term syntax. PRAAx
+includes their equations, successor separation/injectivity, and induction
+restricted to Fm.QF. Its logic is the intuitionistic natural deduction Prf
+of Deduction.lean; despite the identifier PRAAx, this is intuitionistic PRA.
+PRA.qfInd is the concrete available induction interface.
+
+NativeBiInterpretation.lean supplies:
+  pra_iff_native : (Gamma |- [PRAAx] phi) <->
+    NPrf (Gamma.map NFm.ofPRA) (NFm.ofPRA phi).
+All declarations are in LeanProofs.ConciseIPRA.
+BiInterpretation.lean builds synonymous translations between the scalar
+iterator theory TeqAx and PRAAx. This is derivability preservation, not a
+principle converting arbitrary ambient Lean arithmetic theorems to iPRA.
+The final number-theory target must be an actual Prf PRAAx [] phi term.
+
+README reports every included foundations module builds without sorry or
+warnings; it records ordinary Lean metatheoretic axioms. That build was not
+rerun during this inspection. No analytic number theory theorem was found
+in the inspected ConciseIPRA directory.
+
+Existing PNT archive
+--------------------
+Path: docs/drafts/pnt_ipra_constructive_2026-11-14.zip
+Git blob: b433b971657758830a486d4a1af079066d06a05d
+Bytes: 507354
+Extracted under pnt_previous/pnt_ipra in this evidence directory.
+
+The manuscript's human proof derives Selberg symmetry, an error integral
+inequality, and a finite three-case block deficit contraction. It claims
+  |psi(x)/x - 1| <= 1/q
+for x >= 2^(2^((2^20 q^3)^2+1)). This is a useful qualitative PNT with an
+explicit elementary modulus, but it does not provide a logarithmic-integral
+error of order x/log(x)^A for arbitrary A. Its modulus corresponds only to
+a weak inverse power of log log x. Do not cite it as de la Vallee Poussin,
+Korobov--Vinogradov, or Schoenfeld.
+
+Initial inspection of all three mathematical TeX files found no immediate
+fatal error. This is not a complete verification. The Lean STATUS states
+both files are uncompiled outlines, and the number-theoretic estimates,
+PR compiler, and embedded proof object remain to be formalized. No PNT
+theorem in Lean is supplied there.
+
+Existing Cauchy/residue archive
+-------------------------------
+Path: docs/drafts/cauchy_residue_ipra.zip
+Git blob: 77af72e05680678120f7f717ede7e7062c9f73b8
+Extracted under cauchy_previous/cauchy_residue_ipra.
+report.tex proves a strictly finite contour estimate using all 4^m
+midpoint subtriangles and exact shared-edge cancellation. For a triangle
+of taxicab diameter D and perimeter P, its rational trapezoidal sum obeys
+  norm(T_m,n) <= D P 2^-k + P 2^-n (2^(m+1) + D)
+when D 2^-m <= 2^-mu(k), where mu is a supplied uniform first derivative
+modulus. The sample error includes the growing interior perimeter.
+Sections 4 and 5 give quadrature and cancellation; section 6 gives square
+moments including the simple-pole kernel. These are suitable finite contour
+templates for analytic number theory once the concrete zeta derivatives
+and apartness bounds have been supplied. The Lean artifact is expressly
+an uncompiled candidate for elementary algebra only.
+
+Existing zeta functional-equation archive
+-----------------------------------------
+Path: docs/drafts/zeta_functional_equation_ipra.zip
+Git blob: 2561afb9fa94800295b5fb00a9d41f1db5cbaa49
+Extracted under zeta_previous/zeta_ipra.
+Human proof uses quantitative theta/Fejer bounds and reciprocal gamma;
+the finite contract is in finite_contract.md. It proves the functional
+equation with division guarded by apartness. It is not a zero-free-region
+or logarithmic-integral PNT theorem. Its two Lean files are uncompiled
+interface drafts; full residual correctness remains an embedded target.
+
+Source links
+------------
+https://github.com/VladimirReshetnikov/ProveIt/tree/b5a3ad037723c44d69a3d5b28a950c554327a989/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA
+https://github.com/VladimirReshetnikov/ProveIt/blob/b5a3ad037723c44d69a3d5b28a950c554327a989/docs/drafts/pnt_ipra_constructive_2026-11-14.zip
+https://github.com/VladimirReshetnikov/ProveIt/blob/b5a3ad037723c44d69a3d5b28a950c554327a989/docs/drafts/cauchy_residue_ipra.zip
+https://github.com/VladimirReshetnikov/ProveIt/blob/b5a3ad037723c44d69a3d5b28a950c554327a989/docs/drafts/zeta_functional_equation_ipra.zip
+
+Scope caveat
+------------
+The default-branch GitHub code search index still referred to parent
+74f0604fa42fe20bf0ccd91e0d99537542699c54. All files actually cited above
+were read by their pinned b5a3ad... revision. The audit does not assert an
+exhaustive absence of PNT material throughout every directory.

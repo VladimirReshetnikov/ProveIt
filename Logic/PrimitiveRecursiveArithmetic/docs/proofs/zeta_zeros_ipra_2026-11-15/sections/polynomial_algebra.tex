@@ -1,0 +1,303 @@
+\section{A uniform finite engine for rational complex polynomials}
+\label{sec:polynomial-algebra}
+
+The minimum-modulus argument requires factorization of a rational complex
+polynomial whose degree varies with the requested accuracy. The repository's
+FTA draft only asserts its full-factorization schema for each fixed degree.
+That schema does not supply the uniform construction needed here. We give a
+separate finite construction for rational polynomial codes. Its only
+topological ingredient is the elementary winding calculus for rational
+polygons: additivity under subdivision, invariance under a homotopy with a
+positive separation margin, and winding one for a positively oriented square
+about an interior point. These finite facts do not use the fundamental
+theorem of algebra, Jensen's formula, or a general argument principle.
+
+\subsection{Coefficient bounds and the squarefree reduction}
+
+For a rational or Gaussian-rational polynomial $A(X)=\sum a_jX^j$, put
+\[
+ \mathcal B(A,B)=1+\sum_j |a_j|_1B^j,\qquad
+ \mathcal B_r(A,B)=1+\sum_{j\ge r}
+       j(j-1)\cdots(j-r+1)|a_j|_1B^{j-r},
+\]
+where $B\ge1$ is rational and $|x+iy|_1=|x|+|y|$.
+These are rational upper bounds for the polynomial and its indicated
+derivatives on $|z|\le B$. All ensuing constants can be computed exactly;
+there is no appeal to an unspecified bound on coefficient heights.
+
+The zero polynomial is rejected by the input guard; a nonzero constant
+returns an empty root list and itself as leading coefficient. For a
+nonconstant input first divide by its nonzero leading coefficient $a$,
+so that the polynomial used in the gcd loop is monic.
+Euclidean division and the extended Euclidean algorithm over $\mathbb Q(i)$
+are bounded algorithms: a division has at most the current degree plus one
+steps, and a nonzero Euclidean remainder strictly decreases the degree.
+Leading coefficients are rational complex values, so their nonvanishing is
+decidable and their inverses are exact rational operations. The usual gcd
+identities give the squarefree decomposition
+\[
+                  P=a\prod_{j=1}^{d}S_j^{\,j},
+\]
+with monic, squarefree, pairwise coprime $S_j$, allowing $S_j=1$.
+For clarity, writing $P_0=P/a$, this can be computed by setting
+$c=\gcd(P_0,P_0')$, $w=P_0/c$ and,
+successively, $y=\gcd(w,c)$, $S_j=w/y$, $w=y$, $c=c/y$.
+The loop stops when $w=1$ and fills remaining entries with $1$; a zero
+Euclidean remainder stops that particular gcd computation. The outer
+loop runs at most $d=\deg P$ times. Polynomial identities and the
+degree decrease prove the decomposition; its implementation can verify the
+displayed product directly. Thus it suffices to treat a monic squarefree
+polynomial $S$ of degree $d\ge1$.
+
+Compute polynomials $U,V$ with
+\begin{equation}
+                       US+VS'=1.                    \label{eq:poly-bezout}
+\end{equation}
+Let $R$ be an integer greater than $2+\sum_{j<d}|s_j|_1$, and set
+$B=4(R+1)$. Leading-term dominance gives $|S(z)|\ge1$ whenever
+$|z|\ge R-1$. For a root name $\alpha$, read a rational approximation
+$a$ with error at most $1/4$ and decide the rational comparison
+$|a|\le R-1/2$ by squaring. The opposite branch would imply
+$|\alpha|>R-3/4>R-1$ and contradict the displayed lower bound.
+Consequently $|\alpha|\le R-1/4<R$. This obtains a strict bound with
+a margin, rather than inferring it from the negation of an order relation.
+Put
+\[
+ A=\mathcal B(U,B),\quad K=\mathcal B(V,B),\quad
+ M_1=\mathcal B_1(S,B),\quad M_2=\mathcal B_2(S,B).
+\]
+In particular $A,K,M_1,M_2\ge1$. At a root $\alpha$,
+\begin{equation}
+                  |S'(\alpha)|\ge K^{-1}.            \label{eq:poly-root-derivative}
+\end{equation}
+The finite Taylor identity gives
+\[
+ |S(\beta)-S(\alpha)-S'(\alpha)(\beta-\alpha)|
+       \le\tfrac12 M_2|\beta-\alpha|^2.
+\]
+Consequently two roots at distance at most $(KM_2)^{-1}$ must be equal:
+the last inequality and \eqref{eq:poly-root-derivative} imply
+$|\beta-\alpha|/K\le |\beta-\alpha|/(2K)$.
+This proves the needed separation for roots known to be apart without
+dividing by an undecided difference of named numbers.
+
+\subsection{Real roots by a bounded grid and bisection}
+
+The following real procedure will be used several times. Given a nonzero
+rational polynomial $F$, remove repeated factors by gcd, normalize to monic,
+and call the result $F_0$. Compute $U_0F_0+V_0F_0'=1$, a Cauchy root bound
+$R_0$, and bounds $K_0\ge |V_0|$, $M_0\ge\max(1,|F_0''|)$ on
+$[-R_0-1,R_0+1]$. Choose
+\[
+                       h=\frac1{64K_0M_0}.
+\]
+For grid centres $jh$ covering $[-R_0-h,R_0+h]$, inspect the overlapping
+intervals $[jh-2h,jh+2h]$. Retain an interval precisely when its two rational
+endpoint values of $F_0$ have strictly opposite signs. This is a finite
+scan with fewer than $2R_0/h+10$ centres.
+
+Every retained interval contains a uniquely specified real root name.
+Bisection uses exact rational signs; an exactly zero midpoint produces a
+constant name. After $q$ bisections the width is $4h2^{-q}$, so the number
+of bisections for any requested accuracy is explicitly bounded. The nested
+midpoints are Cauchy, and the polynomial Lipschitz bound shows their
+residual tends to zero at the same explicit rate. Existence here is this
+construction, rather than an invocation of a general intermediate-value
+principle.
+
+Conversely, every real root $a$ of $F_0$ lies in one of the retained
+intervals. Choose a grid centre within $h$ of an approximation to $a$,
+with the approximation fine enough to keep the distance below $3h/2$.
+On that interval the derivative differs from $F_0'(a)$ by less than
+$1/(4K_0)$, while $|F_0'(a)|\ge1/K_0$. The finite Taylor identity therefore
+makes the endpoint signs strictly opposite. No exact comparison of $a$
+with a mesh point is required. Distinct roots are at least
+$(K_0M_0)^{-1}$ apart; any two overlapping retained intervals consequently
+name the same root. Merge overlapping intervals and keep one representative
+per group. This gives a finite list of pairwise apart root codes containing
+every real root. Each code consists of $F_0$ and one strict sign-changing
+rational interval. Its evaluator is the fixed bisection program just
+described, uniform in the numerical polynomial code and the precision.
+
+The identities $F_0\mid F$ and $F\mid F_0^{\deg F}$, obtainable during
+the gcd calculation, prove that the list also describes precisely the
+real zeros of the original $F$.
+
+\subsection{Rational coordinate polynomials for complex roots}
+
+Set $Q=S\overline S\in\mathbb Q[X]$, where conjugation acts on the
+coefficients, and let $n=2d$. Consider the finite rational algebra represented
+by arrays in the basis $u^av^b$, $0\le a,b<n$, with multiplication reduced
+by the monic relations $Q(u)=Q(v)=0$. Its array dimension is $n^2$.
+Form the multiplication matrices for
+\[
+                        x_0=(u+v)/2,
+             \qquad     y_0^2=-(u-v)^2/4.
+\]
+Let $A_X$ be the characteristic polynomial of the first matrix and let
+$A_Y(t)$ be the characteristic polynomial of the second matrix evaluated
+at $t^2$. Both are nonzero monic rational polynomials, of degrees $n^2$
+and $2n^2$, respectively. Determinants can be computed by the finite
+permutation formula; efficiency is unnecessary here.
+
+If $\alpha=x+iy$ is a root of $S$, then $Q(\alpha)=Q(\overline\alpha)=0$.
+Evaluating the array algebra at $(u,v)=(\alpha,\overline\alpha)$ and using
+Cayley--Hamilton gives
+\begin{equation}
+                         A_X(x)=A_Y(y)=0.              \label{eq:coordinate-polynomials}
+\end{equation}
+The use of Cayley--Hamilton is purely finite: the adjugate identity for
+$tI-M$ gives its characteristic-polynomial identity, and reduction by the
+two monic polynomials gives an identity of coefficient arrays. No
+existence of complex roots has been used to construct these matrices.
+
+Apply the real-root procedure to $A_X,A_Y$. Every possible complex root
+of $S$ is now among a finite Cartesian product of coded real algebraic
+numbers. The remaining task is an exact, bounded zero test for each pair.
+
+\subsection{Exact zero and order tests on these codes}
+
+Suppose $x,y$ are real root codes for monic rational polynomials $F,G$,
+and $W(X,Y)$ is a rational polynomial. In the finite array algebra
+\[
+                  \mathbb Q[X,Y]/(F(X),G(Y)),
+\]
+compute the characteristic polynomial $C$ of multiplication by $W$.
+It is monic and satisfies $C(W(x,y))=0$. Factor out its initial power of
+the variable by examining its rational coefficients:
+\[
+                    C(t)=t^mC_0(t),\qquad C_0(0)\ne0.
+\]
+If $C_0$ is constant, $W(x,y)=0$. Otherwise write $C_0(t)=\sum c_jt^j$
+and choose the positive rational
+\begin{equation}
+ \eta=\min\left(1,\frac{|c_0|}{2(1+\sum_{j\ge1}|c_j|)}\right).
+                                                        \label{eq:algebraic-gap}
+\end{equation}
+Every nonzero real root of $C$ has absolute value at least $\eta$.
+Indeed, for $|t|<\eta$, the finite geometric estimate gives
+$|C_0(t)|\ge |c_0|/2$; its reciprocal is then permitted, and
+$C(t)=0$ implies $t^m=0$ and hence $t=0$.
+
+Evaluate $W(x,y)$ with error at most $\eta/8$, using the bisection codes
+and the coefficient bound for the two-variable polynomial on their known
+input boxes. This fixes a numerical precision before any evaluation loop.
+For the rational result $w$, the test $|w|\le\eta/2$ means the exact
+value is zero; otherwise the value is apart from zero and has the sign of
+$w$. The gap \eqref{eq:algebraic-gap} proves both branches. The zero
+branch has a proof at every precision by the displayed annihilating
+identity, rather than by a real-equality oracle.
+
+Apply the test to the real and imaginary parts of $S(x+iy)$. Retain
+exactly the pairs passing both zero tests. Equations
+\eqref{eq:coordinate-polynomials} and completeness of the real-root lists
+prove that this is a complete list of actual roots. Different retained
+pairs are apart because their real-root intervals distinguish at least
+one coordinate. The same test, applied to $x^2+y^2-r^2$, decides whether
+a root is inside, on, or outside a rational circle. Thus a later selection
+of roots with $|\alpha|\le3$ includes boundary roots correctly.
+
+\subsection{Why the complete list has exactly the degree}
+
+The preceding construction lists all roots but has not assumed that the
+list is nonempty. The following quantitative argument proves its length
+is $d$, and closes that possible circularity.
+
+We first need a bounded local root construction. Let $z$ be Gaussian
+rational with $|z|\le B-1$, and suppose $|S(z)|\le\varepsilon$, where
+\begin{equation}
+ \varepsilon\le\min\left(
+       \frac1{4A},\frac1{8K},\frac1{16K^2M_2},
+       \frac b{16K}\right),\qquad 0<b\le1.              \label{eq:newton-budget}
+\end{equation}
+By \eqref{eq:poly-bezout}, $|S'(z)|\ge1/(2K)$. Set
+\[
+        r=4K\varepsilon,\qquad
+        T(w)=w-S(w)/S'(z).
+\]
+The denominator is a nonzero Gaussian rational and is computed exactly.
+On $|w-z|\le r$, the finite difference-of-powers formula gives
+\[
+ |T(w)-T(w')|\le2KM_2r\,|w-w'|\le\tfrac12|w-w'|,
+       \qquad |T(z)-z|\le r/2.
+\]
+Thus the rational iteration $z,T(z),T^2(z),\ldots$ remains in that
+disk and has a geometric Cauchy modulus. It gives a root name within
+$r\le b/4$ of $z$. Its step count is the requested precision plus a
+computed binary length; this is one primitive recursion, not an unbounded
+Newton search. The coefficient identity also gives a geometric residual
+bound for $S$ at the iterates.
+
+Now put $r_0=(64KM_2)^{-1}$. Around every root in the complete list choose
+a rational square of half-side $r_0$, whose centre approximates that root
+with error at most $r_0/16$. These squares are disjoint, by root separation.
+Their boundaries have distance at least $15r_0/16$ from their corresponding
+roots. The Taylor inequality and \eqref{eq:poly-root-derivative} give a
+zero-free homotopy of $S$ on each boundary to
+$S'(\alpha)(z-\alpha)$: the remainder is less than $1/32$ of the linear
+term. The image therefore has winding one.
+
+Take $b=r_0/2$ in \eqref{eq:newton-budget}. At every rational point outside
+the interiors of all these squares and inside the outer square of
+half-side $R+1$, one has
+\begin{equation}
+                              |S(z)|>\varepsilon.       \label{eq:poly-outside-lower}
+\end{equation}
+Otherwise the just-proved rational iteration would construct a root within
+$b/4$ of $z$. Completeness of the algebraic list identifies it with a listed
+root, whose distance from every such $z$ is greater than $b$, a contradiction.
+This conclusion uses a decidable rational comparison: the branch
+$|S(z)|\le\varepsilon$ is eliminated by the explicit construction.
+
+Partition the outer square minus the root squares by a rational rectangular
+grid, including every square edge and further subdividing until every cell
+has diameter at most $\varepsilon/(4M_1)$. All cutoffs are explicit. The
+images of each cell's vertices, and the polynomial images of its edges,
+stay in a disk of radius at most $\varepsilon/4$ about the image of one
+vertex. By \eqref{eq:poly-outside-lower} that disk misses zero. Each cell
+image has winding zero. Cancelling shared edges leaves
+\[
+ \operatorname{wind}(S\circ\partial Q_{R+1})
+       =\sum_{\text{root squares}}1.
+\]
+On the outer square, the leading term of the monic $S$ dominates the sum
+of the lower terms. The zero-free straight homotopy to $z^d$ gives winding
+$d$. This proves that the list contains exactly $d$ roots.
+
+Synthetic division now yields
+\[
+                             S(z)=\prod_{j=1}^d(z-\alpha_j).
+\]
+When a root is removed, every remaining root is still a root of the
+quotient, since its difference from the removed root has an explicit
+positive lower bound. Repeating the argument for the rational squarefree
+factors $S_j$ gives the full multiset factorization of the original $P$,
+including multiplicities.
+
+\subsection{Primitive recursion and the induction audit}
+
+Every output root is evaluated by the same fixed bounded bisection routine
+on its finite polynomial-and-interval code. Full factorization therefore
+does not iterate a higher-order root-selection operation of variable depth.
+The operations are rational arithmetic, coefficient-array reduction,
+degree-bounded Euclidean division, determinant expansion over a finite
+permutation list, bounded grid scans, bisection with a specified number of
+steps, and a geometrically bounded rational iteration. Their loop lengths
+are obtained by composition, primitive recursion, factorial, powers,
+rational ceilings, and bounded binary logarithms. Computed coefficient
+bounds replace any hidden root-separation or height oracle.
+
+For the internal proof, requested precisions are fixed before induction.
+The invariants are the exact division identities, degree decreases,
+matrix-array identities, rational brackets and polynomial signs, the
+rational contraction and residual inequalities, and the finite signed-edge
+balance. Bounded lists of such conditions are encoded by Boolean folds.
+Synthetic-division identities and products of algebraic root names are
+checked at an allocated finite precision, using root bounds and the finite
+telescoping product inequality; all root evaluations use their uniform
+finite codes. These are quantifier-free induction arguments.
+
+This establishes the uniform finite polynomial engine required below.
+It does not postulate a total evaluator for arbitrary primitive recursive
+programs, a compactness principle, a general real zero test, or the
+fundamental theorem of algebra as an unproved analytic premise.

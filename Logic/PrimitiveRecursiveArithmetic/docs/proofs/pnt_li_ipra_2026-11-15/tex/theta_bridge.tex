@@ -1,0 +1,73 @@
+\section{From the smoothed estimate to the stated arithmetic modulus}
+\label{sec:theta-bridge}
+
+Recall
+\[
+ \psi(x)=\sum_{p^j\le x}\log p,
+ \qquad \vartheta(x)=\sum_{p\le x}\log p.
+\]
+Only powers with exponent at least two contribute to their difference.
+For each such prime $p\le\sqrt x$, the total contribution is at most
+$\log x$. There are at most $\lfloor\sqrt x\rfloor$ possible primes.
+Consequently, by a finite sum,
+\begin{equation}\label{eq:prime-powers-gap}
+ 0\le\psi(x)-\vartheta(x)\le\sqrt x\log x.
+\end{equation}
+The upper bound does not need an estimate for the distribution of primes.
+
+Put $R=\log x$. For $R\ge16$, $\log R\le R/4$, so
+$R e^{-R/2}\le e^{-R/4}$. On the dyadic scale of the preceding
+section, $R\ge2^{98}k^{10}$, and therefore
+\[
+ \frac{|\psi(x)-\vartheta(x)|}{x}
+ \le R e^{-R/2}\le e^{-R/4}\le2^{-k/8}.
+\]
+Combining this with (A8) gives
+\begin{equation}\label{eq:theta-dyadic}
+ |\vartheta(x)-x|\le2x\,2^{-k/8}.
+\end{equation}
+If a rational expression is desired at every intermediate step, replace
+$2^{-k/8}$ by $2^{-\lfloor k/8\rfloor}$; the following constants have
+much more than the one extra bit needed for this replacement.
+
+\begin{theorem}[A simple primitive recursive modulus for $\vartheta$]
+\label{thm:theta-modulus-established}
+For $C=2^{240}$ and every natural $r$,
+\begin{equation}\label{eq:theta-established}
+ n\ge2^{C(r+1)^{10}}
+ \quad\Longrightarrow\quad
+ |\vartheta(n)-n|\le2^{-r}n.
+\end{equation}
+Here and below a real-valued inequality means its rational enclosure
+version at arbitrary prescribed accuracy, with the finite interpretation
+of Section~\ref{sec:foundations}.
+\end{theorem}
+
+\begin{proof}
+Let $\ell=\lfloor\log_2n\rfloor$ be obtained from the binary length,
+and let $k$ be the largest integer with $2^{100}k^{10}\le\ell$.
+Bounded search up to $\ell$ supplies it. The hypothesis gives
+\[
+ k\ge2^{14}(r+1)\ge16384>8192,
+\]
+since $2^{100}(2^{14}(r+1))^{10}=2^{240}(r+1)^{10}$.
+Maximality gives $\ell<2^{100}(k+1)^{10}$, and the latter is an
+integer, so $\log_2n<\ell+1\le2^{100}(k+1)^{10}$.
+Thus (A8) and \eqref{eq:theta-dyadic} apply. Finally
+$2\cdot2^{-\lfloor k/8\rfloor}\le2^{-r}$, proving the assertion.
+All comparisons selecting $\ell,k$ are integer comparisons.
+\end{proof}
+
+The next section proves an abstract transfer theorem, then applies it
+with the modulus just established. Its prime-counting hypothesis is
+therefore discharged here; it is not an extra assumption in the main
+result. In particular it will give, for $D=2C$,
+\[
+ n\ge2^{D(m+5)^{10}}\ \Longrightarrow\
+ |\pi(n)-\Li_2(n)|\le2^{-m}\frac n{\log n}.
+\]
+Because $b(n)\le2\log_2n\le4\log n$ for $n\ge2$, its instance at
+$m+2$, followed by \eqref{eq:Li-error}, proves
+Theorem~\ref{thm:object}. The transfer proof actually retains a factor
+$17/32$ on its right-hand side, so approximating its analytic names
+cannot consume the entire claimed bound.

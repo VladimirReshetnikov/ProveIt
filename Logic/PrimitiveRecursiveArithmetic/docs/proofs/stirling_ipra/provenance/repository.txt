@@ -1,0 +1,87 @@
+Repository reconnaissance for Stirling in iPRA
+=============================================
+
+Observed revision: 329161f8da0b319d51ba9f6246c4b19d243f7193
+Observed commit timestamp: 2026-11-15T04:58:40Z
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+Toolchain source: lean-toolchain, contents leanprover/lean4:v4.32.0
+Mathlib pin: lakefile.toml, require mathlib rev v4.32.0
+ConciseIPRA source root:
+  Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/
+
+Directly read files and useful content:
+- PR.lean: PR k syntax (zero/successor/projection/composition/primitive
+  recursion), PTm syntax, PRAAx, PRA.qfInd. All induction axioms require
+  an explicit witness that the induction formula is QF.
+- Syntax.lean: Fm T n with equality, bottom, conjunction, disjunction,
+  implication and first-order quantifiers; Fm.QF returns False for either
+  quantifier. De Bruijn variable 0 is innermost.
+- Deduction.lean: Prf Ax Gamma phi is intuitionistic natural deduction
+  with equality. Actual target is a Prf PRAAx derivation, not merely a Lean
+  proposition about Nat or Rat.
+- Scalar.lean: TeqAx is scalar iterator theory with equation induction,
+  coverage and separation.
+- TeqReflect.lean: characteristic term chi of a QF formula and chi_iff;
+  Teq.qfInd derives QF induction from equation induction.
+- TeqRec.lean: Tm.prc encodes recursion by pairing counter and state in
+  an iterator; Q.prc_zero and Q.prc_succ prove defining equations.
+- PRAToScalar.lean: FromPRA.code compiles every PR syntax tree to a
+  scalar term; FromPRA.sigma translates PTm; FromPRA.interp proves
+  interpretation of PRAAx into TeqAx.
+- Native.lean: NFm/NPrf native calculus and NPrf.sound to TeqAx.
+- NativeBiInterpretation.lean: pra_iff_native transfers an actual
+  iPRA derivation to the native calculus; native_iff_pra gives reverse
+  faithfulness; both round trips are proved.
+- ConciseIPRA/README.md: project overview and current status.
+- Analysis/README.md: existing analysis projects. No dedicated iPRA
+  Stirling development was identified in these inspected sources.
+
+Searches for Stirling and Wallis:
+The returned Stirling hits included combinatorial Stirling-number code,
+ordinary analytic uses of Stirling asymptotics and nonformalized reports.
+The Wallis hits were ordinary analytic/report uses. This is NOT an
+exhaustive absence claim about all repository contents.
+
+Important distinctions:
+1. A Lean theorem over Rat does not establish an iPRA derivation.
+2. Primitive-recursiveness of a checker does not establish that iPRA
+   proves that checker universally succeeds.
+3. A uniform universal evaluator for arbitrary PR codes cannot be assumed
+   primitive recursive; only the fixed codes occurring here are needed.
+4. A fixed-precision finite inequality must be proved by QF induction.
+   Induction over predicates quantifying over every precision is forbidden.
+5. The imported repository bridge solves translation between calculi,
+   not the new arithmetic estimates.
+
+Local environment:
+No lean or lake executable was found in the searched runtime locations.
+ObjectLanguageTarget.lean is explicitly uncompiled scaffolding.
+It contains no sorry declarations and no asserted Stirling axiom.
+Its proof wrappers assume an actual object-level derivation as input.
+
+Suggested package layout:
+StirlingIPRA/
+  RationalCode.lean        -- total Nat-coded rationals and arithmetic
+  BoundedArithmetic.lean   -- sums/products, Booleans, QF derived rules
+  Logarithm.lean           -- finite rational log approximants and bounds
+  PiWallis.lean            -- pi definition and finite Wallis certificates
+  Stirling.lean            -- finite log-factorial theorem
+  Internal.lean            -- Prf PRAAx target and native transfer
+  RealComparison.lean     -- optional semantic interpretation, not internal
+  Audit.lean              -- #print axioms and public theorem inventory
+
+Exact source links:
+https://github.com/VladimirReshetnikov/ProveIt/blob/329161f8da0b319d51ba9f6246c4b19d243f7193/lean-toolchain
+https://github.com/VladimirReshetnikov/ProveIt/blob/329161f8da0b319d51ba9f6246c4b19d243f7193/lakefile.toml
+https://github.com/VladimirReshetnikov/ProveIt/blob/329161f8da0b319d51ba9f6246c4b19d243f7193/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md
+https://github.com/VladimirReshetnikov/ProveIt/blob/329161f8da0b319d51ba9f6246c4b19d243f7193/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean
+https://github.com/VladimirReshetnikov/ProveIt/blob/329161f8da0b319d51ba9f6246c4b19d243f7193/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/Syntax.lean
+https://github.com/VladimirReshetnikov/ProveIt/blob/329161f8da0b319d51ba9f6246c4b19d243f7193/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/Deduction.lean
+https://github.com/VladimirReshetnikov/ProveIt/blob/329161f8da0b319d51ba9f6246c4b19d243f7193/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/Scalar.lean
+https://github.com/VladimirReshetnikov/ProveIt/blob/329161f8da0b319d51ba9f6246c4b19d243f7193/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/TeqReflect.lean
+https://github.com/VladimirReshetnikov/ProveIt/blob/329161f8da0b319d51ba9f6246c4b19d243f7193/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/TeqRec.lean
+https://github.com/VladimirReshetnikov/ProveIt/blob/329161f8da0b319d51ba9f6246c4b19d243f7193/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PRAToScalar.lean
+https://github.com/VladimirReshetnikov/ProveIt/blob/329161f8da0b319d51ba9f6246c4b19d243f7193/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/Native.lean
+https://github.com/VladimirReshetnikov/ProveIt/blob/329161f8da0b319d51ba9f6246c4b19d243f7193/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean
+https://github.com/VladimirReshetnikov/ProveIt/blob/329161f8da0b319d51ba9f6246c4b19d243f7193/Analysis/README.md
+

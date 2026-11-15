@@ -1,0 +1,96 @@
+\section{Algebraic lemmas used repeatedly}
+
+\begin{lemma}[Join--meet identities]
+For all $U,V,W\in\F^3$,
+\[
+U\cdot(U\cross V)=V\cdot(U\cross V)=0,
+\qquad
+\br{U}{V}{W}=U\cdot(V\cross W).
+\]
+If $U\cross V\ne0$, it represents the unique projective line through $U$ and $V$; dually for the meet of two lines.
+\end{lemma}
+
+\begin{proof}
+The two dot products expand to the same two monomials with opposite signs.  The determinant identity is the definition of the $3\times3$ determinant.  For uniqueness, a line through $U,V$ is a nonzero solution of two homogeneous linear equations.  When $U,V$ are independent, their common orthogonal space is one-dimensional, and the explicit nonzero solution is $U\cross V$.  Over $\Q$ this finite-dimensional claim is proved constructively by choosing a nonzero $2\times2$ minor, a decidable finite case split.
+\end{proof}
+
+\begin{lemma}[Intersection parameter]
+Let $A,B,C,D$ be affine points, with $A\ne B$, and let $X=AB\cap CD$ be finite.  Put
+\[
+L(P):=[CDP].
+\]
+If $X=(1-t)A+tB$, then
+\[
+(1-t)L(A)+tL(B)=0,
+\qquad
+\frac{AX}{XB}=-\frac{L(A)}{L(B)}.
+\]
+The division-free form is $tL(B)=-(1-t)L(A)$.
+\end{lemma}
+
+\begin{proof}
+The bracket is affine-linear in its third point because all affine representatives have final coordinate $1$.  Since $X$ lies on $CD$, $L(X)=0$.  Substitution gives the first equation.  The second is merely the definition $AX/XB=t/(1-t)$, cross-multiplied before any cancellation.
+\end{proof}
+
+\begin{lemma}[Area principle]
+Suppose $P=A_1A_2\cap BC$ and all named ratios are defined.  Then
+\[
+\frac{A_1P}{PA_2}=\frac{[A_1BC]}{[A_2CB]}.
+\]
+Equivalently, after choosing a consistent line orientation, the directed ratio of the two collinear segments equals the ratio of the two signed areas on the common base $BC$.
+\end{lemma}
+
+\begin{proof}
+Apply the preceding lemma to the line functional $L(X)=[BCX]$.  The apparent sign difference between common textbook formulas is only the choice between $PA_2$ and $A_2P$.
+\end{proof}
+
+\begin{lemma}[Binary quadratic root product, division-free]
+Let
+\[
+h(y,z)=v y^2+p yz+wz^2.
+\]
+Suppose $h(y_1,z_1)=h(y_2,z_2)=0$ and the two projective points are distinct, so
+$\delta=y_1z_2-y_2z_1\ne0$.  Then
+\[
+v y_1y_2=wz_1z_2.
+\]
+\end{lemma}
+
+\begin{proof}
+Multiply the first root equation by $y_2z_2$, the second by $y_1z_1$, and subtract.  The result factors as
+\[
+y_2z_2h(y_1,z_1)-y_1z_1h(y_2,z_2)
+=(y_1z_2-y_2z_1)(v y_1y_2-wz_1z_2).
+\]
+The left side is zero.  Cancel the explicitly nonzero factor $\delta$.
+\end{proof}
+
+\begin{lemma}[Certified side product]
+Let a univariate polynomial restriction be supplied with the coefficient identity
+\[
+g(T)=c\prod_{j=1}^{n}(T-t_j),\qquad c\ne0,
+\]
+and suppose $g(0),g(1)\ne0$.  Then
+\[
+\prod_{j=1}^{n}\frac{t_j}{1-t_j}
+=(-1)^n\frac{g(0)}{g(1)}.
+\]
+\end{lemma}
+
+\begin{proof}
+Coefficient equality permits evaluation at $0$ and $1$:
+\[
+g(0)=c(-1)^n\prod_jt_j,
+\qquad
+g(1)=c\prod_j(1-t_j).
+\]
+The endpoint assumptions imply each denominator is nonzero.  Cancel $c$ and cross-multiply.  The same proof is a primitive recursion on the list $t_1,\ldots,t_n$.
+\end{proof}
+
+\begin{lemma}[Duality is syntactic]
+Any theorem expressed solely with cross products, determinants, incidence, collinearity, and concurrency has a dual obtained by exchanging point vectors with line vectors and exchanging join with meet.  A determinant proof of the original theorem is literally a determinant proof of the dual.
+\end{lemma}
+
+\begin{proof}
+Both points and lines are nonzero triples, and both join and meet are the same polynomial operation $\cross$.  Collinearity and concurrency are both vanishing of a $3\times3$ determinant.  No semantic completeness theorem for projective geometry is required.
+\end{proof}

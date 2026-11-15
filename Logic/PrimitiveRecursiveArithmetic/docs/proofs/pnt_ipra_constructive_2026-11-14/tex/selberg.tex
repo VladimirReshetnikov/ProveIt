@@ -1,0 +1,590 @@
+\section{Finite Selberg estimates with explicit constants}
+\label{sb:section}
+
+We now prove all the number-theoretic estimates needed for the contraction
+argument.  The constants are deliberately generous.  Their purpose is to
+make every error bound visible and to avoid any appeal to an unspecified
+asymptotic estimate.
+
+For a positive integer $n$, define
+\[
+ \Lambda(n)=
+ \begin{cases}
+  \log p,&n=p^j\text{ for a prime }p\text{ and }j\ge1,\\
+  0,&\text{otherwise},
+ \end{cases}
+ \qquad
+ \psi(x)=\sum_{n\le x}\Lambda(n),
+ \qquad R(x)=\psi(x)-x.
+\]
+Thus $\Lambda(1)=0$, and $\psi(x)=0$ for $0\le x<2$.  A summation
+with a real upper endpoint means a finite sum over the positive integers
+below that endpoint.  All integrals below have bounded endpoints.  They
+can be evaluated or approximated by the finite arithmetic procedures
+specified in the arithmetization part of the paper.
+
+\subsection{Harmonic estimates without an infinite constant}
+\label{sb:harmonic}
+
+Write
+\[
+ H_m=\sum_{j=1}^m\frac1j,\qquad
+ h_m=H_m-\log m,\qquad
+ P_i(y)=\sum_{n\le y}(\log n)^i\quad(i=1,2).
+\]
+We use the elementary inequalities
+\begin{equation}
+ \frac{z-1}{z}\le\log z\le z-1\qquad(z\ge1).
+ \label{sb:log-basic}
+\end{equation}
+They follow by comparing $1/t$ with its endpoint values on $[1,z]$.
+In particular $1/2\le\log2\le1$.
+
+\begin{lemma}
+\label{sb:harmonic-finite}
+For integers $1\le m\le M$,
+\[
+ 0\le h_m-h_M\le\frac1m-\frac1M,
+ \qquad 0<h_M\le1.
+\]
+For every $y\ge1$,
+\begin{align}
+ |P_1(y)-(y\log y-y)|&\le\log y+1\le y,
+ \label{sb:log-sum}\\
+ |P_2(y)-y((\log y)^2-2\log y+2)|
+   &\le(\log y)^2+2.
+ \label{sb:log-square-sum}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+The difference of successive $h$'s is
+\[
+ h_n-h_{n+1}=\log(1+1/n)-\frac1{n+1}.
+\]
+By \eqref{sb:log-basic}, this lies between $0$ and
+$1/n-1/(n+1)$.  A finite telescoping sum proves the first assertion.
+The rectangle bounds
+\[
+ \log(M+1)\le H_M\le1+\log M
+\]
+give the second assertion.
+
+If $f$ is either $\log t$ or $(\log t)^2$, and $N=\lfloor y\rfloor$,
+monotonicity on $[1,y]$ gives
+\[
+ 0\le\sum_{n=1}^N f(n)-\int_1^N f(t)\,dt\le f(N).
+\]
+The extra integral from $N$ to $y$ lies between $0$ and $f(y)$.
+Consequently the distance between the sum and $\int_1^y f(t)\,dt$
+is at most $f(y)$.  Now use
+\[
+ \int_1^y\log t\,dt=y\log y-y+1,
+\]
+\[
+ \int_1^y(\log t)^2\,dt
+    =y((\log y)^2-2\log y+2)-2.
+\]
+Finally, $\log y+1\le y$ is another instance of
+\eqref{sb:log-basic}.
+\end{proof}
+
+\subsection{A Chebyshev bound and the signed logarithmic mean}
+\label{sb:chebyshev}
+
+\begin{lemma}
+\label{sb:basic-psi}
+For $x\ge1$,
+\begin{equation}
+ 0\le\psi(x)\le4x,\qquad |R(x)|\le4x,
+ \label{sb:chebyshev-bound}
+\end{equation}
+and
+\begin{equation}
+ \left|\sum_{n\le x}\frac{\Lambda(n)}n-\log x\right|\le6.
+ \label{sb:mertens-bound}
+\end{equation}
+For $1\le a\le b$,
+\begin{equation}
+ \left|\int_a^b\frac{R(u)}{u^2}\,du\right|\le20.
+ \label{sb:signed-integral}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Counting the multiples of each prime power in a factorial gives the exact
+identity
+\[
+ \log\binom{2n}{n}
+  =\sum_{d\le2n}\Lambda(d)
+       \left(\left\lfloor\frac{2n}{d}\right\rfloor
+              -2\left\lfloor\frac nd\right\rfloor\right).
+\]
+Every parenthesis is either $0$ or $1$, and it is $1$ when $n<d\le2n$.
+The binomial theorem gives $\binom{2n}{n}\le2^{2n}$.  Therefore
+\[
+ \psi(2n)-\psi(n)\le2n\log2.
+\]
+Apply this for $n=1,2,\ldots,2^{k-1}$ along the dyadic sequence and
+telescope:
+\[
+ \psi(2^k)\le(2^{k+1}-2)\log2<2^{k+1}.
+\]
+For $x>1$, the least dyadic integer $2^k\ge x$ is less than $2x$.
+Monotonicity gives $\psi(x)\le4x$.  The case $x=1$ is immediate.
+Since $R(x)=\psi(x)-x$, this also gives the stated bound on $R$.
+For later use, $|R(x)|\le4x$ holds for $0\le x<1$ as well, because
+there $R(x)=-x$.
+
+The prime factorization of $n$ gives
+\[
+ \sum_{d\mid n}\Lambda(d)=\log n.
+\]
+Summing over $n\le x$ and reversing two finite sums yields
+\[
+ P_1(x)=\sum_{d\le x}\Lambda(d)
+                      \left\lfloor\frac xd\right\rfloor.
+\]
+Put $A_1(x)=\sum_{d\le x}\Lambda(d)/d$.  The floor errors satisfy
+\[
+ |xA_1(x)-P_1(x)|\le\psi(x)\le4x.
+\]
+Together with \eqref{sb:log-sum}, this gives
+\[
+ |A_1(x)-\log x|
+ \le4+\left|-1+\frac{P_1(x)-(x\log x-x)}x\right|
+ \le6.
+\]
+
+The remaining identity can be checked by integrating each of the finitely
+many terms $\Lambda(n)\mathbf1_{[n,x]}(t)$:
+\[
+ \int_1^x\frac{\psi(t)}{t^2}\,dt
+     =\sum_{n\le x}\Lambda(n)\left(\frac1n-\frac1x\right)
+     =A_1(x)-\frac{\psi(x)}x.
+\]
+Subtracting $\int_1^x dt/t=\log x$ gives
+\[
+ \int_1^x\frac{R(t)}{t^2}\,dt
+     =A_1(x)-\frac{\psi(x)}x-\log x.
+\]
+Its absolute value is at most $10$.  Subtract the expressions at $b$
+and $a$ to obtain \eqref{sb:signed-integral}.
+\end{proof}
+
+\subsection{A finite hyperbola calculation}
+\label{sb:hyperbola}
+
+Let $\tau(n)$ be the number of positive divisors of $n$, and put
+$D(y)=\sum_{n\le y}\tau(n)$.  Fix an outer endpoint $x\ge1$ and set
+\begin{equation}
+ M=\lceil x\rceil,\qquad c=H_M-\log M.
+ \label{sb:finite-c}
+\end{equation}
+The same parameter $c$ will be used for every $1\le y\le x$.
+It is a finite expression; no existence or convergence assertion about
+Euler's constant is being used.
+
+\begin{lemma}
+\label{sb:divisor-approx}
+For $1\le y\le x$,
+\begin{equation}
+ |D(y)-y\log y-(2c-1)y|\le12\sqrt y.
+ \label{sb:divisor-bound}
+\end{equation}
+Furthermore, the arithmetic function
+\begin{equation}
+ f(n)=\tau(n)\log n-2c\tau(n)+4c^2
+ \label{sb:comparison-function}
+\end{equation}
+satisfies
+\begin{equation}
+ \left|\sum_{n\le y}\bigl(f(n)-(\log n)^2\bigr)\right|
+       \le80\sqrt y(\log y+1).
+ \label{sb:comparison-error}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let $m=\lfloor\sqrt y\rfloor$.  Counting pairs of positive integers
+whose product is at most $y$, according to which coordinate is at most
+$m$, gives
+\[
+ D(y)=2\sum_{n\le m}\left\lfloor\frac yn\right\rfloor-m^2
+     =2yH_m-m^2+e,\qquad |e|\le2m.
+\]
+By Lemma~\ref{sb:harmonic-finite},
+\[
+ H_m=\log m+c+\eta_m,\qquad 0\le\eta_m\le1/m.
+\]
+Thus
+\[
+ D(y)-y\log y-(2c-1)y
+   =-y\log(y/m^2)+(y-m^2)+2y\eta_m+e.
+\]
+Because $m\le\sqrt y<m+1\le2m$, we have
+\[
+ y\log(y/m^2)\le\frac{2y}{m}\le4\sqrt y,
+ \qquad 0\le y-m^2\le2\sqrt y,
+\]
+\[
+ 2y\eta_m\le4\sqrt y,\qquad |e|\le2\sqrt y.
+\]
+Adding these bounds proves \eqref{sb:divisor-bound}.
+
+For $T(y)=\sum_{n\le y}\tau(n)\log n$, finite partial summation gives
+\[
+ T(y)=D(y)\log y-\int_1^y\frac{D(t)}t\,dt.
+\]
+Write $D(t)=t\log t+(2c-1)t+E(t)$, where
+$|E(t)|\le12\sqrt t$.  Substitution and elementary integration yield
+\[
+ T(y)=y\bigl((\log y)^2+(2c-2)\log y+2-2c\bigr)+E_T(y),
+\]
+where
+\[
+ |E_T(y)|\le2+12\sqrt y\log y+24(\sqrt y-1)
+                 \le30\sqrt y(\log y+1).
+\]
+Here the constant term before the error is $2c-2$, of absolute value
+at most $2$, since $0<c\le1$.
+
+Now sum \eqref{sb:comparison-function}.  The coefficient of
+$y\log y$ is $(2c-2)-2c=-2$, and its constant coefficient is
+\[
+ (2-2c)-2c(2c-1)+4c^2=2.
+\]
+The error in replacing $4c^2\lfloor y\rfloor$ by $4c^2y$ is at most
+$4$.  It follows that
+\begin{align*}
+ \left|\sum_{n\le y}f(n)
+           -y\bigl((\log y)^2-2\log y+2\bigr)\right|
+ \le30\sqrt y(\log y+1)+24\sqrt y+4.
+\end{align*}
+To compare this with $P_2(y)$, use \eqref{sb:log-square-sum} and
+\[
+ \log y\le\int_1^y t^{-3/4}\,dt
+            =4(y^{1/4}-1)\le4y^{1/4}.
+\]
+In particular $(\log y)^2\le16\sqrt y$.  The total error is at most
+\[
+ 30\sqrt y(\log y+1)+40\sqrt y+6
+       \le80\sqrt y(\log y+1),
+\]
+as required.
+\end{proof}
+
+\subsection{Selberg's symmetry formula}
+\label{sb:symmetry-subsection}
+
+For arithmetic functions on positive integers write
+\[
+ (a*b)(n)=\sum_{d\mid n}a(d)b(n/d).
+\]
+Let $\mathbf1(n)=1$ and let $\varepsilon(1)=1$,
+$\varepsilon(n)=0$ for $n>1$.  The M\"obius function $\mu$ is $0$
+when a square of a prime divides $n$, and otherwise is $(-1)^r$,
+where $r$ is the number of distinct prime factors of $n$.
+Summing over subsets of these prime factors proves
+$\mu*\mathbf1=\varepsilon$.  Also
+$\tau=\mathbf1*\mathbf1$.  All convolution rearrangements below are
+rearrangements of finite divisor sums.
+
+\begin{lemma}
+\label{sb:symmetry}
+For $x\ge1$, put
+\[
+ A(x)=\sum_{n\le x}\bigl(\Lambda(n)\log n+(\Lambda*\Lambda)(n)\bigr).
+\]
+Then
+\begin{equation}
+ |A(x)-2x\log x|\le2048x.
+ \label{sb:symmetry-bound}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let $L(n)=\log n$ and define $(\mathcal Da)(n)=a(n)\log n$.
+Since $\log n=\log d+\log(n/d)$,
+\[
+ \mathcal D(a*b)=(\mathcal Da)*b+a*(\mathcal Db).
+\]
+The divisor identity used earlier is $L=\mathbf1*\Lambda$.  Applying
+$\mathcal D$ gives the exact pointwise identity
+\[
+ L^2=L*\Lambda+\mathbf1*(\mathcal D\Lambda)
+     =\mathbf1*(\Lambda*\Lambda+\mathcal D\Lambda).
+\]
+Convolution with $\mu$ therefore gives
+\begin{equation}
+ \mu*L^2=\Lambda*\Lambda+\mathcal D\Lambda.
+ \label{sb:exact-symmetry}
+\end{equation}
+Similarly $\mathcal D\tau=2L*\mathbf1$.  With the finite parameter
+$c$ from \eqref{sb:finite-c} and $f$ from
+\eqref{sb:comparison-function},
+\begin{equation}
+ \mu*f=2L-2c\mathbf1+4c^2\varepsilon.
+ \label{sb:comparison-convolution}
+\end{equation}
+
+For each $d\le x$, apply \eqref{sb:comparison-error} at $y=x/d$.
+Since $|\mu(d)|\le1$, reversing finite sums gives
+\begin{align*}
+ \left|A(x)-\sum_{n\le x}(\mu*f)(n)\right|
+ &\le80\sum_{d\le x}\sqrt{x/d}\bigl(\log(x/d)+1\bigr).
+\end{align*}
+The preceding integral bound gives
+$\log z+1\le4z^{1/4}$ for $z\ge1$, while a finite rectangle
+comparison gives
+\[
+ \sum_{d\le x}d^{-3/4}
+       \le1+\int_1^x t^{-3/4}\,dt\le4x^{1/4}.
+\]
+Consequently the last error is at most $1280x$.
+
+By \eqref{sb:comparison-convolution},
+\[
+ \sum_{n\le x}(\mu*f)(n)=2P_1(x)-2c\lfloor x\rfloor+4c^2.
+\]
+Its distance from $2x\log x$ is at most $10x$: indeed
+\eqref{sb:log-sum}, $0<c\le1$, and $x\ge1$ bound that distance by
+$6x+4\le10x$.  Thus $1290x$ already bounds
+$|A(x)-2x\log x|$, and the stated constant $2048$ is valid.
+The auxiliary parameter $c$ has disappeared from the conclusion.
+\end{proof}
+
+\subsection{The equation for the error term}
+\label{sb:error-subsection}
+
+\begin{lemma}
+\label{sb:error-equation}
+For $x\ge1$, define
+\[
+ E_R(x)=R(x)\log x+\sum_{n\le x}\Lambda(n)R(x/n).
+\]
+Then
+\begin{equation}
+ |E_R(x)|\le4096x.
+ \label{sb:error-bound}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Integrating the finite step function $\psi$ gives
+\[
+ \sum_{n\le x}\Lambda(n)\log n
+      =\psi(x)\log x-\int_1^x\frac{\psi(t)}t\,dt.
+\]
+The integral is nonnegative and at most $4x$ by
+\eqref{sb:chebyshev-bound}.  Also
+\[
+ \sum_{n\le x}(\Lambda*\Lambda)(n)
+       =\sum_{n\le x}\Lambda(n)\psi(x/n).
+\]
+The symmetry bound therefore implies
+\[
+ \left|\psi(x)\log x+\sum_{n\le x}\Lambda(n)\psi(x/n)
+                -2x\log x\right|\le2052x.
+\]
+Substitute $\psi(y)=R(y)+y$.  The difference between the expression
+inside this absolute value and $E_R(x)$ is
+\[
+ x\left(\sum_{n\le x}\frac{\Lambda(n)}n-\log x\right),
+\]
+whose absolute value is at most $6x$.  Hence
+$|E_R(x)|\le2058x\le4096x$.
+\end{proof}
+
+\subsection{A second substitution and finite summation by parts}
+\label{sb:weighted-sum-subsection}
+
+\begin{lemma}
+\label{sb:weighted-sum}
+For $x\ge4$,
+\begin{equation}
+ |R(x)|(\log x)^2
+ \le2\sum_{n\le x}\log n\,|R(x/n)|+2^{17}x\log x.
+ \label{sb:weighted-sum-bound}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Multiply the defining equation for $E_R(x)$ by $\log x$, split
+$\log x=\log n+\log(x/n)$ in its sum, and use the same equation at
+$x/n$.  This gives the exact identity
+\begin{align*}
+ R(x)(\log x)^2={}&
+   -\sum_{n\le x}\Lambda(n)\log n\,R(x/n)\\
+ &+\sum_{ab\le x}\Lambda(a)\Lambda(b)R(x/(ab))\\
+ &+E_R(x)\log x-\sum_{n\le x}\Lambda(n)E_R(x/n).
+\end{align*}
+The last line has absolute value at most
+\[
+ 4096x\left(\log x+\sum_{n\le x}\frac{\Lambda(n)}n\right)
+ \le4096x(2\log x+6)
+ \le32768x\log x,
+\]
+because $\log x\ge\log4\ge1$.  The arithmetic function
+\[
+ a(n)=\Lambda(n)\log n+(\Lambda*\Lambda)(n)
+\]
+is nonnegative.  Taking absolute values gives
+\begin{equation}
+ |R(x)|(\log x)^2
+    \le\sum_{n\le x}a(n)|R(x/n)|+32768x\log x.
+ \label{sb:first-weighted-bound}
+\end{equation}
+
+Put $N=\lfloor x\rfloor$, $g_n=|R(x/n)|$ for $1\le n\le N+1$,
+and
+\[
+ \Delta_n=A(n)-2P_1(n).
+\]
+The symmetry estimate and \eqref{sb:log-sum} give
+\[
+ |\Delta_n|\le2048n+4n\le4096n.
+\]
+Since $x/(N+1)<1$, we have $g_{N+1}=x/(N+1)$.  The exact finite
+summation-by-parts identity is
+\begin{equation}
+ \sum_{n=1}^N(a(n)-2\log n)g_n
+   =\Delta_Ng_{N+1}
+       +\sum_{n=1}^N\Delta_n(g_n-g_{n+1}).
+ \label{sb:finite-abel}
+\end{equation}
+Monotonicity of $\psi$ gives
+\[
+ |g_n-g_{n+1}|
+ \le\psi(x/n)-\psi(x/(n+1))+\frac{x}{n(n+1)}.
+\]
+In the first term of the resulting weighted sum, each $\Lambda(m)$
+is counted with weight $\lfloor x/m\rfloor\le x/m$.  Therefore
+\begin{align*}
+ \sum_{n=1}^N n|g_n-g_{n+1}|
+ &\le x\sum_{m\le x}\frac{\Lambda(m)}m
+                   +x\sum_{n=1}^N\frac1{n+1}\\
+ &\le x(\log x+6)+x\log(N+1)
+ \le x(2\log x+7).
+\end{align*}
+Here $N+1\le2x$ and $\log2\le1$.  The endpoint term in
+\eqref{sb:finite-abel} is at most $4096x$.  Consequently
+\[
+ \left|\sum_{n\le x}(a(n)-2\log n)|R(x/n)|\right|
+ \le4096x(2\log x+8)\le40960x\log x.
+\]
+Combine this with \eqref{sb:first-weighted-bound}.  The two error
+constants add to $73728$, which is less than $2^{17}$.
+\end{proof}
+
+\subsection{Replacing the weighted sum by a bounded integral}
+\label{sb:sum-integral-subsection}
+
+\begin{lemma}
+\label{sb:sum-integral}
+For $x\ge1$,
+\begin{equation}
+ \left|\sum_{n\le x}\log n\,|R(x/n)|
+            -\int_1^x\log t\,|R(x/t)|\,dt\right|\le20x.
+ \label{sb:sum-integral-bound}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Set $N=\lfloor x\rfloor$ and, for $t\ge1$, put
+$g(t)=|R(x/t)|$ and $h(t)=\log t\,g(t)$.  The bound
+$g(t)\le4x/t$ also holds when $t>x$, because then $R(x/t)=-x/t$.
+For $n\le t\le n+1$, monotonicity of $\psi$ gives
+\begin{align*}
+ |h(t)-h(n)|
+ \le{}&\log n\left(\psi(x/n)-\psi(x/t)+\frac xn-\frac xt\right)\\
+      &+(\log t-\log n)g(t).
+\end{align*}
+Integrate over each of the $N$ unit intervals and sum.
+
+For the contribution involving $\psi$, each $\Lambda(m)$ can occur
+only in the one unit interval containing $x/m$.  Its contribution is
+at most $\Lambda(m)\log(x/m)$, because that interval has length at
+most $1$ and $n\le x/m$.  The total is thus at most
+\[
+ \sum_{m\le x}\Lambda(m)\log(x/m)
+      =\int_1^x\frac{\psi(u)}u\,du\le4x.
+\]
+The contribution from $x/n-x/t$ is at most
+\[
+ x\sum_{n=1}^N\frac{\log n}{n(n+1)}\le x.
+\]
+To verify the last inequality using only finite sums, telescope:
+\begin{align*}
+ \sum_{n=1}^N\log n\left(\frac1n-\frac1{n+1}\right)
+ &=\sum_{n=2}^N\frac{\log n-\log(n-1)}n
+                         -\frac{\log N}{N+1}\\
+ &\le\sum_{n=2}^N\frac1{n(n-1)}\le1.
+\end{align*}
+Finally, $\log t-\log n\le(t-n)/n$ and $g(t)\le4x/t$ bound the
+last contribution by
+\[
+ 4x\sum_{n=1}^N\frac1{n^2}\le8x.
+\]
+Indeed $1/n^2\le1/(n(n-1))$ for $n\ge2$, so the last sum is at
+most $2$.  We have proved
+\[
+ \left|\sum_{n=1}^Nh(n)-\int_1^{N+1}h(t)\,dt\right|\le13x.
+\]
+On the interval $[x,N+1]$, $h(t)=x\log t/t\le x$, and the length
+of the interval is at most $1$.  Removing that final integral gives
+the stronger bound $14x$, hence the displayed bound $20x$.
+\end{proof}
+
+\begin{theorem}
+\label{sb:contraction-inputs}
+Write $r(t)=e^{-t}R(e^t)$ for $t\ge0$.  Then
+\begin{align}
+ |r(t)|&\le4,
+ \label{sb:r-bound}\\
+ \left|\int_a^b r(v)\,dv\right|&\le20
+          &&(0\le a\le b),
+ \label{sb:r-signed}\\
+ |r(t)|&\le\frac2{t^2}\int_0^t(t-v)|r(v)|\,dv+\frac{2^{18}}t
+          &&(t\ge2).
+ \label{sb:r-weighted}
+\end{align}
+For $0\le u\le v$ one also has
+\begin{equation}
+ r(v)\ge r(u)-4(v-u).
+ \label{sb:r-downward}
+\end{equation}
+Thus, in the contraction lemma, one may use
+$B=4$, $C=20$, $S=2^{18}$, and the harmless larger downward constant
+$L=5$.
+\end{theorem}
+
+\begin{proof}
+The first assertion is \eqref{sb:chebyshev-bound}; the second is
+\eqref{sb:signed-integral} after the finite change of variables
+$x=e^v$.  Lemmas~\ref{sb:weighted-sum} and \ref{sb:sum-integral} give,
+for $x\ge4$,
+\[
+ |R(x)|(\log x)^2
+ \le2\int_1^x\log u\,|R(x/u)|\,du
+                    +2^{17}x\log x+40x.
+\]
+Since $\log x\ge1$, the last two terms are at most
+$2^{18}x\log x$.  Put $t=\log x$ and $v=\log(x/u)$.  Direct
+substitution yields
+\[
+ \frac1x\int_1^x\log u\,|R(x/u)|\,du
+       =\int_0^t(t-v)|r(v)|\,dv.
+\]
+Divide by $t^2$ to obtain \eqref{sb:r-weighted}; $t\ge2$ ensures
+$e^t\ge4$.
+
+Finally, monotonicity of $\psi$ implies
+\[
+ r(v)+1=\frac{\psi(e^v)}{e^v}
+       \ge e^{-(v-u)}\frac{\psi(e^u)}{e^u}
+       =e^{-(v-u)}(r(u)+1).
+\]
+Because $0\le r(u)+1\le4$ and $1-e^{-h}\le h$ for $h\ge0$,
+this gives \eqref{sb:r-downward}.
+\end{proof}

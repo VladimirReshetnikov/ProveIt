@@ -1,0 +1,91 @@
+Independent mathematical and arithmetic audit
+============================================
+
+Reviewed analytic_notes/analytic_core.tex after its expansion to E1--E8
+and A1--A8, and transfer_notes.tex. This is human mathematical review,
+not kernel verification. No repository build or Lean compilation was run.
+
+Review-time file names map to the delivered package as follows:
+  analytic_notes/analytic_core.tex -> tex/analytic.tex
+  transfer_notes.tex -> tex/transfer.tex
+  finite_cauchy_audit.tex -> tex/finite_contour.tex
+
+Final coefficient check
+-----------------------
+The later simplification to the coefficient 2^-26 in the stretched
+exponential was independently checked. With D=2^241, the dyadic root
+choice gives q > (log n)^(1/10)/D^(1/10) - 1. Consequently
+  2^(-(q-5)) <= 64 exp(-(log 2)(log n)^(1/10)/D^(1/10)).
+Since D^(1/10)<2^25 and log 2>=1/2, the claimed coefficient follows.
+The threshold n>=2^(D*6^10) ensures q>=6. No further scope reduction
+was identified in the final review.
+
+Analytic route
+--------------
+The proposed log^-9 strip is coherent and constructive in its quantitative
+form. The cosine identity supplies a lower bound for |zeta| at sigma>1;
+a finite horizontal derivative estimate transfers a strictly positive
+lower bound to the strip. Thus this avoids the nonconstructive inference
+from not-zero to apartness. The chosen constants 2^-88, 2^-71 and 2^86
+check out. The pole neighborhood uses the explicit regular function
+w=(s-1)zeta and gives positive denominator separation.
+
+The smoothed Perron argument, tail bounds, rational contour movement,
+and desmoothing estimates were checked. The final A8 bound is
+  |psi(x)-x| <= x * 2^(-k/8),
+not x * 2^(-k) / 8. The initially irrational contour sides were repaired
+in the current analytic notes: Q=k+2, delta=2^-88 Q^-9,
+alpha=1-delta, c=1+1/b, b=ceil(log_2 y). These are rational and retain
+the numerical margins. E1's finite Euler identity has the correct
+endpoint convention. E5's finite product error and its positivity slack
+are sufficient. E7's displayed Dirichlet-tail cutoff is generous enough.
+E8's 1/M vertical closing estimate works uniformly even when v=1;
+there is no need for a lower bound on |v-1|.
+
+The analytic route proves a nonoptimal exponent 1/10. It does not prove
+the de la Vallee Poussin square-root exponent, Korobov--Vinogradov exponent,
+or a Riemann-hypothesis estimate. Every inverse logarithmic order and
+every fixed factorial asymptotic truncation do follow from exponent 1/10.
+
+Finite arithmetization
+---------------------
+The proposed explicit derivative bound for the pole-subtracted integrand
+is safe. I independently derived a smaller coarse bound. The missing
+point in a bare Taylor-cell sketch is the amplification of rational
+sample error along the growing total internal perimeter. The exact
+finite bound and precision schedule are now in finite_cauchy_audit.tex:
+  norm(C_N,eta) <= 2 M R^3/N + 4 R N eta + 2 R^2 eta.
+It is proved by rational affine cancellation on every cell followed by
+exact cancellation of internal edges. The supplied N and eta schedules
+cover all three terms. This file also contains explicit log and complex
+exponential series tails, Euler-integral truncation and quadrature bounds,
+and a finite pole-kernel integral computation on a rational square.
+
+Finite Euler-product input evaluation must include the number of factors:
+per-factor tolerance epsilon/[8 P 4^P (2+2/d)^16] suffices. A precision
+depending only on the final eight-factor product bound would omit the
+error accumulated when computing each finite Euler product. This detail
+is covered in finite_cauchy_audit.tex.
+
+Uniform expansion order
+-----------------------
+All algebraic constants in transfer_notes.tex were checked, including
+the endpoint constant for Li_2, the square-root split, arbitrary inverse
+logarithmic order, the factorial boundary terms, and the eventual
+first-omitted-term inequalities. For uniform r, a cleaner finite proof
+uses the exact telescoping derivative
+  S_r'(t)=1/log t - r!/(log t)^(r+1),
+then a single rational mesh with r-dependent derivative bound. The
+appendix gives B*=2^(r+4)(r+2)^4 r! and a displayed mesh precision.
+Thus no induction on an analytic equality for all precisions is needed.
+
+Required logical status
+-----------------------
+Explicit primitive recursive witnesses do not alone establish iPRA
+provability. The article must retain the local rational identities,
+positive margins, finite error schedules, and QF loop invariants as
+part of the proof. At the fully formal level the necessary endpoint is
+still an actual Prf PRAAx [] phi term. Ambient Lean theorems about Real,
+Complex or Rat, even without sorry, would not replace that endpoint.
+The current material is a detailed human proof and a formalization path;
+its not-yet-produced embedded proof objects must be described as such.

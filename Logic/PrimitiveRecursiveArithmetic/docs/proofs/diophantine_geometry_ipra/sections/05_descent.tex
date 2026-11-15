@@ -1,0 +1,455 @@
+\section{Finite descent and a complete elliptic-curve example}
+\label{sec:descent}
+
+Height-bounded enumeration becomes much stronger when a geometric transformation
+strictly decreases an integer measure.  We now give an example in which descent
+settles the entire rational-point problem, with no height cutoff left over.  The
+main conclusions are Fermat's square-area theorem and the complete list of
+rational points on
+\[
+  E_1:\qquad Y^2Z=X^3-XZ^2.
+\]
+The argument is elementary, but its logical implementation requires care:
+``choose a least counterexample'' is replaced by a specified number of
+primitive-recursive steps.  Fermat's result and its connection with the
+congruent-number curves are classical; see \cite{ConradCongruent}.  An existing
+Coq treatment of Fermat's theorem is useful background for formalization
+\cite{DelahayeMayero}.  Neither reference is used as an unproved arithmetic
+premise below.
+
+\subsection{A descent principle with a numerical stopping bound}
+
+\begin{lemma}[Finite descent in \iPRA]\label{lem:finite-descent}
+Fix primitive-recursive functions $D$ and $\rho$ on codes of states, and a
+primitive-recursive Boolean predicate $G$.  Suppose that \iPRA\ proves
+\[
+ G(s)\ \Longrightarrow\
+  \bigl(0<\rho(s)\ \wedge\ G(D(s))\ \wedge\ \rho(D(s))<\rho(s)\bigr).
+ \tag{D}
+\]
+Then \iPRA\ proves $\neg G(s)$ for every state $s$.
+\end{lemma}
+
+\begin{proof}
+Define $s_0=s$ and $s_{j+1}=D(s_j)$ by primitive recursion.  Under the
+assumption $G(s)$, quantifier-free induction on $j$ gives
+\[
+ G(s_j)\quad\hbox{and}\quad \rho(s_j)+j\leq\rho(s).
+ \tag{1}
+\]
+Indeed, (D) gives $G(s_{j+1})$ and
+$\rho(s_{j+1})+1\leq\rho(s_j)$, which proves the induction step by addition.
+At $j=\rho(s)$, (1) implies $\rho(s_j)=0$, while (D) and $G(s_j)$ imply
+$0<\rho(s_j)$.  This is a contradiction obtained from the assumption $G(s)$,
+and therefore proves its negation intuitionistically.  There is no use of
+double-negation elimination.  The displayed induction predicate is
+quantifier-free after replacing the Boolean tests and inequalities by their
+primitive-recursive characteristic functions.
+\end{proof}
+
+This is a schema for fixed primitive-recursive functions with their defining
+equations.  It does not posit an internal universal evaluator for arbitrary
+primitive-recursive programs.  In the application, the number of descent steps
+is the original hypotenuse.  An abstract assertion that there is some smaller
+counterexample would not by itself supply the required function $D$; the
+formulas below do.
+
+\subsection{Arithmetic tools without prime factorization}
+
+All integers in the next three lemmas are nonnegative unless a sign is shown.
+Division is used only after divisibility has been established.  Each exact
+quotient can equivalently be implemented by a bounded search.
+
+\begin{lemma}[The gcd tools]\label{lem:descent-gcd}
+The following operations and implications have primitive-recursive witnesses
+and quantifier-free-induction proofs.
+\begin{enumerate}
+\item If $a,b>0$, the greatest common divisor $g$ is a positive common divisor,
+and there are signed integers $u,v$ with $ua+vb=g$.
+\item If $\gcd(a,b)=1$ and $a\mid bc$, then $a\mid c$.
+\item If $d^2\mid c^2$ and $d>0$, then $d\mid c$.
+\item If $a,b,c>0$, $\gcd(a,b)=1$, and $ab=c^2$, then one can compute
+positive integers $r,s$ such that $a=r^2$, $b=s^2$, and $c=rs$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+For the first assertion, order the initial pair as
+$(\max(a,b),\min(a,b))$ and perform Euclidean division.  Replace a pair
+$(u,v)$ with $v>0$ by $(v,u\bmod v)$; after reaching a zero second entry,
+leave the pair unchanged.  Before stopping, the sum of the entries strictly
+decreases.  Thus $a+b+1$ iterations suffice.  Track the two entries as signed
+linear combinations of the original $a,b$: subtraction of the quotient times
+the second combination from the first gives the next combination.  The common
+divisors are unchanged at each step, and the last nonzero entry divides both
+preceding entries, hence both original entries.  The tracked last combination
+is the required B\'ezout identity.  These statements are invariants of a fixed
+finite computation and use quantifier-free induction.  If an explicit bound
+for the coefficient storage is desired, each quotient is at most
+$M=\max(a,b)$ and each coefficient is bounded in absolute value by
+$(M+1)^{a+b+2}$.
+
+For the second assertion, multiply a B\'ezout identity $ua+vb=1$ by $c$.
+Both terms on the resulting right side are divisible by $a$ whenever
+$a\mid bc$.  The same identity also shows that coprimality is preserved when
+one of the entries is squared: squaring $ua+vb=1$ gives a B\'ezout identity
+between $a$ and $b^2$.
+
+For the third assertion, $c=0$ gives $d\mid c$ immediately. Otherwise
+put $h=\gcd(c,d)$, $c=hr$, and $d=hs$.
+Then $\gcd(r,s)=1$, and cancellation in $d^2\mid c^2$ gives $s^2\mid r^2$.
+In particular $s\mid r^2$.  Applying the preceding coprimality observation
+and the second assertion yields $s\mid1$, so $s=1$.  Consequently $d=h$ divides
+$c$.
+
+For the fourth assertion, put $h=\gcd(a,c)$, $a=hu$, and $c=hv$.
+Here $\gcd(u,v)=1$, and the equation becomes
+\[
+ ub=hv^2.
+\]
+Since $u$ is coprime to $v^2$, it divides $h$.  Write $h=ue$.  Cancellation
+now gives $a=e u^2$ and $b=e v^2$.  Thus $e$ divides both $a$ and $b$;
+coprimality forces $e=1$.  Taking $r=u$ and $s=v$ proves the claim, including
+$c=rs$.  This proof extracts the square roots by gcd and exact division.
+It does not need a prime factorization of the inputs.
+\end{proof}
+
+Repeatedly applying the last assertion splits a square product of any fixed
+number of pairwise coprime positive factors into squares.  To justify this
+iteration, if $a$ is coprime to each of $b$ and $c$, multiply their B\'ezout
+identities to obtain a B\'ezout identity for $a$ and $bc$.  Thus one factor is
+coprime to the product of all the remaining factors.
+
+\begin{lemma}[Normalization of square-area triangles]\label{lem:triangle-normalize}
+From positive integers $a,b,c,s$ satisfying
+\[
+ a^2+b^2=c^2,\qquad ab=2s^2,
+ \tag{2}
+\]
+one can compute positive integers $A,B,C,S$ satisfying the same equations
+and $\gcd(A,B)=1$, with $C\leq c$.
+\end{lemma}
+
+\begin{proof}
+Let $g=\gcd(a,b)$ and put $A=a/g$, $B=b/g$.  Since
+$c^2=g^2(A^2+B^2)$, Lemma~\ref{lem:descent-gcd}(3) gives $g\mid c$;
+put $C=c/g$.  The resulting Pythagorean equation is primitive in the two
+legs.  Its legs cannot both be even, by coprimality, and cannot both be odd,
+because their squared sum would be $2$ modulo $4$.  Thus exactly one leg is
+even, and $K=AB/2$ is an integer.  Equation (2) now says $s^2=g^2K$.
+Applying the same square-divisibility lemma gives $g\mid s$.  Put $S=s/g$.
+Cancelling $g^2$ in the two equations proves the result.  All four outputs
+are positive, and $C=c/g\leq c$.
+\end{proof}
+
+\begin{lemma}[Primitive Pythagorean parametrization]\label{lem:pythagorean-descent}
+Let $A,B,C>0$, $A^2+B^2=C^2$, and $\gcd(A,B)=1$.  After exchanging the legs
+so that $A$ is even, there are unique positive integers $m>n$ such that
+\[
+ A=2mn,\qquad B=m^2-n^2,\qquad C=m^2+n^2,
+ \tag{3}
+\]
+where $\gcd(m,n)=1$ and $m,n$ have opposite parity.  They are obtained by
+bounded arithmetic from $A,B,C$.
+\end{lemma}
+
+\begin{proof}
+The parity argument in the preceding lemma shows that $B$ and $C$ are odd.
+Also $\gcd(B,C)=1$: any common divisor $d$ satisfies $d^2\mid A^2$, hence
+$d\mid A$ by Lemma~\ref{lem:descent-gcd}(3), and then $d=1$.
+As $C>B>0$, the integers
+\[
+ U=\frac{C+B}{2},\qquad V=\frac{C-B}{2}
+\]
+are positive, with $U>V$.  A common divisor divides their sum $C$ and their
+difference $B$, so $\gcd(U,V)=1$.  Their product is
+\[
+ UV=\frac{C^2-B^2}{4}=\left(\frac A2\right)^2.
+\]
+The square-splitting lemma gives $U=m^2$, $V=n^2$, and $A/2=mn$.
+Addition and subtraction give (3), while $U>V$ gives $m>n$.
+A common divisor of $m,n$ would divide $U,V$, so they are coprime.
+Their squares sum to the odd number $C$, so they have opposite parity.
+Finally, $m^2=(C+B)/2$ and $n^2=(C-B)/2$ determine the positive roots
+uniquely: $x^2=y^2$ for nonnegative integers implies $x=y$ by
+$(x-y)(x+y)=0$, or directly by strict monotonicity of squaring.
+Each root is at most $C$ and can be found by bounded search.
+\end{proof}
+
+\subsection{The explicit descent}
+
+\begin{theorem}[Fermat's square-area theorem in \iPRA]\label{thm:fermat-area}
+There are no positive integers $a,b,c,s$ satisfying (2).  Consequently there
+is no rational right triangle of positive side lengths whose area is a
+nonzero rational square.  In particular, a rational right triangle cannot
+have area $1$.
+\end{theorem}
+
+\begin{proof}
+Normalize a supposed solution by Lemma~\ref{lem:triangle-normalize}.  We
+will transform every primitive solution into another primitive solution
+with a smaller hypotenuse.
+
+Apply Lemma~\ref{lem:pythagorean-descent} and substitute (3) into the
+square-area equation.  Cancelling $2$ gives
+\[
+ m n(m+n)(m-n)=S^2.                         \tag{4}
+\]
+These four factors are positive and pairwise coprime.  For pairs involving
+$m$ or $n$, a common divisor would also divide both $m$ and $n$.
+For the remaining pair, a common divisor of $m+n$ and $m-n$ divides
+$2m$ and $2n$, and hence divides $2$ by a B\'ezout identity for $m,n$.
+Both $m+n$ and $m-n$ are odd, so that common divisor is $1$.
+The square-splitting lemma applied three times to (4) supplies positive
+integers $r,s,t,u$ with
+\[
+ m=r^2,\qquad n=s^2,\qquad m+n=t^2,\qquad m-n=u^2.
+ \tag{5}
+\]
+In particular $t,u$ are odd, $t>u>0$, and $\gcd(t,u)=1$.
+Moreover $s$ is even.  Indeed $m,n$ have opposite parity; if $m$ were even
+and $n$ odd, then the first two equations of (5) would give
+$m-n\equiv-1\equiv3\pmod4$, contradicting $m-n=u^2$.
+Thus $n$ is even, and $n=s^2$ forces $s$ even.
+
+Define
+\[
+ A'=\frac{t+u}{2},\qquad B'=\frac{t-u}{2},\qquad
+ C'=r,\qquad S'=\frac s2.                  \tag{6}
+\]
+All four are positive integers.  Direct calculation using (5) gives
+\begin{align*}
+ (A')^2+(B')^2
+   &=\frac{t^2+u^2}{2}=m=r^2=(C')^2,\\
+ A'B'&=\frac{t^2-u^2}{4}=\frac n2
+       =\frac{s^2}{2}=2(S')^2.
+\end{align*}
+A common divisor of $A',B'$ divides their sum $t$ and difference $u$,
+so the new triangle is primitive.  Finally,
+\[
+ 0<C'=r\leq r^2=m<m^2+n^2=C.
+ \tag{7}
+\]
+This completes the explicit descent step.
+
+For its \iPRA\ implementation, let $G$ be the Boolean predicate that a
+quadruple is positive, satisfies (2), and has coprime legs.  On a valid input,
+let $D$ carry out the leg exchange, the bounded square-root extractions in
+(3) and (5), and formula (6).  On an invalid input let $D$ return the zero
+quadruple.  Bounded integer square root, gcd, exact quotient, comparison,
+and tuple coding are primitive recursive, so this defines a total
+primitive-recursive function.  The preceding paragraphs prove (D) with
+$\rho(a,b,c,s)=c$.  Lemma~\ref{lem:finite-descent} therefore proves that
+$G$ is always false.  Normalization then rules out (2) without the
+coprimality condition.
+
+For the rational statement, suppose positive rationals $a,b,c$ satisfy
+$a^2+b^2=c^2$ and $ab/2=q^2$ with $q\ne0$.  Take the product $L>0$ of the
+positive denominators of $a,b,c,q$.  The numbers
+$La,Lb,Lc,L|q|$ are positive integers satisfying (2), a contradiction.
+The product of denominators is a specified primitive-recursive operation;
+no least common denominator is needed.
+\end{proof}
+
+The proof has a useful complexity audit.  On a valid state of hypotenuse
+$C$, the parameter searches need inspect no integer exceeding $C$.
+The next state's coordinates are all at most $C$: the two legs are smaller
+than the new hypotenuse, and its square-area root is smaller than that
+hypotenuse as well.  Iteration for exactly the original $C$ steps is
+therefore more than sufficient.  The contradiction concerns the purported
+input itself, so it does not require an a priori bound on all possible
+counterexamples.
+
+\begin{corollary}[A quartic obstruction]\label{cor:quartic-obstruction}
+There are no positive integers $x>y$ and $z$ with $x^4-y^4=z^2$.
+In particular $a^4+b^4=c^4$ has no solution in positive integers.
+\end{corollary}
+
+\begin{proof}
+A solution of the first equation would give the integer right triangle
+\[
+ \bigl(2x^2y^2,\ x^4-y^4,\ x^4+y^4\bigr).
+\]
+The identity $(2uv)^2+(u^2-v^2)^2=(u^2+v^2)^2$, with $u=x^2$ and
+$v=y^2$, verifies that it is right-angled.  Its area is
+\[
+ x^2y^2(x^4-y^4)=(xyz)^2>0,
+\]
+contrary to Theorem~\ref{thm:fermat-area}.  For the second assertion,
+$c^4-a^4=(b^2)^2$ would contradict the first, since $c>a>0$.
+\end{proof}
+
+\begin{corollary}[Three rational squares]\label{cor:square-progression}
+There are no rational numbers $r,s,t,d$, with $d\ne0$, for which
+$s^2-r^2=t^2-s^2=d^2$.
+\end{corollary}
+
+\begin{proof}
+Put $R=|r|$, $S=|s|$, $T=|t|$.  Then $T>R\geq0$ and $S>0$.
+The positive rational numbers
+\[
+  T-R,\quad T+R,\quad 2S
+\]
+form a right triangle because
+$(T-R)^2+(T+R)^2=2(T^2+R^2)=4S^2$.
+Its area is $(T^2-R^2)/2=d^2>0$, again a contradiction.
+\end{proof}
+
+\subsection{A rational correspondence with cubic curves}
+
+For a positive rational $n$, write
+\[
+ E_n:\quad y^2=x^3-n^2x.
+\]
+Its projective equation is $Y^2Z=X^3-n^2XZ^2$; after clearing the denominator
+of $n$, this is an integral homogeneous equation in the format used earlier.
+We first keep signs in the triangle coordinates.  This makes the formulas
+mutually inverse without dividing into geometric sign cases.
+
+\begin{theorem}[Congruent-number correspondence]\label{thm:En-correspondence}
+For each positive rational $n$, there are mutually inverse rational maps
+between the following two collections of rational tuples:
+\[
+ \{(a,b,c):a^2+b^2=c^2,\ ab=2n\}
+ \quad\longleftrightarrow\quad
+ \{(x,y):y^2=x^3-n^2x,\ y\ne0\}.
+\]
+They are
+\begin{align}
+ (a,b,c)&\longmapsto
+   \left(\frac{nb}{c-a},\frac{2n^2}{c-a}\right),
+   \label{eq:triangle-to-curve}\\
+ (x,y)&\longmapsto
+   \left(\frac{x^2-n^2}{y},\frac{2nx}{y},
+                     \frac{x^2+n^2}{y}\right).
+   \label{eq:curve-to-triangle}
+\end{align}
+Every indicated denominator is nonzero.  These are primitive-recursive maps
+on reduced rational codes, with any fixed default output outside their stated
+domains.  Thus $E_n$ has a rational point with $y\ne0$ if and only if there
+is a positive rational right triangle of area $n$.
+\end{theorem}
+
+\begin{proof}
+If $(a,b,c)$ is in the first collection, then $ab=2n\ne0$, so $a,b$ are
+nonzero.  Also $c-a\ne0$: otherwise $b^2=c^2-a^2=0$ and hence $b=0$.
+Set $\delta=c-a$, and define $x,y$ by
+\eqref{eq:triangle-to-curve}.  Then $y\ne0$.  The two identities
+\[
+ b^2-\delta^2=2a\delta,\qquad
+ b^2+\delta^2=2c\delta
+\]
+follow by expanding and using $a^2+b^2=c^2$.  They imply
+\[
+ x^2-n^2=ay,\qquad x^2+n^2=cy,
+ \qquad 2nx=by.
+ \tag{8}
+\]
+In addition $ax=anb/\delta=2n^2/\delta=y$.  Multiplying the first
+identity in (8) by $x$ gives
+$x(x^2-n^2)=axy=y^2$, so the image lies on $E_n$.
+The three identities in (8) show that applying
+\eqref{eq:curve-to-triangle} recovers exactly $a,b,c$.
+
+Conversely, let $(x,y)$ lie on $E_n$ with $y\ne0$.  Since
+$y^2=x(x^2-n^2)$, both $x$ and $x^2-n^2$ are nonzero.  Define $a,b,c$
+by \eqref{eq:curve-to-triangle}.  The identity
+\[
+ (x^2-n^2)^2+(2nx)^2=(x^2+n^2)^2
+\]
+gives $a^2+b^2=c^2$, and
+\[
+ ab=\frac{2nx(x^2-n^2)}{y^2}=2n.
+\]
+Furthermore $c-a=2n^2/y\ne0$, so substitution into
+\eqref{eq:triangle-to-curve} returns $x,y$.  This proves both the domain
+checks and the inverse assertions.
+
+For positivity, $ab=2n>0$ makes $a,b$ nonzero with the same sign; also
+$c^2=a^2+b^2>0$.  Replacing $a,b,c$ by their absolute values therefore
+produces positive lengths and preserves both equations.  Conversely a
+positive triangle is already a tuple in the first collection.  All sign
+tests and rational operations are decidable and primitive recursive on
+integer numerator and positive denominator codes.
+\end{proof}
+
+As an exact numerical check, the triangle $(3,4,5)$ has area $6$ and gives
+$(x,y)=(12,36)$ on $E_6$, since $36^2=12^3-36\cdot12$.  Formula
+\eqref{eq:curve-to-triangle} sends it back to $(3,4,5)$.
+
+\begin{theorem}[Complete rational points of $E_1$]\label{thm:E1}
+In the coding of rational projective points, \iPRA\ proves that
+\[
+ E_1(\Q)=\{[0:1:0],\ [0:0:1],\ [1:0:1],\ [-1:0:1]\}.
+ \tag{9}
+\]
+The braces in (9) abbreviate the finite disjunction that every rational
+projective point satisfying the cubic equation is equal to one of the four
+listed points, together with the direct verification that all four are on
+the cubic.
+Projective notation permits either sign; the last displayed point has
+canonical integer code $(1,0,-1)$ under our first-nonzero-positive convention.
+\end{theorem}
+
+\begin{proof}
+Let $[X:Y:Z]$ satisfy $Y^2Z=X^3-XZ^2$.
+The equality $Z=0$ is decidable.  In that case $X^3=0$, so $X=0$, and
+nonzeroness of the coordinate tuple gives $Y\ne0$.  The point is therefore
+$[0:1:0]$.
+
+If $Z\ne0$, put $x=X/Z$ and $y=Y/Z$.  They satisfy
+$y^2=x^3-x$.  The equality $y=0$ is again decidable.  If $y\ne0$,
+Theorem~\ref{thm:En-correspondence} produces a positive rational right
+triangle of area $1$, contradicting Theorem~\ref{thm:fermat-area}.
+Thus $y=0$, and $x(x-1)(x+1)=0$.  Rational equality is decidable and
+$\Q$ has no zero divisors: test $x=0$, and if it is false cancel $x$;
+then test $x-1=0$, and if it is false cancel $x-1$.  This yields
+$x=0$, $x=1$, or $x=-1$.  They give exactly the three affine points in
+(9).  Substitution verifies each of the four displayed projective points.
+\end{proof}
+
+For the usual geometric interpretation, the cubic is nonsingular.  With
+$F=Y^2Z-X^3+n^2XZ^2$, its partial derivatives are
+\[
+ F_X=-3X^2+n^2Z^2,\qquad F_Y=2YZ,\qquad
+ F_Z=Y^2+2n^2XZ.
+\]
+At the unique point at infinity, $F_Z\ne0$.  In the affine chart, simultaneous
+vanishing of $F$ and $F_Y$ gives $y=0$ and $x\in\{0,n,-n\}$.
+At these points $F_X$ is respectively $n^2,-2n^2,-2n^2$, all nonzero.
+The calculation is valid over every characteristic-zero field with $n\ne0$.
+It identifies $E_n$ as a nonsingular plane cubic with a rational distinguished
+point, the customary elliptic-curve situation.  The point classification
+itself is entirely the integer and rational calculation above; it requires
+no group-law or general finite-generation theorem.
+
+\subsection{What the formalization must establish}
+
+The proof naturally separates into five reusable Lean components:
+\begin{enumerate}
+\item The signed-integer and rational-code algebra, including bounded gcd,
+exact division, and the four implications in
+Lemma~\ref{lem:descent-gcd}.
+\item Primitive Pythagorean normalization and the parameter extraction
+of Lemmas~\ref{lem:triangle-normalize} and
+\ref{lem:pythagorean-descent}.
+\item A total function \texttt{descendSquareArea} on quadruple codes, with
+its preservation and strict-decrease theorems proved under the Boolean
+validity hypothesis.
+\item A general finite-iteration lemma using only the displayed
+quantifier-free invariant, followed by
+\texttt{noSquareAreaTriangle}.
+\item The two rational transformations, denominator proofs, inverse
+identities, and the finite disjunction \texttt{rationalPointsE1}.
+\end{enumerate}
+
+The included executable reference file \texttt{code/descent.py} implements
+the arithmetic transformations and checks their identities on exact rational
+examples.  It also implements the total descent map.  A valid input for its
+main descent branch cannot exist, by the theorem; therefore finite testing
+cannot exercise that branch on an actual valid counterexample or replace
+its mathematical proof.  The branch's preservation proof is the symbolic
+calculation (4)--(7).  The remaining formalization task is to check those
+symbolic calculations and their arithmetic preliminaries in Lean, and then
+to connect the fixed algorithms and the indicated quantifier-free
+inductions to the chosen object-theory representation of \iPRA.

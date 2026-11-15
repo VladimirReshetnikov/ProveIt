@@ -1,0 +1,276 @@
+\section{Finite rational volume without measure theory}\label{app:volume}
+
+This appendix supplies the elementary finite-volume
+facts used in \cref{sec:polytope}, keeping that
+reduction within arithmetic instead of appealing
+to arbitrary Lebesgue measurable sets.
+
+A rational polytope is a bounded solution set in
+\(\Q^n\) of finitely many rational weak linear
+inequalities. Explicit bounding inequalities can
+be included. Faces, affine ranks, vertices, and
+simplices are finite rational data.
+Full-dimensional volume will be a rational number.
+
+\subsection{Vertices can be enumerated constructively}
+
+Suppose \(P=\{x:a_i\cdot x\leq b_i,\ i<h\}\)
+has explicit box bounds. Enumerate every
+\(n\)-element subset of rows. For each nonsingular
+square system solve \(a_i\cdot x=b_i\) by rational
+elimination and keep the solution if all
+inequalities hold. Remove duplicates. Call this
+finite list \(V\).
+
+We prove by a bounded construction that every
+rational \(x\in P\) is a convex combination of
+vertices in \(V\). Inspect its tight rows.
+If their rank is \(n\), an independent subset
+already lists \(x\) in \(V\). Otherwise choose
+a nonzero rational vector \(v\) in their common
+nullspace.
+
+Motion along \(v\) in each direction meets a
+constraint, because of the explicit box bounds.
+In the positive direction let
+\[
+ t_+=\min_{a_i\cdot v>0}
+           \frac{b_i-a_i\cdot x}{a_i\cdot v}.
+\]
+Rows in this minimum are not tight, since \(v\)
+annihilates every tight row, so \(t_+>0\).
+The corresponding minimum for \(-v\) gives
+\(t_->0\). Both endpoints
+\(x_+=x+t_+v\) and \(x_-=x-t_-v\) lie in \(P\).
+Each gains an independent tight row: the new row
+does not annihilate \(v\), whereas the span of
+the old tight rows does. Finally,
+\[
+ x=\frac{t_-}{t_++t_-}x_+
+        +\frac{t_+}{t_++t_-}x_-.
+\]
+Repeat at the endpoints. Tight rank increases
+on each branch, so after at most \(n\) stages
+every leaf is in \(V\); there are at most
+\(2^n\) leaves. Products of the branch weights
+give a rational convex combination reconstructing
+the original \(x\).
+
+Conversely each vertex in \(V\) belongs to \(P\),
+and its convex combinations satisfy the defining
+inequalities. Thus \(P=\operatorname{conv}(V)\)
+on rational points. Emptiness and affine dimension
+are decided by finite vertex and rank calculations.
+The argument applies to lower-dimensional
+polytopes too: tight equations restrict the
+allowable directions, and rank growth still
+terminates at vertices of the bounded set.
+
+\subsection{A compatible rational triangulation}
+
+Enumerate nonempty faces by tight subsets of the
+inequality list, identifying duplicates by their
+vertex subsets. Let \(b_F\) be the average of the
+vertices of each face \(F\).
+An inequality not identically tight on \(F\) is
+strict at at least one vertex, hence strict at
+their average. Thus \(b_F\) is in the relative
+interior of \(F\).
+
+For every maximal flag
+\[
+ F_0\subset F_1\subset\cdots\subset F_d=F,
+ \qquad \dim F_i=i,
+\]
+take the simplex with vertices
+\(b_{F_0},\ldots,b_{F_d}\).
+These simplices triangulate \(F\), compatibly
+on all common faces.
+
+In dimension zero this is immediate. Having
+triangulated the facets compatibly, cone each
+boundary simplex to \(b_F\).
+For rational \(x\in F\), \(x\neq b_F\), the ray
+\(b_F+t(x-b_F)\) reaches the boundary at the
+least positive facet ratio, a finite minimum of
+rational numbers. The resulting boundary point
+and the construction in one lower dimension
+give a simplex containing \(x\).
+The first boundary point on the ray is unique;
+together with disjoint relative interiors of
+the boundary simplices, this proves disjoint
+full interiors of the cones. Restrictions agree
+on lower faces because the same face barycenters
+were used throughout.
+
+All recursion is over a finite face list with
+strictly decreasing dimension. Rational affine
+charts are obtained by selecting independent
+vertex differences and solving rational systems.
+
+\subsection{Simplex content and subdivision}
+
+For a full-dimensional simplex define
+\[
+ c([v_0,\ldots,v_n])
+   =\frac{|\det(v_1-v_0,\ldots,v_n-v_0)|}{n!}.
+\]
+Define \(\Vol(P)\) as the sum of these numbers in
+the triangulation just constructed, and as zero
+when \(\dim P<n\).
+
+The determinant boundary identity is
+\begin{equation}\label{eq:boundary}
+ \det(v_1-v_0,\ldots,v_n-v_0)
+ =\sum_{i=0}^n(-1)^i
+      \det(v_0,\ldots,\widehat v_i,\ldots,v_n).
+\end{equation}
+Multilinearity proves it: terms with two copies
+of \(v_0\) vanish; the remaining terms have
+exactly the displayed signs.
+
+Orient the small simplices of a triangulated
+\(n\)-simplex consistently with the ambient
+orientation and sum \cref{eq:boundary}.
+Every interior \((n-1)\)-face occurs twice
+with opposite induced orientations and cancels.
+This incidence fact is finite: at a rational
+relative-interior point of such a face, choose
+a sufficiently small rational displacement to
+either side. A minimum over the finitely many
+other face inequalities supplies a permissible
+size. Coverage gives an incident full simplex
+on each side, and disjoint interiors give at
+most one on each side.
+On an exterior face, subdivision leaves its
+determinant sum unchanged. To verify this last
+claim, choose a rational affine chart of the
+face. The determinant of its \(n\) vertex
+position vectors is a fixed rational multiple
+of the oriented \((n-1)\)-dimensional determinant
+in the chart. If its hyperplane contains the
+origin, the multiple is zero. Otherwise the
+claim is the subdivision identity in dimension
+\(n-1\). Dimension zero starts the induction.
+
+Consequently the oriented determinant sum of
+the small simplices equals that of the original
+simplex. With positive orientation the
+full-dimensional determinants are positive,
+so absolute contents add.
+
+Two finite rational triangulations have a finite
+common refinement: intersect their simplices,
+include the resulting cells and their faces,
+and barycentrically triangulate this cell
+complex. The subdivision identity applied to
+each original simplex shows that both
+triangulations have the same content.
+It also proves additivity for a finite
+face-to-face rational dissection.
+
+\subsection{Monotonicity and covering}
+
+Suppose rational polytopes \(Q_1,\ldots,Q_s\)
+cover every rational point of a bounded
+rational polytope \(P\). Cut a common bounding
+box by all hyperplanes in their inequality
+lists. The result is a finite rational cell
+complex. The sign of each defining linear
+form is constant in the relative interior of
+a cell, and every full-dimensional cell has
+a rational interior barycenter.
+
+For a cell contributing to \(P\), its
+barycenter is in some \(Q_j\) by the assumed
+rational-point coverage. The constant sign
+data put the entire cell in that \(Q_j\).
+Nonnegativity and finite additivity give
+\[
+                    \Vol(P)\leq\sum_{j=1}^s\Vol(Q_j).
+\]
+Lower-dimensional cells have content zero.
+Thus rational-point coverage suffices:
+no sign or floor of an arbitrary real is
+needed for this comparison.
+
+\subsection{Boxes and affine transformations}
+
+For invertible rational \(A\), determinant
+multiplication gives
+\[
+ c([Av_0+b,\ldots,Av_n+b])
+       =|\det A|\,c([v_0,\ldots,v_n]).
+\]
+A transformed triangulation remains rational.
+Thus
+\[
+                  \Vol(AP+b)=|\det A|\,\Vol(P).
+\]
+Triangulate the unit cube into its \(n!\)
+coordinate-order simplices. Each has absolute
+determinant \(1\) and content \(1/n!\);
+the cube's content is \(1\).
+A diagonal affine map yields
+\[
+ \Vol\!\left(\prod_k[\ell_k,u_k]\right)
+                         =\prod_k(u_k-\ell_k).
+\]
+Degenerate boxes have zero determinant and
+content zero. In particular
+\(\Vol(\lambda P)=\lambda^n\Vol(P)\)
+for positive rational \(\lambda\).
+
+\subsection{Primitive recursive bounds and induction}
+
+Here are coarse explicit bounds. With \(h\)
+inequalities there are at most
+\(\binom hn\) candidate vertices,
+\(2^h\) candidate faces, and
+\((2^h)^{n+1}\) candidate flags.
+A hyperplane refinement has at most \(3^h\)
+sign patterns before infeasible cells are
+discarded. A determinant can be computed by
+its \(n!\) permutation expansion.
+All rank, sign, incidence, minimum, and
+equality tests are rational and decidable.
+
+The splitting tree has depth at most \(n\).
+The triangulation recursion visits only the
+bounded face list. Numerator and denominator
+sizes are bounded by iterating elementary
+growth bounds for rational addition,
+multiplication, and nonzero division through
+the bounded number of operations.
+This gives a primitive recursive bound on
+the complete computation-state codes.
+
+Correctness inductions can be expressed by
+finite invariants. In vertex splitting, the
+current list of nodes satisfies the inequalities;
+its stored coefficients reconstruct the
+original input point; weights are nonnegative
+and sum to \(1\); unfinished nodes gain tight
+rank at the next split. These are all bounded
+Boolean equations. The rational point is a
+numerical parameter, and its whole splitting
+tree is finite. No induction over a statement
+quantifying over every rational point is needed.
+
+The triangulation and determinant arguments
+likewise use a finite face-incidence list,
+compatible boundary lists, and cancellation
+of paired oriented faces.
+Induction runs over the bounded lists of
+faces and flags, storing the verified
+determinant identities for earlier faces.
+These are finite rational equalities.
+Covering is checked on the finite list of
+cell barycenters and sign patterns.
+This gives the quantifier-free form of the
+volume lemmas used in \cref{sec:polytope}.
+
+The bound audit is part of the written proof.
+A complete Lean realization of this appendix
+remains a separate substantial implementation
+task after the smaller certificate theorem.

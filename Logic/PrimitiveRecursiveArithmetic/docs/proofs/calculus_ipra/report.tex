@@ -1,0 +1,1518 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor,microtype,fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage[hypertexnames=false,colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{enumitem}
+\usepackage{listings}
+\setlist{topsep=4pt,itemsep=3pt}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!15}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Constructive calculus in iPRA}
+\fancyhead[R]{\small Explicit finite proofs}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ipra}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\normc}[1]{\left\|#1\right\|_{\mathrm{coef}}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\mesh}{\operatorname{mesh}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\code}[1]{\texttt{#1}}
+\title{The fundamental theorem of calculus\protect\\and the Euler--Maclaurin formula\protect\\in intuitionistic primitive recursive arithmetic}
+\author{A constructive proof package prepared for Vladimir Reshetnikov}
+\date{November 14, 2026}
+\hypersetup{pdftitle={Constructive calculus in intuitionistic primitive recursive arithmetic},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={Explicit finite proofs of FTC and Euler--Maclaurin, with a Lean formalization roadmap},pdfkeywords={iPRA, constructive calculus, fundamental theorem of calculus, Euler-Maclaurin, Bernoulli polynomials}}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We give complete human-readable proofs of an effective fundamental theorem
+of calculus, in both directions, and the finite-order Euler--Maclaurin
+formula.  The mathematical objects are primitive recursive rational
+approximation procedures with explicit regularity certificates.  Every
+analytic equality means an explicitly controlled family of rational
+inequalities.  Integration is constructed from Riemann sums; it is not
+defined by antiderivatives.  The fundamental theorem follows from finite
+refinement estimates and telescoping.  Euler--Maclaurin follows from
+rational Bernoulli polynomials and a finite product identity.  We give a
+fully rational error estimate uniform in the truncation order, and the
+elementary remainder bound
+\(\abs{R_m}\le (b-a)4^{-m}M_{2m}\).
+
+First-order arithmetic cannot quantify over arbitrary real functions.
+Accordingly, the precise results are theorem schemas in fixed primitive
+recursive evaluators, with stated moduli as hypotheses.  The usual
+continuous-function form of FTC II uses a supplied uniform derivative
+modulus.  A separate Riemann-integrable version uses a supplied primitive
+recursive tagged-partition realizer.  These data are not extracted from
+bare qualitative hypotheses by an unmentioned compactness principle.
+
+The package includes exact-arithmetic implementations and checks, an
+uncompiled Lean candidate for the finite arithmetic layer, and a detailed
+route to object-theory proofs in ProveIt's deeply embedded \ipra.  It does
+not claim a completed or kernel-checked Lean formalization.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\section{The results and their precise scope}\label{sec:scope}
+
+The familiar formulas we prove are
+\begin{align}
+ A(x)&=\int_a^x f(t)\dd t \quad\Longrightarrow\quad A'(x)=f(x),
+ \label{eq:ftc1intro}\\
+ H'&=f \quad\Longrightarrow\quad
+ \int_a^b f(t)\dd t=H(b)-H(a),\label{eq:ftc2intro}
+\end{align}
+and, for integers \(a\le b\) and \(m\ge1\),
+\begin{align}
+ \sum_{k=a}^{b}f(k)
+ ={}&\int_a^b f(x)\dd x+\frac{f(a)+f(b)}2\notag\\
+ &+\sum_{s=1}^{m}\frac{B_{2s}}{(2s)!}
+       \bigl(f^{(2s-1)}(b)-f^{(2s-1)}(a)\bigr)+R_m,\label{eq:emintro}\\
+ R_m={}&-\sum_{k=a}^{b-1}\int_0^1
+       \frac{B_{2m}(t)}{(2m)!}f^{(2m)}(k+t)\dd t.\label{eq:rintro}
+\end{align}
+The remainder is part of an exact identity.  We make no assertion that
+the sequence of corrections converges when \(m\) tends to infinity.
+The convention is \(B_1=-1/2\).  Formula \eqref{eq:emintro} agrees with
+the standard finite Euler--Maclaurin formula, for example the equivalent
+version in NIST DLMF \S2.10(i) \cite{dlmfem}.
+
+There is a necessary representational qualification.  The language of
+\ipra\ has number variables, not variables for arbitrary functions
+\(\R\to\R\), sets of real numbers, or arbitrary infinite sequences.
+Here a function is supplied by a \emph{fixed primitive recursive}
+procedure producing rational approximations, together with fixed
+primitive recursive moduli and arithmetic correctness assumptions.
+Each choice of those procedures gives a first-order arithmetic theorem.
+Number parameters inside a fixed procedure are allowed uniformly.
+
+This is substantive: the bounds below supply the number of subdivisions,
+the precision of every evaluation, and the exact finite induction
+invariants.  It would not establish the claimed logical strength merely
+to prove an ordinary theorem about \(\R\) in Lean or to say that all the
+objects are computable.
+
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{.20\textwidth}>{\raggedright\arraybackslash}p{.70\textwidth}}
+\toprule
+Result & Explicit input data\\\midrule
+FTC I & A rational approximation procedure, a uniform continuity modulus,
+and a bound on a rational compact interval.\\
+FTC II, uniform form & The preceding data and an approximation procedure
+for an antiderivative with a uniform first-order remainder modulus.\\
+FTC II, Riemann form & A tagged-sum Cauchy modulus, pointwise derivative
+certificates, and a primitive recursive procedure producing suitable
+finite tagged partitions.\\
+Euler--Maclaurin & A finite derivative jet, or a fixed primitive recursive
+derivative family, with bounds, continuity moduli, and the adjacent
+derivative certificates.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The uniform form is the effective \(C^1\) version used in the main
+construction.  It is not presented as a proof that a qualitative
+pointwise derivative assertion automatically has a primitive recursive
+uniform modulus.  Section~\ref{sec:generalFTC} states the additional
+partition data needed for the more general Riemann-integrable version.
+In particular, we do not claim the unrestricted set-theoretic theorems
+as single sentences of first-order \ipra.
+
+\section{The arithmetic foundation}\label{sec:foundation}
+
+\subsection{Logic, induction, and coding}
+
+Use first-order intuitionistic logic with equality, \(0\), successor,
+and a symbol for each primitive recursive function.  Include their
+defining equations, successor injectivity, \(Sx\ne0\), and induction for
+quantifier-free formulas, with parameters.  This is the ordinary
+presentation of \ipra\ formalized by \code{PRAAx} in ProveIt's
+\code{ConciseIPRA/PR.lean} \cite{prsource}.  Its underlying proof system
+is intuitionistic natural deduction.  No unrestricted excluded middle,
+choice principle, Markov principle, or induction for arbitrary formulas
+is used here.
+
+Signed integers are coded by natural numbers, for example by a sign and
+magnitude.  A rational is a pair consisting of a signed numerator and a
+positive denominator; store the denominator as \(d+1\).  Rational
+comparison is signed-integer cross multiplication.  Intermediate
+arithmetic pairs need not be reduced, but every rational argument passed
+to an input evaluator is first put in a fixed canonical representation.
+Reduction uses the greatest common divisor, obtainable by bounded search
+through the positive common divisors, and is primitive recursive.
+Thus equal rational grid nodes give literally the same evaluator input,
+including shared cell endpoints.  Finite lists can be coded by primitive
+recursive pairing and projection functions, with an explicit length.
+All lists, polynomials, partitions, sums, and bounded maxima in this
+paper are such finite codes.  Rational division is used only when the
+denominator has an explicitly verified positive or nonzero rational
+value.
+
+Every bounded quantifier in a proposed induction invariant can be
+replaced by a primitive recursive Boolean fold.  Thus
+\(\forall i<n\,C(i)\), for a decidable arithmetic test \(C\), becomes
+\(\operatorname{all}_{i<n}\chi_C(i)=1\).  A finite triangle inequality,
+a polynomial coefficient identity, or a bound on a finite list then
+has a genuinely quantifier-free formulation.  The universal data
+assumptions stay in the side context and are instantiated at the
+indices occurring in each step.  They are not the induction formula.
+
+Write
+\[
+ \eps_k=2^{-k}.
+\]
+For a nonnegative rational \(z\), let \(\sigma(z)\) be a natural number
+such that
+\begin{equation}
+ 2^{\sigma(z)}\ge\max(1,z).\label{eq:sigma}
+\end{equation}
+For definiteness take the least such number within
+\(0,\ldots,\lceil z\rceil+1\).  This is bounded search, hence primitive
+recursive; the bound exists since \(2^n\ge n+1\), by quantifier-free
+induction.  No logarithm oracle is being assumed.  The notation
+\(\sigma\) merely makes precision schedules readable.
+
+\subsection{A schema, not a universal evaluator}
+
+Expressions such as \(F(x,p)\) and \(\mu(k)\) stand for fixed primitive
+recursive definitions.  A displayed proof is a proof template under
+substitution of those definitions.  We do not add a supposedly primitive
+recursive evaluator for all primitive recursive programs.  Such a
+universal evaluator is not available.  Relative primitive recursion is
+only metanotation here: substituting fixed primitive recursive input
+maps into the constructions produces ordinary primitive recursive
+maps.
+
+For a fixed order \(m\), the Euler--Maclaurin schema can take finitely
+many independently supplied derivative evaluators.  If \(m\) is itself
+a number variable, use one fixed map \(F(j,x,p)\), and fixed maps for
+its bounds and moduli, with derivative index \(j\) as an additional
+number argument.  The assumptions for a chosen order concern only
+\(j\le2m\).  Section~\ref{sec:finiteEM} proves the required uniform
+finite estimate without induction on an analytic assertion.
+
+\subsection{Eliminating limiting shorthand}\label{sec:closure}
+
+\begin{lemma}[Rational closure]
+If rationals \(u,v,C\), with \(C\ge0\), satisfy
+\(u\le v+C2^{-n}\) for every natural number \(n\), then \(u\le v\).
+\end{lemma}
+\begin{proof}
+Compare the rationals \(u,v\), a decidable operation.  If \(u>v\), write
+\(u-v=w/d\) with integers \(w,d\ge1\), and choose an integer
+\(D\ge\max(1,C)\).  At the explicitly bounded index \(n=Dd+1\),
+\(2^n\ge n+1>Dd\), so \(C2^{-n}<1/d\le u-v\), a contradiction.
+The other branch is already \(u\le v\).  This is rational decidability,
+not excluded middle for order on real names.
+\end{proof}
+
+When a proof below says that an auxiliary error tends to zero, first
+fix the output approximation index.  The remaining assertion is an
+inequality between rationals, and the lemma eliminates the auxiliary
+error.  Alternatively, select that error below any requested dyadic
+tolerance using \eqref{eq:sigma}.  No completeness axiom or unbounded
+search is needed.  When an equality of represented quantities is used
+inside a finite sum, the indices can be chosen simultaneously by a
+bounded maximum.  Section~\ref{sec:finiteEM} gives this selection in full
+for the longest argument in the paper.
+
+\section{Names and certified function data}\label{sec:names}
+
+\begin{definition}[Regular rational name]
+A regular name is a fixed primitive recursive sequence \(X(p)\in\Q\)
+with the arithmetic promise
+\begin{equation}
+ \abs{X(p)-X(q)}\le\eps_p+\eps_q\qquad(p,q\in\N).\label{eq:name}
+\end{equation}
+Two names represent the same number if
+\(\abs{X(p)-Y(q)}\le\eps_p+\eps_q\) for all \(p,q\).
+\end{definition}
+
+Reflexivity and symmetry are immediate; transitivity follows by putting
+an intermediate name at precision \(n\), applying the triangle
+inequality, and using rational closure.  A rational is represented by
+its constant sequence.  Addition or subtraction is represented by
+\(X(p+1)\pm Y(p+1)\).  If bounds \(\abs X\le M_X\) and
+\(\abs Y\le M_Y\) are supplied, multiplication is represented by
+\(X(s)Y(s)\), where
+\(s=p+\sigma(2(M_X+M_Y+1))\).  Indeed, its evaluation error is bounded
+by \((M_X+M_Y)\eps_s+\eps_s^2\le\eps_p/2\).
+These statements can all be read as cross-index rational inequalities.
+
+Notation such as \(\abs{X-c}\le d\), for rational \(c,d\), means
+\(\abs{X(p)-c}\le d+\eps_p\) for every \(p\).
+Nonnegativity \(X\ge0\) means \(X(p)\ge-\eps_p\) for every \(p\).
+Likewise \(\abs{X-Y}\le d\) means the corresponding cross-index
+inequality with \(\eps_p+\eps_q\) added.  Real-number notation below
+is an abbreviation for this arithmetic, not an additional object sort.
+
+Fix a rational interval \([a,b]\), with \(a\le b\), and set \(L=b-a\).
+Choose once and for all \(s=\sigma(L)\).  The same \(s\) is used for
+every subinterval.  An admissible uniformly continuous function consists
+of a fixed primitive recursive rational evaluator \(F(x,p)\), a
+primitive recursive modulus \(\mu\), and an integer \(M\ge1\), with
+the following promises for rational arguments in \([a,b]\):
+\begin{align}
+ \abs{F(x,p)-F(x,q)}&\le\eps_p+\eps_q,\tag{C}\label{eq:C}\\
+ \abs{F(x,p)}&\le M+\eps_p,\tag{B}\label{eq:B}\\
+ \abs{x-y}\le2^{-\mu(k)}\quad&\Longrightarrow\quad
+ \abs{F(x,p)-F(y,q)}\le\eps_k+\eps_p+\eps_q.\tag{U}\label{eq:U}
+\end{align}
+We write \(f(x)\) for the name \(p\mapsto F(x,p)\).  Normalize the
+modulus, if necessary, by
+\begin{equation}
+ \mu(k)=k+\max_{i\le k}\mu_{\mathrm{old}}(i).\label{eq:munormal}
+\end{equation}
+This preserves (U), is primitive recursive, and satisfies
+\(\mu(k+1)\ge\mu(k)+1\) and \(\mu(k)\ge k\).
+
+The bound (B) can be derived from (U), so it does not hide a compactness
+theorem.  Let \(N=\max(1,\lceil L2^{\mu(0)}\rceil)\).  Subdivide
+\([a,x]\) into \(N\) equal pieces.  At common precision \(p\), each
+increment of \(F\) has magnitude at most \(1+2\eps_p\le3\), and
+\(\abs{F(a,p)}\le\abs{F(a,0)}+1+\eps_p\).  Thus
+\(M=\max(1,\lceil\abs{F(a,0)}\rceil+1+3N)\) is a valid explicit bound.
+
+\begin{definition}[Uniform derivative certificate]\label{def:derivative}
+Let \(H(x,p)\) be another coherent evaluator.  A primitive recursive
+\(\nu\) certifies that \(H'=f\) if, whenever
+\(\abs{y-x}\le2^{-\nu(k)}\),
+\begin{equation}
+ \abs{H(y,p)-H(x,p)-(y-x)F(x,p)}
+ \le\abs{y-x}\eps_k+(2+\abs{y-x})\eps_p.\tag{D}\label{eq:D}
+\end{equation}
+All arguments in this promise are rational and belong to the interval.
+\end{definition}
+
+The last term is essential: two antiderivative evaluations and one
+derivative evaluation are being rounded.  In name notation (D) says
+\[
+ \abs{H(y)-H(x)-(y-x)f(x)}\le\abs{y-x}\eps_k.
+\]
+It is a division-free quantitative definition of differentiability.
+For a nonzero rational increment it implies the usual difference-quotient
+estimate.  The case \(x=y\) needs no special decision on real equality.
+
+\section{Constructing the integral from finite sums}\label{sec:integral}
+
+For rationals \(u\le v\) in the interval and an integer \(N\ge1\), set
+\begin{equation}
+ S_{N,p}(u,v)=\frac{v-u}{N}\sum_{i=0}^{N-1}
+ F\!\left(u+i\frac{v-u}{N},p\right).\label{eq:sum}
+\end{equation}
+This is a primitive recursive rational expression.
+
+\subsection{The finite refinement estimate}
+
+If a partition is refined and each old sample is repeated over its
+subcells, the weighted sum is unchanged: the subcell lengths sum to the
+parent length.  This is a finite distributive identity.  If instead
+each repeated sample is replaced by a sample at a nearby tag, (U) bounds
+the change by the total length times the common pointwise error.
+
+For two uniform left sums, use their common subdivision into \(NM\)
+pieces.  On a subcell, the two relevant left endpoints both lie to the
+left of its points; their distance is at most the larger original mesh.
+Consequently, if both meshes are at most \(2^{-\mu(k)}\),
+\begin{equation}
+ \abs{S_{N,p}(u,v)-S_{M,q}(u,v)}
+ \le (v-u)(\eps_k+\eps_p+\eps_q).\label{eq:refine}
+\end{equation}
+The same argument works for arbitrary rational partitions with left
+tags, by their finite common refinement.  Only comparisons of rational
+endpoints are needed.
+
+For completeness, a refinement can be avoided altogether.  For cells
+\([x_i,x_{i+1}]\) and \([y_j,y_{j+1}]\), assign the rational overlap
+weight
+\[
+ w_{ij}=\max\bigl(0,\min(x_{i+1},y_{j+1})-\max(x_i,y_j)\bigr).
+\]
+Its row and column sums are the respective cell lengths.  For a fixed
+row interval \([\alpha,\beta]\), put
+\(C(t)=\min(\beta,\max(\alpha,t))\).  Rational order cases give
+\(w_{ij}=C(y_{j+1})-C(y_j)\), so the row sum telescopes to
+\(\beta-\alpha\); the column proof is identical.  These are
+quantifier-free finite inductions.  Rewrite both sums with these weights
+and subtract.  For arbitrary tags, overlapping cells give tag distance
+at most the sum of the two meshes.  Thus meshes at most
+\(2^{-\mu(k+1)}\) suffice for the same estimate, using
+\eqref{eq:munormal}.  This explicit observation will also justify
+additivity and tagged-sum comparisons.
+
+\subsection{A canonical primitive recursive name}
+
+Put
+\begin{equation}
+ c_k=k+s+4,\qquad N_k=2^{s+\mu(c_k)},\qquad
+ I_{u,v}(k)=S_{N_k,c_k}(u,v).\label{eq:integralname}
+\end{equation}
+The mesh is at most \(2^{-\mu(c_k)}\).  If \(k\le l\), \(N_l\) is
+a multiple of \(N_k\), and \eqref{eq:refine} gives
+\begin{align}
+ \abs{I_{u,v}(k)-I_{u,v}(l)}
+ &\le(v-u)(2\eps_{c_k}+\eps_{c_l})\notag\\
+ &\le\frac{\eps_k}{8}+\frac{\eps_l}{16}.\label{eq:integralcauchy}
+\end{align}
+For \(l<k\), interchange them.  In particular this is a regular name.
+Define \(\int_u^v f\) to be this name, \(\int_u^u f=0\), and
+\(\int_v^u f=-\int_u^v f\).  No existence theorem for limits is used:
+\eqref{eq:integralname} is the definition of the output procedure, and
+\eqref{eq:integralcauchy} is its proved arithmetic certificate.
+
+If \((v-u)/N\le2^{-\mu(k)}\), comparison with sufficiently fine
+canonical sums and rational closure yield
+\begin{equation}
+ \abs{\int_u^v f-S_{N,p}(u,v)}
+ \le(v-u)(\eps_k+\eps_p).\label{eq:quaderror}
+\end{equation}
+To read this entirely arithmetically, fix an index \(j\) of the name
+on the left and add \(\eps_j\) to the right.  Apply
+\eqref{eq:refine} with a canonical sum at index \(l\), use
+\eqref{eq:name} between indices \(j,l\), and eliminate its explicitly
+vanishing errors by Section~\ref{sec:closure}.  This proves every
+rational instance of \eqref{eq:quaderror}.
+
+\subsection{Basic integral rules}
+
+\begin{proposition}\label{prop:integralrules}
+The constructed integral is additive in adjacent rational intervals,
+linear over the rationals, and satisfies
+\[
+ \abs{\int_u^v f}\le M\abs{v-u}.
+\]
+If \(f\ge0\), then \(\int_u^v f\ge0\) for \(u\le v\).
+If \(\abs{f-g}\le C\), then
+\(\abs{\int_u^v f-\int_u^v g}\le C\abs{v-u}\).
+\end{proposition}
+\begin{proof}
+For additivity, compare the canonical partition of \([u,v]\) at index
+\(k\) with the union of the canonical partitions of \([u,w]\) and
+\([w,v]\), using the same global \(s\).  All sample precisions are
+\(c_k\).  The overlap argument with arbitrary tags, at precision
+\(c_k-1\), gives
+\begin{equation}
+ \abs{I_{u,v}(k)-I_{u,w}(k)-I_{w,v}(k)}
+ \le4(v-u)\eps_{c_k}\le\eps_k/4.\label{eq:addfinite}
+\end{equation}
+This all-precision estimate proves equality of the represented names,
+after the fixed shift used for adding names.  Reversing endpoints gives
+all other orderings.
+
+Linearity is the distributive law for a common finite partition.  Use
+\eqref{eq:quaderror} to compare that partition with each canonical
+integral, adjusting sample precisions for scalar factors by
+\eqref{eq:sigma}.  The finite sums for a bounded or nonnegative
+function have the asserted bounds, with the evaluation errors added.
+Rational closure removes those errors.  The last assertion follows by
+linearity and the same estimate applied to \(f-g\).
+\end{proof}
+
+The rules also apply to products of bounded uniformly continuous data.
+For example, if \(f,g\) have bounds \(M_f,M_g\), the elementary identity
+\[
+ f(x)g(x)-f(y)g(y)
+ =f(x)(g(x)-g(y))+g(y)(f(x)-f(y))
+\]
+provides a product modulus
+\[
+ \mu_{fg}(k)=\max\{\mu_f(k+\sigma(2M_g)),
+                       \mu_g(k+\sigma(2M_f))\}.
+\]
+Evaluating both factors with the multiplication shift from
+Section~\ref{sec:names} provides the required name.  Sums and scalar
+products have equally explicit moduli.  These facts establish the
+integrability of every product used later.
+
+\section{The fundamental theorem of calculus}\label{sec:FTC}
+
+\subsection{FTC I: integration produces a certified derivative}
+
+\begin{theorem}[Effective FTC I]\label{thm:ftc1}
+From (C), (B), and (U), the primitive recursive evaluator
+\[
+ G(x,p)=I_{a,x}(p)
+\]
+defines \(A(x)=\int_a^x f\), and satisfies the derivative certificate
+\eqref{eq:D} with \(H=G\) and \(\nu=\mu\).
+For \(a<b\), this means \(A'=f\), with one-sided derivatives at the
+interval endpoints.  For \(a=b\), the zero integral and division-free
+certificate remain valid, without asserting an ordinary derivative on
+a singleton domain.
+\end{theorem}
+\begin{proof}
+Let \(h=y-x\) and \(\abs h\le2^{-\mu(k)}\).  Every point between
+\(x,y\) is within that distance of \(x\).  For each summand of the
+canonical oriented integral over this interval, (U) gives
+\[
+ \abs{F(t,c_p)-F(x,p)}\le\eps_k+\eps_{c_p}+\eps_p.
+\]
+Multiplying by the cell lengths and adding yields the exact rational
+bound
+\begin{equation}
+ \abs{I_{x,y}(p)-hF(x,p)}
+ \le\abs h(\eps_k+\eps_{c_p}+\eps_p).\label{eq:localintegral}
+\end{equation}
+Here \(I_{x,y}\) is signed if \(y<x\).  By
+\eqref{eq:addfinite},
+\[
+ \abs{G(y,p)-G(x,p)-I_{x,y}(p)}\le\eps_p/4.
+\]
+Also \(\abs h\le1\), since \(\mu(k)\ge0\), and
+\(\eps_{c_p}\le\eps_p/16\).  Combining these facts gives
+\[
+ \abs{G(y,p)-G(x,p)-hF(x,p)}
+ \le\abs h\eps_k+(2+\abs h)\eps_p,
+\]
+as asserted.  This argument already proves the literal rational
+certificate; it does not first appeal to a theorem about real limits.
+
+In name notation the same argument is the familiar estimate
+\begin{equation}
+ \abs{A(y)-A(x)-f(x)(y-x)}
+ =\abs{\int_x^y(f(t)-f(x))\dd t}
+ \le\abs{y-x}\eps_k.\label{eq:ftc1error}
+\end{equation}
+At nonzero rational \(h\), division by \(\abs h\) gives the
+difference-quotient bound.  At \(h=0\), the division-free inequality
+remains valid.  No integral mean-value theorem has been used.
+\end{proof}
+
+Proposition~\ref{prop:integralrules} also gives
+\(\abs{A(y)-A(x)}\le M\abs{y-x}\), so the constructed primitive is
+Lipschitz.  Its continuity modulus can be taken as \(k+\sigma(M)\)
+in name notation, with a harmless extra shift for the evaluator.
+
+\subsection{FTC II: local errors telescope}
+
+\begin{theorem}[Effective uniform FTC II]\label{thm:ftc2}
+Suppose \(f\) has (C), (B), (U), and a coherent evaluator \(H\) has
+the supplied derivative certificate (D).  Then
+\[
+ \int_a^b f=H(b)-H(a)
+\]
+as equality of names.  Every requested precision has an explicit
+primitive recursive finite proof.
+\end{theorem}
+\begin{proof}
+If \(L=0\), both sides are zero.  Suppose \(L>0\).  On a uniform
+partition \(x_i=a+ih\), \(h=L/N\), assume
+\(h\le2^{-\nu(k)}\).  At common evaluation precision \(p\), sum (D)
+over the \(N\) cells.  The exact same samples at interior endpoints
+cancel, so
+\begin{equation}
+ \abs{H(b,p)-H(a,p)-S_{N,p}(a,b)}
+ \le L\eps_k+(2N+L)\eps_p.\label{eq:finiteFTC}
+\end{equation}
+This is a finite triangle inequality followed by the algebraic identity
+\(\sum_{i<N}(H(x_{i+1},p)-H(x_i,p))=H(b,p)-H(a,p)\).
+The term \(2N\eps_p\) records the local evaluation errors; it must
+not be dropped just because endpoint samples telescope.
+
+For a requested accuracy \(\eps_r\), choose
+\begin{align}
+ k&=r+s+4,\notag\\
+ N&=2^{s+\max(\mu(k),\nu(k))},\notag\\
+ p&=r+\sigma(2N+2L+2)+4.\label{eq:FTCprecision}
+\end{align}
+The mesh meets both moduli.  Combine \eqref{eq:finiteFTC},
+\eqref{eq:quaderror}, and the two endpoint evaluation errors.  The
+resulting bound on the represented difference is
+\begin{align*}
+ \abs{H(b)-H(a)-\int_a^b f}
+ &\le 2L\eps_k+(2N+2L+2)\eps_p\\
+ &\le\eps_r/8+\eps_r/16<\eps_r.
+\end{align*}
+Every term in \eqref{eq:FTCprecision} is primitive recursive.  Since
+\(r\) was arbitrary, the names are equal.  More literally, fix the
+indices of the names being compared, retain their radius terms, and
+use rational closure on the auxiliary \(r\).  This proves the
+cross-index definition of equality from Section~\ref{sec:names}.
+\end{proof}
+
+\subsection{Arguments given as real names}
+
+The rational-point statements determine the usual effective real
+functions.  Here are the explicit details.  Let \(X(n)\) be a fixed
+primitive recursive regular name for an interval point, with its
+rational approximants clamped to \([a,b]\).  Rational clamping is
+primitive recursive and does not change a name representing an interval
+point.  Define
+\begin{equation}
+ \widehat F(X,p)=F\bigl(X(\mu(p+2)+2),p+2\bigr).\label{eq:extend}
+\end{equation}
+For \(p\le q\), the two selected rational arguments differ by at most
+\(2\eps_{\mu(p+2)+2}\le2^{-\mu(p+2)}\).  Hence (U) gives
+\[
+ \abs{\widehat F(X,p)-\widehat F(X,q)}
+ \le2\eps_{p+2}+\eps_{q+2}.
+\]
+This is a regular name.  The same calculation for equivalent input
+names proves that \eqref{eq:extend} respects represented equality;
+the output discrepancy tends to zero with an explicit index shift.
+The Lipschitz primitive \(A\) is extended by the identical construction
+using its computed modulus.
+
+To transfer \eqref{eq:ftc1error} to two named interval points, leave a
+dyadic margin.  The modulus
+\(\mu(k+1)+1\) ensures that sufficiently accurate rational
+representatives are within \(2^{-\mu(k+1)}\), under the antecedent
+\(\abs{Y-X}\le2^{-(\mu(k+1)+1)}\).  Apply the rational
+estimate and let only the explicitly bounded approximation errors
+decrease.  Rational closure, at fixed output indices, yields
+\[
+ \abs{A(Y)-A(X)-f(X)(Y-X)}\le\eps_k\abs{Y-X}.
+\]
+Thus FTC I holds at every admissible primitive recursive named argument.
+Difference quotients for a named nonzero increment require an
+\emph{apartness witness}, such as \(\abs h\ge2^{-d}>0\), to compute
+its reciprocal.  The division-free statement requires no such
+witness, and never decides real trichotomy.  This extension remains a
+schema in fixed names, not an internal quantification over all real
+sequences.
+
+\section{The Riemann-integrable form of FTC II}\label{sec:generalFTC}
+
+The usual weakest elementary version of FTC II assumes that the
+derivative is Riemann integrable, rather than continuous.  The uniform
+modulus in Definition~\ref{def:derivative} is stronger data than bare
+pointwise differentiability.  We therefore state a separate precise
+arithmetic theorem that exposes the partition information needed in
+that version.
+
+The case \(L=0\) is the identity \(0=H(a)-H(a)\), so assume \(L>0\)
+in this section.  Let \(F\) satisfy coherence and boundedness on
+rational arguments.  A
+tagged rational partition \(P\) consists of
+\(a=x_0<\cdots<x_N=b\), with rational tags
+\(t_i\in[x_i,x_{i+1}]\).  Set
+\[
+ S(P,p)=\sum_{i<N}(x_{i+1}-x_i)F(t_i,p).
+\]
+Supply a primitive recursive tagged-sum modulus \(\rho\) satisfying
+\begin{equation}
+ \begin{split}
+ \mesh(P),\mesh(Q)\le2^{-\rho(k)}\quad\Longrightarrow\quad
+ \abs{S(P,p)-S(Q,q)}\le\eps_k+L(\eps_p+\eps_q).
+ \end{split}\tag{R}\label{eq:Riemann}
+\end{equation}
+The quantifiers over \(P,Q\) are quantifiers over finite natural-number
+codes with validity tests.  Replace \(\rho(k)\), if necessary, by
+\(\max_{i\le k}\rho_{\mathrm{old}}(i)\), so it is nondecreasing;
+this preserves (R).  Canonical uniform sums, with mesh controlled
+by \(\rho(k+4)\) and sample precision \(k+s+4\), give a regular
+primitive recursive integral name.  Indeed for indices \(k\le l\),
+\eqref{eq:Riemann} bounds their difference by
+\(\eps_{k+4}+L(\eps_{k+s+4}+\eps_{l+s+4})\), which is smaller than
+\(\eps_k+\eps_l\).  Any tagged sum with mesh at most
+\(2^{-\rho(k)}\) approximates this integral within
+\(\eps_k+L\eps_p\), by rational closure.
+
+This is a rational evaluation interface.  If one starts externally with
+an ordinary Riemann-integrable real function and also supplies a
+primitive recursive evaluator and a primitive recursive tagged-sum
+modulus with the stated certificates, its modulus supplies (R) on
+rational tags and the represented integral is its usual integral.
+Qualitative Riemann integrability alone does not supply those primitive
+recursive data.  We do not infer ordinary Riemann integrability of
+an arbitrary discontinuous real extension merely from its values on
+the rationals.  Unlike the uniform-continuity case, those values alone
+need not determine a real function.
+
+Suppose the antiderivative evaluator \(H\) is coherent, in the sense of
+(C), and has the pointwise certificate
+\begin{equation}
+ \begin{split}
+ \abs{u-t}\le2^{-\nu(t,k)}\quad\Longrightarrow\quad
+ \abs{H(u,p)-H(t,p)-(u-t)F(t,p)}\\
+ \le\abs{u-t}\eps_k+(2+\abs{u-t})\eps_p
+ \end{split}\tag{PD}\label{eq:PD}
+\end{equation}
+at rational tags.  Finally, supply a primitive recursive procedure
+\(\mathcal P(k)\) returning a valid tagged partition with
+\begin{equation}
+ \mesh(\mathcal P(k))\le2^{-\rho(k)},\qquad
+ \abs{x_i-t_i},\abs{x_{i+1}-t_i}\le2^{-\nu(t_i,k)}.
+ \tag{P}\label{eq:partitionwitness}
+\end{equation}
+The existence and correctness of this procedure are explicit hypotheses.
+
+\begin{theorem}[FTC II with effective tagged divisions]\label{thm:taggedFTC}
+Under (R), (PD), and (P),
+\(\int_a^b f=H(b)-H(a)\) as equality of names.
+\end{theorem}
+\begin{proof}
+Apply (PD) at tag \(t_i\) to both endpoints of its cell and subtract.
+The two values \(H(t_i,p)\) cancel exactly.  Since the tag lies in the
+cell,
+\(\abs{x_i-t_i}+\abs{x_{i+1}-t_i}=x_{i+1}-x_i\).
+Thus the cell error is at most
+\((x_{i+1}-x_i)\eps_k+(4+x_{i+1}-x_i)\eps_p\).
+Summing and telescoping gives
+\begin{equation}
+ \abs{H(b,p)-H(a,p)-S(\mathcal P(k),p)}
+ \le L\eps_k+(4N+L)\eps_p.\label{eq:taggedfinite}
+\end{equation}
+Using (R) and the two endpoint radii, the represented error is at most
+\[
+ (L+1)\eps_k+(4N+2L+2)\eps_p.
+\]
+For target precision \(r\), take
+\[
+ k=r+\sigma(L+1)+4,\qquad
+ p=r+\sigma(4N+2L+2)+4,
+\]
+where \(N\) is the length of the already computed
+\(\mathcal P(k)\).  Each term is at most \(\eps_r/16\).
+All computation is primitive recursive, and all reasoning is finite.
+\end{proof}
+
+Under a uniform derivative modulus, (P) is supplied by a sufficiently
+fine uniform grid, so this theorem includes the previous situation.
+For a more general function an adaptive partition algorithm, with its
+proved primitive recursive bound, may supply (P).
+
+One must not discard (P) and cite a qualitative Cousin lemma or compactness
+principle.  Even an arbitrary positive gauge given only on rational
+tags need not have a rational tagged fine partition: externally, choose
+each gauge radius smaller than the distance of its rational tag from a
+fixed irrational point.  No cell tagged within such a radius can contain
+that point.  The finite certificate is therefore a material condition,
+not an automatic consequence of the rational pointwise statement.
+This explicitly describes both the strength and the limitation of the
+general Riemann version proved here.
+
+\section{Integration by parts from finite algebra}\label{sec:parts}
+
+For rational arrays \(u_i,v_i\), put
+\(\Delta u_i=u_{i+1}-u_i\) and \(\Delta v_i=v_{i+1}-v_i\).
+The exact identity
+\begin{equation}
+ u_{i+1}v_{i+1}-u_iv_i
+ =u_i\Delta v_i+v_i\Delta u_i+\Delta u_i\Delta v_i
+ \label{eq:productfinite}
+\end{equation}
+is just multiplication and subtraction.  Its sum telescopes.  This
+identity is the entire algebra behind integration by parts.
+
+Here is a quantitative proof that it gives the usual product rule in
+our framework.  Suppose \(U,V\) are admissible uniformly continuous
+function data, and they and their certified derivatives
+\(u,v\) have respective bounds \(M_U,M_V,A,B\), each at least one.
+For \(h=y-x\), write
+\[
+ E_U=U(y)-U(x)-hu(x),\qquad
+ E_V=V(y)-V(x)-hv(x).
+\]
+If the derivative moduli are met at precision \(t\),
+\(\abs{E_U},\abs{E_V}\le\abs h\eps_t\), and
+\(\abs{\Delta U}\le\abs h(A+1)\),
+\(\abs{\Delta V}\le\abs h(B+1)\).  Subtract the proposed linear
+part from \eqref{eq:productfinite}:
+\[
+ \Delta(UV)-h(Uv+Vu)=U(x)E_V+V(x)E_U+\Delta U\Delta V.
+\]
+Choose
+\begin{align*}
+ t&=k+\sigma(4(M_U+M_V+1)),\\
+ \lambda(k)&=\max\{\nu_U(t),\nu_V(t),
+                   k+\sigma(4(A+1)(B+1))\}.
+\end{align*}
+For \(\abs h\le2^{-\lambda(k)}\) the magnitude of the last display
+is at most
+\[
+ \abs h\bigl((M_U+M_V)\eps_t+(A+1)(B+1)\abs h\bigr)
+ \le\tfrac12\abs h\eps_k.
+\]
+Name evaluation introduces precisely the radius terms of (D), with
+the multiplication shift already specified.  Thus \(UV\) has the
+certified derivative \(Uv+Vu\).  The derivative is integrable by the
+product and sum moduli.  Applying FTC II and linearity gives
+\begin{equation}
+\int_\alpha^\beta U(t)v(t)\dd t
+ =U(\beta)V(\beta)-U(\alpha)V(\alpha)
+       -\int_\alpha^\beta u(t)V(t)\dd t.\label{eq:IBP}
+\end{equation}
+
+The argument used only fixed-precision instances of
+\eqref{eq:productfinite} and the already proved FTC.  In
+Section~\ref{sec:finiteEM} we supply a direct rational version for all
+the products in Euler--Maclaurin at once; this removes any concern about
+repeating name-level equalities under induction on the order.
+
+\section{Bernoulli polynomials by rational recursion}\label{sec:bernoulli}
+
+It is convenient to normalize away the factorials:
+\[
+ P_n(t)=\frac{B_n(t)}{n!},\qquad c_n=P_n(0)=\frac{B_n}{n!}.
+\]
+We construct the polynomials without exponential functions, formal
+infinite series, or analytic integration.  Define
+\begin{equation}
+ P_0=1,\qquad
+ A_n(t)=\int_0^t P_{n-1}(u)\dd u,\qquad
+ P_n(t)=A_n(t)-\int_0^1 A_n(u)\dd u.\label{eq:Pdef}
+\end{equation}
+Both integrals in this definition mean \emph{coefficientwise rational
+polynomial operations}.  For \(\sum_i a_it^i\), the first sends
+\(a_i\) to \(a_i/(i+1)\) in degree \(i+1\); evaluation of that
+antiderivative at rational endpoints is finite arithmetic.  In
+particular, if \(P_{n-1}(t)=\sum_{i=0}^{n-1}a_it^i\), then
+\begin{equation}
+ [t^{i+1}]P_n=\frac{a_i}{i+1},\qquad
+ [t^0]P_n=-\sum_{i=0}^{n-1}\frac{a_i}{(i+1)(i+2)}.\label{eq:Pcoeff}
+\end{equation}
+This is primitive recursion on a finite coefficient table.
+
+\subsection{The required identities, with proofs}
+
+\begin{lemma}\label{lem:Pproperties}
+For \(n\ge1\),
+\begin{align}
+ P_n'&=P_{n-1},&\int_0^1P_n(t)\dd t&=0,\label{eq:Pderiv}\\
+ P_n(1-t)&=(-1)^nP_n(t).&&\label{eq:Preflection}
+\end{align}
+Moreover \(P_1(t)=t-1/2\), and for \(n\ge2\),
+\begin{equation}
+ P_n(1)=P_n(0).\label{eq:Pendpoint}
+\end{equation}
+For odd \(n\ge3\), \(c_n=0\).
+\end{lemma}
+\begin{proof}
+The first two assertions and the formula for \(P_1\) follow immediately
+by the coefficient operations in \eqref{eq:Pdef}.  A polynomial with a
+specified derivative and specified mean over \([0,1]\) is unique:
+the difference has all positive-degree coefficients zero, so is
+constant, and its mean makes that constant zero.
+
+For reflection, use induction on the finite coefficient identity.
+It holds for \(P_0=1\).  If it holds at \(n-1\), the polynomial
+\(Q(t)=(-1)^nP_n(1-t)\) has derivative
+\[
+ Q'(t)=(-1)^{n+1}P_{n-1}(1-t)=P_{n-1}(t).
+\]
+Its coefficientwise integral is zero: the change of variable
+\(u=1-t\) for a polynomial is a finite binomial identity (or follows
+by differentiating its explicit antiderivative at the endpoints).
+Uniqueness proves \(Q=P_n\), hence \eqref{eq:Preflection}.
+
+For \(n\ge2\), coefficientwise integration of the derivative gives
+\(P_n(1)-P_n(0)=\int_0^1P_{n-1}=0\).  If \(n\) is odd and at least
+three, reflection gives \(P_n(1)=-P_n(0)\), so \(2P_n(0)=0\).
+Rational arithmetic yields \(c_n=0\).
+\end{proof}
+
+To identify the convention with the usual Bernoulli numbers, repeated
+use of \(P_n'=P_{n-1}\) gives the finite identity
+\[
+ P_n(t)=\sum_{j=0}^n c_j\frac{t^{n-j}}{(n-j)!},
+ \qquad c_0=1.
+\]
+Its zero mean implies
+\[
+ c_n=-\sum_{j=0}^{n-1}\frac{c_j}{(n-j+1)!}.
+\]
+Multiplying by \((n+1)!\) gives
+\(\sum_{j=0}^{n}\binom{n+1}{j}B_j=0\) for \(n\ge1\), the
+standard triangular Bernoulli recurrence.  Thus these are the standard
+polynomials and numbers, with \(B_1=-1/2\), consistently with
+\cite{dlmfbernoulli,dlmfproperties}.
+
+For reference,
+\begin{align*}
+ P_1(t)&=t-\tfrac12,\\
+ P_2(t)&=\tfrac12t^2-\tfrac12t+\tfrac1{12},\\
+ P_3(t)&=\tfrac16t^3-\tfrac14t^2+\tfrac1{12}t,\\
+ P_4(t)&=\tfrac1{24}t^4-\tfrac1{12}t^3+\tfrac1{24}t^2-\tfrac1{720}.
+\end{align*}
+In particular \(c_2=1/12\), \(c_4=-1/720\), and \(c_6=1/30240\).
+
+\subsection{Polynomial bounds and derivative certificates}
+
+For \(P=\sum a_it^i\), put \(\normc P=\sum_i\abs{a_i}\).
+For rational \(t\in[0,1]\),
+\(\abs{P(t)}\le\normc P\).  From \eqref{eq:Pcoeff},
+\begin{equation}
+ \normc{P_n}\le\tfrac32\normc{P_{n-1}}
+ \le(3/2)^n\le2^n.\label{eq:coefbound}
+\end{equation}
+The first inequality follows because the nonconstant coefficients
+contribute at most \(\sum\abs{a_i}\), and the new constant coefficient
+at most \(\tfrac12\sum\abs{a_i}\).
+
+No analytic mean-value theorem is needed for the polynomial derivative
+bounds.  For \(0\le t\le t+h\le1\), factor
+\[
+ (t+h)^d-t^d=h\sum_{v=0}^{d-1}(t+h)^{d-1-v}t^v.
+\]
+Every factor in the sum has magnitude at most one.  Subtracting
+\(dh t^{d-1}\), factoring again, and summing
+\(0+1+\cdots+(d-1)=d(d-1)/2\), gives
+\begin{equation}
+ \abs{(t+h)^d-t^d-dht^{d-1}}
+ \le\tfrac12d(d-1)h^2.\label{eq:monomialremainder}
+\end{equation}
+The same bound with \(\abs h\) holds for reversed endpoints, by
+the algebraic factorization with \(x,y\in[0,1]\).  Summing by
+coefficients proves a Lipschitz bound and a uniform derivative
+certificate for every rational polynomial.  Thus the coefficientwise
+antiderivatives used above also have the corresponding analytic
+integrals by FTC II; the two meanings of polynomial integration agree.
+
+\section{Euler--Maclaurin: the human-readable proof}\label{sec:EM}
+
+Let \(a,b\in\Z\), \(a\le b\), \(r\ge1\), and let
+\(f_0,f_1,\ldots,f_r\) be admissible function data on \([a,b]\), with
+\(f_{j-1}'=f_j\) certified by (D), for \(1\le j\le r\).
+In ordinary notation \(f_j=f^{(j)}\).  Define the cellwise quantities
+\begin{equation}
+ J_j=\sum_{k=a}^{b-1}\int_0^1P_j(t)f_j(k+t)\dd t,
+ \qquad 0\le j\le r.\label{eq:Jdef}
+\end{equation}
+Every integral exists by the explicit product modulus and the
+construction in Section~\ref{sec:integral}.  Translation of a rational
+variable preserves the given moduli.  Finite additivity gives
+\(J_0=\int_a^b f_0\).
+
+Define the cellwise trapezoidal sum
+\begin{equation}
+ T=\frac12\sum_{k=a}^{b-1}\bigl(f_0(k)+f_0(k+1)\bigr).\label{eq:Tdef}
+\end{equation}
+For \(b>a\), this is
+\(\tfrac12f_0(a)+\sum_{a<k<b}f_0(k)+\tfrac12f_0(b)\).
+The cellwise definition makes \(T=0\) when \(a=b\).
+
+Integration by parts on \([0,1]\), using \(P_j'=P_{j-1}\), gives
+\begin{align}
+ &\int_0^1P_j(t)f_j(k+t)\dd t
+  +\int_0^1P_{j-1}(t)f_{j-1}(k+t)\dd t\notag\\
+ &\hspace{2cm}=P_j(1)f_{j-1}(k+1)-P_j(0)f_{j-1}(k).\label{eq:cellparts}
+\end{align}
+For \(j=1\), the right side is
+\((f_0(k+1)+f_0(k))/2\), so
+\begin{equation}
+ T=J_0+J_1.\label{eq:EMbase}
+\end{equation}
+For \(j\ge2\), the endpoints of \(P_j\) agree; summing the right
+side of \eqref{eq:cellparts} telescopes.  Thus
+\begin{equation}
+ J_{j-1}+J_j=c_j\bigl(f_{j-1}(b)-f_{j-1}(a)\bigr).
+ \label{eq:EMrecurrence}
+\end{equation}
+
+Substitute these identities successively into \eqref{eq:EMbase}.
+Equivalently, add \eqref{eq:EMrecurrence} with alternating signs.
+The intermediate \(J_j\)'s cancel and give
+\begin{equation}
+ T=J_0+\sum_{j=2}^r(-1)^jc_j
+       \bigl(f_{j-1}(b)-f_{j-1}(a)\bigr)+(-1)^{r+1}J_r.
+ \label{eq:EMgeneral}
+\end{equation}
+For \(r=1\), the middle sum is empty and this is exactly
+\eqref{eq:EMbase}.  For \(r=2m\), all odd \(c_j\), \(j\ge3\),
+vanish.  Adding \((f_0(a)+f_0(b))/2\) to \(T\) gives the inclusive
+sum, proving \eqref{eq:emintro}--\eqref{eq:rintro}.
+
+When \(a=b\), all cellwise sums and integrals, and all derivative
+differences, are zero.  The endpoint term equals the one-term inclusive
+sum, so the formula remains valid.  Negative integer endpoints cause
+no change; signed integer arithmetic and the nonnegative cell count
+\(b-a\) are primitive recursive.
+
+The notation \(P_r(\{x\})\) can be introduced after the proof as an
+abbreviation for the cellwise integrands.  We do not compute the floor
+of a real name.  In particular, the jump of \(P_1(\{x\})\) at an
+integer causes no continuity assumption across cells.  At orders
+\(r\ge2\), the polynomial endpoints match anyway.
+
+Section~\ref{sec:finiteEM} now supplies the all-orders rational proof
+behind this convenient analytic notation.  Its purpose is to ensure
+that \eqref{eq:EMgeneral} is never justified by applying
+quantifier-free induction to an equality whose meaning contains an
+unbounded precision quantifier.
+
+\section{A fully rational Euler--Maclaurin certificate}\label{sec:finiteEM}
+
+Assume \(L=b-a\ge1\) and \(r\ge1\).  Let an integer \(M\ge1\)
+bound all \(f_j\), \(0\le j\le r\); compute it by a finite maximum
+of the supplied bounds.  Fix a local precision \(q\) and choose
+\begin{equation}
+ \ell\ge\max\{q,\nu_0(q),\ldots,\nu_{r-1}(q)\},
+ \quad H=2^\ell,\quad h=2^{-\ell},\quad p=q+\ell+4.
+ \label{eq:EMschedulelocal}
+\end{equation}
+Here \(\nu_{j-1}\) is the modulus for \(f_{j-1}'=f_j\).
+Put \(\eps=2^{-q}\) and use one common sample precision throughout:
+\(\widehat f_j(x)=F_j(x,p)\).  In particular,
+\(2^{-p}=\eps h/16\).  Formula (D) gives
+\begin{align}
+ \abs{\Delta\widehat f_{j-1}-h\widehat f_j}
+ &\le h\eps+(2+h)2^{-p}\le\tfrac{19}{16}h\eps,
+ \label{eq:rationalderiv}\\
+ \abs{\widehat f_j}&\le M+1,&
+ \abs{\Delta\widehat f_{j-1}}&\le h(M+3).
+ \label{eq:rationalincrement}
+\end{align}
+All evaluations in these statements are at rational points
+\(x=k+ih\), with \(i<H\).
+
+Set
+\begin{equation}
+ C=2^r,\quad D_1=r2^r,\quad D_2=r^22^r,\quad
+ D=2^r(M+1)(r+1)^2.\label{eq:Dconstants}
+\end{equation}
+Equations \eqref{eq:coefbound} and \eqref{eq:monomialremainder}
+prove, for every \(j\le r\) and \(0\le t\le t+h\le1\),
+\begin{equation}
+ \abs{P_j(t)}\le C,\qquad
+ \abs{\Delta P_j}\le D_1h,\qquad
+ \abs{\Delta P_j-hP_{j-1}(t)}\le D_2h^2.
+ \label{eq:Pfinitebounds}
+\end{equation}
+For the last expression take \(j\ge1\).
+
+Apply \eqref{eq:productfinite} to
+\(P_j(t)\widehat f_{j-1}(k+t)\), and subtract its proposed first-order
+term.  The exact rational defect on one fine cell is
+\begin{align}
+ d_{j,k,i}={}&\Delta(P_j\widehat f_{j-1})
+  -h(P_j\widehat f_j+P_{j-1}\widehat f_{j-1})\notag\\
+ ={}&P_j(\Delta\widehat f_{j-1}-h\widehat f_j)
+ +\widehat f_{j-1}(\Delta P_j-hP_{j-1})
+ +\Delta P_j\Delta\widehat f_{j-1}.\label{eq:localdefect}
+\end{align}
+Use \(h\le\eps\) from \eqref{eq:EMschedulelocal}.  Its absolute value
+is at most
+\[
+ h\eps\left(\tfrac{19}{16}C+(M+1)D_2+(M+3)D_1\right)
+ \le hD\eps.
+\]
+For transparency, the last comparison follows from the rational identity
+\[
+ (M+1)(r+1)^2-
+ \left(\tfrac{19}{16}+(M+1)r^2+(M+3)r\right)
+ =r(M-1)+M-\tfrac3{16}>0.
+\]
+
+Define the rational quadratures
+\begin{equation}
+ Q_j=h\sum_{k=a}^{b-1}\sum_{i=0}^{H-1}
+           P_j(ih)\widehat f_j(k+ih).\label{eq:Q}
+\end{equation}
+Let \(b_1\) be the cellwise trapezoidal sum of \(\widehat f_0\), and
+for \(2\le j\le r\) put
+\[
+ b_j=c_j\bigl(\widehat f_{j-1}(b)-\widehat f_{j-1}(a)\bigr).
+\]
+For every \(1\le j\le r\), define
+\(E_j=b_j-Q_{j-1}-Q_j\).
+Summing \eqref{eq:localdefect} over \(H\) fine cells in each of \(L\)
+unit cells telescopes exactly, because repeated endpoints use the same
+sample.  Therefore
+\begin{equation}
+ \abs{E_j}\le LD\eps\quad(1\le j\le r).\label{eq:Ejbound}
+\end{equation}
+The following is an exact identity of rational expressions:
+\begin{equation}
+ b_1=Q_0+\sum_{j=2}^r(-1)^j b_j+(-1)^{r+1}Q_r
+               +\sum_{j=1}^r(-1)^{j+1}E_j.\label{eq:finiteEMidentity}
+\end{equation}
+It follows directly by substituting the definition of \(E_j\);
+each interior \(Q_j\) has coefficient zero.  A finite accumulator
+proof establishes the same identity by quantifier-free induction.
+Combining with \eqref{eq:Ejbound} gives the literal rational estimate
+\begin{equation}
+ \abs{b_1-Q_0-\sum_{j=2}^r(-1)^jb_j-(-1)^{r+1}Q_r}
+ \le LrD2^{-q}.\label{eq:finiteEMbound}
+\end{equation}
+This is the central arithmetic theorem.  Its proof uses no real names,
+integral objects, or quantified-function induction.
+
+\subsection{From the finite certificate to the represented formula}
+
+Also require \(\ell\ge\mu_0(q),\mu_r(q)\).  Then
+\eqref{eq:quaderror}, applied cellwise, gives
+\[
+ \abs{Q_0-J_0}\le L(\eps+2^{-p})\le2L\eps.
+\]
+For the last product, whenever \(0\le t-t_i\le h\),
+\[
+ \abs{P_r(t)f_r(k+t)-P_r(t_i)f_r(k+t_i)}
+ \le C\eps+MD_1h.
+\]
+Its quadrature error, including sample errors, is consequently at most
+\[
+ L\bigl((C+MD_1)\eps+C2^{-p}\bigr)
+ \le LD\eps.
+\]
+Here \(D\ge2C+MD_1\) follows directly from \eqref{eq:Dconstants}.
+The trapezoidal samples have total weight \(L\), so replacing them by
+their names costs at most \(L2^{-p}\).  The endpoint corrections cost
+at most \(2(r-1)C2^{-p}\).  Thus the error of
+\eqref{eq:EMgeneral}, as a represented identity, is bounded by
+\begin{align*}
+ \bigl(LrD+2L+LD+L+2(r-1)C\bigr)\eps
+ &\le7LrD\eps\\
+ &<8LrD\eps.
+\end{align*}
+These comparisons can be stated at fixed indices of the output names,
+adding their radius terms, and then justified by the rational closure
+lemma.  No existence of limits is being invoked.
+
+For a requested output precision \(n\), one completely explicit
+schedule is
+\begin{align}
+ q&=n+\sigma\bigl(8(L+1)(r+1)D\bigr),\notag\\
+ \ell&=\max\{q,\mu_0(q),\mu_r(q),
+                         \nu_0(q),\ldots,\nu_{r-1}(q)\},\notag\\
+ p&=q+\ell+4.\label{eq:EMfinalschedule}
+\end{align}
+Then \(8LrD2^{-q}<2^{-n}\).  The maximum is a bounded scan over the
+given derivative family.  All coefficient lists, evaluation indices,
+and grid sizes are primitive recursive.  The order \(r\) can be a
+number variable throughout this proof.  Only after the finite rational
+argument is complete do we universally generalize the requested
+precision \(n\).  This resolves the quantifier-free-induction issue
+for the all-orders Euler--Maclaurin theorem.
+
+\section{An elementary bound on the remainder}\label{sec:remainder}
+
+A convenient bound using only rational arithmetic is
+\begin{equation}
+ \abs{P_n(t)}\le2^{-n}\qquad(0\le t\le1).\label{eq:halfbound}
+\end{equation}
+It is not claimed to be sharp.  It avoids the \(\pi\), zeta values,
+and Fourier estimates that occur in a customary sharper bound.
+
+There is a short explanation of the contraction.  The normalization
+in \eqref{eq:Pdef} gives the polynomial identity
+\[
+ P_n(t)=\int_0^t uP_{n-1}(u)\dd u
+            -\int_t^1(1-u)P_{n-1}(u)\dd u.
+\]
+It follows either by coefficientwise calculation or by differentiating
+both sides and comparing their zero means.  A bound \(K\) on
+\(P_{n-1}\) therefore gives
+\[
+ \abs{P_n(t)}\le\tfrac K2\bigl(t^2+(1-t)^2\bigr)\le K/2.
+\]
+To justify uniform induction on \(n\) strictly within the stated
+foundation, we give a finite coefficient certificate for this argument.
+
+\subsection{The Bernstein coefficient certificate}
+
+The degree-\(d\) Bernstein basis is
+\[
+ \beta_{d,i}(t)=\binom di t^i(1-t)^{d-i}\quad(0\le i\le d).
+\]
+For rational \(t\in[0,1]\), all basis values are nonnegative and
+their sum is one, by the finite binomial identity.  Therefore a finite
+coefficient bound \(\abs{b_i}\le K\) implies
+\(\abs{\sum_i b_i\beta_{d,i}(t)}\le K\).
+
+Suppose \(P_{n-1}=\sum_{i=0}^{n-1}b_i\beta_{n-1,i}\).  The degree-\(n\)
+Bernstein coefficients of its normalized antiderivative \(P_n\) are
+\begin{equation}
+ d_j=\frac{\displaystyle\sum_{i<j}(i+1)b_i
+                   -\displaystyle\sum_{i\ge j}(n-i)b_i}
+                  {n(n+1)},\qquad 0\le j\le n.\label{eq:Bernsteinrec}
+\end{equation}
+To verify this, note that an antiderivative has coefficients
+\(a_j=n^{-1}\sum_{i<j}b_i\): differentiating the Bernstein basis
+gives \(n(a_{i+1}-a_i)=b_i\).  The coefficientwise mean of a
+degree-\(n\) Bernstein polynomial is the average of its \(n+1\)
+coefficients.  To prove the basis mean formula entirely by finite
+polynomial identities, for \(0\le j<n\) differentiate to obtain
+\[
+ \beta'_{n+1,j+1}=(n+1)(\beta_{n,j}-\beta_{n,j+1}).
+\]
+The polynomial on the left before differentiation vanishes at both
+endpoints, so coefficientwise integration shows that adjacent basis
+means are equal.  Their sum is the integral of
+\(\sum_j\beta_{n,j}=1\), namely one.  Hence every basis mean is
+\(1/(n+1)\).  For \(n=0\), the statement is immediate.
+Subtracting this mean from each \(a_j\) gives
+\eqref{eq:Bernsteinrec}.
+
+The sum of the absolute weights in \eqref{eq:Bernsteinrec} is
+\begin{equation}
+ \frac{j(j+1)+(n-j)(n-j+1)}{2n(n+1)}\le\frac12,\label{eq:Bernsteinweights}
+\end{equation}
+because the numerator is \(n(n+1)-2j(n-j)\).
+Starting with the single coefficient \(1\) of \(P_0\), the maximum
+absolute Bernstein coefficient thus contracts by \(1/2\) at every
+step.  The inductive invariant is the bounded finite-list test
+\(\max_i\abs{b_i}\le2^{-(n-1)}\), expressed as a rational inequality;
+the coefficient identity is another finite-list equality.  Both are
+quantifier-free after coding.  Nonnegativity and partition of unity
+then prove \eqref{eq:halfbound} for any rational \(t\).
+The name extension proves the same represented inequality on the
+whole interval, without further induction.
+
+\begin{corollary}[Explicit remainder estimate]\label{cor:remainder}
+If \(\abs{f_{2m}}\le M_{2m}\) on \([a,b]\), then
+\begin{equation}
+ \abs{R_m}\le4^{-m}\int_a^b\abs{f_{2m}(x)}\dd x
+              \le(b-a)4^{-m}M_{2m}.\label{eq:remainderbound}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The absolute-value function preserves the continuity modulus, by
+\(\bigl|\abs u-\abs v\bigr|\le\abs{u-v}\), so its integral is
+available.  Apply \eqref{eq:halfbound} on each unit cell, the integral
+triangle inequality (the finite-sum proof of
+Proposition~\ref{prop:integralrules}), and finite additivity.
+\end{proof}
+
+This estimate is a bound at a specified order.  Since the input bounds
+\(M_{2m}\) can grow faster than \(4^m\), it implies no general
+convergence of an infinite Euler--Maclaurin series.  For a polynomial
+of degree less than \(2m\), the top derivative is zero and the
+remainder vanishes exactly.
+
+\section{Rational meshes and an exact example}\label{sec:examples}
+
+Let \(h>0\) be rational, \(N\in\N\), and \(b=a+Nh\), with rational
+\(a\).  Apply the unit-mesh formula to \(g(t)=f(a+ht)\), whose
+certified derivatives are \(g_j(t)=h^jf_j(a+ht)\).  The derivative
+certificates follow by direct substitution in (D) and explicit
+precision shifts for the rational factors.  Finite sums also prove
+the integral change of variable.  Multiplying the unit-mesh formula
+by \(h\) gives
+\begin{align}
+ h\sum_{k=0}^Nf(a+kh)
+ ={}&\int_a^b f(x)\dd x+\frac h2(f(a)+f(b))\notag\\
+ &+\sum_{s=1}^m h^{2s}c_{2s}
+          \bigl(f_{2s-1}(b)-f_{2s-1}(a)\bigr)+R_{m,h},
+ \label{eq:scaledEM}\\
+ R_{m,h}={}&-h^{2m+1}\sum_{k=0}^{N-1}\int_0^1
+       P_{2m}(t)f_{2m}(a+h(k+t))\dd t.\label{eq:scaledR}
+\end{align}
+The remainder obeys
+\[
+ \abs{R_{m,h}}\le (b-a)h^{2m}4^{-m}M_{2m}.
+\]
+For \(N=0\), the identity is interpreted exactly as in the zero-length
+unit-mesh case.
+
+A useful sign check has a \emph{nonzero} remainder.  Let
+\(f(x)=x^4\), \(a=0\), \(b=3\), and \(m=1\).  Direct polynomial
+integration gives
+\[
+ \int_0^3x^4\dd x=\frac{243}{5},\qquad
+ \frac{f(0)+f(3)}2=\frac{81}{2},\qquad
+ c_2(f'(3)-f'(0))=9.
+\]
+For the remainder, \(f''(x)=12x^2\) and
+\[
+ \int_0^1P_2(t)\dd t=0,\quad
+ \int_0^1tP_2(t)\dd t=0,\quad
+ \int_0^1t^2P_2(t)\dd t=\frac1{360}.
+\]
+Each of the three cells therefore contributes \(1/30\) before the
+minus sign in \eqref{eq:rintro}, so \(R_1=-1/10\).  The exact identity
+is
+\[
+ \boxed{\displaystyle
+ \sum_{k=0}^{3}k^4=98=\frac{243}{5}+\frac{81}{2}+9-\frac1{10}.}
+\]
+This checks the endpoint convention and the negative sign of the even
+remainder without relying on exact truncation.
+
+\section{Why the proofs fit \texorpdfstring{\ipra}{iPRA}}\label{sec:audit}
+
+The proof-theoretic claim is a human-readable formalizability argument,
+with the following concrete accounting.  No analytic lemma is being
+assumed as an axiom of \ipra.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{.26\textwidth}>{\raggedright\arraybackslash}p{.64\textwidth}}
+\toprule
+Construction or proof & Primitive recursive operation and permitted induction\\\midrule
+\endhead
+Rational arithmetic & Signed-integer operations, cross multiplication,
+and positive-denominator coding.\\
+Precision choices & Powers of two, bounded search \(\sigma\), and finite
+maxima of the supplied moduli.\\
+Integral evaluator & A finite grid followed by a finite rational sum;
+the grid length is the explicit power of two in
+\eqref{eq:integralname}.\\
+Integral coherence & Finite refinement or overlap weights, positivity,
+and the finite triangle inequality.\\
+FTC I & The fixed-index rational estimates
+\eqref{eq:addfinite} and \eqref{eq:localintegral}.\\
+FTC II & The partial-sum invariant behind
+\eqref{eq:finiteFTC}; internal precision includes its \(2N\) factor.\\
+Riemann FTC II & The supplied finite partition is checked by bounded
+tests; the same partial-sum argument gives the \(4N\) factor.\\
+Bernoulli identities & Equality of finite coefficient lists, with
+coefficientwise derivative, reflection, and mean operations.\\
+Euler--Maclaurin & The exact rational invariant
+\eqref{eq:finiteEMidentity} and its error bound
+\eqref{eq:finiteEMbound}, with precision fixed before induction.\\
+Remainder bound & A finite Bernstein coefficient maximum and the
+explicit contraction \eqref{eq:Bernsteinweights}.\\
+Name equalities & Universal generalization over number precisions after
+the finite proof, plus the rational closure lemma when eliminating
+auxiliary errors.\\\bottomrule
+\end{longtable}
+
+For example, the induction invariant for a finite triangle estimate
+may be written
+\[
+ \operatorname{valid}(z,w,n)=1\ \longrightarrow\
+ \abs{\sum_{i<j}z_i}\le\sum_{i<j}w_i\quad(j\le n),
+\]
+where \(\operatorname{valid}\) is a primitive recursive Boolean
+checking all \(\abs{z_i}\le w_i\).  After coding, this is a
+quantifier-free formula with the array codes and \(n\) as parameters.
+The successor step is the triangle inequality; no quantified analytic
+assertion occurs in the induction formula.
+
+The same principle applies to the coefficient tables.  It is
+insufficient to say only that a proof is finite: every formal proof
+is finite.  What matters is that the inductions displayed here concern
+rational equalities, rational inequalities, and bounded finite-list
+tests.  The all-orders construction in Section~\ref{sec:finiteEM}
+specifically prevents the tempting invalid step of inducting on
+``the two real names are equal at every precision.''
+
+The inputs' regularity promises are hypotheses of the schema.
+For a concrete elementary function, those promises must themselves be
+proved from its primitive recursive definition before the result is
+unconditional.  For rational polynomials they follow from
+\eqref{eq:monomialremainder} and finite coefficient bounds.  The
+proofs do not provide a general procedure deciding whether an arbitrary
+program is a valid continuous or differentiable function name.
+
+\section{Lean formalization: existing foundations and completion path}\label{sec:lean}
+
+\subsection{Pinned sources and the trust boundary}
+
+The inspected ProveIt revision is
+\begin{center}
+\code{0bf379a84212abd05e9a3f0b1320a3d7da509cf9}.
+\end{center}
+Its root toolchain is Lean \code{v4.32.0}, with Mathlib
+\code{v4.32.0}.  The useful deeply embedded foundations are the
+\code{PR}, \code{Deduction}, \code{Syntax}, \code{BiInterpretation},
+and \code{NativeBiInterpretation} modules
+\cite{prsource,nativesource}.  Their source directory is
+\begin{quote}\small
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/}
+\end{quote}
+
+In particular, \code{PR} is an arity-indexed syntax generated by zero,
+successor, projections, composition, and primitive recursion.
+\code{PRAAx} contains defining equations and quantifier-free induction;
+\code{PRA.qfInd} constructs the corresponding object-theory induction
+proof.  The final formal goal must be an actual derivability statement
+\[
+ \Gamma\vdash[\code{PRAAx}]\varphi,
+\]
+in namespace \code{LeanProofs.ConciseIPRA}.  Here \(\Gamma\) is the
+arithmetized list of input promises and \(\varphi\) is a coded
+precision inequality or its universal closure.  Proving a proposition
+in ambient Lean about rational or real functions is a useful prototype,
+but it is not a proof of this derivability statement.
+
+The repository also contains an existing first-order sawtooth
+Euler--Maclaurin theorem in its \code{IntegerPoints} development
+\cite{existingem}:
+\begin{quote}\small
+\code{LeanProofs.IntegerPoints.EM.sum\_eq\_integral}.
+\end{quote}
+It provides a useful independent check of signs and
+endpoint conventions.  It uses real floor, interval integrals, measure
+theory, and compactness to obtain a bound.  It is not an \ipra\ proof
+dependency.  Likewise, Mathlib's standard FTC development is an
+ordinary real-analysis development \cite{mathlibftc}; importing it
+would not settle the foundational claim here.
+
+The listing of \path{docs/drafts} at this revision included FTA, Basel,
+isoperimetric, Minkowski, prime-number-theorem, and Stirling archives.
+Their binary contents were not audited and no result from them is used
+as a dependency.  The mathematical proof in this package is independent
+of those drafts.
+
+\subsection{Delivered Lean candidate}
+
+The file \path{lean/FiniteSkeleton.lean} contains candidate proof scripts
+for rational finite-sum linearity, telescoping, the triangle inequality,
+the finite FTC bound, and an alternating finite recurrence.  For example,
+its central FTC statement is the following arithmetic implication:
+\[
+ \bigl(\forall i<n,\ \abs{F_{i+1}-F_i-hf_i}\le e\bigr)
+ \ \Longrightarrow\
+ \abs{F_n-F_0-h\sum_{i<n}f_i}\le ne.
+\]
+It also includes structures specifying regular names and uniform
+rational approximations.  Those structures are metatheoretic interfaces;
+they do not assert that every Lean function in them is primitive
+recursive.
+
+\textbf{Status.} The candidate contains no \code{sorry} declarations or
+new axioms, but it is \emph{uncompiled}.  No Lean, Lake, or Elan
+executable was available in the preparation environment.  The file
+therefore makes no claim of successful elaboration or kernel checking.
+The full analytic theorems and their deeply embedded \ipra\ proofs
+remain to be implemented.  The exact Python calculations are validation
+artifacts, not substitutes for that implementation.
+
+\subsection{A concrete path to a complete formalization}
+
+The accompanying \path{lean/ROADMAP.md} expands the following sequence.
+
+\begin{enumerate}
+\item \textbf{Compile the finite semantic prototype.}
+Use the pinned checkout and its dependencies, and run
+\code{lake env lean} on \path{FiniteSkeleton.lean}.  Resolve any
+elaboration issues and inspect the declarations' axioms.  Extend it
+with the exact finite identity \eqref{eq:finiteEMidentity} and its
+rational estimate.  At this stage there are still no object-theory
+proofs.
+
+\item \textbf{Build the encoded arithmetic layer.}
+Give fixed \code{PR} expressions for signed rationals, lists,
+polynomial operations, powers of two, sums, bounded maxima, and
+\(\sigma\).  Prove their identities by constructing
+\code{Prf PRAAx} derivations.  Use proof-producing macros for
+rational ring equalities, cross-multiplied inequalities, and finite
+triangle inequalities.  Each macro must return a proof in the
+embedded calculus, rather than only an ambient Lean proof of truth.
+
+\item \textbf{Deeply embed the data promises.}
+Write formulas for (C), (B), (U), and (D), using the chosen fixed
+evaluator and modulus symbols.  Encode interval membership and finite
+partition validity by decidable tests.  Keep universal data assumptions
+in the sequent context.  Replace bounded quantifiers inside induction
+invariants by Boolean folds.
+
+\item \textbf{Formalize rational integration and FTC.}
+Implement \eqref{eq:integralname}.  Derive
+\eqref{eq:refine}, \eqref{eq:integralcauchy},
+\eqref{eq:addfinite}, the literal derivative certificate in
+Theorem~\ref{thm:ftc1}, and \eqref{eq:finiteFTC}.
+The schedules \eqref{eq:FTCprecision} produce the final inequalities.
+The optional general version adds only the finite tagged-partition
+interface and \eqref{eq:taggedfinite}.
+
+\item \textbf{Formalize the Bernoulli table.}
+Use \eqref{eq:Pcoeff} as the recursion on a finite rational coefficient
+list.  Prove the derivative, reflection, endpoint, and odd-vanishing
+identities as list equalities.  Prove the Bernstein recursion
+\eqref{eq:Bernsteinrec} and its finite maximum bound.  No formal power
+series or classical real integration is necessary.
+
+\item \textbf{Prove the uniform finite EM certificate.}
+Implement the parameters \eqref{eq:Dconstants} and
+\eqref{eq:EMfinalschedule}.  Prove
+\eqref{eq:localdefect}, \eqref{eq:Ejbound},
+\eqref{eq:finiteEMidentity}, and \eqref{eq:finiteEMbound}
+by quantifier-free finite accumulator invariants.  Only afterward
+universally generalize output precision and identify the named
+integrals.  This stage also gives the general odd-order version.
+
+\item \textbf{Transfer presentations if desired.}
+After the \code{Prf PRAAx} terms exist, apply the already defined
+\code{pra\_iff\_native} from
+\code{NativeBiInterpretation.lean} to obtain native scalar-core
+proofs.  That theorem preserves the explicit hypotheses; it does
+not extract \ipra\ proofs automatically from ambient Lean analysis.
+\end{enumerate}
+
+The missing work is substantial formal encoding and proof production,
+but the mathematical dependencies, exact intermediate statements,
+permitted induction invariants, and precision algorithms are all
+specified above.  There is no remaining appeal to a qualitative
+analytic theorem that would need to be smuggled into \ipra.
+
+\section{Artifacts and reproducibility}\label{sec:artifacts}
+
+The archive contains this \LaTeX\ source and its compiled PDF, the
+Lean candidate and roadmap, exact Python implementations, a validation
+record, and source provenance.  Rebuild instructions are in
+\path{README.md}.
+
+The standard-library-only program \path{code/bernoulli_em.py} uses
+\code{fractions.Fraction} throughout.  It computes normalized Bernoulli
+polynomials, their Bernstein coefficients, polynomial derivatives and
+integrals, exact Euler--Maclaurin terms and remainders, and finite-grid
+product defects with rounded rational oracles.  The recorded run passed:
+\begin{itemize}
+\item 382 Bernoulli identities and coefficient-certificate checks
+through order 20;
+\item 85 polynomial FTC checks;
+\item 612 unit-mesh Euler--Maclaurin identities, including 100 cases
+with nonzero remainder and negative, shifted, and zero-length intervals;
+\item 272 rational-mesh identities;
+\item 600 local finite-product checks in 16 rounded-oracle cases,
+using the sample precision \(p=q+\ell+4\).
+\end{itemize}
+The companion \path{code/integral_demo.py} exercises the canonical
+integrator on the rationally evaluable nonpolynomial function
+\(f(x)=1/(1+x)\) on \([0,1]\), and checks finite additivity and
+derivative-certificate instances with exact arithmetic.
+These are regression and implementation checks.  The proofs of the
+universal statements are the arguments in the preceding sections;
+formal \ipra\ certification is the explicit future Lean task just
+described.
+
+\begin{thebibliography}{9}
+\small\raggedright
+\bibitem{prsource}
+Vladimir Reshetnikov, \emph{ProveIt: ConciseIPRA, PR.lean},
+revision \code{0bf379a84212abd05e9a3f0b1320a3d7da509cf9}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/0bf379a84212abd05e9a3f0b1320a3d7da509cf9/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean}.
+
+\bibitem{nativesource}
+Vladimir Reshetnikov, \emph{ProveIt: ConciseIPRA,
+NativeBiInterpretation.lean}, same revision.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/0bf379a84212abd05e9a3f0b1320a3d7da509cf9/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}.
+
+\bibitem{existingem}
+Vladimir Reshetnikov, \emph{ProveIt: IntegerPoints,
+EulerMaclaurin.lean}, same revision.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/0bf379a84212abd05e9a3f0b1320a3d7da509cf9/NumberTheory/IntegerPoints/Lean/IntegerPoints/EulerMaclaurin.lean}.
+
+\bibitem{dlmfem}
+NIST Digital Library of Mathematical Functions,
+\S2.10(i), \emph{Euler--Maclaurin Formula}.
+\url{https://dlmf.nist.gov/2.10.i}.
+
+\bibitem{dlmfbernoulli}
+NIST Digital Library of Mathematical Functions,
+\S24.2, \emph{Definitions and Generating Functions}.
+\url{https://dlmf.nist.gov/24.2}.
+
+\bibitem{dlmfproperties}
+NIST Digital Library of Mathematical Functions,
+\S24.4, \emph{Basic Properties}.
+\url{https://dlmf.nist.gov/24.4}.
+
+\bibitem{mathlibftc}
+Mathlib documentation, \emph{Fundamental Theorem of Calculus}.
+\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.html}.
+\end{thebibliography}
+\end{document}

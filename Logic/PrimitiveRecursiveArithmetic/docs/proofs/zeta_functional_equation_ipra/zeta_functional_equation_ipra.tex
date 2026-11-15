@@ -1,0 +1,1826 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{listings}
+\definecolor{ink}{RGB}{25,48,73}
+\definecolor{linkblue}{RGB}{20,80,125}
+\hypersetup{colorlinks=true,linkcolor=linkblue,urlcolor=linkblue,citecolor=linkblue,
+ pdftitle={Riemann's functional equation in intuitionistic primitive recursive arithmetic},
+ pdfauthor={ChatGPT}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Riemann's functional equation in iPRA}
+\fancyhead[R]{\small Quantitative constructive proof}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=0.25em,topsep=0.4em}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\e}{\mathrm e}
+\newcommand{\normone}[1]{\lVert #1\rVert_1}
+\newcommand{\ps}{\psi}
+\newcommand{\gamrec}{R}
+\newcommand{\Jh}{\widehat J}
+\newcommand{\lceilog}{\lambda}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ keepspaces=true,frame=single,rulecolor=\color{black!20},showstringspaces=false}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.65in}
+{\color{ink}\Huge\bfseries Riemann's functional equation\par}
+\vspace{0.3in}
+{\LARGE in intuitionistic primitive recursive arithmetic\par}
+\vspace{0.4in}
+{\large A complete quantitative human proof and a Lean formalization plan\par}
+\vspace{0.35in}
+{\large Constructive proof report\par}
+{\large 15 November 2026\par}
+\vspace{0.5in}
+\begin{abstract}
+We construct the meromorphic Riemann zeta function by explicit primitive
+recursive approximation procedures and prove
+\[
+ \zeta(s)=2^s\pi^{s-1}\sin(\pi s/2)\Gamma(1-s)\zeta(1-s).
+\]
+The primary arithmetic statement is an everywhere-defined,
+denominator-cleared identity between specified complex rational
+approximants at every requested precision. The usual equation is its
+meromorphic interpretation.
+
+The proof uses a quantitative finite Fej\'er calculation to establish the
+Gaussian theta transformation, finite Euler products to establish the
+reciprocal-gamma identities, and a rapidly convergent regularized Mellin
+integral. Gaussian normalization follows from the theta calculation at
+\(t=1\). All convergence, quadrature, and division steps have explicit
+numerical controls. The iPRA interpretation uses symbolic numerical
+parameters and quantifier-free induction on finite arithmetic invariants.
+
+The mathematical proof is supplied here. The Lean part is a concrete
+formalization blueprint with small interface drafts; it is not a completed
+or compiled Lean formalization of the analytic argument.
+\end{abstract}
+\vfill
+{\small Repository snapshot:
+\code{VladimirReshetnikov/ProveIt} at
+\code{c5093c20b5bffb0333fd42915b7bc858d5aa45cc}.\\
+The report is self-contained in its analytic argument. Existing
+ConciseIPRA results supply the intended object-theory interface.}
+\end{titlepage}
+\clearpage
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+\pagenumbering{arabic}
+
+\section{The result and its precise arithmetic meaning}
+
+The familiar functional equation is an identity of meromorphic functions,
+not an instruction to multiply separately undefined values at their poles.
+We prove it through an identity of entire numerators. This also gives the
+appropriate first-order arithmetic formulation.
+
+Put
+\begin{align}
+ \ps(t)&=\sum_{n=1}^{\infty}\e^{-\pi n^2t}, &&t>0,\label{eq:psi}\\
+ J(s)&=\int_1^\infty \ps(t)t^{s/2-1}\,dt,\label{eq:J}\\
+ X(s)&=\frac12+\frac{s(s-1)}2\bigl(J(s)+J(1-s)\bigr),\label{eq:X}\\
+ \gamrec_N(z)&=zN^{-z}\prod_{n=1}^N(1+z/n),\qquad
+ \gamrec(z)=\lim_{N\to\infty}\gamrec_N(z),\label{eq:R}\\
+ Z(s)&=\pi^{s/2}\gamrec(1+s/2)X(s).\label{eq:Z}
+\end{align}
+Powers of positive real numbers always mean \(a^z=\exp(z\log a)\).
+There is no choice of a complex logarithm. The limits and integrals in
+these displays will be given specified rational approximation algorithms.
+
+\begin{theorem}[Constructive functional equation]\label{thm:main}
+The functions \(J,X,\gamrec,Z\) in
+\eqref{eq:J}--\eqref{eq:Z} have uniformly primitive recursive rational
+approximants on each explicitly bounded rational box. They are entire in
+the ordinary analytic interpretation, and
+\begin{align}
+ X(1-s)&=X(s),\label{eq:xiFE}\\
+ s\gamrec(1-s)Z(s)
+ &=(1-s)\,2^s\pi^{s-1}\sin(\pi s/2)Z(1-s) \qquad(s\in\C).
+ \label{eq:entireFE}
+\end{align}
+The meromorphic function represented by
+\[
+                    \zeta(s)=\frac{Z(s)}{s-1}
+                    \tag{\(\ast\)}
+\]
+agrees with \(\sum_{n\ge1}n^{-s}\) for \(\Re s>1\), has its only pole at
+\(s=1\), with residue \(1\), and satisfies the requested equation
+\begin{equation}
+ \boxed{\zeta(s)=2^s\pi^{s-1}\sin(\pi s/2)\Gamma(1-s)\zeta(1-s)}
+ \label{eq:standardFE}
+\end{equation}
+as a meromorphic identity. Here \(\Gamma\) is represented meromorphically
+by \((1,\gamrec)\), and agrees with Euler's integral on \(\Re z>0\).
+
+With the interpretation in Section~\ref{sec:arithmetic}, the
+finite-precision statements of this theorem have proofs in \(\ipra\).
+They also specialize to every fixed primitive recursive complex Cauchy
+name supplied with the stated modulus and a numerical bound.
+\end{theorem}
+
+The notation \(X\) denotes the conventional Riemann \(\xi\)-function.
+We use \(Z\) for its entire zeta numerator, so \(Z\) is not the Dirichlet
+series itself. Formula~\eqref{eq:standardFE} and its equivalence to
+\(\xi(s)=\xi(1-s)\) are the standard normalizations
+\cite{DLMF25}. The contribution of this report is the explicit weak-arithmetic
+proof and its finite interpretation.
+
+\subsection{What is quantified inside iPRA}
+
+First-order \(\ipra\) has natural numbers, primitive recursive function
+symbols, their defining equations, intuitionistic first-order logic,
+successor axioms, and quantifier-free induction. It has no sort of all
+real numbers. Accordingly our principal internal theorem has the form
+\begin{equation}
+ \ipra\vdash
+ \forall c\,\forall B\,\forall k\;
+                \mathsf{Check}(c,B,k)=1.                     \label{eq:checktarget}
+\end{equation}
+Here \(c\) codes a rational complex input, \(B\) is a box bound, \(k\) is
+the requested accuracy, and \(\mathsf{Check}\) is one fixed primitive
+recursive function. On valid inputs it compares rational approximants
+to the two sides of~\eqref{eq:entireFE}; on malformed or out-of-box
+inputs it returns \(1\). Section~\ref{sec:arithmetic} specifies it.
+Thus no undefined value or undecidable real-zero test occurs.
+
+An equality involving real or complex names abbreviates the family of
+finite rational estimates at every precision. We prove those estimates
+with their numerical parameters free and then universally generalize.
+We do not induct on the quantified assertion that a name is Cauchy or
+that two names are equal.
+
+For a fixed PR name \(a:\N\to\Q(\ii)\), the assertion
+\[
+ \normone{a(p)-a(q)}\le 2^{-p}+2^{-q}
+\]
+is a regularity hypothesis; operations on that name are compiled from
+its fixed PR definition. No universal PR evaluator for arbitrary PR
+program codes is assumed. Producing separate numerical proof
+certificates also would not by itself establish~\eqref{eq:checktarget};
+our induction arguments retain the precision as a symbolic parameter.
+
+\section{The finite analytic toolkit}\label{sec:toolkit}
+
+We give the elementary infrastructure explicitly, since its quantitative
+content is essential here. The notation \(|z|\) is the usual complex
+modulus in the human proof. The rational implementation uses
+\(\normone{x+\ii y}=|x|+|y|\), with
+\[
+ |z|\le\normone z\le2|z|,\qquad
+ \normone{zw}\le\normone z\,\normone w.
+\]
+Every final inequality can therefore be decided using rational
+arithmetic without square roots.
+
+\subsection{Elementary functions and constants}
+
+Define \(\exp z\) by its factorial series and \(\sin,\cos\) by the
+corresponding series. On \(\normone z\le S\), for an integer \(S\ge1\),
+the exponential tail after degree \(m\ge2S\) is at most
+\begin{equation}
+              2^{\,4S-m}.                                 \label{eq:exptail}
+\end{equation}
+Indeed the term at degree \(2S\) is bounded by \(4^S\), and all
+following term ratios are at most \(1/2\).
+To obtain this bound before using exponential addition, the finite
+multinomial identity gives
+\[
+ \sum_{n=0}^m\frac{S^n}{n!}
+       \le\left(\sum_{j=0}^m\frac1{j!}\right)^S<3^S
+       \qquad(S\text{ a positive integer}).
+\]
+This argument is entirely finite and removes a dependency on an
+already established exponential product law.
+Taking \(m=4S+p+4\) supplies more than the requested \(2^{-p}\)
+accuracy. The elementary inequality \(\exp1<3<4\) follows directly
+from the factorial series. Addition and product identities follow
+by finite polynomial multiplication, with the same tail estimate.
+For bounded inputs, the useful perturbation bound is
+\begin{equation}
+ |\exp z-\exp w|\le |z-w|\exp(\max(|z|,|w|)+|z-w|).
+ \label{eq:expperturb}
+\end{equation}
+It follows by factoring the exponential and using the series bound for
+\(\exp u-1\).
+
+For positive rational \(t\), define
+\[
+ \log t=2\sum_{j=0}^{\infty}
+                 \frac{y^{2j+1}}{2j+1},\qquad y=\frac{t-1}{t+1}.
+\]
+On a specified interval \(1/A\le t\le A\), a finite geometric
+estimate gives an explicit PR tail. For \(1\le t\le T\), one usable
+choice is \(L=T(u+2T+4)\) terms for error at most \(2^{-u}\):
+\begin{equation}
+ \left|\log t-2\sum_{j<L}\frac{y^{2j+1}}{2j+1}\right|
+ \le 2T^2\exp(-(2L+1)/T)<2^{-u}.
+ \label{eq:logtail}
+\end{equation}
+For \(t<1\), use \(\log t=-\log(1/t)\).
+Differentiating finite sums and controlling the geometric tails gives
+\((\log t)'=1/t\). The finite calculus argument below then proves
+\(\exp(\log t)=t\), the logarithm product rule, and the usual
+positive-base power laws.
+
+Define
+\begin{equation}
+       \pi=4\int_0^1\frac{dx}{1+x^2}.                       \label{eq:pidef}
+\end{equation}
+The integral is a specified rational quadrature limit. Expanding the
+finite geometric identity under the integral gives the alternating
+arctangent series, with error at most \(1/(2L+1)\) after \(L\)
+terms. Thus \(2^{u+3}\) terms give \(\pi\) to error \(2^{-u}\).
+Its first eight terms give \(3<\pi\), and the integrand gives
+\(\pi<4\).
+
+Write \(a(t)=\int_0^t(1+x^2)^{-1}\,dx\).
+Differentiation and a bounded telescoping argument give
+\[
+ \exp(2\ii a(t))=\frac{1+\ii t}{1-\ii t}.
+\]
+Both sides equal \(1\) at zero and obey the same explicitly verified
+first-order differential identity; multiplying by the inverse of the
+rational factor reduces the verification to derivative zero.
+At \(t=1\), this yields \(\exp(\ii\pi/2)=\ii\), hence
+\(\exp(2\pi\ii)=1\).
+There is therefore no circular use of Gaussian normalization in the
+definition or period of the trigonometric functions.
+
+We will use
+\[
+ |\exp(\ii u)|=1,\qquad |\sin u|\le1 \quad(u\in\R).
+\]
+These follow from the exponential addition and conjugation identities.
+On \(0\le u\le2\), alternating Taylor estimates give
+\(\sin u\ge u-u^3/6\ge u/3\).
+This proves positivity on \([0,\pi/2]\); reflection proves it on
+\([0,\pi]\). Consequently \(\sin''=-\sin\le0\), and the finite
+calculus version of the chord inequality gives
+\begin{equation}
+                  \sin u\ge 2u/\pi\quad(0\le u\le\pi/2).
+                  \label{eq:sinchord}
+\end{equation}
+For clarity, the chord inequality needs no extremum theorem: subtract
+the affine chord, compare the finite averages of the decreasing
+derivative on the two adjacent subintervals, and telescope. Taylor
+remainder bounds pass these finite inequalities to every precision.
+
+A positive square root of a \emph{rational} input is computed by
+bisection in a known rational interval, using rational comparisons.
+The required number of bisections is explicit. General named inputs
+are handled by a continuity estimate with a supplied positive lower
+bound; no exact comparison with an arbitrary real is made.
+
+\subsection{Quadrature, calculus, and error composition}
+
+\begin{lemma}[Finite calculus]\label{lem:finitecalculus}
+Suppose a specified elementary function on a rational interval
+\([a,b]\) has Lipschitz constant at most the supplied number \(D\).
+Its left rectangle sum on \(q\) equal intervals differs from its
+integral name by at most
+\[
+              \frac{D(b-a)^2}{2q}.
+\]
+If each sample has error \(\epsilon\), add \((b-a)\epsilon\).
+If a specified function \(f\) has second derivative bounded by \(C\),
+then for a subdivision \(a=x_0<\cdots<x_q=b\),
+\begin{equation}
+ \left|f(b)-f(a)-\sum_{j<q}f'(x_j)(x_{j+1}-x_j)\right|
+       \le \frac C2\sum_{j<q}(x_{j+1}-x_j)^2.               \label{eq:telescoping}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For the quadrature estimate, compare rectangle sums on a common
+refinement. On a cell of width \(h\), the total change is at most
+\(D h^2/2\); finite summation gives the bound. This makes the
+quadrature sums a name with an explicit modulus, so no general
+completeness axiom is needed.
+
+For~\eqref{eq:telescoping}, use the Taylor estimate
+\(|f(x+h)-f(x)-hf'(x)|\le Ch^2/2\) on each cell and add.
+For the elementary functions used here the Taylor estimate comes
+from their series, or from the same common-refinement quadrature
+calculation applied twice. In particular \(f'=0\) implies
+\(|f(b)-f(a)|\le C(b-a)^2/(2q)\) for every specified \(q\).
+Choosing \(q\) from the requested precision proves equality.
+\end{proof}
+
+Products and integration by parts follow by applying the finite product
+identity on each cell; the omitted cross-terms are bounded by a constant
+times \(\sum h^2\). Linear changes of variable are reindexings of
+finite rectangle sums. The substitution \(t=1/u\), used below on
+compact intervals bounded away from zero, follows by comparing the
+image partition with a common refinement; its derivative and second
+derivative have numerical bounds. The endpoint errors will always
+be displayed before an improper integral is used.
+
+These facts apply to the particular explicit functions in the proof.
+They are not assumptions about arbitrary differentiable functions.
+
+Finally, if \(a_j,b_j\) are finitely many complex values, then
+\begin{equation}
+ \left|\prod_{j=1}^m a_j-\prod_{j=1}^m b_j\right|
+ \le \sum_{j=1}^m |a_j-b_j|
+          \prod_{\ell<j}|a_\ell|\prod_{\ell>j}|b_\ell|.
+ \label{eq:producterror}
+\end{equation}
+This exact telescoping identity controls every product of
+approximants. Finite sums use the triangle inequality and precision
+increased by the binary length of the number of terms.
+
+\section{A finite proof of the theta transformation}\label{sec:theta}
+
+Fix an integer \(B\ge2\) and initially a rational
+\(B^{-1}\le t\le B\). Define
+\begin{equation}
+ g_t(x)=\exp(-\pi t x^2),\quad
+ I(t)=\int_\R g_t(x)\,dx,\quad
+ F_t(\xi)=\int_\R g_t(x)\exp(-2\pi\ii\xi x)\,dx.
+ \label{eq:Fourierdef}
+\end{equation}
+The value of \(I(t)\) is initially unknown.
+
+\subsection{Tails and Fourier quadrature}
+
+For \(|x|\ge1\), \(g_t(x)\le\exp(-|x|/B)\); for all \(x\),
+\[
+ g_t(x)\le2\exp(-|x|/B).
+\]
+Hence for \(R\ge1\) and every integer \(r\ge0\),
+\begin{align}
+ \int_{|x|>R}g_t(x)\,dx
+       &\le2B\exp(-R/B),                                  \label{eq:gtail}\\
+ \int_\R |x|^r g_t(x)\,dx
+       &\le4r!B^{r+1}.                                    \label{eq:moments}
+\end{align}
+The second bound uses \(r\) finite integrations by parts for the
+exponential moment. Its tail has an explicit modulus too:
+\begin{equation}
+ |x|^r\exp(-|x|/B)
+       \le(2B)^r r!\exp(-|x|/(2B)).
+ \label{eq:momenttail}
+\end{equation}
+This controls all differentiated improper integrals below.
+
+For \(|\xi|\le K\), a completely explicit quadrature for \(F_t(\xi)\)
+at precision \(p\) is obtained by setting
+\begin{equation}
+ R=B(p+B+4),\quad D=8(BR+K+1),\quad
+ q=2^{p+4}(2R)^2D.
+ \label{eq:fouriercutoffs}
+\end{equation}
+The integrand has derivative bounded by \(D\) on \([-R,R]\).
+The tail in~\eqref{eq:gtail} is at most \(2^{-p-3}\), the
+rectangle error is at most \(2^{-p-5}\), and sample accuracy
+\(2^{-(p+R+5)}\) costs at most \(2^{-p-4}\) after integration.
+All cutoffs are PR.
+
+\subsection{Fourier transform with unknown normalization}
+
+\begin{lemma}\label{lem:gaussianfourier}
+For rational \(\xi\), and hence for the indicated named inputs,
+\begin{equation}
+                F_t(\xi)=I(t)\exp(-\pi\xi^2/t).
+                \label{eq:gaussianfourier}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The estimate
+\(|\exp(\ii u)-1-\ii u|\le u^2/2\), together with
+\eqref{eq:moments}, justifies differentiation with an explicit error:
+\begin{equation}
+ F_t'(\xi)=-2\pi\ii\int_\R xg_t(x)\exp(-2\pi\ii\xi x)\,dx.
+ \label{eq:Fourierderivative}
+\end{equation}
+The error in the difference quotient is at most \(256B^3|h|\).
+On \([-R,R]\), integrate \(g_t'=-2\pi txg_t\) by parts.
+The boundary term is at most \(2\exp(-\pi tR^2)\).
+Using the moment-tail bound gives
+\[
+ \int_\R g_t'(x)\exp(-2\pi\ii\xi x)\,dx
+       =2\pi\ii\xi F_t(\xi),
+\]
+so
+\[
+                    F_t'(\xi)=-(2\pi\xi/t)F_t(\xi).
+\]
+Set \(H(\xi)=\exp(\pi\xi^2/t)F_t(\xi)\). The product rule gives
+\(H'=0\).
+
+To record the finite content, moments give
+\[
+ |F_t^{(r)}(\xi)|\le4\cdot8^r r!B^{r+1}.
+\]
+On \(|\xi|\le K\), a bound for \(|H''|\) is
+\begin{equation}
+ C=2048B^3(K+1)^2\,2^{8B(K+1)^2}.                         \label{eq:Hsecond}
+\end{equation}
+Indeed put \(a=\pi/t\le4B\); the first two derivatives of
+\(\exp(a\xi^2)\) are bounded by
+\(8BK\exp(a\xi^2)\) and
+\((8B+64B^2K^2)\exp(a\xi^2)\), respectively.
+Combine these with \(|F|\le4B\), \(|F'|\le32B^2\),
+\(|F''|\le512B^3\).
+
+On a subdivision of the segment from \(0\) to rational \(\xi\)
+into \(q\) equal parts, Lemma~\ref{lem:finitecalculus} gives
+\[
+                 |H(\xi)-H(0)|\le CK^2/(2q).
+\]
+Choose \(q\ge C(K+1)^2 2^{p+1}\) at precision \(p\), allowing the
+separate quadrature errors already given. This proves the identity
+at every precision. Since \(H(0)=I(t)\), the claim follows.
+\end{proof}
+
+\subsection{Periodization and finite Fourier recovery}
+
+Let
+\[
+          G_t(x)=\sum_{n\in\Z}g_t(x+n),\qquad
+          \theta(t)=G_t(0)=1+2\ps(t).
+\]
+For \(x\in[0,1]\), omitting \(|n|>N\), \(N\ge2\), costs at most
+\begin{equation}
+                4B\,2^{-\lfloor(N-1)/B\rfloor}.             \label{eq:periodtail}
+\end{equation}
+This follows by grouping the exponential tail in blocks of \(B\)
+indices. The same block calculation gives
+\begin{equation}
+ |G_t(x)|\le M:=8B,\qquad
+ |G_t(x)-G_t(y)|\le L|x-y|,\quad L:=128B^3.                \label{eq:periodbounds}
+\end{equation}
+For the derivative bound use
+\[
+ |g_t'(u)|\le16B^2\exp(-|u|/(2B)),
+\]
+then sum the geometric blocks. Periodicity gives the bound also
+in circular distance.
+
+The Fourier coefficients are
+\begin{equation}
+ c_k=\int_0^1G_t(x)\exp(-2\pi\ii kx)\,dx
+       =F_t(k)=I(t)\exp(-\pi k^2/t).                       \label{eq:coeffs}
+\end{equation}
+For the middle equality, first take the finite sum
+\(-N\le n\le N\), substitute \(u=x+n\) in each integral,
+and join the intervals to \([-N,N+1]\). The factor
+\(\exp(2\pi\ii kn)=1\) follows from the elementary period proved
+earlier. Equations~\eqref{eq:gtail} and \eqref{eq:periodtail}
+control the two discarded tails. This proves the exchange without
+using a general theorem on infinite sums of integrals.
+
+For an integer \(m\ge1\), the finite Fej\'er kernel is
+\begin{align}
+ K_m(y)&=\frac1m\left|\sum_{j=0}^{m-1}\exp(2\pi\ii jy)\right|^2\\
+ &=\sum_{|k|<m}\left(1-\frac{|k|}{m}\right)
+                         \exp(2\pi\ii ky).
+ \label{eq:Fejer}
+\end{align}
+This is a finite identity. Thus \(K_m\ge0\) and
+\(\int_{-1/2}^{1/2}K_m=1\). For \(0<|y|\le1/2\), the finite
+geometric-sum identity gives
+\begin{equation}
+ K_m(y)=\frac{\sin^2(\pi my)}{m\sin^2(\pi y)}
+                \le\frac1{my^2}.                         \label{eq:Fejerbound}
+\end{equation}
+Here \(|\sin(\pi y)|\ge |y|\) follows directly from
+\(\sin u\ge u/3\) for \(0\le u\le2\) and \(3\le\pi\le4\).
+
+Split the convolution integral at \(\delta=1/h\), \(h\ge2\).
+Equations~\eqref{eq:periodbounds} and \eqref{eq:Fejerbound}
+give
+\begin{align}
+ \left|\int_{-1/2}^{1/2}G_t(-y)K_m(y)\,dy-G_t(0)\right|
+ &\le L/h+2M\int_{1/h\le|y|\le1/2}\frac{dy}{my^2}\\
+ &\le L/h+4Mh/m.                                         \label{eq:Fejererror}
+\end{align}
+Expanding the finite kernel and using~\eqref{eq:coeffs}, its
+convolution value is \(I(t)W_m(1/t)\), where
+\[
+ W_m(u)=1+2\sum_{k=1}^{m-1}(1-k/m)\exp(-\pi uk^2).
+\]
+For \(1/B\le u\le B\), the block calculation
+\[
+ \sum_{k\ge1}k\exp(-\pi uk^2)
+       \le B^2\sum_{j\ge0}(j+1)2^{-j}=4B^2
+\]
+implies
+\[
+       0\le\theta(u)-W_m(u)\le8B^2/m.
+\]
+All infinite expressions in these inequalities have the geometric
+tail bounds just displayed; the underlying summations are finite.
+Since \(I(t)\le4B\), we have proved the decisive estimate
+\begin{equation}
+ \boxed{|\theta(t)-I(t)\theta(1/t)|
+              \le L/h+(4Mh+32B^3)/m.}                    \label{eq:thetafinite}
+\end{equation}
+At requested precision \(p\), take
+\begin{equation}
+ h=2^{p+3}(L+1),\qquad
+ m=2^{p+3}(4Mh+32B^3+1).                                 \label{eq:Fejercutoffs}
+\end{equation}
+The bound is at most \(2^{-p-2}\), leaving room for rational
+evaluation errors.
+
+\subsection{Gaussian normalization and theta inversion}
+
+At \(t=1\), equation~\eqref{eq:thetafinite} at every precision
+gives \(\theta(1)=I(1)\theta(1)\). Its defining positive series
+gives \(\theta(1)\ge1\), so
+\[
+ |I(1)-1|\le |\theta(1)(I(1)-1)|=0.
+\]
+Thus
+\begin{equation}
+                  \int_\R\exp(-\pi x^2)\,dx=1.            \label{eq:gaussiannormal}
+\end{equation}
+The cancellation has the explicit lower bound \(1\).
+There is no test for the zero of an arbitrary real.
+
+Approximate the positive square root of rational \(t\) by bisection.
+The linear substitution \(y=\sqrt t\,x\), first on finite intervals
+and then with~\eqref{eq:gtail}, gives \(I(t)=t^{-1/2}\).
+Approximating the scaling factor by rationals uses its positive
+lower bound \(1/B\) and the given derivative bounds.
+Consequently
+\begin{equation}
+             \boxed{\theta(t)=t^{-1/2}\theta(1/t).}         \label{eq:theta}
+\end{equation}
+
+For later use, this proof is uniform in the parameter.
+The block estimate
+\[
+ \sum_{n\ge1}n^2\exp(-\pi tn^2)\le12B^3
+\]
+gives a Lipschitz bound \(96B^3\) for \(\theta\) on
+\([1/B,B]\). The difference of the two sides
+of~\eqref{eq:theta} has Lipschitz bound \(200B^6\).
+This extends the rational-input theorem to every specified PR
+real name on this interval. Approximants may be clipped to the
+larger interval \([1/(2B),2B]\); all clipping comparisons are rational.
+
+\section{Reciprocal gamma from finite products}\label{sec:gamma}
+
+The gamma identities used in the functional equation can be proved
+globally without deciding whether a point is a pole. We work with
+\(\gamrec_N\) from~\eqref{eq:R}. The classical formulas and their
+normalizations are recorded in \cite{DLMF5,DLMF58}; we prove the
+needed quantitative versions here.
+
+\subsection{Uniform convergence with an explicit modulus}
+
+For an integer \(B\ge1\), put
+\begin{equation}
+ M_B=B\,4^{B+B^2},\quad
+ C_B=2M_B(B+B^2),\quad
+ J_B=2(B+B^2).                                            \label{eq:gammaConstants}
+\end{equation}
+
+\begin{lemma}\label{lem:Rconverges}
+On \(|z|\le B\), for \(M\ge N\ge J_B\),
+\begin{equation}
+ |\gamrec_N(z)|\le M_B,\qquad
+ |\gamrec_M(z)-\gamrec_N(z)|\le C_B/N.
+ \label{eq:Rtail}
+\end{equation}
+In particular \(|\gamrec(z)-\gamrec_N(z)|\le C_B/N\), and
+\(N\ge\max(J_B,2^pC_B)\) is a PR convergence modulus.
+\end{lemma}
+
+\begin{proof}
+Write \(H_N=\sum_{n=1}^N1/n\) and \(c_N=H_N-\log N\).
+Rectangle comparison with the integral of \(1/x\) gives
+\[
+ 0<c_N\le1,\qquad |c_M-c_N|\le1/N.
+\]
+The elementary inequality
+\[
+ |(1+w)\exp(-w)|\le\exp(|w|^2/2)
+\]
+follows by squaring and applying \(1+u\le\exp u\) to
+\(u=2\Re w+|w|^2\). Since \(\sum_{n\ge1}n^{-2}\le2\),
+\[
+ |\gamrec_N(z)|\le B\exp(B+B^2)\le M_B.
+\]
+For \(n>N\ge2B\), the power series for \(\log(1+z/n)\) gives
+\[
+ |\log(1+z/n)-z/n|\le B^2/n^2.
+\]
+Only this local logarithm series is used. Direct multiplication gives
+the exact identity
+\[
+ \gamrec_M(z)=\gamrec_N(z)\exp E,\qquad
+ E=z(c_M-c_N)+\sum_{n=N+1}^M(\log(1+z/n)-z/n).
+\]
+It does not divide by \(\gamrec_N\).
+Now \(|E|\le(B+B^2)/N\le1/2\), and
+\(|\exp E-1|\le2|E|\); the required bound follows.
+\end{proof}
+
+This also gives a direct local power-series description of \(\gamrec\).
+Write \(J=J_B\) and \(c=\lim_N(H_N-\log N)\), using the \(1/N\)
+modulus just proved. On the disk \(|z|\le B\),
+\begin{equation}
+ \gamrec(z)=z\prod_{n=1}^{J}(1+z/n)\,
+ \exp\left(z(c-H_J)+
+        \sum_{n>J}\bigl(\log(1+z/n)-z/n\bigr)\right).
+ \label{eq:Rlocalfactor}
+\end{equation}
+The differentiated tails are bounded geometric or reciprocal-square
+series. Thus \(\gamrec\) is entire with effective local approximants.
+The exponential has the explicit inverse obtained by negating its
+exponent. This finite-polynomial-times-exponential factorization
+also shows that the denominators used later represent nonzero
+analytic germs; their possible zeros come from the listed linear factors.
+
+Rearranging the finite products gives, for every \(z\),
+\begin{equation}
+ z\gamrec_N(z+1)=\left(1+\frac{z+1}{N}\right)\gamrec_N(z).
+\end{equation}
+The controlled limit yields
+\begin{equation}
+ \gamrec(z)=z\gamrec(z+1),\qquad \gamrec(0)=0,\quad\gamrec(1)=1.
+ \label{eq:Rrecurrence}
+\end{equation}
+These are entire identities, including their zero arguments.
+
+\subsection{Identification with Euler's gamma integral}
+
+For \(\Re z=\sigma\ge1/A>0\), \(|z|\le B\), define
+\[
+                  \Gamma(z)=\int_0^\infty \exp(-u)u^{z-1}\,du.
+\]
+The lower endpoint error at \(\epsilon\le1\) is at most
+\(A\epsilon^{1/A}\). The tail above \(T\ge1\) is at most
+\begin{equation}
+                  2^{B+1}B!\exp(-T/2),                   \label{eq:gammaintegraltail}
+\end{equation}
+using \(u^B\le2^BB!\exp(u/2)\). Quadrature on
+\([\epsilon,T]\) has a derivative bound obtained by differentiating
+this explicit integrand. Thus the integral has a PR name once its
+positive real-part margin is supplied.
+
+Let
+\[
+ \Gamma_N(z)=\int_0^N u^{z-1}(1-u/N)^N\,du.
+\]
+Substitute \(u=Nv\), and integrate the beta polynomial by parts \(N\)
+times. The endpoint \(0\) is controlled by the same real-part margin.
+The result is the finite identity
+\begin{equation}
+ \Gamma_N(z)=
+ \frac{N^zN!}{z(z+1)\cdots(z+N)},\qquad
+                  \Gamma_N(z)\gamrec_N(z)=1.              \label{eq:betaEuler}
+\end{equation}
+All denominators have positive real part.
+
+For \(0\le u\le N/2\),
+\begin{equation}
+ 0\le \exp(-u)-(1-u/N)^N
+                  \le (u^2/N)\exp(-u).                   \label{eq:betakernel}
+\end{equation}
+Indeed the series for \(-N\log(1-u/N)-u\) is at most
+\(u^2/[2N(1-u/N)]\le u^2/N\), and
+\(1-\exp(-v)\le v\). On the rest of the interval, both nonnegative
+kernels are bounded by \(\exp(-u)\).
+Integrating these estimates gives, for \(N\ge2\),
+\begin{equation}
+ |\Gamma_N(z)-\Gamma(z)|\le D_B/N,\qquad
+ D_B=1+(B+1)!+2^{B+3}B!.                                 \label{eq:gammabetaerror}
+\end{equation}
+For the first part, split at \(u=1\) and use
+\(u^{\sigma+1}\le1+u^{B+1}\).
+For the tail use~\eqref{eq:gammaintegraltail} at \(N/2\)
+and \(\exp(-N/4)\le4/N\).
+
+Moreover \(|\Gamma_N(z)|\le A+B!\).
+Combining~\eqref{eq:Rtail}, \eqref{eq:betaEuler},
+and~\eqref{eq:gammabetaerror}, with the finite product estimate,
+proves
+\begin{equation}
+                 \Gamma(z)\gamrec(z)=1\qquad(\Re z>0).
+                 \label{eq:gammaReciprocal}
+\end{equation}
+Thus our reciprocal-gamma construction agrees with Euler's integral
+on its defining half-plane. No analytic continuation principle has
+been used in this identification.
+
+\subsection{Euler's sine product by finite trigonometric algebra}
+
+We need the global identity
+\begin{equation}
+ \frac{\sin(\pi z)}{\pi}
+       =z\prod_{n=1}^\infty(1-z^2/n^2).                  \label{eq:sineproduct}
+\end{equation}
+Its classical normalization is \cite{DLMF422}. The following finite
+argument also provides a PR modulus.
+
+Let \(N=2m+1\) be odd and \(w=\pi z/N\).
+The addition formulas give
+\[
+ \sin(Nw)=\sin w\,F_N(\sin^2w),\quad
+ F_N(Y)=\sum_{j=0}^m(-1)^j\binom N{2j+1}Y^j(1-Y)^{m-j}.
+\]
+The \(m\) values \(\sin^2(\pi k/N)\), \(1\le k\le m\), are
+roots of \(F_N\). They are separated: for \(j<k\),
+\[
+ \sin^2(\pi k/N)-\sin^2(\pi j/N)
+  =\sin(\pi(k+j)/N)\sin(\pi(k-j)/N)\ge4/N^2.
+\]
+Use~\eqref{eq:sinchord} and reflection about \(\pi/2\).
+Their denominators are therefore explicitly nonzero.
+Finite polynomial division, together with \(F_N(0)=N\), proves
+\begin{equation}
+ \sin(\pi z)=N\sin(\pi z/N)
+   \prod_{k=1}^m
+   \left(1-\frac{\sin^2(\pi z/N)}{\sin^2(\pi k/N)}\right).
+ \label{eq:finitesine}
+\end{equation}
+No root of an unspecified polynomial is selected.
+
+Here are sufficient quantitative bounds for passing to the product.
+Suppose \(|z|\le B\), \(B\ge1\), and \(N\ge8B^2\). Set
+\[
+ a_k=\frac{\sin^2(\pi z/N)}{\sin^2(\pi k/N)},\qquad
+ b_k=\frac{z^2}{k^2}.
+\]
+For \(0<v\le\pi/2\),
+\[
+ 0\le\frac1{\sin^2v}-\frac1{v^2}\le2.
+\]
+In fact \(v-\sin v\le v^3/6\), \(\sin v\le v\), and
+\(\sin v\ge v/2\) bound the left side by \(4/3\).
+Taylor estimates at \(|\pi z/N|\le1/2\) now give
+\begin{align}
+ \sum_{k=1}^m|a_k-b_k|
+     &\le128B^4/N^2+16B^2/N\le32B^2/N,\\
+ \sum_{k=1}^m|a_k|&\le32B^2,\qquad
+ \sum_{k=1}^m|b_k|\le2B^2,\\
+ |N\sin(\pi z/N)/\pi-z|&\le6B^3/N^2.
+ \label{eq:sinebounds}
+\end{align}
+Formula~\eqref{eq:producterror} bounds the product discrepancy by
+\(32B^2\,4^{34B^2}/N\).
+For \(P_m(z)=\prod_{k=1}^m(1-z^2/k^2)\), the reciprocal-square
+tail gives
+\[
+ |P_\ell(z)-P_m(z)|
+          \le2\exp(2B^2)B^2/m\quad(\ell\ge m\ge B^2).
+\]
+The proof is the same finite telescoping formula: all mixed partial
+products are at most \(\exp(2B^2)\), and
+\(\sum_{k>m}k^{-2}\le1/m\).
+
+Since \(m\ge N/3\), the finite prefactor error, product comparison,
+and product tail in~\eqref{eq:finitesine} have total bound
+\begin{equation}
+                  \frac{C_{\sin}(B)}{N},\qquad
+ C_{\sin}(B)=44B^3\,4^{34B^2}.                            \label{eq:sinemodulus}
+\end{equation}
+Their three contributions in these common units are at most
+\(6+32+6\). Choose the next odd integer above
+\(\max(8B^2,2^pC_{\sin}(B))\).
+This proves~\eqref{eq:sineproduct} at every prescribed precision,
+including \(z=0\), with no division by \(z\).
+
+\subsection{Reflection, duplication, and the required factor identity}
+
+Direct rearrangement of finite products yields
+\begin{align}
+ \gamrec_N(z)\gamrec_N(1-z)
+ &=z\left(1+\frac{1-z}{N}\right)
+               \prod_{n=1}^N(1-z^2/n^2),                 \label{eq:finiteReflection}\\
+ \gamrec_N(z)\gamrec_N(z+1/2)
+ &=2^{2z-1}\left(1+\frac{z}{N+1/2}\right)
+                    \gamrec_N(1/2)\gamrec_{2N}(2z).
+ \label{eq:finiteDuplication}
+\end{align}
+These are finite polynomial identities after combining the
+positive-base powers. To check duplication explicitly, split the
+product for \(\gamrec_{2N}(2z)\) into its even and odd indices
+and use
+\[
+ a_N=\prod_{k=1}^N\frac{k-1/2}{k},\qquad
+ \gamrec_N(1/2)=\frac{N+1/2}{\sqrt N}\,a_N.
+\]
+All remaining denominators are positive integers or half-integers.
+
+The established moduli give reflection:
+\begin{equation}
+       \gamrec(z)\gamrec(1-z)=\sin(\pi z)/\pi.              \label{eq:Rreflection}
+\end{equation}
+At \(z=1/2\), the finite products are positive, so
+\(\gamrec(1/2)\ge0\) and
+\(\gamrec(1/2)^2=1/\pi\).
+The positive square root, with \(3<\pi<4\), gives
+\(\gamrec(1/2)=1/\sqrt\pi\). Consequently duplication is
+\begin{equation}
+ \gamrec(z)\gamrec(z+1/2)
+             =\frac{2^{2z-1}}{\sqrt\pi}\gamrec(2z).
+ \label{eq:Rduplication}
+\end{equation}
+
+Apply~\eqref{eq:Rduplication} at \(z=(1-s)/2\), rearranging only
+the everywhere-apart exponential factor:
+\[
+ \gamrec(1-s)=2^s\sqrt\pi\,
+                  \gamrec((1-s)/2)\gamrec(1-s/2).
+\]
+Multiply by \(\gamrec(s/2)\) and use reflection.
+We obtain the entire identity
+\begin{equation}
+ \boxed{\gamrec(1-s)\gamrec(s/2)
+ =\frac{2^s}{\sqrt\pi}\sin(\pi s/2)\gamrec((1-s)/2).}
+ \label{eq:gammafactor}
+\end{equation}
+No potentially zero gamma factor has been cancelled.
+
+\subsection{Explicit apartness when a point value is wanted}
+
+The entire identities above need no pole exclusion. To evaluate
+\(\Gamma(z)\) as a number, suppose \(|z|\le B\), set \(J=J_B\), and
+supply a rational \(0<\delta\le1\) with
+\[
+                   |z+j|\ge\delta\quad(0\le j\le J).
+\]
+The finite initial product and the tail-exponential bound give
+\begin{equation}
+                |\gamrec(z)|\ge
+                  \frac{\delta^{J+1}}{2J!J^B}.             \label{eq:Rlower}
+\end{equation}
+Indeed the initial factors have this lower bound without the \(2\);
+the remaining exponent has modulus at most \(1/2\).
+This supplies a PR reciprocal modulus. It also explains, with
+explicit witnesses, the possible poles at nonpositive integers.
+There is no need to decide whether an arbitrary named input equals
+one of them.
+
+\section{The regularized Mellin construction}\label{sec:mellin}
+
+We now prove that the symmetric expression \(X\) really continues the
+completed Dirichlet series. This identification is the substantive
+content behind the simple symmetry in~\eqref{eq:X}.
+
+\subsection{Uniform bounds and a fully specified finite approximation}
+
+For \(t\ge1\), since \(n^2\ge1+3(n-1)\),
+\begin{equation}
+ \ps(t)\le\frac{\exp(-3t)}{1-\exp(-9t)}
+                    \le2\exp(-3t).                      \label{eq:psitail}
+\end{equation}
+For an integer \(B\ge2\) and \(|\Re s|,|\Im s|\le B\),
+\(|t^{s/2-1}|\le t^B\). The factorial-series inequality
+\(t^B\le B!\exp t\) gives
+\begin{equation}
+ \normone{\int_T^\infty\ps(t)t^{s/2-1}\,dt}
+             \le2B!\exp(-2T)\le2B!2^{-2T}.                \label{eq:Jtail}
+\end{equation}
+In particular \(\normone{J(s)}\le2B!\).
+
+For a nonnegative integer \(n\), let
+\[
+ \lceilog(0)=0,\qquad
+ \lceilog(n)=\min\{j\le n:n\le2^j\}\quad(n\ge1).
+\]
+This is a bounded PR search, the ceiling binary logarithm.
+At precision \(p\), set
+\begin{align}
+ T&=p+\lceilog(B!)+4,&
+ N&=p+(B+1)\lceilog(T)+4,\nonumber\\
+ D&=2(B+2)T^B,&
+ q&=p+\lceilog(TD)+4,\nonumber\\
+ r&=p+\lceilog(T)+4,&
+ M&=(T-1)2^q.                                            \label{eq:Jcutoffs}
+\end{align}
+Let \(t_j=1+j2^{-q}\), \(0\le j<M\), and
+\begin{equation}
+ g_N(t,s)=\sum_{n=1}^N
+        \exp\bigl(-\pi n^2t+(s/2-1)\log t\bigr).
+ \label{eq:gn}
+\end{equation}
+Approximate this finite sum by a rational complex value
+\(\widehat g_N(t,s)\) with \(\ell^1\)-error at most \(2^{-r}\).
+It suffices to approximate each of its \(N\) terms to precision
+\(r+\lceilog(N)+1\), leaving half the sample budget for rounding.
+Define
+\begin{equation}
+            \Jh(B,p,s)=2^{-q}\sum_{j=0}^{M-1}
+                                    \widehat g_N(t_j,s).  \label{eq:Jhat}
+\end{equation}
+This is an explicit finite rational expression.
+
+\begin{proposition}[Mellin approximation contract]\label{prop:Jcontract}
+For every valid rational input in the stated box,
+\[
+                  \normone{\Jh(B,p,s)-J(s)}<2^{-p}.
+\]
+More precisely, a sufficient error budget is
+\begin{equation}
+ 2B!2^{-2T}
+ +4T^{B+1}2^{-3(N+1)^2}
+ +TD2^{-q}
+ +T2^{-r}.                                               \label{eq:Jbudget}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The first term is~\eqref{eq:Jtail}.
+For \(n=N+1+j\), \(n^2\ge(N+1)^2+j\).
+Thus the omitted Gaussian series on \(t\ge1\) is bounded by
+\(2\cdot2^{-3(N+1)^2}\). The complex weight has
+\(\ell^1\)-norm at most \(2T^B\); integration over length at most
+\(T\) gives the second term.
+
+For \(\ps_N(t)=\sum_{n=1}^N\exp(-\pi n^2t)\), \(t\ge1\),
+we have \(\ps_N\le1\) and \(|\ps_N'|\le1\).
+For the latter, use \(n^2\le4^{n-1}\), \(n^2\ge n\), and
+\[
+       4n^2\,2^{-3n^2}\le2^{-n}.
+\]
+Then \(|s/2-1|\le B+1\) and differentiation of the power give
+\(\normone{g_N'(t,s)}\le2(B+2)T^B=D\).
+Lemma~\ref{lem:finitecalculus} bounds the mesh error by
+\(TD2^{-q}\). Summing the sample errors contributes \(T2^{-r}\).
+
+For completeness, divide~\eqref{eq:Jbudget} by \(2^{-p}\).
+Its four components are at most
+\[
+                    \frac1{128},\quad\frac1{32},
+                    \quad\frac1{16},\quad\frac1{16}.
+\]
+For the second bound put \(d=(B+1)\lceilog(T)\);
+then \(N=p+d+4\), and its ratio is at most
+\[
+             2^{\,N-2-3(N+1)^2}\le1/32.
+\]
+The other bounds follow immediately from~\eqref{eq:Jcutoffs}
+and \(B!\le2^{\lceilog(B!)}\).
+Their sum is \(21/128<1\).
+\end{proof}
+
+\paragraph{A completely bounded sample evaluator.}
+The sample accuracy used above does not rely on waiting for convergence.
+Suppose \(1\le t\le T\), \(n\le N\), and the required term accuracy is
+\(2^{-u}\). Put
+\begin{equation}
+ U=(4N^2+B+2)T,\qquad C=N^2T+B+1,\qquad
+ v=u+2U+C+4.
+ \label{eq:sampleprecision}
+\end{equation}
+Compute \(\pi\) and \(\log t\) to error \(2^{-v}\) by the
+bounded algorithms in Section~\ref{sec:toolkit}. Form the
+exponent rationally and compute its exponential to precision
+\(u+1\) by~\eqref{eq:exptail}.
+The true exponent has \(\ell^1\)-norm at most \(U\); its input error
+is at most \(C2^{-v}\le2^{-u-2U-4}\).
+The exponential perturbation costs at most \(2^{-u-1}\), using
+the safe factor \(2^{2U+3}\); the final Taylor error costs at most
+another \(2^{-u-1}\). This proves the advertised sample contract.
+
+The bounds are intentionally generous. For example \(B=4,p=20\)
+gives \(T=29,N=49,q=52\) and
+\(M=126100789566373888\).
+This is a primitive recursive existence and proof-theoretic
+construction, not a claim of a practical zeta evaluator. The numerical
+diagnostics use a separate fast method and are labelled accordingly.
+
+\subsection{Local power series and named parameters}
+
+The integral defining \(J\) is entire in a directly effective sense.
+For \(h\) in a bounded disk, expand
+\[
+ t^{(s+h)/2-1}
+       =t^{s/2-1}\sum_{j=0}^\infty
+                         \frac{(h\log t/2)^j}{j!}.
+\]
+Here is a precise finite justification. Choose an integer \(H_0\)
+with \(|h|\le H_0\) on the whole disk, and use the enlarged
+box \(B'=B+H_0+2\). Choose \(T\) so that twice the
+tail in~\eqref{eq:Jtail} for \(B'\) is within the allotted error.
+On \([1,T]\), \(|h\log t/2|\) is explicitly bounded.
+The exponential remainder~\eqref{eq:exptail} makes the integrated
+Taylor error arbitrarily small with a PR degree. On the omitted
+tail, the exponential majorant of the sum is at most
+\(t^{|h|/2}\); the same enlarged-box bound applies both to
+the original integral and to the finite Taylor polynomial whose
+coefficient integrals extend to infinity.
+Finite sums and quadrature may be interchanged exactly before
+these two errors are applied. This proves a local convergent
+power series with coefficients
+\[
+ \frac1{2^j j!}\int_1^\infty
+          \ps(t)t^{s/2-1}(\log t)^j\,dt.
+\]
+All coefficients have effective tails because \(\log t\le t\).
+For example the \(j\)-th differentiated tail is bounded by
+\(2(B+j)!2^{-2T}\) on an appropriate original box.
+
+The same calculation supplies a numerical local continuity bound:
+along a segment in a box of radius \(B\),
+\[
+ \normone{J(s)-J(w)}\le (B+1)!\,|s-w|
+\]
+is sufficient. Indeed the parameter derivative has integrand
+\(\frac12\ps(t)t^{s/2-1}\log t\), and the preceding factorial
+majorant applies. Enlarging the box absorbs rounding of the input.
+This permits evaluation on fixed PR names by reading sufficiently
+many input digits. Uniform derivative bounds for \(\gamrec\)
+come from its polynomial-times-exponential description in
+Section~\ref{sec:gamma}; alternatively each finite evaluator has
+a directly computable sensitivity bound, and its uniform tail
+handles the passage to the name.
+
+\subsection{The Mellin identity on the convergence half-plane}
+
+Assume now that \(\sigma=\Re s\ge1+\delta\), where a positive
+rational margin \(\delta\) is supplied. On \(\sigma>1\), define
+the Dirichlet-series name
+\[
+                         \zeta_D(s)=\sum_{n=1}^\infty n^{-s}.
+\]
+Its tail after \(N\) is at most
+\begin{equation}
+               \sum_{n>N}n^{-\sigma}
+                    \le N^{1-\sigma}/(\sigma-1)
+                    \le\delta^{-1}N^{-\delta}.            \label{eq:Dirichlettail}
+\end{equation}
+This follows by comparing the decreasing positive terms with
+finite integrals of \(x^{-\sigma}\), then using their explicit
+endpoint values. For \(\delta\ge1/a\), \(a\ge1\), an exponential
+cutoff \(N=2^{a(p+a+c)}\), with \(c\) a binary-size allowance for
+the displayed constant, is sufficient at precision \(p\).
+Thus the tail is PR even for a very small supplied margin.
+
+For each fixed positive integer \(n\), the linear substitution
+\(u=\pi n^2t\) gives
+\begin{equation}
+ \int_0^\infty \exp(-\pi n^2t)t^{s/2-1}\,dt
+                  =\pi^{-s/2}n^{-s}\Gamma(s/2).
+ \label{eq:singleMellin}
+\end{equation}
+The gamma endpoint bounds make the substitution effective.
+For a finite number of \(n\)'s we can sum this identity.
+We next justify its infinite version quantitatively.
+
+The Gaussian normalization and monotonicity give
+\[
+ \ps(t)\le\int_0^\infty \exp(-\pi tx^2)\,dx
+                           =\frac1{2\sqrt t}.
+\]
+Consequently the Mellin lower endpoint below \(\epsilon\) has
+error at most
+\begin{equation}
+ \int_0^\epsilon \ps(t)t^{\sigma/2-1}\,dt
+                \le\frac{\epsilon^{(\sigma-1)/2}}{\sigma-1}.
+ \label{eq:Mellinlower}
+\end{equation}
+The upper endpoint is bounded by~\eqref{eq:Jtail}.
+If also \(\sigma\le B\), the positive integrals for the omitted
+\(n\)'s have total bound
+\begin{equation}
+ (2+B!)\,\delta^{-1}N^{-\delta}.                           \label{eq:Mellinnsumtail}
+\end{equation}
+Indeed \(\Gamma(\sigma/2)\le2+B!\), by splitting its integral
+at \(1\), and \(\pi^{-\sigma/2}\le1\). Apply the finite
+identity~\eqref{eq:singleMellin} to any finite block \(n>N\)
+and then~\eqref{eq:Dirichlettail}.
+
+To make the exchange fully explicit, choose an integer \(a\ge1\)
+with \(\delta\ge1/a\), and put
+\[
+ c=\lceilog(2+B!)+4,\qquad
+ N=2^{a(p+a+c)},\qquad
+ \epsilon=2^{-2a(p+a+4)}.
+\]
+The lower endpoint and omitted-\(n\) integral errors are then each
+at most \(2^{-p-4}\). Choose \(T\) from~\eqref{eq:Jcutoffs},
+with extra accuracy if needed for the remaining budget.
+Uniform Gaussian convergence on \([\epsilon,T]\) follows from
+the theta estimates with a parameter envelope at least
+\(\max(T,1/\epsilon)\).
+On this compact interval exchange only a finite sum with a finite
+rectangle quadrature. To identify the residual \(\ps\) sum,
+first use a finite block \(N<n\le M\) and then the uniform tail
+bound as \(M\) is increased to its explicit cutoff.
+The three discarded errors are smaller than the prescribed
+accuracy. This proves
+\begin{equation}
+ \boxed{\pi^{-s/2}\Gamma(s/2)\zeta_D(s)
+        =\int_0^\infty\ps(t)t^{s/2-1}\,dt
+          \qquad(\Re s>1).}                              \label{eq:Mellin}
+\end{equation}
+No general dominated-convergence or Fubini theorem is assumed.
+
+\subsection{Splitting the integral and constructing the continuation}
+
+The theta equation~\eqref{eq:theta} is equivalent to
+\begin{equation}
+ \ps(t)=t^{-1/2}\ps(1/t)+\tfrac12(t^{-1/2}-1).
+ \label{eq:psitransform}
+\end{equation}
+On \(\Re s>1\), split~\eqref{eq:Mellin} at \(1\) and substitute
+this formula below \(1\). The elementary terms integrate to
+\begin{equation}
+ \frac12\int_0^1
+        \left(t^{(s-1)/2-1}-t^{s/2-1}\right)dt
+              =\frac1{s-1}-\frac1s=\frac1{s(s-1)}.
+ \label{eq:elementaryMellin}
+\end{equation}
+At a lower cutoff \(\epsilon\), these equalities follow by
+differentiating \(t^a/a\). Their endpoint terms tend to zero with
+the positive real-part margin already supplied.
+In the remaining integral substitute \(u=1/t\):
+\begin{equation}
+ \int_0^1 t^{s/2-3/2}\ps(1/t)\,dt
+       =\int_1^\infty u^{-s/2-1/2}\ps(u)\,du=J(1-s).
+ \label{eq:inverseMellin}
+\end{equation}
+Use the substitution first on \([\epsilon,1]\).
+The omitted transformed interval is a tail of \(J(1-s)\),
+so~\eqref{eq:Jtail} gives its modulus.
+Although the theta proof uses a parameter box whose bound grows
+as \(1/\epsilon\), that bound is itself PR in the chosen precision.
+
+Combining the finite identities gives
+\begin{equation}
+ \pi^{-s/2}\Gamma(s/2)\zeta_D(s)
+        =\frac1{s(s-1)}+J(s)+J(1-s)
+                    \qquad(\Re s>1).                     \label{eq:regularizedMellin}
+\end{equation}
+Multiplication by \(s(s-1)/2\) yields exactly
+\begin{equation}
+ X(s)=\tfrac12s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta_D(s).
+ \label{eq:xiIdentification}
+\end{equation}
+The right side has now been identified with the entire, directly
+specified function \(X\) in~\eqref{eq:X}.
+
+Since \(\gamrec(s/2)=(s/2)\gamrec(1+s/2)\) and
+\(\Gamma(s/2)\gamrec(s/2)=1\), multiplication gives
+\begin{equation}
+                  Z(s)=(s-1)\zeta_D(s)\qquad(\Re s>1).
+ \label{eq:ZIdentification}
+\end{equation}
+The expression~\eqref{eq:Z} is entire everywhere, so
+\(\zeta=(Z,s-1)\) is the required explicitly constructed
+meromorphic continuation of the Dirichlet series.
+
+\section{The functional equation and all exceptional points}\label{sec:FE}
+
+The elementary identities
+\[
+ (1-s)((1-s)-1)=s(s-1),\qquad 1-(1-s)=s
+\]
+show immediately from~\eqref{eq:X} that \(X(1-s)=X(s)\).
+It is crucial that Section~\ref{sec:mellin} has already identified
+this function with the completed Dirichlet series.
+
+For the sine--gamma form, start with
+\[
+ s\gamrec(1-s)Z(s)
+       =s\gamrec(1-s)\pi^{s/2}\gamrec(1+s/2)X(s).
+\]
+Use recurrence and then~\eqref{eq:gammafactor}:
+\begin{align}
+ s\gamrec(1-s)Z(s)
+ &=2\pi^{s/2}\gamrec(1-s)\gamrec(s/2)X(s)\\
+ &=2^{s+1}\pi^{(s-1)/2}
+                  \sin(\pi s/2)\gamrec((1-s)/2)X(s).
+ \label{eq:FEleft}
+\end{align}
+On the other hand, recurrence at \((1-s)/2\) and symmetry give
+\begin{align}
+ &(1-s)2^s\pi^{s-1}\sin(\pi s/2)Z(1-s)\\
+ &\quad=(1-s)2^s\pi^{s-1+(1-s)/2}\sin(\pi s/2)
+                    \gamrec(1+(1-s)/2)X(1-s)\\
+ &\quad=2^{s+1}\pi^{(s-1)/2}
+                    \sin(\pi s/2)\gamrec((1-s)/2)X(s).
+ \label{eq:FEright}
+\end{align}
+The last expressions are identical. This proves the global entire
+identity~\eqref{eq:entireFE} by multiplication and addition alone.
+
+\subsection{Meromorphic interpretation}
+
+For this report, a meromorphic expression is represented locally by a
+pair of explicit analytic numerator and denominator names. An identity
+is proved by equality of their cross-products. Point evaluation of a
+quotient is performed when a positive rational lower bound for its
+denominator is supplied. This is sufficient for all formulas here;
+we do not need a general quotient construction for arbitrary meromorphic
+functions.
+
+The left side of~\eqref{eq:standardFE} has pair
+\((Z(s),s-1)\).
+The right side has pair
+\[
+ \left(2^s\pi^{s-1}\sin(\pi s/2)Z(1-s),
+                              -s\gamrec(1-s)\right).
+\]
+Their cross-product equality is precisely~\eqref{eq:entireFE}.
+Therefore the displayed sine--gamma functional equation is proved
+as an identity of meromorphic expressions on the whole plane.
+On a region with the appropriate apartness witnesses, it gives
+the ordinary equality of numerical values by division.
+
+Similarly the completed function is represented by
+\begin{equation}
+ \Lambda(s)=
+  \left(1+s(s-1)(J(s)+J(1-s)),\;s(s-1)\right).
+ \label{eq:Lambda}
+\end{equation}
+The numerator is \(2X(s)\) and is invariant under \(s\mapsto1-s\);
+the denominator has the same invariance.
+On \(\Re s>1\), it is
+\(\pi^{-s/2}\Gamma(s/2)\zeta_D(s)\).
+
+\subsection{Values, residue, and removable factors}
+
+From~\eqref{eq:X},
+\[
+ X(0)=X(1)=\frac12.
+\]
+The reciprocal-gamma formulas give
+\[
+ \gamrec(1)=1,\qquad
+ \gamrec(1/2)=1/\sqrt\pi,\qquad
+ \gamrec(3/2)=2/\sqrt\pi.
+\]
+It follows that
+\[
+ Z(0)=\frac12,\qquad Z(1)=1.
+\]
+Hence
+\begin{equation}
+ \zeta(0)=-\frac12,\qquad
+                  \mathop{\rm Res}_{s=1}\zeta(s)=1.       \label{eq:specialvalues}
+\end{equation}
+In local power-series language, \(Z(s)-1\) has a factor \(s-1\);
+so \(\zeta(s)=1/(s-1)\) plus an analytic function near \(1\).
+This proves that the pole is simple and genuine.
+
+For every positive integer \(m\), recurrence gives
+\(\gamrec(1-m)=0\). Thus \(Z(-2m)=0\) and
+\(\zeta(-2m)=0\).
+The entire identity~\eqref{eq:entireFE} remains valid at
+\(s=0,1,2,\ldots\); it never forms an undefined product.
+For example, at a positive even integer the displayed sine and
+gamma factors in~\eqref{eq:standardFE} must be interpreted together
+meromorphically. Their separate totalized computer values are not
+the assertion being proved.
+
+\section{Eliminating the analysis inside iPRA}\label{sec:arithmetic}
+
+We now specify the internal statement and justify the logical strength
+of the preceding human proof. All infinite notation has served to
+organize finite estimates with explicit moduli.
+
+\subsection{One total rational residual checker}
+
+Use natural codes for signed integers, positive-denominator rationals,
+and pairs of rationals. Arithmetic can use canonical fractions, or
+cross-product equality with a canonical final form. Integer
+division, gcd, bit length, finite sums, factorial, bounded
+products, and bounded search are PR. Malformed codes are assigned
+fixed defaults.
+
+For valid \(s=x+\ii y\), \(|x|,|y|\le B\), \(B\ge2\), and
+precision \(k\), put
+\begin{equation}
+       A=B+3,\qquad H=2^{64A^2},\qquad
+       w=k+512A^2+20.                                    \label{eq:workingprecision}
+\end{equation}
+Expand the two sides of the entire equation as
+\begin{align}
+ L(s)&=s\gamrec(1-s)\pi^{s/2}\gamrec(1+s/2)X(s),\nonumber\\
+ U(s)&=(1-s)2^s\pi^{s-1}\sin(\pi s/2)
+       \pi^{(1-s)/2}\gamrec(1+(1-s)/2)X(1-s).
+ \label{eq:expandedFE}
+\end{align}
+Every factor in these expressions has \(\ell^1\)-norm at most \(H\).
+For gamma use~\eqref{eq:gammaConstants} with disk bound \(2A\).
+For \(J\) use \(\normone{J}\le2A!\), giving
+\(\normone X\le1/2+8A^2A!\le2^{8A^2}\).
+The elementary powers and sine are bounded by their exponential
+majorants. These estimates are all well below \(H\).
+
+Evaluate every analytic factor to \(\ell^1\)-error at most \(2^{-w}\),
+and keep rational multiplications and the factors \(s,1-s\) exact.
+The following prescriptions make this a fixed total PR algorithm.
+
+\begin{enumerate}
+\item For \(J\), use~\eqref{eq:Jcutoffs}--\eqref{eq:Jhat}.
+For \(X\), use the common envelope \(A\), put \(p_J=w+4A+8\), and form
+\begin{equation}
+ \widehat X(A,w,s)=\frac12+\frac{s(s-1)}2
+              \bigl(\Jh(A,p_J,s)+\Jh(A,p_J,1-s)\bigr).
+ \label{eq:Xhat}
+\end{equation}
+Its error is at most \(4A^2 2^{-p_J}<2^{-w}\).
+Using the same parameters on both arguments makes
+\(\widehat X(A,w,1-s)=\widehat X(A,w,s)\) an exact rational identity.
+
+\item For \(\gamrec(z)\), use \(D=2A\), which bounds the
+\(\ell^1\)-norm as well as the modulus of each supplied gamma
+argument, and
+\[
+ N=\max(J_D,\,2^{w+4}C_D).
+\]
+The tail is at most \(2^{-w-4}\) in complex modulus.
+Compute the finite rational product exactly and approximate
+\(\exp(-z\log N)\).
+One fully bounded precision schedule is
+\[
+ Q=D(N+1)^D,\quad S=D(N+1)+1,\quad
+ v=w+2S+Q+D+14.
+\]
+The polynomial factor has modulus at most \(Q\):
+\(\prod_{n=1}^N(1+D/n)=\binom{N+D}{D}\le(N+1)^D\).
+Compute \(\log N\) and the resulting exponential to precision \(v\).
+The exponent has modulus at most \(S\), so
+\eqref{eq:expperturb} and the factor \(Q\) leave ample
+\(\ell^1\) budget for \(2^{-w}\) accuracy.
+
+\item For the remaining powers and sine, fix \(v=w+16A+30\).
+Compute \(\pi\), \(\log2\), and
+\(\log(\widehat\pi)\) to precision \(v\), first clipping
+\(\widehat\pi\) rationally to \([3,4]\). Use the exact finite
+series prescribed in Section~\ref{sec:toolkit}.
+The error of \(\log(\widehat\pi)\) as an approximation to
+\(\log\pi\) is at most \(2\cdot2^{-v}\).
+Form each exponent rationally, and evaluate its exponential
+to precision \(w+4\). All these exponents have
+\(\ell^1\)-norm at most \(4A+1\), their perturbations are at most
+\(4A2^{-v}\), and~\eqref{eq:expperturb} proves error below
+\(2^{-w}\).
+For the sine use
+\(\sin z=(\exp(\ii z)-\exp(-\ii z))/(2\ii)\), with the same
+exponential accuracy. Use exact finite polynomial sums throughout;
+no optional final rounding is part of this fixed checker.
+\end{enumerate}
+
+Call the resulting rational products \(\widehat L,\widehat U\).
+The telescoping product estimate~\eqref{eq:producterror}, allowing
+up to eight factors on either side, bounds their aggregate
+evaluation error by
+\begin{equation}
+                2^{11}H^7\,2^{-w}<2^{-k-8}.               \label{eq:finalbudget}
+\end{equation}
+All intermediate finite identities in the human proof are used with
+an additional finite-precision allowance; their explicit moduli can
+make that allowance at most \(2^{-k-8}\) as well.
+Equivalently, the analytic shorthand proves \(L=U\), while the finite
+estimates just given remove that shorthand at the requested precision.
+Define the nontrivial branch of the checker by
+\begin{equation}
+ \mathsf{Check}(c,B,k)=1
+       \quad\Longleftrightarrow\quad
+              \normone{\widehat L-\widehat U}\le2^{-k}.
+ \label{eq:Checkdefinition}
+\end{equation}
+Return \(1\) on malformed codes, \(B<2\), or out-of-box inputs.
+This specifies one total PR function of three natural arguments.
+
+\subsection{Why the proof needs only quantifier-free induction}
+
+The following list identifies the actual induction invariants.
+Each is a rational equation or inequality with all bounds and
+precisions supplied as natural parameters.
+
+\begin{longtable}{p{0.22\textwidth}p{0.68\textwidth}}
+\toprule
+Finite operation & Induction invariant and error accounting\\
+\midrule
+\endhead
+Geometric tails &
+The exact finite geometric-sum identity and a bound on the remaining
+geometric term. Polynomial weights such as \(j\), \(j^2\), or a
+fixed factorial moment are accumulated by a PR fold.\\
+Taylor evaluation &
+A recurrence for the current rational term and partial sum, together
+with the explicit factorial or ratio majorant. The output precision
+is fixed throughout this induction.\\
+Quadrature &
+After \(j\) cells, accumulated error is at most the sum of the first
+\(j\) cell budgets. Formula~\eqref{eq:telescoping} is the corresponding
+telescoping invariant.\\
+Products &
+The finite identity~\eqref{eq:producterror}, with a numerical bound
+for each mixed product. No induction is applied to an infinite-product
+convergence assertion.\\
+Fourier algebra &
+Finite sums over \(|k|<m\), with their exact geometric identities;
+omitted series terms and quadrature errors are bounded by the stated
+numerical cutoffs.\\
+Gamma and sine identities &
+Finite polynomial product rearrangements and polynomial division by
+the explicitly separated trigonometric roots; each denominator has
+a supplied rational apartness bound.\\
+Mellin splitting &
+Finite sums and finite rectangle substitutions on
+\([\epsilon,T]\); the three endpoint and series tails are
+separate rational majorants.\\
+\bottomrule
+\end{longtable}
+
+A bounded universal assertion, for example that every cell error
+among the first \(j\) cells satisfies its bound, can be encoded as
+a finite Boolean conjunction produced by a PR function and equated
+to \(1\). It is therefore quantifier free. Its elementary relation
+to the component tests is itself proved by quantifier-free induction.
+Rational inequalities are reduced to natural cross-product
+inequalities, with the denominators positive by construction.
+
+For every application of a displayed analytic identity, choose the
+requested accuracy symbolically, insert its explicit truncation and
+mesh functions, and use the corresponding finite error inequality.
+Finite sums combine errors additively; finite products use
+\eqref{eq:producterror}; a reciprocal uses its supplied positive
+lower bound. The human proof contains finitely many such kinds of
+steps. Their composition is a PR expression in the original
+numerical parameters. This is the ordinary finite-error
+translation of the proof, and it uses exactly the invariants above.
+
+Consequently the calculation proving~\eqref{eq:Checkdefinition}
+is a proof by quantifier-free induction with \(c,B,k\) as free
+parameters. Universal introduction gives~\eqref{eq:checktarget}.
+This establishes the claimed human proof in \(\ipra\).
+Writing the corresponding deeply embedded derivation in Lean is
+a separate, substantial implementation task described next.
+
+\paragraph{Two distinctions that matter.}
+PR computability alone does not establish correctness in iPRA:
+the finite invariants and their proofs are required, and have been
+identified above. Likewise a PR family of proofs of separate numeral
+instances does not supply a proof of their universal closure.
+The argument here is parameter-uniform and does not invoke an
+internal reflection principle.
+
+\subsection{Specialization to fixed primitive recursive names}
+
+For a fixed PR complex name \(a(n)\) with a supplied regularity
+hypothesis and bound \(B\), evaluate the finite routines on
+a sufficiently accurate rational \(a(m)\), using an enlarged
+box \(A=B+3\). Here is an explicit index rule.
+Keep every Taylor degree and cutoff determined by the common
+box and precision, and use exact polynomial sums with no
+optional rounding. Each resulting approximant, as a function
+of \(s\), is a rational complex polynomial
+\(P(s)=\sum_j a_j s^j\): the rational \(\pi\) and logarithm
+samples are constants independent of \(s\).
+Compute, by a finite coefficient fold,
+\[
+ K=1+\left\lceil
+       \sum_{j\ge1}j\,\normone{a_j}(2A+2)^{j-1}
+       \right\rceil.
+\]
+The finite difference-of-powers identity proves
+\(\normone{P(s)-P(t)}\le K\normone{s-t}\)
+on the enlarged box. At requested precision \(k\), first
+choose the expression's uniform accuracy as \(k+4\), and take
+\[
+                        m=k+\lceilog(K)+8.
+\]
+The regularity hypothesis and this polynomial bound absorb
+the input error; the uniform tails for \(J\) and \(\gamrec\)
+absorb the finite-expression error. This gives the indicated
+named value with the requested accuracy.
+
+This procedure is primitive recursive for each fixed input
+definition. If ordinary pointwise division is required, include
+an apartness witness, such as \(|s-1|\ge2^{-a}\); its inverse
+accuracy is then explicit. The everywhere-defined
+identity~\eqref{eq:entireFE} requires no such witness.
+The specialization is a theorem schema in the fixed PR definitions,
+not a first-order quantification over arbitrary real numbers.
+
+\section{Lean formalization: a concrete completion path}\label{sec:Lean}
+
+\subsection{Inspected ProveIt interfaces and provenance}
+
+The GitHub reads were pinned to ProveIt commit
+\code{c5093c20b5bffb0333fd42915b7bc858d5aa45cc}.
+The root toolchain specifies Lean \code{v4.32.0}, and the Lake
+configuration requests Mathlib \code{v4.32.0}.
+The relevant namespace is \code{LeanProofs.ConciseIPRA}.
+The directly inspected files and useful interfaces are
+\cite{ProveItPR,ProveItBridge,ProveItReadme}:
+
+\begin{center}
+\begin{tabular}{p{0.36\textwidth}p{0.54\textwidth}}
+\toprule
+Source & Relevant interface\\
+\midrule
+\code{PR.lean} &
+\code{PR}, \code{PTm}, \code{PRAAx}, and
+\code{PRA.qfInd}; the induction axiom requires a QF matrix.\\
+\code{BiInterpretation.lean} &
+\code{biInterp}, \code{teq_iff_pra}, and
+\code{pra_iff_teq}.\\
+\code{NativeBiInterpretation.lean} &
+\code{NFm.ofPRA}, \code{NFm.toPRA},
+\code{pra_iff_native}, and \code{native_iff_pra}.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The package README reports builds without \code{sorry} or added
+axioms. That is a source-reported status; it was not independently
+rebuilt in this environment. The metatheoretic Lean dependency of
+the native bridge includes \code{Classical.choice}, while the
+ordinary presentation equivalence is reported to use
+\code{propext} and \code{Quot.sound}. Such ambient metatheory does
+not add excluded middle to the deeply embedded object theory.
+
+The current \code{docs/drafts} directory was inventoried. Its
+analysis archives are not imported as analytic axioms in this
+proof; the report proves the needed theta, gamma, and Mellin facts
+directly. The archive includes a source manifest with pinned URLs
+and hashes for the specific files inspected.
+
+\subsection{Module order and exact acceptance criteria}
+
+\begin{longtable}{p{0.22\textwidth}p{0.68\textwidth}}
+\toprule
+Proposed module & Work to complete and acceptance criterion\\
+\midrule
+\endhead
+\code{Coding} &
+Define fixed PR codes for signed rational and complex arithmetic,
+dyadics, finite sequences, sums, products, and characteristic
+functions. Prove the arithmetic identities as
+\code{Prf PRAAx} derivations, and separately prove semantic
+correctness in ordinary Lean. A Lean \code{Rat} implementation alone
+does not meet this criterion.\\
+\code{Elementary} &
+Compile the specified exp, log, trigonometric, reciprocal, and
+rational square-root algorithms. The output must include
+object-theory proofs of their finite error sentences, with
+intermediate magnitude bounds.\\
+\code{Quadrature} &
+Formalize common-refinement estimates and finite telescoping,
+integration by parts, and the two substitutions actually used.
+Each analytic shorthand must be eliminated by its finite
+rational estimate.\\
+\code{GaussianTheta} &
+Implement Fourier quadrature, moment tails, finite Fej\'er algebra,
+and the \(t=1\) normalization. Prove the parameter-uniform
+theta residual sentence using~\eqref{eq:Fejercutoffs}.\\
+\code{ReciprocalGamma} &
+Formalize finite Euler products, their \(C_B/N\) tail,
+the finite sine identity, reflection, duplication, and
+Euler-integral agreement. Every inversion requires a numerical
+apartness witness.\\
+\code{Mellin} &
+Implement \(\Jh\) exactly as in~\eqref{eq:Jhat}.
+Prove Proposition~\ref{prop:Jcontract}, the half-plane
+Dirichlet identification, and the regularized splitting.
+This module establishes that the symmetric expression is the
+zeta continuation.\\
+\code{FunctionalEquation} &
+Compile the fixed three-argument checker, prove its universally
+closed correctness sentence in the object theory, and apply
+\code{pra_iff_native} to transfer the exact result to the
+native calculus.\\
+\code{Semantics} &
+Optionally identify the constructed names with Mathlib's analytic
+objects. Keep this ordinary semantic validation separate from
+the object-theory proof.\\
+\bottomrule
+\end{longtable}
+
+The definitive endpoint is an actual term of
+\begin{lstlisting}
+Prf PRAAx [] (residualSentence compiledCheck)
+\end{lstlisting}
+where \code{compiledCheck : PR 3} is the fixed implementation
+specified in Section~\ref{sec:arithmetic}.
+The existing bridge then yields
+\begin{lstlisting}
+NPrf [] (NFm.ofPRA (residualSentence compiledCheck)).
+\end{lstlisting}
+An ambient Lean theorem saying that an ordinary function has
+the correct numerical result does not replace this derivation.
+
+\subsection{Included Lean drafts and their status}
+
+\code{lean/AlgebraicCore.lean} records the polynomial symmetry:
+\begin{lstlisting}
+def xiNumerator (J : K -> K) (s : K) : K :=
+  1 + s * (s - 1) * (J s + J (1 - s))
+
+theorem xiNumerator_one_sub (J : K -> K) (s : K) :
+    xiNumerator J (1 - s) = xiNumerator J s := by
+  have h : (1 : K) - (1 - s) = s := by ring
+  simp only [xiNumerator, h]
+  ring
+\end{lstlisting}
+This is the easy algebraic part over a commutative ring.
+It does not assert that \(J\) is an integral or that the analytic
+theorem has been formalized.
+
+\code{lean/ArithmeticBridge.lean} defines the quantifier-free
+matrix \(\mathsf{check}=1\), its threefold universal closure,
+and a theorem transferring a supplied iPRA derivation through
+\code{pra_iff_native}.
+The construction of \code{compiledCheck} and its correctness
+derivation remains to be implemented.
+
+Both files are labelled uncompiled interface drafts. No Lean
+executable was available in this environment, so no kernel-checking
+claim is made for them. They contain no added \code{axiom} or
+\code{sorry}, but this syntactic fact does not amount to completion
+of the analytic proof.
+
+\subsection{Mathlib as a semantic cross-check}
+
+The inspected official Mathlib source has the following theorems
+\cite{MathlibZeta}:
+\begin{itemize}
+\item \code{completedRiemannZeta_one_sub};
+\item \code{completedRiemannZeta}\textsubscript{0}\code{_one_sub}
+      (the identifier uses the Unicode subscript zero);
+\item \code{riemannZeta_one_sub};
+\item \code{zeta_eq_tsum_one_div_nat_add_one_cpow}.
+\end{itemize}
+These are useful comparison theorems in ambient \(\C\).
+Their noncomputable complex-analytic development is not an iPRA
+proof. Mathlib also assigns totalized values at singular points;
+the denominator-cleared statement avoids confusing those values
+with the meromorphic assertion.
+
+\section{Validation and delivered artifacts}\label{sec:validation}
+
+The proof and bounds were independently reviewed in two directions:
+the theta argument was checked against the gamma construction, and
+the gamma argument against the theta construction. The review
+covered constants, endpoint errors, zero-factor handling, and the
+quantifier-free-induction boundary. The resulting argument has
+been incorporated into this report.
+
+\subsection{Exact finite checks}
+
+The executable \code{code/quantitative_bounds.py} uses exact
+Python \code{Fraction} arithmetic to check the displayed budget
+inequalities at 104 selected \(J\) inputs and 91 selected theta
+inputs, and a sample Fourier quadrature input.
+All passed. It also reports the enormous sample workload without
+attempting the full grid.
+The output is in \code{quantitative_bounds_check.json}.
+These checks validate selected arithmetic instances and the
+transcription of the formulas; the universal proof is the
+symbolic argument in the report.
+
+\subsection{Numerical and finite-algebra diagnostics}
+
+At 80 decimal digits, the separate executable
+\code{code/numerical_diagnostics.py} compares the constructed
+theta-integral numerator with \((s-1)\zeta(s)\), checks the
+entire functional equation and theta transformation, and
+compares two evaluations of \(J\).
+The sample points include \(0,1,2,-2,-4\) and seven other
+real or complex inputs.
+At \(s=1\), it compares with the numerator value \(1\);
+it never computes \(0\cdot\infty\).
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Diagnostic & Maximum observed discrepancy\\
+\midrule
+\(Z(s)\) versus \((s-1)\zeta(s)\) & \(1.624\times10^{-72}\)\\
+Entire equation, absolute residual & \(2.709\times10^{-57}\)\\
+Entire equation, normalized residual & \(2.166\times10^{-80}\)\\
+Theta transformation & \(2.109\times10^{-81}\)\\
+Two evaluations of \(J\) & \(2.330\times10^{-83}\)\\
+Finite reflection identity & \(3.400\times10^{-80}\)\\
+Finite duplication identity & \(5.216\times10^{-80}\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The larger absolute residual reflects large factors at one of the
+complex sample points; its normalized residual is at the numerical
+working precision. Exact SymPy polynomial checks of the finite
+recurrence, reflection, and duplication identities also passed
+for \(N=1,\ldots,8\).
+
+The script and saved JSON expressly identify numerical tests as
+diagnostics. They use floating-point special-function routines and
+are not certified enclosures, iPRA proof objects, or substitutes
+for the estimates proved above.
+
+\subsection{Contents and reproduction}
+
+The archive contains this \LaTeX\ source and its compiled PDF,
+the two Lean interface drafts, the detailed formalization plan and
+finite arithmetic contract, runnable diagnostic scripts and saved
+outputs, a source manifest, and a README with reproduction commands.
+The main report compiles with a conventional \code{pdflatex}
+installation. The arithmetic budget script uses the Python standard
+library; the numerical diagnostic additionally uses \code{mpmath}
+and \code{sympy}.
+
+The proof supplies the requested human-readable iPRA argument under
+the explicit first-order interpretation, together with the concrete
+finite contracts needed for a full formalization. The remaining
+Lean work is to encode and verify those contracts inside the existing
+ConciseIPRA proof system, following the module order above.
+
+\begingroup
+\small\raggedright
+\begin{thebibliography}{99}
+
+\bibitem{DLMF25}
+NIST Digital Library of Mathematical Functions,
+\emph{Section 25.4: Reflection Formulas}.
+\url{https://dlmf.nist.gov/25.4}.
+Normalizations of the zeta functional equation and the \(\xi\)-function.
+
+\bibitem{DLMF5}
+NIST Digital Library of Mathematical Functions,
+\emph{Section 5.5: Functional Relations}.
+\url{https://dlmf.nist.gov/5.5}.
+Gamma recurrence, reflection, and duplication.
+
+\bibitem{DLMF58}
+NIST Digital Library of Mathematical Functions,
+\emph{Section 5.8: Infinite Products}.
+\url{https://dlmf.nist.gov/5.8}.
+Euler's limit and reciprocal-gamma product.
+
+\bibitem{DLMF422}
+NIST Digital Library of Mathematical Functions,
+\emph{Section 4.22: Infinite Products and Partial Fractions}.
+\url{https://dlmf.nist.gov/4.22}.
+Euler's sine product.
+
+\bibitem{ProveItReadme}
+Vladimir Reshetnikov, \emph{ProveIt: ConciseIPRA README},
+snapshot \code{c5093c20b5bffb0333fd42915b7bc858d5aa45cc}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/c5093c20b5bffb0333fd42915b7bc858d5aa45cc/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md}.
+
+\bibitem{ProveItPR}
+Vladimir Reshetnikov, \emph{ProveIt: ConciseIPRA/PR.lean},
+same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/c5093c20b5bffb0333fd42915b7bc858d5aa45cc/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean}.
+
+\bibitem{ProveItBridge}
+Vladimir Reshetnikov,
+\emph{ProveIt: ConciseIPRA/NativeBiInterpretation.lean},
+same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/c5093c20b5bffb0333fd42915b7bc858d5aa45cc/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}.
+
+\bibitem{MathlibZeta}
+The Mathlib community, \emph{Mathlib/NumberTheory/LSeries/RiemannZeta.lean},
+tag \code{v4.32.0}.
+\url{https://github.com/leanprover-community/mathlib4/blob/v4.32.0/Mathlib/NumberTheory/LSeries/RiemannZeta.lean}.
+See also the official generated documentation:
+\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/LSeries/RiemannZeta.html}.
+
+\end{thebibliography}
+\endgroup
+\end{document}
+

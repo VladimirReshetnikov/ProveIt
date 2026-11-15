@@ -1,0 +1,174 @@
+\section{The precise constructive setting}
+\label{sec:foundations}
+
+\subsection{The statements being proved}
+
+The linked Hurwitz theorem concerns infinitely many reduced fractions
+$p/q$ satisfying $|x-p/q|<1/(\sqrt5 q^2)$ for each irrational $x$.
+The linked Khinchin theorem concerns almost-everywhere approximation by
+$|x-p/q|<\psi(q)/q$ and the series $\sum_q\psi(q)$.
+Their literal classical formulations quantify over real numbers, infinite
+sequences, and Lebesgue measurable sets.  First-order $\ipra$ has one
+numerical sort, primitive recursive function symbols, intuitionistic
+first-order logic with equality, and induction only for quantifier-free
+formulas.  We therefore specify the finite arithmetic content of the
+constructive versions before using real-number language.
+
+The two central output assertions are as follows.
+\begin{enumerate}
+\item \textbf{Hurwitz witness.} For a fixed primitive recursive rational
+name $x_s$ with error at most $2^{-s}$, a fixed primitive recursive
+rational-apartness modulus, and every natural $B$, compute $p,q,s$ with
+$q>B$, $\gcd(p,q)=1$, and
+\[
+ 5q^4\bigl(|x_s-p/q|+2^{-s}\bigr)^2<1.
+\]
+This is a decidable inequality between rational numbers.  Its proof gives
+the strict classical coefficient, rather than a coefficient enlarged by
+an arbitrary epsilon.
+\item \textbf{Khinchin finite coverage.} For fixed nonnegative rational
+primitive recursive $\psi$ and an appropriate primitive recursive modulus,
+compute finite rational interval lists.  In the divergent case the
+output $U(N,m)$ is labelled by reduced fractions with denominators
+between $N$ and a computed $M(N,m)$ and satisfies
+\[
+ U(N,m)\subseteq\bigcup_{q=N}^{M(N,m)}
+       \bigcup_{p=0}^q (p/q-\psi(q)/q,p/q+\psi(q)/q),
+ \qquad |[0,1]\setminus U(N,m)|<2^{-m}.
+\]
+In the convergent case every finite portion of a specified tail has
+length at most the specified tolerance.  The measure symbols here mean
+finite rational length computed by endpoint sorting.
+\end{enumerate}
+
+The divergence proof needs only that $\psi$ be nonincreasing.  The linked
+encyclopedia page states the stronger older hypothesis that $q\psi(q)$
+is nonincreasing, in the same normalization $\psi(q)/q$.  That stronger
+hypothesis implies ours: for $q\le r$, $r\psi(r)\le q\psi(q)$ implies
+$\psi(r)\le(q/r)\psi(q)\le\psi(q)$.  The present proof consequently
+covers the linked formulation as well as the usual weaker monotonicity
+assumption.  The conversion to the alternative radius notation
+$\Psi(q)=\psi(q)/q$ is stated separately below.
+
+\subsection{Data, hypotheses, and theorem schemata}
+
+``Primitive recursive'' always means obtained from zero, successor and
+projections by composition and primitive recursion.  Natural numbers
+code signed integers, fractions with positive denominator, finite lists,
+and finite machine states.  Numerator signs are stored explicitly.
+Rational arithmetic is implemented by integer arithmetic and comparison
+by cross multiplication.  Reduction of fractions is optional except where
+coprimality is required; gcd can be computed by the bounded search through
+divisors up to the larger input.  List decoding and sorting can be performed
+by bounded loops on the code and its recorded length.  Efficiency is not
+needed for any foundational assertion here.
+
+An input function such as $\psi$, $x_s$, or a modulus is a \emph{fixed}
+primitive recursive definition, represented by its own function symbol.
+The statements are schemata, one for every such fixed collection of
+definitions.  Their hypotheses need not already be theorems of $\ipra$:
+the formal statement is the implication from the displayed coherence,
+monotonicity, separation, or mass assumptions.  For a particular example,
+one additionally proves those assumptions.  Alternatively all queried
+values and their finite verifications may be supplied as finite tables.
+There is no first-order quantification over arbitrary real functions and
+no supposed primitive recursive universal evaluator for all primitive
+recursive program codes.
+
+A name $s\mapsto x_s\in\Q$ may be specified arithmetically by
+\[
+ |x_s-x_t|\le2^{-s}+2^{-t}\qquad(s,t\in\N).
+\]
+The notation $|x-x_s|\le2^{-s}$ expresses its ordinary interpretation;
+the internal arguments use rational enclosures and these coherence
+inequalities.  A positive separation modulus supplies quantitative
+apartness from every rational with bounded denominator.  Mere negative
+irrationality, expressed as the absence of an equality, is not being
+silently promoted to that modulus.
+
+Similarly we do not decide whether an arbitrary nonnegative series
+converges or diverges.  We prove separate implications from a supplied
+tail bound or a supplied divergence witness.  No procedure extracting a
+primitive recursive modulus from an unqualified classical convergence or
+divergence assertion is part of either theorem.  Section~\ref{sec:extensions}
+extends the metric argument to real-valued approximation functions with
+primitive recursive names and witnessed tail information.
+
+\subsection{Bounded predicates and quantifier-free induction}
+
+Every bounded predicate on the finite data used here has a primitive
+recursive Boolean characteristic function.  For a Boolean predicate
+$b(i)$, conjunction over $i<n$ is the finite product of the bits, and
+existence is a bounded search with a failure flag.  Nesting these
+constructions handles finitely nested bounded quantifiers.
+
+There is a relevant proof-theoretic detail.  We do not apply the iPRA
+induction rule directly to a formula containing a bounded quantifier.
+We first replace its bounded tests by the corresponding characteristic
+terms, prove their specifications, and induct on the resulting equation.
+For example the equations
+\[
+ a(0)=1,\qquad a(n+1)=a(n)b(n)
+\]
+are accompanied by a bounded first-failure function.  Quantifier-free
+induction proves that a failure flag identifies an index $i<n$ with
+$b(i)=0$, and that $a(n)=1$ forces $b(i)=1$ for each given $i<n$.
+The converse follows from the failure witness and the decidable bit
+case distinction.  This proves the bounded-universal specification
+without induction on a quantified formula.  The same method handles
+finite maxima, bounded searches, and endpoint membership tests.
+
+More generally, let $S(0,z)=G(z)$ and
+$S(n+1,z)=F(n,S(n,z),z)$ be a fixed primitive recursive state iteration.
+If $V(n,s,z)$ is a primitive recursive Boolean invariant and its initial
+and preservation equations have been proved, iPRA's quantifier-free
+induction proves $V(n,S(n,z),z)=1$.  Universal assumptions about the input
+names or moduli may remain in the context and be instantiated at each
+step; they are not induction formulas.  The invariants used below are
+listed explicitly in Section~\ref{sec:formalization}.  Thus the reasoning
+is a finite arithmetic proof with a specified induction discipline, not
+an appeal to the rule that every terminating algorithm has iPRA-provable
+correctness.  That rule would be unjustified.
+
+\subsection{Finite length and finite second moments}
+
+For rational open intervals, retain their endpoints and their open/closed
+flags when membership matters.  Sort the finite list of all endpoints.
+Between successive distinct endpoints, membership in each input interval
+is constant and can be evaluated at the rational midpoint.  The length
+of a union is the sum of the lengths of exactly those cells whose
+membership bit is one.  Single endpoints have length zero, but a singleton
+in a complement must still be retained for later open-cover statements.
+This procedure proves finite additivity on disjoint cells and finite
+subadditivity by the inequality between membership bits.
+
+If intervals only touch, their open union omits the common endpoint.
+It is permissible to merge strict overlaps; merging touching intervals
+would lose that singleton.  The algorithms and proof below retain it.
+The two endpoints of $[0,1]$ may safely be included as extra singleton
+gaps, even if a relatively open interval already covers them.
+
+For a nonnegative integer-valued function $F$ constant on these cells,
+the notation $\int F$ abbreviates a finite rational sum
+$\sum_i w_iF_i$.  In particular the only Cauchy--Schwarz inequality needed
+in the metric proof follows from
+\[
+ \left(\sum_i w_i\right)\left(\sum_i w_i v_i^2\right)
+   -\left(\sum_i w_i v_i\right)^2
+ =\sum_{i<j}w_iw_j(v_i-v_j)^2\ge0.
+\]
+This is a polynomial identity and a sum of nonnegative rational terms.
+It uses no integration theory, completeness theorem, or countable choice.
+All appearances of measure inside the main proof are of this form.
+
+\subsection{Relation to the classical literature}
+
+The sharp Hurwitz theorem and its three-convergent proof are classical;
+an accessible author-written account is Filaseta's Theorem~25
+\cite{filaseta}.  The organization of the metric proof belongs to the
+local-distribution and overlap methods underlying local ubiquity
+\cite{bv,bdv}.  We prove the counting, overlap, and amplification estimates
+in full, rather than importing the general measure-theoretic theorem.
+The specific constants are chosen to simplify verification.  We make no
+claim that these constants are optimal, or that the classical mathematical
+ideas are new.

@@ -1,0 +1,308 @@
+\section{Exact algebraic coefficients: a bounded arithmetic construction}
+\label{sec:backend}
+
+This section supplies the exact coefficient field used in the main proof.
+Its operations, equality tests, bounds, and polynomial splitting are
+primitive recursive on finite codes. The only root-existence theorem reused
+is the single-root constructive FTA described in Section~\ref{sec:fta}.
+It is used once in the completeness argument for each splitting operation,
+not as an oracle in the executed algorithm.
+
+\subsection{Real-algebraic codes and a bounded isolation procedure}
+
+A real-algebraic code is either a rational number, or a tuple
+\[
+ (p,a,b,A,B,R)
+\]
+of rational polynomials and rationals, with $R$ a positive integer.
+The finite validity conditions require $p$ to be monic and nonconstant,
+\[
+ Ap+Bp'=1,\qquad
+ R>1+\sum_{i<\deg p}\abs{p_i},\qquad
+ -R\le a<b\le R,\qquad p(a)p(b)<0.
+\]
+Write
+\[
+ M=1+\sum_i\abs{B_i}R^i,\qquad
+ L=1+\sum_{i=2}^{\deg p}\binom i2\abs{p_i}R^{i-2},
+ \qquad \sigma=\frac1{2ML},
+\]
+and additionally require $b-a<\sigma$.
+Every validity test is a finite rational calculation; in particular
+squarefreeness is certified by the displayed B\'ezout identity.
+
+The represented value is specified by rational bisection on $[a,b]$.
+At an exact midpoint zero, all subsequent approximations equal that
+midpoint. Otherwise retain the half interval with opposite endpoint signs.
+After $s$ steps its length is $(b-a)2^{-s}$. Thus the midpoints have an
+explicit Cauchy modulus. If
+\[
+ D=1+\sum_{i=1}^{\deg p}i\abs{p_i}R^{i-1},
+\]
+the finite identity for differences of powers gives
+$\abs{p(x)-p(y)}\le D\abs{x-y}$ on $[-R,R]$.
+The opposite endpoint signs then give
+$\abs{p(c_s)}\le D(b-a)2^{-s}$ for the midpoint $c_s$.
+These finite inequalities establish a root name without appealing to a
+completeness axiom or to an already existing real root.
+
+\begin{lemma}[Effective separation and isolation]
+\label{lem:backend-isolation}
+All real roots of a nonzero rational polynomial can be returned as a finite
+list of valid real-algebraic codes, by a primitive recursive algorithm.
+The list is complete even for roots initially supplied only by Cauchy names.
+\end{lemma}
+
+\begin{proof}
+First compute the squarefree part by rational Euclidean division, and
+normalize it to a monic polynomial $p$. Constant polynomials have no roots.
+The finite squarefree calculation also certifies that the squarefree part
+divides the original polynomial and that a power of the squarefree part,
+with exponent at most the original degree, is divisible by the original
+polynomial. These identities establish equality of the root sets without
+using a disjunction principle for a product of arbitrary real numbers.
+Extended Euclid gives $Ap+Bp'=1$. Choose an integer $R$ with the extra margin
+$R>2+\sum_{i<\deg p}\abs{p_i}$, and form $M,L,\sigma,D$ as above.
+The elementary geometric-sum root bound places all roots strictly in
+$(-R,R)$.
+
+At a root $\alpha$, the B\'ezout identity gives
+\[
+ \abs{p'(\alpha)}\ge\frac1M.
+\]
+For $\alpha,t\in[-R,R]$, the exact polynomial identity
+\[
+ p(t)-p(\alpha)-(t-\alpha)p'(\alpha)
+       =(t-\alpha)^2 E(\alpha,t)
+\]
+has $\abs{E(\alpha,t)}\le L$. Indeed, the remainder for the monomial $X^i$
+is
+\[
+ (t-\alpha)^2
+ \sum_{k=0}^{i-2}(i-1-k)t^k\alpha^{i-2-k},
+\]
+and its coefficient sum is $\binom i2$.
+If $\alpha,\beta$ are roots with $\abs{\alpha-\beta}\le\sigma$, this identity
+implies
+\[
+ \frac{\abs{\alpha-\beta}}M
+ \le L\abs{\alpha-\beta}^2
+ \le \frac{\abs{\alpha-\beta}}{2M}.
+\]
+Hence $\alpha=\beta$. This argument does not cancel a possibly zero real.
+
+Choose an integer $K>32ML$ and put $h=1/K<\sigma/16$.
+Evaluate $p$ at every grid point $j/K$ in $[-R,R]$.
+Return each exact grid zero as a rational code. For each cell with nonzero,
+oppositely signed endpoint values, return its bisection code.
+Its width is less than $\sigma$, so the preceding estimate certifies
+uniqueness. A cell adjacent to a grid zero contains no other root.
+
+For completeness, let $\alpha$ be any named root. If it lies strictly
+between nonroot endpoints $l,u$ of a cell, then
+\[
+ p(t)=(t-\alpha)
+       \bigl(p'(\alpha)+(t-\alpha)E(\alpha,t)\bigr).
+\]
+The expression in parentheses differs from $p'(\alpha)$ by less than
+$1/(4M)$ throughout the cell. Consequently the endpoint values have
+opposite signs, and local uniqueness identifies $\alpha$ with the
+returned bisection root.
+
+The selection of this cell does not assume decidable equality of an
+arbitrary named real with a grid point. Compute the positive rational
+\[
+ \mu=\min_{\substack{g\text{ a grid point}\\p(g)\ne0}}
+                         \frac{\abs{p(g)}}D.
+\]
+The list in this minimum is nonempty, since its two extreme grid points
+are not roots. Every root has distance at least $\mu$ from every nonroot
+grid point. Obtain a rational approximation $c$ to $\alpha$ with error
+less than $\min(\mu,\sigma,h)/8$.
+If $\abs{c-g}\le\sigma/2$ for a grid zero $g$, then
+$\abs{\alpha-g}<\sigma$, and the local uniqueness estimate proves
+$\alpha=g$. Otherwise $\alpha$ is positively separated from every grid
+zero as well. The rational value $c$ now determines its cell, whose
+endpoints are nonroots. This gives a bounded selection in all cases.
+
+The list has no repetitions: different cells have disjoint interiors,
+and a nonroot grid endpoint is positively separated from every root.
+Distinct returned roots are apart. Cancelling their positively bounded
+distance in the same remainder estimate gives separation at least
+$1/(ML)$; the weaker bound $\sigma$ will suffice below.
+All searches range over the predetermined $2RK+1$ grid points.
+\end{proof}
+
+\subsection{Arithmetic, equality, and quantitative bounds}
+
+Let $\alpha,\beta$ have monic rational annihilators $p,q$.
+Finite resultant identities give annihilators for their sum and product:
+\[
+ \Res_T\bigl(p(T),q(Z-T)\bigr),\qquad
+ \Res_T\bigl(p(T),T^{\deg q}q(Z/T)\bigr).
+\]
+Both are monic in $Z$, of degree $(\deg p)(\deg q)$, and therefore nonzero.
+Negation uses $p(-Z)$. For a certified nonzero $\alpha$, remove all powers
+of $T$ from $p$, obtaining $p_0$ with $p_0(0)\ne0$; an annihilator for
+$1/\alpha$ is
+$Z^{\deg p_0}p_0(1/Z)$.
+The latter polynomial is nonzero. The annihilation identities follow by
+polynomial elimination and do not presuppose a complex splitting algorithm.
+
+Apply Lemma~\ref{lem:backend-isolation} to the chosen annihilator.
+Using the input bisection names, approximate the intended arithmetic result
+within $h/4$, where $h$ is the new isolating grid's mesh.
+Each candidate's rational midpoint is within $h/2$ of its root, while
+distinct candidates are separated by more than $16h$.
+Exactly one midpoint therefore lies within $h$ of the computed
+approximation. Finite rational comparisons select its code.
+For products, input root bounds give the required input precision.
+For reciprocals, use the explicit positive lower bound established next.
+
+\begin{lemma}[Decidable algebraic zero and sign]
+\label{lem:backend-zero}
+Zero, equality, and order are primitive recursive for real-algebraic codes.
+A nonzero value comes with a positive rational lower bound on its absolute
+value.
+\end{lemma}
+
+\begin{proof}
+Let a named value $\gamma$ have a nonzero rational annihilator
+$r(Z)=Z^k q(Z)$ with $q(0)\ne0$, obtained by removing the initial zero
+coefficients. Put
+\[
+ \eta=\min\left(1,
+       \frac{\abs{q(0)}}{1+\sum_{i\ge1}\abs{q_i}}\right)>0
+\]
+and compute a rational approximation $c$ with error at most $\eta/8$.
+If $\abs c<\eta/2$, then $\abs\gamma<5\eta/8$, and
+\[
+ \abs{q(\gamma)-q(0)}
+ \le\abs\gamma\sum_{i\ge1}\abs{q_i}
+ <\frac58\abs{q(0)}.
+\]
+Thus $q(\gamma)$ is positively apart from zero. Since
+$\gamma^k q(\gamma)=0$, it follows that $\gamma^k=0$ and $\gamma=0$.
+This uses the elementary finite power estimate, not a
+nonzero-to-apartness principle. If instead $\abs c\ge\eta/2$, then
+$\abs\gamma\ge3\eta/8$, and $\gamma$ has the sign of $c$.
+Both alternatives are decided by one rational comparison.
+Apply this procedure to the difference of two codes to obtain equality
+and order. The argument also applies directly to the named arithmetic
+result before its output isolating code has been selected.
+\end{proof}
+
+Upper bounds are supplied by the root bound $R$.
+Complex-algebraic codes are pairs of real-algebraic codes, representing
+$a+ib$; their equivalence is decidable equality of both components.
+The usual two-coordinate formulas give addition and multiplication.
+For a nonzero pair, at least one component has a positive rational
+absolute-value lower bound, which also bounds the complex modulus from
+below. An upper bound is supplied by the sum of the two component bounds.
+Inversion uses
+\[
+ (a+ib)^{-1}=\frac{a-ib}{a^2+b^2},
+\]
+whose denominator is certified positive by the same tests.
+This constructs the represented field $\A$ and all operations required
+in the main argument.
+
+\subsection{A rational annihilator for every root}
+
+Consider a monic polynomial
+\[
+ H(Y)=Y^n+\sum_{j<n}(a_j+ib_j)Y^j
+\]
+over the represented field. Choose monic rational annihilators $p_j,q_j$
+for its real and imaginary coefficient parts. Form the finite rational
+algebra
+\[
+ T=\Q[U_0,V_0,\ldots,U_{n-1},V_{n-1},J]/
+       \bigl(p_j(U_j),q_j(V_j),J^2+1\bigr).
+\]
+Its explicit monomial basis has dimension
+$D_0=2\prod_{j<n}(\deg p_j)(\deg q_j)$.
+The coefficient tuple defines an evaluation homomorphism sending
+$U_j,V_j,J$ to $a_j,b_j,i$. No primitive-element theorem or compatible
+embedding search is involved.
+
+Let $M(Y)$ be the matrix of multiplication on this basis by
+\[
+ H_T(Y)=Y^n+\sum_{j<n}(U_j+JV_j)Y^j,
+ \qquad B_0(Y)=\det M(Y).
+\]
+Since $M(Y)=Y^nI$ plus lower-degree terms, $B_0$ is monic of degree $nD_0$.
+In particular it is nonzero, even though $T$ may have zero divisors.
+Apply the adjugate matrix to the coordinate vector of $1$ to obtain an
+element $E(Y)\in T[Y]$ satisfying
+\[
+ H_T(Y)E(Y)=B_0(Y)\,1.
+\]
+Evaluation at any named root $\beta$ of $H$ proves $B_0(\beta)=0$.
+The construction is a finite determinant calculation with rational
+coefficients. A nonmonic polynomial is first normalized by its certified
+nonzero leading coefficient.
+
+\subsection{Finite candidates and complete splitting}
+
+Write $m=\deg B_0$. Define
+\begin{align*}
+ R_0(U)&=\Res_Z\bigl(B_0(Z),B_0(2U-Z)\bigr),\\
+ T_0(V)&=\Res_Z\bigl(B_0(Z),B_0(Z-2iV)\bigr)\in\Q(i)[V],\\
+ S_0(V)&=T_0(V)\overline{T_0}(V)\in\Q[V],
+\end{align*}
+where the bar conjugates coefficients.
+The leading coefficients of $R_0,T_0$ are respectively
+$2^{m^2}$ and $(-2i)^{m^2}$, and both have degree $m^2$.
+Consequently $R_0$ and $S_0$ are nonzero.
+These assertions follow by selecting the top parameter-degree terms in
+the resultant determinant.
+
+If $\beta=u+iv$ is a root of $B_0$, its conjugate is also a root because
+$B_0$ has rational coefficients. Substitution at $Z=\beta$ in the
+resultant identities gives
+\[
+ R_0(u)=0,\qquad T_0(v)=0,\qquad S_0(v)=0.
+\]
+Isolate all real roots $r_1,\ldots,r_A$ of $R_0$ and
+$s_1,\ldots,s_B$ of $S_0$. The finite Cartesian list
+\[
+ \{\,r_j+i s_k:1\le j\le A,\ 1\le k\le B\,\}
+\]
+therefore contains every named complex root of $H$.
+Completeness here includes a constructive finite identification of both
+coordinates, by Lemma~\ref{lem:backend-isolation}.
+Extraneous candidates caused by other algebraic embeddings are harmless.
+
+Start with residual polynomial $H$. Process the candidate list in order.
+At a candidate $\beta$, use exact equality to test the residual value.
+Whenever it is zero, divide exactly by $Y-\beta$, record the root,
+and repeat, for at most $n$ divisions in total.
+This produces the exact identity
+\[
+ H(Y)=\prod_{\text{recorded }\beta}(Y-\beta)\,H_{\rm rem}(Y).
+\]
+The residual is monic. No processed candidate becomes a root again:
+if it vanished after a later division, the preceding polynomial would
+also have vanished there. Thus no candidate is a root of $H_{\rm rem}$.
+
+Its degree is a decidable natural number. If that degree were positive,
+the single-root constructive FTA of Section~\ref{sec:fta}, applied to
+$H_{\rm rem}$, would supply a named root $\gamma$.
+Its hypotheses hold: a single fixed primitive recursive evaluator reads
+the algebraic coefficient codes, and the leading coefficient is $1$.
+The displayed factorization implies $H(\gamma)=0$, so the candidate
+construction identifies $\gamma$ with an already processed candidate.
+This contradicts the residual tests. Hence $H_{\rm rem}=1$.
+The recorded list is a complete splitting with multiplicities.
+
+All executed loops are bounded: Euclidean steps by degree, the rational
+grid by $2RK+1$, bisection by its explicit precision, determinants by their
+finite dimensions, and synthetic divisions by $n$.
+Finite code validity and the loop invariants are rational Boolean tests.
+The correctness proof is therefore available to quantifier-free induction
+after a precision horizon is fixed. Infinite names abbreviate their
+explicit finite estimates. The reused FTA theorem supplies completeness
+of this finite algorithm; it does not replace the exact coefficient
+backend, and it does not introduce a universal evaluator for arbitrary
+primitive recursive programs.

@@ -1,0 +1,170 @@
+\section{Real-valued inputs, positive witnesses, and examples}
+\label{sec:extensions}
+
+\subsection{Real-valued approximation functions with rational output covers}
+
+The rational-valued restriction in the finite metric statement is convenient
+for exact endpoint calculations.  It can be removed at the represented-input
+level without adding an internal sort of real numbers.  Suppose a fixed
+primitive recursive function $a(q,s)\in\Q$ names a nonnegative value
+$\psi(q)$ with $|a(q,s)-\psi(q)|\le2^{-s}$.  Assume monotonicity of these
+named values and a primitive recursive unit-tail modulus $D$ as before.
+Every instance of these assumptions can be expressed using inequalities
+between rational names.
+
+At scale $Q=2^k$, set
+\[
+ e_k=2^{-(2k+4)},\qquad
+ b_k=\max\{0,a(2^k,2k+4)-e_k\}.
+\]
+Then
+\[
+ 0\le b_k\le\psi(2^k),\qquad
+ 0\le\psi(2^k)-b_k\le2e_k.
+\]
+Use $t_k=\min(2^k b_k,1)$ and the same rational radii
+$r_k=t_k/(8\,4^k)$.  These intervals are contained in the original
+approximation intervals because $b_k\le\psi(2^k)\le\psi(q)$ for
+$q\le2^k$.  Monotonicity of $b_k$ itself is not required.
+
+For a starting scale $K$, put $s=2^K$, $u=D(s)$ and $v=D(u+1)$.
+The two disjoint blocks $s,\ldots,u$ and $u+1,\ldots,v$ each have
+mass at least one, so the total mass through $v$ is at least two.
+For $B=\lceil\log_2 v\rceil$, dyadic condensation yields
+\[
+ \sum_{k=K}^B2^k\psi(2^k)\ge2.
+\]
+The loss caused by the rational lower approximations is bounded by
+\[
+ \sum_{k=K}^B2^k\bigl(\psi(2^k)-b_k\bigr)
+ \le\sum_{k=K}^B2^{-k-3}\le\frac14.
+\]
+Thus $\sum2^k b_k\ge7/4$, and capping at one still gives
+$\sum t_k\ge1$.  Every subsequent counting, overlap and amplification
+argument is unchanged.  The output is a rational list of intervals,
+even when the original target radii are irrational.
+
+For convergence, suppose the named values have a modulus $C(s)\ge1$
+with all finite tail sums bounded by $2^{-s}$.  For a requested $m$ use
+the rational upper envelope
+\[
+ u_m(q)=\max\{0,a(q,q+m+4)+2^{-(q+m+4)}\}.
+\]
+It satisfies $\psi(q)\le u_m(q)\le\psi(q)+2^{-q-m-3}$.
+For $q\ge C(m+3)$, the open intervals of radius $u_m(q)/q$
+centered at $p/q$, $0\le p\le q$, cover every original approximation.
+Their unrestricted lengths, over any finite set of these denominators,
+sum to at most
+\[
+ 4\left(2^{-m-3}+\sum_{q\ge1}2^{-q-m-3}\right)
+ =2^{-m}.
+\]
+Again the infinite geometric notation denotes a bound on every finite
+prefix.  No positive lower bound for every $\psi(q)$ is needed in either
+extension.
+
+\subsection{An explicit extraction lemma for padded finite covers}
+
+There is a constructive point in interpreting the null tests that deserves
+a complete finite argument.  The negation of $a<x<b$ does not generally
+give a decidable choice between $x\le a$ and $x\ge b$.  We avoid such
+choices about real numbers altogether.
+
+Let $U$ be a finite rational open interval list contained in $(0,1)$.
+Compute its rational complement cells and the closed residual gaps by
+sorting endpoints; include the singleton endpoints $0,1$ if necessary.
+Pad every gap on both sides by a fixed positive rational $\delta$, and
+write $V$ for that padded finite open cover.  Let $h>0$ be the least
+positive difference between distinct endpoints of $U$ together with
+$0,1$, and put
+\[
+ \varepsilon=\frac1{32}\min(\delta,h).
+\]
+The list contains $0,1$, so $h$ exists and is computed by a finite minimum.
+Given a rational approximation $y$ to $x\in[0,1]$ with
+$|x-y|<\varepsilon$, the following entirely rational case distinction
+finds either an original interval containing $x$ with positive slack,
+or a padded gap containing $x$ with positive slack.
+
+First check whether $y$ is within $4\varepsilon$ of an endpoint $c$.
+There is at most one distinct such endpoint because distinct endpoints
+are at least $32\varepsilon$ apart.  If $c$ lies in an original open
+interval, that interval's endpoints are at least $h$ away from $c$;
+it therefore contains $x$, whose distance from $c$ is below
+$5\varepsilon<h$.  If no original interval contains $c$, then $c$
+belongs to a residual gap; its padded interval contains $x$ because
+$|x-c|<5\varepsilon<\delta$.  These membership checks are comparisons
+of rational endpoints.
+
+If there is no such nearby endpoint, $y$ belongs to the interior of a
+single endpoint cell and is more than $4\varepsilon$ from its boundary.
+It cannot be outside $[0,1]$, since it is within $\varepsilon$ of $x$.
+Then $x$ belongs to the same cell.  The cell is either covered by an
+original interval, which supplies the desired interval, or is contained
+in a residual gap, whose padding covers $x$.  Its coverage status is
+read from the cell's rational midpoint.
+
+Consequently, given the avoidance assumption that $x$ belongs to none of
+the padded intervals, the second outcome is impossible and the finite
+algorithm returns an original labelled interval containing $x$.  A
+precision $s$ with $2^{-s}<\varepsilon$ is obtained by a bounded rational
+calculation.  No search for a semidecidable real inequality, Markov's
+principle, or excluded middle for real order has been used.
+
+Apply this lemma to each residual list in the null-test construction of
+Section~\ref{sec:finite-khintchine}.  Given a specific test index $m$ and
+the assertion that $x$ avoids every listed interval of $V_m$, we obtain
+a positive rational approximation beyond every prescribed denominator.
+For fixed primitive recursive names, moduli and this index $m$, the
+output witness is primitive recursive in the denominator threshold.
+Iterating with the previous denominator as the next threshold produces
+an increasing-denominator sequence of reduced approximants.
+
+\paragraph{What is and is not asserted.}
+The effective null test is a primitive recursive enumeration of rational
+open intervals for each $m$, with a proved bound $2^{-m}$ on the sum of
+the lengths of every finite sublist.  The positive conclusion takes an
+explicit avoidance index as data.  We do not turn
+$\neg(x\in\bigcap_m V_m)$ into $\exists m\,(x\notin V_m)$ by a
+classical quantifier-negation rule.  In ordinary measure theory the
+finite estimates imply the usual almost-everywhere theorem.  For arbitrary
+classical monotone inputs, the same finite argument works with their
+finite mass witnesses; that external interpretation does not assert
+that those inputs have primitive recursive moduli.
+
+\subsection{Concrete admissible inputs}
+
+\paragraph{Golden ratio and the sharp coefficient.}
+The continued-fraction digits $1,1,1,\ldots$ are primitive recursive.
+Alternatively the name obtained by rational bisection of $z^2-5$ and
+$I(Q)=4Q^2$ supplies the Hurwitz interface.  The optimality estimate has
+a simple visible consequence: for $c=2/5$,
+\[
+ q^2<\frac{2c^2}{1-5c^2}=\frac85.
+\]
+Thus $|\phi-p/q|<(2/5)q^{-2}$ can hold only with $q=1$.
+The exact coefficient $1/\sqrt5$ does give approximants beyond every
+denominator, so retaining it in the constructive theorem is substantive.
+
+\paragraph{Divergent harmonic examples.}
+For any fixed positive rational $c$, take $\psi(q)=c/q$ and put
+$r=\lceil2/c\rceil$.  The explicit elementary modulus
+\[
+ D(s)=2^r s-1
+\]
+works: on each of the $r$ blocks
+$2^j s\le q<2^{j+1}s$, the sum of $1/q$ is at least $1/2$.
+Hence the sum of $c/q$ from $s$ to $D(s)$ is at least $cr/2\ge1$.
+In particular $c=1/4$ gives $D(s)=256s-1$ and target approximation
+$|x-p/q|<1/(4q^2)$.  The finite coverage theorem applies to this
+genuinely shrinking target, not only to large radii.
+
+\paragraph{A convergent example.}
+For $\psi(q)=q^{-2}$, the comparison
+\[
+ \frac1{q^2}\le\frac1{q(q-1)}=\frac1{q-1}-\frac1q\quad(q\ge2)
+\]
+gives a finite tail bound $1/(N-1)$.  Thus $C(m)=2^m+1$ is a valid
+convergence modulus, and the target approximation is $|x-p/q|<q^{-3}$.
+The null-cover conclusion follows with no monotonicity assumption beyond
+what this particular example happens to satisfy.
