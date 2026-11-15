@@ -14,8 +14,13 @@ enters as a parameter.
 **Status.** The three generic modules are checked. `ConPADerivation` reduces the compilation
 of an internal derivation to one requirement on the translation per inference rule; no
 translation is shown to meet them. `PA194ModelSequent` instantiates the sequent layer with the
-numerical calculus (`impValue`, `allValue`, `TargetProvable`) and is checked. Nothing here
-yields a consistency implication.
+numerical calculus (`impValue`, `allValue`, `TargetProvable`) and is checked.
+`PA194ModelEndpoint` is the step after the compiler and is checked: given a simulation for a
+source theory `T`, an internal refutation of `T` makes the modeled scheduler halt, so a model
+in which the scheduler never halts has no internal proof of `⊥` from `T`. No simulation is
+constructed here, `T` is a parameter (the theory treated in `pa194-model-logic` is the
+equality theory of the relational source language, not `𝗣𝗔`), and the physical machine is
+not involved, so nothing here yields a consistency implication for `𝗣𝗔`.
 
 ## Modules
 
@@ -24,6 +29,7 @@ yields a consistency implication.
 | `ConPASequent` | In any model `V` of `𝗜𝚺₁`. A calculus `Calc V` is a `𝚺₁` implication constructor and a `𝚺₁` provability predicate `Pr` with modus ponens and the combinators K, S, B, C. `seq Γ a` is the implication chain of the Foundation vector `Γ` ending in `a`, and `Pr (seq Γ a)` is read as `Γ ⊢ a`. Proved by `𝚺₁` induction inside `V`: `seq_weaken`, `seq_proj` (every entry is derivable), `seq_mp`, `seq_adjoin_iff` (deduction theorem), `seq_cut` (if `Δ` derives every entry of `Γ` then `(Γ ⊢ a) → (Δ ⊢ a)` is a theorem), `seq_mono` (weakening, exchange, contraction), and for a calculus `Quant V` with a quantifier constructor `seq_gen` (generalization under hypotheses closed under the quantifier). |
 | `ConPASetSequent` | For a `𝚺₁` translation `tr e p` with a parameter `e`, `setList e s` lists the translated members of the finite set `s`, and `sseq e s a = seq (setList e s) a`. `sseq_mem`, `sseq_cut` (between two sets and two parameters), `sseq_mono`, `sseq_insert_iff` (`insert p s ⊢ a` exactly when `s ⊢ tr e p → a`), `sseq_gen`. |
 | `ConPADerivation` | For Foundation's internal derivations of a theory `T` (`Bootstrapping.Derivation T d`, with `d` an element of the model). `Sim Q N T` lists what a translation `N` into the calculus `Q` has to satisfy; `Sim.compile` proves by `𝚺₁` induction on `d` that `Pr (sseq e (fstIdx d) bot)` for every admissible environment `e` below a fixed bound, and `Sim.proof` gives `Pr (imp (N e φ) bot)` from an internal proof of `φ`. |
+| `PA194ModelEndpoint` | The step after the compiler, for the objects of `pa194-model-logic` (`numericalQuant`, `numericalTranslation`, the validity-cut interface `CutValidity.Sim`) and a theory `T` in the relational source language. A simulation is a hypothesis; none is constructed. `refutation_targetProvable`: a simulation with falsum code `1`, an internal proof `d` of `⊥` from `T` and an environment admissible for `d` below the bound give `TargetProvable 1` (the translation of `⊥` is `1`, so its negated translation is `1 → 1`). `refutation_halts`: the modeled scheduler then halts at some model time (`PA194ModelFairness.provable_halts`). `provable_falsum_halts` and `not_provable_falsum_of_nonhalting` state this for a family of simulations indexed by the derivation: if no model time is a halting time, `T` has no internal proof of `⊥` in `M`. |
 | `PA194ModelSequent` | The instance for a candidate-PRA model `M` with an IΣ₁ reduct: `quantM` packages `impValue`, `allValue` and `TargetProvable` (with `imp_k`, `imp_s`, `imp_comp`, `imp_exchange`, `tp_gen`, `r2` of `pa194-model-logic`). `Derives Γ a` is `TargetProvable (seqValue Γ a)` for an internal list `Γ`: `Derives.closed`, `.assumption`, `.mp`, `.cut`, `.mono`, `.generalize`, `derives_adjoin_iff`. `Ctx.derives` moves every proof tree of standard size of `PA194ModelContext` under an internal list that derives its hypotheses; `Derives.cases` is an example. |
 
 ## The requirements of `Sim`
@@ -77,7 +83,11 @@ compiles the three generic modules against the root Lake workspace (Foundation m
 there) and requires fourteen axiom reports without `sorryAx`; it then runs
 [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with `PA194ModelSequent` as the
 top module (eight reports), passing its arguments on (for example `--out DIR` to reuse
-compiled objects). On 2026-11-14 the four modules were compiled directly with `lean`: the
+compiled objects), and once more with `PA194ModelEndpoint` as the top module (six reports).
+`PA194ModelEndpoint` was compiled directly with `lean` on 2026-11-14 against objects of the
+standalone modules it imports (39 of them compiled in the same run, the others retained and
+their sources compared with the commits at which they were built); its six reports were
+`[propext, Classical.choice, Quot.sound]`. On 2026-11-14 the other four modules were compiled directly with `lean`: the
 generic ones against rebuilt Foundation objects, `PA194ModelSequent` against rebuilt
 workspace objects and retained objects of the standalone modules it imports, whose sources
 are unchanged since those objects were built. Every printed report was
