@@ -1,0 +1,6 @@
+import PA194ModelFreeBinder
+#print axioms PA194ModelLogic.freeBinder_qf_translation
+#print axioms PA194ModelLogic.freeBridge_all_qf
+#print axioms PA194ModelLogic.freeBridge_ex_qf
+#print axioms PA194ModelLogic.simRuleAll_all_qf
+#print axioms PA194ModelLogic.simRuleAll_ex_qf

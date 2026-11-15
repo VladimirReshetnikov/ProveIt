@@ -1,0 +1,3 @@
+import PA194ModelOneLevelFree
+#print axioms PA194ModelLogic.oneLevel_freeBridge
+#print axioms PA194ModelLogic.simRuleAll_oneLevel
