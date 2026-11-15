@@ -1,0 +1,3 @@
+import PA194FormulaNegation
+#print axioms PA194FormulaDispatcher.NegationProperty_definable
+#print axioms PA194FormulaDispatcher.translateFormula_neg
