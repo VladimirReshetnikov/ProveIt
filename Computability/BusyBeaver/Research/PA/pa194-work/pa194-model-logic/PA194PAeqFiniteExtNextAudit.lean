@@ -1,0 +1,13 @@
+import PA194PAeqFiniteRemainingNext
+#print axioms PA194PAeq.AddExtNormalized.certificate
+#print axioms PA194PAeq.AddExtNormalized.theoryProof
+#print axioms PA194PAeq.AddExtNormalized.source_formula
+#print axioms PA194PAeq.AddExtNormalized.internal_addExt_proof
+#print axioms PA194PAeq.MulCongrTyped.mulCongrAt
+#print axioms PA194PAeq.MulExtNormalized.certificate
+#print axioms PA194PAeq.MulExtNormalized.theoryProof
+#print axioms PA194PAeq.MulExtNormalized.source_formula
+#print axioms PA194PAeq.MulExtNormalized.internal_mulExt_proof
+#print axioms PA194PAeq.InductionReopen.finite_cases_next
+#print axioms PA194PAeq.InductionReopen.finite_supplier_of_remaining_next
+#print axioms PA194PAeq.InductionReopen.pa_refutation_of_remaining_next
