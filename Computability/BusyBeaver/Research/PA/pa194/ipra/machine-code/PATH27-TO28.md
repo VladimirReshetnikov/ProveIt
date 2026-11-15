@@ -7,3 +7,6 @@ At the exact model-valued clock in the theorem it returns to state 24 with left 
 `check-path27-to28.sh` builds the 23-source increment from the nine site-27 decision modules through this path-to-path theorem and checks printed axiom reports for `sorryAx`. It accepts `PA194_TWO_PASSES_SOURCE_DIR` to select these sources, and explicitly requires the parent, project, foundation, parent-startup and dense-startup overlays. Direct imported object hashes are checked, but those checks do not establish a coherent transitive closure: the input overlays must independently be audited and coherent.
 
 This is an all-model semantic physical execution for one branch. It is not by itself a native iPRA proof, an arbitrary-instruction simulation, or either consistency implication.
+
+A later [coherent machine-specific rebuild](SITE27-COHERENT.md) passed from
+the staged unified baseline without machine-specific fallback overlays.
