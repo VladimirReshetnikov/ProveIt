@@ -1,0 +1,10 @@
+import PA194PAeqSuccCongruenceAt
+#print axioms PA194PAeqModusPonens.paeqMPGraph_defined
+#print axioms PA194PAeqModusPonens.paeqMPProof
+#print axioms PA194PAeqDoubleSpecialization.paeqDoubleGraph_defined
+#print axioms PA194PAeqDoubleSpecialization.paeqDoubleProof
+#print axioms PA194PAeqDoubleSpecialization.paeqDoubleProof_val
+#print axioms PA194PAeq.SuccCongruence.source_mem
+#print axioms PA194PAeq.SuccCongruence.source_quote
+#print axioms PA194PAeq.SuccCongruence.atTermsCode_valid
+#print axioms PA194PAeq.SuccCongruence.atTermsCode_defined
