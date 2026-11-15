@@ -1,0 +1,7 @@
+# Site-28 increment followed by seven-block carry
+
+`PA194Site28AfterCarrySeven.afterCarrySeven` composes the model-uniform site-28 increment write with `PA194Site28CarrySeven.carrySeven`. It starts at the site-28 state-24 source header and reaches state 3 at the final spare block after physically incrementing logical register 8 and carrying the marker across the next seven physical register blocks. It keeps the exact complete file suffix as a model-valued expression; the last spare block and arbitrary numeric tail remain unconsumed. Its clock is the exact sum of the increment clock and seven individual model-valued block clocks.
+
+`check-site28-after-carry-seven.sh` source-rebuilds the previous 16 modules plus these two in a fresh output against the pinned site-27 coherent baseline. It pins all source hashes, audits the axiom reports, rejects `sorryAx` and machine-specific fallback roots, and verifies baseline objects unchanged during compilation. Its arguments are `REPO SITE27_BASELINE PROJECT_FOUNDATION PACKAGE_FOUNDATION SOURCE_DIR NEW_OUTPUT`. Reproduction of the baseline and general foundation provenance remains a prerequisite.
+
+The result stops at state 3 with the final spare block and tail still present. It does not establish the return to a site-29 state-24 source frame, native iPRA derivability of the combined sentence, arbitrary-length source simulation, or either consistency implication.
