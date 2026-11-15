@@ -1,0 +1,12 @@
+import PA194PAeqInductionSupplier
+#print axioms PA194PAeqBind.termShift_freeBound_zero
+#print axioms PA194PAeqBind.formulaShift_freeBound_zero
+#print axioms PA194PAeqBind.termBindSubst
+#print axioms PA194PAeqBind.termBindBShift
+#print axioms PA194PAeqBind.bindQVec
+#print axioms PA194PAeqBind.termVecBindSubst
+#print axioms PA194PAeqBind.formulaBindSubst
+#print axioms PA194PAeq.InductionReopen.closureReconstruction_of_oneStep
+#print axioms PA194PAeq.InductionReopen.fvarVec_bind_relation
+#print axioms PA194PAeq.InductionReopen.bindSubstReconstruction
+#print axioms PA194PAeq.InductionReopen.induction_supplier
