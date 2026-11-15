@@ -1,0 +1,675 @@
+{
+  "ok": true,
+  "repository_commit": "7c0bb454cf73c29ca1c385f9fec856ddd236a7cb",
+  "audit_method": "Read literal complete transition rows and source dictionary; compare all fixed-pair identities; replay exact three-transition two-cell dispatch traces for history-sensitive entries. No machine search is performed.",
+  "input_tables": [
+    {
+      "path": "machine/raw.native.tm",
+      "sha256": "4503443b1a8fc28ad7725cd5cd101f4bca347f924c69e7bd61e20cee867f96ea",
+      "working_controls": 201
+    },
+    {
+      "path": "research/gate_search/compositions/AX11HMP/fixed.native.tm",
+      "sha256": "6ff12a1ab730c162d07253b68a104c5218b49b339a48bc19c938542a5dab0440",
+      "working_controls": 133
+    },
+    {
+      "path": "research/gate_search/compositions/H5X/fixed.native.tm",
+      "sha256": "cc422ef0d27a9431e80551257ea4e88d5c5d9247fcc47458ecaff8190b52e298",
+      "working_controls": 133
+    },
+    {
+      "path": "research/gate_search/compositions/H5XS/fixed.native.tm",
+      "sha256": "0f337f7fd2181c9a80c0c0d3a74e21d7635a5122133e6ec300cac592e994656f",
+      "working_controls": 134
+    },
+    {
+      "path": "research/gate_search/compositions/JH5X/fixed.native.tm",
+      "sha256": "cc422ef0d27a9431e80551257ea4e88d5c5d9247fcc47458ecaff8190b52e298",
+      "working_controls": 133
+    },
+    {
+      "path": "research/gate_search/compositions/JH5XS/fixed.native.tm",
+      "sha256": "0f337f7fd2181c9a80c0c0d3a74e21d7635a5122133e6ec300cac592e994656f",
+      "working_controls": 134
+    },
+    {
+      "path": "research/gate_search/compositions/ORH/fixed.native.tm",
+      "sha256": "325f7a0716a6bbeb9c3b735e5a38ede424f38cb14686b1b98dfade8572139025",
+      "working_controls": 134
+    },
+    {
+      "path": "research/gate_search/compositions/QAX11H/fixed.native.tm",
+      "sha256": "cc422ef0d27a9431e80551257ea4e88d5c5d9247fcc47458ecaff8190b52e298",
+      "working_controls": 133
+    }
+  ],
+  "source_dictionary": {
+    "path": "machine/nodes.json",
+    "sha256": "f05cf647a40df5d74325e11af2c519bbd8ada8dff377d703a7bfe5f61685e88f",
+    "bindings": {
+      "node55": [
+        "node49",
+        "node54"
+      ],
+      "node54": [
+        "node51",
+        "node53"
+      ],
+      "node58": [
+        "node49",
+        "node57"
+      ],
+      "node57": [
+        "node56",
+        "node19"
+      ],
+      "node70": [
+        "node49",
+        "node69"
+      ],
+      "node69": [
+        "node68",
+        "node34"
+      ],
+      "node60": [
+        [
+          "leaf",
+          "inc",
+          1
+        ],
+        [
+          "leaf",
+          "inc",
+          1
+        ]
+      ],
+      "node61": [
+        "node60",
+        "node60"
+      ],
+      "node4": [
+        [
+          "leaf",
+          "dec",
+          5
+        ],
+        [
+          "leaf",
+          "continueTo",
+          1
+        ]
+      ],
+      "node145": [
+        [
+          "leaf",
+          "dec",
+          1
+        ],
+        [
+          "leaf",
+          "continueTo",
+          1
+        ]
+      ],
+      "node51": [
+        [
+          "leaf",
+          "dec",
+          4
+        ],
+        "node50"
+      ],
+      "node147": [
+        [
+          "leaf",
+          "dec",
+          4
+        ],
+        "node18"
+      ],
+      "node68": [
+        [
+          "leaf",
+          "dec",
+          3
+        ],
+        "node50"
+      ],
+      "node142": [
+        [
+          "leaf",
+          "dec",
+          3
+        ],
+        "node40"
+      ],
+      "node72": [
+        "node32",
+        "node19"
+      ],
+      "node6": [
+        "node3",
+        "node5"
+      ],
+      "node10": [
+        [
+          "leaf",
+          "dec",
+          7
+        ],
+        "node9"
+      ],
+      "node146": [
+        "node6",
+        "node145"
+      ],
+      "node148": [
+        "node10",
+        "node147"
+      ],
+      "node149": [
+        "node148",
+        "node146"
+      ]
+    }
+  },
+  "pair_identities": [
+    {
+      "name": "copy A",
+      "source_node": "node55",
+      "left": 19,
+      "right": 114,
+      "native": 98
+    },
+    {
+      "name": "copy D",
+      "source_node": "node58",
+      "left": 19,
+      "right": 20,
+      "native": 12
+    },
+    {
+      "name": "copy H",
+      "source_node": "node70",
+      "left": 19,
+      "right": 179,
+      "native": 166
+    },
+    {
+      "name": "two increments",
+      "source_node": "node60",
+      "left": 61,
+      "right": 61,
+      "native": 99
+    },
+    {
+      "name": "four increments",
+      "source_node": "node61",
+      "left": 99,
+      "right": 99,
+      "native": 190
+    },
+    {
+      "name": "ORH shared copy-A/step reader",
+      "source_node": null,
+      "left": 98,
+      "right": 90,
+      "native": 333,
+      "only_if_present": true
+    }
+  ],
+  "pair_checks_passed": 41,
+  "copyH_correction": {
+    "source_of_fix": "Initial diagnosis by the reduction search after symbolic runtime failures; independently confirmed directly against source node70=(node49,node69) and literal state166/read1=1R179.",
+    "wrong_mapping": {
+      "source_node": "node69",
+      "native": 30
+    },
+    "correct_mapping": {
+      "source_node": "node69",
+      "native": 179
+    },
+    "wrong_pair_rule": [
+      19,
+      30,
+      166
+    ],
+    "correct_pair_rule": [
+      19,
+      179,
+      166
+    ],
+    "literal_rows_166": [
+      [
+        0,
+        "R",
+        19
+      ],
+      [
+        1,
+        "R",
+        179
+      ]
+    ],
+    "corrected_scorer": "research/gate_search/corrected/screen_corrected.cpp",
+    "historical_patch": "research/gate_search/audit/scorer_correction.patch"
+  },
+  "transparent_entries": [
+    {
+      "source_node": "node54",
+      "native": 114,
+      "rows": [
+        [
+          0,
+          "R",
+          130
+        ],
+        [
+          1,
+          "R",
+          107
+        ]
+      ],
+      "immediate_entry_bit_requirement": null
+    },
+    {
+      "source_node": "node57",
+      "native": 20,
+      "rows": [
+        [
+          0,
+          "R",
+          30
+        ],
+        [
+          1,
+          "R",
+          31
+        ]
+      ],
+      "immediate_entry_bit_requirement": null
+    },
+    {
+      "source_node": "node69",
+      "native": 179,
+      "rows": [
+        [
+          0,
+          "R",
+          194
+        ],
+        [
+          1,
+          "R",
+          128
+        ]
+      ],
+      "immediate_entry_bit_requirement": null
+    },
+    {
+      "source_node": "node6",
+      "native": 77,
+      "rows": [
+        [
+          0,
+          "R",
+          87
+        ],
+        [
+          1,
+          "R",
+          88
+        ]
+      ],
+      "immediate_entry_bit_requirement": null
+    },
+    {
+      "source_node": "node10",
+      "native": 109,
+      "rows": [
+        [
+          0,
+          "R",
+          62
+        ],
+        [
+          1,
+          "R",
+          42
+        ]
+      ],
+      "immediate_entry_bit_requirement": null
+    },
+    {
+      "source_node": "node146",
+      "native": 196,
+      "rows": [
+        [
+          0,
+          "R",
+          77
+        ],
+        [
+          1,
+          "R",
+          122
+        ]
+      ],
+      "immediate_entry_bit_requirement": null
+    },
+    {
+      "source_node": "node149",
+      "native": 217,
+      "rows": [
+        [
+          0,
+          "R",
+          197
+        ],
+        [
+          1,
+          "R",
+          196
+        ]
+      ],
+      "immediate_entry_bit_requirement": null
+    }
+  ],
+  "incoming_bit_requirements": [
+    {
+      "source_node": "node145",
+      "native": 122,
+      "required_preceding_bit": 1,
+      "distinguishing_read_bit": 0,
+      "alternative_source_after_other_bit": "node4",
+      "three_step_traces": [
+        {
+          "preceding_bit": 0,
+          "steps": [
+            [
+              122,
+              0,
+              0,
+              0,
+              "L",
+              137
+            ],
+            [
+              137,
+              -1,
+              0,
+              0,
+              "R",
+              30
+            ],
+            [
+              30,
+              0,
+              0,
+              0,
+              "R",
+              45
+            ]
+          ],
+          "final_state": 45,
+          "final_head": 1,
+          "two_cells_restored": true
+        },
+        {
+          "preceding_bit": 1,
+          "steps": [
+            [
+              122,
+              0,
+              0,
+              0,
+              "L",
+              137
+            ],
+            [
+              137,
+              -1,
+              1,
+              1,
+              "R",
+              70
+            ],
+            [
+              70,
+              0,
+              0,
+              0,
+              "R",
+              41
+            ]
+          ],
+          "final_state": 41,
+          "final_head": 1,
+          "two_cells_restored": true
+        }
+      ]
+    },
+    {
+      "source_node": "node147",
+      "native": 130,
+      "required_preceding_bit": 1,
+      "distinguishing_read_bit": 1,
+      "alternative_source_after_other_bit": "node51",
+      "three_step_traces": [
+        {
+          "preceding_bit": 0,
+          "steps": [
+            [
+              130,
+              0,
+              1,
+              1,
+              "L",
+              20
+            ],
+            [
+              20,
+              -1,
+              0,
+              0,
+              "R",
+              30
+            ],
+            [
+              30,
+              0,
+              1,
+              1,
+              "R",
+              46
+            ]
+          ],
+          "final_state": 46,
+          "final_head": 1,
+          "two_cells_restored": true
+        },
+        {
+          "preceding_bit": 1,
+          "steps": [
+            [
+              130,
+              0,
+              1,
+              1,
+              "L",
+              20
+            ],
+            [
+              20,
+              -1,
+              1,
+              1,
+              "R",
+              31
+            ],
+            [
+              31,
+              0,
+              1,
+              1,
+              "R",
+              47
+            ]
+          ],
+          "final_state": 47,
+          "final_head": 1,
+          "two_cells_restored": true
+        }
+      ]
+    },
+    {
+      "source_node": "node142",
+      "native": 194,
+      "required_preceding_bit": 1,
+      "distinguishing_read_bit": 1,
+      "alternative_source_after_other_bit": "node68",
+      "three_step_traces": [
+        {
+          "preceding_bit": 0,
+          "steps": [
+            [
+              194,
+              0,
+              1,
+              1,
+              "L",
+              137
+            ],
+            [
+              137,
+              -1,
+              0,
+              0,
+              "R",
+              30
+            ],
+            [
+              30,
+              0,
+              1,
+              1,
+              "R",
+              46
+            ]
+          ],
+          "final_state": 46,
+          "final_head": 1,
+          "two_cells_restored": true
+        },
+        {
+          "preceding_bit": 1,
+          "steps": [
+            [
+              194,
+              0,
+              1,
+              1,
+              "L",
+              137
+            ],
+            [
+              137,
+              -1,
+              1,
+              1,
+              "R",
+              70
+            ],
+            [
+              70,
+              0,
+              1,
+              1,
+              "R",
+              63
+            ]
+          ],
+          "final_state": 63,
+          "final_head": 1,
+          "two_cells_restored": true
+        }
+      ]
+    },
+    {
+      "source_node": "node72",
+      "native": 69,
+      "required_preceding_bit": 0,
+      "distinguishing_read_bit": 0,
+      "alternative_source_after_other_bit": null,
+      "three_step_traces": [
+        {
+          "preceding_bit": 0,
+          "steps": [
+            [
+              69,
+              0,
+              0,
+              0,
+              "L",
+              213
+            ],
+            [
+              213,
+              -1,
+              0,
+              0,
+              "R",
+              92
+            ],
+            [
+              92,
+              0,
+              0,
+              0,
+              "R",
+              104
+            ]
+          ],
+          "final_state": 104,
+          "final_head": 1,
+          "two_cells_restored": true
+        },
+        {
+          "preceding_bit": 1,
+          "steps": [
+            [
+              69,
+              0,
+              0,
+              0,
+              "L",
+              213
+            ],
+            [
+              213,
+              -1,
+              1,
+              1,
+              "R",
+              90
+            ],
+            [
+              90,
+              0,
+              0,
+              0,
+              "R",
+              105
+            ]
+          ],
+          "final_state": 105,
+          "final_head": 1,
+          "two_cells_restored": true
+        }
+      ]
+    }
+  ],
+  "interpretation": "The copy remainders114/20/179 and exposed transparent gate entries have no additional immediate-entry history-bit restriction. The four history-sensitive macros require the recorded preceding bit; source-preservation, address bounds, full runtime contracts, and startup remain separate obligations.",
+  "claim_boundary": "Literal macro audit and finite dispatch traces only. This is not an absolute arithmetic calibration, a Lean proof, or a further state-reduction search. The unrestricted legacy deep-gate screen must not be interpreted as a sound physical-machine search."
+}

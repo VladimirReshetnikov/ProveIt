@@ -1,0 +1,452 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,longtable,array}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\setlength{\emergencystretch}{1em}
+\newcommand{\IPRA}{\mathrm{iPRA}}
+\newcommand{\PRA}{\mathrm{PRA}}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\IS}{\mathrm{I}\Sigma_1}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newtheorem{proposition}{Proposition}
+\title{Independent calibration and architecture review\\
+\large PA194ORMP and PA194ORMPLC3}
+\author{Research review, 15 November 2026}
+\date{}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The two new 194-state machines preserve the resolved primitive program of
+the revised AX11H construction.  Their consistency calibration can therefore
+be inherited by an explicit, uniform source-to-tape simulation.  The
+inspected logical interfaces of the revised calibration are coherent:
+the current Foundation PA predicate is translated rather than identified
+with a historical calculus, the forward proof suppliers are primitive
+recursive, and the intuitionistic conclusion uses negative translation
+without Markov's principle.  This review does not supply a completed Lean
+formalization, rederive every inherited proof recipe, or establish a
+machine with fewer than 194 states.  It also explains which ideas from the
+ZFC, Diophantine, and concise-iPRA projects can be reused and which missing
+steps prevent those projects from immediately yielding a smaller machine.
+\end{abstract}
+
+\section{Exact scope and imported results}
+
+All repository references in this note are to ProveIt commit
+\begin{center}\small
+\path{7c0bb454cf73c29ca1c385f9fec856ddd236a7cb}.
+\end{center}
+Its Foundation gitlink is
+\path{32e1a0956a8622fad067328ca1959729a7634428}, at
+\path{lib/FormalizedFormalLogic-Foundation}.  That gitlink was checked
+directly.  The mathematical parent is the \emph{revised} AX11H packet,
+filed under
+\begin{center}\small
+\path{Computability/BusyBeaver/Research/PA/docs/pa194_ax11h_research_2026-11-14_2/}.
+\end{center}
+Its retained archive has SHA-256
+\begin{center}\small
+\path{93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075}.
+\end{center}
+The suffix \path{_2} matters: an older packet with a similar name is a
+different dependency.  The new construction retains the exact archive
+as \path{calibration_AX11H.zip}, its ten proof fragments in
+\path{calibration/}, and the exact calibrated table and source data in
+\path{parent/}.
+
+The imported written theorem is the final theorem of
+\path{proof/consistency_equivalence.tex}: for the literal PA194AX11H
+table, \(\IPRA\) proves its blank nonhalting equivalent to the pinned
+PA consistency sentence.  This is an imported mathematical theorem,
+not a hypothesis that PA is consistent.  Its packet explicitly states
+that its finite execution checkers do not certify the entire arithmetic
+derivation, and that it does not provide a new end-to-end Lean or Rocq
+build.  Those qualifications also apply to the new machines' inherited
+calibration.  Unfinished Lean work and the existence of a written
+mathematical proof are different status claims.\cite{ax11h}
+
+This review examined the complete final-equivalence and machine-simulation
+fragments, the complete reverse calibration, the finite-demand and
+stratum-ordering portions of the forward calibration, the current
+Foundation adapter and its induction-code interface, and the actual
+generic Lean one-way transfer statements.  It also examined the literal
+relative checker and its receipts for both new machines.  It did
+\emph{not} reconstruct every fixed numerical proof template or rebuild the
+transitive Lean dependencies.  The accompanying source audit and symbolic
+runtime replays provide the broader finite-data checks; they should not
+be described as a newly completed proof-assistant kernel verification.
+
+\section{The precise arithmetic endpoint}
+
+The endpoint is
+\path{DiophantineConsistency.IPRAPA196Consistency.nativePAConsistency}.
+Its historical name contains ``196'', but its definition is a PA
+consistency sentence, not the name of a particular machine.
+It is the intuitionistic negation of the native reading of the mapped
+Foundation PA-refutation predicate.  Three codings must be kept separate:
+Foundation proof/formula codes, ordinary-PAeq proof/formula codes, and
+the Cantor-coded numerical calculus used by the machine.  For example,
+the adapter sends the historical false-formula code 13 to the numerical
+contradiction 1; it does not identify those codes.\cite{adapter,transfer}
+
+The file
+\path{Computability/BusyBeaver/Research/PA/isigma1-machine/ConPAISigma1Directions.lean}
+imports \path{ConPAUnconditional} and
+\path{DiophantineConsistency.PRAPiOneImplication}.  It provides two
+generic theorems.  With \(h(t)\) the chosen halting matrix, they require,
+respectively, the following statements in every model of the specified
+candidate PRA language whose arithmetic reduct satisfies \(\IS\):
+\begin{align*}
+ \text{mapped PA refutation}&\ \Longrightarrow\ \exists t\,h(t),\\
+ \exists t\,h(t)&\ \Longrightarrow\ \text{mapped PA refutation}.
+\end{align*}
+The first endpoint additionally requires the matrix to be bounded; both
+require it to be open.  Taking \(h(t)\equiv\chi_M(t)=1\), where
+\(\chi_M\) is the primitive-recursive bounded simulation of the exact
+literal table, meets those syntactic requirements because the matrix is
+atomic.  The two endpoints then yield
+\begin{align*}
+ \IPRA&\vdash\neg\Halt(M)\to\Con(\PA),\\
+ \IPRA&\vdash\Con(\PA)\to\neg\Halt(M).
+\end{align*}
+The actual Lean proof passes through classical model conservation and
+negative translation.  It obtains double-negated positive existentials
+where appropriate, then concludes the negative implications by
+intuitionistic contraposition.  It does not eliminate double negation
+from a positive existential and does not invoke Markov's principle.
+The generic Lean source supplies these interfaces; it does not itself
+instantiate them with the new literal machines.\cite{transfer}
+
+\section{Why the written forward calibration is plausible in the weak base}
+
+\subsection{The Foundation adapter}
+
+The adapter translates between two arithmetic languages.  The source
+has symbols \(0,1,+,\times,=,<\); the target has \(0,S,+,\times,=\).
+It sends \(1\) to \(S0\) and \(s<t\) to an appropriately shifted
+\(\exists z\,(s+Sz=t)\).  The written construction addresses bound-variable
+shifts, simultaneous substitutions, universal closure, and the explicit
+induction recognizer.  It does not appeal merely to the familiar
+external equivalence of the two presentations.\cite{adapter}
+
+A concrete version difference is handled: the historical finite PA axiom
+\[
+ x<y\to\exists z\,(z<y+1\mathbin{\wedge}x+z=y)
+\]
+and the current axiom
+\[
+ x<y\to\exists z\,(x+z=y)
+\]
+are not silently interchanged.  The adapter supplies the simple
+existential projection in one direction and a fixed derivation using
+the other finite arithmetic axioms in the other direction.  Likewise,
+the current induction recognizer has bounded witnesses for the code of
+the universal closure and its body; the code of an opened body is
+bounded by the explicit opening function, not incorrectly by the
+unopened formula code.  These details remove two possible failures of
+an otherwise informal coding argument.\cite{adapter}
+
+\subsection{Finite-demand compilation}
+
+The forward numerical compiler cannot justify its construction by
+quantifier-free induction on the unbounded assertion ``for every
+environment, there exists a derivation.''  The revised proof instead
+uses finite demand packets.  A query has a natural rank and a finite
+parameter packet.  Its child queries are calculated before any child
+proof is evaluated.  At most two child queries belong to the same
+stratum, each with strictly smaller rank.  A complete binary tree of
+depth bounded by the initial rank therefore contains every required
+same-stratum query.  Inactive positions are filled with explicit
+defaults, and the tree is evaluated in reverse order.  Its bounded
+Boolean validity predicate can be maintained by quantifier-free
+induction.\cite{forward,termleaf}
+
+The essential restriction is that a call to a lower stratum may use a
+larger argument, but no lower-stratum construction calls back into the
+unfinished higher stratum.  That ordering is stated explicitly.
+Term-value syntax, substitutivity, finite-member suppliers, and PA-leaf
+suppliers are presented with finite witness tables or explicit
+recurrences instead of an unbounded choice of a proof.  As a general
+compilation method, this is a legitimate route to primitive-recursive
+proof suppliers.  The present review checked these recursion interfaces
+and their dependency order; the many fixed proof recipes they invoke
+remain part of the imported written proof, rather than a newly replayed
+kernel derivation.\cite{forward,termleaf}
+
+\subsection{Cofinal enumeration and the carried store}
+
+For a numerical derivation code \(e\) of contradiction, the command
+compiler produces an \emph{all-store} halting word
+\(V_e=A_0;W_e;\mathsf{Pop}\).  The final calibration wraps it in a
+candidate whose raw code is
+\[
+ N_e=p\bigl(2,p(0,p(0,p(0,e_{\rm word}(V_e))))\bigr)\geq3.
+\]
+Here \(e_{\rm word}\) codes a command word, not a derivation.
+Every earlier candidate drains within its seed plus one commands unless
+halting has already occurred.  Thus
+\(K(e)=(N_e+2)^2\) bounds the scheduler's halting time in abstract
+commands.  Because \(V_e\) works from every store, the enumeration need
+not reset the carried store or find the least successful candidate.
+The exact source and physical clocks then turn this bound into a
+primitive-recursive literal halting witness.\cite{ax11h,commands}
+
+The reverse direction has a different obligation.  Its invariant says
+that the formulas actually stored have internal PA proof witnesses.
+It uses a finite vector of those witnesses, producing a
+\(\Sigma_1\) invariant, and checks the guarded gate as well as the six
+heads, the restricted \(\rho\) rule, and the diagonal rule.  Consequently,
+the all-store forward property does \emph{not} authorize an arbitrary
+initial source store for the reverse argument.  This distinction is
+especially relevant to future attempts to reuse a 193-state runtime
+with a different initializer.\cite{reverse}
+
+\section{Uniform transfer to the new literal tables}
+
+The new candidates are checked directly against the revised AX11H
+parent.  Their SHA-256 bindings are:
+\begin{description}
+\item[PA194AX11H parent] \hfill\\[-1ex]
+\path{c5dfe1026d077d3e062eca11edb789597bfbbced4f6040f8828ae5d467b1167a}
+\item[PA194ORMP] \hfill\\[-1ex]
+\path{a0473681d6d5fb68e5fccfc473f35bc67aa48083d847e349ba3c52865f293629}
+\item[PA194ORMPLC3] \hfill\\[-1ex]
+\path{6d8a8cf2f5578ccdc28dd7025bc41a7c279dfbc09c5d3893cb965d70292d10f4}
+\end{description}
+These hashes refer to the dense \path{machine.tm} bytes.  The archived
+parent hash and both new hashes were recomputed during this review.
+All three resolved instruction arrays have the same bytes, with SHA-256
+\begin{center}\small
+\path{43a4ba0d62f95fe766d5369940b0aa8b7a4da04824feb8836905e289640f59f7}.
+\end{center}
+This equality includes resolved control-flow targets, not only the
+ordered sequence of primitive operations.  PA194ORMPLC3 retags 61
+\path{continueTo} depths from 2 to 3 while retaining their resolved
+targets.  A comparison of operation names alone would miss this
+obligation.
+
+The direct relative check covers all 3,671 primitive sites and all
+4,778 guarded outcomes.  Exactly 4,777 outcomes are nonhalting.  It
+checks padded destination addresses, absence of unintended halt rows,
+nonnegative affine duration coefficients, and the unique halt outcome.
+The four list-traversal schemas have separate one-block traces; list
+induction extends them to arbitrary nonempty finite spare lists.
+Registers and the gap parameter range over all natural numbers.
+The full blank startup, including the zero exterior, reaches the common
+source state at site 25 with the same logical data.  Startup durations
+are 57,922, 58,014, and 58,010 for parent, ORMP, and ORMPLC3 respectively.
+These are finite arithmetic bindings to the accompanying uniform
+simulation proof, not a finite execution prefix offered as evidence of
+nonhalting.
+
+\begin{proposition}[The clock step needed for all-run transfer]
+Suppose the source step is primitive recursive with an absorbing halt,
+the literal machine has an absorbing semantic halt, and the frame
+simulation is exact at cumulative times
+\[
+ T(k)=s+\tau(k),\qquad
+ \tau(0)=0,\qquad
+ \tau(k+1)=\tau(k)+D(z_k).
+\]
+Assume \(D(z_k)\geq3\) when the source state \(z_k\) is live, and
+\(D(z_k)=0\) after source halt.  Then source halting at step \(k\)
+implies literal halting by \(T(k)\).  Conversely, literal halting at
+time \(t\) implies source halting by step \(t+1\).
+\end{proposition}
+
+\begin{proof}
+The first claim is the exact endpoint simulation.  For the second,
+suppose the source were still live at step \(t+1\).  Absorption makes
+all earlier source states live, so
+\(T(t+1)\geq s+3(t+1)>t\).  Exact simulation says the literal machine
+is live at that later endpoint, contradicting literal halt at \(t\)
+and its absorption.  This uses the duration lower bound only on a live
+prefix; the clock need not keep growing after source halt.
+\end{proof}
+
+In the common blank-run invariant, gap is at most \(k\), the register
+sum is at most \(2+k\), and the spare-list width is at most \(78+3k\).
+The checked coefficient envelope gives
+\[
+ D(z_k)\leq698+18k,\qquad
+ \tau(k)\leq9k^2+689k.
+\]
+The exact clocks are primitive recursive; the displayed polynomials
+are convenient majorants.  Combining the exact source equality with
+the endpoint simulations gives a primitive-recursive halting-witness
+transport in both directions.  Consequently the same two model
+implications, and hence the same negative \(\IPRA\) equivalence, apply
+to both new machines.  No universal all-tape equivalence between their
+raw transition graphs is required or claimed.  It is their proved
+canonical-frame dynamics and full blank initialization that matter.
+
+\section{What the three ancillary projects contribute}
+
+\subsection{ZFC machines: useful physical methods, a different endpoint}
+
+The pinned K215 project supplies a concrete 215-state blank-start binary
+machine, including initialization, with 202 source subtrees, 4,751
+primitive occurrences, and 6,176 runtime outcomes.  Its report records
+compiled external Lean and Rocq equivalences with ZFC refutability, and
+explicitly distinguishes those from an internal PA endpoint.  Its
+95,714-step blank startup is part of the machine, not an auxiliary
+unpriced preprocessing step.\cite{k215}
+
+Several methods carry over: command-local field decoding, command
+permutations, source reassociation, partial selectors, contextual
+marker folds, and short history-dependent repairs.  In particular,
+the K215 account explains a three-step replacement of the target of
+row \(81/0\), freeing a reader row without adding a physical state.
+The principle is to prove equality of complete local configurations
+on the reachable histories, rather than require equality of the two
+transition rows in isolation.  This is closely related to the useful
+context repairs already present in the PA family.\cite{k215}
+
+The K215 table itself cannot answer the present task: it is larger and
+its endpoint is \(\Con(\mathrm{ZFC})\).  Replacing the target theory
+requires a new calibrated source and literal pricing.  Likewise,
+deleting an apparently unnecessary ZFC proof-theoretic operation does
+not automatically delete a decoder state, because the operation's
+reader may be shared by other source subtrees.
+
+\subsection{Diophantine equations: arithmetic expression size is not state count}
+
+The DiophantineConsistency project contains exact equations and several
+native, standard, and equality-only \(\IPRA\) proof-existence endpoints.
+Its principal equations encode ZFC consistency.  The project also
+contains much of the PRA/\(\IS\)/iPRA transfer infrastructure used by
+the PA calibration.  That infrastructure is immediately reusable as
+proof support.\cite{diophantine}
+
+A short equation is not yet a small blank-start machine.  A competing
+design needs a PA-calibrated equation, an exhaustive tuple enumerator,
+uniform integer arithmetic, a representation of its coefficients and
+operations, and initialization.  The tuple decoder, polynomial
+interpreter, sign handling, and literal coefficient data must all be
+priced in the same two-symbol, L/R-only model.  A reduction in variable
+count or arithmetic-operation count may increase those costs.
+
+There is an informative PA-side example already in the compared
+corpus.  The tagged-three recoding changes the leading formula radix
+from four to three while retaining a uniform primitive-recursive
+proof translation.  Its priced implementation reaches 207 states.
+The reported optimizer score of 203 was not an accepted machine count,
+because it overcounted four simultaneously compatible folds.  The
+tagged-two prototype's optimistic 206 score fails a source contract.
+Thus even a sound and apparently simpler numerical coding can be
+larger at the literal-machine layer.\cite{tagged}
+
+The Diophantine route remains open research, not refuted by these
+observations.  A useful first experiment would price an entire fixed
+polynomial evaluator and witness enumerator against the current
+decoder, before investing in a new detailed consistency calibration.
+
+\subsection{Concise iPRA: useful syntax, insufficient target strength}
+
+The concise-iPRA project's stated objective is a theory bi-interpretable
+with full first-order \(\IPRA\), with both numerical domains whole,
+actual equality, and identity round trips.  Its smallest checker
+metrics are normalized Python tokens, AST nodes, and bytes.  The native
+scalar syntax uses variables, zero, successor, and an iterator;
+formulas use equality and the two binders \(Q\) and \(D\).  Several
+six- or seven-rule presentations are proved equivalent to the native
+core.\cite{concise}
+
+Those results provide promising normalization and iteration patterns.
+They do not give a PA-refutation recognizer.  Enumerating contradictions
+of an iPRA-equivalent calculus changes the target consistency sentence.
+To use the syntax here, one would have to specify a PA-strength
+extension, prove both syntactic refutation translations in the required
+weak base, and implement its binding, substitution, normalization, and
+proof validation.  Moving work from an inference rule into a canonical
+syntax constructor may shorten a Python checker while enlarging the
+binary interpreter.  Both the logical target and the literal price
+therefore remain essential missing steps.
+
+\section{Concrete directions below 194 and limits of the present search}
+
+No new machine below 194 states was established in this review.  Several
+seemingly easy logical ideas are already represented in the supplied
+research: premise-order exchange in the six heads, alternative
+diagonals, head and parameter permutations, H5X/J variants, different
+formula radices, and substantial startup search.  Repeating them with
+a different narrative would not supply a materially different design.
+None of their negative finite search results proves a global lower
+bound.
+
+Two more focused directions remain technically meaningful.  First,
+jointly synthesize source association and a local history repair.  The
+relevant cost is the number of \emph{new} reader states after sharing
+and compatible folds.  A reassociation that removes an old selector
+but creates a new unshared subtree has saved nothing.  The most useful
+certificate would list the complete predecessor histories of the
+candidate deleted state, prove that each meets an existing reader at
+an identical future configuration, and replay every affected symbolic
+source contract.  The ORMP construction shows why source and runtime
+cannot always be optimized independently; it does not itself show
+that a further deletion is possible.
+
+Second, a runtime with 193 states should be paired with a search over
+\emph{provably admissible} initial scheduler configurations, not only
+one prescribed initial tape.  Cofinal enumeration allows some variation
+in the starting candidate counter, and the all-store forward compiler
+provides useful flexibility.  However, reverse soundness still needs
+explicit proof witnesses for every initial stored formula and a
+correct scheduler phase.  An arbitrary canonical-looking register
+frame at an arbitrary source address is insufficient.  A viable
+startup family should therefore be specified first by a
+primitive-recursive admissibility predicate, with proofs of source
+soundness and cofinality for every member.  Only then can a literal
+blank run that lands in that family finish the construction.
+
+This second proposal is a research specification, not a claim that the
+required startup exists.  An execution bound exhausted without a hit
+leaves those executions unresolved; it cannot certify impossibility.
+The two 194-state machines have a much firmer status: exact delivered
+tables, uniform literal simulation evidence, and a clearly identified
+written consistency calibration.  Their end-to-end Lean
+formalization remains future work.
+
+\begin{thebibliography}{12}
+\bibitem{ax11h} Revised AX11H packet, pinned ProveIt path
+\path{Computability/BusyBeaver/Research/PA/docs/pa194_ax11h_research_2026-11-14_2/};
+especially \path{proof/consistency_equivalence.tex},
+\path{proof/ipra_simulation_theorem.tex}, and
+\path{proof/physical_ipra_audit.tex}.
+\bibitem{adapter} Same packet,
+\path{proof/foundation_paeq_completion.tex}, especially
+``Binding the current Foundation predicate'' and
+``Exact current Foundation endpoint.''
+\bibitem{forward} Same packet,
+\path{proof/forward_calibration_completion.tex}, finite-demand
+construction and final stratum order.
+\bibitem{termleaf} Same packet,
+\path{proof/term_leaf_completion.tex}.
+\bibitem{commands} Same packet,
+\path{proof/source_command_completion.tex} and
+\path{proof/ax11h_preservation.tex}.
+\bibitem{reverse} Same packet,
+\path{proof/consistency_implies_nonhalting.tex}.
+\bibitem{transfer} Pinned ProveIt,
+\path{Computability/BusyBeaver/Research/PA/isigma1-machine/ConPAISigma1Directions.lean},
+theorems \path{ipra_nonhalt_implies_consistency} and
+\path{ipra_consistency_implies_nonhalt}.
+\bibitem{k215} Pinned ProveIt,
+\path{Computability/BusyBeaver/Research/ZFC/candidate-k215/README.md}
+and \path{proof.md}.  The proof-assistant build statements here are
+reported project results; they were not freshly rebuilt for this review.
+\bibitem{diophantine} Pinned ProveIt,
+\path{Computability/DiophantineConsistency/README.md}.
+\bibitem{concise} Pinned ProveIt,
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md},
+``The question,'' ``The native scalar core,'' and the formalization table.
+\bibitem{tagged} Pinned ProveIt,
+\path{Computability/BusyBeaver/Research/PA/docs/pa194_lcfast_tagged_research_2026-11-14/README.md},
+``Additional mathematical result and reduction attempts.''
+\end{thebibliography}
+\end{document}

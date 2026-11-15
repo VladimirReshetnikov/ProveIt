@@ -1,0 +1,200 @@
+PA194AX11HC4: physical reallocation and iPRA proof transport
+=========================================================
+
+Parent and snapshot
+-------------------
+
+The parent is the literal PA194AX11H table with dense SHA256
+c5dfe1026d077d3e062eca11edb789597bfbbced4f6040f8828ae5d467b1167a
+at ProveIt commit 2ca99e3d23a5397aae4c786f4da7dfe1cca87f85. Its kept
+location is PA/docs/pa194_ax11h_research_2026-11-14/machine/machine.tm.
+The later packet pa194_ax11h_research_2026-11-14_2 supplies a written
+mathematical iPRA calibration of this exact table. Its repeated table was
+removed by the repository deduplication; the equality of its machine inputs
+with the kept older packet was checked in the independent corpus inventory.
+
+The written proof and an end-to-end proof-assistant build are different
+claims. The later packet explicitly supplies the former and does not claim
+the latter. This construction inherits its logical calibration; it does not
+claim a new Lean or Rocq proof of that inherited argument.
+
+New literal table
+-----------------
+
+The child has 194 working states, 388 binary transition rows, dense start 0,
+halt label 194, and a blank two-way infinite tape with head initially at zero.
+Native start and halt are 74 and 254.
+
+Child native SHA256:
+8081a0ef2c2054963d3153f2a4ad385a381a9d7abe7c0301e0c98e830b2433e1
+Child dense SHA256:
+fe4253a42045c330a499d99cc33d55a14e116cae910eb624c499161a7a7ca755
+
+The logical register order is (N,T,W,A,D,H,X,Y,Z), with Z named L in the
+parent source. Replace logical-to-physical map
+  (6,2,0,4,3,7,8,5,1)
+by
+  (6,4,0,3,5,7,8,2,1).
+The physical file (W,Z,T,D,A,Y,N,H,X) becomes (W,Z,Y,A,T,D,N,H,X).
+This is the four-cycle of physical positions 2 -> 4 -> 3 -> 5 -> 2.
+It moves the logical registers T,A,D,Y and changes their access distances.
+
+The native edits are exactly:
+  17,1: 0 R 32 -> 0 R 48
+  41,1: 0 R 25 -> 0 R 32
+  61,1: 0 R 25 -> 0 R 32
+  82,1: 0 R 33 -> 0 R 25
+ 144,1: 0 R 48 -> 0 R 33
+ 161,1: 0 R 32 -> 0 R 48
+
+Every other row, including every register-engine row, is unchanged. With
+SK=(51,36,25,48,32,33,22,55,60), these are precisely the changes
+SK[old_physical(r)] -> SK[new_physical(r)] at source dispatches. Dense
+renumbering adds no state and is checked against an explicit label bijection.
+
+The source instruction array is unchanged, including every jump successor.
+It has 3,671 sites. Its compact canonical JSON SHA256 is
+f92f084b44d6ffc187ceb1bfc67672baea96fc35c72267f150cc9efe4fcda65b.
+The pinned original instruction-file Git blob is
+0a682766d1dc5ba5bb59ba3661a78e55a3c16522. The compact tree in this package
+has 181 entries and regenerates the entire source array.
+
+Exact initialization
+--------------------
+
+The parent reaches its seed after 57,922 literal transitions. The child
+reaches the same complete physical tape after 57,406. Both endpoints have
+native state 84, head -2, source site 25 and path 1000000, header distance 48,
+logical values (2,0,0,0,0,0,0,0,0), physical values
+(0,0,0,0,0,0,2,0,0), and 26 one-valued spare registers. The exteriors are
+zero. Sparse-set and byte-array implementations check the entire tape,
+not only a bounded prefix. All 66 one-cells agree and every head position
+during startup lies in [-11,144]. The saved receipts give the exact support.
+
+Each of the six changed rows occurs during this blank initialization. In
+the edit order above its visit count is (5,11,1,33,2,2), and its first
+zero-based time is (7742,9188,9732,1438,15304,7040).
+The initialization saving is 516 literal transitions; no uniform runtime
+speed claim is made.
+
+Universal physical simulation
+-----------------------------
+
+For source path p, gap n>=0, nine arbitrary natural logical register values
+v, and an arbitrary finite nonempty list of spare values, use the frame
+
+  1 p 0^(48+n-|p|) 1 B(u_0)...B(u_8) B(spares), B(v)=0 1^(v+1),
+
+with native boundary control 84 and the designated allocation u_phi(r)=v_r.
+The left marker is one cell to the left of the head; the remaining exterior
+is blank. Increment, positive decrement, zero decrement, jump and halt use
+the same logical source transitions as the parent, with their unchanged
+auxiliary spare/gap updates.
+
+There are 4,778 cases because each decrement contributes zero and positive
+outcomes. The lightweight Python and JavaScript checks both pass all cases,
+recording 1,515,221 symbolic iterations with a maximum of 506. They use the
+unchanged generic arithmetic-box lemmas explicitly.
+
+The stronger literal check is verify_literal.py HC4 in the parent directory.
+It uses the exact interpreter audited in the parent's physical_ipra_audit.tex.
+It derives four arbitrary-list traversal lemmas from the candidate's actual
+rows, resolves the complete source graph in two independent ways, and computes
+an affine physical duration and exact successor frame for every case. The
+completed run passed all 4,778 outcomes, with 1,095,048 symbolic events and
+maximum 403 per outcome. Every affine clock has nonnegative coefficients and
+constant at least 3. It also independently checks the complete blank tape
+after 57,406 steps. Full clock vectors and list-lemma proofs are retained in
+receipts/literal/, whose receipt reports PASS and arithmetic_box_oracles=false.
+
+iPRA transfer, with explicit witness transformations
+---------------------------------------------------
+
+The parent's physical_ipra_audit.tex proves the soundness in iPRA of the
+literal interpreter rules, including unary sweeps, arbitrary-list induction,
+normalization, and composition with variable positive clocks. Those proofs
+are generic in the actual transition rows checked at each event. They also
+allow each physical block to carry its own independent logical value. The
+new six dispatches do not change the representation algebra or any list rule.
+Consequently the child's successful literal certificates instantiate the
+same theorem with its new allocation.
+
+For the clock construction, extend the source state by ghost data for the
+head coordinate, header gap and complete spare list, updated by the exact
+local contracts. Projection to the original site/nine-register source state
+commutes with every step and preserves the halt flag; quantifier-free
+induction proves this from the stated initial ghost data. The extension
+introduces no physical control or tape symbol.
+
+Here is the composition argument in primitive-recursive terms. Let s(k)
+be the k-th absorbing extended source configuration starting at the common seed.
+Let E_phi(s) encode its full physical frame for allocation phi, mapping the
+canonical source halt to an absorbing physical halt code. The finite literal
+certificates yield a primitive-recursive duration d_phi(s), positive while
+s is live and zero after halt, for which iPRA proves
+
+  Run_phi(d_phi(s),E_phi(s)) = E_phi(SourceStep(s)).
+
+All parameters, including list widths and the changing gap, remain in s.
+The clock is obtained from the proved affine duration vectors for the current
+instruction and branch. It is not computed by waiting for an unspecified exit.
+Define tau_phi(0)=0 and
+tau_phi(k+1)=tau_phi(k)+d_phi(s(k)). Quantifier-free induction gives
+
+  Run_phi(startup_phi+tau_phi(k),blank) = E_phi(s(k)).
+
+If the source halts at k, this equality gives a physical witness at the
+displayed primitive-recursive time. Conversely, suppose the physical machine
+halts at time t. The Boolean source halt flag at s(t) is decidable. If it were
+zero, source absorption would imply that all earlier source configurations
+are live; hence tau_phi(t)>=t. Physical absorption and the displayed equation
+would then identify a halted physical configuration with a live E_phi(s(t)),
+a contradiction. Thus s(t) is halted, giving an explicit source witness t.
+This argument uses finite Boolean case distinction, not Markov's principle
+or an unbounded search for the first source halt.
+
+Therefore iPRA proves Halt(child) iff Halt(the unchanged source). Applying
+the parent's corresponding physical/source theorem proves
+
+  iPRA |- Halt(child) <-> Halt(parent).
+
+Intuitionistic propositional reasoning gives equivalence of their negations.
+Finally use the written theorem of the exact AX11H parent in
+reference/proof/consistency_equivalence.tex. Its PA consistency predicate is
+the current Foundation PA predicate specified in that packet. The conclusion is
+
+  iPRA |- Con(PA) <-> not Halt_blank(PA194AX11HC4).
+
+This last theorem inherits the correctness of the parent's written logical
+calibration. The new work is the fully specified physical reallocation and
+the literal local proof certificates that transport that result. It is not
+an independent reproof of the entire PA-to-numerical-calculus compiler, and
+no new end-to-end proof-assistant theorem is claimed.
+
+The rejected H/X composition
+---------------------------
+
+Applying the first candidate's additional H/X swap to AX11H preserves every
+source contract but did not reach the exact calibrated seed within 500,000
+steps. It is not presented as a solution. A bounded screen tested all 720
+allocations fixing physical positions 0,1,6: 24 reached the required exact
+seed, 127 halted first, and 569 reached the stated bound. Bounded failures are
+not proofs of permanent failure or a global lower bound. HC4 was selected
+from the 24 successful cases and then independently rechecked.
+
+Reproduction
+------------
+
+From this directory:
+  python3 reconstruct.py --output rebuilt
+  python3 verify_source.py
+  node verify_source.cjs
+From the parent directory:
+  python3 verify_literal.py HC4
+
+The latter Python source verifier imports ../vendor/symbolic_runtime.py.
+All other source data needed for the child are embedded or in its compact
+source tree. Preserved imported licenses are in ../licenses/.
+
+Pinned written calibration:
+https://github.com/VladimirReshetnikov/ProveIt/tree/2ca99e3d23a5397aae4c786f4da7dfe1cca87f85/Computability/BusyBeaver/Research/PA/docs/pa194_ax11h_research_2026-11-14_2

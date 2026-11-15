@@ -1,0 +1,73 @@
+% Research scope/results fragment; amsmath and booktabs suffice.
+\section{Additional logic and grammar searches}
+\label{sec:fw-search}
+
+The symmetric-witness incoming packet reassociated fixed source words;
+its dormant per-head parameter-renaming mechanism had not been used.
+We enabled simultaneous grammar moves and independent permutations of
+the three ordinary parameters in each of the six original head blocks.
+The guarded gate and restricted-$\rho$ block were held fixed.  Every
+such permutation is a bijection on its own schema parameters, so the
+same axiom family is generated and the inverse permutation recovers any
+desired instance.  This is a semantic justification for the search
+space, not a substitute for exact source binding of a selected result.
+
+The search corrected the macro-length accounting for the two- and
+four-increment macros before locating head boundaries.  Fixed controller
+cost after its verified fold is 134 states.  The objective below is
+the number of distinct reader states minus the maximum compatible
+history-marker identifications; a value of 60 gives 194 total states.
+Simultaneous fold compatibility, rather than a bare matching count, is
+checked for competitive candidates.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Search&Proposals or iterations&Best reader cost&Elapsed seconds\\
+\midrule
+H5XS: 31 shapes, all $6^6$ parameter tuples&1,446,336&60&134.544\\
+JH5XS: 31 shapes, all $6^6$ parameter tuples&1,446,336&60&146.633\\
+Fused H: 31 shapes, all $6^6$ parameter tuples&1,446,336&60&107.070\\
+H5XS: joint renaming and grammar search&3,445,979&60&420.014\\
+JH5XS: joint renaming and grammar search&3,616,330&60&420.002\\
+Fused H: grammar reassociation search&4,110,109&60&420.002\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The three exhaustive grids therefore evaluated 4,339,008
+shape--parameter combinations.  Each grid retained 31 best-cost hits,
+all with the identity parameter tuple.  The stochastic searches ran
+11,172,418 iterations in total.  Iterations are not a count of distinct
+machines: revisits, unsuccessful moves and proposals rejected by
+structural penalties occur.  The timing-dependent iteration totals are
+recorded evidence; rerunning the same seed for the same wall-clock time
+need not reproduce those exact totals on different hardware.  The
+selected PA194FW grammar and fold list are frozen independently of the
+search and reconstruct deterministically.
+
+For the fused grid, the two original constituent blocks may be permuted
+independently.  A resulting head has the form
+$N(I(h_4(\sigma(D,A,H)),V(\tau(D,A,H))))$.  Its join follows from the
+two original axioms, while each projection is surjective onto its own
+original family by choosing the inverse of its own permutation.  The
+other constituent does not constrain that projection.  The delivered
+machine uses both identity permutations, so its exact formula is the
+simpler (FW-F).  The proof and free-term certificate are for that exact
+selected machine.
+
+The fused-H grammar search produced the new 194-state result.  None of
+these searches produced a valid table below 194 states.  The grids are
+exhaustive only over their finite retained shape sets, and the annealing
+runs have no completeness guarantee.  They do not prove optimality of
+the macro vocabulary, the grammar, the axioms, the controller or the
+global 194-state bound.  An exploratory fusion of the J first-head
+family was rejected as an accepted result: the projection argument here
+uses explosion derived from the retained ordinary $h_1$, whereas the
+J witness design had obtained that resource differently.  No logical
+equivalence is claimed for that unverified branch.
+
+The prepared finite inputs, C++ search/screening programs and recorded
+logs are included under \texttt{research/search/}.  Only the primary
+frozen table, not arbitrary screened candidates, has the complete
+source, literal-runtime and mathematical preservation certificates.

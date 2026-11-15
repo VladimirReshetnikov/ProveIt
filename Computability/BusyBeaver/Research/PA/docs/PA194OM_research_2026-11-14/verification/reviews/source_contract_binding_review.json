@@ -1,0 +1,71 @@
+{
+  "status": "PASS",
+  "reviewer_scope": "Independent written-proof and source-binding review; no repetition of the full symbolic physical replay or inherited absolute calibration.",
+  "relative_proof": {
+    "valid_source_guard_explicit": true,
+    "post_halt_component_bounds_guarded": true,
+    "arbitrary_finite_spare_tail_semantics": "The last affine slot denotes W(X) for the actual list X; the four block lemmas and finite-word normalizations preserve both exterior contexts.",
+    "positive_clock_reflection": "For live z_(t+1), tau_j(t+1)>=3(t+1), contradicting physical absorption after a halt at t; decidability of z_(t+1)=H yields constructive reflection.",
+    "positive_witness": "h_i(t) implies h_j(T_j + 9(t+1)^2 + 685(t+1)).",
+    "clock_constants": {
+      "AX11H": 57922,
+      "OM": 58014,
+      "OMF": 58010
+    },
+    "OM_OMF_factor_each_direction": 3,
+    "factor_reason": "Selector slowdown and three-to-one shortcuts reverse the simulation directions, yielding factor 3 rather than 9.",
+    "Markov_principle_required": false,
+    "completed_Lean_proof_claimed": false,
+    "absolute_result": "Explicitly imports exact revised AX11H written calibration."
+  },
+  "independent_source_binding": [
+    {
+      "name": "AX11H",
+      "sites": 3671,
+      "outcomes": 4778,
+      "nonhalt_successor_closure_checks": 4777,
+      "zero_overflow": true,
+      "common_header_padding": 48,
+      "maximum_address": 37,
+      "two_source_resolvers_agree": true
+    },
+    {
+      "name": "OM",
+      "sites": 3671,
+      "outcomes": 4778,
+      "nonhalt_successor_closure_checks": 4777,
+      "zero_overflow": true,
+      "common_header_padding": 48,
+      "maximum_address": 37,
+      "two_source_resolvers_agree": true
+    },
+    {
+      "name": "OMF",
+      "sites": 3671,
+      "outcomes": 4778,
+      "nonhalt_successor_closure_checks": 4777,
+      "zero_overflow": true,
+      "common_header_padding": 48,
+      "maximum_address": 37,
+      "two_source_resolvers_agree": true
+    }
+  ],
+  "delivered_inspector": {
+    "path": "proof/check_relative_om.py",
+    "sha256": "441da1c43432d33dc2dd2afcf684cdd2e237031ca0dc298e81536d01913d7aff",
+    "added_check": "Independently recomputes arithmetic header updates and compares every canonical padded successor and source operation with the delivered instruction arrays.",
+    "rerun_status": "PASS",
+    "nonhalt_outcomes_each": 4777,
+    "zero_address_overflow_all_three": true,
+    "receipt_sha256": "890e02ec8baff03ed646ef019bc10bac43c2811ab519de47bc4b5263cbe2d12d"
+  },
+  "report_review": {
+    "path": "report/report.tex",
+    "counts_scope_and_novelty": "Consistent with full inventory and exact graph comparison.",
+    "relative_versus_absolute_and_Lean_status": "Accurately separated.",
+    "source_state_accounting_and_changes": "201 raw controls, seven folds; 194 working controls; 154 changed addresses; source instruction graphs identical.",
+    "required_successor_inspector_description_fix": "Resolved by adding the explicit closure check to the delivered inspector.",
+    "remaining_blocking_issues": [],
+    "minor_terminology_suggestion": "Rename table row Symbolic literal events to Symbolic events, since the count includes unary and list events."
+  }
+}

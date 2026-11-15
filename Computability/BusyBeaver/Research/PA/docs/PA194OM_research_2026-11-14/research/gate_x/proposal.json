@@ -1,0 +1,98 @@
+{
+  "base": "primary 190-token AX grammar, H controller, no-push MP",
+  "patch_leaf_ordinal": 185,
+  "old": [
+    "leaf",
+    "inc",
+    1
+  ],
+  "new": [
+    "node32",
+    "node42"
+  ],
+  "guard_and_break": "unchanged; ordinary BREAK tail avoids extra MP read",
+  "fields": "c,y,x,z",
+  "macro_tokens": 191,
+  "native_macro_ports": {
+    "node32": 104,
+    "node42": 81
+  },
+  "entry_contexts": {
+    "node32": "0",
+    "node42": "1"
+  },
+  "status": "source proposal; physical allocation and contracts pending",
+  "fixed_row_edits_relative_to_primary_raw": [
+    [
+      164,
+      1,
+      [
+        1,
+        true,
+        114
+      ]
+    ],
+    [
+      38,
+      0,
+      [
+        0,
+        true,
+        11
+      ]
+    ],
+    [
+      38,
+      1,
+      [
+        1,
+        true,
+        122
+      ]
+    ],
+    [
+      214,
+      0,
+      [
+        0,
+        true,
+        312
+      ]
+    ],
+    [
+      214,
+      1,
+      [
+        1,
+        true,
+        20
+      ]
+    ],
+    [
+      312,
+      0,
+      [
+        0,
+        true,
+        188
+      ]
+    ]
+  ],
+  "source_nodes_patches_relative_to_primary": {
+    "node163": [
+      "node6",
+      "node54"
+    ],
+    "node170": [
+      [
+        "node36",
+        [
+          "node167",
+          "node145"
+        ]
+      ],
+      "node57"
+    ]
+  },
+  "ordinary_BREAK_control_flow": "breakTo1 at final AX leaf skips node164 MP body and reaches continueTo3 at node166 right child (fetch return); root compiler source graph must verify."
+}

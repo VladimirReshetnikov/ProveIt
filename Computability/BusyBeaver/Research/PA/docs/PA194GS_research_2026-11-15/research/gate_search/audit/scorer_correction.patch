@@ -1,0 +1,51 @@
+--- legacy/screen_all.cpp
++++ corrected/screen_corrected.cpp
+@@ -68,7 +68,7 @@
+   int l=value[t.a],r=value[t.b];
+   if(l==19&&r==114){value[i]=98;continue;}
+   if(l==19&&r==20){value[i]=12;continue;}
+-  if(l==19&&r==30){value[i]=166;continue;}
++  if(l==19&&r==179){value[i]=166;continue;}
+   
+   if(l==61&&r==61){value[i]=99;continue;}
+   if(l==99&&r==99){value[i]=190;continue;}
+@@ -79,16 +79,24 @@
+   rows[q][1]=(r==-1)?A{0,0,302}:A{1,1,r};
+  }
+  rows[101][1]={1,1,value[root]};
++ bool alive[2500]={};vector<int> todo{74};alive[74]=true;
++ for(size_t j=0;j<todo.size();j++)for(int bit=0;bit<2;bit++){
++  int q=rows[todo[j]][bit].n;
++  if(q==254)continue;
++  if(q<0||q>=2500||(!fixedstate[q]&&!(q>=2000&&q<2000+n)))throw runtime_error("undefined reached state");
++  if(!alive[q]){alive[q]=true;todo.push_back(q);}
++ }
++ int omitted=int(base.size())+n-int(todo.size());
+  unsigned incoming[2500]={};
+  auto inc=[&](int q){for(int b=0;b<2;b++){auto a=rows[q][b];if(a.n>=0&&a.n<2500)incoming[a.n]|=a.d?(1u<<a.w):4u;}};
+- for(auto q:base)inc(q);for(int j=0;j<n;j++)inc(2000+j);
++ for(auto q:base)if(alive[q])inc(q);for(int j=0;j<n;j++)if(alive[2000+j])inc(2000+j);
+  unordered_map<uint64_t,vector<Provider>> providers[2];providers[0].reserve(256);providers[1].reserve(256);
+- auto exists=[&](int q){return q>=0&&q<2500&&(fixedstate[q]||(q>=2000&&q<2000+n));};
++ auto exists=[&](int q){return q>=0&&q<2500&&alive[q];};
+  auto provide=[&](int h){auto z=rows[h][0],o=rows[h][1];if(z.w||o.w!=1||!z.d||!o.d)return;
+   if(!exists(z.n)||!exists(o.n))return;
+   for(int b=0;b<2;b++)providers[b][key(ac(rows[z.n][b]),ac(rows[o.n][b]))].push_back({h,z.n,o.n});};
+- for(auto q:base)provide(q);for(int j=0;j<n;j++)provide(2000+j);
+- vector<int> left,right,candidates=base;for(int j=0;j<n;j++)candidates.push_back(2000+j);for(int q:candidates)if(q!=74){if(incoming[q]==1)left.push_back(q);if(incoming[q]==2)right.push_back(q);}
++ for(auto q:base)if(alive[q])provide(q);for(int j=0;j<n;j++)if(alive[2000+j])provide(2000+j);
++ vector<int> left,right,candidates=base;for(int j=0;j<n;j++)candidates.push_back(2000+j);for(int q:candidates)if(q!=74&&alive[q]){if(incoming[q]==1)left.push_back(q);if(incoming[q]==2)right.push_back(q);}
+  vector<vector<int>> edges(2500);vector<Op>ops;
+  for(auto a:left)for(auto b:right){bool possible=true;array<vector<A>,2>choices;
+   for(int bit=0;bit<2;bit++){
+@@ -102,8 +110,8 @@
+  vector<int> match(2500,-1);int fold=0;
+  function<bool(int,vector<bool>&)>augment=[&](int a,vector<bool>&seen){for(int b:edges[a]){if(seen[b])continue;seen[b]=true;if(match[b]==-1||augment(match[b],seen)){match[b]=a;return true;}}return false;};
+  for(auto a:left){vector<bool>seen(2500);if(augment(a,seen))fold++;}
+- if(use_compatible&&n-fold<=64)fold=maximum_compatible(ops,fold,n);
+- return {n,fold,n-fold};
++ if(use_compatible&&n-fold-omitted<=64)fold=maximum_compatible(ops,fold,n);
++ return {n,fold,n-fold-omitted};
+ }
+ #ifndef PARAMETER_SCREEN_NO_MAIN
+ int main(int argc,char**argv){

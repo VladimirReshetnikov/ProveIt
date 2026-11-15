@@ -1,0 +1,107 @@
+WRITTEN iPRA CALIBRATION: REVIEW SCOPE AND CONCLUSION
+
+Pinned repository commit:
+  2ca99e3d23a5397aae4c786f4da7dfe1cca87f85
+
+Primary source packet:
+  Computability/BusyBeaver/Research/PA/docs/
+  pa194_ax11h_research_2026-11-14_2/
+
+Conclusion
+----------
+The revised AX11H packet presents a substantive ordinary written
+mathematical calibration in iPRA, rather than merely claiming a future
+Lean endpoint. An unfinished end-to-end Lean formalization does not show
+that this written mathematical theorem is absent. No concrete flaw was
+found in the portions reviewed. This conclusion is a review of the
+written argument, not a new kernel verification of all native templates.
+
+The exact AX11HC4 source is the calibrated AX11H source with a different
+physical register allocation. Its new uniform relative simulation may
+therefore compose with the revised packet's written absolute theorem.
+C32 preserves a different, original primary source: an ordinary PA
+calibration of that source cannot by itself be promoted to an iPRA
+calibration. The revised packet explicitly warns against that inference.
+
+Physical and source interfaces reviewed
+--------------------------------------
+  proof/physical_ipra_audit.tex
+  proof/source_command_completion.tex
+  proof/ax11h_preservation.tex
+  proof/ipra_simulation_theorem.tex
+  proof/consistency_implies_nonhalting.tex
+  proof/consistency_equivalence.tex
+
+The physical proof defines finite binary tape words and two tape halves,
+proves all four list sweep rules by quantifier-free induction, and binds
+literal transitions to arithmetic frame endpoints. It uses exact symbolic
+normalization identities and explicit restrictions ensuring that an
+opaque context is not inspected. Its padding invariant is tied to actual
+available list widths. Complete successor frame closure, positive clocks,
+and a fixed full blank-start computation are explicit ingredients.
+
+Finite certificate acceptance supplies closed arithmetic facts; the
+uniform rules are separately proved for arbitrary natural inputs, which
+is the relevant distinction for nonstandard models. A successful finite
+simulation sample is not substituted for a uniform frame theorem.
+
+The source/command argument gives unpairing, pairing, comparison, clear,
+copy, transfer and arithmetic clocks. It binds the complete literal source
+instruction array to these templates and computes the full AX expression.
+The four AX operands include the actual extra z field consumed by MP
+fallthrough. The fresh candidate counter increments when a candidate is
+selected. Stack contents are carried between candidates rather than reset.
+
+The abstract proof compiler uses an all-store invariant with a bounded
+Boolean formulation and a primitive-recursive majorant. Its induction
+does not silently use an unbounded forall-store/existential-proof formula
+as quantifier-free induction. The command proofs include zero aliases of
+Cantor pairing. The source parser handles every natural candidate code.
+
+Independent forward-compiler review
+-----------------------------------
+Another team member reviewed proof/forward_calibration_completion.tex,
+including the finite-demand request/response construction, coverage
+budgets F4--F7, label and term realization, induction supplier F13--F15,
+and outer compiler F16.
+
+The construction computes child requests before child responses;
+same-stratum ranks strictly decrease; earlier strata are completed first.
+Its correctness predicates are bounded Boolean tree predicates rather
+than an unbounded forall-environment/existential-proof induction premise.
+For the explicitly checked coverage step, m=max(l,l')+1 and child q<=p-1
+give the required m+q<=z bound. The text replaces earlier stronger-PA
+theorem invocations with their finite constructor recipes.
+
+This review found the primitive-recursive/I-sigma-1 method sound in
+outline and found no concrete flaw. It did not independently check every
+join in the many native finite proof templates.
+
+Absolute consistency endpoint
+-----------------------------
+The packet composes a current Foundation proof adapter, a numerical
+proof compiler with the displayed weak arithmetic discipline, exact
+source and physical simulations, and existing one-way negative-translation
+or conservation endpoints. It does not invoke a general Markov inference
+from not-not-existence to an arbitrary witness.
+
+The endpoint is the current nativePAConsistency predicate; native false
+code 13 and numerical false code 1 are translated, not identified.
+The final halting bound displayed by the source is
+
+  57922 + tau(B((N_e+2)^2)),
+
+where e is the translated refutation, V_e=A0;W_e;Pop is its halting word,
+and N_e is the explicitly nested Cantor code of the word and its fields.
+The fixed 57922 prefix is the parent's full physical blank startup.
+A physically reallocated child uses its own separately proved startup
+and physical clock while preserving the logical/source word interface.
+
+Provenance
+----------
+The adjacent comparison files attribute historical correctness/status
+labels to their reports. The ten relevant proof components, README and
+claims file were fetched at the pin and their Git blob SHA-1 identities
+verified. They are retained in inventory_recovered_calibration/ with
+SOURCE_MANIFEST.json. The present review does not claim an independently
+completed proof-assistant theorem.

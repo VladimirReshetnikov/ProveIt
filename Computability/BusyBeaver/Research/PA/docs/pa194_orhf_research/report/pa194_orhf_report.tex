@@ -1,0 +1,213 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=24mm]{geometry}
+\usepackage{booktabs,longtable,array,microtype,enumitem,xurl,hyperref,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue,pdftitle={Two 194-state PA consistency machines: exact speedups after operand reassociation},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}\lhead{PA consistency machines}\rhead{ORHF and ORHBF}\cfoot{\thepage}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\title{Two 194-state PA consistency machines\\[4pt]\large Exact speedups after operand reassociation, a corpus comparison,\\and the remaining obstacle to 193 states}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{14 November 2026, Pacific time}
+\begin{document}
+\maketitle
+\begin{abstract}
+No justified binary blank-start consistency machine with fewer than 194 working states was obtained. This report supplies the requested fallback: two new complete 194-state tables, PA194ORHF and PA194ORHBF, with a written iPRA halting-equivalence proof and reproducible finite certificates. Both compose the supplied repaired operand-reader construction ORH with two exact three-to-one execution shortcuts; the second also composes the supplied dedicated history selector B. The mechanisms are attributed to their sources: the contribution is the new verified composition, its uniform complete-tape invariant, exact stuttering clock, comparison, and artifacts. The absolute consistency endpoint explicitly imports the revised AX11H written calibration. No new completed end-to-end Lean or Rocq proof is claimed. The comparison identifies 104 named distinct 194-state proposals, separates them from experimental graphs, and audits all 55 catalogued 193-state graphs. A fresh exhaustive register-allocation screen and broader macro-exposure searches did not produce a valid smaller table.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Result, machine convention and proof boundary}
+The objective is a deterministic single-tape machine $M$, started in its designated control on an all-zero two-way infinite binary tape, such that
+\[
+             \ipra\vdash \Con(\PA)\ \longleftrightarrow\ \neg\Halt_{\rm blank}(M).
+\]
+Working states exclude the separate terminal halt label. Every working state has exactly one transition on each bit, writes a bit, and moves exactly one cell left or right. There are no stay-put moves, extra symbols, input words, or uncounted initialization states.
+
+The two tables in this packet use working labels $0,\ldots,193$, initial label 0, halt label 194, and initial head coordinate zero. Each file has 388 rows of the form \texttt{state read write L/R next}. Native labels are also supplied: start 74, source-boundary label 84, halt 254. In particular native label 194 is an ordinary working control. The explicit bijections in \texttt{labels.json} relate the native and dense tables.
+
+\begin{center}\input{summary_table.tex}\end{center}
+\input{hashes.tex}
+The complete dense tables are printed in Appendix~\ref{app:tables}. They are not pseudo-code or unresolved compiler recipes. \texttt{construction/build.py} reconstructs them, checks their graph reachability and counts, and verifies their complete blank starts.
+
+\begin{theorem}[Written result with explicit inherited calibration]
+Let $M_F$ and $M_{BF}$ be the two literal tables identified above. The finite transition facts and quantifier-free inductions in this report prove in iPRA that
+\[
+ \Halt(M_F)\leftrightarrow\Halt(\mathrm{ORH}),\qquad
+ \Halt(M_{BF})\leftrightarrow\Halt(\mathrm{ORHB}),
+\]
+where ORHB is the four-row B composition of ORH. The supplied B and ORH relative proofs and the revised AX11H written calibration then give
+\[
+ \ipra\vdash \Con(\PA)\leftrightarrow\neg\Halt(M_F),\qquad
+ \ipra\vdash \Con(\PA)\leftrightarrow\neg\Halt(M_{BF}).
+\]
+The PA-refutation predicate is exactly the fixed current Foundation predicate of that inherited calibration.
+\end{theorem}
+
+The new relative proof is a direct argument about literal transition tables. The absolute endpoint is a composition with an inherited ordinary mathematical theorem, whose ten proof components are retained and reviewed in Section~\ref{sec:inherited-calibration-audit}. We have not independently formalized every inherited proof template. The packet separates that dependency from finite executable checks. An unfinished formalization does not by itself negate a written proof, and a finite execution certificate does not by itself prove the consistency calibration.
+
+The two new tables differ from ORH on two and six native rows, respectively. These differences alter recurring execution, not state names, comment formatting, or unreachable padding. The first table has a uniform time relation to ORH: each changed visit saves exactly two transitions. The companion changes the history-selector implementation as well and has its own bounded-time equivalence; it is not asserted to dominate ORHF in runtime.
+
+\section{Comparison of the complete pinned design corpus}
+\subsection{Snapshot and recognition boundary}
+All comparisons are pinned to the supplied ProveIt repository~\cite{snapshot,catalog}, at commit
+\begin{quote}\footnotesize\path{883da8d55452ea097910ed2509a1eefc833ce292}.\end{quote}
+The scope is the requested PA research subtree and all six ZIPs then present in \texttt{docs/incoming}, including recognized nested archives and explicit table maps. The filed PA directory contains 100 historical research packets. Its catalog records 18,218 historical table occurrences and 1,153 state-renaming classes across many state counts. Of those catalogued classes, 528 have 194 states and 55 have 193 states. These numbers include experiments and rejected machines and therefore do not count 528 established consistency theorems.
+
+The positive manuscript roster contains 104 distinct named 194-state action graphs: 91 filed proposals and 13 principal or supplementary proposals in the six current incoming packets. Every one was independently parsed and recounted at 194 controls and 388 transitions. Each retains 194 blocks under exact action-preserving state-bisimulation refinement. This rules out unconditional duplicate-state quotients of those literal tables; it does not rule out contextual sharing, changed tape encodings or a new algorithm.
+
+Appendix~\ref{app:roster} lists all 104 names and graph identities. The accompanying CSV and JSON add exact source locators, parents, aliases, mechanisms, literal hashes, and attributed proof status. A 38-family grouping is an explanatory taxonomy, not an invariant mathematical count. Structural comparison handles unknown native starts separately and does not infer that the smallest native label is the initial state.
+
+The final novelty receipt gives the precise larger comparison universe. It includes 548 spanning whole-graph classes---all 528 filed 194-state classes plus 20 incoming additions---and two disconnected diagnostic byte forms. The 20 additions comprise 13 named proposals and seven other intermediate or diagnostic graphs. The new tables are checked against every retained whole-graph representative and each other under arbitrary state names and root choices, global tape reflection, global symbol exchange, and ignored write/move decorations on halt-entry rows. Symbol exchange is used only to strengthen the novelty comparison: it is not asserted to preserve a blank-zero computation.
+
+\subsection{Mechanisms that really differ}
+\begin{longtable}{p{33mm}p{53mm}p{60mm}}
+\toprule Axis & Existing design changes & Required preservation argument\\\midrule\endfirsthead
+\toprule Axis & Existing design changes & Required preservation argument\\\midrule\endhead
+\bottomrule\endfoot
+Formula encoding & Coefficients four, five and six; Q premise exchange; H5X/J witness forms & Uniform proof translations with the exact new contradiction and constructor codes.\\
+Axiom interfaces & Combined or separate diagonal, G/GD generalizer operands, ten versus eleven AX stack entries & Exact command equations, sound seed suppliers and an all-store completeness compiler.\\
+Command control & Dummy-push, cached-result or visible no-push MP; sum test versus cache-only halt test & Soundness and completeness on every carried store, including zero aliases.\\
+Source addresses & Reassociated increment, constructor, operand and MP trees; known-zero return substitutions & Equality or a proved simulation of resolved instruction graphs, with every hidden entry checked.\\
+Physical registers & A/D, H/X, T/D/Y swaps and larger cycles, four-cycle and cycle32 allocation & Arbitrary-register physical contracts and a complete blank initialization.\\
+History sharing & Reader quotients, B selector, marker separation & Incoming-context invariants, simultaneous fold validity, and no bootstrap regression.\\
+Acceleration & F, SF, MF and LC/F combinations & Complete-tape local identities and positive primitive recursive clocks.\\
+\end{longtable}
+
+The primary allocation budget is
+\[
+               134\text{ fixed controls}+67\text{ readers}-7\text{ folds}=194.
+\]
+More folds alone need not improve the total: one supplied symmetric witness realization has budget $135+69-10=194$. Likewise, a shorter source word can produce a larger shared decoder. This is why the report counts literal working controls after every proposed transformation.
+
+Several aliases matter. PA194QN and PA194NQ coincide; PA194CSZ and PA194X coincide; PA194AX11QGH and PA194AX11GH coincide. The cache-only machine called PA194NS in one packet is PA194HS elsewhere, whereas the separately named sum-guard PA194NS is a different graph. PA194C is repeated as a principal table in five packets. N6, QN6, QNS and several QH/AX11 variants also have repeated deliveries. The roster resolves these by tables and retains the naming relationships.
+
+\subsection{The six current incoming archives}
+\begin{longtable}{p{76mm}p{70mm}}
+\toprule Archive stem & New named designs or mechanisms\\\midrule\endfirsthead
+\toprule Archive stem & New named designs or mechanisms\\\midrule\endhead
+\bottomrule\endfoot
+\path{PA194ORH_research_2026-11-15} & ORH/OR: operand reassociation with a repaired hidden history-selector entry.\\
+\path{pa194_ax11hc4_c32_research_2026-11-15} & AX11HC4/C32: different physical allocations and their startup proofs.\\
+\path{pa194_new_designs_research_2026-11-15} & LCAX11HSF3 and AX11HMP: return acceleration and MP reassociation.\\
+\path{pa194_research_2026-11-14(1)} & GD\_SF/GDH\_SF/GDHS\_SF: composed generalizer/diagonal, selector and acceleration changes.\\
+\path{pa194_research_2026-11-15} & H5X\_MF/JH5X\_MF: marker separation and acceleration on witness variants.\\
+\path{pa194_symmetric_witness_research_2026-11-14} & H5XS/JH5XS: symmetric cached comparison on witness variants.\\
+\end{longtable}
+All 13 named proposals have graphs absent from the filed 528-class catalog. None of these packets supplies an accepted blank-start result below 194. The revised AX11H calibration retained by newer descendants is especially useful because it gives a precise ordinary written iPRA dependency for source-preserving physical work.
+
+\subsection{What the 193-state tables actually establish}
+All 55 catalogued 193-state graphs were recovered and their canonical identities recomputed. A fresh literal blank-start screen covered every one of the 193 possible starting controls of each graph: 10,615 runs. It found 112 finite halts, 10,499 certified monotone outward rays, and four runs still capped at 100,000 transitions. The ray criterion is sound: once the head moves strictly into untouched blank tape in a repeated zero-transition control cycle, all later steps remain on new blank cells with the same outward movement.
+
+The four capped cases belong to two already rejected constructions. One uses coefficient-three formula coding with the collision $E_3(1,0)=I_3(0,1)=6$ and an explicitly retained finite numerical refutation of the intended contradiction. The other is a constructor-loop reassociation whose positive branch never returns to its decrement test: it repeatedly increases $T$ by four and register 6 by one. Their source failures are distinct from the bounded screen's inability to classify the four executions. No cap is promoted to a consistency-machine result.
+
+A separate known 193-state runtime core merges a decoder history state into the register machinery, but its complete blank startup fails. A prepared source frame is not an allowed input for the requested blank-start model. Reintroducing a valid initializer must be counted. No global 194-state lower bound follows from these failures.
+
+\section{Construction of the two new tables}
+ORH is the supplied repaired reassociation of the operand reader~\cite{orh}. Its source transformation is
+\[
+ ((A,(B,C)),D)\ \longmapsto\ (A,(B,(C,D))),
+\quad
+ (A,B,C,D)=(\texttt{node32},\texttt{node53},\texttt{node55},\texttt{node65}).
+\]
+The corresponding operand words change from $00,010,011,1$ to $0,10,110,111$. A separate repair preserves the reader's hidden use by a history selector. That repair is why the tempting uncorrected 193-state table is rejected. The complete ORH and AX11H source arrays have the same 3,671 primitive instructions, while 134 source addresses differ. The inherited ORH proof and its exact source/clock bindings are retained in \texttt{reference/ORH\_proof}.
+
+Starting from the complete ORH native table, the principal builder changes only
+\[
+        (26,1):1R42\mapsto1R91,\qquad
+        (101,0):0L26\mapsto0R17.
+\]
+For ORHBF, it first applies the four-row B transformation in Section~\ref{sec:b-companion} and then these same two patches. The two changes operate in recurring source execution, and the complete table still has 194 graph-reachable working controls. Both final tables preserve the precise AX11H instruction array and logical register allocation.
+
+Exact blank initialization reaches the whole source frame at control 84 and head $-2$, at source site 25 with logical register vector $(2,0,\ldots,0)$ and 26 one-valued spare blocks. The checker compares every nonzero tape cell and therefore also establishes the zero exterior. It does not check only a tape window. ORHF takes 57,890 transitions, compared with ORH's 57,942; ORHBF takes 57,982, compared with ORHB's 58,034. Each startup uses 26 shortcut occurrences and saves exactly 52 transitions. These are startup comparisons. The uniform ongoing relation is the exact clock theorem proved next.
+
+\input{../proof/shortcut_stuttering.tex}
+
+\section{The companion history selector}\label{sec:b-companion}
+\input{../proof/selector_transfer.tex}
+
+\input{../proof/calibration_audit.tex}
+
+\section{New reduction attempts and their precise limits}
+\subsection{Exhaustive register allocation within a fixed fold template}
+A new C++ enumeration checked all $9!=362,880$ physical register allocations of the unfolded 201-control parent. For each allocation it recomputed all eligible one-history-bit fold edges, allowing eligible fixed non-box controls as well as the AX readers. An edge means the two controls have disjoint incoming history-bit contexts and their two old actions can be reproduced using the direct action or an existing three-step selector.
+
+Every allocation has maximum bipartite matching size exactly seven. Matching is an upper bound on simultaneously compatible disjoint folds. Therefore an eight-fold reduction to 193 is impossible \emph{within this particular template}, independently of whether every seven-edge matching is jointly valid. This is a finite exhaustive result about the supplied parent and fold rule, not a lower bound for other compilers or machines. The exact input, code, hashes, and completed log are retained under \texttt{research/permutation\_research}.
+
+\subsection{Exposing internal macros to the grammar search}
+Two new search directions enlarge the old 190-token grammar vocabulary. One exposes the operand reader as \texttt{node32; node53; node55; node65}, reusing native entries 104 and 107 and the existing fixed pairs $(107,98)\mapsto185$, $(104,185)\mapsto92$, $(92,90)\mapsto213$. It retains the old fixed reader for the separate MP and hidden-selector uses. The AX word grows from 190 to 193 tokens but admits new cross-boundary sharing.
+
+The other exposes repeated Push/Copy pairs:
+\[
+ \texttt{node55}=(\texttt{node49},\texttt{node54}),\quad
+ \texttt{node58}=(\texttt{node49},\texttt{node57}),\quad
+ \texttt{node70}=(\texttt{node49},\texttt{node69}).
+\]
+Its scorer recognizes every fixed reader whose two rows preserve the scanned bit and move right, instead of recognizing only the two- and four-increment macros. The actual binary tree, not a mere word length, determines the allocation score. The unchanged expanded seed is a definitionally expanded source; any changed tree would still require the complete resolved-instruction and physical checks before acceptance.
+
+The original-fixed operand search completed at least 1,604,000 logged proposals before a memory termination, and the Push/Copy search completed at least 960,000 logged proposals before a memory termination. Neither produced a score below 60 effective reader controls, hence neither supplied a sub-194 candidate. Only flushed completed prefixes are counted; their requested durations are not reported as completed runs. The B-fixed operand search completed 2,216,629 proposals in 240.005 seconds, with 375,878 accepted moves, best effective score 60, and no strict hit. Its exact inputs, elapsed-time stopping rule and final receipt are retained separately. The five Catalan associations of the four closed operand routines were also evaluated: two score 194 and three score 195. The portable inputs and source are retained so a longer search can continue from a faithful starting point. Heuristic scores are not proof certificates.
+
+\subsection{Local shortcuts and source-interface experiments}
+A sound bounded backward-history search rediscovered only the two supplied shortcut mechanisms used here. Increasing the predecessor-history depth from three to six and the trace cap from thirteen to nineteen did not yield an additional certified row. The longer search used a finite symbolic-branch budget; it is exploratory evidence, not an exhaustive absence theorem beyond its completed branches.
+
+At the source level, deleting standalone MP is invalid: the AX fallthrough MP sees zero top/cache operands and does not detach arbitrary implications. Executing genuine MP before AX suggests a fused stack command, but the generated head block obstructs clean access to old premises. No all-store completeness compiler was established for it. Similarly, splitting the guarded gate into two independent heads without moving the guard would expose an unsound unguarded head. These failures and the missing obligations are recorded explicitly instead of being hidden behind a low compiler score.
+
+\section{Validation and portable reproduction}
+The direct shortcut verifier independently reads both literal parents and both delivered children. It checks the whole incoming-edge lists, all 386 unchanged rows, the exact B difference, the local trace identities and the finite Boolean invariant cases. There are 24,656 invariant-preservation assignments per table, for four tables, plus 16 and 32 compatible local tape assignments for the two shortcuts per parent. This exhausts the fixed-offset predicate's dependency window. The mathematical induction establishes its uniform validity for arbitrary coded run lengths.
+
+The independent literal source checker derives the four unary-list lemmas from actual transition rows and verifies arbitrary register values, both decrement branches, arbitrary nonnegative header slack, and an arbitrary nonempty spare list. It uses two source resolvers and checks exact dense/native conjugacy and whole blank startup. Its observed receipts are:
+\begin{center}\input{literal_table.tex}\end{center}
+
+From the package root, with Python 3.10 or later, run
+\begin{quote}\ttfamily
+python3 -B verify\_all.py
+\end{quote}
+The default replay verifies the frozen release hashes, reconstructs both tables into temporary directories, compares the complete results, replays the two finite transfer certificates, and checks the new tables against the retained corpus. To repeat the longer independent source checks, run
+\begin{quote}\ttfamily
+python3 -B verify\_all.py --literal
+\end{quote}
+The default checks do not rerun heuristic discovery searches. Assertions must be enabled. The full literal check writes new evidence only to a temporary reconstruction, so replaying it does not invalidate the distributed hash manifest.
+
+To rebuild the paper, run \texttt{python3 report/generate\_data.py}, then run \texttt{pdflatex -halt-on-error pa194\_orhf\_report.tex} twice from the \texttt{report} directory. Standard TeX Live packages named in the preamble suffice. The source tables and roster are generated from the exact delivered data.
+
+\section{Further research questions}
+\begin{enumerate}
+\item Can a different invariant permit the known 193-control runtime to initialize directly from blank, while retaining the complete register/spare-list frame? The required result is a finite bootstrap identity and an inductive runtime simulation, not a long nonhalting prefix.
+\item Can a compiler search share across the newly exposed Push/Copy and operand boundaries while preserving every structured jump? The present seeds expose new legal fixed-reader aliases; a strict score improvement would still need instruction-graph equality and literal source contracts.
+\item Can folds with longer recorded history, non-disjoint state classes, or a changed tape representation evade the seven-edge matching bound? The fresh $9!$ result deliberately leaves those families open.
+\item Can a fused MP--AX protocol recover a clean all-store axiom-selection and premise-access compiler? That is the concrete missing mathematical lemma before attempting to price its binary table.
+\item Which small part of the direct invariant-and-clock theorem should be formalized first? The three-clause Boolean invariant and the two fixed three-step identities provide a much smaller new proof obligation than rebuilding the inherited PA translator.
+\end{enumerate}
+
+\section*{Attribution and primary sources}
+The numerical calculus, compiler ancestry, unary arithmetic engine, AX11H calibration, ORH reassociation, B selector, and shortcut mechanisms are inherited and retain their source licenses. This report claims new compositions and their checked transfer, not invention of those components. The original source names and commit identities are retained in the comparison and reference metadata.
+\begin{thebibliography}{9}
+\bibitem{snapshot}Vladimir Reshetnikov, \emph{ProveIt}, snapshot \texttt{883da8d55452}. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/883da8d55452ea097910ed2509a1eefc833ce292/Computability/BusyBeaver/Research/PA}{Pinned PA research subtree}.
+\bibitem{catalog}\emph{Machines in the delivered packets}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/883da8d55452ea097910ed2509a1eefc833ce292/Computability/BusyBeaver/Research/PA/docs/MACHINES.md}{Pinned machine catalog and identity conventions}.
+\bibitem{ax11h}\emph{Revised AX11H written calibration}. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/883da8d55452ea097910ed2509a1eefc833ce292/Computability/BusyBeaver/Research/PA/docs/pa194_ax11h_research_2026-11-14_2}{Pinned revised packet}; ten manuscripts and exact source identities retained in this archive.
+\bibitem{orh}\emph{PA194ORH research packet}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/883da8d55452ea097910ed2509a1eefc833ce292/docs/incoming/PA194ORH_research_2026-11-15.zip}{Pinned incoming archive}; complete ORH source/physical proof dependency retained here.
+\bibitem{b}\emph{PA194B/PA194G research}. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/883da8d55452ea097910ed2509a1eefc833ce292/Computability/BusyBeaver/Research/PA/docs/PA194B_PA194G_research_2026-11-14}{Pinned source of the dedicated history selector}.
+\bibitem{mf}\emph{Witness/marker/fast research packet}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/883da8d55452ea097910ed2509a1eefc833ce292/docs/incoming/pa194_research_2026-11-15.zip}{Pinned incoming archive}; retained comparison representatives and shortcut ancestry.
+\bibitem{related}\emph{ProveIt related programs}. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/883da8d55452ea097910ed2509a1eefc833ce292/Computability/BusyBeaver/Research/ZFC}{ZFC machines}; \href{https://github.com/VladimirReshetnikov/ProveIt/tree/883da8d55452ea097910ed2509a1eefc833ce292/Computability/DiophantineConsistency}{DiophantineConsistency}; \href{https://github.com/VladimirReshetnikov/ProveIt/tree/883da8d55452ea097910ed2509a1eefc833ce292/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}{ConciseIPRA}.
+\end{thebibliography}
+
+\appendix
+\section{Complete transition tables}\label{app:tables}
+Each entry $bDq$ means write bit $b$, move one cell in direction $D$, and enter control $q$. Both tables start at control 0 on blank zero tape. Dense label 194 is the halt label and has no row. The two halves of each printed row list different working controls.
+\subsection{PA194ORHF}
+\begingroup\small\input{PA194ORHF_table.tex}\endgroup
+\clearpage
+\subsection{PA194ORHBF}
+\begingroup\small\input{PA194ORHBF_table.tex}\endgroup
+\section{All 104 named incoming and filed designs}\label{app:roster}
+This roster counts transition graphs rather than repeat filenames. Each class prefix is backed by the complete hash, literal-table hash, exact source locator and alias history in \texttt{comparison/named\_designs104.csv}. Proof statements in that ledger are attributed to the source manuscripts; this report does not independently certify every absolute calibration.
+\input{roster.tex}
+\end{document}

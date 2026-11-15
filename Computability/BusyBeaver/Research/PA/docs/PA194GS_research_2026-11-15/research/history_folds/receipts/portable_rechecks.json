@@ -1,0 +1,65 @@
+{
+  "positive_control": {
+    "name": "AX11H_raw201",
+    "engine": "noncircular",
+    "radius": 7,
+    "fuel": 31,
+    "returncode": 0,
+    "seconds": 0.08637178099888843,
+    "matches": [
+      "MERGE 2014 2060 -> 0 -1 2050 ; 1 -1 2064 maxsteps 3 start 74",
+      "MERGE 2015 2037 -> 0 -1 2044 ; 1 1 2017 maxsteps 3 start 74",
+      "MERGE 2016 2052 -> 0 1 166 ; 1 -1 2005 maxsteps 3 start 74",
+      "MERGE 2018 2027 -> 0 1 90 ; 1 -1 2020 maxsteps 3 start 74",
+      "MERGE 2019 2055 -> 0 -1 2059 ; 1 -1 2056 maxsteps 3 start 74",
+      "MERGE 2022 2032 -> 0 -1 2002 ; 1 1 61 maxsteps 3 start 74",
+      "MERGE 2022 2032 -> 0 -1 2002 ; 1 -1 190 maxsteps 3 start 74",
+      "MERGE 2024 2046 -> 0 -1 2033 ; 1 1 2028 maxsteps 3 start 74"
+    ],
+    "stderr": "N 201 radius 7 contexts 883959\nrow_candidates 324816 valid_options 872 merges 8 elapsed 0.082829\n",
+    "source_sha256": "60a560a90db1b698ba8b1456917dc4fd3c5156901e2b90f3ab0262c50010aa3b",
+    "command": [
+      "./noncircular",
+      "inputs/AX11H_raw201.native.tm",
+      "reruns/AX11H_raw201_noncircular_r7_f31",
+      "7",
+      "31"
+    ]
+  },
+  "complete_closure": {
+    "input": "inputs/ORH201.native.tm",
+    "input_sha256": "c0b3b43ead2560ccd900bc26d2470fd076794f7dfe5bba2e42b73d30df07fda0",
+    "name": "ORH201_portable_check",
+    "radius": 7,
+    "fuel": 31,
+    "max_nodes": 5000,
+    "strategy": "bfs",
+    "processed": 192,
+    "unique_rooted_graphs": 192,
+    "remaining_queue": 0,
+    "minimum_states": 194,
+    "sub194_found": false,
+    "exhausted": true,
+    "processed_by_states": {
+      "201": 1,
+      "200": 8,
+      "199": 27,
+      "198": 50,
+      "197": 55,
+      "196": 36,
+      "195": 13,
+      "194": 2
+    },
+    "skipped_missing_start": 0,
+    "nonspanning_output_occurrences": 0,
+    "elapsed_seconds": 11.437824895998347,
+    "graph_ledger_sha256": "16949ee2cf9dab4cb61abd73abf0c1ac596b0854b5f56a9eb12aa91ab418c379",
+    "graph_ledger_entries": 192
+  },
+  "code_identity": {
+    "noncircular.cpp": "5b8f2528065cc3b9723b72700a05d4d9c5511165c761862a2f42ad0e34904911",
+    "run_batch.py": "dbdb551914724ae2237c1701c7eab65c6162e2f1597ed7b143b25a4aeace7525",
+    "fold_closure.py": "dc9a791f35dcaa1a864e65d6e3e6aca77b076102f9be15b590f38c5fd39d38f0"
+  },
+  "status": "Packaged driver reproduced the known eight action choices and the entire192-graph ORH closure. Intermediate tables omitted after verification."
+}

@@ -1,0 +1,193 @@
+% Standalone mathematical component for the parent report.
+% Requires amsmath, amssymb, amsthm; define theorem/lemma if absent.
+\section{An explicit weak-arithmetic transport theorem}
+\label{sec:ipra-transport}
+
+The following result separates a new machine transformation from the
+still-unproved consistency calibration of its ancestor. It is a theorem
+about intuitionistic primitive recursive arithmetic, not an inference from
+testing finitely many executions.
+
+\subsection{Exact hypotheses}
+
+Work in the usual language of $\mathrm{iPRA}$, with a function symbol and
+defining equations for every primitive recursive function, and induction
+for quantifier-free formulas. A predicate below is represented by a
+primitive recursive characteristic function. All the displayed hypotheses
+are required to be \emph{theorems of $\mathrm{iPRA}$}, uniformly in their
+free variables. Truth for standard inputs alone does not suffice.
+
+Let $F$ and $G$ be primitive recursive total step functions on codes of
+source and target configurations respectively. Their domains may differ;
+both are coded by natural numbers. Let $h_F,h_G$ be their Boolean halting
+tests. Totalize a halted computation by leaving its configuration fixed.
+It is enough to require the following weaker absorbing-flag law:
+\[
+ h_G(y)=1\ \longrightarrow\ h_G(G(y))=1.                 \tag{A}
+\]
+There is no additional physical working state in this semantic
+totalization: a designated halt label acquires an absorbing interpretation
+only in the arithmetic run function.
+
+Let $c_0,b_0$ be the source and target initial configuration codes; let $P$
+be a primitive recursive source-frame validity predicate; let $E$ encode
+each valid source configuration as a target boundary configuration; and
+let $\tau$ be a primitive recursive segment-duration function. Assume
+\begin{align}
+ &P(c_0)=1,                                                 \tag{B}\label{eq:sim-initial}\\
+ &P(c)=1\ \longrightarrow\ P(F(c))=1,                       \tag{C}\label{eq:sim-closed}\\
+ &P(c)=1\ \longrightarrow\ 1\leq\tau(c),                 \tag{D}\label{eq:sim-positive}\\
+ &P(c)=1\ \longrightarrow\ G^{\tau(c)}(E(c))=E(F(c)),     \tag{E}\label{eq:sim-exact}\\
+ &P(c)=1\ \longrightarrow\ h_G(E(c))=h_F(c).              \tag{F}\label{eq:sim-halt}
+\end{align}
+Here $F^n$ and $G^n$ denote iteration, which is primitive recursive.
+Finally suppose that, for a specified natural number $d$,
+\[
+ G^d(b_0)=E(c_0).                                          \tag{G}\label{eq:sim-startup}
+\]
+A verified fixed blank-tape initialization supplies (G). An explicit
+primitive recursive parameter-dependent startup duration can also be
+used; the fixed form is enough for a blank-start machine.
+
+These are syntactic proof obligations. In particular, (E) is an exact
+endpoint equality, not ``the target either halts or eventually reaches
+the endpoint.'' The latter disjunction would not supply the reverse
+implication below. The totality and primitive recursiveness of $\tau$ are
+part of the hypotheses; they cannot be inferred merely because the
+intended source macro is expected to terminate.
+
+\begin{theorem}[Positive primitive-recursive simulation]
+Under (A)--(G), $\mathrm{iPRA}$ proves
+\[
+ \bigl(\exists n\ h_F(F^n(c_0))=1\bigr)
+ \ \longleftrightarrow\
+ \bigl(\exists t\ h_G(G^t(b_0))=1\bigr).
+\]
+Consequently $\mathrm{iPRA}$ proves the equivalence of the two
+nonhalting sentences. The proof uses no excluded middle for arbitrary
+formulas, no Markov principle, and no consistency assumption.
+\end{theorem}
+
+\begin{proof}
+Define the primitive recursive cumulative duration
+\[
+ T(0)=0,\qquad
+ T(n+1)=T(n)+\tau(F^n(c_0)).
+\]
+Quantifier-free induction using (B),(C) proves $P(F^n(c_0))=1$.
+Quantifier-free induction using (D) then proves $T(n)\geq n$.
+The iteration identity
+\[
+ G^{u+v}(y)=G^v(G^u(y))
+\]
+is itself proved by quantifier-free induction on $v$. Applying it at
+each successor stage with (E), a further quantifier-free induction gives
+\[
+ G^{T(n)}(E(c_0))=E(F^n(c_0)).
+\]
+Together with (G) this is
+\[
+ G^{d+T(n)}(b_0)=E(F^n(c_0)).                            \tag{H}
+\]
+Every induction predicate just used is an equality, an inequality, or a
+finite conjunction of such primitive recursive assertions.
+
+If $n$ witnesses source halting, (H) and (F) show that
+$d+T(n)$ witnesses target halting. This is an explicit witness
+transformation, primitive recursive in $n$.
+
+For the converse, suppose $t$ witnesses target halting. Quantifier-free
+induction from (A) proves
+\[
+ h_G(G^t(b_0))=1\ \longrightarrow\
+ h_G(G^{t+r}(b_0))=1
+\]
+for every $r$. Since $d+T(t)\geq t$, substitute
+$r=d+T(t)\mathbin{\dot{-}}t$ and use the elementary truncated-subtraction
+identity to obtain $h_G(G^{d+T(t)}(b_0))=1$.
+By (H) and (F), $h_F(F^t(c_0))=1$. Thus the identity function
+$t\mapsto t$ supplies a source-halting witness. This also covers a
+purported halt during startup; no least-boundary search is required.
+
+The two positive existential implications prove the claimed equivalence
+intuitionistically. If $H_F\leftrightarrow H_G$, intuitionistic logic
+alone gives $\neg H_F\leftrightarrow\neg H_G$.
+\end{proof}
+
+\subsection{Allowing zero-length administrative segments}
+
+The positivity assumption can be replaced by an explicit cofinality
+certificate. Keep (A)--(C) and (E)--(G), permit $\tau(c)=0$, and supply a
+primitive recursive $N$ together with an $\mathrm{iPRA}$ proof of
+\[
+ d+T(N(t))\geq t\quad\hbox{for every }t.                 \tag{I}
+\]
+The same proof works, with reverse witness transformation $t\mapsto N(t)$.
+For example, if each group of at most $k>0$ source steps consumes at least
+one target step, a proved bound $T(kn)\geq n$ supplies $N(t)=kt$.
+The bound and its proof are required; merely knowing that every standard
+target time eventually lies before some boundary is not a certificate in
+the required weak arithmetic.
+
+Zero-duration local simulation without cofinality is insufficient. Take
+$F(n)=n$, $h_F(n)=0$, $E(n)=0$, $\tau(n)=0$, and target states $0,1$
+with $G(0)=G(1)=1$, $h_G(0)=0$, $h_G(1)=1$. Set both initial codes to
+zero. The exact endpoint equation holds for every source configuration,
+and the halting flags agree at every encoded boundary, but the target
+halts after one step while the source never halts. The missing condition
+is precisely cofinality of the selected target boundaries.
+
+\subsection{How a literal machine transformation can meet the hypotheses}
+
+Use a canonical finite-support tape encoding, for example a state and two
+binary stacks around the head. A literal transition, an iterated run,
+frame construction, and tape equality are then primitive recursive. This
+avoids an unbounded extensional quantifier over tape positions in (E).
+The initial all-zero tape has a fixed code.
+
+For a symbolic runtime certificate, every accepted symbolic step must
+have its own arithmetic derivation. A literal table row is a closed
+equation. Traversing an affine unary run is proved by quantifier-free
+induction on its length. A register-file excursion needs a proved
+primitive recursive scan bound and the corresponding exact endpoint
+equation, uniformly in the whole finite file. A finite certificate
+concatenates those witnesses and their durations. This construction
+produces an actual term $\tau(c)$ rather than an unbounded search for a
+successful duration.
+
+The parent machine's frame invariant must include enough information for
+all called subroutines: header and delimiter positions, the complete
+register/spare list, the represented source control, and any guard used by
+a history-sensitive fold. If the proof depends on a two-cell context,
+that context belongs in $P$ or in the source configuration. Graph
+reachability of a control is not a substitute for the claimed context
+invariant.
+
+A finite certificate-checker run can verify the candidate-specific closed
+facts, but it does not establish the checker rules' uniform soundness in
+$\mathrm{iPRA}$. Conversely, once those rule proofs, the frame closure,
+and the primitive recursive duration bounds are supplied, no separate
+analysis of arbitrary interior target configurations is necessary. The
+exact endpoint law, the absorbing halt flag, and cofinality already
+reflect every finite target halt.
+
+\subsection{What this theorem does and does not settle}
+
+Suppose $M$ is an existing machine and $M'$ a transformed one. A completed
+instantiation gives the genuine relative result
+\[
+ \mathrm{iPRA}\vdash
+ \bigl(\neg\operatorname{Halt}(M)\leftrightarrow
+       \neg\operatorname{Halt}(M')\bigr).
+\]
+To conclude
+\[
+ \mathrm{iPRA}\vdash
+ \bigl(\neg\operatorname{Halt}(M')\leftrightarrow
+       \operatorname{Con}(\mathrm{PA})\bigr),
+\]
+one still needs an unconditional $\mathrm{iPRA}$ calibration of $M$, or
+an independent calibration of $M'$. An ordinary PA calibration of $M$
+does not discharge this premise. The distinction persists even if all
+new machine transformations are proved in $\mathrm{iPRA}$.
+

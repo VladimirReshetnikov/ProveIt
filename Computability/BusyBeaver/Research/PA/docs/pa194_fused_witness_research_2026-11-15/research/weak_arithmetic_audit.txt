@@ -1,0 +1,75 @@
+Targeted weak-arithmetic audit, source snapshot 883da8d55452ea097910ed2509a1eefc833ce292
+
+The PA project README reports the end-to-end Lean/iPRA calibration as open.
+This does not settle the status of the later written mathematics. The updated
+incoming AX11H manuscript is preserved under
+Computability/BusyBeaver/Research/PA/docs/pa194_ax11gdh_research_2026-11-15/references/AX11H_written_sources/.
+Its README identifies the original archive SHA256 as
+93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075 and cites
+source commit 1c9524d8bf2e0a27b9a16ff622359927f536e663 and Foundation
+32e1a0956a8622fad067328ca1959729a7634428. This is a distinct version from
+the earlier filed AX11H report whose ipra_section.tex still documents gaps.
+
+The updated manuscript claims a written iPRA equivalence for AX11H
+(dense SHA256 c5dfe1026d077d3e062eca11edb789597bfbbced4f6040f8828ae5d467b1167a)
+and QAX11H
+(dense SHA256 19e215df20429fa6a35f0a99ba0dcfcb40893a6e4b9a4ae6e450b0225f110e50).
+
+Audit conclusions:
+
+1. The finite-demand method in forward_calibration_completion.tex is a valid
+   way to avoid an induction formula saying that every environment has some
+   certificate. Provided all recursive child queries are computed from the
+   parent request before child outputs, and same-stratum ranks decrease,
+   expand the full bounded binary demand tree to depth r+1, then evaluate it
+   in reverse order. Both loops are primitive recursive. The finite Boolean
+   assertion that every completed valid request contains a checked proof is
+   a quantifier-free invariant. Increased input ranks in already completed
+   lower strata are harmless. These are genuine reasons for the weak-base
+   construction, not an inference from the word primitive-recursive alone.
+
+2. physical_ipra_audit.tex explicitly arithmetizes complete finite-support
+   tapes and gives the correct binary updates for both head directions. It
+   proves the four list sweeps via one-block calculations and prefix-length
+   induction. Its spare-list width is bound to the same list appearing on
+   the tape. The padded address equality and zero displacement conditions
+   account for the whole next source frame. The source register permutation,
+   changing gap, and spare-list extension are explicit.
+
+3. The positive-clock converse is sound. If z_k is a nonhalting source state,
+   cumulative physical duration is at least 3k. The exact endpoint equality
+   at k=t+1 contradicts a physical halt at t unless z_(t+1) has halted,
+   using only decidability of equality with a fixed halt code and absorption.
+   There is no Markov principle, least-witness search, or inference from
+   successful standard sample runs.
+
+4. source_command_completion.tex specifies a complete scheduler embedding
+   and positive primitive-source clocks. The data-retaining halted source
+   configuration is identified explicitly, so its endpoint need not be
+   incorrectly identified with a single pre-halt tape or register file.
+
+5. The final negative consistency statement is obtained through the pinned
+   all-model I-Sigma-1/conservation and negative-translation endpoints. This
+   should not be restated as an unqualified positive existential equivalence
+   proved by a generic double-negation elimination argument.
+
+No mathematical counterexample or immediate circularity was found in the
+central finite-demand and physical/source clock schemes inspected here.
+This is a targeted audit, not independent rederivation of every local
+constructor in the much larger upstream compiler. The absolute calibration
+should remain a named inherited written theorem dependency. Any new literal
+table still requires its own source bindings, whole startup, frame closure,
+and simultaneous-fold certificates. Successful finite replays do not become
+an end-to-end Lean proof.
+
+For the new parameter-permutation investigation, each unrestricted head has
+its own bijection of the three numerical parameters. Every emitted head
+therefore remains an instance of that same schema. Conversely, reset the
+offset registers as in the inherited command compiler, choose the inverse
+permutation of the desired parameter tuple, invoke AX, and select the same
+head index. Guarded and dominated heads are left untouched. Thus schema
+membership and complete access to all six schema families are preserved;
+the AX stack height and individual selection depths remain unchanged.
+The change affects the actual per-command formula stream and compiled
+reader graph, not merely state labels. Formal verification of the exact
+candidate must still compare the full free-algebra AX expression.

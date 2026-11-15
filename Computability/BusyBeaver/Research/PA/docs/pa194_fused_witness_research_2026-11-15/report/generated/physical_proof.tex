@@ -1,0 +1,201 @@
+\subsection{A relative iPRA proof for the three composites}
+\label{sec:symmetric-mf}
+
+Let $P$ be one of the literal parent tables
+\texttt{PA194H5XS}, \texttt{PA194JH5XS}, and \texttt{PA194FW}, with native initial state $74$
+and terminal state $254$.  Let $A$ be the accelerated intermediate table
+and $C$ the corresponding delivered \texttt{\_MF} child.  All three use
+one two-way binary tape, initially zero, and initial head position zero.
+The terminal state is given an absorbing arithmetic transition only in
+our total run function; it is not counted as a working control and is
+not an extra physical transition in the delivered table.
+
+\paragraph{The statement.}
+Write $H_M(t)$ for the primitive-recursive statement that the total run
+of $M$ is in its terminal state after $t$ transitions.  The exact tables
+satisfy
+\[
+ \mathsf{iPRA}\vdash H_P(t)\longrightarrow H_C(5t),
+ \qquad
+ \mathsf{iPRA}\vdash H_C(t)\longrightarrow H_P(3t).
+ \tag{SMF}
+\]
+In particular, iPRA proves positive blank-halting equivalence and its
+intuitionistically valid negated consequence
+$\neg\exists t\,H_P(t)\leftrightarrow\neg\exists t\,H_C(t)$.
+This relative theorem does not assume the consistency of PA.
+Its absolute PA-consistency consequence uses the exact supplied written
+calibration of $P$, as described separately below.
+
+\paragraph{Finite representation.}
+A finite-support tape, a head position and a control are encoded by
+natural numbers using two binary stacks, or any fixed primitive-recursive
+equivalent encoding.  Tape-bit lookup, one-cell update, one-cell motion,
+finite control maps and iteration of a fixed transition table are primitive
+recursive.  Every local identity below preserves the entire tape: cells
+outside the displayed finite interval are untouched.  In a numerical
+encoding this is an equality with arbitrary unchanged outer stack parts,
+not an equality tested only on finitely many complete configurations.
+
+\paragraph{An inductive guard.}
+At a configuration $(q,h,T)$ write $b_i=T(h+i)$, and let $B$ be the
+following quantifier-free Boolean guard:
+\[
+\begin{array}{rcl}
+ q=101&\Longrightarrow& b_{-1}=0,\\
+ q=11 &\Longrightarrow& (b_{-1}=0\ \lor\ b_1=0),\\
+ q=26\ \land\ b_0=1&\Longrightarrow& b_1=b_2=0,\\
+ q=301&\Longrightarrow& b_{-1}=0,\\
+ q=88&\Longrightarrow& b_{-1}=1.
+\end{array}
+\]
+The displayed disjunction can equivalently be written as the Boolean
+identity $b_{-1}b_1=0$.  Thus the induction needs only a quantifier-free
+arithmetic formula.  The guard holds at the blank start, and it is
+preserved by every row of both $P$ and $A$.
+
+The supplied independent checker verifies preservation for each of the
+194 controls and all $2^7$ assignments on offsets $-3,\ldots,3$:
+24,832 windows per table.  Radius three is sufficient because $B$ inspects
+radius at most two and a transition moves the head by one cell.  Hence
+this finite truth table exhausts all configurations with arbitrary exterior
+bits; its complete case distinction is a finite proof of the universal
+one-step implication.  Quantifier-free induction establishes $B$ on all
+blank runs of $P$ and $A$.  This argument uses no inference from a long
+finite execution.
+
+\paragraph{Acceleration.}
+Only the following two rows change from $P$ to $A$:
+\[
+\begin{array}{c|c|c}
+ (q,b)&P(q,b)&A(q,b)\\\hline
+ (26,1)&(1,R,42)&(1,R,91)\\
+ (101,0)&(0,L,26)&(0,R,17).
+\end{array}
+\]
+For the first row, $B$ gives two zero cells immediately to the right.
+The old path is
+\[
+ (26,1)\to(42,0)\to(13,0)\to91;
+\]
+it writes the same complete tape and ends at the same head position as
+one new transition.  For the second row, $B$ gives a zero immediately to
+the left.  The old path is
+\[
+ (101,0)\to(26,0)\to(194,0)\to17;
+\]
+again three old transitions equal one new transition on the complete tape.
+Neither path enters terminal control $254$ internally.  The checker
+exhausts all 12 relevant windows on offsets $-2,\ldots,2$.
+All other rows of $P$ and $A$ agree.
+
+Let $\alpha(0)=0$ and define $\alpha(n+1)-\alpha(n)$ to be three
+when the $n$th $A$ configuration uses either special row, and one otherwise.
+At terminal configurations take the increment to be one.
+The clock and the machine runs are primitive recursive.  Quantifier-free
+induction on the complete-configuration equality gives
+\[
+ P^{\alpha(n)}=A^n,
+ \qquad n\le\alpha(n)\le3n.
+\]
+Using absorption at halt, without inverting an unbounded clock, this yields
+\[
+ H_P(t)\to H_A(t),\qquad H_A(t)\to H_P(3t).
+ \tag{A}
+\]
+Indeed $P^t$ terminal implies $P^{\alpha(t)}$ terminal because
+$\alpha(t)\ge t$, and the converse bound uses $\alpha(t)\le3t$.
+
+\paragraph{Marker and reader separation.}
+Define the finite control map
+\[
+ f(51)=400,\qquad f(301)=88,\qquad f(q)=q\quad\hbox{otherwise}.
+\]
+Rename the old marker $51$ to the fresh control $400$, remove reader
+$301$, and reuse label $51$ as a history selector.  Ordinary rows are
+conjugated by $f$.  At the exceptional controls the child rows are
+\begin{align*}
+ C(88,0)&=(0,L,51), & C(51,0)&=(0,R,122),\\
+ C(51,1)&=(1,R,51), & C(88,1)&=(1,R,103).
+\end{align*}
+The exact predecessor rows of $A$ establish the two reader histories:
+every edge into $301$ writes zero and moves right, and every edge into
+$88$ writes one and moves right.  Neither is the initial control.  These
+facts are also included in $B$.
+
+For $q\notin\{301,88\}$, one child step from $f(q)$ is the $f$-image
+of one $A$ step.  There are 384 such ordinary rows.  For the two reader
+controls there are precisely four history/read cases:
+\[
+\begin{array}{c|c|c|c}
+ A\hbox{ control}&\hbox{left bit}&\hbox{read bit}&
+ \hbox{child steps per old step}\\\hline
+301&0&0&5\\
+301&0&1&1\\
+88&1&0&3\\
+88&1&1&1.
+\end{array}
+\]
+The child reads only the old head cell and its left neighbor.  In the
+five-step case its controls are $88,51,122,137,30$, ending at $45$;
+in the three-step case they are $88,51,51$, ending at $122$.
+The other two cases both end at $103$ in one step.  Every case restores
+the history bit, writes exactly the old output bit, has exactly the old
+net head motion and enters the mapped successor.  There is no internal
+terminal control.  These four complete-tape identities are checked
+literally, independently of the constructor.
+
+Let $\beta(n)$ be the sum of these positive durations over the first
+$n$ transitions of $A$, with duration one for ordinary or terminal
+transitions.  The simulation equality and bounds are
+\[
+ C^{\beta(n)}=f(A^n),\qquad n\le\beta(n)\le5n.
+\]
+Quantifier-free induction proves this statement using the inductive guard
+on $A$.  The map $f$ sends precisely terminal state $254$ to $254$.
+Consequently
+\[
+ H_A(t)\to H_C(5t),\qquad H_C(t)\to H_A(t).
+ \tag{M}
+\]
+For the reverse implication, $C^t$ terminal entails
+$C^{\beta(t)}$ terminal by absorption and $\beta(t)\ge t$;
+the simulation equality then forces $A^t$ terminal.  In particular there
+is no need to assume an informal inverse clock or to enumerate a least
+halting time.  Composing (A) and (M) proves (SMF).
+
+\paragraph{Counting and blank initialization.}
+All three parents have 194 working controls.  Acceleration changes no controls.
+The separation removes $301$ and introduces $400$; $51$ is reused, so the
+child still has 194 controls.  The supplied dense/native bijection maps
+native $74$ to dense $0$, native $254$ to dense $194$, and the 194 working
+controls bijectively to $0,\ldots,193$.  There are exactly 388 physical
+rows and no auxiliary input symbols, registers, tapes or uncounted states.
+
+All three literal blank runs reach the complete inherited source-entry frame at
+native state $84$, head $-2$, after 57,812 child transitions.  The parent
+frame is reached after 57,768 transitions.  The finite check reconstructs
+all one-cells of the frame independently, including the primary physical
+register values $(0,0,0,0,0,0,2,0,0)$ and 26 spare registers of value one.
+An additional 10,000 accelerated-parent steps are synchronized on the
+complete tape.  That interval contains ten uses of the $26/1$ shortcut
+and one use of the removed-reader $301/0$ case.  These facts establish
+that both changes affect recurring execution, while the unbounded
+correctness statement comes from the preceding induction.
+
+\paragraph{Absolute proof dependency.}
+The new theorem proved directly here is (SMF) for the three exact
+parents (two pinned upstream, one new in this work).  For the first two parents, the supplied symmetric-witness packet gives a written iPRA
+halting equivalence of each parent to its H5X/JH5X parent.  Its retained
+witness translations and revised AX11H manuscript provide the stated
+absolute calibration to the mapped current Foundation PA-refutation
+predicate, named
+\texttt{DiophantineConsistency.IPRAPA196Consistency.nativePAConsistency}.
+Composing those exact written dependencies with (SMF) yields the same
+written absolute conclusion for the new children.  No new end-to-end
+Lean or Rocq proof of that calibration is asserted.  The entire supplied
+parent archive is retained byte-for-byte, so the dependency is reviewable
+rather than replaced by a finite execution claim.  For \texttt{PA194FW},
+its new source-level fusion argument and complete physical simulation in
+the main construction supply the parent calibration; the present relative
+proof is unchanged and contributes no further source-calculus assumption.

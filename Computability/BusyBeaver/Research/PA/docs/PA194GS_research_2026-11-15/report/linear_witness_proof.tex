@@ -1,0 +1,62 @@
+\subsection{Sharper linear halting-witness transport}
+\label{sec:linear-witness}
+
+Alignment of the two complete contract files yields an additional finite
+fact: all twelve nonconstant coefficients agree for every corresponding
+outcome.  Of the 4778 constant coefficients, 4736 agree, sixteen increase
+by two, twenty-four decrease by two, and two increase by 44 in the new
+machine.  Direct coefficient comparison establishes, for every common
+live source state,
+\[
+ D_1(z)\le2D_0(z),\qquad D_0(z)\le2D_1(z).             \tag{L1}
+\]
+With the common stopped convention $D_j(H)=0$, (L1) holds at $H$ as
+well.  Quantifier-free induction therefore gives
+\[
+ \tau_1(k)\le2\tau_0(k),\qquad \tau_0(k)\le2\tau_1(k).
+                                                               \tag{L2}
+\]
+Put $b=57922$ and $S_j(k)=b+\tau_j(k)$.  Since both startups have
+the same duration, (L2) is equivalently the pair of useful inequalities
+\[
+                S_{1-j}(k)+b\le2S_j(k)\quad(j=0,1).    \tag{L3}
+\]
+
+Suppose $h_j(t)$.  The already proved constructive reflection gives
+$z_{t+1}=H$.  Let $k$ be the least index at most $t+1$ with $z_k=H$.
+This is a \emph{bounded} minimization of a primitive recursive decidable
+predicate, implemented by scanning the finite prefix; its elementary
+correctness uses quantifier-free induction.  It does not use unbounded
+minimization, Markov's principle, or an induction formula with an
+unbounded quantifier.  Since $z_0$ is live, $k=r+1$ for some $r$,
+$z_r\ne H$, and $z_{r+1}=H$.
+
+By exact boundary simulation, the machine-$j$ configuration at time
+$S_j(r)$ is the live frame $E_j(z_r)$.  Consequently
+$S_j(r)<t$: if $t\le S_j(r)$, physical halt absorption would make that
+same frame halted.  The only live source instruction whose successor is
+$H$ is \texttt{CH}, and its exact duration in both tables is three.
+Hence
+\[
+                     S_j(k)=S_j(r)+3\le t+2.           \tag{L4}
+\]
+This argument does not assume that an arbitrary halting block first
+enters halt at its certified endpoint.
+
+Combining (L3)--(L4) and $b\ge4$ gives, by ordinary cancellation of
+natural-number inequalities,
+\[
+ S_{1-j}(k)+b\le2t+4\le2t+b,
+ \qquad S_{1-j}(k)\le2t.
+\]
+The other machine is halted at its exact boundary time $S_{1-j}(k)$,
+so absorption gives the linear witness map $L(t)=2t$ and proves
+\[
+ \boxed{\mathsf{iPRA}\vdash h_0(t)\to h_1(2t),\qquad
+        \mathsf{iPRA}\vdash h_1(t)\to h_0(2t).}         \tag{L5}
+\]
+All new numerical premises are checked in the aligned-duration receipt;
+the previously established polynomial bound remains a valid, independent
+baseline.  The linear improvement concerns halting-witness transport
+between these exact two tables, not the state count or a claim that the
+machines perform every corresponding instruction in equal time.

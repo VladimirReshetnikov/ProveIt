@@ -1,0 +1,161 @@
+\section{An exact alternative coding: exchange the equality and universal tags}
+\label{sec:ue-tag-swap}
+
+This section establishes a new numerical presentation and its exact source
+word.  A state bound must be supplied by a separately checked physical
+implementation; the existence of a shorter or differently shared word does
+not itself give that bound.
+
+Let $p(a,b)=(a+b)(a+b+1)/2+b$.  The old constructors are
+\[
+ I(a,b)=4p(a,b),\quad M(a,b)=4p(a,b)+1,\quad
+ U(a,B)=4p(B,a)+2,\quad E(a,b)=4p(a,b)+3.
+\]
+The new constructors retain $I,M$ and put
+\[
+       U'(a,B)=4p(B,a)+3,\qquad E'(a,b)=4p(a,b)+2.
+\]
+Numerical truth and contradiction remain respectively $0$ and $1$.
+Negation is $N(B)=I(B,1)$ in both systems.  Keep the same six head
+expressions, dominated implicational schema, separate diagonal, guarded
+gate, modus ponens and theorem generalization, interpreting their $U,E$
+symbols by the appropriate constructors.  This changes the actual formula
+codes and all emitted quantified/equality formulas.
+
+\subsection{The simultaneous code-and-label involution}
+
+Write $\sigma(0)=0,\sigma(1)=1,\sigma(2)=3,\sigma(3)=2$.
+For $n>0$, unpair $\lfloor n/4\rfloor=p(a,b)$ and define
+\[
+ f(0)=0,\qquad f(n)=4p(f(a),f(b))+\sigma(n\bmod4).
+\]
+Both decoded arguments are strictly below $n$.  In particular the
+definition is a primitive-recursive course-of-values recursion, implemented
+by a finite table whose entries are constructed successively.  The zero
+alias $I(0,0)=0$ is handled by the displayed base case.  Strong induction
+on the input, encoded as a Boolean conjunction of the assertions below the
+current input, proves in iPRA
+\[
+                 f(f(n))=n,\qquad f(0)=0,\quad f(1)=1.
+\]
+For example the first sixteen values are
+\[
+ 0,1,3,2,4,5,7,6,8,9,11,10,24,25,27,26.
+\]
+This is not an order-preserving recoding.
+
+The same $f$ acts on formula codes and on variable labels.  Its equations
+are therefore exact even at the self-referential numerical interfaces:
+\[
+\begin{aligned}
+ f(I(a,b))&=I(f(a),f(b)),&
+ f(M(a,b))&=M(f(a),f(b)),\\
+ f(U(a,B))&=U'(f(a),f(B)),&
+ f(E(a,b))&=E'(f(a),f(b)).
+\end{aligned}
+\]
+In particular, the old diagonal $I(c,U(c,c))$ maps to the new diagonal
+$I(f(c),U'(f(c),f(c)))$.  Every occurrence of a gate parameter is recoded,
+including its occurrences as a formula, a binder and an atomic label.
+Thus $f(G(a,b,c))=G'(f(a),f(b),f(c))$, and injectivity gives the exact guard
+equivalence
+\[
+ (c\ne a\land c\ne b)
+ \quad\longleftrightarrow\quad
+ (f(c)\ne f(a)\land f(c)\ne f(b)).
+\]
+Failed guarded heads are zero in both systems.  Fixing labels while
+recoding formulas would not prove these identities and is not the
+translation used here.
+
+\subsection{The domination restriction is expanded, not transported}
+
+The common propositional seed is
+\[
+ \rho(D,A,H,u)=((H\to u)\to D)\to((D\to H)\to(A\to H)),
+ \qquad u\le D.
+\]
+An implication arrow in this display is $I$.  The inequality $u\le D$
+need not survive $f$.  Consequently a source $\rho$ row must not simply
+be retagged as a primitive target row.
+
+Use instead the fixed generic proof of unrestricted $\rho$ from the
+restricted basis, recorded in
+\texttt{M6.Logic.RestrictedImplication.rho8All} and in the preceding
+tagged-three packet.  The generic interface needs only modus ponens,
+the restricted schema, reflexivity of $\le$, and the two bounds
+$a,b\le I(a,b)$.  Here the implication constructor is literally unchanged,
+so all those requirements hold.  The predecessor packet includes a
+68,268-row universal expansion (32,455 restricted-$\rho$ leaves and
+35,813 MP rows), with its primitive bounds justified by subtree inclusion.
+Its compressed SHA-256 is
+\begin{quote}\small\ttfamily
+9fd2d5082a97dc051e4b56cb6e705f1d6f4f9bcabe82eff7fcbb954c6d285278.
+\end{quote}
+The present proof uses that attributed finite template; it does not claim
+to have rediscovered the propositional basis.
+
+All other seed rows translate by the constructor identities.  MP translates
+because implication commutes with $f$, including the zero alias.  A Gen
+row at label $a$ translates to Gen at label $f(a)$.  Scanning a proof list,
+expanding each $\rho$ leaf, and relocating earlier-row pointers gives a
+primitive-recursive proof transformation.  A quantifier-free prefix
+induction proves that its output is valid and that every translated
+conclusion is $f$ of the corresponding source conclusion.  Applying the
+same construction in the opposite coding gives the reverse transformation.
+Since $f(1)=1$, iPRA proves the exact refutation equivalence
+\[
+ (\exists e\,\operatorname{Prf}_{\mathcal C}(e,1))
+ \longleftrightarrow
+ (\exists e\,\operatorname{Prf}_{\mathcal C'}(e,1)).
+\]
+This proof is an instance of the simultaneous code-and-label recoding
+method in the earlier tagged-three construction.  Its new component is
+the concrete two-tag exchange and its exact source realization.
+
+\subsection{The AX source realization}
+
+In the old AX word, a constructor is the \texttt{cons} macro followed by
+zero, one, two or three \texttt{incT} tokens.  The word has 32 implication
+constructor occurrences, ten membership occurrences, fifteen universal
+occurrences and three equality occurrences.  Exchange the runs of two and
+three increments immediately following each constructor; retain all other
+tokens, including increments constructing the numerical constant one.
+The resulting word has 202 tokens instead of 190.
+
+The supplied checker evaluates the whole word over free arithmetic terms,
+without running numerical examples or importing the construction compiler.
+It compares all nine endpoint registers, the complete eleven-entry stack,
+both numerical guards, the actual unconsumed fourth operand, and every
+intermediate scratch-register precondition.  It checks both the ordinary
+AX11H and the independent-binder/diagonal AX11GDH interfaces.  The first
+retains $U'(d,h)$ and $\Gamma'(c)$; the second retains $U'(c,h)$ and
+$\Gamma'(d+x)$.  The remaining entries are exactly the corresponding six
+new heads, new gate, unchanged restricted $\rho$, and saved incoming top.
+
+The command-level proof compiler remains valid after replacing $U,E$ by
+$U',E'$.  Its quantitative distinctions are still exact: implications
+have residue zero, universals have residue three and are positive, and
+contradiction has residue one.  Hence no universal cache can match an
+implication in the Push cleanup, and none of the emitted axiom heads is
+the contradiction.  The Cantor stack, including $p(0,0)=0$, is unchanged.
+The fourth AX operand still yields the same two branches of $I(0,z)=0$,
+both of which leave top and cache zero and offset $z$.
+
+The source change does not assert that $f(d+x)=f(d)+f(x)$.  The new
+proof-search command compiler selects its offsets and operands directly
+in the new numerical coding; exhaustive scheduling then finds those words.
+Nor does the theorem assert a time-step conjugacy between old and new
+register executions.  Physical realization requires the new grammar,
+resolved source graph, literal transition table, arbitrary-register
+contracts and complete blank initialization to be checked separately.
+
+\paragraph{Provenance.}
+The parent grammars are those of AX11H and AX11GDH at ProveIt commit
+\texttt{7c0bb454cf73c29ca1c385f9fec856ddd236a7cb}.  The recoding method and
+restricted-$\rho$ expansion are from
+\texttt{PA/docs/pa194\_lcfast\_tagged\_research\_2026-11-14/research/tagged3/}.
+The finite source checker records the parent grammar hashes in
+\texttt{seeds/source\_check.json}.  Its bounded inverse examples supplement
+the displayed universal proof; they are not the proof of involutivity or
+a proof-assistant kernel verification.

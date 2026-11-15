@@ -1,0 +1,60 @@
+
+The archive is self-contained for the new constructions and their finite
+checks. Python 3.10 or later, with assertions enabled, is sufficient for
+the new builders and verifiers. C++ search programs require a C++17
+compiler only when rerunning the unsuccessful searches. No network,
+external repository checkout, or installed Lean environment is required
+for the finite reproduction commands.
+
+From the archive root, run
+\begin{verbatim}
+python3 -B verify_release.py
+python3 -B verify_release.py --full
+\end{verbatim}
+The default checks the release hashes, all four table conventions and
+bindings, symbolic fusion certificates and command identities, and the
+independent local companion proof. The full command additionally rebuilds
+and replays the principal machine's complete source and physical
+certificates and recomputes the corpus comparison. Full replay may take
+several minutes. Outputs go into designated replay directories; frozen
+inputs are not overwritten. A transcript of the final assembled replay is
+included under \file{verification/}.
+
+\begin{longtable}{@{}p{.27\linewidth}p{.67\linewidth}@{}}
+\toprule
+Directory & Contents\\\midrule\endhead
+\file{report/} & This PDF, its main TeX source, generated proof and table
+inclusions, and a standard-library input generator.\\
+\file{primary/} & Exact FW native and dense tables, source grammar, fold
+certificates, constructor, independent verifier, new written proof, and
+attributed revised AX11H proof dependencies.\\
+\file{companions/} & Three physical variants, literal parent tables,
+independent guard/clock checks, relative proof, and the original symmetric
+witness archive with its inherited calibration packets.\\
+\file{comparison/} & All 104 named-design entries, 106 packet entries,
+44 overlapping mechanism classifications, exact source manifests, all
+609 spanning 193/194 representatives, seven nonspanning diagnostics, and
+an offline comparison checker.\\
+\file{research/} & Bounded physical and scanner searches, exact rejected
+193-state traces, a second emitter checker, and independent mathematical
+audits with explicit limits.\\
+\file{verification/} & Final assembled release replay and file-integrity
+results. Individual component receipts stay beside their artifacts.\\
+\bottomrule
+\end{longtable}
+
+To rebuild the PDF from the archive root:
+\begin{verbatim}
+python3 report/make_inputs.py
+cd report
+pdflatex -interaction=nonstopmode -halt-on-error pa194_fused_witness.tex
+pdflatex -interaction=nonstopmode -halt-on-error pa194_fused_witness.tex
+\end{verbatim}
+The report requires ordinary LaTeX packages listed in its preamble. Its
+transition-table appendix is generated directly from the four delivered
+tables, after checking their SHA-256 identities. The named-design appendix
+is generated directly from the complete CSV ledger. Original authorship
+and licenses are preserved in the component notice files. Reused physical
+folds, runtime code, implication derivations, and inherited mathematical
+calibration are explicitly attributed; the new contribution is the fused
+calculus/interface and the specified new literal implementations.

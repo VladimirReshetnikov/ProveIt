@@ -1,0 +1,90 @@
+\subsection{The ORH--B composition and a relative iPRA theorem}
+Let $P$ be the pinned PA194ORH table and $B(P)$ the delivered
+PA194ORHB table.  This construction composes two mechanisms already
+present in the corpus: the ORH operand-reader layout and the B dedicated
+history selector.  It does not claim either mechanism as new.  The exact
+combination is absent from the audited corpus, including under arbitrary
+control renaming, change of root, reflection, and symbol exchange.
+
+In native numbering, the entire change is
+\[
+\begin{array}{c|cc}
+\text{row}&P&B(P)\\\hline
+87/0&0R301&0R88\\
+88/0&0R122&0L301\\
+301/0&0R45&0R122\\
+301/1&1R103&1R301.
+\end{array}
+\]
+Both tables retain 194 working controls, start 74 and halt 254.
+Dense numbering uses start 0 and halt 194.  The arithmetic marker at
+control 51 is unchanged; thus the failed borrowed-marker initialization
+of the earlier 193-control runtime is not being reused.
+
+Define $\rho(301)=88$ and $\rho(q)=q$ for all other old controls.
+In $P$, the only incoming row to 88 is $77/1=1R88$ and the only incoming
+row to 301 is $87/0=0R301$.  Neither is the start.  Therefore whenever
+one of these controls is reached after at least one transition, the cell
+immediately to the left of the head records its old identity: 1 for 88,
+0 for 301.  Every ordinary old row is copied exactly after applying
+$\rho$ to its source and target; there are 384 such row cases.
+
+For either old exceptional control and either scanned bit, the new
+machine starts in control 88.  When the scanned bit is 1, both old
+controls take $1R103$, which remains a single new transition.  When the
+scanned bit is 0, the new machine first takes $0L301$.  If the history
+bit is 1, its next two transitions are $1R301$ and $0R122$; the complete
+three-step segment has the effect of the old $88/0$ row.  If the history
+bit is 0, its next four transitions are
+\[
+0R122,\quad 0L137,\quad 0R30,\quad 0R45,
+\]
+using the unchanged rows $122/0$, $137/0$, and $30/0$.
+The resulting five-step segment has the effect of the old $301/0$ row.
+Each segment preserves the history cell, changes the scanned cell exactly
+as the old transition does, and ends at the same head position and
+$\rho$-mapped control.  No segment reads outside the two displayed cells,
+and none halts before its endpoint.  The independent finite certificate
+checks these four identities directly from the two literal tables.
+
+\paragraph{Primitive recursive trace maps.}
+For a finite old run, replace each ordinary transition by its copied row
+and each exceptional transition by the corresponding segment above.
+If $a_t$ and $b_t$ count visits to $88/0$ and $301/0$ in its first $t$
+transitions, respectively, the expanded prefix has length
+\[
+ F(t)=t+2a_t+4b_t,\qquad t\le F(t)\le5t.
+\]
+The old configuration sequence, the counts, and $F$ are primitive
+recursive functions of the coded initial configuration and $t$.
+Quantifier-free induction verifies the endpoint relation, including the
+history invariant.  Conversely every new prefix is a prefix of these
+successive finite segments.  Since each segment lasts at most five
+transitions and has no premature halt, a new halting witness of length
+$u$ contains an old halting witness of length at most $u$.
+One may obtain that witness by bounded search over the old prefixes
+$0,\ldots,u$.  This is again primitive recursive.  These constructions
+are intuitionistically valid and yield the ordinary written relative
+arithmetic theorem
+\[
+ \mathrm{iPRA}\vdash
+ H_{B(P)}\leftrightarrow H_P,
+ \qquad
+ \mathrm{iPRA}\vdash
+ \neg H_{B(P)}\leftrightarrow\neg H_P.
+\]
+Here the arithmetic assertion concerns the coded blank computations;
+the same argument works uniformly for coded finite initial tapes.
+The local identities themselves hold for arbitrary exterior tape.
+This is a proof by finite primitive recursive trace transformations,
+not a new compiled Lean theorem.
+
+Consequently any separately established iPRA equivalence
+$\neg H_P\leftrightarrow\mathrm{Con}(\mathrm{PA})$ transfers to this
+composition.  The finite certificate does not by itself establish that
+parent consistency equivalence.  The separately replayed literal
+runtime checks derive four unary-list induction lemmas, cover all 4,778
+primitive source outcomes, and verify the complete blank initialization
+at 58,034 transitions.  Their role is independent validation of the
+physical implementation; the relative halting proof above does not
+assume those checks or the logical calibration.
