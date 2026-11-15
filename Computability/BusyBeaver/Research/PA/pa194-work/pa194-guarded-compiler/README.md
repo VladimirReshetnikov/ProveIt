@@ -66,6 +66,15 @@ of the two languages, and internally valid codes that may be nonstandard.
   values are unique up to order isomorphism, and translated formulas respect order
   isomorphism. These in turn need the corresponding facts for zero, successor, addition and
   multiplication as fixed theorems of the source theory.
+  One difficulty is already visible. A substitution lemma "`(φ[t])*` is equivalent to the
+  translation of `φ` at a value of `t`" has the witness `t` as a parameter of the model, and
+  an induction over `φ` that opens a quantifier by a fresh free variable (the pattern of
+  `PA194PAeqUniversalFormulaCongruence.replace_aux`) shifts the free variables of `t`. The
+  induction hypothesis is then needed at `shift t`, so a fixed `𝚺₁` predicate in `φ` does not
+  suffice. Two ways out are not tried yet: carry the finite family `t, shift t, …` under a
+  bounded quantifier, or prove the lemma only for the one-step terms `0`, `S #0`, `#1 + #0`,
+  `#1 · #0`, which have no free variable, and reach a general witness by an induction over
+  `t` with the formula ranging over substitution instances below a bound.
 - The theory axioms: a proof in the source theory of the translation of each fixed axiom of
   `ordinaryPAeq` and of each closed induction instance, under an identity packet.
   `pa194-model-logic` works on these under `rootParameters`; for a sentence the two
