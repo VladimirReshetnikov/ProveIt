@@ -109,8 +109,12 @@ root-packet invariant collapses distinct variables and does not supply the
 needed domain guards, as explained in the guarded compiler notes. The [guarded calculus and compiler](pa194-work/pa194-guarded-compiler/README.md)
 retain those distinctions and use existential guard bounds. Their interpretation
 interface has no packet-length condition; the [domain-inhabitation supplier](pa194-work/pa194-model-logic/SOURCE-INHABITED.md)
-is proved, while the term facts and remaining axiom suppliers are still open. Identity translation is
-independent of packet length for valid internal formulas. The
+is proved. The term facts reduce to seventeen one-layer naming obligations;
+[variable](pa194-work/pa194-model-axioms/NAME-VARIABLE.md) and
+[zero](pa194-work/pa194-model-logic/NAME-ZERO.md) name existence are proved in
+the full source theory, while the other obligations and remaining axiom
+suppliers are open. Identity translation is independent of packet length for
+valid internal formulas. The
 [ordinary PAeq theory now has a uniform classifier](pa194-work/pa194-model-logic/PAEQ-ORDINARY-CLASS.md),
 and the [arithmetic induction-axiom supplier](pa194-work/pa194-model-logic/PAEQ-INDUCTION-SUPPLIER.md)
 establishes modeled PAeq proof existence for every internal arithmetic induction
