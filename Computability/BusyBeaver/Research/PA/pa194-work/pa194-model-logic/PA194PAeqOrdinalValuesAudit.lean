@@ -1,0 +1,15 @@
+import PA194PAeqOrdinalValues
+#print axioms M6.PA.RelationalSource.Ordinal.domain_rew
+#print axioms M6.PA.RelationalSource.Ordinal.zero_rew
+#print axioms M6.PA.RelationalSource.Ordinal.successor_rew
+#print axioms PA194PAeqOrdinalValues.domainCode_quote
+#print axioms PA194PAeqOrdinalValues.successorCode_quote
+#print axioms PA194PAeqOrdinalValues.variableValue_graph
+#print axioms PA194PAeqOrdinalValues.variableValue_valid
+#print axioms PA194PAeqOrdinalValues.variableValue_quote
+#print axioms PA194PAeqOrdinalValues.zeroValue_graph
+#print axioms PA194PAeqOrdinalValues.zeroValue_valid
+#print axioms PA194PAeqOrdinalValues.zeroValue_quote
+#print axioms PA194PAeqOrdinalValues.successorValue_graph
+#print axioms PA194PAeqOrdinalValues.successorValue_valid
+#print axioms PA194PAeqOrdinalValues.successorValue_quote
