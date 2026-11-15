@@ -1,0 +1,21 @@
+import PA194ModelOneLevelCharacterization
+#print axioms PA194ModelLogic.quantifierFree_anyBases
+#print axioms PA194ModelLogic.internalMembershipQF_definable
+#print axioms PA194ModelLogic.membershipQF_binderRewrite
+#print axioms PA194ModelLogic.membershipQF_allAlpha
+#print axioms PA194ModelLogic.membershipQF_allNegAlpha
+#print axioms PA194ModelLogic.membershipQF_exAlpha
+#print axioms PA194ModelLogic.simRuleAllFresh_allMembershipQFSeed
+#print axioms PA194ModelLogic.simRuleAllFresh_exMembershipQFSeed
+#print axioms PA194ModelLogic.oneLevelMembership_definable
+#print axioms PA194ModelLogic.oneLevelFresh_all_codes
+#print axioms PA194ModelLogic.simRuleAllFresh_oneLevelSeed
+#print axioms PA194ModelLogic.internalQuantifierFree_implies_oneLevel
+#print axioms PA194ModelLogic.oneLevelMembership_and_iff
+#print axioms PA194ModelLogic.oneLevelMembership_or_iff
+#print axioms PA194ModelLogic.oneLevelMembership_all_iff
+#print axioms PA194ModelLogic.oneLevelMembership_ex_iff
+#print axioms PA194ModelLogic.internalMembershipQF_positiveAtom
+#print axioms PA194ModelLogic.internalMembershipQF_negativeAtom
+#print axioms PA194ModelLogic.internalMembershipQF_and_iff
+#print axioms PA194ModelLogic.internalMembershipQF_or_iff
