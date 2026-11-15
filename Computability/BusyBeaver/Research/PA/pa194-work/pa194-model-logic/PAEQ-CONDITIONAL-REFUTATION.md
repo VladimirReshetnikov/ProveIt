@@ -4,6 +4,8 @@ Four fields of `RemainingRules U T param` remain explicit unproved assumptions: 
 
 The theory `U` is still a parameter in this theorem. A subsequent [uniform Δ₁ classifier for `ordinaryPAeq`](PAEQ-ORDINARY-CLASS.md) is now proved, including its class equation for nonstandard codes. Instantiation still requires the four rule and theory suppliers and the separate arithmetic-PA-to-PAeq finite-axiom and induction suppliers. The induction bridge cannot use direct code equality: the arithmetic translation writes successor as addition by one, while the PAeq induction scheme uses primitive successor; transporting arbitrary properties requires a proof of their equivalence and congruence. No ambient model of full PA is assumed.
 
+The existing [addition-congruence draft](../pa194-paeq-add-congruence/PA194PAeqAddCongruence.lean) contains `sorry` in `addExtCertificate`; it is not a completed fixed arithmetic-axiom supplier.
+
 The single-output audit rebuilds both source modules and a five-report audit top against the parent agent's repository-source-replayed closed-root, sequent-rule, sequent-axiom, negation and formula-dispatcher baselines, plus retained overlays. Foundation and other workspace dependencies are prebuilt; this is not a clean whole-workspace build. From the repository root, using a fresh unused output directory:
 
 ```sh
