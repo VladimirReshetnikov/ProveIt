@@ -1,0 +1,3 @@
+import PA194GuardedInterpretationReduction
+#print axioms PA194GuardedInterpretationReduction.interpretation_of_remaining
+#print axioms PA194GuardedInterpretationReduction.refutation_of_remaining
