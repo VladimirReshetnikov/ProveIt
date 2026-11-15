@@ -1,0 +1,7 @@
+import PA194MultiplicationCode
+#print axioms M6.PA.RelationalSource.PairGraph.mulPrefix_rew
+#print axioms M6.PA.RelationalSource.PairGraph.mulResult_rew
+#print axioms PA194SourceTemplates.multiplicationCode_graph
+#print axioms PA194SourceTemplates.multiplicationCode_defined
+#print axioms PA194SourceTemplates.multiplicationCode_quote
+#print axioms PA194SourceTemplates.multiplicationCode_valid
