@@ -1,0 +1,114 @@
+\section{A fully finite proof that \texorpdfstring{$S_5$}{S5} is not solvable}
+\label{sec:s5-nonsolvable}
+
+A common proof invokes the simplicity of $A_5$.  For the present purpose that
+is more than necessary.  We prove directly that $A_5$ is perfect, using one
+explicit commutator.  This reduces the entire obstruction to calculations in
+a group of $120$ permutations.
+
+We compose permutations right-to-left and use
+$[g,h]=ghg^{-1}h^{-1}$.
+
+\subsection{The commutator subgroup of \texorpdfstring{$S_5$}{S5}}
+
+The sign map
+\[
+ \sgn:S_5\longrightarrow\{\pm1\}
+\]
+has abelian target.  Every commutator lies in its kernel, so
+\[
+ [S_5,S_5]\subseteq A_5.
+ \tag{S1}\label{eq:S5-derived-subset}
+\]
+On the other hand, a direct calculation gives
+\[
+ [(23),(12)]=(123).
+ \tag{S2}\label{eq:S5-commutator}
+\]
+The commutator subgroup is normal.  Conjugating~\eqref{eq:S5-commutator} by
+permutations shows that every $3$-cycle belongs to $[S_5,S_5]$.
+Every even permutation is a product of $3$-cycles: write it as an even number
+of transpositions and group those transpositions in pairs.  If two
+transpositions share a letter, their product is a $3$-cycle; if they are
+disjoint, for example,
+\[
+ (12)(34)=(123)(234).
+\]
+Hence $3$-cycles generate $A_5$, and
+\[
+ [S_5,S_5]=A_5.
+ \tag{S3}\label{eq:S5-derived}
+\]
+
+\subsection{The commutator subgroup of \texorpdfstring{$A_5$}{A5}}
+
+Both
+\[
+ a=(23)(45),
+ \qquad
+ b=(12)(45)
+\]
+are even.  A second direct calculation gives
+\[
+ [a,b]=(123).
+ \tag{S4}\label{eq:A5-commutator}
+\]
+Thus $(123)\in[A_5,A_5]$.
+
+Every $3$-cycle is conjugate to $(123)$ by an element of $A_5$.  To see this
+constructively, first choose any permutation carrying the ordered triple
+$(1,2,3)$ to the ordered triple defining the desired $3$-cycle.  If that
+permutation is odd, compose it on the right with $(45)$.  This changes its
+parity but leaves the images of $1,2,3$ unchanged.  Therefore an even
+conjugator always exists.
+
+The subgroup $[A_5,A_5]$ is normal in $A_5$, so it contains every $3$-cycle.
+Since those cycles generate $A_5$,
+\[
+ [A_5,A_5]=A_5.
+ \tag{S5}\label{eq:A5-perfect}
+\]
+
+\begin{theorem}[Nonsolvability of $S_5$]
+\label{thm:S5-not-solvable}
+The symmetric group $S_5$ is not solvable.
+\end{theorem}
+
+\begin{proof}
+By~\eqref{eq:S5-derived}, the first derived subgroup is $A_5$.  By
+\eqref{eq:A5-perfect}, every later derived subgroup is again $A_5$:
+\[
+ S_5^{(1)}=A_5,
+ \qquad
+ S_5^{(r)}=A_5\quad(r\ge1).
+\]
+Since $A_5$ has $60$ elements, the series never reaches the identity group.
+\end{proof}
+
+\subsection{Primitive-recursive verification}
+
+There are only $5!=120$ permutations.  Encode a permutation by a five-entry
+list, enumerate all $120$ lists that pass the bijection test, and compute:
+
+\begin{enumerate}
+\item the $60$ even permutations;
+\item all commutators in $S_5$ and their generated subgroup;
+\item all commutators in $A_5$ and their generated subgroup;
+\item the two explicit identities~\eqref{eq:S5-commutator} and
+  \eqref{eq:A5-commutator}.
+\end{enumerate}
+
+The supplied certificate script finds
+\[
+ |[S_5,S_5]|=60,
+ \qquad
+ [S_5,S_5]=A_5,
+ \qquad
+ |[A_5,A_5]|=60,
+ \qquad
+ [A_5,A_5]=A_5.
+\]
+These calculations are not needed as oracles: they can be reproduced by a
+small primitive-recursive function and proved correct by induction on the
+bounded enumeration.  The explicit human proof above makes the generated
+subgroup certificates particularly short.

@@ -1,0 +1,198 @@
+\section{The iPRA framework}
+\label{sec:ipra-framework}
+
+\subsection{Why an arithmetic theory can discuss fields and Galois groups}
+
+The only primitive objects of iPRA are natural numbers.  Algebraic objects are
+therefore represented by finite codes.  This is not a limitation for the
+present proof.  Every polynomial, rational function, permutation, group table,
+radical tower, field expression, and derivation appearing below is finite.
+The semantic notation is a readable abbreviation for operations on such
+codes.
+
+The ProveIt presentation of iPRA has primitive-recursive function symbols and
+quantifier-free induction.  Its native scalar calculus is bi-interpretable
+with the ordinary first-order presentation; the numerical domain remains all
+of $\N$ and equality remains actual equality.  Consequently it is enough to
+show the following two facts.
+
+\begin{enumerate}
+\item Each construction used in the proof is primitive recursive on codes.
+\item Each induction can be stated as an equation or a Boolean invariant about
+  a primitive-recursive computation.
+\end{enumerate}
+
+The proof does not need induction on an arbitrary semantic property of fields.
+It needs induction on lengths of lists, degrees of sparse polynomials, sizes of
+finite groups, and lengths of derivations.  All these invariants are decidable.
+
+\subsection{A concrete coding layer}
+
+One convenient coding, not the only possible one, is as follows.
+
+\begin{longtable}{p{0.22\textwidth}p{0.70\textwidth}}
+\toprule
+Object & Natural-number representation and primitive-recursive operations\\
+\midrule
+\endhead
+Finite sequence & Iterated pairing with stored length.  Entry, append, map,
+fold, bounded search, and permutation are primitive recursive.\\
+Integer & Zig-zag code: $0,1,-1,2,-2,\ldots$.  Addition and multiplication are
+primitive recursive.\\
+Rational number & A signed numerator and positive denominator, optionally
+normalized by Euclid's algorithm.  Equality is cross multiplication.\\
+Monomial & A coefficient and a finite exponent vector.\\
+Sparse polynomial & A sorted list of nonzero monomials.  Normalization combines
+equal exponent vectors; addition, multiplication, substitution, and formal
+derivative are primitive recursive.\\
+Rational function & A pair $(P,Q)$ with $Q\ne0$.  Equality of $(P,Q)$ and
+$(R,S)$ is the polynomial equation $PS=RQ$.\\
+Permutation of $d$ letters & A length-$d$ list containing each number below
+$d$ exactly once.  Composition, inverse, sign, cycle decomposition, and
+bounded enumeration of all $d!$ permutations are primitive recursive.\\
+Finite group & A finite carrier list with multiplication, inverse, and identity
+tables, or a subgroup of a permutation group represented by a Boolean
+membership table.\\
+Field expression & A syntax tree containing constants, generators, $+,-,\cdot$,
+inversion with a nonzero side certificate, and named algebraic generators.\\
+Radical step & An exponent $m\ge2$, a radicand expression $a$, a new generator
+$z$, and the relation $z^m=a$.\\
+Derivation & A list of proof nodes in a fixed finite calculus; every node names
+its premises and has a local primitive-recursive checker.\\
+\bottomrule
+\end{longtable}
+
+There is no need to decide all true identities in an arbitrary finitely
+presented field.  A certificate carries an explicit derivation.  The checker
+only verifies local rules: normalized ring identities, substitution of a
+named relation, use of an explicit inverse equation, finite linear algebra,
+and finite group computations.  Soundness of the checker is proved by
+quantifier-free induction on the derivation length.
+
+\subsection{Proof-carrying field presentations}
+
+A \emph{proof-carrying presentation} consists of:
+
+\begin{itemize}
+\item a finite list of generators;
+\item a finite list of polynomial and inverse relations;
+\item syntax trees for every element used in the argument;
+\item a derivation for every asserted equality or nonzero condition;
+\item for a finite extension, a finite basis and coordinate calculations for
+  multiplication, embeddings, and automorphisms used by the proof.
+\end{itemize}
+
+The checker is primitive recursive because it never searches for a proof.
+It checks the supplied proof.  This is the same design principle used by a
+small proof assistant: semantic truth may be difficult, but checking a finite
+proof object is mechanical.
+
+For the generic quintic the base field has an especially simple direct
+representation.  Start with sparse polynomials in five variables over $\Q$,
+then represent $L=\Q(x_1,\ldots,x_5)$ by fractions.  Equality in $L$ is a
+single cross-multiplied polynomial identity.  The subfield
+$K=\Q(e_1,\ldots,e_5)$ is represented by rational expressions in five named
+symmetric generators together with their embeddings in $L$.  All operations
+used in the proof are therefore explicit normalization computations.
+
+\subsection{Radical programs as relational data}
+
+A global operation $z\mapsto\sqrt[m]{z}$ is inappropriate constructively.
+Instead we use a finite sequential program with a nondeterministic but
+proof-carrying radical instruction:
+\[
+  z_i^m = a_i(z_0,\ldots,z_{i-1}).
+\]
+A \emph{run} is a tuple of values in an extension field satisfying every
+instruction.  Arithmetic instructions are deterministic; radical
+instructions supply a value and a proof of its power equation.  A run is
+\emph{complete for $f$} if the designated outputs give the exact factorization
+of $f$.
+
+Every ordinary nested-radical expression compiles to such a program.  A case
+distinction compiles to a finite decision tree whose guards are decidable
+equalities of normalized expressions.  Conversely, a run generates a radical
+tower by adjoining its radical values in program order.  Thus the relational
+language is neither weaker nor stronger than the standard field-theoretic
+notion needed for Abel--Ruffini; it merely exposes the witnesses.
+
+\subsection{Arithmetic predicates used in the final theorem}
+
+The formalization can use the following coded predicates.
+
+\begin{align*}
+ \operatorname{RatFunField}(k) &:\quad k\text{ codes the base rational-function presentation},\\
+ \operatorname{RadTower}(k,t) &:\quad t\text{ codes a valid radical tower over }k,\\
+ \operatorname{Splits}(k,p,t) &:\quad p\text{ factors completely in the top of }t,\\
+ \operatorname{Formula}(n,c) &:\quad c\text{ is a degree-}n\text{ radical-program code},\\
+ \operatorname{Run}(k,c,w) &:\quad w\text{ is a valid run of }c\text{ over }k.
+\end{align*}
+
+The local checking relations can be made primitive recursive.  Their semantic
+soundness is a theorem of iPRA about the checker.  The negative theorem is
+conveniently factored into two statements:
+
+\begin{align}
+ &\forall t\;\neg\operatorname{Splits}(K,P,t),
+ \label{eq:no-tower}\\
+ &\operatorname{Formula}(5,c)\land\operatorname{Universal}(c)
+ \;\longrightarrow\;
+   \exists t\;\operatorname{Splits}(K,P,t).
+ \label{eq:compile-formula}
+\end{align}
+
+Equation~\eqref{eq:no-tower} is the Galois obstruction.
+Equation~\eqref{eq:compile-formula} is the primitive-recursive compiler that
+specializes a purported coefficient formula to the generic coefficients.
+Together they imply that no universal code $c$ exists.
+
+For degrees at most four, fixed constructors produce a radical program and a
+factorization derivation from the supplied witness equations.  The internal
+statements therefore have the form
+\[
+ \forall a_0,\ldots,a_n,w\;
+   \bigl(\operatorname{WitnessEquations}_n(a,w)=1\bigr)
+   \to
+   \bigl(\operatorname{FactorCheck}_n(a,w)=1\bigr).
+\]
+Both sides are equations between primitive-recursive terms, exactly the kind
+of induction-free or quantifier-free-induction statement natural to PRA.
+
+\subsection{Where intuitionistic logic matters}
+
+Three classical shortcuts are explicitly removed.
+
+\paragraph{No arbitrary branch choice.}
+The square or cube root is a witness, not the result of a choice function.
+Cardano's two cube radicals are linked by a product equation.
+
+\paragraph{No unrestricted zero/nonzero split.}
+The human proof sometimes writes ``if $s=0$''.  Internally $s$ is a normalized
+coded expression in a decidable field presentation, so the split is a Boolean
+calculation.  When no decidable equality is available, the primary theorem is
+kept as a factorization identity and makes no disjunctive claim.
+
+\paragraph{No appeal to an infinite set of all automorphisms.}
+The only automorphism groups used are finite.  For the generic quintic every
+automorphism is represented by one of the $120$ permutations of five
+symbols.  Radical normal-closure groups are represented by finite tables whose
+sizes are bounded by products and factorials extracted from the tower code.
+
+\subsection{Quantifier-free induction is enough}
+
+Examples of the induction statements actually needed are:
+
+\begin{itemize}
+\item after processing the first $j$ monomials, the accumulator equals their
+  normalized sum;
+\item after processing the first $j$ proof nodes, each checked node is sound;
+\item after processing the first $j$ radical steps, the generated group-series
+  certificate passes its finite checker;
+\item after $j$ closure rounds, the Boolean table equals the subgroup generated
+  by commutators found so far.
+\end{itemize}
+
+Each invariant is an equation between values of primitive-recursive functions.
+No induction on a formula containing an unbounded existential quantifier is
+required.  Existential mathematical statements are represented by explicit
+witness codes produced before the checker is invoked.

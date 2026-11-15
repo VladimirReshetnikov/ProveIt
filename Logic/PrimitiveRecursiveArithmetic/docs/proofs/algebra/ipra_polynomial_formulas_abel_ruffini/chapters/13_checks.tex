@@ -1,0 +1,82 @@
+\section{Executable certificate checks}
+\label{sec:checks}
+
+The archive contains
+\[
+ \code{certificates/verify_certificates.py}.
+\]
+It performs exact symbolic and finite checks; it uses no floating-point
+arithmetic.  From the archive root, run
+
+\begin{lstlisting}[style=lean,language={}]
+python3 certificates/verify_certificates.py
+\end{lstlisting}
+
+The script writes \code{verification_report.json} and exits with a nonzero
+status if a required check fails.  Its role is reproducibility and error
+detection.  It is not substituted for the human proof and is not part of the
+Lean kernel trust base.
+
+\subsection{Checks performed}
+
+\begin{longtable}{p{0.48\textwidth}p{0.18\textwidth}p{0.25\textwidth}}
+\toprule
+Check & Result & Mathematical role\\
+\midrule
+\endhead
+Quadratic factorization reduced by
+$s^2=b^2-4ac$ & $0$ & Equation~\eqref{eq:quad-factor}.\\
+Cardano three-factor product reduced by
+$\omega^2+\omega+1$, $uv=-p/3$, and $u^3+v^3=-q$ & $0$ &
+Equation~\eqref{eq:cardano-factorization}.\\
+Ferrari two-quadratic product reduced by the three parameter equations & $0$ &
+Equation~\eqref{eq:ferrari-target}.\\
+Denominator-free resolvent plus eight times the monic resolvent & $0$ &
+Equivalence of~\eqref{eq:ferrari-resolvent} and
+\eqref{eq:ferrari-resolvent-monic}.\\
+Order of $S_5$ and $A_5$ & $120$, $60$ & Finite group coding.\\
+Derived subgroup of $S_5$ & $A_5$ of order $60$ &
+Equation~\eqref{eq:S5-derived}.\\
+Derived subgroup of $A_5$ & $A_5$ of order $60$ &
+Equation~\eqref{eq:A5-perfect}.\\
+Two displayed commutators & both $(123)$ &
+Equations~\eqref{eq:S5-commutator} and~\eqref{eq:A5-commutator}.\\
+Discriminant of $X^5-X-1$ & $2869$ &
+Equation~\eqref{eq:selmer-disc}.\\
+Factorization modulo $2$ & irreducible degrees $2,3$ &
+A $(2)(3)$ Frobenius cycle.\\
+Factorization modulo $3$ & one irreducible degree-$5$ factor &
+A $5$-cycle and rational irreducibility.\\
+\bottomrule
+\end{longtable}
+
+The generated report records
+\[
+ \code{"all_required_checks_pass": true}.
+\]
+
+\subsection{Why the formal proof should not call SymPy}
+
+The Groebner reductions in the script are convenient independent checks, but
+they would be an unnecessarily large trust dependency in an iPRA proof.  The
+formal route is smaller:
+
+\begin{itemize}
+\item use a verified sparse normalizer for commutative-ring expressions;
+\item store a short reduction trace using the named radical relations;
+\item verify each trace step with a primitive-recursive checker;
+\item prove the generic checker sound once by quantifier-free induction.
+\end{itemize}
+
+Likewise, the full $120^2$ commutator enumeration is useful regression
+evidence, whereas the proof term can use the two explicit commutators and the
+short generation argument from Section~\ref{sec:s5-nonsolvable}.
+
+\subsection{Reproducibility boundary}
+
+The exact report in this archive was produced with the installed Python and
+SymPy environment.  Future library versions may print factor lists in a
+different order, but the script's required Boolean checks depend only on exact
+zero remainders, subgroup equality, commutator equality, and the integer
+discriminant.  The source and generated JSON are both included so that the
+calculation can be inspected without trusting this prose summary.

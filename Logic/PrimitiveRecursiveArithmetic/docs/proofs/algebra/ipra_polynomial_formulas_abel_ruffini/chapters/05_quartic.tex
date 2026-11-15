@@ -1,0 +1,211 @@
+\section{Ferrari's quartic formula}
+\label{sec:quartic}
+
+\subsection{Depressing the quartic}
+
+Let
+\[
+ f(X)=aX^4+bX^3+cX^2+dX+e,
+ \qquad a\ne0.
+\]
+Put
+\[
+ A=\frac ba,\quad B=\frac ca,\quad C=\frac da,\quad D=\frac ea
+\]
+and translate
+\[
+ X=Y-\frac A4.
+\]
+A direct expansion gives
+\[
+ \frac1a f\left(Y-\frac A4\right)=Y^4+pY^2+qY+r,
+ \tag{F1}\label{eq:quartic-depress}
+\]
+where
+\begin{align}
+ p&=B-\frac{3A^2}{8},\label{eq:quartic-p}\\
+ q&=C-\frac{AB}{2}+\frac{A^3}{8},\label{eq:quartic-q}\\
+ r&=D-\frac{AC}{4}+\frac{A^2B}{16}-\frac{3A^4}{256}.
+ \label{eq:quartic-r}
+\end{align}
+We therefore solve
+\[
+ h(Y)=Y^4+pY^2+qY+r.
+\]
+
+\subsection{The biquadratic branch}
+\label{sec:quartic-biquadratic}
+
+When $q=0$, no cubic resolvent is needed.  Apply the quadratic formula to
+\[
+ Z^2+pZ+r=0.
+\]
+Choose $\delta,z_+,z_-$ with
+\[
+ \delta^2=p^2-4r,
+ \qquad
+ z_+=\frac{-p+\delta}{2},
+ \qquad
+ z_-=\frac{-p-\delta}{2}.
+\]
+Then
+\[
+ Z^2+pZ+r=(Z-z_+)(Z-z_-).
+\]
+Choose square-root witnesses $\eta_+^2=z_+$ and $\eta_-^2=z_-$.  The exact
+factorization is
+\[
+ Y^4+pY^2+r
+ =(Y-\eta_+)(Y+\eta_+)(Y-\eta_-)(Y+\eta_-).
+ \tag{F2}\label{eq:biquadratic-factor}
+\]
+This branch is entirely constructive once the equation $q=0$ is supplied; it
+does not test equality of a newly introduced radical.
+
+\subsection{Ferrari's factorization equations when \texorpdfstring{$q\ne0$}{q nonzero}}
+
+Assume now that $q\ne0$.  Seek a factorization into two monic quadratics of
+opposite linear terms:
+\[
+ h(Y)=\bigl(Y^2-sY+(m-t)\bigr)
+       \bigl(Y^2+sY+(m+t)\bigr).
+ \tag{F3}\label{eq:ferrari-target}
+\]
+Multiplication shows that~\eqref{eq:ferrari-target} follows from
+\[
+ s^2=2m-p,
+ \qquad
+ 2st=-q,
+ \qquad
+ t^2=m^2-r.
+ \tag{F4}\label{eq:ferrari-parameters}
+\]
+Indeed, the $Y^2$ coefficient is $2m-s^2=p$, the $Y$ coefficient is
+$-2st=q$, and the constant term is $m^2-t^2=r$.
+
+Eliminating $s$ and $t$ gives the cubic resolvent
+\[
+ q^2-4(2m-p)(m^2-r)=0.
+ \tag{F5}\label{eq:ferrari-resolvent}
+\]
+Equivalently,
+\[
+ m^3-\frac p2m^2-rm+\frac{pr}{2}-\frac{q^2}{8}=0.
+ \tag{F6}\label{eq:ferrari-resolvent-monic}
+\]
+Thus $m$ is obtained by the cubic construction of
+Section~\ref{sec:cubic}.
+
+Choose a resolvent root $m$ and a square-root witness
+\[
+ s^2=2m-p.
+ \tag{F7}\label{eq:s-square}
+\]
+The hypothesis $q\ne0$ and~\eqref{eq:ferrari-resolvent} imply
+$2m-p\ne0$: otherwise the right-hand product in
+\eqref{eq:ferrari-resolvent} would vanish and hence $q^2=0$, forcing $q=0$.
+Consequently $s\ne0$.  We may therefore define
+\[
+ t=-\frac{q}{2s}.
+ \tag{F8}\label{eq:t-quotient}
+\]
+Then $2st=-q$.  The resolvent equation and~\eqref{eq:s-square} give
+\[
+ q^2=4(2m-p)(m^2-r)=4s^2(m^2-r),
+\]
+so
+\[
+ t^2=\frac{q^2}{4s^2}=m^2-r.
+\]
+All three equations in~\eqref{eq:ferrari-parameters} hold, and every division
+has an explicit nonzero proof.
+
+\subsection{Solving the two quadratics}
+
+Choose square-root witnesses
+\[
+ \rho^2=s^2-4(m-t),
+ \qquad
+ \sigma^2=s^2-4(m+t).
+ \tag{F9}\label{eq:rho-sigma}
+\]
+The first factor in~\eqref{eq:ferrari-target} has roots
+\[
+ y_0=\frac{s+\rho}{2},
+ \qquad
+ y_1=\frac{s-\rho}{2},
+ \tag{F10}\label{eq:quartic-first-pair}
+\]
+and the second has roots
+\[
+ y_2=\frac{-s+\sigma}{2},
+ \qquad
+ y_3=\frac{-s-\sigma}{2}.
+ \tag{F11}\label{eq:quartic-second-pair}
+\]
+The four roots of the original quartic are
+\[
+ x_i=y_i-\frac A4,
+ \qquad i=0,1,2,3.
+ \tag{F12}\label{eq:quartic-roots}
+\]
+
+\begin{theorem}[Exact Ferrari factorization]
+\label{thm:ferrari-factorization}
+Assume~\eqref{eq:ferrari-parameters} and~\eqref{eq:rho-sigma}.  Then
+\[
+ Y^4+pY^2+qY+r
+ =\prod_{i=0}^{3}(Y-y_i),
+ \tag{F13}\label{eq:quartic-complete-factor}
+\]
+with $y_i$ as in~\eqref{eq:quartic-first-pair} and
+\eqref{eq:quartic-second-pair}.  After the translation~\eqref{eq:quartic-depress},
+\[
+ f(X)=a\prod_{i=0}^{3}(X-x_i).
+ \tag{F14}\label{eq:quartic-original-factor}
+\]
+\end{theorem}
+
+\begin{proof}
+The equations~\eqref{eq:ferrari-parameters} give the two-quadratic identity
+\eqref{eq:ferrari-target}.  By the quadratic factorization theorem,
+\[
+ Y^2-sY+(m-t)=(Y-y_0)(Y-y_1)
+\]
+because its discriminant is $s^2-4(m-t)=\rho^2$, and
+\[
+ Y^2+sY+(m+t)=(Y-y_2)(Y-y_3)
+\]
+because its discriminant is $s^2-4(m+t)=\sigma^2$.  Multiplying these
+identities proves~\eqref{eq:quartic-complete-factor}.  Substituting
+$Y=X+A/4$ and multiplying by $a$ gives
+\eqref{eq:quartic-original-factor}.
+\end{proof}
+
+\subsection{Completeness and multiplicity}
+
+In the $q=0$ branch, equation~\eqref{eq:biquadratic-factor} is already the
+complete four-factor certificate.  In the $q\ne0$ branch, any root of the
+depressed quartic makes the product of the two quadratic factors zero.  The
+field no-zero-divisors law reduces the problem to one of the two quadratic
+equations; Theorem~\ref{thm:quadratic-factorization} then yields one of the
+four values.  Repeated roots cause no difficulty: the list may contain equal
+entries, while the factorization retains their multiplicities.
+
+\subsection{Primitive-recursive verification}
+
+The certificate checker first verifies the translation
+\eqref{eq:quartic-depress}.  It then reads the supplied branch certificate:
+$q=0$ selects the biquadratic identity; $q\ne0$ selects Cardano's cubic
+resolver and Ferrari's equations.  In the latter branch it checks
+\[
+ s^2-(2m-p)=0,
+ \quad 2st+q=0,
+ \quad t^2-(m^2-r)=0,
+\]
+then expands~\eqref{eq:ferrari-target} and applies the already verified
+quadratic certificates.  This composition is primitive recursive.  The
+existing Lean file \code{Quartic.lean} proves precisely the parametric Ferrari
+identity and its soundness/exhaustiveness once $m,s,t,\rho,\sigma$ are
+supplied; the additional biquadratic branch is a direct composition of its
+quadratic layer.

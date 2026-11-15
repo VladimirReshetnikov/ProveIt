@@ -1,0 +1,155 @@
+\section{Statement, scope, and constructive reading}
+
+\subsection{The two main results}
+
+The phrase ``formula by radicals'' is often stated informally.  In a
+constructive setting one must say what the radical symbols mean, what data are
+being supplied, and what exactly is proved.  The following definition is the
+one used throughout.
+
+\begin{definition}[Radical tower and complete radical factorization]
+Let $F$ be a field of characteristic zero.  A \emph{radical tower over $F$}
+is a finite chain
+\[
+ F=F_0\subseteq F_1\subseteq\cdots\subseteq F_r
+\]
+with elements $\alpha_i\in F_i$ and integers $m_i\ge 2$ such that
+\[
+ F_i=F_{i-1}(\alpha_i),\qquad \alpha_i^{m_i}\in F_{i-1}.
+\]
+A polynomial $f(T)=a_nT^n+\cdots+a_0\in F[T]$, $a_n\ne0$, has a
+\emph{complete radical factorization} if some radical tower contains elements
+$r_1,\ldots,r_n$ satisfying the exact identity
+\[
+ f(T)=a_n\prod_{j=1}^{n}(T-r_j).
+\]
+Multiplicity is retained.  No ordering or analytic branch convention is part
+of the definition.
+\end{definition}
+
+The identity is stronger than the assertion that each displayed value happens
+to be a root: it gives soundness, exhaustiveness, and multiplicity in one
+finite certificate.
+
+\begin{theorem}[Constructive formula theorem through degree four]
+\label{thm:low-degree-main}
+For every characteristic-zero field and every nonzero polynomial of degree at
+most four, the classical linear, quadratic, Cardano, and Ferrari constructions
+admit the following intuitionistically valid formulation.
+
+Given explicit radical witnesses satisfying the equations displayed in
+Sections~\ref{sec:quadratic}, \ref{sec:cubic}, and \ref{sec:quartic}, a fixed
+primitive-recursive expression returns a list of the required length, and an
+exact factorization identity proves that this list contains precisely all
+roots with multiplicity.  Compatible radical witnesses can be organized in a
+radical tower.  No proof uses excluded middle for an arbitrary proposition;
+the only case distinctions are equality tests on coded field expressions or
+natural numbers.
+\end{theorem}
+
+\begin{theorem}[Constructive Abel--Ruffini theorem]
+\label{thm:abel-main}
+There is no complete formula by radicals for the general polynomial of degree
+$n$ when $n\ge5$.  More precisely, let $x_1,\ldots,x_5$ be independent
+indeterminates, let
+\[
+ L=\Q(x_1,\ldots,x_5),
+\]
+let $e_i$ be the elementary symmetric functions, and let
+$K=\Q(e_1,\ldots,e_5)\subseteq L$.  Then
+\[
+ P(T)=\prod_{i=1}^{5}(T-x_i)\in K[T]
+\]
+has no complete radical factorization over $K$.  Consequently a coefficient-
+parametrized radical solver valid for every quintic cannot exist.  For every
+$n>5$, the polynomial $T^{n-5}P(T)$ gives the same obstruction in exact degree
+$n$.
+
+After coding all finite objects by natural numbers, the proof is formalizable
+in intuitionistic primitive recursive arithmetic.  In particular, ProveIt's
+native concise calculus proves the translation of the arithmetized theorem by
+the established bi-interpretation with iPRA.
+\end{theorem}
+
+\subsection{What Abel--Ruffini does and does not say}
+
+The negative theorem concerns a \emph{uniform complete} radical solution for
+all polynomials of a fixed degree.  It does not say that every individual
+quintic is unsolvable.  For example, $T^5-1$ is already solved by roots of
+unity, and a reducible quintic may reduce to equations of smaller degree.  It
+also does not forbid algorithms using operations beyond radicals, nor does it
+forbid numerical approximation.
+
+The word \emph{complete} matters.  A polynomial can have one easy root and
+other roots that are not obtainable by radicals.  A purported solution of the
+equation must account for the whole factorization, not merely produce one
+root.  The generic polynomial used here is stronger still: its Galois group is
+$S_5$, and no radical tower can contain all five independent roots.
+
+\subsection{Why radical witnesses replace branch functions}
+
+A complex square root is not a single-valued analytic function on all of
+$\C$.  A cube root has three values, and Cardano's formula fails if two cube
+roots are selected independently.  Therefore the constructive statement is
+relational:
+\[
+  s^2=D,
+  \qquad u^3=R,
+  \qquad v^3=S,
+  \qquad uv=-p/3.
+\]
+The data are the elements $s,u,v$ together with proofs of these equations.
+The formula then proves a polynomial identity.  This is exactly the style of
+the existing ProveIt Lean development: square and cube roots are represented
+by field elements plus their defining equations, and the formal theorems are
+generic over characteristic-zero fields.
+
+This witness-oriented formulation is more constructive than choosing a global
+branch.  It is also stronger algebraically: it works in every field extension
+where the witnesses exist, not only in $\C$ and not only for a preferred
+analytic branch.
+
+\subsection{Relationship to the current ProveIt development}
+
+At the inspected repository revision, the following semantic Lean layers are
+already present.
+
+\begin{itemize}
+\item \code{Algebra/PolynomialFormulas/Lean/PolynomialFormulas/Basic.lean}
+  proves the linear and quadratic formulae, exact quadratic factorization, and
+  quadratic exhaustiveness.
+\item \code{Cubic.lean} proves the depressed-cubic transformation, compatible
+  Cardano radicals, the three-factor identity, and
+  \code{cubic_eq_zero_iff}.
+\item \code{Quartic.lean} proves Ferrari's resolvent equations, the two-
+  quadratic factorization, and \code{quartic_eq_zero_iff}.
+\item \code{GenericAbelRuffini.lean} constructs a generic polynomial whose
+  Galois group is a symmetric group and derives a rootwise radical
+  obstruction through mathlib's field-theoretic infrastructure.
+\item \code{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA} supplies the
+  formal iPRA presentation and the theorem \code{native_iff_pra} transferring
+  derivability between the native calculus and ordinary iPRA.
+\end{itemize}
+
+The present report does not replace those files.  It reorganizes their
+mathematics into a deliberately finite, certificate-oriented proof whose
+arithmetization uses only primitive recursion and quantifier-free induction.
+Section~\ref{sec:lean-plan} identifies the exact additional bridge modules
+needed for a fully kernel-checked iPRA result.
+
+\subsection{Constructive discipline used below}
+
+The proof observes four rules.
+
+\begin{enumerate}
+\item A radical is always accompanied by its power equation.
+\item Division is performed only with an explicit nonzero hypothesis.
+\item A disjunction is introduced only after a decidable finite equality test,
+  or it is avoided by retaining a factorization identity.
+\item Every finite construction is given with a primitive-recursive bound;
+  no appeal is made to unbounded minimization, a global choice function, or a
+  completed infinite set.
+\end{enumerate}
+
+These rules will be repeated at the few places where a classical textbook
+proof usually suppresses a branch or an existence argument.

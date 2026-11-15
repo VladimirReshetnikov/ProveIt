@@ -1,0 +1,93 @@
+\section{Optional rational specialization: \texorpdfstring{$X^5-X-1$}{X5-X-1}}
+\label{sec:explicit-quintic}
+
+The generic proof is the cleanest route for the iPRA architecture because its
+Galois action is literal variable permutation.  For readers who want a single
+polynomial over $\Q$, this section gives a compact finite certificate for
+\[
+ f(X)=X^5-X-1.
+ \tag{E1}\label{eq:selmer5}
+\]
+The only additional theorem needed is the finite Dedekind--Frobenius lemma:
+for a prime not dividing the discriminant, the degrees of the distinct
+irreducible factors modulo that prime occur as the cycle lengths of an element
+of the rational Galois group.  That lemma can itself be arithmetized, but doing
+so adds more local algebra than the generic proof requires.
+
+\subsection{Irreducibility modulo three}
+
+Modulo $3$, the values at $0,1,2$ are all $2$, so $f$ has no linear factor.
+The monic irreducible quadratics over $\F_3$ are
+\[
+ X^2+1,
+ \qquad X^2+X+2,
+ \qquad X^2+2X+2.
+\]
+Polynomial division gives the respective remainders
+\[
+ -1,
+ \qquad X-1,
+ \qquad X-1.
+\]
+Thus none divides $f$.  A reducible polynomial of degree five has a factor of
+degree one or two: among the degrees of its nonconstant factors, the smallest
+is at most $2$.  Hence $f$ is irreducible over $\F_3$, and Gauss's lemma gives
+irreducibility over $\Q$.
+
+The same modular factorization is a single irreducible factor of degree five,
+so the Dedekind--Frobenius lemma supplies a $5$-cycle in the Galois group.
+
+\subsection{A transposition from reduction modulo two}
+
+Modulo $2$ one has the exact factorization
+\[
+ X^5+X+1
+ =(X^2+X+1)(X^3+X^2+1).
+ \tag{E2}\label{eq:mod2-factor}
+\]
+The quadratic has no root in $\F_2$, and the cubic also has no root in
+$\F_2$; hence both factors are irreducible.  A resultant computation gives
+\[
+ \operatorname{disc}(X^5-X-1)=2869=19\cdot151.
+ \tag{E3}\label{eq:selmer-disc}
+\]
+In particular, neither $2$ nor $3$ divides the discriminant.  Reduction
+modulo $2$ is therefore square-free, and the factor degrees $2$ and $3$ give
+an element of cycle type $(2)(3)$ in the Galois group.  The cube of this
+element is a transposition.
+
+\subsection{The Galois group is \texorpdfstring{$S_5$}{S5}}
+
+Let $c$ be the $5$-cycle obtained modulo $3$ and let $t$ be the transposition
+obtained from the cube of the $(2)(3)$ element.  The conjugates
+\[
+ c^k t c^{-k},\qquad k=0,1,2,3,4,
+\]
+are transpositions whose edges form a connected graph on the five letters.
+Indeed, if $t$ exchanges vertices at cyclic distance $d$, then the conjugates
+join $i$ to $i+d$ modulo $5$; because $5$ is prime and $d\ne0$, this graph is
+a $5$-cycle.  Transpositions along the edges of any connected graph generate
+the full symmetric group.  Hence
+\[
+ \Gal(f/\Q)=S_5.
+\]
+By Theorem~\ref{thm:S5-not-solvable}, this group is not solvable.
+
+\begin{corollary}[Explicit rational Abel--Ruffini witness]
+No root of $X^5-X-1$ is expressible by radicals over $\Q$.
+\end{corollary}
+
+\begin{proof}
+Suppose one root $\alpha$ lay in a radical tower.  Take a finite solvable
+normal closure $N/\Q$ of that tower as in
+Theorem~\ref{thm:radical-group-solvable}.  Since $f$ is irreducible, every
+conjugate root is the image of $\alpha$ under a $\Q$-embedding; normality of
+$N$ places all those images in $N$.  Thus the splitting field of $f$ is
+contained in $N$, and its Galois group is a quotient of the solvable group
+$\Gal(N/\Q)$.  This contradicts $\Gal(f/\Q)=S_5$.
+\end{proof}
+
+This rational example strengthens the coefficient-field interpretation of
+Section~\ref{sec:abel-proof}.  It is not needed for the core generic proof, but
+it is useful as an independently checkable specialization and aligns with the
+rootwise rational results already developed in ProveIt.
