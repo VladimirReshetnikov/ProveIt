@@ -1,0 +1,4 @@
+import PA194ModelSourceQVecHistory
+#print axioms PA194ModelLogic.sourceQVec_exists_trace
+#print axioms PA194ModelLogic.sourceQVec_trace_start
+#print axioms PA194ModelLogic.sourceQVec_trace_step

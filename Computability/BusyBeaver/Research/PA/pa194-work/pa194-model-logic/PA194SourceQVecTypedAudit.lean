@@ -1,0 +1,3 @@
+import PA194ModelSourceQVecTyped
+#print axioms PA194ModelLogic.sourceQVec_trace_typed
+#print axioms PA194ModelLogic.sourceQVec_trace_entries

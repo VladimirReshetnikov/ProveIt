@@ -1,0 +1,2 @@
+import PA194ModelSourceOpeningLabel
+#print axioms PA194ModelLogic.sourceOpeningTerm_label

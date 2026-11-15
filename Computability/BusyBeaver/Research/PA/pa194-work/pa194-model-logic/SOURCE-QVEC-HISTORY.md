@@ -1,0 +1,7 @@
+# Relational-source opening vectors at arbitrary depth
+
+In every PRA model with an IΣ₁ arithmetic reduct, `sourceQVec_exists_trace` and its zero/successor equations provide a coded history of iterating the actual relational-source `qVec` at every model-valued depth. For the singleton `[free 0]` initial vector, `sourceQVec_trace_typed` and `sourceQVec_trace_entries` show that the depth-i vector has length i+1, is scoped at i, has `bound j` in each j<i position, and `free 0` at i. Depths and indices may be nonstandard.
+
+`sourceOpeningTerm_label` uses that vector invariant to prove preservation of scoped source-term labels at arbitrary model-valued depth under explicit stack-alignment and root-label premises. `sourceOpeningStack_aligned` discharges those premises for the actual allocation stacks, and `sourceOpeningTerm_allocated` gives arbitrary-depth term-label preservation. Formula-level translation remains open; this does not discharge the full compiler rule, identify PA, or prove either consistency implication.
+
+The history, typed-history, term-label and stack-alignment sources passed separate independent incremental replays against separately replayed one-level-opening and earlier baselines. The workspace dependencies remain prebuilt. Run `check-source-qvec-history.sh --out OUTPUT` to replay the repository source closure and eight axiom reports; the retained foundations are documented by `check_bridge.py`.

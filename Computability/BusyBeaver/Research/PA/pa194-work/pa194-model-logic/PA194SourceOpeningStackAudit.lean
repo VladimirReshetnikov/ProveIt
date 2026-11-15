@@ -1,0 +1,3 @@
+import PA194ModelSourceOpeningStack
+#print axioms PA194ModelLogic.sourceOpeningStack_aligned
+#print axioms PA194ModelLogic.sourceOpeningTerm_allocated
