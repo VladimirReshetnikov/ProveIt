@@ -1,4 +1,4 @@
-import PA194GuardedEndpoint
+import PA194TranslateSubst
 import Foundation.FirstOrder.Incompleteness.InductionSchemeDelta1
 set_option autoImplicit false
 set_option maxHeartbeats 5000000
