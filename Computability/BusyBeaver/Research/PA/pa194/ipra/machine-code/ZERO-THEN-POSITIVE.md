@@ -1,0 +1,9 @@
+# Physical site-25 zero branch followed by site-27 positive branch
+
+`PA194ZeroThenPositive.zeroThenPositive` composes two model-uniform literal PA194 stepper executions: site 25 takes its zero branch to site 27, then site 27 takes its positive branch to site 28. The starting conditions are exactly `e 8 = 0` and `e 0 = m+1`. The intermediate path-27 tape is identified exactly. Register 0 is decremented to `m`; all other registers and the entire numeric suffix remain arbitrary and are retained.
+
+The two calls use the explicit separately named clocks `clock25 (k+1) e` and `clock27 k e`. Their starting padding is chosen to match the first output to the second input: the initial path-25 zero run is length `k+3`, and the intermediate and final runs are both length `k+2`. The theorem gives nested exact stepper calls, without assuming or proving a separate model-length run-composition law.
+
+The checker rebuilds the two required site-25 source modules plus the composition in a fresh output using the pinned site-27 coherent baseline, and audits the axiom reports for all three theorems. It pins the three source hashes, checks all baseline object hashes before and after, and rejects machine-specific objects in fallback roots. Invoke it with `REPO SITE27_BASELINE PROJECT_FOUNDATION PACKAGE_FOUNDATION COMPOSITION_SOURCE NEW_OUTPUT`; `PA194_COMPOSITION_SOURCE_DIR` overrides the repository directory containing the first two sources. The retained baseline manifest and object receipt do not prove the prior build's provenance; reproduce or separately trust its coherent prerequisites and the general foundations.
+
+This establishes a physical two-step result for the given branch conditions. It is not yet a native iPRA sentence, arbitrary-length source simulation, or either consistency implication.

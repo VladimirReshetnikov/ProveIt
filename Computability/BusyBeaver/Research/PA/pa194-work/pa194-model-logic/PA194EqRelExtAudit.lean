@@ -1,0 +1,10 @@
+import PA194ModelEqRelExt
+#print axioms PA194ModelLogic.fixedFormulaTranslation_eqRelExt_target
+#print axioms PA194ModelLogic.eqRelExt_reference_complete
+#print axioms PA194ModelLogic.eqRelExtRoot_four_le
+#print axioms PA194ModelLogic.eqRelExtRoot_budget_shape
+#print axioms PA194ModelLogic.eqRelExt_reference_core
+#print axioms PA194ModelLogic.eqRelExtRoot_quote
+#print axioms PA194ModelLogic.eqRelExtRoot_valid
+#print axioms PA194ModelLogic.neighborhoodEqualityCongruence_target
+#print axioms PA194ModelLogic.equalityRelExtNNF_supplier
