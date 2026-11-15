@@ -1,0 +1,7 @@
+import PA194PAeqUniversalAtomicCongruence
+#print axioms PA194PAeq.ContextCongruence.context_symmetry
+#print axioms PA194PAeq.ContextCongruence.context_transitivity
+#print axioms PA194PAeq.ContextCongruence.atomic_implication
+#print axioms PA194PAeq.ContextCongruence.negative_atomic_implication
+#print axioms PA194PAeq.UniversalAtomicCongruence.positive
+#print axioms PA194PAeq.UniversalAtomicCongruence.negative
