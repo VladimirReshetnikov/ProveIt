@@ -1,0 +1,5 @@
+import PA194PAeqArithmeticInduction
+#print axioms PA194PAeqBind.formulaCode_imp
+#print axioms PA194PAeqBind.arithmeticSuccVariable_quote
+#print axioms PA194PAeqBind.arithmeticZero_quote
+#print axioms PA194PAeqBind.formulaCode_indBodyVal
