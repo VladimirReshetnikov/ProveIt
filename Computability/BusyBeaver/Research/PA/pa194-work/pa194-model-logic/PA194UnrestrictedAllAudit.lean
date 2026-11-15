@@ -1,0 +1,9 @@
+import PA194ModelSourceOpeningGeneral
+#print axioms PA194ModelLogic.sourceQVec_exists_trace
+#print axioms PA194ModelLogic.sourceQVec_trace_entries
+#print axioms PA194ModelLogic.sourceOpeningStack_aligned
+#print axioms PA194ModelLogic.sourceOpeningTerm_allocated
+#print axioms PA194ModelLogic.sourceOpening_positiveAtom
+#print axioms PA194ModelLogic.sourceOpening_negativeAtom
+#print axioms PA194ModelLogic.sourceOpening_freeBridge
+#print axioms PA194ModelLogic.simRuleAll_general

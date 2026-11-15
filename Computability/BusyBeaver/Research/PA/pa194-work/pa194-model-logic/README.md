@@ -12,10 +12,11 @@ a candidate-PRA model `M` whose arithmetic reduct satisfies `𝗜𝚺₁`.
 are checked, including for nonstandard codes. The
 [general seeded freshness field](GENERAL-FRESHNESS.md) and
 [general shift rules](SHIFT-INTERFACE.md) are proved in PRA models with an IΣ₁
-arithmetic reduct. The universal-introduction rule has an independently replayed
-[one-level quantified case](ONE-LEVEL-FREE.md); unrestricted quantified rules, a
-complete compiler simulation, and identification of the source theory with PA remain
-open. None of these results is a native iPRA consistency implication. The detailed
+arithmetic reduct. The [unrestricted universal-introduction rule](UNRESTRICTED-ALL.md)
+has passed a repository source-closure replay for arbitrary internal formula depth.
+The unrestricted existential rule and finite-adjunctive compiler simulation have
+independent replays and await repository integration. Identification of the source
+theory with PA remains open. None of these results is a native iPRA consistency implication. The detailed
 module descriptions below include earlier stages of the development; consult the
 linked individual status notes for later results and their audit provenance.
 
