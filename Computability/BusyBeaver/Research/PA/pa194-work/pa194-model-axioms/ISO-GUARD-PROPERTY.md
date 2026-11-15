@@ -1,0 +1,7 @@
+# Isomorphism-guarded induction property
+
+For any internally valid arity-one source formula code p, including nonstandard codes, `isoGuardProperty p` is the arity-one property `Q(a) := ∀ b, (domain(b) ∧ orderIso(a,b)) → P(b)`. The fixed guard uses `PairGraph.orderIso` from the unified forward-translation baseline, and p is placed as the property of the inner bound variable. `isoGuardProperty_scoped` and `isoGuardPropertyGraph_defined` verify scope and a fixed Σ₁ code graph.
+
+`isoGuardOrdinalGraph_defined` and `isoGuardOrdinalProof_val` compose this property with the deterministic full-source ordinal-induction supplier. Thus the latter graph takes only p and computes the exact code of a proof of the ordinal-induction statement for Q, in every PRA model with IΣ₁ arithmetic reduct. This is not a proof that the actual translated PA induction axiom follows; in particular it does not establish the remaining substitution, zero/successor witness and isomorphism transport steps. It is not a native iPRA result.
+
+Run `bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-axioms/check-iso-guard-property.sh "$PWD" /dev/shm/pa194-iso-guard-property-repo-NEW` from the repository root. It source-compiles the module against pinned prebuilt dependencies, including `/dev/shm/pa194-forward-refl-unified-repo` and the repository-replayed canonical ordinal constructor, and rejects `sorryAx`.
