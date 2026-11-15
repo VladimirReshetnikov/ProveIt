@@ -62,7 +62,7 @@ source sites, including a [matched loop through site 32](pa194/ipra/machine-code
 in PRA models; a complete reachable-state simulation remains open. Native iPRA
 clocked equalities cover the [physical positive loop](pa194/ipra/machine-code/ACTUAL-PHYSICAL-NATIVE.md),
 [source fetch](pa194/ipra/machine-code/UNIFIED-FETCH-NATIVE.md),
-[decoder](pa194/ipra/machine-code/DECODER-NATIVE.md), and
+[decoder](pa194/ipra/machine-code/DECODER-NATIVE.md),
 [tag dispatch](pa194/ipra/machine-code/DISPATCH-TAG-NATIVE.md), and the
 [site-31 physical increment](pa194/ipra/machine-code/SITE31-NATIVE.md). The complete
 [fetch/decode/dispatch prefix](pa194/ipra/machine-code/SCHEDULER-BRANCHES-OPEN.md)
@@ -81,8 +81,10 @@ in each covered model; the nonstandard-property case remains open. The [addition
 and [multiplication](pa194-work/pa194-model-logic/PAEQ-MULTIPLICATION-CODE.md)
 code graphs establish syntax. Recursive PAeq [term](pa194-work/pa194-model-logic/PAEQ-TERM-DISPATCHER.md)
 and [formula](pa194-work/pa194-model-logic/PAEQ-FORMULA-DISPATCHER.md)
-dispatchers have scope preservation under an explicit environment bound;
-arithmetic semantics and a proof compiler remain open.
+dispatchers have scope preservation under an explicit environment bound. A
+[conditional internal refutation compiler](pa194-work/pa194-model-logic/PAEQ-CONDITIONAL-REFUTATION.md)
+still assumes the quantifier, shift, and theory-axiom suppliers. Arithmetic
+semantics and an unconditional proof compiler remain open.
 A proof-code interpretation of PA and the connection to the physical machine
 remain open. In standard Lean semantics, [the calculus/clock composition](pa194-work/pa194-calculus-clock/README.md)
 proves that either clock reaches 1 exactly when the displayed separate-diagonal
