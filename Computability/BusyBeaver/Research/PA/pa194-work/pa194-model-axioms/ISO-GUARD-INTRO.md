@@ -1,0 +1,9 @@
+# Contextual application and introduction of the isomorphism-guarded property
+
+`PA194IsoGuardAt.lean` constructs the source derivation of `P(b)` from derivations in the same context of `Q(a)` and `domain(b) ∧ orderIso(a,b)`, where `Q(a) = ∀ b, (domain(b) ∧ orderIso(a,b)) → P(b)`.  The property code `p` is any internally valid arity-one formula, including nonstandard codes; `a` and `b` are arbitrary model-valued free-variable indices. `isoGuardAt_expanded` establishes the exact typed substitution through Q's binder. `isoGuardAtProof` applies specialization and modus ponens to the given proof codes. `isoGuardAtProof_val` identifies its proof code with `isoGuardAtCode`, and `isoGuardAtGraph_defined` shows that this one fixed Σ₁ graph defines the constructor in every assumed PRA model whose arithmetic reduct satisfies IΣ₁.
+
+`isoGuardIntroProof` is the converse introduction adapter: it accepts a proof of the opened implication body in the shifted context, then constructs a proof of `Q(a)` via the contextual universal rule. `isoGuardIntroGraph_defined` and `isoGuardIntroProof_val` provide its fixed Σ₁ proof-code graph and correctness.
+
+The source theory and context are arbitrary, and proofs of Q(a) and its guard are explicit inputs. This does not derive Q's ordinal induction premises, establish compatibility with the translated PA induction axiom, supply a native iPRA proof, or establish the machine correctness theorem.
+
+Run `bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-axioms/check-iso-guard-intro.sh REPO NEW_OUTPUT`. The source module is recompiled in a fresh output with the pinned prebuilt input objects; this is not a full transitive source rebuild. The checks include the repository-rebuilt unified order-isomorphism syntax and the committed Q-property module. A successful output reports seven axiom audits without `sorryAx`.
