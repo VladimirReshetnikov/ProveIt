@@ -84,7 +84,9 @@ in each covered PRA model with IΣ₁ arithmetic reduct, including nonstandard
 property codes. [Fixed Σ₁ graphs for deterministic ordinal proof codes](pa194-work/pa194-model-axioms/CANONICAL-ORDINAL.md)
 now supply open and closed proofs uniformly in the property code, using an
 internally least tuple of auxiliary proofs. These are model-level results under
-the stated PRA and IΣ₁ assumptions, not native iPRA derivations. A fixed
+the stated PRA and IΣ₁ assumptions, not native iPRA derivations. The source
+theory also [proves successor cancellation for ordinal isomorphism](pa194-work/pa194-model-axioms/ISO-CANCEL-SOURCE.md);
+the translated PA induction bridge remains open. A fixed
 [universally closed least-point exclusion theorem](pa194-work/pa194-model-axioms/LEAST-EXCLUDES.md)
 has an internal proof in the covered models, and a separate
 [triple-specialization graph](pa194-work/pa194-model-axioms/CONTEXT-TRIPLE-SPECIALIZE.md)
