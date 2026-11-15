@@ -75,7 +75,9 @@ separation theory is [identified with the typed Foundation scheme](pa194-work/pa
 The combined source theory [internally proves its open separation instances](pa194-work/pa194-model-axioms/FULL-SEP-OPEN.md)
 for model-valued valid properties under the stated PRA and IΣ₁ assumptions.
 [Internal closure and reopening](pa194-work/pa194-model-axioms/CLOSE.md)
-also preserve proof existence for model-valued closure lengths. The [addition](pa194-work/pa194-model-logic/PAEQ-ADDITION-CODE.md)
+also preserve proof existence for model-valued closure lengths. The source theory
+[proves ordinal induction for standard typed properties](pa194-work/pa194-model-axioms/STANDARD-ORDINAL.md)
+in each covered model; the nonstandard-property case remains open. The [addition](pa194-work/pa194-model-logic/PAEQ-ADDITION-CODE.md)
 and [multiplication](pa194-work/pa194-model-logic/PAEQ-MULTIPLICATION-CODE.md)
 code graphs establish syntax. Recursive PAeq [term](pa194-work/pa194-model-logic/PAEQ-TERM-DISPATCHER.md)
 and [formula](pa194-work/pa194-model-logic/PAEQ-FORMULA-DISPATCHER.md)
