@@ -1,0 +1,7 @@
+# Source supplier for open separation instances
+
+For every internally valid arity-one source property p, `full_sep_root_provable` proves that the internal `fullSepTheory` has a proof of `sepRoot p`. `adjunctive_full_sep_root_provable` proves the same for `adjunctiveFullSepTheory`, the classifier-defined union with equality and weak adjunction. The property may contain free parameters and its code may be nonstandard. Unlike the general reopening theorem, these results discharge closed-instance axiom membership using the full-separation classifier theorem.
+
+The theorems are model-level: they assume a nonempty candidate-PRA model with IΣ₁ in its induced ordered-ring reduct. The conclusion states existence of a Foundation internal source proof. It does not supply a model-definable proof-code function, prove the ordinal-induction theorem, or establish an iPRA consistency implication.
+
+The staged source replay uses `/dev/shm/pa194-reopen-proof-repo`, `/dev/shm/pa194-full-sep-theory-replay`, and their prebuilt transitive overlays listed in `check-full-sep-open.sh`. The checker hashes the source and immediate prerequisite oleans and checks the two axiom reports. Run `Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-axioms/check-full-sep-open.sh "$REPO" FRESH_OUTPUT`; the passing output is `/dev/shm/pa194-full-sep-open-replay`, with `/tmp/pa194-full-sep-open-replay.log`. The transitive dependencies are not rebuilt by this checker.
