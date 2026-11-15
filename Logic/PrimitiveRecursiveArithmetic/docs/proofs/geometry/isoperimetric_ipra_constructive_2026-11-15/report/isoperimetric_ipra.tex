@@ -1,0 +1,238 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor,microtype,enumitem,fancyhdr,hyperref,pdfpages}
+\hypersetup{colorlinks=true,linkcolor=blue!40!black,urlcolor=blue!45!black,
+ citecolor=blue!40!black,pdftitle={Constructive Isoperimetry in Intuitionistic Primitive Recursive Arithmetic},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Constructive isoperimetry in iPRA}
+\fancyhead[R]{\small Finite proofs and effective geometry}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{12mm}
+{\color{blue!45!black}\large MATHEMATICAL RESEARCH REPORT\par}
+\vspace{7mm}
+{\LARGE\bfseries Constructive isoperimetry\\[3mm]
+in intuitionistic primitive\\[3mm] recursive arithmetic\par}
+\vspace{9mm}
+{\large Planar and higher-dimensional inequalities,\\
+Wigner caustics, triangles, and hypercube boundaries\par}
+\vspace{10mm}
+Prepared for Vladimir Reshetnikov\\
+15 November 2026
+\vspace{8mm}
+\begin{abstract}
+We develop constructive versions of the mathematical statements in the
+Wikipedia article \emph{Isoperimetric inequality}. The finite core consists
+of explicit rational or integer inequalities: polygonal isoperimetry,
+both triangle inequalities, a rational-parameter Brunn--Minkowski theorem
+for finite unions of boxes, Fourier deficit identities, the sharp hypercube
+edge inequality, and the full Harper vertex theorem. The proof of the box
+theorem uses exact rational volume cuts with a bounded recursion; the
+hypercube proof includes the exceptional compressed families.
+
+The finite results extend to specified primitive recursive geometric
+presentations, with all approximation and regularity hypotheses stated.
+These yield the sharp planar inequality and circle rigidity, the
+Wigner-caustic improvement and constant-width equality, sharp Euclidean
+isoperimetry with an outer-volume modulus, a finite layered Sobolev theorem,
+and spherical inequalities for finite unions of caps and their complements.
+We distinguish these results from unrestricted classical claims that this
+report does not prove. The Lean contribution specifies finite definitions,
+internal iPRA proof targets, and a concrete completion path; it is an
+uncompiled outline rather than a finished formal proof.
+\end{abstract}
+\vfill
+\begin{tabular}{@{}p{0.24\textwidth}p{0.68\textwidth}@{}}
+\toprule
+Human proof & Full finite arguments and explicit presentation-dependent
+transfer estimates.\\
+Foundation & Intuitionistic first-order PRA with quantifier-free induction;
+ProveIt APIs audited at an immutable commit.\\
+Artifact status & LaTeX and compiled PDF, original planar appendix,
+Lean outlines, exact-arithmetic reference code and validation records.\\
+Formal status & No completed internal Lean derivation is claimed.\\
+\bottomrule
+\end{tabular}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+
+\setcounter{tocdepth}{1}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Results, coverage, and the meaning of the claim}
+
+The request concerns a broad article, ranging from elementary triangles
+to geometric measure theory. The appropriate constructive answer cannot
+be a single invocation of its classical results. We give exact finite
+theorems first, then state the data needed to interpret them geometrically.
+The article was consulted on 15 November 2026 \cite{Wikipedia}; the
+mathematical proofs below are developed in full, with primary references
+for the classical results and exact provenance for the reused repository
+work.
+
+\begin{longtable}{@{}p{0.29\textwidth}p{0.61\textwidth}@{}}
+\toprule
+Article topic & Result proved here and its scope\\
+\midrule
+\endfirsthead
+\toprule Article topic & Result proved here and its scope\\\midrule
+\endhead
+Planar inequality & \(4\pi|A|\leq L^2\) for explicitly represented
+boundaries; a uniform rational-polygon theorem; circle rigidity for the
+effective parametrized class. The full prior finite proof is appended.\\[3pt]
+Quotient, ratio, optimizers & \(Q\leq1\), \(L^2/A\geq4\pi\),
+disk attainment, equivalence of the fixed-length and fixed-area problems,
+and Dido's semicircle optimum, with positive denominators specified.\\[3pt]
+Regular polygons & The exact formula \(Q_n=\pi/(n\tan(\pi/n))\),
+strict increase, and \(0<1-Q_n\leq8/n^2\).\\[3pt]
+Wigner-caustic refinement & Full finite support-polynomial proof and
+effective \(C^2\) support-function extension; equality exactly at constant
+width within that class; an explicit width-stability estimate.\\[3pt]
+Euclidean dimensions & Root-free Brunn--Minkowski for rational box unions;
+\(P^n\geq n^n\omega_nV^{n-1}\) for explicit outer-volume presentations;
+verified box-union and ball examples; balls attain equality.\\[3pt]
+Sobolev connection & Finite layered and cubical BV inequalities with the
+sharp constant; an explicit sufficient approximation contract for the
+analytic \(W^{1,1}\) form. Universal effective coarea is not asserted.\\[3pt]
+Sphere & Exact cap equality; the spherical inequality for finite disjoint
+cap unions and their complements; radius scaling and complement symmetry.
+The general spherical curve theorem is not proved.\\[3pt]
+Finite graph profiles & Bounded algorithms computing edge and vertex
+profiles and returning minimizing subsets.\\[3pt]
+Hypercube edge boundary & Full sharp edge inequality in an integer-power
+form, subcube equality classification, and sharp half-volume expansion.\\[3pt]
+Hypercube vertex boundary & Full Harper theorem for every size, binomial
+thresholds, exact boundary at Hamming-ball sizes, and all-distance
+neighborhoods.\\[3pt]
+Triangles & Both inequalities in the article, equivalent radical-free
+polynomial inequalities, and equilateral equality for nondegenerate
+triangles.\\[3pt]
+Other generalizations & No unrestricted theorem about arbitrary Hadamard
+manifolds, arbitrary metric-measure spaces, general Hausdorff/Minkowski
+boundary identifications, or all higher-dimensional equality sets is
+claimed.\\
+\bottomrule
+\end{longtable}
+
+\paragraph{Organization and reuse.}
+The arithmetic conventions come first. The planar section summarizes and
+audits the decisive finite argument already in ProveIt, then adds the
+regular-polygon and Wigner developments. The box, Sobolev, spherical,
+hypercube, and triangle sections give their own complete proofs. The
+repository section states exactly which Lean definitions exist and which
+proof terms remain to be built. Appendix~\ref{app:planar-full} reproduces
+the complete 22-page upstream planar paper, with its original provenance
+and original uncompiled-Lean status preserved. This report is therefore
+readable without downloading an additional paper from the repository.
+
+\input{foundations.tex}
+\input{plane.tex}
+\input{triangles.tex}
+\input{euclidean.tex}
+\input{sobolev_sphere.tex}
+\input{hypercube.tex}
+\input{repository_audit.tex}
+\input{validation_scope.tex}
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{Wikipedia}
+Wikipedia contributors, \emph{Isoperimetric inequality}, consulted
+15 November 2026.
+\url{https://en.wikipedia.org/wiki/Isoperimetric_inequality}.
+
+\bibitem{prior-planar}
+ProveIt, \emph{The sharp planar isoperimetric inequality in intuitionistic
+primitive recursive arithmetic}, 14 November 2026. Source retrieved from
+\path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/geometry/isoperimetric_ipra/} at commit
+\texttt{22afac4c9db7a0e060c081cc11db0dc96fe59e93}.
+The unmodified source and complete compiled paper are included in this
+archive; see \texttt{reused/PROVENANCE.txt}.
+
+\bibitem{ProveIt}
+Vladimir Reshetnikov, \emph{ProveIt},
+\texttt{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA},
+source snapshot as specified above.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{Gardner2002}
+R. J. Gardner, The Brunn--Minkowski inequality,
+\emph{Bulletin of the American Mathematical Society} \textbf{39} (2002),
+355--405. In particular Theorem 4.1 and its finite box argument.
+\url{https://doi.org/10.1090/S0273-0979-02-00941-2}.
+
+\bibitem{zwierzynski}
+M. Zwierzy\'nski, The improved isoperimetric inequality and the Wigner
+caustic of planar ovals, \emph{Journal of Mathematical Analysis and
+Applications} \textbf{442} (2016), 726--739.
+\url{https://arxiv.org/abs/1512.06684}.
+
+\bibitem{Harper1966}
+L. H. Harper, Optimal numberings and isoperimetric problems on graphs,
+\emph{Journal of Combinatorial Theory} \textbf{1} (1966), 385--393.
+\url{https://doi.org/10.1016/S0021-9800(66)80059-5}.
+
+\bibitem{Harper2004}
+L. H. Harper, \emph{Global Methods for Combinatorial Isoperimetric Problems},
+Cambridge University Press, 2004, Chapter 4.
+\url{https://doi.org/10.1017/CBO9780511616679.005}.
+
+\bibitem{SvrtanVeljan}
+D. Svrtan and D. Veljan, Non-Euclidean versions of some classical triangle
+inequalities, \emph{Forum Geometricorum} \textbf{12} (2012), 197--209.
+The triangle inequalities are independently proved in
+Section~\ref{sec:triangles}.
+\end{thebibliography}
+
+\clearpage
+\appendix
+\section{Complete reused planar proof}
+\label{app:planar-full}
+
+The following pages reproduce the complete compiled upstream paper
+\cite{prior-planar}. They retain its original pagination and date.
+The source \texttt{reused/isoperimetric\_ipra.tex} is included without
+mathematical changes. It contains the positive quadratic-radical coding,
+the full finite polygon theorem, lower-real perimeter construction,
+and effective equality analysis used by the planar section above.
+
+The upstream paper describes an older foundational snapshot in its own
+audit. The current repository audit in this report is at
+\texttt{22afac4c9db7a0e060c081cc11db0dc96fe59e93}; preserving the
+upstream text does not change its provenance or formalization status.
+
+\includepdf[pages=-,pagecommand={\thispagestyle{empty}}]{../reused/isoperimetric_ipra.pdf}
+\end{document}
+

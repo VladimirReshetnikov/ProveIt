@@ -1,0 +1,229 @@
+\section{A concrete path to complete Lean formalization}
+\label{sec:lean}
+
+\subsection{Repository interface and what has actually been checked}
+The inspected ProveIt revision is
+\begin{center}
+\texttt{f7e5eac0a94a0e690a22cbeecc5f6cca9270e6df}.
+\end{center}
+At that revision the root toolchain file specifies Lean \texttt{v4.32.0},
+and the root Lake configuration requests Mathlib \texttt{v4.32.0}.
+The relevant source files are \texttt{ConciseIPRA/PR.lean},
+\texttt{Deduction.lean}, \texttt{BiInterpretation.lean}, and
+\texttt{NativeBiInterpretation.lean}~\cite{ProveIt}. We read their actual
+interfaces. In particular the repository has the types
+\[
+ \texttt{PR k},\quad\texttt{PTm n},\quad
+ \texttt{Fm PTm n},\quad\texttt{Prf PRAAx \,$\Gamma$\, $\varphi$},
+\]
+and the quantifier-free induction constructor
+\texttt{PRAAx.ind} and derived rule \texttt{PRA.qfInd}.
+Its theorem \texttt{pra\_iff\_native} translates an already proved
+arithmetic sequent into \texttt{NPrf} with the translated formulas.
+
+\textbf{Formalization status.} The human proofs and their explicit
+finite estimates are the completed mathematical component. The supplied
+Lean files are an \emph{uncompiled outline with definitions and small
+candidate finite proof scripts}. There was no Lean, Lake, or Elan
+executable in the preparation environment. No analytic theorem in this
+package is claimed to be kernel checked, and no completed object-theory
+proof certificate is supplied. Absence of \texttt{sorry} or added
+\texttt{axiom} declarations in an outline is not evidence of completion.
+The exact rational Python checks are separate implementation evidence.
+
+\subsection{Definitions to formalize, in dependency order}
+The file \texttt{FiniteDefinitions.lean} gives rational complex records,
+finite sums and products, the regular-name and equality predicates,
+apartness, the Bernoulli coefficient recursion, exponential and logarithm
+polynomials, and the regularized Euler--Maclaurin expression. Its
+rational-input branch at $s=1$ is decidable. For arbitrary fixed names,
+replace that branch by the everywhere-defined integral or power series
+$Q_N$ in \eqref{em:Q}; do not test exact equality of names.
+
+A complete implementation should use the following modules. These names
+are a proposed module map, not claims that such modules already exist.
+\begin{longtable}{p{0.20\textwidth}p{0.72\textwidth}}
+\toprule
+Module & Required definitions and proved contract\\\midrule
+\endfirsthead
+\toprule Module & Required definitions and proved contract\\\midrule
+\endhead
+\texttt{Codes} & Signed integers, positive-denominator fractions, pairs,
+finite lists, polynomial coefficient lists, bounded Boolean conjunction,
+and decoding lemmas. All arithmetic must have explicit PR syntax.\\
+\texttt{Names} & The predicates (F1)--(F2), arithmetic on names, rational
+ball containment, supplied apartness, refinement and rational-gap lemmas.
+Prove sum, product and inverse error rules.\\
+\texttt{Elementary} & Fixed log/exp/sin/cos approximators using
+\eqref{eq:exp-tail}--\eqref{eq:log-tail}; $\pi$ by arctangent; positive
+square roots by bounded bisection. Prove their addition, derivative and
+modulus identities from finite polynomials.\\
+\texttt{FiniteCalculus} & The mesh sums and bound \eqref{eq:quad};
+telescoping FTC, product rule, integration by parts, and substitutions on
+certified compact intervals. Derivative moduli are data or explicit
+consequences of the elementary formulas.\\
+\texttt{Dirichlet} & The fixed right-half-plane evaluator; dyadic tail
+\eqref{eq:d-tail}, derivative tail \eqref{eq:d-derivative-tail},
+convolution \eqref{eq:d-convolution}, factorization, and the Euler,
+M\"obius, eta and logarithm identities.\\
+\texttt{BernoulliEM} & Finite coefficient recursions; endpoint,
+reflection and difference identities; finite formula \eqref{em:finite}
+with its negative integral remainder.\\
+\texttt{Continuation} & The fixed evaluator $E_{m,N(k)}$, its $K_0/N$
+error, order compatibility, regular part $H$, Taylor coefficients,
+Stieltjes names, and the exact finite nonpositive values.\\
+\texttt{GammaGateway} & The fixed reciprocal-gamma product, explicit
+lower bounds, Euler integral, finite sine product, reflection and
+normalized duplication, with their stated remainders.\\
+\texttt{Theta} & Finite Fej\'er polynomials, the Gaussian transform,
+periodization, the entire integral $A(s)$ and the pole-cleared expression
+\textnormal{(TH8)}.\\
+\texttt{Propagation} & Finite circle coefficient extraction,
+\eqref{eq:analytic-propagation}, the backwards precision recurrence,
+and its finite tree of sample points. This replaces an abstract
+identity theorem.\\
+\texttt{Hasse} & Finite differences $D_n$, the shifted finite Mellin
+identity, the derivative-basis coefficient invariant, the bound
+$C(n+1)^m$, and the outer geometric tail. Prove entire eta with finite
+circle coefficient extraction and identify its cleared product with
+zeta.\\
+\texttt{Consequences} & Functional equations, $\xi$, Fourier Bernoulli
+values, Mellin and cube integrals, the explicit boundary lower bound,
+and the finite-block non-Cauchy witnesses.\\
+\texttt{ObjectProofs} & For every compiled fixed evaluator, actual
+\texttt{Prf PRAAx} derivations of its rational residual inequalities.
+Only then use the existing native bridge.\\
+\bottomrule
+\end{longtable}
+
+\subsection{The exact object-theory target}
+A theorem about Lean's completed real or complex numbers, even if
+constructively proved, is not itself an iPRA derivation. The target is a
+finite rational predicate with the inputs coded as naturals. For example,
+for a rational argument in an Euler--Maclaurin chart, a checker receives
+\[
+ u=\operatorname{code}(a,b,c,d,A,R,k,N,M,\ldots)
+\]
+where $(a/b)+i(c/d)$ is the input. It verifies the domain inequalities
+and the rational finite-error conclusion. A failed domain test makes the
+implication true; a valid input must satisfy the stated conclusion.
+Return $0$ for success. Once this \emph{fixed} checker has been compiled
+to a symbol $\mathsf{check}:\texttt{PR 1}$, the closed sentence is
+\[
+ \forall u\;\mathsf{check}(u)=0.
+ \tag{L1}\label{eq:object-target}
+\]
+The required endpoint is a term of
+\[
+ \texttt{Prf PRAAx [] (residualSentence check)}.
+ \tag{L2}\label{eq:object-proof}
+\]
+For a fixed nonrational input name, inline its fixed PR definition and
+retain its regularity and domain formulas in $\Gamma$. This gives a
+sequent rather than silently asserting that every name is regular.
+Some conclusions, such as the non-Cauchy theorem, have an explicit
+witness function: insert the given $M(N),L(N)$, prove the finite bound,
+and then use intuitionistic existential introduction. There is no
+unbounded minimization.
+
+The included \texttt{ArithmeticTargets.lean} writes the syntax of
+(L1)--(L2) and the final bridge. Its theorem
+\texttt{native\_of\_completed} takes a completed object proof as its
+hypothesis and transports it. It is an interface example, not a proof of
+that missing hypothesis. The substantive unfinished formal work is to
+construct the checkers, prove their coding meanings, and build their
+\texttt{Prf PRAAx} terms from the finite arguments in the article.
+
+\subsection{Quantifier-free invariants and precision accounting}
+Here are the principal invariants, stated at the level at which they
+should be compiled. Fix all exterior precision variables first.
+\begin{enumerate}[leftmargin=*,itemsep=4pt]
+\item For a finite sum: the accumulator equals the sum of the recorded
+terms and its error is at most the sum of their assigned rational
+radii. For a product, use the factor-replacement telescoping identity.
+\item For a Bernoulli recursion: the stored coefficient vector has the
+specified derivative vector, rational mean zero, and coefficient bound
+$C_n$. Each identity is a bounded conjunction of rational equalities.
+\item For finite Euler--Maclaurin: after $j$ cells, the accumulator is
+exactly the endpoint correction plus the finite integral expression,
+within the sum of the explicitly assigned quadrature errors. For the
+integration-by-parts order, store the finite list of derivative and
+Bernoulli coefficients and the remaining signed integral.
+\item For a Dirichlet or Euler-product truncation: every included
+factorization is unique and every omitted index lies in the declared
+nonnegative tail majorant. This is finite arithmetic on bounded lists.
+\item For gamma and theta: the accumulated rational evaluations lie
+in their balls, with tail at most the explicit product, geometric or
+exponential bound. No ``the series converges'' invariant is used.
+\item For analytic propagation: build the finite tree of circle sample
+points required by the successive coefficient quadratures. Store at each
+node its rational residual bound and the backwards precision supplied
+by (TH7). Tree depth and branching are PR numbers fixed before the
+induction. The invariant quantifies only over this bounded coded tree.
+\item For a final named equality: prove the finite residual inequality
+for the already fixed precision, then introduce that precision
+universally. Do not apply quantifier-free induction to equality of names.
+\end{enumerate}
+The cutoffs in the text are deliberately loose. Their role is to make
+all existence witnesses primitive recursive and all induction invariants
+finite; they are not assertions of efficient numerical complexity.
+The Python evaluator uses tighter exact arithmetic whenever convenient,
+but its reported enclosure always uses the proved analytic remainder.
+
+\subsection{Executable evidence and reproducibility}
+The program \texttt{code/zeta\_certificates.py} implements exact complex
+rational balls with the $1$-norm, range-reduced logarithms, exponential
+polynomials with rounded-ball repeated squaring, Bernoulli coefficients,
+and the finite Euler--Maclaurin formula. Its remainder is
+\[
+ 2\frac{C_{2m}\prod_{j<2m}\|s+j\|_1}{(2m)!}
+       \frac{N^{1-\lfloor\Re s\rfloor-2m}}{\Re s+2m-1}.
+ \tag{L3}\label{eq:code-remainder}
+\]
+The factor $2$ converts a Euclidean bound to a $1$-norm bound.
+The exponent is made integral by rounding $\Re s$ down, which enlarges
+the bound for $N\ge1$. When a Pochhammer factor is exactly zero at a
+nonpositive integer, the remainder is exactly zero and rational integer
+powers give the exact rational value.
+
+The saved verification run passed $780$ exact polynomial
+Euler--Maclaurin identities, including $300$ with nonzero remainder;
+$359$ Bernoulli polynomial identities; $8$ reference Bernoulli values;
+$13$ exact nonpositive zeta values; $54$ rational-ball product
+containment instances; and $4$ overlapping independent-truncation checks.
+Seven example enclosures are stored with exact rational centers and
+radii, and outward-rounded decimal endpoints. These finite checks catch
+implementation and normalization mistakes. They do not prove a
+universal analytic theorem or constitute the object proof (L2).
+
+For example, at $N=64$, $m=12$ and working precision $70$ bits,
+the program returns the following outward-rounded decimal intervals.
+The machine-readable file retains the exact rational ball radii.
+\begin{center}
+\small
+\begin{tabular}{ll}
+\toprule Quantity & Enclosure or exact value\\\midrule
+$\zeta(2)$ & $[1.64493406684822,\ 1.64493406684823]$\\
+$\zeta(3)$ & $[1.20205690315959,\ 1.20205690315960]$\\
+$\zeta(1/2)$ & $[-1.46035450880959,\ -1.46035450880958]$\\
+$\gamma$ & $[0.57721566490153,\ 0.57721566490154]$\\
+$\zeta(-1)$ & $-1/12$ exactly\\
+$\zeta(-2)$ & $0$ exactly\\
+$\Re\zeta(1/2+14i)$ & $[0.02224114258984,\ 0.02224114262092]$\\
+$\Im\zeta(1/2+14i)$ & $[-0.10325812328498,\ -0.10325812325391]$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The complex example is a value enclosure, not a certificate for a zero.
+
+From the extracted package root, run
+\begin{verbatim}
+python3 code/check_finite.py
+python3 code/zeta_certificates.py --output verification/enclosures.json
+python3 code/build_pdf.py
+\end{verbatim}
+The first two commands use only Python's standard library. The third
+needs \texttt{pdflatex} and the ordinary LaTeX packages listed in the
+preamble. Proposed Lean checking commands and the exact module roadmap
+are in \texttt{lean/README.md}. The PDF build, exact checks, and visual
+inspection are recorded separately from unperformed Lean verification.

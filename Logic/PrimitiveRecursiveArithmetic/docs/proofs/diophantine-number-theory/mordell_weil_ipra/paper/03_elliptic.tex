@@ -1,0 +1,537 @@
+\section{Explicit arithmetic on an arbitrary integral elliptic model}
+\label{sec:elliptic}
+
+Throughout this section fix integers $A,B$ with
+$D_0=4A^3+27B^2\ne0$, and put
+\[
+ E:\quad y^2=x^3+Ax+B,\qquad S=1+|A|+|B|.
+ \tag{4.1}\label{eq:4-model}
+\]
+Its projective equation is $Y^2Z=X^3+AXZ^2+BZ^3$.
+The only point with $Z=0$ is $O=[0:1:0]$. Every other point has unique
+affine coordinates, so the tagged rational codes of
+Section~\ref{sec:foundations} cover all rational projective points.
+
+\subsection{The operations and the inverse-translation identity}
+
+Define $-O=O$ and $-(x,y)=(x,-y)$; make $O$ the identity.
+For affine $P=(x,y),R=(u,v)$, if $x=u,y=-v$, put $P+R=O$.
+Otherwise use
+\[
+ \lambda=
+ \begin{cases}
+  (v-y)/(u-x),&x\ne u,\\
+  (3x^2+A)/(2y),&P=R,\ y\ne0,
+ \end{cases}\qquad
+ x'=\lambda^2-x-u,\quad y'=\lambda(x-x')-y.
+ \tag{4.2}\label{eq:add}
+\]
+Set $P+R=(x',y')$. If $x=u$, the two curve equations imply
+$(y-v)(y+v)=0$; decidable rational equality therefore leaves exactly the
+listed branches. Every denominator is nonzero in its own branch.
+
+Substitute the line $Y=\lambda(X-x)+y$ into the cubic. Its polynomial
+has $x,u$ as roots, with multiplicity two in the tangent case, and the
+sum of its three roots is $\lambda^2$. Polynomial division therefore
+gives the third root $\lambda^2-x-u$. Reflecting its ordinate gives
+\eqref{eq:add}, which proves closure by direct substitution. This proof
+uses only rational arithmetic and monic division by linear factors.
+
+We will need
+\[
+ (U+R)-R=U.
+ \tag{4.3}\label{eq:inverse-translation}
+\]
+This identity has a short verification that does not require the full
+associativity theorem. If the line through $U,R$ meets the cubic a third
+time at $-(U+R)$, its reflection meets it at $-U,-R,U+R$.
+Applying the same third-intersection rule to $U+R,-R$ therefore yields
+$U$. When two of these intersections coincide, the multiplicity gives
+the tangent branch. A vertical line gives the inverse branch; an input
+$O$ gives the identity branch. Equivalently these are the finite case
+splits of \eqref{eq:add}, verified by the same cubic factorization.
+Replacing $R$ by $-R$ also gives $(U-R)+R=U$.
+Thus the word-producing theorem below has an elementary arithmetic
+proof independent of a separate formalization of associativity.
+
+For the usual abelian-group formulation, \eqref{eq:add} is the
+elliptic group operation. The general group laws may be reused in a
+standard mathematical development; they are explicitly separate
+object-theory obligations if one wants the coefficient-vector version
+inside iPRA. The compact-word conclusion itself does not need them.
+For the unconditional family in Section~\ref{sec:unconditional}, the
+entire group law will instead be a verified four-element table.
+
+\subsection{Square and cube denominators}
+
+\begin{lemma}[Canonical affine form]\label{lem:denominators}
+Every rational affine point of \eqref{eq:4-model} has a unique expression
+\[
+ x=a/d^2,\qquad y=b/d^3,\qquad
+ a,b\in\Z,\ d>0,\quad \gcd(|a|,d)=1,
+ \tag{4.4}\label{eq:denomform}
+\]
+where
+\[
+ b^2=a^3+Aa d^4+Bd^6.
+ \tag{4.5}\label{eq:clearedcurve}
+\]
+The conversion is primitive recursive.
+\end{lemma}
+\begin{proof}
+Write $x=a/c$ in reduced form, $c>0$. Then
+\[
+ x^3+Ax+B=(a^3+Aac^2+Bc^3)/c^3.
+\]
+The numerator is coprime to $c$, because it is congruent to $a^3$
+modulo $c$ and $\gcd(a,c)=1$. It is consequently coprime to $c^3$.
+Write $y=b/s$ in reduced form. Both $b^2/s^2$ and the preceding
+fraction are reduced. Uniqueness of reduced fractions gives $s^2=c^3$
+and $b^2=a^3+Aac^2+Bc^3$.
+
+Since $c^2\mid s^2$, Lemma~\ref{lem:squares} gives $c\mid s$.
+Put $d=s/c$. Then $d^2=c$, so $s=d^3$. This proves the equations.
+The zero-ordinate branch causes no exception: reduced zero has
+denominator $1$, and the argument gives $c=s=d=1$.
+Uniqueness follows from uniqueness of the reduced $x$ denominator,
+the positive square root, and then the ordinate.
+\end{proof}
+
+The uniqueness of reduced fractions used here is elementary: if
+$a/c=b/d$ with both denominators positive and both pairs coprime,
+$ad=bc$ and coprime cancellation imply $c\mid d$ and $d\mid c$.
+Thus $c=d,a=b$. The denominator proof does not invoke valuations,
+prime factorization, or algebraic number theory.
+
+\subsection{Integer height and complete bounded-height enumeration}
+
+For a reduced projective rational pair $[a:c]$, set
+$H([a:c])=\max(|a|,|c|)$. For an affine elliptic point use its
+$x$-coordinate; put $x(O)=[1:0]$. Thus
+\[
+ H(O)=1,\qquad H(P)=\max(|a|,d^2)
+ \quad\hbox{in \eqref{eq:denomform}}.
+ \tag{4.6}
+\]
+All heights are positive integers. Define
+\[
+ h(P)=\htwo H(P)=\min\{n\le H(P):H(P)\le2^n\}.
+ \tag{4.7}\label{eq:binaryheight}
+\]
+The minimum is a bounded scan. The elementary inequality $N\le2^N$
+for $N\ge1$ proves its success. In particular $h(O)=0$, and
+$h(P)=0$ whenever $H(P)=1$. No real logarithm occurs in the definition.
+
+\begin{lemma}[An explicit finite point box]\label{lem:ell-enum}
+For an integer $M\ge1$, every affine point with $H(P)\le M$ occurs among
+the triples
+\[
+ |a|\le M,\quad 1\le d\le M,\quad d^2\le M,\quad
+ |b|\le SM^2,
+ \tag{4.8}\label{eq:box}
+\]
+filtered by $\gcd(|a|,d)=1$ and \eqref{eq:clearedcurve}.
+Adding $O$ gives a complete primitive recursive enumeration
+$\mathcal L_E(M)$. Its length is at most
+\[
+ 1+(2M+1)M(2SM^2+1).
+ \tag{4.9}
+\]
+\end{lemma}
+\begin{proof}
+Lemma~\ref{lem:denominators} gives the form and the first three bounds.
+The equation implies
+$b^2\le(1+|A|+|B|)M^3=SM^3\le S^2M^4$.
+Since all compared magnitudes are nonnegative, $|b|\le SM^2$.
+The displayed box has the stated number of candidates before filtering.
+Conversely every retained triple gives a rational point of the required
+height. Each loop has its displayed numerical bound, and all tests are
+decidable. Completeness is the preceding inequality, not a conclusion
+drawn from an empirical search.
+\end{proof}
+
+For Theorem~\ref{thm:abstract} take $L_E(C)=\mathcal L_E(2^C)$.
+One may implement the enumeration more efficiently by testing square
+roots of the right side of \eqref{eq:clearedcurve}, rather than scanning
+every $b$; the same bound proves completeness.
+
+\subsection{A finite polynomial certificate for duplication}
+\label{subsec:dup}
+
+The tangent formula in \eqref{eq:add} gives the homogeneous map
+\[
+ x(2P)=[F(X,Z):G(X,Z)]\quad\text{when }x(P)=[X:Z],
+ \tag{4.10}\label{eq:dupmap}
+\]
+where
+\[
+\begin{split}
+ F(X,Z)&=X^4-2AX^2Z^2-8BXZ^3+A^2Z^4,\\
+ G(X,Z)&=4X^3Z+4AXZ^3+4BZ^4.
+\end{split}
+\tag{4.11}\label{eq:FG}
+\]
+Indeed $x(2P)=(3x^2+A)^2/(4y^2)-2x$; substitute the curve equation
+and homogenize. At $O$ the pair is $[1:0]$.
+If $y=0$, the denominator vanishes and the numerator is
+$(3x^2+A)^2$, which is nonzero by nonsingularity. Thus the same
+projective formula handles every branch.
+
+Construct the integer $8$ by $8$ matrix $M_{A,B}$ of the linear map
+\[
+ (U,V)\longmapsto UF+VG,
+ \tag{4.12}
+\]
+where $U,V$ are binary cubics, and the output is a binary form of degree
+$7$. Use the input order
+$X^3,X^2Z,XZ^2,Z^3$ first for $U$, then for $V$, and output order
+$X^7,X^6Z,\ldots,Z^7$. The columns are simply these monomials times
+$F$ or $G$. Determinant expansion gives
+\[
+ R_0=\det M_{A,B}=256(4A^3+27B^2)^2\ne0.
+ \tag{4.13}\label{eq:resultant}
+\]
+This is a fixed-size polynomial computation, not an appeal to a
+nonconstructive elimination theorem.
+
+For an alternative check of nonvanishing, put $f=X^3+AX+B$ and
+$f'=3X^2+A$. Direct expansion proves
+\[
+ (27B-18AX)f+(6AX^2-9BX+4A^2)f'=4A^3+27B^2.
+ \tag{4.14}
+\]
+Moreover $F(X,1)=f'(X)^2-8Xf(X)$ and $G(X,1)=4f(X)$.
+Thus the dehomogenized polynomials are coprime over $\Q$; their
+homogeneous versions have no common factor at infinity since
+$F(X,0)=X^4$. This also makes the Sylvester matrix invertible by
+finite polynomial division and rational linear algebra.
+
+The first and last columns of $\adj M_{A,B}$ supply integral binary
+cubics $U_X,V_X,U_Z,V_Z$ such that
+\[
+ U_XF+V_XG=R_0X^7,\qquad
+ U_ZF+V_ZG=R_0Z^7.
+ \tag{4.15}\label{eq:bezout7}
+\]
+All coefficients are computed by fixed-size determinants. If a positive
+integer divides $R_0$ and all the coefficients of the four cubics, divide
+both identities by it. Denote the resulting nonzero integer by $R_*$.
+No sharp normalization is required; a common gcd suffices.
+Let
+\[
+ L=\max\bigl(1,\norm{U_X}_1+\norm{V_X}_1,
+                   \norm{U_Z}_1+\norm{V_Z}_1\bigr).
+ \tag{4.16}\label{eq:L}
+\]
+Here $\norm{\cdot}_1$ is the sum of the absolute coefficients, after any
+normalization. This is an explicit positive integer depending only on
+$A,B$. With
+$M=\max(1,2|A|,8|B|,A^2,4,4|A|,4|B|)$, a coarser completely
+displayed upper bound is $L\le8\cdot7!\,M^7$.
+
+\begin{lemma}[Duplication lower bound]\label{lem:dup-height}
+For every rational point,
+\[
+                  H(P)^4\le L\,H(2P).
+ \tag{4.17}\label{eq:dupheight}
+\]
+\end{lemma}
+\begin{proof}
+Write $x(P)=[a:c]$ with $\gcd(|a|,|c|)=1$. Set
+\[
+ H=\max(|a|,|c|),\qquad T=\max(|F(a,c)|,|G(a,c)|).
+\]
+The two evaluations cannot both vanish, because
+\eqref{eq:bezout7}, with $R_*$ in place of $R_0$, would force
+$a=c=0$. Put $g=\gcd(|F(a,c)|,|G(a,c)|)>0$.
+The identities show that $g$ divides both $R_*a^7$ and $R_*c^7$.
+Since $a^7,c^7$ are coprime, Bezout gives $g\mid R_*$.
+Consequently $g\le|R_*|$.
+
+Choose a coordinate of magnitude $H$ and use its corresponding identity.
+Every cubic multiplier is at most its coefficient norm times $H^3$,
+so
+\[
+ |R_*|H^7\le L H^3T,\qquad |R_*|H^4\le LT.
+ \tag{4.18}
+\]
+After reduction, $H(2P)=T/g$. Dividing the second inequality by
+$g$, and using $|R_*|/g\ge1$, gives \eqref{eq:dupheight}.
+All divisions used in the last statement are exact integer divisions;
+one can instead multiply through by $g$ throughout.
+
+The gcd argument controls the cancellation in projective coordinates.
+Omitting it would not prove a lower height bound.
+\end{proof}
+
+\subsection{A translation upper bound with every constant specified}
+\label{subsec:translation}
+
+For a nonidentity rational point $R$, define
+\[
+ T_R=\max\{4S^2H(R)^2,\ H(2R),\ 1\};
+ \qquad T_O=1.
+ \tag{4.19}\label{eq:TR}
+\]
+All these quantities are directly computable.
+
+\begin{lemma}[Translation upper bound]\label{lem:translation}
+For every pair of rational points $P,R$,
+\[
+                  H(P-R)\le T_R H(P)^2.
+ \tag{4.20}\label{eq:translation}
+\]
+\end{lemma}
+\begin{proof}
+For nonidentity $P,R$, use their canonical forms
+$P=(a/d^2,b/d^3)$ and $R=(c/e^2,w/e^3)$.
+If their abscissae differ, the secant formula simplifies to
+\[
+ x(P-R)=
+ \frac{x(P)^2x(R)+x(P)x(R)^2+
+       A(x(P)+x(R))+2B+2y(P)y(R)}
+      {(x(P)-x(R))^2}.
+ \tag{4.21}
+\]
+Multiplying numerator and denominator by $d^4e^4$ gives the integer pair
+\[
+\begin{split}
+ N={}&a^2ce^2+ac^2d^2
+       +A(ad^2e^4+cd^4e^2)
+       +2Bd^4e^4+2bwde,\\
+ D={}&(ae^2-cd^2)^2.
+\end{split}
+\tag{4.22}\label{eq:ND}
+\]
+Put $H=H(P)$ and $J=H(R)$. The curve equation gives
+$b^2\le SH^3$ and $d^2\le H$, whence
+$(|b|d)^2\le SH^4\le S^2H^4$, and therefore $|b|d\le SH^2$.
+Likewise $|w|e\le SJ^2$.
+The first two terms of $N$ each have magnitude at most $H^2J^2$;
+the $A$ terms contribute at most $2|A|H^2J^2$;
+the $B$ term at most $2|B|H^2J^2$;
+and the last term at most $2S^2H^2J^2$.
+Thus
+\[
+ |N|\le2(S+S^2)H^2J^2\le4S^2H^2J^2,\qquad
+ |D|\le4H^2J^2.
+ \tag{4.23}
+\]
+Reduction of the pair can only decrease its height. This proves the bound
+for distinct abscissae.
+
+If the abscissae agree, the ordinates are equal or opposite.
+Then $P-R$ is $O$ or $-2R$, whose height is at most
+$\max(1,H(2R))H(P)^2$. This includes a point of order two.
+If $P=O$, the needed inequality is $H(R)\le T_R$;
+if $R=O$, it is $H(P)\le H(P)^2$. These follow from the definitions.
+All exceptional branches have now been covered.
+\end{proof}
+
+\subsection{Unconditional finite division by two}
+\label{subsec:halves}
+
+Producing the preimages of a given rational point under doubling
+is much easier than finding an unknown representative of every quotient
+class. We make this distinction algorithmic.
+
+\begin{lemma}[A complete finite rational-root scan]\label{lem:ratroots}
+The rational roots of any nonzero integer polynomial of fixed degree can
+be listed by a primitive recursive algorithm.
+\end{lemma}
+\begin{proof}
+Record zero exactly when the constant coefficient vanishes, then strip
+the maximal power of $X$, using a scan bounded by the degree.
+If a nonconstant polynomial
+$c_dX^d+\cdots+c_0$ remains with $c_dc_0\ne0$, a nonzero rational
+root $m/n$ in lowest terms, $n>0$, satisfies
+\[
+ c_dm^d+c_{d-1}m^{d-1}n+\cdots+c_0n^d=0.
+ \tag{4.24}
+\]
+Reducing the equation modulo $m$ gives $m\mid c_0n^d$.
+Since $\gcd(|m|,n^d)=1$, $|m|\mid|c_0|$.
+Similarly $n\mid|c_d|$. Scan
+$-|c_0|\le m\le|c_0|$ and $1\le n\le|c_d|$, test coprimality,
+and test (4.24). This is complete and sound.
+If stripping leaves a constant, there are no nonzero roots.
+The division tests and finite scans are covered by
+Lemmas~\ref{lem:gcd} and \ref{lem:scan}.
+\end{proof}
+
+\begin{theorem}[Primitive recursive rational halving]\label{thm:halves}
+There is a fixed primitive recursive function $\Halves_E(T)$ that lists
+exactly the rational points $Q$ with $2Q=T$. In particular rational
+divisibility of a given point by two is decidable.
+\end{theorem}
+\begin{proof}
+First take an affine target whose reduced abscissa is $u/v$, $v>0$.
+By \eqref{eq:dupmap}, the abscissa $X=x(Q)$ of a preimage satisfies
+\[
+\begin{split}
+ p_T(X)={}&vX^4-4uX^3-2AvX^2\\
+          &-(8Bv+4Au)X+(A^2v-4Bu)=0.
+\end{split}
+\tag{4.25}\label{eq:halvingquartic}
+\]
+Its leading coefficient is $v>0$, so it is nonzero.
+List all its rational roots by Lemma~\ref{lem:ratroots}.
+For each root $x$, calculate the reduced rational
+$z=x^3+Ax+B$. If $z<0$, discard it. Otherwise test the numerator
+and denominator of $z$ for exact squares. If they are squares, test
+both points $(x,\sqrt z)$ and $(x,-\sqrt z)$ by the full exact equation
+$2Q=T$. Keep exactly the successful points, removing duplicates if desired.
+
+Soundness follows from that final check. For completeness, a preimage of
+an affine target is affine and is not of order two; its abscissa satisfies
+\eqref{eq:halvingquartic}, and its ordinate is one of the two rational
+square roots just tested. Thus it is retained.
+
+For $T=O$, include $O$ and the points $(x,0)$ where $x$ is a rational
+root of $x^3+Ax+B$. These are exactly the zero-denominator branches
+of doubling. The cubic is monic, so the rational-root scan is again
+bounded. Every step has explicit input-dependent finite bounds.
+There is no search for points of unbounded height.
+\end{proof}
+
+An empty output is a genuine decision about that particular
+point. It is not a decision of the universal assertion
+$\Cover_E(R)$. Pointwise decidability of a quotient equivalence relation
+does not by itself supply a complete list of its classes.
+
+\section{The supplied-cover constructive elliptic Mordell--Weil theorem}
+\label{sec:cover-thm}
+
+Let $R=(R_0,\ldots,R_{r-1})$ be a nonempty list of rational points of
+$E$, and suppose \eqref{eq:cover}. Adding $O$ to the list is always
+permitted. Compute $L$ from \eqref{eq:L} and $T_{R_i}$ from
+\eqref{eq:TR}, then put
+\[
+ T=\max_{i<r}T_{R_i},\quad
+ D=LT,\quad d=\htwo D,\quad C=d+2.
+ \tag{5.1}\label{eq:cutoff}
+\]
+These constants depend only on the given equation and representative list.
+
+\begin{lemma}[A natural-number contraction]\label{lem:bitcontract}
+Whenever $P=2Q+R_i$, one has
+\[
+          H(Q)^4\le D H(P)^2,\qquad
+          2h(Q)\le h(P)+C.
+ \tag{5.2}\label{eq:bitcontract}
+\]
+\end{lemma}
+\begin{proof}
+By \eqref{eq:inverse-translation}, $2Q=P-R_i$.
+Combine \eqref{eq:dupheight} and \eqref{eq:translation}.
+For the second inequality, if $h(Q)=0$ there is nothing to prove.
+Otherwise the definition of $h$ gives
+$2^{h(Q)-1}<H(Q)$, while $D\le2^d$ and $H(P)\le2^{h(P)}$.
+Comparing powers of two yields
+\[
+ 4(h(Q)-1)<d+2h(P),
+ \qquad
+ 4h(Q)\le d+2h(P)+3\le2h(P)+2d+4.
+ \tag{5.3}
+\]
+Dividing this last natural-number inequality by two proves the result.
+This proof can be written entirely with integer multiplication, powers and
+order; no logarithm laws or real analysis are being imported.
+\end{proof}
+
+\begin{theorem}[Constructive Mordell--Weil from a supplied cover]
+\label{thm:elliptic-cover}
+For every $A,B\in\Z$ with $4A^3+27B^2\ne0$, and every finite valid
+list $R$ satisfying $\Cover_E(R)$, the explicitly computed list
+\[
+                G_E(R)=R\mathbin{+\!\!+}\mathcal L_E(2^C)
+ \tag{5.4}\label{eq:genlist}
+\]
+generates $E(\Q)$ by chord-and-tangent addition and doubling.
+A fixed primitive recursive algorithm returns, for each rational point
+$P$, a finite word over this list evaluating to $P$.
+Its arithmetic correctness under the stated covering hypothesis has an
+iPRA proof by the displayed quantifier-free invariants.
+
+In an abelian-group presentation with the group laws proved, the same
+algorithm returns nonnegative integer coefficients. With
+$e=h(P)\dotminus C$ and $t=\bl(e)$, every coefficient is at most $2^t$.
+The size of the list is bounded by
+\[
+ |R|+1+(2^{C+1}+1)2^C(2S\,2^{2C}+1).
+ \tag{5.5}
+\]
+\end{theorem}
+\begin{proof}
+For an input $P$, scan $i=0,\ldots,r-1$, calculate $P-R_i$ and
+$\Halves_E(P-R_i)$, and select the first point found.
+This is a fixed primitive recursive operation, totalized with a failure
+flag if every list is empty. By $\Cover_E(R)$ there exists a correct pair
+$i,Q$; Theorem~\ref{thm:halves} proves the corresponding finite list is
+nonempty. Thus the failure branch is never taken on a valid input under
+the covering hypothesis. Equation \eqref{eq:inverse-translation}, in
+its reverse form, gives $P=2Q+R_i$.
+Lemma~\ref{lem:bitcontract} proves the contraction for whichever witness
+the scan selects.
+
+Lemma~\ref{lem:ell-enum} supplies the entire base region.
+Apply Theorem~\ref{thm:abstract}, or its operation-only word version.
+The bound (5.5) is (4.9) with $M=2^C$, plus the representative list.
+
+The only unbounded existential elimination in constructing the selector's
+proof comes from the hypothesis $\Cover_E(R)$ at the current point.
+It proves the success of a specified finite program; it does not
+define a choice function by arbitrary witness selection. All induction
+formulas are the Boolean scan invariant or the forward state invariant of
+Section~\ref{sec:descent}.
+\end{proof}
+
+\subsection{An alternative selector using only bounded-height enumeration}
+
+Even without the rational-root optimization, \eqref{eq:bitcontract}
+implies $h(Q)\le h(P)+C$. One may scan all $i<r$ and all
+$Q\in\mathcal L_E(2^{h(P)+C})$, testing $2Q+R_i=P$.
+Completeness of the enumeration and the same covering hypothesis prove
+success. This route is larger computationally but shows directly that
+the height bounds alone remove the need for a separately supplied selector.
+The native Lean finite-search module formalizes the selection mechanism.
+
+\subsection{A small explicit duplication certificate}
+
+For $E_1:y^2=x^3-x$,
+$F=(X^2+Z^2)^2$, $G=4XZ(X^2-Z^2)$. The following two identities
+can be checked by expansion:
+\[
+\begin{split}
+ (16X^3-12XZ^2)F+(-5X^2Z-3Z^3)G&=16X^7,\\
+ (-12X^2Z+16Z^3)F+(3X^3+5XZ^2)G&=16Z^7.
+\end{split}
+\tag{5.6}
+\]
+They give $L=36$. With the four points later proved to be all of $E_1(\Q)$,
+$T=16$ and $C=\htwo(576)+2=12$. This is a deliberately loose general
+bound: the unconditional proof below gives the exact height bound $H=1$.
+The example illustrates that the general constants are explicit, rather
+than asserting that their large enumeration is a practical way to solve
+this curve.
+
+\subsection{The abstract version for number fields and abelian varieties}
+
+For a fixed number field one may encode $K=\Q[T]/(f)$ by coefficient
+vectors of degree less than $\deg f$, with $f$ a supplied irreducible
+polynomial. Reduction and field operations then have finite algebraic
+implementations. A projective variety can be represented by finitely many
+coordinate charts and polynomial membership tests, with fixed formulas
+and guards for its group operations. To apply
+Theorem~\ref{thm:abstract} to $A(K)$ one must additionally provide:
+a natural-valued primitive recursive height; complete finite
+bounded-height enumerations; an actual covering list modulo multiplication;
+and a primitive recursive decomposition with the proved contraction.
+
+The same arithmetic theorem then produces generators. This is a
+relative interface, not a completed construction of heights,
+number-field geometry, weak descent, or representatives for arbitrary
+$A,K$. Merely supplying defining equations for an abelian variety does
+not discharge those obligations. Section~\ref{sec:unconditional} supplies
+actual abelian varieties of every finite dimension for which all the
+required rational-point data are settled without those extra hypotheses.

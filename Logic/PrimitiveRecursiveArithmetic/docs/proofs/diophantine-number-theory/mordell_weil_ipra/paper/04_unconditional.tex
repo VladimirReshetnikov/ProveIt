@@ -1,0 +1,305 @@
+\section{An unconditional Mordell--Weil family in iPRA}
+\label{sec:unconditional}
+
+We now discharge all arithmetic hypotheses for a concrete elliptic curve,
+and identify its group rather than merely bounding its rank.
+The proof does not use the supplied-cover theorem, a search cutoff,
+Selmer groups, or a theorem about all elliptic curves.
+Its engine is a completely bounded version of Fermat's square-area descent.
+Related arguments were present in the inspected ProveIt Diophantine and
+Faltings packages \cite{proveit-geometry,proveit-fermat};
+the complete argument needed here is included.
+
+\subsection{Primitive square-area triangles}
+
+\begin{definition}
+A square-area triangle is a positive integer tuple $(a,b,c,s)$ satisfying
+\[
+       a^2+b^2=c^2,\qquad ab=2s^2.
+ \tag{6.1}\label{eq:triangle}
+\]
+It is primitive if $\gcd(a,b)=1$.
+\end{definition}
+
+\begin{lemma}[Normalization]\label{lem:normal-triangle}
+Every square-area triangle yields a primitive square-area triangle
+$(A,B,C,S_0)$ with $C\le c$, by a specified primitive recursive operation.
+\end{lemma}
+\begin{proof}
+Let $g=\gcd(a,b)>0$ and put $A=a/g,B=b/g$.
+Then $g^2\mid c^2$, so Lemma~\ref{lem:squares} gives $g\mid c$.
+Set $C=c/g$. The pair $A,B$ is coprime and
+$A^2+B^2=C^2$.
+
+Exactly one of $A,B$ is even. They cannot both be even by coprimality,
+and cannot both be odd because the only square residues modulo $4$ are
+$0,1$, whereas two odd squares sum to $2$. Therefore $K=AB/2$ is an
+integer. From $ab=2s^2$ we get $s^2=g^2K$.
+Again Lemma~\ref{lem:squares} gives $g\mid s$. Put $S_0=s/g$,
+cancel $g^2$, and obtain $AB=2S_0^2$.
+All four entries are positive and $C=c/g\le c$.
+\end{proof}
+
+\begin{lemma}[Bounded Pythagorean parametrization]\label{lem:pyth}
+For a primitive positive triangle $A^2+B^2=C^2$, exchange the legs
+if necessary so that $A$ is even. There are computable integers $m>n>0$
+with
+\[
+ A=2mn,\qquad B=m^2-n^2,\qquad C=m^2+n^2,
+ \tag{6.2}\label{eq:pyth}
+\]
+where $\gcd(m,n)=1$ and $m,n$ have opposite parity.
+The required square-root scans have bound $C$.
+\end{lemma}
+\begin{proof}
+The parity argument makes $B,C$ odd. The pair $B,C$ is coprime:
+a common divisor $d$ would satisfy $d^2\mid C^2-B^2=A^2$,
+whence $d\mid A$, so $d=1$. Since $C>B>0$, the numbers
+\[
+              U=(C+B)/2,\qquad V=(C-B)/2
+\]
+are positive, $U>V$, and $UV=(A/2)^2$.
+A common divisor of $U,V$ divides $C$ and $B$, so they are coprime.
+Square splitting gives $U=m^2,V=n^2,A/2=mn$.
+Their sum and difference give \eqref{eq:pyth}.
+
+A common divisor of $m,n$ would divide $U,V$; hence they are coprime.
+Their squares sum to the odd number $C$, so they have opposite parity.
+The nonnegative roots are unique, since
+$t^2-r^2=(t-r)(t+r)>0$ when $0\le r<t$.
+Both radicands are at most $C$, and their roots can therefore be found
+by scans of $0,\ldots,C$. Every division by two has an even numerator.
+\end{proof}
+
+\subsection{The explicit descending transformation}
+
+\begin{lemma}[A strictly smaller square-area triangle]\label{lem:fermat-step}
+A primitive square-area triangle $(A,B,C,S_0)$ gives a primitive
+square-area triangle $(A',B',C',S'_0)$ with $0<C'<C$.
+The transformation is a fixed total primitive recursive function after
+assigning a default output to invalid inputs.
+\end{lemma}
+\begin{proof}
+Use the preceding parametrization. The area equation becomes
+\[
+             mn(m+n)(m-n)=S_0^2.
+ \tag{6.3}\label{eq:fourfactors}
+\]
+The four factors are positive and pairwise coprime.
+For pairs involving $m$ or $n$, subtract multiples to reduce a common
+divisor to one of $m,n$. A common divisor of $m+n,m-n$ divides
+$2m,2n$, and hence divides $2$ by a Bezout equation for $m,n$.
+Both $m+n,m-n$ are odd, so this divisor is $1$.
+
+Repeated square splitting now supplies positive integers $r,s,t,u$ with
+\[
+        m=r^2,\quad n=s^2,\quad m+n=t^2,\quad m-n=u^2.
+ \tag{6.4}\label{eq:fourroots}
+\]
+In particular $t>u>0$, and $t,u$ are odd and coprime.
+The integer $s$ is even. To prove this, if $m$ were even and $n$ odd,
+their square forms would give $m\equiv0,n\equiv1\pmod4$,
+so $m-n=u^2\equiv3\pmod4$, a contradiction.
+Thus $n$ is even, and its square root $s$ is even.
+
+Define
+\[
+        A'=(t+u)/2,\quad B'=(t-u)/2,\quad C'=r,\quad S'_0=s/2.
+ \tag{6.5}\label{eq:fermat-map}
+\]
+These are positive integers. Expanding gives
+\[
+ (A')^2+(B')^2=(t^2+u^2)/2=m=r^2,
+ \qquad
+ A'B'=(t^2-u^2)/4=n/2=2(s/2)^2.
+ \tag{6.6}
+\]
+A common divisor of $A',B'$ divides their sum $t$ and difference $u$,
+so the new triangle is primitive. Finally
+\[
+                 0<C'=r\le r^2=m<m^2+n^2=C.
+ \tag{6.7}
+\]
+
+To specify a total program, first test the primitive triangle conditions.
+On failure return $(0,0,0,0)$ with a failure bit. Otherwise order the legs,
+find $m,n$ as in Lemma~\ref{lem:pyth}, find the four roots in
+\eqref{eq:fourroots}, and return \eqref{eq:fermat-map}.
+Every root scan may use the original $C$:
+$m,n,m-n,m+n\le m^2+n^2=C$.
+The proof establishes that every demanded root exists and every exact
+division succeeds in the valid branch. An invalid root search also has a
+specified default output.
+\end{proof}
+
+\begin{theorem}[Square-area impossibility in iPRA]\label{thm:no-square-area}
+There are no positive integers satisfying \eqref{eq:triangle}.
+\end{theorem}
+\begin{proof}
+Suppose a solution is given and normalize it using
+Lemma~\ref{lem:normal-triangle}. Let $q$ code the resulting primitive
+triangle, $\Good(q)$ be its primitive recursive Boolean validity
+predicate, and $\rho(q)$ its hypotenuse. Let $D$ be the total map just
+constructed, and define $q_0=q,q_{j+1}=D(q_j)$ by primitive recursion.
+Under the assumption $\Good(q)=1$, quantifier-free induction proves
+\[
+           \Good(q_j)=1\quad\wedge\quad \rho(q_j)+j\le\rho(q).
+ \tag{6.8}\label{eq:fermat-invariant}
+\]
+The base is immediate. The step follows from
+$\Good(D(q_j))=1$ and $\rho(D(q_j))+1\le\rho(q_j)$.
+All relations in the invariant are Boolean tests or equations of the
+fixed coded functions.
+
+Instantiate this invariant at the explicit term $j=\rho(q)$.
+It implies $\rho(q_j)=0$, while validity requires $\rho(q_j)>0$.
+This contradiction discharges the assumed solution.
+The proof runs for exactly the initial hypotenuse; it chooses neither a
+least counterexample nor an infinite descending sequence.
+Proving the negation of a solution by deriving falsity from that solution
+is intuitionistically valid.
+\end{proof}
+
+\subsection{All rational points of \texorpdfstring{$y^2=x^3-x$}{y2=x3-x}}
+
+\begin{theorem}[Exact rational point classification]\label{thm:e1}
+In the rational codes defined above, iPRA proves
+\[
+ E_1(\Q)=\{O,(0,0),(1,0),(-1,0)\},
+ \qquad E_1:\ y^2=x^3-x.
+ \tag{6.9}\label{eq:e1points}
+\]
+In particular every rational point has $x$-height $1$.
+\end{theorem}
+\begin{proof}
+The projective point at infinity is $O$, so consider an affine point
+$(x,y)$. Rational equality is decidable. In the branch $y\ne0$,
+the equation excludes $x=0,1,-1$. Define the positive rational numbers
+\[
+ \alpha=\left|\frac{x^2-1}{y}\right|,
+ \qquad
+ \beta=\left|\frac{2x}{y}\right|,
+ \qquad
+ \gamma=\left|\frac{x^2+1}{y}\right|.
+ \tag{6.10}\label{eq:triangle-map}
+\]
+They are strictly positive by the exclusions and $x^2+1>0$.
+The polynomial identity
+$(x^2-1)^2+4x^2=(x^2+1)^2$ gives
+$\alpha^2+\beta^2=\gamma^2$. The curve equation gives
+\[
+ \frac{\alpha\beta}{2}
+   =\left|\frac{x(x^2-1)}{y^2}\right|=1.
+ \tag{6.11}
+\]
+Let $d>0$ be the product of the positive denominators of
+$\alpha,\beta,\gamma$. Then
+$a=d\alpha,b=d\beta,c=d\gamma$ are positive integers and
+$a^2+b^2=c^2$, $ab=2d^2$. This contradicts
+Theorem~\ref{thm:no-square-area}, with $s=d$.
+
+Thus the decidable case split on $y=0$ leaves only $y=0$.
+Then $x(x-1)(x+1)=0$. The integral-domain property of the rational
+arithmetic, or finite case distinction on these three factors,
+gives $x=0,1,-1$. Direct substitution verifies all three points.
+The list is pairwise distinct, and their heights, including $O$, are $1$.
+
+Every operation in this reduction is normalization, exact rational
+arithmetic, sign comparison, or the bounded triangle procedure.
+The nonexistence proof was already given with its explicit induction
+formula. No empirical point enumeration is used to conclude completeness.
+\end{proof}
+
+\subsection{The group, generators, relations and coordinate function}
+
+Write $T=(0,0)$, $U=(1,0)$, $V=(-1,0)$. Each has negative equal to
+itself, so its double is $O$. The line through any two distinct affine
+points in this list is $y=0$. Formula \eqref{eq:add} shows that the sum
+is the remaining affine point. Thus the complete table is
+\[
+\begin{array}{c|cccc}
+ +&O&T&U&V\\ \hline
+ O&O&T&U&V\\
+ T&T&O&V&U\\
+ U&U&V&O&T\\
+ V&V&U&T&O
+\end{array}
+\tag{6.12}
+\]
+Identify these labels respectively with
+$(0,0),(1,0),(0,1),(1,1)\in\{0,1\}^2$.
+The table is componentwise addition modulo two. This proves all group
+laws, the isomorphism
+\[
+                     E_1(\Q)\cong(\Z/2\Z)^2,
+ \tag{6.13}
+\]
+and the presentation with generators $T,U$ and relations
+$2T=2U=0$, $T+U=U+T$. There is no additional relation between the two
+bits: their four sums are the four distinct points.
+
+The coordinate algorithm tests equality with the four listed points
+and returns the associated pair of bits. By Theorem~\ref{thm:e1} the
+successful branch always exists for a valid point; finite search supplies
+the witnesses. It therefore proves a genuine constructive finite-generation
+statement, including exact coordinates and relations. The finite table
+is separately checked in \code{lean/E1FiniteTable.lean}; the arithmetic
+surjectivity onto that table is the preceding written proof.
+
+\subsection{Uniform rational scalings and finite products}
+
+\begin{theorem}[An unconditional family in every finite dimension]
+\label{thm:products}
+For every rational $u\ne0$ let $E_u:y^2=x^3-u^4x$. Then iPRA proves
+\[
+ E_u(\Q)=\{O,(0,0),(u^2,0),(-u^2,0)\},
+ \qquad E_u(\Q)\cong(\Z/2\Z)^2.
+ \tag{6.14}
+\]
+For every finite input list $u_1,\ldots,u_r\in\Q^\times$, the rational
+group of the product has the explicit presentation
+\[
+ \left(\prod_{j=1}^rE_{u_j}\right)(\Q)
+       \cong(\Z/2\Z)^{2r}.
+ \tag{6.15}
+\]
+It has exactly $4^r$ points, rank zero, and a primitive recursive
+$2r$-bit coordinate map. The $2r$ coordinate-axis points are generators.
+For $r=0$ this means the trivial group and an empty generator list.
+\end{theorem}
+\begin{proof}
+The mutually inverse rational maps
+\[
+ (x,y)\longmapsto(u^2x,u^3y),\qquad
+ (X,Y)\longmapsto(X/u^2,Y/u^3)
+ \tag{6.16}
+\]
+fix $O$ and carry the respective curve equations to one another.
+Their denominators are nonzero because $u\ne0$.
+Theorem~\ref{thm:e1} therefore proves the displayed list for $E_u$.
+Its three nonidentity ordinates are zero; applying
+\eqref{eq:add} gives the same four-element table. Thus the
+coordinate bijection is a group isomorphism, without needing any
+separate abstract theorem about coordinate changes.
+
+A rational point of the product is a tuple of points in its factors.
+Apply the four-case test independently to every coordinate, obtaining
+$2r$ bits. Conversely any $2r$ bits give exactly one such tuple.
+Both transformations are bounded list folds, inverse by their
+coordinatewise identities. Addition is bitwise modulo two, so the
+coordinate-axis tuples generate and the number of points is $2^{2r}=4^r$.
+Induction on the finite input list can be expressed by a Boolean test
+of all already processed coordinates together with the accumulated
+integer count; it is quantifier-free after list coding.
+
+The ordinary geometric description of this product as an abelian variety
+of dimension $r$ is background terminology. The iPRA assertion proved
+here is the explicit statement about rational tuple codes, their
+membership tests, group table and coordinate map; it does not quantify
+over schemes.
+\end{proof}
+
+The models in this family are rationally isomorphic to powers of the same
+elliptic curve. This is an unconditional infinite family of input
+presentations, not a claim that arbitrary twists, positive-rank curves,
+or arbitrary number fields have been settled.

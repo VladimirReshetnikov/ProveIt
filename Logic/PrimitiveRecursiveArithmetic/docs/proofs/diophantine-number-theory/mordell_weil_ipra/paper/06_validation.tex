@@ -1,0 +1,104 @@
+\section{Reference implementation, checks and remaining limitations}
+\label{sec:validation}
+
+\subsection{Exact executable arithmetic}
+
+The Python companion uses integers and \code{fractions.Fraction}.
+\code{code/elliptic.py} implements the guarded group operations, integer
+height, complete finite point boxes, Sylvester determinants and normalized
+adjugate identities, translation constants, and the complete
+\code{halves} procedure. \code{division\_by\_representatives} scans a
+supplied list; it reports failure if no decomposition is found.
+This behavior does not assert that the list covers the entire curve.
+
+\code{code/coordinates.py} implements the full frozen trace and coefficient
+extractor with $\bl(h(P)\dotminus C)$ fuel, as well as the complete
+generator enumeration and conversion to a coordinate vector.
+It shares its extraction engine with the $\Z^r$ tests, which exercise
+nontrivial active steps. \code{code/symbolic\_resultant.py} expands the
+$8!$ determinant permutations using exact symbolic coefficient dictionaries;
+it collects the polynomial
+$4096A^6+55296A^3B^2+186624B^4$, exactly
+$256(4A^3+27B^2)^2$. This checks a polynomial identity coefficientwise,
+rather than testing it only at selected curves.
+
+The polynomial verifier checks the two displayed integral identities and
+the multiplier norm. Curve metadata is not itself certified by that check:
+the generated $F,G$ must also be the explicit forms belonging to the
+chosen $A,B$. The generator constructs them by \eqref{eq:FG}, and the
+tests compare these fields. This keeps an identity certificate's actual
+meaning precise.
+
+The full point-box and rational-root algorithms are primitive recursive
+in the sense of their proved finite bounds. Some Python interfaces raise
+an exception on malformed input; the corresponding object-theory
+functions use a failure bit and a default output. Faster standard-library
+gcd and square-root implementations can be replaced by the displayed
+bounded scans without changing the mathematical theorems.
+
+\subsection{What the checks establish}
+
+The exact elliptic checks include:
+\begin{itemize}
+\item duplication polynomial certificates on five nonsingular models,
+with projective-coordinate height comparisons;
+\item agreement of two independently implemented bounded-point
+enumerations at several small cutoffs;
+\item the complete four-point table for $E_1$, and its enumeration through
+$x$-height $256$ as a regression check;
+\item exact addition, translation inequalities and division round trips
+on modest multiples of $(0,1)$ on $y^2=x^3-x+1$;
+\item zero-constant quartic branches, empty halving fibers, and all halves
+of $O$ on $E_1$;
+\item the normalized $E_1$ identities with $R_*=16,L=36,C=12$.
+\end{itemize}
+The two arithmetic test modules contain fourteen passing tests in total.
+They also enumerate the general-theorem generator list for $E_1$ at
+$H\le4096$ and recover coordinates for all four points; that list contains
+eight entries because representatives and base points are both retained.
+The $\Z^r$ fixtures check active transitions, frozen transitions, coefficient
+bounds and explicit failure behavior when no decomposition is supplied.
+These tests detect implementation errors. The enumeration to $256$ is
+not the reason the rational point list is complete, and the sampled
+inequalities do not prove their universal versions. Completeness and
+the general bounds rest on the proofs in the paper.
+
+The file \path{lean/verification.txt} records the compiler output,
+axiom audit and executable example. All six Lean source files compile.
+The exact arithmetic check results,
+source revision, mathematical audit and file hashes are included in
+\code{metadata/} and \code{SHA256SUMS}. The accompanying README gives
+the reproduction commands and the exact delivered file inventory.
+
+\subsection{Precise deliverable status}
+
+\begin{longtable}{@{}p{0.53\textwidth}p{0.41\textwidth}@{}}
+\toprule
+Result & Status\\
+\midrule
+\endhead
+Primitive recursive height descent and coefficient bounds
+& Full written proof; native Lean kernel for the coarse-fuel word theorem.\\
+General elliptic duplication and translation bounds
+& Full written elementary proof; exact arithmetic certificate implementation.\\
+Complete rational halving
+& Full written proof and exact implementation; embedded proof remains to build.\\
+Generation from supplied actual quotient representatives
+& Full conditional written theorem; no assumption of a precomputed selector.\\
+$E_1(\Q)$, scaled models and finite products
+& Unconditional written arithmetic proof; native finite-table verification.\\
+Full \code{Prf PRAAx} proof objects
+& Not yet constructed; definitions, invariants and dependency plan supplied.\\
+Uniform generator algorithm for arbitrary elliptic curves
+& Not established; actual representative construction remains unresolved.\\
+All abelian varieties over all number fields
+& Abstract relative descent interface only; no unrestricted constructive proof.\\
+\bottomrule
+\end{longtable}
+
+No claim of mathematical novelty for Fermat descent, standard height
+methods, or the classical group classification is intended. The main
+contribution of the package is a carefully delimited arithmetic
+reconstruction: explicit constants and bounded witnesses replace the
+ineffective choices in the descent step, and the unresolved global
+input remains visible.

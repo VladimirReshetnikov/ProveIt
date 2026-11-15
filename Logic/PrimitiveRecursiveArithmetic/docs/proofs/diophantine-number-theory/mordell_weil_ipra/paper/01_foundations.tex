@@ -1,0 +1,267 @@
+\section{The theorem being proved and its logical scope}
+\label{sec:scope}
+
+The classical Mordell--Weil theorem says that $A(K)$ is a finitely generated
+abelian group whenever $A$ is an abelian variety over a number field $K$.
+The requested Wikipedia page supplies this formulation
+\cite{wikipedia}; Milne gives a detailed treatment of the elliptic case
+\cite{milne}. An arithmetic constructive interpretation should say what
+finite data are produced, how an arbitrary rational point is expressed in
+those data, and why every search terminates within a primitive recursive
+bound.
+
+For an explicitly coded group, a strong form is a finite list
+$G=(G_0,\ldots,G_{s-1})$ and a total primitive recursive function
+$\operatorname{coord}$ satisfying
+\[
+ P=\sum_{j<s}\operatorname{coord}(P)_jG_j
+ \qquad\text{for every valid point code }P.
+ \tag{1.1}
+\]
+The coefficients may be signed integers. Our descent actually produces
+nonnegative coefficients; negative points are allowed among the generators.
+An equivalent form useful for formalization returns a finite expression
+formed by addition and doubling, whose leaves belong to $G$.
+
+\subsection{Why the unrestricted constructive theorem is not claimed}
+
+The ordinary proof has two major ingredients: finiteness of
+$A(K)/mA(K)$, and height descent. Passing from an upper bound on the number
+of cosets to a list of \emph{actual rational representatives} is a real
+constructive issue. Sutherland explicitly identifies the absence of an
+effective representative-height bound in the usual argument
+\cite{sutherland}. The current official Magma handbook describes the
+general algorithmic Mordell--Weil problem as open \cite{magma}.
+
+These observations justify a boundary, not an unprovability claim.
+In particular, we do not infer that the classical statement is independent
+of iPRA, that every possible constructive reformulation is impossible, or
+that an arbitrary existential theorem of intuitionistic arithmetic has an
+immediate primitive recursive witness-extraction theorem. Our claim is
+more direct: the proposed unrestricted \emph{algorithmic} conclusion would
+itself supply a currently unavailable uniform generator algorithm.
+
+The elementary logical distinction can be seen without elliptic curves.
+Let $f_e(t)$ be $1$ if a fixed machine with code $e$ halts within $t$
+steps, and $0$ otherwise. This is a primitive recursive function of $e,t$,
+and its image has at most two elements. A uniform procedure returning
+finitely many times whose values cover the whole image would decide
+halting: simulate to the greatest returned time. Thus an explicitly finite
+ambient set does not by itself give a terminating procedure for listing
+which of its labels are attained.
+
+In descent, an explicitly computed finite Selmer group is an ambient
+container for rational-point classes; it need not consist entirely of
+classes with a rational point. The familiar exact sequence
+\[
+0\longrightarrow E(\Q)/2E(\Q)
+ \longrightarrow \operatorname{Sel}^{(2)}(E/\Q)
+ \longrightarrow \Sha(E/\Q)[2]\longrightarrow0
+\]
+expresses that distinction in the classical theory \cite{milne}.
+We use this only to explain the missing input. No cohomology theorem is
+used as an unproved arithmetic premise below.
+
+\subsection{The three completed mathematical results}
+
+\begin{enumerate}
+\item \textbf{A general arithmetic descent schema.}
+For any fixed primitive recursively presented abelian group, a finite
+bounded-height enumeration and a verified contracting decomposition give
+generators, coefficients, and explicit descent fuel
+(Theorem~\ref{thm:abstract}).
+
+\item \textbf{A supplied-cover theorem for every integral elliptic model.}
+For $E:y^2=x^3+Ax+B$, $4A^3+27B^2\ne0$, the only nonautomatic arithmetic
+input is a finite list $R$ of rational points satisfying
+\[
+ \Cover_E(R):\quad
+ \forall P\in E(\Q)\ \exists i<|R|\ \exists Q\in E(\Q)\
+       P=2Q+R_i.
+ \tag{1.2}\label{eq:cover}
+\]
+Explicit polynomial formulas compute the needed height constants and
+a primitive recursive selector. We then compute a finite generating list
+and coordinates (Theorem~\ref{thm:elliptic-cover}). The condition
+\eqref{eq:cover} is an explicit universal hypothesis, not a claim that a
+finite test decides it.
+
+\item \textbf{Unconditional arithmetic Mordell--Weil instances.}
+We prove
+\[
+ E_1(\Q)=\{O,(0,0),(1,0),(-1,0)\},\qquad E_1:y^2=x^3-x,
+\]
+and identify the group as $(\Z/2\Z)^2$. For any finite list
+$u_1,\ldots,u_r\in\Q^\times$, we explicitly classify the rational group
+of $\prod_{j=1}^r E_{u_j}$, where
+$E_u:y^2=x^3-u^4x$, as $(\Z/2\Z)^{2r}$
+(Theorem~\ref{thm:products}).
+\end{enumerate}
+
+All arithmetic dependencies needed for these statements are explained
+below. General number fields and arbitrary abelian varieties fit the
+abstract interface only after their corresponding arithmetic data and
+proofs have been supplied. We do not claim to construct those data
+uniformly.
+
+\section{The arithmetic setting and coding conventions}
+\label{sec:foundations}
+
+\subsection{Logic and nonlogical axioms}
+
+Our object theory is the first-order intuitionistic primitive recursive
+arithmetic implemented in ProveIt's \code{ConciseIPRA/Lean/ConciseIPRA/PR.lean}
+\cite{proveit}. Its language has equality and a function symbol for each
+primitive recursive definition. Symbols are generated from zero,
+successor and projections by composition and primitive recursion:
+\[
+\begin{split}
+ \operatorname{Rec}(f,g)(0,\vec x)&=f(\vec x),\\
+ \operatorname{Rec}(f,g)(n+1,\vec x)
+   &=g(n,\operatorname{Rec}(f,g)(n,\vec x),\vec x).
+\end{split}
+\]
+The nonlogical axioms are these defining equations, successor injectivity,
+$Sx\ne0$, and induction for quantifier-free formulas, with arbitrary
+numerical parameters:
+\[
+ \varphi(0)\ \to\
+ \bigl(\forall n\,(\varphi(n)\to\varphi(n+1))\bigr)
+ \ \to\ \forall n\,\varphi(n).
+ \tag{2.1}\label{eq:qfind}
+\]
+The logic is intuitionistic first-order natural deduction with equality,
+$\bot,\wedge,\vee,\to,\forall,\exists$, the usual introduction and
+elimination rules, and falsity elimination. No excluded-middle schema,
+choice schema, Markov principle, or double-negation elimination is added.
+
+Numerical comparisons and finite tests are decidable. Their characteristic
+functions are primitive recursive; bounded conjunctions and disjunctions
+are finite folds. When a displayed induction invariant uses a bounded
+quantifier, it is shorthand for the corresponding Boolean test equalling
+$1$. This conversion is part of the proof plan, not permission to use
+unrestricted induction.
+
+\subsection{Exact codes and total operations}
+
+We fix the following concrete conventions; alternative primitive recursive
+encodings would give the same results.
+
+\begin{itemize}
+\item Encode an integer $z$ by $2z$ for $z\ge0$, and $2|z|-1$ for $z<0$.
+Sign, magnitude, addition and multiplication are primitive recursive.
+\item Encode a pair by
+$\langle a,b\rangle=2^a(2b+1)-1$. Recover $a$ by bounded division of the
+successive powers of $2$ into the positive number $n+1$, then recover $b$.
+The inverse searches can use $n+1$ as fuel.
+\item The empty list has code $0$ and
+$\operatorname{cons}(a,\ell)=1+\langle a,\ell\rangle$.
+The tail of a nonempty list has smaller code. Iterating at most the input
+code therefore suffices for length, access, folds and validity checks.
+\item A rational is a reduced pair $(a,b)$ with $a\in\Z$, $b>0$ and
+$\gcd(|a|,b)=1$. Normalize by a positive gcd. Equality is equality of
+canonical pairs; addition and multiplication use cross products followed
+by normalization.
+\item An elliptic point is the tag $O$, or an affine pair of canonical
+rationals satisfying the curve equation. We may use code $0$ for $O$
+and $1+\langle x,y\rangle$ for an affine pair. Invalid codes carry a
+failure flag and return specified default outputs.
+\end{itemize}
+
+Each program is a fixed primitive recursive definition. Statements about
+an arbitrary primitive recursively presented group are schemas, one for
+each fixed collection of programs and proved laws. We do not postulate a
+single total primitive recursive evaluator for all primitive recursive
+program codes. For the elliptic theorem the programs are fixed, with
+numeric $A,B,R,P$ as ordinary inputs.
+
+Finite list construction, an exponential-size search, or a very large
+integer is compatible with primitive recursion. No claim of practical
+running time or polynomial complexity is intended.
+
+\subsection{Bounded arithmetic lemmas}
+\label{subsec:gcd}
+
+Here are the elementary ingredients used repeatedly later. Giving their
+witnesses is useful both mathematically and for the object formalization.
+
+\begin{lemma}[Gcd with Bezout witnesses]\label{lem:gcd}
+For nonnegative $a,b$, not both zero, one computes $g>0$ and signed
+$u,v$ with
+\[
+g\mid a,\quad g\mid b,\quad ua+vb=g,
+\]
+and every common divisor divides $g$. The computation and proof are
+primitive recursive and use quantifier-free induction.
+\end{lemma}
+\begin{proof}
+Handle a zero argument directly. Otherwise order the entries as
+$(\max(a,b),\min(a,b))$ and run the Euclidean step
+$(a_i,b_i)\mapsto(b_i,a_i\bmod b_i)$, freezing at $b_i=0$.
+When active, the positive sum of the entries strictly decreases, so
+$a+b+1$ stages suffice. Track both entries as integer linear combinations
+of the original arguments. If $a_i=q_ib_i+r_i$, replace the second pair
+of coefficients by the old first pair minus $q_i$ times the old second
+pair. The linear-combination equations are preserved.
+
+For a fixed numerical parameter $d$, the divisibility of both entries by
+$d$ is preserved in both directions. At the terminal pair $(g,0)$ this
+proves the gcd property. The invariant
+$b_i=0\ \vee\ a_i+b_i+i\le a+b$, together with the two tracked equations
+and Boolean divisibility predicates, is quantifier-free. Division itself
+is a scan for a quotient at most the dividend.
+\end{proof}
+
+\begin{lemma}[Coprime cancellation and square splitting]\label{lem:squares}
+The following operations have primitive recursive witnesses:
+\begin{enumerate}
+\item If $\gcd(a,b)=1$ and $a\mid bc$, then $a\mid c$.
+\item If $d>0$ and $d^2\mid c^2$, then $d\mid c$.
+\item If $a,b,c>0$, $\gcd(a,b)=1$ and $ab=c^2$, there are positive
+$r,s$ with $a=r^2$, $b=s^2$ and $c=rs$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+For (1), multiply a Bezout equation for $a,b$ by $c$.
+Squaring a Bezout equation also shows that coprimality with $b$ implies
+coprimality with $b^2$; multiplying two Bezout equations shows that
+coprimality with each of two factors implies coprimality with their product.
+
+For (2), the case $c=0$ is immediate. Otherwise write
+$c=hr,d=hs$, where $h=\gcd(c,d)$ and $\gcd(r,s)=1$.
+The hypothesis gives $s^2\mid r^2$, so $s\mid r^2$.
+But $s$ is coprime to $r^2$; Bezout then gives $s\mid1$, hence $s=1$.
+
+For (3), put $h=\gcd(a,c)$, $a=hu,c=hv$, with $\gcd(u,v)=1$.
+The equation gives $ub=hv^2$, so (1) implies $u\mid h$.
+Write $h=ue$; cancellation gives
+$a=eu^2,b=ev^2,c=euv$. The positive integer $e$ divides both $a,b$,
+so $e=1$. Thus $r=u,s=v$ work. All quotients are exact bounded divisions.
+These are equation manipulations and applications of Lemma~\ref{lem:gcd};
+no factorization theorem or least-counterexample principle is needed.
+\end{proof}
+
+The last conclusion applies successively to any fixed number of pairwise
+coprime positive factors whose product is a square. An exact integer
+square root is also primitive recursive: scan $0,\ldots,N$ for $r^2=N$,
+with a separate success bit. A rational square root is found by applying
+this to the nonnegative numerator and positive denominator of a reduced
+fraction. Lemma~\ref{lem:squares}(2) proves that a rational with integral
+square is an integer. This proves completeness of the rational-square
+test, not just soundness.
+
+\begin{lemma}[Finite scans]\label{lem:scan}
+For a fixed primitive recursive Boolean predicate $T(j,\vec a)$ and an
+input bound $B$, scanning $0,\ldots,B$ returns the first successful index
+and a success flag. If a successful index exists within that interval,
+the flag is $1$ and the returned index satisfies $T$.
+\end{lemma}
+\begin{proof}
+Store a success bit and index, freezing after the first success. The
+Boolean invariant states that success is the disjunction of the tests
+already inspected, and that a successful stored index is within that
+prefix and passes the test. Finite disjunction is itself a primitive
+recursive fold; induction on the scan index is quantifier-free.
+Existential elimination may then be used outside that induction to show
+that a supplied bounded witness forces success.
+\end{proof}

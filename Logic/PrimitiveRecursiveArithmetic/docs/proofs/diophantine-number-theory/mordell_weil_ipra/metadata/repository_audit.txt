@@ -1,0 +1,76 @@
+PROVEIT REPOSITORY AUDIT FOR CONSTRUCTIVE MORDELL-WEIL
+Date: November 15, 2026
+Pinned main revision: 27da047166883e5010e115968d3a40f9e91bfb3d
+Main tree SHA: be056755eaea68584f11201d00425d66eb485ea2
+Main revision fetched using GitHub plugin /branches/main. All content fetched at the pinned revision.
+No repository files were changed; no repository build was attempted.
+
+1. EXACT OBJECT THEORY
+
+Prefix: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/
+Namespace: LeanProofs.ConciseIPRA
+
+Syntax.lean defines Fm with eq, bot, and, or, imp, all, ex. Fm.QF admits eq/bot and closes under and/or/imp, but rejects both quantifiers. Quantifier-free induction is syntactic, not arbitrary Lean induction.
+
+Deduction.lean defines Prf Ax Gamma phi as intuitionistic first-order natural deduction with equality. Rules are hyp, ax, botE, andI, andE1/2, orI1/2, orE, impI, impE, allI, allE, exI, exE, eqRefl, eqSubst. There is no excluded-middle or double-negation-elimination rule. Equality substitution uses pointwise provably equal term substitutions. Derived weakening, substitution and cut-like transitivity are present.
+
+PR.lean defines PR k as the grammar zero, succ, proj, comp, prec; PTm n as var/app; PRAAx as primitive recursive defining equations, successor injectivity and separation from zero, and induction on Fm.QF. PRA.qfInd constructs an embedded induction derivation from a base and shifted step derivation. Exact type (schematically): qfInd phi hQF h0 hStep : Gamma |- [PRAAx] all phi.
+
+PRAToScalar.lean compiles each PR definition to the iterator language using FromPRA.code; FromPRA.interp interprets PRAAx in TeqAx. This is syntactic compilation of a given fixed PR program, not a uniform total evaluator for all PR programs.
+
+TeqReflect.lean defines chi reflecting QF formulas into equations, proves chi_zero_iff, chi_iff and Teq.qfInd. If working directly in PRAAx, PRA.qfInd is the cleanest foundation and avoids detouring through the scalar model.
+
+BiInterpretation.lean defines biInterp : BiInterp TeqAx PRAAx, and teq_iff_pra, pra_iff_teq, round-trip equivalences and equiconsistency. NativeBiInterpretation.lean proves:
+  pra_iff_native : (Gamma |- [PRAAx] phi) <-> NPrf (Gamma.map NFm.ofPRA) (NFm.ofPRA phi).
+It also proves native_iff_pra and both round trips. This bridge transports an ALREADY CONSTRUCTED embedded proof. It does not turn an arbitrary theorem of ambient Lean, even one avoiding Classical.choice, into a theorem of iPRA.
+
+README's existing build statement says all modules build without sorry/warnings; final dependencies generally propext, Classical.choice and Quot.sound, while the T_eq/iPRA part uses propext and Quot.sound alone. This is an upstream claim read in source, not independently rebuilt in this task.
+
+2. EXISTING RELEVANT DIOPHANTINE DEVELOPMENT
+
+Prefix: Logic/PrimitiveRecursiveArithmetic/docs/proofs/diophantine-number-theory/diophantine_geometry_ipra/
+
+README.txt explicitly claims written elementary iPRA proofs and compiled ambient Lean arithmetic core, while explicitly withholding full Mordell-Weil, Roth, Siegel and Faltings. Its target embedded Prf PRAAx derivations are not supplied.
+
+sections/02_heights.tex: canonical projective Q-points; complete PR bounded-height box enumeration; elementary polynomial height upper bounds. Every assertion uses integer multiplicative height, not real logarithms.
+
+sections/03_dynamics.tex: two-sided height inequalities for [F:G] on P1. For degree d forms and Sylvester determinant R != 0, first/last columns of adj(S) yield A_X F+B_X G=R X^(2d-1), A_Y F+B_Y G=R Y^(2d-1). Let L=max(sum l1 norms of X pair, sum l1 norms of Y pair), M=max(1, coefficients). Then H(P)^d <= L H(f(P)), H(f(P)) <= (d+1)M H(P)^d, with L <= 2d(2d-1)!M^(2d-1). Proof controls gcd cancellation: primitive input implies gcd(F(x,y),G(x,y)) divides R, and the R factor then cancels from the lower bound. I audited this argument and found it mathematically sound. It directly supports the degree-four doubling map on an elliptic curve.
+
+sections/05_descent.tex: Fermat square-area descent and congruent-number-curve correspondence; complete E1(Q) list for y^2=x^3-x.
+
+sections/07_generation.tex: finite generation of a coded abelian group from supplied PR height-reducing selector D(P), index i(P), finite representatives R and small-height list S. Relation P=mD(P)+r_i and h(D(P))<h(P) yields coefficient extraction with fuel h(P) truncated-minus T. Maintained invariant P=m^k Q+sum_i a_i r_i; coefficients updated by m^k. All are nonnegative for this specific recursion. This is already present, correctly caveated. A new MW report can strengthen the interface by deriving the selector via bounded preimage search from supplied weak-MW representatives and explicit height bounds.
+
+lean/DiophantineCore.lean imports Std only. Native theorems include anyLE_correct, findLE_sound, findLE_none_iff, noBooleanDescent, quadratic_expansion, second_identity, second_on_conic, circle_identity, circle_inverse_identity, elliptic_triangle_identity, elliptic_triangle_area, triangle_curve_certificate, triangle_on_curve. The noBooleanDescent proof uses the invariant good(run k)=true and rank(run k)+k<=rank start, contradiction at k=rank start+1. These are ambient theorems, not Prf PRAAx. README reports compilation under Lean 4.32.0 and dependency audits. I downloaded but did not recompile.
+
+sections/08_lean.tex correctly flags that native anyLE_correct induces on an existential-containing formula and must be replaced by a Boolean invariant in the object theory. It gives a detailed module plan for integer/rational/list coding, PR symbols, arithmetic, normalization, bounds, descent, resultants and bridge transfer.
+
+3. AUDITED COMPLETE FERMAT DESCENT
+
+Prefix: Logic/PrimitiveRecursiveArithmetic/docs/proofs/diophantine-number-theory/faltings_ipra/
+Source: sections/fermat_instance.tex
+Downloaded exact content locally to repo_reference/fermat_instance.tex.
+
+This newer source supplies all the square-area ingredients self-contained: bounded gcd with Bezout witnesses; coprime cancellation; d^2 | c^2 implies d|c; square splitting via gcd rather than prime factorization; primitive normalization; Pythagorean parametrization; explicit descending map and fixed-fuel contradiction. I critically checked the arithmetic and the induction inventory. No gap was found in the square-area segment.
+
+Precise descent: primitive A^2+B^2=C^2, AB=2S^2. Make A even, derive A=2mn, B=m^2-n^2, C=m^2+n^2, gcd(m,n)=1 with opposite parity. The positive pairwise-coprime factors m,n,m+n,m-n have square product, so m=r^2, n=s^2, m+n=t^2, m-n=u^2. Then t,u odd, coprime; s even by the square residues mod 4. Set A'=(t+u)/2, B'=(t-u)/2, C'=r, S'=s/2. Direct identities give A'^2+B'^2=C'^2 and A'B'=2S'^2, while gcd(A',B')=1 and 0<C'=r<=m<C. All roots found by search bounded by the input hypotenuse C.
+
+For initial valid code q, let G Boolean validity, D totalized descent, rho hypotenuse. Iteration q_i=D^i(q) has quantifier-free invariant G(q_i) and rho(q_i)+i<=rho(q). At i=rho(q), rho=0 contradicts positivity. This is intuitionistically valid proof of negation, not double-negation elimination. No least counterexample or infinite sequence is selected.
+
+To apply to E1: if rational y != 0 and y^2=x^3-x, then x notin {0,+1,-1}. The absolute values of (x^2-1)/y, 2x/y and (x^2+1)/y are positive rational right-triangle sides with area 1. Their product formula uses x(x^2-1)=y^2>0, so the product before absolute values is already positive. Clearing denominators by D gives integer sides of square area D^2, forbidden by the descent. Thus y=0 and x=0,+1,-1. The projective point at infinity is O=[0:1:0]. The rational group is exactly four points and each nonidentity point has order two. This supplies E1(Q) congruent (Z/2Z)^2, and products/scaled Q-isomorphic models follow with explicit maps.
+
+4. LOCAL REFERENCE FILES
+
+repo_reference/ currently contains exact copies fetched at the pinned revision:
+  fermat_instance.tex
+  ConciseIPRA_README.md
+  Syntax.lean, Deduction.lean, PR.lean, PRAToScalar.lean, TeqReflect.lean
+  BiInterpretation.lean, NativeBiInterpretation.lean
+  README.txt (diophantine_geometry package)
+  02_heights.tex, 03_dynamics.tex, 05_descent.tex, 07_generation.tex, 08_lean.tex
+  DiophantineCore.lean, descent.py
+  FiniteSearch.lean, Logic.lean, Curves.lean (Faltings package)
+
+These local copies are research references, not modifications to or rebuilt certificates from ProveIt. Full audit scope is the inspected files, not the entire repository.
+
+Canonical URL base for citations:
+https://github.com/VladimirReshetnikov/ProveIt/blob/27da047166883e5010e115968d3a40f9e91bfb3d/

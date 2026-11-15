@@ -1,0 +1,315 @@
+\section{Even values, further integral representations, and boundary zeros}
+\label{sec:additional}
+
+\subsection{Euler's formula for every positive even integer}
+\label{subsec:even-values}
+The Bernoulli polynomials of Section~\ref{em:section} and the finite
+Fej\'er kernel of Section~\ref{sec:theta-functional} give a short proof
+which is independent of the functional equation. Regard $B_{2m}(x)$,
+$m\ge1$, as one-periodic. It is continuous across the endpoints and
+has circular Lipschitz constant at most $2m C_{2m-1}$ and absolute bound
+$C_{2m}$. For every nonzero integer $k$, repeated finite integration by
+parts gives
+\[
+ \int_0^1 B_n(x)e^{-2\pi ikx}\,dx
+   =\frac{n}{2\pi ik}\int_0^1B_{n-1}(x)e^{-2\pi ikx}\,dx
+       \quad(n\ge2).
+\]
+The endpoint contribution vanishes because $B_n(1)=B_n(0)$.
+At $n=1$ the endpoint difference equals one and the constant derivative
+has zero integral against the exponential, so the coefficient is
+$-1/(2\pi ik)$. Therefore
+\[
+ \widehat B_{2m}(k)=-\frac{(2m)!}{(2\pi ik)^{2m}},\qquad
+ \widehat B_{2m}(0)=0.
+\]
+Fej\'er approximation at $x=0$ consequently gives
+\[
+ B_{2m}=(-1)^{m+1}\frac{2(2m)!}{(2\pi)^{2m}}
+       \lim_{N\to\infty}\sum_{k=1}^{N-1}
+                  \left(1-\frac{k}{N}\right)k^{-2m}.
+\]
+This weighted sum has the same named limit as $\zeta(2m)$.
+Indeed its difference from that value is at most
+\[
+ \sum_{k\ge N}k^{-2m}+\frac1N\sum_{k<N}k^{1-2m}
+ \le\frac1{N-1}+\frac{1+\log N}{N}\le\frac5{\sqrt N}
+       \qquad(N\ge2).
+\]
+For the last estimate, $\log N\le2\sqrt N$ follows by comparing
+$1/x$ with $1/\sqrt x$. A dyadic square $N=2^{2q}$ absorbs this
+error with a PR modulus; the Fej\'er error has its own explicit modulus.
+We obtain the entire family
+\begin{equation}
+ \boxed{\displaystyle
+ \zeta(2m)=(-1)^{m+1}\frac{B_{2m}(2\pi)^{2m}}{2(2m)!}
+                 \qquad(m\ge1).}
+ \label{eq:even-values}
+\end{equation}
+Positivity of the Dirichlet series also proves
+$(-1)^{m+1}B_{2m}>0$; no Bernoulli sign theorem was assumed.
+In particular
+\[
+ \zeta(2)=\frac{\pi^2}{6},\quad
+ \zeta(4)=\frac{\pi^4}{90},\quad
+ \zeta(6)=\frac{\pi^6}{945},\quad
+ \zeta(8)=\frac{\pi^8}{9450},\quad
+ \zeta(10)=\frac{\pi^{10}}{93555}.
+\]
+The same Fourier calculation and Fej\'er estimate give the full expansion
+\[
+ B_{2m}(x)=(-1)^{m+1}\frac{2(2m)!}{(2\pi)^{2m}}
+           \sum_{k=1}^{\infty}\frac{\cos(2\pi kx)}{k^{2m}}.
+\]
+Its tail is at most the prefactor times
+$N^{1-2m}/(2m-1)$ after $N$ terms. The case $m=1$, evaluated at any
+fixed named $x\in[0,1]$, is a constructive version of the familiar
+Fourier-series proof of the Basel evaluation.
+
+The coprime-pair density in \eqref{eq:d-coprime-density} is therefore
+$6/\pi^2$. The same number is the squarefree density with an equally
+finite proof. Write $Q(N)=\sum_{n\le N}\mu(n)^2$ and
+$D=\lfloor\sqrt N\rfloor\ge1$, computed by bounded integer search.
+The finite square-divisor identity already proved gives
+\[
+ Q(N)=\sum_{d\le D}\mu(d)\lfloor N/d^2\rfloor,\qquad
+ \left|\frac{Q(N)}N-\frac6{\pi^2}\right|
+       \le\frac DN+\frac1D.
+\]
+The first error counts at most $D$ floor-rounding errors; the second is
+$\sum_{d>D}d^{-2}\le1/D$. Choosing $N=2^{2(p+2)}$ gives a PR
+modulus smaller than $2^{-p}$.
+
+\subsection{Mellin integral and its endpoint certificates}
+\label{subsec:mellin}
+For $\sigma=\Re s>1$ with a supplied margin, define
+\[
+ J(s)=\int_0^\infty\frac{t^{s-1}}{e^t-1}\,dt.
+\]
+For $0<\epsilon\le1$, the omitted initial interval has absolute integral
+at most $\epsilon^{\sigma-1}/(\sigma-1)$, since $e^t-1\ge t$.
+For $T\ge1$ and $|s|\le R$, the tail is at most
+$2^{R+2}R!e^{-T/2}$, since $(e^t-1)^{-1}\le2e^{-t}$.
+On $[\epsilon,T]$, every denominator is explicitly positive and a
+rational bound for the derivative follows by the product and quotient
+rules. These bounds define $J$ by finite quadrature.
+
+The finite geometric identity gives
+$(e^t-1)^{-1}=\sum_{n=1}^Ne^{-nt}+e^{-(N+1)t}/(1-e^{-t})$.
+Termwise integration of the finite sum and the substitution $u=nt$
+produce $\Gamma(s)\sum_{n\le N}n^{-s}$.
+The absolute integral of the omitted positive majorant is at most
+\[
+ \Gamma(\sigma)\sum_{n>N}n^{-\sigma}
+       \le\frac{\Gamma(\sigma)}{\sigma-1}N^{1-\sigma}.
+\]
+This inequality can itself be obtained first for a finite additional
+geometric sum and then from the just-displayed endpoint bounds.
+Hence
+\begin{equation}
+ \boxed{\displaystyle
+ \Gamma(s)\zeta(s)=\int_0^\infty\frac{t^{s-1}}{e^t-1}\,dt
+                     \quad(\Re s>1).}
+ \label{eq:zeta-mellin}
+\end{equation}
+The gamma lower bound in \eqref{eq:gamma-lower} licenses division when
+the conventional quotient version is desired.
+
+There is also a faster-decaying alternating-kernel representation:
+\[
+ \boxed{\displaystyle
+ \Gamma(s)\eta(s)=\int_0^\infty\frac{t^{s-1}}{e^t+1}\,dt
+                     \quad(\Re s>0).}
+\]
+The initial tail is at most $\epsilon^\sigma/\sigma$, and the upper
+tail has the same exponential majorant as the gamma integral.
+For a finite alternating geometric sum the kernel remainder is
+$(-1)^Ne^{-(N+1)t}/(1+e^{-t})$, whose absolute integral is at most
+$\Gamma(\sigma)(N+1)^{-\sigma}$. Integrating the finite sum and
+using the eta tail therefore proves the formula even when the individual
+Dirichlet terms are not absolutely summable. The eta-zeta relation gives
+the usual version with factor $(1-2^{1-s})\Gamma(s)$; the cleared
+identity is meaningful at its removable points.
+
+One finite integration by parts gives two further formulas:
+\begin{align*}
+ \Gamma(s+1)\zeta(s)
+   &=\int_0^\infty\frac{e^t t^s}{(e^t-1)^2}\,dt
+       &&(\Re s>1),\\
+ \Gamma(s+1)\eta(s)
+   &=\int_0^\infty\frac{e^t t^s}{(e^t+1)^2}\,dt
+       &&(\Re s>0).
+\end{align*}
+At zero the boundary terms are bounded by $\epsilon^{\sigma-1}$
+and $\epsilon^\sigma$, respectively; at infinity both have an
+exponential bound. These are the exact endpoint conditions needed for
+the integrations by parts. The normalizations agree with
+\cite[\S25.5]{DLMF25_5}.
+
+\subsection{Fractional-part integral on the right half-plane}
+\label{subsec:fractional}
+Let $\{x\}=x-\lfloor x\rfloor$, with integration performed separately
+on its integer cells. Finite summation by parts, or telescoping the
+integrals on those cells, gives for an integer $M\ge1$,
+\[
+ s\int_1^M\lfloor x\rfloor x^{-s-1}\,dx
+       =\sum_{n=1}^M n^{-s}-M^{1-s}.
+\]
+For $\Re s>1$ this identifies the Dirichlet series with
+\begin{equation}
+ \zeta(s)=\frac{s}{s-1}
+           -s\int_1^\infty\{x\}x^{-s-1}\,dx.
+ \label{eq:fractional-zeta}
+\end{equation}
+The integral itself converges whenever $\sigma>0$, with tail at most
+$M^{-\sigma}/\sigma$. The same formula agrees directly with the
+Euler--Maclaurin continuation there: write
+$\{x\}=\widetilde B_1(x)+1/2$ and integrate once using
+$\widetilde B_2'=2\widetilde B_1$. The endpoint contribution is
+$-B_2/2$ and the remaining term is
+$(s+1)\int_1^\infty\widetilde B_2(x)x^{-s-2}dx/2$.
+This is exactly the $m=1$ formula for $H(s)$, including its sign.
+Thus \eqref{eq:fractional-zeta} holds for $\sigma>0$, $s\mathrel\#1$,
+without another analytic-continuation argument.
+
+If $0<\sigma<1$ with margins at both endpoints, substitute $t=1/x$
+and add the explicitly integrable part $t\ge1$, where $\{1/t\}=1/t$.
+The rational terms $1/(s-1)$ and $1/(1-s)$ cancel and give
+\begin{equation}
+ \boxed{\displaystyle
+ \int_0^\infty\{1/t\}t^{s-1}\,dt=-\frac{\zeta(s)}s.}
+ \label{eq:mathworld-fractional}
+\end{equation}
+The tail at zero is bounded by $\epsilon^\sigma/\sigma$, and the tail
+at infinity by $T^{\sigma-1}/(1-\sigma)$. The finite middle interval
+is split at its finitely many reciprocal-integer break points.
+
+\subsection{Unit-cube and logarithmic square integrals}
+For every integer $d\ge2$,
+\begin{equation}
+ \boxed{\displaystyle
+ \zeta(d)=\int_{[0,1]^d}
+                  \frac{dx_1\cdots dx_d}{1-x_1\cdots x_d}.}
+ \label{eq:cube-integral}
+\end{equation}
+Here is an explicit improper-integral interpretation. Integrate first
+on $[0,\rho]^d$ for rational $0<\rho<1$. The geometric series for the
+integrand has uniform error at most
+$\rho^{d(N+1)}/(1-\rho^d)$ after degree $N$, so finite polynomial
+integration gives
+\[
+ I_\rho=\sum_{j=1}^\infty\frac{\rho^{dj}}{j^d}.
+\]
+For every $J\ge1$,
+\[
+ 0\le\zeta(d)-I_\rho
+ \le dJ(1-\rho)+\frac1{(d-1)J^{d-1}}.
+\]
+This follows from $1-\rho^{dj}\le dj(1-\rho)$ for $j\le J$, and
+from the Dirichlet tail for $j>J$. Taking, for example,
+$J=2^{p+4}$ and $1-\rho\le2^{-p-4}/(dJ)$ gives an explicit PR endpoint
+modulus, uniformly in $d\ge2$. The finite multiple integrals are just
+iterated finite sums, so no measure-theoretic interchange is required.
+
+A further representation appearing on the reference pages is
+\begin{equation}
+ \boxed{\displaystyle
+ \int_0^1\!\int_0^1
+       \frac{[-\log(xy)]^s}{1-xy}\,dx\,dy
+       =\Gamma(s+2)\zeta(s+2)\quad(\Re s>-1).}
+ \label{eq:square-log}
+\end{equation}
+To specify its endpoints constructively, truncate first to
+$\epsilon\le xy\le1-\epsilon$. With $u=xy$, the inner bounds are
+$u\le x\le1$ and the Jacobian is $1/x$. Hence its finite double
+integral equals
+\[
+ \int_\epsilon^{1-\epsilon}
+            \frac{(-\log u)^{s+1}}{1-u}\,du.
+\]
+This change of variables takes place on a compact region with explicit
+positive denominators and can be checked by two finite sums and the
+one-dimensional substitution rule. Now $u=e^{-t}$ changes the integral
+to the truncation of
+$\int_0^\infty t^{s+1}/(e^t-1)dt$. The endpoint bounds used in
+\eqref{eq:zeta-mellin}, with $s$ replaced by $s+2$, are the required
+PR modulus. Complex powers of $-\log(xy)>0$ use the positive-real
+logarithm convention. For example $s=0$ gives the square case of
+\eqref{eq:cube-integral}, and $s=1$ gives $2\zeta(3)$.
+
+\subsection{A quantitative zero-free theorem on $\Re s=1$}
+\label{subsec:boundary-zeros}
+The Euler logarithm proves the finite-tail form of the classical
+$3$--$4$--$1$ inequality:
+\[
+ 1\le\zeta(\sigma)^3|\zeta(\sigma+it)|^4
+                       |\zeta(\sigma+2it)|\qquad(\sigma>1).
+ \tag{Z1}\label{eq:341-repeat}
+\]
+For each prime-power angle the relevant numerator is
+$3+4\cos u+\cos2u=2(1+\cos u)^2\ge0$. Thus the nonnegativity is
+already true for every finite logarithm sum; exponentiation and the
+specified tails give (Z1).
+
+Supply integers $A,T\ge1$ with $1/A\le|t|\le T$, and put
+\[
+ \eta=1/A,\quad R=2T+3,\quad
+ B=R(1+\eta^{-1}),\quad M=\eta^{-2}+1+R,
+ \quad h=\frac1{256B(M+1)^4}.
+ \tag{Z2}\label{eq:boundary-constants}
+\]
+From \eqref{eq:fractional-zeta}, uniformly for $0\le u\le1$,
+\[
+ |\zeta(1+u+2it)|\le B,\qquad
+ |\zeta'(1+u+it)|\le M.
+\]
+For the derivative bound differentiate the explicit integral. Its two
+integrals have bounds
+$\int_1^\infty x^{-\sigma-1}dx=1/\sigma$ and
+$\int_1^\infty(\log x)x^{-\sigma-1}dx=1/\sigma^2$.
+The derivative of $s/(s-1)$ is $-1/(s-1)^2$. These give exactly $M$;
+all differentiated tails have the same explicit logarithmic bounds used
+in Section~\ref{em:section}.
+
+Also $\zeta(1+h)\le1+1/h\le2/h$. Equation (Z1) therefore gives
+\[
+ |\zeta(1+h+it)|^4\ge h^3/(8B)
+       =32(M+1)^4h^4,
+\]
+and hence $|\zeta(1+h+it)|\ge2(M+1)h$. This last inequality follows
+by the monotonicity of the fourth power on nonnegative quantities; its
+finite rational approximation proof uses a positive rational gap.
+Finite integration of the derivative along the horizontal segment gives
+$|\zeta(1+h+it)-\zeta(1+it)|\le Mh$. Consequently
+\begin{equation}
+ \boxed{\displaystyle |\zeta(1+it)|\ge h>0
+       \quad\left(1/A\le|t|\le T\right),}
+ \label{eq:boundary-apartness}
+\end{equation}
+with the explicit rational $h$ in (Z2). This is an apartness theorem,
+not merely a derivation of $\neg(\zeta(1+it)=0)$.
+For an explicit disk, put
+\[
+ M_* =4\eta^{-2}+2+4R,\qquad
+ r=\min\left(\frac12,\frac\eta2,\frac{h}{2M_*}\right).
+\]
+If $|z-(1+it)|\le r$, then $\Re z\ge1/2$, $|z-1|\ge\eta/2$,
+and $|z|\le R$. The differentiated fractional-part formula gives
+$|\zeta'(z)|\le M_*$. Segment integration therefore proves
+$|\zeta(z)|\ge h/2$ on that entire disk.
+
+The functional equation supplies positive lower bounds on $\Re s=0$
+when $|\Im s|$ is bounded above and away from zero. The factors
+$\sin(\pi s/2)$, $\Gamma(1-s)$, and $\zeta(1-s)$ each have the
+explicit lower bounds already proved. The remaining point is
+$\zeta(0)=-1/2$. Together with the reciprocal Dirichlet series and the
+left-half-plane sine factor, these give the usual zero-free exterior
+statements on their certified charts. The negative even zeros have the
+simple derivative formula \eqref{eq:trivial-zero-derivative}.
+
+For a real input $0<x<1$ with rational margins, paired terms show
+$\eta(x)\ge1-2^{-x}>0$, while $1-2^{1-x}<0$. Thus $\zeta(x)<0$.
+On the negative real axis away from even integers, its sign is the sign
+of $\sin(\pi x/2)$ by the functional equation. These are explicit sign
+statements, and do not decide equality to a lattice point for an
+arbitrary real name.

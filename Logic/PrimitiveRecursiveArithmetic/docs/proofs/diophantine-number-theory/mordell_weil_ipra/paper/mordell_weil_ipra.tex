@@ -1,0 +1,114 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.94in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Constructive Mordell-Weil descent in iPRA},
+ pdfauthor={}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Constructive Mordell--Weil descent}
+\fancyhead[R]{\small iPRA}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.1em}
+\setlist{itemsep=0.2em,topsep=0.3em}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\iPRA}{\mathsf{iPRA}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\dotminus}{\mathbin{\mathord{\dot-}}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\DeclareMathOperator{\ev}{eval}
+\DeclareMathOperator{\htwo}{ceilLog_2}
+\DeclareMathOperator{\bl}{bitlen}
+\DeclareMathOperator{\Cover}{Cover}
+\DeclareMathOperator{\Good}{Good}
+\DeclareMathOperator{\Halves}{Halves}
+\DeclareMathOperator{\Sha}{Sha}
+\DeclareMathOperator{\adj}{adj}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,
+ columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{gray!40},
+ showstringspaces=false}
+
+\title{\textbf{Constructive Mordell--Weil descent\\
+ in intuitionistic primitive recursive arithmetic}\\[0.6em]
+ \large Explicit generation from quotient representatives,\\
+ and an unconditional family of rational Mordell--Weil groups}
+\author{}
+\date{November 15, 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a precise, witness-producing version of the height-descent part of
+Mordell--Weil, with an arithmetic proof using primitive recursion and
+quantifier-free induction. For every nonsingular integral short Weierstrass
+equation, we construct explicit integer height constants, a complete finite
+algorithm for rational division by two, and an algorithm which turns a
+supplied covering list modulo doubling into generators and coordinates of
+every rational point. The universal covering assertion remains an explicit
+hypothesis. In particular, no selector or height estimate is hidden in that
+hypothesis.
+
+Independently, we prove in full that the rational group of
+$y^2=x^3-x$ is $(\Z/2\Z)^2$, by a bounded version of Fermat's square-area
+descent. This gives unconditional uniform classifications for rationally
+scaled models and their finite products, in every finite dimension.
+We give precise coding conventions, induction invariants, executable exact
+arithmetic, a compiled Lean descent kernel, and a module-by-module plan for
+the deeply embedded iPRA formalization in ProveIt.
+
+This is not an unconditional constructive proof of finite generation for
+every abelian variety over every number field. Producing the quotient
+representatives uniformly is not solved here. The distinction is necessary:
+a general algorithm producing Mordell--Weil generators is still an open
+effectivity problem already for elliptic curves over $\Q$.
+\end{abstract}
+
+\begin{center}
+\fbox{\begin{minipage}{0.91\textwidth}
+\textbf{Verification boundary.}
+The arithmetic arguments in this paper are human-readable proofs with
+explicit iPRA induction invariants. The accompanying Lean files check
+selected native Lean theorems. The complete arithmetic results have not
+yet been assembled as values of ProveIt's embedded \code{Prf PRAAx}.
+No independence or impossibility result about iPRA is asserted.
+\end{minipage}}
+\end{center}
+
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+\input{01_foundations}
+\input{02_descent}
+\input{03_elliptic}
+\input{04_unconditional}
+\input{05_formalization}
+\input{06_validation}
+\clearpage
+\input{references}
+\end{document}

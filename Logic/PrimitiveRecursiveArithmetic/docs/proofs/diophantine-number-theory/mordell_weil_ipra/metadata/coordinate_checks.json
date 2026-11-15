@@ -1,0 +1,3013 @@
+{
+  "tests_run": 5,
+  "failures": 0,
+  "errors": 0,
+  "successful": true,
+  "fuel": "bit_length(max(h(P)-C,0))",
+  "coefficient_bound": "2*max(1,h(P)-C)",
+  "E1": {
+    "C": 12,
+    "bounded_generator_search_height": 4096,
+    "generators_with_duplicates": [
+      "O",
+      "(-1, 0)",
+      "(0, 0)",
+      "(1, 0)",
+      "O",
+      "(-1, 0)",
+      "(0, 0)",
+      "(1, 0)"
+    ],
+    "representations": [
+      {
+        "success": true,
+        "failure_reason": null,
+        "initial": "O",
+        "representatives": [
+          "O",
+          "(-1, 0)",
+          "(0, 0)",
+          "(1, 0)"
+        ],
+        "representative_coefficients": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "terminal": "O",
+        "terminal_coefficient": 1,
+        "threshold": 12,
+        "initial_height": 0,
+        "initial_excess": 0,
+        "fuel": 0,
+        "active_steps": 0,
+        "coefficient_bound": 2,
+        "trace": [],
+        "full_coordinate_vector": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "success": true,
+        "failure_reason": null,
+        "initial": "(-1, 0)",
+        "representatives": [
+          "O",
+          "(-1, 0)",
+          "(0, 0)",
+          "(1, 0)"
+        ],
+        "representative_coefficients": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "terminal": "(-1, 0)",
+        "terminal_coefficient": 1,
+        "threshold": 12,
+        "initial_height": 0,
+        "initial_excess": 0,
+        "fuel": 0,
+        "active_steps": 0,
+        "coefficient_bound": 2,
+        "trace": [],
+        "full_coordinate_vector": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "success": true,
+        "failure_reason": null,
+        "initial": "(0, 0)",
+        "representatives": [
+          "O",
+          "(-1, 0)",
+          "(0, 0)",
+          "(1, 0)"
+        ],
+        "representative_coefficients": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "terminal": "(0, 0)",
+        "terminal_coefficient": 1,
+        "threshold": 12,
+        "initial_height": 0,
+        "initial_excess": 0,
+        "fuel": 0,
+        "active_steps": 0,
+        "coefficient_bound": 2,
+        "trace": [],
+        "full_coordinate_vector": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ]
+      },
+      {
+        "success": true,
+        "failure_reason": null,
+        "initial": "(1, 0)",
+        "representatives": [
+          "O",
+          "(-1, 0)",
+          "(0, 0)",
+          "(1, 0)"
+        ],
+        "representative_coefficients": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "terminal": "(1, 0)",
+        "terminal_coefficient": 1,
+        "threshold": 12,
+        "initial_height": 0,
+        "initial_excess": 0,
+        "fuel": 0,
+        "active_steps": 0,
+        "coefficient_bound": 2,
+        "trace": [],
+        "full_coordinate_vector": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      }
+    ]
+  },
+  "lattice_fixture": {
+    "height": "sum of coordinate squares",
+    "threshold": "dimension r",
+    "representatives": "all vectors in {0,1}^r",
+    "step": "coordinatewise parity digit and floor division by two",
+    "identity": "2*sum(q_i^2) <= sum((2*q_i+d_i)^2)+r for d_i in {0,1}",
+    "runs": [
+      {
+        "success": true,
+        "failure_reason": null,
+        "initial": [
+          1000
+        ],
+        "representatives": [
+          [
+            0
+          ],
+          [
+            1
+          ]
+        ],
+        "representative_coefficients": [
+          23,
+          488
+        ],
+        "terminal": [
+          1
+        ],
+        "terminal_coefficient": 512,
+        "threshold": 1,
+        "initial_height": 1000000,
+        "initial_excess": 999999,
+        "fuel": 20,
+        "active_steps": 9,
+        "coefficient_bound": 1999998,
+        "trace": [
+          {
+            "iteration": 1,
+            "kind": "active",
+            "before": [
+              1000
+            ],
+            "after": [
+              500
+            ],
+            "height_before": 1000000,
+            "height_after": 250000,
+            "selected_index": 0,
+            "active_steps": 1,
+            "scale": 2,
+            "representative_coefficients": [
+              1,
+              0
+            ]
+          },
+          {
+            "iteration": 2,
+            "kind": "active",
+            "before": [
+              500
+            ],
+            "after": [
+              250
+            ],
+            "height_before": 250000,
+            "height_after": 62500,
+            "selected_index": 0,
+            "active_steps": 2,
+            "scale": 4,
+            "representative_coefficients": [
+              3,
+              0
+            ]
+          },
+          {
+            "iteration": 3,
+            "kind": "active",
+            "before": [
+              250
+            ],
+            "after": [
+              125
+            ],
+            "height_before": 62500,
+            "height_after": 15625,
+            "selected_index": 0,
+            "active_steps": 3,
+            "scale": 8,
+            "representative_coefficients": [
+              7,
+              0
+            ]
+          },
+          {
+            "iteration": 4,
+            "kind": "active",
+            "before": [
+              125
+            ],
+            "after": [
+              62
+            ],
+            "height_before": 15625,
+            "height_after": 3844,
+            "selected_index": 1,
+            "active_steps": 4,
+            "scale": 16,
+            "representative_coefficients": [
+              7,
+              8
+            ]
+          },
+          {
+            "iteration": 5,
+            "kind": "active",
+            "before": [
+              62
+            ],
+            "after": [
+              31
+            ],
+            "height_before": 3844,
+            "height_after": 961,
+            "selected_index": 0,
+            "active_steps": 5,
+            "scale": 32,
+            "representative_coefficients": [
+              23,
+              8
+            ]
+          },
+          {
+            "iteration": 6,
+            "kind": "active",
+            "before": [
+              31
+            ],
+            "after": [
+              15
+            ],
+            "height_before": 961,
+            "height_after": 225,
+            "selected_index": 1,
+            "active_steps": 6,
+            "scale": 64,
+            "representative_coefficients": [
+              23,
+              40
+            ]
+          },
+          {
+            "iteration": 7,
+            "kind": "active",
+            "before": [
+              15
+            ],
+            "after": [
+              7
+            ],
+            "height_before": 225,
+            "height_after": 49,
+            "selected_index": 1,
+            "active_steps": 7,
+            "scale": 128,
+            "representative_coefficients": [
+              23,
+              104
+            ]
+          },
+          {
+            "iteration": 8,
+            "kind": "active",
+            "before": [
+              7
+            ],
+            "after": [
+              3
+            ],
+            "height_before": 49,
+            "height_after": 9,
+            "selected_index": 1,
+            "active_steps": 8,
+            "scale": 256,
+            "representative_coefficients": [
+              23,
+              232
+            ]
+          },
+          {
+            "iteration": 9,
+            "kind": "active",
+            "before": [
+              3
+            ],
+            "after": [
+              1
+            ],
+            "height_before": 9,
+            "height_after": 1,
+            "selected_index": 1,
+            "active_steps": 9,
+            "scale": 512,
+            "representative_coefficients": [
+              23,
+              488
+            ]
+          },
+          {
+            "iteration": 10,
+            "kind": "frozen",
+            "before": [
+              1
+            ],
+            "after": [
+              1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 9,
+            "scale": 512,
+            "representative_coefficients": [
+              23,
+              488
+            ]
+          },
+          {
+            "iteration": 11,
+            "kind": "frozen",
+            "before": [
+              1
+            ],
+            "after": [
+              1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 9,
+            "scale": 512,
+            "representative_coefficients": [
+              23,
+              488
+            ]
+          },
+          {
+            "iteration": 12,
+            "kind": "frozen",
+            "before": [
+              1
+            ],
+            "after": [
+              1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 9,
+            "scale": 512,
+            "representative_coefficients": [
+              23,
+              488
+            ]
+          },
+          {
+            "iteration": 13,
+            "kind": "frozen",
+            "before": [
+              1
+            ],
+            "after": [
+              1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 9,
+            "scale": 512,
+            "representative_coefficients": [
+              23,
+              488
+            ]
+          },
+          {
+            "iteration": 14,
+            "kind": "frozen",
+            "before": [
+              1
+            ],
+            "after": [
+              1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 9,
+            "scale": 512,
+            "representative_coefficients": [
+              23,
+              488
+            ]
+          },
+          {
+            "iteration": 15,
+            "kind": "frozen",
+            "before": [
+              1
+            ],
+            "after": [
+              1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 9,
+            "scale": 512,
+            "representative_coefficients": [
+              23,
+              488
+            ]
+          },
+          {
+            "iteration": 16,
+            "kind": "frozen",
+            "before": [
+              1
+            ],
+            "after": [
+              1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 9,
+            "scale": 512,
+            "representative_coefficients": [
+              23,
+              488
+            ]
+          },
+          {
+            "iteration": 17,
+            "kind": "frozen",
+            "before": [
+              1
+            ],
+            "after": [
+              1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 9,
+            "scale": 512,
+            "representative_coefficients": [
+              23,
+              488
+            ]
+          },
+          {
+            "iteration": 18,
+            "kind": "frozen",
+            "before": [
+              1
+            ],
+            "after": [
+              1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 9,
+            "scale": 512,
+            "representative_coefficients": [
+              23,
+              488
+            ]
+          },
+          {
+            "iteration": 19,
+            "kind": "frozen",
+            "before": [
+              1
+            ],
+            "after": [
+              1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 9,
+            "scale": 512,
+            "representative_coefficients": [
+              23,
+              488
+            ]
+          },
+          {
+            "iteration": 20,
+            "kind": "frozen",
+            "before": [
+              1
+            ],
+            "after": [
+              1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 9,
+            "scale": 512,
+            "representative_coefficients": [
+              23,
+              488
+            ]
+          }
+        ]
+      },
+      {
+        "success": true,
+        "failure_reason": null,
+        "initial": [
+          -999
+        ],
+        "representatives": [
+          [
+            0
+          ],
+          [
+            1
+          ]
+        ],
+        "representative_coefficients": [
+          998,
+          25
+        ],
+        "terminal": [
+          -1
+        ],
+        "terminal_coefficient": 1024,
+        "threshold": 1,
+        "initial_height": 998001,
+        "initial_excess": 998000,
+        "fuel": 20,
+        "active_steps": 10,
+        "coefficient_bound": 1996000,
+        "trace": [
+          {
+            "iteration": 1,
+            "kind": "active",
+            "before": [
+              -999
+            ],
+            "after": [
+              -500
+            ],
+            "height_before": 998001,
+            "height_after": 250000,
+            "selected_index": 1,
+            "active_steps": 1,
+            "scale": 2,
+            "representative_coefficients": [
+              0,
+              1
+            ]
+          },
+          {
+            "iteration": 2,
+            "kind": "active",
+            "before": [
+              -500
+            ],
+            "after": [
+              -250
+            ],
+            "height_before": 250000,
+            "height_after": 62500,
+            "selected_index": 0,
+            "active_steps": 2,
+            "scale": 4,
+            "representative_coefficients": [
+              2,
+              1
+            ]
+          },
+          {
+            "iteration": 3,
+            "kind": "active",
+            "before": [
+              -250
+            ],
+            "after": [
+              -125
+            ],
+            "height_before": 62500,
+            "height_after": 15625,
+            "selected_index": 0,
+            "active_steps": 3,
+            "scale": 8,
+            "representative_coefficients": [
+              6,
+              1
+            ]
+          },
+          {
+            "iteration": 4,
+            "kind": "active",
+            "before": [
+              -125
+            ],
+            "after": [
+              -63
+            ],
+            "height_before": 15625,
+            "height_after": 3969,
+            "selected_index": 1,
+            "active_steps": 4,
+            "scale": 16,
+            "representative_coefficients": [
+              6,
+              9
+            ]
+          },
+          {
+            "iteration": 5,
+            "kind": "active",
+            "before": [
+              -63
+            ],
+            "after": [
+              -32
+            ],
+            "height_before": 3969,
+            "height_after": 1024,
+            "selected_index": 1,
+            "active_steps": 5,
+            "scale": 32,
+            "representative_coefficients": [
+              6,
+              25
+            ]
+          },
+          {
+            "iteration": 6,
+            "kind": "active",
+            "before": [
+              -32
+            ],
+            "after": [
+              -16
+            ],
+            "height_before": 1024,
+            "height_after": 256,
+            "selected_index": 0,
+            "active_steps": 6,
+            "scale": 64,
+            "representative_coefficients": [
+              38,
+              25
+            ]
+          },
+          {
+            "iteration": 7,
+            "kind": "active",
+            "before": [
+              -16
+            ],
+            "after": [
+              -8
+            ],
+            "height_before": 256,
+            "height_after": 64,
+            "selected_index": 0,
+            "active_steps": 7,
+            "scale": 128,
+            "representative_coefficients": [
+              102,
+              25
+            ]
+          },
+          {
+            "iteration": 8,
+            "kind": "active",
+            "before": [
+              -8
+            ],
+            "after": [
+              -4
+            ],
+            "height_before": 64,
+            "height_after": 16,
+            "selected_index": 0,
+            "active_steps": 8,
+            "scale": 256,
+            "representative_coefficients": [
+              230,
+              25
+            ]
+          },
+          {
+            "iteration": 9,
+            "kind": "active",
+            "before": [
+              -4
+            ],
+            "after": [
+              -2
+            ],
+            "height_before": 16,
+            "height_after": 4,
+            "selected_index": 0,
+            "active_steps": 9,
+            "scale": 512,
+            "representative_coefficients": [
+              486,
+              25
+            ]
+          },
+          {
+            "iteration": 10,
+            "kind": "active",
+            "before": [
+              -2
+            ],
+            "after": [
+              -1
+            ],
+            "height_before": 4,
+            "height_after": 1,
+            "selected_index": 0,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              998,
+              25
+            ]
+          },
+          {
+            "iteration": 11,
+            "kind": "frozen",
+            "before": [
+              -1
+            ],
+            "after": [
+              -1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              998,
+              25
+            ]
+          },
+          {
+            "iteration": 12,
+            "kind": "frozen",
+            "before": [
+              -1
+            ],
+            "after": [
+              -1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              998,
+              25
+            ]
+          },
+          {
+            "iteration": 13,
+            "kind": "frozen",
+            "before": [
+              -1
+            ],
+            "after": [
+              -1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              998,
+              25
+            ]
+          },
+          {
+            "iteration": 14,
+            "kind": "frozen",
+            "before": [
+              -1
+            ],
+            "after": [
+              -1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              998,
+              25
+            ]
+          },
+          {
+            "iteration": 15,
+            "kind": "frozen",
+            "before": [
+              -1
+            ],
+            "after": [
+              -1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              998,
+              25
+            ]
+          },
+          {
+            "iteration": 16,
+            "kind": "frozen",
+            "before": [
+              -1
+            ],
+            "after": [
+              -1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              998,
+              25
+            ]
+          },
+          {
+            "iteration": 17,
+            "kind": "frozen",
+            "before": [
+              -1
+            ],
+            "after": [
+              -1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              998,
+              25
+            ]
+          },
+          {
+            "iteration": 18,
+            "kind": "frozen",
+            "before": [
+              -1
+            ],
+            "after": [
+              -1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              998,
+              25
+            ]
+          },
+          {
+            "iteration": 19,
+            "kind": "frozen",
+            "before": [
+              -1
+            ],
+            "after": [
+              -1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              998,
+              25
+            ]
+          },
+          {
+            "iteration": 20,
+            "kind": "frozen",
+            "before": [
+              -1
+            ],
+            "after": [
+              -1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              998,
+              25
+            ]
+          }
+        ]
+      },
+      {
+        "success": true,
+        "failure_reason": null,
+        "initial": [
+          1000,
+          -999
+        ],
+        "representatives": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "representative_coefficients": [
+          6,
+          992,
+          17,
+          8
+        ],
+        "terminal": [
+          0,
+          -1
+        ],
+        "terminal_coefficient": 1024,
+        "threshold": 2,
+        "initial_height": 1998001,
+        "initial_excess": 1997999,
+        "fuel": 21,
+        "active_steps": 10,
+        "coefficient_bound": 3995998,
+        "trace": [
+          {
+            "iteration": 1,
+            "kind": "active",
+            "before": [
+              1000,
+              -999
+            ],
+            "after": [
+              500,
+              -500
+            ],
+            "height_before": 1998001,
+            "height_after": 500000,
+            "selected_index": 2,
+            "active_steps": 1,
+            "scale": 2,
+            "representative_coefficients": [
+              0,
+              0,
+              1,
+              0
+            ]
+          },
+          {
+            "iteration": 2,
+            "kind": "active",
+            "before": [
+              500,
+              -500
+            ],
+            "after": [
+              250,
+              -250
+            ],
+            "height_before": 500000,
+            "height_after": 125000,
+            "selected_index": 0,
+            "active_steps": 2,
+            "scale": 4,
+            "representative_coefficients": [
+              2,
+              0,
+              1,
+              0
+            ]
+          },
+          {
+            "iteration": 3,
+            "kind": "active",
+            "before": [
+              250,
+              -250
+            ],
+            "after": [
+              125,
+              -125
+            ],
+            "height_before": 125000,
+            "height_after": 31250,
+            "selected_index": 0,
+            "active_steps": 3,
+            "scale": 8,
+            "representative_coefficients": [
+              6,
+              0,
+              1,
+              0
+            ]
+          },
+          {
+            "iteration": 4,
+            "kind": "active",
+            "before": [
+              125,
+              -125
+            ],
+            "after": [
+              62,
+              -63
+            ],
+            "height_before": 31250,
+            "height_after": 7813,
+            "selected_index": 3,
+            "active_steps": 4,
+            "scale": 16,
+            "representative_coefficients": [
+              6,
+              0,
+              1,
+              8
+            ]
+          },
+          {
+            "iteration": 5,
+            "kind": "active",
+            "before": [
+              62,
+              -63
+            ],
+            "after": [
+              31,
+              -32
+            ],
+            "height_before": 7813,
+            "height_after": 1985,
+            "selected_index": 2,
+            "active_steps": 5,
+            "scale": 32,
+            "representative_coefficients": [
+              6,
+              0,
+              17,
+              8
+            ]
+          },
+          {
+            "iteration": 6,
+            "kind": "active",
+            "before": [
+              31,
+              -32
+            ],
+            "after": [
+              15,
+              -16
+            ],
+            "height_before": 1985,
+            "height_after": 481,
+            "selected_index": 1,
+            "active_steps": 6,
+            "scale": 64,
+            "representative_coefficients": [
+              6,
+              32,
+              17,
+              8
+            ]
+          },
+          {
+            "iteration": 7,
+            "kind": "active",
+            "before": [
+              15,
+              -16
+            ],
+            "after": [
+              7,
+              -8
+            ],
+            "height_before": 481,
+            "height_after": 113,
+            "selected_index": 1,
+            "active_steps": 7,
+            "scale": 128,
+            "representative_coefficients": [
+              6,
+              96,
+              17,
+              8
+            ]
+          },
+          {
+            "iteration": 8,
+            "kind": "active",
+            "before": [
+              7,
+              -8
+            ],
+            "after": [
+              3,
+              -4
+            ],
+            "height_before": 113,
+            "height_after": 25,
+            "selected_index": 1,
+            "active_steps": 8,
+            "scale": 256,
+            "representative_coefficients": [
+              6,
+              224,
+              17,
+              8
+            ]
+          },
+          {
+            "iteration": 9,
+            "kind": "active",
+            "before": [
+              3,
+              -4
+            ],
+            "after": [
+              1,
+              -2
+            ],
+            "height_before": 25,
+            "height_after": 5,
+            "selected_index": 1,
+            "active_steps": 9,
+            "scale": 512,
+            "representative_coefficients": [
+              6,
+              480,
+              17,
+              8
+            ]
+          },
+          {
+            "iteration": 10,
+            "kind": "active",
+            "before": [
+              1,
+              -2
+            ],
+            "after": [
+              0,
+              -1
+            ],
+            "height_before": 5,
+            "height_after": 1,
+            "selected_index": 1,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              6,
+              992,
+              17,
+              8
+            ]
+          },
+          {
+            "iteration": 11,
+            "kind": "frozen",
+            "before": [
+              0,
+              -1
+            ],
+            "after": [
+              0,
+              -1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              6,
+              992,
+              17,
+              8
+            ]
+          },
+          {
+            "iteration": 12,
+            "kind": "frozen",
+            "before": [
+              0,
+              -1
+            ],
+            "after": [
+              0,
+              -1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              6,
+              992,
+              17,
+              8
+            ]
+          },
+          {
+            "iteration": 13,
+            "kind": "frozen",
+            "before": [
+              0,
+              -1
+            ],
+            "after": [
+              0,
+              -1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              6,
+              992,
+              17,
+              8
+            ]
+          },
+          {
+            "iteration": 14,
+            "kind": "frozen",
+            "before": [
+              0,
+              -1
+            ],
+            "after": [
+              0,
+              -1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              6,
+              992,
+              17,
+              8
+            ]
+          },
+          {
+            "iteration": 15,
+            "kind": "frozen",
+            "before": [
+              0,
+              -1
+            ],
+            "after": [
+              0,
+              -1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              6,
+              992,
+              17,
+              8
+            ]
+          },
+          {
+            "iteration": 16,
+            "kind": "frozen",
+            "before": [
+              0,
+              -1
+            ],
+            "after": [
+              0,
+              -1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              6,
+              992,
+              17,
+              8
+            ]
+          },
+          {
+            "iteration": 17,
+            "kind": "frozen",
+            "before": [
+              0,
+              -1
+            ],
+            "after": [
+              0,
+              -1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              6,
+              992,
+              17,
+              8
+            ]
+          },
+          {
+            "iteration": 18,
+            "kind": "frozen",
+            "before": [
+              0,
+              -1
+            ],
+            "after": [
+              0,
+              -1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              6,
+              992,
+              17,
+              8
+            ]
+          },
+          {
+            "iteration": 19,
+            "kind": "frozen",
+            "before": [
+              0,
+              -1
+            ],
+            "after": [
+              0,
+              -1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              6,
+              992,
+              17,
+              8
+            ]
+          },
+          {
+            "iteration": 20,
+            "kind": "frozen",
+            "before": [
+              0,
+              -1
+            ],
+            "after": [
+              0,
+              -1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              6,
+              992,
+              17,
+              8
+            ]
+          },
+          {
+            "iteration": 21,
+            "kind": "frozen",
+            "before": [
+              0,
+              -1
+            ],
+            "after": [
+              0,
+              -1
+            ],
+            "height_before": 1,
+            "height_after": 1,
+            "selected_index": null,
+            "active_steps": 10,
+            "scale": 1024,
+            "representative_coefficients": [
+              6,
+              992,
+              17,
+              8
+            ]
+          }
+        ]
+      },
+      {
+        "success": true,
+        "failure_reason": null,
+        "initial": [
+          47,
+          -28,
+          69
+        ],
+        "representatives": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1
+          ]
+        ],
+        "representative_coefficients": [
+          16,
+          10,
+          0,
+          32,
+          0,
+          1,
+          0,
+          4
+        ],
+        "terminal": [
+          0,
+          -1,
+          1
+        ],
+        "terminal_coefficient": 64,
+        "threshold": 3,
+        "initial_height": 7754,
+        "initial_excess": 7751,
+        "fuel": 13,
+        "active_steps": 6,
+        "coefficient_bound": 15502,
+        "trace": [
+          {
+            "iteration": 1,
+            "kind": "active",
+            "before": [
+              47,
+              -28,
+              69
+            ],
+            "after": [
+              23,
+              -14,
+              34
+            ],
+            "height_before": 7754,
+            "height_after": 1881,
+            "selected_index": 5,
+            "active_steps": 1,
+            "scale": 2,
+            "representative_coefficients": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "iteration": 2,
+            "kind": "active",
+            "before": [
+              23,
+              -14,
+              34
+            ],
+            "after": [
+              11,
+              -7,
+              17
+            ],
+            "height_before": 1881,
+            "height_after": 459,
+            "selected_index": 1,
+            "active_steps": 2,
+            "scale": 4,
+            "representative_coefficients": [
+              0,
+              2,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "iteration": 3,
+            "kind": "active",
+            "before": [
+              11,
+              -7,
+              17
+            ],
+            "after": [
+              5,
+              -4,
+              8
+            ],
+            "height_before": 459,
+            "height_after": 105,
+            "selected_index": 7,
+            "active_steps": 3,
+            "scale": 8,
+            "representative_coefficients": [
+              0,
+              2,
+              0,
+              0,
+              0,
+              1,
+              0,
+              4
+            ]
+          },
+          {
+            "iteration": 4,
+            "kind": "active",
+            "before": [
+              5,
+              -4,
+              8
+            ],
+            "after": [
+              2,
+              -2,
+              4
+            ],
+            "height_before": 105,
+            "height_after": 24,
+            "selected_index": 1,
+            "active_steps": 4,
+            "scale": 16,
+            "representative_coefficients": [
+              0,
+              10,
+              0,
+              0,
+              0,
+              1,
+              0,
+              4
+            ]
+          },
+          {
+            "iteration": 5,
+            "kind": "active",
+            "before": [
+              2,
+              -2,
+              4
+            ],
+            "after": [
+              1,
+              -1,
+              2
+            ],
+            "height_before": 24,
+            "height_after": 6,
+            "selected_index": 0,
+            "active_steps": 5,
+            "scale": 32,
+            "representative_coefficients": [
+              16,
+              10,
+              0,
+              0,
+              0,
+              1,
+              0,
+              4
+            ]
+          },
+          {
+            "iteration": 6,
+            "kind": "active",
+            "before": [
+              1,
+              -1,
+              2
+            ],
+            "after": [
+              0,
+              -1,
+              1
+            ],
+            "height_before": 6,
+            "height_after": 2,
+            "selected_index": 3,
+            "active_steps": 6,
+            "scale": 64,
+            "representative_coefficients": [
+              16,
+              10,
+              0,
+              32,
+              0,
+              1,
+              0,
+              4
+            ]
+          },
+          {
+            "iteration": 7,
+            "kind": "frozen",
+            "before": [
+              0,
+              -1,
+              1
+            ],
+            "after": [
+              0,
+              -1,
+              1
+            ],
+            "height_before": 2,
+            "height_after": 2,
+            "selected_index": null,
+            "active_steps": 6,
+            "scale": 64,
+            "representative_coefficients": [
+              16,
+              10,
+              0,
+              32,
+              0,
+              1,
+              0,
+              4
+            ]
+          },
+          {
+            "iteration": 8,
+            "kind": "frozen",
+            "before": [
+              0,
+              -1,
+              1
+            ],
+            "after": [
+              0,
+              -1,
+              1
+            ],
+            "height_before": 2,
+            "height_after": 2,
+            "selected_index": null,
+            "active_steps": 6,
+            "scale": 64,
+            "representative_coefficients": [
+              16,
+              10,
+              0,
+              32,
+              0,
+              1,
+              0,
+              4
+            ]
+          },
+          {
+            "iteration": 9,
+            "kind": "frozen",
+            "before": [
+              0,
+              -1,
+              1
+            ],
+            "after": [
+              0,
+              -1,
+              1
+            ],
+            "height_before": 2,
+            "height_after": 2,
+            "selected_index": null,
+            "active_steps": 6,
+            "scale": 64,
+            "representative_coefficients": [
+              16,
+              10,
+              0,
+              32,
+              0,
+              1,
+              0,
+              4
+            ]
+          },
+          {
+            "iteration": 10,
+            "kind": "frozen",
+            "before": [
+              0,
+              -1,
+              1
+            ],
+            "after": [
+              0,
+              -1,
+              1
+            ],
+            "height_before": 2,
+            "height_after": 2,
+            "selected_index": null,
+            "active_steps": 6,
+            "scale": 64,
+            "representative_coefficients": [
+              16,
+              10,
+              0,
+              32,
+              0,
+              1,
+              0,
+              4
+            ]
+          },
+          {
+            "iteration": 11,
+            "kind": "frozen",
+            "before": [
+              0,
+              -1,
+              1
+            ],
+            "after": [
+              0,
+              -1,
+              1
+            ],
+            "height_before": 2,
+            "height_after": 2,
+            "selected_index": null,
+            "active_steps": 6,
+            "scale": 64,
+            "representative_coefficients": [
+              16,
+              10,
+              0,
+              32,
+              0,
+              1,
+              0,
+              4
+            ]
+          },
+          {
+            "iteration": 12,
+            "kind": "frozen",
+            "before": [
+              0,
+              -1,
+              1
+            ],
+            "after": [
+              0,
+              -1,
+              1
+            ],
+            "height_before": 2,
+            "height_after": 2,
+            "selected_index": null,
+            "active_steps": 6,
+            "scale": 64,
+            "representative_coefficients": [
+              16,
+              10,
+              0,
+              32,
+              0,
+              1,
+              0,
+              4
+            ]
+          },
+          {
+            "iteration": 13,
+            "kind": "frozen",
+            "before": [
+              0,
+              -1,
+              1
+            ],
+            "after": [
+              0,
+              -1,
+              1
+            ],
+            "height_before": 2,
+            "height_after": 2,
+            "selected_index": null,
+            "active_steps": 6,
+            "scale": 64,
+            "representative_coefficients": [
+              16,
+              10,
+              0,
+              32,
+              0,
+              1,
+              0,
+              4
+            ]
+          }
+        ]
+      },
+      {
+        "success": true,
+        "failure_reason": null,
+        "initial": [
+          12,
+          -300,
+          50,
+          7
+        ],
+        "representatives": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1
+          ]
+        ],
+        "representative_coefficients": [
+          0,
+          8,
+          192,
+          0,
+          32,
+          0,
+          16,
+          0,
+          1,
+          0,
+          0,
+          4,
+          2,
+          0,
+          0,
+          0
+        ],
+        "terminal": [
+          0,
+          -2,
+          0,
+          0
+        ],
+        "terminal_coefficient": 256,
+        "threshold": 4,
+        "initial_height": 92693,
+        "initial_excess": 92689,
+        "fuel": 17,
+        "active_steps": 8,
+        "coefficient_bound": 185378,
+        "trace": [
+          {
+            "iteration": 1,
+            "kind": "active",
+            "before": [
+              12,
+              -300,
+              50,
+              7
+            ],
+            "after": [
+              6,
+              -150,
+              25,
+              3
+            ],
+            "height_before": 92693,
+            "height_after": 23170,
+            "selected_index": 8,
+            "active_steps": 1,
+            "scale": 2,
+            "representative_coefficients": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "iteration": 2,
+            "kind": "active",
+            "before": [
+              6,
+              -150,
+              25,
+              3
+            ],
+            "after": [
+              3,
+              -75,
+              12,
+              1
+            ],
+            "height_before": 23170,
+            "height_after": 5779,
+            "selected_index": 12,
+            "active_steps": 2,
+            "scale": 4,
+            "representative_coefficients": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "iteration": 3,
+            "kind": "active",
+            "before": [
+              3,
+              -75,
+              12,
+              1
+            ],
+            "after": [
+              1,
+              -38,
+              6,
+              0
+            ],
+            "height_before": 5779,
+            "height_after": 1481,
+            "selected_index": 11,
+            "active_steps": 3,
+            "scale": 8,
+            "representative_coefficients": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              4,
+              2,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "iteration": 4,
+            "kind": "active",
+            "before": [
+              1,
+              -38,
+              6,
+              0
+            ],
+            "after": [
+              0,
+              -19,
+              3,
+              0
+            ],
+            "height_before": 1481,
+            "height_after": 370,
+            "selected_index": 1,
+            "active_steps": 4,
+            "scale": 16,
+            "representative_coefficients": [
+              0,
+              8,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              4,
+              2,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "iteration": 5,
+            "kind": "active",
+            "before": [
+              0,
+              -19,
+              3,
+              0
+            ],
+            "after": [
+              0,
+              -10,
+              1,
+              0
+            ],
+            "height_before": 370,
+            "height_after": 101,
+            "selected_index": 6,
+            "active_steps": 5,
+            "scale": 32,
+            "representative_coefficients": [
+              0,
+              8,
+              0,
+              0,
+              0,
+              0,
+              16,
+              0,
+              1,
+              0,
+              0,
+              4,
+              2,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "iteration": 6,
+            "kind": "active",
+            "before": [
+              0,
+              -10,
+              1,
+              0
+            ],
+            "after": [
+              0,
+              -5,
+              0,
+              0
+            ],
+            "height_before": 101,
+            "height_after": 25,
+            "selected_index": 4,
+            "active_steps": 6,
+            "scale": 64,
+            "representative_coefficients": [
+              0,
+              8,
+              0,
+              0,
+              32,
+              0,
+              16,
+              0,
+              1,
+              0,
+              0,
+              4,
+              2,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "iteration": 7,
+            "kind": "active",
+            "before": [
+              0,
+              -5,
+              0,
+              0
+            ],
+            "after": [
+              0,
+              -3,
+              0,
+              0
+            ],
+            "height_before": 25,
+            "height_after": 9,
+            "selected_index": 2,
+            "active_steps": 7,
+            "scale": 128,
+            "representative_coefficients": [
+              0,
+              8,
+              64,
+              0,
+              32,
+              0,
+              16,
+              0,
+              1,
+              0,
+              0,
+              4,
+              2,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "iteration": 8,
+            "kind": "active",
+            "before": [
+              0,
+              -3,
+              0,
+              0
+            ],
+            "after": [
+              0,
+              -2,
+              0,
+              0
+            ],
+            "height_before": 9,
+            "height_after": 4,
+            "selected_index": 2,
+            "active_steps": 8,
+            "scale": 256,
+            "representative_coefficients": [
+              0,
+              8,
+              192,
+              0,
+              32,
+              0,
+              16,
+              0,
+              1,
+              0,
+              0,
+              4,
+              2,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "iteration": 9,
+            "kind": "frozen",
+            "before": [
+              0,
+              -2,
+              0,
+              0
+            ],
+            "after": [
+              0,
+              -2,
+              0,
+              0
+            ],
+            "height_before": 4,
+            "height_after": 4,
+            "selected_index": null,
+            "active_steps": 8,
+            "scale": 256,
+            "representative_coefficients": [
+              0,
+              8,
+              192,
+              0,
+              32,
+              0,
+              16,
+              0,
+              1,
+              0,
+              0,
+              4,
+              2,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "iteration": 10,
+            "kind": "frozen",
+            "before": [
+              0,
+              -2,
+              0,
+              0
+            ],
+            "after": [
+              0,
+              -2,
+              0,
+              0
+            ],
+            "height_before": 4,
+            "height_after": 4,
+            "selected_index": null,
+            "active_steps": 8,
+            "scale": 256,
+            "representative_coefficients": [
+              0,
+              8,
+              192,
+              0,
+              32,
+              0,
+              16,
+              0,
+              1,
+              0,
+              0,
+              4,
+              2,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "iteration": 11,
+            "kind": "frozen",
+            "before": [
+              0,
+              -2,
+              0,
+              0
+            ],
+            "after": [
+              0,
+              -2,
+              0,
+              0
+            ],
+            "height_before": 4,
+            "height_after": 4,
+            "selected_index": null,
+            "active_steps": 8,
+            "scale": 256,
+            "representative_coefficients": [
+              0,
+              8,
+              192,
+              0,
+              32,
+              0,
+              16,
+              0,
+              1,
+              0,
+              0,
+              4,
+              2,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "iteration": 12,
+            "kind": "frozen",
+            "before": [
+              0,
+              -2,
+              0,
+              0
+            ],
+            "after": [
+              0,
+              -2,
+              0,
+              0
+            ],
+            "height_before": 4,
+            "height_after": 4,
+            "selected_index": null,
+            "active_steps": 8,
+            "scale": 256,
+            "representative_coefficients": [
+              0,
+              8,
+              192,
+              0,
+              32,
+              0,
+              16,
+              0,
+              1,
+              0,
+              0,
+              4,
+              2,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "iteration": 13,
+            "kind": "frozen",
+            "before": [
+              0,
+              -2,
+              0,
+              0
+            ],
+            "after": [
+              0,
+              -2,
+              0,
+              0
+            ],
+            "height_before": 4,
+            "height_after": 4,
+            "selected_index": null,
+            "active_steps": 8,
+            "scale": 256,
+            "representative_coefficients": [
+              0,
+              8,
+              192,
+              0,
+              32,
+              0,
+              16,
+              0,
+              1,
+              0,
+              0,
+              4,
+              2,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "iteration": 14,
+            "kind": "frozen",
+            "before": [
+              0,
+              -2,
+              0,
+              0
+            ],
+            "after": [
+              0,
+              -2,
+              0,
+              0
+            ],
+            "height_before": 4,
+            "height_after": 4,
+            "selected_index": null,
+            "active_steps": 8,
+            "scale": 256,
+            "representative_coefficients": [
+              0,
+              8,
+              192,
+              0,
+              32,
+              0,
+              16,
+              0,
+              1,
+              0,
+              0,
+              4,
+              2,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "iteration": 15,
+            "kind": "frozen",
+            "before": [
+              0,
+              -2,
+              0,
+              0
+            ],
+            "after": [
+              0,
+              -2,
+              0,
+              0
+            ],
+            "height_before": 4,
+            "height_after": 4,
+            "selected_index": null,
+            "active_steps": 8,
+            "scale": 256,
+            "representative_coefficients": [
+              0,
+              8,
+              192,
+              0,
+              32,
+              0,
+              16,
+              0,
+              1,
+              0,
+              0,
+              4,
+              2,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "iteration": 16,
+            "kind": "frozen",
+            "before": [
+              0,
+              -2,
+              0,
+              0
+            ],
+            "after": [
+              0,
+              -2,
+              0,
+              0
+            ],
+            "height_before": 4,
+            "height_after": 4,
+            "selected_index": null,
+            "active_steps": 8,
+            "scale": 256,
+            "representative_coefficients": [
+              0,
+              8,
+              192,
+              0,
+              32,
+              0,
+              16,
+              0,
+              1,
+              0,
+              0,
+              4,
+              2,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "iteration": 17,
+            "kind": "frozen",
+            "before": [
+              0,
+              -2,
+              0,
+              0
+            ],
+            "after": [
+              0,
+              -2,
+              0,
+              0
+            ],
+            "height_before": 4,
+            "height_after": 4,
+            "selected_index": null,
+            "active_steps": 8,
+            "scale": 256,
+            "representative_coefficients": [
+              0,
+              8,
+              192,
+              0,
+              32,
+              0,
+              16,
+              0,
+              1,
+              0,
+              0,
+              4,
+              2,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      },
+      {
+        "success": true,
+        "failure_reason": null,
+        "initial": [
+          0,
+          0
+        ],
+        "representatives": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "representative_coefficients": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "terminal": [
+          0,
+          0
+        ],
+        "terminal_coefficient": 1,
+        "threshold": 2,
+        "initial_height": 0,
+        "initial_excess": 0,
+        "fuel": 0,
+        "active_steps": 0,
+        "coefficient_bound": 2,
+        "trace": []
+      },
+      {
+        "success": true,
+        "failure_reason": null,
+        "initial": [
+          1,
+          -1,
+          0
+        ],
+        "representatives": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1
+          ]
+        ],
+        "representative_coefficients": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "terminal": [
+          1,
+          -1,
+          0
+        ],
+        "terminal_coefficient": 1,
+        "threshold": 3,
+        "initial_height": 2,
+        "initial_excess": 0,
+        "fuel": 0,
+        "active_steps": 0,
+        "coefficient_bound": 2,
+        "trace": []
+      }
+    ]
+  },
+  "missing_decomposition_example": {
+    "success": false,
+    "failure_reason": "No supplied representative gives a rational decomposition of the current point.",
+    "initial": 100,
+    "representatives": [
+      0
+    ],
+    "representative_coefficients": [
+      3
+    ],
+    "terminal": 25,
+    "terminal_coefficient": 4,
+    "threshold": 0,
+    "initial_height": 100,
+    "initial_excess": 100,
+    "fuel": 7,
+    "active_steps": 2,
+    "coefficient_bound": 200,
+    "trace": [
+      {
+        "iteration": 1,
+        "kind": "active",
+        "before": 100,
+        "after": 50,
+        "height_before": 100,
+        "height_after": 50,
+        "selected_index": 0,
+        "active_steps": 1,
+        "scale": 2,
+        "representative_coefficients": [
+          1
+        ]
+      },
+      {
+        "iteration": 2,
+        "kind": "active",
+        "before": 50,
+        "after": 25,
+        "height_before": 50,
+        "height_after": 25,
+        "selected_index": 0,
+        "active_steps": 2,
+        "scale": 4,
+        "representative_coefficients": [
+          3
+        ]
+      },
+      {
+        "iteration": 3,
+        "kind": "missing_decomposition",
+        "before": 25,
+        "after": 25,
+        "height_before": 25,
+        "height_after": 25,
+        "selected_index": null,
+        "active_steps": 2,
+        "scale": 4,
+        "representative_coefficients": [
+          3
+        ]
+      }
+    ]
+  },
+  "symbolic_resultant": {
+    "identity": "det(S) = 256*(4*A^3+27*B^2)^2 = discriminant^2",
+    "permutations_checked": 40320,
+    "nonzero_permutation_terms": 41,
+    "coefficient_order": "[exponent_of_A, exponent_of_B, integer_coefficient]",
+    "computed_coefficients": [
+      [
+        0,
+        4,
+        186624
+      ],
+      [
+        3,
+        2,
+        55296
+      ],
+      [
+        6,
+        0,
+        4096
+      ]
+    ],
+    "target_coefficients": [
+      [
+        0,
+        4,
+        186624
+      ],
+      [
+        3,
+        2,
+        55296
+      ],
+      [
+        6,
+        0,
+        4096
+      ]
+    ],
+    "verified": true,
+    "scope": "exact polynomial coefficient identity; ordinary Python computation, not a Lean proof object"
+  },
+  "logical_limits": [
+    "The elliptic extractor assumes the universal covering property of the supplied representatives.",
+    "A successful individual trace certifies only its own expansion and displayed height checks.",
+    "The E1 global classification is proved by the report's Fermat descent, not by finite enumeration alone.",
+    "The Z^r fixtures exercise active and frozen steps of the same generic extraction code.",
+    "Exact symbolic determinant expansion verifies a polynomial identity by coefficient computation; it is not an embedded Lean proof."
+  ]
+}

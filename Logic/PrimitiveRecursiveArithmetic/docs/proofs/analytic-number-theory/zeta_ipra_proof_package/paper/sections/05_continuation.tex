@@ -1,0 +1,600 @@
+\section{A finite Euler--Maclaurin construction on the whole plane}
+\label{em:section}
+
+The purpose of this section is to construct the continuation, rather than to
+invoke an abstract analytic-continuation theorem.  Its inputs are the
+primitive recursive approximators for rational arithmetic, logarithm,
+complex exponential, and finite integrals developed earlier.  Every
+improper integral below comes with a tail bound; it is notation for the
+resulting approximation procedure.  Likewise, an equality of named complex
+numbers means the family of finite rational error statements at every
+requested precision.  No quantification over all functions or an evaluator
+for arbitrary primitive recursive program codes is needed.
+
+\subsection{Bernoulli polynomials as rational finite data}
+
+Put $B_0(X)=1$.  For $n\geq1$, define $B_n(X)$ to be the unique rational
+polynomial satisfying
+\begin{equation}
+ B_n'(X)=nB_{n-1}(X),\qquad \int_0^1 B_n(x)\,dx=0.
+ \label{em:bernoulli-definition}
+\end{equation}
+Here integration of a polynomial means its finite rational antiderivative.
+Thus this is a primitive recursion on coefficient lists: integrate
+$nB_{n-1}$ with zero constant, compute its rational integral on $[0,1]$,
+and subtract that integral.  Write $B_n=B_n(0)$.  In particular
+\[
+ B_0=1,\quad B_1=-\tfrac12,\quad B_2=\tfrac16,\quad B_3=0,
+ \quad B_4=-\tfrac1{30},\quad B_6=\tfrac1{42}.
+\]
+Our convention for $B_1$ matters at the value $\zeta(0)$.
+
+We record the required algebra, including its proofs.  Integrating the
+first identity in \eqref{em:bernoulli-definition} gives
+\begin{equation}
+ B_n(1)=B_n(0)\quad(n\geq2),\qquad B_1(1)-B_1(0)=1.
+ \label{em:bernoulli-endpoints}
+\end{equation}
+The polynomial $(-1)^n B_n(1-X)$ has derivative
+$n(-1)^{n-1}B_{n-1}(1-X)$ and integral zero.  Starting with $B_0=1$,
+uniqueness in the defining recursion therefore proves
+\begin{equation}
+ B_n(1-X)=(-1)^nB_n(X).
+ \label{em:bernoulli-reflection}
+\end{equation}
+For odd $n\geq3$, the endpoint and reflection identities give
+$B_n=-B_n$, and rational arithmetic gives $B_n=0$.
+Repeated differentiation at zero gives the coefficient formula
+\begin{equation}
+ B_n(X)=\sum_{j=0}^n\binom nj B_jX^{n-j}.
+ \label{em:bernoulli-coefficients}
+\end{equation}
+Finally, differentiation and \eqref{em:bernoulli-endpoints} prove
+\begin{equation}
+ B_n(X+1)-B_n(X)=nX^{n-1}\qquad(n\geq1).
+ \label{em:bernoulli-difference}
+\end{equation}
+Indeed the derivatives agree by the corresponding identity for $n-1$;
+for $n\geq2$ the constants agree by evaluating at zero, while $n=1$
+is immediate.  Summing this polynomial identity proves Faulhaber's formula
+without any limiting operation:
+\begin{equation}
+ \sum_{n=1}^{N-1}n^q
+   =\frac{B_{q+1}(N)-B_{q+1}(1)}{q+1}
+       \qquad(q\geq0,\ N\geq1).
+ \label{em:faulhaber}
+\end{equation}
+All these arguments can instead be run on coefficient lists.  The
+invariants are finite rational equalities, so that the inductions used
+here have quantifier-free arithmetical instances after coding.
+
+For subsequent bounds define the nonnegative rational
+\begin{equation}
+ C_n=\sum_{j=0}^n\binom nj|B_j|.
+ \label{em:bernoulli-bound}
+\end{equation}
+Then $|B_n(x)|\leq C_n$ for $0\leq x\leq1$.  This deliberately crude
+bound is completely explicit and primitive recursive.  For $n=2$ we
+shall also use the sharper bound
+\begin{equation}
+ B_2(x)=x^2-x+\tfrac16=(x-\tfrac12)^2-\tfrac1{12},
+ \qquad |B_2(x)|\leq\tfrac16\quad(0\leq x\leq1).
+ \label{em:B2-bound}
+\end{equation}
+
+\subsection{The finite summation identity, with its sign checked}
+
+On an interval $[n,n+1]$, write $\widetilde B_j(x)=B_j(x-n)$.
+For $j\geq2$ the values from adjacent intervals agree at integers.
+For $j=1$, the endpoint convention will not affect an integral.
+Let $N<M$ be positive integers, $m\geq1$, and let $f$ have the explicitly
+controlled derivatives needed in the following finite integrations.
+Integration by parts on one unit interval gives
+\[
+ \int_n^{n+1}B_1(x-n)f'(x)\,dx
+ =\frac{f(n)+f(n+1)}2-\int_n^{n+1}f(x)\,dx.
+\]
+Sum over $n=N,\ldots,M-1$.  Then repeatedly use
+$B_{j+1}'=(j+1)B_j$.  The odd Bernoulli endpoint values beyond $B_1$
+vanish, while every even endpoint value equals $B_{2k}$.  This gives the
+finite identity
+\begin{align}
+ \sum_{n=N}^{M-1}f(n)
+ ={}&\int_N^M f(x)\,dx+\frac{f(N)-f(M)}2 \notag\\
+ &+\sum_{k=1}^m\frac{B_{2k}}{(2k)!}
+          \bigl(f^{(2k-1)}(M)-f^{(2k-1)}(N)\bigr)\notag\\
+ &-\frac1{(2m)!}\int_N^M\widetilde B_{2m}(x)f^{(2m)}(x)\,dx.
+ \label{em:finite}
+\end{align}
+There is no infinite summation in this assertion.  The number of
+integrations by parts is $2m-1$; the number of unit intervals is $M-N$.
+Both are finite loops.  If integrals are replaced by rational quadrature,
+the identity means that its defect is bounded by the specified quadrature
+errors; making those errors smaller than $2^{-r}$ proves its named-number
+version.  It does not require deciding whether a real error is zero.
+
+Write $(s)_j=\prod_{a=0}^{j-1}(s+a)$, with $(s)_0=1$.  For
+$f(x)=x^{-s}=\exp(-s\log x)$,
+\[
+ f^{(j)}(x)=(-1)^j(s)_j x^{-s-j}.
+\]
+For $s$ supplied with an apartness bound from $1$, define
+\begin{align}
+ F_{m,N}(s)={}&\sum_{n=1}^{N-1}n^{-s}
+ +\frac{N^{1-s}}{s-1}+\frac12N^{-s}\notag\\
+ &+\sum_{k=1}^m\frac{B_{2k}}{(2k)!}
+                    (s)_{2k-1}N^{1-s-2k}.
+ \label{em:F}
+\end{align}
+Substitution into \eqref{em:finite} gives exactly
+\begin{equation}
+ F_{m,N}(s)-F_{m,M}(s)
+  =\frac{(s)_{2m}}{(2m)!}
+       \int_N^M\widetilde B_{2m}(x)x^{-s-2m}\,dx.
+ \label{em:difference}
+\end{equation}
+In particular, the remainder in the infinite-tail formula below has a
+minus sign.
+
+\subsection{Removing the apparent division at $s=1$}
+
+Define an entire elementary function, by its power series or its finite
+integral with an explicit exponential modulus,
+\begin{equation}
+ Q_N(s)=-(\log N)\int_0^1
+                \exp\bigl(-t(s-1)\log N\bigr)\,dt.
+ \label{em:Q}
+\end{equation}
+The fundamental theorem of calculus, or termwise finite polynomial
+integration followed by the exponential tail estimate, gives
+\[
+ Q_N(s)=\frac{N^{1-s}-1}{s-1}\quad(s\mathrel{\#}1),
+ \qquad Q_N(1)=-\log N.
+\]
+Here $s\mathrel{\#}1$ means an explicitly supplied positive rational
+lower bound for $|s-1|$; it is stronger data than a bare negated equality.
+Set
+\begin{align}
+ E_{m,N}(s)={}&\sum_{n=1}^{N-1}n^{-s}+Q_N(s)+\frac12N^{-s}\notag\\
+ &+\sum_{k=1}^m\frac{B_{2k}}{(2k)!}
+                  (s)_{2k-1}N^{1-s-2k}.
+ \label{em:E}
+\end{align}
+This expression is defined even at $s=1$.  The finite calculation leading
+to \eqref{em:difference} can be performed with $Q_N-Q_M$ in place of
+the quotient.  Consequently
+\begin{equation}
+ E_{m,N}(s)-E_{m,M}(s)
+  =\frac{(s)_{2m}}{(2m)!}
+     \int_N^M\widetilde B_{2m}(x)x^{-s-2m}\,dx
+ \label{em:E-difference}
+\end{equation}
+holds for every $s$, including $s=1$, without a continuity or identity
+theorem argument.
+
+Let $\sigma=\operatorname{Re}s$.  If $\sigma+2m-1>0$, absolute values
+in \eqref{em:E-difference} give
+\begin{equation}
+ |E_{m,N}(s)-E_{m,M}(s)|
+ \leq \frac{|(s)_{2m}|C_{2m}}{(2m)!}
+       \frac{N^{1-\sigma-2m}}{\sigma+2m-1}.
+ \label{em:cauchy-bound}
+\end{equation}
+The estimate follows by integrating $x^{-\sigma-2m}$; using a positive
+rational lower bound for the denominator gives a rational error bound.
+Thus $E_{m,N}$ has an explicitly named limit $H(s)$ on this half-plane.
+For any such $m$ and any $N\geq1$,
+\begin{align}
+ H(s)={}&E_{m,N}(s)
+ -\frac{(s)_{2m}}{(2m)!}
+       \int_N^\infty\widetilde B_{2m}(x)x^{-s-2m}\,dx.
+ \label{em:H-integral}
+\end{align}
+This is also a definition of the improper integral: truncate at $M$ and
+use \eqref{em:cauchy-bound} with $N=M$ as its tail estimate.
+
+Here is one explicit, uniform primitive recursive modulus.  Suppose the
+input includes integers $A\geq0$ and $R\geq1$ with
+\[
+ \operatorname{Re}s\geq-A,\qquad |s|\leq R.
+\]
+Put $m=A+2$, $L=2m$, $U=R+L$, and
+\begin{equation}
+ K_0=\frac{C_L U^L}{L!},\qquad
+ N(k)=2^{k+2}\bigl(1+\lceil K_0\rceil\bigr).
+ \label{em:PR-modulus}
+\end{equation}
+Since $L-A-1\geq1$, \eqref{em:cauchy-bound} is at most $K_0/N$.
+It follows that
+\begin{equation}
+ |H(s)-E_{m,N(k)}(s)|\leq2^{-k-2}.
+ \label{em:explicit-evaluation}
+\end{equation}
+Evaluate the finite expression with rational error at most $2^{-k-2}$;
+its result approximates $H(s)$ within $2^{-k-1}$.  The precision budget
+for its subexpressions is obtained from finite absolute-value and
+Lipschitz bounds for the displayed arithmetic expression.  It consists
+only of a bounded sum, a bounded product, and evaluations of the fixed
+logarithm and exponential families.  Every loop bound and every requested
+subprecision is primitive recursive in $A,R,k$ and the supplied input
+name parameters.
+
+There is no dependence on the chosen chart.  For adjacent orders,
+\[
+ E_{m+1,N}(s)-E_{m,N}(s)
+ =\frac{B_{2m+2}}{(2m+2)!}(s)_{2m+1}N^{-s-2m-1}.
+\]
+On the domain $\sigma+2m-1>0$, this tends to zero with an explicit power
+bound.  A finite telescoping sum compares any two admissible orders.
+Thus the chart values agree to every requested precision.  This is a
+finite compatibility proof, not an application of the identity theorem.
+
+For $s\mathrel{\#}1$, define
+\begin{equation}
+ \zeta(s)=\frac1{s-1}+H(s).
+ \label{em:zeta-definition}
+\end{equation}
+If $\sigma>1$ with a rational margin, the elementary integral estimate
+for $\sum n^{-s}$ and the vanishing of every correction in
+\eqref{em:F} show directly that this agrees with its Dirichlet series.
+Indeed $N^{1-s}/(s-1)$, $N^{-s}$, and every displayed Bernoulli correction
+have explicit bounds tending to zero.  Equation \eqref{em:H-integral}
+therefore yields the usual Euler--Maclaurin representation of the
+Riemann zeta function, with a concrete primitive recursive evaluation
+procedure on every bounded chart away from the pole.  Compare the
+classical formula in \cite{DLMF25_2}; the argument above proves the
+finite estimate needed here.
+
+\subsection{Entire regular part and controlled derivatives}
+
+A useful specialization of \eqref{em:H-integral} is $N=1$:
+\begin{equation}
+ H(s)=\frac12+
+   \sum_{k=1}^m\frac{B_{2k}}{(2k)!}(s)_{2k-1}
+  -\frac{(s)_L}{L!}
+        \int_1^\infty\widetilde B_L(x)x^{-s-L}\,dx,
+ \qquad L=2m.
+ \label{em:H-chart}
+\end{equation}
+We prove analyticity by an explicit local series.  Fix a center $s_0$
+with $\operatorname{Re}s_0\geq-A$, and a disk $|w|\leq T$, where $T$
+is a positive integer.  Increase the even integer $L$ until
+\[
+ a=L-A-1\geq2T+1.
+\]
+Expand $x^{-w}=\exp(-w\log x)$.  The coefficient of $w^r$ in the
+integral in \eqref{em:H-chart}, at $s=s_0+w$, is
+\begin{equation}
+ j_r=\frac{(-1)^r}{r!}
+       \int_1^\infty\widetilde B_L(x)
+                     x^{-s_0-L}(\log x)^r\,dx.
+ \label{em:local-coefficients}
+\end{equation}
+Finite integration by parts, repeated $r$ times, proves
+\begin{equation}
+ \int_1^\infty x^{-a-1}(\log x)^r\,dx
+       =\frac{r!}{a^{r+1}}\qquad(a>0).
+ \label{em:log-moment}
+\end{equation}
+The boundary terms vanish by the elementary exponential bound
+$t^r\leq r!b^{-r}e^{bt}$ with, for example, $b=a/2$.
+Consequently
+\begin{equation}
+ |j_r|\leq\frac{C_L}{a^{r+1}},\qquad
+ \sum_{r>d}|j_rw^r|
+ \leq\frac{C_L}{a}\,
+          \frac{(T/a)^{d+1}}{1-T/a}.
+ \label{em:local-tail}
+\end{equation}
+The equality between the integral and this series follows first for
+finite sums by linearity.  The absolute remainder of the exponential
+series has an integrable majorant, and summing its geometric integral
+bound gives exactly \eqref{em:local-tail}; no unquantified interchange
+of two limits is being used.  Multiplication by the finite polynomial
+$(s_0+w)_L$ now gives a power series for $H(s_0+w)$ with an explicit
+geometric tail on the chosen disk.  Since every center and radius have
+such a chart, $H$ is entire in this constructive, local-power-series
+sense.
+
+For later use we also give a uniform bound for differentiated
+Euler--Maclaurin remainders.  Assume $\sigma\geq-A$, $|s|\leq R$,
+$L=2m\geq A+3$, and $U=R+L$.  For $j\leq L$, differentiating a product
+shows
+\[
+ |((s)_L)^{(j)}|\leq L^jU^L;
+\]
+for $j>L$ the derivative is zero.  For $x\geq1$ and $v\geq0$,
+$(\log x)^v\leq v!x$.  Applying these two inequalities to the finite
+Leibniz expansion, and then integrating, gives
+\begin{equation}
+ \left|H^{(d)}(s)-E_{m,N}^{(d)}(s)\right|
+ \leq\frac{K_d}{N},\qquad
+ K_d=\frac{C_L U^L}{L!}\,d!(1+L)^d.
+ \label{em:derivative-tail}
+\end{equation}
+More explicitly, the integrand after $d$ derivatives is bounded by
+\[
+ \frac{C_LU^L}{L!}
+ \sum_{j=0}^{\min(d,L)}\binom dj L^j(d-j)!\,x^{A-L+1},
+\]
+and the coefficient sum is at most $d!(1+L)^d$, while
+$\int_N^\infty x^{A-L+1}dx\leq1/N$.
+Differentiation of the named integrals is justified by the local series
+just constructed; it is not an extra assumption about improper
+integrals.  This same bound proves convergence of every fixed-order
+derivative by a primitive recursive modulus.  The integer $d$ can also
+be an input to the explicitly written coefficient and Leibniz loops.
+
+It follows that the only pole of $\zeta$ is at $1$, and that
+\[
+ (s-1)\zeta(s)=1+(s-1)H(s)
+\]
+extends to an entire function with value $1$ at $s=1$.
+This last statement refers to the displayed regular extension, rather
+than an undefined product at the pole.
+
+\subsection{The residue, Euler's constant, and a small zero-free disk}
+
+The pole and its residue have particularly simple quantitative versions.
+Use $m=1$ in \eqref{em:H-chart}.  For $|s-1|\leq\tfrac12$,
+$\sigma\geq\tfrac12$, $|s|\leq\tfrac32$, and $|s+1|\leq\tfrac52$.
+By \eqref{em:B2-bound},
+\begin{align*}
+ |H(s)|
+ &\leq\frac12+\frac{|s|}{12}
+       +\frac{|s(s+1)|}{2}
+                  \frac{1/6}{\sigma+1}\\
+ &\leq\frac12+\frac18+\frac5{24}=\frac56.
+\end{align*}
+Thus
+\begin{equation}
+ \left|(s-1)\zeta(s)-1\right|
+       \leq\frac56|s-1|\qquad
+       (s\mathrel{\#}1,\ |s-1|\leq\tfrac12).
+ \label{em:residue-modulus}
+\end{equation}
+This proves residue $1$ with an explicit linear modulus.  It also gives
+\begin{equation}
+ |(s-1)\zeta(s)|\geq\frac7{12},
+ \qquad |\zeta(s)|\geq\frac7{12|s-1|}
+ \label{em:pole-zero-free}
+\end{equation}
+on that punctured disk.  These are constructive apartness statements.
+
+Let $H_N=\sum_{n=1}^N1/n$.  The logarithmic integral inequalities give,
+for $M\geq N\geq1$,
+\[
+ 0\leq(H_N-\log N)-(H_M-\log M)\leq\frac1N.
+\]
+To see the sign, sum
+$1/(n+1)\leq\int_n^{n+1}dx/x\leq1/n$; for the upper bound sum the
+differences $1/n-1/(n+1)$.  Hence
+\begin{equation}
+ \gamma=\lim_{N\to\infty}(H_N-\log N),\qquad
+ |\gamma-(H_N-\log N)|\leq\frac1N
+ \label{em:gamma-name}
+\end{equation}
+defines a primitive recursive real.  Direct evaluation of
+\eqref{em:E} at $s=1$ gives
+\begin{equation}
+ E_{m,N}(1)=H_N-\log N-\frac1{2N}
+              +\sum_{k=1}^m\frac{B_{2k}}{2k}N^{-2k}.
+ \label{em:gamma-identification}
+\end{equation}
+Every extra term tends to zero with a displayed power bound.  Therefore
+$H(1)=\gamma$ and
+\begin{equation}
+ \zeta(s)=\frac1{s-1}+\gamma+O(s-1)
+ \quad\hbox{near }s=1.
+ \label{em:laurent-first}
+\end{equation}
+The $O$ notation here abbreviates the local power-series modulus above;
+it is not an unevaluated existence assertion.
+
+\subsection{All nonpositive integer values}
+
+Fix $q\geq0$ and choose $L=2m>q+1$.  At $s=-q$, $(s)_L=0$ exactly,
+so the remainder in \eqref{em:H-integral} vanishes exactly.  In
+\eqref{em:F}, the surviving correction terms satisfy
+\[
+ (-q)_{2k-1}=-\frac{q!}{(q-2k+1)!}
+          \quad(2k\leq q+1),
+\]
+and all later terms are zero.  By
+\eqref{em:bernoulli-coefficients},
+\[
+ \frac{B_{q+1}(N)}{q+1}
+ =\frac{N^{q+1}}{q+1}-\frac12N^q+
+   \sum_{2k\leq q+1}\frac{B_{2k}}{q+1}
+                    \binom{q+1}{2k}N^{q+1-2k}.
+\]
+Substitute Faulhaber's formula \eqref{em:faulhaber} into
+\eqref{em:F}.  Every power of $N$ cancels, including the constant term
+when $q+1$ is even.  The exact answer is
+\begin{equation}
+ \zeta(-q)=-\frac{B_{q+1}(1)}{q+1}\qquad(q\geq0).
+ \label{em:negative-unified}
+\end{equation}
+Consequently,
+\begin{equation}
+ \zeta(0)=-\frac12,\qquad
+ \zeta(-q)=-\frac{B_{q+1}}{q+1}\quad(q\geq1).
+ \label{em:negative}
+\end{equation}
+In particular, for $n\geq1$,
+\begin{equation}
+ \zeta(-2n)=0,
+ \label{em:trivial-zeros}
+\end{equation}
+because $B_{2n+1}=0$.  Some exact examples are
+\[
+ \zeta(-1)=-\frac1{12},\quad
+ \zeta(-3)=\frac1{120},\quad
+ \zeta(-5)=-\frac1{252},\quad
+ \zeta(-7)=\frac1{240},\quad
+ \zeta(-11)=\frac{691}{32760}.
+\]
+These values agree with \cite{DLMF25_6}.  Their proof here uses only
+finite Bernoulli identities and an exactly vanishing remainder, so the
+special-value step is especially direct to arithmetize.  It makes no
+claim that the negative even zeros are simple; simplicity requires
+additional information, supplied separately if a functional equation
+and the corresponding nonvanishing factors have been established.
+
+\subsection{Every Stieltjes coefficient and a global Laurent expansion}
+
+For $r\geq0$ and $N\geq1$, put
+\begin{equation}
+ c_{r,N}=\sum_{n=1}^N\frac{(\log n)^r}{n}
+           -\frac{(\log N)^{r+1}}{r+1}.
+ \label{em:stieltjes-approximant}
+\end{equation}
+For $r=0$ the convention $(\log n)^0=1$ is used, including at $n=1$.
+We give a convergence proof with a modulus independent of any compactness
+principle.  Set $f_r(x)=(\log x)^r/x$.  For each integer $n\geq1$,
+\[
+ \left|f_r(n)-\int_n^{n+1}f_r(x)\,dx\right|
+       \leq\int_n^{n+1}|f_r'(x)|\,dx.
+\]
+The inequality follows by integrating
+$f_r(n)-f_r(x)=-\int_n^x f_r'(t)dt$ and using the unit interval length.
+For $r\geq1$,
+\[
+ |f_r'(x)|\leq
+ \frac{r(\log x)^{r-1}+(\log x)^r}{x^2};
+\]
+for $r=0$ use $|f_0'(x)|=x^{-2}$.
+Let
+\[
+ I_r(N)=\int_N^\infty\frac{(\log x)^r}{x^2}dx
+       =\frac1N\sum_{j=0}^r\frac{r!}{(r-j)!}(\log N)^{r-j}.
+\]
+The equality is repeated integration by parts with its exponential
+boundary bound.  Moreover
+$I_r(N)=f_r(N)+rI_{r-1}(N)$ when $r\geq1$.
+The absolutely controlled sum of the cell defects defines a real
+$\gamma_r$.  Since $f_r(N)\to0$, comparison with
+\eqref{em:stieltjes-approximant} gives
+\begin{equation}
+ |\gamma_r-c_{r,N}|\leq2I_r(N)
+ \leq\frac{2^{r+2}r!}{\sqrt N}.
+ \label{em:stieltjes-tail}
+\end{equation}
+For the last inequality use
+$(\log x)^r\leq2^r r!\sqrt x$ and integrate $x^{-3/2}$.
+Thus, for example,
+\begin{equation}
+ N_r(k)=2^{2(k+r+3)}(r!)^2
+ \label{em:stieltjes-modulus}
+\end{equation}
+makes the truncation error at most $2^{-k-1}$.  The formula is primitive
+recursive in both $r$ and $k$, and the required rational approximations
+to the finitely many logarithms have an explicit finite error budget.
+For $r=0$ this is the same $\gamma$ as before.
+
+We next identify these numbers with the Laurent coefficients.  Finite
+differentiation of \eqref{em:E} at $s=1$ gives
+\begin{align}
+ E_{m,N}^{(r)}(1)={}&(-1)^r c_{r,N}
+       -\frac{(-1)^r(\log N)^r}{2N}\notag\\
+ &+\left.\frac{d^r}{ds^r}
+      \sum_{k=1}^m\frac{B_{2k}}{(2k)!}
+                     (s)_{2k-1}N^{1-s-2k}\right|_{s=1}.
+ \label{em:stieltjes-derivative}
+\end{align}
+In particular the derivative of $Q_N$ contributes
+$(-1)^{r+1}(\log N)^{r+1}/(r+1)$; this follows directly by integrating
+$t^r$ in \eqref{em:Q}.  Every term on the second line of
+\eqref{em:stieltjes-derivative} is a finite rational linear combination
+of $(\log N)^v/N^{2k}$ with $v\leq r$.  The bound
+$(\log N)^v\leq2^v v!\sqrt N$ supplies a primitive recursive vanishing
+modulus for all of them.  Equation \eqref{em:derivative-tail}, with any
+fixed admissible $m$, therefore proves
+\begin{equation}
+ H^{(r)}(1)=(-1)^r\gamma_r.
+ \label{em:stieltjes-identification}
+\end{equation}
+
+The global Laurent expansion is consequently
+\begin{equation}
+ \zeta(1+w)=\frac1w+
+        \sum_{r=0}^\infty\frac{(-1)^r\gamma_r}{r!}w^r
+        \qquad(w\mathrel{\#}0).
+ \label{em:global-laurent}
+\end{equation}
+This is valid at every supplied bounded value of $w$, with an explicit
+geometric modulus for the regular series.  To make that assertion
+concrete, fix an integer $T\geq1$ with $|w|\leq T$, and choose an even
+$L>2T$.  In \eqref{em:local-coefficients}, take $s_0=1$; then
+$|j_r|\leq C_L/L^{r+1}$.  The other factor is the degree-$L$ polynomial
+$P(w)=(1+w)_L$.  Its coefficient absolute values at $T$ sum to
+$P(T)=\prod_{a=1}^L(T+a)\leq(1+T+L)^L$.
+For $h\geq L$, the omitted terms of the product series are therefore
+bounded by
+\begin{equation}
+ \left|H(1+w)-\sum_{r=0}^h
+           \frac{(-1)^r\gamma_r}{r!}w^r\right|
+ \leq
+ \frac{C_L(1+T+L)^L}{L!L}\,
+       \frac{(T/L)^{h-L+1}}{1-T/L}.
+ \label{em:global-laurent-tail}
+\end{equation}
+Indeed a polynomial coefficient of degree $\ell\leq L$ multiplies only
+integral-series terms of degree greater than $h-\ell$ in the omitted
+tail, and this is bounded by the geometric tail starting after $h-L$.
+The polynomial part of \eqref{em:H-chart} has degree at most $L-1$ and
+contributes no remainder.  Since $T/L<1/2$, this is a primitive recursive
+geometric rate.  No assertion that an unspecified analytic power series
+has a computable radius is used.
+
+\subsection{Further consequences with explicit bounds}
+
+\paragraph{Conjugation.}
+Every Bernoulli coefficient is rational and every positive-base power
+satisfies $\overline{x^{-s}}=x^{-\overline s}$.  Apply conjugation first
+to the finite expressions \eqref{em:E}, then use their common error
+bound.  This proves
+\begin{equation}
+ H(\overline s)=\overline{H(s)},\qquad
+ \zeta(\overline s)=\overline{\zeta(s)}\quad(s\mathrel{\#}1).
+ \label{em:conjugation}
+\end{equation}
+In particular real inputs away from $1$ have real values, and a certified
+zero gives its conjugate zero.
+
+\paragraph{An explicit, nonoptimal growth bound.}
+Given $\sigma\geq-A$, $|s|\leq R$, $|s-1|\geq2^{-D}$, choose
+$L=2m\geq A+2$ and $U=R+L$.  Equation \eqref{em:H-chart} gives
+\begin{equation}
+ |\zeta(s)|\leq 2^D+\frac12+
+  \sum_{k=1}^m\frac{|B_{2k}|}{(2k)!}U^{2k-1}
+          +\frac{C_LU^L}{L!}.
+ \label{em:growth}
+\end{equation}
+For each fixed left boundary $-A$, this is a concrete polynomial bound
+in $R$ away from the pole.  It is sufficient for approximation and
+formalization; it is not the sharp growth estimate studied in analytic
+number theory.
+
+\paragraph{Compatibility with the alternating series.}
+Let $S_N(s)=\sum_{n=1}^Nn^{-s}$.  Taking $m=1$ in the continuation
+formula and moving the $n=N$ term between the sum and the endpoint gives
+\begin{align}
+ \zeta(s)={}&S_N(s)+\frac{N^{1-s}}{s-1}-\frac12N^{-s}
+       +\frac{s}{12}N^{-s-1}\notag\\
+ &-\frac{s(s+1)}2\int_N^\infty\widetilde B_2(x)x^{-s-2}dx.
+ \label{em:SN}
+\end{align}
+If $\sigma>0$, $|s|\leq R$, and $s\mathrel{\#}1$, it follows that
+\begin{equation}
+ \left|S_N(s)-\zeta(s)-\frac{N^{1-s}}{1-s}\right|
+ \leq\left(\frac12+\frac R{12}+\frac{R(R+1)}{12}\right)N^{-\sigma}.
+ \label{em:eta-compatibility}
+\end{equation}
+The identity
+$\sum_{n=1}^{2N}(-1)^{n-1}n^{-s}
+ =S_{2N}(s)-2^{1-s}S_N(s)$ is finite and exact.  Inserting
+\eqref{em:eta-compatibility} cancels the two growing powers exactly and
+proves the compatibility with the eta representation on its right
+half-plane.  Division by $1-2^{1-s}$, when desired, separately requires
+an apartness certificate for that denominator.

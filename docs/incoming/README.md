@@ -174,6 +174,17 @@ was found untracked. It was committed unchanged as its arrival (`349481d51f`), a
 placed the same way, under `geometry/`. Its one ignored `SHA256SUMS` is not placed, and the
 archive is removed.
 
+Three more archives there were placed the same way, but their ZIP files were not committed,
+on Vladimir's instruction of 15 November 2026:
+- `isoperimetric_ipra_constructive_2026-11-15.zip` is placed under `geometry/`. Its 14
+  `reused/` files are not placed, because they are byte-identical to the earlier
+  `geometry/isoperimetric_ipra`.
+- `mordell_weil_ipra.zip` is placed under `diophantine-number-theory/`.
+- `zeta_ipra_proof_package.zip` is placed under `analytic-number-theory/`.
+
+The last two each leave out only their ignored checksum manifest. These three archives are
+not in the history.
+
 ## Sub-exponential 3-SAT (ETH) reports
 
 Forty-three arrivals of 26–27 October 2026 about sub-exponential 3-SAT, that

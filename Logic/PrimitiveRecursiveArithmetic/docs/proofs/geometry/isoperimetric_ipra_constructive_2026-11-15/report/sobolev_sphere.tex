@@ -1,0 +1,214 @@
+\section{A finite Sobolev theorem and an explicit extension contract}
+\label{sec:sobolev}
+
+The article relates Euclidean isoperimetry to the sharp \(W^{1,1}\)
+Sobolev inequality. There is a useful exact constructive version before
+any infinite-dimensional function space is introduced.
+
+Fix \(n\geq2\) and put \(p=n/(n-1)\). Let
+\(E_1\supseteq\cdots\supseteq E_m\) be nested regions with supplied
+volumes \(v_j\), perimeters \(P_j\), and presentations to which
+Theorem~\ref{thm:euclidean-isoperimetry} applies. Zero-volume entries
+can be omitted when they are decidably empty; alternatively their
+individual inequality can be supplied directly. Let
+\(0=t_0<t_1<\cdots<t_m\) be rational and
+\(\delta_j=t_j-t_{j-1}\). The associated nonnegative simple function is
+\(u=\sum_{j=1}^m\delta_j\mathbf1_{E_j}\). Its entire numerical data
+consist of the finitely many shell volumes
+\(w_i=v_i-v_{i+1}\geq0\), where \(v_{m+1}=0\):
+\[
+ \|u\|_p=\left(\sum_{i=1}^m w_i t_i^p\right)^{1/p},
+ \qquad J(u)=\sum_{j=1}^m\delta_jP_j.
+\]
+Fractional powers are the primitive recursively named roots described
+earlier. Neither an integral over all real points nor a completed
+Lebesgue function space is needed to define these quantities.
+
+\begin{lemma}[Finite weighted triangle inequality]
+For nonnegative weights \(w_i\), the quantity
+\(\|a\|_p=(\sum_i w_i|a_i|^p)^{1/p}\) satisfies
+\(\|a+b\|_p\leq\|a\|_p+\|b\|_p\).
+\end{lemma}
+\begin{proof}
+We give the finite proof to expose its strength. Arithmetic--geometric
+mean on \(n\) numbers, \(n-1\) copies of \(A^p\) and one copy of
+\(B^n\), gives Young's inequality
+\[
+ AB\leq\frac{n-1}{n}A^p+\frac1nB^n.
+\]
+After normalization and summation this gives the weighted finite
+H\"older inequality with conjugate exponents \(p,n\):
+\[
+ \sum_iw_i A_i B_i
+ \leq\left(\sum_iw_i A_i^p\right)^{1/p}
+       \left(\sum_iw_i B_i^n\right)^{1/n}.
+\]
+To avoid any undecidable division by zero, normalize using
+\(\|A\|_p+\varepsilon\) and \(\|B\|_n+\varepsilon\) for positive
+rational \(\varepsilon\), and then use the order definition as
+\(\varepsilon\) runs through prescribed dyadics. The normalized sums
+are at most one, so the same calculation proves the desired bound with
+the two extra \(\varepsilon\)'s; there is no existence search.
+
+Apply H\"older to \(A_i=|a_i|\), and then to \(A_i=|b_i|\),
+with \(B_i=|a_i+b_i|^{p-1}\). Since \((p-1)n=p\),
+\[
+ \|a+b\|_p^p
+ \leq(\|a\|_p+\|b\|_p)\|a+b\|_p^{p-1}.
+\]
+This implies the triangle inequality constructively: if its conclusion
+failed by a positive rational margin, then \(\|a+b\|_p\) would have
+an explicit positive lower bound, permitting division and contradicting
+that margin. Equivalently perform the comparison on rational root
+intervals at a precision fixed by the margin. This proves the order
+inequality without real trichotomy. Iteration gives the finite-sum form.
+\end{proof}
+
+\begin{theorem}[Finite layered sharp Sobolev inequality]
+\label{thm:layered-sobolev}
+For the supplied nested data,
+\[
+ \left(\sum_{i=1}^m w_i t_i^{n/(n-1)}\right)^{(n-1)/n}
+ \leq \frac1{n\omega_n^{1/n}}\sum_{j=1}^m\delta_jP_j.
+\]
+\end{theorem}
+\begin{proof}
+View the function as a vector on the \(m\) shells. Its \(j\)-th
+layer is the vector equal to \(\delta_j\) on shells with index
+\(i\geq j\), and zero on the other shells. Its weighted \(p\)-norm
+is \(\delta_jv_j^{1/p}\). The finite triangle inequality gives
+\(\|u\|_p\leq\sum_j\delta_jv_j^{(n-1)/n}\).
+Apply Euclidean isoperimetry separately to each \(E_j\), then sum.
+All sums have length at most \(m\), and positivity of \(\omega_n\)
+was proved by an explicit contained cube.
+\end{proof}
+
+\subsection{Exact coarea for rational grid functions}
+
+Consider finitely many rational grid cells with rational nonnegative
+values, extended by zero outside a bounding rectangle. List the distinct
+positive values as \(t_1<\cdots<t_m\). The superlevel sets
+\(E_j=\{u\geq t_j\}\) are finite unions of grid cells. Let
+\(P(E_j)\) be the sum of the areas of their exposed faces.
+The finite box-union calculation in Section~\ref{sec:euclidean} proves
+that these are valid outer-perimeter bounds, so the preceding theorem
+applies unconditionally to this finite input.
+
+For each interface face \(F\), let \(u_F^+,u_F^-\) be the values
+on its two sides, one of which is zero on an exterior face. The exact
+coarea identity is
+\[
+ \sum_j\delta_jP(E_j)
+ =\sum_F\operatorname{area}_{n-1}(F)|u_F^+-u_F^-|.
+\]
+Indeed, if the two adjacent values are \(a<b\), a fixed face contributes
+precisely for indices satisfying \(a<t_j\leq b\); the corresponding
+\(\delta_j\)'s telescope to \(b-a\). Summing this
+identity over the finite list of faces proves the formula. This gives a
+finite BV form of Sobolev's inequality with the Euclidean isoperimetric
+constant and an explicitly
+computable right-hand side. It is not being confused with a classical
+gradient of a discontinuous grid function.
+
+\subsection{What must be supplied for a \(W^{1,1}\) interpretation}
+
+A precise extension is as follows. Supply a named target norm \(N\),
+a named gradient integral \(G\), and a primitive recursive sequence of
+layered data \(u_k\) satisfying, with proofs,
+\[
+ N\leq\|u_k\|_p+2^{-k},\qquad J(u_k)\leq G+2^{-k}.
+\]
+Then Theorem~\ref{thm:layered-sobolev} gives
+\[
+ N\leq \frac{G}{n\omega_n^{1/n}}
+       +\left(1+\frac1{n\omega_n^{1/n}}\right)2^{-k}
+\]
+for every \(k\), hence \(N\leq G/(n\omega_n^{1/n})\).
+This proves the analytic Sobolev inequality for any presentation that
+supplies these norm and coarea approximation data. Constructing such data
+for every abstract classical \(W^{1,1}\) element is not a theorem claimed
+here. In particular, naive approximation by axis-aligned step functions
+does not automatically preserve the Euclidean gradient norm: it may
+converge to an anisotropic variation instead. The explicit condition on
+\(J(u_k)\) prevents that false inference.
+
+The constant cannot be decreased for the finite layered class: the single
+layer \(u=\mathbf1_{B_R}\) has
+\(\|u\|_p=(\omega_nR^n)^{(n-1)/n}\) and
+\(J(u)=n\omega_nR^{n-1}\), which give equality. These ball data are
+effective by the preceding section. The Sobolev sharpness approximation
+can also be made quantitative with a radial Lipschitz linear transition on the
+shell \(R\leq|x|\leq R+\varepsilon\): its gradient integral is
+\(\omega_n((R+\varepsilon)^n-R^n)/\varepsilon\), and the norm error
+is bounded by the volume of that shell to the power \(1/p\). The
+binomial estimates already supplied give all rates. This verifies
+sharpness by an explicit approximation family, without asserting a
+universal effective coarea theorem.
+
+\section{Spherical statements: caps, finite cap unions, and complements}
+\label{sec:spherical}
+
+The general spherical isoperimetric inequality for every presented
+simple closed curve is not proved in this report. The following
+substantial explicitly represented subclass, together with the exact
+equality examples and complement symmetry, is completely elementary.
+This scope distinction matters: a calculation for latitude circles is
+not a proof that all spherical curves have greater perimeter.
+
+Let the sphere have radius \(R>0\), with a supplied positive lower bound,
+and let a cap have angular radius \(\theta\in[0,\pi]\), named with
+primitive recursive approximations. The standard parametrization is
+\[
+ (\phi,t)\longmapsto
+ (R\sin\phi\cos t,R\sin\phi\sin t,R\cos\phi),
+ \qquad 0\leq\phi\leq\theta,\quad0\leq t\leq2\pi.
+\]
+Its boundary speed is \(R\sin\theta\), and the norm of the cross
+product of its two partial derivatives is \(R^2\sin\phi\).
+These are finite trigonometric identities; the area and length integrals
+have explicit antiderivatives and can equally be defined by rational
+Riemann sums with the elementary sine and cosine moduli. Thus
+\[
+ A=2\pi R^2(1-\cos\theta),\qquad
+ L=2\pi R\sin\theta.
+\]
+Using \(\sin^2\theta+\cos^2\theta=1\), direct substitution gives
+\begin{equation}\label{eq:cap-equality}
+ L^2=4\pi A-\frac{A^2}{R^2}.
+\end{equation}
+The polar parametrization's degeneracy at a pole is harmless: truncating
+a polar strip changes area by its explicit cap-area formula, tending to
+zero with a prescribed modulus. No division by \(\sin\phi\) is used.
+
+\begin{theorem}[Spherical isoperimetry for disjoint cap unions]
+Let a finite collection of caps have disjoint interiors, with supplied
+evidence that their boundary lengths add (for example, boundaries are
+disjoint or meet at finitely many points). Let \(A\) be the sum of their
+areas and \(L\) the sum of their boundary lengths. Then
+\[
+ L^2\geq4\pi A-\frac{A^2}{R^2}.
+\]
+The same inequality holds for the complement of the union on the sphere.
+\end{theorem}
+\begin{proof}
+Write the cap data as \(A_i,L_i\) and use
+\eqref{eq:cap-equality}. Expansion gives the exact identity
+\[
+ L^2-4\pi A+\frac{A^2}{R^2}
+ =2\sum_{i<j}L_iL_j+\frac2{R^2}\sum_{i<j}A_iA_j\geq0.
+\]
+For the complement, the area is \(A'=4\pi R^2-A\) and its boundary
+length is \(L\). Direct algebra shows
+\(4\pi A'-(A')^2/R^2=4\pi A-A^2/R^2\).
+This proves the complement assertion without selecting which side of a
+simple closed curve is the smaller side.
+\end{proof}
+
+If there are two caps with explicitly positive areas, the displayed
+deficit is explicitly positive. A single nondegenerate cap gives equality.
+For \(R=1\), the right side is \(A(4\pi-A)\), exactly the spherical
+formula in the article. Scaling lengths by \(R\) and areas by \(R^2\)
+explains the general-radius formula. The theorem proves a finite-union
+extension as well as the equality examples, while leaving general
+spherical rearrangement and general spherical rigidity outside its scope.
+

@@ -1,0 +1,146 @@
+\section{A primitive recursive Mordell--Weil descent schema}
+\label{sec:descent}
+
+Let $\Gamma$ be an abelian group represented by valid natural-number codes,
+with fixed primitive recursive equality, addition, negation and scalar
+multiplication. Suppose its laws are proved on valid codes in iPRA.
+The group is not required to be finite or to have a decidable rank.
+Let $h:\Gamma\to\N$ be a fixed primitive recursive height.
+
+An enumeration $L(B)$ means a primitive recursive finite list of valid
+points, with the proved property
+\[
+ h(P)\le B\quad\Longrightarrow\quad P\text{ occurs in }L(B).
+ \tag{3.1}\label{eq:enum}
+\]
+Duplicates are harmless. Including the identity in every list avoids
+irrelevant empty-list branches.
+
+\begin{theorem}[Explicit contracting descent]\label{thm:abstract}
+Suppose $R=(R_0,\ldots,R_{r-1})$, $r>0$, is a finite list, $C\in\N$,
+and fixed primitive recursive functions $i(P),D(P)$ satisfy, for all
+valid $P$ with $h(P)>C$,
+\[
+ i(P)<r,\qquad D(P)\in\Gamma,\qquad
+ P=2D(P)+R_{i(P)},\qquad
+ 2h(D(P))\le h(P)+C.
+ \tag{3.2}\label{eq:contract}
+\]
+Assume \eqref{eq:enum} and these statements have iPRA proofs.
+Then $G=R\mathbin{+\!\!+}L(C)$ generates $\Gamma$. A primitive recursive
+function produces the coefficients in \eqref{eq:1-coord} below, with an
+iPRA proof of correctness.
+
+More explicitly, write $e=(h(P)\dotminus C)$ and let
+$t=\bl(e)$, where $\bl(0)=0$ and, for $e>0$, $\bl(e)$ is the unique
+integer with $2^{t-1}\le e<2^t$. The algorithm takes at most $t$ active
+descent steps. Every resulting coefficient is at most $2^t$; if $e>0$,
+$2^t\le2e$, and if $e=0$ the largest coefficient is $1$.
+\end{theorem}
+
+\begin{proof}
+Define the excess $e(Q)=h(Q)\dotminus C$. An active step has
+$h(Q)=C+e(Q)$, so \eqref{eq:contract} gives
+$2h(D(Q))\le2C+e(Q)$. Therefore
+\[
+ e(D(Q))\le \left\lfloor e(Q)/2\right\rfloor.
+ \tag{3.3}\label{eq:halve-excess}
+\]
+If the child has height below $C$, the left side is zero; otherwise this
+is direct subtraction. In particular every active step strictly decreases
+height. Freeze the whole state as soon as its height is at most $C$.
+
+The state consists of a current point $Q$, an active-step count $k$,
+and an $r$-entry coefficient vector $a$. Start at
+$Q=P,k=0,a=0$. An active step, using the old point, performs
+\[
+ j=i(Q),\quad Q'=D(Q),\quad
+ a'_j=a_j+2^k,\quad a'_l=a_l\ (l\ne j),\quad k'=k+1.
+ \tag{3.4}\label{eq:3-update}
+\]
+Run this stopped transition for exactly $t$ stages. The natural number $t$
+is computed by a bounded scan: search $0,\ldots,e+1$ for the least $j$
+with $e<2^j$. Induction proves $2^{e+1}>e$, so the scan succeeds.
+
+After $j$ stages, \eqref{eq:halve-excess} gives
+$e(Q)\le\lfloor e/2^j\rfloor$. A convenient entirely integral invariant
+is $2^j e(Q)\le e$, maintained also through frozen stages because then
+$e(Q)=0$. At $j=t$, $e<2^t$, so $e(Q)=0$ and $Q$ belongs to $L(C)$.
+If one prefers a simpler bound, $h(P)$ stages suffice by strict decrease.
+The compiled Lean kernel uses this coarser bound.
+
+The simultaneous group invariant is
+\[
+ P=2^kQ+\sum_{l<r}a_lR_l.
+ \tag{3.5}\label{eq:group-invariant}
+\]
+It holds initially. Substituting $Q=2Q'+R_j$ proves it after
+\eqref{eq:3-update}; a frozen step leaves it unchanged.
+At the end, scan $L(C)$ for $Q$ using decidable equality and
+Lemma~\ref{lem:scan}. If $Q=L(C)_b$, then
+\[
+ P=\sum_{l<r}a_lR_l+2^kL(C)_b.
+ \tag{3.6}\label{eq:1-coord}
+\]
+The digit weights added in active steps are $1,2,\ldots,2^{k-1}$.
+Consequently $\sum_l a_l=2^k-1$, and $k\le t$ proves the coefficient
+bound. The elementary inequality $2^t\le2e$ for $e>0$ follows from the
+minimality of $t$.
+
+For the iPRA proof, encode the vector and state. Validity, the excess
+inequality, the coefficient-sum identity and
+\eqref{eq:group-invariant} are quantifier-free formulas about the coded
+functions. The finite sum is a primitive recursive fold. Correctness of
+each update supplies the induction step of \eqref{eq:qfind}. The possibly
+quantified global premises remain hypotheses of the derivation; they
+are not placed inside its induction formula.
+\end{proof}
+
+\subsection{A formulation requiring no group identities}
+
+The core also works for a set with a binary operation $\oplus$, without
+associativity or commutativity. Assume a child satisfies
+$P=(D(P)\oplus D(P))\oplus R_{i(P)}$.
+Construct a word by returning the corresponding bounded-height atom when
+small, and otherwise returning
+\[
+ \operatorname{add}\bigl(\operatorname{double}(w(D(P))),
+                         \operatorname{rep}(i(P))\bigr).
+ \tag{3.7}
+\]
+With $h(P)$ fuel this gives an expression evaluating exactly to $P$.
+Each active stage adds three constructors, so the compact expression has
+at most $3h(P)+1$ constructors. A dedicated \emph{double} constructor
+avoids physically copying the child expression.
+
+This is the theorem proved in \code{lean/DescentCore.lean}. In an abelian
+group, folding the word into coefficients gives (3.6). For elliptic curves,
+the word version isolates the arithmetic chord-and-tangent construction
+from the independent proof of all abstract group identities.
+
+\subsection{What counts as a certificate}
+
+A finite list, a constant and program definitions do not make their
+universal correctness automatically decidable. The assumptions in
+Theorem~\ref{thm:abstract} are mathematical assertions with proofs.
+There are two honest uses of the theorem: prove these assertions for a
+particular input, or state a conditional theorem with those assertions as
+premises.
+
+One may also supply finite formal derivations of the premises. Checking
+such a derivation is a syntactic operation, and combining it with a fixed
+proof template can produce a new derivation. This does not justify an
+internal principle saying that every accepted proof has a true conclusion.
+Such a principle would be a reflection assertion and is not used here.
+
+\subsection{A simple infinite test group}
+
+For $\Gamma=\Z^r$, take $h(z)=\sum_j z_j^2$, digits
+$(z_j\bmod2)_j\in\{0,1\}^r$, and child
+$q_j=\lfloor z_j/2\rfloor$. For an even coordinate,
+$2q_j^2\le z_j^2+1$; for $z_j=2q_j+1$ the same inequality follows from
+$(2q_j+1)^2+1-2q_j^2=2(q_j+1)^2\ge0$. Summing gives the contract
+with $C=r$. The finite cube $[-r,r]^r$, filtered by $\sum_jz_j^2\le r$,
+enumerates the base region. This illustrates an infinite group where the
+algorithm's hypotheses are elementary and the output is not vacuous.
+It is an algorithmic test case, not an elliptic-curve rank computation.

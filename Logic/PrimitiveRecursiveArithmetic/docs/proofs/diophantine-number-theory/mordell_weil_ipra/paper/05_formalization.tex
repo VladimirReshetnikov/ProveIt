@@ -1,0 +1,304 @@
+\section{Lean formalization: completed kernel and exact remaining targets}
+\label{sec:formalization}
+
+\subsection{The distinction between three kinds of verification}
+
+There are three separate claims in this package.
+First, the paper supplies human-readable arithmetic proofs whose programs
+and induction invariants are primitive recursive and quantifier-free.
+Second, selected general algorithms and finite-table assertions are proved
+in ordinary Lean. Third, one can encode the arithmetic proofs in the
+first-order object theory implemented by ProveIt.
+The first two are delivered; the full third development is a detailed
+implementation plan, not a completed proof term.
+
+An ordinary theorem of Lean about natural numbers is not automatically a
+derivation in iPRA. In particular, native Lean permits induction on
+propositions with quantifiers, even if the proof never invokes
+\code{Classical}. The embedded target must instead construct a term of
+\[
+ \code{Prf PRAAx}\ \Gamma\ \varphi,
+ \qquad\text{written }\Gamma\vdash[\code{PRAAx}]\varphi.
+ \tag{7.1}\label{eq:7-derivation}
+\]
+ProveIt's \code{pra\_iff\_native} translates a derivation that already
+exists in one of its embedded calculi. It is not a reflection rule that
+turns every ambient Lean theorem into \eqref{eq:7-derivation}.
+
+\subsection{Repository foundations inspected at a fixed revision}
+
+The inspected ProveIt revision is
+\begin{center}
+\code{27da047166883e5010e115968d3a40f9e91bfb3d}.
+\end{center}
+The repository was read through the selected GitHub connector. No upstream
+files were changed, and the entire repository was not rebuilt.
+The following are the exact relevant files under
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/}:
+
+\begin{longtable}{@{}p{0.30\textwidth}p{0.64\textwidth}@{}}
+\toprule
+File & Role in the intended proof\\
+\midrule
+\endhead
+\code{Syntax.lean} & \code{Fm} and the syntactic predicate \code{Fm.QF};
+both quantifiers are excluded from the induction formula.\\
+\code{Deduction.lean} & Embedded intuitionistic natural deduction,
+equality, substitution, weakening and proof composition.\\
+\code{PR.lean} & Function-symbol grammar \code{PR}, terms \code{PTm},
+axioms \code{PRAAx}, and the derived proof constructor \code{PRA.qfInd}.\\
+\code{PRAToScalar.lean} & Compilation of a specified primitive recursive
+definition into the alternative iterator language.\\
+\code{TeqReflect.lean} & Reflection of quantifier-free formulas into
+characteristic terms and the corresponding induction.\\
+\code{BiInterpretation.lean} & Translation between the two object theories.\\
+\code{NativeBiInterpretation.lean} & Translation between already
+constructed embedded derivations, including \code{pra\_iff\_native}.\\
+\bottomrule
+\end{longtable}
+
+The existing Diophantine-geometry package supplies written bounded-height,
+resultant and square-area arguments and a native arithmetic kernel.
+Its earlier finite-generation interface assumes an already supplied
+primitive recursive reducing selector. The present elliptic development
+derives that selector from the actual representative list and its covering
+proof. The complete rational-halving algorithm is a further explicit
+piece of this derivation. The square-area proof here follows the especially
+self-contained version in the repository's Faltings package, with its
+exact fixed-fuel invariant. These dependencies and the audit scope are
+recorded in \code{metadata/repository\_audit.txt}.
+
+\subsection{The delivered native Lean definitions}
+
+The generic point type is an arbitrary \code{Type}; its laws are supplied
+in a structure. The central interface in \code{DescentCore.lean} contains:
+\begin{lstlisting}
+structure DescentData (alpha : Type u) where
+  add : alpha -> alpha -> alpha
+  height : alpha -> Nat
+  cutoff : Nat
+  repCount : Nat
+  baseCount : Nat
+  rep : Fin repCount -> alpha
+  base : Fin baseCount -> alpha
+  repIndex : alpha -> Fin repCount
+  baseIndex : alpha -> Fin baseCount
+  child : alpha -> alpha
+  baseComplete :
+    forall p, height p <= cutoff -> base (baseIndex p) = p
+  decompose :
+    forall p, cutoff < height p ->
+      add (add (child p) (child p)) (rep (repIndex p)) = p
+  contract :
+    forall p, cutoff < height p ->
+      2 * height (child p) <= height p + cutoff
+\end{lstlisting}
+This listing transliterates the actual Unicode Lean source for readability.
+There is no declaration asserting that every elliptic curve has such a
+structure.
+
+The inductive datatype \code{Word r b} has base and representative atoms,
+addition, and a compact doubling constructor. \code{Word.eval} interprets
+it in the given operation; \code{Word.size} counts constructors;
+\code{baseCoeff} and \code{repCoeff} compute its nonnegative coefficients.
+The definitions \code{next} and \code{run} freeze inside the base region.
+\code{build} recursively constructs the word with numerical fuel, and
+\code{coordinates p = build (height p) p}.
+
+The completed theorems include
+\[
+\begin{split}
+ h(\code{run}(n,P))&\le C+(h(P)\dotminus n),\\
+ h(\code{run}(h(P),P))&\le C,\\
+ \ev(\code{coordinates}(P))&=P,\\
+ \operatorname{size}(\code{coordinates}(P))&\le3h(P)+1.
+\end{split}
+\tag{7.2}
+\]
+The proof is independent of the group laws. The stronger logarithmic
+fuel bound in Theorem~\ref{thm:abstract} is proved in the paper and used
+in the arithmetic reference algorithm; it is not advertised as a theorem
+already contained in the native kernel.
+
+\code{FiniteSearch.lean} defines a structurally recursive \code{first?},
+proves soundness and completeness on an explicit finite list, then supplies
+total selection with a default and bounded-natural search.
+\code{E1FiniteTable.lean} defines four labels and checks the table,
+commutativity, associativity, exponent two, and a two-generator coding.
+It does not infer that these labels exhaust the rational curve.
+\code{DescentExample.lean} executes the kernel on a simple numerical
+instance; \code{Audit.lean} prints the actual axiom dependencies.
+
+The sixth source, \code{EllipticSpec.lean}, supplies concrete native
+definitions of integer, pair, rational and point codes; curve membership;
+chord addition, negation and doubling; $H$ and bounded-search $h$; the
+halving quartic; the covering predicate; finite division candidates; and
+generator-word syntax. Its remaining arithmetic obligations are
+definitions of propositions, including \code{HalvesCorrectTarget} and
+\code{E1ClassificationTarget}. They are not asserted axioms or proved
+theorems. Native \code{Rat} is used as an implementation specification;
+its standard-library proof fields have dependencies from Lean's fuller
+foundations, including classical choice. The first-order arithmetic bridge
+must replace these with the explicit numerical coding proofs. This does
+not affect the separate descent/search axiom audit.
+
+Compilation used Lean 4.32.0, commit
+\code{8c9756b28d64dab099da31a4c09229a9e6a2ef35}.
+The main descent and finite-search theorems report only
+\code{propext} and \code{Quot.sound}; the finite table's
+\code{two\_generators} theorem reports no axioms.
+There are no \code{sorry} placeholders or new axiom declarations in the
+compiled files, and no reported \code{Classical.choice} or \code{sorryAx}.
+This is not a claim that the entire arithmetic paper is formally proved.
+
+\subsection{All data needed for the arithmetic bridge}
+
+Use the concrete encodings of Section~\ref{sec:foundations}.
+The intended embedded development has fixed symbols for:
+
+\begin{enumerate}
+\item signed integer operations, positive division, gcd with Bezout
+coefficients, rational normalization and ordered comparisons;
+\item pair/list operations, bounded scans and finite polynomial evaluation;
+\item \code{valid(A,B,P)}, \code{neg}, \code{add}, \code{twice},
+and the projective abscissa, with formulas \eqref{eq:add};
+\item $H,h,\mathcal L_E$, the matrix $M_{A,B}$, its determinant,
+adjugate multipliers, normalized $L$, $T_R$ and $C$;
+\item rational-root enumeration, rational-square testing and
+$\Halves_E$, including the exceptional target $O$;
+\item the finite-list selector, stopped descent state, compact word,
+coefficient vector, and evaluation;
+\item the primitive triangle predicate, normalized triangle,
+Pythagorean parameters, square-area map and its iterate;
+\item the four-point classification code, scale maps and finite-product
+coordinate maps.
+\end{enumerate}
+
+These definitions are fully specified by formulas and bounded loops in
+the paper. Integer square root may use an exhaustive scan for the object
+proof even when Python uses a faster implementation.
+For words, code the constructors by a finite tag and the pairing function.
+Choose each constructor's code larger than its subword codes.
+Evaluation and structural tests can be implemented by course-of-values
+primitive recursion, storing the computed values for all smaller codes
+in a finite list. Thus the native inductive datatype is not assumed as an
+extra first-order sort.
+
+Define the object-language cover formula by
+\[
+ \forall p\bigl(\operatorname{valid}(A,B,p)=1\to
+   \exists i\,\exists q\,
+   [\,i<|R|\wedge\operatorname{valid}(A,B,q)=1
+    \wedge p=\operatorname{add}(\operatorname{twice}(q),R_i)\,]\bigr).
+ \tag{7.3}\label{eq:objectcover}
+\]
+Bounded list membership in other formulas means equality of a primitive
+recursive Boolean fold to $1$. In particular the successful selector
+predicate and all induction invariants are quantifier-free.
+
+The main elliptic target is a derivation under
+\eqref{eq:objectcover}, nonsingularity and validity of the given list.
+Abbreviate the computed terms by
+$W=\operatorname{coordinates}(A,B,R,p)$ and $G=G_E(R)$. The target is
+\[
+ \operatorname{valid}(A,B,p)=1
+ \ \longrightarrow\
+ \bigl[\operatorname{wordValid}(W,G)=1\ \wedge\ \ev(G,W)=p\bigr].
+ \tag{7.4}
+\]
+Universal closures over the input codes are introduced after the proof.
+For the unconditional target replace the hypotheses by
+$\operatorname{valid}(-1,0,p)=1$ and conclude that the four-case classifier
+decodes to $p$. This gives the bit-coordinate theorem directly.
+
+\subsection{A dependency-ordered implementation path}
+
+\begin{longtable}{@{}p{0.21\textwidth}p{0.73\textwidth}@{}}
+\toprule
+Module to implement & Exact mathematical obligation and proof route\\
+\midrule
+\endhead
+\code{Codes} & Encode integers, pairs, lists and rationals; prove projection
+identities, normalization idempotence, and reduced-fraction uniqueness.\\
+\code{Arithmetic} & Order, divisibility and gcd; prove the Euclidean
+coefficient invariant and the three square-splitting lemmas.\\
+\code{FiniteLoops} & Compile scans and folds into \code{PR} terms;
+prove their Boolean prefix invariants with \code{PRA.qfInd}.\\
+\code{EllipticOps} & Define the total guarded chord formulas, closure,
+inverse translation and projective duplication. General associativity is
+needed only for the coefficient-vector group presentation.\\
+\code{PointBoxes} & Prove the square/cube denominator lemma and the
+explicit $(a,b,d)$ enumeration bounds.\\
+\code{PolyCertificates} & Fixed-size determinant and adjugate identities,
+the explicit discriminant polynomial, normalization and coefficient norms.\\
+\code{HeightBounds} & Prove image-gcd divisibility, duplication lower
+bound, translation upper bound including the exceptional cases, and
+binary-height contraction.\\
+\code{Halving} & Prove the rational-root divisibility bounds, square test,
+quartic completeness and the exact theorem
+$Q\in\Halves_E(T)\leftrightarrow Q\in E(\Q)\wedge2Q=T$.\\
+\code{CoverSelector} & From the supplied cover, prove success of the
+finite scan through $R_i,\Halves_E(P-R_i)$ and prove its contraction.\\
+\code{DescentIPRA} & Prove the forward-state invariant by quantifier-free
+induction; construct the final word or coefficient vector and its bound.\\
+\code{SquareArea} & Normalize triangles, derive Pythagorean parameters,
+prove \eqref{eq:fermat-map}, and derive the contradiction at
+the initial hypotenuse using \eqref{eq:fermat-invariant}.\\
+\code{E1AndProducts} & Clear denominators in \eqref{eq:triangle-map};
+prove all points lie in the four-element table; define inverse bit maps,
+scale maps and product folds.\\
+\bottomrule
+\end{longtable}
+
+Each row has explicit premises and a mathematical proof in this paper.
+For example, the target named \code{Halves\_correct} is a missing
+formal arithmetic lemma, not a theorem already present in the compiled
+kernel. Once it and the height lemmas are constructed, a target
+\code{Cover\_implies\_search\_success} is proved by existential elimination
+from \eqref{eq:objectcover}, finite-scan completeness, and inverse
+translation. No unbounded search or choice axiom is required.
+
+\subsection{The critical induction translation}
+
+Native Lean's proof of word correctness inducts on fuel while generalizing
+over the point. Its induction proposition therefore has a universal
+quantifier. The safe embedded implementation instead fixes the initial
+point $P$ and numerically iterates one forward state. At stage $j$, a
+coarse invariant is
+\[
+\begin{gathered}
+ \operatorname{valid}(Q_j)=1,\quad k_j\le j,\quad
+ h(Q_j)\le C+(h(P)\dotminus j),\\
+ P=2^{k_j}Q_j+\sum_l a_{j,l}R_l .
+\end{gathered}
+\tag{7.5}\label{eq:embedded-invariant}
+\]
+The symbol for the finite sum, all state entries, and validity are fixed
+primitive recursive terms. Hence this is a quantifier-free formula with
+$P,R,C$ as parameters. For the operation-only version maintain equality
+between $P$ and an accumulated context applied to $Q_j$; the context is
+a coded compact word with a hole. Its update substitutes
+$(Q_{j+1}\oplus Q_{j+1})\oplus R_i$ for the hole.
+One can also retain the entire finite trace and verify its equations by a
+Boolean fold.
+
+For the optimized fuel, replace the height line by
+$2^j(h(Q_j)\dotminus C)\le h(P)\dotminus C$.
+For the Fermat proof use exactly \eqref{eq:fermat-invariant}.
+These choices resolve the weak-induction issue explicitly rather than
+assuming native Lean induction is an admissible object rule.
+
+\subsection{Completion criteria}
+
+A complete embedded formalization should deliver actual \code{Prf PRAAx}
+values for the relative elliptic theorem and unconditional classification,
+with the primitive recursive symbols and quantifier-free side conditions
+defined in the repository. Rebuild those modules, inspect every added axiom
+and placeholder, and only then apply the existing interpretation bridges.
+The supplied native files and executable arithmetic are useful intermediate
+artifacts; they do not meet this final criterion on their own.
+
+Completing the missing finite algebra and coding is a substantial but
+specified formalization project. Removing the representative-cover premise
+for all elliptic curves is a different mathematical problem and is not
+presented as a routine remaining Lean task.

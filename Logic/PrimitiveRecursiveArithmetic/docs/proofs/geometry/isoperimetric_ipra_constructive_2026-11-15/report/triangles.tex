@@ -1,0 +1,102 @@
+\section{Both triangle inequalities, with exact polynomial cores}
+\label{sec:triangles}
+
+Let \(a,b,c>0\) be side lengths satisfying the strict triangle
+inequalities. Write \(\ell=a+b+c\), \(s=\ell/2\), and
+\[
+ x=s-a,\qquad y=s-b,\qquad z=s-c.
+\]
+Then \(x,y,z>0\), \(a=y+z\), \(b=z+x\), \(c=x+y\),
+and \(s=x+y+z\). Put \(T\geq0\) for the area. Heron's identity is
+\begin{equation}\label{eq:heron-new}
+ T^2=sxyz.
+\end{equation}
+For completeness, place a side of length \(c\) on the horizontal axis.
+The third vertex has horizontal coordinate
+\(u=(b^2+c^2-a^2)/(2c)\) and height \(h\), where
+\(h^2=b^2-u^2\). Since \(T=ch/2\), clearing denominators gives
+\[
+ 16T^2=2(a^2b^2+b^2c^2+c^2a^2)-a^4-b^4-c^4
+ =(a+b+c)(-a+b+c)(a-b+c)(a+b-c),
+\]
+which is \eqref{eq:heron-new}. Both equalities are polynomial identities.
+Conversely these formulas construct the triangle using a positive square
+root, so the finite arithmetic presentation is not vacuous.
+
+\begin{theorem}[Triangle isoperimetry]
+For every such triangle,
+\[
+ \ell^2\geq12\sqrt3\,T.
+\]
+Equality holds exactly for an equilateral triangle.
+\end{theorem}
+\begin{proof}
+Finite arithmetic--geometric mean, proved in the graph section, gives
+\(s^3=(x+y+z)^3\geq27xyz\). Multiplying by \(16s\) gives
+\[
+ \ell^4=16s^4\geq432sxyz=432T^2.
+\]
+Both sides of the desired unsquared inequality are nonnegative, so this
+is equivalent to the assertion. Equality in arithmetic--geometric mean
+forces \(x=y=z\), equivalently \(a=b=c\); conversely these values
+give equality. For rational side inputs the squared assertion is a
+single exact rational inequality.
+\end{proof}
+
+\begin{theorem}[The stronger product-of-sides inequality]
+\label{thm:triangle-product}
+For every nondegenerate triangle,
+\[
+ T\leq\frac{\sqrt3}{4}(abc)^{2/3}.
+\]
+Equality holds exactly for an equilateral triangle. A radical-free
+equivalent assertion is
+\begin{equation}\label{eq:triangle-product-polynomial}
+ 4096T^6\leq27(abc)^4.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Set \(p=x+y+z\), \(q=xy+yz+zx\), \(r=xyz\), and
+\(w=(x+y)(y+z)(z+x)=pq-r=abc\).
+Arithmetic--geometric mean gives
+\[
+ q^3\geq27r^2,\qquad pq\geq9r.
+\]
+The second inequality can be checked without division: expand
+\(pq=3r+(x^2y+y^2z+z^2x)+(xy^2+yz^2+zx^2)\).
+Each parenthesized triple has product \(r^3\), hence has sum at
+least \(3r\). These are the finite rational forms of the same mean
+inequality; no logarithm or differentiation is involved.
+
+It follows that \(9w=9pq-9r\geq8pq\), and
+\(pq^4=(pq)q^3\geq243r^3\). Consequently
+\[
+ 9^4w^4\geq8^4p^4q^4
+ \geq4096\cdot243\,p^3r^3.
+\]
+Divide by \(243\), noting \(9^4/243=27\), and use
+\(T^2=pr\). This proves \eqref{eq:triangle-product-polynomial}.
+Taking nonnegative sixth roots gives the displayed geometric inequality.
+Equality forces equality in \(q^3\geq27r^2\), so
+\(xy=yz=zx\); positivity yields \(x=y=z\). The converse is direct.
+\end{proof}
+
+The stronger inequality indeed implies the perimeter inequality: finite
+arithmetic--geometric mean gives \(abc\leq(\ell/3)^3\), and therefore
+\[
+ T\leq\frac{\sqrt3}{4}\left(\frac\ell3\right)^2
+ =\frac{\ell^2}{12\sqrt3}.
+\]
+For a wholly polynomial implementation let
+\(H=(a+b+c)(-a+b+c)(a-b+c)(a+b-c)=16T^2\).
+The two targets become, respectively,
+\[
+ 27H\leq\ell^4,\qquad H^3\leq27(abc)^4.
+\]
+These are the targets recorded in the Lean outline and the exact-arithmetic
+verification script. Degenerate triangles have \(T=0\) and satisfy both
+inequalities. The equality classifications above concern nondegenerate
+triangles. In the stronger inequality, a degenerate triple of the form
+\((t,t,0)\), up to permutation, also has equality. Degenerate equality
+in the perimeter inequality occurs only at the all-zero triple.
+

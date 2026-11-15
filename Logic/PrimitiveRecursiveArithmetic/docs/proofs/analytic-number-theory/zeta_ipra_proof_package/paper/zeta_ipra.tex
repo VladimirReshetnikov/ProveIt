@@ -1,0 +1,230 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem,graphicx}
+\usepackage{xcolor,fancyhdr}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{linkblue}{HTML}{245F91}
+\usepackage[colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,
+ pdftitle={Constructive zeta theory in intuitionistic primitive recursive arithmetic},
+ pdfauthor={Research notes prepared for Vladimir Reshetnikov}]{hyperref}
+\usepackage{bookmark}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus1pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Constructive zeta theory}
+\fancyhead[R]{\small\color{ink}Finite proofs in $\ipra$}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{1.2cm}
+{\color{ink}\LARGE\bfseries Constructive zeta theory\par}
+\vspace{0.45cm}
+{\Large in intuitionistic primitive recursive arithmetic\par}
+\vspace{0.8cm}
+{\large Finite estimates, special values, analytic continuation,\par
+functional equations, and a Lean formalization roadmap\par}
+\vspace{1.0cm}
+Prepared for Vladimir Reshetnikov\\[3pt]
+15 November 2026
+\vspace{1.1cm}
+\begin{abstract}
+We develop a substantial portion of the classical theory of the Riemann
+zeta function by explicit finite arguments suitable for first-order
+intuitionistic primitive recursive arithmetic. The constructions include
+Dirichlet and Euler-product representations with moduli, a uniform
+finite-block proof of divergence of the defining series on
+$\Re s\le1$, an entire regular part obtained by finite Euler--Maclaurin
+summation, all nonpositive and positive even integer values, Stieltjes
+coefficients, the theta transformation and both standard functional
+equations, the entire xi function, arithmetic Dirichlet series, a global Euler--Hasse series, integral
+representations, simple trivial zeros, and a quantitative zero-free
+boundary theorem. Every analytic limit is read through prescribed
+rational approximations and primitive recursive error bounds.
+
+The arithmetic assertions are uniform for coded rational inputs and are
+schemas in each fixed certified primitive recursive real or complex
+name. They do not postulate an arbitrary-real sort, choice, an unrestricted
+identity theorem, or a universal primitive recursive program evaluator.
+The package includes exact rational enclosure software and a detailed
+Lean outline. The mathematical proofs are human-readable; the analytic
+development has not been kernel checked and no completed iPRA proof
+certificate is claimed.
+\end{abstract}
+\vfill
+\small
+Reference scope: the Riemann zeta function pages on Wikipedia and Wolfram
+MathWorld. Formula normalization is checked against NIST DLMF. Arithmetic
+interfaces are pinned to a recorded ProveIt revision. Exact source and
+verification status appear in the final sections.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{arabic}
+\tableofcontents
+\clearpage
+
+\section*{Reading guide and theorem inventory}
+\addcontentsline{toc}{section}{Reading guide and theorem inventory}
+The reference pages collect elementary identities, deep theorems and
+open conjectures together~\cite{Wikipedia,MathWorld}. The present package
+proves the following families with a finite-precision interpretation.
+A family, such as all even values or all Stieltjes coefficients, contains
+infinitely many instances; the table counts families rather than making
+an artificial claim about a maximum number of statements.
+
+\begin{longtable}{p{0.06\textwidth}p{0.73\textwidth}p{0.12\textwidth}}
+\toprule
+ID & Result family proved in this manuscript & Location\\\midrule
+\endfirsthead
+\toprule ID & Result family & Location\\\midrule
+\endhead
+1 & Dirichlet series on $\Re s>1$, absolute tails and an evaluation modulus. & \ref{sec:dirichlet}\\
+2 & All termwise derivatives and an explicit local Taylor remainder. & \ref{sec:dirichlet}\\
+3 & Euler product and its prime-cutoff error. & \ref{sec:dirichlet}\\
+4 & M\"obius reciprocal series and a positive lower bound for $|\zeta|$. & \ref{sec:dirichlet}\\
+5 & Euler logarithm and the $3$--$4$--$1$ inequality. & \ref{sec:dirichlet}\\
+6 & Von Mangoldt logarithmic derivative. & \ref{sec:dirichlet}\\
+7 & Dirichlet series for $\tau,\sigma_r,\varphi,\mu^2,\lambda$. & \ref{sec:dirichlet}\\
+8 & Odd-integer sum, eta on $\Re s>0$, its quotient restrictions and $\eta(1)=\log2$. & \ref{sec:dirichlet}\\
+9 & Strict complete monotonicity and strict logarithmic convexity on $(1,\infty)$. & \ref{sec:dirichlet}\\
+10 & Real bounds, $\zeta(x)\to1$, and $2^x(\zeta(x)-1)\to1$ with rates. & \ref{sec:dirichlet}\\
+11 & Four sums of zeta values and a generating function on $|z|<2$. & \ref{sec:dirichlet}\\
+12 & Coprime-tuple density $1/\zeta(r)$ with a finite error bound; squarefree density $6/\pi^2$. & \ref{sec:dirichlet}\\
+13 & Uniform non-Cauchy witnesses for the defining series on $\Re s\le1$. & \ref{sec:dirichlet-divergence}\\
+14 & Finite Euler--Maclaurin and a PR continuation on every bounded chart. & \ref{em:section}\\
+15 & Entire regular part $H(s)=\zeta(s)-1/(s-1)$ and all its derivatives. & \ref{em:section}\\
+16 & Unique simple pole at one, residue one, Laurent constant $\gamma$, and a small zero-free disk. & \ref{em:section}\\
+17 & All nonpositive integer values; the exact Bernoulli formula and trivial zeros. & \ref{em:section}\\
+18 & Every Stieltjes constant and the global Laurent expansion with a geometric tail. & \ref{em:section}\\
+19 & Conjugation, realness, and a coarse growth bound on certified charts. & \ref{em:section}\\
+20 & Gamma product, integral, reflection and duplication gateways with moduli. & \ref{sec:gamma-gateway}\\
+21 & The local log-gamma zeta generating series and polygamma values at one. & \ref{sec:gamma-gateway}\\
+22 & Quantitative Fej\'er approximation and the Gaussian Fourier transform. & \ref{sec:theta-functional}\\
+23 & Theta transformation and its Mellin representation. & \ref{sec:theta-functional}\\
+24 & Completed, sine and cosine functional equations. & \ref{sec:theta-functional}\\
+25 & Entire $\xi$, symmetry, conjugation, endpoint values, reality on the critical line and odd derivatives at $1/2$. & \ref{sec:theta-functional}\\
+26 & Simple trivial zeros, the formula for $\zeta'(-2m)$, and left-half-plane apartness away from them. & \ref{sec:theta-functional}\\
+27 & $\zeta'(0)=-\tfrac12\log(2\pi)$. & \ref{sec:theta-functional}\\
+28 & All positive even values and the Bernoulli Fourier series. & \ref{subsec:even-values}\\
+29 & Gamma and eta Mellin integrals, their integrated derivatives, and two fractional-part representations. & \ref{subsec:mellin}, \ref{subsec:fractional}\\
+30 & Unit-cube and logarithmic unit-square integral representations. & \ref{sec:additional}\\
+31 & Explicit apartness on $\Re s=1$ away from its pole, with zero-free disks; corresponding boundary results at $\Re s=0$. & \ref{subsec:boundary-zeros}\\
+32 & Signs on the real line under supplied interval and lattice separations. & \ref{sec:additional}\\
+33 & Global Euler--Hasse series with a geometric modulus; entire eta and its regularized quotient values. & \ref{sec:hasse}\\
+\bottomrule
+\end{longtable}
+
+The strongest uniform algorithmic statements concern coded rational inputs.
+For nonrational inputs the exact interpretation and hypotheses are given
+in Section~\ref{sec:foundations}. ``Meromorphic identity'' means equality
+of specified local expressions after removing or clearing displayed
+poles. It never assigns a finite value to $\zeta(1)$.
+
+\textbf{Results not proved here.} We do not prove the Riemann hypothesis,
+zero counting or zero-density theorems, infinitely many critical-line
+zeros, a Hadamard product over all zeros, universality, the prime number
+theorem, or irrationality of $\zeta(3)$. The Riemann hypothesis is a
+conjecture on the reference pages; the other omissions are limitations
+of this package, not assertions of unprovability in iPRA. We also do not
+claim a uniform decision procedure for equality of arbitrary real names
+or for whether an unspecified complex input lies on a domain boundary.
+
+\input{sections/01_foundations}
+\input{sections/02_dirichlet}
+\input{sections/03_divergence}
+\input{sections/05_continuation}
+\input{sections/04_gamma_gateway}
+\input{sections/06_theta}
+\input{sections/06b_hasse}
+\input{sections/07_values_integrals_zeros}
+\input{sections/08_formalization}
+
+\section{Provenance, dependencies, and scope of verification}
+The two requested web pages determine the selection of result families.
+NIST DLMF is used to check standard normalizations, notably the signs in
+the functional equations and special values~\cite{DLMF25_2,DLMF25_4,DLMF25_6,DLMF25_8}.
+The quantitative derivations and their finite-precision organization are
+given in the manuscript; a source citation is not used as a substitute
+for an iPRA proof.
+
+We inspected the repository's ordinary iPRA definition and native bridge,
+and the human proof packages for calculus, gamma and the zeta functional
+equation. The gamma gateway is reconstructed here with its actual finite
+estimates, rather than imported as an unverified analytic axiom.
+The other repository analytic packages contain proof plans and explicitly
+report incomplete Lean formalizations; they are not treated as completed
+formal dependencies. The provenance manifest lists the exact paths and
+Git blob identifiers actually read. No repository file was changed and
+no commit or pull request was created for this archive request.
+
+The proof review checked the Euler--Maclaurin sign, Bernoulli convention,
+Mellin normalization, gamma and theta constants, quantitative propagation,
+exceptional eta denominator, and boundary lower bounds. It also checked
+the distinction between Euclidean and rational $1$-norm errors in the
+executable enclosures. The saved exact tests and build record are under
+\texttt{verification/}. These are concrete verification records, while
+the missing kernel proof remains explicitly listed in Section~\ref{sec:lean}.
+
+\begin{thebibliography}{99}
+\bibitem{Wikipedia}
+Wikipedia contributors, \emph{Riemann zeta function}, reference-page
+inventory inspected 15 November 2026.
+\url{https://en.wikipedia.org/wiki/Riemann_zeta_function}.
+\bibitem{MathWorld}
+Eric W. Weisstein, \emph{Riemann Zeta Function}, MathWorld--A Wolfram Web
+Resource, inspected 15 November 2026.
+\url{https://mathworld.wolfram.com/RiemannZetaFunction.html}.
+\bibitem{DLMF}
+NIST Digital Library of Mathematical Functions, Chapter 25,
+\emph{Zeta and Related Functions}.
+\url{https://dlmf.nist.gov/25}.
+\bibitem{DLMF25_2}
+NIST DLMF, \S25.2, \emph{Definition and Expansions}.
+\url{https://dlmf.nist.gov/25.2}.
+\bibitem{DLMF25_4}
+NIST DLMF, \S25.4, \emph{Reflection Formulas}.
+\url{https://dlmf.nist.gov/25.4}.
+\bibitem{DLMF25_5}
+NIST DLMF, \S25.5, \emph{Integral Representations}.
+\url{https://dlmf.nist.gov/25.5}.
+\bibitem{DLMF25_6}
+NIST DLMF, \S25.6, \emph{Integer Arguments}.
+\url{https://dlmf.nist.gov/25.6}.
+\bibitem{DLMF25_8}
+NIST DLMF, \S25.8, \emph{Sums}.
+\url{https://dlmf.nist.gov/25.8}.
+\bibitem{ProveIt}
+Vladimir Reshetnikov and contributors, \emph{ProveIt},
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}, revision
+\par\texttt{f7e5eac0a94a0e690a22cbeecc5f6cca9270e6df}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/f7e5eac0a94a0e690a22cbeecc5f6cca9270e6df/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+\bibitem{GammaRepo}
+ProveIt, \emph{Gamma function in iPRA}, same pinned revision,
+\texttt{Logic/PrimitiveRecursiveArithmetic/docs/proofs/analysis/gamma\_ipra}.
+In particular the foundations, finite products, Euler integral, and
+reflection/duplication sections were inspected. Human proof material;
+no completed Lean proof is assumed.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/f7e5eac0a94a0e690a22cbeecc5f6cca9270e6df/Logic/PrimitiveRecursiveArithmetic/docs/proofs/analysis/gamma_ipra}.
+\end{thebibliography}
+\end{document}

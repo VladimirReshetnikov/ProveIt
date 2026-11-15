@@ -1,0 +1,489 @@
+\section{Finite graphs and the complete hypercube vertex theorem}
+\label{sec:hypercube}
+
+This section proves both hypercube inequalities stated in the source article,
+including the full vertex minimization theorem.  The arguments operate on
+finite bit strings and integer powers.  In particular, the logarithm in the
+usual edge statement need not occur in the object language.  The historical
+vertex theorem is Harper's \cite{Harper1966,Harper2004}; we give all the
+combinatorial steps needed here, together with explicit bounds on the
+compression procedure.
+
+\subsection{Finite encodings and graph profiles}
+
+A graph on \(v\) labelled vertices is a symmetric, irreflexive Boolean
+\(v\)-by-\(v\) matrix.  A subset is a \(v\)-bit mask.  Its cardinality,
+edge boundary, external vertex boundary and closed neighbourhood are,
+respectively,
+\[
+ \begin{aligned}
+ &|S|,\qquad N(S)=S\cup\partial_V S,\\
+ &\partial_E S=\{\{x,y\}:x\in S,\ y\notin S,\ x\sim y\},\\
+ &\partial_V S=\{y\notin S:(\exists x\in S)\ x\sim y\}.
+ \end{aligned}
+\]
+All quantifiers in these definitions are bounded by \(v\), so their
+characteristic functions and cardinalities are primitive recursive.
+For \(0\leq k\leq v\), the two isoperimetric profiles are computed by
+scanning the masks below \(2^v\) of cardinality \(k\) and retaining the
+smallest boundary count.  This scan also returns a minimizing mask.
+Thus the minima in the article's finite-graph definitions are actual
+bounded-search outputs, with no principle of choice required.
+
+Write \(Q_d=\{0,1\}^d\), identifying a vertex with a subset of
+\([d]=\{1,\ldots,d\}\).  Adjacent vertices differ in exactly one coordinate.
+A vertex is an integer below \(2^d\), and a family \(S\subseteq Q_d\) is
+an integer below \(2^{2^d}\).  Put
+\[
+ k=|S|,\qquad e(S)=\#\{\{x,y\}\subseteq S:x\sim y\},
+ \qquad b(S)=|\partial_E S|.
+\]
+Counting the \(d\) incident edges at each vertex of \(S\) gives the exact
+identity
+\begin{equation}\label{eq:cube-degree}
+ dk=2e(S)+b(S).
+\end{equation}
+An internal edge is counted twice and an outgoing edge once; this is also a
+proof by interchanging two finite sums of Boolean indicators.
+
+\subsection{A logarithm-free sharp edge inequality}
+
+We first record the entirely algebraic form of the elementary
+arithmetic--geometric mean inequality used in the proof.
+
+\begin{lemma}[Finite AM--GM]
+For nonnegative rational numbers \(x_1,\ldots,x_m\), \(m\geq1\),
+\[
+ \prod_{j=1}^{m}x_j\ \leq\
+ \left(\frac{x_1+\cdots+x_m}{m}\right)^m.
+\]
+For positive inputs equality holds exactly when all inputs are equal.
+\end{lemma}
+\begin{proof}
+For two inputs, multiply the assertion by \(4\) and use
+\((x_1-x_2)^2\geq0\).  Applying this operation to consecutive pairs,
+then pairs of pair averages, and so on, proves the assertion for a list
+of length \(2^r\).  At every level the average of the list is unchanged;
+the product is bounded by the square of the product of the next list.
+The product at the root of this finite binary tree is the overall average
+raised to \(2^r\).
+
+For an arbitrary positive list of length \(m\), let its average be \(u>0\).
+Choose a power \(M=2^r\geq m\), append \(M-m\) copies of \(u\), and
+apply the power-of-two result.  The average is still \(u\), so
+\((\prod x_j)u^{M-m}\leq u^M\).  Cancelling the positive factor gives
+the result.  If an input is zero, the asserted inequality is immediate.
+The equality assertion follows from the equality condition at every pair
+of the binary tree.  One may choose \(r=m\), so even the padding length
+has a specified primitive recursive bound.
+\end{proof}
+
+\begin{lemma}[The split inequality]\label{lem:cube-split}
+For integers \(a\geq b\geq0\), with the convention \(0^0=1\),
+\begin{equation}\label{eq:cube-split}
+ 4^b a^a b^b\ \leq\ (a+b)^{a+b}.
+\end{equation}
+If \(a,b>0\), equality holds exactly when \(a=b\).
+\end{lemma}
+\begin{proof}
+The case \(b=0\) is an identity.  For \(b>0\), apply the preceding lemma
+to \(b\) entries equal to \(2\) and \(a-b\) entries equal to \(1\):
+\[
+ 2^b\leq\left(\frac{a+b}{a}\right)^a.
+\]
+Also \(a+b\geq2b\), hence \(2^b\leq((a+b)/b)^b\).
+Multiply these inequalities and clear the positive denominators.
+If \(a>b>0\), the second inequality is strict; if \(a=b\), both are
+equalities.  Thus the equality assertion is decidable integer algebra.
+\end{proof}
+
+\begin{theorem}[Hypercube edge inequality, exact arithmetic form]
+\label{thm:cube-edge}
+For every \(S\subseteq Q_d\),
+\begin{equation}\label{eq:cube-edge-internal}
+ 2^{2e(S)}\leq |S|^{|S|},
+\end{equation}
+or, equivalently by \eqref{eq:cube-degree},
+\begin{equation}\label{eq:cube-edge-integer}
+ 2^{d|S|}\leq 2^{b(S)}|S|^{|S|}.
+\end{equation}
+For nonempty \(S\), equality holds exactly when \(S\) is a subcube:
+a set obtained by fixing some coordinates and leaving all others free.
+\end{theorem}
+\begin{proof}
+Induct on \(d\).  For \(d=0\) there are only the empty family and the
+singleton family, and the assertion is \(1\leq1\).
+Split \(S\subseteq Q_d\) into its two sections \(S_0,S_1\subseteq Q_{d-1}\)
+in a fixed coordinate.  Let their sizes be \(a,b\), interchanging their
+names if necessary so that \(a\geq b\).  Edges between the sections
+correspond exactly to the common vertices \(S_0\cap S_1\); put
+\(c=|S_0\cap S_1|\leq b\).  Therefore
+\[
+ e(S)=e(S_0)+e(S_1)+c.
+\]
+The induction hypotheses and Lemma~\ref{lem:cube-split} give
+\[
+ 2^{2e(S)}
+ \leq 2^{2e(S_0)}2^{2e(S_1)}4^b
+ \leq a^a b^b4^b
+ \leq(a+b)^{a+b}.
+\]
+This proves the inequality, including either empty section.
+
+For the equality statement, suppose first that both sections are nonempty.
+Every inequality in this chain must be an equality.  The split lemma gives
+\(a=b\), and equality in \(c\leq b\) gives \(S_0=S_1\).
+Both sections have equality in the induction hypothesis, so the common
+section is a subcube.  Allowing the split coordinate to be free produces
+precisely a subcube in \(Q_d\).  If one section is empty, the nonempty
+section has equality by cancellation, so it is a subcube by induction;
+the split coordinate is fixed.  Conversely, a subcube with \(r\) free
+coordinates has \(k=2^r\), \(2e=r2^r\), and
+\(b=(d-r)2^r\).  Substitution proves equality, also for \(r=0\).
+\end{proof}
+
+For \(k>0\), the usual real-number reading of
+\eqref{eq:cube-edge-internal} is
+\[
+ 2e(S)\leq k\log_2 k,
+ \qquad b(S)\geq k(d-\log_2 k).
+\]
+The exact finite theorem proved inside arithmetic is
+\eqref{eq:cube-edge-integer}; this avoids using a real logarithm as an
+undefined arithmetic object.  The equality witnesses in the article are
+therefore obtained constructively, and the argument in fact classifies
+all nonempty equality cases.
+
+\begin{corollary}[Sharp expansion at half volume]
+For \(d\geq1\) and \(0<|S|\leq2^{d-1}\), one has
+\(b(S)\geq |S|\).  This constant is sharp, as witnessed by a coordinate
+half-cube.  Applying the same assertion to the complement gives
+\[
+ b(S)\geq\min\{|S|,2^d-|S|\}.
+\]
+\end{corollary}
+\begin{proof}
+If \(b(S)<k\), then \eqref{eq:cube-edge-integer} and \(k\leq2^{d-1}\)
+would imply
+\[
+ 2^{dk}\leq2^{b(S)}k^k
+ \leq2^{b(S)+(d-1)k}<2^{dk},
+\]
+an impossible comparison of integers.  Since integer order is decidable,
+this proves \(b(S)\geq k\) intuitionistically.  A coordinate half-cube
+has exactly one outgoing edge at every vertex.  Complementation preserves
+the edge boundary.
+\end{proof}
+
+\subsection{Simplicial order and its neighbourhoods}
+
+Order subsets of \([d]\) first by cardinality.  Within one cardinality,
+use lexicographic order with a smaller coordinate preferred: if
+\(X\neq Y\) have equal size, then \(X<Y\) when the least element of
+\(X\mathbin{\triangle}Y\) belongs to \(X\).
+For example, the two-element subsets of \([4]\) are ordered
+\[
+ 12,\ 13,\ 14,\ 23,\ 24,\ 34.
+\]
+This is the \emph{simplicial order}.  Let \(I_d(k)\) denote its first
+\(k\) vertices, and let \(\operatorname{rk}_d(X)\) be the rank of
+\(X\), starting at zero.  Both are primitive recursive: enumerate the
+\(2^d\) masks, count their bits, compare them in the stated order, and
+count how many precede the given mask.
+
+\begin{lemma}[Neighbourhoods preserve initial segments]
+\label{lem:cube-initial-neighborhood}
+The closed neighbourhood of \(I_d(k)\) is another simplicial initial
+segment.  Moreover, \(k\mapsto |N(I_d(k))|\) is nondecreasing.
+\end{lemma}
+\begin{proof}
+The empty and full initial segments are immediate.  Any other nonempty
+initial segment consists of all sets of size less than \(r\), together
+with a nonempty lexicographic initial family \(F\) of \(r\)-sets.
+Its neighbourhood contains every set of size at most \(r\): for a set
+of size \(r\) this follows by deleting one element, unless \(r=0\),
+which is immediate.  Its only other members are the \((r+1)\)-sets
+containing some member of \(F\).
+
+If \(Y=\{y_1<\cdots<y_{r+1}\}\), its lexicographically first
+\(r\)-subset is \(\{y_1,\ldots,y_r\}\).  Consequently \(Y\) contains
+a member of \(F\) exactly when this first \(r\)-subset belongs to \(F\).
+Deleting the largest element preserves the weak lexicographic order on
+sets of the same size: compare their sorted lists at the first differing
+position; if this is the last position, the shortened lists agree.
+It follows that the eligible \((r+1)\)-sets form an initial segment.
+For \(r=0\), every singleton contains the empty set, giving the same
+conclusion.  Finally \(I_d(k)\subseteq I_d(k+1)\), and the operation
+\(N\) preserves inclusion.
+\end{proof}
+
+\subsection{Compression with a specified termination bound}
+
+For coordinate \(i\), write \(S_i^0,S_i^1\subseteq Q_{d-1}\) for the
+sections obtained by fixing that coordinate to \(0\) or \(1\) and
+then deleting it.  The \(i\)-compression \(C_iS\) replaces these two
+sections by
+\[
+ I_{d-1}(|S_i^0|),\qquad I_{d-1}(|S_i^1|).
+\]
+Deleting a coordinate from vertices which agree in that coordinate
+preserves their relative simplicial order.  Thus each section is moved
+leftwards in its inherited order, without changing its size.
+
+\begin{lemma}[One compression step]
+\label{lem:cube-compression}
+Assume the vertex theorem in dimension \(d-1\): every family \(T\)
+in that cube satisfies
+\( |N(T)|\geq|N(I_{d-1}(|T|))|\).
+Then \( |C_iS|=|S|\) and
+\[
+ |N(C_iS)|\leq |N(S)|.
+\]
+\end{lemma}
+\begin{proof}
+Put \(A=S_i^0\), \(B=S_i^1\), and let \(A',B'\) be their compressed
+initial segments.  A vertex in the zero section of \(N(S)\) either
+is in the closed neighbourhood of \(A\) inside that section or is
+joined across coordinate \(i\) to a member of \(B\).  Hence the two
+sections of \(N(S)\) are
+\[
+ N(A)\cup B,\qquad N(B)\cup A.
+\]
+The corresponding compressed sections are \(N(A')\cup B'\) and
+\(N(B')\cup A'\).  By
+Lemma~\ref{lem:cube-initial-neighborhood}, \(N(A')\) and \(B'\)
+are nested initial segments.  Therefore
+\[
+ \begin{split}
+ |N(A')\cup B'|
+ &=\max\{|N(A')|,|B'|\}\\
+ &\leq\max\{|N(A)|,|B|\}
+ \leq|N(A)\cup B|.
+ \end{split}
+\]
+The first inequality uses the dimension induction hypothesis and
+\(|B'|=|B|\).  Interchange \(A,B\) for the other section and add.
+The cardinality assertion is part of the definition of compression.
+\end{proof}
+
+Define the nonnegative integer potential
+\[
+ P(S)=\sum_{X\in S}\operatorname{rk}_d(X).
+\]
+If \(C_iS\neq S\), at least one section has moved strictly leftwards;
+matching its sorted old and new lists shows that its rank sum strictly
+decreases.  The other section's rank sum does not increase.  Thus
+\[
+ P(C_iS)<P(S)\qquad(C_iS\neq S),
+ \qquad P(S)\leq |S|(2^d-1)<2^{2d}.
+\]
+For a total algorithm, choose the least coordinate whose compression
+changes the current family, and leave the family unchanged if there is
+none.  Iterate this instruction \emph{exactly} \(2^{2d}\) times.
+Each nontrivial step lowers the potential by at least one, and once the
+family is fixed, all later steps leave it fixed.  The final family \(B\)
+is therefore fixed by every coordinate compression.  This is a bounded
+primitive recursive iteration, not an unbounded ``repeat until stable''
+search.  Lemma~\ref{lem:cube-compression} gives
+\[
+ |B|=|S|,\qquad |N(B)|\leq|N(S)|.
+\]
+
+\subsection{The fully compressed exceptional families}
+
+Being fixed by every coordinate compression does not by itself make a
+family an initial segment.  We now handle exactly the possible obstruction;
+omitting it would leave the proof incomplete.
+
+\begin{lemma}[Classification of a compressed obstruction]
+\label{lem:cube-exceptions}
+Suppose \(B\subseteq Q_d\) is fixed by every coordinate compression and
+is not an initial segment.  Let \(x\) be its first missing vertex and
+\(y\) its last present vertex.  Then \(x<y\), \(x,y\) are consecutive
+in simplicial order, and \(y=[d]\setminus x\).  In particular, \(B\)
+is the initial segment of size \(|B|\) with \(x\) replaced by \(y\).
+There are only the following two forms:
+\begin{enumerate}
+\item If \(d=2r+1\), then the initial segment is all sets of size at most
+\(r\), and
+\[
+ x=\{r+2,\ldots,2r+1\},\qquad y=\{1,\ldots,r+1\}.
+\]
+\item If \(d=2r\), then the initial segment consists of all sets of size
+less than \(r\), followed by all \(r\)-sets containing \(1\), and
+\[
+ x=\{1,r+2,\ldots,2r\},\qquad y=\{2,\ldots,r+1\}.
+\]
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Take any inversion \(u<v\) with \(u\notin B\) and \(v\in B\).
+If they agreed in some coordinate, they would belong to the same section;
+that section is an initial segment, contradicting the inversion.
+They must therefore disagree in every coordinate, so \(v=[d]\setminus u\).
+Apply this to \(x,y\).  If a vertex \(z\) lay strictly between them,
+then \(z\in B\) would force \(z=[d]\setminus x=y\), whereas
+\(z\notin B\) would force \(z=[d]\setminus y=x\).
+Both alternatives are impossible.  Membership is decidable, so this is
+an intuitionistically legitimate case distinction.  Thus \(x,y\) are
+consecutive, and the definition of first missing and last present gives
+the claimed single exchange.
+
+Put \(p=|x|\) and \(q=|y|\).  Since \(x<y\) and they are
+complements, \(p\leq q\) and \(p+q=d\).
+If \(p<q\), consecutiveness forces \(q=p+1\); otherwise an entire
+intermediate cardinality lies between them.  The vertex \(x\) must be
+the last \(p\)-set, and \(y\) the first \((p+1)\)-set.  These are the
+displayed odd-dimensional vertices.
+If \(p=q=r\), then \(d=2r\).  Because they are complementary, their
+least differing coordinate is \(1\), which belongs to \(x\).
+All \(r\)-sets containing \(1\) precede every \(r\)-set not containing
+\(1\).  Consecutiveness therefore forces \(x\) to be the last of the
+former kind and \(y\) the first of the latter kind, giving the second
+form.
+\end{proof}
+
+\begin{lemma}[Repairing the obstruction]
+\label{lem:cube-repair}
+For a family \(B\) in Lemma~\ref{lem:cube-exceptions}, put
+\(I=I_d(|B|)\).  Then \(|N(I)|\leq |N(B)|\).
+\end{lemma}
+\begin{proof}
+In the odd case \(d=2r+1\), suppose first \(r\geq1\).
+The neighbourhood \(N(I)\) consists of all sets of size at most \(r+1\).
+The family \(B\) still contains every set of size at most \(r-1\),
+so every set of size at most \(r\) belongs to \(N(B)\).
+Every \((r+1)\)-set has \(r+1\geq2\) different \(r\)-subsets.
+Only one \(r\)-set was removed; hence at least one of these subsets
+remains in \(B\).  Consequently \(N(I)\subseteq N(B)\).
+For \(r=0\), both singleton families in \(Q_1\) have the entire
+\(Q_1\) as their closed neighbourhood.
+
+In the even case \(d=2r\), suppose \(r\geq2\).
+Here \(N(I)\) contains all sets of size at most \(r\), and all
+\((r+1)\)-sets containing \(1\).  The smaller sets still belong to
+\(N(B)\) because all sets of size less than \(r\) remain in \(B\).
+Each \((r+1)\)-set containing \(1\) has \(r\geq2\) different
+\(r\)-subsets containing \(1\), and at most one was removed.
+Again \(N(I)\subseteq N(B)\).
+For \(r=1\), the two families are \(\{\varnothing,\{1\}\}\)
+and \(\{\varnothing,\{2\}\}\) in \(Q_2\); both neighbourhoods
+are all of \(Q_2\).
+\end{proof}
+
+\begin{theorem}[Harper's vertex theorem]\label{thm:cube-harper}
+For every \(d\geq0\) and every \(S\subseteq Q_d\),
+\begin{equation}\label{eq:cube-harper}
+ |N(S)|\geq |N(I_d(|S|))|.
+\end{equation}
+Consequently, for every \(0\leq k\leq2^d\),
+\[
+ \Phi_V(Q_d,k)=|N(I_d(k))|-k.
+\]
+\end{theorem}
+\begin{proof}
+Induct on \(d\), starting with the two families in \(Q_0\).
+The induction hypothesis justifies every compression step by
+Lemma~\ref{lem:cube-compression}.  Run the bounded iteration to obtain
+\(B\) fixed by all compressions.  If \(B\) is an initial segment,
+then \(B=I_d(|S|)\).  Otherwise
+Lemmas~\ref{lem:cube-exceptions} and \ref{lem:cube-repair} give
+\[
+ |N(I_d(|S|))|\leq|N(B)|\leq|N(S)|.
+\]
+Whether a finite family is an initial segment is decidable by a bounded
+scan, so the displayed case split is constructive.
+Subtract the common cardinality \(k\) from the closed-neighbourhood
+inequality to compare external boundaries; the initial segment itself
+is a minimizing witness.
+\end{proof}
+
+\begin{corollary}[The binomial thresholds in the source article]
+\label{cor:cube-thresholds}
+Let \(0\leq r\leq d\), and put
+\[
+ B(d,r)=\sum_{j=0}^{r}\binom dj,
+ \qquad \binom d{d+1}=0.
+\]
+If \(|S|\geq B(d,r)\), then
+\[
+ |N(S)|\geq B(d,\min\{r+1,d\}).
+\]
+At the exact threshold,
+\[
+ \Phi_V(Q_d,B(d,r))=\binom d{r+1}.
+\]
+\end{corollary}
+\begin{proof}
+The initial segment of size \(B(d,r)\) is the exact Hamming ball
+\(\{X:|X|\leq r\}\).  Its closed neighbourhood is the ball of radius
+\(\min\{r+1,d\}\).  This follows by adding or deleting one element;
+its cardinality is the stated binomial sum.  Harper's theorem and
+monotonicity of the neighbourhoods of initial segments give the first
+claim.  At equality of cardinalities, subtract \(B(d,r)\) and use the
+ball as a witness.
+\end{proof}
+
+For intermediate sizes, the minimizing family consists of all layers below
+some weight and an \emph{initial lexicographic portion} of the next layer.
+The qualification on the partial layer matters: the proof does not assert
+that every arbitrarily chosen portion of that layer is optimal.
+The same argument also yields all-distance neighbourhoods.  If \(N^t\)
+denotes \(t\) iterations of \(N\), then
+\[
+ |N^t(S)|\geq |N^t(I_d(|S|))|.
+\]
+Indeed, apply Harper at each step, use monotonicity in the cardinality,
+and use Lemma~\ref{lem:cube-initial-neighborhood} to identify each next
+initial segment.  At a binomial threshold this gives the ball of radius
+\(\min\{r+t,d\}\).  The induction is a bounded iteration if \(t\)
+is replaced by \(\min\{t,d\}\), since every nonempty neighbourhood
+has filled the cube by distance \(d\).
+
+\subsection{Why these proofs use only intuitionistic primitive recursion}
+
+Here is an explicit audit of the induction strength.  For the dimension
+induction in Harper's theorem, use the Boolean predicate
+\[
+ H(d)=\bigwedge_{m<2^{2^d}}
+ \bigl[\,|N(S_m)|\geq|N(I_d(|S_m|))|\,\bigr],
+\]
+where \(S_m\) is the family encoded by mask \(m\), and the conjunction
+is evaluated by a primitive recursive finite loop.  The induction formula
+is simply \(H(d)=1\), a quantifier-free equation.  The same construction
+works for the edge inequality and for its equality classification.
+Intermediate universal assertions range over coordinates, vertices,
+families, or time indices with the displayed primitive recursive bounds;
+replace each bounded quantifier by its finite Boolean fold.
+
+The potential argument uses at most \(2^{2d}\) states of a deterministic
+loop.  Each state is a mask below \(2^{2^d}\), each rank is below \(2^d\),
+and each potential is below \(2^{2d}\).  A code for the whole computation
+trace can, for example, be bounded by
+\[
+ (2^{2^d})^{\,2^{2d}+1}.
+\]
+This generous bound suffices to compile every invariant to a bounded
+arithmetical predicate.  Exact counting, comparison, addition,
+multiplication, exponentiation, bit extraction, binomial coefficients and
+finite sorting are all primitive recursive.
+
+For the split inequality, the averaging proof only uses finitely many
+rational operations.  In its application the inputs are \(1,2\), or their
+average \((a+b)/a\); all averages lie between \(1\) and \(2\).
+With padding length \(M=2^a\), a common denominator \(aM\) represents
+all intermediate means, with numerators at most \(2aM\).  Thus the
+binary averaging tree also has an explicit primitive recursive code
+bound.  Clearing positive denominators leaves only integer polynomial
+inequalities.  No unbounded search, unbounded induction formula,
+nonconstructive extremum, or real-number case distinction is used.
+
+The supplied \texttt{hypercube\_verify.py} implements the exact masks,
+boundaries, simplicial initial segments and bounded compression algorithm.
+Its recorded run checks both main inequalities on every family in
+\(Q_d\) for \(0\leq d\leq4\), checks the binomial thresholds, and
+checks that the nonempty equality cases of the edge inequality number
+\(3^d\), exactly the number of subcubes.  These finite checks are useful
+regression tests for the definitions and the exceptional cases.  They are
+not the uniform proof: that proof is the quantified, bounded-induction
+argument given above.
