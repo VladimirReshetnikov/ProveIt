@@ -24,3 +24,9 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-axioms/check-mo
 ```
 
 The four source modules and 15-declaration axiom audit were compiled in one fresh output. The checker pins those sources and the general-separation prerequisite object before and after, checks 15 axiom reports, and rejects `sorryAx`. Other overlay dependencies, Foundation, and Mathlib are prebuilt; this is a staged replay. Successful log: `/tmp/pa194-model-closure-replay.log`.
+
+`PA194ModelClosureDefinable.lean` also proves Σ₁ function definability of the canonical `modelClose` and `modelPush` operations for model-valued counts. This does not itself establish sentence closure or native iPRA derivability. Its independent and repository staged replays passed against the source-replayed closure and retained prebuilt baselines. From the repository root, select a fresh output:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-axioms/check-model-closure-definability.sh "$PWD" /dev/shm/pa194-model-closure-replay /dev/shm/pa194-general-separation-replay /dev/shm/pa194-ranked-open-separation-replay-v3 /dev/shm/pa194-unrestricted-all-replay /dev/shm/pa194-full-one-level-audit /dev/shm/pa194-model-closure-definability-repo
+```
