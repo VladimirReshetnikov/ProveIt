@@ -1,0 +1,2 @@
+import PA194SuccCongruenceAnyPacket
+#print axioms PA194SuccCongruenceAnyPacket.succCongruence_any_packet

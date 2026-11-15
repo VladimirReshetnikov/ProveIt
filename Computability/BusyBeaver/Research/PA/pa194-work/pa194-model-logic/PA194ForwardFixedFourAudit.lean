@@ -1,0 +1,5 @@
+import PA194ForwardFixedFour
+#print axioms PA194ForwardReflProof.remainingFixedAfterSuccCongruence_length
+#print axioms PA194ForwardReflProof.remainingFixedAfterSuccInjective_split
+#print axioms PA194ForwardReflProof.fixed_typed_supplier_of_four
+#print axioms PA194ForwardReflProof.root_theoryAxiom_of_four_and_induction

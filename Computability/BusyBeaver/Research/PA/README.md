@@ -126,7 +126,7 @@ under the stated code bounds. A [normalized identity-packet bridge](pa194-work/p
 now supplies these five fixed translations for the guarded route; they still
 need to be connected to the new calculus interpretation field. [Transitivity](pa194-work/pa194-model-logic/TRANSITIVITY-PACKET.md)
 is also supplied for every valid arity-zero packet. The [remaining source
-axiom reduction](pa194-work/pa194-model-logic/FORWARD-FIXED-FIVE.md) assumes five
+axiom reduction](pa194-work/pa194-model-logic/FORWARD-FIXED-FOUR.md) assumes four
 fixed axioms and arbitrary induction instances. Other rule suppliers and the
 unconditional PAeq-to-source compiler are still open. The [universal formula replacement theorem](pa194-work/pa194-model-logic/PAEQ-UNIVERSAL-FORMULA-CONGRUENCE.md)
 supplies modeled PAeq proof existence for arbitrary internally valid arity-one
