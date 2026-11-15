@@ -1,0 +1,7 @@
+# Total sound Σ₁ relation for closed ordinal-induction proof codes
+
+`closedOrdinalSeedGraph` is one fixed Σ₁ formula in output and property-code inputs. It existentially quantifies the eight fixed-theorem proof codes, verifies each by the full source theory's fixed Δ₁ proof predicate, and runs the checked closed ordinal-induction proof-code constructor. `closedOrdinalSeedGraph_defined` connects the graph to its semantic relation. `closedOrdinalSeedRelation_total` proves that for every internal property-code input there is an output, using the eight available source theorems. `closedOrdinalSeedRelation_sound` proves that whenever the input is an internally valid arity-one formula (including a nonstandard one), each related output is the actual code of a full-source proof of `closedOrdinalInductionCode p`.
+
+This relation is multivalued, not a selected proof-code function. It is a Lean model-level result for PRA models with IΣ₁ arithmetic reduct. It does not establish the missing PA interpretation, native iPRA internalization, or the machine equivalence.
+
+Run `bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-axioms/check-closed-ordinal-seed-relation.sh "$PWD" /dev/shm/pa194-closed-ordinal-seed-relation-repo` from the repository root. This compiles the source against hash-pinned prebuilt dependencies and rejects `sorryAx`; the completed output is `/dev/shm/pa194-closed-ordinal-seed-relation-replay`.
