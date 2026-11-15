@@ -1,0 +1,6 @@
+import PA194UniformFullyClosedModel
+#print axioms PA194BindSource.pureTermFreeBoundGraph_iff
+#print axioms PA194BindSource.pureFormulaFreeBound_defined
+#print axioms PA194BindSource.pureFormulaFreeBound_model
+#print axioms PA194BindSource.pureFullyClosedSepGraph_defined
+#print axioms PA194BindSource.pureFullyClosedSeparation_model
