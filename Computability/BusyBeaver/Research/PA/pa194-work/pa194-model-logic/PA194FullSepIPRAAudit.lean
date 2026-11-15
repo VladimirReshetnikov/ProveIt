@@ -1,0 +1,4 @@
+import PA194FullSepIPRA
+#print axioms PA194FullSepIPRA.source_refutation_to_scheduler
+#print axioms PA194FullSepIPRA.modeled_nonhalt_implies_PA_consistency
+#print axioms PA194FullSepIPRA.physical_nonhalt_implies_PA_consistency
