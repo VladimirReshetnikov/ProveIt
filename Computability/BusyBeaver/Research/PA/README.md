@@ -273,6 +273,11 @@ on the formula translation per inference rule. No translation is shown to meet t
 the relational source language, an internal refutation of `T` makes the modeled scheduler
 halt, so a model in which it never halts has no internal proof of `⊥` from `T`. The
 simulation is a hypothesis there, and `T` is not `𝗣𝗔`.
+[`pa194-model-axioms`](pa194-work/pa194-model-axioms/README.md) starts the model-level target
+proofs of the source axioms outside the equality theory: primitive equality entails
+observational equality at every other label without a vacuity premise, and the translation of
+the weak-adjunction sentence is target-provable, which gives its axiom leaf for a simulation.
+The separation scheme and a source theory containing these axioms are open.
 
 [`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
