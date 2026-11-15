@@ -27,6 +27,13 @@ increases the gap by `i` and the spare count by `2*i`, preserves the spare,
 and iterates the supplied controller advance `i` times. It does not yet supply
 the concrete frame, cost, or guarded physical one-step equality.
 
+`PA194ModelLoopFrame` supplies a primitive-recursive code for the site-27
+physical frame from that packed state and nine supplied register-reader codes.
+Its model equations reconstruct the source file with the repeated one-spare
+suffix and the path prefix. Specializing the readers to the actual controller
+and proving a coded physical cost and guarded one-step match remain separate.
+`check-model-loop-frame.sh` replays this extension with the same staged roots.
+
 Replay with `check-model-loop-iteration.sh` into a fresh output directory;
 the usage lists its roots. `ROUNDTRIP_STAGE` is the successfully audited
 `check-one-spare-file-roundtrip.sh` output. It pins the existing iterator
