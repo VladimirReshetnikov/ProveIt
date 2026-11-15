@@ -1,0 +1,11 @@
+import PA194ForwardSuccInjectiveRoot
+#print axioms PA194CancelClosedShift.closedStrictSeparation_shift
+#print axioms PA194CancelInputs.Inputs.cancel
+#print axioms PA194SuccInjective.succValueEliminate
+#print axioms PA194SuccInjective.succEqualEliminate
+#print axioms PA194SuccInjective.succInjectiveValue
+#print axioms PA194SuccInjective.target_eq
+#print axioms PA194ForwardSuccInjective.proof
+#print axioms PA194ForwardSuccInjective.contextDerivation
+#print axioms PA194ForwardSuccInjective.sourceProof
+#print axioms PA194ForwardSuccInjective.root_succInjective_provable
