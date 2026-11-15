@@ -1,0 +1,18 @@
+import PA194TranslatedStructuralRules
+#print axioms PA194FormulaDispatcher.translatedSequent_insert
+#print axioms PA194FormulaDispatcher.translatedSequent_subset
+#print axioms PA194FormulaDispatcher.compileVerum_graph
+#print axioms PA194FormulaDispatcher.compileAnd_graph
+#print axioms PA194FormulaDispatcher.compileOr_graph
+#print axioms PA194FormulaDispatcher.compileWeak_graph
+#print axioms PA194FormulaDispatcher.compileCut_graph
+#print axioms PA194FormulaDispatcher.compileVerum_valid
+#print axioms PA194FormulaDispatcher.compileAnd_valid
+#print axioms PA194FormulaDispatcher.compileOr_valid
+#print axioms PA194FormulaDispatcher.compileWeak_valid
+#print axioms PA194FormulaDispatcher.compileCut_valid
+#print axioms PA194FormulaDispatcher.compileVerum_sequent
+#print axioms PA194FormulaDispatcher.compileAnd_sequent
+#print axioms PA194FormulaDispatcher.compileOr_sequent
+#print axioms PA194FormulaDispatcher.compileWeak_sequent
+#print axioms PA194FormulaDispatcher.compileCut_sequent
