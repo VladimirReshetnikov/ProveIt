@@ -257,3 +257,7 @@ conjunction and disjunction Sim conclusions; other rules remain open.
 The [binder context translation](BINDER-CONTEXT.md) derives exact quantified
 constructor equations in candidate models; freshness, substitution, and the
 compiler quantifier rules remain separate.
+
+The [negation duality and refined cut interface](REFINED-CUT.md) handle
+arbitrary internally valid formulas, but do not construct the complete
+derivation simulation.
