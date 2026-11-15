@@ -78,8 +78,10 @@ The combined source theory [internally proves its open separation instances](pa1
 for model-valued valid properties under the stated PRA and IΣ₁ assumptions.
 [Internal closure and reopening](pa194-work/pa194-model-axioms/CLOSE.md)
 also preserve proof existence for model-valued closure lengths. The source theory
-[proves ordinal induction for standard typed properties](pa194-work/pa194-model-axioms/STANDARD-ORDINAL.md)
-in each covered model; the nonstandard-property case remains open. A fixed
+[proves ordinal induction for all internally valid properties](pa194-work/pa194-model-axioms/INTERNAL-ORDINAL-FROM-BAD.md)
+in each covered PRA model with IΣ₁ arithmetic reduct, including nonstandard
+property codes. This is modeled proof existence using model-level choice, not
+a native iPRA derivation or an overall uniform proof-code graph. A fixed
 [universally closed least-point exclusion theorem](pa194-work/pa194-model-axioms/LEAST-EXCLUDES.md)
 has an internal proof in the covered models, and a separate
 [triple-specialization graph](pa194-work/pa194-model-axioms/CONTEXT-TRIPLE-SPECIALIZE.md)
