@@ -1,0 +1,2 @@
+import PA194PAeqNegativeAtomicCongruence
+#print axioms PA194PAeq.AtomicCongruence.negative_atomic_replace
