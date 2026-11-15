@@ -15,7 +15,8 @@ register 0 decreases by the number of iterations, registers 6 and 8 each grow
 by it, the gap grows by it, and the trailing-block count grows by twice it.
 Open induction in PRA suffices for the source orbit and clocked iteration; no
 additional IΣ₁ model hypothesis is used. This is a model-theoretic Lean
-statement, not yet a native iPRA proof sentence. It is one loop of the source
+statement. The [native iPRA sentence](ACTUAL-PHYSICAL-NATIVE.md) internalizes
+the completed loop. It is one loop of the source
 program, not a full model-uniform simulation and not either direction of the
 PA consistency equivalence.
 
