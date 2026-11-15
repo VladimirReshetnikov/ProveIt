@@ -266,7 +266,9 @@ numerical calculus (the model-level counterpart of
 [`pa194-model-sequent`](pa194-work/pa194-model-sequent/README.md) supplies its sequent layer for
 an abstract calculus in a model of `𝗜𝚺₁`: hypothesis lists and hypothesis sets that are
 elements of the model, with the deduction theorem, cut, the structural rules and
-generalization. Its instance for the numerical calculus and the compiler itself are open.
+generalization. It is instantiated with the numerical calculus (`PA194ModelSequent`), and its
+module `ConPADerivation` reduces the compilation of an internal derivation to one requirement
+on the formula translation per inference rule. No translation is shown to meet them.
 
 [`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation

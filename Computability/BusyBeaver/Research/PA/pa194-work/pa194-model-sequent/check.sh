@@ -25,4 +25,9 @@ done
 '
 if grep -q "sorryAx\|declaration uses" "$out/axioms.log"; then echo "sorry found" >&2; exit 1; fi
 grep -c "depends on axioms" "$out/axioms.log" | grep -qx 14
-echo "pa194-model-sequent: checked"
+echo "pa194-model-sequent: generic modules checked"
+# The instance for the numerical calculus, with every standalone module it imports.
+# Arguments of this script are passed on (for example --out DIR to reuse compiled objects).
+if command -v py >/dev/null 2>&1; then py=py; else py=python3; fi
+"$py" -X utf8 -B "$here/../pa194-model-fairness/check_bridge.py" \
+  --top "$here/PA194ModelSequent.lean" --reports 8 "$@"
