@@ -27,3 +27,9 @@ consistency implication. The retained-overlay same-output source replay is not a
 empty-overlay build. The checker audits all eight displayed theorem reports.
 
 Run `bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check-rel-ext.sh --out DIR` with matching retained prerequisites.
+
+`PA194ModelRelExtSource` defines `relExtRoot` by source-code constructors in an arbitrary model of candidate PRA and IΣ₁. `relExtRoot_quote` proves it is exactly the model-valued quote of Foundation's actual typed `Theory.Eq.relExt Relation.mem`, using the source language equality instance selected in `PA194RelExtTypedTranslation`. Its four universal binders contain negative equality atoms at de Bruijn pairs (0,2) and (1,3), a negative membership atom at (0,1), and a positive membership atom at (2,3), combined in the exact Foundation NNF shape. `relExtRoot_valid` proves the model-valued code satisfies `IsUFormula` for the source language; this includes nonstandard models, although the source axiom itself is a fixed standard formula.
+
+`PA194ModelRelExtBudget` shows that a reserved label `z` at least four successors above `lo` is fresh for the four consecutive labels, and derives the closed target numerical-calculus supplier under that single hypothesis. This does not prove that `formulaReference` on the quoted source code gives the supplier's expression, that the source-proof compiler establishes the bound, or that any arbitrary source axiom or proof is translated. It does not establish either consistency implication. The checker is a retained-overlay same-output replay, not an empty-overlay build; it recompiles sources in this directory and audits five axiom reports.
+
+Run `bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check-rel-ext-source.sh --out DIR` with matching retained prerequisites for the model-valued quote and budget audit.
