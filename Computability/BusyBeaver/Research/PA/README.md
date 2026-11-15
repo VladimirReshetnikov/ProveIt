@@ -76,10 +76,10 @@ for model-valued valid properties under the stated PRA and IΣ₁ assumptions.
 [Internal closure and reopening](pa194-work/pa194-model-axioms/CLOSE.md)
 also preserve proof existence for model-valued closure lengths. The [addition](pa194-work/pa194-model-logic/PAEQ-ADDITION-CODE.md)
 and [multiplication](pa194-work/pa194-model-logic/PAEQ-MULTIPLICATION-CODE.md)
-code graphs establish syntax. A [recursive PAeq term dispatcher](pa194-work/pa194-model-logic/PAEQ-TERM-DISPATCHER.md)
-has [scope preservation](pa194-work/pa194-model-logic/PAEQ-TERM-SCOPE.md) under
-an explicit environment bound, but arithmetic semantics and a proof compiler
-remain open.
+code graphs establish syntax. Recursive PAeq [term](pa194-work/pa194-model-logic/PAEQ-TERM-DISPATCHER.md)
+and [formula](pa194-work/pa194-model-logic/PAEQ-FORMULA-DISPATCHER.md)
+dispatchers have scope preservation under an explicit environment bound;
+arithmetic semantics and a proof compiler remain open.
 A proof-code interpretation of PA and the connection to the physical machine
 remain open. In standard Lean semantics, [the calculus/clock composition](pa194-work/pa194-calculus-clock/README.md)
 proves that either clock reaches 1 exactly when the displayed separate-diagonal
