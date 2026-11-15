@@ -1,0 +1,7 @@
+import PA194ModelEqRefl
+#print axioms PA194ModelLogic.fixedFormulaTranslation_eqRefl_target
+#print axioms PA194ModelLogic.eqRefl_reference_complete
+#print axioms PA194ModelLogic.eqReflRoot_budget_shape
+#print axioms PA194ModelLogic.eqReflRoot_quote
+#print axioms PA194ModelLogic.eqReflRoot_valid
+#print axioms PA194ModelLogic.reference_pos_eq

@@ -1,0 +1,4 @@
+import PA194ModelRelExtRootBound
+#print axioms PA194ModelLogic.fixedFormulaTranslation_relExt_target_rootBound
+#print axioms PA194ModelLogic.fixedFormulaTranslation_relExt_target
+#print axioms PA194ModelLogic.relExtRoot_quote
