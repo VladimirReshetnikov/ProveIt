@@ -1,0 +1,16 @@
+# Blank-tape startup and four encoded-controller steps
+
+`PA194SourceSite29Physical.sourcePhysical` proves, in every PRA model and under the precise physical-tail hypothesis `args 10 = block(1, seedTail)`, that the actual encoded source-controller instruction at site 29 increments logical register 6 and reaches site 30, while the pinned literal machine reaches the corresponding path-30 physical frame in one model-valued finite time. The logical register update matches on both sides, the padding is preserved, the physical suffix gains a second one-valued spare, and the encoded controller's file tail is arbitrary and independent.
+
+`PA194SeedControllerReach30.blankAndFourSteps` composes this theorem with the already checked 58,154-step blank startup and three source/physical transitions. For the startup source-controller state at site 25 with its actual nine logical register values and an arbitrary controller-file tail, four actual controller steps reach the stated site-30 state; there exists a model-valued time taking the physical blank to its matching site-30 frame. This is a finite semantic Lean theorem. It is not a native iPRA sentence, an arbitrary-time source/physical simulation, a scheduler correspondence, or a consistency implication.
+
+The three new sources are `PA194SourceSite29Controller.lean`, `PA194SourceSite29Physical.lean`, and `PA194SeedControllerReach30.lean`. The checker also rebuilds `PA194SourceSite28Physical.lean`, `PA194Site27PositiveThen28.lean`, `PA194Site25Then27Then28.lean`, and `PA194SeedControllerReach29.lean`, and their encoded-controller/site-25/site-27 source suffix, into the same fresh output. Invoke from the repository root:
+
+```
+/dev/shm/pa194-site28-controller/check-seed-controller-reach30.sh "$PWD" /dev/shm/pa194-model-length /dev/shm/pa194-source-controller /dev/shm/pa194-source-physical /dev/shm/pa194-site27-coherent/build /dev/shm/pa194-termgraph /tmp/current14-standard-fresh-build-20261104/lib /tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib /dev/shm/pa194-site28-controller /dev/shm/pa194-site28-work/build-complete /dev/shm/pa194-site28-work/build-finish-return /dev/shm/pa194-site28-work/build-site29-selected-return /dev/shm/pa194-site28-work/build-carry-seven /dev/shm/pa194-site28-work/build-carry-roundtrip /dev/shm/pa194-site28-work/build-carry-codes /dev/shm/pa194-site28-work/build-site29-to-increment /dev/shm/pa194-site28-work/build-site29-return-to-root /dev/shm/pa194-site28-work/build-site29-path30-identities /dev/shm/pa194-site28-work/build-site29-complete
+```
+
+The coherent site-27 baseline, ten disjoint site-28/site-29 physical stages, code-graph overlay, and general foundations are prebuilt. The checker pins selected direct objects and source hashes, rejects overlapping machine-object names, and audits theorem axiom reports for `sorryAx`; these checks do not authenticate the stages' full transitive closure. The site-29 physical completion was separately replayed with exit 0 in `/tmp/pa194-site29-complete-check.log`. The independent combined replay log is `/tmp/pa194-seed-controller-reach30-replay.log`; consult its final PASS and process exit before relying on it.
+
+The repository-source replay also passed using this directory for all four
+source-directory arguments and the same retained overlays.
