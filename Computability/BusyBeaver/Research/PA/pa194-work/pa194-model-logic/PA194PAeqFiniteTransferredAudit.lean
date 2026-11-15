@@ -1,0 +1,8 @@
+import PA194PAeqFiniteTransferred
+#print axioms PA194PAeq.InductionReopen.fixed_provable_to_ordinary
+#print axioms PA194PAeq.InductionReopen.reflexivity_provable
+#print axioms PA194PAeq.InductionReopen.symmetry_provable
+#print axioms PA194PAeq.InductionReopen.transitivity_provable
+#print axioms PA194PAeq.InductionReopen.zeroExt_provable
+#print axioms PA194PAeq.InductionReopen.oneExt_provable
+#print axioms PA194PAeq.InductionReopen.zeroLtOne_provable
