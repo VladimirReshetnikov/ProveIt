@@ -1,0 +1,16 @@
+import PA194ModelOneLevelQF
+#print axioms PA194ModelLogic.primitiveToNeighborhood_target
+#print axioms PA194ModelLogic.equalityNeighborhoodLeftRewrite
+#print axioms PA194ModelLogic.equalityNeighborhoodRightRewrite
+#print axioms PA194ModelLogic.equalityAtom_binderRewrite
+#print axioms PA194ModelLogic.negativeEqualityAtom_binderRewrite
+#print axioms PA194ModelLogic.fullQF_binderRewrite
+#print axioms PA194ModelLogic.fullQF_allAlpha
+#print axioms PA194ModelLogic.fullQF_allNegAlpha
+#print axioms PA194ModelLogic.fullQF_exAlpha
+#print axioms PA194ModelLogic.simRuleAllFresh_allFullQFSeed
+#print axioms PA194ModelLogic.simRuleAllFresh_exFullQFSeed
+#print axioms PA194ModelLogic.oneLevelQF_definable
+#print axioms PA194ModelLogic.oneLevelQFFresh_all_codes
+#print axioms PA194ModelLogic.simRuleAllFresh_oneLevelQFSeed
+#print axioms PA194ModelLogic.oneLevelSafe_implies_oneLevelQF
