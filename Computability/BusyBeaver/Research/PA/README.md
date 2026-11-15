@@ -59,6 +59,7 @@ for each physical position, and the
 [marked decrement](pa194/ipra/machine-code/DECREMENT-SOURCE.md) boxes have
 them for each logical register. The controller and physical-frame transitions have also been connected for selected
 source sites, including a [matched loop through both site-32 branches](pa194/ipra/machine-code/LOOP-AFTER32.md)
+and the [site-38 zero branch](pa194/ipra/machine-code/SITE38-ZERO-PHYSICAL.md)
 in PRA models; a complete reachable-state simulation remains open. Native iPRA
 clocked equalities cover the [physical positive loop](pa194/ipra/machine-code/ACTUAL-PHYSICAL-NATIVE.md),
 [source fetch](pa194/ipra/machine-code/UNIFIED-FETCH-NATIVE.md),
