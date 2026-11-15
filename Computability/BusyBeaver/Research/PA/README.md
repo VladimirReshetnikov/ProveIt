@@ -64,7 +64,10 @@ clocked equalities cover the [physical positive loop](pa194/ipra/machine-code/AC
 [source fetch](pa194/ipra/machine-code/UNIFIED-FETCH-NATIVE.md),
 [decoder](pa194/ipra/machine-code/DECODER-NATIVE.md),
 [tag dispatch](pa194/ipra/machine-code/DISPATCH-TAG-NATIVE.md), and the
-[site-31 physical increment](pa194/ipra/machine-code/SITE31-NATIVE.md). The complete
+[site-31 physical increment](pa194/ipra/machine-code/SITE31-NATIVE.md). A
+[native iPRA equality for the complete site-31 restore loop](pa194/ipra/machine-code/SITE31-RESTORE-ORBIT-NATIVE.md)
+also covers a model-valued number of physical iterations, up to the initial
+value of register 6; the following zero exit is a separate obligation. The complete
 [fetch/decode/dispatch prefix](pa194/ipra/machine-code/SCHEDULER-BRANCHES-OPEN.md)
 is proved model-theoretically under the documented hypotheses. The general
 [compiler](pa194-work/pa194-model-logic/FULL-SEPARATION-THEORY.md)
@@ -77,7 +80,11 @@ for model-valued valid properties under the stated PRA and IΣ₁ assumptions.
 [Internal closure and reopening](pa194-work/pa194-model-axioms/CLOSE.md)
 also preserve proof existence for model-valued closure lengths. The source theory
 [proves ordinal induction for standard typed properties](pa194-work/pa194-model-axioms/STANDARD-ORDINAL.md)
-in each covered model; the nonstandard-property case remains open. The [addition](pa194-work/pa194-model-logic/PAEQ-ADDITION-CODE.md)
+in each covered model; the nonstandard-property case remains open. A fixed
+[universally closed least-point exclusion theorem](pa194-work/pa194-model-axioms/LEAST-EXCLUDES.md)
+has an internal proof in the covered models, and a separate
+[triple-specialization graph](pa194-work/pa194-model-axioms/CONTEXT-TRIPLE-SPECIALIZE.md)
+handles nonstandard indices. The [addition](pa194-work/pa194-model-logic/PAEQ-ADDITION-CODE.md)
 and [multiplication](pa194-work/pa194-model-logic/PAEQ-MULTIPLICATION-CODE.md)
 code graphs establish syntax. Recursive PAeq [term](pa194-work/pa194-model-logic/PAEQ-TERM-DISPATCHER.md)
 and [formula](pa194-work/pa194-model-logic/PAEQ-FORMULA-DISPATCHER.md)
@@ -86,7 +93,9 @@ dispatchers have scope preservation under an explicit environment bound. A
 still assumes the quantifier, shift, and theory-axiom suppliers. The
 [ordinary PAeq theory now has a uniform classifier](pa194-work/pa194-model-logic/PAEQ-ORDINARY-CLASS.md),
 but its connection to arithmetic PA induction and the unconditional source
-compiler remain open.
+compiler remain open. The [universal term replacement theorem](pa194-work/pa194-model-logic/PAEQ-UNIVERSAL-TERM-CONGRUENCE.md)
+supplies modeled PAeq proof existence for arbitrary internally valid arity-one
+terms, including nonstandard codes; arbitrary formula replacement is still open.
 A proof-code interpretation of PA and the connection to the physical machine
 remain open. In standard Lean semantics, [the calculus/clock composition](pa194-work/pa194-calculus-clock/README.md)
 proves that either clock reaches 1 exactly when the displayed separate-diagonal
