@@ -1,0 +1,6 @@
+import PA194PAeqOneBinderCongruence
+#print axioms PA194PAeq.OpenSubstitution.open_subst
+#print axioms PA194PAeqOneBinderCongruence.shift_equality
+#print axioms PA194PAeqOneBinderCongruence.opened_qf_replace
+#print axioms PA194PAeqOneBinderCongruence.all_qf_replace
+#print axioms PA194PAeqOneBinderCongruence.exs_qf_replace
