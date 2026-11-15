@@ -9,3 +9,5 @@ Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-axioms/check-interna
 ```
 
 Choose a fresh output for another run.
+
+The source has since been strengthened with a uniform conclusion proof-code graph. The checker above now runs the [stronger audit](ORDINAL-CONCLUSION-UNIFORM.md).
