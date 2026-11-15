@@ -1,0 +1,7 @@
+# PA194 sequent truth and weakening
+
+`verumIntro_sseq` handles Foundation's truth-introduction leaf: in every candidate-PRA/IΣ₁ model, for arbitrary environment and any possibly nonstandard internal finite source set containing the actual source truth code `^⊤`, the numerical sequent of negated fixed translations proves target contradiction code 1. It computes the fixed translation to target code 0 and derives that code from target row 8.
+
+`weakening_sseq` transfers the concrete target contradiction sequent from any model-valued finite source set to a superset at the same environment, using the upstream nonstandard `sseq_mono` theorem. `complementary_sseq` derives the target contradiction sequent for any source set containing p and q, under the explicit extra premise that the two negated translations are target-provably incompatible. This is only the conditional shape of Foundation's `axL`: the essential theorem that translation of an arbitrary valid source formula and translation of its coded negation are incompatible remains to be proved; due to the source NNF representation it requires target-provable equivalence and does not generally hold as syntactic equality. The other source-rule simulations and induction over derivations remain open. The retained-overlay same-output checker recompiles local sources and audits six reports; it is not an empty-overlay build.
+
+Run `bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check-sequent-truth.sh --out DIR` with matching retained prerequisites.
