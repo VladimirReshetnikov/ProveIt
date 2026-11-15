@@ -12,9 +12,9 @@ a candidate-PRA model `M` whose arithmetic reduct satisfies `𝗜𝚺₁`.
 
 **Status.** The implication basis, finite-context machinery, and fixed-size neighborhood
 equality derivations are checked. They contain no induction inside the model. The compiler
-itself, which needs
-internal inductions over a derivation, over formula codes and over sequents of nonstandard
-length, is not started. Nothing here yields a consistency implication.
+itself remains incomplete: it needs internal inductions over derivations, formula codes and
+sequents of nonstandard length, as well as the remaining rule simulations and axiom
+suppliers. Nothing here yields a consistency implication.
 
 ## Modules
 
@@ -71,3 +71,16 @@ In an arbitrary candidate-PRA + IΣ₁ model, `sigmaFunction_boundedRange` prove
 These results provide the structural and environment-bound ingredients for a concrete compiler admission. No complete compiler or consistency implication follows here: general target logical and source-theory axiom simulation fields remain to be proved. In particular the finite equality-theory supplier does not supply all PA axioms.
 
 Run `bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check-seed-admission.sh --out DIR` with matching retained prerequisites.
+## Compiler admission bundle
+
+`SeedCompilerAdmission bound reserve` packages the seven structural admission
+inheritance obligations used by the `CutValidity.Sim` compiler, including a
+single bound on admitted environment codes. `seedCompilerAdmission_exists`
+constructs the bundle for arbitrary model-valued parameters. The seed
+admission predicate is Π₁-definable, and `seedAdmission_initial` gives an
+explicit starting seed for a suitable reserve.
+
+This bundle is not a `Sim` instance or a consistency implication. The
+remaining obligations include quantified and substitution rule simulations
+and suppliers for the non-equality PA axioms.
+

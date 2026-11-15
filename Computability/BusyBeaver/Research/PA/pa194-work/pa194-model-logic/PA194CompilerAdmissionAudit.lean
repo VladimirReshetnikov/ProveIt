@@ -1,0 +1,5 @@
+import PA194ModelSeedCompilerAdmission
+#print axioms PA194ModelLogic.seedAdmission_definable
+#print axioms PA194ModelLogic.seedAdmission_initial
+#print axioms PA194ModelLogic.seedAdmission_uniformBound
+#print axioms PA194ModelLogic.seedCompilerAdmission_exists
