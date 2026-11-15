@@ -1,0 +1,5 @@
+import PA194ForwardFixedAxiom
+#print axioms PA194ForwardTyped.fixedList_class
+#print axioms PA194ForwardTyped.fixedTheory_class
+#print axioms PA194ForwardTyped.root_fixed_supplier
+#print axioms PA194ForwardTyped.root_theoryAxiom_of_fixed_and_induction
