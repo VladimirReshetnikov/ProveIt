@@ -149,3 +149,12 @@ module alone against the same checked staged dependencies:
 ```sh
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-leibniz.sh "$PWD" NEW_EMPTY_OUTPUT
 ```
+
+A separate incremental repository-source replay of `PA194TermNames` against the
+checked calculus and Leibniz objects passed with four axiom reports and no
+`sorryAx`. Earlier source, dispatcher and other dependencies were prebuilt; this
+is not a full transitive rebuild. Reproduce with a fresh output directory:
+
+```sh
+bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-term-names.sh "$PWD" NEW_EMPTY_OUTPUT
+```
