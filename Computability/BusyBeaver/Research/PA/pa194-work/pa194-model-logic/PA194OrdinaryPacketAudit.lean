@@ -1,0 +1,5 @@
+import PA194OrdinaryAxiomPacketBridge
+#print axioms PA194ClosedEnvironment.ordinaryAxiom_shift
+#print axioms PA194ClosedEnvironment.ordinaryAxiom_root_packet
+#print axioms PA194ClosedEnvironment.ordinaryAxiom_packet_of_root
+#print axioms PA194ClosedEnvironment.ordinaryAxiom_packet_of_root_supply
