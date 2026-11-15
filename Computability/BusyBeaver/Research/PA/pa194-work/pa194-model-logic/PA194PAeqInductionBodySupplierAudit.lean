@@ -1,0 +1,13 @@
+import PA194PAeqInductionBodySupplier
+#print axioms PA194PAeq.OpeningQVec.sourceQVec_trace_entries
+#print axioms PA194PAeq.OpeningQVec.opening_bindTerm
+#print axioms PA194PAeq.OpeningQVec.opening_bindTermVec
+#print axioms PA194PAeq.OpeningQVec.opening_bind_positiveAtom
+#print axioms PA194PAeq.OpeningQVec.opening_bind_negativeAtom
+#print axioms PA194PAeq.OpeningQVec.bindFormula_scope_open
+#print axioms PA194PAeq.InductionReopen.openingInverse
+#print axioms PA194PAeq.InductionReopen.reopen
+#print axioms PA194PAeq.InductionReopen.reopen_iterated
+#print axioms PA194PAeq.InductionReopen.primitiveBody_unconditional
+#print axioms PA194PAeq.InductionReopen.addOneBody_unconditional
+#print axioms PA194PAeq.InductionReopen.arithmeticInductionBody_unconditional
