@@ -1,0 +1,7 @@
+The fixed PAeq reflexivity, zero-not-successor, and addition-zero cases are now all supplied in the PAeq-to-source compiler's source-axiom obligations. `remainingFixedAfterAddZero` is the remaining fixed-sentence list, and `remainingFixedAfterAddZero_length` checks that it has exactly nine entries. `fixed_typed_supplier_of_nine` derives singleton source proofs for all twelve fixed typed translations from proofs for those nine, using the independently checked actual source certificates. `root_theoryAxiom_of_nine_and_induction` obtains the full theory-axiom sequent field at `rootParameters d`, assuming the nine remaining fixed proofs and the arbitrary model-valued translated induction supplier. This holds in candidate PRA models with IΣ₁ arithmetic reduct. The remaining assumptions, the all/exs/shift compiler rules, physical synchronization and requested equivalence remain open.
+
+The audit rebuilds the new reduction and a four-report audit against the independently replayed addition-zero source/root certificate, the repository-replayed ten-case reduction, unified dispatcher and quotation chain, plus retained source, Foundation and workspace dependencies. It is not a clean workspace build. All four reports exclude `sorryAx`. From the repository root with a fresh output:
+
+```sh
+bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check-forward-fixed-nine.sh "$PWD" NEW_EMPTY_OUTPUT
+```

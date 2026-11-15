@@ -1,0 +1,5 @@
+import PA194ForwardFixedNine
+#print axioms PA194ForwardReflProof.remainingFixedAfterAddZero_length
+#print axioms PA194ForwardReflProof.remainingFixedAfterZero_split
+#print axioms PA194ForwardReflProof.fixed_typed_supplier_of_nine
+#print axioms PA194ForwardReflProof.root_theoryAxiom_of_nine_and_induction
