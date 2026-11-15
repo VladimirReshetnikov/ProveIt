@@ -100,3 +100,13 @@ objects of the standalone modules they import (the import closure of
 `PA194ConditionalRefutation` and `PA194OrderIsoRew`, compiled from the repository sources at
 `34c4c35edc`). The twenty axiom reports are `[propext, Classical.choice, Quot.sound]`. The
 script itself has not been run.
+
+An incremental repository-source replay of all four modules also passed after the
+shared PairGraph syntax change. It rebuilt `PA194ConditionalRefutation` and the
+four guarded modules, reported all twenty expected axiom audits, and found no
+`sorryAx`. The dispatcher, sequent, Foundation and other listed overlays were
+prebuilt, so this is not a clean transitive build. From the repository root:
+
+```sh
+bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-incremental.sh "$PWD" NEW_EMPTY_OUTPUT
+```
