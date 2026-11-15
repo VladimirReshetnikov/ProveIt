@@ -1,0 +1,4 @@
+import PA194ModelAllShiftGeneral
+#print axioms PA194ModelLogic.shift_translation_sameBase
+#print axioms PA194ModelLogic.simRuleAllShift_generalRanked
+#print axioms PA194ModelLogic.simRuleAllShift_generalSeed

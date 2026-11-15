@@ -1,0 +1,2 @@
+import PA194ModelShiftActualDerivation
+#print axioms PA194ModelLogic.simRuleShift_generalSeed_derivation

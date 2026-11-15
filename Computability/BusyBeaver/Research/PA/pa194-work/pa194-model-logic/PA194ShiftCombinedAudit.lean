@@ -1,0 +1,14 @@
+import PA194GeneralShiftAudit
+import PA194ReverseCombinedAudit
+import PA194ShiftInterfaceAudit
+#print axioms PA194ModelLogic.shift_translation_sameBase
+#print axioms PA194ModelLogic.simRuleAllShift_generalRanked
+#print axioms PA194ModelLogic.simRuleAllShift_generalSeed
+#print axioms PA194ModelLogic.shiftRule_generalBaseSlack
+#print axioms PA194ModelLogic.simRuleShift_generalSeed_valid
+#print axioms PA194ModelLogic.simRuleShift_generalSeed_set
+#print axioms PA194ModelLogic.simRuleShift_generalSeed_derivation
+#print axioms ConPA.Sequent.ShiftValidity.Sim.ofCutValidity
+#print axioms ConPA.Sequent.ShiftValidity.Sim.compile
+#print axioms ConPA.Sequent.ShiftValidity.Sim.proof
+#print axioms PA194ModelLogic.simRuleShift_generalSeed_derivation

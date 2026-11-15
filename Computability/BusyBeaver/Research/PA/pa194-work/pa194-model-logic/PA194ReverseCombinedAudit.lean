@@ -1,0 +1,6 @@
+import PA194ReverseShiftAudit
+import PA194ReverseDerivationAudit
+#print axioms PA194ModelLogic.shiftRule_generalBaseSlack
+#print axioms PA194ModelLogic.simRuleShift_generalSeed_valid
+#print axioms PA194ModelLogic.simRuleShift_generalSeed_set
+#print axioms PA194ModelLogic.simRuleShift_generalSeed_derivation

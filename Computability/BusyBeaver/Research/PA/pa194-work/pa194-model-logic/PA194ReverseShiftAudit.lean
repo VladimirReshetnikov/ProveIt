@@ -1,0 +1,4 @@
+import PA194ModelShiftGeneralReverse
+#print axioms PA194ModelLogic.shiftRule_generalBaseSlack
+#print axioms PA194ModelLogic.simRuleShift_generalSeed_valid
+#print axioms PA194ModelLogic.simRuleShift_generalSeed_set
