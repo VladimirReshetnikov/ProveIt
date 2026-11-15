@@ -342,6 +342,16 @@ scheme is done instance by instance: the translation of the instance for an inte
 of arity one, possibly nonstandard and with free variables, is target-provable. A source
 theory containing the instances is open, because instances with parameters have to be
 axioms in universally closed form.
+[`pa194-guarded-compiler`](pa194-work/pa194-guarded-compiler/README.md) is about the
+compiler from `ordinaryPAeq` derivations to the relational source theory. Its README argues
+that the invariant of `conditional_compile` at `rootParameters` (the source theory derives
+the translated sequent) fails for derivable sequents with free variables, so the four open
+suppliers cannot all be proved in that form. The directory uses an invariant with the guards
+`¬Dom(&i)` and a packet that keeps free variables distinct, proves the propositional rules,
+cut, the shift rule, the universal rule and the existential rule for a variable witness for
+it, and removes the guards at the root of a refutation. The existential rule for a function
+term as witness, the translated theory axioms and the inhabitation of the domain in the
+actual source theory are still hypotheses there, so `OrdinaryCompiler` is not proved.
 
 [`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
