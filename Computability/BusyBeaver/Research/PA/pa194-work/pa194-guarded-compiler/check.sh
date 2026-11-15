@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Compile the modules of this directory with every standalone module they import, one lean
 # process at a time. Arguments are passed on to check_bridge.py (for example --out DIR to
-# reuse compiled objects). The last module imports the other three.
+# reuse compiled objects). Each module imports the ones before it.
 set -euo pipefail
 here=$(cd "$(dirname "$0")" && pwd)
 if command -v py >/dev/null 2>&1; then py=py; else py=python3; fi
