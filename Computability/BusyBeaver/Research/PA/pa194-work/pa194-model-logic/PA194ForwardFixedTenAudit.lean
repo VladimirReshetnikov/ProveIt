@@ -1,0 +1,5 @@
+import PA194ForwardFixedTen
+#print axioms PA194ForwardReflProof.remainingFixedAfterZero_length
+#print axioms PA194ForwardReflProof.remainingFixed_split
+#print axioms PA194ForwardReflProof.fixed_typed_supplier_of_ten
+#print axioms PA194ForwardReflProof.root_theoryAxiom_of_ten_and_induction
