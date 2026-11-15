@@ -1,0 +1,4 @@
+import PA194ModelQFFree
+
+#print axioms PA194ModelLogic.quantifierFree_freeBridge
+#print axioms PA194ModelLogic.simRuleAll_quantifierFree
