@@ -1,0 +1,3 @@
+import PA194GuardedInterpretationAxiomsFour
+#print axioms PA194GuardedAxiomReductionFour.packet_axiom_supplier_of_four_and_induction
+#print axioms PA194GuardedInterpretationAxiomsFour.interpretation_axioms_of_four_and_induction
