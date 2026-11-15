@@ -1,0 +1,7 @@
+import PA194CompositionProofSource
+#print axioms PA194CompositionClosedTemplate.compositionSeparation_fvSup
+#print axioms PA194CompositionClosedTemplate.compositionSeparation_closure
+#print axioms PA194CompositionClosedTemplate.compositionClosedAt
+#print axioms PA194CompositionContext.compositionDerivation
+#print axioms PA194CompositionSource.closedCompositionSeparationProof
+#print axioms PA194CompositionSymmetrySource.compositionSourceProof
