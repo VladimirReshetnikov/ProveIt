@@ -65,9 +65,11 @@ clocked equalities cover the [physical positive loop](pa194/ipra/machine-code/AC
 [tag dispatch](pa194/ipra/machine-code/DISPATCH-TAG-NATIVE.md). The complete
 [fetch/decode/dispatch prefix](pa194/ipra/machine-code/SCHEDULER-BRANCHES-OPEN.md)
 is proved model-theoretically under the documented hypotheses. The general
-[seeded freshness compiler rule](pa194-work/pa194-model-logic/GENERAL-FRESHNESS.md)
-has been verified in models of PRA plus IΣ₁; it is one field, not a complete
-compiler or a native iPRA consistency proof. In standard Lean semantics, [the calculus/clock composition](pa194-work/pa194-calculus-clock/README.md)
+[compiler](pa194-work/pa194-model-logic/COMPILED-HALT.md) translates
+refutations of the finite equality-plus-weak-adjunction theory into modeled
+scheduler halting in PRA + IΣ₁ models; its generic version assumes a target
+axiom supplier. PA calibration and the connection to the physical machine
+remain open. In standard Lean semantics, [the calculus/clock composition](pa194-work/pa194-calculus-clock/README.md)
 proves that either clock reaches 1 exactly when the displayed separate-diagonal
 numerical calculus has a finite derivation of contradiction. Its calibration
 to PA and its internalization in iPRA remain open, as do both machine-specific
