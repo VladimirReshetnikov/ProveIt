@@ -1,0 +1,62 @@
+import PA194SourceSite46Physical
+import PA194Site46Complete
+import PA194SourceSite46Controller
+set_option autoImplicit false
+set_option maxRecDepth 10000
+set_option maxHeartbeats 1200000
+namespace PA194Site46ClockExact
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency PRAFiniteFunctionCodes PRALanguage PRATheory PRAAddOne PRAHistoryPairCode
+open TableDispatch PA194SourceControllerCode PA194SourceSite31Controller PA194SourceSite31Physical
+section models
+variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M] [M↓[language] ⊧* PRA]
+local notation "F" => Structure.func (L := language) (M := M)
+local instance : Zero M := ⟨F (Code.zero 0) Fin.elim0⟩
+local instance : One M := ⟨F oneCode Fin.elim0⟩
+local instance : Add M := ⟨fun x y => F addCode ![x,y]⟩
+local instance : Mul M := ⟨fun x y => F mulCode ![x,y]⟩
+local instance : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
+
+noncomputable def clock (k count : M) (args : Fin 11 → M) : M :=
+  let e := PA194RegisterPermutation.physicalArgs args
+  let selected := PA194Site46MarkedFile.selectedArgs args
+  let vec := PA194Site46MarkedFile.prefixArgs args
+  let a := F (PA194CarryFile.costCode 4) vec
+  let b := F (PA194CarryFile.costCode 5) (fun i => selected i.succ)
+  let front := (((1 : M)+1)+selected 0)+b
+  let t0 := modelNumeral M 23
+  let t1 := ((1 : M)+k+modelNumeral M 3)+t0
+  let t2 := ((modelNumeral M 2+1)+k+1)+t1
+  let t3 := modelNumeral M 2+t2
+  let t4 := ((k+1)+1)+t3
+  let t5 := a+t4
+  let t6 := (((selected 0+1)+1)+1)+t5
+  let t7 := b+t6
+  let t8 := ((count+count)+count)+t7
+  let t9 := modelNumeral M 2+t8
+  let t10 := modelNumeral M 3+t9
+  let t11 := ((count+count)+count)+t10
+  let t12 := (1 : M)+t11
+  let t13 := front+t12
+  let t14 := a+t13
+  let t15 := (k+1)+t14
+  let t16 := modelNumeral M 9+t15
+  let t17 := modelNumeral M 24+t16
+  let t18 := (((k+1)+1)+1)+t17
+  let t19 := PA194Site46SecondTo17.fourCost args+t18
+  let t20 := modelNumeral M 3+t19
+  PA194Site46SecondTo17.clock14 k args+t20
+
+theorem exactClock (k count : M) (args : Fin 11 → M)
+    (he : PA194RegisterPermutation.physicalArgs args 10 = F PA194OneSpareReturn.repeatOutput ![count,(0 : M)]) :
+    F PA194Stepper.stepper ![clock k count args,physicalFrame 46 ((k+1)+1) args] =
+      physicalFrame 47 ((k+1)+1) (PA194Site46OutputFile.updated args count) := by
+  have h := (PA194SourceSite46Physical.sourcePhysical k count (0 : M) args he).2
+  dsimp only [PA194Site46To7Increment.runTo2] at h
+  repeat' rw [←PA194StepperCompose.modelStepperCompose] at h
+  change F PA194Stepper.stepper ![clock k count args,physicalFrame 46 ((k+1)+1) args] = _ at h
+  exact h
+#print axioms exactClock
+end models
+end PA194Site46ClockExact
