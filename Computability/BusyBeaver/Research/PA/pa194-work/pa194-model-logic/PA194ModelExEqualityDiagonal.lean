@@ -464,6 +464,30 @@ theorem simRuleExs_negativeEqualityCode_of_eqVacuity (e s v t d : M)
     · exact simRuleExs_negativeEqualityBoundRight_of_eqVacuity e s i j d hs hm ha heq
     · exact simRuleExs_negativeFvars e s (0 : M) i k (^&j) d hs hm (by simp) relExt_relation_zero ha
 
+/-- The equality field when the reserved label is the numeric equality code. -/
+theorem simRuleExs_equalityCode_atDiagonal (e s v t d : M)
+    (hs : IsFormulaSet SourceL s) (hm : (^∃ (^rel (2 : M) (0 : M) v)) ∈ s)
+    (ht : IsTerm SourceL t) (ha : RankedAdmission e d)
+    (hreserve : simReserve e = eqValue (F termLabelCode ![t,simBound e,simFree e]) (simBase e)) :
+    numericalQuant.Pr (numericalQuant.imp
+      (numericalQuant.imp (numericalTranslation.tr e (substs1 SourceL t (^rel (2 : M) (0 : M) v))) 1)
+      (numericalQuant.imp (numericalTranslation.tr e (^∃ (^rel (2 : M) (0 : M) v))) 1)) := by
+  apply simRuleExs_equalityCode_of_eqVacuity e s v t d hs hm ht ha
+  rw [hreserve]
+  exact diagonal_provable _
+
+/-- The equality field when the reserved label is the numeric equality code. -/
+theorem simRuleExs_negativeEqualityCode_atDiagonal (e s v t d : M)
+    (hs : IsFormulaSet SourceL s) (hm : (^∃ (^nrel (2 : M) (0 : M) v)) ∈ s)
+    (ht : IsTerm SourceL t) (ha : RankedAdmission e d)
+    (hreserve : simReserve e = eqValue (F termLabelCode ![t,simBound e,simFree e]) (simBase e)) :
+    numericalQuant.Pr (numericalQuant.imp
+      (numericalQuant.imp (numericalTranslation.tr e (substs1 SourceL t (^nrel (2 : M) (0 : M) v))) 1)
+      (numericalQuant.imp (numericalTranslation.tr e (^∃ (^nrel (2 : M) (0 : M) v))) 1)) := by
+  apply simRuleExs_negativeEqualityCode_of_eqVacuity e s v t d hs hm ht ha
+  rw [hreserve]
+  exact diagonal_provable _
+
 #print axioms targetEq_to_neighborhood_of_vacuity
 #print axioms targetExistsNeighborhoodLeft_of_eqVacuity
 #print axioms targetExistsNegNeighborhoodLeft_of_eqVacuity
@@ -475,6 +499,8 @@ theorem simRuleExs_negativeEqualityCode_of_eqVacuity (e s v t d : M)
 #print axioms simRuleExs_negativeEqualityBoundRight_of_eqVacuity
 #print axioms simRuleExs_equalityCode_of_eqVacuity
 #print axioms simRuleExs_negativeEqualityCode_of_eqVacuity
+#print axioms simRuleExs_equalityCode_atDiagonal
+#print axioms simRuleExs_negativeEqualityCode_atDiagonal
 #print axioms targetExists_of_bodyTheorem
 #print axioms substs1_equalityBoundDiagonal
 #print axioms substs1_negativeEqualityBoundDiagonal

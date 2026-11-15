@@ -1,0 +1,5 @@
+import PA194ModelExAtomUnified
+#print axioms PA194ModelLogic.simRuleExs_equalityCode_atDiagonal
+#print axioms PA194ModelLogic.simRuleExs_negativeEqualityCode_atDiagonal
+#print axioms PA194ModelLogic.simRuleExs_positiveAtomCode
+#print axioms PA194ModelLogic.simRuleExs_negativeAtomCode
