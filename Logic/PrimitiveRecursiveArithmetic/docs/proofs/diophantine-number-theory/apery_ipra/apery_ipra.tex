@@ -1,0 +1,1176 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor}
+\usepackage{listings,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Apery's theorem in intuitionistic primitive recursive arithmetic},pdfauthor={Prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Ap\'ery's theorem in iPRA}\fancyhead[R]{\small A finite rational proof}\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\setlist{nosep,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}\newcommand{\Q}{\mathbb Q}
+\newcommand{\ipra}{\mathrm{iPRA}}\newcommand{\lc}{\operatorname{lcm}}
+\newcommand{\abs}[1]{\left|#1\right|}\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\HH}[2]{H_{#1}^{(#2)}}
+\newcommand{\code}[1]{{\small\texttt{#1}}}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,frame=single,rulecolor=\color{black!20},showstringspaces=false}
+\title{\textbf{Ap\'ery's theorem in intuitionistic\break primitive recursive arithmetic}\\[5pt]
+\large A fully finite rational separation argument\\and a Lean formalization blueprint}
+\author{Prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a constructive arithmetic proof that $\zeta(3)$ is irrational.
+Its actual conclusion is stronger and contains no real numbers or infinite sums:
+for every integer $p$ and positive integer $q$, a primitive-recursively specified
+finite rational interval containing the partial sums of $\sum j^{-3}$ separates
+from $p/q$ by an explicitly specified positive amount.
+The proof combines the classical Nesterenko--Zudilin rational function with
+an algebraic partial-fraction functional, an exact Wronskian, and the elementary
+sparse-index bound $\lc(1,\ldots,42^k)^3\le28^{42^k}$.
+All estimates are rational. Every apparent limiting step is replaced by a finite
+calculation with explicit auxiliary indices and a decidable rational comparison.
+We identify the quantifier-free inductions needed in iPRA and give executable
+Lean definitions and a module-by-module plan for constructing an object-language
+derivation in ProveIt's ConciseIPRA calculus.
+The mathematical argument is developed here; the accompanying Lean files are
+uncompiled specifications, not a completed formal proof.
+\end{abstract}
+
+\section*{Deliverable and verification status}
+\addcontentsline{toc}{section}{Deliverable and verification status}
+\begin{center}
+\begin{tabular}{p{.26\linewidth}p{.65\linewidth}}
+\toprule
+Component & Status and exact scope\\\midrule
+Mathematical proof & Complete finite rational argument, including the recurrence,
+denominator bound, positivity, separation, and induction audit.\\
+Exact computation & The supplied Python verifier checks the fixed polynomial
+certificate symbolically and checks representative finite identities with
+integer and rational arithmetic. These checks supplement the proof.\\
+Lean artifacts & Definitions, finite theorem specification, an interface to the
+actual ConciseIPRA object theory, and an explicit implementation roadmap.
+No claim that the new files have been compiled or that the final internal
+derivation has been constructed.\\
+Repository dependency & Interfaces inspected at ProveIt commit
+\texttt{d72c8b24637e}.
+No result in an unverified draft is used as a proved theorem.\\
+\bottomrule
+\end{tabular}
+\end{center}
+\newpage
+\tableofcontents
+\newpage
+
+\section{The exact arithmetic theorem}
+Write
+\begin{equation}\label{eq:partials}
+ Z_M=\sum_{j=1}^{M}\frac1{j^3},\qquad
+ a_n=\sum_{k=0}^{n}\binom nk^2\binom{n+k}{k}^2.
+\end{equation}
+Empty sums have value zero. For $q\ge1$, define the following natural numbers:
+\begin{equation}\label{eq:modulus}
+ n(q)=42^{q+1},\qquad
+ h(q)=(n(q)+1)^3a_{n(q)+1},\qquad
+ N(q)=a_{n(q)}h(q).
+\end{equation}
+Each definition uses only primitive recursion, finite sums, multiplication,
+and integer powers. In particular $N(q)$ is a specified function, not the
+outcome of an unbounded search.
+
+\begin{theorem}[Finite Ap\'ery separation]\label{thm:main}
+For every $p\in\Z$ and $q\in\N$ with $q\ge1$, put $N=N(q)$. Then
+\begin{equation}\label{eq:main}
+ \boxed{\quad
+ \frac pq+\frac1N<Z_N
+ \quad\lor\quad
+ Z_N+\frac1{2N^2}+\frac1N<\frac pq.
+ \quad}
+\end{equation}
+After signed integers and rational inequalities are coded by natural numbers,
+this is a theorem of intuitionistic primitive recursive arithmetic.
+\end{theorem}
+
+The interval $[Z_N,Z_N+1/(2N^2)]$ contains $Z_M$ for every $M\ge N$;
+this is proved by a finite telescoping inequality in Section~\ref{sec:finite}.
+Thus the theorem gives a direction and a positive rational margin separating
+$p/q$ from the entire interval. In any usual interpretation of the rational
+sequence as the real number $\zeta(3)$, it gives
+\begin{equation}\label{eq:apartness}
+ \abs{\zeta(3)-\frac pq}>\frac1{N(q)}.
+\end{equation}
+The huge modulus is chosen for a short proof, not for numerical efficiency or
+an optimized irrationality measure. The finite theorem, rather than the real
+notation in \eqref{eq:apartness}, is the internal iPRA statement.
+
+\subsection{Proof strategy and attribution}
+We construct $b_n\in\Q$ such that $d_n^3b_n\in\Z$, where
+$d_n=\lc(1,\ldots,n)$ and $d_0=1$. An exact recurrence gives a positive
+Wronskian. A coarse finite estimate identifies the resulting approximants
+with the sequence $Z_M$. This yields
+\[
+ \frac6{(n+1)^3a_{n+1}}-\frac{a_n}{2M^2}
+ \le a_nZ_M-b_n\le\frac1{4a_n}\qquad(n\ge48).
+\]
+The separate bound $d_{42^k}^3\le28^{42^k}$ lets us choose $n=n(q)$ with
+$qd_n^3/a_n<1/8$. A decidable comparison of one integer with zero then proves
+the disjunction.
+
+The rational function and its telescoper are classical and are recorded in
+Zudilin's elementary proof \cite{Zudilin}, following Nesterenko's approach.
+The Egyptian-fraction and multinomial idea behind the denominator estimate
+is due to Hanson \cite{Hanson}. We prove the precise weaker sparse-index bound
+needed here directly. Our presentation supplies the finite formal-functional
+recurrence argument, the explicit rational squeeze, and the iPRA separation
+certificate. It does not claim discovery of Ap\'ery's theorem or of its
+classical approximation sequences.
+
+\section{Foundations and allowed reasoning}\label{sec:foundations}
+We use the standard first-order formulation of iPRA. Its variables range over
+natural numbers. There is a function symbol for each primitive recursive
+function, with its defining equations for zero, successor, projections,
+composition and primitive recursion. There are the usual equality rules,
+successor injectivity, and $Sx\ne0$. Logic is intuitionistic first-order logic.
+Induction is restricted to quantifier-free formulas, with parameters:
+\[
+ A(0),\qquad A(x)\longrightarrow A(x+1)
+ \quad\Longrightarrow\quad A(t).
+\]
+These ingredients are precisely the object-theory interface used by the
+ConciseIPRA files discussed in Section~\ref{sec:lean}.
+
+Integers may be represented by pairs $(u,v)$ for $u-v$. Rationals are pairs
+of a signed numerator and a positive denominator. Equality and order are
+defined by cross multiplication; reduction to lowest terms is unnecessary.
+After moving denominator signs into numerators, rational expressions in
+this paper have explicitly positive denominators at the point where order
+comparisons are made. Thus every rational inequality
+can be replaced by a quantifier-free relation on natural numbers.
+
+Finite sums and products are primitive recursive. So are factorials,
+binomial coefficients, natural division, remainders, bounded primality tests,
+gcd, and lcm. For example, gcd can be found by a scan of $0,\ldots,u+v$;
+positive lcm can then be computed by a bounded quotient of $uv$ by the gcd.
+No complexity restriction on running time is imposed by iPRA.
+
+Bounded universal claims can be replaced by primitive recursive Boolean
+folds. For instance, ``$P(i)$ for all $i\le r$'', when $P$ is a decidable
+arithmetic predicate, is the equation
+$\prod_{i=0}^{r}\chi_P(i)=1$. Its usual induction proof becomes an induction
+on this quantifier-free equation. This convention also permits finite
+arrays, coefficient lists and bounded course-of-values arguments. It does
+not license induction on an arbitrary formula containing unbounded
+quantifiers.
+
+Every case split below is on natural, integer or rational order, equality,
+or a bounded test. These predicates have primitive recursive decision
+functions. No instance of excluded middle for an arbitrary proposition,
+Markov's principle, countable choice, real completeness, or an unbounded
+least-number principle is used.
+
+\section{Finite coefficients and their denominators}\label{sec:coeff}
+For $0\le k\le n$ and $s\in\{2,3\}$, put
+\[
+ c_{n,k}=(-1)^{n-k}\binom nk\binom{n+k}{k},\qquad
+ \HH{k}{s}=\sum_{j=1}^{k}\frac1{j^s}.
+\]
+The signed coefficients $c_{n,k}$ are integers. Define
+\begin{align}
+ a_n&=\sum_{k=0}^{n}c_{n,k}^2,\label{eq:a}\\
+ b_n&=\sum_{k=0}^{n}c_{n,k}^2\HH{k}{3}
+ +\sum_{0\le k<l\le n}\frac{c_{n,k}c_{n,l}}{l-k}
+       \bigl(\HH{k}{2}-\HH{l}{2}\bigr).\label{eq:b}
+\end{align}
+Formula \eqref{eq:a} agrees with \eqref{eq:partials}. These definitions,
+including all denominators, are finite.
+
+\begin{lemma}[Integrality and initial values]\label{lem:integrality}
+For every $n\ge0$, $a_n$ is a positive integer and $d_n^3b_n\in\Z$.
+Moreover
+\[
+ a_0=1,\quad a_1=5,\quad b_0=0,\quad b_1=6.
+\]
+\end{lemma}
+\begin{proof}
+The $k=0$ summand of $a_n$ is $1$. For the first sum in $b_n$, every
+denominator is $j^3$ with $1\le j\le n$, so it divides $d_n^3$.
+For the second sum, each expanded denominator is $(l-k)j^2$ with
+$1\le l-k\le n$ and $1\le j\le n$. Both $l-k$ and $j$ divide $d_n$;
+explicitly
+\[
+ \frac{d_n^3}{(l-k)j^2}=\frac{d_n}{l-k}\left(\frac{d_n}{j}\right)^2\in\N.
+\]
+Thus integrality holds term by term, before any cancellation.
+At $n=0$ the harmonic sums vanish. At $n=1$ the coefficients are
+$c_{1,0}=-1$, $c_{1,1}=2$, giving $a_1=1+4=5$ and
+$b_1=4+(-2)(0-1)=6$.
+\end{proof}
+
+The denominator proof can alternatively define an integer $B_n=d_n^3b_n$
+directly, replacing each $1/j^3$ by $(d_n/j)^3$ and each
+$1/((l-k)j^2)$ by $(d_n/(l-k))(d_n/j)^2$. This is useful when encoding the
+final integer comparison without a rational-integrality predicate.
+
+\subsection{The rational function and partial fractions}
+Use the formal variable $t$ and define
+\begin{equation}\label{eq:R}
+ Q_n(t)=\frac{\prod_{j=1}^{n}(t-j)}{\prod_{j=0}^{n}(t+j)},\qquad
+ R_n(t)=Q_n(t)^2.
+\end{equation}
+These are finite polynomial fractions over $\Q$. Formal differentiation
+means the usual coefficient rule and quotient rule on these finite objects.
+No analytic differentiability theorem is being invoked.
+
+\begin{lemma}[Partial fractions]\label{lem:partial}
+We have
+\begin{equation}\label{eq:Qpartial}
+ Q_n(t)=\sum_{k=0}^{n}\frac{c_{n,k}}{t+k}.
+\end{equation}
+On putting
+\begin{equation}\label{eq:gamma}
+ \gamma_{n,k}=\sum_{\substack{0\le l\le n\\l\ne k}}
+                  \frac{c_{n,k}c_{n,l}}{l-k},
+\end{equation}
+we obtain
+\begin{equation}\label{eq:Rpartial}
+ R_n(t)=\sum_{k=0}^{n}\left(
+       \frac{c_{n,k}^2}{(t+k)^2}+\frac{2\gamma_{n,k}}{t+k}\right),
+ \qquad\sum_{k=0}^{n}\gamma_{n,k}=0.
+\end{equation}
+Furthermore
+\begin{equation}\label{eq:bgamma}
+ b_n=\sum_{k=0}^{n}c_{n,k}^2\HH{k}{3}
+                   +\sum_{k=0}^{n}\gamma_{n,k}\HH{k}{2}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Multiply \eqref{eq:Qpartial} by $\prod_{j=0}^{n}(t+j)$. Both sides become
+polynomials of degree at most $n$. At $t=-k$, only the $k$th summand on the
+right survives. The coefficient it requires is
+\[
+ \frac{\prod_{j=1}^{n}(-k-j)}{\prod_{0\le j\le n,\,j\ne k}(j-k)}
+ =(-1)^{n-k}\frac{(n+k)!}{k!^2(n-k)!}=c_{n,k}.
+\]
+The difference therefore has $n+1$ distinct roots and degree at most $n$.
+Repeated division by the corresponding linear factors proves it zero.
+This familiar root-count argument uses finite polynomial division only.
+
+Square \eqref{eq:Qpartial} and, for $k<l$, use the directly verified identity
+\[
+ \frac1{(t+k)(t+l)}=
+ \frac1{l-k}\left(\frac1{t+k}-\frac1{t+l}\right).
+\]
+This gives \eqref{eq:Rpartial}. The two terms indexed by $(k,l)$ and
+$(l,k)$ cancel in $\sum_k\gamma_{n,k}$. Pairing the same two terms in
+$\sum_k\gamma_{n,k}\HH{k}{2}$ gives exactly the second sum in
+\eqref{eq:b}, proving \eqref{eq:bgamma}.
+\end{proof}
+
+\section{An exact recurrence without a limit argument}\label{sec:recurrence}
+Let
+\begin{equation}\label{eq:telescoper-def}
+ P_n=(2n+1)(17n^2+17n+5),\quad
+ s_n(t)=4(2n+1)\bigl(-2t^2+t+(2n+1)^2\bigr),\quad
+ V_n(t)=s_n(t)R_n(t).
+\end{equation}
+The following fixed algebraic certificate is the key identity from
+\cite{Zudilin}.
+
+\begin{lemma}[Telescoper]\label{lem:telescoper}
+For $n\ge1$, as an identity of rational functions,
+\begin{equation}\label{eq:telescoper}
+ (n+1)^3R_{n+1}(t)-P_nR_n(t)+n^3R_{n-1}(t)
+       =V_n(t+1)-V_n(t).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The product definitions give the formal quotients
+\[
+ \frac{R_{n+1}(t)}{R_n(t)}=\left(\frac{t-n-1}{t+n+1}\right)^2,
+ \quad
+ \frac{R_{n-1}(t)}{R_n(t)}=\left(\frac{t+n}{t-n}\right)^2,
+\]
+\[
+ \frac{R_n(t+1)}{R_n(t)}=
+ \frac{t^4}{(t-n)^2(t+n+1)^2}.
+\]
+Consequently \eqref{eq:telescoper} reduces to the polynomial identity
+\begin{align}
+ &(n+1)^3(t-n-1)^2(t-n)^2
+  -P_n(t-n)^2(t+n+1)^2 \notag\\[-2pt]
+ &\hspace{24mm}+n^3(t+n)^2(t+n+1)^2\notag\\
+ &\quad=s_n(t+1)t^4-s_n(t)(t-n)^2(t+n+1)^2.\label{eq:polynomial-certificate}
+\end{align}
+Substituting the two polynomials in \eqref{eq:telescoper-def} and expanding
+verifies this identity coefficient by coefficient. It is a single fixed
+polynomial identity in $n,t$, not a pattern inferred from sample values.
+The supplied verifier expands it exactly. Since we work with rational
+functions, intermediate quotients at $t=n$ are never used as numerical
+evaluations; the cleared identity establishes the result everywhere its
+original denominators are nonzero.
+\end{proof}
+
+One must not extract the recurrence for $a_n,b_n$ by assuming that $1$ and
+$\zeta(3)$ are linearly independent: that would assume the conclusion.
+The following finite device avoids that circularity entirely.
+
+\subsection{A formal partial-fraction functional}
+Consider rational functions with constant polynomial part and poles of
+order at most two among $0,-1,\ldots,-r$. Write such a function as
+\[
+ f(t)=c+\sum_{k=0}^{r}\left(\frac{A_k}{(t+k)^2}+\frac{C_k}{t+k}\right).
+\]
+The decomposition is unique. To see this, clear the common denominator.
+Evaluation at each $-k$ first isolates the coefficient of the double pole;
+after those coefficients are zero, cancel one copy of each linear factor
+and evaluate again to isolate the simple-pole coefficients. The constant
+part is then also zero. This proves uniqueness by finite arithmetic.
+
+For two \emph{formal indeterminates} $X,Y$, define
+\begin{equation}\label{eq:Theta}
+ \Theta(f)=\left(\sum_kA_k\right)X+\frac12\left(\sum_kC_k\right)Y
+ -\sum_kA_k\HH{k}{3}-\frac12\sum_kC_k\HH{k}{2}.
+\end{equation}
+This is just a triple of rational coefficients (of $X,Y,1$), so no polynomial
+ring with infinite objects is needed. It is a linear map by uniqueness.
+Equations \eqref{eq:Rpartial} and \eqref{eq:bgamma} give
+\begin{equation}\label{eq:ThetaR}
+ \Theta(R_n)=a_nX-b_n.
+\end{equation}
+
+Shifting a pole from $-k$ to $-(k+1)$ changes $\HH{k}{s}$ by
+$1/(k+1)^s$. The coefficients of $X,Y$ cancel. Thus direct subtraction gives
+\begin{equation}\label{eq:ThetaShift}
+ \Theta(f(t+1)-f(t))
+ =-\sum_k\frac{A_k}{(k+1)^3}-\frac12\sum_k\frac{C_k}{(k+1)^2}
+ =\frac12f'(1).
+\end{equation}
+Here $f'(1)$ is the evaluation of a formal rational derivative.
+
+The function $V_n=s_nR_n$ is in this class: its polynomial part is constant
+because its numerator and denominator have the same degree, and its poles
+remain at most double. Its partial fractions can also be constructed
+explicitly. Write $s_n(t)=\alpha t^2+\beta t+\delta$ and put
+$A_k=c_{n,k}^2$, $C_k=2\gamma_{n,k}$. Multiplication and division of each
+partial-fraction term give
+\[
+ A_k^*=s_n(-k)A_k,\qquad
+ C_k^*=s_n'(-k)A_k+s_n(-k)C_k.
+\]
+The polynomial part is
+\[
+ \alpha t\sum_kC_k+\alpha\sum_kA_k+
+       \sum_kC_k(\beta-\alpha k).
+\]
+Its potential linear term vanishes because $\sum_kC_k=0$; the remainder is
+constant. This explicitly verifies the domain condition for $\Theta$.
+For $n\ge1$, $R_n$ has a factor $(t-1)^2$ and a nonzero denominator at $1$,
+whence $V_n'(1)=0$.
+
+Apply $\Theta$ to \eqref{eq:telescoper}. By
+\eqref{eq:ThetaR}--\eqref{eq:ThetaShift}, the result is a zero formal
+polynomial. Compare its $X$ coefficient and constant coefficient.
+
+\begin{proposition}[Ap\'ery recurrence]\label{prop:recurrence}
+For either sequence $y=a$ or $y=b$, and every $n\ge1$,
+\begin{equation}\label{eq:recurrence}
+ (n+1)^3y_{n+1}=P_ny_n-n^3y_{n-1}.
+\end{equation}
+\end{proposition}
+This derivation used finite coefficient identities throughout. In particular,
+neither $X$ nor $Y$ denotes a zeta value.
+
+\section{Finite sums identify the approximated number}\label{sec:finite}
+We next connect the rational approximants to $Z_M$ without assuming the
+existence of an infinite sum.
+
+\begin{lemma}[Finite zeta tails]\label{lem:zeta-tail}
+For $T\ge M\ge1$,
+\begin{equation}\label{eq:zeta-tail}
+ 0\le Z_T-Z_M\le\frac1{2M^2}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $t\ge2$,
+\[
+ \frac1{t^3}\le\frac12\left(\frac1{(t-1)^2}-\frac1{t^2}\right).
+\]
+After multiplication by $2t^3(t-1)^2$, the difference of the right numerator
+and the left numerator is $3t-2\ge0$. Sum from $t=M+1$ to $T$; the right
+side telescopes to $1/(2M^2)-1/(2T^2)$. Nonnegativity is termwise.
+\end{proof}
+
+For $n\ge1$ and $T\ge n$, put
+\[
+ F_{n,T}=-\frac12\sum_{t=1}^{T}R_n'(t),\qquad
+ E_n=(n+1)^3\,64^n.
+\]
+
+\begin{lemma}[A coarse, uniform finite bound]\label{lem:coarse}
+For $n\ge1$ and $T\ge n$,
+\begin{equation}\label{eq:coarse}
+ \abs{a_nZ_T-b_n}\le3+\frac{E_n}{T^2}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+If $1\le t\le n$, the zero of $R_n$ at $t$ is double, so its formal
+derivative is zero. For an integer $t>n$, all factors in \eqref{eq:R} are
+positive and
+\[
+ 0<R_n(t)\le\frac1{t^2},\qquad
+ R_n'(t)=2R_n(t)\left(
+       \sum_{j=1}^{n}\frac1{t-j}-\sum_{j=0}^{n}\frac1{t+j}\right).
+\]
+Every reciprocal inside the parentheses has absolute value at most $1$.
+Therefore $\abs{R_n'(t)}\le(4n+2)/t^2$. Also
+\[
+ \sum_{t=n+1}^{T}\frac1{t^2}
+ \le\sum_{t=n+1}^{T}\left(\frac1{t-1}-\frac1t\right)\le\frac1n.
+\]
+It follows that $\abs{F_{n,T}}\le(2n+1)/n\le3$.
+
+For $s=2,3$, set
+$\Delta_{T,k}^{(s)}=\HH{T+k}{s}-\HH{T}{s}$.
+Differentiate \eqref{eq:Rpartial} and sum from $1$ to $T$.
+All sums are finite. The terms in $\HH{T}{2}$ cancel because
+$\sum_k\gamma_{n,k}=0$, and we obtain the exact equality
+\begin{equation}\label{eq:finite-pf}
+ F_{n,T}=a_nZ_T-b_n+\varepsilon_{n,T},\quad
+ \varepsilon_{n,T}=\sum_kc_{n,k}^2\Delta_{T,k}^{(3)}
+                       +\sum_k\gamma_{n,k}\Delta_{T,k}^{(2)}.
+\end{equation}
+Since $0\le\Delta_{T,k}^{(s)}\le k/T^s$, we can bound this error explicitly.
+The binomial theorem gives
+\[
+ \binom nk\le2^n,\qquad \binom{n+k}{k}\le2^{n+k}\le4^n,
+\]
+so $\abs{c_{n,k}}\le8^n$ and $c_{n,k}^2\le64^n$.
+In \eqref{eq:gamma} each nonzero integer $l-k$ has absolute value at least
+$1$, so $\abs{\gamma_{n,k}}\le n64^n$. Consequently, for $T\ge1$,
+\[
+ \abs{\varepsilon_{n,T}}
+ \le\frac{n(n+1)64^n}{T^3}+\frac{n^2(n+1)64^n}{T^2}
+ \le\frac{(n+1)^3\,64^n}{T^2}.
+\]
+Combine this with $\abs{F_{n,T}}\le3$.
+\end{proof}
+
+Only this very coarse estimate is needed to identify the number being
+approximated. The much smaller error used for irrationality will come from
+the recurrence, not from estimating the rational function sharply.
+
+\section{Wronskian, growth, and finite positive tails}\label{sec:wronskian}
+Write $r_n=b_n/a_n$, which is defined because $a_n\ge1$.
+
+\begin{lemma}[Exact Wronskian]\label{lem:wronskian}
+For every $n\ge0$,
+\begin{equation}\label{eq:wronskian}
+ a_nb_{n+1}-a_{n+1}b_n=\frac6{(n+1)^3}.
+\end{equation}
+Hence, for $m>n$,
+\begin{equation}\label{eq:r-tail}
+ r_m-r_n=6\sum_{k=n}^{m-1}\frac1{(k+1)^3a_ka_{k+1}}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $W_n$ be the left side of \eqref{eq:wronskian}. The initial values give
+$W_0=6$. Substitution of \eqref{eq:recurrence}, once for $a$ and once for
+$b$, gives
+\[
+ (n+1)^3W_n=n^3(a_{n-1}b_n-a_nb_{n-1})=n^3W_{n-1}.
+\]
+Induction proves $(n+1)^3W_n=6$. Divide by positive $a_na_{n+1}$ and
+telescope from $n$ to $m-1$.
+\end{proof}
+
+\begin{lemma}[Two lower bounds for $a_n$]\label{lem:growth}
+The sequence $a_n$ is nondecreasing and satisfies
+\begin{equation}\label{eq:grow4}
+ a_n\ge4^n\ge n+1.
+\end{equation}
+For $n\ge48$,
+\begin{equation}\label{eq:grow32}
+ a_{n+1}\ge32a_n,\qquad a_n\ge32^{n-48}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For fixed $k\le n$, both nonnegative binomial factors in the $k$th summand
+of $a_{n+1}$ are at least the corresponding factors in $a_n$, by Pascal's
+identity. The extra summand is nonnegative. Thus $a_{n+1}\ge a_n$.
+The $k=n$ summand gives
+\[
+ a_n\ge\binom{2n}{n}^2,
+ \qquad\binom{2n}{n}=\prod_{j=1}^{n}\frac{n+j}{j}\ge2^n.
+\]
+Here $n+j\ge2j$ for $1\le j\le n$; the case $n=0$ is the empty product.
+The elementary inequality $4^n\ge n+1$ follows by induction.
+
+Since $a_{n-1}\le a_n$, the recurrence gives
+\[
+ (n+1)^3a_{n+1}\ge(P_n-n^3)a_n.
+\]
+The excess over $32(n+1)^3a_n$ is
+\[
+ \bigl(n^3-45n^2-69n-27\bigr)a_n.
+\]
+For $n=48+u$ its polynomial factor is
+\begin{equation}\label{eq:growth-poly}
+ u^3+99u^2+2523u+3573\ge0.
+\end{equation}
+This proves the first inequality in \eqref{eq:grow32}; iteration from $48$
+and $a_{48}\ge1$ gives the second.
+\end{proof}
+
+\begin{lemma}[Bounds on every finite approximant tail]\label{lem:finite-tail}
+For $m>n\ge48$, put $h_n=(n+1)^3a_{n+1}$. Then
+\begin{equation}\label{eq:finite-tail-bounds}
+ \frac6{a_nh_n}\le r_m-r_n\le\frac1{4a_n^2}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The first term of the positive sum \eqref{eq:r-tail} gives the lower bound.
+For $k=n+j$, \eqref{eq:grow32} gives
+$a_k\ge32^ja_n$ and $a_{k+1}\ge32^{j+1}a_n$. Thus
+\[
+ r_m-r_n
+ \le\frac6{32a_n^2}\sum_{j=0}^{m-n-1}\frac1{1024^j}
+ \le\frac{192}{1023a_n^2}<\frac1{4a_n^2}.
+\]
+The finite geometric-sum bound follows by multiplying by $1-1/1024$ and
+telescoping. The final numerical comparison is $768<1023$.
+\end{proof}
+
+\section{Eliminating every apparent limiting step}\label{sec:squeeze}
+The next lemma is about rational order only.
+
+\begin{lemma}[Finite rational squeeze]\label{lem:squeeze}
+Let $x,y\in\Q$. If for every positive integer $K$ one has
+$x\le y+1/K$, then $x\le y$. If for every such $K$ one has
+$x\ge y-1/K$, then $x\ge y$.
+\end{lemma}
+\begin{proof}
+Rational order is decidable. If $x>y$, write their difference using the
+product $v$ of their positive denominators. Its positive integer numerator
+is at least $1$, so $x-y\ge1/v$. Substitute the explicit integer $K=2v$ in
+the hypothesized inequality to get $x-y\le1/(2v)$, a contradiction.
+The lower version follows by interchanging $x,y$.
+No convergence theorem or unbounded choice is present: a single computable
+instance of the displayed family of inequalities suffices.
+\end{proof}
+
+\begin{proposition}[The finite enclosure]\label{prop:enclosure}
+For all $n\ge48$ and $M\ge1$, with $h_n=(n+1)^3a_{n+1}$,
+\begin{equation}\label{eq:enclosure}
+ \boxed{\quad
+ \frac6{h_n}-\frac{a_n}{2M^2}
+ \le a_nZ_M-b_n\le\frac1{4a_n}.
+ \quad}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Fix an arbitrary positive integer $K$, and choose explicitly
+\begin{equation}\label{eq:aux-cutoffs}
+ m=n+1+6K,\qquad
+ E_m=(m+1)^3\,64^m,\qquad
+ T=M+m+2K(E_m+1).
+\end{equation}
+These are primitive recursive expressions in $n,M,K$.
+They ensure $m>n$, $T\ge M$, and $T\ge m$.
+By \eqref{eq:coarse},
+\[
+ \abs{Z_T-r_m}\le\frac3{a_m}+\frac{E_m}{a_mT^2}.
+\]
+The first summand is less than $1/(2K)$, since
+$a_m\ge m+1>6K$. The second is also less than $1/(2K)$:
+$a_m\ge1$ and $T^2\ge T\ge2K(E_m+1)>2KE_m$.
+Consequently
+\begin{equation}\label{eq:aux-close}
+ \abs{Z_T-r_m}<\frac1K.
+\end{equation}
+Combine this with $Z_M\le Z_T\le Z_M+1/(2M^2)$ and
+\eqref{eq:finite-tail-bounds}. It follows that
+\[
+ r_n+\frac6{a_nh_n}-\frac1{2M^2}-\frac1K
+ \le Z_M
+ \le r_n+\frac1{4a_n^2}+\frac1K.
+\]
+All quantities here are rational. Apply Lemma~\ref{lem:squeeze} to each
+side, then multiply by the positive integer $a_n$. This proves
+\eqref{eq:enclosure}.
+\end{proof}
+
+This proposition is the main constructive repair to the usual presentation
+with infinite series. The index $m$ is not selected by an unexplained
+``sufficiently large'' assertion; it is given in \eqref{eq:aux-cutoffs}.
+The same holds for $T$. The parameter $K$ is finally instantiated at twice
+an explicitly known denominator in the rational squeeze. The proof is
+therefore a finite uniform arithmetic argument even when written with
+universally quantified lemmas.
+
+\section{An elementary denominator bound at sparse indices}\label{sec:lcm}
+The familiar all-index estimate $d_n<3^n$ is more than we need. The following
+short variant of Hanson's multinomial method \cite{Hanson} suffices.
+
+\begin{lemma}[A floor certificate]\label{lem:floor}
+For a natural number $j$, let
+\[
+ w(j)=j-\floor{j/2}-\floor{j/3}-\floor{j/7}-\floor{j/42}.
+\]
+Then $w(j)\ge0$ for all $j$, and $w(j)\ge1$ when $1\le j\le41$.
+\end{lemma}
+\begin{proof}
+The identity $1/2+1/3+1/7+1/42=1$ shows that the sum of the four floors is
+at most $j$. If $1\le j\le41$, the last floor is zero and the other three
+sum to at most $41j/42<j$. An integer strictly below $j$ is at most $j-1$.
+Multiplication by $42$ makes both arguments integer inequalities.
+\end{proof}
+
+For $m\ge1$, define the positive integer
+\begin{equation}\label{eq:multinomial}
+ M_m=\frac{(42m)!}{(21m)!(14m)!(6m)!m!}
+     =\binom{42m}{21m}\binom{21m}{14m}\binom{7m}{6m}.
+\end{equation}
+
+\begin{lemma}[The divisibility step]\label{lem:lcm-div}
+For $m\ge1$, $d_{42m}$ divides $d_mM_m$.
+\end{lemma}
+\begin{proof}
+Fix a prime $p\le42m$. The exponent of $p$ in a positive integer product
+is the sum of its exponents in the factors. In a factorial, count once
+for every multiple of $p$, once more for every multiple of $p^2$, and so
+on. This gives the finite Legendre formula
+\[
+ v_p(r!)=\sum_{e=1}^{r}\floor{r/p^e}.
+\]
+Terms with $p^e>r$ vanish. The exponent of $p$ in $d_r$ is the number of
+positive exponents $e\le r$ with $p^e\le r$: the multiples of $p^e$ occur
+among $1,\ldots,r$ exactly under that condition. Applying the factorial
+formula to \eqref{eq:multinomial} gives
+\[
+ v_p(M_m)=\sum_{e=1}^{42m}
+          w\!\left(\floor{42m/p^e}\right).
+\]
+Here we used $\floor{\floor{x}/c}=\floor{x/c}$ for positive integer $c$,
+which follows immediately from quotient and remainder.
+
+Every summand is nonnegative. Every prime power satisfying
+$m<p^e\le42m$ has $1\le\floor{42m/p^e}\le41$, and hence contributes
+at least $1$. Therefore
+\[
+ v_p(M_m)\ge\#\{e:m<p^e\le42m\}
+             =v_p(d_{42m})-v_p(d_m).
+\]
+The prime exponents of $d_{42m}$ are thus no greater than those of
+$d_mM_m$, proving divisibility. All primes and exponents considered are
+bounded by $42m$. The elementary finite factorization justification is
+expanded in Appendix~\ref{app:arithmetic}.
+\end{proof}
+
+\begin{lemma}[A multinomial upper bound]\label{lem:multibound}
+Let $A=2^{22}3^{15}7^7$. Then $M_m\le A^m$ and $A^3<28^{41}$.
+\end{lemma}
+\begin{proof}
+In the expansion of $(21+14+6+1)^{42m}=42^{42m}$, the term with respective
+exponents $21m,14m,6m,m$ is
+\[
+ M_m\,21^{21m}14^{14m}6^{6m}.
+\]
+All terms are nonnegative, so it is at most the whole sum. Factorization of
+the integer bases gives the exact identity
+\[
+ 42^{42m}=A^m\,21^{21m}14^{14m}6^{6m}.
+\]
+Cancel the positive common factor to obtain $M_m\le A^m$.
+
+For the numerical comparison, just two small inequalities suffice:
+\[
+ 3^7=2187<2401=7^4,\qquad
+ 3^{10}=59049<65536=2^{16}.
+\]
+Thus $3^{45}=(3^7)^5\,3^{10}<7^{20}2^{16}$, and hence
+\[
+ A^3=2^{66}3^{45}7^{21}<2^{82}7^{41}=28^{41}.
+\]
+\end{proof}
+
+\begin{proposition}[Sparse lcm bound]\label{prop:sparse}
+For every $k\ge0$,
+\begin{equation}\label{eq:sparse}
+ \boxed{d_{42^k}^{\,3}\le28^{42^k}.}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Lemmas~\ref{lem:lcm-div} and \ref{lem:multibound} give
+$d_{42m}\le d_mA^m$. If $d_m^3\le28^m$, then
+\[
+ d_{42m}^3\le d_m^3A^{3m}\le28^m(28^{41})^m=28^{42m}.
+\]
+Start at $m=1$, where $d_1^3=1\le28$, and induct on $k$.
+The induction formula $d(42^k)^3\le28^{42^k}$ is itself quantifier-free.
+\end{proof}
+
+\section{The explicit index and the final integer comparison}\label{sec:finish}
+We now prove Theorem~\ref{thm:main}.
+
+\begin{lemma}[The chosen index is large enough]\label{lem:index}
+For $q\ge1$ and $n=42^{q+1}$,
+\begin{equation}\label{eq:index-small}
+ n\ge48,\qquad \frac{qd_n^3}{a_n}<\frac18.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Certainly $n\ge42^2=1764$. Put $C=32^{48}=2^{240}$.
+Equations \eqref{eq:grow32} and \eqref{eq:sparse} give
+\[
+ \frac{qd_n^3}{a_n}\le qC\left(\frac78\right)^n.
+\]
+We bound the right side by a finite block comparison. Induction gives
+$42^{q-1}\ge q$, so $n\ge1764q$. For $q\ge1$,
+\[
+ 1764q\ge6(q+243),
+\]
+because the difference is $1758q-1458\ge300$.
+The exact inequality $8^6=262144>235298=2\cdot7^6$ yields
+\[
+ \left(\frac87\right)^n
+ \ge\left(\frac87\right)^{6(q+243)}>2^{q+243}.
+\]
+Consequently
+\[
+ qC\left(\frac78\right)^n
+ <\frac{q2^{240}}{2^{q+243}}
+ =\frac{q}{8\cdot2^q}\le\frac18,
+\]
+where $q\le2^q$ is another elementary induction.
+Every power comparison can be read after clearing positive denominators.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Fix $p\in\Z$ and $q\ge1$. Abbreviate
+\[
+ n=42^{q+1},\quad a=a_n,\quad b=b_n,\quad d=d_n,\quad
+ h=(n+1)^3a_{n+1},\quad N=ah.
+\]
+All these quantities except possibly $b$ are positive integers; $d^3b$ is
+an integer. Since $a_{n+1}\ge a_n$, we have $h\ge a\ge1$ and $N\ge a^2$.
+Define the two rational endpoints of the corresponding linear-form interval:
+\[
+ L=aZ_N-b,\qquad U=a\left(Z_N+\frac1{2N^2}\right)-b.
+\]
+By Proposition~\ref{prop:enclosure},
+\begin{equation}\label{eq:LU}
+ L\ge\frac6h-\frac{a}{2N^2}
+   =\frac6h-\frac1{2ah^2}\ge\frac5h>0,
+ \qquad
+ U\le\frac1{4a}+\frac1{2ah^2}\le\frac3{4a}.
+\end{equation}
+In particular, using \eqref{eq:index-small},
+\begin{equation}\label{eq:small-U}
+ qd^3U<\frac3{32}<\frac14,\qquad
+ \frac{qd^3}{h}\le\frac{qd^3}{a}<\frac18.
+\end{equation}
+
+The number
+\begin{equation}\label{eq:J}
+ J=d^3(ap-qb)=d^3ap-q(d^3b)
+\end{equation}
+is an integer. Decidable integer order gives precisely the alternatives
+$J\le0$ or $J\ge1$.
+
+If $J\le0$, then $p/q\le b/a$. Therefore
+\[
+ Z_N-\frac pq\ge Z_N-\frac ba=\frac La
+       \ge\frac5{ah}=\frac5N>\frac1N.
+\]
+This is the first disjunct of \eqref{eq:main}.
+
+If $J\ge1$, use \eqref{eq:small-U} to obtain
+\[
+ qd^3\left(U+\frac aN\right)
+ =qd^3U+\frac{qd^3}{h}<\frac14+\frac18<1\le J.
+\]
+Substitute the definitions of $U,J$, cancel the positive factors, and get
+\[
+ Z_N+\frac1{2N^2}+\frac1N<\frac pq.
+\]
+This is the second disjunct. The construction and the case distinction use
+only finite arithmetic, proving the theorem.
+\end{proof}
+
+\section{Why this proves constructive irrationality}\label{sec:irrationality}
+The theorem provides more information than a contradiction from an
+unexplained assumption that $\zeta(3)$ is rational. Both the precision $N(q)$
+and the rational margin $1/N(q)$ are explicit. The sign is decided by the
+integer $J$ in \eqref{eq:J}, which can be computed directly using the integer
+formula for $d_n^3b_n$ after Lemma~\ref{lem:integrality}.
+
+Here is an entirely first-order arithmetization. Say that a rational $p/q$
+is the value of the zeta sequence if
+\begin{equation}\label{eq:rational-value}
+ \forall M\ge1\quad
+ Z_M\le\frac pq\le Z_M+\frac1{2M^2}.
+\end{equation}
+The displayed intervals are the natural lower-sum and tail enclosures.
+In the standard interpretation their common value is $\sum_{j\ge1}j^{-3}$.
+Theorem~\ref{thm:main} refutes \eqref{eq:rational-value} using the single
+explicit instance $M=N(q)$. Thus iPRA proves the negation of the assertion
+that any rational has this value.
+
+One can equally use a regular Cauchy name
+\[
+ z_s=Z_{2^{s+1}}\qquad(s\in\N).
+\]
+Lemma~\ref{lem:zeta-tail} gives the rational modulus
+$\abs{z_t-z_s}\le2^{-2s-3}$ for $t\ge s$.
+For any $M\ge N(q)$, the same branch of \eqref{eq:main} separates $p/q$
+from $Z_M$ by more than $1/N(q)$. Choosing, for example, $s=N(q)+1$ makes
+$2^{s+1}\ge N(q)$ and $2^{-s}<1/N(q)$. Thus the usual arithmetic equality
+condition $\forall s\,\abs{z_s-p/q}\le2^{-s}$ also fails at an explicit
+index. There is no need to form a completed field of real numbers inside
+the first-order theory.
+
+In a constructive real-number presentation, these statements give
+\emph{apartness}: $\zeta(3)$ and $p/q$ have a witnessed positive separation.
+The real formulation \eqref{eq:apartness} follows from the same interval
+estimates, without changing the arithmetic proof.
+
+\section{Detailed iPRA internalization audit}\label{sec:audit}
+It is not enough to observe that a theorem is computable or that its witness
+is primitive recursive. Correctness must also be proved with the permitted
+induction. We therefore list the actual induction and encoding obligations.
+
+\begin{longtable}{@{}p{.21\linewidth}p{.36\linewidth}p{.35\linewidth}@{}}
+\toprule
+Part & Data and invariant & Permitted proof form\\\midrule
+\endfirsthead
+\toprule Part & Data and invariant & Permitted proof form\\\midrule\endhead
+Arithmetic & Quotient/remainder, gcd, signed pairs, positive fraction
+denominators & Loop invariants are equations and inequalities after clearing
+denominators. Bounded tests use Boolean folds.\\
+Binomials & Pascal recursion, finite row sums, factorial identities &
+Quantifier-free induction on a row index; inner indices are bounded and
+compiled into finite arrays.\\
+Partial fractions & Lists of polynomial coefficients, roots $-k$, and
+explicit $c_{n,k},\gamma_{n,k}$ & Coefficient equality and finite polynomial
+division; root-count induction is on finite degree, with a supplied root
+list.\\
+Telescoper & Fixed polynomial identity \eqref{eq:polynomial-certificate} &
+A fixed finite ring calculation. Product-ratio identities use finite product
+recursion.\\
+Functional $\Theta$ & Finite coefficient triples and harmonic sums &
+Linearity, uniqueness and shifts reduce to finite sum equations; no functional
+quantification in the final object language.\\
+Wronskian & $(n+1)^3(a_nb_{n+1}-a_{n+1}b_n)=6$ &
+Quantifier-free induction after clearing the displayed rational denominators.\\
+Growth & $a_{48+i}\ge32^i$ and
+$a_{n+j}\ge32^ja_n$ with $n\ge48$ & Quantifier-free induction on $i,j$.
+The start and step use \eqref{eq:growth-poly}.\\
+Finite tails & Explicit harmonic or geometric partial sums &
+Quantifier-free induction on the number of terms; telescoping identities and
+termwise rational comparison.\\
+Squeeze & Denominator of a rational gap, $K=2v$, followed by explicit
+$m,T$ & Decidable rational order and universal instantiation. No induction on
+a formula containing the universal precision quantifier.\\
+Prime exponents & Bounded factor lists and sums of indicators of $p^e\le r$ &
+Quantifier-free invariants for bounded factorization, product valuations and
+factorial counting.\\
+Sparse lcm & $d(42^k)^3\le28^{42^k}$ & One quantifier-free induction on $k$,
+using the explicit multinomial inequality.\\
+Final theorem & An integer $J$ and a Boolean disjunction of two rational
+comparisons & A decidable integer comparison, substitution and positive
+cross multiplication. No unbounded search.\\
+\bottomrule
+\end{longtable}
+
+Universal statements in the prose are lemmas with arbitrary parameters,
+not the formulas to which induction is applied. For example, to prove a
+bound for all coefficients below a degree, the induction invariant is a
+primitive recursive Boolean conjunction over that finite range. For the
+squeeze, the family indexed by $K$ is obtained from the explicit expressions
+\eqref{eq:aux-cutoffs}; the final proof substitutes a specific $K$ into it.
+These distinctions are necessary to keep the proof in iPRA rather than
+silently appealing to full Heyting arithmetic.
+
+All finite encodings can be eliminated by their explicit primitive recursive
+definitions. This produces an ordinary finite iPRA derivation of the
+universally closed Boolean separation equation. The preceding table is a
+non-formal proof audit and an implementation guide; a machine-checked
+derivation still has to be constructed.
+
+\section{Lean formalization plan and repository integration}\label{sec:lean}
+\subsection{Pinned interfaces actually inspected}
+The accompanying audit records source inspection of ProveIt at commit
+\texttt{d72c8b24637e} \cite{ProveIt}.
+The declared toolchain is Lean \texttt{v4.32.0} with Mathlib
+\texttt{v4.32.0}.
+
+The relevant interfaces are in namespace \code{LeanProofs.ConciseIPRA}:
+\begin{center}
+\begin{tabular}{p{.36\linewidth}p{.55\linewidth}}
+\toprule
+Source module & Interface and use\\\midrule
+\code{Syntax.lean} & \code{Fm}, \code{Fm.QF}, connectives, quantifiers,
+substitution, and scoped syntax.\\
+\code{Deduction.lean} & \code{Prf}, intuitionistic natural deduction,
+equality rules, weakening and cut.\\
+\code{PR.lean} & \code{PR k}, \code{PTm n}, \code{PRAAx}, defining-equation
+lemmas and \code{PRA.qfInd}.\\
+\code{BiInterpretation.lean} & \code{pra\_theorem\_iff} and the
+translation to the equational presentation.\\
+\code{NativeBiInterpretation.lean} & \code{NFm.ofPRA},
+\code{pra\_iff\_native}, \code{native\_iff\_pra}.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The inspected \code{basel\_ipra.zip} draft supplies a useful convention for
+raw signed fractions and an internalization roadmap. Its new theorem files
+are explicitly uncompiled specifications, so no Basel theorem or analysis
+compiler from that archive is assumed here.
+
+\subsection{Two distinct formalization obligations}
+The first layer is a theorem about finite natural and rational calculations
+in the Lean metatheory. The second is a derivation \emph{inside the encoded
+first-order iPRA calculus}. The first does not automatically supply the
+second.
+
+The final object-language target has the form
+\begin{lstlisting}
+([] : List (Fm PTm 0)) |- [PRAAx] aperyFormula
+\end{lstlisting}
+where the file uses the repository's actual Unicode turnstile notation.
+Here \code{aperyFormula} universally closes a quantifier-free equation saying
+that the concrete separation checker returns $0$. Its arguments are
+$p_+,p_-,q_0$, representing $p=p_+-p_-$ and $q=q_0+1$; this removes the need
+for a nonzero-denominator antecedent.
+
+An implementation that proves only \code{Irrational (Real.zeta 3)} or an
+equivalent theorem about \code{Real.tsum} does not meet this target.
+Likewise, evaluating a checker on finitely many numerals cannot prove its
+universal correctness. No semantic truth-to-provability principle is
+available or required.
+
+\subsection{Executable specifications included in the archive}
+The files in the \code{lean/} directory have the following roles.
+\begin{itemize}
+\item \code{AperySpec.lean} supplies total finite definitions for signed raw
+fractions, exact order, finite sums, binomial coefficients, $a_n,b_n,d_n$,
+$n(q),h(q),N(q)$, $Z_M$, and the separation checker. It states the principal
+mathematical obligations with their exact arguments and bounds.
+\item \code{FiniteAlgebraSpec.lean} defines finite polynomial and rational-function
+operations, the partial-fraction arrays and $\Theta$, the derivative sums,
+and the explicit auxiliary indices used in the finite squeeze.
+\item \code{AlgebraCertificates.lean} gives ordinary Lean proof scripts for
+the fixed polynomial identities and small numerical comparisons.
+\item \code{ObjectTheoryTarget.lean} gives the interface from a separately
+constructed \code{PR 3} program to the object-language sentence and its
+internal derivation target. Transport to the concise native calculus is
+stated conditional on an actual derivation in iPRA.
+\item \code{FORMALIZATION\_ROADMAP.md} gives the dependency order and the
+remaining implementation tasks.
+\end{itemize}
+
+These files use explicit parameters for missing derivations. They do not
+turn a missing proof into an axiom or conceal it behind a \code{sorry}.
+They are not presented as a completed Ap\'ery formalization. No Lean, Lake,
+or Elan executable was available in the authoring environment, so the new
+Lean source has not been compiled here. This limitation does not affect the
+exact Python certificate checks or the human proof, but compilation and
+object-proof construction remain concrete required work.
+
+\subsection{A completion path with explicit intermediate targets}
+The following order avoids a large analysis development.
+\begin{enumerate}
+\item Implement and verify raw signed rational arithmetic and bounded loops.
+Prove denominator positivity and agreement of comparison with cross
+multiplication. Specialize each bounded sum to a first-order primitive
+recursive program; do not quantify over arbitrary functions in the object
+language.
+\item Build the binomial, factorial, gcd/lcm and finite polynomial libraries
+with internal defining-equation proofs. Establish the specific coefficient
+and valuation invariants in the audit table.
+\item Formalize Lemmas~\ref{lem:integrality} and \ref{lem:partial}, then check
+the fixed polynomial certificate \eqref{eq:polynomial-certificate}.
+An ambient \code{ring} proof is a useful independent check; the internal
+version must produce an equality derivation from iPRA's arithmetic lemmas.
+\item Represent a partial-fraction expression by finite coefficient arrays,
+with \code{Theta} returning a triple of raw fractions. Prove uniqueness,
+linearity, and the shift identity for these arrays. Derive both recurrences
+by coefficient projection.
+\item Prove the finite derivative-sum identity and error estimate, the
+Wronskian identity, and the two growth bounds. Formal derivatives here are
+operations on polynomial pairs, so no Mathlib real-analysis dependency is
+needed.
+\item Prove the finite enclosure with the exact indices
+\eqref{eq:aux-cutoffs}. Implement rational squeeze as the explicit
+denominator-based contradiction, with decidable order supplied internally.
+\item Prove the floor certificate, bounded valuation calculation and
+multinomial selected-term inequality. Apply the quantifier-free induction
+for \eqref{eq:sparse}; prove the small block comparisons of
+Lemma~\ref{lem:index}.
+\item Construct the integer $J$, perform its internally justified decidable
+case split, and derive each Boolean branch of the checker. Universally
+introduce the three natural arguments.
+\item Compose these derivations into the final \code{Prf PRAAx} object.
+Only then use \code{pra\_iff\_native} to transport it. Optionally add a
+separate semantic corollary about the usual real $\zeta(3)$.
+\end{enumerate}
+At every step, the intended result is an internal proof as well as any
+convenient ambient Lean theorem. The compilation bridge is an obligation
+with explicit correctness proofs, not an automatic feature of the
+repository that has been assumed without inspection.
+
+\section{Reproduction and scope of the computational checks}\label{sec:checks}
+The archive contains \code{code/verify.py}. Run
+\begin{lstlisting}
+python3 code/verify.py
+\end{lstlisting}
+with Python and SymPy installed. The verifier uses exact integers, rational
+fractions and symbolic polynomial expansion. It checks the telescoper,
+the shifted growth polynomial, the small numerical comparisons, the
+definitions and recurrences for initial ranges, denominator integrality,
+partial-fraction finite-sum errors, and instances of the lcm construction.
+Its output is saved in \code{code/verification\_report.json}.
+
+The fixed symbolic polynomial certificate establishes an identity for its
+formal variables. The other finite-range checks are regression checks;
+their role is to catch transcription, sign and normalization errors.
+Universal validity of the theorem is supplied by the arguments and
+inductions above. In particular, the program does not attempt to enumerate
+the astronomically long sum $Z_{N(q)}$ from the final theorem.
+
+The PDF is compiled from this \LaTeX{} source with
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error apery_ipra.tex
+\end{lstlisting}
+The source requires standard AMS and typography packages. A separate
+README lists the files and their verification status.
+
+\appendix
+\section{Elementary arithmetic behind the valuation argument}\label{app:arithmetic}
+We give additional detail because an unqualified invocation of a strong
+number-theory library would obscure the foundational bound.
+
+\subsection{Bounded factorization}
+Primality of $p$ is the bounded condition $p\ge2$ and that no integer
+$j$ with $2\le j<p$ divides $p$. For $r>1$, scan $2,\ldots,r$ for its
+first divisor. That divisor is prime: a proper factor of it would be a
+smaller divisor of $r$. Repeatedly divide by such a factor. Each nontrivial
+division reduces the remaining number, so $r$ iterations suffice, with
+idle iterations after the remainder reaches $1$. A primitive recursive
+state stores the remainder, factor list and accumulated product. The
+invariant ``accumulated product times remainder equals the original input''
+and the primality tests are quantifier-free after bounded Boolean coding.
+This supplies a factorization together with its explicit certificate.
+
+Euclid's lemma follows from bounded Bezout computation: if a prime $p$
+does not divide $u$, gcd$(p,u)=1$, and the extended Euclidean algorithm
+produces integers $x,y$ with $xp+yu=1$. Multiplication by $v$ proves that
+$p\mid uv$ implies $p\mid v$. The Euclidean remainder decreases at each
+nonzero step, so a loop bounded by the initial sum of its arguments is
+sufficient. Back substitution and the Bezout invariant use signed pairs.
+Repeated application proves uniqueness of the exponent of each prime in
+a finite product. Thus one positive integer divides another exactly when
+each prime exponent of the first is no larger than the corresponding
+exponent of the second. For a given comparison it is enough to scan primes
+up to the larger input.
+
+\subsection{Finite valuation formulas}
+For a prime $p$ and positive integer $r$, define its valuation by the bounded
+sum
+\[
+ v_p(r)=\sum_{e=1}^{r}[p^e\mid r],
+\]
+where brackets denote the Boolean indicator. Divisibility by powers of a
+prime is an initial segment of the exponent list; product valuation follows
+from Euclid's lemma and finite factorization. Hence
+\[
+ v_p(r!)=\sum_{j=1}^{r}v_p(j)
+        =\sum_{e=1}^{r}\#\{j\le r:p^e\mid j\}
+        =\sum_{e=1}^{r}\floor{r/p^e}.
+\]
+The middle equality exchanges two finite sums, not infinite series.
+For $d_r$, each $j\le r$ divides $d_r$, and the maximum exponent required
+is exactly the number of $e\le r$ with $p^e\le r$. This proves the lcm
+valuation formula used in Section~\ref{sec:lcm}. All witness searches and
+all sums have the displayed natural bounds.
+
+\subsection{Binomial and multinomial facts}
+Define binomial coefficients by Pascal recursion, with out-of-range values
+zero. Induction gives the finite binomial theorem, nonnegativity,
+monotonicity in the upper argument and row sum $2^n$.
+Factorial formulas follow by multiplying Pascal's identity by the relevant
+factorials and induction. Repeated application of the binomial theorem
+gives the four-term multinomial expansion. Its coefficient at
+$(21m,14m,6m,m)$ is the product of the three binomial coefficients in
+\eqref{eq:multinomial}. The selected-term bound therefore follows from a
+finite sum of nonnegative integers. None of these steps requires an
+asymptotic estimate for factorials or primes.
+
+\section{A concrete coding of the final sentence}\label{app:coding}
+One convenient raw rational representation is a triple
+$(u,v,d)$ with natural $u,v$ and $d\ge1$, denoting $(u-v)/d$.
+Addition, negation and multiplication are given by
+\begin{align*}
+ (u,v,d)+(u',v',d')&=(ud'+u'd,vd'+v'd,dd'),\\
+ -(u,v,d)&=(v,u,d),\\
+ (u,v,d)(u',v',d')&=(uu'+vv',uv'+vu',dd').
+\end{align*}
+The comparison $(u,v,d)<(u',v',d')$ is the natural inequality
+\[
+ ud'+v'd<u'd+vd'.
+\]
+Division by a known positive natural multiplies the denominator. A negative
+integer coefficient is represented by swapping the two numerator fields.
+These operations preserve positive denominators by direct induction.
+
+For inputs $(p_+,p_-,q_0)$, let $q=q_0+1$, compute the numbers in
+\eqref{eq:modulus}, and compute $Z_N$ by a primitive recursive fold. Form
+the two strict comparisons in \eqref{eq:main} by the displayed natural
+cross-multiplication rule. Return $0$ if their Boolean disjunction is true,
+and $1$ otherwise. Call this concrete function $\operatorname{sep}$.
+Then an entirely quantifier-free matrix for our theorem is
+\[
+ \operatorname{sep}(p_+,p_-,q_0)=0.
+\]
+Universally close its three free variables to obtain the first-order
+sentence used as the final formalization target. The existence of the
+large intermediate numbers is guaranteed by their primitive recursive
+defining equations; no minimization or higher-type choice is involved.
+
+\begin{thebibliography}{9}
+\bibitem{Apery}
+R. Ap\'ery, \emph{Irrationalit\'e de $\zeta(2)$ et $\zeta(3)$},
+Ast\'erisque \textbf{61} (1979), 11--13.
+\url{https://www.numdam.org/item/AST_1979__61__11_0/}.
+\bibitem{Zudilin}
+W. Zudilin, \emph{An elementary proof of Ap\'ery's theorem},
+arXiv:math/0202159, 17 February 2002.
+The rational function and telescoper used here are equations (1), (5), (6).
+\url{https://www.math.ru.nl/~wzudilin/PS/apery.pdf}.
+\bibitem{Hanson}
+D. Hanson, \emph{On the product of the primes}, Canadian Mathematical
+Bulletin \textbf{15}(1) (1972), 33--37.
+\href{https://doi.org/10.4153/CMB-1972-007-7}{doi:10.4153/CMB-1972-007-7}.
+\bibitem{ProveIt}
+V. Reshetnikov, \emph{ProveIt: ConciseIPRA}, repository snapshot
+\texttt{d72c8b24637e}, inspected 15 November 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/d72c8b24637e342816dc92d11bef337748683e51/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}{Pinned ConciseIPRA source snapshot}. The accompanying repository audit records
+the full commit identifier and exact source-file URLs.
+\bibitem{Target}
+\emph{Ap\'ery's theorem}, Wikipedia, user-specified overview,
+consulted 15 November 2026. Used to identify the requested theorem;
+the proof above is independently developed from the cited primary work.
+\url{https://en.wikipedia.org/wiki/Ap%C3%A9ry%27s_theorem}.
+\end{thebibliography}
+\end{document}
