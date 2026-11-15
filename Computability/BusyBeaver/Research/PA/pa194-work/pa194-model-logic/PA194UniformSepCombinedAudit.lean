@@ -1,0 +1,7 @@
+import PA194ModelClosedSepUniform
+import PA194ModelQFTail
+#print axioms PA194ModelLogic.sepRootGraph_defined
+#print axioms PA194ModelLogic.closedSepUniform_defined
+#print axioms PA194ModelLogic.closedSepUniform_provablyProper
+#print axioms PA194ModelLogic.sepRootPure_model
+#print axioms PA194ModelLogic.closedSepUniform_model
