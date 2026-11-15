@@ -1,0 +1,7 @@
+import PA194ModelAdjunctiveHalt
+import PA194ModelNumericalSeedHalt
+import PA194ModelQFTail
+#print axioms PA194ModelLogic.finiteAdjunctive_provable_halts
+#print axioms PA194ModelLogic.finiteAdjunctive_consistent_of_nonhalting
+#print axioms PA194ModelLogic.numericalSeed_provable_halts
+#print axioms PA194ModelLogic.numericalSeed_consistent_of_nonhalting
