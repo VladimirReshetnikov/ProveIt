@@ -1,0 +1,7 @@
+import PA194EqualTransitivity
+#print axioms PA194CompositionClosedTemplate.closedCompositionSeparation_shift_fast
+#print axioms PA194CompositionInputs.Inputs.compose
+#print axioms PA194CompositionAlign.alignMiddle
+#print axioms PA194InverseEqual.equalEliminate
+#print axioms PA194InverseEqual.EqualComponents.shift
+#print axioms PA194InverseEqual.equalTransitivity
