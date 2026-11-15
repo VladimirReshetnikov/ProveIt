@@ -1,0 +1,8 @@
+import PA194ClosedInductionEnvironment
+#print axioms PA194ClosedEnvironment.closedTermProperty_definable
+#print axioms PA194ClosedEnvironment.closedTermEnvironment
+#print axioms PA194ClosedEnvironment.closedAtomEnvironment
+#print axioms PA194ClosedEnvironment.closedFormulaProperty_definable
+#print axioms PA194ClosedEnvironment.closedFormulaEnvironment
+#print axioms PA194ClosedEnvironment.closedTranslate_packets
+#print axioms PA194ClosedEnvironment.closedInduction_root_packet
