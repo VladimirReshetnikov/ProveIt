@@ -1,0 +1,4 @@
+import PA194PAeqShiftFreeBound
+#print axioms PA194PAeqBind.termShift_freeBound_zero
+#print axioms PA194PAeqBind.atomShift_freeBound_zero
+#print axioms PA194PAeqBind.formulaShift_freeBound_zero
