@@ -57,3 +57,11 @@ along the packed source-state orbit up to the initial `r0`; it is a frame
 identity rather than a physical execution theorem. Independent and
 repository-source replays of `check-actual-loop-orbit.sh` passed using the
 same retained machine, graph and foundation stages.
+
+`PA194ModelLoopCost` builds a primitive-recursive combined cost from supplied
+site-27, site-28 and site-29 clock codes and the fixed 40-step jump. The
+associated input lemmas identify their packed-state argument vectors and the
+next frame. `check-actual-loop-cost-inputs.sh` replays these four modules with
+the same staged source closure; its independent and repository-source runs
+passed. The concrete segment clock equalities and a complete coded physical
+iteration remain separate obligations.
