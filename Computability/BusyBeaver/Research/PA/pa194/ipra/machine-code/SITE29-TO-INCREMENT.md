@@ -1,0 +1,9 @@
+# PA194 site-29 increment write
+
+`PA194Site29ToIncrement.site29ToIncrement` follows the literal machine from the state-24 site-29 input through the first two controller passes, the third dispatch, traversal to physical register 8 (logical register 6), and the actual increment write. The theorem ends in state 3 and gives exact left and right tape codes and the combined clock. Its input requires `k+2` zeros after source path `100010110`. Every logical register value, the preceding spare, and the complete numeric suffix are arbitrary model values. The established blank-to-site-29 execution has sufficient padding.
+
+The state-2 traversal is proved by `PA194Site29TwoFile.traverseFile` for any externally fixed finite number of blocks, using induction in Lean; its block counts, clocks, and register values may be nonstandard elements of any model of PRA. This is not a theorem iterating over a nonstandard number of blocks. The selected register is physical slot 8, which the checked register permutation maps to logical register 6. The state-3 output is an intermediate configuration: subsequent tape carry and return to the site-30 source frame remain open.
+
+`check-site29-to-increment.sh` recompiles the preceding eighteen source modules and the five new modules in a fresh output. Invoke with `REPO SITE27_BASELINE SITE28_STAGE FINISH_STAGE PROJECT_FOUNDATION PACKAGE_FOUNDATION SOURCE_DIR NEW_OUTPUT`. It pins source and selected direct-object hashes, checks all requested axiom reports for `sorryAx`, rejects overlapping machine objects and machine-specific fallback roots, and verifies input objects unchanged. Retained stages and general foundation objects require their preceding replays or independent provenance.
+
+The result is an all-model finite physical-run theorem, not a native iPRA sentence, arbitrary-length source simulation, or a consistency implication.
