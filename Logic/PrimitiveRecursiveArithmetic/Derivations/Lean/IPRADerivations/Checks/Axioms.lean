@@ -500,6 +500,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.fibS_le_pow
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.fib_le_pow
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.luc_le_pow
+#print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.fib_triple
+#print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.luc_triple
+#print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.luc_fib_mixed
+#print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.alt_sum
+#print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.fib_parity
+#print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.fib_parity_one
+#print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.fib_parity_two
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.add_formula
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.pell_norm
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.cop_XY
