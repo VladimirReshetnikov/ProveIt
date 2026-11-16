@@ -1,0 +1,103 @@
+\section{Scope, thesis, and proof status}
+
+\subsection{What the requested formalization should mean}
+
+The phrase ``formalize algebraic geometry in iPRA'' can be understood in several inequivalent
+ways.  The strongest and least useful interpretation would demand a single natural number coding
+an arbitrary scheme, an internal set of all of its points, and a universal evaluator for every
+algorithm mentioned in a textbook.  That interpretation is neither necessary nor compatible with
+the foundational discipline of primitive recursive arithmetic.
+
+The interpretation adopted here is presentation-relative and theorem-relative:
+
+\begin{enumerate}[label=\arabic*.]
+\item Fix a class of finite codes: polynomials, matrices, finite presentations, local fractions,
+      overlap maps, and certificates.
+\item Fix each primitive-recursive operation before it appears in a theorem.  There is no evaluator
+      for arbitrary encoded programs.
+\item Express equality and side conditions through finite witnesses whose checkers are primitive
+      recursive.
+\item Replace an infinite geometric object by the finite algebraic presentation needed by the
+      theorem: an affine presentation, a finite atlas, a finite cover, a finite \v{C}ech complex, or
+      finitely many observations of a represented object.
+\item Prove the finite correctness statement with quantifier-free induction and the ordinary
+      intuitionistic logical rules of iPRA.
+\end{enumerate}
+
+A completed formalization is not merely a Lean theorem about standard natural numbers.  In the
+repository's notation, its endpoint is a term
+\[
+                 \Prf\ \PRAAx\ []\ \varphi,
+\]
+where $\varphi$ is the coded first-order formula expressing the advertised result.  The existing
+bridge \code{pra_iff_native} may then transport that derivation to the concise native calculus.
+
+\subsection{The central thesis}
+
+The topological point-set definition of a scheme quantifies over prime ideals and arbitrary open
+sets.  Most concrete arguments, however, consume much less information.  They use finitely
+presented rings, standard opens $D(f)$, localizations, finitely many overlap maps, and finitely many
+compatibility equations.  This finite algebraic skeleton is enough for a large body of algebraic
+geometry.
+
+The central thesis is therefore:
+
+\begin{quote}
+\emph{For iPRA, the right primitive notion is not an internally completed prime spectrum.  It is a
+certified finite affine atlas together with proof-relevant localization and descent data.}
+\end{quote}
+
+The conventional scheme is the external mathematical interpretation of that atlas.  The internal
+arithmetic proof manipulates only its finite codes and certificates.  This is analogous to working
+with a finite presentation of a group rather than with a completed set containing all group
+elements, but it additionally records the local-to-global structure that distinguishes geometry
+from bare commutative algebra.
+
+\subsection{Main contributions}
+
+The report develops the following chain.
+
+\begin{enumerate}[label=\textbf{C\arabic*.}]
+\item \textbf{Certified setoids.}  Equality is a primitive-recursive relation
+      $\EqW(x,y,w)$ on two object codes and a witness code.  Reflexivity, symmetry,
+      transitivity, and operation congruence are implemented by witness transformers.  No equality
+      search is assumed.
+\item \textbf{Presented algebra.}  Equality in
+      $\Z[X_0,\ldots,X_{n-1}]/(g_0,\ldots,g_{r-1})$ is witnessed by polynomials
+      $h_i$ satisfying $p-q=\sum_i h_i g_i$.  Morphisms are polynomial tuples with relation
+      certificates.
+\item \textbf{Localization.}  Equality of $a/f^n$ and $b/f^m$ is witnessed by an exponent $k$
+      and a base-ring certificate for
+      $f^k(f^m a-f^n b)=0$.  The report gives explicit witness formulas for transitivity and ring
+      congruence.
+\item \textbf{Power covers.}  From $\sum_i c_i f_i=1$ and $N\geq1$, a bounded multinomial
+      construction produces $d_i$ with $\sum_i d_i f_i^N=1$.
+\item \textbf{Zariski gluing.}  Compatible local fractions in $M_{f_i}$ are homogenized, their
+      overlap annihilators are synchronized, and one explicit linear combination produces a global
+      section.  The same power-cover lemma proves uniqueness.
+\item \textbf{Finite affine atlases.}  Charts, principal overlaps, localization isomorphisms, and
+      cocycles form a finite presentation of a scheme.  Quasi-coherent modules and vector bundles
+      become finite descent data.
+\item \textbf{Projective geometry.}  The standard affine charts of $\Proj$ are explicit
+      localizations.  For $\mathbf P^1$, Laurent-polynomial support gives complete normal forms for
+      the \v{C}ech groups of $\cO(d)$.  For $\mathbf P^n$, exponent-vector summands admit an
+      explicit finite contracting homotopy.
+\end{enumerate}
+
+\subsection{What is and is not proved}
+
+The ordinary mathematical proofs of the power-cover lemma, localization calculus, principal-cover
+gluing, and the projective \v{C}ech computations are complete in this report.  Their algorithms are
+implemented over exact rings in the Python companion and checked on finite test suites, including a
+zero-divisor example over $\Z/12\Z$.
+
+The supplied Lean files are blueprints.  They contain host-level structures, definitions, and named
+target propositions, together with the exact object-theory endpoint.  The preparation environment
+had no Lean executable or local ProveIt dependency closure, so no new compilation claim is made.
+The final conversion of the principal theorems to \code{Prf PRAAx} remains an engineering task,
+although the required primitive recursions and quantifier-free invariants are specified.
+
+The framework does not manufacture a general height bound, a complete rational-point list, a set of
+Mordell--Weil quotient representatives, or an exact branch selector for arbitrary Cauchy
+coefficients.  It makes such data composable and verifiable when supplied; it does not erase the
+mathematics needed to produce them.

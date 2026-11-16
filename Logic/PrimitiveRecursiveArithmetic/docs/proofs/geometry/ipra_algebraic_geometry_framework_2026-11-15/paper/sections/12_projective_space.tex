@@ -1,0 +1,167 @@
+\section{The standard \v{C}ech computation on \texorpdfstring{$\mathbf P^n$}{Pn}}
+
+\subsection{The finite complex}
+
+Let $n\geq1$ and let
+\[
+           \mathbf P^n_R=\bigcup_{i=0}^{n}U_i,
+           \qquad U_i=D_+(X_i).
+\]
+Every finite intersection $U_{i_0}\cap\cdots\cap U_{i_p}$ is a standard affine open.  In homogeneous
+coordinates, its degree-$d$ sections of $\cO(d)$ are finite Laurent polynomials in which
+$X_{i_0},\ldots,X_{i_p}$ may have negative exponents and all other variables have nonnegative
+exponents, with total degree $d$.
+
+The ordered \v{C}ech complex is
+\begin{equation}\label{eq:pn-cech}
+ \check C^p_d=\bigoplus_{0\leq i_0<\cdots<i_p\leq n}
+ \left(R[X_0,\ldots,X_n,(X_{i_0}\cdots X_{i_p})^{-1}]\right)_d,
+\end{equation}
+with the alternating restriction differential.
+
+Every individual code in \eqref{eq:pn-cech} has finite Laurent support.  Thus an iPRA theorem does
+not form an actually infinite direct sum: it scans the finitely many exponent vectors occurring in
+the input cochain.
+
+\subsection{Decomposition by exponent vector}
+
+Fix $e=(e_0,\ldots,e_n)\in\Z^{n+1}$ with
+\[
+                            \sum_{i=0}^{n}e_i=d.
+\]
+Let
+\[
+                     \operatorname{Neg}(e)=\set{i:e_i<0}.
+\]
+The monomial $X^e=X_0^{e_0}\cdots X_n^{e_n}$ occurs in the component indexed by
+$I=\{i_0<\cdots<i_p\}$ exactly when
+\[
+                       \operatorname{Neg}(e)\subseteq I.
+\]
+Consequently the full complex is the coefficientwise direct sum of finite complexes
+$C^\bullet(e)$, each having one copy of $R$ for every subset $I$ that contains
+$\operatorname{Neg}(e)$.
+
+The differential on $C^\bullet(e)$ is purely combinatorial and independent of the coefficients:
+\[
+       (ds)_J=\sum_{a=0}^{|J|-1}(-1)^a s_{J\setminus\{j_a\}},
+\tag{12.1}
+\]
+where a missing component is interpreted as zero.
+
+\subsection{The three sign cases}
+
+\begin{theorem}[Monomial summands]\label{thm:monomial-summands}
+For a fixed exponent vector $e$:
+\begin{enumerate}[label=\arabic*.]
+\item If every $e_i\geq0$, then $C^\bullet(e)$ has cohomology $R$ in degree $0$ and zero in positive
+      degrees.
+\item If every $e_i<0$, then $C^\bullet(e)$ has a single nonzero term, in degree $n$, and its
+      cohomology is $R$ there.
+\item If $\operatorname{Neg}(e)$ is nonempty and proper, then $C^\bullet(e)$ is contractible by an
+      explicit primitive-recursive homotopy.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+In the first case, every subset component is present.  This is the ordered cochain complex of a full
+$n$-simplex.  Its degree-zero constant tuples give one copy of $R$, and the usual insertion homotopy
+contracts the positive degrees.
+
+In the second case, a subset containing all $n+1$ indices must be the full set, so the only term is in
+degree $n$.
+
+For the mixed case, choose the least index
+$i_*\notin\operatorname{Neg}(e)$.  For a $p$-cochain $s$, define the $(p-1)$-cochain $hs$ on an
+ordered set $I=\{i_0<\cdots<i_{p-1}\}$ by zero when $i_*\in I$, and otherwise by inserting $i_*$:
+\begin{equation}\label{eq:insertion-homotopy}
+ (hs)_I=(-1)^a s_{I\cup\{i_*\}},
+ \qquad
+ a=\#\set{i\in I:i<i_*}.
+\end{equation}
+The component on the right exists because adding $i_*$ does not change whether the set contains
+$\operatorname{Neg}(e)$.  A finite sign computation pairs every deletion not involving $i_*$ once in
+$dh$ and once with the opposite sign in $hd$; the remaining deletion of $i_*$ contributes $s_I$.
+Hence
+\[
+                              dh+hd=\mathrm{id}.
+\]
+All sums have at most $n+1$ terms.
+\end{proof}
+
+\subsection{Cohomology table}
+
+\begin{theorem}[Finite \v{C}ech cohomology of projective space]\label{thm:pn-cohomology}
+For $n\geq1$, the standard-cover \v{C}ech cohomology is
+\[
+ \check H^q(\mathbf P^n_R,\cO(d))\cong
+ \begin{cases}
+   R[X_0,\ldots,X_n]_d,& q=0,\ d\geq0,\\[0.2em]
+   \displaystyle
+   \left(\frac1{X_0\cdots X_n}
+   R[X_0^{-1},\ldots,X_n^{-1}]\right)_d,& q=n,\ d\leq-n-1,\\[0.5em]
+   0,&\text{otherwise.}
+ \end{cases}
+\]
+The two nonzero modules are finite free.  Their ranks are
+\[
+    \operatorname{rank}H^0=\binom{n+d}{n}\quad(d\geq0),
+    \qquad
+    \operatorname{rank}H^n=\binom{-d-1}{n}\quad(d\leq-n-1).
+\]
+The isomorphisms and zero contractions are primitive-recursive on finite cochain codes.
+\end{theorem}
+
+\begin{proof}
+Decompose every finite cochain coefficientwise by exponent vector.  By
+Theorem~\ref{thm:monomial-summands}, only all-nonnegative exponent vectors survive in degree zero and
+all-negative vectors survive in degree $n$.  The all-nonnegative vectors of total degree $d$ are the
+ordinary degree-$d$ monomials, which exist only for $d\geq0$ and are counted by
+$\binom{n+d}{n}$.
+
+For an all-negative vector write $e_i=-a_i-1$ with $a_i\geq0$.  Then
+\[
+                   \sum_i a_i=-d-(n+1).
+\]
+Such vectors exist exactly when $d\leq-n-1$, and stars-and-bars counts them by
+$\binom{-d-1}{n}$.  The normal-form map keeps precisely those monomial coefficients and applies the
+insertion homotopy to every mixed-sign summand.
+\end{proof}
+
+For $n=1$, Theorem~\ref{thm:pn-cohomology} specializes to
+Theorems~\ref{thm:p1-h0} and~\ref{thm:p1-h1}.
+
+\subsection{Primitive-recursive realization}
+
+The implementation needs the following fixed operations:
+
+\begin{itemize}
+\item signed exponent-vector coding and bounded coordinate access;
+\item the set $\operatorname{Neg}(e)$ as a bit mask;
+\item enumeration of subsets of $\{0,\ldots,n\}$ by bit masks;
+\item alternating-sign finite sums;
+\item insertion of the least index outside a bit mask;
+\item finite maps from exponent vectors to coefficient tuples;
+\item coefficientwise splitting into all-nonnegative, all-negative, and mixed classes.
+\end{itemize}
+
+All are primitive recursive.  To prove \eqref{eq:insertion-homotopy}, an object-iPRA development can
+avoid abstract matrices.  For each output component and each deletion index, a bounded case split
+checks whether the deleted index is $i_*$, below it, or above it.  A finite accumulator records the
+paired terms and their signs.  The induction formula is an equality of natural-number-coded finite
+sums.
+
+\subsection{Executable matrix check}
+
+The companion program independently constructs the finite matrices of $d$ and $h$ for every proper
+nonempty negative-index set in dimensions $1\leq n\leq6$.  It verifies
+$dh+hd=I$ over the integers in 240 mixed-sign cases.  This is not a proof for all $n$, but it checks
+the exact sign convention and the finite-index implementation used by the Lean plan.
+
+\subsection{Conventional cohomology}
+
+The standard cover has affine finite intersections, and $\cO(d)$ is quasi-coherent.  The conventional
+comparison theorem therefore identifies the finite \v{C}ech calculation with
+$H^q(\mathbf P^n_R,\cO(d))$.  The Stacks Project gives the same exponent-vector decomposition and
+insertion homotopy.  The new foundational point is that the entire calculation itself is finite,
+explicit, and admits a direct route to quantifier-free induction.

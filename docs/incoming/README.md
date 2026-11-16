@@ -241,7 +241,8 @@ deleted. It leaves out one ignored `.log` file, and three `lean/ConciseIPRA/` fi
 byte-identical to the `lean/upstream/` copies in
 `foundations/ipra_coherent_methods_2026-11-15`. `ipra_finite_use_framework_2026-11-15.zip`
 was placed the same way, under `foundations/`, and then deleted. All 37 of its members are
-placed.
+placed. `ipra_algebraic_geometry_framework_2026-11-15.zip` was placed the same way, under
+`geometry/`, and then deleted. All 46 of its members are placed.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

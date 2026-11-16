@@ -1,0 +1,3365 @@
+Certified Zariski Descent in Intuitionistic Primitive
+Recursive Arithmetic
+Finite presentations, localization, affine atlases, and projective-space cohomology
+Prepared for Vladimir Reshetnikov
+15 November 2026
+Abstract
+The existing ProveIt iPRA packets develop finite contracts, demand-driven observations,
+relational finite-use composition, stable outputs, exact arithmetic, and several Diophantine
+constructions. This report adds a specifically algebraic-geometric layer. Mathematical objects
+are represented by natural-number codes with proof-relevant equality certificates; quotient rings
+use explicit ideal-combination witnesses; localizations use explicit annihilating exponents; and
+finite affine covers are carried by unit-ideal certificates rather than by quantification over prime
+ideals. The central result is an explicit primitive-recursive Zariski gluing algorithm for modules
+on a finite principal-open cover. It works over rings with zero divisors and separates certificate
+verification from certificate production.
+This provides a finitary semantics for affine schemes, finite affine atlases, quasi-coherent
+module data, vector bundles, and finite Čech complexes. As a developed case study, the two-chart
+atlas of P1 gives a primitive-recursive normal form for the Čech cohomology of every O(d). The
+construction extends to the standard cover of Pn : the complex decomposes by exponent vectors,
+mixed-sign summands have an explicit contracting homotopy, and only the all-nonnegative
+and all-negative summands survive. Thus the familiar cohomology table is reduced to finite
+combinatorics suitable for iPRA.
+The archive contains complete human-readable proofs, exact Python validation, source-level
+Lean interfaces, and a dependency-ordered route to actual PrfPRAAx terms. The Lean outlines
+are not claimed compiler-checked, and no general effective Siegel, Faltings, Mordell–Weil, or
+singular Puiseux theorem is claimed.
+
+Contents
+1 Scope, thesis, and proof status
+
+6
+
+1.1 What the requested formalization should mean . . . . . . . . . . . . . . . . . . . . .
+
+6
+
+1.2 The central thesis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+6
+
+1.3
+
+Main contributions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+7
+
+1.4 What is and is not proved . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+7
+
+2 Repository audit and the missing geometric layer
+2.1
+
+Pinned repository state . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1
+
+7
+7
+
+Certified Zariski descent in iPRA
+
+2/51
+
+2.2
+
+Prior frameworks that are treated as baseline . . . . . . . . . . . . . . . . . . . . . .
+
+8
+
+2.3
+
+Difficulties recorded by theorem-specific packets . . . . . . . . . . . . . . . . . . . . .
+
+9
+
+2.4 Why the Wikipedia checklist is useful but insufficient . . . . . . . . . . . . . . . . . . 10
+3 A general framework: certified presentations and finite descent
+
+10
+
+3.1 The five-layer architecture . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+3.2
+
+Certified setoids . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+
+3.3 Algebraic structures without quotient types . . . . . . . . . . . . . . . . . . . . . . . 12
+3.4
+
+Finite diagrams and descent objects . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+
+3.5
+
+Exact, relational, and approximate outputs . . . . . . . . . . . . . . . . . . . . . . . 12
+
+3.6 The no-universal-evaluator discipline . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+4 Finitely presented algebra with proof-relevant equality
+
+13
+
+4.1
+
+Polynomial codes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+
+4.2
+
+Quotient rings by ideal-combination witnesses . . . . . . . . . . . . . . . . . . . . . . 13
+
+4.3
+
+Presented algebras over a certified base ring . . . . . . . . . . . . . . . . . . . . . . . 14
+
+4.4
+
+Morphisms and their certificates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+
+4.5
+
+Modules, matrices, kernels, and cokernels . . . . . . . . . . . . . . . . . . . . . . . . 15
+
+4.6
+
+Gröbner bases as optional certificates . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+
+4.7 A small exact example . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+5 Localization as a certified setoid
+
+16
+
+5.1
+
+Fractions and equality witnesses . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+
+5.2
+
+Localization of modules . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+
+5.3
+
+Universal property in certificate form . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+
+5.4
+
+Localizing a presented quotient . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+
+5.5
+
+Primitive-recursive implementation and induction audit . . . . . . . . . . . . . . . . 18
+
+6 The explicit power-cover lemma
+
+18
+
+6.1
+
+Unit-ideal covers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+
+6.2
+
+Exact coefficient formula . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+
+6.3 An iPRA-friendly iterative proof . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+6.4
+
+Examples and validation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+
+6.5
+
+Functoriality . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+
+Certified Zariski descent in iPRA
+
+3/51
+
+7 Explicit principal-cover gluing
+
+20
+
+7.1
+
+Statement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+
+7.2
+
+Denominator homogenization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+
+7.3
+
+Construction of the global section . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+
+7.4
+
+Uniqueness . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+
+7.5 A zero-divisor example . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+7.6
+
+Primitive-recursive complexity
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+
+7.7
+
+Refinements and iterated covers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+
+8 Certified finite affine atlases
+
+23
+
+8.1
+
+Strict principal atlases . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+
+8.2
+
+Finite principal-overlap atlases . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+
+8.3 The internal geometric language
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+
+8.4 Atlas morphisms and refinement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+8.5
+
+Base change and fiber products . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+
+8.6
+
+Properties as finite certificates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+
+8.7
+
+Conventional semantics . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+
+9 Quasi-coherent modules, vector bundles, and finite Čech complexes
+
+25
+
+9.1 Affine module data . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+9.2
+
+Sections and the sheaf equalizer . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 26
+
+9.3 Vector bundles and transition matrices . . . . . . . . . . . . . . . . . . . . . . . . . . 26
+9.4
+
+Coherent modules and finite resolutions . . . . . . . . . . . . . . . . . . . . . . . . . 26
+
+9.5
+
+Finite Čech complexes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 27
+
+9.6
+
+Cohomology by explicit normal forms . . . . . . . . . . . . . . . . . . . . . . . . . . 27
+
+9.7
+
+Relation to conventional sheaf cohomology . . . . . . . . . . . . . . . . . . . . . . . . 27
+
+10 Projective schemes and computational algebraic geometry
+10.1 The standard affine charts of Proj
+
+28
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . 28
+
+10.2 Homogeneous coordinates and points . . . . . . . . . . . . . . . . . . . . . . . . . . . 28
+10.3 Projective morphisms . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+10.4 Jacobian and smoothness certificates . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+10.5 Divisors and line bundles . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+10.6 Hilbert functions and finite graded certificates . . . . . . . . . . . . . . . . . . . . . . 29
+
+Certified Zariski descent in iPRA
+
+4/51
+
+10.7 Elimination, images, and fibers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 30
+10.8 What part of algebraic geometry is thereby accessible? . . . . . . . . . . . . . . . . . 30
+11 Case study: P1 and every twist O(d)
+
+30
+
+11.1 The two-chart atlas . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 30
+11.2 Global sections . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31
+11.3 First cohomology: the middle-support normal form . . . . . . . . . . . . . . . . . . . 32
+11.4 Examples . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+11.5 iPRA implementation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+11.6 From Čech groups to conventional cohomology . . . . . . . . . . . . . . . . . . . . . 33
+12 The standard Čech computation on Pn
+
+33
+
+12.1 The finite complex . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+12.2 Decomposition by exponent vector . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34
+12.3 The three sign cases . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34
+12.4 Cohomology table . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 35
+12.5 Primitive-recursive realization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36
+12.6 Executable matrix check . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36
+12.7 Conventional cohomology . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36
+13 Resolution map for the repository difficulties
+
+36
+
+13.1 What the new framework resolves . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36
+13.2 Integration with Diophantine geometry . . . . . . . . . . . . . . . . . . . . . . . . . . 37
+13.3 Faltings and Siegel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 38
+13.4 Mordell–Weil descent . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 38
+13.5 Puiseux expansions and singularities . . . . . . . . . . . . . . . . . . . . . . . . . . . 38
+13.6 Analytic number theory packets . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 39
+13.7 Further algebraic-geometry targets . . . . . . . . . . . . . . . . . . . . . . . . . . . . 39
+14 Lean formalization: exact definitions and a route to Prf PRAAx
+
+39
+
+14.1 The formal endpoint . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 39
+14.2 Two formalization layers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 40
+14.3 Codecs and totalization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 40
+14.4 Certified-setoid library . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 41
+14.5 Presented quotient rings . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 41
+
+Certified Zariski descent in iPRA
+
+5/51
+
+14.6 Localization witnesses . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 42
+14.7 The power-cover constructor . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 42
+14.8 Principal-cover uniqueness and gluing . . . . . . . . . . . . . . . . . . . . . . . . . . 43
+14.9 Finite atlases and quasi-coherent data . . . . . . . . . . . . . . . . . . . . . . . . . . 43
+14.10The projective-line modules . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 44
+14.11The projective-space homotopy . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 44
+14.12Suggested module order . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 45
+14.13Completion criteria . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 45
+15 Executable validation, theorem status, and reproducibility
+
+45
+
+15.1 Purpose of the executable companion . . . . . . . . . . . . . . . . . . . . . . . . . . . 45
+15.2 Recorded validation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 46
+15.3 Worked principal-cover examples . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47
+15.4 Claim ledger
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47
+
+15.5 Negative checks and nonclaims . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 48
+15.6 Rebuilding the package . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 48
+15.7 Archive inventory . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49
+16 References and source provenance
+
+49
+
+Certified Zariski descent in iPRA
+
+6/51
+
+1
+
+Scope, thesis, and proof status
+
+1.1
+
+What the requested formalization should mean
+
+The phrase “formalize algebraic geometry in iPRA” can be understood in several inequivalent
+ways. The strongest and least useful interpretation would demand a single natural number coding
+an arbitrary scheme, an internal set of all of its points, and a universal evaluator for every
+algorithm mentioned in a textbook. That interpretation is neither necessary nor compatible with
+the foundational discipline of primitive recursive arithmetic.
+The interpretation adopted here is presentation-relative and theorem-relative:
+1. Fix a class of finite codes: polynomials, matrices, finite presentations, local fractions, overlap
+maps, and certificates.
+2. Fix each primitive-recursive operation before it appears in a theorem. There is no evaluator for
+arbitrary encoded programs.
+3. Express equality and side conditions through finite witnesses whose checkers are primitive
+recursive.
+4. Replace an infinite geometric object by the finite algebraic presentation needed by the theorem:
+an affine presentation, a finite atlas, a finite cover, a finite Čech complex, or finitely many
+observations of a represented object.
+5. Prove the finite correctness statement with quantifier-free induction and the ordinary intuitionistic logical rules of iPRA.
+A completed formalization is not merely a Lean theorem about standard natural numbers. In the
+repository’s notation, its endpoint is a term
+Prf PRAAx [] φ,
+where φ is the coded first-order formula expressing the advertised result. The existing bridge
+pra_iff_native may then transport that derivation to the concise native calculus.
+
+1.2
+
+The central thesis
+
+The topological point-set definition of a scheme quantifies over prime ideals and arbitrary open sets.
+Most concrete arguments, however, consume much less information. They use finitely presented rings,
+standard opens D(f ), localizations, finitely many overlap maps, and finitely many compatibility
+equations. This finite algebraic skeleton is enough for a large body of algebraic geometry.
+The central thesis is therefore:
+For iPRA, the right primitive notion is not an internally completed prime spectrum. It
+is a certified finite affine atlas together with proof-relevant localization and descent data.
+The conventional scheme is the external mathematical interpretation of that atlas. The internal
+arithmetic proof manipulates only its finite codes and certificates. This is analogous to working with
+a finite presentation of a group rather than with a completed set containing all group elements, but it
+additionally records the local-to-global structure that distinguishes geometry from bare commutative
+algebra.
+
+Certified Zariski descent in iPRA
+
+1.3
+
+7/51
+
+Main contributions
+
+The report develops the following chain.
+C1. Certified setoids. Equality is a primitive-recursive relation EqW(x, y, w) on two object
+codes and a witness code. Reflexivity, symmetry, transitivity, and operation congruence are
+implemented by witness transformers. No equality search is assumed.
+C2. Presented algebra. Equality in Z[X0 , . . . , Xn−1 ]/(g0 , . . . , gr−1 ) is witnessed by polynomials
+P
+hi satisfying p − q = i hi gi . Morphisms are polynomial tuples with relation certificates.
+C3. Localization. Equality of a/f n and b/f m is witnessed by an exponent k and a base-ring
+certificate for f k (f m a − f n b) = 0. The report gives explicit witness formulas for transitivity
+and ring congruence.
+P
+C4. Power covers. From i ci fi = 1 and N ≥ 1, a bounded multinomial construction produces di
+P
+with i di fiN = 1.
+C5. Zariski gluing. Compatible local fractions in Mfi are homogenized, their overlap annihilators
+are synchronized, and one explicit linear combination produces a global section. The same
+power-cover lemma proves uniqueness.
+C6. Finite affine atlases. Charts, principal overlaps, localization isomorphisms, and cocycles
+form a finite presentation of a scheme. Quasi-coherent modules and vector bundles become
+finite descent data.
+C7. Projective geometry. The standard affine charts of Proj are explicit localizations. For P1 ,
+Laurent-polynomial support gives complete normal forms for the Čech groups of O(d). For Pn ,
+exponent-vector summands admit an explicit finite contracting homotopy.
+
+1.4
+
+What is and is not proved
+
+The ordinary mathematical proofs of the power-cover lemma, localization calculus, principal-cover
+gluing, and the projective Čech computations are complete in this report. Their algorithms are
+implemented over exact rings in the Python companion and checked on finite test suites, including
+a zero-divisor example over Z/12Z.
+The supplied Lean files are blueprints. They contain host-level structures, definitions, and named
+target propositions, together with the exact object-theory endpoint. The preparation environment
+had no Lean executable or local ProveIt dependency closure, so no new compilation claim is made.
+The final conversion of the principal theorems to PrfPRAAx remains an engineering task, although
+the required primitive recursions and quantifier-free invariants are specified.
+The framework does not manufacture a general height bound, a complete rational-point list, a set of
+Mordell–Weil quotient representatives, or an exact branch selector for arbitrary Cauchy coefficients.
+It makes such data composable and verifiable when supplied; it does not erase the mathematics
+needed to produce them.
+
+2
+
+Repository audit and the missing geometric layer
+
+2.1
+
+Pinned repository state
+
+The mathematical audit is pinned to commit bce5113f44d613f5625c274128ee761f35486fc5. During
+final verification, main had advanced to a2f72b0cdf57f8a3fefd34b272c3d471385e819c, but a direct
+
+Certified Zariski descent in iPRA
+
+8/51
+
+contents-API comparison showed that the three entries under Logic/PrimitiveRecursiveArithmetic
+were unchanged: ConciseIPRA had Git object 622927389849d1e4c3b5f813b8481b7674974acc,
+README.md had object 1340d58e7f 9c97cc8593341f 5e80452633a2b77d, and docs had object
+996363773c5e9f09fa826e0cc943f55af059d8dd at both commits. Thus unrelated repository activity
+did not alter the audited iPRA subtree.
+At the pinned snapshot the root iPRA README listed sixty-six research packets. It also stated an
+important caveat: the packets were filed as delivered and were not independently rerun, compiled,
+or verified by the indexing commit. Consequently this report treats packet claims as research inputs,
+not as automatically certified facts.
+The checked foundation is ConciseIPRA. The relevant Lean layers are:
+Module/interface
+
+Role
+
+Syntax.lean
+
+First-order terms and formulas, substitution, and quantifier-free
+formulas.
+Intuitionistic natural deduction with equality; derivations Prf.
+The inductive family PR, terms PTm, axioms PRAAx, and
+the quantifier-free induction interface.
+The bridge pra_iff_native.
+
+Deduction.lean
+PR.lean
+NativeBiInterpretation.lean
+
+This package therefore targets the usual iPRA calculus first. Native export is the last step, not a
+substitute for an embedded derivation.
+
+2.2
+
+Prior frameworks that are treated as baseline
+
+The repository already contains a substantial general methodology. The following table records the
+parts most relevant here.
+Packet
+
+Existing contribution
+
+Boundary retained here
+
+ipra_framework
+
+Finite contracts, bounded
+Booleanization,
+bounded
+search, quotient-free finite
+presentations, and a compiler
+outline.
+Demand-driven finite observations, certificate-relative interpretation, finite windows, simple Cauchy branches, and finite
+algebra interfaces.
+Precise diagnosis of illegal
+universal evaluation, Cauchyinduction mistakes, computation/proof horizons, and exactoutput demands.
+
+A contract does not by itself provide geometric overlap objects, localization equality, or a sheaf gluing
+formula.
+
+ipra_embedding_frame
+work
+
+ipra_finite_observation
+
+Exact global branch data and general height bounds remain separate
+producer problems.
+All algorithms below are fixed PR
+constructions; no universal interpreter is introduced.
+
+Certified Zariski descent in iPRA
+
+Packet
+
+Existing contribution
+
+ipra_coherent_methods
+
+Coherent finite presentations
+and several small genuine Pr
+fPRAAx derivations.
+Variable-length recursion and
+numerical local-to-global rules.
+
+ipra_local_global
+ipra_f inite_use_fram
+ework
+
+ipra_stable_observable
+s
+diophantine_geometry
+_ipra
+
+9/51
+
+Boundary retained here
+
+The weighted and object-specific applications are not automatically embedded.
+Zariski localization and module descent require additional algebraic
+witness calculus.
+Relational finite-use compo- The present package uses that phisition, backward viability, losophy but adds exact localization,
+branch-invariant
+outputs, unit-ideal covers, and sheaf equalizrobust covers, and root ers.
+clusters.
+Exact or stable observables, A certificate verifier is not a certifimatrix certificates, and impos- cate producer; this distinction resibility of complete effective mains explicit.
+bound certificates in general.
+Rational projective point codes, It treats points and heights rather
+heights, conics, local obstruc- than a general scheme/atlas/sheaf
+tions, explicit descent, and con- layer.
+ditional finite generation.
+
+The most recent finite-use packet is especially close in spirit. It allows a producer to return a finite
+relation of locally valid answers and lets a bounded consumer choose a viable transcript. That is
+useful for chart selection and root clusters. It does not, however, supply the algebraic identity that
+makes a principal-open cover jointly monic or the formula that glues compatible module fractions.
+Those are the central additions here.
+
+2.3
+
+Difficulties recorded by theorem-specific packets
+
+The theorem packets identify several logically distinct obstacles.
+1. No universal PR evaluator. An inductive Lean datatype of PR programs does not give an
+iPRA function evaluating arbitrary program codes. Every evaluator in this package is fixed
+syntactically, or a finite trace is supplied and checked.
+2. No induction on infinitary predicates. Cauchy convergence, sheafhood over all opens, or
+ideal equality by unbounded search cannot be the induction formula. Finite prefix folds and
+explicit witnesses replace them.
+3. Exact choice can be discontinuous. Singular Puiseux branches and arbitrary Cauchy
+coefficient zero tests remain outside a uniform exact interface. Relational chart data or supplied
+separation witnesses are required.
+4. Cardinality does not locate points. The Faltings and Siegel packets stress that a bound
+on the number of rational or integral points is not a height cutoff and does not terminate
+enumeration.
+5. Descent requires actual representatives. The Mordell–Weil packet can consume a finite
+list covering a quotient but does not manufacture rational representatives from abstract Selmer
+data.
+
+Certified Zariski descent in iPRA
+
+10/51
+
+6. Native Lean is not object iPRA. Several packets check host-level finite arithmetic but do
+not construct the corresponding PrfPRAAx value.
+The geometric framework below resolves none of the genuinely missing height or representative
+producer theorems. It does resolve a different structural difficulty: how to represent quotient rings,
+localizations, finite covers, gluing, and projective cohomology without silently using classical quotient
+types, prime spectra, arbitrary choice, or induction beyond iPRA.
+
+2.4
+
+Why the Wikipedia checklist is useful but insufficient
+
+The user-specified overview divides algebraic geometry into polynomial zero sets, affine and projective
+varieties, computational methods, and the modern scheme/sheaf viewpoint. Each item requires a
+different iPRA representation:
+• polynomial zero sets use finite polynomial evaluation and bounded point searches;
+• affine geometry uses finitely presented coordinate rings;
+• projective geometry uses homogeneous presentations and finite standard charts;
+• computational geometry uses certificate-checked reductions rather than an assumed terminating
+universal algorithm;
+• schemes and sheaves use finite affine atlases and descent equalizers rather than an internally
+completed topology of prime ideals.
+The rest of the report supplies one common architecture for these representations.
+
+3
+
+A general framework: certified presentations and finite descent
+
+3.1
+
+The five-layer architecture
+
+A reusable embedding of mathematics into iPRA should make the transition from ordinary mathematical language to arithmetic explicit. The following five layers are sufficient for the examples in
+this report and subsume the earlier finite-contract methodology.
+Layer 1: numerical representation.
+Every datum is a natural-number code. Lists, trees, signed integers, polynomials, matrices, and
+finite diagrams have primitive-recursive constructors and bounded accessors. Malformed inputs
+are handled by total default values; a separate predicate Valid(x) states the intended domain.
+Layer 2: proof-relevant equality.
+An object code need not have a canonical normal form. Equality is witnessed by a code
+w satisfying EqW(x, y, w). The checker is primitive recursive, and fixed primitive-recursive
+transformers produce witnesses for reflexivity, symmetry, transitivity, and congruence.
+Layer 3: static algebra and finite diagrams.
+Operations are fixed PR functions on codes. A finite diagram consists of finitely many objects,
+arrows, and compatibility witnesses. There is no quantification over an open-ended universe of
+programs or objects.
+Layer 4: observations, covers, and descent.
+A theorem asks only for a finite observation: a bounded coefficient identity, a local section on
+a finite cover, a finite Čech class, or a finite error bound. Local answers are composed using
+explicit compatibility and gluing certificates.
+
+Certified Zariski descent in iPRA
+
+11/51
+
+Layer 5: object-theory reflection.
+The finite checker and constructor are represented by PR terms. Their loop invariants are
+quantifier-free formulas. The result is assembled as a term of type Prf PRAAx Γ φ.
+The architecture is deliberately asymmetric. A witness may certify a correct output even when no
+uniform procedure can discover that witness from the raw input. This is not a defect: it isolates the
+actual mathematical producer theorem.
+
+3.2
+
+Certified setoids
+
+Definition 3.1 (Certified setoid). A certified setoid consists of fixed primitive-recursive functions
+Valid(x),
+
+EqW(x, y, w),
+
+refl(x),
+
+sym(x, y, w),
+
+trans(x, y, z, u, v),
+
+together with iPRA derivations of
+Valid(x) → EqW(x, x, refl(x)),
+EqW(x, y, w) → EqW(y, x, sym(x, y, w)),
+EqW(x, y, u) ∧ EqW(y, z, v) → EqW(x, z, trans(x, y, z, u, v)).
+The existential relation x ≃ y :⇔ ∃w EqW(x, y, w) is the represented equality.
+No decision procedure for x ≃ y is required. A theorem using an equality carries the witness it
+needs. This representation is stronger than merely declaring an equivalence relation: it makes proof
+composition an explicit finite operation.
+Definition 3.2 (Certified map). A certified map F : A → B is a fixed PR function on codes, a
+domain-preservation proof, and a PR witness transformer F∗ satisfying
+EqWA (x, y, w) → EqWB (F x, F y, F∗ (x, y, w)).
+Certified maps compose by ordinary function composition and composition of witness transformers.
+Identity maps use the supplied reflexivity witness. Thus represented objects and certified maps form
+a category at the metalevel, while every individual composition is a finite arithmetic construction.
+Proposition 3.3 (Finite extensional compilation). Fix certified setoids, certified maps, and a
+finite expression tree built from their operations. A witness that corresponding leaves are equal can
+be transformed primitive-recursively into a witness that the two expression values are equal. The
+correctness proof uses only structural recursion on the fixed expression and quantifier-free induction
+for the bounded list folds occurring in the code.
+Proof. At each operation node apply its congruence transformer. At a finite-list node fold the binary
+transformer while maintaining the quantifier-free invariant that the current accumulator pair has a
+valid equality witness. Since the expression tree is fixed before the theorem is formed, the metalevel
+structural recursion produces a finite derivation; it is not an object-level truth predicate.
+
+Certified Zariski descent in iPRA
+
+3.3
+
+12/51
+
+Algebraic structures without quotient types
+
+A certified ring is a certified setoid equipped with PR operations 0, 1, +, −, · and witness transformers
+for congruence. Its ring laws are finite families of equality witnesses. A certified module similarly
+supplies addition, negation, scalar multiplication, and their congruence data.
+This formulation accommodates several common representations:
+• rational numbers as numerator/positive-denominator pairs with cross-multiplication witnesses;
+• projective points as primitive coordinate tuples with scaling witnesses;
+• quotient rings as polynomial codes with ideal-combination witnesses;
+• localization fractions with annihilator witnesses;
+• Cauchy names observed only to a finite precision, with quantitative closeness witnesses;
+• chain complexes whose equality is coefficientwise certificate equality.
+The key gain is uniformity. Once an operation has a congruence transformer, all later constructions
+can use it without deciding a quotient equality or selecting a canonical representative.
+
+3.4
+
+Finite diagrams and descent objects
+
+A finite diagram has a natural-number bound r on its objects and finitely coded arrows. Source,
+target, identity, and composition are fixed PR functions. Equality of arrows is proof-relevant. A
+diagram-valued construction supplies object and arrow codes together with finite commutativity
+witnesses.
+For geometry, a cover is represented by a finite index set i < r, local objects Ai , overlap objects Aijα ,
+and restriction maps. A descent datum is a tuple si with equality witnesses between its restrictions
+on each overlap, plus cocycle witnesses where needed. A gluing contract consists of
+(a) a PR constructor producing a candidate global code;
+(b) PR constructors for the restriction-equality witnesses;
+(c) a PR uniqueness transformer taking local equality witnesses to a global one.
+The principal-open case will supply all three explicitly. More general finite sites can take them as
+verified primitives or reduce them to principal refinements.
+
+3.5
+
+Exact, relational, and approximate outputs
+
+The framework has three output modes.
+Exact certificate mode.
+A quotient identity, localization equality, or matrix equation is returned with an exact finite
+witness. This is the main mode of the algebraic geometry developed below.
+Relational finite-use mode.
+A producer supplies a finite relation of possible charts, branches, or refinements. A bounded
+consumer uses the repository’s finite-use viability construction. The final output must be
+branch-invariant or quantitatively stable.
+Approximation mode.
+A represented infinite object is queried only to finitely many precisions. A modulus, apartness
+witness, or error DAG determines the demanded input precision. Exact algebraic conclusions
+
+Certified Zariski descent in iPRA
+
+13/51
+
+may not be inferred without exact separation data.
+These modes can be mixed. For example, a singular variety may be covered by a finite relation of
+candidate charts, while each chosen chart carries exact polynomial and localization certificates. The
+finite-use framework handles chart choice; the certified atlas handles algebraic gluing.
+
+3.6
+
+The no-universal-evaluator discipline
+
+Nothing above licenses a PR function that evaluates arbitrary encoded PR programs. There are
+two sound implementation patterns:
+1. the theorem fixes a particular function code built from the constructors of PR;
+2. the input contains a finite execution trace and a fixed checker verifies each transition.
+A degree parameter, number of variables, cover size, or matrix dimension may be an ordinary
+numerical input to one fixed evaluator. What is forbidden is replacing that evaluator by a universal
+interpreter whose termination or primitive recursiveness has not been established.
+
+4
+
+Finitely presented algebra with proof-relevant equality
+
+4.1
+
+Polynomial codes
+
+Fix a number n of variables. A monomial is a vector α = (α0 , . . . , αn−1 ) ∈ Nn , encoded by a finite
+tuple. A polynomial over Z is a finite list of coefficient–monomial pairs. The code need not be
+normalized: duplicate monomials and zero coefficients are allowed. Evaluation, addition, negation,
+multiplication, substitution, coefficient collection on a supplied finite degree box, and equality of
+collected coefficient vectors are primitive recursive.
+There are two legitimate equality interfaces.
+1. A canonical normalization algorithm may be used when coefficient equality is decidable and
+the required sorting/collection procedure has been represented.
+2. More generally, a coefficientwise identity is supplied as a finite certificate. This avoids requiring
+a global normal form and extends directly to coefficients in a certified ring.
+The second interface is foundational below. Gröbner bases can accelerate witness production, but
+are not required for the definition of quotient equality.
+
+4.2
+
+Quotient rings by ideal-combination witnesses
+
+Let
+
+A = Z[X0 , . . . , Xn−1 ]/(g0 , . . . , gr−1 ).
+
+An element of A is represented by a polynomial code. A witness that p and q represent the same
+element is a vector of polynomial codes h = (h0 , . . . , hr−1 ) satisfying
+p−q =
+
+X
+i<r
+
+coefficientwise.
+
+hi gi
+
+(1)
+
+Certified Zariski descent in iPRA
+
+14/51
+
+Theorem 4.1 (Exact certified presentation of a quotient ring). The checker for (1) and the following
+witness transformers make polynomial codes into a certified commutative ring presenting A:
+refl(p) = (0, . . . , 0),
+sym(h) = (−h0 , . . . , −hr−1 ),
+trans(h, k) = (h0 + k0 , . . . , hr−1 + kr−1 ).
+Addition, negation, and multiplication admit primitive-recursive congruence transformers.
+Proof. Reflexivity, symmetry, and transitivity follow by the corresponding polynomial identities.
+P
+P
+Suppose p − p′ = hi gi and q − q ′ = ki gi . Then
+(p + q) − (p′ + q ′ ) =
+
+X
+
+(hi + ki )gi ,
+
+i
+
+and
+
+pq − p′ q ′ = (p − p′ )q + p′ (q − q ′ ) =
+
+(hi q + p′ ki )gi .
+
+X
+i
+
+These formulas are the required witness transformers. Negation sends hi to −hi . Ring laws are
+literal polynomial identities and therefore have fixed zero or elementary coefficient certificates. Every
+operation is a bounded fold over finite polynomial lists, so its correctness is proved by quantifier-free
+induction on a list index.
+The relation is complete by definition of the generated ideal: p and q have equal quotient classes
+exactly when some finite list hi satisfies (1). Completeness does not imply a primitive-recursive
+search that finds h from p, q in every presentation. The certificate may be an input or the output of
+a separately justified algorithm.
+
+4.3
+
+Presented algebras over a certified base ring
+
+The same construction works over any fixed certified commutative ring R. Polynomial coefficients
+are R-codes; coefficient identities carry R-equality witnesses; and the ideal witness includes both
+multiplier polynomials and the coefficientwise equality certificates. A uniform theorem may quantify
+over a finite presentation code only when the base-ring operations and their correctness proofs are
+supplied through a fixed interface. It may not call an arbitrary ring program stored in the input.
+Nested presentations can be flattened. If R = Z[Y ]/J and A = R[X]/I, replace every coefficient by
+a Y -polynomial and present A directly as a quotient of Z[Y, X] by J together with lifted generators
+of I. The flattening algorithm is primitive recursive and preserves every supplied ideal witness by
+substitution.
+
+4.4
+Let
+
+Morphisms and their certificates
+A = Z[X0 , . . . , Xn−1 ]/(g0 , . . . , gr−1 ),
+
+B = Z[Y0 , . . . , Ym−1 ]/(h0 , . . . , hs−1 ).
+
+A presented ring map ϕ : A → B consists of polynomials p0 (Y ), . . . , pn−1 (Y ) and, for each gi , a
+witness
+X
+gi (p0 , . . . , pn−1 ) =
+aij hj .
+j<s
+
+Certified Zariski descent in iPRA
+
+15/51
+
+The induced map sends q(X) to q(p(Y )). If q − q ′ =
+
+P
+
+bi gi , then substitution gives
+!
+
+q(p) − q ′ (p) =
+
+X
+
+bi (p)gi (p) =
+
+i
+
+X X
+j
+
+bi (p)aij hj ,
+
+i
+
+so the map has an explicit equality-witness transformer.
+Composition substitutes the image tuple of one map into the other and composes the relation
+certificates by the displayed formula. Identity maps use the coordinate variables. An isomorphism
+certificate is a pair of presented maps plus coordinatewise witnesses that both composites equal the
+identities. Thus affine morphisms and affine isomorphisms are finite arithmetic data.
+
+4.5
+
+Modules, matrices, kernels, and cokernels
+
+A finitely presented A-module is given by a matrix R : Au → Av and the cokernel presentation
+Av / im R. A vector equality witness is a coefficient vector z ∈ Au satisfying x − y = Rz, with
+componentwise ring witnesses. The same witness algebra as in Theorem 4.1 gives a certified module.
+Matrix multiplication, direct sums, tensor-presentation matrices, dual maps, Koszul differentials, and
+finite chain complexes are all primitive recursive on finite codes. Kernel membership is expressed by
+a checked equation Rx = 0; image membership by a witness x = Ry; and exactness at a particular
+element by an explicit preimage witness. This is exactly the level needed for finite Čech arguments.
+
+4.6
+
+Gröbner bases as optional certificates
+
+A Gröbner basis is valuable for producing ideal witnesses and normal forms, but the foundational
+interface should not assume that a uniform unbounded Buchberger run is a primitive-recursive
+oracle. Three safe modes are available.
+Verification mode.
+The input contains a proposed basis, representations of its elements in the original ideal,
+reduction traces for the original generators, and reductions of all relevant S-polynomials to
+zero. A fixed checker verifies Buchberger’s criterion and every identity.
+Fuelled mode.
+A fixed Buchberger evaluator runs for a supplied bound and returns its finite trace. Soundness
+of a successful output is proved; failure to finish within the bound makes no completeness claim.
+Bounded-family mode.
+For a family with a separately proved degree/size bound, the bound becomes the fuel for a
+total primitive-recursive constructor.
+This separation matters for computational algebraic geometry. Ideal membership certificates,
+Hilbert-function tables, elimination identities, and finite standard-monomial bases can all be checked
+in iPRA even when their general-purpose discovery algorithm is not part of the theorem.
+
+4.7
+
+A small exact example
+
+In Z[x]/(x2 − 2) the equality x4 = 4 is certified by
+x4 − 4 = (x2 + 2)(x2 − 2).
+
+Certified Zariski descent in iPRA
+
+16/51
+
+The executable companion represents each polynomial sparsely and verifies this coefficientwise.
+Nothing is inferred from an approximate root of x2 − 2; the quotient identity is exact finite algebra.
+
+5
+
+Localization as a certified setoid
+
+5.1
+
+Fractions and equality witnesses
+
+Let A be a certified commutative ring and fix f ∈ A. A code for an element of Af is a pair (a, n),
+written a/f n . The pair is valid when a is a valid A-code. Equality is not defined by normalizing
+fractions. A witness from a/f n to b/f m is
+(a) a natural number k, and
+(b) an A-equality witness for
+
+f k f m a − f n b = 0.
+
+
+(2)
+
+This is the standard equality relation for localization at {1, f, f 2 , . . .}, made proof-relevant.
+Theorem 5.1 (Localization witness calculus). The relation (2) is an equivalence relation. Addition
+and multiplication
+a
+b
+f ma + f nb
+a b
+ab
++
+=
+,
+= n+m
+fn fm
+f n+m
+fn fm
+f
+are certified congruent operations. All witness transformers are primitive recursive.
+Proof. For reflexivity choose k = 0 and the certificate for f n a − f n a = 0. Symmetry uses the same
+k and negates the base equality.
+For transitivity, suppose
+f k (f m a − f n b) = 0,
+f ℓ (f r b − f m c) = 0.
+Multiply the first identity by f ℓ+r and the second by f k+n , then add. The middle terms cancel and
+give
+f k+ℓ+m (f r a − f n c) = 0.
+Thus a valid killing exponent for the composite witness is k + ℓ + m, where m is the denominator
+exponent of the middle fraction. The new base-ring witness is constructed from the old ones using
+multiplication congruence, addition, and the distributive-law certificates.
+For addition and multiplication, expand the cross-multiplied difference of the outputs. It is a finite
+sum of multiples of the two input differences. If input witnesses kill those differences by f k and f ℓ ,
+′
+′
+then multiplying by a sufficiently large explicit power, for example f k+ℓ+n+m+n +m , kills the output
+difference. A sharper exponent is easy but unnecessary. The expansion and witness combination
+are fixed polynomial identities, hence primitive recursive.
+The theorem remains valid with zero divisors. The killing exponent is essential precisely because
+cross multiplication need not be cancellative.
+
+Certified Zariski descent in iPRA
+
+5.2
+
+17/51
+
+Localization of modules
+
+For an A-module M , represent an element of Mf by x/f n and witness equality by
+f k (f m x − f n y) = 0M .
+The preceding proof uses only additivity and scalar multiplication, so it carries over verbatim. The
+restriction map M → Mf sends x to x/f 0 . Equality of two restricted elements is witnessed by a
+local annihilation equation f k (x − y) = 0.
+If g ∈ A, restriction from Mf to Mf g sends
+x
+gnx
+−
+7
+→
+.
+fn
+(f g)n
+This formula is preferable to an abstract universal property in an object-theory implementation: it
+is a fixed primitive-recursive map, and its functoriality is a finite polynomial identity.
+
+5.3
+
+Universal property in certificate form
+
+Suppose ϕ : A → B is a certified ring map and u is a supplied inverse witness for ϕ(f ), that is, a
+code v ∈ B with certificates
+ϕ(f )v = 1,
+vϕ(f ) = 1.
+Then
+
+n
+e
+ϕ(a/f
+) = ϕ(a)v n
+
+defines a certified map Af → B. If (2) holds, applying ϕ and multiplying by the appropriate power
+of v proves equality of the images. Uniqueness is checked on a supplied fraction by the equation
+a/f n = (a/1)(1/f )n .
+Thus the universal property can be used in iPRA as a family of finite witness transformations,
+without quantifying over a completed class of all ring maps.
+
+5.4
+
+Localizing a presented quotient
+
+Let A = R[X]/I be represented by ideal-combination witnesses. A localization equality witness for
+p/f n and q/f m consists of a killing exponent k and multipliers hi satisfying
+f k (f m p − f n q) =
+
+X
+
+hi gi
+
+i
+
+in the polynomial ring. This is a single coefficientwise certificate. Hence quotient formation and
+localization compose without choosing normal forms.
+The same presentation can be flattened algebraically:
+(R[X]/I)f ∼
+= R[X, T ]/(I, T f − 1).
+The map from a fraction sends p/f n to pT n ; the inverse sends T to 1/f . Both composites have explicit
+relation witnesses. The fraction presentation is usually smaller for gluing, while the polynomial
+presentation is convenient for elimination and finite-presentation libraries.
+
+Certified Zariski descent in iPRA
+
+5.5
+
+18/51
+
+Primitive-recursive implementation and induction audit
+
+The code operations needed here are bounded exponentiation, tuple access, polynomial addition and
+multiplication, and witness-vector combination. Exponentiation is primitive recursion on n with
+the quantifier-free invariant that the accumulator equals the requested finite power. Polynomial
+operations are bounded folds over finite lists. No induction formula asserts that two localization
+classes are equal; it asserts only that a concrete, checked equality witness has been transformed
+correctly.
+
+6
+
+The explicit power-cover lemma
+
+6.1
+
+Unit-ideal covers
+
+For a ring A, a finite family of principal opens D(f0 ), . . . , D(fr−1 ) covers Spec(A) exactly when
+the elements fi generate the unit ideal. In the present framework the cover is not represented by
+quantifying over prime ideals. It is represented by coefficients ci ∈ A and an equality witness for
+X
+
+ci fi = 1.
+
+(3)
+
+i<r
+
+This certificate is finite, stable under ring maps, and directly usable by an arithmetic proof.
+Gluing fractions usually requires a common denominator power. The same principal opens are also
+a cover after replacing every fi by fiN , but an iPRA proof needs explicit coefficients.
+Theorem 6.1 (Power-cover constructor). Let r ≥ 1, let fi , ci ∈ A satisfy (3), and let N ≥ 1. There
+is an explicit primitive-recursive construction of coefficients di such that
+X
+
+di fiN = 1.
+
+(4)
+
+i<r
+
+The construction is uniform in the finite ring codes, r, and N .
+Proof. Set
+
+M = r(N − 1) + 1.
+
+Expand the finite power of (3):
+!M
+
+1=
+
+X
+i<r
+
+ci fi
+
+=
+
+X
+α∈Nr
+|α|=M
+
+M
+α
+
+!
+
+Y αj αj
+
+cj fj .
+
+(5)
+
+j<r
+
+For every exponent vector α of total degree M , some coordinate satisfies αi ≥ N . Otherwise
+|α| ≤ r(N − 1) < M . Choose the least such i and assign the corresponding term of (5) to bucket
+i. Factor fiN from every term in bucket i and let di be the sum of the residual factors. Then the
+buckets partition the finite expansion, so (4) follows.
+The proof is constructive even over rings with zero divisors. It uses no radical membership, prime
+ideal, compactness, or excluded middle beyond comparisons of natural-number exponents.
+
+Certified Zariski descent in iPRA
+
+6.2
+
+19/51
+
+Exact coefficient formula
+
+For reproducibility, define
+
+ι(α) = min {i < r : αi ≥ N } .
+
+Then
+
+!
+
+di =
+
+X
+|α|=M
+ι(α)=i
+
+M αi αi −N Y αj αj
+c f
+cj fj .
+α i i
+j̸=i
+
+(6)
+
+The finite weak compositions of M into r parts can be enumerated by nested primitive recursion.
+The multinomial coefficient is computed from bounded products and exact divisions, or avoided
+entirely by an iterative expansion that carries multiplicities by repeated addition.
+
+6.3
+
+An iPRA-friendly iterative proof
+
+Formula (6) is mathematically transparent, but the object proof need not formalize factorials. A
+more direct implementation maintains a finite polynomial table indexed by exponent vectors with
+coordinates at most M . Starting from the constant table 1, perform M rounds of multiplication by
+P
+ci fi . The quantifier-free invariant states:
+(i) every occupied exponent vector has total degree equal to the round number;
+(ii) the sum of table entries times their monomials equals the current power;
+(iii) each entry is the accumulated coefficient obtained by the fixed update rule.
+After round M , scan the finite table, choose the least coordinate at least N , and add the factored
+term to the corresponding di . A second quantifier-free invariant states that the processed prefix of
+P
+the table equals the partial sum i di fiN . This route uses only finite arrays, bounded comparison,
+and ring operations already available in the presentation.
+
+6.4
+
+Examples and validation
+
+For f0 = 2, f1 = 3, c0 = −1, and c1 = 1, the basic cover certificate is −2 + 3 = 1. At power N = 2,
+the constructor used in the executable companion returns
+d0 = 7,
+and indeed
+
+d1 = −3,
+
+7 · 22 − 3 · 32 = 28 − 27 = 1.
+
+The same algorithm was tested in Z/12Z with f0 = 3, f1 = 4 and c0 = 3, c1 = 1, since 3 · 3 + 1 · 4 = 1
+(mod 12). This test is useful because neither principal element is cancellable and localization
+witnesses genuinely need annihilating powers.
+
+6.5
+
+Functoriality
+
+If ϕ : A → B is a certified ring map, applying ϕ to the input cover and to every operation in (6)
+gives exactly the power-cover coefficients constructed in B. Thus the constructor is functorial up
+to the supplied equality witnesses. This fact later makes atlas refinement and base change finite
+certificate transformations rather than new existence proofs.
+
+Certified Zariski descent in iPRA
+
+20/51
+
+7
+
+Explicit principal-cover gluing
+
+7.1
+
+Statement
+
+Let A be a commutative ring, M an A-module, and suppose
+X
+
+ci fi = 1.
+
+i<r
+
+For each i, let a local section on D(fi ) be represented by
+si =
+
+mi
+∈ Mf i .
+fini
+
+On the overlap D(fi fj ), the two restrictions are represented after denominator homogenization by
+fractions in the single localization Mfi fj .
+Theorem 7.1 (Primitive-recursive Zariski gluing). Assume that for every i, j < r a finite localization
+witness proves that si and sj agree in Mfi fj . Then an explicit primitive-recursive formula produces
+m ∈ M and witnesses that m/1 = si in every Mfi . If two global sections have the same restrictions,
+an explicit primitive-recursive witness proves them equal. The theorem is valid over rings with zero
+divisors.
+This is the sheaf equalizer theorem for the quasi-coherent module associated to M , presented in a
+form directly usable by iPRA.
+
+7.2
+
+Denominator homogenization
+
+Set
+
+N = max ni ,
+i<r
+
+ai = fiN −ni mi .
+
+Then si = ai /fiN . An overlap witness can be written as an exponent kij satisfying
+(fi fj )kij fjN ai − fiN aj = 0M .
+
+
+(7)
+
+The witness includes the module-equality certificate for this equation. Let
+K = max kij ,
+i,j<r
+
+q = N + K + 1,
+
+bi = fiq−N ai = fiK+1 ai .
+
+Multiplying (7) by the remaining powers needed to reach K gives
+fjq bi = fiq bj
+
+(i, j < r).
+
+(8)
+
+Indeed the difference of the two sides equals
+fi fj (fi fj )K (fjN ai − fiN aj ),
+which is zero by the synchronized overlap witness. The harmless extra +1 in q avoids a special case
+when every denominator and every killing exponent is zero.
+
+Certified Zariski descent in iPRA
+
+7.3
+
+21/51
+
+Construction of the global section
+
+Apply Theorem 6.1 to the exponent q. It returns di satisfying
+X
+
+di fiq = 1.
+
+i<r
+
+Define
+
+m=
+
+X
+
+(9)
+
+di bi .
+
+i<r
+
+For a fixed chart j, use (8):
+fjq m =
+
+X
+
+=
+
+X
+
+di fjq bi
+
+i
+
+di fiq bj
+
+i
+
+= bj .
+n
+
+Thus m/1 = bj /fjq = aj /fjN = mj /fj j in Mfj . Every equality in this calculation is accompanied
+by a finite witness obtained from module distributivity, the pairwise cross witnesses, and the
+power-cover certificate.
+This proves existence without search. Once the overlap witnesses and the unit-ideal cover are in
+hand, the global section is a fixed bounded formula.
+
+7.4
+
+Uniqueness
+
+Suppose m, m′ ∈ M have equal restrictions in every Mfi . For each i, let ei witness
+fiei (m − m′ ) = 0.
+Set E = 1 + maxi ei . Then fiE (m − m′ ) = 0 for every i. Use the power-cover constructor to find ui
+P
+with ui fiE = 1. Therefore
+X
+m − m′ =
+ui fiE (m − m′ ) = 0.
+i
+
+This is a direct equality witness in M . No cancellation, prime ideal argument, or excluded middle is
+used.
+Corollary 7.2 (Finite principal-cover equalizer). The sequence
+0 −→ M −→
+
+Y
+i<r
+
+M fi ⇒
+
+Y
+
+M fi fj
+
+i,j<r
+
+is exact in the following certificate sense:
+(a) the first map has an explicit joint-monicity witness transformer;
+(b) every tuple with supplied pairwise compatibility witnesses has an explicitly constructed preimage;
+(c) the restriction witnesses and uniqueness witness are primitive recursive in the input codes.
+Finite products are coded by lists, so the theorem is a statement entirely about natural numbers.
+The use of the word “exact” does not import an abstract abelian-category library.
+
+Certified Zariski descent in iPRA
+
+7.5
+
+22/51
+
+A zero-divisor example
+
+Take A = M = Z/12Z, f0 = 3, f1 = 4, and cover coefficients c0 = 3, c1 = 1:
+3 · 3 + 1 · 4 = 13 = 1
+
+(mod 12).
+
+The local numerators 9 on D(3) and 8 on D(4) both represent the global class 5:
+3(9 − 5) = 0,
+
+4(8 − 5) = 0
+
+(mod 12).
+
+On the overlap, (3 · 4)1 = 0 kills every difference, so the compatibility witness has exponent one.
+The gluing algorithm takes N = 0, K = 1, q = 2 if the displayed formula is used literally. A slightly
+optimized implementation uses q = 1 because the synchronized cross identity already holds; either
+choice is sound. The executable companion uses the optimized exponent and returns the unique
+global class 5.
+This example demonstrates why localization equality must retain killing exponents. Cross multiplication alone would not be a cancellative equality test in a ring with zero divisors.
+
+7.6
+
+Primitive-recursive complexity
+
+All loops are bounded by primitive-recursive terms in the input lengths and exponents:
+• scanning the ni and kij uses bounded maxima;
+• exponentiation uses primitive recursion;
+• the power-cover constructor enumerates finitely many weak compositions or performs a bounded
+iterative expansion;
+• the final sums are finite module folds.
+A convenient quantifier-free invariant for the final fold over i < t is
+!
+
+fjq mt =
+
+X
+
+di fiq
+
+bj ,
+
+i<t
+
+where mt = i<t di bi . The invariant is an equality of coded module terms with a concrete witness
+accumulator. It contains no quantification over local sections or opens.
+P
+
+7.7
+
+Refinements and iterated covers
+
+If a chart D(fi ) is further covered by principal opens D(fi giα ) with a local unit-ideal certificate
+in Afi , clear the finitely many denominators in that certificate and obtain a power cover in A.
+Gluing first within each chart and then across the outer cover agrees with gluing on the flattened
+refinement. The proof follows uniqueness: both constructions have the same restrictions on every
+refined principal piece, so the global outputs are equal.
+Thus finite cover refinement is coherent without choosing canonical normal forms. This is the basic
+associativity needed to build finite affine atlases and sheaf data.
+
+Certified Zariski descent in iPRA
+
+23/51
+
+8
+
+Certified finite affine atlases
+
+8.1
+
+Strict principal atlases
+
+The simplest geometric gluing object has one principal overlap for each ordered pair of charts.
+Definition 8.1 (Strict certified affine atlas). A strict certified affine atlas consists of:
+(a) a positive integer r and finitely presented rings Ai for i < r;
+(b) elements fij ∈ Ai for every i, j < r, with fii = 1;
+(c) certified isomorphisms
+∼
+ϕij : (Ai )fij −
+→ (Aj )fji ;
+(d) identity witnesses for ϕii and inverse witnesses for ϕji ϕij = id;
+(e) on every triple (i, j, k), a finite common localization and a witness that
+ϕik = ϕjk ϕij
+there.
+Every ring, element, map, localization, and equality in this definition is a natural-number code with
+the certificates described in the preceding sections.
+Externally, the usual gluing theorem for schemes turns this data into a scheme covered by the affine
+schemes Spec(Ai ). Internally, no topological quotient is needed. A theorem about the glued object
+is translated into a finite theorem about the charts and the certified overlap maps.
+The strict form already covers projective space: on the chart Xi ̸= 0, the overlap with the chart
+Xj ̸= 0 is the principal open where Xj /Xi is invertible.
+
+8.2
+
+Finite principal-overlap atlases
+
+Pairwise intersections of affine opens need not always be one principal open. The practical extension
+replaces fij by a finite family fijα , each giving a principal overlap piece. The data include:
+• a unit-ideal or relative-cover certificate that the pieces cover the intended intersection;
+• a localization isomorphism on every piece;
+• compatibility witnesses on double refinements;
+• cocycle witnesses on triple refinements.
+The principal-cover gluing theorem proves that chartwise constructions independent of the chosen
+piece descend to the whole intersection. Refinement coherence follows from uniqueness. Thus the
+additional indexing is finite bookkeeping rather than a new logical principle.
+
+8.3
+
+The internal geometric language
+
+A finite atlas supports the following notions without constructing an internal prime spectrum.
+Regular function.
+A tuple ai ∈ Ai with localization equality witnesses ϕij (ai ) = aj on overlaps. The principal-cover
+theorem glues such tuples whenever one chart is itself presented by a finite principal cover.
+
+Certified Zariski descent in iPRA
+
+24/51
+
+Morphism.
+A chartwise finite family of presented ring maps in the contravariant direction, together with a
+finite target-chart cover and overlap commutativity witnesses. Relational finite-use composition
+may choose among several valid target charts; the induced map on an invariant observation is
+choice-free.
+Open subobject.
+A finite family of principal elements on each chart with compatibility certificates under overlap
+maps. Union and intersection are computed by concatenation and products of principal
+elements.
+Closed subobject.
+A finite ideal presentation on each chart, stable under localization and equipped with overlap
+identities. A global finitely presented closed subscheme is represented by finitely many local
+relation lists.
+Point over a presented ring R.
+A compatible family of certified ring maps Ai → R on a selected chart cover, or more commonly a
+single chart map with a certificate that its denominators are invertible. Projective homogeneous
+coordinates are a compact specialized presentation of the same data.
+These are theorem-relative representations. A statement requiring only chartwise equations never
+needs to enumerate the topological points of the scheme.
+
+8.4
+
+Atlas morphisms and refinement
+
+A refinement replaces a chart Ai by a finite principal cover. Its certificate contains the unit-ideal
+relation and the localization maps. A common refinement of two finite atlases is formed by taking
+finite pairwise intersections and then principal refinements. All index bounds are primitive recursive
+in the atlas sizes.
+Proposition 8.2 (Refinement invariance). Suppose a finite atlas observation is defined by compatible
+local data and has uniqueness under the principal-cover equalizer. Then its value is invariant, with
+an explicit equality witness, under finite principal refinement.
+Proof. Pull the data to the common refinement. Both candidate values have equal restrictions on
+every refined principal piece. Apply principal-cover uniqueness chart by chart and then on the outer
+finite atlas. The resulting equality witness is obtained by nested applications of the power-cover
+constructor.
+This proposition supplies the practical replacement for proving equality of two constructions on all
+open sets.
+
+8.5
+
+Base change and fiber products
+
+For presented affine rings, tensor products have explicit presentations. If A ← R → B are finitely
+presented, then A⊗R B is presented by the combined variables and relations, together with equations
+identifying the two images of the generators of R. The construction is primitive recursive on the
+finite presentations.
+
+Certified Zariski descent in iPRA
+
+25/51
+
+Base-changing an atlas along a presented morphism applies this tensor construction chartwise and
+base-changes each localization certificate. Fiber products of finite atlases are obtained by the finite
+product of chart index sets. Overlap cocycles are inherited by functoriality of localization and
+tensor-product maps. Thus many finite-limit constructions in algebraic geometry fit the same
+certificate language.
+
+8.6
+
+Properties as finite certificates
+
+Some geometric properties have direct finite witnesses on a chosen atlas:
+• finite presentation: already part of every chart and morphism code;
+• separatedness: a finite presentation/certificate for each affine diagonal or, in common cases,
+affine pairwise intersections with multiplication-map surjectivity witnesses;
+• smoothness of a fixed relative dimension: a finite principal cover on which specified Jacobian
+minors are invertible, together with identities certifying the relations and rank;
+• finite locally free module of rank d: local bases and inverse matrices on a finite principal cover;
+• proper projective presentation: a closed homogeneous presentation inside a fixed projective
+space.
+These certificates are sufficient conditions with soundness proofs. The framework does not assert
+that a uniform primitive-recursive algorithm discovers such certificates for every input presentation.
+
+8.7
+
+Conventional semantics
+
+Externally, Definition 8.1 is interpreted by the standard gluing theorem for schemes. The finite ring
+maps determine open immersions of affine schemes, and the inverse and cocycle witnesses provide
+the usual gluing datum. Every internal chartwise theorem is sound for the resulting conventional
+scheme because its algebraic restriction maps are exactly the localization maps used by the structure
+sheaf.
+A full formal equivalence between the finite-atlas category and an appropriate category of quasicompact schemes with chosen atlases would be valuable, but it is not required for individual iPRA
+theorems. Each theorem can state its atlas hypotheses explicitly and prove the desired finite
+observation directly.
+
+9
+
+Quasi-coherent modules, vector bundles, and finite Čech complexes
+
+9.1
+
+Affine module data
+
+On an affine chart Ui = Spec(Ai ), a quasi-coherent module is represented by an Ai -module Mi . For a
+finitely presented theory one usually takes a finite presentation matrix, although the principal-cover
+gluing theorem only needs a certified module interface. Restriction to a principal open D(f ) is the
+localization (Mi )f .
+For a strict atlas, descent data for a quasi-coherent module consists of certified isomorphisms
+∼
+
+θij : (Mi )fij −
+→ (Mj )fji
+
+Certified Zariski descent in iPRA
+
+26/51
+
+semilinear with respect to ϕij , together with inverse and triple-cocycle witnesses. With finite
+principal-overlap atlases, the same data are supplied on every overlap piece and checked on finite
+refinements.
+Definition 9.1 (Certified quasi-coherent atlas module). A certified quasi-coherent atlas module is a
+finite affine atlas, one certified module on each chart, and finite localization isomorphism/cocycle
+certificates on the overlaps.
+This definition is purely finite. Its external interpretation is the conventional quasi-coherent sheaf
+obtained by descent.
+
+9.2
+
+Sections and the sheaf equalizer
+
+A global section code is a tuple (si )i<r with si ∈ Mi and overlap witnesses
+θij (si ) = sj .
+If a chart or overlap is represented by several principal pieces, compatibility on those pieces is
+compressed by Theorem 7.1. Equality of global sections is componentwise certificate equality;
+refinement invariance follows from Proposition 8.2.
+For a principal cover of a single affine chart, Corollary 7.2 proves the sheaf condition directly. Hence
+the structure presheaf D(f ) 7→ Af and module presheaf D(f ) 7→ Mf are sheaves on the finite
+standard-open basis in exactly the finite sense used by an iPRA proof.
+
+9.3
+
+Vector bundles and transition matrices
+
+A rank-d vector bundle on a finite atlas is represented by a free module Adi on each chart and
+invertible matrices
+Gij ∈ GLd ((Ai )fij )
+with supplied inverse matrices and cocycle witnesses Gik = Gjk Gij on triple overlaps. All matrix
+identities are finite coefficient identities in localizations. A section is a tuple of vectors vi ∈ Adi
+satisfying vj = Gij vi .
+Line bundles are the case d = 1: transition matrices are units. The twists O(d) on projective space
+have transition units given by integer powers of coordinate ratios. Negative powers live in the
+overlap localization and require no extra total inversion operation outside its certified domain.
+
+9.4
+
+Coherent modules and finite resolutions
+
+A coherent module may be represented chartwise by a finite presentation
+R
+
+i
+Aui i −→
+Avi i → Mi → 0.
+
+Overlap isomorphisms are matrices on generators together with witnesses that they respect relations,
+plus inverse witnesses. Kernels, cokernels, tensor products, and duals are represented by explicit
+finite matrices and relation certificates.
+A finite locally free resolution is especially useful: every differential is a matrix, the equation
+dp−1 dp = 0 is coefficientwise, and exactness at a supplied vector is certified by a preimage. The
+framework can verify a finite resolution without deciding module equality globally.
+
+Certified Zariski descent in iPRA
+
+9.5
+
+27/51
+
+Finite Čech complexes
+
+Let U0 , . . . , Ur−1 be a finite atlas or a finite principal cover. For a module datum F, define the
+ordered Čech group in degree p by the finite direct sum
+Č p (U, F) =
+
+M
+
+F(Ui0 ∩ · · · ∩ Uip ).
+
+i0 <···<ip
+
+Each multiple intersection is represented by an iterated localization or a finite principal refinement.
+The differential is
+(ds)i0 ...ip+1 =
+
+p+1
+X
+
+(−1)a si ...iba ...i
+
+a=0
+
+0
+
+p+1
+
+Ui0 ...ip+1
+
+.
+
+All sums and restrictions are fixed PR operations on finite tuples.
+The identity d2 = 0 is proved by pairing the two ways of deleting two indices; their signs are
+opposite. An iPRA proof enumerates the bounded pairs (a, b) and carries a quantifier-free coefficient
+accumulator. It does not use induction on a statement quantifying over sheaves.
+
+9.6
+
+Cohomology by explicit normal forms
+
+For a finite complex, a cohomology class may be represented in several certificate-relative ways:
+1. a cocycle z with a witness dz = 0, modulo proof-relevant equality z − z ′ = dy;
+2. a supplied direct-sum normal form with constructors for decomposition and uniqueness;
+3. a finite presentation matrix for ker d/ im d;
+4. a contracting homotopy h satisfying hd + dh = 1 on a designated summand.
+The projective-space computation uses the fourth and second forms. Every monomial-weight
+summand is finite and has either a one-dimensional survivor or an explicit insertion homotopy.
+
+9.7
+
+Relation to conventional sheaf cohomology
+
+The arithmetic construction gives exact Čech cohomology of a chosen finite atlas. To identify it
+with derived-functor sheaf cohomology one needs a comparison theorem, usually supplied by affine
+acyclicity for quasi-coherent sheaves and acyclicity of finite intersections. For the standard cover of
+projective space, this is the standard conventional argument.
+There are two honest formalization targets:
+Immediate target.
+Formalize the finite Čech complex and its normal forms in iPRA. This already proves concrete
+local-to-global statements and computes a canonical finite algebraic invariant.
+Extended target.
+Develop a coded homological-algebra library and an affine-acyclicity theorem, then prove that
+the finite Čech result represents the usual sheaf cohomology. This is a larger project and is not
+silently assumed to be complete here.
+The report states conventional cohomology conclusions only with this comparison boundary made
+explicit.
+
+Certified Zariski descent in iPRA
+
+28/51
+
+10
+
+Projective schemes and computational algebraic geometry
+
+10.1
+
+The standard affine charts of Proj
+
+Let
+
+S = R[X0 , . . . , Xn ]/I
+
+be a finitely presented graded ring, with I given by finitely many homogeneous relations. The
+standard chart D+ (Xi ) is represented algebraically by the degree-zero part of the localization SXi .
+For a projective subscheme of PnR , this chart has the familiar finite presentation obtained by setting
+Xi = 1 and introducing affine coordinates
+xij = Xj /Xi
+
+(j ̸= i).
+
+Each homogeneous relation is dehomogenized with respect to Xi .
+The overlap of charts i and j is the principal open in chart i where xij is invertible. The transition
+map is
+xjk 7−→ xik /xij ,
+xji 7−→ 1/xij .
+These formulas are maps of localization presentations. Their inverse and triple-cocycle equations
+are finite rational-function identities, hence localization equality certificates.
+Proposition 10.1 (Finite atlas for a projective presentation). For every fixed finite homogeneous
+presentation of S, the n + 1 standard charts, their principal overlaps, transition maps, inverse
+witnesses, and triple cocycles are primitive-recursively constructible. They form a strict certified
+affine atlas.
+Proof. Dehomogenization is a bounded substitution on each finite polynomial code. The transition
+maps are fixed monomial substitutions into localizations. Applying a homogeneous relation and
+clearing the explicit denominator gives its target relation certificate. The inverse and cocycle
+equations are monomial exponent identities; a bounded coefficient checker verifies them. The
+number of charts and overlaps is finite and bounded by polynomial expressions in n.
+Thus a large class of projective geometry can be developed without defining Proj internally as a set
+of homogeneous prime ideals.
+
+10.2
+
+Homogeneous coordinates and points
+
+For a field or domain with a suitable exact presentation, a projective point may be represented by
+a nonzero tuple (x0 , . . . , xn ) modulo common scaling. The existing Diophantine geometry packet
+uses primitive representatives and height. The atlas representation and homogeneous-coordinate
+representation are complementary:
+• homogeneous coordinates are compact for point enumeration and height arguments;
+• affine charts are natural for local rings, functions, sheaves, Jacobians, and descent;
+• a point with xi invertible maps to chart i by the ratios xj /xi ;
+• two chart descriptions agree by the certified transition maps.
+A theorem may use a finite relational choice of a nonzero coordinate. If its final output is projectively
+invariant, the finite-use framework eliminates dependence on the selected chart. Alternatively, a
+primitive representative over Z can choose the least nonzero coordinate deterministically.
+
+Certified Zariski descent in iPRA
+
+10.3
+
+29/51
+
+Projective morphisms
+
+A tuple of homogeneous forms F0 , . . . , Fm of one common degree defines a projective morphism on
+the locus where they do not vanish simultaneously. A finite certificate for a global morphism on a
+projective subscheme consists of:
+(a) relation witnesses showing that the image satisfies the target homogeneous equations;
+(b) a finite principal-cover certificate that the Fj generate the unit ideal on each source chart, or
+equivalent local nonvanishing certificates;
+(c) chartwise rational formulas and overlap commutativity witnesses.
+Composition substitutes homogeneous forms and multiplies degrees. The relation and base-locus
+certificates transform by finite polynomial identities. Height upper bounds are obtained from
+coefficient norms exactly as in the Diophantine packet; lower bounds still require gcd/resultant or
+base-locus information and are not produced by the atlas formalism alone.
+
+10.4
+
+Jacobian and smoothness certificates
+
+For a closed affine presentation A = R[X]/(g1 , . . . , gs ), the Jacobian matrix is a finite matrix of
+formal partial derivatives. A certificate that a chosen d × d minor is invertible on a principal open
+consists of a localization inverse witness. A finite list of such minors and a unit-ideal cover certificate
+proves that the required rank condition holds everywhere on the chosen atlas.
+This gives an iPRA-friendly sufficient interface for smoothness in standard complete-intersection
+situations. It does not assert a uniform algorithm deciding smoothness of arbitrary presentations.
+The input may carry a Gröbner/elimination certificate producing the relevant Jacobian ideal, or the
+minor cover may simply be part of the theorem hypotheses.
+
+10.5
+
+Divisors and line bundles
+
+A Cartier divisor on a finite atlas is represented by local nonzerodivisor fractions gi and unit
+transition witnesses gi /gj ∈ O× (Ui ∩ Uj ). The associated line bundle uses those units as rank-one
+transition matrices. Tensor product adds divisor data and multiplies transition units; dualization
+inverts them on overlaps.
+For projective space, the hyperplane divisor gives O(1), and O(d) has transition factor (Xj /Xi )d . All
+integer powers are finite localization terms. The projective-line and projective-space computations
+below therefore require no abstract Picard group.
+
+10.6
+
+Hilbert functions and finite graded certificates
+
+A homogeneous Gröbner certificate can provide a finite monomial ideal of leading terms. For a fixed
+degree D, the standard monomials of degree D are a bounded finite set, and coefficient reduction
+proves a spanning or basis statement for the degree-D quotient. Hence the Hilbert function at a
+specified degree is a finite iPRA observation.
+A claim about the eventual Hilbert polynomial needs an additional stabilization certificate: a bound
+D0 , a polynomial P , and finite algebraic data proving the relevant recurrence or graded resolution
+
+Certified Zariski descent in iPRA
+
+30/51
+
+for all D ≥ D0 . The framework checks such a certificate; it does not infer an unbounded stabilization
+theorem from a finite table.
+
+10.7
+
+Elimination, images, and fibers
+
+For a presented morphism, an elimination certificate can describe equations for a scheme-theoretic
+image or a fiber. Soundness is again finite: substitute the morphism tuple and verify ideal
+membership. Completeness of the proposed elimination ideal requires a Gröbner basis, resultant, or
+other finite certificate appropriate to the family.
+This division of labor is useful in iPRA:
+• polynomial substitution and certificate verification are generic;
+• the domain-specific algorithm produces the elimination certificate;
+• the geometric theorem consumes only the certified presentation of the resulting image or fiber.
+
+10.8
+
+What part of algebraic geometry is thereby accessible?
+
+The finite-atlas language directly supports substantial fragments of:
+• affine and projective varieties/schemes of finite presentation;
+• regular and rational maps on certified domains;
+• finite morphisms and finite module algebras;
+• closed immersions, fiber products, and base change;
+• vector bundles, line bundles, and finite Čech complexes;
+• Jacobian calculations and chartwise smoothness certificates;
+• exact finite-field point counting by bounded enumeration;
+• rational/integral point searches once an external height bound is supplied;
+• graded pieces, Hilbert-function observations, and certificate-relative elimination.
+The framework is intentionally less ambitious about arbitrary non-quasi-compact schemes, unbounded
+sites, derived categories as completed universes, and existence theorems whose proofs provide no
+primitive-recursive quantitative data. Those topics can still have finite theorem-specific observations,
+but they are not forced into a single universal code.
+
+11
+
+Case study: P1 and every twist O(d)
+
+11.1
+
+The two-chart atlas
+
+Fix a commutative ring R with a certified presentation. The projective line has two standard charts
+U0 = Spec R[t],
+with overlap
+
+U1 = Spec R[u],
+
+U01 = Spec R[t, t−1 ] = Spec R[u, u−1 ],
+
+u = t−1 .
+
+The overlap maps are localizations at t and u, followed by the certified isomorphism sending u to
+t−1 . The inverse sends t to u−1 . Their composite identities are literal Laurent-monomial identities.
+
+Certified Zariski descent in iPRA
+
+31/51
+
+The line bundle O(d) is trivial on each chart. Let e0 and e1 be the chosen local bases. On the
+overlap,
+e1 = td e0 .
+This formula is valid for every d ∈ Z because t is invertible on the overlap.
+A degree-zero Čech cochain is a pair
+a(t)e0 ∈ R[t]e0 ,
+
+b(u)e1 ∈ R[u]e1 .
+
+After writing u = t−1 , the differential is
+δd (a, b) = a(t) − td b(t−1 ) ∈ R[t, t−1 ]e0 .
+
+(10)
+
+Since the cover has two members, the ordered Čech complex is
+δ
+
+d
+0 −→ R[t] ⊕ R[u] −→
+R[t, t−1 ] −→ 0.
+
+11.2
+
+Global sections
+
+Theorem 11.1 (Global sections of O(d) on P1 ). The kernel of δd has the following explicit normal
+form:
+(
+Rd+1 , d ≥ 0,
+0
+1
+∼
+Ȟ (PR , O(d)) =
+0,
+d < 0.
+For d ≥ 0, the vector (c0 , . . . , cd ) corresponds to
+a(t) =
+b(u) =
+
+d
+X
+e=0
+d
+X
+
+ce te ,
+cd−j uj .
+
+j=0
+
+The conversion in both directions is primitive recursive on finite polynomial codes.
+Proof. The equality δd (a, b) = 0 says
+
+a(t) = td b(t−1 ).
+
+The left side has Laurent support in {e : e ≥ 0}; the right side has support in {e : e ≤ d}. Equality
+of Laurent polynomials is coefficientwise, so the common support lies in
+{e : 0 ≤ e ≤ d}.
+If d < 0, this set is empty and both polynomials are zero. If d ≥ 0, the common Laurent polynomial
+has unique coefficients c0 , . . . , cd . Rewriting its coefficient at exponent e as the coefficient of ud−e
+gives the displayed formula for b.
+No cancellation in R is used; the conclusion follows from the free Laurent-monomial presentation.
+Extraction and reconstruction scan the finite support interval.
+
+Certified Zariski descent in iPRA
+
+32/51
+
+Corollary 11.2 (Global regular functions). For every certified commutative ring R,
+Γ(P1R , O) ∼
+=R
+in the finite-atlas semantics. The isomorphism sends a constant c to the pair (c, c).
+This is already a genuinely scheme-theoretic local-to-global theorem: it is not a statement about a
+bounded set of rational points, but about compatible regular functions on two affine charts.
+
+11.3
+
+First cohomology: the middle-support normal form
+
+For a Laurent polynomial
+c(t) =
+
+U
+X
+
+ce te ,
+
+e=L
+
+define three finite pieces:
+c≥0 (t) =
+
+X
+
+ce te ,
+
+e≥0
+
+c≤d (t) =
+
+X
+
+ce te ,
+
+e≤d
+
+c(d,0) (t) =
+
+X
+
+ce te .
+
+d<e<0
+
+Set
+
+a(t) = c≥0 (t),
+
+b(u) = −
+
+X
+
+ce ud−e .
+
+e≤d
+
+Then
+
+c(t) = δd (a, b) + c(d,0) (t).
+
+(11)
+
+Theorem 11.3 (Primitive-recursive H 1 normal form). Every degree-one Čech cochain has the
+decomposition (11). The residual term is supported exactly in the finite interval d < e < 0, and two
+such residual terms differ by a coboundary only when they are coefficientwise equal. Consequently
+Ȟ
+
+1
+
+(P1R , O(d)) ∼
+=
+
+(
+
+0,
+R−d−1 ,
+
+d ≥ −1,
+d ≤ −2,
+
+with basis represented by td+1 , . . . , t−1 in the second case.
+Proof. The high-support part c≥0 is the a contribution to (10). For an exponent e ≤ d, choose the
+coefficient of ud−e in b to be −ce . Then the term −td b(t−1 ) contributes ce te . This proves existence
+of (11).
+The image of the a component is supported in exponents e ≥ 0. The image of the b component
+is supported in exponents e ≤ d. Therefore a coboundary has zero coefficient at every exponent
+d < e < 0. A residual supported in that interval can be a coboundary only when all its coefficients
+are zero. The interval is empty exactly when d ≥ −1, and otherwise contains −d − 1 integers.
+The proof gives algorithms for the quotient map, a section selecting the unique normal form, and
+witnesses that their composites are identities. It is therefore stronger than a mere rank count.
+
+Certified Zariski descent in iPRA
+
+11.4
+
+33/51
+
+Examples
+
+For d = 2, a global section is
+a(t) = c0 + c1 t + c2 t2 ,
+
+b(u) = c2 + c1 u + c0 u2 .
+
+There is no H 1 obstruction because the interval 2 < e < 0 is empty.
+For d = −3, global sections vanish. Every Laurent cocycle is cohomologous to a unique expression
+αt−2 + βt−1 ,
+so Ȟ 1 ∼
+= R2 .
+The executable companion generated and checked 1,200 random Laurent-polynomial decompositions
+for −7 ≤ d ≤ 7. The tests use exact integer coefficients and verify reconstruction and support
+bounds coefficientwise.
+
+11.5
+
+iPRA implementation
+
+A Laurent polynomial code stores a lower exponent, an upper exponent, and a finite coefficient
+array, or equivalently a sorted sparse list. Negative exponents are encoded as signed integers. The
+normal-form constructor scans the finite support once and writes each coefficient to one of three
+output lists according to the decidable comparisons e ≥ 0 and e ≤ d.
+A quantifier-free invariant after processing a support prefix states:
+(i) the input prefix equals the sum of the partial coboundary and partial residual;
+(ii) the chart-zero list contains only nonnegative exponents;
+(iii) the chart-one list contains only nonnegative u-exponents;
+(iv) the residual contains only exponents d < e < 0.
+At the end, coefficientwise uniqueness is proved by a bounded scan of the common finite support
+interval. No induction formula quantifies over polynomials or cohomology classes.
+
+11.6
+
+From Čech groups to conventional cohomology
+
+The standard two-chart cover and its intersection are affine, and O(d) is quasi-coherent. The usual
+affine-acyclicity comparison identifies the computed Čech groups with conventional sheaf cohomology.
+The finite arithmetic proof above is independent of that abstract comparison: it computes the exact
+complex and its normal forms. A full internal development of derived-functor cohomology would
+add the comparison theorem as a later layer, not alter the finite calculation.
+
+12
+
+The standard Čech computation on Pn
+
+12.1
+
+The finite complex
+
+Let n ≥ 1 and let
+PnR =
+
+n
+[
+i=0
+
+Ui ,
+
+Ui = D+ (Xi ).
+
+Certified Zariski descent in iPRA
+
+34/51
+
+Every finite intersection Ui0 ∩ · · · ∩ Uip is a standard affine open. In homogeneous coordinates, its
+degree-d sections of O(d) are finite Laurent polynomials in which Xi0 , . . . , Xip may have negative
+exponents and all other variables have nonnegative exponents, with total degree d.
+The ordered Čech complex is
+Čdp =
+
+
+
+M
+
+
+
+R[X0 , . . . , Xn , (Xi0 · · · Xip )−1 ]
+
+0≤i0 <···<ip ≤n
+
+d
+
+,
+
+(12)
+
+with the alternating restriction differential.
+Every individual code in (12) has finite Laurent support. Thus an iPRA theorem does not form
+an actually infinite direct sum: it scans the finitely many exponent vectors occurring in the input
+cochain.
+
+12.2
+
+Decomposition by exponent vector
+
+Fix e = (e0 , . . . , en ) ∈ Zn+1 with
+
+n
+X
+
+ei = d.
+
+i=0
+
+Let
+
+Neg(e) = {i : ei < 0} .
+
+The monomial X e = X0e0 · · · Xnen occurs in the component indexed by I = {i0 < · · · < ip } exactly
+when
+Neg(e) ⊆ I.
+Consequently the full complex is the coefficientwise direct sum of finite complexes C • (e), each
+having one copy of R for every subset I that contains Neg(e).
+The differential on C • (e) is purely combinatorial and independent of the coefficients:
+|J|−1
+
+(ds)J =
+
+X
+
+(−1)a sJ\{ja } ,
+
+(12.1)
+
+a=0
+
+where a missing component is interpreted as zero.
+
+12.3
+
+The three sign cases
+
+Theorem 12.1 (Monomial summands). For a fixed exponent vector e:
+1. If every ei ≥ 0, then C • (e) has cohomology R in degree 0 and zero in positive degrees.
+2. If every ei < 0, then C • (e) has a single nonzero term, in degree n, and its cohomology is R
+there.
+3. If Neg(e) is nonempty and proper, then C • (e) is contractible by an explicit primitive-recursive
+homotopy.
+Proof. In the first case, every subset component is present. This is the ordered cochain complex of a
+full n-simplex. Its degree-zero constant tuples give one copy of R, and the usual insertion homotopy
+contracts the positive degrees.
+
+Certified Zariski descent in iPRA
+
+35/51
+
+In the second case, a subset containing all n + 1 indices must be the full set, so the only term is in
+degree n.
+For the mixed case, choose the least index i∗ ∈
+/ Neg(e). For a p-cochain s, define the (p − 1)-cochain
+hs on an ordered set I = {i0 < · · · < ip−1 } by zero when i∗ ∈ I, and otherwise by inserting i∗ :
+(hs)I = (−1)a sI∪{i∗ } ,
+
+a = # {i ∈ I : i < i∗ } .
+
+(13)
+
+The component on the right exists because adding i∗ does not change whether the set contains
+Neg(e). A finite sign computation pairs every deletion not involving i∗ once in dh and once with
+the opposite sign in hd; the remaining deletion of i∗ contributes sI . Hence
+dh + hd = id.
+All sums have at most n + 1 terms.
+
+12.4
+
+Cohomology table
+
+Theorem 12.2 (Finite Čech cohomology of projective space). For n ≥ 1, the standard-cover Čech
+cohomology is
+
+
+R[X0 , . . . , Xn ]d ,
+
+
+
+
+
+q = 0, d ≥ 0,
+
+1
+Ȟ q (PnR , O(d)) ∼
+=
+R[X0−1 , . . . , Xn−1 ] ,
+
+X
+·
+·
+·
+X
+
+0
+n
+d
+
+
+0,
+
+
+q = n, d ≤ −n − 1,
+otherwise.
+
+The two nonzero modules are finite free. Their ranks are
+n+d
+n
+
+!
+
+rank H 0 =
+
+(d ≥ 0),
+
+rank H n =
+
+−d − 1
+n
+
+!
+
+(d ≤ −n − 1).
+
+The isomorphisms and zero contractions are primitive-recursive on finite cochain codes.
+Proof. Decompose every finite cochain coefficientwise by exponent vector. By Theorem 12.1, only
+all-nonnegative exponent vectors survive in degree zero and all-negative vectors survive in degree n.
+The all-nonnegative vectors of total degree d are the ordinary degree-d monomials, which exist only
+for d ≥ 0 and are counted by n+d
+n .
+For an all-negative vector write ei = −ai − 1 with ai ≥ 0. Then
+X
+
+ai = −d − (n + 1).
+
+i
+
+Such vectors exist exactly when d ≤ −n − 1, and stars-and-bars counts them by −d−1
+. The
+n
+normal-form map keeps precisely those monomial coefficients and applies the insertion homotopy to
+every mixed-sign summand.
+
+
+For n = 1, Theorem 12.2 specializes to Theorems 11.1 and 11.3.
+
+Certified Zariski descent in iPRA
+
+12.5
+
+36/51
+
+Primitive-recursive realization
+
+The implementation needs the following fixed operations:
+• signed exponent-vector coding and bounded coordinate access;
+• the set Neg(e) as a bit mask;
+• enumeration of subsets of {0, . . . , n} by bit masks;
+• alternating-sign finite sums;
+• insertion of the least index outside a bit mask;
+• finite maps from exponent vectors to coefficient tuples;
+• coefficientwise splitting into all-nonnegative, all-negative, and mixed classes.
+All are primitive recursive. To prove (13), an object-iPRA development can avoid abstract matrices.
+For each output component and each deletion index, a bounded case split checks whether the deleted
+index is i∗ , below it, or above it. A finite accumulator records the paired terms and their signs. The
+induction formula is an equality of natural-number-coded finite sums.
+
+12.6
+
+Executable matrix check
+
+The companion program independently constructs the finite matrices of d and h for every proper
+nonempty negative-index set in dimensions 1 ≤ n ≤ 6. It verifies dh + hd = I over the integers in
+240 mixed-sign cases. This is not a proof for all n, but it checks the exact sign convention and the
+finite-index implementation used by the Lean plan.
+
+12.7
+
+Conventional cohomology
+
+The standard cover has affine finite intersections, and O(d) is quasi-coherent. The conventional
+comparison theorem therefore identifies the finite Čech calculation with H q (PnR , O(d)). The Stacks
+Project gives the same exponent-vector decomposition and insertion homotopy. The new foundational
+point is that the entire calculation itself is finite, explicit, and admits a direct route to quantifier-free
+induction.
+
+13
+
+Resolution map for the repository difficulties
+
+13.1
+
+What the new framework resolves
+
+The contribution is architectural rather than a claim that every difficult theorem in the repository
+is now proved. The following table separates resolved representation problems from remaining
+mathematical producer problems.
+Difficulty
+
+Resolution supplied here
+
+Remaining boundary
+
+Quotients without decid- Proof-relevant
+ideal- Finding a witness may require a
+able normal forms
+combination equality;
+op- separate Gröbner or elimination
+erations transform witnesses.
+theorem.
+
+Certified Zariski descent in iPRA
+
+Difficulty
+
+Resolution supplied here
+
+37/51
+
+Remaining boundary
+
+Localization with zero divi- Equality carries a killing exposors
+nent; transitivity and congruence have explicit formulas.
+Finite local-to-global glu- Power-cover constructor plus
+ing
+explicit module gluing and
+uniqueness.
+Certified finite affine atlas with
+Scheme representation
+localization isomorphisms and
+cocycles.
+Sheaf condition
+Exact equalizer for modules on
+finite principal covers.
+
+Invertibility or annihilation witnesses must be supplied or produced.
+Arbitrary infinite covers are not
+internalized; use finite refinements
+or finite observations.
+No single completed internal universe of all schemes or prime ideals
+is claimed.
+General sheaf categories and derived functors require a larger
+coded library.
+Projective geometry
+Standard Proj charts and tran- Global projective existence theositions are primitive-recursively rems may still require nontrivial
+generated.
+algebraic certificates.
+Projective cohomology
+Explicit finite Čech normal Formal comparison with derivedforms and contracting homo- functor cohomology is a separate
+topy for O(d).
+extension.
+Chart/branch nonunique- Combine certified atlases with Discontinuous exact selectors reness
+the prior finite-use relational main unavailable without stronger
+framework; require invariant input.
+outputs.
+Object-theory boundary
+Exact list of PR/PTm/PrfPRA The final Lean implementation
+Ax targets and quantifier-free and compilation have not been
+invariants.
+completed in this archive.
+
+13.2
+
+Integration with Diophantine geometry
+
+The existing Diophantine packet represents rational projective points, heights, polynomial maps,
+conics, local congruence obstructions, and finite descent. The atlas layer extends that work in four
+ways.
+1. Local equations. A projective variety can be dehomogenized on finitely many charts, and
+local algebraic manipulations can be glued or compared by localization witnesses.
+2. Rational maps with domains. A denominator-nonvanishing condition is represented by a
+principal open. Several formulas for the same rational map are compared on overlaps rather
+than forced into one global syntactic expression.
+3. Line bundles and sections. Height constructions often use homogeneous forms or divisors.
+Transition factors and local sections can now be represented and checked on a finite atlas.
+4. Local-to-global obstructions. Congruence, real, or p-adic local certificates can be attached
+to chart data, while exact algebraic descent witnesses handle the finite overlaps.
+A bounded rational-point search on a projective scheme proceeds as before: enumerate primitive
+coordinate tuples up to a supplied height, check homogeneous equations, and quotient by projective
+scaling. The atlas does not create the height bound. It provides the geometric operations needed to
+state and verify local computations around the enumerated points.
+
+Certified Zariski descent in iPRA
+
+13.3
+
+38/51
+
+Faltings and Siegel
+
+The Faltings and Siegel packets correctly distinguish a finite cardinality statement from an effective
+height cutoff. The present framework sharpens the interface but does not remove that obstruction.
+A positive theorem can have the form:
+Given a presented projective curve X, a height bound B, and a certificate proving that
+every rational point has height at most B, the bounded enumeration returns a complete
+list; every local chart computation and overlap equality is certified by the atlas.
+The bounded enumeration, chart conversion, and completeness-from-bound implication are primitive
+recursive. The production of B for general high-genus curves is the missing arithmetic theorem. A
+count bound, a finite-dimensional span bound, or a point-count estimate over finite fields is not a
+substitute.
+For Runge-type integral-point problems, explicit pole data and a supplied separation/height estimate
+can be attached to the finite projective compactification. This may simplify the exact bookkeeping
+of points at infinity, divisors, and local functions, but the quantitative Runge inequality remains the
+substantive producer.
+
+13.4
+
+Mordell–Weil descent
+
+The Mordell–Weil packet has an explicit finite-height descent conditional on actual representatives
+of the quotient by doubling. A finite group scheme, isogeny, or Selmer computation can now be
+presented chartwise with exact localization certificates. This is useful for verifying the descent maps
+and local images.
+It still does not follow that a finite abstract Selmer class has a rational point representative. The
+atlas framework can verify a supplied representative and its compatibility; it cannot create a rational
+point from a purely cohomological class without an additional theorem.
+
+13.5
+
+Puiseux expansions and singularities
+
+For exact polynomial coefficients, Newton polygons, finite truncations, and branch equations can be
+encoded as finite algebraic certificates. A singularity may be covered by finitely many candidate
+charts or blow-up charts; relational finite-use composition can avoid an arbitrary global branch
+label.
+For arbitrary Cauchy coefficient names, the exact vanishing tests that distinguish singular strata
+remain discontinuous. The correct interfaces are:
+• a supplied exact algebraic stratum or Newton-polygon certificate;
+• a derivative/separation witness giving a regular local branch;
+• finite root clusters and branch-invariant observations;
+• approximate solution germs with residual bounds.
+The finite atlas does not turn approximation into exact equality.
+
+Certified Zariski descent in iPRA
+
+13.6
+
+39/51
+
+Analytic number theory packets
+
+Chebotarev, Siegel–Walfisz, Bombieri–Vinogradov, and related packets require uniform analytic
+estimates, exceptional-zero control, field arithmetic, and explicit error terms. Finite algebraic
+geometry can organize number fields, finite covers, discriminants, and Frobenius data, but it does
+not supply the missing estimates. The no-universal-evaluator and finite-observation disciplines
+continue to apply.
+
+13.7
+
+Further algebraic-geometry targets
+
+The framework gives a clear route to several additional iPRA projects.
+1. Blow-ups of finitely presented affine schemes. Use the standard finite charts of the Rees
+algebra and localization transition maps.
+2. Grassmannians. Use Plücker coordinates, finitely many standard minors, and explicit
+transition matrices.
+3. Finite morphisms and normalization certificates. Present the target algebra as a finite
+module with multiplication tables and verify integral equations.
+4. Bézout in zero-dimensional certified intersections. Combine resultants or a homogeneous
+Gröbner certificate with finite quotient-rank calculations.
+5. Riemann–Roch for explicitly presented curves. First formalize divisor/line-bundle Čech
+complexes and finite-dimensional normal forms; any general theorem still needs quantitative
+algebraic inputs.
+6. Cohomology of toric varieties. Fans are finite combinatorial objects, affine toric charts are
+monoid algebras, and line-bundle cohomology often reduces to finite lattice-region calculations.
+7. Finite descent for vector bundles. Transition matrices and principal-cover gluing already
+provide the base layer for explicit projective-module calculations.
+The common theme is that the geometric theorem should expose a finite atlas, a finite complex, or
+a finite certificate rather than conceal infinitary semantics behind an unexamined object code.
+
+14
+
+Lean formalization: exact definitions and a route to Prf PRAAx
+
+14.1
+
+The formal endpoint
+
+The repository distinguishes three formal systems that must not be conflated. Lean’s ambient type
+theory is used to define syntax and metatheorems; the ordinary first-order presentation of iPRA has
+primitive-recursive terms PTm, axioms PRAAx, and derivations Prf; and the smaller native scalar
+core has its own derivation relation. The checked bridge is of the form
+theorem pra_iff_native
+{Gamma : List (Fm PTm n)} {phi : Fm PTm n} :
+(Gamma |- [PRAAx] phi) <->
+NPrf (Gamma.map NFm.ofPRA) (NFm.ofPRA phi)
+
+Consequently a host theorem such as
+theorem power_cover_semantic : ...
+
+Certified Zariski descent in iPRA
+
+40/51
+
+is not yet an iPRA formalization. The relevant endpoint is a term such as
+def powerCoverObjectProof :
+Prf PRAAx [] powerCoverFormula := ...
+
+and only afterwards may pra_iff_native transport it to the native calculus.
+The source files in this archive are blueprints. No Lean executable or complete repository dependency
+closure was available in the preparation environment, so they are not claimed to compile. They
+contain no axiom, sorry, or admit; unfinished results are named targets, not asserted theorems.
+
+14.2
+
+Two formalization layers
+
+The proposed development has two deliberately separate layers.
+Host certificate layer. A CertSetoid contains numerical codes, a Boolean validity predicate, a
+proof-relevant relation eqWxyw, and explicit witness transformers for reflexivity, symmetry, and
+transitivity. A certified map carries equality witnesses to equality witnesses. Certified rings and
+modules add congruence transformers for their operations. This layer is useful for testing the
+interfaces and for proving generic metatheorems, but its quantifiers live in Lean rather than in the
+object theory.
+Object-iPRA layer. Every numerical operation is replaced by one fixed PR code. Its application
+is a PTm; every checker and invariant is an FmPTmn; and all correctness theorems are values of
+PrfPRAAx. A theorem schema may fix the definitions of a presented ring or module externally
+and remain uniform in ordinary numerical parameters. It must not evaluate arbitrary codes for
+primitive-recursive programs, since there is no primitive-recursive universal evaluator for all such
+codes.
+
+14.3
+
+Codecs and totalization
+
+All objects of the internal theory are natural numbers. The first module should therefore supply
+fixed primitive-recursive codecs for:
+• signed integers and finite tuples;
+• lists with length, bounded lookup, update, append, map, fold, maximum, and least bounded
+search;
+• exponent vectors, monomials, sparse polynomials, and Laurent polynomials;
+• finite matrices and bit-mask subsets of {0, . . . , n};
+• ideal-combination witnesses, localization witnesses, cover certificates, and descent data.
+Every operation is total. Malformed input receives a default output together with a failure flag.
+Theorems assume the finite validity predicate, so no partial function is hidden in the object language.
+The basic reconstruction lemmas have the shape
+Valid(x) = 1 −→ decode(encode(x)) = x,
+and bounded access lemmas are proved by quantifier-free induction on the list prefix.
+
+Certified Zariski descent in iPRA
+
+14.4
+
+41/51
+
+Certified-setoid library
+
+For each presentation A, introduce fixed primitive-recursive predicates
+ValidA (x),
+
+EqWA (x, y, w).
+
+The object library should construct the following derivations, uniformly in the displayed codes:
+ValidA (x) → EqWA (x, x, reflW(x)),
+EqWA (x, y, w) → EqWA (y, x, symmW(x, y, w)),
+EqWA (x, y, u) ∧ EqWA (y, z, v) → EqWA (x, z, transW(x, y, z, u, v)).
+For every operation F , add a witness transformer
+EqWA (x, x′ , u) ∧ EqWB (y, y ′ , v) → EqWC (F (x, y), F (x′ , y ′ ), mapW(u, v)).
+The library never asserts ∃w EqWA (x, y, w) merely because two semantic quotient classes are equal
+in Lean. The witness is part of the finite mathematical data.
+A useful generic lemma is bounded-fold congruence. Suppose two lists have the same length and
+each pair of corresponding entries comes with an equality witness. Quantifier-free induction on the
+prefix produces a witness between the two additive or multiplicative folds. This lemma will be used
+repeatedly in ideal identities, multinomial expansions, and Čech differentials.
+
+14.5
+For
+
+Presented quotient rings
+A = Z[X1 , . . . , Xs ]/(g0 , . . . , gr−1 ),
+
+a code for an element is a polynomial code. A witness that p = q is a tuple (h0 , . . . , hr−1 ) satisfying
+the coefficientwise identity
+X
+p−q =
+hi gi .
+i<r
+
+The checker expands every product and compares a bounded coefficient range determined from the
+input supports. The soundness proof uses only finite polynomial arithmetic.
+The witness transformers are explicit. Negation negates every multiplier; addition concatenates or
+adds multiplier lists; and multiplication uses
+pq − p′ q ′ = (p − p′ )q + p′ (q − q ′ ).
+Associativity, commutativity, distributivity, and the unit laws can be witnessed by the zero multiplier
+list once the corresponding polynomial identity is normalized coefficientwise. No Gröbner basis is
+needed for soundness. A Gröbner or elimination algorithm is a separate producer that may find
+witnesses in useful subclasses.
+The principal object theorem should be exposed as a derivation of a formula asserting:
+if the ideal-certificate checker accepts, then the represented quotient elements are equal,
+and all quotient operations preserve accepted equality certificates.
+
+Certified Zariski descent in iPRA
+
+14.6
+
+42/51
+
+Localization witnesses
+
+Fix a presented ring A and an element f . A fraction is a pair (a, n) representing a/f n . Equality of
+(a, n) and (b, m) is witnessed by a number k and a base-ring witness for
+f k (f m a − f n b) = 0.
+
+(14.1)
+
+The object formalization should implement the following witness algebra.
+• Reflexivity uses k = 0 and the zero witness.
+• Symmetry negates the witness in (14.1).
+• For transitivity, suppose k kills f m a − f n b and ℓ kills f r b − f m c. Multiplying the first relation
+by f ℓ+r and the second by f k+n and adding cancels the middle term. The result supplies a
+safe killing exponent k + ℓ + m for f r a − f n c; a slightly smaller exponent can be used after a
+more exact bookkeeping proof.
+• Addition and multiplication expand the cross differences and combine the supplied witnesses
+by finite ring identities.
+Every exponentiation is a fixed primitive recursion. The loop invariant records the current power,
+the accumulated product, and an accepted equality witness. The induction formula is quantifier-free.
+
+14.7
+
+The power-cover constructor
+
+The most important generic producer starts with a checked identity
+X
+
+ci fi = 1
+
+(14.2)
+
+i<r
+
+and a number N ≥ 1. Set M = r(N − 1) + 1. Enumerate every weak composition α ∈ Nr of M and
+P
+expand ( ci fi )M . The pigeonhole bound gives an index i with αi ≥ N ; choose the least such index
+and assign that monomial to the accumulator di after factoring fiN . The output satisfies
+X
+
+di fiN = 1.
+
+(14.3)
+
+i<r
+
+A direct object implementation uses nested bounded loops rather than an abstract multinomial
+polynomial. Its state contains:
+(i) the current exponent vector and its remaining sum;
+(ii) the partial multinomial coefficient;
+(iii) the chosen least large coordinate;
+(iv) the coefficient accumulators d0 , . . . , dr−1 ;
+(v) the partial expansion value and the partial factored value.
+The invariant says that the two partial values are equal and that every processed composition was
+assigned to exactly one accumulator. All quantifiers are bounded folds represented by Boolean
+prefix predicates. A final finite-power calculation rewrites the expansion by (14.2) to 1M = 1.
+The endpoint should be
+def powerCoverObjectProof :
+Prf PRAAx [] powerCoverFormula := ...
+
+where powerCoverFormula states validity of the input certificate, N ≥ 1, and acceptance of the
+output identity checker.
+
+Certified Zariski descent in iPRA
+
+14.8
+
+43/51
+
+Principal-cover uniqueness and gluing
+
+For joint monicity, the input contains for each i < r a local annihilation exponent ki and a witness
+for fiki m = 0. Let K = maxi ki . Raise each equation to the common exponent, construct di with
+P
+di fiK = 1, and calculate
+X
+m=
+di fiK m = 0.
+i
+
+The induction invariant for the last fold records a witness that the accumulated partial sum equals
+zero.
+For existence, first homogenize the denominators of local sections to a common exponent N . Take a
+maximum K of the overlap-killing exponents and a safe q = N + K + 1. Form numerators bi so
+that the accepted overlap certificates imply
+fjq bi = fiq bj
+for every i, j. Construct di with
+
+(14.4)
+
+q
+i di fi = 1 and output
+
+P
+
+m=
+
+X
+
+di bi .
+
+(14.5)
+
+i
+
+For a fixed j, a bounded fold proves
+fjq m =
+
+X
+
+di fjq bi =
+
+X
+
+i
+
+di fiq bj = bj .
+
+i
+
+This equation is itself the localization equality witness between m/1 and the given local section
+on D(fj ). A double-loop invariant covers all pairs (i, j); no induction formula says “for every
+localization”.
+The two final statements should have types analogous to
+def principalCoverUniqueObjectProof :
+Prf PRAAx [] principalCoverUniqueFormula := ...
+def principalCoverGlueObjectProof :
+Prf PRAAx [] principalCoverGlueFormula := ...
+
+14.9
+
+Finite atlases and quasi-coherent data
+
+A finite affine atlas is a natural-number code containing:
+• finitely presented chart rings Ai ;
+• for each ordered pair (i, j), finite principal-open refinements of the overlap;
+• forward and inverse localization homomorphisms with accepted composition witnesses;
+• triple-overlap cocycle witnesses;
+• a finite cover certificate wherever a family of principal opens is asserted to cover.
+A quasi-coherent module contains chart modules Mi and transition isomorphisms after the same
+localizations. Validity is one Boolean fold over the finite atlas. The gluing theorem above gives the
+equalizer law on every chart, and finite-family composition gives the corresponding law on the atlas.
+
+Certified Zariski descent in iPRA
+
+44/51
+
+Morphisms, kernels, finite direct sums, and tensor products can then be added by certified module
+operations.
+This layer should be formalized as a library of certificate transformations, not as an internal
+quantification over prime ideals or over all open subsets. A separate semantic theorem in Lean may
+interpret a valid atlas as a conventional glued scheme.
+
+14.10
+
+The projective-line modules
+
+The P1 development uses sparse Laurent-polynomial codes. Define
+δd (a, b) = a(t) − td b(t−1 ).
+For a cocycle c =
+
+e
+e ce t , one bounded scan places:
+
+P
+
+e≥0
+
+in the first chart polynomial a,
+
+e≤d
+
+in the second chart polynomial b,
+
+d<e<0
+
+in the obstruction h.
+
+The invariant after processing a prefix of the finite support is
+c<s = δd (as , bs ) + hs ,
+
+supp(hs ) ⊆ {e : d < e < 0} .
+
+This yields an object proof of p1LaurentSplitFormula. Uniqueness is coefficientwise: neither chart
+coboundary contains a monomial in the middle interval. The H 0 theorem uses the same support
+separation on a compatible pair. In particular, at d = 0 the global functions on P1R are exactly the
+constants in R.
+
+14.11
+
+The projective-space homotopy
+
+Encode a subset I ⊆ {0, . . . , n} as a bit mask and an exponent vector as a signed list. For one
+exponent vector e, let N (e) be the negative-coordinate mask. A component occurs at I exactly
+when N (e) ⊆ I. The differential is a bounded alternating sum over deleted bits.
+When N (e) is nonempty and not full, choose the least i∗ ∈
+/ N (e). The homotopy inserts that bit
+with sign determined by the number of smaller elements. To prove
+dh + hd = id,
+
+(14.6)
+
+fix one output mask and scan all deletion positions. The state records the unmatched term, the
+paired contribution below i∗ , and the paired contribution above i∗ . Terms not deleting i∗ occur
+twice with opposite parity; the deletion of i∗ is the unique identity contribution. The parity and
+bit-mask cases are decidable numerical predicates, so the induction is quantifier-free.
+The all-nonnegative case is the full simplex complex: the same insertion homotopy contracts the
+positive degrees, while a coefficient projection identifies degree-zero constants. The all-negative case
+contains only the full mask. A finite scan over the input cochain’s support applies the appropriate
+normalizer to each exponent vector. This gives the object formula pnOdCechFormula and the
+binomial-rank calculations by bounded counting of weak compositions.
+
+Certified Zariski descent in iPRA
+
+14.12
+
+45/51
+
+Suggested module order
+
+A practical repository integration order is:
+Module
+
+Main contents and endpoint
+
+AlgebraicGeometry/Code
+cs.lean
+AlgebraicGeometry/Cert
+Setoid.lean
+AlgebraicGeometry/Pres
+entedRing.lean
+AlgebraicGeometry/Loca
+lization.lean
+AlgebraicGeometry/Powe
+rCover.lean
+AlgebraicGeometry/Prin
+cipalDescent.lean
+AlgebraicGeometry/Atlas.
+lean
+AlgebraicGeometry/Proj
+ectiveLine.lean
+AlgebraicGeometry/Proj
+ectiveCech.lean
+AlgebraicGeometry/Nati
+veBridge.lean
+
+Signed/list/polynomial/Laurent/matrix/subset codes and their
+PR graphs.
+Valid, EqW, witness transformers, bounded-fold congruence.
+
+14.13
+
+Ideal-combination checker and quotient-operation witnesses.
+Fraction codes and localization equivalence/congruence proofs.
+Weak compositions, multinomial fold, and powerCoverObjectPr
+oof.
+Joint monicity and principalCoverGlueObjectProof.
+Finite affine atlases, refinements, morphisms, and module descent
+data.
+Two-chart atlas and Laurent normal forms for every O(d).
+Exponent decomposition, insertion homotopy, and projectivespace table.
+Applications of pra_if f_native to already constructed object
+derivations.
+
+Completion criteria
+
+The formalization should be called complete only when all of the following hold:
+1. the modules compile against the current ConciseIPRA sources;
+2. the advertised formulas use the actual repository syntax and not a surrogate proof relation;
+3. the principal theorems are inhabited PrfPRAAx values;
+4. an axiom audit reports no sorryAx, custom axiom, or hidden native decision oracle;
+5. finite executable tests agree with the object-level producers on a representative corpus;
+6. the native translations are performed only after the preceding object proofs exist.
+The present archive supplies the mathematical derivations, numerical algorithms, host interfaces,
+and this dependency order, but does not claim these completion criteria have already been met.
+
+15
+
+Executable validation, theorem status, and reproducibility
+
+15.1
+
+Purpose of the executable companion
+
+The file code/zariski_descent.py is an exact-arithmetic reference implementation of the central
+finite algorithms. It uses only the Python standard library and never uses floating point. It is not
+
+Certified Zariski descent in iPRA
+
+46/51
+
+an iPRA proof checker and does not replace the universal arguments in the preceding sections. Its
+role is to check formulas, sign conventions, exponent bookkeeping, and examples independently of
+the LaTeX derivation.
+The implementation includes:
+• a minimal exact commutative-ring interface, with instances for Z and Z/mZ;
+• verification and exponentiation of unit-ideal cover certificates;
+• the multinomial power-cover coefficient constructor;
+• principal-cover gluing for the module M = A;
+• sparse univariate polynomial arithmetic and ideal-certificate checking;
+• the P1 Laurent Čech differential and normal form;
+• projective-space cohomology rank formulas;
+• integer matrices for the monomial-wise differential and insertion homotopy.
+
+15.2
+
+Recorded validation
+
+Running
+python3 -m unittest discover -s code -v
+python3 code/zariski_descent.py
+
+produced the log in verification/python_tests.txt and the structured records in metadata/valid
+ation.json and verification/demo_output.json. The eight unit tests passed. The recorded checks
+comprise:
+Component
+
+Recorded check
+
+Power covers
+
+Eleven exact cases over Z and Z/12Z, including exponents
+larger than one.
+A two-chart example with unequal denominators recovers
+the global section 17; the optimized common exponent is
+2, and the computed power-cover coefficients are (7, −3).
+A cover in Z/12Z recovers the global section 5, demonstrating that the algorithm does not cancel nonunits or
+assume a domain.
+An exact polynomial identity of the form p − q = hg is
+accepted coefficientwise; a perturbed certificate is rejected.
+1,200 randomly generated Laurent cocycles satisfy exact
+reconstruction, and every obstruction term lies in d < e <
+0.
+Generated coefficient vectors give compatible chart pairs
+for several positive degrees and the expected empty basis
+for negative degrees.
+The code checks the closed rank formulas against direct
+bounded enumeration in the tested range.
+For all proper nonempty negative-coordinate masks in
+dimensions 1 ≤ n ≤ 6, 240 matrix cases satisfy dh+hd = I
+over Z.
+
+Integer gluing
+Zero-divisor gluing
+Ideal certificate
+P1 normal form
+P1 global sections
+Projective ranks
+Pn homotopy
+
+Certified Zariski descent in iPRA
+
+47/51
+
+The report uses the uniformly safe gluing exponent q = N + K + 1. The executable companion
+uses the slightly sharper q = max(1, N + K) and then verifies the resulting cross identities. This
+difference is intentional: the paper favors a simple bound with slack, while the program demonstrates
+that the slack is not mathematically essential.
+
+15.3
+
+Worked principal-cover examples
+
+An integer example. Take the cover elements f0 = 2, f1 = 3 with certificate
+(−1) · 2 + 1 · 3 = 1.
+Choose local fractions obtained from the global integer 17 but with different denominator exponents.
+The compatibility checker clears the denominators, the gluing routine constructs a common power
+cover, and the output is exactly 17. This test exercises denominator homogenization rather than
+merely gluing two identical numerators.
+A zero-divisor example. In A = Z/12Z, the elements 3 and 4 satisfy
+3·3+1·4=1
+
+(mod 12).
+
+Neither chart element is a unit, and A has zero divisors. Localizations and overlap equalities are
+therefore genuinely proof-relevant. The supplied local data glue to 5 ∈ A. Every final restriction
+equation is checked in the ring. This example is a useful guard against accidentally using cancellation
+in the human or Lean proof.
+
+15.4
+
+Claim ledger
+
+The machine-readable file metadata/claims.json and the human-readable metadata/THEOREM_L
+EDGER.md distinguish the four relevant levels of completion. The main status is summarized here.
+ID
+
+Result
+
+Status in this archive
+
+F1
+
+Certified-setoid and congruence discipline
+
+A1
+
+Quotient equality by ideal combinations
+
+A2
+
+Localization equivalence and ring congruence
+
+Z1
+
+Power-cover constructor
+
+Z2
+
+Joint monicity on a principal cover
+
+Full human proof and Lean interface; object derivation pending.
+Full human proof and exact
+checker; object derivation pending.
+Explicit witness formulas
+proved; Lean target supplied.
+Full proof, exact implementation, finite tests; PrfPRAAx
+pending.
+Full proof; object derivation
+pending.
+
+Certified Zariski descent in iPRA
+
+48/51
+
+ID
+
+Result
+
+Status in this archive
+
+Z3
+
+Principal-cover module gluing
+
+G1–G2
+
+Finite affine atlases and quasi-coherent descent
+data
+
+P1–P3
+
+P1 , O(d), H 0 , and H 1
+
+PN
+
+Mixed-sign contraction and the standard Pn
+table
+
+C1
+
+Agreement with conventional sheaf cohomology
+
+L1
+
+Lean completion route
+
+Full proof including zero divisors; exact implementation for
+M = A; object derivation pending.
+Precise certificate semantics
+and constructions; no complete category-of-schemes library claimed.
+Full finite proofs and exact normal-form tests; object
+derivations pending.
+Full combinatorial proof and
+finite matrix checks; object
+derivation pending.
+Uses the standard affine-cover
+comparison theorem; no internal derived-functor formalization claimed.
+Source-level blueprints and dependency order; not compilerchecked.
+
+15.5
+
+Negative checks and nonclaims
+
+The validation deliberately does not infer an unbounded theorem from a successful finite test.
+Specifically:
+• testing finitely many rings does not prove the power-cover theorem for every presented ring;
+• a bounded point search does not prove absence of points above its cutoff;
+• a successful certificate checker does not guarantee that a certificate producer exists for every
+true semantic statement;
+• native Lean propositions, once added, would not by themselves be PrfPRAAx values;
+• the standard Čech computation is not by itself a formalization of all derived-functor sheaf
+cohomology inside iPRA.
+No claim is made here of general effective Siegel or Faltings, uniform Mordell–Weil generators,
+exact singular Puiseux selection from arbitrary Cauchy coefficients, decidable equality of arbitrary
+represented reals, or a primitive-recursive universal evaluator.
+
+15.6
+
+Rebuilding the package
+
+From the extracted package root, the intended commands are:
+python3 -m unittest discover -s code -v
+python3 code/zariski_descent.py > metadata/validation.json
+cd paper
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+
+Certified Zariski descent in iPRA
+
+49/51
+
+ipra_algebraic_geometry_framework.tex
+
+The included build.sh performs the tests, rebuilds the PDF, and writes an integrity manifest. A
+normal TeX Live installation with the packages named in the master source is sufficient.
+The upstream repository audit is pinned to bce5113f44d613f5625c274128ee761f35486fc5. At the
+final check, main was a2f72b0cdf57f8a3fefd34b272c3d471385e819c; the Git object identifiers of
+ConciseIPRA, the iPRA README.md, and docs were identical at the two commits. The archive
+neither modifies nor rebuilds the repository. Its source audit is in metadata/SOURCE_AUDIT.md;
+its explicit limitations are in metadata/LIMITATIONS.md.
+
+15.7
+
+Archive inventory
+
+Path
+
+Purpose
+
+paper/ipra_algebraic_geometry_ Master editable LaTeX source.
+framework.tex
+paper/sections/
+The complete section sources, including proofs and
+formalization plan.
+paper/ipra_algebraic_geometry_ Compiled report.
+framework.pdf
+code/zariski_descent.py
+Exact finite reference algorithms.
+code/test_zariski_descent.py
+Unit and randomized regression tests.
+lean/*.lean
+Host structures, target propositions, and object-theory
+endpoint blueprint.
+lean/FORMALIZATION_PLAN. Dependency-ordered path to complete Lean and objectmd
+iPRA proofs.
+metadata/SOURCE_AUDIT.md
+Pinned repository and external-source audit.
+metadata/THEOREM_LEDGE Result-by-result proof status.
+R.md
+metadata/claims.json
+Machine-readable claim levels and nonclaims.
+metadata/validation.json
+Exact executable validation record.
+verification/
+Test logs, demo output, PDF build report, and visual
+QA notes.
+MANIFEST.sha256
+Integrity hashes of delivered files other than the manifest itself.
+
+16
+
+References and source provenance
+
+The mathematical proofs in this report are written out rather than delegated to the references.
+The references locate the conventional statements, the inspected repository interfaces, and related
+constructive or formal developments.
+
+Certified Zariski descent in iPRA
+
+50/51
+
+References
+[1] V. Reshetnikov, ProveIt: Primitive recursive arithmetic, repository directory https://github.c
+om/VladimirReshetnikov/ProveIt/tree/bce5113f44d613f5625c274128ee761f35486fc5/Logic/P
+rimitiveRecursiveArithmetic, inspected 15 November 2026 (Pacific time).
+[2] V. Reshetnikov, Concise presentations of intuitionistic primitive recursive arithmetic, https:
+//github.com/VladimirReshetnikov/ProveIt/tree/bce5113f44d613f5625c274128ee761f3548
+6fc5/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA. In particular, the Lean modules
+PR.lean and NativeBiInterpretation.lean define PR, PTm, PRAAx, Prf, and pra_iff_native.
+[3] Demand-Driven Relational Certificates for Mathematics in iPRA, ProveIt packet ipra_finite_
+use_framework_2026-11-15, https://github.com/VladimirReshetnikov/ProveIt/tree/bce511
+3f44d613f5625c274128ee761f35486fc5/Logic/PrimitiveRecursiveArithmetic/docs/proofs/foun
+dations/ipra_finite_use_framework_2026-11-15.
+[4] Coherent finite methods for intuitionistic primitive recursive arithmetic, ProveIt packet ipra_c
+oherent_methods_2026-11-15, https://github.com/VladimirReshetnikov/ProveIt/tree/bce5
+113f44d613f5625c274128ee761f35486fc5/Logic/PrimitiveRecursiveArithmetic/docs/proofs/fo
+undations/ipra_coherent_methods_2026-11-15.
+[5] A general embedding framework for mathematics in iPRA, ProveIt packet ipra_embedding_f
+ramework, https://github.com/VladimirReshetnikov/ProveIt/tree/bce5113f44d613f5625c27
+4128ee761f35486fc5/Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_e
+mbedding_framework.
+[6] Local-to-global constructions in intuitionistic primitive recursive arithmetic, ProveIt packet
+ipra_local_global, https://github.com/VladimirReshetnikov/ProveIt/tree/bce5113f44d613
+f5625c274128ee761f35486fc5/Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/
+ipra_local_global.
+[7] Stable observables from finite witnesses, ProveIt packet ipra_stable_observables, https:
+//github.com/VladimirReshetnikov/ProveIt/tree/bce5113f44d613f5625c274128ee761f35486f
+c5/Logic/PrimitiveRecursiveArithmetic/docs/proofs/algebra/ipra_stable_observables.
+[8] Diophantine geometry in intuitionistic primitive recursive arithmetic, ProveIt packet diophant
+ine_geometry_ipra, https://github.com/VladimirReshetnikov/ProveIt/tree/bce5113f44d613
+f5625c274128ee761f35486fc5/Logic/PrimitiveRecursiveArithmetic/docs/proofs/diophantin
+e-number-theory/diophantine_geometry_ipra.
+[9] Faltings’ theorem and intuitionistic PRA, ProveIt packet faltings_ipra, https://github.com/V
+ladimirReshetnikov/ProveIt/tree/bce5113f44d613f5625c274128ee761f35486fc5/Logic/Primiti
+veRecursiveArithmetic/docs/proofs/diophantine-number-theory/faltings_ipra.
+[10] Siegel’s theorem and intuitionistic primitive recursive arithmetic, ProveIt packet siegel_ipra,
+https://github.com/VladimirReshetnikov/ProveIt/tree/bce5113f44d613f5625c274128ee761f
+35486fc5/Logic/PrimitiveRecursiveArithmetic/docs/proofs/diophantine-number-theory/sieg
+el_ipra.
+[11] Constructive Mordell–Weil descent in iPRA, ProveIt packet mordell_weil_ipra, https://github
+.com/VladimirReshetnikov/ProveIt/tree/bce5113f44d613f5625c274128ee761f35486fc5/Logic
+/PrimitiveRecursiveArithmetic/docs/proofs/diophantine-number-theory/mordell_weil_ipra.
+
+Certified Zariski descent in iPRA
+
+51/51
+
+[12] The Stacks Project Authors, Localization, Tag 00CM, https://stacks.math.columbia.edu/tag/0
+0CM.
+[13] The Stacks Project Authors, Affine schemes, Tag 01HR, https://stacks.math.columbia.edu/tag
+/01HR.
+[14] The Stacks Project Authors, Affine schemes and standard opens, Tag 01HR, and The category
+of affine schemes, Tag 01HX, https://stacks.math.columbia.edu/tag/01HR and https:
+//stacks.math.columbia.edu/tag/01HX.
+[15] The Stacks Project Authors, Quasi-coherent sheaves on affines, Tag 01I6, https://stacks.math.
+columbia.edu/tag/01I6.
+[16] The Stacks Project Authors, Glueing schemes, Tag 01JA, https://stacks.math.columbia.edu/t
+ag/01JA.
+[17] The Stacks Project Authors, Čech cohomology and cohomology, Tag 01EO, https://stacks.mat
+h.columbia.edu/tag/01EO.
+[18] The Stacks Project Authors, Cohomology of projective space, Tag 01XS, https://stacks.math.co
+lumbia.edu/tag/01XS.
+[19] B. Buchberger, An Algorithm for Finding the Basis Elements of the Residue Class Ring of
+a Zero Dimensional Polynomial Ideal, Ph.D. thesis, University of Innsbruck, 1965; English
+translation, 2006.
+[20] T. Coquand and H. Lombardi, A logical approach to abstract algebra, Mathematical Structures
+in Computer Science 16 (2006), 885–900.
+[21] J. Zhang, Formalising the Proj Construction in Lean, Interactive Theorem Proving (ITP 2023),
+LIPIcs 268, Article 35.
+[22] R. Hartshorne, Algebraic Geometry, Graduate Texts in Mathematics 52, Springer, 1977.
+[23] Wikipedia contributors, Algebraic geometry, https://en.wikipedia.org/wiki/Algebraic_geomet
+ry, used only as the user-specified orientation checklist.
+
+Provenance note
+A more detailed path-by-path audit, including what was and was not reused, is included as
+metadata/SOURCE_AUDIT.md. The external references describe conventional algebraic geometry
+and related constructive methods; they are not substitutes for the finite arithmetic proofs presented
+in this report.
+
+

@@ -1,0 +1,174 @@
+\section{Executable validation, theorem status, and reproducibility}
+
+\subsection{Purpose of the executable companion}
+
+The file \code{code/zariski\_descent.py} is an exact-arithmetic reference implementation of the
+central finite algorithms.  It uses only the Python standard library and never uses floating point.
+It is not an iPRA proof checker and does not replace the universal arguments in the preceding
+sections.  Its role is to check formulas, sign conventions, exponent bookkeeping, and examples
+independently of the LaTeX derivation.
+
+The implementation includes:
+\begin{itemize}
+\item a minimal exact commutative-ring interface, with instances for $\Z$ and $\Z/m\Z$;
+\item verification and exponentiation of unit-ideal cover certificates;
+\item the multinomial power-cover coefficient constructor;
+\item principal-cover gluing for the module $M=A$;
+\item sparse univariate polynomial arithmetic and ideal-certificate checking;
+\item the $\mathbf P^1$ Laurent \v{C}ech differential and normal form;
+\item projective-space cohomology rank formulas;
+\item integer matrices for the monomial-wise differential and insertion homotopy.
+\end{itemize}
+
+\subsection{Recorded validation}
+
+Running
+\begin{lstlisting}[language={}] 
+python3 -m unittest discover -s code -v
+python3 code/zariski_descent.py
+\end{lstlisting}
+produced the log in \code{verification/python\_tests.txt} and the structured records in
+\code{metadata/validation.json} and \code{verification/demo\_output.json}.  The eight unit tests
+passed.  The recorded checks comprise:
+
+\begin{longtable}{@{}p{0.32\textwidth}p{0.58\textwidth}@{}}
+\toprule
+Component & Recorded check \\
+\midrule
+\endfirsthead
+\toprule
+Component & Recorded check \\
+\midrule
+\endhead
+Power covers & Eleven exact cases over $\Z$ and $\Z/12\Z$, including exponents larger than one. \\
+Integer gluing & A two-chart example with unequal denominators recovers the global section $17$; the optimized common exponent is $2$, and the computed power-cover coefficients are $(7,-3)$. \\
+Zero-divisor gluing & A cover in $\Z/12\Z$ recovers the global section $5$, demonstrating that the algorithm does not cancel nonunits or assume a domain. \\
+Ideal certificate & An exact polynomial identity of the form $p-q=hg$ is accepted coefficientwise; a perturbed certificate is rejected. \\
+$\mathbf P^1$ normal form & $1{,}200$ randomly generated Laurent cocycles satisfy exact reconstruction, and every obstruction term lies in $d<e<0$. \\
+$\mathbf P^1$ global sections & Generated coefficient vectors give compatible chart pairs for several positive degrees and the expected empty basis for negative degrees. \\
+Projective ranks & The code checks the closed rank formulas against direct bounded enumeration in the tested range. \\
+$\mathbf P^n$ homotopy & For all proper nonempty negative-coordinate masks in dimensions $1\leq n\leq6$, $240$ matrix cases satisfy $dh+hd=I$ over $\Z$. \\
+\bottomrule
+\end{longtable}
+
+The report uses the uniformly safe gluing exponent $q=N+K+1$.  The executable companion uses the
+slightly sharper $q=\max(1,N+K)$ and then verifies the resulting cross identities.  This difference
+is intentional: the paper favors a simple bound with slack, while the program demonstrates that the
+slack is not mathematically essential.
+
+\subsection{Worked principal-cover examples}
+
+\paragraph{An integer example.}
+Take the cover elements $f_0=2$, $f_1=3$ with certificate
+\[
+                         (-1)\cdot2+1\cdot3=1.
+\]
+Choose local fractions obtained from the global integer $17$ but with different denominator
+exponents.  The compatibility checker clears the denominators, the gluing routine constructs a
+common power cover, and the output is exactly $17$.  This test exercises denominator homogenization
+rather than merely gluing two identical numerators.
+
+\paragraph{A zero-divisor example.}
+In $A=\Z/12\Z$, the elements $3$ and $4$ satisfy
+\[
+                         3\cdot3+1\cdot4=1\pmod{12}.
+\]
+Neither chart element is a unit, and $A$ has zero divisors.  Localizations and overlap equalities are
+therefore genuinely proof-relevant.  The supplied local data glue to $5\in A$.  Every final
+restriction equation is checked in the ring.  This example is a useful guard against accidentally
+using cancellation in the human or Lean proof.
+
+\subsection{Claim ledger}
+
+The machine-readable file \code{metadata/claims.json} and the human-readable
+\code{metadata/THEOREM\_LEDGER.md} distinguish the four relevant levels of completion.  The main
+status is summarized here.
+
+\begin{longtable}{@{}p{0.12\textwidth}p{0.48\textwidth}p{0.31\textwidth}@{}}
+\toprule
+ID & Result & Status in this archive \\
+\midrule
+\endfirsthead
+\toprule
+ID & Result & Status in this archive \\
+\midrule
+\endhead
+F1 & Certified-setoid and congruence discipline & Full human proof and Lean interface; object derivation pending. \\
+A1 & Quotient equality by ideal combinations & Full human proof and exact checker; object derivation pending. \\
+A2 & Localization equivalence and ring congruence & Explicit witness formulas proved; Lean target supplied. \\
+Z1 & Power-cover constructor & Full proof, exact implementation, finite tests; \code{Prf PRAAx} pending. \\
+Z2 & Joint monicity on a principal cover & Full proof; object derivation pending. \\
+Z3 & Principal-cover module gluing & Full proof including zero divisors; exact implementation for $M=A$; object derivation pending. \\
+G1--G2 & Finite affine atlases and quasi-coherent descent data & Precise certificate semantics and constructions; no complete category-of-schemes library claimed. \\
+P1--P3 & $\mathbf P^1$, $\cO(d)$, $H^0$, and $H^1$ & Full finite proofs and exact normal-form tests; object derivations pending. \\
+PN & Mixed-sign contraction and the standard $\mathbf P^n$ table & Full combinatorial proof and finite matrix checks; object derivation pending. \\
+C1 & Agreement with conventional sheaf cohomology & Uses the standard affine-cover comparison theorem; no internal derived-functor formalization claimed. \\
+L1 & Lean completion route & Source-level blueprints and dependency order; not compiler-checked. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Negative checks and nonclaims}
+
+The validation deliberately does not infer an unbounded theorem from a successful finite test.
+Specifically:
+\begin{itemize}
+\item testing finitely many rings does not prove the power-cover theorem for every presented ring;
+\item a bounded point search does not prove absence of points above its cutoff;
+\item a successful certificate checker does not guarantee that a certificate producer exists for
+      every true semantic statement;
+\item native Lean propositions, once added, would not by themselves be \code{Prf PRAAx} values;
+\item the standard \v{C}ech computation is not by itself a formalization of all derived-functor
+      sheaf cohomology inside iPRA.
+\end{itemize}
+
+No claim is made here of general effective Siegel or Faltings, uniform Mordell--Weil generators,
+exact singular Puiseux selection from arbitrary Cauchy coefficients, decidable equality of arbitrary
+represented reals, or a primitive-recursive universal evaluator.
+
+\subsection{Rebuilding the package}
+
+From the extracted package root, the intended commands are:
+\begin{lstlisting}[language={}] 
+python3 -m unittest discover -s code -v
+python3 code/zariski_descent.py > metadata/validation.json
+cd paper
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  ipra_algebraic_geometry_framework.tex
+\end{lstlisting}
+The included \code{build.sh} performs the tests, rebuilds the PDF, and writes an integrity manifest.
+A normal TeX Live installation with the packages named in the master source is sufficient.
+
+The upstream repository audit is pinned to
+\code{bce5113f44d613f5625c274128ee761f35486fc5}.  At the final check, \code{main} was
+\code{a2f72b0cdf57f8a3fefd34b272c3d471385e819c}; the Git object identifiers of \code{ConciseIPRA}, the iPRA
+\code{README.md}, and \code{docs} were identical at the two commits.  The archive neither
+modifies nor rebuilds the repository.  Its source audit is in
+\code{metadata/SOURCE\_AUDIT.md}; its explicit limitations are in
+\code{metadata/LIMITATIONS.md}.
+
+\subsection{Archive inventory}
+
+\begin{longtable}{@{}p{0.35\textwidth}p{0.55\textwidth}@{}}
+\toprule
+Path & Purpose \\
+\midrule
+\endfirsthead
+\toprule
+Path & Purpose \\
+\midrule
+\endhead
+\code{paper/ipra\_algebraic\_geometry\_framework.tex} & Master editable LaTeX source. \\
+\code{paper/sections/} & The complete section sources, including proofs and formalization plan. \\
+\code{paper/ipra\_algebraic\_geometry\_framework.pdf} & Compiled report. \\
+\code{code/zariski\_descent.py} & Exact finite reference algorithms. \\
+\code{code/test\_zariski\_descent.py} & Unit and randomized regression tests. \\
+\code{lean/*.lean} & Host structures, target propositions, and object-theory endpoint blueprint. \\
+\code{lean/FORMALIZATION\_PLAN.md} & Dependency-ordered path to complete Lean and object-iPRA proofs. \\
+\code{metadata/SOURCE\_AUDIT.md} & Pinned repository and external-source audit. \\
+\code{metadata/THEOREM\_LEDGER.md} & Result-by-result proof status. \\
+\code{metadata/claims.json} & Machine-readable claim levels and nonclaims. \\
+\code{metadata/validation.json} & Exact executable validation record. \\
+\code{verification/} & Test logs, demo output, PDF build report, and visual QA notes. \\
+\code{MANIFEST.sha256} & Integrity hashes of delivered files other than the manifest itself. \\
+\bottomrule
+\end{longtable}

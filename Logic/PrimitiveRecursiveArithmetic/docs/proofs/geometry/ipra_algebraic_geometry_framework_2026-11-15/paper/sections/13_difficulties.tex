@@ -1,0 +1,140 @@
+\section{Resolution map for the repository difficulties}
+
+\subsection{What the new framework resolves}
+
+The contribution is architectural rather than a claim that every difficult theorem in the
+repository is now proved.  The following table separates resolved representation problems from
+remaining mathematical producer problems.
+
+\begin{longtable}{@{}p{0.27\textwidth}p{0.31\textwidth}p{0.34\textwidth}@{}}
+\toprule
+Difficulty & Resolution supplied here & Remaining boundary \\
+\midrule
+\endfirsthead
+\toprule
+Difficulty & Resolution supplied here & Remaining boundary \\
+\midrule
+\endhead
+Quotients without decidable normal forms & Proof-relevant ideal-combination equality; operations transform witnesses. & Finding a witness may require a separate Gröbner or elimination theorem. \\
+Localization with zero divisors & Equality carries a killing exponent; transitivity and congruence have explicit formulas. & Invertibility or annihilation witnesses must be supplied or produced. \\
+Finite local-to-global gluing & Power-cover constructor plus explicit module gluing and uniqueness. & Arbitrary infinite covers are not internalized; use finite refinements or finite observations. \\
+Scheme representation & Certified finite affine atlas with localization isomorphisms and cocycles. & No single completed internal universe of all schemes or prime ideals is claimed. \\
+Sheaf condition & Exact equalizer for modules on finite principal covers. & General sheaf categories and derived functors require a larger coded library. \\
+Projective geometry & Standard $\Proj$ charts and transitions are primitive-recursively generated. & Global projective existence theorems may still require nontrivial algebraic certificates. \\
+Projective cohomology & Explicit finite \v{C}ech normal forms and contracting homotopy for $\cO(d)$. & Formal comparison with derived-functor cohomology is a separate extension. \\
+Chart/branch nonuniqueness & Combine certified atlases with the prior finite-use relational framework; require invariant outputs. & Discontinuous exact selectors remain unavailable without stronger input. \\
+Object-theory boundary & Exact list of \code{PR}/\code{PTm}/\code{Prf PRAAx} targets and quantifier-free invariants. & The final Lean implementation and compilation have not been completed in this archive. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Integration with Diophantine geometry}
+
+The existing Diophantine packet represents rational projective points, heights, polynomial maps,
+conics, local congruence obstructions, and finite descent.  The atlas layer extends that work in four
+ways.
+
+\begin{enumerate}[label=\arabic*.]
+\item \textbf{Local equations.}  A projective variety can be dehomogenized on finitely many charts,
+      and local algebraic manipulations can be glued or compared by localization witnesses.
+\item \textbf{Rational maps with domains.}  A denominator-nonvanishing condition is represented by a
+      principal open.  Several formulas for the same rational map are compared on overlaps rather
+      than forced into one global syntactic expression.
+\item \textbf{Line bundles and sections.}  Height constructions often use homogeneous forms or
+      divisors.  Transition factors and local sections can now be represented and checked on a
+      finite atlas.
+\item \textbf{Local-to-global obstructions.}  Congruence, real, or $p$-adic local certificates can be
+      attached to chart data, while exact algebraic descent witnesses handle the finite overlaps.
+\end{enumerate}
+
+A bounded rational-point search on a projective scheme proceeds as before: enumerate primitive
+coordinate tuples up to a supplied height, check homogeneous equations, and quotient by projective
+scaling.  The atlas does not create the height bound.  It provides the geometric operations needed
+to state and verify local computations around the enumerated points.
+
+\subsection{Faltings and Siegel}
+
+The Faltings and Siegel packets correctly distinguish a finite cardinality statement from an
+effective height cutoff.  The present framework sharpens the interface but does not remove that
+obstruction.
+
+A positive theorem can have the form:
+
+\begin{quote}
+Given a presented projective curve $X$, a height bound $B$, and a certificate proving that every
+rational point has height at most $B$, the bounded enumeration returns a complete list; every local
+chart computation and overlap equality is certified by the atlas.
+\end{quote}
+
+The bounded enumeration, chart conversion, and completeness-from-bound implication are primitive
+recursive.  The production of $B$ for general high-genus curves is the missing arithmetic theorem.
+A count bound, a finite-dimensional span bound, or a point-count estimate over finite fields is not a
+substitute.
+
+For Runge-type integral-point problems, explicit pole data and a supplied separation/height estimate
+can be attached to the finite projective compactification.  This may simplify the exact bookkeeping
+of points at infinity, divisors, and local functions, but the quantitative Runge inequality remains
+the substantive producer.
+
+\subsection{Mordell--Weil descent}
+
+The Mordell--Weil packet has an explicit finite-height descent conditional on actual representatives
+of the quotient by doubling.  A finite group scheme, isogeny, or Selmer computation can now be
+presented chartwise with exact localization certificates.  This is useful for verifying the descent
+maps and local images.
+
+It still does not follow that a finite abstract Selmer class has a rational point representative.
+The atlas framework can verify a supplied representative and its compatibility; it cannot create a
+rational point from a purely cohomological class without an additional theorem.
+
+\subsection{Puiseux expansions and singularities}
+
+For exact polynomial coefficients, Newton polygons, finite truncations, and branch equations can be
+encoded as finite algebraic certificates.  A singularity may be covered by finitely many candidate
+charts or blow-up charts; relational finite-use composition can avoid an arbitrary global branch
+label.
+
+For arbitrary Cauchy coefficient names, the exact vanishing tests that distinguish singular strata
+remain discontinuous.  The correct interfaces are:
+
+\begin{itemize}
+\item a supplied exact algebraic stratum or Newton-polygon certificate;
+\item a derivative/separation witness giving a regular local branch;
+\item finite root clusters and branch-invariant observations;
+\item approximate solution germs with residual bounds.
+\end{itemize}
+
+The finite atlas does not turn approximation into exact equality.
+
+\subsection{Analytic number theory packets}
+
+Chebotarev, Siegel--Walfisz, Bombieri--Vinogradov, and related packets require uniform analytic
+estimates, exceptional-zero control, field arithmetic, and explicit error terms.  Finite algebraic
+geometry can organize number fields, finite covers, discriminants, and Frobenius data, but it does
+not supply the missing estimates.  The no-universal-evaluator and finite-observation disciplines
+continue to apply.
+
+\subsection{Further algebraic-geometry targets}
+
+The framework gives a clear route to several additional iPRA projects.
+
+\begin{enumerate}[label=\arabic*.]
+\item \textbf{Blow-ups of finitely presented affine schemes.}  Use the standard finite charts of the
+      Rees algebra and localization transition maps.
+\item \textbf{Grassmannians.}  Use Pl\"ucker coordinates, finitely many standard minors, and explicit
+      transition matrices.
+\item \textbf{Finite morphisms and normalization certificates.}  Present the target algebra as a
+      finite module with multiplication tables and verify integral equations.
+\item \textbf{B\'ezout in zero-dimensional certified intersections.}  Combine resultants or a
+      homogeneous Gröbner certificate with finite quotient-rank calculations.
+\item \textbf{Riemann--Roch for explicitly presented curves.}  First formalize divisor/line-bundle
+      \v{C}ech complexes and finite-dimensional normal forms; any general theorem still needs
+      quantitative algebraic inputs.
+\item \textbf{Cohomology of toric varieties.}  Fans are finite combinatorial objects, affine toric
+      charts are monoid algebras, and line-bundle cohomology often reduces to finite lattice-region
+      calculations.
+\item \textbf{Finite descent for vector bundles.}  Transition matrices and principal-cover gluing
+      already provide the base layer for explicit projective-module calculations.
+\end{enumerate}
+
+The common theme is that the geometric theorem should expose a finite atlas, a finite complex, or a
+finite certificate rather than conceal infinitary semantics behind an unexamined object code.

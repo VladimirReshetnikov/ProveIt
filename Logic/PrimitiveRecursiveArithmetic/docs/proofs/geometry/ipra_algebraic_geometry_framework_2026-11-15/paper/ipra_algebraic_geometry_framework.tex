@@ -1,0 +1,133 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{graphicx}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  citecolor=blue!45!black,
+  urlcolor=blue!55!black,
+  pdftitle={Certified Zariski Descent in Intuitionistic Primitive Recursive Arithmetic},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov}
+}
+\urlstyle{same}
+\setlist{nosep,leftmargin=2em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2.5em}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Certified Zariski descent in iPRA}
+\rhead{\thepage/\pageref{LastPage}}
+\cfoot{}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{warning}[theorem]{Warning}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{problem}[theorem]{Formalization target}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\Proj}{\operatorname{Proj}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\cO}{\mathcal O}
+\newcommand{\Prf}{\mathsf{Prf}}
+\newcommand{\PRAAx}{\mathsf{PRAAx}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\PTm}{\mathsf{PTm}}
+\newcommand{\Fm}{\mathsf{Fm}}
+\newcommand{\EqW}{\mathsf{EqW}}
+\newcommand{\Valid}{\mathsf{Valid}}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\newcommand{\true}{\mathsf{true}}
+\newcommand{\false}{\mathsf{false}}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\set}[1]{\left\{#1\right\}}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  breaklines=true,
+  frame=single,
+  xleftmargin=0.5em,
+  xrightmargin=0.5em,
+  showstringspaces=false,
+  keywordstyle=\bfseries,
+  commentstyle=\itshape\color{black!65}
+}
+
+\title{\textbf{Certified Zariski Descent in Intuitionistic Primitive Recursive Arithmetic}\\[0.5em]
+\large Finite presentations, localization, affine atlases, and projective-space cohomology}
+\author{Prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The existing \emph{ProveIt} iPRA packets develop finite contracts, demand-driven observations,
+relational finite-use composition, stable outputs, exact arithmetic, and several Diophantine
+constructions.  This report adds a specifically algebraic-geometric layer.  Mathematical objects
+are represented by natural-number codes with proof-relevant equality certificates; quotient rings
+use explicit ideal-combination witnesses; localizations use explicit annihilating exponents; and
+finite affine covers are carried by unit-ideal certificates rather than by quantification over prime
+ideals.  The central result is an explicit primitive-recursive Zariski gluing algorithm for modules
+on a finite principal-open cover.  It works over rings with zero divisors and separates certificate
+verification from certificate production.
+
+This provides a finitary semantics for affine schemes, finite affine atlases, quasi-coherent module
+data, vector bundles, and finite \v{C}ech complexes.  As a developed case study, the two-chart atlas
+of $\mathbf P^1$ gives a primitive-recursive normal form for the \v{C}ech cohomology of every
+$\cO(d)$.  The construction extends to the standard cover of $\mathbf P^n$: the complex decomposes
+by exponent vectors, mixed-sign summands have an explicit contracting homotopy, and only the
+all-nonnegative and all-negative summands survive.  Thus the familiar cohomology table is reduced
+to finite combinatorics suitable for iPRA.
+
+The archive contains complete human-readable proofs, exact Python validation, source-level Lean
+interfaces, and a dependency-ordered route to actual \code{Prf PRAAx} terms.  The Lean outlines
+are not claimed compiler-checked, and no general effective Siegel, Faltings, Mordell--Weil, or
+singular Puiseux theorem is claimed.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{sections/01_scope}
+\input{sections/02_audit}
+\input{sections/03_framework}
+\input{sections/04_presented_algebra}
+\input{sections/05_localization}
+\input{sections/06_power_cover}
+\input{sections/07_gluing}
+\input{sections/08_atlases}
+\input{sections/09_sheaves}
+\input{sections/10_projective_schemes}
+\input{sections/11_projective_line}
+\input{sections/12_projective_space}
+\input{sections/13_difficulties}
+\input{sections/14_lean}
+\input{sections/15_validation}
+\input{sections/16_references}
+
+\end{document}

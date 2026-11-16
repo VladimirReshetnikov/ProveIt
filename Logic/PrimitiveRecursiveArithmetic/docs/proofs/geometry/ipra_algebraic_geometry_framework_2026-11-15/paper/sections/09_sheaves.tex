@@ -1,0 +1,131 @@
+\section{Quasi-coherent modules, vector bundles, and finite \v{C}ech complexes}
+
+\subsection{Affine module data}
+
+On an affine chart $U_i=\Spec(A_i)$, a quasi-coherent module is represented by an $A_i$-module
+$M_i$.  For a finitely presented theory one usually takes a finite presentation matrix, although the
+principal-cover gluing theorem only needs a certified module interface.  Restriction to a principal
+open $D(f)$ is the localization $(M_i)_f$.
+
+For a strict atlas, descent data for a quasi-coherent module consists of certified isomorphisms
+\[
+   \theta_{ij}:(M_i)_{f_{ij}}
+      \xrightarrow{\sim}
+      (M_j)_{f_{ji}}
+\]
+semilinear with respect to $\phi_{ij}$, together with inverse and triple-cocycle witnesses.  With
+finite principal-overlap atlases, the same data are supplied on every overlap piece and checked on
+finite refinements.
+
+\begin{definition}[Certified quasi-coherent atlas module]
+A certified quasi-coherent atlas module is a finite affine atlas, one certified module on each chart,
+and finite localization isomorphism/cocycle certificates on the overlaps.
+\end{definition}
+
+This definition is purely finite.  Its external interpretation is the conventional quasi-coherent
+sheaf obtained by descent.
+
+\subsection{Sections and the sheaf equalizer}
+
+A global section code is a tuple $(s_i)_{i<r}$ with $s_i\in M_i$ and overlap witnesses
+\[
+                    \theta_{ij}(s_i)=s_j.
+\]
+If a chart or overlap is represented by several principal pieces, compatibility on those pieces is
+compressed by Theorem~\ref{thm:principal-gluing}.  Equality of global sections is componentwise
+certificate equality; refinement invariance follows from Proposition~\ref{prop:refinement-invariance}.
+
+For a principal cover of a single affine chart, Corollary~\ref{cor:equalizer} proves the sheaf
+condition directly.  Hence the structure presheaf $D(f)\mapsto A_f$ and module presheaf
+$D(f)\mapsto M_f$ are sheaves on the finite standard-open basis in exactly the finite sense used by
+an iPRA proof.
+
+\subsection{Vector bundles and transition matrices}
+
+A rank-$d$ vector bundle on a finite atlas is represented by a free module $A_i^d$ on each chart and
+invertible matrices
+\[
+                     G_{ij}\in\operatorname{GL}_d((A_i)_{f_{ij}})
+\]
+with supplied inverse matrices and cocycle witnesses $G_{ik}=G_{jk}G_{ij}$ on triple overlaps.
+All matrix identities are finite coefficient identities in localizations.  A section is a tuple of
+vectors $v_i\in A_i^d$ satisfying $v_j=G_{ij}v_i$.
+
+Line bundles are the case $d=1$: transition matrices are units.  The twists $\cO(d)$ on projective
+space have transition units given by integer powers of coordinate ratios.  Negative powers live in
+the overlap localization and require no extra total inversion operation outside its certified
+domain.
+
+\subsection{Coherent modules and finite resolutions}
+
+A coherent module may be represented chartwise by a finite presentation
+\[
+                       A_i^{u_i}\xrightarrow{R_i}A_i^{v_i}\to M_i\to0.
+\]
+Overlap isomorphisms are matrices on generators together with witnesses that they respect relations,
+plus inverse witnesses.  Kernels, cokernels, tensor products, and duals are represented by explicit
+finite matrices and relation certificates.
+
+A finite locally free resolution is especially useful: every differential is a matrix, the equation
+$d_{p-1}d_p=0$ is coefficientwise, and exactness at a supplied vector is certified by a preimage.
+The framework can verify a finite resolution without deciding module equality globally.
+
+\subsection{Finite \v{C}ech complexes}
+
+Let $U_0,\ldots,U_{r-1}$ be a finite atlas or a finite principal cover.  For a module datum
+$\mathcal F$, define the ordered \v{C}ech group in degree $p$ by the finite direct sum
+\[
+ \check C^p(U,\mathcal F)
+   =\bigoplus_{i_0<\cdots<i_p}
+     \mathcal F(U_{i_0}\cap\cdots\cap U_{i_p}).
+\]
+Each multiple intersection is represented by an iterated localization or a finite principal
+refinement.  The differential is
+\[
+   (ds)_{i_0\ldots i_{p+1}}
+      =\sum_{a=0}^{p+1}(-1)^a
+       s_{i_0\ldots\widehat{i_a}\ldots i_{p+1}}\big|_{U_{i_0\ldots i_{p+1}}}.
+\]
+All sums and restrictions are fixed PR operations on finite tuples.
+
+The identity $d^2=0$ is proved by pairing the two ways of deleting two indices; their signs are
+opposite.  An iPRA proof enumerates the bounded pairs $(a,b)$ and carries a quantifier-free
+coefficient accumulator.  It does not use induction on a statement quantifying over sheaves.
+
+\subsection{Cohomology by explicit normal forms}
+
+For a finite complex, a cohomology class may be represented in several certificate-relative ways:
+
+\begin{enumerate}[label=\arabic*.]
+\item a cocycle $z$ with a witness $dz=0$, modulo proof-relevant equality
+      $z-z'=dy$;
+\item a supplied direct-sum normal form with constructors for decomposition and uniqueness;
+\item a finite presentation matrix for $\ker d/\im d$;
+\item a contracting homotopy $h$ satisfying $hd+dh=1$ on a designated summand.
+\end{enumerate}
+
+The projective-space computation uses the fourth and second forms.  Every monomial-weight summand is
+finite and has either a one-dimensional survivor or an explicit insertion homotopy.
+
+\subsection{Relation to conventional sheaf cohomology}
+
+The arithmetic construction gives exact \v{C}ech cohomology of a chosen finite atlas.  To identify it
+with derived-functor sheaf cohomology one needs a comparison theorem, usually supplied by affine
+acyclicity for quasi-coherent sheaves and acyclicity of finite intersections.  For the standard cover
+of projective space, this is the standard conventional argument.
+
+There are two honest formalization targets:
+
+\begin{description}[style=nextline]
+\item[Immediate target.]
+Formalize the finite \v{C}ech complex and its normal forms in iPRA.  This already proves concrete
+local-to-global statements and computes a canonical finite algebraic invariant.
+
+\item[Extended target.]
+Develop a coded homological-algebra library and an affine-acyclicity theorem, then prove that the
+finite \v{C}ech result represents the usual sheaf cohomology.  This is a larger project and is not
+silently assumed to be complete here.
+\end{description}
+
+The report states conventional cohomology conclusions only with this comparison boundary made
+explicit.

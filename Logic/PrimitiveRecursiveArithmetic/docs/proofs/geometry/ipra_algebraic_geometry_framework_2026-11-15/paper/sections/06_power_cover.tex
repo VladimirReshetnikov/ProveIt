@@ -1,0 +1,104 @@
+\section{The explicit power-cover lemma}
+
+\subsection{Unit-ideal covers}
+
+For a ring $A$, a finite family of principal opens $D(f_0),\ldots,D(f_{r-1})$ covers
+$\Spec(A)$ exactly when the elements $f_i$ generate the unit ideal.  In the present framework the
+cover is not represented by quantifying over prime ideals.  It is represented by coefficients
+$c_i\in A$ and an equality witness for
+\begin{equation}\label{eq:unit-cover}
+                 \sum_{i<r} c_i f_i=1.
+\end{equation}
+This certificate is finite, stable under ring maps, and directly usable by an arithmetic proof.
+
+Gluing fractions usually requires a common denominator power.  The same principal opens are also a
+cover after replacing every $f_i$ by $f_i^N$, but an iPRA proof needs explicit coefficients.
+
+\begin{theorem}[Power-cover constructor]\label{thm:power-cover}
+Let $r\geq1$, let $f_i,c_i\in A$ satisfy \eqref{eq:unit-cover}, and let $N\geq1$.  There is an
+explicit primitive-recursive construction of coefficients $d_i$ such that
+\begin{equation}\label{eq:power-cover}
+                  \sum_{i<r}d_i f_i^N=1.
+\end{equation}
+The construction is uniform in the finite ring codes, $r$, and $N$.
+\end{theorem}
+
+\begin{proof}
+Set
+\[
+                    M=r(N-1)+1.
+\]
+Expand the finite power of \eqref{eq:unit-cover}:
+\begin{equation}\label{eq:multinomial-cover}
+  1=\left(\sum_{i<r}c_i f_i\right)^M
+   =\sum_{\substack{\alpha\in\N^r\\ |\alpha|=M}}
+      \binom{M}{\alpha}\prod_{j<r}c_j^{\alpha_j}f_j^{\alpha_j}.
+\end{equation}
+For every exponent vector $\alpha$ of total degree $M$, some coordinate satisfies
+$\alpha_i\geq N$.  Otherwise
+$|\alpha|\leq r(N-1)<M$.  Choose the least such $i$ and assign the corresponding term of
+\eqref{eq:multinomial-cover} to bucket $i$.  Factor $f_i^N$ from every term in bucket $i$ and let
+$d_i$ be the sum of the residual factors.  Then the buckets partition the finite expansion, so
+\eqref{eq:power-cover} follows.
+\end{proof}
+
+The proof is constructive even over rings with zero divisors.  It uses no radical membership,
+prime ideal, compactness, or excluded middle beyond comparisons of natural-number exponents.
+
+\subsection{Exact coefficient formula}
+
+For reproducibility, define
+\[
+  \iota(\alpha)=\min\set{i<r:\alpha_i\geq N}.
+\]
+Then
+\begin{equation}\label{eq:di-formula}
+ d_i=\sum_{\substack{|\alpha|=M\\ \iota(\alpha)=i}}
+ \binom{M}{\alpha}
+ c_i^{\alpha_i}f_i^{\alpha_i-N}
+ \prod_{j\neq i}c_j^{\alpha_j}f_j^{\alpha_j}.
+\end{equation}
+The finite weak compositions of $M$ into $r$ parts can be enumerated by nested primitive recursion.
+The multinomial coefficient is computed from bounded products and exact divisions, or avoided
+entirely by an iterative expansion that carries multiplicities by repeated addition.
+
+\subsection{An iPRA-friendly iterative proof}
+
+Formula \eqref{eq:di-formula} is mathematically transparent, but the object proof need not formalize
+factorials.  A more direct implementation maintains a finite polynomial table indexed by exponent
+vectors with coordinates at most $M$.  Starting from the constant table $1$, perform $M$ rounds of
+multiplication by $\sum c_i f_i$.  The quantifier-free invariant states:
+
+\begin{enumerate}[label=(\roman*)]
+\item every occupied exponent vector has total degree equal to the round number;
+\item the sum of table entries times their monomials equals the current power;
+\item each entry is the accumulated coefficient obtained by the fixed update rule.
+\end{enumerate}
+
+After round $M$, scan the finite table, choose the least coordinate at least $N$, and add the factored
+term to the corresponding $d_i$.  A second quantifier-free invariant states that the processed prefix
+of the table equals the partial sum $\sum_i d_i f_i^N$.  This route uses only finite arrays, bounded
+comparison, and ring operations already available in the presentation.
+
+\subsection{Examples and validation}
+
+For $f_0=2$, $f_1=3$, $c_0=-1$, and $c_1=1$, the basic cover certificate is
+$-2+3=1$.  At power $N=2$, the constructor used in the executable companion returns
+\[
+                   d_0=7,\qquad d_1=-3,
+\]
+and indeed
+\[
+                    7\cdot2^2-3\cdot3^2=28-27=1.
+\]
+
+The same algorithm was tested in $\Z/12\Z$ with $f_0=3$, $f_1=4$ and
+$c_0=3$, $c_1=1$, since $3\cdot3+1\cdot4=1\pmod {12}$.  This test is useful because neither
+principal element is cancellable and localization witnesses genuinely need annihilating powers.
+
+\subsection{Functoriality}
+
+If $\phi:A\to B$ is a certified ring map, applying $\phi$ to the input cover and to every operation
+in \eqref{eq:di-formula} gives exactly the power-cover coefficients constructed in $B$.  Thus the
+constructor is functorial up to the supplied equality witnesses.  This fact later makes atlas
+refinement and base change finite certificate transformations rather than new existence proofs.

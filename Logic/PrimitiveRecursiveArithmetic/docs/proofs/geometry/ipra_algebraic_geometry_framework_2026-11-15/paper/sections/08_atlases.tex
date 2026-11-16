@@ -1,0 +1,153 @@
+\section{Certified finite affine atlases}
+
+\subsection{Strict principal atlases}
+
+The simplest geometric gluing object has one principal overlap for each ordered pair of charts.
+
+\begin{definition}[Strict certified affine atlas]\label{def:strict-atlas}
+A strict certified affine atlas consists of:
+\begin{enumerate}[label=(\alph*)]
+\item a positive integer $r$ and finitely presented rings $A_i$ for $i<r$;
+\item elements $f_{ij}\in A_i$ for every $i,j<r$, with $f_{ii}=1$;
+\item certified isomorphisms
+\[
+           \phi_{ij}:(A_i)_{f_{ij}}\xrightarrow{\sim}(A_j)_{f_{ji}};
+\]
+\item identity witnesses for $\phi_{ii}$ and inverse witnesses for
+      $\phi_{ji}\phi_{ij}=\mathrm{id}$;
+\item on every triple $(i,j,k)$, a finite common localization and a witness that
+\[
+                         \phi_{ik}=\phi_{jk}\phi_{ij}
+\]
+there.
+\end{enumerate}
+Every ring, element, map, localization, and equality in this definition is a natural-number code
+with the certificates described in the preceding sections.
+\end{definition}
+
+Externally, the usual gluing theorem for schemes turns this data into a scheme covered by the affine
+schemes $\Spec(A_i)$.  Internally, no topological quotient is needed.  A theorem about the glued
+object is translated into a finite theorem about the charts and the certified overlap maps.
+
+The strict form already covers projective space: on the chart $X_i\neq0$, the overlap with the chart
+$X_j\neq0$ is the principal open where $X_j/X_i$ is invertible.
+
+\subsection{Finite principal-overlap atlases}
+
+Pairwise intersections of affine opens need not always be one principal open.  The practical
+extension replaces $f_{ij}$ by a finite family $f_{ij\alpha}$, each giving a principal overlap piece.
+The data include:
+
+\begin{itemize}
+\item a unit-ideal or relative-cover certificate that the pieces cover the intended intersection;
+\item a localization isomorphism on every piece;
+\item compatibility witnesses on double refinements;
+\item cocycle witnesses on triple refinements.
+\end{itemize}
+
+The principal-cover gluing theorem proves that chartwise constructions independent of the chosen
+piece descend to the whole intersection.  Refinement coherence follows from uniqueness.  Thus the
+additional indexing is finite bookkeeping rather than a new logical principle.
+
+\subsection{The internal geometric language}
+
+A finite atlas supports the following notions without constructing an internal prime spectrum.
+
+\begin{description}[style=nextline]
+\item[Regular function.]
+A tuple $a_i\in A_i$ with localization equality witnesses
+$\phi_{ij}(a_i)=a_j$ on overlaps.  The principal-cover theorem glues such tuples whenever one chart
+is itself presented by a finite principal cover.
+
+\item[Morphism.]
+A chartwise finite family of presented ring maps in the contravariant direction, together with a
+finite target-chart cover and overlap commutativity witnesses.  Relational finite-use composition
+may choose among several valid target charts; the induced map on an invariant observation is
+choice-free.
+
+\item[Open subobject.]
+A finite family of principal elements on each chart with compatibility certificates under overlap
+maps.  Union and intersection are computed by concatenation and products of principal elements.
+
+\item[Closed subobject.]
+A finite ideal presentation on each chart, stable under localization and equipped with overlap
+identities.  A global finitely presented closed subscheme is represented by finitely many local
+relation lists.
+
+\item[Point over a presented ring $R$.]
+A compatible family of certified ring maps $A_i\to R$ on a selected chart cover, or more commonly a
+single chart map with a certificate that its denominators are invertible.  Projective homogeneous
+coordinates are a compact specialized presentation of the same data.
+\end{description}
+
+These are theorem-relative representations.  A statement requiring only chartwise equations never
+needs to enumerate the topological points of the scheme.
+
+\subsection{Atlas morphisms and refinement}
+
+A refinement replaces a chart $A_i$ by a finite principal cover.  Its certificate contains the
+unit-ideal relation and the localization maps.  A common refinement of two finite atlases is formed
+by taking finite pairwise intersections and then principal refinements.  All index bounds are
+primitive recursive in the atlas sizes.
+
+\begin{proposition}[Refinement invariance]\label{prop:refinement-invariance}
+Suppose a finite atlas observation is defined by compatible local data and has uniqueness under the
+principal-cover equalizer.  Then its value is invariant, with an explicit equality witness, under
+finite principal refinement.
+\end{proposition}
+
+\begin{proof}
+Pull the data to the common refinement.  Both candidate values have equal restrictions on every
+refined principal piece.  Apply principal-cover uniqueness chart by chart and then on the outer
+finite atlas.  The resulting equality witness is obtained by nested applications of the power-cover
+constructor.
+\end{proof}
+
+This proposition supplies the practical replacement for proving equality of two constructions on
+all open sets.
+
+\subsection{Base change and fiber products}
+
+For presented affine rings, tensor products have explicit presentations.  If
+$A\leftarrow R\to B$ are finitely presented, then $A\otimes_R B$ is presented by the combined
+variables and relations, together with equations identifying the two images of the generators of
+$R$.  The construction is primitive recursive on the finite presentations.
+
+Base-changing an atlas along a presented morphism applies this tensor construction chartwise and
+base-changes each localization certificate.  Fiber products of finite atlases are obtained by the
+finite product of chart index sets.  Overlap cocycles are inherited by functoriality of localization
+and tensor-product maps.  Thus many finite-limit constructions in algebraic geometry fit the same
+certificate language.
+
+\subsection{Properties as finite certificates}
+
+Some geometric properties have direct finite witnesses on a chosen atlas:
+
+\begin{itemize}
+\item \emph{finite presentation}: already part of every chart and morphism code;
+\item \emph{separatedness}: a finite presentation/certificate for each affine diagonal or,
+      in common cases, affine pairwise intersections with multiplication-map surjectivity witnesses;
+\item \emph{smoothness of a fixed relative dimension}: a finite principal cover on which specified
+      Jacobian minors are invertible, together with identities certifying the relations and rank;
+\item \emph{finite locally free module of rank $d$}: local bases and inverse matrices on a finite
+      principal cover;
+\item \emph{proper projective presentation}: a closed homogeneous presentation inside a fixed
+      projective space.
+\end{itemize}
+
+These certificates are sufficient conditions with soundness proofs.  The framework does not assert
+that a uniform primitive-recursive algorithm discovers such certificates for every input
+presentation.
+
+\subsection{Conventional semantics}
+
+Externally, Definition~\ref{def:strict-atlas} is interpreted by the standard gluing theorem for
+schemes.  The finite ring maps determine open immersions of affine schemes, and the inverse and
+cocycle witnesses provide the usual gluing datum.  Every internal chartwise theorem is sound for the
+resulting conventional scheme because its algebraic restriction maps are exactly the localization
+maps used by the structure sheaf.
+
+A full formal equivalence between the finite-atlas category and an appropriate category of
+quasi-compact schemes with chosen atlases would be valuable, but it is not required for individual
+iPRA theorems.  Each theorem can state its atlas hypotheses explicitly and prove the desired finite
+observation directly.

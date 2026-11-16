@@ -1,0 +1,160 @@
+\section{Explicit principal-cover gluing}
+
+\subsection{Statement}
+
+Let $A$ be a commutative ring, $M$ an $A$-module, and suppose
+\[
+                  \sum_{i<r}c_i f_i=1.
+\]
+For each $i$, let a local section on $D(f_i)$ be represented by
+\[
+                  s_i=\frac{m_i}{f_i^{n_i}}\in M_{f_i}.
+\]
+On the overlap $D(f_if_j)$, the two restrictions are represented after denominator
+homogenization by fractions in the single localization $M_{f_if_j}$.
+
+\begin{theorem}[Primitive-recursive Zariski gluing]\label{thm:principal-gluing}
+Assume that for every $i,j<r$ a finite localization witness proves that $s_i$ and $s_j$ agree in
+$M_{f_if_j}$.  Then an explicit primitive-recursive formula produces $m\in M$ and witnesses that
+$m/1=s_i$ in every $M_{f_i}$.  If two global sections have the same restrictions, an explicit
+primitive-recursive witness proves them equal.  The theorem is valid over rings with zero divisors.
+\end{theorem}
+
+This is the sheaf equalizer theorem for the quasi-coherent module associated to $M$, presented in a
+form directly usable by iPRA.
+
+\subsection{Denominator homogenization}
+
+Set
+\[
+                         N=\max_{i<r} n_i,
+          \qquad a_i=f_i^{N-n_i}m_i.
+\]
+Then $s_i=a_i/f_i^N$.  An overlap witness can be written as an exponent $k_{ij}$ satisfying
+\begin{equation}\label{eq:overlap-kill}
+  (f_if_j)^{k_{ij}}
+  \bigl(f_j^N a_i-f_i^N a_j\bigr)=0_M.
+\end{equation}
+The witness includes the module-equality certificate for this equation.  Let
+\[
+                         K=\max_{i,j<r}k_{ij},
+             \qquad q=N+K+1,
+             \qquad b_i=f_i^{q-N}a_i=f_i^{K+1}a_i.
+\]
+Multiplying \eqref{eq:overlap-kill} by the remaining powers needed to reach $K$ gives
+\begin{equation}\label{eq:cross-common}
+                         f_j^q b_i=f_i^q b_j
+                         \qquad(i,j<r).
+\end{equation}
+Indeed the difference of the two sides equals
+\[
+ f_if_j(f_if_j)^K(f_j^Na_i-f_i^Na_j),
+\]
+which is zero by the synchronized overlap witness.  The harmless extra $+1$ in $q$ avoids a special
+case when every denominator and every killing exponent is zero.
+
+\subsection{Construction of the global section}
+
+Apply Theorem~\ref{thm:power-cover} to the exponent $q$.  It returns $d_i$ satisfying
+\[
+                         \sum_{i<r}d_i f_i^q=1.
+\]
+Define
+\begin{equation}\label{eq:global-glue}
+                         m=\sum_{i<r}d_i b_i.
+\end{equation}
+For a fixed chart $j$, use \eqref{eq:cross-common}:
+\begin{align*}
+ f_j^q m
+   &=\sum_i d_i f_j^q b_i\\
+   &=\sum_i d_i f_i^q b_j\\
+   &=b_j.
+\end{align*}
+Thus $m/1=b_j/f_j^q=a_j/f_j^N=m_j/f_j^{n_j}$ in $M_{f_j}$.  Every equality in this calculation is
+accompanied by a finite witness obtained from module distributivity, the pairwise cross witnesses,
+and the power-cover certificate.
+
+This proves existence without search.  Once the overlap witnesses and the unit-ideal cover are in
+hand, the global section is a fixed bounded formula.
+
+\subsection{Uniqueness}
+
+Suppose $m,m'\in M$ have equal restrictions in every $M_{f_i}$.  For each $i$, let $e_i$ witness
+\[
+                            f_i^{e_i}(m-m')=0.
+\]
+Set $E=1+\max_i e_i$.  Then $f_i^E(m-m')=0$ for every $i$.  Use the power-cover constructor to find
+$u_i$ with $\sum u_i f_i^E=1$.  Therefore
+\[
+  m-m'=\sum_i u_i f_i^E(m-m')=0.
+\]
+This is a direct equality witness in $M$.  No cancellation, prime ideal argument, or excluded middle
+is used.
+
+\begin{corollary}[Finite principal-cover equalizer]\label{cor:equalizer}
+The sequence
+\[
+  0\longrightarrow M
+   \longrightarrow \prod_{i<r}M_{f_i}
+   \rightrightarrows \prod_{i,j<r}M_{f_if_j}
+\]
+is exact in the following certificate sense:
+\begin{enumerate}[label=(\alph*)]
+\item the first map has an explicit joint-monicity witness transformer;
+\item every tuple with supplied pairwise compatibility witnesses has an explicitly constructed
+      preimage;
+\item the restriction witnesses and uniqueness witness are primitive recursive in the input codes.
+\end{enumerate}
+\end{corollary}
+
+Finite products are coded by lists, so the theorem is a statement entirely about natural numbers.
+The use of the word ``exact'' does not import an abstract abelian-category library.
+
+\subsection{A zero-divisor example}
+
+Take $A=M=\Z/12\Z$, $f_0=3$, $f_1=4$, and cover coefficients $c_0=3$, $c_1=1$:
+\[
+                    3\cdot3+1\cdot4=13=1\pmod {12}.
+\]
+The local numerators $9$ on $D(3)$ and $8$ on $D(4)$ both represent the global class $5$:
+\[
+                  3(9-5)=0,\qquad 4(8-5)=0\pmod {12}.
+\]
+On the overlap, $(3\cdot4)^1=0$ kills every difference, so the compatibility witness has exponent
+one.  The gluing algorithm takes $N=0$, $K=1$, $q=2$ if the displayed formula is used literally.
+A slightly optimized implementation uses $q=1$ because the synchronized cross identity already
+holds; either choice is sound.  The executable companion uses the optimized exponent and returns the
+unique global class $5$.
+
+This example demonstrates why localization equality must retain killing exponents.  Cross
+multiplication alone would not be a cancellative equality test in a ring with zero divisors.
+
+\subsection{Primitive-recursive complexity}
+
+All loops are bounded by primitive-recursive terms in the input lengths and exponents:
+
+\begin{itemize}
+\item scanning the $n_i$ and $k_{ij}$ uses bounded maxima;
+\item exponentiation uses primitive recursion;
+\item the power-cover constructor enumerates finitely many weak compositions or performs a bounded
+      iterative expansion;
+\item the final sums are finite module folds.
+\end{itemize}
+
+A convenient quantifier-free invariant for the final fold over $i<t$ is
+\[
+ f_j^q m_t=\left(\sum_{i<t}d_i f_i^q\right)b_j,
+\]
+where $m_t=\sum_{i<t}d_i b_i$.  The invariant is an equality of coded module terms with a concrete
+witness accumulator.  It contains no quantification over local sections or opens.
+
+\subsection{Refinements and iterated covers}
+
+If a chart $D(f_i)$ is further covered by principal opens $D(f_i g_{i\alpha})$ with a local
+unit-ideal certificate in $A_{f_i}$, clear the finitely many denominators in that certificate and
+obtain a power cover in $A$.  Gluing first within each chart and then across the outer cover agrees
+with gluing on the flattened refinement.  The proof follows uniqueness: both constructions have the
+same restrictions on every refined principal piece, so the global outputs are equal.
+
+Thus finite cover refinement is coherent without choosing canonical normal forms.  This is the
+basic associativity needed to build finite affine atlases and sheaf data.

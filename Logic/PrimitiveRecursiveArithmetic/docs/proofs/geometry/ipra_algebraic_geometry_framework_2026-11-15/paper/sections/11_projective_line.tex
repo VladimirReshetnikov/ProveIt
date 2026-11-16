@@ -1,0 +1,188 @@
+\section{Case study: \texorpdfstring{$\mathbf P^1$}{P1} and every twist \texorpdfstring{$\cO(d)$}{O(d)}}
+
+\subsection{The two-chart atlas}
+
+Fix a commutative ring $R$ with a certified presentation.  The projective line has two standard
+charts
+\[
+   U_0=\Spec R[t],\qquad U_1=\Spec R[u],
+\]
+with overlap
+\[
+   U_{01}=\Spec R[t,t^{-1}]=\Spec R[u,u^{-1}],
+   \qquad u=t^{-1}.
+\]
+The overlap maps are localizations at $t$ and $u$, followed by the certified isomorphism sending
+$u$ to $t^{-1}$.  The inverse sends $t$ to $u^{-1}$.  Their composite identities are literal
+Laurent-monomial identities.
+
+The line bundle $\cO(d)$ is trivial on each chart.  Let $e_0$ and $e_1$ be the chosen local bases.
+On the overlap,
+\[
+                         e_1=t^d e_0.
+\]
+This formula is valid for every $d\in\Z$ because $t$ is invertible on the overlap.
+
+A degree-zero \v{C}ech cochain is a pair
+\[
+                   a(t)e_0\in R[t]e_0,
+              \qquad b(u)e_1\in R[u]e_1.
+\]
+After writing $u=t^{-1}$, the differential is
+\begin{equation}\label{eq:p1-delta}
+  \delta_d(a,b)=a(t)-t^d b(t^{-1})
+        \in R[t,t^{-1}]e_0.
+\end{equation}
+Since the cover has two members, the ordered \v{C}ech complex is
+\[
+  0\longrightarrow R[t]\oplus R[u]
+    \xrightarrow{\delta_d} R[t,t^{-1}]
+    \longrightarrow0.
+\]
+
+\subsection{Global sections}
+
+\begin{theorem}[Global sections of $\cO(d)$ on $\mathbf P^1$]\label{thm:p1-h0}
+The kernel of $\delta_d$ has the following explicit normal form:
+\[
+ \check H^0(\mathbf P^1_R,\cO(d))\cong
+ \begin{cases}
+   R^{d+1},& d\geq0,\\
+   0,&d<0.
+ \end{cases}
+\]
+For $d\geq0$, the vector $(c_0,\ldots,c_d)$ corresponds to
+\begin{align*}
+ a(t)&=\sum_{e=0}^d c_e t^e,\\
+ b(u)&=\sum_{j=0}^d c_{d-j}u^j.
+\end{align*}
+The conversion in both directions is primitive recursive on finite polynomial codes.
+\end{theorem}
+
+\begin{proof}
+The equality $\delta_d(a,b)=0$ says
+\[
+                         a(t)=t^d b(t^{-1}).
+\]
+The left side has Laurent support in $\{e:e\geq0\}$; the right side has support in
+$\{e:e\leq d\}$.  Equality of Laurent polynomials is coefficientwise, so the common support lies in
+\[
+                         \{e:0\leq e\leq d\}.
+\]
+If $d<0$, this set is empty and both polynomials are zero.  If $d\geq0$, the common Laurent
+polynomial has unique coefficients $c_0,\ldots,c_d$.  Rewriting its coefficient at exponent $e$ as
+the coefficient of $u^{d-e}$ gives the displayed formula for $b$.
+
+No cancellation in $R$ is used; the conclusion follows from the free Laurent-monomial
+presentation.  Extraction and reconstruction scan the finite support interval.
+\end{proof}
+
+\begin{corollary}[Global regular functions]\label{cor:p1-global-functions}
+For every certified commutative ring $R$,
+\[
+                         \Gamma(\mathbf P^1_R,\cO)\cong R
+\]
+in the finite-atlas semantics.  The isomorphism sends a constant $c$ to the pair $(c,c)$.
+\end{corollary}
+
+This is already a genuinely scheme-theoretic local-to-global theorem: it is not a statement about a
+bounded set of rational points, but about compatible regular functions on two affine charts.
+
+\subsection{First cohomology: the middle-support normal form}
+
+For a Laurent polynomial
+\[
+                         c(t)=\sum_{e=L}^U c_e t^e,
+\]
+define three finite pieces:
+\begin{align*}
+ c_{\geq0}(t)&=\sum_{e\geq0}c_e t^e,\\
+ c_{\leq d}(t)&=\sum_{e\leq d}c_e t^e,\\
+ c_{(d,0)}(t)&=\sum_{d<e<0}c_e t^e.
+\end{align*}
+Set
+\[
+ a(t)=c_{\geq0}(t),
+ \qquad
+ b(u)=-\sum_{e\leq d}c_e u^{d-e}.
+\]
+Then
+\begin{equation}\label{eq:p1-normal-form}
+                     c(t)=\delta_d(a,b)+c_{(d,0)}(t).
+\end{equation}
+
+\begin{theorem}[Primitive-recursive $H^1$ normal form]\label{thm:p1-h1}
+Every degree-one \v{C}ech cochain has the decomposition
+\eqref{eq:p1-normal-form}.  The residual term is supported exactly in the finite interval
+$d<e<0$, and two such residual terms differ by a coboundary only when they are coefficientwise equal.
+Consequently
+\[
+ \check H^1(\mathbf P^1_R,\cO(d))\cong
+ \begin{cases}
+   0,&d\geq-1,\\
+   R^{-d-1},&d\leq-2,
+ \end{cases}
+\]
+with basis represented by $t^{d+1},\ldots,t^{-1}$ in the second case.
+\end{theorem}
+
+\begin{proof}
+The high-support part $c_{\geq0}$ is the $a$ contribution to \eqref{eq:p1-delta}.  For an exponent
+$e\leq d$, choose the coefficient of $u^{d-e}$ in $b$ to be $-c_e$.  Then the term
+$-t^d b(t^{-1})$ contributes $c_e t^e$.  This proves existence of
+\eqref{eq:p1-normal-form}.
+
+The image of the $a$ component is supported in exponents $e\geq0$.  The image of the $b$ component is
+supported in exponents $e\leq d$.  Therefore a coboundary has zero coefficient at every exponent
+$d<e<0$.  A residual supported in that interval can be a coboundary only when all its coefficients
+are zero.  The interval is empty exactly when $d\geq-1$, and otherwise contains
+$-d-1$ integers.
+\end{proof}
+
+The proof gives algorithms for the quotient map, a section selecting the unique normal form, and
+witnesses that their composites are identities.  It is therefore stronger than a mere rank count.
+
+\subsection{Examples}
+
+For $d=2$, a global section is
+\[
+  a(t)=c_0+c_1t+c_2t^2,
+  \qquad
+  b(u)=c_2+c_1u+c_0u^2.
+\]
+There is no $H^1$ obstruction because the interval $2<e<0$ is empty.
+
+For $d=-3$, global sections vanish.  Every Laurent cocycle is cohomologous to a unique expression
+\[
+                       \alpha t^{-2}+\beta t^{-1},
+\]
+so $\check H^1\cong R^2$.
+
+The executable companion generated and checked 1,200 random Laurent-polynomial decompositions for
+$-7\leq d\leq7$.  The tests use exact integer coefficients and verify reconstruction and support
+bounds coefficientwise.
+
+\subsection{iPRA implementation}
+
+A Laurent polynomial code stores a lower exponent, an upper exponent, and a finite coefficient
+array, or equivalently a sorted sparse list.  Negative exponents are encoded as signed integers.
+The normal-form constructor scans the finite support once and writes each coefficient to one of
+three output lists according to the decidable comparisons $e\geq0$ and $e\leq d$.
+
+A quantifier-free invariant after processing a support prefix states:
+\begin{enumerate}[label=(\roman*)]
+\item the input prefix equals the sum of the partial coboundary and partial residual;
+\item the chart-zero list contains only nonnegative exponents;
+\item the chart-one list contains only nonnegative $u$-exponents;
+\item the residual contains only exponents $d<e<0$.
+\end{enumerate}
+At the end, coefficientwise uniqueness is proved by a bounded scan of the common finite support
+interval.  No induction formula quantifies over polynomials or cohomology classes.
+
+\subsection{From \v{C}ech groups to conventional cohomology}
+
+The standard two-chart cover and its intersection are affine, and $\cO(d)$ is quasi-coherent.  The
+usual affine-acyclicity comparison identifies the computed \v{C}ech groups with conventional sheaf
+cohomology.  The finite arithmetic proof above is independent of that abstract comparison: it
+computes the exact complex and its normal forms.  A full internal development of derived-functor
+cohomology would add the comparison theorem as a later layer, not alter the finite calculation.

@@ -1,0 +1,153 @@
+\section{Projective schemes and computational algebraic geometry}
+
+\subsection{The standard affine charts of \texorpdfstring{$\Proj$}{Proj}}
+
+Let
+\[
+ S=R[X_0,\ldots,X_n]/I
+\]
+be a finitely presented graded ring, with $I$ given by finitely many homogeneous relations.  The
+standard chart $D_+(X_i)$ is represented algebraically by the degree-zero part of the localization
+$S_{X_i}$.  For a projective subscheme of $\mathbf P^n_R$, this chart has the familiar finite
+presentation obtained by setting $X_i=1$ and introducing affine coordinates
+\[
+                    x_{ij}=X_j/X_i\qquad(j\neq i).
+\]
+Each homogeneous relation is dehomogenized with respect to $X_i$.
+
+The overlap of charts $i$ and $j$ is the principal open in chart $i$ where $x_{ij}$ is invertible.
+The transition map is
+\[
+ x_{jk}\longmapsto x_{ik}/x_{ij},
+ \qquad
+ x_{ji}\longmapsto 1/x_{ij}.
+\]
+These formulas are maps of localization presentations.  Their inverse and triple-cocycle equations
+are finite rational-function identities, hence localization equality certificates.
+
+\begin{proposition}[Finite atlas for a projective presentation]\label{prop:proj-atlas}
+For every fixed finite homogeneous presentation of $S$, the $n+1$ standard charts, their principal
+overlaps, transition maps, inverse witnesses, and triple cocycles are primitive-recursively
+constructible.  They form a strict certified affine atlas.
+\end{proposition}
+
+\begin{proof}
+Dehomogenization is a bounded substitution on each finite polynomial code.  The transition maps are
+fixed monomial substitutions into localizations.  Applying a homogeneous relation and clearing the
+explicit denominator gives its target relation certificate.  The inverse and cocycle equations are
+monomial exponent identities; a bounded coefficient checker verifies them.  The number of charts
+and overlaps is finite and bounded by polynomial expressions in $n$.
+\end{proof}
+
+Thus a large class of projective geometry can be developed without defining $\Proj$ internally as a
+set of homogeneous prime ideals.
+
+\subsection{Homogeneous coordinates and points}
+
+For a field or domain with a suitable exact presentation, a projective point may be represented by a
+nonzero tuple $(x_0,\ldots,x_n)$ modulo common scaling.  The existing Diophantine geometry packet
+uses primitive representatives and height.  The atlas representation and homogeneous-coordinate
+representation are complementary:
+
+\begin{itemize}
+\item homogeneous coordinates are compact for point enumeration and height arguments;
+\item affine charts are natural for local rings, functions, sheaves, Jacobians, and descent;
+\item a point with $x_i$ invertible maps to chart $i$ by the ratios $x_j/x_i$;
+\item two chart descriptions agree by the certified transition maps.
+\end{itemize}
+
+A theorem may use a finite relational choice of a nonzero coordinate.  If its final output is
+projectively invariant, the finite-use framework eliminates dependence on the selected chart.
+Alternatively, a primitive representative over $\Z$ can choose the least nonzero coordinate
+deterministically.
+
+\subsection{Projective morphisms}
+
+A tuple of homogeneous forms $F_0,\ldots,F_m$ of one common degree defines a projective morphism on
+the locus where they do not vanish simultaneously.  A finite certificate for a global morphism on a
+projective subscheme consists of:
+
+\begin{enumerate}[label=(\alph*)]
+\item relation witnesses showing that the image satisfies the target homogeneous equations;
+\item a finite principal-cover certificate that the $F_j$ generate the unit ideal on each source
+      chart, or equivalent local nonvanishing certificates;
+\item chartwise rational formulas and overlap commutativity witnesses.
+\end{enumerate}
+
+Composition substitutes homogeneous forms and multiplies degrees.  The relation and base-locus
+certificates transform by finite polynomial identities.  Height upper bounds are obtained from
+coefficient norms exactly as in the Diophantine packet; lower bounds still require gcd/resultant or
+base-locus information and are not produced by the atlas formalism alone.
+
+\subsection{Jacobian and smoothness certificates}
+
+For a closed affine presentation $A=R[X]/(g_1,\ldots,g_s)$, the Jacobian matrix is a finite matrix of
+formal partial derivatives.  A certificate that a chosen $d\times d$ minor is invertible on a
+principal open consists of a localization inverse witness.  A finite list of such minors and a
+unit-ideal cover certificate proves that the required rank condition holds everywhere on the chosen
+atlas.
+
+This gives an iPRA-friendly sufficient interface for smoothness in standard complete-intersection
+situations.  It does not assert a uniform algorithm deciding smoothness of arbitrary presentations.
+The input may carry a Gröbner/elimination certificate producing the relevant Jacobian ideal, or the
+minor cover may simply be part of the theorem hypotheses.
+
+\subsection{Divisors and line bundles}
+
+A Cartier divisor on a finite atlas is represented by local nonzerodivisor fractions $g_i$ and unit
+transition witnesses $g_i/g_j\in\cO^\times(U_i\cap U_j)$.  The associated line bundle uses those
+units as rank-one transition matrices.  Tensor product adds divisor data and multiplies transition
+units; dualization inverts them on overlaps.
+
+For projective space, the hyperplane divisor gives $\cO(1)$, and $\cO(d)$ has transition factor
+$(X_j/X_i)^d$.  All integer powers are finite localization terms.  The projective-line and
+projective-space computations below therefore require no abstract Picard group.
+
+\subsection{Hilbert functions and finite graded certificates}
+
+A homogeneous Gröbner certificate can provide a finite monomial ideal of leading terms.  For a fixed
+degree $D$, the standard monomials of degree $D$ are a bounded finite set, and coefficient reduction
+proves a spanning or basis statement for the degree-$D$ quotient.  Hence the Hilbert function at a
+specified degree is a finite iPRA observation.
+
+A claim about the eventual Hilbert polynomial needs an additional stabilization certificate: a
+bound $D_0$, a polynomial $P$, and finite algebraic data proving the relevant recurrence or graded
+resolution for all $D\geq D_0$.  The framework checks such a certificate; it does not infer an
+unbounded stabilization theorem from a finite table.
+
+\subsection{Elimination, images, and fibers}
+
+For a presented morphism, an elimination certificate can describe equations for a scheme-theoretic
+image or a fiber.  Soundness is again finite: substitute the morphism tuple and verify ideal
+membership.  Completeness of the proposed elimination ideal requires a Gröbner basis, resultant, or
+other finite certificate appropriate to the family.
+
+This division of labor is useful in iPRA:
+
+\begin{itemize}
+\item polynomial substitution and certificate verification are generic;
+\item the domain-specific algorithm produces the elimination certificate;
+\item the geometric theorem consumes only the certified presentation of the resulting image or
+      fiber.
+\end{itemize}
+
+\subsection{What part of algebraic geometry is thereby accessible?}
+
+The finite-atlas language directly supports substantial fragments of:
+
+\begin{itemize}
+\item affine and projective varieties/schemes of finite presentation;
+\item regular and rational maps on certified domains;
+\item finite morphisms and finite module algebras;
+\item closed immersions, fiber products, and base change;
+\item vector bundles, line bundles, and finite \v{C}ech complexes;
+\item Jacobian calculations and chartwise smoothness certificates;
+\item exact finite-field point counting by bounded enumeration;
+\item rational/integral point searches once an external height bound is supplied;
+\item graded pieces, Hilbert-function observations, and certificate-relative elimination.
+\end{itemize}
+
+The framework is intentionally less ambitious about arbitrary non-quasi-compact schemes, unbounded
+sites, derived categories as completed universes, and existence theorems whose proofs provide no
+primitive-recursive quantitative data.  Those topics can still have finite theorem-specific
+observations, but they are not forced into a single universal code.

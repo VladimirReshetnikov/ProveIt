@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives on 14 and
-15 November 2026: 33 to `docs/drafts`, and 33 to
+15 November 2026: 33 to `docs/drafts`, and 34 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -61,7 +61,7 @@ manifests, build logs and `build/` files.
 
 ## Packets
 
-The 66 archives hold 1,747 members: 1,623 placed here, 77 ignored, 21 in bundled copies of
+The 67 archives hold 1,793 members: 1,669 placed here, 77 ignored, 21 in bundled copies of
 a sibling packet, 1 nested copy of a sibling archive and 25 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -161,7 +161,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 
 ### Geometry
 
-[`geometry/`](geometry/): Euclidean and projective incidence theorems, triangle and solid geometry, rotations and the isoperimetric inequality.
+[`geometry/`](geometry/): Euclidean and projective incidence theorems, triangle and solid geometry, rotations, the isoperimetric inequality, and Zariski descent on schemes.
 
 | Directory | Arrival | Wrapper in the archive | What the packet states | P | O |
 |---|---|---|---|---:|---:|
@@ -169,6 +169,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | [`eight_geometry_theorems_ipra`](geometry/eight_geometry_theorems_ipra/) | `390098877e` 2026-11-15 | `eight_geometry_theorems_ipra` | Constructive coordinate proofs of eight theorems: Pappus's harmonic theorem, Ceva, Menelaus, Carnot's conic and polygon theorems, Hoehn, Pappus's hexagon theorem and Brianchon. | 31 | 0 |
 | [`euler_rodrigues_ipra`](geometry/euler_rodrigues_ipra/) | `db4b793b19` 2026-11-14 | `euler_rodrigues_ipra` | Euler's rotation theorem and Rodrigues' formula. It says the unrestricted exact-axis form is not constructively provable (LLPO reduction) and proves constructive replacements. | 21 | 2 |
 | [`four_metrics_ipra_2026-11-15`](geometry/four_metrics_ipra_2026-11-15/) | *not committed* 2026-11-15 | `four_metrics_ipra` | Exact local forms of the Schwarzschild, Reissner–Nordström, Kerr and Kerr–Newman metrics: under valid rational coding, the inverse, determinant, Einstein–Maxwell, source-free Maxwell and Bianchi identities hold. Its Lean files define the arithmetic and name the `Prf PRAAx` target as an obligation. | 35 | 13 |
+| [`ipra_algebraic_geometry_framework_2026-11-15`](geometry/ipra_algebraic_geometry_framework_2026-11-15/) | *not committed* 2026-11-15 | `ipra_algebraic_geometry_framework_2026-11-15` | Certified Zariski descent: certified setoids with quotient equality by ideal-combination witnesses, localization equality by killing exponents (valid with zero divisors), a primitive recursive power-cover constructor, finite principal-open gluing of modules, finite affine atlases and Čech complexes, and the Čech computation of O(d) on P^1 and on P^n. Its Lean files are uncompiled blueprints, and it claims none of its main theorems as a constructed `Prf PRAAx` value. | 46 | 0 |
 | [`isoperimetric_ipra`](geometry/isoperimetric_ipra/) | `0bf379a842` 2026-11-14 | `isoperimetric_ipra` | The sharp planar isoperimetric inequality L² ≥ 4πA, with its equality characterization, for effective presentations. | 16 | 0 |
 | [`isoperimetric_ipra_constructive_2026-11-15`](geometry/isoperimetric_ipra_constructive_2026-11-15/) | *not committed* 2026-11-15 | `isoperimetric_ipra` | Constructive isoperimetry, broadening [`isoperimetric_ipra`](geometry/isoperimetric_ipra/) (which it carries under `reused/` and as an appendix): planar and Dido problems, triangle inequalities, a rational Brunn–Minkowski theorem for box unions, the sharp n-dimensional inequality from outer-volume data, finite Sobolev/BV, spherical caps, and the hypercube edge and Harper vertex theorems. Its Lean files are uncompiled outlines. | 30 | 14 |
 | [`mollweide_circle_ipra`](geometry/mollweide_circle_ipra/) | `349481d51f` 2026-11-15 | `mollweide_circle_ipra` | Mollweide's formulas, the laws of tangents and cotangents with the inradius formula, and the power-of-a-point, tangent-secant, intersecting-chords and intersecting-secants theorems. Its Lean files are not compiled. | 25 | 1 |
