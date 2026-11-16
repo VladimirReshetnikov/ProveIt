@@ -33,6 +33,9 @@ the [seven timing variants](verification/pa194/ipra/variants/pa194fast/README.md
 The remaining 194-state candidates, the original PA195, and the PA196
 candidate still need equivalence proofs.
 
+The [AX11H source development](verification/pa194/ipra/variants/pa194ax11h/README-candidate.md)
+checks the exact revised push and field-reader outputs at model-valued clocks.
+
 ## Primary 194-state candidate
 
 The target table is `pa194_conpa/construction/tables/pa194.tm` in
