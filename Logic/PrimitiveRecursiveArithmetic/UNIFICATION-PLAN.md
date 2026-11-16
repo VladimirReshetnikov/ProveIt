@@ -350,14 +350,14 @@ The iPRA libraries have opt-in targets. Run relevant commands serially.
 Stage-heavy PA and ZFC checks use their published inputs and commands.
 
 ```sh
-LAKE_JOBS=1 lake build +ConciseIPRA.NativeBiInterpretation
-LAKE_JOBS=1 lake build IPRADerivations
-LAKE_JOBS=1 lake build +IPRADerivations.Checks.Axioms
-LAKE_JOBS=1 lake build IPRABridge
-LAKE_JOBS=1 lake build +IPRABridge.Checks.Arithmetic
-LAKE_JOBS=1 lake build +IPRABridge.Checks.ComparisonBits
-LAKE_JOBS=1 lake build +IPRABridge.Checks.BoundedSearch
-LAKE_JOBS=1 lake build Diophantine
+lake build +ConciseIPRA.NativeBiInterpretation
+lake build IPRADerivations
+lake build +IPRADerivations.Checks.Axioms
+lake build IPRABridge
+lake build +IPRABridge.Checks.Arithmetic
+lake build +IPRABridge.Checks.ComparisonBits
+lake build +IPRABridge.Checks.BoundedSearch
+lake build Diophantine
 lake env lean Computability/HilbertTenthProblem/Lean/checks/MRDPAxioms.lean
 ```
 
