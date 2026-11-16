@@ -53,11 +53,15 @@ lemma tstep_mp_no (y x t w d h δ : V) (hm : 4 * cantor t (d + y) ≠ h) :
     tstep S ⟪1, y, x⟫ ⟪⟪t, w, d, h⟫, δ, 0⟫ = ⟪⟪0, w, d + y, 0⟫, δ, 0⟫ := by
   simp [tstep, hm, S.mp_eq]
 
-lemma tstep_ax (A y x t w d h δ : V) :
-    tstep S ⟪A + 1 + 1, y, x⟫ ⟪⟪t, w, d, h⟫, δ, 0⟫ =
-      ⟪⟪S.axT (h + y) (d + x) A,
-          stack10 (fun i => S.leaf i (d + x) (h + y) A d) (4 * cantor h d + 2) t w, 0, 0⟫,
-        δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1, 0⟫ := by
+lemma tstep_ax (A y x z t w d h δ : V) :
+    tstep S ⟪A + 1 + 1, y, x, z⟫ ⟪⟪t, w, d, h⟫, δ, 0⟫ =
+      ⟪(if S.ax11 then
+          ⟪0, cantor (S.axT (h + y) (d + x) A)
+            (stack10 (fun i => S.leaf i (d + x) (h + y) A d) (4 * cantor h d + 2) t w), z, 0⟫
+        else
+          ⟪S.axT (h + y) (d + x) A,
+            stack10 (fun i => S.leaf i (d + x) (h + y) A d) (4 * cantor h d + 2) t w, 0, 0⟫),
+        δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + (S.g : V), 0⟫ := by
   simp [tstep, S.ax_eq]
 
 lemma texec_of_flag (W τ : V) (hf : π₂ (π₂ τ) ≠ 0) : texec S W τ = τ := by
@@ -150,6 +154,22 @@ lemma follows_mp {δ₀ v₀ δ u v : V} (b : V) (hs : SameTop δ u v v₀) :
   · have h := follows_mk (δ₀ := δ₀) (t := (0 : V)) (d := (0 : V)) (h := b) (f := (0 : V)) hs
     simpa using h
 
+/-- The store after AX, in either layout, respects the base. -/
+lemma follows_ax {δ₀ v₀ δ u v : V} (T z : V) (f : ℕ → V) (g t : V) (hs : SameTop δ u v v₀) :
+    Follows δ₀ v₀
+      ⟪(if S.ax11 then ⟪0, cantor T (stack10 f g t u), z, 0⟫ else ⟪T, stack10 f g t u, 0, 0⟫),
+        δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + (S.g : V), 0⟫
+      ⟪(if S.ax11 then ⟪0, cantor T (stack10 f g t v), z, 0⟫ else ⟪T, stack10 f g t v, 0, 0⟫),
+        δ₀ + (δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + (S.g : V)), 0⟫ := by
+  unfold Sem.g
+  cases S.ax11
+  · have h := follows_mk (δ₀ := δ₀) (t := T) (d := (0 : V)) (h := (0 : V)) (f := (0 : V))
+      (sameTop_stack10 f g t hs)
+    simpa using h
+  · have h := follows_mk (δ₀ := δ₀) (t := (0 : V)) (d := z) (h := (0 : V)) (f := (0 : V))
+      (sameTop_push T (sameTop_stack10 f g t hs))
+    simpa using h
+
 lemma follows_step {δ₀ v₀ A B : V} (c : V) (hf : flg(tstep S c A) ≠ 2)
     (hF : Follows δ₀ v₀ A B) : Follows δ₀ v₀ (tstep S c A) (tstep S c B) := by
   obtain ⟨t, u, d, h, δ, f, rfl⟩ : ∃ t u d h δ f : V, A = ⟪⟪t, u, d, h⟫, δ, f⟫ :=
@@ -181,11 +201,12 @@ lemma follows_step {δ₀ v₀ A B : V} (c : V) (hf : flg(tstep S c A) ≠ 2)
         · rw [tstep_mp_no S y x t u d h δ hm, tstep_mp_no S y x t v d h (δ₀ + δ) hm]
           exact follows_mk hs
       · rw [ha] at hf ⊢
-        rw [tstep_ax S b y x t u d h δ, tstep_ax S b y x t v d h (δ₀ + δ)]
-        have he : δ₀ + δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 =
-            δ₀ + (δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1) := by simp [add_assoc]
+        obtain ⟨x', z, rfl⟩ : ∃ x' z : V, x = ⟪x', z⟫ := ⟨π₁ x, π₂ x, by simp⟩
+        rw [tstep_ax S b y x' z t u d h δ, tstep_ax S b y x' z t v d h (δ₀ + δ)]
+        have he : δ₀ + δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + (S.g : V) =
+            δ₀ + (δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + (S.g : V)) := by simp [add_assoc]
         rw [he]
-        exact follows_mk (sameTop_stack10 _ _ _ hs)
+        exact follows_ax S _ z _ _ _ hs
   · rw [tstep_final S c _ δ f hfz, tstep_final S c _ (δ₀ + δ) f hfz]
     exact follows_mk hs
 

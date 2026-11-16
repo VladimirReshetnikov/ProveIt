@@ -30,53 +30,69 @@ open SetTheory.BusyBeaver.ZFC.ArithmeticCantor (cantor first second triangle)
 section model
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-/-! ## Seeds and pointers -/
+/-! ## Seeds and pointers
+
+A command is `⟪tag, y, x, z⟫`. The flag `l` says whether AX has the fourth field `z` in the
+command stream (the eleven-entry layout); without it the stream has three fields and the
+decoded command has `z = 0`. Below, `encC`, `ptr`, `nextL` and `cmd` stand for these functions
+at the layout of the semantics `S`.
+-/
 
 /-- The seed that decodes into the command `c` followed by the pointer `q`. -/
-def encC (c q : V) : V :=
+def encCL (l : Bool) (c q : V) : V :=
   if π₁ c = 0 then cantor 0 q
   else if π₁ c = 1 then cantor 1 (cantor (π₁ (π₂ c)) q)
-  else cantor (π₁ c) (cantor (π₁ (π₂ c)) (cantor (π₂ (π₂ c)) q))
+  else if l then
+    cantor (π₁ c) (cantor (π₁ (π₂ c)) (cantor (π₁ (π₂ (π₂ c))) (cantor (π₂ (π₂ (π₂ c))) q)))
+  else cantor (π₁ c) (cantor (π₁ (π₂ c)) (cantor (π₁ (π₂ (π₂ c))) q))
 
-def encCDef : 𝚺₁.Semisentence 3 :=
-  .mkSigma “s c q. ∃ tag, !pi₁Def tag c ∧ ∃ c2, !pi₂Def c2 c ∧ ∃ y, !pi₁Def y c2 ∧
-    ∃ x, !pi₂Def x c2 ∧
-    ((tag = 0 ∧ !cantorDef s 0 q) ∨
-     (tag = 1 ∧ ∃ p, !cantorDef p y q ∧ !cantorDef s 1 p) ∨
-     (tag ≠ 0 ∧ tag ≠ 1 ∧ ∃ p, !cantorDef p x q ∧ ∃ p2, !cantorDef p2 y p ∧ !cantorDef s tag p2))”
+def encCLDef (l : Bool) : 𝚺₁.Semisentence 3 :=
+  if l then
+    .mkSigma “s c q. ∃ tag, !pi₁Def tag c ∧ ∃ c2, !pi₂Def c2 c ∧ ∃ y, !pi₁Def y c2 ∧
+      ∃ c3, !pi₂Def c3 c2 ∧ ∃ x, !pi₁Def x c3 ∧ ∃ z, !pi₂Def z c3 ∧
+      ((tag = 0 ∧ !cantorDef s 0 q) ∨
+       (tag = 1 ∧ ∃ p, !cantorDef p y q ∧ !cantorDef s 1 p) ∨
+       (tag ≠ 0 ∧ tag ≠ 1 ∧ ∃ p0, !cantorDef p0 z q ∧ ∃ p, !cantorDef p x p0 ∧
+          ∃ p2, !cantorDef p2 y p ∧ !cantorDef s tag p2))”
+  else
+    .mkSigma “s c q. ∃ tag, !pi₁Def tag c ∧ ∃ c2, !pi₂Def c2 c ∧ ∃ y, !pi₁Def y c2 ∧
+      ∃ c3, !pi₂Def c3 c2 ∧ ∃ x, !pi₁Def x c3 ∧
+      ((tag = 0 ∧ !cantorDef s 0 q) ∨
+       (tag = 1 ∧ ∃ p, !cantorDef p y q ∧ !cantorDef s 1 p) ∨
+       (tag ≠ 0 ∧ tag ≠ 1 ∧ ∃ p, !cantorDef p x q ∧ ∃ p2, !cantorDef p2 y p ∧
+          !cantorDef s tag p2))”
 
-lemma encCDef_iff (s c q : V) : encCDef.val.Evalb ![s, c, q] ↔ s = encC c q := by
-  unfold encC
-  by_cases h0 : π₁ c = 0
-  · simp [encCDef, h0]
-  · by_cases h1 : π₁ c = 1
-    · simp [encCDef, h1]
-    · simp [encCDef, h0, h1]
+lemma encCDef_iff (l : Bool) (s c q : V) :
+    (encCLDef l).val.Evalb ![s, c, q] ↔ s = encCL l c q := by
+  unfold encCL encCLDef
+  cases l <;> by_cases h0 : π₁ c = 0 <;> by_cases h1 : π₁ c = 1 <;> simp [h0, h1]
 
-lemma le_encC (c q : V) : q ≤ encC c q := by
+lemma le_encC {l : Bool} (c q : V) : q ≤ encCL l c q := by
   have h2 := fun a b : V => (SetTheory.BusyBeaver.ZFC.ArithmeticCantor.components_le a b).2
-  unfold encC
+  unfold encCL
   split_ifs
   · exact h2 _ _
   · exact le_trans (h2 _ _) (h2 _ _)
+  · exact le_trans (h2 _ _) (le_trans (h2 _ _) (le_trans (h2 _ _) (h2 _ _)))
   · exact le_trans (h2 _ _) (le_trans (h2 _ _) (h2 _ _))
 
-@[simp] lemma first_encC (c q : V) : first (encC c q) = π₁ c := by
-  unfold encC
+@[simp] lemma first_encC {l : Bool} (c q : V) : first (encCL l c q) = π₁ c := by
+  unfold encCL
   split_ifs with h0 h1
   · simp [h0]
   · simp [h1]
   · simp
+  · simp
 
 namespace Ptr
 
-def blueprint : PR.Blueprint 2 where
+def blueprint (l : Bool) : PR.Blueprint 2 where
   zero := .mkSigma “y W q. y = q”
-  succ := .mkSigma “y ih m W q. ∃ c, !nthDef c W m ∧ ∃ s, !encCDef s c ih ∧ y = s + 1”
+  succ := .mkSigma “y ih m W q. ∃ c, !nthDef c W m ∧ ∃ s, !(encCLDef l) s c ih ∧ y = s + 1”
 
-def construction : PR.Construction V blueprint where
+def construction (l : Bool) : PR.Construction V (blueprint l) where
   zero := fun v ↦ v 1
-  succ := fun v m ih ↦ encC (v 0).[m] ih + 1
+  succ := fun v m ih ↦ encCL l (v 0).[m] ih + 1
   zero_defined := .mk fun v ↦ by simp [blueprint]
   succ_defined := .mk fun v ↦ by simp [blueprint, encCDef_iff]
 
@@ -84,24 +100,28 @@ end Ptr
 
 /-- The pointer of the last `m` commands of the word `W` (its first `m` entries), with the
 continuation `q`. -/
-def ptr (W q m : V) : V := Ptr.construction.result ![W, q] m
+def ptrL (l : Bool) (W q m : V) : V := (Ptr.construction l).result ![W, q] m
 
-@[simp] lemma ptr_zero (W q : V) : ptr W q 0 = q := by simp [ptr, Ptr.construction]
+@[simp] lemma ptr_zero {l : Bool} (W q : V) : ptrL l W q 0 = q := by
+  simp [ptrL, Ptr.construction]
 
-@[simp] lemma ptr_succ (W q m : V) : ptr W q (m + 1) = encC W.[m] (ptr W q m) + 1 := by
-  simp [ptr, Ptr.construction]
+@[simp] lemma ptr_succ {l : Bool} (W q m : V) :
+    ptrL l W q (m + 1) = encCL l W.[m] (ptrL l W q m) + 1 := by
+  simp [ptrL, Ptr.construction]
 
-def ptrDef : 𝚺₁.Semisentence 4 := Ptr.blueprint.resultDef |>.rew (Rew.subst ![#0, #3, #1, #2])
+def ptrLDef (l : Bool) : 𝚺₁.Semisentence 4 :=
+  (Ptr.blueprint l).resultDef |>.rew (Rew.subst ![#0, #3, #1, #2])
 
-instance ptr_defined : 𝚺₁-Function₃ (ptr : V → V → V → V) via ptrDef := .mk
-  fun v ↦ by simp [Ptr.construction.result_defined_iff, ptrDef]; rfl
+instance ptr_defined (l : Bool) : 𝚺₁-Function₃ (ptrL l : V → V → V → V) via ptrLDef l := .mk
+  fun v ↦ by simp [(Ptr.construction l).result_defined_iff, ptrLDef]; rfl
 
-instance ptr_definable : 𝚺₁-Function₃ (ptr : V → V → V → V) := ptr_defined.to_definable
+instance ptr_definable (l : Bool) : 𝚺₁-Function₃ (ptrL l : V → V → V → V) :=
+  (ptr_defined l).to_definable
 
-instance ptr_definable' (Γ m) : Γ-[m + 1]-Function₃ (ptr : V → V → V → V) :=
-  ptr_definable.of_sigmaOne
+instance ptr_definable' (l : Bool) (Γ m) : Γ-[m + 1]-Function₃ (ptrL l : V → V → V → V) :=
+  (ptr_definable l).of_sigmaOne
 
-lemma le_ptr (W q m : V) : q ≤ ptr W q m := by
+lemma le_ptr {l : Bool} (W q m : V) : q ≤ ptrL l W q m := by
   induction m using ISigma1.sigma1_succ_induction
   · definability
   case zero => simp
@@ -109,9 +129,9 @@ lemma le_ptr (W q m : V) : q ≤ ptr W q m := by
     rw [ptr_succ]
     exact le_trans ih (le_trans (le_encC _ _) (le_add_of_nonneg_right (by simp)))
 
-lemma ptr_ne_zero (W q m : V) (hq : q ≠ 0) : ptr W q m ≠ 0 := by
+lemma ptr_ne_zero {l : Bool} (W q m : V) (hq : q ≠ 0) : ptrL l W q m ≠ 0 := by
   intro h
-  have hle := le_ptr W q m
+  have hle := le_ptr (l := l) W q m
   rw [h] at hle
   exact hq (nonpos_iff_eq_zero.mp hle)
 
@@ -121,33 +141,57 @@ lemma ptr_ne_zero (W q m : V) (hq : q ≠ 0) : ptr W q m ≠ 0 := by
 def seed (n l : V) : V := if l = 0 then n else l - 1
 
 /-- The next pointer of a seed. -/
-def nextL (s : V) : V :=
+def nextLL (l : Bool) (s : V) : V :=
   if first s = 0 then second s
   else if first s = 1 then second (second s)
+  else if l then second (second (second (second s)))
   else second (second (second s))
 
 /-- The command of a seed. -/
-def cmd (s : V) : V := ⟪first s, first (second s), first (second (second s))⟫
+def cmdL (l : Bool) (s : V) : V :=
+  ⟪first s, first (second s), first (second (second s)),
+    (if l then first (second (second (second s))) else 0)⟫
 
-@[simp] lemma nextL_encC (c q : V) : nextL (encC c q) = q := by
-  unfold nextL
+@[simp] lemma nextL_encC {l : Bool} (c q : V) : nextLL l (encCL l c q) = q := by
+  unfold nextLL
   rw [first_encC]
-  unfold encC
-  split_ifs <;> simp
+  unfold encCL
+  cases l <;> split_ifs <;> simp
 
 variable (S : Sem V)
+
+local notation "encC" => encCL (Sem.ax11 S)
+local notation "ptr" => ptrL (Sem.ax11 S)
+local notation "nextL" => nextLL (Sem.ax11 S)
+local notation "cmd" => cmdL (Sem.ax11 S)
+
+lemma command_eta4 (c : V) : c = ⟪π₁ c, π₁ (π₂ c), π₁ (π₂ (π₂ c)), π₂ (π₂ (π₂ c))⟫ := by simp
 
 lemma cstep_cmd_encC (c q σ : V) : S.cstep (cmd (encC c q)) σ = S.cstep c σ := by
   obtain ⟨t, w, d, h, rfl⟩ : ∃ t w d h : V, σ = ⟪t, w, d, h⟫ :=
     ⟨π₁ σ, π₁ (π₂ σ), π₁ (π₂ (π₂ σ)), π₂ (π₂ (π₂ σ)), by simp⟩
-  obtain ⟨tag, y, x, rfl⟩ : ∃ tag y x : V, c = ⟪tag, y, x⟫ := ⟨_, _, _, command_eta c⟩
+  obtain ⟨tag, y, x, z, rfl⟩ : ∃ tag y x z : V, c = ⟪tag, y, x, z⟫ :=
+    ⟨_, _, _, _, command_eta4 c⟩
   by_cases h0 : tag = 0
   · subst h0
-    simp [cmd, encC, S.shift_eq]
+    simp [cmdL, encCL, S.shift_eq]
   · by_cases h1 : tag = 1
     · subst h1
-      simp [cmd, encC, S.mp_eq]
-    · simp [cmd, encC, h0, h1]
+      simp [cmdL, encCL, S.mp_eq]
+    · obtain ⟨A, rfl⟩ : ∃ A : V, tag = A + 1 + 1 := by
+        rcases zero_or_succ tag with (rfl | ⟨a, rfl⟩)
+        · exact absurd rfl h0
+        · rcases zero_or_succ a with (rfl | ⟨b, rfl⟩)
+          · simp at h1
+          · exact ⟨b, rfl⟩
+      cases hl : S.ax11
+      · have e : cmdL false (encCL false ⟪A + 1 + 1, y, x, z⟫ q) = ⟪A + 1 + 1, y, x, 0⟫ := by
+          simp [cmdL, encCL, h0, h1]
+        rw [e, S.ax_eq, S.ax_eq]
+        simp [hl]
+      · have e : cmdL true (encCL true ⟪A + 1 + 1, y, x, z⟫ q) = ⟪A + 1 + 1, y, x, z⟫ := by
+          simp [cmdL, encCL, h0, h1]
+        rw [e]
 
 /-- One scheduler step on `⟪n, l, σ⟫`. -/
 def sstep (x : V) : V :=

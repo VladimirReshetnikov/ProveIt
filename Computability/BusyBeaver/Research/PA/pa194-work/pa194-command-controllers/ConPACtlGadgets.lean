@@ -82,7 +82,7 @@ lemma four_mul_ne_zero {c : V} (hc : c ≠ 0) : 4 * c ≠ 0 :=
 
 def SH : V := ⟪0, 0, 0⟫
 def MP (y : V) : V := ⟪1, y, 0⟫
-def AX (A y x : V) : V := ⟪A + 1 + 1, y, x⟫
+def AX (A y x : V) : V := ⟪A + 1 + 1, y, x, 0⟫
 
 /-- The word `W` followed by the command `c`. -/
 def snoc (W c : V) : V := c ∷ W
@@ -137,17 +137,47 @@ def items (f : ℕ → V) (g t : V) : List V := [f 0, f 1, f 2, f 3, f 4, f 5, f
 
 lemma stack10_eq (f : ℕ → V) (g t w : V) : stack10 f g t w = (items f g t).foldr cantor w := rfl
 
+/-- The entries pushed by AX, top first: in the eleven-entry layout the gate `T` comes
+first. -/
+def itemsL (T : V) (f : ℕ → V) (g t : V) : List V :=
+  if S.ax11 then T :: items f g t else items f g t
+
+/-- The entries without the saved top. -/
+def initL (T : V) (f : ℕ → V) (g : V) : List V :=
+  if S.ax11 then [T, f 0, f 1, f 2, f 3, f 4, f 5, f 6, f 7, g]
+  else [f 0, f 1, f 2, f 3, f 4, f 5, f 6, f 7, g]
+
+/-- The top after AX: the gate, or `0` when the gate is pushed. -/
+def topL (T : V) : V := if S.ax11 then 0 else T
+
+lemma itemsL_length (T : V) (f : ℕ → V) (g t : V) : (itemsL S T f g t).length = S.n := by
+  unfold itemsL Sem.n
+  cases S.ax11 <;> simp [items]
+
+lemma initL_length (T : V) (f : ℕ → V) (g : V) : (initL S T f g).length = S.n - 1 := by
+  unfold initL Sem.n
+  cases S.ax11 <;> simp
+
+lemma itemsL_split (T : V) (f : ℕ → V) (g t : V) :
+    itemsL S T f g t = initL S T f g ++ [t] := by
+  unfold itemsL initL
+  cases S.ax11 <;> simp [items]
+
+lemma ax_height (δ : V) :
+    δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + (S.g : V) = δ + (S.n : V) := by
+  unfold Sem.g Sem.n
+  cases S.ax11 <;> simp only [Bool.false_eq_true, ↓reduceIte] <;> push_cast <;> ring
+
 lemma tstep_AX (A y x t w d h δ : V) :
     tstep S (AX A y x) ⟪⟪t, w, d, h⟫, δ, 0⟫ =
-      ⟪⟪S.axT (h + y) (d + x) A,
-          (items (fun i => S.leaf i (d + x) (h + y) A d) (4 * cantor h d + 2) t).foldr cantor w,
-          0, 0⟫, δ + ((10 : ℕ) : V), 0⟫ := by
+      ⟪⟪topL S (S.axT (h + y) (d + x) A),
+          (itemsL S (S.axT (h + y) (d + x) A) (fun i => S.leaf i (d + x) (h + y) A d)
+            (4 * cantor h d + 2) t).foldr cantor w,
+          0, 0⟫, δ + (S.n : V), 0⟫ := by
   unfold AX
-  rw [tstep_ax S A y x t w d h δ, stack10_eq]
-  have he : δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 = δ + ((10 : ℕ) : V) := by
-    push_cast
-    ring
-  rw [he]
+  rw [tstep_ax S A y x 0 t w d h δ, stack10_eq, ax_height]
+  unfold topL itemsL
+  cases S.ax11 <;> simp
 
 /-- The two registers after shifting through a list. -/
 def last2 : V → V → List V → V × V
@@ -179,41 +209,67 @@ lemma shifts_run (xs : List V) : ∀ (a b w d δ W τ : V), NoHalt S a b xs →
       exact tstep_SH S a b x _ d _ hn.1
     exact ih b x w d δ (snoc W SH) τ hn.2 h1
 
-/-- AX followed by SHIFTs through the first entries `xs` of the ten. -/
+lemma last2_itemsL (T : V) (f : ℕ → V) (g t : V) :
+    last2 (topL S T) 0 (itemsL S T f g t) = (g, t) := by
+  unfold topL itemsL
+  cases S.ax11 <;> simp [items, last2]
+
+lemma last2_initL (T : V) (f : ℕ → V) (g : V) :
+    last2 (topL S T) 0 (initL S T f g) = (f 7, g) := by
+  unfold topL initL
+  cases S.ax11 <;> simp [last2]
+
+lemma nohalt_itemsL (T : V) (f : ℕ → V) (x t : V) (hT : T ≠ 1) (hf : ∀ j, f j ≠ 1) :
+    NoHalt S (topL S T) 0 (itemsL S T f (4 * x + 2) t) := by
+  unfold topL itemsL
+  cases S.ax11 <;> simp [NoHalt, items, halts_iff_false, hT, hf, allV_ne_one]
+
+lemma nohalt_initL (T : V) (f : ℕ → V) (g : V) (hT : T ≠ 1) (hf : ∀ j, f j ≠ 1) :
+    NoHalt S (topL S T) 0 (initL S T f g) := by
+  unfold topL initL
+  cases S.ax11 <;> simp [NoHalt, halts_iff_false, hT, hf]
+
+/-- AX followed by SHIFTs through the first entries `xs` of its list. -/
 lemma ax_shifts (A y x t w d h δ : V) (xs ys : List V)
-    (hsplit : items (fun i => S.leaf i (d + x) (h + y) A d) (4 * cantor h d + 2) t = xs ++ ys)
-    (hn : NoHalt S (S.axT (h + y) (d + x) A) 0 xs) (W τ : V)
+    (hsplit : itemsL S (S.axT (h + y) (d + x) A) (fun i => S.leaf i (d + x) (h + y) A d)
+      (4 * cantor h d + 2) t = xs ++ ys)
+    (hn : NoHalt S (topL S (S.axT (h + y) (d + x) A)) 0 xs) (W τ : V)
     (hW : texec S W τ = ⟪⟪t, w, d, h⟫, δ, 0⟫) :
     texec S (shifts xs.length (snoc W (AX A y x))) τ =
-      ⟪⟪(last2 (S.axT (h + y) (d + x) A) 0 xs).1, ys.foldr cantor w, 0,
-          (last2 (S.axT (h + y) (d + x) A) 0 xs).2⟫, δ + (ys.length : V), 0⟫ := by
+      ⟪⟪(last2 (topL S (S.axT (h + y) (d + x) A)) 0 xs).1, ys.foldr cantor w, 0,
+          (last2 (topL S (S.axT (h + y) (d + x) A)) 0 xs).2⟫, δ + (ys.length : V), 0⟫ := by
   apply shifts_run S xs _ _ _ _ _ _ _ hn
   rw [texec_snoc, hW, tstep_AX, hsplit, List.foldr_append]
-  have hl : ((10 : ℕ) : V) = (ys.length : V) + (xs.length : V) := by
+  have hl : (S.n : V) = (ys.length : V) + (xs.length : V) := by
     have h10 := congrArg List.length hsplit
-    simp only [items, List.length_cons, List.length_nil, List.length_append] at h10
-    have h10' : (10 : ℕ) = ys.length + xs.length := by omega
-    rw [← Nat.cast_add, ← h10']
+    rw [itemsL_length, List.length_append] at h10
+    rw [h10]
+    push_cast
+    ring
   rw [hl, add_assoc]
 
-/-- The ten-shift identity: the generalization in `t`, the old top in `h`, the stack restored. -/
+/-- SHIFTs through all entries: the generalization in `t`, the old top in `h`, the stack
+restored. -/
 lemma ax_all (A y x t w d h δ W τ : V) (hW : texec S W τ = ⟪⟪t, w, d, h⟫, δ, 0⟫) :
-    texec S (shifts 10 (snoc W (AX A y x))) τ = ⟪⟪4 * cantor h d + 2, w, 0, t⟫, δ, 0⟫ := by
+    texec S (shifts S.n (snoc W (AX A y x))) τ = ⟪⟪4 * cantor h d + 2, w, 0, t⟫, δ, 0⟫ := by
   have h := ax_shifts S A y x t w d h δ
-    (items (fun i => S.leaf i (d + x) (h + y) A d) (4 * cantor h d + 2) t) [] (by simp)
-    (by simp [NoHalt, items, halts_iff_false, S.leaf_ne_one, S.axT_ne_one, allV_ne_one]) W τ hW
-  simpa [items, last2] using h
+    (itemsL S (S.axT (h + y) (d + x) A) (fun i => S.leaf i (d + x) (h + y) A d)
+      (4 * cantor h d + 2) t) [] (by simp)
+    (nohalt_itemsL S _ _ _ _ (S.axT_ne_one _ _ _) (fun j => S.leaf_ne_one j _ _ _ _)) W τ hW
+  rw [itemsL_length, last2_itemsL] at h
+  simpa using h
 
-/-- Nine shifts: the last leaf in `t`, the generalization in `h`, the old top pushed. -/
+/-- All SHIFTs but one: the last leaf in `t`, the generalization in `h`, the old top
+pushed. -/
 lemma ax_nine (A y x t w d h δ W τ : V) (hW : texec S W τ = ⟪⟪t, w, d, h⟫, δ, 0⟫) :
-    texec S (shifts 9 (snoc W (AX A y x))) τ =
+    texec S (shifts (S.n - 1) (snoc W (AX A y x))) τ =
       ⟪⟪S.leaf 7 (d + x) (h + y) A d, cantor t w, 0, 4 * cantor h d + 2⟫, δ + 1, 0⟫ := by
   have h := ax_shifts S A y x t w d h δ
-    [S.leaf 0 (d + x) (h + y) A d, S.leaf 1 (d + x) (h + y) A d, S.leaf 2 (d + x) (h + y) A d,
-      S.leaf 3 (d + x) (h + y) A d, S.leaf 4 (d + x) (h + y) A d, S.leaf 5 (d + x) (h + y) A d,
-      S.leaf 6 (d + x) (h + y) A d, S.leaf 7 (d + x) (h + y) A d, 4 * cantor h d + 2] [t] rfl
-    (by simp [NoHalt, halts_iff_false, S.leaf_ne_one, S.axT_ne_one]) W τ hW
-  simpa [last2] using h
+    (initL S (S.axT (h + y) (d + x) A) (fun i => S.leaf i (d + x) (h + y) A d)
+      (4 * cantor h d + 2)) [t] (itemsL_split S _ _ _ _)
+    (nohalt_initL S _ _ _ (S.axT_ne_one _ _ _) (fun j => S.leaf_ne_one j _ _ _ _)) W τ hW
+  rw [initL_length, last2_initL] at h
+  simpa using h
 
 lemma shifts_succ' (k : ℕ) : ∀ W : V, shifts (k + 1) W = snoc (shifts k W) SH := by
   induction k with
@@ -227,17 +283,17 @@ lemma shifts_succ' (k : ℕ) : ∀ W : V, shifts (k + 1) W = snoc (shifts k W) S
 
 /-- Remove the top stack entry into `h`; the top `t` is kept, `d` is cleared. The last SHIFT
 of the word has `t` in the cache, so the top must not be `1`. -/
-def POP : V := shifts 11 (snoc 0 (AX 0 0 0))
+def POP : V := shifts (S.n + 1) (snoc 0 (AX 0 0 0))
 
 lemma pop_run (t a w d h δ : V) (ht : t ≠ 1) :
-    texec S POP ⟪⟪t, cantor a w, d, h⟫, δ + 1, 0⟫ = ⟪⟪t, w, 0, a⟫, δ, 0⟫ := by
+    texec S (POP S) ⟪⟪t, cantor a w, d, h⟫, δ + 1, 0⟫ = ⟪⟪t, w, 0, a⟫, δ, 0⟫ := by
   rw [POP, shifts_succ', texec_snoc,
     ax_all S 0 0 0 t (cantor a w) d h (δ + 1) 0 _ (by simp)]
   exact tstep_SH S _ t a w 0 δ (not_halts S (allV_ne_one _) ht)
 
 /-- With the top `1`, POP halts at its last SHIFT when the test is `h = 1`. -/
 lemma pop_halt (hc : S.cacheTest = true) (w d h δ : V) :
-    flg(texec S POP ⟪⟪1, w, d, h⟫, δ, 0⟫) = 1 := by
+    flg(texec S (POP S) ⟪⟪1, w, d, h⟫, δ, 0⟫) = 1 := by
   rw [POP, shifts_succ', texec_snoc, ax_all S 0 0 0 1 w d h δ 0 _ (by simp),
     tstep_SH_halt S _ 1 w 0 δ (by unfold Sem.Halts Sem.k; simp [hc])]
   simp
@@ -245,20 +301,20 @@ lemma pop_halt (hc : S.cacheTest = true) (w d h δ : V) :
 /-- `W` followed by `k` POPs. -/
 def pops : ℕ → V → V
   | 0, W => W
-  | k + 1, W => pops k (W ⧺ POP)
+  | k + 1, W => pops k (W ⧺ POP S)
 
 lemma pops_run (xs : List V) : ∀ (t a w d h δ W τ : V), t ≠ 1 →
     texec S W τ = ⟪⟪t, (xs ++ [a]).foldr cantor w, d, h⟫, δ + ((xs.length + 1 : ℕ) : V), 0⟫ →
-    texec S (pops (xs.length + 1) W) τ = ⟪⟪t, w, 0, a⟫, δ, 0⟫ := by
+    texec S (pops S (xs.length + 1) W) τ = ⟪⟪t, w, 0, a⟫, δ, 0⟫ := by
   induction xs with
   | nil =>
     intro t a w d h δ W τ ht hW
-    show texec S (W ⧺ POP) τ = _
+    show texec S (W ⧺ POP S) τ = _
     rw [texec_seqApp, hW]
     simpa using pop_run S t a w d h δ ht
   | cons x xs ih =>
     intro t a w d h δ W τ ht hW
-    show texec S (pops (xs.length + 1) (W ⧺ POP)) τ = _
+    show texec S (pops S (xs.length + 1) (W ⧺ POP S)) τ = _
     apply ih t a w 0 x δ _ _ ht
     rw [texec_seqApp, hW]
     have he : δ + (((x :: xs).length + 1 : ℕ) : V) = δ + ((xs.length + 1 : ℕ) : V) + 1 := by
@@ -269,19 +325,19 @@ lemma pops_run (xs : List V) : ∀ (t a w d h δ W τ : V), t ≠ 1 →
     exact pop_run S t x _ d h _ ht
 
 /-- Save the top on the stack; the top becomes `0`. -/
-def PUSH : V := snoc (shifts 9 (snoc 0 (AX 0 0 0))) (MP 0)
+def PUSH : V := snoc (shifts (S.n - 1) (snoc 0 (AX 0 0 0))) (MP 0)
 
 lemma push_run (t w δ : V) :
-    texec S PUSH ⟪⟪t, w, 0, 0⟫, δ, 0⟫ = ⟪⟪0, cantor t w, 0, 0⟫, δ + 1, 0⟫ := by
+    texec S (PUSH S) ⟪⟪t, w, 0, 0⟫, δ, 0⟫ = ⟪⟪0, cantor t w, 0, 0⟫, δ + 1, 0⟫ := by
   rw [PUSH, texec_snoc, ax_nine S 0 0 0 t w 0 0 δ 0 _ (by simp),
     tstep_MP_no S 0 _ _ 0 _ _ (four_mul_ne _ _)]
   simp
 
 /-- Replace the top by `0`. -/
-def DISCARD : V := snoc (shifts 10 (snoc (snoc 0 (MP 1)) (AX 1 0 0))) (MP 0)
+def DISCARD : V := snoc (shifts S.n (snoc (snoc 0 (MP 1)) (AX 1 0 0))) (MP 0)
 
 lemma discard_run (t w δ : V) :
-    texec S DISCARD ⟪⟪t, w, 0, 0⟫, δ, 0⟫ = ⟪⟪0, w, 0, 0⟫, δ, 0⟫ := by
+    texec S (DISCARD S) ⟪⟪t, w, 0, 0⟫, δ, 0⟫ = ⟪⟪0, w, 0, 0⟫, δ, 0⟫ := by
   have h1 : texec S (snoc 0 (MP 1)) ⟪⟪t, w, 0, 0⟫, δ, 0⟫ = ⟪⟪0, w, 0 + 1, 0⟫, δ, 0⟫ := by
     rw [texec_snoc, texec_nil]
     exact tstep_MP_no S 1 t w 0 0 δ (four_mul_ne_zero (cantor_ne_zero_right (by simp)))

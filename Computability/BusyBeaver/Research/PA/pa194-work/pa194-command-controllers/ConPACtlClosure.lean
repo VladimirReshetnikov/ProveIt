@@ -37,91 +37,111 @@ lemma chain {W U τ σ σ' : V} (h : flg(texec S W τ) = 1 ∨ texec S W τ = σ
   · rw [h]
     exact hU
 
+/-! ## Selecting an entry of an AX -/
+
+/-- AX on the store `⟪0, 0, d, 0⟫`, then `m` SHIFTs, then POPs of the remaining entries: the
+top is what the SHIFTs leave there. -/
+lemma select_run (A H x d : V) (m : ℕ) (ys : List V) (r W : V) (hm : m ≤ S.n)
+    (hdrop : (itemsL S (S.axT (0 + H) (d + x) A) (fun j => S.leaf j (d + x) (0 + H) A d)
+      (4 * cantor 0 d + 2) 0).drop m = ys ++ [0])
+    (hno : NoHalt S (topL S (S.axT (0 + H) (d + x) A)) 0
+      ((itemsL S (S.axT (0 + H) (d + x) A) (fun j => S.leaf j (d + x) (0 + H) A d)
+        (4 * cantor 0 d + 2) 0).take m))
+    (hr : (last2 (topL S (S.axT (0 + H) (d + x) A)) 0
+      ((itemsL S (S.axT (0 + H) (d + x) A) (fun j => S.leaf j (d + x) (0 + H) A d)
+        (4 * cantor 0 d + 2) 0).take m)).1 = r) (hr1 : r ≠ 1)
+    (hW : texec S W ⟪⟪0, 0, 0, 0⟫, 0, 0⟫ = ⟪⟪0, 0, d, 0⟫, 0, 0⟫) :
+    texec S (pops S (ys.length + 1) (shifts m (snoc W (AX A H x)))) ⟪⟪0, 0, 0, 0⟫, 0, 0⟫ =
+      ⟪⟪r, 0, 0, 0⟫, 0, 0⟫ := by
+  have h2 := ax_shifts S A H x 0 0 d 0 0 _ _ (List.take_append_drop m _).symm hno W _ hW
+  have ht : ((itemsL S (S.axT (0 + H) (d + x) A) (fun j => S.leaf j (d + x) (0 + H) A d)
+      (4 * cantor 0 d + 2) 0).take m).length = m := by
+    rw [List.length_take, itemsL_length]
+    exact Nat.min_eq_left hm
+  rw [ht, hdrop, hr, List.length_append, List.length_singleton] at h2
+  exact pops_run S ys r 0 0 0 _ 0 _ _ hr1 h2
+
 /-! ## Leaves -/
 
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] in
+lemma leaf_le (i : ℕ) (hi : i < 8) : i + 2 + S.g ≤ S.n := by
+  unfold Sem.g Sem.n
+  cases S.ax11 <;> simp <;> omega
+
 lemma leaf_window (f : ℕ → V) (g t T : V) (i : ℕ) (hi : i < 8) :
-    (last2 T 0 ((items f g t).take (i + 2))).1 = f i := by
-  interval_cases i <;> rfl
+    (last2 (topL S T) 0 ((itemsL S T f g t).take (i + 2 + S.g))).1 = f i := by
+  unfold topL itemsL Sem.g
+  cases S.ax11 <;> interval_cases i <;> rfl
 
 lemma leaf_nohalt (f : ℕ → V) (g t T : V) (hT : T ≠ 1) (hf : ∀ j, f j ≠ 1) (i : ℕ)
-    (hi : i < 8) : NoHalt S T 0 ((items f g t).take (i + 2)) := by
-  interval_cases i <;> simp [NoHalt, items, halts_iff_false, hT, hf]
+    (hi : i < 8) : NoHalt S (topL S T) 0 ((itemsL S T f g t).take (i + 2 + S.g)) := by
+  unfold topL itemsL Sem.g
+  cases S.ax11 <;> interval_cases i <;> simp [NoHalt, items, halts_iff_false, hT, hf]
 
-omit [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] in
-lemma leaf_last (f : ℕ → V) (g t : V) (i : ℕ) (hi : i < 8)
-    (hne : (items f g t).drop (i + 2) ≠ []) : ((items f g t).drop (i + 2)).getLast hne = t := by
-  interval_cases i <;> rfl
-
-lemma pops_run' (ys : List V) (hne : ys ≠ []) (t w d h δ W τ : V) (ht : t ≠ 1)
-    (hW : texec S W τ = ⟪⟪t, ys.foldr cantor w, d, h⟫, δ + (ys.length : V), 0⟫) :
-    texec S (pops ys.length W) τ = ⟪⟪t, w, 0, ys.getLast hne⟫, δ, 0⟫ := by
-  have he : ys.dropLast ++ [ys.getLast hne] = ys := List.dropLast_append_getLast hne
-  have hlen : ys.dropLast.length + 1 = ys.length := by
-    have h1 := congrArg List.length he
-    simpa using h1
-  have h := pops_run S ys.dropLast t (ys.getLast hne) w d h δ W τ ht
-    (by rw [he, hlen]; exact hW)
-  rw [hlen] at h
-  exact h
+lemma leaf_drop (f : ℕ → V) (g t T : V) (i : ℕ) (hi : i < 8) :
+    ∃ ys : List V, (itemsL S T f g t).drop (i + 2 + S.g) = ys ++ [t] ∧
+      ys.length + 1 = 8 - i := by
+  refine ⟨((itemsL S T f g t).drop (i + 2 + S.g)).dropLast, ?_, ?_⟩ <;>
+    (unfold itemsL Sem.g; cases S.ax11 <;> interval_cases i <;> rfl)
 
 /-- The word for the leaf `i` with the parameters `D H A d`. -/
 def LEAF (i : ℕ) (D H A d : V) : V :=
-  pops (8 - i) (shifts (i + 2) (snoc (offset d DISCARD) (AX A H (D - d))))
+  pops S (8 - i) (shifts (i + 2 + S.g) (snoc (offset d (DISCARD S)) (AX A H (D - d))))
 
 theorem G_leaf (i : ℕ) (hi : i < 8) (D H A d : V) (hd : d ≤ D) : G S (S.leaf i D H A d) := by
-  refine ⟨LEAF i D H A d, Or.inr ?_⟩
-  obtain ⟨L, hL⟩ : ∃ L : List V,
-      L = items (fun j => S.leaf j D H A d) (4 * cantor 0 d + 2) 0 := ⟨_, rfl⟩
-  have hlen : L.length = 10 := by rw [hL]; rfl
-  have h1 : texec S (offset d DISCARD) ⟪⟪0, 0, 0, 0⟫, 0, 0⟫ = ⟪⟪0, 0, d, 0⟫, 0, 0⟫ :=
-    offset_run S d 0 0 DISCARD _ (discard_run S 0 0 0)
+  refine ⟨LEAF S i D H A d, Or.inr ?_⟩
+  have h1 : texec S (offset d (DISCARD S)) ⟪⟪0, 0, 0, 0⟫, 0, 0⟫ = ⟪⟪0, 0, d, 0⟫, 0, 0⟫ :=
+    offset_run S d 0 0 (DISCARD S) _ (discard_run S 0 0 0)
   have hD : d + (D - d) = D := add_tsub_cancel_of_le hd
-  have h2 := ax_shifts S A H (D - d) 0 0 d 0 0 (L.take (i + 2)) (L.drop (i + 2))
-    (by rw [hD, zero_add, ← hL]; exact (List.take_append_drop _ _).symm)
-    (by
-      rw [hD, zero_add, hL]
-      exact leaf_nohalt S _ _ _ _ (S.axT_ne_one _ _ _) (fun j => S.leaf_ne_one j _ _ _ _) i hi)
-    _ _ h1
-  have ht : (L.take (i + 2)).length = i + 2 := by
-    rw [List.length_take, hlen]
-    omega
-  have hdl : (L.drop (i + 2)).length = 8 - i := by
-    rw [List.length_drop, hlen]
-    omega
-  have hne : L.drop (i + 2) ≠ [] := by
-    intro h0
-    rw [h0] at hdl
-    simp at hdl
-    omega
-  rw [ht] at h2
-  have h3 := pops_run' S (L.drop (i + 2)) hne _ 0 0 _ 0 _ _
-    (by rw [hL, leaf_window _ _ _ _ i hi]; exact S.leaf_ne_one i _ _ _ _) h2
-  rw [hdl] at h3
-  rw [LEAF, h3]
-  subst hL
-  rw [leaf_last _ _ _ i hi, leaf_window _ _ _ _ i hi]
+  obtain ⟨ys, hys, hylen⟩ := leaf_drop S (fun j => S.leaf j (d + (D - d)) (0 + H) A d)
+    (4 * cantor 0 d + 2) 0 (S.axT (0 + H) (d + (D - d)) A) i hi
+  have h := select_run S A H (D - d) d (i + 2 + S.g) ys
+    (S.leaf i (d + (D - d)) (0 + H) A d) _ (leaf_le S i hi) hys
+    (leaf_nohalt S _ _ _ _ (S.axT_ne_one _ _ _) (fun j => S.leaf_ne_one j _ _ _ _) i hi)
+    (leaf_window S _ _ _ _ i hi) (S.leaf_ne_one i _ _ _ _) h1
+  rw [hylen, hD, zero_add] at h
+  exact h
 
 /-! ## The gate -/
 
+lemma gate_le : 2 * S.g ≤ S.n := by
+  unfold Sem.g Sem.n
+  cases S.ax11 <;> simp
+
+lemma gate_window (f : ℕ → V) (g t T : V) :
+    (last2 (topL S T) 0 ((itemsL S T f g t).take (2 * S.g))).1 = T := by
+  unfold topL itemsL Sem.g
+  cases S.ax11 <;> rfl
+
+lemma gate_nohalt (f : ℕ → V) (g t T : V) (hT : T ≠ 1) :
+    NoHalt S (topL S T) 0 ((itemsL S T f g t).take (2 * S.g)) := by
+  unfold topL itemsL Sem.g
+  cases S.ax11 <;> simp [NoHalt, items, halts_iff_false, hT]
+
+lemma gate_drop (f : ℕ → V) (g t T : V) :
+    ∃ ys : List V, (itemsL S T f g t).drop (2 * S.g) = ys ++ [t] := by
+  refine ⟨((itemsL S T f g t).drop (2 * S.g)).dropLast, ?_⟩
+  unfold itemsL Sem.g
+  cases S.ax11 <;> rfl
+
+/-- The gate: it is the top after AX, or the first stack entry in the eleven-entry layout,
+where two SHIFTs bring it to the top. -/
 theorem G_axT (H D A : V) : G S (S.axT H D A) := by
-  refine ⟨pops 10 (snoc DISCARD (AX A H D)), Or.inr ?_⟩
-  have h1 : texec S (snoc DISCARD (AX A H D)) ⟪⟪0, 0, 0, 0⟫, 0, 0⟫ =
-      ⟪⟪S.axT (0 + H) (0 + D) A,
-        (items (fun i => S.leaf i (0 + D) (0 + H) A 0) (4 * cantor 0 0 + 2) 0).foldr cantor 0,
-        0, 0⟫, 0 + ((10 : ℕ) : V), 0⟫ := by
-    rw [texec_snoc, discard_run S 0 0 0, tstep_AX]
-  have h2 := pops_run' S (items (fun i => S.leaf i (0 + D) (0 + H) A 0) (4 * cantor 0 0 + 2) 0)
-    (by simp [items]) _ 0 0 0 0 _ _ (S.axT_ne_one _ _ _) h1
-  simpa [items] using h2
+  obtain ⟨ys, hys⟩ := gate_drop S (fun j => S.leaf j (0 + D) (0 + H) A 0)
+    (4 * cantor 0 0 + 2) 0 (S.axT (0 + H) (0 + D) A)
+  refine ⟨pops S (ys.length + 1) (shifts (2 * S.g) (snoc (DISCARD S) (AX A H D))), Or.inr ?_⟩
+  have h := select_run S A H D 0 (2 * S.g) ys (S.axT (0 + H) (0 + D) A) _ (gate_le S) hys
+    (gate_nohalt S _ _ _ _ (S.axT_ne_one _ _ _)) (gate_window S _ _ _ _)
+    (S.axT_ne_one _ _ _) (discard_run S 0 0 0)
+  simpa using h
 
 /-! ## Generalization -/
 
 /-- After a PUSH: label the saved formula and pop its generalization. -/
-def GENTAIL (i : V) : V := shifts 10 (snoc (snoc (offset i 0) SH) (AX i 0 0))
+def GENTAIL (i : V) : V := shifts S.n (snoc (snoc (offset i 0) SH) (AX i 0 0))
 
 lemma gen_run (i a v δ : V) :
-    texec S (GENTAIL i) ⟪⟪0, cantor a v, 0, 0⟫, δ + 1, 0⟫ = ⟪⟪4 * cantor a i + 2, v, 0, 0⟫, δ, 0⟫ := by
+    texec S (GENTAIL S i) ⟪⟪0, cantor a v, 0, 0⟫, δ + 1, 0⟫ =
+      ⟪⟪4 * cantor a i + 2, v, 0, 0⟫, δ, 0⟫ := by
   have h1 : texec S (offset i 0) ⟪⟪0, cantor a v, 0, 0⟫, δ + 1, 0⟫ =
       ⟪⟪0, cantor a v, i, 0⟫, δ + 1, 0⟫ := offset_run S i _ _ 0 _ (by simp)
   have h2 : texec S (snoc (offset i 0) SH) ⟪⟪0, cantor a v, 0, 0⟫, δ + 1, 0⟫ =
@@ -132,7 +152,7 @@ lemma gen_run (i a v δ : V) :
 
 theorem G_gen (i a : V) (ha : G S a) : G S (4 * cantor a i + 2) := by
   obtain ⟨W, hW⟩ := ha
-  refine ⟨W ⧺ PUSH ⧺ GENTAIL i, ?_⟩
+  refine ⟨W ⧺ PUSH S ⧺ GENTAIL S i, ?_⟩
   exact chain S (chain S hW (Or.inr (push_run S a 0 0))) (Or.inr (gen_run S i a 0 0))
 
 /-! ## Modus ponens -/
@@ -154,19 +174,19 @@ lemma sh2_halt (w δ : V) :
 
 /-- After the two SHIFTs: test the implication and pop the consequent. For the MP kinds
 `push` and `top`. -/
-def MPSUF2 (b : V) : V := shifts 11 (snoc (snoc 0 (MP b)) (AX b 0 0))
+def MPSUF2 (b : V) : V := shifts (S.n + 1) (snoc (snoc 0 (MP b)) (AX b 0 0))
 
 /-- After the two SHIFTs, for the MP kind `cache`: the consequent is in the cache, and one
 SHIFT moves it to the top. -/
 def MPSUFC (b : V) : V := snoc (snoc 0 (MP b)) SH
 
 /-- The part of `MPSUF2` after its MP: the consequent is in `t` and `d` and a zero is on the
-stack. The AX and its ten SHIFTs clear `d`; the last SHIFT has the consequent in the cache,
-so it halts or removes the zero. -/
+stack. The AX and its SHIFTs clear `d`; the last SHIFT has the consequent in the cache, so it
+halts or removes the zero. -/
 lemma mpsuf2_tail (b v δ W τ : V)
     (hW : texec S W τ = ⟪⟪0 + b, cantor 0 v, 0 + b, 0⟫, δ + 1, 0⟫) :
-    flg(texec S (shifts 11 (snoc W (AX b 0 0))) τ) = 1 ∨
-      texec S (shifts 11 (snoc W (AX b 0 0))) τ = ⟪⟪b, v, 0, 0⟫, δ, 0⟫ := by
+    flg(texec S (shifts (S.n + 1) (snoc W (AX b 0 0))) τ) = 1 ∨
+      texec S (shifts (S.n + 1) (snoc W (AX b 0 0))) τ = ⟪⟪b, v, 0, 0⟫, δ, 0⟫ := by
   rw [shifts_succ', texec_snoc, ax_all S b 0 0 (0 + b) (cantor 0 v) (0 + b) 0 (δ + 1) _ _ hW]
   by_cases hH : S.Halts (4 * cantor 0 (0 + b) + 2) (0 + b)
   · left
@@ -178,8 +198,8 @@ lemma mpsuf2_tail (b v δ W τ : V)
 
 /-- With the push, the successful MP supplies the zero that the last SHIFT removes. -/
 lemma mpsuf2_run (hk : S.mp = MPKind.push) (a b v δ : V) :
-    flg(texec S (MPSUF2 b) ⟪⟪a, v, 0, 4 * cantor a b⟫, δ, 0⟫) = 1 ∨
-      texec S (MPSUF2 b) ⟪⟪a, v, 0, 4 * cantor a b⟫, δ, 0⟫ = ⟪⟪b, v, 0, 0⟫, δ, 0⟫ := by
+    flg(texec S (MPSUF2 S b) ⟪⟪a, v, 0, 4 * cantor a b⟫, δ, 0⟫) = 1 ∨
+      texec S (MPSUF2 S b) ⟪⟪a, v, 0, 4 * cantor a b⟫, δ, 0⟫ = ⟪⟪b, v, 0, 0⟫, δ, 0⟫ := by
   unfold MPSUF2
   apply mpsuf2_tail S b v δ (snoc 0 (MP b))
   rw [texec_snoc, texec_nil, tstep_MP_yes S b a v 0 _ δ (by simp)]
@@ -187,8 +207,8 @@ lemma mpsuf2_run (hk : S.mp = MPKind.push) (a b v δ : V) :
 
 /-- Without the push, a zero reserved below the premises takes its place. -/
 lemma mpsuf2_run' (hk : S.mp = MPKind.top) (a b v δ : V) :
-    flg(texec S (MPSUF2 b) ⟪⟪a, cantor 0 v, 0, 4 * cantor a b⟫, δ + 1, 0⟫) = 1 ∨
-      texec S (MPSUF2 b) ⟪⟪a, cantor 0 v, 0, 4 * cantor a b⟫, δ + 1, 0⟫ =
+    flg(texec S (MPSUF2 S b) ⟪⟪a, cantor 0 v, 0, 4 * cantor a b⟫, δ + 1, 0⟫) = 1 ∨
+      texec S (MPSUF2 S b) ⟪⟪a, cantor 0 v, 0, 4 * cantor a b⟫, δ + 1, 0⟫ =
         ⟪⟪b, v, 0, 0⟫, δ, 0⟫ := by
   unfold MPSUF2
   apply mpsuf2_tail S b v δ (snoc 0 (MP b))
@@ -217,8 +237,8 @@ lemma mpsufc_run (hk : S.mp = MPKind.cache) (a b v δ : V) :
 /-- The two premises on the empty stack, and the two SHIFTs that bring them into the top and
 the cache. -/
 lemma mp_prefix {Wp Wq a b : V} (hp : Good S Wp a) (hq : Good S Wq (4 * cantor a b)) :
-    flg(texec S (Wq ⧺ PUSH ⧺ Wp ⧺ PUSH ⧺ SH2) ⟪⟪0, 0, 0, 0⟫, 0, 0⟫) = 1 ∨
-      texec S (Wq ⧺ PUSH ⧺ Wp ⧺ PUSH ⧺ SH2) ⟪⟪0, 0, 0, 0⟫, 0, 0⟫ =
+    flg(texec S (Wq ⧺ PUSH S ⧺ Wp ⧺ PUSH S ⧺ SH2) ⟪⟪0, 0, 0, 0⟫, 0, 0⟫) = 1 ∨
+      texec S (Wq ⧺ PUSH S ⧺ Wp ⧺ PUSH S ⧺ SH2) ⟪⟪0, 0, 0, 0⟫, 0, 0⟫ =
         ⟪⟪a, 0, 0, 4 * cantor a b⟫, 0, 0⟫ := by
   have c1 := chain S hq (Or.inr (push_run S (4 * cantor a b) 0 0))
   have c2 := chain S c1 (good_run S hp (cantor (4 * cantor a b) 0) (0 + 1))
@@ -236,11 +256,11 @@ lemma mp_prefix {Wp Wq a b : V} (hp : Good S Wp a) (hq : Good S Wq (4 * cantor a
 /-- The same on a stack that holds a reserved zero. -/
 lemma mp_prefix_reserved {Wp Wq a b : V} (hp : Good S Wp a)
     (hq : Good S Wq (4 * cantor a b)) :
-    flg(texec S (PUSH ⧺ Wq ⧺ PUSH ⧺ Wp ⧺ PUSH ⧺ SH2) ⟪⟪0, 0, 0, 0⟫, 0, 0⟫) = 1 ∨
-      texec S (PUSH ⧺ Wq ⧺ PUSH ⧺ Wp ⧺ PUSH ⧺ SH2) ⟪⟪0, 0, 0, 0⟫, 0, 0⟫ =
+    flg(texec S (PUSH S ⧺ Wq ⧺ PUSH S ⧺ Wp ⧺ PUSH S ⧺ SH2) ⟪⟪0, 0, 0, 0⟫, 0, 0⟫) = 1 ∨
+      texec S (PUSH S ⧺ Wq ⧺ PUSH S ⧺ Wp ⧺ PUSH S ⧺ SH2) ⟪⟪0, 0, 0, 0⟫, 0, 0⟫ =
         ⟪⟪a, cantor 0 0, 0, 4 * cantor a b⟫, 0 + 1, 0⟫ := by
-  have c0 : flg(texec S PUSH ⟪⟪0, 0, 0, 0⟫, 0, 0⟫) = 1 ∨
-      texec S PUSH ⟪⟪0, 0, 0, 0⟫, 0, 0⟫ = ⟪⟪0, cantor 0 0, 0, 0⟫, 0 + 1, 0⟫ :=
+  have c0 : flg(texec S (PUSH S) ⟪⟪0, 0, 0, 0⟫, 0, 0⟫) = 1 ∨
+      texec S (PUSH S) ⟪⟪0, 0, 0, 0⟫, 0, 0⟫ = ⟪⟪0, cantor 0 0, 0, 0⟫, 0 + 1, 0⟫ :=
     Or.inr (push_run S 0 0 0)
   have c1 := chain S c0 (good_run S hq (cantor 0 0) (0 + 1))
   have c2 := chain S c1 (Or.inr (push_run S (4 * cantor a b) (cantor 0 0) (0 + 1)))
@@ -261,11 +281,11 @@ theorem G_mp (a b : V) (ha : G S a) (hab : G S (4 * cantor a b)) : G S b := by
   obtain ⟨Wp, hp⟩ := ha
   obtain ⟨Wq, hq⟩ := hab
   cases hk : S.mp
-  · exact ⟨Wq ⧺ PUSH ⧺ Wp ⧺ PUSH ⧺ SH2 ⧺ MPSUF2 b,
+  · exact ⟨Wq ⧺ PUSH S ⧺ Wp ⧺ PUSH S ⧺ SH2 ⧺ MPSUF2 S b,
       chain S (mp_prefix S hp hq) (mpsuf2_run S hk a b 0 0)⟩
-  · exact ⟨PUSH ⧺ Wq ⧺ PUSH ⧺ Wp ⧺ PUSH ⧺ SH2 ⧺ MPSUF2 b,
+  · exact ⟨PUSH S ⧺ Wq ⧺ PUSH S ⧺ Wp ⧺ PUSH S ⧺ SH2 ⧺ MPSUF2 S b,
       chain S (mp_prefix_reserved S hp hq) (mpsuf2_run' S hk a b 0 0)⟩
-  · exact ⟨PUSH ⧺ Wq ⧺ PUSH ⧺ Wp ⧺ PUSH ⧺ SH2 ⧺ MPSUFC b,
+  · exact ⟨PUSH S ⧺ Wq ⧺ PUSH S ⧺ Wp ⧺ PUSH S ⧺ SH2 ⧺ MPSUFC b,
       chain S (mp_prefix_reserved S hp hq) (mpsufc_run S hk a b 0 0)⟩
 
 end model

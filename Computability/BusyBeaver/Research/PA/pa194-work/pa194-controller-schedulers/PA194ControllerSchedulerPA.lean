@@ -8,17 +8,18 @@ set_option linter.unusedSectionVars false
 /-!
 # The controller schedulers and the consistency of arithmetic
 
-For every kind `k` of successful MP and every choice `ct` of the halting test:
+For every kind `k` of successful MP, every choice `ct` of the halting test and every AX
+layout `a`:
 
 * `scheduler_iff_pa_refutation`: in every candidate-PRA model whose arithmetic reduct
-  satisfies `𝗜𝚺₁`, the scheduler `haltAfterK k ct` halts at some time of the model exactly
+  satisfies `𝗜𝚺₁`, the scheduler `haltAfterK k ct a` halts at some time of the model exactly
   when arithmetic has an internal refutation. It composes
   `PA194ControllerScheduler.halts_iff_primary` with
   `PA194ModeledSchedulerSemanticIFF.scheduler_iff_pa_refutation`.
-* `haltSentenceK k ct`: the sentence of the PRA language that says that the halt bit
-  `haltAfterK k ct` is `1` at some time.
+* `haltSentenceK k ct a`: the sentence of the PRA language that says that the halt bit
+  `haltAfterK k ct a` is `1` at some time.
 * `consistency_iff_scheduler_nonhalt`: the standard theory proves that the consistency
-  sentence is equivalent to the negation of `haltSentenceK k ct`.
+  sentence is equivalent to the negation of `haltSentenceK k ct a`.
 
 The schedulers are the command-level definitions of `PA194ControllerScheduler`. No
 connection with a literal table or with a source program is proved or used here, so these
@@ -46,30 +47,31 @@ local instance : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := standardModelIOpen
 variable [M↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 /-- The scheduler halts exactly when arithmetic is internally refutable. -/
-theorem scheduler_iff_pa_refutation (k : MPKind) (ct : Bool) :
-    (∃ n : M, F (haltAfterK k ct) ![n] = 1) ↔ Provable (𝗣𝗔 : ArithmeticTheory) (^⊥ : M) :=
-  (halts_iff_primary k ct).trans PA194ModeledSchedulerSemanticIFF.scheduler_iff_pa_refutation
+theorem scheduler_iff_pa_refutation (k : MPKind) (ct a : Bool) :
+    (∃ n : M, F (haltAfterK k ct a) ![n] = 1) ↔ Provable (𝗣𝗔 : ArithmeticTheory) (^⊥ : M) :=
+  (halts_iff_primary k ct a).trans PA194ModeledSchedulerSemanticIFF.scheduler_iff_pa_refutation
 
 #print axioms scheduler_iff_pa_refutation
 end models
 
 /-! ## The halting sentences -/
 
-def haltTermK (k : MPKind) (ct : Bool) : Semiterm language Empty 1 :=
-  .func (haltAfterK k ct) (fun _ => #0)
-def haltMatrixK (k : MPKind) (ct : Bool) : Semisentence language 1 :=
-  .rel .eq ![haltTermK k ct, .func oneCode Fin.elim0]
-def haltSentenceK (k : MPKind) (ct : Bool) : Sentenceᵢ language := native (∃⁰ haltMatrixK k ct)
+def haltTermK (k : MPKind) (ct a : Bool) : Semiterm language Empty 1 :=
+  .func (haltAfterK k ct a) (fun _ => #0)
+def haltMatrixK (k : MPKind) (ct a : Bool) : Semisentence language 1 :=
+  .rel .eq ![haltTermK k ct a, .func oneCode Fin.elim0]
+def haltSentenceK (k : MPKind) (ct a : Bool) : Sentenceᵢ language :=
+  native (∃⁰ haltMatrixK k ct a)
 
 section eval
 variable {M : Type} [Structure language M] [Structure.Eq language M]
 
-theorem haltMatrixK_eval (k : MPKind) (ct : Bool) (t : M) :
-    (haltMatrixK k ct).Eval ![t] Empty.elim ↔
-      Structure.func (L := language) (haltAfterK k ct) (fun _ => t) =
+theorem haltMatrixK_eval (k : MPKind) (ct a : Bool) (t : M) :
+    (haltMatrixK k ct a).Eval ![t] Empty.elim ↔
+      Structure.func (L := language) (haltAfterK k ct a) (fun _ => t) =
         Structure.func (L := language) oneCode Fin.elim0 := by
   change Semiformula.EvalAux (inferInstance : Structure language M) Empty.elim ![t]
-    (haltMatrixK k ct) ↔ _
+    (haltMatrixK k ct a) ↔ _
   simp only [haltMatrixK, Semiformula.EvalAux, eqRel, Matrix.cons_val_zero, Matrix.cons_val_one]
   have hz (v : Fin 1 → M) :
       (Semiterm.val v Empty.elim ∘ (Fin.elim0 : Fin 0 → Semiterm language Empty 1)) =
@@ -82,9 +84,9 @@ theorem const_vec {M : Type} (n : M) : (![n] : Fin 1 → M) = (fun _ => n) := by
   exact Fin.cases rfl (fun j => Fin.elim0 j) i
 
 /-- Non-halting of the scheduler implies the consistency sentence. -/
-theorem scheduler_nonhalt_consistency (k : MPKind) (ct : Bool) :
-    standardTheory ⊢ ∼haltSentenceK k ct 🡒 nativePAConsistency := by
-  apply ConPA.Directions.ipra_nonhalt_implies_consistency (haltMatrixK k ct)
+theorem scheduler_nonhalt_consistency (k : MPKind) (ct a : Bool) :
+    standardTheory ⊢ ∼haltSentenceK k ct a 🡒 nativePAConsistency := by
+  apply ConPA.Directions.ipra_nonhalt_implies_consistency (haltMatrixK k ct a)
   · simp [haltMatrixK, Semiformula.Open]
   · exact Hierarchy.rel _ _ _ _
   · intro M _ _ _ _ hr hp
@@ -98,22 +100,22 @@ theorem scheduler_nonhalt_consistency (k : MPKind) (ct : Bool) :
       rw [models_iff, PA195RefutationBridge.mapped_refutation_iff] at hp
       obtain ⟨d, hd⟩ := hp
       exact ⟨d, by simpa [Sentence.quote_def] using hd⟩
-    obtain ⟨n, hn⟩ := (scheduler_iff_pa_refutation (M := M) k ct).mpr hpa
+    obtain ⟨n, hn⟩ := (scheduler_iff_pa_refutation (M := M) k ct a).mpr hpa
     rw [models_iff, Semiformula.eval_ex]
     refine ⟨n, ?_⟩
-    apply (haltMatrixK_eval k ct n).mpr
+    apply (haltMatrixK_eval k ct a n).mpr
     rw [← const_vec n]
     exact hn
 
 /-- The consistency sentence implies non-halting of the scheduler. -/
-theorem consistency_scheduler_nonhalt (k : MPKind) (ct : Bool) :
-    standardTheory ⊢ nativePAConsistency 🡒 ∼haltSentenceK k ct := by
-  apply ConPA.Directions.ipra_consistency_implies_nonhalt (haltMatrixK k ct)
+theorem consistency_scheduler_nonhalt (k : MPKind) (ct a : Bool) :
+    standardTheory ⊢ nativePAConsistency 🡒 ∼haltSentenceK k ct a := by
+  apply ConPA.Directions.ipra_consistency_implies_nonhalt (haltMatrixK k ct a)
   · simp [haltMatrixK, Semiformula.Open]
   · intro M _ _ _ _ hr hhalt
     rw [models_iff, Semiformula.eval_ex] at hhalt
     obtain ⟨n, hn⟩ := hhalt
-    have hn' := (haltMatrixK_eval k ct n).mp hn
+    have hn' := (haltMatrixK_eval k ct a n).mp hn
     rw [← const_vec n] at hn'
     letI : Zero M := ⟨Structure.func (L := language) (Code.zero 0) Fin.elim0⟩
     letI : One M := ⟨Structure.func (L := language) oneCode Fin.elim0⟩
@@ -122,14 +124,14 @@ theorem consistency_scheduler_nonhalt (k : MPKind) (ct : Bool) :
     letI : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
     letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₁ := standard_isigma1 hr
     rw [models_iff, PA195RefutationBridge.mapped_refutation_iff]
-    exact (scheduler_iff_pa_refutation (M := M) k ct).mp ⟨n, hn'⟩
+    exact (scheduler_iff_pa_refutation (M := M) k ct a).mp ⟨n, hn'⟩
 
 /-- The consistency sentence is equivalent to non-halting of the scheduler, in the standard
 theory. -/
-theorem consistency_iff_scheduler_nonhalt (k : MPKind) (ct : Bool) :
-    standardTheory ⊢ nativePAConsistency 🡘 ∼haltSentenceK k ct := by
-  obtain ⟨hp⟩ := consistency_scheduler_nonhalt k ct
-  obtain ⟨hq⟩ := scheduler_nonhalt_consistency k ct
+theorem consistency_iff_scheduler_nonhalt (k : MPKind) (ct a : Bool) :
+    standardTheory ⊢ nativePAConsistency 🡘 ∼haltSentenceK k ct a := by
+  obtain ⟨hp⟩ := consistency_scheduler_nonhalt k ct a
+  obtain ⟨hq⟩ := scheduler_nonhalt_consistency k ct a
   exact ⟨Entailment.K_intro hp hq⟩
 
 #print axioms scheduler_nonhalt_consistency

@@ -482,18 +482,21 @@ above does not apply to them unchanged. The first change treated is the command 
 The packets describe four: the primary one; PA194N, whose successful modus ponens does not
 push a zero; PA194C and PA194CS, which return the result of modus ponens in the cache and
 halt a SHIFT on `h = 1`; and PA194H and PA194HS, which combine the no-push modus ponens with
-that halting test.
+that halting test. The AX command has two layouts: ten stack entries with the gate on top,
+and the eleven entries of PA194AX11, where the gate is pushed and the command takes a fourth
+field.
 [`pa194-command-controllers`](pa194-work/pa194-command-controllers/README.md) restates the
 command-word theory of `pa194-model-fairness` with the controller as a parameter, and
 [`pa194-controller-schedulers`](pa194-work/pa194-controller-schedulers/README.md) defines a
-scheduler for each controller by PRA codes and proves that, in every candidate-PRA model
+scheduler for each controller and each layout by PRA codes and proves that, in every
+candidate-PRA model
 whose arithmetic reduct satisfies `𝗜𝚺₁`, it halts exactly when the numerical calculus proves
 the contradiction code, hence exactly when the modeled scheduler of the primary table halts
 and exactly when arithmetic has an internal refutation; the corresponding equivalence with
 the consistency sentence is derived in iPRA. These are statements about schedulers defined
 at the level of commands. They are not connected with the literal tables or their source
-programs, and they do not cover the candidates that also change the axiom emitter, the AX
-command or the coding of formulas.
+programs, and they do not cover the candidates that also change the axiom emitter or the
+coding of formulas.
 
 [`isigma1-machine`](shared/isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation

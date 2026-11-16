@@ -2,10 +2,10 @@ import PA194ModelFairness
 import ConPACtlSchedulerHalts
 
 /-!
-# Schedulers for the four controllers
+# Schedulers for the command controllers
 
-The candidates of the PA194 family use four command controllers. On a store `⟪t, w, d, h⟫`
-with `b = d + y`:
+The candidates of the PA194 family use several command controllers. On a store
+`⟪t, w, d, h⟫` with `b = d + y`:
 
 | Protocol | Successful MP returns | SHIFT halts when |
 | --- | --- | --- |
@@ -14,14 +14,18 @@ with `b = d + y`:
 | PA194C, PA194CS | `⟪0, w, 0, b⟫` | `h = 1` |
 | PA194H, PA194HS | `⟪b, w, b, 0⟫` | `h = 1` |
 
-SHIFT without a halt, the failing MP (`⟪0, w, b, 0⟫`), AX, the fetch and decoding of commands,
-and the numerical calculus are the same in all four.
+SHIFT without a halt, the failing MP (`⟪0, w, b, 0⟫`) and the numerical calculus are the same
+in all four. AX has two layouts. In the ten-entry layout it leaves its gate on top, pushes the
+eight leaves, the generalization and the old top, and clears `d`; a command of the stream has
+three fields. In the eleven-entry layout of PA194AX11 it also pushes the gate, leaves the top
+`0` and sets `d` to a fourth field `z` of the command:
+`⟪0, [G, q₁, …, q₈, U(d, h), t; w], z, 0⟫`.
 
-This file defines, for every kind `k` of successful MP and every choice `ct` of the halting
-test, a scheduler by PRA codes, and proves in every candidate-PRA model `M` whose arithmetic
-reduct satisfies `𝗜𝚺₁`:
+This file defines, for every kind `k` of successful MP, every choice `ct` of the halting test
+and every AX layout `a` (`true` for eleven entries), a scheduler by PRA codes, and proves in
+every candidate-PRA model `M` whose arithmetic reduct satisfies `𝗜𝚺₁`:
 
-* `stepK_eq`: the step code is `ConPA.Ctl.sstep (semK k ct)`;
+* `stepK_eq`: the step code is `ConPA.Ctl.sstep (semK k ct a)`;
 * `G_of_provable`: a target proof of `r` gives a command word that computes `r`;
 * `runK_sound`: top, cache and all stack entries stay provable in the numerical calculus
   along every run from a sound state;
@@ -35,6 +39,7 @@ or with a source program is proved or used.
 set_option autoImplicit false
 set_option maxHeartbeats 5000000
 set_option linter.unusedSectionVars false
+set_option linter.unusedSimpArgs false
 namespace PA194ControllerScheduler
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.FirstOrder.Arithmetic.Bootstrapping
 open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
@@ -48,6 +53,10 @@ open SetTheory.BusyBeaver.ZFC.ArithmeticCantor
 open ConPA.Ctl (MPKind mpStore)
 
 /-! ## Codes -/
+
+/-- The third and fourth fields of a command `⟪tag, y, x, z⟫`. -/
+noncomputable def cX4 : Code 2 := fst (snd (snd (.proj 0)))
+noncomputable def cZ4 : Code 2 := snd (snd (snd (.proj 0)))
 
 /-- `0` when the implication matches, the consequent otherwise. -/
 noncomputable def mpFail {n : Nat} (t h d x : Code n) : Code n :=
@@ -77,35 +86,70 @@ noncomputable def mpHK (k : MPKind) {n : Nat} (t h d x : Code n) : Code n :=
   | .cache => mpTop t h d x
   | _ => .zero n
 
+/-- The top after AX: the gate, or `0` in the eleven-entry layout. -/
+noncomputable def axTopA (a : Bool) {n : Nat} (A d h y x : Code n) : Code n :=
+  match a with
+  | true => .zero n
+  | false => axTopCode A d h y x
+
+/-- The stack after AX: in the eleven-entry layout the gate is pushed last. -/
+noncomputable def axStackA (a : Bool) {n : Nat} (t A d h y x w : Code n) : Code n :=
+  match a with
+  | true => pair (axTopCode A d h y x) (axStackCode t A d h y x w)
+  | false => axStackCode t A d h y x w
+
+/-- The register `d` after AX: the fourth argument in the eleven-entry layout. -/
+noncomputable def axDA (a : Bool) {n : Nat} (z : Code n) : Code n :=
+  match a with
+  | true => z
+  | false => .zero n
+
 /-- The store step as a code of a command and a store. -/
-noncomputable def cstepCodeK (k : MPKind) : Code 2 :=
+noncomputable def cstepCodeK (k : MPKind) (a : Bool) : Code 2 :=
   bin pairCode
-    (choose0 cTag sH (choose1 cTag (mpTopK k sT sH sD cY) (axTopCode cA sD sH cY cX)))
+    (choose0 cTag sH (choose1 cTag (mpTopK k sT sH sD cY) (axTopA a cA sD sH cY cX4)))
     (bin pairCode
       (choose0 cTag (shiftStack sW)
-        (choose1 cTag (mpStackK k sT sW sH sD cY) (axStackCode sT cA sD sH cY cX sW)))
+        (choose1 cTag (mpStackK k sT sW sH sD cY) (axStackA a sT cA sD sH cY cX4 sW)))
       (bin pairCode
-        (choose0 cTag sD (choose1 cTag (mpDK k sT sH sD cY) (.zero 2)))
+        (choose0 cTag sD (choose1 cTag (mpDK k sT sH sD cY) (axDA a cZ4)))
         (choose0 cTag (shiftCache sW) (choose1 cTag (mpHK k sT sH sD cY) (.zero 2)))))
 
-noncomputable def nextTopK (k : MPKind) {m : Nat} (n l t _w d h : Code m) : Code m :=
+/-- The fourth field of the seed and the tail after it. -/
+noncomputable def zArg {m : Nat} (n l : Code m) : Code m := unary fixedFirst (tail3 n l)
+noncomputable def tail4 {m : Nat} (n l : Code m) : Code m := unary fixedSecond (tail3 n l)
+
+/-- The fourth command field: read from the seed only in the eleven-entry layout. -/
+noncomputable def zField (a : Bool) {m : Nat} (n l : Code m) : Code m :=
+  match a with
+  | true => zArg n l
+  | false => .zero m
+
+/-- The next continuation pointer. -/
+noncomputable def nextLA (a : Bool) {m : Nat} (n l : Code m) : Code m :=
+  match a with
+  | true => choose0 (head n l) (PA194SchedulerCode.tail n l)
+      (choose1 (head n l) (tail2 n l) (tail4 n l))
+  | false => PA194SchedulerCode.nextL n l
+
+noncomputable def nextTopK (k : MPKind) (a : Bool) {m : Nat} (n l t _w d h : Code m) : Code m :=
   choose0 (head n l) h (choose1 (head n l) (mpTopK k t h d (yArg n l))
-    (axTopCode (axArg n l) d h (yArg n l) (xArg n l)))
-noncomputable def nextStackK (k : MPKind) {m : Nat} (n l t w d h : Code m) : Code m :=
+    (axTopA a (axArg n l) d h (yArg n l) (xArg n l)))
+noncomputable def nextStackK (k : MPKind) (a : Bool) {m : Nat} (n l t w d h : Code m) : Code m :=
   choose0 (head n l) (shiftStack w) (choose1 (head n l) (mpStackK k t w h d (yArg n l))
-    (axStackCode t (axArg n l) d h (yArg n l) (xArg n l) w))
-noncomputable def nextDK (k : MPKind) {m : Nat} (n l t d h : Code m) : Code m :=
-  choose0 (head n l) d (choose1 (head n l) (mpDK k t h d (yArg n l)) (.zero m))
+    (axStackA a t (axArg n l) d h (yArg n l) (xArg n l) w))
+noncomputable def nextDK (k : MPKind) (a : Bool) {m : Nat} (n l t d h : Code m) : Code m :=
+  choose0 (head n l) d (choose1 (head n l) (mpDK k t h d (yArg n l)) (axDA a (zField a n l)))
 noncomputable def nextCacheK (k : MPKind) {m : Nat} (n l t w d h : Code m) : Code m :=
   choose0 (head n l) (shiftCache w) (choose1 (head n l) (mpHK k t h d (yArg n l)) (.zero m))
 
 /-- One scheduler step on the packed state `⟪n, l, t, w, d, h⟫`. -/
-noncomputable def stepK (k : MPKind) : Code 1 :=
-  pack (PA194SchedulerCode.nextN fN fL) (PA194SchedulerCode.nextL fN fL)
-    (nextTopK k fN fL fT fW fD fH) (nextStackK k fN fL fT fW fD fH) (nextDK k fN fL fT fD fH)
-    (nextCacheK k fN fL fT fW fD fH)
+noncomputable def stepK (k : MPKind) (a : Bool) : Code 1 :=
+  pack (PA194SchedulerCode.nextN fN fL) (nextLA a fN fL)
+    (nextTopK k a fN fL fT fW fD fH) (nextStackK k a fN fL fT fW fD fH)
+    (nextDK k a fN fL fT fD fH) (nextCacheK k fN fL fT fW fD fH)
 
-noncomputable def runK (k : MPKind) : Code 2 := dropCode (stepK k)
+noncomputable def runK (k : MPKind) (a : Bool) : Code 2 := dropCode (stepK k a)
 
 /-- The halting test `h = 1`. -/
 noncomputable def shiftHaltC {n : Nat} (h : Code n) : Code n :=
@@ -116,8 +160,8 @@ noncomputable def haltAtK (ct : Bool) : Code 1 :=
   if ct then choose0 (head fN fL) (shiftHaltC fH) (.zero 1) else haltAt
 
 /-- The halt bit after a number of steps from the initial state. -/
-noncomputable def haltAfterK (k : MPKind) (ct : Bool) : Code 1 :=
-  unary (haltAtK ct) (bin (runK k) (.proj 0) initialConstant)
+noncomputable def haltAfterK (k : MPKind) (ct a : Bool) : Code 1 :=
+  unary (haltAtK ct) (bin (runK k a) (.proj 0) initialConstant)
 
 section models
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
@@ -148,62 +192,97 @@ theorem shiftHaltC_correct {n : Nat} (h : Code n) (e : Fin n → M) :
   change F equalityCode ![F h e, 1] = F oneCode Fin.elim0 ↔ _
   exact (modelEqualityCode (F h e) (1 : M)).2
 
-/-- The store step, component by component. -/
-theorem cstepK_eval (k : MPKind) (c σ : M) :
-    F (cstepCodeK k) ![c, σ] =
+theorem cX4_model (c σ : M) : F cX4 ![c, σ] = π₁ (π₂ (π₂ c)) := by
+  rw [cX4, fst_model, snd_model, snd_model, modelProjection]
+  rfl
+theorem cZ4_model (c σ : M) : F cZ4 ![c, σ] = π₂ (π₂ (π₂ c)) := by
+  rw [cZ4, snd_model, snd_model, snd_model, modelProjection]
+  rfl
+theorem zArg_model (s : M) :
+    F (zArg fN fL) ![s] =
+      first (second (second (second (ConPA.Words.seed (π₁ s) (π₁ (π₂ s)))))) := by
+  rw [zArg, unary_bracket, tail3_model, fixedFirst_model]
+theorem tail4_model (s : M) :
+    F (tail4 fN fL) ![s] =
+      second (second (second (second (ConPA.Words.seed (π₁ s) (π₁ (π₂ s)))))) := by
+  rw [tail4, unary_bracket, tail3_model, fixedSecond_model]
+
+/-- The AX label depends only on the tag of the command. -/
+theorem cA_cmdL (a : Bool) (s σ : M) :
+    F cA ![ConPA.Ctl.cmdL a s, σ] = F cA ![ConPA.Words.cmd s, σ] := by
+  simp only [cA, modelUnary, cTag_model, ConPA.Ctl.cmdL, ConPA.Words.cmd, pi₁_pair]
+
+/-- The store step, component by component. The command is `⟪tag, y, x, z⟫`. -/
+theorem cstepK_eval (k : MPKind) (a : Bool) (c σ : M) :
+    F (cstepCodeK k a) ![c, σ] =
       pair (if π₁ c = 0 then π₂ (π₂ (π₂ σ)) else if π₁ c = 1 then
           (match k with
             | .cache => 0
             | _ => if impValue (π₁ σ) (π₁ (π₂ (π₂ σ)) + π₁ (π₂ c)) = π₂ (π₂ (π₂ σ)) then
                 π₁ (π₂ (π₂ σ)) + π₁ (π₂ c) else 0)
-        else axTop (π₂ (π₂ (π₂ σ)) + π₁ (π₂ c)) (π₁ (π₂ (π₂ σ)) + π₂ (π₂ c)) (F cA ![c, σ]))
+        else
+          (match a with
+            | true => 0
+            | false => axTop (π₂ (π₂ (π₂ σ)) + π₁ (π₂ c)) (π₁ (π₂ (π₂ σ)) + π₁ (π₂ (π₂ c)))
+                (F cA ![c, σ])))
       (pair (if π₁ c = 0 then second (π₁ (π₂ σ)) else if π₁ c = 1 then
           (match k with
             | .push => if impValue (π₁ σ) (π₁ (π₂ (π₂ σ)) + π₁ (π₂ c)) = π₂ (π₂ (π₂ σ)) then
                 cantor 0 (π₁ (π₂ σ)) else π₁ (π₂ σ)
             | _ => π₁ (π₂ σ))
-        else axStack (π₁ (π₂ (π₂ σ)) + π₂ (π₂ c)) (π₂ (π₂ (π₂ σ)) + π₁ (π₂ c)) (F cA ![c, σ])
-          (π₁ (π₂ (π₂ σ))) (π₂ (π₂ (π₂ σ))) (π₁ σ) (π₁ (π₂ σ)))
+        else
+          (match a with
+            | true => cantor
+                (axTop (π₂ (π₂ (π₂ σ)) + π₁ (π₂ c)) (π₁ (π₂ (π₂ σ)) + π₁ (π₂ (π₂ c)))
+                  (F cA ![c, σ]))
+                (axStack (π₁ (π₂ (π₂ σ)) + π₁ (π₂ (π₂ c))) (π₂ (π₂ (π₂ σ)) + π₁ (π₂ c))
+                  (F cA ![c, σ]) (π₁ (π₂ (π₂ σ))) (π₂ (π₂ (π₂ σ))) (π₁ σ) (π₁ (π₂ σ)))
+            | false => axStack (π₁ (π₂ (π₂ σ)) + π₁ (π₂ (π₂ c))) (π₂ (π₂ (π₂ σ)) + π₁ (π₂ c))
+                (F cA ![c, σ]) (π₁ (π₂ (π₂ σ))) (π₂ (π₂ (π₂ σ))) (π₁ σ) (π₁ (π₂ σ))))
       (pair (if π₁ c = 0 then π₁ (π₂ (π₂ σ)) else if π₁ c = 1 then
           (match k with
             | .cache => if impValue (π₁ σ) (π₁ (π₂ (π₂ σ)) + π₁ (π₂ c)) = π₂ (π₂ (π₂ σ)) then
                 0 else π₁ (π₂ (π₂ σ)) + π₁ (π₂ c)
             | _ => π₁ (π₂ (π₂ σ)) + π₁ (π₂ c))
-          else 0)
+          else
+            (match a with
+              | true => π₂ (π₂ (π₂ c))
+              | false => 0))
         (if π₁ c = 0 then first (π₁ (π₂ σ)) else if π₁ c = 1 then
           (match k with
             | .cache => if impValue (π₁ σ) (π₁ (π₂ (π₂ σ)) + π₁ (π₂ c)) = π₂ (π₂ (π₂ σ)) then
                 π₁ (π₂ (π₂ σ)) + π₁ (π₂ c) else 0
             | _ => 0)
           else 0))) := by
-  cases k <;>
-  · simp only [cstepCodeK, mpTopK, mpStackK, mpDK, mpHK, modelBin, modelPairCode,
-      choose0_model, choose1_model, mpTop_model, mpStack_model, mpFail_model, axTop_model,
-      axStack_model, mpArg, shiftStack, shiftCache, unary_bracket, fixedFirst_model,
-      fixedSecond_model, cTag_model, cY_model, cX_model, sT_model, sW_model,
-      sD_model, sH_model, PRAMultiplication.modelZero]
+  cases k <;> cases a <;>
+  · simp only [cstepCodeK, mpTopK, mpStackK, mpDK, mpHK, axTopA, axStackA, axDA, modelBin,
+      modelPairCode, choose0_model, choose1_model, mpTop_model, mpStack_model, mpFail_model,
+      axTop_model, axStack_model, pair_model, mpArg, shiftStack, shiftCache, unary_bracket,
+      fixedFirst_model, fixedSecond_model, cTag_model, cY_model, cX4_model, cZ4_model,
+      sT_model, sW_model, sD_model, sH_model, PRAMultiplication.modelZero]
     rfl
 
-theorem cstepK_defined (k : MPKind) :
-    𝚺₁-Function₂ (fun c σ : M => F (cstepCodeK k) ![c, σ]) via
-      (PA194CodeGraph.graph (cstepCodeK k)) :=
+theorem cstepK_defined (k : MPKind) (a : Bool) :
+    𝚺₁-Function₂ (fun c σ : M => F (cstepCodeK k a) ![c, σ]) via
+      (PA194CodeGraph.graph (cstepCodeK k a)) :=
   .mk fun v => by
-    have h := PA194CodeGraph.modelGraph (M := M) (cstepCodeK k)
+    have h := PA194CodeGraph.modelGraph (M := M) (cstepCodeK k a)
     have he : (fun i : Fin 2 => v i.succ) = ![v 1, v 2] := by
       funext i
       exact Fin.cases rfl (fun j => Fin.cases rfl (fun k => Fin.elim0 k) j) i
     rw [h.df v]
-    show v 0 = F (cstepCodeK k) (fun x => v x.succ) ↔ v 0 = F (cstepCodeK k) ![v 1, v 2]
+    show v 0 = F (cstepCodeK k a) (fun x => v x.succ) ↔ v 0 = F (cstepCodeK k a) ![v 1, v 2]
     rw [he]
 
 /-! ## The command semantics -/
 
-noncomputable def semK (k : MPKind) (ct : Bool) : ConPA.Ctl.Sem M where
-  cstep := fun c σ => F (cstepCodeK k) ![c, σ]
-  cstepDef := PA194CodeGraph.graph (cstepCodeK k)
-  cstep_defined := cstepK_defined k
+noncomputable def semK (k : MPKind) (ct a : Bool) : ConPA.Ctl.Sem M where
+  cstep := fun c σ => F (cstepCodeK k a) ![c, σ]
+  cstepDef := PA194CodeGraph.graph (cstepCodeK k a)
+  cstep_defined := cstepK_defined k a
   mp := k
   cacheTest := ct
+  ax11 := a
   axT := fun H D A => axTop H D A
   leaf := leafM
   shift_eq := by
@@ -215,49 +294,55 @@ noncomputable def semK (k : MPKind) (ct : Bool) : ConPA.Ctl.Sem M where
     rw [cstepK_eval]
     cases k <;> by_cases hm : 4 * cantor t (d + y) = h <;> simp [impValue, hm, mpStore]
   ax_eq := by
-    intro A y x t w d h
+    intro A y x z t w d h
     rw [cstepK_eval, cA_model]
-    simp [axStack, ConPA.Ctl.stack10, leafM, allValue, impValue]
+    cases a <;> simp [axStack, ConPA.Ctl.stack10, leafM, allValue, impValue]
   axT_ne_one := axTop_ne_one
   leaf_ne_one := leafM_ne_one
 
 /-! ## The scheduler step -/
 
-theorem sstep_unfold (k : MPKind) (ct : Bool) (s : M) :
-    ConPA.Ctl.sstep (semK k ct) s =
+theorem sstep_unfold (k : MPKind) (ct a : Bool) (s : M) :
+    ConPA.Ctl.sstep (semK k ct a) s =
       pair (if π₁ (π₂ s) = 0 then π₁ s + 1 else π₁ s)
-        (pair (ConPA.Words.nextL (ConPA.Words.seed (π₁ s) (π₁ (π₂ s))))
-          (F (cstepCodeK k)
-            ![ConPA.Words.cmd (ConPA.Words.seed (π₁ s) (π₁ (π₂ s))), π₂ (π₂ s)])) :=
+        (pair (ConPA.Ctl.nextLL a (ConPA.Words.seed (π₁ s) (π₁ (π₂ s))))
+          (F (cstepCodeK k a)
+            ![ConPA.Ctl.cmdL a (ConPA.Words.seed (π₁ s) (π₁ (π₂ s))), π₂ (π₂ s)])) :=
   rfl
 
-/-- The step code is the scheduler step of `ConPA.Ctl` for the semantics `semK k ct`. -/
-theorem stepK_eq (k : MPKind) (ct : Bool) (s : M) :
-    F (stepK k) ![s] = ConPA.Ctl.sstep (semK k ct) s := by
+/-- The step code is the scheduler step of `ConPA.Ctl` for the semantics `semK k ct a`. -/
+theorem stepK_eq (k : MPKind) (ct a : Bool) (s : M) :
+    F (stepK k a) ![s] = ConPA.Ctl.sstep (semK k ct a) s := by
   have hsucc : F (unary Code.succ fN) ![s] = π₁ s + 1 := by
     rw [modelUnary, fN_model, modelSucc]
-  have hcmd1 : π₁ (ConPA.Words.cmd (ConPA.Words.seed (π₁ s) (π₁ (π₂ s)))) =
-      first (ConPA.Words.seed (π₁ s) (π₁ (π₂ s))) := by simp [ConPA.Words.cmd]
-  have hcmd2 : π₁ (π₂ (ConPA.Words.cmd (ConPA.Words.seed (π₁ s) (π₁ (π₂ s))))) =
-      first (second (ConPA.Words.seed (π₁ s) (π₁ (π₂ s)))) := by simp [ConPA.Words.cmd]
-  have hcmd3 : π₂ (π₂ (ConPA.Words.cmd (ConPA.Words.seed (π₁ s) (π₁ (π₂ s))))) =
-      first (second (second (ConPA.Words.seed (π₁ s) (π₁ (π₂ s))))) := by simp [ConPA.Words.cmd]
-  rw [sstep_unfold, cstepK_eval, hcmd1, hcmd2, hcmd3]
-  cases k <;>
-  · simp only [stepK, pack_model, PA194SchedulerCode.nextN, PA194SchedulerCode.nextL,
-      nextTopK, nextStackK, nextDK, nextCacheK, mpTopK, mpStackK, mpDK, mpHK, choose0_model,
-      choose1_model, mpTop_model, mpStack_model, mpFail_model, axTop_model, axStack_model,
-      mpArg, shiftStack, shiftCache, unary_bracket, fixedFirst_model, fixedSecond_model,
-      add_model, fN_model, fL_model, fT_model, fW_model, fD_model, fH_model, head_model,
-      tail_model, yArg_model, tail2_model, xArg_model, tail3_model, axArg_model, hsucc,
-      PRAMultiplication.modelZero, ConPA.Words.nextL]
+  have hcmd1 : π₁ (ConPA.Ctl.cmdL a (ConPA.Words.seed (π₁ s) (π₁ (π₂ s)))) =
+      first (ConPA.Words.seed (π₁ s) (π₁ (π₂ s))) := by simp [ConPA.Ctl.cmdL]
+  have hcmd2 : π₁ (π₂ (ConPA.Ctl.cmdL a (ConPA.Words.seed (π₁ s) (π₁ (π₂ s))))) =
+      first (second (ConPA.Words.seed (π₁ s) (π₁ (π₂ s)))) := by simp [ConPA.Ctl.cmdL]
+  have hcmd3 : π₁ (π₂ (π₂ (ConPA.Ctl.cmdL a (ConPA.Words.seed (π₁ s) (π₁ (π₂ s)))))) =
+      first (second (second (ConPA.Words.seed (π₁ s) (π₁ (π₂ s))))) := by
+    simp [ConPA.Ctl.cmdL]
+  have hcmd4 : π₂ (π₂ (π₂ (ConPA.Ctl.cmdL a (ConPA.Words.seed (π₁ s) (π₁ (π₂ s)))))) =
+      if a then first (second (second (second (ConPA.Words.seed (π₁ s) (π₁ (π₂ s))))))
+      else 0 := by
+    simp [ConPA.Ctl.cmdL]
+  rw [sstep_unfold, cstepK_eval, hcmd1, hcmd2, hcmd3, hcmd4, cA_cmdL]
+  cases k <;> cases a <;>
+  · simp only [stepK, pack_model, PA194SchedulerCode.nextN, nextLA, PA194SchedulerCode.nextL,
+      nextTopK, nextStackK, nextDK, nextCacheK, zField, mpTopK, mpStackK, mpDK, mpHK, axTopA,
+      axStackA, axDA, choose0_model, choose1_model, mpTop_model, mpStack_model, mpFail_model,
+      axTop_model, axStack_model, pair_model, mpArg, shiftStack, shiftCache, unary_bracket,
+      fixedFirst_model, fixedSecond_model, add_model, fN_model, fL_model, fT_model, fW_model,
+      fD_model, fH_model, head_model, tail_model, yArg_model, tail2_model, xArg_model,
+      tail3_model, zArg_model, tail4_model, axArg_model, hsucc, PRAMultiplication.modelZero,
+      ConPA.Ctl.nextLL, Bool.false_eq_true, if_true, if_false]
     rfl
 
-theorem haltAtK_iff (k : MPKind) (ct : Bool) (s : M) :
-    F (haltAtK ct) ![s] = 1 ↔ ConPA.Ctl.shalt (semK k ct) s := by
+theorem haltAtK_iff (k : MPKind) (ct a : Bool) (s : M) :
+    F (haltAtK ct) ![s] = 1 ↔ ConPA.Ctl.shalt (semK k ct a) s := by
   cases ct
   · have h := haltAt_iff s
-    have e : ConPA.Ctl.shalt (semK k false) s ↔ ConPA.Words.shalt s := by
+    have e : ConPA.Ctl.shalt (semK k false a) s ↔ ConPA.Words.shalt s := by
       unfold ConPA.Ctl.shalt ConPA.Words.shalt ConPA.Ctl.Sem.Halts ConPA.Ctl.Sem.k
       simp only [semK, Bool.false_eq_true, if_false, Nat.cast_one, one_mul]
       exact Iff.rfl
@@ -275,33 +360,36 @@ theorem haltAtK_iff (k : MPKind) (ct : Bool) (s : M) :
       · intro h
         exact absurd h.1 h0
 
-theorem runK_base (k : MPKind) (s : M) : F (runK k) ![0, s] = s := modelDropBase (stepK k) s
+theorem runK_base (k : MPKind) (a : Bool) (s : M) : F (runK k a) ![0, s] = s :=
+  modelDropBase (stepK k a) s
 
-theorem runK_succ (k : MPKind) (n s : M) :
-    F (runK k) ![n + 1, s] = F (stepK k) ![F (runK k) ![n, s]] := by
+theorem runK_succ (k : MPKind) (a : Bool) (n s : M) :
+    F (runK k a) ![n + 1, s] = F (stepK k a) ![F (runK k a) ![n, s]] := by
   rw [runK, modelDropStep]
-  have hv : (fun _ : Fin 1 => F (dropCode (stepK k)) ![n, s]) =
-      ![F (dropCode (stepK k)) ![n, s]] := by
+  have hv : (fun _ : Fin 1 => F (dropCode (stepK k a)) ![n, s]) =
+      ![F (dropCode (stepK k a)) ![n, s]] := by
     funext i
     exact Fin.cases rfl (fun j => Fin.elim0 j) i
   rw [hv]
 
-theorem runK_definable (k : MPKind) : 𝚺₁-Function₂ (fun n x : M => F (runK k) ![n, x]) := by
-  have h : 𝚺₁.DefinableFunction (fun e : Fin 2 → M => F (runK k) e) :=
-    HierarchySymbol.Defined.to_definable _ (PA194CodeGraph.modelGraph (M := M) (runK k))
+theorem runK_definable (k : MPKind) (a : Bool) :
+    𝚺₁-Function₂ (fun n x : M => F (runK k a) ![n, x]) := by
+  have h : 𝚺₁.DefinableFunction (fun e : Fin 2 → M => F (runK k a) e) :=
+    HierarchySymbol.Defined.to_definable _ (PA194CodeGraph.modelGraph (M := M) (runK k a))
   convert h using 1
   funext e
-  exact congrArg (fun e : Fin 2 → M => F (runK k) e) (Matrix.fun_eq_vec_two e).symm
+  exact congrArg (fun e : Fin 2 → M => F (runK k a) e) (Matrix.fun_eq_vec_two e).symm
 
 /-- The run of the scheduler. -/
-noncomputable def runKR (k : MPKind) (ct : Bool) : ConPA.Ctl.Run M (semK k ct) where
-  run := fun n x => F (runK k) ![n, x]
-  run_definable := runK_definable k
-  run_zero := fun x => runK_base k x
-  run_succ := fun n x => by rw [runK_succ, stepK_eq k ct]
+noncomputable def runKR (k : MPKind) (ct a : Bool) : ConPA.Ctl.Run M (semK k ct a) where
+  run := fun n x => F (runK k a) ![n, x]
+  run_definable := runK_definable k a
+  run_zero := fun x => runK_base k a x
+  run_succ := fun n x => by rw [runK_succ, stepK_eq k ct a]
 
-theorem haltAfterK_model (k : MPKind) (ct : Bool) (n : M) :
-    F (haltAfterK k ct) ![n] = F (haltAtK ct) ![F (runK k) ![n, F initial Fin.elim0]] := by
+theorem haltAfterK_model (k : MPKind) (ct a : Bool) (n : M) :
+    F (haltAfterK k ct a) ![n] =
+      F (haltAtK ct) ![F (runK k a) ![n, F initial Fin.elim0]] := by
   rw [haltAfterK, modelUnary, modelBin, modelProjection, initialConstant_model]
   simp only [Matrix.cons_val_zero]
   have hv (v : M) : (fun _ : Fin 1 => v) = ![v] := by
@@ -311,54 +399,54 @@ theorem haltAfterK_model (k : MPKind) (ct : Bool) (n : M) :
 
 /-! ## Target proofs give command words -/
 
-theorem G_of_provable (k : MPKind) (ct : Bool) (r : M) (hp : TargetProvable r) :
-    ConPA.Ctl.G (semK k ct) r := by
+theorem G_of_provable (k : MPKind) (ct a : Bool) (r : M) (hp : TargetProvable r) :
+    ConPA.Ctl.G (semK k ct a) r := by
   obtain ⟨program, hprog⟩ := hp
-  refine targetProof_sound (ConPA.Ctl.G (semK k ct)) (ConPA.Ctl.G_definable (semK k ct))
+  refine targetProof_sound (ConPA.Ctl.G (semK k ct a)) (ConPA.Ctl.G_definable (semK k ct a))
     ?_ ?_ ?_ ?_ program r hprog
-  · intro a b
+  · intro x y
     rw [machineHead1_model]
-    exact ConPA.Ctl.G_leaf (semK k ct) 6 (by norm_num) a b 0 0 (by simp)
-  · intro label a ha
-    exact ConPA.Ctl.G_gen (semK k ct) label a ha
-  · intro a b ha hab
-    exact ConPA.Ctl.G_mp (semK k ct) a b ha hab
+    exact ConPA.Ctl.G_leaf (semK k ct a) 6 (by norm_num) x y 0 0 (by simp)
+  · intro label x hx
+    exact ConPA.Ctl.G_gen (semK k ct a) label x hx
+  · intro x y hx hxy
+    exact ConPA.Ctl.G_mp (semK k ct a) x y hx hxy
   · exact
-      { head2 := fun a b c => ConPA.Ctl.G_leaf (semK k ct) 5 (by norm_num) a c b 0 (by simp)
-        head3 := fun a b c => ConPA.Ctl.G_leaf (semK k ct) 4 (by norm_num) a c b 0 (by simp)
-        head4 := fun a b c => ConPA.Ctl.G_leaf (semK k ct) 3 (by norm_num) a c b 0 (by simp)
-        head5 := fun a b => ConPA.Ctl.G_leaf (semK k ct) 2 (by norm_num) a b 0 0 (by simp)
-        head6 := fun a b c => ConPA.Ctl.G_leaf (semK k ct) 1 (by norm_num) a c b 0 (by simp)
-        rho8 := fun a b c u hu => ConPA.Ctl.G_leaf (semK k ct) 7 (by norm_num) a c b u hu
-        gate := fun a b c ha hb => by
-          have h := ConPA.Ctl.G_axT (semK k ct) a b c
-          have he : (semK k ct).axT a b c = oldBundleValue a b c := by
-            change axTop a b c = _
+      { head2 := fun x y z => ConPA.Ctl.G_leaf (semK k ct a) 5 (by norm_num) x z y 0 (by simp)
+        head3 := fun x y z => ConPA.Ctl.G_leaf (semK k ct a) 4 (by norm_num) x z y 0 (by simp)
+        head4 := fun x y z => ConPA.Ctl.G_leaf (semK k ct a) 3 (by norm_num) x z y 0 (by simp)
+        head5 := fun x y => ConPA.Ctl.G_leaf (semK k ct a) 2 (by norm_num) x y 0 0 (by simp)
+        head6 := fun x y z => ConPA.Ctl.G_leaf (semK k ct a) 1 (by norm_num) x z y 0 (by simp)
+        rho8 := fun x y z u hu => ConPA.Ctl.G_leaf (semK k ct a) 7 (by norm_num) x z y u hu
+        gate := fun x y z hx hy => by
+          have h := ConPA.Ctl.G_axT (semK k ct a) x y z
+          have he : (semK k ct a).axT x y z = oldBundleValue x y z := by
+            change axTop x y z = _
             unfold axTop
             rw [if_neg]
             rintro (h1 | h1)
-            · exact hb h1.symm
-            · exact ha h1.symm
+            · exact hy h1.symm
+            · exact hx h1.symm
           rw [he] at h
           exact h
-        diagonal := fun a => ConPA.Ctl.G_leaf (semK k ct) 0 (by norm_num) 0 0 a 0 (by simp) }
+        diagonal := fun x => ConPA.Ctl.G_leaf (semK k ct a) 0 (by norm_num) 0 0 x 0 (by simp) }
 
 /-- A target proof of the contradiction code makes the scheduler halt. -/
-theorem provable_halts (k : MPKind) (ct : Bool) (h : TargetProvable (1 : M)) :
-    ∃ n : M, F (haltAfterK k ct) ![n] = 1 := by
-  obtain ⟨n, hn⟩ := ConPA.Ctl.derivation_halts (runKR k ct) (⟪0, 0, 0, 0⟫ : M)
-    (G_of_provable k ct 1 h)
+theorem provable_halts (k : MPKind) (ct a : Bool) (h : TargetProvable (1 : M)) :
+    ∃ n : M, F (haltAfterK k ct a) ![n] = 1 := by
+  obtain ⟨n, hn⟩ := ConPA.Ctl.derivation_halts (runKR k ct a) (⟪0, 0, 0, 0⟫ : M)
+    (G_of_provable k ct a 1 h)
   refine ⟨n, ?_⟩
-  rw [haltAfterK_model, haltAtK_iff k ct, initial_eq]
+  rw [haltAfterK_model, haltAtK_iff k ct a, initial_eq]
   exact hn
 
 /-! ## Soundness -/
 
 /-- The store step preserves provability of the top, the cache and the stack entries. -/
-theorem cstepK_sound (k : MPKind) (c σ : M)
+theorem cstepK_sound (k : MPKind) (a : Bool) (c σ : M)
     (hs : SoundStore (π₁ σ) (π₁ (π₂ σ)) (π₂ (π₂ (π₂ σ)))) :
-    SoundStore (π₁ (F (cstepCodeK k) ![c, σ])) (π₁ (π₂ (F (cstepCodeK k) ![c, σ])))
-      (π₂ (π₂ (π₂ (F (cstepCodeK k) ![c, σ])))) := by
+    SoundStore (π₁ (F (cstepCodeK k a) ![c, σ])) (π₁ (π₂ (F (cstepCodeK k a) ![c, σ])))
+      (π₂ (π₂ (π₂ (F (cstepCodeK k a) ![c, σ])))) := by
   rw [cstepK_eval]
   simp only [pi₁_pair, pi₂_pair]
   by_cases h0 : π₁ c = 0
@@ -386,28 +474,33 @@ theorem cstepK_sound (k : MPKind) (c σ : M)
         · simp only [if_neg hm]
           exact ⟨zero_provable, zero_provable, hw⟩
     · simp only [if_neg h0, if_neg h1]
-      exact ax_preserves _ _ _ _ _ _ _ hs
+      have h := ax_preserves (π₁ σ) (π₁ (π₂ σ)) (π₂ (π₂ (π₂ σ))) (π₁ (π₂ (π₂ σ)))
+        (π₁ (π₂ (π₂ c))) (π₁ (π₂ c)) (F cA ![c, σ]) hs
+      cases a
+      · exact h
+      · exact ⟨zero_provable, zero_provable, push_sound TargetProvable _ _ h.1 h.2.2⟩
 
-theorem stepK_sound (k : MPKind) (s : M) (hs : SoundPacked s) :
-    SoundPacked (F (stepK k) ![s]) := by
+theorem stepK_sound (k : MPKind) (a : Bool) (s : M) (hs : SoundPacked s) :
+    SoundPacked (F (stepK k a) ![s]) := by
   unfold SoundPacked at hs ⊢
   rw [fT_model, fW_model, fH_model] at hs ⊢
-  rw [stepK_eq k false, sstep_unfold]
+  rw [stepK_eq k false a, sstep_unfold]
   simp only [pi₂_pair]
-  exact cstepK_sound k _ _ hs
+  exact cstepK_sound k a _ _ hs
 
-theorem runK_def (k : MPKind) (s : M) : 𝚺₁-Function₁ (fun n : M => F (runK k) ![n, s]) :=
-  unary_from_binary _ s (runK_definable k)
+theorem runK_def (k : MPKind) (a : Bool) (s : M) :
+    𝚺₁-Function₁ (fun n : M => F (runK k a) ![n, s]) :=
+  unary_from_binary _ s (runK_definable k a)
 
-theorem runK_sound (k : MPKind) (s n : M) (hs : SoundPacked s) :
-    SoundPacked (F (runK k) ![n, s]) := by
+theorem runK_sound (k : MPKind) (a : Bool) (s n : M) (hs : SoundPacked s) :
+    SoundPacked (F (runK k a) ![n, s]) := by
   haveI := soundPacked_def (M := M)
-  haveI := runK_def k s
-  have hp : 𝚺₁-Predicate (fun n : M => SoundPacked (F (runK k) ![n, s])) := by definability
+  haveI := runK_def k a s
+  have hp : 𝚺₁-Predicate (fun n : M => SoundPacked (F (runK k a) ![n, s])) := by definability
   induction n using ISigma1.sigma1_succ_induction with
   | hP => exact hp
   | zero => rw [runK_base]; exact hs
-  | succ n ih => rw [runK_succ]; exact stepK_sound k _ ih
+  | succ n ih => rw [runK_succ]; exact stepK_sound k a _ ih
 
 theorem one_of_add_eq_one {t h : M} (e : t + h = 1) : t = 1 ∨ h = 1 := by
   rcases zero_or_succ t with (rfl | ⟨u, rfl⟩)
@@ -423,8 +516,8 @@ theorem one_of_add_eq_one {t h : M} (e : t + h = 1) : t = 1 ∨ h = 1 := by
     rw [hu, zero_add]
 
 /-- A halting SHIFT in a sound state finds a proof of the contradiction code. -/
-theorem halt_provable (k : MPKind) (ct : Bool) (s : M) (hs : SoundPacked s)
-    (hh : ConPA.Ctl.shalt (semK k ct) s) : TargetProvable (1 : M) := by
+theorem halt_provable (k : MPKind) (ct a : Bool) (s : M) (hs : SoundPacked s)
+    (hh : ConPA.Ctl.shalt (semK k ct a) s) : TargetProvable (1 : M) := by
   unfold SoundPacked at hs
   rw [fT_model, fW_model, fH_model] at hs
   obtain ⟨ht, hc, _⟩ := hs
@@ -439,20 +532,20 @@ theorem halt_provable (k : MPKind) (ct : Bool) (s : M) (hs : SoundPacked s)
     rwa [h2] at hc
 
 /-- A halt of the scheduler gives a target proof of the contradiction code. -/
-theorem halts_provable (k : MPKind) (ct : Bool) (n : M) (hh : F (haltAfterK k ct) ![n] = 1) :
-    TargetProvable (1 : M) := by
-  rw [haltAfterK_model, haltAtK_iff k ct] at hh
-  exact halt_provable k ct _ (runK_sound k _ n initial_sound) hh
+theorem halts_provable (k : MPKind) (ct a : Bool) (n : M)
+    (hh : F (haltAfterK k ct a) ![n] = 1) : TargetProvable (1 : M) := by
+  rw [haltAfterK_model, haltAtK_iff k ct a] at hh
+  exact halt_provable k ct a _ (runK_sound k a _ n initial_sound) hh
 
 /-- The scheduler halts exactly when the calculus proves the contradiction code. -/
-theorem halts_iff_provable (k : MPKind) (ct : Bool) :
-    (∃ n : M, F (haltAfterK k ct) ![n] = 1) ↔ TargetProvable (1 : M) :=
-  ⟨fun ⟨n, hn⟩ => halts_provable k ct n hn, provable_halts k ct⟩
+theorem halts_iff_provable (k : MPKind) (ct a : Bool) :
+    (∃ n : M, F (haltAfterK k ct a) ![n] = 1) ↔ TargetProvable (1 : M) :=
+  ⟨fun ⟨n, hn⟩ => halts_provable k ct a n hn, provable_halts k ct a⟩
 
 /-- The scheduler halts exactly when the modeled scheduler of the primary table halts. -/
-theorem halts_iff_primary (k : MPKind) (ct : Bool) :
-    (∃ n : M, F (haltAfterK k ct) ![n] = 1) ↔ ∃ n : M, F haltAfter ![n] = 1 :=
-  (halts_iff_provable k ct).trans PA194ModelFairness.halts_iff_provable.symm
+theorem halts_iff_primary (k : MPKind) (ct a : Bool) :
+    (∃ n : M, F (haltAfterK k ct a) ![n] = 1) ↔ ∃ n : M, F haltAfter ![n] = 1 :=
+  (halts_iff_provable k ct a).trans PA194ModelFairness.halts_iff_provable.symm
 
 #print axioms stepK_eq
 #print axioms G_of_provable

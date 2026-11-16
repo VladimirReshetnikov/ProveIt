@@ -26,11 +26,16 @@ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {S : 
 lemma second_le (p : V) : second p ≤ p :=
   (SetTheory.BusyBeaver.ZFC.ArithmeticCantor.projections_spec p).2.1
 
+local notation "ptr" => ptrL (Sem.ax11 S)
+local notation "nextL" => nextLL (Sem.ax11 S)
+
 lemma nextL_le (s : V) : nextL s ≤ s := by
-  unfold nextL
+  unfold nextLL
   split_ifs
   · exact second_le s
   · exact le_trans (second_le _) (second_le s)
+  · exact le_trans (second_le _)
+      (le_trans (second_le _) (le_trans (second_le _) (second_le s)))
   · exact le_trans (second_le _) (le_trans (second_le _) (second_le s))
 
 /-- The scheduler returns to an empty continuation with the same candidate. -/
@@ -88,7 +93,7 @@ variable (S) in
 /-- The word that tests whether the top is the contradiction code `1`. With the halting test
 `t + h = 1` it is one SHIFT. With the test `h = 1` it is POP, whose last SHIFT has the top in
 the cache. -/
-def TEST : V := if S.cacheTest then POP else snoc 0 SH
+def TEST : V := if S.cacheTest then POP S else snoc 0 SH
 
 variable (S) in
 lemma test_halts (v δ : V) : flg(texec S (TEST S) ⟪⟪1, v, 0, 0⟫, δ, 0⟫) = 1 := by
@@ -112,7 +117,7 @@ lemma tail_halts {W : V} (hW : Good S W 1) (v δ : V) :
 variable (S) in
 /-- Reset by an AX, clear the top, compute `1`, test it. -/
 lemma final_word_halts {W : V} (hW : Good S W 1) (σ : V) :
-    flg(texec S (((snoc 0 (AX 0 0 0) ⧺ DISCARD) ⧺ W) ⧺ TEST S) ⟪σ, 0, 0⟫) = 1 := by
+    flg(texec S (((snoc 0 (AX 0 0 0) ⧺ DISCARD S) ⧺ W) ⧺ TEST S) ⟪σ, 0, 0⟫) = 1 := by
   obtain ⟨t, w, d, h, rfl⟩ : ∃ t w d h : V, σ = ⟪t, w, d, h⟫ :=
     ⟨π₁ σ, π₁ (π₂ σ), π₁ (π₂ (π₂ σ)), π₂ (π₂ (π₂ σ)), by simp⟩
   rw [texec_seqApp, texec_seqApp, texec_seqApp, texec_snoc, texec_nil, tstep_AX, discard_run]
@@ -121,7 +126,8 @@ lemma final_word_halts {W : V} (hW : Good S W 1) (σ : V) :
 /-- **If some word computes the formula `1`, the scheduler halts.** -/
 theorem derivation_halts (σ : V) (h1 : G S 1) : ∃ k, shalt S (R.run k ⟪2, 0, σ⟫) := by
   obtain ⟨W, hW⟩ := h1
-  obtain ⟨Wf, hWf⟩ : ∃ Wf : V, Wf = ((snoc 0 (AX 0 0 0) ⧺ DISCARD) ⧺ W) ⧺ TEST S := ⟨_, rfl⟩
+  obtain ⟨Wf, hWf⟩ : ∃ Wf : V, Wf = ((snoc 0 (AX 0 0 0) ⧺ DISCARD S) ⧺ W) ⧺ TEST S :=
+    ⟨_, rfl⟩
   have hc3 : (3 : V) ≤ ptr Wf 3 (len Wf) := le_ptr Wf 3 (len Wf)
   obtain ⟨m, hm⟩ : ∃ m : V, ptr Wf 3 (len Wf) = m + 3 :=
     ⟨ptr Wf 3 (len Wf) - 3, (sub_add_self_of_le hc3).symm⟩
