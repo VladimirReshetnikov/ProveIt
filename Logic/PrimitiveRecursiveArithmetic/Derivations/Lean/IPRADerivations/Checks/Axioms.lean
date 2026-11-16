@@ -584,6 +584,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.BarnesInteger.barnes_pos
 #print axioms LeanProofs.IPRA.Analysis.BarnesInteger.hyp_pos
 #print axioms LeanProofs.IPRA.Analysis.BarnesInteger.barnes_quotient
+#print axioms LeanProofs.IPRA.prod_congr_bounded
+#print axioms LeanProofs.IPRA.prod_one
+#print axioms LeanProofs.IPRA.prod_const_of
+#print axioms LeanProofs.IPRA.prod_pos_bounded
+#print axioms LeanProofs.IPRA.prod_zero_of
+#print axioms LeanProofs.IPRA.Analysis.BarnesInteger.barnes_power_form
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.add_formula
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.pell_norm
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.cop_XY
