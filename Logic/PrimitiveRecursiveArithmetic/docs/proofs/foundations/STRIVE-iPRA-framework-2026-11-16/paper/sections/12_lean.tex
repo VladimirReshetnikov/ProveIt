@@ -1,0 +1,194 @@
+\section{Lean formalization architecture}
+
+\subsection{Public theorem shape}
+
+The implementation should expose one structure for a compiled fixed formula.
+A simplified signature is:
+
+\begin{lstlisting}[language={},caption={Core package shape}]
+structure CompiledFormula (n : Nat) where
+  meaning : Fm PTm n
+  value positiveBound negativeBound : PTm n
+  positiveCheck negativeCheck : PTm (n + 1)
+  canonicalPositive canonicalNegative : PTm n
+
+  valueBoolean : [] |- [PRAAx] value = 0 or value = 1
+  valueCorrect : [] |- [PRAAx] (value = 1 <-> meaning)
+  positiveSound : [positiveCheck = 1] |- [PRAAx] meaning.shift
+  negativeSound : [negativeCheck = 1] |- [PRAAx] not meaning.shift
+  positiveCodeBound : [positiveCheck = 1] |- [PRAAx]
+    var 0 < positiveBound.shift
+  negativeCodeBound : [negativeCheck = 1] |- [PRAAx]
+    var 0 < negativeBound.shift
+  canonicalPositiveAccepted : [] |- [PRAAx]
+    value = 1 -> positiveCheck[canonicalPositive] = 1
+  canonicalNegativeAccepted : [] |- [PRAAx]
+    value = 0 -> negativeCheck[canonicalNegative] = 1
+\end{lstlisting}
+
+The actual source in \code{lean/STRIVE/CompiledFormula.lean} uses the repository
+syntax and scope operations.  The key point is that proof fields are ordinary
+object derivations.  A semantic theorem such as
+\code{evaluate formula env = true} is not accepted as a substitute.
+
+\subsection{Module dependency order}
+
+The recommended dependency chain is:
+
+\begin{enumerate}
+\item \code{STRIVE.Kernel}: boundary, specialization, simultaneous cut,
+certificate sealing.  This file has no placeholders.
+\item \code{Core.MixedRadix}: prefix products, packed sums, digit bounds,
+decoding, and extensionality.
+\item \code{Core.BooleanFolds}: exact all/any equations, prefix sums/products,
+and disjoint-owner search.
+\item \code{STRIVE.CompiledFormula}: package structure, atom, conjunction, and
+disjunction constructors.
+\item Bounded existential and universal constructors.
+\item Generated formula modules and regression theorems.
+\item Contract graph, demand closure, trace/viability, and observer modules.
+\item Foundation/open-sequent and native exports.
+\end{enumerate}
+
+This order keeps the trusted surface small.  The mixed-radix module is useful
+independently and can be reviewed before any generated compiler code.
+
+\subsection{Mixed-radix proof path}
+
+The first substantial Lean milestone should be
+\code{IPRADerivations/Core/MixedRadix.lean}.  Reuse the exact current theorem
+names where possible:
+
+\begin{itemize}
+\item \code{prod2\_zero}, \code{prod2\_succ}, \code{sum2\_zero}, and
+\code{sum2\_succ} for prefix/table recurrences;
+\item \code{div\_mod} and \code{div\_mod\_unique} for digit extraction;
+\item \code{sum2\_congr\_bounded} for extensionality;
+\item order and semiring lemmas for the append interval;
+\item \code{ind} or \code{PRA.qfInd} for code bounds and decoding.
+\end{itemize}
+
+A useful local normal form is
+\[
+ \pack(N+1)=\pack(N)+a_N\pref(N),
+ \qquad
+ \pref(N+1)=\pref(N)B_N.
+\]
+Prove these equations at arbitrary argument terms first.  Then the induction
+steps become arithmetic rewrites plus one interval lemma.
+
+\subsection{Bounded folds}
+
+The compiler needs two families of finite-fold lemmas.
+
+For \(\mathsf{all}\):
+\begin{align*}
+ \mathsf{all}(0)&=1,\\
+ \mathsf{all}(N+1)&=\mathsf{all}(N)\cdot p(N),\\
+ \mathsf{all}(N)=1&\to p(i)=1\quad(i<N),\\
+ (\forall i<N\;p(i)=1)&\to\mathsf{all}(N)=1.
+\end{align*}
+For \(\mathsf{any}\), use the dual recurrence and least-success theorem.  The
+current search library finds the least zero of a body; a least one is obtained
+by searching the Boolean complement or an equality-to-one test.
+
+These lemmas should be object derivations parameterized by concrete body terms,
+not host propositions over arbitrary functions.
+
+\subsection{Constructor implementation}
+
+Each syntax constructor is a Lean definition returning a
+\code{CompiledFormula} record.
+
+\paragraph{Atom.}
+Fill every field by the reflection package and numeral simplification.
+
+\paragraph{Conjunction and disjunction.}
+Define code bounds by term addition/multiplication.  Use the two-digit
+mixed-radix special case or pairing lemmas for product codes, and a two-interval
+disjoint sum for choices.  Prove checker soundness directly with natural-
+deduction introduction/elimination.
+
+\paragraph{Quantifiers.}
+Generate a concrete child-bound body in one extra scope.  Prefix sums and
+products are \(PR\) symbols.  The checker's finite loop is a specialized
+primitive recursion.  Soundness is a quantifier-free induction on the bound;
+child soundness is instantiated at the current numerical index by
+\code{Prf.subst}.
+
+A practical first implementation may use a slightly redundant code format if
+that shortens the proof.  The exact tight heterogeneous bounds can then replace
+it behind the same package interface.
+
+\subsection{Metalevel generator}
+
+The generator reads a restricted description of a fixed formula and emits a
+Lean module.  It performs:
+
+\begin{enumerate}
+\item scope checking and alpha-renaming;
+\item allocation of concrete \(PR\) symbols for every value, bound, checker,
+prefix sum, and prefix product;
+\item constructor assembly;
+\item theorem-name generation and a machine-readable ledger;
+\item optional reference fixtures for the Python model.
+\end{enumerate}
+
+The generator is not in the trusted base.  Its output must elaborate without
+\code{sorry}.  A small formula should generate readable code before any effort
+is spent on optimization.
+
+\subsection{Open-sequent integration}
+
+The contract compiler should retain a list
+\code{residuals : List (Fm PTm n)} and a proof
+\[
+ \code{residuals |- [PRAAx] goal}.
+\]
+Closing a graph is exactly \code{proof.trans supply}.  Specializing a query is
+exactly \code{proof.subst sigma}.  A proof-local certificate is exactly
+\code{Prf.exE producer consumer}.  These structural operations are already
+small enough to audit manually.
+
+Only after this ordinary endpoint is complete should a client invoke the
+open-sequent bridge.  The transported theorem must preserve the free-variable
+assignment and every residual hypothesis.  A native scalar export is similarly
+a final corollary, not the main implementation.
+
+\subsection{Tests and audits}
+
+A completed module should pass four independent checks.
+
+\begin{enumerate}
+\item \textbf{Equation tests}: numeral examples for every generated \(PR\)
+symbol, especially zero bounds and empty products.
+\item \textbf{Cross-model tests}: compare generated evaluator, bounds, codes,
+and checker with \path{strive_reference.py} on small inputs.
+\item \textbf{Proof tests}: instantiate public \(\Prf\;\PRAAx\) theorems at
+small numerals and build the corresponding check modules.
+\item \textbf{Axiom audit}: ensure no declaration depends on \code{sorryAx},
+classical axioms, or an accidental semantic theorem.
+\end{enumerate}
+
+The Python exhaustive tests in this packet check every code in both signed code
+spaces for the two principal examples.  They establish implementation
+consistency, not formal soundness; the Lean derivations remain the authoritative
+goal.
+
+\subsection{Estimated formalization milestones}
+
+The dependency structure suggests independently useful merge points:
+
+\begin{enumerate}
+\item mixed-radix arithmetic and disjoint sums;
+\item quantifier-free Boolean folds;
+\item binary signed formulas;
+\item one bounded existential;
+\item one bounded universal;
+\item generated alternating examples;
+\item contract escape modes;
+\item demand closure and trace integration.
+\end{enumerate}
+
+Each milestone has mathematical value even if later generator work is delayed.
+The detailed command-level checklist is in \code{lean/FORMALIZATION\_PLAN.md}.

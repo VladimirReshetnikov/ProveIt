@@ -1,0 +1,137 @@
+\section{The STRIVE architecture}
+
+\subsection{Finite observations as the common language}
+
+Many mathematical objects are infinitary when presented extensionally: a real
+number has arbitrarily accurate rational approximations, a continuous function
+has values at infinitely many inputs, an algebraic branch has infinitely many
+compatible truncations, and a model or strategy may respond to every possible
+challenge.  A finite proof does not consume the entire object.  It asks finitely
+many questions and uses finitely many answers.
+
+STRIVE represents a concept by a \emph{finite observation interface}.  For an
+input parameter \(a\), a query \(q\), and a certificate \(c\), the interface
+contains primitive-recursive data
+\[
+ B(a,q),\qquad C(a,q,c)\in\{0,1\},\qquad O(a,q,c),
+\]
+where \(c<B(a,q)\) is the declared finite code range, \(C=1\) means that the
+certificate answers the query correctly, and \(O\) is the part of the answer
+visible to the consumer.  The producer contract is a formula such as
+\[
+  \forall q<Q(a)\;\exists c<B(a,q)\; C(a,q,c)=1.
+\]
+A theorem-specific proof may establish this contract outright.  If it cannot,
+the contract remains an explicit residual hypothesis.
+
+This interface covers several familiar situations.
+
+\begin{itemize}
+\item For an exact finite object, \(q\) may be trivial and \(O=c\).
+\item For a real number, \(q\) is a requested precision and \(O\) is a rational
+interval or approximation.
+\item For a root of a polynomial, \(c\) may contain a box and a local
+verification trace, while \(O\) is a symmetric polynomial of all roots in the
+box.
+\item For a bounded game, \(q\) identifies a node and \(c\) is a signed
+strategy code.
+\item For a finite cover, \(c\) identifies a covering patch and carries a
+local estimate.
+\end{itemize}
+
+The important point is that the public theorem need not expose \(c\).  The
+scope of a certificate is a design choice, formalized in Section~8.
+
+\subsection{Five layers and their proof obligations}
+
+The framework has five layers.
+
+\begin{description}[leftmargin=2.3cm,style=nextline]
+\item[Arithmetic layer]
+Natural-number coding, bounded sums/products, quotient/remainder, pairing,
+order, and least search.  This is mostly inherited checked infrastructure.
+
+\item[Strategy layer]
+A compiler from each fixed bounded formula to a Boolean value, two code spaces,
+two checkers, and canonical signed codes.  Mixed-radix tables are the key new
+realization device.
+
+\item[Interaction layer]
+A finite query graph or clocked state machine.  It computes the set of demanded
+observations, verifies compatible transitions, and replays a successful finite
+interaction.  Monotone cyclic demands are first closed on a finite product of
+chains.
+
+\item[Observation layer]
+Rules for erasing noncanonical certificates.  Exact observers are independent
+of the certificate, quotient observers are equivalent, and metric observers
+have a bounded diameter.
+
+\item[Boundary layer]
+All theorem-specific inputs are formulas in an open \(\PRAAx\) context.  A
+compiled theorem has the literal shape
+\[
+  R_1,\ldots,R_s,\Gamma\;\vdash_{\PRAAx}\;\Phi.
+\]
+Supplying derivations of the residuals closes the theorem by simultaneous cut.
+\end{description}
+
+\begin{center}
+\begin{tikzpicture}[
+  node distance=7mm,
+  box/.style={draw,rounded corners,minimum width=11cm,minimum height=9mm,
+    align=center,fill=softblue},
+  arr/.style={-{Latex[length=2.5mm]},thick,deepblue}]
+\node[box] (arith) {Checked arithmetic: order, sums/products, division, search};
+\node[box,below=of arith] (strategy) {Signed bounded-formula compiler and mixed-radix tables};
+\node[box,below=of strategy] (interaction) {Demand closure, traces, viability, finite replay};
+\node[box,below=of interaction] (observer) {Local, exact, quotient, or metric observation};
+\node[box,below=of observer] (boundary) {Open \(\Prf\;\PRAAx\) endpoint with explicit residuals};
+\draw[arr] (arith) -- (strategy);
+\draw[arr] (strategy) -- (interaction);
+\draw[arr] (interaction) -- (observer);
+\draw[arr] (observer) -- (boundary);
+\end{tikzpicture}
+\end{center}
+
+\subsection{Two kinds of compilation}
+
+The word ``compiler'' is used in two related senses.
+
+First, the \emph{formula compiler} is structural.  Given a fixed bounded
+formula, it constructs the value and signed-certificate package.  Its
+metatheoretic recursion follows the syntax tree.
+
+Second, the \emph{contract compiler} is graph based.  Given finitely many local
+lemmas and data dependencies, it determines which queries are demanded,
+instantiates local results, and composes their derivations.  Its object-level
+work is a clocked recurrence or a finite sequence of cuts.
+
+The two compilers meet at a simple interface: every local finite claim can be
+turned into a Boolean reflected atom or a bounded formula, and every unresolved
+local producer is retained as a boundary formula.  This separation prevents a
+large monolithic universal checker.  It also lets arithmetic lemmas be checked
+and reused independently of any particular application.
+
+\subsection{Why signed certificates are preferable to truth values alone}
+
+A Boolean evaluator answers whether a finite statement is true.  A proof
+compiler needs more.
+
+\begin{itemize}
+\item When the value is one, it needs enough information to introduce every
+existential and disjunction and to answer every universal or conjunction
+challenge.
+\item When the value is zero, it needs enough information to prove an
+intuitionistic negation.  A bare zero is not a proof of failure; a
+counterstrategy is.
+\item For diagnosis, a negative certificate identifies a least failing query or
+contains a table closing every attempted witness.
+\item For composition, the checker can consume an externally supplied
+certificate without trusting the producer that constructed it.
+\end{itemize}
+
+The positive and negative code spaces are therefore first-class and generally
+have different sizes.  Their recurrences are not implementation accidents;
+they are the numerical reflection of intuitionistic introduction and
+elimination behavior.

@@ -1,0 +1,208 @@
+\section{Heterogeneous mixed-radix tables}
+
+\subsection{Why one natural number is enough}
+
+At a universal node a certificate may need one subcertificate for every
+\(i<N\).  The number of entries depends on the input, and the bound on the
+\(i\)-th subcertificate may depend on earlier quantified values.  A fixed tuple
+type is therefore inadequate, while an abstract list would require a separate
+list theory and coding layer.
+
+Natural numbers already provide the needed finite container.  Let
+\(B_0,\ldots,B_{N-1}\) be positive radices and let
+\(0\le c_i<B_i\).  Define prefix products and the code by
+\[
+  P_0=1,\qquad P_{i+1}=P_iB_i,
+  \qquad
+  \pack_N(\vec c)=\sum_{i<N}c_iP_i.
+\]
+The total code range is \(0\le\pack_N(\vec c)<P_N\).  The \(i\)-th digit is
+recovered by
+\[
+  \digit_i(x)=\bigl(\lfloor x/P_i\rfloor\bmod B_i\bigr).
+\]
+All operations are primitive recursive when \(N\), the digit function, and the
+radix function are primitive recursive.  In the repository they are assembled
+from bounded sums, bounded products, quotient, and remainder.
+
+\subsection{The interval lemma}
+
+The basic estimate is elementary but central.
+
+\begin{lemma}[Append interval]
+If \(0\le x<P\), \(0\le d<B\), and \(P,B>0\), then
+\[
+  0\le x+dP<PB.
+\]
+\end{lemma}
+
+\begin{proof}
+The lower bound is immediate.  Since \(d<B\), natural-number discreteness gives
+\(d+1\le B\).  Therefore
+\[
+  x+dP < P+dP=(d+1)P\le BP.
+\]
+Every step is an order or semiring identity already available in ordinary iPRA.
+The proof uses no subtraction by an unknown sign and no classical case split.
+\end{proof}
+
+\begin{theorem}[Packed-code bound]
+Assume \(B_i>0\) and \(c_i<B_i\) for every \(i<N\).  Then
+\[
+  \pack_N(\vec c)<P_N.
+\]
+\end{theorem}
+
+\begin{proof}
+Use induction on \(N\).  For \(N=0\), the empty sum is zero and the empty
+product is one.  In the successor step,
+\[
+ \pack_{N+1}=\pack_N+c_NP_N,
+ \qquad P_{N+1}=P_NB_N.
+\]
+The induction hypothesis gives \(\pack_N<P_N\), and the append interval lemma
+with \(x=\pack_N\), \(P=P_N\), \(d=c_N\), and \(B=B_N\) gives the result.  The
+induction predicate is an inequality between primitive-recursive terms and is
+quantifier-free.
+\end{proof}
+
+\subsection{Digit recovery}
+
+Fix \(i<N\).  Split the packed sum into lower, current, and upper pieces:
+\[
+  \pack_N=L_i+c_iP_i+P_{i+1}U_i,
+\]
+where
+\[
+  L_i=\sum_{j<i}c_jP_j,
+  \qquad
+  U_i=\sum_{i<j<N}c_j\prod_{i<k<j}B_k.
+\]
+By the packed-code bound applied to the prefix, \(L_i<P_i\).  Since
+\(P_{i+1}=P_iB_i\), we may rewrite
+\[
+ \pack_N=P_i(c_i+B_iU_i)+L_i.
+\]
+Division uniqueness for the positive divisor \(P_i\) therefore gives
+\[
+  \left\lfloor\frac{\pack_N}{P_i}\right\rfloor=c_i+B_iU_i,
+  \qquad
+  \pack_N\bmod P_i=L_i.
+\]
+A second use of division uniqueness, now for divisor \(B_i\), gives remainder
+\(c_i\).  Thus \(\digit_i(\pack_N)=c_i\).
+
+\begin{theorem}[Mixed-radix decoding]
+Under the hypotheses of the packed-code bound, every \(i<N\) satisfies
+\[
+  \digit_i(\pack_N(\vec c))=c_i.
+\]
+\end{theorem}
+
+\begin{proof}
+The preceding calculation is the mathematical proof.  For a direct iPRA
+formalization it is convenient to avoid defining \(U_i\) first.  Prove by
+induction on \(N\) two lemmas simultaneously.
+
+\begin{enumerate}
+\item The newest digit of \(x+dP_N\) is \(d\) whenever \(x<P_N\) and
+\(d<B_N\).
+\item Appending \(dP_N\) leaves every earlier digit unchanged.
+\end{enumerate}
+
+For the newest digit, division uniqueness by \(P_N\) identifies quotient
+\(d\) and remainder \(x\), and division by \(B_N\) identifies the remainder of
+\(d\) as \(d\).  For an earlier index \(i<N\), \(P_N\) is divisible by
+\(P_iB_i\); adding a multiple of \(P_iB_i\) changes the quotient by a multiple
+of \(B_i\) and hence does not change its remainder modulo \(B_i\).  The
+repository's finite-product recurrence supplies the factorization of prefix
+products.  Applying the induction hypothesis to the old prefix completes the
+proof.
+\end{proof}
+
+\subsection{Uniqueness and extensionality}
+
+\begin{corollary}[Code extensionality]
+If \(c_i,d_i<B_i\) for all \(i<N\), then
+\[
+  \pack_N(\vec c)=\pack_N(\vec d)
+  \quad\Longleftrightarrow\quad
+  \forall i<N\;c_i=d_i.
+\]
+\end{corollary}
+
+\begin{proof}
+The reverse implication follows from bounded-sum congruence.  For the forward
+implication, apply \(\digit_i\) to both sides and use the decoding theorem.  In
+the object proof, ``for all \(i<N\)'' is represented by a Boolean fold or by a
+universally quantified implication whose matrix is quantifier-free; the
+compiler chooses the form appropriate to the consumer.
+\end{proof}
+
+\subsection{Disjoint sums for one selected child}
+
+Tables encode a certificate for every child.  A node controlled by the winning
+side needs only one child.  Let child code space \(i\) have size \(B_i\), which
+may be zero when no certificate of the requested sign can exist.  Define prefix
+sums
+\[
+  S_0=0,
+  \qquad S_{i+1}=S_i+B_i.
+\]
+The disjoint union has bound \(S_N\).  A pair \((i,c)
+equation\) with
+\(i<N\) and \(c<B_i\) is encoded as
+\[
+  S_i+c.
+\]
+Conversely, for every \(x<S_N\), the least \(i<N\) satisfying
+\(x<S_{i+1}\) exists; minimality gives \(S_i\le x\), and
+\(c=x\mathbin{\dot{-}}S_i<B_i\).  The owner index is computed by bounded
+least search.  This is a particularly clean use of the existing
+\code{Core.Search}: it supplies both foundness and minimality.
+
+\begin{lemma}[Disjoint decoding]
+For \(i<N\) and \(c<B_i\), the least owner of \(S_i+c\) is \(i\), and the local
+code is \(c\).
+\end{lemma}
+
+\begin{proof}
+For every \(j<i\), monotonicity of prefix sums gives
+\(S_{j+1}\le S_i\le S_i+c\), so no earlier interval contains the code.  At
+\(i\), \(c<B_i\) gives \(S_i+c<S_i+B_i=S_{i+1}\).  Least-search minimality and
+truncated-subtraction cancellation yield the local code equation.
+\end{proof}
+
+\subsection{Zero radices and empty tables}
+
+A tight table bound \(\prod_{i<N}B_i\) can be zero.  This is correct: if one
+required child has no certificate of the demanded sign, no table certificate
+exists.  The checker first verifies \(c<\prod B_i\).  Under that assumption the
+product is positive, hence every factor is positive, so quotient/remainder
+lemmas may safely be used.  If the table is empty, the product is one and the
+unique code is zero.
+
+For an initial Lean implementation one may instead use padded radices
+\(B_i+1\), reject the sentinel digit \(B_i\), and later optimize to the tight
+bound.  STRIVE's reference implementation uses the tight representation, and
+the formalization plan states the positivity obligations explicitly.
+
+\subsection{Primitive-recursive realization}
+
+Let \(b(i,p)\) and \(c(i,p)\) be concrete primitive-recursive terms.  Define
+\[
+ \pref(i,p)=\prod_{j<i}b(j,p),
+ \qquad
+ \pack(N,p)=\sum_{i<N}c(i,p)\pref(i,p).
+\]
+The current repository already supplies parameterized finite products and
+sums.  Hence \(\pref\) and \(\pack\) are concrete \(PR\) symbols with zero and
+successor equations.  Digit access is the term
+\[
+ \operatorname{rem}\bigl(
+   \operatorname{quo}(x,\pref(i,p)),\;b(i,p)
+ \bigr).
+\]
+The Lean blueprint \code{STRIVE/MixedRadix.lean} is organized precisely around
+these existing equations.  No abstract sequence type, quotient type, or
+universal decoding relation is required.

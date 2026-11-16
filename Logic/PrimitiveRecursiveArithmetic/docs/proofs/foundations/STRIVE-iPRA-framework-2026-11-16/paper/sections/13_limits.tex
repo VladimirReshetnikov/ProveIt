@@ -1,0 +1,97 @@
+\section{Limits, nonclaims, and open research}
+
+\subsection{No universal formula evaluator is claimed}
+
+The compiler is uniform as a metalevel algorithm over fixed syntax trees, but
+the generated iPRA theorem is specialized.  Internalizing arbitrary formula
+codes would require syntax coding, substitution, a universal evaluator for
+primitive-recursive symbols, and a proof of its reflection.  That may be useful
+for metamathematics, but it is not required for the mathematical embedding
+program and would greatly enlarge the trusted development.
+
+\subsection{No hidden infinitary choice}
+
+The framework constructs only finite strategies under explicit bounds.  A
+family of theorems indexed by every \(n\) does not automatically yield one
+function choosing compatible witnesses for all \(n\).  Such a function may be
+available as a separately proved primitive-recursive producer, but it is not
+extracted merely from pointwise existential proofs.
+
+\subsection{No global height bound from finiteness}
+
+A qualitative finiteness theorem does not generally contain a primitive-
+recursive cutoff.  STRIVE can verify a proposed cutoff and compile every
+bounded consequence.  It does not turn the assertion ``there are finitely many
+solutions'' into a search bound.
+
+\subsection{No convergence modulus from convergence alone}
+
+Similarly, a convergence proof may not provide a usable modulus in the chosen
+base theory.  The framework supports an explicit modulus, a ranked descent
+bound, or a metastable finite-window statement.  It does not silently upgrade
+one form to another.
+
+\subsection{No exact branch selector without separation}
+
+At collisions, exact labels may be unstable or discontinuous.  The generic
+output is a cluster, equivalence class represented by an observer, or bounded-
+diameter approximation.  A unique branch term requires a separation producer.
+
+\subsection{No quantitative inverse from bare negation}
+
+The formula \(x\ne0\) is propositionally useful but usually insufficient for a
+numerical reciprocal error bound.  Approximate inversion requires explicit
+apartness.  Any report that replaces this lower bound by a bare negation risks
+smuggling in a classical or nonuniform principle.
+
+\subsection{No producer theorem from a checker}
+
+A verified checker establishes
+\(\mathsf{Check}(c)=1\to\mathsf{Claim}\).  It does not establish
+\(\exists c\,\mathsf{Check}(c)=1\).  The signed compiler supplies a canonical
+producer for its own computed finite game, but external covers, moduli,
+separation estimates, and height bounds retain separate producer obligations.
+
+\subsection{Potential extensions}
+
+The following directions appear both feasible and useful.
+
+\begin{enumerate}
+\item \textbf{Tight generated Lean code.}  Complete mixed-radix arithmetic and
+measure proof-term growth for nested alternation.
+\item \textbf{DAG sharing.}  Compile repeated subformulas once and use trace
+states rather than duplicate syntax trees.
+\item \textbf{Proof-carrying optimization.}  Allow an external tool to minimize
+code bounds or strategy tables while Lean checks an equivalence certificate.
+\item \textbf{Observer algebra.}  Develop reusable combinators showing that
+exact, quotient, and metric observers are closed under products, composition,
+and finite folds.
+\item \textbf{Residual synthesis.}  Generate human-readable statements of the
+weakest missing producer and counterchallenge data from a failed contract
+compilation.
+\item \textbf{Complexity accounting.}  Track code bounds, recursion depth,
+proof size, and maximum numeral growth alongside theorem status.
+\item \textbf{Certified front end.}  Build a small typed DSL whose elaborator
+emits only the fixed constructor family, reducing generator complexity.
+\item \textbf{Bridge regression suite.}  Transport generated open sequents to
+Foundation iPRA and round-trip them at representative scopes.
+\end{enumerate}
+
+\subsection{A criterion for genuine progress}
+
+A future packet advances this program when it does at least one of the
+following:
+
+\begin{itemize}
+\item removes a visible \code{sorry} from a reusable object-theory module;
+\item supplies a previously missing quantitative producer;
+\item weakens a residual hypothesis while preserving a checked endpoint;
+\item turns an abstract certificate into a concrete bounded code and checker;
+\item proves a new observer invariance or compatibility theorem;
+\item or demonstrates a substantial mathematical application through the
+ordinary \(\PRAAx\) interface.
+\end{itemize}
+
+Renaming the same finite-certificate idea without crossing one of these
+boundaries is not progress.  STRIVE is designed to make those boundaries
+machine visible.

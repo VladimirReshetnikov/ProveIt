@@ -1,0 +1,71 @@
+\section{Artifact reproduction and validation}
+
+\subsection{Directory layout}
+
+\begin{lstlisting}[language={}]
+strive_ipra_framework_2026-11-16/
+  README.md
+  build.sh
+  paper/
+    strive_ipra_framework.tex
+    strive_ipra_framework.pdf
+    sections/*.tex
+  lean/
+    FORMALIZATION_PLAN.md
+    STRIVE/Kernel.lean
+    STRIVE/MixedRadix.lean
+    STRIVE/CompiledFormula.lean
+    STRIVE/DemandClosure.lean
+    STRIVE/Examples.lean
+  reference/
+    strive_reference.py
+    test_strive_reference.py
+    generate_examples.py
+  examples/*.json
+  metadata/*
+  validation/*
+\end{lstlisting}
+
+\subsection{Python validation}
+
+Run:
+\begin{lstlisting}[language=bash]
+PYTHONPATH=reference python3 -m unittest -v \
+  reference/test_strive_reference.py
+\end{lstlisting}
+The test suite checks:
+
+\begin{itemize}
+\item random heterogeneous mixed-radix round trips;
+\item empty tables and rejection of out-of-range digits/codes;
+\item canonical success and failure strategy acceptance;
+\item exhaustive soundness of every code in both signed code spaces for small
+alternating formulas;
+\item exact empty existential/universal behavior;
+\item monotone cyclic demand closure and the rank bound;
+\item JSON serialization of audit records.
+\end{itemize}
+
+The captured output is in \code{validation/python\_tests.txt}.
+
+\subsection{PDF build and inspection}
+
+Run \code{latexmk -pdf} in the \code{paper} directory.  The build log is stored
+in \code{validation/latex\_build.txt}.  The final workflow renders every page
+to PNG, checks PDF metadata and extracted text, and inspects representative
+pages and contact sheets for clipping, overlaps, broken glyphs, and malformed
+tables.  The validation directory records the resulting checks.
+
+\subsection{Lean validation}
+
+Lean was not installed in the artifact runtime.  To continue in the pinned
+repository checkout, follow \code{lean/FORMALIZATION\_PLAN.md}.  The status
+rules are:
+
+\begin{enumerate}
+\item do not describe a blueprint theorem as checked;
+\item remove every \code{sorry};
+\item end at a literal \code{Prf PRAAx} judgment;
+\item run the relevant Lake build and axiom audit;
+\item only then add bridge/native exports.
+\end{enumerate}

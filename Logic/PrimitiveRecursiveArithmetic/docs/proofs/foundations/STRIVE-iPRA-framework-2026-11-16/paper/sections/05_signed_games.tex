@@ -1,0 +1,151 @@
+\section{Bounded formulas as signed finite games}
+
+\subsection{Formula grammar}
+
+Fix a finite formula schema with free parameter tuple \(\vec a\).  Its atoms
+are reflected primitive-recursive relations.  The grammar is
+\[
+ A ::= R(\vec t)\mid A\wedge A\mid A\vee A
+       \mid \exists x<b(\vec a,\vec z)\,A
+       \mid \forall x<b(\vec a,\vec z)\,A.
+\]
+The bound may depend on parameters and variables chosen by earlier quantifiers,
+but not on the variable it bounds.  The formula tree is fixed in the
+metatheory.  All numerical bounds may vary with the input.
+
+An atom is represented by a Boolean term \(r(\vec a)\in\{0,1\}\) and checked
+derivations
+\[
+ r=1\to R,\qquad r=0\to\neg R.
+\]
+Equivalently one may supply \(r=1\leftrightarrow R\) together with Booleanity.
+The negative direction is constructively available because the atom is
+decidable.  Negation need not be pushed through the entire formula: the signed
+compiler directly constructs a proof of \(\neg A\) from a negative strategy.
+
+\subsection{Game reading}
+
+Read a positive certificate as a strategy for the prover and a negative
+certificate as a strategy for the refuter.
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Node & Positive certificate & Negative certificate \\
+\midrule
+Atom & recomputed true atom & recomputed false atom \\
+\(A\wedge B\) & certificates for both & one failing conjunct \\
+\(A\vee B\) & one successful disjunct & certificates for both \\
+\(\exists x<b\,A_x\) & one witness and child certificate & table for every witness \\
+\(\forall x<b\,A_x\) & table for every challenge & one counterexample and child certificate \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The table cases use heterogeneous mixed radix.  The one-child cases use
+disjoint sums.  This duality is exactly the intuitionistic proof theory.  A
+negative certificate for \(A\wedge B\) is not a proof of the classically
+stronger formula \(\neg A\vee\neg B\) obtained by an unrestricted De Morgan
+law; it explicitly contains the branch and a proof of that branch's negation.
+Similarly, a negative certificate for a bounded existential explicitly
+contains a refutation for every candidate.
+
+\subsection{Value functions}
+
+Define the Boolean value structurally:
+\begin{align*}
+ \Val_R &= r,\\
+ \Val_{A\wedge B} &= \Val_A\cdot\Val_B,\\
+ \Val_{A\vee B} &= \mathsf{or}(\Val_A,\Val_B),\\
+ \Val_{\exists x<b A_x} &= \mathsf{any}_{x<b}\Val_{A_x},\\
+ \Val_{\forall x<b A_x} &= \mathsf{all}_{x<b}\Val_{A_x}.
+\end{align*}
+Here \(\mathsf{all}\) is a finite product of normalized Booleans, and
+\(\mathsf{any}\) may be defined as the sign of a finite sum or by a direct
+primitive recursion.  Empty conventions are
+\[
+ \mathsf{any}_{x<0}=0,
+ \qquad
+ \mathsf{all}_{x<0}=1.
+\]
+Every value is primitive recursive, and Booleanity follows by structural
+specialization and quantifier-free induction for the folds.
+
+\subsection{Positive and negative code-space bounds}
+
+Let \(P_A^+(\vec a)\) and \(P_A^-(\vec a)\) be the sizes of the syntactic
+positive and negative code spaces.  The recurrences are
+\begin{align*}
+ P_R^+&=1,&P_R^-&=1,\\
+ P_{A\wedge B}^+&=P_A^+P_B^+,&
+ P_{A\wedge B}^-&=P_A^-+P_B^-,\\
+ P_{A\vee B}^+&=P_A^++P_B^+,&
+ P_{A\vee B}^-&=P_A^-P_B^-,\\
+ P_{\exists x<b A_x}^+&=\sum_{x<b}P_{A_x}^+,&
+ P_{\exists x<b A_x}^-&=\prod_{x<b}P_{A_x}^-,\\
+ P_{\forall x<b A_x}^+&=\prod_{x<b}P_{A_x}^+,&
+ P_{\forall x<b A_x}^-&=\sum_{x<b}P_{A_x}^-.
+\end{align*}
+A bound may be zero.  For example, the positive space of an empty existential
+has size zero, while its negative space is the singleton empty table.  These
+are exact bounds; they do not assert that every syntactically shaped code is
+valid.
+
+The sum/product pattern is the numerical form of the game duality.  One branch
+is a disjoint sum; all branches are a Cartesian product encoded by mixed radix.
+This observation provides a simple audit: if a constructor's code-bound
+recurrence does not match its proof rule, the compiler is wrong.
+
+\subsection{Checkers}
+
+For each formula define primitive-recursive predicates
+\[
+ C_A^+(\vec a,c),\qquad C_A^-(\vec a,c)
+\]
+with values in \(\{0,1\}\).  Every checker first verifies
+\(c<P_A^\pm(\vec a)\).
+
+At an atom the only code is zero, and the checker recomputes the atomic Boolean.
+At a product node, mixed-radix decoding produces the child codes and the
+checker conjoins their checks.  At a disjoint node, prefix sums locate the owner
+interval and the checker invokes the corresponding child.  At a bounded
+quantifier, the same operations occur over a variable number of children;
+the checker uses a finite Boolean fold.
+
+The checker is intentionally independent of the canonical producer.  An
+external algorithm may provide a different valid strategy.  Soundness trusts
+only the checker equation, not the history of the code.
+
+\subsection{Canonical codes}
+
+The canonical producer follows the value.
+
+\begin{itemize}
+\item At a product node, recursively produce all child codes and pack them.
+\item At a disjoint node, use bounded least search to find the least child with
+the required value, recursively produce its code, and add the corresponding
+prefix sum.
+\item At an empty product, return zero.
+\end{itemize}
+
+There are two canonical terms \(\kappa_A^+\) and \(\kappa_A^-\), but only the
+one matching \(\Val_A\) is required to be accepted.  Defining both as total
+primitive-recursive functions avoids partial terms.  Their behavior on the
+wrong side is irrelevant.
+
+\subsection{Counterstrategy content}
+
+A negative certificate is more informative than a proof of decidability.
+For a formula
+\[
+ \forall q<Q\;\exists z<Z(q)\;\forall e<E(q,z)\;R(q,z,e),
+\]
+a positive certificate is a table assigning each \(q\) one \(z\) and, for
+that \(z\), a table of atomic successes for all \(e\).  A negative certificate
+chooses one \(q_0\) and contains, for every candidate \(z<Z(q_0)\), one
+counterexample \(e_z\) with a negative atomic certificate.  This is exactly the
+failure explanation practitioners want from a finite search.
+
+No excluded-middle principle is hidden here.  The alternatives are computed by
+finite primitive recursion over decidable atomic tests.  The object proof of
+the winning side is generated together with the computation.

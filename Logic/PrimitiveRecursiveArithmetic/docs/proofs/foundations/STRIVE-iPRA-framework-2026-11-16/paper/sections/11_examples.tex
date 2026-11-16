@@ -1,0 +1,169 @@
+\section{Worked examples}
+
+\subsection{\texorpdfstring{A successful \(\forall\exists\forall\) challenge}{A successful forall-exists-forall challenge}}
+
+Consider
+\[
+ A\equiv
+ \forall q<4\;\exists z<4\;\forall e<3\;
+     ((z+q)\bmod 4=0).
+\]
+The variable \(e\) is deliberately irrelevant to the atom; it forces a
+nontrivial universal certificate table and makes the code structure visible.
+For every \(q\), choose \(z=(-q)\bmod4\).
+
+At an atom, both code bounds are one.  For the inner universal over three
+values of \(e\), the positive bound is \(1^3=1\), while the negative bound is
+\(1+1+1=3\).  For the existential over four values of \(z\),
+\[
+ P^+=1+1+1+1=4,
+ \qquad
+ P^-=3^4=81.
+\]
+For the outer universal over four values of \(q\),
+\[
+ P_A^+=4^4=256,
+ \qquad
+ P_A^-=81+81+81+81=324.
+\]
+The reference implementation computes value one and canonical positive code
+108.  In base four, the four outer table digits encode the least successful
+\(z\) for \(q=0,1,2,3\), namely \(0,3,2,1\) under the chosen little-endian
+convention.  Each digit points to the unique inner positive table code zero.
+
+The positive checker decodes all four digits.  At each \(q\) it locates the
+selected \(z\), checks the three atomic leaves, and introduces the existential.
+Universal introduction then assembles the four verified responses.  A malformed
+code can be rejected at a bound test, at an owner interval, or at an atomic
+recomputation; the proof trusts none of the producer's intentions.
+
+The generated fixture is
+\code{examples/bounded\_challenge\_success.json}.  It records the formula,
+code bounds, canonical code, and a fully decoded human-readable certificate
+tree.
+
+\subsection{A least counterchallenge}
+
+Now consider
+\[
+ B\equiv
+ \forall q<3\;\exists z<2\;\forall e<2\;(q<z).
+\]
+For \(q=0\), the witness \(z=1\) works.  For \(q=1\), neither \(z=0\) nor
+\(z=1\) satisfies \(1<z\).  Thus the least failing outer challenge is
+\(q=1\).
+
+The inner universal has positive bound one and negative bound two.  The
+existential has positive bound two and negative bound \(2^2=4\).  The outer
+universal therefore has
+\[
+ P_B^+=2^3=8,
+ \qquad
+ P_B^-=4+4+4=12.
+\]
+The canonical negative code is 4: the first interval \([0,4)\) belongs to
+\(q=0\), and the next interval begins at 4 and belongs to \(q=1\).  Its local
+code is zero, a mixed-radix table containing negative certificates for both
+candidate witnesses.  Each candidate's negative universal certificate chooses
+the least failing \(e\), here \(e=0\).
+
+Negative checker soundness proceeds exactly as the intended counterargument.
+Assume the outer universal.  Instantiate it at \(q=1\).  Open a proposed
+\(z<2\).  Decode the corresponding table digit, obtain a negative certificate
+for the inner universal, and contradict that universal.  Therefore \(\neg B\).
+The fixture
+\code{examples/bounded\_challenge\_failure.json} records this counterstrategy.
+
+\subsection{Empty bounds}
+
+Let
+\[
+ E_0=\exists x<0\;\top,
+ \qquad
+ U_0=\forall x<0\;\bot.
+\]
+The value of \(E_0\) is zero; its positive code bound is the empty sum zero,
+and its negative code bound is the empty product one.  Code zero is the empty
+negative table.  Conversely \(U_0\) has positive bound one, negative bound zero,
+and code zero is its positive empty table.
+
+These cases are important regression tests.  A sentinel-based implementation
+that confuses the bound with a valid witness often fails at zero.  The
+disjoint-sum/product definitions handle them without exceptions.  The exact
+outputs are in \code{examples/empty\_bounds.json}.
+
+\subsection{A cyclic demand closure}
+
+Take capacities \((3,3,4)\), seed \((0,0,0)\), and monotone requirements
+\begin{align*}
+ F_0(d)&=\max(1,d_1),\\
+ F_1(d)&=\min(3,d_0+1),\\
+ F_2(d)&=\max(2,d_0,d_1).
+\end{align*}
+Iteration of \(d\mapsto d\vee F(d)\) gives
+\[
+ (0,0,0),
+ (1,1,2),
+ (1,2,2),
+ (2,2,2),
+ (2,3,2),
+ (3,3,3).
+\]
+The final vector is stable and is the least prefixed point above the seed.  The
+rank budget is \(3+3+4=10\), while only five strict steps are needed.  This
+example demonstrates why a cyclic graph need not be broken by guessing a large
+global precision.  The exact trace appears in
+\code{examples/cyclic\_demand\_closure.json}.
+
+\subsection{Finite maximum on a certified net}
+
+Suppose a domain certificate lists \(y_0,\ldots,y_{N-1}\) and proves that every
+admissible \(x\) lies within \(\delta\) of some \(y_i\).  Suppose each value
+\(f(y_i)\) is approximated by a rational \(r_i\) within \(\eta\), and a modulus
+proves \(d(x,y)\le\delta\to |f(x)-f(y)|\le\varepsilon\).
+
+A bounded formula compares the rational codes and chooses the least index
+\(i^*\) maximizing \(r_i\).  Its positive strategy certifies every comparison
+used by the finite argmax.  For arbitrary admissible \(x\), choose a covered
+\(y_j\).  Then
+\begin{align*}
+ f(x)&\le f(y_j)+\varepsilon\\
+     &\le r_j+\eta+\varepsilon\\
+     &\le r_{i^*}+\eta+\varepsilon\\
+     &\le f(y_{i^*})+2\eta+\varepsilon.
+\end{align*}
+Thus the selected sample is within \(2\eta+\varepsilon\) of the supremal value.
+The cover and modulus are explicit residual producers.  The finite comparison,
+argmax, and failure explanation are generic STRIVE components.
+
+\subsection{Approximate reciprocal}
+
+Let rational observations satisfy
+\[
+ |x-\tilde x|\le\delta,
+ \qquad |x|\ge\lambda>0,
+ \qquad \delta\le\lambda/2.
+\]
+Then \(|\tilde x|\ge\lambda/2\), and
+\[
+ \left|\frac1x-\frac1{\tilde x}\right|
+ =\frac{|x-\tilde x|}{|x|\,|\tilde x|}
+ \le \frac{2\delta}{\lambda^2}.
+\]
+All operations can be expressed by cross-multiplied integer inequalities.  A
+reverse demand transformer chooses \(\delta\) so that
+\(2\delta/\lambda^2\le2^{-n}\).  The lower bound \(\lambda\) is the crucial
+producer; \(x\ne0\) alone is not substituted for it.
+
+\subsection{Bounded Diophantine completeness}
+
+Let \(p(\vec x)=0\) be a fixed polynomial and suppose a residual theorem gives
+\(|x_i|\le H\) for every solution.  Encode signed integers by naturals and
+enumerate the finite box.  A positive certificate for ``\(\vec x\) is a
+solution'' is just the arithmetic evaluation trace.  A negative table proves
+that every nonlisted tuple fails.  The output list is complete relative to the
+height theorem.
+
+This example isolates the genuine bottleneck.  The strategy compiler solves
+bounded enumeration and completeness checking.  It does not derive \(H\) from
+a statement that the solution set is finite.

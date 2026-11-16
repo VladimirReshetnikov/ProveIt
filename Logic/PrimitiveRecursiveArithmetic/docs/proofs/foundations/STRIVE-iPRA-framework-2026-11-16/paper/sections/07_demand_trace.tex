@@ -1,0 +1,154 @@
+\section{Finite demand closure, traces, and compatible interaction}
+
+\subsection{Why query dependencies can be cyclic}
+
+A finite proof may request the precision of one object as a function of the
+precision available for another.  In a composition graph, local error estimates
+can point in both directions.  For example, a normalization step may need a
+bound on a denominator, while the denominator bound is derived from a rough
+normalization.  Treating such dependencies as an acyclic syntax tree either
+fails or introduces unnecessarily large global precision.
+
+The correct finite construction is a least monotone closure.  Fix capacities
+\(c_1,\ldots,c_m\) and the product of finite chains
+\[
+ D=\prod_{i=1}^m\{0,1,\ldots,c_i\}.
+\]
+Let \(d^{(0)}\) be the external demand and let \(F:D\to D\) be a monotone
+transfer function collecting all local backward requirements.  Define
+\[
+ d^{(n+1)}=d^{(n)}\vee F(d^{(n)}),
+\]
+where the join is coordinatewise maximum.
+
+\begin{theorem}[Finite monotone demand closure]
+The iteration stabilizes after at most
+\(\sum_i(c_i-d_i^{(0)})\) strict steps.  Its stable value \(d^*\) is the least
+prefixed point above \(d^{(0)}\):
+\[
+ d^{(0)}\le d^*,\qquad F(d^*)\le d^*,
+\]
+and if \(d^{(0)}\le e\) and \(F(e)\le e\), then \(d^*\le e\).
+\end{theorem}
+
+\begin{proof}
+Every iterate lies in \(D\), is above \(d^{(0)}\), and is no smaller than the
+previous iterate.  If a step is strict, at least one coordinate increases by at
+least one.  Therefore the rank
+\[
+  \rho(d)=\sum_i d_i
+\]
+increases at each strict step and is bounded by \(\sum_i c_i\).  This proves
+stabilization within the stated budget.  At a stable value,
+\(d^*=d^*\vee F(d^*)\), so \(F(d^*)\le d^*\).
+
+For leastness, let \(e\) be any prefixed point above the seed.  Induct on
+\(n\).  The base is the seed assumption.  If \(d^{(n)}\le e\), monotonicity
+gives \(F(d^{(n)})\le F(e)\le e\), hence
+\(d^{(n+1)}=d^{(n)}\vee F(d^{(n)})\le e\).  Thus every iterate, in particular
+the stable one, lies below \(e\).
+\end{proof}
+
+For object formalization, encode the finite vector as one natural number and
+make the dimension a metalevel numeral.  Coordinate projections, saturated
+updates, and the rank are primitive recursive.  The invariant consists of
+coordinate bounds, inflation, and the rank equation, all quantifier-free.
+
+\subsection{Closure does not prove feasibility}
+
+Demand closure computes the least precision request consistent with local
+rules.  It does not by itself prove that every requested producer exists.  A
+coordinate may saturate at its capacity while a local error target still fails.
+STRIVE records this as a failed local checker or as a residual producer
+formula.  This distinction is essential: a terminating scheduler is not a
+mathematical existence proof.
+
+\subsection{From closure to a clocked schedule}
+
+Once demands are fixed, replace the cyclic graph by a finite schedule.
+Each node receives its stabilized query, and a topological order is chosen for
+the actual producers.  When a producer is relational rather than functional,
+use a state machine whose state stores the finite information accumulated so
+far.
+
+A deterministic trace machine has primitive-recursive terms
+\[
+ s_0=\mathsf{init}(a),
+ \qquad
+ s_{t+1}=\mathsf{step}(t,s_t,a).
+\]
+Together with a quantifier-free invariant \(I(t,s_t,a)\).  If iPRA derives the base and
+step implications, quantifier-free induction derives \(I(T,s_T,a)\) at every
+finite clock \(T\).  The final checker converts the invariant into the desired
+postcondition.
+
+The same pattern works for a normalized trace certificate supplied externally.
+The checker verifies the initial row, every step equation, and the terminal
+condition.  Soundness follows by induction over the row index.  An external
+program may generate the trace efficiently, but the proof trusts only the
+checker.
+
+\subsection{Relational transitions and backward viability}
+
+Pointwise existence of answers is not enough to construct a compatible run.
+The invalid inference is
+\[
+  \forall t\;\exists a_t\;\mathsf{Local}(t,a_t)
+  \quad\Longrightarrow\quad
+  \exists(a_0,\ldots,a_T)\;\mathsf{CompatibleRun}.
+\]
+Local answers may have incompatible successors.
+
+For a bounded relational machine, let \(R_t(s,a,s')\) be the transition
+checker and \(A_T(s)\) the terminal acceptance predicate.  Define viability
+backwards:
+\begin{align*}
+ V_T(s)&=A_T(s),\\
+ V_t(s)&=\mathsf{any}_{a<B_t(s)}
+   \mathsf{any}_{s'<S_{t+1}}
+     \bigl(R_t(s,a,s')\cdot V_{t+1}(s')\bigr).
+\end{align*}
+All bounds are finite primitive-recursive terms.  The value
+\(V_t(s)=1\) means that a successful continuation exists within the declared
+horizon and state bounds.
+
+\begin{theorem}[Viability correctness]
+For every fixed finite horizon, \(V_t(s)=1\) if and only if there is a bounded
+accepted continuation from \((t,s)\).
+\end{theorem}
+
+\begin{proof}
+Use backward induction on the remaining horizon.  At the terminal layer this is
+the definition.  In the step, the bounded-any fold is one exactly when some
+pair \((a,s')\) passes the local relation and has viable continuation.  Apply
+the induction hypothesis to that continuation.  Conversely, an accepted run
+supplies such a pair and hence makes the bounded-any fold one.  In a forward
+\(\PRAAx\) proof, define the evaluator by primitive recursion on remaining
+resource and prove the equivalence with a quantifier-free path-checker bit.
+\end{proof}
+
+A canonical compatible run is obtained by selecting the least pair whose local
+edge and successor viability bits are one.  The choice is safe because it tests
+future feasibility before committing to the present answer.  A failed initial
+viability bit is itself a finite failure certificate: the backward table shows
+that every possible continuation closes.
+
+\subsection{Relation to signed formula certificates}
+
+A fixed-horizon interaction is a bounded formula with alternation, so it can be
+compiled directly by the signed strategy theorem.  Conversely, the formula
+compiler may be implemented as a specialized backward game evaluator.  STRIVE
+keeps both interfaces because their engineering uses differ:
+
+\begin{itemize}
+\item formula syntax is convenient for theorem statements and direct proof
+composition;
+\item a state machine is convenient for long traces, shared subcomputations,
+and generated certificates;
+\item viability is convenient when local witnesses must be compatible;
+\item independent stable observers are cheaper when compatibility is irrelevant
+to the final observation.
+\end{itemize}
+
+No logical strength is gained by choosing one representation.  The choice is a
+normalization decision made before proof generation.
