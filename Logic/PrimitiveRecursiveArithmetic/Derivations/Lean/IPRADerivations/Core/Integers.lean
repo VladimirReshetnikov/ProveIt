@@ -206,6 +206,33 @@ def sq (u : ZT n) : ZT n := u * u
 /-- The iPRA formula expressing equality of two integer terms. -/
 def eq (u v : ZT n) : Fm PTm n := u.pos + v.neg ≐ v.pos + u.neg
 
+/-- Substitution in an integer term. -/
+def subst {m : ℕ} (σ : Fin n → PTm m) (u : ZT n) : ZT m := ⟨Syn.subst σ u.pos, Syn.subst σ u.neg⟩
+
+section Subst
+
+variable {m : ℕ} (σ : Fin n → PTm m)
+
+@[simp] theorem subst_eq (u v : ZT n) : (eq u v).subst σ = eq (u.subst σ) (v.subst σ) := by
+  simp [eq, subst]
+@[simp] theorem subst_add (u v : ZT n) : (u + v).subst σ = u.subst σ + v.subst σ := by
+  show (⟨Syn.subst σ (u.pos + v.pos), Syn.subst σ (u.neg + v.neg)⟩ : ZT m) = _
+  simp only [PTm.subst_add]; rfl
+@[simp] theorem subst_mul (u v : ZT n) : (u * v).subst σ = u.subst σ * v.subst σ := by
+  show (⟨Syn.subst σ (u.pos * v.pos + u.neg * v.neg), Syn.subst σ (u.pos * v.neg + u.neg * v.pos)⟩
+    : ZT m) = _
+  simp only [PTm.subst_add, PTm.subst_mul]; rfl
+@[simp] theorem subst_neg (u : ZT n) : (-u).subst σ = -u.subst σ := rfl
+@[simp] theorem subst_sub (u v : ZT n) : (u - v).subst σ = u.subst σ - v.subst σ := by
+  show (u + -v).subst σ = _; rw [subst_add]; rfl
+@[simp] theorem subst_sq (u : ZT n) : (sq u).subst σ = sq (u.subst σ) := subst_mul σ u u
+@[simp] theorem subst_ofNat (t : PTm n) : (ofNat t).subst σ = ofNat (Syn.subst σ t) := by
+  simp [ofNat, subst]
+@[simp] theorem subst_natLit (k : ℕ) : (natLit k : ZT n).subst σ = natLit k := by
+  simp [natLit]
+
+end Subst
+
 /-- Evaluation of an integer term in the ring of differences of `Q Γ`. -/
 def toZ (Γ : List (Fm PTm n)) (u : ZT n) : Groth (Q Γ) :=
   Groth.ι (Q.mk Γ u.pos) - Groth.ι (Q.mk Γ u.neg)

@@ -8,10 +8,12 @@ import IPRADerivations.Core.Definitions
 import IPRADerivations.Core.Sums
 import IPRADerivations.Core.Monus
 import IPRADerivations.Core.Order
+import IPRADerivations.Core.Pairing
 import IPRADerivations.Algebra.CayleyHamilton
 import IPRADerivations.Algebra.PolynomialFormulas
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
+import IPRADerivations.DiophantineNumberTheory.Recurrences
 import IPRADerivations.Foundations.QuantitativeIdentities
 import IPRADerivations.Geometry.EulerRodrigues
 import IPRADerivations.Geometry.Morley

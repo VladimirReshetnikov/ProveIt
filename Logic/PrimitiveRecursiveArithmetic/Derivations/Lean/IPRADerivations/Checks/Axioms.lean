@@ -59,3 +59,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.le_trans
 #print axioms LeanProofs.IPRA.eq_or_ne
 #print axioms LeanProofs.IPRA.lt_or_le
+#print axioms LeanProofs.IPRA.isqrt_unique
+#print axioms LeanProofs.IPRA.fst_pair
+#print axioms LeanProofs.IPRA.snd_pair
+#print axioms LeanProofs.IPRA.sim₁_succ
+#print axioms LeanProofs.IPRA.sim₂_succ
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Recurrences.pell_powers
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Recurrences.pell_recurrence
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Recurrences.det_step
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Recurrences.det_sq
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Recurrences.fibonacci_norm
