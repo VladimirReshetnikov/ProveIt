@@ -21,9 +21,17 @@ variants = {
             "sites.json": "4ceafb0e8b1e7b983f2b25d7b4c0902c34a6544142f7fd8a715c4b9bb8ef0e6d",
         },
     ),
+    "PA1944L": (
+        "pa1944l_research_2026-11-14/machine",
+        {
+            "machine.tm": "c5787c6f2350e77183ca0d3ff25d2733ba87e8bb52cd54092d7fa26fcf4d5253",
+            "labels.json": "2890771c2db5c598d5f3f833feecf2903e01d69bdf626782e34196c34bfcb13b",
+            "sites.json": "bccf0a80ffdf4ff48c4457adf7331aa4c4d2a7742712983dd45ab4b243ed8820",
+        },
+    ),
 }
 if len(sys.argv) != 4 or sys.argv[1] not in variants:
-    raise SystemExit("usage: generate-source-table.py {PA194OR,PA194LC} REPO OUTPUT")
+    raise SystemExit(f"usage: generate-source-table.py {{{','.join(variants)}}} REPO OUTPUT")
 variant = sys.argv[1]
 repo, out = map(Path, sys.argv[2:])
 packets = repo / "Computability/BusyBeaver/Research/PA/docs"

@@ -3,9 +3,14 @@
 from pathlib import Path
 import sys
 
-checkers = {"PA194AD": "PA194ADCompressedChecks", "PA194LC": "PA194LCChecks"}
+checkers = {
+    "PA194AD": "PA194ADCompressedChecks",
+    "PA194LC": "PA194LCChecks",
+    "PA194LCC": "PA194LCCChecks",
+    "PA1944L": "PA1944LChecks",
+}
 if len(sys.argv) != 3 or sys.argv[1] not in checkers:
-    raise SystemExit("usage: generate-linear-coverage.py {PA194AD,PA194LC} OUTPUT")
+    raise SystemExit(f"usage: generate-linear-coverage.py {{{','.join(checkers)}}} OUTPUT")
 candidate, destination = sys.argv[1:]
 checker = checkers[candidate]
 coverage = f"{candidate}Coverage"
