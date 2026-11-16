@@ -14,6 +14,7 @@ import IPRADerivations.Core.Parity
 import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Core.Descent
 import IPRADerivations.Core.Division
+import IPRADerivations.Core.Gcd
 import IPRADerivations.Algebra.CayleyHamilton
 import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Analysis.Chebyshev
