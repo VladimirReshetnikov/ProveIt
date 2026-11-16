@@ -5,4 +5,7 @@ import IPRADerivations.Core.Integers
 import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.LinearAlgebra
 import IPRADerivations.Algebra.CayleyHamilton
+import IPRADerivations.Geometry.EulerRodrigues
+import IPRADerivations.Geometry.Projective
+import IPRADerivations.Geometry.SphericalTrigonometry
 import IPRADerivations.Geometry.TriangleFormulas
