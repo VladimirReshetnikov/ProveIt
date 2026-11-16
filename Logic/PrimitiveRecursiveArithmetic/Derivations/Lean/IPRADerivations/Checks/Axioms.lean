@@ -649,6 +649,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellNegUnits.neg_square
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellNegUnits.A_eq
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellNegUnits.seed_unique
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers.cb_double
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers.cb_ge_pow
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers.apery_zero
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers.apery_one
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers.apery_ge_cb
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers.apery_lower
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers.four_pow_ge
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers.apery_ge_succ
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers.apery_pos
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero

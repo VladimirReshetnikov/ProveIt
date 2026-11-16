@@ -102,6 +102,7 @@ import IPRADerivations.DiophantineNumberTheory.FLTMixed
 import IPRADerivations.DiophantineNumberTheory.IrrationalSqrt
 import IPRADerivations.DiophantineNumberTheory.PellDescent
 import IPRADerivations.DiophantineNumberTheory.PellAll
+import IPRADerivations.DiophantineNumberTheory.AperyNumbers
 import IPRADerivations.Foundations.QuantitativeIdentities
 import IPRADerivations.Foundations.Termination
 import IPRADerivations.Foundations.ChineseRemainder
