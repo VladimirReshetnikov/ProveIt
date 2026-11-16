@@ -105,3 +105,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.euclid_terminates
 #print axioms LeanProofs.IPRA.gcd_greatest
 #print axioms LeanProofs.IPRA.gcd_dvd
+#print axioms LeanProofs.IPRA.Search.search_spec
+#print axioms LeanProofs.IPRA.Search.search_found
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Primes.dvd_fact
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Primes.lpf_dvd
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Primes.lpf_prime
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Primes.euclid
+#print axioms LeanProofs.IPRA.sum_zero_of_bounded
+#print axioms LeanProofs.IPRA.Combinatorics.Binomial.binom_open
+#print axioms LeanProofs.IPRA.Combinatorics.Binomial.binom_spec
+#print axioms LeanProofs.IPRA.Combinatorics.Binomial.pascal
+#print axioms LeanProofs.IPRA.Combinatorics.Binomial.binom_edges
