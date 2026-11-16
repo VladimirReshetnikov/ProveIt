@@ -19,6 +19,7 @@ import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.Bezout
 import IPRADerivations.Core.Search
 import IPRADerivations.Core.SumLemmas
+import IPRADerivations.Core.SumReflect
 import IPRADerivations.Algebra.CayleyHamilton
 import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Analysis.Chebyshev
@@ -60,6 +61,7 @@ import IPRADerivations.AnalyticNumberTheory.PhiLimsup
 import IPRADerivations.AnalyticNumberTheory.PhiPowTwo
 import IPRADerivations.Combinatorics.Bell
 import IPRADerivations.Combinatorics.BellBounds
+import IPRADerivations.Combinatorics.BellTriangle
 import IPRADerivations.DiophantineNumberTheory.PellGcd
 import IPRADerivations.Core.Pigeonhole
 import IPRADerivations.DiophantineNumberTheory.PellModular
