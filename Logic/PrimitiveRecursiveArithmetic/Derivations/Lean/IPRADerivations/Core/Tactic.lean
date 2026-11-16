@@ -31,6 +31,18 @@ theorem closeAll {m : ℕ} (k : ℕ) {φ : Fm PTm (m + k)}
   | zero => exact h
   | succ k ih => exact ih (.allI (by simpa using h))
 
+/-- Universal closure of a formula over all its `k` free variables. -/
+def univ : (k : ℕ) → Fm PTm k → Fm PTm 0
+  | 0, φ => φ
+  | k + 1, φ => univ k (Fm.all φ)
+
+/-- An open theorem gives its universal closure. -/
+theorem closeUniv (k : ℕ) {φ : Fm PTm k} (h : ([] : List (Fm PTm k)) ⊢[PRAAx] φ) :
+    ([] : List (Fm PTm 0)) ⊢[PRAAx] univ k φ := by
+  induction k with
+  | zero => exact h
+  | succ k ih => exact ih (.allI (by simpa using h))
+
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-- A derived natural-number equation, as an equation in the ring `Groth (Q Γ)`. -/
