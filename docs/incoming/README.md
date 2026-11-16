@@ -187,7 +187,9 @@ not in the history. `trigonometric_identities_ipra_2026-11-15.zip` was placed th
 under `analysis/`, without committing the ZIP. It leaves out only its ignored `SHA256SUMS`.
 `lagrange_inversion_ipra.zip` was placed the same way, under `algebra/`, without committing
 the ZIP. All 18 of its members are placed. From here on, every archive is deleted from its
-drop directory after placement (Vladimir, 15 November 2026).
+drop directory after placement (Vladimir, 15 November 2026). `siegel_ipra.zip` was placed the
+same way, under `diophantine-number-theory/`, and then deleted. It leaves out only its
+ignored `SHA256SUMS`.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

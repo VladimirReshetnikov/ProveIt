@@ -1,0 +1,151 @@
+\section{Lean definitions, checked results, and completion plan}
+\label{sec:lean}
+
+\subsection{Two different formalization levels}
+
+The sources use Lean 4.32.0 and its bundled \texttt{Std} library.
+They contain native definitions and kernel-checked arithmetic theorems,
+not yet proof objects in ProveIt's first-order theory. Lean's metatheory
+is stronger than iPRA even when the mathematical argument has a short
+iPRA proof.
+
+The arithmetic and search modules are \texttt{Arithmetic.lean} and
+\texttt{FiniteSearch.lean}. The other modules are
+\texttt{QuarticExample.lean} and \texttt{Specifications.lean}.
+All four compile.
+The audit module prints axiom dependencies and checks target types.
+The general targets are definitions of propositions, not asserted
+theorems or added axioms.
+
+\subsection{Checked native mathematics}
+
+\texttt{Arithmetic.lean} proves the nonzero-product bound, the
+difference-of-squares identity, and the decisive gap statement
+\[
+ z^2=a^2+r,\quad r\ne0\quad\Longrightarrow\quad |a|\le|r|.
+\]
+It proves the quartic factorization and both sharp quartic bounds,
+uniformly in $a,b,x,y$, and proves that no natural-number square lies
+strictly between consecutive natural-number squares.
+
+\texttt{FiniteSearch.lean} defines
+\begin{lstlisting}
+def scan (p : Nat -> Bool) (B : Nat) : List Nat :=
+  (List.range (B+1)).filter p
+\end{lstlisting}
+and proves its exact membership characterization. It proves that a
+complete finite list and a numerical bound are equivalent for predicates
+on natural-number codes. It also proves the intentionally weaker
+fact that every finite prefix is bounded.
+
+\texttt{QuarticExample.lean} proves for all integers $x,y$ that
+\[
+\begin{split}
+y^2=x^4+7x^2+1\quad\Longleftrightarrow\quad
+&[x=0\ \wedge\ (y=1\vee y=-1)]\\
+{}\vee{}&[(x=1\vee x=-1)\ \wedge\ (y=3\vee y=-3)].
+\end{split}
+\]
+Its global coordinate bounds are proved before the finite case analysis.
+This is not a bounded experiment promoted to a universal theorem.
+
+The axiom audit contains only the standard Lean principles
+\texttt{propext} and \texttt{Quot.sound}; the finite-prefix witness
+requires none. No audited result depends on \texttt{Classical.choice},
+\texttt{sorryAx}, or an added theorem axiom. This fact does not replace
+the missing embedded iPRA derivations.
+
+\subsection{Exact specifications and unproved targets}
+
+The specification file defines polynomials as \texttt{List Int},
+Horner evaluation, coefficient lookup with default zero, a coefficient
+norm, and convolution coefficients. A certificate contains the finite
+data $f,A,R,D$. The Boolean \texttt{certificateCheck} verifies positivity,
+degree, nonzero conditions, and coefficient equality over a finite
+support range. It contains no assumed height bound.
+
+The bound functions are implemented directly:
+\[
+\begin{split}
+\texttt{xBound}(c)&=\|A_{<\deg A}\|_1+\|R\|_1,\\
+\texttt{yBound}(c)&=\sum_i |f_i|\max(1,\texttt{xBound}(c))^i.
+\end{split}
+\]
+The file also defines the integer interval, rectangular filter, and
+$X^{2m}+X+1$. The propositions \texttt{RungeBoundTarget},
+\texttt{RungeEnumerationTarget}, and \texttt{GenusFamilyTarget}
+are unproved in Lean. The corresponding mathematics is proved in
+the paper. A concrete sample certificate is checked, and its finite
+box evaluates to the expected four points.
+
+For general affine systems the file defines monomials, exponent lists,
+polynomial evaluation, a well-formedness test, an integral-point test,
+and coordinate height. \texttt{PositiveSiegelTarget} and
+\texttt{CountSiegelTarget} have different conclusions. Each accepts an
+\texttt{admissible} predicate as a parameter. Implementing that
+predicate so that it really certifies smooth positive-genus curves,
+and proving its coverage, remain separate obligations. A parameterized
+definition asserts no geometric theorem.
+
+\subsection{The actual ProveIt interfaces}
+
+At the pinned revision the namespace is
+\texttt{LeanProofs.ConciseIPRA}. The inspected interfaces are
+\begin{center}
+\begin{tabular}{@{}p{0.35\linewidth}p{0.56\linewidth}@{}}
+\toprule
+Interface & Role\\
+\midrule
+\texttt{PR k} & Primitive recursive construction of arity $k$\\
+\texttt{PTm n} & Arithmetic terms with $n$ free variables\\
+\texttt{Fm PTm n} & First-order formulas\\
+\texttt{Fm.QF} & Quantifier-free restriction\\
+\texttt{PRAAx} & Arithmetic axioms and restricted induction\\
+\texttt{Prf PRAAx Gamma phi} & Intuitionistic natural-deduction derivability\\
+\texttt{PRA.qfInd} & Quantifier-free induction rule\\
+\texttt{pra\_iff\_native} & Transfer to the concise native calculus\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The intended elementary result must ultimately have the type
+\begin{lstlisting}
+Prf PRAAx [] rungeFormula
+\end{lstlisting}
+where \texttt{rungeFormula} is the closed universal formula built
+from the compiled \texttt{PR} functions and actual \texttt{Fm}
+constructors. A host proposition with similar mathematical words
+is insufficient. Once the derivation exists,
+\texttt{pra\_iff\_native} transports it; the equivalence does not
+create the missing derivation.
+
+\subsection{Dependency-ordered completion tasks}
+
+First prove that the finite polynomial checker implies the evaluated
+identity. Establish the coefficient and integer-root bounds for
+normalized lists. Combine them with \texttt{square\_gap} to prove
+\texttt{RungeBoundTarget}. Prove membership in the integer interval
+and nested filter to obtain \texttt{RungeEnumerationTarget}.
+Instantiate the certificate uniformly in $m$ and apply the consecutive
+square lemma to prove \texttt{GenusFamilyTarget}. Every mathematical
+ingredient appears in Section~\ref{sec:runge-certificate}.
+
+Next construct fixed primitive recursive codes for signed arithmetic,
+arrays, sums, evaluation, the certificate test, both bounds, and
+enumeration. Derive their equations inside \texttt{PRAAx}. Compile
+the invariants of Section~\ref{sec:arithmetic-audit} to characteristic
+equations, supply their \texttt{QF} witnesses, and use
+\texttt{PRA.qfInd}. Assemble the universal derivation by natural
+deduction and equality substitution, then specialize it to concrete
+certificates and transport it to the concise calculus.
+
+The accompanying \texttt{OBJECT\_PLAN.txt} expands these steps into
+individual invariants and proof obligations. Completion requires
+the actual object derivation, an axiom audit, and a clean build.
+A native Lean build alone does not meet that requirement.
+
+There is a finite implementation path for the elementary results.
+The general Siegel dependencies in Section~\ref{sec:general-route}
+are additional mathematical research tasks. Completing routine Lean
+infrastructure is not promised to resolve them.
+

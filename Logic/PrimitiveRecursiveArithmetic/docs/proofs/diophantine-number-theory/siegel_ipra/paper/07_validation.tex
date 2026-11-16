@@ -1,0 +1,118 @@
+\section{Verification, reproducibility, and remaining scope}
+\label{sec:verification}
+
+\subsection{What was checked}
+
+The exact reference code was run with Python 3 using only standard-library
+integer and rational arithmetic. The results recorded in
+\texttt{code/verification.json} include:
+\begin{center}
+\begin{tabular}{@{}p{0.68\linewidth}r@{}}
+\toprule
+Check & Cases\\
+\midrule
+Bounded binary square root versus an independent implementation & 10,385\\
+Family $X^{2m}+X+1$, $m=2,\ldots,12$ & 11\\
+Quartics $X^4+aX^2+b$, $a,b\in[-8,8]$, $\Delta\ne0$ & 284\\
+Additional square-completion inputs & 2\\
+Malformed or out-of-scope inputs rejected & 9\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For quartics, the certificate enumerator, signed-divisor enumerator,
+and an independent direct-power search agree. The independent search
+uses a larger horizontal window and Python's separate integer-square-root
+routine. These are implementation checks. They are not the proof
+that the window contains every point; that fact comes from the
+universal arithmetic bound. The family theorem for every $m\ge2$ is
+likewise proved symbolically, not inferred from its eleven tested values.
+
+The binary square-root implementation has explicit fuel. For $n\ge0$
+it starts at $\ell=0,h=n+1$, maintains
+$\ell^2\le n<h^2$, and replaces an endpoint by the integer midpoint
+according to a square comparison. The interval length is at most
+halved up to rounding. For $n\ge1$ with bitlength $b$, initially
+$h-\ell=n+1\le2^b$, so $b+1$ iterations suffice to reach adjacent
+endpoints. The case $n=0$ begins with adjacent endpoints. This proves
+termination with a primitive recursive bound; it is not an
+unbounded perfect-square search.
+
+\begin{samepage}
+The Lean build used version 4.32.0, commit
+\begin{center}\small\ttfamily
+8c9756b28d64dab099da31a4c09229a9e6a2ef35.
+\end{center}
+\end{samepage}
+Its reproducible output is in \texttt{verification/lean\_build.txt}.
+The exact theorem names and axiom dependencies are printed there.
+A compiled definition of an unproved target is reported as a
+specification, not as a proof. No complete ProveIt repository build
+was performed.
+
+The mathematical arguments were separately reviewed for their
+coefficient estimates, nonzero remainder requirement, square
+completion, sign cases, geometric interpretation, and logical
+witness claims. The coding discussion was clarified to require
+canonical point codes. The symbol $\Delta=a^2-4b$ is the auxiliary
+quartic parameter; it is not the full polynomial discriminant.
+The full quartic discriminant is $16b\Delta^2$.
+
+\subsection{Archive contents}
+
+\begin{center}
+\begin{tabular}{@{}p{0.37\linewidth}p{0.54\linewidth}@{}}
+\toprule
+Path & Purpose\\
+\midrule
+\texttt{paper/siegel\_ipra.pdf} & Complete report\\
+\texttt{paper/*.tex} & Master source and included sections\\
+\texttt{lean/*.lean} & Checked native modules, specifications, and audit\\
+\texttt{lean/OBJECT\_PLAN.txt} & Detailed object-iPRA compilation obligations\\
+\texttt{lean/build.sh} & Reproducible Lean build\\
+\texttt{code/runge.py} & Exact certificate constructor and solvers\\
+\texttt{code/verify.py} & Independent finite regression checks\\
+\texttt{code/build\_pdf.py} & Ordinary or private-format LaTeX build\\
+\texttt{verification/} & Build and document-validation records\\
+\texttt{provenance/} & Pinned source audit and research references\\
+\texttt{README.txt} & Entry point, scope, and reproduction commands\\
+\texttt{SHA256SUMS} & Checksums of the delivered files\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+From the extracted root directory, run:
+\begin{lstlisting}
+python3 code/verify.py
+bash lean/build.sh
+python3 code/build_pdf.py
+\end{lstlisting}
+Use the version pinned in \texttt{lean/lean-toolchain}. If Lean is
+available at a custom path, set \texttt{SIEGEL\_LEAN\_BIN} to that
+executable before running the build script. The PDF script uses
+ordinary \texttt{pdflatex} when configured and can prepare a private
+format from installed TeX sources when the system format is missing.
+It runs without shell escape.
+
+Verify \texttt{SHA256SUMS} before rebuilding, since regenerated
+logs and metadata may change. The archive contains source and
+evidence; it does not bundle a Lean distribution or claim to have
+recompiled the upstream foundation.
+
+\subsection{The exact unresolved conclusion}
+
+The fully developed arithmetic theorem proves effective finiteness
+for the certified Runge family and supplies actual complete lists.
+The archive also contains compiled native Lean proofs of important
+lemmas and one global positive-genus example. The object-iPRA
+derivations remain to be implemented using the explicit induction
+invariants.
+
+For arbitrary smooth positive-genus affine curves over number fields,
+the requested general iPRA proof is not provided. A positive complete
+list or height-bound proof would require the missing general effective
+argument. A cardinality proof can pursue the different finite-tuple
+route discussed above, whose approximation and geometry dependencies
+have not been established in iPRA here. This report does not prove
+either general target, and it does not claim either one impossible.
+

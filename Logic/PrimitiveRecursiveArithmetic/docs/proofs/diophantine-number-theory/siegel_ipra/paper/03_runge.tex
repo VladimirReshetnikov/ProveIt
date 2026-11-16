@@ -1,0 +1,387 @@
+\section{A complete constructive subcase: a finite Runge certificate}
+\label{sec:runge-certificate}
+
+The following result is an actual, uniform arithmetic theorem.  Its input is
+a finite algebraic certificate, its output is an explicit box containing every
+integral point, and its proof uses only integer arithmetic and bounded sums.
+It supplies a substantial effective subcase of the requested theorem, including
+smooth curves of arbitrarily large genus.  It does not supply the missing
+certificate for an arbitrary curve to which Siegel's theorem applies.
+
+Throughout this section a polynomial is a finite coefficient list, in ascending
+order.  Trailing zero coefficients are removed; the empty list represents zero.
+Its degree, coefficients, sum of absolute coefficients, products, and value at
+an integer are primitive recursive operations.  Polynomial equalities below
+are therefore finite, decidable coefficient identities.  Integers can be
+represented by any fixed primitive recursive signed coding.  Statements using
+absolute values are abbreviations for statements about the natural-number
+absolute-value function on those codes.
+
+\subsection{Two elementary bounds}
+
+\begin{lemma}[An integer root bound]
+\label{lem:runge-root-bound}
+Let $G(X)=\sum_{i=0}^{r}g_iX^i$ be a nonzero integer polynomial.  If $r=0$,
+it has no root.  If $r\geq1$ and $G(x)=0$ for an integer $x$, then
+\[
+ |x|\leq \sum_{i<r}|g_i|.
+\]
+\end{lemma}
+\begin{proof}
+The assertion is immediate for $x=0$.  Otherwise put $t=|x|\geq1$ and
+$L=\sum_{i<r}|g_i|$.  Since the nonzero integer $g_r$ has $|g_r|\geq1$,
+the equation $g_rx^r=-\sum_{i<r}g_ix^i$ gives
+\[
+ t^r\leq |g_r|t^r
+   \leq\sum_{i<r}|g_i|t^i
+   \leq L t^{r-1}.
+\]
+Cancellation of the positive integer $t^{r-1}$ gives $t\leq L$.  The constant
+case says simply that a nonzero integer is not zero.  All sums are finite;
+the comparison $t^i\leq t^{r-1}$ is proved by induction on the exponent.
+\end{proof}
+
+\begin{lemma}[A nonzero product]
+\label{lem:runge-product-bound}
+If $u,v$ are integers with $uv\neq0$, then
+\[
+ |uv|\geq\max\{|u|,|v|\},\qquad
+ |u|+|v|\leq |uv|+1.
+\]
+Moreover, if $v-u=2z$, then $\max\{|u|,|v|\}\geq |z|$.
+\end{lemma}
+\begin{proof}
+Write $U=|u|$ and $V=|v|$.  Both are positive integers, so $UV\geq U,V$.
+Expanding $(U-1)(V-1)\geq0$ gives $U+V\leq UV+1$.
+Finally,
+$2|z|=|v-u|\leq U+V\leq2\max(U,V)$, and cancellation of $2$ proves the
+last assertion.  These are finite inequalities, with no choice of a prime
+factor and no factorization theorem needed.
+\end{proof}
+
+\subsection{The certificate theorem and its complete proof}
+
+\begin{theorem}[Elementary effective Runge certificate]
+\label{thm:runge-certificate}
+Let $f,A,R\in\mathbb Z[X]$ and $D\geq1$ satisfy the coefficient identity
+\[
+                 D^2 f=A^2+R.
+\tag{RC}
+\]
+Assume that $m=\deg A\geq1$, that $R\neq0$, and that $\deg R<m$.
+Write
+\[
+ \alpha=\sum_{i<m}|a_i|,\qquad
+ \beta=\sum_i|r_i|,\qquad H=\alpha+\beta,
+ \qquad K=\sum_i|f_i|H^i.
+\]
+Then every integer solution of $y^2=f(x)$ satisfies
+\[
+                         |x|\leq H,
+                    \qquad |y|\leq K.
+\]
+Consequently the integral points have a primitive recursive complete
+enumeration, uniformly in $f,D,A,R$ satisfying the displayed conditions.
+\end{theorem}
+
+\begin{proof}
+Because $R$ is nonzero, $\beta\geq1$, hence $H\geq1$.
+Let $y^2=f(x)$ and put $t=|x|$.  Integer order is decidable.  It suffices to
+show that its alternative $t>H$ leads to a contradiction.
+
+First, $R(x)\neq0$.  This is immediate if $R$ is constant.  If its degree is
+$r\geq1$, Lemma~\ref{lem:runge-root-bound} would otherwise give
+$t\leq\sum_{i<r}|r_i|\leq\beta\leq H$.
+
+Second, $A(x)$ is larger in absolute value than $R(x)$.  Since $t\geq1$ and
+the leading coefficient of $A$ is a nonzero integer, the reverse triangle
+inequality gives
+\begin{align*}
+ |A(x)|
+ &\geq |a_m|t^m-\sum_{i<m}|a_i|t^i\\
+ &\geq t^m-\alpha t^{m-1}
+   =(t-\alpha)t^{m-1}
+   >\beta t^{m-1}.
+\end{align*}
+The strict inequality follows from $t>\alpha+\beta$ and
+$t^{m-1}\geq1$.  Every exponent occurring in $R$ is at most $m-1$, so
+\[
+                  |R(x)|\leq\beta t^{m-1}<|A(x)|.
+\]
+
+Now use (RC) at the particular integer $x$ and substitute $y^2=f(x)$:
+\[
+              (Dy-A(x))(Dy+A(x))=R(x).
+\]
+The two factors are nonzero integers.  Their difference is $2A(x)$, so
+Lemma~\ref{lem:runge-product-bound} gives
+\[
+ |R(x)|\geq
+ \max\{|Dy-A(x)|,|Dy+A(x)|\}\geq |A(x)|.
+\]
+This contradicts the preceding strict inequality.  We have proved $t\leq H$.
+
+For the second coordinate,
+\[
+ y^2=f(x)\leq |f(x)|\leq\sum_i|f_i|\,|x|^i
+                         \leq\sum_i|f_i|H^i=K.
+\]
+For every integer $y$, the natural number $n=|y|$ satisfies $n\leq n^2$:
+separate $n=0$ from $n\geq1$ and multiply $1\leq n$ by $n$.
+Thus $|y|\leq y^2\leq K$.
+
+Finally, run two bounded loops through $-H\leq x\leq H$ and
+$-K\leq y\leq K$, retaining exactly the pairs for which the decidable
+identity $y^2=f(x)$ holds.  Every retained pair is a solution by the test.
+Every solution is retained by the two bounds just proved.  This produces a
+finite list with both soundness and completeness, rather than merely a
+numerical bound on the number of possible points.
+\end{proof}
+
+The use of a contradiction in this proof is intuitionistically harmless.
+We did not infer an existential witness from the negation of its negation.
+We computed $H$ and $K$ before considering a point, and used the decidable
+integer dichotomy $t\leq H$ or $t>H$ to verify their universal correctness.
+Similarly, the conclusion $R(x)\neq0$ follows by excluding equality in a
+decidable integer calculation.  No principle for choosing from an infinite
+family of finite sets occurs.
+
+The factorization step explains the scope of the method.  The certificate
+forces $Dy$ to be close to either $A(x)$ or $-A(x)$ at large $|x|$.  The two
+integer factors cannot both remain nonzero while their product has lower
+growth than their difference.  An arbitrary affine curve need not admit
+this particular description; the theorem contains no algorithm for
+manufacturing it in that generality.
+
+The domain of the coordinates is equally essential.  The proof uses the
+fact that the absolute value of a nonzero \emph{integer} is at least one.
+For rational factors this fails: $u$ may be an arbitrarily small positive
+fraction while $v$ is large.  Thus the same displayed polynomial identity
+does not prove finiteness of rational points.  Nor does it automatically
+prove an analogous assertion for coordinates whose denominators are
+supported on a prescribed set of primes.  In that setting the product
+argument would have to control several absolute values simultaneously;
+the ordinary real absolute value alone no longer gives the required
+lower bound for each factor.  The theorem here is deliberately stated
+over $\mathbb Z$ with its fixed affine coordinates.
+
+This distinction also explains why a birational change of variables must
+not be inserted silently.  A rational transformation can introduce
+denominators and can omit exceptional points.  To transfer the explicit
+box to a different equation, one would have to give the transformation,
+prove which integral points it covers, bound any denominators it creates,
+and handle all exceptional fibers.  None of those obligations is needed
+for the displayed families, whose integral points are bounded directly in
+their original coordinates.  A polynomial identity checked on the actual
+input equation is therefore part of the certificate, rather than an
+informal assertion that the curve resembles an already-solved example.
+
+\subsection{Constructing the certificate by completing a polynomial square}
+
+The certificate is not an oracle for the following broad family.  Suppose
+$f$ has degree $2m\geq2$ and its leading coefficient is a positive integer
+square $s^2$, where $s\geq1$.  Construct a rational polynomial
+\[
+                      Q(X)=sX^m+\sum_{j<m}q_jX^j
+\]
+so that all coefficients of $f-Q^2$ in degrees $m,m+1,\ldots,2m$ vanish.
+Start with $q_m=s$.  For $j=m-1,m-2,\ldots,0$, set
+\[
+ q_j=\frac{1}{2s}
+ \left(f_{m+j}-
+   \sum_{\substack{j<i<m,\ j<k<m\\i+k=m+j}}q_iq_k\right).
+\tag{SQ}
+\]
+The sum uses only coefficients already defined.  Indeed, a term of degree
+$m+j$ in $Q^2$ either uses one coefficient of degree $m$ and the coefficient
+of degree $j$, or has both indices strictly greater than $j$.  The former
+two terms total $2s q_j$.  Thus (SQ) sets the coefficient in degree $m+j$
+equal to $f_{m+j}$ and leaves every previously matched higher coefficient
+unchanged.  A finite downward induction verifies
+\[
+                         \deg(f-Q^2)<m
+\]
+unless $f-Q^2=0$, when the same coefficient assertion holds.
+
+Take any positive common multiple $D$ of the denominators of the $q_j$.
+Their product is sufficient; taking their least common multiple improves
+the numerical size.  Define
+\[
+                        A=DQ,\qquad R=D^2f-A^2.
+\]
+These are integer polynomials and satisfy (RC).  If $R\neq0$, its degree is
+less than $m$, so Theorem~\ref{thm:runge-certificate} applies immediately.
+If $R=0$, the constructor reports the exact exceptional case
+$f=Q^2$ in $\mathbb Q[X]$ and makes no finiteness claim.  Conversely, if
+$f$ is a rational polynomial square, its square root with leading
+coefficient $s$ has to obey the same triangular recursion, so this test
+does detect that case.  In particular every nonsquare monic integer
+polynomial of positive even degree is covered.  Every squarefree such
+polynomial is nonsquare and therefore covered as well.
+
+This construction uses exactly $m$ rational coefficient steps.  Each step
+uses a bounded sum and rational addition, multiplication, and division by
+the explicitly nonzero integer $2s$.  Denominators can be represented
+without reduction, or reduced by the primitive recursive Euclidean
+algorithm.  Clearing denominators, checking that the remainder is nonzero,
+and checking the final coefficient identity are finite arithmetic
+operations.  There is no search for a height bound with an unknown stopping
+criterion.  The bounds can be large, and no claim of practical efficiency
+is part of the theorem.
+
+The restrictions should be kept visible.  For example, the displayed
+constructor does not handle an odd-degree cubic or an even-degree
+polynomial with a nonsquare positive leading coefficient.  Such a
+rejection says that this constructor does not provide the certificate;
+it says nothing about whether another method proves finiteness for the
+curve.  Conversely, a zero remainder must not be ignored: the integer
+polynomial $f(X)=(X^2+1)^2$ has the infinitely many points
+$(x,\pm(x^2+1))$.
+
+\subsection{A complete family in every positive hyperelliptic genus}
+
+\begin{theorem}[Uniform exact classification]
+\label{thm:runge-all-genera}
+For every integer $m\geq2$, the integral solutions of
+\[
+                         y^2=x^{2m}+x+1
+\]
+are exactly
+\[
+                    (-1,-1),\quad(-1,1),\quad(0,-1),\quad(0,1).
+\]
+\end{theorem}
+
+\begin{proof}
+Use $D=1$, $A=X^m$, and $R=X+1$.  Then
+$D^2f=A^2+R$, $\deg R=1<m$, $\alpha=0$, and $\beta=2$.
+The certificate theorem gives $|x|\leq2$.  It remains to check just five
+integers.
+
+For $x=-1$ or $x=0$, the right side is $1$, giving exactly $y=\pm1$.
+For $x=1$ it is $3$, strictly between the consecutive squares $1$ and $4$.
+For $x=2$, put $k=2^m\geq4$.  The right side is $k^2+3$, and
+\[
+                         k^2<k^2+3<(k+1)^2,
+\]
+because $(k+1)^2-k^2=2k+1\geq9$.  For $x=-2$ it is $k^2-1$, and
+\[
+                        (k-1)^2<k^2-1<k^2,
+\]
+because $k^2-1-(k-1)^2=2k-2>0$.
+An integer square cannot lie strictly between consecutive natural-number
+squares: its absolute square root would have to be a natural number
+strictly between the two consecutive integers.  This eliminates the
+remaining values of $x$.  Substitution checks each of the four listed
+points, completing both directions.
+\end{proof}
+
+Here the constant list of four points is already a uniform constructive
+output; no growth of the list with the genus parameter is necessary.
+The exponent $2m$ is part of the input, and exponentiation is primitive
+recursive.  The argument uses only the finite coefficient certificate and
+inequalities between integers.  It does not assume a general theorem
+about rational points or integral points on high-genus curves.
+
+For completeness, these examples really do represent smooth positive-genus
+curves, rather than a collection of singular rational equations.  Set
+$f_m=X^{2m}+X+1$.  A common zero $\xi$ of $f_m$ and its derivative would
+satisfy the polynomial identity
+\[
+       2m f_m(X)-X f_m'(X)=(2m-1)X+2m
+\]
+and hence $\xi=-2m/(2m-1)$.  This is a reduced nonintegral rational number
+for $m\geq2$.  A rational root of a monic integer polynomial is an integer:
+writing it as $p/q$ in lowest terms and clearing denominators shows
+$q\mid p^{\deg f}$, so $q=1$.  Thus no such common zero exists, and $f_m$
+is squarefree.  An alternative finite certificate is reduction modulo
+$2$, where $f_m'$ becomes the constant polynomial $1$.
+
+The affine equation is nonsingular in characteristic zero: a singular
+point would have $2y=0$, $f_m(x)=0$, and $f_m'(x)=0$, which has just been
+excluded.  At infinity put $t=1/x$ and $w=y/x^m$.  The equation becomes
+\[
+                         w^2=1+t^{2m-1}+t^{2m}.
+\]
+At $t=0$ there are exactly the two rational points $w=1$ and $w=-1$;
+both are smooth because the derivative with respect to $w$ is $2w\neq0$.
+The smooth completion is the double cover of the projective line branched
+at the $2m$ simple finite roots of $f_m$, with no ramification at infinity.
+The usual hyperelliptic genus calculation is
+$2g-2=2(-2)+2m$, giving $g=m-1$.  This geometric identification explains
+the range of the examples.  The arithmetic classification above is
+independent of that genus calculation and requires none of its geometry
+as an additional axiom of the arithmetic proof.
+
+\subsection{A sharper quartic calculation and a divisor algorithm}
+
+The symmetric quartic family admits an especially transparent certificate
+and sharper numerical bounds.  Let $a,b\in\mathbb Z$ and put
+$\Delta=a^2-4b$.  Assume $\Delta\neq0$.  A solution of
+\[
+                         y^2=x^4+ax^2+b
+\]
+satisfies
+\[
+ (2x^2+a-2y)(2x^2+a+2y)=\Delta.
+\tag{QF}
+\]
+Write the two factors as $u,v$ and let $d=|\Delta|$.
+Both are nonzero and $|u|+|v|\leq d+1$ by
+Lemma~\ref{lem:runge-product-bound}.  Since
+$u+v=4x^2+2a$ and $v-u=4y$, we obtain the useful signed bounds
+\[
+                    4x^2\leq d+1-2a,
+                 \qquad 4|y|\leq d+1.
+\tag{QB}
+\]
+If the first right side is negative, the equation has no integral points.
+Otherwise one may take
+\[
+ H=\left\lfloor\sqrt{\left\lfloor(d+1-2a)/4\right\rfloor}\right\rfloor,
+ \qquad K=\left\lfloor(d+1)/4\right\rfloor.
+\]
+For the more general certificate theorem one could simply take
+$D=2$, $A=2X^2+a$, and $R=4b-a^2$, giving the less sharp but still explicit
+bound $|x|\leq |a|+|\Delta|$.
+
+There is also a complete algorithm that avoids scanning this rectangle.
+Enumerate the nonzero integers $u$ in $[-d,d]$ and retain those dividing
+$\Delta$.  Set $v=\Delta/u$.  For each ordered factor pair test whether
+\[
+           z=\frac{u+v-2a}{4},\qquad y=\frac{v-u}{4}
+\]
+are integers, whether $z\geq0$, and whether $z$ is an integer square.
+If $z=x_0^2$, return $(x_0,y)$ and $(-x_0,y)$, removing duplicates.
+Every solution supplies exactly such a factor pair by (QF), so none is
+missed.  Conversely the displayed reconstruction gives
+$2z+a=(u+v)/2$ and $2y=(v-u)/2$; their difference of squares is
+$uv=\Delta$.  Expanding and substituting $\Delta=a^2-4b$ yields
+$y^2=z^2+az+b$, the original equation with $z=x_0^2$.  Thus every returned
+pair is valid.  Divisibility, the congruences modulo $4$, and the square
+test are all bounded decisions.
+
+For a concrete positive-genus example, choose $a=7$ and $b=1$, so
+$\Delta=45$.  The bounds give $x^2\leq8$ and $|y|\leq11$.
+In (QF), $u+v=4x^2+14>0$ and $uv=45>0$, so both factors are positive.
+Up to order the positive factor pairs are
+$(1,45)$, $(3,15)$, and $(5,9)$.  They give respectively
+$z=8,1,0$.  The first is not a square; the latter two give exactly
+\[
+                         (0,\pm1),\qquad(\pm1,\pm3).
+\]
+This is a complete list of six points.  It is verified by the factor
+argument, not by interpreting a finite experimental search as complete.
+
+More generally the quartic polynomial $X^4+aX^2+b$ is squarefree when
+$b\Delta\neq0$.  A repeated root would have either $x=0$, forcing $b=0$,
+or $2x^2+a=0$, forcing $b-a^2/4=0$.  Both alternatives are excluded.
+Its smooth completion is therefore a genus-one curve, with two rational
+points at infinity.  The assumptions hold for $a=7,b=1$.
+The arithmetic bound itself only requires $\Delta\neq0$, so it also
+handles some singular examples.  When $\Delta=0$, integrality forces $a$
+to be even and
+$X^4+aX^2+b=(X^2+a/2)^2$; in that case there are infinitely many integral
+points.  The excluded zero remainder is therefore a necessary distinction
+for this particular family.
+

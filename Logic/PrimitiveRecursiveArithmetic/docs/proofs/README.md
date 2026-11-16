@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives on 14 and
-15 November 2026: 33 to `docs/drafts`, and 10 to
+15 November 2026: 33 to `docs/drafts`, and 11 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -32,7 +32,7 @@ reason. Its directory column gives `<area>/<directory>`.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `ignored` | 44 | The member matches the repository's `.gitignore`: 32 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests and 12 `.log` files from LaTeX and Lean builds. It is available only from the delivered archive. |
+| `ignored` | 45 | The member matches the repository's `.gitignore`: 33 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests and 12 `.log` files from LaTeX and Lean builds. It is available only from the delivered archive. |
 | `sibling-packet` | 13 | `puiseux_ipra` bundles `dependencies/FTA_iPRA/`, a byte-identical copy of the packet filed in [`algebra/FTA_iPRA`](algebra/FTA_iPRA/). The reference column gives the placed file, except for the copy of `SHA256SUMS`, which is ignored in both. |
 | `sibling-archive` | 1 | `zeta_zeros_ipra_2026-11-15` bundles `dependencies/zeta_functional_equation_ipra.zip`, a byte-identical copy of the delivered archive filed in [`analytic-number-theory/zeta_functional_equation_ipra`](analytic-number-theory/zeta_functional_equation_ipra/). |
 | `repository-copy` | 17 | `zeta_zeros_ipra_2026-11-15` bundles `sources/Deduction.lean`, `sources/NativeBiInterpretation.lean` and `sources/PR.lean`, byte-identical to the files of the same names in [`ConciseIPRA/Lean/ConciseIPRA`](../../ConciseIPRA/Lean/ConciseIPRA/). `isoperimetric_ipra_constructive_2026-11-15` bundles, under `reused/`, the earlier packet [`geometry/isoperimetric_ipra`](geometry/isoperimetric_ipra/) as filed here at `22afac4c9d`; 14 of its files are byte-identical to that packet. The reference column gives that file, relative to the repository root. |
@@ -49,11 +49,11 @@ To recover an omitted member, restore the archive from the commit that added it
 `ipra_polynomial_formulas_abel_ruffini` and `mollweide_circle_ipra`, replace `docs/drafts` with
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. The archives of
 `isoperimetric_ipra_constructive_2026-11-15`, `mordell_weil_ipra`, `zeta_ipra_proof_package`,
-`trigonometric_identities_ipra_2026-11-15` and `lagrange_inversion_ipra` were not committed, on
-Vladimir's instruction, so they cannot be restored from the history. The only omitted members
-of the first are its `reused/` copies, which are the files of `geometry/isoperimetric_ipra`.
-Three of the others omit only their ignored checksum manifests, and `lagrange_inversion_ipra`
-omits nothing:
+`trigonometric_identities_ipra_2026-11-15`, `lagrange_inversion_ipra` and `siegel_ipra` were not
+committed, on Vladimir's instruction, so they cannot be restored from the history. The only
+omitted members of the first are its `reused/` copies, which are the files of
+`geometry/isoperimetric_ipra`. Four of the others omit only their ignored checksum manifests,
+and `lagrange_inversion_ipra` omits nothing:
 
 ```bash
 git show <arrival>:docs/drafts/<archive>.zip > <scratch>/<archive>.zip
@@ -61,7 +61,7 @@ git show <arrival>:docs/drafts/<archive>.zip > <scratch>/<archive>.zip
 
 ## Packets
 
-The 43 archives hold 946 members: 871 placed here, 44 ignored, 13 in the bundled copy of
+The 44 archives hold 979 members: 903 placed here, 45 ignored, 13 in the bundled copy of
 a sibling packet, 1 nested copy of a sibling archive and 17 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -123,6 +123,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | [`minkowski_ipra`](diophantine-number-theory/minkowski_ipra/) | `057b790401` 2026-11-14 | `minkowski_ipra` | Minkowski's convex-body theorem. | 37 | 1 |
 | [`mordell_weil_ipra`](diophantine-number-theory/mordell_weil_ipra/) | *not committed* 2026-11-15 | `mordell_weil_ipra` | Constructive Mordell–Weil descent: a general primitive-recursive finite-descent theorem, generators for an elliptic curve relative to a supplied covering list, and an unconditional computation of E(Q) for y² = x³ − u⁴x and products of these. It says it does not give a uniform generator algorithm for arbitrary elliptic curves. | 33 | 1 |
 | [`pell_ipra_2026-11-15`](diophantine-number-theory/pell_ipra_2026-11-15/) | `b5a3ad0377` 2026-11-15 | `pell_ipra` | Pell equations for every nonsquare D ≥ 2, with an audit of their algorithms and induction invariants in iPRA. | 18 | 1 |
+| [`siegel_ipra`](diophantine-number-theory/siegel_ipra/) | *not committed* 2026-11-15 | `siegel_ipra` | Siegel's theorem on integral points: it says it does not prove the general theorem in iPRA. It proves a complete constructive Runge case with explicit height bounds and enumeration, the integral points of y² = x²ᵐ + x + 1 and of y² = x⁴ + ax² + b, and the logical link between a uniform iPRA proof and a height bound. It states that its native Lean results compile. | 32 | 1 |
 | [`transcendence_ipra`](diophantine-number-theory/transcendence_ipra/) | `c5093c20b5` 2026-11-14 | `transcendence_ipra` | Transcendence of e and π as explicit apartness bounds for nonzero integer polynomials. | 18 | 1 |
 
 ### Geometry

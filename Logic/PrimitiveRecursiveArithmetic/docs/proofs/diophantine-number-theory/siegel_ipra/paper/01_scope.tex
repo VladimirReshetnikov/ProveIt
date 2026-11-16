@@ -1,0 +1,135 @@
+\section{The requested theorem and the actual result}
+
+\subsection{The mathematical statement}
+
+Fix a number field $K$, its ring of integers $\mathcal O_K$, and a smooth
+geometrically integral affine curve $C$ over $K$ with a specified embedding
+in affine space. An integral point is a tuple in $\mathcal O_K^n$ satisfying
+the defining equations of that affine presentation. Let $\overline C$ be
+the smooth projective completion and let $g$ be its geometric genus.
+Siegel's theorem states that
+\[
+ g\ge1\quad\Longrightarrow\quad C(\mathcal O_K)\text{ is finite}.
+\]
+The more general Siegel--Mahler statement permits a finite set $S$ of places
+containing the infinite places and the ring $\mathcal O_{K,S}$ of elements
+integral outside $S$. If $r$ is the number of geometric points in
+$\overline C\setminus C$, the sufficient condition is $g\ge1$ or $r\ge3$.
+An affine curve has $r\ge1$, so this condition is equivalent to
+$2g-2+r>0$. We retain the ordinary-integral, positive-genus statement as
+the requested goal. The classical background is discussed in
+\cite{BiluIllengo2009,CorvajaZannier2002}.
+
+The embedding and the deleted points matter. A birational equivalence of
+smooth projective curves can introduce denominators, and it generally does
+not take the original integral-point problem to the integral-point problem
+of an arbitrary new affine equation. Thus replacing a curve by a convenient
+equation requires a proved, effective comparison of the integral models.
+
+For example, the existence of hyperelliptic equations for genus-two curves
+does not settle all their integral-point problems. Corvaja--Lombardo--Zannier
+explain precisely this distinction for curves with one point removed, and
+report that a general terminating procedure for their integral-point sets
+is not known \cite[Introduction and Remark 1.2]{CorvajaLombardoZannier2024}.
+Our explicit results concern their stated equations over $\Z$. They do not
+erase this dependence on the affine presentation.
+
+\subsection{Why a full affirmative answer is not claimed}
+
+The usual classical theorem does not, in general, provide a computable bound
+on the sizes of the points. A constructive theorem producing a finite
+complete list, or a bound followed by finite search, would supply that
+missing information. In iPRA the witness consequence is particularly
+strong: under decidable input hypotheses a uniform proof would yield a
+primitive recursive bound. Section~\ref{sec:logical-audit} proves this
+conditional implication carefully.
+
+This is a serious obstacle, not a proof of impossibility. We neither prove
+that Siegel's theorem is independent of iPRA nor claim that the effective
+problem cannot be solved. Moreover, the user did not specify that
+``finite'' must mean a positive complete list. A bound on the \emph{number}
+of points is a different meaningful constructive target. That target does
+not automatically settle the height problem. A complete iPRA proof of the
+general cardinality formulation is also absent here.
+
+The recent primary source above and the older effective results describe
+many cases with computable solutions. This report does not claim that
+positive genus itself forces ineffectivity, or that all genus-two models
+are beyond effective methods. The open general step and the elementary
+families below must be distinguished.
+
+\subsection{Results established in the report}
+
+The main arithmetic theorem applies to a checkable finite certificate,
+not to a promised numerical bound. Write $A(X)=a_mX^m+\cdots+a_0$ with
+$a_m\ne0$, and let $R(X)=\sum_i r_iX^i$. Suppose
+\[
+ D^2f(X)=A(X)^2+R(X),\qquad
+ D\in\Z_{>0},\quad m\ge1,\quad\deg R<m,\quad R\ne0.
+\]
+Then every integral point $y^2=f(x)$ satisfies
+\[
+ |x|\le B_x:=\sum_{i<m}|a_i|+\sum_i|r_i|,
+ \qquad
+ |y|\le B_y:=\sum_i |f_i|\max(1,B_x)^i.
+\]
+These are explicit integer bounds, and both the certificate and the
+enumeration can be computed by primitive recursion. The hypotheses are
+verified coefficient by coefficient. In particular, the certificate
+does not contain an assertion about all solutions as an unchecked field.
+
+We give a uniform certificate constructor for every nonsquare integral
+polynomial $f$ of even positive degree whose leading coefficient is a
+nonzero integer square. When $f$ is squarefree of degree $2m\ge4$, this
+gives a genuine positive-genus instance of Siegel finiteness. The proof
+is an elementary instance of Runge's method: two integral quantities
+cannot be nonzero factors of a smaller integer.
+
+We additionally give a sharper factor-divisor algorithm for
+$y^2=x^4+ax^2+b$, a complete six-point classification for $a=7,b=1$,
+and a four-point classification valid in every positive genus. No
+claim of novelty is made for the underlying factorization or Runge
+principle; the purpose is an explicit arithmetic proof and a transparent
+formalization interface.
+
+\subsection{Repository snapshot and reuse}
+
+The repository was inspected through the GitHub connector at revision
+\begin{center}\small\ttfamily
+7eeb3c0e821594d5d5ebcfbaf4bdba64819e3502.
+\end{center}
+The actual foundation supplies primitive recursive syntax, intuitionistic
+natural deduction, quantifier-free induction, and faithful translation
+to the concise native calculus. We use those interfaces in
+Section~\ref{sec:lean}; we do not infer an arithmetic theorem from
+bi-interpretability alone.
+
+The repository's proof-packet index explicitly says that the packets were
+filed as delivered, without being rerun or verified at placement.
+The inspected Faltings package explicitly leaves general Faltings in iPRA
+unproved; the Mordell--Weil package retains a covering-list hypothesis in
+its general descent theorem; and the Roth package leaves a general
+effective cutoff unproved. Their existence therefore supplies no verified
+general Siegel height bound. These observations are limited to the
+identified files and are not an exhaustive correctness review of ProveIt.
+Exact paths and the pinned source manifest accompany the archive
+\cite{ProveIt2026}.
+
+\subsection{Status at a glance}
+
+\begin{center}
+\begin{tabular}{@{}p{0.48\linewidth}p{0.43\linewidth}@{}}
+\toprule
+Claim & Status in this archive\\
+\midrule
+General positive Siegel finiteness in iPRA & Not proved\\
+General cardinality Siegel finiteness in iPRA & Not proved\\
+General negative translation in iPRA & Not proved\\
+Explicit Runge bound and certificate constructor & Fully developed arithmetic proof\\
+Exhaustive search for the certified family & Proved; executable reference code\\
+Every-genus four-point family & Complete arithmetic classification\\
+Biquadratic factor bound and six-point example & Written proof and compiled native Lean proof\\
+Embedded \texttt{Prf PRAAx} derivations & Detailed implementation plan; not constructed\\
+\bottomrule
+\end{tabular}
+\end{center}

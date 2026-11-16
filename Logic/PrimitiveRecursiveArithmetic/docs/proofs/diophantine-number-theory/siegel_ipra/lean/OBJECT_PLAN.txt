@@ -1,0 +1,252 @@
+OBJECT-iPRA COMPILATION PLAN AND NATIVE LEAN AUDIT
+
+Status: specification and implementation plan, not a completed embedded proof.
+The target is a term of type Prf PRAAx [] rungeFormula in the namespace
+LeanProofs.ConciseIPRA.  A native Lean theorem about Int or List is not itself
+such a term.  The existing pra_iff_native bridge may transport proofs between
+the embedded presentations covered by its actual type; it is not a general
+compiler from arbitrary Lean proofs to restricted arithmetic derivations.
+
+1. INDEPENDENT AUDIT OF THE CURRENT NATIVE MODULES
+
+Compiler used: Lean 4.32.0, with the supplied toolchain and Std only.  The audit
+imports the compiled Arithmetic, FiniteSearch and QuarticExample modules and
+uses #print axioms on their theorems.  On the final versions inspected:
+
+  positive_product_sum       propext, Quot.sound
+  factor_natAbs_sum          propext, Quot.sound
+  difference_of_squares      propext, Quot.sound
+  square_gap                 propext, Quot.sound
+  quartic_factorization      propext, Quot.sound
+  quartic_bounds             propext, Quot.sound
+  no_square_between          propext, Quot.sound
+  mem_scan                   propext, Quot.sound
+  scan_covers                propext, Quot.sound
+  mem_le_listBound           propext
+  covers_bounded             propext
+  list_iff_bound             propext, Quot.sound
+  prefix_always_bounded      no axioms
+  bound_not_unbounded        propext, Quot.sound
+  quartic_seven_complete     propext, Quot.sound
+
+There is no Classical.choice or sorryAx dependency in those declarations.
+This establishes native Lean kernel checking with the reported standard
+axioms.  It does not establish object-iPRA derivability, restricted induction,
+or an axiom-free interpretation of these native proofs.  In particular,
+FiniteSearch quantifies over arbitrary p : Nat -> Bool in Lean; the first-order
+arithmetic version must specialize p to a fixed primitive recursive algorithm
+on numerical input data.  The checked QuarticExample theorem is a complete
+classification for y^2=x^4+7x^2+1.  Arithmetic checks the integer gap and
+biquadratic bounds, not the polynomial Runge theorem for arbitrary lists.
+
+Specifications.lean separately defines polynomial data, a finite coefficient
+certificate, bounds, enumeration, and named target propositions.  These are
+definitions, not axioms asserting the targets and not proofs of the targets.
+RungeBoundTarget, RungeEnumerationTarget, GenusFamilyTarget,
+PositiveSiegelTarget, and CountSiegelTarget must remain visibly unproved until
+corresponding theorem declarations have been supplied.  The admissible Boolean
+parameter in the two general targets has no built-in geometric meaning.
+
+2. FIRST-ORDER DATA AND THE CLOSED TARGET FORMULA
+
+Fix canonical, injective natural-number codes for signed integers and finite
+integer arrays.  Use total primitive recursive functions for length, lookup
+(default 0), update, absolute value, signed addition and multiplication,
+comparison, power, bounded sum, bounded all/any, and finite-list filtering.
+Keep this finite collection of algorithms fixed.  In particular, evaluation
+of a polynomial coefficient array is one fixed primitive recursive function;
+it is not evaluation of arbitrary syntax for primitive recursive programs.
+There is no primitive recursive universal evaluator for all PR program codes.
+
+For a code c=(f,A,R,D), let Cert(c)=1 mean exactly the finite conditions of
+RungeCertificate: D>0; len(A)>=2; A[len(A)-1] nonzero; len(R)<len(A); some
+coefficient of R nonzero; and D^2 f_i=(A*A)_i+R_i for all i less than
+L=max(len(f),2 len(A),len(R)).  The bounded universal test is implemented by
+a fixed primitive recursion, hence is represented by one Boolean equation.
+Coefficients at every larger index vanish; prove this support fact, rather
+than overlooking coefficients outside the checked range.
+
+Put n=len(A)-1, S=sum_{i<n}|A_i|, T=sum_i|R_i|, H=S+T, and
+K=sum_i |f_i| (max(1,H))^i.  T>=1 follows from the nonzero-remainder test.
+All these expressions are terms in the PR language.  Encode x,y as signed
+integers and define Sol(f,x,y) by y*y=Eval(f,x).
+
+The intended rungeFormula is the universal closure in c,x,y of the matrix
+
+  Cert(c)=1 -> (Sol(f,x,y) -> (|x|<=H(c) and |y|<=K(c))).
+
+Use the actual PTm and Fm constructors from upstream, with the appropriate
+de Bruijn indices and binder shifts.  The displayed matrix is quantifier-free
+once the finite tests and sums are named PR functions.  This document does
+not pretend that this schematic display is an already compiled Lean term.
+The final deliverable of this stage is:
+
+  def rungeProof : Prf PRAAx [] rungeFormula := ...
+
+with a real proof term and no new axiom or unresolved placeholder.
+
+3. PR DESCRIPTIONS AND BASIC ARITHMETIC DERIVATIONS
+
+Construct PR descriptions using zero, succ, proj, comp, and prec for the fixed
+algorithms above, and use the associated defining equations in PRAAx.  Bounded
+search is a primitive recursion through its prescribed bound with a remembered
+answer; it must not be represented by unrestricted minimization.  A code for
+an input polynomial is ordinary data read by the fixed evaluation algorithm.
+
+Prove signed ring identities and elementary natural inequalities in the
+embedded theory.  In particular supply the factor lemma: if u*v=d and d!=0,
+then |u|+|v|<=|d|+1.  Its numerical core is a+b<=ab+1 for a,b>=1, obtained
+from (a-1)(b-1)>=0.  From (z-a)(z+a)=r!=0 obtain 2|a|<=|r|+1 and then
+|a|<=|r|, since |r|>=1.  Every hypothesis and conclusion here is quantifier-free
+in the chosen signed-integer encoding.  This reconstructs the substance of
+the native square_gap proof without importing its Lean proof term.
+
+Where an induction is used, instantiate PRA.qfInd only after providing the
+required Fm.QF evidence for its object-language formula.  Generalization over
+parameters is a logical inference after the induction, not unrestricted
+induction over the final universally quantified theorem.
+
+4. HORNER EVALUATION AND POLYNOMIAL IDENTITIES
+
+For an array f of length l, set V_0=0 and
+V_{k+1}=f[l-1-k]+x V_k while k<l.  A precise induction invariant is
+
+  k<=l -> V_k = Sum_{j<k} f[l-k+j] x^j.
+
+The sum on the right is a fixed PR function.  Thus the invariant is a QF
+implication between PR equations, with l,f,x as parameters.  At k=l it proves
+agreement of Horner evaluation with the monomial sum.  Index subtraction is
+truncated natural subtraction, used only inside the range where it agrees
+with the intended index.
+
+Derive Eval(scale(d,f),x)=d Eval(f,x), evaluation of addition, and evaluation
+of convolution.  For convolution, use nested bounded-sum induction, recording
+the sum over the first k rows of the coefficient product table.  One suitable
+row invariant is
+
+  RowSum(k,f,g,x) = (Sum_{i<k} f_i x^i) * Eval(g,x),
+
+where RowSum is the bounded double sum with i<k and j<len(g), and the support
+and index arithmetic are explicit PR identities.  Reindex the finite double
+sum by i+j to match convolution.  The coefficient identity test then proves
+the QF evaluation equation D^2 Eval(f,x)=Eval(A,x)^2+Eval(R,x).
+
+5. COEFFICIENT NORMS, NONZERO VALUES, AND THE X BOUND
+
+Let t=|x|.  For t>=1 and an array b of length at most n, define
+E_k=Sum_{i<k} b_i x^i and N_k=Sum_{i<k}|b_i|.  The low-degree norm invariant is
+
+  k<=n -> |E_k| <= N_k * t^(n-1).
+
+In the successor step k<n, use |x^k|=t^k and t^k<=t^(n-1), followed by the
+triangle inequality.  Prove power monotonicity by QF induction on its exponent;
+all exponent bounds are numerical parameters.  This yields
+|Eval(R,x)|<=T*t^(n-1) and the analogous estimate for the lower terms of A.
+
+The leading coefficient of A is a nonzero integer, so its absolute value is
+at least 1.  The triangle inequality, expressed without truncated subtraction,
+gives
+
+  t^n <= |Eval(A,x)| + S*t^(n-1).
+
+If t>H=S+T, then t>=1 and t^(n-1)>=1.  Substituting t>=S+T+1 into this
+inequality gives |Eval(A,x)|>T*t^(n-1)>=|Eval(R,x)|.
+
+The square-gap lemma also requires Eval(R,x)!=0, not just R!=0 as a polynomial.
+Prove this separately.  A bounded search chooses the greatest index j with
+R_j!=0.  Its QF invariant records that no larger inspected coefficient is
+nonzero, using a bounded-all characteristic function.  If j=0, the value is
+the nonzero constant.  If j>=1, the same leading-term argument yields
+
+  t^j <= |Eval(R,x)| + T_low*t^(j-1),
+
+where T_low=sum_{i<j}|R_i|<=T.  If Eval(R,x)=0 and t>T, cancel the positive
+t^(j-1) to get t<=T_low<=T, a contradiction.  Since t>H implies t>T, the
+needed nonzero value follows.
+
+For an integral point, put z=D*y.  The certificate evaluation identity gives
+z^2=Eval(A,x)^2+Eval(R,x).  Square_gap therefore gives
+|Eval(A,x)|<=|Eval(R,x)|, contradicting the preceding strict inequality.
+Decidability of the numerical order converts the exclusion of t>H to t<=H.
+No excluded-middle instance for an arbitrary unbounded formula is needed.
+
+6. THE Y BOUND AND EXACT FINITE ENUMERATION
+
+With |x|<=H, let U=max(1,H).  Use the partial-sum invariant
+
+  |Sum_{i<k} f_i x^i| <= Sum_{i<k}|f_i| U^i
+
+to prove |Eval(f,x)|<=K.  The point equation gives |y|^2<=K; the elementary
+inequality v<=v^2 for natural v then gives |y|<=K.  This deliberately avoids
+requiring a square-root function in the proof of completeness.
+
+Enumerate x=-H,...,H and y=-K,...,K by two fixed bounded loops, and filter the
+rectangle by Sol.  Equivalently flatten it into N=(2H+1)(2K+1) indices using
+division and remainder.  For a fixed candidate code q, a precise filter
+invariant after k indices is
+
+  Member(q,Output_k)=1 <->
+    ExistsBounded(i,k, Decode(i)=q and Sol(Decode(i)))=1.
+
+Every right-side quantifier is represented by a bounded Boolean recursion,
+so this equivalence is QF.  Induction in k proves soundness and completeness
+for the rectangle.  The height theorem supplies the missing implication that
+every integral point occurs in that rectangle.  Universal generalization over
+q follows afterward.  Canonical coding or equality of decoded pairs prevents
+multiple representations of one point from changing the statement.
+
+The faster implementation that scans x and computes a bounded integer square
+root needs an additional verified root algorithm.  It is optional for the
+object proof: rectangle enumeration already gives a primitive recursive exact
+solver and has simpler loop invariants.
+
+7. FINITE RATIONAL SQUARE COMPLETION AND DENOMINATOR CLEARING
+
+The bound theorem accepts a certificate and does not depend on constructing
+one.  A separate constructor can nevertheless be compiled.  Given degree 2m
+and a positive integer s with leading coefficient s^2, form rational
+q_m=s and, downward for j=m-1,...,0,
+
+  q_j = (f_{m+j} - Sum_{i+k=m+j, i>j, k>j} q_i q_k)/(2s).
+
+Store a rational as a signed numerator and positive denominator.  Arithmetic
+uses finite integer products and sums; equality is cross multiplication.  The
+invariant after k downward steps is that the coefficients of Q^2 and f agree
+at every index t with 2m-k<=t<=2m, and all unassigned lower q_i remain zero.
+Encode this finite coefficient range by a bounded-all PR test.  The next
+coefficient is linear in q_j with nonzero coefficient 2s; its defining equation
+cancels it.  At k=m the remainder f-Q^2 has degree less than m.
+
+To match reduced fractions, compute gcd by a bounded scan of common divisors
+up to |p|+d, where d>0 is the denominator.  The invariant records that the
+remembered g is positive, divides both inputs, and is at least every inspected
+common divisor; the last clause is a bounded-all test.  Division by g is exact
+and preserves the represented rational.  A faster Euclidean implementation
+would instead require an explicit iteration bound and its remainder invariant.
+Either choice is PR; an unbounded while-loop cannot simply be cited as such.
+
+Clear denominators with D_0=1 and
+D_{k+1}=D_k*d_k/gcd(D_k,d_k).  The invariant is D_k>0 and d_i divides D_k for
+each i<k.  Exact divisibility and the two common-multiple identities prove
+preservation.  Minimality of this common denominator is unnecessary.  One may
+alternatively use the product of denominators and omit gcd from this stage.
+Set A_i=num(q_i)*(D/den(q_i)) and R=D^2 f-A^2.  The cancellation invariant
+gives deg(R)<m.  Test R!=0 explicitly.  If R=0 the input is a rational
+polynomial square and this certificate theorem deliberately does not apply.
+Deriving R!=0 from a separate squarefreeness hypothesis is an additional
+polynomial lemma, not part of denominator clearing.
+
+8. COMPLETION GATES
+
+First complete native polynomial proofs of RungeBoundTarget and
+RungeEnumerationTarget, or reconstruct their arguments directly in the object
+language.  Then provide the fixed PR descriptors, object formulas, Fm.QF
+certificates for the displayed invariants, and the Prf PRAAx derivations.
+Transport through upstream equivalences only within their actual scope.
+Finally check the complete proof term and publish its precise import/axiom
+dependencies.  None of these gates follows from a few successful executions
+of the Python solver or from compiling an unproved target definition.
+
+Completing this plan proves the explicit Runge subcase and its finite solver.
+It supplies neither the geometric implementation of general admissibility nor
+the global positive or cardinality form of Siegel's theorem.

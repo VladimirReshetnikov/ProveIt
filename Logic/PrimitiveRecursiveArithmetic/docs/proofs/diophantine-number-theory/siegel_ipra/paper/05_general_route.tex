@@ -1,0 +1,135 @@
+\section{The general theorem: a precise remaining route}
+\label{sec:general-route}
+
+The elementary proof leaves the original general request open. This section
+identifies a constructive target that does not demand a height bound, proves
+its finite combinatorial last step, and specifies the missing dependencies.
+It is a research program, not a claim that its hard theorem has been proved.
+
+\subsection{A short audit of the classical route}
+
+The Subspace Theorem approach uses a Riemann--Roch space of functions with
+controlled poles at the boundary. Local estimates turn integral points
+into solutions of linear-form inequalities. The Subspace Theorem confines
+their images to finitely many proper subspaces; a nonzero function with
+bounded poles has only boundedly many zeros, so each subspace contributes
+finitely many curve points. Covers and lifting arguments handle the
+positive-genus cases with too few boundary points
+\cite{CorvajaZannier2002}.
+
+This outline has not verified the strength of those dependencies in iPRA.
+Qualitative compactness, arbitrary infinite subsequences, an unlocated
+exceptional subspace, or a nonconstructive cover cannot be accepted as
+hidden axioms. Each use needs a finite replacement with explicitly coded
+data and permitted induction.
+
+Quantitative Subspace Theorems control the \emph{number} of exceptional
+subspaces under explicit hypotheses; they do not thereby construct them.
+Evertse's Theorems 2.1--2.2 give relevant quantitative forms
+\cite{Evertse2010}. The following finite formulation avoids assuming that
+a global exceptional set has already been found.
+
+\subsection{A finite covering lemma}
+
+\begin{proposition}[Finite cover to cardinality]
+Let $P$ be a decidable predicate on canonical point codes, let $\Phi$ map
+point codes to finite vectors over a coded field, and let $M,D\in\N$.
+Suppose the following two contracts have been proved.
+
+For every finite list $p_1,\ldots,p_t$ of pairwise distinct points satisfying
+$P$, the vectors $\Phi(p_i)$ admit a cover by at most $M$ proper linear
+subspaces, with decidable membership in each supplied subspace.
+
+For every subspace $W$ occurring in such a cover, at most $D$ distinct
+points in the list have image in $W$.
+
+Then no list of $MD+1$ pairwise distinct points satisfying $P$ exists.
+\end{proposition}
+
+\begin{proof}
+Suppose $t=MD+1$ distinct points are given. Obtain a cover
+$W_1,\ldots,W_s$ with $s\le M$. For each of the finitely many points,
+test the subspaces in order and assign it to the least index $j$ for
+which $\Phi(p_i)\in W_j$. The covering contract ensures that the finite
+search succeeds. No selection from an infinite family occurs.
+
+Let $n_j$ count the points assigned to $j$. Each point is assigned
+exactly once, so $t=\sum_{j=1}^s n_j$. Every point counted by $n_j$
+lies above $W_j$, and the input points are distinct; hence $n_j\le D$.
+Consequently $MD+1=t\le sD\le MD$, a contradiction. These sums,
+least indices, and counts are primitive recursive, and their
+equalities and inequalities have quantifier-free finite-loop proofs.
+\end{proof}
+
+Using the proposition for curves is conditional on proving its two
+contracts. It returns no height bound. If there are several local
+inequality systems, with respective bounds $M_i,D_i$, and at most $E$
+points in an explicitly enumerated exception box, the same assignment
+argument gives the cardinality bound
+\[
+                         E+\sum_i M_iD_i.
+\]
+No point outside the exception box has thereby been located.
+
+\subsection{Why finite covers can have finite certificates}
+
+Fix a list of $t$ vectors in dimension $n$. If a proper subspace $W$
+covers a sublist, replace $W$ by the span of that sublist. This new
+space remains inside $W$ and is proper. Finite Gaussian elimination
+selects a basis of at most $n-1$ input vectors, including the empty
+basis for a zero-dimensional span.
+
+For a particular tuple, therefore, a covering certificate may be sought
+among lists of at most $M$ subsets of at most $n-1$ of its $t$ vectors.
+There are at most $2^t$ candidate subsets and at most $(2^t+1)^M$
+padded lists of candidates. Rank, dependence, and membership have
+finite exact checks over rational numbers, or over a supplied
+number-field basis. These search limits are primitive recursive.
+
+The existence of a successful certificate for \emph{every} relevant tuple
+is still a mathematical theorem. The search can fail; executing it does
+not show that it always succeeds. The needed statement is a finite-tuple
+version of the quantitative Subspace Theorem, proved with the induction
+permitted in iPRA. No such proof is provided here. Assuming a global
+finite set of exceptional subspaces would silently introduce stronger
+positive information.
+
+\subsection{The geometric input to the fibre bound}
+
+Suppose $\phi_1,\ldots,\phi_n$ are linearly independent rational
+functions on a smooth projective curve whose poles are all bounded
+by an effective divisor $E$ of degree $D$. A proper linear
+subspace admits a nonzero annihilating linear functional. Its
+coefficients give a nonzero function $\sum a_i\phi_i$, by linear
+independence. Its poles are bounded by $E$. Equality of the degrees
+of its zero and pole divisors bounds its distinct zeros by $D$.
+
+This conditional geometric argument suggests the second contract.
+It does not construct the functions or their divisor data in arithmetic.
+An internal development must represent the function field, divisor,
+vector space, and independence certificate, then prove the zero-count
+lemma from those finite descriptions. An abstract divisor theorem in
+the host Lean library does not automatically discharge that obligation.
+
+\subsection{Explicit unresolved obligations}
+
+A general cardinality proof still needs finite presentations of the
+Riemann--Roch functions and their local expansions; a proof of the
+finite-tuple quantitative approximation theorem; bounds for its
+auxiliary polynomials and matrices using permitted induction; control
+of local case splits and the small-height part; and a quantitative
+cover-and-lift construction for the positive-genus one- or two-boundary
+cases, including all field and denominator changes. Finally, one must
+prove the zero-count contract and apply the finite covering lemma.
+
+These are mathematical dependencies. Describing them as standard,
+declaring Lean axioms for them, or storing them as unproved structure
+fields would not complete the requested proof.
+
+For the positive height/list version, the target is stronger: a
+uniform function bounding coordinates in the original affine model,
+with a correctness proof. The Runge theorem supplies this for its
+explicit family. It does not supply the general bound discussed by
+the primary sources. No independence or unprovability conclusion is
+drawn from the unresolved state of that step.
+

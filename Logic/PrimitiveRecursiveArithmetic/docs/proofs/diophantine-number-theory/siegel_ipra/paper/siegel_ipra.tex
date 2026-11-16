@@ -1,0 +1,76 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage{xcolor,listings,xurl,hyperref,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+ urlcolor=blue!45!black,pdftitle={Siegel's theorem and intuitionistic PRA},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Siegel's theorem and intuitionistic PRA}
+\fancyhead[R]{\small Constructive scope and explicit cases}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=0.25em,topsep=0.4em}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\height}{ht}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+ keepspaces=true,frame=single,framerule=0.3pt,rulecolor=\color{black!25},
+ showstringspaces=false}
+\title{Siegel's Theorem and Intuitionistic Primitive Recursive Arithmetic\\[0.6em]
+\large Explicit Runge bounds, complete positive-genus examples,\\
+and the unresolved general proof}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The full requested proof of Siegel's theorem in intuitionistic primitive
+recursive arithmetic is \emph{not established in this report}. Positive
+height-bounded finiteness would have strong effectivity consequences; a
+cardinality formulation is weaker and requires a different proof. We explain
+both distinctions, inspect the relevant ProveIt foundation, and identify the
+unproved general steps rather than postulating them.
+
+The constructive results proved here are unconditional and uniform. A finite
+polynomial identity $D^2f=A^2+R$, with $D>0$, $\deg R<\deg A$, and $R\ne0$,
+gives the explicit bound
+$|x|\le\sum_{i<\deg A}|a_i|+\sum_i|r_i|$ for every integral solution of
+$y^2=f(x)$. Such an identity is constructed by primitive recursive rational
+arithmetic whenever $f$ is nonsquare, of positive even degree, and has nonzero
+square leading coefficient. Finite enumeration is then exhaustive. In
+particular, $y^2=x^{2m}+x+1$ has exactly the four points
+$(-1,\pm1),(0,\pm1)$ for every $m\ge2$; these curves have genus $m-1$.
+We also prove a sharper quartic bound and a complete six-point example.
+The archive contains the detailed proofs, exact reference algorithms,
+compiled native Lean arithmetic and search lemmas, and a dependency-ordered
+plan for embedded iPRA derivations. The general Siegel and polynomial-list
+targets in the Lean specifications remain unproved.
+\end{abstract}
+\tableofcontents
+\newpage
+\input{01_scope}
+\input{02_logic}
+\input{03_runge}
+\input{04_arithmetic}
+\input{05_general_route}
+\input{06_lean}
+\input{07_validation}
+\input{references}
+\end{document}
