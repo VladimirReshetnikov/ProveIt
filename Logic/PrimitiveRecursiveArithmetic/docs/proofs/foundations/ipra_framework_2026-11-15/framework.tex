@@ -1,0 +1,136 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,hyperref,enumitem,longtable}
+\usepackage[T1]{fontenc}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\NN}{\mathbb N}\newcommand{\QQ}{\mathbb Q}\newcommand{\PR}{\mathrm{PR}}\newcommand{\iPRA}{\mathrm{iPRA}}\newcommand{\eps}{\varepsilon}
+\title{A Certificate-and-Modulus Framework for Constructive Mathematics in Intuitionistic Primitive Recursive Arithmetic}
+\author{Research note and formalization blueprint}\date{15 November 2026}
+\begin{document}\maketitle
+\begin{abstract}
+We develop an interface for expressing a broad range of mathematical proofs as quantifier-free primitive-recursive (PR) arithmetic.  It separates (i) finite data and verifiable certificates, (ii) quantitative approximation with specified moduli, (iii) stability/apartness information required for discontinuous constructions, and (iv) an internal proof in the object theory from an external Lean verification.  We give complete finitary proofs of the principal transfer lemmas, a constructive bounded-search theorem, an explicit rational limit-algebra theorem, and a uniform computability obstruction to an unrestricted exact-choice interface.  Applications explain how to restructure proof packets for analysis, geometry, algebra and Diophantine problems.  This is a reusable framework and not a claim to settle the general Faltings, Siegel, Roth or other unresolved packet targets.
+\end{abstract}
+\tableofcontents
+\section{Repository audit and logical scope}
+The repository \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic/docs/proofs} reports 48 archived proof packets.  Its README explicitly says these were filed without rerunning their Lean builds; some files are specification-only.  The \texttt{ConciseIPRA/Lean/ConciseIPRA/PR.lean} implementation exposes \texttt{PR}, \texttt{PTm}, \texttt{PRAAx}, \texttt{PRA.qfInd}, and defining-equation lemmas.  We use that object-theory boundary.  In particular, \emph{Lean proves a natural-number proposition} is not synonymous with \emph{there is a proof of the corresponding formula from \texttt{PRAAx}}.
+
+The audit identifies structurally different problems: the Puiseux packet documents an impossibility of uniform exact coefficients from arbitrary fast Cauchy names; the Euler--Rodrigues packet records an LLPO obstruction to choosing an exact axis without separation; the prime-distribution packet leaves Chebotarev, Siegel--Walfisz, and Bombieri--Vinogradov as targets; the Faltings and Siegel packets explicitly lack general height bounds; the Basel packet gives a particularly precise finite arithmetic goal, but its internal derivation is outstanding.  These are not interchangeable gaps.
+
+\section{A four-layer representation protocol}
+\begin{definition}[Finite presentation]
+A presentation type is a tuple of natural numbers $d\in\NN^r$ with a primitive-recursive well-formedness test $W(d)\in\{0,1\}$. A \emph{certificate relation} $C(d,c)$ is a primitive-recursive Boolean, with $c$ a finite natural-number code.  The intended theorem has the form $W(d)=1\land C(d,c)=1\Rightarrow R(d,c)=1$, where $R$ is a fixed PR Boolean or a finite conjunction of such Booleans.
+\end{definition}
+The phrase ``finite'' alone is insufficient: unbounded minimization is not a PR operation, and a general computable real is not automatically a finite presentation with decidable equality.  Encodings of lists, finite maps, rational pairs, polynomial coefficient arrays, grids, paths and finite probability distributions are PR via length-indexed pairing. Their correctness theorems must be established for the chosen codes, not assumed merely because the metalanguage has arrays.
+
+\begin{definition}[Quantitative name]
+A quantitative name for a real is a PR map $a:\NN\to\QQ$ with a specified PR modulus $\mu:\NN\to\NN$ such that for all $k$ and $m,n\ge\mu(k)$,
+\[|a(m)-a(n)|\le 2^{-k}.\tag{1}\]
+Absolute value of a signed fraction is implemented by sign/magnitude or a triple $(p,m,d)$ representing $(p-m)/d$, $d>0$, and all comparisons are cross-multiplied natural inequalities.  The assertion that (1) holds is an \emph{internal proof obligation}; giving a program for $a$ and $\mu$ by itself proves nothing.
+\end{definition}
+A complex value is a pair of quantitative real names.  The core language can also use approximate finite lattices and rational intervals; the common interface is \emph{an exact PR verifier plus a quantitative error budget}.
+
+\begin{definition}[Stability certificate]
+A positive rational $\delta$ is a stability certificate for a nonzero quantity $x$ if $|x|\ge\delta$. For a complex number use $|x|^2\ge\delta^2$; thus no square-root operation is needed in the verifier.  A branch certificate also records the finite disjoint alternatives and a gap separating their output regions.
+\end{definition}
+Inversion, sign selection, algebraic degree, square-free decomposition, exact eigenspaces, and certain geometric axes require stability information not delivered by an arbitrary Cauchy modulus.
+
+\begin{definition}[Proof object boundary]
+A fully internalized packet consists of (a) a concrete \texttt{PR k} code $f$, (b) the corresponding \texttt{PTm} and quantifier-free formula $\phi$, (c) a \texttt{Prf} derivation $\Gamma\vdash[\texttt{PRAAx}]\phi$, and (d) an external semantics theorem connecting the code to the familiar mathematical presentation.  Until (c) exists, the packet is an internal \emph{target}, not an iPRA theorem.
+\end{definition}
+
+\section{Three reusable finite proof mechanisms}
+\begin{lemma}[Bounded existential search]
+Let $P(n,j)\in\{0,1\}$ be PR and $B(n)$ PR. Set $s(n,0)=0$ and
+\[s(n,j+1)=\max\bigl(s(n,j),P(n,j)\bigr),\qquad j<B(n).\]
+Then $s(n,B(n))=1$ if and only if there is $j<B(n)$ with $P(n,j)=1$. More importantly, a witness can be returned without an unbounded minimization: define $w(n,0)=B(n)$ and update $w(n,j+1)=j$ when $w(n,j)=B(n)$ and $P(n,j)=1$, otherwise retain $w(n,j)$. Then $w(n,B(n))<B(n)$ iff the bounded existential holds, and in that case $P(n,w(n,B(n)))=1$.
+\end{lemma}
+\begin{proof}
+All functions are PR by primitive recursion and PR Boolean conditional. By induction on $j\le B(n)$, $s(n,j)=1$ exactly when some earlier test succeeds. Simultaneously, either $w=B(n)$ and no earlier test succeeds, or $w<j$ and $P(n,w)=1$. The base case is immediate. In the successor step, if a witness is already stored, it is retained; otherwise the new candidate is stored exactly if its test succeeds. The invariant is a Boolean combination of bounded statements, which are themselves PR fold tests, so its induction is quantifier-free after expanding the fixed PR symbols. \end{proof}
+\begin{lemma}[Finite-certificate composition]
+Suppose $V_1(d,c_1)$ and $V_2(d,c_1,c_2)$ are PR tests with internal iPRA derivations
+\[V_1=1\Rightarrow A(d,c_1)=1,\quad V_1=1\land V_2=1\Rightarrow B(d,c_1,c_2)=1.\]
+Then the paired certificate $c=\langle c_1,c_2\rangle$ and the PR verifier $V=V_1\wedge V_2$ yield an internal derivation $V=1\Rightarrow A=1\land B=1$.
+\end{lemma}
+\begin{proof}
+Projection of the pair is primitive recursive. The required conjunction is obtained by intuitionistic conjunction introduction and implication elimination, with the already given internal derivations composed after substituting the projections. No law of excluded middle is used. The point of recording the proof objects is that closure of the \emph{truth} of both verifiers in the standard model would not, by itself, supply this internal proof.\end{proof}
+\begin{lemma}[Finite descent with explicit range]
+Suppose $H(d,x)\in\{0,1\}$ and $h(d,x)\in\NN$ are PR, and a PR step map $T(d,x)$ has a proof of
+\[H(d,x)=1\land h(d,x)>0\Longrightarrow H(d,T(d,x))=1\land h(d,T(d,x))<h(d,x).\]
+Then from $H(d,x)=1$ there is a PR-produced $y=T^{h(d,x)}(d,x)$ with $H(d,y)=1$ and $h(d,y)=0$, provided the stated descent hypothesis is valid at every positive-height state.
+\end{lemma}
+\begin{proof}
+Use primitive recursion for $x_0=x$, $x_{t+1}=T(d,x_t)$. An induction for $t\le h(d,x)$ establishes $H(d,x_t)=1$ and $h(d,x_t)\le h(d,x)-t$, using truncated subtraction in the invariant. If the height was positive, the descent hypothesis decreases it by at least one. Consequently $h(d,x_{h(d,x)})\le0$ and hence vanishes. All induction matrices are quantifier-free combinations of PR equalities/inequalities; the external exposition of the invariant abbreviates a PR Boolean.\end{proof}
+These lemmas supply the combinatorial substrate for finite pigeonhole proofs, interval bisection, rational point searches with a given height cutoff, exact geometry certificates, and algebraic elimination with a given degree/height bound.
+
+\section{A quantitative analysis calculus}
+\begin{lemma}[Algebra of dyadic Cauchy names]
+Let $(a,\mu_a)$ and $(b,\mu_b)$ satisfy (1). The sum name $c(n)=a(n+2)+b(n+2)$ is Cauchy with modulus $\mu_c(k)=\max(0,\mu_a(k+1)-2,\mu_b(k+1)-2)$ when interpreted as a shifted-index evaluator; equivalently and more simply, define $c(k)=a(\mu_a(k+2))+b(\mu_b(k+2))$. Then $|c(k)-c(l)|\le 2^{-k}+2^{-l}$ for $l\ge k$, after the customary strengthening of the Cauchy modulus by increasing precision. In particular a canonical precision-indexed output can use $c(k+2)$ and obtain a $2^{-k}$ Cauchy tail bound.
+\end{lemma}
+\begin{proof}
+For any $p,q\ge K=\max\{\mu_a(k+1),\mu_b(k+1)\}$, the rational triangle inequality gives
+$|(a(p)+b(p))-(a(q)+b(q))|\le2^{-(k+1)}+2^{-(k+1)}=2^{-k}$. Thus the direct synchronized evaluator $a(K)+b(K)$ is sufficient; if the input has distinct index clocks, synchronize by the displayed maximum. All denominators are positive and the inequalities follow by multiplication of positive denominators, so the proof is expressible through PR term equalities and order Booleans.\end{proof}
+\begin{remark}[Correction to the convenient precision-index form]
+The explicit output $a(\mu_a(k+2))+b(\mu_b(k+2))$ is best treated as a \emph{precision-indexed approximation}, not assumed to satisfy the original raw-index modulus without additional monotonicity of the input modulus. Replace each modulus $\mu$ by $\widehat\mu(k)=\max_{i\le k}\mu(i)+k$, which is PR and monotone. Then both approximants at precision $k,l\ge k$ lie beyond $\mu(k+2)$, giving the stated error. This distinction must be respected in the Lean implementation.
+\end{remark}
+\begin{lemma}[Effective inverse under apartness]
+Suppose $a(k)$ approximates $x$ with $|a(k)-x|\le2^{-k}$, and a positive rational $\delta$ satisfies $|x|\ge\delta$. Choose $k$ with $2^{-k}\le\delta/2$. Then $|a(k)|\ge\delta/2$, and
+\[\left|\frac1{a(k)}-\frac1x\right|\le \frac{2^{1-k}}{\delta^2}.\tag{2}\]
+Consequently inversion is uniformly effective relative to the supplied apartness certificate, by a PR precision schedule obtained from a bounded search for a power of two below a positive rational.
+\end{lemma}
+\begin{proof}
+By the reverse triangle inequality, $|a(k)|\ge |x|-|x-a(k)|\ge\delta/2$. The fraction identity $1/a-1/x=(x-a)/(ax)$ and positivity of denominators yield (2). For target precision $2^{-n}$ choose any primitive-recursive $k$ satisfying both $2^{-k}\le\delta/2$ and $2^{1-k}\le\delta^2 2^{-n}$. Writing $\delta=u/v>0$ with $u,v\in\NN$, one explicit crude choice is $k=n+3+2v+2u$, since $u\ge1$ and $2^v\ge v$; much smaller choices are possible. The inequalities can be checked by elementary induction. \end{proof}
+\begin{proposition}[Finite-tail replacement principle]
+To express a statement $F=L$ for a limit object $L$ within iPRA, it suffices to give PR rational approximants $f(k),\ell(k)$ with individually proved $2^{-(k+2)}$ error to $F,L$, and an internal proof of $|f(k)-\ell(k)|\le2^{-(k+1)}$. Then both names represent the same Cauchy real, since $|F-L|\le2^{-k}$ for every $k$. The internal target can be presented entirely as a universally quantified equality of PR Boolean comparison tests.
+\end{proposition}
+\begin{proof}
+Apply the triangle inequality to $(F-f(k))+(f(k)-\ell(k))+(\ell(k)-L)$. Its bound is $2^{-(k+2)}+2^{-(k+1)}+2^{-(k+2)}=2^{-k}$. In a purely arithmetical presentation one never needs to form the completed real $F$ or $L$: equality means the vanishing-distance tests at each requested precision, and the three rational inequalities are their explicit witnesses.\end{proof}
+\section{Nonuniformity: a boundary theorem and a replacement}
+\begin{theorem}[No uniform zero-decision from Cauchy names]
+There is no total computable procedure that, from an index for an arbitrary uniformly fast Cauchy sequence of nonnegative rationals, always decides whether its represented real is exactly zero. This remains true for a single fixed primitive-recursive evaluator with a natural-number parameter.
+\end{theorem}
+\begin{proof}
+Let $H(m,t)$ be the PR Boolean which tests whether machine $m$ has halted by stage $t$. Define $A(m,s)=\sum_{t<s}2^{-t-1}H(m,t)$. This is PR in $m,s$; its tail is at most $2^{-s}$. Thus $A(m,\cdot)$ is uniformly fast Cauchy. If $m$ never halts, its limit is zero. If it halts first at $h$, then $H(m,t)=1$ for every $t\ge h$ and the limit is $2^{-h}>0$. Any purported uniform exact-zero decider would decide the halting problem, contradiction. This is a metatheoretic computability theorem, not a syntactic iPRA unprovability result.\end{proof}
+\begin{proposition}[Safe alternatives]
+There are uniform PR procedures for: (i) computing approximate values to any specified tolerance; (ii) selecting a sign or inverse when an explicit apartness modulus is supplied; (iii) returning a \emph{finite set} of possible candidates when existence and coverage have verified rational error bounds; and (iv) constructing a conditional exact branch when a finite algebraic presentation supplies a decidable equality procedure. The unrestricted exact-choice conclusion of the preceding theorem does not follow from any of these.
+\end{proposition}
+This directly addresses the Puiseux discontinuity and exact Euler--Rodrigues axis-selection obstruction at their common source. Approximate root \emph{sets} and verified finite coverings avoid the need to decide an ambiguous branch; exact coefficients can be supplied for finite algebraic codes with certified field operations.
+
+\section{Height bounds and the quantifier-pattern obstruction}
+\begin{lemma}[Search from a supplied height bound]
+Let $V(d,x)$ be PR and $E(d,B)$ a PR Boolean that certifies the assertion: every solution of the intended problem has a code $x\le B$. Given a concrete $B$ together with an internal iPRA proof of $E(d,B)=1$ and a proved correspondence between solutions and $V(d,x)=1$, bounded search enumerates all solutions and decides existence within that bound.
+\end{lemma}
+\begin{proof}
+Evaluate $V(d,0),\ldots,V(d,B)$ by primitive recursion and collect successful indices. Every output passes $V$ by construction. Conversely a solution has code at most $B$ by the \emph{supplied} height theorem, so appears in the loop. For the internal proof use the bounded-search invariant and the correspondence proofs. Nothing here creates $B$ from an ineffective finiteness theorem.\end{proof}
+A purported general Siegel/Faltings algorithm cannot be inferred merely from a finiteness statement $\forall d\,\exists B\,\forall x( V(d,x)\Rightarrow x\le B)$. The existence of a bound for each input does not in general provide a uniform PR bound. A quantified theorem already proved internally may have additional extractability properties, but the extraction and growth classification need a separate metatheorem; the proposed framework does not claim one automatically. For Roth-type goals, similarly state and prove a quantitative \emph{family} with explicit constants before importing a classical theorem with nonconstructive dependencies.
+
+\section{Cross-domain engineering patterns}
+\paragraph{Algebra and geometry.} Use finite rational or exact-algebraic coefficient records; use cross-product identities and resultants as PR tests. Under explicit nonzero denominators, Ceva/Menelaus-type identities are polynomial equations. For FTA-style approximate roots, certify a list of rational disks and their coverings instead of globally naming a root branch. For Puiseux, exact coefficient presentations and separability/discriminant certificates are necessary for canonical exact expansions; arbitrary Cauchy coefficients are too weak for the desired uniform interface.
+\paragraph{Analysis and special functions.} Every series, contour integral, Fourier coefficient, and limit theorem should state a PR cutoff $N(k,d)$ and an exact rational bound on the tail. Avoid using real-valued completeness, indefinite integrals, or complex analytic continuation as unexamined axioms. Produce a rational inequality indexed by precision and prove that inequality internally. The Basel packet's \texttt{checkBasel} specification is a model example of the desired target, although the internal proof remains to be supplied.
+\paragraph{Topology.} For Jordan-curve and dimension-invariance arguments, use finite grids, perturbation/separation margins and parity certificates. Degenerate inputs require either tolerances or explicit stability certificates. A computational grid check at selected scales is evidence only; the universally quantified finite invariant must be proved using QF induction.
+\paragraph{Diophantine problems.} Distinguish explicitly bounded enumeration, descent with a decreasing natural rank, and uniform existence of a bound. Runge-type algorithms can instantiate the first two when all constants are explicit. The generic heights missing in the Siegel and Faltings packets are separate mathematical goals, not implementation details.
+\paragraph{Probability.} Represent finite laws by rational mass arrays summing to one. Berry--Esseen or CLT statements become rational bounds on finite characteristic-function approximants or distribution-grid comparisons, with explicit moduli and moment certificates. The passage from exact finite convolutions to normal approximation is a substantial analytic proof obligation, not merely the existence of a PR convolution loop.
+
+\section{Lean formalization: concrete milestones}
+The archive includes \texttt{lean/FiniteCore.lean} (a native finite kernel-independent playground), \texttt{lean/ObjectTheoryBlueprint.lean} (the target interface to \texttt{ConciseIPRA}), and \texttt{lean/ROADMAP.md}. First prove bounded-search and finite-descent correctness over native \texttt{Nat}; these are auxiliary semantic lemmas, not iPRA certificates. Next define the same algorithms as closed \texttt{PR} codes and prove their step equations with \texttt{PRA.precZero}, \texttt{PRA.precSucc}, and \texttt{PRA.comp}. Rephrase each invariant as a quantifier-free \texttt{Fm PTm}, use \texttt{PRA.qfInd}, and compose \texttt{Prf} objects. Finally prove an external interpretation theorem that the \texttt{PR} evaluation agrees with the executable specification. No axiom or \texttt{sorry} is allowed in the completed certification layer.
+
+The formal work has two legitimately different targets. For an individual input one can check a finite certificate by reflection (with a soundness theorem for the checker). For a theorem universally quantified over all inputs, one must internally prove the checker's success for all those inputs; finite test runs do not establish that assertion. The remaining semantic-to-object proof translation is not claimed complete here.
+
+\section{Dependency ledger and research questions}
+\begin{longtable}{p{.25\linewidth}p{.39\linewidth}p{.26\linewidth}}\textbf{Target}&\textbf{Available reusable mechanism}&\textbf{Still required}\endhead
+Finite certificate composition&PR pairing, QF invariant, intuitionistic proof composition&Concrete object-level \texttt{PR}/\texttt{Prf} construction\\
+Bounded search and descent&Explicit finite induction proofs in this report&Object-language coding and internal induction\\
+Cauchy addition/inversion&Error budgets and apartness proof&Fraction arithmetic and modulus compiler\\
+Puiseux root selection&Exact algebraic codes or approximate multivalued output&Algebraic splitting certificates and convergence bounds\\
+Euler--Rodrigues axis&Gap-conditioned branch/approximate axis set&Quantitative perturbation lemmas\\
+Basel and special functions&Precision-indexed rational comparison&Full internal analytic finite inequality\\
+Faltings/Siegel generality&Enumeration conditional on height bound&Uniform effective height theorem (not established)\\
+\end{longtable}
+Research questions: Can the finite invariant compiler be verified compositionally once and reused for all packets? Which classical theorems admit a \emph{multivalued} computable reformulation avoiding LLPO? Can certificate complexity be stratified into PR quantitative bounds versus higher-growth existence statements? Can the Basel and Jordan packets serve as end-to-end object-proof benchmarks, including verified extraction of their PR codes?
+
+\section*{Source notes}
+Repository source paths examined: \texttt{docs/proofs/README.md}, \texttt{docs/proofs/algebra/puiseux\_ipra/evidence/scope\_obstruction.md}, \texttt{docs/proofs/analysis/basel\_ipra/lean/ROADMAP.md}, and \texttt{ConciseIPRA/Lean/ConciseIPRA/PR.lean}. Links are relative to \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic/}. The report is a new synthesis; it does not certify the existing packet claims or the unfinished Lean formalization.
+\end{document}
