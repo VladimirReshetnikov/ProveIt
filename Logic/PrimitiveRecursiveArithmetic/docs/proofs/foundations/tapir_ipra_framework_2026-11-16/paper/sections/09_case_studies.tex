@@ -1,0 +1,237 @@
+\section{Worked compilation patterns}\label{sec:cases}
+
+\subsection{Case study I: least witness and finite minimum}
+
+Let \(g(i,x)\) be a primitive-recursive natural-valued function and let \(N>0\).  We want a public
+index \(j<N\) minimizing \(g(j,x)\).
+
+Define the bounded predicate
+\[
+ P(j,x,N)\;:\Longleftrightarrow\;j<N\land
+   \forall i<N\,[g(j,x)\le g(i,x)].
+\]
+By compositional bounded reflection, \(P\) has a bit.  Existence can be proved without classical
+choice by a trace that scans \(0,\ldots,N-1\) while maintaining the best index.  The state is
+\((t,j)\), initially \((1,0)\), and the step replaces \(j\) by \(t\) when
+\(g(t,x)<g(j,x)\).  The invariant says
+\[
+ j<t\quad\land\quad\forall i<t\;g(j,x)\le g(i,x).
+\]
+The bounded universal is reflected to a bit so the induction formula is quantifier free.  At
+\(t=N\) the invariant gives \(P(j,x,N)\).
+
+If the public theorem only needs the minimum value, the index can be sealed and the value shown
+independent of the selected minimizer.  If the theorem needs a canonical index, use the least index
+satisfying \(P\), supplied by bounded choice.
+
+\paragraph{Schedule.}
+A compact schedule has nodes:
+
+\begin{enumerate}
+\item defining equations for the scan trace;
+\item reflection of the bounded invariant;
+\item base invariant;
+\item preservation;
+\item quantifier-free induction;
+\item final minimum theorem;
+\item optional least-minimizer naming.
+\end{enumerate}
+
+There are no residuals: all data are primitive recursive and the finite nonempty domain is explicit.
+
+\subsection{Case study II: a bounded game strategy}
+
+Consider
+\[
+ \forall x<N\;\exists y<M(x)\;R(x,y,q),
+\]
+where \(R\) is primitive recursive and the intended public result is the existence of a response
+function for the fixed finite domain.
+
+For each \(x<N\), define
+\[
+ w(x)=\min\{y<M(x):R(x,y,q)\},
+\]
+using the arity-polymorphic bounded-choice theorem.  The premise required at arbitrary \(x\) is the
+object formula \(x<N\to\exists y<M(x)\,R(x,y,q)\).  Universal elimination supplies it under the
+hypothesis \(x<N\).  Bounded choice yields \(w(x)<M(x)\) and \(R(x,w(x),q)\).  Universal
+introduction closes \(x\).
+
+The function \(w\) is primitive recursive because the search bound and verifier are.  This is a
+legitimate finite choice function; no unbounded choice principle is used.
+
+If the public theorem merely asserts the original bounded sentence, constructing \(w\) is optional.
+One can eliminate each existential locally.  The named strategy is justified only because the
+bounds are explicit and the family is finite.
+
+For a second alternation
+\[
+ \forall x<N\;\exists y<M(x)\;\forall z<K(x,y)\;\exists u<L(x,y,z)\;R(x,y,z,u),
+\]
+compile the inner existential first, reflect the inner bounded universal, and then search for an outer
+\(y\) whose reflected bit is one.  Meta-level recursion on the fixed quantifier tree produces the
+strategy terms and their proofs.
+
+\subsection{Case study III: bisection for a monotone inverse}
+
+Suppose \(F\) is represented on rationals by exact arithmetic and has a proved monotonicity theorem.
+Given rational \(a<b\), target \(y\), and signs
+\[
+ F(a)\le y\le F(b),
+\]
+a fixed number \(p\) of bisection steps produces an interval \([a_p,b_p]\) of width
+\((b-a)/2^p\) that still brackets the target.
+
+Encode dyadic rationals by integer numerator and exponent.  The state contains endpoints and a
+failure bit.  At each step compute the midpoint \(m\), compare \(F(m)\) with \(y\), and keep the
+appropriate half.  The quantifier-free invariant is:
+
+\begin{enumerate}
+\item the endpoints have the expected dyadic denominator;
+\item \(a_t\le b_t\);
+\item \(F(a_t)\le y\le F(b_t)\);
+\item the width identity \(2^t(b_t-a_t)=b-a\);
+\item the failure bit is zero.
+\end{enumerate}
+
+The base is immediate.  Preservation uses exact midpoint arithmetic and monotonicity.  One
+quantifier-free induction proves the invariant at \(p\).  The public output can be the interval or
+its midpoint with an explicit error bound.
+
+An exact inverse value is not required.  If an external theorem gives a separation gap ensuring that
+only one algebraic branch intersects the interval, a later schedule node recovers the branch label.
+Without that residual, the interval is the maximal constructive result.
+
+\subsection{Case study IV: height-bounded Diophantine enumeration}\label{subsec:height}
+
+Let \(S(q,z)\) be a primitive-recursive solution predicate for codes \(z\), and let
+\(h(z)\) be a primitive-recursive height.  Assume a domain-specific producer theorem
+\[
+ B(q,H):\quad \forall z\,[S(q,z)\to h(z)\le H].
+\]
+Also assume a complete coding bound \(C(q,H)\) with an object proof
+\[
+ h(z)\le H\to z<C(q,H).
+\]
+The second condition is often elementary once the code convention is fixed; the first may be the
+deep theorem.
+
+Define the list bit for every \(z<C(q,H)\) by filtering with \(S(q,z)\).  A list code can be produced
+by a primitive-recursive scan, or the theorem can use the characteristic bit directly.
+
+\begin{theorem}[Conditional complete-list theorem]\label{thm:complete-list}
+Under \(B(q,H)\), iPRA proves:
+\begin{enumerate}
+\item every listed code is a solution;
+\item every solution code occurs in the bounded list;
+\item equality and any finite observable can be decided by bounded search over the list.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Soundness is built into the filter: membership implies the solution bit is one, hence \(S\) by
+reflection.  For completeness, let \(z\) satisfy \(S(q,z)\).  The producer theorem gives
+\(h(z)\le H\), and the coding theorem gives \(z<C(q,H)\).  The scan visits \(z\), its solution bit is
+one, and the list invariant proves membership.  All list operations are bounded and therefore
+primitive recursive.
+\end{proof}
+
+This theorem resolves the logical packaging of Faltings/Siegel-style packets: once a genuine height
+producer is supplied, complete enumeration and all subsequent finite reasoning compile uniformly.
+It does not manufacture the height theorem.  The schedule endpoint is
+\[
+ B(q,H),\Gamma\vdash_{\PRAAx}\mathsf{CompleteList}(q,H,L).
+\]
+A packet that lacks \(B\) should publish exactly this conditional theorem rather than claiming an
+unconditional complete list.
+
+\subsection{Case study V: a certificate cloud and a gap gate}
+
+Let \(C_p(q,c)\) be a validity predicate for precision-\(p\) certificates, and let \(a(c)\) be a
+rational observation.  Assume:
+\[
+ \exists c\,C_p(q,c),
+ \qquad
+ C_p(q,c)\land C_p(q,d)\to |a(c)-a(d)|\le2^{-p}.
+\]
+The first witness may be entirely local.  Select it existentially, output the rational interval
+\[
+ I_p(c)=[a(c)-2^{-p},a(c)+2^{-p}],
+\]
+and seal \(c\).  Any other valid certificate has observation in this interval, so the interval is a
+certificate-independent public cloud up to the stated enlargement.
+
+Now suppose labels \(\ell<K\) have reference values \(v_\ell\), and a residual gap theorem states
+\[
+ \ell\ne m\to |v_\ell-v_m|>4\cdot2^{-p},
+\]
+while every valid certificate is within \(2^{-p}\) of the reference value of some label.  Then the
+label is unique.  A bounded search through \(K\) labels finds it, and the uniqueness proof shows that
+the least found label is the intended one.
+
+The architecture separates two theorems:
+
+\begin{enumerate}
+\item unconditionally, produce a small cloud or stable observation;
+\item conditionally on the gap, produce an exact label.
+\end{enumerate}
+
+This prevents approximation accuracy from being collapsed into constructive exactness.
+
+\subsection{Case study VI: a finite cover argument}
+
+Suppose a theorem about a compact-looking domain uses only a finite set of test points once a mesh
+\(\delta\) is fixed.  Let \(N(q,\delta)\) be a supplied net and let \(\mathsf{Covers}\) be a
+primitive-recursive verifier that every coded basic region is within \(\delta\) of a net point.  A
+uniform continuity modulus transports a property from the net to the whole finite-use query.
+
+The schedule has residual nodes for the net-completeness theorem and the modulus if they are not
+already checked.  The remaining nodes are bounded:
+
+\begin{enumerate}
+\item verify the property at every net point;
+\item reflect the bounded universal;
+\item use the modulus and cover certificate to transport to an arbitrary query point;
+\item seal the chosen nearby net point.
+\end{enumerate}
+
+No unrestricted compactness principle occurs.  The public theorem states exactly the finite cover and
+modulus assumptions consumed.
+
+\subsection{Case study VII: recurrence identities}
+
+For sequences such as Fibonacci, Lucas, Catalan, or Bell numbers, the repository already contains
+many checked recurrence and bounded-sum derivations.  \TAPIR{} adds value when a new identity combines
+several libraries.
+
+For example, to prove a fixed polynomial identity in \(F_n,F_{n+1},L_n\):
+
+\begin{enumerate}
+\item import the recurrence equations as closed plans;
+\item choose a quantifier-free polynomial invariant in the paired state
+      \((F_n,F_{n+1},L_n,L_{n+1})\);
+\item prove the base by normalization;
+\item prove preservation by rewriting with recurrence equations and the checked ring tool;
+\item compile one induction node and specialize at the requested \(n\).
+\end{enumerate}
+
+If an identity involves a bounded convolution, the sum reflection module supplies the recursion and
+its equations.  The schedule compiler combines these local derivations without introducing a new
+logic or a new semantic model.
+
+\subsection{What these examples show}
+
+The examples share one architecture:
+
+\begin{enumerate}
+\item finite code or fixed precision;
+\item primitive-recursive checker or trace;
+\item bounded reflection and quantifier-free induction;
+\item local sealing of noncanonical data;
+\item named witnesses only under explicit bounds;
+\item residual hypotheses for the genuinely deep producer theorems;
+\item schedule compilation to a literal object sequent.
+\end{enumerate}
+
+The framework is broad because these proof moves recur, not because iPRA is being asked to contain an
+unrestricted universe of mathematics.

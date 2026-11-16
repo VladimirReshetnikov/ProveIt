@@ -1,0 +1,138 @@
+\section{Limits, maximal honest formulations, and research directions}\label{sec:limits}
+
+\subsection{The framework is not a completeness theorem for mathematics}
+
+\TAPIR{} is complete for neither all constructive mathematics nor all theorems true in the standard
+natural numbers.  It is a proof-producing architecture for finite, primitive-recursive, or explicitly
+bounded interfaces.  A theorem may fail to fit because:
+
+\begin{itemize}
+\item no primitive-recursive presentation of the needed data is known;
+\item the proof requires an unbounded search or a nonconstructive selection that cannot be sealed;
+\item an effective modulus, height bound, or separation constant is unavailable;
+\item the desired statement is stronger than the finite observations supported by the certificates;
+\item the theorem is simply not provable in iPRA.
+\end{itemize}
+
+The correct response is to weaken the public statement to a finite-use or residualized theorem, not
+to hide the obstacle in an informal compiler assumption.
+
+\subsection{Maximal honest formulations}
+
+Several recurring situations have canonical strongest statements.
+
+\paragraph{Convergence without a modulus.}
+State: for the fixed finite list of requested precisions, a supplied certificate answers them, or a
+metastable interval contains a stable pair.  Do not state a uniform rate.
+
+\paragraph{Finite solutions without an effective height.}
+State: any supplied height bound yields a complete bounded list, and prove the list theorem.  Keep the
+height theorem as a residual.
+
+\paragraph{Noncanonical exact data.}
+State an invariant observation, equality class, or small cloud.  Add exact naming only under a gap.
+
+\paragraph{Compactness-like arguments.}
+State the result under a supplied finite net/cover and modulus.  If the domain-specific theory can
+produce them, a later cut closes the theorem.
+
+\paragraph{Classical existence with finite verification.}
+If the witness is local, existentially eliminate it from an object-level existence theorem.  If only
+a host proof of existence is known, no object theorem has yet been produced.
+
+\subsection{Potential extension: proof-plan reification}
+
+The present plan is a Lean datatype whose interpreter produces \(\Prf\).  A later phase may reify
+plans as natural codes and prove a bounded checker correct inside iPRA.  Such reification would be
+useful for proof compression, self-verification experiments, or Busy Beaver consistency machines.
+It should be undertaken only after the direct typed compiler is checked.
+
+The reified language must be deliberately finite: fixed rule set, bounded syntax, explicit fuel, and
+no universal primitive-recursive evaluator.  Its soundness theorem would concern accepted plans below
+a bound, not arbitrary encoded Lean programs.
+
+\subsection{Potential extension: optimizer correctness}
+
+Because plans expose structure, one can define host transformations:
+
+\begin{itemize}
+\item dead-node elimination;
+\item common-subproof sharing;
+\item fusion of consecutive substitutions;
+\item context minimization;
+\item choice between ordinary \(\Prf\) and native-clause backends;
+\item trace compression.
+\end{itemize}
+
+There are two sound implementation strategies.  The simplest optimizer returns a new indexed plan;
+type checking plus \code{Plan.run} suffices.  A more ambitious verified optimizer proves equality or
+mutual derivability of plans.  The former should be preferred until performance requires the latter.
+
+\subsection{Potential extension: resource certificates}
+
+Proof generation itself has finite resource questions.  A plan may carry:
+
+\begin{itemize}
+\item an upper bound on object proof nodes;
+\item maximal context length;
+\item maximal substitution arity;
+\item number of induction uses;
+\item certificate search-space size.
+\end{itemize}
+
+A host analyzer can report these metrics, and a reified bounded checker could verify some of them.
+This would make proof-term explosion measurable across framework alternatives.
+
+\subsection{Potential extension: front ends}
+
+Domain-specific front ends can compile to the same IR:
+
+\begin{enumerate}
+\item a recurrence DSL for sequences and bounded sums;
+\item an exact polynomial/matrix DSL using the existing ring tactic;
+\item a quantitative-analysis DSL with precision propagation and error budgets;
+\item a finite-strategy DSL for bounded alternating formulas;
+\item a finite-cover DSL for geometry and topology;
+\item a height-list DSL for Diophantine packets.
+\end{enumerate}
+
+The front ends may be elaborate and untrusted.  Their outputs remain safe because the common typed
+back end must elaborate to \(\Prf\,\PRAAx\).
+
+\subsection{Research question: optimal boundary discovery}
+
+The reference compiler computes residuals syntactically.  A stronger analyzer could use proof search
+or interpolation to reduce the boundary set, but logical minimality is generally difficult and may be
+undecidable.  A pragmatic direction is to annotate each local node with a small declared boundary set
+and let backward slicing remove unused declarations.  This gives predictable, auditable results.
+
+\subsection{Research question: constructive observational quotients}
+
+Stable observer erasure suggests a reusable theory of finite observational descent.  Given a graph of
+presentations and compatibility edges, one can bound the discrepancy between any two nodes by a path
+sum.  A spanning tree certificate suffices.  Formalizing this generically over coded seminorms or
+entourages could unify branch clouds, chart transitions, numerical enclosures, and approximate group
+representations.
+
+\subsection{Research question: bridge-aware compilation}
+
+The current unification plan supports open-sequent transport among the main kernels.  A future
+compiler could select the cheapest backend per node, then transport every result to ordinary
+\(\Prf\,\PRAAx\) at the schedule boundary.  Correctness would rely only on checked bridge theorems.
+A cost model could compare native clauses, ordinary natural deduction, and specialized arithmetic
+lemmas.
+
+\subsection{Honesty about this artifact}
+
+No Lean executable was installed in the runtime used to build this archive.  Therefore:
+
+\begin{itemize}
+\item the two no-placeholder Lean files are carefully matched to inspected APIs but unelaborated;
+\item files with \code{sorry} are formalization outlines, not proofs;
+\item Python test success says nothing about derivability in iPRA;
+\item the only kernel-checked facts relied upon are those already present in the pinned repository,
+      as documented in the source audit.
+\end{itemize}
+
+This status is part of the mathematical result: it prevents a source sketch from being mistaken for a
+verified theorem.

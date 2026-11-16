@@ -1,0 +1,87 @@
+\section{Reproducibility and validation}\label{app:repro}
+
+\subsection{Archive build}
+
+From the archive root:
+
+\begin{lstlisting}[language=bash]
+./build.sh
+\end{lstlisting}
+
+The script runs the Python unit tests, regenerates the JSON example, scans Lean files for
+placeholders, compiles the report with \code{latexmk}, runs PDF preflight, and records metadata in
+\code{validation/}.
+
+Individual commands are:
+
+\begin{lstlisting}[language=bash]
+PYTHONPATH=reference python3 -m unittest -v reference/test_tapir_reference.py
+PYTHONPATH=reference python3 reference/generate_demo.py
+cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error tapir_ipra_framework.tex
+python /home/oai/skills/pdfs/scripts/pdf_preflight.py \
+  paper/tapir_ipra_framework.pdf
+\end{lstlisting}
+
+The build does not run Lean because no Lean or Lake executable was available in the artifact runtime.
+To test the Lean sources, copy \code{lean/TAPIR} into the pinned ProveIt checkout, add imports in a
+scratch module, and follow \code{lean/FORMALIZATION_PLAN.md}.
+
+\subsection{PDF validation}
+
+The generated PDF is rendered to page images at 150--200 dpi.  The shipping check requires:
+
+\begin{itemize}
+\item every page renders;
+\item no clipped text, overlap, missing glyphs, or black boxes;
+\item table rows remain legible;
+\item code listings wrap within the text block;
+\item the title, table of contents, headers, and page numbers are consistent.
+\end{itemize}
+
+The archive retains text preflight and font reports but omits the bulky render directory.  Rendered
+images used for manual QA are outside the ZIP deliverable.
+
+\subsection{Source reproducibility}
+
+The source audit records the repository pin and the exact files inspected.  Since the branch may
+advance, integration should repin and compare:
+
+\begin{itemize}
+\item \code{ConciseIPRA/Deduction.lean};
+\item \code{ConciseIPRA/PR.lean};
+\item \code{IPRADerivations/Core/Basic.lean};
+\item \code{IPRADerivations/Core/Definitions.lean};
+\item \code{IPRADerivations/Core/Search.lean};
+\item \code{IPRADerivations/Core/Pairing.lean};
+\item \code{IPRADerivations/Foundations/BoundedReflection.lean};
+\item \code{IPRADerivations/Foundations/Termination.lean};
+\item \code{ConciseIPRA/NativeClausalDiagonal.lean};
+\item root README, endpoint, and unification documents.
+\end{itemize}
+
+If an API changes, update the source candidates and rerun the no-placeholder scan before making any
+new verification claim.
+
+\subsection{How to evaluate the proposal experimentally}
+
+A useful first benchmark is not a grand theorem.  Select one existing packet with:
+
+\begin{enumerate}
+\item a small bounded checker;
+\item a local certificate;
+\item one explicit residual producer;
+\item a final ordinary formula already expressible with current arithmetic libraries.
+\end{enumerate}
+
+Implement its local nodes as plans, order them into a schedule, and compile the root sequent.  Record:
+
+\begin{itemize}
+\item lines of new Lean;
+\item number of imported generic theorems;
+\item elaboration time and proof term size;
+\item residual context before and after backward slicing;
+\item comparison with a direct hand-written derivation.
+\end{itemize}
+
+This benchmark will determine whether the plan layer is sufficiently lightweight and where further
+macros are justified.

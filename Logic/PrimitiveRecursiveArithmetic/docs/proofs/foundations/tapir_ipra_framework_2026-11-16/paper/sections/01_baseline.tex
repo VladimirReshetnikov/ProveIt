@@ -1,0 +1,127 @@
+\section{Repository baseline and diagnosis}\label{sec:baseline}
+
+\subsection{The checked core already available}
+
+The pinned repository has three layers that must be kept distinct.
+
+\begin{enumerate}
+\item \textbf{The object calculus.}  \code{ConciseIPRA} defines primitive-recursive symbols
+\(\PR k\), terms \(\PTm n\), formulas \(\Fm\,\PTm\,n\), the axiom family \(\PRAAx\), and the
+intuitionistic natural-deduction judgment
+\[
+   \Prf\,\PRAAx\,\Gamma\,\varphi,
+   \qquad\text{written}\qquad \Gamma\vdash_{\PRAAx}\varphi.
+\]
+The calculus has scoped substitution, weakening, simultaneous cut, first-order quantifiers,
+equality substitution, and quantifier-free induction.
+
+\item \textbf{Checked mathematical derivations.}  \code{IPRADerivations} gives object-level
+proofs for arithmetic operations, order, bounded sums and products, pairing, search, finite
+combinatorics, termination, and many theorem-specific developments.  In particular, the current
+\code{Core/Search.lean} proves the least-search specification, while
+\code{Foundations/BoundedReflection.lean} proves bounded universal and existential reflection and a
+least-witness theorem.  These are not mere semantic lemmas about Lean functions: their conclusions
+are sequents in \(\Prf\,\PRAAx\).
+
+\item \textbf{Research packets.}  The catalogue under \code{docs/proofs} contains broad analyses,
+formalization outlines, and executable finite checkers.  Their scientific value is substantial, but
+most packets explicitly do not claim a constructed proof of their main theorem in the object
+calculus.  Framework packets have converged on finite certificates, explicit moduli, stable
+observers, residual producer hypotheses, and proof-graph composition, but many of their generic Lean
+modules remain unelaborated blueprints.
+\end{enumerate}
+
+The correct goal is therefore not to invent another semantics for iPRA.  It is to connect finite
+mathematical arguments to the already checked endpoint with the least possible new trusted code.
+
+\subsection{What the repository has learned}
+
+Across algebra, analysis, number theory, geometry, probability, and foundations, the same lessons
+recur.
+
+\paragraph{Fixed finite questions are the natural unit.}
+An iPRA theorem about an analytic function is not best represented by a completed real-number
+universe.  It is represented by a primitive-recursive approximation program together with a theorem
+that answers every fixed precision request.  Likewise, a compactness argument is represented by an
+explicit finite cover or net, an algebraic classification by a finite list plus completeness proof,
+and a computation by a clocked trace plus an invariant.
+
+\paragraph{Verification is easier than production.}
+Given a candidate factorization, path, cover, height bound, separation gap, or convergence modulus,
+its finite correctness is often primitive recursive and amenable to bounded reflection.  Producing
+such data uniformly can be much harder or impossible at the intended strength.  The framework must
+therefore distinguish a producer from its verifier.
+
+\paragraph{Noncanonical witnesses should usually be sealed.}
+A proof may need a root, chart, basis, triangulation, or local branch without needing to expose which
+one was selected.  Searching for a canonical code adds an unnecessary bound and can create a false
+uniformity claim.  Ordinary existential elimination is the correct rule when only a
+certificate-independent conclusion escapes.
+
+\paragraph{Approximation is not equality.}
+A small-diameter cloud of candidates supports stable numerical observations.  It does not by itself
+supply an exact label.  Exact branch recovery requires an additional separation gap.  The theorem
+statement must preserve that distinction.
+
+\paragraph{Quantifier-free induction is sufficient when the state is designed correctly.}
+The induction formula should be a finite arithmetic invariant of a primitive-recursive state.  All
+precision parameters, resource budgets, and demanded observations are frozen before induction or
+stored as state fields.  Rich mathematical conclusions are extracted after the trace theorem.
+
+\subsection{The remaining bottleneck}
+
+Earlier frameworks frequently reach a statement of the following shape at the meta level:
+
+\begin{quote}
+A bounded checker accepted a certificate; every accepted certificate has a valid trace; the final
+trace state satisfies the desired finite observation; therefore the theorem follows in iPRA.
+\end{quote}
+
+Three gaps can hide inside that sentence.
+
+\begin{enumerate}[label=\textbf{G\arabic*.}]
+\item A Python or Lean Boolean computation has been mistaken for an object proof of its correctness.
+\item A host-level graph has been declared compositional without producing the sequence of
+\code{Prf.trans}, \code{Prf.subst}, binder shifts, and quantifier rules required by the scoped
+calculus.
+\item A deep producer---for example a general height cutoff---has been folded into the word
+``certificate'' even though only verification is primitive recursive.
+\end{enumerate}
+
+\TAPIR{} addresses G1 and G2 by making the intermediate language intrinsically indexed by the
+object sequent and by compiling a schedule through the checked structural operations.  It addresses
+G3 by residualization: producer statements remain formulas in the antecedent until an actual object
+proof discharges them.
+
+\subsection{Why a universal internal proof checker is the wrong target}
+
+One tempting response is to encode arbitrary proof graphs, terms, formulas, and evaluators by
+natural numbers and prove a universal soundness theorem inside iPRA.  That direction has three costs.
+
+First, there is no total primitive-recursive universal evaluator for all primitive-recursive
+programs.  A fixed bounded interpreter can be built for a fixed language and fuel, but a silent
+universal evaluator assumption is unsound.  Second, the repository already has a trusted Lean
+representation of syntax and derivations; re-encoding it internally duplicates binder and
+substitution work.  Third, most applications are theorem-specific: the graph, arithmetic symbols,
+and requested precision are known before elaboration.
+
+The proposed compiler therefore uses \emph{staging}.  Host computation specializes a fixed finite
+argument to concrete syntax.  The generated object proof is checked by Lean.  Soundness is obtained
+from the type and the structural interpreter, not from trusting the host generator.
+
+\subsection{Scope of the claimed resolution}
+
+This report claims a resolution of the following framework-level problems:
+
+\begin{itemize}
+\item a small typed IR whose interpreter returns literal \(\Prf\,\PRAAx\) terms;
+\item a schedule theorem that composes finite acyclic proof graphs by simultaneous cut;
+\item a precise rule for local, observed, and publicly named certificates;
+\item a compositional interface for bounded reflection using the checked least-search backend;
+\item a reusable trace pattern compatible with quantifier-free induction;
+\item a residual theorem normal form for all unresolved producers.
+\end{itemize}
+
+It does not claim to solve general effective Faltings, Siegel, Mordell--Weil, ineffective analytic
+constants, or missing separation estimates.  It shows exactly how such an input would be consumed
+and exactly what theorem is available without it.

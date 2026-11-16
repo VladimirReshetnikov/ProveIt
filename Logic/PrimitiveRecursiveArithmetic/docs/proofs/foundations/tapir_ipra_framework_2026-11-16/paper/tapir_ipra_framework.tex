@@ -1,0 +1,152 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,calc}
+
+\definecolor{tapirblue}{RGB}{27,73,101}
+\definecolor{tapirgreen}{RGB}{35,110,87}
+\definecolor{tapirgray}{RGB}{245,247,249}
+\definecolor{tapirred}{RGB}{150,45,45}
+\hypersetup{colorlinks=true,linkcolor=tapirblue,citecolor=tapirgreen,urlcolor=tapirblue,
+  pdftitle={TAPIR-iPRA: A Typed Proof-Plan Compiler for Finitary Mathematics},
+  pdfauthor={OpenAI research assistant},
+  pdfsubject={Intuitionistic primitive recursive arithmetic and Lean formalization}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small TAPIR-iPRA}
+\fancyhead[R]{\small Typed proof-plan compilation}
+\fancyfoot[C]{\thepage}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlist{nosep,leftmargin=2em}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{obstruction}[theorem]{Obstruction}
+
+\newcommand{\iPRA}{\mathrm{iPRA}}
+\newcommand{\PRAAx}{\mathsf{PRAAx}}
+\newcommand{\Prf}{\mathsf{Prf}}
+\newcommand{\PTm}{\mathsf{PTm}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\Fm}{\mathsf{Fm}}
+\newcommand{\Plan}{\mathsf{Plan}}
+\newcommand{\TAPIR}{\textsc{Tapir}}
+\newcommand{\seq}[3]{#1\;\vdash_{#2}\;#3}
+\newcommand{\obj}[2]{#1\;\vdash_{\PRAAx}\;#2}
+\newcommand{\Nat}{\mathbb N}
+\newcommand{\Bool}{\mathbb B}
+\newcommand{\angles}[1]{\langle #1\rangle}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\newcommand{\resid}{\mathcal R}
+\newcommand{\outputs}{\mathcal O}
+\newcommand{\TODO}{\textcolor{tapirred}{\textbf{Formalization milestone}}}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\setlength{\emergencystretch}{2em}
+
+\lstdefinelanguage{Lean}{
+  morekeywords={inductive,structure,def,theorem,lemma,namespace,end,open,variable,abbrev,
+    import,where,by,exact,refine,match,with,if,then,else,let,in,forall,exists,fun,Type,Prop},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[s]{/-}{-/},
+  morestring=[b]"
+}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+  frame=single,backgroundcolor=\color{tapirgray},rulecolor=\color{tapirblue!35},
+  xleftmargin=0.5em,xrightmargin=0.5em,aboveskip=0.7em,belowskip=0.7em,
+  showstringspaces=false}
+
+\begin{document}
+\pagenumbering{gobble}
+\begin{titlepage}
+\centering
+\vspace*{1.2cm}
+{\Huge\bfseries\color{tapirblue} TAPIR-iPRA\par}
+\vspace{0.35cm}
+{\LARGE A Typed Proof-Plan Compiler for Theorem-Specialized Mathematics in Intuitionistic Primitive Recursive Arithmetic\par}
+\vspace{0.9cm}
+{\large Human proofs, a Lean integration design, executable reference algorithms, and a difficulty audit\par}
+\vfill
+\begin{minipage}{0.88\textwidth}
+\colorbox{tapirgray}{\parbox{0.94\textwidth}{
+\textbf{Repository baseline.} VladimirReshetnikov/ProveIt, branch \code{main}, commit
+\code{58627ed89814ba122e1f0f012f1aba103cda267b}, inspected 16 November 2026.
+
+\textbf{Verification status.} This report proves the generic mathematics on paper and supplies two
+small, no-placeholder Lean source candidates for the typed kernel and sequential schedule compiler.
+No Lean executable was available in the artifact runtime, so no new declaration is claimed to have
+been elaborated or kernel-checked. Existing ProveIt declarations cited as checked are inherited
+upstream results. Python tests validate only the finite host algorithms; they are not an iPRA proof
+checker.
+}}
+\end{minipage}
+\vfill
+{\large 16 November 2026\par}
+\end{titlepage}
+\pagenumbering{roman}
+
+\input{sections/00_abstract}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\input{sections/01_baseline}
+\input{sections/02_design}
+\input{sections/03_typed_ir}
+\input{sections/04_schedule}
+\input{sections/05_certificates}
+\input{sections/06_reflection}
+\input{sections/07_traces}
+\input{sections/08_presentations}
+\input{sections/09_case_studies}
+\input{sections/10_difficulties}
+\input{sections/11_lean}
+\input{sections/12_limits}
+\input{sections/13_conclusion}
+\appendix
+\input{sections/A_signatures}
+\input{sections/B_ledger}
+\input{sections/C_reproducibility}
+
+\begin{thebibliography}{99}
+\bibitem{ProveItCore}
+V. Reshetnikov, \emph{ProveIt: Logic/PrimitiveRecursiveArithmetic}, pinned source tree at commit
+\code{58627ed89814ba122e1f0f012f1aba103cda267b}, 2026.
+
+\bibitem{TroelstraVanDalen}
+A. S. Troelstra and D. van Dalen, \emph{Constructivism in Mathematics}, Vols. I--II,
+North-Holland, 1988.
+
+\bibitem{Kleene}
+S. C. Kleene, \emph{Introduction to Metamathematics}, North-Holland, 1952.
+
+\bibitem{Buss}
+S. R. Buss, \emph{Bounded Arithmetic}, Bibliopolis, 1986.
+
+\bibitem{Howard}
+W. A. Howard, Hereditarily majorizable functionals of finite type, in
+\emph{Metamathematical Investigation of Intuitionistic Arithmetic and Analysis}, 1973.
+
+\bibitem{BridgesRichman}
+D. Bridges and F. Richman, \emph{Varieties of Constructive Mathematics}, Cambridge University Press, 1987.
+\end{thebibliography}
+\end{document}

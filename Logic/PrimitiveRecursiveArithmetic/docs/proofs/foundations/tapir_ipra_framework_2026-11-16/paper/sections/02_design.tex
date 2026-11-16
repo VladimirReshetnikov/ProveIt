@@ -1,0 +1,125 @@
+\section{Design principles}\label{sec:design}
+
+\subsection{The endpoint is part of every type}
+
+A framework object is acceptable only when its type records an actual object-theory judgment.  We
+write
+\[
+  \mathsf{Deriv}_n(\Gamma,\varphi)
+  := \Prf\,\PRAAx\,\Gamma\,\varphi.
+\]
+A host-level proposition such as ``the checker returned true'' is not interchangeable with
+\(\mathsf{Deriv}_n(\Gamma,\varphi)\).  The bridge between them must itself be an object derivation,
+typically a reflection theorem specialized to the checker.
+
+This principle prevents a common ambiguity.  A Lean theorem about the standard natural numbers may
+be mathematically correct while proving nothing about derivability in iPRA.  In \TAPIR{}, semantic
+lemmas are useful for testing, but reusable proof nodes must return \(\mathsf{Deriv}\) or a typed plan
+that structurally compiles to it.
+
+\subsection{Theorem specialization, not universal evaluation}
+
+Suppose a mathematical proof uses a fixed transition program \(s\), a fixed checker \(v\), and a
+fixed formula \(\Phi\).  The host compiler constructs concrete objects
+\[
+  s^{\sharp}:\PR k,\qquad v^{\sharp}:\PTm n,\qquad \Phi^{\sharp}:\Fm\,\PTm\,n.
+\]
+It then emits a plan assembled from library theorems specialized by
+\code{Prf.subst}.  No object-level function receives the code of an arbitrary program and evaluates
+it.  Meta-level recursion on the syntax tree is permitted because it produces a finite Lean term;
+the kernel verifies the result.
+
+This is analogous to proof-producing compilation.  The compiler is not trusted for soundness.  A
+bug can make it fail, produce an ill-typed term, or prove a weaker theorem, but it cannot cause Lean
+to accept an invalid \(\Prf\) value without a defect in the checked kernel or imported axioms.
+
+\subsection{A small macro IR is preferable to a second logic}
+
+The IR should not duplicate natural deduction.  Its constructors are macros for operations already
+available in the checked calculus:
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+IR operation & Checked implementation & Mathematical role \\
+\midrule
+embed & existing \(\Prf\) term & reuse arithmetic/domain lemma \\
+specialize & \code{Prf.subst} & instantiate a theorem schema \\
+weaken & \code{Prf.weaken} & align contexts \\
+cut & \code{Prf.trans} & compose nodes / discharge outputs \\
+seal & \code{Prf.exE} & eliminate proof-local certificate \\
+name & checked bounded choice & expose least bounded witness \\
+loop & \code{PRA.qfInd} & verify a clocked invariant \\
+close & a second \code{Prf.trans} & discharge residual producers \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The IR is useful because it gives a uniform target for generators and enforces scoping, but its
+interpreter is transparent and small.
+
+\subsection{Residual hypotheses are first-class}
+
+Let \(B_1,\ldots,B_r\) be producer statements such as:
+
+\begin{itemize}
+\item every solution has height at most \(H(q)\);
+\item a rational approximation has an error below \(2^{-p}\);
+\item a branch is separated from all competitors by \(\delta\);
+\item a finite cover is complete;
+\item a constant \(C\) satisfies the explicit inequalities needed by the proof.
+\end{itemize}
+
+The compiler is required to produce
+\[
+ B_1,\ldots,B_r,\Gamma\vdash_{\PRAAx}\Phi.
+\]
+It is forbidden to replace an unavailable \(B_i\) by a host assertion.  If a later development
+proves \(\Delta\vdash B_i\) for every residual, simultaneous cut immediately produces
+\(\Delta,\Gamma\vdash\Phi\).  Thus residualization is not an admission of failure; it is a stable
+modular interface.
+
+\subsection{Certificate escape analysis}
+
+Every existential datum is assigned one of three modes.
+
+\begin{description}
+\item[Local.] The witness occurs only inside the proof.  It is introduced existentially and sealed
+by \code{Prf.exE}.  No code bound is needed merely to eliminate it.
+
+\item[Observed.] The witness is noncanonical, but the public theorem mentions an invariant or stable
+observation.  The local proof establishes that every valid witness gives the same observation, or
+observations within a specified diameter.  The witness is then sealed.
+
+\item[Named.] The public result explicitly returns a code, a least witness, a branch label, or a
+function of the witness.  A complete bounded search space and a decidable verifier are required.
+The checked bounded-choice theorem may then expose a primitive-recursive least witness.
+\end{description}
+
+This analysis prevents finite existence from silently becoming a uniform choice function.
+
+\subsection{Static resources and dynamic state}
+
+A proof generator first performs a reverse pass that computes all precisions, horizons, finite-set
+sizes, and observation demands.  These values are fixed terms by the time object induction begins.
+The forward object proof uses a single primitive-recursive state and a quantifier-free invariant.
+If a resource must change during a run, it is represented as a state field and its update is included
+in the step equation.
+
+The point is logical, not merely algorithmic.  An induction schema applies to one fixed formula.  A
+proof that informally changes its precision parameter at every step must be rewritten so that the
+precision is a parameter or a component of the state.
+
+\subsection{A trust budget}
+
+The proposed trust boundary is:
+
+\begin{enumerate}
+\item Lean's kernel and the imported checked ProveIt definitions;
+\item the concrete \(\Prf\) term produced by the plan interpreter;
+\item no trust in Python tests, JSON certificates, numerical experiments, or host graph generators.
+\end{enumerate}
+
+Executable artifacts remain valuable: they detect malformed schedules, arithmetic mistakes, and
+resource bugs before formalization.  Their role is regression testing and certificate production,
+not logical justification.

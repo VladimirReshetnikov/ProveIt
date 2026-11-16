@@ -1,0 +1,213 @@
+\section{Presenting mathematical concepts inside iPRA}\label{sec:presentations}
+
+\subsection{A common presentation record}
+
+A mathematical concept is embedded by a theorem-specific presentation rather than by assuming a
+large ambient universe.
+
+\begin{definition}[Finite presentation interface]
+A presentation of a concept \(A\) consists of:
+\begin{enumerate}
+\item natural-number codes \(a\);
+\item a primitive-recursive validity predicate \(\mathsf{Valid}_A(a,\vec q)\);
+\item an equality or compatibility relation \(a\sim_A b\), with object proofs of the laws actually
+      used;
+\item primitive-recursive operations on codes;
+\item object derivations of operation preservation and the needed algebraic laws;
+\item observation maps to public finite data;
+\item producer statements for any code bounds, moduli, covers, or separation facts not derivable by
+      the generic verifier.
+\end{enumerate}
+\end{definition}
+
+The query tuple \(\vec q\) includes every resource that makes the task finite: precision, degree,
+cardinality, time horizon, height, or requested observable.  A presentation need not decide equality
+of the underlying idealized objects; it needs only the compatibility theorem required by the current
+proof.
+
+\subsection{Finite tuples, records, and arrays}
+
+For a fixed number of fields, nested pairing is enough.  The checked pairing module supplies a
+primitive-recursive pairing term with proved projections.  A record
+\((a_0,\ldots,a_{k-1})\) is represented by a fixed binary tree of pairs.  Every projection theorem is
+obtained by composition of \code{fst_pair} and \code{snd_pair}.
+
+For a variable but explicitly bounded horizon \(h\), there are two standard representations.
+
+\paragraph{Mixed-radix code.}
+If field \(i\) has a proved bound \(B_i\), encode
+\[
+  a_0+B_0(a_1+B_1(\cdots)).
+\]
+Division and remainder recover fields.  The product of the radices is an exact bound for the whole
+record.  This is well suited to one-shot bounded search.
+
+\paragraph{Trace code.}
+Define the \(i\)-th field by primitive recursion or an array-access function over a code.  A validity
+predicate proves the access equations only for \(i<h\).  This representation is better for
+incremental construction and avoids enormous explicit radix terms.
+
+A mere cardinality statement is not a code bound.  To search a set of mathematical objects, the
+presentation must give a complete encoding whose codes are bounded and whose decoder covers every
+valid object.
+
+\subsection{Integers, rationals, and exact algebra}
+
+Integers may be represented by signed pairs or differences of naturals, with equality
+\((a,b)\sim(c,d)\) iff \(a+d=b+c\).  Rational codes are pairs \((p,q)\) with \(q>0\); equality is
+cross multiplication.  Reduction to lowest terms is optional unless canonical codes are public.
+
+Polynomial codes use a bounded coefficient array and a declared degree.  Evaluation is a bounded
+sum; addition and multiplication are bounded convolutions.  Matrices are rectangular arrays, and
+matrix multiplication is a bounded sum.  All of these operations are primitive recursive once the
+shape parameters are explicit.
+
+The presentation principle is to prove only the quotient laws needed by the theorem.  If a proof
+uses rational addition and order but never requests a canonical fraction, there is no need to
+formalize normalization.  Equality substitution through observations suffices.
+
+\subsection{Finite sets, maps, and combinatorics}
+
+A finite subset of \([0,N)\) is represented by a bit vector or characteristic term.  Membership,
+union, intersection, cardinality, and bounded quantification are primitive recursive.  A finite map
+is a table with a validity predicate for key uniqueness; a total map on \([0,N)\) is simply a bounded
+array.
+
+Permutations may be represented by a table plus the bounded statement that every value occurs
+exactly once.  Graphs are adjacency bits; paths and matchings are finite arrays with local validity
+checks.  Counting arguments are expressed by explicit injections/surjections or bounded sums, not by
+an abstract powerset.
+
+This representation is directly compatible with the checked pigeonhole, permutation, sums, and
+search modules in the derivation library.
+
+\subsection{Algebraic numbers and branches}
+
+An algebraic-number presentation can be a polynomial together with an isolating rational interval
+and a certificate that the interval contains exactly one relevant root.  Operations produce new
+polynomials and interval certificates.  Equality may be established by a common annihilating
+polynomial plus interval overlap/separation, or avoided in favor of stable numerical observations.
+
+A branch label is not constructively available merely because an approximation is accurate.  The
+unconditional object is a finite cloud of possible labels or a rational interval.  A public exact
+label requires a gap statement showing that distinct labels are separated by more than the current
+uncertainty.  In the absence of the gap, \TAPIR{} exports the cloud or invariant observer.
+
+\subsection{Quantitative real and complex names}
+
+A real number used by a fixed theorem is presented by a primitive-recursive rational approximation
+\(a(p)\) and an error theorem
+\[
+  |a(p)-x|\le 2^{-p}
+\]
+or, without an ambient \(x\), by a Cauchy compatibility theorem
+\[
+  |a(p)-a(q)|\le 2^{-p}+2^{-q}.
+\]
+The latter is preferable inside weak arithmetic because it speaks only about finite rational codes.
+A complex number is a pair of such names.
+
+The public theorem should be quantitative.  Examples include:
+\[
+ |F_p(\vec x)-G_p(\vec x)|\le 2^{-p},
+\]
+``the sign is positive under a supplied gap,'' or ``the output interval has diameter at most
+\(2^{-p}\).''  An assertion of exact equality of completed reals is shorthand only when accompanied
+by a family of finite error theorems.
+
+\subsection{Continuous functions and moduli}
+
+A continuous function on a coded domain is presented by:
+
+\begin{enumerate}
+\item an approximation evaluator \(E(p,x)\);
+\item a modulus mapping output precision to input precision;
+\item a theorem that compatible input names at the requested input precision produce output
+      approximations within the requested error;
+\item optional range or Lipschitz bounds.
+\end{enumerate}
+
+Without a primitive-recursive modulus, the strongest honest theorem may be finite-consumer or
+metastable: for a fixed finite list of input precisions, a supplied certificate meets those requests.
+The framework does not turn classical pointwise continuity into a uniform modulus.
+
+Composition is theorem-specialized.  A reverse demand pass asks the outer modulus what precision it
+needs from the inner function, constructs the inner approximation at that precision, and then applies
+the two error theorems.  The resulting proof graph is acyclic even if the source expression is nested.
+
+\subsection{Differentiation and integration}
+
+A derivative theorem is represented by a finite difference estimate with an explicit remainder:
+\[
+  \left|\frac{f(x+h)-f(x)}{h}-d(x)\right|\le E(x,h).
+\]
+A requested precision determines a nonzero rational \(h\) and sufficient input precision.  The
+certificate contains the algebraic bound on \(E\).  Exact differentiability is represented by the
+family of these finite theorems.
+
+An integral is represented by a quadrature sum plus an error theorem.  Compactness or uniform
+continuity enters as a finite mesh/modulus producer.  The checked bounded-sum and Fubini-style modules
+handle the finite algebra; the analytic error estimate remains a domain node or residual.
+
+\subsection{Topology and geometry}
+
+For finite topology, use simplicial complexes, nerves, incidence tables, and finite covers.  A
+compact-space argument consumes an explicit net or cover rather than invoking unrestricted
+compactness.  Homology computations become bounded integer matrix calculations with certificates for
+rank, kernels, or Smith data.
+
+Euclidean and projective geometry are represented by coordinates and polynomial incidence
+relations.  Degeneracy conditions are explicit.  Noncanonical coordinate charts or orientations are
+sealed when the final invariant is chart-independent.  Exact orientation signs require a nonzero
+determinant gap; otherwise an interval or disjunction is exported.
+
+\subsection{Probability and finite distributions}
+
+A finite distribution is a list of nonnegative integer weights and a positive total weight.
+Expectation and variance are rational bounded sums.  Independence is an equality of finite weight
+tables.  Random variables are tables over a finite sample space.
+
+Limit theorems require quantitative tail bounds, rates, or finite-horizon versions.  The finite
+algebra can be compiled by existing expectation/variance modules; an asymptotic rate is an explicit
+producer.  A statement such as convergence in distribution without a modulus should be kept as a
+family of finite test-function obligations or a metastable contract.
+
+\subsection{Groups, categories, and finite diagrams}
+
+A finite group is a multiplication table with identity and inverse witnesses, checked by bounded
+universal formulas.  A finitely presented group for a finite-use theorem is represented by words up
+to a fixed length plus derivation certificates; unrestricted word-problem claims are not silently
+assumed.
+
+A finite category is a table of objects, arrows, source/target, identities, and partial composition,
+with bounded associativity checks.  A finite diagram, cone, or natural transformation is another
+record.  Universal properties are compiled at the finite diagram actually queried.  Infinite
+categories or sheaves enter through finite subdiagrams, covers, and compatibility certificates.
+
+\subsection{Setoids and quotient discipline}
+
+When codes are noncanonical, define a setoid relation \(\sim\) and prove only:
+
+\begin{enumerate}
+\item reflexivity, symmetry, and transitivity on valid codes;
+\item operation congruence;
+\item observer invariance or quantitative compatibility.
+\end{enumerate}
+
+The public theorem is stated in invariant observations or in formulas stable under \(\sim\).  There
+is no need to construct a quotient type inside first-order arithmetic.  This finite observational
+descent is especially effective for bases, charts, presentations, and choices of representatives.
+
+\subsection{A criterion for successful embedding}
+
+A concept is ready for \TAPIR{} compilation when every use in the intended theorem can be reduced to:
+
+\begin{itemize}
+\item a fixed finite code or a fixed finite precision request;
+\item a primitive-recursive validity/checking predicate;
+\item local object derivations for operations and observers;
+\item explicit producer boundaries for all non-generic existence or uniformity claims.
+\end{itemize}
+
+The criterion is intentionally theorem-relative.  It avoids formalizing a large universe when the
+proof consumes only a finite interface.
