@@ -208,7 +208,7 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/chec
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-translate-ext.sh "$PWD" NEW_EMPTY_OUTPUT
 ```
 
-`check-incremental.sh` now lists the current nineteen modules with their report counts, because
+`check-incremental.sh` now lists the current twenty modules with their report counts, because
 `PA194GuardedEndpoint` no longer exists. In that form it has not been run. It writes
 `PA194TranslateExt` into its output directory, so `check-translate-ext.sh` is only needed to
 replay that module alone.
@@ -219,7 +219,7 @@ incremental replay of `PA194Leibniz` against those objects passed with four axio
 reports and no `sorryAx`. The dispatcher, source theory and other listed overlays
 were prebuilt; these checks do not rebuild the full transitive dependency closure.
 The first replay used the preceding six-module version of `check-incremental.sh`;
-the current nineteen-module script has not been run as a whole. To replay the later
+the current twenty-module script has not been run as a whole. To replay the later
 module alone against the same checked staged dependencies:
 
 ```sh
@@ -306,4 +306,15 @@ fresh output directory:
 
 ```sh
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-guarded-closed.sh "$PWD" NEW_EMPTY_OUTPUT
+```
+
+A separate repository-source replay of `PA194InductionWiring` passed five axiom
+audits without `sorryAx` against the independently replayed induction and closed
+guard modules and other prebuilt dependencies. It proves conditional iteration
+of parameter closure for arbitrary internal lengths; identifying the concrete
+closure and binding operations, shift invariance of the fully closed axiom, and
+the root-parameter supplier remains open. Reproduce with a fresh output:
+
+```sh
+bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-induction-wiring.sh "$PWD" NEW_EMPTY_OUTPUT
 ```
