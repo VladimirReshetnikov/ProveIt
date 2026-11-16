@@ -32,6 +32,18 @@ variants = {
         "source": ("source/instructions.json", "source/sites.json"),
         "routes": {41: (25, 48), 61: (25, 48), 82: (33, 25), 144: (48, 33)},
     },
+    "PA194C32": {
+        "folder": "pa194_ax11hc4_c32_research_2026-11-15/construction",
+        "table": "cycle32/pa194_cycle32.tm",
+        "labels": "cycle32/labels.json",
+        "table_hash": "3af42ea9d430e5df22b69e6fc540e3530f87263372580c7c554bae37ba524ac8",
+        "label_hash": "45ed8d4ce00769058326ca2563d122afd809385c77b2f551f038016b9f79cb6a",
+        "native_hash": "7a83339f95624c0d9b3935f081f226b17461dac6c4660e03a400ce04be8e0a9e",
+        "native_output": "pa194_cycle32.native.tm",
+        "grammar": ("source/source_grammar.json", "e162ee72042f671edcaf99d5aa4d0173e867c636719f9fb3fd254c83f84ebb4e"),
+        "routes": {17: (32, 48), 21: (60, 55), 41: (25, 32), 45: (55, 60),
+                   61: (25, 32), 144: (48, 25), 161: (32, 48)},
+    },
 }
 
 
@@ -78,9 +90,36 @@ def lean_tree(rows, keys):
             f"{lean_tree(rows, keys[mid + 1:])})")
 
 
+def grammar_sites(grammar):
+    """Expand the packet's compact tree to its path/operator/operand triples."""
+    entries = grammar["entries"]
+    opcodes = {"i": "inc", "d": "dec", "b": "breakTo", "c": "continueTo", "h": "halt"}
+
+    def expand(index, path):
+        entry = entries[index]
+        if isinstance(entry, str):
+            yield [path, opcodes[entry[0]], int(entry[1:]) if len(entry) > 1 else None]
+        else:
+            yield from expand(entry[0], path + "0")
+            yield from expand(entry[1], path + "1")
+
+    return list(expand(grammar["root"], ""))
+
+
+def check_source(spec, folder, primary):
+    if "grammar" in spec:
+        filename, digest = spec["grammar"]
+        grammar = json.loads(pinned(folder / filename, digest))
+        assert grammar_sites(grammar) == json.loads((primary / "source/pa194.sites.json").read_bytes())
+    else:
+        for name, source in zip(("instructions", "sites"), spec["source"]):
+            assert json.loads((folder / source).read_bytes()) == \
+                json.loads((primary / "source" / f"pa194.{name}.json").read_bytes())
+
+
 def main():
     if len(sys.argv) != 4 or sys.argv[1] not in variants:
-        raise SystemExit("usage: generate-selector-table.py {PA194P5,PA194TDY} REPO OUTPUT")
+        raise SystemExit("usage: generate-selector-table.py {PA194P5,PA194TDY,PA194C32} REPO OUTPUT")
     variant = sys.argv[1]
     repo, out = map(Path, sys.argv[2:])
     spec = variants[variant]
@@ -92,9 +131,7 @@ def main():
     primary_labels = json.loads(pinned(primary / "tables/pa194.labels.json", LABEL_HASH))
     labels = json.loads(pinned(folder / spec["labels"], spec["label_hash"]))
     assert len(set(labels)) == len(labels) == 195 and (labels[0], labels[-1]) == (74, 254)
-    for name, source in zip(("instructions", "sites"), spec["source"]):
-        assert json.loads((folder / source).read_bytes()) == \
-            json.loads((primary / "source" / f"pa194.{name}.json").read_bytes())
+    check_source(spec, folder, primary)
     native = native_table(child, labels)
     expected = native_table(parent, primary_labels)
     for q, (old, new) in spec["routes"].items():

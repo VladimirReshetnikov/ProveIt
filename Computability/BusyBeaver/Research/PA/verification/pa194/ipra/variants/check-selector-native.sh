@@ -3,9 +3,9 @@ set -euo pipefail
 ulimit -s unlimited
 ulimit -c 0
 
-candidate=${1:?candidate (PA194P5 or PA194TDY) required}
+candidate=${1:?candidate (PA194P5, PA194TDY, or PA194C32) required}
 case "$candidate" in
-  PA194P5 | PA194TDY) ;;
+  PA194P5 | PA194TDY | PA194C32) ;;
   *) printf 'Unknown candidate %s\n' "$candidate" >&2; exit 2 ;;
 esac
 model=$(cd -- "${2:?verified selector model stage required}" && pwd)

@@ -5,9 +5,9 @@ import sys
 
 
 def main():
-    checkers = {"PA194P5": "PA194P5Representative", "PA194TDY": "PA194TDYChecks"}
+    checkers = {"PA194P5": "PA194P5Representative", "PA194TDY": "PA194TDYChecks", "PA194C32": "PA194C32Checks"}
     if len(sys.argv) != 3 or sys.argv[1] not in checkers:
-        raise SystemExit("usage: generate-selector-coverage.py {PA194P5,PA194TDY} OUTPUT")
+        raise SystemExit("usage: generate-selector-coverage.py {PA194P5,PA194TDY,PA194C32} OUTPUT")
     candidate, destination = sys.argv[1:]
     checker = checkers[candidate]
     out = Path(destination)

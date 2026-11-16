@@ -28,6 +28,11 @@ variants = {
         "84bfe1368312c7c71c9e4706de7cb65923310e25f8d472997c9c57c5aedd7934",
         57594,
     ),
+    "PA194C32": (
+        "pa194_ax11hc4_c32_research_2026-11-15/construction/cycle32/pa194_cycle32.tm",
+        "3af42ea9d430e5df22b69e6fc540e3530f87263372580c7c554bae37ba524ac8",
+        56250,
+    ),
 }
 
 
@@ -108,7 +113,7 @@ end {variant}Startup
 
 
 if len(sys.argv) != 4 or sys.argv[1] not in variants:
-    raise SystemExit("usage: generate-indexed-startup.py {PA194OR,PA194LC,PA194P5,PA194TDY} REPO OUTPUT")
+    raise SystemExit("usage: generate-indexed-startup.py {PA194OR,PA194LC,PA194P5,PA194TDY,PA194C32} REPO OUTPUT")
 variant = sys.argv[1]
 repo, out = map(Path, sys.argv[2:])
 relative, digest, time = variants[variant]

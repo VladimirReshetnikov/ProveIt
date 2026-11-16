@@ -3,7 +3,7 @@
 The [delivered PA194TDY table](../../../../../docs/pa194_tdy_2026-11-14/artifacts/pa194_tdy.tm)
 has 194 working states and SHA-256
 `84bfe1368312c7c71c9e4706de7cb65923310e25f8d472997c9c57c5aedd7934`.
-The generator pins its native-to-dense map and checks the four selector
+The generator pins its dense-to-native map and checks the four selector
 changes against the primary native rows. The resolved instructions and
 source addresses match the primary 3,673-site program.
 
