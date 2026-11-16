@@ -1,0 +1,145 @@
+\section{Repository audit and design constraints}
+\label{sec:audit}
+
+The framework was designed against the state of
+\pathcode{VladimirReshetnikov/ProveIt} at commit
+\texttt{2ef31aa3e313d792df6b63bb28babfe48e1f982e}.  This matters because the
+repository changed substantially during the sequence of earlier research
+packets.  The present architecture should be judged against the checked
+interfaces now available, not against an earlier packet-only picture.
+
+\subsection{The canonical endpoint is ordinary \texorpdfstring{\(\Prf\;\PRAAx\)}{Prf PRAAx}}
+
+The directory \pathcode{Logic/PrimitiveRecursiveArithmetic} separates four
+roles.
+\begin{enumerate}
+  \item \pathcode{ConciseIPRA} contains checked presentations and proves their
+        relation to ordinary \(\iPRA\).
+  \item \pathcode{Derivations} contains actual Lean-kernel-checked object
+        derivations whose theorem types are explicit judgments
+        \(\Gamma\vdash_{\PRAAx}\varphi\).
+  \item \pathcode{Bridge} transports closed and open derivations between the
+        ordinary presentation and the Foundation presentation used by other
+        projects.
+  \item \pathcode{docs/proofs} stores delivered research packets.  These are
+        valuable mathematical design inputs, but their Lean sources were
+        generally not rerun or integrated when filed.
+\end{enumerate}
+The unification plan explicitly selects ordinary \code{Prf PRAAx} as the
+shared interface for new portable statements.  Therefore a new framework that
+ends only in an external certificate checker, a semantic theorem about
+\(\Nat\), or an uncompiled custom calculus would not close the central gap.
+DARC requires every local node and the global result to target the ordinary
+judgment.
+
+\subsection{Checked structural and arithmetic support}
+
+The ordinary deduction file supplies precisely the structural operations
+needed for compositional proof generation:
+\begin{itemize}
+  \item \code{Prf.substWeaken}, combining substitution and weakening;
+  \item \code{Prf.subst} and \code{Prf.weaken};
+  \item \code{Prf.trans}, a simultaneous-cut theorem replacing every
+        hypothesis by a derivation of it;
+  \item \code{Prf.exE}, the primitive operation for sealing local existential
+        certificates;
+  \item equality congruence and substitution;
+  \item introduction and elimination rules for the intuitionistic
+        connectives and quantifiers.
+\end{itemize}
+The ordinary arithmetic theory supplies a symbol for every primitive-recursive
+definition, defining equations for projection, composition and primitive
+recursion, successor separation and injectivity, and quantifier-free
+induction.  The reusable derivation library builds semiring laws, order,
+pairing, bounded sums and products, simultaneous recursion, finite descent,
+division, gcd, Bezout, and bounded least search on this foundation.
+
+Two checked interfaces are especially important.
+
+\paragraph{Open induction.}
+The helper \code{IPRA.ind} packages quantifier-free induction for an open
+formula with parameters in scope.  DARC's loop reflection theorem is designed
+to reduce to this exact shape.
+
+\paragraph{Bounded least search.}
+For a fixed binary primitive-recursive body \(f(i,x)\), the checked search code
+\(\mu_f(N,x)\) has an ordinary derivation of:
+\begin{align*}
+  \mu_f(N,x)&\le N,\\
+  \mu_f(N,x)<N&\to f(\mu_f(N,x),x)=0,\\
+  i<\mu_f(N,x)&\to f(i,x)\ne 0,
+\end{align*}
+and the theorem \code{search\_found} proves that a known zero below \(N\)
+is found no later than that zero.  This is exactly the right primitive for
+named-certificate export.  It should not be reimplemented by an unchecked
+host-language search.
+
+\subsection{The bridge is no longer merely closed}
+
+The Bridge library now exposes translation under finite open contexts and
+explicit assignments, as well as scoped round-trip theorems.  This removes an
+earlier reason to force every reusable lemma into a closed sentence.  DARC can
+therefore keep local parameters and hypotheses visible, compile in ordinary
+\(\iPRA\), and translate only at a client boundary.  The recommended order is:
+\[
+\begin{aligned}
+  \text{prove once in ordinary }\iPRA
+    &\quad\longrightarrow\quad \text{compare client symbols}\\
+    &\quad\longrightarrow\quad \text{transport the open or closed sequent}.
+\end{aligned}
+\]
+This order is built into the backend layer of the proposed Lean architecture.
+
+\subsection{Prior framework packets and the remaining gap}
+
+Several recent packets identify the right components:
+\begin{itemize}
+  \item open context-polymorphic contracts equivalent to sequents;
+  \item finite interaction programs and bounded strategy certificates;
+  \item least finite demand closures, including cyclic monotone demands;
+  \item certificate escape analysis and existential sealing;
+  \item normalized trace reflection;
+  \item backward relational viability and stable observers;
+  \item explicit residuals for missing moduli, margins, and height bounds.
+\end{itemize}
+Their exact status is also important.  The generic mathematics is often
+written in detail, and small source candidates may contain no placeholders,
+but the larger compiler files are generally blueprints and the packages do not
+claim new kernel-checked main theorems.  The ideas also remain partly
+orthogonal: one analysis decides precision, another decides certificate
+escape, and another tracks residuals.  A proof generator can become
+inconsistent if those analyses disagree about which node is live.
+
+DARC's distinctive step is to put all four decisions in one least finite state.
+A single transfer network answers:
+\begin{quote}
+What must be true, how accurately must it be true, which local data must be
+public, and which producer hypotheses remain, in order to answer this exact
+query?
+\end{quote}
+The pruned proof schedule is then derived from that same state.  This avoids a
+class of mismatches in which, for example, a precision pass removes a branch
+but a witness pass still tries to name it, or a residual producer is declared
+unnecessary even though a retained guard depends on it.
+
+\subsection{Acceptance criteria derived from the audit}
+
+The audit yields the following nonnegotiable criteria.
+\begin{enumerate}
+  \item The final theorem type is literally an ordinary \code{Prf PRAAx}
+        sequent.
+  \item Metalevel code is evidence about the compiler, not a replacement for
+        an object derivation.
+  \item Every fixed formula or algorithm is statically specialized; no total
+        object-level universal evaluator is postulated.
+  \item Quantifier-free induction remains quantifier-free after compilation.
+  \item Missing deep mathematics is visible in residual formulas.
+  \item Local noncanonical witnesses are not canonicalized unless demanded by
+        the public statement.
+  \item Backend translation is a separate checked step, preserving exact
+        client symbols and theorem direction.
+  \item Verification status is claim-by-claim: inherited checked theorem,
+        human argument, uncompiled Lean target, executable finite test, or
+        open producer.
+\end{enumerate}
+These criteria shape every definition in the following sections.

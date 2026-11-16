@@ -1,0 +1,134 @@
+\section{Static specialization and the universal-evaluator barrier}
+\label{sec:specialization}
+
+A general proof framework naturally tempts one to define an object-language
+function that interprets arbitrary formulas, proof plans, or
+primitive-recursive programs.  In \(\iPRA\), that temptation must be resisted.
+DARC obtains generality by a family of specialized compilers, not by one total
+universal evaluator inside the object theory.
+
+\subsection{Why a total universal evaluator is the wrong target}
+
+Primitive-recursive functions are closed under a finite syntax of composition
+and primitive recursion, but there is no primitive-recursive function that,
+for every code of a primitive-recursive program and every input, returns that
+program's value.  A diagonal argument explains the obstruction.  If
+\(U(e,x)\) were primitive recursive and evaluated every unary
+primitive-recursive function \(f_e\), then
+\[
+  g(e)=U(e,e)+1
+\]
+would itself be primitive recursive and hence equal to some \(f_k\).  But then
+\(g(k)=U(k,k)+1=f_k(k)+1=g(k)+1\), a contradiction.
+
+Clocked evaluators for a fixed instruction set and fixed fuel are primitive
+recursive.  Partial universal evaluators can also be represented by step
+relations.  Neither gives a total evaluator for arbitrary primitive-recursive
+programs.  Therefore a framework that silently introduces such an evaluator
+has strengthened or changed the theory.
+
+\subsection{Specialization theorem schema}
+
+DARC uses the following metatheoretic schema.
+
+\begin{theorem}[Fixed-plan specialization]
+\label{thm:fixed-specialization}
+For each fixed finite DARC plan \(P\), one can effectively construct:
+\begin{enumerate}
+  \item a finite list of concrete primitive-recursive symbols used by \(P\);
+  \item their defining equations as instances of \(\PRAAx\);
+  \item fixed truth-bit, strategy-checker, trace, and viability symbols for the
+        bounded substructures appearing in \(P\);
+  \item a finite Lean term whose target is the ordinary compiled sequent,
+        provided the declared local proof obligations are supplied.
+\end{enumerate}
+No object-language variable ranges over plans or program codes.
+\end{theorem}
+
+\begin{proof}
+Proceed by external structural recursion on the finite plan.  A producer node
+contributes a formula and either a derivation parameter or a residual.  A
+compute node contributes the concrete \(\mathsf{PR}\) syntax for its fixed
+function.  A bounded-formula node is compiled by recursion on that fixed
+formula, producing finite folds.  A loop node contributes a fixed primitive
+recursion or simultaneous recursion for its state.  A relation node contributes
+a finite backward recursion over its fixed horizon.  A proof node contributes
+a call to a local theorem and simultaneous cut.  Since the plan is finite, the
+construction terminates and outputs finite syntax.  The output contains no
+interpreter; it contains the syntax generated for this \(P\).
+\end{proof}
+
+The phrase ``effectively construct'' belongs to the metatheory.  Once the
+construction is run, the resulting theorem is a specific ordinary derivation.
+
+\subsection{Fixed instruction sets and clocked traces}
+
+There is still an important place for interpreters.  A theorem about a
+particular Turing machine, register machine, recurrence language, or algebraic
+rewriting system may use a fixed primitive-recursive step function
+\(\operatorname{step}_P\) and a clocked iteration
+\(\operatorname{run}_P(t,x)\).  These are concrete symbols generated from
+\(P\).  DARC permits:
+\[
+ \operatorname{run}_P(0,x)=x,
+ \qquad
+ \operatorname{run}_P(S t,x)=\operatorname{step}_P(
+   \operatorname{run}_P(t,x)).
+\]
+What is prohibited is replacing the subscript \(P\) by an arbitrary code and
+claiming total evaluation for all such codes.
+
+This policy aligns with existing exact machine proofs in the repository.  A
+literal table or fixed equation is bound to a concrete endpoint; provenance
+and byte-level identity are preserved.  Generality comes from reusable proof
+patterns around that concrete object, not from erasing its identity.
+
+\subsection{Specialization of bounded formulas}
+
+A fixed bounded formula
+\[
+  \forall i<N(x)\;\exists j<M(i,x)\;R(i,j,x)
+\]
+is compiled to concrete primitive-recursive folds and strategy functions.  The
+compiler may recurse on the displayed syntax to generate a bit
+\(b_A(x)\).  The object theorem is the particular formula
+\[
+  b_A(x)=1\;\leftrightarrow\;A(x).
+\]
+It is not
+\[
+  \forall e,x\;\bigl(\operatorname{EvalFormula}(e,x)=1
+    \leftrightarrow \operatorname{Sat}(e,x)\bigr)
+\]
+for a total arbitrary-formula evaluator.  This distinction also keeps the
+induction matrix quantifier-free: the matrix mentions only the generated bit.
+
+\subsection{Specialization cache and theorem reuse}
+
+Static specialization need not duplicate proofs uncontrollably.  A practical
+implementation should hash a normalized fixed definition and reuse:
+\begin{itemize}
+  \item the same generated \(\mathsf{PR}\) symbol for identical bodies;
+  \item the same reflection theorem for identical bounded formulas;
+  \item the same transfer summary and local theorem for a reusable library
+        component;
+  \item theorem instantiation through \code{Prf.subst} rather than rebuilding
+        a closed derivation.
+\end{itemize}
+The cache is an engineering optimization outside the trusted core.  A cache
+hit is accepted only after Lean checks the reused declaration at its exact
+type.
+
+\subsection{What is and is not uniform}
+
+DARC is uniform in a metamathematical sense: one generator handles a class of
+finite plans.  It is nonuniform in the object language: each output theorem
+contains symbols specialized to one plan.  This is not a weakness.  It is the
+natural form of a theory whose language already contains a function symbol for
+every primitive-recursive definition.
+
+Uniform object theorems are still possible when their parameters are ordinary
+numbers or terms.  For example, one symbol can compute a finite sum up to a
+variable bound, and one open derivation can prove its recurrence for all
+bounds.  The boundary is syntax and unbounded program behavior, not numerical
+parameters.

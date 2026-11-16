@@ -1,0 +1,197 @@
+\section{Lean formalization architecture}
+\label{sec:lean}
+
+The supplied Lean files are organized so that useful results can be checked
+incrementally.  The small structural kernel targets declarations already
+present in the repository; the remaining files state dependency-ordered
+blueprints.  This section gives a concrete path from those blueprints to a
+kernel-checked compiler.
+
+\subsection{Module graph}
+
+\begin{center}
+\begin{tikzpicture}[
+  node distance=8mm and 10mm,
+  box/.style={draw,rounded corners,align=center,fill=darcgray,inner sep=5pt,font=\small},
+  arr/.style={-{Latex[length=2mm]},thick}
+]
+\node[box] (up) {ConciseIPRA.PR\\IPRADerivations.Core};
+\node[box,below left=of up] (struct) {DARC.StructuralKernel};
+\node[box,below right=of up] (demand) {DARC.Demand};
+\node[box,below=of struct] (bool) {DARC.BoundedReflection};
+\node[box,below=of bool] (trace) {DARC.Trace};
+\node[box,right=of trace] (rel) {DARC.Relational};
+\node[box,below right=10mm and -8mm of trace] (comp) {DARC.Compiler};
+\node[box,below=of comp] (bridge) {IPRABridge export checks};
+\draw[arr] (up) -- (struct);
+\draw[arr] (up) -- (demand);
+\draw[arr] (struct) -- (bool);
+\draw[arr] (bool) -- (trace);
+\draw[arr] (bool) -- (rel);
+\draw[arr] (demand) -- (comp);
+\draw[arr] (trace) -- (comp);
+\draw[arr] (rel) -- (comp);
+\draw[arr] (struct) -- (comp);
+\draw[arr] (comp) -- (bridge);
+\end{tikzpicture}
+\end{center}
+
+The demand module is metatheory: it proves facts about finite plans and returns
+resource states.  The structural, reflection, trace, relational, and compiler
+modules construct values of the ordinary \code{Prf PRAAx} type.
+
+\subsection{Structural kernel}
+
+The file \pathcode{lean/DARC/StructuralKernel.lean} contains no
+\code{sorry}, \code{admit}, or new \code{axiom}.  It defines:
+\begin{itemize}
+  \item \code{OpenContract} and \code{openContract\_iff};
+  \item context replacement by \code{Prf.trans};
+  \item free-variable specialization by \code{Prf.subst};
+  \item a scoped certificate structure and sealing by \code{Prf.exE};
+  \item a wrapper around \code{Search.search\_found} for named export;
+  \item a quantifier-free loop structure and runner using \code{IPRA.ind};
+  \item reuse of closed derivations under arbitrary hypotheses.
+\end{itemize}
+The first formalization step is to place this file in the current Lake
+workspace and resolve any namespace or import drift.  Since every proof is a
+direct call to a checked API, this step should be small and gives immediate
+value even before the full compiler exists.
+
+A representative declaration is:
+\begin{lstlisting}[language={}]
+def OpenContract (Gamma : List (Fm PTm n)) (A : Fm PTm n) : Prop :=
+  forall Delta, (forall C in Gamma, Delta |- [PRAAx] C) ->
+    Delta |- [PRAAx] A
+
+theorem openContract_iff :
+    OpenContract Gamma A <-> Gamma |- [PRAAx] A := ...
+\end{lstlisting}
+The actual file uses Lean notation and scoped variables.
+
+\subsection{Demand formalization}
+
+The metalevel demand module should avoid unnecessary abstract lattice
+machinery.  Define a shape by capacities \(c_i\), a demand as a dependent
+vector of \code{Fin (c i + 1)}, coordinatewise order, join, and rank.  Prove:
+\begin{enumerate}
+  \item join is an upper bound;
+  \item strict coordinatewise increase raises rank;
+  \item rank is bounded by the sum of capacities;
+  \item inflationary iteration stabilizes within that sum;
+  \item monotonicity implies leastness.
+\end{enumerate}
+For executable plans, a threshold rule can be a finite map from trigger
+coordinates to levels and from required coordinates to levels.  A generic
+lemma proves its transfer monotone.  More complicated modules may provide a
+custom transfer and a monotonicity theorem.
+
+The blueprint \pathcode{lean/DARC/DemandBlueprint.lean} records the intended
+signatures.  Its proof milestones are metatheoretic and do not add object
+axioms.
+
+\subsection{Bounded reflection}
+
+A robust representation should store atom evidence in the syntax.  One option
+is a dependent structure:
+\begin{lstlisting}[language={}]
+structure ReflectedAtom (n : Nat) where
+  bit      : PR n
+  formula  : Fm PTm n
+  range    : [] |- [PRAAx] bitTerm = 0 or bitTerm = 1
+  reflect  : [] |- [PRAAx] (bitTerm = 1 <-> formula)
+\end{lstlisting}
+The fixed formula syntax then contains \code{ReflectedAtom}, Boolean
+connectives, and bounded binders.  The generated \code{bit} and
+\code{denote} functions recurse in Lean.  Reflection is proved by induction on
+the syntax.  The bounded binder cases should reuse existing finite sums and
+products rather than inventing a second arithmetic library.
+
+Binder substitution is the main engineering risk.  The implementation should
+first establish reusable lemmas for shifting the generated body symbol and
+instantiating it at the bounded index.  Small tests with one free parameter
+under two nested binders should precede the strategy compiler.
+
+\subsection{Trace formalization}
+
+A trace specification stores a finite state arity, initial terms, step terms,
+and a quantifier-free invariant.  Generate state functions using existing
+primitive recursion and pairing/simultaneous recursion.  Prove zero and
+successor equations at arbitrary terms.  Then expose a theorem whose inputs
+are exactly the base and one-step invariant derivations and whose output is the
+open invariant.
+
+Do not encode the invariant as an arbitrary syntax code evaluated at runtime.
+It is a fixed \code{Fm PTm} value, and the theorem is generated for it.
+Bounded assertions inside the informal invariant must already have been
+replaced by reflected bits.
+
+\subsection{Relational formalization}
+
+For a first implementation, use a uniform numerical bound at each layer and a
+fixed primitive-recursive edge bit.  Define viability by primitive recursion on
+remaining depth, using a finite \code{any} fold.  Prove the one-step theorem:
+\[
+  V_h(x)=1\to
+  \exists y<B_{h+1}\,[E_h(x,y)=1\wedge V_{h+1}(y)=1].
+\]
+Then use \code{Search.search\_found} to define the least viable successor and
+prove the finite path invariant.  General finite coded sets can be added after
+this numerical version works.
+
+\subsection{Proof plan and compiler}
+
+The global plan exists in Lean metatheory and stores local theorem values.
+Because theorem types depend on node formulas, a fully generic dependent graph
+can become cumbersome.  A practical staged implementation is:
+\begin{enumerate}
+  \item generate one Lean module per concrete plan;
+  \item declare node formulas and local proof constants in that module;
+  \item generate the topological schedule as ordinary Lean code using
+        \code{Prf.trans};
+  \item use a generic metatheoretic demand library to decide which declarations
+        are emitted;
+  \item only later abstract common dependent graph machinery.
+\end{enumerate}
+This route gives checked application pilots sooner and avoids spending months
+formalizing a universal compiler representation before validating the local
+interfaces.
+
+The blueprint \pathcode{lean/DARC/CompilerBlueprint.lean} states the ideal
+generic theorem, but the generated-module approach is an equally valid path to
+a complete checked result.
+
+\subsection{Axiom and dependency audit}
+
+Every completed module should have a check file that:
+\begin{enumerate}
+  \item imports only the intended lower layers;
+  \item prints the exact theorem types;
+  \item runs \code{\#print axioms} on exported declarations;
+  \item scans for \code{sorryAx};
+  \item records the Lake command and repository commit;
+  \item checks that the ordinary arithmetic layer does not import application
+        endpoints or a second backend unexpectedly.
+\end{enumerate}
+A theorem is marked checked only after this audit succeeds.  Source files with
+no visible placeholders but no elaboration record remain source candidates.
+
+\subsection{Suggested integration milestones}
+
+\begin{description}
+  \item[M0.] Elaborate the structural kernel and add axiom checks.
+  \item[M1.] Check demand stabilization/leastness and reproduce the JSON
+        example in Lean metatheory.
+  \item[M2.] Reflect conjunction, disjunction, and one bounded existential;
+        then add nested alternation.
+  \item[M3.] Prove the square-accumulator trace and a finite viability path as
+        ordinary sequents.
+  \item[M4.] Generate one concrete proof graph module and compile it by
+        simultaneous cut.
+  \item[M5.] Export the result through the open Bridge and compare client
+        symbols.
+  \item[M6.] Migrate one real packet with a nontrivial residual modulus and
+        show that discharging the producer removes the boundary.
+\end{description}
+The detailed commands and acceptance criteria are in
+\pathcode{lean/FORMALIZATION_PLAN.md}.

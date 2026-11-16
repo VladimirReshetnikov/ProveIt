@@ -1,0 +1,170 @@
+\section{Worked application templates}
+\label{sec:applications}
+
+This section illustrates how the framework changes proof shape.  The examples
+are templates rather than claims that every listed deep theorem has now been
+formalized.
+
+\subsection{A value query with a dead branch witness}
+
+Suppose a finite algebra procedure produces a certificate containing a root
+cluster \(C\), an ordered branch label \(\ell\), a local trace \(t\), and an
+error bound \(e\).  The public query asks only for a symmetric observable
+\(s(C)\) to precision \(p\).  The resource rules may be:
+\begin{align*}
+  \text{query:value}(p)&\Rightarrow \Prec(s)\ge p,\\
+  \Prec(s)\ge p&\Rightarrow \Prec(C)\ge p+c,\\
+  \text{query:labeled-root}&\Rightarrow \Cert(\ell)=1,
+       \Guard(\text{separation})=1,\\
+  \text{query:replay}&\Rightarrow \Cert(t)=1.
+\end{align*}
+For the value-only seed, the least closure leaves \(\ell\) and \(t\) dead and
+never requests separation.  The certificate producer is opened locally; the
+symmetric-observer theorem derives the value; existential elimination seals
+the full certificate.  The endpoint is stronger and more stable than one that
+exports an arbitrary ordered root.
+
+If the query changes to a labeled root, query monotonicity activates the label,
+separation guard, and named export.  The stronger theorem visibly has stronger
+hypotheses.
+
+\subsection{A cyclic precision closure}
+
+The generated demonstration uses coordinates
+\[
+ \Prec(\text{root})\in\{0,\ldots,6\},
+ \quad
+ \Prec(\text{integral})\in\{0,\ldots,6\},
+\]
+with rules
+\begin{align*}
+  \text{value query}&\Rightarrow \Prec(\text{root})\ge3,\\
+  \Prec(\text{root})\ge1&\Rightarrow
+       \Prec(\text{integral})\ge2,
+       \Guard(\text{denominator})=1,\\
+  \Prec(\text{integral})\ge2&\Rightarrow
+       \Prec(\text{root})\ge5,\\
+  \Prec(\text{root})\ge5&\Rightarrow
+       \Prec(\text{integral})\ge6,
+       \Res(\text{tail modulus})=1.
+\end{align*}
+The least closure is
+\[
+  \Prec(\text{root})=5,
+  \quad \Prec(\text{integral})=6,
+  \quad \Guard(\text{denominator})=1,
+  \quad \Res(\text{tail modulus})=1.
+\]
+Branch and trace certificate coordinates remain zero; so do a separation guard
+and an unrelated height-bound residual.  The cycle is solved entirely in the
+finite metalevel lattice.  The object proof is a straight schedule at the
+chosen precision levels.
+
+\subsection{Bounded alternation}
+
+Consider the finite statement
+\[
+  \forall i<I\;\exists j<J\;R(i,j).
+\]
+A direct nested proof can be awkward because the existential witness depends on
+\(i\).  DARC generates a strategy certificate coding the function
+\(i\mapsto j_i\), together with a checker asserting
+\(j_i<J\) and \(R(i,j_i)\) for all \(i<I\).  The checker is primitive
+recursive and its validity reflects the original bounded formula.  Three
+public endpoints are possible:
+\begin{enumerate}
+  \item seal the strategy and prove only the bounded formula;
+  \item observe a stable aggregate, such as a finite sum of costs;
+  \item name the least valid strategy code under a finite code bound.
+\end{enumerate}
+The reference artifact instantiates this with parity and verifies the finite
+certificate.
+
+\subsection{A deterministic recurrence}
+
+For the loop
+\[
+  (n,a)\mapsto(n+1,a+2n+1),
+\]
+the invariant \(a=n^2\) is polynomial and quantifier-free.  DARC generates the
+trace functions and applies the semiring proof of
+\((n+1)^2=n^2+2n+1\).  No trace list is public.  A replay query would activate a
+trace code, but the theorem of the recurrence itself does not need one.
+
+This pattern covers many existing checked derivations: finite sums, powers,
+recurrences, the Euclidean algorithm, and simultaneous recursions.  DARC's
+contribution is to package them as loop nodes with explicit transfer summaries
+and certificate scope.
+
+\subsection{Finite compatible approximation clouds}
+
+Suppose each precision level \(h\le H\) has a finite set of approximation
+certificates \(X_h\), and \(E_h(x,y)\) means that \(y\) refines \(x\).  Local
+nonemptiness of every \(X_h\) is insufficient: independently least elements
+may be incompatible.  DARC computes viability backward from terminal
+accuracy, prunes dead certificates, and only then chooses least successors.
+
+If compatible edges preserve an observable within error \(\varepsilon_h\), the
+public endpoint is the root observation with total finite error
+\(\sum_{h<H}\varepsilon_h\).  The path is sealed.  To pass from all finite
+horizons to a regular name, the plan must activate an extension function and a
+tail-modulus producer.
+
+\subsection{Special functions and analytic packets}
+
+A special-function packet typically mixes four levels:
+\begin{enumerate}
+  \item exact identities of finite products, recurrences, or coefficients;
+  \item formal power-series identities at a fixed truncation;
+  \item effective convergence inside a guarded domain;
+  \item continuation, branch selection, asymptotics, or special values.
+\end{enumerate}
+DARC separates these levels.  Exact finite identities often compile with no
+residual.  A truncation theorem requests a finite coefficient bound.  An
+analytic value query activates a convergence or tail modulus and domain
+margins.  A branch-specific query additionally activates a path and separation
+guards.  A continuation theorem beyond the formalized domain remains residual.
+
+This prevents an exact coefficient proof from being overstated as a complete
+theorem about a global analytic function, while maximizing the portion that
+can be checked in \(\iPRA\).
+
+\subsection{Diophantine enumeration}
+
+Suppose \(R(x,y)=0\) is a concrete polynomial or primitive-recursive relation.
+The verifier is straightforward.  Given a height \(H\), bounded search can
+enumerate all solutions with code below \(H\), prove soundness of the list, and
+prove completeness below \(H\).  To claim global completeness, the plan needs
+\[
+  R(x,y)=0\Longrightarrow \operatorname{height}(x,y)<H.
+\]
+If no effective height producer is known, DARC emits a conditional theorem
+with that formula as the sole deep residual.  This is more informative than
+marking the whole application ``unformalizable'': the verifier, enumeration,
+and downstream finite reasoning can still be completed.
+
+\subsection{Geometry and finite nets}
+
+For a compact-domain geometric inequality, a DARC plan can contain:
+\begin{enumerate}
+  \item a rational mesh generator at scale \(p\);
+  \item a finite-net coverage producer;
+  \item a Lipschitz or continuity modulus;
+  \item exact checking of the inequality with slack on every mesh point;
+  \item transfer from mesh slack to the full domain.
+\end{enumerate}
+The requested final slack determines mesh precision.  Degenerate configurations
+activate separate guards or case nodes.  If the coverage or modulus is not yet
+formalized, it remains an exact residual rather than being supplied by
+abstract compactness.
+
+\subsection{Busy Beaver and exact coded endpoints}
+
+Machine and consistency applications demand exact provenance.  A plan should
+bind the literal table, blank-start convention, proof predicate, and object
+theory at producer nodes.  Generic arithmetic lemmas can be imported through
+ordinary open sequents; a final bridge node translates to the published
+Foundation endpoint.  DARC does not identify two machines because their
+external simulations agree, nor does it replace a conditional object theorem
+by a stronger semantic statement.  The endpoint inventory remains the source
+of truth.

@@ -1,0 +1,157 @@
+\section{The fixed proof-plan language}
+\label{sec:plan}
+
+DARC compiles one fixed finite plan at a time.  The plan language is broad
+enough to organize proofs from discrete mathematics, algebra, bounded number
+theory, effective analysis, and finite geometry, but deliberately small enough
+that every construct has a direct ordinary-\(\iPRA\) interpretation.
+
+\subsection{Nodes and interfaces}
+
+A plan consists of a finite directed graph \(G=(V,E)\), a public query node
+\(q\), and declarations for resources and local proof interfaces.  Nodes have
+one of the following roles.
+
+\begin{description}
+  \item[Producer.] Establishes an input theorem, modulus, bound, finite net,
+  apartness margin, or certificate-existence formula.  A producer may be
+  proved, supplied as a hypothesis, or classified as an open residual.
+
+  \item[Compute.] Applies a fixed primitive-recursive transformation and
+  exposes its defining equations.  Examples are polynomial evaluation,
+  bounded sums, a recurrence step, code projections, and rational arithmetic.
+
+  \item[Verify.] Checks a fixed decidable relation through a characteristic
+  bit and an object-level reflection theorem.
+
+  \item[Case or bounded-formula node.] Compiles finite conjunction,
+  disjunction, implication under decidability, and bounded quantifier
+  alternation to truth bits or strategy certificates.
+
+  \item[Loop.] Encapsulates a bounded iteration with a fixed state type,
+  primitive-recursive step, and quantifier-free invariant.
+
+  \item[Relation.] Represents a finite cloud of possible witnesses and a
+  compatibility relation between adjacent layers.  It is compiled by backward
+  viability.
+
+  \item[Observer.] Maps a possibly nonunique local witness to the public data
+  that actually matter.  Its contract includes exact, quotient, or metric
+  compatibility.
+
+  \item[Bridge.] Translates a completed ordinary sequent to a client
+  presentation and proves comparison lemmas for the client's symbols.
+\end{description}
+
+Every node \(v\) has a conclusion formula \(\phi_v\), dependency list
+\(\operatorname{dep}(v)\), and local contract
+\[
+  \bigl(\phi_u: u\in\operatorname{dep}(v)\bigr),\;B_v(d)
+  \;\vdash_{\PRAAx}\;\phi_v,
+\]
+where \(B_v(d)\) is the list of boundary formulas demanded at state \(d\).
+A node is active only if its output or one of its resource effects is demanded.
+The graph is a proof graph, not an execution graph: a compute node denotes a
+proved equation for a fixed primitive-recursive symbol, and a loop node denotes
+an induction proof.
+
+\subsection{Resource declarations}
+
+A resource coordinate has a name, kind, finite capacity, and intended theorem
+meaning.  Boolean coordinates have capacity one.  A precision coordinate has
+capacity chosen for the requested theorem instance.  This finite cap is not a
+claim that an analytic object has only finitely many precisions; the theorem
+being compiled has a fixed finite target precision, so only the finite interval
+needed for that instance appears in the plan.
+
+Typical declarations are:
+\begin{center}
+\begin{tabularx}{0.95\textwidth}{@{}l l c X@{}}
+\toprule
+Name & Kind & Capacity & Meaning \\
+\midrule
+\code{query:value} & query & 1 & approximate value is requested \\
+\code{cert:branch} & certificate & 1 & an ordered branch label must escape \\
+\code{precision:f} & precision & \(p_{\max}\) & accuracy requested from \(f\) \\
+\code{guard:denom} & guard & 1 & positive denominator margin is needed \\
+\code{residual:tail} & residual & 1 & tail-modulus producer is not yet supplied \\
+\code{backend:foundation} & backend & 1 & Foundation export is requested \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+A level may encode more than presence.  For example, a guard coordinate can
+record one of finitely many margin classes, and a precision coordinate records
+an integer level.  The only structural requirement is a finite chain with a
+clear monotone meaning: a larger value requests at least as much resource.
+
+\subsection{Transfer rules}
+
+A local transfer summary says what a node needs when one of its outputs is
+needed.  The most transparent executable form is a finite family of threshold
+rules:
+\[
+  \bigwedge_{r\in T} d_r\ge a_r
+  \quad\Longrightarrow\quad
+  d_s\ge b_s\quad(s\in U).
+\]
+For example:
+\begin{align*}
+  \Prec(g)\ge p &\Longrightarrow \Prec(f)\ge p+1,\\
+  \Cert(\text{ordered root})=1
+    &\Longrightarrow \Guard(\text{separation})=1,\\
+  \Prec(\text{series})\ge p_0
+    &\Longrightarrow \Res(\text{tail modulus})=1.
+\end{align*}
+The global transfer \(F\) joins all requirements whose thresholds fire.
+Threshold rules are monotone by construction: raising the input can only make
+more rules fire, and requirements are added by coordinatewise maximum.
+
+More general monotone transfer functions are allowed.  A Lean formalization
+should demand a monotonicity proof for each such function.  Threshold rules are
+preferred for generated plans because their monotonicity and provenance are
+immediate.
+
+\subsection{Plan normalization}
+
+Before demand analysis, a plan is normalized as follows.
+\begin{enumerate}
+  \item Inline purely definitional aliases so each compute node has one fixed
+        symbol and explicit equations.
+  \item Replace each fixed bounded formula by a node that will generate its
+        truth bit and reflection derivation.
+  \item Isolate runtime cycles as explicit loop nodes with state and invariant.
+        A cyclic dependency in precision or liveness is not a runtime loop; it
+        remains in the monotone transfer network.
+  \item Group mutually recursive finite witness choices into one relation node
+        rather than choosing each witness independently.
+  \item Attach every partial operation to a guard formula.
+  \item Attach every unproved quantitative input to a producer node and a
+        residual coordinate.
+  \item Compute the strongly connected components of the remaining proof
+        graph.  After loop extraction, the condensation graph used for
+        simultaneous-cut assembly must be acyclic.
+\end{enumerate}
+
+The normalization does not prove local mathematics.  It makes proof
+obligations explicit and puts them in forms supported by the checked library.
+
+\subsection{Machine-readable representation}
+
+The accompanying schema \pathcode{schema/darc_plan.schema.json} records:
+resource names and capacities, threshold rules, node kinds, dependency lists,
+boundary formulas, certificate scope, Lean target, and status.  The schema is
+not part of the trusted proof kernel.  Its purpose is reproducibility: a
+reviewer can compare the human theorem, demand analysis, generated proof
+schedule, and final residual list against one common plan.
+
+A trustworthy generator should emit at least four artifacts:
+\begin{enumerate}
+  \item the closed demand state and its iteration history;
+  \item the pruned node schedule;
+  \item a theorem ledger mapping each node to a Lean declaration or residual;
+  \item the final ordinary sequent, before any backend translation.
+\end{enumerate}
+The reference Python code emits the first item and small demonstrations of the
+finite strategy, trace, and viability algorithms.  It intentionally does not
+parse or accept Lean proof certificates.

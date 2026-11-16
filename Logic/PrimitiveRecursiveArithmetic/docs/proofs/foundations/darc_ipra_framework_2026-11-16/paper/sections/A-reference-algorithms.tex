@@ -1,0 +1,103 @@
+\section{Reference algorithms and worked finite instance}
+\label{app:reference}
+
+This appendix describes the exact finite algorithms in the artifact.  They are
+included for reproducibility and testing, not as a substitute for the Lean
+formalization.
+
+\subsection{Demand closure pseudocode}
+
+\begin{lstlisting}[language=Python]
+def close(seed, transfer, capacity_sum):
+    d = seed
+    history = [d]
+    for _ in range(capacity_sum + 1):
+        nxt = join(d, transfer(d))
+        if nxt == d:
+            return d, history
+        assert rank(nxt) > rank(d)
+        d = nxt
+        history.append(d)
+    raise Error("rank bound violated")
+\end{lstlisting}
+The implementation validates coordinate names and levels.  For small shapes it
+exhaustively checks every admissible candidate to verify leastness.  It checks
+monotonicity on every comparable pair when that set is below a configurable
+limit; threshold-rule monotonicity is otherwise justified symbolically by the
+form of the rules.
+
+\subsection{Strategy checker pseudocode}
+
+For a positive bounded formula:
+\begin{lstlisting}[language=Python]
+check(atom A, c, env) = (c.tag == atom and A(env))
+check(P and Q, c, env) =
+    c.tag == and and check(P,c.left,env) and check(Q,c.right,env)
+check(P or Q, c, env) =
+    c.side selects a branch whose subcertificate checks
+check(exists i<N. P, c, env) =
+    0 <= c.witness < N and check(P,c.sub,env[i := c.witness])
+check(forall i<N. P, c, env) =
+    c has N branches and each branch i checks under env[i := i]
+\end{lstlisting}
+The builder chooses the leftmost true disjunct and least true existential
+witness.  These canonical choices model the object-level bounded-search plan.
+
+\subsection{Backward viability pseudocode}
+
+\begin{lstlisting}[language=Python]
+viable[H] = terminal layer
+for h = H-1 down to 0:
+    viable[h] = [x in X[h] | exists y in viable[h+1], edge(h,x,y)]
+
+if start not in viable[0]: fail
+path = [start]
+for h = 0 .. H-1:
+    path.append(least y in viable[h+1] with edge(h,path[h],y))
+\end{lstlisting}
+The object formalization replaces host lists and predicates by bounded codes,
+truth bits, finite folds, and checked least search.
+
+\subsection{Generated demand instance}
+
+The demonstration's public seed requests an approximate value but not a named
+witness.  The closure reaches:
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Coordinate & Final level \\
+\midrule
+query:value & 1 \\
+query:witness & 0 \\
+cert:branch & 0 \\
+cert:trace & 0 \\
+precision:root & 5 \\
+precision:integral & 6 \\
+guard:separation & 0 \\
+guard:denominator & 1 \\
+residual:tail\_modulus & 1 \\
+residual:height\_bound & 0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Thus the generated endpoint needs a denominator guard and tail modulus but not
+branch separation, trace replay, or a Diophantine height bound.  This is the
+kind of cross-category pruning that motivates the unified lattice.
+
+\subsection{Test inventory}
+
+The eleven unit tests cover:
+\begin{enumerate}
+  \item a cyclic demand closure;
+  \item exhaustive leastness for the small test lattice;
+  \item exhaustive monotonicity over comparable pairs;
+  \item query-specific certificate liveness;
+  \item residual and guard reporting;
+  \item rejection of out-of-range rules;
+  \item bounded least search;
+  \item valid strategy construction;
+  \item rejection of a tampered strategy and of a false existential;
+  \item deterministic trace checking;
+  \item viable and nonviable layered relations.
+\end{enumerate}
+The build script reruns these tests before compiling the PDF.

@@ -1,0 +1,198 @@
+\section{The global DARC compilation theorem}
+\label{sec:global}
+
+We now assemble the preceding components into one conditional theorem.  The
+statement is deliberately explicit about the boundary between generic
+compilation and theorem-specific mathematics.
+
+\subsection{Well-formed plans}
+
+A normalized fixed plan \(P\) is \emph{well formed} when the following data
+and proofs are supplied.
+
+\begin{enumerate}
+  \item A finite resource shape \(L_P\), a query seed \(q_P\), and a monotone
+        transfer \(F_P:L_P\to L_P\).
+  \item A finite proof graph whose condensation after explicit loop extraction
+        is acyclic.
+  \item For each demand state \(d\) and each node active at \(d\), an ordinary
+        local contract from active dependencies and selected boundary formulas
+        to the node conclusion.
+  \item For each loop node, concrete trace symbols, defining equations, a
+        quantifier-free invariant, and base/step derivations.
+  \item For each bounded-formula node, reflected atoms and the generated
+        fixed-formula reflection derivation.
+  \item For each relation node, finite bounds and reflected edge/terminal bits.
+  \item For each scoped certificate, a local producer and consumer, or an exact
+        producer formula placed in the residual boundary.
+  \item For each named certificate, a finite bound, validity bit, reflection
+        theorem, and a proof that some valid code lies below the bound.
+  \item For each quantitative operation, a sound transfer theorem connecting
+        requested output resources to input precisions, guards, and residuals.
+  \item For each backend export, checked vocabulary comparisons and a Bridge
+        theorem preserving the required open or closed sequent.
+\end{enumerate}
+
+The plan may contain open residual producers.  Well-formedness requires that
+they be named by exact formulas; it does not require derivations of them.
+
+\subsection{Compiler output}
+
+Compute \(d^*=\cl_P(q_P)\) by the finite iteration of
+\cref{sec:demand}.  Define:
+\begin{itemize}
+  \item \(V^*(P)\), the active nodes at \(d^*\);
+  \item \(B^*(P)\), the residual and guard formulas selected at \(d^*\) that
+        are not already discharged;
+  \item \(\Phi_P\), the public conclusion specialized to the requested
+        outputs and precisions;
+  \item \(S^*(P)\), a topological schedule of the retained condensation graph,
+        with loop, bounded-formula, relation, and certificate blocks expanded
+        through their dedicated compilers.
+\end{itemize}
+The compiler's primary output type is
+\[
+  B^*(P)\vdash_{\PRAAx}\Phi_P.
+  \tag{13.1}\label{eq:compiled-endpoint}
+\]
+If the query has free parameters, both context and conclusion remain in that
+finite scope.
+
+\begin{theorem}[DARC soundness]
+\label{thm:darc-soundness}
+Every well-formed fixed plan \(P\) has a finite compilation that constructs an
+ordinary derivation of \eqref{eq:compiled-endpoint}.
+\end{theorem}
+
+\begin{proof}
+The proof has five stages.
+
+\paragraph{1. Demand closure.}
+By \cref{thm:demand-stabilization}, computation of \(d^*\) terminates.  By
+\cref{thm:demand-least}, it contains every resource forced by the query and
+local transfer summaries.  By transfer soundness, all resources used by a
+retained local proof are present.
+
+\paragraph{2. Specialized block proofs.}
+For each retained bounded-formula node, invoke the generated reflection theorem
+\cref{thm:bounded-reflection}.  For each retained loop node, invoke normalized
+trace reflection \cref{thm:trace-reflection}.  For each relation node, invoke
+finite viability and, only if needed, canonical finite path construction
+\cref{thm:finite-viability,thm:least-path}.  These operations produce ordinary
+local sequents.
+
+\paragraph{3. Certificate handling.}
+For every sealed certificate, compose its producer and consumer by existential
+elimination \cref{thm:local-cert-erasure}.  For an observed certificate, insert
+the supplied compatibility theorem and seal the witness.  For a named
+certificate, invoke bounded least search \cref{thm:named-export}.  If a
+producer is absent, keep its exact existential or quantitative formula in
+\(B^*(P)\).
+
+\paragraph{4. Acyclic proof assembly.}
+After block expansion, the retained condensation graph is acyclic.  Compile it
+in topological order by \cref{thm:acyclic-compile}, using simultaneous cut to
+supply dependencies.  Every selected boundary formula is available either by
+the hypothesis rule or by a producer derivation already inserted into the
+schedule.
+
+\paragraph{5. Output assembly.}
+Combine retained public outputs by the ordinary logical introduction rules and
+specialize them at the requested terms.  The result is a finite inhabitant of
+\(B^*(P)\vdash_{\PRAAx}\Phi_P\).
+\end{proof}
+
+\subsection{Residual exactness}
+
+Soundness alone would allow the compiler to retain every conceivable
+hypothesis.  Demand leastness gives a stronger audit property.
+
+\begin{theorem}[Residual exactness relative to summaries]
+\label{thm:residual-exactness}
+Let \(e\) be any demand state above the query that satisfies all declared local
+transfer summaries.  Then \(d^*\le e\).  Consequently every residual, guard,
+precision, or certificate coordinate selected by DARC is forced by the
+published summaries.
+\end{theorem}
+
+\begin{proof}
+This is \cref{thm:demand-least}.  The interpretation of the coordinates gives
+the consequence.
+\end{proof}
+
+The theorem does not say that every selected residual is logically necessary
+for \(\Phi_P\).  It says that it is necessary for this modular proof plan with
+these local contracts.  A better local theorem can legitimately improve the
+endpoint.
+
+\subsection{Producer substitution and monotone improvement}
+
+Let \(B^*(P)=[B_1,\ldots,B_r]\).  If later work supplies derivations of some
+\(B_i\), \cref{cor:incremental-discharge} removes them.  If a supplied producer
+also has a better transfer summary, rerunning demand analysis may remove
+additional nodes and boundaries.
+
+\begin{corollary}[Full discharge]
+If \(\vdash B_i\) for every residual in \(B^*(P)\), then
+\[
+  \vdash_{\PRAAx}\Phi_P.
+\]
+\end{corollary}
+
+This is the preferred route from research packet to checked theorem: first
+compile an exact conditional endpoint, then discharge producers independently.
+
+\subsection{Query monotonicity}
+
+If query seed \(q\le q'\), monotonicity of the update implies
+\[
+  \cl_P(q)\le\cl_P(q').
+\]
+Thus asking for more outputs cannot reduce the declared resource demand.  A
+value-only query may hide a branch witness; a value-plus-witness query can only
+add the branch, separation guard, and supporting proof nodes.
+
+\begin{proof}
+Induct simultaneously over the inflationary iterations from \(q\) and \(q'\).
+The base inequality is given.  Monotonicity of \(F_P\) and of join preserves it
+at every stage.  Pass to stable values.
+\end{proof}
+
+\subsection{Plan composition}
+
+Let \(P\) compile a conclusion used as an input producer of \(Q\).  Form the
+composite by identifying that interface formula, extending each resource shape
+with zeros for the other component, and joining transfer maps.  The global
+compiler may inline both schedules or retain the theorem boundary and use
+simultaneous cut.  The latter is preferable when \(P\) is a stable library
+component.
+
+\begin{proposition}[Compositional soundness]
+If \(P\) and \(Q\) are well formed and their shared formulas and resource
+interfaces agree, then the composite plan is well formed and its compiled
+endpoint is obtained by ordinary cut composition of the two endpoints,
+possibly after a smaller joint demand closure prunes unused outputs of \(P\).
+\end{proposition}
+
+\begin{proof}
+Monotonicity is preserved by extending and joining the transfers.  The
+combined graph is finite; any cross-component cycle is either a resource cycle,
+handled by demand closure, or must be normalized into an explicit loop block.
+Local contracts remain valid under weakening and substitution.  Compile the
+joint retained graph by \cref{thm:darc-soundness}; at the theorem boundary the
+composition is \cref{lem:simcut}.
+\end{proof}
+
+\subsection{Backend preservation}
+
+After obtaining \eqref{eq:compiled-endpoint}, an application may request a
+Foundation sequent.  The checked open Bridge translates the context and
+conclusion under an explicit assignment.  Symbol-comparison theorems rewrite
+the generic arithmetic vocabulary to the client's existing codes.  DARC treats
+this as a final node so that backend requirements do not contaminate the
+mathematical core.
+
+No theorem is identified merely because two Lean functions compute the same
+standard natural-number function.  The bridge requires an object-level
+comparison or an exact syntax round trip.  This preserves the theory and
+encoding stated by each endpoint.

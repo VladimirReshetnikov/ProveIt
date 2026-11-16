@@ -1,0 +1,192 @@
+\section{Quantitative names, moduli, guards, and residual producers}
+\label{sec:quantitative}
+
+Effective analysis and continuous mathematics can be handled in \(\iPRA\) only
+through finite quantitative statements.  DARC does not introduce completed
+real or complex objects as a new domain.  It compiles statements about
+primitive-recursive approximation programs, explicit error bounds, and
+requested finite precisions.
+
+\subsection{Finite-precision contracts}
+
+A typical approximation node for an object \(x\) supplies a rational or dyadic
+code \(a_x(p,\vec u)\) and a correctness formula
+\[
+  \operatorname{Approx}_x(p,\vec u,a_x(p,\vec u)).
+\]
+The formula may mean an interval enclosure, a scaled integer inequality, or a
+metric bound encoded without division.  The exact encoding is theorem-specific,
+but it must be decidable or reduced to reflected arithmetic atoms when used in
+an induction invariant.
+
+The public theorem asks for a fixed or variable numerical precision \(p\).
+For a fixed artifact instance, the demand coordinate is capped at the maximum
+precision reachable from that query.  Transfer rules propagate required input
+precisions and guards backward.
+
+\subsection{Addition and subtraction}
+
+If \(|x-a|\le 2^{-(p+1)}\) and
+\(|y-b|\le 2^{-(p+1)}\), then
+\[
+  |(x+y)-(a+b)|\le 2^{-p}.
+\]
+Thus a safe transfer for addition is
+\[
+  \Prec(x+y)\ge p
+  \Longrightarrow
+  \Prec(x)\ge p+1,\quad\Prec(y)\ge p+1.
+\]
+The same applies to subtraction.  In integer-scaled encodings, the proof is a
+finite inequality after clearing powers of two.  A sharper local theorem may
+reduce the one-bit slack, but the transfer must match the theorem actually
+formalized.
+
+\subsection{Multiplication and magnitude bounds}
+
+Multiplication needs magnitude information.  With
+\(|x|,|y|\le M\), \(|x-a|\le\delta\), and \(|y-b|\le\delta\), one has
+\[
+ |xy-ab|
+ \le |x|\,|y-b|+|b|\,|x-a|.
+\]
+Since \(|b|\le M+\delta\), it suffices to choose \(\delta\) from an explicit
+function of \(p\) and a bound code for \(M\).  Accordingly, a multiplication
+node transfers output precision to:
+\begin{itemize}
+  \item higher input precisions;
+  \item magnitude-bound resources for both inputs;
+  \item any arithmetic overflow or denominator conventions used by the code.
+\end{itemize}
+A magnitude bound is not silently inferred from existence of the numbers.  It
+is a producer theorem or part of the representation contract.
+
+\subsection{Reciprocal and division}
+
+A proof of \(x\ne0\) is insufficient for a finite error modulus of reciprocal.
+One needs quantitative apartness, for example
+\[
+  |x|\ge 2^{-a}.
+\]
+If \(|x-y|\le 2^{-b}\) and the error is small enough to preserve a lower bound
+on \(|y|\), then
+\[
+  \left|\frac1x-\frac1y\right|
+  =\frac{|x-y|}{|x|\,|y|}
+\]
+has an explicit bound depending on \(a\) and \(b\).  DARC records this
+quantitative precondition as a guard coordinate,
+\[
+  \Guard(\text{denominator},a).
+\]
+The associated precision transfer has the schematic form
+\[
+  \Prec(1/x)\ge p
+  \Longrightarrow
+  \Prec(x)\ge p+2a+c,
+  \quad \Guard(|x|\ge2^{-a}).
+\]
+The constant \(c\) depends on the exact coding and safety slack.  It must be
+proved in the local theorem, not guessed by the analysis.
+
+The same principle covers matrix pivots, normalization, logarithms, and
+analytic continuation across singular loci.
+
+\subsection{Roots, branches, and collisions}
+
+Ordered root labels are discontinuous at collisions.  A finite approximation
+proof should therefore export one of:
+\begin{enumerate}
+  \item symmetric polynomial observations;
+  \item a multiset or cluster code;
+  \item a labeled root under an explicit separation guard;
+  \item a local branch continued along a finite path with compatibility and
+        margin certificates.
+\end{enumerate}
+A value query for a symmetric observable need not activate branch labels or a
+separation guard.  A query that names ``the third root'' must activate both.
+This is a canonical example of the benefit of joint certificate/guard demand
+analysis.
+
+Spectral theory has the same shape.  At repeated eigenvalues, invariant
+subspaces or projectors are stable; individual eigenvectors require a gap,
+normalization, and often an orientation convention.  DARC's resource transfer
+makes the stronger assumptions appear only for the stronger output.
+
+\subsection{Finite nets instead of abstract compactness}
+
+When an argument uses compactness to select finite data, the constructive
+interface is:
+\begin{enumerate}
+  \item a primitive-recursive finite net at requested scale;
+  \item a coverage theorem;
+  \item a modulus transferring local estimates from net points to the whole
+        domain;
+  \item a finite verification of the desired property on the net.
+\end{enumerate}
+The net and coverage theorem are producer nodes.  If the repository packet has
+only an abstract compactness argument, DARC leaves the effective net or
+coverage modulus residual instead of presenting the finite check as a complete
+proof.
+
+\subsection{Series, integrals, and tail moduli}
+
+A finite partial sum identity is often easy in \(\iPRA\).  An analytic value
+requires a tail theorem.  Let \(S_N\) be a primitive-recursive partial sum and
+suppose a producer gives
+\[
+  N\ge M(p,\vec u)
+  \Longrightarrow
+  |S_N-L|\le 2^{-p}.
+\]
+Then the requested precision transfers to a cutoff \(M(p,\vec u)\) and the
+arithmetic proof verifies the finite sum.  If \(M\) is not proved, the final
+endpoint remains conditional on the exact tail formula.  It is incorrect to
+replace a convergence assertion by a host-language numerical experiment.
+
+For integration, the same pattern uses a quadrature rule, mesh modulus,
+finite error estimate, and endpoint/magnitude guards.  For special functions,
+one should separate exact algebraic identities of finite truncations from
+analytic continuation and asymptotic remainder producers.
+
+\subsection{Metastability versus convergence rates}
+
+A metastable theorem has finite form
+\[
+  \forall p,g\;\exists N\le B(p,g)\;
+  \forall i,j\in[N,N+g(N)]\;d(x_i,x_j)\le 2^{-p}.
+\]
+For fixed bounds this can be compiled to a bounded strategy theorem.  It does
+not imply a global Cauchy modulus \(M(p)\).  DARC keeps the finite-window
+endpoint unless a separate tail argument produces \(M\).  The demand system
+must not add a fictitious rate coordinate merely because repeated finite
+queries are available.
+
+\subsection{Diophantine finiteness and height bounds}
+
+A theorem that a set of solutions is finite does not provide a number \(H\)
+such that every solution has height below \(H\).  A complete enumeration or
+least-solution search requires such a cutoff.  DARC splits the task into:
+\begin{enumerate}
+  \item a primitive-recursive verifier for a proposed solution;
+  \item finite enumeration below a supplied height;
+  \item a producer theorem asserting completeness of that height.
+\end{enumerate}
+The first two can be fully compiled.  The third remains residual for general
+Faltings-, Siegel-, or Mordell--Weil-type applications unless an effective
+bound is actually available.
+
+\subsection{Quantitative transfer as an auditable interface}
+
+Each quantitative node should publish:
+\begin{enumerate}
+  \item the representation and error predicate;
+  \item a monotone resource transfer;
+  \item an ordinary local derivation proving that the transferred resources
+        suffice;
+  \item the conventions at singular or failed cases;
+  \item a status for each producer theorem.
+\end{enumerate}
+This interface is analogous to a function type with preconditions and a
+modulus.  It is the main mechanism by which DARC turns informal analytic
+reasoning into a sequence of finite proof obligations.
