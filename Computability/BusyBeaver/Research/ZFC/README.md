@@ -11,6 +11,14 @@ uses the existing IOpen predecessor laws to replace a witness `raw ≤ code`
 with `code − 1` whenever `code = raw + 1`. The same rule derives the
 [ordinary iPRA normalization](../../../../Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Order.lean).
 C222 retains the original `stepDef` graph and its totality theorem in IΣ₁.
+The [C254 row](../../Lean/BusyBeaver/ZFC/ArithmeticRow254.lean) now forwards
+`pred_add_one`, `pred_le` and `predecessor_witness` with their original
+universe-polymorphic signatures. The witness theorem still accepts every
+IOpen model and every predicate `Q : V → Prop`. Lean replayed the C254 GEN
+and history proofs, the C222 evaluator and its natural-number specialization,
+and the [permuted C222 proof-word evaluator](../../../DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticProofWordPerm222.lean).
+The checked history and proof-word declarations reported only `propext`,
+`Classical.choice` and `Quot.sound`.
 
 The literal [K215 machine](candidate-k215/README.md) now has **compiled Lean and Rocq
 correctness proofs**: blank-tape halting iff ZFC has a finite refutation, and

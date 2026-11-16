@@ -12,4 +12,12 @@ A separate compatibility check covers **67 project modules and two explicit clie
 
 [Independent source review](source-peer/review.json), [actual adoption](integration/adoption.json), [current-source binding](integration/current-review.json), [source measurements](integration/source-metrics.json) and [Lean execution evidence](lean/README.md) preserve the boundaries. The maintained L2 producer gains exactly one import substitution; an [own literal data reader](integration/check_producer_literal.py) reproduces all three maintained L2 outputs without executing the delivered generator. Its original canonical before-input remains an exact historical snapshot. The other current producers and the two retired-template absences are unchanged.
 
+The [source-peer inventory](source-peer/comparison.json) includes the old
+`ArithmeticRow254.lean` among the files it read. The exact source at SHA-256
+`90c29554d76400618777a6139be5089220093a5effb2b0587f0d3ab497d0ca7c` is available
+in Git `437804fcdd5550fec6ece3b6073c616690d4625f` and as a
+[tracked frozen copy](../../../../../../../../DiophantineConsistency/research/ordinary12-ipra-bridge/compact44-graph-marked-rebuild-prototype/evidence/frozen/BusyBeaver/ZFC/ArithmeticRow254.lean).
+The source-peer endpoint and decoder union excludes that module. All 197
+archived union source hashes were checked against the recorded Git tree.
+
 This adopts the import split from Source 182 in [supplemental batch 213](../../../../../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-213.md). The shared implication-basis and direct full-seed proposals remain separate work. The machine, source program, endpoint theorem types and earlier Rocq checkpoint are unchanged. Primitive/return suffix factoring and the internal PA endpoint remain open. The [previous checkpoint](../phase11/README.md) retains its exact source and execution records.

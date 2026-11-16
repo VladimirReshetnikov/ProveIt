@@ -1,4 +1,4 @@
-import BusyBeaver.ZFC.ArithmeticRow254
+import Foundation.FirstOrder.Arithmetic.IOpen.Basic
 import ConciseIPRA.GuardedWitness
 import ConciseIPRA.Semantics
 
@@ -63,6 +63,12 @@ private theorem normalization : [recover, supply] ⊢[noAxioms]
 
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻]
 
+lemma pred_add_one (u : V) (hu : u ≠ 0) : u - 1 + 1 = u := by
+  have hpos : 0 < u := lt_of_le_of_ne (Arithmetic.zero_le u) (Ne.symm hu)
+  exact tsub_add_cancel_of_le (by simpa using lt_iff_succ_le.mp hpos)
+
+lemma pred_le (u : V) : u - 1 ≤ u := tsub_le_self
+
 @[reducible] private noncomputable def structureFor (u : V) (Q : V → Prop) : Structure language V where
   func := by
     classical
@@ -109,7 +115,7 @@ theorem predecessor_witness (u : V) (Q : V → Prop) :
     change M.Holds guard e → M.Holds (row.subst (Syn.inst witness)) e
     rw [readGuard, M.holds_subst, readRow]
     intro hu
-    exact ⟨ArithmeticRow254.pred_le u, (ArithmeticRow254.pred_add_one u hu).symm⟩
+    exact ⟨pred_le u, (pred_add_one u hu).symm⟩
   have h := M.sound (fun ha => False.elim ha) normalization e
     (List.forall_mem_cons.2 ⟨hRecover,
       List.forall_mem_cons.2 ⟨hSupply, by simp⟩⟩)

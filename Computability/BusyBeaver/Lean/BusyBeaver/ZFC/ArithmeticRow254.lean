@@ -1,5 +1,6 @@
 import BusyBeaver.ZFC.ArithmeticTemplates254
 import BusyBeaver.ZFC.Code254History
+import BusyBeaver.ZFC.ArithmeticPredecessorWitness
 
 /-!
 Fixed bounded graphs for the complete rule row, with its two child results
@@ -14,11 +15,10 @@ open ArithmeticCantor ArithmeticCode254
 
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻]
 
-lemma pred_add_one (u : V) (hu : u ≠ 0) : u - 1 + 1 = u := by
-  have hpos : 0 < u := lt_of_le_of_ne (Arithmetic.zero_le u) (Ne.symm hu)
-  exact tsub_add_cancel_of_le (by simpa using lt_iff_succ_le.mp hpos)
+lemma pred_add_one (u : V) (hu : u ≠ 0) : u - 1 + 1 = u :=
+  ArithmeticPredecessorWitness.pred_add_one u hu
 
-lemma pred_le (u : V) : u - 1 ≤ u := tsub_le_self
+lemma pred_le (u : V) : u - 1 ≤ u := ArithmeticPredecessorWitness.pred_le u
 
 /-- The MP test uses predecessor witnesses bounded by the two child results,
 including when the proposed row result is zero. -/
@@ -51,14 +51,8 @@ instance mp_defined : 𝚺₀-Function₃[V] mpValue via mpDef := .mk fun e => b
     simp
 
 lemma predecessor_witness (u : V) (Q : V → Prop) :
-    (∃ x, x ≤ u ∧ u = x + 1 ∧ Q x) ↔ u ≠ 0 ∧ Q (u - 1) := by
-  constructor
-  · rintro ⟨x, _, h, hQ⟩
-    have hne : u ≠ 0 := by rw [h]; simp
-    have hp : u - 1 = x := by rw [h]; simp
-    exact ⟨hne, hp ▸ hQ⟩
-  · rintro ⟨hu, hQ⟩
-    exact ⟨u - 1, pred_le u, (pred_add_one u hu).symm, hQ⟩
+    (∃ x, x ≤ u ∧ u = x + 1 ∧ Q x) ↔ u ≠ 0 ∧ Q (u - 1) :=
+  ArithmeticPredecessorWitness.predecessor_witness u Q
 
 noncomputable def genValue (a u : V) : V := by
   classical

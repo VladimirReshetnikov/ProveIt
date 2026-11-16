@@ -55,9 +55,21 @@ no source or audit proof build.
 
 ```sh
 python Logic/Interpretability/ZFCinPA/check_validator_quantifier_core254.py \
-  --repo "$PWD" --dependency-root /path/to/pinned/Proofs \
+  --repo /path/to/pinned/project-sources --dependency-root /path/to/pinned/Proofs \
   --output /external/fresh/quantifier-check
 ```
+
+The historical [verification record](results/validator-quantifier-core254-verification.json)
+pins the [frozen C254 row](../../../Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/compact44-graph-marked-rebuild-prototype/evidence/frozen/BusyBeaver/ZFC/ArithmeticRow254.lean)
+at source SHA-256 `90c29554d76400618777a6139be5089220093a5effb2b0587f0d3ab497d0ca7c`
+and object SHA-256 `31605fadd094293637d997b102f64ec2814da76d120a942aa0f17ef8d402b76e`.
+The same row source is available at Git `437804fcdd5550fec6ece3b6073c616690d4625f`.
+Pass the complete hash-matching source tree to `--repo` and, if needed, pass
+the ordered cached libraries via `--library-path`. The old dependency root's
+recorded Foundation paths for `IOpen.Basic`, `HFS.PRF` and `HFS.Seq` are absent.
+The first two have hash-matching copies in the checked workspace cache.
+`HFS.Seq` remains unresolved in the locations checked. Ten other sources in
+the historical worktree differ from the hashes in the verification record.
 
 This finite interface does not represent a formula renamer, establish closure
 of arbitrary accepted proofs under renaming, perform environment/alpha
