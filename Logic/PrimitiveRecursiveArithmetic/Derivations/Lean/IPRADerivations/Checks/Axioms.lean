@@ -298,6 +298,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiTwo.leaf_k2
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiTwo.phi_two_values
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiTwo.phi_two_classification
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLowerSharp.sq_pred_ge2
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLowerSharp.ppow_sq2
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLowerSharp.lpf_le_three
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLowerSharp.d2_found
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLowerSharp.phi_sq_odd2
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLowerSharp.phi_sq
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
