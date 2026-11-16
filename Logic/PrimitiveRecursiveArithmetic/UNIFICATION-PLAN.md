@@ -214,13 +214,17 @@ truncated subtraction, and strict order.
   Retain the existing
   [cancellation check](Bridge/Lean/IPRABridge/Checks/Arithmetic.lean) as a
   direct-match regression test.
-- [ ] Migrate one arithmetic client in BusyBeaver PA and one in
+- [x] Migrate one arithmetic client in BusyBeaver PA and one in
   DiophantineConsistency from a parallel local lemma to the shared proof.
   Suitable first families are a successor/addition identity, an order
   comparison used in a bounded loop, and a bounded-search contract. Pick
   actual call sites from the inventory and keep the previous public
   Foundation statement as a checked corollary. Verify reuse under an
   arbitrary parameter environment before consolidating a local proof.
+  The checked uses of `not_succ_le_self` are the literal PA1944L endpoint
+  and the explicit ZFC equation, both through the exact `subCode` inequality
+  and the original universal Foundation statement. The
+  [endpoint receipts](ENDPOINTS.md) identify the production proof paths.
 - [ ] Repeat in dependency order. Prefer the smallest shared lemma set
   demanded by the next clients. Keep PR programs, proof predicates, and
   reduction-specific arithmetic local when their statements depend on those

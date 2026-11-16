@@ -71,6 +71,17 @@ public bridge and order-symbol comparison.
   axioms were `propext`, `Classical.choice`, and `Quot.sound`. The
   [PA inventory](../../Computability/BusyBeaver/Research/PA/README.md) links
   its other independently checked variants.
+  The [shared arithmetic replay](../../Computability/BusyBeaver/Research/PA/verification/pa194/ipra/variants/pa1944l/README.md#replay-with-shared-arithmetic)
+  traverses the literal theorem's proof values through bounded equality
+  decidability and `IPRASubSuccSelfNonzero.native` to
+  `LeanProofs.IPRA.not_succ_le_self`. It verifies the original table hash
+  and checks both endpoint judgments with the same three Lean axioms.
+  The native and Concise objects had SHA-256
+  `3213f3a5b57fed8392e1d0050f811fa9a73459d1a80c2ef1ea442b1a2970f664` and
+  `6504cd585235a08dbc3e92854a34cbceaf7ee899e34f752e9615ce5acdb055cf`.
+  With the model and coverage stages already compiled, the replay took
+  6 minutes 53 seconds, used 2,595 MiB peak resident memory, and wrote
+  24 MiB of replay artifacts including the selected provider snapshot.
 - **Original PA195.** The
   [emitter and scheduler proof](../../Computability/BusyBeaver/Research/PA/verification/pa194-work/pa194-controller-schedulers/README.md)
   gives `PA194EmitterSchedulerPA.consistency_iff_scheduler_nonhalt`, a
@@ -178,7 +189,18 @@ completed all 2,746 jobs and matched the expected axiom audit. With the
 previously compiled general dependencies, it took 48 minutes 9 seconds
 and peaked at about 11.0 GiB of resident memory. This is the initial ZFC
 endpoint baseline. The root replay of the new exports also checks their
-dependencies after the arithmetic migration.
+dependencies after the arithmetic migration. It completed all 3,347 jobs in
+26 minutes 1 second using 2,782 MiB peak resident memory, reusing the
+previously built independent branches. Both exports reported the same three
+Lean axioms. The exact root export object had SHA-256
+`c8933a20f5eafa14f1b39ffc20a3614200ef8020bb46670fcd073eeaed3bd6a8`.
+
+The explicit equation's compiled proof values reach
+`IPRABoundedRhoZFC.zfcEquiv` through `IPRAExpressionNative.comparison_of_pra`.
+The reduction's backward bounded induction reaches native equality
+decidability, `IPRASubSuccSelfNonzero.native` and the shared ordinary
+`LeanProofs.IPRA.not_succ_le_self`. This is the same arithmetic comparison
+used by the independently replayed literal PA1944L proof.
 
 ## Adjacent providers
 

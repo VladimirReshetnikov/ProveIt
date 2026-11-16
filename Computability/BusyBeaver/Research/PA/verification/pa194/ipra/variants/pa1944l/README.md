@@ -45,6 +45,26 @@ lake build +IPRABridge.Standard
 bash "$variants/pa1944l/check-concise-export.sh" /dev/shm/pa1944l-final /path/to/fresh-concise-export
 ```
 
+## Replay with shared arithmetic
+
+The PA refutation comparison in the literal 4L proof uses bounded equality
+decidability. Its subtraction helper `IPRASubSuccSelfNonzero.native` now
+uses the shared ConciseIPRA proof `LeanProofs.IPRA.not_succ_le_self`.
+[`PA1944LSharedArithmeticChecks.lean`](PA1944LSharedArithmeticChecks.lean)
+checks both links in the proof values.
+
+Build the current arithmetic modules, then reuse the checked machine and
+coverage stages in the replay above.
+
+```sh
+lake build +DiophantineConsistency.IPRADifferenceStepClosure
+bash "$variants/pa1944l/check-shared-arithmetic.sh" "$four_l" "$four_l_coverage" /path/to/fresh-shared-arithmetic-replay
+```
+
+This replay snapshots the selected arithmetic and bridge objects and records
+their hashes. It checks the unconditional Foundation theorem and its arithmetic
+dependency and exports the same literal sentence to ConciseIPRA.
+
 ## Shared startup for LC_A and M4R
 
 Lean checks that the 58,320-step PA1944L startup avoids dense controls
