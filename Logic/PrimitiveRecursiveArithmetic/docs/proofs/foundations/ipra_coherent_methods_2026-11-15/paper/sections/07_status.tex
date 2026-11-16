@@ -1,0 +1,132 @@
+\section{What is resolved, what remains, and how to use the package}
+\label{sec:status}
+
+\subsection{The mathematical results and their exact reach}
+
+\begin{longtable}{P{.24\linewidth}P{.39\linewidth}P{.28\linewidth}}
+\toprule
+Problem & Result in this report & Remaining condition\\
+\midrule\endhead
+Compatible exact approximations & A finite uniqueness theorem gives
+coherence of an explicit PR producer. & Correctness and uniqueness must
+be proved at each level.\\[4pt]
+Implicit algebraic construction & Filtered correction solves a simultaneous
+polynomial system in each nilpotent truncation with a fixed step count.
+& A seed root and inverse Jacobian at the first level.\\[4pt]
+Formal power-series solutions & Coherent exact jets, with constant seed and
+uniqueness. & Analytic radii and tail bounds are separate estimates.\\[4pt]
+Local modular roots & Coherent solutions modulo \(q^n\), including composite
+\(q\), from a unit Jacobian seed. & No inference to global integer or
+rational solvability.\\[4pt]
+Differential equations over integral rings & Hurwitz coefficients are
+constructed by a triangular primitive recurrence without factorial
+division. & Analytic interpretation needs additional assumptions.\\[4pt]
+Geometric zero-count input & Sharp norm and subspace fiber bounds for
+\(Y^m-cX^d\) with lower-weight terms and coprime \(m,d\). & The geometric
+curve class is explicit; a general divisor library is not supplied.\\[4pt]
+Finite spaces of functions & An explicit monomial basis and exact eventual
+dimension \(L+1-(m-1)(d-1)/2\). & No identification with arbitrary
+Riemann--Roch spaces is asserted.\\[4pt]
+Finite-cover argument & A cover by \(M\) proper subspaces yields a bound
+\(ML\) on a supplied distinct point list. & A proof or construction of the
+cover is still needed.\\[4pt]
+Deep arithmetic formalization & Compiled core and object composition;
+explicit new targets and dependency order. & Full embedded lifting and
+norm derivations remain unfinished.\\
+\bottomrule
+\end{longtable}
+
+The norm certificate is produced from the coefficient tables. The jet and
+modular root producers are constructed from their finite seeds. Thus the
+applications do more than name a proof field containing the conclusion.
+On the other hand, the finite-cover corollary is deliberately conditional:
+its covering hypothesis is substantial mathematics, and a finite checker
+for a proposed cover does not prove that an adequate cover always exists.
+
+\subsection{Three boundaries that cannot be erased by a representation}
+
+\paragraph{A count bound is not a cutoff.}
+For a machine code \(e\), let \(R(e,t)\) say that the machine first halts
+at exactly step \(t\). This is a PR predicate, and determinism proves
+that at most one \(t\) satisfies it. If there were a total computable
+bound \(B(e)\) containing every such witness, checking the first
+\(B(e)\) steps would decide halting. Hence no uniform conversion from
+an arbitrary finite-cardinality bound to a search cutoff exists, even
+for PR families of sets with at most one element. This is a general
+obstruction to an inference, not an independence result for any specific
+Diophantine theorem. A new height theorem for a particular curve family
+could still supply the missing information.
+
+\paragraph{Finite Cauchy approximations do not decide exact algebraic cases.}
+Define a real \(a_e\) to be \(2^{-t}\) if machine \(e\) first halts
+at step \(t\), and zero if it never halts. At precision \(k\), simulate
+only \(k\) steps and return the corresponding dyadic value if halting
+has occurred, otherwise zero. This is a uniform PR rational evaluator;
+its error is at most \(2^{-k}\). Externally, in the ordinary classical metatheory, every \(a_e\) is rational, yet a
+uniform exact zero test for these names would decide halting. A claim
+that every Cauchy-presented rational can be uniformly converted to an
+exact rational code with decidable equality is therefore false.
+
+Our regular lifting theorem uses a different input: an exact seed and
+a finite invertibility certificate. For \(Y^2-X=0\) at \((0,0)\),
+the derivative with respect to \(Y\) is zero, so the hypothesis fails.
+The theorem does not silently select a singular Puiseux branch.
+
+\paragraph{Coherent local roots need not be global points.}
+The polynomial \(Z^2-2\) has the root \(3\) modulo \(7\), and its
+derivative there is \(6\), a unit. The modular lifting theorem constructs
+compatible roots modulo every \(7^n\). It has no rational root: writing
+a putative root in coprime integers leads to both numerator and denominator
+being even. Thus the tower supplies local arithmetic information, not an
+integer or rational witness. Likewise a formal identity is not already
+a quantified analytic error bound, even when an independent convergence
+theorem is available for the same data.
+
+\subsection{Consequences for the unresolved repository requests}
+
+The new norm theorem settles the zero-count component of the Siegel
+finite-cover route for the stated weighted curves. The dimension and
+function-field constructions reduce further algebraic setup in that class.
+The quantitative approximation theorem, suitable covers, local estimates,
+and the global height/list problem remain. This does not prove the full
+Siegel or Faltings theorem in \ipra.
+
+The lifting theorem provides a common finite backend for the regular
+parts of formal implicit construction, modular arithmetic and local
+expansions. It does not construct all singular Newton--Puiseux branches
+from arbitrary Cauchy coefficients. The existing exact-algebraic Puiseux
+argument and analytic regular-chart estimates remain relevant separate
+modules.
+
+For Mordell--Weil the obstacle identified in the inspected packet is not
+ordinary height descent. Its supplied representative list must still be
+constructed and proved to cover the desired quotient. The checked descent
+core in this archive can consume such data, but is not a resolution of
+that missing arithmetic existence theorem. For Chebotarev,
+Siegel--Walfisz and Bombieri--Vinogradov the analytic estimates and their
+uniform witnesses similarly remain outside the results proved here.
+
+\subsection{Reproducibility and the next concrete formalization steps}
+
+The archive includes the complete LaTeX source and compiled PDF,
+standalone Lean 4.32.0 sources, exact-arithmetic example programs, source
+provenance and machine-readable validation records. The programs check
+finite instances and invariants. Their passing results are regression
+evidence, not proofs of the universal algebraic claims.
+
+The first useful extension is to finish the common integer, rational,
+list, polynomial and finite determinant library inside the object theory.
+The next is the generic bounded-loop compiler and its coefficient-prefix
+invariants. With those in place, frozen-inverse lifting has a short proof
+dependency graph: polynomial Taylor remainder, Jacobian congruence,
+residual improvement, uniqueness and restriction. The weighted norm
+development then reuses the same polynomial kernel and adds a finite
+determinant library, rescaling, Vandermonde factors and finite-list
+grouping. Each endpoint is a \texttt{Prf PRAAx} object, transported to the
+native calculus only afterwards.
+
+The point of the framework is that these are common reusable modules.
+The full logic of finite observation, the data consumed by a construction,
+and the exact theorem remaining to be proved are visible at each boundary.
+That makes future successes composable and prevents a failed existence
+argument from disappearing inside a convenient representation.

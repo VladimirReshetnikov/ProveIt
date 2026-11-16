@@ -221,6 +221,10 @@ way, under `foundations/`, and then deleted. It leaves out only its ignored `SHA
 `ipra_embedding_framework_2026-11-15.zip` is a different archive from
 `ipra_embedding_framework.zip`: a different SHA-256, and 45 members against 29. It was placed
 the same way, under `foundations/`, and then deleted. All 45 of its members are placed.
+`ipra_coherent_methods_2026-11-15.zip` was placed the same way, under `foundations/`, and then
+deleted. All 55 of its members are placed. Its `lean/upstream/` copies of three ConciseIPRA
+sources each differ from the repository file by one trailing blank line, so they are not
+repository copies.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

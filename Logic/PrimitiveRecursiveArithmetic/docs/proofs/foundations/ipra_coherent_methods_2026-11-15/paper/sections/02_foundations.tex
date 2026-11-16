@@ -1,0 +1,211 @@
+\section{The arithmetic target and its proof discipline}
+\label{sec:foundations}
+
+\subsection{The theory used throughout}
+
+The object theory is first-order intuitionistic arithmetic with natural
+numbers as its only sort. Its language has \(0,S\) and a symbol for every
+fixed primitive recursive construction. The symbols are generated from
+zero, successor and projections by composition and primitive recursion.
+For a recursion symbol the defining equations are
+\[
+ r(0,\boldsymbol x)=g(\boldsymbol x),\qquad
+ r(n+1,\boldsymbol x)=h(n,r(n,\boldsymbol x),\boldsymbol x).
+\]
+We include the successor axioms \(Sx\ne0\) and
+\(Sx=Sy\to x=y\), equality reflexivity and substitution, and ordinary
+intuitionistic first-order natural deduction. In particular implication,
+conjunction, disjunction, falsity and both quantifiers have their usual
+introduction and elimination rules, with the standard freshness conditions
+on quantifier introduction and existential elimination. No excluded-middle
+schema, choice principle or Markov principle is added.
+
+Induction is restricted to quantifier-free formulas, with parameters:
+\[
+ A(0,\boldsymbol x),\quad
+ \forall n\bigl(A(n,\boldsymbol x)\to A(n+1,\boldsymbol x)\bigr)
+ \quad\Longrightarrow\quad \forall n\,A(n,\boldsymbol x).
+\]
+This is the ordinary \ipra\ presentation formalized by
+\texttt{PRAAx}, \texttt{PTm}, and \texttt{PR} in ConciseIPRA
+\cite{repoCore}. The native concise calculus is connected to it by an
+existing syntactic bi-interpretation. We work first in this explicit
+arithmetic presentation, and transport a derivation only after it exists.
+
+The induction restriction does not prohibit formulas with quantifiers from
+appearing as assumptions or conclusions. For example, a hypothesis
+\(\forall n\,C(n)\) may be instantiated at each of finitely many indices in
+a calculation. What must be audited is the formula on which induction is
+performed.
+
+\subsection{Finite objects, total operations, and decidability}
+
+An integer is a signed natural-number code; a rational is a pair
+\((z,d)\) with \(d>0\). We do not need quotient objects: equality is
+\((z,d)\simeq(w,e)\) precisely when \(ze=wd\). Addition, multiplication,
+comparison and inversion with a nonzero-numerator guard are explicit
+integer calculations. A gcd normalization is optional. All operations
+receive harmless default values on malformed input; the theorem carries
+the validity guards.
+
+Finite tuples, coefficient arrays, matrices and execution histories are
+also natural-number codes. One possible list code is empty list \(0\)
+and
+\[
+ \operatorname{cons}(a,t)=1+2^a(2t+1).
+\]
+Recovering its head and tail uses bounded tests on a code; the tail is
+smaller than a nonempty valid code. Repeated decoding can therefore be
+implemented with a loop bounded by that code. This very inefficient coding
+is nevertheless primitive recursive. A practical implementation may use
+a more efficient pairing scheme; no argument depends on efficiency.
+
+A polynomial is a finite coefficient list or exponent-coefficient table.
+Multiplication is a bounded convolution. A determinant is the signed sum
+over finitely many permutations, with at most \(n!\) summands. A rational
+matrix can be row-reduced by scanning bounded lists of columns and rows;
+each pivot is selected by a decidable nonzero test. These descriptions
+establish that the operations are primitive recursive. Their algebraic
+correctness still needs proofs, given by the finite invariants described
+below. A computation model is not a correctness argument.
+
+\begin{lemma}[Booleanization, as a schema]
+\label{lem:booleanization}
+For every fixed bounded arithmetic formula \(B(\boldsymbol x)\), built
+from fixed PR terms and bounded number quantifiers, there is a fixed PR
+function \(b_B\) with values in \(\{0,1\}\), and an \ipra\ derivation
+\[
+ B(\boldsymbol x)\ \longleftrightarrow\ b_B(\boldsymbol x)=1.
+\]
+Consequently induction on bounded formulas is a derived use of
+quantifier-free induction.
+\end{lemma}
+\begin{proof}
+Equality and order have their ordinary PR Boolean tests. The successor
+axioms and quantifier-free induction prove their correctness. Boolean
+complement, product and maximum implement negation, conjunction and
+disjunction. The Boolean implication test returns one exactly when the
+antecedent test is zero or the consequent test is one. Its equivalence to
+intuitionistic implication uses the already proved decidability of the
+antecedent; it does not decide arbitrary propositions.
+
+For a bounded universal quantifier use a prefix product
+\(p(0)=1\), \(p(t+1)=p(t)c(t)\), where \(c(t)\in\{0,1\}\).
+Quantifier-free induction proves \(p(t)\in\{0,1\}\) and
+\(p(t+1)\le p(t)\). Fix an arbitrary index \(i\). Induction on the
+quantifier-free implication
+\(i<t\land p(t)=1\to c(i)=1\) proves the forward direction of
+\(p(b)=1\leftrightarrow\forall i<b\,c(i)=1\).
+For the reverse direction, keep the bounded universal assertion as a
+fixed assumption and induct on \(t\le b\to p(t)=1\). In the step
+\(t<b\), instantiate that assumption at \(t\).
+
+For bounded existence scan all positions below the bound, retaining the
+first success and using the current scan length as a failure sentinel
+(so the final sentinel is the final bound). Induct
+on the conjunction of: the stored value is at most the current length;
+if it is smaller it is a successful witness; and the prefix product of
+the failure tests before it is one. These are quantifier-free tests.
+A supplied successful position precludes the sentinel, and the stored
+position then witnesses the existential assertion. This proves both
+directions without double-negation elimination.
+
+Structural induction in the metatheory on the fixed formula supplies
+the test and its derivation. Replacing a bounded induction formula by
+the equation \(b_B(n,\boldsymbol x)=1\) completes the last assertion.
+\end{proof}
+
+This proof also gives bounded minimization and finite choice. In particular,
+from a proof of
+\(\forall i<n\,\exists y<B(x,i)\,R(x,i,y)\), with fixed PR bounds and
+tests, a PR scan produces the finite list of least witnesses. There is no
+corresponding inference from unbounded existence without an additional
+bound or a separately proved PR constructor.
+
+\subsection{A precise finite-loop rule}
+
+Let the fixed PR run be
+\[
+ S(x,0)=\operatorname{init}(x),\qquad
+ S(x,t+1)=\operatorname{step}(x,t,S(x,t)).
+\]
+Let \(P(x)\), \(I(x,N,t,s)\), and \(Q(x,N,s)\) be bounded predicates.
+Suppose there are already \ipra\ proofs of
+\begin{align*}
+ P(x)&\to I(x,N,0,\operatorname{init}(x)),\\
+ t<N\land I(x,N,t,s)&\to
+ I(x,N,t+1,\operatorname{step}(x,t,s)),\\
+ I(x,N,N,s)&\to Q(x,N,s).
+\end{align*}
+Then \ipra\ proves \(P(x)\to Q(x,N,S(x,N))\). Indeed, under the
+fixed assumption \(P(x)\), induct on the Booleanization of
+\[
+              t\le N\ \longrightarrow\ I(x,N,t,S(x,t)).
+\]
+For the successor case with \(t+1\le N\), apply the step proof; outside
+the guard the implication is immediate. Instantiating at \(N\) gives
+the conclusion. This is the precise meaning of a finite induction audit
+in later chapters.
+
+The rule also accommodates a finite log of hypotheses queried from a
+represented input. Include a Boolean conjunction saying that every
+previously queried fact holds. A global regularity assumption can supply
+the next fact by universal elimination, or the entire finite log can be
+part of the theorem's input. The induction invariant remains a bounded
+predicate about the coded state.
+
+\begin{theorem}[Bounded descent with a reconstruction invariant]
+\label{thm:rank}
+Fix PR functions \(T,s_0,r\), a Boolean terminal test \(D\), and a
+bounded validity predicate \(V\). Suppose \ipra\ proves that \(T\)
+preserves \(V\), fixes terminal valid states, and satisfies
+\[
+ V(s)\land D(s)=0\quad\Longrightarrow\quad r(T(s))<r(s).
+\]
+If \(V(s_0)\), then the iterate \(T^{r(s_0)}(s_0)\) is terminal.
+Every bounded invariant proved to be preserved by \(T\) holds there.
+\end{theorem}
+\begin{proof}
+The bounded-loop rule gives validity of the iterates. Induct on
+\[
+ D(T^t(s_0))=1\quad\lor\quad r(T^t(s_0))+t\le r(s_0).
+\]
+If the terminal alternative holds, absorption preserves it. Otherwise
+strict decrease of the natural-number rank preserves the second
+alternative at \(t+1\). At \(t=r(s_0)\), a nonterminal state would
+have rank zero. Its stipulated next step would have negative rank, a
+contradiction. Hence the terminal test is one. A simultaneous bounded
+invariant is proved by the same loop rule.
+\end{proof}
+
+This is background infrastructure, not a new Mordell--Weil argument.
+The inspected Mordell--Weil packet already proves a more efficient
+contracting-height descent once actual quotient representatives are
+supplied. The theorem is useful here because a progress measure, a
+coefficient precision and a finite row-reduction phase are all explicit
+natural-number budgets. It also has a compiled Lean proof.
+
+\subsection{What is uniform, and what is only a schema}
+
+The degrees, matrix dimensions, integer moduli, coefficient lists and
+precision bounds in the applications may be variable natural-number
+inputs. Their algorithms use a fixed finite vocabulary of integer and
+rational operations, together with explicitly bounded loops. They are
+therefore genuinely uniform PR constructions.
+
+An abstract coefficient ring is different. A theorem over every
+\emph{PR-presented ring} is a schema: fix PR operations and supply or prove
+their ring laws; then compile that instance. This does not introduce a
+variable ranging over all total PR programs with a universal evaluator.
+If such a PR evaluator \(U(e,x)\) existed, listing all unary PR functions,
+then \(d(n)=U(n,n)+1\) would itself be PR and have an index \(e\).
+Substitution of \(e\) gives \(U(e,e)=U(e,e)+1\), impossible. The
+diagonal argument also explains why a generic evaluator hidden in an
+apparently convenient Lean record would be a serious error.
+
+Finally, a PR proof checker for arbitrary arithmetic proofs is not an
+internal reflection principle. We never infer a formula from the single
+assumption that an arbitrary coded proof passes a checker. We construct
+derivations of the specific fixed formulas at issue. The object
+composition lemmas in the archive transform actual \texttt{Prf PRAAx}
+objects, with every input proof retained as a hypothesis.

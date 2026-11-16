@@ -1,0 +1,301 @@
+\section{Lean formalization: definitions, verified core, and completion path}
+\label{sec:formalization}
+
+\subsection{The endpoint is an embedded proof}
+
+The included standalone kernel reproduces three current repository files:
+\texttt{Syntax.lean}, \texttt{Deduction.lean}, and \texttt{PR.lean}.
+The source bodies were checked against the pinned commit. Original imports
+are replaced by \texttt{import Std} and a natural-number notation; the
+declarations and proofs are preserved. The archive retains the original
+source files, their provenance and the repository license.
+
+The key interfaces, in namespace \texttt{LeanProofs.ConciseIPRA}, are:
+\begin{lstlisting}
+PR k                 -- a fixed primitive recursive function symbol
+PTm n                -- a term with n free variables
+Fm PTm n             -- a first-order arithmetic formula
+Prf PRAAx Gamma phi  -- an object-iPRA derivation
+PRA.qfInd            -- quantifier-free object induction
+\end{lstlisting}
+Here \texttt{PR} is an inductive syntax with constructors for zero,
+successor, projection, composition and primitive recursion. A constructor
+of type \texttt{PR k} supplies a fixed program symbol, not an interpreter
+for arbitrary programs. \texttt{Prf} is the intuitionistic natural
+deduction relation with equality and the stated axiom scheme.
+
+The current repository proves the exact transport statement
+\begin{lstlisting}
+pra_iff_native :
+  (Gamma |- [PRAAx] phi) <->
+  NPrf (Gamma.map NFm.ofPRA) (NFm.ofPRA phi)
+\end{lstlisting}
+where the displayed ASCII turnstile is only explanatory notation for
+the repository's scoped judgment \cite{repoBridge}. The forward direction
+is applied to an already constructed arithmetic derivation. It does not
+accept a host theorem about naturals as a replacement. The standalone
+build does not rebuild the full native equivalence dependency closure.
+
+\subsection{What is checked in the supplied Lean core}
+
+\begin{longtable}{P{.27\linewidth}P{.43\linewidth}P{.21\linewidth}}
+\toprule
+Module & Contents & Logical status\\
+\midrule\endhead
+{\footnotesize\path{ObjectKernel.lean}} & Pinned scoped syntax, substitution,
+intuitionistic deduction and ordinary iPRA axioms. & Reused foundations.\\[3pt]
+{\footnotesize\path{RankedDescent.lean}} & Run validity, rank budget, termination in the
+initial rank, invariant transport and a contraction-to-descent lemma.
+& Proved host theorems.\\[3pt]
+{\footnotesize\path{CoherentTower.lean}} & Iteration of specified local lifts,
+admissibility, adjacent coherence, base projection and uniqueness over
+the seed. & Proved host theorems.\\[3pt]
+{\footnotesize\path{ObjectComposition.lean}} & Witness-contract composition,
+specialization, existential introduction, a QF-induction interface and
+an instantiated identity-iteration proof. & Actual object-proof
+constructions.\\[3pt]
+{\footnotesize\path{DescentTargets.lean}} & Explicit PR codes for arithmetic and bounded
+iteration; exact object formulas and the remaining descent compiler
+goal. & Definitions; the compiler goal is unproved.\\[3pt]
+{\footnotesize\path{ApplicationTargets.lean}} & Polynomial systems, Jacobians, ring and
+filtration laws, frozen iteration, jets, residues and projections.
+& Compiled definitions; general lifting and presentation goals unproved.\\[3pt]
+{\footnotesize\path{WeightedNormTargets.lean}} & Rational polynomials, monic reduction,
+multiplication matrices, determinants, weights and monomial counts.
+& Compiled definitions; general norm and counting goals unproved.\\[3pt]
+{\footnotesize\path{HurwitzTargets.lean}} & Binomial products, typed derivative demand,
+and a scalar rational polynomial-ODE prefix producer.
+& Compiled definitions; general algebra and ODE goals unproved.\\[3pt]
+{\footnotesize\path{ApplicationChecks.lean}} & A modular root and a finite basis count;
+exact rational jet and norm computations. & Two finite kernel theorems;
+rational diagnostics are executable checks.\\[3pt]
+{\footnotesize\path{AxiomAudit.lean}} & Printed dependencies of the core declarations.
+& Reproducible audit.\\
+\bottomrule
+\end{longtable}
+
+The core build uses Lean 4.32.0 and \texttt{Std}. Its coherence and
+uniqueness declarations use no axioms. The other audited core results
+use at most Lean's metatheoretic \texttt{propext} and \texttt{Quot.sound};
+none uses \texttt{Classical.choice} or \texttt{sorryAx}. Those dependencies
+are properties of the host proofs, not extra axioms inserted into
+\texttt{PRAAx}. The build and axiom logs list the exact declarations.
+
+All ten modules compile. The application propositions are ordinary
+\texttt{Prop} definitions, not axioms or admitted proofs. Their compilation
+checks that the definitions and targets are well typed; it does not prove
+those targets. The modular example proves by kernel reduction that the
+producer for \(X^3-X-2\), with \(q=4\), \(N=3\), seed \(2\) and inverse
+\(3\), returns \(22\). The rational diagnostics check the Catalan prefix
+\((1,1,2,5,14)\), a mixed-curve norm \(1+X+X^4\), and the Hurwitz
+solution prefix \((1,1,2,6,24,120,720,5040)\) for \(Y'=Y^2\).
+The concrete ODE target uses a scalar polynomial with constant rational
+coefficients. The broader time-dependent, multivariate human theorem
+extends the same finite coefficient recurrence; that extension is part
+of the documented completion route.
+
+\subsection{A genuine composition theorem}
+
+For formulas \(P(x)\) and \(Q(y,x)\), the actual structure
+\texttt{TermContract P Q} contains a fixed term \(f(x)\) and an object
+derivation of \(Q(f(x),x)\) from \(P(x)\). A second contract contains
+\(g(y,x)\) and a derivation of \(R(g(y,x),y,x)\) from \(Q(y,x)\).
+The checked composition operation substitutes \(f(x)\) for \(y\), then
+uses cut to produce
+\[
+        [P(x)]\ \vdash_{\ipra}\ R(g(f(x),x),f(x),x).
+\]
+Capture avoidance and context substitution are handled by the repository's
+scoped syntax. The record contains proof obligations; there is no axiom
+asserting that arbitrary preconditions and postconditions can be filled.
+
+The file also defines the explicit PR symbol
+\begin{lstlisting}
+identityIteration : PR 2 :=
+  .prec (.proj (0 : Fin 1)) (.proj (1 : Fin 3))
+\end{lstlisting}
+and proves in the embedded theory that iterating the identity on a seed
+returns the seed. Its base uses \texttt{PRA.precZero} and
+\texttt{PRA.proj}; its step uses \texttt{PRA.precSucc}, the accumulator
+projection and the induction hypothesis. The outer induction is the
+actual \texttt{PRA.qfInd}. This small example checks the full syntactic
+route without misrepresenting the scale of the remaining algebra library.
+
+\subsection{Numerical definitions for the application layers}
+
+The following definitions are sufficient; no abstract analytic or
+algebraic-geometric object is required as an object-theory primitive.
+
+\begin{description}
+\item[Ring and filtration.] A fixed finite tuple of PR symbols provides
+\(\Valid(x)\), \(\operatorname{eq}(x,y)\), \(0,1,+,-,\cdot\) and
+\(\operatorname{member}(N,k,x)\). The ring and filtration laws are
+object derivations or explicit hypotheses. Their parameters include the
+chosen precision and, for residues, the base \(q\).
+\item[Polynomial system.] A polynomial is a list of pairs
+\((c,e)\), where \(e\) is a vector of nonnegative exponents. A bounded
+test verifies the vector length and coefficient validity. Evaluation
+multiplies powers along each vector and then adds terms; formal partial
+derivatives replace \(cX^e\) by
+\(ce_jX^{e-\mathbf e_j}\) when \(e_j>0\). The Jacobian is the finite
+matrix of evaluations of these partial derivatives.
+\item[Jets.] A precision-\(N\) element is a coefficient vector of length
+\(N\), with zero-default lookup. Equality compares the entries. Products
+are truncated convolution; membership in level \(k\) checks that the
+first \(\min(k,N)\) entries are zero. Hurwitz jets insert the natural
+factor \(\binom nj\) in each product summand.
+\item[Residues.] A precision-\(N\) element is the canonical natural
+number below \(q^N\). Operations reduce signed integer expressions
+modulo that modulus. The membership test is divisibility by
+\(q^{\min(k,N)}\). Matrices and vectors are finite lists of these codes.
+\item[Plane polynomials.] The supplied target module uses a finite list
+of rational \(X\)-coefficient lists indexed by \(Y\)-degree, with
+zero-default lookup. Equivalently, an arithmetic encoding can use sparse
+triples \((i,j,a_{ij})\), normalized by adding duplicates and dropping
+zeros. The monic remainder is computed by eliminating the largest
+\(Y\) exponent. Conversion between the two finite representations is PR.
+\item[Multiplication norm.] Construct column \(j<m\) by reducing
+\(GY^j\). The matrix is an \(m\)-square array of rational
+\(X\)-polynomials. Its determinant is either the signed permutation sum
+or a recursively expanded Laplace determinant. Both are finite PR
+algorithms; their equivalence can be proved coefficientwise.
+\item[Point lists and subspaces.] A point is a pair of rational codes.
+The common-zero predicate is evaluation equality. Pairwise distinctness
+is the bounded conjunction over pairs of list indices. A subspace is a
+finite rational spanning matrix; membership is a rank comparison, and
+properness is rank below the ambient dimension. The weight-bounded
+monomial list is enumerated by \(j<m\), \(i\le L\) and \(mi+dj\le L\).
+\end{description}
+
+Malformed arrays are explicitly excluded by bounded well-formedness tests.
+The totalized operations may return defaults on malformed inputs. The
+algebraic laws and result statements are always guarded by those tests.
+
+\subsection{From the human lifting proof to a complete Lean proof}
+
+Let \(H(N,P,U,a)\) be the bounded input test consisting of validity,
+the residual membership and the two inverse-Jacobian congruences in
+Theorem~\ref{thm:filtered-lifting}. Let \(B(N,P,U,a)\) be the state
+after \(N-1\) updates. Its correctness target is
+\[
+ H(N,P,U,a)\to
+ \bigl(P(B)=0\ \land\ B-a\in F^1\bigr).
+\]
+The uniqueness target additionally takes a \emph{fixed numerical candidate}
+\(z\) and concludes
+\[
+ H(N,P,U,a)\land P(z)=0\land z-a\in F^1\quad\to\quad z=B.
+\]
+Every part is a bounded formula once arrays are encoded. Universal closure
+over the input codes can be introduced after its proof.
+
+The finite dependency order is as follows.
+\begin{enumerate}
+\item Prove the integer, rational and array operations correct on valid
+codes. Give their \texttt{PR} syntax and their defining equations.
+\item Prove addition and matrix multiplication preserve the indicated
+filtration levels. The invariant is a conjunction over the processed
+entries and the accumulated sum.
+\item Prove polynomial evaluation, partial differentiation and the finite
+Taylor identities. Induct on monomial exponents and on the length of
+the processed term list; the invariant is a finite coefficient identity
+and membership test, not a universally quantified ring identity.
+\item Derive the single-step residual improvement equation (1) of the
+lifting proof. Freeze \(N\), Booleanize invariant (3), and apply
+\texttt{PRA.qfInd} to the explicit PR state recursion.
+\item Freeze the two candidate roots and \(N\). Begin the uniqueness
+induction at filtration zero, use the seed congruence for the step to
+level one, and equation (2) for all later steps. At level \(N\), use
+the proved nilpotence test.
+\item Prove finite evaluation commutes with restriction. Compose this
+with uniqueness to obtain pairwise coherence. This last step needs no
+infinite family object.
+\item Instantiate the generic contracts for ordinary jets, Hurwitz jets
+and residues. For the Hurwitz ODE use a separate prefix recurrence;
+prove coefficient causality by induction on the finite polynomial
+evaluation, then induct on the stored solution length.
+\end{enumerate}
+
+At the end, replace each bounded formula by its fixed Boolean compiler
+output and build terms of
+\texttt{Prf PRAAx [] (allClose liftingFormula)}. The actual compiler
+and the large algebraic derivation are not completed in this archive.
+The definitions, local identities and induction formulas above make the
+remaining work explicit rather than introducing an uninterpreted
+``lifting soundness'' axiom.
+
+\subsection{From the norm proof to a complete Lean proof}
+
+Define \(\operatorname{GoodCurve}(m,d,c,F)\) to check
+\(m\ge2\), \(d\ge1\), \(\gcd(m,d)=1\), \(c\ne0\), the two leading
+coefficients and every lower-weight restriction. Define
+\(\operatorname{ReducedNonzero}(m,G)\) by its finite coefficient tests,
+and \(W(m,d,G)\) by bounded maximum over the nonzero terms. The main
+object formula is the universal closure of
+\[
+ \begin{split}
+ &\operatorname{GoodCurve}(m,d,c,F)\land
+   \operatorname{ReducedNonzero}(m,G)\land
+   \operatorname{DistinctCommonZeros}(F,G,L)\\
+ &\hspace{35mm}\longrightarrow\quad
+   \operatorname{length}(L)\le W(m,d,G).
+ \end{split}
+\]
+Unlike a formula quantifying over a completed function field, this is an
+ordinary finite assertion about the supplied polynomial and point codes.
+
+\begin{longtable}{P{.28\linewidth}P{.34\linewidth}P{.29\linewidth}}
+\toprule
+Lemma to formalize & Finite mechanism & Induction invariant\\
+\midrule\endhead
+Monic remainder & Eliminate the highest \(Y\)-coefficient using \(F\).
+& Original polynomial equals quotient times \(F\) plus residual;
+processed high coefficients are zero.\\[3pt]
+Norm specialization & Evaluate every entry in the multiplication matrix;
+evaluate its finite determinant. & Equality of the accumulated
+permutation sums.\\[3pt]
+Rescaling identity & Clear a computed common power of \(t\), then compare
+finite polynomial coefficients. & The change-of-basis equality for
+processed matrix columns.\\[3pt]
+Exact norm degree & Compute the cyclic companion determinant and compare
+the constant term. & Finite coefficient support and a certified nonzero
+top coefficient.\\[3pt]
+Fiber multiplicity & Use the explicit Vandermonde rows and factor
+\(X-u\) out of their entries. & The row identities and accumulated
+factorization.\\[3pt]
+Product of fiber factors & Remove distinct-coordinate powers successively.
+& \(N_G=C_kQ_k\), with \(C_k\) the processed product, and the finite
+Taylor coefficients needed for the next fiber.\\[3pt]
+Dimension count & Enumerate the bounded monomials and residues modulo \(m\).
+& Prefix counts and the permutation of residue classes.\\[3pt]
+Subspace fiber bound & Row-reduce the rational spanning matrix and produce
+an annihilator. & Row equivalence, nonzero pivots and the explicit free
+variable giving a nonzero kernel vector.\\
+\bottomrule
+\end{longtable}
+
+For all coefficient identities, the finite support bound is part of the
+state. Monic reduction lowers the largest remaining \(Y\)-exponent; in
+the principal weighted family it also never increases monomial weight.
+The determinant has \(m!\) permutation terms. Rational values may grow
+rapidly, but the state is still a PR-coded finite list. There is no need
+for a common external bound on every possible rational input value.
+
+An ambient algebra proof can be completed first using ordinary Lean
+polynomials and matrices; that would be useful independent validation.
+For the intended iPRA theorem, it must then be implemented in the numerical
+coefficient library or accompanied by an explicit verified compiler that
+constructs the corresponding embedded derivation. The target modules in
+this archive make no general reflection assumption.
+
+\subsection{Repository integration and reproducible builds}
+
+The standalone source is intended for inspection and independent builds.
+Inside ProveIt, replace the import of \texttt{ObjectKernel} by the current
+\texttt{ConciseIPRA.PR} import and build against the pinned toolchain.
+Do not import both versions of the same namespace in one build. Once a
+new object theorem is completed, apply \texttt{pra\_iff\_native.mp} to
+obtain its native form. The provided scripts compile the standalone
+sources, run the axiom audit and regenerate exact-arithmetic checks.
+The proof-status ledger distinguishes tested programs, compiled target
+definitions, host proofs and embedded proof constructions.

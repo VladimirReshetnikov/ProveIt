@@ -1,0 +1,119 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor,xurl,hyperref,fancyhdr,listings}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{accent}{HTML}{246B75}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={Coherent finite methods for intuitionistic primitive recursive arithmetic},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Coherent finite methods in iPRA}
+\fancyhead[R]{\small Research report}
+\fancyfoot[C]{\thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{3em}
+\setlist{topsep=4pt,itemsep=3pt}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\ensuremath{\mathrm{iPRA}}}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}\newcommand{\R}{\mathbb R}
+\newcommand{\PR}{\mathrm{PR}}
+\newcommand{\Valid}{\operatorname{Valid}}
+\newcommand{\CertCheck}{\operatorname{Check}}
+\newcommand{\Run}{\operatorname{Run}}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\id}{\operatorname{id}}
+\DeclareMathOperator{\lc}{lc}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,
+ columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20},
+ xleftmargin=4pt,xrightmargin=4pt}
+\begin{document}
+\begin{titlepage}
+\vspace*{14mm}
+{\color{accent}\large FOUNDATIONS AND WORKED APPLICATIONS\par}
+\vspace{8mm}
+{\color{ink}\Huge\bfseries Coherent finite methods\par}
+\vspace{4mm}
+{\LARGE for intuitionistic primitive\par recursive arithmetic\par}
+\vspace{10mm}
+{\large A reusable framework for refinement, lifting,\par and finite algebraic certificates\par}
+\vspace{10mm}
+Prepared for Vladimir Reshetnikov\par
+15 November 2026\par
+\vspace{10mm}
+\begin{minipage}{0.94\textwidth}
+\textbf{Main results.} A finite filtered-algebra lifting theorem produces
+unique compatible solutions in polynomial jets and residue rings by an
+explicit primitive recurrence. A weighted determinant norm gives a sharp
+finite point-count theorem for a class of plane curves, replacing a
+divisor-theoretic input by exact polynomial arithmetic. A common proof
+discipline connects these constructions to quantifier-free induction and
+to ProveIt's actual object-language proof relation.
+
+\textbf{Status.} The report gives complete human-readable arguments for its
+stated finite theorems and explicit induction audits. Selected foundational
+Lean proofs and concrete definitions are compiled. The full object-iPRA
+derivations of the lifting and norm theorems remain formalization work;
+their precise targets and completion steps are supplied.
+\end{minipage}
+\vfill
+{\small Source snapshot: ProveIt\par
+\texttt{052fbaebfc955294b4c02f6532ab7e7a3f760f7a}\par
+Existing framework packets are treated as prior work, with additions
+identified explicitly.}
+\end{titlepage}
+\begin{abstract}
+Embedding a proof into first-order intuitionistic primitive recursive
+arithmetic requires more than an executable algorithm. It requires finite
+representations, primitive recursive constructions, and a derivation whose
+induction invariants are decidable bounded predicates. We organize these
+requirements around coherent finite presentations: every precision is a
+finite arithmetic problem, restriction maps preserve its meaning, and
+finite uniqueness supplies compatibility without countable choice.
+
+The first main application is a division-free correction iteration in a
+nilpotent filtered algebra. A supplied inverse Jacobian modulo the first
+filtration level gives exact solutions after a stated number of steps.
+Ordinary formal power series, simultaneous implicit equations, and roots
+modulo powers of any integer base become instances of the same theorem.
+A related Hurwitz-series presentation treats polynomial differential
+equations without dividing by factorials. The second application gives
+exact determinant degrees and point counts on curves with leading terms
+\(Y^m-cX^d\), where \(\gcd(m,d)=1\). Fiber multiplicities are handled by
+Vandermonde row certificates, so distinct points with a common abscissa
+are counted correctly, including singular fibers.
+
+These results address concrete representation and geometric counting
+obligations in the inspected repository. They do not supply a general
+height bound, a rational-point enumeration cutoff, analytic convergence
+for an arbitrary formal solution, or the major analytic estimates absent
+from the prime-distribution reports. The accompanying source audit,
+exact-arithmetic programs, Lean files, and proof-status ledger distinguish
+each of these boundaries.
+\end{abstract}
+\tableofcontents
+\newpage
+\input{sections/01_audit}
+\input{sections/02_foundations}
+\input{sections/03_refinement}
+\input{sections/04_lifting}
+\input{sections/05_norms}
+\input{sections/06_formalization}
+\input{sections/07_status}
+\input{references}
+\end{document}

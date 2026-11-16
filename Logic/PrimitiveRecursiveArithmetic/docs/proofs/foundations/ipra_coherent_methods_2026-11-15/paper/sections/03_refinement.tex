@@ -1,0 +1,146 @@
+\section{Coherent finite presentations}
+\label{sec:refinement}
+
+The existing packets use finite observations and explicit error contracts.
+For algebraic constructions there is a useful further organizing principle:
+successive finite observations can be \emph{exact restrictions} of one
+another. This avoids treating all infinite objects as analytic Cauchy
+sequences and exposes the algebra actually needed by the proof.
+
+\subsection{A presentation at each requested precision}
+
+For fixed numerical parameters \(x\), let \(A_n\) be a presentation of
+finite data at precision \(n\). In the arithmetic theory this means a
+bounded validity test \(V(x,n,z)\), a bounded equivalence test
+\(z\simeq_{x,n}z'\), and PR restriction operations
+\(\pi_{m,n}\) for \(n\le m\). Their laws, on valid inputs, are
+\[
+ \pi_{n,n}(z)\simeq_{x,n}z,\qquad
+ \pi_{k,n}(\pi_{m,k}(z))\simeq_{x,n}\pi_{m,n}(z)
+ \quad(n\le k\le m).
+\]
+All operations respect the equivalence tests and preserve validity.
+For polynomials modulo \(T^{n+1}\), restriction deletes high
+coefficients. For residues modulo \(q^n\), it reduces to the smaller
+modulus. For finite matrix identities, precision may instead mean the
+finite list of entries or identities requested.
+
+A represented object is a specified PR producer \(a(x,n)\), together
+with proofs of its validity and coherence
+\[
+ \pi_{m,n}(a(x,m))\simeq_{x,n}a(x,n)\qquad(n\le m).
+\]
+The first-order theorem quantifies over the numerical parameters and the
+requested precisions. It does not assert the existence of a function
+object inside \ipra. One can interpret the family externally as an
+element of an inverse limit, but that interpretation is explanatory, not
+an additional axiom used to establish the finite claims.
+
+\begin{theorem}[Finite uniqueness supplies coherence]
+\label{thm:coherence}
+Let \(C(x,n,z)\) be a bounded specification that includes validity at
+precision \(n\). Suppose a fixed PR producer
+\(a(x,n)\) satisfies it, restrictions preserve it, and it determines a
+unique equivalence class at every precision:
+\begin{align*}
+ &C(x,n,a(x,n)),\\
+ &n\le m\land C(x,m,z)\to C(x,n,\pi_{m,n}(z)),\\
+ &C(x,n,z)\land C(x,n,z')\to z\simeq_{x,n}z'.
+\end{align*}
+If these implications have \ipra\ derivations, so does the coherence
+formula for \(a\).
+\end{theorem}
+\begin{proof}
+Fix \(x,n,m\) with \(n\le m\). Correctness at \(m\) and restriction
+give \(C(x,n,\pi_{m,n}(a(x,m)))\). Correctness at \(n\) gives
+\(C(x,n,a(x,n))\). Apply finite uniqueness. No induction and no choice
+principle is required in this final step.
+\end{proof}
+
+The statement deliberately includes existence \emph{with a fixed PR
+producer}. A bare theorem \(\forall n\,\exists z\,C(n,z)\), even with
+uniqueness, does not by itself provide a PR function. The lifting theorem
+in the next chapter constructs the producer before coherence is invoked.
+Moreover the specification includes the selected initial residue or
+constant term. Without that seed there may be several roots and the
+uniqueness hypothesis would be false.
+
+\subsection{Operations carry an explicit precision demand}
+
+An operation producing an output observation at level \(n\) must state
+which input levels it reads. For product of ordinary jets the demand is
+\(n\) for each input. For a derivative it is \(n+1\). For a coefficient
+in an implicit solution the demand is the polynomial data and the seed
+plus its finite inverse certificate. Once these demands are stated,
+composition is ordinary composition of their PR bounds and programs.
+
+Suppose a first operation has witness \(f(x)\) and proof
+\(P(x)\to Q(x,f(x))\), and a second operation has witness \(g(x,y)\)
+and proof \(Q(x,y)\to R(x,y,g(x,y))\). Substitution and implication
+elimination give
+\[
+ P(x)\to R(x,f(x),g(x,f(x))).
+\]
+This is a syntactic proof transformation, not an appeal to semantic
+soundness. The module \texttt{ObjectComposition.lean} implements it for
+the repository's actual \texttt{Prf PRAAx} relation, including capture-free
+substitution and specialization of parameters.
+
+Coherent operations can similarly be composed. Restrict the outer result,
+use its restriction law, apply the restriction laws of its arguments,
+and then use congruence. Every equality is a finite equality at a stated
+level. No equality test for the entire infinite object is needed.
+
+\subsection{Three kinds of precision, with different meanings}
+
+\begin{center}\small
+\begin{tabular}{P{.20\linewidth}P{.30\linewidth}P{.40\linewidth}}
+\toprule
+Presentation & Finite observation & What passing every level means externally\\
+\midrule
+Ordinary jets & Coefficients through degree \(n\), exact modulo
+\(T^{n+1}\) & A formal power series identity; it does not supply a radius
+of analytic convergence.\\[3pt]
+Residue towers & A root modulo \(q^n\), with a selected residue modulo
+\(q\) & A compatible \(q\)-adic solution; it need not be a rational or
+integer solution.\\[3pt]
+Metric names & Rational observations with explicit error bounds & A real
+or complex object in a stated represented family; exact zero tests do not
+follow from arbitrary finite approximations.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These are different embeddings of mathematics. Their finite arithmetic
+theorems are useful in their own right. A conversion between them needs a
+separate proof: convergence estimates convert suitable jets to analytic
+names, and a global arithmetic argument may sometimes turn local residue
+information into a rational solution. Neither conversion is automatic.
+
+\subsection{Certificates: validity, production, and scope}
+
+For every certificate language record three separate statements:
+\[
+ \CertCheck(x,c)=1\to \Spec(x,c),\qquad
+ \CertCheck(x,\operatorname{produce}(x))=1,
+\]
+and the exact input class on which the second statement is proved.
+The specification itself must be an explicit arithmetic formula, not an
+unexplained proof field whose contents already are the desired theorem.
+
+In the lifting application, the initial certificate consists of a root
+modulo the first filtration level and a matrix inverse there. Both are
+finite checks. The algorithm then produces all requested refinements.
+For rational jets a nonzero rational determinant lets finite elimination
+construct the inverse. For residues, the inverse may be supplied or
+found by a bounded search modulo \(q\), provided invertibility is
+established. In the norm application the certificate is constructed
+directly: form the multiplication matrix and its determinant. Its exact
+degree is proved from the weighted leading terms. No external oracle
+supplies the norm.
+
+The later covering corollary has a different status. Given a list of
+covering subspaces, it proves a point bound. Producing such a list for
+the integral or rational points on an arbitrary curve remains a separate
+mathematical obligation. The type of the output is kept visible precisely
+so that a counting theorem cannot be mistaken for a height bound.

@@ -1,0 +1,146 @@
+\section{Source audit, aim, and contribution}
+\label{sec:audit}
+
+\subsection{The inspected snapshot}
+
+The repository was read through its GitHub connector at commit
+\begin{center}\small\ttfamily
+052fbaebfc955294b4c02f6532ab7e7a3f760f7a.
+\end{center}
+The proof-packet index lists 54 packets grouped by mathematical area.
+It explicitly says that placing them in the repository did not verify,
+rerun or compile their contents \cite{repoIndex}. We therefore distinguish
+an author's stated result, a mathematical argument read in a source file,
+a compiled host Lean theorem, and an actual object-iPRA derivation.
+
+The review covered the index, the three previous framework packets, the
+ConciseIPRA interfaces needed for the new Lean files, and selected
+application reports. It is a targeted source audit, not a verification of
+all 54 packets. The machine-readable manifest records inspected paths,
+the pinned revision, available Git blob identifiers, and SHA-256 hashes
+of materialized source text. Exact audit notes are included separately.
+
+Three framework packets already exist at this revision:
+\begin{enumerate}
+\item \texttt{ipra\_framework\_2026-11-15}: an earlier compact framework.
+\item \texttt{ipra\_embedding\_framework}: finite-demand transfer,
+approximation and isolation, analytic regular branches, stable windows,
+the odd-degree hyperelliptic norm count, and finite-algebra certificates.
+\item \texttt{ipra\_framework}: finite contracts, an expanded analytic
+chart constructor, finite-window arguments, and integral power-gap
+certificates with explicit producers.
+\end{enumerate}
+Their reusable ideas are retained and cited as prior work
+\cite{repoSmallFramework,repoEmbedding,repoFramework}. In particular,
+bounded Booleanization, certificate composition, scalar Hensel steps,
+ordinary bounded descent, and metastability are not presented as newly
+discovered results of this report.
+
+\subsection{The obstacles that determine the design}
+
+\begin{longtable}{P{.20\linewidth}P{.34\linewidth}P{.37\linewidth}}
+\toprule
+Source & Specific difficulty or already available result & Consequence here\\
+\midrule\endhead
+ConciseIPRA & The equivalence transports an existing arithmetic derivation;
+it does not turn arbitrary ambient Lean truth into one. & Every formal
+endpoint is stated using \texttt{Prf PRAAx}.\\[4pt]
+Existing frameworks & Finite observation contracts and bounded loops are
+already developed. & Add exact restriction and coherence interfaces with
+new worked algebraic constructions.\\[4pt]
+Puiseux & General exact branch selection is impossible uniformly from
+arbitrary Cauchy names; exact algebraic and regular-chart results exist.
+& Solve simultaneous regular formal equations from a supplied invertible
+Jacobian, with exact coherent jets. Retain the singular obstruction.\\[4pt]
+Lagrange inversion; Bell numbers & Many identities concern finite
+coefficient lists even when written using infinite generating functions.
+& Give a common formal lifting and integral Hurwitz-series interface;
+use their known identities as illustrations.\\[4pt]
+Siegel general route & The proper-subspace fiber bound is described via
+functions, divisors, and a zero/pole degree theorem. & Construct functions,
+an exact dimension count and a sharp zero-count certificate for weighted
+plane curves using finite polynomials.\\[4pt]
+Earlier embedding framework & The fiber repair is already proved for
+\(Y^2=f(X)\) with odd \(\deg f\). & Extend to \(Y^m-cX^d\) with arbitrary
+lower-weight mixed terms and \(\gcd(m,d)=1\).\\[4pt]
+Mordell--Weil & Contracting descent with explicit fuel already exists; actual
+quotient representatives remain an input. & Reuse bounded descent only
+as infrastructure. Do not claim it constructs those representatives.\\[4pt]
+Faltings; Siegel & A general cardinal bound, height bound and complete list
+are different targets. & Supply a counting component and state the
+unresolved cover and height obligations separately.\\[4pt]
+Diophantine geometry & Modular obstructions and bounded searches are finite;
+passing local tests does not establish global rational points. & Add
+compatible lifting through modulus powers; assert no local-to-global
+converse.\\[4pt]
+Prime distribution & Field certificates and major analytic estimates are
+separate inputs. & The finite algebra modules can support certificates;
+they do not prove the missing analytic estimates.\\
+\bottomrule
+\end{longtable}
+
+The application rows refer to the inspected Puiseux, Lagrange-inversion,
+Bell-number, Mordell--Weil, Faltings, Diophantine-geometry and prime-distribution
+packets \cite{repoPuiseux,repoLagrange,repoBell,repoMW,repoFaltings,repoGeometry,repoPrimes}.
+
+The most concrete source obligation addressed below is the paragraph
+``The geometric input to the fibre bound'' in the Siegel report's
+\texttt{paper/05\_general\_route.tex} \cite{repoSiegel}. Its original
+description requests finite functions, independence data and a zero-count
+argument. The earlier hyperelliptic repair settles a restricted instance.
+Our weighted norm theorem settles a broader, explicitly stated family
+without assuming a developed divisor theory. It does not settle the
+separate finite-tuple approximation theorem required by that route.
+
+\subsection{What this report adds}
+
+The central framework addition is \emph{coherent finite presentation}.
+Instead of immediately constructing an infinite object, construct its
+requested finite observation, prove its finite specification, and prove
+that restriction preserves that specification. A finite uniqueness theorem
+then supplies coherence. This allows exact algebra, modular arithmetic and
+formal differential algebra to use the same proof architecture as the
+repository's metric approximation modules, while preserving their different
+meanings.
+
+The first main application is a filtered-algebra lifting theorem. For a
+polynomial system, a root and an inverse Jacobian modulo the first
+filtration level yield a fixed correction recurrence. Each step raises the
+order of the residual by one; an explicitly nilpotent truncation therefore
+needs only a prescribed finite number of steps. This gives formal implicit
+functions in several unknowns and roots modulo powers of composite as well
+as prime integer bases. A companion Hurwitz construction removes factorial
+division from polynomial differential equations.
+
+The second main application is an exact norm theorem for weighted plane
+curves. It proves the determinant's degree and leading coefficient, then
+shows that a fiber containing \(r\) distinct common zeros contributes
+\(r\) factors to that determinant. The result gives a sharp point count,
+an elementary dimension formula for an explicit space of functions, and a
+proper-subspace fiber bound. An adjugate argument also gives an exact
+function-field presentation for this curve class.
+
+These use established algebraic ideas. Formal implicit-function theorems
+and constructive Hensel methods have substantial prior literature
+\cite{Hu,AlonsoLombardiNeuwirth}; norms as multiplication determinants are
+standard \cite{StacksNorm}. The contribution claimed here is the explicit
+generalization relative to the inspected packets, the integrated finite
+proof architecture and its arithmetic audit. No priority claim over the
+mathematical literature is made.
+
+\subsection{Reading and proof-status conventions}
+
+Sections~\ref{sec:foundations} and \ref{sec:refinement} give the common
+rules. The next two chapters contain the main mathematical applications.
+Section~\ref{sec:formalization} maps them to concrete Lean definitions,
+compiled lemmas and remaining object derivations. The final chapter lists
+exact accomplishments and boundaries.
+
+The phrase ``has an iPRA proof'' in a mathematical theorem means that the
+following human argument is expressed by the stated PR constructions and
+bounded induction invariants. It does not mean that a corresponding Lean
+proof object has already been checked. A compiled host theorem verifies
+its own Lean proposition. A compiled theorem whose conclusion is
+\texttt{Prf PRAAx ...} verifies an actual object derivation or a transformation
+of supplied object derivations. These statuses are recorded individually;
+compiling an unproved proposition definition is never counted as proving it.

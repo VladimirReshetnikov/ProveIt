@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives on 14 and
-15 November 2026: 33 to `docs/drafts`, and 25 to
+15 November 2026: 33 to `docs/drafts`, and 26 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -61,7 +61,7 @@ manifests, build logs and `build/` files.
 
 ## Packets
 
-The 58 archives hold 1,363 members: 1,278 placed here, 54 ignored, 13 in the bundled copy of
+The 59 archives hold 1,418 members: 1,333 placed here, 54 ignored, 13 in the bundled copy of
 a sibling packet, 1 nested copy of a sibling archive and 17 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -144,6 +144,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 
 | Directory | Arrival | Wrapper in the archive | What the packet states | P | O |
 |---|---|---|---|---:|---:|
+| [`ipra_coherent_methods_2026-11-15`](foundations/ipra_coherent_methods_2026-11-15/) | *not committed* 2026-11-15 | `ipra_coherent_methods` | Coherent finite methods: coherent finite presentations with restriction maps, filtered lifting with a frozen inverse, ranked descent and weighted norms, with applications to Hurwitz-type targets. It credits the earlier frameworks here. Its `lean/upstream/` holds `Deduction.lean`, `PR.lean` and `Syntax.lean` as in ConciseIPRA at `052fbaebfc`, each with one extra blank line at the end, so they are placed. | 55 | 0 |
 | [`ipra_embedding_framework`](foundations/ipra_embedding_framework/) | *not committed* 2026-11-15 | `ipra_embedding_framework` | Mathematics in iPRA through finite observations: bounded-formula compilation, simple analytic branches with Cauchy coefficients, simultaneous finite-window stability, a hyperelliptic zero count for the Siegel strategy, and finite algebra certificates. It calls itself a targeted audit of the collection, not a verification of the packets. | 28 | 1 |
 | [`ipra_embedding_framework_2026-11-15`](foundations/ipra_embedding_framework_2026-11-15/) | *not committed* 2026-11-15 | `ipra_embedding_framework_2026-11-15` | Certified Finitary Presentations, a different packet from `ipra_embedding_framework`: fixed codes and evaluator schemas, finite observations with precision transformers, guarded operations, bounded traces and finite nets, ending in a `PRAAx` derivation. It also proves barriers, such as that no total universal PR evaluator exists. Its Lean files are a semantic core and a blueprint. | 45 | 0 |
 | [`ipra_evidence_framework`](foundations/ipra_evidence_framework/) | *not committed* 2026-11-15 | none | Evidence-indexed finite mathematics: a finite relational-output and compatibility interface for cases where only approximate witness families are justified, with a backward finite dynamic program for witness amalgamation. It credits the earlier frameworks here. Its Lean blueprint is not compiled. | 6 | 0 |
