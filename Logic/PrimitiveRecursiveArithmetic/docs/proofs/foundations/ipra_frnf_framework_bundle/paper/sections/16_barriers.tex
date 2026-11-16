@@ -1,0 +1,139 @@
+\section{Exact barriers and honest unresolved inputs}
+\label{sec:barriers}
+
+A general framework is useful only if it distinguishes formalization problems from
+missing mathematics and from impossible interfaces.  This section records the most
+important boundaries.  None of them says that the associated theorem is unprovable in
+\(\iPRA\); each says that a particular generic route cannot supply the required data.
+
+\subsection{Cardinality does not uniformly produce a cutoff}
+
+Suppose \(P_e(n)\) is a decidable family with at most one solution.  It is tempting to
+expect a uniform algorithm that, from \(e\) and the cardinality bound, returns \(B(e)\)
+such that every solution is below \(B(e)\).  This is impossible.
+
+\begin{barrier}[No computable cardinality-to-cutoff operator]
+\label{barrier:cardinality-cutoff}
+There is no total computable operator which, given a code for a decidable predicate
+\(P(n)\) together with a valid certificate that \(P\) has at most one solution, always
+returns a bound \(B\) such that
+\[
+  P(n)\quad\Longrightarrow\quad n<B.
+\]
+In particular, no primitive-recursive operator has this property.
+\end{barrier}
+
+\begin{proof}
+Let \(M_e\) be the Turing machine with code \(e\).  Define the decidable predicate
+\[
+  P_e(n)\;:\Longleftrightarrow\;
+  M_e\text{ halts for the first time after exactly }n\text{ steps}.
+\]
+Bounded simulation makes \(P_e\) primitive recursive in \((e,n)\).  It has at most one
+solution, and the proof of that fact is uniform: a deterministic machine cannot have
+two distinct first halting times.
+
+Apply the hypothetical operator to obtain \(B(e)\).  Simulate \(M_e\) for \(B(e)\)
+steps.  If it halts, answer yes.  If it does not halt, it can never halt later, because
+a later first halting time \(n\ge B(e)\) would be a solution of \(P_e\) outside the
+promised cutoff.  This decides the halting problem, a contradiction.
+\end{proof}
+
+Thus a finiteness or cardinality theorem is not enough for complete enumeration.  A
+height bound, search cutoff, or complete-list certificate is genuinely additional
+data.  This is the precise issue in generic forms of Siegel, Faltings, and
+Mordell--Weil enumeration.
+
+\subsection{Exact zero tests from approximate names}
+
+\begin{barrier}[No finite-use exact zero test]
+\label{barrier:zero-test}
+There is no extensional finite-use procedure that, from an arbitrary regular Cauchy
+name of a real number known only to be dyadic rational, always returns the exact bit
+\([x=0]\).
+\end{barrier}
+
+\begin{proof}
+Run the supposed procedure on a regular name for zero.  Because the output is a finite
+computation, it reads only rows through some horizon \(H\).  Choose a positive dyadic
+\(\delta=2^{-M}\) with \(M\) so large that a regular name for \(\delta\) may output
+zero on every row through \(H\) and switch to sufficiently accurate approximations to
+\(\delta\) later.  For example, take \(M>H+2\); the discrepancy from zero at the early
+rows is below their allowed error.  The two names are indistinguishable to the
+procedure, so it returns the same bit, although one value is zero and the other is not.
+Contradiction.
+\end{proof}
+
+Promises about the abstract value do not repair the information interface.  Saying
+``the represented number happens to be algebraic'' or ``dyadic'' is weaker than
+providing a finite exact presentation from which equality is decidable.  Exact Puiseux
+leading exponents, multiplicities, branch ranks, and similar discrete outputs can
+encode such a zero test.  Therefore an unconditional exact-output theorem for arbitrary
+Cauchy coefficients is not available.  One must require exact algebraic splitting
+data or return a relational approximate object.
+
+\subsection{No universal primitive-recursive evaluator}
+
+The diagonal proof in \cref{barrier:no-universal-pr} blocks another common shortcut.
+A code for an arbitrary primitive-recursive function is not automatically executable
+by a total primitive-recursive universal semantics.  Static specialization, finite
+query tables, or a restricted fuel-bounded interpreter are the admissible alternatives.
+
+\subsection{Metastability does not imply a tail rate}
+
+Finite-window stability is compatible with arbitrarily late future oscillations.  A
+uniform conversion from every metastability bound to a Cauchy modulus would therefore
+supply information not present in the premise.  In applications, a metastable theorem
+is often exactly what a finite consumer needs, and it should be retained as such.  A
+limit name requires a separate tail modulus, summable motion estimate, monotonicity
+argument, or other global input.
+
+\subsection{Negative nonzeroness does not supply positive separation}
+
+The guarded reciprocal theorem shows what division needs: a rational lower bound
+\(\lambda\).  The proposition \(x\ne0\) alone gives no algorithm for finding
+\(\lambda\) from an arbitrary Cauchy name.  This is another discontinuity at zero.
+Accordingly, every inverse, normalization, pivot, or branch-isolation interface lists
+its apartness data explicitly.
+
+\subsection{Qualitative compactness does not supply a net}
+
+A theorem that a space is compact in a strong ambient theory may have no
+primitive-recursive finite-net producer with a modulus usable in \(\iPRA\).  The
+\(\FRNF\) compactness interface is conditional on such data.  For boxes, simplices,
+finite complexes, rational polytopes, and many explicitly presented compact spaces,
+the data are easy to construct.  For an arbitrary quotient or function space, they may
+be the main mathematical theorem.
+
+\subsection{Deep analytic and arithmetic producers}
+
+Finite contour integration, exact rational linear algebra, and bounded enumeration can
+formalize the consequences of a zero-free region, exceptional-zero separation, height
+bound, or covering list.  They do not manufacture those inputs.  In particular:
+
+\begin{itemize}
+\item stronger prime-number-theorem rates require correspondingly strong zero-free
+regions and growth estimates;
+\item Siegel--Walfisz and Bombieri--Vinogradov uniformity require substantive control of
+exceptional characters/zeros, not merely better bookkeeping;
+\item general Chebotarev needs effective field algorithms and analytic estimates with
+field dependence tracked;
+\item general Siegel and Faltings enumeration needs an effective height producer; and
+\item general central-limit and stable-law statements need tail, smoothing,
+quantization, or classification inputs beyond finite-law arithmetic.
+\end{itemize}
+
+\subsection{Effectivity obstacles are not independence proofs}
+
+Failure of a generic producer does not prove that no \(\iPRA\) proof of a particular
+closed theorem exists.  A theorem may have a special argument, a nonuniform constant,
+or a certificate discovered by external mathematics and then verified in \(\iPRA\).
+The barriers above justify exact claim wording:
+
+\begin{quote}
+``The finite verifier and conditional implication are formalized; the required
+producer is not supplied by this framework.''
+\end{quote}
+
+They do not justify the stronger wording ``the theorem is unprovable in \(\iPRA\)''
+without a separate proof-theoretic argument.

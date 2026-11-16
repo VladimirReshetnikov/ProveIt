@@ -1,0 +1,131 @@
+\section{The formula firewall and the four-part interface}
+\label{sec:firewall}
+
+\subsection{Why an interface needs four parts}
+
+A reusable component is often described by only a program and a semantic theorem.
+That is sufficient in an ordinary programming library but insufficient for an
+embedded weak theory.  We require four distinct fields.
+
+\begin{definition}[FRNF component]
+An \(\FRNF\) component from input presentation \(X\) to output presentation \(Y\)
+consists of:
+\begin{enumerate}[label=(\roman*),leftmargin=2.4em]
+\item fixed primitive-recursive symbols computing finite output observations;
+\item an object-language formula \(C_{X\to Y}\) expressing the component contract;
+\item a constructor that, from embedded derivations of declared input contracts,
+returns an embedded derivation of \(C_{X\to Y}\); and
+\item an optional host-semantic theorem identifying the numerical contract with its
+intended mathematical meaning.
+\end{enumerate}
+The first three fields are the \emph{kernel-facing interface}.  The fourth is the
+\emph{semantic interpretation}.
+\end{definition}
+
+The separation between (iii) and (iv) is the formula firewall.  It may feel redundant
+when the host theorem is elementary, but it allows components to be combined without
+accidentally importing a strong metatheory into the object proof.
+
+\subsection{Exact contracts}
+
+The simplest component computes a term \(w(x)\) and proves a formula
+\(Q(x,w(x))\) from a precondition \(P(x)\).  At the object level it has the shape
+\[
+    [P]\ \vdash_{\PRAAx}\ Q[w].
+\]
+Existential hiding then gives
+\[
+    [P]\ \vdash_{\PRAAx}\ \exists y\,Q(x,y),
+\]
+and implication introduction gives a closed contract.  Sequential composition is
+substitution followed by cut.  The accompanying
+\code{lean/FRNF/Kernel.lean} records exactly these logical patterns through a proof
+schedule.
+
+The crucial point is that an exact contract is not merely a structure containing a
+Lean function \(w\) and a field of type \(Q(w)\).  Its witness is an object term
+\(\PTm\), and its certificate is an embedded derivation.
+
+\subsection{Relational contracts}
+
+Many constructive constructions do not justify a single exact witness.  A polynomial
+with a multiple root, an eigenvalue cluster, a chart overlap, or a discretized
+optimization problem naturally yields a nonempty finite set of acceptable answers.
+For such a component we use a bounded relation
+\[
+  R(x,i), \qquad i<B(x),
+\]
+with an object derivation of
+\[
+  P(x)\ \longrightarrow\ \exists i<B(x)\,R(x,i).
+\]
+The relation may carry a compatibility edge to the candidates at the next precision.
+A downstream component must either be defined relationally on every valid candidate or
+prove that its observable is stable across the candidate cloud.
+
+This is stronger than choosing the least candidate immediately.  Least choice is
+primitive recursive over a finite set, but it can destroy extensionality: two
+presentations of the same represented object may enumerate candidates in different
+orders.  Keeping the relation until the observation point allows one to prove
+presentation-independent results.
+
+\subsection{Conditional contracts and boundary nodes}
+
+Suppose a finite algorithm enumerates all solutions below a supplied height bound
+\(H(p)\).  Its correctness is a theorem of weak arithmetic once \(H\) is fixed and the
+height theorem is given.  The statement should therefore be represented as
+\[
+  \operatorname{HeightBound}(p,H(p))
+  \longrightarrow
+  \operatorname{CompleteList}(p,\operatorname{enum}(p,H(p))).
+\]
+The height theorem is a boundary node.  It is not hidden in the implementation of
+\code{enum}.  If a later project supplies an object proof of the height bound, ordinary
+cut discharges the boundary.  Until then the endpoint remains a precise conditional
+theorem rather than an incorrect claim of unconditional enumeration.
+
+\begin{principle}[Producer/verifier separation]
+A primitive-recursive verifier for a finite certificate does not become a
+primitive-recursive producer of that certificate.  Production and verification are
+separate nodes with separate proof obligations.
+\end{principle}
+
+This distinction is decisive in the general Siegel and Faltings packets, exceptional-
+zero arguments in analytic number theory, arbitrary compactness arguments, and exact
+splitting data for represented algebraic functions.
+
+\subsection{Status fields as part of the mathematics}
+
+A practical artifact should store, for every component, at least the following status
+fields:
+
+\begin{enumerate}[label=\arabic*.,leftmargin=2.2em]
+\item semantic statement written;
+\item finite reference implementation tested;
+\item object formula defined;
+\item local \(\Prf\,\PRAAx\) constructor implemented;
+\item composed endpoint built;
+\item native transfer built;
+\item remaining boundary assumptions enumerated;
+\item axiom audit inspected.
+\end{enumerate}
+
+These fields are not project-management decoration.  They express logically distinct
+claims.  In particular, a compiled host theorem with a remaining \code{sorry} in the
+object constructor is not a partial object proof; it is a complete result at one level
+and an open result at another.
+
+\subsection{Compositionality}
+
+Let \(C_1,\ldots,C_m\) be component contracts arranged in topological order.  The local
+proof for node \(i\) may use only the permanent hypotheses \(\Gamma\) and a declared
+subset of earlier contracts.  If
+\[
+   \Delta_i,\Gamma\vdash_{\PRAAx} C_i
+   \quad\text{and}\quad
+   \Gamma\vdash_{\PRAAx}D\quad(D\in\Delta_i),
+\]
+then simultaneous cut yields \(\Gamma\vdash_{\PRAAx}C_i\).  Induction on the node list
+therefore produces all graph contracts.  This simple observation is the logical core
+of the proof schedule in \cref{sec:proof-schedule}; all substantive work lies in
+making each local contract finite and QF-internalizable.

@@ -1,0 +1,157 @@
+\section{The Finitary Realizer Normal Form compilation theorem}
+\label{sec:compilation-theorem}
+
+We now collect the preceding constructions into one theorem schema.  The statement is
+metatheoretic: it takes fixed object syntax and local embedded derivations and returns a
+new embedded derivation.  It does not assert that \(\iPRA\) internally quantifies over
+all such graphs.
+
+\subsection{FRNF graph}
+
+\begin{definition}[Certified FRNF graph]
+A certified \(\FRNF\) graph consists of the following finite data.
+
+\begin{enumerate}[label=\textnormal{G\arabic*.},leftmargin=3.4em]
+\item A finite acyclic directed graph with a designated final node and fixed
+ topological order.
+\item For each input, a finite-observation presentation: exact data, regular names,
+ finite clouds, finite nets, or certified setoids.
+\item For every edge, primitive-recursive computation and justification horizon
+ transformers with an embedded proof that read demand is bounded by justification
+ demand.
+\item For every node, fixed primitive-recursive syntax and an object contract formula.
+\item Each computational node is one of: exact transducer, bounded search, clocked
+ loop, finite relational viability pass, stable observer, gap collapse, boundary node,
+ or finalizer.  Compound domain routines are expanded into these forms.
+\item Every clocked loop has a bounded/QF invariant and embedded base, step, and finish
+ derivations.
+\item Every bounded formula occurring in a local invariant has a characteristic term
+ and the embedded Booleanization derivations of \cref{thm:booleanization}.
+\item Every node has an embedded local derivation of its contract from its declared
+ predecessor contracts and permanent boundary formulas.
+\item Every relational output consumed deterministically is either internal to a
+ finite viability computation or followed by an embedded stability/gap derivation.
+\item Every non-finite mathematical input---modulus, height bound, separation, finite
+ net, zero-free estimate, covering list---is either produced by a preceding certified
+ node or appears explicitly among the boundary formulas.
+\end{enumerate}
+\end{definition}
+
+The definition is intentionally syntactic.  Host-semantic theorems may accompany the
+graph, but they are not among the premises needed to construct the object proof.
+
+\subsection{Compilation theorem}
+
+\begin{theorem}[FRNF compilation]
+\label{thm:frnf-compilation}
+Let \(G\) be a certified \(\FRNF\) graph and let \(d\) be a final demand term.  There is
+a metatheoretically effective construction that produces:
+
+\begin{enumerate}[label=(\roman*),leftmargin=2.4em]
+\item primitive-recursive terms coding the least dual-horizon demand closure of
+\((G,d)\);
+\item finite input-table and trace terms sufficient for every computation and proof in
+\(G\);
+\item an embedded derivation
+\[
+   \Gamma_G\vdash_{\PRAAx}\operatorname{Goal}_G(d),
+\]
+where \(\Gamma_G\) is exactly the list of undischarged boundary formulas; and
+\item by the existing transfer theorem, a derivation of the translated goal in the
+native scalar core.
+\end{enumerate}
+No induction beyond quantifier-free induction is introduced by the construction.
+\end{theorem}
+
+\begin{proof}
+We describe the compiler and verify each stage.
+
+\paragraph{1. Static specialization.}
+Replace every externally fixed routine by concrete primitive-recursive syntax and its
+defining equations.  If a routine was supplied as a finite table or as a code in a
+fixed restricted language, instantiate the corresponding table lookup or bounded
+interpreter.  No total universal evaluator is introduced.
+
+\paragraph{2. Reverse dual-demand pass.}
+Apply \cref{thm:demand-closure} to the finite graph at final demand \(d\).  This yields
+for each node/input the least read and justification bounds.  The pass itself is a
+bounded primitive recursion on the encoded reverse topological list; its correctness
+has a QF invariant.
+
+\paragraph{3. Finite materialization.}
+Construct codes for every input row, validity instance, approximation, candidate, and
+edge relation at indices within the justification closure.  Exact inputs are constant
+tables.  For regular names, the global name hypotheses are instantiated only at the
+finitely many requested indices.  For relational inputs, materialize the bounded
+candidate tables.
+
+\paragraph{4. Booleanization.}
+Apply \cref{thm:booleanization} to every bounded validity, range, table, and edge
+condition.  Local state predicates become equations \(\chi=1\), and finite universal
+conditions become bounded-product equations.  Thus all loop invariants are
+quantifier-free.
+
+\paragraph{5. Local computational nodes.}
+Exact transducers use defining equations.  Bounded searches use
+\cref{thm:bounded-search}.  Majorized descents use
+\cref{thm:majorized-descent}.  Finite relational nodes use
+\cref{thm:backward-viability}.  Each adaptive routine has been defunctionalized into a
+clocked transition system, so \cref{thm:trace-internalization} constructs its embedded
+contract from the supplied base, step, and terminal derivations.
+
+\paragraph{6. Choice erasure.}
+When a downstream observable consumes relational candidates, use the supplied embedded
+stability theorem and \cref{thm:stable-observer}.  If an exact discrete label is
+requested, use the explicit gap data and \cref{thm:gap-collapse}.  No arbitrary exact
+branch choice is generated.
+
+\paragraph{7. Topological proof composition.}
+Process graph nodes in topological order.  By assumption, each local contract is
+derivable from declared predecessors and \(\Gamma_G\).  Apply
+\cref{thm:proof-schedule} at every node.  Induction on the finite list yields a
+derivation of the final goal from \(\Gamma_G\).
+
+\paragraph{8. Native export.}
+Apply \code{pra\_iff\_native} to the completed ordinary-iPRA derivation.  This stage
+changes presentation but not mathematical assumptions.
+
+Every induction introduced above is on a numerical clock/table index with a
+Booleanized state equation.  Hence it is quantifier-free induction.  All other logical
+steps are ordinary intuitionistic deduction and equality reasoning.  The only
+undischarged hypotheses are the boundary formulas because all generated component
+contracts have been cut away.
+\end{proof}
+
+\subsection{Relative expressiveness}
+
+The theorem is not a completeness theorem for all constructive mathematics.  It is a
+normal-form theorem for proofs already equipped with primitive-recursive finite
+realizers and quantitative interfaces.  Within that class, the node vocabulary is
+broad: every fixed primitive recursion is a clocked loop; every bounded existential is
+least search; every finite nondeterministic process is a layered relation; every finite
+DAG composes by the schedule.  Thus the remaining expressiveness questions are mainly
+about whether the mathematics supplies finite bounds and stable representations.
+
+\subsection{Conservativity of the compiler}
+
+The compiler adds no axioms to \(\iPRA\).  Its generic Lean definitions live in the
+metatheory and build terms of the inductive relation \(\Prf\,\PRAAx\).  Trust rests on
+the Lean kernel, the definition of \(\Prf\), and the audited local constructors.  A
+future executable compiler may be large or use sophisticated metaprogramming without
+changing the object-theory theorem, provided the generated proof term checks.
+
+\subsection{The main engineering gap}
+
+The logical schedule and QF loop combinators are short.  The substantial remaining
+implementation is a reusable object arithmetic layer for:
+
+\begin{itemize}
+\item generic bounded-formula reification and substitution;
+\item encoded arrays and finite folds;
+\item graph demand tables;
+\item viability masks and path extraction; and
+\item rational error budgets and metric inequalities.
+\end{itemize}
+
+The checked \code{IPRADerivations} library already contains most low-level ingredients.
+The task is integration and abstraction, not a new foundational theory.

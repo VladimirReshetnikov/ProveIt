@@ -279,7 +279,9 @@ placed. `ipra_uniformity_framework_2026-11-15.zip` was placed the same way, unde
 way, under `algebra/`, and then deleted. All 7 of its members are placed; its wrapper
 directory is `ipra_observation_algebra`. `ipra_finite_query_normal_form_2026-11-16.zip` was
 placed the same way, under `foundations/`, and then deleted. It leaves out one ignored
-`.log` file.
+`.log` file. `ipra_frnf_framework_bundle.zip` was placed the same way, under `foundations/`,
+and then deleted. It leaves out one ignored checksum manifest; its wrapper directory is
+`ipra_frnf_framework`.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

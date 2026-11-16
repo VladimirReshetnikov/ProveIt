@@ -1,0 +1,130 @@
+\section{Finite demand graphs and reverse closure}
+\label{sec:demand-graphs}
+
+Real proofs are rarely simple chains.  A requested observable may depend on several
+approximations, each produced from shared lower-level data, with proof obligations
+that fan out differently from computation.  We therefore organize a proof as a fixed
+acyclic graph.
+
+\subsection{Graph data}
+
+Let \(V=\{0,\ldots,m-1\}\) be nodes in topological order: every dependency of node
+\(v\) has smaller index.  For each edge \(v\to u\), where \(u\) is a dependency of
+\(v\), supply monotone dual demand transformers
+\[
+  r_{v,u},j_{v,u}:\N\to\N,
+  \qquad r_{v,u}(d)\le j_{v,u}(d).
+\]
+A demanded node carries a pair \((R_v,J_v)\).  We adjoin a bottom value
+\(\bot\), meaning ``this node is not used.''  This distinction is essential: numerical
+demand \(0\) means that row zero is required, not that the node is unused.  Bottom is
+below every pair; nonbottom pairs are ordered componentwise and joined by maximum.
+
+Given a root \(z\) and requested output precision \(d\), initialize
+\((R_z,J_z)=(d,d)\) and every other node to \(\bot\).  Traverse nodes in reverse
+topological order.  Skip bottom nodes.  For each edge \(v\to u\) from a nonbottom node,
+update
+\[
+\begin{split}
+ R_u&\leftarrow\max\left(R_u,\max_{q\le R_v}r_{v,u}(q)\right),\\
+ J_u&\leftarrow\max\left(J_u,\max_{q\le J_v}j_{v,u}(q)\right).
+\end{split}
+\]
+Here joining a propagated pair into \(\bot\) returns that pair.  For multiple roots,
+initialize each requested root and take joins.
+
+\begin{theorem}[Reverse demand closure]
+\label{thm:demand-closure}
+The reverse pass computes the least bottom-extended demand assignment closed under
+all edges leaving demanded nodes and dominating the root demand.  Its nonbottom nodes
+are exactly the dependency cone of the root.  It is primitive recursive in the fixed
+graph data and the final demand.  Every resulting pair satisfies \(R_v\le J_v\).
+\end{theorem}
+
+\begin{proof}
+Because the order is topological, when node \(v\) is processed in reverse order, all
+users of \(v\) have already propagated their final demands to it.  No later step can
+increase \(v\)'s demand.  A node receives a nonbottom demand exactly when it lies on a
+dependency path from the root.  Therefore one pass suffices and disconnected nodes do
+not spuriously request row zero.
+
+Closure follows directly from the update equations.  To prove minimality, let
+\((R'_v,J'_v)\) be any closed assignment dominating the root.  Descend through the
+reverse order.  Assume every already processed node has computed demand at most its
+primed demand.  Monotonicity of prefix maxima and closure of the primed assignment show
+that every propagation from the current node is at most the corresponding primed
+dependency demand.  Taking maxima preserves the inequality.  Induction proves
+\((R_v,J_v)\le(R'_v,J'_v)\) for all \(v\).
+
+Primitive recursiveness follows because the graph is fixed and every update is a
+bounded maximum of primitive-recursive functions.  If the graph itself is numerical
+input, encode its finite adjacency table and run a bounded loop of length \(m\); the
+same argument becomes a quantifier-free invariant about the table.
+
+For \(R_v\le J_v\), induct on the reverse pass.  Initially the property holds.  On an
+edge, \(R_v\le J_v\), the edge read transformer is bounded by its justification
+transformer, and prefix maximum is monotone.  Hence the propagated read demand is at
+most the propagated justification demand; componentwise joins preserve the property.
+\end{proof}
+
+\subsection{Why closure precedes induction}
+
+The demand pass is run in the metatheory or as a preliminary primitive-recursive
+computation, before the main correctness induction.  Its output is a finite vector of
+bounds.  The proof then materializes exactly the table rows and contract instances
+within those bounds.  This order avoids an illegal invariant saying ``for every future
+precision, all needed rows are valid.''
+
+In an object implementation, the demand pass itself is a bounded loop and may be
+verified by quantifier-free induction.  The main trace uses its completed table as
+fixed input.  Nested uses of quantifier-free induction are harmless: each invariant is
+finite and explicit.
+
+\subsection{Shared dependencies and proof reuse}
+
+If two nodes depend on the same source, the closure takes the maximum of their demands.
+The source table is computed once.  Likewise, its validity derivations may be stored
+once in the proof schedule and cut into both consumers.  This is the proof-theoretic
+analogue of common-subexpression elimination.
+
+A graph representation is therefore not merely convenient notation.  It can reduce
+proof terms and makes dependency auditing possible.  Each node declares exactly which
+earlier formulas its local proof uses; undeclared global assumptions cannot enter
+silently.
+
+\subsection{Cycles and feedback}
+
+A genuine cyclic dependency cannot be handled by a topological pass.  In practice one
+of three situations occurs.
+
+\begin{enumerate}[label=(\roman*),leftmargin=2.4em]
+\item The apparent cycle is a bounded iteration.  Collapse it into one clocked loop
+node whose state contains all mutually recursive values.
+\item The cycle is a fixed-point specification with a contraction modulus.  Replace it
+by a finite Picard iteration whose clock is derived from the modulus.
+\item The cycle expresses an infinitary or impredicative construction with no supplied
+majorant.  It lies outside the unconditional \(\FRNF\) interface and must remain a
+boundary.
+\end{enumerate}
+
+Simultaneous primitive recursion, already available in the checked repository library,
+is the standard implementation of the first case.
+
+\subsection{Object encoding}
+
+For a fixed small graph, the cleanest formalization generates one tuple of demand terms
+per node and proves the closure equations directly.  For a graph supplied as finite
+data, encode:
+
+\begin{itemize}
+\item the node count and topological order;
+\item edge offsets in a flattened adjacency table;
+\item codes selecting from a fixed finite family of demand transformers;
+\item an active bit distinguishing bottom from the genuine numerical demand zero; and
+\item the read/justification arrays updated by primitive recursion.
+\end{itemize}
+
+The interpreter is admissible because the family of node and edge operations is fixed
+and finite; it is not a universal evaluator for arbitrary primitive-recursive syntax.
+The object theorem \code{demandClosure_correct} in the Lean roadmap is the intended
+closed derivation of this finite table algorithm.

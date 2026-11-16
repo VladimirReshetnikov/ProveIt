@@ -1,0 +1,150 @@
+\section{The target theory and the standard of success}
+\label{sec:ipra-target}
+
+\subsection{Working presentation of iPRA}
+
+For this report, \(\iPRA\) is first-order intuitionistic arithmetic with equality, a
+function symbol for every primitive-recursive function and its defining equations,
+successor axioms, and induction restricted to quantifier-free formulas.  This is the
+presentation implemented by the ProveIt type \(\Prf\,\PRAAx\).  The exact choice of a
+primitive-recursive basis is immaterial up to definitional extension, but it is not
+immaterial to a formalization: every algorithm mentioned in a proof must eventually
+be represented by a fixed symbol or a term assembled from such symbols.
+
+The restriction to quantifier-free induction does not make the theory incapable of
+proving quantified theorems.  It constrains the induction invariant.  A typical proof
+first encodes a finite computation, proves a quantifier-free invariant for the encoded
+state, specializes the invariant at a primitive-recursive clock, and only then uses
+ordinary intuitionistic introduction and elimination rules to derive the final
+quantified statement.
+
+The repository supplies two complementary targets.
+
+\begin{itemize}
+\item \code{ConciseIPRA} formalizes ordinary \(\iPRA\), a very small native scalar
+calculus, and translations between them.  Its theorem \code{pra_iff_native} exports an
+ordinary embedded derivation to the native core.
+\item \code{IPRADerivations} develops arithmetic directly in
+\(\Prf\,\PRAAx\): semiring identities, order, truncated subtraction, pairing,
+simultaneous recursion, bounded sums and search, division, gcd, B\'ezout, descent, and
+other reusable components.
+\end{itemize}
+
+The framework below is therefore not a replacement foundation.  It is a compiler
+front end whose output is designed to enter this checked library.
+
+\subsection{Object theory versus metatheory}
+
+We use three levels of assertion.  Confusing them is the single most damaging source
+of false completion claims.
+
+\paragraph{Level 0: executable mathematics.}
+A primitive-recursive algorithm is described extensionally and may be run in Python,
+Lean, or another language.  One can test examples and inspect traces.  This level is
+useful for finding off-by-one errors and validating finite combinatorics.
+
+\paragraph{Level 1: host semantics.}
+Lean proves a theorem such as
+\[
+   \forall x:\N,\quad \operatorname{run}(x)\ \text{satisfies}\ \operatorname{Spec}(x).
+\]
+This theorem lives in Lean's dependent type theory and may use host induction,
+quotients, classical choice, or a rich library.  It is evidence that the mathematics
+has been formalized, but it is not automatically a theorem of \(\iPRA\).
+
+\paragraph{Level 2: embedded object proof.}
+Lean constructs a term of a type such as
+\[
+   ([] : \mathrm{List}(\Fm\,\PTm\,0))\vdash_{\PRAAx}\varphi.
+\]
+The inductive structure of this term is the formal derivation.  Mathlib may be used in
+the metatheory to build and check it, but the object proof contains only instances of
+\(\PRAAx\) and the deduction rules.  This is the endpoint required here.
+
+\begin{principle}[No semantic promotion]
+A host theorem about the standard natural numbers may justify the design of a
+primitive-recursive symbol, but it may not be used as an object theorem unless a
+translation theorem explicitly constructs the corresponding \(\Prf\,\PRAAx\)
+derivation.
+\end{principle}
+
+This principle does not prohibit semantic reasoning.  It assigns it the correct role.
+For example, a host proof may establish that a proposed rank really decreases; the
+formalization must still encode the rank and derive the decrease formula in the object
+theory before using quantifier-free induction.
+
+\subsection{The shape of acceptable induction}
+
+Suppose a bounded process has state \(s_t\) at time \(t\), encoded by a number, and a
+fixed final demand \(d\).  An unacceptable induction hypothesis often has the form
+\[
+  \forall k\;\forall n\ge M(k),\quad \abs{a_n-a_{n+1}}\le 2^{-k}.
+\]
+It quantifies over a represented infinite object and is not quantifier-free.
+
+The \(\FRNF\) replacement first computes a concrete horizon \(H(d)\).  It stores the
+finite table
+\[
+  a(0),a(1),\ldots,a(H(d))
+\]
+and the finite collection of required inequalities as encoded numerical data.  The
+invariant then states only equalities and inequalities among coded table entries,
+clock values, and accumulator fields.  Universal quantifiers bounded by table length
+are Booleanized into finite products or sums.  After the loop is closed, the proof
+extracts the desired formula at demand \(d\).
+
+The important move is not merely to say ``fix \(d\).''  One must close all dependencies
+of \(d\) first.  If proving row \(d\) needs row \(d+3\), and proving that row needs an
+anchor at \(2d+7\), the invariant must be built after those demands have been
+propagated.  This is the purpose of dual horizons and reverse demand closure.
+
+\subsection{Uniformity and schemas}
+
+There are two legitimate forms of uniformity.
+
+\begin{enumerate}[label=(\alph*)]
+\item A single primitive-recursive symbol may accept numerical parameters such as a
+matrix size, polynomial degree, requested precision, or finite graph code, provided
+its algorithm is itself fixed.
+\item A metatheoretic schema may associate a different primitive-recursive symbol and
+derivation to each externally fixed program or theorem instance.
+\end{enumerate}
+
+What is not generally available is a total primitive-recursive evaluator
+\(U(e,x)\) whose numerical code \(e\) ranges over all primitive-recursive programs and
+which returns the value of every such program.  The diagonal argument in
+\cref{sec:static} rules this out.  Thus, ``uniform over the degree'' can be a genuine
+single theorem, while ``uniform over an arbitrary code of a primitive-recursive
+coefficient evaluator'' must be interpreted as a static metatheoretic schema or be
+restricted to a fixed, bounded interpreter.
+
+\subsection{Constructive content of familiar mathematical language}
+
+The following translations recur throughout the report.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.27\textwidth}X@{}}
+\toprule
+Informal phrase & Required \(\FRNF\) data \\
+\midrule
+``Let \(x\) be a real number'' & A fixed evaluator for rational approximants and a
+coherence modulus, or a finite relational presentation. \\
+``Choose a root'' & A finite root cloud plus residual and coverage certificates;
+coherent choice only from motion/diameter data; exact labeling only from separation. \\
+``By compactness'' & A primitive-recursive finite net, a coverage proof, and the
+modulus converting net radius into output error. \\
+``Since \(x\ne0\), divide by \(x\)'' & A positive rational apartness witness
+\(\abs{x}\ge\lambda>0\). \\
+``There are finitely many solutions'' & A height/cutoff producer or a complete-list
+certificate, not just a cardinality bound. \\
+``Run the algorithm until it stops'' & A primitive-recursive rank, clock, or other
+majorant, with a QF decrease invariant and terminal freezing. \\
+``The result is independent of choices'' & A stable-observer derivation comparing all
+finite candidates, or a common invariant of the relation. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+These are not bureaucratic substitutions.  They identify the exact data consumed by
+constructive proofs and make hidden uses of choice, compactness, or excluded middle
+visible.

@@ -1,0 +1,37 @@
+\section{Notation and formal conventions}
+\label{app:notation}
+
+\begin{longtable}{@{}p{0.22\textwidth}p{0.70\textwidth}@{}}
+\toprule
+Symbol & Meaning \\
+\midrule
+\endfirsthead
+\toprule
+Symbol & Meaning \\
+\midrule
+\endhead
+\(\iPRA\) & Intuitionistic primitive recursive arithmetic. \\
+\(\PRAAx\) & The axiom family used by the embedded ordinary-iPRA calculus in
+\code{ConciseIPRA}. \\
+\(\Gamma\vdash_{\PRAAx}A\) & An embedded derivation, represented in Lean by
+\code{Prf PRAAx Gamma A}. \\
+\(\PTm n\), \(\Fm\,\PTm\,n\) & Object terms and formulas with \(n\) free variables. \\
+\(\chi_A\) & Primitive-recursive characteristic term of a bounded formula \(A\). \\
+\(r_F(d)\) & Largest input row read while computing output demand \(d\). \\
+\(j_F(d)\) & Largest input contract row used in the proof of output demand \(d\). \\
+\(W_i(a)\) & Backward viability bit for candidate \(a\) at level \(i\). \\
+\(\delta_k\) & Same-level diameter bound among viable observations. \\
+\(\eta_k\) & Adjacent-level motion bound along a compatibility edge. \\
+\(\Gamma_G\) & Permanent boundary context of an \(\FRNF\) graph. \\
+\bottomrule
+\end{longtable}
+
+Natural numbers are the object domain.  Integers, rationals, finite sequences, vectors,
+matrices, and finite graphs are coded by naturals.  Rational inequalities are reduced
+to signed-integer or natural-number equations after clearing positive denominators.
+``Primitive recursive'' always means first-order primitive recursive over \(\N\), not
+an arbitrary higher-type functional.
+
+All generic constructions are schemas over fixed syntax.  When a program or transition
+is described as a parameter in the metatheory, the object theorem uses the concrete
+primitive-recursive symbol produced by static specialization.

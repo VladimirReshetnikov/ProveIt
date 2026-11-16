@@ -1,0 +1,139 @@
+\section{Quantitative compactness through certified finite nets}
+\label{sec:finite-nets}
+
+Classical analysis often invokes compactness to pass from local information to a
+uniform conclusion or to obtain an extremum.  In a finitary setting, compactness is an
+interface consisting of a finite net and a modulus.  This section develops the generic
+minimum theorem; the same pattern supports uniform continuity, covering arguments,
+finite-dimensional topology, and integration.
+
+\subsection{Net presentation}
+
+Let \((X,d)\) be a represented metric object.  A certified net interface supplies, for
+each precision parameter \(k\):
+
+\begin{itemize}
+\item a finite list \(N_k=(p_{k,0},\ldots,p_{k,m(k)-1})\);
+\item a radius \(\delta(k)\in\Q_{>0}\); and
+\item a finite certificate that every admissible input observation is within
+\(\delta(k)\) of some net point.
+\end{itemize}
+
+For a function \(f:X\to\mathbb R\), a modulus supplies a rational error
+\(\omega(k)\) such that
+\[
+  d(x,y)\le\delta(k)\quad\Longrightarrow\quad
+  \abs{f(x)-f(y)}\le\omega(k).
+\]
+The evaluator returns rationals \(v_{k,i}\) with
+\[
+  \abs{v_{k,i}-f(p_{k,i})}\le\eta(k).
+\]
+All finite data and bounds are primitive recursive in \(k\).
+
+\subsection{Finite minimum algorithm}
+
+Choose the least index \(i_*\) minimizing \(v_{k,i}\).  This is a primitive-recursive
+fold or bounded search.  Put \(m_k=v_{k,i_*}\) and \(p_k=p_{k,i_*}\).
+
+\begin{theorem}[Finite-net minimum]
+\label{thm:finite-net-min}
+Under the net, modulus, and evaluator contracts:
+\begin{enumerate}[label=(\roman*),leftmargin=2.4em]
+\item for every admissible \(x\in X\),
+\[
+   f(p_k)\le f(x)+\omega(k)+2\eta(k);
+\]
+\item if \(\inf_X f\) is used in the external semantics, then
+\[
+   \inf_X f-\eta(k)\le m_k
+   \le \inf_X f+\omega(k)+\eta(k);
+\]
+\item the selected point is an
+\((\omega(k)+2\eta(k))\)-approximate minimizer; and
+\item the finite comparison theorem, with \(x\) represented by an observation and its
+coverage witness, is derivable in \(\iPRA\) using only bounded search and rational
+arithmetic.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Fix admissible \(x\).  By coverage, choose a net point \(p_{k,j}\) with
+\(d(x,p_{k,j})\le\delta(k)\).  The modulus gives
+\(f(p_{k,j})\le f(x)+\omega(k)\).  Evaluation error gives
+\[
+   v_{k,j}\le f(p_{k,j})+\eta(k)
+            \le f(x)+\omega(k)+\eta(k).
+\]
+Minimality of \(i_*\) yields \(m_k\le v_{k,j}\), and another evaluation estimate gives
+\[
+   f(p_k)\le m_k+\eta(k)
+           \le f(x)+\omega(k)+2\eta(k),
+\]
+proving (i) and (iii).
+
+For the lower bound in (ii), every net value satisfies
+\(v_{k,i}\ge f(p_{k,i})-\eta(k)\ge\inf_X f-\eta(k)\), so their minimum does too.  For
+the upper bound, apply the preceding inequality to points whose function values
+approach the infimum, or equivalently take the infimum over \(x\) in the bound for
+\(m_k\).
+
+For (iv), avoid quantifying over an abstract real space.  The input supplies a finite
+observation of \(x\) and a bounded index witnessing net coverage.  Booleanize the
+coverage and rational inequalities, instantiate the modulus contract, and use the
+finite-minimum comparison proved by induction over the net list.  The resulting object
+formula says that the selected sample is no worse, up to the displayed error, than any
+input carrying a coverage certificate.  Its external interpretation is (i).
+\end{proof}
+
+\subsection{No exact argmin is claimed}
+
+An approximate minimum value is stable under small perturbations; an exact minimizing
+point need not be.  A flat interval, two equal wells, or a symmetric problem may have
+many minimizers.  Therefore the generic interface returns a value name and approximate
+minimizer cloud, not an exact point.
+
+If a quantitative uniqueness modulus is available, coherent minimizers can be
+constructed.  One useful form is
+\[
+   f(x)\le \inf f+\alpha(p)
+   \ \wedge\ 
+   f(y)\le \inf f+\alpha(p)
+   \quad\Longrightarrow\quad d(x,y)\le2^{-p}.
+\]
+Choose net/error parameters making the approximation error at most \(\alpha(p)\).
+Then all approximate minimizers lie in a ball of radius \(2^{-p}\), providing the
+diameter bound required by shrinking viability.
+
+\subsection{Strong convexity as a uniqueness producer}
+
+For a midpoint strongly convex function with parameter \(\lambda>0\), suppose
+\[
+  f\!\left(\frac{x+y}{2}\right)
+  \le\frac{f(x)+f(y)}2-\frac{\lambda}{8}d(x,y)^2.
+\]
+Since the midpoint value is at least \(\inf f\), if both \(x\) and \(y\) are within
+\(\alpha\) of the infimum, then
+\[
+  \frac{\lambda}{8}d(x,y)^2\le\alpha,
+  \qquad d(x,y)\le\sqrt{8\alpha/\lambda}.
+\]
+Choosing dyadic \(\alpha\) with an explicit rational square bound yields a
+primitive-recursive uniqueness modulus.  Thus strong convexity legitimately upgrades
+approximate minimizer clouds to a coherent point name.
+
+\subsection{Other compactness templates}
+
+The same interface yields:
+
+\begin{itemize}
+\item suprema and oscillation bounds by finite max/min folds;
+\item uniform bounds from pointwise estimates plus a modulus;
+\item Riemann sums and cubature from finite partitions and variation moduli;
+\item Lebesgue-number-style finite refinements when an explicit cover margin is given;
+\item finite simplicial approximations of compact metric presentations; and
+\item finite subcover conclusions when a coverage certificate is part of the input.
+\end{itemize}
+
+It does not extract a modulus or finite net from a bare qualitative assertion of
+compactness.  The net producer is mathematical data.

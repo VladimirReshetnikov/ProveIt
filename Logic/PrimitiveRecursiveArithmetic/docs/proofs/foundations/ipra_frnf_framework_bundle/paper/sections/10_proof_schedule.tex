@@ -1,0 +1,117 @@
+\section{Proof-producing schedules and simultaneous cut}
+\label{sec:proof-schedule}
+
+The trace compiler turns one bounded process into an object derivation.  A complete
+mathematical proof contains many such components.  The proof schedule is the final
+logical assembly layer.
+
+\subsection{Schedule invariant}
+
+Fix a permanent context \(\Gamma\) of input and boundary assumptions.  Let
+\(D=[C_k,\ldots,C_1]\) be a reverse-topological list of contracts already compiled.
+A schedule carries the invariant
+\[
+  \forall C\in D,\qquad \Gamma\vdash_{\PRAAx} C.
+\]
+To add a new node \(A\), provide a dependency sublist \(\Delta\subseteq D\) and a local
+derivation
+\[
+  \Delta,\Gamma\vdash_{\PRAAx}A.
+\]
+Simultaneous cut replaces each dependency hypothesis by the corresponding stored
+derivation, and each permanent hypothesis by itself.  The result is
+\(\Gamma\vdash_{\PRAAx}A\).
+
+\begin{theorem}[Finite proof schedule]
+\label{thm:proof-schedule}
+A finite topologically ordered list of local embedded derivations compiles to embedded
+derivations of all node contracts from the permanent context.  In particular, the
+root contract is derivable from exactly the listed boundary assumptions.
+\end{theorem}
+
+\begin{proof}
+Induct on the node list.  The empty schedule is vacuous.  At a successor, apply the
+simultaneous substitution/cut operation of the embedded deduction system to the local
+proof.  The induction hypothesis supplies derivations for declared dependencies, and
+ordinary hypotheses supply the permanent context.  Preserve all earlier derivations
+unchanged.  The root is retrieved by membership.
+\end{proof}
+
+The \code{Schedule.extend} definition in the accompanying Lean source implements this
+argument using \code{Prf.trans}.  It contains no semantic cast and no appeal to
+soundness.
+
+\subsection{Dependency declarations as an audit mechanism}
+
+A local proof is accepted only under \(\Delta++\Gamma\), not under the entire global
+collection of facts.  The inclusion proof \(\Delta\subseteq D\) is the acyclicity
+certificate.  This has three benefits.
+
+\begin{enumerate}[label=(\roman*),leftmargin=2.4em]
+\item The generated proof term records the actual dependency graph.
+\item A boundary assumption cannot leak into a supposedly unconditional component
+unless it appears in \(\Gamma\) and the theorem statement.
+\item Components can be replaced or strengthened locally, and unused earlier nodes do
+not enter the final proof.
+\end{enumerate}
+
+For a generated library, one can additionally emit a machine-readable manifest mapping
+each node to source files, theorem names, horizon transformers, and status.
+
+\subsection{Proof-producing compilation versus proof checking}
+
+A conventional certificate checker takes a numerical certificate and returns true or
+false.  A proof-producing compiler instead constructs a syntax tree of deduction
+rules.  The two may share the same finite algorithm, but their trust boundaries differ.
+
+In the present architecture, the generated proof term can be large.  This is not a
+logical defect.  Compression can be addressed later by factoring reusable lemmas,
+using reflection theorems already proved in the object theory, or exporting to the
+smaller native scalar calculus.  The first goal is a transparent proof with the right
+axioms.
+
+\subsection{Closed theorems and conditional theorems}
+
+If \(\Gamma=[]\), the schedule yields a closed theorem.  If \(\Gamma\) contains a
+modulus, gap, height bound, or other producer contract, the schedule yields a precise
+conditional theorem.  When a producer is later proved, the schedules compose by one
+more cut.  This makes partial progress cumulative: formalizing the finite verifier is
+valuable even before the deep producer theorem is available.
+
+\subsection{Native export}
+
+After the ordinary derivation is complete, the repository theorem
+\code{pra_iff_native} translates it to the native scalar core.  The final export stage
+is therefore
+\[
+  \Gamma\vdash_{\PRAAx}\varphi
+  \quad\Longrightarrow\quad
+  \operatorname{ofPRA}(\Gamma)\vdash_{\mathrm{native}}
+  \operatorname{ofPRA}(\varphi).
+\]
+This translation should occur only at the end.  The ordinary presentation has a much
+richer checked arithmetic library, while the native core is the compact foundational
+endpoint.
+
+\subsection{A generated node template}
+
+A practical compiler may emit one Lean declaration per node in the following pattern.
+
+\begin{lstlisting}
+-- Formula and fixed PR symbols for node v.
+def nodeVFormula : Fm PTm n := ...
+
+-- Local proof: only declared predecessors and base assumptions.
+theorem nodeV_local : depsV ++ Gamma |-[(PRAAx)] nodeVFormula := by
+  -- unfold fixed transition equations
+  -- invoke Booleanization / bounded-search / arithmetic lemmas
+  -- close a QF loop if needed
+  ...
+
+-- Add to proof schedule by simultaneous cut.
+def scheduleV : Schedule Gamma (nodeVFormula :: done) :=
+  Schedule.extend schedulePrev deps_subset nodeV_local
+\end{lstlisting}
+
+The notation in actual source follows the repository's scoped syntax.  The key property
+is the type of \code{nodeV_local}, not the tactic script used to construct it.

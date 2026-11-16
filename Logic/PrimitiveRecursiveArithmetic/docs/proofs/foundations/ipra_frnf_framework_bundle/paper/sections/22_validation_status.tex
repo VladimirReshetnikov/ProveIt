@@ -1,0 +1,79 @@
+\section{Artifact validation and exact status}
+\label{sec:validation}
+
+\subsection{Reference implementation}
+
+The file \code{reference/frnf.py} uses only the Python standard library and exact
+\code{Fraction} arithmetic.  It implements:
+
+\begin{itemize}
+\item least bounded search;
+\item prefix maxima and dual-horizon composition;
+\item reverse demand closure on a finite DAG;
+\item backward viability and least viable paths;
+\item majorized frozen descent and the Euclidean example;
+\item exact finite-net minimization;
+\item stable-observation checking;
+\item exact label agreement under a gap; and
+\item the guarded reciprocal error transformer.
+\end{itemize}
+
+The eleven regression tests in \code{reference/test\_frnf.py} pass.  They include strict
+separation between read and justification horizons, a shared-dependency demand graph,
+a viability instance with dead ends, rejection of an empty viable path, and exact
+rational error checks.  These tests validate the reference algorithms on the included
+instances.  They are not proofs of the generic theorems in \(\iPRA\).
+
+\subsection{Lean artifacts}
+
+The Lean directory has three roles.
+
+\begin{description}[style=nextline,leftmargin=2em]
+\item[\code{FRNF/Semantic.lean}]
+Small host-level records for dual horizons, static transducers, finite candidate
+levels, and exact normalizers.
+\item[\code{FRNF/Kernel.lean}]
+Repository-aligned source for the proof schedule, QF-loop closure, stable observers,
+boundary discharge, exact gap collapse, and native export.  It contains no
+\code{axiom} declaration or \code{sorry} placeholder.
+\item[\code{FRNF/ObjectTargets.lean}]
+An explicit roadmap with the bounded-formula syntax and object theorem endpoints for
+Booleanization, demand closure, viability, stable clouds, finite-net minima, and
+guarded reciprocals.  It intentionally contains visible \code{sorry} placeholders.
+\end{description}
+
+Lean was not installed in the artifact runtime, so none of these new files has been
+kernel checked.  In particular, absence of placeholders from \code{Kernel.lean} is not
+a compilation claim.  The validation folder records every visible placeholder.
+
+\subsection{Paper build}
+
+The PDF is compiled from the included modular LaTeX source.  The build process runs the
+Python tests, compiles the bibliography and document, checks that the PDF has extractable
+text, and records hashes.  The final PDF is rendered to images and visually inspected
+for clipping, missing glyphs, and broken tables.
+
+\subsection{Claim ledger}
+
+\code{metadata/theorem\_ledger.csv} assigns one of the following statuses to every
+major theorem: fully argued, reference-tested, upstream object-checked, source-level
+Lean combinator, or Lean target.  \code{metadata/obstacle\_matrix.csv} records the
+resolution status and remaining input for each difficulty.  These machine-readable
+files are intended to survive migration into the repository and prevent claim drift.
+
+\subsection{Current limitations}
+
+The package does not contain:
+
+\begin{itemize}
+\item a compiled generic \(\Prf\,\PRAAx\) Booleanization theorem;
+\item an object-checked encoded table/demand/viability library;
+\item a new effective height theorem for general Siegel or Faltings;
+\item an exact Puiseux selector for arbitrary Cauchy coefficient names;
+\item stronger analytic zero-free regions or exceptional-zero estimates; or
+\item a proof that every theorem in the packet corpus fits \(\FRNF\).
+\end{itemize}
+
+What it does provide is a complete mathematical architecture, precise generic proofs,
+executable finite algorithms, exact object endpoints, and a prioritized route to a
+checked implementation.

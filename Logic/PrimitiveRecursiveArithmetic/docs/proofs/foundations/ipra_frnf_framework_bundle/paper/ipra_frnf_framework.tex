@@ -1,0 +1,227 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=30mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage[hidelinks,bookmarksnumbered]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{caption}
+\usepackage{etoolbox}
+
+\definecolor{codebg}{RGB}{247,247,247}
+\definecolor{darkblue}{RGB}{25,58,112}
+\definecolor{darkgreen}{RGB}{35,100,55}
+\definecolor{darkred}{RGB}{135,45,45}
+\hypersetup{colorlinks=true,linkcolor=darkblue,citecolor=darkgreen,urlcolor=darkred}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  frame=single,
+  framerule=0.2pt,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  xleftmargin=0.5em,
+  xrightmargin=0.5em
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{principle}[theorem]{Principle}
+\newtheorem{barrier}[theorem]{Barrier}
+\newtheorem{schema}[theorem]{Schema}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{interface}[theorem]{Interface}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{status}[theorem]{Status}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\B}{\{0,1\}}
+\newcommand{\iPRA}{\ensuremath{\mathrm{iPRA}}}
+\newcommand{\FRNF}{\ensuremath{\mathrm{FRNF}}}
+\newcommand{\PRAAx}{\ensuremath{\mathsf{PRAAx}}}
+\newcommand{\Prf}{\ensuremath{\mathsf{Prf}}}
+\newcommand{\PTm}{\ensuremath{\mathsf{PTm}}}
+\newcommand{\Fm}{\ensuremath{\mathsf{Fm}}}
+\newcommand{\QF}{\ensuremath{\mathsf{QF}}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\sg}{\operatorname{sg}}
+\newcommand{\least}{\operatorname{least}}
+\newcommand{\prefixmax}{\operatorname{pmax}}
+\newcommand{\Valid}{\operatorname{Valid}}
+\newcommand{\Read}{\operatorname{Read}}
+\newcommand{\Just}{\operatorname{Just}}
+\newcommand{\Viable}{\operatorname{Viable}}
+\newcommand{\Obs}{\operatorname{Obs}}
+\newcommand{\rank}{\operatorname{rk}}
+\newcommand{\Realize}{\operatorname{Realize}}
+\newcommand{\Eval}{\operatorname{Eval}}
+\newcommand{\Bool}{\operatorname{Bool}}
+\newcommand{\eps}{\varepsilon}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Finitary Realizer Normal Form for iPRA}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{Research package, 16 November 2026}
+
+\title{\textbf{Finitary Realizer Normal Form}\\
+A proof-producing framework for embedding mathematics into\\
+intuitionistic primitive recursive arithmetic}
+\author{Research report prepared for the ProveIt iPRA development}
+\date{16 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The ProveIt repository contains a growing collection of finitary reconstructions of
+classical theorems, together with a checked core of ordinary intuitionistic primitive
+recursive arithmetic and many reports identifying recurring obstructions.  The
+collection already exhibits a remarkably stable pattern: exact finite arithmetic is
+straightforward, while the difficult passages concern represented infinite objects,
+adaptive precision, nonunique witnesses, compactness, branch selection, and the gap
+between a host-language theorem and an object-language derivation.
+
+This report isolates that pattern as a common intermediate language, the
+\emph{Finitary Realizer Normal Form} (\FRNF).  An \FRNF\ proof is a fixed finite graph
+of statically specialized primitive-recursive transducers, bounded searches, clocked
+loops with quantifier-free invariants, finite relational witness clouds, stable
+observers, and explicit producer boundaries.  Every edge carries two primitive-
+recursive moduli: a \emph{computation horizon}, recording which input rows are read,
+and a usually larger \emph{justification horizon}, recording which input contracts
+are required to prove the output correct.  A reverse demand pass is run before any
+induction.  The resulting finite table is Booleanized, one clocked trace is verified
+by quantifier-free induction, and the local embedded derivations are composed by
+simultaneous cut into a term of type \(\Prf\,\PRAAx\).  Nonunique approximate
+witnesses are not prematurely forced into exact selectors: backward viability gives
+finite coherent paths, stable observables erase internal choices, and exact branch
+labels are recovered only from explicit separation data.
+
+The report gives complete human proofs of bounded-formula Booleanization, least
+bounded search, dual-horizon composition, reverse demand closure, trace
+internalization, backward viability, shrinking finite-horizon coherence, majorized
+descent, finite-net minimization, and guarded inversion.  It proves two representation
+barriers---there is no total primitive-recursive universal evaluator, and a uniform
+cardinality-to-cutoff operator would decide the halting problem---and uses them to
+separate genuine mathematical inputs from mere formalization work.  This resolves a
+large class of reported difficulties and gives exact conditional endpoints for the
+remaining ones, including arbitrary Cauchy Puiseux data and general Siegel/Faltings
+height bounds.
+
+The accompanying artifacts include exact-arithmetic Python reference algorithms with
+eleven regression tests, a repository-aligned Lean module containing the logical
+\(\Prf\,\PRAAx\) combinators, explicit Lean targets for the remaining arithmetic
+compiler, machine-readable theorem and obstacle ledgers, and this source.  The Lean
+files have not been compiled in the artifact environment; visible placeholders are
+retained precisely where object-level implementation remains.
+\end{abstract}
+
+\vspace{0.8em}
+\noindent\textbf{Repository snapshot.}
+The audit was made against the public ProveIt repository on 16 November 2026, with
+the current PrimitiveRecursiveArithmetic README at commit
+\code{67f5216e0b1337b533b43064262aeff268bc56db}.  Paths and declaration names in this
+report refer to that snapshot unless stated otherwise.
+
+\tableofcontents
+\clearpage
+
+\input{sections/01_scope}
+\input{sections/02_ipra_target}
+\input{sections/03_formula_firewall}
+\input{sections/04_booleanization}
+\input{sections/05_bounded_search}
+\input{sections/06_static_specialization}
+\input{sections/07_dual_horizons}
+\input{sections/08_demand_graphs}
+\input{sections/09_trace_compiler}
+\input{sections/10_proof_schedule}
+\input{sections/11_relational_witnesses}
+\input{sections/12_stability_coherence}
+\input{sections/13_majorized_descent}
+\input{sections/14_finite_nets}
+\input{sections/15_guarded_operations}
+\input{sections/16_barriers}
+\input{sections/17_domain_interfaces}
+\input{sections/18_compilation_theorem}
+\input{sections/19_difficulty_resolution}
+\input{sections/20_lean_plan}
+\input{sections/21_examples}
+\input{sections/22_validation_status}
+\input{sections/23_conclusion}
+\appendix
+\input{sections/A_notation}
+\input{sections/B_checklist}
+\input{sections/C_artifacts}
+
+\begin{thebibliography}{99}
+
+\bibitem{bishopbridges1985}
+E.~Bishop and D.~Bridges.
+\newblock \emph{Constructive Analysis}.
+\newblock Springer, 1985.
+
+\bibitem{goedel1958}
+K.~G\"odel.
+\newblock \"Uber eine bisher noch nicht ben\"utzte Erweiterung des finiten
+  Standpunktes.
+\newblock \emph{Dialectica}, 12(3--4):280--287, 1958.
+\newblock doi:10.1111/j.1746-8361.1958.tb01464.x.
+
+\bibitem{kohlenbach2008}
+U.~Kohlenbach.
+\newblock \emph{Applied Proof Theory: Proof Interpretations and their Use in
+  Mathematics}.
+\newblock Springer Monographs in Mathematics. Springer, 2008.
+\newblock doi:10.1007/978-3-540-77533-1.
+
+\bibitem{lean4}
+L.~de Moura and S.~Ullrich.
+\newblock The Lean 4 theorem prover and programming language.
+\newblock In \emph{Automated Deduction -- CADE 28}, pages 625--635. Springer,
+  2021.
+\newblock doi:10.1007/978-3-030-79876-5\_37.
+
+\bibitem{parsons1970}
+C.~Parsons.
+\newblock On a number theoretic choice schema and its relation to induction.
+\newblock In A.~Kino, J.~Myhill, and R.~E. Vesley, editors,
+  \emph{Intuitionism and Proof Theory}. North-Holland, 1970.
+
+\bibitem{proveit}
+V.~Reshetnikov and contributors.
+\newblock \emph{ProveIt: Primitive Recursive Arithmetic development}.
+\newblock GitHub repository, snapshot accessed 16 November 2026; README commit
+  \texttt{67f5216e0b1337b533b43064262aeff268bc56db}.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic}.
+
+\bibitem{troelstravanDalen1988}
+A.~S. Troelstra and D.~van Dalen.
+\newblock \emph{Constructivism in Mathematics: An Introduction}, volume I.
+\newblock North-Holland, 1988.
+
+\end{thebibliography}
+\end{document}
