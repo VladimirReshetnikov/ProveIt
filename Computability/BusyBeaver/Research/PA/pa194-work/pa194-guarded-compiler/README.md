@@ -68,6 +68,8 @@ formula of arity zero and `trBody` of a formula under one binder, with no size c
 | `PA194NameSchema` | `Letter`: predicate letters for the domain, source equality, order isomorphism, zero, successor, addition, multiplication, and four value letters. Closed standard formulas over them: `sNameAll`, `sUniq`, `sExName`, `sEqVal` and the value schemas `sZeroV`, `sSuccV`, `sAddV`, `sMulV`. Their typed internal mirrors `tNameAll`, … and the assignment `sig A` (typed quotes of the source templates; `A i` for the value letters), with `instS (sig A) (sX …) = tX …`. `tNameAll_tr`, `tUniq_tr`, `tExName_tr`, `tEqVal_tr`, `tSuccV_val`, `tAddV_val`, `tMulV_val`, `tZeroV_val`: the typed formulas have the codes of the translated name formulas and of `valBody` when their arguments have the codes `valBody s`. |
 | `PA194NameSemantics` | For a structure `M` of the language of the letters: the letters as relations (`mD`, `mE`, `mI`, …), the meaning of each schema (`ev_sNameAll`, `ev_sUniq`, `ev_sExName`, `ev_sEqVal`, `wOf_sSuccV`, …), the twelve fixed hypotheses as sentences `sE1`, …, `sM2` with `MTheta M` and `ev_sWith`, and the facts about names as statements about relations on a set, proved directly: `m_atomTransfer`, `m_nSucc`, `m_nAdd`, `m_nMul`, `m_uZero`, `m_uSucc`, `m_uAdd`, `m_uMul`, `m_eZero`, `m_eSucc`, `m_eAdd`, `m_eMul`, `m_nameOfUniq`, `m_nameOfEq`. Nothing here mentions internal syntax. |
 | `PA194NameFactsProof` | Sixteen closed sentences `fRefl`, …, `fEMul` and their validity under the twelve hypotheses in every structure. `valBody_split`: every value formula is the domain formula at its variable in conjunction with a remainder, so a value letter can stand for the remainder. `SourceFacts T`; `with_facts`: every instance of a sentence valid under the hypotheses is provable in `T`. `pair_of_ei`: the instance of `sEI` at a variable `&c`, by one internal specialization. `gd0`–`gd3`: from a provable implication to the guarded sequent. `field_nRefl`, …, `field_eMul`, and `nameFacts_of_sourceFacts : SourceFacts T → (∀ i, GDerivable T {tr (exName &i)}) → NameFacts T`, `termFacts_of_sourceFacts`. |
+| `PA194InductionForms` | `trBody_or`, `trBody_neg`, `trBody_shift`. `allNames t p` (every name of `t` satisfies `p`) with `tr_allNames`, and `leibnizAll`: from `TermFacts T`, a guarded derivation of `tr (p[t]) → tr (allNames t p)`; the universally closed form of `leibniz`. `indBody p`, the induction axiom for `p` before the closure of its parameters, with `tr_indBody` and `free_substs1_succVar`. `tr_close_step`: from a guarded derivation of `tr (free b)` to one of `tr (∀ b)`. |
+| `PA194InductionSchema` | The sentence `fInd` over the letters `Q` (translation of `p`) and `QS` (translation of `p[S x]`): ordinal induction for `Q`, "names of zero satisfy `Q`", "if `QS x` then names of the successor of `x` satisfy `Q`" and `∀x (Q x → QS x)` give `∀x Q x`; `valid_ind`. `indCode q`: the ordinal induction statement of the source theory for an internal property `q`. `v_ind`, `v_hbase`, `v_x2`, `v_concl`, `instS_sHstep`, `tXs_free`: the instances as codes. `step_derivable`: the step hypothesis, by `leibnizAll` at `S(&0)` and one relativized universal introduction. `induction_body : TermFacts T → SourceFacts T → (∀ q, IsSemiformula SourceL 1 q → Provable T (indCode q)) → IsSemiformula language 1 p → GDerivable T {tr (indBody p)}`. |
 
 All statements are for an arbitrary model `V` of `𝗜𝚺₁`, arbitrary `Δ₁` theories `U` and `T`
 of the two languages, and internally valid codes that may be nonstandard.
@@ -118,6 +120,20 @@ model. Of its three fields, `inhabited` is proved for these theories in `pa194-m
   each closed induction instance. `pa194-model-logic` works on these under `rootParameters`.
   For a sentence that translation should equal `tr`, by `formula_ext` restricted to formulas
   without free variables; that lemma is not written.
+
+  For the induction instances, `induction_body` (`PA194InductionSchema`) derives, for every
+  internal formula `p` of arity one (possibly nonstandard, with parameters) and any `T`,
+  the translation of `indBody p`, which is `p[0] → (∀x (p → p[S x]) → ∀x p)`. Its inputs
+  are `TermFacts T`, `SourceFacts T`, and `Provable T (indCode q)` for every internal source
+  formula `q` of arity one, where `indCode q` is the ordinal induction statement of the
+  source theory for the property `q`. `tr_close_step` (`PA194InductionForms`) passes a
+  guarded derivation of `tr (free b)` to one of `tr (∀ b)`, the step that closes one
+  parameter. Not done here, because the modules that define them are not imported:
+  the identification of `indBody` with `inductionBody` and of `indCode` with
+  `ordinalInductionCode` of `pa194-model-axioms` (the definitions have the same shape; the
+  latter is written with quoted templates, the former with `domainCode`, `zeroCode`,
+  `successorCode`), the iteration of `tr_close_step` over `close n`, and the passage from
+  `tr` to the `rootParameters` form of the induction supplier.
 - `inhabited` for the actual source theory is proved outside this directory
   (`PA194SourceInhabited.inhabited_provable` in `pa194-model-logic`), from the standard
   derivation of the empty-set formula.
@@ -141,7 +157,8 @@ objects of the standalone modules they import (the import closure of
 three axioms. `PA194NameSchema`, `PA194NameSemantics` and `PA194NameFactsProof` were compiled
 the same way, on top of those; of their eight, nine and seventeen reports, the six for the
 facts about relations in `PA194NameSemantics` list `propext` alone and the others the same
-three axioms. The script itself has not been run.
+three axioms. `PA194InductionForms` and `PA194InductionSchema` were compiled the same way;
+their seven and nine reports are the same three axioms. The script itself has not been run.
 
 Two incremental replays against the repository sources were made for an earlier state of this
 directory, before `PA194GuardedCalculus` and `PA194TrCompile` existed and while the compiler
