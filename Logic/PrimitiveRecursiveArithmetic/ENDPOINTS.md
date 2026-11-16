@@ -90,7 +90,8 @@ bounded-refutation comparison and this selector. The
 [bounded-search audit](Bridge/Lean/IPRABridge/Checks/BoundedSearch.lean)
 reported the standard Lean axioms and checked the zero bound, failed
 search, arbitrary parameters and existing native consumer judgments.
-Run `lake build +IPRABridge.Checks.BoundedSearch`.
+The normal `lake build +IPRABridge.Checks.BoundedSearch` run completed
+all 1,447 jobs.
 
 ## BusyBeaver PA
 
@@ -165,6 +166,13 @@ target's 603 transitive imports and resolved the standalone `Core` and
   term names forward to [`SubSuccSelfNonzeroSyntax`](../../Computability/DiophantineConsistency/Lean/DiophantineConsistency/SubSuccSelfNonzeroSyntax.lean).
   The old exact native formula, the separate classical theorem, and the
   current native proof all passed the focused type and axiom checks.
+  The [next pinned replay](../../Computability/BusyBeaver/Research/PA/verification/pa194/ipra/variants/pa1944l/README.md#replay-with-shared-arithmetic)
+  also follows a second proof path. The literal proof reaches the bounded
+  existential comparison, then `selectorOpen`, `translatedSearch_found`
+  and `Search.Finite.search_found`. The wrapper checked both proof paths,
+  the original machine hash, the two endpoint judgments and their
+  standard axiom sets. It took 3 minutes 46 seconds at 2,619 MiB peak
+  resident memory. Both endpoint object hashes match the replay above.
 - **Original PA195.** The
   [emitter and scheduler proof](../../Computability/BusyBeaver/Research/PA/verification/pa194-work/pa194-controller-schedulers/README.md)
   gives `PA194EmitterSchedulerPA.consistency_iff_scheduler_nonhalt`, a
@@ -251,6 +259,10 @@ to check this boundary.
   frozen row input. Their replay guides name the original source and
   object hashes, source locations and currently missing historical
   providers. The literal K215 closure excludes this model arithmetic.
+  The normal root builds `+BusyBeaver.ZFC.ArithmeticHistory254`,
+  `+BusyBeaver.ZFC.ArithmeticHistory222Checks` and
+  `+DiophantineConsistency.ArithmeticProofWordPerm222Checks` passed
+  1,149, 1,156 and 1,174 jobs respectively.
 - **Explicit nine-variable equation.**
   [`IPRAExplicitZFCFinal.standard_equivalence`](../../Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRAExplicitZFCFinal.lean)
   proves `standardTheory ⊢ nativeNoZero ExplicitZFCSyntax.expression 🡘

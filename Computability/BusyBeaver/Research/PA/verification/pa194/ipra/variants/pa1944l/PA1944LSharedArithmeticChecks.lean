@@ -31,10 +31,13 @@ private def proofDeclarations : IO (Std.HashMap Name ConstantInfo) := do
     `PA194NativeCalibratedEndpoint, `PA194ConditionalDenseEndpoint,
     `ConPAISigma1Directions, `ConPAISigma1Transfer,
     `DiophantineConsistency.IPRABoundedInduction, `DiophantineConsistency.IPRABoundedSelector,
+    `DiophantineConsistency.IPRABoundedLogic, `DiophantineConsistency.IPRABoundedChild,
+    `DiophantineConsistency.IPRASelectorSearchBinding,
     `DiophantineConsistency.IPRANativeEqualityDecidable,
     `DiophantineConsistency.IPRADifferenceStepClosure,
     `DiophantineConsistency.IPRADifferenceSuccLogic, `DiophantineConsistency.IPRADifferenceSuccEq,
-    `DiophantineConsistency.IPRASubSuccSelfNonzero, `IPRADerivations.Core.Order]
+    `DiophantineConsistency.IPRASubSuccSelfNonzero, `IPRADerivations.Core.Order,
+    `IPRABridge.BoundedSearch, `IPRADerivations.Core.SearchParameters]
   let mut decls := {}
   for mod in modules do
     let file ← findOLean mod
@@ -50,10 +53,12 @@ def main : IO Unit := do
   initSearchPath (← findSysroot)
   let decls ← proofDeclarations
   let endpoint := `PA1944LFinal.consistency_iff_literal_nonhalt
-  let helper := `DiophantineConsistency.IPRASubSuccSelfNonzero.native
-  let shared := `LeanProofs.IPRA.not_succ_le_self
-  let some usePath := proofPath decls endpoint helper
-    | throw <| IO.userError s!"{endpoint} does not use {helper}"
-  let some arithmeticPath := proofPath decls helper shared
-    | throw <| IO.userError s!"{helper} does not use {shared}"
-  IO.println (" → ".intercalate ((usePath ++ arithmeticPath.drop 1).map toString))
+  let paths := #[
+    (`DiophantineConsistency.IPRASubSuccSelfNonzero.native, `LeanProofs.IPRA.not_succ_le_self),
+    (`DiophantineConsistency.IPRABoundedSelector.selectorOpen, `LeanProofs.IPRA.Search.Finite.search_found)]
+  for (helper, shared) in paths do
+    let some usePath := proofPath decls endpoint helper
+      | throw <| IO.userError s!"{endpoint} does not use {helper}"
+    let some arithmeticPath := proofPath decls helper shared
+      | throw <| IO.userError s!"{helper} does not use {shared}"
+    IO.println (" → ".intercalate ((usePath ++ arithmeticPath.drop 1).map toString))

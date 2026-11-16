@@ -50,14 +50,16 @@ bash "$variants/pa1944l/check-concise-export.sh" /dev/shm/pa1944l-final /path/to
 The PA refutation comparison in the literal 4L proof uses bounded equality
 decidability. Its subtraction helper `IPRASubSuccSelfNonzero.native` now
 uses the shared ConciseIPRA proof `LeanProofs.IPRA.not_succ_le_self`.
+The bounded existential comparison uses `IPRABoundedSelector.selectorOpen`,
+which reaches the shared finite search proof `LeanProofs.IPRA.Search.Finite.search_found`.
 [`PA1944LSharedArithmeticChecks.lean`](PA1944LSharedArithmeticChecks.lean)
-checks both links in the proof values.
+checks both paths in the proof values of the literal endpoint.
 
 Build the current arithmetic modules, then reuse the checked machine and
 coverage stages in the replay above.
 
 ```sh
-lake build +DiophantineConsistency.IPRADifferenceStepClosure
+lake build +DiophantineConsistency.IPRADifferenceStepClosure +DiophantineConsistency.IPRABoundedSelector
 bash "$variants/pa1944l/check-shared-arithmetic.sh" "$four_l" "$four_l_coverage" /path/to/fresh-shared-arithmetic-replay
 ```
 

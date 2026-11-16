@@ -31,7 +31,7 @@ latest = (
     "IPRAArithmeticInstantiation", "IPRASuccessorInduction",
     "IPRASuccessorInductionConverse", "IPRAAddOneGeneral",
     "SubSuccSelfNonzeroSyntax", "IPRASubSuccSelfNonzero", "IPRADifferenceSuccEq",
-    "IPRADifferenceSuccLogic", "IPRADifferenceStepClosure",
+    "IPRADifferenceSuccLogic", "IPRADifferenceStepClosure", "IPRABoundedSelector",
 )
 legacy = [p for stage in (coverage, model) for p in
           (Path(stage) / "leanpath.txt").read_text().strip().split(":") if p]
