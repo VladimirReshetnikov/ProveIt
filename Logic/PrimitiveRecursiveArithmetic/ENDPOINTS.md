@@ -457,12 +457,16 @@ the existing shared model theorem at these call sites.
 | `ArithmeticRow254.{pred_add_one,pred_le,predecessor_witness}` | The C222 and C254 evaluators and the permuted proof-word history share the IOpen interpretation. | The old qualified statements forward with their original model assumptions. The active evaluator builds and proof-word check passed. The validator and R2Gic historical receipts refer to their frozen row source and object. |
 
 The control-step caller `ArithmeticControlStep254.live_decode` also uses
-`ArithmeticRow254.pred_add_one`. An isolated Lean check of the exact call
-under its arbitrary `IOpen` model and nonzero-state hypothesis follows the
-forwarder to `ArithmeticPredecessorWitness.pred_add_one`. The archived full
-control-step replay passes its recorded 27 axiom and 30 typed caller checks
-with the matching target source and its pinned dependency objects. A root
-rebuild of the complete module needs its finite control and data providers.
+`ArithmeticRow254.pred_add_one`. The root build of
+`+BusyBeaver.ZFC.ArithmeticControlStep254` passed 1,215 jobs in 40m50s with
+5,762,904 KiB peak memory. The archived audit also passed its 27 axiom
+probes and 30 typed callers against the fresh objects, with hashes checked
+against the current Lake inputs and outputs. The
+[maintained control-step audit](../../Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticControlStep254Checks.lean),
+run with `lake build +BusyBeaver.ZFC.ArithmeticControlStep254Checks`,
+follows the proof values to `ArithmeticPredecessorWitness.pred_add_one`.
+It checks the nonzero-state hypothesis, the `Σ₁` and `Δ₁` step graphs, and
+unique existence of the output for arbitrary `IOpen` models.
 
 When adding a migration entry, record the original and translated types,
 proof premises, exact table or expression identifier, provider order,
