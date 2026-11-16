@@ -1,0 +1,21 @@
+import PA194BHalting
+import PA194VariantNative
+
+set_option autoImplicit false
+
+namespace PA194BNative
+open LO LO.Entailment
+open DiophantineConsistency.IPRAStandardTheory DiophantineConsistency.IPRAPA196Consistency
+open ConPA.MachineEndpoint
+
+/-- The canonical arithmetic halting sentence of the delivered PA194B table. -/
+noncomputable def haltSentence := machineHaltSentence PA194BSimulation.variantTable 194
+
+/-- A derivation in standard iPRA for the literal PA194B machine. -/
+theorem consistency_iff_literal_nonhalt :
+    standardTheory ⊢ nativePAConsistency 🡘 ∼haltSentence :=
+  PA194VariantNative.consistency_iff_nonhalt PA194BSimulation.variantTable 194
+    (fun V _ _ => (PA194BSimulation.haltRuns (V := V)).symm)
+
+#print axioms consistency_iff_literal_nonhalt
+end PA194BNative

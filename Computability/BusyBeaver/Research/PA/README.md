@@ -14,11 +14,12 @@ the PA196 and U208 comparison, and the imported upstream snapshots.
 `IΣ₁`. [`docs/`](docs/) holds the delivered research packets, whose scripts
 and notes may refer to the directory layout at the time of delivery.
 
-**Status:** Lean proves the unconditional iPRA equivalence for the primary
-literal 194-state table. The theorem and staged replay are under
-[native-endpoint](pa194/ipra/native-endpoint/README.md). Other 194-state
-consistency candidates, the original PA195, and the PA196 candidate remain
-separate proof obligations.
+Lean proves the unconditional iPRA equivalence for two literal 194-state
+tables. The theorems and staged replay instructions are under
+[the primary endpoint](pa194/ipra/native-endpoint/README.md) and
+[PA194B](pa194/ipra/variants/pa194b/README.md). The remaining 194-state
+consistency candidates, the original PA195, and the PA196 candidate still
+need equivalence proofs.
 
 ## Primary 194-state candidate
 
@@ -27,12 +28,10 @@ The target table is `pa194_conpa/construction/tables/pa194.tm` in
 It has 194 working states, start state 0, halt label 194, and 388 transitions.
 Its SHA-256 is
 `4bfea62b17aad7d8c8c5e682fe8942e0a86b93e4351f8e675e32705bdaae007f`.
-The packet reports a PA-provable consistency equivalence and proposes a
-second 194-state table; it does not provide an end-to-end Lean proof or an
-iPRA proof. The primary table is a seven-fold quotient of a 201-control
-parent with a ten-entry source interface. The arithmetic and simulation
-results below provide reusable methods but do not by themselves establish
-the PA194 equivalence.
+The primary table is a seven-fold quotient of a 201-control parent with
+a ten-entry source interface. The packet also proposes PA194-AD. Lean has
+checked [its changed rows and register layout](pa194/ipra/variants/pa194ad/README.md).
+The simulation for its altered routing is still open.
 
 The [14 November incoming reports](INCOMING-2026-11-14.md) include another
 194-state candidate and do not report a verified sub-194 blank-start machine.

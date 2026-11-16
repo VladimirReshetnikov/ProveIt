@@ -21,3 +21,4 @@ if rg -q "error:|error\(|sorryAx|Lean.ofReduceBool|declaration uses 'sorry'" "$o
 
 cat "$out/$mod.log"
 rg -Fxq "'PA194NativeLiteralFinal.consistency_iff_literal_nonhalt' depends on axioms: [propext, Classical.choice, Quot.sound]" "$out/$mod.log"
+printf '%s\n' "$LEAN_PATH" > "$out/leanpath.txt"
