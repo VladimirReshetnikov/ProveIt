@@ -1,0 +1,89 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{array,booktabs,longtable,enumitem}
+\usepackage{xcolor}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\definecolor{inkblue}{RGB}{27,57,88}
+\hypersetup{colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue,
+ pdftitle={From finite presentations to explicit witnesses in iPRA},
+ pdfauthor={Research note prepared for Vladimir Reshetnikov}}
+\newcommand{\ipra}{\ensuremath{\mathrm{iPRA}}}
+\newcommand{\iPRA}{\ipra}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\PR}{\mathrm{PR}}
+\newcommand{\CertCheck}{\operatorname{Check}}
+\newcommand{\eval}{\operatorname{eval}}
+\newcommand{\iter}{\operatorname{it}}
+\newcommand{\len}{\operatorname{len}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Finite presentations and witnesses in \ipra}
+\fancyhead[R]{\small Research note}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\title{\textbf{From finite presentations to explicit witnesses in \ipra}\\[6pt]
+\large Proof-preserving simulation, finite observable modules,\\
+and complete rational-point enumeration}
+\author{Research note prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop a reusable route from finitely presented mathematical data
+to explicitly witnessed theorems in intuitionistic primitive recursive
+arithmetic. The first component is a syntactic simulation theorem:
+an actual arithmetic derivation of a local simulation law produces
+an actual derivation for every finite iteration. Its equality case
+transports iterative constructions through quotients, evaluations,+and truncations. Both transformations are implemented and checked in Lean.
+
+The second component extracts more information from an existing
+finite-algebra interface in ProveIt. A rational unit-and-multiplication
+certificate supplies explicit coordinate denominators and absolute
+bounds, and therefore a complete finite enumeration of rational zeros.
+The proof uses primitive integer eigenvectors and a column-sum bound;
+it needs neither a basis nor a determinant. We give a certificate
+constructor from separated annihilating polynomials, extensions to
+open and projective charts, and a complementary complete enumeration
+procedure for plane sections with a nonzero polynomial norm.
+
+The distinction between a supplied global cover and covers depending
+on a queried finite tuple is made explicit. The results strengthen
+several finite algebraic interfaces in the repository, but do not
+establish general Siegel, Faltings, Mordell--Weil, or the unresolved
+analytic estimates. The archive contains full human proofs, exact
+reference programs, compiled Lean cores, complete definitions for the
+remaining Lean targets, and a separate route to object-language
+arithmetic derivations.
+\end{abstract}
+\tableofcontents
+\newpage
+\input{paper/sections/01_scope}
+\input{paper/sections/02_framework}
+\input{paper/sections/03_algebra}
+\input{paper/sections/04_norms}
+\input{paper/sections/05_applications}
+\input{paper/sections/06_formalization}
+\input{paper/sections/07_validation}
+\input{paper/references}
+\end{document}

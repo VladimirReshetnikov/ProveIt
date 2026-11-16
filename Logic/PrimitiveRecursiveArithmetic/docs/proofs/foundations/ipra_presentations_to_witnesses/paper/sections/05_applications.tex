@@ -1,0 +1,212 @@
+\section{How the framework composes across mathematical domains}
+\label{sec:applications}
+
+The simulation component and the finite-algebra component have different
+jobs. Simulation preserves a proved observation during a finite
+construction. Finite observable modules restrict the possible rational
+values of an observation. Reconstruction turns the resulting finite
+possibilities into actual objects when a finite fiber procedure is
+available. The following examples show how to use the three steps
+without adding an implicit existence principle.
+
+\subsection{Modular computation and exact polynomial evaluation}
+
+Fix $q\ge1$ and let $\rho_q(a)$ be the remainder of $a$ on division
+by $q$. Define the source step $f(a)=a^2$ and the target step
+$g(r)=\rho_q(r^2)$. The local fusion law is
+\[
+                  \rho_q(a^2)=\rho_q(\rho_q(a)^2).
+\]
+To prove it arithmetically, write $a=qA+r$, $0\le r<q$.
+Expanding gives $a^2=q(qA^2+2Ar)+r^2$. Division of $r^2$ by
+$q$ therefore gives the same final remainder as division of $a^2$;
+uniqueness follows by subtracting two division equations with remainders
+between zero and $q-1$. These are finite integer equations and
+inequalities, with a quantifier-free induction proof for division.
+Theorem~\ref{thm:fusion} now transports the entire repeated-squaring
+construction through $\rho_q$.
+
+The statement is uniform in the numerical modulus. To instantiate the
+unary theorem literally, use state $(q,a)$ and a representation map
+$(q,a)\mapsto(q,\rho_q(a))$. The guard $q\ge1$ belongs in the
+relational invariant; a total default for $q=0$ is never used to
+justify modular mathematics. This pattern applies equally to computations
+in a presented number ring after its finite arithmetic and reduction
+laws have been supplied.
+
+For a rational polynomial $P$, evaluation at a fixed rational tuple
+$p$ preserves addition and multiplication. The multiplication assertion
+has a direct finite proof: distribute the two coefficient sums, multiply
+the monomials, and use $p^{\alpha+\beta}=p^\alpha p^\beta$.
+There are only the finitely many coefficient pairs in the input lists.
+The local proof transports repeated squaring and more general finite
+expression evaluation into rational arithmetic. It can also transport
+coefficient identities into equations at a common zero, the precise
+bridge used by the certificate theorem.
+
+\subsection{Truncated series and coherent exact computation}
+
+Let $\pi_N$ discard all coefficients above degree $N$. For finite
+polynomials or coefficient lists, convolution gives
+\[
+      \pi_N(AB)=\pi_N\bigl(\pi_N(A)\pi_N(B)\bigr).
+\]
+Indeed the coefficient of degree $k\le N$ is
+$\sum_{i=0}^{k}a_i b_{k-i}$. Every contributing index is at most
+$N$, so truncating either input leaves it unchanged. For $k>N$
+both truncated outputs have zero coefficient. Coefficient equality
+is a bounded list condition and hence an eligible arithmetic invariant.
+
+Iteration fusion applies to repeated polynomial operations whose local
+truncation law has this form. It yields the exact requested jet without
+requiring a completed infinite series as an object of \ipra. This
+connects to the repository's filtered-lifting and formal-series work
+\cite{Coherent}. Differentiation uses a different demand: coefficients
+through $N+1$ determine the derivative through $N$. A correct
+simulation must include that shift rather than claiming that arbitrary
+operations preserve the same truncation level.
+
+Exact coherence does not imply an analytic tail bound. A convergent
+analytic interpretation must supply a PR function $T(N,k)$ or another
+explicit estimate making the omitted tail small enough at requested
+precision $k$. The present transport theorem then handles the finite
+coefficient calculation; the tail theorem remains its own mathematical
+input. This is a common interface for the Gamma, zeta, calculus,
+Lagrange inversion and regular local-branch developments, rather than
+a replacement for their analytic estimates.
+
+\subsection{Redundant algebraic presentations and observational equality}
+
+The point-enumeration checker intentionally does not require a basis or
+commuting matrices. This is useful, not just a technical weakening.
+Consider
+\[
+ F_1=x^2-x,\qquad F_2=2y-x,\qquad (b_1,b_2,b_3)=(1,x,x).
+\]
+Use
+\[
+ M_x=\begin{pmatrix}0&0&0\\1&1&1\\0&0&0\end{pmatrix},
+ \qquad
+ M_y=\begin{pmatrix}0&0&0\\0&0&0\\1/2&1/2&1/2\end{pmatrix}.
+\]
+They do not commute: the nonzero row of $M_xM_y$ is its second,
+whereas that of $M_yM_x$ is its third. Yet the action identities
+are valid. For the $x$ action the residuals are $0,F_1,F_1$.
+For the $y$ action they are
+\[
+ \tfrac12F_2,\qquad
+ \tfrac12F_1+\tfrac x2F_2,\qquad
+ \tfrac12F_1+\tfrac x2F_2.
+\]
+The unit generator is $b_1=1$. Hence this is an accepted certificate.
+It gives $\Delta=(1,2)$ and $R=(1,1)$, and the grid filter returns
+exactly $(0,0)$ and $(1,1/2)$.
+
+The apparent matrix discrepancy acts in a redundant direction. At any
+common zero, vectors of coefficients $c,d$ representing the same
+value are related by
+\[
+                  \sum_i c_i b_i(p)=\sum_i d_i b_i(p).
+\]
+That relation, with the common-zero guard and the fixed point $p$
+stored as parameters, is the right observation to preserve. Equality
+of coefficient vectors would be unnecessarily strong. A relational
+simulation therefore allows a convenient redundant presentation without
+first constructing a canonical basis. This matters in weak arithmetic,
+where basis selection, rank certificates and coefficient growth are
+additional obligations which the desired conclusion may not need.
+
+\subsection{A finite open part of a positive-dimensional system}
+
+Equations plus guards occur in rational maps, affine charts, and
+elimination with nonzero denominators. Here is a complete concrete
+example of the localization principle.
+The equations
+\[
+                xy=0,\qquad x(x-1)=0
+\]
+have infinitely many rational solutions: the entire line $x=0$ is
+included. On the open part $x\ne0$, the only solution is $(1,0)$.
+Introduce $t$ and use
+\[
+              F_1=xy,\quad F_2=x(x-1),\quad F_3=tx-1.
+\]
+The one-element spanning family $(1)$ has action matrices $M_x=(1)$,
+$M_y=(0)$, $M_t=(1)$. The complete certificate is
+\begin{align*}
+ x-1&=tF_2-(x-1)F_3,\\
+ y&=tF_1-yF_3,\\
+ t-1&=-t^2F_2+\bigl(1+t(x-1)\bigr)F_3.
+\end{align*}
+Each identity follows by expanding both sides; together with the unit
+identity they are all the checker needs. The coordinate radii are
+$(1,0,1)$, so nine candidate triples suffice. Filtering gives precisely
+$(1,0,1)$; projection gives the desired open-part list.
+
+This example illustrates a concrete certificate producer in a useful
+special case. It does not infer that localization always makes a system
+finite. The guard is explicit, its inverse coordinate is unique, and
+the extended system has its own verified action data. Several guards
+$G_i\ne0$ can be combined as $G=\prod_iG_i\ne0$ over $\Q$,
+or treated with separate inverse coordinates.
+
+\subsection{Why finite rational sets on curves are a different problem}
+
+A multiplication certificate is stronger than the assertion that the
+rational zero set is finite. The certificate identities imply that the
+entire quotient algebra $\Q[X_1,\ldots,X_r]/(F_1,\ldots,F_s)$
+is spanned by finitely many classes: start with the unit combination,
+multiply by variables using the action tables, and extend by linearity.
+This argument applies to all polynomials, without testing rational points.
+
+For a single monic plane equation $F(X,Y)$ of positive degree in $Y$,
+the map $\Q[X]\to\Q[X,Y]/(F)$ is injective. A nonzero multiple
+$HF$ has $Y$-degree $\deg_Y H+\deg_Y F>0$ and so cannot be a
+nonzero polynomial in $X$ alone. Consequently the powers of $X$
+remain linearly independent in the quotient. No finite spanning
+certificate for both coordinates can exist for that full ideal.
+This remains true if the curve has only finitely many rational points.
+
+Thus the present theorem does not furnish a direct decision procedure
+for rational points on every curve. It applies to finite algebraic
+sections, suitably finite open charts, or other situations for which
+the extra finite action data are actually available. The norm constructor
+explains exactly how an additional section equation supplies those data.
+The missing global arithmetic work is to show that the points of
+interest are covered by finitely many such explicit sections, with
+uniformly available coefficients or a suitable bound on them.
+
+\subsection{A precise task decomposition for the difficult reports}
+
+\begin{longtable}{P{.20\linewidth}P{.38\linewidth}P{.32\linewidth}}
+\toprule
+Area & Reusable interface supplied here & Further theorem still required\\
+\midrule\endhead
+Siegel-style sections & A nonzero norm produces all rational points
+in a supplied monic-plane section, and a finite algebra certificate. &
+A global cover or bounded coefficients for its sections; the quantitative
+approximation theorem is not supplied.\\[4pt]
+Faltings-style finiteness & Complete lists for individually certified
+finite algebraic pieces; finite union and chart transport. & A method
+covering the rational points of a positive-dimensional curve by such
+explicit pieces.\\[4pt]
+Mordell--Weil descent & Proof transport for finite descent computations
+and exact enumeration of separately certified finite loci. & Actual
+covering representatives and a proof that they cover the required group
+quotient.\\[4pt]
+Formal algebra and local expansions & Checked simulation through
+truncation and evaluation, once their local object laws are supplied. &
+Application-specific local laws, singular branch analysis, and any
+analytic tail bounds.\\[4pt]
+Analytic number theory & Composable finite exact arithmetic and
+explicit certificate checking. & The uniform analytic estimates named
+in the prime-distribution report.\\
+\bottomrule
+\end{longtable}
+
+This division is productive because it names executable and provable
+subtasks. A future global-cover theorem can call the enumeration module
+directly. A future formal coefficient library can reuse the checked
+simulation builder. Until those inputs exist, the completed sublemmas
+remain useful without being misreported as proofs of the original
+deep theorems.
