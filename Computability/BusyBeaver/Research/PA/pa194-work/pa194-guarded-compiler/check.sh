@@ -49,3 +49,7 @@ if command -v py >/dev/null 2>&1; then py=py; else py=python3; fi
   --top "$here/PA194InductionSupplier.lean" --reports 3 "$@"
 "$py" -X utf8 -B "$here/../pa194-model-fairness/check_bridge.py" \
   --top "$here/PA194OrdinalInductionLink.lean" --reports 3 "$@"
+"$py" -X utf8 -B "$here/../pa194-model-fairness/check_bridge.py" \
+  --top "$here/PA194SuccessorLaws.lean" --reports 6 "$@"
+"$py" -X utf8 -B "$here/../pa194-model-fairness/check_bridge.py" \
+  --top "$here/PA194SemanticSupply.lean" --reports 4 "$@"
