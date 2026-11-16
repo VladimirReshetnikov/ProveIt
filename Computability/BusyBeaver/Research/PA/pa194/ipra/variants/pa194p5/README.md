@@ -20,6 +20,11 @@ P5 preserves all 3,673 resolved instructions and their addresses.
 - [`PA194P5SourceEndpoint.endpoint`](PA194P5SourceEndpoint.lean) compares
   blank-run halting with source-controller halting at model-valued clocks.
   It takes the finite source certificates as its remaining premise.
+- [`PA194P5Native.consistency_iff_literal_nonhalt`](PA194P5Native.lean)
+  derives both iPRA directions from that same premise.
+- [`PA194P5Final.consistency_iff_literal_nonhalt`](PA194P5Final.lean) uses
+  the checked certificate for all 3,673 sites to prove the unconditional
+  iPRA equivalence for the literal table.
 
 From the repository root, use the checked
 [PA194HX controller](../pa194hx/README.md) and
@@ -29,9 +34,14 @@ From the repository root, use the checked
 pa=Computability/BusyBeaver/Research/PA
 p5="$pa/pa194/ipra/variants/pa194p5"
 p5_model=/dev/shm/pa194p5-model
+p5_native=/dev/shm/pa194p5-native
+p5_coverage=/dev/shm/pa194p5-coverage
 bash "$p5/check.sh" "$hx_controller" "$lc_base" "$p5_model"
-bash "$p5/../check-selector-coverage.sh" PA194P5 "$p5_model" /dev/shm/pa194p5-coverage
+bash "$p5/../check-selector-native.sh" PA194P5 "$p5_model" "$p5_native"
+bash "$p5/../check-selector-coverage.sh" PA194P5 "$p5_model" "$p5_coverage"
+bash "$p5/../check-controller-final.sh" PA194P5 "$p5_native" "$p5_coverage" /dev/shm/pa194p5-final
 ```
 
 The model replay regenerates the dense and native tables and checks the
-fourteen startup chunks. The full coverage replay is in progress.
+fourteen startup chunks. The coverage replay checks all 58 batches and
+their aggregate certificate.

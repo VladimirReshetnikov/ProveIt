@@ -3,9 +3,9 @@ set -euo pipefail
 ulimit -s unlimited
 ulimit -c 0
 
-candidate=${1:?candidate (PA194AD, PA194HX, or PA194LC) required}
+candidate=${1:?candidate (PA194AD, PA194HX, PA194LC, or PA194P5) required}
 case "$candidate" in
-  PA194AD | PA194HX | PA194LC) ;;
+  PA194AD | PA194HX | PA194LC | PA194P5) ;;
   *) printf 'Unknown candidate %s\n' "$candidate" >&2; exit 2 ;;
 esac
 controller=$(cd -- "${2:?verified controller stage required}" && pwd)
