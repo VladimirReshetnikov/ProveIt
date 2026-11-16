@@ -296,11 +296,16 @@ and the [MRDP proof guide](../../Computability/HilbertTenthProblem/Lean/MRDP.md)
   The [forwarding inventory](ENDPOINTS.md#forwarding-imports-and-shared-proofs)
   records the signum and native equality replacements, the other forwarded
   proofs, and the corresponding current and historical checks.
-- [ ] Review the endpoint inventory for coverage. Each active consumer should
+- [x] Review the endpoint inventory for coverage. Each active consumer should
   have a verified migration or a documented backend boundary and checker.
   Close the migration after the targeted checks, standalone builds and
   retained replay commands pass, and after the dependency scan confirms that
   portable arithmetic remains independent of application imports.
+  The [endpoint inventory](ENDPOINTS.md) records the checked bridge, literal
+  PA endpoints, exact equation exports, C254 proof path and coding clients.
+  The standalone BusyBeaver smoke build, independent H10 library and MRDP
+  audit, exact Pell use-site checks, and portable import gate passed.
+  Historical replay evidence remains tied to its recorded providers.
 
 ## Proof strength, exact statements, and provenance
 
