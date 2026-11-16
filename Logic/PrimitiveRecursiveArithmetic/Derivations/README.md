@@ -41,6 +41,8 @@ The library is built bottom-up. Reusable layers come first:
 | [`Core/Tactic`](Lean/IPRADerivations/Core/Tactic.lean) | Universal closures `allN` and `univ`, and the tactic `ipra_ring` for polynomial identities |
 | [`Core/Definitions`](Lean/IPRADerivations/Core/Definitions.lean) | `toPR`, the symbol computing an open term; definitions by primitive recursion from a base and a step term, with their equations; finite sums and products, powers and factorials |
 | [`Core/Sums`](Lean/IPRADerivations/Core/Sums.lean) | Theorems with the summation bound as an iPRA variable, by induction: Gauss's sum, the sum of odd numbers, telescoping for every unary symbol `f`, and summation by parts (Abel, used by `von_mangoldt_totient_ipra_2026-11-15`) for all unary symbols `a`, `b` |
+| [`Core/Monus`](Lean/IPRADerivations/Core/Monus.lean) | Truncated subtraction: `0 ∸ b = 0`, `Sa ∸ Sb = a ∸ b`, `(a + b) ∸ b = a`, `a ∸ (a + c) = 0`, zero-or-successor, and the joint induction giving `(a ∸ b) + b = (b ∸ a) + a` and `(a ∸ b)(b ∸ a) = 0` |
+| [`Core/Order`](Lean/IPRADerivations/Core/Order.lean) | `a ≤ b` as `a ∸ b = 0` and `a < b` as `S a ≤ b`: witnesses `b = a + d`, reflexivity, transitivity, antisymmetry, totality, `lt_or_le`, decidability of equality, monotonicity of `+` and `*`, and cancellation |
 | [`Core/LinearAlgebra`](Lean/IPRADerivations/Core/LinearAlgebra.lean) | Integer vectors and matrices: finite sums, dot and cross products, matrix products, traces, determinants by Laplace expansion and adjugates by cofactors, each evaluated to the corresponding Mathlib operation; matrix equations as finite conjunctions |
 
 The theorem modules are grouped by the areas of `docs/proofs/`:

@@ -52,3 +52,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Sums.odd_sum
 #print axioms LeanProofs.IPRA.Sums.telescope
 #print axioms LeanProofs.IPRA.Sums.abel_summation
+#print axioms LeanProofs.IPRA.monus_max
+#print axioms LeanProofs.IPRA.monus_mul
+#print axioms LeanProofs.IPRA.le_total
+#print axioms LeanProofs.IPRA.le_antisymm
+#print axioms LeanProofs.IPRA.le_trans
+#print axioms LeanProofs.IPRA.eq_or_ne
+#print axioms LeanProofs.IPRA.lt_or_le
