@@ -93,6 +93,22 @@ search, arbitrary parameters and existing native consumer judgments.
 The normal `lake build +IPRABridge.Checks.BoundedSearch` run completed
 all 1,447 jobs.
 
+| Representative arithmetic check | Rebuild elapsed and peak RSS | Warm check elapsed and peak RSS | Comparison and audit artifacts |
+| --- | ---: | ---: | ---: |
+| `IPRABridge.Checks.ComparisonBits` | 10.70 s, 1,783 MiB | 1.52 s, 803 MiB | 108 KiB |
+| `IPRABridge.Checks.BoundedSearch` | 46.82 s, 1,863 MiB | 1.76 s, 805 MiB | 496 KiB |
+
+These builds use the already compiled toolchain and package dependencies.
+The warm timings use `lake --no-build build` on the same targets.
+
+The [signum provider](Derivations/Lean/IPRADerivations/Core/Signum.lean)
+keeps the nonzero test next to truncated subtraction. The original
+`CubeRootTwo` signum declarations remain as aliases with their old types.
+The direct caller replay checked the bounded-search bridge, Euclidean
+arithmetic, and the modules using the earlier transitive imports. The
+source gate verifies that search, Gcd, Bézout, and the bounded-search
+bridge now share the core signum proof independently of `CubeRootTwo`.
+
 ## BusyBeaver PA
 
 The standalone BusyBeaver default build was checked separately from the root
@@ -323,6 +339,15 @@ changes. It completed 3,353 jobs in 9 minutes with 2,780 MiB peak resident
 memory. Both equation proofs and both exports passed. The root export
 object kept the SHA-256 shown above.
 
+The normal root replay after the finite-selector and C254 changes completed
+3,360 jobs in 21 minutes 40 seconds, with 11,262 MiB peak resident memory.
+It rebuilt the permuted arithmetic proof-word and control dependencies as
+part of checking both exact exports. The warm `lake --no-build build
++IPRABridge.Checks.ZFCEquations` completed in 39.54 seconds with 823 MiB
+peak resident memory. The two native endpoint objects and the bridge
+export, with their companions, used 208 KiB. The exact root export hash
+again matches the receipt above.
+
 ### Maintained fourteen-variable endpoint
 
 [`IPRAStandardCurrentEndpoint`](../../Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRAStandardCurrentEndpoint.lean)
@@ -349,6 +374,9 @@ standard and reference audit objects had SHA-256
 `253dd9ed5c5bca4eb1cb39571ef74b8b81174fe430110fa05e5627e18f90a9c4`.
 For a normal Lake build, use the two `CurrentEndpointChecks` targets in
 the [verification routine](UNIFICATION-PLAN.md#verification-routine).
+Both root targets subsequently completed 3,157 jobs after the finite search
+and C254 migrations. All four endpoint theorems and the three transfer
+reports again use the standard Lean axioms.
 
 ## Adjacent providers
 
@@ -400,9 +428,18 @@ the existing shared model theorem at these call sites.
 | Foundation finite codes, equality-only language, and open syntax | `IPRABridge.Syntax` and the arithmetic image modules import the small code and syntax providers directly. | The original `PRAFiniteFunctionCodes`, `PRATheory`, `IPRAEqualityOnlyReference`, and `IPRAQuantifierFree` imports still expose their declarations. The literal PA launcher checks compiled declaration ownership and supplies import-only modules for legacy providers. The bridge and both pinned literal replays check these paths. |
 | Foundation `standardTheory` and native conversion | The bridge's standard transport uses the statement layer and the checked reference and native conversions. | The original `IPRAStandardTheory` import retains the theory and `provable_iff`. The source closure gate and the closed and open bridge checks cover the new import boundary. |
 | `IPRASubSuccSelfNonzero.native` | The difference proofs, the PA1944L comparison, and the ZFC reduction reach `not_succ_le_self`. | The original classical term names forward to the common syntax provider. The exact native formula and classical theorem were checked together. The closure gate excludes `PRASubSuccSelfNonzero` from the native proof path, and the PA1944L proof-value check reaches the shared lemma. |
+| `IPRAAddOneTransfer.transfer`, `IPRASubPredZeroNative.native`, and `IPRASubSuccZeroNative.native` | Zero decidability, the reconstruction bridge, and the successor-difference step use `succ_eq_add_one`, `monus_succ`, and the ordinary order derivations. | The replacement replay verified the exact public declarations, seven current caller modules, and the explicit ZFC proof paths. The original classical add-one theorem and the subtraction Gödel–Gentzen interfaces retain their own audits. The immutable historical bounded-induction checkout also matches all three earlier proof sources. |
 | `IPRANotBit.notBitConvention` | `IPRACharacteristicTransfer.transferZeroCorrectness` and the bounded-child stability proof use the checked equality-bit comparison. | `IPRANotBitChecks` still checks both the native result and `PRANotBit.PRA_proves_sentence`. The closure gate checks the native proof's independence from `PRANotBit`. The [historical bounded-induction replay](../../Computability/DiophantineConsistency/reviews/ipra-bounded-induction-postmerge-replay/README.md) identifies the immutable checkout for that proof family. |
 | `IPRABoundedSelector.selectorOpen` | The bounded-refutation clients for the ZFC equation and PA1944L use `Search.Finite.search_found` through the exact code comparison. | The existing Foundation search code and native statement both retain their original names. `IPRABoundedSelectorChecks` still audits the classical theorem. The bounded-search audit and PA1944L proof-value check cover the new derivation. The same historical bounded-induction checkout preserves the earlier selector proof. |
 | `ArithmeticRow254.{pred_add_one,pred_le,predecessor_witness}` | The C222 and C254 evaluators and the permuted proof-word history share the IOpen interpretation. | The old qualified statements forward with their original model assumptions. The active evaluator builds and proof-word check passed. The validator and R2Gic historical receipts refer to their frozen row source and object. |
+
+The control-step caller `ArithmeticControlStep254.live_decode` also uses
+`ArithmeticRow254.pred_add_one`. An isolated Lean check of the exact call
+under its arbitrary `IOpen` model and nonzero-state hypothesis follows the
+forwarder to `ArithmeticPredecessorWitness.pred_add_one`. The archived full
+control-step replay passes its recorded 27 axiom and 30 typed caller checks
+with the matching target source and its pinned dependency objects. A root
+rebuild of the complete module needs its finite control and data providers.
 
 When adding a migration entry, record the original and translated types,
 proof premises, exact table or expression identifier, provider order,

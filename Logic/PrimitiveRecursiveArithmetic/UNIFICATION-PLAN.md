@@ -108,12 +108,14 @@ encoding rules below.
   The [dependency inventory](DEPENDENCIES.md) records the parsed import
   scan, the generated table provider checks, and the ordered pinned replay
   scope. It also records the input comparison for the literal K215 lane.
-- [ ] Capture reproducible baselines for the bridge, PA194 exact literal
+- [x] Capture reproducible baselines for the bridge, PA194 exact literal
   endpoint, one ZFC equation endpoint, and representative arithmetic modules.
   Record toolchain and package revisions, theorem types, axiom audits, source
   and resolved object hashes for staged builds, and cold and warm time, peak
   memory, and disk usage. Record checkpoint provenance when the build relies
   on a staged provider.
+  The [endpoint receipts](ENDPOINTS.md) give the fresh and warm measurements
+  and record the package and checkpoint providers used in each run.
 - [ ] Identify the direct and transitive import closures for the standalone
   BusyBeaver, `Diophantine`, ConciseIPRA, and Foundation sides. Review the
   inventory with the affected project maintainers before moving any shared
