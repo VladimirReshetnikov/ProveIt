@@ -1,0 +1,84 @@
+\section{Current repository audit and prior-framework boundary}\label{sec:audit}
+
+\subsection{Pinned snapshot and verification strata}
+
+This report was developed against the main-branch snapshot
+\[
+ \texttt{7fa3ba48e8f62e8018ed954faaa48b908217eaf1},
+\]
+observed on 16 November 2026.  The repository explicitly distinguishes four strata.
+\begin{enumerate}
+  \item \RepoPath{ConciseIPRA} is a checked formalization of ordinary \iPRA, a small native scalar core, and their bi-interpretation.
+  \item \RepoPath{Derivations} is a checked library of explicit theorems of type \(\seq{[]}{\varphi}\), together with open arithmetic lemmas.
+  \item \RepoPath{Bridge} contains checked translations between ConciseIPRA and the Foundation development, with current public strength concentrated on closed endpoints and selected transports.
+  \item \RepoPath{docs/proofs} is a large research corpus.  Its reports and blueprints are evidence and design input, not a collectively compiled Lean library.
+\end{enumerate}
+The distinction matters: a report can contain a correct mathematical reduction and still stop before an object-theory proof; a source file can contain no placeholder and still be unverified until it builds against the current API.
+
+\subsection{Checked infrastructure that should be reused}
+
+The current derivation library already supplies substantially more than the earlier framework packets assumed.  Its reusable core includes:
+\begin{itemize}
+  \item substitution, weakening, simultaneous cut, quantifier rules, and equality transport;
+  \item open quantifier-free induction and term instantiation;
+  \item semiring laws, order, truncated subtraction, parity, powers, division, gcd, B\'ezout, and Euclid's lemma;
+  \item finite sums, products, Fubini rearrangement, bounded search, pigeonhole, permutation invariance, and simultaneous recursion;
+  \item integer differences, a proof-producing ring normalization path, descent, and finite-dimensional linear algebra;
+  \item checked application modules in algebra, number theory, geometry, combinatorics, and finite probability.
+\end{itemize}
+Consequently, a new framework should not propose a second least-search implementation, another pairing code, or another arithmetic kernel.  It should be an adapter and compiler layer over these checked declarations.
+
+\subsection{What KIFC-R already settled}
+
+The residualized KIFC-R packet established a sound design for:
+\begin{itemize}
+  \item fixed-formula Boolean reflection and finite folds;
+  \item query-specialized proof graphs and explicit residual producer formulas;
+  \item acyclic and capped-cyclic reverse demand propagation;
+  \item one-loop trace normalization;
+  \item finite relational viability and stable-observer elimination;
+  \item guarded analytic operations, finite nets, finite gluing, and height-bounded enumeration;
+  \item an honest status ledger separating checked inheritance, human proofs, tested algorithms, outlines, and open producers.
+\end{itemize}
+Its canonical endpoint was a conditional sequent
+\[
+                    B_1,\ldots,B_r,\Gamma\vdash\Phi.
+\]
+That endpoint is mathematically right.  The principal weakness is engineering: its \texttt{ConditionalTheorem} record fixes a particular concatenated context, while its generic graph compiler and Boolean layer remain source-oriented outlines.  The present report preserves the endpoint but gives it a context-polymorphic representation.
+
+\subsection{What the bounded-interaction packet adds}
+
+The later certified bounded-interaction packet contributes two ideas that fit naturally into the residual framework.
+\begin{enumerate}
+  \item A normalized trace theorem should consume base, step, and finish derivations in exactly the syntactic forms expected by \texttt{PRA.qfInd}.  The generic kernel should not perform theorem-specific rewrites or de Bruijn repairs.
+  \item A fixed bounded alternating statement is better compiled to a finite strategy certificate than expanded as a large nest of ad hoc searches.  Both truth and falsity certificates are useful: together they provide a local constructive decision procedure and support stable negative reasoning.
+\end{enumerate}
+The archive includes the no-placeholder trace candidate, rebased to the pinned snapshot as a source artifact, and develops the strategy layer in contract form.
+
+\subsection{The new integration gaps}
+
+The audit identified five gaps not fully resolved by either predecessor.
+\begin{description}[style=nextline,leftmargin=0pt]
+  \item[Context polymorphism.] A local rule should be usable under any context that proves its premises, rather than under one preassembled list.  This is exactly what simultaneous cut already provides.
+  \item[Multi-query minimality.] A graph compiler should state and prove which residuals are needed for a chosen finite set of outputs, and should share common internal nodes rather than compile each output separately.
+  \item[Bounded alternation.] Existing Booleanization discussions emphasize bounded \(\forall\) and \(\exists\) folds but do not give a uniform two-sided strategy semantics for arbitrary fixed alternation.
+  \item[Coherence levels.] Prior reports correctly warn that pointwise or horizonwise witnesses need not form a name, but applications benefit from a precise three-level theorem explaining when no coherence, path coherence, or metric regularity is required.
+  \item[Open backend transport.] The repository's unification plan identifies finite open-context transport as unfinished.  A framework should isolate this one bridge obligation instead of silently reverting to closed sentences.
+\end{description}
+
+\subsection{Design criterion}
+
+A generic component is accepted into \KIFCS\ only when it satisfies all of the following.
+\begin{enumerate}[label=(\alph*)]
+  \item Its executable content is primitive recursive after the theorem and query are fixed.
+  \item Every logical conclusion is represented by \(\Prf\,\PRAAx\), an equivalent open contract, or a checked translation thereof.
+  \item Any unavailable mathematical input appears as a formula, not an opaque host assumption.
+  \item Every recursive correctness argument has a quantifier-free invariant after Booleanization.
+  \item The formal statement distinguishes finite-use, coherent-path, and regular-name conclusions.
+  \item Reference code is reported as testing, not proof.
+  \item The theorem's provenance records the repository snapshot, imported modules, public formula, and axiom audit.
+\end{enumerate}
+
+\subsection{Why this report is not another competing framework}
+
+The name \KIFCS\ denotes a conservative interface refinement, not a replacement for the earlier work.  Sections on Boolean reflection, traces, demand closure, viability, guarded operations, the algebra backend, and domain recipes are retained and re-audited.  The new material is concentrated in open contracts, query-minimal compilation, bounded strategies, coherence, and bridge integration.  All these layers target the same ordinary judgment \(\Prf\,\PRAAx\) and the same checked arithmetic library.

@@ -1,0 +1,141 @@
+\section{A coherence trichotomy for nonunique finite witnesses}\label{sec:coherence}
+
+\subsection{The recurring mistake}
+
+Suppose that for every horizon \(N\) there exists a finite compatible witness sequence
+\(x_0,\ldots,x_N\).  It is tempting to speak immediately of ``the sequence'' or of a Cauchy name selected from these witnesses.  Constructively, three different conclusions must be separated:
+\begin{enumerate}
+  \item a finite consumer needs only a stable output at one requested horizon;
+  \item a later theorem needs one coherent path whose prefixes agree;
+  \item analysis needs a regular metric name with a known rate.
+\end{enumerate}
+Each level requires strictly more data than the preceding level.
+
+\subsection{Level I: finite-use elimination}
+
+Let \(X_i\) be finite sets of state codes and let \(R_i(x,y)\) be a decidable compatibility relation from level \(i\) to \(i+1\).  Backward viability at a fixed horizon \(N\) is defined in \cref{sec:relational}.  Suppose an observer \(O_i:X_i\to Y_i\) has one of the following stability properties on viable states:
+\begin{description}
+  \item[Exact stability:] \(O_i(x)=O_i(y)\) for all viable \(x,y\in X_i\).
+  \item[Metric stability:] \(d(O_i(x),O_i(y))\le\varepsilon_i\) for all viable \(x,y\in X_i\).
+  \item[Quotient stability:] \(O_i(x)\sim O_i(y)\) for a reflected equivalence relation.
+\end{description}
+Then a least viable state may be selected by bounded search, but the public conclusion is independent of that choice at the stated strength.
+
+\begin{theorem}[Finite-use choice erasure]\label{thm:finite-erasure}
+At a fixed horizon, exact, metric, or quotient stability converts existence of a viable state into a canonical observed conclusion without constructing an infinite path.
+\end{theorem}
+
+\begin{proof}
+Backward viability and bounded least search produce the least viable code \(x_i^*\).  Any actual viable state has the same exact observation, lies within \(\varepsilon_i\) of its observation, or is equivalent to it.  Therefore the observer value of \(x_i^*\) is a valid public representative.  The proof uses only the finite table up to the requested horizon.
+\end{proof}
+
+This level is sufficient for many numerical estimates, symmetric polynomial data, root clusters, projectors, finite distributions, and glued observables.  It is often stronger mathematically to avoid a labeled witness than to manufacture a discontinuous selector.
+
+\subsection{Level II: coherent paths}
+
+A coherent path is a sequence \(x_i\in X_i\) with \(R_i(x_i,x_{i+1})\) for every \(i\).  Horizonwise nonemptiness does not by itself provide a primitive-recursive path selector.
+
+\begin{definition}[Effective extension system]
+An effective extension system consists of primitive-recursive maps
+\[
+ e_i:X_i\to X_{i+1}
+\]
+and object-theory contracts proving that every viable \(x\in X_i\) has \(e_i(x)\) viable and \(R_i(x,e_i(x))\).
+\end{definition}
+
+\begin{theorem}[Path from an extension system]\label{thm:path-extension}
+Given an initial viable state \(x_0\) and an effective extension system, primitive recursion defines a coherent path
+\[
+ x_{i+1}=e_i(x_i),
+\]
+and \iPRA\ proves viability and compatibility at every open index.
+\end{theorem}
+
+\begin{proof}
+Encode \((i,x_i)\) in one state and iterate the primitive-recursive extension map.  The invariant states that the current state is viable and that each recorded adjacent pair is compatible.  Its step is exactly the extension contract; after Boolean reflection the invariant is quantifier-free.  Quantifier-free induction proves the open theorem.
+\end{proof}
+
+A useful alternative is a system of retractions \(p_i:X_{i+1}\to X_i\) with a canonical nested family \(S_i\subseteq X_i\) satisfying surjectivity and a primitive-recursive section.  The section gives an extension system.  Merely knowing finite surjectivity semantically is not enough; the section or a bounded searchable certificate must be available.
+
+\begin{barrier}[Horizonwise existence is not a path algorithm]\label{barrier:horizon-path}
+From a family of proofs
+\[
+       \forall N\;\exists x_0,\ldots,x_N\;\bigwedge_{i<N}R_i(x_i,x_{i+1})
+\]
+one cannot in general extract a primitive-recursive coherent infinite path.
+\end{barrier}
+
+\begin{proof}[Reason]
+The displayed statement allows unrelated witnesses for different \(N\).  A path extractor would solve an unbounded choice problem.  Finite trees can encode total computable relations whose infinite paths have no primitive-recursive member, and the proof-theoretic strength needed to pass from arbitrarily long finite paths to an infinite path is a compactness principle absent from \iPRA.  The framework therefore requires an explicit extension or retraction producer rather than hiding compactness in the metatheory.
+\end{proof}
+
+\subsection{Level III: regular metric names}
+
+Let \((Y,d)\) be represented by rational codes and let \(y_i=O_i(x_i)\) be observations along a coherent path.  Coherence alone does not give a Cauchy rate.
+
+\begin{theorem}[Regular name from local motion and a tail budget]\label{thm:regular-name}
+Assume primitive-recursive nonnegative rational bounds \(a_i\) such that
+\[
+       d(y_i,y_{i+1})\le a_i,
+\]
+and a primitive-recursive tail modulus \(M(q)\) satisfying
+\[
+       \sum_{i=M(q)}^{j-1}a_i\le 2^{-q}
+       \qquad(j\ge M(q)).
+\]
+Then
+\[
+       d(y_{M(q)},y_j)\le 2^{-q}
+       \qquad(j\ge M(q)),
+\]
+so \(q\mapsto y_{M(q)}\) is a regular name after a harmless precision shift.
+\end{theorem}
+
+\begin{proof}
+Repeated triangle inequality gives
+\[
+ d(y_{M(q)},y_j)
+ \le \sum_{i=M(q)}^{j-1}d(y_i,y_{i+1})
+ \le \sum_{i=M(q)}^{j-1}a_i
+ \le 2^{-q}.
+\]
+Every sum is finite.  The object-theory proof is an induction on \(j-M(q)\), using the coded rational triangle inequality and the supplied finite-tail contract.  No completed real number is quantified over.
+\end{proof}
+
+If observations are selected independently from viable clouds \(C_i\), replace local motion by two inputs:
+\[
+ \operatorname{diam}(C_i)\le d_i,
+ \qquad
+ \exists x\in C_i,y\in C_{i+1}\; d(O_i(x),O_{i+1}(y))\le m_i.
+\]
+Then arbitrary representatives satisfy an adjacent bound \(d_i+m_i+d_{i+1}\).  A summable tail of these quantities yields a regular name without exact branch coherence.
+
+\subsection{The trichotomy theorem}
+
+\begin{theorem}[Coherence trichotomy]\label{thm:coherence-trichotomy}
+For a finitary relational construction, the following interfaces are sound and should not be conflated.
+\begin{enumerate}
+  \item \textbf{Finite-use interface:} a finite horizon, viability certificate, and stable observer yield the requested finite observation.  No infinite path is required.
+  \item \textbf{Path interface:} an initial viable state plus an effective extension or section yields a coherent primitive-recursive path.
+  \item \textbf{Regular-name interface:} a path or shrinking-cloud construction plus explicit local motion and summable tail data yields a regular metric name.
+\end{enumerate}
+The assumptions of a higher level imply the useful conclusions of lower levels, but the converses fail in general.
+\end{theorem}
+
+\begin{proof}
+The three positive implications are \cref{thm:finite-erasure,thm:path-extension,thm:regular-name}.  Failure of finite-use data to imply a path is \cref{barrier:horizon-path}.  A coherent path need not have a computable convergence rate: encode a slowly changing binary observation whose stabilization time dominates every proposed primitive-recursive modulus.  Thus a tail producer is genuinely additional data.
+\end{proof}
+
+\subsection{Applications}
+
+\paragraph{Polynomial roots.}
+At collisions, unordered multisets or clusters are Level I observables.  A continuously labeled root path is Level II and requires separation or an explicit continuation rule.  A regular complex root name is Level III and requires quantitative motion/tail control.
+
+\paragraph{Spectral theory.}
+Spectral projectors and invariant subspaces are often Level I quotient observables.  A normalized eigenvector path requires a gap and phase convention.  Convergence of iterative eigenvectors requires an explicit contraction rate.
+
+\paragraph{Optimization.}
+An approximate minimum value over a finite net is Level I.  A coherent sequence of minimizers requires tie-handling or a stable quotient.  A convergent minimizer name requires error bounds converting mesh and objective gaps into metric distance.
+
+\paragraph{Probability.}
+Finite rational laws and expectations are Level I.  A coupling across truncation levels is Level II.  A limit distribution name with a prescribed metric rate is Level III and needs a quantitative theorem such as a Berry--Esseen bound, not merely tightness or subsequential convergence.

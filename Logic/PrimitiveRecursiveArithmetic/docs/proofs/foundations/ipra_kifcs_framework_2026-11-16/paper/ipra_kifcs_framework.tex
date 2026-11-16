@@ -1,0 +1,115 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{parskip}
+\usepackage{etoolbox}
+\usepackage{makecell}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!55!black,
+  pdftitle={KIFC-S: Sequent-Polymorphic Finitary Contracts for iPRA},
+  pdfauthor={OpenAI, for Vladimir Reshetnikov}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{KIFC-S for iPRA}
+\rhead{2026-11-16}
+\cfoot{\thepage}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{principle}[theorem]{Principle}
+\newtheorem{barrier}[theorem]{Barrier}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+\newcommand{\iPRA}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\PRAAx}{\ensuremath{\mathsf{PRAAx}}}
+\newcommand{\Prf}{\ensuremath{\mathsf{Prf}}}
+\newcommand{\NPrf}{\ensuremath{\mathsf{NPrf}}}
+\newcommand{\PTm}{\ensuremath{\mathsf{PTm}}}
+\newcommand{\Fm}{\ensuremath{\mathsf{Fm}}}
+\newcommand{\Nat}{\ensuremath{\mathbb N}}
+\newcommand{\Bool}{\ensuremath{\mathbb B}}
+\newcommand{\KIFCR}{\textsc{KIFC-R}}
+\newcommand{\KIFCS}{\textsc{KIFC-S}}
+\newcommand{\Contract}{\mathsf{Ctr}}
+\newcommand{\Valid}{\mathsf{Valid}}
+\newcommand{\Obs}{\mathsf{Obs}}
+\newcommand{\Dem}{\mathsf{Dem}}
+\newcommand{\Run}{\mathsf{Run}}
+\newcommand{\Inv}{\mathsf{Inv}}
+\newcommand{\Viable}{\mathsf{Viable}}
+\newcommand{\Residual}{\mathsf{Res}}
+\newcommand{\Close}{\mathsf{Close}}
+\newcommand{\Code}{\mathsf{Code}}
+\newcommand{\Reach}{\mathsf{Reach}}
+\newcommand{\Front}{\mathsf{Front}}
+\newcommand{\CertCheck}{\mathsf{Check}}
+\newcommand{\Win}{\mathsf{Win}}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\zero}{\mathbf 0}
+\newcommand{\defeq}{\mathrel{:=}}
+\newcommand{\dotminus}{\mathbin{\dot{-}}}
+\newcommand{\llbracket}{[\![}
+\newcommand{\rrbracket}{]\!]}
+\newcommand{\angles}[1]{\langle #1\rangle}
+\newcommand{\RepoPath}[1]{\path{#1}}
+\newcommand{\status}[1]{\textsf{#1}}
+\newcommand{\seq}[2]{#1\mathrel{\vdash[\PRAAx]}#2}
+\lstdefinelanguage{Lean}{morekeywords={def,theorem,lemma,structure,inductive,namespace,end,where,by,exact,refine,have,show,import,open,variable,universe,instance,abbrev,example,if,then,else,match,with,fun,let,in,noncomputable},sensitive=true,morecomment=[l]{--},morecomment=[s]{/-}{-/},morestring=[b]"}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,frame=single,framerule=0.2pt,showstringspaces=false,language=Lean}
+\title{\textbf{KIFC-S: Sequent-Polymorphic Kernel-Integrated Finitary Contracts}\\[0.4em]
+\large A compositional framework for embedding mathematical concepts and proofs into intuitionistic primitive recursive arithmetic}
+\author{Prepared for Vladimir Reshetnikov\\Repository snapshot: \texttt{7fa3ba48e8f62e8018ed954faaa48b908217eaf1}}
+\date{16 November 2026 (Pacific time)}
+\emergencystretch=4em
+\sloppy
+\begin{document}
+\maketitle
+\begin{abstract}
+\input{sections/00_abstract}
+\end{abstract}
+\tableofcontents
+\newpage
+\input{sections/01_executive}
+\input{sections/02_audit}
+\input{sections/03_logic}
+\input{sections/04_open_contracts}
+\input{sections/05_query_compiler}
+\input{sections/06_bounded_strategies}
+\input{sections/05_boolean_search}
+\input{sections/06_loop_normal_form}
+\input{sections/07b_cyclic_demand}
+\input{sections/08_relational}
+\input{sections/09_coherence}
+\input{sections/10_guarded}
+\input{sections/11_algebra_backend}
+\input{sections/12_domain_recipes}
+\input{sections/13_bridge}
+\input{sections/14_examples}
+\input{sections/15_difficulties}
+\input{sections/16_lean}
+\input{sections/17_status}
+\input{sections/18_research}
+\appendix
+\input{sections/A_notation}
+\input{sections/B_templates}
+\input{sections/C_source_audit}
+\end{document}

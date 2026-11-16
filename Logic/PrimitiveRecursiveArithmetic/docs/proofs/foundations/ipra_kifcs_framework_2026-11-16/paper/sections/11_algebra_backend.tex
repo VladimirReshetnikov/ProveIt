@@ -1,0 +1,73 @@
+\section{The checked algebraic backend}\label{sec:algebra-backend}
+
+\subsection{Why this backend matters}
+
+Many packets reduce a theorem to a finite polynomial identity but then stop at a semantic \texttt{ring} proof.  The current \RepoPath{Derivations} library closes this gap for a substantial class of identities.  It derives arithmetic laws in the embedded theory, quotients terms by provable equality, embeds the quotient semiring into a ring of differences, performs metalevel ring normalization, and reflects the normalized equality back to \(\Prf\,\PRAAx\).
+
+This architecture is exactly compatible with \KIFCS.  An algebra node stores an output equation and a proof-producing tactic invocation.  The equation can then be consumed by later search, loop, or observer nodes through ordinary equality substitution.
+
+\subsection{Provable-equality quotient}
+
+Fix a context \(\Gamma\).  Define \(s\sim_\Gamma t\) when \(\Gamma\vdash s=t\).  Reflexivity, symmetry, and transitivity are derived in the deduction system; congruence follows from equality substitution.  Thus \(\sim_\Gamma\) is a congruence for the derived addition and multiplication symbols.  The quotient \(Q_\Gamma\) is a cancellative commutative semiring because the corresponding laws and cancellation are proved in \iPRA.
+
+Natural-number terms embed into the Grothendieck ring \(G(Q_\Gamma)\).  Injectivity of the canonical map follows from additive cancellation.  An integer term is represented by a pair \((p,n)\) denoting \(p-n\), and equality of integer terms is translated to the natural equality
+\[
+ p+n'=p'+n.
+\]
+Consequently, if a polynomial identity holds in \(G(Q_\Gamma)\), injectivity yields an equality in \(Q_\Gamma\), which by definition is an object-level derivation.
+
+\subsection{Sound use of metalevel tactics}
+
+The tactic \texttt{ipra\_ring} does not assert that ring normalization is an axiom of \iPRA.  Its proof term has the following shape:
+\begin{enumerate}[label=(\arabic*)]
+  \item map each object term to its class in \(Q_\Gamma\) and then to \(G(Q_\Gamma)\);
+  \item use Lean's ring tactic to prove equality in this metalevel ring;
+  \item apply injectivity to recover equality of quotient classes;
+  \item unfold quotient equality to obtain \(\Gamma\vdash s=t\).
+\end{enumerate}
+The current axiom-audit module reports no \texttt{sorryAx}.  It lists only Lean's standard metatheoretic axioms for quotients, choice, and propositional extensionality; the object theorem still depends only on \(\PRAAx\).
+
+\subsection{Algebra node interface}
+
+A generic algebra node can be represented by:
+\[
+  \mathsf{AlgNode}(\Gamma,s,t,h),
+  \qquad h:\Gamma\vdash[\PRAAx]s=t.
+\]
+Its operational output may be one side of the equation; its proof output is \(h\).  Common subclasses are:
+\begin{itemize}
+  \item polynomial normalization and factorization;
+  \item linear-combination certificates for ideal membership;
+  \item determinant and adjugate identities at fixed dimension;
+  \item integer-coordinate geometry identities;
+  \item finite combinatorial sum identities after recurrence expansion.
+\end{itemize}
+
+Not every algebraic theorem is a ring identity.  Inequalities require order lemmas and often sums of squares or explicit witnesses.  Divisibility requires a witness term.  Matrix statements of variable dimension require loop invariants.  The node interface is nevertheless useful: these stronger nodes may call the ring backend for their local algebraic subgoals.
+
+\subsection{Worked inherited examples}
+
+The current repository supplies actual embedded derivations for:
+\begin{enumerate}[label=(\roman*)]
+  \item \((xz+yw)^2+(xw-yz)^2=(x^2+y^2)(z^2+w^2)\);
+  \item the Heron factorization
+  \[
+  4b^2c^2-(b^2+c^2-a^2)^2
+   =(a+b+c)(-a+b+c)(a-b+c)(a+b-c);
+  \]
+  \item the coordinate identity equivalent to Heron's formula;
+  \item the coordinate law of cosines.
+\end{enumerate}
+The accompanying Lean adapter wraps the open two-square and Heron derivations as \KIFCS\ kernel rules.  This is an inherited checked component, not a new unverified claim of this packet.
+
+\subsection{Extending the backend}
+
+A practical extension order is:
+\begin{enumerate}[label=(\arabic*)]
+  \item derive a reusable ordered-semiring layer and a tactic for polynomial inequalities from explicit nonnegative decompositions;
+  \item add finite-sum normalization, with a loop invariant connecting recursive sums to closed forms;
+  \item add fixed-size matrix identities by flattening entries and calling \texttt{ipra\_ring};
+  \item add variable-size matrix algorithms as certified loops with determinant/minor certificates;
+  \item add rational-code fields under explicit nonzero denominator guards.
+\end{enumerate}
+Each extension should expose object-level theorem constructors rather than a semantic API only.

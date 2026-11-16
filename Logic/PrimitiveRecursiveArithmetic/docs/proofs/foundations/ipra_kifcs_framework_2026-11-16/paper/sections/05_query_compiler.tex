@@ -1,0 +1,171 @@
+\section{Query-specialized residual graph compilation}\label{sec:query-compiler}
+
+\subsection{Proof graphs}
+
+A fixed theorem is represented by a finite directed graph.  The graph is metalevel data; its formulas and local proofs live in the object-language interface.
+
+\begin{definition}[Contract graph]
+A contract graph consists of a finite node set \(V=\{0,\ldots,N-1\}\).  Every node \(v\) has:
+\begin{itemize}
+  \item a conclusion formula \(C_v\);
+  \item a list \(P_v\subseteq V\) of proof parents;
+  \item a list \(R_v\) of boundary formulas;
+  \item a local contract
+  \[
+      \Contract\bigl(R_v+\!+[C_u\mid u\in P_v]+\!+\Gamma_v,\,C_v\bigr),
+  \]
+  where \(\Gamma_v\) is a sublist of the permanent hypotheses \(\Gamma\).
+\end{itemize}
+Executable recursion internal to a node must already be certified by a trace or other local object proof.  After such components are collapsed, the proof-parent graph is acyclic.
+\end{definition}
+
+Data dependencies may be more numerous than proof dependencies.  A node can inspect a generated term from another node while its correctness theorem uses only a summarized formula.  Residual analysis follows proof edges, because those determine the assumptions of the exported derivation.
+
+\subsection{Backward query reachability}
+
+Fix a finite set \(Q\subseteq V\) of requested sink nodes.  Define \(\Reach(Q)\) as the least subset of \(V\) containing \(Q\) and closed under proof parents:
+\[
+ v\in\Reach(Q),\ u\in P_v\quad\Longrightarrow\quad u\in\Reach(Q).
+\]
+Because the graph is finite, \(\Reach(Q)\) is computed by a bounded work-list recursion.
+
+\begin{lemma}[Reachability soundness]
+Every proof parent used by a reachable node is reachable.
+\end{lemma}
+
+\begin{proof}
+This is the closure condition at termination of the work-list algorithm.  At each iteration, all parents of the removed work item are inserted into the marked set and work list.  The loop terminates after at most \(N\) new marks.
+\end{proof}
+
+\begin{lemma}[Reachability minimality]\label{lem:reach-min}
+If \(S\subseteq V\) contains \(Q\) and is closed under proof parents, then
+\(\Reach(Q)\subseteq S\).
+\end{lemma}
+
+\begin{proof}
+Induct on the stage at which a node is marked.  Sink nodes lie in \(S\).  If a node is marked as a parent of an earlier reachable node, closure of \(S\) puts it in \(S\).  Hence every mark belongs to \(S\).
+\end{proof}
+
+\subsection{The residual frontier}
+
+Let
+\[
+       \Front(Q)=\operatorname{dedup}
+          \left(\mathop{+\!+}_{v\in\Reach(Q)}R_v\right),
+\]
+where deduplication uses a stable boundary key that includes the normalized formula, variable layout, and producer role.  Formula equality alone may be too coarse for provenance, whereas arbitrary textual names are too fine.  The key must be part of the graph schema.
+
+\begin{theorem}[Least residual frontier]\label{thm:least-frontier}
+Relative to the fixed local contracts, \(\Front(Q)\) is the least normalized boundary list sufficient for the query: every residual mentioned by a reachable local rule occurs in \(\Front(Q)\), and no residual attached only to unreachable nodes occurs.
+\end{theorem}
+
+\begin{proof}
+Coverage follows directly from the concatenation over reachable nodes.  Stable deduplication removes repetitions without removing the first representative of any key.  If a boundary belongs only to unreachable nodes, it is absent from the indexed concatenation and hence from its deduplication.  Minimality is relative to the stated local rules: a stronger mathematical proof could eliminate a residual, but the compiler cannot infer such a replacement without another contract.
+\end{proof}
+
+\subsection{Topological contract compilation}
+
+Choose a topological order \(v_0,\ldots,v_{k-1}\) of \(\Reach(Q)\), so every proof parent of \(v_i\) occurs before \(v_i\).  Let
+\[
+        A\defeq\Front(Q)+\!+\Gamma.
+\]
+
+\begin{theorem}[Node accumulation]\label{thm:node-accum}
+For each \(i<k\), there is a contract
+\[
+     \Contract\bigl(A,\,C_{v_i}\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+Induct on \(i\).  Every residual in \(R_{v_i}\) belongs to \(\Front(Q)\), hence has the identity contract from \(A\).  Every permanent premise in \(\Gamma_{v_i}\) belongs to \(\Gamma\), hence also has the identity contract.  Every parent conclusion has a contract from \(A\) by the induction hypothesis and topological ordering.  Apply simultaneous contract cut to the local contract of \(v_i\).
+\end{proof}
+
+\begin{theorem}[Query compilation]\label{thm:query-compile}
+Let \(\Phi_Q\) be the fixed conjunction of the conclusions \(C_q\) for \(q\in Q\), in deterministic query order.  Then
+\[
+                \Contract\bigl(\Front(Q)+\!+\Gamma,\,\Phi_Q\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+By \cref{thm:node-accum}, each requested conclusion has a contract from the common interface.  Repeated conjunction introduction combines them.  When \(Q\) is empty, take \(\Phi_Q\) to be a fixed intuitionistically provable top formula such as \(0=0\).
+\end{proof}
+
+\begin{corollary}[Ordinary residual sequent]
+\[
+             \Front(Q),\Gamma\vdash\Phi_Q.
+\]
+\end{corollary}
+
+\begin{proof}
+Use \cref{thm:contract-sequent}.
+\end{proof}
+
+\subsection{Multi-query sharing}
+
+\begin{proposition}[Union law]
+For finite query sets \(Q_1,Q_2\),
+\[
+ \Reach(Q_1\cup Q_2)=\Reach(Q_1)\cup\Reach(Q_2).
+\]
+Consequently the combined compiler shares every common internal node and its residuals.
+\end{proposition}
+
+\begin{proof}
+The right-hand side contains \(Q_1\cup Q_2\) and is parent-closed, so minimality gives the left-to-right inclusion.  Conversely, each \(\Reach(Q_i)\) is contained in every parent-closed set containing \(Q_1\cup Q_2\), in particular in \(\Reach(Q_1\cup Q_2)\).
+\end{proof}
+
+The corresponding boundary identity holds modulo stable deduplication.  Compiling ten output formulas together is therefore not merely a convenience: it prevents repeated residual assumptions and repeated trace nodes.
+
+\subsection{Dead-code invariance}
+
+\begin{theorem}[Unreachable extension invariance]\label{thm:dead-code}
+Extend a graph by nodes that are not backward reachable from \(Q\), without changing the local data of old reachable nodes.  Then \(\Reach(Q)\), \(\Front(Q)\), and the generated query contract are unchanged up to the normalization equivalence of \cref{prop:contract-normalization}.
+\end{theorem}
+
+\begin{proof}
+The work-list traversal never visits the new nodes, because no reachable old node names them as a parent.  Hence the same local contracts are composed in the same relative topological order.  Any difference in normalized list order is erased by contract permutation invariance.
+\end{proof}
+
+This theorem is important for a growing repository: adding an unrelated theorem module must not enlarge the assumptions of an existing compiled endpoint.
+
+\subsection{Recursive components}
+
+A cycle in the proof-parent graph cannot be resolved by topological composition alone.  There are three legitimate treatments.
+\begin{enumerate}
+  \item \textbf{Trace collapse.}  A recursive program plus a QF invariant is compiled to one trace theorem, then represented as one acyclic node.
+  \item \textbf{Well-founded descent.}  A cycle whose recursive call decreases an explicit natural rank is compiled through a checked descent theorem and collapsed.
+  \item \textbf{Capped demand closure.}  Cycles in resource requests, rather than logical proofs, are solved by the finite fixed-point theorem of \cref{sec:cyclic-demand}.  They do not create proof cycles after the resulting requests are fixed.
+\end{enumerate}
+An unannotated logical cycle is rejected by the compiler.  Treating it as a fixed point would add an unsound circular-proof rule.
+
+\subsection{Residual provenance and canonical formulas}
+
+Every boundary record should contain:
+\begin{itemize}
+  \item a stable key;
+  \item the exact formula with free-variable arity;
+  \item the node and local theorem that introduced it;
+  \item the expected producer theorem or module;
+  \item a human description of its quantitative meaning;
+  \item whether it is an input hypothesis, a currently open theorem, or a theorem available in another backend awaiting transport.
+\end{itemize}
+The formula, not the description, enters the object context.  A generated report should print the normalized residual list before its conclusion.
+
+\subsection{Proof-producing versus verified metadata compilation}
+
+The graph traversal itself need not initially be verified in Lean.  A metaprogram may compute \(\Reach(Q)\), \(\Front(Q)\), and a schedule, then emit an ordinary proof term.  A bug causes type checking to fail or yields a theorem with extra explicit assumptions; it cannot prove a false formula unless the trusted kernel is compromised.
+
+A later verified metadata development can prove \cref{lem:reach-min,thm:least-frontier,thm:dead-code} for the implementation.  This improves confidence that the residual set is minimal and the source is deterministic, but it is not required for logical soundness of a successfully checked generated theorem.
+
+\subsection{Incremental compilation}
+
+For a stable graph, cache for each node:
+\begin{itemize}
+  \item a hash of its normalized formula and local proof source;
+  \item its parent and boundary keys;
+  \item the compiled local theorem name;
+  \item the query sets for which it was reachable.
+\end{itemize}
+A change invalidates the node and its forward dependents, not the whole library.  The cache is a build optimization only.  The final theorem remains an ordinary Lean declaration with no dependence on cache correctness.

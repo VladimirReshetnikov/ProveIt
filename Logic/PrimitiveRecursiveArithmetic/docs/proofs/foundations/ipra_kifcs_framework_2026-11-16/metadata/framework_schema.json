@@ -1,0 +1,33 @@
+{
+  "framework": "KIFC-S",
+  "version": "2026-11-16",
+  "repository_commit": "7fa3ba48e8f62e8018ed954faaa48b908217eaf1",
+  "canonical_judgment": "Prf PRAAx",
+  "contract": {
+    "inputs": "finite list of Fm PTm n",
+    "output": "Fm PTm n",
+    "meaning": "for every ambient context, derivations of all inputs produce a derivation of the output",
+    "exact_equivalence": "Contract A phi iff A |- [PRAAx] phi"
+  },
+  "node_kinds": [
+    "algebra",
+    "reflected_boolean",
+    "bounded_strategy",
+    "checked_search",
+    "normalized_trace",
+    "relation",
+    "observer",
+    "boundary"
+  ],
+  "query_compiler": {
+    "slice": "least parent-closed set containing sinks",
+    "residuals": "stable-deduplicated boundaries on the slice",
+    "schedule": "stable topological order after certified recursion is collapsed",
+    "endpoint": "Contract (residuals ++ permanent) sink_conjunction"
+  },
+  "coherence_levels": [
+    {"level": 1, "name": "finite_use", "requires": ["finite viability", "stable observer"]},
+    {"level": 2, "name": "coherent_path", "requires": ["initial viable state", "effective extension system"]},
+    {"level": 3, "name": "regular_name", "requires": ["path or shrinking clouds", "motion bounds", "tail modulus"]}
+  ]
+}

@@ -1,0 +1,77 @@
+\section{Worked compilation examples}\label{sec:examples}
+
+\subsection{Example A: a residual height-bounded enumerator}
+
+Let \(P(c,\vec x)\) be a reflected predicate on canonical point codes, let \(h(c)\) be a primitive-recursive height, and let \(H(\vec x)\) be a proposed cutoff.  Define \(L_H\) by enumerating all codes in a fixed box determined by \(H\), filtering by well-formedness and \(P\), canonicalizing, and deduplicating.
+
+The graph has nodes for box generation, predicate reflection, filtering, canonicalization, deduplication, soundness, and completeness.  Soundness is unconditional:
+\[
+  c\in L_H\longrightarrow P(c,\vec x)=1.
+\]
+Completeness consumes the boundary formula
+\[
+ \mathsf{HeightBound}(\vec x,H):
+ \quad P(c,\vec x)=1\longrightarrow h(c)\le H(\vec x).
+\]
+The query for soundness alone reaches no height boundary.  The query for completeness reaches exactly \(\mathsf{HeightBound}\).  The combined query shares enumeration and filtering.  The compiler exports
+\[
+ \Contract([\mathsf{HeightBound}],\mathsf{Sound}(L_H)\wedge
+          \mathsf{Complete}(L_H)).
+\]
+This demonstrates query-minimal residuals: a verifier does not prove the existence of the cutoff it checks.
+
+\subsection{Example B: exact rational bisection of \(y^3+y=x\)}
+
+For rational \(x\) and an initial interval \([a,b]\) with
+\[
+ a^3+a\le x\le b^3+b,
+\]
+run \(N\) bisection steps.  The state stores the rational endpoints.  At each step, compare the midpoint polynomial with \(x\), retaining the half interval containing a root.  Monotonicity follows from
+\[
+ (v^3+v)-(u^3+u)=(v-u)(u^2+uv+v^2+1),
+\]
+and the second factor is positive for ordered rationals.
+
+All comparisons are exact integer inequalities after clearing positive denominators.  The loop invariant is the conjunction of endpoint order, bracketing, and the denominator convention; after Booleanization it is quantifier-free.  The normalized trace kernel proves the invariant at the computed bound.  A final arithmetic contract proves interval width \((b-a)/2^N\).  There is no branch-separation residual because equality at the midpoint may be handled by either closed half interval.  The public output is an interval, not a discontinuously selected sign branch.
+
+\subsection{Example C: a bounded challenge--response theorem}
+
+Suppose \(A(u,v,w,\vec x)\) is reflected and all bounds are primitive recursive.  Consider
+\[
+ F(\vec x)=\forall u<U\;\exists v<V(u)\;\forall w<W(u,v)\;A(u,v,w,\vec x).
+\]
+The strategy compiler constructs a truth certificate consisting of a response table \(v(u)\) and atomic truth data for every legal challenge \((u,w)\).  A falsity certificate chooses one \(u\), gives for every candidate \(v\) a counterchallenge \(w(v)\), and supplies atomic falsity data.  The two checkers are reflected by structural contracts.  A later theorem can consume \(F\) without knowing which finite strategy representation was used.
+
+\subsection{Example D: a dead-end relation}
+
+Let levels be
+\[
+ X_0=\{0,1\},\quad X_1=\{0,1,2\},\quad X_2=\{2\},
+\]
+with edges \(0\to0\), \(1\to1\), \(1\to2\), and \(2\to2\) where types permit.  Backward viability at horizon 2 removes \(0\in X_1\), then removes \(0\in X_0\); only the branch beginning at \(1\) survives.  Forward greedy choice without viability could choose \(0\) and get stuck.  The reference implementation checks that the least viable path is \((1,2,2)\).
+
+\subsection{Example E: cyclic precision requests}
+
+Take two requests \(r_0,r_1\) with seeds \((1,0)\), caps \((8,8)\), and updates
+\[
+ r_0\ge r_1+1,
+ \qquad
+ r_1\ge \lfloor r_0/2\rfloor+1.
+\]
+The capped monotone iteration stabilizes at the least closed vector above the seeds.  The rank
+\[
+ (8-r_0)+(8-r_1)
+\]
+strictly decreases on every nonstationary update, so at most 17 rounds are needed.  If a transformer requests a value above its target cap, the overflow Boolean identifies the offending edge; the compiler turns cap adequacy into a residual rather than silently truncating a required precision.
+
+\subsection{Example F: finite probability}
+
+A finite rational law is represented by weights \(w_i\), a positive total \(W\), and values \(X_i\).  Expectations are carried division-free as
+\[
+                 E_X=\sum_i w_iX_i,
+\]
+with the normalized value understood as \(E_X/W\) only under the guard \(W>0\).  The checked finite-sum and Fubini backend proves linearity, product-law identities, tail sums, and finite total expectation.  Approximation to an infinite law is a separate contract requiring an explicit tail-moment or metric error bound.  The finite theorem has no hidden measure-theoretic compactness.
+
+\subsection{Example G: root clusters}
+
+For a polynomial with approximate coefficients, a finite complex grid and argument-principle certificate can identify disjoint boxes with multiplicities.  The stable output is the multiset of boxes and multiplicities.  A query for labeled roots adds separation and continuation residuals; a query for symmetric polynomials does not.  This is precisely the benefit of query specialization: the stronger, discontinuous output does not burden the invariant output.

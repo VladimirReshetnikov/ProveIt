@@ -1,0 +1,54 @@
+\section{Claim ledger and trust boundary}\label{sec:status}
+
+\subsection{Status of the principal claims}
+
+\begin{longtable}{@{}p{0.08\textwidth}p{0.46\textwidth}p{0.20\textwidth}p{0.18\textwidth}@{}}
+\toprule
+ID & Claim & Status & Artifact \\
+\midrule
+C1 & contract--sequent equivalence & human-complete; source candidate & \path{OpenContract.lean} \\
+C2 & identity, cut, weakening, substitution & human-complete; source candidate & \path{OpenContract.lean} \\
+C3 & least query reachability and residual frontier & human-complete; finite-tested & report, Python \\
+C4 & residual graph compilation & human-complete relative theorem; blueprint & report, graph Lean \\
+C5 & two-sided bounded strategy reflection & human-complete schema; finite-tested core & report, Python, blueprint \\
+C6 & normalized trace reflection & human-complete; no-placeholder candidate & trace source \\
+C7 & Boolean folds and checked bounded search & inherited backend plus outline & upstream, report \\
+C8 & capped cyclic demand closure & human-complete; finite-tested & report, Python \\
+C9 & finite viability and least path & human-complete; finite-tested & report, Python \\
+C10 & finite-use stable observer elimination & human-complete; blueprint & report \\
+C11 & path from explicit extension system & human-complete; blueprint & report \\
+C12 & regular name from motion/tail data & human-complete conditional theorem & report \\
+C13 & guarded totalization and finite nets & human-complete conditional theorems & report \\
+C14 & native contract equivalence & inherited checked theorem plus C1 & bridge source \\
+C15 & arbitrary Foundation open-sequent transport & implementation plan & open integration \\
+\bottomrule
+\end{longtable}
+
+\subsection{Inherited checked results}
+
+The report relies on current source declarations for ordinary deduction, quantifier-free induction, bounded search, pairing, simultaneous recursion, arithmetic, finite sums, Fubini, descent, linear algebra, and native bi-interpretation.  These results were inspected through the pinned repository interfaces but were not independently rebuilt in this artifact container.
+
+\subsection{New Lean artifacts}
+
+The new Lean files are source-oriented.  \RepoPath{OpenContract.lean} and \RepoPath{NormalizedTrace.lean} are written as no-placeholder compilation candidates against the inspected API.  The remaining files are typed blueprints whose unfinished mathematical work appears as proof-bearing fields rather than theorem-specific axioms.  Lean is not installed in this artifact runtime, so no new kernel build is claimed.
+
+\subsection{Executable validation}
+
+The Python reference implementation checks graph reachability, residual normalization, topological ordering, capped demand closure, finite viability, least viable paths, and bounded strategy certificates.  These tests validate finite algorithms and examples; they do not prove the object-theory theorems.
+
+\subsection{Claims deliberately not made}
+
+This report does not claim:
+\begin{itemize}
+  \item a total universal primitive-recursive evaluator;
+  \item an unrestricted exact selector for roots, eigenvectors, axes, or minimizers at collisions;
+  \item a Cauchy modulus extracted from metastability alone;
+  \item a height cutoff extracted from mere finiteness or cardinality;
+  \item effective general Faltings, Siegel, Roth, Mordell--Weil generation, Chebotarev, Siegel--Walfisz, or Bombieri--Vinogradov;
+  \item a compiled generic graph elaborator or completed Foundation open bridge.
+\end{itemize}
+What is supplied is a precise finite consumer and the formulas those stronger theorems must produce.
+
+\subsection{Trust boundary}
+
+Logical soundness rests on Lean's kernel, the ConciseIPRA syntax and deduction implementation, and the imported checked theorem declarations.  Metalevel generators, Python tests, JSON graph files, and provenance tooling are outside the logical trusted base.  A malformed generator can fail to compile, produce an unintended explicit formula, or introduce unnecessary residuals; it cannot make the kernel accept a false theorem without an unsound imported axiom.

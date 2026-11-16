@@ -1,0 +1,132 @@
+\section{Two-sided certificates for fixed bounded quantifier alternation}\label{sec:bounded-strategies}
+
+\subsection{Why bounded alternation deserves a uniform interface}
+
+After atomic predicates have been reflected to Boolean terms, a theorem often contains a fixed bounded formula such as
+\[
+  \forall u<U(\vec x)\;\exists v<V(u,\vec x)\;
+  \forall w<W(u,v,\vec x)\; P(u,v,w,\vec x).
+\]
+Expanding each quantifier into a separate ad hoc search works, but it obscures the dual information needed to refute a failed candidate and scales poorly as alternation grows.  Because all bounds are finite and primitive recursive, the correct object is a finite game with a strategy certificate.
+
+\subsection{Bounded formula syntax}
+
+Fix a finite grammar
+\[
+ F ::= \mathsf{atom}(p)\mid F\wedge F\mid F\vee F
+       \mid \forall i<B\,F(i)\mid \exists i<B\,F(i),
+\]
+where every atom has a reflected Boolean code \(b_p\in\{0,1\}\).  The grammar is metalevel and theorem-specific; it does not require an object-level universal syntax evaluator.  Compilation returns fixed primitive-recursive symbols and formulas.
+
+Define the Boolean value recursively:
+\begin{align*}
+ \llbracket\mathsf{atom}(p)\rrbracket &= b_p,\\
+ \llbracket F\wedge G\rrbracket &= \llbracket F\rrbracket\cdot\llbracket G\rrbracket,\\
+ \llbracket F\vee G\rrbracket &= \min(1,\llbracket F\rrbracket+\llbracket G\rrbracket),\\
+ \llbracket\forall i<B\,F(i)\rrbracket &= \prod_{i<B}\llbracket F(i)\rrbracket,\\
+ \llbracket\exists i<B\,F(i)\rrbracket &= \min\left(1,\sum_{i<B}\llbracket F(i)\rrbracket\right).
+\end{align*}
+All operations are primitive recursive, and the bounded folds are compiled by primitive recursion on \(B\).
+
+\subsection{Truth and falsity certificates}
+
+For each fixed formula \(F\), define two finite certificate types by structural recursion.
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lXX@{}}
+\toprule
+Formula & truth certificate \(T(F)\) & falsity certificate \(F(F)\) \\
+\midrule
+atom \(p\) & unit, checked by \(b_p=1\) & unit, checked by \(b_p=0\) \\
+\(G\wedge H\) & pair \((t_G,t_H)\) & tagged failure of \(G\) or \(H\) \\
+\(G\vee H\) & tagged success of \(G\) or \(H\) & pair \((f_G,f_H)\) \\
+\(\forall i<B\,G(i)\) & table \(i\mapsto t_i\) & witness \(i<B\) and \(f_i\) \\
+\(\exists i<B\,G(i)\) & witness \(i<B\) and \(t_i\) & table \(i\mapsto f_i\) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+Fixed finite tags, pairs, and tables are natural-number codes.  Their well-formedness and checking predicates are primitive recursive.
+
+\begin{theorem}[Certificate reflection]\label{thm:strategy-reflection}
+For every fixed bounded formula \(F\), there are primitive-recursive predicates
+\(\CertCheck_T(F,t,\vec x)\) and \(\CertCheck_F(F,f,\vec x)\) and open object-theory derivations of
+\begin{align*}
+ \CertCheck_T(F,t,\vec x)=1 &\longrightarrow F(\vec x),\\
+ \CertCheck_F(F,f,\vec x)=1 &\longrightarrow \neg F(\vec x).
+\end{align*}
+There are also primitive-recursive canonical constructors \(\mathsf{cert}_T\) and \(\mathsf{cert}_F\) satisfying
+\begin{align*}
+ \llbracket F\rrbracket=1 &\longrightarrow
+   \CertCheck_T(F,\mathsf{cert}_T(F,\vec x),\vec x)=1,\\
+ \llbracket F\rrbracket=0 &\longrightarrow
+   \CertCheck_F(F,\mathsf{cert}_F(F,\vec x),\vec x)=1.
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+Proceed by structural recursion on the fixed formula.
+
+For an atom, use its supplied Boolean range and reflection derivations.  For conjunction, the truth checker verifies both subcertificates; the induction hypotheses and conjunction introduction prove the formula.  A falsity certificate carries a tag.  A finite conditional selects the indicated subchecker; the induction hypothesis gives \(\neg G\) or \(\neg H\), each of which intuitionistically implies \(\neg(G\wedge H)\).  Disjunction is dual: a truth tag chooses one introduction rule, while falsity requires both negations and proves \((G\vee H)\to\bot\) by disjunction elimination.
+
+For \(\forall i<B\,G(i)\), the truth certificate is a bounded table.  Its checker is the product of the row checkers.  Bounded-fold reflection gives every row checker below \(B\); the induction hypothesis gives every instance \(G(i)\).  The bounded universal formula used by the compiler is itself represented by its reflected fold or by a fixed first-order bounded expansion, so the desired formula follows.  A falsity certificate contains \(i<B\) and a false subcertificate; instantiate the universal at \(i\) and contradict it.
+
+For \(\exists i<B\,G(i)\), a truth certificate supplies a bounded witness and true subcertificate, followed by existential introduction.  A falsity table supplies \(\neg G(i)\) for every bounded \(i\); existential elimination then yields a contradiction from any alleged witness.
+
+Canonical constructors inspect the Boolean values of finitely many subformulas.  At conjunction and universal nodes, collect every required subcertificate.  At disjunction and existential nodes, bounded least search chooses the first successful branch or witness.  False constructors use the dual pattern.  Every loop has a quantifier-free invariant because subformula truth is represented by Boolean equality.  The construction is primitive recursive for each fixed syntax tree.
+\end{proof}
+
+\subsection{Local decidability without global excluded middle}
+
+\begin{corollary}[Two-sided bounded decision]\label{cor:bounded-decision}
+For every fixed reflected bounded formula \(F\), \iPRA\ derives
+\[
+              F\vee\neg F.
+\]
+More precisely, it derives a disjunction carrying a checked truth certificate or a checked falsity certificate.
+\end{corollary}
+
+\begin{proof}
+Boolean range gives \(\llbracket F\rrbracket=0\vee\llbracket F\rrbracket=1\).  In the second case construct and reflect the truth certificate; in the first construct and reflect the falsity certificate.  Use disjunction elimination.
+\end{proof}
+
+This is a theorem about one fixed bounded formula, not an axiom schema deciding arbitrary formulas.  Its computational content is a finite primitive-recursive program.
+
+\subsection{Game interpretation}
+
+At a bounded universal node, the opponent selects an index and a truth strategy must answer with a sub-strategy.  At a bounded existential node, the prover selects a witness.  Falsity strategies reverse the roles.  The certificate table is therefore a finite strategy tree.  The checker need not explore all possible plays dynamically: it verifies the finite tree by bounded folds.
+
+For the example
+\[
+ \forall u<U\;\exists v<V(u)\;\forall w<W(u,v)\;P(u,v,w),
+\]
+a truth certificate is a function table \(v(u)\) together with, for every \(u\) and \(w<W(u,v(u))\), an atomic truth certificate.  A falsity certificate chooses one \(u<U\) and, for every \(v<V(u)\), chooses a counterexample \(w(v)<W(u,v)\) with an atomic falsity certificate.  Both objects are finite.
+
+\subsection{Contracts for strategy checkers}
+
+The reflection theorem should be exported as contracts:
+\begin{align*}
+ \Contract([\CertCheck_T(F,t,\vec x)=1],F(\vec x)),\\
+ \Contract([\CertCheck_F(F,f,\vec x)=1],\neg F(\vec x)).
+\end{align*}
+The canonical constructor theorem is a second contract from the Boolean value equation to checker acceptance.  A graph node may use either an externally supplied certificate or the canonical internal constructor.  The separation is useful when a compact external certificate is much smaller than recomputation.
+
+\subsection{Negative translation at finite endpoints}
+
+Some classical finite proofs can be normalized to a bounded formula \(F\).  Once \cref{cor:bounded-decision} is available, double-negation elimination for \(F\) is derivable:
+\[
+                     \neg\neg F\longrightarrow F.
+\]
+Indeed, decide \(F\); the negative branch contradicts \(\neg\neg F\).  This justifies a retained classical proof only when its translated conclusion has been proved equivalent to such a fixed decidable endpoint and every premise has an object-level translation.  It does not justify a general classical logic oracle.
+
+\subsection{Complexity and proof size}
+
+A naive truth certificate for \(k\) universal quantifiers can have size equal to the product of their bounds.  This is unavoidable for arbitrary predicates if the certificate explicitly answers every challenge.  Three reductions are available:
+\begin{enumerate}
+  \item use a primitive-recursive response function plus a proof that its answers pass, rather than an extensional table;
+  \item share repeated subcertificates through a trace or DAG code;
+  \item choose a stronger local invariant that proves a whole family of rows by induction.
+\end{enumerate}
+The checker remains bounded and primitive recursive.  The compiler should record whether a strategy is table, functional, or DAG-compressed, because their proof adapters differ.
+
+\subsection{Limits}
+
+Bounded strategy reflection does not decide an unbounded existential or produce a uniform rate of convergence.  It applies after every quantifier has an explicit primitive-recursive bound.  If a theorem supplies only ``there exists a finite bound'', that bound is itself a residual producer.  Similarly, a cardinality bound on a Diophantine set is not a height bound and cannot be substituted for the quantifier bound required by the strategy compiler.

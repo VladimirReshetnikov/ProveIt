@@ -1,0 +1,24 @@
+The current ProveIt development has two assets that should now be joined rather than duplicated: a substantial kernel-checked library of ordinary \iPRA\ derivations, and more than one hundred research packets that repeatedly reduce sophisticated mathematics to finite searches, traces, tables, error budgets, and certificates.  The remaining bottleneck is not the absence of another coding of arithmetic.  It is a compositional interface that turns theorem-specific finite evidence into open object-theory derivations, preserves local hypotheses and parameters, exposes unavailable quantitative producers without overclaiming, and transports the resulting theorem through the repository's checked backends.
+
+This report develops \KIFCS, a sequent-polymorphic refinement of the earlier residualized KIFC-R framework.  Its central object is the contract
+\[
+ \Contract(A,\varphi)\;\equiv\;
+ \forall\Delta\,\Bigl(\bigl[\forall\psi\in A\; \seq{\Delta}{\psi}\bigr]
+     \to \seq{\Delta}{\varphi}\Bigr).
+\]
+The first main theorem proves, constructively and without adding a rule to the logic, that
+\[
+                 \Contract(A,\varphi)\quad\Longleftrightarrow\quad
+                 \seq{A}{\varphi}.
+\]
+Although extensionally equivalent to an ordinary sequent, the contract presentation is a better compiler interface: assumptions have no privileged ambient context, local rules compose by ordinary function application and simultaneous cut, substitution is functorial, and residual boundary formulas become explicit typed inputs.  This removes a recurrent source of context-order and weakening errors from earlier graph blueprints.
+
+A query-specialized graph theorem then computes the least backward proof slice for the requested sinks, collects only the boundary producers reachable from that slice, and composes local contracts into
+\[
+        \Contract(R_Q\mathbin{+\!+}\Gamma,\Phi_Q),
+\]
+where \(R_Q\) is the exact residual frontier.  Supplying object-theory derivations of the residuals closes the result; leaving them open records the actual mathematical boundary.  The theorem is extended to multi-query sharing, acyclic demand propagation, capped monotone cyclic demand systems, normalized one-loop traces, and finite relational viability.
+
+The report also integrates a two-sided certificate semantics for arbitrary fixed bounded quantifier alternation.  Truth and falsity are represented by finite winning strategies whose primitive-recursive checkers are reflected in \iPRA.  This absorbs many uses of classical bounded reasoning without global excluded middle.  A new coherence trichotomy separates three often-confused goals: finite-use elimination of nonunique witnesses, coherent path production from an explicit extension strategy, and regular-name production from diameter, motion, and tail data.  Horizonwise existence alone is proved insufficient for the latter two.
+
+Complete human-readable proofs are supplied for the contract/sequent equivalence, contract composition, least residual frontiers, graph compilation, two-sided bounded strategies, normalized trace reflection, capped demand closure, viability, stable-observer elimination, guarded operations, finite-net transfer, and the coherence trichotomy.  The archive includes source-oriented Lean modules, a dependency-ordered formalization plan, exact Python reference algorithms and tests, worked graph and strategy examples, and a compiled PDF.  New Lean files are accurately labeled as uncompiled candidates or blueprints; inherited checked results are separated from new claims.  General effective Faltings, Siegel, Mordell--Weil generation, unrestricted exact branch selection, and ineffective analytic constants are not asserted: their exact residual producer obligations are stated instead.

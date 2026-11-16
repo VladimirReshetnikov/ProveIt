@@ -1,0 +1,129 @@
+\section{Lean formalization architecture}\label{sec:lean}
+
+\subsection{Pinned APIs}
+
+The source artifacts target the inspected declarations in the pinned snapshot:
+\begin{itemize}
+  \item \texttt{LeanProofs.ConciseIPRA.PR}, \texttt{PTm}, \texttt{Fm}, \texttt{PRAAx};
+  \item \texttt{Prf.trans}, \texttt{Prf.subst}, \texttt{Prf.weaken}, quantifier and connective constructors;
+  \item \texttt{PRA.qfInd};
+  \item \texttt{LeanProofs.IPRA} arithmetic, bounded search, pairing, simultaneous recursion, finite sums, Fubini, descent, and linear algebra;
+  \item \texttt{pra\_iff\_native} for context-sensitive native transfer.
+\end{itemize}
+The framework must be placed over these modules, not copy their syntax or deduction kernel.
+
+\subsection{Module graph}
+
+A dependency-ordered implementation is:
+\begin{enumerate}[label=\textbf{M\arabic*.},leftmargin=4.2em]
+  \item \RepoPath{KIFCS/OpenContract.lean}: definition, exactness, identity, cut, weakening, substitution, native equivalence.
+  \item \RepoPath{KIFCS/NormalizedTrace.lean}: normalized trace system and reflection theorem.
+  \item \RepoPath{KIFCS/BoundedStrategyBlueprint.lean}: fixed strategy schema, certificate records, checker contracts.
+  \item \RepoPath{KIFCS/GraphCompilerBlueprint.lean}: boundary/node/query metadata and kernel-facing compiled result.
+  \item \RepoPath{KIFCS/CoherenceBlueprint.lean}: finite observer, extension system, and regular-name interfaces.
+  \item \RepoPath{KIFCS/BridgeBlueprint.lean}: native corollaries and signatures for Foundation open transport.
+  \item theorem-specific generated modules and \RepoPath{Checks.lean}.
+\end{enumerate}
+
+\subsection{The open-contract core}
+
+The central file is small enough to compile before any graph work:
+\begin{lstlisting}
+def Contract {n : Nat} (A : List (Fm PTm n)) (phi : Fm PTm n) : Prop :=
+  forall Delta,
+    (forall psi, psi in A -> Delta |- [PRAAx] psi) ->
+    Delta |- [PRAAx] phi
+
+theorem Contract.ofPrf (h : A |- [PRAAx] phi) : Contract A phi :=
+  fun Delta supply => h.trans supply
+
+theorem Contract.toPrf (c : Contract A phi) : A |- [PRAAx] phi :=
+  c A (fun psi hpsi => Prf.hyp hpsi)
+\end{lstlisting}
+All other logical combinators should be derived through these two functions.  This keeps the implementation insensitive to list order and avoids reproducing natural-deduction recursion.
+
+\subsection{Normalized trace kernel}
+
+The included candidate deliberately requires theorem-specific normalization before invoking the generic theorem.  Its proof has five logical steps:
+\begin{enumerate}
+  \item call \texttt{PRA.qfInd} on the invariant-along-run formula;
+  \item universally eliminate at the computed bound;
+  \item apply the terminal implication;
+  \item discharge the input guard by implication introduction;
+  \item universally close the remaining input variable.
+\end{enumerate}
+This is a better integration target than a large generic trace theorem that tries to rewrite every run equation internally.
+
+\subsection{Boolean and bounded-strategy implementation}
+
+Start with fixed combinators, not a universal formula-code interpreter.  A structure \texttt{Reflected} should contain a formula, Boolean term, range derivation, and two implication directions.  Constructors for equality, order, conjunction, disjunction, and negation are followed by bounded \texttt{allB} and \texttt{anyB} folds.  The strategy compiler is a metalevel recursion over a fixed syntax returning:
+\begin{itemize}
+  \item certificate code layouts;
+  \item truth and falsity checker PR symbols;
+  \item canonical constructor PR symbols;
+  \item local reflection contracts assembled from the fixed combinators.
+\end{itemize}
+The generated module contains the fixed symbols and derivations; there is no object-level evaluation of arbitrary syntax.
+
+\subsection{Graph compiler implementation}
+
+The metalevel graph structure carries names, formulas, parent indices, boundary records, and local contracts.  Compilation performs:
+\begin{enumerate}
+  \item validate indices and arities;
+  \item compute backward reachability from the query;
+  \item normalize and deduplicate boundaries;
+  \item topologically sort reachable nodes after recursive components are collapsed;
+  \item build one contract per reachable conclusion using \texttt{Contract.trans};
+  \item conjoin requested sinks;
+  \item emit \texttt{Contract.toPrf} and provenance declarations.
+\end{enumerate}
+The eventual implementation may use Lean elaborator code or an external generator.  Logical trust is the same provided the emitted theorem is checked.
+
+\subsection{Coherence interfaces}
+
+Do not define a record named merely \texttt{Coherent} with hidden semantic fields.  Use three separate structures:
+\begin{itemize}
+  \item \texttt{StableObserver}: finite viability and exact/metric/quotient stability contracts;
+  \item \texttt{ExtensionSystem}: a PR extension symbol and preservation/compatibility contracts;
+  \item \texttt{RegularNameData}: local motion bounds and a finite-tail contract.
+\end{itemize}
+The type distinction prevents a Level I theorem from being consumed where a Level III name is required.
+
+\subsection{Foundation bridge plan}
+
+Implementation should follow the repository unification plan:
+\begin{enumerate}
+  \item prove extensional equality of Foundation PR codes with their round trips at arbitrary parameters;
+  \item lift to terms and formulas;
+  \item establish translation/substitution and translation/shift simp lemmas;
+  \item preserve derivations under arbitrary term assignments;
+  \item reflect finite free-variable contexts using fresh indices;
+  \item recover original assumptions by round-trip biconditionals and \texttt{Prf.trans};
+  \item derive existing closed exports as corollaries where theorem types remain unchanged.
+\end{enumerate}
+
+\subsection{Acceptance tests}
+
+A framework theorem should be advertised as formalized only after:
+\begin{enumerate}[label=(\alph*)]
+  \item its public formula and residual assumptions are printed;
+  \item its endpoint has type \(\Prf\,\PRAAx\), \(\NPrf\), or a checked backend judgment;
+  \item no \texttt{sorry}, \texttt{admit}, theorem-specific axiom, or semantic oracle lies in the dependency closure;
+  \item \texttt{\#print axioms} is recorded;
+  \item a clean build from the pinned snapshot succeeds;
+  \item generated source is deterministic from the graph and query;
+  \item reference algorithms agree with independent tests, reported only as tests;
+  \item native or Foundation transfer occurs after the ordinary theorem exists, unless the theorem is explicitly backend-specific.
+\end{enumerate}
+
+\subsection{Formalization milestones}
+
+\begin{description}[style=nextline,leftmargin=0pt]
+  \item[Gate 1: open contracts.] Compile \RepoPath{OpenContract.lean}; audit exactness, cut, substitution, and native equivalence.
+  \item[Gate 2: normalized trace.] Compile the one-parameter trace candidate and a tiny counter example.
+  \item[Gate 3: fixed bounded formulas.] Reflect nested bounded quantifiers and produce both truth and falsity certificates for one \(\forall\exists\forall\) example.
+  \item[Gate 4: graph generator.] Generate the dead-end relation and height-residual examples; inspect the printed residual frontier.
+  \item[Gate 5: coherence.] Formalize finite-use observer elimination, then one extension-system path theorem, then rational tail sums.
+  \item[Gate 6: bridge.] Transport one two-hypothesis open contract to Foundation and back.
+  \item[Gate 7: application adoption.] Recompile one analysis packet and one Diophantine packet through the common interface.
+\end{description}

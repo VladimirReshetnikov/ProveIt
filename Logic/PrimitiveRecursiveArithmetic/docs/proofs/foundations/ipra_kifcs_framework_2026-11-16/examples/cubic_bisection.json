@@ -1,0 +1,14 @@
+{
+  "name": "cubic_bisection",
+  "equation": "y^3 + y = x",
+  "state": ["lower rational", "upper rational"],
+  "invariant": [
+    "lower <= upper",
+    "lower^3 + lower <= x",
+    "x <= upper^3 + upper",
+    "denominators are positive"
+  ],
+  "step": "retain the closed half interval whose midpoint comparison preserves bracketing",
+  "terminal": "upper - lower <= initial_width / 2^N",
+  "residuals": []
+}

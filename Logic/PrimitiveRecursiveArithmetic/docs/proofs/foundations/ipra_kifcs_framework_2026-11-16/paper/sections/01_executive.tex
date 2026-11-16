@@ -1,0 +1,100 @@
+\section{Executive result and recommended architecture}\label{sec:executive}
+
+\subsection{The problem after the current repository advances}
+
+The repository no longer needs a general argument that elementary finite mathematics can in principle be encoded in primitive recursive arithmetic.  It already contains a checked ordinary calculus, a checked native scalar presentation, a checked bridge to the Foundation development, and a growing library of actual derivations for arithmetic, bounded search, simultaneous recursion, finite sums, number theory, linear algebra, geometry, probability, and combinatorics.  At the same time, the research packets display a stable family of obstructions:
+\begin{itemize}
+  \item an ambient Lean theorem is mistaken for an object-theory derivation;
+  \item a loop invariant contains bounded quantifiers and is therefore not eligible for quantifier-free induction;
+  \item a finite witness is chosen independently at each horizon although later consumers need compatibility;
+  \item a represented nonzero input is treated as if it carried a positive quantitative margin;
+  \item an abstract finiteness or compactness statement is used as if it supplied an enumeration cutoff or a finite net;
+  \item a theorem-specific effective constant, height bound, separation gap, or representative system is hidden in host-language data;
+  \item a proof is proved only for closed sentences even though applications require hypotheses and arbitrary parameters.
+\end{itemize}
+The earlier \KIFCR\ report resolved most of the mathematical representation issues and proposed an explicit residualized endpoint.  The newer bounded-interaction packet isolated a small normalized trace kernel and two-sided finite strategy certificates.  The remaining unifying step is to make the composition interface itself independent of a fixed ambient context.
+
+\subsection{The one new abstraction}
+
+For a finite list \(A\) of formulas and a formula \(\varphi\), all with the same free-variable arity, define
+\[
+ \Contract(A,\varphi)
+ \;:\!\!\Longleftrightarrow\;
+ \forall\Delta\;\Bigl(
+   (\forall\psi\in A\;\seq{\Delta}{\psi})
+   \to \seq{\Delta}{\varphi}\Bigr).
+\]
+A value of this type is not a semantic implication.  It is a proof transformer whose input and output are embedded derivations.  The ambient context \(\Delta\) is universally quantified, so a contract can be reused under any local hypotheses.  The key fact is exactness:
+\[
+                       \Contract(A,\varphi)
+                       \quad\Longleftrightarrow\quad
+                       \seq{A}{\varphi}.
+\]
+The forward direction instantiates the contract at \(A\) and supplies assumptions by the hypothesis rule.  The reverse direction is the checked simultaneous-cut theorem \texttt{Prf.trans}.  Thus contracts do not strengthen \iPRA; they expose the correct higher-order API for composing its derivations.
+
+This modest change has several consequences.
+\begin{enumerate}[label=(\arabic*)]
+  \item A local theorem no longer stores a proof tied to a particular ordering of permanent and residual assumptions.  It stores a contract from the assumptions it actually consumes.
+  \item Derived facts can be inserted, reordered, deduplicated, or supplied from another backend through the same \texttt{trans} interface.
+  \item Substitution acts on contracts by applying \texttt{Prf.subst} to the underlying sequent, so open parameters are first-class.
+  \item Residual boundaries are ordinary formulas, not special host-language tokens.  Closing a residualized theorem is simply contract application.
+  \item A graph generator can remain untrusted: it emits a fixed ordinary derivation, and Lean checks the result.
+\end{enumerate}
+
+\subsection{The compilation pipeline}
+
+For a fixed mathematical query, the recommended pipeline is:
+\begin{enumerate}[label=\textbf{P\arabic*.},leftmargin=4.1em]
+  \item \textbf{Choose an observational statement.}  Replace completed infinitary objects by the finite observations actually consumed: exact algebraic data, rational intervals, finite distributions, bounded complexes, finite nets, finite lists, or stable quotient observables.
+  \item \textbf{Separate producers from verifiers.}  A height cutoff, separation margin, covering radius, effective constant, or representative family is a producer.  Its checker is usually primitive recursive; its existence may be the difficult theorem.  Put each unavailable producer into a boundary formula.
+  \item \textbf{Booleanize fixed bounded content.}  Equality, order, connectives, and bounded quantifiers are compiled to Boolean primitive-recursive terms with object-level reflection derivations.
+  \item \textbf{Resolve finite alternation by strategies.}  For a fixed bounded formula, construct a canonical winning certificate for truth or falsity and reflect its checker.  This gives local decidability without a global classical axiom.
+  \item \textbf{Propagate finite demands before induction.}  Compute all precisions, horizons, and table sizes from the terminal query.  Use capped finite closure for justified cyclic requests.
+  \item \textbf{Normalize recursion.}  Collapse bounded loops, searches, and folds into one primitive-recursive trace with a quantifier-free invariant, or compile each already checked loop separately.
+  \item \textbf{Handle nonuniqueness at the correct strength.}  Use backward viability for finite compatibility; erase choices through stable observables when possible; require an explicit extension strategy for a coherent path; require diameter, motion, and tail data for a regular name.
+  \item \textbf{Compile the proof slice.}  Starting from requested sinks, compute backward proof reachability, collect the least residual frontier, topologically compose local contracts, and export one open contract.
+  \item \textbf{Close and transport.}  Supply object proofs of the residuals, recover the ordinary \(\Prf\,\PRAAx\) sequent, and only then use the checked native or Foundation bridge required by the consumer.
+\end{enumerate}
+
+\subsection{Main generic theorems}
+
+The framework proves the following reusable results.
+\begin{enumerate}[label=\textbf{T\arabic*.},leftmargin=4.1em]
+  \item \textbf{Contract exactness and naturality.}  Open contracts are equivalent to ordinary sequents and are closed under identity, simultaneous cut, weakening of available assumptions, and term substitution.
+  \item \textbf{Least query boundary.}  Backward proof reachability from a finite sink set gives the unique least set of executable nodes relevant to that query and the least boundary frontier relative to stable boundary keys.
+  \item \textbf{Residual graph compilation.}  Local node contracts compose, in topological order, to a contract from the reachable residuals and permanent hypotheses to all requested sink conclusions.
+  \item \textbf{Two-sided bounded-strategy reflection.}  Every fixed bounded formula over reflected atoms has canonical finite truth and falsity certificates, primitive-recursive checkers, and object-level checker-to-formula derivations.
+  \item \textbf{Normalized trace reflection.}  A base derivation, a shifted step derivation, and a terminal derivation in the exact forms consumed by \texttt{PRA.qfInd} yield a closed theorem about the primitive-recursive run at its computed bound.
+  \item \textbf{Capped demand closure.}  A monotone demand system on a finite capped box reaches its least closed point by an explicit bounded primitive recursion, or produces a finite overflow witness.
+  \item \textbf{Finite viability and stable elimination.}  Backward viable rows characterize extendable finite prefixes; least search extracts a canonical finite path; exact or diameter-stable observations erase path choices.
+  \item \textbf{Coherence trichotomy.}  Stable finite consumers need no infinite path; a coherent path requires an effective extension operator or equivalent retraction data; a regular metric name additionally requires an explicit summable tail estimate.
+  \item \textbf{Guarded totalization.}  Partial mathematical operations become total primitive-recursive programs whose intended laws are proved under quantitative guard certificates.
+\end{enumerate}
+
+\subsection{What is resolved and what remains genuinely external}
+
+The framework resolves composition, bounded search, finite strategies, finite relational compatibility, precision bookkeeping, trace reflection, finite nets, guarded operations, and residual accounting at the generic level.  It does not manufacture theorem-specific information that is absent from the hypotheses.  The following remain producer obligations when an application needs them:
+\begin{itemize}
+  \item an effective height bound for Diophantine points;
+  \item a computable set of rational representatives for descent or Selmer data;
+  \item separation gaps for labeled roots, eigenvectors, or exact branch selectors;
+  \item positive lower bounds for inversion, pivoting, normalization, or sign decisions;
+  \item effective constants and thresholds in analytic number theory;
+  \item finite-net coverage and moduli for compactness-style arguments;
+  \item tail moduli needed to upgrade metastable or finite-horizon data to regular names;
+  \item the remaining open-sequent engineering required to transport arbitrary Foundation contexts through the repository bridge.
+\end{itemize}
+Putting these formulas in the final sequent is not a weakness.  It is the formal distinction between a verified consumer and an unavailable producer, and it makes incremental formalization possible.
+
+\subsection{Recommended repository placement}
+
+The small, application-independent core should live beside \RepoPath{IPRADerivations/Core} rather than inside another research packet.  A practical split is:
+\begin{itemize}
+  \item \RepoPath{Core/OpenContract.lean}: contract exactness, composition, substitution;
+  \item \RepoPath{Core/ReflectedBounded.lean}: Boolean folds and bounded strategy checkers;
+  \item \RepoPath{Core/NormalizedTrace.lean}: the tiny trace-reflection theorem;
+  \item \RepoPath{Framework/QueryGraph.lean}: metalevel graph syntax and proof-producing generator;
+  \item \RepoPath{Framework/FiniteRelation.lean}: viability and stable observers;
+  \item \RepoPath{Bridge/OpenSequent.lean}: the remaining Foundation context transport.
+\end{itemize}
+The archive's Lean files are organized in this dependency order and deliberately avoid reimplementing the checked arithmetic library.
