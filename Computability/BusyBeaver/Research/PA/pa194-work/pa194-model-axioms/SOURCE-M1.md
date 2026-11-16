@@ -11,3 +11,5 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-axioms/check-so
 ```
 
 This incremental checker rebuilds these three sources in one output, rejects `sorryAx`, and checks six axiom reports. The `LEAN_PATH` retains the independently source-replayed multiplication Separation, induction, output, prefix and graph chains, repository-replayed `a1` and recurrence/graph objects, older addition-output/induction objects, and Foundation objects. It is not a fresh rebuild of the entire dependency closure; a separate standalone check of the corresponding addition-output source development passed, but did not establish byte identity with the older objects used here.
+
+A separate [17-module repository-source replay](SOURCE-M1-CHAIN.md) rebuilt the multiplication helper chain and these three final modules in dependency order, passing all declared axiom audits without `sorryAx`. Earlier graph, addition and Foundation dependencies remained prebuilt.

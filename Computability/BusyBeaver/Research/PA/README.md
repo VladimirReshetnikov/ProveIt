@@ -133,7 +133,8 @@ are proved in the covered models. A separate [addition-existence supplier](pa194
 and a [multiplication-existence supplier](pa194-work/pa194-model-axioms/SOURCE-M1.md)
 have passed incremental replays. The [ten-fact assembly](pa194-work/pa194-model-axioms/SOURCE-FACTS-TEN.md)
 leaves addition and multiplication coherence as explicit premises. The
-multiplication source chain is independently rebuilding. Older addition and
+[multiplication source chain](pa194-work/pa194-model-axioms/SOURCE-M1-CHAIN.md)
+has independently replayed. Older addition and
 induction dependencies remain prebuilt in these replays; a
 separate standalone source check of the corresponding addition-output
 development passed with a Foundation overlay, without establishing byte identity
