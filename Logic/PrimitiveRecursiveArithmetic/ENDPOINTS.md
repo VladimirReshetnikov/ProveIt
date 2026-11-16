@@ -42,6 +42,16 @@ public bridge and order-symbol comparison.
 
 ## BusyBeaver PA
 
+The standalone BusyBeaver default build was checked separately from the root
+workspace. From a Git archive containing `lean-toolchain` and the three
+tracked Lean source directories for BusyBeaver, FirstOrder and ZF, run
+`lake build` in `Computability/BusyBeaver/Lean`. The fresh build completed
+five jobs in 3.13 seconds and peaked at 510 MiB resident memory. The second
+run took 0.15 seconds and peaked at 107 MiB. The standalone `.lake` directory
+used 1.9 MiB. The source closure report also matched the root `BusyBeaver`
+target's 603 transitive imports and resolved the standalone `Core` and
+`KnownValues` sources.
+
 - **Primary PA194.** [`PA194NativeLiteralFinal.consistency_iff_literal_nonhalt`](../../Computability/BusyBeaver/Research/PA/verification/pa194/ipra/native-endpoint/PA194NativeLiteralFinal.lean)
   proves `standardTheory ⊢ nativePAConsistency 🡘 ∼PA194ExplicitEndpoint.haltSentence`.
   The two-way blank-tape table has SHA-256
@@ -147,6 +157,11 @@ to check this boundary.
   environment using `lake build +BusyBeaver.ZFC.ArithmeticHistory222`.
   The focused source replay checked both declarations with `propext`,
   `Classical.choice`, and `Quot.sound`.
+  The historical `ArithmeticRow254` witness statement continues to serve
+  its existing callers. That file is bound by source-hash receipts for
+  ZFCinPA and K215 stages. The focused C222 replay used the migrated
+  evaluator source with SHA-256
+  `eab9a10f9cda777f5db0b207c9df60a4491198018bd878f7f2e1bac6b8df9f5e`.
 - **Explicit nine-variable equation.**
   [`IPRAExplicitZFCFinal.standard_equivalence`](../../Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRAExplicitZFCFinal.lean)
   proves `standardTheory ⊢ nativeNoZero ExplicitZFCSyntax.expression 🡘
@@ -207,6 +222,8 @@ used by the independently replayed literal PA1944L proof.
 The [MRDP proof guide](../../Computability/HilbertTenthProblem/Lean/MRDP.md)
 covers `Diophantine.mrdp` and `mrdp_iff` over standard natural numbers.
 Use `lake build Diophantine` and the published `MRDPAxioms.lean` audit.
+The focused `lake env lean -j1` run of that audit passed all 18 axiom
+checks and the three explicit interface checks.
 The [Pell slack row](../../Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRAPellSlack.lean)
 is the first object-theory client. It uses `Sys90.E10b` with
 `k = η + ζ` and a positive natural witness `ζ`, and proves both
@@ -217,12 +234,27 @@ iPRA. Independently build `+Diophantine.Paper1980.System90` and
 `lake env lean -j1 Computability/DiophantineConsistency/Lean/checks/IPRAPellSlack.lean`
 to check the existing native consumer's interface. All three checks passed.
 
-The [PA list-coding project](../PeanoArithmetic/ListCoding/README.md) provides
-the `ExactTrace` interface for this closure. The
-[ZFCinPA project](../Interpretability/ZFCinPA/README.md) and
-[bounded consistency projects](../PeanoArithmetic/BoundedConsistency/README.md)
-provide their declared proof codings and theory judgments. New object
-translations at those boundaries should have their own inventory entries.
+| Interface | Preserved boundary and focused check |
+| --- | --- |
+| [PA list coding](../PeanoArithmetic/ListCoding/Lean/PAListCoding/ExactTrace.lean) | For every `R : ℕ → ℕ → Prop` and `h x y : ℕ`, `exactIter_iff_exists_sequence` represents `ExactIter R h x y` by adjacent steps in a sequence, and `exactIter_iff_exists_betaTrace` represents it by `∃ code step, BetaTrace R code step h x y`. These are natural-number theorems used by [H10's trace adapter](../../Computability/HilbertTenthProblem/Lean/Diophantine/Common/DiophantineTrace.lean). Both passed source-current type and axiom checks with the Lake providers. |
+| [ZFCinPA free renaming](../Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedFreeRenamingAudit.lean) | Renaming, shift and substitution hold for arbitrary `IΣ₁` model elements and coded syntax, including nonstandard values. For example, `renameIndex_lift_succ` proves `renameIndex chosen (level + 1) offset (x + 1) = renameIndex chosen level offset x + 1`. The current-source `ModelCodedFreeRenamingAudit` passed all 15 axiom reports and the exact type probes. The [older hash-bound receipt](../Interpretability/ZFCinPA/results/model-coded-free-renaming-verification.json) refers to its pinned source and remains separate. |
+| [Uniform bounded PA provability](../PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/UniformInternalProvabilityTheoremAudit.lean) | The audited declaration states `Peano ⊢ paUniformRestrictedConsistencyProvabilitySentence`. Its proof uses actual PA proof codes at arbitrary internal levels. Reproduce with `lake build +BoundedPAConsistency.UniformInternalProvabilityTheoremAudit`. The current focused probe lacked the endpoint object and 111 other local prerequisite objects. |
+| [Bounded ZFC endpoint](../../SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Endpoint.lean) | For each external `n : Nat`, `zfc_proves_conZFC_unfolded` gives `BProv ZFCax_s [] (conZFCForm n)` in the sealed calculus. The current source check passed both ZFC theorem forms and the sentence seal. |
+
+The three successful checks used the standard Lean axioms. The bounded ZFC
+sentence seal used only `propext` and `Quot.sound`. The provider source and
+object hashes for [BoundedDioph](../PeanoArithmetic/ListCoding/Lean/PAListCoding/BoundedDioph.lean),
+the ZFC axiom truth file and the ZFCinPA free-renaming module matched their
+Lake traces.
+
+The nearest arithmetic use sites in the model-coded proofs are additive
+cancellation in [`TermEvaluationTransport`](../PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/TermEvaluationTransport.lean)
+and [`ModelCodedFreeRenaming`](../Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedFreeRenaming.lean).
+They already share Foundation's `AddCancelCommMonoid` instance derived
+from PA⁻ ordered-ring semantics. The current `IΣ₁` inputs range over the
+ambient model. An ordinary iPRA proof could be used at this interface with
+a checked symbol and axiom interpretation over every such model. Retain
+the existing shared model theorem at these call sites.
 
 When adding a migration entry, record the original and translated types,
 proof premises, exact table or expression identifier, provider order,
