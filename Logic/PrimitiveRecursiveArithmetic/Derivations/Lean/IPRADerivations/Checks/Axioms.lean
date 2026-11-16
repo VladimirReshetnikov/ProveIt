@@ -183,6 +183,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Descent.descent
 #print axioms LeanProofs.IPRA.Algebra.TrisectionCubic.nonneg_root
 #print axioms LeanProofs.IPRA.Algebra.TrisectionCubic.nonpos_root
+#print axioms LeanProofs.IPRA.Algebra.Quintic.s4_sos
+#print axioms LeanProofs.IPRA.Algebra.Quintic.strong_monotonicity
+#print axioms LeanProofs.IPRA.Algebra.Quintic.residual
+#print axioms LeanProofs.IPRA.Algebra.Quintic.depress_quintic
+#print axioms LeanProofs.IPRA.Algebra.Quintic.bring_scaling
+#print axioms LeanProofs.IPRA.Algebra.Quintic.de_moivre_root
+#print axioms LeanProofs.IPRA.Algebra.Quintic.reducible_example
 #print axioms LeanProofs.IPRA.Topology.Sperner.parity_invariant
 #print axioms LeanProofs.IPRA.Topology.Sperner.sperner_1d
 #print axioms LeanProofs.IPRA.Foundations.Termination.termination
