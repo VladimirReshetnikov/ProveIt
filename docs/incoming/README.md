@@ -303,7 +303,8 @@ placed the same way, under `combinatorics/`, and then deleted. It leaves out one
 `.log` file. `normal_distribution_ipra_2026-11-16.zip` was placed the same way, under
 `probability/`, and then deleted. It leaves out one ignored checksum manifest.
 `aperiodic_monotile_ipra_2026-11-16.zip` was placed the same way, under `geometry/`, and
-then deleted. All 31 of its members are placed.
+then deleted. All 31 of its members are placed. `conway_criterion_ipra_2026-11-16.zip` was
+placed the same way, under `geometry/`, and then deleted. All 50 of its members are placed.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

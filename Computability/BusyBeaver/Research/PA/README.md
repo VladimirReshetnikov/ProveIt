@@ -540,6 +540,14 @@ PA194JH5X, the fused head of the FW candidates, the gate of PA196 (equality vacu
 place of the diagonal, another calculus), and the candidates with another coefficient of
 the formula constructors.
 
+[`pa194-generic-calculus`](verification/pa194-work/pa194-generic-calculus/README.md) prepares the
+PA196 gate. It restates the propositional and vacuity laws of the numerical calculus for an
+arbitrary set of codes closed under its rules, and proves by `Σ₁` order induction on codes
+that such a set contains every diagonal `Γ(B)` once it contains the vacuity of the two kinds
+of atoms at fresh labels; and it proves that arithmetic proves the translation of the
+equality vacuity `E(a,b) → U(c, E(a,b))` for `c ≠ a, b`, for all codes of the model. No
+scheduler with the PA196 gate is treated yet.
+
 [`isigma1-machine`](verification/shared/isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
 `Calibrated T h` from which the iPRA equivalence follows. No table is shown to be calibrated.

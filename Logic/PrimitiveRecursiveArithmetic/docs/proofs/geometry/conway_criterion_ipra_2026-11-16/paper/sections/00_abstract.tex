@@ -1,0 +1,34 @@
+\begin{abstract}
+The Conway criterion is a local symmetry test implying that a topological disk tiles the plane periodically by translations and half-turns.  Its usual proofs describe matching strips or double the tile into a generalized parallelogram or hexagon.  Those pictures correctly identify the construction, but a completely formal proof must still rule out a gap or overlap at the vertices where several boundary arcs meet.
+
+This report gives a finite, constructive proof for rational piecewise-linear disks, the natural arithmetic presentation of polygonal and polyform instances.  If the counterclockwise boundary is split into six paths
+\(a,b,c,d,e,f\), with \(a\) translating to the reverse of \(d\) and the other four paths invariant under their endpoint half-turns, define
+\[
+ t=E-A=D-B,
+ \qquad
+ u=E+F-B-C,
+ \qquad
+ H_e(x)=E+F-x.
+\]
+The explicit family
+\[
+ T+mt+nu,
+ \qquad
+ H_e(T)+mt+nu
+ \quad (m,n\in\Z)
+\]
+is shown to be a tiling.  The proof projects the two orbit representatives to the period torus \(\R^2/(\Z t+\Z u)\).  Their oriented boundaries cancel.  After a finite common subdivision they form a nonnegative two-cycle, hence have a constant coverage multiplicity.  An exact open-path shoelace calculation gives
+\[
+ \det(t,u)=2\Area(T)>0,
+\]
+so the two representatives have exactly the area of one torus fundamental cell and the constant multiplicity is one.  This simultaneously proves coverage, disjointness of interiors, and nondegeneracy of the period lattice.
+
+Every ingredient is finite: signed rational arithmetic, lists of vertices, a certified triangulation, segment clipping, a dual spanning tree, and bounded sums.  We formulate the resulting number-coded theorem as a quantifier-free universal schema of intuitionistic primitive recursive arithmetic (iPRA), audit the proof for constructive principles, and give a dependency-ordered route to a Lean theorem of type
+\[
+ ([] : \mathrm{List}(\mathrm{Fm}\;\mathrm{PTm}\;0))\ \vdash[\PRA]\ \varphi_{\rm Conway}.
+\]
+The packet also contains exact Python reference code, a nonconvex worked example, figures, and an uncompiled Lean blueprint.  The mathematical theorem is proved here; a kernel-checked \(\Prf\,\PRA\) object remains a clearly delimited formalization task.
+\end{abstract}
+
+\paragraph{Deliverable status.}
+The report proves the finite PL theorem without excluded middle, choice, compactness, or a classical covering-space argument.  The executable companion validates the algebraic and torus certificates of the worked example using exact rational arithmetic.  The Lean files contain no admitted facts, but they are a blueprint rather than a completed formal proof.

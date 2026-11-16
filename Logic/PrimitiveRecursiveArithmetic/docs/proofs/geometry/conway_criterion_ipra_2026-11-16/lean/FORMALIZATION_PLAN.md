@@ -1,0 +1,161 @@
+# Lean completion plan
+
+## Target
+
+The final checked endpoint should be a closed theorem in the existing `IPRADerivations` library:
+
+```lean
+theorem conwayCriterion :
+  ([] : List (Fm PTm 0)) ⊢[PRAAx] conwayCriterionFormula
+```
+
+The formula quantifies over codes of a rational PL disk certificate and its six normalized boundary paths.  It states that `DiskOK = 1` and `ConwayOK = 1` imply that the primitive-recursive constructor `buildTorus` returns a two-orbit, multiplicity-one torus certificate.  A second theorem derives every bounded planar patch.  Transfer to the native scalar core is performed only after this `Prf PRAAx` object exists, using `pra_iff_native`.
+
+## Existing ProveIt modules to reuse
+
+- `IPRADerivations.Core.Basic`, `Semiring`, `Integers`, `Order`, `Tactic`: arithmetic and polynomial identities.
+- `Core.Pairing`: number coding, projections, equality test, simultaneous recursion.
+- `Core.Search`: bounded least search used by clipping, sorting and face traversal.
+- `Core.BoundedSums`, `MultiSums`, `SumLemmas`: shoelace sums, areas and coverage counts.
+- `Core.LinearAlgebra`: integer vectors, determinants, finite conjunctions and the `ZT.derive` bridge.
+- `ConciseIPRA`: `PR`, `PTm`, `PRAAx`, `Prf`, substitution/cut, and `pra_iff_native`.
+
+The Jordan packet may guide finite planar-arrangement conventions, but the Conway proof does **not** depend on its uncompiled Jordan theorem.  All topology needed here is replaced by a finite torus subdivision.
+
+## Data representation
+
+1. Encode a signed integer as a difference pair, reusing `ZT` at the proof layer.
+2. Encode a rational as `(positive denominator, signed numerator)`; equality and order use cross multiplication, so normalization by gcd is unnecessary.
+3. Encode a point as a pair of rationals, a path as a coded finite list, and a triangle/polygon as nested lists.
+4. Encode a disk certificate by a list of positively oriented triangles, an oriented boundary cycle, and finite edge-incidence data.
+5. Require boundary paths to be subdivision-normalized.  A separate primitive-recursive normalizer removes consecutive duplicates and redundant collinear vertices.
+
+Every decoder is total and returns a default value on malformed input.  The Boolean predicates `DiskOK` and `ConwayOK` isolate the well-formed branch.
+
+## Dependency-ordered milestones
+
+### M0 — Host-level executable geometry
+
+Complete and compile `ConwayCriterionBlueprint.lean` as a semantic model.  Prove by ordinary Lean reasoning:
+
+- half-turn involution and composition;
+- path map/reversal laws;
+- translation and half-turn laws for `pathJ`;
+- exact boundary-pair identities for the two orbit representatives;
+- the determinant/area identity for a certified triangulated disk.
+
+No object-theory claim is made at this milestone.
+
+### M1 — Primitive-recursive path and rational library
+
+Define symbols and object-theory equations for:
+
+- list length, lookup, map, reverse and concatenation;
+- rational addition, subtraction, multiplication, comparison and determinant;
+- `pathJ`, cyclic shoelace sum and triangle area;
+- path normalization and exact equality after normalization.
+
+Prove the equations by quantifier-free induction over list length.  Use `Pairing` and `Search`; do not introduce a universal evaluator.
+
+### M2 — Affine identity package
+
+Construct `Prf PRAAx` derivations of:
+
+```text
+H_r(H_s(x)) = x + (r-s)
+J(P+w) = J(P) + det(w,end(P)-start(P))
+J(reverse P) + J(P) = 0                         (integer-difference form)
+H_{X+Y}(P)=reverse(P) -> J(P)=det(X,Y)
+```
+
+The determinant calculations should be discharged through `ZT`, `Core.LinearAlgebra`, and `ipra_ring`.  The path statements use induction on the coded path.
+
+### M3 — Period and area theorem
+
+From the five local Conway equations derive, internally:
+
+```text
+u = E+F-B-C
+boundaryJ = det(t,u)
+twiceArea = boundaryJ
+det(t,u) > 0
+```
+
+The `twiceArea = boundaryJ` proof is finite cancellation over the supplied triangulation: every interior oriented edge occurs twice with opposite signs.
+
+### M4 — Finite torus cutter
+
+Implement `buildTorus`:
+
+1. map each certified triangle and its half-turned image into homogeneous lattice coordinates;
+2. enumerate the finitely many integer shifts whose bounding boxes meet the unit square;
+3. clip convex triangles by the four square half-planes;
+4. split at all pairwise segment intersections;
+5. sort split points along every segment by cross multiplication;
+6. enumerate faces and triangulate them;
+7. attach to each small face the number of covering pieces.
+
+All loops have explicit bounds computed from input list lengths and coordinate sizes, so the constructor is primitive recursive.  Malformed branches return an empty certificate.
+
+### M5 — Torus cycle lemma
+
+For the refinement dual graph, prove:
+
+```text
+boundaryZero -> adjacentFaceCountsEqual
+connectedDual -> allFaceCountsEqual
+```
+
+Use a supplied spanning-tree certificate generated by bounded search.  The second result is induction over the tree enumeration, not an appeal to classical connectedness.
+
+Then prove the common count is one from the exact finite sum
+
+```text
+commonCount * det(t,u) = 2 * area(tile) = det(t,u)
+```
+
+and positivity of `det(t,u)`.  This is the formal replacement for the informal claim that the copies “fit at the vertices.”
+
+### M6 — Closed iPRA theorem
+
+Define a quantifier-free matrix `conwayCriterionMatrix(c)` and close it universally.  The desired theorem says:
+
+```text
+DiskOK(c)=1 ∧ ConwayOK(c)=1
+  -> TorusOK(c, buildTorus(c))=1.
+```
+
+A companion theorem universally quantifies over a radius `R` and verifies the finite patch obtained by lifting the torus certificate to all lattice indices within the computed bounding range.
+
+### M7 — Integration and audit
+
+- Add `Geometry/ConwayCriterion.lean` to `IPRADerivations.lean`.
+- Add the theorem to `Checks/Axioms.lean`.
+- Run `lake build IPRADerivations` and record `#print axioms`.
+- Require no `sorryAx`; the expected metatheoretic axioms are the same standard Lean axioms already reported by the library.
+- Export through `pra_iff_native` only at the final step.
+
+## Suggested theorem decomposition
+
+The formal proof should expose at least these named lemmas:
+
+```text
+halfTurn_comp
+pathJ_translate
+pathJ_reverse
+pathJ_central
+translated_pair_J
+conway_boundary_J
+triangulation_boundary_J
+period_det_pos
+orbit_boundary_zero
+face_coeff_adjacent
+face_coeff_constant
+face_coeff_one
+torus_two_orbit_exact
+bounded_patch_exact
+```
+
+## Completion gate
+
+The package supplied here is complete as a human-readable proof and exact finite reference computation.  It is **not** a completed Lean formalization.  Completion means an elaborated empty-context `Prf PRAAx` theorem plus an axiom audit; a host-level theorem or a Boolean program alone does not meet that gate.

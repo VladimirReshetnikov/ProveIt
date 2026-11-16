@@ -1,0 +1,171 @@
+\appendix
+\section{Algebraic identity sheet}
+\label{app:identities}
+
+This appendix collects the equations that a formal development can use as rewrite targets.
+
+\subsection{Endpoint and center equations}
+
+\begin{align*}
+ t&=E-A=D-B,\\
+ D&=B+t, & E&=A+t,\\
+ p&=B+C, & q&=C+D=p+t,\\
+ r&=E+F, & s&=F+A=r-t,\\
+ u&=r-p=E+F-B-C.
+\end{align*}
+
+\subsection{Half-turn compositions}
+
+For \(H_z(x)=z-x\),
+\begin{align*}
+ H_zH_w&=\tau_{z-w},\\
+ H_rH_p&=\tau_u,\\
+ H_rH_q&=\tau_{u-t},\\
+ H_rH_r&=\mathrm{id},\\
+ H_rH_s&=\tau_t.
+\end{align*}
+
+\subsection{Boundary equations}
+
+\begin{align*}
+ \tau_t(a)&=-d,\\
+ H_p(b)&=-b, & H_r(b)&=-\tau_u(b),\\
+ H_q(c)&=-c, & H_r(c)&=-\tau_{u-t}(c),\\
+ H_r(e)&=-e,\\
+ H_s(f)&=-f, & H_r(f)&=-\tau_t(f).
+\end{align*}
+
+\subsection{Shoelace equations}
+
+For \(P:X\to Y\),
+\begin{align*}
+ \PathJ(\tau_wP)&=\PathJ(P)+\det(w,Y-X),\\
+ \PathJ(H_zP)&=\PathJ(P)+\det(z,X-Y),\\
+ \PathJ(-P)&=-\PathJ(P),\\
+ H_{X+Y}P=-P&\Longrightarrow \PathJ(P)=\det(X,Y).
+\end{align*}
+Thus
+\begin{align*}
+ \PathJ(a)+\PathJ(d)&=-\det(t,B-A),\\
+ \PathJ(b)+\PathJ(c)+\PathJ(e)+\PathJ(f)
+ &=\det(B,C)+\det(C,D)+\det(E,F)+\det(F,A),\\
+ \PathJ(\partial T)&=\det(t,u)=2\Area(T).
+\end{align*}
+
+\section{Primitive-recursive torus constructor}
+\label{app:algorithm}
+
+The following pseudocode spells out one total implementation.  Every loop has an explicit finite bound.
+
+\begin{lstlisting}
+BuildTorus(code c):
+  if not DiskOK(c) or not ConwayOK(c):
+      return EmptyCertificate
+
+  t := E(c) - A(c)
+  u := E(c) + F(c) - B(c) - C(c)
+  delta := det(t,u)
+  if delta <= 0: return EmptyCertificate
+
+  triangles := DecodeCertifiedTriangles(c)
+  turned := map (x |-> E(c)+F(c)-x) triangles
+  pieces := []
+
+  for triangle q in triangles ++ turned:
+      q' := map LatticeCoordinates(t,u,delta) q
+      I := all integer horizontal shifts whose box meets [0,1]^2
+      J := all integer vertical shifts whose box meets [0,1]^2
+      for i in I:
+        for j in J:
+          p := ClipConvex(q' + (i,j), UnitSquare)
+          if TwiceArea(p) > 0: append p to pieces
+
+  intersections := all pairwise segment intersections in pieces
+  split every edge at its sorted intersection list
+  graph := build directed half-edge graph with torus side tags
+  faces := bounded face walk from every unused half-edge
+  trianglesK := triangulate each rational face
+  dualTree := least-search spanning tree of face adjacency
+  counts := coverage count of each triangleK by original pieces
+
+  return Certificate(pieces, graph, faces, trianglesK, dualTree, counts)
+\end{lstlisting}
+
+The verifier checks:
+\begin{enumerate}[label=(\arabic*)]
+\item all decoded rational denominators are positive;
+\item all segment splits and cyclic face walks are exact;
+\item every directed half-edge has the prescribed reverse, including side identifications;
+\item every small triangle is positively oriented;
+\item the dual tree visits every face exactly once;
+\item the boundary coefficient of every edge is zero;
+\item adjacent face counts agree; and
+\item the common count is one by the determinant-area identity.
+\end{enumerate}
+
+A simpler certificate can omit \code{graph}, \code{faces}, and \code{counts}, retaining the clipped convex pieces and checking pairwise zero-area intersections plus total area one.  The report's Python reference uses this variant.  For a first object-theory implementation, the dual-tree form has the advantage that the logical core is just equality propagation on a finite graph.
+
+\section{Object-theory dependency graph}
+\label{app:dependencies}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Stage & Depends on \\
+\midrule
+Point determinant identities & \code{Core.Integers}, \code{Core.LinearAlgebra}, \code{Core.Tactic} \\
+Path folds and reversal & \code{Core.Definitions}, \code{Core.Pairing}, quantifier-free induction \\
+Path shoelace lemmas & point identities, \code{Core.BoundedSums} \\
+Disk boundary cancellation & path folds, triangle incidence certificate \\
+Conway period-area theorem & path centrality, translated-pair lemma, disk cancellation \\
+Lattice coordinates and clipping & rational arithmetic, \code{Core.Order}, \code{Core.Search} \\
+Torus refinement & clipping, finite sorting, pairing/list infrastructure \\
+Constant multiplicity & edge incidence, dual spanning tree, induction \\
+Multiplicity one & period-area theorem, bounded area sums, positive cancellation \\
+Final criterion & all previous stages, propositional composition and universal closure \\
+Native export & final \(\Prf\,\PRA\) theorem, \code{pra\_iff\_native} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The dependency graph intentionally keeps topology downstream of exact arithmetic.  This makes failures local: the affine and area theorem can be promoted to the checked derivation library before the full torus constructor is finished.
+
+\section{Theorem and artifact ledger}
+\label{app:ledger}
+
+\begin{longtable}{@{}p{0.12\textwidth}p{0.53\textwidth}p{0.25\textwidth}@{}}
+\toprule
+ID & Claim/artifact & Status \\
+\midrule
+\endhead
+C1 & Composition of half-turns is translation & Proved in \cref{lem:halfturnalgebra}. \\
+C2 & Four turned-orbit path identities & Proved in \cref{lem:orbitpairs}. \\
+C3 & Open-path shoelace laws & Proved in \cref{lem:Jlaws}. \\
+C4 & Central path endpoint determinant & Proved in \cref{lem:Jcentral}. \\
+C5 & \(\det(t,u)=2\Area(T)>0\) & Proved in \cref{thm:periodarea}. \\
+C6 & Projected two-tile boundary is zero & Proved in \cref{lem:boundaryzero}. \\
+C7 & Closed nonnegative top chain has constant multiplicity & Proved in \cref{lem:constantmultiplicity}. \\
+C8 & Multiplicity is one & Proved by \cref{eq:kcancel}. \\
+C9 & Explicit family tiles the plane & Proved in \cref{thm:mainPL}. \\
+P1 & \code{code/conway\_core.py} & Exact rational reference implementation. \\
+P2 & \code{code/test\_conway\_core.py} & Seven passing tests at delivery. \\
+P3 & Worked torus certificate & \(58\) pieces, exact area \(1\), zero positive-area overlap. \\
+L1 & \code{lean/ConwayCriterionBlueprint.lean} & Uncompiled definitions/targets; no admitted facts. \\
+L2 & Empty-context \(\Prf\,\PRA\) theorem & Planned, not claimed complete. \\
+\bottomrule
+\end{longtable}
+
+\section{Reproduction commands}
+\label{app:reproduce}
+
+From the package root:
+
+\begin{lstlisting}
+(cd code && python3 -m unittest -v test_conway_core.py)
+python3 code/conway_core.py examples/zigzag_conway_tile.json \
+  --output examples/zigzag_conway_tile_report.json
+python3 figures/make_figures.py
+bash build.sh
+\end{lstlisting}
+
+The exact kernel depends only on the Python standard library.  Figure generation requires Matplotlib.  The PDF build requires a conventional TeX Live installation with the packages in the preamble.

@@ -1,0 +1,132 @@
+\section{The finite torus-cycle argument}
+\label{sec:torus}
+
+We now close the vertex gap.  The key move is to quotient by the lattice whose existence was just proved.
+
+\subsection{Two copies on one torus}
+
+Let
+\[
+ L=\Z t+\Z u,
+ \qquad
+ \Torus=\R^2/L,
+ \qquad
+ \pi:\R^2\to\Torus.
+\]
+Orient \(\Torus\) so that the ordered basis \((t,u)\) is positive.  Let \([T]\) denote the positively oriented finite two-chain obtained by summing the certified triangles of \(T\).  Rotation by \(180^\circ\) preserves orientation, so \([R(T)]\) is also a positive two-chain.  Consider
+\begin{equation}
+ C=\pi_\#[T]+\pi_\#[R(T)].
+ \label{eq:toruschain}
+\end{equation}
+Although projected triangles may cross or wrap around the fundamental parallelogram, \(C\) is a perfectly well-defined finite PL chain.  A common subdivision will later remove all crossings.
+
+\begin{lemma}[Boundary cancellation on the torus]
+\label{lem:boundaryzero}
+The two-chain \(C\) satisfies \(\partial C=0\).
+\end{lemma}
+\begin{proof}
+In the quotient, translations by \(t\), \(u\), and \(u-t\) are identities.  The paths \(a,d\) cancel in \(\pi_\#\partial[T]\) because \(\trans t(a)=-d\).  They also cancel in the turned copy by the last assertion of \cref{lem:orbitpairs}.
+
+The remaining paths cancel between the two copies.  Specifically,
+\[
+ \pi_\#\half r(b)=-\pi_\#b,
+ \quad
+ \pi_\#\half r(c)=-\pi_\#c,
+ \quad
+ \pi_\#\half r(e)=-\pi_\#e,
+ \quad
+ \pi_\#\half r(f)=-\pi_\#f
+\]
+by \cref{eq:bpair,eq:cpair,eq:epair,eq:fpair}.  Adding all twelve oriented paths gives zero.
+\end{proof}
+
+\subsection{A finite common subdivision}
+
+Choose the half-open fundamental parallelogram
+\[
+ \mathcal P=\{\alpha t+\beta u:0\leq\alpha<1,\;0\leq\beta<1\}.
+\]
+Every rational point has rational lattice coordinates
+\begin{equation}
+ \alpha(x)=\frac{\det(x,u)}{\det(t,u)},
+ \qquad
+ \beta(x)=\frac{\det(t,x)}{\det(t,u)}.
+ \label{eq:latticecoords}
+\end{equation}
+The denominator is positive by \cref{thm:periodarea}.  Project each triangle of \(T\) and \(R(T)\) to \((\alpha,\beta)\)-coordinates, enumerate the finitely many integer shifts meeting the unit square, and clip them by its four sides.  Split all resulting segments at their pairwise intersections.  The finite planar arrangement can be triangulated, with opposite sides of the square identified.  Call the resulting torus triangulation \(K\).
+
+Every oriented two-simplex \(\sigma\) of \(K\) lies inside a definite number \(c_\sigma\in\mathbb N\) of projected input triangles, counted with multiplicity.  Because all input triangle maps preserve orientation locally,
+\begin{equation}
+ C=\sum_{\sigma\in K_2} c_\sigma\,\sigma,
+ \qquad c_\sigma\geq 0.
+ \label{eq:facecoeff}
+\end{equation}
+This is a finite equality of rational PL chains.  No limiting subdivision or compactness theorem is involved.
+
+\subsection{The constant-multiplicity lemma}
+
+\begin{lemma}[Finite closed nonnegative two-chain]
+\label{lem:constantmultiplicity}
+Let \(K\) be a finite triangulation of a connected, closed, oriented PL surface.  Give every two-simplex the surface orientation.  If
+\[
+ Z=\sum_{\sigma\in K_2} c_\sigma\sigma,
+ \qquad c_\sigma\in\mathbb N,
+ \qquad \partial Z=0,
+\]
+then there is a natural number \(k\) such that \(c_\sigma=k\) for every \(\sigma\in K_2\).
+\end{lemma}
+\begin{proof}
+Each unoriented edge \(e\) is incident with exactly two oriented faces, say \(\sigma\) and \(\tau\).  Their induced orientations on \(e\) are opposite.  Hence the coefficient of either orientation of \(e\) in \(\partial Z\) is
+\[
+ c_\sigma-c_\tau.
+\]
+Since \(\partial Z=0\), adjacent face coefficients are equal.
+
+The dual graph of a triangulation of a connected closed surface is connected.  For the constructive version, the certificate includes a finite spanning tree of this dual graph rooted at a chosen face.  Traverse its explicitly listed vertices in parent-before-child order.  Quantifier-free induction on the traversal index propagates equality with the root coefficient.  Thus all coefficients equal \(k=c_{\sigma_0}\).
+\end{proof}
+
+The usual statement ``a top-dimensional cycle on a connected oriented surface is an integer multiple of the fundamental class'' is exactly \cref{lem:constantmultiplicity}.  The proof above exposes the finite combinatorics needed by iPRA; it does not appeal to singular homology.
+
+Applying the lemma to \cref{eq:toruschain,eq:facecoeff} and \cref{lem:boundaryzero} yields
+\begin{equation}
+ C=k[\Torus]
+ \label{eq:kfundamental}
+\end{equation}
+for a natural number \(k\).  Geometrically, \(k\) is the number of covering tile interiors above any point away from the finite subdivision skeleton.
+
+\subsection{Computing the multiplicity}
+
+For a positively oriented rational triangle, its determinant area is positive.  Sum these finite areas on both sides of \cref{eq:kfundamental}.  The left side has area
+\[
+ \Area(T)+\Area(R(T))=2\Area(T),
+\]
+because a half-turn preserves area.  The right side has area
+\[
+ k\det(t,u).
+\]
+By \cref{thm:periodarea}, these are equal to \(\det(t,u)\).  Thus
+\begin{equation}
+ k\det(t,u)=\det(t,u).
+ \label{eq:kcancel}
+\end{equation}
+Since \(\det(t,u)>0\), natural-number cancellation gives \(k=1\).
+
+\begin{theorem}[Multiplicity-one torus partition]
+\label{thm:toruspartition}
+The projected closed sets \(\pi(T)\) and \(\pi(R(T))\), counted with all lattice lifts implicit in the projection, cover the torus exactly once away from their boundary images.  Their interiors have no positive-dimensional overlap.  Every point of the torus belongs to at least one projected closed tile.
+\end{theorem}
+\begin{proof}
+The coefficient of every open two-simplex of \(K\) is \(k=1\), so each such simplex is contained in exactly one tile interior.  If two tile interiors met, their intersection would be open in \(\R^2\) and would contain an open subdivision face, contradicting coefficient one.
+
+The union of the finitely many projected closed triangle pieces is closed.  Every point on the subdivision skeleton is a limit of an adjacent open face.  The tile covering that face is closed and therefore contains the limit point.  Hence the skeleton is covered as well.  Boundaries may coincide, as permitted in a tiling.
+\end{proof}
+
+\subsection{An exact checker-friendly variant}
+
+The executable companion uses an equivalent certificate that avoids constructing the full face graph for its example.  It triangulates the tile, changes to lattice coordinates, clips all relevant translated triangles to the unit square, and obtains finitely many closed convex rational polygons.  It verifies:
+\begin{enumerate}[label=(\arabic*)]
+\item every piece lies in the unit square;
+\item every pairwise intersection has area zero; and
+\item the sum of piece areas is exactly one.
+\end{enumerate}
+For rational polygons, these facts imply a partition: a nonempty gap in a finite closed polygonal union contains a rational open triangle of positive area, while a positive-area overlap is detected by a pairwise intersection.  The full iPRA development may use either this convex-piece certificate or the face-multiplicity certificate.  The latter mirrors the conceptual proof; the former can be shorter computationally.

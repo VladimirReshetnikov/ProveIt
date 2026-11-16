@@ -1,0 +1,133 @@
+\section{Encoding the proof in intuitionistic PRA}
+\label{sec:ipra}
+
+This section turns the geometric proof into an arithmetic program and proof obligation.  The point is not merely that all objects are finite.  We must identify total primitive-recursive functions, quantifier-free invariants, and induction parameters.
+
+\subsection{The ambient theory}
+
+The ProveIt development uses iPRA in its ordinary first-order form: one function symbol for every primitive-recursive function, defining equations, successor axioms, equality, intuitionistic natural deduction, and induction for quantifier-free formulas.  Its checked Lean embedding represents derivations by
+\[
+ \Prf\;\PRA\;\Gamma\;A,
+\]
+written in repository notation as \(\Gamma\vdash[\PRA]A\).  The existing \code{IPRADerivations} library supplies arithmetic, signed differences, order, finite sums, pairing, bounded search, and determinant infrastructure.  The intended endpoint is not a meta-level Lean theorem about natural numbers but an actual term of type
+\[
+ ([]:\mathrm{List}(\mathrm{Fm}\;\mathrm{PTm}\;0))
+ \vdash[\PRA]\varphi_{\rm Conway}.
+\]
+Only after that term exists should the checked bridge \code{pra\_iff\_native} transport it to the native scalar calculus.
+
+\subsection{Number codes}
+
+One convenient total coding is as follows.
+
+\paragraph{Signed integers.}
+Represent \(z\in\Z\) by a pair \((z^+,z^-)\in\mathbb N^2\), denoting \(z^+-z^-\).  Equality is
+\[
+ z^++w^-=w^++z^-.
+\]
+The existing \code{ZT} layer already implements this difference-ring view and turns polynomial identities in the quotient ring into iPRA derivations.
+
+\paragraph{Rationals.}
+Represent a rational by \((n,d)\), where \(n\) is a signed integer and \(d\geq1\).  Reduction to lowest terms is unnecessary.  Equality and order use cross multiplication.  Addition and multiplication are primitive recursive, and every division introduced by segment intersection is represented by a numerator/positive-denominator pair.
+
+\paragraph{Finite lists.}
+Use the checked pairing function and its projections recursively.  A list code stores its length and a nested payload, or equivalently uses a tagged nil/cons representation.  Lookup, map, reverse, concatenation, bounded fold, and normalization are all primitive recursive.  The defining equations are proved by quantifier-free induction on length.
+
+\paragraph{Geometry.}
+A point is a pair of rationals.  A path is a list of points.  A triangle is a triple of points.  A disk certificate contains:
+\begin{enumerate}[label=(\arabic*)]
+\item a triangle list;
+\item a list of oriented triangle edges;
+\item an involutive pairing of interior edges;
+\item the remaining boundary cycle; and
+\item six index intervals selecting \(a,b,c,d,e,f\).
+\end{enumerate}
+All malformed decodings return fixed defaults.  Correctness predicates guard the meaningful branch.
+
+\subsection{Primitive-recursive checkers}
+
+The principal Boolean-valued functions can be specified as follows.
+
+\begin{longtable}{@{}p{0.26\textwidth}p{0.68\textwidth}@{}}
+\toprule
+Function & Meaning \\
+\midrule
+\endhead
+\code{PathNorm}(p) & Delete consecutive duplicates and collinear interior vertices by a bounded pass repeated at most the original length. \\
+\code{PathEq}(p,q) & Compare normalized lists by rational cross multiplication. \\
+\code{DiskOK}(c) & Check positive triangle orientations, edge-pair incidence, one boundary cycle, path concatenation, and nonempty area. \\
+\code{ConwayOK}(c) & Check the translated-pair equation, four half-turn equations, cyclic endpoints, and at least three distinct marks. \\
+\code{PeriodT}(c) & Return \(E-A\). \\
+\code{PeriodU}(c) & Return \(E+F-B-C\). \\
+\code{PathJ}(p) & Bounded fold of edge determinants. \\
+\code{BuildPieces}(c) & Produce clipped convex pieces of the two orbit representatives in one lattice cell. \\
+\code{BuildRefine}(c) & Optionally split all piece boundaries into a common torus triangulation and output a dual spanning tree. \\
+\code{TorusOK}(c,z) & Verify boundary cancellation, valid subdivision, nonnegative coefficients, common coefficient one, or the equivalent convex-piece partition certificate. \\
+\code{BuildPatch}(c,N) & Enumerate all two-orbit placements whose lattice-coordinate boxes can meet \([-N,N]^2\). \\
+\code{PatchOK}(c,N,z) & Check exact coverage and interior disjointness after clipping to the query square. \\
+\bottomrule
+\end{longtable}
+
+Each loop is bounded by an input length or a coordinate bound computed from the input.  Sorting a finite rational list can use insertion sort.  Segment intersection compares integer cross products.  Face traversal uses bounded search on a finite adjacency table.  Therefore all functions are primitive recursive, not merely computable.
+
+\subsection{A quantifier-free matrix}
+
+Let \(P(c)\) abbreviate the Boolean equation
+\[
+ \code{DiskOK}(c)\cdot\code{ConwayOK}(c)=1.
+\]
+Let \(Q(c)\) abbreviate
+\[
+ \code{TorusOK}\bigl(c,\code{BuildTorus}(c)\bigr)=1.
+\]
+After replacing Boolean connectives by arithmetic selectors, \(P(c)\to Q(c)\) is a quantifier-free formula with one free number variable.  The closed target is its universal closure:
+\begin{equation}
+ \varphi_{\rm Conway}=\forall c\,(P(c)\to Q(c)).
+ \label{eq:conwayformula}
+\end{equation}
+In the native scalar presentation, universal closure and implication are macros.  In the ordinary \(\PRA\) calculus they are the familiar logical constructors.  The proof itself is a composition of quantifier-free inductions establishing the correctness of the primitive-recursive folds and constructors.
+
+A bounded-patch sentence is similarly
+\begin{equation}
+ \forall c\,\forall N\,\Bigl(P(c)\to
+ \code{PatchOK}\bigl(c,N,\code{BuildPatch}(c,N)\bigr)=1\Bigr).
+ \label{eq:patchformula}
+\end{equation}
+The torus formula is preferable as the main theorem because it is finite independently of \(N\), while \cref{eq:patchformula} is a direct corollary.
+
+\subsection{Internal proof decomposition}
+
+The mathematical proof translates to the following object-theory blocks.
+
+\paragraph{Block A: path algebra.}
+Induction over the path code proves concatenation, reversal, translation, and half-turn equations for \code{PathJ}.  Every induction formula is an equation of primitive-recursive terms.
+
+\paragraph{Block B: central paths and the area identity.}
+Use the path equations and integer-ring normalization to derive \(\PathJ(P)=\det(X,Y)\) from the central-symmetry list equality.  Sum the six contributions.  A second induction over the triangle list cancels paired interior edges and proves boundary shoelace equals the sum of triangle double areas.
+
+\paragraph{Block C: torus boundary.}
+Map the six path equations into the quotient-coordinate representation.  ``Equal modulo the lattice'' is an explicit integer-pair witness, not a quotient type in the object language.  The four identities in \cref{lem:orbitpairs} make the boundary fold evaluate to zero.
+
+\paragraph{Block D: constant multiplicity.}
+The refinement certificate gives, for each oriented edge, its two incident faces.  A bounded fold computes the boundary coefficient and proves adjacent counts equal.  Induction over the supplied dual-tree enumeration proves every face count equals the root count.
+
+\paragraph{Block E: multiplicity one.}
+A finite area sum gives
+\[
+ k\cdot\det(t,u)=\det(t,u).
+\]
+The positive determinant witness obtained from the disk certificate permits cancellation.  No integral-domain axiom for arbitrary encoded rings is needed; this is ordinary natural/integer arithmetic.
+
+\subsection{No universal evaluator is required}
+
+The theorem quantifies over \emph{data} for fixed primitive-recursive decoders and checkers.  It does not quantify over codes of arbitrary primitive-recursive programs and then appeal to a universal evaluation function.  This distinction matters because full universal evaluation is not primitive recursive.  Every function symbol used in \cref{eq:conwayformula} is fixed once and for all by explicit recursion.
+
+\subsection{Uniformity and extraction}
+
+The proof is uniform in the input code.  Under Curry--Howard reading, a proof of \cref{eq:conwayformula} justifies the concrete extraction already displayed in \cref{eq:periods,eq:tilefamily}.  Given valid data, the witnessing tiling is not found by search:
+\[
+ t=E-A,
+ \qquad u=E+F-B-C,
+ \qquad R(x)=E+F-x.
+\]
+Search is used only for finite normalization, clipping, and traversal certificates.  The central geometric construction is closed-form.

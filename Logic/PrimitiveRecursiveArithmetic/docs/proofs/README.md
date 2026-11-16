@@ -5,7 +5,7 @@ gives the target interface for future verified
 derivations of these delivered proofs.
 
 This directory holds the research packets that were delivered as archives from 14 to
-16 November 2026: 33 to `docs/drafts`, and 64 to
+16 November 2026: 33 to `docs/drafts`, and 65 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -66,7 +66,7 @@ manifests, build logs and `build/` files.
 
 ## Packets
 
-The 97 archives hold 3,010 members: 2,857 placed here, 106 ignored, 21 in bundled copies of
+The 98 archives hold 3,060 members: 2,907 placed here, 106 ignored, 21 in bundled copies of
 a sibling packet, 1 nested copy of a sibling archive and 25 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -196,6 +196,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | Directory | Arrival | Wrapper in the archive | What the packet states | P | O |
 |---|---|---|---|---:|---:|
 | [`aperiodic_monotile_ipra_2026-11-16`](geometry/aperiodic_monotile_ipra_2026-11-16/) | `18938ba6c6` 2026-11-16 | `aperiodic_monotile_ipra_2026-11-16` | The hat aperiodic monotile as a finitary theorem: one fixed primitive-recursive coherent sequence of exact finite hat patches covers every requested lattice ball, and every finite torus code that purports to describe a periodic hat tiling is rejected; a finite-state lemma turns a period into a finite torus. It comes with exact hat, substitution and coupling certificates and a standard-library verifier. Its Lean files are an outline that keeps `sorry` obligations; no kernel-checked derivation is claimed. | 31 | 0 |
+| [`conway_criterion_ipra_2026-11-16`](geometry/conway_criterion_ipra_2026-11-16/) | `d5ec6415ee` 2026-11-16 | `conway_criterion_ipra_2026-11-16` | The piecewise-linear Conway criterion: a rational PL disk whose boundary splits into six paths satisfying the translated-pair and four half-turn equations tiles the plane periodically, by the tile and one half-turned copy translated over the lattice spanned by `t` and `u`. The two representatives project to a boundaryless nonnegative 2-chain on the period torus, a finite dual-tree lemma makes its face multiplicity constant, and `det(t, u) = 2 area(T)` forces that multiplicity to be one. It comes with an exact rational reference kernel and a worked zigzag certificate. Its Lean file is an uncompiled blueprint; no kernel-checked derivation is claimed. | 50 | 0 |
 | [`desargues_pascal_ipra`](geometry/desargues_pascal_ipra/) | `4ea4d4a14a` 2026-11-15 | `desargues_pascal_ipra` | Desargues' and Pascal's theorems, with a formalization roadmap and a repository-source audit. | 28 | 0 |
 | [`eight_geometry_theorems_ipra`](geometry/eight_geometry_theorems_ipra/) | `390098877e` 2026-11-15 | `eight_geometry_theorems_ipra` | Constructive coordinate proofs of eight theorems: Pappus's harmonic theorem, Ceva, Menelaus, Carnot's conic and polygon theorems, Hoehn, Pappus's hexagon theorem and Brianchon. | 31 | 0 |
 | [`euler_rodrigues_ipra`](geometry/euler_rodrigues_ipra/) | `db4b793b19` 2026-11-14 | `euler_rodrigues_ipra` | Euler's rotation theorem and Rodrigues' formula. It says the unrestricted exact-axis form is not constructively provable (LLPO reduction) and proves constructive replacements. | 21 | 2 |
