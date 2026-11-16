@@ -314,6 +314,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.bell_zero
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.nth_BL
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.bell_rec
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.add_formula
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.pell_norm
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.cop_XY
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.Y_pos
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.Y_dvd_mul
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.branch
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.pell_gcd
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
