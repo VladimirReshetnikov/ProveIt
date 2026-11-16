@@ -11,7 +11,7 @@ namespace IPRABridge
 
 open LeanProofs.ConciseIPRA
 open LeanProofs.IPRA
-open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
+open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open scoped Fm
 open LeanProofs.ConciseIPRA.PTm (app zero succ)
 open LeanProofs.IPRA.PTm (pred)

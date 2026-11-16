@@ -72,6 +72,9 @@ private def checkPortableLayers (searchPath : SearchPath) : IO Unit := do
     [`DiophantineConsistency.PRASubSuccSelfNonzero]
   check searchPath [`DiophantineConsistency.IPRANotBit]
     [`DiophantineConsistency.PRANotBit]
+  check searchPath [`IPRADerivations.Core.Search, `IPRADerivations.Core.Gcd,
+    `IPRADerivations.Core.Bezout, `IPRABridge.BoundedSearch]
+    [`IPRADerivations.Algebra.CubeRootTwo]
 
 def main (args : List String) : IO Unit := do
   let searchPath ← getSrcSearchPath

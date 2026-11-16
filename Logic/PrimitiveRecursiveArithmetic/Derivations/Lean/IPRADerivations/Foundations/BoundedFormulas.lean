@@ -33,7 +33,7 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Foundations.BoundedFormulas
 
 open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
+open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Foundations.BoundedReflection
 open Syn
 open scoped Fm

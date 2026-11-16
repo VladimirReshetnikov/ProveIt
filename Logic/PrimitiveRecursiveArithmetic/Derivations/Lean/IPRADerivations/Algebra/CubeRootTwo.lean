@@ -1,4 +1,5 @@
 import IPRADerivations.Core.BoundedSums
+import IPRADerivations.Core.Signum
 
 /-!
 # `X³ − 2` has no rational root (`three_impossibilities_ipra`)
@@ -35,13 +36,13 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 abbrev cube (x : PTm n) : PTm n := x * x * x
 
 /-- `sg x = 1 ∸ (1 ∸ x)`: `0` at `0` and `1` at successors. -/
-abbrev sg (x : PTm n) : PTm n := monus one (monus one x)
+abbrev sg (x : PTm n) : PTm n := LeanProofs.IPRA.Signum.sg x
 
 theorem sg_zero : Γ ⊢[PRAAx] sg (zero : PTm n) ≐ zero :=
-  (congrMonus (.eqRefl _) (monus_zero _)).eqTrans (monus_self _)
+  LeanProofs.IPRA.Signum.sg_zero
 
 theorem sg_succ (x : PTm n) : Γ ⊢[PRAAx] sg (succ x) ≐ one :=
-  (congrMonus (.eqRefl _) ((succ_monus_succ _ _).eqTrans (zero_monus _))).eqTrans (monus_zero _)
+  LeanProofs.IPRA.Signum.sg_succ x
 
 /-- `2X = 2Y → X = Y`. -/
 theorem double_cancel {x y : PTm n} (h : Γ ⊢[PRAAx] two * x ≐ two * y) : Γ ⊢[PRAAx] x ≐ y := by

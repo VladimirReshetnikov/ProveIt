@@ -1,5 +1,6 @@
 import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.Parity
 
 /-!
 # The affine and area algebra of the Conway criterion

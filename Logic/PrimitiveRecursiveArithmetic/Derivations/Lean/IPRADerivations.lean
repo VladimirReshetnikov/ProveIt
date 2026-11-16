@@ -7,6 +7,7 @@ import IPRADerivations.Core.LinearAlgebra
 import IPRADerivations.Core.Definitions
 import IPRADerivations.Core.Sums
 import IPRADerivations.Core.Monus
+import IPRADerivations.Core.Signum
 import IPRADerivations.Core.Order
 import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.Powers

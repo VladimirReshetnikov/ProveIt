@@ -23,7 +23,7 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA
 
 open LeanProofs.ConciseIPRA
-open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
+open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open Syn
 open scoped Fm
 open ConciseIPRA.PTm (app zero succ)

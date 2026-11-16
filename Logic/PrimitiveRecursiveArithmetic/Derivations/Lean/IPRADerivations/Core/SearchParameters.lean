@@ -8,7 +8,7 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Search.Finite
 
 open LeanProofs.ConciseIPRA
-open LeanProofs.IPRA.Algebra.CubeRootTwo (sg)
+open LeanProofs.IPRA.Signum (sg)
 open Syn
 open scoped Fm
 open LeanProofs.ConciseIPRA.PTm (zero succ)
