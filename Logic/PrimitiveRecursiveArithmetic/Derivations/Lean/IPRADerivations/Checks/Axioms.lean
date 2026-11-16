@@ -349,6 +349,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.decr
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.local_factor
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.local_factor_closed
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared.pw_lt_pw
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared.pw_le_cancel
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared.pw_le_exp
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared.A_pos
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared.local_pow
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared.pc
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared.power_cleared
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared.sum_bounds_product
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared.sum_bounds_closed
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.iS_pair
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.nth_pair_succ
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.bell_zero
