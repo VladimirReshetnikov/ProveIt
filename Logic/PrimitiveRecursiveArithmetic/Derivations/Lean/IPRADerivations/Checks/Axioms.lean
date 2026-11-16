@@ -96,6 +96,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.PowerOfPoint.tangent_power
 #print axioms LeanProofs.IPRA.Geometry.PowerOfPoint.chords_secants
 #print axioms LeanProofs.IPRA.Geometry.PowerOfPoint.tangent_secant
+#print axioms LeanProofs.IPRA.Probability.Expectation.exp_add
+#print axioms LeanProofs.IPRA.Probability.Expectation.exp_mono
+#print axioms LeanProofs.IPRA.Probability.Expectation.exp_lower
+#print axioms LeanProofs.IPRA.Probability.Expectation.exp_upper
+#print axioms LeanProofs.IPRA.Probability.Expectation.prob_le
+#print axioms LeanProofs.IPRA.Probability.Expectation.markov
+#print axioms LeanProofs.IPRA.Probability.Expectation.chebyshev
+#print axioms LeanProofs.IPRA.Probability.Expectation.four_mul_le
+#print axioms LeanProofs.IPRA.Probability.Expectation.two_mul_le
+#print axioms LeanProofs.IPRA.Probability.Expectation.cauchy_schwarz
+#print axioms LeanProofs.IPRA.Probability.Expectation.second_moment
 #print axioms LeanProofs.IPRA.pw_add
 #print axioms LeanProofs.IPRA.pw_le_pw
 #print axioms LeanProofs.IPRA.le_self_pw

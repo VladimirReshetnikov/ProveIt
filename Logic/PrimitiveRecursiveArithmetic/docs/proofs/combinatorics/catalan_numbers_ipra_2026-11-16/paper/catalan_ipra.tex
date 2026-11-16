@@ -1,0 +1,153 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{fancyvrb}
+\usepackage{graphicx}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Catalan Numbers in Intuitionistic Primitive Recursive Arithmetic},
+ pdfauthor={Research prepared for Vladimir Reshetnikov},
+ pdfsubject={Constructive Catalan identities, bijections, arithmetic, Hankel determinants, asymptotics, and Lean plan}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Cat}{\mathsf C}
+\newcommand{\Bin}{\mathsf B}
+\newcommand{\ipra}{\ensuremath{\mathrm{iPRA}}}
+\newcommand{\monus}{\mathbin{\mathop{\dot{-}}}}
+\newcommand{\card}[1]{\left|#1\right|}
+\newcommand{\ind}[1]{\mathbf 1_{#1}}
+\newcommand{\coeff}[2]{[x^{#1}]\,#2}
+\newcommand{\vp}[1]{v_{#1}}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\Dyck}{\mathsf{Dyck}}
+\newcommand{\Ball}{\mathsf{Ball}}
+\pdfstringdefDisableCommands{\def\ipra{iPRA}\def\Cat{C}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{status}[theorem]{Formal status}
+\numberwithin{equation}{section}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{3.5pt}
+\setcounter{tocdepth}{2}
+\allowdisplaybreaks[2]
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,frame=single,
+  xleftmargin=0.3em,xrightmargin=0.3em,showstringspaces=false,
+  literate={≐}{{$\doteq$}}1}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{1.0cm}
+{\Large Constructive arithmetic research\par}
+\vspace{1.0cm}
+{\huge\bfseries Catalan Numbers in Intuitionistic\\[7pt]
+Primitive Recursive Arithmetic\par}
+\vspace{0.7cm}
+{\Large Finite bijections, exact identities, valuations,\\[4pt]
+Hankel determinants, effective asymptotics, and a Lean blueprint\par}
+\vspace{1.0cm}
+{\large Prepared for Vladimir Reshetnikov\par}
+\vspace{0.25cm}
+{\large November 16, 2026\par}
+\vfill
+\begin{minipage}{0.90\textwidth}
+\textbf{Principal result.}
+The standard Catalan formulas and recurrences, all four additional finite sums
+printed by MathWorld, the product, all six proof routes displayed by Wikipedia, the principal
+interpretations listed by Wikipedia and MathWorld, the generating-function
+and Bessel identities, the boundary sum,
+the random-walk statement, prime and parity assertions, the three Hankel
+determinants, the moment representation, rational and Fuss--Catalan
+extensions, the $k$-fold convolution, and the displayed asymptotic terms all
+admit constructive proofs whose arithmetical content is primitive recursive.
+Infinite and analytic notation is replaced by formal coefficient identities or
+by rational Cauchy data with explicit primitive-recursive moduli.
+
+\medskip
+\textbf{Checked base theorem.}
+The inspected ProveIt snapshot already contains a Lean-kernel-checked
+object-language derivation of the denominator-cleared Catalan identity.  The
+present package starts from that theorem and gives a dependency-complete route
+to the larger development.  The new Lean files in this delivery are an
+uncompiled scaffold and executable specification; they contain no \texttt{sorry}.
+\end{minipage}
+\vfill
+{\small ProveIt source snapshot:\quad
+\texttt{00bbe871268c453903499fb6afe07519e87d9631}\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+
+\begin{abstract}
+We develop a large part of the elementary and intermediate theory of Catalan
+numbers inside intuitionistic primitive recursive arithmetic (\ipra).  The
+basic numerical function is the division-free difference
+\(\Cat_n=\binom{2n}{n}\monus\binom{2n}{n+1}\).  A reflection bijection proves
+that it counts Dyck words, while the already checked ProveIt theorem proves
+\((n+1)\Cat_n=\binom{2n}{n}\) in the embedded calculus
+\(\mathsf{Prf}\,\mathsf{PRAAx}\).  From this base we derive all explicit
+factorial, double-factorial, generalized-binomial, terminating
+hypergeometric, product, recurrence, and finite-sum formulas displayed on the
+requested pages.  Primitive-recursive bijections cover Dyck paths, balanced
+parentheses, binary and plane trees, parenthesizations, triangulations,
+noncrossing matchings and partitions, two-row standard tableaux, restricted
+sequences, stack-sortable permutations, and all six length-three pattern
+classes.
+
+Formal power series are treated coefficientwise.  Analytic statements use
+rational Cauchy codes.  An exact telescoping identity gives
+\(\sum_{j=0}^N\Cat_j/4^j\) together with a tail at most
+\(2/\sqrt{N+2}\), so the boundary sum and random-walk recurrence have very
+small \ipra{} proofs.  Legendre and Kummer arguments give a digit algorithm for
+\(v_p(\Cat_n)\), the parity criterion, the base-five last-digit criterion, and
+the fact that only \(\Cat_2=2\) and \(\Cat_3=5\) are prime.  Ballot-number
+Gram factorizations prove the two unit Hankel determinants; Cauchy--Binet and
+an alternating null vector prove the shifted determinant \(n+1\), and the
+first two determinant sequences characterize Catalan numbers uniquely.
+A source audit also gives finite counterexamples to two incorrect Coxeter
+identifications on the requested Wikipedia revision and proves the corrected
+type-$A$ formulas.  Finally, finite Wallis inequalities and an
+Euler--Maclaurin remainder give a primitive-recursive modulus for the leading equivalent and a quantitative
+version of the first three terms printed by MathWorld.  A module-by-module
+Lean plan targets ProveIt's object language and explicitly separates already
+checked material from future formalization.
+\end{abstract}
+
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+
+\input{01_foundations}
+\input{02_arithmetic}
+\input{03_combinatorics}
+\input{04_series}
+\input{05_number_theory}
+\input{06_hankel}
+\input{07_generalizations}
+\input{08_asymptotics}
+\input{09_formalization}
+\input{10_coverage}
+\input{references}
+
+\end{document}

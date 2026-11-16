@@ -1,0 +1,32 @@
+Normal-distribution iPRA packet build audit
+===========================================
+Date: 2026-11-16
+
+Exact certificate command:
+  python3 code/gaussian_certificates.py --output evidence/validation.json --summary evidence/validation.txt
+Result:
+  96 / 96 checks passed
+  validation SHA-256: 3c6cb04cbec2df59530a541cc0e51b046ec337ea024e129c585d7ef2ec3cdd5d
+
+PDF command:
+  latexmk -pdf -interaction=nonstopmode -halt-on-error normal_distribution_ipra.tex
+Result:
+  success
+  pages: 46
+  bytes: 577854
+  PDF SHA-256: 95c93cbf851b6102795643208ec30288e6b760fa6d83adec841a09289ab43a2b
+  unresolved LaTeX references/citations: none found
+  overfull boxes: none found
+
+PDF post-build checks:
+  pdfinfo: readable, A4, PDF 1.7
+  pdftotext: successful; no unresolved '??' markers
+  pdffonts: all listed fonts embedded and subsetted
+  render_pdf.py: all 46 pages rendered at 120 dpi
+  visual sampling: title/contents, analytic sections, multivariate/derived laws,
+    iPRA and Lean sections, ledger, appendices, and references inspected
+
+Lean status:
+  Lean/Lake were unavailable in the construction environment.
+  Files under lean/ are explicit uncompiled blueprints.
+  No main analytic theorem is claimed kernel checked.

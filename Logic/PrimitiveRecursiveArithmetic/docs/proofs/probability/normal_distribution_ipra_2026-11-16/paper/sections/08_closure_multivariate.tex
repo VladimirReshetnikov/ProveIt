@@ -1,0 +1,158 @@
+\section{Affine closure, sums, stability, and multivariate normals}\label{sec:closure}
+
+\subsection{Sums and linear combinations}
+
+\begin{theorem}[Independent Gaussian linear combinations]\label{thm:linear-combination}
+Let $X_j\sim N(\mu_j,\sigma_j^2)$ be independent for $1\le j\le n$, and let $a_j$ be represented scalars.  Then
+\begin{equation}\label{eq:linear-combination}
+ \sum_{j=1}^na_jX_j
+ \sim N\!\left(\sum_ja_j\mu_j,\ \sum_ja_j^2\sigma_j^2\right).
+\end{equation}
+In particular, the sum of independent normals is normal.
+\end{theorem}
+
+\begin{proof}
+Independence of a finite product law is the exact factorization of its rectangular weights or density.  Fubini is first a finite double-sum identity after truncation.  Therefore the characteristic function of the sum is the product of the characteristic functions:
+\[
+ \prod_j\exp\!\left(ia_j\mu_jt-\frac12a_j^2\sigma_j^2t^2\right)
+ =\exp\!\left(it\sum_ja_j\mu_j-\frac12t^2\sum_ja_j^2\sigma_j^2\right).
+\]
+Apply the effective characteristic-function uniqueness argument of \cref{thm:stein-characterization}.  The entire calculation is a finite sum in the exponent.
+\end{proof}
+
+\begin{corollary}[Stability and infinite divisibility]\label{cor:stability}
+The normal family is stable.  If $X_1,X_2$ are independent copies of $N(\mu,\sigma^2)$ and $a,b$ are scalars, then
+\[
+ aX_1+bX_2\sim N((a+b)\mu,(a^2+b^2)\sigma^2).
+\]
+For every $n\ge1$,
+\[
+ N(\mu,\sigma^2)
+ =\underbrace{N(\mu/n,\sigma^2/n)*\cdots*N(\mu/n,\sigma^2/n)}_{n\text{ factors}},
+\]
+so the normal law is infinitely divisible in the finite arithmetical sense.
+\end{corollary}
+
+\begin{proof}
+This is \cref{thm:linear-combination}.  The infinite-divisibility statement has one finite convolution identity for each $n$; no actual infinite convolution is formed.
+\end{proof}
+
+\begin{proposition}[Normalized product of Gaussian densities]\label{prop:product-densities}
+Let $f_j$ be Gaussian densities $N(\mu_j,\sigma_j^2)$ and let $w_j>0$ be rational weights.  The normalized weighted geometric product
+\[
+ g(x)=\frac{\prod_j f_j(x)^{w_j}}
+ {\int\prod_j f_j(t)^{w_j}\dd t}
+\]
+is Gaussian with precision and mean
+\begin{equation}\label{eq:precision-pool}
+ \tau^{-2}=\sum_j\frac{w_j}{\sigma_j^2},
+ \qquad
+ m=\tau^2\sum_j\frac{w_j\mu_j}{\sigma_j^2}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Take logarithms.  The $x$-dependent part is
+$-\tfrac12\sum_jw_j(x-\mu_j)^2/\sigma_j^2$.  Completing the square gives
+$-(x-m)^2/(2\tau^2)$ plus a constant.  The positive normalizing integral is then the Gaussian normalization.  All exponents and sums are finite; logarithmic powers are evaluated on positive density intervals.
+\end{proof}
+
+\subsection{Multivariate definition and transforms}
+
+Let $\Sigma$ be a symmetric positive-definite $d\times d$ matrix of represented numbers.  Constructively, positive definiteness is accompanied by a rational witness $\lambda>0$ such that
+$v^T\Sigma v\ge\lambda\|v\|^2$ for rational vectors in the relevant finite precision.  This yields apartness of $\det\Sigma$, an inverse-matrix name, and stable Cholesky or $LDL^T$ elimination.
+
+\begin{definition}[Multivariate normal]
+The law $N_d(\mu,\Sigma)$ has density
+\begin{equation}\label{eq:multi-density}
+ f(x)=\frac{1}{(2\pi)^{d/2}(\det\Sigma)^{1/2}}
+ \exp\!\left(-\frac12(x-\mu)^T\Sigma^{-1}(x-\mu)\right).
+\end{equation}
+Equivalently, $X=\mu+AZ$ where $Z$ has independent standard-normal coordinates and $AA^T=\Sigma$.
+\end{definition}
+
+\begin{theorem}[Multivariate normalization and characteristic function]\label{thm:multivariate-normal}
+The density \eqref{eq:multi-density} integrates to one, and
+\begin{equation}\label{eq:multi-cf}
+ \E e^{it^TX}=\exp\!\left(it^T\mu-\frac12t^T\Sigma t\right).
+\end{equation}
+Every rational linear image $BX+c$ is
+\begin{equation}\label{eq:multi-affine}
+ BX+c\sim N_k(B\mu+c,B\Sigma B^T),
+\end{equation}
+with the natural possibly degenerate interpretation when $B\Sigma B^T$ is singular.
+\end{theorem}
+
+\begin{proof}
+For a nonsingular rational approximation $A$ to a Cholesky factor, perform the linear substitution $x=\mu+Az$ on a finite box.  Determinants are finite Leibniz sums, and the Jacobian cancellation is an exact matrix identity.  The approximation error is controlled by the matrix perturbation witness and the Gaussian tails.  Equivalently, define the law by the affine image of independent coordinates; normalization is automatic.  Formula \eqref{eq:multi-cf} is the finite product of scalar characteristic functions.  Replacing $t$ by $B^Tt$ proves \eqref{eq:multi-affine}.
+\end{proof}
+
+\begin{corollary}[Projections, marginals, and ellipsoids]\label{cor:projections}
+For every vector $a$,
+\[
+ a^TX\sim N(a^T\mu,a^T\Sigma a).
+\]
+Every coordinate subvector is multivariate normal with the corresponding principal covariance block.  The positive-density level sets are ellipsoids
+\[
+ (x-\mu)^T\Sigma^{-1}(x-\mu)=c.
+\]
+Whitening by any effective $A^{-1}$ with $AA^T=\Sigma$ produces a standard spherical normal.
+\end{corollary}
+
+\begin{proof}
+Projection and marginal statements are instances of \eqref{eq:multi-affine}.  Taking the logarithm of \eqref{eq:multi-density} leaves a constant minus half the displayed quadratic form, so level sets have the stated equation.
+\end{proof}
+
+\subsection{Uncorrelated jointly normal variables are independent}
+
+\begin{theorem}[Block independence]\label{thm:joint-normal-independence}
+If a jointly Gaussian vector $(U,V)$ has block covariance
+\[
+ \Sigma=\begin{pmatrix}\Sigma_U&0\\0&\Sigma_V\end{pmatrix},
+\]
+then $U$ and $V$ are independent.  In particular, jointly normal scalar variables are independent exactly when their covariance is zero, except for the trivial degenerate qualifications.
+\end{theorem}
+
+\begin{proof}
+The characteristic function factors:
+\[
+ e^{i(s^T\mu_U+t^T\mu_V)-\frac12(s^T\Sigma_Us+t^T\Sigma_Vt)}
+ =\chi_U(s)\chi_V(t).
+\]
+Apply effective transform uniqueness on finite rectangles.  If both variances are positive, independence implies zero covariance by finite product integration, giving the converse.  Degenerate constants are independent of every law in the usual finite-product sense.
+\end{proof}
+
+\begin{corollary}[Sum and difference]\label{cor:sum-difference}
+If $X,Y$ are independent $N(\mu,\sigma^2)$ variables, then $X+Y$ and $X-Y$ are independent, with laws $N(2\mu,2\sigma^2)$ and $N(0,2\sigma^2)$.
+\end{corollary}
+
+\begin{proof}
+The pair is jointly Gaussian.  Its transformed covariance is
+$\Cov(X+Y,X-Y)=\Var X-\Var Y=0$.  Apply \cref{thm:joint-normal-independence}.
+\end{proof}
+
+\subsection{Conditional multivariate normals}
+
+\begin{theorem}[Bivariate conditional law]\label{thm:bivariate-conditional}
+Let $(X,Y)$ be jointly normal with positive scales $\sigma_X,\sigma_Y$ and correlation $|\rho|<1$ with an apartness witness.  At a represented observation $Y=y$, the conditional density of $X$ is
+\begin{equation}\label{eq:conditional-normal}
+ X\mid(Y=y)\sim N\!\left(
+ \mu_X+\rho\frac{\sigma_X}{\sigma_Y}(y-\mu_Y),
+ \sigma_X^2(1-\rho^2)
+ \right).
+\end{equation}
+The statement is interpreted as the quotient of the joint density by the positive marginal density at $y$.
+\end{theorem}
+
+\begin{proof}
+Write the bivariate quadratic form and complete the square in $x$.  The $x$-dependent part is
+\[
+ \frac{1}{2\sigma_X^2(1-\rho^2)}
+ \left(x-\mu_X-\rho\frac{\sigma_X}{\sigma_Y}(y-\mu_Y)\right)^2.
+\]
+All remaining factors depend only on $y$ and cancel against the marginal.  Positive definiteness gives $1-\rho^2>0$ and hence the scale witness.  The proof is finite rational matrix algebra plus the scalar normalization theorem.
+\end{proof}
+
+\begin{remark}[Singular covariance]
+A singular Gaussian is represented as an affine image of a lower-dimensional standard normal, not by \eqref{eq:multi-density}, which would divide by zero.  Projection, characteristic-function, and linear-combination statements remain valid without modification.  Density and conditional formulas are restricted to the nondegenerate blocks whose determinants have explicit lower bounds.
+\end{remark}

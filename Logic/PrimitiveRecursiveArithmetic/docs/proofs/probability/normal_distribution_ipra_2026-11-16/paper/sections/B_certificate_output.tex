@@ -1,0 +1,37 @@
+\section{Executable certificate summary}\label{app:certificates}
+
+The command
+\begin{lstlisting}
+python3 code/gaussian_certificates.py \
+  --output evidence/validation.json \
+  --summary evidence/validation.txt
+\end{lstlisting}
+performs 96 checks.  All proof-relevant numerical operations use Python integers and \code{fractions.Fraction}.  The script may also print high-precision \code{mpmath} diagnostics, but these are explicitly labeled non-authoritative and are never used to decide a check.
+
+The exact-rational checks include:
+\begin{itemize}
+  \item a Machin-series interval for $\pi$ and a dyadic interval for $(2\pi)^{-1/2}$;
+  \item six CDF/coverage certificates from the alternating integrated exponential series;
+  \item both Mills inequalities at $x=1,\dots,6$;
+  \item the standard moment recurrence and exact values through order $20$;
+  \item the general raw-moment recurrence for a nontrivial rational $(\mu,\sigma^2)$ test instance;
+  \item Gaussian derivative/Hermite identities through order $14$;
+  \item the Hermite three-term and derivative recurrences through order $14$;
+  \item exact finite-law mean/variance and the least-squares center identity;
+  \item symbolic regression checks for score functions, KL and Hellinger self-values, and the Box--Muller polar Jacobian.
+\end{itemize}
+
+The recorded central coverage displays are:
+\begin{lstlisting}
+All checks passed: True
+Checks: 96 / 96
+n=1  0.68268949213708589717...
+n=2  0.95449973610364158560...
+n=3  0.99730020393673981095...
+n=4  0.99993665751633376016...
+n=5  0.99999942669685624161...
+n=6  0.99999999802682470992...
+\end{lstlisting}
+The full JSON records outward rational endpoints, not only decimals.  The script rounds intermediate transcendental enclosures outward to fixed dyadic grids, so its certificate sizes remain manageable and every subsequent interval operation remains exact.
+
+These computations serve three purposes: they test the formulas, provide finite examples for the proposed Lean implementation, and demonstrate that the precision schedules are genuinely primitive recursive.  They do not replace the universal proofs in the manuscript or the future object-language derivations.

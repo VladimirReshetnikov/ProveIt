@@ -1,0 +1,187 @@
+\section{Lean formalization roadmap}\label{sec:lean-roadmap}
+
+\subsection{Repository interfaces}
+
+The intended destination is the ProveIt workspace at the inspected snapshot
+\begin{center}
+\commitsha
+\end{center}
+The namespace is
+\code{LeanProofs.ConciseIPRA}.  The relevant existing interfaces are:
+\begin{center}
+\begin{tabularx}{0.95\textwidth}{l X}
+\toprule
+Interface & Role\\
+\midrule
+\code{PR} & Arity-indexed syntax of primitive-recursive programs.\\
+\code{PTm} & First-order terms built from those programs.\\
+\code{PRAAx} & Defining equations, successor axioms, and the ordinary iPRA theory.\\
+\code{Prf} & Intuitionistic first-order derivability; notation \code{$\Gamma$ $\vdash$[PRAAx] $\varphi$}.\\
+\code{PRA.qfInd} & Concrete quantifier-free induction interface.\\
+\code{pra\_iff\_native} & Bi-interpretation bridge to the concise native scalar core.\\
+IPRADerivations & Checked arithmetic for semirings, order, division, gcd, parity, bounded sums, pairing, simultaneous recursion, and ring identities.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The companion files in \code{lean/} are intentionally blueprints.  Lean and Lake were not available in the construction environment, so no compilation claim is made.
+
+\subsection{Proposed module graph}
+
+\begin{center}
+\begin{tikzpicture}[
+  node distance=8mm and 9mm,
+  box/.style={draw,rounded corners,align=center,minimum width=30mm,minimum height=8mm,font=\small},
+  arr/.style={-{Stealth[length=2mm]}}
+]
+\node[box] (codes) {Gaussian.Codes\\rationals, lists, intervals};
+\node[box, right=of codes] (finite) {Gaussian.FiniteAlgebra\\folds, polynomials, matrices};
+\node[box, right=of finite] (names) {Gaussian.Names\\fast names and contracts};
+\node[box, below=of codes] (special) {Gaussian.Special\\$\pi$, exp, log, sqrt};
+\node[box, below=of finite] (integral) {Gaussian.Integral\\quadrature, tails, IBP};
+\node[box, below=of names] (density) {Gaussian.Density\\$\phi$, $\Phi$, CDF bounds};
+\node[box, below=of special] (moments) {Gaussian.Moments\\moments, Hermite};
+\node[box, below=of integral] (trans) {Gaussian.Transforms\\MGF, CF, Stein};
+\node[box, below=of density] (laws) {Gaussian.Laws\\closure and derived laws};
+\node[box, below=of trans] (stats) {Gaussian.Statistics\\sample decomposition};
+\node[box, below=of stats] (object) {Gaussian.ObjectTheory\\\code{Prf PRAAx} targets};
+\draw[arr] (codes)--(finite);
+\draw[arr] (finite)--(names);
+\draw[arr] (codes)--(special);
+\draw[arr] (finite)--(integral);
+\draw[arr] (names)--(density);
+\draw[arr] (special)--(density);
+\draw[arr] (integral)--(density);
+\draw[arr] (special)--(moments);
+\draw[arr] (integral)--(moments);
+\draw[arr] (density)--(trans);
+\draw[arr] (moments)--(trans);
+\draw[arr] (density)--(laws);
+\draw[arr] (trans)--(laws);
+\draw[arr] (laws)--(stats);
+\draw[arr] (moments)--(stats);
+\draw[arr] (stats)--(object);
+\draw[arr] (trans)--(object);
+\draw[arr] (density)--(object);
+\end{tikzpicture}
+\end{center}
+
+\subsection{Layer 1: executable finite mathematics}
+
+The first layer should compile independently of the embedded logic and should contain no analytic axioms.
+\begin{enumerate}[label=\arabic*.]
+  \item Define signed rationals, dyadics, outward intervals, list codes, and polynomial coefficient arrays, reusing repository types where convenient.
+  \item Implement \code{atanPartial} and \code{piInterval}.
+  \par Implement \code{sqrtInterval} and \code{expNegInterval}.
+  \par Implement \code{cdfTaylorInterval}, following
+  \path{code/gaussian_certificates.py}.
+  \item Prove each interval constructor sound over Lean's integers/rationals.  These are ordinary metatheoretic proofs, not yet object-language derivations.
+  \item Define \code{hermite : Nat -> Polynomial Int} and \code{normalMoment : Nat -> Nat}; prove the recurrences and coefficient identities.
+  \item Define finite-law expectation, variance, product laws, and exact independence tables.  Reuse the central-limit packet's finite-law conventions when promoted into the repository.
+\end{enumerate}
+The executable layer provides trusted test vectors and lets later object formulas refer to concrete program syntax without manually transcribing large recursors.
+
+\subsection{Layer 2: represented analysis contracts}
+
+Define structures whose fields are data plus proofs, rather than declaring a typeclass instance for an unspecified classical function.  Suggested signatures are:
+\begin{lstlisting}[language={}] 
+structure FastName where
+  eval : Nat -> Rat
+  regular : forall p q, abs (eval p - eval q) <= dy p + dy q
+
+structure BoundedFunName where
+  eval : Rat -> Nat -> Rat
+  modulus : Nat -> Nat
+  bound : Nat -> Nat
+  regular : ...
+
+structure ImproperIntegralCert where
+  cutoff : Nat -> Nat
+  mesh : Nat -> Nat
+  tail_ok : ...
+  mesh_ok : ...
+\end{lstlisting}
+The actual types should match repository rational infrastructure.  Derivative, logarithm-apartness, matrix-positive-definiteness, and density-tail certificates are analogous.  The point is that no theorem receives a bare \code{Real -> Real} and then attempts to extract a modulus nonconstructively.
+
+Ambient Lean can first prove that the certificate combinators are sound.  This establishes the mathematical dependency graph and catches missing hypotheses.  It is not yet the final \ipra{} result.
+
+\subsection{Layer 3: primitive-recursive syntax}
+
+For every executable producer and checker, construct the corresponding \code{PR k} term.  The order should be:
+\begin{enumerate}[label=(\roman*)]
+  \item integer/rational coding and interval Booleans;
+  \item bounded folds, factorial, double factorial, powers, and coefficient lists;
+  \item bisection and finite alternating sums;
+  \item CDF and tail certificate checkers;
+  \item Hermite and moment checkers;
+  \item finite matrices, pairings, and sample-statistic checkers.
+\end{enumerate}
+Prove their defining equations in \code{Prf PRAAx}.  The central theorem for each program should have the form ``the graph formula is equivalent to equality with the \code{PTm} application.''  This permits rewriting inside larger object proofs.
+
+\subsection{Layer 4: object arithmetic lemmas}
+
+Develop the following checked derivations, using existing IPRADerivations wherever possible:
+\begin{itemize}
+  \item interval arithmetic soundness;
+  \item alternating-sum bracketing;
+  \item integer square-root bisection invariant;
+  \item finite binomial, factorial, double-factorial, and Hermite coefficient identities;
+  \item summation by parts and bounded Riemann refinement inequalities;
+  \item matrix quadratic-form and Pythagorean identities;
+  \item finite Jensen/log-sum-exp inequality needed for \cref{thm:expected-max}.
+\end{itemize}
+The repository's ring tool should dispatch many coefficient and sum-of-squares equalities after finite sums are normalized.
+
+\subsection{Layer 5: target sentences}
+
+The file \code{lean/ObjectLanguageTargets.lean} sketches the target families.  Representative mathematical forms are:
+\begin{align*}
+ \operatorname{CDFBound}(x,p,L,U)
+ &:\equiv L\le\Phi_p(x)\wedge\Phi_p(x)\le U\wedge U-L\le2^{-p},\\
+ \operatorname{Moment}(n,p,m)
+ &:\equiv |I_{n,p}-m|\le2^{-p},\\
+ \operatorname{Mills}(x,p)
+ &:\equiv \frac{x}{1+x^2}\phi_p(x)<Q_p(x)<\frac{\phi_p(x)}x
+       \quad\text{up to }2^{-p},\\
+ \operatorname{HermiteDeriv}(n,x,p)
+ &:\equiv |D^n\phi_p(x)-(-1)^n\He_n(x)\phi_p(x)|\le2^{-p}.
+\end{align*}
+Here every apparent analytic symbol is an abbreviation for a finite evaluator and certificate code.  The theorem statement exposed to \code{Prf} contains only natural-number variables, equalities, and order predicates.
+
+\subsection{Layer 6: ordinary-to-native transport}
+
+After constructing
+\[
+ h_A : []\vdash[\code{PRAAx}]A,
+\]
+apply the existing bridge to obtain the native derivation.  The exact invocation should be taken from the current signature of \code{pra\_iff\_native}; no new semantic axiom is required.  Keep both endpoints in the module:
+\begin{itemize}
+  \item the ordinary theorem, because its formulas are readable and compose with IPRADerivations;
+  \item the transported native theorem, because it demonstrates compatibility with the smallest concise presentation.
+\end{itemize}
+
+\subsection{Recommended completion order}
+
+A realistic sequence that yields useful checked milestones is:
+\begin{enumerate}
+  \item Hermite coefficient identities and exact moment recurrence.
+  \item Exact affine, sum-of-squares, and MLE identities.
+  \item Machin $\pi$, square-root, and exponential interval producers.
+  \item Certified CDF values at integer arguments and the $68$--$95$--$99.7$ theorem.
+  \item Mills inequalities and the quantile bisection checker.
+  \item General represented normalization and integration by parts.
+  \item MGF/CF, convolution closure, and multivariate projections.
+  \item Entropy/KL/Fisher formulas.
+  \item Sample decomposition, chi-square, $t$, and $F$.
+  \item General maximum entropy and effective transform uniqueness.
+\end{enumerate}
+The first four milestones are largely bounded arithmetic and would already turn a substantial portion of this packet into kernel-checked object mathematics.
+
+\subsection{Axiom and status audit}
+
+The completed development should run three audits:
+\begin{enumerate}[label=(\roman*)]
+  \item reject \code{sorry}, \code{admit}, and newly introduced axioms;
+  \item print the axioms of every exported ambient theorem;
+  \item ensure every headline object theorem literally has type \code{Prf PRAAx [] $\varphi$} or its notation equivalent.
+\end{enumerate}
+The present archive passes its Python validation and PDF build, but because Lean was unavailable it makes no statement about Lean compilation.  This limitation is repeated in the README and manifest so that an outline cannot be mistaken for a formal proof.

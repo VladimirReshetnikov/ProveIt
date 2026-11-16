@@ -1,0 +1,174 @@
+\section{What it means to prove a Catalan statement in \ipra}
+\label{sec:foundations}
+
+\subsection{The ambient theory and the inspected ProveIt base}
+
+The intended theory is first-order intuitionistic logic with equality, a
+function symbol for every primitive-recursive function together with its
+defining equations, successor axioms, and induction for quantifier-free
+formulas.  This is the usual presentation of intuitionistic primitive
+recursive arithmetic.  No appeal to a completed infinite set, an unrestricted
+minimum principle, excluded middle for arbitrary formulas, or countable choice
+is needed below.
+
+In ProveIt's embedded calculus, an internal theorem has type
+\[
+  ([]:\operatorname{List}(\mathsf{Fm}\;\mathsf{PTm}\;0))
+  \ \vdash_{\mathsf{PRAAx}}\ \varphi.
+\]
+The relevant checked modules already provide factorials, exact division with
+remainder, binomial coefficients, bounded sums and products, order,
+pairing, primitive recursion, and determinant infrastructure.  In particular,
+\texttt{Combinatorics/BinomialIdentities.lean} contains the theorem
+\texttt{catalan}, whose object-language conclusion is the universal closure of
+\[
+ (n+1)\left(\binom{2n}{n}\monus\binom{2n}{n+1}\right)
+   =\binom{2n}{n}.
+\tag{1.1}\label{eq:checked-catalan}
+\]
+The source indexes the checked open variable as $n=m+1$; the case $n=0$ is a
+one-line computation.  Thus integrality is not merely asserted in the
+metatheory: the denominator-cleared identity is already a theorem of the
+object theory.
+
+\subsection{Finite objects are bounded natural-number codes}
+
+Every combinatorial object in this report is represented by a natural number
+below a primitive-recursive bound.  A word of length $r$ over an alphabet of
+size $a$ is a number below $a^r$; its $i$th letter is extracted by quotient and
+remainder.  A finite sequence is encoded by pairing, a finite tree by a prefix
+word, a permutation by a bounded list with a primitive-recursive distinctness
+test, and a finite set partition by a restricted-growth word.  All predicates
+used below are quantifier-free after bounded searches are compiled to sums or
+products of characteristic functions.
+
+\begin{definition}[Bounded cardinality]
+If $P(n,z)$ is a primitive-recursive Boolean predicate and $z<B(n)$ is a
+primitive-recursive bound, put
+\[
+  \#P(n)=\sum_{z<B(n)}[P(n,z)],
+\]
+where $[P]\in\{0,1\}$ is the Boolean truth value.  This is itself a
+primitive-recursive function.
+\end{definition}
+
+\begin{lemma}[Finite bijection principle]
+\label{lem:finite-bijection}
+Suppose $P(n,z)$ and $Q(n,w)$ have bounds $B(n)$ and $D(n)$.  If
+primitive-recursive maps $F$ and $G$ satisfy, by quantifier-free bounded
+proofs,
+\[
+ P(n,z)\Rightarrow Q(n,F(n,z)),\qquad
+ Q(n,w)\Rightarrow P(n,G(n,w)),
+\]
+and $G(F(z))=z$, $F(G(w))=w$ on the indicated domains, then
+$\#P(n)=\#Q(n)$ is provable in \ipra.
+\end{lemma}
+
+\begin{proof}
+For each $w<D(n)$, the indicator of $Q(n,w)$ equals the bounded sum of
+$[P(n,z)\wedge F(n,z)=w]$ over $z<B(n)$: existence follows from $G$, and
+uniqueness follows by applying $G$ to two preimages.  Sum this equality over
+$w$, interchange two bounded sums, and use the fact that exactly one $w$ is
+$F(n,z)$.  Every operation is a bounded sum, equality test, and
+quantifier-free induction.  No choice function is inferred: $F$ and $G$ are
+part of the data.
+\end{proof}
+
+A recurrence proof has the same status.  If a class of size $n+1$ decomposes
+uniquely into pairs of classes of sizes $i$ and $n-i$, the coding functions
+for decomposition and reconstruction give
+\[
+  A_{n+1}=\sum_{i\le n}A_iA_{n-i}
+\]
+as an equality of bounded sums.  The word ``uniquely'' always means that the
+inverse equations are explicitly checked.
+
+\subsection{Division-free arithmetic}
+
+Fractions are not primitive objects of \ipra.  Thus
+\(\Cat_n=\binom{2n}{n}/(n+1)\) is represented by the pair of assertions
+\[
+  (n+1)\Cat_n=\binom{2n}{n},\qquad n+1>0,
+\]
+not by an unguarded division symbol.  Rational identities are cleared of all
+positive denominators.  Signed identities are represented by pairs of natural
+numbers or by ProveIt's integer-difference type.  A congruence
+$a\equiv b\pmod m$ is the equation $\operatorname{rem}(a,m)=
+\operatorname{rem}(b,m)$, with the positive-modulus hypothesis made explicit.
+This convention is used throughout the number-theoretic and asymptotic
+sections.
+
+\subsection{Formal series mean finite coefficient identities}
+
+A formal series $A(x)=\sum_{n\ge0}a_nx^n$ is not an infinite set in the object
+language.  The assertion $A=B$ abbreviates
+\[
+  \forall N\;\bigl(a_N=b_N\bigr),
+\]
+and multiplication is the primitive-recursive Cauchy coefficient
+\((AB)_N=\sum_{i\le N}a_i b_{N-i}\).  A square root with constant term $1$ is
+specified recursively by its coefficients, or avoided by a polynomial
+identity.  Consequently
+\[
+ C(x)=1+xC(x)^2
+\tag{1.2}\label{eq:formal-catalan}
+\]
+is exactly Segner's finite recurrence, one coefficient at a time.  Formal
+substitution is admitted only with zero constant term, so every requested
+coefficient depends on finitely many input coefficients.
+
+\begin{lemma}[Uniqueness of the Catalan formal solution]
+There is at most one sequence $a_0,a_1,\ldots$ satisfying $a_0=1$ and
+$a_{n+1}=\sum_{i\le n}a_i a_{n-i}$.
+\end{lemma}
+
+\begin{proof}
+Quantifier-free induction on $n$.  At stage $n+1$ the right side uses only
+indices at most $n$, which agree by the induction hypothesis.
+\end{proof}
+
+\subsection{Constructive real and complex notation}
+
+A real number is used only through a primitive-recursive rational Cauchy code:
+a pair $a^-(q)\le a^+(q)$ with width at most $1/q$, monotone refinement, and
+an explicit modulus.  Addition, multiplication on bounded intervals, square
+root by integer bisection, and logarithm and exponential by alternating or
+Taylor sums have primitive-recursive realizers.  One convenient code for
+$\pi$ is Machin's identity
+\[
+ \frac\pi4=4\arctan\frac15-\arctan\frac1{239},
+\]
+where the alternating arctangent series gives an immediate rational error
+bound.  Complex numbers are pairs of such codes.
+
+Accordingly, a limit statement $u_n\to L$ means a displayed
+primitive-recursive $N(q)$ such that
+\[
+ n\ge N(q)\Longrightarrow \abs{u_n-L}\le \frac1q,
+\]
+a rational inequality after interval endpoints and denominators are cleared.
+An integral means upper and lower rational Riemann sums with a displayed mesh
+modulus.  The endpoint square root in Section~\ref{sec:series} is handled by a
+change of variables before the sums are formed.
+
+\subsection{Three levels of formal status}
+
+To prevent an ambient Lean theorem from being confused with an internal
+arithmetic theorem, the report uses the following labels.
+
+\begin{enumerate}[label=\textbf{\Alph*.},leftmargin=2.4em]
+\item \textbf{Checked object-language theorem}: a term of
+      \(\mathsf{Prf}\,\mathsf{PRAAx}\) already accepted by Lean's kernel.
+\item \textbf{iPRA-ready finite proof}: all functions, bounds, maps, and
+      induction measures are explicit; translation to the existing bounded
+      arithmetic library is routine but has not been entered as a proof term.
+\item \textbf{Effective analytic proof}: the finite algebra is \ipra-ready
+      and every limiting operation comes with a primitive-recursive rational
+      modulus; the real-code library still has to be connected to
+      \(\mathsf{Prf}\,\mathsf{PRAAx}\).
+\end{enumerate}
+
+Only Equation~\eqref{eq:checked-catalan} and the imported ProveIt lemmas are
+claimed here at level A.  The new source files supplied with this package are
+explicit scaffolds, not a claim of completed kernel verification.

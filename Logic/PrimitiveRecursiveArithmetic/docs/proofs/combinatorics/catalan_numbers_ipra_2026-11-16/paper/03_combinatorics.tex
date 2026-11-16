@@ -1,0 +1,221 @@
+\section{Primitive-recursive Catalan bijections}
+\label{sec:combinatorics}
+
+This section proves the principal counting interpretations listed on the two
+source pages.  Each map is an algorithm on bounded words or lists, and each
+inverse is described.  Thus the arguments are not merely classical counting
+proofs; they directly instantiate Lemma~\ref{lem:finite-bijection}.
+
+\subsection{Words, parentheses, lattice paths, and mountains}
+
+The Dyck-word interpretation is Theorem~\ref{thm:reflection}.  Replacing $U$
+by an opening parenthesis and $D$ by a closing parenthesis gives correctly
+matched parenthesis strings: the height is the number of currently open
+parentheses.  Replacing $U,D$ by right and up steps gives monotone paths from
+$(0,0)$ to $(n,n)$ that remain on the chosen side of the diagonal.  Replacing
+them by slopes $+1,-1$ gives mountains that do not fall below the starting
+level.  These are literal letter substitutions, so their inverses are
+immediate.
+
+The column-height representation on Wikipedia is also direct.  For the
+$j$th right step, record the number $h_j$ of up steps preceding it.  A path
+below the diagonal gives
+\[
+ 0\le h_1\le h_2\le\cdots\le h_n,
+ \qquad h_j\le j-1.
+\tag{3.1}\label{eq:height-sequence}
+\]
+Conversely, insert the required number of up steps before each right step and
+then the remaining up steps.  This gives a primitive-recursive bijection with
+nondecreasing sequences satisfying Equation~\eqref{eq:height-sequence}.
+
+\subsection{Full binary trees and complete parenthesizations}
+
+A full ordered binary tree is either a leaf or an internal node with an ordered
+left and right subtree.  Define its Dyck code recursively by
+\[
+ \operatorname{code}(\text{leaf})=\varepsilon,
+ \qquad
+ \operatorname{code}(\operatorname{node}(L,R))
+   =U\operatorname{code}(L)D\operatorname{code}(R).              \tag{3.2}\label{eq:tree-code}
+\]
+If the tree has $n$ internal nodes, the word has $n$ $U$'s and $n$ $D$'s.
+The first-return decomposition in Theorem~\ref{thm:segner} recovers $L$ and
+$R$, so Equation~\eqref{eq:tree-code} is a bijection.  Hence $\Cat_n$ counts full
+ordered binary trees with $n$ internal vertices and $n+1$ leaves.
+
+A complete parenthesization of $n+1$ ordered factors has a unique outermost
+binary operation; its two operands are parenthesized initial and final blocks.
+Make this operation the root and recurse.  Reading a tree back as an operation
+gives the inverse.  The same proof covers binary parse trees, bracketings of
+ordered exponentials, and any fixed binary operator.  Adding a plant edge and
+suppressing leaves converts a full binary tree into the planted planar
+trivalent tree described by MathWorld.
+
+\subsection{Rooted plane trees}
+
+For a rooted ordered tree with $n$ edges, perform its contour traversal.  Write
+$U$ when an edge is traversed away from the root for the first time and $D$
+when it is traversed back.  The current depth is the Dyck height, so the output
+is a Dyck word of semilength $n$.  Conversely, scan a Dyck word with a stack:
+on $U$, create the next child of the current vertex and push it; on $D$, pop.
+The prefix condition prevents underflow and the final height empties the
+stack.  These two routines are inverse, proving that $\Cat_n$ counts rooted
+plane trees with $n$ edges, equivalently $n+1$ vertices.
+
+The familiar left-child/right-sibling representation gives the same
+bijection through binary trees: the left pointer is the first child and the
+right pointer is the next sibling.  This alternative is useful in Lean because
+both trees can share one bounded-array representation.
+
+\subsection{Triangulations of a convex polygon}
+
+Fix a distinguished boundary edge of a convex $(n+2)$-gon.  In any
+triangulation, exactly one triangle is incident with that edge.  If its third
+vertex leaves $i+2$ vertices on one side and $n-i+2$ on the other, the remaining
+diagonals are independent triangulations of those two polygons.  Thus the
+numbers $T_n$ satisfy
+\[
+ T_0=1,\qquad T_{n+1}=\sum_{i=0}^{n}T_iT_{n-i}.                  \tag{3.3}
+\]
+More strongly, the incident triangle is a computable root, and recursively
+placing the two subtriangulations to its left and right is a bijection with
+full ordered binary trees.  Therefore $T_n=\Cat_n$.  The same recursion proves
+Euler's polygon-division problem and Segner's formula
+$E_m=\Cat_{m-2}$ for $m\ge2$.
+
+\subsection{Noncrossing handshakes and pair partitions}
+
+Place $2n$ labeled points around a circle.  In a noncrossing perfect matching,
+point $1$ is paired with an even point $2i+2$.  The $2i$ points inside that
+chord and the remaining $2(n-1-i)$ points outside it are matched
+independently.  This is an explicit first-chord decomposition with inverse,
+so the count satisfies Segner's recurrence and is $\Cat_n$.
+
+Equivalently, scan the points in cyclic order and write $U$ at the first
+endpoint and $D$ at the second endpoint of each chord, where chords are
+processed by nesting.  Noncrossing is exactly the stack condition.  This also
+proves the Wikipedia statement about noncrossing partitions of $[2n]$ whose
+blocks all have size two.
+
+\subsection{Noncrossing set partitions and the Bell bound}
+
+Encode a partition of $[n]$ by its restricted-growth word.  It is noncrossing
+when there do not exist $a<b<c<d$ with $a,c$ in one block and $b,d$ in another.
+This is a bounded decidable predicate.
+
+Let $P(x)$ be the formal counting series for noncrossing partitions.  In a
+nonempty partition, list the elements of the block containing $1$ as
+$1=b_0<b_1<\cdots<b_r$.  The $r+1$ cyclic intervals after these elements carry
+independent noncrossing partitions.  Marking the $r+1$ elements of the root
+block gives, coefficientwise,
+\[
+ P=1+\sum_{r\ge0}x^{r+1}P^{r+1}
+  =1+\frac{xP}{1-xP}.                                           \tag{3.4}\label{eq:NCseries}
+\]
+Multiplication by $1-xP$ reduces this to $P=1+xP^2$.  By formal uniqueness,
+$P=C$, so there are $\Cat_n$ noncrossing partitions of $[n]$.  The decomposition
+and reconstruction are bounded list algorithms; the geometric terminology is
+not essential to the proof.
+
+The inclusion of noncrossing partitions into all set partitions is injective,
+so
+\[
+ \Cat_n\le \operatorname{Bell}(n).                               \tag{3.5}\label{eq:bell-bound}
+\]
+This is an \ipra{} inequality between bounded counts, not an appeal to cardinal
+comparison of abstract sets.
+
+\subsection{Two-row standard Young tableaux}
+
+Given a standard Young tableau of rectangular shape $(n,n)$, scan the numbers
+$1,\ldots,2n$ and write $U$ if the number is in the first row and $D$ if it is
+in the second.  Each row contains $n$ entries.  The $j$th first-row entry is
+smaller than the $j$th second-row entry exactly when every prefix has at least
+as many $U$'s as $D$'s.  Thus the word is Dyck.
+
+Conversely, place the positions of the $U$'s increasingly in the first row and
+the positions of the $D$'s increasingly in the second.  The Dyck prefix
+condition is precisely the column inequality.  This proves that the number of
+$2$-by-$n$ standard tableaux is $\Cat_n$.  Evaluating the hook-length product
+also gives
+\[
+ \frac{(2n)!}{n!(n+1)!}=\Cat_n,
+\]
+so the hook-length specialization agrees with the bijection.
+
+\subsection{The restricted sequences on Wikipedia}
+
+Let $a_i$ be the height immediately after the $i$th $U$ in a Dyck word.  Then
+\[
+ a_1=1,
+ \qquad 1\le a_{i+1}\le a_i+1.                                  \tag{3.6}\label{eq:restricted-seq}
+\]
+Thus the sequence may rise by at most one and may fall by any amount while
+remaining positive.  Conversely, from such a sequence insert
+$a_i-a_{i+1}+1$ letters $D$ between the $i$th and $(i+1)$st $U$, and insert
+$a_n$ letters $D$ at the end.  These numbers are nonnegative and telescope to
+$n$ down steps.  The construction stays nonnegative and inverts height
+recording.  Hence these length-$n$ sequences are counted by $\Cat_n$.
+
+\subsection{Pattern-avoiding and stack-sortable permutations}
+
+A permutation avoids $231$ precisely when, after writing it as $u\,n\,v$ at
+its largest entry, every entry of $u$ is smaller than every entry of $v$, and
+both standardized subwords avoid $231$.  If some $x\in u$ exceeds some
+$y\in v$, then $x,n,y$ is a $231$ pattern; the converse is immediate by
+locating the largest member of any alleged pattern.  Therefore the left word
+uses the smallest $i$ values for some $i$, the right word uses the remaining
+values, and
+\[
+ A_{n+1}=\sum_{i=0}^{n}A_iA_{n-i},\qquad A_0=1.                  \tag{3.7}
+\]
+Standardization and unstandardization are primitive recursive, so
+$A_n=\Cat_n$ by an actual decomposition bijection.
+
+Reverse, complement, and inverse are explicit involutions on permutations.
+They show that $132,213,231,312$ have the same avoidance count.  For the
+remaining orbit, the Robinson--Schensted row-insertion algorithm is primitive
+recursive and its reverse row-deletion algorithm is an explicit inverse.  The
+special Schensted lemma needed here also has a bounded inductive proof: the
+row-bumping lemma says that insertion paths for successively smaller letters
+move strictly left and strictly downward.  Hence a decreasing subsequence of
+length $r$ forces $r$ distinct rows.  Conversely, tracing the bumping
+predecessors of the leftmost entry in each successive row, and then reversing
+the recorded insertion times, constructs a decreasing subsequence with one
+entry from every occupied row.  Thus a permutation avoids $321$ exactly when
+its insertion tableau has at most two rows.  Therefore its number is
+\[
+ \sum_{k=0}^{\floor{n/2}} f_{(n-k,k)}^2,
+\]
+where the two-row hook calculation gives
+$f_{(n-k,k)}=\binom nk-\binom n{k-1}$.  Equation~\eqref{eq:square-sum} identifies
+this sum with $\Cat_n$.  Reversal covers $123$.  Consequently every pattern of
+length three has exactly $\Cat_n$ avoiding permutations.
+
+The recursive stack-sorting operator satisfies
+$S(u\,n\,v)=S(u)S(v)n$.  Its output is increasing if and only if $S(u)$ and
+$S(v)$ are increasing and every value in $u$ is smaller than every value in
+$v$.  By the preceding characterization this is equivalent, inductively, to
+$231$-avoidance.  Thus the stack-sortable permutations are also counted by
+$\Cat_n$.
+
+\subsection{Staircase tilings and related tree models}
+
+A tiling of the staircase Ferrers shape $(n,n-1,\ldots,1)$ by $n$ rectangles
+has a unique rectangle containing the northwest corner.  Extending its
+southeast corner to the antidiagonal splits the remaining cells into two
+smaller staircase regions; empty regions are allowed.  Recursing produces a
+full ordered binary tree with one internal node per rectangle.  Conversely,
+place the root rectangle across the corresponding antidiagonal interval and
+recurse on the two subregions.  The split coordinates are integral and
+bounded, so this is a primitive-recursive inverse pair.  It proves the
+staircase-tiling interpretation stated on Wikipedia.
+
+MathWorld also lists admissible diagonals in positive integral frieze patterns
+and abstract flexagon configurations.  Their published correspondences pass
+through triangulations or ordered pairs of ``pats.''  The triangulation side
+has been proved above.  A complete formal proof for those specialized object
+formats would require fixing their exact source conventions; this package
+records them as formalization targets rather than silently changing the
+definitions.  See the coverage ledger in Section~\ref{sec:coverage}.

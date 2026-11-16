@@ -1,0 +1,205 @@
+\section{CDF series, tails, coverage probabilities, and quantiles}\label{sec:cdf-tails}
+
+\subsection{The ordinary Taylor series with a finite remainder}
+
+Expanding $e^{-t^2/2}$ and integrating term by term only after fixing a finite cutoff gives the safest constructive CDF formula.
+
+\begin{theorem}[Alternating CDF Taylor formula]\label{thm:cdf-taylor}
+For every integer $N\ge1$ and represented $x$,
+\begin{equation}\label{eq:cdf-taylor}
+ \Phi(x)=\frac12+\frac1{\sqrt{2\pi}}
+  \sum_{k=0}^{N-1}\frac{(-1)^k x^{2k+1}}{2^k k!(2k+1)}+R_N(x),
+\end{equation}
+where
+\begin{equation}\label{eq:cdf-taylor-rem}
+ |R_N(x)|\le
+ \frac1{\sqrt{2\pi}}
+ \frac{|x|^{2N+1}}{2^N N!(2N+1)}e^{x^2/2}.
+\end{equation}
+If $N>x^2/2$, the absolute terms decrease from index $N$ onward and the sharper alternating next-term enclosure is valid.
+\end{theorem}
+
+\begin{proof}
+Taylor's theorem for $e^{-u}$ at $u=0$ gives a finite polynomial plus a Lagrange remainder bounded by $e^{|u|}|u|^N/N!$.  Set $u=t^2/2$, integrate from $0$ to $x$, and bound $|t|\le|x|$.  This yields \eqref{eq:cdf-taylor-rem}.  The ratio of successive integrated term magnitudes is
+\[
+ \frac{x^2(2k+1)}{2(k+1)(2k+3)}<\frac{x^2}{2(k+1)}.
+\]
+Thus after $k+1>x^2/2$ the alternating-series theorem applies.  Its proof is the finite pairing inequality for even and odd partial sums, followed by the explicit vanishing of the next term; no countable completeness is used.
+\end{proof}
+
+\subsection{A second global series}
+
+The Wikipedia page displays another useful identity, sometimes described there as asymptotic.  It is in fact a convergent equality for every finite $x$.
+
+\begin{theorem}[Convergent density-factor series]\label{thm:cdf-density-series}
+For every represented $x$,
+\begin{equation}\label{eq:cdf-density-series}
+ \Phi(x)=\frac12+\phi(x)
+   \sum_{k=0}^{\infty}\frac{x^{2k+1}}{(2k+1)!!}.
+\end{equation}
+For the $N$-term sum $S_N(x)$,
+\begin{equation}\label{eq:density-series-rem}
+ \left|\Phi(x)-\frac12-\phi(x)S_N(x)\right|
+ \le \frac{\phi(0)|x|^{2N+1}}{(2N-1)!!(2N+1)}.
+\end{equation}
+Consequently \eqref{eq:cdf-density-series} has a primitive-recursive convergence modulus on every bounded interval.
+\end{theorem}
+
+\begin{proof}
+Set
+\[
+ S_N(x)=\sum_{k=0}^{N-1}\frac{x^{2k+1}}{(2k+1)!!}.
+\]
+Direct coefficient cancellation gives
+\[
+ S_N'(x)-xS_N(x)=1-\frac{x^{2N}}{(2N-1)!!}.
+\]
+Using $\phi'=-x\phi$,
+\[
+ \frac{\dd}{\dd x}(\phi S_N)
+ =\phi\left(1-\frac{x^{2N}}{(2N-1)!!}\right).
+\]
+Subtract from $\Phi'=\phi$, integrate from $0$ to $x$, and use $\Phi(0)=1/2$ and $S_N(0)=0$.  The remainder is
+\[
+ \frac1{(2N-1)!!}\int_0^x \phi(t)t^{2N}\dd t,
+\]
+whose absolute value is bounded by \eqref{eq:density-series-rem}.  The ratio of successive majorants tends to zero and is eventually at most $1/2$ with an explicit cutoff $N>|x|^2$, giving the required modulus.
+\end{proof}
+
+\begin{remark}[Correction of terminology]
+The finite truncations of \eqref{eq:cdf-density-series} can be poor at large $|x|$, because the prefactor is tiny and the positive polynomial sum is large.  That numerical conditioning does not make the series merely asymptotic.  Its tail tends effectively to zero for each bounded $x$, as \eqref{eq:density-series-rem} proves.
+\end{remark}
+
+\subsection{Mills inequalities and the complete finite tail expansion}
+
+Write $Q(x)=1-\Phi(x)=\int_x^\infty\phi(t)\dd t$ for $x\ge0$.
+
+\begin{theorem}[Mills inequalities]\label{thm:mills}
+For every $x>0$,
+\begin{equation}\label{eq:mills}
+ \frac{x}{1+x^2}\phi(x)<Q(x)<\frac{\phi(x)}{x}.
+\end{equation}
+The inequalities are uniform finite contracts on every rational interval $x\in[\delta,B]$ with $\delta>0$.
+\end{theorem}
+
+\begin{proof}
+For the upper bound, $t/x>1$ for $t>x$, hence
+\[
+ Q(x)<\frac1x\int_x^\infty t\phi(t)\dd t=\frac{\phi(x)}x.
+\]
+For the lower bound define
+\[
+ h(x)=Q(x)-\frac{x}{1+x^2}\phi(x).
+\]
+A finite differentiation gives
+\[
+ h'(x)=-\frac{2\phi(x)}{(1+x^2)^2}<0,
+\]
+while both terms tend effectively to zero as $x\to\infty$.  Therefore $h(x)>0$: for a finite cutoff $T>x$, $h(x)=h(T)-\int_x^T h'(t)\dd t$, the integral is positive, and the explicit tail bound makes $|h(T)|$ smaller than half of that positive rational lower enclosure.  Alternatively one can integrate the pointwise identity obtained from differentiating $x\phi(x)/(1+x^2)$; both versions are primitive recursive.
+\end{proof}
+
+\begin{theorem}[Finite alternating tail expansion]\label{thm:mills-expansion}
+Let $m\ge1$ and $x>0$.  Then
+\begin{equation}\label{eq:tail-expansion}
+ Q(x)=\phi(x)\sum_{j=0}^{m-1}
+   \frac{(-1)^j(2j-1)!!}{x^{2j+1}}
+   +(-1)^m(2m-1)!!J_m(x),
+\end{equation}
+where
+\[
+ J_m(x)=\int_x^\infty\frac{\phi(t)}{t^{2m}}\dd t>0.
+\]
+Thus consecutive truncations bracket $Q(x)$, and
+\begin{equation}\label{eq:tail-expansion-error}
+ |R_m(x)|<(2m-1)!!\frac{\phi(x)}{x^{2m+1}}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Put $J_j(x)=\int_x^\infty\phi(t)t^{-2j}\dd t$.  Since $\phi'=-t\phi$, finite integration by parts gives
+\[
+ J_j(x)=\frac{\phi(x)}{x^{2j+1}}-(2j+1)J_{j+1}(x).
+\]
+Iterate this identity $m$ times.  Positivity gives the alternating bracket, and the upper Mills argument applied to $J_m$ gives
+$J_m(x)<\phi(x)/x^{2m+1}$.
+\end{proof}
+
+\subsection{The \texorpdfstring{$68$--$95$--$99.7$}{68--95--99.7} rule and certified values}
+
+\begin{corollary}[Central coverage]\label{cor:coverage}
+For $Z\sim N(0,1)$,
+\[
+ \Pp(|Z|\le n)=2\Phi(n)-1=\erf(n/\sqrt2).
+\]
+The exact-rational certificate program in this package proves the following outward intervals:
+\begin{center}
+\begin{tabular}{c c}
+\toprule
+$n$ & certified value of $\Pp(|Z|\le n)$ (decimal display)\\
+\midrule
+1 & $0.68268949213708589717\ldots$\\
+2 & $0.95449973610364158560\ldots$\\
+3 & $0.99730020393673981095\ldots$\\
+4 & $0.99993665751633376016\ldots$\\
+5 & $0.99999942669685624161\ldots$\\
+6 & $0.99999999802682470992\ldots$\\
+\bottomrule
+\end{tabular}
+\end{center}
+In particular the familiar rounded rule is $68.27\%$, $95.45\%$, and $99.73\%$ for one, two, and three standard deviations.
+\end{corollary}
+
+\begin{proof}
+The identity follows from symmetry.  For certification, compute a dyadic enclosure of $(2\pi)^{-1/2}$ from Machin's formula and bisection, evaluate \eqref{eq:cdf-taylor} with 220 terms, and use the next-term enclosure because $220>6^2/2$.  Every endpoint is a rational number recorded in \code{evidence/validation.json}; the decimal strings are only renderings of those endpoints.  The same run independently verifies both inequalities in \eqref{eq:mills} for $x=1,\dots,6$.
+\end{proof}
+
+\subsection{Effective inverse CDF}
+
+The notation $\Phi^{-1}(p)$ is legitimate constructively only after an algorithm and an error contract are supplied.
+
+\begin{theorem}[Primitive-recursive quantile name]\label{thm:quantile}
+Fix a rational $\delta>0$.  There is a primitive-recursive procedure
+\[
+ \operatorname{qnorm}(p,k)
+\]
+which, for rational $p\in[\delta,1-\delta]$, returns a rational interval $I_{p,k}$ of width at most $2^{-k}$ containing the unique $q$ with $\Phi(q)=p$.  The correctness proof is uniform in $p$ and $k$.
+\end{theorem}
+
+\begin{proof}
+Choose $B$ by bounded search so that the upper Mills bound $\phi(B)/B<\delta/4$.  Then $q\in[-B,B]$.  On this compact interval,
+\[
+ \phi(x)\ge m:=\phi(B)>0,
+\]
+where $m$ has a certified rational lower bound.  Maintain a bracket $[a,b]$ known to contain a solution up to the current CDF tolerance.  At midpoint $c$, compute an interval $J$ for $\Phi(c)$ of radius
+\[
+ \varepsilon\le m2^{-k-4}.
+\]
+If $J$ lies below $p$, replace $a$ by $c$; if it lies above, replace $b$ by $c$.  If $p\in J$, the mean-value estimate
+$|\Phi(c)-p|\ge m|c-q|$ shows $|c-q|\le2^{-k-4}$, so return the interval of radius $2^{-k-3}$ about $c$.  Otherwise ordinary bisection reaches width $2^{-k}$ after a primitive-recursive number of steps.  Notice that equality $\Phi(c)=p$ never has to be decided.
+\end{proof}
+
+\begin{corollary}[Quantile symmetry and derivatives]\label{cor:quantile-ode}
+For $0<p<1$,
+\begin{align}
+ q(1-p)&=-q(p), & q(1/2)&=0,\label{eq:q-sym}\\
+ q'(p)&=\frac1{\phi(q(p))}=\sqrt{2\pi}\,e^{q(p)^2/2},\label{eq:qprime}\\
+ q''(p)&=q(p)\,q'(p)^2.\label{eq:qsecond}
+\end{align}
+On every closed subinterval $[\delta,1-\delta]$ these are effective derivative contracts with explicit bounds.
+\end{corollary}
+
+\begin{proof}
+Equation \eqref{eq:q-sym} follows from \eqref{eq:cdf-symmetry} and uniqueness.  Differentiate $\Phi(q(p))=p$ on a compact interval where $\phi(q)$ has a positive lower bound.  This gives \eqref{eq:qprime}; differentiating once more and using $\phi'/\phi=-q$ gives \eqref{eq:qsecond}.  The represented derivative theorem uses finite differences and the supplied moduli, not an unbounded inverse-function principle.
+\end{proof}
+
+\begin{algorithm}[Safeguarded Newton quantile iteration]\label{alg:newton}
+Maintain the bracket from \cref{thm:quantile}.  Given $x_j$ and interval enclosures for $\Phi(x_j)$ and $\phi(x_j)$, form
+\[
+ y_j=x_j-\frac{\Phi(x_j)-p}{\phi(x_j)}
+\]
+with enough guard precision, and replace $x_{j+1}$ by $y_j$ if its whole enclosure lies in the bracket; otherwise use the midpoint.  On $[-B,B]$, $\phi\ge m$ and $|\phi'|\le M$, so once $|x_j-q|\le m/(2M)$,
+\[
+ |x_{j+1}-q|\le \frac{M}{m}|x_j-q|^2
+\]
+after the rational evaluation errors are budgeted below half the right-hand side.  The initial bisection therefore gives a primitive-recursive entry time into the quadratic regime.
+\end{algorithm}
