@@ -16,8 +16,10 @@ configuration for source site 25.
 The [controller theorem](PA194M6Controller.lean) relates literal machine
 halting to reachability of site 10 in the [M6 source](README.md). It
 uses the verified register operations and a finite premise covering all
-3,795 sites. The all-site certificate and the PA consistency calibration
-are separate proof stages.
+3,795 sites. The [final literal theorem](PA194M6PhysicalFinal.lean)
+applies the checked certificate for every site to discharge that
+premise. The arithmetic calibration from the revised source to PA
+consistency remains open.
 
 From the repository root, pass the checked M6 source stage and the common
 startup stage produced by
@@ -27,4 +29,5 @@ startup stage produced by
 variants=Computability/BusyBeaver/Research/PA/verification/pa194/ipra/variants
 bash "$variants/pa194m6/check-physical.sh" /path/to/m6-source /path/to/common-startup /path/to/fresh-m6-literal
 bash "$variants/check-linear-coverage.sh" PA194M6 /path/to/fresh-m6-literal /path/to/fresh-m6-coverage
+bash "$variants/check-controller-final.sh" PA194M6 /path/to/fresh-m6-literal /path/to/fresh-m6-coverage /path/to/fresh-m6-final
 ```

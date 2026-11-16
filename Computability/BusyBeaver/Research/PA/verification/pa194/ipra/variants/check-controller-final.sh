@@ -9,7 +9,7 @@ case "$candidate" in
     suffix=Final
     theorem=consistency_iff_literal_nonhalt
     ;;
-  PA194M5)
+  PA194M5 | PA194M6)
     suffix=PhysicalFinal
     theorem=halt_iff_site10
     ;;
