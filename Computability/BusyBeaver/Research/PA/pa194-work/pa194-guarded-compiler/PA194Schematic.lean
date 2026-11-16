@@ -7,10 +7,10 @@ set_option linter.unusedSimpArgs false
 /-!
 # Instantiating predicate letters of a standard derivation by internal formulas
 
-`boxL ar` is a language without function symbols whose relation symbols are `m` predicate
-letters of the arities `ar`. A standard formula of `boxL ar` and internal formulas
-`σ 0, …, σ (m-1)` of a language `L`, of these arities, give an internal formula of `L`
-(`inst σ φ`): the atom of the `i`-th letter at terms `v` becomes `σ i` at `v`. A standard
+`boxL ar` is a language without function symbols whose relation symbols are predicate
+letters indexed by a type `ι`, the letter `i` of arity `ar i`. A standard formula of
+`boxL ar` and internal formulas `σ i` of a language `L`, of these arities, give an internal
+formula of `L` (`inst σ φ`): the atom of the letter `i` at terms `v` becomes `σ i` at `v`. A standard
 derivation in pure logic of a sequent of `boxL ar` gives an internal derivation of its
 instance, for every choice of `σ`, including nonstandard formulas (`instDer`). With the
 completeness theorem, a sentence of `boxL ar` that holds in every structure has all its
@@ -22,19 +22,19 @@ namespace PA194Schematic
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.FirstOrder.Arithmetic.Bootstrapping
 open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
 
-/-- Predicate letters: the `i`-th letter has arity `ar i`. -/
-inductive BoxRel {m : ℕ} (ar : Fin m → ℕ) : ℕ → Type
-  | box (i : Fin m) : BoxRel ar (ar i)
+/-- Predicate letters: the letter `i` has arity `ar i`. -/
+inductive BoxRel {ι : Type} (ar : ι → ℕ) : ℕ → Type
+  | box (i : ι) : BoxRel ar (ar i)
 
 /-- The language of the predicate letters; it has no function symbol. -/
-def boxL {m : ℕ} (ar : Fin m → ℕ) : Language where
+def boxL {ι : Type} (ar : ι → ℕ) : Language where
   Func := fun _ => PEmpty
   Rel := BoxRel ar
 
 section generic
 variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 variable {L : Language} [L.Encodable] [L.LORDefinable]
-variable {m : ℕ} {ar : Fin m → ℕ}
+variable {ι : Type} {ar : ι → ℕ}
 
 /-- The internal term of a standard term of `boxL ar`; such a term is a variable. -/
 noncomputable def tq {n : ℕ} : SyntacticSemiterm (boxL ar) n → Bootstrapping.Semiterm V L n
@@ -70,7 +70,7 @@ theorem tq_substs {n k : ℕ} (w : Fin n → SyntacticSemiterm (boxL ar) k)
   | func f _ => exact nomatch f
 
 /-- The instance of a standard formula of `boxL ar` at internal formulas `σ`. -/
-noncomputable def inst (σ : (i : Fin m) → Bootstrapping.Semiformula V L (ar i)) :
+noncomputable def inst (σ : (i : ι) → Bootstrapping.Semiformula V L (ar i)) :
     {n : ℕ} → Semiproposition (boxL ar) n → Bootstrapping.Semiformula V L n
   | _, .rel (.box i) v => (σ i).subst fun j => tq (v j)
   | _, .nrel (.box i) v => ∼((σ i).subst fun j => tq (v j))
@@ -81,7 +81,7 @@ noncomputable def inst (σ : (i : Fin m) → Bootstrapping.Semiformula V L (ar i
   | _, ∀⁰ φ => ∀⁰ inst σ φ
   | _, ∃⁰ φ => ∃⁰ inst σ φ
 
-variable (σ : (i : Fin m) → Bootstrapping.Semiformula V L (ar i))
+variable (σ : (i : ι) → Bootstrapping.Semiformula V L (ar i))
 
 @[simp] theorem inst_verum {n : ℕ} : inst σ (⊤ : Semiproposition (boxL ar) n) = ⊤ := by simp [inst]
 @[simp] theorem inst_falsum {n : ℕ} : inst σ (⊥ : Semiproposition (boxL ar) n) = ⊥ := by simp [inst]
@@ -93,10 +93,10 @@ variable (σ : (i : Fin m) → Bootstrapping.Semiformula V L (ar i))
     inst σ (∀⁰ φ) = ∀⁰ inst σ φ := by simp [inst]
 @[simp] theorem inst_exs {n : ℕ} (φ : Semiproposition (boxL ar) (n+1)) :
     inst σ (∃⁰ φ) = ∃⁰ inst σ φ := by simp [inst]
-@[simp] theorem inst_rel {n : ℕ} (i : Fin m) (v : Fin (ar i) → SyntacticSemiterm (boxL ar) n) :
+@[simp] theorem inst_rel {n : ℕ} (i : ι) (v : Fin (ar i) → SyntacticSemiterm (boxL ar) n) :
     inst σ (FirstOrder.Semiformula.rel (L := boxL ar) (BoxRel.box i) v) =
       (σ i).subst fun j => tq (v j) := by simp [inst]
-@[simp] theorem inst_nrel {n : ℕ} (i : Fin m) (v : Fin (ar i) → SyntacticSemiterm (boxL ar) n) :
+@[simp] theorem inst_nrel {n : ℕ} (i : ι) (v : Fin (ar i) → SyntacticSemiterm (boxL ar) n) :
     inst σ (FirstOrder.Semiformula.nrel (L := boxL ar) (BoxRel.box i) v) =
       ∼((σ i).subst fun j => tq (v j)) := by simp [inst]
 
@@ -223,7 +223,7 @@ theorem inst_free (φ : Semiproposition (boxL ar) 1) :
 /-! ### Sequents -/
 
 /-- The instance of a standard sequent. -/
-noncomputable def instSeq (σ : (i : Fin m) → Bootstrapping.Semiformula V L (ar i)) :
+noncomputable def instSeq (σ : (i : ι) → Bootstrapping.Semiformula V L (ar i)) :
     FirstOrder.Sequent (boxL ar) → Bootstrapping.Sequent V L
   | [] => ∅
   | φ :: Γ => insert (inst σ φ) (instSeq σ Γ)
@@ -264,7 +264,7 @@ theorem instSeq_shift (Γ : FirstOrder.Sequent (boxL ar)) :
 
 /-- The instance of a standard derivation in pure logic, at every choice of the letters. -/
 noncomputable def instDer (T : Theory L) [T.Δ₁] : {Γ : FirstOrder.Sequent (boxL ar)} → ⊢ᴸᴷ¹ Γ →
-    (σ : (i : Fin m) → Bootstrapping.Semiformula V L (ar i)) →
+    (σ : (i : ι) → Bootstrapping.Semiformula V L (ar i)) →
       T.internalize V ⊢!ᵈᵉʳ instSeq σ Γ
   | _, .identity r v, σ =>
     TDerivation.em (inst σ (FirstOrder.Semiformula.rel r v)) (by simp [instSeq])
@@ -312,6 +312,144 @@ theorem inst_provable_of_valid (T : Theory L) [T.Δ₁] (φ : Sentence (boxL ar)
   obtain ⟨d⟩ := (LK.Proof.provable_def _).mp h3
   exact inst_provable_of_derivation σ T d
 
+/-! ### Sentences
+
+`instS σ φ` is the instance of a standard formula without free variables. Its equations are
+stated directly, so that a user never has to move the embedding of sentences into
+propositions through a formula. -/
+
+/-- The internal term of a standard term without free variables: a bound variable. -/
+noncomputable def tqS {n : ℕ} :
+    FirstOrder.Semiterm (boxL ar) Empty n → Bootstrapping.Semiterm V L n
+  | .bvar i => Bootstrapping.Semiterm.bvar i
+  | .fvar x => nomatch x
+  | .func f _ => nomatch f
+
+@[simp] theorem tqS_bvar {n : ℕ} (i : Fin n) :
+    (tqS (.bvar i : FirstOrder.Semiterm (boxL ar) Empty n) : Bootstrapping.Semiterm V L n) =
+      Bootstrapping.Semiterm.bvar i := rfl
+
+theorem tq_emb {n : ℕ} (t : FirstOrder.Semiterm (boxL ar) Empty n) :
+    (tq (Rew.emb t : SyntacticSemiterm (boxL ar) n) : Bootstrapping.Semiterm V L n) = tqS t := by
+  cases t with
+  | bvar i => rfl
+  | fvar x => exact nomatch x
+  | func f _ => exact nomatch f
+
+theorem tqS_vec1 {n : ℕ} (t : FirstOrder.Semiterm (boxL ar) Empty n) :
+    (fun j : Fin 1 => (tqS (![t] j) : Bootstrapping.Semiterm V L n)) = ![tqS t] := by
+  funext j
+  have hj : j = 0 := Subsingleton.elim _ _
+  subst hj
+  rfl
+theorem tqS_vec2 {n : ℕ} (t u : FirstOrder.Semiterm (boxL ar) Empty n) :
+    (fun j : Fin 2 => (tqS (![t,u] j) : Bootstrapping.Semiterm V L n)) = ![tqS t, tqS u] := by
+  funext j
+  cases j using Fin.cases with
+  | zero => rfl
+  | succ j =>
+    have hj : j = 0 := Subsingleton.elim _ _
+    subst hj
+    rfl
+theorem tqS_vec3 {n : ℕ} (t u w : FirstOrder.Semiterm (boxL ar) Empty n) :
+    (fun j : Fin 3 => (tqS (![t,u,w] j) : Bootstrapping.Semiterm V L n)) =
+      ![tqS t, tqS u, tqS w] := by
+  funext j
+  cases j using Fin.cases with
+  | zero => rfl
+  | succ j =>
+    cases j using Fin.cases with
+    | zero => rfl
+    | succ j =>
+      have hj : j = 0 := Subsingleton.elim _ _
+      subst hj
+      rfl
+
+/-- The instance of a standard formula without free variables. -/
+noncomputable def instS {n : ℕ} (φ : FirstOrder.Semiformula (boxL ar) Empty n) :
+    Bootstrapping.Semiformula V L n :=
+  inst σ (Rewriting.emb φ : Semiproposition (boxL ar) n)
+
+@[simp] theorem instS_verum {n : ℕ} :
+    instS σ (⊤ : FirstOrder.Semiformula (boxL ar) Empty n) = ⊤ := by simp [instS]
+@[simp] theorem instS_falsum {n : ℕ} :
+    instS σ (⊥ : FirstOrder.Semiformula (boxL ar) Empty n) = ⊥ := by simp [instS]
+@[simp] theorem instS_and {n : ℕ} (φ ψ : FirstOrder.Semiformula (boxL ar) Empty n) :
+    instS σ (φ ⋏ ψ) = instS σ φ ⋏ instS σ ψ := by simp [instS]
+@[simp] theorem instS_or {n : ℕ} (φ ψ : FirstOrder.Semiformula (boxL ar) Empty n) :
+    instS σ (φ ⋎ ψ) = instS σ φ ⋎ instS σ ψ := by simp [instS]
+@[simp] theorem instS_all {n : ℕ} (φ : FirstOrder.Semiformula (boxL ar) Empty (n+1)) :
+    instS σ (∀⁰ φ) = ∀⁰ instS σ φ := by simp [instS]
+@[simp] theorem instS_exs {n : ℕ} (φ : FirstOrder.Semiformula (boxL ar) Empty (n+1)) :
+    instS σ (∃⁰ φ) = ∃⁰ instS σ φ := by simp [instS]
+@[simp] theorem instS_neg {n : ℕ} (φ : FirstOrder.Semiformula (boxL ar) Empty n) :
+    instS σ (∼φ) = ∼(instS σ φ) := by simp [instS, inst_neg]
+@[simp] theorem instS_imp {n : ℕ} (φ ψ : FirstOrder.Semiformula (boxL ar) Empty n) :
+    instS σ (φ 🡒 ψ) = instS σ φ 🡒 instS σ ψ := by simp [instS, inst_imp]
+@[simp] theorem instS_rel {n : ℕ} (i : ι)
+    (v : Fin (ar i) → FirstOrder.Semiterm (boxL ar) Empty n) :
+    instS σ (FirstOrder.Semiformula.rel (L := boxL ar) (BoxRel.box i) v) =
+      (σ i).subst fun j => tqS (v j) := by
+  have e : (Rewriting.emb (FirstOrder.Semiformula.rel (L := boxL ar) (BoxRel.box i) v) :
+      Semiproposition (boxL ar) n) =
+      FirstOrder.Semiformula.rel (L := boxL ar) (BoxRel.box i) (fun j => Rew.emb (v j)) :=
+    FirstOrder.Semiformula.rew_rel _ _ _
+  unfold instS
+  rw [e, inst_rel]
+  congr 1
+  funext j
+  exact tq_emb _
+@[simp] theorem instS_nrel {n : ℕ} (i : ι)
+    (v : Fin (ar i) → FirstOrder.Semiterm (boxL ar) Empty n) :
+    instS σ (FirstOrder.Semiformula.nrel (L := boxL ar) (BoxRel.box i) v) =
+      ∼((σ i).subst fun j => tqS (v j)) := by
+  have e : (Rewriting.emb (FirstOrder.Semiformula.nrel (L := boxL ar) (BoxRel.box i) v) :
+      Semiproposition (boxL ar) n) =
+      FirstOrder.Semiformula.nrel (L := boxL ar) (BoxRel.box i) (fun j => Rew.emb (v j)) :=
+    FirstOrder.Semiformula.rew_nrel _ _ _
+  unfold instS
+  rw [e, inst_nrel]
+  congr 2
+  funext j
+  exact tq_emb _
+
+theorem emb_substs {n k : ℕ} (w : Fin n → FirstOrder.Semiterm (boxL ar) Empty k)
+    (φ : FirstOrder.Semiformula (boxL ar) Empty n) :
+    (Rewriting.emb (φ ⇜ w) : Semiproposition (boxL ar) k) =
+      (Rewriting.emb φ : Semiproposition (boxL ar) n) ⇜
+        (fun i => (Rew.emb (w i) : SyntacticSemiterm (boxL ar) k)) := by
+  show Rewriting.app Rew.emb (Rewriting.app (Rew.subst w) φ) =
+    Rewriting.app (Rew.subst fun i => (Rew.emb (w i) : SyntacticSemiterm (boxL ar) k))
+      (Rewriting.app Rew.emb φ)
+  have e : (Rew.emb.comp (Rew.subst w) : Rew (boxL ar) Empty n ℕ k) =
+      (Rew.subst fun i => (Rew.emb (w i) : SyntacticSemiterm (boxL ar) k)).comp Rew.emb := by
+    apply Rew.ext
+    · intro x
+      simp [Rew.comp_app]
+    · intro x
+      exact x.elim
+  rw [← TransitiveRewriting.comp_app, ← TransitiveRewriting.comp_app, e]
+
+theorem instS_substs {n k : ℕ} (w : Fin n → FirstOrder.Semiterm (boxL ar) Empty k)
+    (φ : FirstOrder.Semiformula (boxL ar) Empty n) :
+    instS σ (φ ⇜ w) = (instS σ φ).subst (fun i => tqS (w i)) := by
+  unfold instS
+  rw [emb_substs, inst_substs]
+  congr 1
+  funext i
+  exact tq_emb _
+
+/-- Every instance of a sentence of `boxL ar` that holds in every structure is provable in
+every internal theory; the typed form. -/
+theorem instS_provable_of_valid (T : Theory L) [T.Δ₁] (φ : Sentence (boxL ar))
+    (h : ∀ (M : Type) [Nonempty M] [Structure (boxL ar) M], M↓[boxL ar] ⊧ φ) :
+    T.internalize V ⊢ instS σ φ :=
+  (TProvable.iff_provable (T := T.internalize V) (σ := instS σ φ)).mpr
+    (inst_provable_of_valid σ T φ h)
+
+#print axioms instS_rel
+#print axioms instS_substs
+#print axioms instS_provable_of_valid
 #print axioms inst_neg
 #print axioms inst_shift
 #print axioms inst_substs
