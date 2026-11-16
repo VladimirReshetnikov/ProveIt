@@ -24,6 +24,11 @@ variants = {
         "c5dfe1026d077d3e062eca11edb789597bfbbced4f6040f8828ae5d467b1167a",
         57922,
     ),
+    "PA194LCAX11H": (
+        "pa194_loop_continuation_research_2026-11-14/additional/PA194LC_AX11H/machine.tm",
+        "5f10f071e7118ff33aba822e05bae0331b4c78508656c3e945c31b0c6788f9c5",
+        57922,
+    ),
     "PA194OR": (
         "PA194ORH_research_2026-11-15/machines/PA194OR/machine.tm",
         "379e12957eafc5ecb1ec04868067fe931af913e7bc46e69a36b6067d83c4c79f",

@@ -12,6 +12,7 @@ checkers = {
     "PA194M4R": "PA194M4RChecks",
     "PA194LCB": "PA194LCBChecks",
     "PA194AX11H": "PA194AX11HChecks",
+    "PA194LCAX11H": "PA194LCAX11HChecks",
     "PA194M5": "PA194M5Checks",
 }
 if len(sys.argv) != 3 or sys.argv[1] not in checkers:
@@ -21,7 +22,7 @@ checker = checkers[candidate]
 coverage = f"{candidate}Coverage"
 out = Path(destination)
 out.mkdir(parents=True, exist_ok=True)
-sites = {"PA194AX11H": 3671, "PA194M5": 3734}.get(candidate, 3673)
+sites = {"PA194AX11H": 3671, "PA194LCAX11H": 3671, "PA194M5": 3734}.get(candidate, 3673)
 block_size = 64
 kernel_size = 16
 blocks = [(base, min(base + block_size, sites)) for base in range(0, sites, block_size)]

@@ -5,7 +5,7 @@ ulimit -c 0
 
 candidate=${1:?candidate required}
 case "$candidate" in
-  PA194LC | PA1944L | PA194LCA | PA194M4R | PA194LCB | PA194AX11H | PA194M5) ;;
+  PA194LC | PA1944L | PA194LCA | PA194M4R | PA194LCB | PA194AX11H | PA194LCAX11H | PA194M5) ;;
   *) printf 'Unknown candidate %s\n' "$candidate" >&2; exit 2 ;;
 esac
 base=$(cd -- "${2:?verified table stage required}" && pwd)
