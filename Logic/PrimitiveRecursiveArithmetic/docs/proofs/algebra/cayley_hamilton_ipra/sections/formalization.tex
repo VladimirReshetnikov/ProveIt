@@ -1,0 +1,168 @@
+\section{Lean formalization and the exact ProveIt interface}
+\label{sec:lean}
+
+\subsection{What was inspected}
+
+The source audit is pinned to ProveIt commit
+\texttt{73e6a339db7c72c6b13259059a8345b24385f6e3}.
+The inspected project specifies Lean and Mathlib \texttt{v4.32.0}.
+The relevant source root is
+\begin{center}
+\small\texttt{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/}.
+\end{center}
+Its \texttt{PR.lean} defines the actual object theory, and
+\texttt{NativeBiInterpretation.lean} provides the translation to the
+native scalar calculus~\cite{proveit-pr,proveit-native}.
+The packet inventory at
+\path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/README.md}
+expressly distinguishes delivered research packets from rechecked
+proofs~\cite{proveit-packets}. No theorem from those incoming packets is
+used as a verified dependency here. The mathematical development above
+is self-contained.
+
+Inside the namespace \texttt{LeanProofs.ConciseIPRA}, the function-symbol
+syntax is exactly
+\begin{lstlisting}
+inductive PR : Nat -> Type
+  | zero : PR 0
+  | succ : PR 1
+  | proj {k : Nat} (i : Fin k) : PR k
+  | comp {m k : Nat} (f : PR m)
+      (gs : Fin m -> PR k) : PR k
+  | prec {k : Nat} (f : PR k)
+      (g : PR (k + 2)) : PR (k + 1)
+\end{lstlisting}
+The recursion argument comes first. Terms are \texttt{PTm n}, formulas
+are \texttt{Fm PTm n}, the axiom family is \texttt{PRAAx}, and an internal
+derivation has type \texttt{Prf PRAAx Gamma phi}. The wrapper for
+quantifier-free induction is \texttt{PRA.qfInd}; it requires an explicit
+proof that the induction formula satisfies \texttt{Fm.QF}.
+
+\subsection{The three delivered Lean files}
+
+\texttt{NatKernelSpec.lean} gives concrete natural-number definitions of
+the coding and checking algorithm. Its functions include
+\texttt{cons}, \texttt{head}, \texttt{tail}, \texttt{lookup},
+\texttt{zadd}, \texttt{zmul}, dense polynomial addition and convolution,
+matrix multiplication, permutation signs, determinants, minors,
+adjugates, characteristic coefficients, and finally
+\texttt{cayleyResidual} and \texttt{chCheck}. It imports only
+\texttt{Std}. For the characteristic polynomial it stores $t$ as one
+extra generic variable, then extracts its coefficients. This is
+equivalent to the separate $t$-coefficient list used in the manuscript.
+Its fixed-cap convolution is multiplication in a truncated polynomial
+ring; the support proof in Section~\ref{sec:foundations} is essential
+to showing that no relevant coefficient was lost.
+
+These are host-level definitions of numerical functions. The remaining
+syntactic step is to construct their \emph{particular} codes in
+\texttt{PR k}, with the representation and defining-equation proofs.
+The fixed functions passed to folds are implementation abbreviations,
+not object-language quantification over all functions.
+
+\texttt{ObjectLanguageTargets.lean} defines the exact target formula.
+In schematic ASCII notation, its central definition is
+\begin{lstlisting}
+def checkStatement (check : PR 1) : Fm PTm 0 :=
+  Fm.all (Fm.eq
+    (PTm.app check (fun _ : Fin 1 => PTm.var 0))
+    (PTm.succ PTm.zero))
+
+def MainDerivationTarget (check : PR 1) : Prop :=
+  Prf PRAAx [] (checkStatement check)
+\end{lstlisting}
+The argument must be the actual code \texttt{chCheckCode : PR 1}
+representing the specified numerical checker. The file supplies no
+postulated inhabitant of \texttt{MainDerivationTarget chCheckCode}.
+Once an inhabitant is constructed, the existing theorem
+\texttt{pra\_iff\_native} transfers it to
+\texttt{NPrf [] (NFm.ofPRA (checkStatement chCheckCode))}.
+That equivalence does not turn arbitrary Lean truth into iPRA provability.
+
+\texttt{HostReference.lean} records ordinary Mathlib comparison targets.
+For example,
+\begin{lstlisting}
+theorem cayleyHamilton (n : Nat)
+    (A : Matrix (Fin n) (Fin n) R) :
+    aeval A A.charpoly = 0 :=
+  Matrix.aeval_self_charpoly A
+\end{lstlisting}
+Mathlib's theorem and its monic-remainder corollaries are useful for
+checking the intended host-level mathematical statement~\cite{mathlib}.
+They do not discharge the internal proof task. The three files contain
+no added \texttt{axiom} declarations or \texttt{sorry} proof bodies.
+Their absence does not mean that the missing target theorem has been
+proved: it is deliberately left as a specification.
+
+\subsection{A concrete route to the complete internal proof}
+
+The following order avoids a hidden reflection theorem or an accidental
+use of quantified induction.
+\begin{enumerate}
+\item \textbf{Coding and arithmetic.} Assemble \texttt{PR} syntax for
+the finitely many list, signed-integer, comparison, iteration, and
+bounded-sum helpers. Derive their equations with
+\texttt{PRA.proj}, \texttt{PRA.comp}, \texttt{PRA.precZero}, and
+\texttt{PRA.precSucc}. Prove equality tests, finite-sum reindexing, and
+two-element cancellation internally.
+\item \textbf{Polynomial arrays.} Prove convolution laws coefficient by
+coefficient, packed into Boolean equalities. Prove support preservation,
+padding compatibility, and specialization of normalized polynomials.
+These lemmas give the precise link between the dense checker and the
+ordinary integer polynomial notation.
+\item \textbf{Matrices and permutations.} Prove the finite matrix ring
+laws; implement insertion/deletion of a row and column, transpositions,
+and the sign parity calculations. Derive cofactor expansion by the
+explicit permutation bijection, then the two adjugate identities.
+\item \textbf{Characteristic coefficients.} Construct the finite
+coefficient matrices $B_j$. Prove $c_n=1$, $B_{n-1}=I$, and the
+coefficient relations used in Theorem~\ref{thm:CH}. These are equalities
+of coded arrays, not an application of an evaluation homomorphism whose
+commutation hypotheses have not been proved.
+\item \textbf{Telescoping.} Apply \texttt{PRA.qfInd} to the packed
+version of
+$\sum_{j=0}^{k}c_jX^j=-X^{k+1}B_k$ for the bounded prefix.
+Handle the final leading coefficient and the empty-matrix branch.
+Convert equality of the resulting array to \texttt{chCheck(n)=1},
+universally close $n$, and obtain the actual
+\texttt{Prf PRAAx [] (checkStatement chCheckCode)}.
+\item \textbf{Applications.} Add the explicit monic-division,
+Newton/Bell, Gaussian-elimination, interpolation, and finite-tail
+invariants already stated in the respective proofs. Keep the input
+certificates as assumptions until discharged for a particular
+presentation. Apply the native translation only after each internal
+derivation has been constructed.
+\end{enumerate}
+
+The accompanying \texttt{FORMALIZATION\_PLAN.md} supplies a more detailed
+module table, coding equations, finite bounds, and source hashes. This
+is substantive remaining formalization work, mainly the internal
+finite-array and determinant library. A proof assistant cannot replace
+it by observing that the answer of the executable checker is true.
+
+\subsection{Verification status}
+
+No Lean or Lake executable was available in this execution environment.
+Consequently neither these outline files nor the upstream project was
+compiled here. Their import paths and principal API names were checked
+against the pinned source. The delivered PDF was compiled from the
+delivered LaTeX, and the executable Python checks were run.
+
+The core verification program computes signed permutation determinants
+independently of a characteristic-polynomial library. It checks generic
+matrices in dimensions $0$ through $4$ by exact integer-polynomial
+normalization, $56$ integer matrices, $180$ matrix instances modulo
+$2,4,6,9$, and $30$ rational quaternion representation examples.
+It checks both adjugate identities, all coefficient recurrences,
+Cayley--Hamilton, polynomial adjugates, and power reduction where
+specified. It also verifies the displayed counterexamples and finite
+factorial-tail sample bounds.
+
+The separate trace program checks $43$ integer matrices in dimensions
+$0$ through $4$ for Newton, Bell, Hessenberg, exact integer
+Faddeev--LeVerrier, and truncated exponential/logarithm identities,
+as well as the trace obstructions in characteristics $2,3,5$.
+These finite checks can detect transcription and implementation errors;
+the all-dimension results rest on the human proofs and their induction
+accounting, not on extrapolation from the checks.
+

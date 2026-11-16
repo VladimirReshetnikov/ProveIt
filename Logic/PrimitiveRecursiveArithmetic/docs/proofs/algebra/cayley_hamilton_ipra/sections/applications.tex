@@ -1,0 +1,608 @@
+% Sections prepared independently for inclusion in the main manuscript.
+% Requires amsmath, amssymb, and theorem/proposition/lemma/corollary/remark environments.
+% No custom macros are used.
+
+\section{Finite consequences: powers and minimal polynomials}
+\label{sec:finite-applications}
+
+Throughout this section, $n\geq1$ and
+\[
+ p(X)=X^n+\sum_{i=0}^{n-1}c_iX^i=\det(XI-A).
+\]
+All ring statements below are equational statements, or implications from
+explicit finite data. To read them internally in intuitionistic primitive
+recursive arithmetic, fix a primitive recursive presentation of the ring
+whose ring laws have iPRA proofs. The field algorithms additionally require
+primitive recursive equality and inversion of nonzero elements, with
+iPRA proofs of the field axioms and the guarded inverse identities for
+that fixed presentation. Rational
+numbers and finite fields provide concrete examples. This convention does
+not quantify over arbitrary rings as objects of first-order arithmetic.
+
+\subsection{Monic division without a zero test}
+
+\begin{lemma}[Fixed-length monic division]
+For every coefficient list $f$ and monic $p$ of displayed degree $n$, there
+are primitive recursively computed lists $q,r$ such that
+\[
+ f=qp+r,\qquad r_i=0\quad(i\geq n).
+\]
+They are unique as polynomials. No division by a ring element is used.
+\end{lemma}
+\begin{proof}
+Use the input list length as an upper bound for degree. Starting at its last
+index $d\geq n$, subtract $f_dX^{d-n}p$ and add $f_dX^{d-n}$ to the quotient.
+The coefficient at $d$ becomes zero, regardless of whether it was already
+zero. Continue down to $n$. The invariant is the coefficientwise identity
+$f=q_{\mathrm{current}}p+r_{\mathrm{current}}$ with all processed high
+coefficients zero. It is an equality of bounded lists and is preserved by
+one distributive-law calculation.
+
+For uniqueness, suppose $p(q-q')=r'-r$. Look at coefficients from the fixed
+maximum list length downwards. The highest not-yet-eliminated coefficient
+of the left side is the corresponding coefficient of $q-q'$, since the
+leading coefficient of $p$ is $1$; the right side is zero in every degree
+at least $n$. Descending induction therefore sets every coefficient of
+$q-q'$ to zero, and then every coefficient of $r-r'$ to zero. This argument
+needs neither an integral domain nor a decision of whether a coefficient
+is zero.
+\end{proof}
+
+Evaluation in a matrix is multiplicative for scalar polynomials because
+scalar matrices commute with $A$: expansion of the finite double sum gives
+$(fg)(A)=f(A)g(A)$. Consequently $p(A)=0$ implies $f(A)=r(A)$.
+For powers, one can avoid constructing the quotient. Let $r_{0}=1$ and
+write $r_k=\sum_{i<n}r_{k,i}X^i$. Then
+\begin{align*}
+ r_{k+1,0}&=-c_0r_{k,n-1},\\
+ r_{k+1,i}&=r_{k,i-1}-c_ir_{k,n-1}\qquad(1\leq i<n).
+\end{align*}
+The induction invariant is $A^k=\sum_{i<n}r_{k,i}A^i$.
+Thus every nonnegative power has a computed representative of degree
+less than $n$. Reduced multiplication followed by binary exponentiation
+also computes this representative; binary exponentiation improves
+efficiency but is unnecessary for primitive recursiveness.
+
+Negative powers are also covered: use the explicit inverse from
+Theorem~\ref{thm:inverse}, take its positive powers, and apply the same
+monic reduction. The exact numerical examples were proved in
+Section~\ref{sec:main}.
+
+\subsection{Computing a minimal polynomial by bounded elimination}
+
+\begin{proposition}[Effective field version]
+Over a nontrivial discrete field with primitive recursive operations and
+inversion, a primitive recursive algorithm constructs a monic polynomial
+$m_A$ satisfying
+\[
+ m_A(A)=0,\qquad \deg m_A\leq n,\qquad
+ h(A)=0\ \Longleftrightarrow\ m_A\mid h.
+\]
+In particular $m_A\mid p$; conversely that divisibility implies $p(A)=0$.
+\end{proposition}
+\begin{proof}
+Flatten $I,A,A^2,\ldots$ into vectors $v_j$ of length $n^2$.
+For $d=1,\ldots,n^2$, solve
+\[
+ [v_0\ \cdots\ v_{d-1}]x=-v_d
+\]
+by row reduction. Search for a pivot only within the remaining finite
+rectangle. A nonzero pivot is inverted and its row is used to eliminate
+its column. Every operation is invertible, so the transformed system is
+equivalent to the original one. If a zero row of coefficients has nonzero
+right-hand side, the stored product of row operations supplies a row
+witness $w$ with $w[v_0\cdots v_{d-1}]=0$ but $wv_d\ne0$. Otherwise set
+the free variables to zero and recover a solution by back substitution.
+There is no search over possible field coefficients.
+
+Some $d\leq n^2$ succeeds: row reduction of the $n^2\times(n^2+1)$
+matrix $[v_0\cdots v_{n^2}]$ has at most $n^2$ pivots, so a free column
+produces a dependence. Normalize its last nonzero coefficient. Since
+$I\ne0$, that last index is positive. Select the first successful $d$
+and its coefficients, obtaining $m_A=X^d+\sum_{j<d}x_jX^j$.
+The supplied inconsistency witnesses for earlier $d$ certify minimality.
+Cayley--Hamilton makes the system successful already at $d=n$, so the
+output has $d\leq n$.
+
+Divide any annihilator $h$ by $m_A$: $h=qm_A+r$, with $\deg r<d$.
+Then $r(A)=0$. A bounded scan either verifies every coefficient of $r$
+is zero, or finds its last nonzero coefficient. In the latter case,
+division by that coefficient makes a monic annihilator of degree less
+than $d$, contradicting the stored minimality certificates. A nonzero constant
+remainder would imply $I=0$, which is excluded by the nontrivial field
+and $n\ge1$ hypotheses. Thus $r=0$.
+The converse follows from multiplicativity of evaluation. This also
+proves uniqueness of the monic generator.
+\end{proof}
+
+The loops are bounded by displayed dimensions; their invariants are
+equalities and decidable inequalities between finite arrays. A field
+presented only by an abstract classical existence axiom for inverses
+does not supply the algorithm assumed here. Nor is a minimal-polynomial
+algorithm over an arbitrary commutative ring asserted.
+
+\subsection{Companion matrices}
+
+For a monic $f=X^n+a_{n-1}X^{n-1}+\cdots+a_0$, define its companion matrix
+by
+\[
+ C_fe_i=e_{i+1}\ (i<n-1),\qquad
+ C_fe_{n-1}=-\sum_{i<n}a_ie_i.
+\]
+Then $C_f^ie_0=e_i$ for $i<n$, so $f(C_f)e_0=0$. Commuting with
+$C_f^i$ shows $f(C_f)e_i=0$ for every basis vector, and hence $f(C_f)=0$.
+Expansion of $\det(XI-C_f)$ down the last column gives $f$: the cofactor
+at row $i$ of that column is $X^i$. Indeed, its minor has $i$ diagonal
+$X$ factors and $n-1-i$ subdiagonal $-1$ factors; its cofactor sign
+cancels the latter signs. The final row contributes
+$(X+a_{n-1})X^{n-1}$.
+
+More strongly, over every commutative ring,
+\[
+ h(C_f)=0\quad\Longleftrightarrow\quad f\mid h.
+\]
+Divide $h=qf+r$ with $r$ supported below $n$. If $h(C_f)=0$, then
+$0=r(C_f)e_0=\sum_{i<n}r_ie_i$, which says every $r_i$ is zero.
+This argument does not require a field or linear dependence search.
+
+\section{Eigenvalue statements with explicit finite data}
+
+If $Av=\lambda v$, induction gives $A^kv=\lambda^kv$, and therefore
+\[
+ f(A)v=f(\lambda)v
+\]
+for every scalar polynomial $f$. With $f=p$, this yields $p(\lambda)v=0$.
+Over a discrete field, a nonzero vector has a nonzero component found by
+a bounded scan; inversion of that component gives $p(\lambda)=0$.
+Over a ring the same conclusion holds if a component is supplied with a
+unit inverse. Without such a hypothesis it can fail: in $\mathbb Z/6$,
+$A=(2)$, $\lambda=5$, and $v=(2)$ satisfy $Av=\lambda v$ although
+$p(5)=3\ne0$.
+
+Conversely, over the effective field, $p(\lambda)=0$ means that
+$\lambda I-A$ has zero determinant. Row reduction cannot have a pivot
+in every column, because elementary row operations change determinant
+by known nonzero factors and a triangular matrix with all pivots has
+nonzero determinant. Set one free variable to $1$, the others to $0$,
+and back substitute. The result is a certified nonzero eigenvector.
+This proves the eigenvalue/root equivalence constructively under the
+stated field assumptions.
+
+Suppose matrices $S,T$ with $ST=TS=I$ are supplied and $B=TAS$.
+Finite multiplication gives $B^k=TA^kS$, while determinant
+multiplicativity gives
+\[
+ \det(XI-B)=\det T\,\det(XI-A)\,\det S=p(X).
+\]
+If $B$ is upper triangular with diagonal $\lambda_0,\ldots,\lambda_{n-1}$,
+its determinant polynomial is $\prod_i(X-\lambda_i)$. To verify this
+directly, a nonzero Leibniz summand would require $\sigma(i)\geq i$ for
+every $i$; equality of the two finite sums of indices forces all
+$\sigma(i)=i$. Products of triangular matrices multiply their diagonal
+entries, so $\operatorname{tr}(B^k)=\sum_i\lambda_i^k$.
+Finally $\operatorname{tr}(UV)=\operatorname{tr}(VU)$ follows by
+interchanging two finite sums, and hence
+\[
+ \operatorname{tr}(A^k)=\sum_i\lambda_i^k.
+\]
+These are proofs from a supplied triangularization certificate; they do
+not assume an algorithm finding roots or a Jordan form. A supplied
+diagonalization is the special case in which $B$ is diagonal.
+
+\section{Finitely generated modules and integral elements}
+
+\subsection{The determinant trick without a basis}
+
+\begin{proposition}[Finite generator form]
+Let $g_0,\ldots,g_{n-1}$ be elements of an $R$-module, and let $\phi$ be
+$R$-linear. Suppose
+\[
+ \phi(g_j)=\sum_{i<n}a_{ij}g_i.
+\]
+Writing $p=\det(XI-A)$, one has $p(\phi)(g_j)=0$ for every $j$, and
+therefore $p(\phi)(\sum_jx_jg_j)=0$ for every supplied coordinate list
+$x$. If these elements generate the module, $p(\phi)=0$ on it.
+\end{proposition}
+\begin{proof}
+Let $\pi(x)=\sum_jx_jg_j$. The supplied equations say
+$\phi\pi=\pi A$. Induction gives $\phi^k\pi=\pi A^k$; addition with the
+coefficients of $p$ gives $p(\phi)\pi=\pi p(A)=0$. Apply to the unit
+vectors, or to any supplied $x$. Linear independence of the generators
+has never been used.
+\end{proof}
+
+In arithmetic the last assertion is read using a coordinate witness for
+the element in question, or a primitive recursive coordinate function
+when a uniform computational presentation is desired. It is not an
+invocation of a choice principle to select coordinates in an arbitrary
+abstract module.
+
+If every $a_{ij}$ belongs to an ideal $J$, then the coefficient of
+$X^{n-k}$ in $p$ belongs to $J^k$: the principal-minor formula displays
+it as a finite sum of products of $k$ such entries. This proves the
+usual strengthened determinant trick with explicit membership
+certificates.
+
+For a certificate version of Nakayama's lemma, suppose
+$g_j=\sum_i a_{ij}g_i$ with $a_{ij}\in J$. Apply the proposition with
+$\phi=1$. The scalar
+$\delta=\det(I-A)=1-b$, for a displayed $b\in J$, annihilates every
+$g_j$. If an inverse $u\delta=1$ is supplied, multiplying gives $g_j=0$.
+Thus the whole generated module is zero. The familiar assumption that
+$J$ lies in the Jacobson radical supplies this unit property in the
+abstract formulation; the finite arithmetic theorem uses the inverse
+as data and does not search for it.
+
+\subsection{Closure of integral elements with a degree bound}
+
+\begin{proposition}[Explicit integrality construction]
+In a commutative $R$-algebra, suppose $\alpha_j$ satisfies a supplied
+monic polynomial $f_j$ of positive degree $d_j$, for $1\leq j\leq k$.
+For every supplied polynomial expression $\beta$ in the $\alpha_j$,
+one can construct a monic annihilator of $\beta$ of degree
+$D=\prod_{j=1}^k d_j$.
+\end{proposition}
+\begin{proof}
+Use the $D$ monomials
+$g_e=\prod_j\alpha_j^{e_j}$, $0\leq e_j<d_j$, including $g_0=1$.
+Reduce high powers by the supplied monic relations, one variable at a
+time. Every reduction preserves the represented element and decreases
+the exponent currently being processed. It computes coefficients for
+$\beta g_e$ in the displayed list. Let $A$ be the resulting $D\times D$
+matrix. Multiplication by $\beta$ satisfies the generator equations,
+so the determinant trick gives $p_A(\beta)g_0=0$. As $g_0=1$,
+$p_A(\beta)=0$. The construction uses lists and bounded monic division.
+It neither assumes the monomials are independent nor computes a basis
+of their span.
+\end{proof}
+
+Taking $R=\mathbb Z$ proves closure of integral elements under addition,
+multiplication, and negation, with a computed monic equation. In
+particular two input equations of degrees $d,e$ give an equation of
+degree $de$ for both the sum and the product. This bypasses any theorem
+that a submodule of a finitely generated module is finitely generated.
+
+For an element $\alpha$ of a finite extension presented by a
+$\mathbb Q$-basis, a unit coordinate vector, and a rational multiplication
+table, form the matrix $L_\alpha$ of multiplication by $\alpha$.
+Associativity and the unit give
+$h(L_\alpha)=L_{h(\alpha)}$ and
+$L_{h(\alpha)}(1)=h(\alpha)$. Thus its matrix minimal polynomial is
+exactly the minimal polynomial of $\alpha$. The bounded algorithm above
+computes it. Computing the characteristic polynomial alone only gives
+an annihilator; it need not be minimal. For example the multiplication
+matrix of $1$ in any extension of degree $D>1$ has characteristic
+polynomial $(X-1)^D$ and minimal polynomial $X-1$.
+
+If $\alpha$ is integral over $\mathbb Z$, its rational minimal polynomial
+has integer coefficients. Here is the finite algebra needed for that
+extra claim. Let $P\in\mathbb Z[X]$ be a monic annihilator and
+$P=mq$ in $\mathbb Q[X]$, with $m,q$ monic. Clear denominators and
+divide coefficient gcds to write $f=am$, $g=bq$ as primitive integer
+polynomials with positive leading coefficients $a,b$. These are positive
+integers: the coefficient gcd divides the leading coefficient of the
+cleared monic polynomial. A product of
+primitive integer polynomials is primitive: otherwise a prime dividing
+all its coefficients, found by bounded search from their gcd, would
+make its reduction zero modulo that prime. The two factors each have
+a last nonzero reduced coefficient; their product gives a nonzero
+coefficient in the sum of these two degrees, a contradiction. Hence
+$fg=abP$ has content $1$, whereas the right side has content $ab$.
+Therefore $a=b=1$ and $m\in\mathbb Z[X]$. Integer gcd, bounded prime
+search, and finite-field multiplication all have primitive recursive
+implementations.
+
+\section{Interpolation from supplied splitting data}
+
+Suppose a monic annihilating polynomial is supplied in the form
+\[
+ p(X)=\prod_{j<r}(X-\lambda_j)^{m_j},\qquad
+ m_j\geq1,\quad\sum_jm_j=n,
+\]
+and every difference $\lambda_i-\lambda_j$ for $i\ne j$ has a supplied
+unit inverse. These assumptions are stronger than the mere existence of
+roots and make all interpolation operations explicit.
+
+\subsection{Distinct roots and Sylvester's formula}
+
+If all $m_j=1$, set
+\[
+ L_j(X)=\prod_{i\ne j}\frac{X-\lambda_i}{\lambda_j-\lambda_i}.
+\]
+For every polynomial $f$,
+\[
+ \operatorname{rem}_p f=\sum_j f(\lambda_j)L_j(X),\qquad
+ f(A)=\sum_jf(\lambda_j)L_j(A).
+\]
+To prove uniqueness, a polynomial vanishing at $\lambda_0$ is divisible
+by $X-\lambda_0$, by monic division. If it also vanishes at $\lambda_1$,
+evaluate the quotient identity there and cancel the supplied unit
+$\lambda_1-\lambda_0$ to obtain the next factor. Continuing shows that
+a polynomial of degree less than $n$ vanishing at every root is zero.
+The displayed candidate has the required values, so it is the
+remainder. Evaluating its congruence modulo $p$ gives the matrix formula.
+The same argument applied to products shows
+$L_i(A)L_j(A)=0$ for $i\ne j$, $L_j(A)^2=L_j(A)$, and
+$\sum_jL_j(A)=I$.
+
+\subsection{Repeated roots: jets and Hasse derivatives}
+
+The $s$th Hasse derivative at $\lambda$ is the coefficient of $Z^s$ in
+$f(\lambda+Z)$:
+\[
+ D^{[s]}f(\lambda)=\sum_{k\geq s}\binom{k}{s}f_k\lambda^{k-s}.
+\]
+This is a finite formula in every characteristic. Ordinary derivatives
+satisfy $f^{(s)}(\lambda)=s!D^{[s]}f(\lambda)$, so ordinary derivative
+conditions are equivalent only when the relevant factorials are units.
+
+Let $q_j=p/(X-\lambda_j)^{m_j}$. Write
+$q_j(\lambda_j+Z)=\sum_s a_{j,s}Z^s$ and put
+\[
+ b_{j,0}=a_{j,0}^{-1},\qquad
+ b_{j,t}=-a_{j,0}^{-1}\sum_{s=1}^t a_{j,s}b_{j,t-s}
+ \quad(1\leq t<m_j).
+\]
+The constant $a_{j,0}=\prod_{i\ne j}(\lambda_j-\lambda_i)^{m_i}$
+has a supplied inverse. Convolution proves
+$q_j(\lambda_j+Z)\sum_{t<m_j}b_{j,t}Z^t\equiv1\pmod{Z^{m_j}}$.
+Thus
+\[
+ E_j(X)=q_j(X)\sum_{t<m_j}b_{j,t}(X-\lambda_j)^t
+\]
+is $1$ modulo $(X-\lambda_j)^{m_j}$ and $0$ modulo every other factor.
+For arbitrary jet data $d_{j,s}$ the polynomial
+\[
+ r=\operatorname{rem}_p\left(
+ \sum_jE_j(X)\sum_{s<m_j}d_{j,s}(X-\lambda_j)^s\right)
+\]
+therefore has exactly these jets and degree less than $n$.
+
+For uniqueness, note that the same truncated inverse construction shows
+that any product of the other factors is invertible modulo
+$(X-\lambda_j)^{m_j}$. If a polynomial is divisible by that product
+and by $(X-\lambda_j)^{m_j}$, its quotient by the former is divisible by
+the latter: multiply its zero residue by this explicit inverse.
+Induction therefore makes a polynomial divisible by each factor
+divisible by their product $p$. A difference of two candidates of
+degree less than $n$ must vanish by monic division uniqueness.
+Taking $d_{j,s}=D^{[s]}f(\lambda_j)$ proves $f(A)=r(A)$.
+
+This explains why repeated eigenvalues require derivative data in
+characteristic zero, and why repeated values alone do not determine a
+unique remainder. The proof also supplies a division-free replacement
+for derivatives in positive characteristic, apart from the explicitly
+assumed inverse root differences.
+
+\section{Matrix functions as controlled finite calculations}
+
+An arbitrary analytic function is not a first-order arithmetic object.
+Here the precise replacement is a specified primitive recursive sequence
+of rational coefficients and a primitive recursive modulus for finite
+tails. Equalities of the corresponding Cauchy names mean explicit
+finite inequalities at every precision. The external real-number
+interpretation is useful notation, not an additional completeness axiom
+inside iPRA.
+
+\subsection{A sufficient quantitative polynomial-reduction theorem}
+
+Let $A$ be a rational matrix and let $r_k=\operatorname{rem}_pX^k$ as
+above. For a polynomial supported below $n$, write
+$|r|_1=\sum_{i<n}|r_i|$, and choose rational
+\[
+ K\geq\max\left(1,\sum_{i<n}|c_i|\right),\qquad
+ H\geq\max(1,\|A\|_\infty^{n-1}),
+\]
+where $\|A\|_\infty=\max_i\sum_j|a_{ij}|$.
+The recurrence for $r_k$ gives
+$|r_{k+1}|_1\leq K|r_k|_1$, so $|r_k|_1\leq K^k$.
+The finite triangle inequality and submultiplicativity of the row norm
+give $\|r(A)\|_\infty\leq H|r|_1$.
+
+Suppose a primitive recursive rational sequence $a_k$ and a primitive
+recursive function $N$ are supplied together with proofs that
+\[
+ \sum_{k=N(s)}^m |a_k|K^k\leq2^{-s}
+ \qquad(m\geq N(s)).                                      \tag{*}
+\]
+Define finite approximants
+\[
+ \beta_{i,M}=\sum_{k<M}a_kr_{k,i},\qquad
+ F_M=\sum_{k<M}a_kA^k.
+\]
+Their exact finite identity is
+$F_M=\sum_{i<n}\beta_{i,M}A^i$. Condition (*) bounds every coefficient
+tail by $2^{-s}$ and every matrix tail by $H2^{-s}$. It follows, in the
+precise sense of these finite estimates, that
+\[
+ f(A)=\sum_{i<n}\beta_iA^i,\qquad
+ \beta_i=\sum_{k\geq0}a_kr_{k,i}.
+\]
+For a requested matrix error $2^{-e}$, choose an integer $h$ with
+$H\leq2^h$ and use $N(e+h)$. Thus the conclusion contains an explicit
+primitive recursive modulus. It does not assert that every analytic
+function near the spectrum satisfies (*) for this possibly larger $K$.
+
+The statement $f=qp+r$ with both $q$ and $r$ polynomials cannot hold
+for a nonpolynomial analytic $f$. Even when an analytic quotient is
+available, that is a different assertion. Our argument uses only
+polynomial identities for finite partial sums and the specified tail
+bounds.
+
+\subsection{An explicit factorial tail bound}
+
+For a positive integer $U$ and $s\geq0$, put
+\[
+ M(U,s)=2U+2U^2+s+2.
+\]
+For $k\geq2U$, the ratio of successive terms $U^k/k!$ is at most
+$1/2$. Also $U^{2U}/(2U)!\leq U^{2U}\leq2^{2U^2}$, since
+$U\leq2^U$. Therefore
+\[
+ \frac{U^{M(U,s)}}{M(U,s)!}\leq2^{-s-2},\qquad
+ \sum_{k=M(U,s)}^v\frac{U^k}{k!}\leq2^{-s-1}
+ \quad(v\geq M(U,s)).
+\]
+The last inequality is the finite geometric-sum bound. All denominators
+can be cleared, leaving inequalities of natural numbers proved by
+bounded summation and quantifier-free induction.
+
+For rational $t$, choose an integer $U\geq\max(1,|t|K)$.
+The exponential coefficients $a_k=t^k/k!$ satisfy (*) with this $M$;
+the sine and cosine coefficient subsequences satisfy the same bound.
+If a direct matrix-series bound is also wanted, enlarge $U$ to exceed
+$|t|\|A\|_\infty$. Consequently matrix exponential, sine, and cosine
+have primitive recursive rational Cauchy names and polynomial
+representations of degree less than $n$, with the displayed moduli.
+
+\subsection{The article's examples and rotation identities}
+
+For $T=\left(\begin{smallmatrix}1&2\\0&3\end{smallmatrix}\right)$,
+induction gives
+\[
+ T^k=\begin{pmatrix}1&3^k-1\\0&3^k\end{pmatrix}\qquad(k\geq0).
+\]
+Hence every polynomial obeys
+\[
+ f(T)=\begin{pmatrix}f(1)&f(3)-f(1)\\0&f(3)\end{pmatrix}.
+\]
+Apply this exact identity to exponential or sine partial sums and use
+the factorial estimate. For every rational $t$, as identities of the
+specified Cauchy names,
+\[
+ e^{tT}=\begin{pmatrix}e^t&e^{3t}-e^t\\0&e^{3t}\end{pmatrix},\qquad
+ \sin(tT)=\begin{pmatrix}\sin t&\sin3t-\sin t\\0&\sin3t\end{pmatrix}.
+\]
+The corresponding coefficients in $c_0I+c_1T$ are
+$c_0=(3f(1)-f(3))/2$ and $c_1=(f(3)-f(1))/2$.
+
+More generally the relation $J^2=-I$ gives
+$J^{2r}=(-1)^rI$ and $J^{2r+1}=(-1)^rJ$, whence
+\[
+ e^{tJ}=(\cos t)I+(\sin t)J.
+\]
+For $J=\left(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\right)$
+this is the article's two-dimensional rotation matrix. If $P^2=I$,
+the same calculation over rational complex numbers gives
+$e^{itP}=(\cos t)I+i(\sin t)P$. In particular, with the usual Pauli
+matrices
+\[
+ \sigma_1=\begin{pmatrix}0&1\\1&0\end{pmatrix},\qquad
+ \sigma_2=\begin{pmatrix}0&-i\\i&0\end{pmatrix},\qquad
+ \sigma_3=\begin{pmatrix}1&0\\0&-1\end{pmatrix},
+\]
+direct multiplication gives
+$\sigma_j^2=I$ and
+$\sigma_j\sigma_k+\sigma_k\sigma_j=0$ for $j\ne k$.
+Thus $P=\sum_j u_j\sigma_j$ has $P^2=I$ whenever the supplied rational
+coordinates satisfy $\sum_j u_j^2=1$.
+
+For rational complex matrices, use the scalar norm
+$|a+bi|_1=|a|+|b|$ and its induced row-sum matrix norm. Direct expansion
+proves submultiplicativity, so the same factorial estimates justify
+the complex-valued formulas above.
+
+For a rational unit vector $u=(u_1,u_2,u_3)$ put
+\[
+ K=\begin{pmatrix}0&-u_3&u_2\\u_3&0&-u_1\\-u_2&u_1&0\end{pmatrix}.
+\]
+Entrywise multiplication gives $K^2=uu^{\mathsf T}-I$ and $Ku=0$,
+so $K^3=-K$. Hence $K^{2r+1}=(-1)^rK$ and
+$K^{2r+2}=(-1)^rK^2$, yielding Rodrigues' formula
+\[
+ e^{tK}=I+(\sin t)K+(1-\cos t)K^2.
+\]
+Each displayed analytic identity is obtained from a finite identity
+between partial sums followed by the same explicit tail estimates.
+Here $\cos t$ and $\sin t$ denote the Cauchy names given respectively by
+the finite sums of $(-1)^rt^{2r}/(2r)!$ and
+$(-1)^rt^{2r+1}/(2r+1)!$; the exponential uses $t^r/r!$.
+No extraction of eigenvalues, analytic continuation, or appeal to a
+matrix Lie group is involved. Rational parameters give a fully
+arithmetical family; extending it to further real inputs requires
+their approximation codes and error bounds as additional data.
+
+\section{Quaternion and octonion boundaries}
+
+\subsection{A precise quaternionic Cayley--Hamilton theorem}
+
+For a rational quaternion $q=a+bi+cj+dk$ define
+\[
+ L(q)=\begin{pmatrix}
+ a&-b&-c&-d\\
+ b&a&-d&c\\
+ c&d&a&-b\\
+ d&-c&b&a
+ \end{pmatrix}.
+\]
+The columns are the coordinates of $q$, $qi$, $qj$, and $qk$.
+The quaternion multiplication table proves
+$L(qr)=L(q)L(r)$, $L(q+r)=L(q)+L(r)$, and $L(1)=I_4$.
+The first column recovers $q$, so $L$ is injective.
+Apply $L$ blockwise to $A\in M_n(\mathbb H_{\mathbb Q})$, producing
+$L_n(A)\in M_{4n}(\mathbb Q)$. Matrix multiplication is preserved because
+each block product is a finite sum of products preserved by $L$.
+If $p=\det(XI-L_n(A))$, then
+\[
+ L_n(p(A))=p(L_n(A))=0.
+\]
+Injectivity gives $p(A)=0$. This is an explicit monic rational
+annihilator of degree $4n$, not a naive quaternionic Leibniz determinant.
+
+There is a degree $2n$ refinement. In $\mathbb Q(i)$ set
+\[
+ \rho(q)=\begin{pmatrix}a+bi&c+di\\-c+di&a-bi\end{pmatrix},\qquad
+ J=\begin{pmatrix}0&1\\-1&0\end{pmatrix}.
+\]
+Multiplication of the four basis matrices verifies the quaternion
+relations, so $\rho$ is an injective algebra homomorphism. Furthermore
+$J\overline{\rho(q)}J^{-1}=\rho(q)$. For the block matrix
+$B=\rho_n(A)$ and block diagonal $J_n$, this gives
+$J_n\overline B J_n^{-1}=B$. Determinant similarity therefore makes
+every coefficient of $\det(XI-B)$ fixed by complex conjugation.
+A rational complex number fixed by conjugation has zero imaginary
+coordinate, so this characteristic polynomial lies in $\mathbb Q[X]$.
+Its degree is $2n$ and its evaluation at $A$ is zero by injectivity.
+All representation identities involve finitely many rational coordinate
+equalities; no quaternionic spectral theorem is required.
+
+For split quaternions with $i^2=j^2=1$ and $ij=k=-ji$, the representation
+\[
+ a+bi+cj+dk\longmapsto
+ \begin{pmatrix}a+b&c+d\\c-d&a-b\end{pmatrix}
+\]
+is faithful over $\mathbb Q$ by its four coordinate equations.
+Blockwise application gives a monic degree $2n$ rational annihilator in
+the same way. These are carefully specified instances of the article's
+noncommutative generalizations.
+
+\subsection{What the octonion assertion does and does not give}
+
+For one rational octonion $q=a_0+\sum_{i=1}^7a_ie_i$, direct use of the
+multiplication table gives
+$q\overline q=\sum_{i=0}^7a_i^2$ and $\overline q=2a_0-q$. Distributing
+the product, which involves only two factors, proves
+\[
+ q^2-2a_0q+\left(\sum_{i=0}^7a_i^2\right)1=0.
+\]
+This is an elementary quadratic identity. It is not a proof of the
+modified theorem for matrices over octonions mentioned in the article.
+The latter requires a specified nonassociative evaluation convention
+and a different theorem, and is not claimed here.
+
+\subsection{Arithmetic status of these applications}
+
+The constructions above use only fixed primitive recursive ring
+operations, coefficient lists, products, bounded searches, and
+primitive recursion with displayed bounds or parameters. Their stated
+invariants are finite arrays of equalities and decidable inequalities.
+Finite conjunctions are represented by a Boolean fold, so induction on
+such invariants is quantifier-free induction after expansion of the
+primitive recursive definitions. Algebraic structure axioms are used
+as supplied equations; field inverses, root differences, generator
+coordinates, and analytic tail estimates are additional data precisely
+where indicated. This gives an explicit route to iPRA proofs of these
+arithmetized statements. It does not turn an abstract host-language
+proof about all rings, all modules, or all real functions into an
+object-language iPRA derivation without the required coding and proof
+translation.

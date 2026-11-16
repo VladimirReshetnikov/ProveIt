@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives on 14 and
-15 November 2026: 33 to `docs/drafts`, and 16 to
+15 November 2026: 33 to `docs/drafts`, and 17 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -47,23 +47,21 @@ directory. Its files are in [`algebra/FTA_iPRA`](algebra/FTA_iPRA/). Likewise, `
 To recover an omitted member, restore the archive from the commit that added it
 (the Arrival column). For `apery_ipra`, `faltings_ipra`, `gamma_ipra`,
 `ipra_polynomial_formulas_abel_ruffini` and `mollweide_circle_ipra`, replace `docs/drafts` with
-`Logic/PrimitiveRecursiveArithmetic/docs/incoming`. The archives of
-`isoperimetric_ipra_constructive_2026-11-15`, `mordell_weil_ipra`, `zeta_ipra_proof_package`,
-`trigonometric_identities_ipra_2026-11-15`, `lagrange_inversion_ipra`, `siegel_ipra`,
-`bell_numbers_ipra`, `prime_distribution_ipra`, `flt_ipra`, `central_limit_ipra_2026-11-15` and
-`spherical_trigonometry_ipra_2026-11-15` were not committed, on Vladimir's instruction, so
-they cannot be restored from the history. The only omitted members of the first are its
-`reused/` copies, which are the files of `geometry/isoperimetric_ipra`. Eight of the others
-omit only their ignored checksum manifests and build logs, and `lagrange_inversion_ipra` and
-`bell_numbers_ipra` omit nothing:
+`Logic/PrimitiveRecursiveArithmetic/docs/incoming`:
 
 ```bash
 git show <arrival>:docs/drafts/<archive>.zip > <scratch>/<archive>.zip
 ```
 
+An archive whose Arrival is *not committed* was not committed, on Vladimir's instruction, and
+was deleted after placement, so it cannot be restored from the history. Of those,
+`isoperimetric_ipra_constructive_2026-11-15` omits only its `reused/` copies, which are the
+files of `geometry/isoperimetric_ipra`. The others omit at most their ignored checksum
+manifests and build logs.
+
 ## Packets
 
-The 49 archives hold 1,129 members: 1,048 placed here, 50 ignored, 13 in the bundled copy of
+The 50 archives hold 1,153 members: 1,072 placed here, 50 ignored, 13 in the bundled copy of
 a sibling packet, 1 nested copy of a sibling archive and 17 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -75,6 +73,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | Directory | Arrival | Wrapper in the archive | What the packet states | P | O |
 |---|---|---|---|---:|---:|
 | [`FTA_iPRA`](algebra/FTA_iPRA/) | `ea3f6066cf` 2026-11-14 | `FTA_iPRA` | An arithmetized constructive fundamental theorem of algebra, with a Lean formalization blueprint and exact rational reference programs. | 12 | 1 |
+| [`cayley_hamilton_ipra`](algebra/cayley_hamilton_ipra/) | *not committed* 2026-11-15 | `cayley_hamilton_ipra` | The Cayley–Hamilton theorem as the uniform primitive recursive identity for the generic n×n matrix, specialized to any commutative ring, with trace identities, minimal polynomials, integrality and quaternionic extensions. Its Lean files are uncompiled specifications and an outline. | 24 | 0 |
 | [`ipra_polynomial_formulas_abel_ruffini`](algebra/ipra_polynomial_formulas_abel_ruffini/) | `6800f2d21a` 2026-11-15 | `ipra_polynomial_formulas_abel_ruffini` | Radical formulae for polynomials through degree four, and the Abel–Ruffini theorem for the generic quintic, with an iPRA arithmetization plan. Its Lean file is a blueprint whose `opaque` declarations are not yet defined. | 27 | 1 |
 | [`lagrange_inversion_ipra`](algebra/lagrange_inversion_ipra/) | *not committed* 2026-11-15 | `lagrange_inversion_ipra` | Lagrange inversion coefficientwise in truncated power series: the Lagrange–Bürmann formulas, Bell-polynomial and Good's multivariate forms, Puiseux-type inversion, explicit inverse radii, Lambert W and Catalan expansions. Its Lean file is a blueprint, not a kernel-checked proof. | 18 | 0 |
 | [`puiseux_ipra`](algebra/puiseux_ipra/) | `8c135f6f2a` 2026-11-15 | `puiseux_ipra` | Puiseux expansions for exactly presented algebraic coefficients, with explicit convergence radii and tail bounds. It bundles the FTA packet as a dependency. | 17 | 14 |

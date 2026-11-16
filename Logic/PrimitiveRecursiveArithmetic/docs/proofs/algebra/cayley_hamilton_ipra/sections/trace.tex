@@ -1,0 +1,393 @@
+\section{Coefficients, traces, and division-free identities}
+\label{sec:trace}
+
+Throughout this section $R$ is a commutative ring with identity and $A$ is an
+$n\times n$ matrix.  All sums and coefficient operations below are finite.
+Write
+\[
+ E(t)=\det(I+tA)=\sum_{k=0}^n e_k t^k,
+ \qquad s_j=\operatorname{tr}(A^j)\quad(j\geq1),
+ \qquad d_k=(-1)^k e_k.
+\]
+Set $e_0=d_0=1$, and set $e_k=d_k=0$ for $k>n$.  Then
+\[
+ p_A(X)=X^n+d_1X^{n-1}+\cdots+d_n.
+\]
+The coefficient $d_k$ here is the coefficient called $c_{n-k}$ in the
+article.  A natural-number multiple such as $k e_k$ means repeated addition;
+it does not presuppose that $k$ is invertible.
+
+\subsection{Principal minors and the first coefficients}
+
+\begin{proposition}[Principal-minor formula]
+\label{prop:trace-principal}
+For $0\leq k\leq n$,
+\[
+ e_k=\sum_{\substack{S\subseteq\{1,\ldots,n\}\\ |S|=k}}
+       \det A[S,S].
+\]
+In particular $e_1=\operatorname{tr}(A)$, $e_n=\det A$, and
+\[
+ e_2=\sum_{1\leq i<j\leq n}
+       (a_{ii}a_{jj}-a_{ij}a_{ji}).
+\]
+\end{proposition}
+\begin{proof}
+Expand the determinant by its permutation definition, and in each factor
+$\delta_{i,\sigma(i)}+t a_{i,\sigma(i)}$ choose either summand.  A choice of
+the second summand on precisely the rows in $S$ contributes a term of degree
+$|S|$.  The other factors vanish unless $\sigma$ fixes every index outside
+$S$.  Such permutations are exactly the extensions, by fixed points, of
+permutations of the increasingly ordered set $S$.  Their signs are the
+signs of those restricted permutations: adjoining a fixed point does not
+change the parity of a permutation.  Thus their sum is the determinant of
+the principal submatrix indexed by $S$.  This gives the asserted coefficient
+by a finite reindexing.  The special cases are its instances for subsets of
+size one, two, and $n$.
+\end{proof}
+
+\subsection{Newton identities without division or eigenvalues}
+
+\begin{proposition}[Finite Jacobi identity]
+\label{prop:trace-jacobi}
+For a matrix $M(t)$ of polynomials,
+\[
+ \frac{d}{dt}\det M(t)
+ =\operatorname{tr}\bigl(\operatorname{adj} M(t)\,M'(t)\bigr).
+\]
+The derivative is the formal derivative of a finite coefficient list.
+\end{proposition}
+\begin{proof}
+Apply the product rule to every product in the permutation formula for the
+determinant.  Group terms according to the position $(i,j)$ of the
+differentiated factor.  The sum of the remaining signed products is the
+cofactor $C_{ij}(M)$, so the result is
+$\sum_{i,j}C_{ij}(M)M'_{ij}$.  Since
+$(\operatorname{adj}M)_{ji}=C_{ij}(M)$, this sum is the stated trace.
+Both the product rule and this regrouping are identities between finite
+sums, valid in every characteristic.
+\end{proof}
+
+\begin{theorem}[Division-free Newton identities]
+\label{thm:trace-newton}
+For every $k\geq1$,
+\begin{equation}
+ k e_k=\sum_{i=1}^{k}(-1)^{i-1}e_{k-i}s_i,
+ \qquad
+ k d_k+\sum_{i=1}^{k}d_{k-i}s_i=0.
+ \label{eq:trace-newton}
+\end{equation}
+These formulas include the cases $k>n$, using the zero convention above.
+\end{theorem}
+\begin{proof}
+Fix $k$.  The finite geometric sum
+\[
+ U(t)=\sum_{j=0}^{k-1}(-t)^jA^j
+\]
+satisfies $(I+tA)U(t)=I+(-1)^{k-1}t^kA^k$.  Consequently, modulo $t^k$,
+the adjugate identity gives
+\[
+ \operatorname{adj}(I+tA)=E(t)U(t).
+\]
+For completeness, multiply
+$\operatorname{adj}(I+tA)(I+tA)=E(t)I$ on the right by $U(t)$ and discard
+only coefficients of degree at least $k$; this gives the displayed
+congruence without cancelling $E(t)$.  The finite Jacobi identity now yields
+\[
+ E'(t)\equiv E(t)\sum_{j=0}^{k-1}(-1)^j s_{j+1}t^j\pmod{t^k}.
+\]
+Comparing the coefficient of $t^{k-1}$ proves the first equality.  Multiplying
+it by $(-1)^k$ proves the second.  Differentiation was performed on ordinary
+polynomials before truncation; no derivative on the quotient ring
+$R[t]/(t^k)$ has been assumed.
+\end{proof}
+
+This proof does not require a field, characteristic zero, an eigenvalue, an
+algebraic closure, or an inverse of $A$.  It also proves the useful adjugate
+trace identities
+\begin{equation}
+ p_A'(X)=\operatorname{tr}\operatorname{adj}(XI-A),\qquad
+ Xp_A'(X)-n p_A(X)
+   =\operatorname{tr}\bigl(A\operatorname{adj}(XI-A)\bigr).
+ \label{eq:trace-adjugate}
+\end{equation}
+Indeed the first is Jacobi's formula with derivative matrix $I$; the second
+is the trace of
+$(XI-A)\operatorname{adj}(XI-A)=p_A(X)I$.
+
+\begin{proposition}[A supplied splitting is enough]
+\label{prop:trace-splitting}
+Suppose a list $\lambda_1,\ldots,\lambda_n$ in a commutative extension ring
+is supplied with the identity
+$p_A(X)=\prod_{j=1}^n(X-\lambda_j)$.  Then $e_k$ is the $k$th elementary
+symmetric expression in that list and, for every $r\geq1$,
+\[
+ \operatorname{tr}(A^r)=\sum_{j=1}^n\lambda_j^r.
+\]
+No diagonalization hypothesis is necessary.
+\end{proposition}
+\begin{proof}
+Coefficient comparison gives the assertion about $e_k$.  Put
+$u_r=\sum_j\lambda_j^r$.  Differentiate the finite product
+$E(t)=\prod_j(1+t\lambda_j)$ and multiply each factor formally by its
+truncated geometric inverse.  The same coefficient argument as above gives
+$k d_k+\sum_{i=1}^k d_{k-i}u_i=0$.  In this recurrence the coefficient of
+$u_k$ is $d_0=1$.  Subtract the recurrence for $s_k$.  Induction on $k$,
+using equality of all preceding $u_i$ and $s_i$, gives $u_k=s_k$.
+This last induction needs no division by $k$.
+\end{proof}
+
+\subsection{Bell-polynomial formulas with all denominators accounted for}
+
+Define the complete exponential Bell polynomials by the finite recurrence
+\begin{equation}
+ B_0=1,\qquad
+ B_k(x_1,\ldots,x_k)=
+  \sum_{i=1}^{k}\binom{k-1}{i-1}x_iB_{k-i}(x_1,\ldots,x_{k-i}).
+ \label{eq:trace-bell-rec}
+\end{equation}
+This recurrence is a definition over $\mathbb Z$ and involves no fractions.
+For example, $B_1=x_1$, $B_2=x_1^2+x_2$, and
+$B_3=x_1^3+3x_1x_2+x_3$.
+
+\begin{theorem}[Integral Bell identity]
+\label{thm:trace-bell}
+For every $k\geq0$ in every commutative ring,
+\begin{equation}
+ k!e_k=B_k\bigl(s_1,-s_2,2!s_3,\ldots,
+                    (-1)^{k-1}(k-1)!s_k\bigr).
+ \label{eq:trace-bell}
+\end{equation}
+Thus, if $k!$ is a unit, $d_k$ is $(-1)^k/k!$ times the displayed Bell
+polynomial.  In particular the article's determinant formula is obtained
+at $k=n$ when $n!$ is a unit.
+\end{theorem}
+\begin{proof}
+Use induction, retaining all previously established identities.  Substitute
+$x_i=(-1)^{i-1}(i-1)!s_i$ into the Bell recurrence and substitute
+$B_{k-i}=(k-i)!e_{k-i}$ from the earlier stages.  The elementary integer
+identity
+\[
+ \binom{k-1}{i-1}(i-1)!(k-i)!=(k-1)!
+\]
+reduces the result to
+$(k-1)!\sum_{i=1}^k(-1)^{i-1}s_i e_{k-i}$, which equals $k!e_k$ by
+\eqref{eq:trace-newton}.  There is no cancellation of $(k-1)!$, so the proof
+works in positive characteristic and in rings with additive torsion.
+\end{proof}
+
+The first four identities are
+\begin{align}
+ e_1&=s_1,\notag\\
+ 2e_2&=s_1^2-s_2,\notag\\
+ 6e_3&=s_1^3-3s_1s_2+2s_3,\label{eq:trace-lowdim}\\
+ 24e_4&=s_1^4-6s_1^2s_2+3s_2^2+8s_1s_3-6s_4.\notag
+\end{align}
+They follow by explicitly evaluating the first four Bell recurrences, so
+the displayed formulas supply, respectively, the determinant in dimensions
+$1,2,3,4$ after the indicated exact division.  They also give the first four
+nonleading characteristic coefficients in all larger dimensions.  For
+example, if $2$ is invertible, the dimension-three identity is
+\[
+ A^3-s_1A^2+\frac{s_1^2-s_2}{2}A-\det(A)I=0.
+\]
+If $2$ and $3$ are invertible, its dimension-four counterpart is
+\[
+ A^4-s_1A^3+\frac{s_1^2-s_2}{2}A^2
+ -\frac{s_1^3-3s_1s_2+2s_3}{6}A+\det(A)I=0.
+\]
+Over an arbitrary ring, retain the coefficients $e_k$ from principal minors;
+one may multiply the displayed equations by the denominators to obtain valid
+consequences, but those multiplied equations need not imply Cayley--Hamilton.
+
+\paragraph{Why the characteristic restriction matters.}
+For a prime $p$, the two $p\times p$ matrices $0$ and $I$ over
+$\mathbb F_p$ have equal traces of every positive power, namely zero, while
+their determinants are respectively $0$ and $1$.  Their characteristic
+polynomials are $X^p$ and $X^p-1$.  Thus the traces alone cannot recover the
+characteristic coefficients in arbitrary characteristic.  The factor
+$k!$ in \eqref{eq:trace-bell} cannot simply be cancelled.
+
+\subsection{The Hessenberg determinant formula}
+
+Let $H_k$ be the $k\times k$ matrix with entries, in one-based indexing,
+\[
+ (H_k)_{ij}=
+ \begin{cases}
+ s_{i-j+1},&j\leq i,\\
+ k-i,&j=i+1,\\
+ 0,&j>i+1.
+ \end{cases}
+\]
+Thus its first row is $(s_1,k-1,0,\ldots,0)$ and its last row is
+$(s_k,s_{k-1},\ldots,s_1)$.  Put $D_0=1$ and $D_k=\det H_k$.
+
+\begin{theorem}[Integral Hessenberg identity]
+\label{thm:trace-hessenberg}
+For every $k\geq0$, $D_k=k!e_k$.  In particular, when $k!$ is a unit,
+\[
+ c_{n-k}=d_k=\frac{(-1)^k}{k!}\det H_k\qquad(0\leq k\leq n).
+\]
+\end{theorem}
+\begin{proof}
+Expand $D_k$ along its first column.  In the minor corresponding to row $i$,
+the first $i-1$ rows force the entries
+$k-1,k-2,\ldots,k-i+1$ successively: the first such row has only its first
+available entry nonzero, and the same holds after each removal.  The
+remaining lower-right matrix is $H_{k-i}$.  Therefore
+\[
+ D_k=\sum_{i=1}^k(-1)^{i-1}s_i
+       \left(\prod_{h=1}^{i-1}(k-h)\right)D_{k-i}.
+\]
+The empty product is $1$.  Inductively substituting
+$D_{k-i}=(k-i)!e_{k-i}$ turns the product of the two factorial factors into
+$(k-1)!$.  Newton's identity now gives $D_k=k!e_k$, as required.
+\end{proof}
+
+\subsection{A correctly initialized Faddeev--LeVerrier algorithm}
+
+Assume for now that $1,2,\ldots,n$ are units of $R$.  Define
+\begin{equation}
+ F_0=I,\qquad
+ d_k=-k^{-1}\operatorname{tr}(AF_{k-1}),\qquad
+ F_k=AF_{k-1}+d_k I\quad(1\leq k\leq n).
+ \label{eq:trace-flv}
+\end{equation}
+These assignments compute the characteristic coefficients.  Indeed the
+invariant
+\[
+ F_k=A^k+d_1A^{k-1}+\cdots+d_kI
+\]
+is immediate by induction.  Assuming the coefficients through $k-1$ have
+been computed correctly, Newton's identity gives
+\[
+ \operatorname{tr}(AF_{k-1})
+  =s_k+d_1s_{k-1}+\cdots+d_{k-1}s_1=-k d_k,
+\]
+which proves the next assignment.  The invariant at $k=n$ gives
+$F_n=p_A(A)=0$.  The adjugate coefficient formula additionally gives
+$\operatorname{adj}(A)=(-1)^{n-1}F_{n-1}$ for $n\geq1$; if $d_n$ is a unit,
+$A^{-1}=-d_n^{-1}F_{n-1}$.
+
+For integer matrices the same algorithm uses exact integer division by
+the positive number $k$.  Its divisibility is not guessed: the principal-minor
+definition supplies the integer witness $-d_k$ for
+$\operatorname{tr}(AF_{k-1})=k(-d_k)$.  Integer quotient and remainder are
+primitive recursive, and their defining equations verify each step.  More
+generally an effective exact-division operation with this correctness
+property suffices; mere characteristic zero does not supply such an operation.
+
+The article's displayed recurrence with initial value $M_0=0$ contains
+$1/(k-1)$ at $k=1$.  Read literally it cannot be initialized.  One must give
+$M_1=I$ and start that recurrence at $k=2$, or use
+\eqref{eq:trace-flv} from $F_0=I$.
+
+\subsection{Finite formal logarithms, exponentials, and the partition formula}
+
+Fix a precision $N$ and suppose $1,2,\ldots,N$ are units, as they are in a
+$\mathbb Q$-algebra.  Every expression in this subsection is reduced modulo
+$z^{N+1}$.  Define
+\[
+ L_N(z)=-\sum_{j=1}^N\frac{s_j}{j}z^j,
+ \qquad
+ G_N(z)=\sum_{r=0}^N\frac{L_N(z)^r}{r!}\pmod{z^{N+1}}.
+\]
+These are finite polynomial definitions, not limits.  Then
+\begin{equation}
+ \det(I-zA)\equiv G_N(z)
+   =\exp_N\bigl(\operatorname{tr}\log_N(I-zA)\bigr)
+       \pmod{z^{N+1}}.
+ \label{eq:trace-explog}
+\end{equation}
+To prove the identity, write $g_k$ for the coefficient of $z^k$ in $G_N$.
+Differentiating the ordinary finite sum defining $G_N$ gives
+$G_N'\equiv L_N'G_N\pmod{z^N}$: the omitted term is
+$L_N'L_N^N/N!$ and has degree at least $N$.  Coefficient comparison therefore
+gives
+\[
+ g_0=1,\qquad k g_k=-\sum_{j=1}^k s_j g_{k-j}\quad(1\leq k\leq N).
+\]
+The coefficients $d_k$ of $\det(I-zA)$ satisfy exactly this recurrence by
+Newton's identity.  Induction and multiplication by the supplied inverse of
+$k$ give $g_k=d_k$ through degree $N$.  This proves
+\eqref{eq:trace-explog} without analytic convergence or a logarithm branch.
+No nonzero-eigenvalue assumption is needed.  If $N>n$, the coefficients of
+degrees $n+1,\ldots,N$ in $G_N$ consequently vanish.
+
+Expanding the finite exponential and grouping its products according to
+the number $m_j$ of occurrences of $s_jz^j/j$ gives the useful corrected
+partition formula
+\begin{equation}
+ d_k=
+ \sum_{\substack{m_1,\ldots,m_k\geq0\\
+                 \sum_{j=1}^k j m_j=k}}
+ \prod_{j=1}^k
+   \frac{(-1)^{m_j}s_j^{m_j}}{j^{m_j}m_j!}.
+ \label{eq:trace-partition}
+\end{equation}
+For a fixed tuple put $r=\sum_jm_j$.  Its terms in $L_N^r$ occur
+$r!/\prod_jm_j!$ times; division by $r!$ proves the displayed coefficient.
+Every index has the bound $m_j\leq k$, so this is a finite bounded sum.
+The article's product with sign $(-1)^{m_j+1}$ for each of $n$ factors differs
+from the correct sign by $(-1)^n$; for odd $n$ it would already give the
+incorrect leading coefficient $c_n=-1$.  Equation
+\eqref{eq:trace-partition} uses the corrected sign.  In rings where the
+fractions are unavailable, the integral Bell identity is the applicable
+statement instead.
+
+The familiar expression
+$p_A(\lambda)=\lambda^n\exp(\operatorname{tr}\log(I-A/\lambda))$
+can therefore be read rigorously, at every finite precision, by putting
+$z=\lambda^{-1}$ in \eqref{eq:trace-explog}.  This is a formal Laurent
+calculation.  It does not assert the existence of a numerical matrix
+logarithm for every nonzero value of $\lambda$.
+
+\subsection{The exact induction obligations for iPRA}
+
+For the arithmetic implementation, subsets are bit masks below $2^n$,
+permutations are bounded lists, and polynomials are finite coefficient
+arrays with an explicit length.  Traces, determinants, products, powers,
+coefficient selection, formal derivatives, and truncation are primitive
+recursive operations on these codes.  The earlier ring-identity
+interpretation is used for the universal ring assertions.  Rational
+instances use signed integer numerator--positive denominator pairs;
+statements about supplied inverses include their finite verification
+equations.
+
+Computability by itself is not the proof of iPRA-provability.  The preceding
+proofs use the following explicit induction invariants, each a decidable
+equality of finite arrays or a bounded conjunction of such equalities.
+For a coded ring presentation use its decidable equality; for generic
+identities compare the corresponding normalized integer polynomial arrays.
+\begin{enumerate}
+\item The geometric-sum invariant is
+$(I+tA)\sum_{j=0}^{q}(-t)^jA^j
+ =I+(-1)^qt^{q+1}A^{q+1}$.
+Its successor step is obtained by adjoining one term and cancelling the
+two adjacent terms of degree $q+1$.
+\item Determinant differentiation is a bounded sum of product-rule
+identities, and the principal-minor argument is the explicit finite
+bijection $(\sigma,S)\leftrightarrow(S,\sigma|_S)$ on nonzero summands.
+Finite-sum reindexing is proved by induction on the enumerated list length;
+zero summands are retained, so no existence search for a nonzero entry occurs.
+\item In the Bell proof retain the table invariant
+$B_j=j!e_j$ for every $j\leq q$.  Its next row follows by
+\eqref{eq:trace-bell-rec} and \eqref{eq:trace-newton}.  For the Hessenberg
+proof retain $D_j=j!e_j$ on the same prefix.  Their factorial identities are
+equalities of finite products and binomial coefficients, with the usual
+Pascal recursion giving quantifier-free induction proofs.
+\item In the Faddeev--LeVerrier proof retain the polynomial expression for
+$F_q$ and correctness of the first $q$ coefficients.  The next numerator
+is exactly $-k d_k$ by Newton's identity, so unit multiplication or verified
+exact integer division proves the next step.
+\item In the finite exponential proof retain $g_j=d_j$ for $j\leq q$.
+The displayed coefficient recurrence and the explicit inverse of $q+1$
+give the successor step.  The partition expansion is a bounded grouping of
+words of length at most $N$ by their occurrence-count vectors.
+\end{enumerate}
+A prefix invariant can be represented by one primitive recursive Boolean
+conjunction over its bounded list.  Induction on that Boolean equation is
+quantifier-free induction, so no induction over an unbounded quantified
+formula is being silently introduced.  These invariants give the concrete
+proof obligations for the object-language formalization, rather than
+inferring provability merely from the existence of the algorithms.

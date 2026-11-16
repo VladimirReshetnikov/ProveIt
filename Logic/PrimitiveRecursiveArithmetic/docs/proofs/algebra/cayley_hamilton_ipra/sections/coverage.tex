@@ -1,0 +1,74 @@
+\section*{Coverage and qualifications at a glance}
+\addcontentsline{toc}{section}{Coverage and qualifications at a glance}
+
+The starting inventory is the mathematical content of the specified
+Wikipedia article, revision \texttt{1375228092}~\cite{wikipedia}.
+The proofs below are developed afresh as finite algebra and finite
+arithmetic. Classical background and related formulations can be found
+in the Stacks Project and Conrad's notes~\cite{stacks,conrad}; their
+abstract existence arguments are not imported as iPRA lemmas.
+
+In the table, \textbf{U} means a universal finite ring identity, interpreted
+arithmetically as an integer-polynomial identity; \textbf{C} means a
+finite construction from the stated certificates in a fixed effective
+presentation; and \textbf{Q} means a quantitative rational-approximation
+version with a supplied or explicitly proved modulus. Every row refers
+to a human proof in this manuscript. None denotes a completed Lean
+kernel proof.
+
+\small
+\begin{longtable}{@{}p{0.07\textwidth}p{0.39\textwidth}p{0.45\textwidth}@{}}
+\toprule
+ID & Result family & Exact scope \\
+\midrule
+\endfirsthead
+\toprule ID & Result family & Exact scope \\ \midrule
+\endhead
+\bottomrule
+\endfoot
+A1 & Determinant toolkit & U: signs, alternation, cofactors, adjugates, multiplicativity. \\
+A2 & Characteristic coefficients & U: leading and constant coefficients, principal minors, trace coefficient. \\
+A3 & Cayley--Hamilton & U: all dimensions, arbitrary commutative rings, including the zero ring. \\
+A4 & Polynomial adjugate & U: every adjugate coefficient is an explicit polynomial in the matrix. \\
+A5 & Evaluation and power reduction & U/C: restricted noncommutative evaluation; monic remainder and explicit power recurrence. \\
+A6 & Inversion and negative powers & C: a supplied inverse of the determinant; exact numerical examples. \\
+A7 & Minimal polynomials & C: bounded elimination over a fixed effective field; divisibility of the characteristic polynomial. \\
+A8 & Companion matrices & U: prescribed characteristic polynomial and exact annihilator ideal. \\
+A9 & Eigenvectors and roots & C: equivalence over an effective field; ring consequences with a unit component. \\
+A10 & Similarity and split spectra & U/C: supplied inverses, triangularization or factorization; coefficient and power-trace formulas. \\
+T1 & Jacobi and adjugate traces & U: finite formal differentiation. \\
+T2 & Newton identities & U: all degrees, without division or eigenvalues. \\
+T3 & Bell-polynomial formulas & U: factorial-multiplied identities; division only with justified units or exact integer quotients. \\
+T4 & Hessenberg determinant formula & U: determinant equals $k!e_k$; explicit formulas through order four. \\
+T5 & Faddeev--LeVerrier & C: correctly initialized; supplied units or proved exact integer division. \\
+T6 & Exponential/logarithm and partitions & C: every finite formal precision, with integer denominators invertible. \\
+M1 & Finitely generated modules & C: supplied generator images and coordinates; no basis required. \\
+M2 & Ideal coefficients and Nakayama & C: finite membership and unit certificates. \\
+M3 & Closure of integral elements & C: monic input equations give a degree-$\prod_jd_j$ output equation. \\
+M4 & Algebraic-number minimal polynomials & C: finite multiplication table; integral coefficients for integral elements. \\
+I1 & Lagrange and Sylvester formulas & C: supplied roots with unit differences; spectral idempotents. \\
+I2 & Hermite interpolation & C: repeated-root jets, Hasse derivatives, explicit truncated inverses. \\
+F1 & Polynomial matrix-function reduction & Q: primitive recursive rational coefficients and weighted finite-tail bound. \\
+F2 & Exponential, sine, cosine & Q: rational matrix and parameter inputs, explicit factorial cutoff. \\
+F3 & Rotation formulas & Q: planar, Pauli, and Rodrigues identities from supplied polynomial relations. \\
+Q1 & Quaternion and split-quaternion matrices & C: faithful representations give degree $2n$ annihilators; also degree $4n$ regular representation. \\
+Q2 & One octonion & U/C: quadratic norm identity, with rational coordinate interpretation. \\
+\end{longtable}
+\normalsize
+
+The unrestricted analytic functional calculus is not claimed as a literal
+first-order iPRA theorem. Neither are a root-finding or Jordan-form
+existence theorem for arbitrary fields, density of diagonalizable complex
+matrices, or the modified matrix-octonion theorem. The article's broader
+Lie-group references and its exterior-algebra and combinatorial proof
+methods are not developed here. The main theorem already has two
+complete finite proofs; those other methods are unnecessary dependencies.
+
+Several source formulations require correction. Over a ring, an inverse
+requires a unit determinant. Trace expressions with factorial
+denominators must be qualified. The stated partition product has an
+extra sign, and the displayed Faddeev--LeVerrier recursion lacks its
+first valid initialization. A nonpolynomial analytic function cannot be
+written $qp+r$ with both $q,r$ polynomials. These points are proved or
+diagnosed in the appropriate sections rather than used as premises.
+

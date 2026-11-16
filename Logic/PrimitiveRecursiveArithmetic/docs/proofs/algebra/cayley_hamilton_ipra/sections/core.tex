@@ -1,0 +1,291 @@
+\section{A finite determinant toolkit}
+\label{sec:determinants}
+
+Write $[n]=\{0,\ldots,n-1\}$. A permutation is a list containing each
+element of $[n]$ once, and its sign is $(-1)^{\operatorname{inv}(\sigma)}$,
+where an inversion is a pair $i<j$ with $\sigma(i)>\sigma(j)$. Define
+\[
+ \det M=\sum_{\sigma\in S_n}\operatorname{sgn}(\sigma)
+                              \prod_{i<n}m_{i,\sigma(i)}.
+ \tag{D}
+\]
+In arithmetic the sum can run through $n^n$ candidate lists and assign
+zero to every list that is not a permutation. The determinant of the
+empty matrix is $1$.
+
+\begin{lemma}[Permutation signs]
+Swapping two positions in a permutation reverses its sign. Moreover,
+$\operatorname{sgn}(\sigma\tau)=\operatorname{sgn}(\sigma)
+\operatorname{sgn}(\tau)$ and
+$\operatorname{sgn}(\sigma^{-1})=\operatorname{sgn}(\sigma)$.
+\end{lemma}
+\begin{proof}
+An adjacent interchange changes the inversion count by exactly $1$ in
+absolute value. Swapping positions $i<j$ is a product of
+$2(j-i)-1$ adjacent interchanges, hence changes parity. Bubble sorting a
+list uses at most $n(n-1)/2$ adjacent interchanges and reduces its
+inversion count to zero. Applying the same adjacent interchanges to
+the positions in any other permutation multiplies its sign by the same
+factor. This proves the product formula, then the inverse formula by
+applying it to $\sigma\sigma^{-1}$. Every procedure and parity invariant
+here is bounded in $n$.
+\end{proof}
+
+\begin{lemma}[Multilinearity, alternation, and transpose]
+The determinant is additive and scalar-linear in each individual row or
+column. It vanishes when two rows, or two columns, are equal.
+Also $\det(M^{\mathsf T})=\det M$ and $\det I_n=1$.
+\end{lemma}
+\begin{proof}
+Each summand of (D) contains one entry from a prescribed row and one
+from a prescribed column, so distributivity proves multilinearity.
+If rows $i$ and $j$ agree, pair $\sigma$ with the permutation obtained by
+swapping its values at $i,j$. The products agree and the signs are
+opposite. There are no fixed points. Sum once over the smaller member
+of each pair to get zero. This argument never infers $z=0$ from $2z=0$.
+The column proof is the same, or follows by transposition. Reindexing
+by $\sigma^{-1}$ proves transposition invariance. For the identity matrix
+only the identity permutation contributes, and its contribution is $1$.
+\end{proof}
+
+For $n\ge1$, write $M^{\widehat i,\widehat j}$ for the matrix obtained by
+deleting row $i$ and column $j$, retaining their original orders. Define
+\[
+ C_{ij}=(-1)^{i+j}\det M^{\widehat i,\widehat j},\qquad
+ (\operatorname{adj}M)_{ji}=C_{ij}.
+\]
+
+\begin{lemma}[Cofactor expansion and the two adjugate identities]
+\label{lem:adjugate}
+For every row $i$ and column $j$,
+\[
+ \det M=\sum_{k<n}m_{ik}C_{ik}
+       =\sum_{k<n}C_{kj}m_{kj},
+ \qquad
+ M\operatorname{adj}M=\operatorname{adj}M\,M=(\det M)I_n.
+\]
+\end{lemma}
+\begin{proof}
+Partition the permutations according to the value $\sigma(i)=k$.
+Delete the position $i$ and the value $k$, then relabel the remaining
+ordered sets by $[n-1]$. This is a bijection with $S_{n-1}$; its inverse
+inserts the missing position and value. Moving row $i$ to the first
+position uses $i$ adjacent interchanges, and moving column $k$ to the
+first position uses $k$; the surviving sign is therefore
+$(-1)^{i+k}$ times the smaller permutation sign. The corresponding
+products agree after extracting $m_{ik}$. This proves row expansion;
+transpose gives column expansion.
+
+The $(i,j)$ entry of $M\operatorname{adj}M$ is
+$\sum_k m_{ik}C_{jk}$. It is the expansion along row $j$ of the matrix
+obtained by replacing row $j$ of $M$ with row $i$. If $i=j$, it is
+$\det M$; otherwise the replacement matrix has two equal rows and its
+determinant is zero. Column replacement proves the other identity.
+For $n=1$ the deleted determinant is $1$, so the proof includes that case.
+\end{proof}
+
+\begin{lemma}[Multiplicativity]
+\label{lem:detmul}
+For square matrices over a commutative ring,
+$\det(AB)=\det A\det B$.
+\end{lemma}
+\begin{proof}
+Column $j$ of $AB$ is $\sum_i b_{ij}A_i$, where $A_i$ is column $i$ of
+$A$. Repeated multilinearity expands its determinant as a sum indexed
+by maps $f:[n]\to[n]$, with term
+\[
+                 \left(\prod_j b_{f(j),j}\right)
+                        \det(A_{f(0)},\ldots,A_{f(n-1)}).
+\]
+A noninjective $f$ repeats a column and contributes zero. Since its
+domain and codomain have the same finite size, an injective $f$ is a
+permutation: the occupancy counts $\nu_i=|f^{-1}(i)|$ all belong to
+$\{0,1\}$ and sum to $n$, so a missing value would make their sum at
+most $n-1$. Reordering its columns gives
+$\operatorname{sgn}(f)\det A$. Factoring out $\det A$ leaves the column
+form of (D) for $B$, proving the formula. The expansion has $n^n$ terms,
+and is valid in the zero ring as well.
+\end{proof}
+
+\begin{corollary}[Change of scalars and similarity]
+Every ring homomorphism preserves determinants and characteristic
+polynomials. If $P,Q$ are supplied with $PQ=QP=I$, then
+$\chi_{PAQ}=\chi_A$ and $f(PAQ)=P f(A)Q$ for every scalar polynomial $f$.
+\end{corollary}
+\begin{proof}
+A homomorphism preserves the finite sum and products in (D).
+The equality $tI-PAQ=P(tI-A)Q$ holds in the polynomial matrix ring, and
+$\det P\det Q=1$ by Lemma~\ref{lem:detmul}. This proves the polynomial
+identity. Induction gives $(PAQ)^k=PA^kQ$ for all $k$, including $k=0$;
+summing proves the evaluation identity.
+\end{proof}
+
+\section{Cayley--Hamilton without division or spectral theory}
+\label{sec:main}
+
+Let $n\ge1$ and $A\in M_n(R)$. Work with finite polynomial lists in a
+central indeterminate $t$. Set
+\[
+ \chi_A(t)=\det(tI-A)=\sum_{j=0}^n c_jt^j,
+ \qquad B(t)=\operatorname{adj}(tI-A)=\sum_{j=0}^{n-1}B_jt^j.
+\]
+The degree bound for $B$ follows because every cofactor is a product
+sum with $n-1$ linear factors. In $\chi_A$ a term of degree $n$ must
+select $t$ from all $n$ rows. Only the identity permutation permits this,
+and the coefficient is $1$. Thus $c_n=1$. At $t=0$,
+$c_0=\det(-A)=(-1)^n\det A$.
+
+\begin{theorem}[Coefficient telescoping]
+\label{thm:CH}
+For every square matrix over every commutative ring,
+\[
+       \boxed{\;A^n+c_{n-1}A^{n-1}+\cdots+c_1A+c_0I=0.\;}
+\]
+\end{theorem}
+\begin{proof}
+Lemma~\ref{lem:adjugate}, applied over the polynomial ring, gives
+\[
+                    (tI-A)B(t)=\chi_A(t)I.
+\]
+Comparing the finite coefficient lists gives
+\begin{align*}
+ B_{n-1}&=I,\\
+ B_{j-1}-AB_j&=c_jI &&(1\le j\le n-1),\\
+ -AB_0&=c_0I.
+\end{align*}
+Multiply the equation indexed by $j$ on the left by $A^j$ and add,
+including the leading equation multiplied by $A^n$. The left side is
+\[
+ -AB_0+\sum_{j=1}^{n-1}
+       \bigl(A^jB_{j-1}-A^{j+1}B_j\bigr)+A^nB_{n-1}=0;
+\]
+every summand cancels with its neighbor. The right side is precisely
+$\sum_{j=0}^n c_jA^j$. In detail, the partial-sum invariant is
+$\sum_{j=0}^k c_jA^j=-A^{k+1}B_k$ for $k<n$, followed by
+$B_{n-1}=I$. This is the quantifier-free invariant identified in
+Section~\ref{sec:induction}; it proves Theorem~\ref{thm:arithmetic} after
+generic polynomial coding. No assertion about eigenvalues is used.
+
+For $n=0$, the matrix algebra has one element, its zero and identity
+coincide, and $\chi_A(t)=1$. Its evaluation is the empty identity matrix,
+which is also zero. Thus the theorem includes dimension zero.
+\end{proof}
+
+\begin{theorem}[Adjugate as a polynomial]
+\label{thm:adjpoly}
+For $n\ge1$ and $0\le j<n$,
+\[
+ B_j=\sum_{k=j+1}^n c_k A^{k-1-j}.
+\]
+In particular,
+\[
+ \operatorname{adj}(-A)=A^{n-1}+c_{n-1}A^{n-2}+\cdots+c_1I,
+ \qquad
+ \operatorname{adj}A=(-1)^{n-1}
+              \sum_{k=1}^{n}c_kA^{k-1}.
+\]
+\end{theorem}
+\begin{proof}
+Start with $B_{n-1}=c_nI=I$. If the formula holds for $B_j$, the
+coefficient recurrence gives $B_{j-1}=AB_j+c_jI$, which is exactly the
+next formula. This is a descending bounded recursion, or an ordinary
+induction on $n-1-j$. The constant coefficient of the adjugate is
+$\operatorname{adj}(-A)$, and each of its minors has $n-1$ negated
+factors, giving the second identity. In particular every $B_j$ commutes
+with $A$; this is a proved conclusion, not an assumption used above.
+\end{proof}
+
+\subsection{A second proof and the evaluation pitfall}
+
+For a polynomial $F(t)=\sum F_it^i$ with coefficients in an associative
+ring, define right evaluation by $F(A)=\sum F_iA^i$. It always preserves
+addition, but generally does not preserve multiplication. If every
+coefficient of $G$ commutes with $A$, however,
+\[
+ F(A)G(A)=\sum_{i,j}F_iA^iG_jA^j
+         =\sum_{i,j}F_iG_jA^{i+j}=(FG)(A).
+\]
+This proves the required restricted substitution rule by a finite
+calculation. In particular, evaluation is a ring homomorphism on
+polynomials whose coefficients commute with $A$, even if those
+coefficients do not commute with one another.
+
+The two adjugate identities imply
+$(tI-A)B(t)=B(t)(tI-A)$, hence $AB_j=B_jA$ by coefficient comparison.
+The restricted substitution rule now legitimately evaluates
+$(tI-A)B(t)=\chi_A(t)I$ at $A$, giving $0=\chi_A(A)$. This is a second,
+fully finite proof. The stronger formula of Theorem~\ref{thm:adjpoly}
+places these coefficients in the commutative algebra generated by $A$.
+
+There is a concrete obstruction to unrestricted substitution. Take
+\[
+ A=\begin{pmatrix}0&1\\0&0\end{pmatrix},\qquad
+ D=\begin{pmatrix}0&0\\1&0\end{pmatrix},\qquad F(t)=tI,\quad G(t)=D.
+\]
+Then $(FG)(A)=DA$, whereas $F(A)G(A)=AD$; the two products are different
+diagonal idempotents. Thus a proof that treats evaluation on all
+matrix-coefficient polynomials as a homomorphism is invalid.
+Nor can one replace the scalar variable in $\det(tI-A)$ by a matrix
+inside the entries and call the resulting expression $\det(A-A)$:
+the types and the surrounding matrix sizes have changed.
+
+An additional arithmetic diagnostic is provided by the permanent. For
+$H=\left(\begin{smallmatrix}1&2\\3&4\end{smallmatrix}\right)$,
+\[
+ \operatorname{perm}(tI-H)=t^2-5t+10,
+ \qquad H^2-5H+10I=12I\ne0.
+\]
+The same putative substitution proof would incorrectly annihilate this
+permanent polynomial. Our proof specifically uses the sign cancellation
+in the determinant.
+
+\subsection{Inverse matrices, including the exact hypothesis}
+
+\begin{theorem}[Explicit inverse from a unit determinant]
+\label{thm:inverse}
+For $n\ge1$, if $u\det A=1$ is supplied, then
+\[
+ A^{-1}=u\operatorname{adj}A
+       =u(-1)^{n-1}
+                (A^{n-1}+c_{n-1}A^{n-2}+\cdots+c_1I)
+\]
+is a two-sided inverse. Conversely a supplied inverse $V$ gives the
+unit witness $\det V$ for $\det A$.
+\end{theorem}
+\begin{proof}
+Multiply each adjugate identity by the scalar $u$ for the first claim.
+The explicit polynomial expression follows from
+Theorem~\ref{thm:adjpoly}. Conversely $AV=I$ gives
+$\det A\det V=\det I=1$ by determinant multiplicativity. All witnesses
+are explicit finite expressions.
+\end{proof}
+Over a field a nonzero determinant has an inverse, so this recovers the
+usual statement. Over $\mathbb Z$, the matrix $(2)$ has nonzero
+determinant and no inverse over $\mathbb Z$; nonzeroness is not the
+correct ring hypothesis. The theorem remains valid in the zero ring,
+where the required equations have their usual algebraic meanings.
+
+\subsection{The displayed small examples}
+
+For $A=(a)$ one has $\chi_A(t)=t-a$ and $A-aI=0$. For
+$A=\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)$,
+\[
+ \chi_A(t)=t^2-(a+d)t+(ad-bc),\qquad
+ A^2=\begin{pmatrix}a^2+bc&ab+bd\\ca+dc&cb+d^2\end{pmatrix}.
+\]
+Subtracting $(a+d)A$ and adding $(ad-bc)I$ cancels each of the four
+entries, using only commutativity and distributivity.
+For the numerical matrix $H$ above this gives
+\[
+ H^2=5H+2I,\qquad H^3=27H+10I,\qquad H^4=145H+54I.
+\]
+Each successive equality is obtained by multiplying the previous one
+by $H$ and replacing $H^2$ by $5H+2I$. Over $\mathbb Q$,
+\[
+ H^{-1}=\tfrac12(H-5I),\qquad
+ H^{-2}=\tfrac14(-5H+27I).
+\]
+The first identity follows from $H(H-5I)=2I$; squaring it and reducing
+$H^2$ proves the second. Thus all of the article's elementary numerical
+examples have exact integer or rational proofs.
+
