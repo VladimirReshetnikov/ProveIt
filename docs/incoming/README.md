@@ -185,6 +185,9 @@ on Vladimir's instruction of 15 November 2026:
 The last two each leave out only their ignored checksum manifest. These three archives are
 not in the history. `trigonometric_identities_ipra_2026-11-15.zip` was placed the same way,
 under `analysis/`, without committing the ZIP. It leaves out only its ignored `SHA256SUMS`.
+`lagrange_inversion_ipra.zip` was placed the same way, under `algebra/`, without committing
+the ZIP. All 18 of its members are placed. From here on, every archive is deleted from its
+drop directory after placement (Vladimir, 15 November 2026).
 
 ## Sub-exponential 3-SAT (ETH) reports
 
