@@ -70,6 +70,8 @@ formula of arity zero and `trBody` of a formula under one binder, with no size c
 | `PA194NameFactsProof` | Sixteen closed sentences `fRefl`, …, `fEMul` and their validity under the twelve hypotheses in every structure. `valBody_split`: every value formula is the domain formula at its variable in conjunction with a remainder, so a value letter can stand for the remainder. `SourceFacts T`; `with_facts`: every instance of a sentence valid under the hypotheses is provable in `T`. `pair_of_ei`: the instance of `sEI` at a variable `&c`, by one internal specialization. `gd0`–`gd3`: from a provable implication to the guarded sequent. `field_nRefl`, …, `field_eMul`, and `nameFacts_of_sourceFacts : SourceFacts T → (∀ i, GDerivable T {tr (exName &i)}) → NameFacts T`, `termFacts_of_sourceFacts`. |
 | `PA194InductionForms` | `trBody_or`, `trBody_neg`, `trBody_shift`. `allNames t p` (every name of `t` satisfies `p`) with `tr_allNames`, and `leibnizAll`: from `TermFacts T`, a guarded derivation of `tr (p[t]) → tr (allNames t p)`; the universally closed form of `leibniz`. `indBody p`, the induction axiom for `p` before the closure of its parameters, with `tr_indBody` and `free_substs1_succVar`. `tr_close_step`: from a guarded derivation of `tr (free b)` to one of `tr (∀ b)`. |
 | `PA194InductionSchema` | The sentence `fInd` over the letters `Q` (translation of `p`) and `QS` (translation of `p[S x]`): ordinal induction for `Q`, "names of zero satisfy `Q`", "if `QS x` then names of the successor of `x` satisfy `Q`" and `∀x (Q x → QS x)` give `∀x Q x`; `valid_ind`. `indCode q`: the ordinal induction statement of the source theory for an internal property `q`. `v_ind`, `v_hbase`, `v_x2`, `v_concl`, `instS_sHstep`, `tXs_free`: the instances as codes. `step_derivable`: the step hypothesis, by `leibnizAll` at `S(&0)` and one relativized universal introduction. `induction_body : TermFacts T → SourceFacts T → (∀ q, IsSemiformula SourceL 1 q → Provable T (indCode q)) → IsSemiformula language 1 p → GDerivable T {tr (indBody p)}`. |
+| `PA194ArithFacts` | Guarded derivations of the translations of four open formulas. `cong_add`, `cong_mul`: `s₁ = s₁' → s₂ = s₂' → s₁ + s₂ = s₁' + s₂'` and the same for `·`, for arbitrary internal terms, from `SourceFacts T`. `addSucc_open`: `S(&a) + &b = S(&a + &b)`, and `mulSucc_open`: `S(&a) · &b = &b + &a · &b`, from `SourceFacts T` and the further fixed facts `sA3`, `sM3`. `ne_derivable`: under the domain guard of `&c`, the value formula of the variable `&c` has a member. Sentences `fCAdd`, `fCMul`, `fAddSucc`, `fMulSucc` with their validity, and the relational lemmas `m_cAdd`, `m_cMul`, `m_addSucc`, `m_mulSucc`. |
+| `PA194FixedAxiomQuotes` | Imports `PA194PAeqTargetInventory`. `q_eq`, `q_add`, `q_mul`, `q_succ`, `q_implies`: quotes of the standard syntax of the arithmetic language as the codes used here. `tr_close_quote`: closing one standard quantifier. `addCongruence_tr`, `mulCongruence_tr`, `addSucc_tr`, `mulSucc_tr`: `GDerivable T {tr ⌜σ⌝}` for the four quoted axioms. |
 
 All statements are for an arbitrary model `V` of `𝗜𝚺₁`, arbitrary `Δ₁` theories `U` and `T`
 of the two languages, and internally valid codes that may be nonstandard.
@@ -134,6 +136,18 @@ model. Of its three fields, `inhabited` is proved for these theories in `pa194-m
   latter is written with quoted templates, the former with `domainCode`, `zeroCode`,
   `successorCode`), the iteration of `tr_close_step` over `close n`, and the passage from
   `tr` to the `rootParameters` form of the induction supplier.
+
+  For four of the fixed axioms, `PA194FixedAxiomQuotes` gives guarded derivations of
+  `tr ⌜σ⌝` for the quoted sentences themselves: `addCongruence_tr` and `mulCongruence_tr`
+  from `SourceFacts T`, and `addSucc_tr`, `mulSucc_tr` from `SourceFacts T` and one more
+  fixed fact each, `T ⊢ tHyp sA3` and `T ⊢ tHyp sM3` (`PA194ArithFacts`): if `u'` is a
+  successor of `u`, `w` a sum of `u'` and `v`, `w₀` a sum of `u` and `v` and `w₁` a successor
+  of `w₀`, then `w` and `w₁` are order-isomorphic; and the same with products for `w`,
+  `w₀` and a sum of `v` and `w₀` for `w₁`. These four are the fixed axioms that the
+  supplier of `pa194-model-logic` still assumes
+  ([`FORWARD-FIXED-FOUR.md`](../pa194-model-logic/FORWARD-FIXED-FOUR.md)); that supplier
+  takes them as unguarded proofs of the quoted standard translation, so connecting the two
+  forms is not done. `sA3` and `sM3` are not proved for the actual source theory.
 - `inhabited` for the actual source theory is proved outside this directory
   (`PA194SourceInhabited.inhabited_provable` in `pa194-model-logic`), from the standard
   derivation of the empty-set formula.
@@ -158,7 +172,9 @@ three axioms. `PA194NameSchema`, `PA194NameSemantics` and `PA194NameFactsProof` 
 the same way, on top of those; of their eight, nine and seventeen reports, the six for the
 facts about relations in `PA194NameSemantics` list `propext` alone and the others the same
 three axioms. `PA194InductionForms` and `PA194InductionSchema` were compiled the same way;
-their seven and nine reports are the same three axioms. The script itself has not been run.
+their seven and nine reports are the same three axioms. So were `PA194ArithFacts` and
+`PA194FixedAxiomQuotes` (nine and six reports, the same three axioms), the latter also
+against a locally compiled `PA194PAeqTargetInventory`. The script itself has not been run.
 
 Two incremental replays against the repository sources were made for an earlier state of this
 directory, before `PA194GuardedCalculus` and `PA194TrCompile` existed and while the compiler
