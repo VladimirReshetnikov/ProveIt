@@ -86,3 +86,6 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Algebra.CubeRootTwo.double_cancel
 #print axioms LeanProofs.IPRA.Algebra.CubeRootTwo.descent_open
 #print axioms LeanProofs.IPRA.Algebra.CubeRootTwo.no_rational_cube_root_of_two
+#print axioms LeanProofs.IPRA.Descent.descent
+#print axioms LeanProofs.IPRA.Algebra.TrisectionCubic.nonneg_root
+#print axioms LeanProofs.IPRA.Algebra.TrisectionCubic.nonpos_root
