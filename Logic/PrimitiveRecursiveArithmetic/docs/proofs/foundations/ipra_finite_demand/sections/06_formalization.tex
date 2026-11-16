@@ -1,0 +1,186 @@
+\section{A concrete path to complete Lean formalization}
+\label{sec:formalization}
+
+\subsection{Three levels that must remain distinct}
+
+The report contains complete human arguments for the stated finite and
+represented-output theorems. Their iPRA accounting identifies fixed PR
+programs, bounded invariants, finite search limits, and the required
+instances of unbounded input hypotheses. The root existence constructor
+reuses the explicitly identified rational-descent lemma from the FTA
+packet; an unchanged copy of its article is included in the archive.
+
+The delivered Lean files are at two different implementation levels.
+\path{BackwardDemand.lean} and \path{FiniteHausdorff.lean} prove
+native Lean lemmas. \path{AggregateTargets.lean},
+\path{RootSetTargets.lean}, and \path{NormTargets.lean} define
+concrete algorithms and named propositions for their missing proofs.
+A declaration of the form \texttt{def TheoremTarget : Prop := ...}
+neither proves its proposition nor introduces it as an axiom.
+All five files compile. The archive contains no admitted proof of a
+main theorem and does not claim that these definitions constitute one.
+
+The final logical-strength endpoint is different again:
+\[
+                  \texttt{Prf PRAAx [] sentence}.
+\]
+This type denotes a derivation in the repository's embedded arithmetic.
+An arbitrary native Lean induction on \texttt{Prop} is not an instance
+of the embedded theory's quantifier-free induction. In particular,
+the native scheduling theorem deliberately accepts arbitrary predicates;
+its iPRA application requires the separate boundedness and PR hypotheses
+proved in Section~\ref{sec:backward-demands}.
+
+\subsection{Definitions and theorem boundaries in the delivered modules}
+
+\begin{longtable}{@{}p{0.24\textwidth}p{0.39\textwidth}p{0.30\textwidth}@{}}
+\toprule
+Module & Concrete content & Proof status\\
+\midrule
+\endhead
+\texttt{BackwardDemand} & Backward schedule; forward evaluation;
+parameter-changing recursion; finite query envelopes. & Schedule,
+compilation equation, transfer, and finite-query theorems proved in
+native Lean.\\[4pt]
+\texttt{FiniteHausdorff} & Directed covers; Boolean checker; rational
+metric; two-sided closeness; regular aggregate names. & Reflection,
+composition, image, union, and triangle lemmas proved in native Lean.\\[4pt]
+\texttt{AggregateTargets} & Rational vectors, exact minima, least-neighbor
+chain, sampled membership, represented evaluation, and minimizers. &
+Chain, distance, value, and approximate-witness goals are unproved
+propositions.\\[4pt]
+\texttt{RootSetTargets} & Gaussian rationals, polynomial operations,
+descent clock, deflation, budgets, sampled root support and adequacy. &
+Six targets: descent-to-root, product stability, factorization,
+coherence, and two adequacy goals. All unproved.\\[4pt]
+\texttt{NormTargets} & Rational polynomial lists, companion matrices, monic
+reduction, determinant, norm, weighted degrees, points and subspaces. &
+General and superelliptic norm, multiplicity, zero-count, and subspace
+goals are unproved. Finite examples execute.\\
+\bottomrule
+\end{longtable}
+
+\texttt{AggregateTargets.MemberZero} tests the rational samples of the
+distance name at precision $k+1$ against $2^{-k}$. The least-neighbor
+proof supplies the stronger $\tfrac58\,2^{-k}$ bound. Its optimization
+targets specify both the value name and the complete two-parameter
+point-name constructor. Thus an exact minimizer is not silently stored
+as an assumed field of a structure.
+
+\texttt{RootSetTargets} defines the supplied descent map's specification
+in squared-norm arithmetic and implements its $J$-step iterator. The
+remaining descent assumption has an exact upstream proof location.
+Its adequacy targets use rational samples and bounded squared-distance
+covers, avoiding comparisons of exact complex roots. Its integer
+precision constants can be more generous than those in the paper:
+choosing $b=4C$ instead of a binary length still guarantees $2^b\ge4C$.
+This costs time but changes no theorem.
+
+\texttt{NormTargets.PlaneData} includes all coefficients of a monic
+equation in $Y$. Companion-matrix powers implement reduction even for
+an arbitrary input $Y$-coefficient list. The main general target retains
+the essential nonzero-norm hypothesis. The human coprime-degree theorem
+proves nonvanishing automatically; the specialized Lean target states
+that conclusion but does not yet prove it. These compiled definitions
+use rational coefficients and rational points. Generalization to the
+coded-field interface of the written theorem is a further formalization
+step. The subspace target uses
+explicit row-span witnesses and a nonzero annihilator certificate;
+Gaussian elimination is the producer described in the human proof.
+
+\subsection{The arithmetic compiler work, in dependency order}
+
+The intended integration uses the pinned repository modules
+\path{Syntax.lean}, \path{Deduction.lean}, and \path{PR.lean}
+\cite{repo-core}. They already provide scoped terms and formulas,
+substitution, intuitionistic deductions, PR function syntax, and
+\texttt{PRA.qfInd}. The following sequence avoids a gap between
+native correctness and the object-theory claim.
+\begin{enumerate}
+\item \textbf{Concrete arithmetic.} Introduce PR syntax for signed
+integers, positive-denominator rationals, list lookup and folds,
+polynomial convolution, bounded maxima and least search. Prove their
+defining-equation specifications in \texttt{PRAAx}. Every malformed code
+gets a default; correctness predicates assert the valid-input guards.
+\item \textbf{Boolean compilation.} Implement the fixed-syntax
+translation of Lemma~\ref{lem:booleanization}. Its universal and
+existential fold invariants were given explicitly, so this step needs
+no induction on an unbounded satisfaction predicate. The compiler can
+run in Lean's metatheory; each output must be a genuine derivation.
+\item \textbf{Schedule derivations.} Reify the two recursions of
+Section~\ref{sec:backward-demands}. Derive the truncated-subtraction
+identities and schedule equations from \texttt{PRA.precZero},
+\texttt{PRA.precSucc}, equality substitution, and quantifier-free
+induction. Build the syntax of the guarded invariant and apply
+\texttt{PRA.qfInd}. The native proof gives the exact algebraic template.
+\item \textbf{Finite metric algebra.} Prove rational triangle and
+finite-minimum specifications by denominator clearing and prefix
+induction. Translate \texttt{coverCheck\_correct} and the finite cover
+combinators. Formalize the least-neighbor invariant and the explicitly
+bounded geometric sum. Then implement the value and witness budgets.
+\item \textbf{Rational polynomial analysis.} Prove squared-norm
+multiplication, the power-difference identity, coefficient convolution,
+synthetic division, and the rational descent lemma. The last is the
+substantial inherited obligation. Compose its bounded iterator with
+the fixed-length deflation invariant; then substitute $E(t)$ in the
+finite product-stability proof and use the adequacy sample indices.
+\item \textbf{Finite field algebra.} Prove monic reduction, evaluation
+rows, determinant multiplication and row multilinearity, the
+Vandermonde calculation, and synthetic removal of linear factors.
+For the specialized theorem, formalize the unique-weight argument and
+the unique cyclic-shift determinant term. The finite proof has no
+irreducibility or divisor-theory dependency to import.
+\item \textbf{Output adequacy and transport.} Universally introduce
+the numerical parameters only after the finite derivations are built.
+For named inputs, retain their validity hypotheses and instantiate them
+at the explicitly calculated indices. The existing transport APIs between ordinary iPRA and
+the ConciseIPRA scalar calculus can then be applied to an actual arithmetic
+derivation; they do not produce that derivation from a native theorem.
+\end{enumerate}
+
+For example, in backward transfer the invariant formula is the syntax
+of $t\le N\to c(t,h(t;N,K))=1$. The base is a derivation of its
+substitution at zero. The step is a derivation in the context containing
+that formula and the old context shifted by one variable. Instantiate
+the local contract at $h(t+1)$, use the schedule equality, and introduce
+the guard implication. After \texttt{PRA.qfInd}, eliminate the universal
+quantifier at the term $N$ and rewrite $h(N)=K$. This specifies the
+binders, substitutions, and final inference, not merely the shape of
+the desired conclusion.
+
+\clearpage
+\subsection{Induction inventory}
+
+\begin{longtable}{@{}p{0.23\textwidth}p{0.45\textwidth}p{0.25\textwidth}@{}}
+\toprule
+Construction & Finite invariant & Terminal resource\\
+\midrule
+\endhead
+Backward transfer & $t\le N\to c(t,h(t))=1$ & $N$ forward steps and
+$N$ backward steps.\\[3pt]
+Least-neighbor chain & Current point lies in its finite list; accumulated
+rational distance is at most the finite geometric sum. & $s+k+3$ as
+largest observed list index for membership at $k$.\\[3pt]
+Approximate factorization & Monicity and degree; coefficient bounds;
+the exact partial telescoping identity; accumulated error. & $n$
+divisions, each with its specified descent or grid bound.\\[3pt]
+Norm construction & Each matrix column is the specified remainder;
+partial determinant sum has its computed coefficient list. & $m^m$
+candidate permutation words suffice.\\[3pt]
+Norm zero count & Groups partition the input list; removed linear
+factors multiply the current quotient to the original norm. & Input
+list length and polynomial degrees.\\[3pt]
+Subspace fibers & Pivot equations and selected free coordinate;
+the annihilator is nonzero and annihilates each supplied row. & Matrix
+row and column counts.\\
+\bottomrule
+\end{longtable}
+
+The native axiom reports are included verbatim in the validation output.
+The scheduling results use only \texttt{propext} and \texttt{Quot.sound}.
+Pure relational cover composition uses no axioms. The native rational
+triangle proof inherits \texttt{Classical.choice} from \texttt{Std}'s
+rational-order lemmas. This explains why compiling the native rational
+layer is not by itself a certificate of intuitionistic arithmetic
+strength. The object development uses coded rational comparisons and
+the explicit finite proofs instead.

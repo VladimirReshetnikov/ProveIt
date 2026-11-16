@@ -1,0 +1,350 @@
+\section{Automatic norm certificates and sharp finite zero counts}
+\label{sec:norm-certificates}
+
+The earlier embedding packet proves a sharp zero bound for
+$y^2=f(x)$ when $\deg f$ is odd, using
+$A^2-fB^2$. It also gives a general finite-algebra spanning-certificate
+interface. The remaining question is how to \emph{construct} useful
+certificates for wider classes without an unspecified elimination
+algorithm \cite{repo-embedding,repo-siegel}. The present section supplies such a constructor for every
+monic equation in one coordinate, and an automatic nonvanishing proof
+for the coprime superelliptic family. For this family it replaces the
+divisor-based zero-count obligation in the Siegel packet by explicit
+polynomial and matrix arithmetic.
+
+All fields used below have exact, decidable equality and primitive
+recursive arithmetic on finite codes, with their field laws available
+in the object theory. Rational numbers are the principal example. A
+fixed explicitly presented number field works as well once those
+arithmetic contracts have been proved. Arbitrary Cauchy names for real
+or complex coefficients do not provide this interface. Lists of points
+are always finite input data; no set of all points is formed.
+
+\subsection{The determinant constructor for a monic plane equation}
+
+Let $K$ be such a coded field and let
+\[
+ F(X,Y)=Y^m+\sum_{i<m}f_i(X)Y^i,\qquad m\geq1.
+\]
+Every polynomial in $Y$ has a remainder of degree less than $m$ after
+division by $F$, computed by monic division. Write
+$G=\sum_{i<m}A_i(X)Y^i$ for the remainder of the function whose zeros
+are to be counted. For each $j<m$, reduce $GY^j$ modulo $F$ and put
+its coefficient vector in column $j$ of an $m$ by $m$ matrix $M_G(X)$.
+Define
+\[
+                         N_G(X)=\det M_G(X).
+\]
+The matrix and determinant are finite polynomial computations. In
+particular this definition does not presume an algebraic closure,
+factorization, a divisor, or a terminating search for a certificate.
+
+\begin{theorem}[Finite norm zero bound]\label{thm:general-norm}
+If $N_G\ne0$, every finite list of pairwise distinct points
+$(x,y)\in K^2$ satisfying $F(x,y)=G(x,y)=0$ has length at most
+$\deg N_G$. Nonvanishing of the computed polynomial is a finite
+coefficient test. The statement includes singular curves and
+ramified fibers.
+\end{theorem}
+
+\begin{proof}
+First recall the elementary finite root bound: a nonzero polynomial of
+degree $r$ over a field has at most $r$ distinct roots in a supplied
+list. Synthetic division removes $Y-b$ at a listed root $b$. At a
+different listed root $c$, its nonzero value $c-b$ implies that the
+quotient still vanishes. A finite induction removes the product of
+the distinct linear factors, whose degree cannot exceed $r$. This
+is a proof by polynomial operations on the input list.
+
+Group the supplied common zeros by their $x$-coordinates. Fix one
+group with common abscissa $a$ and distinct ordinates
+$b_1,\ldots,b_t$. The preceding root bound, applied to the monic
+polynomial $F(a,Y)$, gives $t\leq m$. Set
+\[
+               e(b)=(1,b,\ldots,b^{m-1}).
+\]
+The definition of $M_G$ and evaluation of the monic-division
+identities give
+\[
+ e(b_\ell)M_G(a)=G(a,b_\ell)e(b_\ell)=0
+                    \qquad(1\leq\ell\leq t).
+\]
+Extend these $t$ rows to a square matrix $U$ by adjoining the
+standard rows with indices $t,t+1,\ldots,m-1$, using zero-based
+column indices. Its upper-left $t$ by $t$ block is the Vandermonde
+matrix on the distinct $b_\ell$, and its lower-left block is zero
+with lower-right block the identity. Thus
+\[
+             \det U=\prod_{1\leq i<j\leq t}(b_j-b_i)\ne0.
+\]
+The Vandermonde identity itself has a finite inductive proof.
+Replace the last ordinate by an indeterminate $T$. The determinant
+has degree at most $t-1$ in $T$ and vanishes at the preceding
+$t-1$ distinct ordinates because two rows then agree. The root
+removal argument already proved above divides out all
+$T-b_i$. Its leading coefficient is the preceding $(t-1)$ by
+$(t-1)$ Vandermonde determinant, by expansion in the last row.
+Induction, starting with the determinant one in size one, proves
+the formula after substitution $T=b_t$.
+
+Every entry in the first $t$ rows of $UM_G(X)$ vanishes at $X=a$.
+Synthetic division therefore removes a factor $X-a$ from each such
+entry. Multilinearity in the rows shows
+\[
+                        (X-a)^t\mid\det(UM_G(X)).
+\]
+Since $\det U$ is a nonzero scalar and
+$\det(UM_G)=\det U\,N_G$, it follows that
+$(X-a)^t\mid N_G$. This step counts the \emph{number of distinct
+points} in the fiber, not merely the number of abscissae. In
+particular a ramified point with $b=0$ causes no division by $b$;
+all divisions in $U^{-1}$, if one chooses to compute it, are by the
+witnessed nonzero differences $b_j-b_i$ and by a nonzero determinant.
+The proof does not need to compute that inverse.
+
+For different abscissae, multiply these divisibilities. Here is an
+explicit cancellation argument that avoids a factorization oracle.
+Suppose $N_G=CQ$ after removing the factors belonging to previous
+abscissae. At a new abscissa $a$ we have $C(a)\ne0$. From
+$(X-a)^t\mid CQ$ and $t>0$, evaluation gives $Q(a)=0$. Write
+$Q=(X-a)Q_1$ by synthetic division and cancel one $X-a$ from the
+two polynomial expressions. Repeat exactly $t$ times. This removes
+the new factor without disturbing the previous ones.
+
+Consequently, if the groups have sizes $t_a$, then
+\[
+               \prod_a(X-a)^{t_a}\mid N_G.
+\]
+The product is monic of degree $\sum_a t_a$, which equals the
+original list length. The assumption $N_G\ne0$ now proves the
+required bound.
+\end{proof}
+
+There is also a fully explicit coarse degree estimate. Suppose all
+nonzero $A_i$ have degree at most $a$ and all nonzero $f_i$ have
+degree at most $c$, where $a,c\geq0$. The multiplication matrix for
+$Y$ has entries of degree at most $c$: its nontrivial last column
+is $(-f_0,\ldots,-f_{m-1})^T$. Therefore
+$M_G=\sum_{i<m}A_iT^i$ has entries of degree at most
+$a+(m-1)c$. Expanding its determinant gives
+\[
+              \deg N_G\leq m\bigl(a+(m-1)c\bigr)
+                       \quad\text{if }N_G\ne0.
+\]
+The nonvanishing check is essential for a general monic equation.
+For example $F=Y^2-X^2$ and $G=Y-X$ give $N_G=0$ and infinitely
+many common rational zeros. The next theorem supplies a structural
+nonvanishing proof for an important uniform class.
+
+\subsection{Coprime superelliptic equations: no nonvanishing oracle}
+
+Fix $m\geq2$ and a nonzero $f\in K[X]$ with positive degree $d$.
+Assume
+\[
+                             \gcd(m,d)=1.
+\]
+For $G=\sum_{i<m}A_i(X)Y^i\ne0$, define its weighted degree by
+\[
+ W(G)=\max_{\substack{i<m\\A_i\ne0}}
+                   \bigl(m\deg A_i+d i\bigr).
+\]
+The maximum has a unique maximizing index $k$. Indeed equality of
+two displayed weights implies $m\mid d(i-j)$, hence $m\mid i-j$,
+and $0\leq i,j<m$ then forces $i=j$. Coprime cancellation here can
+be derived from the integer Bezout identity produced by bounded
+Euclidean arithmetic.
+
+\begin{theorem}[Exact degree of the superelliptic norm]
+\label{thm:norm-degree}
+For $F=Y^m-f(X)$, the determinant constructor above gives
+\[
+                       N_G\ne0,\qquad \deg N_G=W(G).
+\]
+If $k$ is the unique maximizing index, its leading coefficient is
+\[
+ \operatorname{sgn}(\sigma_k)
+       \operatorname{lc}(A_k)^m\operatorname{lc}(f)^k,
+ \qquad \sigma_k(j)=(j+k)\bmod m.
+\]
+\end{theorem}
+
+\begin{proof}
+Use row and column indices $r,j\in\{0,\ldots,m-1\}$. There is
+exactly one $i$ in this range with $r\equiv i+j\pmod m$.
+Writing $i+j=r+mq$, we have $q\in\{0,1\}$, and reduction of
+$Y^{i+j}$ gives the particularly simple matrix entry
+\[
+                       (M_G)_{rj}=A_i f^q.
+\]
+Whenever this entry is nonzero,
+\[
+       m\deg (M_G)_{rj}+d r-d j
+            =m\deg A_i+d i\leq W(G).
+\]
+Consider a nonzero determinant term associated to a permutation
+$\sigma$. Sum this equality over its $m$ columns. The row and
+column correction terms cancel because $\sigma$ permutes the
+indices, so
+\[
+ m\deg\left(\prod_{j<m}(M_G)_{\sigma(j),j}\right)
+       =\sum_{j<m}\bigl(m\deg A_{i_j}+d i_j\bigr)
+       \leq mW(G).
+\]
+Equality is possible only if every $i_j=k$, by uniqueness of the
+maximizing index. Exactly one permutation does this, namely
+$\sigma_k(j)=(j+k)\bmod m$. Among these entries precisely $k$
+wrap around the end of the index range. Their product is therefore
+$A_k^m f^k$, of degree $m\deg A_k+dk=W(G)$.
+
+Every other nonzero determinant term has strictly smaller degree.
+Thus the top coefficient of the unique term cannot cancel. Its
+value is the nonzero coefficient displayed in the statement, which
+proves both assertions. This is a direct determinant computation;
+no irreducibility theorem, valuation extension, or algebraic closure
+is used.
+\end{proof}
+
+\begin{corollary}[Sharp weighted zero count]\label{cor:norm-zeros}
+Every finite list of pairwise distinct points of $y^m=f(x)$ on
+which $G(x,y)=0$ has length at most $W(G)$.
+\end{corollary}
+\begin{proof}
+Apply Theorems~\ref{thm:general-norm} and~\ref{thm:norm-degree}.
+\end{proof}
+
+The degree hypothesis genuinely matters to the automatic proof.
+When $m=d=2$, $f=X^2$ and $G=Y-X$, both summands have weight two;
+their norm cancels identically. The general determinant theorem
+remains valid whenever its computed norm is nonzero, even when
+$\gcd(m,d)>1$.
+
+The weighted bound is attained over $\Q$. Choose distinct rational
+numbers $a_1,\ldots,a_d$ and put
+\[
+           f(X)=1+\prod_{j=1}^d(X-a_j),\qquad G=Y-1.
+\]
+For $\gcd(m,d)=1$, the common zeros are exactly
+$(a_1,1),\ldots,(a_d,1)$, and $W(G)=d$. For example $m=3,d=4$
+and $(a_j)=(0,1,2,4)$ give
+$f=X^4-7X^3+14X^2-8X+1$. This example illustrates sharpness of
+the arithmetic zero bound; smoothness is neither required nor
+claimed by the theorem.
+
+\subsection{A uniform proper-subspace fiber theorem}
+
+For any $L\in\N$, let
+\[
+ \mathcal B_L=\{X^jY^i:0\leq i<m,\ j\geq0,\ mj+di\leq L\},
+ \qquad n_L=|\mathcal B_L|.
+\]
+The constant monomial belongs to this list, so $n_L\geq1$.
+Enumerate its entries lexicographically, and define
+$\Phi_L(x,y)\in K^{n_L}$ by evaluating them in that order.
+The list is obtained by the loops $i<m$ and $j\leq L$ followed by
+a numerical test; no symbolic basis search occurs.
+
+\begin{corollary}[Subspace fibers for superelliptic curves]
+\label{cor:norm-subspace}
+For every proper subspace $V\subsetneq K^{n_L}$ supplied by a
+finite matrix of spanning rows of rank less than $n_L$, every
+finite list of distinct points on $y^m=f(x)$ whose evaluation
+vectors lie in $V$ has length at most $L$.
+\end{corollary}
+\begin{proof}
+Bounded Gaussian elimination produces a nonzero annihilating
+linear functional: choose a free column, assign its unknown one,
+set the other free unknowns to zero, and solve the pivot equations
+backwards. Its evaluation on $\Phi_L$ is a nonzero canonical
+polynomial $G=\sum_{i<m}A_i(X)Y^i$ with $W(G)\leq L$.
+Every point under consideration is a zero of $G$.
+Corollary~\ref{cor:norm-zeros} gives the result.
+\end{proof}
+
+If a separately proved finite-tuple theorem covers the evaluation
+vectors of each supplied list of points in a decidable class $S$
+by at most $M$ such proper subspaces, then every distinct list
+from $S$ has length at most $ML$. Assign each point to the first
+covering subspace by bounded exact membership search; each of the
+at most $M$ groups has size at most $L$. This last finite counting
+step is the existing Siegel interface. The new contribution is an
+automatic, sharp proof of its geometric fiber contract for all
+coprime exponents $m,d$, as well as a computable norm test for a
+general monic plane equation.
+
+This result does not construct the quantitative approximation
+cover, a complete list of rational or integral points, or a global
+height cutoff. It therefore does not prove general Siegel or
+Faltings. Nor does it impose smoothness or genus hypotheses that
+would be needed for those larger theorems. It resolves the stated
+finite zero-count dependency on a substantially wider class than
+the previous odd-degree hyperelliptic case.
+
+\subsection{Arithmetic compilation and Lean obligations}
+
+For rational coefficients, use canonical signed numerators and
+positive denominators, coefficient lists for univariate polynomials,
+and lists of such lists for $G$. Monic reduction runs for the
+input $Y$-degree. A companion matrix, finite matrix powers, and a
+determinant expansion construct the norm. Permutations can be
+enumerated by scanning all length-$m$ lists of indices less than
+$m$ and retaining those with no repeated entries: the candidate
+count is $m^m$. Thus even the deliberately inefficient determinant
+algorithm is one fixed primitive recursive program, uniformly in
+$m$. Euclidean and Gaussian elimination loops are bounded by
+their input lengths or matrix dimensions. Exact coefficient size
+may grow, but integer and rational arithmetic on codes remains
+primitive recursive.
+
+The human proof translates by quantifier-free loop invariants.
+Monic division tracks the coefficient identity
+$H=QF+R$ and the degree bound on its current remainder. Matrix
+construction tracks, for every bounded column index, the
+coefficient identity for $GY^j$ modulo $F$. The determinant
+degree argument uses finite products, bounded permutation lists,
+and a Boolean test for the unique cyclic shift. Grouping points
+tracks that the accumulated groups partition the input list;
+root removal tracks $N_G=CQ$ and the accumulated degree. All
+coefficient equalities, bounded membership assertions, and
+nonzero tests are Boolean folds on these finite data. The field
+laws and the arbitrary supplied list remain external parameters
+of these inductions. No induction formula asserts a universal
+claim about all points of the curve.
+
+The file \path{lean/NormTargets.lean} gives executable
+coefficient-list definitions, a general monic-plane companion matrix,
+monic reduction, the superelliptic matrix, determinants, weighted
+degrees, finite-point checks, and named propositions for the main
+theorems. It also defines weighted monomial evaluation vectors, row-span
+witnesses, and nonzero annihilator certificates for the subspace result.
+These propositions are
+\emph{unproved targets}; compiling their definitions proves none
+of their mathematical content. A complete formalization should
+proceed in the following dependency order:
+\begin{enumerate}
+\item Prove normalization, convolution, evaluation, degree of
+  nonzero products, and synthetic division for the chosen codes.
+\item Prove the monic-reduction identities and the evaluation-row
+  equation for the multiplication matrix.
+\item Prove determinant multiplicativity, row multilinearity,
+  the Vandermonde identity, and finite root removal; assemble
+  Theorem~\ref{thm:general-norm}.
+\item Prove the unique-weight lemma by Bezout cancellation,
+  the entry weight equality, and the unique cyclic-shift term;
+  assemble Theorem~\ref{thm:norm-degree}.
+\item Prove the finite Gaussian annihilator construction and
+  use the existing finite-cover counting argument.
+\item Reify the fixed arithmetic programs and each displayed
+  bounded invariant in the repository's primitive-recursive
+  syntax, and build the corresponding embedded
+  \texttt{Prf PRAAx} derivations. Native Lean matrix theorems alone
+  are not this final object-theory step.
+\end{enumerate}
+
+The reference program \path{code/superelliptic_norm.py}
+constructs these matrices and determinants with exact rational
+polynomial arithmetic. It checks leading degrees against the
+formula, determinant evaluation identities, the hyperelliptic
+specialization, a sharp cubic-cover example, and repeated factors
+coming from two-point and ramified fibers. These are finite
+implementation checks supporting the definitions, separate from
+the all-input human proofs above.

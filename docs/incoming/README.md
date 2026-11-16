@@ -224,7 +224,9 @@ the same way, under `foundations/`, and then deleted. All 45 of its members are 
 `ipra_coherent_methods_2026-11-15.zip` was placed the same way, under `foundations/`, and then
 deleted. All 55 of its members are placed. Its `lean/upstream/` copies of three ConciseIPRA
 sources each differ from the repository file by one trailing blank line, so they are not
-repository copies.
+repository copies. `ipra_finite_demand.zip` was placed the same way, under `foundations/`, and
+then deleted. Its four `dependencies/FTA_iPRA/` files are byte-identical to
+`algebra/FTA_iPRA` and are not placed.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

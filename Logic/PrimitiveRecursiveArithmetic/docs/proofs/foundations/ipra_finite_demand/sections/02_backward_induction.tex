@@ -1,0 +1,435 @@
+\section{Backward demands replace induction on completed objects}
+\label{sec:backward-demands}
+
+A recurring obstruction in an arithmetic treatment of analysis is an
+induction hypothesis of the form ``the object at stage $n$ is valid at every
+precision.''  For example, validity of a real name is an unbounded universal
+statement.  The same issue occurs when one proves all field laws at every
+stage of a tower of algebraic extensions.  Quantifier-free induction does
+not permit these statements as induction formulas.
+
+The existing packets already provide bounded Booleanization, finite loops,
+and composition of observation contracts
+\cite{repo-contracts,repo-embedding}.  Moreover, the Platonic-solids packet
+uses a backward sequence of coefficient budgets for its field-tower
+argument \cite{repo-platonic}.  The contribution here is a single explicit
+rule covering nonstationary and nonmonotone demands, a construction of
+parameter-changing recursions, and a checked Lean realization of their
+finite scheduling arguments.  This is a generalization and reusable
+formalization of that method, not a claim that backward budgeting itself
+is new.
+
+\subsection{The exact finite transfer theorem}
+
+All functions in this subsection are fixed primitive recursive functions;
+the notation $\vec a$ denotes their ordinary numerical parameters.  Let
+$C(n,k,\vec a)$ be a bounded formula: it describes a finite observation of
+the object at stage $n$, with demand $k$.  It can, for example, assert all
+the required inequalities with indices at most $k$.  It is not required
+to be monotone in $k$.  Let $D(n,k,\vec a)$ be a demand transformer.  A local
+step contract has the shape
+\begin{equation}\label{eq:backward-local-step}
+ C(n,D(n,k,\vec a),\vec a)
+       \ \longrightarrow\ C(n+1,k,\vec a).
+\end{equation}
+The point of this contract is that its premise asks for one specified
+finite observation, instead of asking that the predecessor object satisfy
+its specification at every precision.
+
+Fix a terminal stage $N$ and a terminal demand $K$.  Define the backward
+array by ordinary primitive recursion:
+\begin{align}
+ b(0;N,K,\vec a)&=K,\nonumber\\
+ b(j+1;N,K,\vec a)
+   &=D\bigl(N\mathbin{\dotminus}(j+1),b(j;N,K,\vec a),\vec a\bigr),
+   \label{eq:backward-array}\\
+ h(t;N,K,\vec a)&=b(N\mathbin{\dotminus}t;N,K,\vec a).
+   \label{eq:backward-horizon}
+\end{align}
+Here $\dotminus$ is truncated subtraction.  The values with $j>N$ or
+$t>N$ merely make the displayed functions total.  The proof uses only
+the intended range.  Direct substitution gives
+\begin{equation}\label{eq:backward-schedule-laws}
+ h(N)=K,\qquad h(t)=D(t,h(t+1),\vec a)\quad(t<N).
+\end{equation}
+For the second equation use
+$N\dotminus t=(N\dotminus(t+1))+1$ and
+$N\dotminus((N\dotminus(t+1))+1)=t$, valid when $t<N$.
+These are elementary numerical equations proved by quantifier-free
+induction; no backwards induction principle is being added.
+
+\begin{theorem}[Backward-observation transfer]
+\label{thm:backward-transfer}
+Let $\Gamma(\vec a,N,K)$ be a finite context in which the stage variable
+does not occur freely.  Suppose that \ipra\ derives
+\[
+ \Gamma\vdash C(0,h(0;N,K,\vec a),\vec a)
+\]
+and, with $n,r$ free,
+\[
+ \Gamma,\ n<N,\ C(n,D(n,r,\vec a),\vec a)
+       \vdash C(n+1,r,\vec a).
+\]
+Then \ipra\ derives
+\[
+                 \Gamma\vdash C(N,K,\vec a).
+\]
+Only the single initial observation at demand $h(0)$ is required.  Neither
+$D$ nor $C$ needs a monotonicity hypothesis.
+\end{theorem}
+
+\begin{proof}
+Fix $\vec a,N,K$ throughout the argument.  Booleanize the fixed bounded
+formula $C$: let $c(n,k,\vec a)$ be its primitive recursive characteristic
+function, with an \ipra\ derivation of
+$C(n,k,\vec a)\leftrightarrow c(n,k,\vec a)=1$.
+Use the induction formula
+\begin{equation}\label{eq:backward-invariant}
+ J(t):\quad
+ t\le N\ \longrightarrow\ c(t,h(t;N,K,\vec a),\vec a)=1.
+\end{equation}
+The numerical comparison $t\le N$ is also a primitive recursive test, so
+$J$ is quantifier-free in the language of \ipra.
+
+The base follows from the supplied initial derivation and $0\le N$.
+For the successor step assume $J(t)$ and $t+1\le N$.  Then $t<N$ and
+$t\le N$, hence the induction hypothesis gives $C(t,h(t),\vec a)$.
+By \eqref{eq:backward-schedule-laws}, this is exactly
+$C(t,D(t,h(t+1),\vec a),\vec a)$.  Instantiate the supplied local step at
+$n=t$ and $r=h(t+1)$.  It gives $C(t+1,h(t+1),\vec a)$, and
+Booleanization yields the consequent of $J(t+1)$.  This argument proves
+the implication defining $J(t+1)$; it asserts nothing about out-of-range
+stages.
+
+Quantifier-free induction proves $\forall t\,J(t)$.  Instantiate at $N$,
+use $h(N)=K$, and convert the Boolean equation back to $C(N,K,\vec a)$.
+The context $\Gamma$ remains fixed during induction.  Its formulas need
+not themselves be decidable or bounded.
+\end{proof}
+
+\begin{corollary}[Observational induction]
+\label{cor:observational-induction}
+Suppose the context $\Gamma(\vec a)$ is independent of $N,K$, \ipra\
+derives $\Gamma\vdash C(0,k,\vec a)$ for arbitrary $k$, and it derives
+\eqref{eq:backward-local-step} under $\Gamma$.  Then it derives
+\[
+       \Gamma\vdash\forall n\,\forall k\ C(n,k,\vec a).
+\]
+\end{corollary}
+
+\begin{proof}
+Fix $N,K$, substitute $h(0;N,K,\vec a)$ for $k$ in the base derivation,
+and apply Theorem~\ref{thm:backward-transfer}.  Universal introduction over
+$N,K$ gives the result.  The induction formula was
+\eqref{eq:backward-invariant}; it was not $\forall k\,C(t,k,\vec a)$.
+\end{proof}
+
+For a constant precision loss $c$, namely $D(n,k)=k+c$, the schedule is
+especially simple:
+\begin{equation}\label{eq:constant-loss-budget}
+                  h(t)=K+c(N\dotminus t).
+\end{equation}
+If $D(n,k)=k+d(n)$, then $h(0)=K+\sum_{n<N}d(n)$.  A nonlinear $D$ is
+handled by the same primitive recursion \eqref{eq:backward-array}; no
+closed formula or elementary growth bound is needed.  This remains a
+fixed primitive recursive definition uniformly in the numerical inputs
+$N,K,\vec a$.  It is not a universal evaluator for variable program syntax.
+
+\subsection{Parameter-changing recursion without hidden strength}
+
+Even defining an iterated represented object can conceal a difficulty.
+The equations
+\begin{equation}\label{eq:parameter-changing-recursion}
+ x_0(k)=b_0(k),\qquad
+ x_{n+1}(k)=F(n,k,x_n(D(n,k)))
+\end{equation}
+change the parameter $k$ in the recursive call.  Therefore one should not
+simply declare that they are an instance of the primitive-recursion
+constructor with $k$ held fixed.
+
+\begin{theorem}[Compilation of a predetermined demand recurrence]
+\label{thm:parameter-changing-recursion}
+For fixed primitive recursive $b_0,D,F$, there is a fixed primitive
+recursive function $X(N,K)$ satisfying
+\eqref{eq:parameter-changing-recursion}.  Its equations have \ipra\ proofs.
+\end{theorem}
+
+\begin{proof}
+Compute the schedule $h(t;N,K)$ by
+\eqref{eq:backward-array}--\eqref{eq:backward-horizon}.  Then compute
+\[
+ v_0=b_0(h(0)),\qquad
+ v_{t+1}=F(t,h(t+1),v_t),\qquad X(N,K)=v_N.
+\]
+This is a composition of two ordinary primitive recursions, with $N,K$
+as fixed parameters in the second one.  All data are natural-number codes.
+
+For $N=0$, $h(0;0,K)=K$, so $X(0,K)=b_0(K)$.  For the successor
+equation compare the schedule for terminal data $(N+1,K)$ with that for
+$(N,D(N,K))$.  Their demands at time $N$ are both $D(N,K)$.  The same
+backward recurrence therefore gives identical demands at every time
+$t\le N$.  More explicitly, quantifier-free induction on $j$ proves
+\[
+ b(j+1;N+1,K)=b(j;N,D(N,K));
+\]
+the equality of the relevant truncated subtractions supplies its step.
+Substitution gives equality of the two schedules at $t\le N$.
+Their initial forward values agree, and quantifier-free induction on
+$t\le N$ gives equality of their forward values.  The last step of the
+larger computation is consequently
+\[
+       X(N+1,K)=F(N,K,X(N,D(N,K))).
+\]
+Each induction here compares numerical terms; it does not quantify over
+functions or assume an unbounded family of already constructed objects.
+\end{proof}
+
+The predetermined nature of $D$ matters.  The theorem does not license
+arbitrary nested recursion in which a future demand is determined by a
+not-yet-computed recursive output.  Such a definition needs a separate
+primitive recursive construction or bound.  A bounded trace can support
+adaptive queries, as in the earlier finite-contract frameworks, but
+termination of an unbounded query process is not supplied by this theorem.
+
+\subsection{Variable finite sets of demands}
+
+A local mathematical argument often needs several predecessor facts.
+Let $A(n,j,\vec a)$ be bounded, let $m(n,j,\vec a)$ be the number of
+queries, and let $q(n,j,r,\vec a)$ be the $r$th query.  Suppose the local
+derivation is
+\begin{equation}\label{eq:multiple-demand-step}
+ \left(\forall r<m(n,j,\vec a)\;
+ A(n,q(n,j,r,\vec a),\vec a)\right)
+       \longrightarrow A(n+1,j,\vec a).
+\end{equation}
+Define
+\begin{align}
+ C(n,H,\vec a)&:\Longleftrightarrow
+       \forall j\le H\ A(n,j,\vec a),\label{eq:prefix-observations}\\
+ D(n,H,\vec a)&=
+       \max_{j\le H}\ \max_{r<m(n,j,\vec a)}q(n,j,r,\vec a).
+       \label{eq:multiple-demand-envelope}
+\end{align}
+An empty maximum is zero.  Finite maxima are primitive recursive, even
+when the number of queries varies with the input and none of their indices
+is monotone.
+
+\begin{corollary}[Finite-query observational induction]
+\label{cor:finite-query-induction}
+Given \ipra\ derivations of $A(0,j,\vec a)$ and
+\eqref{eq:multiple-demand-step} under a fixed context, there is an \ipra\
+derivation of $\forall n\,\forall j\,A(n,j,\vec a)$ under that context.
+\end{corollary}
+
+\begin{proof}
+For $j\le H$ and $r<m(n,j,\vec a)$, the defining maximum gives
+$q(n,j,r,\vec a)\le D(n,H,\vec a)$.  Thus $C(n,D(n,H,\vec a),\vec a)$
+supplies every premise in \eqref{eq:multiple-demand-step}.  It yields
+$A(n+1,j,\vec a)$ for each $j\le H$, hence $C(n+1,H,\vec a)$.
+Apply Corollary~\ref{cor:observational-induction} to the prefix predicate.
+
+There are two bounded conjunctions here, not a hidden universal invariant.
+Concretely, if $a(n,j,\vec a)$ Booleanizes $A$, then $C(n,H,\vec a)$ is
+Booleanized by the product of the $H+1$ Boolean values $a(n,j,\vec a)$.
+The query premise is the analogous product over $r<m(n,j,\vec a)$.
+Their prefix-fold equations and the finite-maximum inequalities have
+quantifier-free induction proofs.  The proof remains within \ipra\ when
+$H$ and the query counts are input-dependent.
+\end{proof}
+
+Multidimensional observations require no new logical rule.  Code a tuple
+of indices by a fixed primitive recursive pairing function, and put
+domain and range checks into its bounded predicate.  A query can carry a
+tag naming which law, coordinate, or estimate is requested.  If a local
+step uses several earlier stages, replace \eqref{eq:prefix-observations}
+by the bounded history predicate
+\[
+             C(n,H):\Longleftrightarrow
+                  \forall i\le n\;\forall j\le H\ A(i,j).
+\]
+Use a demand envelope at least $H$ and at least every requested query
+index, and require each requested stage to be at most $n$.  Old history
+entries persist because the envelope is at least $H$; the local step
+establishes the new entries.  This proves the same transfer rule for a
+finite directed dependency graph ordered by its stage index.  Cyclic
+dependencies are not justified by this argument.
+
+\subsection{Worked application: nonlinear iteration of a real name}
+\label{subsec:nonlinear-name-iteration}
+
+This example exhibits the computational content of the rule.  It avoids
+both an induction on equality of real numbers and the assumption that
+an arbitrary nested approximation program is primitive recursive.
+
+Fix a rational $a$ with $0\le a\le4$ and a fixed primitive recursive
+rational family $u(k)$.  Suppose its regularity observations are
+\[
+ \operatorname{Obs}_u(H):\Longleftrightarrow
+  \forall i,j\le H\quad
+       |u(i)-u(j)|\le2^{-i}+2^{-j},
+\]
+including positivity checks for all denominators used.  Put
+\[
+ p(r)=\min(1,\max(0,r)),\qquad T_a(r)=ar(1-r),
+\]
+and define the output family directly by the finite loop
+\begin{equation}\label{eq:nonlinear-name-definition}
+                v(n,k)=T_a^{\,n}\bigl(p(u(k+2n))\bigr).
+\end{equation}
+For each input $n,k$, this evaluates $u$ once and performs $n$ exact
+rational updates.  Therefore it is a fixed primitive recursive family,
+uniformly in $n,k,a$ and the numerical parameters of the fixed evaluator
+$u$.  Rational arithmetic may be implemented by signed numerators and
+positive denominators; reduction to lowest terms is unnecessary.
+
+Three rational inequalities provide all local mathematics.  First,
+$p$ takes values in $[0,1]$ and is nonexpansive:
+$|p(r)-p(s)|\le|r-s|$.  To see the latter, assume $r\le s$ and split at
+$0,1$.  On the middle interval $p$ is the identity; on either outer
+interval it is constant.  Crossing an endpoint removes a nonnegative
+part of the distance, so in every case
+$0\le p(s)-p(r)\le s-r$.
+Second, $T_a$ maps $[0,1]$ into itself, because
+\[
+       0\le r(1-r)\le\frac14
+       \quad\text{follows from}\quad (2r-1)^2\ge0.
+\]
+Third, for $r,s\in[0,1]$,
+\begin{equation}\label{eq:logistic-lipschitz}
+ |T_a(r)-T_a(s)|
+    =a|r-s|\,|1-r-s|\le4|r-s|.
+\end{equation}
+All cases and inequalities concern rational numbers and can be checked
+after clearing positive denominators.
+
+The finite iterate definition also gives the exact identity
+\begin{equation}\label{eq:logistic-parameter-shift}
+                     v(n+1,k)=T_a(v(n,k+2)).
+\end{equation}
+Indeed, both sides start from $p(u(k+2n+2))$ and apply the same map
+$n+1$ times.  This identity can equivalently be obtained by
+Theorem~\ref{thm:parameter-changing-recursion} with demand $D(n,k)=k+2$.
+
+\begin{theorem}[Finite validity of the nonlinear iterates]
+\label{thm:nonlinear-name-validity}
+From $0\le a\le4$ and $\operatorname{Obs}_u(K+2N)$, \ipra\ proves
+\[
+ \begin{gathered}
+      \forall k\le K\quad 0\le v(N,k)\le1,\\
+      \forall k,\ell\le K\quad
+       |v(N,k)-v(N,\ell)|\le2^{-k}+2^{-\ell}.
+ \end{gathered}
+\]
+In particular, a globally regular input family gives a globally regular
+output family at every numerical stage $N$.
+\end{theorem}
+
+\begin{proof}
+Let $C(n,H)$ be the conjunction of the displayed range and regularity
+assertions with $n,H$ in place of $N,K$.  It is bounded.  At $n=0$,
+$v(0,k)=p(u(k))$; the range assertion and nonexpansiveness of $p$ give
+$C(0,K+2N)$ from the input observation.
+
+Assume $C(n,H+2)$.  For $k\le H$, the input $v(n,k+2)$ lies in $[0,1]$,
+so \eqref{eq:logistic-parameter-shift} gives the next range assertion.
+For $k,\ell\le H$, the same identity and
+\eqref{eq:logistic-lipschitz} give
+\[
+ \begin{split}
+ |v(n+1,k)-v(n+1,\ell)|
+ &\le4|v(n,k+2)-v(n,\ell+2)|\\
+ &\le4\bigl(2^{-(k+2)}+2^{-(\ell+2)}\bigr)\\
+ &=2^{-k}+2^{-\ell}.
+ \end{split}
+\]
+Thus $C(n,H+2)\to C(n+1,H)$ is the local finite contract.
+The backward schedule is $h(t)=K+2(N-t)$ for $t\le N$.
+Apply Theorem~\ref{thm:backward-transfer}.  Its induction formula is the
+Boolean equation for $C(t,K+2(N-t))$, guarded by $t\le N$.
+Only after this finite argument is complete do we universally quantify
+over $N,K$ when the input is globally regular.
+\end{proof}
+
+In the ordinary external interpretation of regular names, if $u$ names
+$x$, then $v(N,\cdot)$ names $T_a^N(p(x))$.  The same Lipschitz estimate
+gives an error at most
+$4^N2^{-(k+2N)}=2^{-k}$ at precision $k$.  When $x\in[0,1]$, this is
+the usual nonlinear orbit $T_a^N(x)$.  No completed real-number sort or
+completeness axiom occurs in the internal theorem.  Nor does the theorem
+promise a fixed input precision adequate for arbitrarily many iterations:
+the explicit cost is two additional bits per iteration.
+
+\subsection{Lean status and the exact object-theory endpoint}
+\label{subsec:backward-lean-status}
+
+The file \path{lean/BackwardDemand.lean} imports only \texttt{Std} and
+contains proved declarations for the following items:
+\begin{itemize}
+\item \texttt{horizon\_step} and \texttt{horizon\_coherence}: the schedule
+  equations and their compatibility when one final step is added;
+\item \texttt{compiledRecursion\_succ}: the successor equation of the
+  two-loop implementation of parameter-changing recursion;
+\item \texttt{transfer} and \texttt{observational\_induction}: finite
+  transfer and subsequent universal closure;
+\item \texttt{finite\_query\_induction}: reduction of a variable finite
+  family of predecessor queries to a prefix maximum;
+\item \texttt{constant\_shift\_transfer}: the explicit accumulated budget
+  $K+Nc$.
+\end{itemize}
+All these declarations compiled with Lean 4.32.0.  Their axiom audit lists
+only \texttt{propext} and \texttt{Quot.sound}; it lists neither
+\texttt{sorryAx} nor \texttt{Classical.choice}.  This checks the native
+Lean scheduling arguments.  The Lean predicates in these declarations
+are arbitrary \texttt{Prop}-valued functions; Lean does not infer from
+their types that they are primitive recursive or bounded.
+
+The corresponding object-theory target is the repository judgment
+$\texttt{Prf PRAAx}\;\Gamma\;\varphi$ \cite{repo-core}.
+A complete formalization has the following concrete steps.
+\begin{enumerate}
+\item Supply fixed \texttt{PR} syntax for $D$, the test Booleanizing $C$,
+  truncated subtraction, and the two recursions.  The recursion argument
+  of \texttt{PR.prec} comes first; use projections and composition to put
+  $N,K,\vec a$ in the parameter slots.  The formulas
+  \eqref{eq:backward-array}--\eqref{eq:backward-horizon} are the complete
+  numerical definitions needed for this step.
+\item Prove the subtraction identities and
+  \eqref{eq:backward-schedule-laws} as object equalities, using
+  \texttt{PRA.precZero}, \texttt{PRA.precSucc}, and equality congruence.
+  The schedule-coherence proof is another quantifier-free equality
+  induction.  No evaluator over arbitrary \texttt{PR} syntax is required.
+\item Supply the actual object derivations of bounded Booleanization and
+  the application's base and local-step contracts.  For finite queries,
+  use the explicit Boolean products in
+  Corollary~\ref{cor:finite-query-induction} and the primitive recursive
+  prefix maximum in \eqref{eq:multiple-demand-envelope}.
+\item Form the syntax of \eqref{eq:backward-invariant}.  Its base has type
+  $\Gamma\vdash\varphi[0/t]$.  Its step has type
+  $\varphi::\operatorname{shift}(\Gamma)\vdash\varphi[S(t)/t]$.
+  Use substitution, \texttt{Prf.eqSubst1}, and the supplied local contract
+  to construct this step.  These shifted contexts are necessary to avoid
+  capturing the arbitrary endpoint parameters.
+\item Apply \texttt{PRA.qfInd} to that quantifier-free formula, then apply
+  universal elimination at the term $N$.  Rewrite $h(N)=K$ and use the
+  reverse Booleanization implication.  Universal introduction yields
+  the corollary only when its variables are absent from the fixed context.
+\item For the nonlinear application, introduce signed-rational code
+  operations, clipping, and exact iteration; prove the three displayed
+  rational inequalities and the parameter-shift identity.  Instantiate
+  the preceding derivation transformer with their bounded tests.
+\end{enumerate}
+The native Lean file completes the scheduling proofs, including the
+nonmonotone and variable-query cases.  The PR syntax compiler, general
+Booleanization compiler, and the final object derivations of the nonlinear
+example remain explicit formalization tasks.  A semantic theorem proved
+with native Lean induction is not being advertised as an already
+constructed \ipra\ proof object.
+
+Finally, the rule is intentionally sufficient rather than an unrestricted
+proof-extraction principle.  A local derivation and a fixed PR demand must
+be supplied.  Finite consistency of a table does not prove global validity
+of a proposed infinite object.  A loop that repeatedly asks whether a
+represented real is nonzero has no guaranteed terminating demand merely
+because every finite query is legitimate.  The diagonal obstruction to a
+universal unclocked PR evaluator also remains intact
+\cite{repo-contracts,repo-embedding}.
