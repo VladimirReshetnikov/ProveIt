@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives on 14 and
-15 November 2026: 33 to `docs/drafts`, and 17 to
+15 November 2026: 33 to `docs/drafts`, and 18 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -61,7 +61,7 @@ manifests and build logs.
 
 ## Packets
 
-The 50 archives hold 1,153 members: 1,072 placed here, 50 ignored, 13 in the bundled copy of
+The 51 archives hold 1,159 members: 1,078 placed here, 50 ignored, 13 in the bundled copy of
 a sibling packet, 1 nested copy of a sibling archive and 17 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -136,6 +136,14 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | [`pell_ipra_2026-11-15`](diophantine-number-theory/pell_ipra_2026-11-15/) | `b5a3ad0377` 2026-11-15 | `pell_ipra` | Pell equations for every nonsquare D ≥ 2, with an audit of their algorithms and induction invariants in iPRA. | 18 | 1 |
 | [`siegel_ipra`](diophantine-number-theory/siegel_ipra/) | *not committed* 2026-11-15 | `siegel_ipra` | Siegel's theorem on integral points: it says it does not prove the general theorem in iPRA. It proves a complete constructive Runge case with explicit height bounds and enumeration, the integral points of y² = x²ᵐ + x + 1 and of y² = x⁴ + ax² + b, and the logical link between a uniform iPRA proof and a height bound. It states that its native Lean results compile. | 32 | 1 |
 | [`transcendence_ipra`](diophantine-number-theory/transcendence_ipra/) | `c5093c20b5` 2026-11-14 | `transcendence_ipra` | Transcendence of e and π as explicit apartness bounds for nonzero integer polynomials. | 18 | 1 |
+
+### Foundations
+
+[`foundations/`](foundations/): Methods shared across areas: search, certificates and quantitative names in iPRA.
+
+| Directory | Arrival | Wrapper in the archive | What the packet states | P | O |
+|---|---|---|---|---:|---:|
+| [`ipra_framework_2026-11-15`](foundations/ipra_framework_2026-11-15/) | *not committed* 2026-11-15 | `ipra_framework` | A cross-domain certificate-and-modulus framework for the packets here: bounded primitive recursive search and descent, certificate composition, arithmetic of quantitative real names and apartness-conditioned inverses. It says it is not a verified solution of the other packets. Its Lean files have not been typechecked. | 6 | 0 |
 
 ### Geometry
 
