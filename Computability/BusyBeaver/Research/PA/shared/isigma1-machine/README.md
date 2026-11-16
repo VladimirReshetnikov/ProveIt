@@ -34,12 +34,29 @@ the finite transition table gives the actual step on model-valued tape
 halves. `scan` uses the corresponding self-loop to execute a whole run of
 identical bits, in either direction, including at nonstandard lengths.
 
+[`ConPAMachineCompressedNormalization.lean`](ConPAMachineCompressedNormalization.lean)
+turns a compressed source contract into a positive literal execution segment.
+It takes the actual row correspondence and the arithmetic realizations of
+register operations as hypotheses. [`ConPAMachineSourceSimulation.lean`](ConPAMachineSourceSimulation.lean)
+uses such segments to synchronize a definable source run with an absorbing
+literal machine halt at arbitrary model-valued clocks.
+
 [`ConPAMachineStutter.lean`](ConPAMachineStutter.lean) compares halting
 for two tables under a `Σ₁` configuration relation. The proof allows
 each step to be matched by a positive finite sequence and uses persistence
 of the variant halt. [`ConPAISigma1Relative.lean`](ConPAISigma1Relative.lean)
 transfers an all-model comparison to an equivalence of nonhalting sentences
 inside iPRA.
+
+For a staged replay of the execution modules and the
+[PA194 controller interface](../../pa194/ipra/variants/PA194VariantController.lean),
+pass the outputs of the [primary](../../pa194/ipra/native-endpoint/README.md)
+and [PA194B](../../pa194/ipra/variants/pa194b/README.md) checks.
+
+```sh
+bash Computability/BusyBeaver/Research/PA/shared/isigma1-machine/check-execution.sh \
+  "$literal" "$shared" /dev/shm/pa194-execution-replay
+```
 
 ## `ConPAMachineEndpoint.lean`
 
