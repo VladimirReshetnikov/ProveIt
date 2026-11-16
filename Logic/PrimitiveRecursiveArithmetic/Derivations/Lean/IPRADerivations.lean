@@ -18,14 +18,17 @@ import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Analysis.Chebyshev
 import IPRADerivations.Algebra.PolynomialFormulas
 import IPRADerivations.Algebra.TrisectionCubic
+import IPRADerivations.DiophantineNumberTheory.Hurwitz
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
 import IPRADerivations.DiophantineNumberTheory.Recurrences
 import IPRADerivations.DiophantineNumberTheory.Siegel
 import IPRADerivations.Foundations.QuantitativeIdentities
+import IPRADerivations.Foundations.Termination
 import IPRADerivations.Geometry.EulerRodrigues
 import IPRADerivations.Geometry.Morley
 import IPRADerivations.Geometry.PlatonicSolids
 import IPRADerivations.Geometry.Projective
 import IPRADerivations.Geometry.SphericalTrigonometry
 import IPRADerivations.Geometry.TriangleFormulas
+import IPRADerivations.Topology.Sperner
