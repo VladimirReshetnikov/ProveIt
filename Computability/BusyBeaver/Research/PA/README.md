@@ -470,6 +470,18 @@ from `calibration` in `PA194ArithmeticCalibrationSemantic` of the
 internal refutation of arithmetic. The literal machine and modeled scheduler agree by the
 model-level proof above.
 
+Most of the other delivered candidates change the source program, so the arithmetic half
+above does not apply to them unchanged. The first case treated is the controller of PA194N,
+whose successful modus ponens does not push a zero.
+[`pa194-command-controllers`](pa194-work/pa194-command-controllers/README.md) restates the
+command-word theory of `pa194-model-fairness` with that choice as a parameter, and
+[`pa194n-scheduler`](pa194-work/pa194n-scheduler/README.md) defines the scheduler with the
+no-push modus ponens and proves that, in every candidate-PRA model whose arithmetic reduct
+satisfies `𝗜𝚺₁`, it halts exactly when the numerical calculus proves the contradiction code,
+hence exactly when the modeled scheduler of the primary table halts. This is a statement
+about a scheduler defined at the level of commands; it is not connected with the literal
+PA194N table or its source program.
+
 [`isigma1-machine`](shared/isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
 `Calibrated T h` from which the iPRA equivalence follows. No table is shown to be calibrated.
