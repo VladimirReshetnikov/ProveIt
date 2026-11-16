@@ -120,8 +120,9 @@ fields are also proved. A separately replayed generic reduction derives all nami
 fields from twelve fixed source facts and variable-name existence; the latter is
 proved for the full source theory. Of the twelve fixed facts,
 [equality reflexivity and successor existence](pa194-work/pa194-model-axioms/SOURCE-FIXED-FACTS.md)
-and [domain-zero existence](pa194-work/pa194-model-axioms/SOURCE-Z1.md) are
-proved in the covered models; the remaining facts are open.
+[domain-zero existence](pa194-work/pa194-model-axioms/SOURCE-Z1.md), and
+[isomorphism of zero representatives](pa194-work/pa194-model-axioms/SOURCE-Z2.md)
+are proved in the covered models; the remaining facts are open.
 A [successor-value transport](pa194-work/pa194-model-axioms/SUCC-VALUE-FULL-SOURCE.md)
 is proved in the covered models, including for nonstandard term codes. The
 remaining source axiom suppliers are open. Identity translation is independent
@@ -320,9 +321,9 @@ conditional traces. A [seed-derived initial run](pa194/ipra/machine-code/SEED-FI
 reaches the first site-38 physical frame from blank tape in every PRA model.
 The [first decoder completion](pa194/ipra/machine-code/SEED-FIRST-DECODE-COMPLETE.md)
 continues the concrete run to site 42 with existential model-valued clocks. From
-that first frame, a [physical continuation](pa194/ipra/machine-code/SEED-FIRST-SITE3664.md)
-reaches site 3664 with gap 50; its register 5 is zero, identifying the source
-controller’s zero branch. A complete source-frame correspondence and
+that first frame, a [physical continuation](pa194/ipra/machine-code/SEED-FIRST-SITE3668.md)
+reaches site 3668 with gap 50; the matched site-3664 zero step preserves that
+gap. A complete source-frame correspondence and
 reachability invariant remain open.
 The other direction, `¬Halt(M₁₉₄) → Con(PA)`, also needs an internal
 translation of arbitrary PA refutations into the machine's numerical calculus.
