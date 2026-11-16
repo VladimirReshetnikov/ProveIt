@@ -45,3 +45,5 @@ if command -v py >/dev/null 2>&1; then py=py; else py=python3; fi
   --top "$here/PA194GuardedClosed.lean" --reports 6 "$@"
 "$py" -X utf8 -B "$here/../pa194-model-fairness/check_bridge.py" \
   --top "$here/PA194InductionWiring.lean" --reports 5 "$@"
+"$py" -X utf8 -B "$here/../pa194-model-fairness/check_bridge.py" \
+  --top "$here/PA194InductionSupplier.lean" --reports 3 "$@"

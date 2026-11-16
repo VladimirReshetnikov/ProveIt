@@ -74,6 +74,7 @@ formula of arity zero and `trBody` of a formula under one binder, with no size c
 | `PA194FixedAxiomQuotes` | Imports `PA194PAeqTargetInventory`. `q_eq`, `q_add`, `q_mul`, `q_succ`, `q_implies`: quotes of the standard syntax of the arithmetic language as the codes used here. `tr_close_quote`: closing one standard quantifier. `addCongruence_tr`, `mulCongruence_tr`, `addSucc_tr`, `mulSucc_tr`: `GDerivable T {tr ⌜σ⌝}` for the four quoted axioms. |
 | `PA194GuardedClosed` | `discharge_step_of_shift`, `gd_provable_of_shift`: a guarded derivation of a formula that is not changed by the shift of free variables is a proof, when `T` proves that the domain is inhabited; the argument of `discharge_guards` with an arbitrary such formula in place of `⊥`. `tr_provable_of_closed`: the same for `tr φ` with `φ` invariant under shift. `addCongruence_provable`, `mulCongruence_provable`, `addSucc_provable`, `mulSucc_provable`: `Provable T (tr ⌜σ⌝)`. |
 | `PA194InductionWiring` | `indBody_valid`. `tr_close_iter`: for a `Σ₁` iteration `cl` of a binder `B` that inverts opening, a guarded derivation of `tr φ` gives one of `tr (cl n φ)` for every internal `n`, by `Σ₁` induction on `n`. `induction_closed`, `induction_closed_provable`: the translated induction axiom with `n` parameters closed. `indCode_quotes`: `indCode q` in terms of the quotes of `Ordinal.domain`, `Ordinal.zero` and `Ordinal.successor` at bound variables. |
+| `PA194InductionSupplier` | Imports `PA194PAeqClosedInduction`, `PA194PAeqOpeningFormulaInverse` and `PA194ClosedSentenceEnvironment`. `inductionBody_eq : inductionBody p = indBody p`. `closedInduction_tr_provable`: `Provable T (tr (closedInduction p))`, by `induction_closed_provable` with `close` and `bindFormula 0`. `induction_supplier`: the same at `rootParameters`, by `sentence_root_packet`. |
 
 All statements are for an arbitrary model `V` of `𝗜𝚺₁`, arbitrary `Δ₁` theories `U` and `T`
 of the two languages, and internally valid codes that may be nonstandard.
@@ -137,13 +138,18 @@ model. Of its three fields, `inhabited` is proved for these theories in `pa194-m
   returns a formula of arity one that opens to its argument; `induction_closed_provable`
   adds that the result is a proof when it is invariant under shift and the domain is
   inhabited. `indCode_quotes` writes `indCode q` with the quotes of the standard `domain`,
-  `zero` and `successor` formulas. Not done here, because the modules that define them are
-  not imported: the instantiation of `cl` and `B` by `close` and `bindFormula 0`, the
-  identification of `indBody` with `inductionBody` and of `indCode` with
+  `zero` and `successor` formulas.
+
+  `PA194InductionSupplier` imports the arithmetic development and states the result in its
+  terms: `induction_supplier` proves
+  `Provable T (translateFormula (rootParameters (closedInduction p)) (closedInduction p))`
+  for every internal `p` of arity one, which is the hypothesis `hind` of
+  `refutation_of_remaining` in `pa194-model-logic` for an arbitrary `T`. Its inputs are
+  `TermFacts T`, `SourceFacts T`, `Provable T (indCode q)` for every internal `q`, and
+  inhabitation of the domain. Not done: the identification of `indCode` with
   `ordinalInductionCode` of `pa194-model-axioms` (after `indCode_quotes` both sides are the
-  same arrangement of the same quotes, but the equality is not checked here), the shift
-  invariance of the fully closed axiom, and the passage from `tr` to the `rootParameters`
-  form of the induction supplier.
+  same arrangement of the same quotes, but the equality is not checked here, because that
+  module is not imported), so the ordinal induction proved there is not yet connected.
 
   For four of the fixed axioms, `PA194FixedAxiomQuotes` gives guarded derivations of
   `tr ⌜σ⌝` for the quoted sentences themselves: `addCongruence_tr` and `mulCongruence_tr`
@@ -187,7 +193,10 @@ facts about relations in `PA194NameSemantics` list `propext` alone and the other
 three axioms. `PA194InductionForms` and `PA194InductionSchema` were compiled the same way;
 their seven and nine reports are the same three axioms. So were `PA194ArithFacts` and
 `PA194FixedAxiomQuotes` (nine and six reports, the same three axioms), the latter also
-against a locally compiled `PA194PAeqTargetInventory`, `PA194InductionWiring` (five reports,
+against a locally compiled `PA194PAeqTargetInventory`, `PA194InductionSupplier` (three
+reports, the same three axioms; its imports from `pa194-model-logic` were compiled locally
+from the repository sources, 448 modules of which most objects already existed),
+`PA194InductionWiring` (five reports,
 the same three axioms), and `PA194GuardedClosed` (six reports,
 the same three axioms). The script itself has not been run.
 
