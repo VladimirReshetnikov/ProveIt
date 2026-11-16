@@ -45,6 +45,7 @@ import IPRADerivations.Algebra.Quintic
 import IPRADerivations.Algebra.QuadraticExtension
 import IPRADerivations.Algebra.ObservationAlgebra
 import IPRADerivations.Algebra.JacobiRotation
+import IPRADerivations.Algebra.PowerDifference
 import IPRADerivations.Combinatorics.Binomial
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Combinatorics.BinomialTheorem
