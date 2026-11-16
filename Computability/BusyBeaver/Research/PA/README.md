@@ -120,12 +120,14 @@ fields are also proved. A separately replayed generic reduction derives all nami
 fields from twelve fixed source facts and variable-name existence; the latter is
 proved for the full source theory. Of the twelve fixed facts,
 [equality reflexivity and successor existence](pa194-work/pa194-model-axioms/SOURCE-FIXED-FACTS.md),
+[equality-to-isomorphism](pa194-work/pa194-model-axioms/SOURCE-EI.md),
 [domain-zero existence](pa194-work/pa194-model-axioms/SOURCE-Z1.md),
 [isomorphism of zero representatives](pa194-work/pa194-model-axioms/SOURCE-Z2.md),
 [guarded isomorphism symmetry](pa194-work/pa194-model-axioms/SOURCE-IS.md),
 [guarded isomorphism transitivity](pa194-work/pa194-model-axioms/SOURCE-IT.md),
 and [successor compatibility](pa194-work/pa194-model-axioms/SOURCE-S2.md)
-are proved in the covered models; the remaining facts are open.
+are proved in the covered models. The [assembly](pa194-work/pa194-model-axioms/SOURCE-FACTS-EIGHT.md)
+leaves four addition and multiplication facts as explicit premises.
 A [successor-value transport](pa194-work/pa194-model-axioms/SUCC-VALUE-FULL-SOURCE.md)
 is proved in the covered models, including for nonstandard term codes. The
 remaining source axiom suppliers are open. Identity translation is independent
