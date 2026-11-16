@@ -2,7 +2,7 @@
 set -euo pipefail
 base=Computability/BusyBeaver/Research/PA
 package=$base/pa194-work/pa194-bundled-diagonal
-upstream=$base/jamesyc-upstream/pa196/M6/Logic
+upstream=$base/other-machines/jamesyc-upstream/pa196/M6/Logic
 task_dir=$(mktemp -d "${TMPDIR:-/dev/shm}/pa194-bundled-diagonal.XXXXXXXX")
 trap 'rm -rf "$task_dir"' EXIT
 # Retain the freshly rebuilt source-calculus compiler and prerequisites.

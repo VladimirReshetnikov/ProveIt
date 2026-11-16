@@ -5,7 +5,7 @@ task_dir=$(mktemp -d /dev/shm/pa194-source-tree.XXXXXXXX)
 trap 'rm -rf "$task_dir"' EXIT
 mkdir -p "$task_dir/M6/Source"
 base=Computability/BusyBeaver/Research/PA
-upstream=$base/jamesyc-upstream/pa196/M6
+upstream=$base/other-machines/jamesyc-upstream/pa196/M6
 printf '%s  %s\n' \
   4edcf4eb98b24999f610f06a22d943db68c7c2cae8d96160bbf614c75821738a "$upstream/Source/Syntax.lean" \
   98bdd0185ee5db469d400e32d349d20368ac117742386b6e253d3636c677cdd8 "$upstream/Source/PathTrie.lean" \

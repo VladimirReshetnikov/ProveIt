@@ -5,7 +5,7 @@ task_dir=$(mktemp -d /dev/shm/pa194-seed-bridge.XXXXXXXX)
 trap 'rm -rf "$task_dir"' EXIT
 mkdir -p "$task_dir/M6/Source" "$task_dir/PA196"
 base=Computability/BusyBeaver/Research/PA
-upstream=$base/jamesyc-upstream/pa196/M6
+upstream=$base/other-machines/jamesyc-upstream/pa196/M6
 printf '%s  %s\n' \
   152d1d552b27baca8db0ac05b16092d9083c2ab979bb0b4e7f96a95803d9a9b0 "$upstream/Zip.lean" \
   e66961d7acb60e0c84e9674ee2d91ca2049ac6d704ad0edf7d971ef933f3ce2e "$upstream/Runtime.lean" \
@@ -31,11 +31,11 @@ printf '%s  %s\n' \
   af81fe00cc0b1420f5b4e547f7adff77279f4211d7f7aa401395fa15ee6f1360 "$upstream/Source/RootFrame.lean" \
   4a4f5a95b397beee45bf20d853f66be27fde7955bb621f52a8c6d48de5d351f6 "$upstream/Source/FileInvariant.lean" \
   3eda577b4f6d1934af3e719dcb99a259b2f0d2ce9b9b9847401aa4318aba12d0 "$upstream/PositiveInvariant.lean" \
-  bdd8711116e5a99811ba77d20cb0cd35d9963d51ced9f1fa5c429556370c1bba "$base/jamesyc-upstream/pa196/PA196/Frame.lean" | sha256sum -c
+  bdd8711116e5a99811ba77d20cb0cd35d9963d51ced9f1fa5c429556370c1bba "$base/other-machines/jamesyc-upstream/pa196/PA196/Frame.lean" | sha256sum -c
 for task_module in Source/Determinism Source/CyclicDriver Source/CyclicDeterminism Source/RootFrame Source/FileInvariant PositiveInvariant; do
   lean -M6000 -j1 -o "$task_dir/M6/$task_module.olean" "$upstream/$task_module.lean"
 done
-lean -M6000 -j1 -o "$task_dir/PA196/Frame.olean" "$base/jamesyc-upstream/pa196/PA196/Frame.lean"
+lean -M6000 -j1 -o "$task_dir/PA196/Frame.olean" "$base/other-machines/jamesyc-upstream/pa196/PA196/Frame.lean"
 for task_module in PA194RuntimeContracts PA194PrimitiveSimulation; do
   lean -M6000 -j1 -o "$task_dir/$task_module.olean" "$base/pa194-work/pa194-source-iteration/$task_module.lean"
 done

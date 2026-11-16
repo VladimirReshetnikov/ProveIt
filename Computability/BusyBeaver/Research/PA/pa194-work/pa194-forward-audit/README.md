@@ -10,26 +10,26 @@ its assumptions include a full PA model (`theory := Peano`) as well as IΣ₁,
 and it uses a different verifier and command encoding. Two explicit uses of
 full induction are:
 
-* [`ordinary_derivation_requested`](../../jamesyc-upstream/pa196/PA196/Arithmetic/Transport/NumericPAeqSequentDerivation.lean)
+* [`ordinary_derivation_requested`](../../other-machines/jamesyc-upstream/pa196/PA196/Arithmetic/Transport/NumericPAeqSequentDerivation.lean)
   uses `InductionScheme.succ_induction (C := Set.univ)` on
-  [`budgetedDerivationInvariant`](../../jamesyc-upstream/pa196/PA196/Arithmetic/Transport/NumericPAeqSequentBudgetInvariant.lean).
+  [`budgetedDerivationInvariant`](../../other-machines/jamesyc-upstream/pa196/PA196/Arithmetic/Transport/NumericPAeqSequentBudgetInvariant.lean).
   It quantifies over smaller derivations and all environments, then requires
-  a [`RequestedCertificate`](../../jamesyc-upstream/pa196/PA196/Arithmetic/Transport/NumericPAeqSequentDerivationInvariant.lean)
+  a [`RequestedCertificate`](../../other-machines/jamesyc-upstream/pa196/PA196/Arithmetic/Transport/NumericPAeqSequentDerivationInvariant.lean)
   for every covered parameter assignment. This invariant is presented as
   unrestricted arithmetic syntax; it has not been shown Σ₁.
-* [`fuel_invariant`](../../jamesyc-upstream/pa196/PA196/Arithmetic/CompilerInvariant.lean)
+* [`fuel_invariant`](../../other-machines/jamesyc-upstream/pa196/PA196/Arithmetic/CompilerInvariant.lean)
   also uses `C := Set.univ`. Its
-  [`fuelInvariantFormula`](../../jamesyc-upstream/pa196/PA196/Arithmetic/CompilerInvariantFormula.lean)
+  [`fuelInvariantFormula`](../../other-machines/jamesyc-upstream/pa196/PA196/Arithmetic/CompilerInvariantFormula.lean)
   universally quantifies the table bound and expresses a table-wide realization
   condition; it has not been shown Σ₁.
 
 The upstream original-PA-presentation conversion also invokes
-[`original_induction_axiom_supplier`](../../jamesyc-upstream/pa196/M6PA/Calibration/FoundationPAeqCodeOriginalInductionSupplier.lean).
+[`original_induction_axiom_supplier`](../../other-machines/jamesyc-upstream/pa196/M6PA/Calibration/FoundationPAeqCodeOriginalInductionSupplier.lean).
 Its `additive_matrix_witness`, `canonicalSuccessorAxiom_provable`, and
 `successor_proof_to_additive` are individually stated under IΣ₁ alone; the
 latter two construct internal proof codes. The supplier nevertheless relies on
 `translated_induction_witness` and, through it,
-[`formulaCode_subst`](../../jamesyc-upstream/pa196/M6PA/Calibration/FoundationPAeqCodeSubstitution.lean).
+[`formulaCode_subst`](../../other-machines/jamesyc-upstream/pa196/M6PA/Calibration/FoundationPAeqCodeSubstitution.lean).
 The upstream substitution-translation compatibility theorem explicitly uses
 `C := Set.univ` induction over an invariant quantifying all vectors, depths,
 and translation parameters. Its local constructor step is already proved

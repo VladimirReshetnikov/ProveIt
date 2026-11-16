@@ -8,7 +8,7 @@ cd "$repo"
 IPRA_LEAN_OVERLAY=$(realpath "$IPRA_LEAN_OVERLAY")
 IPRA_FOUNDATION_OVERLAY=$(realpath "$IPRA_FOUNDATION_OVERLAY")
 sha256sum -c <<'PINS'
-152d1d552b27baca8db0ac05b16092d9083c2ab979bb0b4e7f96a95803d9a9b0  Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/M6/Zip.lean
+152d1d552b27baca8db0ac05b16092d9083c2ab979bb0b4e7f96a95803d9a9b0  Computability/BusyBeaver/Research/PA/other-machines/jamesyc-upstream/pa196/M6/Zip.lean
 842453bc52956492e439df8ccadbe00b1c0a2bac547d157b48b13daa045a8946  Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAHistoryPairCode.lean
 a346cba7ed93b8d495eeca81c85e52510eb45938bf417eb950d9e66b2a0d2f98  Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAIsZero.lean
 f0a5ba7482344477c2c7ca5ec2544f127ede62ec30e60b1101bfaed7be94db74  Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAFiniteFunctionCodes.lean
@@ -33,16 +33,16 @@ printf '%s  %s\n' \
   b2417583564a1d6b0bbfb4952587db79339fab8c2b4d24442145e39578173e19 "$IPRA_LEAN_OVERLAY/DiophantineConsistency/IPRAStandardTheory.olean" | sha256sum -c
 
 sha256sum -c <<'PINS'
-e66961d7acb60e0c84e9674ee2d91ca2049ac6d704ad0edf7d971ef933f3ce2e  Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/M6/Runtime.lean
+e66961d7acb60e0c84e9674ee2d91ca2049ac6d704ad0edf7d971ef933f3ce2e  Computability/BusyBeaver/Research/PA/other-machines/jamesyc-upstream/pa196/M6/Runtime.lean
 49ce05862aae65c8774af1f2a801b6e45789fc44cefb4c3b04501fb81749979c  Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRATermCompilation.lean
 PINS
 printf '%s  %s\n' \
   0b3a10a1d85a6eb1d66a02ccd586021728a2aa6a156ee17dcf766a2e397d3cfd "$IPRA_LEAN_OVERLAY/DiophantineConsistency/PRATermCompilation.olean" | sha256sum -c
 
 sha256sum -c <<'PINS'
-4edcf4eb98b24999f610f06a22d943db68c7c2cae8d96160bbf614c75821738a  Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/M6/Source/Syntax.lean
-8689481036b4c29d1a8ce7fec25e6ae12e8ac54fd4a86f23fb9cb5ee01b39f38  Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/M6/Source/Semantics.lean
-102490b3a2ca6b3b57f4e5b52b0409a66f8067b3231e9f48751a4162ecc7627f  Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/M6/Source/PhysicalRegisters.lean
+4edcf4eb98b24999f610f06a22d943db68c7c2cae8d96160bbf614c75821738a  Computability/BusyBeaver/Research/PA/other-machines/jamesyc-upstream/pa196/M6/Source/Syntax.lean
+8689481036b4c29d1a8ce7fec25e6ae12e8ac54fd4a86f23fb9cb5ee01b39f38  Computability/BusyBeaver/Research/PA/other-machines/jamesyc-upstream/pa196/M6/Source/Semantics.lean
+102490b3a2ca6b3b57f4e5b52b0409a66f8067b3231e9f48751a4162ecc7627f  Computability/BusyBeaver/Research/PA/other-machines/jamesyc-upstream/pa196/M6/Source/PhysicalRegisters.lean
 PINS
 
 task_dir=$(mktemp -d "${TMPDIR:-/dev/shm}/binary-tape-code.XXXXXXXX")
@@ -67,7 +67,7 @@ lean -M5000 -j1 Computability/BusyBeaver/Research/PA/pa194/ipra/machine-code/Tab
   -o "$BINARY_TAPE_TASK_DIR/TableModelSemantics.olean" | tee -a "$BINARY_TAPE_TASK_DIR/axioms.log"
 lean -M5000 -j1 Computability/BusyBeaver/Research/PA/pa194/ipra/machine-code/ConfigurationStep.lean \
   -o "$BINARY_TAPE_TASK_DIR/ConfigurationStep.olean" | tee -a "$BINARY_TAPE_TASK_DIR/axioms.log"
-lean -M6000 -j1 Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/M6/Zip.lean \
+lean -M6000 -j1 Computability/BusyBeaver/Research/PA/other-machines/jamesyc-upstream/pa196/M6/Zip.lean \
   -o "$BINARY_TAPE_TASK_DIR/M6/Zip.olean"
 lean -R "$BINARY_TAPE_TASK_DIR" -M6000 -j1 "$BINARY_TAPE_TASK_DIR/PA194Literal.lean" \
   -o "$BINARY_TAPE_TASK_DIR/PA194Literal.olean"
@@ -139,7 +139,7 @@ lean -M6000 -j1 Computability/BusyBeaver/Research/PA/pa194/ipra/machine-code/PA1
   -o "$BINARY_TAPE_TASK_DIR/PA194TwelveThirteenCompose.olean" | tee -a "$BINARY_TAPE_TASK_DIR/axioms.log"
 lean -M6000 -j1 Computability/BusyBeaver/Research/PA/pa194/ipra/machine-code/PA194TwelveThirteenSentence.lean \
   -o "$BINARY_TAPE_TASK_DIR/PA194TwelveThirteenSentence.olean" | tee -a "$BINARY_TAPE_TASK_DIR/axioms.log"
-lean -M6000 -j1 Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/M6/Runtime.lean \
+lean -M6000 -j1 Computability/BusyBeaver/Research/PA/other-machines/jamesyc-upstream/pa196/M6/Runtime.lean \
   -o "$BINARY_TAPE_TASK_DIR/M6/Runtime.olean"
 lean -M6000 -j1 Computability/BusyBeaver/Research/PA/pa194/ipra/machine-code/PA194RegisterFile.lean \
   -o "$BINARY_TAPE_TASK_DIR/PA194RegisterFile.olean" | tee -a "$BINARY_TAPE_TASK_DIR/axioms.log"
@@ -276,11 +276,11 @@ lean -M6000 -j1 Computability/BusyBeaver/Research/PA/pa194/ipra/machine-code/PA1
 lean -M6000 -j1 Computability/BusyBeaver/Research/PA/pa194/ipra/machine-code/PA194DecrementChoiceSentence.lean \
   -o "$BINARY_TAPE_TASK_DIR/PA194DecrementChoiceSentence.olean" | tee -a "$BINARY_TAPE_TASK_DIR/axioms.log"
 mkdir -p "$BINARY_TAPE_TASK_DIR/M6/Source"
-lean -M6000 -j1 Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/M6/Source/Syntax.lean \
+lean -M6000 -j1 Computability/BusyBeaver/Research/PA/other-machines/jamesyc-upstream/pa196/M6/Source/Syntax.lean \
   -o "$BINARY_TAPE_TASK_DIR/M6/Source/Syntax.olean" | tee -a "$BINARY_TAPE_TASK_DIR/axioms.log"
-lean -M6000 -j1 Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/M6/Source/Semantics.lean \
+lean -M6000 -j1 Computability/BusyBeaver/Research/PA/other-machines/jamesyc-upstream/pa196/M6/Source/Semantics.lean \
   -o "$BINARY_TAPE_TASK_DIR/M6/Source/Semantics.olean" | tee -a "$BINARY_TAPE_TASK_DIR/axioms.log"
-lean -M6000 -j1 Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/M6/Source/PhysicalRegisters.lean \
+lean -M6000 -j1 Computability/BusyBeaver/Research/PA/other-machines/jamesyc-upstream/pa196/M6/Source/PhysicalRegisters.lean \
   -o "$BINARY_TAPE_TASK_DIR/M6/Source/PhysicalRegisters.olean" | tee -a "$BINARY_TAPE_TASK_DIR/axioms.log"
 lean -M6000 -j1 Computability/BusyBeaver/Research/PA/pa194/ipra/machine-code/PA194RegisterPermutation.lean \
   -o "$BINARY_TAPE_TASK_DIR/PA194RegisterPermutation.olean" | tee -a "$BINARY_TAPE_TASK_DIR/axioms.log"

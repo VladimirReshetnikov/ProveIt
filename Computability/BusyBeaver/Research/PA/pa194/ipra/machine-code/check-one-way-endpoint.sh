@@ -12,7 +12,7 @@ marker = "if rg -q 'sorryAx' \"$task_dir/axioms.log\"; then"
 if source.count(marker) != 1:
     raise SystemExit('unexpected generic-bridge axiom-check marker')
 addition = '''lean -M6000 -j1 -o "$task_dir/ConPAISigma1Directions.olean" \\
-  Computability/BusyBeaver/Research/PA/isigma1-machine/ConPAISigma1Directions.lean | tee -a "$task_dir/axioms.log"
+  Computability/BusyBeaver/Research/PA/shared/isigma1-machine/ConPAISigma1Directions.lean | tee -a "$task_dir/axioms.log"
 lean -M6000 -j1 "$base/PA194OneWayEndpoint.lean" | tee -a "$task_dir/axioms.log"
 '''
 Path(sys.argv[2]).write_text(source.replace(marker, addition + marker))

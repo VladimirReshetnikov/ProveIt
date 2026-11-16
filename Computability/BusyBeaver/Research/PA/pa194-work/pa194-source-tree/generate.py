@@ -7,7 +7,7 @@ import re
 import sys
 
 root = Path(__file__).resolve().parents[6]
-program_path = root / 'Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/PA196/Program.lean'
+program_path = root / 'Computability/BusyBeaver/Research/PA/other-machines/jamesyc-upstream/pa196/PA196/Program.lean'
 sys.path.insert(0, str(root / 'Computability/BusyBeaver/Research/PA'))
 from packet_inputs import PlacedPacket
 program = program_path.read_bytes()

@@ -6,7 +6,7 @@ base=Computability/BusyBeaver/Research/PA
 root=$(mktemp -d "${TMPDIR:-/dev/shm}/pa194-qvec-substs-invariant.XXXXXXXX")
 trap 'rm -rf "$root"' EXIT
 export PA194_QVEC_SUBSTS_REPO="$PWD"
-python3 - "$base/pa196-vs-u208/ipra/check.sh" "$root/qvec-substs-prerequisites.sh" <<'PY'
+python3 - "$base/other-machines/pa196-vs-u208/ipra/check.sh" "$root/qvec-substs-prerequisites.sh" <<'PY'
 from pathlib import Path
 import sys
 s = Path(sys.argv[1]).read_text()

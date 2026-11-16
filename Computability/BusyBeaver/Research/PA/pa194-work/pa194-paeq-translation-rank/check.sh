@@ -9,7 +9,7 @@ for dir in pa194-work/pa194-paeq-term-blueprint pa194-work/pa194-paeq-formula pa
   sha256sum -c "$base/$dir/upstream.sha256"
 done
 export PA194_TRANSLATION_WITNESS_REPO="$PWD"
-python3 - "$base/pa196-vs-u208/ipra/check.sh" "$root/translation-prerequisites.sh" <<'PY'
+python3 - "$base/other-machines/pa196-vs-u208/ipra/check.sh" "$root/translation-prerequisites.sh" <<'PY'
 from pathlib import Path
 import sys
 s = Path(sys.argv[1]).read_text()

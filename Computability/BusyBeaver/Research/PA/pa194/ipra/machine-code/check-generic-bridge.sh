@@ -52,12 +52,12 @@ for name in PRAHistoryLengthUnique PRAHistorySingletonMembership PRAHistorySingl
     "Computability/DiophantineConsistency/Lean/DiophantineConsistency/$name.lean"
 done
 lean -M6000 -j1 -o "$task_dir/PA194UnaryRecursionGraph.olean" \
-  Computability/BusyBeaver/Research/PA/pa195-work/pa195-calibration/PA194UnaryRecursionGraph.lean | tee -a "$task_dir/axioms.log"
+  Computability/BusyBeaver/Research/PA/other-machines/pa195-work/pa195-calibration/PA194UnaryRecursionGraph.lean | tee -a "$task_dir/axioms.log"
 # The wrapper independently rebuilds the PA witness certificate and the
 # generic IΣ₁ transfer from their local sources in a separate private overlay.
-IPRA_LEAN_OVERLAY="$task_dir" python3 -B Computability/BusyBeaver/Research/PA/isigma1-machine/check_unconditional.py --out "$task_dir/conpa"
+IPRA_LEAN_OVERLAY="$task_dir" python3 -B Computability/BusyBeaver/Research/PA/shared/isigma1-machine/check_unconditional.py --out "$task_dir/conpa"
 export LEAN_PATH="$task_dir:$task_dir/conpa:$IPRA_FOUNDATION_OVERLAY:$(lake env printenv LEAN_PATH)"
-lean -M6000 -j1 -o "$task_dir/ConPAMachine.olean" Computability/BusyBeaver/Research/PA/isigma1-machine/ConPAMachine.lean
+lean -M6000 -j1 -o "$task_dir/ConPAMachine.olean" Computability/BusyBeaver/Research/PA/shared/isigma1-machine/ConPAMachine.lean
 for mod in PA194HalfDiv PA194GenericBridge PA194Reachable; do
   lean -M6000 -j1 -o "$task_dir/$mod.olean" "$base/$mod.lean" | tee -a "$task_dir/axioms.log"
 done
@@ -66,7 +66,7 @@ for mod in PA194ForwardGG PA194StandardSemantics; do
 done
 lean -M6000 -j1 -o "$task_dir/PA194ExplicitEndpoint.olean" "$base/PA194ExplicitEndpoint.lean" | tee -a "$task_dir/axioms.log"
 lean -M6000 -j1 -o "$task_dir/PA195RefutationBridge.olean" \
-  Computability/BusyBeaver/Research/PA/pa195/ipra/PA195RefutationBridge.lean | tee -a "$task_dir/axioms.log"
+  Computability/BusyBeaver/Research/PA/other-machines/pa195/ipra/PA195RefutationBridge.lean | tee -a "$task_dir/axioms.log"
 lean -M6000 -j1 -o "$task_dir/PA194GenericHalt.olean" "$base/PA194GenericHalt.lean" | tee -a "$task_dir/axioms.log"
 if rg -q 'sorryAx' "$task_dir/axioms.log"; then
   echo 'Unexpected sorryAx in bridge theorem dependencies' >&2

@@ -10,7 +10,7 @@ trap 'rm -rf "$root"' EXIT
 mkdir -p "$root/source" "$root/scheduler"
 export PA194_TARGET_SOURCE_SRC="$root/source" PA194_TARGET_SOURCE_SCHEDULER="$root/scheduler"
 export PA194_TARGET_SOURCE_REPO="$repo"
-python3 - "$base/pa195-work/pa195-calibration/check-source-diagonal-preservation.sh" "$root/source-prerequisites.sh" <<'PY'
+python3 - "$base/other-machines/pa195-work/pa195-calibration/check-source-diagonal-preservation.sh" "$root/source-prerequisites.sh" <<'PY'
 from pathlib import Path
 import sys
 s=Path(sys.argv[1]).read_text()
@@ -22,7 +22,7 @@ repo='repo=$(git -C "$(dirname "$0")" rev-parse --show-toplevel)'
 if s.count(repo) != 1:
     raise SystemExit('unexpected source-head2 repository discovery')
 s=s.replace(repo,'repo=$PA194_TARGET_SOURCE_REPO',1).replace(old,'task_dir=$PA194_TARGET_SOURCE_SRC',1).replace(trap,'',1)
-s += '''\nfor module in PA194SourceLineSoundness PA194SourceLineRefutation; do\n  lean -M6000 -j1 -o "$task_dir/$module.olean" "Computability/BusyBeaver/Research/PA/pa195-work/pa195-calibration/$module.lean" | tee -a "$task_dir/axioms.log"\ndone\nif rg -q 'sorryAx' "$task_dir/axioms.log"; then exit 1; fi\n'''
+s += '''\nfor module in PA194SourceLineSoundness PA194SourceLineRefutation; do\n  lean -M6000 -j1 -o "$task_dir/$module.olean" "Computability/BusyBeaver/Research/PA/other-machines/pa195-work/pa195-calibration/$module.lean" | tee -a "$task_dir/axioms.log"\ndone\nif rg -q 'sorryAx' "$task_dir/axioms.log"; then exit 1; fi\n'''
 Path(sys.argv[2]).write_text(s)
 PY
 bash -n "$root/source-prerequisites.sh"
@@ -39,7 +39,7 @@ s=s.replace(old,'root=$PA194_TARGET_SOURCE_SCHEDULER',1).replace(trap,'',1)
 s += '''
 export LEAN_PATH="$PA194_TARGET_SOURCE_SRC:$LEAN_PATH"
 for module in PA194SourceGateReduction PA194SourceGateTargetLink; do
-  lean -M6000 -j1 -o "$root/final/$module.olean" "$base/pa195-work/pa195-calibration/$module.lean" | tee "$root/final/$module.axioms.log"
+  lean -M6000 -j1 -o "$root/final/$module.olean" "$base/other-machines/pa195-work/pa195-calibration/$module.lean" | tee "$root/final/$module.axioms.log"
   if rg -q 'sorryAx' "$root/final/$module.axioms.log"; then exit 1; fi
 done
 lean -M6000 -j1 -o "$root/final/PA194SchedulerHalt.olean" "$base/pa194-work/pa194-scheduler-halt/PA194SchedulerHalt.lean" | tee "$root/final/halt-axioms.log"

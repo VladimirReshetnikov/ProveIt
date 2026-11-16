@@ -11,7 +11,7 @@ sha256sum -c "$base/pa194-work/pa194-paeq-bshift-growth/upstream.sha256"
 sha256sum -c "$base/pa194-work/pa194-paeq-term-subst-growth/upstream.sha256"
 sha256sum -c "$base/pa194-work/pa194-paeq-subst-growth/upstream.sha256"
 export PA194_PAEQ_SUBST_GROWTH_REPO="$PWD"
-python3 - "$base/pa196-vs-u208/ipra/check.sh" "$root/paeq-subst-growth-prerequisites.sh" <<'PY'
+python3 - "$base/other-machines/pa196-vs-u208/ipra/check.sh" "$root/paeq-subst-growth-prerequisites.sh" <<'PY'
 from pathlib import Path
 import sys
 s = Path(sys.argv[1]).read_text()
@@ -33,7 +33,7 @@ done
 for task_mod in PA194PAeqTermSubstGrowth PA194PAeqTermSubstVecGrowth; do
   lean -M6000 -j1 "Computability/BusyBeaver/Research/PA/pa194-work/pa194-paeq-term-subst-growth/$task_mod.lean" -o "$PA196_TASK_CHECK_DIR/$task_mod.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 done
-lean -M6000 -j1 "Computability/BusyBeaver/Research/PA/pa196-vs-u208/ipra/PA196PASubstitutionConstructorGrowth.lean" -o "$PA196_TASK_CHECK_DIR/PA196PASubstitutionConstructorGrowth.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "Computability/BusyBeaver/Research/PA/other-machines/pa196-vs-u208/ipra/PA196PASubstitutionConstructorGrowth.lean" -o "$PA196_TASK_CHECK_DIR/PA196PASubstitutionConstructorGrowth.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "Computability/BusyBeaver/Research/PA/pa194-work/pa194-paeq-bshift-growth/PA194PAeqQVecGrowth.lean" -o "$PA196_TASK_CHECK_DIR/PA194PAeqQVecGrowth.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 for task_mod in PA194PAeqSubstAtomicGrowth PA194PAeqSubstGraphStep PA194PAeqSubstUniformGrowth; do
   lean -M6000 -j1 "Computability/BusyBeaver/Research/PA/pa194-work/pa194-paeq-subst-growth/$task_mod.lean" -o "$PA196_TASK_CHECK_DIR/$task_mod.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"

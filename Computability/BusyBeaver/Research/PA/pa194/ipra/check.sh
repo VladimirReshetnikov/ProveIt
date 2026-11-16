@@ -7,7 +7,7 @@ cd "$repo"
 IPRA_LEAN_OVERLAY=$(realpath "$IPRA_LEAN_OVERLAY")
 IPRA_FOUNDATION_OVERLAY=$(realpath "$IPRA_FOUNDATION_OVERLAY")
 sha256sum -c <<'PINS'
-152d1d552b27baca8db0ac05b16092d9083c2ab979bb0b4e7f96a95803d9a9b0  Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/M6/Zip.lean
+152d1d552b27baca8db0ac05b16092d9083c2ab979bb0b4e7f96a95803d9a9b0  Computability/BusyBeaver/Research/PA/other-machines/jamesyc-upstream/pa196/M6/Zip.lean
 5e21edfdc4593f441f46f7fde9f8d0fc467eb1369c03251fe4f3a1a4d17a57de  Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRALanguage.lean
 f0a5ba7482344477c2c7ca5ec2544f127ede62ec30e60b1101bfaed7be94db74  Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAFiniteFunctionCodes.lean
 PINS
@@ -26,7 +26,7 @@ lake env bash -c '
 set -euo pipefail
 lean --version | rg -q "Lean \(version 4\.32\.0"
 export LEAN_PATH="$PA194_TASK_DIR:$IPRA_LEAN_OVERLAY:$IPRA_FOUNDATION_OVERLAY:${LEAN_PATH:-}"
-lean -M6000 -j1 Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/M6/Zip.lean -o "$PA194_TASK_DIR/M6/Zip.olean"
+lean -M6000 -j1 Computability/BusyBeaver/Research/PA/other-machines/jamesyc-upstream/pa196/M6/Zip.lean -o "$PA194_TASK_DIR/M6/Zip.olean"
 cd "$PA194_TASK_DIR"
 lean -M6000 -j1 PA194Literal.lean -o PA194Literal.olean
 lean -M6000 -j1 PA194Rows.lean -o PA194Rows.olean

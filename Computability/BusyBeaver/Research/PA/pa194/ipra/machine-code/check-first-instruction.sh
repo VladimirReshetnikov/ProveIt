@@ -17,7 +17,7 @@ new = r'''printf '%s  %s\n' \
   cdb6a955eee0322c86be2909a6d60d89719bd3cefec8c4e5cfacab295083afe4 "$PA194_BRIDGE_OVERLAY/PA194PackedNumeralBridge.olean" \
   1d6b79498c7772f370065c35e7a0f11a89ba48a0d4710c609843a6cc5c1b307c "$PA194_DENSE_OVERLAY/PA194DenseStartupData.olean" \
   0839f147afdc3d3fc797c53523480ea55aeea92e39fb84d808d8d982d6c9824b "$PA194_PARENT_OVERLAY/PA196/FastRun.olean" \
-  bfb3245b742173c47f94222800fdccb189f26486140bc69db844f7e9870e1deb "Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/PA196/FastRun.lean" | sha256sum -c
+  bfb3245b742173c47f94222800fdccb189f26486140bc69db844f7e9870e1deb "Computability/BusyBeaver/Research/PA/other-machines/jamesyc-upstream/pa196/PA196/FastRun.lean" | sha256sum -c
 first_gen=${PA194_FIRST_INSTRUCTION_GENERATOR:-$base/generate-first-instruction.py}
 first_source=${PA194_FIRST_INSTRUCTION_SENTENCE_SOURCE:-$base/PA194FirstInstructionSentence.lean}
 first_source=$(realpath "$first_source")

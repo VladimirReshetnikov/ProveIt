@@ -2,7 +2,7 @@
 set -euo pipefail
 base=Computability/BusyBeaver/Research/PA
 package=$base/pa194-work/pa194-command-source
-upstream=$base/jamesyc-upstream/pa196
+upstream=$base/other-machines/jamesyc-upstream/pa196
 task_dir=$(mktemp -d "${TMPDIR:-/dev/shm}/pa194-command-source.XXXXXXXX")
 trap 'rm -rf "$task_dir"' EXIT
 # Retain the fully checked AX builder's isolated objects for this composition.

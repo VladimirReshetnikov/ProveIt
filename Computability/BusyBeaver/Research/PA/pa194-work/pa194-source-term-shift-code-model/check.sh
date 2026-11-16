@@ -9,7 +9,7 @@ trap 'rm -rf "$root"' EXIT
 mkdir -p "$root/source" "$root/model" "$root/final"
 export PA194_TERM_CODE_SOURCE_DIR="$root/source" PA194_TERM_CODE_MODEL_DIR="$root/model"
 export PA194_TERM_CODE_REPO="$PWD"
-python3 - "$base/pa194-work/pa194-source-term-shift-model/check.sh" "$root/source-prerequisites.sh" "$base/pa195-work/pa195-calibration/check-term-well-formed-unconditional.sh" "$root/model-prerequisites.sh" <<'PY'
+python3 - "$base/pa194-work/pa194-source-term-shift-model/check.sh" "$root/source-prerequisites.sh" "$base/other-machines/pa195-work/pa195-calibration/check-term-well-formed-unconditional.sh" "$root/model-prerequisites.sh" <<'PY'
 from pathlib import Path
 import re,sys
 src,srcout,model,modelout=sys.argv[1:]

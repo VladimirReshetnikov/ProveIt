@@ -7,10 +7,12 @@ arithmetic, `Con(PA)`. The current goal is a Lean proof of
 by the other 194-, 195-, and 196-state consistency candidates. The machines start
 on a blank two-way binary tape; state counts exclude the halt state.
 
-The `pa194/` and `pa195/` directories contain the principal machine-specific
-arithmetic developments. Supporting packages are grouped by candidate under
-[`pa194-work/`](pa194-work/) and [`pa195-work/`](pa195-work/). The `docs/`
-directory holds the delivered research packets.
+[`pa194/`](pa194/) and [`pa194-work/`](pa194-work/) hold the primary PA194
+development. [`other-machines/`](other-machines/) groups the PA195 development,
+the PA196 and U208 comparison, and the imported upstream snapshots.
+[`shared/`](shared/) holds the reusable machine coding and transfer from
+`IΣ₁`. [`docs/`](docs/) holds the delivered research packets, whose scripts
+and notes may refer to the directory layout at the time of delivery.
 
 **Status:** Neither machine-specific direction of this equivalence has yet
 been established in iPRA for PA194, the original PA195, or the PA196 candidate. In
@@ -200,40 +202,40 @@ The table's SHA-256 is
 The packet claims a PA-provable consistency equivalence; it does not supply
 an end-to-end Lean proof of that claim or an iPRA proof.
 
-- [PA195 arithmetic endpoint](pa195/ipra/README.md) binds the table to a
+- [PA195 arithmetic endpoint](other-machines/pa195/ipra/README.md) binds the table to a
   primitive-recursive halting test and an iPRA sentence in the standard
   model. Its equivalence theorem assumes two machine-specific classical PRA
   reductions; those assumptions remain open.
-- [Quotient and dense-table proof](pa195-work/pa195-dense/README.md) proves in Lean that
+- [Quotient and dense-table proof](other-machines/pa195-work/pa195-dense/README.md) proves in Lean that
   the 202-control parent and the delivered dense 195-state table halt under
   the same circumstances for every complete tape and head position.
-  [The zipper bridge](pa195-work/pa195-zip-bridge/README.md) connects blank-tape
+  [The zipper bridge](other-machines/pa195-work/pa195-zip-bridge/README.md) connects blank-tape
   halting to the arithmetic endpoint over the standard natural numbers.
-- [Register engine](pa195-work/pa195-runtime/README.md),
-  [source entry binding](pa195-work/pa195-source-entry/README.md), and
-  [symbolic contract batches](pa195-work/pa195-symbolic/README.md) check parts of the
+- [Register engine](other-machines/pa195-work/pa195-runtime/README.md),
+  [source entry binding](other-machines/pa195-work/pa195-source-entry/README.md), and
+  [symbolic contract batches](other-machines/pa195-work/pa195-symbolic/README.md) check parts of the
   parent machine's execution. The entry binding covers one source instruction
   and both branches; the complete source-graph and arithmetic correctness
   connections still need proof.
-- [Explicit machine codes](pa195/ipra/machine-code/README.md) develop tape,
+- [Explicit machine codes](other-machines/pa195/ipra/machine-code/README.md) develop tape,
   transition-table, and configuration-step functions in the PRA language.
   Their model equations are ingredients for a weak-arithmetic proof, not the
   missing machine/refutation reductions.
-- [Diagonal calibration](pa195-work/pa195-calibration/README.md) constructs an
+- [Diagonal calibration](other-machines/pa195-work/pa195-calibration/README.md) constructs an
   occurrence code and proves decoder self-freshness in classical PRA,
   including its behavior in nonstandard models. The component codes are
   supplied existentially; the proof-producing PA translation remains open.
 
 ## Other machines and related work
 
-[James Chang's imported snapshots](jamesyc-upstream/README.md) contain the
+[James Chang's imported snapshots](other-machines/jamesyc-upstream/README.md) contain the
 upstream PA196 and PA209 developments. The imported PA196 result includes a
 PA proof of the implication from literal nonhalting to PA consistency; this
 alone does not establish the converse in PA or either direction in iPRA.
-[PA196 versus U208](pa196-vs-u208/ipra/README.md) documents the PA196
+[PA196 versus U208](other-machines/pa196-vs-u208/ipra/README.md) documents the PA196
 arithmetic endpoint, conditional transfers, and the completed PA-refutation
 witness certificate. The machine-specific reductions remain open.
-[The archive audit](pa196-vs-u208/archive-audit/README.md) inventories related
+[The archive audit](other-machines/pa196-vs-u208/archive-audit/README.md) inventories related
 196-state tables and distinguishes candidates from rejected machines.
 
 [The later PA195 packet](docs/PA195_ConPA_research_2026-11-14/)
@@ -274,7 +276,7 @@ the repository, as `docs/README.md` describes, until it reads the placed files i
 
 ## Transfer from IΣ₁
 
-[`isigma1-transfer`](isigma1-transfer/README.md) proves, for any bounded arithmetic formula
+[`isigma1-transfer`](shared/isigma1-transfer/README.md) proves, for any bounded arithmetic formula
 `δ`, that an `𝗜𝚺₁` proof of `paRefutation 🡘 ∃ t, δ t` gives the iPRA equivalence of PA
 consistency and the negation of the mapped sentence `∃ t, δ t`, given the PA witness
 certificate. It is independent of the machine and proves no machine equivalence. Its use is
@@ -293,13 +295,13 @@ proved yet; the earlier standard-run source simulation does not supply them.
 
 For the compiler's internal syntax operations, fixed candidate-PRA codes now
 have all-model correctness proofs for [source formula shift](pa194-work/pa194-source-formula-shift-code-model/README.md)
-and [arithmetic formula closing](pa195-work/pa195-calibration/PA194FormulaAgreement.md).
+and [arithmetic formula closing](other-machines/pa195-work/pa195-calibration/PA194FormulaAgreement.md).
 These cover nonstandard valid formulas in candidate PRA models with IΣ₁
 reducts. They are components of the compiler, not a translation of arbitrary
 PA proofs or a verification of source execution.
 
 For the direction `Con(PA) → ¬Halt(M₁₉₄)`, a
-[conditional source-line theorem](pa195-work/pa195-calibration/PA194SourceLineRefutation.md)
+[conditional source-line theorem](other-machines/pa195-work/pa195-calibration/PA194SourceLineRefutation.md)
 turns an internally valid numerical derivation of code 1 into an internal PA
 refutation, provided its seed translations are PA-provable. Model-uniform
 proofs cover the six numbered seeds, rho8 and diagonal, as well as modus
@@ -320,11 +322,11 @@ turns that proof into an internal PA refutation assuming the guarded
 gate seed. The [distinct-label endpoint](pa194-work/pa194-distinct-gate-endpoint/README.md)
 discharges the equal-label gate case and narrows the premise to the remaining
 distinct-label separation tails. The model-length
-[universal-opening endpoint](pa195-work/pa195-calibration/PA194OpeningEndpoint.md) is
+[universal-opening endpoint](other-machines/pa195-work/pa195-calibration/PA194OpeningEndpoint.md) is
 now identified even for nonstandard codes, and the resulting
-[internal induction theorem](pa195-work/pa195-calibration/PA194FullInternalInduction.md)
+[internal induction theorem](other-machines/pa195-work/pa195-calibration/PA194FullInternalInduction.md)
 constructs the required closed induction axiom bodies. General
-[internal finite-set separation](pa195-work/pa195-calibration/PA194InternalSeparation.md)
+[internal finite-set separation](other-machines/pa195-work/pa195-calibration/PA194InternalSeparation.md)
 is also checked for arbitrary internal formula codes, and its
 [distinct-label numerical gate application](pa194-work/pa194-distinct-gate-sound/README.md)
 now supplies the remaining gate premise in those models. A modeled scheduler
@@ -435,6 +437,6 @@ the two recursion clauses, then reaches modeled scheduler halting. The checked
 source assembly still needs addition and multiplication coherence, both
 recursion clauses, and a bridge from the scheduler to the literal machine.
 
-[`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
+[`isigma1-machine`](shared/isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
 `Calibrated T h` from which the iPRA equivalence follows. No table is shown to be calibrated.

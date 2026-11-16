@@ -9,7 +9,7 @@ trap 'rm -rf "$root"' EXIT
 mkdir -p "$root/source" "$root/graph" "$root/final"
 export PA194_COMBINED_SOURCE_DIR="$root/source" PA194_COMBINED_GRAPH_DIR="$root/graph"
 export PA194_COMBINED_REPO="$PWD"
-python3 - "$base/pa194-work/pa194-search-pra-code/check.sh" "$root/source-prerequisites.sh" "$base/pa195-work/pa195-calibration/check-code-graph.sh" "$root/graph-prerequisites.sh" <<'PY'
+python3 - "$base/pa194-work/pa194-search-pra-code/check.sh" "$root/source-prerequisites.sh" "$base/other-machines/pa195-work/pa195-calibration/check-code-graph.sh" "$root/graph-prerequisites.sh" <<'PY'
 from pathlib import Path
 import re,sys
 src,srcout,graph,graphout=sys.argv[1:]
@@ -24,9 +24,9 @@ s=patch_task(Path(graph).read_text(),'PA194_COMBINED_GRAPH_DIR')
 old='repo=$(git -C "$(dirname "$0")" rev-parse --show-toplevel)'
 if s.count(old) != 1: raise SystemExit('unexpected graph repository declaration')
 s=s.replace(old,'repo=$PA194_COMBINED_REPO',1)
-old='lean -M6000 -j1 Computability/BusyBeaver/Research/PA/pa195-work/pa195-calibration/PA194CodeGraph.lean'
+old='lean -M6000 -j1 Computability/BusyBeaver/Research/PA/other-machines/pa195-work/pa195-calibration/PA194CodeGraph.lean'
 if s.count(old) != 1: raise SystemExit('unexpected graph Lean invocation')
-s=s.replace(old,'lean -M6000 -j1 -o "$task_dir/PA194CodeGraph.olean" Computability/BusyBeaver/Research/PA/pa195-work/pa195-calibration/PA194CodeGraph.lean',1)
+s=s.replace(old,'lean -M6000 -j1 -o "$task_dir/PA194CodeGraph.olean" Computability/BusyBeaver/Research/PA/other-machines/pa195-work/pa195-calibration/PA194CodeGraph.lean',1)
 Path(graphout).write_text(s)
 PY
 bash -n "$root/source-prerequisites.sh"

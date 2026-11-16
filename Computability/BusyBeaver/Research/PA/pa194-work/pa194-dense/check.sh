@@ -14,7 +14,7 @@ build pa194-work/pa194-all-tape PA194AllTape
 build pa194-work/pa194-translate PA194Translate
 build pa194-work/pa194-ordinary PA194Ordinary
 build pa194-work/pa194-simulation PA194Simulation
-build pa195-work/pa195-generic-trace PA195GenericTrace
+build other-machines/pa195-work/pa195-generic-trace PA195GenericTrace
 build pa194-work/pa194-control PA194ControlData
 build pa194-work/pa194-control PA194Control
 build pa194-work/pa194-global PA194Global

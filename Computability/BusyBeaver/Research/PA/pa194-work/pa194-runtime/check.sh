@@ -4,7 +4,7 @@ set -euo pipefail
 task_dir=$(mktemp -d /dev/shm/pa194-runtime-check.XXXXXXXX)
 trap 'rm -rf "$task_dir"' EXIT
 mkdir -p "$task_dir/M6"
-upstream=Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/M6
+upstream=Computability/BusyBeaver/Research/PA/other-machines/jamesyc-upstream/pa196/M6
 printf '%s  %s\n' \
   152d1d552b27baca8db0ac05b16092d9083c2ab979bb0b4e7f96a95803d9a9b0 "$upstream/Zip.lean" \
   e66961d7acb60e0c84e9674ee2d91ca2049ac6d704ad0edf7d971ef933f3ce2e "$upstream/Runtime.lean" \

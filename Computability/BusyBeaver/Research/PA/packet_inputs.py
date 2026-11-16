@@ -79,7 +79,7 @@ class PlacedPacket:
             return data
         base = self.repo / "Computability/BusyBeaver/Research/PA"
         if member.endswith("/reference/PA196/Program.lean"):
-            path = base / "jamesyc-upstream/pa196/PA196/Program.lean"
+            path = base / "other-machines/jamesyc-upstream/pa196/PA196/Program.lean"
         else:
             prefix = f"pa{self.machine}_conpa/"
             if not member.startswith(prefix):

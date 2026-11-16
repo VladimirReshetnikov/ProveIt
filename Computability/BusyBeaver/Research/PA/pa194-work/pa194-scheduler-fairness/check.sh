@@ -2,7 +2,7 @@
 set -euo pipefail
 base=Computability/BusyBeaver/Research/PA
 package=$base/pa194-work/pa194-scheduler-fairness
-upstream=$base/jamesyc-upstream/pa196/M6/Source
+upstream=$base/other-machines/jamesyc-upstream/pa196/M6/Source
 task_dir=$(mktemp -d "${TMPDIR:-/dev/shm}/pa194-scheduler-fairness.XXXXXXXX")
 trap 'rm -rf "$task_dir"' EXIT
 # Retain the freshly rebuilt derivation compiler and its prerequisites.

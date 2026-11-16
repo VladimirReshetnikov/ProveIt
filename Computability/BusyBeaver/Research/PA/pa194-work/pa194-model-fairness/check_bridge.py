@@ -35,7 +35,7 @@ here = os.path.dirname(os.path.abspath(__file__))
 repo = subprocess.run(["git", "-C", here, "rev-parse", "--show-toplevel"], capture_output=True,
                       text=True, check=True, creationflags=NW).stdout.strip()
 PA = os.path.join(repo, "Computability", "BusyBeaver", "Research", "PA")
-UP = os.path.join(PA, "jamesyc-upstream", "pa196")
+UP = os.path.join(PA, "other-machines", "jamesyc-upstream", "pa196")
 WORKSPACE = ("DiophantineConsistency", "Foundation", "BusyBeaver", "FirstOrder", "Mathlib", "Std",
              "Lean", "Init", "Batteries", "Aesop", "Qq", "Plausible", "ImportGraph",
              "LeanSearchClient", "ProofWidgets", "Cli")
@@ -73,7 +73,7 @@ if not os.path.exists(os.path.join(gen, "PA194AXPlan.lean")):
 flat = collections.defaultdict(list)
 for root, dirs, files in os.walk(PA):
     rel = os.path.relpath(root, PA).replace("\\", "/")
-    if rel.startswith(("docs", "jamesyc-upstream")):
+    if rel.startswith(("docs", "other-machines/jamesyc-upstream")):
         dirs[:] = []
         continue
     for f in files:

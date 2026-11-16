@@ -9,7 +9,7 @@ sha256sum -c "$base/pa194-work/pa194-paeq-term-blueprint/upstream.sha256"
 sha256sum -c "$base/pa194-work/pa194-paeq-formula/upstream.sha256"
 sha256sum -c "$base/pa194-work/pa194-paeq-bshift-growth/upstream.sha256"
 export PA194_PAEQ_BSHIFT_REPO="$PWD"
-python3 - "$base/pa196-vs-u208/ipra/check.sh" "$root/paeq-bshift-prerequisites.sh" <<'PY'
+python3 - "$base/other-machines/pa196-vs-u208/ipra/check.sh" "$root/paeq-bshift-prerequisites.sh" <<'PY'
 from pathlib import Path
 import sys
 s = Path(sys.argv[1]).read_text()

@@ -8,7 +8,7 @@ cd "$repo"
 IPRA_LEAN_OVERLAY=$(realpath "$IPRA_LEAN_OVERLAY")
 IPRA_FOUNDATION_OVERLAY=$(realpath "$IPRA_FOUNDATION_OVERLAY")
 sha256sum -c <<'PINS'
-152d1d552b27baca8db0ac05b16092d9083c2ab979bb0b4e7f96a95803d9a9b0  Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/M6/Zip.lean
+152d1d552b27baca8db0ac05b16092d9083c2ab979bb0b4e7f96a95803d9a9b0  Computability/BusyBeaver/Research/PA/other-machines/jamesyc-upstream/pa196/M6/Zip.lean
 842453bc52956492e439df8ccadbe00b1c0a2bac547d157b48b13daa045a8946  Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAHistoryPairCode.lean
 a346cba7ed93b8d495eeca81c85e52510eb45938bf417eb950d9e66b2a0d2f98  Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAIsZero.lean
 f0a5ba7482344477c2c7ca5ec2544f127ede62ec30e60b1101bfaed7be94db74  Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAFiniteFunctionCodes.lean
@@ -47,7 +47,7 @@ lean -M5000 -j1 Computability/BusyBeaver/Research/PA/pa194/ipra/machine-code/Tab
   -o "$BINARY_TAPE_TASK_DIR/TableModelSemantics.olean" | tee -a "$BINARY_TAPE_TASK_DIR/axioms.log"
 lean -M5000 -j1 Computability/BusyBeaver/Research/PA/pa194/ipra/machine-code/ConfigurationStep.lean \
   -o "$BINARY_TAPE_TASK_DIR/ConfigurationStep.olean" | tee -a "$BINARY_TAPE_TASK_DIR/axioms.log"
-lean -M6000 -j1 Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/M6/Zip.lean \
+lean -M6000 -j1 Computability/BusyBeaver/Research/PA/other-machines/jamesyc-upstream/pa196/M6/Zip.lean \
   -o "$BINARY_TAPE_TASK_DIR/M6/Zip.olean"
 lean -R "$BINARY_TAPE_TASK_DIR" -M6000 -j1 "$BINARY_TAPE_TASK_DIR/PA194Literal.lean" \
   -o "$BINARY_TAPE_TASK_DIR/PA194Literal.olean"

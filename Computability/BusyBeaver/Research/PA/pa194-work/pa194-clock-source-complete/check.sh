@@ -38,7 +38,7 @@ sha256sum "$packet/tables/pa194.tm" \
   "$packet/tables/unfolded201.native.tm" "$packet/tables/pa194.labels.json" \
   "$packet/source/pa194.folds.json" "$packet/source/pa194.grammar.json" \
   "$packet/evidence/pa194.local-cases.json" "$base/packet_inputs.py" \
-  "$base/jamesyc-upstream/pa196/PA196/Program.lean" \
+  "$base/other-machines/jamesyc-upstream/pa196/PA196/Program.lean" \
   "$base/pa194-work/pa194-quotient/generate.py" "$base/pa194-work/pa194-source-tree/generate.py" \
   "$base/pa194-work/pa194-startup/generate.py" "$base/pa194/ipra/generate.py" \
   "$base/pa194-work/pa194-coverage/check.sh" "$base/pa194-work/pa194-startup/check.sh" \

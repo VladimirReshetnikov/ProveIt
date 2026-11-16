@@ -1,6 +1,6 @@
 # Source order-isomorphism transitivity, conditional on Separation
 
-This source-natural-deduction port of `Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/M6PA/Calibration/RelationalIsoComposition*.lean` constructs finite composition prefixes by ordinal induction, verifies the resulting graph is an order bijection, and concludes `compositionIsoTransitivity`: from source equality, empty set, adjunction, intersection, the exact graph-parameter-closed Separation instance, `domain a`, and isomorphisms a→b and b→c, it derives `orderIso a c`.
+This source-natural-deduction port of `Computability/BusyBeaver/Research/PA/other-machines/jamesyc-upstream/pa196/M6PA/Calibration/RelationalIsoComposition*.lean` constructs finite composition prefixes by ordinal induction, verifies the resulting graph is an order bijection, and concludes `compositionIsoTransitivity`: from source equality, empty set, adjunction, intersection, the exact graph-parameter-closed Separation instance, `domain a`, and isomorphisms a→b and b→c, it derives `orderIso a c`.
 
 The Separation premise remains explicit. This package alone does not discharge it in the source theory, prove translated PAeq transitivity, establish proof compilation, or yield an iPRA implication.
 

@@ -25,8 +25,8 @@ else
   model_path=''
 fi
 sha256sum -c <<PINS
-152d1d552b27baca8db0ac05b16092d9083c2ab979bb0b4e7f96a95803d9a9b0  $base/jamesyc-upstream/pa196/M6/Zip.lean
-bfb3245b742173c47f94222800fdccb189f26486140bc69db844f7e9870e1deb  $base/jamesyc-upstream/pa196/PA196/FastRun.lean
+152d1d552b27baca8db0ac05b16092d9083c2ab979bb0b4e7f96a95803d9a9b0  $base/other-machines/jamesyc-upstream/pa196/M6/Zip.lean
+bfb3245b742173c47f94222800fdccb189f26486140bc69db844f7e9870e1deb  $base/other-machines/jamesyc-upstream/pa196/PA196/FastRun.lean
 1c6476ea202824eeea7d690d7e5e544f6026adf4e5386152d03097aeed6ed0c5  $base/pa194/ipra/generate.py
 6ff179c3180b5ff2597a03048eaf0659285180d2dcf85c7629393bb48b236960  $base/pa194-work/pa194-startup/generate.py
 d57c38ab650fd64a527960e9868645a4f5f03616fefd41d5cc207e77d15ced8e  $PA194_STARTUP_OVERLAY/PA194PrimitiveSimulation.olean
@@ -48,9 +48,9 @@ python3 "$base/pa194-work/pa194-startup/generate.py" --out "$task_dir" --start-b
 printf '%s  %s\n' 7cd4f1ae6f6f5d0ee476840d6e7aa447500a3ec4e2293f6830e672cca735bbd7 "$task_dir/PA194StartupData.lean" | sha256sum -c
 python3 "${PA194_DENSE_GENERATOR:-$code/generate-dense-startup.py}" "$repo" "$task_dir"
 export LEAN_PATH="$task_dir:$model_path$PA194_STARTUP_OVERLAY:$(lake env printenv LEAN_PATH)"
-lean -M6000 -j1 -o "$task_dir/M6/Zip.olean" "$base/jamesyc-upstream/pa196/M6/Zip.lean"
+lean -M6000 -j1 -o "$task_dir/M6/Zip.olean" "$base/other-machines/jamesyc-upstream/pa196/M6/Zip.lean"
 lean -M6000 -j1 -R "$task_dir" -o "$task_dir/PA194Literal.olean" "$task_dir/PA194Literal.lean"
-lean -M6000 -j1 -o "$task_dir/PA196/FastRun.olean" "$base/jamesyc-upstream/pa196/PA196/FastRun.lean"
+lean -M6000 -j1 -o "$task_dir/PA196/FastRun.olean" "$base/other-machines/jamesyc-upstream/pa196/PA196/FastRun.lean"
 lean -M6000 -j1 -R "$task_dir" -o "$task_dir/PA194StartupData.olean" "$task_dir/PA194StartupData.lean"
 lean -M6000 -j1 -R "$task_dir" -o "$task_dir/PA194DenseStartupData.olean" "$task_dir/PA194DenseStartupData.lean" | tee "$task_dir/data-axioms.log"
 if rg -q 'sorryAx' "$task_dir/data-axioms.log"; then

@@ -9,7 +9,7 @@ root=$(mktemp -d "${TMPDIR:-/dev/shm}/pa194-distinct-gate-endpoint.XXXXXXXX")
 trap 'rm -rf "$root"' EXIT
 mkdir -p "$root/source" "$root/scheduler"
 export PA194_DISTINCT_GATE_SRC="$root/source" PA194_DISTINCT_GATE_REPO="$repo"
-python3 - "$base/pa195-work/pa195-calibration/check-equal-gate-numeric.sh" "$root/source-prerequisites.sh" <<'PY'
+python3 - "$base/other-machines/pa195-work/pa195-calibration/check-equal-gate-numeric.sh" "$root/source-prerequisites.sh" <<'PY'
 from pathlib import Path
 import sys
 s=Path(sys.argv[1]).read_text()
