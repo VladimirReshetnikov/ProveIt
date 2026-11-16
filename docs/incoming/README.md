@@ -306,7 +306,11 @@ placed the same way, under `combinatorics/`, and then deleted. It leaves out one
 then deleted. All 31 of its members are placed. `conway_criterion_ipra_2026-11-16.zip` was
 placed the same way, under `geometry/`, and then deleted. All 50 of its members are placed.
 `bring_quintic_ipra_2026-11-16.zip` was placed the same way, under `algebra/`, and then
-deleted. It leaves out one ignored `.log` file.
+deleted. It leaves out one ignored `.log` file. On 16 November 2026, on Vladimir's
+instruction, the 45 checksum manifests that had been placed with these packets
+(`MANIFEST.sha256`, `manifest.sha256` and three `MANIFEST.txt` digest lists) were removed
+and recorded in `OMITTED.tsv` as `checksum-manifest`; later packets are placed without
+theirs.
 
 ## Sub-exponential 3-SAT (ETH) reports
 
