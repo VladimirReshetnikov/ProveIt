@@ -43,19 +43,19 @@ lemma chain {W U τ σ σ' : V} (h : flg(texec S W τ) = 1 ∨ texec S W τ = σ
 top is what the SHIFTs leave there. -/
 lemma select_run (A H x d : V) (m : ℕ) (ys : List V) (r W : V) (hm : m ≤ S.n)
     (hdrop : (itemsL S (S.axT (0 + H) (d + x) A) (fun j => S.leaf j (d + x) (0 + H) A d)
-      (4 * cantor 0 d + 2) 0).drop m = ys ++ [0])
+      (4 * cantor 0 (S.genL A d) + 2) 0).drop m = ys ++ [0])
     (hno : NoHalt S (topL S (S.axT (0 + H) (d + x) A)) 0
       ((itemsL S (S.axT (0 + H) (d + x) A) (fun j => S.leaf j (d + x) (0 + H) A d)
-        (4 * cantor 0 d + 2) 0).take m))
+        (4 * cantor 0 (S.genL A d) + 2) 0).take m))
     (hr : (last2 (topL S (S.axT (0 + H) (d + x) A)) 0
       ((itemsL S (S.axT (0 + H) (d + x) A) (fun j => S.leaf j (d + x) (0 + H) A d)
-        (4 * cantor 0 d + 2) 0).take m)).1 = r) (hr1 : r ≠ 1)
+        (4 * cantor 0 (S.genL A d) + 2) 0).take m)).1 = r) (hr1 : r ≠ 1)
     (hW : texec S W ⟪⟪0, 0, 0, 0⟫, 0, 0⟫ = ⟪⟪0, 0, d, 0⟫, 0, 0⟫) :
     texec S (pops S (ys.length + 1) (shifts m (snoc W (AX A H x)))) ⟪⟪0, 0, 0, 0⟫, 0, 0⟫ =
       ⟪⟪r, 0, 0, 0⟫, 0, 0⟫ := by
   have h2 := ax_shifts S A H x 0 0 d 0 0 _ _ (List.take_append_drop m _).symm hno W _ hW
   have ht : ((itemsL S (S.axT (0 + H) (d + x) A) (fun j => S.leaf j (d + x) (0 + H) A d)
-      (4 * cantor 0 d + 2) 0).take m).length = m := by
+      (4 * cantor 0 (S.genL A d) + 2) 0).take m).length = m := by
     rw [List.length_take, itemsL_length]
     exact Nat.min_eq_left hm
   rw [ht, hdrop, hr, List.length_append, List.length_singleton] at h2
@@ -93,7 +93,7 @@ theorem G_leaf (i : ℕ) (hi : i < 8) (D H A d : V) (hd : d ≤ D) : G S (S.leaf
     offset_run S d 0 0 (DISCARD S) _ (discard_run S 0 0 0)
   have hD : d + (D - d) = D := add_tsub_cancel_of_le hd
   obtain ⟨ys, hys, hylen⟩ := leaf_drop S (fun j => S.leaf j (d + (D - d)) (0 + H) A d)
-    (4 * cantor 0 d + 2) 0 (S.axT (0 + H) (d + (D - d)) A) i hi
+    (4 * cantor 0 (S.genL A d) + 2) 0 (S.axT (0 + H) (d + (D - d)) A) i hi
   have h := select_run S A H (D - d) d (i + 2 + S.g) ys
     (S.leaf i (d + (D - d)) (0 + H) A d) _ (leaf_le S i hi) hys
     (leaf_nohalt S _ _ _ _ (S.axT_ne_one _ _ _) (fun j => S.leaf_ne_one j _ _ _ _) i hi)
@@ -127,7 +127,7 @@ lemma gate_drop (f : ℕ → V) (g t T : V) :
 where two SHIFTs bring it to the top. -/
 theorem G_axT (H D A : V) : G S (S.axT H D A) := by
   obtain ⟨ys, hys⟩ := gate_drop S (fun j => S.leaf j (0 + D) (0 + H) A 0)
-    (4 * cantor 0 0 + 2) 0 (S.axT (0 + H) (0 + D) A)
+    (4 * cantor 0 (S.genL A 0) + 2) 0 (S.axT (0 + H) (0 + D) A)
   refine ⟨pops S (ys.length + 1) (shifts (2 * S.g) (snoc (DISCARD S) (AX A H D))), Or.inr ?_⟩
   have h := select_run S A H D 0 (2 * S.g) ys (S.axT (0 + H) (0 + D) A) _ (gate_le S) hys
     (gate_nohalt S _ _ _ _ (S.axT_ne_one _ _ _)) (gate_window S _ _ _ _)
@@ -148,7 +148,8 @@ lemma gen_run (i a v δ : V) :
       ⟪⟪0, v, i, a⟫, δ, 0⟫ := by
     rw [texec_snoc, h1]
     exact tstep_SH S 0 0 a v i δ (by simp [halts_zero_iff])
-  exact ax_all S i 0 0 0 v i a δ _ _ h2
+  have h := ax_all S i 0 0 0 v i a δ _ _ h2
+  rwa [S.genL_self] at h
 
 theorem G_gen (i a : V) (ha : G S a) : G S (4 * cantor a i + 2) := by
   obtain ⟨W, hW⟩ := ha
@@ -188,7 +189,7 @@ lemma mpsuf2_tail (b v δ W τ : V)
     flg(texec S (shifts (S.n + 1) (snoc W (AX b 0 0))) τ) = 1 ∨
       texec S (shifts (S.n + 1) (snoc W (AX b 0 0))) τ = ⟪⟪b, v, 0, 0⟫, δ, 0⟫ := by
   rw [shifts_succ', texec_snoc, ax_all S b 0 0 (0 + b) (cantor 0 v) (0 + b) 0 (δ + 1) _ _ hW]
-  by_cases hH : S.Halts (4 * cantor 0 (0 + b) + 2) (0 + b)
+  by_cases hH : S.Halts (4 * cantor 0 (S.genL b (0 + b)) + 2) (0 + b)
   · left
     rw [tstep_SH_halt S _ _ _ _ _ hH]
     simp

@@ -172,7 +172,7 @@ lemma tstep_AX (A y x t w d h δ : V) :
     tstep S (AX A y x) ⟪⟪t, w, d, h⟫, δ, 0⟫ =
       ⟪⟪topL S (S.axT (h + y) (d + x) A),
           (itemsL S (S.axT (h + y) (d + x) A) (fun i => S.leaf i (d + x) (h + y) A d)
-            (4 * cantor h d + 2) t).foldr cantor w,
+            (4 * cantor h (S.genL A d) + 2) t).foldr cantor w,
           0, 0⟫, δ + (S.n : V), 0⟫ := by
   unfold AX
   rw [tstep_ax S A y x 0 t w d h δ, stack10_eq, ax_height]
@@ -232,7 +232,7 @@ lemma nohalt_initL (T : V) (f : ℕ → V) (g : V) (hT : T ≠ 1) (hf : ∀ j, f
 /-- AX followed by SHIFTs through the first entries `xs` of its list. -/
 lemma ax_shifts (A y x t w d h δ : V) (xs ys : List V)
     (hsplit : itemsL S (S.axT (h + y) (d + x) A) (fun i => S.leaf i (d + x) (h + y) A d)
-      (4 * cantor h d + 2) t = xs ++ ys)
+      (4 * cantor h (S.genL A d) + 2) t = xs ++ ys)
     (hn : NoHalt S (topL S (S.axT (h + y) (d + x) A)) 0 xs) (W τ : V)
     (hW : texec S W τ = ⟪⟪t, w, d, h⟫, δ, 0⟫) :
     texec S (shifts xs.length (snoc W (AX A y x))) τ =
@@ -251,10 +251,10 @@ lemma ax_shifts (A y x t w d h δ : V) (xs ys : List V)
 /-- SHIFTs through all entries: the generalization in `t`, the old top in `h`, the stack
 restored. -/
 lemma ax_all (A y x t w d h δ W τ : V) (hW : texec S W τ = ⟪⟪t, w, d, h⟫, δ, 0⟫) :
-    texec S (shifts S.n (snoc W (AX A y x))) τ = ⟪⟪4 * cantor h d + 2, w, 0, t⟫, δ, 0⟫ := by
+    texec S (shifts S.n (snoc W (AX A y x))) τ = ⟪⟪4 * cantor h (S.genL A d) + 2, w, 0, t⟫, δ, 0⟫ := by
   have h := ax_shifts S A y x t w d h δ
     (itemsL S (S.axT (h + y) (d + x) A) (fun i => S.leaf i (d + x) (h + y) A d)
-      (4 * cantor h d + 2) t) [] (by simp)
+      (4 * cantor h (S.genL A d) + 2) t) [] (by simp)
     (nohalt_itemsL S _ _ _ _ (S.axT_ne_one _ _ _) (fun j => S.leaf_ne_one j _ _ _ _)) W τ hW
   rw [itemsL_length, last2_itemsL] at h
   simpa using h
@@ -263,10 +263,10 @@ lemma ax_all (A y x t w d h δ W τ : V) (hW : texec S W τ = ⟪⟪t, w, d, h�
 pushed. -/
 lemma ax_nine (A y x t w d h δ W τ : V) (hW : texec S W τ = ⟪⟪t, w, d, h⟫, δ, 0⟫) :
     texec S (shifts (S.n - 1) (snoc W (AX A y x))) τ =
-      ⟪⟪S.leaf 7 (d + x) (h + y) A d, cantor t w, 0, 4 * cantor h d + 2⟫, δ + 1, 0⟫ := by
+      ⟪⟪S.leaf 7 (d + x) (h + y) A d, cantor t w, 0, 4 * cantor h (S.genL A d) + 2⟫, δ + 1, 0⟫ := by
   have h := ax_shifts S A y x t w d h δ
     (initL S (S.axT (h + y) (d + x) A) (fun i => S.leaf i (d + x) (h + y) A d)
-      (4 * cantor h d + 2)) [t] (itemsL_split S _ _ _ _)
+      (4 * cantor h (S.genL A d) + 2)) [t] (itemsL_split S _ _ _ _)
     (nohalt_initL S _ _ _ (S.axT_ne_one _ _ _) (fun j => S.leaf_ne_one j _ _ _ _)) W τ hW
   rw [initL_length, last2_initL] at h
   simpa using h
