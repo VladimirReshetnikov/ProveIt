@@ -134,13 +134,13 @@ private theorem image_emb {n : ℕ} (free : ℕ → PTm n) (p : Sentenceᵢ L) :
   simp only [propImage, toConciseClosed, toConciseFormula_rew, toConciseFormula_subst]
   congr 1 <;> exact funext isEmptyElim
 
-/-- A Foundation theory proof gives a Concise derivation of its closed image
-once each theory axiom has a closed Concise derivation. -/
-theorem theoryToConcise {Ax : LeanProofs.ConciseIPRA.Theory PTm}
+/-- Translate an open reference proposition under an arbitrary assignment,
+given closed Concise derivations of the theory axioms. -/
+theorem extendedToConcise {Ax : LeanProofs.ConciseIPRA.Theory PTm}
     (T : Theoryᵢ L (𝗜𝗻𝘁¹ : Hilbertᵢ L))
     (axiomImage : ∀ p ∈ T.theory, Prf Ax [] (toConciseClosed p))
-    {p : Sentenceᵢ L} (h : T ⊢ p) : Prf Ax [] (toConciseClosed p) := by
-  obtain ⟨proof⟩ := h
+    {p : Propositionᵢ L} (proof : DiophantineConsistency.IPRATheoryHilbertBridge.extended T ⊢! p)
+    {n : ℕ} (free : ℕ → PTm n) : Prf Ax [] (toConciseFormula Fin.elim0 free p) := by
   let H := DiophantineConsistency.IPRATheoryHilbertBridge.extended T
   have map_axiom {n : ℕ} (q : Propositionᵢ L) (hq : q ∈ H)
       (free : ℕ → PTm n) : Prf Ax [] (propImage free q) := by
@@ -149,9 +149,18 @@ theorem theoryToConcise {Ax : LeanProofs.ConciseIPRA.Theory PTm}
       exact .impI (.botE _ Prf.hyp0)
     · rw [image_emb]
       exact (axiomImage q hq).subst Fin.elim0
+  exact hilbertToConcise map_axiom proof free
+
+/-- A Foundation theory proof gives a Concise derivation of its closed image
+once each theory axiom has a closed Concise derivation. -/
+theorem theoryToConcise {Ax : LeanProofs.ConciseIPRA.Theory PTm}
+    (T : Theoryᵢ L (𝗜𝗻𝘁¹ : Hilbertᵢ L))
+    (axiomImage : ∀ p ∈ T.theory, Prf Ax [] (toConciseClosed p))
+    {p : Sentenceᵢ L} (h : T ⊢ p) : Prf Ax [] (toConciseClosed p) := by
+  obtain ⟨proof⟩ := h
   let free : ℕ → PTm 0 := fun _ => PTm.zero
   have result : Prf Ax [] (propImage free (Rewriting.emb p)) :=
-    hilbertToConcise map_axiom
+    extendedToConcise T axiomImage
       (DiophantineConsistency.IPRATheoryHilbertBridge.theoryToExtended T proof) free
   rw [image_emb] at result
   have hEmpty : (Fin.elim0 : Fin 0 → PTm 0) = Syn.var := funext isEmptyElim
