@@ -18,12 +18,12 @@ arbitrary suffix. `PA194M5Constructor.firstMultiply` applies that result to
 the exact archived rows at sites 123 through 129, with a positive model-valued
 source clock.
 
-This stage covers the source arithmetic and the delivered loop rows. It uses
-the original controller's dispatch code for increment, decrement, and jump.
-A complete controller for the larger source list requires separate malformed
-and halt ordinals beyond its instruction sites. The literal binary tape
-simulation and radix-five consistency calibration are independent proof
-obligations for the final M5 endpoint.
+The complete source dispatch assigns malformed ordinal 3,734 and halt ordinal
+3,735, both beyond the 3,734 instruction sites. `PA194M5Control.haltExecution`
+checks the delivered source halt at site 10. `haltedRun` and `malformedRun`
+prove that the respective configurations are fixed over every model-valued
+clock. The constructor proof uses this same dispatch and iterator. The literal
+binary tape simulation and radix-five consistency calibration remain open.
 
 From the repository root, supply a checked PA194 model stage whose
 `leanpath.txt` exposes `PA194ModelMPDrain.olean`. A staged primary native

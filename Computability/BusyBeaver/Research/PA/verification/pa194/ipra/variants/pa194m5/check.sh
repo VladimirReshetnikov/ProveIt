@@ -37,13 +37,19 @@ check() {
   if rg -q "error:|sorryAx|Lean.ofReduceBool|declaration uses 'sorry'" "$log"; then return 1; fi
   printf 'PASS %s\n' "$module"
 }
+check "$here/PA194ProgramControl.lean" PA194ProgramControl
 check "$here/PA194ProgramDrain.lean" PA194ProgramDrain
 check "$out/PA194M5Program.lean" PA194M5Program
 check "$out/PA194M5Constructor.lean" PA194M5Constructor
+check "$here/PA194M5Control.lean" PA194M5Control
 rg -Fxq "'PA194ProgramDrain.rowStep' depends on axioms: [propext, Classical.choice, Quot.sound]" "$out/PA194ProgramDrain.log"
 rg -Fxq "'PA194ProgramDrain.drain' depends on axioms: [propext, Classical.choice, Quot.sound]" "$out/PA194ProgramDrain.log"
 rg -Fxq "'PA194ProgramDrain.multiply' depends on axioms: [propext, Classical.choice, Quot.sound]" "$out/PA194ProgramDrain.log"
 rg -Fxq "'PA194M5Constructor.loopRows' depends on axioms: [propext]" "$out/PA194M5Constructor.log"
 rg -Fxq "'PA194M5Constructor.firstMultiply' depends on axioms: [propext, Classical.choice, Quot.sound]" "$out/PA194M5Constructor.log"
-sha256sum "$here/PA194ProgramDrain.lean" "$here/generate.py" "$here/check.sh" \
+rg -Fxq "'PA194ProgramControl.outsideStep' depends on axioms: [propext, Classical.choice, Quot.sound]" "$out/PA194ProgramControl.log"
+rg -Fxq "'PA194M5Control.haltExecution' depends on axioms: [propext, Classical.choice, Quot.sound]" "$out/PA194M5Control.log"
+rg -Fxq "'PA194M5Control.haltedRun' depends on axioms: [propext, Classical.choice, Quot.sound]" "$out/PA194M5Control.log"
+rg -Fxq "'PA194M5Control.malformedRun' depends on axioms: [propext, Classical.choice, Quot.sound]" "$out/PA194M5Control.log"
+sha256sum "$here"/*.lean "$here/generate.py" "$here/check.sh" \
   "$out"/PA194M5{Program,Constructor}.lean "$out"/*.olean > "$out/sha256.txt"

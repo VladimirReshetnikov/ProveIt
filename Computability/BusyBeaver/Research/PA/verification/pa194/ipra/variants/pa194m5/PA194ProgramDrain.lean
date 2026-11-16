@@ -1,4 +1,4 @@
-import PA194ModelMPDrain
+import PA194ProgramControl
 
 set_option autoImplicit false
 set_option maxRecDepth 20000
@@ -12,19 +12,14 @@ open DiophantineConsistency PRAFiniteFunctionCodes PRALanguage PRATheory PRAAddO
 open PRAHistoryPairCode PRAModelIOpenPairing PRAExhaustion PRASubAddition TableDispatch
 open PA194SchedulerFetchPositive PA194SourceRegisterRelation PA194SourceFetchLoop
 open PA194IteratedSimulation PA194ClockInvariantDefinable
-open PA194SourceControllerCode (dispatch pc destination)
-open PA194SourceControllerBinding (dispatchAt)
+open PA194SourceControllerCode (pc destination)
 open PA194SourceRegisters PA194SourceInstructionModel
 open PA194ModelMPDrain (location tally tick tickCons frameDef argsAfter partialDef partialZero subSelf tallyZero)
 
-abbrev Program := List (Option M6.Source.Instruction)
-
-def row (program : Program) (site : Nat) : Option M6.Source.Instruction :=
-  (program[site]?).join
-
-def step (program : Program) : Code 1 := dispatch 0 program
-
-def run (program : Program) : Code 2 := iterate (step program)
+abbrev Program := PA194ProgramControl.Program
+abbrev row := PA194ProgramControl.row
+abbrev step := PA194ProgramControl.step
+abbrev run := PA194ProgramControl.run
 
 /-- A finite group of increment rows followed by a jump to the loop entry. -/
 inductive Increments (program : Program) (exit : Nat) : Nat → List (Fin 9) → Prop where
@@ -50,18 +45,26 @@ variable [M↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 variable (program : Program)
 
 theorem rowStep (q : Nat) (hq : q < program.length) (s : M)
-    (hs : F pc ![s] = modelNumeral M q) :
-    F (step program) ![s] = instructionSem (row program q) s := by
-  have hd := dispatchAt 0 program q hq s (by simpa using hs)
-  rw [step,hd,instructionModel]
-  simp [row,List.getElem?_eq_getElem hq]
+    (hs : F pc ![s] = modelNumeral M q) {i : M6.Source.Instruction}
+    (hrow : row program q = some i) (hstep : i ≠ .halt) :
+    F (step program) ![s] = instructionSem (some i) s := by
+  change PA194ProgramControl.row program q = some i at hrow
+  rw [PA194ProgramControl.actionAt program q hq s hs,hrow]
+  cases i with
+  | halt => exact False.elim (hstep rfl)
+  | inc r next =>
+    simpa only [PA194ProgramControl.action] using instructionModel (some (.inc r next)) s
+  | dec r zero positive =>
+    simpa only [PA194ProgramControl.action] using instructionModel (some (.dec r zero positive)) s
+  | jump next =>
+    simpa only [PA194ProgramControl.action] using instructionModel (some (.jump next)) s
 
 theorem sourceInc (q d : Nat) (r : Fin 9) (hq : q < program.length)
     (hinst : row program q = some (.inc r (some d)))
     (args : Fin 11 → M) (tail : M) :
     F (step program) ![sourceState q args tail] =
       sourceState d (Function.update args ⟨r.val,by have h := r.isLt; omega⟩ (regsOfArgs args r+1)) tail := by
-  rw [rowStep program q hq _ (statePC q args tail),hinst]
+  rw [rowStep program q hq _ (statePC q args tail) hinst (by intro h; cases h)]
   simp only [PA194SourceInstructionModel.instructionSem,destination]
   change pair (modelNumeral M d) (putSem r.val (pi₂ (sourceState q args tail))
     (F Code.succ (fun _ => getSem r.val (pi₂ (sourceState q args tail))))) = _
@@ -75,7 +78,7 @@ theorem sourceJump (q d : Nat) (hq : q < program.length)
     (hinst : row program q = some (.jump (some d)))
     (args : Fin 11 → M) (tail : M) :
     F (step program) ![sourceState q args tail] = sourceState d args tail := by
-  rw [rowStep program q hq _ (statePC q args tail),hinst]
+  rw [rowStep program q hq _ (statePC q args tail) hinst (by intro h; cases h)]
   change pair (modelNumeral M d) (pi₂ (pair (modelNumeral M q) (pack (regsOfArgs args) tail))) = _
   rw [pi₂_pair]; rfl
 
@@ -89,7 +92,7 @@ theorem sourceDecPositive (q d : Nat) (r : Fin 9) (z : Option Nat) (hq : q < pro
     exact ne_of_gt (lt_of_le_of_lt (zero_le : (0 : M) ≤ m) (lt_add_of_pos_right m (Arithmetic.zero_lt_one : (0 : M) < 1)))
   have hp : F predCode (fun _ => getSem r.val (pi₂ (sourceState q args tail))) = m := by
     rw [stateReg,hm,show m+1 = F Code.succ (fun _ => m) from modelAddOne m,modelPredSucc]
-  rw [rowStep program q hq _ (statePC q args tail),hinst]
+  rw [rowStep program q hq _ (statePC q args tail) hinst (by intro h; cases h)]
   simp only [PA194SourceInstructionModel.instructionSem,destination]
   change (if getSem r.val (pi₂ (sourceState q args tail)) = (0 : M) then _ else _) = _
   rw [if_neg hn]
@@ -106,7 +109,7 @@ theorem sourceDecZero (q d : Nat) (r : Fin 9) (p : Option Nat) (hq : q < program
     (args : Fin 11 → M) (tail : M) (hz : regsOfArgs args r = (0 : M)) :
     F (step program) ![sourceState q args tail] = sourceState d args tail := by
   have hr : getSem r.val (pi₂ (sourceState q args tail)) = (0 : M) := (stateReg q args tail r).trans hz
-  rw [rowStep program q hq _ (statePC q args tail),hinst]
+  rw [rowStep program q hq _ (statePC q args tail) hinst (by intro h; cases h)]
   simp only [PA194SourceInstructionModel.instructionSem,destination]
   change (if getSem r.val (pi₂ (sourceState q args tail)) = (0 : M) then _ else _) = _
   rw [if_pos hr]
