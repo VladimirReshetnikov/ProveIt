@@ -123,4 +123,5 @@ import IPRADerivations.Probability.Lotus
 import IPRADerivations.Probability.Independence
 import IPRADerivations.Probability.TailSum
 import IPRADerivations.Probability.Variance
+import IPRADerivations.Probability.NormalMoments
 import IPRADerivations.Topology.Sperner

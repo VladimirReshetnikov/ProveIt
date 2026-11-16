@@ -158,6 +158,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.Variance.sum_one
 #print axioms LeanProofs.IPRA.Probability.Variance.sum_const_of
 #print axioms LeanProofs.IPRA.Probability.Variance.sample_mean
+#print axioms LeanProofs.IPRA.Probability.NormalMoments.df_succ
+#print axioms LeanProofs.IPRA.Probability.NormalMoments.edf_succ
+#print axioms LeanProofs.IPRA.Probability.NormalMoments.df_fact
+#print axioms LeanProofs.IPRA.Probability.NormalMoments.edf_eq
+#print axioms LeanProofs.IPRA.Probability.NormalMoments.double_fact
+#print axioms LeanProofs.IPRA.Probability.NormalMoments.df_cb
+#print axioms LeanProofs.IPRA.Probability.NormalMoments.df_pos
+#print axioms LeanProofs.IPRA.Probability.NormalMoments.moment_quotient
 #print axioms LeanProofs.IPRA.pw_add
 #print axioms LeanProofs.IPRA.pw_le_pw
 #print axioms LeanProofs.IPRA.le_self_pw
