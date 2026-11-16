@@ -212,6 +212,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Algebra.QuadraticExtension.root_sq
 #print axioms LeanProofs.IPRA.Algebra.QuadraticExtension.conj_mul
 #print axioms LeanProofs.IPRA.Algebra.QuadraticExtension.norm_mul
+#print axioms LeanProofs.IPRA.Algebra.ObservationAlgebra.newton2
+#print axioms LeanProofs.IPRA.Algebra.ObservationAlgebra.newton3a
+#print axioms LeanProofs.IPRA.Algebra.ObservationAlgebra.newton3b
+#print axioms LeanProofs.IPRA.Algebra.ObservationAlgebra.companion2
+#print axioms LeanProofs.IPRA.Algebra.ObservationAlgebra.companion3
+#print axioms LeanProofs.IPRA.Algebra.ObservationAlgebra.quad_observation
+#print axioms LeanProofs.IPRA.Algebra.ObservationAlgebra.quad_observation_sq
 #print axioms LeanProofs.IPRA.Topology.Sperner.parity_invariant
 #print axioms LeanProofs.IPRA.Topology.Sperner.sperner_1d
 #print axioms LeanProofs.IPRA.Foundations.Termination.termination
