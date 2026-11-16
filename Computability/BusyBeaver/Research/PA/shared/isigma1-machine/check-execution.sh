@@ -30,7 +30,7 @@ check() {
   printf 'PASS %s\n' "$mod"
 }
 
-for module in Segments Scans SourceSimulation CompressedTape CompressedExecutor CompressedNormalization GenericMark GenericDecrement; do
+for module in Segments Scans SourceSimulation CompressedTape CompressedExecutor CompressedNormalization GenericMark GenericDecrement GenericIncrement; do
   check "$here/ConPAMachine$module.lean"
 done
 check "$here/../../pa194/ipra/variants/PA194VariantController.lean"

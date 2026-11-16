@@ -46,6 +46,8 @@ complete marking segment for any table with the specified literal rows
 and any of the first nine unary blocks.
 [`ConPAMachineGenericDecrement.lean`](ConPAMachineGenericDecrement.lean)
 proves both branches of decrement for any table with its specified rows.
+[`ConPAMachineGenericIncrement.lean`](ConPAMachineGenericIncrement.lean)
+proves the increment path through an arbitrary preceding and following file.
 The segment clocks and register lengths are model-valued.
 
 [`ConPAMachineStutter.lean`](ConPAMachineStutter.lean) compares halting
