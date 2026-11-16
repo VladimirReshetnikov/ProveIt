@@ -219,6 +219,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Algebra.ObservationAlgebra.companion3
 #print axioms LeanProofs.IPRA.Algebra.ObservationAlgebra.quad_observation
 #print axioms LeanProofs.IPRA.Algebra.ObservationAlgebra.quad_observation_sq
+#print axioms LeanProofs.IPRA.Algebra.JacobiRotation.pivot
+#print axioms LeanProofs.IPRA.Algebra.JacobiRotation.row_invariant
+#print axioms LeanProofs.IPRA.Algebra.JacobiRotation.rational_circle
+#print axioms LeanProofs.IPRA.Algebra.JacobiRotation.high_branch
+#print axioms LeanProofs.IPRA.Algebra.JacobiRotation.low_branch
+#print axioms LeanProofs.IPRA.Algebra.JacobiRotation.lagrange2
+#print axioms LeanProofs.IPRA.Algebra.JacobiRotation.lagrange3
 #print axioms LeanProofs.IPRA.Topology.Sperner.parity_invariant
 #print axioms LeanProofs.IPRA.Topology.Sperner.sperner_1d
 #print axioms LeanProofs.IPRA.Foundations.Termination.termination
