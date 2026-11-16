@@ -59,6 +59,7 @@ import IPRADerivations.AnalyticNumberTheory.PhiUpper
 import IPRADerivations.AnalyticNumberTheory.PhiLimsup
 import IPRADerivations.AnalyticNumberTheory.PhiPowTwo
 import IPRADerivations.Combinatorics.Bell
+import IPRADerivations.Combinatorics.BellBounds
 import IPRADerivations.DiophantineNumberTheory.PellGcd
 import IPRADerivations.Core.Pigeonhole
 import IPRADerivations.DiophantineNumberTheory.PellModular

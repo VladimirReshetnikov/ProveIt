@@ -320,6 +320,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.bell_zero
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.nth_BL
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.bell_rec
+#print axioms LeanProofs.IPRA.Combinatorics.BellBounds.bell_pos
+#print axioms LeanProofs.IPRA.Combinatorics.BellBounds.sum_binom
+#print axioms LeanProofs.IPRA.Combinatorics.BellBounds.bell_lower
+#print axioms LeanProofs.IPRA.Combinatorics.BellBounds.sum_w
+#print axioms LeanProofs.IPRA.Combinatorics.BellBounds.upper_step
+#print axioms LeanProofs.IPRA.Combinatorics.BellBounds.bell_upper
+#print axioms LeanProofs.IPRA.Combinatorics.BellBounds.bell_bounds
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.add_formula
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.pell_norm
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.cop_XY
