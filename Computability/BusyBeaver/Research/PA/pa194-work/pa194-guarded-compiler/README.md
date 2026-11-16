@@ -287,3 +287,15 @@ and `sM3` recursion hypotheses. Reproduce with a fresh output directory:
 ```sh
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-fixed-arithmetic.sh "$PWD" NEW_EMPTY_OUTPUT
 ```
+
+A separate repository-source replay of `PA194GuardedClosed` passed six axiom
+audits without `sorryAx` against the independently replayed fixed-arithmetic
+modules and other prebuilt dependencies. Its closed-form guard elimination and
+four resulting axiom proofs remain conditional on the documented source facts,
+domain inhabitation, and, where applicable, the `sA3` or `sM3` recursion fact.
+The bridge to the standard-translation supplier remains open. Reproduce with a
+fresh output directory:
+
+```sh
+bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-guarded-closed.sh "$PWD" NEW_EMPTY_OUTPUT
+```
