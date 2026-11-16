@@ -89,3 +89,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Descent.descent
 #print axioms LeanProofs.IPRA.Algebra.TrisectionCubic.nonneg_root
 #print axioms LeanProofs.IPRA.Algebra.TrisectionCubic.nonpos_root
+#print axioms LeanProofs.IPRA.Topology.Sperner.parity_invariant
+#print axioms LeanProofs.IPRA.Topology.Sperner.sperner_1d
+#print axioms LeanProofs.IPRA.Foundations.Termination.termination
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Hurwitz.denominator_bound
