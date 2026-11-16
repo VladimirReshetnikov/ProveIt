@@ -1,0 +1,299 @@
+\appendix
+\section{Elementary estimates and certificate templates}\label{sec:appendix-estimates}
+
+This appendix collects the inequalities used repeatedly in the main proof.  It
+is deliberately elementary: each proof can be translated into bounded sums,
+products, polynomial inequalities, and quantifier-free induction.  These are
+the lemmas that should be formalized first because they remove nearly all
+analytic ambiguity from later modules.
+
+\subsection{A rational exponential bound}
+
+\begin{lemma}[Finite exponential majorant]\label{lem:exp-majorant}
+Let \(u\in\Q\) satisfy \(0\le u<1\).  Then
+\[
+  \e^u\le \frac1{1-u},
+  \qquad
+  0\le \e^u-1-u\le \frac{u^2}{2(1-u)}.
+\]
+For a complex number with \(\lvert w\rvert\le u\),
+\[
+  \lvert \e^w-1\rvert\le \frac{u}{1-u}.
+\]
+\end{lemma}
+
+\begin{proof}
+Use the power series and the factorial inequality \(j!\ge1\) for the first
+bound.  For the second, \(j!\ge2\) when \(j\ge2\), hence
+\[
+ \sum_{j\ge2}\frac{u^j}{j!}
+ \le \frac12\sum_{j\ge2}u^j
+ =\frac{u^2}{2(1-u)}.
+\]
+The complex estimate follows from the triangle inequality.  In an iPRA
+certificate the infinite geometric series is represented by the finite identity
+\((1-u)\sum_{j<M}u^j=1-u^M\), together with a chosen \(M\) satisfying
+\(u^M\le2^{-p}\).  Such an \(M\) is obtained by bounded search after a rational
+separation witness for \(u<1\) has been supplied.
+\end{proof}
+
+\subsection{The logarithmic canonical factor}
+
+For \(\lvert w\rvert<1\), put
+\[
+  r(w)=\Log(1+w)-w+\frac{w^2}{2}
+      =\sum_{j=3}^{\infty}\frac{(-1)^{j-1}}{j}w^j.
+\]
+When \(\lvert w\rvert\le1/2\),
+\begin{equation}\label{eq:r-bound-appendix}
+  \lvert r(w)\rvert
+  \le \sum_{j=3}^{\infty}\frac{\lvert w\rvert^j}{j}
+  \le \frac{\lvert w\rvert^3}{3(1-\lvert w\rvert)}
+  \le \frac{2}{3}\lvert w\rvert^3.
+\end{equation}
+This is the estimate used in \cref{lem:canonical-tail}.  Differentiating the
+finite polynomial before taking a limit gives, for each fixed \(d\), a rational
+constant \(C_d\) such that
+\[
+  \left|\frac{\dd^d}{\dd z^d}
+   \left(k\Log(1+z/k)-z+\frac{z^2}{2k}\right)\right|
+   \le \frac{C_d(1+R)^{d+3}}{k^2}.
+\]
+after increasing the cutoff to \(k\ge2R+2d\).  No differentiation of an
+uncertified infinite object is needed.
+
+\subsection{A telescoping bound for the quadratic tail}
+
+For \(N\ge1\),
+\begin{equation}\label{eq:pseries-tail}
+  \sum_{k=N+1}^{M}\frac1{k^2}
+  \le \sum_{k=N+1}^{M}\frac1{k(k-1)}
+  =\frac1N-\frac1M
+  \le\frac1N.
+\end{equation}
+The displayed equality is exact after multiplication by the common denominator
+\(\prod_{k=N}^{M}k\).  Hence the estimate is especially suitable for iPRA: it
+is a finite polynomial identity plus monotonicity of multiplication by positive
+integers.
+
+\subsection{Harmonic numbers and logarithms}
+
+Let \(H_N=\sum_{k=1}^{N}1/k\).  The elementary integral comparison gives
+\begin{equation}\label{eq:harmonic-log}
+  0<H_N-\Log N-\gamma<\frac1N,
+\end{equation}
+where \(\gamma\) is introduced as the fast name
+\(\gamma_N=H_N-\Log N\).  A wholly finite proof compares each rectangle with
+\(\int_k^{k+1}1/t\,\dd t\); the logarithm itself is evaluated by the atanh
+series after rational range reduction.  The difference
+\(\gamma_N-\gamma_{2N}\) is bounded by \(1/N\), giving a dyadic Cauchy modulus.
+This is the only Euler-constant input needed by the canonical product.
+
+For fixed rational \(x\) in a compact interval and \(N\) exceeding its
+apartness margin,
+\begin{equation}\label{eq:log-shift}
+ \Log(N+x)-\Log N
+ =\sum_{j=1}^{J}\frac{(-1)^{j-1}}{j}\left(\frac{x}{N}\right)^j
+  +\varepsilon_J,
+ \qquad
+ |\varepsilon_J|
+ \le\frac{|x/N|^{J+1}}{(J+1)(1-|x/N|)}.
+\end{equation}
+This single formula supplies the uniform compact-\(x\) error in the corrected
+asymptotic characterization.
+
+\subsection{Products from logarithmic enclosures}
+
+Suppose rational complex balls certify
+\(|a_k|\le A_k\) and \(\sum_{k=N}^{M}A_k\le S<1\).  Then
+\[
+  \left|\prod_{k=N}^{M}\e^{a_k}-1\right|
+  =\left|\e^{\sum a_k}-1\right|
+  \le\frac{S}{1-S}.
+\]
+after a consistent finite branch has been chosen.  More generally, if
+\(|u_k|\le1/2\), the exact finite identity
+\[
+ \prod_{k<N}(1+u_k)-1
+ =\sum_{\varnothing\ne I\subseteq\{0,\ldots,N-1\}}
+   \prod_{i\in I}u_i
+\]
+combined with the binomial theorem gives
+\[
+  \left|\prod_{k<N}(1+u_k)-1\right|
+  \le \prod_{k<N}(1+|u_k|)-1.
+\]
+The archive's product checker uses the logarithmic version because it has a
+smaller certificate, but both are primitive recursive for fixed input names.
+
+\subsection{Safe division and logarithms}
+
+\begin{lemma}[Ball division]\label{lem:ball-division}
+Let \(z\in B(c,r)\) and \(w\in B(d,s)\), where
+\(|d|-s\ge\delta>0\).  Then
+\[
+ \frac zw\in B\left(\frac cd,
+ \frac{r}{\delta}+\frac{|c|s}{|d|\delta}\right).
+\]
+\end{lemma}
+
+\begin{proof}
+Write
+\[
+ \frac zw-\frac cd=\frac{d(z-c)+c(d-w)}{dw}
+\]
+and use \(|w|\ge|d|-s\ge\delta\).  Squared rational norms may replace every
+square root.  Thus the checker needs only additions, multiplications,
+comparisons, and one supplied lower-bound witness.
+\end{proof}
+
+A logarithm is treated similarly.  On a disk
+\(B(c,r)\) with \(r<|c|\), choose a rational center logarithm and expand
+\[
+ \Log z=\Log c+\sum_{j\ge1}\frac{(-1)^{j-1}}j
+       \left(\frac{z-c}{c}\right)^j.
+\]
+The tail is bounded by \cref{eq:log-shift}.  Along a path, overlapping disks
+transport the branch; the finite overlap list is part of the certificate.
+
+\subsection{Rational quadrature}
+
+Let \(f\) have a certified derivative bound \(|f'|\le L\) on \([a,b]\).
+For the left Riemann sum on a mesh of width \(h=(b-a)/m\),
+\begin{equation}\label{eq:riemann-error}
+ \left|\int_a^b f(t)\,\dd t-h\sum_{j<m}f(a+jh)\right|
+ \le \frac{L(b-a)h}{2}.
+\end{equation}
+Indeed, on each interval the pointwise error is at most \(L(t-a-jh)\), and
+integration gives \(Lh^2/2\).  The right side is rational when the interval and
+bound are rational.  Repeated integration by parts, with all boundary terms
+retained, yields higher-order rules and smaller meshes but is not logically
+necessary.
+
+For an improper integral, prove a local Taylor bound on \([0,\eta]\), use
+\cref{eq:riemann-error} on \([\eta,T]\), and bound the remaining tail by a
+geometric or incomplete-Gamma estimate.  Choosing \(\eta,m,T\) by bounded
+search turns the whole statement into one FQNF query.
+
+\subsection{Euler--Maclaurin with a checkable remainder}
+
+For fixed \(m\), repeated integration by parts proves the finite identity
+\begin{align}
+ \sum_{k=a}^{b-1}f(k)
+ &=\int_a^b f(t)\,\dd t+\frac{f(a)-f(b)}2\\
+ &\quad+\sum_{j=1}^{m}
+ \frac{B_{2j}}{(2j)!}
+ \bigl(f^{(2j-1)}(b)-f^{(2j-1)}(a)\bigr)+R_m,
+\end{align}
+where
+\[
+ R_m=-\frac1{(2m)!}\int_a^b
+ B_{2m}(\{t\})f^{(2m)}(t)\,\dd t.
+\]
+For externally fixed \(m\), the Bernoulli polynomial is a fixed rational
+polynomial.  Its maximum on each unit interval is bounded by subdivision and
+rational derivative bounds.  Thus
+\[
+ |R_m|\le \frac{C_m}{(2m)!}
+             \int_a^b|f^{(2m)}(t)|\,\dd t
+\]
+is a finite checker statement.  Applied to the logarithmic summands of Barnes
+\(G\), it yields the expansion of \cref{sec:asymptotic}.  Nemes' closed sector
+bound is stronger and is used in the main theorem; the elementary form here is
+sufficient to build the first complete Lean implementation.
+
+\subsection{The multiplication constant by finite rearrangement}
+
+Define the finite quotient obtained by replacing every Barnes function in the
+multiplication formula by its canonical product truncated at \(M\).  Split all
+indices uniquely as \(k=qn+r\), \(0\le r<n\).  The factors depending on
+\(z\) cancel exactly after multiplication by the corresponding finite Gamma
+multiplication identity.  What remains is independent of \(z\) up to an error
+bounded by \(O_n(1/M)\), because each uncancelled logarithmic tail is bounded
+by \cref{eq:pseries-tail}.  Evaluating at \(z=0\), then applying the
+Euler--Maclaurin formula to the finite sums of \(k\log k\), gives the explicit
+constant.  This route is preferable in iPRA to an abstract theorem saying that
+a holomorphic periodic function is constant: every step is a finite residue-
+class rearrangement plus a rational error estimate.
+
+\subsection{Finite-difference form of the Vign\'eras condition}
+
+A coded fast name need not expose a completed third derivative.  On a rational
+interval and mesh \(h>0\), use
+\[
+ \Delta_h^3L(x)=L(x+3h)-3L(x+2h)+3L(x+h)-L(x).
+\]
+If \(L'''\ge0\), then \(\Delta_h^3L(x)\ge0\); conversely, a uniform family of
+such inequalities with an explicit third-order Taylor remainder recovers the
+third-derivative condition.  For Barnes \(G\), the product gives
+\[
+ \Delta_h^3L(x)
+ =2h^3\sum_{k\ge0}\frac{k+1}{\xi_{k,x,h}^{3}}
+\]
+for suitable points in the corresponding intervals; a derivative-free proof
+instead expands each logarithm and checks positivity of the resulting rational
+kernel.  The tail is bounded by
+\[
+ 2h^3\sum_{k\ge N}\frac{k+1}{(x+k)^3}
+ \le 2h^3\left(\frac1{x+N-1}+\frac1{(x+N-1)^2}\right).
+\]
+This is the recommended object-iPRA formulation of the characterization.
+
+\subsection{Sample object-language targets}
+
+After fixing primitive-recursive codes for all inputs, the principal analytic
+claims become ordinary first-order arithmetic sentences.  Schematically, the
+canonical product target is
+\[
+ \forall R,p,z,N\;
+ \bigl(\mathrm{Disk}(z,R)\wedge N\ge C(R,p)\bigr)
+ \to
+ \BallEq\bigl(P_N(z),P_{C(R,p)}(z),p\bigr),
+\]
+where \(z\) is a code for a rational complex point, \(P_N\) is a cleared-
+denominator finite product, and \(\BallEq\) is a polynomial inequality between
+squared norms.  The functional equation target is
+\[
+ \forall z,p\;\mathrm{Safe}(z,p)\to
+ \BallEq\bigl(G_p(z+1),\Gamma_p(z)G_p(z),p\bigr).
+\]
+The quantifiers range only over natural numbers; every displayed predicate is a
+fixed primitive-recursive symbol.  The proof in \code{Prf PRAAx} is assembled
+from defining equations, order lemmas, bounded-sum/product lemmas, and
+quantifier-free induction.
+
+\subsection{Reproducible finite checks}
+
+The companion programs do not stand in for the proofs.  They provide three
+useful regression layers:
+\begin{enumerate}
+\item \code{verify\_finite\_core.py} checks exact factorial, superfactorial,
+      hyperfactorial, finite-product, and recurrence identities on a broad
+      finite range;
+\item \code{certified\_product.py} uses exact rational arithmetic to compare
+      canonical logarithmic tails with the proved bound;
+\item \code{check\_numeric\_identities.py} independently evaluates selected
+      functional, multiplication, reflection, special-value, and asymptotic
+      formulas at high precision.
+\end{enumerate}
+Each script writes machine-readable evidence.  A failure indicates either a
+formula transcription error or an implementation bug; success is only a
+regression check, never a substitute for universal induction or an analytic
+remainder theorem.
+
+\subsection{Minimal trusted base}
+
+The intended final trust chain is:
+\[
+ \begin{gathered}
+ \text{Lean kernel}
+ \longleftarrow \code{Prf PRAAx}\text{ derivations}
+ \longleftarrow \text{certificate checkers},\\[2mm]
+ \text{certificate checkers}
+ \longleftarrow \text{explicit rational certificates}.
+ \end{gathered}
+\]
+The host Python programs and the prose report are not in the trusted base.
+Neither is Mathlib analysis: it may be used to help construct proofs, but the
+endpoint is the object calculus already present in ProveIt.  This separation is
+what makes the phrase ``proved in iPRA'' precise rather than rhetorical.

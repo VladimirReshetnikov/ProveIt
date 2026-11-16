@@ -1,0 +1,321 @@
+\section{Lean formalization outline and path to object iPRA}\label{sec:formalization}
+
+This section is deliberately more concrete than a list of desired theorems.  It
+specifies representations, module boundaries, induction invariants and the
+final theorem type.  The accompanying \code{lean/} directory mirrors this
+plan.  Those files are a scaffold: the artifact-building environment did not
+contain Lean, and the analytic object-theory derivations have not yet been
+implemented.
+
+\subsection{The endpoint that counts}
+
+The target is not merely a theorem about Lean's \code{Nat}, \code{Rat}, or a
+host-level complex type.  At the pinned ProveIt commit, the endpoint is
+schematically
+\begin{lstlisting}[language={}]
+namespace LeanProofs.ConciseIPRA
+
+-- phi : Fm PTm 0
+example : [] |- [PRAAx] phi := by
+  ...  -- finite object-language derivation
+
+end LeanProofs.ConciseIPRA
+\end{lstlisting}
+The repository notation is \(\code{[]}\vdash_{\code{PRAAx}}\varphi\).  The syntax
+\code{PR} has constructors for zero, successor, projection, composition and
+primitive recursion.  \code{PRAAx} contains the defining equations, successor
+axioms and quantifier-free induction, while \code{PRA.qfInd} is the convenient
+induction constructor.  After an ordinary derivation is obtained, the
+\code{pra\_iff\_native} bridge transfers it to the concise native scalar core.
+
+A host theorem is useful during development but is not the final result.  Every
+module should therefore have three layers:
+
+\begin{enumerate}
+\item executable host definitions and regression theorems;
+\item graph formulas and bounded checkers in \code{PTm}/\code{Fm};
+\item a theorem whose type is \code{Prf PRAAx [] phi}.
+\end{enumerate}
+
+\subsection{Module graph}
+
+A practical dependency order is
+\begin{verbatim}
+BarnesG/FiniteProducts
+  -> BarnesG/IntegerValues
+  -> BarnesG/RationalBalls
+  -> BarnesG/ElementaryNames
+  -> BarnesG/CanonicalFactor
+  -> BarnesG/CanonicalProduct
+  -> BarnesG/FunctionalEquation
+  -> BarnesG/Taylor
+  -> BarnesG/Integral
+  -> BarnesG/Derivative
+  -> BarnesG/Reflection
+  -> BarnesG/Multiplication
+  -> HurwitzZeta/DerivativeMinusOne
+  -> BarnesG/Asymptotic
+  -> BarnesG/SpecialValues
+  -> BarnesG/Characterization
+  -> BarnesG/ObjectTargets
+\end{verbatim}
+The order is intentionally not the order of the source pages.  It minimizes
+circularity and permits early object-level milestones.
+
+\subsection{Stage 1: exact finite core}
+
+Introduce primitive-recursive symbols:
+\[
+ \operatorname{fac},\quad g,\quad \operatorname{sf},\quad
+ \operatorname{hyp},\quad \operatorname{pow},\quad
+ \operatorname{facBlock},\quad c,\quad \operatorname{oddDF}.
+\]
+The intended equations are
+\begin{align*}
+ \operatorname{fac}(0)&=1,&
+ \operatorname{fac}(n+1)&=(n+1)\operatorname{fac}(n),\\
+ g(0)&=1,&g(n+1)&=\operatorname{fac}(n)g(n),\\
+ \operatorname{hyp}(0)&=1,&
+ \operatorname{hyp}(n+1)&=\operatorname{hyp}(n)(n+1)^{n+1},\\
+ c(0)&=1,&c(k+1)&=c(k)\operatorname{oddDF}(k+1).
+\end{align*}
+All are direct \code{PR.prec} definitions.  Prove:
+\begin{align}
+ g(n+1)&=\operatorname{sf}(n),\label{eq:lean-sf-target}\\
+ g(n)\operatorname{hyp}(n)&=\operatorname{fac}(n)^n,
+ \label{eq:lean-hyp-target}\\
+ g(k+n)&=g(k)\operatorname{facBlock}(k,n).
+ \label{eq:lean-block-target}
+\end{align}
+The first and third inductions are telescopes.  The second uses the invariant
+shown in \cref{eq:hyper-cross}; the successor algebra should be discharged by
+the checked semiring/power normalizer in \code{IPRADerivations}, not by a large
+handwritten associativity proof.
+
+The supplied \code{lean/FiniteCore.lean} gives host definitions and the easy
+telescope.  The Python checker tests 151 exact instances, but those tests are
+not substitutes for \cref{eq:lean-sf-target,eq:lean-hyp-target,eq:lean-block-target}
+as object derivations.
+
+\subsection{Stage 2: rational and complex balls}
+
+Reuse the repository's integer, rational, pairing and bounded-division
+infrastructure.  A normalized fraction type is optional; an object theorem can
+use raw signed numerators and positive denominators because every comparison is
+cross multiplied.
+
+Define a complex rational center as four naturals and a sign convention.  A
+ball is
+\[
+ B(c,p)=\{z:\|z-c\|_1\le2^{-p}\}.
+\]
+The object predicate \code{BallEq(code,center,p)} says that the evaluator with
+the fixed code returns a center whose mathematical error theorem is at most
+\(2^{-p}\).  It is not necessary to encode the set braces; use a graph formula
+for the evaluator and a rational inequality for the error.
+
+Required generic lemmas are:
+\begin{enumerate}
+\item addition, negation, conjugation and multiplication of balls;
+\item Horner evaluation with backward precision demands;
+\item finite sum and product telescopes;
+\item reciprocal under an apartness certificate;
+\item exponential and positive logarithm Taylor evaluators;
+\item positive square root by dyadic bisection;
+\item path logarithm from local atanh increments.
+\end{enumerate}
+The Gamma packet already sketches most of these and defines host-level rational
+complex arithmetic.  Each pending contract must be replaced by a bounded
+checker plus a \code{Prf PRAAx} soundness theorem.
+
+\subsection{Stage 3: named constants}
+
+Implement fixed primitive-recursive names for:
+\[
+ \pi,\quad \log(2\pi),\quad \gamma,\quad
+ \zeta(m)\ (m\ge2\text{ fixed}),\quad
+ A,\quad \mathcal K.
+\]
+Recommended definitions are:
+\begin{itemize}
+\item Machin-type arctangent series for \(\pi\), with a geometric tail;
+\item harmonic-minus-log for \(\gamma\);
+\item the positive-term zeta series with integral tail;
+\item the hyperfactorial Euler--Maclaurin limit \cref{eq:A-limit} for \(A\);
+\item the alternating odd-square series \cref{eq:Catalan} for \(\mathcal K\).
+\end{itemize}
+Every name returns a rational center at precision \(p\).  Regularity is proved
+by the same tail estimate that proves correctness, so no choice principle is
+involved.
+
+\subsection{Stage 4: canonical factor and product}
+
+Define a finite rational-ball approximation to
+\[
+ q_k(z)=k\Log(1+z/k)-z+z^2/(2k)
+\]
+when \(k\ge2R\), and a direct polynomial/exponential approximation to
+\(E_k(z)\) for the finite head.  The key object theorem is the cleared form of
+\cref{eq:qtail}:
+\begin{lstlisting}[language={}]
+CanonicalTail(R,N,p) :
+  2*R <= N ->
+  2*R^3*2^(p+2) <= 3*N ->
+  LogTailBall(R,N,p)
+\end{lstlisting}
+Here \code{LogTailBall} is a quantifier-free formula about the center and radius
+returned by the tail evaluator.  Prove the geometric-series bound by a bounded
+sum, and the \(\sum k^{-2}\) bound by the telescope
+\[
+ k^{-2}\le(k-1)^{-1}-k^{-1}.
+\]
+All divisions are cleared before induction.
+
+Define the Barnes evaluator by
+\begin{enumerate}
+\item selecting \(N(R,p)\) as in \cref{eq:product-cutoff};
+\item evaluating the prefactor and head factors with allocated guard bits;
+\item applying the tail exponential ball;
+\item multiplying the balls by a balanced tree or sequential telescope.
+\end{enumerate}
+A balanced tree improves numerical radii but is not logically necessary.
+Soundness is an invariant over the finite factor list.
+
+For holomorphy, implement the derivative bounds
+\cref{eq:qprime-bound,eq:qsecond-bound,eq:qhigher-bound}.  It is enough initially
+to formalize derivatives through order three, because all source-page theorems
+can be derived from those plus fixed-order asymptotic contracts.  A later
+generic order parameter can use simultaneous primitive recursion.
+
+\subsection{Stage 5: functional equation and zeros}
+
+The finite cancellation formula \cref{eq:finite-ratio} is a rational/power
+identity after branches are exponentiated.  Reuse four Gamma contracts:
+
+\begin{enumerate}
+\item the Gauss finite product with a uniform remainder;
+\item harmonic-minus-log for \(\gamma\);
+\item Stirling for \((N-1)!\);
+\item \((1+z/N)^N\to\e^z\) on a compact ball.
+\end{enumerate}
+A single telescope proves the ratio remnant \cref{eq:ratio-remnant} lies in a
+ball about one.  The primary object target is
+\begin{lstlisting}[language={}]
+Safe(zCode,p) ->
+BallEq( G(z+1), Gamma(z) * G(z), p )
+\end{lstlisting}
+with a local factorized version at poles.  Do not state a quotient theorem as
+the primitive result.
+
+For a fixed integer \(m\), factor the \(m\)-th canonical head polynomial as
+\((z+m)^mU(z)\).  A bounded rational-box search returns a lower bound for the
+other head factors, and the tail exponential is automatically apart from zero.
+This produces the zero-order theorem.  Exact nonpositive-integer values are
+then numeral consequences.
+
+\subsection{Stage 6: series, integrals, and reflection}
+
+The Taylor module uses the finite rectangle
+\[
+ \sum_{k\le K}\sum_{m\le M}
+ \frac{(-1)^{m+1}z^m}{mk^{m-1}}
+ =\sum_{m\le M}\frac{(-1)^{m+1}z^m}{m}
+ \sum_{k\le K}k^{1-m}.
+\]
+This is a bounded-sum interchange theorem.  The two explicit tails prove
+\cref{eq:taylor-tail}.  The object checker for a rational
+\(\rho=a/b\) verifies \cref{eq:taylor-tail-cleared}.
+
+For integration, reuse a generic rectangle/segment quadrature module with a
+modulus field.  The log-Gamma identity is easiest to formalize from finite
+products and exact antiderivatives rather than from a general theorem saying
+two derivatives agree.  The improper integral needs three regions and the
+regularizer described in \cref{thm:improper}.
+
+For reflection, prove a generic finite lemma:
+\begin{quote}
+If a named function has a derivative ball contained in \(B(0,p+c)\) on every
+cell of a certified path and its value at the initial point is zero, then its
+endpoint value lies in \(B(0,p)\).
+\end{quote}
+Instantiate it with the cross-multiplied derivative of the Kinkelin difference.
+The Clausen function is a separate sine-series name with a \(1/N\) tail.
+
+\subsection{Stage 7: multiplication, asymptotic, and special values}
+
+The finite product shift \cref{eq:Pshift} is a double-list cancellation.
+Combine it with the already formalized Gauss multiplication theorem.  Define
+the ratio \(Q_n\) only on apartness domains, but retain a cross-multiplied
+periodicity theorem globally.  A right shift by a sufficiently large integer
+moves every input into the asymptotic sector.  The fixed-order asymptotic
+checker determines \(K(n)\), proving multiplication.
+
+For the asymptotic module, formalize a fixed external \(N\) first.  Define the
+Bernoulli polynomial \(B_{2N+2}(x)\) by a finite rational coefficient list.
+Implement the periodic-Bernoulli remainder integral and prove the geometric
+sector bound using a rational lower bound on \(\cos(\theta/2)\).  This suffices
+for \cref{eq:Nemes-bound}.  A second theorem combines it with Gamma Stirling to
+obtain \cref{eq:combined-bound}.
+
+Special values are then short compositions.  Use a small exponent-vector
+normalizer for monomials in the named positive constants
+\(2,\pi,A,\Gamma(1/4),\e^{1/32},\e^{\mathcal K/(4\pi)}\).  This avoids fragile
+manual rewriting of rational exponents.  The integer coefficient \(c_k\) is an
+exact \code{PR} function and its half-integer theorem is qf induction.
+
+\subsection{Stage 8: coded characterizations}
+
+A candidate for the Vign\'eras theorem is a finite tuple of fixed programs:
+\[
+ (f,\log f,g',g'',g''',\text{moduli},\text{positivity bounds},
+   \text{recurrence certificates}).
+\]
+The theorem is parameterized externally by those fixed codes.  Its premises
+are object formulas saying their checkers succeed on the current finite query.
+The proof in \cref{thm:vigneras} uses only right shifts, the explicit decay
+bound \cref{eq:Lthird-decay}, one-period integrals, and continuity moduli.
+
+The asymptotic characterization replaces derivative data by a relative-error
+producer.  For each fixed rational \(x>0\) and precision \(p\), choose a common
+\(n\) from the candidate and canonical moduli.  Periodicity then turns an
+asymptotic ball into an endpoint equality ball.
+
+\subsection{Audit and trust checks}
+
+Each completed Lean module should finish with:
+\begin{enumerate}
+\item \code{\#print axioms} for host helper theorems;
+\item a repository-specific linter confirming that the final theorem is a
+\code{Prf PRAAx} derivation;
+\item no \code{sorry}, \code{admit}, \code{axiom}, \code{Classical.choice}, or
+\code{native\_decide} in the trusted path;
+\item executable small-n regression examples kept logically separate from the
+proof;
+\item a provenance comment naming the mathematical estimate and its exact
+finite version.
+\end{enumerate}
+
+The trusted endpoint is the small proof checker for the object calculus plus
+Lean's kernel checking the derivation datatype.  Numerical libraries and the
+Python scripts in this archive are validation aids only.
+
+\subsection{Milestones}
+
+A realistic sequence of independently valuable milestones is:
+
+\begin{enumerate}
+\item exact integer values, hyperfactorial relation and finite Gamma product in
+\code{Prf PRAAx};
+\item canonical tail and an evaluator for \(|z|\le1/2\);
+\item normalization, Taylor series and the functional equation on a positive
+rational domain;
+\item extension to compact complex disks and zero multiplicities;
+\item reflection and special half/quarter values;
+\item fixed-order positive-real asymptotics;
+\item fixed-sector asymptotics and multiplication;
+\item the coded uniqueness theorems.
+\end{enumerate}
+
+At each stage the theorem statements remain meaningful even before the later
+modules exist.  This prevents a monolithic development from hiding which
+claims have actually reached object iPRA.

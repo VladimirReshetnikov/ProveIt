@@ -1,0 +1,161 @@
+\section{Statement of the problem and exact scope}
+
+The two target pages mix four very different kinds of assertion.
+
+\begin{enumerate}
+\item There are exact finite identities, such as
+\(G(n)=0!1!\cdots(n-2)!\) and the finite product of gamma values.
+\item There are convergent infinite constructions, such as the canonical
+product and the Taylor series.
+\item There are analytic continuation statements involving a logarithm,
+square root, quotient or path integral.  These are not meaningful until a
+zero-free domain and a branch have been fixed.
+\item There are asymptotic and uniqueness statements that quantify over a
+precision, a sector, a differentiability order, or a coded function.
+\end{enumerate}
+
+A proof ``in iPRA'' must therefore say what finite arithmetical sentence replaces
+each assertion.  It is not enough to copy a classical proof whose objects are
+arbitrary Cauchy sequences or arbitrary functions.  Conversely, iPRA is not
+limited to tiny finite computations.  A fixed approximation algorithm, an
+explicit primitive-recursive modulus, and quantifier-free induction are enough
+to express all of the finite estimates used below.
+
+\subsection{Four status levels}\label{sec:scope-status}
+
+Every entry in the coverage ledger is assigned one of the following levels.
+
+\begin{description}
+\item[\statusA: exact finite theorem.]  The claim reduces to natural-number,
+integer or rational identities and inequalities.  The report gives a direct
+primitive-recursive induction.  These are the first targets to compile into
+\code{Prf PRAAx}.
+
+\item[\statusB: quantitative analytic theorem.]  The report gives a finite
+algorithm and an explicit error bound on a certified compact domain.  For every
+fixed code and precision, the resulting statement is first-order arithmetic.
+The remaining work is implementation of the checkers and their object-language
+derivations.
+
+\item[\statusC: branch- or representation-dependent theorem.]  The classical
+formula is valid only after a continuation path, a branch of logarithm or
+square root, or a normalization of a negative-order polygamma has been chosen.
+The report supplies the missing data and proves the corresponding finite
+contract.
+
+\item[\statusD: corrected source statement.]  The displayed source formula is
+false or misleading as written.  We identify the defect, prove the corrected
+formula, and retain the original in the audit only.
+\end{description}
+
+None of these letters means ``already kernel-checked in Lean.''  A completed
+object-iPRA theorem has the more specific form
+\[
+  []\;\vdash[\mathrm{PRAAx}]\;\varphi,
+\]
+where the terms in \(\varphi\) are built from the primitive-recursive symbols of
+ProveIt's \code{ConciseIPRA.PR}.  The present package supplies the mathematics,
+the exact target formulas and the dependency order, but does not claim that all
+analytic targets have already been constructed as such derivations.
+
+\subsection{Pinned repository foundation}
+
+At the pinned ProveIt commit \cite{ProveIt}, iPRA is presented as first-order
+intuitionistic logic with equality, a symbol for every primitive-recursive
+function, its defining equations, successor axioms, and induction for
+quantifier-free formulas.  The checked library has three relevant layers:
+
+\begin{enumerate}
+\item \code{ConciseIPRA} defines \code{PR}, terms, formulas, the axiom family
+\code{PRAAx}, derivations \code{Prf}, and the bridge \code{pra\_iff\_native} to
+the small native scalar calculus.
+\item \code{IPRADerivations} supplies checked arithmetic: semiring laws,
+order, bounded sums and products, division with remainder, pairing,
+simultaneous recursion and polynomial normalization.
+\item the \code{gamma\_ipra} packet gives a broad quantitative plan for Gamma,
+including finite Euler products, explicit constants, integration, reflection,
+multiplication and Stirling estimates.  Its own status statement correctly says
+that the full analytic Lean development and the compilation into the object
+theory remain work.
+\end{enumerate}
+
+This report reuses the third layer as a source of contracts, not as an assumed
+theorem oracle.  Whenever a Barnes proof invokes Gamma, the formal dependency
+is a named finite Gamma contract: an evaluator, a modulus, an apartness result,
+or a fixed-sector Stirling remainder.  Such a contract can later be discharged
+by the Gamma packet's intended modules.
+
+\subsection{The theorem collection obtained}
+
+The main conclusions are the following.
+
+\begin{theorem}[Coverage theorem]\label{thm:coverage}
+For every fixed primitive-recursive input name and every requested precision,
+the following Barnes-$G$ statements admit an iPRA formulation by bounded
+certificates and quantifier-free induction.
+
+\begin{enumerate}[label=(\roman*)]
+\item the canonical product, with a uniform compact-disc tail;
+\item existence as an entire function, real conjugation, and the zero at
+\(0,-1,-2,\ldots\) with multiplicities \(1,2,3,\ldots\);
+\item normalization and the functional equation;
+\item all positive-integer values, the superfactorial identity, the
+hyperfactorial identity, and finite Gamma products;
+\item the Taylor series for \(\log G(1+z)\), with explicit tails for every
+closed subdisc of \(|z|<1\);
+\item the logarithmic derivative, derivative, log-Gamma integral, and the
+improper-integral representation on \(\Re z>-1\);
+\item Kinkelin reflection, its Clausen forms, and the half-shift tangent form;
+\item the squared absolute-value products, including the corrected
+pure-imaginary formula;
+\item the general multiplication formula, duplication, quarter values,
+half-integer values, and the integer coefficient formula for all odd
+half-integers;
+\item the Hurwitz-zeta derivative representation, the negative-order
+polygamma representation after normalization, and the analytic K-function
+relation;
+\item the full fixed-order Barnes asymptotic expansion on every fixed sector
+separated from the negative real axis, with an explicit remainder bound;
+\item order two and infinite type, with explicit integer-radius estimates;
+\item the Vign\'eras characterization and the asymptotic characterization,
+read as schemas for fixed coded functions with effective smoothness or
+relative-error moduli.
+\end{enumerate}
+\end{theorem}
+
+The proof occupies the rest of the report.  Its constructive content is not a
+new axiom of real analysis.  It is the repeated pattern
+\[
+  \text{finite approximant}
+  \quad+\quad
+  \text{primitive-recursive error budget}
+  \quad+\quad
+  \text{bounded verifier}.
+\]
+
+\subsection{Two errors caught before formalization}
+
+\begin{audit}[Asymptotic characterization]\label{audit:char}
+The Wikipedia page presently displays
+\(f(x+n)\sim\Gamma(x)^n n^{\binom{x}{2}}f(n)\).  Setting \(x=1\) contradicts
+the functional equation, because the left side is exactly
+\(\Gamma(n)f(n)\), while the displayed right side is \(f(n)\).  The cited
+higher-order Bohr--Mollerup theorem has
+\[
+ f(x+n)\sim \Gamma(n)^x n^{\binom{x}{2}}f(n).
+\]
+We prove this corrected formula in \cref{sec:characterization}.
+\end{audit}
+
+\begin{audit}[Pure-imaginary modulus]\label{audit:modulus}
+The Wikipedia page gives a factor \(y\) on the right of a formula for
+\(|G(\ii y)|\) and says that \(y\) is arbitrary real.  The right side would be
+negative for \(y<0\).  Conjugating the product gives a factor \(y^2\) in the
+squared formula, and hence the unsquared factor is \(|y|\).  The corrected
+identity is proved in \cref{sec:modulus}.
+\end{audit}
+
+These are not cosmetic matters.  The finite checker rejects both incorrect
+statements immediately: the first at the exact input \(x=1\), the second at any
+negative rational \(y\).  This illustrates why source auditing and formal
+normalization should precede large proof-assistant developments.

@@ -1,0 +1,191 @@
+\section{Log-Gamma integrals, logarithmic derivatives, and the improper integral}\label{sec:integrals}
+
+\subsection{Alexeiewsky's log-Gamma integral}
+
+The DLMF form most convenient for branches is
+\begin{equation}\label{eq:alex-dlmf}
+ \Log G(1+z)=\frac z2\log(2\pi)-\frac{z(z+1)}2
+ +z\Log\Gamma(1+z)-\int_0^z\Log\Gamma(1+t)\dd t.
+\end{equation}
+Here the logarithms are continued from the positive real axis along a path
+avoiding the poles and zeros.  Replacing \(t+1\) by \(x\), or using the Gamma
+functional equation, gives the equivalent target-page form
+\begin{equation}\label{eq:alex}
+ \int_0^z\Log\Gamma(x)\dd x
+ =\frac{z(1-z)}2+\frac z2\log(2\pi)
+ +(z-1)\Log\Gamma(z)-\Log G(z).
+\end{equation}
+
+\begin{theorem}[Constructive Alexeiewsky identity]\label{thm:alex}
+On any rational polygonal path from a positive base point to \(z\), separated
+from the nonpositive integers and equipped with coherent branches of
+\(\Log\Gamma\) and \(\Log G\), \cref{eq:alex-dlmf,eq:alex} hold with an
+explicit finite quadrature modulus.  Their exponentiated derivatives extend to
+the corresponding meromorphic identities globally.
+\end{theorem}
+
+\begin{proof}
+Define the difference between the two sides of \cref{eq:alex-dlmf} as
+\(A(z)\).  Differentiate on a zero-free disk.  The canonical-product series
+may be differentiated by \cref{eq:qprime-bound}.  The reciprocal-Gamma product
+may be differentiated using its analogous \(k^{-2}\) tail from the Gamma
+packet.  Termwise cancellation gives \(A'(z)=0\).  At \(z=0\), every term is
+zero, so \(A(0)=0\).  Subdivide the certified path into disks on which both
+Taylor contracts are valid.  On each segment the finite integral of the
+derivative is enclosed by a rational ball of radius smaller than the allocated
+budget.  A finite telescope proves \(A(z)=0\) at the requested precision.
+
+For a more algebraic verification, start with the finite product logarithms.
+After integrating the finite reciprocal-Gamma logarithm, every summand is an
+explicit polynomial-log expression.  Subtract the finite Barnes logarithm;
+all terms cancel except an endpoint error.  The Gamma and Barnes tail bounds
+make that error tend effectively to zero.  This second route is especially
+suitable for an object-language proof because it avoids a general fundamental
+theorem of calculus: only a finite antiderivative identity and two tail
+estimates are used.
+\end{proof}
+
+On the positive real axis, the logarithms are ordinary real logarithms and no
+branch data are needed.  The integral is implemented by the fixed Gamma
+quadrature contract from the existing packet.  For complex paths, the integral
+is a sum over finitely many line segments and the same evaluator handles the
+real and imaginary parts after an affine substitution.
+
+\subsection{Logarithmic derivative and derivative formulas}
+
+Differentiate \cref{eq:alex}.  The \(\log\Gamma(z)\) terms cancel and yield
+\begin{equation}\label{eq:phi-global}
+ \frac{G'(z)}{G(z)}
+ =(z-1)\psi(z)-z+\frac12\log(2\pi)+\frac12,
+\end{equation}
+where \(\psi=\Gamma'/\Gamma\).  Multiplying by \(G(z)\) gives the globally
+entire identity
+\begin{equation}\label{eq:Gprime}
+ G'(z)=G(z)\left((z-1)\psi(z)-z+\frac12\log(2\pi)+\frac12\right),
+\end{equation}
+understood at Gamma's poles by cancellation.  Shifting \(z\mapsto z+1\) and
+using \(\psi(z+1)=\psi(z)+1/z\) gives the MathWorld form
+\begin{equation}\label{eq:phi-shift}
+ \frac{G'(z+1)}{G(z+1)}
+ =\frac12\log(2\pi)+\frac12-z+z\frac{\Gamma'(z)}{\Gamma(z)}.
+\end{equation}
+
+\begin{proof}[Division-free formal form]
+On a compact domain where \(G\) and \(\Gamma\) are apart from zero, the quotient
+identities follow from the named reciprocal evaluators.  The primary theorem,
+however, is obtained by multiplying \cref{eq:Gprime} by \(\Gamma(z)\):
+\[
+ \Gamma(z)G'(z)
+ =G(z)\left((z-1)\Gamma'(z)
+ +\left[-z+\tfrac12\log(2\pi)+\tfrac12\right]\Gamma(z)\right).
+\]
+Every factor has a Taylor-ball name, and no division appears.  Around a
+nonpositive integer, use the known zero orders of \(G\) and \(1/\Gamma\) to
+verify the removable singularity by finite polynomial factorization.  This is
+the object-iPRA target.
+\end{proof}
+
+The Taylor series \cref{eq:phi-taylor} is recovered by differentiating the
+canonical series, so the integral, product and power-series derivations are
+mutually consistent without circularity.
+
+\subsection{The improper-integral representation}
+
+The target page gives
+\begin{equation}\label{eq:improper}
+ \log G(1+z)
+ =\frac z2\log(2\pi)
+ +\int_0^\infty\frac{1}{t}
+ \left[
+ \frac{1-\e^{-zt}}{4\sinh^2(t/2)}
+ +\frac{z^2}{2}\e^{-t}-\frac zt
+ \right]\dd t.
+\end{equation}
+The literal integral converges for
+\begin{equation}\label{eq:improper-domain}
+ \Re z>-1.
+\end{equation}
+At zero the three apparent singular terms cancel; at infinity the first two
+terms decay exponentially and the last is \(O(t^{-2})\) after the exterior
+factor \(1/t\).  If \(\Re z\le-1\), the expression may still represent the
+analytic continuation, but not as this unmodified convergent improper integral.
+
+\begin{theorem}[Improper-integral formula]\label{thm:improper}
+On every compact set
+\[
+ |z|\le R,\qquad \Re z\ge-1+\delta,
+\]
+with positive rational \(\delta\), \cref{eq:improper} has a
+primitive-recursive quadrature and tail modulus and equals the canonical
+product definition of \(G\).
+\end{theorem}
+
+\begin{proof}
+Use the exact expansion
+\begin{equation}\label{eq:sinh-kernel}
+ \frac{1}{4\sinh^2(t/2)}
+ =\frac{\e^{-t}}{(1-\e^{-t})^2}
+ =\sum_{k=1}^{\infty}k\e^{-kt},\qquad t>0.
+\end{equation}
+To avoid separately divergent Frullani integrals, differentiate the right side
+of \cref{eq:improper} three times with respect to \(z\).  The polynomial
+regularizers disappear and dominated differentiation gives
+\begin{align}
+ I'''(z)
+ &=\int_0^\infty
+   \frac{t^2\e^{-zt}}{4\sinh^2(t/2)}\dd t\notag\\
+ &=\sum_{k=1}^{\infty}k\int_0^\infty t^2\e^{-(k+z)t}\dd t
+ =2\sum_{k=1}^{\infty}\frac{k}{(k+z)^3}.
+ \label{eq:improper-third}
+\end{align}
+The same third derivative follows from the product logarithm by
+\cref{eq:qhigher} with \(r=3\).  The value and the first two derivatives at
+\(z=0\) agree by direct finite evaluation of the regularized integral and the
+coefficients in \cref{eq:taylor-logG}.  Therefore the two analytic names agree
+on the connected half-plane.
+
+For the quantitative version, split the integral into
+\([0,2^{-M}]\), \([2^{-M},T]\), and \([T,\infty)\).  At zero, expand
+\(1-\e^{-zt}\), \(\e^{-t}\), and
+\(t^2/(4\sinh^2(t/2))\) to a fixed order.  Their constant and linear
+singularities cancel exactly; the remainder is bounded by a rational multiple
+of \(t\), uniformly for \(|z|\le R\).  Thus the first piece is at most
+\(C_R2^{-M}\).
+
+For the tail, \cref{eq:sinh-kernel} and
+\(\Re z\ge-1+\delta\) give
+\[
+ \left|\frac{1-\e^{-zt}}{4\sinh^2(t/2)}\right|
+ \le C_R\bigl(\e^{-t}+\e^{-\delta t}\bigr),
+ \qquad t\ge1.
+\]
+Together with the other terms, the tail is bounded by
+\[
+ C_R\left(\frac{\e^{-\delta T}}{\delta T}
+          +\frac{\e^{-T}}{T}+\frac1T\right).
+\]
+Choose primitive-recursive \(M,T\) to make the endpoint pieces smaller than
+the allocated dyadic budgets.  The middle integral is ordinary rational
+quadrature with a derivative modulus.  These estimates also justify the
+interchanges in \cref{eq:improper-third}.
+\end{proof}
+
+\subsection{A practical evaluator}
+
+For small \(|z|\), the Taylor series is fastest.  On moderate compact disks the
+canonical product is simplest.  In the half-plane \(\Re z>-1+\delta\), the
+integral can be useful when its smooth middle interval is short.  For large
+\(|z|\), the asymptotic module in \cref{sec:asymptotic} dominates.  A formal
+evaluator need not choose among them by an undecidable real comparison: it can
+use rational upper bounds on the input box and a fixed priority table.  The
+certificate records which algorithm was chosen, and the soundness theorem for
+that branch supplies the result.
+
+\begin{roadmap}[Lean modules \code{BarnesG/Integral} and
+\code{BarnesG/Derivative}]
+Reuse the Gamma packet's path integration and digamma contracts.  Prove the
+finite version of \cref{eq:sinh-kernel} with a geometric tail.  Encode the
+zero-end regularizer as a fixed Taylor polynomial plus a rational remainder.
+The derivative theorem should first be cross-multiplied by \(\Gamma G\); add
+quotient corollaries only under apartness structures.
+\end{roadmap}

@@ -1,0 +1,242 @@
+\section{Multiplication, duplication, and special values}\label{sec:multiplication}
+
+\subsection{The general multiplication formula}
+
+For an integer \(n\ge1\), put
+\begin{equation}\label{eq:Pn}
+ P_n(z)=\prod_{i=0}^{n-1}\prod_{j=0}^{n-1}
+ G\left(z+\frac{i+j}{n}\right)
+\end{equation}
+and
+\begin{equation}\label{eq:An}
+ A_n(z)=n^{n^2z^2/2-nz}(2\pi)^{-(n^2-n)z/2}.
+\end{equation}
+A finite cancellation in the \(i\)-product gives
+\begin{align}
+ \frac{P_n(z+1/n)}{P_n(z)}
+ &=\prod_{j=0}^{n-1}
+   \frac{G(z+1+j/n)}{G(z+j/n)}\notag\\
+ &=\prod_{j=0}^{n-1}\Gamma(z+j/n).
+ \label{eq:Pshift}
+\end{align}
+Gauss' multiplication formula for Gamma is
+\begin{equation}\label{eq:gauss-mult}
+ \prod_{j=0}^{n-1}\Gamma(z+j/n)
+ =(2\pi)^{(n-1)/2}n^{1/2-nz}\Gamma(nz).
+\end{equation}
+Also, direct subtraction of the exponents in \cref{eq:An} gives
+\begin{equation}\label{eq:Ashift}
+ \frac{A_n(z+1/n)}{A_n(z)}
+ =n^{nz-1/2}(2\pi)^{-(n-1)/2}.
+\end{equation}
+Multiplying \cref{eq:Pshift,eq:gauss-mult,eq:Ashift},
+\begin{equation}\label{eq:APshift}
+ \frac{A_n(z+1/n)P_n(z+1/n)}{A_n(z)P_n(z)}=\Gamma(nz).
+\end{equation}
+The functional equation gives the same quotient for \(G(nz)\).  Hence
+\begin{equation}\label{eq:periodic-ratio}
+ Q_n(z):=\frac{G(nz)}{A_n(z)P_n(z)}
+\end{equation}
+is \(1/n\)-periodic wherever the quotient is defined; after cross
+multiplication it extends through all removable points.
+
+Apply the asymptotic expansion of \cref{sec:asymptotic} to every factor as
+\(z\to+\infty\).  The coefficients of \(z^2\log z,z^2,z\log z,z,\log z\)
+cancel.  The remaining constant is
+\begin{equation}\label{eq:Kn}
+ K(n)=\exp\bigl(-(n^2-1)\zeta'(-1)\bigr)
+       n^{5/12}(2\pi)^{(n-1)/2}.
+\end{equation}
+Since
+\begin{equation}\label{eq:A-zeta}
+ \log A=\frac1{12}-\zeta'(-1),
+\end{equation}
+this is equivalently
+\begin{equation}\label{eq:Kn-A}
+ K(n)=\left(A\e^{-1/12}\right)^{n^2-1}
+       n^{5/12}(2\pi)^{(n-1)/2}.
+\end{equation}
+Periodicity now makes the asymptotic determination exact: for fixed \(z\),
+\(Q_n(z)=Q_n(z+m/n)\) for every integer \(m\), and the right side tends
+effectively to \(K(n)\).
+
+\begin{theorem}[Barnes multiplication]\label{thm:multiplication}
+For every integer \(n\ge1\), with coherent branches for the powers,
+\begin{equation}\label{eq:multiplication}
+ G(nz)=K(n)n^{n^2z^2/2-nz}
+ (2\pi)^{-(n^2-n)z/2}
+ \prod_{i=0}^{n-1}\prod_{j=0}^{n-1}
+ G\left(z+\frac{i+j}{n}\right).
+\end{equation}
+The branch-independent formal theorem is obtained by exponentiating the
+quadratic logarithmic exponent along a declared path and cross multiplying all
+Barnes factors.
+\end{theorem}
+
+\begin{proof}[Constructive modulus]
+The finite shift calculation is exact.  Given a compact input box and precision
+\(p\), choose an integer \(m\) large enough that every argument
+\(z+m/n+(i+j)/n\) lies in the positive fixed sector used by the asymptotic
+module and that the sum of the \(n^2+1\) explicit remainder bounds is at most
+\(2^{-p-c}\).  Such an \(m\) is a primitive-recursive function of the box,
+\(n\), the fixed truncation order and \(p\).  By exact periodicity, the desired
+ratio at \(z\) equals the ratio at the shifted point.  The finite asymptotic
+algebra reduces its ball to the constant \(K(n)\).  This proves every precision
+instance.  The only use of a limit has thus been replaced by a checked finite
+shift and a remainder inequality.
+\end{proof}
+
+\subsection{Duplication}
+
+Set \(n=2\) in \cref{eq:multiplication}.  Since
+\[
+ P_2(x)=G(x)G(x+\tfrac12)^2G(x+1)
+\]
+and
+\[
+ K(2)=A^3\e^{-1/4}2^{5/12}(2\pi)^{1/2},
+\]
+solving for \(P_2(x)\) gives
+\begin{equation}\label{eq:duplication}
+ G(x)G(x+\tfrac12)^2G(x+1)
+ =\e^{1/4}A^{-3}
+ 2^{-2x^2+3x-11/12}\pi^{x-1/2}G(2x).
+\end{equation}
+This is the Wikipedia duplication formula.  The powers of two are checked by
+the exact exponent arithmetic
+\[
+ -2x^2+2x+x-\frac{5}{12}-\frac12
+ =-2x^2+3x-\frac{11}{12}.
+\]
+
+\subsection{The value at one half}
+
+Put \(x=1/2\) in \cref{eq:duplication}.  Since \(G(1)=1\) and
+\(G(3/2)=\Gamma(1/2)G(1/2)=\sqrt\pi G(1/2)\),
+\[
+ \sqrt\pi\,G(1/2)^2=\e^{1/4}A^{-3}2^{1/12}.
+\]
+Positivity on the positive real axis selects the positive square root:
+\begin{equation}\label{eq:Ghalf}
+ G(1/2)=A^{-3/2}\pi^{-1/4}\e^{1/8}2^{1/24}.
+\end{equation}
+Two applications of the functional equation give
+\begin{align}
+ G(3/2)&=A^{-3/2}\pi^{1/4}\e^{1/8}2^{1/24},
+ \label{eq:Gthreehalf}\\
+ G(5/2)&=A^{-3/2}\pi^{3/4}\e^{1/8}2^{-23/24}.
+ \label{eq:Gfivehalf}
+\end{align}
+These prove MathWorld equations (19)--(21).
+
+All square roots here are positive real names.  Their iPRA proof uses lower and
+upper dyadic bisection: from a positive input ball and a rational lower bound,
+a bounded integer search returns the unique dyadic interval whose squared
+endpoints enclose the input.
+
+\subsection{Quarter values and Catalan's constant}
+
+Define Catalan's constant by the alternating series
+\begin{equation}\label{eq:Catalan}
+ \mathcal K=\sum_{r=0}^{\infty}\frac{(-1)^r}{(2r+1)^2}.
+\end{equation}
+The alternating remainder is at most \((2N+3)^{-2}\), so \(\mathcal K\) has an
+immediate primitive-recursive Cauchy modulus.  It is also
+\(\Cl(\pi/2)\).
+
+Let
+\(a=\log G(1/4)\) and \(b=\log G(3/4)\).  Kinkelin reflection at \(z=1/4\)
+gives, because \(G(5/4)=\Gamma(1/4)G(1/4)\),
+\begin{equation}\label{eq:quarter-difference}
+ b-a=\log\Gamma(1/4)-\frac18\log2-\frac14\log\pi
+      +\frac{\mathcal K}{2\pi}.
+\end{equation}
+Here we used
+\[
+ \int_0^{1/4}\pi x\cot(\pi x)\dd x
+ =\frac18\log2+\frac{\mathcal K}{2\pi}.
+\]
+
+Duplication at \(x=1/4\), followed by \cref{eq:Ghalf}, gives
+\begin{equation}\label{eq:quarter-sum}
+ a+b=\frac3{16}-\frac94\log A-\frac18\log2
+ -\frac14\log\pi-\frac12\log\Gamma(1/4).
+\end{equation}
+Solving the two linear equations yields
+\begin{equation}\label{eq:Gquarter}
+ G(1/4)=A^{-9/8}\Gamma(1/4)^{-3/4}
+ \exp\!\left(\frac3{32}-\frac{\mathcal K}{4\pi}\right),
+\end{equation}
+\begin{equation}\label{eq:Gthreequarter}
+ G(3/4)=A^{-9/8}\Gamma(3/4)^{-1/4}
+ \exp\!\left(\frac3{32}+\frac{\mathcal K}{4\pi}\right).
+\end{equation}
+Using
+\(\Gamma(1/4)\Gamma(3/4)=\pi\sqrt2\), the second formula is equivalently
+\begin{equation}\label{eq:Gthreequarter-alt}
+ G(3/4)=A^{-9/8}2^{-1/8}\pi^{-1/4}
+ \Gamma(1/4)^{1/4}
+ \exp\!\left(\frac3{32}+\frac{\mathcal K}{4\pi}\right).
+\end{equation}
+Thus MathWorld's equation (18) is an alternative form of its preceding
+\(G(3/4)\) value; it is not a third quarter argument.
+
+The constructive proof does not solve a real linear system abstractly.  At
+precision \(p\), it computes balls for the sum and difference with two guard
+bits and applies the exact rational maps \((s,d)\mapsto((s-d)/2,(s+d)/2)\).
+Exponentiation then uses a fixed positive-real evaluator.
+
+\subsection{All odd half-integer values}
+
+For \(k\ge2\), define
+\begin{equation}\label{eq:ck}
+ c_k=\prod_{i=1}^{k-2}
+ \frac{2^i\Gamma(i+1/2)}{\sqrt\pi}
+ =\prod_{i=1}^{k-2}(2i-1)!!.
+\end{equation}
+The second equality follows from
+\(
+\Gamma(i+1/2)=(2i)!\sqrt\pi/(4^ii!)
+\), so \(c_k\) is an exact natural number.  Its primitive recursion is
+\begin{equation}\label{eq:ck-rec}
+ c_2=1,
+ \qquad
+ c_{k+1}=c_k(2k-3)!!.
+\end{equation}
+
+\begin{theorem}[Odd half-integer formula]\label{thm:odd-half}
+For \(k>1\),
+\begin{equation}\label{eq:odd-half}
+ G(k-1/2)=
+ c_k\,
+ \frac{\pi^{(2k-3)/4}\e^{1/8}2^{1/24}}
+      {2^{(k-1)(k-2)/2}A^{3/2}}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The case \(k=2\) is \cref{eq:Gthreehalf}.  Suppose the formula holds for
+\(k\).  The functional equation gives
+\[
+ G(k+1/2)=\Gamma(k-1/2)G(k-1/2).
+\]
+Write
+\[
+ \Gamma(k-1/2)=\frac{(2k-3)!!}{2^{k-1}}\sqrt\pi.
+\]
+Multiplication by this factor changes \(c_k\) to \(c_{k+1}\), increases the
+power of \(\pi\) by \(1/2\), and increases the denominator's power of two by
+\(k-1\).  These are exactly the changes from \(k\) to \(k+1\) in
+\cref{eq:odd-half}.  This is a quantifier-free induction once powers and
+\(c_k\) are primitive-recursive symbols.
+\end{proof}
+
+\subsection{Formal dependency summary}
+
+The multiplication theorem needs only the functional equation, Gauss
+multiplication for Gamma, and the Barnes asymptotic constant.  Duplication is
+its \(n=2\) instance.  The half values use duplication and recurrence.  The
+quarter values use duplication, reflection and the single Clausen value
+\(\Cl(\pi/2)=\mathcal K\).  Therefore the special-value module should be built
+last; it contains almost no new analysis, only exact exponent arithmetic and
+positive-real root/exponential operations.

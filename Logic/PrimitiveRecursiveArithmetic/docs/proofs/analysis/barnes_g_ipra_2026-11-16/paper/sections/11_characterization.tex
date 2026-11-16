@@ -1,0 +1,211 @@
+\section{The two characterizations}\label{sec:characterization}
+
+The target page gives two analogues of the Bohr--Mollerup theorem.  They require
+care because a first-order arithmetic theory cannot quantify over arbitrary
+real functions.  We first prove the ordinary mathematical theorems, then state
+their exact coded-function interpretation.
+
+\subsection{Third-derivative positivity for \texorpdfstring{$\log G$}{log G}}
+
+Let \(L(x)=\log G(x)\) for \(x>0\).  From \cref{eq:phi-global},
+\begin{align}
+ L'''(x)&=2\psi'(x)+(x-1)\psi''(x)\notag\\
+ &=2\sum_{k=0}^{\infty}
+ \left(\frac1{(x+k)^2}-\frac{x-1}{(x+k)^3}\right)\notag\\
+ &=2\sum_{k=0}^{\infty}\frac{k+1}{(x+k)^3}>0.
+ \label{eq:Lthird}
+\end{align}
+For \(x\ge1\), since \(k+1\le x+k\),
+\begin{equation}\label{eq:Lthird-decay}
+ 0<L'''(x)
+ \le2\sum_{k=0}^{\infty}\frac1{(x+k)^2}
+ \le2\left(\frac1{x^2}+\frac1x\right).
+\end{equation}
+Thus \(L'''(x)\to0\) with an explicit modulus.
+
+The series proof is constructive.  The trigamma and second-polygamma series
+have tails bounded by elementary integrals.  Positivity is witnessed by every
+finite partial sum, and \cref{eq:Lthird-decay} is a rational inequality once
+\(x\) is replaced by a positive rational lower bound.
+
+\subsection{Vign\'eras uniqueness}
+
+\begin{theorem}[Vign\'eras characterization for Barnes $G$]\label{thm:vigneras}
+Let \(f:(0,\infty)\to(0,\infty)\) be three times continuously differentiable
+and satisfy
+\begin{equation}\label{eq:vigneras-rec}
+ f(x+1)=\Gamma(x)f(x),
+ \end{equation}
+\begin{equation}\label{eq:vigneras-convex}
+ \frac{d^3}{dx^3}\log f(x)\ge0\qquad(x\ge1).
+\end{equation}
+Then \(f(x)=cG(x)\) for a constant \(c>0\).  If \(f(1)=1\), then \(c=1\).
+\end{theorem}
+
+\begin{proof}
+Put \(g=\log f\) and \(p=g-L\).  The two functional equations imply
+\[
+ p(x+1)=p(x),
+\]
+so \(p\) is one-periodic, as are its first three derivatives.  For every fixed
+\(x\ge1\) and integer \(n\ge0\),
+\[
+ 0\le g'''(x+n)=L'''(x+n)+p'''(x).
+\]
+By \cref{eq:Lthird-decay}, \(L'''(x+n)\to0\).  Therefore
+\(p'''(x)\ge0\).  Since \(p'''\) is continuous and periodic,
+\[
+ \int_1^2p'''(x)\dd x=p''(2)-p''(1)=0.
+\]
+A continuous nonnegative function with zero integral is identically zero, so
+\(p'''=0\).  Hence \(p\) is a polynomial of degree at most two.  A periodic
+polynomial is constant.  Thus \(g=L+\log c\), and
+\(f=cG\).  The normalization at one gives \(c=1\).
+\end{proof}
+
+This proof is considerably simpler than a general higher-order convexity
+sandwich because the canonical solution has already been constructed and its
+third derivative has an explicit decay bound.  It is also particularly well
+suited to iPRA.
+
+\begin{proof}[Finite constructive reading]
+Fix a coded candidate \(f\), a rational point \(x\), and a precision \(p\).
+The code supplies evaluators and continuity moduli for \(g'''\).  Choose
+\(n\) so that the rational right side of \cref{eq:Lthird-decay} at \(x+n\) is
+at most \(2^{-p}\).  The certified inequality \(g'''(x+n)\ge0\) and periodicity
+of \(p'''\) imply
+\(p'''(x)\ge-2^{-p}\).  Since this holds for every \(p\), it is the
+constructive assertion \(p'''(x)\ge0\).
+
+To infer \(p'''=0\) from zero integral, argue by a finite contradiction.  If a
+ball at some rational \(x_0\) has lower endpoint \(\eta>0\), the continuity
+modulus supplies a rational interval of positive length on which
+\(p'''\ge\eta/2\).  A lower Riemann sum then makes
+\(\int_1^2p'''>0\), contradicting the exact periodic endpoint equality.  Thus
+every value ball contains zero at every requested precision.  Two certified
+integrations show \(p''\), then \(p'\), are constant; periodic endpoint
+equalities force those constants to be zero.  Hence \(p\) is constant.
+Every step is a finite query about the fixed code.
+\end{proof}
+
+\subsection{The corrected asymptotic ratio}
+
+The correct asymptotic law is
+\begin{equation}\label{eq:correct-asymp-ratio}
+ G(n+x)\sim
+ \Gamma(n)^x n^{\binom{x}{2}}G(n)
+ \qquad(n\to\infty),
+\end{equation}
+for each fixed \(x>0\).  We now prove a quantitative version.
+
+\begin{lemma}[Digamma strip estimate]\label{lem:digamma-strip}
+For every rational \(X>0\), there is an explicit rational \(C_X\) such that,
+for \(n\ge2X+2\) and \(0\le t\le X\),
+\begin{equation}\label{eq:digamma-strip}
+ \left|
+ \psi(n+t)-\log n-\frac{t-1/2}{n}
+ \right|\le\frac{C_X}{n^2}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Use the first two terms of the fixed-sector digamma expansion, or differentiate
+the Gamma Stirling expansion with its explicit remainder.  Alternatively,
+start from
+\[
+ \psi(y)=\log y-\frac1{2y}
+ -\int_0^\infty \frac{2u}{(u^2+y^2)(\e^{2\pi u}-1)}\dd u,
+\]
+whose last term is bounded by a rational multiple of \(y^{-2}\).  Expand
+\(\log(n+t)=\log n+\log(1+t/n)\) to first order with the geometric remainder,
+and \((n+t)^{-1}\) about \(n^{-1}\).  On \(t/n\le1/2\), all remainders have
+explicit \(C_X/n^2\) bounds.
+\end{proof}
+
+Integrate the logarithmic derivative.  For \(0\le x\le X\),
+\begin{equation}\label{eq:Ldifference-integral}
+ L(n+x)-L(n)=\int_0^x
+ \left((n+t-1)\psi(n+t)-(n+t)+c\right)\dd t,
+\end{equation}
+where \(c=\frac12\log(2\pi)+\frac12\).  Substitute
+\cref{eq:digamma-strip} and the one-term Stirling estimate
+\begin{equation}\label{eq:loggamma-one-term}
+ \log\Gamma(n)=
+ \left(n-\frac12\right)\log n-n+\frac12\log(2\pi)
+ +O(n^{-1}).
+\end{equation}
+The main integrand becomes
+\[
+ \log\Gamma(n)+(t-\tfrac12)\log n,
+\]
+and the remaining error is bounded by \(D_X/n\) for an explicit rational
+\(D_X\).  Integration yields
+\begin{equation}\label{eq:ratio-log-error}
+ \left|
+ \log\frac{G(n+x)}
+ {G(n)\Gamma(n)^x n^{x(x-1)/2}}
+ \right|
+ \le\frac{E_X}{n}.
+\end{equation}
+Exponentiating gives a relative-error modulus, for example
+\begin{equation}\label{eq:ratio-relative-error}
+ \left|
+ \frac{G(n+x)}{G(n)\Gamma(n)^x n^{x(x-1)/2}}-1
+ \right|
+ \le \frac{2E_X}{n}
+\end{equation}
+whenever \(n\ge2E_X\).  This proves \cref{eq:correct-asymp-ratio} uniformly on
+every fixed compact \(x\)-interval.
+
+\begin{audit}[Why \(\Gamma(x)^n\) cannot be repaired by convention]
+At \(x=1\), the correct formula is exact:
+\[
+ G(n+1)=\Gamma(n)G(n).
+\]
+Replacing \(\Gamma(n)^x\) by \(\Gamma(x)^n\) gives \(G(n+1)\sim G(n)\), whose
+ratio is \(\Gamma(n)\), not one.  Therefore the source display is a genuine
+transposition error, not a branch or indexing convention.
+\end{audit}
+
+\subsection{Asymptotic characterization}
+
+\begin{theorem}[Corrected asymptotic characterization]\label{thm:corrected-characterization}
+Let \(f:(0,\infty)\to(0,\infty)\) satisfy
+\(f(x+1)=\Gamma(x)f(x)\).  Suppose that for every fixed \(x>0\),
+\begin{equation}\label{eq:f-asymp}
+ f(n+x)\sim\Gamma(n)^x n^{\binom{x}{2}}f(n).
+\end{equation}
+Then \(f=cG\) for a constant \(c>0\).  Conversely, every \(cG\) satisfies
+\cref{eq:f-asymp}.
+\end{theorem}
+
+\begin{proof}
+The converse is \cref{eq:correct-asymp-ratio}; the constant cancels.  For
+uniqueness, put \(h=f/G\).  The functional equations imply
+\(h(x+1)=h(x)\).  Divide the asymptotic relation for \(f\) by that for \(G\):
+\[
+ \frac{h(n+x)}{h(n)}\longrightarrow1.
+\]
+Periodicity makes the quotient independent of \(n\): it is
+\(h(x)/h(1)\).  Therefore \(h(x)=h(1)\) for every \(x>0\), and \(f=cG\).
+\end{proof}
+
+The constructive version requires explicit relative-error moduli for the coded
+candidate \(f\).  At requested precision \(p\), choose an integer \(n\) large
+enough for the \(f\)-modulus and the explicit \(G\)-modulus
+\cref{eq:ratio-relative-error}.  Positive lower bounds for the involved values
+turn the two relative balls into a ball for \(h(x)/h(1)\).  Periodicity is an
+exact finite iteration of the recurrence.  The resulting radius is at most
+\(2^{-p}\).  Again there is no object-language quantification over all
+functions; there is a theorem schema for each fixed evaluator and modulus code.
+
+\subsection{Comparison of the two characterizations}
+
+The derivative characterization needs a coded \(C^3\) structure and a
+nonnegativity checker, but no separate asymptotic input: decay of the canonical
+solution forces the periodic discrepancy to be constant.  The asymptotic
+characterization needs only positive values and recurrence, but it requires a
+relative-error modulus as part of the candidate data.  Both are natural in
+FQNF.  The first is preferable for verifying an independently implemented
+smooth function; the second is preferable when the implementation already has
+an asymptotic evaluator.

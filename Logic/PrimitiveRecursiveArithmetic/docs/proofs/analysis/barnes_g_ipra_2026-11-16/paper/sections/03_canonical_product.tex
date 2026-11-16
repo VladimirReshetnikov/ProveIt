@@ -1,0 +1,200 @@
+\section{The canonical product, convergence, zeros, and entirety}\label{sec:product}
+
+Put
+\begin{equation}\label{eq:Fdef}
+ F(z):=G(1+z)
+ =(2\pi)^{z/2}
+ \exp\!\left(-\frac{z+(1+\gamma)z^2}{2}\right)
+ \prod_{k=1}^{\infty}E_k(z),
+\end{equation}
+where
+\begin{equation}\label{eq:Ek}
+ E_k(z):=\left(1+\frac zk\right)^k
+          \exp\!\left(-z+\frac{z^2}{2k}\right).
+\end{equation}
+This is the product displayed by DLMF, Wikipedia and MathWorld.  Its form is
+already suggestive of a constructive proof: after the linear and quadratic
+terms of \(k\Log(1+z/k)\) are cancelled, the tail is summable like \(k^{-2}\).
+
+\subsection{The one estimate that drives the construction}
+
+For \(|z|\le R\) and \(k\ge 2R\), use the principal Taylor branch of the
+logarithm in \(|z/k|\le 1/2\) and set
+\[
+ q_k(z):=k\Log\left(1+\frac zk\right)-z+\frac{z^2}{2k}.
+\]
+The first two Taylor terms cancel exactly:
+\begin{equation}\label{eq:qseries}
+ q_k(z)=\sum_{m=3}^{\infty}
+       \frac{(-1)^{m+1}z^m}{m k^{m-1}}.
+\end{equation}
+
+\begin{lemma}[Uniform canonical-factor tail]\label{lem:canonical-tail}
+If \(|z|\le R\), \(N\ge 2R\), and \(N\ge1\), then
+\begin{align}
+ |q_k(z)|&\le \frac{2R^3}{3k^2}\qquad(k>N),\label{eq:qbound}\\
+ \sum_{k>N}|q_k(z)|&\le \frac{2R^3}{3N}.
+ \label{eq:qtail}
+\end{align}
+Consequently, for \(M>N\),
+\begin{equation}\label{eq:product-cauchy}
+ \left|\prod_{k=N+1}^{M}E_k(z)-1\right|
+ \le \exp(B_N)B_N,
+ \qquad B_N=\frac{2R^3}{3N}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+From \cref{eq:qseries} and \(R/k\le1/2\),
+\[
+ |q_k(z)|
+ \le \sum_{m=3}^{\infty}\frac{R^m}{m k^{m-1}}
+ \le \frac{R^3}{3k^2}\sum_{j=0}^{\infty}\left(\frac Rk\right)^j
+ \le \frac{2R^3}{3k^2}.
+\]
+The elementary integral comparison
+\[
+ \sum_{k=N+1}^{\infty}\frac1{k^2}
+ \le \int_N^{\infty}\frac{dt}{t^2}=\frac1N
+\]
+is proved arithmetically by the telescoping inequality
+\(
+1/k^2\le1/(k-1)-1/k
+\)
+for \(k\ge2\), after clearing denominators.  This proves
+\cref{eq:qtail}.  Finally
+\(
+\prod E_k=\exp(\sum q_k)
+\)
+and
+\(
+|\e^w-1|\le \e^{|w|}|w|
+\), whose finite Taylor proof has an explicit remainder.  Applying it to the
+finite sum and then passing through the Cauchy modulus gives
+\cref{eq:product-cauchy}.
+\end{proof}
+
+Every inequality in this proof has a division-free version.  A convenient
+primitive-recursive cutoff is
+\begin{equation}\label{eq:product-cutoff}
+ N(R,p):=\max\!\left(2R,\left\lceil\frac{2^{p+5}R^3}{3}\right\rceil\right).
+\end{equation}
+Then \(B_N\le2^{-p-5}\).  On this range \(B_N\le1\), so
+\(\e^{B_N}B_N\le3B_N\le2^{-p-3}\), leaving guard bits for the
+finite factors and the prefactor.  The ceiling is implemented by bounded
+integer division, and the verifier checks the cross-multiplied inequality
+rather than trusting the formula for \(N\).
+
+\subsection{Derivative tails}
+
+Uniform convergence of values alone gives a continuous function.  To obtain a
+constructive holomorphic contract, differentiate the logarithmic tail.  Direct
+calculation gives
+\begin{align}
+ q_k'(z)&=\frac1{1+z/k}-1+\frac zk
+        =\frac{(z/k)^2}{1+z/k},\label{eq:qprime}\\
+ q_k''(z)&=-\frac{1}{k(1+z/k)^2}+\frac1k
+        =\frac{2z/k+z^2/k^2}{k(1+z/k)^2},\label{eq:qsecond}\\
+ q_k^{(r)}(z)&=\frac{(-1)^{r-1}(r-1)!}
+ {k^{r-1}(1+z/k)^r}\qquad(r\ge3).
+ \label{eq:qhigher}
+\end{align}
+Thus, when \(|z|\le R\) and \(k\ge2R\),
+\begin{align}
+ |q_k'(z)|&\le \frac{2R^2}{k^2},\label{eq:qprime-bound}\\
+ |q_k''(z)|&\le \frac{12R}{k^2},\label{eq:qsecond-bound}\\
+ |q_k^{(r)}(z)|&\le
+ 2^r(r-1)!\,k^{1-r}\qquad(r\ge3).
+ \label{eq:qhigher-bound}
+\end{align}
+For each fixed derivative order the tails have explicit moduli.  At orders
+\(r\ge3\), the geometric/integral estimate is even faster.  These bounds give
+a finite Taylor-ball certificate on every rational disk: evaluate finitely many
+factors and sum finitely many derivative tails.  No appeal to a nonconstructive
+``uniform limit theorem'' is necessary; that theorem is re-proved here in the
+only quantitative form required.
+
+\begin{theorem}[Constructive existence and entirety]\label{thm:entire}
+The partial products in \cref{eq:Fdef} form, on every rational compact disk, a
+fast uniformly Cauchy family together with every fixed derivative.  Their limit
+\(F\) has a primitive-recursive evaluation modulus and compatible Taylor-ball
+certificates.  Hence \(G(z)=F(z-1)\) is entire in the constructive sense of
+\cref{sec:ipra}.
+\end{theorem}
+
+\begin{proof}
+Fix an integer radius \(R\).  The first \(2R\) factors and the prefactor are
+finite combinations of polynomials and exponentials, for which the Gamma packet
+already specifies rational-ball evaluators.  Apply
+\cref{lem:canonical-tail,eq:qprime-bound,eq:qsecond-bound,eq:qhigher-bound} to
+the remaining factors.  Given precision \(p\) and derivative order \(r\), a
+primitive-recursive maximum of the corresponding cutoffs makes every tail at
+most \(2^{-p-c_r}\).  The finite product rule and exponential error lemmas
+combine them into a Taylor ball.  Compatibility of overlapping balls follows
+from the same value-tail estimate.  All loops are bounded by the cutoff, so the
+certificate producer is primitive recursive; all local checks are rational
+inequalities, so its soundness proof uses quantifier-free induction.
+\end{proof}
+
+\subsection{Normalization and real conjugation}
+
+At \(z=0\), every factor in \cref{eq:Fdef} is one and the prefactor is one.
+Therefore
+\begin{equation}\label{eq:G1}
+ G(1)=F(0)=1.
+\end{equation}
+This is exact, not merely a limiting statement.
+
+Every coefficient and constant in the product is real.  Finite partial products
+therefore satisfy
+\(
+F(\overline z)=\overline{F(z)}
+\)
+exactly.  The common tail modulus permits passage to the named limits:
+\begin{equation}\label{eq:conj}
+ G(\overline z)=\overline{G(z)}.
+\end{equation}
+In iPRA the proof at precision \(p\) simply evaluates both sides using the same
+cutoff; the finite centers are conjugate and the two radius bounds coincide.
+
+\subsection{Zeros and their multiplicities}
+
+\begin{theorem}[Zero divisor]\label{thm:zeros}
+The zeros of \(G\) are exactly
+\[
+ 0,-1,-2,\ldots,
+\]
+and the zero at \(1-m\) has multiplicity \(m\) for every \(m\ge1\).
+\end{theorem}
+
+\begin{proof}
+For \(F(z)=G(1+z)\), the finite factor
+\((1+z/m)^m\) vanishes to order \(m\) at \(z=-m\).  Its exponential multiplier
+never vanishes.  Every other finite factor is nonzero there, as is the
+prefactor.  Choose \(N>2m+2\).  On a sufficiently small rational disk around
+\(-m\), all factors with \(k>N\) satisfy \(|z/k|<1/2\); their logarithmic tail
+converges to a finite value, so their product is quantitatively apart from zero.
+The remaining finitely many nonvanishing factors have a rational lower bound on
+a smaller disk.  Therefore \(F(z)=(z+m)^m U_m(z)\), where \(U_m\) is analytic
+and apart from zero on that disk.
+
+Conversely, at a point that is not a negative integer, choose a rational disk
+avoiding the finitely many possible zeros among the head factors.  Their product
+has a positive rational lower bound, and the tail exponential is nonzero.  Thus
+there is no other zero.  Translating by one gives the stated divisor of \(G\).
+\end{proof}
+
+The factorization proof is fully finitary: for a fixed integer \(m\), polynomial
+division extracts \((z+m)^m\) from the \(m\)-th factor, while all lower bounds
+are supplied by bounded searches over rational boxes.  This proves the integer
+zero statements on both target pages and strengthens them by multiplicity.
+
+\subsection{Why the product is the right iPRA definition}
+
+One could instead define \(G\) from its functional equation plus a uniqueness
+principle.  That route postpones rather than removes the analytic work: the
+uniqueness condition involves third derivatives or an asymptotic modulus.  The
+canonical product is preferable as the foundational iPRA definition because
+its convergence is controlled by the single rational inequality
+\cref{eq:qtail}.  Functional equations, reflection and special values then
+become theorems with independently checkable finite certificates.

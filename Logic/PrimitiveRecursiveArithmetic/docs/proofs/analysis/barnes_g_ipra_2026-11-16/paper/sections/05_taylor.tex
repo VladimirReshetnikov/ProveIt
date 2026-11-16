@@ -1,0 +1,183 @@
+\section{Taylor series, logarithmic derivatives, and power-series certificates}\label{sec:taylor}
+
+The canonical-factor calculation \cref{eq:qseries} contains the full Taylor
+series.  On \(|z|<1\), absolute convergence permits the order of summation to be
+reversed:
+\begin{align}
+ \sum_{k=1}^{\infty}q_k(z)
+ &=\sum_{k=1}^{\infty}\sum_{m=3}^{\infty}
+   \frac{(-1)^{m+1}z^m}{m k^{m-1}}\notag\\
+ &=\sum_{m=3}^{\infty}
+   \frac{(-1)^{m+1}\zeta(m-1)}{m}z^m.
+ \label{eq:q-double-sum}
+\end{align}
+The constructive justification is a rectangular-tail estimate.  If
+\(|z|\le\rho<1\), then \(\zeta(m-1)<2\) for every \(m\ge3\), and hence all
+omitted terms are dominated by a geometric series.
+
+\begin{theorem}[Taylor series for \(\log G\)]\label{thm:taylor}
+For \(|z|<1\), on the branch normalized by \(\log G(1)=0\),
+\begin{equation}\label{eq:taylor-logG}
+ \log G(1+z)
+ =\frac{\log(2\pi)-1}{2}z
+  -\frac{1+\gamma}{2}z^2
+  +\sum_{m=3}^{\infty}
+    \frac{(-1)^{m-1}\zeta(m-1)}{m}z^m.
+\end{equation}
+Equivalently, with \(k=m-1\),
+\begin{equation}\label{eq:taylor-wiki}
+ \log G(1+z)
+ =\frac z2\log(2\pi)
+  -\frac{z+(1+\gamma)z^2}{2}
+  +\sum_{k=2}^{\infty}
+    (-1)^k\frac{\zeta(k)}{k+1}z^{k+1}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Take the logarithm of the finite partial product in \cref{eq:Fdef} on
+\(|z|<1\).  Each \(1+z/k\) lies in the disk centered at one of radius less than
+one, so the Taylor branch is coherent.  Substitute \cref{eq:qseries}.  For
+\(|z|\le\rho<1\),
+\[
+ \sum_{m=3}^{\infty}\sum_{k=1}^{\infty}
+ \frac{|z|^m}{m k^{m-1}}
+ \le 2\sum_{m=3}^{\infty}\frac{\rho^m}{m}<\infty.
+\]
+The finite rectangle identity is exact; the two tails have explicit geometric
+bounds, so their difference is smaller than any requested dyadic radius.  The
+linear and quadratic coefficients come from the prefactor.  The sign
+\((-1)^{m-1}=(-1)^{m+1}\) is unchanged because the exponents differ by two.
+\end{proof}
+
+\subsection{Explicit truncation bounds}
+
+Let \(T_M(z)\) contain the terms through degree \(M\), where \(M\ge3\).  If
+\(|z|\le\rho<1\), then
+\begin{equation}\label{eq:taylor-tail}
+ \left|\log G(1+z)-T_M(z)\right|
+ \le
+ \frac{2\rho^{M+1}}{(M+1)(1-\rho)}.
+\end{equation}
+Indeed,
+\[
+ \sum_{m=M+1}^{\infty}
+ \frac{\zeta(m-1)\rho^m}{m}
+ \le \frac2{M+1}\sum_{m=M+1}^{\infty}\rho^m.
+\]
+For rational \(\rho=a/b<1\), the assertion that the right side is at most
+\(2^{-p}\) is the natural-number inequality
+\begin{equation}\label{eq:taylor-tail-cleared}
+ 2a^{M+1}b\,2^p
+ \le (M+1)(b-a)b^{M+1}.
+\end{equation}
+The certificate producer increases \(M\) until this decidable inequality
+holds.  Bounded search can be capped by a deliberately generous primitive-
+recursive value, for example a polynomial-exponential function of
+\(p+b\).  Soundness depends only on the checked inequality, not on optimality
+of the cap.
+
+The same argument gives derivative tails.  If \(0\le r\le M\), termwise
+\(r\)-fold differentiation yields
+\begin{equation}\label{eq:taylor-derivative-tail}
+ \left|D^r\bigl(\log G(1+z)-T_M(z)\bigr)\right|
+ \le
+ \frac{2(M+1)^r\rho^{M+1-r}}
+      {(1-\rho)^{r+1}}
+\end{equation}
+with a coarse but primitive-recursive constant.  A sharper falling-factorial
+bound is available, but the coarse form is easier to compile and entirely
+adequate.
+
+\subsection{Exponentiating the series}
+
+Exponentiating \cref{eq:taylor-wiki} gives
+\begin{align}
+ G(1+z)={}&(2\pi)^{z/2}
+ \exp\!\left(-\frac{z+(1+\gamma)z^2}{2}\right)\notag\\
+ &\times
+ \exp\!\left(
+ \sum_{k=2}^{\infty}(-1)^k\frac{\zeta(k)}{k+1}z^{k+1}
+ \right).
+ \label{eq:exp-taylor}
+\end{align}
+Comparing with the canonical product yields
+\begin{equation}\label{eq:series-product-relation}
+ \exp\!\left(
+ \sum_{k=2}^{\infty}(-1)^k\frac{\zeta(k)}{k+1}z^{k+1}
+ \right)
+ =\prod_{k=1}^{\infty}E_k(z),
+ \qquad |z|<1.
+\end{equation}
+This is not circular: both sides have independently supplied finite
+approximants, and \cref{eq:q-double-sum} shows that their logarithmic
+approximants differ by a rectangular tail tending effectively to zero.
+
+For formalization, use the ball version
+\[
+ |u-v|\le2^{-p-c},\quad |u|,|v|\le B
+ \Longrightarrow
+ |\e^u-\e^v|\le \e^B2^{-p-c}.
+\]
+The exponential evaluator supplies an upper rational ball for \(\e^B\), and
+the backward demand pass chooses \(c\).  No exact transcendental equality is
+asked of the finite centers.
+
+\subsection{The logarithmic derivative series}
+
+Differentiate \cref{eq:taylor-logG}.  With
+\[
+ \phi(w):=\frac{d}{dw}\log G(w),
+ \qquad
+ \phi(1)=\frac{\log(2\pi)-1}{2},
+\]
+we obtain, for \(|w-1|<1\),
+\begin{equation}\label{eq:phi-taylor}
+ \phi(w)=\phi(1)-(1+\gamma)(w-1)
+ +\sum_{k=2}^{\infty}(-1)^k\zeta(k)(w-1)^k.
+\end{equation}
+The tail on \(|w-1|\le\rho<1\) is bounded by
+\begin{equation}\label{eq:phi-tail}
+ \left|\sum_{k=M+1}^{\infty}(-1)^k\zeta(k)(w-1)^k\right|
+ \le \frac{2\rho^{M+1}}{1-\rho}.
+\end{equation}
+These formulas prove the Taylor and logarithmic-derivative claims on the target
+pages in a stronger complex-disk form.  One source states only \(0<z<1\);
+that interval is a valid special case, not the full domain.
+
+\subsection{Primitive-recursive names for the coefficients}
+
+For each fixed integer \(s\ge2\), define
+\[
+ \zeta(s)=\sum_{n=1}^{N}\frac1{n^s}+R_{s,N},
+ \qquad
+ 0<R_{s,N}\le\frac{1}{(s-1)N^{s-1}}.
+\]
+The finite sum is rational and primitive recursive.  Given \(p\), choose
+\(N\) so that
+\((s-1)N^{s-1}\ge2^{p+2}\).  Bounded powering and search produce a modulus.
+Thus every coefficient in a fixed Taylor truncation is a fast rational name.
+The development never requires a single object-language function that accepts
+an arbitrary code for \(s\); the external theorem schema introduces the finite
+list of fixed \(s\)'s needed at each truncation order.
+
+Euler's constant has the standard name
+\[
+ \gamma_N=H_N-\log N,
+ \qquad
+ 0<\gamma_N-\gamma<\frac1N,
+\]
+with a sharpened Euler--Maclaurin bound available from the Gamma packet.  The
+constant \(\log(2\pi)\) is obtained from the named \(\pi\) and positive-log
+evaluator.  Consequently every coefficient and every tail budget in
+\cref{eq:taylor-logG} is expressible in the iPRA framework of
+\cref{sec:ipra}.
+
+\begin{roadmap}[Lean module \code{BarnesG/Taylor}]
+Implement a finite coefficient function returning the rational balls for
+\(\zeta(2),\ldots,\zeta(M-1)\), a Horner evaluator for \(T_M\), and the checker
+for \cref{eq:taylor-tail-cleared}.  Prove the finite double-sum rearrangement by
+bounded sum interchange, then use the canonical-factor tail to pass from the
+finite rectangle to the product.  The object theorem is a ball inclusion, not
+an equality of host-Lean real numbers.
+\end{roadmap}
