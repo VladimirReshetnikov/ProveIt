@@ -21,6 +21,7 @@ check() {
   printf 'PASS %s\n' "$mod"
 }
 check "$here/../PA194TrieRoot.lean"
+check "$here/../PA194VariantController.lean"
 check "$here/../PA194TrieSourceController.lean"
 check "$here/PA194LCCController.lean"
 check "$here/PA194LCCInitializer.lean"

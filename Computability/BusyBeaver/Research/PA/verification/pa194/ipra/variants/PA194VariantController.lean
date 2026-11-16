@@ -28,8 +28,8 @@ variable [M↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 /- The four root inputs are the source state, header gap, additional spare
    count, and first spare value. The last stays fixed along the source orbit. -/
-private def Aligned (root : Code 4) (spare : M) (s c : M) : Prop :=
-  F pc ![s] < modelNumeral M 3673 ∧ ∃ gap count : M, c = F root ![s,gap,count,spare]
+private def Aligned (root : Code 4) (bound spare : M) (s c : M) : Prop :=
+  F pc ![s] < bound ∧ ∃ gap count : M, c = F root ![s,gap,count,spare]
 
 omit [Structure.Eq language M] [M↓[language] ⊧* PRA] in
 private theorem alignmentDef (p : M → M) (r : M → M → M → M → M) (bound spare : M)
@@ -39,8 +39,8 @@ private theorem alignmentDef (p : M → M) (r : M → M → M → M → M) (boun
   letI := hr
   definability
 
-private theorem alignedDef (root : Code 4) (spare : M) :
-    𝚺₁-Relation (Aligned (M := M) root spare) := by
+private theorem alignedDef (root : Code 4) (bound spare : M) :
+    𝚺₁-Relation (Aligned (M := M) root bound spare) := by
   have h : 𝚺₁.DefinableFunction (fun e : Fin 4 → M => F root e) :=
     HierarchySymbol.Defined.to_definable _ (PA194CodeGraph.modelGraph (M := M) root)
   have hr : 𝚺₁-Function₄ (fun s gap count spare : M => F root ![s,gap,count,spare]) := by
@@ -50,7 +50,44 @@ private theorem alignedDef (root : Code 4) (spare : M) :
     funext i
     fin_cases i <;> rfl
   exact alignmentDef (fun s => F pc ![s]) (fun s gap count v => F root ![s,gap,count,v])
-    (modelNumeral M 3673) spare (unaryCodeDef pc) hr
+    bound spare (unaryCodeDef pc) hr
+
+/-- The source implementation proof reduces to initialization, source
+instruction returns, and the literal run from the terminal source site. -/
+theorem halt_iff_site (T : ConPA.Machine.Table) (halt : Nat) (root : Code 4) (next : Code 1)
+    (terminal bound seed startup spare initialGap initialCount : M)
+    (hseed : F pc ![seed] < bound)
+    (initial : ConPA.Machine.run T startup = F root ![seed,initialGap,initialCount,spare])
+    (live : ∀ s gap count : M, F pc ![s] < bound →
+      π₁ (F root ![s,gap,count,spare]) ≠ (halt : M))
+    (absorb : ∀ c : M, π₁ c = (halt : M) → ConPA.Machine.step T c = c)
+    (advance : ∀ s gap count : M, F pc ![s] < bound →
+      F pc ![s] ≠ terminal → ∃ k nextGap nextCount : M, 0 < k ∧
+        F pc ![F next ![s]] < bound ∧
+        ConPA.Machine.runFrom T k (F root ![s,gap,count,spare]) =
+          F root ![F next ![s],nextGap,nextCount,spare])
+    (finish : ∀ s gap count : M, F pc ![s] = terminal →
+      ∃ k : M, π₁ (ConPA.Machine.runFrom T k (F root ![s,gap,count,spare])) = (halt : M)) :
+    (∃ t : M, π₁ (ConPA.Machine.run T t) = (halt : M)) ↔
+      ∃ n : M, F pc ![F (iterate next) ![n,seed]] = terminal := by
+  let source : M → M := fun n => F (iterate next) ![n,seed]
+  have hs : 𝚺₁-Function₁ source := bindBinary _ seed (binaryCodeDef (iterate next))
+  have hbase : Aligned root bound spare (source 0) (ConPA.Machine.run T startup) := by
+    have hz : source 0 = seed := iterateZero next seed
+    rw [hz]
+    exact ⟨hseed, initialGap, initialCount, initial⟩
+  refine (ConPA.Machine.halt_iff_source T halt source hs
+    (fun s => F pc ![s] = terminal) (Aligned root bound spare) (alignedDef root bound spare)
+    startup hbase ?_ absorb ?_ ?_)
+  · rintro s c ⟨hpc, gap, count, rfl⟩
+    exact live s gap count hpc
+  · rintro n c ⟨hpc, gap, count, rfl⟩ hn
+    obtain ⟨k, nextGap, nextCount, hk, hp, hrun⟩ := advance (source n) gap count hpc hn
+    have he : source (n + 1) = F next ![source n] := iterateSucc next n seed
+    rw [he]
+    exact ⟨k, hk, hp, nextGap, nextCount, hrun⟩
+  · rintro s c ⟨_, gap, count, rfl⟩ ht
+    exact finish s gap count ht
 
 /-- The source implementation proof reduces to initialization, source
 instruction returns, and the literal halt at source site 10. -/
@@ -69,26 +106,12 @@ theorem halt_iff_controller (T : ConPA.Machine.Table) (halt : Nat) (root : Code 
     (finish : ∀ s gap count : M, F pc ![s] = modelNumeral M 10 →
       ∃ k : M, π₁ (ConPA.Machine.runFrom T k (F root ![s,gap,count,spare])) = (halt : M)) :
     (∃ t : M, π₁ (ConPA.Machine.run T t) = (halt : M)) ↔
-      ∃ n : M, F pc ![F run ![n,seed]] = modelNumeral M 3674 := by
-  let source : M → M := fun n => F run ![n,seed]
-  have hs : 𝚺₁-Function₁ source := bindBinary _ seed (binaryCodeDef run)
-  have hbase : Aligned root spare (source 0) (ConPA.Machine.run T startup) := by
-    have hz : source 0 = seed := iterateZero step seed
-    rw [hz]
-    exact ⟨hseed, initialGap, initialCount, initial⟩
-  refine (ConPA.Machine.halt_iff_source T halt source hs
-    (fun s => F pc ![s] = modelNumeral M 10) (Aligned root spare) (alignedDef root spare)
-    startup hbase ?_ absorb ?_ ?_).trans (PA194ControllerHaltReach.reachesHaltIffSite10 seed hseed).symm
-  · rintro s c ⟨hpc, gap, count, rfl⟩
-    exact live s gap count hpc
-  · rintro n c ⟨hpc, gap, count, rfl⟩ hn
-    obtain ⟨k, nextGap, nextCount, hk, hp, hrun⟩ := advance (source n) gap count hpc hn
-    have he : source (n + 1) = F step ![source n] := iterateSucc step n seed
-    rw [he]
-    exact ⟨k, hk, hp, nextGap, nextCount, hrun⟩
-  · rintro s c ⟨_, gap, count, rfl⟩ ht
-    exact finish s gap count ht
+      ∃ n : M, F pc ![F run ![n,seed]] = modelNumeral M 3674 :=
+  (halt_iff_site T halt root step (modelNumeral M 10) (modelNumeral M 3673)
+    seed startup spare initialGap initialCount hseed initial live absorb advance finish).trans
+      (PA194ControllerHaltReach.reachesHaltIffSite10 seed hseed).symm
 
+#print axioms halt_iff_site
 #print axioms halt_iff_controller
 end models
 end PA194VariantController

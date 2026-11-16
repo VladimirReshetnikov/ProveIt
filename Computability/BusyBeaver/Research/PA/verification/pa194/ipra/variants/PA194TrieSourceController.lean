@@ -52,20 +52,22 @@ abbrev checkAt := PA194SourceContracts.checkAt d.machine d.path d.codeAt
 
 def AllContracts : Prop := ∀ i : Nat, i < 3673 → checkAt d i = true
 
-def Contracts (i : Nat) : Instruction → Prop
-  | .inc r next => destination next < 3673 ∧
+def BoundedContracts (bound i : Nat) : Instruction → Prop
+  | .inc r next => destination next < bound ∧
     contract d none i (destination next) 0 512 (.inc (physicalRegister r)) = true
-  | .dec r z p => destination z < 3673 ∧ destination p < 3673 ∧
+  | .dec r z p => destination z < bound ∧ destination p < bound ∧
     contract d (some (physicalRegister r,true)) i (destination z) 0 512 .none = true ∧
     contract d (some (physicalRegister r,false)) i (destination p) 1 512 (.dec (physicalRegister r)) = true
-  | .jump next => destination next < 3673 ∧ contract d none i (destination next) 0 512 .none = true
+  | .jump next => destination next < bound ∧ contract d none i (destination next) 0 512 .none = true
   | .halt => haltContract d i 512 = true
+
+abbrev Contracts := BoundedContracts d 3673
 
 private theorem atSite (i : Nat) (h : checkAt d i = true) :
     ∃ code, resolveAt PA194SourceProgram.sites i = some code ∧ Contracts d i code := by
   obtain ⟨code, hresolve, hcheck⟩ := PA194SourceContracts.checked_at d.machine d.path d.codeAt i h
   refine ⟨code, hresolve, ?_⟩
-  cases code <;> simpa only [checkInstruction, PA194SourceContracts.checkInstruction, Contracts,
+  cases code <;> simpa only [checkInstruction, PA194SourceContracts.checkInstruction, Contracts, BoundedContracts,
     PA194FoldedSourceContracts.destination_eq, Bool.and_eq_true, decide_eq_true_eq, and_assoc] using hcheck
 
 section models
@@ -149,36 +151,30 @@ private theorem stepAt (s s' gap count spare nextCount : M) (i j : Fin 3673)
     rw [root_advanced_gap d gap box j.val eff, hstart, hfinish] at h
     exact h
 
-/-- Execute each nonterminal instruction and reach the next source root. -/
-theorem advance (checks : AllContracts d) (spare : M) (boxes : Boxes d spare) :
-    ∀ s : M, F pc ![s] < modelNumeral M 3673 → F pc ![s] ≠ modelNumeral M 10 →
-    ∀ gap count : M, ∃ nextGap nextCount : M,
-      F pc ![F step ![s]] < modelNumeral M 3673 ∧
+/-- A checked physical instruction implements the supplied register and PC
+    results. The supplied instruction can come from a different resolved
+    source list with at most 3,673 sites. -/
+theorem advanceAt (bound : Nat) (boundOK : bound ≤ 3673)
+    (s s' gap count spare : M) (i : Fin 3673) (instr : Instruction)
+    (hi : F pc ![s] = modelNumeral M i.val) (boxes : Boxes d spare)
+    (hc : BoundedContracts d bound i.val instr) (hnormal : instr ≠ .halt)
+    (hpc' : F pc ![s'] = modelNumeral M (execute (some instr) (regs s)).1)
+    (hl : regs s' = (execute (some instr) (regs s)).2) :
+    ∃ nextGap nextCount : M, F pc ![s'] < modelNumeral M bound ∧
       Reach1 d.table (F (sourceRootCode d) ![s,gap,count,spare])
-        (F (sourceRootCode d) ![F step ![s],nextGap,nextCount,spare]) := by
+        (F (sourceRootCode d) ![s',nextGap,nextCount,spare]) := by
   classical
-  intro s hbound hnormal gap count
-  let s' : M := F step ![s]
   let a := tapeArgs s count spare
   let inc := incremented a count
-  obtain ⟨i,hi,hpc,hregs⟩ := boundedStepCalibration s (regs s) hbound (by intro r; rfl)
-  obtain ⟨instr,hinst,hc⟩ := atSite d i.val (checks i.val i.isLt)
-  have ht : (M6.Source.PathTrie.nthSite PA194.SourceTree.trie i.val).bind
-      (M6.FastResolve.resolveTree PA194.SourceTree.trie) = some instr := by
-    rwa [←PA194SourceProgram.resolve_tree]
-  rw [ht] at hpc hregs
-  have hl : regs s' = (execute (some instr) (regs s)).2 := funext hregs
-  have hpc' : F pc ![s'] = modelNumeral M (execute (some instr) (regs s)).1 :=
-    (pcModel s').trans hpc
   have bslot (r : Fin 9) : physicalRegister r < 9 := physicalRegister_lt r
   have read (r : Fin 9) : a (slot (position r)) = regs s r := readRegister s count spare r
   cases instr with
   | halt =>
     exfalso
-    exact hnormal (by rwa [resolvedHaltIndex i.val hinst] at hi)
+    exact hnormal rfl
   | jump next =>
     obtain ⟨hb,hc⟩ := hc
-    let j : Fin 3673 := ⟨destination next,hb⟩
+    let j : Fin 3673 := ⟨destination next,lt_of_lt_of_le hb boundOK⟩
     refine ⟨gap,count,?_,?_⟩
     · rw [hpc']
       exact modelNumeralStrict _ _ hb
@@ -188,7 +184,7 @@ theorem advance (checks : AllContracts d) (spare : M) (boxes : Boxes d spare) :
       exact stepAt d s s' gap count spare count i j hi hpc' boxes none trivial false .none hc hout
   | inc r next =>
     obtain ⟨hb,hc⟩ := hc
-    let j : Fin 3673 := ⟨destination next,hb⟩
+    let j : Fin 3673 := ⟨destination next,lt_of_lt_of_le hb boundOK⟩
     refine ⟨gap,count+1,?_,?_⟩
     · rw [hpc']
       exact modelNumeralStrict _ _ hb
@@ -202,7 +198,7 @@ theorem advance (checks : AllContracts d) (spare : M) (boxes : Boxes d spare) :
     obtain ⟨hzbound,hpbound,hzcheck,hpcheck⟩ := hc
     by_cases hz : regs s r = (0 : M)
     · simp only [execute,hz,if_true] at hpc' hl
-      let j : Fin 3673 := ⟨destination zero,hzbound⟩
+      let j : Fin 3673 := ⟨destination zero,lt_of_lt_of_le hzbound boundOK⟩
       have hb : BranchOK a (some (physicalRegister r,true)) := by
         intro hr
         change a (slot (position r)) = 0
@@ -213,7 +209,7 @@ theorem advance (checks : AllContracts d) (spare : M) (boxes : Boxes d spare) :
         rfl
       exact stepAt d s s' gap count spare count i j hi hpc' boxes _ hb false .none hzcheck hout
     · simp only [execute,hz,if_false] at hpc' hl
-      let j : Fin 3673 := ⟨destination positive,hpbound⟩
+      let j : Fin 3673 := ⟨destination positive,lt_of_lt_of_le hpbound boundOK⟩
       have hb : BranchOK a (some (physicalRegister r,false)) := by
         intro hr
         change a (slot (position r)) ≠ 0
@@ -225,6 +221,31 @@ theorem advance (checks : AllContracts d) (spare : M) (boxes : Boxes d spare) :
         simp only [boxValue,bslot r,dite_true,decrement,←read r,position]
         rfl
       exact stepAt d s s' gap count spare count i j hi hpc' boxes _ hb true _ hpcheck hout
+
+/-- Execute each nonterminal instruction and reach the next source root. -/
+theorem advance (checks : AllContracts d) (spare : M) (boxes : Boxes d spare) :
+    ∀ s : M, F pc ![s] < modelNumeral M 3673 → F pc ![s] ≠ modelNumeral M 10 →
+    ∀ gap count : M, ∃ nextGap nextCount : M,
+      F pc ![F step ![s]] < modelNumeral M 3673 ∧
+      Reach1 d.table (F (sourceRootCode d) ![s,gap,count,spare])
+        (F (sourceRootCode d) ![F step ![s],nextGap,nextCount,spare]) := by
+  classical
+  intro s hbound hnormal gap count
+  let s' : M := F step ![s]
+  obtain ⟨i,hi,hpc,hregs⟩ := boundedStepCalibration s (regs s) hbound (by intro r; rfl)
+  obtain ⟨instr,hinst,hc⟩ := atSite d i.val (checks i.val i.isLt)
+  have ht : (M6.Source.PathTrie.nthSite PA194.SourceTree.trie i.val).bind
+      (M6.FastResolve.resolveTree PA194.SourceTree.trie) = some instr := by
+    rwa [←PA194SourceProgram.resolve_tree]
+  rw [ht] at hpc hregs
+  have hl : regs s' = (execute (some instr) (regs s)).2 := funext hregs
+  have hpc' : F pc ![s'] = modelNumeral M (execute (some instr) (regs s)).1 :=
+    (pcModel s').trans hpc
+  have hnot : instr ≠ .halt := by
+    intro h
+    subst instr
+    exact hnormal (by rwa [resolvedHaltIndex i.val hinst] at hi)
+  exact advanceAt d 3673 le_rfl s s' gap count spare i instr hi boxes hc hnot hpc' hl
 
 theorem terminal (spare : M) (boxes : Boxes d spare) (s gap count : M)
     (hpc : F pc ![s] = modelNumeral M 10) :
@@ -261,6 +282,7 @@ theorem halt_iff_controller (checks : AllContracts d) (boxes : Boxes d (initialS
     obtain ⟨nextGap, nextCount, hpc, k, hk, hrun⟩ := advance d checks _ boxes s hs hn gap count
     exact ⟨k, nextGap, nextCount, hk, hpc, hrun⟩
 
+#print axioms advanceAt
 #print axioms advance
 #print axioms terminal
 #print axioms halt_iff_controller

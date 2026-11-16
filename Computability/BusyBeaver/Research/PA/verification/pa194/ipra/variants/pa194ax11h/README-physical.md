@@ -22,6 +22,13 @@ literal trie's site. It checks in-range targets and the physical contract
 for each checked instruction. Coverage of all 3,671 sites is a separate
 replay stage.
 
+[The controller theorem](PA194AX11HController.lean) proves that the
+literal table halts at a model-valued clock exactly when the revised source
+run reaches site 10. It uses the finite site checks as its premise and
+checks that site 10 is the unique halt instruction. The
+[revised source orbit](README-source-orbit.md) gives the interface to
+the scheduler command proofs.
+
 From the repository root, supply the checked [candidate source stage](README-candidate.md)
 and [PA1944L model stage](../pa1944l/README.md).
 
@@ -29,5 +36,6 @@ and [PA1944L model stage](../pa1944l/README.md).
 variants=Computability/BusyBeaver/Research/PA/verification/pa194/ipra/variants
 literal=/dev/shm/pa194ax11h-literal
 bash "$variants/pa194ax11h/check-physical.sh" "$literal" /dev/shm/pa194ax11h-source /dev/shm/pa1944l-model
+bash "$variants/pa194ax11h/check-controller.sh" "$literal" /dev/shm/pa194ax11h-controller
 bash "$variants/check-linear-coverage.sh" PA194AX11H "$literal" /dev/shm/pa194ax11h-coverage
 ```
