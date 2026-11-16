@@ -265,6 +265,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct.phi_one
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct.eu_found
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct.euler_product
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Radical.val_pos
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Radical.cof_lt
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Radical.rad_pos
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Radical.rad_dvd
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Radical.phi_prime
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Radical.phi_rad
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Radical.radical_identity
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
