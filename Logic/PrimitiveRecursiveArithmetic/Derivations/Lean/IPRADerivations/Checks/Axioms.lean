@@ -534,6 +534,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.Pochhammer.poch_binom
 #print axioms LeanProofs.IPRA.Analysis.Pochhammer.gauss_ratio
 #print axioms LeanProofs.IPRA.Analysis.Pochhammer.gauss_derivative
+#print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_fact
+#print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_symm
+#print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_step_left
+#print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_step_right
+#print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_balanced
+#print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_pascal
+#print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_poch
+#print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_general
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.add_formula
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.pell_norm
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.cop_XY
