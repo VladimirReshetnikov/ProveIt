@@ -1,0 +1,138 @@
+\section{Numerical coding and the induction discipline}\label{sec:coding}
+
+This appendix fixes enough representation detail to make the route from
+the mathematical arguments to first-order iPRA unambiguous. The particular
+codes can be changed by proved PR translations. Their logical role cannot
+be omitted.
+
+\subsection{Total numerical operations and validity guards}
+
+Use the signed coding
+\[
+ \operatorname{enc}(z)=
+ \begin{cases}2z,&z\ge0,\\2|z|-1,&z<0.\end{cases}
+\]
+Decoding, sign, absolute value, comparison and the integer ring operations
+are PR. Their laws reduce to natural addition, multiplication
+and truncated subtraction. A rational is a pair $(z,d)$ with $d>0$;
+canonical reduction by the gcd is convenient but unnecessary for the
+arithmetic estimates. Equality and order use cross multiplication with
+positive denominators. On a malformed rational code, use a fixed default
+value and keep the validity flag explicit. Division in the ODE algorithm
+always has a separately proved positive denominator.
+
+For a concrete pairing, one can use
+$\langle a,b\rangle=2^a(2b+1)-1$. Bounded trial division and a bounded
+search recover its components. The decoder is total. A finite sequence
+can be coded by a length together with nested pairs. Access to entry $i$
+is a recursion bounded by the length, returning a default past the end.
+Alternatively, a table whose entries are bounded by $C$ can be coded in
+base $C+1$. Then a length-$r$ table has code below $(C+1)^r$.
+Both encodings and the usual append, map, fold and bounded search
+operations are PR.
+
+Canonical polynomial codes remove trailing zero coefficients. In the
+split-branch checker, the remainder must be nonzero, and the chosen
+difference is recomputed from the two selected input polynomials.
+Comparison of normalized lengths expresses the strict degree gap even
+for constant remainders. The zero polynomial is not assigned a genuine
+degree and then accidentally admitted as a certificate.
+
+\subsection{Why variable size does not introduce a universal evaluator}
+
+The interpreter for a finite integer or rational polynomial table is one
+fixed PR program. It performs bounded folds over coefficients, monomials
+and coordinates, using numerical exponentiation. It does not evaluate
+arbitrary PR program descriptions. Iterating this fixed update a variable
+number of times is precisely the primitive recursion operation allowed
+in the language.
+
+For example, let $s_{j+1}=\operatorname{Step}(s_j,c)$ where $c$ is a
+polynomial-code parameter. The function $(j,c,s_0)\mapsto s_j$ is PR
+because \code{Step} is one fixed PR function, even if its outputs become
+very large. Its evaluation time need not be elementary or practical.
+Nothing here asserts that the evaluator of all PR syntax is itself PR.
+
+The same distinction applies to Lean's function-valued notation
+\code{Fin d -> Rat}. This is a convenient finite coordinate presentation
+in the metatheory. The object theory uses its explicit finite sequence
+code, and the correspondence is proved by entrywise decoding lemmas.
+Arbitrary functions $\N\to\Q$ are never inserted into the numerical
+state as if they were finite data.
+
+\subsection{Bounded formulas and finite induction}
+
+For a fixed PR Boolean test $b(\vec x,i)$, define
+\[
+ A(\vec x,0)=1,\qquad
+ A(\vec x,j+1)=A(\vec x,j)\mathbin{\wedge_b}b(\vec x,j),
+\]
+where $\wedge_b$ is conjunction on $0,1$. A finite induction
+proves that $A(\vec x,j)=1$ expresses success at every index $i<j$.
+For the forward direction, fix an arbitrary challenge $i$ and induct on
+$j$ with the quantifier-free invariant
+$(i<j\land A(\vec x,j)=1)\to b(\vec x,i)=1$.
+For the reverse direction, fix a terminal bound $N$ and keep
+$\forall i<N\,b(\vec x,i)=1$ as an assumption independent of the
+induction variable. Induct on $j$ with
+$j\le N\to A(\vec x,j)=1$. Universal elimination from the fixed
+assumption supplies the successor test. Thus even the proof of bounded
+reflection does not presuppose induction on a quantified formula.
+The corresponding disjunctive fold and first-success register implement
+bounded existence and witness selection. With atomic equality and order
+tests, structural induction on a fixed bounded formula proves its
+equivalence to a Boolean equation. This is the reflection interface used
+throughout; it is not reflection for all theorems of iPRA.
+
+If a bounded loop has guard $j\le N$, its invariant can have the form
+\[
+ (j\le N\longrightarrow B(s_j,j,\vec x)=1).
+\]
+Here order is a PR test. A stopped transition freezes the state outside
+the active range. The induction formula is quantifier-free. In particular,
+the assertion that the first $j$ entries all satisfy a bound must be
+expressed by its Boolean prefix fold before invoking \code{PRA.qfInd}.
+
+The principal invariants in the new applications are:
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.22\linewidth}>{\raggedright\arraybackslash}p{.42\linewidth}>{\raggedright\arraybackslash}p{.30\linewidth}@{}}
+\toprule
+Loop & Numerical invariant & Necessary guard or auxiliary data \\
+\midrule\endhead
+Polynomial evaluation & Horner prefix agrees with the corresponding finite
+sum & Encoded coefficient length and prefix index \\
+Polynomial bound & Absolute partial sum is bounded by the sum of absolute
+terms & Nonnegative power base; leading coefficient nonzero when used \\
+Euler trajectory & $\norm{x_j-x_0}\le jhM$ & $j\le N$,
+$hN=T$, and the box bound \\
+Error propagation & $e_j\le r^j(e_0+\sum_{i<j}\delta_i)$ & $r\ge1$
+and nonnegative rational errors \\
+Conservation & Accumulated discrepancy is at most the sum
+of quadratic step remainders & Coefficientwise Lie-derivative identity \\
+Split factors & Each selected nonzero integer factor has absolute value
+at most the product & Full product nonzero; zero-product case separate \\
+Rectangle scan & Output contains exactly the successful tests already
+visited & Explicit bounds $H,K$ and scan position \\
+\bottomrule
+\end{longtable}
+
+\subsection{Accuracy challenges and rational gap elimination}
+
+An equality of names is an assertion about all requested precisions. The
+correct proof order is to fix an arbitrary precision $k$, compute a finite
+schedule from $k$, prove the corresponding rational inequality by the
+preceding induction discipline, and then universally introduce $k$.
+One does not induct on equality of represented values.
+
+Removing a vanishing numerical error is elementary. Suppose
+rational $a,b,C$ with $C\ge0$ satisfy $a\le b+C2^{-n}$ for all $n$.
+If $a>b$, write the positive rational gap $a-b=u/v$ with $u,v\ge1$.
+Choose an integer $J\ge Cv/u$ and take $n=J+1$. The finite inequality
+$2^{J+1}>J$ makes $C2^{-n}<u/v$ when $C>0$, a contradiction.
+For $C=0$ the conclusion is immediate. The choice of $J$ is an explicit
+rational ceiling, and the exponent bound is PR. This removes a rational
+slack; it does not decide the sign of an arbitrary represented real.
+
+Finally, every theorem described as uniform has one finite numerical
+algorithm and one arithmetic proof schema for that algorithm. A collection
+of unrelated standard-numeral proofs is not substituted for a single
+variable-parameter proof.

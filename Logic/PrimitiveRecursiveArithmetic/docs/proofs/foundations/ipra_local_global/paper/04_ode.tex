@@ -1,0 +1,546 @@
+\section{Polynomial differential equations from finite arithmetic}
+\label{sec:ode}
+
+The three-impossibilities packet asks whether the analytic infrastructure
+for the Hermite identity and disk-area calculation can be organized around
+a generic theorem for polynomial differential equations with explicit
+majorants \cite{impossibilitiespacket}.  We give such a construction, together
+with a finite algebraic method for proving its conserved quantities.  This
+extends the earlier libraries of names, finite integration, and implicit
+branches \cite{oldframework}.  The new construction produces a primitive
+recursive approximation scheme and its finite error estimates; its
+existence proof never invokes completeness of the real numbers.
+
+\subsection{Finite polynomial data and a constructed local horizon}
+
+A rational polynomial vector field in dimension $d\ge1$ is a finite table
+\[
+ F_i(x)=\sum_{\alpha}c_{i,\alpha}x^\alpha,
+ \qquad x^\alpha=\prod_{j<d}x_j^{\alpha_j},\qquad
+ |\alpha|=\sum_{j<d}\alpha_j.
+\]
+Rational arithmetic, exponent vectors, and all the tables are numerically
+coded.  Polynomial evaluation is uniform primitive recursion on this
+particular finite syntax; it is not evaluation of arbitrary primitive
+recursive program codes.  Dimension, degree, coefficient sizes, and
+precision may all vary.  We use the norm
+$\lVert x\rVert=\max_{i<d}|x_i|$.
+
+For rational $B\ge1$, compute
+\begin{align}
+ M&=\max\left(1,\max_{i<d}\sum_\alpha
+                  |c_{i,\alpha}|B^{|\alpha|}\right),\label{eq:ode-M}\\
+ L&=\max_{i<d}\sum_{|\alpha|\ge1}
+                  |c_{i,\alpha}|\,|\alpha|B^{|\alpha|-1}.
+                  \label{eq:ode-L}
+\end{align}
+
+\begin{lemma}[Finite polynomial bounds]
+\label{lem:ode-polybound}
+If $\lVert x\rVert,\lVert y\rVert\le B$, then
+\[
+ \lVert F(x)\rVert\le M,\qquad
+ \lVert F(x)-F(y)\rVert\le L\lVert x-y\rVert.
+\]
+\end{lemma}
+\begin{proof}
+The first assertion is the triangle inequality applied to each monomial.
+For the second, write a monomial as a product of $|\alpha|$ factors, with
+coordinates repeated as prescribed by $\alpha$.  Replace the factors at
+$x$ by the factors at $y$ one at a time.  The resulting telescoping identity
+has $|\alpha|$ terms, each of absolute value at most
+$B^{|\alpha|-1}\lVert x-y\rVert$.  Multiplication by coefficient absolute
+values and finite summation give the result.  These are finite identities
+and inequalities, including when dimension and degree vary.
+\end{proof}
+
+Given any rational initial vector $x_0$, the choices
+\begin{equation}
+ B=1+\lVert x_0\rVert,\qquad M,L\text{ from
+ \eqref{eq:ode-M}--\eqref{eq:ode-L}},\qquad T=\frac1{2M}
+ \label{eq:ode-localhorizon}
+\end{equation}
+construct a positive rational horizon.  For $N=2^n$ and $h=T/N$, define
+\begin{equation}
+ x_{n,0}=x_0,\qquad x_{n,j+1}=x_{n,j}+hF(x_{n,j})\quad(j<N).
+ \label{eq:ode-euler}
+\end{equation}
+Induction gives
+\begin{equation}
+ \lVert x_{n,j}-x_0\rVert\le jhM\le TM=\tfrac12\quad(j\le N).
+ \label{eq:ode-invariant}
+\end{equation}
+At each step the preceding estimate puts the current point in the box,
+where Lemma~\ref{lem:ode-polybound} applies.  Thus both the local horizon
+and its validity proof are produced from the finite input.  They are not
+extra existence hypotheses.
+
+The subsequent theorems also work on any larger rational horizon $T>0$
+for which a uniform arithmetic proof establishes that the Euler nodes
+remain in $\lVert x\rVert\le B$.  The finite inequality
+$\lVert x_0\rVert+TM\le B$ is one sufficient certificate.  Concrete linear
+and triangular systems below admit sharper invariant proofs.  Restricting
+to meshes $2^{n+b}$, for a supplied natural $b$, is harmless: every bound
+below remains true with $2^{-n}$ as an overestimate of the mesh factor.
+
+\subsection{Discrete Gronwall with an entirely rational growth bound}
+
+\begin{lemma}[Rational growth bound]
+\label{lem:ode-growth}
+For $a\in\Q$, $a\ge0$, and integer $k\ge1$,
+\[
+ \left(1+\frac ak\right)^k\le3^{\lceil a\rceil}.
+\]
+\end{lemma}
+\begin{proof}
+Let $A=\lceil a\rceil$.  Finite Bernoulli gives
+$1+a/k\le1+A/k\le(1+1/k)^A$.  The binomial expansion gives
+\[
+ (1+1/k)^k\le\sum_{j=0}^k\frac1{j!}\le3,
+\]
+because $\binom{k}{j}\le k^j/j!$ and $j!\ge2^{j-1}$ for $j\ge2$;
+the last step is a finite geometric sum.  Raise the Bernoulli inequality
+to the $k$th power.  If $A=0$, then $a=0$ and the claim is immediate.
+\end{proof}
+
+\begin{lemma}[Finite Gronwall estimate]
+\label{lem:ode-gronwall}
+Suppose $e_0,\ldots,e_k$ and $\delta_0,\ldots,\delta_{k-1}$ are
+nonnegative rationals and
+$e_{j+1}\le r e_j+\delta_j$, where $r\ge1$.  Then
+\[
+ e_j\le r^j\left(e_0+\sum_{i<j}\delta_i\right)\quad(j\le k).
+\]
+In particular, if $r=1+a/k$, $k\ge1$, and $\delta_i\le\delta$, then
+\begin{equation}
+ e_j\le3^{\lceil a\rceil}(e_0+k\delta)\quad(j\le k).
+ \label{eq:ode-gronwall}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The first inequality is a finite induction.  In its step, multiply the
+induction bound by $r$ and use
+$\delta_j\le r^{j+1}\delta_j$.  For the second assertion, use
+$r^j\le r^k$, Lemma~\ref{lem:ode-growth}, and the finite sum bound.
+After rational coding and Booleanization of the bounded input conditions,
+the invariant is quantifier-free.  It involves no analytic assertion.
+\end{proof}
+
+\subsection{A primitive recursive family of solution names}
+
+Interpolate the nodes of \eqref{eq:ode-euler} by
+\begin{equation}
+ U_n(t)=x_{n,j}+(t-jh)F(x_{n,j})
+ \quad(jh\le t\le(j+1)h),\qquad U_n(T)=x_{n,N}.
+ \label{eq:ode-polygon}
+\end{equation}
+The containing cell is found by integer division.  At grid boundaries
+the two formulas agree.  The invariant box is convex, so it contains the
+whole polygon.  Every polygon is $M$-Lipschitz: split any rational time
+interval at its finitely many mesh points and sum the bounds on the
+constant slopes.
+
+Compute
+\begin{equation}
+ A=\lceil LT\rceil,\qquad G=3^A,
+ \qquad K=\max(1,\lceil GLMT^2\rceil).
+ \label{eq:ode-constants}
+\end{equation}
+
+\begin{theorem}[Uniform finite refinement estimate]
+\label{thm:ode-refine}
+For every rational $0\le t\le T$,
+\begin{equation}
+ \lVert U_{n+1}(t)-U_n(t)\rVert
+       \le\frac{GLMT^2}{2\,2^n}.
+ \label{eq:ode-refine}
+\end{equation}
+Consequently, for all $m\ge n$,
+\begin{equation}
+ \lVert U_m(t)-U_n(t)\rVert\le K2^{-n}.
+ \label{eq:ode-cauchy}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Put $N=2^n$, $h=T/N$, and compare the two polygons at times $kh/2$,
+$k\le2N$.  Write $y_k=U_n(kh/2)$, $z_k=U_{n+1}(kh/2)$ and
+$e_k=\lVert y_k-z_k\rVert$.  At an even $k$ the coarse slope is
+$F(y_k)$.  At an odd $k$, the point $y_k$ is a half-step from a coarse
+node $x$, so $\lVert y_k-x\rVert\le Mh/2$.  Thus the coarse slope
+differs from $F(y_k)$ by at most $LMh/2$.  In both cases,
+\[
+ e_{k+1}\le(1+Lh/2)e_k+LMh^2/4,
+ \qquad e_0=0.
+\]
+Apply \eqref{eq:ode-gronwall} with $2N$ steps and $a=LT$.  It gives
+$e_k\le GLMT^2/(2N)$ at every fine node.  On a fine interval both
+polygons are affine, and their difference is the convex interpolation
+of its endpoint values.  The same norm bound therefore holds throughout
+the interval.  This proves \eqref{eq:ode-refine}.
+
+For \eqref{eq:ode-cauchy}, telescope the finite list
+$U_n(t),\ldots,U_m(t)$ and use
+$\sum_{j=n}^{m-1}2^{-j-1}\le2^{-n}$.  No infinite sum or completeness
+principle occurs.
+\end{proof}
+
+For integer $K\ge1$, let $\ell(K)$ be the least $r\le K$ such that
+$K\le2^r$, found by bounded search.  With
+\begin{equation}
+ c=\ell(K)+3,\qquad X(p,t)=U_{p+c}(t),
+ \label{eq:ode-name}
+\end{equation}
+the estimate \eqref{eq:ode-cauchy} gives
+\[
+ \lVert X(q,t)-X(p,t)\rVert\le2^{-p-3}\qquad(q\ge p).
+\]
+This is a uniform regular name, with spare precision.  The mathematical
+object produced by the theorem is this primitive recursive rational
+evaluator and these contracts, not an independently postulated real limit.
+
+For completeness, the time input can itself be represented.  Given a fixed
+regular time-name evaluator $\tau(p)$ representing a point in $[0,T]$,
+clip its rational approximations to $[0,T]$.  Clipping does
+not increase distance.  Put
+$d_0=\ell(\max(1,\lceil M\rceil))+3$ and use
+\[
+ U_{p+c}\bigl(\operatorname{clip}(\tau(p+d_0))\bigr).
+\]
+Split the difference of two outputs into a same-time mesh error and a
+same-mesh time error.  The former is at most $2^{-p-3}$, and the latter,
+by $M$-Lipschitz continuity, is at most $2^{-p-3}+2^{-q-3}$ when $q\ge p$.
+This gives the regular-name contract.  The evaluator for $\tau$ is fixed,
+or supplied through a finite table with explicit demands.
+
+\subsection{The solution contract and its derivative modulus}
+
+The following definition states precisely which differential-equation
+claim is proved.  In particular, it keeps the uniform error data visible.
+
+\begin{definition}[Controlled solution name]
+\label{def:controlled-flow}
+For fixed finite data $F,x_0,B,T$ and rational $C\ge0$, a controlled
+solution name is a primitive recursive rational evaluator $Y(p,t)$,
+for rational $0\le t\le T$, such that:
+\begin{enumerate}
+\item it is regular in $p$, uniformly in rational $t$: for all $p,q$,
+      $\lVert Y(p,t)-Y(q,t)\rVert\le2^{-p}+2^{-q}$;
+\item $\lVert Y(p,t)\rVert\le B$ and
+      $\lVert Y(p,0)-x_0\rVert\le2^{-p}$;
+\item for rational $q,r\in[0,T]$,
+\begin{equation}
+ \begin{split}
+ &\lVert Y(p,r)-Y(p,q)-(r-q)F(Y(p,q))\rVert\\
+ &\hspace{30mm}\le C|r-q|^2+2^{-p}.
+ \end{split}
+ \label{eq:ode-controlled}
+\end{equation}
+\end{enumerate}
+For a fixed evaluator these are first-order arithmetic formulas.
+The construction of its code and the proof of its contracts are separate
+from the assertion that it is a solution name.
+\end{definition}
+
+\begin{theorem}[Constructed controlled flow]
+\label{thm:ode-existence}
+The evaluator \eqref{eq:ode-name} is a controlled solution name with
+$C=LM/2$.  Hence every rational polynomial vector field and rational
+initial vector have a uniformly constructed positive local horizon and
+a primitive recursive controlled solution there.
+\end{theorem}
+\begin{proof}
+Regularity, the box bound and the initial value have already been proved.
+Let $v=|r-q|$.  On the cell containing $s$, its left endpoint is within
+$Mh$ of $U_n(s)$.  The latter is within $M|s-q|$ of $U_n(q)$.
+Lemma~\ref{lem:ode-polybound} bounds the difference between the polygon
+slope and $F(U_n(q))$ by $LM(h+|s-q|)$.
+
+Split the interval between $q$ and $r$ at its finitely many mesh points.
+On each resulting subinterval the slope difference is constant.  Evaluate
+the affine upper bound at that subinterval's rational midpoint and multiply
+by its length.  Summing these inequalities and the constant polygon slopes
+yields
+\begin{equation}
+ \begin{split}
+ &\lVert U_n(r)-U_n(q)-(r-q)F(U_n(q))\rVert\\
+ &\hspace{30mm}\le LM\bigl(v^2/2+hv\bigr).
+ \end{split}
+ \label{eq:ode-localdefect}
+\end{equation}
+For $q\le r$, the midpoint-times-length sum of $s-q$ is exactly
+$(r-q)^2/2$, by the difference-of-squares identity on each subinterval.
+Thus this uses only finite rational arithmetic, with no general positivity
+theorem for integrals.  Reversing the orientation proves
+the same estimate for $r<q$.
+
+Substitute $n=p+c$, use $v\le T$, and observe
+$LMT^2\le K$ and $K2^{-c}\le1/8$.  The extra mesh term is at most
+$2^{-p-3}$, so \eqref{eq:ode-controlled} follows with $C=LM/2$.
+Finally \eqref{eq:ode-localhorizon} supplies all hypotheses for arbitrary
+finite rational polynomial input.
+\end{proof}
+
+The name-level interpretation of \eqref{eq:ode-controlled} is
+\[
+ \lVert Y(r)-Y(q)-(r-q)F(Y(q))\rVert\le C|r-q|^2.
+\]
+For nonzero rational $r-q$, the difference-quotient error is at most
+$C|r-q|$.  Thus
+$|r-q|\le2^{-k}/\max(1,\lceil C\rceil)$ is a derivative modulus,
+with one-sided derivatives at endpoints.  This interpretation can be
+proved entirely as all-precision rational tests using
+\eqref{eq:ode-controlled}; no exact real sign or equality decision is used.
+The same contract gives a time-continuity modulus, since for $|r-q|\le1$
+the increment is bounded by $(M+C)|r-q|+2^{-p}$ at precision $p$.
+
+\subsection{Uniqueness proved at one finite precision}
+
+\begin{theorem}[Quantitative uniqueness]
+\label{thm:ode-unique}
+Two controlled solution names for the same $F,x_0,B,T$, with respective
+defect constants $C_1,C_2$, represent the same function on $[0,T]$.
+There is an explicit primitive recursive schedule for the mesh and name
+precision used to verify equality at any requested accuracy.
+\end{theorem}
+\begin{proof}
+Fix a rational $t\in[0,T]$, a positive integer $N$, and a name precision
+$p$.  Compare the rational approximations to the two candidates at
+$jt/N$, $j\le N$.  If $e_j$ is their distance, the two instances of
+\eqref{eq:ode-controlled} give
+\[
+ e_{j+1}\le(1+Lt/N)e_j+(C_1+C_2)(t/N)^2+2\,2^{-p},
+ \qquad e_0\le2\,2^{-p}.
+\]
+The finite Gronwall estimate therefore gives
+\begin{equation}
+ e_N\le G\left((C_1+C_2)T^2/N+2(N+1)2^{-p}\right).
+ \label{eq:ode-uniquefinite}
+\end{equation}
+For a requested accuracy $2^{-k}$ choose a dyadic $N$ at least
+$4G(C_1+C_2)T^2 2^k$ (and at least one), then choose $p$ with
+$2^p\ge16G(N+1)(1+LT)2^k$.  Both choices use bounded logarithms of explicit
+integers.  Each term in \eqref{eq:ode-uniquefinite} is at most
+$2^{-k-2}$.  The resulting arbitrarily accurate agreement, together with
+regularity, is exactly equality of the two name families: a primitive
+recursive common reindexing makes their rational outputs differ by at
+most $2^{-k}$ for every $k$.  Regularity transfers this agreement to every
+finer requested observation.
+
+In the object-theory proof, $N,p,t,k$ are numerical parameters and the
+induction is on the rational error table $e_j$.  It is not induction on
+the assertion that two real functions are equal.
+\end{proof}
+
+The theorem deliberately specifies controlled candidates.  It does not
+extract a primitive recursive modulus from qualitative differentiability
+of an arbitrary external function.  Its useful feature is that the
+constructed solution supplies the requisite modulus automatically.
+
+A related finite comparison is useful when composing constructions.  If
+two polynomial fields have a common Lipschitz bound $L$ and a coefficient
+estimate proves $\lVert F(x)-\widetilde F(x)\rVert\le\varepsilon$ on the
+box, their Euler trajectories with initial separation $\eta$ satisfy
+\[
+ e_{j+1}\le(1+Lh)e_j+h\varepsilon.
+\]
+Their represented flows therefore obey
+\begin{equation}
+ \lVert X_F(t)-X_{\widetilde F}(t)\rVert
+       \le G(\eta+T\varepsilon).
+ \label{eq:ode-perturbation}
+\end{equation}
+An additional step error $\delta_j$ adds
+$G\sum_j\delta_j$ to the bound.  This gives a predetermined precision
+budget for rounded steps or Cauchy-named coefficients, provided the
+common domain and invariance contracts are supplied.  The unconditional
+local theorem above already covers arbitrary finite rational polynomial
+codes.
+
+\subsection{Finite algebraic identities produce conserved quantities}
+
+Let $H(x)=\sum_\alpha b_\alpha x^\alpha$ be a rational polynomial.
+Its formal partial derivatives are finite coefficient tables.
+
+\begin{theorem}[Polynomial conservation compiler]
+\label{thm:ode-conservation}
+If the coefficientwise polynomial identity
+\begin{equation}
+ \sum_{i<d}(\partial_iH)(x)F_i(x)=0
+ \label{eq:ode-conservationcert}
+\end{equation}
+holds, then the constructed flow satisfies
+$H(X(t))=H(x_0)$ for every represented time $t\in[0,T]$.
+\end{theorem}
+\begin{proof}
+Put $D=\max(1,B,MT)$ and compute the rational
+\[
+ R_H=\sum_{|\alpha|\ge2}|b_\alpha|\,2^{|\alpha|}
+                                  D^{|\alpha|-2}.
+\]
+The multivariate binomial expansion gives the finite remainder estimate
+\begin{equation}
+ |H(x+v)-H(x)-\nabla H(x)\cdot v|\le R_H\lVert v\rVert^2
+ \label{eq:ode-polyremainder}
+\end{equation}
+when $\lVert x\rVert\le B$ and $\lVert v\rVert\le MT$.
+Indeed, degree-zero and degree-one terms in $v$ are precisely the
+subtracted terms.  In every remaining term retain two factors of $v$
+and bound the other factors by $D$.  For a monomial of total degree $e$,
+the sum of the relevant binomial coefficients is at most $2^e$.
+Finite summation proves \eqref{eq:ode-polyremainder}.
+
+Take $v=hF(x)$.  Identity \eqref{eq:ode-conservationcert} makes the
+linear term zero, so a full Euler step changes $H$ by at most
+$R_HM^2h^2$.  At time $t=jh+\theta$, $0\le\theta\le h$, telescope
+the $j$ full steps and the final partial step.  Since
+$jh^2+\theta^2\le h(jh+\theta)\le hT$,
+\begin{equation}
+ |H(U_n(t))-H(x_0)|\le R_HM^2T^2\,2^{-n}.
+ \label{eq:ode-conservationerror}
+\end{equation}
+The polynomial $H$ has an explicit Lipschitz bound on the box, by the
+proof of Lemma~\ref{lem:ode-polybound}.  Combining it with
+\eqref{eq:ode-cauchy} and \eqref{eq:ode-conservationerror}, at an
+arbitrary specified precision, proves equality of the represented values.
+The represented-time extension uses the same continuity bound.
+\end{proof}
+
+The certificate \eqref{eq:ode-conservationcert} is checked by finite
+polynomial multiplication and rational coefficient comparison.  The
+passage from that certificate to an exact invariant uses only the
+displayed finite error bounds.  This is a useful general separation:
+algebra finds the identity, while one common arithmetic theorem transports
+it to the represented flow.
+
+If instead $\nabla H\cdot F=J$, retaining the linear term gives the
+corresponding integral identity.  One can also add an accumulator coordinate
+$z'=J(x)$ and apply the zero-derivative theorem to $H(x)-z$.
+The accumulator's increments are finite Riemann sums with an explicitly
+vanishing defect.  Thus its identification with the integral uses the
+existing finite-sum integration interface, without invoking an existence
+theorem for integrals of arbitrary functions.
+
+\subsection{A common engine for the Hermite identity and circle calculus}
+
+\paragraph{Exponential and oscillator names.}
+For $x'=x$, $x(0)=1$, on any rational horizon $T>0$, finite Euler states
+are bounded by
+$(1+T/N)^j\le3^{\lceil T\rceil}$.  Thus a uniform invariant box is
+available directly from Lemma~\ref{lem:ode-growth}, without imposing
+the smaller local horizon.  At $T=1$ the endpoint approximants are
+$(1+2^{-n})^{2^n}$.  The generic construction supplies a name, its
+derivative contract, and its uniqueness property.  Existing exponential
+names with the same controlled residual and initial value can be identified
+by Theorem~\ref{thm:ode-unique}.
+
+For the oscillator
+\[
+ c'=-s,\qquad s'=c,\qquad(c(0),s(0))=(1,0),
+\]
+the sup norm of a step grows by at most $1+h$, so the same invariant
+box works.  The coefficient identity
+\[
+ \partial_c(c^2+s^2)(-s)+\partial_s(c^2+s^2)c
+       =-2cs+2sc=0
+\]
+gives $c(t)^2+s(t)^2=1$ through Theorem~\ref{thm:ode-conservation}.
+Once the standard sine and cosine names satisfy the controlled derivative
+contract, one uniqueness theorem identifies both constructions.
+
+\paragraph{The finite Hermite antiderivative identity.}
+Let $f\in\Q[t]$ have degree at most $m$, and compute
+\[
+ Q=\sum_{j=0}^{m}f^{(j)}.
+\]
+Formal differentiation is a finite coefficient operation, and telescoping
+gives $Q-Q'=f$.  Consider the polynomial system
+\begin{equation}
+ \tau'=1,\qquad E'=-E,\qquad J'=E f(\tau),
+ \qquad (\tau(0),E(0),J(0))=(0,1,0).
+ \label{eq:hermite-flow}
+\end{equation}
+For any supplied rational horizon $T>0$, begin with meshes satisfying
+$h\le1$, accomplished by a bounded logarithm.  The Euler invariant is
+explicit: $0\le\tau_j\le T$, $0\le E_j\le1$, and
+\[
+ |J_j|\le jh F_0\le TF_0,\qquad
+ F_0=\sum_{k\le m}|f_k|\max(1,T)^k.
+\]
+The bound on $E_j$ follows from $E_{j+1}=(1-h)E_j$; the bound on $J_j$
+is a finite induction.  Therefore the generic flow theorem applies on
+the entire supplied horizon.
+
+The polynomial $H(\tau,E,J)=E Q(\tau)+J$ satisfies
+\[
+ \nabla H\cdot(1,-E,Ef(\tau))
+   =E\bigl(Q'(\tau)-Q(\tau)+f(\tau)\bigr)=0.
+\]
+The conservation theorem proves
+\begin{equation}
+ J(t)=Q(0)-E(t)Q(t).
+ \label{eq:hermite-flowidentity}
+\end{equation}
+Here $\tau(t)=t$, already exactly true of the Euler polygons, and $E$
+is the controlled solution of $E'=-E$, $E(0)=1$.  The accumulator $J$
+is the integral name of $E(t)f(t)$: sum its controlled increments over
+a rational mesh.  At finite table precision $p$, the total defect is
+bounded by $C_JT^2/N+(N+1)2^{-p}$, where $C_J$ is its controlled-increment
+constant.  First choose $N$ to make the mesh term small, then choose $p$
+to make the second term small.  The product-evaluation error has an
+explicit coefficient bound and is included by increasing $p$ further.
+Thus the sums converge with an explicit modulus to $J(t)$.
+Identifying $E$ with the existing $e^{-t}$ name by uniqueness gives the
+usual Hermite identity
+\begin{equation}
+ \int_0^t f(u)e^{-u}\,du=Q(0)-e^{-t}Q(t).
+ \label{eq:hermite-identity}
+\end{equation}
+The integral notation in \eqref{eq:hermite-identity} denotes this
+explicit finite-sum name.  Formula \eqref{eq:hermite-flowidentity} was
+proved first, using only finite polynomial identities and Euler estimates.
+The divisibility arguments and the final transcendence contradiction in
+the original application remain separate arithmetic steps.
+
+\paragraph{Circle-area accumulator.}
+Add coordinates $\tau,A$ to the oscillator with
+$\tau'=1$ and $A'=(c^2+s^2)/2$, initially zero.  The same finite
+growth bound supplies an Euler box for $c,s$, and
+$|A_j|\le T\,3^{2\lceil T\rceil}$ is a sufficient accumulator bound.
+The two polynomial certificates are
+\[
+ \nabla(c^2+s^2)\cdot F=0,
+ \qquad
+ \nabla\bigl(A-\tau(c^2+s^2)/2\bigr)\cdot F=0.
+\]
+Consequently $c^2+s^2=1$ and $A(t)=t/2$.  Since
+$(c s'-s c')/2=(c^2+s^2)/2$, $A$ is the signed sector-integral
+accumulator.  The identification of a full period with $2\pi$ and the
+geometric interpretation of that integral as disk area are still supplied
+by the relevant geometric argument.  What has been resolved is the
+common analytic construction and its exact polynomial identities, not
+every step of those applications.
+
+\subsection{The iPRA induction audit}
+
+All algorithms here are primitive recursive uniformly in their finite
+inputs.  The large value $2^{p+c}$ is harmless for primitive recursiveness;
+the theorem makes no feasibility claim.  The required inductions have
+explicit finite invariants: the Euler box estimate, the Gronwall bound
+with partial error sum, the paired fine/coarse-node comparison, the
+geometric telescoping bound, and the accumulated conservation defect.
+Rational inequalities are reduced to integer inequalities by positive
+denominators.  Finite coordinate, monomial, and mesh quantifiers are
+Booleanized before induction.
+
+For equality or differentiability of names, first fix a numerical
+precision challenge.  The displayed bounds compute a sufficient mesh
+and finite evaluation table.  Prove the resulting finite arithmetic
+assertion, and only then introduce the challenge universally.  This is
+the point at which one avoids induction on an analytic formula.
+
+The mathematical construction therefore has a concrete path to
+$\mathsf{Prf}\,\mathsf{PRAAx}$ proofs: code the finite algorithms, prove
+their defining equations, and implement those bounded invariants in the
+existing object calculus.  The complete deep Lean derivations are not
+claimed here.  Ambient Lean correctness of a rational Euler algorithm
+and an object-language iPRA proof remain distinct deliverables.

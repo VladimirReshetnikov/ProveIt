@@ -1,0 +1,190 @@
+\section{Formalization status and a concrete completion plan}
+\label{sec:formalization}
+
+The report contains complete written proofs of its stated restricted
+mathematical results, with an explicit arithmetic induction audit. The
+archive adds executable definitions, exact finite checks and a checked
+part of the embedded proof infrastructure. Those categories have different
+meanings; the following inventory makes each claim reviewable.
+
+\subsection{What was checked}
+
+The standalone Lean files were compiled with Lean 4.32.0, using only the
+standard distribution. The compiler commit was
+\begin{center}\small\code{8c9756b28d64dab099da31a4c09229a9e6a2ef35}.\end{center} The arithmetic kernel is a source-preserving extraction from
+the pinned repository, with imports adapted as described in
+Section~\ref{sec:object-iteration}. The build includes:
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.27\linewidth}>{\raggedright\arraybackslash}p{.35\linewidth}>{\raggedright\arraybackslash}p{.32\linewidth}@{}}
+\toprule
+File & Content & Verification meaning \\
+\midrule\endhead
+\code{ObjectKernel.lean} & Unchanged syntax, natural deduction and iPRA
+declarations from three upstream modules & Kernel checked after import
+adaptation; not new mathematical results \\
+\code{ObjectIteration.lean} & Substitution lemmas and the general
+primitive-recursion invariant rule & Actual embedded \code{Prf PRAAx}
+proof transformation \\
+\code{ObjectExample.lean} & Iterated successor equals its iteration count &
+Closed embedded arithmetic derivation using the new rule \\
+\code{NegativeSyntax.lean} & Negative translation, syntax laws, preservation
+of QF, translation of all source axioms & Proved syntax facts and actual
+embedded derivations of translated axioms; full proof translation pending \\
+\code{ODETargets.lean} & Polynomial tables, Euler algorithm, solution name,
+coefficient certificate and exact goal propositions & Definitions and target
+types checked; the goal propositions are unproved \\
+\code{SplitTargets.lean} & Integer polynomial algorithms, certificate,
+bounds, enumeration and goal propositions & Definitions and target types
+checked; the goal propositions are unproved \\
+\code{Audit.lean} & Axiom reports and explicit target-type checks & Records
+dependencies; checking a target's type does not establish it \\
+\bottomrule
+\end{longtable}
+
+The audited new theorems use Lean's standard \code{propext} and
+\code{Quot.sound} in the metatheory; some require only the former. The
+reports contain no \code{sorryAx} or \code{Classical.choice} dependency.
+Those metatheoretic principles do not add excluded middle, arbitrary
+induction or choice to the embedded \code{PRAAx} proof calculus. The
+source theory \code{ClassicalPRAAx} is an explicitly defined datatype of
+axioms used as the translation input, not a new trusted Lean axiom.
+
+The full repository native adapter was inspected against the current API
+but was not built against the whole repository dependency closure. It is
+clearly separated from the standalone build. No full object-theory proof
+of the ODE construction, separated-branch bound or logical proof translator
+is claimed.
+
+\subsection{Definitions supplied for the analytic development}
+
+\code{ODETargets.lean} uses finite coordinate functions
+\code{Fin d -> Rat} for rational vectors. A monomial consists of a rational
+coefficient and a finite exponent vector; a polynomial is a list of
+monomials. Repeated exponent vectors are allowed. The polynomial-zero
+checker adds the coefficients belonging to each exponent vector occurring
+in the list and checks that all those sums vanish. Thus it handles
+cancellation, and does not use equality of functions on an infinite
+domain as a computational test.
+
+The file defines the exact Euler-node recursion, rational polygon
+interpolation, coefficient magnitude and Lipschitz bounds, the automatic
+local horizon, the integer growth and Cauchy constants, and the reindexed
+name. The predicate \code{Controlled} is precisely the finite-precision
+solution contract in Definition~\ref{def:controlled-flow}.
+\code{SameName} states agreement at arbitrarily accurate common
+precisions. Its use is metatheoretic: each fixed evaluator becomes a PR
+function symbol in the embedded version. The main target names are
+\code{RefinementGoal}, \code{LocalExistenceGoal}, \code{UniquenessGoal}
+and \code{ConservationGoal}.
+
+The targets quantify over finite polynomial input data, and the uniform
+algorithm evaluates that one finite grammar. This accommodates variable
+dimension and degree without an unclocked interpreter for arbitrary PR
+syntax.
+
+\subsection{Dependency order for the main proofs}
+
+Here is a path with independently reviewable endpoints, rather than a list
+of unproved high-level axioms.
+
+\paragraph{Stage 1: numerical representations.}
+Implement natural encodings for integers, positive-denominator rationals,
+finite arrays and polynomial tables. Prove the local ring and order laws,
+finite-product absolute-value rules and positive-denominator cancellation
+inside \code{Prf PRAAx}. Implement Boolean folds for bounded assertions.
+The invariants in Appendix~\ref{sec:coding} describe the numerical
+induction formulas. The existing repository may supply parts of this
+library, but their actual proof endpoints must be imported explicitly.
+
+\paragraph{Stage 2: reusable finite estimates.}
+For ODEs, formalize coefficient bounds, rational Bernoulli, the finite
+binomial estimate $(1+1/N)^N\le3$, and the variable-error Gronwall fold.
+Each is an algebraic inequality with bounded index conditions. For split
+branches, formalize \code{intFactorAbsLeGoal},
+\code{polyEvalAbsLeGoal}, \code{polyDominanceGoal} and
+\code{nonzeroPolyNoLargeRootGoal}. These are concrete named propositions
+in \code{SplitTargets.lean}; their mathematical proofs are in
+Section~\ref{sec:split-branches}.
+
+The general rule of Theorem~\ref{thm:object-rule} discharges the outer
+primitive-recursion induction after these local step proofs are supplied.
+It is especially useful for folding bounded maxima, products, Euler tables
+and accumulated errors. It does not replace the arithmetic in the local
+step proofs.
+
+\paragraph{Stage 3: the ODE invariant and refinement.}
+Formalize the node bound
+$\norm{x_{n,j}-x_0}\le jhM$, with the guard $j\le2^n$ encoded as a
+Boolean or a quantifier-free implication. The paired-mesh state stores
+both current nodes, parity of the fine-node index, and accumulated
+error. Prove the recurrence in Theorem~\ref{thm:ode-refine}, apply the
+finite Gronwall bound, and then extend from endpoints by affine
+interpolation. A second finite fold telescopes refinements.
+This proves \code{RefinementGoal} and the regularity component of
+\code{LocalExistenceGoal}.
+
+\paragraph{Stage 4: ODE meaning and conservation.}
+The local-defect proof uses a finite partition of a rational interval by
+mesh points, exact midpoint identities, and a rational triangle inequality.
+It completes the controlled-solution contract. For uniqueness, fix the
+requested accuracy first, compute $N,p$, and compare the finite table of
+two candidates at that precision. For conservation, prove coefficient
+checker soundness and the multivariate binomial remainder, then use one
+accumulated-error invariant. Finally introduce the accuracy challenge
+universally. No induction formula asserts equality of arbitrary real
+functions.
+
+\paragraph{Stage 5: complete integral-point lists.}
+Prove \code{splitXBoundGoal} by coefficient dominance, and
+\code{splitYBoundGoal} by the two cases $R(x)=0$ and $R(x)\ne0$.
+Signed-interval membership and a rectangle scan give
+\code{enumerateSolutionsIffGoal}. The numerical witnesses for a point in
+the rectangle are $x+H$ and $y+K$; their bounds are already known.
+The general family classification then needs only the integer unit
+factors, $x\in\{-1,0,1\}$, and the parity fold described in its proof.
+
+\paragraph{Stage 6: logical translation and native transport.}
+The syntax and axiom layers of negative translation are already proved.
+The next new lemma is the arithmetic equality-stability adapter, followed
+by formula stability and induction on a complete source derivation.
+The proof cases are fully spelled out in Section~\ref{sec:logic}.
+After producing the desired \code{Prf PRAAx} theorem, apply the existing
+\code{pra\_iff\_native} bridge. Its use is the final step, not an
+alternative to Stages 1--5.
+
+\subsection{Finite reference computations}
+
+The exact-rational ODE program checks 5,342 assertions over exponential,
+oscillator, nonlinear local-flow, Hermite-accumulator and circle-area
+examples. It checks the finite inequalities and four coefficientwise
+conservation certificates, and rejects an invalid certificate. The
+nonlinear example uses small meshes because exact rational numerators and
+denominators grow rapidly; the proof itself covers arbitrary precision.
+No floating-point estimate is used as a proof oracle.
+
+The integer program checks the complete certificate rectangle for the
+mixed cubic, several further accepted certificates, exceptional fibers
+where the remainder vanishes, coefficient expansion consistency, the
+explicit family at $m=3,\ldots,12$ on stated finite boxes, and malformed
+certificate rejection. The uniform classification and the absence of
+solutions outside the certificate rectangle follow from the written
+theorems, not from finite testing.
+
+The source files and evidence record how to reproduce these runs. These
+programs are reference implementations; neither is an iPRA proof checker.
+
+\subsection{The difficulties that remain}
+
+The framework makes the missing work more specific. It does not infer a
+general height bound from finiteness or a cardinality bound, manufacture
+Mordell--Weil quotient representatives, or establish the missing uniform
+analytic estimates in prime-distribution packets. It does not decide
+whether an arbitrary represented real is zero, choose singular Puiseux
+branches from arbitrary Cauchy inputs, or infer a Cauchy modulus from finite
+window stability. The source reports' warnings about these operations
+remain applicable.
+
+What is resolved here is narrower and concrete: an actual embedded
+iteration rule, a written logical transfer mechanism with a checked axiom
+layer, a constructed polynomial-flow interface for a stated analytic
+unification problem, and a further explicit class of integral-point
+problems with complete primitive-recursive solution lists.

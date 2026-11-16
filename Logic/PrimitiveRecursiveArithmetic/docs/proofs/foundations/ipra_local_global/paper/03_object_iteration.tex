@@ -1,0 +1,144 @@
+\section{A verified object-theory rule for primitive recursion}
+\label{sec:object-iteration}
+
+This section supplies a concrete formal advance at the common endpoint of
+the proof packets. The theorem is an inference rule about embedded iPRA
+derivations. It does not appeal to the soundness or completeness of iPRA in
+the standard natural numbers.
+
+\subsection{Mathematical statement and proof}
+
+Fix a tuple of numerical parameters $\vec x$ of length $k$, a PR initial
+state function $f(\vec x)$ and a PR update function $g(t,s,\vec x)$. Define
+\begin{align*}
+ u(0,\vec x)&=f(\vec x),\\
+ u(t+1,\vec x)&=g(t,u(t,\vec x),\vec x).
+\end{align*}
+The state $s$ is one number; tuples, finite tables and certificates may be
+encoded in that number. Let $P(s,t,\vec x)$ be a quantifier-free formula.
+Let $\Gamma(\vec x)$ be any finite list of assumptions, possibly with
+unbounded quantifiers. They are fixed parameters in the induction and do
+not become part of its induction formula.
+
+\begin{theorem}[Primitive-recursion invariant rule]\label{thm:object-rule}
+Suppose there are iPRA derivations of
+\begin{align}
+ \Gamma(\vec x)&\vdash P(f(\vec x),0,\vec x),\label{eq:object-base}\\
+ P(s,t,\vec x),\Gamma(\vec x)&\vdash
+ P(g(t,s,\vec x),t+1,\vec x).\label{eq:object-step}
+\end{align}
+Then there is an iPRA derivation of
+\[
+ \Gamma(\vec x)\vdash\forall t\,P(u(t,\vec x),t,\vec x).
+\]
+Moreover the derivation is obtained uniformly from the two supplied
+derivations, the finite PR syntax for $f,g$, and the formula $P$.
+For any PR term $b(\vec x)$ it gives
+\[
+ \Gamma(\vec x)\vdash
+ P(u(b(\vec x),\vec x),b(\vec x),\vec x).
+\]
+\end{theorem}
+
+\begin{proof}
+Put $I(t,\vec x)=P(u(t,\vec x),t,\vec x)$. Substitution of terms in a
+quantifier-free formula preserves quantifier-freeness, so $I$ is an allowed
+induction formula. At zero, the defining equation of primitive recursion
+and equality substitution turn \eqref{eq:object-base} into $I(0,\vec x)$.
+For the induction step, instantiate the freely available state variable
+$s$ in \eqref{eq:object-step} by $u(t,\vec x)$. Its premise becomes
+$I(t,\vec x)$ and its conclusion becomes
+$P(g(t,u(t,\vec x),\vec x),t+1,\vec x)$. The successor defining equation
+of primitive recursion rewrites this as $I(t+1,\vec x)$.
+Quantifier-free induction, with the unchanged assumptions $\Gamma$, gives
+$\forall t\,I(t,\vec x)$. Universal elimination at $b(\vec x)$ proves
+the final assertion. All proof transformations are syntactic substitution,
+weakening, equality substitution and one instance of the permitted induction
+rule. No induction on a formula containing a quantifier has been used.
+\end{proof}
+
+The important point is that \eqref{eq:object-step} is proved once with
+arbitrary $s,t,\vec x$. A separately supplied proof for each standard
+numeral $t$ is a different input and would not justify the theorem. Likewise,
+the bounds and challenges in $\vec x$ remain variables in a single theorem.
+
+\subsection{The exact Lean implementation}
+
+The file \code{lean/ObjectKernel.lean} contains the current repository
+declarations from \code{Syntax.lean}, \code{Deduction.lean} and
+\code{PR.lean}, with imports replaced by \code{Std} and the notation
+\code{Nat} supplied locally. Their declaration bodies are unchanged; hashes
+and the inherited license are supplied. This avoids requiring the full
+Mathlib dependency closure to check the new rule, while retaining the exact
+embedded theory's syntax, deduction constructors and axioms.
+
+\code{ObjectIteration.lean} fixes the following variable convention:
+\[
+ P:\code{Fm PTm}\,(k+2),\qquad
+ 0=\text{state},\quad1=\text{time},\quad2,3,\ldots=\text{parameters}.
+\]
+In the PR step symbol, the order is instead the repository's required
+$(\text{time},\text{state},\text{parameters})$. The file explicitly performs
+that permutation. This is a substantive scoping detail: exchanging those
+arguments accidentally could produce a plausible-looking but incorrect
+compiler interface.
+
+The key declarations, using shortened qualification, are:
+\begin{lstlisting}
+runTerm (f : PR k) (g : PR (k + 2))
+  (t : PTm n) (xs : Fin k -> PTm n) : PTm n
+
+instStateTime (P : Fm PTm (k + 2))
+  (s t : PTm n) (xs : Fin k -> PTm n) : Fm PTm n
+
+primitiveRecursionInvariant
+  (f : PR k) (g : PR (k + 2))
+  (P : Fm PTm (k + 2)) (hP : P.QF)
+  (Gamma : List (Fm PTm k))
+  (h0 : Prf PRAAx Gamma (baseFormula f P))
+  (hS : Prf PRAAx
+    (P :: (Gamma.map Fm.shift).map Fm.shift)
+    (nextFormula g P)) :
+  Prf PRAAx Gamma (Fm.all (runInvariant f g P))
+\end{lstlisting}
+The displayed code is a readable signature; the file uses the repository's
+sequent notation and contains the complete proof. Its proof first establishes
+substitution identities for state and time, then uses
+\code{PRA.precZero}, \code{PRA.precSucc}, \code{Prf.substWeaken},
+\code{Prf.eqSubst} and \code{PRA.qfInd}. The separate theorem
+\code{primitiveRecursionAt} instantiates the fuel term.
+
+\subsection{A closed test of the proof rule}
+
+\code{ObjectExample.lean} chooses $f=0$, the update $g(t,s)=s+1$ and
+$P(s,t)\equiv s=t$. Initialization is reflexivity. The local step follows
+from the explicit PR composition and projection equations and congruence
+of successor. The generic rule then constructs the closed object theorem
+\[
+ \ipra\vdash\forall t\,[u(t)=t].
+\]
+This small example checks the argument ordering, free-variable substitution
+and genuine induction endpoint. It is not offered as a new arithmetic
+result. The more useful artifact is the general derived rule itself.
+
+\subsection{What the result does and does not automate}
+
+The rule accepts \emph{proofs} of initialization and preservation. It does
+not accept semantic truth values in their place. Once the integer, rational
+and array operations are represented by PR syntax and their local lemmas
+are proved, a large bounded algorithm can use the rule repeatedly without
+rebuilding its induction plumbing. Bounded quantifiers in an invariant must
+first be replaced by their Boolean tests with a proved equivalence.
+
+This is a verified proof transformer, not a completed compiler from Python,
+arbitrary Lean, or informal mathematics. In particular, the ODE and
+integral-point estimates below still require their own arithmetic
+object-theory proofs. The rule resolves their common iteration interface;
+it does not manufacture those estimates.
+
+The standalone build checks the new rule against the exact arithmetic
+kernel declarations. Integration into ProveIt replaces the standalone
+kernel import with \code{import ConciseIPRA.PR}. After that build,
+\code{pra\_iff\_native.mp} transports the resulting sequent. The optional
+repository adapter is supplied as source and is explicitly excluded from
+the standalone verification claim.
