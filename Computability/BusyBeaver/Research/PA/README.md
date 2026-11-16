@@ -35,7 +35,9 @@ The primary table is a seven-fold quotient of a 201-control parent with
 a ten-entry source interface. Lean has checked the exact packed seed reached
 from blank by [PA194-AD](pa194/ipra/variants/pa194ad/README.md) after 58,122
 steps and by [PA194HX](pa194/ipra/variants/pa194hx/README.md) after 56,134
-steps. The simulations through their altered routers remain open.
+steps. For each table, Lean has also checked its literal register engine
+and derived the iPRA equivalence conditional on the 3,673 source-site
+certificates. The two certificate replays are in progress.
 
 The [14 November incoming reports](INCOMING-2026-11-14.md) include another
 194-state candidate and do not report a verified sub-194 blank-start machine.

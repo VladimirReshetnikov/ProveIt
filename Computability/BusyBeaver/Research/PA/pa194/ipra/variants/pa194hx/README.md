@@ -29,8 +29,12 @@ frames, given the corresponding file encodings and register effects.
 [`PA194HXSourceRoot.sourceRootCodeCorrect`](PA194HXSourceRoot.lean) and
 [`PA194HXSourceArgs`](PA194HXSourceArgs.lean) give those encodings and
 register updates in the H/X physical order.
-The end-to-end iPRA proof still requires full source-site coverage and
-composition along the source run.
+[`PA194HXSourceEndpoint.endpoint`](PA194HXSourceEndpoint.lean) compares
+halting at arbitrary model-valued clocks from the exact HX startup seed.
+[`PA194HXNative.consistency_iff_literal_nonhalt`](PA194HXNative.lean)
+derives the equivalence in standard iPRA given the finite source
+certificates. The remaining premise is successful checking of all 3,673
+source sites.
 
 Run from the repository root with fresh output directories.
 
@@ -54,5 +58,9 @@ and the HX startup output, replay the literal boxes and their source-root
 interface.
 
 ```sh
-bash "$pa/pa194/ipra/variants/pa194hx/check-registers.sh" "$register" /dev/shm/pa194hx-replay /dev/shm/pa194hx-registers
+hx="$pa/pa194/ipra/variants/pa194hx"
+hx_registers=/dev/shm/pa194hx-registers
+bash "$hx/check-registers.sh" "$register" /dev/shm/pa194hx-replay "$hx_registers"
+bash "$hx/check-controller.sh" "$hx_registers" /dev/shm/pa194hx-controller
+bash "$hx/check-coverage.sh" "$hx_registers" /dev/shm/pa194hx-coverage
 ```
