@@ -36,6 +36,7 @@ import IPRADerivations.Analysis.BetaIntegers
 import IPRADerivations.Analysis.BarnesInteger
 import IPRADerivations.Analysis.RationalClosure
 import IPRADerivations.Analysis.TrapezoidAffine
+import IPRADerivations.Analysis.HypergeometricTerm
 import IPRADerivations.Analysis.PowerSums
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.Core.EuclidLemma
@@ -46,6 +47,7 @@ import IPRADerivations.Algebra.QuadraticExtension
 import IPRADerivations.Algebra.ObservationAlgebra
 import IPRADerivations.Algebra.JacobiRotation
 import IPRADerivations.Algebra.PowerDifference
+import IPRADerivations.Algebra.HenselStep
 import IPRADerivations.Combinatorics.Binomial
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Combinatorics.BinomialTheorem
