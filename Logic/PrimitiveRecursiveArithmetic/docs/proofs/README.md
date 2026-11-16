@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives from 14 to
-16 November 2026: 33 to `docs/drafts`, and 50 to
+16 November 2026: 33 to `docs/drafts`, and 51 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -62,7 +62,7 @@ manifests, build logs and `build/` files.
 
 ## Packets
 
-The 83 archives hold 2,519 members: 2,376 placed here, 96 ignored, 21 in bundled copies of
+The 84 archives hold 2,525 members: 2,382 placed here, 96 ignored, 21 in bundled copies of
 a sibling packet, 1 nested copy of a sibling archive and 25 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -173,6 +173,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | [`ipra_strategy_framework`](foundations/ipra_strategy_framework/) | *not committed* 2026-11-16 | `ipra_strategy_framework` | Finite strategy certificates: compiling a fixed bounded formula into finite game strategies and counterstrategies, with finite challenge decomposition and a Lean migration plan. Its Lean file is a blueprint that does not construct `Prf PRAAx` terms. | 6 | 0 |
 | [`ipra_unified_finitary_framework_2026-11-15`](foundations/ipra_unified_finitary_framework_2026-11-15/) | *not committed* 2026-11-15 | `ipra_unified_finitary_framework_2026-11-15` | A unified finitary-relational framework: proof-producing finite traces, in which embedded base, step and final derivations combine into one `Prf PRAAx` derivation; finitary relational presentations as verified answer clouds with compatibility edges; finite witness amalgamation by backward viability; and shrinking viability, giving coherent PR names under a diameter modulus and a summable motion budget. It keeps height bounds, analytic constants and other deep data apart from their finite verifiers. Its Lean files are blueprints with `sorry` placeholders, and it claims no kernel-checked `Prf PRAAx` compiler. | 47 | 1 |
 | [`ipra_uniform_certificates`](foundations/ipra_uniform_certificates/) | *not committed* 2026-11-15 | `ipra_uniform_certificates` | Uniform certificates complementing the finite-contract frameworks here: finite-net lifting with an explicit modulus and rational error budgets, uniform root names from sign brackets and algebraic separation, and composition of precision contracts. Its Lean blueprint is not compiled. | 6 | 0 |
+| [`ipra_uniformity_framework_2026-11-15`](foundations/ipra_uniformity_framework_2026-11-15/) | *not committed* 2026-11-16 | `ipra_uniformity_framework` | Uniformity gates: conditional finitary framework lemmas, obstructions to uniformity and applications to gaps in the repository's packets, with a host Lean seed for finite list filtering and a roadmap for internal `Prf PRAAx` proofs. It claims no general Faltings, Siegel or prime-asymptotic result. | 6 | 0 |
 | [`ocipra_framework_2026-11-15`](foundations/ocipra_framework_2026-11-15/) | `7c91b67347` 2026-11-15 | `ocipra_framework_2026-11-15` | Observation-contract internalisation (OCiPRA): one statement calculus with four theorem classes (deterministic contracts, bounded relational contracts, branch-independent or diameter-stable observables, and conditional theorems with explicit producer data), with proofs of bounded-formula Booleanisation, least bounded search, contract-DAG composition, clocked trace reflection, demand closure and backward viability. Its Lean outline has no `sorry` and was not compiled. | 44 | 5 |
 
 ### Geometry
