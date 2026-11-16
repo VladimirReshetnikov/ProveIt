@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
 """Compile PA194ModelFairness.lean and every standalone module it imports.
 
-usage: check_bridge.py [--out DIR] [--top FILE.lean] [--reports N]
+usage: check_bridge.py [--out DIR] [--top FILE.lean] [--reports N] [--also MODULE:N ...]
 
 Without --top the module is PA194ModelFairness.lean of this directory and three axiom reports
 are expected. With --top FILE.lean another standalone module of Research/PA is checked the
 same way, its directory takes the place of "this directory" below, and --reports gives the
-expected number of axiom reports.
+expected number of axiom reports. Each --also MODULE:N names a module of the import closure
+of the top module and the number of axiom reports expected in its log; a directory whose
+modules all lie below one top module is checked with one run this way.
 
 The modules of the root Lake workspace (DiophantineConsistency, Foundation, BusyBeaver, ...)
 are taken as built in .lake/build. Every other module of the import closure is a standalone
 file below Computability/BusyBeaver/Research/PA, or one of the generated inputs
 
   PA194Rows, PA194Literal          pa194/ipra/generate.py
+  PA195Rows, PA195Literal          other-machines/pa195/ipra/generate.py
   PA194SourceTree                  pa194-source-tree/generate.py
   PA194AXBatch*, PA194AXPlan       pa194-ax-core/generate.py
 
@@ -46,6 +49,7 @@ if "--top" in sys.argv:
     top = os.path.abspath(sys.argv[sys.argv.index("--top") + 1])
 if "--reports" in sys.argv:
     reports = int(sys.argv[sys.argv.index("--reports") + 1])
+also = [sys.argv[i + 1] for i, a in enumerate(sys.argv[:-1]) if a == "--also"]
 topmod = os.path.basename(top)[:-5]
 mydir = os.path.dirname(top)
 if "--out" in sys.argv:
@@ -61,8 +65,11 @@ def run(cmd, **kw):
     return subprocess.run(cmd, cwd=repo, stdin=subprocess.DEVNULL, creationflags=NW, **kw)
 
 
+py = [sys.executable, "-X", "utf8", "-B"]
+if not os.path.exists(os.path.join(gen, "PA195Rows.lean")):
+    run(py + [os.path.join(PA, "other-machines", "pa195", "ipra", "generate.py"), repo, gen],
+        check=True, stdout=subprocess.DEVNULL)
 if not os.path.exists(os.path.join(gen, "PA194AXPlan.lean")):
-    py = [sys.executable, "-X", "utf8", "-B"]
     run(py + [os.path.join(PA, "pa194", "ipra", "generate.py"), repo, gen], check=True,
         stdout=subprocess.DEVNULL)
     run(py + [os.path.join(PA, "pa194-work", "pa194-source-tree", "generate.py"),
@@ -163,5 +170,15 @@ lines = [l for l in report.splitlines() if "depends on axioms" in l]
 print("\n".join(lines))
 if len(lines) != reports:
     sys.exit("expected %d axiom reports, found %d" % (reports, len(lines)))
+compiled_mods = {mod for mod, _ in order}
+for spec in also:
+    mod, count = spec.rsplit(":", 1)
+    if mod not in compiled_mods:
+        sys.exit("--also %s: the module is not in the import closure of %s" % (mod, topmod))
+    text = open(os.path.join(out, *mod.split(".")) + ".log", encoding="utf-8", errors="replace").read()
+    found = [l for l in text.splitlines() if "depends on axioms" in l]
+    print("\n".join(found))
+    if len(found) != int(count):
+        sys.exit("%s: expected %s axiom reports, found %d" % (mod, count, len(found)))
 print("%s: checked (%d standalone modules, %d compiled now, objects in %s)" % (
     topmod, len(order), compiled, out))
