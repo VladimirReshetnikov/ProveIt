@@ -70,7 +70,7 @@ theorem base_closed : F ⊢[𝗜𝗻𝘁¹] ∀⁰ Rewriting.emb (atZero matrix)
   convert ho using 1
   simp [matrix, I, Z, R, IPRASubArithmetic.sub, add, z, equal, atZero, zeroTerm, Rewriting.free, Rewriting.emb, Semiformulaᵢ.rew_rel]
   constructor <;> funext i <;> cases i using Fin.cases with
-  | zero => simp [Rew.func, Function.comp_def, Matrix.fun_eq_vec_two, funext_iff]; change Rew.free (#(0 : Fin 1) : Semiterm language ℕ 1) = &0; rw [Rew.free_bvar_last_zero]
+  | zero => simp [Rew.func, Function.comp_def, Matrix.fun_eq_vec_two, funext_iff]
   | succ i => cases i using Fin.cases with
     | zero => simp [Rew.func, Function.comp_def, Matrix.fun_eq_vec_two, funext_iff] <;> change Rew.free (#(0 : Fin 1) : Semiterm language ℕ 1) = &0 <;> rw [Rew.free_bvar_last_zero]
     | succ i => exact Fin.elim0 i
