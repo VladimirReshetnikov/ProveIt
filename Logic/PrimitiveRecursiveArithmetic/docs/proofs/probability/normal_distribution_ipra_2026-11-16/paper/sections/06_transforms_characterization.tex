@@ -1,0 +1,140 @@
+\section{Transforms, cumulants, Stein's identity, and effective characterizations}\label{sec:transforms}
+
+\subsection{Moment-generating and characteristic functions}
+
+\begin{theorem}[MGF, characteristic function, and Fourier transform]\label{thm:transforms}
+For $X\sim N(\mu,\sigma^2)$ and represented real $t$,
+\begin{align}
+ M_X(t)&=\E e^{tX}=\exp\!\left(\mu t+\frac12\sigma^2t^2\right),\label{eq:mgf}\\
+ \chi_X(t)&=\E e^{itX}=\exp\!\left(i\mu t-\frac12\sigma^2t^2\right).
+ \label{eq:cf}
+\end{align}
+With the Fourier convention $\widehat f(\xi)=\int f(x)e^{-2\pi i\xi x}\dd x$,
+\begin{equation}\label{eq:fourier}
+ \widehat{f_{\mu,\sigma}}(\xi)
+ =e^{-2\pi i\mu\xi}e^{-2\pi^2\sigma^2\xi^2}.
+\end{equation}
+All three identities are uniform on bounded parameter boxes; the MGF is uniform on every bounded $t$ interval.
+\end{theorem}
+
+\begin{proof}
+For the MGF, complete the square by an exact polynomial identity:
+\[
+ tx-\frac{(x-\mu)^2}{2\sigma^2}
+ =-\frac{(x-\mu-\sigma^2t)^2}{2\sigma^2}
+   +\mu t+\frac12\sigma^2t^2.
+\]
+Factor out the constant and translate the normalized Gaussian integral.  On a finite interval this is a rational identity between exponential evaluators; the shifted tails are controlled uniformly by \eqref{eq:poly-gaussian-tail}.
+
+For the characteristic function one may repeat the argument with complex rational pairs, but a fully real proof is cleaner.  Let
+\[
+ C(t)=\int\phi(x)\cos(tx)\dd x,\qquad
+ S(t)=\int\phi(x)\sin(tx)\dd x.
+\]
+Oddness gives $S(t)=0$.  Differentiate the finite integral, use $x\phi=-\phi'$, and integrate by parts to obtain $C'(t)=-tC(t)$ with $C(0)=1$.  The ODE uniqueness argument of \cref{prop:gaussian-odes} gives $C(t)=e^{-t^2/2}$.  Translation and scaling give \eqref{eq:cf}; substituting $t=2\pi\xi$ gives \eqref{eq:fourier}.  This is the same quantitative architecture as the Gaussian transform proved in the ProveIt zeta packet.
+\end{proof}
+
+\begin{corollary}[Self-reciprocal Gaussian]\label{cor:self-fourier}
+Under the convention of \eqref{eq:fourier}, $x\mapsto e^{-\pi x^2}$ is fixed by the Fourier transform.  More generally
+\[
+ \int_{-\infty}^{\infty}e^{-\pi a x^2}e^{-2\pi ibx}\dd x
+ =a^{-1/2}e^{-\pi b^2/a}
+\]
+for every positive represented $a$.
+\end{corollary}
+
+\begin{proof}
+Scale \eqref{eq:fourier}, or solve the same transform ODE with the normalization obtained from \eqref{eq:gaussian-normalization}.  The positive inverse square root uses the supplied apartness witness for $a$.
+\end{proof}
+
+\subsection{Cumulants and Wick's formula}
+
+\begin{corollary}[Cumulants]\label{cor:cumulants}
+The cumulant-generating function is
+\begin{equation}\label{eq:cgf}
+ K_X(t)=\log M_X(t)=\mu t+\frac12\sigma^2t^2.
+\end{equation}
+Hence
+\[
+ \kappa_1=\mu,\qquad \kappa_2=\sigma^2,
+ \qquad \kappa_n=0\quad(n\ge3).
+\]
+This proves the normal distribution's vanishing higher cumulants.  It does not by itself prove the full Marcinkiewicz characterization of all distributions with only finitely many nonzero cumulants.
+\end{corollary}
+
+\begin{proof}
+On a bounded $t$ interval $M_X(t)$ has an explicit positive lower bound, so the represented logarithm is defined.  Apply it to \eqref{eq:mgf} and compare finite Taylor coefficients.  Derivatives of a quadratic vanish after order two by exact arithmetic.
+\end{proof}
+
+\begin{theorem}[Finite Wick--Isserlis formula]\label{thm:wick}
+Let $(X_1,\dots,X_d)$ be a centered jointly Gaussian vector with covariance matrix $\Sigma$.  For every finite index list $i_1,\dots,i_n$,
+\[
+ \E\prod_{r=1}^nX_{i_r}=0\quad\text{if $n$ is odd},
+\]
+and for $n=2m$,
+\begin{equation}\label{eq:wick}
+ \E\prod_{r=1}^{2m}X_{i_r}
+ =\sum_{\text{pairings }P}\prod_{\{r,s\}\in P}\Sigma_{i_r i_s}.
+\end{equation}
+The sum is over the finite primitive-recursively enumerable set of pairings.
+\end{theorem}
+
+\begin{proof}
+The multivariate MGF is $\exp(\tfrac12 t^T\Sigma t)$.  Fix the finite order $n$, replace the exponential by its Taylor polynomial through degree $n$, and extract the coefficient of $t_{i_1}\cdots t_{i_n}$.  Odd total degree is absent.  In degree $2m$, choosing $m$ quadratic factors is exactly choosing a pairing; the factorials cancel the ordering multiplicities.  This is a finite polynomial identity.  Alternatively, repeated multivariate integration by parts gives the same pairing recurrence.
+\end{proof}
+
+\subsection{Stein's identity and characterization}
+
+\begin{theorem}[Stein identity]\label{thm:stein}
+Let $X\sim N(\mu,\sigma^2)$.  Suppose $g$ has an effective derivative on every bounded interval and a primitive-recursive growth bound making $g(x)f_{\mu,\sigma}(x)$ vanish at both tails.  Then
+\begin{equation}\label{eq:stein}
+ \E[(X-\mu)g(X)]=\sigma^2\E[g'(X)].
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The density derivative satisfies
+$f'_{\mu,\sigma}=-(x-\mu)f_{\mu,\sigma}/\sigma^2$.  Therefore on $[-T,T]$,
+\[
+ \int (x-\mu)g(x)f(x)\dd x
+ =-\sigma^2\int g(x)f'(x)\dd x
+ =\sigma^2\int g'(x)f(x)\dd x
+   -\sigma^2[g(x)f(x)]_{-T}^T.
+\]
+The growth/tail contract makes the boundary smaller than any requested dyadic error.  The remaining two integrals have the ordinary finite quadrature contracts.
+\end{proof}
+
+\begin{theorem}[Effective Stein characterization]\label{thm:stein-characterization}
+Let $Y$ be an effectively presented probability law with finite second moment.  Assume that for every represented trigonometric test $g_t(x)=e^{itx}$ on every bounded $t$ interval,
+\begin{equation}\label{eq:stein-assumption}
+ \E[(Y-\mu)g_t(Y)]=\sigma^2\E[g_t'(Y)]
+\end{equation}
+holds with a uniform primitive-recursive modulus.  Then the characteristic function of $Y$ equals \eqref{eq:cf}; consequently all finite interval probabilities agree effectively with $N(\mu,\sigma^2)$.
+\end{theorem}
+
+\begin{proof}
+Let $\chi(t)=\E e^{itY}$.  Equation \eqref{eq:stein-assumption} becomes
+\[
+ \frac1i\chi'(t)-\mu\chi(t)=i\sigma^2t\chi(t),
+\]
+after differentiating under the effective second-moment bound.  Thus
+$\chi'(t)=(i\mu-\sigma^2t)\chi(t)$ and $\chi(0)=1$.  Multiplying by
+$e^{-i\mu t+\sigma^2t^2/2}$ gives a function with zero derivative, hence the normal characteristic function by finite ODE uniqueness.
+
+To pass from characteristic functions to interval probabilities constructively, convolve both laws with the finite triangular smoothing kernel used in the central-limit packet.  Fourier inversion for that compactly supported kernel is a finite integral identity.  Equality of the characteristic functions gives equality of the smoothed CDFs, and the supplied tightness plus anti-concentration modulus lets the smoothing width tend effectively to zero at rational interval endpoints.
+\end{proof}
+
+\subsection{What is and is not characterized}
+
+\begin{proposition}[Quadratic log-MGF criterion]\label{prop:quadratic-mgf}
+If an effective law has an MGF on a rational neighborhood of zero and its represented logarithm is exactly
+$\mu t+\sigma^2t^2/2$ there, then the law is $N(\mu,\sigma^2)$.
+\end{proposition}
+
+\begin{proof}
+Exponentiate to recover \eqref{eq:mgf}, substitute imaginary arguments through the common finite power series, and apply the characteristic-function uniqueness step above.  Equivalently, equality of all derivatives at zero plus an explicit analytic remainder gives equality of MGFs on a neighborhood and then of characteristic functions.
+\end{proof}
+
+\begin{remark}[Deep classical characterizations]
+The stronger Marcinkiewicz theorem (a polynomial log characteristic function has degree at most two), Cramer's decomposition theorem, the Kac--Bernstein theorem, and Geary's characterization by independence of sample mean and variance require substantial additional harmonic or functional-equation arguments.  They are listed as D in the ledger.  This package proves every forward Gaussian statement used by those theorems, and the analytic quadratic-MGF criterion, but does not disguise those deeper converses as elementary consequences of cumulant algebra.
+\end{remark}

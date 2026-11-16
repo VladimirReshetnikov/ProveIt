@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives from 14 to
-16 November 2026: 33 to `docs/drafts`, and 62 to
+16 November 2026: 33 to `docs/drafts`, and 63 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -32,7 +32,7 @@ reason. Its directory column gives `<area>/<directory>`.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `ignored` | 105 | The member matches the repository's `.gitignore`: 46 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests, 58 `.log` files from LaTeX and Lean builds and from test and verification runs, and 1 file under a `build/` directory. It is available only from the delivered archive, so it is lost for the archives that were not committed. |
+| `ignored` | 106 | The member matches the repository's `.gitignore`: 47 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests, 58 `.log` files from LaTeX and Lean builds and from test and verification runs, and 1 file under a `build/` directory. It is available only from the delivered archive, so it is lost for the archives that were not committed. |
 | `sibling-packet` | 21 | `puiseux_ipra` bundles `dependencies/FTA_iPRA/`, a byte-identical copy of the packet filed in [`algebra/FTA_iPRA`](algebra/FTA_iPRA/) (13 members). `ipra_finite_demand` bundles four of its files under the same path (4 members). `ipra_resources_and_elimination_2026-11-15` bundles `lean/BackwardDemand.lean` of [`foundations/ipra_finite_demand`](foundations/ipra_finite_demand/) (1 member). `ipra_stable_observables` bundles three `lean/ConciseIPRA/` files byte-identical to the `lean/upstream/` copies in [`foundations/ipra_coherent_methods_2026-11-15`](foundations/ipra_coherent_methods_2026-11-15/) (3 members). The reference column gives the placed file, except for the copy of `SHA256SUMS`, which is ignored in both. |
 | `sibling-archive` | 1 | `zeta_zeros_ipra_2026-11-15` bundles `dependencies/zeta_functional_equation_ipra.zip`, a byte-identical copy of the delivered archive filed in [`analytic-number-theory/zeta_functional_equation_ipra`](analytic-number-theory/zeta_functional_equation_ipra/). |
 | `repository-copy` | 25 | `zeta_zeros_ipra_2026-11-15` bundles `sources/Deduction.lean`, `sources/NativeBiInterpretation.lean` and `sources/PR.lean`; `ipra_presentations_to_witnesses` and `four_metrics_ipra_2026-11-15` bundle those three and `Syntax.lean`, under `lean/upstream/` and `lean/upstream_inspected/`; all byte-identical to the files of the same names in [`ConciseIPRA/Lean/ConciseIPRA`](../../ConciseIPRA/Lean/ConciseIPRA/). `isoperimetric_ipra_constructive_2026-11-15` bundles, under `reused/`, the earlier packet [`geometry/isoperimetric_ipra`](geometry/isoperimetric_ipra/) as filed here at `22afac4c9d`; 14 of its files are byte-identical to that packet. The reference column gives that file, relative to the repository root. |
@@ -62,7 +62,7 @@ manifests, build logs and `build/` files.
 
 ## Packets
 
-The 95 archives hold 2,943 members: 2,791 placed here, 105 ignored, 21 in bundled copies of
+The 96 archives hold 2,979 members: 2,826 placed here, 106 ignored, 21 in bundled copies of
 a sibling packet, 1 nested copy of a sibling archive and 25 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -214,6 +214,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | [`central_limit_ipra_2026-11-15`](probability/central_limit_ipra_2026-11-15/) | *not committed* 2026-11-15 | `central_limit_ipra_2026-11-15` | Central limit theorems with explicit Berry–Esseen-type bounds for finite rational laws, and effective iid, Lindeberg, Lyapunov, de Moivre–Laplace, local, multivariate and martingale versions. Its Lean files are uncompiled blueprints. | 17 | 1 |
 | [`expected_value_ipra_2026-11-16`](probability/expected_value_ipra_2026-11-16/) | `6ac70b5fcb` 2026-11-16 | `expected_value_ipra` | Expected value: for finite weighted laws with natural weights and rational-valued observables, expectation, the law of the unconscious statistician, linearity, monotonicity, indicator expectations, tail sums, variance, Cauchy–Schwarz, Markov and Chebyshev, independence and product formulas, finite conditional expectation, unbiasedness and variance reduction of the sample mean, and a quantitative finitary strong law, all by bounded sums and quantifier-free induction. Countable and continuous claims use primitive-recursive approximants with explicit tail, integration or L1 moduli. Its Lean files are uncompiled blueprints. | 30 | 1 |
 | [`median_ipra_constructive_proofs`](probability/median_ipra_constructive_proofs/) | `6ac70b5fcb` 2026-11-16 | `median_ipra_constructive_proofs` | Medians: with the division-free balance predicate `2·#{x_i < t} ≤ n` and `2·#{x_i > t} ≤ n`, the medians of sorted data are exactly the interval between the two middle entries, which gives the odd and even formulas, existence, uniqueness, quantile identifications, order invariance, robust rank bounds and the minimisers of total absolute deviation. For a finite weighted law it proves `(2S − MW)² ≤ 4(WQ − S²)`, the cleared form of the bound of the distance between mean and median by the standard deviation, and the exact law of an odd sample median by multinomial counting. Continuous and asymptotic claims are stated with explicit moduli. Its Lean blueprint states no `sorry`; the `Prf PRAAx` endpoint is a target, not a compiled proof. | 14 | 0 |
+| [`normal_distribution_ipra_2026-11-16`](probability/normal_distribution_ipra_2026-11-16/) | `85afffc93b` 2026-11-16 | `normal_distribution_ipra_2026-11-16` | The normal distribution: normalisation, standardisation, density, CDF and error function with two convergent CDF expansions, Mills inequalities, finite tail asymptotics and effective quantiles; integer and absolute moments, Hermite identities, transforms, cumulants, Wick formulas and Stein's identity; entropy, KL and Hellinger distances and Fisher information; affine and convolution closure, stability and multivariate projections; and related laws such as the chi-square and Rayleigh. Real numbers and functions are fixed primitive-recursive rational names with explicit moduli, and integrals are finite quadrature certificates with tail bounds. Its Lean files are a blueprint with object-language targets. | 35 | 1 |
 
 ### Topology
 

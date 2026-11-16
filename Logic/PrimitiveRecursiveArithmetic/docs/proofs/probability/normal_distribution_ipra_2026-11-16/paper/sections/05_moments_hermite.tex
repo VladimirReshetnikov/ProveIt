@@ -1,0 +1,181 @@
+\section{Moments, Hermite polynomials, and conditional expectations}\label{sec:moments}
+
+\subsection{The moment recurrence}
+
+\begin{theorem}[Standard moment recurrence]\label{thm:moment-recurrence}
+Let $m_n=\E Z^n$ for $Z\sim N(0,1)$.  Then
+\begin{equation}\label{eq:moment-recurrence}
+ m_0=1,\qquad m_1=0,\qquad m_{n+2}=(n+1)m_n.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:standard-moments}
+ \E Z^{2r+1}=0,
+ \qquad
+ \E Z^{2r}=(2r-1)!!=\frac{(2r)!}{2^r r!}.
+\end{equation}
+The theorem is uniform in the externally variable order $n$ and is proved by quantifier-free induction.
+\end{theorem}
+
+\begin{proof}
+Odd moments vanish by symmetry, with polynomially weighted tails controlled by \eqref{eq:poly-gaussian-tail}.  For $n\ge0$ use $\phi'=-x\phi$:
+\[
+ m_{n+2}=-\int_{-\infty}^{\infty}x^{n+1}\phi'(x)\dd x
+ =(n+1)\int_{-\infty}^{\infty}x^n\phi(x)\dd x.
+\]
+At a finite cutoff $T$, integration by parts is an exact telescoping identity plus the boundary $T^{n+1}\phi(T)$ at each end.  The primitive-recursive tail schedule chooses $T$ large enough to make the boundary and both omitted integrals smaller than the requested error.  The recurrence is then an equality of names.  Iteration of the recurrence is primitive recursion on $r$ and gives \eqref{eq:standard-moments}.
+\end{proof}
+
+\begin{corollary}[Raw moments of a general normal]\label{cor:raw-moments}
+For $X\sim N(\mu,\sigma^2)$ and $n\ge0$,
+\begin{equation}\label{eq:raw-moment}
+ \E X^n=\sum_{j=0}^{\lfloor n/2\rfloor}
+  \binom{n}{2j}(2j-1)!!\,\sigma^{2j}\mu^{n-2j}
+ =\sum_{j=0}^{\lfloor n/2\rfloor}
+  \frac{n!}{2^j j!(n-2j)!}\sigma^{2j}\mu^{n-2j}.
+\end{equation}
+Equivalently the raw moments obey
+\begin{equation}\label{eq:raw-rec}
+ M_{n+1}=\mu M_n+n\sigma^2M_{n-1}\qquad(n\ge1).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Write $X=\mu+\sigma Z$, expand by the finite binomial theorem, discard odd moments, and insert \eqref{eq:standard-moments}.  Equation \eqref{eq:raw-rec} follows either by coefficient cancellation or by applying Stein's identity to $g(x)=x^n$ after \cref{thm:stein}.  The direct coefficient proof is a finite ring identity and is the preferred object-language route.
+\end{proof}
+
+\subsection{Absolute moments}
+
+\begin{theorem}[Absolute moments]\label{thm:absolute-moments}
+For every fixed positive rational $p$ (indeed every effectively represented $p>-1$ with the gamma contracts),
+\begin{equation}\label{eq:absolute-moment}
+ \E|Z|^p=\frac{2^{p/2}\Gamma((p+1)/2)}{\sqrt\pi}.
+\end{equation}
+Hence
+\[
+ \E|X-\mu|^p=\sigma^p\frac{2^{p/2}\Gamma((p+1)/2)}{\sqrt\pi}.
+\]
+For integer $p$, this specializes to the double-factorial formulas above and to
+\[
+ \E|Z|^{2r+1}=\frac{2^{r+1/2}r!}{\sqrt\pi}.
+\]
+\end{theorem}
+
+\begin{proof}
+By symmetry and the substitution $u=x^2/2$,
+\begin{align*}
+ \E|Z|^p
+ &=\frac2{\sqrt{2\pi}}\int_0^\infty x^p e^{-x^2/2}\dd x\\
+ &=\frac{2^{p/2}}{\sqrt\pi}\int_0^\infty
+      u^{(p-1)/2}e^{-u}\dd u.
+\end{align*}
+The last integral is $\Gamma((p+1)/2)$.  Constructively, truncate away from both $0$ and $\infty$, perform the positive substitution on finite meshes, use the gamma packet's near-zero and tail bounds, and then allocate the error budget.  The condition $p>-1$ is exactly what makes the near-zero power integrable and gives a primitive-recursive cutoff once an apartness witness from $-1$ is supplied.
+\end{proof}
+
+\subsection{Hermite polynomials and all derivatives}
+
+Define the probabilists' Hermite polynomials by
+\begin{equation}\label{eq:hermite-def}
+ \He_0(x)=1,
+ \quad \He_1(x)=x,
+ \quad \He_{n+1}(x)=x\He_n(x)-n\He_{n-1}(x).
+\end{equation}
+This is a primitive-recursive coefficient array.  Polynomial evaluation and coefficient comparison are bounded folds.
+
+\begin{theorem}[Gaussian derivatives]\label{thm:hermite-derivatives}
+For every $n\ge0$,
+\begin{align}
+ \phi^{(n)}(x)&=(-1)^n\He_n(x)\phi(x),\label{eq:phi-hermite}\\
+ f_{\mu,\sigma}^{(n)}(x)&=\frac{(-1)^n}{\sigma^{n+1}}
+   \He_n\!\left(\frac{x-\mu}{\sigma}\right)
+   \phi\!\left(\frac{x-\mu}{\sigma}\right).
+\end{align}
+Moreover
+\begin{equation}\label{eq:hermite-derivative}
+ \He_n'(x)=n\He_{n-1}(x),
+\end{equation}
+and Rodrigues' formula holds:
+\begin{equation}\label{eq:rodrigues}
+ \He_n(x)=(-1)^ne^{x^2/2}\frac{\dd^n}{\dd x^n}e^{-x^2/2}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The case $n=0$ is immediate.  If \eqref{eq:phi-hermite} holds at $n$, differentiation gives
+\[
+ \phi^{(n+1)}=(-1)^n(\He_n'-x\He_n)\phi.
+\]
+A simultaneous induction proves $\He_n'=n\He_{n-1}$ from \eqref{eq:hermite-def}; substituting it shows the polynomial in parentheses is $-\He_{n+1}$.  This is quantifier-free induction on coefficient lists.  Scaling gives the location-scale formula, and rearranging \eqref{eq:phi-hermite} gives Rodrigues' formula.  The certificate program independently checks the coefficient identity through order 14.
+\end{proof}
+
+\begin{corollary}[Hermite orthogonality and norms]\label{cor:hermite-orthogonality}
+For integers $m,n\ge0$,
+\begin{equation}\label{eq:hermite-orthogonality}
+ \int_{-\infty}^{\infty}\He_m(x)\He_n(x)\phi(x)\dd x
+ =n!\,\mathbf 1_{m=n}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Assume $m\le n$.  Replace $\He_n\phi$ by $(-1)^n\phi^{(n)}$ and integrate by parts $m$ times.  All boundary terms vanish by the polynomial Gaussian tail bound.  If $m<n$, the $m$th derivative of the degree-$m$ polynomial $\He_m$ is constant and at least one derivative remains on $\phi$; its integral is a vanishing boundary.  If $m=n$, the $n$th derivative of the monic polynomial $\He_n$ is $n!$, leaving $n!\int\phi=n!$.  Every number of integrations is finite and externally indexed, so the proof is a uniform primitive-recursive family.
+\end{proof}
+
+\begin{corollary}[Generating function, coefficientwise form]\label{cor:hermite-generating}
+For every cutoff $N$,
+\begin{equation}\label{eq:hermite-generating}
+ e^{tx-t^2/2}=\sum_{n=0}^{N-1}\He_n(x)\frac{t^n}{n!}+R_N(x,t),
+\end{equation}
+with a primitive-recursive Taylor remainder on each bounded $(x,t)$ box.  Therefore the familiar formal identity
+\[
+ e^{tx-t^2/2}=\sum_{n\ge0}\He_n(x)t^n/n!
+\]
+holds as a represented analytic equality.
+\end{corollary}
+
+\begin{proof}
+Differentiate $e^{tx-t^2/2}$ finitely in $t$.  At $t=0$, the coefficient recurrence is exactly \eqref{eq:hermite-def}.  Taylor's theorem with the bounded exponential remainder proves \eqref{eq:hermite-generating}.  The object theory need only compare the finite coefficient arrays and verify the supplied remainder bound.
+\end{proof}
+
+\subsection{Truncated and conditional moments}
+
+Let $\alpha=(a-\mu)/\sigma$, $\beta=(b-\mu)/\sigma$, and
+$Z_{\alpha,\beta}=\Phi(\beta)-\Phi(\alpha)$.  Assume a positive lower bound on this interval probability.
+
+\begin{theorem}[Conditional mean and variance on an interval]\label{thm:truncated-normal}
+For $a<b$,
+\begin{align}
+ \E[X\mid a<X<b]
+ &=\mu+\sigma\frac{\phi(\alpha)-\phi(\beta)}{Z_{\alpha,\beta}},\label{eq:trunc-mean}\\
+ \Var(X\mid a<X<b)
+ &=\sigma^2\left[
+ 1+\frac{\alpha\phi(\alpha)-\beta\phi(\beta)}{Z_{\alpha,\beta}}
+ -\left(\frac{\phi(\alpha)-\phi(\beta)}{Z_{\alpha,\beta}}\right)^2
+ \right].\label{eq:trunc-var}
+\end{align}
+One-sided truncations follow by sending an endpoint to infinity with the Mills modulus.
+\end{theorem}
+
+\begin{proof}
+Standardize.  Since $z\phi(z)=-\phi'(z)$,
+\[
+ \int_\alpha^\beta z\phi(z)\dd z=\phi(\alpha)-\phi(\beta).
+\]
+Also integration by parts gives
+\[
+ \int_\alpha^\beta z^2\phi(z)\dd z
+ =Z_{\alpha,\beta}+\alpha\phi(\alpha)-\beta\phi(\beta).
+\]
+Divide by the positive interval mass, transform back to $X=\mu+\sigma Z$, and subtract the square of the mean.  The denominator's lower bound is computable from the positive minimum of the density on $[\alpha,\beta]$.
+\end{proof}
+
+\begin{proposition}[Recursive incomplete moments]\label{prop:incomplete-moments}
+For $I_n(a,b)=\int_a^b x^n\phi(x)\dd x$,
+\begin{equation}\label{eq:incomplete-rec}
+ I_n(a,b)=\bigl[-x^{n-1}\phi(x)\bigr]_a^b+(n-1)I_{n-2}(a,b)
+ \qquad(n\ge2).
+\end{equation}
+Thus every finite truncated integer moment reduces to $\Phi$ and endpoint density values by primitive recursion.
+\end{proposition}
+
+\begin{proof}
+Use $x\phi=-\phi'$ and integrate $x^{n-1}(-\phi')$ by parts on the bounded interval.  No improper limit occurs.
+\end{proof}

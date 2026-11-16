@@ -1,0 +1,120 @@
+\section{Finite lemmas used repeatedly}\label{app:finite-lemmas}
+
+This appendix collects the elementary identities that carry most of the arithmetization.  Each is a theorem of finite algebra or bounded induction.
+
+\begin{lemma}[Product telescoping]\label{lem:product-telescope}
+For any commutative ring and finite lists $a_0,\dots,a_{n-1}$ and $b_0,\dots,b_{n-1}$,
+\begin{equation}\label{eq:product-telescope}
+ \prod_{j<n}a_j-\prod_{j<n}b_j
+ =\sum_{k<n}(a_k-b_k)
+   \left(\prod_{j<k}a_j\right)
+   \left(\prod_{k<j<n}b_j\right).
+\end{equation}
+Consequently, if $|a_j|,|b_j|\le M$, then
+\[
+ \left|\prod a_j-\prod b_j\right|
+ \le M^{n-1}\sum_j|a_j-b_j|.
+\]
+\end{lemma}
+
+\begin{proof}
+Induct on $n$.  The successor step adds and subtracts
+$a_n\prod_{j<n}b_j$, then applies the induction hypothesis.  The inequality is the finite triangle inequality.  This lemma propagates interval errors through exponentiation, likelihood products, and characteristic-function products.
+\end{proof}
+
+\begin{lemma}[Finite summation by parts]\label{lem:summation-parts}
+For finite sequences $u_j,v_j$ and forward differences
+$\Delta v_j=v_{j+1}-v_j$,
+\begin{equation}\label{eq:summation-parts}
+ \sum_{j=0}^{n-1}u_j\Delta v_j
+ =u_{n-1}v_n-u_0v_0-\sum_{j=0}^{n-2}v_{j+1}(u_{j+1}-u_j).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Expand both sums and cancel adjacent terms.  Bounded induction on $n$ formalizes the cancellation.  Finite integration by parts is obtained by taking $u_j$ and $v_j$ to be sampled function values and controlling the difference-quotient residuals.
+\end{proof}
+
+\begin{lemma}[Alternating enclosure]\label{lem:alternating}
+Let $a_0\ge a_1\ge\cdots\ge a_N\ge0$.  Then every partial alternating sum after $N$ lies between the last even and odd partial sums.  If a supplied tail majorant proves $a_N\to0$ effectively, the value of the represented series lies between $S_N$ and $S_N+(-1)^Na_N$.
+\end{lemma}
+
+\begin{proof}
+Pair neighboring terms: $a_{2j}-a_{2j+1}\ge0$.  Even partial sums decrease and odd partial sums increase, while each even sum is above the following odd sum.  The claim for a finite later cutoff is quantifier-free induction.  The tail modulus identifies the common represented limit.
+\end{proof}
+
+\begin{lemma}[Bisection without real trichotomy]\label{lem:robust-bisection}
+Let $F$ be increasing on $[a,b]$ with an effective lower slope $m>0$:
+$F(y)-F(x)\ge m(y-x)$ for $x\le y$.  Suppose $F(c)$ can be enclosed within radius $\varepsilon$ at every rational $c$.  Given $p$, midpoint bisection may use the following three-way bounded rule:
+\begin{enumerate}[label=(\roman*)]
+ \item if the enclosure is below $p$, keep the right half;
+ \item if it is above $p$, keep the left half;
+ \item if it contains $p$, return $[c-\varepsilon/m,c+\varepsilon/m]$.
+\end{enumerate}
+The returned interval contains every solution of $F(x)=p$ and has a primitive-recursive width bound.
+\end{lemma}
+
+\begin{proof}
+Only rational interval comparisons are used.  In the third case,
+$|F(c)-p|\le\varepsilon$, while the lower slope gives
+$m|c-q|\le|F(c)-F(q)|$.  Ordinary bisection handles the other cases.  This is the constructive pattern used for Gaussian quantiles and all continuous positive-density pivots.
+\end{proof}
+
+\begin{lemma}[Completion of squares]\label{lem:complete-square}
+For $\sigma>0$,
+\begin{align*}
+ tx-\frac{(x-\mu)^2}{2\sigma^2}
+ &=-\frac{(x-\mu-\sigma^2t)^2}{2\sigma^2}
+   +\mu t+\frac12\sigma^2t^2,\\
+ \frac{(x-\mu_0)^2}{4\sigma_0^2}
+ +\frac{(x-\mu_1)^2}{4\sigma_1^2}
+ &=A(x-m)^2+C,
+\end{align*}
+where $A,m,C$ are the rational expressions used in the Hellinger calculation.  Every Gaussian MGF, product-of-densities, conditional, and Hellinger formula is obtained by one such ring identity followed by normalization.
+\end{lemma}
+
+\begin{proof}
+Multiply through by the positive common denominator and normalize both sides as polynomials in $x$.  Prove equality coefficientwise using the repository ring tactic or its object-language certificate.
+\end{proof}
+
+\begin{lemma}[Gaussian anti-concentration on bounded intervals]\label{lem:anti-concentration}
+For every rational interval $I=[a,b]$,
+\[
+ 0<\int_a^b\phi(x)\dd x
+ \le (b-a)\phi(0),
+\]
+and if $|a|,|b|\le B$,
+\[
+ \int_a^b\phi(x)\dd x
+ \ge(b-a)\phi(B).
+\]
+\end{lemma}
+
+\begin{proof}
+On $[-B,B]$, monotonicity in $|x|$ gives
+$\phi(B)\le\phi(x)\le\phi(0)$.  Multiply by the interval length using finite lower and upper Riemann sums.  This lemma supplies positive denominators for truncated means and lower derivatives for quantile inversion.
+\end{proof}
+
+\begin{lemma}[Finite Gaussian moment tail]\label{lem:moment-tail}
+For every externally fixed $n$ there is a primitive-recursive $T(n,p)$ such that
+\[
+ \int_{|x|>T(n,p)}|x|^n\phi(x)\dd x\le2^{-p}.
+\]
+The same cutoff can make all boundary terms $|x|^j\phi(x)$, $j\le n+1$, at most $2^{-p}$.
+\end{lemma}
+
+\begin{proof}
+Use \eqref{eq:poly-gaussian-tail}, absorb the fixed normalizing constant by the rational bound $(2\pi)^{-1/2}<1$, and find $T$ by bounded search until the explicit exponential majorant is below $2^{-p}$.  Exponential evaluation itself has the finite enclosure of \eqref{eq:exp-alt}.
+\end{proof}
+
+\begin{lemma}[Finite change of variables]\label{lem:finite-cov}
+Let $y=g(x)$ be monotone on a compact rational interval, with effective derivative and inverse contracts and a derivative apartness witness.  Then the transformed tagged sums differ by at most an explicit function of the source mesh, evaluator errors, and the moduli of $f,g,g^{-1}$ from
+\[
+ \int f(g(x))g'(x)\dd x=\int f(y)\dd y.
+\]
+For the affine, square, exponential, and polar substitutions in this manuscript, this error function is primitive recursive.
+\end{lemma}
+
+\begin{proof}
+Map every source cell to a target interval.  The exact mean-value identity is replaced by the derivative contract, which controls the target cell length.  Compare the source and target sample values through the supplied moduli, sum the local errors, and use the mesh bound.  Improper endpoints are removed separately by their explicit tails.  This is the finite proof behind every displayed change of variables.
+\end{proof}

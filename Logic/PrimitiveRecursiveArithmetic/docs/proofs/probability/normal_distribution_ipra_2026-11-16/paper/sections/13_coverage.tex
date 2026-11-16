@@ -1,0 +1,90 @@
+\section{Statement-by-statement coverage}\label{sec:coverage}
+
+This section summarizes the main claims appearing on the inspected Wikipedia and MathWorld pages.  The separate \code{THEOREM\_LEDGER.md} gives a more granular list, corrections, and cross-references.
+
+\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.34\textwidth} c >{\raggedright\arraybackslash}p{0.46\textwidth}@{}}
+\toprule
+Source claim family & Status & Result in this package\\
+\midrule
+\endfirsthead
+\toprule
+Source claim family & Status & Result in this package\\
+\midrule
+\endhead
+Density and parameterization by $\mu,\sigma^2$ & P & Definition \eqref{eq:normal-density}; effective scale apartness is explicit.\\
+Standard normal and standardization & P & \Cref{thm:normalization-standardization}.\\
+Normalization of the density & P/R & Gamma substitution and $\Gamma(1/2)=\sqrt\pi$, \eqref{eq:gaussian-normalization}.\\
+CDF and error function & P & \Cref{cor:cdf-erf}.\\
+Quantile function & E & Primitive-recursive interval-valued inverse, \cref{thm:quantile}; no real trichotomy.\\
+Support is all real numbers & E & Every rational interval gets a computable positive lower bound, \cref{cor:support}.\\
+Mean, median, mode & P & All equal $\mu$, \cref{thm:centers}.\\
+Variance and standard deviation & P & $\sigma^2$ and $\sigma$, \cref{thm:centers}.\\
+Mean absolute deviation & P & $\sigma\sqrt{2/\pi}$, \cref{cor:shape-statistics}.\\
+Median absolute deviation & P & $\sigma\Phi^{-1}(3/4)$, \cref{cor:shape-statistics}.\\
+Skewness and kurtosis & P & $0$, $3$, and zero excess.\\
+Density peak and inflection points & P & Peak at $\mu$, inflections at $\mu\pm\sigma$, \cref{prop:shape}.\\
+Symmetry & P & \eqref{eq:cdf-symmetry} and even density.\\
+Log-concavity & P & Constant negative second derivative of log density.\\
+Density/CDF ODEs & P & \Cref{prop:gaussian-odes}.\\
+Taylor series for $\Phi$ & P & Finite formula and explicit remainder, \cref{thm:cdf-taylor}.\\
+Density-factor series for $\Phi$ & C/P & It is globally convergent, not merely asymptotic; \cref{thm:cdf-density-series}.\\
+Tail estimates & P & Mills inequalities and arbitrary finite expansion, \cref{thm:mills,thm:mills-expansion}.\\
+$68$--$95$--$99.7$ rule & P & Exact-rational certified intervals for $n=1,\dots,6$, \cref{cor:coverage}.\\
+Newton computation of quantiles & E & Safeguarded Newton with explicit entry and quadratic-error bounds, \cref{alg:newton}.\\
+Raw and central moments & P & \Cref{thm:moment-recurrence,cor:raw-moments}.\\
+Absolute moments & P/R & Gamma formula \eqref{eq:absolute-moment}.\\
+Hermite derivative identities & P & \Cref{thm:hermite-derivatives}.\\
+Hermite orthogonality/generating function & P & \Cref{cor:hermite-orthogonality,cor:hermite-generating}.\\
+Conditional mean on an interval & P & \eqref{eq:trunc-mean}; conditional variance also proved.\\
+Fourier transform & P/R & \Cref{thm:transforms,cor:self-fourier}; quantitative route reused from zeta packet.\\
+MGF and characteristic function & P & \eqref{eq:mgf}--\eqref{eq:cf}.\\
+Cumulants & P & First two nonzero; all higher vanish, \cref{cor:cumulants}.\\
+Stein operator and characterization & E & \Cref{thm:stein,thm:stein-characterization}.\\
+Differential entropy & P & \eqref{eq:entropy}.\\
+Maximum entropy & E & Effective-density form with explicit integrability, \cref{thm:max-entropy}.\\
+KL divergence & P & Closed formula \eqref{eq:kl-normal} and constructive positivity.\\
+Hellinger distance & P & \eqref{eq:hellinger}.\\
+Fisher information & P & Both common parameterizations, \cref{thm:fisher}.\\
+Expected maximum bound & P & No independence needed, \cref{thm:expected-max}.\\
+Affine transformations & P & \Cref{thm:normalization-standardization}.\\
+Sums and convolution closure & P & \Cref{thm:linear-combination}.\\
+Stability & P & \Cref{cor:stability}.\\
+Infinite divisibility & P & One finite convolution identity for every $n$.\\
+Normalized product of densities & P & Precision-weighted pooling, \cref{prop:product-densities}.\\
+Multivariate normal/projections & E/P & Positive-definite effective matrices, \cref{thm:multivariate-normal,cor:projections}.\\
+Joint normal plus zero covariance implies independence & P & \Cref{thm:joint-normal-independence}.\\
+Independence of sum and difference & P & \Cref{cor:sum-difference}.\\
+Conditional bivariate normal & E/P & Nondegenerate case with an explicit $1-\rho^2$ bound, \cref{thm:bivariate-conditional}.\\
+Absolute/folded/half-normal law & P & \Cref{thm:folded-normal}.\\
+Square gives chi-square & P & Central and noncentral one-dimensional versions, \cref{thm:normal-square}.\\
+Sum of squares/chi law/Rayleigh/Maxwell & P & \Cref{thm:chi-square,cor:chi-radius}.\\
+Ratio of centered normals is Cauchy & C/P & Centering is essential; \cref{thm:normal-ratio}.\\
+Product of centered normals & P & Characteristic function and $K_0$ density, \cref{thm:product-normal}.\\
+Exponentiation gives lognormal & P & Density and moments, \cref{thm:lognormal}.\\
+Sample mean distribution & P & Exact for Gaussian samples, \eqref{eq:mean-law}.\\
+Sample variance and independence & P & \Cref{thm:sample-decomposition}.\\
+MLE for mean and variance & C/P & Formula plus correction for identical data, \cref{thm:mle}.\\
+Bias/unbiased variance and variances & P & \Cref{cor:sample-variance-moments}.\\
+Student $t$ and Fisher $F$ laws & P/R & Gamma/beta change-of-variable proofs, \cref{thm:student,thm:f-distribution}.\\
+Confidence pivots & E/P & Effective quantile versions, \cref{cor:confidence}.\\
+Inverse-CDF simulation & E/P & Finite-bit implementation with boundary error, \cref{thm:inverse-transform}.\\
+Box--Muller simulation & E/P & Truncated finite implementation and Jacobian proof, \cref{thm:box-muller}.\\
+Zero-variance degeneration & C/P & Effective weak convergence; CDF convergence excludes the jump, \cref{thm:zero-variance}.\\
+Central limit theorem and Berry--Esseen & R & Existing ProveIt packet, \cref{thm:clt-reuse}.\\
+Exact normality of arbitrary averages & C & False in general; asymptotic quantitative statement in \cref{cor:sample-mean-clt}.\\
+Marcinkiewicz polynomial-cumulant characterization & D & Forward Gaussian cumulants and analytic quadratic-MGF criterion proved; full converse omitted.\\
+Cramer decomposition theorem & D & Requires a separate factorization theorem for entire characteristic functions.\\
+Kac--Bernstein theorem & D & Requires a separate functional-equation argument.\\
+Geary characterization & D & Forward mean/variance independence proved; converse omitted.\\
+Information-geometric constant curvature & D & Fisher metric is computed; global curvature development is outside this packet.\\
+Full exact variance formulas for high sample skewness/kurtosis statistics & D & Reducible to finite Wick enumeration, but the long combinatorial simplifications are not reconstructed.\\
+Claims about non-elementarity of the CDF & D & This is a differential-algebra theorem, not needed for effective evaluation.\\
+Historical, empirical, and application claims & D & Not mathematical identities in the requested proof-theoretic sense.\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\subsection{Assessment}
+
+The elementary normal theory is unusually well suited to \ipra.  Its essential proofs are finite completion of squares, integration by parts with explicit Gaussian tails, polynomial recurrences, and finite-dimensional linear algebra.  The genuine boundary lies not at transcendental constants or improper integrals---those have direct primitive-recursive names---but at deep converse characterization theorems and at statements whose classical wording suppresses effectivity.  The packet proves the forward Gaussian mathematics and exposes those boundaries rather than filling them with semantic assumptions.

@@ -296,7 +296,8 @@ manifest; its wrapper directory is `expected_value_ipra`.
 `median_ipra_constructive_proofs.zip` was placed the same way, under `probability/`, and
 then deleted. All 14 of its members are placed. `catalan_numbers_ipra_2026-11-16.zip` was
 placed the same way, under `combinatorics/`, and then deleted. It leaves out one ignored
-`.log` file.
+`.log` file. `normal_distribution_ipra_2026-11-16.zip` was placed the same way, under
+`probability/`, and then deleted. It leaves out one ignored checksum manifest.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

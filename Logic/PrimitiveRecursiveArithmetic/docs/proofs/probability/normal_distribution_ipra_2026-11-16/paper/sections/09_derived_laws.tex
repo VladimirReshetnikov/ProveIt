@@ -1,0 +1,158 @@
+\section{Derived laws: absolute value, squares, products, ratios, radii, and exponentials}\label{sec:derived-laws}
+
+\subsection{Absolute value and folded normals}
+
+\begin{theorem}[Folded and half-normal laws]\label{thm:folded-normal}
+If $X\sim N(\mu,\sigma^2)$ and $Y=|X|$, then for $y>0$
+\begin{equation}\label{eq:folded-density}
+ f_Y(y)=f_{\mu,\sigma}(y)+f_{\mu,\sigma}(-y),
+ \qquad
+ F_Y(y)=F_{\mu,\sigma}(y)-F_{\mu,\sigma}(-y).
+\end{equation}
+When $\mu=0$, this is the half-normal law
+\begin{equation}\label{eq:half-normal}
+ f_Y(y)=\sqrt{\frac2{\pi\sigma^2}}e^{-y^2/(2\sigma^2)}\quad(y\ge0),
+\end{equation}
+with mean $\sigma\sqrt{2/\pi}$ and variance $\sigma^2(1-2/\pi)$.
+\end{theorem}
+
+\begin{proof}
+For $y\ge0$, the event $|X|\le y$ is $-y\le X\le y$, giving the CDF.  On a positive interval $[a,b]$, the preimage under absolute value is the disjoint union $[a,b]\cup[-b,-a]$; substitution on both pieces gives the density sum.  The half-normal formula follows by symmetry.  Its first moment was proved in \cref{cor:shape-statistics}; the second is $\E X^2=\sigma^2$, so the variance is the stated difference.
+\end{proof}
+
+\subsection{Squares and chi-square laws}
+
+\begin{theorem}[Square of a normal]\label{thm:normal-square}
+If $Z\sim N(0,1)$, then $W=Z^2$ has the chi-square law with one degree of freedom:
+\begin{equation}\label{eq:chi1-density}
+ f_W(w)=\frac{1}{\sqrt{2\pi w}}e^{-w/2}\quad(w>0).
+\end{equation}
+More generally, if $X\sim N(\mu,\sigma^2)$, then $X^2/\sigma^2$ is noncentral chi-square with one degree of freedom and noncentrality $\lambda=(\mu/\sigma)^2$, with density obtained by adding the two inverse branches $x=\pm\sigma\sqrt w$.
+\end{theorem}
+
+\begin{proof}
+For $0<a<b$, the preimage of $[a,b]$ under $z\mapsto z^2$ is
+$[-\sqrt b,-\sqrt a]\cup[\sqrt a,\sqrt b]$.  Substitution on each monotone branch contributes the Jacobian $1/(2\sqrt w)$.  In the centered case the two equal density values add to \eqref{eq:chi1-density}.  The noncentered formula is the same finite two-branch calculation without symmetry.  Near zero, integrability follows from the explicit bound $\int_0^\varepsilon w^{-1/2}\dd w=2\sqrt\varepsilon$.
+\end{proof}
+
+\begin{theorem}[Sum of squares]\label{thm:chi-square}
+If $Z_1,\dots,Z_k$ are independent standard normals, then
+\begin{equation}\label{eq:chi-square-law}
+ V=\sum_{j=1}^kZ_j^2\sim\chi_k^2,
+ \qquad
+ f_V(v)=\frac{v^{k/2-1}e^{-v/2}}{2^{k/2}\Gamma(k/2)}\quad(v>0).
+\end{equation}
+Its MGF is $(1-2t)^{-k/2}$ for $t<1/2$, its mean is $k$, and its variance is $2k$.
+\end{theorem}
+
+\begin{proof}
+For one square, complete the Gaussian integral:
+\[
+ \E e^{tZ^2}=\frac1{\sqrt{2\pi}}\int e^{-(1-2t)x^2/2}\dd x=(1-2t)^{-1/2}.
+\]
+Independence multiplies the $k$ factors.  The density in \eqref{eq:chi-square-law} has the same MGF by the gamma substitution $u=v/2$ and is normalized by the gamma integral.  Effective transform uniqueness gives the law.  Differentiating the finite Taylor contract at zero gives the first two moments; alternatively sum the independent moments of $Z_j^2$.
+\end{proof}
+
+\subsection{Radii: chi, Rayleigh, and Maxwell laws}
+
+\begin{corollary}[Chi radius]\label{cor:chi-radius}
+For $R=(Z_1^2+\cdots+Z_k^2)^{1/2}$,
+\begin{equation}\label{eq:chi-density}
+ f_R(r)=\frac{2^{1-k/2}}{\Gamma(k/2)}r^{k-1}e^{-r^2/2}
+ \quad(r>0).
+\end{equation}
+For $k=2$ this is the Rayleigh density $re^{-r^2/2}$; for $k=3$ it is the Maxwell density $\sqrt{2/\pi}\,r^2e^{-r^2/2}$.
+\end{corollary}
+
+\begin{proof}
+Apply the monotone substitution $v=r^2$ to \eqref{eq:chi-square-law}, whose Jacobian is $2r$.  The special constants use $\Gamma(1)=1$ and $\Gamma(3/2)=\sqrt\pi/2$ from the gamma packet.
+\end{proof}
+
+\subsection{Ratio of centered normals}
+
+\begin{theorem}[Normal ratio is Cauchy]\label{thm:normal-ratio}
+Let $X\sim N(0,\sigma_X^2)$ and $Y\sim N(0,\sigma_Y^2)$ be independent, with positive scales.  Then
+\begin{equation}\label{eq:cauchy-ratio}
+ R=\frac XY.
+\end{equation}
+It has the Cauchy density
+\[
+ f_R(r)=\frac{1}{\pi\gamma}\frac{1}{1+(r/\gamma)^2},
+ \qquad \gamma=\sigma_X/\sigma_Y.
+\]
+The undefined event $Y=0$ has probability zero in the effective interval sense.
+\end{theorem}
+
+\begin{proof}
+Standardize to independent $U,V\sim N(0,1)$.  On the region $v\ne0$, use the transformation $(r,v)\mapsto(u,v)=(rv,v)$, whose absolute Jacobian is $|v|$.  The marginal density of $r$ is
+\[
+ \frac1{2\pi}\int_{-\infty}^{\infty}|v|e^{-(1+r^2)v^2/2}\dd v
+ =\frac1\pi\int_0^\infty v e^{-(1+r^2)v^2/2}\dd v
+ =\frac1{\pi(1+r^2)}.
+\]
+All substitutions are performed away from $|v|<\varepsilon$; that omitted strip has probability at most $2\varepsilon\phi(0)$ and therefore vanishes with an explicit modulus.  Scaling $U/V$ by $\sigma_X/\sigma_Y$ gives the general formula.
+\end{proof}
+
+\subsection{Product of two centered normals}
+
+Define the modified Bessel function needed here by its positive integral
+\begin{equation}\label{eq:k0-def}
+ K_0(r)=\frac12\int_0^\infty
+   \exp\!\left(-\frac r2\left(u+\frac1u\right)
+\right)\frac{\dd u}{u}
+ \qquad(r>0).
+\end{equation}
+This is an effective improper integral: near $0$ substitute $v=1/u$, and at infinity use exponential decay.  No general Bessel theory is needed.
+
+\begin{theorem}[Product-normal law]\label{thm:product-normal}
+If $X,Y$ are independent standard normals and $P=XY$, then
+\begin{align}
+ \chi_P(t)&=(1+t^2)^{-1/2},\label{eq:product-cf}\\
+ f_P(p)&=\frac1\pi K_0(|p|)\qquad(p\ne0).\label{eq:product-density}
+\end{align}
+The density has an integrable logarithmic singularity at $p=0$.
+\end{theorem}
+
+\begin{proof}
+Condition on $X=x$.  The conditional characteristic function is
+$e^{-t^2x^2/2}$.  Integrating against the standard normal and using Gaussian normalization with coefficient $1+t^2$ gives \eqref{eq:product-cf}.
+
+For $p\ne0$, transform $(x,y)\mapsto(x,p=xy)$ on each half-line $x>0$ and $x<0$.  The Jacobian is $1/|x|$, so
+\[
+ f_P(p)=\frac1{2\pi}\int_{-\infty}^{\infty}
+ e^{-(x^2+p^2/x^2)/2}\frac{\dd x}{|x|}
+ =\frac1\pi\int_0^\infty e^{-(x^2+p^2/x^2)/2}\frac{\dd x}{x}.
+\]
+Set $u=x^2/|p|$; then $\dd x/x=\dd u/(2u)$ and the last expression is $K_0(|p|)/\pi$.  The transformations are first made on $\varepsilon\le|x|\le T$; the two omitted regions have explicit exponential bounds.  The logarithmic behavior at zero follows by splitting \eqref{eq:k0-def} at $u=1$ and comparing the central range with $\int\dd u/u$; only integrability, not a full asymptotic expansion, is needed here.
+\end{proof}
+
+\begin{corollary}[Scaled product]\label{cor:scaled-product}
+If $X\sim N(0,\sigma_X^2)$ and $Y\sim N(0,\sigma_Y^2)$ are independent, then $XY$ has characteristic function
+$[1+\sigma_X^2\sigma_Y^2t^2]^{-1/2}$ and density
+$K_0(|p|/(\sigma_X\sigma_Y))/(\pi\sigma_X\sigma_Y)$ away from zero.
+\end{corollary}
+
+\subsection{Exponentials and lognormal laws}
+
+\begin{theorem}[Exponentiating a normal]\label{thm:lognormal}
+If $X\sim N(\mu,\sigma^2)$ and $Y=e^X$, then $Y$ has the lognormal density
+\begin{equation}\label{eq:lognormal-density}
+ f_Y(y)=\frac{1}{y\sigma\sqrt{2\pi}}
+ \exp\!\left(-\frac{(\log y-\mu)^2}{2\sigma^2}
+\right)
+ \quad(y>0).
+\end{equation}
+For every integer $n\ge0$,
+\begin{equation}\label{eq:lognormal-moments}
+ \E Y^n=e^{n\mu+n^2\sigma^2/2}.
+\end{equation}
+Products and positive powers of independent lognormal variables are lognormal after adding and scaling their underlying normal logarithms.
+\end{theorem}
+
+\begin{proof}
+The monotone substitution $x=\log y$ has Jacobian $1/y$, giving \eqref{eq:lognormal-density}.  Equation \eqref{eq:lognormal-moments} is the Gaussian MGF at $t=n$.  For products, take logarithms and apply \cref{thm:linear-combination}.  Constructively all claims are made on positive intervals separated from zero, with the small-$y$ and large-$y$ tails transported to Gaussian tails in $x$.
+\end{proof}
+
+\begin{remark}[Noncentered ratios and products]
+The ratio of noncentered independent normals is generally not Cauchy, and the product of general noncentered normals has additional Bessel-type terms.  The source pages' simple ratio and product statements require the centered hypotheses used above.  The ledger marks any unqualified version C.
+\end{remark}

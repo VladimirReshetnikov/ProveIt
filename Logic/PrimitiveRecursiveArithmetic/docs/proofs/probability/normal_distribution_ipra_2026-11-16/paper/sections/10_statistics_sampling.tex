@@ -1,0 +1,251 @@
+\section{Finite samples, estimation, pivots, simulation, and Gaussian approximation}\label{sec:statistics}
+
+\subsection{Orthogonal decomposition of a normal sample}
+
+Let $X_1,\dots,X_n$ be independent $N(\mu,\sigma^2)$ variables, $n\ge2$, and define
+\[
+ \bar X=\frac1n\sum_{j=1}^nX_j,
+ \qquad
+ \widehat v=\frac1n\sum_{j=1}^n(X_j-\bar X)^2,
+ \qquad
+ S^2=\frac1{n-1}\sum_{j=1}^n(X_j-\bar X)^2.
+\]
+
+\begin{theorem}[Normal sample decomposition]\label{thm:sample-decomposition}
+The sample mean and residual sum of squares satisfy
+\begin{align}
+ \bar X&\sim N(\mu,\sigma^2/n),\label{eq:mean-law}\\
+ \frac1{\sigma^2}\sum_{j=1}^n(X_j-\bar X)^2&\sim\chi_{n-1}^2,\label{eq:residual-chi}\\
+ \bar X&\text{ is independent of }\sum_{j=1}^n(X_j-\bar X)^2.\label{eq:mean-var-independence}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Standardize $Z_j=(X_j-\mu)/\sigma$.  Choose a rational orthogonal matrix approximation, or an exact algebraic Householder matrix, whose first row is
+$n^{-1/2}(1,\dots,1)$.  Let $Y=QZ$.  Orthogonal invariance of the standard multivariate normal follows from \eqref{eq:multi-cf} because $QIQ^T=I$.  Thus $Y_1,\dots,Y_n$ are independent standard normals, and
+\[
+ Y_1=\sqrt n\frac{\bar X-\mu}{\sigma},
+ \qquad
+ \sum_{j=2}^nY_j^2=\frac1{\sigma^2}
+  \sum_{j=1}^n(X_j-\bar X)^2.
+\]
+The second identity is the finite Pythagorean decomposition
+\[
+ \sum_j(X_j-\mu)^2=
+ \sum_j(X_j-\bar X)^2+n(\bar X-\mu)^2.
+\]
+Now apply the chi-square theorem and independence of disjoint coordinate blocks.  Square roots of $n$ are represented by bisection; exact orthogonality may alternatively be avoided by using a sequence of rational Givens transformations with a controlled limiting error.
+\end{proof}
+
+\begin{corollary}[Bias and variance of sample variances]\label{cor:sample-variance-moments}
+\begin{align}
+ \E\widehat v&=\frac{n-1}{n}\sigma^2,
+ &\Var(\widehat v)&=\frac{2(n-1)}{n^2}\sigma^4,\label{eq:mle-var-moments}\\
+ \E S^2&=\sigma^2,
+ &\Var(S^2)&=\frac{2}{n-1}\sigma^4.\label{eq:unbiased-var-moments}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+If $V\sim\chi^2_{n-1}$, then $n\widehat v/\sigma^2=(n-1)S^2/\sigma^2=V$.  Use $\E V=n-1$ and $\Var V=2(n-1)$ from \cref{thm:chi-square} and scale.
+\end{proof}
+
+\subsection{Maximum likelihood and sufficiency}
+
+\begin{theorem}[Normal maximum likelihood]\label{thm:mle}
+For observed rationals $x_1,\dots,x_n$ not all equal, the unique maximum-likelihood estimators over $\mu\in\R$, $\sigma>0$ are
+\begin{equation}\label{eq:mle}
+ \widehat\mu=\bar x,
+ \qquad
+ \widehat{\sigma^2}=\frac1n\sum_{j=1}^n(x_j-\bar x)^2.
+\end{equation}
+If all observations are equal, the likelihood has no maximizer with positive $\sigma$: it is unbounded as $\mu$ approaches the common value and $\sigma\downarrow0$.  Thus an unqualified existence claim requires this correction.
+\end{theorem}
+
+\begin{proof}
+The log likelihood, up to a constant, is
+\[
+ \ell(\mu,v)=-\frac n2\log v-\frac1{2v}\sum_j(x_j-\mu)^2,
+ \qquad v=\sigma^2>0.
+\]
+The exact sum-of-squares identity
+\begin{equation}\label{eq:ss-decomp}
+ \sum_j(x_j-a)^2=
+ \sum_j(x_j-\bar x)^2+n(a-\bar x)^2
+\end{equation}
+shows that $a=\bar x$ uniquely minimizes the quadratic.  Write $A=\sum(x_j-\bar x)^2>0$.  For fixed center, maximizing in $v$ is equivalent to minimizing
+$n\log v+A/v$.  Its derivative is $(nv-A)/v^2$, negative below $A/n$ and positive above, hence the unique minimizer is $v=A/n$.  All sign claims have rational apartness witnesses because $A>0$ for nonconstant rational data.  When $A=0$, the likelihood is proportional to $v^{-n/2}$ and diverges as $v\downarrow0$.
+\end{proof}
+
+\begin{proposition}[Finite factorization and sufficient statistics]\label{prop:sufficient}
+The likelihood factors through the pair
+\[
+ T_1=\sum_jx_j,
+ \qquad T_2=\sum_jx_j^2.
+\]
+Hence $(T_1,T_2)$, equivalently $(\bar X,\sum(X_j-\bar X)^2)$, is sufficient in the finite likelihood-ratio sense.
+\end{proposition}
+
+\begin{proof}
+Expand
+$\sum(x_j-\mu)^2=T_2-2\mu T_1+n\mu^2$.  Every ratio of likelihoods for two sample vectors with the same $(T_1,T_2)$ is one, independently of the parameter.  This is the factorization criterion reduced to a finite algebraic identity; no sigma-algebra of statistics is needed internally.
+\end{proof}
+
+\subsection{Student and Fisher pivots}
+
+\begin{theorem}[Student $t$ statistic]\label{thm:student}
+Under the normal sample model,
+\begin{equation}\label{eq:t-stat}
+ T=\frac{\sqrt n(\bar X-\mu)}{S}\sim t_{n-1},
+\end{equation}
+with density, for $\nu=n-1$,
+\begin{equation}\label{eq:t-density}
+ f_\nu(t)=
+ \frac{\Gamma((\nu+1)/2)}{\sqrt{\nu\pi}\,\Gamma(\nu/2)}
+ \left(1+\frac{t^2}{\nu}
+\right)^{-(\nu+1)/2}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \cref{thm:sample-decomposition}, $Z=\sqrt n(\bar X-\mu)/\sigma$ is standard normal, $V=(n-1)S^2/\sigma^2$ is $\chi^2_\nu$, and they are independent.  Thus $T=Z/\sqrt{V/\nu}$.  Transform the joint density with variables $(t,v)$, where $z=t\sqrt{v/\nu}$ and the Jacobian is $\sqrt{v/\nu}$.  The $v$ integral is a gamma integral with parameter $(\nu+1)/2$, yielding \eqref{eq:t-density}.  Near $v=0$ and at infinity the gamma packet supplies explicit truncation bounds.
+\end{proof}
+
+\begin{theorem}[F ratio]\label{thm:f-distribution}
+If $U\sim\chi^2_{d_1}$ and $V\sim\chi^2_{d_2}$ are independent, then
+\[
+ F=\frac{U/d_1}{V/d_2}
+\]
+has density
+\begin{equation}\label{eq:f-density}
+ f_F(x)=
+ \frac{(d_1/d_2)^{d_1/2}x^{d_1/2-1}}
+ {B(d_1/2,d_2/2)
+  (1+d_1x/d_2)^{(d_1+d_2)/2}}
+ \quad(x>0).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use the change of variables $(u,v)=(d_1xv/d_2,v)$ in the product gamma density.  The remaining $v$ integral is gamma with shape $(d_1+d_2)/2$.  Simplifying with
+$B(a,b)=\Gamma(a)\Gamma(b)/\Gamma(a+b)$ gives \eqref{eq:f-density}.  The transformation is performed first on a compact positive rectangle and extended with explicit gamma tails.
+\end{proof}
+
+\subsection{Confidence pivots as finite probability identities}
+
+Let $z_p=\Phi^{-1}(p)$, $t_{\nu,p}$ the effective $t$ quantile, and $c_{\nu,p}$ the effective chi-square quantile.  Their names are obtained by the same bracket-and-lower-density method as \cref{thm:quantile}, using the positive continuous densities on compact probability subintervals.
+
+\begin{corollary}[Standard confidence intervals]\label{cor:confidence}
+For rational $0<\alpha<1$:
+\begin{enumerate}[label=(\roman*)]
+ \item If $\sigma$ is known,
+ \[
+  \Pp\!\left(
+   \bar X-z_{1-\alpha/2}\frac{\sigma}{\sqrt n}
+   \le\mu\le
+   \bar X+z_{1-\alpha/2}\frac{\sigma}{\sqrt n}
+  \right)=1-\alpha.
+ \]
+ \item If $\sigma$ is unknown,
+ \[
+  \Pp\!\left(
+   \bar X-t_{n-1,1-\alpha/2}\frac{S}{\sqrt n}
+   \le\mu\le
+   \bar X+t_{n-1,1-\alpha/2}\frac{S}{\sqrt n}
+  \right)=1-\alpha.
+ \]
+ \item For the variance,
+ \[
+  \Pp\!\left(
+   \frac{(n-1)S^2}{c_{n-1,1-\alpha/2}}
+   \le\sigma^2\le
+   \frac{(n-1)S^2}{c_{n-1,\alpha/2}}
+  \right)=1-\alpha.
+ \]
+\end{enumerate}
+Each equality is an effective interval-probability identity; numerical endpoints are produced to any prescribed dyadic precision.
+\end{corollary}
+
+\begin{proof}
+Rewrite each event as the corresponding standard pivot lying between its symmetric or asymmetric quantiles, then apply \cref{eq:mean-law}, \cref{thm:student}, or \cref{eq:residual-chi}.  Exact equality at a quantile is harmless because these laws have continuous positive densities and hence no atoms; that fact has a direct interval upper bound by length times a density bound.
+\end{proof}
+
+\subsection{Inverse-transform and Box--Muller sampling}
+
+\begin{theorem}[Inverse-CDF transform]\label{thm:inverse-transform}
+If $U$ is uniform on $(0,1)$ in the effective interval-probability sense and $X=\mu+\sigma\Phi^{-1}(U)$, then $X\sim N(\mu,\sigma^2)$.
+\end{theorem}
+
+\begin{proof}
+For every represented $x$,
+\[
+ \Pp(X\le x)=\Pp\!\left(U\le\Phi((x-\mu)/\sigma)\right)
+ =\Phi((x-\mu)/\sigma).
+\]
+Internally, a finite-bit uniform integer $J<2^m$ and the quantile algorithm produce a rational approximation.  To approximate interval probabilities to $2^{-p}$, take $m$ larger than $p$ plus the anti-concentration budget; the two boundary grid cells contribute at most $2^{1-m}$.  Thus no ideal random real is required.
+\end{proof}
+
+\begin{theorem}[Box--Muller transform]\label{thm:box-muller}
+Let $U,V$ be independent uniforms on $(0,1)$ and put
+\begin{equation}\label{eq:box-muller}
+ R=\sqrt{-2\log U},
+ \quad \Theta=2\pi V,
+ \quad X=R\cos\Theta,
+ \quad Y=R\sin\Theta.
+\end{equation}
+Then $X$ and $Y$ are independent standard normals.
+\end{theorem}
+
+\begin{proof}
+The transformation $u=e^{-r^2/2}$ sends the uniform density to
+$r e^{-r^2/2}$ on $r>0$, while $\theta=2\pi v$ is uniform on $[0,2\pi)$.  Hence the joint polar density is
+$(2\pi)^{-1}r e^{-r^2/2}$.  The polar Jacobian from $(r,\theta)$ to $(x,y)$ is $r$, so the Cartesian density is
+\[
+ \frac1{2\pi}e^{-(x^2+y^2)/2}=\phi(x)\phi(y).
+\]
+For a finite implementation, truncate $U$ below at $2^{-M}$.  The discarded probability is exactly $2^{-M}$, and all logarithm, square-root, sine, and cosine evaluations then occur on bounded domains with explicit moduli.  The certificate code checks the symbolic Jacobian; the universal proof is the finite change-of-variables argument above.
+\end{proof}
+
+\subsection{Zero-variance limit}
+
+\begin{theorem}[Degenerate limit, correctly formulated]\label{thm:zero-variance}
+Let $X_\sigma=\mu+\sigma Z$.  For every effective Lipschitz function $g$ with constant $L$,
+\begin{equation}\label{eq:weak-degenerate}
+ |\E g(X_\sigma)-g(\mu)|
+ \le L\sigma\sqrt{2/\pi}.
+\end{equation}
+Hence $N(\mu,\sigma^2)$ converges effectively and weakly to the point mass at $\mu$ as $\sigma\downarrow0$.  Its CDF converges to the step CDF at every $x\ne\mu$; at $x=\mu$ the Gaussian CDF remains $1/2$, so pointwise convergence at the discontinuity is not asserted.
+\end{theorem}
+
+\begin{proof}
+The Lipschitz inequality gives
+$|g(\mu+\sigma Z)-g(\mu)|\le L\sigma|Z|$.  Take expectations and use \cref{cor:shape-statistics}.  For CDFs away from $\mu$, standardization sends the argument to $\pm\infty$, and the Mills bound gives an explicit modulus.
+\end{proof}
+
+\subsection{Central-limit claims imported from ProveIt}
+
+\begin{theorem}[Quantitative finite-law CLT, reused]\label{thm:clt-reuse}
+For independent centered finite rational laws $X_j$, total variance $s^2>0$, and
+$\rho=\sum_j\E|X_j|^3$, the existing ProveIt central-limit packet proves at every rational threshold $q$
+\begin{equation}\label{eq:berry-esseen-reuse}
+ \left|\Pp\!\left(\sum_jX_j\le q\right)-\Phi(q/s)\right|
+ \le\min\left(1,\frac{64\rho}{s^3}
+\right).
+\end{equation}
+It also supplies effective iid, Lindeberg, Lyapunov, de Moivre--Laplace, finite-range, martingale, and rational-projection multivariate consequences.
+\end{theorem}
+
+\begin{proof}
+This is result R, not a new proof claim.  The cited packet derives \eqref{eq:berry-esseen-reuse} from exact finite probability, finite Taylor remainders, characteristic-function damping, product telescoping, and a constructive Esseen smoothing kernel.  Its theorem ledger states the precise hypotheses and corrections to overbroad classical wording.  The present packet supplies the Gaussian CDF evaluator, quantiles, and identities consumed by those approximation theorems.
+\end{proof}
+
+\begin{corollary}[Sample mean is asymptotically, not generally exactly, Gaussian]\label{cor:sample-mean-clt}
+For iid effectively presented finite rational variables with mean $\mu$, variance $\sigma^2>0$, and third absolute centered moment $\beta_3$,
+\[
+ \sup_q\left|\Pp\!\left(
+ \frac{\sqrt n(\bar X_n-\mu)}{\sigma}\le q\right)-\Phi(q)\right|
+ \le\min\left(1,\frac{64\beta_3}{\sigma^3\sqrt n}
+\right).
+\]
+If the summands themselves are Gaussian, exact normality follows instead from \cref{thm:linear-combination}.  Thus any source sentence saying an arbitrary finite-sample average ``is normally distributed'' must be read with this distinction.
+\end{corollary}

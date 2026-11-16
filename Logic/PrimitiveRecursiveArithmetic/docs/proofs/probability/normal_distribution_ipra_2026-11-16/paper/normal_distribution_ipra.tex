@@ -1,0 +1,151 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=28mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  citecolor=green!35!black,
+  urlcolor=blue!55!black,
+  pdftitle={The normal distribution in intuitionistic primitive recursive arithmetic},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov}
+}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Normal distribution in iPRA}
+\rhead{Constructive finite proofs}
+\cfoot{\thepage\ of \pageref{LastPage}}
+\setlength{\headheight}{14pt}
+\setlist{nosep,leftmargin=*}
+\setcounter{tocdepth}{2}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{contract}[theorem]{Finite contract}
+\newtheorem{algorithm}[theorem]{Algorithm}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\KL}{D_{\mathrm{KL}}}
+\newcommand{\He}{\operatorname{He}}
+\newcommand{\erf}{\operatorname{erf}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ipra}{\ensuremath{\mathrm{iPRA}}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\commitsha}{\texttt{8f028dcb4be7a7397d0c11d7c467aa1}\allowbreak\texttt{170cbf2f3}}
+\newcommand{\statusP}{\textbf{P}}
+\newcommand{\statusE}{\textbf{E}}
+\newcommand{\statusR}{\textbf{R}}
+\newcommand{\statusC}{\textbf{C}}
+\newcommand{\statusD}{\textbf{D}}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  columns=fullflexible,
+  showstringspaces=false
+}
+
+\title{\textbf{The normal distribution in intuitionistic primitive recursive arithmetic}\\[2mm]
+\large A constructive, quantitative reconstruction of the Wikipedia and MathWorld formula collections}
+\author{OpenAI\\Prepared for Vladimir Reshetnikov}
+\date{16 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We reconstruct a large part of the elementary and intermediate theory of the normal distribution in intuitionistic primitive recursive arithmetic (\ipra).  Since first-order arithmetic has neither a completed real line nor a sort of arbitrary probability measures, every real number, function, integral, and probability law is replaced by a fixed primitive-recursive rational approximation procedure together with explicit error, tail, positivity, or regularity certificates.  Every limiting assertion is expanded into a bounded rational inequality with a primitive-recursive modulus.
+
+Within that discipline we prove normalization, standardization, the density and cumulative-distribution formulas, symmetry, unimodality and inflection points, two global CDF series with remainder bounds, Mills inequalities and a full finite tail expansion, certified values for the $68$--$95$--$99.7$ rule, effective quantiles and safeguarded Newton iteration, all integer moments and the general absolute-moment formula, Hermite derivative identities, conditional moments, Fourier and moment-generating transforms, cumulants, Stein's identity, entropy, Kullback--Leibler and Hellinger formulas, maximum entropy, Fisher information, affine and convolution closure, stability and infinite divisibility, multivariate projection and independence criteria, product, ratio, radial and chi-square laws, exact sampling identities, maximum likelihood, sample-mean and sample-variance theory, and the usual confidence pivots.  The existing ProveIt central-limit packet is used for quantitative CLT claims rather than reproved.
+
+The package includes a statement-by-statement ledger, exact-rational executable certificates (96 checks), a detailed Lean module plan, and explicit target shapes for derivations in ProveIt's deeply embedded \code{Prf PRAAx}.  The Lean files are blueprints, not a claim of a completed kernel-checked analytic development.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{sections/01_scope}
+\input{sections/02_representation}
+\input{sections/03_gaussian_core}
+\input{sections/04_cdf_tails_quantiles}
+\input{sections/05_moments_hermite}
+\input{sections/06_transforms_characterization}
+\input{sections/07_information}
+\input{sections/08_closure_multivariate}
+\input{sections/09_derived_laws}
+\input{sections/10_statistics_sampling}
+\input{sections/11_ipra_internalization}
+\input{sections/12_lean_roadmap}
+\input{sections/13_coverage}
+
+\appendix
+\input{sections/A_finite_lemmas}
+\input{sections/B_certificate_output}
+
+\begin{thebibliography}{99}
+\bibitem{WikipediaNormal}
+Wikipedia contributors, ``Normal distribution,'' \emph{Wikipedia, The Free Encyclopedia}, snapshot inspected 16 November 2026.\\
+\url{https://en.wikipedia.org/wiki/Normal_distribution}
+
+\bibitem{MathWorldNormal}
+E. W. Weisstein, ``Normal Distribution,'' \emph{MathWorld---A Wolfram Web Resource}, snapshot inspected 16 November 2026.\\
+\url{https://mathworld.wolfram.com/NormalDistribution.html}
+
+\bibitem{ProveIt}
+V. Reshetnikov, \emph{ProveIt}, repository snapshot \commitsha.\\
+\url{https://github.com/VladimirReshetnikov/ProveIt}
+
+\bibitem{ConciseIPRA}
+V. Reshetnikov et al., ``Concise presentations of intuitionistic primitive recursive arithmetic,'' in \path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA} of \cite{ProveIt}.
+
+\bibitem{CLTIPRA}
+``Constructive central limit theorems in iPRA,'' in \path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/probability/central_limit_ipra_2026-11-15} of \cite{ProveIt}.
+
+\bibitem{CalculusIPRA}
+``The fundamental theorem of calculus and the Euler--Maclaurin formula in iPRA,'' in \path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/analysis/calculus_ipra} of \cite{ProveIt}.
+
+\bibitem{GammaIPRA}
+``Gamma in intuitionistic primitive recursive arithmetic,'' in \path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/analysis/gamma_ipra} of \cite{ProveIt}.
+
+\bibitem{TaylorIPRA}
+``Taylor's theorem and Cauchy's integral formula in iPRA,'' in \path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/analysis/taylor_cauchy_ipra} of \cite{ProveIt}.
+
+\bibitem{ZetaIPRA}
+``Constructive zeta theory,'' especially its certified Gaussian Fourier transform, in \path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/analytic-number-theory/zeta_ipra} of \cite{ProveIt}.
+
+\bibitem{Feller}
+W. Feller, \emph{An Introduction to Probability Theory and Its Applications}, vol. 1, Wiley.
+
+\bibitem{JohnsonKotz}
+N. L. Johnson, S. Kotz, and N. Balakrishnan, \emph{Continuous Univariate Distributions}, vol. 1, Wiley.
+\end{thebibliography}
+
+\end{document}

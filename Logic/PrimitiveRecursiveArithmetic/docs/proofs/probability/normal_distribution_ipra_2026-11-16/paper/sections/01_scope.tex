@@ -1,0 +1,81 @@
+\section{Scope, logical meaning, and trust boundary}
+
+\subsection{What ``the normal distribution in \ipra'' can mean}
+
+The ordinary sentence ``let $X$ be a normally distributed real random variable'' quantifies over a completed real line, a sigma-algebra, and a countably additive measure.  None of these is a primitive object of first-order primitive recursive arithmetic.  It would therefore be misleading merely to copy a classical real-analysis proof and announce that it is formalizable.  The correct arithmetical content is a family of finite contracts.
+
+A \emph{fast rational name} is a primitive-recursive map $a\colon\N\to\Q$ satisfying
+\begin{equation}\label{eq:fast-name}
+  |a(p)-a(q)|\le 2^{-p}+2^{-q}.
+\end{equation}
+A represented real is not a new object inside the theory: it is convenient metanotation for a fixed program $a$ and the bounded equations asserting \eqref{eq:fast-name} through every requested finite horizon.  An equality $x=y$ means
+\[
+  \forall p\; |a_x(p+2)-a_y(p+2)|\le 2^{-p},
+\]
+and an inequality $x\le y$ means the corresponding family of rational inequalities with an explicit tolerance.  Strict positivity is always supplied quantitatively, for example by a witness $r$ with $x\ge 2^{-r}$.  This last point is essential for division by a standard deviation or by a density lower bound.
+
+A function on a bounded rational interval is represented by a primitive-recursive evaluator $F(x,p)$ and a modulus that tells how much input and evaluation precision suffice for an output error $2^{-p}$.  An improper integral is represented by finite quadrature on $[-T,T]$, a mesh-error certificate, and a tail bound beyond $T$.  A probability law is represented either by a finite rational law or by a density/CDF evaluator with these explicit contracts.  Every theorem below is consequently a first-order schema in the codes of the fixed evaluators and certificates.
+
+\begin{remark}[No hidden second-order quantification]
+We never postulate a universal evaluator for all primitive-recursive programs and never quantify over ``all real functions'' inside \ipra.  A displayed theorem with parameters such as $f$, $\mu$, or $\sigma$ abbreviates the theorem generated after their concrete primitive-recursive names have been fixed.  Uniform families are allowed when the entire family of evaluators and moduli is itself one primitive-recursive program.
+\end{remark}
+
+\subsection{The ambient theory}
+
+The repository's ordinary presentation of \ipra{} has intuitionistic first-order logic with equality, a symbol for every primitive-recursive function together with its defining equations, the successor axioms, and induction for quantifier-free formulas.  In the Lean library the relevant interfaces are the syntax \code{PR} and \code{PTm}, the axiom set \code{PRAAx}, the derivability relation \code{Prf}, and the derived induction rule \code{PRA.qfInd}.  The theorem \code{pra_iff_native} transports completed ordinary derivations to the concise native calculus.  Thus the final formal endpoint for a closed theorem $A$ is not an ambient theorem about \code{Real}; it is a term of type
+\[
+  []\;\vdash[\code{PRAAx}]\; A,
+\]
+followed, when desired, by transport through \code{pra\_iff\_native}.
+
+The manuscript supplies human proofs in a deliberately finitary form, identifies every required primitive-recursive operation, gives bounded induction invariants, and lists the target formulas.  It does \emph{not} claim that the analytic collection has already been entered as kernel-checked \code{Prf PRAAx} terms.  The executable Python certificate file is likewise evidence about concrete finite calculations, not a proof oracle for universal statements.
+
+\subsection{Four levels of coverage}
+
+The ledger uses the following labels.
+\begin{center}
+\begin{tabularx}{0.94\textwidth}{>{\bfseries}l X}
+\toprule
+P & A complete constructive proof is given for fixed effective presentations; all limits are accompanied by primitive-recursive bounds.\\
+E & The classical wording is replaced by its effective version, with the missing modulus, tail bound, apartness, or integrability hypothesis displayed.\\
+R & The result is imported from an identified ProveIt packet whose finite proof architecture is used here.\\
+C & The source wording needs a qualification or correction; the corrected theorem is proved.\\
+D & The statement is recorded but not reconstructed; the missing deep ingredient is named rather than silently assumed.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The labels concern the mathematical proof in this package.  They are not assertions that the corresponding Lean object derivation has already been compiled.
+
+\subsection{Main result at a glance}
+
+\begin{theorem}[Constructive Gaussian package]\label{thm:master}
+Fix fast names $\mu$ and $\sigma$, a witness $\sigma\ge 2^{-s_0}>0$, and the standard primitive-recursive approximation contracts for $\pi$, square root, exponential, logarithm, trigonometric functions, and finite Riemann integration described in \cref{sec:representation}.  Then \ipra{} proves, as uniform finite schemas, all results marked P or E in \cref{sec:coverage}.  In particular it proves:
+\begin{enumerate}[label=(\roman*)]
+  \item the normalization and all elementary shape properties of
+  \[
+    f_{\mu,\sigma}(x)=\frac{1}{\sigma\sqrt{2\pi}}
+       \exp\!\left(-\frac{(x-\mu)^2}{2\sigma^2}\right);
+  \]
+  \item effective evaluation of the CDF, tails, and quantiles, with explicit rational remainder bounds;
+  \item every integer moment, the rational absolute-moment family, all Hermite derivative identities, and the standard transforms;
+  \item the entropy, divergence, Hellinger, Fisher-information, and maximum-entropy formulas under explicit effective-integrability contracts;
+  \item affine, convolution, multivariate, ratio, product, radial, chi-square, Student and Fisher consequences, and the finite-sample Gaussian statistics described below.
+\end{enumerate}
+All proofs use only bounded sums and products, rational inequalities, primitive recursion, and quantifier-free induction after the named analytic contracts have been expanded.
+\end{theorem}
+
+\begin{proof}[Proof architecture]
+The proof is distributed through the manuscript.  The analytic constants and operations are reduced to finite Taylor sums, bisection, and quadrature in \cref{sec:representation}.  Gaussian normalization follows from the effective gamma identity $\Gamma(1/2)=\sqrt\pi$.  Every density identity is then a finite algebraic identity plus an explicit integral substitution.  Integration by parts is the finite telescoping theorem from the calculus packet with Gaussian tail terms discharged by \cref{thm:mills}.  Infinite series are never used without a displayed next-term or geometric remainder.  Transform and convolution theorems use finite rectangles before tail cutoffs are removed.  Information-theoretic statements use the pointwise convex inequality underlying Gibbs' inequality and an explicit integrability modulus.  Multivariate and sample results reduce to finite-dimensional matrix algebra and orthogonal changes of variables.  Finally \cref{sec:internalization} spells out how the bounded verifiers and their invariants become \code{PR} programs and \code{Prf PRAAx} derivations.
+\end{proof}
+
+\subsection{Reuse from ProveIt}
+
+The present packet is intentionally complementary to existing work.
+\begin{itemize}
+  \item The calculus packet supplies represented differentiation, finite Riemann integration, substitutions, integration by parts, and the effective fundamental theorem of calculus.
+  \item The gamma packet supplies a primitive-recursive gamma name, the Euler integral, $\Gamma(1/2)=\sqrt\pi$, beta integrals, and rational absolute-moment evaluation.
+  \item The Taylor packet supplies finite Taylor formulas with explicit remainders.
+  \item The zeta packet contains a quantitative proof of the Gaussian Fourier transform by tail bounds and a first-order differential equation.
+  \item The central-limit packet supplies quantitative Berry--Esseen, Lindeberg, de Moivre--Laplace, and related approximation theorems for finite rational laws.  We cite those results in \cref{sec:statistics} rather than duplicate thirty pages of smoothing estimates.
+\end{itemize}
+Each reuse is at the level of an explicit finite theorem contract.  No conclusion is obtained merely because a classically equivalent theorem exists in Mathlib or ordinary analysis.

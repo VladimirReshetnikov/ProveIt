@@ -1,0 +1,188 @@
+\section{Entropy, divergence, Hellinger distance, Fisher information, and maxima}\label{sec:information}
+
+The formulas in this section involve logarithms of densities or ratios.  The constructive statements therefore include the following standard contract: each density has a fixed primitive-recursive evaluator, the relevant logarithm is requested only where a positive lower bound is known, and the integral has explicit near-zero and tail moduli.  For a Gaussian density these conditions are automatic on bounded intervals and the tails are controlled by \cref{thm:mills}.  For a comparison density in the maximum-entropy theorem they are hypotheses rather than consequences of the word ``density.''
+
+\subsection{Differential entropy}
+
+\begin{theorem}[Gaussian entropy]\label{thm:entropy}
+For $X\sim N(\mu,\sigma^2)$,
+\begin{equation}\label{eq:entropy}
+ h(X)=-\int f_{\mu,\sigma}(x)\log f_{\mu,\sigma}(x)\dd x
+ =\frac12\log(2\pi e\sigma^2).
+\end{equation}
+The value is independent of $\mu$, and $h(aX+b)=h(X)+\log|a|$ for $a\ne0$.
+\end{theorem}
+
+\begin{proof}
+The exact identity
+\[
+ -\log f_{\mu,\sigma}(x)
+ =\log(\sigma\sqrt{2\pi})+\frac{(x-\mu)^2}{2\sigma^2}
+\]
+reduces the integral to normalization and variance.  Therefore
+\[
+ h(X)=\log(\sigma\sqrt{2\pi})+\frac12
+ =\frac12\log(2\pi e\sigma^2).
+\]
+Every term is an effective name.  The affine formula follows either by substitution in the integral or by replacing $\sigma$ with $|a|\sigma$.
+\end{proof}
+
+\subsection{Kullback--Leibler divergence}
+
+\begin{theorem}[KL divergence of two normals]\label{thm:kl-normal}
+Let $P=N(\mu_0,\sigma_0^2)$ and $Q=N(\mu_1,\sigma_1^2)$, with positive scale witnesses.  Then
+\begin{equation}\label{eq:kl-normal}
+ \KL(P\Vert Q)
+ =\log\frac{\sigma_1}{\sigma_0}
+ +\frac{\sigma_0^2+(\mu_0-\mu_1)^2}{2\sigma_1^2}-\frac12.
+\end{equation}
+It is nonnegative and is zero exactly when $\mu_0=\mu_1$ and $\sigma_0=\sigma_1$ in the represented equality sense.
+\end{theorem}
+
+\begin{proof}
+Subtract the two log-density formulas and take expectation under $P$.  The only inputs are
+$\E_P(X-\mu_0)^2=\sigma_0^2$ and
+$\E_P(X-\mu_1)^2=\sigma_0^2+(\mu_0-\mu_1)^2$, giving \eqref{eq:kl-normal}.
+
+For nonnegativity, put $r=\sigma_0^2/\sigma_1^2>0$ and $d=(\mu_0-\mu_1)^2/\sigma_1^2\ge0$.  Twice the divergence is
+\[
+ r-1-\log r+d.
+\]
+The scalar inequality $\log r\le r-1$ follows from
+\[
+ r-1-\log r=\int_1^r\left(1-\frac1t\right)\dd t\ge0,
+\]
+with the orientation reversed when $r<1$; the integrand has the appropriate sign on the bounded interval.  Equality forces $r=1$ and $d=0$.  The effective strict statement uses an apartness witness; without one, the non-strict inequality is the internal formula.
+\end{proof}
+
+\begin{lemma}[Gibbs inequality in finite-contract form]\label{lem:gibbs}
+Let $p$ and $q$ be effective densities with $q>0$ and with explicit integrability moduli for $p\log(p/q)$.  Then
+\[
+ \int p\log\frac pq\dd x\ge0.
+\]
+\end{lemma}
+
+\begin{proof}
+The pointwise inequality $u\log u-u+1\ge0$ for $u\ge0$ follows by calculus on a bounded interval and the convention $0\log0=0$ with its explicit limiting bound.  Set $u=p/q$, multiply by $q$, and integrate:
+\[
+ p\log(p/q)-p+q\ge0.
+\]
+Normalization cancels the last two integrals.  Constructively, truncate to a finite interval, replace very small $p$ by the elementary bound $|p\log p|\le C\sqrt p$, and use the supplied tail modulus.  All pointwise comparisons are rational interval comparisons.
+\end{proof}
+
+\subsection{Maximum entropy}
+
+\begin{theorem}[Gaussian maximum entropy]\label{thm:max-entropy}
+Let $p$ be an effectively presented density with mean $\mu$, variance $\sigma^2>0$, finite entropy, and the integrability contracts required by \cref{lem:gibbs}.  Then
+\begin{equation}\label{eq:max-entropy}
+ h(p)\le\frac12\log(2\pi e\sigma^2),
+\end{equation}
+with equality only when $p=f_{\mu,\sigma}$ almost everywhere in the effective $L^1$ sense.
+\end{theorem}
+
+\begin{proof}
+Let $g=f_{\mu,\sigma}$.  Since $-\log g$ is a constant plus $(x-\mu)^2/(2\sigma^2)$, the matching first two moments give
+\[
+ -\int p\log g=\frac12\log(2\pi e\sigma^2)=h(g).
+\]
+Therefore
+\[
+ \KL(p\Vert g)=\int p\log p-\int p\log g=h(g)-h(p)\ge0
+\]
+by \cref{lem:gibbs}.  Equality in the pointwise convex inequality forces $p/g=1$ wherever the effective mass is nonzero; quantitatively, the finite Pinsker inequality
+$\|p-g\|_1^2\le2\KL(p\Vert g)$ gives the represented $L^1$ conclusion.
+\end{proof}
+
+\begin{remark}[The hypothesis is not merely ``has a variance'']
+A bare classical density with a finite second moment does not automatically carry a primitive-recursive entropy or KL integrability modulus.  The maximum-entropy theorem is therefore marked E: it is fully proved for effective densities with the displayed contracts, not asserted for an unrepresented totality of all measures.
+\end{remark}
+
+\subsection{Hellinger affinity and equal-variance total variation}
+
+\begin{theorem}[Hellinger formula]\label{thm:hellinger}
+For the convention
+$H^2(P,Q)=1-\int\sqrt{pq}$, two normal laws satisfy
+\begin{equation}\label{eq:hellinger}
+ H^2(P,Q)=1-
+ \sqrt{\frac{2\sigma_0\sigma_1}{\sigma_0^2+\sigma_1^2}}
+ \exp\!\left(-\frac{(\mu_0-\mu_1)^2}{4(\sigma_0^2+\sigma_1^2)}\right).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Multiply the square roots of the two densities.  Completing the square writes the exponent as a normalized Gaussian with variance
+$2\sigma_0^2\sigma_1^2/(\sigma_0^2+\sigma_1^2)$ plus the constant
+$-(\mu_0-\mu_1)^2/[4(\sigma_0^2+\sigma_1^2)]$.  Integrate the normalized factor and simplify the rational square roots.  The completion is a finite polynomial identity; positivity of the denominators is supplied by the scale witnesses.
+\end{proof}
+
+\begin{proposition}[Total variation for equal scales]\label{prop:tv-equal-scale}
+For $P=N(\mu_0,\sigma^2)$ and $Q=N(\mu_1,\sigma^2)$,
+\begin{equation}\label{eq:tv-equal-scale}
+ \|P-Q\|_{\mathrm{TV}}
+ =2\Phi\!\left(\frac{|\mu_0-\mu_1|}{2\sigma}\right)-1.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Assume $\mu_1>\mu_0$.  The two densities cross exactly at $c=(\mu_0+\mu_1)/2$, because their log ratio is an affine function of $x$.  Integrating the positive difference on $(c,\infty)$ and standardizing gives
+$\Phi((\mu_1-\mu_0)/(2\sigma))-\Phi(-(\mu_1-\mu_0)/(2\sigma))$, which is \eqref{eq:tv-equal-scale}.  The other order follows by symmetry.
+\end{proof}
+
+\subsection{Fisher information}
+
+\begin{theorem}[Fisher information matrices]\label{thm:fisher}
+For parameters $(\mu,\sigma)$, the score functions are
+\[
+ S_\mu(X)=\frac{X-\mu}{\sigma^2},
+ \qquad
+ S_\sigma(X)=-\frac1\sigma+\frac{(X-\mu)^2}{\sigma^3},
+\]
+and the Fisher information is
+\begin{equation}\label{eq:fisher-musigma}
+ I(\mu,\sigma)=
+ \begin{pmatrix}
+  \sigma^{-2}&0\\[1mm]
+  0&2\sigma^{-2}
+ \end{pmatrix}.
+\end{equation}
+For parameters $(\mu,v)$ with $v=\sigma^2$,
+\begin{equation}\label{eq:fisher-muv}
+ I(\mu,v)=
+ \begin{pmatrix}
+  v^{-1}&0\\[1mm]
+  0&(2v^2)^{-1}
+ \end{pmatrix}.
+\end{equation}
+For $n$ independent observations the matrix is multiplied by $n$.
+\end{theorem}
+
+\begin{proof}
+Differentiate the explicit log density on a bounded parameter box separated from $\sigma=0$.  Standardize $X-\mu=\sigma Z$ and use $\E Z=0$, $\E Z^2=1$, $\E Z^3=0$, $\E Z^4=3$.  This gives
+$\E S_\mu^2=1/\sigma^2$, $\E S_\mu S_\sigma=0$, and
+$\E S_\sigma^2=(3-2+1)/\sigma^2=2/\sigma^2$.  The $v$ formula follows by the finite chain rule.  Independence makes log likelihoods and scores finite sums, so cross-observation terms vanish by the zero score mean.
+\end{proof}
+
+\subsection{Maximum of Gaussian variables}
+
+\begin{theorem}[Expected maximum bound]\label{thm:expected-max}
+Let $X_1,\dots,X_n$ be Gaussian random variables with means at most $\mu$ and variances at most $\sigma^2$.  Independence is not required.  Then for $n\ge2$,
+\begin{equation}\label{eq:expected-max}
+ \E\max_{j\le n}X_j\le \mu+\sigma\sqrt{2\log n}.
+\end{equation}
+The statement is effective for a finite jointly presented law and fixed $n$.
+\end{theorem}
+
+\begin{proof}
+For any rational $t>0$,
+\[
+ e^{t\max_jX_j}\le\sum_{j=1}^ne^{tX_j}.
+\]
+By concavity of $\log$ in its finite Jensen form,
+\[
+ t\E\max_jX_j
+ \le \log\E e^{t\max_jX_j}
+ \le \log\sum_j\E e^{tX_j}
+ \le \log n+t\mu+\frac12t^2\sigma^2.
+\]
+Divide by $t$ and choose $t=\sqrt{2\log n}/\sigma$ when $\sigma>0$.  Square root and logarithm are effective because $n\ge2$.  If $\sigma=0$, every variable is degenerate at its mean and the inequality is immediate.  The finite Jensen inequality follows from the convexity of $e^x$ or the weighted AM--GM inequality with rational approximation; it needs no independence.
+\end{proof}

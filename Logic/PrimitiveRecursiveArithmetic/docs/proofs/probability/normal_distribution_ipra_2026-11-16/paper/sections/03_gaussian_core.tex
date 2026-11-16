@@ -1,0 +1,143 @@
+\section{The Gaussian density, CDF, and elementary geometry}\label{sec:gaussian-core}
+
+\subsection{Definitions and standardization}
+
+Define
+\begin{equation}\label{eq:phi-def}
+ \phi(x)=\frac{1}{\sqrt{2\pi}}e^{-x^2/2},
+ \qquad
+ \Phi(x)=\int_{-\infty}^{x}\phi(t)\dd t.
+\end{equation}
+For a location name $\mu$ and a scale name $\sigma$ with $\sigma\ge2^{-s_0}>0$, define
+\begin{equation}\label{eq:normal-density}
+ f_{\mu,\sigma}(x)=\frac1\sigma\phi\!\left(\frac{x-\mu}{\sigma}\right),
+ \qquad
+ F_{\mu,\sigma}(x)=\Phi\!\left(\frac{x-\mu}{\sigma}\right).
+\end{equation}
+The notation $X\sim N(\mu,\sigma^2)$ means that finite interval probabilities are evaluated by $F_{\mu,\sigma}(b)-F_{\mu,\sigma}(a)$, with the represented-integral contract of \cref{sec:representation}.
+
+\begin{theorem}[Normalization and affine standardization]\label{thm:normalization-standardization}
+The function $f_{\mu,\sigma}$ is positive and has total integral one.  If $X\sim N(\mu,\sigma^2)$ and $a\ne0$, $b$ are effectively represented, then
+\[
+ aX+b\sim N(a\mu+b,a^2\sigma^2).
+\]
+In particular $Z=(X-\mu)/\sigma\sim N(0,1)$.
+\end{theorem}
+
+\begin{proof}
+Positivity follows from positivity of the exponential, the positive square-root enclosure, and the scale apartness witness.  On a finite interval substitute $z=(x-\mu)/\sigma$ in the tagged Riemann sum; the factor $\sigma$ from the mesh cancels the prefactor $1/\sigma$.  Tail cutoffs transform by the same affine formula.  Equation \eqref{eq:gaussian-normalization} then gives total mass one.
+
+For $Y=aX+b$, interval probabilities satisfy, when $a>0$,
+\[
+ \Pp(Y\le y)=\Pp\!\left(X\le\frac{y-b}{a}\right)
+ =\Phi\!\left(\frac{y-(a\mu+b)}{a\sigma}\right).
+\]
+When $a<0$ the inequality reverses; symmetry $\Phi(-u)=1-\Phi(u)$, proved below, converts the result to the same formula with scale $|a|\sigma$.  Every comparison is a bounded rational comparison after the finite CDF enclosure is expanded.
+\end{proof}
+
+\begin{corollary}[CDF and error-function formulas]\label{cor:cdf-erf}
+For all represented $x$,
+\begin{align}
+ \Phi(x)&=\frac12+\int_0^x\phi(t)\dd t
+      =\frac12\left(1+\erf\!\left(\frac{x}{\sqrt2}\right)\right),\label{eq:cdf-erf}\\
+ F_{\mu,\sigma}(x)&=\frac12\left(1+\erf\!\left(\frac{x-\mu}{\sigma\sqrt2}\right)\right),
+\end{align}
+where
+\[
+ \erf(u)=\frac2{\sqrt\pi}\int_0^u e^{-t^2}\dd t.
+\]
+\end{corollary}
+
+\begin{proof}
+The density is even, so its mass on each half-line is $1/2$.  In the integral from $0$ to $x$, substitute $t=\sqrt2u$ and use $\sqrt2/\sqrt{2\pi}=1/\sqrt\pi$.  This is an equality of finite quadrature names with transformed moduli.
+\end{proof}
+
+\subsection{Symmetry, location, and spread}
+
+\begin{theorem}[Symmetry and the three centers]\label{thm:centers}
+The standard density is even and the standard CDF satisfies
+\begin{equation}\label{eq:cdf-symmetry}
+ \Phi(-x)=1-\Phi(x).
+\end{equation}
+For $N(\mu,\sigma^2)$ the mean, median, and unique mode are all $\mu$.  The variance is $\sigma^2$.
+\end{theorem}
+
+\begin{proof}
+Evenness is the polynomial identity $(-x)^2=x^2$.  Split the normalized integral at zero and substitute $t\mapsto-t$ on a finite symmetric mesh to obtain \eqref{eq:cdf-symmetry}.  Hence $F_{\mu,\sigma}(\mu)=1/2$, and strict positivity of the density makes the CDF strictly increasing, so the median is unique.
+
+For the standard mean, oddness of $x\phi(x)$ gives cancellation on $[-T,T]$, while \eqref{eq:poly-gaussian-tail} makes the two tails tend effectively to zero.  Thus $\E Z=0$.  Since $\phi'(x)=-x\phi(x)$,
+\[
+ \E Z^2=\int_{-\infty}^{\infty}x^2\phi(x)\dd x
+ =-\int x\phi'(x)\dd x
+ =\int\phi(x)\dd x=1,
+\]
+where the finite integration-by-parts boundary $x\phi(x)|_{-T}^T$ is bounded effectively by \eqref{eq:poly-gaussian-tail}.  Affine standardization gives $\E X=\mu$ and $\Var X=\sigma^2$.
+
+Finally $f'_{\mu,\sigma}(x)=-(x-\mu)f_{\mu,\sigma}(x)/\sigma^2$.  The derivative is positive to the left of $\mu$, zero at $\mu$, and negative to the right.  Rational separation from $\mu$ supplies the strict sign; at an unresolved equality the claim is the non-strict bounded inequality.  Thus the mode is unique.
+\end{proof}
+
+\begin{corollary}[Mean absolute deviation, median absolute deviation, skewness and kurtosis]\label{cor:shape-statistics}
+For $X\sim N(\mu,\sigma^2)$,
+\begin{align*}
+ \E|X-\mu|&=\sigma\sqrt{\frac2\pi},\\
+ \operatorname{MAD}(X)&=\sigma\Phi^{-1}(3/4),\\
+ \operatorname{skew}(X)&=0,\\
+ \operatorname{kurt}(X)&=3,
+ \qquad \operatorname{excess}(X)=0.
+\end{align*}
+\end{corollary}
+
+\begin{proof}
+For the first identity,
+\[
+ \E|Z|=2\int_0^\infty x\phi(x)\dd x
+ =2\phi(0)=\sqrt{2/\pi},
+\]
+because $\phi'=-x\phi$.  The median absolute deviation $m$ solves
+$\Pp(|X-\mu|\le m)=2\Phi(m/\sigma)-1=1/2$, hence $m/\sigma=\Phi^{-1}(3/4)$.  The third centered moment vanishes by oddness.  The fourth is $3$ by the moment recurrence in \cref{thm:moment-recurrence}, so the standardized kurtosis is $3$.
+\end{proof}
+
+\subsection{Differential equations, shape, and log-concavity}
+
+\begin{proposition}[Density and CDF differential equations]\label{prop:gaussian-odes}
+The standard density and CDF satisfy
+\begin{align}
+ \phi'(x)+x\phi(x)&=0, & \phi(0)&=(2\pi)^{-1/2},\label{eq:phi-ode}\\
+ \Phi''(x)+x\Phi'(x)&=0, & \Phi(0)&=1/2,
+ &\Phi'(0)&=(2\pi)^{-1/2}.
+\end{align}
+On every bounded interval these initial-value contracts uniquely determine their represented solutions.
+\end{proposition}
+
+\begin{proof}
+Differentiate the finite exponential approximation and pass its explicit remainder through the product and chain rules.  Since $\Phi'=\phi$ by the effective fundamental theorem of calculus, the second equation follows.  If $u$ and $v$ solve \eqref{eq:phi-ode} with the same initial value, then
+\[
+ \frac{\dd}{\dd x}\left(e^{x^2/2}(u-v)\right)=0.
+\]
+The finite fundamental theorem on the segment from $0$ to $x$ makes the product constant, hence zero.  The proof is quantitative: an approximate ODE with residual $\varepsilon$ yields a sup-norm error bounded by the segment length times an explicit exponential factor.
+\end{proof}
+
+\begin{proposition}[Peak, inflection points, and log-concavity]\label{prop:shape}
+For the standard normal,
+\[
+ \phi'(x)=-x\phi(x),\qquad \phi''(x)=(x^2-1)\phi(x).
+\]
+Thus the peak is $\phi(0)=1/\sqrt{2\pi}$, the inflection points are exactly $x=\pm1$, and $\phi$ is strictly log-concave.  For $N(\mu,\sigma^2)$ the peak is $1/(\sigma\sqrt{2\pi})$ and the inflection points are $\mu\pm\sigma$.
+\end{proposition}
+
+\begin{proof}
+The derivative identities are finite applications of the product and chain rules.  Positivity of $\phi$ reduces the sign of $\phi''$ to the rationally decidable sign of $x^2-1$ away from equality.  Moreover
+\[
+ \frac{\dd^2}{\dd x^2}\log f_{\mu,\sigma}(x)=-\frac1{\sigma^2}<0.
+\]
+The logarithm is permitted because the density has a positive lower bound on every bounded parameter box.  The affine formulas follow by the chain rule.
+\end{proof}
+
+\begin{corollary}[Strict monotonicity and support]\label{cor:support}
+The CDF is strictly increasing, with effective limits $\Phi(x)\to0$ as $x\to-\infty$ and $\Phi(x)\to1$ as $x\to+\infty$.  Every nonempty rational interval has positive Gaussian probability.  Hence the topological support is all of $\R$ in the represented sense: every rational neighborhood receives a computably positive lower bound.
+\end{corollary}
+
+\begin{proof}
+On $[a,b]$ the density has a computable positive minimum, so
+$\Phi(b)-\Phi(a)\ge(b-a)\min_{[a,b]}\phi>0$.  The tail limits follow from \eqref{eq:poly-gaussian-tail}, and later from the sharper Mills bounds.
+\end{proof}
