@@ -22,17 +22,20 @@ derivation is written. The structures are not assumed extensional.
 | `PA194SourceAddCoherence` | `add_zero_left`: a sum of an empty representative and `b` is `b`; `sem_a2`: coherence of addition in a structure, by `letter_induction`; `a2_supply`: `adjunctiveFullSepTheory.internalize V ⊢ tHyp sA2` from `TenFacts`. |
 | `PA194SourceMulCoherence` | `mul_zero_left`: a product with an empty first factor is that factor; `sem_m2`: coherence of multiplication in a structure, from coherence of addition; `m2_supply`: `⊢ tHyp sM2` from `TenFacts` and `⊢ tHyp sA2`. |
 | `PA194SourceAddComm` | `sem_r0` (a sum of `b` and an empty representative is isomorphic to `b`), `sem_rs` (the sum with a successor as second summand, up to isomorphism), `sem_ac` (commutativity), each by `letter_induction`; `ac_supply`: `⊢ tHyp sAC` from `TenFacts`. |
+| `PA194SourceCalibration` | `sourceFacts_of_ten`, `sourceFacts_full`: `SourceFacts` from `TenFacts`; `calibration_of_ten`: internal proofs of `sA2`, `sM2`, `sA3`, `sM3` in `adjunctiveFullSepTheory` from `TenFacts`. These four are the conjuncts of `ArithmeticCalibration` of `pa194-guarded-compiler`. |
 
 ## Status
 
 Proved here for the actual source theory, in every model of `IΣ₁`: `sAP` and `sMP`
-outright; `sA2` and `sAC` from `TenFacts`; `sM2` from `TenFacts` and `sA2`. `TenFacts` is
+outright; `sA2`, `sM2`, `sAC`, and with them `sA3` and `sM3`, from `TenFacts`. `TenFacts` is
 internal provability of the ten members of `SourceFacts` other than `sA2` and `sM2`.
 
-Not done here: `TenFacts` is a hypothesis. Its ten members have internal proofs in
-`pa194-model-axioms`, for models of the candidate PRA presentation with an `IΣ₁` reduct;
-this directory does not import them, and the combination with
-`PA194FullSourceRefutationReduction.refutation_of_source_facts` is not written here.
+Not done in the committed modules: `TenFacts` is a hypothesis. Its ten members have internal
+proofs in `pa194-model-axioms`, for models of the candidate PRA presentation with an `IΣ₁`
+reduct. The module that instantiates `TenFacts` with them and states
+`ArithmeticCalibration` is written but has not been compiled, because its imports are not
+all compiled locally; it is not in the repository yet. Its wrapper over all such models was
+checked against a stand-in for `TenFacts` only.
 
 ## Checking
 
@@ -41,5 +44,12 @@ compiled objects of their imports (`PA194SemanticSupply`, `PA194SuccessorLaws` a
 closure). All axiom reports are `[propext, Classical.choice, Quot.sound]`: five in
 `PA194SourceModelBase`, four in `PA194SourcePredecessor`, two in `PA194SourceModelIso`, four
 in `PA194SourceInduction`, two in `PA194SourceKnown`, three in `PA194SourceAddCoherence`,
-three in `PA194SourceMulCoherence`, four in `PA194SourceAddComm`.
-There is no check script in this directory yet.
+three in `PA194SourceMulCoherence`, four in `PA194SourceAddComm`, three in
+`PA194SourceCalibration`.
+
+```sh
+bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-source-semantics/check.sh
+```
+
+runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with each module as the top
+and these report counts. The script has not been run.

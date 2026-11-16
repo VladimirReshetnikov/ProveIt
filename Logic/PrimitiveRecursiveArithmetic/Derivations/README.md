@@ -39,6 +39,8 @@ The library is built bottom-up. Reusable layers come first:
 | [`Core/Quotient`](Lean/IPRADerivations/Core/Quotient.lean) | Terms modulo provable equality under a context `Γ` form a cancellative commutative semiring `Q Γ` |
 | [`Core/Integers`](Lean/IPRADerivations/Core/Integers.lean) | Integers as differences: integer terms `ZT` with their iPRA equation `ZT.eq`, and the ring of differences `Groth (Q Γ)`, in which integer identities are proved by `ring` and `linear_combination` |
 | [`Core/Tactic`](Lean/IPRADerivations/Core/Tactic.lean) | Universal closures `allN` and `univ`, and the tactic `ipra_ring` for polynomial identities |
+| [`Core/Definitions`](Lean/IPRADerivations/Core/Definitions.lean) | `toPR`, the symbol computing an open term; definitions by primitive recursion from a base and a step term, with their equations; finite sums and products, powers and factorials |
+| [`Core/Sums`](Lean/IPRADerivations/Core/Sums.lean) | Theorems with the summation bound as an iPRA variable, by induction: Gauss's sum, the sum of odd numbers, telescoping for every unary symbol `f`, and summation by parts (Abel, used by `von_mangoldt_totient_ipra_2026-11-15`) for all unary symbols `a`, `b` |
 | [`Core/LinearAlgebra`](Lean/IPRADerivations/Core/LinearAlgebra.lean) | Integer vectors and matrices: finite sums, dot and cross products, matrix products, traces, determinants by Laplace expansion and adjugates by cofactors, each evaluated to the corresponding Mathlib operation; matrix equations as finite conjunctions |
 
 The theorem modules are grouped by the areas of `docs/proofs/`:
@@ -46,10 +48,21 @@ The theorem modules are grouped by the areas of `docs/proofs/`:
 | Module | Packet | Theorems |
 |---|---|---|
 | [`Algebra/CayleyHamilton`](Lean/IPRADerivations/Algebra/CayleyHamilton.lean) | [`cayley_hamilton_ipra`](../docs/proofs/algebra/cayley_hamilton_ipra/) | Cayley–Hamilton for 2×2 and 3×3 integer matrices; `M · adj M = (det M) I` and `det (M N) = det M · det N` as schemas, one theorem for every size; `L(q r) = L(q) L(r)` for quaternions and Euler's four-square identity |
+| [`Algebra/PolynomialFormulas`](Lean/IPRADerivations/Algebra/PolynomialFormulas.lean) | [`ipra_polynomial_formulas_abel_ruffini`](../docs/proofs/algebra/ipra_polynomial_formulas_abel_ruffini/), [`three_impossibilities_ipra`](../docs/proofs/algebra/three_impossibilities_ipra/) | The quadratic, Cardano and Ferrari factorisations as implications from the defining relations of the radicals and of `ω`; the triple-angle identity on the unit circle |
+| [`DiophantineNumberTheory/Pell`](Lean/IPRADerivations/DiophantineNumberTheory/Pell.lean) | [`pell_ipra_2026-11-15`](../docs/proofs/diophantine-number-theory/pell_ipra_2026-11-15/), [`diophantine_ipra_2026-11-15`](../docs/proofs/diophantine-number-theory/diophantine_ipra_2026-11-15/) | Brahmagupta's identity; composition of solutions of `x² = D y² + 1` |
+| [`DiophantineNumberTheory/Identities`](Lean/IPRADerivations/DiophantineNumberTheory/Identities.lean) | [`flt_ipra`](../docs/proofs/diophantine-number-theory/flt_ipra/), [`diophantine_geometry_ipra`](../docs/proofs/diophantine-number-theory/diophantine_geometry_ipra/), [`faltings_ipra`](../docs/proofs/diophantine-number-theory/faltings_ipra/) | `(t + s√5)⁵ = tG + 5sF√5` and its norm `(tG)² − 5(5sF)² = (t² − 5s²)⁵`; the Pythagorean parametrisation; the Pythagorean triangle of `x⁴ − y⁴ = z²` |
+| [`Foundations/QuantitativeIdentities`](Lean/IPRADerivations/Foundations/QuantitativeIdentities.lean) | finite-use, contract-compiler and embedding frameworks; `goldbach_euler_ipra`, `zeta_zeros_ipra_2026-11-15`, `gamma_ipra` | The product-contract and cubic-difference identities; `xᵏ − yᵏ = (x − y) ∑ xⁱ y^{k−1−i}` and `xᵏ = (x − 1) ∑ xⁱ + 1` as schemas in `k`; `3 + 4c + (2c² − 1) = 2(1 + c)²`; the rational parametrisation of the circle |
 | [`Geometry/EulerRodrigues`](Lean/IPRADerivations/Geometry/EulerRodrigues.lean) | [`euler_rodrigues_ipra`](../docs/proofs/geometry/euler_rodrigues_ipra/) | For the Euler–Rodrigues matrix `R` of `(a, v)`: `Rᵀ R = (a² + v·v)² I`, `det R = (a² + v·v)³`, `R v = (a² + v·v) v`; for 3×3 matrices, `adj (I − B)`, `det (I − B)` and `adj (adj B) = (det B) B` |
+| [`Geometry/Morley`](Lean/IPRADerivations/Geometry/Morley.lean) | [`morley_ipra_constructive`](../docs/proofs/geometry/morley_ipra_constructive/) | The trisector identity `3s − 4s³ = s (ρc + s)(ρc − s)` from `s² + c² = 1` and `ρ² = 3` |
 | [`Geometry/Projective`](Lean/IPRADerivations/Geometry/Projective.lean) | [`desargues_pascal_ipra`](../docs/proofs/geometry/desargues_pascal_ipra/), [`eight_geometry_theorems_ipra`](../docs/proofs/geometry/eight_geometry_theorems_ipra/) | The double cross identity, the universal Desargues identity `[XYZ] = [abc][ABC][a×A, b×B, c×C]`, the Plücker relation and the Pappus identity `X − Y + Z = 0` |
 | [`Geometry/SphericalTrigonometry`](Lean/IPRADerivations/Geometry/SphericalTrigonometry.lean) | [`spherical_trigonometry_ipra_2026-11-15`](../docs/proofs/geometry/spherical_trigonometry_ipra_2026-11-15/) | Binet–Cauchy, the Gram identity for `[u v w]²`, the Lagrange identity, and the division-free spherical cosine law under `u·u = 1` |
 | [`Geometry/TriangleFormulas`](Lean/IPRADerivations/Geometry/TriangleFormulas.lean) | [`triangle_formulas_ipra`](../docs/proofs/geometry/triangle_formulas_ipra/) | two-square identity, Heron factorisation, Heron's formula and the law of cosines in integer coordinates |
+
+Some theorems are *schemas*. One Lean theorem then gives an iPRA theorem for
+each matrix size `k`, exponent `k` or primitive recursive symbol `f`. Inside each
+such iPRA theorem every number variable is a variable of the formula. In the
+`Core/Sums` theorems the bound `n` is such a variable, and the derivation uses
+the induction axiom of `PRAAx`.
 
 ## How the ring tool yields iPRA derivations
 

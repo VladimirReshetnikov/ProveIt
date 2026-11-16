@@ -4,8 +4,15 @@ import IPRADerivations.Core.Quotient
 import IPRADerivations.Core.Integers
 import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.LinearAlgebra
+import IPRADerivations.Core.Definitions
+import IPRADerivations.Core.Sums
 import IPRADerivations.Algebra.CayleyHamilton
+import IPRADerivations.Algebra.PolynomialFormulas
+import IPRADerivations.DiophantineNumberTheory.Identities
+import IPRADerivations.DiophantineNumberTheory.Pell
+import IPRADerivations.Foundations.QuantitativeIdentities
 import IPRADerivations.Geometry.EulerRodrigues
+import IPRADerivations.Geometry.Morley
 import IPRADerivations.Geometry.Projective
 import IPRADerivations.Geometry.SphericalTrigonometry
 import IPRADerivations.Geometry.TriangleFormulas
