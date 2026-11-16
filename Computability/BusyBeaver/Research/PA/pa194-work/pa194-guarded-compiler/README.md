@@ -63,6 +63,7 @@ formula of arity zero and `trBody` of a formula under one binder, with no size c
 | `PA194Leibniz` | `TermFacts T`: three facts about terms (below). `leibniz`: for every internal formula `p` of arity one, term `t` and free variable `c`, a guarded derivation of `{¬tr(&c = t), ¬tr(p[t]), tr(p[&c])}`. Opening a quantifier of `p` shifts the free variables of `t`, so the induction is over the coded triples `(p, t, c)` with the formula complexity as measure (`measured_bounded_sigma1_order_induction`); the quantifier cases use `free_subst_qVec` (opening the quantified variable of `q[#0, t]` gives `(free1 q)[shift t]`). `witness_of_termFacts`: the `witness` field of `Interpretation`, by eliminating `c` against `tr(∃x. x = t)`. `interpretation_of_termFacts` assembles `Interpretation` from `TermFacts`, the axioms and the inhabitation of the domain. |
 | `PA194TermNames` | Three formulas of the arithmetic language in which the naming variable is quantified: `nameAll s s'` (every `x` with `x = s` has `x = s'`), `uniq s` (two names of `s` are equal), `exName s` (some `x` has `x = s`). `NameFacts T`: seventeen guarded facts, each about one function layer with arbitrary internal terms as arguments (below). `uniq_all`, `exName_all`: by induction over the term. `nameSubst`: names transfer along a substitution `a[u] ↦ a[w]` once they transfer from `u` to `w`, by induction over `a`. `termFacts_of_nameFacts`: `TermFacts T`. Because the naming variable is bound inside the formulas, no step of these inductions opens a quantifier: each is a cut. |
 | `PA194ValueBody` | `valBody s`: the source formula of arity one saying that its bound variable is a value of the term `s` of arity zero. `translate_lift`: under a packet whose free environment is the identity, the translation of such a term is its value formula at the result term of the packet. `tr_peq`: `tr(s = s')` is `∃v∃w (valBody s at v ∧ valBody s' at w ∧ orderIso(v, w))`. `valBody_fvar`, `valBody_zero`, `valBody_succ`, `valBody_add`, `valBody_mul`, `valBody_shift`. These identities between codes prepare the proofs of `NameFacts`, in which the value formulas of the arguments are parameters; no field of `NameFacts` is proved. |
+| `PA194Schematic` | Independent of the other modules; it imports only Foundation. `boxL ar`: a language of `m` predicate letters of arities `ar`, without function symbols. `inst σ φ`: the internal formula of an arbitrary language `L` obtained from a standard formula `φ` of `boxL ar` by putting the internal formula `σ i` (of arity `ar i`, possibly nonstandard) for the `i`-th letter. `inst_neg`, `inst_shift`, `inst_substs`, `inst_free`: it commutes with negation, with substitution of terms, and with shift and opening when the letters are shifted too. `instDer`: a standard derivation in pure logic of a sequent of `boxL ar` gives an internal derivation of its instance in every internal theory, for every `σ`. `inst_provable_of_valid`: by the completeness theorem, every instance of a sentence of `boxL ar` that holds in all structures is internally provable. This is the tool intended for the fields of `NameFacts` in which value formulas of nonstandard terms are parameters: the first-order argument is made once, semantically, with letters for the value formulas and for the fixed formulas of the ordinal domain. It is not yet applied; no field of `NameFacts` is proved with it. |
 
 All statements are for an arbitrary model `V` of `𝗜𝚺₁`, arbitrary `Δ₁` theories `U` and `T`
 of the two languages, and internally valid codes that may be nonstandard.
@@ -70,11 +71,16 @@ of the two languages, and internally valid codes that may be nonstandard.
 ## What is open
 
 `OrdinaryCompiler` follows from `Interpretation ordinaryPAeq adjunctiveFullSepTheory` in every
-model. None of its three fields is proved for these theories.
+model. Of its three fields, `inhabited` is proved for these theories in `pa194-model-logic`
+(see the last item); `witness` and `axioms` are not.
 
 - `witness`, the existential introduction at a function term, is reduced to `TermFacts T`
-  (`witness_of_termFacts`) and that to `NameFacts T` (`termFacts_of_nameFacts`). The
-  seventeen fields of `NameFacts` are not proved. Each is a guarded derivation of the
+  (`witness_of_termFacts`) and that to `NameFacts T` (`termFacts_of_nameFacts`). Of the
+  seventeen fields of `NameFacts`, two are proved for the actual source theory outside this
+  directory: `eVar` ([`NAME-VARIABLE.md`](../pa194-model-axioms/NAME-VARIABLE.md)) and
+  `eZero` ([`NAME-ZERO.md`](../pa194-model-logic/NAME-ZERO.md)); `uVar` is reduced there to
+  its open matrix ([`NAME-UNIQUE.md`](../pa194-model-axioms/NAME-UNIQUE.md)). The other
+  fields are not proved. Each is a guarded derivation of the
   translation of a formula that `ordinaryPAeq` proves, with `s, s', …` arbitrary internal
   terms of arity zero:
   - `nRefl`: `nameAll s s`;
@@ -89,16 +95,16 @@ model. None of its three fields is proved for these theories.
   into (the value formula of `s`), so the proofs are first-order arguments in the source
   theory with those subformulas as parameters, from fixed facts about the ordinal domain:
   order isomorphism is an equivalence there, zero exists and is unique up to isomorphism,
-  and successor, addition and multiplication are total and respect isomorphism. None of
-  these seventeen is written.
+  and successor, addition and multiplication are total and respect isomorphism.
+  `PA194Schematic` transfers such an argument, made once for predicate letters, to
+  arbitrary internal value formulas; it has not been applied to any field yet.
 - `axioms`: a guarded proof of the translation of each fixed axiom of `ordinaryPAeq` and of
   each closed induction instance. `pa194-model-logic` works on these under `rootParameters`.
   For a sentence that translation should equal `tr`, by `formula_ext` restricted to formulas
   without free variables; that lemma is not written.
-- `inhabited` for the actual source theory. The standard development has a derivation of it
-  from the empty-set formula (`emptyFoundationDerivation` of
-  [`pa194-foundation-ordinal`](../pa194-foundation-ordinal/README.md)); it is not yet
-  transported to models here.
+- `inhabited` for the actual source theory is proved outside this directory
+  (`PA194SourceInhabited.inhabited_provable` in `pa194-model-logic`), from the standard
+  derivation of the empty-set formula.
 
 Nothing here yields a consistency implication.
 
@@ -114,7 +120,8 @@ module, passing its arguments on (for example `--out DIR` to reuse compiled obje
 objects of the standalone modules they import (the import closure of
 `PA194ConditionalRefutation` and `PA194OrderIsoRew`, compiled from the repository sources at
 `34c4c35edc`). The forty axiom reports are `[propext, Classical.choice, Quot.sound]`.
-The script itself has not been run.
+`PA194Schematic` was compiled the same day against the Foundation objects alone; its six
+reports are the same three axioms. The script itself has not been run.
 
 Two incremental replays against the repository sources were made for an earlier state of this
 directory, before `PA194GuardedCalculus` and `PA194TrCompile` existed and while the compiler
@@ -133,7 +140,7 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/chec
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-translate-ext.sh "$PWD" NEW_EMPTY_OUTPUT
 ```
 
-`check-incremental.sh` now lists the current nine modules with their report counts, because
+`check-incremental.sh` now lists the current ten modules with their report counts, because
 `PA194GuardedEndpoint` no longer exists. In that form it has not been run. It writes
 `PA194TranslateExt` into its output directory, so `check-translate-ext.sh` is only needed to
 replay that module alone.
