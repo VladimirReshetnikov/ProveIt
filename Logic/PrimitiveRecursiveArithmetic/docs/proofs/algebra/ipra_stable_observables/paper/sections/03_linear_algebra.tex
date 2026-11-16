@@ -1,0 +1,108 @@
+\section{Finite rational linear algebra}
+\label{sec:linear}
+
+\subsection{Norm notation without irrational operations}
+
+For a rational matrix put
+\[
+ \F(A)=\sum_{i,j<n} A_{ij}^2,
+ \qquad \E(A)=\sum_{\substack{i,j<n\\i\ne j}}A_{ij}^2.
+\]
+Write $\bound(A,a)$ for $a\ge0$ and $\F(A)\le a^2$. The notation $\norm A\le a$ means precisely $\bound(A,a)$. No primitive function for an irrational norm is required. A displayed comparison involving norms can always be read as the rational squared assertion stated alongside it. Likewise $\|v\|^2=\sum_i v_i^2$ is rational.
+
+The relevant finite inequalities have elementary sum-of-squares proofs. For rational lists $u,v$ of equal length,
+\[
+ \left(\sum_i u_i^2\right)\left(\sum_i v_i^2\right)
+ -\left(\sum_i u_iv_i\right)^2
+ =\sum_{i<j}(u_iv_j-u_jv_i)^2\ge0.
+\]
+Expanding and collecting terms proves the identity by finite distributivity. Prefix induction verifies the expansion uniformly in length. Taking signs or absolute values uses only decidable rational comparisons. This proves finite Cauchy--Schwarz, the triangle inequality for Frobenius bounds, and the submultiplicative estimate
+\[
+ \F(AB)\le\F(A)\F(B).
+\]
+For the last estimate apply Cauchy--Schwarz to each matrix entry and sum over the row and column indices.
+
+\begin{lemma}[Quadratic-form bound]
+\label{lem:qform}
+If $\bound(R,a)$, then for every rational vector $v$,
+\[
+ |v^{\mathsf T}Rv|\le a\sum_i v_i^2.
+\]
+\end{lemma}
+\begin{proof}
+Apply the finite inequality to the two arrays $R_{ij}$ and $v_iv_j$. Their second squared sum is
+\[
+ \sum_{i,j}v_i^2v_j^2=\left(\sum_i v_i^2\right)^2.
+\]
+The squared asserted inequality follows. Both sides of the unsquared comparison are nonnegative rationals; if the comparison failed, their squares would have the same strict ordering, a contradiction.
+\end{proof}
+
+A rational orthogonal certificate will include both identities
+$Q^{\mathsf T}Q=I$ and $QQ^{\mathsf T}=I$. The algorithm constructs $Q$ as a product of explicit plane rotations, so both identities are immediate invariants. Including both in a checker also avoids requiring a separate invertibility argument there. Finite expansion gives
+\[
+ \F(Q^{\mathsf T}AR)=\F(A)
+\]
+whenever $Q,R$ are square orthogonal matrices of the appropriate dimensions. Indeed sum first over the outer index and use $\sum_i Q_{ki}Q_{\ell i}=\delta_{k\ell}$, and then do the same on the right.
+
+\subsection{Constructive intersection by rational elimination}
+
+\begin{lemma}[Finite intersection]
+\label{lem:intersection}
+Let $Q,R$ be rational orthogonal $n\times n$ matrices and $0\le k<n$. The span of the first $k+1$ columns of $Q$ and the span of the last $n-k$ columns of $R$ contain a common nonzero rational vector. A fixed primitive recursive procedure constructs it.
+\end{lemma}
+\begin{proof}
+Form the $n\times(n+1)$ rational matrix
+\[
+ W=[\,Q_{\{0,\ldots,k\}}\mid -R_{\{k,\ldots,n-1\}}\,].
+\]
+Perform Gaussian elimination, scanning the remaining rows and columns in a fixed order for a nonzero rational pivot. This is a bounded scan; division occurs only after a successful nonzero test. Each pivot eliminates one column below its row. At most $n$ pivot columns can occur, so one of the $n+1$ columns is free. Set its free coordinate to one, all other free coordinates to zero, and back substitute to obtain a nonzero rational nullvector $(u,v)$.
+
+The nullvector equation says $Q_{\le k}u=R_{\ge k}v=:x$. If $x=0$, multiplying by the transpose of the respective column family gives $u=0$ and $v=0$, because its columns are orthonormal. This contradicts the selected free coordinate. Thus $x\ne0$.
+
+The procedure performs at most $n$ pivot stages, each containing only loops bounded by the array dimensions, followed by at most $n$ back-substitution stages. Its row-operation identity, pivot-position constraints and nullvector equations are finite predicates. Their Booleanized versions are quantifier-free invariants. No decision of the rank of a real matrix is made.
+\end{proof}
+
+\subsection{Positive rational matrices have finite certificates}
+
+\begin{definition}[Positive certificate]
+For a rational symmetric $A$, a positive certificate is rational data $(L,a)$ with
+\[
+ A=L\diag(a)L^{\mathsf T},\qquad a_i\ge0\ (i<n).
+\]
+The factor $L$ need not be orthogonal or triangular in the certificate format. It may include row permutations from elimination. The displayed identities are checked exactly.
+\end{definition}
+
+Such a certificate implies $v^{\mathsf T}Av\ge0$ by a finite sum of nonnegative squares. Conversely, finite rational elimination can either construct a certificate or construct a counterexample.
+
+\begin{theorem}[Finite positivity alternative]
+\label{thm:ldl}
+A primitive recursive algorithm, uniform in $n$, returns for every rational symmetric $A$ either a positive certificate or a rational vector $v$ with $v^{\mathsf T}Av<0$. Hence rational positive semidefiniteness has a complete finite certificate interface.
+\end{theorem}
+\begin{proof}
+For dimension zero return the empty certificate. If some diagonal entry is negative, the corresponding coordinate vector is a counterexample. If every diagonal entry is zero, then either every entry is zero, yielding the zero diagonal certificate, or some off-diagonal $b=A_{ij}$ is nonzero. In the latter case
+\[
+ v=e_i-\operatorname{sgn}(b)e_j
+ \quad\text{satisfies}\quad v^{\mathsf T}Av=-2|b|<0.
+\]
+All cases are decided by finite scans.
+
+In the remaining case choose a positive diagonal entry, move it to the first position by a permutation, and write
+\[
+ A=\begin{pmatrix}a&v^{\mathsf T}\\v&B\end{pmatrix},\qquad a>0.
+\]
+Compute the rational Schur complement $C=B-vv^{\mathsf T}/a$. Repeat the same process on $C$. If the recursive result is a negative vector $y$, lift it to
+\[
+ x=\begin{pmatrix}-v^{\mathsf T}y/a\\y\end{pmatrix};
+ \qquad x^{\mathsf T}Ax=y^{\mathsf T}Cy<0.
+\]
+If $C=K\diag(c)K^{\mathsf T}$ with $c\ge0$, use
+\[
+ L=\begin{pmatrix}1&0\\v/a&K\end{pmatrix},\qquad
+ A=L\diag(a,c)L^{\mathsf T}.
+\]
+Undo the permutation. This proves correctness of the elimination step.
+
+There are at most $n$ dimension-reduction stages. To implement it as ordinary primitive recursion, retain a stack of the pivots, columns and permutations; then reconstruct the certificate or negative vector in at most $n$ reverse stages. The invariant records the exact block congruence with the current Schur matrix and the positivity of the processed pivots. These are bounded rational assertions. The final alternative, including the produced negative vector in the failure branch, is likewise finite. Thus the argument can be expressed by quantifier-free induction over the two bounded passes. This avoids an induction hypothesis quantifying over all matrices of the current size.
+\end{proof}
+
+This theorem concerns exact rational inputs. It does not decide positivity of an arbitrary represented real matrix. Section~\ref{sec:psdnames} gives the separate correction needed for positive real names with slightly indefinite rational samples.

@@ -37,7 +37,7 @@ also records the intake of those packages.
 
 ## Proof packets
 
-[`docs/proofs/`](docs/proofs/README.md) files 63 research packets, delivered on 14 and
+[`docs/proofs/`](docs/proofs/README.md) files 65 research packets, delivered on 14 and
 15 November 2026. Each gives a human-readable proof of a classical theorem in a finitary,
 quantitative form intended for iPRA. Most add exact-arithmetic reference code and a Lean plan
 or scaffold aimed at `ConciseIPRA`.
@@ -46,13 +46,13 @@ The packets are grouped by area:
 
 | Area | Packets | Examples |
 |---|---:|---|
-| [`algebra/`](docs/proofs/algebra/) | 6 | fundamental theorem of algebra, Puiseux expansions, Abel–Ruffini, Cayley–Hamilton |
+| [`algebra/`](docs/proofs/algebra/) | 7 | fundamental theorem of algebra, Puiseux expansions, Abel–Ruffini, Cayley–Hamilton |
 | [`analysis/`](docs/proofs/analysis/) | 8 | fundamental theorem of calculus, Stirling's formula, the Gamma function, residues |
 | [`analytic-number-theory/`](docs/proofs/analytic-number-theory/) | 10 | prime number theorem, Dirichlet's theorem, the zeta functional equation |
 | [`combinatorics/`](docs/proofs/combinatorics/) | 1 | Bell numbers |
 | [`diophantine-number-theory/`](docs/proofs/diophantine-number-theory/) | 12 | Pell equations, transcendence of e and π, Fermat for exponents divisible by 3, 4, 5 or 7, Siegel and Faltings analyses |
 | [`foundations/`](docs/proofs/foundations/) | 12 | cross-domain frameworks of certificates, moduli and finite contracts |
-| [`geometry/`](docs/proofs/geometry/) | 11 | isoperimetric inequality, Platonic solids, spherical trigonometry |
+| [`geometry/`](docs/proofs/geometry/) | 12 | isoperimetric inequality, Platonic solids, spherical trigonometry |
 | [`probability/`](docs/proofs/probability/) | 1 | central limit theorems |
 | [`topology/`](docs/proofs/topology/) | 2 | Jordan curve theorem, invariance of dimension |
 
@@ -60,15 +60,18 @@ The packets are grouped by area:
 [proofs README](docs/proofs/README.md) repeat what each packet says about itself. Many
 packets say that their Lean files are uncompiled outlines, or that they prove only part of
 what was asked; for example, the Faltings and Siegel packets do not prove the general
-theorems. Four foundations packets state that they construct derivations in `ConciseIPRA`'s
-`Prf PRAAx`, all for framework rules and small examples:
+theorems. Five packets state that they construct derivations in `ConciseIPRA`'s `Prf PRAAx`,
+all for framework rules and small examples:
 - `ipra_coherent_methods_2026-11-15`, for contract composition, specialization, a
   quantifier-free induction interface and identity iteration;
 - `ipra_local_global`, for a variable-length recursion rule and an example;
 - `ipra_presentations_to_witnesses`, for fusion, relational simulation, squaring transport
   and a successor instance;
 - `ipra_resources_and_elimination_2026-11-15`, for a term-to-symbol compiler and the
-  equations of a backward demand pass.
+  equations of a backward demand pass;
+- `algebra/ipra_stable_observables`, for five observation combinators.
+
+The first four are in `foundations/`.
 
 No packet claims such a derivation for one of its main theorems. The proofs README also lists the
 members that were not placed, in

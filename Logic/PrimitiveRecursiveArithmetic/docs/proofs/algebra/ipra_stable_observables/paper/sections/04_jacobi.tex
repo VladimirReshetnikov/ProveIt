@@ -1,0 +1,157 @@
+\section{A rational approximate spectral theorem}
+\label{sec:jacobi}
+
+The classical Jacobi method motivates the construction \cite{jacobinotes}, but none of its convergence or spectral theorems is assumed. We prove a finite, entirely rational variant with a deliberately elementary fuel bound.
+
+\subsection{An exact energy identity}
+
+Fix a symmetric rational matrix $A$ and indices $i<j$. Its pivot block is
+\[
+ \begin{pmatrix}a&b\\b&d\end{pmatrix},\qquad h=a-d.
+\]
+Let $G$ be the identity outside these coordinates, with pivot block
+\[
+ G_{ij}=\begin{pmatrix}c&-s\\s&c\end{pmatrix},
+ \qquad c^2+s^2=1.
+\]
+Set $A'=G^{\mathsf T}AG$. Direct multiplication gives
+\begin{equation}
+ b'=(c^2-s^2)b-csh. \label{eq:pivot}
+\end{equation}
+For each $k$ outside the pivot, the pair $(A_{ki},A_{kj})$ is multiplied by an orthogonal $2\times2$ matrix and preserves its squared sum. Symmetry supplies the matching row pair. All remaining off-diagonal entries are unchanged. Therefore
+\begin{equation}
+ \E(A')=\E(A)-2b^2+2(b')^2. \label{eq:energy}
+\end{equation}
+This identity isolates the entire progress argument in two rational numbers $h,b$.
+
+\subsection{Two rational branches}
+
+\begin{lemma}[Rational pivot improvement]
+\label{lem:pivot}
+For any rational $b\ne0$ and $h$, the following decidable two-branch construction produces rational $c,s$ with $c^2+s^2=1$ and $(b')^2\le b^2/2$. Consequently $\E(A')\le\E(A)-b^2$.
+\end{lemma}
+\begin{proof}
+If $h^2\ge b^2$, then $h\ne0$. Put
+\[
+ t=\frac b{4h},\qquad
+ c=\frac{1-t^2}{1+t^2},\qquad s=\frac{2t}{1+t^2}.
+\]
+The denominator $1+t^2$ is positive, and expansion gives $c^2+s^2=1$. With $u=t^2$ we have $0\le u\le1/16$. Substitution in \eqref{eq:pivot} gives
+\[
+ b'=b\frac{1-11u+2u^2}{2(1+u)^2}.
+\]
+The numerator is nonnegative because $1-11u\ge5/16$. Also
+\[
+ 1-11u+2u^2\le(1+u)^2
+ \quad\Longleftrightarrow\quad u^2\le13u,
+\]
+which holds on this interval. The factor multiplying $b$ lies between zero and $1/2$, so $(b')^2\le b^2/4$.
+
+If $h^2<b^2$, take $c=3/5$ and compare $s=4/5$ with $s=-4/5$. Choose the one giving the smaller rational square of the transformed pivot. The two pivots are
+\[
+ b'_+=\frac{-7b-12h}{25},\qquad
+ b'_- =\frac{-7b+12h}{25}.
+\]
+Their mean square equals
+\[
+ \frac{(b'_+)^2+(b'_-)^2}{2}
+ =\frac{49b^2+144h^2}{625}
+ <\frac{193}{625}b^2<\frac12b^2.
+\]
+The smaller square is at most the mean. This proves the common bound in both branches. Equation~\eqref{eq:energy} gives the claimed decrease.
+\end{proof}
+
+No irrational angle, square root, or real equality test occurs. The high-difference branch guards its division; the low-difference branch has fixed positive denominators. On the unused input $b=0$ the totalized step returns the identity rotation.
+
+\subsection{The finite algorithm and its proof}
+
+\begin{definition}[Diagonalization certificate]
+\label{def:diagonalcertificate}
+For symmetric rational $A$ and rational $\eps>0$, a certificate consists of a rational orthogonal $Q$ and an increasing rational list $d$ such that, with $D=\diag(d)$,
+\[
+ B=Q^{\mathsf T}AQ,\qquad d_i=B_{ii},\qquad
+ \F(B-D)\le\eps^2.
+\]
+In particular the residual has zero diagonal. Both orthogonality identities are part of the finite format.
+\end{definition}
+
+\begin{theorem}[Uniform rational approximate diagonalization]
+\label{thm:jacobi}
+There is a fixed primitive recursive producer of diagonalization certificates. For $n\ge2$ it needs at most
+\begin{equation}
+ T=n(n-1)\left(\left\lceil\frac{\F(A)}{\eps^2}\right\rceil+1\right)
+ \label{eq:fuel}
+\end{equation}
+rotation stages. Dimensions zero and one need no rotations.
+\end{theorem}
+\begin{proof}
+Set $A_0=A,Q_0=I$ and $m=n(n-1)$. At each stage, freeze if $\E(A_t)\le\eps^2$. Otherwise choose the first pair $i<j$ maximizing $A_{t,ij}^2$, apply Lemma~\ref{lem:pivot}, and set
+\[
+ A_{t+1}=G_t^{\mathsf T}A_tG_t,
+ \qquad Q_{t+1}=Q_tG_t.
+\]
+The maximum exists by a finite scan. At an active stage it is nonzero. There are $m/2$ unordered pairs and energy counts each twice; hence
+\[
+ b^2\ge\E(A_t)/m>\eps^2/m.
+\]
+Every active stage reduces energy by at least $\eps^2/m$.
+
+The exact invariant includes
+\[
+ Q_t^{\mathsf T}Q_t=Q_tQ_t^{\mathsf T}=I,\quad
+ A_t=Q_t^{\mathsf T}AQ_t,\quad A_t=A_t^{\mathsf T},\quad
+ \F(A_t)=\F(A).
+\]
+The progress component is the quantifier-free rational disjunction
+\begin{equation}
+ \E(A_t)\le\eps^2
+ \quad\lor\quad
+ m\E(A_t)+t\eps^2\le m\F(A). \label{eq:invariant}
+\end{equation}
+It holds at zero. A frozen stage preserves its first alternative. At an active stage use the decrease estimate to prove the second alternative at $t+1$ if the first does not already hold. This proves the invariant by quantifier-free induction.
+
+Write $K=\lceil\F(A)/\eps^2\rceil+1$, so $K\eps^2>\F(A)$. At $T=mK$ the second alternative in \eqref{eq:invariant}, together with nonnegative energy, would imply $K\eps^2\le\F(A)$, a contradiction. Thus the desired residual inequality holds.
+
+Finally sort the rational diagonal entries, breaking ties by the original index. Apply the corresponding permutation simultaneously to the columns of $Q_T$ and the rows and columns of $A_T$. Exact orthogonality, the transformed-matrix identity, and off-diagonal energy are preserved. This yields the stated certificate. If $n=0$ or $1$, use the identity matrix and the already sorted diagonal.
+
+Every update, scan, comparison, permutation and fuel computation is primitive recursive on its finite code. Booleanize the finite matrix equalities and combine them with \eqref{eq:invariant}. This identifies the actual admissible induction formula, rather than merely asserting that some termination proof exists.
+\end{proof}
+
+One can stop the implementation as soon as its state freezes. This is exactly equivalent to the specified $T$-stage primitive recursion, because all subsequent states are unchanged. The reference program uses this optimization.
+
+\subsection{A grid refinement controlling rational denominators}
+\label{sec:grid}
+
+The preceding proof is simple, but repeated exact ratios can create very large denominators. The following variant keeps each rotation denominator bounded in terms of the original finite input and precision.
+
+Put
+\[
+ M=1+\lceil\F(A)\rceil,
+ \qquad L=\max\left(1,\left\lceil\frac{128Mn}{\eps}\right\rceil\right).
+\]
+Then $\norm{A_t}\le M$, so $|b|\le M$ and $|h|\le2M$. In the high-difference branch replace $t=b/(4h)$ by its truncation $v$ toward zero on the $1/L$ grid. Thus $|v|\le|t|\le1/4$ and $|v-t|<1/L$. Use the same rational circle parametrization at $v$. The low-difference branch is unchanged.
+
+\begin{proposition}[Finite-grid progress]
+\label{prop:grid}
+The grid variant decreases active-stage energy by at least $b^2/2$ and therefore succeeds with twice the fuel in \eqref{eq:fuel}. Each rotation entry has a denominator at most $\max(5,2L^2)$ before reduction.
+\end{proposition}
+\begin{proof}
+For $|u|,|v|\le1$ the exact rational identities
+\[
+ c(u)-c(v)=\frac{2(v^2-u^2)}{(1+u^2)(1+v^2)},\qquad
+ s(u)-s(v)=\frac{2(u-v)(1-uv)}{(1+u^2)(1+v^2)}
+\]
+give $|c(u)-c(v)|,|s(u)-s(v)|\le4|u-v|$. Since $|c|,|s|\le1$, the transformed-pivot expression changes by at most
+\[
+ (16|b|+8|h|)|u-v|\le32M|u-v|.
+\]
+At an active maximal pivot, $|b|>\eps/n$, because $b^2>\eps^2/[n(n-1)]$. The rounding changes the ideal pivot by at most
+\[
+ 32M/L\le\eps/(4n)<|b|/4.
+\]
+Its new absolute value is therefore at most $3|b|/4$. The low branch has squared pivot at most $b^2/2$, which is also at most $9b^2/16$. Equation~\eqref{eq:energy} now gives a decrease of at least $7b^2/8$, and hence of at least $b^2/2$. Use the invariant with $2m$ in place of $m$ and double the fuel.
+
+Writing $v=j/L$, the rotation entries have common denominator $L^2+j^2\le2L^2$. In the low branch the denominator is $5$. This proves the denominator claim.
+\end{proof}
+
+If $H=\max(5,2L^2)$, the product $Q_t$ has some common denominator at most $H^t$; this need not mean that its denominator divides the particular integer $H^t$. Products of the individual rotation denominators provide the claimed bound. For an input common denominator $D_0$, the transformed matrix has one at most $D_0H^{2t}$. Entry magnitudes remain bounded by $1$ in $Q_t$ and $M$ in $A_t$. Thus the entries admit reduced or common-denominator representatives whose numerator and denominator bit lengths have explicit bounds linear in $t\log H$ plus the input sizes. This is a storage bound when fractions are reduced, as in the reference program, or when a common denominator is explicitly maintained; it is not a bound on arbitrarily redundant unreduced intermediate encodings. We make no polynomial-time claim in binary precision: the elementary fuel itself grows like $\eps^{-2}$.

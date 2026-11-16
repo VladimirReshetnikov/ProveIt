@@ -1,0 +1,174 @@
+\section{Principal positive square roots without coherent eigenvectors}
+\label{sec:squareroots}
+
+This application goes beyond extracting a list of eigenvalues. We reconstruct a matrix from noncanonical spectral witnesses and prove that the reconstructed matrices are coherent. A separate argument establishes uniqueness among all positive represented roots.
+
+\subsection{A finite square-root certificate}
+
+Let $A$ be rational positive semidefinite, with a certificate from Theorem~\ref{thm:ldl}, and let $\eta>0$. For $n\ge1$, diagonalize $A$ with error $\eta/2$. Every diagonal observation is nonnegative:
+\[
+ d_i=q_i^{\mathsf T}Aq_i\ge0,
+\]
+where $q_i$ is the corresponding rational column of $Q$. This uses the input positive certificate and exact orthogonality, not the spectral theorem.
+
+Choose an integer $U\ge1+\norm A$, for example
+$U=2+\lceil\F(A)\rceil$. This example is valid because $2+x\ge1+\sqrt{x}$ for every nonnegative rational $x$, as a squared arithmetic comparison. Put
+\begin{equation}
+ H=\left\lceil\frac{2n(2U+1)}{\eta}\right\rceil.
+ \label{eq:sqrtgrid}
+\end{equation}
+Then $H\ge1$ and $0\le d_i\le U\le U^2$. By a bounded scan, or a bounded binary search, find the largest integer $j_i\le UH$ with
+\[
+ j_i^2\le d_iH^2.
+\]
+Define $s_i=j_i/H$. If $j_i=UH$, maximality and $d_i\le U^2$ imply $s_i^2=d_i$. Otherwise the next integer fails the comparison, giving
+\[
+ 0\le d_i-s_i^2<\frac{2j_i+1}{H^2}
+ \le\frac{2U+1}{H}\le\frac{\eta}{2n}.
+\]
+Set
+\begin{equation}
+ S=Q\diag(s)Q^{\mathsf T}. \label{eq:sqrtapprox}
+\end{equation}
+This matrix has an exact positive spectral certificate.
+
+\begin{proposition}[Finite positive root approximation]
+\label{prop:sqrtproducer}
+The construction is primitive recursive and satisfies $\bound(S^2-A,\eta)$.
+\end{proposition}
+\begin{proof}
+In $Q$ coordinates, $A=D+R$ with $R$ having zero diagonal and $\F(R)\le\eta^2/4$. The square of \eqref{eq:sqrtapprox} is $Q\diag(s_i^2)Q^{\mathsf T}$. Therefore
+\[
+ \F(S^2-A)
+ =\sum_i(s_i^2-d_i)^2+\F(R)
+ \le n\left(\frac{\eta}{2n}\right)^2+\frac{\eta^2}{4}
+ \le\frac{\eta^2}{2}\le\eta^2.
+\]
+The sum has at least one term only when $n\ge1$; dimension zero is handled by the empty output. All searches have explicit integer bounds from \eqref{eq:sqrtgrid}. Binary search may be run for the bit length of $UH+1$ plus one and then frozen, or replaced by the literal finite scan.
+\end{proof}
+
+\subsection{Stability in mixed bases}
+
+\begin{theorem}[Square-root certificate stability]
+\label{thm:sqrtstable}
+Let
+\[
+ S=Q\diag(s)Q^{\mathsf T},\qquad
+ T=R\diag(t)R^{\mathsf T},
+\]
+where $Q,R$ are rational orthogonal matrices and $s_i,t_j\ge0$. Then the entirely rational inequality
+\begin{equation}
+ \F(S-T)^2\le n\F(S^2-T^2) \label{eq:sqrtstable}
+\end{equation}
+holds. In particular, if $\bound(S^2-T^2,\delta)$ and $n\ge1$, then
+$\F(S-T)\le n\delta$.
+\end{theorem}
+\begin{proof}
+Put $V=Q^{\mathsf T}R$. In the mixed bases,
+\begin{align*}
+ (Q^{\mathsf T}(S-T)R)_{ij}&=(s_i-t_j)V_{ij},\\
+ (Q^{\mathsf T}(S^2-T^2)R)_{ij}&=(s_i^2-t_j^2)V_{ij}.
+\end{align*}
+For nonnegative rationals $s,t$, $|s-t|\le s+t$, so
+$(s-t)^2\le|s^2-t^2|$. Consequently
+\[
+ \F(S-T)
+ \le\sum_{i,j}|(s_i^2-t_j^2)V_{ij}|\,|V_{ij}|.
+\]
+Apply finite Cauchy--Schwarz to the two arrays on the right and use
+$\sum_{i,j}V_{ij}^2=n$. Orthogonal invariance proves \eqref{eq:sqrtstable}. If $\F(S^2-T^2)\le\delta^2$, then
+$\F(S-T)^2\le n\delta^2\le n^2\delta^2$ for $n\ge1$. Nonnegative rational square comparison gives the convenient weaker bound $\F(S-T)\le n\delta$.
+\end{proof}
+
+For fixed rational $A$, construct $S_r$ with residual tolerance
+\[
+ \eta_r=\frac{2^{-2r-4}}{n+1}.
+\]
+The squares satisfy $\bound(S_r^2-S_s^2,\eta_r+\eta_s)$. The theorem gives
+\[
+ \F(S_r-S_s)\le n(\eta_r+\eta_s)
+ \le\frac{(2^{-r}+2^{-s})^2}{16}.
+\]
+Thus these matrices form a regular name with spare margin. Their squared residuals tend to zero with the explicit displayed modulus. The bases used at different stages can be unrelated.
+
+\subsection{Represented positivity and slightly indefinite samples}
+\label{sec:psdnames}
+
+An arbitrary rational sample of a positive real matrix need not be positive. Ignoring this point would make the diagonal square-root scan invalid. We give an arithmetic correction.
+
+Let $A_r$ be a symmetric Frobenius-regular name with $e_r=2^{-r}$. Define its positive-semidefinite contract by
+\begin{equation}
+ v^{\mathsf T}A_rv\ge-e_r v^{\mathsf T}v
+ \qquad\text{for all numerical }r\text{ and rational vector codes }v.
+ \label{eq:psdname}
+\end{equation}
+For ordinary real semantics this is the condition obtained from positivity of the represented matrix and a sample error at most $e_r$. It is an explicit universal arithmetic assumption, not a Boolean test on real names.
+
+Set $B_r=A_r+e_rI$. Every rational quadratic form of $B_r$ is nonnegative by \eqref{eq:psdname}. Run the unconditional finite positivity alternative, Theorem~\ref{thm:ldl}, on $B_r$. Its negative-vector branch contradicts \eqref{eq:psdname} instantiated at the produced vector. Hence it returns a positive certificate. This is a uniform construction from the name under its proved positivity contract; it does not assume access to hidden positive rational approximants.
+
+The correction costs at most $ne_r$ in Frobenius norm, using the convenient rational bound $\norm I\le n$ for $n\ge1$. Therefore
+\[
+ \bound(B_r-B_s,(n+1)(e_r+e_s)).
+\]
+For output stage $k$, choose a primitive recursive precision $r(k)$ satisfying
+\[
+ (n+1)e_{r(k)}\le\eta_k/4,
+ \qquad \eta_k=2^{-2k-4}/(n+1),
+\]
+and apply the finite root producer to $B_{r(k)}$ with tolerance $\eta_k/4$. Then
+\[
+ \bound(S_k^2-S_\ell^2,(\eta_k+\eta_\ell)/2).
+\]
+The same mixed-basis proof establishes a regular root name. The correction vanishes with its explicit modulus, so the represented square is the original $A$. All finite approximants $S_k$ are positive, and hence the resulting name satisfies its own positivity contract.
+
+A uniform finite magnitude bound follows either from the root certificate or from a sufficiently coarse sample and regularity. For example,
+$\tr(S_k^2)=\F(S_k)$ is controlled by the diagonal entries of the nearby bounded input. Such bounds permit multiplication of the names with explicit precision demands.
+
+\subsection{Uniqueness among all positive roots}
+
+Theorem~\ref{thm:sqrtstable} initially assumes exact rational nonnegative diagonal certificates. Calling the output the \emph{principal} root requires uniqueness against positive roots not already supplied in that form. The following finite repair closes that gap.
+
+\begin{lemma}[A finite uniqueness modulus]
+\label{lem:rootunique}
+Let $S,T$ be rational positive semidefinite matrices, $n\ge1$, with
+$\bound(S,M)$ and $\bound(T,M)$ for rational $M\ge1$. Given $\eps>0$, if
+\[
+ \bound(S^2-T^2,\delta),\qquad
+ \delta\le\frac{\eps^2}{8n},
+\]
+then $\bound(S-T,\eps)$.
+\end{lemma}
+\begin{proof}
+Choose a positive rational
+\[
+ \alpha\le\min\left(1,\frac\eps4,
+                    \frac{\eps^2}{16n(2M+1)}\right).
+\]
+Apply the finite diagonalizer to $S$ and $T$ at tolerance $\alpha$ and discard each off-diagonal residual. The resulting matrices $S',T'$ have exact nonnegative diagonal certificates: their diagonal entries are nonnegative quadratic forms of $S,T$. They lie within $\alpha$ of $S,T$.
+
+For arbitrary matrices the noncommutative identity
+\[
+ X^2-Y^2=X(X-Y)+(X-Y)Y
+\]
+and finite submultiplicativity give
+\[
+ \norm{S'^2-S^2}\le\alpha(2M+1),\qquad
+ \norm{T'^2-T^2}\le\alpha(2M+1).
+\]
+Here $\norm{S'},\norm{T'}\le M+1$ follows from $\alpha\le1$. Hence
+\[
+ \norm{S'^2-T'^2}\le\delta+2\alpha(2M+1)
+ \le\frac{\eps^2}{4n}.
+\]
+Theorem~\ref{thm:sqrtstable} implies
+$\F(S'-T')\le\eps^2/4$, that is, $\norm{S'-T'}\le\eps/2$.
+Finally
+\[
+ \norm{S-T}\le2\alpha+\eps/2\le\eps.
+\]
+All approximations in this proof use a single explicitly specified rational precision. There is no appeal to an exact spectral decomposition or qualitative convergence.
+\end{proof}
+
+For two represented positive roots of the same matrix, first replace their rational samples by the positive shifted samples just constructed. Their shifts have explicit vanishing errors. Regularity supplies a common magnitude bound $M$; the displayed product identity supplies a primitive recursive modulus for their squares. At any requested output tolerance $\eps$, choose sample precisions making the square difference at most $\eps^2/(8n)$ and the sample/shift errors small enough to leave the desired margin. Apply Lemma~\ref{lem:rootunique} and the triangle inequality. This proves equality of the root names in the finite-slack sense.
+
+We have therefore constructed the unique positive represented matrix $S$ satisfying $S^2=A$, with an explicit primitive recursive presentation. The proof covers singular positive inputs: no lower eigenvalue bound was used. The derivative of scalar square root near zero is irrelevant because the comparison has a quadratic precision demand rather than a uniform linear one.

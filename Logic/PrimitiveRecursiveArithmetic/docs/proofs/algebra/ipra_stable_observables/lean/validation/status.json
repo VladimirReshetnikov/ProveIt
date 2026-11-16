@@ -1,0 +1,114 @@
+{
+  "repo": "VladimirReshetnikov/ProveIt",
+  "commit": "c39c388d4f87220ab9e758ae457520bbc0d74341",
+  "files": [
+    {
+      "path": "ConciseIPRA/Syntax.lean",
+      "sha256": "32d6c3dc5256b5cfd4ae435eacdc445a06caa551a5f3218c7542fcd82049b8a0",
+      "unchanged_from_retrieved_source": true
+    },
+    {
+      "path": "ConciseIPRA/Deduction.lean",
+      "sha256": "76ec34d7e52f3ab2dffc0bc85ceb92f6731891e5666e3116638cf93c8b8db4f3",
+      "unchanged_from_retrieved_source": true
+    },
+    {
+      "path": "ConciseIPRA/PR.lean",
+      "sha256": "6ae8f29ca87f7867f2004e5b4701b28003ed3caf0366b9fc9970c2a4a94b2dfa",
+      "unchanged_from_retrieved_source": true
+    }
+  ],
+  "lean_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "mathlib_revision": "81a5d257c8e410db227a6665ed08f64fea08e997",
+  "checks": [
+    {
+      "name": "version",
+      "command": [
+        "lean",
+        "--version"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "build",
+      "command": [
+        "lake",
+        "build",
+        "ObjectObservation",
+        "SpectralBlueprint"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "axioms",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "ObjectAudit.lean"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "spectral_blueprint",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "SpectralAudit.lean"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "axioms": [
+    "propext",
+    "Quot.sound"
+  ],
+  "contains_sorry": false,
+  "source_sha256": "0f12ddd74a56f5ff8ddb221baf7ebd9995160f19a28e26ac3fdf0d91d5dd3d2e",
+  "scope": "Five proved embedded inference-rule combinators; compiled rational algorithms and explicit unproved main spectral targets.",
+  "embedded_combinator_axioms": [
+    "propext",
+    "Quot.sound"
+  ],
+  "host_rational_definition_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "spectral_blueprint_sha256": "a4cdc3a88e9f7c0936d0ae3169559608944844c97464955bf0ca91f5cfcb7715",
+  "unproved_target_names": [
+    "PivotImprovementTarget",
+    "EnergyIdentityTarget",
+    "DiagonalizationFuelTarget",
+    "SpectralComparisonTarget",
+    "PositiveSoundnessTarget",
+    "PositiveCompletenessTarget",
+    "PositiveProducerTarget",
+    "RootProducerTarget",
+    "SquareRootMixedBasisTarget",
+    "ThresholdProjectorValidityTarget",
+    "SeparatedProjectorsTarget",
+    "ThresholdProjectorComparisonTarget",
+    "PositiveGapToMarginTarget"
+  ],
+  "spectral_unproved_structure_instantiated": false,
+  "finite_execution_example": {
+    "matrix": [
+      [
+        2,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "tolerance": "1/2",
+    "sorted_values": [
+      "26/25",
+      "74/25"
+    ],
+    "squared_offdiagonal_residual": "98/625"
+  }
+}

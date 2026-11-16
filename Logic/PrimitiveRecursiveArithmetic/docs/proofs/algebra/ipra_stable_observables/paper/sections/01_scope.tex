@@ -1,0 +1,55 @@
+\section{What this report adds}
+\label{sec:scope}
+
+The repository's own index distinguishes the kernel-checked ConciseIPRA development from the delivered proof packets, whose mathematical and Lean claims were not rerun during intake \cite{repoindex,packetindex}. At the pinned revision there are 61 packets, including ten foundations packets. Accordingly, a useful next framework should build on the existing finite-observation methods and supply a substantive missing mathematical comparison theorem.
+
+The focus here is the passage from \emph{independent finite witnesses} to \emph{coherent, representation-independent observations}. A polynomial factorization, an approximate minimizer, or an approximate eigenbasis may change drastically when the input or precision changes. One should ask which information extracted from it has a quantitative comparison law. If such a law is proved for every pair of valid certificates, separate finite computations already suffice to construct a single coherent name for that information. Compatibility of the entire witnesses is unnecessary.
+
+This principle is not presented as an unprecedented logical idea. The earlier aggregate packet obtains coherent extremal values from changing approximate minimizers; the coherent-methods packet derives coherence from uniqueness in finite presentations \cite{aggregates,coherent}. We give an explicit general interface and develop a new, multiplicity-sensitive spectral application with independent finite proofs of the required estimates.
+
+\subsection{The principal conclusions}
+
+All numerical error bounds in the following list are rational. Norm notation abbreviates squared rational inequalities, as defined in Section~\ref{sec:linear}.
+\begin{enumerate}
+\item Given a rational symmetric $n\times n$ matrix $A$ and $\eps>0$, a fixed primitive recursive algorithm returns a rational orthogonal matrix $Q$ and an increasing rational list $d$ such that
+\[
+ \norm{A-Q\diag(d)Q^{\mathsf T}}\le\eps.
+\]
+There is no dimension-dependent appeal to a separate existence theorem.
+\item If two such certificates have residuals $\eta,\theta$ for inputs $A,B$, and $\norm{A-B}\le\delta$, their ordered observations satisfy
+\[
+ \max_{i<n}|d_i-e_i|\le\delta+\eta+\theta.
+\]
+This comparison gives regular primitive recursive eigenvalue names, with multiplicity, for represented symmetric matrices. It requires no gap between adjacent eigenvalues.
+\item Positive rational matrices admit rational positive square-root approximants. The comparison estimate
+\[
+ \F(S-T)^2\le n\F(S^2-T^2),\qquad
+ \F(X)=\sum_{i,j}X_{ij}^2,
+\]
+first holds for the explicitly constructed spectral certificates. A further finite approximation argument proves uniqueness against arbitrary positive represented roots. The representation correction for rational samples that are slightly negative is included.
+\item If a threshold is separated from the spectrum by a supplied positive numerical margin, finite rational spectral projectors are coherent. Collisions within either selected block cause no problem. Projector stability is proved by a mixed-basis entrywise identity.
+\item A general complete-certificate principle for numerical bounds is impossible even for primitive recursive fibers containing at most one element. The proof clarifies why finite checking cannot replace the missing global height-bound producers in other packets.
+\end{enumerate}
+
+\subsection{Comparison with the existing packets}
+
+\begin{longtable}{@{}P{0.23\textwidth}P{0.34\textwidth}P{0.37\textwidth}@{}}
+\toprule
+Earlier development & Existing contribution & Additional result or retained boundary \\
+\midrule\endhead
+Finite contracts and finite observation \cite{contracts,observations} & Booleanized finite assertions, precision transformers, finite replay, and numerical presentations. & Reused as the arithmetical foundation. The new content is the comparison of independently generated spectral witnesses. \\
+Finite aggregates and root supports \cite{aggregates,rootsupport} & Hausdorff root supports through collisions, spectral-radius names, and stable aggregate values. & Sorted symmetric spectra retain multiplicities and satisfy an explicit linear perturbation estimate. General complex root-multiset matching remains outside the result. \\
+Uniform factorization \cite{factorization} & A finite producer of complete factorization data. & Existence of a list is separated from a comparison theorem between lists. The spectral theorem provides both in its symmetric subclass. \\
+Coherent finite methods \cite{coherent} & Restriction-compatible finite data, uniqueness-based coherence, filtered lifting. & Approximate bases need neither be unique nor form a compatible tower; their ordered observations are compared directly. \\
+Local-to-global methods \cite{localglobal} & A variable-length object-iPRA iteration rule. & The same induction interface is specialized to an energy-controlled computation and two-certificate comparison. \\
+Euler--Rodrigues \cite{rotations} & Approximate axes without coherent axis selection, exact extraction with a gap, and quaternion data. & Approximate axes themselves are not claimed as new. We obtain an arbitrary-dimensional matrix framework and intrinsic spectral operations. \\
+\bottomrule
+\end{longtable}
+
+The distinction between root \emph{supports} and multiplicity-bearing lists is essential. The lists $(0,0,1)$ and $(0,1,1)$ have the same support but different multiplicities; Hausdorff support distance cannot distinguish them. The earlier root-support report explicitly leaves this problem open \cite{rootsupport}. Our ordered comparison resolves the issue for spectra of real symmetric matrices. It is not a solution of the general complex-polynomial matching problem.
+
+\subsection{Four levels of assertion}
+
+We keep four levels separate throughout. An executable reference program demonstrates finite computations. A human arithmetic proof justifies a uniform theorem using defining equations and quantifier-free induction. A host Lean theorem establishes a statement in Lean's ambient mathematics. An embedded derivation has the actual type \code{Prf PRAAx Gamma phi}. Only the last is input to the repository's native transfer theorem.
+
+The main mathematical arguments in this report are human arithmetic proofs. The archive contains compiled embedded inference combinators, but not embedded proofs of the spectral estimates. Section~\ref{sec:lean} specifies the latter's definitions, dependencies, induction invariants, and precise completion steps. Experimental checks are reported separately and are not used as substitutes for universal proofs.

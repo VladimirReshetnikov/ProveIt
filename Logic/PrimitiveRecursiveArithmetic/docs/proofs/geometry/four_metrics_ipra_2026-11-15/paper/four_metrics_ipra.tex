@@ -1,0 +1,1067 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=26mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,breaklinks=true]{hyperref}
+\usepackage{bookmark}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\Ric}{\operatorname{Ric}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\Q}{\mathbb{Q}}\newcommand{\Z}{\mathbb{Z}}\newcommand{\N}{\mathbb{N}}
+\newcommand{\calB}{\mathcal{B}}
+\newcommand{\co}{\colon}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newcommand{\status}[1]{\par\smallskip\noindent\textbf{Status.} #1\par\smallskip}
+\setlist{nosep,leftmargin=1.8em}
+\setlength{\emergencystretch}{3em}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Four exact metrics in iPRA}\fancyhead[R]{\small Rational certificates}\fancyfoot[C]{\thepage}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20}}
+\hypersetup{pdftitle={Four exact black-hole metrics in intuitionistic primitive recursive arithmetic},pdfauthor={Research proof package prepared for Vladimir Reshetnikov}}
+\title{\textbf{Four exact black-hole metrics in\newline intuitionistic primitive recursive arithmetic}\\[0.8em]\large A rational Einstein--Maxwell proof, regular coordinate atlas,\newline exact arithmetic certificates, and a Lean formalization plan}
+\author{Research proof package prepared for Vladimir Reshetnikov}
+\date{15 November 2026 (Pacific time)}
+\begin{document}
+\maketitle
+\begin{abstract}
+We prove precise exact-solution versions of the Schwarzschild, Reissner--Nordstr\"om, Kerr, and Kerr--Newman metrics in intuitionistic primitive recursive arithmetic. One master calculation suffices. Replacing the polar angle by $x=\cos\theta$ makes the metric, inverse, connection, curvature, electromagnetic field, and all field-equation residuals rational. A general radial-function Ricci identity reduces the rotating Einstein--Maxwell equations to two scalar expressions and derives the quadratic radial function within the specified ansatz. All four named metrics follow by substitution.
+
+The arithmetic theorem is an explicit universally quantified implication about codes of rational inputs, rather than a claim that first-order arithmetic contains a universe of manifolds. We give the coding, quantifier-free induction invariants, and a constructive-real interpretation with supplied bounds and apartness witnesses. Rational ingoing and stereographic charts remove the radial-horizon and polar-coordinate poles; an explicit congruence proves Lorentz signature throughout the regular atlas. We also prove local Killing-horizon identities and curvature-invariant formulas.
+
+Two independent exact computations verify the master tensors; a small checker uses only Python's standard library. The complete Lean formalization is not claimed: the supplied uncompiled Lean files define the arithmetic objects and expose the remaining proof obligations, including the separate object-language derivation in ProveIt's \texttt{Prf PRAAx} calculus.
+\end{abstract}
+\vspace{0.5em}
+\noindent\textbf{Deliverable boundary.} The human mathematical argument and exact executable checks are supplied. The Lean endpoint is a detailed construction plan with complete core definitions. Global black-hole uniqueness, maximal extensions, stability, and identification of a null surface as a global event horizon are separate theorems and are not asserted here.
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The precise theorem and its arithmetic meaning}\label{sec:main}
+
+\subsection{Conventions and the equations to be proved}
+We use geometric units, signature $(-,+,+,+)$, and coordinates ordered as $(t,r,x,\phi)$. The constants $m,a,q$ denote the mass parameter, rotation parameter, and electric-charge parameter in this normalization. They are arbitrary rational inputs in the literal arithmetic theorem; the constructive-real interpretation is stated in Section~\ref{sec:real}. No positivity assumption on $m$ is required for the field equations.
+
+The curvature convention is fixed by
+\begin{align}
+ \Gamma^\lambda_{\mu\nu}
+ &=\frac12\sum_\rho g^{\lambda\rho}
+ (\partial_\mu g_{\rho\nu}+\partial_\nu g_{\rho\mu}-\partial_\rho g_{\mu\nu}),\label{eq:gamma}\\
+ R_{\mu\nu}
+ &=\sum_\lambda\partial_\lambda\Gamma^\lambda_{\mu\nu}
+   -\partial_\nu\sum_\lambda\Gamma^\lambda_{\mu\lambda}
+   +\sum_{\lambda,\rho}
+   (\Gamma^\lambda_{\mu\nu}\Gamma^\rho_{\lambda\rho}
+    -\Gamma^\rho_{\mu\lambda}\Gamma^\lambda_{\nu\rho}).\label{eq:ricci}
+\end{align}
+Every index sum runs from $0$ to $3$. For a potential $A$, put
+\begin{equation}
+ F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu,
+ \qquad F^{\mu\nu}=\sum_{\alpha,\beta}g^{\mu\alpha}g^{\nu\beta}F_{\alpha\beta}.
+\end{equation}
+Our Einstein--Maxwell equations, with zero cosmological constant, are
+\begin{align}
+ R_{\mu\nu}&=2\left(\sum_{\rho,\sigma}F_{\mu\rho}g^{\rho\sigma}F_{\nu\sigma}
+       -\frac14 g_{\mu\nu}\sum_{\alpha,\beta}F_{\alpha\beta}F^{\alpha\beta}\right),\label{eq:EM}\\
+ \partial_\lambda F_{\mu\nu}+\partial_\mu F_{\nu\lambda}
+  +\partial_\nu F_{\lambda\mu}&=0,\label{eq:dF}\\
+ \sum_\mu\partial_\mu(\Sigma F^{\mu\nu})&=0.\label{eq:maxwell}
+\end{align}
+Here $\det g=-\Sigma^2$, with $\Sigma>0$ on the geometric domain; hence $\Sigma=\sqrt{-\det g}$. Equation~\eqref{eq:maxwell} is the coordinate divergence equation. The trace of the right-hand side of \eqref{eq:EM} is zero, so this is equivalent to the usual Einstein equation $G_{\mu\nu}=8\pi T_{\mu\nu}$ with $T_{\mu\nu}=(4\pi)^{-1}(F_{\mu\rho}F_\nu{}^\rho-\tfrac14g_{\mu\nu}F_{\alpha\beta}F^{\alpha\beta})$.
+
+\subsection{The master formula}
+Set
+\begin{equation}\label{eq:notation}
+ s=1-x^2,\qquad \Sigma=r^2+a^2x^2,\qquad P=r^2+a^2,
+ \qquad \Delta=r^2-2mr+a^2+q^2,
+\end{equation}
+and introduce two rational one-forms
+\begin{equation}\label{eq:pb}
+ p=\dd t-a s\,\dd\phi,\qquad b=P\,\dd\phi-a\,\dd t.
+\end{equation}
+The master metric and potential are
+\begin{align}
+ g&=-\frac{\Delta}{\Sigma}p^2+\frac{\Sigma}{\Delta}\dd r^2
+       +\frac{\Sigma}{s}\dd x^2+\frac{s}{\Sigma}b^2,\label{eq:master}\\
+ A&=-\frac{qr}{\Sigma}p.\label{eq:potential}
+\end{align}
+A square of a one-form denotes its symmetric tensor square. Thus a displayed term $2c\,\dd t\,\dd\phi$ means $g_{t\phi}=g_{\phi t}=c$.
+
+\begin{theorem}[Arithmetic exact-solution theorem]\label{thm:arithmetic}
+There are explicitly specified primitive recursive functions $\mathsf{Reg}$ and $\mathsf{Zero}$ on natural-number codes such that $\ipra$ proves
+\begin{equation}\label{eq:literal}
+ \forall c\,\bigl(\mathsf{Reg}(c)=1\ \longrightarrow\ \mathsf{Zero}(c)=1\bigr).
+\end{equation}
+The function $\mathsf{Reg}$ tests that $c$ codes five rationals $(m,a,q,r,x)$ and that $\Sigma\Delta s\ne0$. The function $\mathsf{Zero}$ tests the inverse identity for \eqref{eq:master}, its determinant $-\Sigma^2$, and every component of \eqref{eq:EM}--\eqref{eq:maxwell}, with formal rational differentiation defined below. It also tests the displayed Ricci formula of Theorem~\ref{thm:KN}. In particular, the uncharged specialization is a vacuum solution.
+\end{theorem}
+
+\begin{theorem}[Constructive geometric realization]\label{thm:real-summary}
+For each externally fixed family of primitive recursive rational names for the parameters and local coordinates, $\ipra$ proves the finite-precision conclusions interpreting the formulas above as a smooth Lorentz metric and a source-free Einstein--Maxwell field, \emph{from the stated name-regularity, magnitude-bound, chart-positivity, and denominator-apartness contracts}. If those contracts have $\ipra$ derivations, the corresponding unconditional precision statements follow. On a Boyer--Lindquist chart the geometric guard is $\Sigma>0$, $s>0$, $\Delta\ne0$. The regular ingoing stereographic atlas of Section~\ref{sec:charts} requires only $\Sigma>0$, with an explicit apartness bound; its coordinate formulas have no denominator $\Delta$ or $1-x^2$.
+\end{theorem}
+
+Theorem~\ref{thm:real-summary} is a scheme indexed externally by fixed primitive recursive definitions. It does not quantify internally over all programs, arbitrary functions, or arbitrary sets of real numbers. Its analytic content is proved by finite rational estimates in Section~\ref{sec:real}. Interpreting those contracts in an ordinary real-number model yields the familiar local smooth-spacetime theorem.
+
+\subsection{How the named metrics are obtained}
+\begin{center}
+\begin{tabular}{lll}\toprule
+Metric & Parameter substitution & Field equation\\\midrule
+Kerr--Newman & none & Einstein--Maxwell\\
+Kerr & $q=0$ & $R_{\mu\nu}=0$\\
+Reissner--Nordstr\"om & $a=0$ & Einstein--Maxwell\\
+Schwarzschild & $a=q=0$ & $R_{\mu\nu}=0$\\\bottomrule
+\end{tabular}
+\end{center}
+These identifications match the standard Boyer--Lindquist formulas, after changing the overall signature when comparing with Adamo--Newman~\cite{adamo}. The referenced encyclopedia pages identify the requested targets~\cite{wiki}; no theorem from them is assumed in the proof.
+
+\section{Finite rational differential geometry}\label{sec:rational}
+
+The coefficient ring for the master calculation is the localization
+\begin{equation}\label{eq:ring}
+ \mathcal R=\Z[r,x,a,m,q,1/2,1/\Sigma,1/\Delta,1/s].
+\end{equation}
+An element is represented by an integer polynomial numerator and a denominator
+$2^e\Sigma^i\Delta^j s^k$, where $e,i,j,k\in\N$. For a literal interpretation at rational inputs, all denominator factors are required to be nonzero. Equality can be checked by multiplying denominators and comparing integer coefficients; full factorization is unnecessary.
+
+Define $\partial_r$ and $\partial_x$ on integer polynomials by differentiating monomials. Extend them to rational expressions by the product rule and
+\begin{equation}\label{eq:quotient}
+ \partial_z(u^{-1})=-u^{-2}\partial_z u.
+\end{equation}
+The other two coordinate derivations, $\partial_t$ and $\partial_\phi$, vanish on every coefficient. The parameters $m,a,q$ are constants for these derivations. All calculations therefore take place in a finitely described commutative differential ring. In particular, a coordinate derivative is never approximated numerically.
+
+The quotient rule is well-defined on equal rational expressions: differentiating $ND'=N'D$ and applying the product rule proves equality of the differentiated fractions after another multiplication by nonzero denominators. Mixed derivatives commute. One can check the latter first on polynomials; for an inverse, both orders give
+\[
+ \partial_x\partial_r(u^{-1})
+ =2u^{-3}(\partial_xu)(\partial_ru)-u^{-2}\partial_x\partial_ru,
+\]
+which is symmetric in the two derivations. Sums and products preserve the property. These are finite algebraic identities with guarded inverses.
+
+A metric in this setting is a symmetric $4\times4$ matrix together with a displayed inverse. We define connection and Ricci directly by \eqref{eq:gamma}--\eqref{eq:ricci}. Thus the arithmetic proof needs neither a manifold existence theorem nor an inverse-matrix search. The usual connection properties also follow algebraically: swapping $\mu,\nu$ in \eqref{eq:gamma} proves zero torsion, and substituting it into
+\[
+ \partial_\lambda g_{\mu\nu}
+ -\Gamma^\rho_{\lambda\mu}g_{\rho\nu}
+ -\Gamma^\rho_{\lambda\nu}g_{\mu\rho}
+\]
+gives zero by the inverse identity. This identifies the displayed connection as the Levi--Civita connection under real interpretation.
+
+\section{Metric, inverse, determinant, and elementary identities}\label{sec:metric}
+
+The nonzero entries of \eqref{eq:master} are
+\begin{align}
+ g_{tt}&=-\frac{\Delta-a^2s}{\Sigma},&
+ g_{t\phi}&=-\frac{as(P-\Delta)}{\Sigma},\notag\\
+ g_{rr}&=\frac{\Sigma}{\Delta},&g_{xx}&=\frac{\Sigma}{s},&
+ g_{\phi\phi}&=\frac{s(P^2-a^2\Delta s)}{\Sigma}.\label{eq:gtable}
+\end{align}
+The inverse is
+\begin{align}
+ g^{tt}&=-\frac{P^2-a^2\Delta s}{\Sigma\Delta},&
+ g^{t\phi}&=-\frac{a(P-\Delta)}{\Sigma\Delta},\notag\\
+ g^{rr}&=\frac{\Delta}{\Sigma},&g^{xx}&=\frac{s}{\Sigma},&
+ g^{\phi\phi}&=\frac{\Delta-a^2s}{\Sigma\Delta s}.\label{eq:ginv}
+\end{align}
+Symmetric entries are understood; all unlisted entries vanish.
+
+For a short verification, the change from $(\dd t,\dd\phi)$ to $(p,b)$ is
+\begin{equation}\label{eq:Q}
+ Q=\begin{pmatrix}1&-as\\-a&P\end{pmatrix},\qquad
+ \det Q=P-a^2s=\Sigma,\qquad
+ Q^{-1}=\frac1\Sigma\begin{pmatrix}P&as\\a&1\end{pmatrix}.
+\end{equation}
+The fiber block is $H=Q^{\mathsf T}\operatorname{diag}(-\Delta/\Sigma,s/\Sigma)Q$; hence $\det H=-\Delta s$. Multiplying by the base determinant $\Sigma^2/(\Delta s)$ gives
+\begin{equation}\label{eq:det}
+ \det g=-\Sigma^2.
+\end{equation}
+Inverting the two diagonal blocks in this coframe gives exactly \eqref{eq:ginv}. Alternatively, the sixteen products $(gg^{-1})_{\mu}{}^\nu$ are explicit rational identities. The identity $P-a^2s=\Sigma$ is the only simplification needed for the $2\times2$ block inversion.
+
+Taking the trace of \eqref{eq:gamma} and using the displayed inverse gives
+\begin{equation}\label{eq:trace}
+ \sum_\lambda\Gamma^\lambda_{\mu\lambda}
+ =\frac{\partial_\mu\Sigma}{\Sigma}
+ =\begin{cases}2r/\Sigma&\mu=r,\\2a^2x/\Sigma&\mu=x,\\0&\mu=t,\phi.\end{cases}
+\end{equation}
+For an antisymmetric tensor $F$, the term $\Gamma^\nu_{\mu\lambda}F^{\mu\lambda}$ vanishes by symmetry. Substituting \eqref{eq:trace} into $\nabla_\mu F^{\mu\nu}$ proves
+\[
+ \nabla_\mu F^{\mu\nu}
+ =\Sigma^{-1}\partial_\mu(\Sigma F^{\mu\nu}),
+\]
+where the repeated $\mu$ is summed. This is an algebraic derivation of the precise Maxwell equation used in the certificate.
+
+\section{The radial-function curvature lemma}\label{sec:offshell}
+
+We first leave the radial function unspecified. Write $d=\Delta(r)$, $v=\Delta'(r)$, and $w=\Delta''(r)$. Algebraically, these are three independent indeterminates, with $\partial_r d=v$, $\partial_r v=w$, and $\partial_x d=\partial_x v=0$. No derivative of $w$ is used. This is a finite second-jet calculation, not an assumption that a universal evaluator for functions is available.
+
+\begin{lemma}[Radial-function Ricci identity]\label{lem:offshell}
+Replace $\Delta$ by $d$ in \eqref{eq:master} and assume $\Sigma d s\ne0$. Define
+\begin{equation}\label{eq:UV}
+ N=r^2-a^2+d-rv,\qquad V=\frac{N}{\Sigma^2},\qquad
+ U=V+\frac{w-2}{2\Sigma}.
+\end{equation}
+Then
+\begin{equation}\label{eq:offshell}
+ \Ric(g)=U\left(\frac d\Sigma p^2-\frac\Sigma d\dd r^2\right)
+       +V\left(\frac\Sigma s\dd x^2+\frac s\Sigma b^2\right),
+ \qquad R=\frac{2-w}{\Sigma}.
+\end{equation}
+\end{lemma}
+
+The following proof displays the small matrices needed for every contraction. It also supplies a useful human-readable alternative to a long list of forty connection entries. The general radial-function method is related to the usual off-shell canonical-metric viewpoint~\cite{frolov}; the explicit contractions here are derived directly.
+
+\subsection{Splitting the connection into three families}
+Let base indices $i,j,k$ range over $(r,x)$, and fiber indices $A,B,C$ over $(t,\phi)$. Write
+\[
+ h=\operatorname{diag}(\Sigma/d,\Sigma/s),\qquad
+ H=\frac1\Sigma\begin{pmatrix}
+ -d+a^2s&-as(P-d)\\-as(P-d)&s(P^2-a^2ds)
+ \end{pmatrix}.
+\]
+Because all coefficients are independent of the fiber coordinates, \eqref{eq:gamma} has only three potentially nonzero families:
+\begin{equation}\label{eq:three-gamma}
+ \Gamma^i_{jk}=\gamma^i_{jk}(h),\qquad
+ \Gamma^i_{AB}=-\frac12h^{ij}\partial_jH_{AB},\qquad
+ \Gamma^A_{iB}=(K_i)^A{}_B,\quad K_i=\frac12H^{-1}\partial_iH.
+\end{equation}
+Substitution in \eqref{eq:ricci}, grouping base and fiber summands, gives
+\begin{align}
+ R_{iA}&=0,\label{eq:mixedzero}\\
+ R_{ij}&=R(h)_{ij}-\partial_j\tr K_i
+          +\gamma^k_{ij}\tr K_k-\tr(K_iK_j),\label{eq:baseRic}\\
+ R_{AB}&=\frac1{2\Sigma}\left[-\partial_r(dH_r)-\partial_x(sH_x)
+                  +dH_rH^{-1}H_r+sH_xH^{-1}H_x\right]_{AB}.\label{eq:fiberRic}
+\end{align}
+For clarity about \eqref{eq:fiberRic}, its derivative part before collecting terms is
+$-\tfrac12\Delta_h H_{AB}-\tfrac12h^{ij}(\tr K_i)\partial_jH_{AB}$.
+The base connection trace and the fiber trace add to $\partial_i\Sigma/\Sigma$, by \eqref{eq:trace}; thus this part is exactly the weighted divergence in \eqref{eq:fiberRic}. The two mixed products in the last term of \eqref{eq:ricci} give the positive quadratic matrix terms. This establishes the block identities without importing a curvature formula.
+
+\subsection{The base block, including all required traces}
+The six distinct base connection coefficients are
+\begin{align}
+ \gamma^r_{rr}&=\frac r\Sigma-\frac v{2d},&
+ \gamma^r_{rx}&=\frac{a^2x}{\Sigma},&
+ \gamma^r_{xx}&=-\frac{rd}{\Sigma s},\notag\\
+ \gamma^x_{rr}&=-\frac{a^2xs}{\Sigma d},&
+ \gamma^x_{rx}&=\frac r\Sigma,&
+ \gamma^x_{xx}&=\frac{a^2x}{\Sigma}+\frac xs.\label{eq:basegamma}
+\end{align}
+Put
+\begin{equation}\label{eq:W}
+ W=2d(r^2-a^2x^2)-rv\Sigma
+       +2a^2\bigl((2r^2+a^2)x^2-r^2\bigr).
+\end{equation}
+Differentiating \eqref{eq:basegamma} in the two-dimensional version of \eqref{eq:ricci} yields
+\begin{equation}
+ R(h)_{rr}=\frac{W}{2d\Sigma^2},\quad R(h)_{rx}=0,\quad
+ R(h)_{xx}=\frac{W}{2s\Sigma^2}.\label{eq:basecurv}
+\end{equation}
+The needed $2\times2$ matrix traces are
+\begin{align}
+ \tr K_r&=\frac v{2d},&\tr K_x&=-\frac xs,\notag\\
+ \tr K_r^2&=\frac{v^2}{4d^2}-\frac{rv}{d\Sigma}
+                   +\frac{2r^2(d-a^2s)}{d\Sigma^2},\label{eq:traces}\\
+ \tr(K_rK_x)&=\frac{a^2xv}{2d\Sigma}-\frac{rx}{s\Sigma},\notag\\
+ \tr K_x^2&=\frac{x^2}{s^2}+\frac{2a^2x^2(P-d)}{s\Sigma^2}.\notag
+\end{align}
+Each follows by multiplying $H^{-1}H_i/2$ using \eqref{eq:Q} or the ordinary two-dimensional inverse formula. For example the first two also follow by explicitly differentiating $\det H=-ds$ and multiplying out the cofactor formula; no logarithm is needed.
+
+Inserting \eqref{eq:basecurv}--\eqref{eq:traces} into \eqref{eq:baseRic}, collecting $N$ and $w-2$, gives
+\begin{equation}\label{eq:base-result}
+ R_{rr}=-\frac{\Sigma U}{d},\qquad R_{rx}=0,\qquad
+ R_{xx}=\frac{\Sigma V}{s}.
+\end{equation}
+For instance, the mixed entry is visibly
+\[
+ 0-\partial_x\left(\frac v{2d}\right)
+ +\frac{a^2x}{\Sigma}\frac v{2d}
+ +\frac r\Sigma\left(-\frac xs\right)
+ -\left(\frac{a^2xv}{2d\Sigma}-\frac{rx}{s\Sigma}\right)=0.
+\]
+The two diagonal entries require only the derivatives $\partial_r(v/(2d))=w/(2d)-v^2/(2d^2)$ and $\partial_x(-x/s)=-(1+x^2)/s^2$, together with the displayed tables.
+
+\subsection{The fiber block as four small matrices}
+Let $G=\operatorname{diag}(-d/\Sigma,s/\Sigma)$, so $H=Q^{\mathsf T}GQ$. Set
+\[
+ C_i=(\partial_iQ)Q^{-1},\qquad M_i=Q^{-\mathsf T}H_iQ^{-1}.
+\]
+Differentiation of $H=Q^{\mathsf T}GQ$ gives $M_i=G_i+C_i^{\mathsf T}G+GC_i$. Explicitly,
+\begin{align}
+ C_r&=\frac1\Sigma\begin{pmatrix}0&0\\2ar&2r\end{pmatrix},&
+ C_x&=\frac1\Sigma\begin{pmatrix}2a^2x&2ax\\0&0\end{pmatrix},\label{eq:C}\\
+ M_r&=\frac1{\Sigma^2}\begin{pmatrix}2rd-v\Sigma&2ars\\2ars&2rs\end{pmatrix},&
+ M_x&=-\frac{2x}{\Sigma^2}\begin{pmatrix}a^2d&ad\\ad&P\end{pmatrix}.\label{eq:M}
+\end{align}
+If $T$ is $2\Sigma$ times the fiber Ricci matrix, \eqref{eq:fiberRic} becomes
+\begin{align}
+ \overline T:=Q^{-\mathsf T}TQ^{-1}
+ ={}&-d\bigl(\partial_rM_r+C_r^{\mathsf T}M_r+M_rC_r\bigr)-vM_r\notag\\
+ &-s\bigl(\partial_xM_x+C_x^{\mathsf T}M_x+M_xC_x\bigr)+2xM_x\notag\\
+ &+dM_rG^{-1}M_r+sM_xG^{-1}M_x.\label{eq:Tbar}
+\end{align}
+The first two lines come from differentiating $H_i=Q^{\mathsf T}M_iQ$; the last follows by canceling neighboring $Q,Q^{-1}$.
+
+The three independent entries obtained from \eqref{eq:C}--\eqref{eq:Tbar} are
+\begin{align}
+ \overline T_{11}&=\frac{2dN}{\Sigma^2}+\frac{d(w-2)}{\Sigma}=2dU,\notag\\
+ \overline T_{12}&=0,\qquad
+ \overline T_{22}=\frac{2sN}{\Sigma^2}=2sV.\label{eq:Tbarresult}
+\end{align}
+To exhibit the cancellation in the off-diagonal entry, separate \eqref{eq:Tbar} into its derivative part $J$ (the first two lines) and quadratic part $K$ (the last line). Multiplication of the two-by-two matrices gives
+\[
+ \Sigma^3J_{12}=2a\Sigma(-2dx^2-rvs),\qquad
+ \Sigma^3K_{12}=-2a\Sigma(-2dx^2-rvs).
+\]
+For the diagonal entries, multiplication and collection in the same displayed expression gives the two numerators in \eqref{eq:Tbarresult}; Appendix~\ref{app:diagonal} displays both derivative and quadratic numerators and their cancellation explicitly. Thus
+\[
+ R_{AB}=\frac{dU}{\Sigma}p_Ap_B+\frac{sV}{\Sigma}b_Ab_B.
+\]
+Together with \eqref{eq:base-result} and \eqref{eq:mixedzero}, this proves the first identity in Lemma~\ref{lem:offshell}. Tracing in the coframe $(p,\dd r,\dd x,b)$ gives $R=-2U+2V=(2-w)/\Sigma$, completing the proof.\hfill$\square$
+
+\subsection{Specializing the curvature}
+\begin{theorem}[Kerr--Newman Ricci tensor]\label{thm:KN}
+For \eqref{eq:notation},
+\begin{equation}\label{eq:RicKN}
+ \Ric(g)=\frac{q^2}{\Sigma^2}
+ \left(\frac\Delta\Sigma p^2-\frac\Sigma\Delta\dd r^2
+       +\frac\Sigma s\dd x^2+\frac s\Sigma b^2\right),\qquad R=0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Here $v=2r-2m$, $w=2$, and
+\[
+ N=r^2-a^2+(r^2-2mr+a^2+q^2)-r(2r-2m)=q^2.
+\]
+Consequently $U=V=q^2/\Sigma^2$ in Lemma~\ref{lem:offshell}.
+\end{proof}
+For direct comparison with a coordinate calculation, the only nonzero entries are
+\begin{align}
+ R_{tt}&=\frac{q^2(\Delta+a^2s)}{\Sigma^3},&
+ R_{t\phi}&=-\frac{aq^2s(\Delta+P)}{\Sigma^3},\notag\\
+ R_{rr}&=-\frac{q^2}{\Sigma\Delta},&R_{xx}&=\frac{q^2}{\Sigma s},&
+ R_{\phi\phi}&=\frac{q^2s(a^2\Delta s+P^2)}{\Sigma^3}.\label{eq:Ric-table}
+\end{align}
+The off-diagonal entry is symmetric. All other entries vanish.
+
+\section{The Maxwell field and the Einstein equation}\label{sec:maxwell}
+
+\subsection{Differentiating the potential}
+Write
+\begin{equation}\label{eq:EB}
+ E=\frac{q(r^2-a^2x^2)}{\Sigma^2},\qquad
+ \calB=\frac{2qarx}{\Sigma^2}.
+\end{equation}
+These are rational coefficient functions, not assumptions about an orthonormal frame. Since $\dd p=2ax\,\dd x\wedge\dd\phi$, differentiation of \eqref{eq:potential} gives
+\begin{equation}\label{eq:Fcoframe}
+ F=\dd A=E\,\dd r\wedge p-\calB\,\dd x\wedge b.
+\end{equation}
+For example the $\dd x$ contribution before simplifying is
+\[
+ \frac{2qra^2x}{\Sigma^2}\dd x\wedge p
+ -\frac{2qrax}{\Sigma}\dd x\wedge\dd\phi
+ =\frac{2qrax}{\Sigma^2}\dd x\wedge(ap-\Sigma\dd\phi)
+ =-\calB\,\dd x\wedge b.
+\]
+Here $ap-\Sigma\dd\phi=-b$. Thus the nonzero lower-index entries, with their antisymmetric companions, are
+\begin{equation}\label{eq:Ftable}
+ F_{rt}=E,\quad F_{r\phi}=-asE,\quad
+ F_{xt}=a\calB,\quad F_{x\phi}=-P\calB.
+\end{equation}
+Commutation of the rational coordinate derivations proves $\dd F=\dd^2 A=0$ by cancellation of its six second-derivative terms. This proves every instance of \eqref{eq:dF}.
+
+\subsection{The four Maxwell divergences}
+Raising both indices with \eqref{eq:ginv} gives the particularly small density table
+\begin{equation}\label{eq:density}
+ \Sigma F^{rt}=-PE,\quad \Sigma F^{r\phi}=-aE,\quad
+ \Sigma F^{xt}=-as\calB,\quad \Sigma F^{x\phi}=-\calB.
+\end{equation}
+All other independent entries vanish. Notice that these expressions do not contain $d$ or $\Delta$: they hold for the general radial-function metric of Lemma~\ref{lem:offshell} as well.
+
+The $r$ and $x$ divergence equations contain only $t$ or $\phi$ derivatives and therefore vanish. The other two reduce, up to an overall minus sign, to
+\begin{equation}\label{eq:twoMaxwell}
+ \partial_r(PE)+\partial_x(as\calB)=0,
+ \qquad a\partial_r E+\partial_x\calB=0.
+\end{equation}
+Direct differentiation yields
+\begin{equation}\label{eq:EBderiv}
+ E_r=\frac{2qr(-r^2+3a^2x^2)}{\Sigma^3},\qquad
+ \calB_x=\frac{2qar(r^2-3a^2x^2)}{\Sigma^3}=-aE_r.
+\end{equation}
+This proves the second equation. Using $P-a^2s=\Sigma$, the first left-hand side becomes
+\begin{align*}
+ 2rE+PE_r+as\calB_x-2ax\calB
+ &=2rE+\Sigma E_r-2ax\calB\\
+ &=\frac{2qr}{\Sigma^2}
+       \bigl((r^2-a^2x^2)+(-r^2+3a^2x^2)-2a^2x^2\bigr)=0.
+\end{align*}
+This is a complete source-free Maxwell verification for every radial $d$ for which the displayed metric is regular.
+
+\subsection{Contracting the electromagnetic stress tensor}
+In the rational coframe $(p,\dd r,\dd x,b)$ the metric and nonzero field entries are
+\[
+ g_{ij}=\operatorname{diag}(-d/\Sigma,\Sigma/d,\Sigma/s,s/\Sigma),
+ \qquad F_{10}=E,\quad F_{23}=-\calB.
+\]
+The products of the first two and last two metric coefficients are $-1$ and $1$. Consequently
+\begin{equation}\label{eq:F2}
+ F_{ij}F^{ij}=2(\calB^2-E^2).
+\end{equation}
+Let $J_{ij}=F_{ik}g^{k\ell}F_{j\ell}$. It is diagonal in this coframe, with entries
+\[
+ J_{00}=\frac d\Sigma E^2,\quad J_{11}=-\frac\Sigma d E^2,
+ \quad J_{22}=\frac\Sigma s\calB^2,\quad J_{33}=\frac s\Sigma\calB^2.
+\]
+Subtracting $\tfrac14g_{ij}$ times \eqref{eq:F2} and multiplying by $2$ therefore gives
+\begin{equation}\label{eq:stress}
+ 2\left(J_{ij}-\tfrac14g_{ij}F_{k\ell}F^{k\ell}\right)
+ =(E^2+\calB^2)\operatorname{diag}
+       (d/\Sigma,-\Sigma/d,\Sigma/s,s/\Sigma).
+\end{equation}
+Finally the elementary square identity
+\begin{equation}\label{eq:sumSquares}
+ (r^2-a^2x^2)^2+4a^2r^2x^2=(r^2+a^2x^2)^2
+\end{equation}
+proves $E^2+\calB^2=q^2/\Sigma^2$. Equation~\eqref{eq:stress} is thus exactly \eqref{eq:RicKN}. The Einstein equation is proved component by component. No square-root tetrad, complex coordinates, or analytic approximation has entered the argument.
+
+\section{Deriving the radial function within the ansatz}\label{sec:derive}
+
+The preceding proof verifies the metric and also determines its radial function, once the angular structure and potential have been chosen.
+
+\begin{proposition}[Radial reduction]\label{prop:radial}
+For the radial-function metric of Lemma~\ref{lem:offshell} and $A=-qrp/\Sigma$, the Einstein--Maxwell equations are equivalent to
+\begin{equation}\label{eq:radial}
+ d''=2,\qquad r^2-a^2+d-rd'=q^2.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Maxwell's equations already hold for every radial $d$. Equating \eqref{eq:offshell} and \eqref{eq:stress} in the invertible coframe gives $U=V=q^2/\Sigma^2$. The difference $U-V$ yields $d''=2$, and $V=q^2/\Sigma^2$ yields the second equation. Conversely these two scalar equations imply those two values of $U,V$, so all the tensor equations follow.
+\end{proof}
+
+\begin{corollary}[Polynomial radial uniqueness]\label{cor:unique}
+Among polynomial radial functions with rational coefficients (and fixed parameters $a,q$), the solutions of \eqref{eq:radial} are exactly
+\[
+ d(r)=r^2-2mr+a^2+q^2,\qquad m\in\Q.
+\]
+The same coefficient argument applies to constructive real coefficients with the displayed coefficient identities.
+\end{corollary}
+\begin{proof}
+Write $d(r)=\sum_{j=0}^n c_jr^j$, padding the coefficient array with zeros when $n<2$. The polynomial identity $d''=2$ gives $2c_2=2$ and $j(j-1)c_j=0$ for $j\ge3$. Multiplication by the nonzero rational integer $j(j-1)$ is cancellable, so $c_2=1$ and all higher coefficients vanish. Thus $d=r^2+c_1r+c_0$. The second equation is now $c_0-a^2=q^2$; write $c_1=-2m$. All coefficient comparisons are finite. An induction over the coded coefficient list uses only decidable rational equalities and is quantifier-free after coding, as in Section~\ref{sec:ipra}.
+\end{proof}
+
+For a $C^2$ radial function on an interval with $r\ne0$, the second equation can also be written
+\[
+ \frac{\dd}{\dd r}\left(\frac{d-r^2-a^2-q^2}{r}\right)=0.
+\]
+With supplied derivative-remainder bounds, constancy follows constructively by subdividing any compact segment into $n$ pieces: the telescoping error is at most $C\ell^2/n$ for segment length $\ell$. Given a requested precision, choose a sufficiently large power-of-two $n$. This is the same finite estimate used in Section~\ref{sec:real}. We do not need this broader analytic uniqueness statement for the main theorem; Corollary~\ref{cor:unique} already derives the actual polynomial family inside $\ipra$.
+
+The phrase ``within the ansatz'' is essential. We have fixed the angular dependence, two commuting coordinate symmetries, and the aligned electromagnetic potential. The argument neither derives that ansatz from general hypotheses about stationary spacetimes nor proves a black-hole uniqueness theorem.
+
+\section{The four specializations and a separate static proof}\label{sec:four}
+
+\subsection{Returning to angular notation}
+On an ordinary angular chart with $0<\theta<\pi$, set $x=\cos\theta$. The identities $s=\sin^2\theta$ and $\dd x^2/s=\dd\theta^2$ change \eqref{eq:master} to
+\begin{align}
+ g={}&-\frac{\Delta}{\Sigma}(\dd t-a\sin^2\theta\,\dd\phi)^2
+ +\frac\Sigma\Delta\dd r^2+\Sigma\dd\theta^2\notag\\
+ &+\frac{\sin^2\theta}{\Sigma}
+       ((r^2+a^2)\dd\phi-a\dd t)^2,
+ \qquad \Sigma=r^2+a^2\cos^2\theta.\label{eq:BLtheta}
+\end{align}
+This is only a comparison with the customary notation. The rational proof and the atlas below do not require a primitive sine or cosine function.
+
+\subsection{Kerr and Schwarzschild as vacuum specializations}
+Set $q=0$. Then $A=F=0$, while \eqref{eq:RicKN} gives $\Ric(g)=0$ identically for $\Delta=r^2-2mr+a^2$. This proves the Kerr exact-solution theorem. The substitution is a homomorphism on every displayed polynomial identity and preserves all instances whose remaining denominators satisfy the chart guard.
+
+Now also set $a=0$. For $r\ne0$ put $f=1-2m/r$. Then \eqref{eq:BLtheta} becomes
+\begin{equation}\label{eq:Schw}
+ g=-\left(1-\frac{2m}{r}\right)\dd t^2
+   +\left(1-\frac{2m}{r}\right)^{-1}\dd r^2
+   +r^2(\dd\theta^2+\sin^2\theta\,\dd\phi^2).
+\end{equation}
+Thus Schwarzschild is obtained by exact substitution, without taking a limiting argument. This proves the vacuum equations on its regular static chart and, by the atlas below, across its removable static-coordinate pole.
+
+\subsection{Reissner--Nordstr\"om and its elementary verification}
+Set $a=0$, retaining $q$. Then
+\begin{equation}\label{eq:RN}
+ f=1-\frac{2m}{r}+\frac{q^2}{r^2},\qquad
+ g=-f\,\dd t^2+f^{-1}\dd r^2+r^2\dd\Omega^2,
+ \qquad A=-\frac qr\dd t,
+\end{equation}
+where $\dd\Omega^2=\dd\theta^2+\sin^2\theta\,\dd\phi^2$. The electromagnetic field is $(q/r^2)\dd r\wedge\dd t$.
+
+There is a short independent static computation. For arbitrary $f(r)$ in this ansatz, substituting its diagonal metric into \eqref{eq:gamma}--\eqref{eq:ricci} gives
+\begin{align}
+ R_{tt}&=f\left(\frac{f''}{2}+\frac{f'}r\right),&
+ R_{rr}&=-f^{-1}\left(\frac{f''}{2}+\frac{f'}r\right),\notag\\
+ R_{\theta\theta}&=1-f-rf',&
+ R_{\phi\phi}&=\sin^2\theta(1-f-rf').\label{eq:staticRic}
+\end{align}
+All off-diagonal entries vanish. These identities also follow from Lemma~\ref{lem:offshell} with $d=r^2f$, $a=0$; the substitution $d'=2rf+r^2f'$, $d''=2f+4rf'+r^2f''$ gives exactly the four entries.
+
+For \eqref{eq:RN},
+\[
+ f'=\frac{2m}{r^2}-\frac{2q^2}{r^3},\qquad
+ f''=-\frac{4m}{r^3}+\frac{6q^2}{r^4},
+\]
+so $f''/2+f'/r=q^2/r^4$ and $1-f-rf'=q^2/r^2$. These are precisely the stress-tensor components from the purely electric field. Maxwell's nontrivial divergence is $\partial_r(r^2F^{rt})=\partial_r(-q)=0$. The angular equation can also construct the solution: $(rf)'=1-q^2/r^2$ has the displayed rational primitive $rf=r-2m+q^2/r$. Setting $q=0$ repeats the Schwarzschild verification independently.
+
+\section{A rational atlas across radial and polar coordinate poles}\label{sec:charts}
+
+\subsection{The ingoing chart}
+Introduce local coordinate symbols $(v,r,x,\psi)$ and the differential substitution on a Boyer--Lindquist overlap
+\begin{equation}\label{eq:ingoingchange}
+ \dd t=\dd v-\frac P\Delta\dd r,\qquad
+ \dd\phi=\dd\psi-\frac a\Delta\dd r.
+\end{equation}
+Put $p_+=\dd v-as\,\dd\psi$ and $b_+=P\,\dd\psi-a\,\dd v$. Then $p=p_+-(\Sigma/\Delta)\dd r$ and $b=b_+$, so the terms in $\dd r^2/\Delta$ cancel:
+\begin{equation}\label{eq:ingoing}
+ g_+=-\frac\Delta\Sigma p_+^2+2p_+\dd r
+          +\frac\Sigma s\dd x^2+\frac s\Sigma b_+^2,
+ \qquad A_+=-\frac{qr}{\Sigma}p_+.
+\end{equation}
+There is no inverse power of $\Delta$ in these formulas. The inverse metric, in coordinate order $(v,r,x,\psi)$, is
+\begin{equation}\label{eq:ingoinginv}
+ (g_+^{\mu\nu})=\frac1\Sigma
+ \begin{pmatrix}
+ a^2s&P&0&a\\P&\Delta&0&a\\0&0&s&0\\a&a&0&1/s
+ \end{pmatrix},\qquad \det g_+=-\Sigma^2.
+\end{equation}
+The transformed old potential differs from $A_+$ by $(qr/\Delta)\dd r$. This form is closed on the overlap, because its coefficient depends only on $r$. Consequently both potentials give the same field strength there. No gauge antiderivative needs to be constructed.
+
+These charts are defined directly by their coefficients. The overlap Jacobian \eqref{eq:ingoingchange} is integrable locally because its extra coefficients depend only on $r$; if actual coordinate maps are wanted, bounded quadrature of those rational functions supplies primitive recursive local names on a separated overlap. The field-equation proof does not depend on performing those integrals.
+
+\begin{proposition}[Field equations at $\Delta=0$]\label{prop:regular}
+The metric and potential \eqref{eq:ingoing} satisfy Einstein--Maxwell whenever $\Sigma s\ne0$, including at $\Delta=0$.
+\end{proposition}
+\begin{proof}
+One direct proof recomputes \eqref{eq:gamma}--\eqref{eq:maxwell} with \eqref{eq:ingoing}--\eqref{eq:ingoinginv}; the accompanying standard-library checker does this for every component. There is also a short algebraic proof from the overlap. All ingoing residuals lie in
+$\Z[1/2,r,x,a,m,q,1/\Sigma,1/s]$. They vanish after inverting $\Delta$, by the tensor transformation law and the proved Boyer--Lindquist identities. The map from this integral domain to its localization at the nonzero polynomial $\Delta$ is injective: if $\Delta^kN=0$, then $N=0$. Hence the residual numerator is the zero polynomial before any parameter or point is substituted. It therefore vanishes also at $\Delta=0$. This is polynomial cancellation, not an appeal to a dense open subset or to a real-number case distinction.
+\end{proof}
+
+\subsection{Removing the polar coordinate pole}
+Let $L=2mr-q^2$ and $\eta=s\,\dd\psi$. An equivalent expression for \eqref{eq:ingoing} is
+\begin{equation}\label{eq:sphereform}
+ g_+=-\dd v^2+2\dd v\dd r-2a\dd r\eta
+    +\Sigma\dd\Omega^2+a^2\eta^2+\frac L\Sigma(\dd v-a\eta)^2.
+\end{equation}
+Indeed $P-\Sigma=a^2s$, so the angular terms in \eqref{eq:ingoing} expand to $\Sigma\dd\Omega^2+a^2\eta^2$ after the corresponding cross terms are combined.
+
+Use stereographic coordinates $(u,z)$ on the sphere, and put
+\begin{equation}\label{eq:stereo}
+ h=1+u^2+z^2,\quad x=\frac{1-u^2-z^2}{h},\quad
+ \eta=\frac{4(u\dd z-z\dd u)}{h^2},\quad
+ \dd\Omega^2=\frac{4(\dd u^2+\dd z^2)}{h^2}.
+\end{equation}
+Substituting \eqref{eq:stereo} into \eqref{eq:sphereform} and $A_+=-qr(\dd v-a\eta)/\Sigma$ gives rational coefficients regular at $u=z=0$. On a second chart take $x=(u^2+z^2-1)/h$ with the same formulas for $\eta$ and $\dd\Omega^2$. On the overlap the transition is
+\[
+ (u',z')=\left(\frac{u}{u^2+z^2},\frac{z}{u^2+z^2}\right).
+\]
+Differentiating it proves that the expressions for $\eta$ and $\dd\Omega^2$ agree. The metric and potential use $x$ only through $x^2$, so they agree on the overlap. Each denominator $h$ is at least $1$ on real inputs.
+
+The field equations on these charts follow from rational coordinate covariance on the nonpolar overlap. Every residual has only powers of $h$ and $\Sigma$ in its denominators. Localization at the nonzero polynomial $u^2+z^2$ is injective, so its zero numerator remains zero at the pole. This repeats the exact coefficient argument of Proposition~\ref{prop:regular} and requires no decision whether a given constructive real is zero. In these stereographic coordinates the density is $\sqrt{-\det g}=4\Sigma/h^2$; the Maxwell divergence is therefore $\partial_\mu[(4\Sigma/h^2)F^{\mu\nu}]=0$. The density $\Sigma$ in \eqref{eq:maxwell} is specific to the $(t,r,x,\phi)$ and $(v,r,x,\psi)$ charts.
+
+\subsection{An explicit Lorentz-signature proof everywhere in the atlas}
+The following congruence deals with both kinds of coordinate pole at once. In the stereographic chart set
+\begin{equation}\label{eq:nullcoframe}
+ p=\dd v-a\eta,\qquad
+ n=\dd r-a\eta+\frac{L-\Sigma}{2\Sigma}p.
+\end{equation}
+Expansion of \eqref{eq:sphereform}, using $\dd v=p+a\eta$, gives exactly
+\begin{equation}\label{eq:signature}
+ g_+=2pn+\frac{4\Sigma}{h^2}(\dd u^2+\dd z^2)
+ =-\frac12(p-n)^2+\frac12(p+n)^2
+    +\frac{4\Sigma}{h^2}(\dd u^2+\dd z^2).
+\end{equation}
+The coframe $(p,n,\dd u,\dd z)$ has determinant $1$ relative to $(\dd v,\dd r,\dd u,\dd z)$. The further change $(p,n)\mapsto(p-n,p+n)$ has determinant $2$. Thus all these one-forms are independent. If $\Sigma>0$, the last expression has exactly one negative and three positive coefficients. This gives a constructive definition and proof of Lorentz signature, with no square root and no sign decision on $\Delta$.
+
+It also proves
+\begin{equation}\label{eq:stereodet}
+ \det g_+=-\frac{16\Sigma^2}{h^4}.
+\end{equation}
+Inverting the constant $2\times2$ null block in \eqref{eq:signature} shows directly that the inverse coefficients have denominators only in $2,h,\Sigma$. Thus the regularity assertions used in the field-equation extension have an explicit algebraic witness.
+
+\subsection{Flat background and the Kerr--Schild form}
+For completeness, the flat limit has a rational Cartesian description. Define
+\begin{equation}\label{eq:cartesian}
+ T=v-r,\quad X=\frac{2(ru-az)}h,\quad
+ Y=\frac{2(rz+au)}h,\quad Z=\frac{r(1-u^2-z^2)}h.
+\end{equation}
+Differentiating the four rational functions and multiplying their Jacobian matrices gives
+\begin{equation}\label{eq:flatpullback}
+ -\dd T^2+\dd X^2+\dd Y^2+\dd Z^2
+ =-\dd v^2+2\dd v\dd r-2a\dd r\eta+\Sigma\dd\Omega^2+a^2\eta^2.
+\end{equation}
+For a hand verification of the spatial part, write $X+iY=(r+ia)\,2(u+iz)/h$ merely as a convenient pair of real identities, expand its squared differential norm, and add $(\dd Z)^2$. The terms proportional to $a$ are $-2a\dd r\eta$; the remaining terms collect to $\dd r^2+\Sigma\dd\Omega^2+a^2\eta^2$. Subtracting $(\dd v-\dd r)^2$ proves \eqref{eq:flatpullback}. The spatial Jacobian has absolute determinant $4\Sigma/h^2$, so it is locally nondegenerate for $\Sigma>0$.
+
+Writing the flat metric in \eqref{eq:flatpullback} as $g_0$, the full metric is
+\begin{equation}\label{eq:KS}
+ g_+=g_0+\frac L\Sigma p^2.
+\end{equation}
+The covector $p$ is null for $g_0^{-1}$, as is immediate from \eqref{eq:nullcoframe}--\eqref{eq:signature} with $L=0$. This proves the local Kerr--Schild form and explicitly explains the flat $m=q=0$ specialization. The Cartesian inverse need not be rational or globally one-to-one; only the displayed local pullback and nonzero Jacobian are claimed.
+
+\section{Local horizons, stationary limits, and curvature}\label{sec:consequences}
+
+\subsection{Null radial surfaces and a local Killing horizon}
+The inverse coefficient \eqref{eq:ingoinginv} gives
+\begin{equation}\label{eq:nullr}
+ g_+^{-1}(\dd r,\dd r)=\frac\Delta\Sigma.
+\end{equation}
+Let $r_0$ be a specified root of $\Delta$ with $P_0=r_0^2+a^2>0$. Define
+\begin{equation}\label{eq:chi}
+ \Omega_0=\frac a{P_0},\qquad \chi=\partial_v+\Omega_0\partial_\psi.
+\end{equation}
+The metric is independent of $v,\psi$, so both coordinate vector fields, and hence their constant linear combination $\chi$, satisfy the Killing equation. At $r=r_0$,
+\[
+ p_+(\chi)=1-\frac{a^2s}{P_0}=\frac\Sigma{P_0},
+ \qquad b_+(\chi)=0,\qquad \dd r(\chi)=\dd x(\chi)=0.
+\]
+Using \eqref{eq:ingoing} with $\Delta=0$ therefore proves
+\begin{equation}\label{eq:horizonkilling}
+ g_+(\chi,\chi)=0,\qquad \chi^\flat=\frac\Sigma{P_0}\dd r.
+\end{equation}
+Thus the regular hypersurface $r=r_0$ is a local Killing horizon: its normal is null and proportional to a Killing vector. In a stereographic chart the axial vector is $-z\partial_u+u\partial_z$, so the vector field and identities extend smoothly to the axes.
+
+The local surface-gravity identity is also finite. Keeping $\Omega_0$ constant when differentiating the squared norm gives, at $r_0$,
+\[
+ \dd(g_+(\chi,\chi))=-\frac{\Delta'(r_0)\Sigma}{P_0^2}\dd r
+                   =-2\kappa\chi^\flat,
+ \qquad \kappa=\frac{\Delta'(r_0)}{2P_0}=\frac{r_0-m}{P_0}.
+\]
+For a Killing field, differentiating its squared norm and using the Killing equation gives $\nabla_\chi\chi=\kappa\chi$ on the surface. This identifies precisely the normalization used for $\kappa$.
+
+Completing the square,
+\begin{equation}\label{eq:roots}
+ \Delta=(r-m)^2-(m^2-a^2-q^2).
+\end{equation}
+For a supplied nonnegative discriminant $d_0=m^2-a^2-q^2$, the roots are $r_\pm=m\pm\sqrt{d_0}$. With rational parameter inputs, the square root has primitive recursive rational names: choose a rational interval $[0,B]$ containing it and bisect by the decidable comparison of the rational midpoint's square with $d_0$. After $N$ steps the interval width is $B2^{-N}$, so the required precision has an explicit bound. At $d_0=0$, the specified root is $m$ and $\kappa=0$ whenever $P_0>0$. We do not require a decision among all three possible signs of an arbitrary real discriminant; each assertion has its stated witness or inequality hypothesis.
+
+\subsection{The stationary-limit equation}
+The squared norm of $\partial_v$ (or $\partial_t$ on the overlap) is
+\begin{equation}
+ g_{vv}=-\frac{r^2-2mr+q^2+a^2x^2}{\Sigma}.
+\end{equation}
+Therefore its null locus is $r^2-2mr+q^2+a^2x^2=0$, with formal roots $m\pm\sqrt{m^2-q^2-a^2x^2}$ when the stated discriminant is nonnegative. This proves the local stationary-limit equation. A complete global ergoregion or event-horizon theorem requires additional causal and domain information; those conclusions are not encoded merely by these root identities.
+
+\subsection{Curvature invariants with a finite contraction certificate}
+The Ricci expression \eqref{eq:RicKN} immediately implies
+\begin{equation}\label{eq:RicSquared}
+ R_{\mu\nu}R^{\mu\nu}=\frac{4q^4}{\Sigma^4}.
+\end{equation}
+Each of its four diagonal coframe contributions is $q^4/\Sigma^4$ after raising both indices.
+
+A supplementary exact certificate computes the full Riemann tensor from
+\begin{equation}\label{eq:Riemann}
+ R^i{}_{j k\ell}=\partial_k\Gamma^i_{\ell j}-\partial_\ell\Gamma^i_{kj}
+       +\sum_h(\Gamma^i_{kh}\Gamma^h_{\ell j}-\Gamma^i_{\ell h}\Gamma^h_{kj}),
+ \qquad R_{ij k\ell}=g_{ih}R^h{}_{j k\ell}.
+\end{equation}
+It verifies, by integer polynomial normalization,
+\begin{align}
+ \mathcal K:=R_{\alpha\beta\gamma\delta}R^{\alpha\beta\gamma\delta}
+ =\frac8{\Sigma^6}\bigl[{}&6m^2(r^6-15r^4a^2x^2+15r^2a^4x^4-a^6x^6)\notag\\
+ &-12mq^2r(r^4-10r^2a^2x^2+5a^4x^4)\notag\\
+ &+q^4(7r^4-34r^2a^2x^2+7a^4x^4)\bigr].\label{eq:Kretschmann}
+\end{align}
+Here is the exact finite contraction rule, to make the supplementary calculation reproducible independently of a tensor library. Order the six pairs $I=(i,j)$ with $i<j$. Let $C_{IJ}=R_{ij k\ell}$ for $J=(k,\ell)$ and let
+$J_{(i,j),(k,\ell)}=g^{ik}g^{j\ell}-g^{i\ell}g^{jk}$.
+Then
+\begin{equation}\label{eq:paircontract}
+ \mathcal K=4\tr(CJCJ).
+\end{equation}
+Indeed raising a pair of antisymmetric indices produces multiplication by $J$; summing over both possible orders of each of two pairs gives the factor $4$. The checker forms all $96$ entries $R^i{}_{j k\ell}$ with $k<\ell$ from \eqref{eq:Riemann}, lowers the first index, checks the curvature symmetries, and uses \eqref{eq:paircontract}. It also contracts $R^i{}_{j i\ell}$ back to \eqref{eq:Ric-table}. Thus \eqref{eq:Kretschmann} is a finite verified polynomial-contraction corollary, not an appeal to the vanishing of one numerical sample. The proof of the four exact solutions above is independent of this supplementary invariant calculation.
+
+At $x=0$, \eqref{eq:Kretschmann} simplifies to the especially useful positive expression
+\begin{equation}\label{eq:equatorK}
+ \mathcal K=\frac{8\bigl(6(mr-q^2)^2+q^4\bigr)}{r^8}.
+\end{equation}
+Besides the bound $\mathcal K\ge8q^4/r^8$, completing the square gives
+\[
+ 6(mr-q^2)^2+q^4
+ =7\left(q^2-\frac67mr\right)^2+\frac67m^2r^2,
+ \qquad \mathcal K\ge\frac{48m^2}{7r^6}.
+\]
+A supplied apartness witness $|m|\ge\epsilon>0$ therefore proves curvature blow-up along the equator without deciding whether $q$ is zero. For example, for any rational target $T>0$, take
+\[
+ 0<r\le\delta:=\min\left(1,\frac{48\epsilon^2}{7(T+1)}\right).
+\]
+Then $\mathcal K\ge(48\epsilon^2/7)r^{-6}\ge T+1$. With $|q|\ge\epsilon$, the analogous bound uses $\delta=\min(1,8\epsilon^4/(T+1))$. These are explicit primitive recursive moduli for the singular behavior.
+
+The locus $\Sigma=0$ is $r=0$ and $ax=0$. If $a$ is supplied apart from zero, this becomes $r=x=0$, the ring locus in the Cartesian description. If $a=0$, it is the ordinary central locus. These statements about squares use positivity, not an arbitrary real excluded-middle principle. When $m=q=0$, the full Riemann tensor vanishes, as both \eqref{eq:flatpullback} and the supplementary certificate verify. Accordingly $\Sigma=0$ must not automatically be called a curvature singularity in that flat degenerate case.
+
+\section{Why the proof is available in iPRA}\label{sec:ipra}
+
+\subsection{The underlying arithmetic theory}
+We use the conventional $\ipra$: intuitionistic first-order logic with equality, symbols for specified primitive recursive functions and their defining equations, the successor axioms, and induction for quantifier-free formulas. All parameters may remain free in an induction instance. This is the conventional target connected to the native scalar core by the inspected ProveIt development~\cite{proveit}.
+
+The following proof does not assume that every terminating program is primitive recursive, that every true rational identity is automatically an $\ipra$ theorem, or that $\ipra$ proves its own soundness. Instead, the operations used here have explicit primitive recursive definitions and their arithmetic invariants are quantifier-free.
+
+\subsection{Concrete coding and total operations}
+For definiteness, use Cantor pairing $\pi(u,v)=(u+v)(u+v+1)/2+v$, with division by $2$ performed on the even product. The projections are obtained by bounded search over $u,v\le c$ for an input code $c$. Encode the empty list by $0$ and a cons cell by $1+\pi(\text{head},\text{tail})$. Its tail code is smaller, so all structural traversals may be implemented with explicit fuel given by the original code. Encode an integer by sign and magnitude, and a rational by a pair $(z,b)$ with signed integer $z$ and positive natural denominator $b$. Equality is
+\begin{equation}\label{eq:ratEq}
+ (z,b)=_\Q(w,c)\quad\Longleftrightarrow\quad zc=wb.
+\end{equation}
+There is no need to reduce fractions by a gcd. Addition, negation, and multiplication are
+\[
+ (z,b)+(w,c)=(zc+wb,bc),\quad -(z,b)=(-z,b),\quad
+ (z,b)(w,c)=(zw,bc).
+\]
+For $z\ne0$, the reciprocal is $(\operatorname{sgn}(z)b,|z|)$. Invalid codes and inverse-of-zero calls are assigned a fixed harmless default, so all algorithms are total; the guard excludes them in every theorem. Sign tests concern integers and are decidable by primitive recursive comparisons.
+
+Finite lists, vectors of length five, and $4\times4$ matrices are coded by nested pairs or a fixed bounded sequence coding. Their projections, updates, and bounded folds are primitive recursive. Powers are defined by primitive recursion. A signed integer coefficient polynomial can be stored as a finite list of terms $(c,\alpha_1,\ldots,\alpha_5)$ or as a dense box of coefficients; conversion is a bounded fold. The six-variable second-jet calculation is the same fixed construction with one more exponent coordinate.
+
+An expression is a finite code built from integer constants, five variables, addition, multiplication, negation, and guarded inversion. A topological list of instructions is particularly convenient: every instruction refers only to earlier entries. Evaluating this fixed expression language is primitive recursive by recursion on list length. This is \emph{not} a universal evaluator for all primitive recursive definitions; it evaluates a small finite arithmetic syntax with an explicit structural bound.
+
+Formal differentiation is primitive recursive on the same syntax. It is performed symbolically before rational evaluation. Differentiating a numeral obtained from a sampled point would be a different and incorrect algorithm. The tensor programs are fixed finite compositions of these derivatives and bounded sums; their outputs are therefore primitive recursive rational codes.
+
+\subsection{The rational algebra lemmas have quantifier-free proofs}
+The elementary laws of natural addition and multiplication are proved using their defining recursions and quantifier-free induction. For example, right distributivity follows by induction on the final multiplier, with free parameters for the other two arguments. Associativity and commutativity are obtained in the same way. The sign-and-magnitude operations reduce signed laws to natural laws and decidable cases. Cross multiplication then proves the rational field laws under positive-denominator and nonzero guards. Such laws are universally generalized only after their quantifier-free induction proofs have been completed.
+
+Every step in Sections~\ref{sec:metric}--\ref{sec:maxwell} is now an instance of a rational field law or of the explicit derivative rewrite rules. Since the dimension and the metric formulas are fixed, one direct object-theory proof simply expands each displayed calculation into a finite sequence of these equalities. The parameters remain variables. This gives a uniform proof for all rational inputs; it does not just prove that a checker happened to accept one closed input.
+
+The next two invariants give a second route: verify the finite normalizer once, then instantiate it at the explicit residual expressions. They also specify the required Lean bridge precisely.
+
+\subsection{A quantifier-free invariant for polynomial collection}
+Let a raw polynomial list be $p=((c_i,\alpha_i))_{i<n}$ with each exponent coordinate at most $d$. Encode all exponent vectors in the box $\{0,\ldots,d\}^5$ by numbers $e<E$, where $E=(d+1)^5$. Let $\beta(e)$ be the decoded vector and define
+\[
+ C(k,e)=\sum_{i<k}c_i[\alpha_i=\beta(e)],\qquad
+ v^\alpha=\prod_{j<5}v_j^{\alpha_j}.
+\]
+The bracket is the Boolean $0/1$ equality test. With the coded rational environment $v$ a free parameter, use induction on $k$ with invariant
+\begin{equation}\label{eq:polyInv}
+ k\le n\quad\Longrightarrow\quad
+ \sum_{i<k}c_i v^{\alpha_i}
+ =_\Q\sum_{e<E}C(k,e)v^{\beta(e)}.
+\end{equation}
+Both sides are primitive recursive rational codes, so \eqref{eq:polyInv} is a single integer cross-product equality after expanding \eqref{eq:ratEq}. It is quantifier-free. At $k=0$ both sides are zero. At the step, exactly the coefficient at the encoded exponent $\alpha_k$ increases by $c_k$, so both sides increase by $c_kv^{\alpha_k}$. The needed finite-sum identities are themselves quantifier-free fold inductions.
+
+At $k=n$, if every collected coefficient is zero, the right-hand side is zero. The bounded statement about coefficients can be represented by one primitive recursive Boolean fold equal to $1$. It introduces no unbounded quantifier into the induction formula. Hence zero coefficient normal form implies zero evaluation for every rational environment, by a proof within $\ipra$.
+
+\subsection{A quantifier-free invariant for rational normalization}
+For each instruction $e_j$ construct a numerator polynomial $N_j$ and denominator polynomial $D_j$. At a constant or variable use denominator $1$; use the exact recurrences
+\begin{align*}
+ (N,D)+(M,E)&=(NE+MD,DE),&
+ (N,D)(M,E)&=(NM,DE),\\
+ -(N,D)&=(-N,D),& (N,D)^{-1}&=(D,N).
+\end{align*}
+Let $\mathsf{SafePrefix}(k,v)$ be the Boolean test that all inverse arguments encountered in the first $k$ instructions evaluate to nonzero rationals and that every referenced earlier instruction is valid. The induction invariant is the coded bounded conjunction
+\begin{equation}\label{eq:normInv}
+ \mathsf{SafePrefix}(k,v)=1\ \longrightarrow\
+ \mathsf{All}_{j<k}\bigl(D_j(v)\ne0\ \wedge\
+       \operatorname{value}_j(v)D_j(v)=_\Q N_j(v)\bigr)=1.
+\end{equation}
+The notation $\mathsf{All}$ denotes a primitive recursive Boolean fold, so this is again quantifier-free. The base is empty. Addition and multiplication preserve the invariant by the field laws. For inversion, safety gives $\operatorname{value}_j(v)\ne0$; the previously proved relation and $D_j(v)\ne0$ imply $N_j(v)\ne0$. Exchanging numerator and denominator is therefore justified. This proves every step without induction on a formula quantifying over all environments. Universal generalization over $v$ is performed at the end.
+
+For the fixed metric calculation, the only denominator factors are $2,\Sigma,\Delta,s$. Differentiation raises their powers and never introduces a new factor. Thus $\mathsf{Reg}(c)=1$ implies the safety guard for every residual expression by a fixed syntactic proof. The numerator of every residual is the zero polynomial, as demonstrated by the displayed calculations and the exact coefficient computation. Equations~\eqref{eq:polyInv}--\eqref{eq:normInv} now prove \eqref{eq:literal} in $\ipra$. This completes the proof of Theorem~\ref{thm:arithmetic}.
+
+\subsection{Why the executable checker also has a primitive recursive implementation}
+The efficient standard-library checker represents a rational expression as
+\[
+ (N;e,i,j,k)\quad\text{meaning}\quad
+ \frac{N}{2^e\Sigma^i\Delta^j s^k}.
+\]
+Addition aligns the four denominator exponents by taking maxima and multiplies numerators by the missing factors. Multiplication convolves coefficient lists. Derivatives use
+\[
+ \partial_z\left(\frac N{\prod f_j^{e_j}}\right)
+ =\frac{\partial_zN}{\prod f_j^{e_j}}
+  -\sum_j e_j\frac N{\prod f_j^{e_j}}\frac{\partial_z f_j}{f_j}.
+\]
+Optional cancellation divides by the three fixed polynomials $\Sigma,\Delta,s$ and by coefficient powers of $2$. It does not call a factorization oracle or a multivariate gcd routine.
+
+For a polynomial numerator of total degree $d$ in $N$ variables, graded lexicographic division by a fixed monic-up-to-sign factor strictly decreases the leading monomial at each successful subtraction, and never increases total degree. There are at most $\binom{d+N}{N}$ monomials of degree at most $d$. Thus the implementation's division loop can be replaced by recursion with this explicit fuel. The exponent-reduction loops are bounded by their input exponents. Every dictionary operation can be implemented by a bounded scan of a coded list. Hence there is an explicit primitive recursive arithmetic realization, irrespective of Python's more general execution capabilities.
+
+The invariant of a successful polynomial division step is $N=Qf+R$; it is a coefficientwise integer equality represented by a bounded Boolean check. If the remainder is zero, replacing $N/f$ by $Q$ is justified under the nonzero factor guard. Alternatively, a Lean replayer can check each proposed quotient by multiplication. No trust in an external cancellation routine is needed.
+
+\subsection{What has and has not been proved about formal proofs}
+The preceding paragraphs give a human proof of $\ipra$-derivability through explicit primitive recursive operations and quantifier-free invariants. The archive does not contain a completed, kernel-checked term of the object-language type \texttt{Prf PRAAx [] statement}. A successful Python run alone would not supply that term, and a host Lean theorem about \texttt{Rat} would not supply it either. Section~\ref{sec:lean} specifies the construction still required for that formal endpoint. No general reflection or consistency assertion is used anywhere in the mathematical argument.
+
+\section{Constructive real interpretation with explicit finite bounds}\label{sec:real}
+
+\subsection{Names and the exact logical form of the extension}
+A fixed primitive recursive rational family $c(n)$ is a regular name under the contract
+\begin{equation}\label{eq:name}
+ |c(n)-c(k)|\le 2^{-n}+2^{-k}\qquad(n,k\in\N).
+\end{equation}
+One may use any equivalent explicit Cauchy modulus. In the usual real-number interpretation this presents a real with $|c(n)-c_\infty|\le2^{-n}$. The arithmetic theory itself uses the finite rational inequalities, rather than forming $c_\infty$ as an additional object of its first-order domain.
+
+There is a proof-theoretic qualification. The mere external fact that a primitive recursive family is a valid name does not imply that its universal regularity contract is provable in $\ipra$. Accordingly all claims in this section are conditional on the displayed name, box, and apartness contracts. More precisely, for each requested precision and each fixed expression, the construction uses finitely many instances of those contracts, and $\ipra$ proves its rational conclusion from those instances. If the complete input contracts are themselves $\ipra$-provable, their universal output contracts follow. We never import an arbitrary true $\Pi_1$ premise as an axiom.
+
+A nonzero denominator is represented constructively by \emph{apartness}: a supplied positive rational $\delta$ and the inequality $|d|\ge\delta$. A negative assertion $\neg(d=0)$ alone is not substituted for this quantitative input. This is the precise condition that makes reciprocal evaluation effective.
+
+\subsection{Producing a separated rational neighborhood}
+Suppose the center has all five coordinate and parameter magnitudes at most a rational $B\ge1$. Put $K=B+1$. On a maximum-norm neighborhood of radius at most $1$, all magnitudes are at most $K$. The elementary polynomial difference formula
+\[
+ \prod_{i=1}^n y_i-\prod_{i=1}^n z_i
+ =\sum_{j=1}^n(y_j-z_j)
+       \left(\prod_{i<j}y_i\right)\left(\prod_{i>j}z_i\right)
+\]
+provides Lipschitz estimates without a mean-value theorem. Applied to our three denominator polynomials, it gives the following valid constants on the box:
+\begin{center}
+\begin{tabular}{lll}\toprule
+Polynomial & Magnitude bound & Maximum-norm Lipschitz constant\\\midrule
+$\Sigma=r^2+a^2x^2$ & $2K^4$ & $6K^3$\\
+$\Delta=r^2-2mr+a^2+q^2$ & $5K^2$ & $10K$\\
+$s=1-x^2$ & $2K^2$ & $2K$\\\bottomrule
+\end{tabular}
+\end{center}
+For example, the change in $a^2x^2$ is at most $4K^3$ times the maximum input change, and the change in $r^2$ is at most $2K$ times that change. The sum is at most $6K^3$ because $K\ge1$.
+
+If at the center each denominator has absolute value at least $\delta_0>0$, choose
+\begin{equation}\label{eq:radius}
+ \rho=\min\left(1,\frac{\delta_0}{20K^3}\right).
+\end{equation}
+Throughout the resulting box, every denominator has absolute value at least $\delta_0/2$. Thus in the following estimates the uniform local bound is $\delta=\delta_0/2$, not $\delta_0$. For a center given by a name, a coarse rational approximation and its error bound can certify the center inequalities with an additional factor of two of slack. All such checks are finite rational comparisons.
+
+On the ingoing stereographic atlas, use the same procedure for the polynomial $\widehat\Sigma=r^2h^2+a^2(1-u^2-z^2)^2$, since $\Sigma=\widehat\Sigma/h^2$ and $h\ge1$. Polynomial degree and coefficient bounds give a primitive recursive Lipschitz constant by the same product-difference formula. The forbidden factors $\Delta$ and $s$ no longer occur.
+
+\subsection{Evaluation and derivative bounds by syntax recursion}
+For a fixed rational expression $e$ on a separated box, construct rational constants $B_e,L_e,C_e\ge0$ satisfying
+\begin{align}
+ |e(y)|&\le B_e,\label{eq:Bbound}\\
+ |e(y)-e(z)|&\le L_e\|y-z\|_\infty,\label{eq:Lbound}\\
+ |e(y+t\mathbf e_j)-e(y)-t(\partial_je)(y)|&\le C_e t^2\label{eq:Cbound}
+\end{align}
+whenever the points and the intervening coordinate segment remain in the box. The construction can be restricted to the finitely many inverse subexpressions in our metric program; each is supplied a uniform local lower bound. Constants and coordinate variables have $C=0$; a coordinate variable has $L=1$, while a constant has $L=0$. Sums and negations add or preserve the bounds. For products use
+\begin{align}
+ B_{fg}&=B_fB_g,\qquad L_{fg}=B_fL_g+B_gL_f,\notag\\
+ C_{fg}&=B_fC_g+B_gC_f+L_fL_g.\label{eq:productbounds}
+\end{align}
+To verify the remainder formula, write $\Delta f=f(y+t\mathbf e_j)-f(y)$ and similarly for $g$. The product remainder is
+\[
+ g(y)(\Delta f-tf_j(y))+f(y)(\Delta g-tg_j(y))+\Delta f\Delta g.
+\]
+The three displayed bounds yield \eqref{eq:productbounds} directly.
+
+For an inverse, with $|f|\ge\delta$ throughout the box, use
+\begin{equation}\label{eq:inversebounds}
+ B_{1/f}=\delta^{-1},\quad L_{1/f}=L_f\delta^{-2},\quad
+ C_{1/f}=C_f\delta^{-2}+L_f^2\delta^{-3}.
+\end{equation}
+The exact identity behind the final estimate is
+\begin{equation}\label{eq:inverseremainder}
+ \frac1{u+h}-\frac1u+\frac h{u^2}
+       =\frac{h^2}{u^2(u+h)}.
+\end{equation}
+Apply it with $u=f(y)$ and $h=\Delta f$, then split $\Delta f=t f_j(y)+(\Delta f-t f_j(y))$. The remainder is bounded by $C_f t^2/\delta^2+L_f^2t^2/\delta^3$. This proves the quotient-rule derivative by a finite inequality; no completeness theorem or infinitary differentiation rule is being smuggled into the arithmetic proof.
+
+For the main tensor identities it suffices to apply this argument to the metric and its first formal derivatives, thereby identifying its second derivatives. The same argument applies to each externally fixed finite number of further differentiations. This is the precise sense of smoothness available as an arithmetic scheme. It is not an internal quantification over a variable-order class of arbitrary functions.
+
+\subsection{Explicit precision selection}
+Suppose all input approximations have error at most $2^{-N}$ and remain in the separated box. Equation~\eqref{eq:Lbound} bounds output error by $L_e2^{-N}$. Choose an integer $K_e\ge\max(1,L_e)$; taking
+\[
+ N=n+K_e+2
+\]
+is a deliberately conservative primitive recursive precision selector because $2^{K_e}\ge K_e\ge L_e$. Increase this offset, by a similarly bounded calculation, until the input error is also at most $\rho/2$. Thus $e$ has an explicit regular name and a uniform evaluation modulus. More efficient bit-length selectors may be used, but are unnecessary for primitive recursiveness.
+
+Equation~\eqref{eq:Cbound} gives, for $t\ne0$,
+\[
+ \left|\frac{e(y+t\mathbf e_j)-e(y)}t-(\partial_je)(y)\right|
+ \le C_e|t|.
+\]
+Choosing $|t|\le2^{-n}/\max(1,C_e)$ is an explicit derivative modulus. Applying this to derivative syntax gives all the needed connection and curvature interpretation contracts. Each inequality proof is a finite induction over a fixed expression tree, with the requested precision and coded rational values as free parameters; the induction formulas are quantifier-free.
+
+\subsection{Transferring the exact equations}
+At every sufficiently accurate rational approximation in the guarded box, all field-equation residuals evaluate to exactly zero by Theorem~\ref{thm:arithmetic}. Their operations and derivatives have the just-proved uniform precision contracts. Therefore the two sides of each interpreted tensor equation agree at every requested precision. A convenient formulation is: for any $n$, select the finitely many argument precisions prescribed above and prove that the difference of the resulting rational approximations has absolute value at most $2^{-n}$. Since $n$ is arbitrary, the regular names are equal.
+
+On a regular stereographic chart the Maxwell expression uses density $4\Sigma/h^2$, as established in Section~\ref{sec:charts}. All its residual numerators are identically zero by the same finite localization argument. The explicit coframe \eqref{eq:signature} supplies the signature witness and a bound on the inverse matrix when $\Sigma$ is apart from zero. Thus the geometry, the field equations, and their domain conditions have simultaneous effective witnesses. This proves the conditional contract formulation of Theorem~\ref{thm:real-summary}.
+
+The construction concerns the explicit solutions and rational local coordinate maps at hand. It is not a general existence theorem for the Einstein equations, a construction of arbitrary smooth manifolds inside arithmetic, or an extraction of moduli from an arbitrary classical proof.
+
+\section{Executable certificates and their trust boundary}\label{sec:verification}
+
+The archive contains the defining formulas, rather than just a table of sampled values. The primary checker implements sparse integer polynomials and four explicit denominator exponents; all zero tests inspect integer coefficients. It rejects a nonzero residual by raising an exception. Python optimization therefore cannot disable the checks. Four deliberately incorrect residuals are included as rejection controls.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.29\textwidth}>{\raggedright\arraybackslash}p{0.63\textwidth}}
+\toprule
+Program & Mathematical check\\\midrule\endhead
+\file{code/verify_stdlib.py} & Full Boyer--Lindquist inverse, determinant, connection trace, all sixteen Ricci entries, scalar curvature, $F$, Maxwell divergence, $\dd F$, and Einstein--Maxwell residuals; integer arithmetic only.\\[0.4em]
+\file{code/verify_sympy.py} & Independent construction of the same tensors by SymPy rational simplification. It is an independent check, not the trusted arithmetic definition.\\[0.4em]
+\file{code/compare_engines.py} & Exact agreement of all $48$ stored Ricci, field, and Maxwell-density components between those two engines.\\[0.4em]
+\file{code/verify_offshell.py} & Recomputes the radial-function Ricci identity in six formal variables $r,x,a,d,v,w$.\\[0.4em]
+\file{code/verify_ingoing.py} & Recomputes the full equations using the horizon-regular metric and inverse, verifies the overlap transformation, and checks that no $\Delta$ denominator survives.\\[0.4em]
+\file{code/verify_stereographic.py} & Checks the null congruence, inverse, determinant, rational Cartesian pullback, Jacobian, and null Kerr--Schild covector. The field equations at the poles use the explicit polynomial-localization proof in the article.\\[0.4em]
+\file{code/verify_curvature.py} & Full Riemann construction on six index pairs, curvature symmetries, Ricci contraction, quadratic invariants, equatorial numerator, and flat-parameter curvature.\\[0.4em]
+\file{code/check_controls.py} & Positive arithmetic sanity checks and deliberately nonzero residuals that must be rejected.\\[0.4em]
+\file{code/run_all.py} & Sequential reproduction of the standard-library suite, with an optional independent SymPy pass.\\\bottomrule
+\end{longtable}
+
+The second-jet derivation used in \file{verify_offshell.py} sets $\partial_r d=v$ and $\partial_r v=w$. The metric contains no $v$ or $w$ initially; its connection contains at most $v$; the final curvature contains at most $w$. Thus no third derivative is ever taken. The implementation's value for $\partial_r w$ is immaterial to this calculation, and is not an assertion that a general $\Delta'''$ vanishes.
+
+The stereographic checker explicitly activates derivatives in both angular chart coordinates. In the Boyer--Lindquist checker only the $r,x$ coordinate derivatives are active. This distinction matters: a coordinate change must not reuse the old convention that the fourth coordinate is cyclic when the fourth coordinate has become stereographic $z$.
+
+To reproduce the main suite from the archive root:
+\begin{lstlisting}
+python3 code/run_all.py
+python3 code/run_all.py --sympy
+\end{lstlisting}
+Only the second command needs SymPy. Each checker runs in a fresh process, so changes to the coefficient ring for off-shell or stereographic calculations do not leak into other checks. Results and logs are written to \file{certificates/}. The recorded output is supplementary reproducibility evidence; the code and displayed mathematical operations specify the verification itself.
+
+\input{verification_summary.tex}
+
+The maximum support and degree counters count \emph{normalized rational numerators}; they are not claimed to bound every transient multiplication polynomial. Timings are observations in this environment and are not complexity bounds. The primitive recursive termination argument is the explicit finite-degree and finite-list bound in Section~\ref{sec:ipra}, independent of those timings.
+
+\section{Lean definitions, object-language target, and completion plan}\label{sec:lean}
+
+\subsection{What the supplied files actually define}
+The archive contains two new Lean files. Both are expressly \emph{uncompiled outlines}: no Lean executable was available in the generation environment. They contain no \texttt{sorry} or newly introduced axiom claiming the main result. Missing results are proposition-valued definitions, and assembly theorems are visibly conditional on those obligations.
+
+\file{lean/RationalGeometry.lean} gives a complete finite syntax with constructors for integer constants, variables, addition, multiplication, negation, and inversion. It defines formal derivatives recursively, rational evaluation, safety guards, raw integer polynomials, coefficient collection, and a transparent numerator/denominator normalizer. It then gives all $g,g^{-1},A,F,\Gamma,R_{\mu\nu}$ expressions and the Einstein, Maxwell, Bianchi, and inverse residuals.
+
+The variables in this Lean specification are ordered $(m,a,q,r,x)$; the standard-library polynomial engine records its order $(r,x,a,m,q)$ explicitly in its JSON. The difference is only a permutation, but a certificate importer must respect it.
+
+The core host-level target is defined as
+\begin{lstlisting}
+def ArithmeticGoal : Prop :=
+  forall rho, Regular rho ->
+    forall e, e in residuals -> e.eval rho = 0
+\end{lstlisting}
+The actual file uses Lean's Unicode binders and membership notation. The four exposed obligations are:
+\begin{enumerate}
+ \item \texttt{CoefficientSoundGoal}: zero collected integer coefficients imply zero rational evaluation.
+ \item \texttt{NormalizationSoundGoal}: a safe expression equals its normalized fraction, whose denominator is nonzero.
+ \item \texttt{GuardPropagationGoal}: the master guard makes every residual expression safe.
+ \item \texttt{CheckedResidualsGoal}: every fixed residual has zero polynomial numerator.
+\end{enumerate}
+The theorem \texttt{arithmetic\_of\_obligations} assembles these assumptions into \texttt{ArithmeticGoal}. It intentionally does not assert that the four assumptions have already been discharged.
+
+The transparent list normalizer may expand to very large raw expressions. For practical replay, use the sparse factored representation from the Python checker, with a Lean theorem validating each cancellation by multiplication. One should not expect naive expansion of the illustrative normalizer to be the efficient implementation.
+
+\subsection{The necessary separation between a host theorem and iPRA}
+\file{lean/ObjectTarget.lean} imports the inspected ProveIt bridge and names the actual arithmetic endpoint
+\begin{lstlisting}
+Prf PRAAx [] (statement concreteSymbols)
+\end{lstlisting}
+Here \texttt{concreteSymbols} must contain the explicit primitive recursive syntax for the input guard and residual evaluator. The file currently supplies a structure of slots for those terms and an exact object formula built from them. Replacing those slots by concrete \texttt{PR} terms, and constructing the derivation, are part of the remaining formalization work.
+
+Once that derivation exists, the already present repository theorem
+\begin{lstlisting}
+pra_iff_native
+\end{lstlisting}
+transports it to the native scalar core. The supplied theorem \texttt{native\_of\_main} is conditional on the object proof and performs precisely this transport. The bridge does not convert an arbitrary Lean statement about \texttt{Rat} into a proof in $\ipra$.
+
+\subsection{A concrete order for completing the Lean proof}
+\begin{enumerate}
+ \item Compile the definitions under the pinned ProveIt toolchain; resolve any elaboration or standard-library API differences. This first step is explicitly outstanding.
+ \item Implement sparse polynomial terms with a fixed variable order. Prove addition, convolution, power, coefficient collection, and derivative evaluation laws. Keep the explicit finite-fold invariants of \eqref{eq:polyInv} and \eqref{eq:normInv} in the proof design.
+ \item Prove normalization and guard propagation. For an external quotient suggestion, verify $N=Qf$ in the polynomial kernel rather than trusting factor cancellation.
+ \item Import or regenerate the fixed tensor expressions, compare them to the specified metric, and replay all coefficient identities. Kernel computation or a proved reflection procedure is appropriate. A bare external/native computation is not a substitute for its soundness lemma.
+ \item Instantiate the four host-level obligations and derive \texttt{ArithmeticGoal}. Add determinant and signature witnesses and the three parameter-substitution corollaries. Add the regular-chart identities using their distinct coordinate derivatives and volume densities.
+ \item Define natural codes for signed integers, positive-denominator rationals, polynomial arrays, and instruction lists in the repository's \texttt{PR} syntax. Every loop has an explicit primitive recursive bound; no compiler for arbitrary terminating programs is needed.
+ \item Build object derivations of the arithmetic laws and the two finite-loop invariants using the defining equations, equality congruence/transitivity, and quantifier-free induction. Instantiate them at the fixed residual program to obtain the concrete \texttt{Prf PRAAx} term.
+ \item Apply \texttt{pra\_iff\_native}. Inspect the axioms of the discharged Lean theorems and keep the host proof, object proof, and real-interpretation proof separate in the status ledger.
+ \item If a formal theorem about real manifolds is also desired, implement the conditional effective-real contracts of Section~\ref{sec:real}, or connect the rational derivative formulas to a real-analysis library in a separate semantic layer. That layer does not replace the object-theory arithmetic derivation.
+\end{enumerate}
+
+The steps are finite, concrete proof engineering tasks. Their effort should not be understated: especially the explicit construction of the object-language arithmetic library is substantive work. The present packet supplies the human proof and the mathematical invariants required for it, rather than representing an unfinished formal derivation as already complete.
+
+\section{Repository audit, provenance, and reuse}\label{sec:repo}
+
+The inspected repository snapshot is
+\begin{center}\small
+\texttt{87ccad4659b63acdce75540d17a69d799bbd25ad}.
+\end{center}
+The root \file{lean-toolchain} specifies \texttt{leanprover/lean4:v4.32.0}; its Lake configuration uses the corresponding Mathlib version and exposes the \texttt{ConciseIPRA} library. These are observations from the pinned sources, not a claim that this package was built against them here.
+
+The repository's main iPRA README distinguishes its checked ConciseIPRA library from research packets filed as delivered without an intake verification. We therefore use the inspected definitions and derivability bridge as the integration target, and do not assume the correctness of an unrelated proof packet. The polynomial calculations in this article are developed independently. The packet audit also inspected finite-algebra and presentation-to-witness material as context; none of its unverified main claims is needed as a premise here.
+
+The archive includes exact copies of the four inspected core files \file{PR.lean}, \file{Syntax.lean}, \file{Deduction.lean}, and \file{NativeBiInterpretation.lean}, together with the upstream license and a provenance manifest. Their Git blob hashes were checked against the retrieved metadata. These excerpts document the interface; they are not a standalone copy of the full transitive Lean project.
+
+The standard classical formulas were compared with the primary-author review of Adamo and Newman~\cite{adamo}. The off-shell viewpoint was compared with Frolov, Krtou\v{s}, and Kubiz\v{n}\'ak~\cite{frolov}. Their sources motivate notation and identify the formulas; the actual field-equation proof in this packet is the explicit rational derivation above. No novelty claim is made for the four classical metrics or for the off-shell viewpoint. The contribution of the package is their explicit weak-arithmetic treatment, complete rational verification, effective-domain analysis, and formalization specification.
+
+\section{Result ledger}\label{sec:ledger}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.50\textwidth}>{\raggedright\arraybackslash}p{0.42\textwidth}}
+\toprule
+Statement & Status in this package\\\midrule\endhead
+Kerr--Newman source-free Einstein--Maxwell identities & Human rational proof; two independent exact engines.\\[0.4em]
+Kerr and Schwarzschild vacuum identities; Reissner--Nordstr\"om electrovac identities & Proved by explicit substitution; static verification also supplied.\\[0.4em]
+Radial-function Ricci identity and polynomial radial uniqueness within the fixed ansatz & Fully specified block proof and exact off-shell certificate.\\[0.4em]
+Rational ingoing and stereographic atlas, determinant, inverse, Lorentz signature & Explicit algebraic proofs and local checks; no horizon or polar denominator remains.\\[0.4em]
+Local Killing horizons, angular velocity, surface gravity, stationary-limit equation & Proved with stated root and regularity hypotheses.\\[0.4em]
+Ricci-square, Kretschmann scalar, equatorial blow-up, flat specialization & Exact finite contraction certificate and explicit consequences.\\[0.4em]
+Literal $\ipra$ derivability of the guarded rational theorem & Human proof via specified primitive recursive operations and quantifier-free invariants.\\[0.4em]
+Constructive-real solution interpretation & Conditional finite-contract scheme with explicit bounds and apartness.\\[0.4em]
+Complete Lean kernel verification and an explicit \texttt{Prf PRAAx} term & Not supplied; definitions, targets, and completion path supplied as uncompiled outlines.\\[0.4em]
+Global event-horizon theorem, maximal analytic extension, uniqueness from general stationary hypotheses, dynamical stability, or physical collapse & Not asserted by this package.\\\bottomrule
+\end{longtable}
+
+\appendix
+\section{Visible diagonal cancellations in the radial Ricci lemma}\label{app:diagonal}
+This appendix expands the two diagonal entries in \eqref{eq:Tbarresult} without a large coordinate curvature table. Use $J$ for the derivative part of \eqref{eq:Tbar} and $K$ for its quadratic part. Put
+\[
+ C_0=r^2-a^2x^2,\qquad A_0=2rd-v\Sigma.
+\]
+Multiplication of the matrices in \eqref{eq:C}--\eqref{eq:M} gives
+\begin{align}
+ \Sigma^3J_{11}={}&(4rd-v\Sigma)A_0+dw\Sigma^2-2d^2\Sigma
+                -8a^2r^2ds+2a^2d(1-3x^2)\Sigma,\notag\\
+ \Sigma^3K_{11}={}&-A_0^2+4a^2d(sC_0+x^2d),\label{eq:diag11}\\
+ \Sigma^3J_{22}={}&2\Sigma\bigl[P(1-3x^2)-s(d+rv)\bigr]
+                        -8a^2sx^2(P-d),\notag\\
+ \Sigma^3K_{22}={}&4\bigl[dsC_0-a^2r^2s^2+x^2P^2\bigr].\label{eq:diag22}
+\end{align}
+For the first pair, use
+\[
+ (4rd-v\Sigma)A_0-A_0^2=2rdA_0,
+ \qquad C_0+2a^2x^2=\Sigma.
+\]
+The terms quadratic in $d$ combine to $2d^2\Sigma$; the remaining $r,v,a,x$ terms combine to $d\Sigma[-2rv-2a^2-2a^2x^2]$. Adding $dw\Sigma^2$ yields
+\[
+ \Sigma^3(J_{11}+K_{11})
+ =d\Sigma\bigl[(w-2)\Sigma+2(r^2-a^2+d-rv)\bigr].
+\]
+Division by $\Sigma^3$ is exactly $2dU$.
+
+For the second pair, halve their sum. Its terms containing $d$ combine to $ds\Sigma$, since $-\Sigma+4a^2x^2+2C_0=\Sigma$. The $rv$ term is $-srv\Sigma$. The other terms reduce to
+\[
+ s(PC_0-2a^2r^2s)=s\Sigma(r^2-a^2),
+\]
+using $P-\Sigma=a^2s$. Consequently
+\[
+ \Sigma^3(J_{22}+K_{22})=2s\Sigma(r^2-a^2+d-rv)=2s\Sigma N,
+\]
+which gives $2sV$. Along with the displayed off-diagonal cancellation, this provides all three entries of the fiber block by explicit finite arithmetic.
+
+\section{Archive layout and rebuilding the article}
+The main source is \file{paper/four_metrics_ipra.tex}; it includes only the generated local file \file{paper/verification_summary.tex}. From the \file{paper/} directory run
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error four_metrics_ipra.tex
+\end{lstlisting}
+The delivered PDF was rendered and inspected after compilation. All substantive source files, exact check outputs, Lean outlines, provenance records, and the article are included in the ZIP. The top-level README provides reproduction commands and the status boundary. No remote repository write or deployment is required to reproduce the arithmetic suite.
+
+{\raggedright\begin{thebibliography}{9}
+\bibitem{adamo}
+T. Adamo and E. T. Newman,
+\emph{The Kerr--Newman metric: A Review}, Scholarpedia \textbf{9}(10), 31791 (2014),
+arXiv:1410.6626v2 (2016), especially Section 3.1 for the Boyer--Lindquist formula.
+\url{https://arxiv.org/abs/1410.6626}.
+
+\bibitem{frolov}
+V. P. Frolov, P. Krtou\v{s}, and D. Kubiz\v{n}\'ak,
+\emph{Black holes, hidden symmetries, and complete integrability},
+Living Reviews in Relativity \textbf{20}, 6 (2017), arXiv:1705.05482v3,
+especially Section 3.2 for the off-shell canonical-metric viewpoint.
+\url{https://arxiv.org/abs/1705.05482}.
+
+\bibitem{proveit}
+V. Reshetnikov and contributors,
+\emph{ProveIt: Logic/PrimitiveRecursiveArithmetic}, snapshot
+\texttt{87ccad4659b63acdce75540d17a69d799bbd25ad}.
+The README and the inspected ConciseIPRA source interfaces are recorded in this archive's provenance manifest.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/87ccad4659b63acdce75540d17a69d799bbd25ad/Logic/PrimitiveRecursiveArithmetic}.
+
+\bibitem{wiki}
+User-specified target descriptions, accessed 15 November 2026 (Pacific time):
+\emph{Schwarzschild metric}, \emph{Reissner--Nordstr\"om metric}, \emph{Kerr metric}, and \emph{Kerr--Newman metric}, Wikipedia.
+\url{https://en.wikipedia.org/wiki/Schwarzschild_metric};
+\url{https://en.wikipedia.org/wiki/Reissner%E2%80%93Nordstr%C3%B6m_metric};
+\url{https://en.wikipedia.org/wiki/Kerr_metric};
+\url{https://en.wikipedia.org/wiki/Kerr%E2%80%93Newman_metric}.
+The mathematical argument does not rely on these pages as proof authorities.
+\end{thebibliography}}
+\end{document}

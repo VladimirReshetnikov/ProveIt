@@ -1,0 +1,55 @@
+\section{Artifacts, verification, and remaining work}
+\label{sec:validation}
+
+\subsection{Executable exact arithmetic}
+
+The Python reference uses integers and \code{fractions.Fraction} throughout. It contains no floating-point tolerance tests in certificate acceptance. \code{spectral.py} implements both the exact-ratio and finite-grid diagonalizers, together with independent certificate checking. \code{observables.py} implements the positive-factor/negative-vector alternative, root certificates and threshold projectors. The programs are references for the finite constructions, not proof checkers for the whole theory $\ipra$.
+
+The included verification scripts check the following finite cases:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Check family & Cases \\
+\midrule
+Scalar pivot inequalities, both rational branches & 600 \\
+Full three-dimensional energy identities & 3 \\
+Complete exact-ratio diagonalization certificates & 9 \\
+Complete finite-grid diagonalization certificates & 4 \\
+Positive rational factorization certificates & 9 \\
+Negative quadratic-form witnesses & 5 \\
+Positive square-root residual certificates & 8 \\
+Mixed-basis square-root comparison instances & 3 \\
+Sorted spectral comparisons & 3 matrix pairs / 8 coordinates \\
+Exact rational projector certificates & 5 \\
+Cross-precision projector comparison & 1 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Additional negative tests reject invalid input contracts and a deliberately corrupted root certificate. The examples cover dimensions zero and one, indefinite matrices, repeated spectra, a split collision, singular positive matrices, nonsquare scalar roots and dense matrices of dimensions three and four.
+
+In one dense $4\times4$ grid example, tolerance $1/16$ was achieved in 21 rotations; the largest denominator of an entry of $Q$ had 658 bits. These are reproducible facts about the included example, not asymptotic performance claims. The uniform proof is the energy argument and its explicit fuel, independent of these runs.
+
+\subsection{Lean and provenance}
+
+The standalone Lean build checks the embedded inference combinators and the host blueprint definitions separately. The axiom logs distinguish the two layers, including the transitive host-rational \code{Classical.choice} dependency. No main spectral theorem is reported as proved by the kernel.
+
+The provenance manifest identifies the pinned repository revision, exact inspected source paths, and hashes of the locally retrieved source text. The report's bibliography supplies human-readable primary references. The source audit is targeted; the claims of other proof packets are not promoted to verified theorems merely because they were read.
+
+\subsection{Theorem status ledger}
+
+\begin{longtable}{@{}P{0.36\textwidth}P{0.27\textwidth}P{0.31\textwidth}@{}}
+\toprule
+Result & Mathematical status here & Machine status here \\
+\midrule\endhead
+Stable-observation composition & Full elementary inference argument. & Compiled generic embedded proof combinators. \\
+Rational approximate diagonalization and grid variant & Full finite proof with explicit fuel and Booleanizable invariants. & Exact reference computations; host algorithm and target types checked; object proof pending. \\
+Sorted multiplicity-preserving spectral names & Full cross-certificate comparison and coefficient-factorization argument. & Host target types and finite comparison tests; object proof pending. \\
+Rational positivity alternative & Full bounded elimination argument. & Exact producer/checker and negative witnesses; formal proof pending. \\
+Principal positive square root & Full residual, stability, sample-correction and uniqueness arguments. & Exact certificates and comparison tests; formal proof pending. \\
+Gap-dependent spectral projector & Full finite comparison and gap-production arguments. & Exact projectors and comparison checks; formal proof pending. \\
+No complete effective numerical-bound certificates for arbitrary singleton fibers & Full metatheoretic diagonal proof. & Formalization plan only. \\
+General Siegel/Faltings, general Mordell--Weil quotient covers, general effective Roth, full prime-distribution targets & Not proved here; remaining input theorems identified. & No new claimed formalization. \\
+\bottomrule
+\end{longtable}
+
+The most direct next formalization target is the scalar pivot lemma, followed by the energy identity and fuel invariant. These close the producer side without any real analysis. The rational intersection and spectral comparison then close the stable-observation side. Together they would yield the first substantive embedded matrix theorem of this package. The square-root and projector developments reuse those same finite kernels.

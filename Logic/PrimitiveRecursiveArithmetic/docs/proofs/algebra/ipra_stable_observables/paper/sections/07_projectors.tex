@@ -1,0 +1,112 @@
+\section{Spectral projectors at a certified gap}
+\label{sec:projectors}
+
+Ordered eigenvalue names survive collisions, but a projector selecting one side of a threshold requires that threshold to be separated from the spectrum. We give a finite condition that both states and checks the required separation.
+
+\subsection{Finite projectors and their comparison}
+
+Given a rational diagonalization certificate $(Q,d)$, a rational threshold $\tau$, and a rational margin $\gamma>0$, suppose
+\[
+ |d_i-\tau|\ge\gamma\qquad(i<n).
+\]
+Use the decidable rational comparison to put $p_i=1$ if $d_i<\tau$ and $p_i=0$ otherwise. Define
+\[
+ P=Q\diag(p)Q^{\mathsf T}.
+\]
+It follows by exact multiplication that $P^{\mathsf T}=P$, $P^2=P$ and $\tr(P)=\sum_i p_i$. Thus $P$ is already an exact rational orthogonal projector, even though it only approximately reduces the original input matrix.
+
+\begin{theorem}[Projector comparison]
+\label{thm:projector}
+Suppose certificates $(Q,d)$ for $A$ and $(R,e)$ for $B$ have residuals $\eta,\theta$. Let both lists avoid the same $\tau$ by at least $\gamma>0$, and let $P,P'$ be their threshold projectors. If $\bound(A-B,\delta)$, then
+\begin{equation}
+ 4\gamma^2\F(P-P')\le(\delta+\eta+\theta)^2.
+ \label{eq:projector}
+\end{equation}
+Equivalently $\norm{P-P'}\le(\delta+\eta+\theta)/(2\gamma)$.
+\end{theorem}
+\begin{proof}
+Write $D=\diag(d)$, $E=\diag(e)$, and $V=Q^{\mathsf T}R$. For the exact reconstructed matrices $C=QDQ^{\mathsf T}$ and $C'=RER^{\mathsf T}$,
+\[
+ (Q^{\mathsf T}(C-C')R)_{ij}=(d_i-e_j)V_{ij},
+\]
+whereas
+\[
+ (Q^{\mathsf T}(P-P')R)_{ij}=(p_i-p'_j)V_{ij}.
+\]
+If the two bits agree the second entry is zero. If they differ, one corresponding diagonal value is at most $\tau-\gamma$ and the other at least $\tau+\gamma$, so $|d_i-e_j|\ge2\gamma$. In either case,
+\[
+ 4\gamma^2(p_i-p'_j)^2V_{ij}^2
+ \le(d_i-e_j)^2V_{ij}^2.
+\]
+Sum and use orthogonal invariance. This gives
+$4\gamma^2\F(P-P')\le\F(C-C')$.
+Finally the three finite errors give
+$\bound(C-C',\delta+\eta+\theta)$.
+\end{proof}
+
+This proof does not identify individual eigenvectors. It compares whole selected subspaces by a matrix observable. Eigenvalues may collide arbitrarily within the lower or upper block.
+
+\subsection{A positive certificate for the input gap}
+
+\begin{definition}[Rational gap certificate]
+For rational symmetric $A$, a rational threshold $\tau$ and $g>0$, a gap certificate is a positive certificate for
+\begin{equation}
+ (A-\tau I)^2-g^2I.
+ \label{eq:gapcert}
+\end{equation}
+It is an exact rational identity of the form $L\diag(a)L^{\mathsf T}$ with $a_i\ge0$.
+\end{definition}
+
+\begin{lemma}[A gap passes to approximate diagonals]
+\label{lem:gappass}
+If \eqref{eq:gapcert} is positive and $(Q,d)$ has residual at most $\eta$, then
+\[
+ |d_i-\tau|\ge g-\eta\qquad(i<n).
+\]
+In particular $\eta\le g/2$ supplies the margin $\gamma=g/2$.
+\end{lemma}
+\begin{proof}
+For the unit column $q_i$, the gap certificate gives
+\[
+ \|(A-\tau I)q_i\|^2
+ =q_i^{\mathsf T}(A-\tau I)^2q_i\ge g^2.
+\]
+The residual column in $Aq_i=d_iq_i+r_i$ has squared length at most $\eta^2$. Triangle comparison yields
+\[
+ \|(A-\tau I)q_i\|\le|d_i-\tau|+\eta.
+\]
+Squaring and comparing nonnegative rationals proves $g\le|d_i-\tau|+\eta$. All statements involve finite vector sums; the norm expressions abbreviate their squared versions.
+\end{proof}
+
+For fixed rational input with such a certificate, choose diagonalization errors
+$\eta_r=g2^{-r-4}$. These are at most $g/2$. Theorem~\ref{thm:projector} with $A=B$ gives
+\[
+ \norm{P_r-P_s}\le2^{-r-4}+2^{-s-4}.
+\]
+Thus the projectors form a coherent primitive recursive matrix name. Since their exact reconstructed diagonal matrices commute with them, the residual gives
+\[
+ \norm{AP_r-P_rA}\le2\eta_r.
+\]
+To see the constant directly, multiplication by an orthogonal projector is a contraction in Frobenius norm: in its rational orthogonal coordinates it simply deletes rows or columns. Apply this to the two residual products. Finite multiplication moduli now show that the represented $P$ is symmetric, idempotent and commutes with $A$.
+
+For represented inputs the margin conversion is also explicit. Suppose the represented gap is $G>0$, and the matrix and its rational samples have Frobenius bound $M$. Put $M_\tau=M+n|\tau|$. If a sample has input error at most $e_r$, the product identity gives squared-matrix error at most $2M_\tau e_r$. Choose a precision satisfying
+\[
+ 2M_\tau e_r\le G^2/2
+\]
+and use the smaller rational gap $g=G/2$. The margin reserve is $G^2-g^2=3G^2/4$, which dominates that error. Thus the rational matrix $(A_r-\tau I)^2-g^2I$ is positive and Theorem~\ref{thm:ldl} supplies its finite certificate. Internally the premise is the corresponding universal finite quadratic-form gap contract; instantiate it at a putative negative witness from the elimination algorithm to rule that branch out. The cross-input projector comparison then handles different samples. A bare assertion that no eigenvalue equals $\tau$ is not being used as a numerical gap producer.
+
+There is a second useful, wholly finite sufficient guard. Suppose one baseline diagonalization certificate has residual $\eta_0\le g/4$ and every diagonal value has distance at least $g$ from $\tau$. Any later certificate for the same matrix, with residual $\eta\le g/4$, has its ordered diagonal within $g/2$ of the baseline by Theorem~\ref{thm:weyl}. Its margin is at least $g/2$, and the threshold bit at each ordered index agrees with the baseline. Thus one decidable finite check can authorize all later precision demands; subsequent production does not require a new unproved existence assertion.
+
+\subsection{Stable block counts and limits of the result}
+
+Let $k=\tr P$ and $\ell=\tr P'$ be the integer bit counts. With $V=Q^{\mathsf T}R$,
+\[
+ \F(P-P')=k+\ell-2\sum_{i,j}p_ip'_jV_{ij}^2.
+\]
+The final sum is at most both $k$ and $\ell$, using the row and column squared sums of $V$. Hence
+\[
+ \F(P-P')\ge|k-\ell|.
+\]
+Once the comparison error is strictly less than one, the two integer counts agree. A certified gap thus supports a finite decision of the selected block size and, for a cut at zero, inertia information.
+
+There is no unconditional rank procedure here. In the scalar family $A(t)=[t]$, rank and the zero-threshold projector change at $t=0$. Stable names for $t$ alone need not determine whether it vanishes by a finite test. Likewise the exact multiplicity partition of the ordered spectrum is not decided by the eigenvalue-name theorem. The explicit gap identifies precisely the extra data used for discrete block information.

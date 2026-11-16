@@ -1,0 +1,228 @@
+% Research fragment for the main report. All repository references use the
+% pinned revision c39c388d4f87220ab9e758ae457520bbc0d74341.
+\section{The boundary between certificates and global witnesses}
+\label{sec:certificate-boundary}
+
+The audited arithmetic packets \cite{faltings,siegel,mordell,roth,prime} make an essential distinction that a general
+embedding framework must preserve. A finite computation can check a
+candidate point, a rational identity, or a finite formal derivation.
+It cannot automatically certify that all points of an infinite search
+space have already been found. The latter is a mathematical assertion
+about every possible point. There is also a distinction between a proof
+that some bound exists and a certificate which contains a particular
+numerical bound and certifies its correctness.
+
+\subsection{An exact impossibility theorem for complete bound certificates}
+
+Fix an effective enumeration of deterministic programs. Let $H(e,t)$ mean
+that program $e$, run on input $e$, halts for the first time at positive
+step $t$. Bounded simulation and a bounded check of the preceding steps
+make $H$ primitive recursive. Determinism implies
+\[
+ H(e,s)\wedge H(e,t)\ \longrightarrow\ s=t.
+\]
+Thus every fiber has the uniform cardinality bound one. Set
+\[
+ \operatorname{Bound}(e,B)
+   \quad\Longleftrightarrow\quad
+ \forall t\bigl(H(e,t)\longrightarrow t\le B\bigr).
+\]
+
+\begin{theorem}[No complete effective system of numerical bound certificates]
+\label{thm:no-complete-bound-certificates}
+There is no total computable predicate $C(e,B,w)$ satisfying both of the
+following properties in the standard natural numbers:
+\begin{enumerate}
+\item \emph{Soundness:} $C(e,B,w)$ implies
+      $\operatorname{Bound}(e,B)$.
+\item \emph{Completeness:} for every $e$ there are $B,w$ with $C(e,B,w)$.
+\end{enumerate}
+The same impossibility holds for a computably enumerable acceptance
+relation. In particular, it holds for primitive recursive checkers.
+\end{theorem}
+
+\begin{proof}
+Suppose first that $C$ is decidable. Given $e$, enumerate all pairs
+$(B,w)$ in a fixed effective order and test $C(e,B,w)$. Completeness
+guarantees that this search terminates. Its running time need not have
+a primitive recursive bound; ordinary recursive termination is already
+enough for the argument. Let $B_e$ be the bound in the first accepted
+certificate.
+
+Simulate program $e$ on input $e$ for $B_e$ steps. If it halts, answer
+yes. If it does not halt within those steps, answer no. Soundness makes
+the second answer correct: any later first halting time $t$ would satisfy
+$t>B_e$, contrary to $\operatorname{Bound}(e,B_e)$. Hence this procedure
+would be a total decision algorithm $D$ for diagonal halting.
+
+For completeness, the diagonal contradiction is immediate. Construct a
+program $P$ which, on input $n$, runs $D(n)$ and loops forever when the
+answer is yes, but halts when the answer is no. Let $p$ be a code of $P$.
+If $D(p)$ answers yes, then $P(p)$ loops; if it answers no, then $P(p)$
+halts. Either answer contradicts the asserted correctness of $D$.
+
+If acceptance is only computably enumerable, dovetail the acceptance
+computations for all pairs $(B,w)$. Completeness again supplies a pair
+whose acceptance will eventually be observed, and the remainder of the
+argument is unchanged.
+\end{proof}
+
+The theorem concerns certificates which explicitly supply a numerical
+bound. It does not say that a classical theory cannot prove
+$\forall e\exists B\operatorname{Bound}(e,B)$: classical case analysis
+on whether $e(e)$ halts proves that assertion. A finite classical proof
+of the existential sentence does not by itself provide a numerical
+witness. Nor does the theorem say that any particular family of
+algebraic curves has this obstruction. The halting fibers are a
+counterexample to a general certificate-completeness principle, not
+an encoding of curves.
+
+This yields a practical requirement for the framework. Every use of
+certificates should identify separately the finite acceptance relation,
+its proved soundness, and the existence or construction of accepted
+certificates on the intended input class. A sound checker may be a useful
+artifact even when completeness is unavailable. It cannot serve as a
+substitute for the missing completeness theorem.
+
+\subsection{The precise intuitionistic witnessing theorem}
+
+The strong witnessing assertion used in the Siegel packet is supported
+by a primary proof-theoretic reference. Salehi defines $\mathsf{iPRA}$
+using all primitive recursive defining equations and atomic induction,
+and states the following as Fact~3.5 on page~57:
+\[
+ \begin{gathered}
+ T\vdash\forall x\exists y\,A(x,y)\\
+ \Longrightarrow\quad
+ \text{some primitive recursive symbol }f\text{ satisfies}\\
+ T\vdash\forall x\,A(x,f(x)).
+ \end{gathered}
+\]
+for $T=\mathsf{iPRA}$ or intuitionistic $\Sigma_1$ induction in the
+primitive recursive language. The matrix $A$ is not restricted to a
+decidable or quantifier-free formula. See \cite{salehi}.
+This is an external metatheorem, not an internal reflection axiom and
+not a result formalized by the present files. Atomic and quantifier-free
+induction are interderivable here by the Boolean representations of
+quantifier-free formulas.
+
+Ferreira and Marques give a related formulation for intuitionistic
+$I\Sigma_1$, with correctness in its primitive-recursive definitional
+extension; their author manuscript states the theorem on printed
+page~14:
+\cite{ferreira}.
+The Faltings packet cites that more conservative formulation and does
+not claim an extracted correctness proof in $\mathsf{iPRA}$ itself.
+Salehi's exact statement supports the stronger conclusion when its
+specified $\mathsf{iPRA}$ hypothesis is met.
+
+Here is the premise-management step in full. Suppose $G(x)$ is decidable
+in $\mathsf{iPRA}$ and
+\[
+ \mathsf{iPRA}\vdash
+ \forall x\bigl(G(x)\longrightarrow\exists y\,A(x,y)\bigr).
+\]
+Fix $x$. If $G(x)$, the displayed theorem supplies $y$ and $A(x,y)$,
+and therefore $G(x)\to A(x,y)$. If $\neg G(x)$, choose $y=0$;
+the implication $G(x)\to A(x,0)$ follows by contradiction. Decidability
+of $G$ proves these cases exhaustive. Generalization gives
+\[
+ \mathsf{iPRA}\vdash
+ \forall x\exists y\bigl(G(x)\longrightarrow A(x,y)\bigr).
+\]
+The witnessing theorem now supplies one primitive recursive $f$ and
+an $\mathsf{iPRA}$ proof of
+\[
+ \forall x\bigl(G(x)\longrightarrow A(x,f(x))\bigr).
+\]
+This does not use unrestricted independence of premise. Its essential
+hypothesis is the proved decidability of $G$.
+
+Apply this observation with
+$A(c,B)=\forall p(P(c,p)\to h(p)\le B)$. A uniform positive
+$\mathsf{iPRA}$ theorem on decidably admissible curve codes gives a
+primitive recursive height bound, even though $A$ contains an unbounded
+universal quantifier. If $c$ includes a certificate, the extracted
+function is allowed to depend on that certificate. A further producer
+is necessary before the input can be reduced to raw curve coefficients.
+The implication gives a necessary computational consequence; absence
+of a known bound is not a nonprovability theorem.
+
+\subsection{What the audited arithmetic packets still require}
+
+The following statements are relative to the pinned repository revision,
+not a claim that all mathematics in the packets has been verified.
+
+\paragraph{Faltings and Siegel.}
+The positive list and height versions require a global height bound.
+The packets prove bounded enumeration after such a bound is supplied
+and distinguish a cardinality bound from a height bound. The Siegel
+packet already proves the finite covering last step of a quantitative
+Subspace Theorem route: at most $M$ subspaces, each meeting the curve
+in at most $D$ relevant points, give a cardinality bound $MD$. Its
+missing ingredients include a finite-tuple approximation theorem,
+the requisite curve-function presentations, lifting and valuation
+estimates, and their arithmetic proofs. The present general framework
+does not supply those ingredients.
+
+\paragraph{Mordell--Weil.}
+The supplied-cover result is substantially more explicit than an
+abstract invocation of descent. For an integral short Weierstrass model
+$y^2=x^3+Ax+B$, it gives a primitive recursive list of all halves of
+any supplied rational point by a rational-root scan of a quartic. From
+a supplied complete list of representatives modulo doubling it derives
+an explicit height contraction and generator list. Pointwise
+decidability of divisibility by two does not construct that complete
+quotient-covering list. General production of that list remains an
+unfilled obligation.
+
+\paragraph{Roth.}
+The quadratic case and the Liouville range are treated by explicit
+polynomial separation. General cutoff effectivity is left open. The
+packet already includes the cardinality-to-empty-window construction
+using $N+1$ successive intervals, so that observation should not be
+presented as a new contribution.
+
+\paragraph{Chebotarev.}
+The packet explicitly separates effective analytic estimates from their
+translation to $\mathsf{iPRA}$. Its conditional density-modulus lemma
+is supplied with integer thresholds. The still missing inputs include
+number-field and prime-ideal algorithms with arithmetic correctness,
+Dedekind/Hecke explicit formulas, quantitative zero-free estimates,
+and certified primitive recursive constants. A possible exceptional
+zero alone is not asserted to prevent effective Chebotarev.
+
+\paragraph{Siegel--Walfisz and Bombieri--Vinogradov.}
+The report isolates uniform constants and thresholds before the
+unbounded size variable. Its elementary reduction from effective
+Bombieri--Vinogradov witnesses to logarithmic-power Siegel--Walfisz
+estimates shows why averaging alone does not erase the issue. It also
+retains the aggregate rational approximation error $QX2^{-s}$ when
+summing over $Q$ moduli. Neither finite evaluation of prime counts nor
+a finite Gram-matrix certificate supplies the missing uniform analytic
+estimates.
+
+\subsection{Lean targets for the certificate boundary}
+
+The computability obstruction is a metatheoretic theorem, naturally
+formalized in Lean's ordinary metatheory rather than as a new
+$\mathsf{iPRA}$ axiom. A clean dependency chain is:
+\begin{enumerate}
+\item Fix a concrete machine model and a primitive recursive bounded
+simulation, with the first-halt predicate and its uniqueness proof.
+\item Define $\operatorname{Bound}$ and a certificate structure with
+an acceptance predicate and semantic soundness theorem.
+\item Given totality of accepted pairs, define the partial-recursive
+least accepted pair; prove its totality from the hypothesis. No claim
+that this minimization is primitive recursive is needed.
+\item Compose it with bounded simulation and prove that it decides
+diagonal halting, using soundness exactly when the simulation reports
+no halt by the supplied bound.
+\item Apply the chosen machine model's diagonal undecidability
+theorem, or formalize the short self-application contradiction above.
+\end{enumerate}
+For iPRA integration, only the finite simulator, first-halt uniqueness,
+and finite acceptance checks are object-language kernels. The
+impossibility theorem and the external witnessing theorem belong in
+the metatheory and must not be added as arithmetic axioms.
+
