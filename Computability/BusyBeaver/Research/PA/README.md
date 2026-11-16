@@ -443,8 +443,11 @@ The proof [checks all 3,673 source ordinals](pa194/ipra/machine-code/COMPRESSED-
 At the next layer, the [controller and scheduler synchronization](pa194/ipra/machine-code/SCHEDULER-HALT-SOURCE.md)
 reduces their halting equivalence to the commands that return to a scheduler
 boundary. The [MP and SHIFT return proofs](pa194/ipra/machine-code/MODEL-MP.md)
-establish those cases for arbitrary model-valued stores. AX command alignment
-is still needed.
+establish those cases for arbitrary model-valued stores. The [AX command proof](pa194/ipra/machine-code/ax-controller/README.md)
+checks all 251 body blocks and interprets their result in the same model as the
+controller. It supplies the last return case, giving equivalence between literal
+halting and scheduler halting in the covered models. The combined native iPRA
+equivalence still needs a joint repository replay with the arithmetic endpoint.
 
 [`pa194-source-semantics`](pa194-work/pa194-source-semantics/README.md) proves facts about
 the source theory in its models instead of by derivations: a fixed hypothesis of the guarded
@@ -463,7 +466,7 @@ states `ArithmeticCalibration` itself from `calibration`, for the models of the 
 PRA presentation, has not been compiled, because the module defining that statement has
 imports that are not compiled locally yet; the calibration in that form, and the
 scheduler-level implication that follows from it, are therefore not claimed here. The
-remaining AX controller command is the missing machine-level correspondence.
+literal machine and modeled scheduler now agree by the model-level proof above.
 
 [`isigma1-machine`](shared/isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
