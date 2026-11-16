@@ -182,9 +182,9 @@ iPRA theorems for matrices of every size.
 `Computability/DiophantineConsistency` and `Computability/BusyBeaver/Research/PA`
 develop iPRA in Foundation's first-order framework (`LO.FirstOrder`, with
 `𝗜𝗻𝘁¹` and the language `DiophantineConsistency.PRALanguage`). They target the
-consistency equation and Busy Beaver statements, with their own PRA language
-and calculus. `DiophantineConsistency`'s `HA*Arithmetic` modules derive semiring
-laws in a further calculus, `SetTheory.PA`. None of these is stated in
-`ConciseIPRA`'s `Prf PRAAx`, and no bridge between the two systems exists. The
-packets of `docs/proofs/` target `Prf PRAAx` and `pra_iff_native`, so this
-library builds its arithmetic layer there.
+consistency equation and Busy Beaver statements. The
+[Foundation–ConciseIPRA bridge](../Bridge/README.md) transports closed
+derivations between that standard iPRA theory and `Prf PRAAx []`. The
+`HA*Arithmetic` modules of `DiophantineConsistency` derive semiring laws in
+`SetTheory.PA`. The packets of `docs/proofs/` target `Prf PRAAx` and
+`pra_iff_native`, so this library builds its arithmetic layer there.

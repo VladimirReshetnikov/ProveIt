@@ -5,12 +5,13 @@ This directory holds ProveIt's work on intuitionistic primitive recursive arithm
 primitive recursive definition with its defining equations, successor axioms, and induction
 for quantifier-free formulas.
 
-It has three parts. They differ in what has been checked.
+The parts have different verification statuses.
 
 | Part | What it is | Status |
 |---|---|---|
 | [`ConciseIPRA/`](ConciseIPRA/README.md) | Very small complete presentations of a theory bi-interpretable with iPRA, and a Lean formalization of the smallest | Lean library, checked by the kernel |
 | [`Derivations/`](Derivations/README.md) | Derivations in `ConciseIPRA`'s `Prf PRAAx` of theorems from the packets, with a reusable arithmetic library | Lean library, checked by the kernel |
+| [`Bridge/`](Bridge/README.md) | Transport between the Foundation iPRA used by Busy Beaver and ConciseIPRA’s ordinary `Prf PRAAx` | Lean library, checked by the kernel |
 | [`docs/proofs/`](docs/proofs/README.md) | Delivered research packets giving finitary proofs of classical theorems, meant to be expressed in iPRA | Filed as delivered; nothing rerun, checked or compiled |
 
 ## ConciseIPRA
