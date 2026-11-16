@@ -1,0 +1,99 @@
+\section{Worked examples}
+\label{sec:examples}
+
+\subsection{A demand-passing arithmetic pipeline}
+
+Consider a sequence of approximate operations.  Stage \(n+1\) produces an
+output at precision \(r\) from a stage-\(n\) input at precision \(r+c_n\), where
+\(c_n\) is a fixed primitive-recursive loss.  Thus
+\(D(n,r)=r+c_n\).  The backward schedule is
+\[
+ h_{N,k}(t)=k+\sum_{j=t}^{N-1}c_j.
+\]
+This identity is proved by induction from the schedule equations.
+
+Suppose \(P(n,r)\) says that the stage-\(n\) rational approximation has error at
+most \(2^{-r}\), and the local arithmetic lemma proves
+\[
+ P(n,r+c_n)\to P(n+1,r).
+\]
+The demand theorem gives \(P(N,k)\) from one base approximation at
+\(k+\sum_{j<N}c_j\).  No global monotonicity theorem for the entire pipeline is
+needed.  In Lean, the sum is a \(\PR\) accumulator, the local estimate is an
+object derivation, and \code{primitiveRecursionAt} carries the invariant.
+
+\subsection{Dead-end removal in a finite approximation tree}
+
+Let level zero have candidates \(0,1\), level one have \(0,1\), and level two
+have only candidate \(1\).  All candidates are locally good.  Compatibility
+edges are
+\[
+ 0\to0,\qquad 1\to1
+\]
+from level zero to one, and only
+\[
+ 1\to1
+\]
+from level one to two.  Choosing the least good candidate at every level starts
+with zero and becomes stuck.  Backward viability at horizon two marks level-one
+candidate zero nonviable and propagates this information to level zero.  The
+least viable path is \((1,1,1)\).
+
+This small example captures a general issue in chart selection, root-cluster
+matching, and finite descent: local admissibility is not extendibility.  The
+viability recurrence is the exact finite correction.
+
+\subsection{Independent square-root intervals}
+
+Fix a positive rational \(q\).  At precision \(n\), a certificate is a dyadic
+interval \([L,U]\) such that
+\[
+ 0\le L\le U,
+ \qquad L^2\le q\le U^2,
+ \qquad U-L\le2^{-n-2}.
+\]
+The observation is the midpoint \((L+U)/2\).  Any two valid intervals at
+precisions \(n,m\) both contain \(\sqrt q\) in the ordered-field semantics, so
+their midpoints differ by at most
+\[
+ 2^{-n-2}+2^{-m-2}.
+\]
+The same inequality can be proved without mentioning a completed real: from
+\(L^2\le q\le U^2\) and nonnegativity, two valid intervals must overlap, for
+otherwise the upper endpoint of one would lie strictly below the lower endpoint
+of the other and squaring would contradict the common bracket.  Overlap plus
+the two widths gives the midpoint bound.
+
+Therefore arbitrary independently produced valid intervals yield a regular
+name by \cref{thm:stable-erasure}.  No nested-interval producer is required.
+This is an instructive improvement over a path-based construction: nesting is
+sufficient but not necessary.
+
+A verifier checks all displayed rational inequalities by cross multiplication.
+A producer may use bisection.  The object theorem requires only the verifier's
+soundness and pairwise interval comparison.
+
+\subsection{Finite-consumer metastability}
+
+Suppose a bounded routine evaluates a rational sequence at at most eight
+indices, each between a base \(N\) and \(N+3N+20\), and proves a conclusion
+provided all queried values differ by at most \(2^{-r}\).  Set
+\(G(N)=3N+20\).  A metastability certificate for this \(G\) supplies a stable
+window containing every query.  The routine's trace then proves its conclusion.
+
+Nothing follows about indices outside that window, and no Cauchy modulus has
+been constructed.  Nevertheless the finite downstream theorem is fully valid.
+This is the intended use of metastability in iPRA.
+
+\subsection{Height bound and complete enumeration}
+
+Let \(P(x)\) be a decidable Diophantine predicate and suppose all codes with
+height at most \(H\) lie below a finite code bound \(C(H)\).  Given a height
+certificate, scan \(x<C(H)\), retain exactly those satisfying \(P\), and remove
+duplicates.  The resulting list is complete.  Given a complete list, compute
+the maximum height.  Both directions are finite traces with straightforward
+Boolean invariants.
+
+The example shows exactly where a Faltings- or Siegel-type application remains
+difficult: not in enumerating or checking points once \(H\) is known, but in
+producing the uniform height certificate.

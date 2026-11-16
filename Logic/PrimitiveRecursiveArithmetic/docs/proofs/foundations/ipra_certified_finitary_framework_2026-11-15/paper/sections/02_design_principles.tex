@@ -1,0 +1,118 @@
+\section{Design principles: finite interfaces, not miniature set theory}
+\label{sec:principles}
+
+\subsection{The finitary-interface doctrine}
+
+The central methodological claim is that a broad range of mathematics can be
+embedded in iPRA without first reconstructing a large abstract universe of
+sets, functions, real numbers, topological spaces, and measures.  Instead, each
+mathematical object is exposed through a finite interface tailored to the
+observation required by the theorem.
+
+\begin{definition}[Finitary presentation]
+A finitary presentation of a class of objects consists of:
+\begin{enumerate}[label=(\roman*)]
+\item a natural-number code \(p\) for the input;
+\item a primitive-recursive validity predicate \(\mathsf{Valid}(p)\);
+\item for every requested precision or finite query \(n\), a bounded family of
+      answer codes \(a<B(p,n)\);
+\item a primitive-recursive correctness predicate
+      \(\mathsf{Answer}(p,n,a)\); and
+\item a primitive-recursive observation map \(\Obs(p,n,a)\), possibly into a
+      rational pseudometric space.
+\end{enumerate}
+The presentation is functional only when the theorem needs it.  Otherwise the
+answer interface is intentionally relational.
+\end{definition}
+
+The same mathematical object may have several presentations.  An exact
+polynomial has a coefficient list; a real-valued function may have a modulus
+and a dyadic evaluator; a compact set may have certified finite nets; a root
+set may have isolating disks; a probability law may have a finite rational
+approximation plus a tail bound.  The relevant equivalence is observational,
+not syntactic.
+
+\subsection{Fixed families instead of a universal evaluator}
+
+There is no total primitive-recursive function that evaluates every
+primitive-recursive program code.  Therefore a sound framework cannot hide a
+universal higher-type oracle inside a natural-number code.  It uses one of the
+following finite alternatives.
+
+\begin{enumerate}[label=(\alph*)]
+\item A theorem fixes a finite family of \(\PR\) symbols in advance.
+\item A code is accompanied by a clocked execution trace, and a fixed checker
+      verifies each step.
+\item A bounded domain-specific language is compiled to a fixed trace system;
+      the compiler is structural, not a universal evaluator.
+\end{enumerate}
+
+This restriction is usually benign.  A concrete theorem already fixes the
+algorithms for addition, evaluation, subdivision, matrix steps, or certificate
+checking.  It becomes important only when a statement quantifies over arbitrary
+programs without a complexity or trace bound.
+
+\subsection{Proof objects at every boundary}
+
+A module is proof-producing when its contract contains derivations, not merely
+truth-valued fields.  For example, a finite transducer has:
+\[
+  \mathsf{sound}_F:
+  \Gamma_F\vdash[\PRAAx]
+  \mathsf{Input}_F(x)\to
+  \mathsf{Output}_F(x,F(x)).
+\]
+Sequential composition substitutes the output term of the first derivation
+into the second and applies cut or implication elimination.  No metatheoretic
+soundness shortcut is required.
+
+This principle suggests a useful distinction.
+
+\begin{definition}[Producer, verifier, compiler]
+A \emph{producer} computes a candidate certificate.  A \emph{verifier} checks a
+candidate by a fixed bounded computation.  A \emph{compiler} combines local
+object-language soundness derivations into a global object-language derivation.
+\end{definition}
+
+The verifier and compiler are often elementary and uniform even when no
+uniform producer is known.  The report records producer obligations rather than
+silently replacing them by existence claims.
+
+\subsection{The four output modes}
+
+Every application should declare one of four output modes.
+
+\begin{enumerate}[label=\textbf{O\arabic*.}]
+\item \textbf{Exact code.}  Appropriate for finite algebraic data with decidable
+      equality and a canonical normal form.
+\item \textbf{Finite relation.}  A bounded nonempty set of acceptable witnesses,
+      with all downstream theorems quantified over any accepted witness.
+\item \textbf{Stable observation.}  Witnesses may vary, but a compressed
+      observable is provably independent of the witness, exactly or up to a
+      stated error.
+\item \textbf{Coherent name.}  A sequence of finite observations is supplied
+      together with an explicit Cauchy or refinement modulus.
+\end{enumerate}
+
+A common source of difficulty is demanding O1 or O4 when O2 or O3 is the
+constructively stable theorem.  The framework never upgrades an output mode
+without a proof of the required stability or modulus.
+
+\subsection{Quantifier order as part of the interface}
+
+In finitary mathematics, the order of quantifiers is computational content.
+The robust pattern is
+\[
+  \forall p\;\forall n\;\exists a<B(p,n)\;
+  \mathsf{Answer}(p,n,a),
+\]
+where the bound and checker are explicit.  To obtain a primitive-recursive
+output function, the existential is discharged by bounded search.  To obtain a
+coherent real name, one additionally proves cross-precision stability.  Merely
+knowing \(\forall n\exists a\) is not enough.
+
+Similarly, an analytic theorem should expose constants in the order in which
+they are used.  A certificate may contain \(C,N,\delta\), and the checker proves
+that these constants imply all requested finite inequalities.  The separate
+producer theorem must establish that accepted constants exist and can be found
+in the claimed uniformity class.

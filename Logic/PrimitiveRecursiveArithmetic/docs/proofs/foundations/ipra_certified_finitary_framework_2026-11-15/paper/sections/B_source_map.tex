@@ -1,0 +1,80 @@
+\section{Repository source map and provenance}
+\label{app:sources}
+
+The report was prepared against ProveIt commit
+\code{9df5cbdf39e6220be823f611987bd584d37711fd}.  The following files and
+packets were especially important.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.31\textwidth}>{\raggedright\arraybackslash}p{0.61\textwidth}@{}}
+\toprule
+Repository source & Role in this report \\
+\midrule
+\endhead
+\path{ConciseIPRA/Syntax.lean} & Scoped syntax, simultaneous substitution,
+binder operations, and quantifier-free formulas.\\
+\addlinespace
+\path{ConciseIPRA/Deduction.lean} & Intuitionistic natural deduction with
+equality; substitution, weakening, cut, quantifier rules, and equality
+transport.\\
+\addlinespace
+\path{ConciseIPRA/PR.lean} & Primitive-recursive symbols, terms, iPRA axioms,
+recursion equations, and quantifier-free induction.\\
+\addlinespace
+\path{ConciseIPRA/NativeBiInterpretation.lean} & Checked ordinary/native
+translation and \code{pra\_iff\_native}.\\
+\addlinespace
+\path{docs/proofs/foundations/ipra_local_global/lean/ObjectIteration.lean} &
+Compiled \code{primitiveRecursionInvariant} and
+\code{primitiveRecursionAt} object-proof transformers.\\
+\addlinespace
+\path{docs/proofs/algebra/ipra_stable_observables/lean/ObjectObservation.lean}
+& Compiled finite-loop certificate and independent-observable cut combinators.\\
+\addlinespace
+\path{docs/proofs/foundations/ipra_finite_demand/lean/BackwardDemand.lean} &
+Checked semantic backward schedule, coherence, transfer, finite-query envelope,
+and constant-shift examples; translated here into an object-proof roadmap.\\
+\addlinespace
+\path{docs/proofs/foundations/ipra_unified_finitary_framework_2026-11-15} &
+Booleanization, finite traces, relational presentations, viability, shrinking,
+difficulty audit, and the explicit statement that the generic trace compiler
+remained a Lean blueprint.\\
+\addlinespace
+\path{docs/proofs/README.md} & Repository-wide status survey and summaries of
+application and foundation packets.\\
+\bottomrule
+\end{longtable}
+
+\subsection*{Relationship to earlier framework packets}
+
+This report does not replace the existing packets.  It consolidates them and
+changes the recommended implementation order in three ways:
+\begin{enumerate}[label=(\arabic*)]
+\item it reduces the proposed trace compiler to the already checked
+      primitive-recursion invariant transformer;
+\item it promotes direct stable-observable choice erasure ahead of path-based
+      coherence; and
+\item it gives metastability a positive finite-consumer interface while
+      retaining the impossibility of a general Cauchy-rate conversion.
+\end{enumerate}
+
+The included theorem ledger distinguishes inherited checked components,
+human-complete generic arguments, executable finite tests, Lean blueprints, and
+open producer obligations.
+
+\begin{thebibliography}{9}
+\bibitem{ProveIt}
+V. Reshetnikov,
+\emph{ProveIt}, repository revision
+\code{9df5cbdf39e6220be823f611987bd584d37711fd}, 2026.
+
+\bibitem{ConciseIPRA}
+V. Reshetnikov et al.,
+\emph{ConciseIPRA: a checked ordinary and native presentation of intuitionistic
+primitive recursive arithmetic}, files under
+\code{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+
+\bibitem{Unified}
+\emph{Unified finitary-relational framework for mathematics in iPRA},
+research packet under
+\path{docs/proofs/foundations/ipra_unified_finitary_framework_2026-11-15}.
+\end{thebibliography}

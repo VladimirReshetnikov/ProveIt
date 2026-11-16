@@ -1,0 +1,171 @@
+\section{Proof-producing finite traces}
+\label{sec:trace}
+
+\subsection{Trace systems}
+
+A trace system packages a bounded computation and the invariant needed to
+justify it.  All external data---the mathematical input, requested precision,
+finite tables, and supplied certificate codes---are paired into one natural
+number \(u\).  Fix primitive-recursive symbols
+\[
+ \mathsf{good}(u),\quad \mathsf{init}(u),\quad \mathsf{bound}(u),
+ \quad \mathsf{step}(i,s,u),\quad \mathsf{inv}(i,s,u),
+ \quad \mathsf{accept}(s,u).
+\]
+The run is the primitive recursion
+\begin{align*}
+ \Run(0,u)&=\mathsf{init}(u),\\
+ \Run(i+1,u)&=\mathsf{step}(i,\Run(i,u),u).
+\end{align*}
+In the repository syntax this is exactly
+\code{PR.prec init step}; the recursion argument is followed by the single
+parameter \(u\).
+
+The local obligations are not metatheoretic propositions.  They are supplied
+as object-language derivations of the open formulas
+\begin{align}
+ \mathsf{good}(u)=1&\to
+   \mathsf{inv}(0,\mathsf{init}(u),u)=1,
+   \tag{B}\label{eq:traceB}\\
+ \mathsf{good}(u)=1&\to
+   \mathsf{inv}(i,s,u)=1\to
+   \mathsf{inv}(i+1,\mathsf{step}(i,s,u),u)=1,
+   \tag{S}\label{eq:traceS}\\
+ \mathsf{good}(u)=1&\to
+   \mathsf{inv}(\mathsf{bound}(u),s,u)=1\to
+   \mathsf{accept}(s,u)=1.
+   \tag{F}\label{eq:traceF}
+\end{align}
+
+\begin{theorem}[Embedded finite-trace theorem]
+\label{thm:trace-reflection}
+Given derivations of \eqref{eq:traceB}--\eqref{eq:traceF}, one can construct a
+derivation
+\[
+ []\vdash[\PRAAx]\forall u\;
+ \bigl(\mathsf{good}(u)=1\to
+ \mathsf{accept}(\Run(\mathsf{bound}(u),u),u)=1\bigr).
+\]
+The construction is structural in the three supplied proof terms.
+\end{theorem}
+
+\begin{proof}
+Keep \(u\) free and place \(G(u):\mathsf{good}(u)=1\) in the context.  Use the
+quantifier-free induction formula
+\[
+  I(i,u):\equiv
+  \mathsf{inv}(i,\Run(i,u),u)=1.
+\]
+
+For the base, instantiate \eqref{eq:traceB} at \(u\), eliminate the implication
+with the context hypothesis, and obtain the invariant at
+\(\mathsf{init}(u)\).  The checked theorem \code{PRA.precZero} derives
+\(\Run(0,u)=\mathsf{init}(u)\).  Equality substitution changes the state
+argument and yields \(I(0,u)\).
+
+For the successor step, work in the induction context containing \(I(i,u)\)
+and the appropriately shifted copy of \(G(u)\).  Instantiate
+\eqref{eq:traceS} with \(s=\Run(i,u)\) and apply both implications.  This gives
+\[
+ \mathsf{inv}(i+1,\mathsf{step}(i,\Run(i,u),u),u)=1.
+\]
+The checked theorem \code{PRA.precSucc} derives the equality between the state
+inside this formula and \(\Run(i+1,u)\).  A single use of
+\code{Prf.eqSubst1} yields \(I(i+1,u)\).
+
+Apply \code{PRA.qfInd}.  Specialize the resulting universal invariant at
+\(\mathsf{bound}(u)\).  Instantiate \eqref{eq:traceF} with the terminal run
+state, eliminate its two implications, discharge \(G(u)\), and universally
+introduce \(u\).  Every operation is either a constructor of \code{Prf} or a
+checked structural theorem in \code{Deduction.lean} and \code{PR.lean}.
+\end{proof}
+
+\subsection{Reduction to the checked primitive-recursion transformer}
+
+The repository already contains a stronger reusable component in the
+\code{ipra\_local\_global} packet.  Its theorem
+\code{primitiveRecursionInvariant} accepts a quantifier-free formula
+\(P(s,i,\bar x)\), object proofs of a base and local step, and returns the
+object proof of \(P(\Run(i,\bar x),i,\bar x)\) for all \(i\).  Therefore the
+trace theorem need not reimplement binder plumbing.
+
+Take the one-parameter formula
+\[
+  P(s,i,u):\equiv\mathsf{inv}(i,s,u)=1
+\]
+and context \([G(u)]\).  The three trace obligations produce exactly the base
+and successor premises required by \code{primitiveRecursionInvariant}.  Its
+specialized theorem \code{primitiveRecursionAt} is applied at
+\(\mathsf{bound}(u)\); the final obligation then closes the proof.  This
+reduction is important for implementation: the difficult de Bruijn
+substitutions and recursion equations have already been exercised by a compiled
+object-theory proof transformer.
+
+\subsection{Certificate mode}
+
+A large computation can be externally produced and internally verified.  A
+certificate code \(c\) stores a bounded state sequence and auxiliary witnesses.
+A fixed checker verifies
+\begin{align*}
+ s_0&=\mathsf{init}(u),\\
+ s_{i+1}&=\mathsf{step}(i,s_i,u),\\
+ \mathsf{inv}(i,s_i,u)&=1,\\
+ \mathsf{accept}(s_B,u)&=1.
+\end{align*}
+All list assertions are finite folds.
+
+\begin{theorem}[Certificate reflection]
+\label{thm:certificate-reflection}
+Suppose the soundness of each checker clause is supplied as an object-language
+derivation.  Then a fixed derivation constructor proves
+\[
+ []\vdash[\PRAAx]\forall u\forall c\;
+ \bigl(\mathsf{TraceOK}(u,c)=1\to
+       \mathsf{Conclusion}(u,\mathsf{out}(c))\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+Fold correctness exposes every checked clause.  One proof route reads the final
+accepted state directly and applies the supplied soundness implication.  A
+second route proves by quantifier-free induction that each certified state is
+equal to the canonical run and then invokes \cref{thm:trace-reflection}.  The
+first route is smaller; the second is useful when later modules need equality
+with the canonical run.
+\end{proof}
+
+Certificate mode separates proof complexity from producer complexity.  A
+matrix factorization, isolating-disk list, high-precision numerical inequality,
+finite cover, or descent trace can be produced by sophisticated software while
+the iPRA proof checks only a small fixed relation.
+
+\subsection{Composition}
+
+A certified finite transducer consists of a trace system, an input contract, an
+output term, and a derivation of its output contract.  Two transducers compose
+by pairing their states and adding a phase bit.  Phase zero runs the first
+system; a switch state freezes its output and any magnitude or guard metadata;
+phase one runs the second.  The combined invariant is a Boolean case split on
+the phase.
+
+\begin{theorem}[Finite transducer closure]
+\label{thm:transducer-closure}
+Certified finite transducers are closed under sequential composition, finite
+products, bounded loops, overlapping guarded branches, and finite acyclic
+networks.  The composite bound, state transition, and proof are primitive
+recursive in the fixed component syntax and structural in the component
+proofs.
+\end{theorem}
+
+\begin{proof}
+For sequential composition, use the phase construction just described.  In
+phase zero, invariant preservation is the first component's step theorem.  At
+the switch, its acceptance theorem establishes the second component's input
+contract.  In phase one, preservation is the second component's step theorem.
+Apply \cref{thm:trace-reflection}.  Products pair states and conjoin invariants.
+A bounded loop is already a trace.  A guarded branch uses a total Boolean
+selector and requires each overlapping branch to prove the same output
+contract.  A finite acyclic network is topologically ordered and flattened
+into phases.  Proof composition uses substitution, weakening, implication
+elimination, and \code{Prf.trans}.
+\end{proof}

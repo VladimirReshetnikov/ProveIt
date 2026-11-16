@@ -1,0 +1,122 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{
+  hidelinks,
+  pdftitle={Certified Finitary Interfaces for Mathematics in iPRA},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov},
+  pdfsubject={Demand-driven, relational, proof-producing framework for iPRA},
+  pdfkeywords={iPRA, primitive recursive arithmetic, Lean, finitary mathematics, proof compiler}
+}
+\usepackage{fancyhdr}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{setspace}
+
+\definecolor{codeblue}{RGB}{35,75,130}
+\definecolor{codegray}{RGB}{85,85,85}
+\definecolor{codebg}{RGB}{247,248,250}
+\lstdefinelanguage{Lean}{
+  morekeywords={import,namespace,end,open,scoped,variable,structure,inductive,def,theorem,lemma,corollary,where,by,have,let,exact,apply,simpa,using,rw,at,with,match,fun,if,then,else,forall,exists},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[s]{/-}{-/},
+  morestring=[b]"
+}
+\lstset{
+  language=Lean,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{codeblue}\bfseries,
+  commentstyle=\color{codegray}\itshape,
+  backgroundcolor=\color{codebg},
+  frame=single,
+  framerule=0.2pt,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  xleftmargin=0.5em,
+  xrightmargin=0.5em
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{principle}[theorem]{Principle}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\B}{\{0,1\}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\PRAAx}{\mathsf{PRAAx}}
+\newcommand{\Prf}{\mathsf{Prf}}
+\newcommand{\PTm}{\mathsf{PTm}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\Fm}{\mathsf{Fm}}
+\newcommand{\NPrf}{\mathsf{NPrf}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\All}{\mathsf{All}}
+\newcommand{\Any}{\mathsf{Any}}
+\newcommand{\Search}{\mathsf{Search}}
+\newcommand{\Run}{\mathsf{Run}}
+\newcommand{\Good}{\mathsf{Good}}
+\newcommand{\Compat}{\mathsf{Compat}}
+\newcommand{\Viable}{\mathsf{Viable}}
+\newcommand{\FullV}{\mathsf{FullV}}
+\newcommand{\Obs}{\mathsf{Obs}}
+\newcommand{\Tail}{\mathsf{Tail}}
+\newcommand{\height}{\mathsf{ht}}
+\newcommand{\True}{\mathsf{True}}
+\newcommand{\False}{\mathsf{False}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Certified finitary interfaces for iPRA}
+\rhead{November 2026}
+\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\emergencystretch=3em
+
+\title{\textbf{Certified Finitary Interfaces for Mathematics in iPRA}\\
+\large A demand-driven, relational, proof-producing framework}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{November 15, 2026}
+
+\begin{document}
+\maketitle
+\input{sections/00_abstract_status}
+\tableofcontents
+\newpage
+\input{sections/01_repository_audit}
+\input{sections/02_design_principles}
+\input{sections/03_boolean_kernel}
+\input{sections/04_trace_compiler}
+\input{sections/05_demand_passing}
+\input{sections/06_relational_presentations}
+\input{sections/07_stable_observables}
+\input{sections/08_shrinking_viability}
+\input{sections/09_metastability_consumers}
+\input{sections/10_guards_extensionality}
+\input{sections/11_domain_adapters}
+\input{sections/12_difficulty_matrix}
+\input{sections/13_lean_architecture}
+\input{sections/14_worked_examples}
+\input{sections/15_limits_and_barriers}
+\input{sections/16_research_questions}
+\input{sections/A_exact_statements}
+\input{sections/B_source_map}
+\end{document}

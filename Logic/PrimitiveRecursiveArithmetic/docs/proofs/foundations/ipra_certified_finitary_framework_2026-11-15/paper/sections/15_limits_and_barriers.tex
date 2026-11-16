@@ -1,0 +1,87 @@
+\section{Retained limits and barriers}
+\label{sec:barriers}
+
+A general framework is trustworthy only if it refuses invalid upgrades.
+
+\subsection{No total universal primitive-recursive evaluator}
+
+\begin{theorem}[Diagonal barrier]
+There is no binary primitive-recursive function \(U(e,x)\) such that every
+unary primitive-recursive function is \(x\mapsto U(e,x)\) for some \(e\).
+\end{theorem}
+
+\begin{proof}
+If such \(U\) existed, \(g(x)=U(x,x)+1\) would be primitive recursive and
+would equal \(U(e,x)\) for some \(e\).  Substituting \(x=e\) gives
+\(U(e,e)+1=U(e,e)\), impossible.
+\end{proof}
+
+Thus the framework uses fixed evaluator schemas, bounded DSLs, or checked
+traces.  It never quantifies over arbitrary PR programs through one total
+evaluator.
+
+\subsection{Cardinality does not give a cutoff}
+
+Let \(T(e,t)\) say that machine \(e\) halts for the first time at stage \(t\).
+For each \(e\), there is at most one such \(t\).  If a computable function
+\(H(e)\) bounded every possible witness \(t\), simulating through \(H(e)\)
+would decide halting.  Therefore even a uniform cardinality bound one does not
+supply a search cutoff.  Diophantine finiteness needs a height bound or complete
+list as additional data.
+
+\subsection{Exact sign and branch selection}
+
+A total operation that, for every fast Cauchy real \(x\), returned one valid
+side \(x\le0\) or \(x\ge0\) would imply the lesser limited principle of
+omniscience by encoding a binary sequence with at most one nonzero term into a
+signed rapidly convergent series.  Consequently exact sign, orientation, or
+branch selection at a zero boundary cannot be obtained merely by increasing
+precision.  A positive gap, an overlapping conclusion, or a relational output
+is required.
+
+The rotation-axis problem at the identity and individual root labels at a
+collision are instances of this barrier.
+
+\subsection{Arbitrary Cauchy coefficients and exact branch data}
+
+Exact Puiseux or algebraic branch coefficients from arbitrary Cauchy-presented
+coefficients can encode equality to zero and hence halting information.  A
+uniform exact producer is therefore not available in the proposed generality.
+Valid alternatives are exact finite algebraic input with splitting data,
+guarded nonsingular branches, or approximate root clusters.
+
+\subsection{Metastability is not a Cauchy modulus}
+
+There are primitive-recursive increasing bounded rational sequences with no
+computable Cauchy modulus, obtained by adding weights when computations halt.
+A modulus would decide whether a future weight can appear.  Stable-window
+theorems remain useful for the finite consumers of \cref{sec:metastability},
+but no general conversion to a regular name is claimed.
+
+\subsection{Qualitative uniqueness is not a rate}
+
+A unique object can be approached with no computable convergence modulus.  To
+construct a name one needs quantitative isolation: a contraction factor,
+strong-convexity constant, residual-to-distance estimate, separating disk, or
+an equivalent shrinking certificate.  The framework distinguishes logical
+uniqueness, finite near-uniqueness, and a primitive-recursive shrinking rate.
+Only the last supports a uniform name constructor.
+
+\subsection{No general reflection of ambient Lean proofs}
+
+Lean may prove a theorem using quotients, classical choice, large algebraic
+libraries, or an induction principle not represented in the object theory.
+There is no general mechanism converting such a theorem into
+\(\Prf\,\PRAAx\).  The positive result is intentionally restricted: for a
+small DSL of Boolean folds, bounded traces, fixed arithmetic transducers, and
+finite relations, the compiler constructs the object proof from local object
+proofs.
+
+\subsection{Boundary summary}
+
+The framework does not claim a universal evaluator, a discontinuous selector,
+a height cutoff from finiteness, a Cauchy rate from metastability, a modulus from
+qualitative uniqueness, or automatic reflection from semantic Lean.  Each
+refusal has a positive replacement: fixed traces, relational output, explicit
+height certificates, finite-window consumers, shrinking data, and a restricted
+proof-producing compiler.

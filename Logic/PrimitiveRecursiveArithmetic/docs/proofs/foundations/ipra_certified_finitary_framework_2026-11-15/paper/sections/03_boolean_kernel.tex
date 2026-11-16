@@ -1,0 +1,129 @@
+\section{The shared Boolean and bounded-search kernel}
+\label{sec:boolean}
+
+\subsection{Boolean predicates}
+
+A bounded numerical predicate is represented by a primitive-recursive bit
+\(b(\bar x)\), with a normalization theorem
+\[
+  b(\bar x)=0\;\vee\;b(\bar x)=1.
+\]
+We write \([P](\bar x)\) for the object-language equation
+\(b_P(\bar x)=1\).  Boolean conjunction, disjunction, implication, and
+negation are fixed truth-table functions.  Equality and order are represented
+by fixed Boolean tests.
+
+For a bit predicate \(b(i,\bar x)\), define finite folds
+\begin{align*}
+\All_b(0,\bar x)&=1,
+&\All_b(n+1,\bar x)&=\All_b(n,\bar x)\wedge b(n,\bar x),\\
+\Any_b(0,\bar x)&=0,
+&\Any_b(n+1,\bar x)&=\Any_b(n,\bar x)\vee b(n,\bar x).
+\end{align*}
+A least search \(\Search_b(n,\bar x)\) returns the least \(i<n\) with
+\(b(i,\bar x)=1\), or the sentinel \(n\) if none exists.
+
+\begin{theorem}[Fold and search correctness]
+\label{thm:fold-correct}
+For every fixed primitive-recursive bit predicate \(b\), iPRA proves:
+\begin{align*}
+\All_b(n,\bar x)=1
+  &\leftrightarrow \forall i<n\; b(i,\bar x)=1,\\
+\Any_b(n,\bar x)=1
+  &\leftrightarrow \exists i<n\; b(i,\bar x)=1.
+\end{align*}
+If \(\Any_b(n,\bar x)=1\), then
+\(\Search_b(n,\bar x)<n\), the returned index satisfies \(b=1\), and every
+smaller index fails.
+\end{theorem}
+
+\begin{proof}
+The proof is organized around Boolean equations, not logical quantifiers inside
+the induction predicate.
+
+For the universal fold, fix an index \(i\) and induct on \(n\) using the
+quantifier-free formula
+\[
+  [i<n]\wedge [\All_b(n,\bar x)=1]
+  \;\longrightarrow\;[b(i,\bar x)=1].
+\]
+At zero the antecedent is false.  At a successor, the decidable numerical split
+\(i<n\) or \(i=n\) reduces the claim respectively to the induction hypothesis
+or to the newest factor.  Universal introduction over \(i\) occurs after the
+induction.  The reverse implication is proved by induction on the prefix
+length, keeping the quantified hypothesis in the context and instantiating it
+at the current index.
+
+The existential fold is dual.  The forward proof inspects the last bit; the
+reverse proof propagates a supplied witness into all longer prefixes.  The
+search routine carries a found bit and a candidate.  Its quantifier-free
+invariant states: either no earlier bit is one, or the stored candidate is in
+range, satisfies the predicate, and no smaller candidate does.  At termination,
+the existential fold excludes the no-witness branch.
+\end{proof}
+
+\subsection{Structural Booleanization}
+
+\begin{theorem}[Bounded Booleanization]
+\label{thm:booleanization}
+Let \(\theta(\bar x)\) be a fixed formula built from equations between
+primitive-recursive terms, propositional connectives, and bounded quantifiers
+\(\forall i<B(\bar x)\) and \(\exists i<B(\bar x)\).  There is an effectively
+constructed \(\PR\) bit symbol \(b_\theta\) such that iPRA proves
+\[
+ b_\theta(\bar x)=1\quad\leftrightarrow\quad\theta(\bar x).
+\]
+\end{theorem}
+
+\begin{proof}
+Proceed by structural recursion.  Atomic equations use the equality bit.
+Propositional connectives use Boolean truth functions; their correctness follows
+by the two numerical cases for each input bit and is intuitionistically valid
+because the bits are decidable.  A bounded universal becomes an \(\All\)-fold,
+and a bounded existential becomes an \(\Any\)-fold.  Apply
+\cref{thm:fold-correct}.  Composition and primitive recursion preserve
+primitive recursiveness, and the proof derivation is assembled from the
+component equivalences by substitution and natural-deduction rules.
+\end{proof}
+
+\subsection{Finite minimization and canonicalization}
+
+Let \(A(i,p)\) be a Boolean admissibility predicate and let
+\(c(i,p)\) be a coded rational or integer cost with a decidable comparison.
+A primitive recursion scans \(i<C(p)\), retains a found bit, and stores the
+least-cost candidate, breaking ties by the least index.
+
+\begin{lemma}[Finite minimization]
+\label{lem:minimize}
+If some candidate below \(C(p)\) is admissible, iPRA proves that the scan
+returns an admissible index below \(C(p)\) whose cost is no larger than that of
+any admissible candidate; among equal minima it returns the least index.
+\end{lemma}
+
+\begin{proof}
+At prefix length \(j\), the invariant says either no admissible candidate has
+appeared, or the stored index is admissible, lies below \(j\), is cost-minimal
+among earlier candidates, and satisfies the tie-breaking clause.  All fields
+are Boolean equations or bounded comparisons.  The successor step performs one
+admissibility test and one comparison.  At the final prefix, the nonemptiness
+premise rules out the first branch.
+\end{proof}
+
+Finite minimization is the canonicalization mechanism used throughout the
+report.  It does not assert that the chosen code is mathematically canonical;
+it merely supplies a deterministic representative from a proved nonempty
+finite relation.  Extensionality is established separately.
+
+\subsection{A standard compilation rule}
+
+The recommended rule for every bounded assertion is:
+\begin{enumerate}[label=(\arabic*)]
+\item define a fixed \(\PR\) checker;
+\item prove its local recursion equations;
+\item prove a quantifier-free Boolean invariant;
+\item derive the ordinary logical statement after induction; and
+\item export the resulting derivation, not only a semantic truth theorem.
+\end{enumerate}
+This rule prevents bounded quantifiers from leaking into every later induction
+and makes certificate verification, path checking, finite nets, and search
+share one small kernel.

@@ -1,0 +1,95 @@
+\section{Metastability for finite consumers}
+\label{sec:metastability}
+
+\subsection{The apparent conflict}
+
+A metastability theorem provides arbitrarily long finite intervals on which a
+sequence is stable.  It does not in general provide a Cauchy modulus.  Several
+research packets correctly identify this barrier, but the negative conclusion
+can be overstated: a bounded downstream computation often needs only one
+stable window containing its finitely many queries.  Such a consumer can use
+metastability directly, without constructing a global real name.
+
+Let \(x_t\) be a coded rational sequence.  A quantitative metastability
+contract has the form
+\begin{equation}
+ \forall r\forall g\;\exists N\le M(r,g)\;
+ \forall i,j\in[N,N+g(N)]\quad d(x_i,x_j)\le2^{-r}.
+ \label{eq:meta}
+\end{equation}
+Here \(g\) is not passed as an arbitrary higher-type object.  Each theorem
+fixes a primitive-recursive control schema, or supplies a finite table and a
+certificate that it is the required control.
+
+\subsection{Finite consumers}
+
+A finite consumer at base index \(N\) generates a bounded query log
+\(q_0,\ldots,q_{L-1}\).  The queries may be adaptive, but a trace or certificate
+provides a primitive-recursive upper offset \(G(N)\) such that
+\[
+ N\le q_i\le N+G(N)
+\]
+over the entire accepted run.  Its local soundness theorem assumes stability
+between queried values to precision \(r\).
+
+\begin{theorem}[Metastable finite-consumer theorem]
+\label{thm:finite-consumer}
+Assume \eqref{eq:meta} for the fixed control \(G\), and suppose a certified
+finite consumer has the property that every query in an accepted run at base
+\(N\) lies in \([N,N+G(N)]\).  If the consumer's local arithmetic soundness is
+proved under pairwise \(2^{-r}\)-stability of its queried values, then iPRA
+proves the existence of an accepted output satisfying the consumer contract.
+If a primitive-recursive producer supplies a valid metastability witness
+\(N\), the output itself is primitive recursive; otherwise the theorem remains
+an existential or relational conclusion.
+\end{theorem}
+
+\begin{proof}
+Instantiate the metastability contract with the consumer's control \(G\) and
+requested precision \(r\), obtaining \(N\le M(r,G)\).  The query-bound theorem
+places every query in the stable window.  Therefore every comparison,
+finite-difference estimate, or averaging step used by the consumer has the
+required pairwise stability premise.  Apply the finite trace theorem to the
+consumer's run.
+
+Formally, the witness \(N\) is handled in one of two ways.  If the
+metastability theorem includes a bounded Boolean witness predicate, least
+search produces \(N\).  If it gives only an existential proof, use existential
+elimination to derive an existential output theorem; do not pretend that an
+output term has been constructed.  In either case no conclusion is made about
+indices outside the chosen finite window.
+\end{proof}
+
+\subsection{Adaptive query closure}
+
+When queries depend on previous values, define \(G(N)\) in one of two ways.
+
+\paragraph{Worst-case closure.}
+The finite state space and finite runtime bound permit bounded search over all
+possible accepted branches, taking the maximum query offset.  This gives a
+total control function independent of actual data.
+
+\paragraph{Certified actual closure.}
+A certificate contains the actual query log and its maximum offset.  The
+checker verifies every transition and the claimed maximum.  The metastability
+window is then chosen for this certified control value.  This route can be
+substantially sharper.
+
+Both are finite.  Neither converts a metastable sequence into a globally
+convergent name.
+
+\subsection{Applications}
+
+The theorem applies to:
+\begin{itemize}
+\item finite ergodic averages consumed by a later bounded estimate;
+\item a finite optimization routine that needs stable objective values only at
+      its sampled indices;
+\item a numerical root or fixed-point checker using a finite tail segment;
+\item finite-dimensional distribution tests in probability; and
+\item any theorem whose conclusion is itself a finite stable window.
+\end{itemize}
+
+If a later theorem genuinely needs a real number or all sufficiently late
+indices, a Cauchy or tail modulus must still be supplied.  Metastability is not
+silently upgraded.

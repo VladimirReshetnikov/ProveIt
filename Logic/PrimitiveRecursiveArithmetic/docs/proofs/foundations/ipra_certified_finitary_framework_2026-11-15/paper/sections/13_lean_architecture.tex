@@ -1,0 +1,239 @@
+\section{Lean formalization architecture}
+\label{sec:lean}
+
+\subsection{Target API}
+
+The implementation should extend the checked repository workspace rather than
+copying a second logical kernel.  The primary imports are:
+
+\begin{lstlisting}
+import ConciseIPRA.PR
+import ConciseIPRA.NativeBiInterpretation
+\end{lstlisting}
+
+The relevant checked interfaces are:
+\begin{itemize}
+\item \code{Syn}, \code{Fm}, scoped substitution, shifting, and instantiation;
+\item \code{Prf} natural deduction, \code{Prf.subst}, weakening, cut, and
+      equality substitution;
+\item \code{PR}, \code{PTm}, \code{PRAAx}, \code{PRA.precZero},
+      \code{PRA.precSucc}, and \code{PRA.qfInd}; and
+\item \code{pra\_iff\_native} for the final transport.
+\end{itemize}
+
+Two existing packet modules should be promoted into a common
+\code{ConciseIPRA/Finitary} namespace:
+\begin{enumerate}[label=(\roman*)]
+\item the checked \code{primitiveRecursionInvariant} and
+      \code{primitiveRecursionAt} transformer from
+      \code{ipra\_local\_global}; and
+\item the checked certificate/stable-observable combinators from
+      \code{ipra\_stable\_observables}.
+\end{enumerate}
+Their conclusions already have the required \code{Prf PRAAx} type.
+
+\subsection{Canonical data modules}
+
+The first implementation milestone is one shared representation library:
+
+\begin{center}
+\begin{tabularx}{0.94\textwidth}{@{}lX@{}}
+\toprule
+Module & Contents \\
+\midrule
+\code{Finitary/Bool.lean} & normalized bits and truth-table proofs \\
+\code{Finitary/Pair.lean} & pairing, projections, bounded tuples \\
+\code{Finitary/List.lean} & bounded lists, lookup, update, folds \\
+\code{Finitary/Int.lean} & signed integers and order \\
+\code{Finitary/Rat.lean} & positive-denominator rationals and dyadics \\
+\code{Finitary/Table.lean} & bounded maps, bit vectors, path and trace codes \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Every operation should have a \(\PR\) symbol, a term application helper, and
+embedded defining/correctness derivations.  The same code must be reused across
+all application packets.
+
+\subsection{Explicit trace formulas}
+
+The accompanying file \code{TraceReflectionRoadmap.lean} defines the formula
+constructors in full.  The intended core is:
+
+\begin{lstlisting}
+structure PRTraceSystem where
+  good   : PR 1
+  init   : PR 1
+  bound  : PR 1
+  step   : PR 3       -- (time, previous state, input)
+  inv    : PR 3       -- (time, state, input)
+  accept : PR 2       -- (state, input)
+
+def PRTraceSystem.run (T : PRTraceSystem) : PR 2 :=
+  .prec T.init T.step
+
+structure TraceProofs (T : PRTraceSystem) where
+  base  : Prf PRAAx [] (BaseFm T)
+  step  : Prf PRAAx [] (StepFm T)
+  final : Prf PRAAx [] (FinalFm T)
+\end{lstlisting}
+
+The main implementation should be a definition computing a derivation:
+
+\begin{lstlisting}
+def traceReflection (T : PRTraceSystem) (h : TraceProofs T) :
+    Prf PRAAx [] (ResultFm T) := by
+  -- Put Good(u) in the context.
+  -- Derive the base and step premises for InvP(state,time,u).
+  -- Call primitiveRecursionAt at bound(u).
+  -- Instantiate h.final at the terminal run state.
+  -- Discharge Good(u), then introduce u.
+  ...
+\end{lstlisting}
+
+The key engineering choice is to call \code{primitiveRecursionAt}; this avoids
+repeating its already checked substitution lemmas.  The remaining work is a
+small number of \code{simpa} statements identifying the trace formulas with
+\code{baseFormula}, \code{nextFormula}, and \code{instStateTime}.
+
+\subsection{Demand compilation}
+
+The object demand module should define fixed symbols for:
+\begin{align*}
+ \mathsf{backward}(D,N,k,j),\qquad
+ \mathsf{horizon}(D,N,k,t),\qquad
+ \mathsf{advance}(F,H,s_0,t).
+\end{align*}
+Because there is no universal evaluator for a variable \(D\), the practical
+Lean interface is parameterized by the actual \code{PR} symbols:
+
+\begin{lstlisting}
+structure PRDemandSystem where
+  demand : PR 2       -- (time, requested output precision)
+  base   : PR 1       -- initial object at a precision
+  step   : PR 3       -- (time, next precision, previous object)
+
+def backwardSchedule (D : PRDemandSystem) : PR 3 := ...
+def compiledRun      (D : PRDemandSystem) : PR 2 := ...
+\end{lstlisting}
+
+The schedule equations are proved with \code{PRA.precZero} and
+\code{PRA.precSucc}.  The demand-passing theorem then calls the ordinary
+primitive-recursion invariant transformer with the formula
+\(P(t,\mathsf{horizon}(N,k,t))\).  No new induction rule is introduced.
+
+For variable finite predecessor lists, implement an envelope symbol with nested
+finite maxima.  Prove query coverage once; later applications need only supply
+the local Booleanized step theorem.
+
+\subsection{Relational kernel}
+
+A numerical layered presentation can be represented by:
+
+\begin{lstlisting}
+structure PRLayeredRelation where
+  bound  : PR 2       -- (level, parameter)
+  good   : PR 3       -- (candidate, level, parameter)
+  compat : PR 4       -- (next, candidate, level, parameter)
+
+def viable     (R : PRLayeredRelation) : PR 4 := ...
+def reach       (R : PRLayeredRelation) : PR 3 := ...
+def fullViable  (R : PRLayeredRelation) : PR 4 := ...
+def leastPath   (R : PRLayeredRelation) : PR 5 := ...
+\end{lstlisting}
+
+Suggested object endpoints are:
+\begin{lstlisting}
+def viableIffPath (R : PRLayeredRelation) :
+  Prf PRAAx [] (ViablePathSpec R) := ...
+
+def leastViablePathSound (R : PRLayeredRelation) :
+  Prf PRAAx [] (LeastPathSpec R) := ...
+
+def fullViableSplit (R : PRLayeredRelation) :
+  Prf PRAAx [] (FullViableSpec R) := ...
+\end{lstlisting}
+
+Implement a depth-recursive definition first because its proof is shortest.
+Then implement forward/backward tables and prove equivalence.  The table version
+has better execution complexity, while the recursive version is the reference
+specification.
+
+\subsection{Stable observations and shrinking}
+
+The stable-observable module needs only bounded search and the already checked
+cut combinators.  Its assumptions are object derivations of nonemptiness and
+pairwise stability.  The main theorem substitutes the two least-certificate
+terms into the stability proof.
+
+The shrinking module is larger:
+
+\begin{lstlisting}
+structure ShrinkingProofs
+    (R : PRLayeredRelation) (obs dist eps delta horizon : PR ...) where
+  cloudNonempty : Prf PRAAx [] (CloudNonemptyFm ...)
+  horizonMono    : Prf PRAAx [] (HorizonMonoFm ...)
+  cloudDiameter  : Prf PRAAx [] (CloudDiameterFm ...)
+  edgeBound      : Prf PRAAx [] (EdgeBoundFm ...)
+  metric         : MetricProofs dist
+
+def shrinkingViability (h : ShrinkingProofs ...) :
+  Prf PRAAx [] (ShrinkingBoundFm ...) := ...
+\end{lstlisting}
+
+Its internal dependency chain is: least full-viable candidate, least complete
+path, path truncation, finite telescoping, triangle inequality.  Each is a
+separate reusable theorem.
+
+\subsection{Packet endpoint records}
+
+Completed application packets should export:
+
+\begin{lstlisting}
+structure PacketTarget where
+  params      : Nat
+  assumptions : List (Fm PTm params)
+  conclusion  : Fm PTm params
+  derivation  : Prf PRAAx assumptions conclusion
+
+def PacketTarget.toNative (T : PacketTarget) :
+    NPrf (T.assumptions.map NFm.ofPRA) (NFm.ofPRA T.conclusion) :=
+  (pra_iff_native).mp T.derivation
+\end{lstlisting}
+
+An incomplete packet should export a record of missing producer or estimate
+obligations, not an axiom, \code{opaque} placeholder, or a semantic surrogate.
+
+\subsection{Dependency-ordered implementation plan}
+
+\begin{enumerate}[label=\textbf{M\arabic*.}]
+\item Integrate the checked recursion and observable-glue modules.
+\item Complete application helpers and the trace formulas; prove
+      \code{traceReflection} via \code{primitiveRecursionAt}.
+\item Implement normalized Booleans, pairs, and bounded lists.
+\item Prove object-level folds, least search, and finite maximum.
+\item Implement demand schedules and parameter-changing transfer.
+\item Implement path codes, viability, and least viable paths.
+\item Implement signed integers, rationals, finite sums, and error ledgers.
+\item Prove stable-observable erasure and shrinking viability.
+\item Add regular-name arithmetic, guards, finite nets, and robust branches.
+\item Migrate packets one at a time, exporting \code{PacketTarget} values.
+\end{enumerate}
+
+The first vertical slice should be a finite sum loop whose exact theorem is
+transported to \(\NPrf\).  The second should be the square-root interval example
+in \cref{sec:examples}; it exercises finite relations, viability, rational
+bounds, and a regular-name modulus.
+
+\subsection{Audit discipline}
+
+For each public endpoint, the repository build should record:
+\begin{enumerate}[label=(\arabic*)]
+\item the pinned ProveIt commit, Lean version, and Mathlib revision;
+\item a scan for \code{sorry}, \code{admit}, and newly introduced axioms;
+\item \code{\#print axioms} output;
+\item a theorem ledger linking the human statement to the Lean name;
+\item executable regression tests, clearly separated from universal proofs; and
+\item proof-term size and compile-time measurements for the compiler-generated
+      derivation.
+\end{enumerate}

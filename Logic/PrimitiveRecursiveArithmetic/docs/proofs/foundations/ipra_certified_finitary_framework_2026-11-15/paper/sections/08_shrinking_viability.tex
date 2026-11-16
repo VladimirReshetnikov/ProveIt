@@ -1,0 +1,130 @@
+\section{Shrinking viable clouds and coherent approximate names}
+\label{sec:shrinking}
+
+\subsection{When direct stability is unavailable}
+
+Suppose observations are controlled only along compatible edges, and different
+finite paths can yield different candidates at the same level.  Finite
+amalgamation produces a path for each chosen horizon, but horizons may choose
+unrelated paths.  A coherent approximate name can still be extracted if all
+candidates that participate in a sufficiently long full path have small
+observational diameter.
+
+Let \(d\) be a coded rational pseudometric, and suppose every compatible edge
+satisfies
+\[
+ d(\Obs(p,k,a),\Obs(p,k+1,b))\le\delta(p,k).
+\]
+Choose a nondecreasing horizon \(H(p,k)\ge k\).  Define the full-viable cloud
+\[
+ V_{p,k}=\{a<B(p,k):\FullV(p,H(p,k),k,a)=1\}.
+\]
+Let \(s(p,k)\) be its least member and
+\(x(p,k)=\Obs(p,k,s(p,k))\).
+
+\begin{theorem}[Shrinking viable-cloud theorem]
+\label{thm:shrinking}
+Assume iPRA proves:
+\begin{enumerate}[label=(SV\arabic*)]
+\item every \(V_{p,k}\) is nonempty;
+\item \(H(p,k)\le H(p,\ell)\) when \(k\le\ell\);
+\item every two members of \(V_{p,k}\) are at distance at most
+      \(\varepsilon(p,k)\); and
+\item every compatible edge has motion at most \(\delta(p,k)\).
+\end{enumerate}
+Then for \(k\le\ell\),
+\[
+ d(x(p,k),x(p,\ell))
+ \le \varepsilon(p,k)+
+      \sum_{j=k}^{\ell-1}\delta(p,j).
+\]
+If an explicit tail modulus makes the right-hand side at most \(2^{-n}\), the
+selected observations form a regular name.
+\end{theorem}
+
+\begin{proof}
+Choose, by bounded search from the full-viability certificate, a complete path
+to horizon \(H(p,\ell)\) passing through \(s(p,\ell)\).  Let \(b\) be its
+level-\(k\) member.  Monotonicity of horizons permits truncation of this path at
+\(H(p,k)\), so \(b\in V_{p,k}\).  The cloud-diameter hypothesis gives
+\[
+ d(\Obs(p,k,s(p,k)),\Obs(p,k,b))\le\varepsilon(p,k).
+\]
+Telescoping the edge bounds along the path segment from \(k\) to \(\ell\)
+gives
+\[
+ d(\Obs(p,k,b),\Obs(p,\ell,s(p,\ell)))
+ \le\sum_{j=k}^{\ell-1}\delta(p,j).
+\]
+One triangle inequality yields the result.
+
+The object proof uses only finite objects: a least path code, path truncation,
+a Boolean cloud-membership proof, and quantifier-free induction for the finite
+sum of edge bounds.  The final regularity theorem substitutes the supplied tail
+modulus; no infinite path is selected.
+\end{proof}
+
+\subsection{Sources of shrinking}
+
+The cloud-diameter hypothesis is quantitative determinacy.  It can arise from:
+
+\begin{itemize}
+\item \textbf{isolating balls:} every viable candidate lies in one rational ball;
+\item \textbf{strong convexity:} a residual bound and a positive convexity
+      constant control distance to the unique minimizer;
+\item \textbf{residual-to-distance estimates:} a certified error bound controls
+      distance to an isolated zero or cluster;
+\item \textbf{algebraic separation:} exact coefficient data isolate disjoint
+      root clusters;
+\item \textbf{contraction:} repeated certified contraction shrinks all viable
+      candidates in one box; or
+\item \textbf{finite Hausdorff control:} two candidate clouds approximate the
+      same compact object in a finite coded metric.
+\end{itemize}
+
+Qualitative uniqueness alone supplies none of these rates.  The modulus is a
+mathematical premise, not a logical consequence of uniqueness.
+
+\subsection{Exact labels under a gap}
+
+Suppose candidates carry labels from a finite set, and candidates with
+different labels are at distance at least a positive rational \(g\).  Once the
+shrinking bound is below \(g\), selected labels cannot differ.
+
+\begin{corollary}[Eventual label stability]
+\label{cor:label-gap}
+If a primitive-recursive threshold \(K(p)\) proves
+\[
+ \varepsilon(p,k)+\sum_{j=k}^{m-1}\delta(p,j)<g
+ \quad(k\ge K(p),\;m\ge k),
+\]
+then the selected labels are constant beyond \(K(p)\), and an exact label is
+obtained by evaluating at \(K(p)\).
+\end{corollary}
+
+This is the sound interface for ordering separated roots, choosing a pivot,
+selecting a chart, fixing an orientation, or identifying a branch.  At a
+collision or zero gap, the theorem correctly returns only the unlabeled or
+relational object.
+
+\subsection{Comparison with the stable-observable shortcut}
+
+The two methods solve different problems.
+
+\begin{center}
+\begin{tabularx}{0.94\textwidth}{@{}lXX@{}}
+\toprule
+ & Stable-observable shortcut & Shrinking viability \\
+\midrule
+Input comparison & Any two certificates, possibly independent & Compatible
+paths plus same-level viable-cloud diameter \\
+Need paths? & No & Yes, but only finite paths \\
+Best use & Canonical aggregate or invariant & Refining local approximations \\
+Modulus & Direct cross-precision bound & Diameter plus summable edge motion \\
+Failure mode & Observable itself is unstable & Viable clouds do not shrink \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+An application should attempt direct stability first and introduce viability
+only when the mathematics genuinely depends on refinement paths.
