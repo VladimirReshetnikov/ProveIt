@@ -1,5 +1,6 @@
 import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.ProdLemmas
+import IPRADerivations.Core.ParityArith
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Analysis.RationalClosure
 
@@ -75,12 +76,6 @@ theorem q_oo (a b : PTm N) : Γ ⊢[PRAAx] qn (two * a + one) (two * b + one) �
   apply deriveNat; ipra_simps; ring
 
 /-! ## Parity -/
-
-theorem even_of {m : PTm N} (h : Γ ⊢[PRAAx] par m ≐ zero) : Γ ⊢[PRAAx] m ≐ two * half m :=
-  (half_par m).eqTrans ((congrAdd (.eqRefl _) h).eqTrans (add_zero _))
-
-theorem odd_of {m : PTm N} (h : Γ ⊢[PRAAx] par m ≐ one) : Γ ⊢[PRAAx] m ≐ two * half m + one :=
-  (half_par m).eqTrans (congrAdd (.eqRefl _) h)
 
 /-- `Q(0, 0) ≡ 0`. -/
 theorem q_par_ee {m n : PTm N} (hm : Γ ⊢[PRAAx] par m ≐ zero) (hn : Γ ⊢[PRAAx] par n ≐ zero) :

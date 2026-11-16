@@ -25,6 +25,7 @@ import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.SumOrder
+import IPRADerivations.Core.ParityArith
 import IPRADerivations.Algebra.CayleyHamilton
 import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Analysis.Chebyshev
@@ -142,3 +143,4 @@ import IPRADerivations.Probability.Variance
 import IPRADerivations.Probability.NormalMoments
 import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Topology.Sperner
+import IPRADerivations.Topology.CrossingParity
