@@ -1,0 +1,278 @@
+\section{Elementary, algebraic, and polynomial special cases}\label{sec:special}
+
+\subsection{The binomial and geometric series}
+
+\begin{theorem}[Generalized binomial identity]\label{thm:binomial}
+Formally,
+\begin{equation}\label{eq:binomial}
+ \F a b b z=\sum_{n\ge0}\frac{\poch a n}{n!}z^n=(1-z)^{-a}.
+\end{equation}
+For rational or algebraically named \(a\), the right side means the normalized
+formal solution of
+\((1-z)y'-ay=0\).  On a certified branch disk it is the named analytic power
+\(\exp(-a\log(1-z))\).
+\end{theorem}
+
+\begin{proof}
+The cancellation of \(\poch b n\) is finite and guarded.  If
+\(B_n=\poch a n/n!\), then
+\((n+1)B_{n+1}=(n+a)B_n\), which is exactly the coefficient recurrence of
+\((1-z)y'-ay=0\), with \(B_0=1\).  The named power has the same differential
+equation and initial value; effective uniqueness on a strict disk follows by
+integrating the difference or by comparing Taylor coefficients and tails.
+\end{proof}
+
+\begin{corollary}[Geometric cases]
+\begin{align*}
+ \F{1}{b}{b}{z}&=\frac1{1-z}, &
+ \F{1}{1}{1}{z}&=\frac1{1-z},\\
+ \F{1}{2}{1}{z}&=\frac1{(1-z)^2}, &
+ \F{1}{2}{2}{z}&=\frac1{1-z}.
+\end{align*}
+\end{corollary}
+
+\begin{proof}
+Apply \cref{thm:binomial}; for \(\F12 1z\), the coefficient is \(n+1\), and
+the finite identity
+\((1-z)^2\sum_{n<N}(n+1)z^n=1-(N+1)z^N+Nz^{N+1}\) supplies an explicit
+remainder.
+\end{proof}
+
+\subsection{Logarithm and inverse sine}
+
+\begin{theorem}[Logarithm]\label{thm:log-special}
+On \(\norm z<1\), with the branch normalized by \(\log(1)=0\),
+\[
+ \F11 2{-z}=\frac{\log(1+z)}z,
+\]
+with the value at \(z=0\) interpreted as \(1\).
+\end{theorem}
+
+\begin{proof}
+The coefficient is
+\[
+ \frac{\poch1n^2}{\poch2n n!}=\frac1{n+1}.
+\]
+Thus
+\[
+ z\F11 2{-z}=\sum_{m\ge1}(-1)^{m-1}\frac{z^m}{m}.
+\]
+Formal differentiation gives \((1+z)^{-1}\) and the constant term is zero.
+Define the effective logarithm either by this series or by
+\(\int_0^z(1+t)^{-1}\,dt\) on a star-shaped certified disk.  The geometric
+tail proof in \cref{sec:convergence} makes the equality quantitative.
+\end{proof}
+
+\begin{theorem}[Arcsine]\label{thm:arcsin-special}
+On a certified disk \(\norm z<1\),
+\[
+ \F{1/2}{1/2}{3/2}{z^2}=\frac{\arcsin z}{z},
+\]
+with value \(1\) at zero.
+\end{theorem}
+
+\begin{proof}
+The finite factorial identities
+\[
+ \frac{\poch{1/2}n}{n!}=\frac1{4^n}\binom{2n}{n},
+ \qquad
+ \frac{\poch{1/2}n}{\poch{3/2}n}=\frac1{2n+1}
+\]
+are proved by induction after clearing powers of two.  Hence the coefficient
+of \(z^{2n}\) is
+\[
+ \frac1{4^n(2n+1)}\binom{2n}{n}.
+\]
+Multiplying by \(z\) and differentiating gives the binomial series
+\((1-z^2)^{-1/2}\), while the value at zero is zero.  This is the defining
+effective integral for \(\arcsin z\) on the chosen branch.
+\end{proof}
+
+\subsection{The cubic radical identity}
+
+The most striking elementary formula on the Wikipedia page can be proved
+without guessing the radical: both sides are the uniquely normalized algebraic
+solution of a cubic.
+
+\begin{theorem}[Cubic algebraic hypergeometric function]\label{thm:cubic-radical}
+Let
+\[
+ Y(x)=\F{1/3}{2/3}{3/2}{-27x^2/4}.
+\]
+As a formal power series,
+\begin{equation}\label{eq:cubic-algebraic}
+ Y+x^2Y^3=1,
+ \qquad Y(0)=1.
+\end{equation}
+On the real branch with positive square and cube roots,
+\begin{equation}\label{eq:cubic-radical}
+Y(x)=
+\frac{
+ \sqrt[3]{\frac{3\sqrt3x+\sqrt{27x^2+4}}2}
+ -\sqrt[3]{\frac{2}{3\sqrt3x+\sqrt{27x^2+4}}}
+}{\sqrt3x},
+\end{equation}
+with the removable value \(1\) at \(x=0\).
+\end{theorem}
+
+\begin{proof}
+Write \(t=x^2\).  Transforming the hypergeometric ODE gives
+\begin{equation}\label{eq:cubic-ode}
+ t(4+27t)Y''+(6+54t)Y'+6Y=0,
+ \qquad Y(0)=1,\quad Y'(0)=-1.
+\end{equation}
+Now let \(U\) be the unique formal solution of \(U+tU^3=1\) with
+\(U(0)=1\).  Existence and uniqueness are coefficientwise: the coefficient of
+\(t^n\) in the cubic determines \(u_n\) from earlier coefficients.  Differentiate
+the cubic twice, eliminate \(U'\) and \(U''\), and reduce with
+\(tU^3=1-U\).  Exact polynomial simplification yields
+\eqref{eq:cubic-ode}.  Its first two coefficients agree with those of \(Y\),
+so the ODE recurrence gives \(U=Y\).  This entire calculation can be checked
+in the finite truncated-series ring of \cref{def:trunc-series}.
+
+For the radical, set
+\[
+ s=\sqrt{27x^2+4},\qquad
+ u^3=\frac{s+3\sqrt3x}{2},\qquad v=u-u^{-1}.
+\]
+Because \((s+3\sqrt3x)(s-3\sqrt3x)=4\), one has
+\(u^{-3}=(s-3\sqrt3x)/2\), and therefore
+\[
+ v^3+3v=u^3-u^{-3}=3\sqrt3x.
+\]
+Putting \(R=v/(\sqrt3x)\) gives \(R+x^2R^3=1\).  The positive isolated-root
+choices make \(R\to1\) at zero, so formal/algebraic uniqueness gives
+\(R=Y\).  Bisection names for the radicals and the strict-disk series modulus
+turn the equality into an iPRA theorem schema.
+\end{proof}
+
+\subsection{A general algebraic family (Glasser's identity)}
+
+\begin{theorem}[Well-poised algebraic family]\label{thm:glasser}
+Let \(k\ge2\),
+\[
+ f_k=\frac{k}{(k+1)^{1+1/k}}.
+\]
+The numerator parameter vector
+\(\frac1{k+1},\frac2{k+1},\ldots,\frac{k}{k+1}\), and denominator vector
+\(\frac2k,\frac3k,\ldots,\frac{k-1}k,\frac{k+1}k\).  Then, as a formal
+identity in \(x\),
+\begin{equation}\label{eq:glasser}
+ {}_kF_{k-1}\!\left(
+ \begin{matrix}\frac1{k+1},\frac2{k+1},\ldots,\frac{k}{k+1}\\
+ \frac2k,\frac3k,\ldots,\frac{k-1}k,\frac{k+1}k
+ \end{matrix};
+ \left(\frac{x(1-x^k)}{f_k}\right)^k\right)
+ =\frac1{1-x^k}.
+\end{equation}
+For \(0\le x\le(k+1)^{-1/k}\), both sides have their ordinary positive-real
+meaning and the convergence is effective.
+\end{theorem}
+
+\begin{proof}
+Put \(u=x^k\),
+\[
+ t=\left(\frac{x(1-x^k)}{f_k}\right)^k,
+ \qquad y=\frac1{1-u}.
+\]
+Since \(f_k^k=k^k/(k+1)^{k+1}\), direct algebra gives
+\begin{equation}\label{eq:glasser-algebraic}
+ y=1+f_k^k t\,y^{k+1}.
+\end{equation}
+The coefficient of the unique formal solution is the Fuss--Catalan number
+\begin{equation}\label{eq:fuss}
+ [t^n]y=\frac1{kn+1}\binom{(k+1)n}{n}f_k^{kn}.
+\end{equation}
+A fully finitary proof of \eqref{eq:fuss} is obtained by induction from
+\eqref{eq:glasser-algebraic}: the coefficient of order \(n\) is a bounded
+\((k+1)\)-fold convolution.  Alternatively, the standard Lagrange coefficient
+formula is proved once by the finite binomial theorem and coefficient
+extraction.
+
+Apply the factorial multiplication identity
+\[
+ \prod_{j=1}^{k}\poch{j/(k+1)}n
+ =\frac{((k+1)n)!}{(k+1)^{(k+1)n}n!}.
+\]
+After separating multiples of \(k+1\), and the analogous denominator
+identity for the fractions with denominator \(k\).  Cross-multiplication
+reduces the hypergeometric coefficient exactly to \eqref{eq:fuss}.  Hence the
+left side is the unique formal solution of \eqref{eq:glasser-algebraic}, and
+substitution gives \(y=(1-x^k)^{-1}\).  On the stated interval, the argument
+lies in the convergence range and every root is the positive isolated root.
+\end{proof}
+
+\begin{corollary}[The \(k=2\) trigonometric-looking case]
+For \(0\le x\le1/\sqrt3\),
+\[
+ \F{1/3}{2/3}{3/2}{\frac{27}{4}x^2(1-x^2)^2}
+ =\frac1{1-x^2}.
+\]
+Combining this with \cref{thm:arcsin-special} or the cubic equation yields the
+intermediate sine expression displayed by MathWorld; the algebraic equality
+is the foundationally simpler statement.
+\end{corollary}
+
+\subsection{Jacobi, Legendre, and Chebyshev polynomials}
+
+\begin{theorem}[Jacobi polynomial representation]\label{thm:jacobi}
+For \(n\in\N\),
+\begin{equation}\label{eq:jacobi}
+ \F{-n}{n+\alpha+\beta+1}{\alpha+1}{x}
+ =\frac{n!}{\poch{\alpha+1}n}P_n^{(\alpha,\beta)}(1-2x),
+\end{equation}
+where the right side may be characterized as the polynomial solution of the
+Jacobi differential equation normalized by
+\(P_n^{(\alpha,\beta)}(1)=\poch{\alpha+1}n/n!\).
+\end{theorem}
+
+\begin{proof}
+The left side terminates at degree \(n\).  Substitute \(z=(1-t)/2\) into the
+hypergeometric ODE.  Clearing denominators yields
+\[
+ (1-t^2)y''+[\beta-\alpha-(\alpha+\beta+2)t]y'
+ +n(n+\alpha+\beta+1)y=0,
+\]
+the Jacobi equation.  The value at \(t=1\) is \(1\), so multiplication by
+\(\poch{\alpha+1}n/n!\) gives the standard normalization.  Among polynomials
+of degree at most \(n\), the coefficient recurrence determines the solution.
+Everything is finite and remains valid over localized rational parameter
+rings.
+\end{proof}
+
+\begin{corollary}[Legendre polynomials]
+\[
+ P_n(t)=\F{-n}{n+1}{1}{\frac{1-t}{2}}.
+\]
+\end{corollary}
+
+\begin{theorem}[Generalized Chebyshev/cosine identity]\label{thm:chebyshev}
+Formally in \(s\),
+\[
+ \F a{-a}{1/2}{\frac{1-s}{2}}=T_a(s).
+\]
+On a named real interval \(-\pi<x<\pi\), with \(s=\cos x\),
+\[
+ \F a{-a}{1/2}{\sin^2(x/2)}=\cos(ax).
+\]
+For integral \(a=n\), this is the ordinary Chebyshev polynomial identity and
+is entirely finite.
+\end{theorem}
+
+\begin{proof}
+Let \(z=\sin^2(x/2)\).  The chain rule transforms the hypergeometric equation
+with parameters \((a,-a,1/2)\) into
+\(Y''+a^2Y=0\).  The normalized solution has
+\(Y(0)=1\), \(Y'(0)=0\), which characterizes \(\cos(ax)\) by its primitive
+recursive Taylor coefficients and tail bound.  For integral \(n\), termination
+makes \(T_n\) a polynomial and no trigonometric analysis is required.
+\end{proof}
+
+\begin{remark}[Legendre functions of nonintegral degree]
+The source page also gives a formula involving an associated Legendre
+function and gamma factors.  We treat it as a \StatusC{} identity: after a
+specific Legendre branch is defined by its differential equation and local
+normalization, the equality follows from the same change of variable and
+formal uniqueness.  A global statement across its cuts additionally needs
+branch-continuation data.
+\end{remark}

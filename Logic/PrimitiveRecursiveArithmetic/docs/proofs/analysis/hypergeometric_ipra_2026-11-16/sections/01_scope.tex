@@ -1,0 +1,208 @@
+\section{Scope, semantics, and the main result}\label{sec:scope}
+
+\subsection{What is being proved}
+
+The two reference pages mix several logically different kinds of statement:
+finite coefficient identities, convergence assertions, differential-equation
+claims, integral representations, branch-dependent continuation formulas,
+and global assertions about monodromy or modular functions.  Treating all of
+these as though they had the same foundational content would conceal the main
+issue.  In first-order \(\ipra\), variables range over natural numbers.  There
+is no primitive sort of arbitrary real numbers, no quantification over all
+complex functions, and no completeness axiom that manufactures limits without
+rates.  We therefore use the following four-level interpretation.
+
+\begin{definition}[Four proof levels]\label{def:levels}
+A displayed classical statement is assigned one of the following readings.
+\begin{enumerate}[label=\textsf{\Alph*.}]
+\item \emph{Finite algebra.}  A statement about a finite product, a finite
+sum, a coefficient, or a polynomial is translated literally into an
+arithmetic identity or inequality between coded integers and rationals.
+\item \emph{Effective analysis.}  A real or complex quantity is a fixed
+primitive recursive approximation procedure with a fixed primitive recursive
+Cauchy modulus.  An equality \(x=y\) means
+\[
+   \forall p\;\norm{x(p+s)-y(p+s)}\le 2^{-p}
+\]
+for an explicitly supplied precision shift \(s\).  Uniform statements carry
+explicit compact-domain bounds and moduli.
+\item \emph{Certified continuation.}  A branch or contour formula is read
+relative to a finite code for a path, a branch of logarithm, positive distance
+margins from singularities, and quantitative bounds on every local chart.
+\item \emph{Global classical claim.}  A statement whose ordinary proof uses
+unbounded path existence, compactness without data, an abstract Riemann
+surface, or a global classification theorem is not silently reinterpreted as
+an iPRA theorem.  We record the precise finite certificate that would suffice,
+or mark the claim as outside the present package.
+\end{enumerate}
+\end{definition}
+
+This distinction makes the strongest part of the theory unexpectedly cheap.
+The hypergeometric function is controlled by one rational recurrence, and a
+large fraction of its identities are consequences of that recurrence plus
+uniqueness of a normalized formal solution of a second-order equation.
+
+\subsection{Principal theorem}
+
+Let a \emph{guarded rational parameter package} consist of rational codes
+\(a,b,c,z\), together with proofs that every denominator used below is
+nonzero.  A complex-rational package consists of pairs of rational codes and
+uses the norm \(\norm{x+iy}=|x|+|y|\), whose comparisons are decidable.
+For fixed packages, all operations in the following theorem are primitive
+recursive.
+
+\begin{theorem}[Constructive hypergeometric package]\label{thm:main-package}
+The following families admit proofs in \(\ipra\), in the senses of
+\cref{def:levels}.
+
+\begin{enumerate}[label=(\roman*)]
+\item[\StatusA--1.] The rising factorial, hypergeometric coefficient, finite
+partial sum, generalized \({}_pF_q\) coefficient, and all their recurrence
+relations are primitive recursive after totalized guarded division.
+
+\item[\StatusA--2.] Symmetry in \(a,b\), termination for a nonpositive
+integral numerator parameter, the explicit terminating polynomial,
+coefficientwise differentiation of every finite order, the hypergeometric
+ODE, and uniqueness of its normalized formal solution are provable by
+quantifier-free induction.
+
+\item[\StatusA--3.] The pullback--gauge calculations underlying Euler's
+and Pfaff's transformations, the standard quadratic transformations, the six
+Frobenius expressions, Kummer's 24 local forms, and all contiguous identities
+on the source pages reduce to finite polynomial/rational certificates.
+Equality of analytically continued branches is read at level \StatusB{} or
+\StatusC{} with the displayed branch and path data.  Resonant logarithmic
+second solutions are covered to every externally fixed truncation order; a
+uniform order requires a jointly primitive recursive coefficient table.
+
+\item[\StatusA--4.] Chu--Vandermonde, the terminating Jacobi and Legendre
+representations, the generalized Chebyshev identity as a formal identity, the
+binomial, logarithm, arcsine, incomplete-beta coefficient identity, and the
+cubic-radical special case are provable by finite algebra and formal-series
+uniqueness.
+
+\item[\StatusB--1.] For each rational \(0\le r<1\), the series has a primitive
+recursive geometric-tail modulus uniformly on \(\norm z\le r\), provided
+quantitative lower bounds are supplied for denominator factors.  The sum is a
+primitive recursively named complex number.  Termwise differentiation of any
+fixed order, and of variable order under jointly primitive recursive data,
+has an explicit modulus.
+
+\item[\StatusB--2.] Euler's beta integral, its \([0,\infty)\) variant,
+complete elliptic-integral specializations, and the incomplete-beta formula
+hold for effective parameters with positive endpoint-exponent margins and a
+branch/apartness certificate.  The proof is a finite quadrature argument plus
+a geometric head--tail estimate.
+
+\item[\StatusB--3.] Gauss's summation theorem in its Euler chamber, Kummer's
+\(z=-1\) theorem, Gauss's second theorem and Bailey's \(z=1/2\) theorem follow
+with explicit error schedules from Euler's integral, beta identities, and
+quadratic transformations.  The terminating Vandermonde case has no analytic
+hypotheses.
+
+\item[\StatusB--4.] The coefficientwise confluent limit
+\[
+ {}_1F_1(a;c;z)=\lim_{h\to0}\F{a}{h^{-1}}{c}{hz}
+\]
+has an explicit compact-disk modulus after splitting into a finite head and a
+uniform geometric tail.
+
+\item[\StatusC--1.] The connection formula at \(z=1\), analytic continuation
+along a rational polygonal path, Barnes's integral, and Gauss's continued
+fraction hold relative to explicit nonresonance, branch, contour-separation,
+tail, and denominator-apartness certificates described below.
+
+\item[\StatusD--1.] The global Schwarz-triangle uniformization, the complete
+finite-monodromy classification, the modular-lambda inversion statement, and
+the modular proofs of all isolated MathWorld algebraic values are not claimed
+as completed iPRA reductions here.  We prove the local algebraic differential
+identities and give a finite certificate interface for the remaining global
+input.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[Organization of the proof]
+The finite core is developed in \cref{sec:arithmetic,sec:series,sec:ode}.
+Effective convergence and differentiation are proved in
+\cref{sec:convergence}.  Elementary and polynomial specializations are in
+\cref{sec:special}; transformations and Kummer forms in
+\cref{sec:transformations}; integrals and summations in
+\cref{sec:integrals-sums}; contiguous relations and continued fractions in
+\cref{sec:contiguous}; and continuation, Barnes contours, and the precise
+boundary of the package in \cref{sec:continuation}.  Every analytic argument
+is accompanied by a primitive recursive choice of truncation, mesh, or
+precision.  The Lean compilation plan is in \cref{sec:formalization}.
+\end{proof}
+
+\subsection{Why theorem schemas are the right object}
+
+A primitive recursive function may be represented in \(\ipra\) by a function
+symbol together with defining equations.  It is important that we do not
+quantify over codes for all primitive recursive programs and then assume a
+primitive recursive universal evaluator: diagonalization rules that out.
+Thus a theorem about a named approximation procedure \(A(n,p)\) is a theorem
+schema, one first-order theorem for each fixed primitive recursive definition.
+Numerical parameters of that definition may still vary uniformly.
+
+This is exactly the format used by the surrounding ProveIt work.  Its ordinary
+object theory has symbols for primitive recursive functions, their defining
+equations, successor axioms, and quantifier-free induction.  Its checked
+\code{Derivations} library packages theorems as sequents
+\[
+   ([]:\mathrm{List}(\mathrm{Fm}\;\mathrm{PTm}\;0))
+      \;\vdash_{\mathrm{PRAAx}}\;\varphi,
+\]
+and transports them to the native scalar calculus through a bi-interpretation.
+The present report supplies the mathematical derivations and the target
+formulas; it does not claim that the full analytic development has already
+been compiled into those sequents.
+
+\subsection{Constructive content versus classical notation}
+
+The notation \(\F{a}{b}{c}{z}\) is used at three levels:
+\begin{enumerate}
+\item the formal series \(\sum_{n\ge0}A_nz^n\), where equality means equality
+of every coefficient;
+\item the effective sum on a closed disk \(\norm z\le r<1\), represented by
+partial sums and a tail modulus;
+\item a continued branch obtained from a finite chain of local disks.
+\end{enumerate}
+The surrounding text always identifies the level.  A formal identity can be
+stronger foundationally than an analytic one: it is valid over a localized
+polynomial ring with no appeal to limits.  Conversely, a classical formula
+that compares branches at distant points needs data that are invisible in the
+printed equation.
+
+\begin{remark}[No hidden excluded middle]
+All comparisons used to choose a truncation or mesh are comparisons of coded
+integers or rationals and hence decidable.  Bounded minimization over such a
+test is primitive recursive.  We never infer a modulus from a merely
+qualitative convergence assertion, and we never choose a zero or a path by an
+unbounded existence principle.
+\end{remark}
+
+\subsection{A compact coverage map}
+
+The source pages are covered in the following order.
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{.27\textwidth}p{.12\textwidth}X@{}}
+\toprule
+Source topic & Status & Constructive replacement \\
+\midrule
+Series, Pochhammer, termination & \StatusA & finite products, recurrence, finite polynomial \\
+Differentiation & \StatusA/\StatusB & coefficient identity; analytic transfer by tail moduli \\
+Elementary special cases & \StatusA/\StatusB & formal identities plus effective named functions \\
+Hypergeometric ODE & \StatusA & coefficient recurrence and formal uniqueness \\
+Six/24 local solutions & \StatusA/\StatusC & algebraic pullback/gauge certificates; branch data for analytic equality \\
+Euler integral & \StatusB & rational quadrature with endpoint margins \\
+Barnes integral & \StatusC & finite residue rectangle plus explicit vertical/horizontal tail bounds \\
+Contiguous relations & \StatusA & coefficientwise rational identities \\
+Continued fraction & \StatusA/\StatusC & exact finite convergents; convergence under apartness/contraction data \\
+Euler--Pfaff/quadratic transforms & \StatusA/\StatusB & transformed ODE and normalized uniqueness \\
+Gauss/Kummer/Bailey sums & \StatusA/\StatusB & finite Vandermonde or beta-integral evaluation \\
+Schwarz maps and monodromy & \StatusC/\StatusD & local matrix/path certificates; no global classification claim \\
+Modular-lambda and isolated modular values & \StatusD & exact displayed values audited numerically; modular proof not reconstructed \\
+\bottomrule
+\end{tabularx}
+\end{center}

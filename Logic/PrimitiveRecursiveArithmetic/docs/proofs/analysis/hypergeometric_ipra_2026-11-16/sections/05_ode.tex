@@ -1,0 +1,245 @@
+\section{The differential equation and its local solutions}\label{sec:ode}
+
+\subsection{Coefficient proof of the equation}
+
+Let
+\[
+ \mathcal L_{a,b,c}y
+ =z(1-z)y''+[c-(a+b+1)z]y'-aby.
+\]
+
+\begin{theorem}[Hypergeometric differential equation]\label{thm:ode}
+The formal Gauss series satisfies
+\begin{equation}\label{eq:hg-ode}
+ \mathcal L_{a,b,c}\F a b c z=0.
+\end{equation}
+On every strict subdisk where the series is effectively convergent, the same
+identity holds between named analytic functions.
+\end{theorem}
+
+\begin{proof}
+For \(y=\sum_{n\ge0}A_nz^n\), the coefficient of \(z^n\) in
+\(\mathcal L_{a,b,c}y\) is
+\[
+ (n+1)(n+c)A_{n+1}
+ -[n^2+(a+b)n+ab]A_n
+ =(n+1)(n+c)A_{n+1}-(n+a)(n+b)A_n.
+\]
+It vanishes by \cref{lem:ratio}.  This is a single rational identity for
+each \(n\).  Analytic equality follows from
+\cref{thm:analytic-derivative}: all three named series have explicit common
+tail moduli, so coefficientwise cancellation passes to their sums.
+\end{proof}
+
+\begin{corollary}[Normalized regular solution is unique]\label{cor:ode-unique}
+Suppose \(y=\sum B_nz^n\), \(B_0=1\), and
+\(\mathcal L_{a,b,c}y=0\).  If \(n+c\) is apart from zero for every observed
+\(n\), then \(y=\F a b c z\) formally.
+\end{corollary}
+
+\begin{proof}
+The ODE coefficient gives exactly the recurrence in
+\cref{thm:formal-uniqueness}.
+\end{proof}
+
+\subsection{Frobenius calculation at the three singular points}
+
+The following calculations are algebra in a ring with a formal monomial
+\(z^s\) and the derivative rule
+\(D(z^s)=sz^{s-1}\).  Analytically, the monomial is interpreted using a
+certified logarithm branch.
+
+\begin{proposition}[Solutions at zero]\label{prop:zero-solutions}
+The indicial polynomial at \(z=0\) is
+\[
+ I_0(s)=s(s+c-1).
+\]
+The two formal Frobenius expressions are
+\begin{align}
+ u_{0,1}(z)&=\F a b c z,\label{eq:u01}\\
+ u_{0,2}(z)&=z^{1-c}
+   \F{a+1-c}{b+1-c}{2-c}{z}.
+   \label{eq:u02}
+\end{align}
+Under nonresonance and branch certificates they are named local analytic
+solutions.
+\end{proposition}
+
+\begin{proof}
+Substitute \(y=z^sv\).  The coefficient of the lowest power is
+\(s(s+c-1)v(0)\).  For \(s=0\), the equation for \(v\) is the original one.
+For \(s=1-c\), direct collection gives
+\[
+ \mathcal L_{a,b,c}(z^{1-c}v)
+ =z^{1-c}\mathcal L_{a+1-c,b+1-c,2-c}v.
+\]
+The claimed solutions now follow from \cref{thm:ode}.  The displayed gauge
+identity is checked after clearing the monomial by a finite polynomial
+calculation in \(s\); substituting \(s=1-c\) finishes it.
+\end{proof}
+
+\begin{proposition}[Solutions at one]\label{prop:one-solutions}
+With \(t=1-z\), the exponents at \(z=1\) are \(0\) and \(c-a-b\), and two
+standard expressions are
+\begin{align}
+ u_{1,1}(z)&=\F a b{a+b+1-c}{1-z},\label{eq:u11}\\
+ u_{1,2}(z)&=(1-z)^{c-a-b}
+  \F{c-a}{c-b}{c+1-a-b}{1-z}.
+  \label{eq:u12}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Replace \(z\) by \(1-t\) and use \(d/dz=-d/dt\).  After collecting terms,
+the regular equation in \(t\) has parameters
+\((a,b,a+b+1-c)\).  The second expression is obtained from the second
+exponent exactly as in \cref{prop:zero-solutions}.  Every step is an identity
+of rational differential operators.
+\end{proof}
+
+\begin{proposition}[Solutions at infinity]\label{prop:infty-solutions}
+With \(w=z^{-1}\), the exponents at infinity are \(a,b\) in the convention
+\(y\sim z^{-s}\).  Two expressions are
+\begin{align}
+ u_{\infty,a}(z)&=(-z)^{-a}
+   \F a{a+1-c}{a+1-b}{z^{-1}},\label{eq:uinf-a}\\
+ u_{\infty,b}(z)&=(-z)^{-b}
+   \F{b+1-c}{b}{b+1-a}{z^{-1}}.
+   \label{eq:uinf-b}
+\end{align}
+The choice of \((-z)^{-a}\) rather than \(z^{-a}\) is branch bookkeeping;
+formally either monomial is a unit multiple of the other.
+\end{proposition}
+
+\begin{proof}
+Use
+\(D_z=-w^2D_w\) and
+\(D_z^2=w^4D_w^2+2w^3D_w\), then set
+\(y=z^{-s}v(w)\).  The lowest-order equation is
+\((s-a)(s-b)=0\).  At \(s=a\) and \(s=b\), collection gives the two displayed
+parameter triples.  A finite symbolic checker can verify the operator
+identity after multiplying by a sufficient power of \(z\).
+\end{proof}
+
+\begin{remark}[Resonance]
+If an exponent difference is an integer, the second local solution may
+contain a logarithm.  The nonlogarithmic formulas can coincide or become
+undefined because a denominator parameter is a nonpositive integer.  The
+constructive response is not to pretend that the generic basis persists.
+For every fixed truncation order, substitute
+\[
+ y=y_1\log z+z^s\sum_{n<N}d_nz^n+O(z^{s+N})
+\]
+into the differential equation.  The coefficients \(d_n\) satisfy a finite
+inhomogeneous recurrence involving finite harmonic sums (equivalently,
+digamma differences).  This recurrence is primitive recursive.  A full
+uniform logarithmic solution is a \StatusB{} theorem once a joint coefficient
+bound and convergence modulus are supplied.  The present package gives the
+recurrence interface but does not claim a completed all-resonances analytic
+library.
+\end{remark}
+
+\subsection{Wronskians and local independence}
+
+\begin{lemma}[Wronskian equation]\label{lem:wronskian}
+For two solutions of \eqref{eq:hg-ode}, their Wronskian satisfies
+\[
+ W'(z)=-\frac{c-(a+b+1)z}{z(1-z)}W(z).
+\]
+Equivalently
+\[
+ W(z)=Cz^{-c}(1-z)^{c-a-b-1}
+\]
+on a certified branch domain.
+\end{lemma}
+
+\begin{proof}
+For an equation \(y''+P y'+Qy=0\), direct expansion gives
+\(W'=-PW\).  Here
+\[
+ P(z)=\frac{c-(a+b+1)z}{z(1-z)}
+      =\frac c z+\frac{c-a-b-1}{1-z}.
+\]
+The displayed solution follows by differentiating the right side.  Thus the
+claim can be verified without invoking indefinite integration.  A nonzero
+constant \(C\) is witnessed by the leading terms of a nonresonant Frobenius
+pair.
+\end{proof}
+
+\subsection{The normal or Q-form}
+
+\begin{proposition}[Elimination of the first derivative]\label{prop:q-form}
+Set
+\[
+ y(z)=v(z)u(z),
+ \qquad
+ v(z)=z^{-c/2}(1-z)^{(c-a-b-1)/2}.
+\]
+Then \(u\) satisfies
+\[
+ u''+Q(z)u=0.
+\]
+After choosing the convention consistent with \(y=vu\), where
+\[
+ Q(z)=
+ \frac{z^2[1-(a-b)^2]
+       +z[2c(a+b-1)-4ab]+c(2-c)}
+      {4z^2(1-z)^2}.
+\]
+\end{proposition}
+
+\begin{proof}
+Divide the original equation by \(z(1-z)\), obtaining
+\(y''+Py'+Ry=0\).  For \(y=vu\), the coefficient of \(u'\) is
+\(2v'/v+P\), which vanishes because
+\[
+ \frac{v'}v=-\frac{c}{2z}-\frac{1+a+b-c}{2(z-1)}=-\frac P2.
+\]
+The remaining coefficient is \(R-P'/2-P^2/4\).  Clearing the denominator
+\(4z^2(1-z)^2\) and expanding yields the displayed numerator.  This is a
+polynomial identity suitable for the repository's ring tactic.
+\end{proof}
+
+\subsection{Reduction of a three-singularity equation}
+
+The classical slogan that every second-order linear equation with three
+regular singular points is hypergeometric must be made data-sensitive.
+
+\begin{theorem}[Certified Riemann-to-Gauss reduction]\label{thm:riemann-reduction}
+Let
+\[
+ y''+P(x)y'+Q(x)y=0
+\]
+be a rational differential equation.  Supply:
+\begin{enumerate}
+\item three pairwise apart algebraic points \(x_0,x_1,x_\infty\), with a
+certificate that the poles of \(P,Q\) occur only there;
+\item regular-singularity bounds
+\((x-x_i)P(x)\) and \((x-x_i)^2Q(x)\) at each finite point, and the analogous
+bounds at infinity;
+\item isolated roots of the three indicial polynomials;
+\item the Fuchs relation between the six exponents.
+\end{enumerate}
+Then a primitive recursive symbolic procedure constructs a fractional-linear
+coordinate \(z\) sending the three points to \(0,1,\infty\), a gauge
+\(y=z^\alpha(1-z)^\beta u\), and parameters \(a,b,c\) for which \(u\)
+satisfies the hypergeometric equation.  The correctness proof is a finite
+rational-function identity.
+\end{theorem}
+
+\begin{proof}
+Take
+\[
+ z=\frac{(x-x_0)(x_1-x_\infty)}
+          {(x-x_\infty)(x_1-x_0)}.
+\]
+Apartness makes every denominator invertible.  The chain rule transforms the
+equation to one with singularities at \(0,1,\infty\).  Choose the gauge
+exponents to make one exponent at \(0\) and one at \(1\) equal to zero.  If
+the remaining exponent differences are \(1-c\), \(c-a-b\), and \(a-b\),
+solve the resulting linear equations for \(a,b,c\).  The Fuchs relation
+ensures consistency.  After multiplication by a common polynomial
+denominator, equality with \(\mathcal L_{a,b,c}\) is an exact coefficient
+identity.  All root choices were supplied as isolated algebraic names, so no
+unbounded selection is hidden in the construction.
+\end{proof}

@@ -1,0 +1,227 @@
+\section{Transformation formulas}\label{sec:transformations}
+
+\subsection{A finite pullback--gauge certificate}
+
+\begin{lemma}[Pullback certificate]\label{lem:pullback-certificate}
+Let \(v(w)\) satisfy \(\mathcal L_{A,B,C}v=0\).  Let
+\(w=\phi(z)\) and \(g(z)=p(z)v(\phi(z))\), where \(p,\phi\) are rational or
+algebraic named functions.  After differentiating twice and replacing
+\(v''\) with the expression supplied by its differential equation, one gets
+\[
+ \mathcal L_{a,b,c}g=R_0(z)v(\phi(z))+R_1(z)v'(\phi(z)).
+\]
+If exact algebraic certificates prove \(R_0=R_1=0\), and if
+\(g(0)=1\), then
+\[
+ g(z)=\F a b c z
+\]
+as a formal series.  On any branch domain with effective convergence, the
+identity holds between named analytic functions.
+\end{lemma}
+
+\begin{proof}
+The chain rule is a finite symbolic calculation.  Clearing all denominators
+turns \(R_0=R_1=0\) into polynomial identities in the parameter and pullback
+codes.  The resulting \(g\) satisfies the target ODE.  Its constant term fixes
+the normalized regular solution by \cref{cor:ode-unique}.  If a resonant
+parameter makes the regular recurrence singular, the same certificate is
+read after localization or at each finite truncation where the required
+denominators are guarded.
+\end{proof}
+
+\begin{remark}
+This lemma is a practical proof checker for transformation formulas.  It does
+not rely on recognizing two analytic functions after the fact.  The
+certificate consists only of two cleared rational-function numerators and a
+normalization value.
+\end{remark}
+
+\subsection{Euler and Pfaff transformations}
+
+\begin{theorem}[Euler transformation]\label{thm:euler-transform}
+On the normalized branch at \(z=0\),
+\begin{equation}\label{eq:euler-transform}
+ \F a b c z=(1-z)^{c-a-b}\F{c-a}{c-b}{c}{z}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply \cref{lem:pullback-certificate} with \(\phi(z)=z\),
+\(p(z)=(1-z)^{c-a-b}\), and source parameters
+\((c-a,c-b,c)\).  Using
+\(p'/p=-(c-a-b)/(1-z)\), direct collection makes both residual
+coefficients zero.  The prefactor and inner series have constant term \(1\).
+The calculation is polynomial after multiplication by \((1-z)^2\).
+\end{proof}
+
+\begin{theorem}[Pfaff transformations]\label{thm:pfaff}
+On the normalized branch at zero,
+\begin{align}
+ \F a b c z
+ &=(1-z)^{-a}
+   \F a{c-b}c{\frac{z}{z-1}},
+   \label{eq:pfaff-a}\\
+ \F a b c z
+ &=(1-z)^{-b}
+   \F{c-a}b c{\frac{z}{z-1}}.
+   \label{eq:pfaff-b}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+For \eqref{eq:pfaff-a}, use
+\(\phi=z/(z-1)\), \(p=(1-z)^{-a}\), and parameters
+\((a,c-b,c)\) in \cref{lem:pullback-certificate}.  The derivative data
+\[
+ \phi'=-\frac1{(z-1)^2},\qquad
+ \phi''=\frac2{(z-1)^3},\qquad
+ \frac{p'}p=\frac a{1-z}
+\]
+make the residual numerators vanish.  The second formula follows by symmetry
+in \(a,b\).  All denominators are powers of \(1-z\), so the formal identity
+is checked in a localized polynomial ring and the analytic identity needs a
+branch disk avoiding \(1\).
+\end{proof}
+
+\begin{corollary}[Half-argument conversion]\label{cor:half-minus-one}
+\[
+ \F a b c{1/2}=2^a\F a{c-b}c{-1}
+\]
+whenever both named values and the chosen power of two are defined.
+\end{corollary}
+
+\begin{proof}
+Put \(z=1/2\) in \eqref{eq:pfaff-a}.
+\end{proof}
+
+\subsection{Quadratic transformations}
+
+\begin{theorem}[A standard quadratic transformation]\label{thm:quadratic}
+On the branch normalized at zero,
+\begin{equation}\label{eq:quadratic}
+ \F a b{2b}{z}
+ =(1-z)^{-a/2}
+ \F{a/2}{b-a/2}{b+1/2}{\frac{z^2}{4z-4}}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply \cref{lem:pullback-certificate} with
+\[
+ \phi(z)=\frac{z^2}{4z-4},
+ \qquad p(z)=(1-z)^{-a/2}.
+\]
+Use a source equation with parameters
+\((a/2,b-a/2,b+1/2)\), and target parameters \((a,b,2b)\).
+Multiplication by \(16(1-z)^4\) clears every derivative denominator.  The
+coefficient of \(v'\) and then that of \(v\) expand to zero.  At zero,
+\(p(0)=1\), \(\phi(0)=0\).  Moreover, the right derivative is
+\(a/2=ab/(2b)\), so the normalization is compatible even in a formulation
+using the first two coefficients.  This provides a finite checker rather
+than an appeal to a table of transformations.
+\end{proof}
+
+\begin{theorem}[Kummer quadratic pair]\label{thm:kummer-quadratic}
+For the normalized branches,
+\begin{align}
+ \F a b{1+a-b}{z}
+ &=(1-z)^{-a}
+ \F{a/2}{(a+1)/2-b}{1+a-b}
+   {-\frac{4z}{(1-z)^2}},
+ \label{eq:kummer-q1}\\
+ \F a b{1+a-b}{z}
+ &=(1+z)^{-a}
+ \F{a/2}{(a+1)/2}{1+a-b}
+   {\frac{4z}{(1+z)^2}}.
+ \label{eq:kummer-q2}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Both are applications of \cref{lem:pullback-certificate}.  For the first use
+\(\phi=-4z/(1-z)^2\), \(p=(1-z)^{-a}\); for the second use
+\(\phi=4z/(1+z)^2\), \(p=(1+z)^{-a}\).  Clearing \((1\mp z)^4\) reduces the
+claims to polynomial identities.  The constant term is \(1\).  The source
+parameter relation \(c=1+a-b\) is exactly what cancels the residual
+coefficient.
+\end{proof}
+
+\begin{remark}[Constructive domain statement]
+The formal transformations do not need inequalities.  Their analytic reading
+requires that the chosen disk avoid the poles of the pullback and that the
+prefactor branch be named there.  The equality may then be continued along a
+coded path by \cref{thm:path-continuation}.  This is more precise than a
+single informal phrase such as ``by analytic continuation.''
+\end{remark}
+
+\subsection{The six local expressions and Kummer's 24 forms}
+
+Let the six base expressions be
+\[
+ u_{0,1},u_{0,2},u_{1,1},u_{1,2},u_{\infty,a},u_{\infty,b}
+\]
+from \cref{prop:zero-solutions,prop:one-solutions,prop:infty-solutions}.
+For any hypergeometric factor in one of these expressions, apply one of four
+operations:
+\begin{enumerate}[label=(\arabic*)]
+\item leave it unchanged;
+\item apply Euler's transformation;
+\item apply the first Pfaff transformation;
+\item apply the second Pfaff transformation.
+\end{enumerate}
+After simplifying the outer monomial, this produces the 24 forms tabulated by
+Kummer and displayed by MathWorld.
+
+\begin{theorem}[Kummer-form generator]\label{thm:kummer-24}
+For generic nonresonant parameters, every expression generated by the
+preceding \(6\times4\) construction solves the same hypergeometric differential
+equation.  Within the local branch domain of its parent base expression, it
+represents that same local solution.  The construction and its verification
+are primitive recursive symbolic procedures.
+\end{theorem}
+
+\begin{proof}
+Each base expression solves the target equation by the operator calculations
+of \cref{sec:ode}.  Euler and Pfaff transformations replace only the inner
+hypergeometric factor by a formally equal expression, so the parent function
+is unchanged in its normalized local branch.  Syntactic simplification of
+powers adds exponents and composes rational pullbacks; this is finite rational
+arithmetic.  Alternatively, each of the 24 outputs can be checked directly
+by \cref{lem:pullback-certificate}.  Resonant coincidences reduce the number
+of distinct forms but do not invalidate the equation-solving claim.
+\end{proof}
+
+\begin{audit}[What ``all 24'' means]
+The 24 entries are not 24 globally single-valued functions.  They are local
+expressions containing powers such as \((-z)^{-a}\) and
+\((1-z)^{c-a-b}\).  Equality of two entries away from the normalized local
+disk includes a connection constant determined by continuation.  The formal
+certificate proves the differential equation and local normalization; the
+analytic branch statement carries a path and logarithm certificate.
+\end{audit}
+
+\subsection{Higher rational pullbacks}
+
+\begin{proposition}[Finite checkability of algebraic transformations]
+Suppose a proposed quadratic, cubic, or higher transformation has the form
+\[
+ \F a b c z=p(z)\F A B C{\phi(z)},
+\]
+where \(p\) and \(\phi\) are algebraic functions given by isolated polynomial
+relations and local initial values.  If implicit differentiation supplies
+named \(p',p'',\phi',\phi''\), then the identity has a finite
+pullback--gauge certificate as in \cref{lem:pullback-certificate}.
+\end{proposition}
+
+\begin{proof}
+Use the polynomial relations to eliminate all algebraic powers in the two
+residual coefficients.  A Gröbner-style reduction is not foundationally
+needed: a certificate explicitly expresses each cleared residual numerator as
+a polynomial combination of the defining relations.  Checking that
+combination is primitive recursive polynomial arithmetic.  The initial value
+selects the intended local branch.
+\end{proof}
+
+This proposition covers the specific transformations stated on the source
+pages and gives a direct formalization route for the many additional Goursat
+transformations that those pages mention but do not print.

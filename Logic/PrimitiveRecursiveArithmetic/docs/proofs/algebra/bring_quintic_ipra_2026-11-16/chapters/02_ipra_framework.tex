@@ -1,0 +1,223 @@
+\section{The finite infrastructure inside \(\ipra\)}\label{sec:framework}
+
+\subsection{The object theory actually used}
+
+The ProveIt presentation of \ipra{} is first-order intuitionistic arithmetic
+with equality, a symbol and defining equations for every fixed primitive
+recursive function, the successor axioms, and induction for quantifier-free
+formulas.  The crucial word is \emph{fixed}: we may add the coefficient
+function of one series, the verifier of one certificate format, or the step
+function of one iteration.  We do not postulate a primitive-recursive universal
+evaluator for all primitive-recursive programs.
+
+Every invariant below is represented by an equality of natural-number terms.
+For example, a bounded assertion
+\[
+  \forall i<N\; P(i)
+\]
+with decidable \(P\) is encoded by the Boolean fold
+\[
+  \operatorname{All}_P(0)=1,
+  \qquad
+  \operatorname{All}_P(i+1)=
+  \operatorname{All}_P(i)\cdot\chi_P(i).
+\]
+The assertion is the quantifier-free equation
+\(\operatorname{All}_P(N)=1\).  Consequently the ordinary proof ``maintain
+this finite invariant for every stage'' is literally quantifier-free
+induction.
+
+\subsection{Integers, rationals, and finite algebra}
+
+An integer is coded by a pair \((u,v)\) representing \(u-v\).  Equality is
+cross-addition,
+\[
+ (u,v)=(u',v')\quad\Longleftrightarrow\quad u+v'=u'+v.
+\]
+A rational is represented by a signed numerator and a positive denominator;
+all rational identities are converted to integer identities by multiplying by
+the product of the guarded nonzero denominators.  The ProveIt
+\code{IPRADerivations.Core.Integers} and \code{Core.Tactic} layers already
+implement this difference-ring method and a ring normalizer for object-theory
+polynomial identities.
+
+A polynomial of degree at most \(d\) is a finite coefficient vector.  Addition,
+multiplication, formal differentiation, evaluation, Euclidean division over a
+field, Sylvester determinants and resultants are bounded loops.  A sparse
+representation is convenient for the very large universal Tschirnhaus
+expressions, but no theorem depends on the choice of representation.
+
+\begin{lemma}[Finite polynomial normalization]\label{lem:poly-normalize}
+For each fixed number of variables and each coded degree bound there is a
+primitive-recursive normalizer \(\operatorname{nf}\) for integer polynomials
+such that \ipra{} proves
+\[
+ \operatorname{nf}(P)=\operatorname{nf}(Q)
+ \quad\Longrightarrow\quad
+ P(\mathbf x)=Q(\mathbf x).
+\]
+The same is true for rational polynomials after denominator clearing.
+\end{lemma}
+
+\begin{proof}
+Encode a monomial by its exponent vector and a polynomial by a finite list of
+coefficient--monomial pairs.  Insertion sort by the lexicographic monomial code,
+followed by a bounded fold combining equal monomials, is primitive recursive.
+Correctness is proved by induction on the input length.  The invariant is an
+equality between the evaluation of the processed prefix and the evaluation of
+the normalized accumulator, hence quantifier-free.  Rational coefficients are
+handled by a common positive denominator.
+\end{proof}
+
+This elementary lemma is the object-theory meaning of every use of
+\code{ring}, \code{field\_simp}, or a symbolic resultant in the metatheoretic
+Lean and Python artifacts.
+
+\subsection{Regular names for real and complex numbers}
+
+A \emph{regular dyadic name} for a real number is a primitive-recursive
+function \(q:\N\to\Q\) satisfying
+\begin{equation}\label{eq:regular-name}
+  \abs{q(n)-q(m)}\le 2^{-n}+2^{-m}.
+\end{equation}
+Two names are equal if
+\(\abs{q(n)-r(n)}\le 2^{1-n}\) for all \(n\).  A complex name is a pair of real
+names.  Arithmetic on names uses explicit error propagation.  On a supplied
+rational bound \(\abs{x}\le M\), the polynomial map \(x\mapsto x^5+x\) has an
+explicit rational modulus because
+\[
+ \abs{x^5-y^5}
+ \le 5(M+1)^4\abs{x-y}.
+\]
+after increasing the bound by one to absorb approximation error.
+
+Statements about order use located intervals rather than an illicit global law
+of trichotomy for arbitrary reals.  In the Bring construction all branching is
+performed on exact rational midpoint evaluations.  The extension from rational
+parameters to a named real parameter is then made by the Lipschitz estimate of
+Theorem~\ref{thm:bring-lipschitz}; no undecidable sign test on a real number is
+required.
+
+\begin{definition}[Effective convergence]
+A sequence \(z_n\) converges to \(z\) with modulus \(M\) when
+\[
+ m,n\ge M(k)\quad\Longrightarrow\quad
+ \abs{z_m-z_n}\le 2^{-k}.
+\]
+every term and \(M\) being primitive recursive.  A power series is asserted to
+converge only together with a primitive-recursive tail bound on each named
+closed subdisk of its open disk of convergence.
+\end{definition}
+
+This is the reading used for the Bring series, hypergeometric functions and
+local analytic branches.
+
+\subsection{Truncated power series}
+
+For a commutative coded ring \(R\), define
+\[
+  T_N(R)=R[X]/(X^{N+1})
+\]
+as vectors \((a_0,\ldots,a_N)\).  Cauchy multiplication is
+\[
+  (ab)_n=\sum_{i=0}^{n}a_i b_{n-i}.
+\]
+Composition \(A(B)\) is a bounded sum whenever \(B_0=0\).  If \(U_0=1\), the
+inverse of \(U\) in \(T_N(R)\) is produced by the finite geometric series in
+\(1-U\), or recursively coefficient by coefficient.  All these operations are
+primitive recursive in \(N\).
+
+The finite Lagrange theorem used later can be stated without completed series.
+
+\begin{theorem}[Finite Lagrange inversion, reusable form]\label{thm:finite-lagrange}
+Let \(\Phi\in T_N(\Q)\).  Starting from \(G_0=0\), define
+\[
+ G_{r+1}=X\Phi(G_r)\pmod{X^{N+1}}.
+\]
+Then \(G_{N+1}\) is the unique vector with zero constant term satisfying
+\(G=X\Phi(G)\).  For \(1\le n\le N\),
+\begin{equation}\label{eq:finite-lagrange}
+ n[X^n]G=[W^{n-1}]\Phi(W)^n.
+\end{equation}
+Every operation and the proof of the theorem are primitive recursive in \(N\),
+and the theorem is derivable in \ipra{} by quantifier-free induction.
+\end{theorem}
+
+\begin{proof}
+If two vectors agree below degree \(m\), their images under
+\(A\mapsto X\Phi(A)\) agree below degree \(m+1\).  Thus the successive iterates
+stabilize one coefficient per step, which gives existence and uniqueness after
+\(N+1\) steps.  Formula~\eqref{eq:finite-lagrange} follows from the finite
+Laurent-residue substitution identity
+\[
+ \Res Q(F(W))F'(W)=\Res Q(W).
+\]
+after truncating every Laurent vector to the finite exponent interval that can
+contribute to the residue.  The proof on Laurent monomials is a telescoping
+coefficient identity; linearity gives the general case.  This is exactly the
+architecture of the existing ProveIt Lagrange-inversion packet.
+\end{proof}
+
+Writing the equation with the factor \(n\) on the left avoids division in the
+object theory.  Division by \(n>0\) is used only in the rational metanotation.
+
+\subsection{Finite fields, permutations, and groups}
+
+For the Galois arguments we use two complementary encodings.
+
+\begin{enumerate}
+\item For a concrete polynomial modulo a concrete prime, elements of
+      \(\F_p[X]/(f)\) are coefficient vectors of length \(\deg f\).  Addition,
+      multiplication, gcd, Frobenius powers and Bézout certificates are
+      bounded algorithms.
+\item An abstract finite group is a natural number \(n\) together with an
+      \(n\times n\) multiplication table and tables for identity and inverse.
+      The group axioms, subgroup closure, commutators, derived series, orbits
+      and permutation actions are bounded Boolean folds.
+\end{enumerate}
+
+A permutation of five letters is a five-entry vector.  There are only
+\(5!=120\) candidates.  The executable certificate enumerates all 156 actual
+subgroups of \(S_5\), identifies the 20 transitive ones, and checks that the 18
+solvable transitive subgroups have orders \(5,10\), or \(20\) and are contained
+in a conjugate of \(\operatorname{AGL}(1,5)\).  This is a finite computation,
+so its trace can be reproduced by a primitive-recursive verifier inside
+\ipra.
+
+\begin{lemma}[Finite certificate reflection]\label{lem:certificate-reflection}
+Let \(V(c)\in\{0,1\}\) be a fixed primitive-recursive verifier, and suppose
+\ipra{} proves the uniform soundness implication
+\[
+ V(c)=1\longrightarrow R(c).
+\]
+after all bounded assertions in \(R\) have been Boolean-folded.  Then every
+explicit accepted certificate \(\bar c\) yields an \ipra{} proof of
+\(R(\bar c)\).
+\end{lemma}
+
+\begin{proof}
+The closed computation \(V(\bar c)=1\) reduces by the defining equations of the
+primitive-recursive symbols.  Modus ponens with the uniform soundness theorem
+gives \(R(\bar c)\).  No reflection principle for arbitrary proofs is being
+assumed; this is only evaluation of one fixed decidable verifier.
+\end{proof}
+
+\subsection{Reuse of the checked ProveIt library}
+
+The following dependencies are already available in the repository.
+
+\begin{itemize}
+\item \code{IPRADerivations.Core.Semiring}, \code{Core.Integers},
+      \code{Core.Order}, \code{Core.Powers}, \code{Core.Search} and
+      \code{Core.Pairing} provide the basic arithmetic, bounded search and
+      coding infrastructure.
+\item \code{IPRADerivations.Algebra.PolynomialFormulas.quadratic},
+      \code{cardano}, and \code{ferrari} are closed derivations of the exact
+      factorization identities needed to solve the auxiliary equations of
+      degrees two, three and four.
+\item The transfer theorem \code{pra\_iff\_native} transports these ordinary
+      \ipra{} derivations to the repository's very small native scalar core.
+\end{itemize}
+
+The present Lean blueprint is designed to add new object-theory modules above
+this checked base rather than to replace it with Mathlib field reasoning.

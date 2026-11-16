@@ -1,0 +1,213 @@
+\section{Beyond radicals: what can be made constructive}\label{sec:beyond}
+
+The reference pages devote substantial space to Hermite's theta-function
+solution, Klein's icosahedral method, hypergeometric differential equations,
+and the Doyle--McMullen iteration.  These claims are not excluded by
+Abel--Ruffini: they use operations more general than ordinary radicals.  This
+section separates their finite local cores from the global analytic work still
+required for a complete Lean development.
+
+\subsection{Named hypergeometric functions}
+
+For fixed rational parameters \(a_1,\ldots,a_p,b_1,\ldots,b_q\), define
+\[
+ c_0=1,
+ \qquad
+ c_{n+1}=c_n
+ \frac{(n+a_1)\cdots(n+a_p)}{(n+b_1)\cdots(n+b_q)(n+1)}.
+\]
+After clearing the fixed parameter denominators, this is a primitive-recursive
+rational recurrence.  The truncated sum
+\[
+ H_N(z)=\sum_{n<N}c_nz^n
+\]
+is therefore a finite coded polynomial.  On a named disk where the coefficient
+ratio is eventually bounded by a rational \(\theta<1\), the geometric tail
+\[
+ \left|H(z)-H_N(z)\right|
+ \le \frac{|c_Nz^N|}{1-\theta}
+\]
+gives a primitive-recursive modulus.
+
+\begin{proposition}[Local hypergeometric verification]
+For fixed rational parameters, every coefficient identity, linear differential
+equation, and algebraic substitution involving a generalized hypergeometric
+series can be proved in \ipra{} coefficient by coefficient.  Analytic equality
+on a named disk follows when both sides are supplied with effective tail
+moduli.
+\end{proposition}
+
+\begin{proof}
+The coefficient recurrence proves the differential equation after multiplying
+by a common denominator and comparing the coefficient of \(z^n\).  Equality of
+two named series follows by induction on \(n\) from equal initial coefficients
+and a common recurrence.  A geometric or ratio-based tail modulus lifts the
+finite equality to the analytic names.
+\end{proof}
+
+Theorem~\ref{thm:bring-hypergeom} is a complete example.  The four
+hypergeometric basis functions used for all branches of the Bring quintic are
+handled the same way: verify the Cockle--Harley recurrence, match four initial
+data, and use the zero sum of the five roots.  This is a substantially smaller
+task than formalizing a general library of analytic continuation.
+
+The MathWorld observation that equations of the shape
+\(x^p+bx^q+c=0\) admit one-variable hypergeometric expansions also has a
+finite local interpretation.  Around a simple root or a parameter value where
+the equation becomes \(x=X\Phi(x)\), finite Lagrange inversion gives the
+coefficient sequence; residue classes of the exponent produce a finite number
+of hypergeometric recurrences.  Each fixed pair \((p,q)\) is an \ipra{} theorem
+schema.  Uniformity over arbitrary coded \((p,q)\) requires only bounded
+factorial and binomial algorithms, not higher-order quantification.
+
+\subsection{Theta series and elliptic data}
+
+For \(|q|<1\), the Jacobi theta constants may be named by
+\begin{align*}
+ \theta_2(0,q)&=2q^{1/4}\sum_{n\ge0}q^{n(n+1)},\\
+ \theta_3(0,q)&=1+2\sum_{n\ge1}q^{n^2}.
+\end{align*}
+On a named closed disk \(|q|\le r<1\), the omitted tail after \(N\) is bounded
+by a geometric series beginning at \(r^{N^2}\).  Thus both theta constants are
+primitive-recursively named.  If a rational lower bound for
+\(|\theta_3(0,q)|\) is supplied, the modular lambda value
+\begin{equation}\label{eq:lambda-theta}
+ m(q)=\frac{\theta_2(0,q)^4}{\theta_3(0,q)^4}
+\end{equation}
+has an effective quotient name.
+
+The complete elliptic integral
+\[
+ K(k)=\frac\pi2\,{}_2F_1\!\left(\frac12,\frac12;1;k^2\right).
+\]
+automatically receives a name from the preceding hypergeometric construction
+on \(|k|<1\).  The nome
+\[
+ q=\exp\!\left(-\pi\frac{K(\sqrt{1-k^2})}{K(k)}\right).
+\]
+gains an effective name when the square roots, denominator lower bound, and
+exponential modulus are supplied.  All of these operations are already within
+the general effective-analysis architecture used elsewhere in ProveIt.
+
+\begin{theorem}[Finite verification interface for Hermite-type formulas]
+\label{thm:hermite-interface}
+Fix a compact parameter region avoiding every displayed denominator and branch
+cut, and supply:
+\begin{enumerate}
+\item regular names and moduli for the required theta constants, elliptic
+      integrals, roots and exponentials;
+\item the finite modular-equation identities relating the auxiliary modulus to
+      the Bring parameter;
+\item a branch certificate at one base point.
+\end{enumerate}
+Then the Hermite--Kronecker--Brioschi root expression can be verified in
+\ipra{} by approximating both sides and checking the exact algebraic identity
+\(x^5-x+a=0\), with uniqueness/continuation on the certified region.
+\end{theorem}
+
+\begin{proof}
+Every special-function value has a primitive-recursive Cauchy name by the tail
+bounds above.  The algebraic combination of names gives a candidate \(x\).
+The modular equations and theta identities reduce the residual
+\(x^5-x+a\) to zero; at finite precision this is an equality of truncated
+series plus an explicit tail bound.  A lower bound for \(|5x^4-1|\) gives local
+uniqueness by the quantitative inverse theorem.  Subdivision of a certified
+path transports the branch from the base point to the target.
+\end{proof}
+
+\begin{frontier}[Global Hermite formula]
+A complete proof of the exact formula printed on the source page must formalize
+the relevant modular equations, all eighth-root branch choices, and analytic
+continuation across a specified cut plane.  The local theta and hypergeometric
+objects are fully compatible with \ipra{}, but this archive does not claim that
+those global modular identities have already been reduced to Lean certificates.
+The status is therefore \(\Outline\), not a rejection of the claim.
+\end{frontier}
+
+\subsection{Klein's icosahedral equation}
+
+Klein reduces a principal quintic to an icosahedral invariant equation and
+expresses a local inverse by a ratio of two Gauss hypergeometric functions.  The
+large polynomial printed by MathWorld is itself an exact finite object.  For a
+proposed value of its invariant \(Z\), substitution and polynomial
+normalization are immediate \ipra{} tasks.
+
+The hypergeometric ratio has three constructive layers.
+
+\begin{enumerate}
+\item Its numerator and denominator are named by rational coefficient
+      recurrences, with effective tails for \(|1728Z|<1\).
+\item A Wronskian or direct coefficient calculation verifies the associated
+      second-order differential equation.
+\item The rational icosahedral invariant of the ratio is checked by finite
+      series substitution near a base point.  Equality then propagates on a
+      certified simply connected region by uniqueness of the differential
+      equation.
+\end{enumerate}
+
+The local disk is thus accessible with existing tools.  The global theorem that
+all relevant branches and icosahedral monodromy are covered requires an
+explicit path-and-monodromy library.  Such a library can be entirely
+arithmetized: a path is a rational polygon, continuation uses overlapping
+rational disks, and a permutation of the five roots is a five-entry table.
+What remains is volume, not a need for classical set existence.
+
+\subsection{Differential resolvents in arbitrary fixed degree}
+
+The derivation of Theorem~\ref{thm:differential-resolvent} generalizes.  If
+\(P(x,a)=0\) and \(P_x\ne0\), then
+\[
+ x'=-\frac{P_a}{P_x}.
+\]
+Repeated total differentiation expresses each \(x^{(j)}\) as a rational
+function of \(x,a\).  The vector space over \(\Q(a)\) spanned by
+\(1,x,\ldots,x^{d-1}\) has dimension \(d\) modulo a degree-\(d\) equation.
+Therefore \(d+1\) derivatives are linearly dependent after reduction modulo
+\(P\), producing a linear differential resolvent of order at most \(d\), and
+o larger than \(d-1\) when the sum of the branches supplies one dependence.
+
+For fixed \(d\), Gaussian elimination over rational-function codes and
+polynomial remainder are primitive recursive.  Thus the source page's claim
+that differential resolvents extend to higher-degree algebraic equations has a
+uniform finite proof for each fixed degree.  Partial differential resolvents
+for several coefficient variables are handled by multi-indexed bounded
+derivatives in the same way.
+
+\subsection{Doyle--McMullen iteration}
+
+The source page describes a rational map \(T_Z\) for the Brioschi quintic and
+advises iterating from a random start until convergence.  Randomness and the
+phrase ``until it converges'' are not a formal theorem.  The correct
+constructive interface is a trapping/contraction certificate.
+
+\begin{theorem}[Certified rational iteration]\label{thm:certified-iteration}
+Let \(T\) be a rational map with named coefficients.  Suppose a certificate
+provides a closed rational disk \(D\), a nonzero lower bound for every
+denominator on \(D\), a proof that \(T(D)\subseteq D\), and a rational
+\(0\le\lambda<1\) such that
+\[
+ |T(u)-T(v)|\le\lambda|u-v|
+ \quad(u,v\in D).
+\]
+Then iteration from any named point in \(D\) converges to the unique fixed point
+with the primitive-recursive error bound
+\[
+ |T^n(w)-w_*|
+ \le\frac{\lambda^n}{1-\lambda}|T(w)-w|.
+\]
+If the final algebraic reconstruction formulas are supplied, the resulting
+Brioschi roots are effective \ipra{} reals or complexes.
+\end{theorem}
+
+\begin{proof}
+The usual telescoping proof is a finite induction:
+\(|w_{n+1}-w_n|\le\lambda^n|w_1-w_0|\).  A finite geometric sum bounds every
+Cauchy tail, and a primitive-recursive logarithmic cutoff makes it smaller than
+\(2^{-k}\).  Substitution into the rational map and then the Brioschi
+polynomial verifies the limit.
+\end{proof}
+
+A global theorem that a generic ``random'' start reaches such a disk is a
+separate dynamical statement involving Julia sets and measure.  It is not
+needed for certified computation of any fixed instance and is not claimed in
+this packet.

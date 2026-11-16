@@ -1,0 +1,276 @@
+\section{Lean formalization plan}\label{sec:formalization}
+
+\subsection{Two distinct Lean layers}
+
+A faithful formalization should not confuse a theorem in Lean's ambient
+classical mathematics with a derivation in the object theory \(\ipra\).
+We therefore propose two linked libraries.
+
+\begin{enumerate}
+\item \textbf{Mathlib/model layer.}  Define ordinary finite coefficients and
+analytic sums over \(\Q,\R,\C\); prove the algebraic identities, convergence
+bounds, and correctness of certificate generators.  This layer is useful for
+rapid development and for checking formulas.
+\item \textbf{Object-theory layer.}  Represent every primitive recursive
+coefficient, partial sum, cutoff, and error test by a symbol/term in
+\code{Prf PRAAx}; derive the first-order sentences using the checked iPRA core.
+Only the second layer establishes the foundational claim of this report.
+\end{enumerate}
+
+The repository already contains a Mathlib-side definition
+\code{Fabius.classicalHypergeometricTerm} for \({}_{s+1}F_s\), using
+Mathlib's rising-factorial polynomial, and a noncomputable infinite sum
+\code{classicalHypergeometric}.  It also proves nonvanishing and termination
+lemmas in the context of a classical \(q\to1\) limit.  These definitions can
+be reused for the model layer, but the noncomputable \(\sum'\) is not itself
+an iPRA construction.
+
+The checked \code{IPRADerivations} library supplies the object-theory
+infrastructure needed here: integer differences, a ring tactic, definitions
+by primitive recursion, finite sums and products, powers, factorials, order,
+bounded search, pairing, and multi-sums.  This sharply reduces the amount of
+new foundational code.
+
+\subsection{Proposed module graph}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{.28\textwidth}X@{}}
+\toprule
+Module & Main declarations \\
+\midrule
+\path{Hypergeometric/Codes} & signed rationals, complex-rational pairs,
+normalized or cross-multiplied equality, one-norm, dyadic error predicate \\
+\path{Hypergeometric/Pochhammer} & rising factorial numerator/denominator,
+split and shift laws, negative-integer termination \\
+\path{Hypergeometric/Coefficient} & \(A_n\), guard predicate, ratio
+recurrence, generalized \({}_pF_q\) term \\
+\path{Hypergeometric/FiniteSeries} & partial sums, Cauchy products,
+derivatives, substitution in \(R/(z^N)\) \\
+\path{Hypergeometric/ODE} & coefficient form of \(\mathcal L\), normalized
+uniqueness, Frobenius gauge identities, Q-form \\
+\path{Hypergeometric/Transform} & Euler, two Pfaff, quadratic/Kummer
+certificates, six/24-form generator \\
+\path{Hypergeometric/Special} & logarithm, arcsine, cubic equation, Glasser
+family, Jacobi/Legendre/Chebyshev \\
+\path{Hypergeometric/Bounds} & explicit ratio cutoff, geometric tail,
+head--tail combinators, derivative moduli \\
+\path{Hypergeometric/Integral} & endpoint cutoffs, Riemann sums, beta shifts,
+Euler integral, substitutions \\
+\path{Hypergeometric/Summation} & Vandermonde, Gauss chamber, Kummer,
+Gauss second, Bailey \\
+\path{Hypergeometric/Contiguous} & seven master identities, shift reducer,
+finite Gauss fraction \\
+\path{Hypergeometric/Continuation} & local Taylor recurrence, disk-step
+majorant, finite path continuation \\
+\path{Hypergeometric/Checks/Axioms} & \code{\#print axioms} for every exported
+object-theory theorem; no \code{sorry} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The exact finite core should be implemented first.  It is independent of the
+analytic-name infrastructure and will already formalize a substantial fraction
+of both reference pages.
+
+\subsection{Executable model definitions}
+
+The companion file \code{lean/HypergeometricFinite.lean} uses a direct
+rational definition suitable for experimentation:
+\begin{lstlisting}[language={}]
+def pochhammer (a : Q) : Nat -> Q
+| 0     => 1
+| n + 1 => pochhammer a n * (a + n)
+
+def hgCoeff (a b c : Q) (n : Nat) : Q :=
+  pochhammer a n * pochhammer b n /
+    (pochhammer c n * n.factorial)
+
+def hgPartial (a b c z : Q) (N : Nat) : Q :=
+  sumRange N (fun n => hgCoeff a b c n * z^n)
+\end{lstlisting}
+The production version should use a guarded rational structure or state
+nonzero hypotheses, rather than relying on Lean's total field division at a
+zero denominator.
+
+At the Mathlib level, specialization of the existing generic definition is:
+\begin{lstlisting}[language={}]
+def gaussTerm (a b c z : K) (n : Nat) : K :=
+  Fabius.classicalHypergeometricTerm
+    (s := 1) (fun | 0 => a | 1 => b) (fun _ => c) z n
+\end{lstlisting}
+One then proves agreement with \code{hgCoeff} over \(\Q\) and uses the
+existing lemmas about \code{ascPochhammer}.
+
+\subsection{The object-theory representation}
+
+Working directly with rational quotients makes cancellation side conditions
+awkward.  A robust object-theory implementation stores a rational expression
+as a pair of signed-integer terms \((N,D)\), with \(D>0\).  Equality is
+\[
+  N_1D_2=N_2D_1
+\]
+in the ring of integer differences.  Addition and multiplication are
+polynomial; inversion swaps numerator and denominator under a nonzero guard.
+For most hypergeometric identities it is even cheaper to keep the coefficient
+as the unreduced pair
+\[
+ \operatorname{num}(A_n)=\poch a n\poch b n,
+ \qquad
+ \operatorname{den}(A_n)=\poch c n\,n!,
+\]
+where each rational parameter has first been expanded into a common integer
+denominator.  The core recurrence is then one integer polynomial equality.
+
+A typical target theorem has the shape
+\begin{lstlisting}[language={}]
+theorem coeff_recurrence :
+  ([] : List (Fm PTm 0)) |- [PRAAx]
+    allN 4 (guardCoeff ==>.
+      ratEq
+        ((n+1) * (n+c) * coeff (n+1))
+        ((n+a) * (n+b) * coeff n)) := by
+  -- unfold primitive recursions; use product equations and ipra_ring
+\end{lstlisting}
+This is schematic notation; the archive's Lean outline records the intended
+binder order and imports, not a claim that these exact identifiers already
+exist.
+
+\subsection{Induction invariants for the finite core}
+
+The crucial proofs have unusually small invariants.
+
+\paragraph{Pochhammer split.}
+For fixed \(x,m\), induct on \(n\) with the literal equation
+\[
+ \poch x{m+n}=\poch x m\poch{x+m}n.
+\]
+
+\paragraph{Termination.}
+Induct on \(n\le m\) for the factorial formula, then use the zero factor at
+\(m+1\) and the successor equation for later indices.
+
+\paragraph{Derivative order.}
+Induct on \(r\) with a universally quantified observed coefficient \(n\), or
+encode the bounded conjunction of all coefficients below \(N\).  The step is
+\(\poch a{r+1}=\poch a r(a+r)\).
+
+\paragraph{ODE.}
+No induction is needed beyond the coefficient definitions: one
+\code{ipra\_ring} invocation proves the cross-multiplied recurrence at an
+arbitrary \(n\).
+
+\paragraph{Vandermonde.}
+Use the induction in \cref{thm:vandermonde}.  The induction hypothesis is
+universal in the rational parameter codes, so it may be instantiated at
+\((b+1,c+1)\) in the successor step.
+
+\paragraph{Transformations.}
+Implement a small symbolic differential-expression datatype.  A certificate
+contains two rational-polynomial residuals and identities expressing them as
+zero.  Reflection into the object theory turns each residual check into a
+ring theorem.  Formal uniqueness then transports the result to coefficients.
+
+\subsection{Formalizing the analytic contracts}
+
+A dyadic complex-rational approximation can be stored as four natural
+numbers: signed numerators for real and imaginary parts and a common power-of
+two denominator.  Define
+\[
+ \operatorname{errLE}(X,Y,p)
+\]
+to mean, after scaling to a common denominator,
+\(\norm{X-Y}\le2^{-p}\).  This is a quantifier-free formula over natural
+arithmetic.
+
+For a fixed evaluator \(E(p)\), the Cauchy contract is the sentence
+\[
+ \forall p\forall q\;
+ (q\ge p+s\to\operatorname{errLE}(E(q),E(p+s),p)).
+\]
+The analytic equality of fixed evaluators \(E_1,E_2\) is
+\[
+ \forall p\;
+ \operatorname{errLE}(E_1(p+s),E_2(p+s),p).
+\]
+The quantifiers are ordinary first-order quantifiers; only the evaluator
+symbols are fixed by the theorem schema.
+
+The tail theorem can be compiled without a general theory of real limits.
+Define the primitive recursive cutoff \(N(a,b,c,r,p)\) by the explicit formula
+and bounded search of \cref{lem:ratio-cutoff,thm:disk-convergence}.  Prove
+inside iPRA that every finite tail segment between \(N\) and \(M\) is bounded
+by the geometric expression.  The Cauchy theorem follows directly.  This
+approach is shorter than first building a full abstract constructive analysis
+library.
+
+\subsection{Formalizing Euler's integral}
+
+A minimal development needs only the following reusable lemmas:
+\begin{enumerate}
+\item a bounded-sum estimate for rational complex numbers;
+\item a modulus-to-Riemann-sum Cauchy lemma on a closed rational interval;
+\item endpoint power-tail bounds with a positive rational exponent margin;
+\item summation/integration interchange for a finite head plus a uniform
+remainder;
+\item finite substitution for the specific rational maps used in this report.
+\end{enumerate}
+Each theorem is a first-order statement about explicit sums and inequalities.
+The integral is not introduced as a higher-order object; every named integrand
+gets its own primitive recursive Riemann-sum symbol.
+
+\subsection{Suggested implementation milestones}
+
+\begin{enumerate}[label=\textbf{M\arabic*.}]
+\item Compile Pochhammer, coefficients, termination, derivatives, ODE,
+formal uniqueness, and Vandermonde.  This should contain no analytic names.
+\item Add a finite truncated-series evaluator and reflection checker.  Prove
+Euler, Pfaff, the printed quadratic transformations, the cubic equation, and
+the Glasser family.
+\item Add rational/complex-rational bounds and prove the strict-disk tail
+modulus and termwise differentiation.
+\item Add beta Riemann sums and prove the Euler-chamber integral and Gauss
+summation; reuse the gamma packet for the quotient form.
+\item Add Kummer, Gauss second, Bailey, incomplete beta, and elliptic
+specializations.
+\item Add path stepping and conditional certificates for the connection
+formula, continued fraction, and Barnes contour.
+\end{enumerate}
+
+\subsection{Expected theorem declarations}
+
+The final object library should export, at minimum, declarations corresponding
+to the following mathematical statements:
+\begin{lstlisting}[language={}]
+poch_split, poch_shift, poch_neg, poch_zero_after
+hg_coeff_ratio, hg_terminates, hg_deriv_coeff
+hg_ode_coeff, hg_regular_unique
+hg_euler_formal, hg_pfaff1_formal, hg_pfaff2_formal
+hg_quadratic_formal, hg_kummer_quadratic_formal
+hg_contiguous_master, hg_shift_reduction
+chu_vandermonde
+hg_cubic_algebraic, glasser_family
+hg_ratio_cutoff, hg_tail_cauchy, hg_termwise_derivative
+euler_integral_effective, gauss_sum_effective
+kummer_sum_effective, gauss_second_effective, bailey_effective
+hg_path_continue, gauss_fraction_finite
+\end{lstlisting}
+The last two analytic groups should state all margins and moduli in their
+types; hidden typeclass assumptions such as abstract completeness should not
+be used to discharge them.
+
+\subsection{Audit status of the supplied Lean files}
+
+The archive includes:
+\begin{itemize}
+\item \code{HypergeometricFinite.lean}, a detailed Mathlib-style finite-core
+outline with definitions and many proof scripts or proof sketches;
+\item \code{HypergeometricIPRA.lean}, the object-theory declaration plan and
+formula encodings;
+\item \code{FORMALIZATION\_PLAN.md}, a file-by-file dependency and proof
+checklist.
+\end{itemize}
+The environment used to prepare this package did not contain a Lean executable,
+so these files were not compiled.  They are explicitly labeled as an outline;
+no claim of kernel verification is made.  The existing repository files cited
+above are separate and already provide checked infrastructure.

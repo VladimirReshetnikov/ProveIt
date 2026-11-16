@@ -1,0 +1,1610 @@
+Pentagonal Tilings in Intuitionistic Primitive Recursive
+Arithmetic
+Constructive proofs, exact finite certificates, and a Lean formalization route
+Research report prepared for Vladimir Reshetnikov
+16 November 2026
+Abstract
+This report reconstructs as much as possible of the mathematical content of the current
+Wikipedia article “Pentagonal tiling” inside a deliberately weak and constructive setting: intuitionistic primitive recursive arithmetic (iPRA). The central method is to replace unrestricted
+real-plane objects by finite exact certificates. Coordinates lie in rational quadratic fields or small
+explicitly isolated algebraic extensions; every loop is bounded; every sign test is reduced to
+integer arithmetic; and an infinite periodic tiling is compressed to a finite cell on a lattice torus.
+Complete constructive arguments are given for a strengthened obstruction to a Euclidean
+regular-pentagon tiling, the pentagon angle sum, the general Type 1 half-turn construction,
+exact Type 1 and Type 3 hexagonal subdivisions, a full 12-pentagon Type 15 lattice cell,
+the rigid Type 14 algebra and a six-copy local patch, three congruent nonconvex subdivision
+families, duality facts for valence-five uniform tilings, the dodecahedral {5, 3} spherical tiling, the
+degenerate {5, 2} case, and the arithmetic criterion for all regular hyperbolic {5, n} tilings. The
+fifteen systems of angle equations in the article are also reduced to explicit linear consequences
+of the 540◦ angle sum.
+A companion exact checker verifies four periodic Euclidean cells, including all edge subdivisions
+and reverse pairings, exact lattice areas, a complete finite
+√ set of separating-axis tests, the Type 14
+nested radicals, nonconvex subdivisions, and a Q( 5) dodecahedron certificate. A no-sorry
+Lean blueprint specifies the path to closed derivations of type Prf PRAAx. The report is explicit
+about what is not proved: in particular Rao’s full 371-case classification trace, the 24-isohedral
+classification, the all-orders nonperiodic rotational construction, and the irregular hyperbolic
+catalogue are not imported as axioms.
+
+Formal status. The human proofs below are constructive and finitary. The shipped
+Python checker passes all exact assertions. The Lean file contains no sorry, admit, or new
+axiom, but Lean/Lake were unavailable in the delivery environment, so it is not claimed
+compiler-checked. None of the main geometric results is falsely presented as an already
+completed object Prf PRAAx derivation.
+
+Contents
+1 Scope, interpretation, and main results
+1.1 Results proved here . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.2 Current status of the exhaustive convex classification . . . . . . . . . . . . . . . . . .
+
+4
+4
+5
+
+2 The target theory: intuitionistic primitive recursive arithmetic
+2.1 The ProveIt object calculus . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.2 Why finite algebraic geometry fits iPRA . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5
+5
+5
+
+1
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+3 Finite periodic tiling certificates
+3.1 The certificate predicate . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3.2 Why only finitely many translates must be checked . . . . . . . . . . . . . . . . . . .
+3.3 Constructive soundness . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+6
+6
+7
+7
+
+4 Universal Euclidean lemmas
+4.1 Pentagon angle sum . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.2 Regular pentagons: a stronger local obstruction . . . . . . . . . . . . . . . . . . . . .
+4.3 Centrally symmetric hexagons tile . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.4 The general Type 1 construction . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+8
+8
+8
+9
+9
+
+5 Exact Euclidean constructions
+5.1 A rational two-pentagon Type 1 cell . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.2 A regular hexagon split into two Type 1 pentagons . . . . . . . . . . . . . . . . . . .
+5.3 A regular hexagon split into three Type 3 pentagons . . . . . . . . . . . . . . . . . .
+5.4 The rigid Type 15 tiling . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.5 The rigid Type 14 algebra and local patch . . . . . . . . . . . . . . . . . . . . . . . .
+
+10
+10
+11
+11
+12
+14
+
+6 The fifteen convex type equations
+
+16
+
+7 Dual uniform tilings
+17
+7.1 Finite quotient duality . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+7.2 The angle formula . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+8 Nonconvex pentagonal constructions
+
+18
+
+9 Spherical pentagonal tilings
+20
+9.1 The dodecahedron {5, 3} . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+9.2 The degenerate {5, 2} tiling . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+10 Regular hyperbolic pentagonal tilings
+
+21
+
+11 The exhaustive classification and its constructive boundary
+11.1 What Rao’s manuscript establishes . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11.2 Why “just run the program” is not enough . . . . . . . . . . . . . . . . . . . . . . . .
+11.3 A checkable import design . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+22
+22
+22
+23
+
+12 Lean formalization route
+12.1 Two layers, not one . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12.2 Proposed module dependency order . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12.3 Expected endpoint . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12.4 What the supplied Lean file already does . . . . . . . . . . . . . . . . . . . . . . . . .
+
+23
+23
+24
+24
+25
+
+13 Reproducibility and exact-check summary
+
+25
+
+14 Conclusions and further research
+
+25
+
+A Concrete certificate payloads
+
+26
+
+B All article claims: status convention
+
+26
+2 of 28
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+C Reference checker design notes
+
+27
+
+3 of 28
+
+Pentagonal tilings in iPRA
+
+1
+
+16 November 2026
+
+Scope, interpretation, and main results
+
+The source article ranges from elementary angle arithmetic to large classification theorems, infinite
+nonperiodic constructions, and Euclidean, spherical, and hyperbolic geometry. These statements
+do not all have the same logical shape. A finite incidence statement about a dodecahedron is
+naturally arithmetical. A periodic tiling with algebraic coordinates can be compressed to a finite
+torus certificate. By contrast, “every real convex pentagon that tiles the plane belongs to one of
+fifteen families” quantifies over arbitrary real parameters and an infinite tiling; that sentence is not
+literally a first-order formula of iPRA until one specifies codes for reals, tilings, and their correctness.
+Accordingly, this report uses the following constructive reading.
+Definition 1.1 (Certified polygon and certified tiling). A certified algebraic polygon is a finite code
+for its coordinates, together with exact algebraic sign information sufficient to decide all orientation,
+equality, and length comparisons used in the proof. A certified periodic tiling is a finite list of such
+polygons, two lattice vectors, finite edge-pairing data, and finite nonoverlap witnesses satisfying the
+verifier of definition 3.1.
+This is not an arbitrary weakening chosen to make the problem easy. It is the right form for
+iPRA: primitive recursive arithmetic can manipulate any fixed finite algebraic certificate, and it
+can prove a uniform theorem about a primitive-recursive certificate checker. The infinite family of
+translates is generated by the two integer lattice parameters, while global coverage is reduced to a
+finite arrangement inside one fundamental cell.
+
+1.1
+
+Results proved here
+
+The principal completed results are as follows.
+R1. A regular pentagon cannot tile the Euclidean plane, even if T-junctions are permitted. The
+local equation would be 3k + 5ℓ = 10, with k ≥ 1, which is impossible in N.
+R2. Every certified Type 1 convex pentagon tiles periodically. Two copies joined by a half-turn
+form a centrally symmetric hexagon, and every such hexagon tiles by two translations.
+R3. Exact periodic cells are provided for a rational Type 1 pentagon, a regular hexagon split
+into two Type 1 pentagons, and a regular hexagon split into three Type 3 pentagons.
+√
+R4. The rigid Type 15 tile is reconstructed over Q( 3), with exact angles and side ratios, and
+twelve copies are certified in one lattice cell.
+R5. The rigid Type 14 nested-radical formulas and a six-tile local patch are proved exactly. A
+full torus certificate is not claimed for Type 14.
+R6. The angle equations for all fifteen convex types yield explicit linear identities compatible
+with a 540◦ pentagon angle sum.
+R7. The dual of an edge-to-edge valence-five tiling is pentagonal; primal isogonality implies
+dual isohedrality, and the three listed uniform-dual angle sequences follow from the formula
+360◦ /p.
+R8. Equilateral triangles, squares, and regular hexagons are divided into respectively three, four,
+and six congruent nonconvex pentagons by exact constructions.
+4 of 28
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+√
+R9. The regular dodecahedron is certified over Q( 5) as a spherical {5, 3} tiling with (V, E, F ) =
+(20, 30, 12).
+R10. The regular hyperbolic tilings {5, n} occur exactly for finite orders n ≥ 4, because the
+Coxeter triangle condition reduces to 10 < 3n.
+The exact claim-by-claim boundary is recorded in THEOREM_LEDGER.md.
+
+1.2
+
+Current status of the exhaustive convex classification
+
+Rao’s 2017 manuscript reports an exhaustive search with 371 angle-condition cases and a backtracking
+search that finds no family beyond the known fifteen [2]. On the author’s current publication page,
+the work is still listed under “Manuscripts/Submitted,” with links to the arXiv version, a draft,
+slides, and preliminary code [3]. The present report therefore does not silently treat the classification
+as a small checked lemma. Section 11 gives a concrete certificate-import program and identifies the
+additional issue that the published statement quantifies over arbitrary real pentagons and infinite
+tilings.
+
+2
+
+The target theory: intuitionistic primitive recursive arithmetic
+
+2.1
+
+The ProveIt object calculus
+
+The checked ProveIt presentation used as the formal target is ordinary first-order iPRA: one
+numerical sort, a function symbol for every primitive recursive function, defining equations for
+those symbols, successor axioms, intuitionistic natural deduction with equality, and induction for
+quantifier-free formulas. In the repository, the relevant types are
+PR(k),
+
+PTm(n),
+
+PRAAx,
+
+and a final closed theorem has the shape
+([] : List(Fm PTm 0)) ⊢ [PRAAx] φ.
+The existing derivation library supplies arithmetic, integers as differences, order, pairing, bounded
+search, powers, division, and finite linear algebra. The intended final endpoints are actual derivation
+values, not merely semantic truths in Lean.
+
+2.2
+
+Why finite algebraic geometry fits iPRA
+
+A primitive recursive proof may use arbitrarily complicated finite data, but it may not quantify
+over an unanalyzed completed continuum. The geometry in this report is therefore compiled into
+the following arithmetical layers.
+1. Integers are represented by signed pairs or by the existing Grothendieck construction in
+ProveIt.
+2. A rational is a signed numerator and a positive denominator. Equality is cross multiplication;
+canonical reduction is convenient but unnecessary.
+√
+√
+3. An element of Q( d) is a pair (a, b) denoting a + b d, with rational a, b.
+5 of 28
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+4. A point is a pair of algebraic numbers, a pentagon is five points, and a finite family is a
+pairing-coded list.
+5. All geometric predicates are Boolean primitive-recursive functions on these codes: determinant
+sign, collinearity, segment membership, convexity, shoelace area, cyclic congruence, and
+separating-axis nonoverlap.
+The key exact operation is the sign of a quadratic number.
+Lemma 2.1
+√ (Exact sign in a quadratic field). Let d > 0 be a fixed nonsquare natural and let
+x = a + b d, with a, b ∈ Q. The sign of x is decidable using rational signs and at most one
+comparison of a2 with db2 .
+Proof. If a and b have the same nonzero sign, the answer is immediate.
+If one is zero, it is immediate
+√
+as well. Suppose a > 0 > b. Then x > 0 exactly when a > −b d. Both sides are nonnegative, so
+this is equivalent to a2 > db2 . The case a < 0 < b is the negation of the same comparison. Clearing
+rational denominators gives an integer comparison. Every branch is bounded and primitive recursive.
+No excluded middle for arbitrary real equality is used; only decidable integer order occurs.
+Nested radicals in Type 14 are handled by iterating the same construction. The checker uses
+the ordered quartic field
+√
+√
+6 57 − 2
+2
+Q( 57, t),
+t > 0,
+t =
+.
+64
+√
+Every element has the form a + bt with a, b ∈ Q( 57). Its sign is decided by the signs of a, b and,
+in the mixed-sign case, by the base-field sign of a2 − b2 t2 . Thus the Type 14 congruence, convexity,
+and separation checks use no floating-point or computer-algebra sign oracle.
+
+3
+
+Finite periodic tiling certificates
+
+3.1
+
+The certificate predicate
+
+Let K be an explicitly coded ordered algebraic field. Points and vectors lie in K 2 . For vectors
+u = (ux , uy ), v = (vx , vy ), write
+cross(u, v) = ux vy − uy vx ,
+
+dot(u, v) = ux vx + uy vy .
+
+For a polygon P = (p0 , . . . , pr−1 ), its doubled signed area is
+area2 (P ) =
+
+X
+
+cross(pi , pi+1 ),
+
+pr = p0 .
+
+i<r
+
+Definition 3.1 (Periodic certificate). A periodic pentagonal certificate consists of:
+1. two nonparallel lattice vectors L1 , L2 ∈ K 2 ;
+2. finitely many five-vertex polygons P0 , . . . , Pt−1 ;
+3. for every polygon pair and every relevant lattice translate, an exact separating-axis witness,
+when convexity is asserted;
+4. a finite subdivision of each directed tile edge at all translated tile vertices lying on it;
+6 of 28
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+5. a pairing of every resulting directed subedge with its reverse modulo an integer vector mL1 +nL2 .
+The verifier additionally checks common cyclic distance matrices, convexity, and
+X | area2 (Pi )|
+i<t
+
+2
+
+= | cross(L1 , L2 )|.
+
+The edge subdivision is essential for non-edge-to-edge tilings: a long edge may be matched by
+several shorter edges. Subdivision points are found by bounded exact segment tests, so T-junctions
+require no topological oracle.
+
+3.2
+
+Why only finitely many translates must be checked
+
+Let λ1 , λ2 : K 2 → K be the dual lattice coordinates defined by Cramer’s rule:
+v = λ1 (v)L1 + λ2 (v)L2 .
+For all vertices in the chosen finite cell, let
+wj = max λj (v) − min λj (v),
+
+j = 1, 2.
+
+Lemma 3.2 (Finite translate bound). If a cell polygon Pi has an interior point in common with
+Pj + mL1 + nL2 , then |m| ≤ ⌈w1 ⌉ and |n| ≤ ⌈w2 ⌉.
+Proof. The first dual-coordinate interval of the translate is the interval of Pj shifted by the integer
+m. An overlap of polygons implies an overlap of their projected intervals. The difference between
+any endpoint of the first polygon interval and any endpoint of the second unshifted interval is
+bounded by the global width w1 . Hence |m| ≤ w1 , and the integer bound follows. The second
+coordinate is identical. All maxima and minima are finite folds using exact order.
+For each of the four shipped periodic cells, both ceilings are at most 2. Thus all possible overlaps
+are covered by the 25 shifts in [−2, 2]2 . This is a derived bound, not a visually chosen search radius.
+
+3.3
+
+Constructive soundness
+
+Theorem 3.3 (Finite certificate soundness). If a periodic certificate passes the checks of definition 3.1, then the lattice translates
+
+
+Pi + mL1 + nL2 : i < t, (m, n) ∈ Z2
+
+form a monohedral tiling of the plane: tile interiors are disjoint and their union is the plane.
+Proof. Congruence follows from the common cyclic squared-distance matrix. For convex polygons,
+the separating-axis theorem says that two interiors are disjoint if some normal to an edge separates
+their projection intervals. The certificate supplies such a normal for every translate allowed by
+lemma 3.2; all farther translates are excluded by the dual coordinate intervals. Therefore the entire
+infinite family has pairwise disjoint interiors.
+It remains to prove coverage without appealing to countable additivity or a classical measure
+theorem. Work in the fundamental parallelogram with opposite sides identified. First use the
+dual-coordinate bound to list every translated tile that can meet the cell. Intersect all of those
+translated tile edges with one another and with the parallelogram boundary. Sort the finitely
+many intersection parameters exactly and split the edges. These segments form a finite planar
+7 of 28
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+arrangement. Each arrangement face is a polygon whose relative interior is either inside one tile or
+inside none; it cannot cross a tile boundary by construction. Triangulate every face by choosing its
+least-coded vertex and forming a fan.
+Shoelace additivity is an integer-polynomial identity: internal directed edges cancel in reverse
+pairs. Since tile interiors are disjoint, every covered arrangement triangle occurs once. The
+certificate’s area equality therefore says that the sum of the areas of uncovered arrangement triangles
+is zero. Every nondegenerate triangle has strictly positive exact area, so bounded induction over
+the face list shows there is no uncovered two-dimensional face.
+Could a lower-dimensional slit remain? No. The tile images on the torus are closed polygons,
+so an uncovered point would have an uncovered neighborhood; in the finite arrangement that
+neighborhood contains a nondegenerate open face, already excluded by the area argument. The
+reverse-subedge pairing is an explicit combinatorial check of the same boundary gluing: every tile
+edge has material on the opposite local side after passage to the torus, and cell edges are identified
+with their translates. Hence the quotient is covered. Translating the cell covers the plane.
+Every construction used in this argument is a bounded list operation, rational/algebraic sign test,
+or quantifier-free induction. The proof is therefore a direct blueprint for a theorem of iPRA.
+Remark 3.4. The companion Python program verifies the concrete hypotheses and records edge
+pairings, exact separating axes, and translate instances. It does not pretend to be the object iPRA
+soundness proof. In Lean, the finite arrangement theorem must be proved once and then instantiated
+by each evaluated certificate.
+
+4
+
+Universal Euclidean lemmas
+
+4.1
+
+Pentagon angle sum
+
+Angles are most convenient in rational turns: a full turn is 1, a half turn is 1/2, and 108◦ = 3/10.
+For general algebraic diagrams one can instead use oriented ray codes and a finite angle-addition
+table.
+Theorem 4.1 (Constructive pentagon angle sum). The interior angles of a convex pentagon sum
+to three half-turns, equivalently 3π = 540◦ .
+Proof. Let the vertices be A, B, C, D, E in boundary order. Draw the diagonals AC and AD. Convexity puts them inside the pentagon, and they divide it into the three triangles ABC, ACD, ADE.
+The three triangle angle sums give 3π. At A, C, D, the triangle angles partition the corresponding
+pentagon angles; at B, E they are unchanged. Summing and cancelling gives the result.
+In the coded proof, “inside” is the common sign of five determinants. The partition of an angle
+is a finite orientation statement. The triangle angle sum may be represented by the exterior-turn
+identity, avoiding analytic trigonometry. The derivation is a fixed finite calculation.
+
+4.2
+
+Regular pentagons: a stronger local obstruction
+
+The usual one-line argument says that 108◦ does not divide 360◦ . That formulation tacitly assumes
+an edge-to-edge vertex. A general polygon tiling may contain a T-junction, where the chosen point
+lies in the interior of another tile edge. The following arithmetic argument covers both cases.
+Theorem 4.2 (No Euclidean tiling by regular pentagons). No locally finite tiling of the Euclidean
+plane by congruent regular pentagons exists, even when the tiling is not edge-to-edge.
+
+8 of 28
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+Proof. Choose a vertex x of one tile. Around x, let k be the number of tile corners incident with x,
+and let ℓ be the number of tiles for which x lies in the relative interior of an edge. A regular-pentagon
+corner contributes 108◦ = 3π/5; a straight-through edge contributes 180◦ = π. Since the local
+sectors fill one full turn,
+k
+
+3π
++ ℓπ = 2π,
+5
+
+hence
+
+3k + 5ℓ = 10.
+
+The selected tile contributes a corner, so k ≥ 1. Reducing modulo 5 gives 3k ≡ 0 (mod 5), hence
+5 | k. Thus k ≥ 5, and the left side is at least 15, contradicting 10.
+Equivalently, bounded arithmetic may simply check the finitely many possibilities 1 ≤ k ≤ 3.
+Both proofs are intuitionistic: they use only decidable natural arithmetic.
+The host-Lean file closes the arithmetic core with omega:
+Listing 1: Host-Lean arithmetic core
+theorem regular_pentagon_local_obstruction (k ell : Nat) (hk : 1 ≤ k) :
+3 * k + 5 * ell != 10 := by
+omega
+
+4.3
+
+Centrally symmetric hexagons tile
+
+Lemma 4.3 (Parallelohexagon translation lemma). Let a simple convex hexagon have successive
+edge vectors
+u, v, w, −u, −v, −w.
+Then it tiles the plane by translations generated by
+U = u + v,
+
+V = v + w.
+
+Proof. Translate the edge with vector u by V = v + w; it meets the opposite edge with reversed
+boundary orientation. Translate the edge with vector v by V − U = w − u, and translate the
+edge with vector w by −U . Thus all six directed boundary edges pair under the lattice ZU + ZV .
+The shoelace area of the hexagon equals | cross(U, V )|; this follows by expanding both expressions
+and cancelling opposite-edge terms. Convexity gives nonoverlap with neighboring translates, and
+theorem 3.3 gives coverage. More elementarily, the three edge pairings glue one hexagon to a torus
+fundamental polygon.
+
+4.4
+
+The general Type 1 construction
+
+The article’s Type 1 condition is
+B + C = 180◦ ,
+
+A + D + E = 360◦ ,
+
+where the second equation follows from the first and theorem 4.1.
+Theorem 4.4 (Every certified Type 1 pentagon tiles). Let P be a simple convex algebraic pentagon
+whose consecutive angles B, C satisfy B + C = π. Then two congruent copies of P form a centrally
+symmetric hexagon, and P tiles periodically.
+
+9 of 28
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+Proof. Rotate P by a half-turn about the midpoint of the side joining the B- and C-vertices. The
+two copies share that side with opposite orientation. At one endpoint, an exposed edge of the
+original and the corresponding exposed edge of the rotated copy meet with total interior angle
+B + C = π, so they are collinear and merge into one boundary segment. The same happens at
+the other endpoint. Starting from eight exposed edges, these two mergers leave six. The half-turn
+exchanges opposite vertices and edges, so the resulting hexagon has edge vectors u, v, w, −u, −v, −w.
+Convexity of the original and the exact orientation conditions certify that the interiors of the two
+copies do not overlap. Apply lemma 4.3.
+On coordinate codes, half-turn, midpoint, determinant, and collinearity are all primitive recursive.
+Thus this is a uniform constructor from a certified Type 1 pentagon to a periodic certificate.
+
+5
+
+Exact Euclidean constructions
+
+5.1
+
+A rational two-pentagon Type 1 cell
+
+Consider the centrally symmetric hexagon
+H = [(0, 0), (2, 0), (3, 1), (2, 2), (0, 2), (−1, 1)].
+Insert the segment from p = (1, 0) to q = (1, 2). The two pentagons are
+P = [p, (2, 0), (3, 1), (2, 2), q],
+Q = [p, q, (0, 2), (−1, 1), (0, 0)].
+A half-turn about (1, 1) exchanges them. The angle sequence of P in coordinate order is
+90◦ , 135◦ , 90◦ , 135◦ , 90◦ .
+Relabeling cyclically makes B = C = 90◦ , so it is Type 1.
+Take lattice vectors
+L1 = (3, 1),
+L2 = (0, 2).
+The cell determinant is 6. Direct shoelace calculation gives area 3 for each pentagon. The exact
+verifier finds ten directed boundary pieces, paired in five reverse pairs, and checks all 49 nontrivial
+convex-separation instances in the derived translate range.
+
+10 of 28
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+Type 1 rational two-pentagon cell
+
+2
+
+1
+
+Figure 1: Rational Type 1 two-pentagon cell. The dashed parallelogram is a lattice cell.
+
+5.2
+Let
+
+A regular hexagon split into two Type 1 pentagons
+V0 = (1, 0),
+
+√
+V1 = (1/2, 3/2),
+
+V2 = (−1/2,
+
+√
+
+3/2),
+
+with Vi+3 = −Vi . Let p and q be the midpoints of edges V5 V0 and V2 V3 . Then
+[p, V0 , V1 , V2 , q],
+
+[p, q, V3 , V4 , V5 ]
+
+are half-turn images. At the endpoints of the shared chord, the adjacent angles sum to 180◦ , so
+they are Type 1. The standard hexagonal lattice
+√
+√
+L1 = (3/2, 3/2),
+L2 = (0, 3)
+√
+has determinant 3 3/2, equal to the regular hexagon area. The exact certificate has two congruent
+convex pentagons and five boundary pairs.
+
+5.3
+
+A regular hexagon split into three Type 3 pentagons
+
+Let O = (0, 0), and let M0 , M1 , M2 be the midpoints of the alternating edges V0 V1 , V2 V3 , V4 V5 .
+Define
+Ti = [O, Mi , V2i+1 , V2i+2 , Mi+1 ],
+i (mod 3).
+Rotation by 120◦ permutes the three tiles. For T0 , the interior angles in counterclockwise coordinate
+order are
+(120◦ , 90◦ , 120◦ , 120◦ , 90◦ ),
+and the consecutive edge lengths are
+√
+√
+( 3/2, 1/2, 1, 1/2, 3/2).
+11 of 28
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+Use the article’s convention that side a lies immediately clockwise from angle A. Labeling the
+displayed vertices as A, B, C, D, E gives
+√
+A = C = D = 120◦ ,
+a = b = 3/2,
+c = e = 1/2,
+d = 1 = c + e.
+These are precisely the Type 3 relations. The exact periodic checker finds 18 directed subsegments,
+nine reverse pairs, and 111 separating-axis instances.
+
+Regular hexagon trisected into three Type 3 pentagons
+
+1
+
+2
+
+3
+
+Figure 2: A regular hexagon split into three congruent Type 3 pentagons.
+
+5.4
+
+The rigid Type 15 tiling
+
+The article records the rigid Type 15 data
+a = c = e,
+
+b = 2a,
+
+q
+
+d=a 2+
+
+√
+
+3,
+
+(A, B, C, D, E) = (150◦ , 60◦ , 135◦ , 105◦ , 90◦ ).
+We now prove
+√ both the tile data and an exact twelve-tile
+√ periodic cell.
+Put h = 3. Define twelve anchor points ai ∈ Q( 3)2 :
+a0 = (0, 0),
+
+a1 = (h, 1),
+
+a2 = (2h, 0),
+
+a3 = (2h + 1, h),
+
+a4 = (2h + 2, 0),
+
+a5 = (3h + 2, 1),
+
+a6 = (3h + 4, 1),
+
+a7 = (3h + 6, 1),
+
+a8 = (5h + 6, 3),
+
+a9 = (5h + 6, 1),
+
+a10 = (2h + 3, −h),
+
+a11 = (3h + 5, 1 − h).
+
+12 of 28
+
+Pentagonal tilings in iPRA
+For ai = (xi , yi ), put
+
+16 November 2026
+
+(Xi , Yi ) = (10h + 12 − xi , 4 − yi ),
+
+and define
+bi = (Xi − h − 1, Yi − h − 3),
+
+ci = (xi − h − 1, yi − h − 3),
+
+di = (Xi , Yi ).
+
+For two 12-point lists x, y, define six pentagons
+S1 (x, y) = [x0 , x1 , y3 , y2 , y1 ],
+S2 (x, y) = [x1 , x2 , y5 , y4 , y3 ],
+S3 (x, y) = [x2 , x3 , x10 , y6 , y5 ],
+S4 (x, y) = [x4 , x5 , x7 , x11 , x10 ],
+S5 (x, y) = [x10 , x11 , y8 , y7 , y6 ],
+S6 (x, y) = [x7 , x8 , x9 , y8 , x11 ].
+The cell consists of S1 (a, c), . . . , S6 (a, c) and S1 (b, d), . . . , S6 (b, d), with lattice
+L1 = (12 + 9h, 3),
+
+L2 = (1 + h, 3 + h).
+
+Theorem 5.1 (Exact Type 15 tile invariants). Every one of the twelve polygons is convex and
+congruent. In the coordinate order of the certificate, its side squares are
+√
+4, 16, 4, 4, 8 + 4 3,
+and its interior angles are
+135◦ , 60◦ , 150◦ , 90◦ , 105◦ .
+After reversing and relabeling according to the article’s convention, the Type 15 side and angle
+relations follow.
+Proof. Cyclic
+√ squared-distance matrices of all twelve polygons are identical; this is a finite equality
+check in Q( 3). For a representative polygon, the five consecutive pairs (u, v) of rays from a vertex
+have the following (u · v, cross(u, v), cos2 θ) data:
+√
+√
+(−2 − 2 3, 2 + 2 3, 1/2),
+√
+(4, 4 3, 1/4),
+√
+(−4 3, 4, 3/4),
+(0, 4, 0),
+
+√
+√
+(−2, 4 + 2 3, 1/2 − 3/4).
+
+All crosses are positive, so the polygon is convex. The signs of the dots select the correct quadrants.
+The first four lines give 135◦ , 60◦ , 150◦ , 90◦ . In the fifth,
+√
+√
+2− 3
+1
+3
+2
+◦
+cos (105 ) =
+= −
+,
+4
+2
+4
+and the dot is negative, so the angle is 105◦ .
+The last side length is
+q
+
+√
+√
+√
+8 + 4 3 = 6 + 2.
+13 of 28
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+Label the coordinate vertices P0 , . . . , P4 . The article order is (A, B, C, D, E) = (P2 , P1 , P0 , P4 , P3 ).
+Since the side with the same lowercase letter precedes its uppercase vertex in that clockwise order,
+we obtain
+√
+√
+(a, b, c, d, e) = (2, 4, 2, 6 + 2, 2).
+Thus a = c = e, b = 2a, and
+
+ 2
+
+d
+a
+
+√
+√
+8+4 3
+=
+= 2 + 3.
+4
+
+after choosing positive lengths.
+Theorem 5.2 (Exact Type 15 periodic cell). The twelve Type 15 pentagons above form a periodic
+tiling under ZL1 + ZL2 .
+Proof. The lattice determinant is
+cross(L1 , L2 ) = (12 + 9h)(3 + h) − 3(1 + h) = 60 + 36h.
+The sum of the twelve exact shoelace areas is the same value. The global dual coordinate widths are
+√
+√
+4
+3
+11 3 3
+w1 = −
+< 2,
+w2 =
+−
+< 2.
+3
+6
+4
+4
+By lemma 3.2, only shifts in [−2, 2]2 can overlap. The certificate checks 1,794 nonduplicate
+polygon/translate pairs; each has an exact separating axis. Splitting at all T-junctions yields 64
+directed subsegments, paired into 32 reverse pairs modulo the lattice. Apply theorem 3.3.
+
+Type 15: exact 12-tile lattice cell and neighboring translates
+
+Figure 3: The exact Type 15 cell and neighboring lattice translates. The certificate uses the central
+twelve tiles; the repetition illustrates the result, but the proof uses exact finite data.
+
+5.5
+
+The rigid Type 14 algebra and local patch
+
+Let C denote the article’s angle C, and put
+s = sin(C/2).
+The six-tile construction decomposes into right triangles whose vertical closure condition is
+2 cos C + 1 = 3 sin(C/2).
+Using cos C = 1 − 2s2 , this becomes
+4s2 + 3s − 3 = 0.
+14 of 28
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+The positive root is
+
+√
+57 − 3
+.
+s=
+8
+Since 2B + C = 360◦ , we have B = 180◦ − C/2, and therefore sin B = s, agreeing with the article.
+Moreover,
+√
+3 57 − 17
+2
+.
+cos C = 1 − 2s =
+16
+For agreement with the coordinate certificate, write y1 = s and y2 = cos C. Choose the positive
+quantities
+q
+q √
+√
+6 57 − 2
+102 57 − 546
+,
+x2 = sin C =
+.
+x1 = cos(C/2) =
+8
+16
+The exact coordinate construction in the companion certificate produces six convex congruent
+pentagons. Their full cyclic 5 × 5 squared-distance matrices agree, all fifteen pairs have an exact
+separating axis, and the shared-vertex graph is connected. For the edges AB, BC, CD, DE, EA,
+namely (b, c, d, e, a), the side squares are
+√
+11 57 − 25
+, 1, 4, 4, 1.
+8
+Hence, after scaling so that a = c = 1,
+d = e = 2,
+
+b
+=
+a
+
+s
+
+√
+11 57 − 25
+.
+8
+
+For the angle relations, the normalized ray data at A have zero dot product. At C and E the sine
+is the same positive number x2 while the cosines are y2 and −y2 . At B the normalized ray data are
+(−x1 , y1 ), whereas the half-angle data for C are (x1 , y1 ). Positivity of x1 , x2 , y1 , y2 therefore gives
+A = 90◦ ,
+
+2B + C = 360◦ ,
+
+C + E = 180◦ .
+
+These are algebraic statements about oriented rays; no inverse trigonometric function is required.
+
+15 of 28
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+Type 14 exact nested-radical six-tile local patch
+
+5
+
+6
+
+2
+4
+1
+3
+
+Figure 4: Type 14 six-tile nested-radical local patch. Exact congruence and tile algebra are checked;
+a complete torus boundary certificate is not claimed.
+Formal-status note 5.3. This subsection proves the rigid tile data and the local six-copy arrangement.
+The source article also states a six-tile primitive unit with p2 symmetry. To promote the local patch
+to a fully certified periodic tiling in the present framework, one must add exact lattice vectors, all
+boundary subdivisions, and reverse-pair data. Those data are not guessed or treated as an axiom
+here.
+
+6
+
+The fifteen convex type equations
+
+The article lists side and angle equations for fifteen families [1]. The side equations are geometric
+constraints; the angle equations must also coexist with
+A + B + C + D + E = 540◦ .
+The following table records a useful derived identity for every type. Each row is a linear calculation,
+so after clearing angle denominators it is a quantifier-free integer theorem of iPRA. The table does
+not by itself prove that the corresponding side lengths close to a simple convex pentagon or that the
+pentagon tiles; those are separate geometric obligations.
+
+16 of 28
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+Table 1: Angle equations and consequences of the pentagon angle sum.
+Type
+
+Article angle hypotheses
+
+Derived identity
+
+1
+
+B + C = 180, A + D + E = 360
+
+2
+3
+4
+5
+6
+
+B + D = 180
+A = C = D = 120
+B = D = 90
+A = 60, D = 120
+B + D = 180, E = 2B
+
+7
+8
+9
+10
+11
+12
+13
+14
+15
+
+B + 2E = 360, 2C + D = 360
+2B + C = 360, D + 2E = 360
+2A + C = 360, D + 2E = 360
+A = 90, B + E = 180, B + 2C = 360
+A = 90, C + E = 180, 2B + C = 360
+Same angle equations as Type 11
+B = E = 90, 2A + D = 360
+A = 90, 2B + C = 360, C + E = 180
+(A, B, C, D, E) = (150, 60, 135, 105, 90)
+
+Given directly; either equation follows from the other and the sum.
+A + C + E = 360.
+B + E = 180.
+A + C + E = 360.
+B + C + E = 360.
+A + C + E = 360, equivalently
+A + C + 2B = 360.
+A + 180 = C + E.
+A + 180 = B + E.
+A + E = B + 180.
+C + D = 270.
+B + D = 270.
+B + D = 270.
+A = C.
+B + D = 270.
+Direct sum 540.
+
+Proposition 6.1 (Primitive-recursive angle ledger). There is a single primitive-recursive checker
+which, given one of the fifteen row numbers and rational angle codes satisfying the row hypotheses,
+verifies the derived identity in table 1.
+Proof. Encode a rational angle as an integer numerator after clearing a common positive denominator.
+Each row is a fixed finite list of linear equations. Substitution and addition produce the target
+equation. A case split on the row number is primitive recursive, and all equalities are polynomial
+identities over integer differences. The ProveIt ipra_ring layer is designed precisely for such
+closures.
+
+7
+
+Dual uniform tilings
+
+7.1
+
+Finite quotient duality
+
+For an edge-to-edge periodic tiling, take a finite torus quotient. Place a dual vertex in each primal
+face and join dual vertices across each primal edge. This is a finite incidence transformation.
+Theorem 7.1 (Valence five gives pentagonal duals). If every primal vertex has valence five, then
+every face of the dual is a pentagon. If the primal symmetry group is transitive on vertices, the dual
+symmetry group is transitive on faces. More generally, k primal vertex orbits give k dual face orbits.
+Proof. A dual face traces the primal faces incident around one primal vertex. There are exactly
+five, so its boundary has five dual edges and vertices. The dual construction commutes with every
+incidence-preserving symmetry: a symmetry sending primal vertex v to w sends the dual face around
+v to the dual face around w. Therefore vertex orbits and dual-face orbits are in bijection. The proof
+is a finite permutation argument on the torus quotient.
+
+17 of 28
+
+Pentagonal tilings in iPRA
+
+7.2
+
+16 November 2026
+
+The angle formula
+
+Lemma 7.2 (Dual angle at a regular p-gon). At the dual vertex placed at the center of a regular
+p-gon, the angle of a dual face between the two adjacent center-to-center edges is 2π/p = 360◦ /p.
+Proof. The center of the neighboring regular polygon across an edge is the reflection of the original
+center across that edge. Thus the center-to-center segment is normal to the edge. The two dual edges
+associated with adjacent primal edges therefore point along the two outward normals. Adjacent
+outward normals of a regular p-gon differ by its exterior turning angle 2π/p.
+Applying lemma 7.2 to the three valence-five uniform vertex configurations gives exactly the
+article’s lists:
+V 3.3.3.4.4 7−→ (120, 120, 120, 90, 90),
+V 3.3.4.3.4 7−→ (120, 120, 90, 120, 90),
+V 3.3.3.3.6 7−→ (120, 120, 120, 120, 60).
+Each sum is 540◦ . The host-Lean file proves these numerical sums by normalization. For the
+displayed k-uniform examples, the same finite argument proves that a valence-five primal with k
+vertex orbits has a k-isohedral pentagonal dual; importing the actual catalog entries requires their
+finite incidence data.
+
+8
+
+Nonconvex pentagonal constructions
+
+The article states that an equilateral triangle, square, and regular hexagon can be subdivided into
+three, four, and six congruent nonconvex pentagons. We now give exact coordinates.
+For n ∈ {3, 4, 6}, let Vi be the vertices of the outer regular n-gon, let O = (0, 0), and choose
+inner points Wi as follows.
+Triangle.
+
+Let V0 = (1, 0) and rotate by 120◦ . Put
+√
+W0 = ( 3/4, −1/4)
+
+and rotate it by 120◦ .
+Square. Let V0 = (1, 0) and rotate by 90◦ . Put
+W0 = (1/3, −1/3)
+and rotate it by 90◦ .
+Hexagon. Use the regular hexagon vertices from section 5.3. Put
+√
+W0 = ( 3/4, −1/4)
+and rotate it by 60◦ .
+In every case define
+
+Ti = [Vi , Vi+1 , Wi+1 , O, Wi ].
+
+18 of 28
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+Theorem 8.1 (Three exact nonconvex subdivisions). For n = 3, 4, 6, the polygons T0 , . . . , Tn−1 are
+congruent simple nonconvex pentagons whose union is the outer regular n-gon and whose interiors
+are disjoint.
+Proof. Rotation by 2π/n sends Ti to Ti+1 , proving congruence. At the vertex Wi+1 , the signed
+turn has the opposite sign from the other four turns; the exact cross values are respectively
+−1/4, −1/3, −1/4, so each pentagon is nonconvex.
+Every non-outer directed edge is paired with its reverse in an adjacent tile:
+Vi+1 Wi+1 ↔ Wi+1 Vi+1 ,
+
+Wi+1 O ↔ OWi+1 .
+
+The unpaired edges are exactly the outer sides Vi Vi+1 . Direct exact segment-intersection checks
+show that nonpaired edges meet only at their specified endpoints. Hence the edge graph is a planar
+subdivision of the outer polygon. Alternatively, triangulate each pentagon along its internal edges;
+the signed triangle list has no crossing and fills the cyclic sectors. The exact total areas are
+√
+√
+3 3
+3 3
+,
+2,
+,
+4
+2
+which equal the corresponding outer areas. Thus there is neither overlap nor gap.
+Each outer unit tiles the plane by a standard finite periodic construction: equilateral triangles
+pair to rhombi, squares translate directly, and regular hexagons use the lattice from section 5.3.
+Replacing every unit by its finite subdivision gives the claimed pentagonal tilings.
+
+3 congruent nonconvex pentagons
+
+4 congruent nonconvex pentagons
+
+6 congruent nonconvex pentagons
+
+Figure 5: Exact subdivisions into congruent nonconvex pentagons.
+Formal-status note 8.2. The article also discusses the sphinx rep-tile, its limit-periodic substitution
+tiling, and a two-sphinx parallelogram. Those specific substitution and nonperiodicity proofs are
+not reconstructed here. They are finite-rule candidates for a later iPRA development: one would
+encode each substitution supertile, prove its boundary recursion by induction, and separate “not
+periodic” from the weaker statement that a displayed substitution is not generated by a chosen
+bounded period.
+
+19 of 28
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+9
+
+Spherical pentagonal tilings
+
+9.1
+
+The dodecahedron {5, 3}
+
+Put
+
+√
+1+ 5
+φ=
+,
+2
+
+φ−1 = φ − 1.
+
+(0, ±φ−1 , ±φ),
+
+(±φ−1 , ±φ, 0),
+
+Take the twenty points
+(±1, ±1, ±1),
+√
+All coordinates lie in Q( 5).
+
+(±φ, 0, ±φ−1 ).
+
+Theorem 9.1 (Exact dodecahedron certificate). The convex hull of these twenty points is a regular
+dodecahedron. Its boundary is a spherical pentagonal tiling with Schlaefli symbol {5, 3}.
+Proof. Using φ2 = φ + 1 and φ−1 = φ − 1, every vertex has squared radius 3. The least nonzero
+squared distance between distinct vertices is
+√
+6 − 2 5.
+Joining exactly those pairs gives 30 edges, and every vertex has degree 3. Enumerating simple
+five-cycles canonically gives exactly 12 cycles. For each cycle, exact cross products produce a nonzero
+normal; all five vertices lie in one plane, all five edge squares agree, all five diagonal squares agree,
+and all fifteen remaining vertices lie strictly on one side of the plane. Thus each cycle is a regular
+supporting pentagonal face of the convex hull.
+Every edge occurs in exactly two of the 12 cycles. The finite incidence count is
+V − E + F = 20 − 30 + 12 = 2.
+The supporting faces form a closed connected polyhedral surface and already use both sides of every
+hull edge; no additional boundary facet can occur. Hence they are exactly the boundary of the
+convex hull. Radial projection to the sphere preserves the incidence pattern, giving twelve congruent
+spherical pentagonal faces with three at each vertex.
+
+20 of 28
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+Dodecahedral {5,3} incidence certificate
+
+Figure 6: Projection of the exact dodecahedral incidence certificate.
+√Every step in the certificate is a bounded loop over 20 vertices and 12 faces, using arithmetic in
+Q( 5). It is therefore especially suitable for a closed Prf PRAAx evaluator theorem.
+
+9.2
+
+The degenerate {5, 2} tiling
+
+Subdivide a great circle into five equal arcs. Regard the northern and southern hemispheres as two
+faces, each bounded by the same five arcs with opposite orientation. Then
+V = 5,
+
+E = 5,
+
+F = 2,
+
+V − E + F = 2.
+
+Every face has five boundary edges and exactly two faces meet at every vertex. This is the degenerate
+Schlaefli object {5, 2}. Its proof is purely finite incidence arithmetic; no spherical trigonometry is
+required.
+
+10
+
+Regular hyperbolic pentagonal tilings
+
+For the regular tiling {5, n}, use the Coxeter fundamental triangle with angles
+π
+,
+2
+
+π
+,
+5
+
+π
+.
+n
+
+The triangle is hyperbolic exactly when its angle sum is less than π.
+Theorem 10.1 (Hyperbolic order criterion). For a natural order n ≥ 2, the Coxeter triangle above
+is hyperbolic exactly when n ≥ 4.
+
+21 of 28
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+Proof. For positive n,
+1 1 1
++ + < 1 ⇐⇒ 5n + 2n + 10 < 10n
+2 5 n
+⇐⇒ 10 < 3n
+⇐⇒ 4 ≤ n.
+The last equivalence is elementary natural-number order. It is proved in the host-Lean blueprint by
+omega and is directly expressible in iPRA.
+Reflecting the triangle in its sides creates the Coxeter complex. Ten triangles meet around the
+π/5 face-center angle to form one regular pentagon. Two triangles of a pentagon meet at each
+original vertex, so the pentagon’s interior angle is 2π/n, and n pentagons meet around the vertex.
+For n = 4, this is π/2, giving the right-angled tiling {5, 4}. As n → ∞, the angle tends to zero and
+the vertices become ideal, yielding {5, ∞}.
+Formal-status note 10.2 (What remains for a literal object-iPRA geometric theorem). The arithmetic
+criterion is complete. A uniform geometric formalization must choose a constructive code for cos(π/n)
+and the reflection matrices. One route uses cyclotomic polynomials and primitive-recursive Sturm
+isolation; another ships one exact algebraic certificate for each fixed n. Coxeter word reduction then
+gives a primitive-recursive combinatorial tiling, and a finite fundamental-domain theorem gives the
+geometric realization. This uniform layer is outlined but not implemented in the archive.
+The article also lists infinitely many irregular hyperbolic pentagonal duals with configurations
+V 3.3.p.3.q, and a polygonal binary tiling with only one-dimensional symmetry. Those catalogue
+and nonperiodicity claims require separate hyperbolic incidence and group-action certificates and
+are not proved here.
+
+11
+
+The exhaustive classification and its constructive boundary
+
+11.1
+
+What Rao’s manuscript establishes
+
+Rao’s manuscript states that only the fifteen known convex pentagon families can tile the plane,
+without assuming periodicity. Its architecture has two large parts: a reduction to finitely many sets
+of vertex types, and a backtracking search through 371 angle-condition representatives [2]. This is
+strong evidence and is the source of the article’s completeness claim. It is not, however, already a
+theorem of the checked ProveIt object calculus.
+
+11.2
+
+Why “just run the program” is not enough
+
+Three distinct obligations must be separated.
+1. Analytical reduction. One must constructively justify the passage from an arbitrary infinite
+tiling by an arbitrary real convex pentagon to a positive-density or otherwise finitely controlled
+configuration. Classical compactness, limit extraction, or arbitrary real choice cannot be
+silently used in iPRA.
+2. Finite enumeration. The list of vertex-condition cases must be generated by a primitiverecursive program with a proof that it is complete.
+3. Backtracking certificates. Every rejected branch needs an exact contradiction certificate;
+every surviving branch must map to one of the fifteen families.
+22 of 28
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+Furthermore, first-order iPRA cannot quantify directly over all real numbers. A literal constructive classification must choose one of the following formulations.
+Certified-algebraic classification. Quantify over finite algebraic coordinate codes and a certified
+tiling witness.
+Primitive-recursive-name classification. Quantify over indices of primitive-recursive Cauchy
+names and primitive-recursive tiling enumerators, with explicit moduli and coverage predicates.
+Finite-patch consequence. State that every sufficiently coherent finite patch certificate forces
+one of the fifteen equation systems.
+The first is the most directly compatible with this report. It is weaker than an unrestricted
+theorem about all real pentagons, but it is an honest arithmetical sentence.
+
+11.3
+
+A checkable import design
+
+A future archive should contain:
+1. a canonical finite encoding of each of the 371 representatives;
+2. rational row-reduction or Farkas certificates for every infeasible linear angle system;
+3. an explicit search tree whose nodes record boundary states and whose children exhaust every
+local placement;
+4. for each terminal failure, a small exact witness: angle overflow, forbidden edge incidence,
+length inconsistency, or previously dominated state;
+5. for each surviving branch, a derivation of one of the fifteen family equation systems;
+6. a verified checker and a separate soundness theorem in Prf PRAAx.
+The finite search itself is plausible in iPRA: a very large numeral and a very long bounded
+derivation are still primitive recursive. The delicate part is the uniform analytical reduction from
+arbitrary real-plane tilings. Until that reduction and the complete trace are present, this report
+records the classification as open rather than importing it as an axiom.
+Corollary 11.1 (Conditional “no convex aperiodic-only polygon”). Assume the full convex classification and assume a periodic certificate for one member of each of its fifteen families. Then no
+convex polygon tiles the plane only aperiodically.
+Proof. Any convex polygon that tiles belongs to one of the fifteen families, and every family has a
+periodic tiling witness. Therefore the polygon admits at least one periodic tiling. This does not say
+that all of its tilings are periodic.
+
+12
+
+Lean formalization route
+
+12.1
+
+Two layers, not one
+
+A reliable formalization must distinguish:
+1. a host-Lean theorem that a Boolean function correctly evaluates the shipped data; and
+23 of 28
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+2. an object-language theorem, represented by an actual value of Prf PRAAx, that the corresponding closed arithmetic sentence follows in iPRA.
+A Mathlib proof using real analysis does not automatically give the second layer. Conversely,
+evaluating a certificate to 1 is not enough until the certificate checker’s geometric soundness has
+also been internalized.
+
+12.2
+
+Proposed module dependency order
+
+The detailed plan is in FORMALIZATION_PLAN.md. The core modules are:
+1. Encoding: integers, rationals, quadratic towers, points, lists, polygons, certificates.
+2. Quadratic: exact arithmetic and sign correctness.
+3. Geometry: dot, cross, shoelace area, segment tests, convexity, cyclic congruence, separating
+axes.
+4. Lattice: dual coordinates and the finite translate bound.
+5. PeriodicCertificate: the bounded verifier.
+6. ArrangementSoundness: exact finite coverage proof.
+7. Concrete modules Type1, Type3, Type14, Type15, Nonconvex, Dodecahedron, Dual, and
+Hyperbolic.
+8. ObjectProofs: compilation to closed Prf PRAAx derivations.
+
+12.3
+
+Expected endpoint
+
+The fixed Type 15 certificate should ultimately be exposed as follows.
+Listing 2: Intended object-theory endpoint
+def verifyPeriodicPR : PR 1 := ...
+def type15Code : PTm 0 := numeral encodedCertificate
+def verifyType15Fm : Fm PTm 0 :=
+app verifyPeriodicPR (fun _ => type15Code) == succ zero
+theorem verifyType15 :
+([] : List (Fm PTm 0)) |- [PRAAx] verifyType15Fm := by
+-- unfold bounded folds and exact field operations
+-- use PRA.qfInd for encoded list iteration
+-- close polynomial identities with ipra_ring
+...
+
+A separate theorem should state, internally, that Verify(c) = 1 implies the finite coded tiling
+predicate. The concrete evaluator theorem then instantiates it.
+
+24 of 28
+
+Pentagonal tilings in iPRA
+
+12.4
+
+16 November 2026
+
+What the supplied Lean file already does
+
+lean/PentagonalTilingBlueprint.lean defines compile-oriented host structures for quadratic
+numbers, points, pentagons, edge pairings, separation witnesses, and periodic certificates. It
+completely proves the following host-level arithmetic lemmas:
+• the Type 15 angle sum;
+• full-vertex and half-vertex regular-pentagon obstructions;
+• the unified 3k + 5ℓ ̸= 10 obstruction;
+• 10 < 3n ⇐⇒ 4 ≤ n;
+• the dodecahedral Euler count; and
+• the three dual angle sums.
+It deliberately leaves the large object construction as commented interfaces rather than hiding
+unproved constants behind axioms.
+
+13
+
+Reproducibility and exact-check summary
+
+Run
+python3 code/verify_pentagonal_tilings.py
+
+from the package root. The concise result file is verification/results.json; the larger witness
+file is verification/periodic_witnesses.json.
+Certificate
+
+Tiles
+
+Cell area
+
+Directed
+pieces
+
+Separation
+checks
+
+Rational Type 1
+Regular hexagon / Type 1
+Regular hexagon / Type 3
+Rigid Type 15
+
+2
+2
+3
+12
+
+√6
+3√3/2
+3 3/2√
+60 + 36 3
+
+10
+10
+18
+64
+
+49
+49
+111
+1,794
+
+Table 2: Exact periodic certificates. Directed pieces pair in twos; the counts are therefore 5, 5, 9,
+and 32 reverse pairs.
+√
+The checker uses exact Fraction arithmetic for Q( d) and an exact ordered quartic extension
+for Type 14. It uses floating-point values only to draw figures and, in the nonconvex module, as an
+additional Shapely sanity check after the exact planar-complex proof. The logical claims do not
+depend on the plots.
+
+14
+
+Conclusions and further research
+
+The broad lesson is that much of elementary and computational tiling geometry is compatible
+with very weak constructive arithmetic once the statement is phrased in proof-relevant finite
+form. Periodicity is especially helpful: a whole-plane tiling becomes a finite torus complex, and
+exact area, edge pairing, and separation reduce global geometry to bounded arithmetic. The
+25 of 28
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+Type 15 construction is a substantial example:
+all coordinates, side ratios, angles, T-junctions, and
+√
+neighboring translates are checked in Q( 3).
+The remaining work falls into four distinct programs.
+1. Complete object derivations. Implement the generic certificate checker and arrangement
+soundness as actual Prf PRAAx values, beginning with the rational Type 1 cell and then
+Type 15.
+2. Complete the convex-family witness library. Convert standard diagrams for Types 2
+and 4–13 into exact algebraic periodic certificates. In particular, finish the Type 14 lattice
+boundary data.
+3. Classification trace. Obtain a stable complete Rao search trace, replace every numerical
+or solver step by exact witnesses, and isolate the genuinely infinitary reduction principles.
+Determine the strongest classification sentence literally expressible and provable in first-order
+iPRA.
+4. Uniform geometry generators. Formalize Coxeter reflection matrices and cyclotomic root
+isolation for {5, n}, and develop substitution certificates for sphinx and rotationally symmetric
+nonperiodic pentagonal tilings.
+A particularly useful near-term theorem would be a reusable, checked “periodic algebraic polygon
+certificate” library in ProveIt. It would apply not only to pentagons but to periodic tilings, polyhedral
+nets, finite-element meshes, and lattice packings throughout the repository.
+
+A
+
+Concrete certificate payloads
+
+The archive contains the following JSON certificates.
+type_1_rational_two_pentagon_cell.json Rational coordinates and lattice for figure 1.
+√
+regular_hexagon_bisected_into_two_type_1_pentagons.json Exact Q( 3) regular-hexagon
+bisection.
+regular_hexagon_trisected_into_three_type_3_pentagons.json Exact Type 3 trisection.
+type_15_exact_twelve_pentagon_cell.json The twelve Type 15 polygons and lattice.
+type_14_exact_local_patch.json Ordered-quartic coordinates, polynomial identities, full congruence data, convexity, connectedness, and pairwise separation results.
+nonconvex_subdivisions.json Exact result summaries for the three nonconvex units.
+dodecahedron_qsqrt5.json Twenty vertices, twelve faces, and incidence invariants.
+
+B
+
+All article claims: status convention
+
+The separate THEOREM_LEDGER.md uses the following marks:
+
+26 of 28
+
+Pentagonal tilings in iPRA
+
+H
+X
+Lh
+Lo
+C
+O
+
+C
+
+16 November 2026
+
+complete human constructive proof in this report;
+exact executable finite certificate passes;
+completed host-Lean lemma;
+explicit route to object Prf PRAAx, not yet completed;
+conditional on a finite source theorem/certificate not shipped;
+open in this delivery, with no proof claimed.
+
+Reference checker design notes
+
+The exact checker is intentionally straightforward rather than optimized. Its main procedures are:
+√
+1. normalize and operate in a + b d;
+2. compare signs by lemma 2.1;
+3. check congruence by all entries of cyclic squared-distance matrices;
+4. check convexity by five turn signs;
+5. derive a finite overlap radius from dual lattice widths;
+6. search the finite translate box and apply exact separating axes;
+7. split edges at all translated certificate vertices lying on them;
+8. pair every directed subedge with a reverse lattice translate;
+9. compare shoelace area with lattice determinant;
+10. verify the ordered-quartic Type 14 algebra, full distance congruence, convexity, local separation,
+and dodecahedral incidence; and
+11. emit exact rational linear-combination witnesses for all fifteen angle rows.
+These operations are all primitive recursive once rational and list encodings are fixed. The
+program is therefore not merely an informal numerical experiment; it is a readable reference
+implementation for the eventual object checker.
+
+References
+[1] Wikipedia contributors, “Pentagonal tiling,” English Wikipedia, https://en.wikipedia.org/
+wiki/Pentagonal_tiling, accessed 16 November 2026.
+[2] Michaël Rao, “Exhaustive search of convex pentagons which tile the plane,” arXiv:1708.00274,
+2017, https://arxiv.org/abs/1708.00274.
+[3] Michaël Rao, “Publications,” author web page, https://perso.ens-lyon.fr/michael.rao/
+publi.php?lang=fr, accessed 16 November 2026.
+[4] Casey Mann, Jennifer McLoud-Mann, and David Von Derau, “Convex pentagons that admit
+i-block transitive tilings,” Geometriae Dedicata 194 (2018), 141–167, arXiv:1510.01186.
+27 of 28
+
+Pentagonal tilings in iPRA
+
+16 November 2026
+
+[5] Branko Grünbaum and G. C. Shephard, Tilings and Patterns, W. H. Freeman, 1987.
+[6] Bernhard Klaassen, “Rotationally symmetric tilings with convex pentagons and hexagons,”
+Elemente der Mathematik 71 (2016), 137–144, arXiv:1509.06297.
+[7] Jolu Mij, “14th pentagon (Stein, 1985),” exact JavaScript construction, https://jsfiddle.
+net/jolumij/fzu3jw23/, accessed 16 November 2026.
+[8] Jolu Mij, “15th pentagon” exact JavaScript construction, https://jsfiddle.net/jolumij/
+1qh7zav9/, accessed 16 November 2026.
+[9] Alessandro Longo, “Pentagons: Type 15,” The Tiling Atlas, https://www.thetilingatlas.
+com/pentagons?type=15, accessed 16 November 2026.
+Reshetnikov,
+ProveIt
+repository,
+[10] Vladimir
+VladimirReshetnikov/ProveIt,
+main
+commit
+observed
+d91fc1854ebe1f4be70f5c690b6180aca57cc937.
+
+28 of 28
+
+https://github.com/
+16
+November
+2026:
+
+

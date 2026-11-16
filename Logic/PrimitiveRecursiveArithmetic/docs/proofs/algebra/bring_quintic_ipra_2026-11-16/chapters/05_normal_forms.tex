@@ -1,0 +1,268 @@
+\section{Quintic normal forms and exact Tschirnhaus certificates}\label{sec:normal-forms}
+
+\subsection{Depressing the general quintic}
+
+Consider
+\begin{equation}\label{eq:general-quintic}
+ A x^5+B x^4+C x^3+D x^2+E x+F=0,
+ \qquad A\ne0.
+\end{equation}
+Set \(x=y-B/(5A)\) and divide by \(A\).  Direct expansion gives a depressed
+quintic
+\begin{equation}\label{eq:depressed-quintic}
+ y^5+p y^3+q y^2+r y+s=0,
+\end{equation}
+where
+\begin{align}
+ p&=\frac{5AC-2B^2}{5A^2},\label{eq:depress-p}\\
+ q&=\frac{25A^2D-15ABC+4B^3}{25A^3},\label{eq:depress-q}\\
+ r&=\frac{125A^3E-50A^2BD+15AB^2C-3B^4}{125A^4},\label{eq:depress-r}\\
+ s&=\frac{3125A^4F-625A^3BE+125A^2B^2D-25AB^3C+4B^5}
+          {3125A^5}.\label{eq:depress-s}
+\end{align}
+
+\begin{theorem}[Exact depression identity]\label{thm:depress-quintic}
+Equations~\eqref{eq:depress-p}--\eqref{eq:depress-s} satisfy the identity
+\begin{equation}\label{eq:depress-identity}
+ \frac1A P\!\left(y-\frac{B}{5A}\right)
+ =y^5+py^3+qy^2+ry+s.
+\end{equation}
+After multiplication by \(3125A^5\), this is an integer polynomial identity
+and hence a theorem of \ipra.
+\end{theorem}
+
+\begin{proof}
+Expand the left side, collect powers of \(y\), and use the binomial
+coefficients \(1,5,10,10,5,1\).  The coefficient of \(y^4\) is
+\(-B/A+B/A=0\); the remaining coefficients normalize to the four displayed
+fractions.  The executable verifier checks the fully symbolic numerator.
+\end{proof}
+
+The formal derivative of~\eqref{eq:general-quintic} is a quartic.  Thus all
+critical points are roots of a polynomial whose factorization identity is
+already covered by the checked Ferrari module.  For real rational coefficients,
+a Sturm chain or derivative-based interval subdivision is a bounded exact
+algorithm for isolating every real root.  This gives an independent effective
+meaning to the source page's elementary observation that a quintic's turning
+points are controlled by a quartic.
+
+\subsection{A transparent reduction to principal form}
+
+A principal quintic has the form
+\begin{equation}\label{eq:principal-form}
+ Y^5+c_2Y^2+c_1Y+c_0=0;
+\end{equation}
+its quartic and cubic terms vanish.  We now prove the quadratic Tschirnhaus
+step by power sums.
+
+Let \(x_1,\ldots,x_5\) be the roots of a monic depressed quintic in a formal
+splitting algebra, and set
+\[
+ S_m=\sum_{i=1}^5x_i^m.
+\]
+Then \(S_1=0\).  If the coefficient \(p\) of \(x^3\) in
+\eqref{eq:depressed-quintic} is zero, the equation is already principal.  Assume
+therefore \(p\ne0\).  Newton's identity gives \(S_2=-2p\ne0\).
+
+Define
+\begin{equation}\label{eq:quadratic-tsch}
+ Y_i=x_i^2+\alpha x_i+\beta,
+ \qquad \beta=-\frac{S_2}{5}.
+\end{equation}
+Then
+\begin{equation}\label{eq:Ysum}
+ \sum_iY_i=S_2+5\beta=0.
+\end{equation}
+A second expansion gives
+\begin{align}
+ \sum_iY_i^2
+ &=S_4+2\alpha S_3+(\alpha^2+2\beta)S_2+5\beta^2\notag\\
+ &=S_4+2\alpha S_3+\alpha^2S_2-\frac{S_2^2}{5}.
+ \label{eq:Ysquare-sum}
+\end{align}
+Choose \(\alpha\) to satisfy
+\begin{equation}\label{eq:alpha-principal}
+ 5S_2\alpha^2+10S_3\alpha+5S_4-S_2^2=0.
+\end{equation}
+This is a genuine quadratic because \(S_2\ne0\), and its required square root
+is supplied by the checked quadratic factorization theorem.
+
+\begin{theorem}[Principal-form reduction]\label{thm:principal-reduction}
+With \(\alpha,\beta\) satisfying
+\eqref{eq:quadratic-tsch}--\eqref{eq:alpha-principal}, the transformed roots
+\(Y_i\) are the roots of a polynomial of the form~\eqref{eq:principal-form}.
+The transformation and its correctness are expressible by finite radical-tower
+certificates and are provable in \ipra.
+\end{theorem}
+
+\begin{proof}
+Equations~\eqref{eq:Ysum} and~\eqref{eq:Ysquare-sum} show that the first two
+power sums \(T_1=\sum Y_i\) and \(T_2=\sum Y_i^2\) vanish.  If
+\(e_j(Y)\) denotes the elementary symmetric polynomial in the \(Y_i\), Newton's
+identities give
+\[
+ e_1=T_1=0,
+ \qquad
+ 2e_2=e_1T_1-T_2=0.
+\]
+Characteristic zero permits cancellation of \(2\).  Therefore
+\[
+ \prod_{i=1}^5(Z-Y_i)
+ =Z^5-e_3(Y)Z^2+e_4(Y)Z-e_5(Y),
+\]
+which is principal.  Every symmetric coefficient can either be computed as a
+bounded sum of products or obtained as a resultant.  The proof uses only the
+quadratic relation~\eqref{eq:alpha-principal} and polynomial identities.
+\end{proof}
+
+The two possible roots of~\eqref{eq:alpha-principal} give two valid principal
+forms.  This explains constructively the source page's statement that either
+solution may be used.  No choice principle is needed: a certificate carries one
+chosen radical and its defining square equation.
+
+\subsection{Bring--Jerrard reduction as a compact certificate}
+
+Let
+\[
+ P(Y)=Y^5+c_2Y^2+c_1Y+c_0
+\]
+a principal quintic.  A quartic Tschirnhaus map has the form
+\begin{equation}\label{eq:quartic-tsch}
+ T(Y)=Y^4+\alpha Y^3+\beta Y^2+\gamma Y+\delta.
+\end{equation}
+Introduce a new indeterminate \(V\) and compute
+\begin{equation}\label{eq:tsch-resultant}
+ R(V)=\Res_Y\bigl(P(Y),V-T(Y)\bigr).
+\end{equation}
+Because the first polynomial has degree five, \(R\) is monic of degree five in
+\(V\), counting multiplicities.  A successful Bring certificate consists of
+\[
+ (\alpha,\beta,\gamma,\delta,d_1,d_0).
+\]
+together with their finite algebraic-tower definitions and the exact identity
+\begin{equation}\label{eq:bring-certificate}
+ R(V)=V^5+d_1V+d_0.
+\end{equation}
+
+\begin{theorem}[Soundness of a Bring--Jerrard certificate]
+\label{thm:bring-certificate-sound}
+If the finite identity~\eqref{eq:bring-certificate} holds and \(y\) is a root
+of \(P\), then \(v=T(y)\) satisfies
+\[
+ v^5+d_1v+d_0=0.
+\]
+Checking the certificate is primitive recursive, uniformly in the coded
+coefficient tower, and its soundness is provable in \ipra.
+\end{theorem}
+
+\begin{proof}
+The defining property of the resultant is already visible from the Sylvester
+determinant: substituting \(V=T(y)\) makes the two polynomials
+\(P(Y)\) and \(T(y)-T(Y)\) have the common root \(Y=y\), so the determinant
+vanishes.  Substitution into~\eqref{eq:bring-certificate} gives the desired
+trinomial equation.  Alternatively a Bézout certificate
+\(A(Y,V)P(Y)+B(Y,V)(V-T(Y))=R(V)\) makes this a single polynomial evaluation.
+All matrices and degree bounds are finite.
+\end{proof}
+
+\begin{frontier}[Universal witness generation]
+The classical Bring construction chooses the four parameters in
+\eqref{eq:quartic-tsch} so that the coefficients of \(V^4,V^3,V^2\) in
+\eqref{eq:tsch-resultant} vanish.  After suitable elimination, the remaining
+choices require a cubic and a quadratic equation.  This is entirely compatible
+with \ipra{} because the Cardano and quadratic factorization identities are
+already checked.  What is large is not the logical principle but the universal
+symbolic witness: expanded formulas can occupy megabytes.  This packet proves
+the uniform verifier and soundness theorem, and gives an exact route for adding
+any generated witness, but it does not claim a kernel-checked universal
+multimegabyte certificate generator.
+\end{frontier}
+
+This distinction is important.  The mathematically useful theorem is often the
+small verifier~\eqref{eq:bring-certificate}, not a human-readable expansion of
+all its witnesses.
+
+\subsection{Scaling a Bring--Jerrard trinomial}
+
+The one-variable reduction is short and complete.
+
+\begin{theorem}[Scaling formula]\label{thm:bring-scaling}
+Let \(c^4=p\) and \(c\ne0\).  Then
+\begin{equation}\label{eq:scaling-identity}
+ (cz)^5+p(cz)+q
+ =c^5\left(z^5+z+\frac{q}{c^5}\right).
+\end{equation}
+Consequently every compatible branch of a root of \(x^5+px+q\) has the form
+\begin{equation}\label{eq:root-by-BR}
+ x=c\,\BR\!\left(\frac{q}{c^5}\right),
+\end{equation}
+with the other four roots obtained by the other algebraic branches.  In the
+customary notation this is
+\(p^{1/4}\BR(p^{-5/4}q)\).  If \(p=0\), the equation is simply
+\(x^5=-q\).
+\end{theorem}
+
+\begin{proof}
+Use \(p=c^4\) in the left side and factor out \(c^5\).  Formula
+\eqref{eq:root-by-BR} follows from the defining equation of the selected Bring
+branch.  To avoid division inside \ipra{}, multiply by \(c^5\) and retain the
+guard \(c\ne0\).
+\end{proof}
+
+Choosing \(c^4=-p\) instead produces the alternative form
+\(z^5-z+a=0\).  The four choices of the fourth root and the five algebraic
+branches explain why the displayed scaling formula must be accompanied by
+branch compatibility; it is not a single global complex-valued radical.
+
+\subsection{Inverting the Tschirnhaus transformation}
+
+Suppose a root \(v\) of the Bring--Jerrard equation has been computed.  The
+corresponding original root \(y\) is a common zero of
+\begin{equation}\label{eq:inverse-system}
+ P(Y)=0,
+ \qquad T(Y)-v=0.
+\end{equation}
+The polynomial gcd of these two polynomials over the finite coefficient tower
+can be computed by the subresultant algorithm.  In the generic case the gcd
+has degree at most four, so its roots are available from the checked formulas
+through Ferrari.  In a degenerate case the certificate records the actual gcd
+and its degree; no generic division is silently performed.
+
+\begin{proposition}[Certified inversion]
+A list of candidates \(y_j\) is a complete inverse image of \(v\) under the
+Tschirnhaus map on the roots of \(P\) when the following finite conditions
+hold:
+\begin{enumerate}
+\item every \(y_j\) satisfies both equations in~\eqref{eq:inverse-system};
+\item the monic gcd of the two left sides factors as \(\prod_j(Y-y_j)\);
+\item the supplied Bézout/subresultant trace verifies that this polynomial is
+      the gcd.
+\end{enumerate}
+These conditions have a primitive-recursive verifier and imply completeness in
+\ipra.
+\end{proposition}
+
+This is the constructive resolution of the ``extraneous solutions'' issue
+mentioned in the source page: numerical guessing is not logically necessary.
+One may approximate candidates to choose a branch, but exact substitution and
+the gcd certificate perform the final verification.
+
+\subsection{Brioschi and other normal forms}
+
+The Brioschi family
+\[
+ W^5-10CW^3+45C^2W-C^2=0.
+\]
+afforded a different route in the classical literature.  The source page gives
+a rational Tschirnhaus map
+\[
+ W=\frac{\lambda+\mu X}{X^2/C-3}.
+\]
+For any proposed formulas for \(C,\lambda,\mu\), correctness is again a finite
+certificate: multiply by the fifth power of the denominator, reduce modulo the
+original quintic, and check that the remainder is zero.  The denominator guard
+is retained, and exceptional roots are checked separately.  Thus the Brioschi
+normal-form claim has the same compact \ipra{} interface as
+Theorem~\ref{thm:bring-certificate-sound}, even though deriving the universal
+polyhedral formulas for the parameters belongs to the global icosahedral
+frontier of Section~\ref{sec:beyond}.

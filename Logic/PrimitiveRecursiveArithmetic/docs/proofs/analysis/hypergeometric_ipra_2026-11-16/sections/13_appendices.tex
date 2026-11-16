@@ -1,0 +1,258 @@
+\appendix
+\section{The twenty-four Kummer expressions}\label{app:kummer24}
+
+This appendix records a complete working list of the twenty-four classical
+expressions generated from one local hypergeometric solution by the six
+fractional-linear arguments
+\[
+ z,\quad 1-z,\quad z^{-1},\quad (1-z)^{-1},\quad
+ \frac{z}{z-1},\quad 1-z^{-1}
+\]
+and the elementary powers of \(z\), \(1-z\), and \(-z\).  They are grouped
+into six quartets.  Within a simply connected rational polygonal domain on
+which all required powers have certified logarithm branches, each expression
+is a solution of the same pulled-back differential equation.  Equality of two
+expressions is therefore reduced, as in \cref{thm:formal-uniqueness}, to equality
+of two initial coefficients.  This is a \StatusB{} theorem schema.  Without
+branch certificates, the table is only a formal list of local expressions;
+no global single-valued equality is intended.
+
+For readability write \(F(a,b;c;w)=\F{a}{b}{c}{w}\).  A convenient set of
+representatives is
+\begin{align*}
+K_{1,1}&=F(a,b;c;z),\\
+K_{1,2}&=(1-z)^{c-a-b}F(c-a,c-b;c;z),\\
+K_{1,3}&=(1-z)^{-a}F\left(a,c-b;c;\frac{z}{z-1}\right),\\
+K_{1,4}&=(1-z)^{-b}F\left(c-a,b;c;\frac{z}{z-1}\right);
+\end{align*}
+\begin{align*}
+K_{2,1}&=F(a,b;a+b+1-c;1-z),\\
+K_{2,2}&=z^{1-c}F(a+1-c,b+1-c;a+b+1-c;1-z),\\
+K_{2,3}&=z^{-a}F(a,a+1-c;a+b+1-c;1-z^{-1}),\\
+K_{2,4}&=z^{-b}F(b+1-c,b;a+b+1-c;1-z^{-1});
+\end{align*}
+\begin{align*}
+K_{3,1}&=(-z)^{-a}F(a,a+1-c;a+1-b;z^{-1}),\\
+K_{3,2}&=(-z)^{b-c}(1-z)^{c-a-b}
+ F(1-b,c-b;a+1-b;z^{-1}),\\
+K_{3,3}&=(1-z)^{-a}F\left(a,c-b;a+1-b;(1-z)^{-1}\right),\\
+K_{3,4}&=(-z)^{1-c}(1-z)^{c-a-1}
+ F\left(a+1-c,1-b;a+1-b;(1-z)^{-1}\right);
+\end{align*}
+\begin{align*}
+K_{4,1}&=(-z)^{-b}F(b+1-c,b;b+1-a;z^{-1}),\\
+K_{4,2}&=(-z)^{a-c}(1-z)^{c-a-b}
+ F(1-a,c-a;b+1-a;z^{-1}),\\
+K_{4,3}&=(1-z)^{-b}F\left(b,c-a;b+1-a;(1-z)^{-1}\right),\\
+K_{4,4}&=(-z)^{1-c}(1-z)^{c-b-1}
+ F\left(b+1-c,1-a;b+1-a;(1-z)^{-1}\right);
+\end{align*}
+\begin{align*}
+K_{5,1}&=z^{1-c}F(a+1-c,b+1-c;2-c;z),\\
+K_{5,2}&=z^{1-c}(1-z)^{c-a-b}F(1-a,1-b;2-c;z),\\
+K_{5,3}&=z^{1-c}(1-z)^{c-a-1}
+ F\left(a+1-c,1-b;2-c;\frac{z}{z-1}\right),\\
+K_{5,4}&=z^{1-c}(1-z)^{c-b-1}
+ F\left(b+1-c,1-a;2-c;\frac{z}{z-1}\right);
+\end{align*}
+\begin{align*}
+K_{6,1}&=(1-z)^{c-a-b}F(c-a,c-b;c+1-a-b;1-z),\\
+K_{6,2}&=z^{1-c}(1-z)^{c-a-b}
+ F(1-a,1-b;c+1-a-b;1-z),\\
+K_{6,3}&=z^{a-c}(1-z)^{c-a-b}
+ F(c-a,1-a;c+1-a-b;1-z^{-1}),\\
+K_{6,4}&=z^{b-c}(1-z)^{c-a-b}
+ F(c-b,1-b;c+1-a-b;1-z^{-1}).
+\end{align*}
+
+The first quartet consists of the identity, Euler's transformation, and the
+two Pfaff transformations.  The remaining quartets are obtained by changing
+the distinguished singular point and choosing either local exponent there.
+At resonant parameters some displayed pairs coalesce or their normalizations
+become singular.  The correct replacement is then a logarithmic Frobenius
+solution, so the generic twenty-four-label statement must not be read as
+asserting twenty-four linearly independent functions.
+
+\section{Primitive recursive precision schedules}\label{app:schedules}
+
+The arguments in the main text repeatedly use the same small collection of
+precision compilers.  This appendix makes them explicit enough to serve as an
+implementation specification.
+
+\subsection{Geometric domination}
+
+Let \(0\le r<1\) be rational and let \(A\ge0\).  Put
+\[
+ d=\operatorname{den}(1-r),\qquad
+ E(q,A,r)=\min\left\{N\le B:
+ A r^N\le 2^{-q}(1-r)\right\},
+\]
+where a primitive recursive search bound is
+\[
+ B=(q+\sigma(A)+2)d,
+ \qquad
+ \sigma(A)=\min\{s\le \lceil A\rceil+1:2^s\ge\max(1,A)\}.
+\]
+The elementary inequality \((1-1/d)^d\le 1/2\), proved after clearing
+denominators by induction on \(d\), shows that the bounded search succeeds
+after enlarging \(B\) by at most a fixed linear factor.  Consequently
+\[
+ \sum_{n\ge E(q,A,r)} A r^n\le 2^{-q}.
+\]
+All occurrences of a phrase such as ``choose \(N\) so that the geometric tail
+is below \(2^{-q}\)'' can be replaced by this bounded search.
+
+\subsection{Hypergeometric ratio schedule}
+
+For fixed rational-complex parameters with denominator margins
+\(\norm{c+n}\ge\eta(n)>0\), the exact ratio is
+\[
+ R_n(z)=\frac{(a+n)(b+n)}{(c+n)(n+1)}z.
+\]
+After clearing the parameter denominators, the inequality
+\(\norm{R_n(z)}\le r<1\) is a polynomial inequality in \(n\).  The proof of
+\cref{lem:ratio-cutoff} supplies an explicit polynomial bound \(N_0\) beyond
+which it holds.  The complete cutoff is
+\[
+ N(q)=\max\bigl(N_0,E(q,A,r)\bigr),
+\]
+where \(A\) bounds the normalized \(N_0\)-th term.  This is primitive
+recursive in the input codes and requested precision.
+
+\subsection{Endpoint truncation for Euler's integral}
+
+Assume rational witnesses
+\[
+ 0<\delta_b\le\RePart b,
+ \qquad
+ 0<\delta_{c-b}\le\RePart(c-b).
+\]
+For an integrand bounded by
+\(M t^{\delta_b-1}(1-t)^{\delta_{c-b}-1}\), choose dyadic
+\(\varepsilon=2^{-m}\) by bounded search so that
+\[
+ \frac{M}{\delta_b}\varepsilon^{\delta_b}
+ +\frac{M}{\delta_{c-b}}\varepsilon^{\delta_{c-b}}
+ \le 2^{-q-2}.
+\]
+Rational powers are evaluated by the certified exponential/logarithm names of
+\cref{sec:arithmetic}.  On \([\varepsilon,1-\varepsilon]\), use the supplied
+modulus of continuity to choose a mesh whose Riemann error is at most
+\(2^{-q-2}\), and evaluate each node to precision \(2^{-q-2}/(M+1)\).  The
+three errors add to at most \(2^{-q}\).  Every search is bounded by a function
+of the displayed rational data.
+
+\subsection{Path continuation schedule}
+
+For a polygonal path \(\gamma\) avoiding \(\{0,1\}\), a continuation
+certificate contains rational margins
+\[
+ \rho_j\le \min_{z\in S_j}\bigl(\abs z,\abs{1-z}\bigr).
+\]
+After decomposing the path into segments \(S_j\).  On each segment the ODE is
+rewritten as a first-order system with a rational Lipschitz bound \(L_j\).
+A truncated Taylor or Picard step of length \(h_j\) is accepted when
+\(L_jh_j\le 1/4\).  The order is chosen by the geometric compiler above,
+and the local errors are budgeted as
+\(2^{-q-j-2}\).  Finite summation of the local budgets proves the final
+\(2^{-q}\) error.  This realizes continuation without a compactness or
+choice principle.
+
+\section{Object-theory target schemas}\label{app:targets}
+
+A theorem in the present report becomes a closed first-order iPRA sentence
+only after the primitive recursive programs naming its parameters and
+certificates have been fixed.  The following patterns are the intended
+translation targets in ProveIt's \code{Prf PRAAx} calculus.
+
+\subsection{Exact coefficient identity}
+
+If \(A(n)\) and \(B(n)\) are integer-coded rational expressions, equality is
+represented after cross multiplication by a natural-number equation
+\[
+ \operatorname{num}A(n)\operatorname{den}B(n)
+ =\operatorname{num}B(n)\operatorname{den}A(n).
+\]
+The target is the universal closure of this quantifier-free equation.  A
+simultaneous recurrence can be encoded by the pairing machinery already
+available in the repository.
+
+\subsection{Equality of effective complex numbers}
+
+For primitive recursive complex-rational names \(X(q)\) and \(Y(q)\), the
+statement \(X=Y\) is compiled to the schema
+\[
+ \forall q\;
+ 2^q\,\norm{X(q+2)-Y(q+2)}\le 1.
+\]
+The norm is the rational \(\ell^1\)-norm, so the displayed predicate is a
+finite integer inequality.  The two lost bits absorb the independent naming
+errors.  Uniform identities add the bounded parameter code as another free
+number variable.
+
+\subsection{Convergence with a modulus}
+
+For partial sums \(S(N)\) and a primitive recursive modulus \(M(q)\), Cauchy
+convergence is the arithmetical formula
+\[
+ \forall q\,\forall m,n\;
+ \bigl(M(q)\le m\wedge M(q)\le n\bigr)
+ \to 2^q\norm{S(m)-S(n)}\le1.
+\]
+When the proof uses a geometric tail, the implication is discharged by the
+exact finite geometric identity and the cutoff of \cref{app:schedules}.
+
+\subsection{Apartness and branches}
+
+A guarded division \(x/y\) carries an integer witness \(k\) satisfying
+\(2^{-k}\le\abs y\).  A branch certificate for \(z^\alpha\) is a finite list
+of rational polygons, overlap points, logarithm names, and estimates asserting
+that the image stays a rational positive distance from the selected cut.  All
+checks are bounded conjunctions of integer inequalities.  Thus the apparent
+higher-type data are replaced by one number coding a finite certificate and a
+primitive recursive checker.
+
+\subsection{Suggested closed milestone theorems}
+
+The first object-theory implementation should target, in order:
+\begin{enumerate}
+\item the Pochhammer recurrence and zero criterion;
+\item the coefficient ratio, differentiation identity, and ODE residual;
+\item terminating Chu--Vandermonde and Jacobi/Legendre specializations;
+\item the three basic contiguous relations and their finite continued-fraction
+      eliminant;
+\item the cubic radical coefficient recurrence;
+\item the generic disk tail theorem for a fixed rational parameter tuple;
+\item Euler's integral for one fixed positive rational parameter tuple;
+\item Gauss summation in the same tuple, followed by a parameterized schema.
+\end{enumerate}
+The first five use only finite algebra.  The last three exercise the effective
+analysis interfaces without yet requiring branch continuation.
+
+\section{Archive map and reproducibility}\label{app:archive}
+
+\begin{center}
+\begingroup\small
+\begin{tabularx}{\textwidth}{@{}p{0.35\textwidth}X@{}}
+\toprule
+Path & Role\\
+\midrule
+\path{report.tex}, \path{report.pdf} & Complete paper and compiled rendering.\\
+\path{sections/} & Source sections, including the generated inventory table.\\
+\path{theorem_inventory.csv} & Source-row coverage ledger with status, route, and qualifications.\\
+\path{lean/HypergeometricFinite.lean} & Executable-looking finite algebra layer and theorem statements; uncompiled outline.\\
+\path{lean/HypergeometricIPRA.lean} & Object-theory translation skeleton aimed at \code{Prf PRAAx}.\\
+\path{lean/FORMALIZATION_PLAN.md} & Dependency graph, induction invariants, and completion checklist.\\
+\path{code/validate_finite.py} & Exact rational and high-precision numerical regression checks.\\
+\path{evidence/validation.json} & Deterministic output of the validation program.\\
+\path{SOURCE_MANIFEST.md} & Web and repository sources, scope, and inspected revision.\\
+\path{SHA256SUMS.txt} & Checksums for all packaged files except the checksum file itself.\\
+\bottomrule
+\end{tabularx}
+\endgroup
+\end{center}
+
+The PDF is rebuilt with \code{make pdf}; the finite evidence with
+\code{make validate}; and both plus checksums with \code{make all}.  The
+validation program proves no general theorem, but it is useful for detecting
+sign, index-shift, and normalization mistakes in the human and Lean plans.

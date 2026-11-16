@@ -110,4 +110,6 @@ import IPRADerivations.Core.IntCancel
 import IPRADerivations.Geometry.PowerOfPoint
 import IPRADerivations.Probability.Expectation
 import IPRADerivations.Probability.Lotus
+import IPRADerivations.Probability.Independence
+import IPRADerivations.Probability.TailSum
 import IPRADerivations.Topology.Sperner

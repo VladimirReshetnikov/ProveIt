@@ -1,0 +1,243 @@
+\section{Effective convergence and differentiation}\label{sec:convergence}
+
+\subsection{A primitive recursive ratio cutoff}
+
+Fix complex-rational parameters \(a,b,c\) and a rational radius
+\(0\le r<1\).  Let rational numbers \(A,B,C\) satisfy
+\[
+ \norm a\le A,\qquad \norm b\le B,\qquad \norm c\le C.
+\]
+For \(n>C\), the reverse triangle inequality gives
+\(\norm{n+c}\ge n-C\).  Hence, for \(\norm z\le r\),
+\begin{equation}\label{eq:term-ratio-bound}
+ \norm{\frac{A_{n+1}z^{n+1}}{A_nz^n}}
+ \le r\frac{(n+A)(n+B)}{(n+1)(n-C)}
+ \le r\frac{(n+A)(n+B)}{n(n-C)}.
+\end{equation}
+This estimate is used only after denominator apartness has been verified.
+
+\begin{lemma}[Explicit ratio cutoff]\label{lem:ratio-cutoff}
+If \(0<r<1\), put
+\[
+ q=\frac{1+r}{2},\qquad
+ \varepsilon=\frac{q-r}{r}=\frac{1-r}{2r},
+\]
+\[
+ D=(1+\varepsilon)C+A+B+AB,
+ \qquad
+ N_0=1+\left\lceil\max\left(C,\frac{2D}{\varepsilon}\right)\right\rceil.
+\]
+Then for every \(n\ge N_0\), the right side of
+\eqref{eq:term-ratio-bound} is at most \(q\).  For \(r=0\), every nonconstant
+term vanishes.
+\end{lemma}
+
+\begin{proof}
+It is enough to prove
+\[
+ (n+A)(n+B)\le(1+\varepsilon)n(n-C).
+\]
+After expansion this is
+\[
+ \varepsilon n^2\ge
+  ((1+\varepsilon)C+A+B)n+AB.
+\]
+For \(n\ge1\), the right side is at most \(Dn\).  The definition of
+\(N_0\) gives \(\varepsilon n\ge2D\), hence the desired inequality with
+room to spare.  Every comparison is rational and every ceiling is obtained by
+bounded integer search.
+\end{proof}
+
+\begin{theorem}[Uniform convergence on a strict subdisk]\label{thm:disk-convergence}
+Assume the denominator factors \(c+j\) carry apartness certificates.  For
+every rational \(r<1\), the partial sums
+\(H_N(a,b;c;z)\) have a primitive recursive Cauchy modulus uniformly on
+\(\norm z\le r\).  More precisely, for \(N\ge N_0\) and \(m\ge0\),
+\begin{equation}\label{eq:geometric-tail}
+ \norm{\sum_{n\ge N+m}A_nz^n}
+ \le \frac{\norm{A_N}r^N}{1-q}q^m.
+\end{equation}
+A primitive recursive bounded search finds the least \(m\) making the right
+side at most \(2^{-p}\).
+\end{theorem}
+
+\begin{proof}
+By \cref{lem:ratio-cutoff}, every term after \(N_0\) is at most \(q\) times
+the preceding term.  Induction gives
+\(\norm{A_{N+j}z^{N+j}}\le\norm{A_N}r^Nq^j\).
+The finite geometric identity
+\[
+ (1-q)\sum_{j<m}q^j=1-q^m
+\]
+is an exact polynomial identity, so the tail bound follows by passing to the
+Cauchy estimate.  No classical ratio test is invoked: the ratio cutoff and
+the geometric remainder are explicit.
+
+For termination of the search, write \(d=1-q>0\).  The finite binomial
+inequality
+\((1-d)^{-m}\ge1+md\) gives
+\(q^m\le(1+md)^{-1}\).  Taking
+\(m\ge2^{p+s}/d\), where \(s\) absorbs
+\(\norm{A_N}r^N/(1-q)\), certainly succeeds.  This is a primitive recursive,
+though intentionally crude, bound.
+\end{proof}
+
+\begin{corollary}[Named analytic function on a strict subdisk]
+For each fixed guarded parameter package and rational \(r<1\),
+\(z\mapsto\F a b c z\) is a named uniformly continuous function on
+\(\norm z\le r\).  An evaluator computes a sufficiently long rational
+partial sum; a modulus follows by splitting
+\[
+ F(z)-F(w)=\sum_{n<N}A_n(z^n-w^n)+\Tail_N(z)-\Tail_N(w).
+\]
+\end{corollary}
+
+\begin{proof}
+Choose \(N\) so that both tails are at most \(2^{-p-2}\).  The finite head is
+uniformly continuous because
+\[
+ z^n-w^n=(z-w)\sum_{j<n}z^jw^{n-1-j}.
+\]
+On \(\norm z,\norm w\le r\), its norm is at most
+\(n r^{n-1}\norm{z-w}\).  The finite sum of these rational constants gives an
+explicit Lipschitz bound and hence a dyadic modulus.
+\end{proof}
+
+\subsection{Analytic differentiation}
+
+The formal identity of \cref{thm:derivatives} becomes an analytic identity
+once both sides have compatible moduli.
+
+\begin{theorem}[Effective termwise differentiation]\label{thm:analytic-derivative}
+Let \(0\le r<\rho<1\) be rational.  On \(\norm z\le r\), the difference
+quotient of the named sum converges effectively to the named derivative
+series, and
+\[
+ \frac{d^s}{dz^s}\F a b c z
+ =\frac{\poch a s\poch b s}{\poch c s}
+   \F{a+s}{b+s}{c+s}{z}.
+\]
+after the shifted denominator guards are supplied.
+\end{theorem}
+
+\begin{proof}
+Choose the series on the larger disk \(\norm z\le\rho\).  Its tail has a
+primitive recursive modulus by \cref{thm:disk-convergence}.  For a monomial,
+\[
+ \frac{(z+h)^n-z^n}{h}-nz^{n-1}
+ =\sum_{j=2}^{n}\binom nj z^{n-j}h^{j-1}.
+\]
+On \(\norm z\le r\) and \(\norm h\le(\rho-r)/2\), the norm is bounded by an
+explicit finite multiple of \(\norm h\rho^{n-2}\).  Split the derivative
+series into a finite head and tail.  Choose the tail cutoff first, then choose
+\(h\) small enough for the finite head.  All choices are bounded searches over
+rational inequalities.  The coefficient identity from
+\cref{thm:derivatives} identifies the resulting derivative name.  Iterating
+this argument gives fixed order \(s\); joint primitive recursive data give a
+uniform variable-order schema.
+\end{proof}
+
+\subsection{Convergence on the unit circle}
+
+The source pages state convergence at \(|z|=1\) when
+\(\RePart(c-a-b)>0\).  A constructive version needs a positive margin, not
+merely the negation of a nonpositive real part.
+
+\begin{contract}[Boundary convergence data]\label{con:boundary}
+Supply a positive rational \(\delta\) with
+\[
+ \RePart(c-a-b)\ge\delta>0,
+\]
+a denominator-apartness table, and an effective gamma-ratio estimate
+\begin{equation}\label{eq:gamma-ratio-contract}
+ \norm{A_n(a,b;c)}\le K(n+1)^{-1-\delta}
+ \qquad(n\ge N_1)
+\end{equation}
+for rational \(K,N_1\).  The gamma/Stirling package in the repository gives a
+route to such an estimate for fixed primitive recursive parameter names on a
+compact nonresonant set.
+\end{contract}
+
+\begin{theorem}[Effective unit-circle convergence]\label{thm:unit-circle}
+Under \cref{con:boundary}, the hypergeometric series converges absolutely and
+uniformly on the full coded Euclidean unit disk
+\[
+   (\RePart z)^2+(\ImPart z)^2\le1,
+\]
+with a primitive recursive tail modulus.  In particular it converges
+uniformly on the rational diamond \(\norm z\le1\).
+\end{theorem}
+
+\begin{proof}
+Choose an integer \(k\ge1\) with \(1/k\le\delta\).  For \(N\ge N_1\), group
+indices into blocks
+\([j^k,(j+1)^k)\).  Every term in the block is at most
+\(Kj^{-k-1}\), while the block has at most
+\(k(j+1)^{k-1}\) terms.  Hence its contribution is at most
+\(K'j^{-2}\) for an explicit rational \(K'\).  The elementary telescoping
+bound
+\[
+ \sum_{j\ge J}\frac1{j^2}
+ \le\sum_{j\ge J}\frac1{j(j-1)}=\frac1{J-1}
+\]
+gives a primitive recursive tail cutoff.  This avoids invoking an integral
+test or a completed real-number order.  If
+\((\RePart z)^2+(\ImPart z)^2\le1\), then the same inequality, raised to the
+\(n\)-th power, certifies that each real and imaginary component of \(z^n\)
+has absolute value at most one.  Consequently
+\(\norm{A_nz^n}\le2\norm{A_n}\); the harmless factor two is absorbed in
+\(K'\).  On \(\norm z\le1\), even that extra argument is unnecessary.
+\end{proof}
+
+\begin{remark}[Endpoint without a margin]
+The qualitative assertion \(\RePart(c-a-b)>0\) is read as the existence of a
+positive rational witness \(\delta\).  For a fixed named real with no supplied
+witness, iPRA cannot in general decide on which side of zero it lies.  The
+margin is mathematical data, not bureaucratic overhead.
+\end{remark}
+
+\subsection{Coefficientwise confluent limit}
+
+Let \(h\ne0\) and consider
+\[
+ G_h(z)=\F a{h^{-1}}c{hz}.
+\]
+A coefficient contains
+\[
+ \poch{h^{-1}}n h^n=\prod_{j<n}(1+jh).
+\]
+
+\begin{theorem}[Effective confluent limit]\label{thm:confluent}
+For every fixed \(n\),
+\[
+ \prod_{j<n}(1+jh)\longrightarrow1
+\]
+with the explicit bound
+\begin{equation}\label{eq:finite-product-perturb}
+ \norm{\prod_{j<n}(1+jh)-1}
+ \le \left(1+n\norm h\right)^n-1.
+\end{equation}
+Consequently the coefficients of \(G_h\) converge to those of
+\[
+ {}_1F_1(a;c;z)=\sum_{n\ge0}\frac{\poch a n}{\poch c n}\frac{z^n}{n!}.
+\]
+On each rational disk \(\norm z\le r\), and for \(h\) restricted by a
+sufficiently small rational bound, the convergence is uniform with a primitive
+recursive modulus.
+\end{theorem}
+
+\begin{proof}
+Expand the difference of two finite products by telescoping one factor at a
+time:
+\[
+ \prod_{j<n}(1+u_j)-1
+ =\sum_{k<n}u_k\prod_{j<k}(1+u_j).
+\]
+With \(u_j=jh\), a coarse estimate gives
+\eqref{eq:finite-product-perturb}.  For uniform convergence, choose a head
+cutoff \(N\) using a common ratio majorant for all sufficiently small
+\(\norm h\).  On the finite head, choose \(h\) so that each coefficient error
+is below the allocated budget.  The two tails use the same geometric bound.
+This is the constructive head--tail proof; no interchange of two abstract
+limits is needed.
+\end{proof}

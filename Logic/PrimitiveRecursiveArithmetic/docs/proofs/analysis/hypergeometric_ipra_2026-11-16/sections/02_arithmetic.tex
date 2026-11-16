@@ -1,0 +1,204 @@
+\section{The arithmetic substrate}\label{sec:arithmetic}
+
+\subsection{Integer, rational, and complex-rational codes}
+
+An integer is represented by a pair \((u,v)\in\N^2\), denoting \(u-v\).
+A rational is a pair \((m,d)\), where \(m\) is an integer code and \(d+1\)
+is the positive denominator.  Equality and order are tested by cross
+multiplication.  Normalization by the bounded Euclidean algorithm is useful
+for canonical input codes but is not mathematically necessary.  A complex
+rational is a pair of rational codes.  We use
+\[
+  \norm{x+iy}=|x|+|y|
+\]
+for error estimates.  It satisfies
+\(\norm{uv}\le\norm u\norm v\), and every comparison is rational.
+The Euclidean norm is used only in familiar displayed formulas; replacing it
+by the one-norm changes constants but not the constructions.
+
+Division is totalized.  Define
+\[
+ \operatorname{qdiv}(x,y)=
+ \begin{cases}x/y,&y\ne0,\\0,&y=0.
+ \end{cases}
+\]
+Every theorem that uses the first branch carries a proof of \(y\ne0\).  This
+allows all displayed functions to be primitive recursive without turning a
+partial operation into an implicit logical principle.
+
+\subsection{Finite sequences and bounded folds}
+
+Pairing and projections code finite tuples.  Bounded sums, products, maxima,
+and Boolean folds are obtained by primitive recursion:
+\begin{align*}
+ \operatorname{sum}(0,f)&=0,&
+ \operatorname{sum}(n+1,f)&=\operatorname{sum}(n,f)+f(n),\\
+ \operatorname{prod}(0,f)&=1,&
+ \operatorname{prod}(n+1,f)&=\operatorname{prod}(n,f)f(n).
+\end{align*}
+A bounded universal assertion is represented by a Boolean fold
+\[
+  \operatorname{all}(N,P)=\prod_{n<N}\chi_P(n).
+\]
+It is equal to \(1\) precisely when every decidable test \(P(n)\) below \(N\)
+holds.  This is the standard way to keep induction invariants literally
+quantifier-free.  For example, instead of carrying
+\(\forall k<n\,D_k\ne0\), the object-theory proof carries
+\(\operatorname{all}(n,k\mapsto[D_k\ne0])=1\).
+
+\subsection{Names of effective numbers}
+
+\begin{definition}[Dyadic Cauchy name]\label{def:name}
+A complex number name is a primitive recursive function
+\(X:\N\to\Q(i)\) satisfying
+\[
+  \norm{X(p+1)-X(p)}\le2^{-p}
+  \qquad(p\in\N).
+\]
+A stronger and often more convenient contract is
+\[
+  \norm{X(q)-X(p)}\le2^{-p+1}
+  \qquad(q\ge p).
+\]
+Two names are extensionally equal when a primitive recursive shift \(s\)
+satisfies
+\[
+  \norm{X(p+s)-Y(p+s)}\le 2^{-p}
+  \quad\text{for every }p.
+\]
+\end{definition}
+
+The shift absorbs a finite number of error sources.  Given a rational
+constant \(C\ge0\), define by bounded search
+\[
+ \sigma(C)=\min\{s\le \lceil C\rceil+1:2^s\ge\max(1,C)\}.
+\]
+Existence follows from \(2^s\ge s+1\), proved by quantifier-free induction.
+Then \(C2^{-p-\sigma(C)}\le2^{-p}\).  Every precision allocation below is a
+composition of such shifts, bounded searches, and elementary arithmetic, and
+is therefore primitive recursive.
+
+\begin{definition}[Named function on a rational domain]\label{def:named-function}
+A named function on a coded rational domain \(D\) consists of a primitive
+recursive evaluator
+\[
+  F(x,p)\in\Q(i).
+\]
+A uniform value bound \(M\), and a modulus \(\omega\) such that
+\[
+  x,y\in D,\quad \norm{x-y}\le2^{-\omega(p)}
+   \Longrightarrow \norm{F(x,p+s)-F(y,p+s)}\le2^{-p}
+\]
+for a displayed shift \(s\).  Derivative, integral, and branch contracts add
+further finite inequalities.  The evaluator is fixed; the theory does not
+quantify over all evaluators.
+\end{definition}
+
+\subsection{Apartness and branch data}
+
+Constructive division requires more than the negation of equality.  To name
+\(1/X\), supply a positive rational margin \(\delta\) and a precision
+\(p_0\) such that
+\[
+  \norm{X(p_0)}\ge\delta,
+  \qquad
+  \norm{X(p)-X(p_0)}\le\delta/2\quad(p\ge p_0).
+\]
+Then \(\norm{X}\ge\delta/2\), and rational interval arithmetic gives a name
+for the reciprocal.  We call this an \emph{apartness certificate}.
+
+A branch of \(z^\alpha\) on a rational disk consists of a named logarithm
+\(L(z)\), a disk center and radius, a proof that the disk avoids the branch
+cut and zero by a rational margin, and the local identities
+\(L'(z)=1/z\), \(L(z_0)=\ell_0\).  Then
+\(z^\alpha=\exp(\alpha L(z))\).  The exponential is represented by its
+Taylor series with a factorial-tail modulus.  No global choice of argument is
+assumed.
+
+\subsection{Formal power series as finite observations}
+
+A full infinite sequence is not an object over which first-order iPRA
+quantifies.  A fixed primitive recursive coefficient function
+\(A:\N\to\Q(i)\), however, is legitimate.  A formal-series identity
+\[
+  \sum_{n\ge0}A_nz^n=\sum_{n\ge0}B_nz^n
+\]
+means the theorem schema \(A_n=B_n\) for every \(n\).  Product and
+composition identities are expressed through finite Cauchy sums.  For
+example, the coefficient of a product is
+\[
+  (A*B)_n=\sum_{k=0}^{n}A_kB_{n-k}.
+\]
+Every coefficient uses only a bounded sum.
+
+\begin{definition}[Truncated series algebra]\label{def:trunc-series}
+For \(N\in\N\), let
+\(R_N=R[z]/(z^N)\).  Represent an element by the vector
+\((a_0,\ldots,a_{N-1})\).  Addition, Cauchy multiplication, formal
+differentiation, and substitution by a series with zero constant term are
+primitive recursive operations on finite vectors.  Equality in \(R_N\) is a
+finite conjunction.
+\end{definition}
+
+A uniform formal identity is proved by an induction whose invariant is the
+correctness of all coefficients below the current bound.  Alternatively, for
+a fixed target coefficient \(n\), one works entirely in \(R_{n+1}\).  This
+``finite observation'' interpretation is especially useful for the Kummer
+forms and algebraic substitutions.
+
+\subsection{Isolated algebraic names}
+
+Radicals are handled without postulating a total root operation on arbitrary
+reals.
+
+\begin{definition}[Isolated algebraic number]\label{def:alg-name}
+An isolated real algebraic name consists of an integer polynomial \(P\),
+rational endpoints \(u<v\), a sign-change or monotonicity certificate proving
+that \(P\) has exactly one zero in \([u,v]\), and a primitive recursive
+bisection procedure.  A complex algebraic name uses two real intervals plus a
+finite uniqueness certificate, for example a rectangle on which a resultant
+or Newton test is separating.
+\end{definition}
+
+Bisection has a primitive recursive convergence rate because the interval
+width after \(m\) steps is \((v-u)2^{-m}\).  Square and cube roots occurring
+in the source pages are interpreted by positive isolated roots.  Polynomial
+identities between such names are proved by interval refinement together with
+an exact polynomial relation, not by an unguarded appeal to classical root
+choice.
+
+\subsection{Integration by finite quadrature}
+
+For a named uniformly continuous function \(f:[0,1]\to\C\), define the
+left Riemann sum
+\[
+  R_N(f)=\frac1N\sum_{j<N}f(j/N).
+\]
+If \(\norm{f(x)-f(y)}\le\varepsilon\) whenever
+\(|x-y|\le1/N\), then
+\[
+  \norm{R_N(f)-R_{2N}(f)}\le\varepsilon.
+\]
+The proof pairs the two fine cells in every coarse cell and uses the supplied
+modulus.  Thus a primitive recursive mesh schedule produces a Cauchy name for
+the integral.  Endpoint singularities are treated by cutting off
+\([0,\eta]\) and \([1-\eta,1]\), bounding those tails by explicit powers,
+and applying ordinary quadrature on the central interval.  This is the
+integration engine used in \cref{sec:integrals-sums}.
+
+\begin{lemma}[Finite substitution principle]\label{lem:finite-substitution}
+Suppose \(f,g\) are named functions on rational intervals, \(g\) is
+monotone with named derivative and explicit endpoint values, and the
+fundamental theorem estimate is supplied with a modulus.  Then the usual
+change-of-variables formula is an iPRA theorem schema.
+\end{lemma}
+
+\begin{proof}
+Apply the identity to the polygonal/Riemann sums.  On each cell, replace the
+increment \(g(x_{j+1})-g(x_j)\) by
+\(g'(x_j)(x_{j+1}-x_j)\).  The derivative-remainder contract bounds the
+sum of errors by a primitive recursive multiple of the mesh.  The two finite
+sums telescope at the endpoints.  Choosing the mesh by bounded search makes
+the total error at most \(2^{-p}\).  Every invariant is an equality or
+inequality of finite rational sums.
+\end{proof}

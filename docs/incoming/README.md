@@ -305,6 +305,16 @@ placed the same way, under `combinatorics/`, and then deleted. It leaves out one
 `aperiodic_monotile_ipra_2026-11-16.zip` was placed the same way, under `geometry/`, and
 then deleted. All 31 of its members are placed. `conway_criterion_ipra_2026-11-16.zip` was
 placed the same way, under `geometry/`, and then deleted. All 50 of its members are placed.
+`bring_quintic_ipra_2026-11-16.zip` was placed the same way, under `algebra/`, and then
+deleted. It leaves out one ignored `.log` file. On 16 November 2026, on Vladimir's
+instruction, the 45 checksum manifests that had been placed with these packets
+(`MANIFEST.sha256`, `manifest.sha256` and three `MANIFEST.txt` digest lists) were removed
+and recorded in `OMITTED.tsv` as `checksum-manifest`; later packets are placed without
+theirs. `hypergeometric_ipra_2026-11-16.zip` was placed the same way, under `analysis/`, and
+then deleted. It leaves out one ignored checksum manifest.
+`pentagonal_tiling_ipra_2026-11-16.zip` was placed the same way, under `geometry/`, and then
+deleted; its wrapper directory is `pentagonal_tiling_ipra`. It leaves out its two checksum
+manifests, `metadata/checksums.sha256` and `metadata/FILE_MANIFEST.txt`.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

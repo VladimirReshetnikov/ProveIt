@@ -1,0 +1,174 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=0.88in]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage[hyphens]{url}
+\usepackage{xurl}
+\usepackage[hypertexnames=false]{hyperref}
+\usepackage{bookmark}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!65!black,
+  pdftitle={Bring radicals and quintic equations in intuitionistic primitive recursive arithmetic},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov},
+  pdfsubject={Constructive finite proofs, exact certificates, and a Lean formalization roadmap}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Bring radicals and quintics in iPRA}
+\rhead{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\allowdisplaybreaks
+\setlist{leftmargin=*,itemsep=3pt,topsep=5pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{claim}[theorem]{Claim}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{audit}[theorem]{Audit item}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{frontier}[theorem]{Formalization frontier}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\F}{\mathbb F}
+\newcommand{\ipra}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\BR}{\operatorname{BR}}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\Disc}{\operatorname{Disc}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\coeff}[2]{[X^{#1}]\,#2}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\angles}[1]{\left\langle #1\right\rangle}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\Exact}{\textsf{Exact}}
+\newcommand{\Effective}{\textsf{Effective}}
+\newcommand{\Conditional}{\textsf{Certificate}}
+\newcommand{\Outline}{\textsf{Outline}}
+
+\lstdefinestyle{code}{
+  basicstyle=\ttfamily\footnotesize,
+  columns=fullflexible,
+  breaklines=true,
+  frame=single,
+  showstringspaces=false,
+  keepspaces=true
+}
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+\vspace*{0.85in}
+{\LARGE\bfseries Bring Radicals and Quintic Equations\\[0.35em]
+in Intuitionistic Primitive Recursive Arithmetic\par}
+\vspace{0.7in}
+{\large Finite algebra, effective real roots, solvable families,\\
+and the Abel--Ruffini obstruction\par}
+\vspace{0.7in}
+{\large Prepared for Vladimir Reshetnikov\par}
+\vfill
+\begin{minipage}{0.91\textwidth}
+\small
+This report is written against the ProveIt repository state headed by commit
+\code{b73ff58ad10e9c446fa997777c5f502844249929} (16 November 2026).
+It reuses the kernel-checked \ipra{} derivations of the quadratic, Cardano and
+Ferrari factorization identities, the existing finite Lagrange-inversion
+packet, and the repository's generic Abel--Ruffini architecture.  The exact
+Python checker in this archive independently verifies the new polynomial,
+finite-field and finite-group certificates.  The accompanying Lean source is a
+detailed blueprint; only the imported ProveIt derivations, not every new target
+in that blueprint, are claimed to be kernel-checked.
+\end{minipage}
+\vspace{0.55in}
+{\large 16 November 2026\par}
+\end{titlepage}
+
+\pagenumbering{roman}
+
+\begin{abstract}
+We reconstruct a large part of the mathematical content of the reference pages
+on the Bring radical and quintic equations in a form suitable for
+intuitionistic primitive recursive arithmetic.  The governing discipline is
+that a purported infinite or analytic object is replaced by a
+primitive-recursive name together with an explicit modulus, while every
+algebraic assertion is reduced to a finite polynomial identity, a bounded
+search, or a finite certificate.
+
+For real input we construct the Bring radical by exact rational bisection and
+prove uniqueness, oddness, strict decrease, unboundedness, a sharp inverse
+Lipschitz bound, a residual error bound, differentiability, and an explicit
+fifth-root asymptotic estimate.  Lagrange inversion in truncated power-series
+rings yields the Taylor coefficients and their hypergeometric form.  A
+constructive ratio argument gives the exact convergence radius
+\(4/(5\sqrt[4]{5})\); the resultant
+\(3125a^4+256\) simultaneously identifies the four complex branch points.
+We also verify the Cockle--Harley fourth-order differential resolvent.
+
+For general quintics we prove the exact depression formula and a transparent
+quadratic Tschirnhaus reduction to principal form.  We formulate the enormous
+Bring--Jerrard step as a compact resultant certificate whose checking is
+primitive recursive, and prove the scaling formula expressing
+\(x^5+px+q\) through a Bring radical.  The generic Abel--Ruffini obstruction is
+then rendered finitarily: the generic Galois group is \(S_5\), radical towers
+have solvable normal closures, and explicit commutator certificates show that
+\(S_5\) is not solvable.  Two concrete polynomials,
+\(x^5-x+1\) and \(x^5+x+3\), are certified to have group \(S_5\) by
+factorizations modulo small primes.  In particular \(\BR(3)\) is not a radical
+number over \(\Q\).
+
+The solvable side is developed by exact cyclotomic identities.  We prove the
+de Moivre quintic formula, MathWorld's four-resolvent expansion, several
+explicit radical and cyclotomic examples, and a finite classification check:
+every solvable transitive subgroup of \(S_5\) lies in a conjugate of
+\(\operatorname{AGL}(1,5)\).  Finally, denominator clearing is used to derive
+the quintic occurring in the collinear Lagrange-point problem.  A statement
+audit distinguishes completed exact arguments, effective analytic arguments,
+certificate theorems, and remaining global modular-function formalization.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\input{chapters/01_scope}
+\input{chapters/02_ipra_framework}
+\input{chapters/03_real_bring}
+\input{chapters/04_series_and_branches}
+\input{chapters/05_normal_forms}
+\input{chapters/06_abel_ruffini}
+\input{chapters/07_solvable_quintics}
+\input{chapters/08_beyond_radicals}
+\input{chapters/09_applications}
+\input{chapters/10_lean_formalization}
+\input{chapters/11_statement_audit}
+\input{chapters/12_references}
+
+\end{document}

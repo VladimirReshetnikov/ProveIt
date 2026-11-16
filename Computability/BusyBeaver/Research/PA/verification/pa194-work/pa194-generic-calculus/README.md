@@ -62,11 +62,13 @@ the equality vacuity in the gate of PA196. The proof is the one of
 `PA194SourceDiagonalPreservation.diagonal` with the freshness of `c` taken from the two
 inequalities instead of from a bound.
 
-## What is not here
+## Use
 
-Neither module mentions a scheduler or a machine. The use in a scheduler with the PA196
-gate (soundness through `good`, completeness through `diagonal` for the scheduler's computed
-formulas) is not yet written.
+Neither module mentions a scheduler or a machine.
+[`pa194-controller-schedulers`](../pa194-controller-schedulers/README.md) uses both for the
+schedulers whose AX has the gate of PA196: `diagonal` for the formulas that the scheduler
+computes (completeness), and `eq_vacuity` together with the laws for `good` (soundness).
+It also uses `Closed` for its soundness direction in general.
 
 ## Checking
 

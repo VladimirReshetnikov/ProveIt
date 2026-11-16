@@ -1,0 +1,269 @@
+\section{The real Bring radical as a primitive-recursive real}\label{sec:real-bring}
+
+Set
+\[
+ P_a(x)=x^5+x+a,
+ \qquad h(x)=x^5+x.
+\]
+The usual proof that \(h\) is strictly increasing appeals to ordinary real
+calculus.  For \ipra{} it is better to use a polynomial certificate that is
+valid over every ordered field.
+
+\subsection{A sum-of-squares monotonicity certificate}
+
+Define
+\[
+ S_4(x,y)=x^4+x^3y+x^2y^2+xy^3+y^4.
+\]
+
+\begin{lemma}[Positivity of the fifth-power divided difference]
+\label{lem:s4-sos}
+The following identity holds in \(\Z[x,y]\):
+\begin{equation}\label{eq:s4-sos}
+ 12S_4(x,y)
+ =3(2x^2+xy)^2+(3xy+2y^2)^2+8y^4.
+\end{equation}
+Consequently \(S_4(x,y)\ge0\) in every ordered field.
+\end{lemma}
+
+\begin{proof}
+Expansion of the right side gives
+\[
+ 12x^4+12x^3y+12x^2y^2+12xy^3+12y^4.
+\]
+This is an exact polynomial normalization, so after coding signed coefficients
+it is an \ipra{} ring identity.  Nonnegativity follows from nonnegativity of
+squares and multiplication by the positive integer \(12\).
+\end{proof}
+
+\begin{theorem}[Strong monotonicity]\label{thm:strong-monotonicity}
+For \(y\ge x\),
+\begin{equation}\label{eq:strong-monotonicity}
+ P_a(y)-P_a(x)
+ =(y-x)(1+S_4(x,y))\ge y-x.
+\end{equation}
+In particular \(P_a\) and \(h\) are strictly increasing.
+\end{theorem}
+
+\begin{proof}
+The factorization
+\(y^5-x^5=(y-x)S_4(x,y)\) is exact.  Apply
+Lemma~\ref{lem:s4-sos}.  If \(y>x\), then the right side is at least the
+positive number \(y-x\).
+\end{proof}
+
+The extra lower bound in~\eqref{eq:strong-monotonicity}, rather than mere strict
+increase, is the key constructive estimate used throughout this section.
+
+\subsection{Exact rational bisection}
+
+Let \(a\in\Q\).  Put
+\[
+ M=\lceil |a|\rceil+1.
+\]
+Then
+\[
+ P_a(-M)<0<P_a(M).
+\]
+Starting with \([L_0,U_0]=[-M,M]\), define
+\(m_n=(L_n+U_n)/2\) and
+\begin{equation}\label{eq:bisection}
+ (L_{n+1},U_{n+1})=
+ \begin{cases}
+   (m_n,U_n),&P_a(m_n)\le0,\\
+   (L_n,m_n),&P_a(m_n)>0.
+ \end{cases}
+\end{equation}
+Every comparison in~\eqref{eq:bisection} is a decidable comparison of rational
+codes.
+
+\begin{lemma}[Bisection invariant]\label{lem:bisection-invariant}
+For every \(n\),
+\[
+ L_n\le U_n,
+ \qquad P_a(L_n)\le0\le P_a(U_n),
+ \qquad U_n-L_n=2M\,2^{-n}.
+\]
+The functions \(L_n,U_n\) are primitive recursive in the code of \(a\) and
+\(n\).
+\end{lemma}
+
+\begin{proof}
+One step of~\eqref{eq:bisection} preserves the two endpoint signs by the branch
+condition and halves the width.  All statements are rational equalities or
+orders and the induction invariant can be Boolean-folded, so quantifier-free
+induction suffices.
+\end{proof}
+
+Let
+\[
+ N(a,k)=k+2+\left\lceil\log_2(2M)\right\rceil,
+ \qquad
+ q_a(k)=\frac{L_{N(a,k)}+U_{N(a,k)}}2.
+\]
+Then the containing interval has width at most \(2^{-k-1}\).  The sequence
+\(q_a\) is therefore a regular dyadic name.
+
+\begin{theorem}[Constructive existence and uniqueness]\label{thm:bring-exists}
+For every rational \(a\), the name \(q_a\) converges with its displayed
+primitive-recursive modulus to a real \(x\) satisfying
+\[
+ x^5+x+a=0.
+\]
+This zero is unique.
+\end{theorem}
+
+\begin{proof}
+Nested intervals with a geometric width give a regular Cauchy name.  On
+\([-M,M]\), the exact factorization of fifth powers gives the rational
+Lipschitz estimate
+\[
+ |P_a(u)-P_a(v)|
+ \le \bigl(1+5M^4\bigr)|u-v|.
+\]
+Since \(P_a(L_n)\le0\le P_a(U_n)\), monotonicity places
+\(P_a(q_a(k))\) between the endpoint values; the difference of those endpoint
+values tends effectively to zero by the displayed Lipschitz bound.  Hence the
+limit satisfies \(P_a(x)=0\).  If \(x<y\) were two zeros,
+Theorem~\ref{thm:strong-monotonicity} would give
+\(0=P_a(y)-P_a(x)\ge y-x>0\), a contradiction.
+\end{proof}
+
+\begin{definition}[Real Bring radical]
+For rational \(a\), \(\BR(a)\) is the regular name constructed above.  For a
+regular real name \(a_n\), define \(\BR(a)\) by applying rational bisection to
+a sufficiently accurate \(a_n\) and using the stability estimate in the next
+theorem.  This extension is independent of the chosen name.
+\end{definition}
+
+\subsection{Stability, oddness, and order}
+
+\begin{theorem}[Sharp inverse Lipschitz estimate]\label{thm:bring-lipschitz}
+For all real \(a,b\),
+\begin{equation}\label{eq:bring-lipschitz}
+ \abs{\BR(a)-\BR(b)}\le |a-b|.
+\end{equation}
+More generally, for every real \(q\),
+\begin{equation}\label{eq:residual-bound}
+ \abs{q-\BR(a)}\le |q^5+q+a|.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let \(x=\BR(a)\), \(y=\BR(b)\), and suppose \(x\le y\).  Strong monotonicity
+gives
+\[
+ y-x\le h(y)-h(x)=(-b)-(-a)=a-b\le|a-b|.
+\]
+The other order is symmetric.  Taking \(y=q\) and using
+\(P_a(x)=0\) gives~\eqref{eq:residual-bound}.
+\end{proof}
+
+Estimate~\eqref{eq:bring-lipschitz} proves at once that applying rational
+bisection to successively better rational approximants of a named real gives a
+regular name.  This is the constructive extension promised above.
+
+\begin{corollary}[Oddness and strict decrease]\label{cor:bring-odd-decreasing}
+The Bring radical is odd and strictly decreasing:
+\[
+ \BR(-a)=-\BR(a),
+ \qquad a<b\Longrightarrow \BR(b)<\BR(a).
+\]
+\end{corollary}
+
+\begin{proof}
+If \(x^5+x+a=0\), then \((-x)^5+(-x)-a=0\); uniqueness gives oddness.  If
+\(a<b\), then
+\[
+ P_b(\BR(a))=b-a>0.
+\]
+Since \(P_b\) is strictly increasing and vanishes at \(\BR(b)\), its positive
+value at \(\BR(a)\) forces \(\BR(b)<\BR(a)\).
+\end{proof}
+
+\begin{corollary}[Unboundedness with a witness]\label{cor:bring-unbounded}
+For every \(m\ge0\),
+\[
+ a>m^5+m\Longrightarrow \BR(a)<-m,
+ \qquad
+ a<-(m^5+m)\Longrightarrow \BR(a)>m.
+\]
+Thus \(\BR\) is unbounded in both directions.
+\end{corollary}
+
+\begin{proof}
+For the first implication,
+\(P_a(-m)=a-m^5-m>0\).  The zero of the increasing polynomial lies to the
+left of \(-m\).  The second implication follows by oddness.
+\end{proof}
+
+\subsection{Differentiability without an inverse-function black box}
+
+Let \(x=\BR(a)\), \(y=\BR(a+t)\).  Subtracting the two defining equations gives
+the exact identity
+\begin{equation}\label{eq:bring-difference-quotient}
+ (y-x)\bigl(1+S_4(x,y)\bigr)=-t.
+\end{equation}
+The denominator is at least one by Lemma~\ref{lem:s4-sos}.
+
+\begin{theorem}[Derivative of the real Bring radical]\label{thm:bring-derivative}
+The real Bring radical is effectively differentiable and
+\begin{equation}\label{eq:bring-derivative}
+ \BR'(a)=-\frac{1}{1+5\BR(a)^4}.
+\end{equation}
+On every rationally bounded interval, the convergence of the difference
+quotient has a primitive-recursive modulus.
+\end{theorem}
+
+\begin{proof}
+By~\eqref{eq:bring-lipschitz}, \(|y-x|\le|t|\).  Hence
+\(S_4(x,y)\to S_4(x,x)=5x^4\) with an explicit polynomial modulus on any
+supplied bound for \(|x|\).  Divide~\eqref{eq:bring-difference-quotient} by
+\(t\ne0\) and pass to the effective limit.  Since the denominator is uniformly
+at least one, reciprocal error propagation is primitive recursive.
+\end{proof}
+
+Repeated differentiation produces rational functions of \(\BR(a)\) whose
+denominators are powers of \(1+5\BR(a)^4\).  For example,
+\[
+ \BR''(a)=-\frac{20\BR(a)^3}{(1+5\BR(a)^4)^3}.
+\]
+Thus each fixed derivative is a named continuous function.  A quantitative
+complex inverse theorem applied at a real point gives a local analytic branch;
+all constants are computable because \(5x^4+1\ge1\) on the real axis.  This
+establishes, in the effective sense, the source page's assertion that the
+complex branch can be chosen analytic in a neighborhood of the real line.
+
+\subsection{Fifth-root asymptotics}
+
+For \(a>0\), put \(y=-\BR(a)>0\).  Then
+\begin{equation}\label{eq:y-equation}
+ y^5+y=a.
+\end{equation}
+Let \(r=a^{1/5}\), represented by its standard primitive-recursive bisection
+name.  Equation~\eqref{eq:y-equation} gives \(y\le r\).  Factoring the
+difference of fifth powers yields
+\begin{equation}\label{eq:asymptotic-exact}
+ (r-y)(r^4+r^3y+r^2y^2+ry^3+y^4)=y.
+\end{equation}
+
+\begin{theorem}[Effective asymptotic bound]\label{thm:bring-asymptotic}
+For \(a=r^5\) with \(r\ge1\),
+\begin{equation}\label{eq:bring-asymptotic-bound}
+ 0\le r+\BR(a)\le r^{-3},
+ \qquad
+ 0\le 1-\frac{-\BR(a)}{r}\le r^{-4}.
+\end{equation}
+Consequently \(\BR(a)\sim-a^{1/5}\) as \(a\to+\infty\), with the explicit
+modulus supplied by~\eqref{eq:bring-asymptotic-bound}.  The negative direction
+follows by oddness.
+\end{theorem}
+
+\begin{proof}
+The parenthesized factor in~\eqref{eq:asymptotic-exact} is at least \(r^4\),
+and \(y\le r\).  Therefore
+\(0\le r-y\le y/r^4\le r^{-3}\).  Divide by \(r>0\) for the relative bound.
+All inequalities become integer polynomial inequalities after multiplying by
+positive powers of \(r\), so the proof is compatible with the regular-real
+coding.
+\end{proof}

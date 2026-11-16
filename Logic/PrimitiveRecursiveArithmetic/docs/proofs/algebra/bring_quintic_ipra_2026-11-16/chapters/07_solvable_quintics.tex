@@ -1,0 +1,312 @@
+\section{Solvable quintics and cyclotomic resolvents}\label{sec:solvable}
+
+Abel--Ruffini leaves a large and interesting solvable class.  In this section
+all displayed root identities are proved by finite expansion in a cyclotomic
+extension.  The point is not that the resulting formulas are small, but that
+their correctness is decidable by exact algebra.
+
+\subsection{Reducible equations}
+
+A reducible quintic is solved factor by factor.  For example,
+\begin{equation}\label{eq:reducible-example}
+ X^5-X^4-X+1=(X^2+1)(X+1)(X-1)^2.
+\end{equation}
+This identity is immediate by multiplication and is an \ipra{} theorem after
+integer polynomial normalization.  Its roots use only the checked quadratic
+formula and rational roots.  Such examples are not exceptions to
+Theorem~\ref{thm:abel-ruffini}: that theorem concerns a uniform formula for the
+generic quintic.
+
+\subsection{The de Moivre quintic}
+
+Let \(\omega\) satisfy~\eqref{eq:cyclo5}, and let \(u,v\) lie in a commutative
+field containing \(\omega\).  Define
+\[
+ r_j=\omega^j u+\omega^{-j}v,
+ \qquad 0\le j<5.
+\]
+
+\begin{theorem}[de Moivre product identity]\label{thm:de-moivre-product}
+One has
+\begin{equation}\label{eq:de-moivre-product}
+ \prod_{j=0}^{4}(X-r_j)
+ =X^5-5uvX^3+5u^2v^2X-(u^5+v^5).
+\end{equation}
+This identity is valid in the finite quotient
+\(\Z[\omega,u,v,X]/(1+\omega+\cdots+\omega^4)\) and is therefore directly
+formalizable in \ipra.
+\end{theorem}
+
+\begin{proof}
+Let \(s_m=\sum_jr_j^m\).  Since
+\(\sum_{j=0}^4\omega^{kj}=0\) unless \(5\mid k\), expansion gives
+\[
+ s_1=s_3=0,
+ \qquad s_2=10uv,
+ \qquad s_4=30u^2v^2.
+\]
+Newton's identities then yield
+\[
+ e_1=0,
+ \quad e_2=-5uv,
+ \quad e_3=0,
+ \quad e_4=5u^2v^2.
+\]
+Finally,
+\[
+ e_5=\prod_jr_j
+ =\prod_j(v+u\omega^{2j})=u^5+v^5,
+\]
+because multiplication by two permutes the fifth roots of unity and
+\(\prod_{j=0}^4(Z+\omega^j)=Z^5+1\).  Substitution into
+\(\prod(X-r_j)=X^5-e_1X^4+e_2X^3-e_3X^2+e_4X-e_5\) gives the result.
+\end{proof}
+
+Take \(uv=-a\) and \(u^5+v^5=-b\).  Then~\eqref{eq:de-moivre-product} becomes
+\begin{equation}\label{eq:de-moivre-quintic}
+ X^5+5aX^3+5a^2X+b.
+\end{equation}
+If \(Y=u^5\), then \(v=-a/u\) and
+\[
+ v^5=-\frac{a^5}{Y}.
+\]
+The equation \(u^5+v^5=-b\) is therefore equivalent to
+\begin{equation}\label{eq:de-moivre-aux}
+ Y^2+bY-a^5=0.
+\end{equation}
+
+\begin{corollary}[Radical solution of the de Moivre family]
+\label{cor:de-moivre-roots}
+Let \(Y\) be either root of~\eqref{eq:de-moivre-aux}, choose \(u^5=Y\), and
+put \(v=-a/u\).  Then the five roots of~\eqref{eq:de-moivre-quintic} are
+\begin{equation}\label{eq:de-moivre-roots}
+ X_j=\omega^ju-\frac{a}{\omega^ju},
+ \qquad 0\le j<5.
+\end{equation}
+Every defining relation and the final substitution are finite radical-tower
+certificates.
+\end{corollary}
+
+The auxiliary equation is quadratic; the remaining operations are fifth roots
+and fifth roots of unity.  Thus this family is solved by ordinary radicals in
+the strict sense.
+
+\subsection{The four-resolvent identity printed by MathWorld}
+
+Let \(u_1,u_2,u_3,u_4\) be elements of a commutative cyclotomic extension and
+put
+\begin{equation}\label{eq:four-resolvent-roots}
+ r_j=\omega^ju_1+\omega^{2j}u_2+\omega^{3j}u_3+\omega^{4j}u_4.
+\end{equation}
+Define
+\begin{align*}
+ U&=u_1u_4+u_2u_3,\\
+ V&=u_1u_2^2+u_2u_4^2+u_3u_1^2+u_4u_3^2,\\
+ W&=u_1^2u_4^2+u_2^2u_3^2-u_1^3u_2-u_2^3u_4-u_3^3u_1-u_4^3u_3
+     -u_1u_2u_3u_4,\\
+ X_0&=u_1^3u_3u_4+u_2^3u_1u_3+u_3^3u_2u_4+u_4^3u_1u_2,\\
+ Y_0&=u_1u_3^2u_4^2+u_2u_1^2u_3^2+u_3u_2^2u_4^2+u_4u_1^2u_2^2,\\
+ Z&=u_1^5+u_2^5+u_3^5+u_4^5.
+\end{align*}
+
+\begin{theorem}[Four-resolvent product]\label{thm:four-resolvent}
+The five values~\eqref{eq:four-resolvent-roots} are the roots of
+\begin{equation}\label{eq:four-resolvent-product}
+ T^5-5UT^3-5VT^2+5WT+5(X_0-Y_0)-Z.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Expand \(\prod_{j=0}^4(T-r_j)\), reduce every power of \(\omega\) with
+\(1+\omega+\cdots+\omega^4=0\), and collect monomials in the \(u_i\).  The
+coefficients are exactly those displayed above.  This finite calculation is
+implemented independently by the archive's checker; its soundness in \ipra{}
+is Lemma~\ref{lem:poly-normalize} in the cyclotomic quotient.  A human
+alternative is to compute the first five power sums of the \(r_j\) and apply
+Newton's identities, using the root-of-unity filter as in
+Theorem~\ref{thm:de-moivre-product}.
+\end{proof}
+
+\begin{corollary}[Conditional root formula for \(T^5+aT+b\)]
+\label{cor:four-resolvent-specialization}
+If
+\begin{equation}\label{eq:four-resolvent-constraints}
+ U=0,
+ \qquad V=0,
+ \qquad W=\frac a5,
+ \qquad 5(X_0-Y_0)-Z=b,
+\end{equation}
+then every \(r_j\) in~\eqref{eq:four-resolvent-roots} satisfies
+\(r_j^5+ar_j+b=0\).
+\end{corollary}
+
+This proves the algebraic core of MathWorld's formulas (43)--(55).  The long
+expressions there for the \(u_i\) are a way of manufacturing a solution of
+\eqref{eq:four-resolvent-constraints}.  Their correctness can be checked by
+adjoining symbols for the indicated square and fifth roots, clearing
+nonzero denominators, and normalizing the four identities.  That is a finite
+certificate problem; the present packet proves the uniform product identity
+and specialization, while leaving the page's full parameter substitution as a
+separate generated certificate rather than reproducing several pages of
+radicals.
+
+\subsection{Why every solvable irreducible quintic has resolvents of this kind}
+
+The affine-group criterion gives a conceptual construction.  Label the roots
+\(x_0,\ldots,x_4\) so that the normal translation subgroup \(C_5\) acts by
+\(x_j\mapsto x_{j+1}\).  Define Lagrange resolvents
+\begin{equation}\label{eq:lagrange-resolvents}
+ R_k=\sum_{j=0}^4\omega^{-kj}x_j,
+ \qquad 0\le k<5.
+\end{equation}
+Under the generating 5-cycle,
+\[
+ R_k\longmapsto\omega^kR_k.
+\]
+Therefore \(R_k^5\) is fixed by the normal \(C_5\).  The quotient of the
+Galois group by \(C_5\) is a subgroup of \(C_4\), so each \(R_k^5\) lies in an
+extension of degree at most four over the base field and can be obtained using
+the checked formulas through Ferrari.  Once compatible fifth roots \(R_k\)
+are chosen, Fourier inversion gives
+\begin{equation}\label{eq:resolvent-inversion}
+ x_j=\frac15\sum_{k=0}^4\omega^{kj}R_k.
+\end{equation}
+
+\begin{theorem}[Constructive resolvent solution]
+\label{thm:solvable-quintic-resolvents}
+Given an irreducible quintic together with a finite Galois certificate embedding
+its group into \(\operatorname{AGL}(1,5)\), the construction
+\eqref{eq:lagrange-resolvents}--\eqref{eq:resolvent-inversion} yields a finite
+radical-tower certificate for all five roots.  Every compatibility choice is
+verified by substitution rather than by an unbounded search.
+\end{theorem}
+
+\begin{proof}
+The normal \(C_5\) and quotient action are read from the supplied permutation
+table.  Elementary symmetric polynomials in the \(R_k^5\) are fixed by the
+whole group and can be computed as rational functions of the original
+coefficients by finite orbit sums.  The quotient degree is at most four, so the
+checked quadratic, Cardano and Ferrari identities factor the corresponding
+resolvent polynomial.  Adjoin one fifth root and obtain the remaining
+compatible roots by the recorded group action.  Finally verify
+\eqref{eq:resolvent-inversion} and the original quintic by cyclotomic
+normalization.  Each stage is a bounded calculation on finite codes.
+\end{proof}
+
+This theorem explains the source page's statement that for prime degree five a
+root may be written as a sum of fifth roots of the roots of a quartic auxiliary
+equation, with compatibility relations among those fifth roots.
+
+\subsection{Explicit radical examples}
+
+The following examples illustrate how short the final verification can be even
+when discovering the expression was difficult.
+
+\begin{example}[A single fifth radical]
+Let \(t^5=2\) and
+\[
+ x=1+t-t^2+t^3-t^4.
+\]
+Then
+\begin{equation}\label{eq:explicit-example-one}
+ x^5-5x^4+30x^3-50x^2+55x-21=0.
+\end{equation}
+Indeed, substituting the displayed \(x\) makes the left side a multiple of
+\(t^5-2\).  Polynomial division gives an exact quotient of degree 15, recorded
+by the executable certificate.
+\end{example}
+
+\begin{example}[A Paxton Young example]
+With the same \(t^5=2\), put
+\[
+ x=t-t^2+t^3-t^4.
+\]
+Then
+\begin{equation}\label{eq:young-example}
+ x^5+20x^3+20x^2+30x+10=0.
+\end{equation}
+Again the substituted polynomial has zero remainder modulo \(t^5-2\).
+\end{example}
+
+\begin{example}[An eleventh-root-of-unity quintic]
+Let \(z^{11}=1\), \(z\ne1\), and \(x=z+z^{-1}\).  Then
+\begin{equation}\label{eq:cos11-example}
+ x^5+x^4-4x^3-3x^2+3x+1=0.
+\end{equation}
+To verify this, multiply the left side after substituting \(x=z+z^{-1}\) by
+\(z^5\) and reduce modulo
+\(1+z+z^2+\cdots+z^{10}\).  The remainder is zero.  Under the usual complex
+embedding, these roots are \(2\cos(2k\pi/11)\).
+\end{example}
+
+All three examples are exact quotient-ring computations and require no appeal
+to numerical approximation.
+
+\subsection{Fifth roots of unity by square roots}
+
+The de Moivre formulas themselves use \(\omega\), but a primitive fifth root of
+unity is obtainable by quadratic radicals.  Let \(s^2=5\), choose
+\(\alpha,\beta\in\{-1,1\}\), let
+\(t^2=-10-2\beta s\), and put
+\begin{equation}\label{eq:fifth-root-radical}
+ \omega_{\alpha,\beta}
+ =\frac{\alpha t+\beta s-1}{4}.
+\end{equation}
+Clearing the denominator and reducing successively by
+\(s^2-5\) and \(t^2+10+2\beta s\) proves
+\[
+ 1+\omega_{\alpha,\beta}+\omega_{\alpha,\beta}^2
+ +\omega_{\alpha,\beta}^3+\omega_{\alpha,\beta}^4=0.
+\]
+The four sign pairs give the four primitive roots; inequality of their real and
+imaginary components is decidable in the corresponding ordered quadratic
+subfields.  Thus every cyclotomic constant used above is itself represented by
+a short radical certificate.
+
+\subsection{Parameterized solvable trinomials}
+
+The source pages quote the Runge--Cadenhad--Young and Spearman--Williams
+parameterizations of solvable irreducible trinomials \(X^5+aX+b\).  Their
+logical content separates naturally:
+
+\begin{enumerate}
+\item The displayed rational formulas for \(a,b\) are primitive-recursive
+      maps of the rational parameters.
+\item The displayed radical expressions for the \(u_i\), once supplied, are
+      checked by Corollary~\ref{cor:four-resolvent-specialization} after
+      clearing their square- and fifth-root relations.
+\item The ``if and only if'' classification is a Galois theorem.  By
+      Theorem~\ref{thm:AGL-criterion}, it reduces to constructing rational
+      invariants that parameterize the embeddings of the particular trinomial
+      Galois group into \(\operatorname{AGL}(1,5)\).  This is finite invariant
+      theory, but its published formulas are lengthy.
+\end{enumerate}
+
+Accordingly, this packet proves the finite group criterion and the universal
+root verifier, and treats the exact necessity/sufficiency substitution for the
+published parameterization as a generated certificate target in the Lean
+roadmap.  This is stronger than accepting the formulas numerically, but more
+honest than claiming a handwritten formal derivation that has not been
+expanded.
+
+\subsection{Casus irreducibilis}
+
+The source page notes that some solvable quintics have five real roots but any
+radical formula passes through nonreal intermediate values.  The field-theoretic
+mechanism is the same as for the cubic.  If an irreducible, totally real
+extension were generated through a tower in which every radical and every
+intermediate embedding remained real, then any odd-prime radical step would
+have only one real conjugate and could not contribute to the normal totally
+real closure.  After eliminating such steps, only quadratic extensions remain,
+so the degree is a power of two.  An irreducible quintic has degree five, not a
+power of two; hence a radical solution of a five-real-root solvable quintic must
+use complex intermediates.
+
+For \ipra{} this argument is formulated for coded finite ordered fields and
+embedding tables: at an odd-prime radical step the other roots are
+\(\zeta^j\alpha\), and the table certifies that they are nonreal; a tower that
+keeps every conjugate real can therefore have only index two steps.  The full
+ordered-field tower module is included as a formalization target rather than a
+completed Lean file, so the audit labels this global theorem \(\Outline\), even
+though every individual finite tower can already be checked by the certificate
+interface.
