@@ -15,6 +15,7 @@ import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Core.Descent
 import IPRADerivations.Core.Division
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.Bezout
 import IPRADerivations.Core.Search
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Algebra.CayleyHamilton
@@ -22,6 +23,7 @@ import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Analysis.Chebyshev
 import IPRADerivations.Analysis.Products
 import IPRADerivations.AnalyticNumberTheory.Primes
+import IPRADerivations.Core.EuclidLemma
 import IPRADerivations.Algebra.PolynomialFormulas
 import IPRADerivations.Algebra.TrisectionCubic
 import IPRADerivations.Combinatorics.Binomial
