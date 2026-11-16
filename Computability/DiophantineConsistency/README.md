@@ -259,6 +259,12 @@ Both endpoints and their named axiom checks have now passed an
 over a historical provider. This is not an independent paired replay or a
 fully authenticated transitive provider closure.
 
+The [ConciseIPRA exports](../../Logic/PrimitiveRecursiveArithmetic/Bridge/Lean/IPRABridge/Checks/ZFCEquations.lean)
+derive both exact equivalences in ordinary `Prf PRAAx []`, using the same
+mapped Foundation refutation predicate. Both passed against the ordered
+historical providers. The [endpoint inventory](../../Logic/PrimitiveRecursiveArithmetic/ENDPOINTS.md)
+records the checked inputs and the root Lake replay command.
+
 For the maintained 14-variable equation, a [historical paired replay](reviews/ipra-standard-current14-historical-pair-terminal/README.md)
 has matched all 16 added modules, including the standard-iPRA endpoint, and
 passed an independent complete-result audit. The endpoint uses the selected

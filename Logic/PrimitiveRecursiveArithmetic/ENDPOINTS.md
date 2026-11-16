@@ -129,6 +129,30 @@ public bridge and order-symbol comparison.
   [local proof plan](../../Computability/DiophantineConsistency/IPRA_PROVABILITY_PLAN.md)
   records the separate maintained 14-variable formula and replay checks.
 
+The [Concise ZFC exports](Bridge/Lean/IPRABridge/Checks/ZFCEquations.lean)
+prove `Fm.iff explicitNoZero consistency` and
+`Fm.iff currentNoZero consistency` in `Prf PRAAx []`. Each no-zero
+formula translates its own equation, and each consistency formula
+translates `∼mappedNativeRefutation PRALanguage.embedding`. Both passed
+against the ordered historical providers of the
+[104-stage replay](../../Computability/DiophantineConsistency/reviews/nine-variable-ipra-complete-author-ledger/README.md).
+The two native endpoint sources matched the current endpoint files
+byte-for-byte in that replay. The import objects had SHA-256
+`187060bd35f1ee3c0afc66c53d1079652e3f3de3e9db9218536f3640810425ce`
+and `552fef65bae85ee3bfe8aabbf0f92cbfe8e2dc4d170e957770eabab8e47f9069`,
+respectively. The new export object had SHA-256
+`5c3e8d6b9f54b0d82a308f341c17e6d639779a13da76197d1fbd911f38c67341`.
+The exported proofs use `propext`, `Classical.choice`, and `Quot.sound`.
+The root-source replay command is
+`lake build +IPRABridge.Checks.ZFCEquations`.
+
+A separate initial root Lake run of `+DiophantineConsistency.IPRAExplicitZFCFinal`
+completed all 2,746 jobs and matched the expected axiom audit. With the
+previously compiled general dependencies, it took 48 minutes 9 seconds
+and peaked at about 11.0 GiB of resident memory. This is the initial ZFC
+endpoint baseline. The root replay of the new exports also checks their
+dependencies after the arithmetic migration.
+
 ## Adjacent providers
 
 The [MRDP proof guide](../../Computability/HilbertTenthProblem/Lean/MRDP.md)
