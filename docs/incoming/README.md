@@ -183,7 +183,8 @@ on Vladimir's instruction of 15 November 2026:
 - `zeta_ipra_proof_package.zip` is placed under `analytic-number-theory/`.
 
 The last two each leave out only their ignored checksum manifest. These three archives are
-not in the history.
+not in the history. `trigonometric_identities_ipra_2026-11-15.zip` was placed the same way,
+under `analysis/`, without committing the ZIP. It leaves out only its ignored `SHA256SUMS`.
 
 ## Sub-exponential 3-SAT (ETH) reports
 
