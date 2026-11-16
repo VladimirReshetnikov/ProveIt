@@ -1,0 +1,343 @@
+\section{An algebraic producer of integral-point bounds}
+\label{sec:split-branches}
+
+A framework becomes more useful when some of its global quantitative
+inputs can themselves be produced from finite algebra.  The earlier
+Siegel packet proves a square-completion certificate
+\(D^2 f=A^2+R\), and the earlier general framework already extends it
+to all powers \(D^m f=A^m+R\) with a degree gap
+\cite{rungepacket,oldframework}.  We do not repeat that extension.
+Here we give a different certificate, adapted to equations with several
+polynomial branches.  It applies directly to mixed polynomials in two
+variables and supplies both coordinate bounds, including the exceptional
+fibres where a remainder polynomial vanishes.
+
+The arithmetic principle is elementary: a nonzero integer factor of an
+integer \(w\) has absolute value at most \(|w|\).  If two factors differ
+by a polynomial that eventually grows faster than \(w\), an integral
+solution cannot lie beyond an explicit cutoff.  This gives a producer
+for a restricted, syntactically recognizable class of height bounds.
+It makes no completeness claim for certificate search and does not supply
+the missing general Siegel or Faltings height theorem
+\cite{rungepacket,faltingspacket}.
+
+\subsection{The finite certificate and its estimates}
+
+For an integer polynomial \(Q(X)=\sum_{k=0}^s q_kX^k\), write
+\[
+ \|Q\|_1=\sum_{k=0}^s|q_k|,
+ \qquad
+ E_Q(H)=\sum_{k=0}^s |q_k|H^k.
+\]
+Trailing zero coefficients are removed before computing a degree.
+The zero polynomial has the empty coefficient array; every degree
+comparison below is made only after checking that the relevant
+polynomials are nonzero.
+
+\begin{definition}[A certificate from separated polynomial branches]
+\label{def:split-cert}
+The finite input consists of integer polynomials
+\(A_0,\ldots,A_{m-1},R\), with \(m\geq2\) and \(R\ne0\), and indices
+\(i,j<m\).  Form \(P=A_i-A_j\), and require
+\[
+ d=\deg P>r=\deg R.
+\]
+In particular \(P\ne0\), \(d\geq1\), and the chosen branches are
+different.  Put
+\begin{align}
+ L&=\sum_{k<d}|p_k|,
+ & C&=\|R\|_1,\label{eq:split-LC}\\
+ H&=\max\{1,L+2C\},
+ & K&=\max_{t<m}E_{A_t}(H)+E_R(H).
+ \label{eq:split-HK}
+\end{align}
+All these conditions and numbers are computed from the coefficient
+arrays.  Since \(R\ne0\), the integer \(C\) is at least one.
+\end{definition}
+
+\begin{lemma}[Polynomial estimates]
+\label{lem:split-poly-estimates}
+For \(|x|\leq H\), with \(H\geq1\), one has
+\( |Q(x)|\leq E_Q(H)\).
+If \(Q\) has degree \(s\geq1\), nonzero integer leading coefficient,
+and \(M=|x|\geq1\), then
+\begin{equation}
+ M^s\leq |Q(x)|+
+          \left(\sum_{k<s}|q_k|\right)M^{s-1}.
+ \label{eq:split-dominance}
+\end{equation}
+Consequently a nonzero integer polynomial \(Q\) has no integer root
+with \(|x|>\|Q\|_1\).
+\end{lemma}
+
+\begin{proof}
+The triangle inequality applied to the finite evaluation sum gives
+\[
+ |Q(x)|\leq\sum_{k=0}^s|q_k||x|^k
+              \leq\sum_{k=0}^s|q_k|H^k.
+\]
+For the second assertion, isolate the leading term.  Because
+\(|q_s|\geq1\),
+\[
+ M^s\leq |q_sx^s|
+ \leq |Q(x)|+\sum_{k<s}|q_k|M^k
+ \leq |Q(x)|+
+          \left(\sum_{k<s}|q_k|\right)M^{s-1}.
+\]
+The final comparison uses \(M\geq1\).
+If \(Q(x)=0\), cancellation of the positive integer \(M^{s-1}\)
+yields \(M\leq\sum_{k<s}|q_k|\leq\|Q\|_1\).
+A nonzero constant polynomial has no root at all, so it supplies the
+remaining case.  All cancellations concern positive integers; no real
+root, asymptotic notation, or logarithm is needed.
+\end{proof}
+
+\begin{lemma}[Size of an integer factor]
+\label{lem:split-factor}
+If \(u,v,w\in\Z\), \(uv=w\), and \(w\ne0\), then
+\(u\ne0\), \(v\ne0\), and \(|u|\leq|w|\).
+If a finite product of integers is zero, some factor is zero.
+\end{lemma}
+
+\begin{proof}
+Either zero factor would force \(w=0\).  A nonzero integer \(v\)
+satisfies \(|v|\geq1\), so
+\(|w|=|u||v|\geq|u|\).  For the last assertion, induct through the
+finite product using the integer product-zero law.  This also yields a
+bounded algorithm: scan the factor list for its first zero.  Integer
+equality is decidable, so this finite search does not use an infinitary
+choice principle.
+\end{proof}
+
+\begin{theorem}[Explicit bounds from separated branches]
+\label{thm:split-bound}
+For every certificate in Definition~\ref{def:split-cert}, every integer
+solution of
+\begin{equation}
+ \prod_{t<m}\bigl(y-A_t(x)\bigr)=R(x)
+ \label{eq:split-equation}
+\end{equation}
+satisfies \(|x|\leq H\) and \(|y|\leq K\), with the explicit
+bounds in \eqref{eq:split-HK}.
+There is a uniform primitive recursive function of the certificate
+that returns a complete finite list of its integer solutions.
+\end{theorem}
+
+\begin{proof}
+First prove the bound for \(x\).  Integer order is decidable; in the
+case \(|x|\leq H\) there is nothing to do.  In the other case set
+\(M=|x|>H\).  Since \(H\geq2C\), we have \(M>C\).
+Lemma~\ref{lem:split-poly-estimates} applied to the nonzero
+polynomial \(R\) shows that \(R(x)\ne0\).
+
+Put \(u_t=y-A_t(x)\).  For a fixed \(t<m\), the product of all
+other factors is an integer \(v_t\), and
+\(u_tv_t=R(x)\ne0\).  Lemma~\ref{lem:split-factor} therefore gives
+\( |u_t|\leq|R(x)|\).  Applying this to the two selected indices,
+\begin{equation}
+ |P(x)|=|u_j-u_i|
+       \leq |u_j|+|u_i|\leq2|R(x)|.
+ \label{eq:split-factor-upper}
+\end{equation}
+The polynomial estimates and \(r<d\) imply
+\[
+ M^d\leq |P(x)|+LM^{d-1},
+ \qquad
+ |R(x)|\leq CM^r\leq CM^{d-1}.
+\]
+Combining these with \eqref{eq:split-factor-upper},
+\[
+ M^d\leq (L+2C)M^{d-1}.
+\]
+The factor \(M^{d-1}\) is positive, so cancellation gives
+\(M\leq L+2C\leq H\), contradicting the case assumption.
+Thus \(|x|\leq H\).
+
+For the \(y\)-bound, the cases \(R(x)\ne0\) and \(R(x)=0\)
+are both necessary.  In the first case, the factor estimate applies
+without any lower bound on \(|x|\), and in particular
+\[
+ |y-A_0(x)|\leq |R(x)|.
+\]
+Using the just-proved \(x\)-bound,
+\[
+ |y|\leq|A_0(x)|+|R(x)|
+       \leq\max_{t<m}E_{A_t}(H)+E_R(H)=K.
+\]
+In the second case the finite product in
+\eqref{eq:split-equation} is zero.
+Lemma~\ref{lem:split-factor} gives an index \(t<m\) with
+\(y=A_t(x)\).  Therefore
+\( |y|\leq E_{A_t}(H)\leq K\).
+This includes all exceptional fibres over roots of \(R\).
+
+Finally, enumerate \(x=-H,-H+1,\ldots,H\) and, for each such \(x\),
+enumerate \(y=-K,-K+1,\ldots,K\).  Retain a pair exactly when the
+two integers in \eqref{eq:split-equation} are equal.  The two loop
+lengths are \(2H+1\) and \(2K+1\), and their product is an explicit
+bound on the number of tests.  Every returned pair is a solution by
+its acceptance test.  Every solution occurs because of the two bounds
+already proved.  Polynomial evaluation, the bounds, finite products,
+and these bounded loops are primitive recursive uniformly in their
+finite coefficient inputs.
+\end{proof}
+
+\begin{remark}[How to attach the certificate to another equation]
+Suppose an integer polynomial \(F(X,Y)\) is given together with a
+nonzero integer \(D\) and a coefficientwise checked identity
+\[
+ D F(X,Y)=\prod_{t<m}\bigl(Y-A_t(X)\bigr)-R(X).
+\]
+Then its integer zero set is exactly the set in
+\eqref{eq:split-equation}: one implication substitutes \(F=0\),
+and the converse cancels the nonzero integer \(D\).
+Thus a coefficient identity connects the certificate to the intended
+input equation.  Verifying the identity is a finite computation;
+proving that every equation of interest admits such an identity would
+be a separate theorem, and is not asserted here.
+\end{remark}
+
+For two branches this method is closely related to completing a
+square.  With three or more branches, mixed powers of \(Y\) generally
+remain, and the proof works directly with them.  This is an extension
+of the certificate classes treated explicitly in the inspected packets,
+not a claim of historical novelty for Runge's method.  It also has a
+different purpose from the existing Mordell--Weil descent theorem,
+which already produces generators and coordinates under actual
+quotient-cover and contraction hypotheses \cite{mordellpacket}.
+Neither input interface generates the missing hypotheses of the other.
+
+\subsection{A complete family of mixed equations}
+
+The preceding theorem gives a uniform height bound in a family whose
+integral solutions can in fact be classified exactly.
+
+\begin{theorem}[An exact classification for every number of branches]
+\label{thm:split-classification}
+For every integer \(m\geq3\), the complete integer solution set of
+\begin{equation}
+ \prod_{j=1}^{m}\bigl(y-x^j\bigr)=1
+ \label{eq:split-family}
+\end{equation}
+consists of the following points:
+\begin{enumerate}
+ \item \((0,1)\) and \((1,2)\), for every \(m\);
+ \item \((0,-1)\) and \((1,0)\), in addition, precisely when
+       \(m\) is even;
+ \item \((-1,0)\), in addition, precisely when
+       \(m\bmod4\) is \(0\) or \(1\).
+\end{enumerate}
+The list is a primitive recursive function of \(m\).
+\end{theorem}
+
+\begin{proof}
+Every integer factor of a product equal to \(1\) is \(1\) or \(-1\).
+Indeed, its absolute value is at most one by
+Lemma~\ref{lem:split-factor}, and it cannot be zero.
+Since \(m\geq3\), the first and third factors are present, so
+\[
+ |x^3-x|
+ =|(y-x)-(y-x^3)|\leq2.
+\]
+For \(x\geq2\), however,
+\(x^3-x=x(x-1)(x+1)\geq2\cdot1\cdot3=6\).
+For \(x\leq-2\), apply the same inequality to \(-x\) and use the
+oddness of \(X^3-X\).  Hence \(x\in\{-1,0,1\}\).
+
+When \(x=0\), the equation is \(y^m=1\).
+Its integer solutions are \(y=1\), and also \(y=-1\) for even
+\(m\): a number of absolute value at least two has a power of
+absolute value at least \(2^m>1\), and zero has power zero.
+When \(x=1\), exactly the same argument applied to
+\((y-1)^m=1\) gives \(y=2\), and also \(y=0\) for even \(m\).
+
+When \(x=-1\), the first two factors are \(y+1\) and \(y-1\).
+They must both belong to \(\{-1,1\}\).  Since their difference is
+two, the only possibility is \(y+1=1\), \(y-1=-1\), hence \(y=0\).
+At this point every odd-indexed factor is \(1\), and every even-indexed
+factor is \(-1\).  The product is consequently
+\[
+ (-1)^{\lfloor m/2\rfloor}.
+\]
+Write \(m=4q+s\), where \(0\leq s<4\).  Then
+\(\lfloor m/2\rfloor=2q+\lfloor s/2\rfloor\), which is even
+exactly for \(s=0,1\).  This proves the stated condition.
+
+The same substitutions verify every listed point.  Thus the list is
+sound and complete, and computing it needs only parity and remainder
+modulo four.  The proof consists of finite integer inequalities and
+bounded product identities, uniformly in \(m\).
+\end{proof}
+
+At \(m=3\), the equation is explicitly
+\[
+ y^3-(x+x^2+x^3)y^2+(x^3+x^4+x^5)y-x^6=1,
+\]
+and its only integer solutions are \((0,1)\) and \((1,2)\).
+The general certificate uses the branches \(X\) and \(X^3\),
+so that \(L=C=1\); it gives \(H=3\) and \(K=3^m+1\).
+The direct argument in Theorem~\ref{thm:split-classification} sharpens
+that coarse box to the exact list.  No assertion of smoothness,
+irreducibility, or genus is used in this arithmetic classification.
+
+\subsection{Primitive recursion and the induction audit}
+\label{subsec:split-audit}
+
+The certificate is numerical data for one fixed algorithm, rather than
+a code for an arbitrary program to be evaluated.  Choose canonical
+signed-integer codes and finite arrays.  Polynomial evaluation uses
+Horner recursion.  Subtraction pads with zero; multiplication uses bounded
+convolution; an \(m\)-fold product is a primitive recursion in \(m\).
+Trailing-zero removal is a bounded scan.  Absolute coefficient sums,
+weighted sums, finite maxima, and the rectangular solution scan are
+bounded folds.  Thus the implementation is genuinely uniform in degree,
+coefficient size, and the number of branches.
+
+The proofs require the following quantifier-free invariants after
+expanding their fixed primitive recursive symbols:
+\begin{enumerate}
+ \item A Horner prefix or suffix equals its corresponding finite
+       evaluation sum; addition and convolution respect evaluation.
+ \item A processed product has the asserted factorization.  Nonzero
+       total product entails that every processed factor is nonzero,
+       and every product of nonzero integers has absolute value at
+       least one.
+ \item Partial coefficient sums dominate partial absolute evaluations;
+       for \(M\geq1\), a smaller exponent gives a no-larger power.
+ \item The scan for a zero factor either stores a verified zero index
+       or has checked every preceding factor to be nonzero.
+ \item The solution-list accumulator contains exactly the successful
+       pairs in the already processed part of the explicit box.
+ \item At \((-1,0)\), the product through index \(j\) equals
+       \((-1)^{\lfloor j/2\rfloor}\).
+\end{enumerate}
+Bounded statements about earlier indices are represented by Boolean
+folds.  Their use does not enlarge the induction schema.
+The large degree, coefficient, or enumeration bounds cause no
+proof-theoretic difficulty: primitive recursion places no polynomial-time
+restriction on an algorithm.
+
+The supplied \texttt{SplitTargets.lean} defines named pending goals for
+the factor bound, polynomial evaluation bound, dominance estimate, large-root
+exclusion, the two height bounds, complete enumeration and uniform family
+classification. Their definitions require integer coefficient arrays, normalized degree,
+Horner evaluation, branch products, the Boolean certificate checker,
+and the two bounds in \eqref{eq:split-HK}.  The checker must compute
+\(A_i-A_j\) itself; trusting separately supplied difference coefficients
+would leave a gap.
+
+The displayed arguments give a concrete route to \(\ipra\): establish
+the signed-integer and array equations, prove the local update lemmas,
+apply quantifier-free induction to the stated invariants, and then use
+intuitionistic case analysis on the decidable arithmetic guards.
+Producing the corresponding \texttt{Prf PRAAx} objects remains part of
+the formalization work.  Native Lean statements, Python evaluations, and
+coefficient checks alone do not discharge that object-language obligation.
+
+The accompanying reference program uses integer arithmetic only.  It
+checks malformed certificates, expands the mixed cubic independently,
+enumerates several complete certificate boxes, includes examples where
+\(R(x)=0\), and compares the family classification for \(m=3,\ldots,12\)
+on explicit small boxes.  These recorded checks validate implementation
+behavior.  The global completeness claims rest on the proofs above,
+not on the extent of a numerical search.

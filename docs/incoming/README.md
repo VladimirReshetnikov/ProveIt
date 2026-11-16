@@ -226,7 +226,8 @@ deleted. All 55 of its members are placed. Its `lean/upstream/` copies of three 
 sources each differ from the repository file by one trailing blank line, so they are not
 repository copies. `ipra_finite_demand.zip` was placed the same way, under `foundations/`, and
 then deleted. Its four `dependencies/FTA_iPRA/` files are byte-identical to
-`algebra/FTA_iPRA` and are not placed.
+`algebra/FTA_iPRA` and are not placed. `ipra_local_global.zip` was placed the same way, under
+`foundations/`, and then deleted. It leaves out only its ignored `SHA256SUMS`.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

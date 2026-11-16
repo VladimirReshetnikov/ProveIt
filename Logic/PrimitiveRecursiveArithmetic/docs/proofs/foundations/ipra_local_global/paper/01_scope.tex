@@ -1,0 +1,99 @@
+\section{Scope, source audit and the added mechanisms}\label{sec:scope}
+
+The source of this investigation is the ProveIt directory
+\path{Logic/PrimitiveRecursiveArithmetic}. We fixed the snapshot
+\begin{center}
+\code{d56cd5505fb93135b90b048bf3dcca9e73615162}.
+\end{center}
+Its index lists 57 research packets, including six in \code{foundations/}.
+It distinguishes these delivered packets from the checked ConciseIPRA
+library and says that the packets were filed without rerunning their
+verification commands~\cite{repository}. That distinction governs this
+report: source claims are evidence of what a packet proposes, not automatic
+imports of its mathematical correctness. We inspected the foundation
+packets and the particular analytic and Diophantine reports relevant below;
+we have not audited all 57 packets.
+
+The target theory is first-order intuitionistic logic with equality, the
+defining equations for every fixed primitive-recursive definition, successor
+injectivity and nonzeroness, and induction for quantifier-free formulas.
+Parameters in induction are allowed. This is the theory represented by
+\code{PRAAx} in the current ConciseIPRA source. Its existing
+\code{pra\_iff\_native} theorem transfers derivations to the small native
+scalar presentation~\cite{kernel,bridge}. The theorem is a transport map;
+it does not create an arithmetic derivation from an ordinary Lean theorem.
+
+\subsection{What is inherited and what is added}
+
+The earlier packets already explain Booleanization of bounded formulas,
+finite observations, explicit approximation moduli, precision propagation,
+finite-window stability, simple implicit branches and several Runge-type
+integer-point arguments~\cite{oldframework,embeddingpacket,finiteobservation,
+evidencepacket,uniformpacket,frameworkdated}. Repeating those descriptions
+would not answer the present request well. The following table makes the
+additional work explicit.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.20\linewidth}>{\raggedright\arraybackslash}p{.34\linewidth}>{\raggedright\arraybackslash}p{.40\linewidth}@{}}
+\toprule
+Interface & Existing coverage & Addition in this report \\
+\midrule\endhead
+Finite proofs & Quantifier-free induction and finite contracts; several
+semantic Lean lemmas and thin object-theory adapters & A proved Lean
+transformer for arbitrary primitive recursion with state, time and
+parameters, returning a \code{Prf PRAAx} derivation \\
+Classical reasoning & Strong emphasis on constructive presentation & A
+precise criterion allowing classical first-order PRA proofs of universal
+decidable conclusions, with a written negative-translation proof \\
+Analysis & Fixed-function constructions, integration, implicit branches,
+explicit moduli & A uniform rational-polynomial ODE constructor,
+finite refinement and uniqueness bounds, and polynomial conservation \\
+Integral points & Square and higher-power gaps; conditional height descent &
+A separated polynomial-factor certificate for curves with mixed terms,
+explicit complete enumeration, and a uniform exact example family \\
+\bottomrule
+\end{longtable}
+
+These are additions to the inspected collection. We make no claim of
+historical priority for negative translation, Euler's method, discrete
+Gronwall estimates, conservation laws or Runge's method. The contribution is
+their explicit organization for this weak first-order setting, the proofs
+of the stated concrete versions, and the implemented object-theory rule.
+
+\subsection{Four separate questions}
+
+An embedding should answer four questions in order.
+\begin{enumerate}
+\item \emph{What is represented?} Specify finite codes, validity conditions,
+equivalence of representatives and the exact meaning of approximations.
+\item \emph{What is computed?} Give fixed PR definitions and numerical bounds,
+including every search bound, precision demand and iteration count.
+\item \emph{Why is it correct in the weak theory?} Supply a finite invariant
+and show that its defining assertion is quantifier-free, or give its
+proved Booleanization.
+\item \emph{What has actually been formalized?} Distinguish a mathematical
+proof, an ordinary Lean proof and a derivation in the embedded theory.
+\end{enumerate}
+
+For example, a record with a field asserting a global height bound does
+not produce a height bound. A type-correct theorem target does not prove
+that target. Similarly, defining a rational Euler algorithm does not prove
+that its approximation errors converge. The work below supplies the latter
+mathematical proofs and implements one general part of the fourth question.
+
+\subsection{The common local-to-global pattern}
+
+The construction has a finite state and numerical challenge. A local step
+has a proved arithmetic contract. The state stores enough history or
+accumulated evidence to express a quantifier-free invariant. Primitive
+recursion propagates that invariant to a challenge-dependent stopping time.
+Finally, a quantitative estimate converts the finite result into the desired
+represented conclusion.
+
+For an ODE, the challenge is accuracy, the state is the finite Euler table,
+and the decisive estimate compares two finite meshes. For the integral-point
+application, the challenge is an encoded candidate point; separated factors
+force a numerical height bound, after which a finite table lists all answers.
+Both use the same arithmetic proof discipline, although their mathematical
+estimates are different. The framework is useful precisely because those
+estimates remain visible instead of being hidden inside a universal
+``certificate soundness'' assumption.

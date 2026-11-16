@@ -1,0 +1,89 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=26mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor}
+\usepackage{listings,xurl,hyperref,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,
+ pdftitle={Local-to-global constructions in intuitionistic primitive recursive arithmetic},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\setlist{topsep=4pt,itemsep=2pt}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\pra}{\mathsf{PRA}_{\mathrm{cl}}}
+\newcommand{\PR}{\mathrm{PR}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\repo}{\url{https://github.com/VladimirReshetnikov/ProveIt}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Local-to-global mathematics in iPRA}
+\fancyhead[R]{\small Research report}
+\fancyfoot[C]{\thepage}
+\lstset{basicstyle=\ttfamily\footnotesize,columns=fullflexible,breaklines=true,
+ frame=single,rulecolor=\color{black!15},showstringspaces=false}
+
+\title{Local-to-global constructions in intuitionistic primitive recursive arithmetic\\[5pt]
+\large Verified iteration, polynomial differential equations, and explicit integral-point certificates}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We extend the ProveIt collection's finite-observation approach to mathematics
+in intuitionistic primitive recursive arithmetic. The inspected baseline
+already contains six general framework packets, so the emphasis here is on
+specific additional mechanisms and on closing a formal interface gap.
+First, we give a precise interpretation discipline for finite representations
+and a restricted classical-to-intuitionistic transfer theorem. Second, we
+implement and kernel-check a generic primitive-recursion invariant rule whose
+conclusion is an actual derivation in ProveIt's embedded \code{Prf PRAAx}
+calculus. Third, we construct local solutions of rational polynomial
+differential equations directly as primitive-recursive rational names, with
+explicit Euler refinement bounds, uniqueness hypotheses and polynomial
+conservation laws. This supplies a common analytic mechanism requested by
+the classical-impossibilities packet. Fourth, we prove an explicit height
+bound and complete enumeration theorem for split polynomial-branch equations,
+including a uniform exact classification of a family with mixed terms.
+All mathematical arguments are presented with the finite recursions and
+quantifier-free invariants that support their iPRA interpretation. The large
+application theorems are not yet fully formalized in the embedded calculus;
+typed Lean targets and a dependency-ordered completion plan identify that
+remaining work. General Siegel, Faltings and the outstanding analytic
+number-theoretic estimates are not claimed.
+\end{abstract}
+
+\noindent\textbf{Reading guide.}
+Section~\ref{sec:scope} compares the contribution with the inspected repository.
+Section~\ref{sec:object-iteration} contains the kernel-checked object-theory rule.
+The two main mathematical applications are Sections~\ref{sec:ode} and
+\ref{sec:split-branches}. Section~\ref{sec:formalization} states exactly what
+has been checked and what remains to be implemented.
+
+\tableofcontents
+\newpage
+\input{paper/01_scope.tex}
+\input{paper/02_logic.tex}
+\input{paper/03_object_iteration.tex}
+\input{paper/04_ode.tex}
+\input{paper/05_split_branches.tex}
+\input{paper/06_formalization.tex}
+\appendix
+\input{paper/07_coding.tex}
+\input{paper/08_references.tex}
+\end{document}

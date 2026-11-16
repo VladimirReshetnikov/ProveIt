@@ -1,0 +1,70 @@
+FORMALIZATION MAP
+
+Namespaces
+  LeanProofs.ConciseIPRA.LocalGlobal
+  LeanProofs.ConciseIPRA.LocalGlobal.NegativeSyntax
+  IPRALocalGlobal.ODE
+  IPRALocalGlobal.Split
+
+COMPLETED EMBEDDED RESULTS
+  primitiveRecursionInvariant and primitiveRecursionAt:
+    P has variables (state,time,parameters); g has arguments
+    (time,previous_state,parameters). Local premises are Prf PRAAx proofs.
+    Gamma contains only the parameters, and is weakened under state/time.
+  counting_is_time:
+    Closed object arithmetic example using the new rule.
+  translatedInductionAxiom, translatedExcludedMiddle,
+  negative_pra_axiom, negative_classical_axiom:
+    Actual target derivations of translated source axioms.
+
+COMPLETED SYNTAX
+  qf_subst; state/time substitution and congruence.
+  negative_subst, negative_shift, negative_qf,
+  negative_inductionFormula.
+
+PENDING LOGICAL GOALS (NegativeSyntax.lean)
+  EqualityStabilityGoal: obtain a concrete embedded proof via the existing
+    scalar equality-test/cover/ToPRA translation, or prove it directly.
+  NegativeStabilityGoal: structural proof using the arithmetic equality case.
+  ProofTranslationGoal: induction on Prf ClassicalPRAAx; all axiom cases
+    already available; logical elimination cases use translated stability.
+  RetainedEquivalenceGoal and RetainedTransferGoal: formula induction, then
+    simultaneous cut; bounded leaves need the Booleanization adapter.
+  Bounded selector: encode first-success scan and prove its guarded QF
+    invariant in Prf PRAAx. Written proof: paper Section 2.
+
+PENDING ANALYTIC GOALS (ODETargets.lean)
+  Definitions cover vectors, finite monomial tables, field evaluation,
+    coefficient bounds, Euler states, rational polygon interpolation,
+    local horizon, fixed precision shift, controlled residual, coefficient
+    comparison, Lie derivative, and conservation remainder.
+  RefinementGoal -> LocalExistenceGoal -> UniquenessGoal.
+  Coefficient soundness + finite binomial remainder -> ConservationGoal.
+  First prove exact semantic lemmas, then numerical coding and embedded
+    local arithmetic proofs. The object iteration rule supplies their QF
+    recurrence derivations. No semantic reflection rule is provided.
+  Cauchy-name equalities: fix a precision challenge, produce finite rational
+    estimates, then universally quantify the challenge.
+
+PENDING INTEGRAL-POINT GOALS (SplitTargets.lean)
+  intFactorAbsLeGoal, polyEvalAbsLeGoal, polyDominanceGoal,
+    nonzeroPolyNoLargeRootGoal;
+  splitXBoundGoal and splitYBoundGoal (including R(x)=0);
+  enumerateSolutionsIffGoal;
+  classificationGoal and classificationListGoal.
+  Exact signed-integer and finite-list laws must also be represented and
+    proved in Prf PRAAx. The induction invariants are in paper Section 5
+    and Appendix A; arithmetic proofs are fully written there.
+
+REPOSITORY INTEGRATION
+  Standalone ObjectKernel concatenates Syntax, Deduction, PR declarations
+    without changing their bodies. Provenance and source match are recorded.
+  Inside ProveIt, replace 'import ObjectKernel' in the new modules by
+    'import ConciseIPRA.PR'. Do not import both copies of the same declarations.
+  Build in pinned Lean 4.32.0/Mathlib workspace.
+  RepositoryAdapter.toNative applies pra_iff_native.mp to the completed
+    arithmetic derivation. This adapter has not been compiled here against
+    the entire upstream dependency closure.
+
+All ...Goal declarations are definitions of propositions. They do not assert
+or assume those propositions. Check CLAIMS.json before relying on any result.

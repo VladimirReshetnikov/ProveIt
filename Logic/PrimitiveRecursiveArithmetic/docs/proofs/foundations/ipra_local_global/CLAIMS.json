@@ -1,0 +1,79 @@
+{
+  "baseline_commit": "d56cd5505fb93135b90b048bf3dcca9e73615162",
+  "claims": [
+    {
+      "id": "representation_interpretation",
+      "statement": "First-order interpretation through numerical presentations, subject to proved domain/congruence/axiom obligations.",
+      "human_proof": "paper/02_logic.tex",
+      "lean_status": "not implemented",
+      "boundary": "Source induction axioms require their own arithmetic validation; abstract QF need not remain QF."
+    },
+    {
+      "id": "classical_transfer",
+      "statement": "Classical first-order PRA derivations translate into iPRA; bounded/negative retained conclusions are preserved.",
+      "human_proof": "paper/02_logic.tex",
+      "lean_status": "syntax and all source axiom translations checked; full proof translator pending",
+      "boundary": "No transfer of arbitrary PA, ambient Lean or set-theoretic proofs."
+    },
+    {
+      "id": "bounded_witness",
+      "statement": "Explicit PR witness from a classical PRA proof of bounded decidable existence under retained hypotheses.",
+      "human_proof": "paper/02_logic.tex",
+      "lean_status": "outlined",
+      "boundary": "A PR bound and an actual source derivation are required."
+    },
+    {
+      "id": "object_iteration",
+      "statement": "Initialization and one-step embedded derivations imply an embedded invariant theorem for arbitrary PR recursion and PR fuel.",
+      "human_proof": "paper/03_object_iteration.tex",
+      "lean_status": "kernel checked as Prf PRAAx transformer",
+      "lean_file": "lean/ObjectIteration.lean",
+      "boundary": "Local proof premises are not manufactured from semantic truth."
+    },
+    {
+      "id": "polynomial_flow",
+      "statement": "Uniform local PR controlled solution name for finite rational polynomial vector field and rational initial vector; explicit Euler estimates.",
+      "human_proof": "paper/04_ode.tex",
+      "lean_status": "executable definitions and typed goals; deep proofs pending",
+      "lean_file": "lean/ODETargets.lean",
+      "boundary": "General larger horizons need a uniform Euler-invariance proof."
+    },
+    {
+      "id": "flow_uniqueness",
+      "statement": "Two controlled names with certified box and rational local-defect constants represent the same solution.",
+      "human_proof": "paper/04_ode.tex",
+      "lean_status": "typed goal; proof pending",
+      "boundary": "No modulus extracted from arbitrary qualitative differentiability."
+    },
+    {
+      "id": "conservation",
+      "statement": "A coefficientwise polynomial Lie-derivative identity yields a conserved represented value through finite Euler remainder bounds.",
+      "human_proof": "paper/04_ode.tex",
+      "lean_status": "typed coefficient algorithms and goal; proof pending",
+      "boundary": "Finite coefficient certificates are checked; full deep arithmetic transport not implemented."
+    },
+    {
+      "id": "Hermite_circle",
+      "statement": "A common polynomial ODE engine derives the Hermite accumulator identity, circle invariant, and sector accumulator A(t)=t/2.",
+      "human_proof": "paper/04_ode.tex",
+      "lean_status": "outlined; exact instance checks passed",
+      "boundary": "Period/disk-area geometric normalization and transcendence arithmetic remain separate."
+    },
+    {
+      "id": "split_height",
+      "statement": "Accepted separated polynomial-factor certificates yield explicit x/y bounds and complete PR solution lists.",
+      "human_proof": "paper/05_split_branches.tex",
+      "lean_status": "executable definitions and typed goals; proof pending",
+      "lean_file": "lean/SplitTargets.lean",
+      "boundary": "Does not produce certificates for arbitrary curves or claim general effective Siegel/Faltings."
+    },
+    {
+      "id": "split_classification",
+      "statement": "Complete integer solutions of product_(j=1)^m(y-x^j)=1, uniformly for m>=3, with parity/mod-4 cases.",
+      "human_proof": "paper/05_split_branches.tex",
+      "lean_status": "typed goal; exact small instances checked",
+      "boundary": "Universal classification rests on the written arithmetic proof, not finite enumeration."
+    }
+  ],
+  "validation_scope": "Human proofs, checked core proof transformations, typed unproved targets, and finite reference checks are distinct."
+}

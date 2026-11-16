@@ -1,0 +1,465 @@
+\section{Presentations, interpretations, and classical proof transfer}
+\label{sec:logic}
+
+The previous foundation packets already supply the essential numerical
+tools: bounded Booleanization, finite witness search, precision-indexed
+presentations, and compilation of finite observation contracts. We retain
+those tools and add a precise logical interface. The distinction that matters
+is between the strength of a mathematical proof and its use of classical
+logic. A proof can be classical while using only the nonlogical resources of
+primitive recursive arithmetic. For the conclusions specified below, its
+classical logical steps can be eliminated without increasing the induction
+strength. This is an application of the established negative-translation
+method, not a claim of a new conservation theorem; see
+\cite{moschovakis} for the broader background. We give the restricted proof
+directly, because its preservation of quantifier-free induction is essential.
+
+\subsection{The arithmetic target and its presentations}
+
+Our target \(\ipra\) is the repository's first-order theory
+\texttt{PRAAx}. Its variables range over \(\N\). Its function symbols are
+finite primitive recursive definitions, represented by \texttt{PR k}; terms
+are \texttt{PTm n}; formulas are \texttt{Fm PTm n}; and a completed
+formalization must construct a term of type
+\(\texttt{Prf PRAAx}\,\Gamma\,\varphi\).
+The nonlogical axioms are defining equations, successor separation and
+injectivity, and induction for quantifier-free formulas. Intuitionistic
+first-order natural deduction supplies the logical rules.
+
+An assertion about a primitive recursive approximation procedure is a
+schema: its finite definition is fixed externally and then appears through
+the corresponding function symbol. Its numerical parameters, dimensions,
+degrees and precisions can all remain quantified. A schema is not a theorem
+quantifying over a total universal evaluator for arbitrary primitive recursive
+programs. The existing diagonal obstruction to such an evaluator remains in
+force.
+
+Finite lists, integers, rationals with positive denominator, polynomial
+coefficient arrays and matrix entries have primitive recursive numerical
+encodings. A fixed bounded formula about such data has a primitive recursive
+Boolean characteristic function. Its equivalence to the characteristic
+equation is proved by finite folds and quantifier-free induction, as in the
+earlier framework. We use this established bounded reflection principle
+throughout. It licenses a bounded invariant; it does not license every true
+universal assertion about a primitive recursive function.
+
+\begin{definition}[A numerical presentation of a sort]
+\label{def:presented-sort}
+A presentation of a mathematical sort consists of an arithmetic domain
+predicate \(D(a)\), an arithmetic relation \(E(a,b)\) serving as equality,
+and a specified code \(a_0\) with a proof of \(D(a_0)\). On \(D\), the
+relation \(E\) must be provably reflexive, symmetric and transitive.
+Every operation is represented by a fixed primitive recursive numerical
+function, with proofs that it preserves the domains and respects \(E\).
+Every additional relation is an arithmetic formula, with a proof that it
+respects \(E\) in each argument.
+\end{definition}
+
+The domain and equality formulas need not be decidable. For example, for a
+fixed family \(a(u,k)\) of rational observations, the assertion that \(u\)
+presents a regular name and the equality of two such names are generally
+universal arithmetic formulas. This is a specified family of names, not a
+code space with a universal evaluator for all primitive recursive functions.
+Whenever closure under an operation on name parameters is claimed, the
+corresponding numerical constructor and its contracts must be supplied.
+Finite-observation compilation is one way of constructing that closure.
+
+\begin{proposition}[Interpretation through numerical presentations]
+\label{prop:setoid-interpretation}
+Consider a fixed finite many-sorted first-order signature with presentations
+as in Definition~\ref{def:presented-sort}. Replace source equality by \(E\),
+source operations and relations by their numerical interpretations, and
+sorted quantifiers by
+\[
+ (\forall x{:}D\ A)^I=\forall x\,(D(x)\to A^I),
+ \qquad
+ (\exists x{:}D\ A)^I=\exists x\,(D(x)\land A^I).
+\]
+If the interpreted source axioms have \(\ipra\) derivations, every
+intuitionistic first-order derivation from those axioms has an interpreted
+\(\ipra\) derivation, with domain assumptions for its free variables.
+\end{proposition}
+
+\begin{proof}
+First induct externally on terms. The closure proofs show that an interpreted
+term has the appropriate domain, and the congruence proofs show that replacing
+its free parameters by equivalent codes produces an equivalent result.
+Then induct externally on formulas to show that the interpreted formula is
+unchanged in truth under those replacements. For atomic equality this follows
+from symmetry and transitivity of \(E\); for other atoms it is the supplied
+relation congruence. The propositional cases follow by the intuitionistic
+rules. In a quantified case keep the newly quantified code fixed, use the
+induction hypothesis under its domain assumption, and introduce the
+restricted quantifier.
+
+Finally transform the given proof by induction on its finite derivation
+tree. The propositional rules translate directly. Universal elimination
+uses the term-domain lemma to discharge its added domain premise.
+Existential introduction supplies both the term-domain proof and the
+translated matrix. Existential elimination opens a witness together with
+its domain proof; its eigenvariable condition is unchanged. The equality
+substitution rule is the formula congruence just established. Source axioms
+use their supplied interpretations. The chosen inhabitants ensure the usual
+nonempty interpretation of every sort. These are external inductions on
+finite syntax and proofs; they add no numerical induction schema to
+\(\ipra\).
+\end{proof}
+
+This proposition gives an organization of definitions and proofs, rather
+than an automatic presentation of every mathematical structure. In
+particular, an induction schema in a source theory is an additional axiom
+whose translation must be verified. A formula that is quantifier-free in
+abstract notation may cease to be quantifier-free after interpretation.
+If abstract equality means \(\forall k\,E_k(a,b)\), induction on that
+equality is induction on a quantified arithmetic formula. The proposition
+does not authorize it. The finite observation method must first replace it
+by a numerical invariant at a fixed requested precision.
+
+\subsection{A source theory with classical logic}
+
+Let \(\pra\) denote the theory with exactly the same first-order language
+and nonlogical axioms as \(\ipra\), but classical logic. Concretely, add to
+the existing intuitionistic deduction system the axiom schema
+\[
+ A\lor\neg A,
+ \qquad \neg A:=(A\to\bot),
+\]
+for arbitrary first-order formulas \(A\). Thus the source theory is not
+Peano arithmetic, a higher-type theory, Lean's ambient mathematics, or set
+theory. A proof in a stronger system must first be reduced to the stated
+\(\pra\) before the result below can apply.
+
+We use the elementary \(\ipra\) theorem that numerical equality is
+decidable, hence stable:
+\[
+ (s=t)\lor\neg(s=t),
+ \qquad \neg\neg(s=t)\longrightarrow s=t.
+\]
+The repository has an explicit arithmetic route to this fact. In
+\texttt{TeqReflect.lean}, the term \texttt{Tm.eqt} reflects scalar equality
+by \texttt{Q.eqt\_eq\_zero\_iff}. The cover/selector cases decide whether
+the test vanishes. The interpretation \texttt{ToPRA.interp} and its round
+trip transport the result to numerical \texttt{PTm} equality. This is an
+object-theory proof obligation; a Lean instance of \texttt{DecidableEq}
+cannot be substituted for it.
+
+\begin{definition}[Negative translation]
+\label{def:negative}
+Define \(A\mapsto A^N\) externally by recursion on formulas:
+\[
+\begin{array}{rcl@{\qquad}rcl}
+ (s=t)^N&:=&s=t,& \bot^N&:=&\bot,\\
+ (A\land B)^N&:=&A^N\land B^N,
+   &(A\to B)^N&:=&A^N\to B^N,\\
+ (\forall x A)^N&:=&\forall x A^N,
+   &(A\lor B)^N&:=&\neg(\neg A^N\land\neg B^N),\\
+ (\exists x A)^N&:=&\neg\forall x\neg A^N.&&&
+\end{array}
+\]
+This atom-preserving form uses the stability of numerical equality.
+\end{definition}
+
+Terms and numerical free variables are unchanged. Structural induction on
+the formula gives
+\[
+ (A[\sigma])^N=A^N[\sigma]
+\]
+for simultaneous capture-avoiding substitution, and the corresponding
+weakening identity. At a quantifier both sides use the same lifted
+substitution. Moreover, \(A^N\) is quantifier-free whenever \(A\) is
+quantifier-free: translating a disjunction introduces only conjunction,
+implication and bottom.
+
+\begin{lemma}[Stability of translated formulas]
+\label{lem:negative-stable}
+For every fixed formula \(A\), \(\ipra\) proves
+\(\neg\neg A^N\to A^N\).
+\end{lemma}
+
+\begin{proof}
+This is external induction on the syntax of \(A\). Equality is stable by
+the arithmetic fact above. Bottom is stable by applying a hypothesis
+\((\bot\to\bot)\to\bot\) to the identity implication.
+
+Stability is preserved by conjunction: a denial of either conjunct denies
+the conjunction, so double negation of the conjunction supplies double
+negation of both conjuncts. Apply their stability proofs.
+If \(B\) is stable, then \(C\to B\) is stable. Indeed, given
+\(\neg\neg(C\to B)\) and \(C\), a denial of \(B\) would deny
+\(C\to B\). We therefore obtain \(\neg\neg B\), and then \(B\).
+Universal quantification preserves stability by the same argument at an
+arbitrary numerical value, followed by universal introduction.
+
+Finally every negation is stable intuitionistically. Given
+\(\neg\neg\neg C\), assume \(C\); this implies \(\neg\neg C\),
+contradicting the given triple negation. Both the translated disjunction
+and translated existential are negations. This proves their stability
+without any additional decidability assumption.
+\end{proof}
+
+\begin{theorem}[Classical-to-intuitionistic transfer at fixed strength]
+\label{thm:negative-transfer}
+From a \(\pra\) derivation of \(A\) with finite hypothesis context
+\(\Gamma\), one can construct an \(\ipra\) derivation
+\[
+ \Gamma^N\vdash_{\ipra} A^N.
+\]
+Here \(\Gamma^N\) translates every context member. The statement requires
+a source derivation; truth of the source statement alone does not suffice.
+\end{theorem}
+
+\begin{proof}
+Transform the source derivation by induction on its finite proof tree.
+Conjunction, implication, universal quantification and bottom use the
+corresponding intuitionistic deduction rules. Substitution commutation
+handles universal instantiation.
+
+For disjunction introduction, a proof of \(A^N\) contradicts the first
+conjunct of \(\neg A^N\land\neg B^N\); the other introduction is
+symmetric. For disjunction elimination, the translated premises are
+\[
+ \neg(\neg A^N\land\neg B^N),\qquad
+ A^N\to C^N,\qquad B^N\to C^N.
+\]
+To obtain \(C^N\), use Lemma~\ref{lem:negative-stable}. A denial of
+\(C^N\) supplies both \(\neg A^N\) and \(\neg B^N\), contradicting
+the first premise.
+
+For existential introduction, an instance \(A^N(t)\) contradicts
+\(\forall x\neg A^N(x)\). For existential elimination, the translated
+existence premise is \(\neg\forall x\neg A^N(x)\), and the transformed
+subderivation obtains \(C^N\) from \(A^N(x)\), with \(x\) fresh for
+the conclusion and the other hypotheses. If \(\neg C^N\), this gives
+\(\neg A^N(x)\) for arbitrary \(x\); universal introduction contradicts
+the existence premise. Stability then gives \(C^N\).
+
+The translation of excluded middle is
+\[
+ \neg\bigl(\neg A^N\land\neg(A^N\to\bot)\bigr).
+\]
+Its two prohibited conjuncts would be a formula and its negation, so this
+is an intuitionistic theorem. Equality reflexivity is unchanged. For the
+equality-substitution rule, all premises asserting equality of numerical
+terms are unchanged, and the same rule substitutes equals in the translated
+formula.
+
+It remains to check the nonlogical axioms, which is the strength-sensitive
+part of the argument. The primitive recursive defining equations,
+successor separation and successor injectivity are unchanged. By the
+substitution identity, the translation of the induction instance for
+\(\varphi\) is precisely
+\[
+ \varphi^N(0)\to
+ \bigl(\forall n(\varphi^N(n)\to\varphi^N(n+1))\bigr)
+ \to\forall n\varphi^N(n).
+\]
+Since \(\varphi\) was quantifier-free, \(\varphi^N\) is also
+quantifier-free. This is an allowed \(\ipra\) induction instance.
+Every derivation constructor and nonlogical axiom is now covered.
+\end{proof}
+
+The transformation is syntactic. With standard finite encodings, it is a
+primitive recursive operation on formula and derivation codes: each
+constructor inserts a fixed proof pattern, and atomic stability instances
+are substitutions into one fixed arithmetic proof. No arbitrary primitive
+recursive function symbol is evaluated. A future internal theorem asserting
+that this operation sends accepted \(\pra\) proofs to accepted \(\ipra\)
+proofs would concern two syntactic proof checkers. It would not assert the
+truth of all theorems of either system.
+
+\subsection{Conclusions retained in their original form}
+
+\begin{definition}[A class of retained formulas]
+\label{def:retained}
+Let \(\mathcal N_b\) be the class generated from fixed bounded formulas
+over primitive recursive predicates by conjunction, implication and
+unbounded universal quantification. We do not close this class under
+unbounded existential quantification or arbitrary disjunction.
+\end{definition}
+
+\begin{lemma}[Equivalence to the translation]
+\label{lem:negative-retained}
+If \(A\in\mathcal N_b\), then
+\(\ipra\vdash A^N\leftrightarrow A\).
+\end{lemma}
+
+\begin{proof}
+First consider a bounded formula. Its bounded subformulas are decidable by
+bounded Booleanization. For decidable subformulas, the negative reading of
+disjunction is equivalent to ordinary disjunction. For a bounded existential,
+scan its finite numerical range. If a candidate succeeds, it supplies the
+existential; if all candidates fail, the resulting finite universal failure
+contradicts its negative reading. This proves the equivalence for a bounded
+existential without unbounded search or Markov's principle. The bounded
+universal case uses pointwise equivalence. Equivalently, both readings are
+equivalent to the same characteristic Boolean equation.
+
+The remaining closure cases follow by substituting provably equivalent
+subformulas in a conjunction, implication or universal quantifier. These
+are external inductions on fixed formulas, not object-theory induction on
+arbitrary quantified predicates.
+\end{proof}
+
+\begin{proposition}[Transfer without changing the asserted conclusion]
+\label{prop:negative-conservation}
+If every member of \(\Gamma\) and \(A\) belongs to \(\mathcal N_b\), then
+\[
+ \Gamma\vdash_{\pra} A
+ \quad\Longleftrightarrow\quad
+ \Gamma\vdash_{\ipra} A.
+\]
+\end{proposition}
+
+\begin{proof}
+Apply Theorem~\ref{thm:negative-transfer}, replace the hypotheses by their
+provably equivalent translations, and then use
+Lemma~\ref{lem:negative-retained} for the conclusion. The reverse direction
+regards an intuitionistic proof as a classical one.
+\end{proof}
+
+In particular, a \(\pra\) proof of
+\(\forall\mathbf x\,B(\mathbf x)\), with \(B\) bounded, transfers to
+\(\ipra\) with the original meaning. Its intermediate proof may use
+excluded middle even for unbounded formulas; the target proof contains no
+new excluded-middle axiom. This applies to the logical form of exact
+polynomial identities, universal finite-list bounds, arithmetic inequalities
+and fixed-exponent nonexistence statements. The premise that there is a
+\(\pra\) derivation remains essential: the proposition does not turn an
+arbitrary published proof or an ambient Lean theorem into such a derivation.
+
+\subsection{Witnesses recovered from bounded classical proofs}
+
+\begin{theorem}[Bounded classical existence yields a verified selector]
+\label{thm:bounded-classical-selector}
+Fix a primitive recursive relation \(R(\mathbf x,y)\), a primitive
+recursive numerical bound \(b(\mathbf x)\), and
+\(H(\mathbf x)\in\mathcal N_b\). If \(\pra\) proves
+\[
+ \forall\mathbf x\left(H(\mathbf x)\to
+       \exists y\le b(\mathbf x)\ R(\mathbf x,y)\right),
+\]
+then an explicitly defined primitive recursive function \(w\) satisfies
+\[
+ \ipra\vdash\forall\mathbf x\left(H(\mathbf x)\to
+       w(\mathbf x)\le b(\mathbf x)\ \land\
+       R(\mathbf x,w(\mathbf x))\right).
+\]
+\end{theorem}
+
+\begin{proof}
+The bounded existential belongs to \(\mathcal N_b\); hence the entire
+displayed implication does too. Proposition~\ref{prop:negative-conservation}
+first gives an \(\ipra\) proof of that implication.
+
+Define \(w\) by scanning \(0,\ldots,b(\mathbf x)\), retaining the first
+successful candidate, and returning zero if no candidate succeeds. A
+separate found flag distinguishes failure from success at zero. This is
+numerical primitive recursion with a given finite bound.
+
+After testing the first \(j\) candidates, use the following bounded
+invariant. Either the flag is unset and every tested candidate fails, or
+the saved candidate is less than \(j\), satisfies \(R\), and every earlier
+candidate fails. Bounded Booleanization makes the invariant
+quantifier-free. Its base case is immediate, and its successor step is a
+case split on the flag and one primitive recursive test. Quantifier-free
+induction therefore proves it. The bounded existential supplied by the
+transferred theorem rules out the all-failed terminal state. The saved
+candidate is the required witness within its bound.
+\end{proof}
+
+This theorem enlarges the acceptable proof interface. One may prove, using
+classical \(\pra\) reasoning, that a finite search space contains a desired
+certificate, and then obtain the constructive certificate by the fixed
+bounded selector. It is unnecessary to redesign every intermediate
+classical choice in that existence proof. The substantive requirements are
+the primitive recursive search bound and a proof using only the stated
+nonlogical strength.
+
+The hypotheses can still describe infinite observations. For example,
+regularity of a fixed family of Cauchy names or a uniform local error
+contract often has the form \(\forall\mathbf u\,C(\mathbf x,\mathbf u)=1\).
+Such a formula belongs to \(\mathcal N_b\), although its validity is not a
+decidable numerical test. The theorem's output and search relation remain
+finite. The proofs of the existence and accuracy of an operation, and the
+data required to execute it, must remain distinct.
+
+\subsection{The boundary and the Lean completion path}
+
+The transfer removes a logical obstacle; it supplies neither missing
+quantitative estimates nor missing arithmetic induction reductions. For
+example, a finiteness assertion in the form
+\[
+ \exists H\ \forall z\,
+   (\operatorname{Point}(z)\to\operatorname{ht}(z)\le H)
+\]
+contains an unbounded existential. The theorem translates it to
+\[
+ \neg\forall H\neg\forall z\,
+   (\operatorname{Point}(z)\to\operatorname{ht}(z)\le H),
+\]
+which does not provide \(H\). An explicit primitive recursive bound is
+exactly what makes Theorem~\ref{thm:bounded-classical-selector} stronger
+for its restricted conclusion. No general rule
+\(\neg\neg\exists y\,R(y)\to\exists y\,R(y)\) is being assumed.
+Likewise, stability of equality between represented names does not make
+that equality decidable, and does not supply an apartness witness for
+division or a singularity classifier for a polynomial branch.
+
+The order of work is consequential. First interpret mathematical objects
+and assertions numerically. Then replace every impermissible induction by
+a verified finite invariant, fixing observation precision where necessary.
+After this arithmetic audit, Theorem~\ref{thm:negative-transfer} can remove
+classical logic from a \(\pra\) derivation. Finally a bounded existential
+can be realized by Theorem~\ref{thm:bounded-classical-selector}.
+Performing negative translation before the arithmetic audit does not cure
+induction on an unbounded observation formula.
+
+The companion \texttt{NegativeSyntax.lean} completes the syntax and
+axiom-translation layer. It compiles with Lean 4.32.0; its checked declarations
+use neither \texttt{sorryAx} nor \texttt{Classical.choice}. The audit records
+Lean's standard \texttt{propext} and \texttt{Quot.sound} dependencies in the
+metatheory. The completed and remaining steps are concrete:
+\begin{enumerate}
+\item The file defines \texttt{negative} on the existing \texttt{Fm PTm n},
+  and \texttt{ClassicalPRAAx} with one constructor for a \texttt{PRAAx}
+  instance and one for excluded middle. It proves the syntax identities
+  \texttt{negative\_subst}, \texttt{negative\_shift} and
+  \texttt{negative\_qf} by structural induction.
+\item Produce the object proof of numerical equality stability through the
+  arithmetic route described above. Then construct an actual
+  \texttt{Prf PRAAx} proof of stability for every translated formula, using
+  the proof patterns in Lemma~\ref{lem:negative-stable}.
+\item The file also translates every arithmetic and excluded-middle axiom
+  constructor into an actual \texttt{Prf PRAAx} derivation. For induction,
+  it invokes \texttt{PRAAx.ind} on \texttt{negative phi};
+  \texttt{negative\_qf} certifies the precise side condition. The excluded
+  middle translation is proved directly by intuitionistic contradiction.
+\item The remaining main task is to prove by induction on the existing
+  \texttt{Prf} derivation the target
+\[
+ \texttt{Prf ClassicalPRAAx}\ \Gamma\ \varphi
+ \ \longrightarrow\
+ \texttt{Prf PRAAx}\ (\Gamma\texttt{.map negative})\
+       (\texttt{negative}\ \varphi).
+\]
+  The \texttt{eqSubst} case uses the same constructor on the translated
+  formula; the quantifier cases use the substitution and weakening
+  identities. The critical disjunction and existential elimination cases
+  are exactly those written out in Theorem~\ref{thm:negative-transfer}.
+\item The file defines retained formulas with quantifier-free leaves.
+  Their equivalence and transfer theorems remain named goal propositions,
+  as does the full proof translator. The bounded-leaf extension then uses a
+  separately proved Booleanization adapter. Derive transfer of retained
+  sequents using
+  \texttt{Prf.trans} and the equivalence proofs.
+\item Implement first-success search using \texttt{PR} symbols and prove its
+  bounded found/no-success invariant. The object recurrence rule developed
+  in this report supplies the corresponding induction step. This produces
+  the selector theorem at the actual \texttt{Prf PRAAx} level.
+\end{enumerate}
+
+The human proof of the logical transfer and the selector theorem is complete
+above. Their full Lean proof translator and equality-stability adapter are
+specified obligations, not completed formalizations. The independently
+compiled object recurrence result reported later should not be confused
+with completion of this entire translation pipeline.
