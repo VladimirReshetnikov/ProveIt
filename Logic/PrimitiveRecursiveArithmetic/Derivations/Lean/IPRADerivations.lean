@@ -53,6 +53,7 @@ import IPRADerivations.AnalyticNumberTheory.Radical
 import IPRADerivations.AnalyticNumberTheory.GeneralMul
 import IPRADerivations.AnalyticNumberTheory.TotientCorollaries
 import IPRADerivations.AnalyticNumberTheory.PhiLower
+import IPRADerivations.AnalyticNumberTheory.PhiTwo
 import IPRADerivations.DiophantineNumberTheory.Hurwitz
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
