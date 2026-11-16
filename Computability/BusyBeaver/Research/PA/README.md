@@ -14,10 +14,11 @@ the PA196 and U208 comparison, and the imported upstream snapshots.
 `IΣ₁`. [`docs/`](docs/) holds the delivered research packets, whose scripts
 and notes may refer to the directory layout at the time of delivery.
 
-Lean proves the unconditional iPRA equivalence for two literal 194-state
+Lean proves the unconditional iPRA equivalence for three literal 194-state
 tables. The theorems and staged replay instructions are under
-[the primary endpoint](pa194/ipra/native-endpoint/README.md) and
-[PA194B](pa194/ipra/variants/pa194b/README.md). The remaining 194-state
+[the primary endpoint](pa194/ipra/native-endpoint/README.md),
+[PA194B](pa194/ipra/variants/pa194b/README.md), and
+[PA194SEL](pa194/ipra/variants/pa194sel/README.md). The remaining 194-state
 consistency candidates, the original PA195, and the PA196 candidate still
 need equivalence proofs.
 
