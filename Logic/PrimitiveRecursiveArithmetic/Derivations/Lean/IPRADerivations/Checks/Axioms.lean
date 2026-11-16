@@ -321,6 +321,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.Y_dvd_mul
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.branch
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.pell_gcd
+#print axioms LeanProofs.IPRA.Pigeonhole.count_le_one
+#print axioms LeanProofs.IPRA.Pigeonhole.no_rep_absurd
+#print axioms LeanProofs.IPRA.Pigeonhole.phpJ_spec
+#print axioms LeanProofs.IPRA.Pigeonhole.firstMatch_spec
+#print axioms LeanProofs.IPRA.Pigeonhole.pigeonhole
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
