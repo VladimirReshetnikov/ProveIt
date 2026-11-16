@@ -16,11 +16,14 @@ controller:
 | `x` | fifth head | `W(D,H) → 1` | `W(D,H) → A` |
 | `ga` | generalization | `U(d, h)` | `U(A, h)` |
 | `bundled` | gate, diagonal | `¬(V → Q)`, `Γ` pushed | `¬(Γ(A) → (V → Q))`, no `Γ` pushed |
+| `delta` | gate, diagonal | `¬(V → Q)`, `Γ` pushed | `¬(Δ → (V → Q))`, no `Γ` pushed |
 
 Here `W(D,H) = U(D, E(H,D) → 1)`, `A` is the label argument of the command, `D = d + x` and
-`H = h + y`, and `V = V(H,D,A)`, `Q = Q(H,D,A)` are the two parts of the gate of the primary
-table. With `bundled`, AX pushes seven leaves instead of eight; this is the emitter of the
-original PA195. The field `gd` has no effect then.
+`H = h + y`, `V = V(H,D,A)`, `Q = Q(H,D,A)` are the two parts of the gate of the primary
+table, and `Δ = E(H,D) → U(A, E(H,D))` is the equality vacuity. With `bundled` or `delta`, AX
+pushes seven leaves instead of eight. `bundled` is the emitter of the original PA195 and
+`delta` the one of PA196. The field `gd` has no effect then, and `delta` takes precedence
+over `bundled`.
 
 All fields default to `false`, so an emitter is written by its changed fields, for example
 `{ q := true, ga := true }`.
@@ -59,6 +62,8 @@ structure Emitter where
   ga : Bool := false
   /-- The diagonal is not pushed; the gate is `¬(Γ(A) → (V → Q))`. -/
   bundled : Bool := false
+  /-- The diagonal is not pushed; the gate is `¬((E(H,D) → U(A, E(H,D))) → (V → Q))`. -/
+  delta : Bool := false
 
 /-- The emitter of the primary table. -/
 def Emitter.primary : Emitter := {}
@@ -76,6 +81,14 @@ noncomputable def head5X : Code 3 :=
 `a b c`. -/
 noncomputable def bundledGate : Code 3 :=
   machineNeg (machineImp (unary diagonal (.proj 2)) (machineImp memVac separationTail))
+
+/-- The gate with the equality vacuity bundled,
+`¬((E(a,b) → U(c, E(a,b))) → (V(a,b,c) → Q(a,b,c)))`, as a code of `a b c`. -/
+noncomputable def deltaGate : Code 3 :=
+  machineNeg (machineImp
+    (machineImp (machineEq (.proj 0) (.proj 1))
+      (machineAll (.proj 2) (machineEq (.proj 0) (.proj 1))))
+    (machineImp memVac separationTail))
 
 /-- The argument of the separate diagonal. -/
 noncomputable def diagArg (g : Bool) {n : Nat} (D A : Code n) : Code n :=
@@ -101,8 +114,7 @@ noncomputable def genArg (ga : Bool) {n : Nat} (A d : Code n) : Code n :=
   | true => A
   | false => d
 
-/-- The stack entries of AX, top first: ten, or nine when the diagonal is bundled into the
-gate. -/
+/-- The stack entries of AX, top first: ten, or nine when no diagonal is pushed. -/
 noncomputable def axStackCodeE (e : Emitter) {n : Nat} (t A d h y x w : Code n) : Code n :=
   let D := bin addCode d x
   let H := bin addCode h y
@@ -115,18 +127,24 @@ noncomputable def axStackCodeE (e : Emitter) {n : Nat} (t A d h y x w : Code n) 
               (pair (bin machineHead1 D H)
                 (pair (app4 rho8 D A H d)
                   (pair (machineAll (genArg e.ga A d) h) (pair t w))))))))
-  match e.bundled with
+  match e.bundled || e.delta with
   | true => rest
   | false => pair (unary diagonal (diagArg e.gd D A)) rest
 
 /-- The gate of AX with its guard: `0` when `D = A` or `H = A`. -/
 noncomputable def axTopCodeE (e : Emitter) {n : Nat} (A d h y x : Code n) : Code n :=
-  match e.bundled with
+  match e.delta with
   | true =>
     selectAmong (bin equalityCode (bin addCode d x) A) (.zero n)
       (selectAmong (bin equalityCode (bin addCode h y) A) (.zero n)
-        (app3 bundledGate (bin addCode h y) (bin addCode d x) A))
-  | false => axTopCode A d h y x
+        (app3 deltaGate (bin addCode h y) (bin addCode d x) A))
+  | false =>
+    match e.bundled with
+    | true =>
+      selectAmong (bin equalityCode (bin addCode d x) A) (.zero n)
+        (selectAmong (bin equalityCode (bin addCode h y) A) (.zero n)
+          (app3 bundledGate (bin addCode h y) (bin addCode d x) A))
+    | false => axTopCode A d h y x
 
 /-- The top after AX: the gate, or `0` in the layout that pushes the gate. -/
 noncomputable def axTopEA (e : Emitter) (a : Bool) {n : Nat} (A d h y x : Code n) : Code n :=

@@ -523,30 +523,33 @@ at the level of commands; a connection with a literal table and its source progr
 separate proof, which the [PA194AX11H endpoint](verification/pa194/ipra/variants/pa194ax11h/README-final.md)
 supplies for one of them.
 
-The same directory treats five changes of the axiom emitter, independent of each other and
+The same directory treats six changes of the axiom emitter, independent of each other and
 of the controller: the separate diagonal `Γ(D)` in place of `Γ(A)` (PA194D, PA194DHS, the GD
 family), the sixth head with exchanged premises (the Q families, PA194G, PA194GH), the
 fifth head with an arbitrary consequent (PA194H5X), the generalization `U(c, h)` in
-place of `U(d, h)` (the G, GH and GD families), and the gate `¬(Γ(c) → (V → Q))` with no
-separately pushed diagonal, which is the nine-entry AX of the original PA195. The numerical
-calculus is unchanged: for each emitter and each controller, the scheduler halts exactly
-when the calculus of the primary table proves the contradiction code, and iPRA derives the
-equivalence of its non-halting with the consistency sentence. The README of the directory
-lists the emitter and controller that the packets state for eleven candidates, the
-original PA195 among them. For that machine this is the arithmetic half at the level of
-commands only: its literal table is not connected with the scheduler, and it has not been
-checked that its program enumerates commands as the modeled scheduler does. Not covered:
-PA194JH5X, the fused head of the FW candidates, the gate of PA196 (equality vacuity in
-place of the diagonal, another calculus), and the candidates with another coefficient of
-the formula constructors.
+place of `U(d, h)` (the G, GH and GD families), the gate `¬(Γ(c) → (V → Q))` with no
+separately pushed diagonal, which is the nine-entry AX of the original PA195, and the gate
+`¬(Δ → (V → Q))` with the equality vacuity `Δ = E(a,b) → U(c, E(a,b))`, which is the
+nine-entry AX of PA196. For each emitter and each controller, the scheduler halts at some
+time of a model exactly when arithmetic has an internal refutation, and iPRA derives the
+equivalence of its non-halting with the consistency sentence. For the emitters other than
+the last the scheduler is compared with the calculus of the primary table, which they do
+not change. The PA196 gate changes the calculus:
+[`pa194-generic-calculus`](verification/pa194-work/pa194-generic-calculus/README.md) restates the
+propositional and vacuity laws for an arbitrary set of codes closed under the rules, and
+proves by `Σ₁` order induction on codes that such a set contains every diagonal `Γ(B)` once
+it contains the vacuity of the two kinds of atoms at fresh labels, so the diagonals are
+among the formulas that a scheduler with that gate computes; in the other direction the
+invariant is that arithmetic proves the translations of the store entries, and arithmetic
+proves the translation of the equality vacuity for all codes of the model.
 
-[`pa194-generic-calculus`](verification/pa194-work/pa194-generic-calculus/README.md) prepares the
-PA196 gate. It restates the propositional and vacuity laws of the numerical calculus for an
-arbitrary set of codes closed under its rules, and proves by `Σ₁` order induction on codes
-that such a set contains every diagonal `Γ(B)` once it contains the vacuity of the two kinds
-of atoms at fresh labels; and it proves that arithmetic proves the translation of the
-equality vacuity `E(a,b) → U(c, E(a,b))` for `c ≠ a, b`, for all codes of the model. No
-scheduler with the PA196 gate is treated yet.
+The README of the directory lists the emitter and controller that the packets state for
+sixteen candidates, among them the original PA195, PA195DC and PA196. For these machines
+this is the arithmetic half at the level of commands only: no literal table is connected
+with a scheduler here, and it has not been checked that the programs of PA195 and PA196
+enumerate commands as the modeled scheduler of the primary table does. Not covered:
+PA194JH5X, the fused head of the FW candidates, MP196 (its modus ponens halts), and the
+candidates with another coefficient of the formula constructors.
 
 [`isigma1-machine`](verification/shared/isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
