@@ -54,3 +54,8 @@ bash "$variants/check-linear-coverage.sh" PA194M4R /dev/shm/pa194m4r-model /dev/
 bash "$variants/check-controller-final.sh" PA194LCA /dev/shm/pa194lca-model /dev/shm/pa194lca-coverage /dev/shm/pa194lca-final
 bash "$variants/check-controller-final.sh" PA194M4R /dev/shm/pa194m4r-model /dev/shm/pa194m4r-coverage /dev/shm/pa194m4r-final
 ```
+
+The [seven archived variants](companions/README.md) have their own literal
+row certificates and unconditional iPRA equivalences. Their proofs use
+the verified PA1944L endpoint and model-valued simulations of the timing,
+selector, and history-dependent changes.
