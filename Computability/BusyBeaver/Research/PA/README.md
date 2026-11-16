@@ -71,8 +71,9 @@ now have native iPRA sentences for their complete transfer loops. A
 [matched five-instruction macro](pa194/ipra/machine-code/TRANSFER-TO-SITE0-INVARIANT.md)
 preserves a repeated-spare frame and its gap under explicit branch and padding
 conditions; it is a model-uniform finite segment, not an all-site simulation. A
-[native iPRA padding theorem](pa194/ipra/machine-code/HEADER-WIDTH-NATIVE.md)
-rules out a gap below 21 under the explicit bounded-PC and width-57 conditions;
+[native iPRA padding theorem](pa194/ipra/machine-code/HEADER-WIDTH-GLOBAL.md)
+rules out a gap below 21 under the explicit width-57 condition for every
+path-length lookup input. Outside the source table the lookup defaults to zero;
 preservation of that width is open. A complete reachable-state simulation remains open. Other native iPRA
 clocked equalities cover the [physical positive loop](pa194/ipra/machine-code/ACTUAL-PHYSICAL-NATIVE.md),
 [source fetch](pa194/ipra/machine-code/UNIFIED-FETCH-NATIVE.md),
