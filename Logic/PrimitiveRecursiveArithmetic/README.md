@@ -83,12 +83,12 @@ packets say that their Lean files are uncompiled outlines, or that they prove on
 what was asked; for example, the Faltings and Siegel packets do not prove the general
 theorems. Sixteen packets state that they construct derivations in `ConciseIPRA`'s `Prf PRAAx`,
 all for framework rules and small examples:
-- `ipra_cbip_framework_2026-11-16`, in an uncompiled candidate, for a normalised
-  trace-reflection kernel;
 - `cifer_ipra_framework_2026-11-15`, in uncompiled source, for residual proof-graph
   compilation and boundary discharge by simultaneous cut;
 - `ipra_categorical_methods`, in uncompiled source expressions, for inverse uniqueness,
   Yoneda components and contract cut;
+- `ipra_cbip_framework_2026-11-16`, in an uncompiled candidate, for a normalised
+  trace-reflection kernel;
 - `ipra_coherent_methods_2026-11-15`, for contract composition, specialization, a
   quantifier-free induction interface and identity iteration;
 - `ipra_finite_query_normal_form_2026-11-16`, in uncompiled source, for structural
