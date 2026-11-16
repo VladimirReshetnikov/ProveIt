@@ -36,8 +36,15 @@ SHA-256 is `27613aa92da79ba2ec6e2e88e0ac909fda218e06495ecc0af27201eac0e26c8f`.
   [`PA194ADCompressedPhysical`](PA194ADCompressedPhysical.lean) converts
   checked source contracts into positive literal AD execution segments.
 
-The full set of source-site contracts and the controller simulation are
-still needed for the end-to-end iPRA derivation.
+- [`PA194ADInitializer.startup_root`](PA194ADInitializer.lean) identifies
+  the 58,122-step configuration with the exact coded AD source root.
+  [`PA194ADControllerEndpoint.halt_iff_controller_literal`](PA194ADControllerEndpoint.lean)
+  proves the halting comparison at arbitrary model-valued clocks, given
+  the finite source certificates.
+- [`PA194ADNative.consistency_iff_literal_nonhalt`](PA194ADNative.lean)
+  derives the equivalence in standard iPRA given those same certificates.
+
+The remaining premise is successful checking of all 3,673 source sites.
 
 Run from the repository root with a fresh output directory.
 
@@ -63,5 +70,8 @@ and the AD startup output, replay the compressed table and literal register
 proofs.
 
 ```sh
-bash "$dir/check-registers.sh" "$register" /dev/shm/pa194ad-replay /dev/shm/pa194ad-registers
+ad_registers=/dev/shm/pa194ad-registers
+bash "$dir/check-registers.sh" "$register" /dev/shm/pa194ad-replay "$ad_registers"
+bash "$dir/check-controller.sh" "$ad_registers" /dev/shm/pa194ad-model-run /dev/shm/pa194ad-controller
+bash "$dir/check-coverage.sh" "$ad_registers" /dev/shm/pa194ad-coverage
 ```

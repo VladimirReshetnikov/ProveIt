@@ -28,6 +28,13 @@ def checkInstruction (i : Nat) : Instruction → Bool
 
 def checkAt (i : Nat) : Bool := (PA194CheckCoverage.codeAt i).any (checkInstruction i)
 
+def blockCheck (base count : Nat) : Bool := (List.range count).all (fun j => checkAt (base + j))
+
+theorem block_sound {base count i : Nat} (h : blockCheck base count = true)
+    (lo : base ≤ i) (hi : i < base + count) : checkAt i = true := by
+  have checked := List.all_eq_true.mp h (i - base) (List.mem_range.mpr (by omega))
+  simpa only [Nat.add_sub_of_le lo] using checked
+
 theorem checked_at (i : Nat) (h : checkAt i = true) :
     ∃ code, M6.Source.resolveAt sites i = some code ∧ checkInstruction i code = true := by
   unfold checkAt at h
