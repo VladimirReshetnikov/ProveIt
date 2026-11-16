@@ -1,3 +1,4 @@
+import DiophantineConsistency.IPRAStandardAxioms
 import DiophantineConsistency.IPRAArithmeticInstantiation
 import DiophantineConsistency.IPRAReferenceCloseFamily
 /-! Usual successor-step quantifier-free induction from the candidate native x+1 schema, for arbitrary finite parameters. -/
@@ -23,16 +24,6 @@ def replaceParameter {n : ℕ} (φ : Semisentenceᵢ language (n+1))
   IPRASuccessorInductionConverse.replaceParameterT
     (fun _ h => Axiomatized.prfAxm (NativeAxiom.equality h)) φ u v args
 
-def succTerm (n : ℕ) : TermN (n+1) := .func Code.succ (fun _ => #0)
-def atSucc {n : ℕ} (φ : Semisentenceᵢ language (n+1)) : Semisentenceᵢ language (n+1) :=
-  Rew.subst (Fin.cases (succTerm n) (fun i => #i.succ)) ▹ φ
-
-def succStepBody {n : ℕ} (φ : Semisentenceᵢ language (n+1)) : Semisentenceᵢ language n :=
-  ∀⁰ (φ 🡒 atSucc φ)
-def succInductionBody {n : ℕ} (φ : Semisentenceᵢ language (n+1)) : Semisentenceᵢ language n :=
-  atZero φ 🡒 succStepBody φ 🡒 ∀⁰ φ
-def succInductionAxiom {n : ℕ} (φ : Semisentenceᵢ language (n+1)) : Sentenceᵢ language :=
-  ∀⁰* (succInductionBody φ)
 
 def replaceSuccWithAdd {n : ℕ} (φ : Semisentenceᵢ language (n+1))
     (x : Term language ℕ) (args : Fin n → Term language ℕ) :

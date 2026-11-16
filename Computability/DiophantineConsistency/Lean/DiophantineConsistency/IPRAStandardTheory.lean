@@ -1,3 +1,4 @@
+import DiophantineConsistency.IPRAStandardAxioms
 import DiophantineConsistency.IPRASuccessorInductionConverse
 /-! # A standard presentation of intuitionistic primitive recursive arithmetic
 
@@ -30,22 +31,6 @@ open DiophantineConsistency.IPRASuccessorInduction DiophantineConsistency.IPRASu
 local instance : language.DecidableEq where
   func := fun k => by change DecidableEq (Code k); infer_instance
   rel := fun k => by change DecidableEq (Language.ORing.Rel k); infer_instance
-
-/-- Reflexivity, and replacement for atomic formulas with arbitrary parameters. -/
-inductive StandardEqualityAxiom : Sentenceᵢ language → Prop
-  | refl : StandardEqualityAxiom eqReflI
-  | atomic {n k : ℕ} (r : language.Rel k) (ts : Fin k → TermN (n+1)) :
-      StandardEqualityAxiom (eqSubstitutionI (Semiformulaᵢ.rel r ts))
-
-inductive StandardAxiom : Sentenceᵢ language → Prop
-  | equality {σ} : StandardEqualityAxiom σ → StandardAxiom σ
-  | defining {σ} : DefiningEquationI σ → StandardAxiom σ
-  | basic {σ} : BasicAxiomI σ → StandardAxiom σ
-  | induction {n : ℕ} (φ : Semisentenceᵢ language (n+1)) : OpenI φ →
-      StandardAxiom (succInductionAxiom φ)
-
-/-- Standard intuitionistic primitive recursive arithmetic. -/
-def standardTheory : Theoryᵢ language (𝗜𝗻𝘁¹ : Hilbertᵢ language) := ⟨{σ | StandardAxiom σ}⟩
 
 /-- Monotonicity of `∃` in the Hilbert calculus. -/
 def exImplyEx {L : Language} {Λ : Hilbertᵢ L} (A B : Semipropositionᵢ L 1) :

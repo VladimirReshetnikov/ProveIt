@@ -23,6 +23,14 @@ open IPRANativeTheory (nativeTheory)
 open IPRAStandardTheory (standardTheory)
 open IPRAEqualityOnlyReference (referenceTheory ReferenceAxiom)
 
+local instance standardBridgeLanguageDecidableEq : PRALanguage.language.DecidableEq where
+  func k := by
+    change DecidableEq (PRAFiniteFunctionCodes.Code k)
+    infer_instance
+  rel k := by
+    change DecidableEq (Language.ORing.Rel k)
+    infer_instance
+
 private theorem referenceAxiomInNative (φ : Sentenceᵢ IPRAEqualityOnlyReference.language)
     (h : ReferenceAxiom φ) : nativeTheory ⊢ embed φ := by
   cases h with
