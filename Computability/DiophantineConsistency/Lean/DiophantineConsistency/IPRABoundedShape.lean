@@ -21,14 +21,13 @@ theorem shape {n : ℕ} (t : TermN n) (φ : Semisentence language (n+1))
     (e : Fin n → Term language ℕ) :
     native (Rew.embSubsts e ▹ bounded t φ) =
       ∃⁰ (guard (Fin.cases (Rew.embSubsts e t) e) ⋏ childBody φ (Fin.cases (Rew.embSubsts e t) e)) := by
+  have hrew : (Rew.embSubsts e).q = Rew.embSubsts (Fin.cases (#0) (fun i => Rew.bShift (e i))) := by
+    ext i
+    · cases i using Fin.cases <;> simp [Rew.q_embSubsts]
+    · exact Empty.elim i
   simp [bounded, bexs, IPRANativeFormula.native, IPRABoundedChild.guard, childBody, assign]
-  constructor
-  · rfl
-  · have hrew : (Rew.embSubsts e).q = Rew.embSubsts (Fin.cases (#0) (fun i => Rew.bShift (e i))) := by
-      ext i
-      · cases i using Fin.cases <;> simp [Rew.q_embSubsts]
-      · exact Empty.elim i
-    rw [hrew]
+  rw [hrew]
+
 def stableBoundedExists {n : ℕ} (t : TermN n) (φ : Semisentence language (n+1))
     (hφ : Hierarchy 𝚺 0 φ) (e : Fin n → Term language ℕ)
     (hback : ∀ u : Fin (n+1) → Term language ℕ,
