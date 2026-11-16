@@ -312,6 +312,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLimsup.lt_EP
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLimsup.limsup_at
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLimsup.limsup_phi
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiPowTwo.gcd_two_of_odd
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiPowTwo.phi_ppow_two
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiPowTwo.phi_pow_two
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.iS_pair
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.nth_pair_succ
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.bell_zero
