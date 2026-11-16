@@ -93,3 +93,6 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Topology.Sperner.sperner_1d
 #print axioms LeanProofs.IPRA.Foundations.Termination.termination
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Hurwitz.denominator_bound
+#print axioms LeanProofs.IPRA.Analysis.Products.pochhammer_shift
+#print axioms LeanProofs.IPRA.Analysis.Products.telescoping_sum
+#print axioms LeanProofs.IPRA.Analysis.Products.wallis_product
