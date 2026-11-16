@@ -51,7 +51,7 @@
   theory bi-interpretable with intuitionistic primitive recursive arithmetic
   (one iterator, two binders, six rules), with their Lean formalization.
 - [`PrimitiveRecursiveArithmetic/docs/proofs/`](PrimitiveRecursiveArithmetic/docs/proofs/README.md)
-  files, as delivered and unchecked, 47 packets of finitary proofs of classical
+  files, as delivered and unchecked, 48 packets of finitary proofs of classical
   theorems (the fundamental theorem of algebra, the prime number theorem, the
   Jordan curve theorem, transcendence of e and π, …) intended for intuitionistic
   primitive recursive arithmetic.

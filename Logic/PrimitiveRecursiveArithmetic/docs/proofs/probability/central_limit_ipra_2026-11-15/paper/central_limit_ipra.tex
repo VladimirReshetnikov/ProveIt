@@ -1,0 +1,2257 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\usepackage{url}
+\usepackage{graphicx}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  citecolor=green!35!black,
+  urlcolor=blue!55!black,
+  pdftitle={Constructive Central Limit Theorems in iPRA},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov}
+}
+\setlength{\emergencystretch}{3em}
+\setlength{\headheight}{14pt}
+\setlist{nosep,leftmargin=2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Constructive central limit theorems in iPRA}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\PhiN}{\Phi}
+\newcommand{\phiN}{\varphi}
+\newcommand{\dk}{d_{\mathrm K}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\PR}{\mathrm{PR}}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+
+\title{\bfseries Constructive Central Limit Theorems\\
+       in Intuitionistic Primitive Recursive Arithmetic\\[0.5em]
+       \large Berry--Esseen, Lindeberg, Lyapunov, de Moivre--Laplace,\\
+       effective extensions, and a Lean formalization route}
+\author{Prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This paper reconstructs a large part of the statement inventory on the
+Wikipedia and MathWorld pages about the central limit theorem inside the
+finitary, constructive setting of intuitionistic primitive recursive
+arithmetic (\(\ipra\)).  The internal objects are finite rational probability
+laws, exact finite product spaces, primitive-recursive regular names for real
+numbers, and explicit moduli.  No countable probability space, arbitrary
+real-valued function, choice principle, or nonconstructive compactness theorem
+is used in the core argument.
+
+The main quantitative theorem is a finite triangular-array Berry--Esseen
+bound.  If independent centered finite laws have total variance \(s^2>0\) and
+\(\rho=\sum_j\E|X_j|^3\), then, at every rational raw threshold \(q\),
+\[
+ \abs{\Pp\!\left[\sum_j X_j\le q\right]-\PhiN(q/s)}
+ \le \min\!\left(1,64\frac{\rho}{s^3}\right).
+\]
+A separate bounded-increment proof gives the sharper estimate
+\(\dk\le\min(1,7B/s)\) when \(|X_j|\le B\).  The proof is elementary and
+arithmetically explicit: finite Taylor inequalities, a damping estimate from
+an independent copy, a finite product telescoping identity, and Esseen's
+smoothing kernel
+\(v_T(x)=(1-\cos Tx)/(\pi T x^2)\).  The constants are deliberately
+non-optimal but have a complete rational audit.
+
+Consequences include the iid CLT with an explicit \(O(n^{-1/2})\) rate,
+uniform CDF convergence, the characteristic-function formulation,
+quantitative Lindeberg and Lyapunov theorems, the binomial and local
+de Moivre--Laplace theorems, fixed-dimensional multivariate convergence,
+an effective random-sum theorem, bounded finite-range dependence, a
+finite-tree martingale CLT, lattice local limits, the weak law of large
+numbers, and the multiplicative/lognormal CLT.  The unrestricted classical
+finite-variance theorem is recovered for effectively presented laws carrying
+a primitive-recursive second-moment-tail modulus.
+
+The paper also identifies overbroad source wording: finite variances alone do
+not imply a CLT for an arbitrary non-identical array, and a general sample
+mean is only asymptotically, not exactly, Gaussian.  A final section gives a
+concrete Lean module plan and the exact \(\ipra\) object-language endpoint.
+The accompanying Lean files are honest, uncompiled blueprints; they do not
+claim a completed kernel-checked derivation.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{What is being proved}
+
+\subsection{The constructive replacement for textbook quantifiers}
+
+Classical probability writes ``let \(X\) be an arbitrary real random
+variable'' and then quantifies over measures, measurable functions, and
+limits.  First-order \(\ipra\) cannot literally quantify over those
+higher-type objects.  This is not an obstacle to a constructive central limit
+theorem; it determines the correct statement.
+
+A theorem in this paper is a first-order theorem schema for a fixed
+primitive-recursive presentation.  The presentation contains finite rational
+laws, or a primitive-recursive sequence of finite approximants, together with
+all moduli needed to control tails, continuity, and numerical approximation.
+The conclusion supplies a primitive-recursive cutoff.  In particular,
+``\(F_n\to\PhiN\)'' means
+\[
+ \forall k\;\forall n\ge N(k)\;\forall q\in\Q,
+ \qquad \abs{F_n(q)-\PhiN(q)}\le 2^{-k},                 \tag{1.1}
+\]
+where \(N\) is a displayed primitive-recursive function and \(\PhiN(q)\) is
+a regular interval name.  Internally, the absolute-value inequality is a
+family of rational interval comparisons with a dyadic slack.
+
+The use of rational thresholds is essential.  A normalized sum may contain an
+irrational square root, whereas the event
+\(\sum X_j\le q\) is exactly decidable when the values and \(q\) are rational.
+Thus the internally strongest convenient form is
+\[
+ \abs{\Pp[S\le q]-\PhiN(q/s)}\le\varepsilon
+ \qquad(q\in\Q),                                      \tag{1.2}
+\]
+with \(s=\sqrt{\Var S}\) represented by a regular name.  Externally, because
+all jumps of a finite rational law occur at rational points and \(\PhiN\) is
+continuous, (1.2) is exactly the usual Kolmogorov-distance assertion.
+
+\subsection{Three levels of coverage}
+
+We distinguish three claims.
+
+\begin{enumerate}
+\item \emph{Internal finite theorem.}  All probabilities are exact finite
+  sums and the proof directly arithmetizes in \(\ipra\).
+\item \emph{Effective completion theorem.}  An infinite or continuous law is
+  supplied by finite rational approximants and primitive-recursive tail and
+  quantization moduli.  The finite theorem transfers with an explicit error.
+\item \emph{Unrestricted classical theorem.}  The usual statement ranges over
+  all measures satisfying a qualitative hypothesis.  Such a statement need
+  not have a uniform computable modulus and is not, without a presentation,
+  a single first-order \(\ipra\) sentence.
+\end{enumerate}
+
+The main Berry--Esseen theorem is level 1.  The classical finite-variance iid
+CLT is level 2.  The theorem ledger accompanying this paper says which level
+is reached for each item on the requested pages.
+
+\subsection{Main results}
+
+Let \(X_1,\ldots,X_m\) be independent finite rational laws, centered so that
+\(\E X_j=0\).  Put
+\[
+ s^2=\sum_{j<m}\E X_j^2>0,
+ \qquad \rho=\sum_{j<m}\E|X_j|^3,
+ \qquad S=\sum_{j<m}X_j.                               \tag{1.3}
+\]
+
+\begin{theorem}[Finite Berry--Esseen theorem]\label{thm:be-main}
+For every rational \(q\),
+\[
+ \abs{\Pp[S\le q]-\PhiN(q/s)}
+ \le \min\!\left(1,64\frac{\rho}{s^3}\right).          \tag{1.4}
+\]
+Every quantity in (1.4) has a uniform primitive-recursive presentation, and
+the proof uses only quantifier-free induction after all finite lengths and
+precision parameters have been fixed.
+\end{theorem}
+
+\begin{theorem}[Bounded array theorem]\label{thm:bounded-main}
+If additionally \(|X_j|\le B\) for every support point, then
+\[
+ \abs{\Pp[S\le q]-\PhiN(q/s)}
+ \le \min\!\left(1,7\frac{B}{s}\right)                 \tag{1.5}
+\]
+for every rational \(q\).
+\end{theorem}
+
+There is a typographical convention to note: when a displayed minimum is
+used below, it is always harmless to replace the right-hand side by the
+second entry if that entry exceeds one.
+
+\begin{corollary}[iid finite-law CLT with rate]\label{cor:iid-rate}
+Let \(X\) be a finite rational law with mean \(\mu\), variance
+\(\sigma^2>0\), and \(\rho_3=\E|X-\mu|^3\).  For iid copies and
+\(S_n=X_1+\cdots+X_n\),
+\[
+ \sup_x\abs{\Pp\!\left[\frac{S_n-n\mu}{\sigma\sqrt n}\le x\right]
+                 -\PhiN(x)}
+ \le \min\!\left(1,\frac{64\rho_3}{\sigma^3\sqrt n}\right). \tag{1.6}
+\]
+The internal version quantifies over rational raw thresholds.  A sufficient
+primitive-recursive cutoff for error \(2^{-k}\) is any \(N(k)\) satisfying
+\[
+ N(k)(\sigma^2)^3\ge 2^{2k+12}\rho_3^2.                \tag{1.7}
+\]
+\end{corollary}
+
+The factor \(2^{12}=64^2\) makes (1.7) a purely rational test; no division by
+an irrational standard deviation occurs in the checker.
+
+\section{Audit of the requested source statements}
+
+The two requested pages~\cite{WikipediaCLT,MathWorldCLT} contain a mixture of precise theorems, informal
+interpretations, and claims requiring extra hypotheses.  The following
+corrections are mathematically important.
+
+\begin{warning}[Finite variances do not suffice for an arbitrary array]
+For each \(n\), take \(X_{n,1}\) to be a Rademacher variable and
+\(X_{n,j}=0\) for \(j>1\).  The variables in each row are independent and the
+total variance is one, but the normalized sum is Rademacher for every \(n\),
+not Gaussian.  A non-identical array therefore needs an infinitesimal,
+Lindeberg, Lyapunov, or comparable condition.  The corrected theorem is
+proved in \cref{sec:lindeberg}.
+\end{warning}
+
+\begin{warning}[A general sample mean is not exactly normal]
+For iid non-Gaussian summands, the average has mean \(\mu\) and variance
+\(\sigma^2/n\), but its distribution is merely asymptotically Gaussian.
+If the summands themselves are Gaussian, characteristic functions show that
+the average is exactly \(\mathcal N(\mu,\sigma^2/n)\).  Thus the exact and
+asymptotic assertions must not be conflated.
+\end{warning}
+
+\begin{warning}[The formal power-series derivation needs repair]
+Expanding \(e^{itX}\) into an infinite series and interchanging expectation
+with that series requires hypotheses much stronger than finite variance.
+Our proof uses the finite identity
+\[
+ \abs{e^{iu}-1-iu+\tfrac12u^2}\le \frac{|u|^3}{6},     \tag{2.1}
+\]
+so no infinite interchange is needed.  With only a second moment, truncation
+and the Lindeberg argument replace the third-order estimate.
+\end{warning}
+
+The page statements proved directly or effectively include the classical
+CLT, pointwise and uniform CDF convergence, Berry--Esseen, Lyapunov,
+Lindeberg, de Moivre--Laplace, the characteristic-function and convolution
+forms, multivariate convergence, random sums, a finite-range dependence
+case, a martingale case, the variance formula, products/lognormality, and the
+law-of-large-numbers comparison.  The high-dimensional convex-body and
+random-geometry theorems use separate machinery and are explicitly listed as
+out of scope rather than being silently claimed.
+
+\section{Coding finite probability in \texorpdfstring{\(\ipra\)}{iPRA}}\label{sec:coding}
+
+\subsection{Finite rational laws}
+
+\begin{definition}[Law code]
+A finite rational law is a tuple
+\[
+ L=(r;(a_j,b_j,w_j)_{j<r};W)                           \tag{3.1}
+\]
+with \(b_j>0\), \(w_j\in\N\), \(W=\sum_{j<r}w_j>0\),
+and value \(x_j=a_j/b_j\).  Repetitions are allowed.  For a rational-valued
+observable \(f\),
+\[
+ \E_L f=\frac1W\sum_{j<r}w_j f(x_j).                  \tag{3.2}
+\]
+\end{definition}
+
+Signed integers and positive-denominator rationals are coded by natural
+pairs.  Addition, multiplication, absolute value, comparison, finite sums,
+and bounded maxima are primitive recursive.  The validity predicate for
+(3.1) is decidable.
+
+A product of laws \(L_0,\ldots,L_{m-1}\) is enumerated by a mixed-radix
+index.  The weight of an outcome tuple is the product of its coordinate
+weights and the total weight is the product of the coordinate totals.
+Consequently independence is not an axiom: it is an exact identity of finite
+sums.
+
+\begin{lemma}[Finite independence algebra]\label{lem:finite-algebra}
+For observables depending on disjoint coordinates,
+\[
+ \E[f(X_A)g(X_B)]=\E f(X_A)\,\E g(X_B).                \tag{3.3}
+\]
+Hence centered independent variables satisfy
+\[
+ \E\sum_jX_j=0,
+ \qquad \Var\!\left(\sum_jX_j\right)=\sum_j\Var(X_j), \tag{3.4}
+\]
+and their characteristic functions multiply.
+\end{lemma}
+
+\begin{proof}
+Expand both sides of (3.3) over the mixed-radix product.  The numerator is
+\[
+ \sum_{u,v}w_A(u)w_B(v)f(u)g(v)
+ =\left(\sum_uw_A(u)f(u)\right)
+  \left(\sum_vw_B(v)g(v)\right),                      \tag{3.5}
+\]
+and the denominator factors in the same way.  Formula (3.4) follows by
+expanding the square; all cross terms vanish by (3.3) and centering.  The
+characteristic-function identity is the same calculation with finite
+regular names for sine and cosine.  Each equality is a bounded fold and is
+proved by quantifier-free induction on a fixed finite length.
+\end{proof}
+
+\subsection{Regular interval names}
+
+\begin{definition}[Regular name]
+A real number \(x\) is presented by primitive-recursive rational functions
+\(L_x(p),U_x(p)\) such that
+\[
+ L_x(p)\le L_x(p+1)\le U_x(p+1)\le U_x(p),
+ \qquad U_x(p)-L_x(p)\le2^{-p}.                        \tag{3.6}
+\]
+\end{definition}
+
+Equality and order are never decided by an oracle.  A theorem outputs
+interval inclusions with an explicit dyadic slack.  A positive real used as
+a denominator is accompanied by a rational margin \(c>0\) and a proof
+\(c\le x\).  Addition and bounded multiplication are interval arithmetic;
+reciprocal and square root use rational bisection.  Complex numbers are pairs
+of regular names.
+
+This is the same foundational convention used by the constructive analysis
+packets in the ProveIt repository.  It is important that the program is
+fixed.  \(\ipra\) can reason about every fixed primitive-recursive evaluator,
+but it cannot contain a universal evaluator for all primitive-recursive
+program codes without a diagonal contradiction.
+
+\subsection{Primitive-recursive convergence}
+
+For a presented sequence \(x_n\) and limit \(x\), the assertion
+\(x_n\to x\) is always accompanied by a primitive-recursive modulus
+\(N(k)\):
+\[
+ n\ge N(k)\quad\Longrightarrow\quad |x_n-x|\le2^{-k}. \tag{3.7}
+\]
+For distribution functions, the threshold is a separate number variable and
+(3.7) is uniform in its code.  Qualitative phrases such as ``choose \(n\)
+large enough'' are eliminated from the internal theorem.
+
+\section{Constructive Gaussian and Fourier toolkit}\label{sec:gaussian}
+
+\subsection{Elementary analytic names}
+
+The required constants and functions have standard finite algorithms.
+
+\begin{itemize}
+\item \(\pi\) is named by a Machin formula, for example
+\[
+ \pi=16\arctan(1/5)-4\arctan(1/239),                  \tag{4.1}
+\]
+with alternating-series tail bounds.
+\item \(\exp,\sin,\cos\) use range reduction and finite Taylor sums with
+factorial remainders.  The Taylor/Cauchy packet supplies the general finite
+certificate.
+\item Positive square roots use bisection in a rational bracket.
+\item Integrals on compact rational intervals are named by finite Riemann
+sums with an explicit derivative or Lipschitz bound.  Improper Gaussian
+integrals are a compact integral plus a Mills-type tail estimate.
+\end{itemize}
+
+Only two coarse rational bounds on \(\pi\) enter the constant audit:
+\[
+ \frac{25}{8}<\pi<\frac{16}{5}.                       \tag{4.2}
+\]
+Both follow from short finite arctangent sums.
+
+\subsection{The normal density and CDF}
+
+Define
+\[
+ \phiN(x)=\frac{1}{\sqrt{2\pi}}e^{-x^2/2},
+ \qquad
+ \PhiN(x)=\frac12+\int_0^x\phiN(u)\dd u.              \tag{4.3}
+\]
+The Gaussian integral is obtained constructively from the Wallis/Stirling
+machinery, so \(\int_{\R}\phiN=1\).  Since the maximum occurs at zero,
+(4.2) gives
+\[
+ 0\le\phiN(x)\le\frac1{\sqrt{2\pi}}<\frac25.          \tag{4.4}
+\]
+Thus \(\PhiN\) has the global rational Lipschitz constant \(2/5\).
+For \(x>0\), integration by parts gives the effective Mills bound
+\[
+ 1-\PhiN(x)\le\frac{\phiN(x)}{x},                     \tag{4.5}
+\]
+and symmetry treats the left tail.
+
+\begin{lemma}[Gaussian characteristic function]\label{lem:gauss-cf}
+The characteristic function of (4.3) is
+\[
+ \int_{\R}e^{itx}\phiN(x)\dd x=e^{-t^2/2}.            \tag{4.6}
+\]
+\end{lemma}
+
+\begin{proof}
+The sine integral vanishes by oddness.  Let
+\(g(t)=\int\cos(tx)\phiN(x)\dd x\).  Truncate at \([-A,A]\), differentiate
+the finite integral, and integrate by parts using
+\(\phiN'(x)=-x\phiN(x)\).  Boundary terms are bounded by
+\(2\phiN(A)\), so the explicit Gaussian tail lets \(A\) be chosen
+primitive-recursively.  One obtains \(g'(t)=-tg(t)\) and \(g(0)=1\).
+Multiplying by \(e^{t^2/2}\) gives a function with derivative zero; the
+finite mean-value estimate proves it is constantly one.  Every limiting step
+has the displayed tail modulus, so this is a regular-name argument, not an
+appeal to abstract completeness.
+\end{proof}
+
+\subsection{Three finite inequalities}
+
+The characteristic-function proof uses only the following rationally
+certified inequalities:
+\begin{align}
+ \abs{e^{iu}-1-iu+\tfrac12u^2}&\le |u|^3/6,           \tag{4.7}\\
+ 0\le e^{-x}-1+x&\le x^2/2 \quad(x\ge0),             \tag{4.8}\\
+ 1-\cos u&\ge u^2/3 \quad(|u|\le1).                  \tag{4.9}
+\end{align}
+The first two are Taylor formulas with integral or alternating remainder.
+For (4.9), the alternating cosine series gives
+\(1-\cos u\ge u^2/2-u^4/24\ge11u^2/24>u^2/3\).
+All inequalities can be cleared of denominators and checked with QF
+induction on the finite Taylor order.
+
+\section{Esseen smoothing with an explicit kernel}\label{sec:smoothing}
+
+The passage from characteristic functions to distribution functions is the
+only place where discontinuous indicators enter.  We give the full argument
+because its finitary form is especially suitable for \(\ipra\).
+
+For \(T>0\), define the even kernel
+\[
+ v_T(x)=
+ \begin{cases}
+ \displaystyle\frac{1-\cos(Tx)}{\pi T x^2},&x\ne0,\\[0.7em]
+ \displaystyle\frac{T}{2\pi},&x=0.
+ \end{cases}                                           \tag{5.1}
+\]
+Its value at zero is the removable limit.  The elementary Dirichlet-integral
+calculation gives
+\[
+ v_T(x)\ge0,\qquad \int_{\R}v_T(x)\dd x=1,             \tag{5.2}
+\]
+and its Fourier transform is triangular:
+\[
+ \widehat v_T(t)=
+ \begin{cases}
+ 1-|t|/T,&|t|\le T,\\
+ 0,&|t|>T.
+ \end{cases}                                           \tag{5.3}
+\]
+Moreover, because \(1-\cos(Tx)\le2\),
+\[
+ \int_{|x|>h}v_T(x)\dd x\le\frac4{\pi T h}.           \tag{5.4}
+\]
+
+For constructivity, (5.2)--(5.3) are not black boxes.  Here is an
+explicit modulus for the only conditionally convergent integral.  For
+\(a>0\), put
+\[
+ I(a)=\int_0^\infty e^{-au}\frac{\sin u}{u}\dd u.
+\]
+Differentiation is first performed on \([0,A]\); the exponential tail is
+uniform, so the limit is legitimate with a displayed bound.  Since
+\[
+ I'(a)=-\int_0^\infty e^{-au}\sin u\dd u
+       =-\frac1{1+a^2},
+ \qquad \lim_{a\to\infty}I(a)=0,
+\]
+one obtains \(I(a)=\arctan(1/a)\).  On the other hand, Dirichlet integration
+by parts gives, for \(B>A>0\),
+\[
+ \left|\int_A^B\frac{\sin u}{u}\dd u\right|\le\frac2A,
+ \qquad
+ \left|\int_A^\infty e^{-au}\frac{\sin u}{u}\dd u\right|
+ \le\frac2A.
+\]
+On \([0,A]\), the damped and undamped integrals differ by at most \(aA\),
+because \(1-e^{-au}\le au\).  Thus choosing first rational \(A\) and then
+rational \(a\) makes the total comparison error at most
+\(4/A+aA\).  Since \(\arctan(1/a)\to\pi/2\) with its alternating-series
+modulus, this proves
+\(\int_0^\infty\sin u/u\dd u=\pi/2\) constructively.
+
+An integration by parts, whose boundary term is bounded by \(2/x\) at
+infinity and by \(T^2x/2\) at zero, now gives
+\[
+ \int_0^\infty\frac{1-\cos(Tx)}{x^2}\dd x
+ =T\int_0^\infty\frac{\sin(Tx)}x\dd x
+ =\frac{\pi T}{2}.
+\]
+This proves the normalization in (5.2).  More importantly, direct finite
+integration yields the inverse-transform identity
+\[
+ v_T(x)=\frac1{2\pi}\int_{-T}^{T}
+       \left(1-\frac{|t|}{T}\right)e^{itx}\dd t.     \tag{5.5}
+\]
+For \(x\ne0\), the real part is
+\(\pi^{-1}\int_0^T(1-t/T)\cos(tx)\dd t
+ =(1-\cos(Tx))/(\pi T x^2)\), and the imaginary part vanishes; the value at
+zero is the area of the triangle divided by \(2\pi\).  Formula (5.3) is the
+corresponding finite Fourier-pair statement.  In the arithmetic proof one
+uses (5.5) directly, with finite Riemann enclosures, so no general Fourier
+inversion theorem is assumed.  Thus every integral here is a compact finite
+sum plus one of the explicit remainders just displayed.
+
+\begin{theorem}[Constructive Esseen smoothing]\label{thm:esseen}
+Let \(F\) and \(G\) be distribution functions with finite first moments,
+characteristic functions \(f\) and \(g\), and suppose that \(G\) is
+Lipschitz with constant \(M\).  For every \(T>0\),
+\[
+ \sup_x|F(x)-G(x)|
+ \le \frac1\pi\int_{-T}^{T}
+        \abs{\frac{f(t)-g(t)}{t}}\dd t
+      +\frac{24M}{\pi T}.                              \tag{5.6}
+\]
+For finite rational \(F\), the supremum may be replaced internally by the
+universal assertion over rational \(x\).
+\end{theorem}
+
+\begin{proof}
+Put \(\Delta=F-G\), \(\eta=\sup_x|\Delta(x)|\), and
+\(\Delta_T=\Delta*v_T\), \(\eta_T=\sup_x|\Delta_T(x)|\).
+We first show
+\[
+ \eta\le2\eta_T+\frac{24M}{\pi T}.                    \tag{5.7}
+\]
+For a finite rational law, \(\Delta\) is a continuous function between
+finitely many jumps and tends to zero at both ends, so a one-sided extremum
+is attained.  For a general effective approximant, replace the maximum by a
+point within a supplied rational \(\epsilon\) and carry the \(\epsilon\)
+through; the final slack absorbs it.
+
+Suppose first that \(\Delta(x_0)=\eta>0\).  Monotonicity of \(F\) and the
+Lipschitz bound for \(G\) give, for \(s>0\),
+\[
+ \Delta(x_0+s)\ge\eta-Ms.                              \tag{5.8}
+\]
+Set \(h=\eta/(2M)\) and \(y=x_0+h\).  If \(|x|\le h\), then with
+\(s=h-x\),
+\[
+ \Delta(y-x)\ge\eta/2+Mx.                             \tag{5.9}
+\]
+Outside this interval we only use \(\Delta\ge-\eta\).  Since \(v_T\) is
+even, the integral of \(Mxv_T(x)\) over \([-h,h]\) vanishes.  Applying
+(5.4),
+\begin{align*}
+ \eta_T&\ge\Delta_T(y)\\
+ &\ge \frac\eta2\left(1-\frac4{\pi Th}\right)
+       -\eta\frac4{\pi Th}
+  =\frac\eta2-\frac{12M}{\pi T}.                     \tag{5.10}
+\end{align*}
+This is (5.7).  If the negative extremum has larger magnitude, reflect both
+laws by \(x\mapsto-x\), which preserves the hypotheses and the convolution
+norm.
+
+It remains to estimate \(\eta_T\).  Fourier inversion for the smoothed CDF
+difference, using (5.3), gives
+\[
+ \Delta_T(x)=\frac{1}{2\pi}\int_{-T}^{T}
+  \frac{-e^{-itx}}{it}\,[f(t)-g(t)]
+  \left(1-\frac{|t|}{T}\right)\dd t.                 \tag{5.11}
+\]
+The apparent singularity at zero is removable because finite first moments
+give \(f(t)-g(t)=O(t)\).  Hence
+\[
+ \eta_T\le\frac1{2\pi}\int_{-T}^{T}
+       \abs{\frac{f(t)-g(t)}{t}}\dd t.                \tag{5.12}
+\]
+Substitution into (5.7) proves (5.6).
+
+For \(\ipra\), (5.11) is implemented on a finite rational mesh.  The
+Lipschitz moduli of the finite characteristic functions and of the kernel
+supply a Riemann-sum error; the tails have already disappeared because of
+(5.3).  The proof therefore reduces to finite rational inequalities and does
+not use a measure-theoretic inversion theorem as an oracle.
+\end{proof}
+
+\section{A bounded finite-array theorem}\label{sec:bounded}
+
+We first prove the sharper bounded result.  Besides being useful in its own
+right, it is the engine for the constructive Lindeberg theorem.
+
+Normalize so that the total variance is one.  Write
+\[
+ v_j=\E Y_j^2,\qquad \beta_j=\E|Y_j|^3,
+ \qquad \sum_jv_j=1,                                  \tag{6.1}
+\]
+where the \(Y_j\) are independent, centered, and \(|Y_j|\le b\).  Let
+\(a_j(t)=\E e^{itY_j}\) and \(g_j(t)=e^{-v_jt^2/2}\).
+
+\begin{lemma}[Damping from an independent copy]\label{lem:bounded-damping}
+If \(|t|\le1/(2b)\), then
+\[
+ |a_j(t)|\le e^{-v_jt^2/3}.                            \tag{6.2}
+\]
+\end{lemma}
+
+\begin{proof}
+Let \(Y'_j\) be an independent copy.  Finite independence gives
+\[
+ |a_j(t)|^2=\E e^{it(Y_j-Y'_j)}
+            =\E\cos(t(Y_j-Y'_j)).                     \tag{6.3}
+\]
+Because \(|t(Y_j-Y'_j)|\le1\), inequality (4.9) yields
+\[
+ 1-|a_j(t)|^2
+ \ge\frac{t^2}{3}\E(Y_j-Y'_j)^2
+ =\frac{2v_jt^2}{3}.                                  \tag{6.4}
+\]
+Now \(1-u\le e^{-u}\) and square roots give (6.2).
+\end{proof}
+
+\begin{lemma}[One-factor replacement]\label{lem:one-factor}
+For every real \(t\),
+\[
+ |a_j(t)-g_j(t)|
+ \le\frac{\beta_j|t|^3}{6}+\frac{v_j^2t^4}{8}.        \tag{6.5}
+\]
+\end{lemma}
+
+\begin{proof}
+Taking expectations in (4.7), using \(\E Y_j=0\), gives
+\[
+ \abs{a_j(t)-1+\frac12v_jt^2}
+ \le\frac16\beta_j|t|^3.                             \tag{6.6}
+\]
+Apply (4.8) with \(x=v_jt^2/2\) and add the two errors.
+\end{proof}
+
+\begin{theorem}[Bounded array, normalized form]\label{thm:bounded-normalized}
+If \(\sum_j\E Y_j^2=1\) and \(|Y_j|\le b\), then
+\[
+ \dk\!\left(\sum_jY_j,\mathcal N(0,1)\right)
+ \le\min(1,7b).                                       \tag{6.7}
+\]
+\end{theorem}
+
+\begin{proof}
+If \(b\ge1/7\), the trivial bound \(\dk\le1\) is enough.  Assume
+\(b<1/7\) and set \(T=1/(2b)\).  The finite product identity
+\[
+ \prod_ja_j-\prod_jg_j
+ =\sum_j(a_j-g_j)\prod_{k<j}a_k\prod_{k>j}g_k         \tag{6.8}
+\]
+is proved by induction on the number of factors.  Both (6.2) and
+\(g_k\le e^{-v_kt^2/3}\) hold on \([-T,T]\).  Since
+\(v_j\le b^2<1/49\), the product excluding the \(j\)-th factor is at most
+\[
+ e^{-(1-v_j)t^2/3}\le e^{-t^2/4}.                     \tag{6.9}
+\]
+Also \(\sum_j\beta_j\le b\sum_jv_j=b\), and
+\(\sum_jv_j^2\le b^2\sum_jv_j=b^2\).  Therefore (6.5)--(6.9) imply
+\[
+ \abs{\E e^{it\sum_jY_j}-e^{-t^2/2}}
+ \le e^{-t^2/4}
+       \left(\frac{b|t|^3}{6}+\frac{b^2t^4}{8}\right)
+ \le\frac{11}{48}b|t|^3e^{-t^2/4}.                   \tag{6.10}
+\]
+The last inequality uses \(b|t|\le1/2\).
+
+Apply \cref{thm:esseen} with the standard normal, whose density maximum
+\(M\) is less than \(2/5\).  Since
+\[
+ \int_{-\infty}^{\infty}t^2e^{-t^2/4}\dd t=4\sqrt\pi, \tag{6.11}
+\]
+we obtain
+\[
+ \dk\le \frac{11b}{12\sqrt\pi}+\frac{48Mb}{\pi}.     \tag{6.12}
+\]
+The rational estimates \(1/\sqrt\pi<3/5\), \(M<2/5\), and
+\(1/\pi<8/25\) give
+\[
+ \frac{11}{20}b+\frac{768}{125}b
+ =\frac{3347}{500}b<7b.                               \tag{6.13}
+\]
+All constants are rational consequences of (4.2).
+\end{proof}
+
+Rescaling \(Y_j=X_j/s\) proves \cref{thm:bounded-main}.  Notice that the
+event is still evaluated as \(\sum X_j\le q\); only the Gaussian argument
+uses the regular name \(q/s\).
+
+\section{Finite Berry--Esseen theorem}\label{sec:berry-esseen}
+
+The bounded theorem depends on the largest support value.  A true
+Berry--Esseen bound depends only on the sum of third absolute moments.  The
+same finite Fourier method gives a clean, deliberately coarse constant 64.
+
+Again normalize \(\sum_jv_j=1\), and put
+\[
+ \beta_j=\E|Y_j|^3,\qquad \beta=\sum_j\beta_j.         \tag{7.1}
+\]
+By the finite Lyapunov inequality,
+\[
+ v_j^{3/2}\le\beta_j.                                  \tag{7.2}
+\]
+
+\begin{lemma}[Truncated damping]\label{lem:truncated-damping}
+For \(t\in\R\), define
+\[
+ q_j(t)=\bigl(2v_j-8|t|\beta_j\bigr)_+.               \tag{7.3}
+\]
+Then
+\[
+ |a_j(t)|\le e^{-q_j(t)t^2/6}.                         \tag{7.4}
+\]
+\end{lemma}
+
+\begin{proof}
+With \(Z=Y_j-Y'_j\), formula (6.3) remains valid.  On \(|tZ|\le1\), use
+(4.9):
+\[
+ 1-|a_j(t)|^2
+ \ge\frac{t^2}{3}\E[Z^2\ind_{\{|tZ|\le1\}}].        \tag{7.5}
+\]
+The discarded second moment satisfies
+\[
+ \E[Z^2\ind_{\{|tZ|>1\}}]
+ \le |t|\E|Z|^3
+ \le8|t|\beta_j,                                      \tag{7.6}
+\]
+because \(|u-v|^3\le4(|u|^3+|v|^3)\).  Since
+\(\E Z^2=2v_j\), (7.5)--(7.6) give
+\(1-|a_j|^2\ge t^2q_j/3\).  Apply \(1-u\le e^{-u}\)
+and take square roots.
+\end{proof}
+
+\begin{theorem}[Berry--Esseen, normalized form]\label{thm:be-normalized}
+For independent centered finite laws with total variance one,
+\[
+ \dk\!\left(\sum_jY_j,\mathcal N(0,1)\right)
+ \le\min(1,64\beta).                                  \tag{7.7}
+\]
+\end{theorem}
+
+\begin{proof}
+If \(\beta\ge1/64\), the right-hand side is at least one.  Assume
+\(0<\beta<1/64\) and set \(T=1/(16\beta)\).  For \(|t|\le T\),
+\[
+ \sum_kq_k(t)\ge2-8\beta|t|\ge\frac32.                \tag{7.8}
+\]
+Moreover, (7.2) gives
+\(v_j\le\beta_j^{2/3}\le\beta^{2/3}<1/16\), and hence
+\[
+ \sum_{k\ne j}q_k(t)\ge\frac32-2v_j\ge\frac{11}{8}. \tag{7.9}
+\]
+The Gaussian factor \(g_k=e^{-v_kt^2/2}\) is also bounded by
+\(e^{-q_kt^2/6}\), since \(q_k\le2v_k\).  Therefore every product
+excluding the \(j\)-th factor in (6.8) is at most
+\[
+ e^{-11t^2/48}\le e^{-t^2/5}.                         \tag{7.10}
+\]
+Using \cref{lem:one-factor}, together with
+\[
+ \sum_jv_j^2\le\sum_jv_j^{3/2}\le\sum_j\beta_j=\beta,\tag{7.11}
+\]
+we get
+\[
+ \abs{\E e^{it\sum_jY_j}-e^{-t^2/2}}
+ \le\beta\left(\frac{|t|^3}{6}+\frac{t^4}{8}\right)e^{-t^2/5}
+ \qquad(|t|\le T).                                    \tag{7.12}
+\]
+
+The integral term in \cref{thm:esseen} is at most
+\[
+ \frac{2\beta}{\pi}
+ \left[
+  \frac16\int_0^\infty t^2e^{-t^2/5}\dd t
+ +\frac18\int_0^\infty t^3e^{-t^2/5}\dd t
+ \right].                                              \tag{7.13}
+\]
+Integration by parts and the Gaussian integral give
+\[
+ \int_0^\infty t^2e^{-t^2/5}\dd t=\frac{5\sqrt{5\pi}}4,
+ \qquad
+ \int_0^\infty t^3e^{-t^2/5}\dd t=\frac{25}{2}.      \tag{7.14}
+\]
+Using \(\pi>3\) and \(5\pi<16\), (7.13) is less than
+\(8\beta/5\).  The smoothing remainder is
+\[
+ \frac{24M}{\pi T}=\frac{384M}{\pi}\beta
+ <\frac{6144}{125}\beta.                              \tag{7.15}
+\]
+Thus
+\[
+ \dk<\left(\frac85+\frac{6144}{125}\right)\beta
+ =\frac{6344}{125}\beta<64\beta.                     \tag{7.16}
+\]
+This proves the theorem.
+\end{proof}
+
+Rescaling immediately proves \cref{thm:be-main}.  The proof never takes a
+logarithm of a complex characteristic function; this removes a branch-choice
+issue and makes the arithmetic reconstruction substantially simpler.
+
+\section{The iid theorem, sample means, and effective finite variance}
+\label{sec:iid}
+
+\subsection{The finite-law theorem and its cutoff}
+
+\begin{proof}[Proof of \cref{cor:iid-rate}]
+Apply \cref{thm:be-main} to
+\(X_j-\mu\), \(0\le j<n\).  Then
+\[
+ s^2=n\sigma^2,
+ \qquad
+ \rho=n\rho_3,
+ \qquad
+ 64\frac{\rho}{s^3}
+ =\frac{64\rho_3}{\sigma^3\sqrt n}.                  \tag{8.1}
+\]
+This is (1.6).  If (1.7) holds, then after squaring the nonnegative
+quantities one gets
+\[
+ \frac{64^2\rho_3^2}{n\sigma^6}\le2^{-2k},           \tag{8.2}
+\]
+so the error is at most \(2^{-k}\).  The same conclusion for the sample
+mean follows from the identity
+\[
+ \frac{S_n-n\mu}{\sigma\sqrt n}
+ =\frac{\sqrt n}{\sigma}(\overline X_n-\mu).          \tag{8.3}
+\]
+\end{proof}
+
+Because (8.1) bounds every threshold simultaneously, it proves both the
+pointwise CDF statement and the uniform CDF statement on the requested
+pages.  No completeness argument turning pointwise convergence into uniform
+convergence is needed.  It also separates two assertions that are often
+blurred:
+\[
+ \E\overline X_n=\mu,
+ \qquad
+ \Var(\overline X_n)=\frac{\sigma^2}{n}               \tag{8.4}
+\]
+are exact finite identities, whereas normality of \(\overline X_n\) is in
+general only asymptotic.  If \(X\) is Gaussian, its characteristic function
+is \(e^{i\mu t-\sigma^2t^2/2}\); multiplication of \(n\) such factors proves
+that (8.4) is then the mean and variance of an \emph{exact} Gaussian law.
+
+\subsection{A second-moment-tail presentation}
+
+The classical Lindeberg--L\'evy theorem assumes only a finite second moment.
+A constructive version must say how that moment is known to be finite.
+The following input format is sufficient and covers discrete and continuous
+computable laws.
+
+\begin{definition}[Effective finite-variance law]
+An effective finite-variance presentation consists of a centered presented
+law \(X\), a positive regular name \(\sigma^2\), and, for every \(r\), a
+finite rational law \(X^{[r]}\) together with a primitive-recursive coupling
+presentation satisfying
+\[
+ \E\bigl[(X-X^{[r]})^2\bigr]\le \tau(r),
+ \qquad \tau(r)\le2^{-r},                             \tag{8.5}
+\]
+for a primitive-recursive function \(\tau\).  The coupling presentation
+supplies rational interval enclosures for its finite approximants and a
+modulus making (8.5) an arithmetic certificate.  The means, variances, and
+third moments of \(X^{[r]}\) are computed exactly.  Truncation followed by
+rational quantization is the basic example.
+\end{definition}
+
+The coupling is input data, not an invocation of an abstract optimal-coupling
+theorem.  At every requested precision, its probability and moment estimates
+are reduced to a finite rational approximation before the iPRA derivation is
+constructed.
+
+\begin{lemma}[Transfer between close sums]\label{lem:l2-transfer}
+Let \(X_i,Y_i\) be independent pairs with identical pair law, and center both
+coordinates.  If \(\E(X-Y)^2\le\delta^2\), then, for every \(h>0\),
+\[
+ \dk\!\left(\frac{\sum_{i<n}X_i}{\sigma\sqrt n},N(0,1)\right)
+ \le
+ \dk\!\left(\frac{\sum_{i<n}Y_i}{\sigma\sqrt n},N(0,1)\right)
+ +\frac{\delta^2}{\sigma^2h^2}+\frac{2h}{5}.          \tag{8.6}
+\]
+\end{lemma}
+
+\begin{proof}
+Put \(R_n=\sum(X_i-Y_i)\).  Independence and centering give
+\(\E R_n^2\le n\delta^2\).  Chebyshev's finite-sum proof yields
+\[
+ \Pp[|R_n|>h\sigma\sqrt n]\le\frac{\delta^2}{\sigma^2h^2}. \tag{8.7}
+\]
+On the complementary event, replacing the \(Y\)-sum by the \(X\)-sum moves
+a normalized threshold by at most \(h\).  Apply the two inclusions
+\(\{Y\le x-h\}\subseteq\{X\le x\}\subseteq\{Y\le x+h\}\), up to the bad
+event.  The normal CDF moves by at most \(2h/5\), by (4.4).  This proves the stated transfer estimate.  In a level-2 presentation,
+every probability in this argument is enclosed by the supplied finite
+coupling approximants with their explicit modulus.
+\end{proof}
+
+\begin{theorem}[Effective Lindeberg--L\'evy CLT]\label{thm:effective-iid}
+Every effective finite-variance law with \(\sigma^2>0\) has a
+primitive-recursive modulus for
+\[
+ \frac{X_1+\cdots+X_n}{\sigma\sqrt n}
+ \Longrightarrow\mathcal N(0,1).                     \tag{8.8}
+\]
+The same holds after restoring a nonzero mean.
+\end{theorem}
+
+\begin{proof}
+Fix an error request \(2^{-k}\).  First choose \(r\) so that the right side
+of (8.6), with \(\delta^2=4\tau(r)\) and a dyadic \(h\), is below
+\(2^{-k-2}\).  The factor four allows for centering both approximants.
+The variance \(\sigma_r^2\) of \(X^{[r]}\) then differs from \(\sigma^2\) by
+an explicitly controlled amount, because
+\[
+ |\norm{X}_2-\norm{X^{[r]}}_2|
+ \le\norm{X-X^{[r]}}_2.                              \tag{8.9}
+\]
+Choose \(r\) larger if necessary so that rescaling from \(\sigma_r\) to
+\(\sigma\) changes the normal CDF by at most \(2^{-k-2}\).  Finally apply
+\cref{cor:iid-rate} to the fixed finite law \(X^{[r]}\), using its exactly
+computed third moment, and choose \(n\) from (1.7) so that its Berry--Esseen
+error is below \(2^{-k-2}\).  The triangle inequality gives (8.8).
+
+All choices are bounded searches through rational interval certificates.
+There is no extraction of a modulus from the bare assertion
+\(\E X^2<\infty\): the tail/quantization modulus is part of the constructive
+hypothesis.
+\end{proof}
+
+\subsection{Characteristic functions and convolution}
+
+For a centered finite law of variance one, (4.7) with a truncation argument
+at order two gives, for every fixed rational \(t\),
+\[
+ \phi_X(t/\sqrt n)
+ =1-\frac{t^2}{2n}+r_n(t),
+ \qquad n|r_n(t)|\longrightarrow0                   \tag{8.10}
+\]
+with a primitive-recursive modulus supplied by the second-moment-tail data.
+The finite product identity then yields
+\[
+ \phi_{(X_1+\cdots+X_n)/\sqrt n}(t)
+ =\phi_X(t/\sqrt n)^n\longrightarrow e^{-t^2/2}.     \tag{8.11}
+\]
+For finite laws with a third moment, (7.12) is already a quantitative and
+uniform version on a growing interval.  Esseen smoothing proves the CDF
+conclusion directly, so an abstract L\'evy continuity theorem is unnecessary.
+
+At the distribution level, independence says that the law of a sum is the
+finite convolution of the laws.  Hence (8.8) is equivalently a theorem about
+normalized convolution powers.  This proves the characteristic-function and
+convolution formulations on the source pages under the exact constructive
+hypotheses stated here.
+
+\section{Lindeberg and Lyapunov central limit theorems}
+\label{sec:lindeberg}
+
+Let a row consist of independent centered finite laws \(Y_0,\ldots,Y_{m-1}\)
+with total variance one.  Define the normalized Lindeberg tail
+\[
+ L(\eta)=\sum_{j<m}\E\!
+   \left[Y_j^2\ind_{\{|Y_j|>\eta\}}\right].           \tag{9.1}
+\]
+
+\begin{theorem}[Quantitative finite Lindeberg theorem]
+\label{thm:quant-lindeberg}
+Suppose \(0<\lambda\le1/2\), \(\eta>0\), and
+\(L(\eta)\le\lambda^3\).  Then
+\[
+ \dk\!\left(\sum_jY_j,\mathcal N(0,1)\right)
+ \le 28\eta+3\lambda.                                \tag{9.2}
+\]
+\end{theorem}
+
+\begin{proof}
+Truncate and recenter:
+\[
+ T_j=Y_j\ind_{\{|Y_j|\le\eta\}}
+       -\E\!\bigl[Y_j\ind_{\{|Y_j|\le\eta\}}\bigr],
+ \qquad R_j=Y_j-T_j.                                  \tag{9.3}
+\]
+Then \(|T_j|\le2\eta\), both families are centered, and independence gives
+\[
+ \E\left(\sum_jR_j\right)^2
+ =\sum_j\Var(R_j)\le L(\eta).                        \tag{9.4}
+\]
+Let \(q=\Var(\sum_jT_j)\).  The triangle inequality in the finite
+\(L^2\) norm gives
+\[
+ |\sqrt q-1|\le\sqrt{L(\eta)}\le\lambda,             \tag{9.5}
+\]
+where \(\lambda^{3/2}\le\lambda\).  Thus \(\sqrt q\ge1/2\) and
+\(|T_j|/\sqrt q\le4\eta\).  By \cref{thm:bounded-normalized},
+\[
+ \dk\!\left(\frac{\sum_jT_j}{\sqrt q},N(0,1)\right)
+ \le28\eta.                                          \tag{9.6}
+\]
+The two normal CDFs \(\PhiN(x/\sqrt q)\) and \(\PhiN(x)\) differ uniformly
+by at most \(\lambda/2\).  Indeed, the derivative with respect to the scale
+is \(|y|\phiN(y)/a\), and for \(a\ge1/2\) the elementary bound
+\(\sup_y|y|\phiN(y)<1/4\) gives \(1/2\).
+
+Put \(R=\sum_jR_j\).  In the two one-sided comparisons between \(T+R\) and
+\(T\), move the threshold by \(\lambda\).  Chebyshev and (9.4) give
+\(\Pp(|R|>\lambda)\le\lambda\), while the Gaussian shift costs less than
+\(2\lambda/5\).  Together with (9.6) and the scale cost this is less than
+\(28\eta+2\lambda\), and hence proves the slightly looser displayed bound.
+\end{proof}
+
+\begin{corollary}[Effective Lindeberg--Feller theorem]
+\label{cor:lindeberg}
+For a primitive-recursive triangular array with total row variance one,
+assume that a primitive-recursive function supplies, for every dyadic
+\(\eta>0\) and precision \(k\), a row cutoff after which
+\(L_n(\eta)\le2^{-k}\).  Then the row sums converge uniformly in CDF to the
+standard normal law, with a primitive-recursive modulus.
+\end{corollary}
+
+\begin{proof}
+Given \(2^{-k}\), choose dyadic \(\eta\) with \(28\eta<2^{-k-1}\), then
+dyadic \(\lambda\le1/2\) with \(3\lambda<2^{-k-1}\).  Use the supplied
+Lindeberg modulus until \(L_n(\eta)\le\lambda^3\), and apply
+\cref{thm:quant-lindeberg}.
+\end{proof}
+
+Lindeberg also implies the Feller infinitesimal condition.  Indeed, for each
+summand and every \(\eta>0\),
+\[
+ \E Y_j^2\le\eta^2+L(\eta),                           \tag{9.7}
+\]
+so the largest individual variance tends to zero when the row Lindeberg
+quantities do.
+
+\subsection{Lyapunov's condition}
+
+For a fixed positive rational \(\delta\), put
+\[
+ \Lambda_\delta=\sum_j\E|Y_j|^{2+\delta}.             \tag{9.8}
+\]
+Rational powers are regular names obtained by bounded root bisection; for
+integer \(\delta\) everything is rational outright.  On \(|Y_j|>\eta\),
+\(Y_j^2\le |Y_j|^{2+\delta}/\eta^\delta\), hence
+\[
+ L(\eta)\le\eta^{-\delta}\Lambda_\delta.             \tag{9.9}
+\]
+Taking
+\(\eta=\Lambda_\delta^{1/(\delta+3)}\) and
+\(\lambda=(\Lambda_\delta/\eta^\delta)^{1/3}=\eta\)
+in (9.2), whenever \(\eta\le1/2\), gives
+\[
+ \dk\le31\Lambda_\delta^{1/(\delta+3)}.             \tag{9.10}
+\]
+Thus a primitive-recursive Lyapunov modulus implies a CLT modulus.  For the
+most common case \(\delta=1\), \cref{thm:be-normalized} gives the much
+stronger estimate
+\[
+ \dk\le\min(1,64\Lambda_1).                           \tag{9.11}
+\]
+This proves both the Lyapunov theorem and the implication
+``Lyapunov \(\Rightarrow\) Lindeberg'' stated on the source page.
+
+\subsection{The converse fails constructively}
+
+\begin{example}[Lindeberg without Lyapunov]\label{ex:nonconverse}
+For row \(m\ge2\), take \(m^2-m\) independent Rademacher variables of
+amplitude \(1/m\), and one independent spike variable \(Z_m\) with
+\[
+ \Pp(Z_m=m^2)=\Pp(Z_m=-m^2)=\frac1{2m^5},
+ \qquad \Pp(Z_m=0)=1-\frac1{m^5}.                    \tag{9.12}
+\]
+The row variance is
+\[
+ (m^2-m)m^{-2}+m^4m^{-5}=1.                           \tag{9.13}
+\]
+For every fixed \(\eta>0\), the small variables eventually contribute no
+Lindeberg tail and the spike contributes \(1/m\), so (9.1) tends to zero.
+But the row third absolute moment contains
+\(\E|Z_m|^3=m\), so the \(\delta=1\) Lyapunov quantity diverges.  All
+probabilities are rational and all verifications are finite identities in
+\(\ipra\).
+\end{example}
+
+\section{The de Moivre--Laplace theorems}
+\label{sec:demoivre}
+
+Let \(B_n\sim\operatorname{Bin}(n,p)\), where
+\(0<p<1\) is rational, and put \(q=1-p\).  Bernoulli's third centered
+absolute moment is
+\[
+ \rho_3=pq(p^2+q^2),
+ \qquad \sigma^2=pq.                                  \tag{10.1}
+\]
+Thus \cref{cor:iid-rate} immediately gives the global theorem.
+
+\begin{theorem}[Global de Moivre--Laplace]
+For every integer \(k\),
+\[
+ \left|
+ \Pp(B_n\le k)-
+ \PhiN\!\left(\frac{k-np}{\sqrt{npq}}\right)
+ \right|
+ \le\min\!\left(1,
+       \frac{64(p^2+q^2)}{\sqrt{npq}}\right).         \tag{10.2}
+\]
+With the continuity correction \(k+1/2\), the right side may be increased by
+\(1/(5\sqrt{npq})\).
+\end{theorem}
+
+\begin{proof}
+Equation (10.2) is (1.6) with (10.1).  Moving the normal argument from
+\((k-np)/\sqrt{npq}\) to \((k+1/2-np)/\sqrt{npq}\) costs at most the
+Lipschitz constant \(2/5\) times \(1/(2\sqrt{npq})\).
+\end{proof}
+
+The local theorem identifies individual binomial masses with the Gaussian
+histogram.  Write \(\theta=k/n\),
+\[
+ D(\theta\Vert p)=
+ \theta\log\frac{\theta}{p}+(1-\theta)\log\frac{1-\theta}{q},             \tag{10.3}
+\]
+and let \(m=\min(p,q)\).
+
+\begin{theorem}[Quantitative local de Moivre--Laplace]
+\label{thm:local-demoivre}
+Fix a rational \(A>0\).  Suppose
+\(|k-np|\le A\sqrt n\) and \(A/\sqrt n\le m/2\).  Define
+\[
+ E_n(A,p)=
+ \frac{2A}{m\sqrt n}+
+ \frac{4A^3}{3m^2\sqrt n}+
+ \frac{1/12+1/(3m)}{n}.                               \tag{10.4}
+\]
+If \(E_n(A,p)\le1\), then
+\[
+ \Pp(B_n=k)
+ =\frac{e^{-(k-np)^2/(2npq)}}{\sqrt{2\pi npq}}
+   (1+\varepsilon_{n,k}),
+ \qquad |\varepsilon_{n,k}|\le2E_n(A,p).             \tag{10.5}
+\]
+Consequently the piecewise-linear histogram in every fixed central window
+converges uniformly to the normal density.
+\end{theorem}
+
+\begin{proof}
+The constructive Robbins--Stirling bounds give
+\[
+ \log(r!)=(r+\tfrac12)\log r-r+\tfrac12\log(2\pi)+R_r,
+ \qquad \frac1{12r+1}<R_r<\frac1{12r}.               \tag{10.6}
+\]
+Substitution in
+\(\binom nkp^kq^{n-k}\) yields the exact representation
+\[
+ \Pp(B_n=k)=
+ \frac{\exp[-nD(\theta\Vert p)+R_n-R_k-R_{n-k}]}
+      {\sqrt{2\pi n\theta(1-\theta)}}.               \tag{10.7}
+\]
+For \(d=\theta-p\), Taylor's theorem at \(p\) gives
+\[
+ \left|D(p+d\Vert p)-\frac{d^2}{2pq}\right|
+ \le\frac{4|d|^3}{3m^2},                             \tag{10.8}
+\]
+because throughout the interval between \(p\) and \(p+d\), both coordinates
+are at least \(m/2\), and the absolute third derivative is at most
+\(8/m^2\).  The logarithm of the prefactor ratio satisfies
+\[
+ \frac12\left|
+ \log\frac{pq}{\theta(1-\theta)}
+ \right|\le\frac{2|d|}{m}.                            \tag{10.9}
+\]
+Finally, \(k,n-k\ge nm/2\), so
+\[
+ |R_n-R_k-R_{n-k}|
+ \le\frac{1/12+1/(3m)}{n}.                           \tag{10.10}
+\]
+Equations (10.8)--(10.10), together with \(|d|\le A/\sqrt n\), show that
+the logarithm of the ratio between (10.7) and the Gaussian mass in (10.5)
+has absolute value at most (10.4).  For \(|u|\le1\),
+\(|e^u-1|\le2|u|\), proving (10.5).
+
+All logarithms in this proof are finite regular-name computations with
+Taylor remainder bounds.  The internal statement clears the positive
+interval denominators and compares rational enclosures.
+\end{proof}
+
+\section{Local limits, densities, and Fourier formulations}
+\label{sec:local-limit}
+
+The ordinary CLT concerns CDFs.  Convergence of point masses or densities is
+stronger and needs an aperiodicity or smoothing hypothesis.  For finite
+integer laws one can give a fully constructive lattice theorem.
+
+\begin{definition}[Lattice span]
+Let \(X\) be an integer-valued finite law.  Its span is one if the greatest
+common divisor of all differences between support points of positive weight
+is one.  This is a bounded Euclidean-algorithm computation.
+\end{definition}
+
+\begin{theorem}[Effective lattice local CLT]\label{thm:lattice-local}
+Let \(X\) be an integer-valued finite rational law of span one, mean \(\mu\),
+variance \(\sigma^2>0\), and let \(S_n=X_1+\cdots+X_n\).  There is a
+primitive-recursive modulus \(N(k)\) such that, for \(n\ge N(k)\),
+\[
+ \sup_{r\in\mathbb Z}
+ \left|
+  \sigma\sqrt n\,\Pp(S_n=r)
+  -\phiN\!\left(\frac{r-n\mu}{\sigma\sqrt n}\right)
+ \right|\le2^{-k}.                                    \tag{11.1}
+\]
+For span \(h\), the left mass is multiplied by \(\sigma\sqrt n/h\), with
+only the admissible lattice points considered.
+\end{theorem}
+
+\begin{proof}
+Let \(\psi(t)=\E e^{it(X-\mu)}\).  Integer Fourier inversion is the finite
+orthogonality identity
+\[
+ \Pp(S_n=r)=\frac1{2\pi}\int_{-\pi}^{\pi}
+    \psi(t)^n e^{-it(r-n\mu)}\dd t.                  \tag{11.2}
+\]
+It can be proved first for the finite Laurent polynomial \(\psi^n\), where
+integration merely selects its zero coefficient.  After \(u=\sigma\sqrt n t\),
+(11.2) becomes
+\[
+ \sigma\sqrt n\,\Pp(S_n=r)
+ =\frac1{2\pi}\int_{-\pi\sigma\sqrt n}^{\pi\sigma\sqrt n}
+ \psi\!\left(\frac{u}{\sigma\sqrt n}\right)^n
+ e^{-iu(r-n\mu)/(\sigma\sqrt n)}\dd u.               \tag{11.3}
+\]
+
+Fix a rational \(0<\delta<\pi\).  On \(|t|\le\delta\), the independent-copy
+argument gives \(|\psi(t)|\le e^{-ct^2}\) for an explicitly computed rational
+\(c>0\).  Taylor's finite remainder gives, uniformly on every fixed
+\(|u|\le A\),
+\[
+ \psi\!\left(\frac{u}{\sigma\sqrt n}\right)^n
+ \longrightarrow e^{-u^2/2}                          \tag{11.4}
+\]
+with a primitive-recursive modulus.  On the intermediate region
+\(A\le|u|\le\delta\sigma\sqrt n\), the damping bound makes both the
+integrand and the Gaussian tail smaller than an explicit multiple of
+\(e^{-c'A^2}\).
+
+It remains to control \(\delta\le|t|\le\pi\).  Span one implies
+\(|\psi(t)|<1\) there: equality in the triangle inequality would force all
+phases \(e^{itx}\) on the support to coincide, hence \(t\) to be a multiple
+of \(2\pi\).  Compactness is replaced by a finite rational mesh.  A known
+Lipschitz constant for \(\psi\), together with exact interval evaluation at
+mesh points, produces a rational \(r_\delta<1\) such that
+\[
+ \max_{\delta\le|t|\le\pi}|\psi(t)|\le r_\delta.      \tag{11.5}
+\]
+The outer integral is therefore at most
+\(2\pi\sigma\sqrt n\,r_\delta^n\), with a bounded-search cutoff.
+
+Finally, the inverse Fourier integral of \(e^{-u^2/2}\) is
+\(\phiN(x)\).  The three regions just described give a uniform bound because
+the phase in (11.3) has modulus one.  Choosing \(A\), then the mesh and
+\(n\), yields (11.1).  Every choice is primitive recursive.
+\end{proof}
+
+For the Bernoulli law, \cref{thm:lattice-local} recovers the qualitative local
+de Moivre--Laplace theorem; \cref{thm:local-demoivre} gives its sharper
+central-window error.  For absolutely continuous laws, an analogous density
+theorem follows from Fourier inversion when the input supplies an integrable
+characteristic-function majorant.  Such a majorant is genuinely stronger
+than a finite second moment, exactly as the source pages note.
+
+\section{The multivariate central limit theorem}
+\label{sec:multivariate}
+
+A finite rational vector law in dimension \(d\) is a finite law with support
+in \(\Q^d\).  Its mean \(\mu\) and covariance matrix
+\(\Sigma=\E[(X-\mu)(X-\mu)^{\mathsf T}]\) are exact rational data.  For a
+rational vector \(a\), write
+\[
+ \sigma_a^2=a^{\mathsf T}\Sigma a,
+ \qquad \rho_a=\E|a^{\mathsf T}(X-\mu)|^3.           \tag{12.1}
+\]
+
+\begin{theorem}[Constructive Cram\'er--Wold CLT]\label{thm:cramer-wold}
+Let \(X_1,X_2,\ldots\) be iid copies of a finite rational vector law.  For
+every rational \(a\) with \(\sigma_a>0\),
+\[
+ \sup_x\left|
+ \Pp\!\left[
+  a^{\mathsf T}\frac{\sum_{i<n}(X_i-\mu)}{\sqrt n}
+  \le x\right]
+ -\PhiN(x/\sigma_a)
+ \right|
+ \le\frac{64\rho_a}{\sigma_a^3\sqrt n}.             \tag{12.2}
+\]
+If \(\sigma_a=0\), the projection is identically zero.  Consequently the
+vector sums converge, in the rational-projection sense, to the multivariate
+normal \(N_d(0,\Sigma)\).
+\end{theorem}
+
+\begin{proof}
+The scalar variables \(a^{\mathsf T}(X_i-\mu)\) form an iid finite rational
+law with variance and third moment (12.1).  Apply
+\cref{cor:iid-rate}.  A multivariate normal is constructively specified by
+requiring each rational projection to have the corresponding one-dimensional
+normal law; consistency follows from the characteristic function
+\[
+ \phi_\Sigma(t)=\exp(-\tfrac12t^{\mathsf T}\Sigma t). \tag{12.3}
+\]
+Finite-dimensional characteristic functions are regular names, and the
+quadratic form is rational at rational \(t\).
+\end{proof}
+
+For a fixed dimension, rational-projection convergence implies convergence
+on every rational box whose boundary has zero \(N_d(0,\Sigma)\)-probability.
+Here is the constructive content of the usual Cram\'er--Wold device.
+Approximate a box indicator above and below by tensor products of
+one-dimensional piecewise-linear ramps of width \(h\).  Each ramp is a finite
+linear combination of positive-part functions and can be uniformly
+approximated on a large rational cube by a trigonometric polynomial.  Its
+expectation is therefore a finite linear combination of
+characteristic-function values.  Gaussian tails control the complement of
+the cube.  If coordinate \(i\) has variance \(\Sigma_{ii}>0\), its two
+boundary layers have probability at most
+\(2h/\sqrt{2\pi\Sigma_{ii}}\); if \(\Sigma_{ii}=0\), a continuity box is
+required not to place a face on that deterministic coordinate.  Summing the
+resulting regular-name bounds over the finitely many coordinates gives an
+explicit modulus.  Fixing \(h\), the cube, and the trigonometric mesh before
+the induction avoids compactness and choice.
+
+The dimension-dependent convex-set estimate
+\(C d^{1/4}\sum_i\E\|\Sigma^{-1/2}X_i\|^3\) stated on the source page is a
+substantially deeper geometric Berry--Esseen theorem.  This paper proves all
+rational projections with an explicit constant and fixed-dimensional box
+convergence, but does not claim the optimal convex-set inequality.
+
+\section{A random number of summands}
+\label{sec:random-sum}
+
+We now give an effective version of the Robbins random-sum theorem.  All laws
+below are finite rational laws at each index, and every asserted convergence
+comes with a primitive-recursive uniform-CDF modulus.
+
+\begin{theorem}[Effective Robbins CLT]\label{thm:robbins}
+Let \(X_1,X_2,\ldots\) be iid with mean \(\mu\), variance
+\(\sigma^2\), and an effective finite-variance presentation.  Let \(N_n\) be
+nonnegative integer-valued laws, independent of the \(X_i\), with
+\[
+ m_n=\E N_n,
+ \qquad v_n=\Var(N_n)>0,
+ \qquad \frac{N_n-m_n}{\sqrt{v_n}}\Longrightarrow N(0,1).               \tag{13.1}
+\]
+Assume \(\sigma^2+\mu^2>0\).  Then
+\[
+ \frac{\sum_{i=1}^{N_n}X_i-\mu m_n}
+      {A_n}
+ \Longrightarrow N(0,1),
+ \qquad A_n^2=\sigma^2m_n+\mu^2v_n.                  \tag{13.2}
+\]
+The modulus is primitive recursive from the moduli in the hypotheses.
+\end{theorem}
+
+\begin{proof}
+First, (13.1) forces \(v_n\to\infty\) and
+\(m_n/\sqrt{v_n}\to\infty\).  For the second assertion, if the ratio stayed
+below a rational \(C\), then the standardized nonnegative variable would
+vanish below \(-C\), contradicting convergence to a normal CDF at a rational
+point less than \(-C\).  For the first, Chebyshev puts at least \(3/4\) of
+the mass of \(N_n\) in an interval containing at most
+\(4\sqrt{v_n}+3\) integers.  If \(v_n\) stayed bounded, one atom would have a
+fixed positive mass, impossible under uniform convergence to a continuous
+CDF.  These contradictions have effective finite cutoffs.
+
+Let \(\psi(u)=\E e^{iu(X-\mu)}\).  Conditional on \(N_n\), the
+characteristic function of the numerator in (13.2) is
+\[
+ \E\left[
+ e^{it\mu(N_n-m_n)/A_n}\psi(t/A_n)^{N_n}
+ \right].                                             \tag{13.3}
+\]
+For a finite third-moment approximation to \(X\), (4.7) and a finite product
+estimate give, for fixed \(t\),
+\[
+ \psi(t/A_n)^{N_n}
+ =\exp\!\left(-\frac{\sigma^2t^2N_n}{2A_n^2}\right)+o(1)               \tag{13.4}
+\]
+in expectation.  Indeed, the expected error is bounded by a constant times
+\(m_n/A_n^3\), which tends to zero when \(\sigma>0\).  The general effective
+finite-variance case follows by the transfer argument of
+\cref{thm:effective-iid}.  If \(\sigma=0\), the sum is \(\mu N_n\) and the
+conclusion follows directly from (13.1).
+
+Replace \(N_n\) by \(m_n\) in the real exponential in (13.4).  Its expected
+change is bounded by
+\[
+ \frac{\sigma^2t^2}{2A_n^2}\E|N_n-m_n|
+ \le\frac{\sigma^2t^2\sqrt{v_n}}{2A_n^2}\longrightarrow0.             \tag{13.5}
+\]
+When \(\mu=0\), this is \(t^2\sqrt{v_n}/(2m_n)\); otherwise the denominator
+contains \(\mu^2v_n\).
+
+Put
+\[
+ q_n=\frac{\sigma\sqrt{m_n}}{A_n},
+ \qquad r_n=\frac{\mu\sqrt{v_n}}{A_n},
+ \qquad q_n^2+r_n^2=1.                                \tag{13.6}
+\]
+After (13.4)--(13.5), expression (13.3) differs by \(o(1)\) from
+\[
+ e^{-q_n^2t^2/2}
+ \E\exp\!\left(it r_n\frac{N_n-m_n}{\sqrt{v_n}}\right).               \tag{13.7}
+\]
+Uniform CDF convergence in (13.1), Chebyshev tails, and finite integration by
+parts give convergence of the characteristic functions uniformly for
+\(|r_n t|\le|t|\).  Thus (13.7) tends to
+\(e^{-q_n^2t^2/2}e^{-r_n^2t^2/2}=e^{-t^2/2}\).
+To use \cref{thm:esseen}, split its integral at a small dyadic \(\delta\).
+The variable in (13.2) has exact variance one, so on \(|t|\le\delta\),
+\(|\phi_n(t)-e^{-t^2/2}|/|t|\le |t|\); on
+\(\delta\le|t|\le T\), the just-proved uniform characteristic-function
+modulus applies.  Choose \(T\), then \(\delta\), then the row cutoff.  This
+converts the compact-frequency estimate into a CDF modulus without hiding the
+singularity at zero.  All error terms have explicit rational majorants, so
+the proof arithmetizes.
+\end{proof}
+
+\section{Weak dependence and variance calculation}
+\label{sec:dependence}
+
+The full strong-mixing theorem on the source page is possible in an effective
+presentation, but its mixing-coupling bookkeeping is much longer than the
+independent proof.  We prove a substantial exact subclass: bounded stationary
+finite-range dependence.  Such a process is strongly mixing with mixing
+coefficient zero beyond its range.
+
+\begin{definition}[Finite-range dependence]
+A stationary finite rational process \((X_i)\) is \(m\)-dependent if finite
+coordinate blocks whose index sets are separated by more than \(m\) are
+independent.  Internally this is a family of exact finite-factorization
+certificates.
+\end{definition}
+
+Let \(\E X_i=0\), \(|X_i|\le B\), and
+\(\gamma_h=\E(X_0X_h)\).  Put
+\[
+ \sigma^2=\gamma_0+2\sum_{h=1}^{m}\gamma_h.           \tag{14.1}
+\]
+
+\begin{theorem}[Finite-range dependent CLT]\label{thm:m-dependent}
+If \(\sigma^2>0\), then
+\[
+ \frac{X_1+\cdots+X_n}{\sigma\sqrt n}
+ \Longrightarrow N(0,1)                              \tag{14.2}
+\]
+with a primitive-recursive modulus.  Moreover, for \(n>m\),
+\[
+ \Var(S_n)=n\sigma^2-2\sum_{h=1}^{m}h\gamma_h.        \tag{14.3}
+\]
+\end{theorem}
+
+\begin{proof}
+Expanding the square and grouping pairs by their lag gives
+\[
+ \Var(S_n)=n\gamma_0+2\sum_{h=1}^{m}(n-h)\gamma_h,   \tag{14.4}
+\]
+which is (14.3).
+
+Choose a block length \(\ell=\lfloor n^{1/3}\rfloor\).  Partition the first
+\(n\) coordinates into big blocks of length \(\ell\), separated by gaps of
+length \(m\), plus a final remainder.  The big-block sums are independent.
+The number of discarded coordinates is
+\[
+ O_m(n/\ell+\ell).                                    \tag{14.5}
+\]
+For any set \(A\) of coordinates, finite-range dependence and
+\(|\Cov(X_i,X_j)|\le B^2\) give
+\[
+ \Var\!\left(\sum_{i\in A}X_i\right)
+ \le(2m+1)B^2|A|.                                    \tag{14.6}
+\]
+Thus the discarded sum divided by \(\sqrt n\) tends to zero in probability
+with an explicit Chebyshev modulus.
+
+Each big-block sum is bounded by \(\ell B\).  Its total variance differs
+from \(n\sigma^2\) by at most a rational constant times
+\(n/\ell+\ell\), by (14.3), (14.5), and (14.6).  After normalizing its exact
+total variance, \cref{thm:bounded-main} gives an error
+\[
+ O_{m,B,\sigma}(\ell/\sqrt n)=O(n^{-1/6}).            \tag{14.7}
+\]
+The relative variance error is \(O(n^{-1/3})\).  For the discarded sum,
+choose a normalized threshold shift \(h=n^{-1/9}\): Chebyshev transfer
+then contributes \(O(n^{-1/9})\), while normal-density continuity contributes
+\(O(n^{-1/9})\) as well.  Every hidden constant is an explicit rational
+expression in \(m,B,\sigma^{-1}\).  Bounded search turns these displayed
+powers into a primitive-recursive cutoff, proving (14.2).
+\end{proof}
+
+\subsection{Weighted variance}
+
+For \(g_i=g(i/n)\), stationarity gives the exact identity
+\[
+ \Var\!\left(\sum_{i=1}^ng_iX_i\right)
+ =\gamma_0\sum_i g_i^2
+  +2\sum_{h=1}^{n-1}\gamma_h\sum_{i=1}^{n-h}g_ig_{i+h}.                \tag{14.8}
+\]
+Assume a primitive-recursive modulus of continuity for \(g\), boundedness,
+an effective absolutely summable covariance tail, and \(\gamma_n>0\) on the
+indices under consideration.  For each fixed \(h\),
+\(g_{i+h}-g_i\) is uniformly small, while the omitted boundary has only
+\(h\) terms.  Split the lag sum at an effectively chosen \(H\), use the
+covariance-tail modulus beyond \(H\), and obtain
+\[
+ \frac{\Var(\sum_i g_iX_i)}{n\gamma_n}\longrightarrow\sigma^2,
+ \qquad \gamma_n=\frac1n\sum_i g_i^2.                \tag{14.9}
+\]
+This is the constructive content of the variance lemma stated on the source
+page.  In the \(m\)-dependent case the tail is literally zero, and the same
+blocking proof gives the weighted CLT whenever \(\gamma_n\) has a supplied
+positive lower bound.
+
+\section{Martingale differences on finite probability trees}
+\label{sec:martingale}
+
+A finite probability tree has rational transition weights.  A filtration is
+the sequence of prefix partitions.  Conditional expectation is therefore a
+finite weighted average at each node.  A martingale-difference row is a list
+\(D_1,\ldots,D_r\) satisfying
+\[
+ \E[D_k\mid\mathcal F_{k-1}]=0                       \tag{15.1}
+\]
+at every node.  Put
+\[
+ v_k=\E[D_k^2\mid\mathcal F_{k-1}],
+ \qquad V_j=\sum_{k\le j}v_k.                         \tag{15.2}
+\]
+
+\begin{theorem}[Bounded exact-variance martingale CLT]
+\label{thm:bounded-martingale}
+Suppose \(|D_k|\le b\) at every leaf and \(V_r=1\) at every leaf.  Then for
+each rational \(T>0\),
+\[
+ \sup_{|t|\le T}
+ \left|\E e^{it\sum_kD_k}-e^{-t^2/2}\right|
+ \le e^{T^2b^2/2}
+      \left(\frac{bT^3}{6}+\frac{b^2T^4}{8}\right). \tag{15.3}
+\]
+Consequently a primitive-recursive sequence with \(b_n\to0\) satisfies the
+CLT, with an explicit modulus.  For example, taking
+\(T=b^{-1/4}\) in Esseen smoothing gives a computable error tending to zero.
+\end{theorem}
+
+\begin{proof}
+Let \(S_j=\sum_{k\le j}D_k\) and define the compensated process
+\[
+ H_j=\exp\!\left(itS_j+\frac{t^2}{2}(V_j-1)\right).   \tag{15.4}
+\]
+Because \(V_j\le V_r=1\), one has \(|H_j|\le1\).  Conditional Taylor
+expansion and (15.1) give
+\[
+ \left|\E(e^{itD_k}\mid\mathcal F_{k-1})
+        -1+\frac{t^2v_k}{2}\right|
+ \le\frac{|t|^3}{6}\E(|D_k|^3\mid\mathcal F_{k-1})
+ \le\frac{b|t|^3v_k}{6}.                             \tag{15.5}
+\]
+Also
+\[
+ \left|e^{-t^2v_k/2}-1+\frac{t^2v_k}{2}\right|
+ \le\frac{t^4v_k^2}{8}.                              \tag{15.6}
+\]
+Thus, conditioning on \(\mathcal F_{k-1}\),
+\[
+ |\E(H_k\mid\mathcal F_{k-1})-H_{k-1}|
+ \le e^{t^2v_k/2}
+  \left(\frac{b|t|^3v_k}{6}+\frac{t^4v_k^2}{8}\right).                \tag{15.7}
+\]
+Now \(v_k\le b^2\), \(\sum v_k=1\), and
+\(\sum v_k^2\le b^2\).  Telescope expectations from
+\(H_0=e^{-t^2/2}\) to \(H_r=e^{itS_r}\).  This proves (15.3).
+The smoothing integral on \([-T,T]\) is finite and its displayed bound is a
+primitive-recursive expression.
+\end{proof}
+
+\begin{theorem}[Effective martingale Lindeberg theorem]
+\label{thm:martingale-general}
+Consider a primitive-recursive sequence of finite martingale-difference rows.
+Assume effective moduli for
+\[
+ \Pp(|V_r-1|>\eta)\longrightarrow0                   \tag{15.8}
+\]
+for every dyadic \(\eta>0\), and
+\[
+ \sum_k\E\!
+  \left[D_k^2\ind_{\{|D_k|>\eta\}}\right]
+ \longrightarrow0.                                   \tag{15.9}
+\]
+Then \(\sum_kD_k\Longrightarrow N(0,1)\) with a primitive-recursive
+modulus.
+\end{theorem}
+
+\begin{proof}
+Fix the final precision and a small dyadic \(\eta\).  Truncate each difference
+at \(\eta\) and subtract its conditional mean.  The sum of the discarded
+parts has \(L^2\) norm bounded by an explicit multiple of (15.9), exactly as
+in (9.3)--(9.4).  The truncated differences are bounded by \(2\eta\), and
+their predictable variance differs from \(V_r\) by a quantity controlled by
+(15.9).
+
+On the good event from (15.8), stop just before the cumulative predictable
+variance first exceeds one.  If a crossing would occur, the remaining
+deficit is at most the next conditional variance, hence at most
+\(4\eta^2\); if no crossing occurs, it is bounded by the supplied variance
+error.  Split that rational deficit into finitely many rational pieces
+\(r\le4\eta^2\).  For each piece append, conditionally on the current leaf, a
+three-point increment taking \(2\eta,-2\eta,0\) with probabilities
+\(r/(8\eta^2),r/(8\eta^2),1-r/(4\eta^2)\).  It has conditional mean zero,
+variance exactly \(r\), and amplitude at most \(2\eta\).  Thus no irrational
+branch value is introduced.  On each good branch the enlarged row now has
+predictable variance exactly one and maximum increment tending to zero, so
+\cref{thm:bounded-martingale} applies.  The stopped or modified bad branches
+have total probability bounded by the supplied errors in (15.8)--(15.9).
+Chebyshev transfer and normal anti-concentration then return to the original
+row.
+
+All stopping, truncation, branch extension, and conditional averaging occur
+on a finite tree.  After the requested precision is fixed, the proof is a
+bounded induction over nodes.  This is the constructive finite-tree version
+of the martingale theorem stated on the source page.
+\end{proof}
+
+\section{Products, lognormal limits, and the law of large numbers}
+\label{sec:products-lln}
+
+\subsection{Products of positive variables}
+
+Let \(X\) be a positive finite rational law.  Although \(\log X\) need not be
+rational, its values have primitive-recursive regular names.  Put
+\[
+ \nu=\E\log X,
+ \qquad \tau^2=\Var(\log X)>0,
+ \qquad \rho_{\log}=\E|\log X-\nu|^3.                \tag{16.1}
+\]
+For \(P_n=\prod_{i=1}^nX_i\),
+\[
+ \frac{\log P_n-n\nu}{\tau\sqrt n}
+ =\frac1{\tau\sqrt n}\sum_{i=1}^n(\log X_i-\nu).    \tag{16.2}
+\]
+
+\begin{theorem}[Multiplicative CLT]
+For every positive rational threshold \(r\),
+\[
+ \left|
+ \Pp(P_n\le r)-
+ \PhiN\!\left(\frac{\log r-n\nu}{\tau\sqrt n}\right)
+ \right|
+ \le\frac{64\rho_{\log}}{\tau^3\sqrt n}.             \tag{16.3}
+\]
+The same conclusion under merely finite variance of \(\log X\) follows from
+\cref{thm:effective-iid} when a logarithmic second-moment-tail modulus is
+supplied.
+\end{theorem}
+
+\begin{proof}
+The logarithm is strictly increasing, so \(P_n\le r\) is exactly
+\(\sum_i\log X_i\le\log r\).  The product comparison is decidable because
+both \(P_n\) and \(r\) are rational; only the Gaussian argument uses regular
+names.  Apply \cref{cor:iid-rate}.  In an ordinary real completion, putting
+\(r=e^{n\nu+\tau\sqrt n\,y}\) recovers the familiar lognormal-quantile
+display at every continuity threshold.  The internal checker retains the
+stronger proof-theoretically safe rational-threshold form above.
+\end{proof}
+
+Thus products become asymptotically lognormal after logarithmic centering and
+scaling.  The essential moment condition is finite variance of \(\log X\),
+not square-integrability of a density of \(X\).  A density assumption may be
+a sufficient hypothesis in a particular local theorem, but it is not the
+natural general condition for the multiplicative CLT.
+
+\subsection{Weak law and the fluctuation scale}
+
+For iid finite laws, the weak law of large numbers is already an exact finite
+inequality:
+\[
+ \Pp(|\overline X_n-\mu|\ge\varepsilon)
+ \le\frac{\sigma^2}{n\varepsilon^2}.                 \tag{16.4}
+\]
+It follows from Markov's inequality applied to
+\((\overline X_n-\mu)^2\).  The LLN controls the order-one location of the
+sample mean.  The CLT refines it by showing that the residual fluctuation has
+order \(n^{-1/2}\):
+\[
+ S_n= n\mu+\sigma\sqrt n\,Z_n,
+ \qquad Z_n\Longrightarrow N(0,1).                   \tag{16.5}
+\]
+This makes precise the asymptotic expansion described on the source page.
+
+An almost-sure infinite-sequence statement is not literally a first-order
+claim about one completed random sequence in \(\ipra\).  What is internal is
+every finite maximal inequality.  For independent centered finite laws,
+Kolmogorov's argument gives
+\[
+ \Pp\!\left(\max_{j\le n}|S_j|\ge a\right)
+ \le\frac{\Var(S_n)}{a^2}.                            \tag{16.6}
+\]
+The proof partitions by the first crossing time and uses orthogonality of the
+remaining centered sum.  Hence all finite certificates normally used in a
+dyadic proof of the strong law are available; an actual infinite almost-sure
+object belongs to a completion theory rather than to the first-order core.
+
+\section{Stable laws and the generalized theorem}
+\label{sec:stable}
+
+The normal law is stable: sums of independent
+\(N(\mu,\sigma^2)\) variables are exactly normal, as their characteristic
+functions multiply.  The Cauchy law is also stable, because its characteristic
+function is \(e^{-|t|}\) and
+\((e^{-|t|})^n=e^{-n|t|}\).  These identities have constructive regular-name
+proofs by finite integration with explicit tails.
+
+The difficult direction of the generalized central limit theorem says that
+every nondegenerate limit of centered and scaled iid sums is stable.  A useful
+constructive form separates the compactness step from the algebraic step.
+
+\begin{proposition}[Effective stability criterion]
+Suppose a fixed iid law and primitive-recursive sequences \(a_n>0,b_n\)
+satisfy
+\[
+ a_n(X_1+\cdots+X_n)-b_n\Longrightarrow Z            \tag{17.1}
+\]
+with a modulus.  Assume additionally that, for every fixed \(m\), regular
+names and moduli are supplied for
+\[
+ c_m=\lim_n\frac{a_{mn}}{a_n},
+ \qquad
+ d_m=\lim_n\left(\frac{a_{mn}}{a_n}m b_n-b_{mn}\right).                \tag{17.2}
+\]
+Then, for independent copies \(Z_1,\ldots,Z_m\),
+\[
+ Z\ \stackrel d=\ c_m(Z_1+\cdots+Z_m)+d_m.            \tag{17.3}
+\]
+Thus \(Z\) is stable.
+\end{proposition}
+
+\begin{proof}
+Partition the sum of \(mn\) variables into \(m\) independent blocks of
+length \(n\).  Rewrite its normalization using (17.2).  The joint
+characteristic function of the normalized blocks is the product of their
+one-block characteristic functions.  Pass to the supplied limits with the
+explicit moduli to obtain (17.3).
+\end{proof}
+
+The unrestricted classical theorem must prove that suitable ratio limits in
+(17.2) exist, usually by subsequence compactness and regular-variation
+arguments.  Those qualitative existence steps do not automatically provide
+primitive-recursive moduli.  They are therefore recorded as an open
+completion layer, not asserted as an internal \(\ipra\) theorem in this
+package.
+
+\section{Counterexamples and misconceptions}
+\label{sec:counterexamples}
+
+\subsection{No universal ``sample size 30'' rule}
+
+Let
+\[
+ \Pp(X=100)=\Pp(X=-100)=\frac1{20000},
+ \qquad \Pp(X=0)=\frac{9999}{10000}.                  \tag{18.1}
+\]
+Then \(\E X=0\) and \(\Var X=1\).  For \(n=30\),
+\[
+ \Pp(S_{30}=0)\ge\left(\frac{9999}{10000}\right)^{30}
+ \ge1-\frac{30}{10000}=0.997.                        \tag{18.2}
+\]
+Any distribution with an atom of mass \(p\) has Kolmogorov distance at least
+\(p/2\) from every continuous distribution: the left and right CDF limits
+differ by \(p\), while the comparison CDF does not jump.  Hence the
+standardized sum in (18.2) is more than \(0.498\) away from normal.  This is
+an exact rational disproof of a distribution-free ``\(n\ge30\)'' heuristic.
+
+\subsection{Pairwise independence is not enough}
+
+Let \(U\) be uniform on \(\mathbb F_2^m\).  For every nonzero
+\(a\in\mathbb F_2^m\), put
+\[
+ X_a=(-1)^{a\cdot U}.                                 \tag{18.3}
+\]
+The \(n=2^m-1\) variables are Rademacher and pairwise independent, because
+two distinct nonzero linear functionals over \(\mathbb F_2\) are jointly
+uniform.  Yet
+\[
+ \sum_{a\ne0}X_a=
+ \begin{cases}
+ n,&U=0,\\
+ -1,&U\ne0.
+ \end{cases}                                          \tag{18.4}
+\]
+Thus the variance-normalized sum converges in probability to zero, not to a
+normal law.  Full independence, or a genuine weak-dependence hypothesis, is
+essential.
+
+\subsection{Sampling does not Gaussianize the population}
+
+The empirical distribution of individual observations approximates the
+population law, not a Gaussian law.  The CLT concerns the separate random
+variable formed by a sum or average across repeated samples.  This logical
+distinction is visible in the finite coding: the empirical histogram is a
+vector of category counts, whereas the sample mean is one rational observable
+of the product space.
+
+\section{Examples and elementary applications}
+\label{sec:applications}
+
+\begin{example}[Fair dice]
+For a fair die \(X\in\{1,\ldots,6\}\),
+\[
+ \mu=\frac72,
+ \qquad \sigma^2=\frac{35}{12},
+ \qquad \rho_3=\frac{51}{8}.                         \tag{19.1}
+\]
+Therefore the normalized sum of \(n\) dice has Kolmogorov error at most
+\[
+ \min\!\left(1,
+ \frac{64(51/8)}{(35/12)^{3/2}\sqrt n}\right).       \tag{19.2}
+\]
+Although this constant is intentionally coarse, (1.7) supplies a wholly
+rational certified sample-size cutoff for any requested dyadic accuracy.
+\end{example}
+
+\begin{example}[Linear regression with fixed design]
+In a fixed-design scalar regression, the centered least-squares estimator is
+\[
+ \widehat\beta-\beta
+ =\frac{\sum_i w_i\varepsilon_i}{\sum_i w_i^2}.       \tag{19.3}
+\]
+For independent centered errors of variance \(\sigma^2\), the standardized
+numerator is a triangular array.  If the errors are bounded by \(B\), then
+\cref{thm:bounded-main} gives
+\[
+ \dk\le
+ 7B\frac{\max_i|w_i|}{\sigma\sqrt{\sum_iw_i^2}}.     \tag{19.4}
+\]
+Thus the usual ``no dominating observation'' condition
+\(\max|w_i|/\sqrt{\sum w_i^2}\to0\) has an immediate constructive normal
+approximation.  Third-moment errors can instead use \cref{thm:be-main}.
+\end{example}
+
+The same weighted-array argument applies to measurement errors, survey
+averages, and other ``many small unrelated effects'' examples.  The phrase is
+not a theorem until ``small'' and ``unrelated'' are replaced by a bound such
+as (9.1), (14.6), or (19.4).
+
+\section{Why the proofs fit intuitionistic primitive recursive arithmetic}
+\label{sec:ipra-audit}
+
+\subsection{The exact first-order theorem}
+
+The mathematical notation in \cref{thm:be-main} abbreviates a universal
+arithmetic sentence.  A natural number \(e\) codes a finite row, a natural
+number \(u\) codes a signed rational threshold, and \(p\) is a requested
+precision.  A fixed primitive-recursive checker
+\[
+ \mathsf{BECheck}(e,u,p)                               \tag{20.1}
+\]
+decodes the row, computes exact means, centered support values, total
+variance and third moments, enumerates the product-space CDF at the raw
+threshold, and evaluates interval names for the Gaussian CDF and the error
+bound.  It returns zero exactly when the dyadically slackened enclosure
+required by (1.4) succeeds.  Invalid encodings return zero.  The internal
+open theorem is simply
+\[
+ \mathsf{BECheck}(e,u,p)=0,                            \tag{20.2}
+\]
+and the closed theorem universally quantifies \(p,u,e\).
+
+Returning zero on invalid inputs is convenient: validity need not be placed
+in an implication with logical connectives.  The checker can branch on its
+decidable validity test and make (20.2) automatically true in the invalid
+branch.  In the valid branch it checks integer inequalities obtained by
+clearing explicitly positive denominators.
+
+\subsection{Where induction occurs}
+
+Every induction used in the proof has a quantifier-free invariant after all
+external parameters are fixed:
+
+\begin{center}
+\begin{tabular}{p{0.31\textwidth}p{0.58\textwidth}}
+\toprule
+Construction & Quantifier-free invariant \\
+\midrule
+Finite sums and products & defining integer/rational equality after a fixed number of terms \\
+Mixed-radix product space & decoded prefix has the stated accumulated weight and value \\
+Expectation factorization & partial double sum equals the product of partial sums \\
+Characteristic-product telescoping & partial product difference equals the corresponding partial replacement sum \\
+Taylor evaluators & finite polynomial recurrence and a cleared-denominator remainder inequality \\
+Bisection for roots & the current rational interval contains the target and has the claimed width \\
+Riemann sums & partial sum plus an explicit rational error budget \\
+Esseen integral & mesh prefix satisfies its accumulated upper/lower enclosure \\
+Threshold CDF & accumulated weight equals the weight of all decoded outcomes satisfying a decidable comparison \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The proof never uses induction on a formula containing an unbounded
+quantifier.  Universal closure is applied only after the open QF derivation
+has been constructed.
+
+\subsection{Intuitionistic logic}
+
+No excluded-middle principle for arbitrary propositions occurs.  Case splits
+are on decidable comparisons of integers or rationals, finite membership
+predicates, or Boolean validity checks.  Positivity needed for division is
+carried as a witness.  Existence claims such as ``choose a mesh'' use a
+displayed primitive-recursive bound, not a negative double-negation
+argument.  The independent copy, product space, and martingale tree are
+finite constructions rather than uses of a countable product theorem.
+
+The external paper occasionally writes a supremum, an improper integral, or
+a real limit for readability.  The internal forms are respectively:
+
+\begin{itemize}
+\item a universal inequality at every rational threshold;
+\item a compact rational Riemann sum plus a displayed tail bound;
+\item a primitive-recursive modulus and a dyadic interval inclusion.
+\end{itemize}
+
+\subsection{The theorem-schema issue}
+
+First-order \(\ipra\) has number variables, not variables ranging over all
+primitive-recursive programs or all real functions.  Therefore the result is
+a uniform metatheorem: for each fixed finite-law evaluator or fixed effective
+presentation, there is a mechanically generated arithmetic derivation.
+Equivalently, one may work in a definitional extension containing the fixed
+primitive-recursive function symbols.  This is the same honest reading used
+throughout the ProveIt constructive-analysis packets.
+
+\section{Lean formalization blueprint}
+\label{sec:lean}
+
+The archive contains three Lean-facing artifacts:
+\begin{itemize}[nosep]
+\item \code{FiniteCLTBlueprint.lean};
+\item \code{ObjectLanguageTarget.lean};
+\item \code{ROADMAP.md}.
+\end{itemize}
+They are deliberately split into an ambient finite mathematics layer and a
+deep object-language layer.
+
+\subsection{Ambient finite mathematics}
+
+A first module should define
+\begin{verbatim}
+structure FinLaw where
+  card      : Nat
+  value     : Fin card -> Rat
+  weight    : Fin card -> Nat
+  total     : Nat
+  total_pos : 0 < total
+  weight_sum : (sum i, weight i) = total
+\end{verbatim}
+with exact functions
+\code{expect}, \code{mean}, \code{variance}, \code{thirdAbs},
+\code{cdf}, \code{product}, and \code{convolution}.  Product outcomes use a
+mixed-radix code.  The principal finite lemmas are:
+\begin{verbatim}
+expect_product
+variance_sum_centered
+charFun_product
+product_replace_telescoping
+cdf_sum_raw_threshold
+\end{verbatim}
+All are theorems about \code{Rat} or finite sums and can be proved before any
+real analysis is introduced.
+
+The analytic interface is a structure of regular rational interval names:
+\begin{verbatim}
+structure Regular where
+  lo hi    : Nat -> Rat
+  ordered : forall p, lo p <= hi p
+  nestedLo : Monotone lo
+  nestedHi : Antitone hi
+  width    : forall p, hi p - lo p <= 1 / 2^p
+\end{verbatim}
+Separate modules then implement square root, sine, cosine, exponential,
+\(\pi\), compact integration, Gaussian density/CDF, and complex pairs.  The
+implementation should reuse the existing constructive calculus, Taylor, and
+Stirling packets where their APIs are stable, but the CLT theorem must depend
+only on finite evaluators and proved error bounds, not on semantic
+\code{Real} completeness.
+
+The analytic theorem order should mirror the paper:
+\begin{enumerate}
+\item finite Taylor inequalities (4.7)--(4.9);
+\item Gaussian integral and characteristic function;
+\item the kernel (5.1), its normalization, transform, and tail;
+\item Esseen smoothing;
+\item independent-copy damping and one-factor replacement;
+\item bounded-array constant 7;
+\item Berry--Esseen constant 64;
+\item Lindeberg truncation and the corollaries.
+\end{enumerate}
+
+An ambient Lean theorem may use \code{Real} as a semantic convenience for
+initial experimentation.  It is not the final endpoint.
+
+\subsection{Object-language endpoint}
+
+The decisive module imports
+\code{ConciseIPRA.NativeBiInterpretation}.  It must build concrete
+\code{PR 3} syntax for (20.1) and then construct
+\begin{verbatim}
+structure InternalProof extends Representation where
+  derived : ([] : List (Fm PTm 3))
+              |- [PRAAx] berryEsseenOpen check
+\end{verbatim}
+where the open formula is the equation
+\code{check(row,q,p)=0}.  The archive's exact notation uses the repository's
+sequent symbol rather than the ASCII rendering above.  The completed value
+must be produced from explicit \code{PRAAx} derivations.  A semantic theorem
+that the checker always returns zero is not a reflection principle and does
+not fill \code{derived}.
+
+After the open proof, universal generalization constructs the closed sentence.
+The existing repository theorem \code{pra_iff_native} then transports that
+proof to the native scalar calculus, and \code{FromPRA.code} compiles the
+checker syntax to the concise iterator language.  Thus the final chain is
+\[
+ \text{finite algorithms}
+ \longrightarrow \PR\text{ syntax}
+ \longrightarrow \mathsf{PRAAx}\text{ derivation}
+ \longrightarrow \text{native ConciseIPRA proof}.    \tag{21.1}
+\]
+
+\subsection{Concrete implementation order}
+
+The lowest-risk route to completion is:
+
+\begin{enumerate}
+\item Compile signed integers, positive-denominator rationals, bounded sums,
+products, powers, pairing, lists, and mixed-radix decoding to \code{PR}.
+\item Prove the defining equations of the exact probability layer inside
+\code{PRAAx}.
+\item Implement regular names with fixed precision schedules.  Keep all
+analytic algorithms closed and named; do not attempt a universal program
+evaluator.
+\item Formalize the finite Taylor and Gaussian lemmas.  Reuse previously
+verified finite-integration components where possible.
+\item Formalize Esseen smoothing first as a rational mesh theorem.  The
+external integral notation should be a corollary of the mesh enclosure.
+\item Construct the bounded theorem; it is simpler and tests all major APIs.
+\item Add truncated damping and construct the constant-64 theorem.
+\item Instantiate \code{Representation}, then \code{InternalProof}; close and
+transport the theorem.
+\item Put ordinary measure-theoretic interpretations and Mathlib probability
+corollaries in downstream modules so they cannot mask a missing internal
+proof.
+\end{enumerate}
+
+The repository revision inspected for this plan begins
+\code{979613af}; the full SHA is recorded in \code{provenance/SOURCES.md}.
+Its toolchain file specifies Lean \code{v4.32.0}.  The supplied Lean files contain no \code{sorry} and
+introduce no central-limit axiom.  They were not compiled in the preparation
+environment, because no Lean/Lake executable was installed.  Successful
+elaboration is therefore not claimed.  The concrete unfinished endpoint is a
+closed checker \code{beTest} together with an actual value of
+\code{CentralLimitIPRAPlan.InternalProof beTest}.
+
+\section{Coverage summary and remaining boundaries}
+\label{sec:coverage}
+
+The following compact table supplements the machine-readable-style ledger in
+\code{THEOREM_LEDGER.md}.
+
+\begin{center}
+\small
+\begin{longtable}{p{0.31\textwidth}p{0.16\textwidth}p{0.44\textwidth}}
+\toprule
+Source item & Status & Result here \\
+\midrule
+\endfirsthead
+\toprule
+Source item & Status & Result here \\
+\midrule
+\endhead
+Classical iid CLT & effective/direct & Direct for finite rational laws; effective completion with a second-moment-tail/quantization modulus. \\
+Pointwise and uniform CDF convergence & proved & Explicit universal-threshold Berry--Esseen inequality. \\
+Berry--Esseen & proved & Independent triangular arrays, constant 64. \\
+Lyapunov and Lindeberg & proved/effective & Quantitative truncation, all fixed rational \(\delta>0\), explicit nonconverse. \\
+de Moivre--Laplace & proved & Global CDF rate and local Robbins--Stirling theorem. \\
+Density/convolution form & proved/effective & Exact convolution and span-one lattice local CLT; continuous density form under a Fourier majorant. \\
+Multivariate CLT & proved/effective & Every rational projection with rate; fixed-dimensional Gaussian-continuity boxes. \\
+Convex-set \(d^{1/4}\) rate & open here & Requires separate high-dimensional geometry. \\
+Random number of summands & effective & Constructive Robbins theorem with moduli. \\
+Weak dependence & substantial subclass & Bounded stationary finite-range dependence; exact covariance formula. \\
+Martingale differences & effective & Finite-tree predictable-variance/Lindeberg theorem. \\
+Products/lognormality & proved/effective & Finite variance of \(\log X\), with a third-moment rate when available. \\
+Generalized stable-law characterization & partial & Stability algebra and an effective ratio-limit criterion; compactness classification not reconstructed. \\
+Entropy monotonicity & open here & Needs differential entropy and entropy-power machinery plus regularity. \\
+Convex bodies, lacunary series, Gaussian polytopes, Haar matrices, subsequences, crystal lattices & open here & Distinct geometric, harmonic, or compactness theories; not consequences of the finite-array engine alone. \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+The status word ``effective'' is not a euphemism for a missing proof.  It
+means that the classical qualitative hypothesis has been replaced by the
+explicit modulus needed for a first-order constructive theorem.  By contrast,
+items marked open require additional mathematical machinery not developed in
+this packet.
+
+\appendix
+
+\section{Rational audit of the two main constants}
+\label{app:constants}
+
+The bounded theorem uses only
+\[
+ \pi>\frac{25}{8},
+ \qquad \frac1{\sqrt\pi}<\frac35,
+ \qquad M=\frac1{\sqrt{2\pi}}<\frac25,
+ \qquad \frac1\pi<\frac8{25}.                         \tag{A.1}
+\]
+Consequently
+\[
+ \frac{11}{12\sqrt\pi}<\frac{11}{20},
+ \qquad
+ \frac{48M}{\pi}<48\cdot\frac25\cdot\frac8{25}
+ =\frac{768}{125},                                    \tag{A.2}
+\]
+and
+\[
+ \frac{11}{20}+\frac{768}{125}
+ =\frac{3347}{500}<7.                                 \tag{A.3}
+\]
+
+For the Berry--Esseen theorem, \(5\pi<16\) and \(\pi>3\) imply
+\[
+ \frac{2}{\pi}
+ \left(\frac{5\sqrt{5\pi}}{24}+\frac{25}{16}\right)
+ <\frac23\left(\frac56+\frac{25}{16}\right)
+ =\frac{115}{72}<\frac85.                             \tag{A.4}
+\]
+The smoothing term satisfies
+\[
+ \frac{384M}{\pi}
+ <384\cdot\frac25\cdot\frac8{25}
+ =\frac{6144}{125}.                                   \tag{A.5}
+\]
+Therefore
+\[
+ \frac85+\frac{6144}{125}
+ =\frac{6344}{125}<64.                                \tag{A.6}
+\]
+Every comparison in (A.1)--(A.6) becomes an integer inequality after
+squaring only nonnegative quantities.  The accompanying Python validation
+records the exact \code{Fraction} calculations; floating-point values are
+display-only.
+
+\section{A checker-level statement}
+\label{app:checker}
+
+One convenient checker specification is the following.  Given
+\((e,u,p)\):
+
+\begin{enumerate}
+\item Decode \(e\) as a row of finite rational law codes.  On failure, return
+zero.
+\item Compute exact centered values, \(s^2\), \(\rho\), and the raw-sum CDF
+\(F(q)\), where \(q\) is decoded from \(u\).  If \(s^2=0\), check the
+separate deterministic statement.
+\item Request precision \(p+c(e,u)\) from the square-root, reciprocal,
+Gaussian-CDF, and multiplication interval evaluators, where the guard
+\(c\) is a displayed bit-length polynomial large enough for propagated
+rounding errors.
+\item Form rational intervals \([L_F,U_F]\), \([L_\Phi,U_\Phi]\), and
+\([L_E,U_E]\) for the exact CDF, \(\PhiN(q/s)\), and
+\(\min(1,64\rho/s^3)\).
+\item Return zero when
+\[
+ U_F-L_\Phi\le U_E+2^{-p}
+ \quad\text{and}\quad
+ U_\Phi-L_F\le U_E+2^{-p};                            \tag{B.1}
+\]
+otherwise return one.
+\end{enumerate}
+
+Regularity makes the checker eventually accept at every precision, while the
+mathematical proof establishes that the fixed precision schedule already
+suffices.  Formula (B.1) contains only rational comparisons, hence integer
+comparisons after clearing positive denominators.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item Can the elementary finite Fourier proof be optimized inside \(\ipra\)
+to a Berry--Esseen constant below one without materially enlarging the
+checker?
+\item Is there a proof-friendly multidimensional smoothing kernel giving a
+reasonable explicit convex-set bound while retaining only QF induction?
+\item Can the strong-mixing theorem with the source page's polynomial mixing
+rate and twelfth moment be reconstructed with a compact primitive-recursive
+block-coupling library?
+\item What is the smallest regular-name and finite-integration core needed to
+formalize Esseen smoothing in the native ConciseIPRA calculus?
+\item Can the effective ratio hypotheses in \cref{sec:stable} be derived from
+an intrinsic computable tightness condition, yielding a useful constructive
+generalized CLT?
+\item Can the finite-tree martingale proof be sharpened to a transparent
+Berry--Esseen rate in terms of predictable third moments and variance error?
+\item Which local limit hypotheses admit the shortest object-language
+checker: lattice spectral gaps, integrable characteristic functions, or
+bounded-variation densities?
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{WikipediaCLT}
+Wikipedia contributors,
+\emph{Central limit theorem}, revision consulted 15 November 2026,
+\url{https://en.wikipedia.org/wiki/Central_limit_theorem}.
+
+\bibitem{MathWorldCLT}
+E. W. Weisstein,
+\emph{Central Limit Theorem}, MathWorld---A Wolfram Resource,
+consulted 15 November 2026,
+\url{https://mathworld.wolfram.com/CentralLimitTheorem.html}.
+
+\bibitem{Feller}
+W. Feller,
+\emph{An Introduction to Probability Theory and Its Applications},
+Volumes I--II, Wiley.
+
+\bibitem{Petrov}
+V. V. Petrov,
+\emph{Sums of Independent Random Variables}, Springer.
+
+\bibitem{Billingsley}
+P. Billingsley,
+\emph{Probability and Measure}, Wiley.
+
+\bibitem{ProveIt}
+V. Reshetnikov,
+\emph{ProveIt}, repository revision \code{979613af}\allowbreak\ldots\code{d749f},
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\end{thebibliography}
+
+\end{document}
