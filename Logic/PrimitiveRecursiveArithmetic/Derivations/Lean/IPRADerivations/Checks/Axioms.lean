@@ -201,6 +201,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Totatives.e_fixed
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Totatives.even_pointwise
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Totatives.phi_even
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber.reindex
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber.dvd_cancel
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber.fiber_fwd
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber.fiber_bwd
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber.fiber_point
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber.gcd_fiber
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
