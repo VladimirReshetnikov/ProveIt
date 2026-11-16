@@ -135,6 +135,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Fermat.dvd_sum
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Fermat.freshman
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Fermat.fermat
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.RSA.pw_mul
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.RSA.rem_mul_congr
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.RSA.fermat_pow
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.RSA.fermat_unit
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.RSA.gcd_distinct_primes
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.RSA.rsa
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
