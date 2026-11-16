@@ -144,3 +144,4 @@ import IPRADerivations.Probability.NormalMoments
 import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Topology.Sperner
 import IPRADerivations.Topology.CrossingParity
+import IPRADerivations.Topology.FinitePreorder
