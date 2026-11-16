@@ -4,6 +4,14 @@ The [iPRA unification plan](../../../../Logic/PrimitiveRecursiveArithmetic/UNIFI
 describes arithmetic reuse for candidate machines and
 preserves the exact Lean and Rocq verification boundaries.
 
+The [C222 evaluator](../../Lean/BusyBeaver/ZFC/ArithmeticHistory222.lean) uses
+the shared guarded-witness derivation for its positive code row. The
+[model interpretation](../../Lean/BusyBeaver/ZFC/ArithmeticPredecessorWitness.lean)
+uses the existing IOpen predecessor laws to replace a witness `raw ≤ code`
+with `code − 1` whenever `code = raw + 1`. The same rule derives the
+[ordinary iPRA normalization](../../../../Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Order.lean).
+C222 retains the original `stepDef` graph and its totality theorem in IΣ₁.
+
 The literal [K215 machine](candidate-k215/README.md) now has **compiled Lean and Rocq
 correctness proofs**: blank-tape halting iff ZFC has a finite refutation, and
 nonhalting iff syntactic consistency of ZFC. Lean's original fresh build checked

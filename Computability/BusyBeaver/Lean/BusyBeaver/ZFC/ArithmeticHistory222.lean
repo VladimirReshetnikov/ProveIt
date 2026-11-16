@@ -1,5 +1,6 @@
 import BusyBeaver.ZFC.ArithmeticRow222
 import BusyBeaver.ZFC.ArithmeticSequenceHistory
+import BusyBeaver.ZFC.ArithmeticPredecessorWitness
 
 set_option autoImplicit false
 set_option Elab.async false
@@ -51,7 +52,7 @@ def stepDef : 𝚺₁.Semisentence 3 := .mkSigma
 instance step_defined : 𝚺₁-Function₂[V] stepValue via stepDef := .mk fun e => by
   classical
   simp [stepDef]
-  rw [ArithmeticRow254.predecessor_witness]
+  rw [ArithmeticPredecessorWitness.predecessor_witness]
   by_cases h : e 2 = 0 <;> simp [stepValue, h]
 
 @[simp] theorem stepValue_zero (s : V) : stepValue s 0 = 0 := by

@@ -1,4 +1,5 @@
 import IPRADerivations.Core.Monus
+import ConciseIPRA.GuardedWitness
 
 /-!
 # The order of iPRA
@@ -63,6 +64,35 @@ theorem le_add_right (a c : PTm n) : Γ ⊢[PRAAx] le a (a + c) := monus_add a c
 theorem le_add_left (a c : PTm n) : Γ ⊢[PRAAx] le a (c + a) := le_of_eq_add (add_comm _ _)
 
 theorem le_succ_self (a : PTm n) : Γ ⊢[PRAAx] le a (succ a) := le_of_eq_add (succ_eq_add_one a)
+
+/-- A nonzero term is the successor of its truncated difference from one. -/
+theorem eq_monus_one_add_one {a : PTm n} (ha : Γ ⊢[PRAAx] neg (a ≐ zero)) :
+    Γ ⊢[PRAAx] a ≐ monus a (succ zero) + succ zero := by
+  refine .orE (zero_or_succ a) (.botE _ (.impE ha.wk Prf.hyp0)) ?_
+  have hs : (a ≐ succ (pred a)) :: Γ ⊢[PRAAx] a ≐ succ (pred a) := Prf.hyp0
+  have hp := (congrMonus hs (.eqRefl (succ zero))).eqTrans
+    ((succ_monus_succ (pred a) zero).eqTrans (monus_zero (pred a)))
+  exact hs.eqTrans ((succ_eq_add_one _).eqTrans (congrAdd hp.eqSymm (.eqRefl _)))
+
+/-- Normalize the guarded predecessor witness for any body, preserving the
+bound and instantiating the body at the canonical witness `a ∸ 1`. -/
+theorem predecessor_witness (a : PTm n) (body : Fm PTm (n + 1)) :
+    Γ ⊢[PRAAx] Fm.iff
+      (.ex ((le (var 0) (Syn.shift a) ⋏ (Syn.shift a ≐ var 0 + succ zero)) ⋏ body))
+      (neg (a ≐ zero) ⋏ body.subst (Syn.inst (monus a (succ zero)))) := by
+  let row := le (var 0) (Syn.shift a) ⋏ (Syn.shift a ≐ var 0 + succ zero)
+  let w := monus a (succ zero)
+  refine Prf.guardedWitness row body (neg (a ≐ zero)) w ?_ ?_
+  · have he : row :: Γ.map Fm.shift ⊢[PRAAx] Syn.shift a ≐ var 0 + succ zero :=
+      Prf.andE₂ Prf.hyp0
+    have hne : row :: Γ.map Fm.shift ⊢[PRAAx] neg (Syn.shift a ≐ zero) := .impI <|
+      succ_ne_zero (((succ_eq_add_one (var 0)).eqTrans he.wk.eqSymm).eqTrans Prf.hyp0)
+    have hw : row :: Γ.map Fm.shift ⊢[PRAAx] (var 0 : PTm (n + 1)) ≐ monus (Syn.shift a) (succ zero) :=
+      ((congrMonus he (.eqRefl _)).eqTrans (add_monus (var 0) (succ zero))).eqSymm
+    simpa [w, Fm.shift, Syn.shift] using Prf.andI hne hw
+  · have h : (neg (a ≐ zero) :: Γ) ⊢[PRAAx] neg (a ≐ zero) := Prf.hyp0
+    have he := eq_monus_one_add_one h
+    simpa [row, w] using Prf.andI (le_of_eq_add he) he
 
 theorem le_trans {a b c : PTm n} (h₁ : Γ ⊢[PRAAx] le a b) (h₂ : Γ ⊢[PRAAx] le b c) :
     Γ ⊢[PRAAx] le a c :=

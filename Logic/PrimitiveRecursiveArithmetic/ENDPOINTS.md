@@ -109,6 +109,20 @@ public bridge and order-symbol comparison.
   and follow the
   [ZFC project index](../../Computability/BusyBeaver/Research/ZFC/README.md)
   for table and replay evidence.
+- **C222 arithmetic evaluator.**
+  [`ArithmeticHistory222.step_defined`](../../Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticHistory222.lean)
+  proves `𝚺₁-Function₂[V] stepValue via stepDef` for an arbitrary model `V`
+  of `IΣ₁`. Its positive code row uses the
+  [IOpen interpretation](../../Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticPredecessorWitness.lean)
+  of `Prf.guardedWitness`, the same inference used by the ordinary iPRA
+  `LeanProofs.IPRA.predecessor_witness`. In the IOpen interpretation the row
+  states `x ≤ code ∧ code = x + 1` and the body is any `Q : V → Prop`.
+  The resulting guard is `code ≠ 0` and the witness is `code − 1`.
+  The exact `stepDef` formula and `IΣ₁ ⊢ totalitySentence` stay in the
+  evaluator's original theory. Check the source with the root Lake
+  environment using `lake build +BusyBeaver.ZFC.ArithmeticHistory222`.
+  The focused source replay checked both declarations with `propext`,
+  `Classical.choice`, and `Quot.sound`.
 - **Explicit nine-variable equation.**
   [`IPRAExplicitZFCFinal.standard_equivalence`](../../Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRAExplicitZFCFinal.lean)
   proves `standardTheory ⊢ nativeNoZero ExplicitZFCSyntax.expression 🡘
