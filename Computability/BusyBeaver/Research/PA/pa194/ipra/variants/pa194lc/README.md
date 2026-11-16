@@ -18,6 +18,14 @@ list of 3,673 instructions.
 - [`PA194LCModelStartup.modeledStartup`](PA194LCModelStartup.lean)
   proves that 58,154 steps from blank reach the common packed seed
   in every `IΣ₁` model.
+- [`PA194LCInitializer.startup_root`](PA194LCInitializer.lean) identifies
+  that seed with the exact LC source root.
+  [`PA194LCController.halt_iff_controller`](PA194LCController.lean) compares
+  halting at arbitrary model-valued clocks using the source certificates
+  and the checked LC boxes.
+- [`PA194LCNative.consistency_iff_literal_nonhalt`](PA194LCNative.lean)
+  derives both directions in standard iPRA conditional on the finite
+  source certificates.
 
 From the repository root, use the verified
 [shared register stage](../../../../shared/isigma1-machine/README.md).
@@ -26,11 +34,13 @@ From the repository root, use the verified
 pa=Computability/BusyBeaver/Research/PA
 lc="$pa/pa194/ipra/variants/pa194lc"
 lc_base=/dev/shm/pa194lc-base
+lc_startup=/dev/shm/pa194lc-startup
 bash "$lc/check.sh" "$register" "$lc_base"
-bash "$lc/check-startup.sh" "$lc_base" /dev/shm/pa194lc-startup
+bash "$lc/check-startup.sh" "$lc_base" "$lc_startup"
+bash "$lc/check-controller.sh" "$lc_startup" /dev/shm/pa194lc-controller
 bash "$lc/check-coverage.sh" "$lc_base" /dev/shm/pa194lc-coverage
 ```
 
 The startup replay uses 15 numerical chunks and lifts their composition
-to model-valued arithmetic. The finite source coverage replay is in
-progress.
+to model-valued arithmetic. Checking every source-site certificate is the
+remaining premise. The finite replay is in progress.
