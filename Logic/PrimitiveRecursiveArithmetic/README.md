@@ -44,7 +44,7 @@ checks it. The derivations use only the axioms `PRAAx`: defining equations, succ
 axioms and quantifier-free induction. Mathlib is used only in the metatheory, to find and
 check them. The library is built bottom-up:
 
-- semiring laws, order, truncated subtraction, division with remainder, gcd, parity,
+- semiring laws, order, truncated subtraction, division with remainder, gcd and Bézout, parity,
   bounded sums, bounded search, pairing and simultaneous recursion;
 - a ring tool that turns polynomial identities over the integers into iPRA derivations;
 - a generic infinite-descent theorem.
@@ -53,7 +53,7 @@ On top of these it derives theorems from about thirty packets. Examples include 
 Cayley–Hamilton theorem in sizes 2 and 3, the universal Desargues identity, Heron's
 formula, Brahmagupta's identity and Pell powers, the five Platonic solids, the
 irrationality behind the impossibility of doubling the cube and trisecting `60°`,
-Euclid's theorem, `C(2n, n) ≤ 4ⁿ` and the Catalan identity. The
+Euclid's theorem, Bézout's identity, `C(2n, n) ≤ 2^{2n}` and the Catalan identity. The
 [Derivations README](Derivations/README.md) lists every module with its packet.
 
 ## Proof packets

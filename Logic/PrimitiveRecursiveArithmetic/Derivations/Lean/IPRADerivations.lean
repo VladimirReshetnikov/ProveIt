@@ -15,6 +15,7 @@ import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Core.Descent
 import IPRADerivations.Core.Division
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.Bezout
 import IPRADerivations.Core.Search
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Algebra.CayleyHamilton
