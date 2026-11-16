@@ -4,6 +4,11 @@ See the [iPRA unification plan](../../../../../../../../Logic/PrimitiveRecursive
 for reuse of shared arithmetic and preservation of the exact premises and
 proved directions for PA196.
 
+The [PA196 command-scheduler export](../../../pa194-work/pa194-controller-schedulers/README.md#conciseipra-export)
+contains the checked `Prf PRAAx []` equivalence for the equality-vacuity
+emitter. The literal bridge still needs a correspondence between the table
+below and that command scheduler.
+
 `PA196Bounded.lean` implements a primitive-recursive simulation of the literal
 PA196 machine using natural numbers for the two binary tape halves. Its finite
 table is proved equal, row by row in the Lean kernel, to the imported

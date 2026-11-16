@@ -77,7 +77,7 @@ public bridge and order-symbol comparison.
   Foundation proof of `nativePAConsistency 🡘 ∼haltSentenceE e k ct a`
   for arbitrary emitter, control and layout parameters. The original PA195
   command row chooses the bundled gate, `.push`, and the two false
-  layout flags. The [literal PA195 checks](../../Computability/BusyBeaver/Research/PA/verification/other-machines/pa195/ipra/README.md)
+  halting-test and layout flags. The [literal PA195 checks](../../Computability/BusyBeaver/Research/PA/verification/other-machines/pa195/ipra/README.md)
   bind the supplied table and retain explicit proof premises for the
   consistency endpoint. A verified link from the literal table to the
   command scheduler is a separate obligation.
@@ -93,6 +93,19 @@ public bridge and order-symbol comparison.
   `+BusyBeaver.PA196.IPRAAssembly` and takes the two formulas and proof
   premises as arguments. The literal PA196 equivalence remains conditional
   at this boundary.
+
+The [Concise scheduler exports](../../Computability/BusyBeaver/Research/PA/verification/pa194-work/pa194-controller-schedulers/PA194EmitterSchedulerConcise.lean)
+prove the translated biconditional in `Prf PRAAx []` both for arbitrary
+parameters and for those two exact command schedulers. The named instances
+carry no extra premises. The ordered staged Lean replay compiled
+`PA194EmitterSchedulerPA` (SHA-256
+`07fdb62cd57dec79c8e161f69ae3feae6ab659f7b453356c31f6bd41fd159c19`),
+then rebuilt `IPRABridge.Standard` against the same Foundation provider before
+compiling the export (SHA-256
+`19e271ce708bd72abb9b8eb41d499005894b39b369932d79181d3b2162f1ee1a`).
+All three export audits report `propext`, `Classical.choice`, and `Quot.sound`.
+Use the [scheduler replay guide](../../Computability/BusyBeaver/Research/PA/verification/pa194-work/pa194-controller-schedulers/README.md#conciseipra-export)
+to check this boundary.
 
 ## BusyBeaver ZFC and DiophantineConsistency
 

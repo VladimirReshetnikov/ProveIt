@@ -4,6 +4,11 @@ See the [iPRA unification plan](../../../../../../../../Logic/PrimitiveRecursive
 for how the PA195 command-level result and a future literal-table proof are
 recorded and transported.
 
+The [PA195 command-scheduler export](../../../pa194-work/pa194-controller-schedulers/README.md#conciseipra-export)
+contains the checked `Prf PRAAx []` equivalence for the original bundled
+emitter. The literal bridge still needs a correspondence between the table
+below and that command scheduler.
+
 This directory connects a precise PA195 transition table to an arithmetical
 halting sentence. It does **not** prove either direction of the claimed
 machine-specific equivalence in iPRA, PRA, or PA. The machine-specific

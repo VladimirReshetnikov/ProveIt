@@ -181,6 +181,42 @@ Not covered: PA194JH5X, which also replaces the first head; the fused head of th
 candidates; MP196, whose modus ponens halts; and the candidates with another coefficient of
 the formula constructors.
 
+## ConciseIPRA export
+
+[`PA194EmitterSchedulerConcise.lean`](PA194EmitterSchedulerConcise.lean)
+transports the exact Foundation command-scheduler biconditional to
+`Prf PRAAx []`, keeping all four scheduler parameters in the translated
+sentence. Its named instances use these parameters.
+
+| Command scheduler | Emitter fields set to `true` | MP | Halting test flag | Eleven-entry layout flag |
+| --- | --- | --- | --- | --- |
+| Original PA195 | `bundled` | `.push` | `false` | `false` |
+| PA196 | `delta` | `.push` | `false` | `false` |
+
+The corresponding theorems are
+`pa195_consistency_iff_scheduler_nonhalt` and
+`pa196_consistency_iff_scheduler_nonhalt` in the
+`PA194EmitterSchedulerConcise` namespace. Their halting predicates are
+`PA194EmitterSchedulerPA.haltSentenceE` at the documented parameters.
+A literal-table equivalence still requires a checked connection from
+blank-tape runs of that table to the scheduler, including command enumeration.
+
+To replay from the repository root with the root Lake dependencies built,
+use the same standalone dependency checker as `check.sh`.
+
+```sh
+work=Computability/BusyBeaver/Research/PA/verification/pa194-work
+lake build +IPRABridge.Standard
+python3 -X utf8 -B "$work/pa194-model-fairness/check_bridge.py" \
+  --top "$work/pa194-controller-schedulers/PA194EmitterSchedulerConcise.lean" \
+  --reports 3
+```
+
+The leaf prints the axiom dependencies of the general theorem and both
+instances. For a staged scheduler replay, keep the recorded provider order
+and build the bridge against the same provider environment before compiling
+the leaf.
+
 ## Modules
 
 | Module | Content |
@@ -188,6 +224,7 @@ the formula constructors.
 | `PA194EmitterSchedulerCore` | `Emitter`; the codes `head6Q`, `head5X`, `bundledGate`, `deltaGate`, `axStackCodeE`, `axTopCodeE`, `stepE`, `runE`, `haltAfterE`. Only codes; imports `PA194ControllerSchedulerCore`. |
 | `PA194EmitterScheduler` | `baseLeaf`, `leafE`, `genLE`, `axStackE`, `axTopE` and their model lemmas; `semE e k ct a`, `stepE_eq`; `G_base`, `rulesG`, `G_head6`, `G_head5`, `closedG`, `G_top`, `G_gate`, `atomVacG`, `G_diagonal`, `G_of_provable`, `provable_halts`; `Sound`, `leafE_in`, `axTopE_in`, `axE_preserves`, `runE_sound`, `halts_in`; `soundTarget`, `halts_iff_provable`, `halts_iff_primary`. |
 | `PA194EmitterSchedulerPA` | `good_gate`, `soundGood`, `good_one_refutes`, `scheduler_iff_pa_refutation`; `haltSentenceE` and `consistency_iff_scheduler_nonhalt`. |
+| `PA194EmitterSchedulerConcise` | The translated scheduler biconditional and the named PA195 and PA196 command instances in `Prf PRAAx []`. |
 | `PA194EmitterStandard` | `eval_deltaGate`: on the standard numbers the code `deltaGate` evaluates to `PA196.Commands.Code.bundle` of the upstream snapshot. |
 | `PA194ControllerSchedulerCore` | The PRA code definitions for the scheduler step, its iteration, and its halt test, independent of the fairness and PA-interpretation proofs. |
 | `PA194ControllerScheduler` | `cstepCodeK`, `haltAfterK`; imports the shared core. `semK k ct a`: the command semantics of `ConPA.Ctl`; `stepK_eq`: the step code is `ConPA.Ctl.sstep (semK k ct a)`. `G_of_provable`: a target proof gives a command word (`targetProof_sound` with the closure lemmas of `ConPA.Ctl`). `cstepK_sound`, `runK_sound`: top, cache and stack entries stay provable along a run. `halts_iff_provable`, `halts_iff_primary`. |
