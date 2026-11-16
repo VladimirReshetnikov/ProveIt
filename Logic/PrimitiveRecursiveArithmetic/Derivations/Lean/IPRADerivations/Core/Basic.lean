@@ -167,6 +167,9 @@ theorem ind (φ : Fm PTm (k + 1)) (hφ : φ.QF)
   have h := PRA.qfInd φ hφ h0 (by simpa using hS)
   simpa using h.allOpen
 
+/-- The third hypothesis. -/
+theorem hyp2 {φ ψ χ : Fm PTm n} : (χ :: ψ :: φ :: Γ) ⊢[PRAAx] φ := .hyp (by simp)
+
 /-- Congruence of a function symbol. -/
 theorem congrApp {j : ℕ} (f : PR j) {ts us : Fin j → PTm n}
     (h : ∀ i, Γ ⊢[PRAAx] ts i ≐ us i) : Γ ⊢[PRAAx] app f ts ≐ app f us := by
