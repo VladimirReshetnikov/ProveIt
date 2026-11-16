@@ -185,7 +185,8 @@ model. Of its three fields, `inhabited` is proved for these theories in `pa194-m
   `sMP` (the same for products, with `o` a sum of `d` and `b`; `mulPredecessorResult`) and
   `sAC` (sums of `a, b` and of `b, a` are isomorphic). `a3_of_predecessor` derives `sA3`
   from `SourceFacts T` and `sAP`; `m3_of_predecessor` derives `sM3` from `SourceFacts T`,
-  `sMP` and `sAC`. The three statements are not proved for the actual source theory.
+  `sMP` and `sAC`. Of the three, `sAP` and `sMP` are proved for the actual source theory in
+  [`pa194-source-semantics`](../pa194-source-semantics/README.md); `sAC` is not.
 - A second way to supply fixed facts. Every fixed hypothesis here is the typed quote of a
   standard sentence of the source language, `tHyp φ = ⌜sinst tau0 φ⌝`. `PA194SemanticSupply`
   proves `source_supply`: `adjunctiveFullSepTheory.internalize V ⊢ tHyp φ` holds in every
@@ -196,7 +197,9 @@ model. Of its three fields, `inhabited` is proved for these theories in `pa194-m
   `fullSepTheory_mem_iff_typed` of the separation theory, `eval_sinst` (truth of a standard
   instance is truth in the structure whose letters are the relations defined by the
   standard formulas) and `sinst_closed`. So a fixed fact can be proved as a statement about
-  such structures, with no derivation written. No fixed fact is proved this way yet.
+  such structures, with no derivation written.
+  [`pa194-source-semantics`](../pa194-source-semantics/README.md) proves `sAP` and `sMP`
+  this way.
 - `inhabited` for the actual source theory is proved outside this directory
   (`PA194SourceInhabited.inhabited_provable` in `pa194-model-logic`), from the standard
   derivation of the empty-set formula.
