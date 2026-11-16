@@ -44,6 +44,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.SphericalCore.five_part
 #print axioms LeanProofs.IPRA.Geometry.SphericalCore.four_part
 #print axioms LeanProofs.IPRA.Geometry.SphericalCore.right_rules
+#print axioms LeanProofs.IPRA.Geometry.SphericalPolar.polar_cross
+#print axioms LeanProofs.IPRA.Geometry.SphericalPolar.polar_side
+#print axioms LeanProofs.IPRA.Geometry.SphericalPolar.polar_triple
+#print axioms LeanProofs.IPRA.Geometry.SphericalPolar.face_closure
+#print axioms LeanProofs.IPRA.Geometry.SphericalPolar.tetra_cosine
 #print axioms LeanProofs.IPRA.Algebra.PolynomialFormulas.quadratic
 #print axioms LeanProofs.IPRA.Algebra.PolynomialFormulas.cardano
 #print axioms LeanProofs.IPRA.Algebra.PolynomialFormulas.ferrari
