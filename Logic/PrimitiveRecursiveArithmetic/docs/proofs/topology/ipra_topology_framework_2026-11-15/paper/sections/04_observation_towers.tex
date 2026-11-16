@@ -1,0 +1,117 @@
+
+\section{Certified observation towers}
+\label{sec:towers}
+
+\subsection{Finite nerves}
+
+A finite cover or finite family of observations is represented by a finite abstract simplicial complex.
+
+\begin{definition}[Coded finite complex]
+A coded finite complex $K$ consists of a vertex bound $N_K$ and a Boolean predicate
+\[
+  \Simplex_K(s)\in\{0,1\},\qquad s<2^{N_K},
+\]
+such that the empty bitset is a simplex and every subset of a simplex is a simplex.  All laws are supplied as bounded arithmetic proofs.
+\end{definition}
+
+Semantically, vertices may be basic opens, rational boxes, cells, chart domains, algebraic clusters, or any finite observations.  A bitset $s$ is a simplex when its observations are jointly compatible.  If the vertices are open sets $U_i$, the intended condition is
+\[
+  \bigcap_{i\in s} U_i\neq\varnothing.
+\]
+Constructively, the complex need not decide this condition from an arbitrary topology.  Instead, the application supplies a finite positivity/intersection certificate and proves downward closure.
+
+\subsection{Strong simplicial carriers}
+
+\begin{definition}[Strong carrier]
+Let $K,L$ be finite complexes.  A strong simplicial carrier $C:K\multimap L$ assigns to every vertex $v$ of $K$ a nonempty bitset $C(v)$ of vertices of $L$ such that, for every simplex $\sigma$ of $K$,
+\[
+  C(\sigma)\defeq\bigcup_{v\in\sigma} C(v)
+\]
+is a simplex of $L$.
+\end{definition}
+
+The adjective ``strong'' distinguishes this particularly finite form from a general acyclic carrier.  Here the entire union lies in one simplex and is therefore contractible.  This stronger condition is exactly what cover refinements and sufficiently fine continuous-map images naturally provide.
+
+A carrier is a finite relational map.  It records all currently valid target choices rather than selecting one.  The relation may narrow at finer scales.  The crucial advantage is that its algebra is total and constructive.
+
+\begin{definition}[Carrier composition]
+For $C:K\multimap L$ and $D:L\multimap M$, define
+\[
+  (D\circ C)(v)=\bigcup_{w\in C(v)}D(w).
+\]
+\end{definition}
+
+Every union is bounded by the finite vertex sets.  Therefore composition is primitive recursive on the codes.
+
+\subsection{Observation towers}
+
+\begin{definition}[Certified observation tower]
+A certified observation tower $\mathcal{X}$ consists of:
+\begin{enumerate}
+  \item a fixed primitive-recursive family of finite complexes $K^{\mathcal X}_k$;
+  \item a fixed primitive-recursive family of strong refinement carriers
+  \[
+    R^{\mathcal X}_k:K^{\mathcal X}_{k+1}\multimap K^{\mathcal X}_k;
+  \]
+  \item object-language proofs that every level is a complex and every refinement is a carrier;
+  \item optional quantitative fields such as a mesh bound, cover radius, positivity witness, or exhaustion index.
+\end{enumerate}
+\end{definition}
+
+A theorem never quantifies over the class of all such towers inside first-order arithmetic.  Instead, it is a schema for each fixed family of \code{PR} symbols, or it accepts a finite prefix as numerical input together with a bounded verification certificate.
+
+\begin{center}
+\begin{tikzpicture}[node distance=1.6cm,>=Latex]
+  \node (k2) [draw,rounded corners,minimum width=2.2cm] {$K_{k+2}$};
+  \node (k1) [draw,rounded corners,minimum width=2.2cm,right=of k2] {$K_{k+1}$};
+  \node (k0) [draw,rounded corners,minimum width=2.2cm,right=of k1] {$K_k$};
+  \draw[->,thick] (k2) -- node[above] {$R_{k+1}$} (k1);
+  \draw[->,thick] (k1) -- node[above] {$R_k$} (k0);
+  \draw[->,dashed,bend right=25] (k2) to node[below] {$R_k\circ R_{k+1}$} (k0);
+  \node[below=1.1cm of k1,align=center] {finite nerves; refinement is relational,\\not an arbitrary exact selector};
+\end{tikzpicture}
+\end{center}
+
+\subsection{Presented points}
+
+A point of a represented space can be observed at scale $k$ by a nonempty simplex $O_x(k)$ of $K_k$.  It contains every basic cell consistent with the current finite information.  Coherence means that
+\[
+  O_x(k)\subseteq R_k(O_x(k+1))
+\]
+up to the appropriate bitset relation, with a converse ``no observation is lost'' clause when the presentation needs it.  The observation is a cloud, not a single cell.
+
+For a fixed point name, $k\mapsto O_x(k)$ is a fixed primitive-recursive evaluator.  A variable point can be passed by a finite observation table at the current demand horizon.  If an application can prove that $O_x(k)$ eventually becomes a singleton, it may recover an exact cell.  The general theory does not assume this.
+
+\subsection{Presented maps}
+
+\begin{definition}[Tower map]
+A tower map $F:\mathcal X\to\mathcal Y$ consists of:
+\begin{enumerate}
+  \item a primitive-recursive precision demand $\mu_F(k)$;
+  \item carriers
+  \[
+    F_k:K^{\mathcal X}_{\mu_F(k)}\multimap K^{\mathcal Y}_k;
+  \]
+  \item a finite coherence certificate saying that refining the source and then applying $F_k$, or applying a finer $F_{k+1}$ and then refining the target, gives two selections carried by a common carrier.
+\end{enumerate}
+\end{definition}
+
+The last clause is naturality up to contiguity.  Strict equality of chosen vertex maps is neither needed nor desirable.  At the chain level, contiguity yields a finite homotopy, so the induced homology map is strictly well defined.
+
+\subsection{How classical spaces produce towers}
+
+Suppose a presented space $X$ comes with finite covers
+\[
+  \mathcal U_k=\{U_{k,0},\ldots,U_{k,N(k)-1}\}
+\]
+and finite certificates for nonempty intersections.  Let $K_k$ be the nerve.  Suppose every fine open $U_{k+1,j}$ has a nonempty finite list of certified coarse containers $U_{k,i}$.  Let $R_k(j)$ be that list.  If fine opens $U_{k+1,j}$ for $j\in\sigma$ meet at a point $x$, every chosen coarse container also contains $x$.  Hence their union is a simplex of the coarse nerve.  Thus $R_k$ is a strong carrier.
+
+Now let $f:X\to Y$ have an explicit uniform continuity modulus.  Choose a source scale $\mu(k)$ fine enough that $f(U_{\mu(k),i})$ is contained in at least one target basic open of scale $k$.  Let $F_k(i)$ be the finite list of all certified containers.  If source cells in $\sigma$ meet at $x$, all target containers attached to them contain $f(x)$, so their union is a target simplex.  Again $F_k$ is a strong carrier.
+
+This proof is entirely local and finite.  Abstract compactness is used only in the external theorem that produces the finite covers and a computable modulus.  Inside \ipra, those data are explicit symbols or certificate fields.
+
+\subsection{Pointfree interpretation}
+
+The tower may be used without a pre-existing set of points.  Its vertices are basic observations, its simplices are positive finite intersections, and its refinement carriers are cover relations.  This is close in spirit to formal topology, where basic opens, covers, and positivity are primary and arbitrary point sets are not assumed \cite{Sambin}.  It is also compatible with represented-space practice, where topological properties are expressed through the computability of operations on names and open information \cite{Pauly2016}.
+
+The present construction is deliberately more finitary: at each requested scale, only a finite complex and finite carrier are manipulated.  This is what makes quantifier-free induction and bounded verification available.

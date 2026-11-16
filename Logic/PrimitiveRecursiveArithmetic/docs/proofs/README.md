@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives on 14 and
-15 November 2026: 33 to `docs/drafts`, and 36 to
+15 November 2026: 33 to `docs/drafts`, and 37 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -32,7 +32,7 @@ reason. Its directory column gives `<area>/<directory>`.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `ignored` | 77 | The member matches the repository's `.gitignore`: 43 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests, 33 `.log` files from LaTeX and Lean builds, and 1 file under a `build/` directory. It is available only from the delivered archive, so it is lost for the archives that were not committed. |
+| `ignored` | 81 | The member matches the repository's `.gitignore`: 43 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests, 37 `.log` files from LaTeX and Lean builds, and 1 file under a `build/` directory. It is available only from the delivered archive, so it is lost for the archives that were not committed. |
 | `sibling-packet` | 21 | `puiseux_ipra` bundles `dependencies/FTA_iPRA/`, a byte-identical copy of the packet filed in [`algebra/FTA_iPRA`](algebra/FTA_iPRA/) (13 members). `ipra_finite_demand` bundles four of its files under the same path (4 members). `ipra_resources_and_elimination_2026-11-15` bundles `lean/BackwardDemand.lean` of [`foundations/ipra_finite_demand`](foundations/ipra_finite_demand/) (1 member). `ipra_stable_observables` bundles three `lean/ConciseIPRA/` files byte-identical to the `lean/upstream/` copies in [`foundations/ipra_coherent_methods_2026-11-15`](foundations/ipra_coherent_methods_2026-11-15/) (3 members). The reference column gives the placed file, except for the copy of `SHA256SUMS`, which is ignored in both. |
 | `sibling-archive` | 1 | `zeta_zeros_ipra_2026-11-15` bundles `dependencies/zeta_functional_equation_ipra.zip`, a byte-identical copy of the delivered archive filed in [`analytic-number-theory/zeta_functional_equation_ipra`](analytic-number-theory/zeta_functional_equation_ipra/). |
 | `repository-copy` | 25 | `zeta_zeros_ipra_2026-11-15` bundles `sources/Deduction.lean`, `sources/NativeBiInterpretation.lean` and `sources/PR.lean`; `ipra_presentations_to_witnesses` and `four_metrics_ipra_2026-11-15` bundle those three and `Syntax.lean`, under `lean/upstream/` and `lean/upstream_inspected/`; all byte-identical to the files of the same names in [`ConciseIPRA/Lean/ConciseIPRA`](../../ConciseIPRA/Lean/ConciseIPRA/). `isoperimetric_ipra_constructive_2026-11-15` bundles, under `reused/`, the earlier packet [`geometry/isoperimetric_ipra`](geometry/isoperimetric_ipra/) as filed here at `22afac4c9d`; 14 of its files are byte-identical to that packet. The reference column gives that file, relative to the repository root. |
@@ -61,7 +61,7 @@ manifests, build logs and `build/` files.
 
 ## Packets
 
-The 69 archives hold 1,885 members: 1,761 placed here, 77 ignored, 21 in bundled copies of
+The 70 archives hold 1,932 members: 1,804 placed here, 81 ignored, 21 in bundled copies of
 a sibling packet, 1 nested copy of a sibling archive and 25 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -191,9 +191,10 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 
 ### Topology
 
-[`topology/`](topology/): Combinatorial and quantitative topology of the plane and of cubes.
+[`topology/`](topology/): Combinatorial and quantitative topology of the plane and of cubes, and finite simplicial observation of spaces.
 
 | Directory | Arrival | Wrapper in the archive | What the packet states | P | O |
 |---|---|---|---|---:|---:|
 | [`dimension_invariance_ipra`](topology/dimension_invariance_ipra/) | `f616f72b66` 2026-11-15 | `dimension_invariance_ipra` | Quantitative dimension invariance for finite rational tables, via cubical Sperner parity on staggered grids. | 13 | 1 |
+| [`ipra_topology_framework_2026-11-15`](topology/ipra_topology_framework_2026-11-15/) | *not committed* 2026-11-15 | `ipra_topology_framework_2026-11-15` | Certified observation towers: an object is observed at each precision through a finite simplicial complex, and maps return finite clouds under a strong carrier condition. Carriers compose, every selection is simplicial and any two are contiguous, an explicit prism operator gives the chain homotopy over F_2, and induced homology does not depend on tie-breaking. It treats finite spaces, nerves, homology certificates, compact metric presentations and charted manifolds, and claims no completed object proof of the Jordan or dimension theorems. Its Lean files are uncompiled blueprints with `sorry` obligations. | 43 | 4 |
 | [`jordan_ipra_constructive_2026-11-15`](topology/jordan_ipra_constructive_2026-11-15/) | `4ea4d4a14a` 2026-11-15 | `jordan_ipra` | A quantitative Jordan curve theorem for primitive-recursively presented circle embeddings. | 22 | 1 |

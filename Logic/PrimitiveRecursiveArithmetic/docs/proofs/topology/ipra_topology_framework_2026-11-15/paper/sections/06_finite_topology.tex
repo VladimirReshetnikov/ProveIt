@@ -1,0 +1,82 @@
+
+\section{Finite topology inside \ipra}
+\label{sec:finite-topology}
+
+Finite topological spaces are a useful exact test: no limiting representation is required, yet nontrivial homotopy and homology already occur.  McCord showed that finite spaces and finite simplicial complexes capture the same weak homotopy types in a precise sense \cite{McCord1966}.  For \ipra, the key point is even more elementary: a finite topology has a compact preorder presentation.
+
+\subsection{From a finite topology to a preorder}
+
+Let $X=\{0,\ldots,n-1\}$ and let $\tau$ be a finite topology, coded as a finite list of bitsets.  For $x\in X$, define its minimal open neighborhood
+\[
+  U_x=\bigcap\{U\in\tau:x\in U\}.
+\]
+The intersection is finite, hence open.  Define
+\[
+  x\preceq y
+  \quad\Longleftrightarrow\quad
+  y\in U_x,
+\]
+equivalently: every open set containing $x$ also contains $y$.
+
+\begin{theorem}[Finite topology/preorder equivalence]
+\label{thm:finite-preorder}
+The relation $\preceq$ is a preorder.  The open sets of $\tau$ are exactly the upward-closed subsets for $\preceq$.  Conversely, the upward-closed subsets of any finite preorder form a topology.  These constructions are mutually inverse.  The topology is $T_0$ exactly when the preorder is antisymmetric.
+\end{theorem}
+
+\begin{proof}
+Reflexivity holds because $x\in U_x$.  If $x\preceq y$ and $y\preceq z$, every open containing $x$ contains $y$, and then contains $z$; hence $x\preceq z$.
+
+Every open $U$ is upward closed: if $x\in U$ and $x\preceq y$, the definition of $\preceq$ gives $y\in U$.  Conversely let $A$ be upward closed.  For each $x\in A$, $U_x\subseteq A$, because $y\in U_x$ means $x\preceq y$.  Since $x\in U_x$, we have
+\[
+  A=\bigcup_{x\in A}U_x,
+\]
+so $A$ is open.
+
+For a preorder, arbitrary unions and finite intersections of upward-closed sets are upward closed, so they form a topology.  Its minimal neighborhood of $x$ is $\{y:x\preceq y\}$, recovering the relation.
+
+Finally, $x$ and $y$ have the same open neighborhoods exactly when $x\preceq y$ and $y\preceq x$.  The $T_0$ axiom says this forces $x=y$, which is antisymmetry.
+\end{proof}
+
+Every assertion in the proof is a bounded formula over $x,y,z<n$ and bit membership.  Therefore \cref{thm:booleanization} and quantifier-free induction suffice for a direct object proof.
+
+\subsection{Continuous maps are monotone maps}
+
+\begin{theorem}[Finite continuity]
+\label{thm:finite-continuity}
+For finite spaces presented by their specialization preorders, a function $f:X\to Y$ is continuous if and only if it is monotone:
+\[
+  x\preceq_X x'\ \Longrightarrow\ f(x)\preceq_Y f(x').
+\]
+\end{theorem}
+
+\begin{proof}
+Assume $f$ is continuous and $x\preceq_X x'$.  Let $V$ be any open neighborhood of $f(x)$.  Then $f^{-1}(V)$ is open and contains $x$, so it contains $x'$.  Thus $f(x')\in V$.  Since this holds for every such $V$, $f(x)\preceq_Y f(x')$.
+
+Conversely assume $f$ is monotone and $V\subseteq Y$ is upward open.  If $x\in f^{-1}(V)$ and $x\preceq_X x'$, monotonicity gives $f(x)\preceq_Y f(x')$.  Upward closure of $V$ yields $f(x')\in V$, so $f^{-1}(V)$ is upward open.
+\end{proof}
+
+The preorder encoding is exponentially smaller than listing all open sets in the worst case and makes continuity a bounded pairwise condition.  It is therefore the preferred exact finite representation.
+
+\subsection{Basic constructions}
+
+All of the following are primitive-recursive on finite codes.
+
+\paragraph{Products.}
+The product preorder on $X\times Y$ is coordinatewise:
+$(x,y)\preceq(x',y')$ iff $x\preceq x'$ and $y\preceq y'$.  The standard product topology on finite spaces is recovered.
+
+\paragraph{Subspaces.}
+For a bitset $A\subseteq X$, restrict the preorder to selected vertices.  A coded reindexing produces a finite preorder on $\{0,\ldots,|A|-1\}$.
+
+\paragraph{Quotients.}
+Given a finite equivalence relation $E$ compatible with the preorder, choose the least representative of each class and define the quotient relation by bounded existential search.  A verifier checks well-definedness and the universal property for supplied maps.
+
+\paragraph{Connected components.}
+The undirected comparability graph has an edge between $x$ and $y$ when $x\preceq y$ or $y\preceq x$.  Its graph components are the topological connected components of a finite space.  Breadth-first search with a visited-bitset invariant computes them.
+
+\paragraph{Order complex.}
+For a finite $T_0$ space, the order complex has a simplex for every finite chain $x_0<\cdots<x_q$.  Its construction is bounded.  It supplies the bridge from finite spaces to simplicial homology used in McCord's theory \cite{McCord1966}.
+
+\subsection{What finite topology does and does not solve}
+
+Finite spaces provide exact models, regression tests, and finite approximants.  They do not imply that every infinite topological theorem reduces to one finite space.  The missing information is carried by the observation tower: how finite covers refine, how maps act at every requested scale, and what quantitative condition connects the tower to the intended space.

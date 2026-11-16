@@ -1,0 +1,73 @@
+
+\section{Object-language formula schemas}
+\label{app:schemas}
+
+The following are schematic mathematical presentations of formulas that the Lean compiler should emit.  Every displayed bounded quantifier is replaced by its Boolean fold when used as an induction invariant.
+
+\subsection{Finite complex}
+
+For parameters $a$ describing the level:
+\begin{align*}
+\operatorname{Complex}(a)\;:\!\iff\;&
+\Simplex(a,0)=1\\
+&\wedge
+\forall s<2^{N(a)}\;\forall t<2^{N(a)}\;\bigl(
+  \Simplex(a,s)=1\wedge t\subseteq s
+  \to \Simplex(a,t)=1\bigr).
+\end{align*}
+
+\subsection{Strong carrier}
+
+For cloud evaluator $C(a,v)$:
+\begin{align*}
+\operatorname{Carrier}(a)\;:\!\iff\;&
+\forall v<N_K(a)\;\bigl(C(a,v)\neq0\wedge C(a,v)<2^{N_L(a)}\bigr)\\
+&\wedge
+\forall s<2^{N_K(a)}\;\bigl(
+\Simplex_K(a,s)=1\to
+\Simplex_L(a,\operatorname{foldCloud}(s,C))=1\bigr).
+\end{align*}
+
+\subsection{Selection and contiguity}
+
+\begin{align*}
+\operatorname{Selects}(f,C)&:\!\iff
+  \forall v<N_K\;\operatorname{bit}(C(v),f(v))=1,\\
+\operatorname{Simplicial}(f)&:\!\iff
+  \forall s<2^{N_K}\;(
+  \Simplex_K(s)=1\to\Simplex_L(f[s])=1),\\
+\operatorname{Contiguous}(f,g)&:\!\iff
+  \forall s<2^{N_K}\;(
+  \Simplex_K(s)=1\to\Simplex_L(f[s]\cup g[s])=1).
+\end{align*}
+The selection theorem is a short bounded derivation from bitset inclusion and downward closure.
+
+\subsection{Prism identity}
+
+Let $e_q$ enumerate $q$-simplices.  For every basis index $j<N_q(K)$ and every target basis index $r<N_q(L)$, the coefficient equality
+\[
+  [\partial P(e_q(j))]_r+[P\partial(e_q(j))]_r
+  =[f_\#(e_q(j))]_r+[g_\#(e_q(j))]_r\pmod2
+\]
+is a bounded equality.  Universal bounded folds over $j,r$ give the matrix identity.  The proof invariant pairs emitted terms in the processed prefix of the $(i,j)$ tag enumeration.
+
+\subsection{Gaussian elimination}
+
+Let $S(t)$ be the elimination state after $t$ bounded transitions.  The invariant contains Booleanized formulas for:
+\begin{enumerate}
+  \item $S(t)$ is obtained from the input by a product of recorded elementary row operations;
+  \item all earlier pivot positions contain $1$ and are zero elsewhere in their columns;
+  \item pivot columns are strictly increasing;
+  \item unprocessed rows and columns remain in bounds.
+\end{enumerate}
+At the fixed exit bound, pivot count equals rank.  Combined with simplex counts, this proves the Betti formula.
+
+\subsection{Tower naturality}
+
+For each requested target level $k$, let $m=\mu(k+1)$ and $n=\mu(k)$.  The two composites
+\[
+  R^Y_k\circ F_{k+1}
+  \quad\text{and}\quad
+  F_k\circ R^X_{m\to n}
+\]
+are finite carriers from a common fine source level to $K^Y_k$.  A coherence certificate supplies a super-carrier containing both.  The selection theorem and prism identity imply equality on homology.  This formula is instantiated at free variable $k$ and universally closed only after the finite construction.

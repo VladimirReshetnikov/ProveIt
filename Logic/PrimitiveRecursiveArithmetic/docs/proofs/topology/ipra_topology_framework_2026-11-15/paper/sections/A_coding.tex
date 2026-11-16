@@ -1,0 +1,65 @@
+
+\section{Explicit coding primitives}
+\label{app:coding}
+
+This appendix records one concrete coding route.  Other fixed primitive-recursive codings may be substituted if their laws are proved.
+
+\subsection{Pairs and lists}
+
+Use
+\[
+  \langle a,b\rangle=2^a(2b+1)-1.
+\]
+Then $a$ is the $2$-adic valuation of $\langle a,b\rangle+1$ and
+\[
+  b=\frac{(\langle a,b\rangle+1)/2^a-1}{2}.
+\]
+Bounded search computes the valuation, so pairing and both projections are primitive recursive.  Encode the empty list by $0$ and
+\[
+  \operatorname{cons}(a,\ell)=\langle a,\ell\rangle+1.
+\]
+The tail is smaller than the list code.  Course-of-values recursion gives length and access.  Alternatively, bounded arrays may use mixed-radix digits when an entry bound is already known.
+
+\subsection{Signed integers and rationals}
+
+Encode
+\[
+  z\in\Z
+  \quad\text{as}\quad
+  \begin{cases}
+  2z,&z\geq0,\\
+  -2z-1,&z<0.
+  \end{cases}
+\]
+Addition and multiplication are primitive recursive by sign cases.  A rational is a pair $(a,b)$ with signed numerator $a$ and positive denominator $b+1$.  Equality and order use cross multiplication.  Reduction by gcd is optional: unreduced rationals are sufficient for exact verification.
+
+\subsection{Bitsets}
+
+For a declared bound $n$, a finite set is $s<2^n$.  Define:
+\[
+  i\in s\iff \left(\left\lfloor s/2^i\right\rfloor\bmod2\right)=1.
+\]
+Subset, union, intersection, popcount, and finite image are bounded folds over $i<n$.  A simplex is a bitset with a Boolean validity predicate.
+
+\subsection{Matrices}
+
+A matrix stores dimensions and a row-major list.  Access outside the declared dimensions returns zero.  Matrix addition and multiplication are bounded nested folds.  Over $\Ftwo$, every entry is reduced modulo $2$.  Row swaps and row additions are fixed primitive-recursive state transitions.
+
+\subsection{Finite complexes}
+
+A level record contains:
+\[
+  (n,d,N_0,\ldots,N_d,\operatorname{simplexCode},\operatorname{simplexTest}).
+\]
+One may either enumerate all simplices or enumerate them on demand by scanning bitsets below $2^n$.  The latter has a large but primitive-recursive bound and is simplest for a first formalization.  Performance improvements can be proved extensionally later.
+
+\subsection{Bounded breadth-first search}
+
+A graph on $n$ vertices is an $n\times n$ Boolean matrix.  A BFS state is $(\mathsf{seen},\mathsf{frontier},\mathsf{parent})$.  At most $n$ rounds are needed because every successful round adds a new vertex.  The invariant says:
+\begin{enumerate}
+  \item every seen vertex is reachable by the recorded parent chain;
+  \item every edge from a processed vertex leads to a seen vertex;
+  \item the frontier is contained in seen;
+  \item parent indices are bounded.
+\end{enumerate}
+All clauses are bounded Boolean formulas.  This supplies path certificates for finite connectedness and flood-fill algorithms.

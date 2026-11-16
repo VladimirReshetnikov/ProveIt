@@ -1,0 +1,63 @@
+
+\section{Repository audit and exact proof status}
+\label{sec:audit}
+
+\subsection{The arithmetic backend}
+
+The relevant ProveIt development has a precise formal core.  In its ordinary presentation, \ipra\ has one function symbol for every primitive-recursive definition, the defining equations for those symbols, the successor axioms, intuitionistic first-order natural deduction with equality, and induction restricted to quantifier-free formulas.  The Lean types are \code{PR k} for a $k$-ary primitive-recursive symbol, \code{PTm n} for terms with $n$ free variables, \code{PRAAx} for the axiom family, and \code{Prf} for derivations.  The theorem \code{PRA.qfInd} is the actual induction endpoint.  The current library also proves
+\[
+  (\Gamma\vdash_{\PRAAx}\varphi)
+  \quad\Longleftrightarrow\quad
+  \mathsf{NPrf}(\mathsf{ofPRA}(\Gamma),\mathsf{ofPRA}(\varphi)),
+\]
+under the name \code{pra\_iff\_native}.  Thus the correct workflow is to construct an ordinary object-language derivation first and transport it only afterwards.  The bridge does not turn a true statement about natural numbers, or an ambient Lean theorem, into an \ipra\ derivation automatically \cite{ProveIt}.
+
+This distinction is the main quality gate for the present report.  Every mathematical algorithm described below has three possible statuses:
+\begin{enumerate}[label=(\roman*)]
+  \item a human proof that a finite algorithm is correct;
+  \item a semantic Lean theorem about that algorithm;
+  \item an actual object-language term of type $\Gamma\vdash_{\PRAAx}\varphi$.
+\end{enumerate}
+Only (iii) is an internal \ipra\ proof.  The supplied Lean files specify a path from (i) to (iii), but do not claim to have completed it.
+
+\subsection{What the existing proof packets already achieve}
+
+The repository contains a large collection of delivered packets.  They establish a strong common style:
+\begin{itemize}
+  \item replace arbitrary real objects by fixed primitive-recursive evaluators, rational approximants, and explicit moduli;
+  \item replace compactness by finite grids or finite nets;
+  \item replace exact sign or branch tests by strict margins, overlap, or positive separation data;
+  \item package algorithms as bounded traces with Boolean invariants;
+  \item state explicitly that exact reference programs and semantic Lean lemmas do not by themselves constitute an object-language proof.
+\end{itemize}
+
+The strongest current foundational packet, ``finite contracts'', already gives compiled semantic lemmas, a copied and audited object kernel, actual object-\ipra\ examples, and a contract record that contains both a fixed \code{PR} program and a \code{Prf PRAAx} certificate.  Other packets contribute variable-length recursion, coherent finite presentations, relational outputs, backward demand analysis, and finite observation compilers.  These ingredients are not repeated here; they are reorganized into one topological calculus.
+
+\subsection{The topology packets and their remaining gap}
+
+Two existing topology packets are particularly important.
+
+The dimension packet proves a finite rational theorem.  A table
+$F:\{0,\ldots,N\}^{d}\to\Q^{m}$ whose opposite source faces stay $h$ apart, and whose image on every Kuhn simplex has diameter below $h/d$, must satisfy $d\leq m$.  The positive alternative extracts either a close opposite-face pair or a large same-simplex oscillation.  A cubical Sperner parity argument and staggered target grids drive the proof.  The passage to presented homeomorphisms uses fixed evaluators and explicit local uniform moduli.
+
+The Jordan packet works with a circle embedding given by rational approximation routines, a forward continuity modulus, and a positive inverse-separation modulus.  It constructs a stable inside/outside bit only for points with positive clearance, uses finite crossing parity, and produces polygonal routes with certified clearance.  Crossing paths yield arbitrarily accurate approximate contacts; the packet does not silently assert an exact intersection parameter.
+
+Both reports give substantial complete human arguments, but their Lean files are explicitly scaffolds.  Moreover, they solve theorem-specific finite combinatorics.  They do not yet supply a reusable answer to the following common question:
+
+\begin{quote}
+When a point, cell, root, chart, or branch lies on a finite boundary and several exact choices are compatible with all available observations, how can a map be composed and a topological invariant be proved independent of the choice, without invoking a discontinuous selector?
+\end{quote}
+
+The new ingredient of this report is a finite relational answer: retain the whole compatible cloud as a \emph{simplicial carrier}; prove that all selections are contiguous; and use an explicit prism homotopy to show choice independence on homology.  This is a classical topological mechanism in finite, proof-producing form.  It is closely related to the carrier methods of algebraic topology \cite{Munkres}, but the point here is its exact role as an \ipra\ interface.
+
+\subsection{Audit conclusion}
+
+The repository's recurring difficulties can be divided into three classes.
+
+\begin{enumerate}[label=\textbf{A\arabic*.},leftmargin=2.5em]
+  \item \textbf{Representation difficulties.}  Arbitrary functions, open sets, measures, or infinite structures are higher-type.  They must be replaced by fixed evaluators, finite observations, or explicit finite tables.
+  \item \textbf{Constructive stability difficulties.}  Exact boundary choice, exact sign at zero, eigenvector selection at multiplicity, and branch selection at collision may be discontinuous.  They require overlap, a relational output, or an apartness gap.
+  \item \textbf{Proof-internalization difficulties.}  A finite algorithm may be mathematically correct yet still lack Booleanization lemmas, defining-equation derivations, loop invariants, or the final $\Prf\ \PRAAx$ term.
+\end{enumerate}
+
+Certified observation towers address A1 and A2 uniformly for topology and many adjacent subjects.  The bounded proof compiler described in \cref{sec:contracts,sec:lean} addresses A3 at the level of a precise implementation plan.  The framework does not pretend that missing analytic moduli, Diophantine height bounds, or theorem-specific parity arguments can be obtained by encoding alone.
