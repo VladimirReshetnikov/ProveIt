@@ -105,3 +105,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.euclid_terminates
 #print axioms LeanProofs.IPRA.gcd_greatest
 #print axioms LeanProofs.IPRA.gcd_dvd
+#print axioms LeanProofs.IPRA.Search.search_spec
+#print axioms LeanProofs.IPRA.Search.search_found
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Primes.dvd_fact
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Primes.lpf_dvd
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Primes.lpf_prime
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Primes.euclid
