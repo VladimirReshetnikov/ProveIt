@@ -1,0 +1,199 @@
+\section{Resolution of the reported difficulty classes}
+
+This section applies the framework to the recurring obstacles documented in the repository.  A ``resolution'' may be one of three kinds:
+
+\begin{enumerate}
+  \item an internal theorem schema that removes the obstruction;
+  \item a principled reformulation that identifies the strongest constructive statement;
+  \item a sharp producer boundary showing what additional mathematics remains.
+\end{enumerate}
+
+It is important not to call the third kind a proof of the missing deep theorem.  Exposing the missing producer is nevertheless progress: it prevents a verifier proof from being mistaken for a producer theorem and gives a precise target for further work.
+
+\subsection{Ambient Lean truth is not an iPRA proof}
+
+\paragraph{Difficulty.}
+Many packets contain executable Lean definitions and host-level theorems, but the desired endpoint is a term of \code{Prf PRAAx} or \code{NPrf}.
+
+\paragraph{Resolution.}
+Every local contract includes its object derivation as a field.  The global compiler is typed to return an object derivation.  Equation-heavy local proofs may be generated in the native calculus and transferred by \code{native\_iff\_pra}; bounded logical composition remains in \code{Prf PRAAx}.  Semantic testing is retained only as regression evidence.
+
+\paragraph{Residual work.}
+A generic Booleanizer, trace compiler, and viability compiler must still be implemented against the exact repository syntax.  The architecture removes the logical ambiguity but not the engineering effort.
+
+\subsection{Induction on an all-precision assertion}
+
+\paragraph{Difficulty.}
+A Cauchy, series, or approximation invariant quantified over every precision is not quantifier free, while iPRA induction is restricted to quantifier-free formulas.
+
+\paragraph{Resolution.}
+Fix the requested precision $p$.  Reverse-compute a finite table of every input precision and intermediate error budget used at $p$.  Booleanize the finite invariant and perform quantifier-free induction on the bounded loop.  Only after obtaining the finite theorem introduce the universal quantifier over $p$.  The proof never inducts on the all-precision assertion itself.
+
+\subsection{No universal unclocked evaluator}
+
+\paragraph{Difficulty.}
+One cannot postulate a total primitive-recursive evaluator that executes every coded primitive-recursive program, or every partial search, without a bound.
+
+\paragraph{Resolution.}
+There are two accepted routes.  A fixed source expression is compiled in the metatheory to one fixed \code{PR} term and one proof.  An input-coded computation is represented by a fixed transition function plus a primitive-recursive clock and bounded trace verifier.  The clocked reflection theorem \cref{thm:trace} then applies.
+
+This distinction also clarifies self-interpreters and proof checkers.  A bounded proof checker for a fixed syntax is primitive recursive.  Turning acceptance into an arbitrary mathematical conclusion still requires a separately proved soundness theorem inside the relevant metatheory; OCiPRA never treats checker acceptance as arithmetic truth by reflection.
+
+\subsection{Exact geometric selectors and omniscience}
+
+\paragraph{Difficulty.}
+A globally exact axis for a rotation, a sign at zero, a normalized direction through a zero vector, or a sharp branch choice at a collision can encode limited principles of omniscience.
+
+\paragraph{Resolution.}
+Return projective data, quaternions, finite axis clouds, or stable polynomial observables unconditionally.  Add an apartness or separation gap for an exact selector.  The finite cloud is refined by \cref{thm:viability}; exact branch elimination uses \cref{thm:stable-exact}.  The gap is not a technical nuisance but the constructive information needed to make the selector continuous on the promised domain.
+
+\subsection{Sharp endpoints and one-sided density}
+
+\paragraph{Difficulty.}
+Several approximation statements become nonconstructive when they require equality at a closed endpoint, a negative-only witness, or an exact decision at a boundary.
+
+\paragraph{Resolution.}
+Use strict rational margins, positive separation moduli, and finite alternatives.  For example, prove that a point lies within an open error interval, or return either a positive witness or a certificate that all bounded candidates fail by a stated margin.  Closed-endpoint consequences may then be recovered under an extra decidable equality or apartness hypothesis.
+
+\subsection{Finiteness versus height and stopping}
+\label{sec:height-obstruction}
+
+\paragraph{Difficulty.}
+A theorem that a set of rational or integral points is finite, or even has cardinality at most $N$, does not provide a height bound, a terminating enumeration, or a complete list.
+
+\begin{theorem}[Height-to-list conversion]\label{thm:height-list}
+Let $R(x,y)$ be a bounded decidable relation on coded rational or integer candidates.  If a primitive-recursive height bound $H(x)$ is supplied and every solution satisfies $|y|\leq H(x)$ in the chosen coding, then a primitive-recursive program returns a complete list of all solutions, and iPRA proves its completeness.
+\end{theorem}
+
+\begin{proof}
+Enumerate the finite candidate box determined by $H(x)$, evaluate the bounded relation, and append exactly the passing candidates.  The complete bounded-list theorem \cref{cor:bounded-list} proves soundness and completeness.  Rational candidates require a specified numerator/denominator convention and denominator bound; these are part of the height certificate.
+\end{proof}
+
+\begin{proposition}[Cardinality does not uniformly give a cutoff]\label{prop:cardinality-cutoff}
+There is no uniform primitive-recursive transformation that takes an arbitrary primitive-recursive decidable predicate known to have at most one witness and returns a bound above its possible witness.
+\end{proposition}
+
+\begin{proof}
+For a machine or partial recursive computation index $e$, define the primitive-recursive predicate
+\[
+ R_e(t)\quad\Longleftrightarrow\quad
+ \text{``the computation $e$ halts for the first time exactly at step $t$''}.
+\]
+The predicate has at most one witness.  If a uniform primitive-recursive transformer returned a bound $B(e)$ containing that witness whenever it exists, one could decide whether $e$ halts by simulating through $B(e)$.  This contradicts the undecidability of the halting problem.  The same argument applies to a purported complete-list producer from a mere cardinality bound.
+\end{proof}
+
+\paragraph{Framework treatment.}
+The verifier theorem is conditional on a height bound or complete-list certificate.  General Faltings and Siegel become producer obligations: prove and compute the requisite bound for the stated class.  A special family with an explicit Runge, norm, gap, or resultant certificate may be fully internalized without solving the general producer problem.
+
+\subsection{Mordell--Weil and descent representatives}
+
+\paragraph{Difficulty.}
+Finite Selmer data or a finite collection of covering classes does not automatically provide rational points on the coverings, nor generators of the Mordell--Weil group.
+
+\paragraph{Resolution.}
+Represent each needed rational covering point by a finite certificate and bounded verifier.  Once representatives are supplied, the descent map, group arithmetic, relation checking, saturation within a bound, and finite enumeration are contract-DAG computations.  The theorem is conditional on the representative package unless a separate producer is proved.
+
+This separates three logically different outcomes:
+
+\begin{enumerate}
+  \item a finite obstruction proving that a class has no rational representative;
+  \item a checked representative for each surviving class;
+  \item a proof that the resulting points generate the required group.
+\end{enumerate}
+
+Only the first two are direct finite certificates; the third needs its own height/index argument.
+
+\subsection{Ineffective analytic constants}
+
+\paragraph{Difficulty.}
+Prime-distribution theorems may invoke ineffective constants, exceptional zeros, compactness over character families, or asymptotic notation without a computable threshold.
+
+\paragraph{Resolution.}
+Factor the theorem into:
+
+\begin{enumerate}
+  \item an explicit analytic-input certificate containing all constants, thresholds, zero-free regions, exceptional data, and finite estimates;
+  \item a primitive-recursive verifier for that certificate;
+  \item a finite derivation that propagates the estimates to the claimed bound.
+\end{enumerate}
+
+The propagation theorem is a natural iPRA target.  The uniform producer for the full analytic certificate remains the deep theorem.  For fixed moduli, finite ranges, or explicitly certified zero data, substantial special cases may become unconditional.
+
+\subsection{Higher-type probability and discontinuous distribution tests}
+
+\paragraph{Difficulty.}
+An arbitrary measure is not numerical first-order data, and the exact indicator of a threshold is discontinuous at atoms.
+
+\paragraph{Resolution.}
+Use finite rational laws, quantization, tail and moment moduli, and rational thresholds with anti-concentration margins.  At fixed precision every expectation and convolution is a finite rational sum.  The final theorem can be a bounded-Lipschitz estimate or a CDF estimate at thresholds whose boundary mass is explicitly controlled.  This yields a constructive central-limit interface without pretending that every measure comes with effective presentation data.
+
+\subsection{Root ordering and collisions}
+
+\paragraph{Difficulty.}
+Exact root orderings, branch labels, eigenvectors, and Puiseux branches cannot remain continuous through multiplicity changes.
+
+\paragraph{Resolution.}
+Use isolating clusters, multisets, symmetric functions, sorted real eigenvalue lists, or finite compatible charts.  A derivative/separation certificate permits an isolated branch.  Stable observables are compiled by \cref{thm:stable-exact,thm:stable-approx}; no global exact selector is asserted at collisions.
+
+\subsection{Abstract compactness in topology and analysis}
+
+\paragraph{Difficulty.}
+A proof may say ``choose a finite subcover'' or ``by compactness choose a uniform scale'' without giving a primitive-recursive net or modulus.
+
+\paragraph{Resolution.}
+The object is presented with an explicit finite-net modulus.  A finite cover certificate names the selected cells and verifies coverage with a margin.  Subdivision depth, mesh, and parity/degree calculations are bounded.  If no net modulus can be produced, the theorem remains conditional on one.
+
+\subsection{Producer--verifier--derivation factorization}
+
+The preceding examples are instances of one theorem-design principle.
+
+\begin{theorem}[Producer--verifier--derivation factorization]\label{thm:pvd}
+Suppose a classical proof of $\forall x\in C\,\Phi(x)$ uses finite auxiliary data $c$ only through finitely checkable properties.  Assume:
+
+\begin{enumerate}
+  \item a primitive-recursive bounded predicate $\mathsf{Cert}(x,c)$ expresses those properties;
+  \item a fixed finite construction transforms a valid $c$ into the desired witness or observation;
+  \item local object derivations prove the transformation correct.
+\end{enumerate}
+
+Then OCiPRA yields an object derivation of
+\[
+  \forall x\;\bigl(C(x)\wedge\exists c\,\mathsf{Cert}(x,c)\to\Phi(x)\bigr).
+\]
+If, in addition, iPRA proves a primitive-recursive producer $p$ with
+$C(x)\to\mathsf{Cert}(x,p(x))$, then it proves the unconditional theorem
+$\forall x(C(x)\to\Phi(x))$.
+\end{theorem}
+
+\begin{proof}
+The first statement applies bounded Booleanization, the contract compiler, and existential elimination to an arbitrary certificate satisfying $\mathsf{Cert}$.  For the second, instantiate the conditional theorem with $p(x)$ and cut with the producer proof.  The derivation is entirely intuitionistic.  The substantive difference between the conditional and unconditional theorem is exactly the producer proof.
+\end{proof}
+
+\subsection{A diagnostic table}
+
+\small
+\begin{longtable}{@{}p{0.16\textwidth}p{0.24\textwidth}p{0.34\textwidth}p{0.18\textwidth}@{}}
+\toprule
+Area & Obstruction & OCiPRA treatment & Status\\
+\midrule
+\endfirsthead
+\toprule
+Area & Obstruction & OCiPRA treatment & Status\\
+\midrule
+\endhead
+Logic & Host theorem is not \code{Prf PRAAx} & Proof-carrying contracts; dual native/full backend & Compiler engineering remains\\
+Analysis & All-precision invariant is not QF & Fix precision, finite demand table, QF induction, quantify last & Schema resolved\\
+Computation & Universal unclocked evaluator & Compile fixed syntax or verify a clocked trace & Resolved boundary\\
+Geometry & Exact axis/direction at singularity & Projective or finite-cloud output; exact under gap & Exact unrestricted claim rejected\\
+Approximation & Sharp endpoint or one-sided choice & Strict margins and separation moduli & Positive form resolved\\
+Diophantine geometry & Finiteness lacks cutoff & Conditional height/list verifier; producer separated & General producer open\\
+Elliptic descent & Classes lack rational representatives & Checked representative certificate & Uniform producer open\\
+Prime distribution & Ineffective constants & Explicit analytic-input certificate & Propagation internal; producer open\\
+Probability & Higher-type measures, CDF boundary & Finite rational laws, tail and anti-concentration moduli & Effective presentations covered\\
+Algebra & Root/eigenvector collisions & Clusters, multisets, stable observables, gap selectors & Statement resolved\\
+Topology & Abstract compactness & Finite nets, covers, subdivision and parity certificates & Theorem-specific combinatorics remain\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+The table should be read as an implementation map, not as a declaration that every listed classical theorem has been proved in iPRA.

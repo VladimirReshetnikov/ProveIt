@@ -1,0 +1,130 @@
+\section{Barriers, exact status, and conclusions}
+\label{sec:barriers}
+
+\subsection{No total primitive-recursive universal evaluator}
+
+\begin{proposition}
+There is no primitive-recursive function \(U(e,x)\) that enumerates all unary
+primitive-recursive functions, in the sense that for every unary PR function
+\(f\) there is an \(e\) with \(U(e,x)=f(x)\) for all \(x\).
+\end{proposition}
+
+\begin{proof}
+Assume such a \(U\).  Then
+\[
+       d(x)=U(x,x)+1
+\]
+is primitive recursive.  By universality there is an index \(e\) with
+\(U(e,x)=d(x)\) for all \(x\).  At \(x=e\),
+\[
+       U(e,e)=d(e)=U(e,e)+1,
+\]
+a contradiction.
+\end{proof}
+
+Thus a generic compiler may be parametric over fixed \(\PR\) syntax at the
+Lean level, but it may not assume an internal total evaluator for arbitrary PR
+codes.
+
+\subsection{Finiteness does not uniformly yield a cutoff}
+
+\begin{proposition}
+There is no computable operation that, from every decidable predicate known to
+have at most one witness, returns a bound containing that witness whenever it
+exists.
+\end{proposition}
+
+\begin{proof}
+For a machine code \(e\), let \(P_e(n)\) say that machine \(e\) halts for the
+first time at exactly step \(n\).  This is a bounded-step decidable predicate
+and has at most one witness.  If a uniform bound \(H(e)\) existed, simulate the
+machine for \(H(e)\) steps.  It halts eventually if and only if it halts within
+that bound, deciding the halting problem.
+\end{proof}
+
+This is why abstract cardinality bounds in Diophantine geometry cannot be fed
+directly to bounded search.  A height bound or complete list is genuinely
+additional data.
+
+\subsection{Exact sign selection entails a constructive omniscience principle}
+
+Consider a binary sequence \(a_n\) with at most one entry equal to one, and the
+regular real
+\[
+ x=\sum_{n\ge0}(a_{2n}-a_{2n+1})2^{-n-1}.
+\]
+If the unique one occurs at an even index, \(x>0\); if it occurs at an odd
+index, \(x<0\); if no one occurs, \(x=0\).  A uniform operation that, for every
+real name, returned a justified side \(x\ge0\) or \(x\le0\) would decide the
+LLPO disjunction
+\[
+   (\forall n\;a_{2n}=0)\quad\vee\quad
+   (\forall n\;a_{2n+1}=0).
+\]
+Such a selector is not available in the intended intuitionistic setting.
+Three-way guards and relational branch unions avoid this principle; an
+apartness margin makes exact selection constructive.
+
+\subsection{Metastability does not uniformly give a Cauchy modulus}
+
+A bounded increasing computable rational sequence can encode halting
+information.  Let \(q_s\) add weight \(2^{-e-1}\) when machine \(e\) is seen to
+halt by stage \(s\).  The sequence is increasing and bounded by one.  At each
+fixed precision it has effective finite metastability bounds based on the fact
+that there can be only finitely many jumps larger than that precision.  A
+uniform conversion of such metastability data into a tail modulus would decide,
+for each finite set of machines, whether any new halt can occur after the
+claimed modulus stage, and hence decide halting.  Therefore a finite-window
+theorem and a Cauchy-name theorem must remain different interfaces.
+
+\subsection{Branch data from arbitrary Cauchy coefficients}
+
+Exact Puiseux or eigenvector branches can encode discontinuous choices at
+singular or multiple points.  A uniform exact branch producer from arbitrary
+coefficient names would in particular decide whether a small perturbation lies
+on one side of a discriminant locus.  The safe interfaces are exact algebraic
+input with splitting data, approximate branch clouds, or exact branches guarded
+by a separation certificate.
+
+\subsection{Status of this package}
+
+\begin{longtable}{p{0.26\textwidth}p{0.24\textwidth}p{0.42\textwidth}}
+\toprule
+Component & Status & Evidence \\
+\midrule
+\endfirsthead
+\toprule
+Component & Status & Evidence \\
+\midrule
+\endhead
+Human framework theorems & complete at the stated level & this report, with explicit hypotheses and proofs \\
+Python reference kernel & executed & eleven exact-arithmetic regression tests \\
+Serialized example & verified & cubic inverse certificate for \(x=2\) \\
+Lean formula definitions & source outline & exact pinned API and documented arities \\
+Generic trace proof & mathematical proof complete; Lean incomplete & four small visible \code{sorry} milestones \\
+Boolean compiler & mathematical proof complete; Lean incomplete & fixed-family design and fold plan \\
+Relational viability & mathematical proof complete; Lean incomplete & exact Python dynamic program and Lean targets \\
+Bi-interpretation transport & backend-checked upstream & \code{pra_iff_native} in \code{ConciseIPRA} \\
+General height/constant producers & not claimed & isolated as theorem-specific obligations \\
+\bottomrule
+\end{longtable}
+
+\subsection{Main conclusion}
+
+The broad range of mathematics represented in the repository does not require
+a separate foundational trick for every theorem.  A stable common core has
+emerged:
+\[
+\boxed{\begin{gathered}
+\text{finite observations}+\text{backward demands}+\text{bounded certificates}\\
+{}+\text{relational coherence}+\text{object-language trace reflection}
+\end{gathered}}
+\]
+This core is strong enough to organize algebra, analysis, number theory,
+topology, probability, category theory, and finite parts of algebraic geometry.
+It resolves the recurrent logical difficulties without overstating deep
+mathematical results.  Most importantly, it identifies a concrete next step:
+finish and kernel-check the small generic \code{traceReflection} theorem, then
+migrate domain packets through a shared Boolean and viability library.  That
+work would convert a substantial body of existing finitary mathematics from
+plausible formalization plans into actual iPRA derivations.

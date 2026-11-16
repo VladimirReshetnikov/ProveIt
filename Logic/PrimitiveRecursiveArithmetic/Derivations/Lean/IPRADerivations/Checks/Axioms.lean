@@ -1,4 +1,5 @@
-import IPRADerivations.Geometry.TriangleFormulas
+import IPRADerivations
+
 
 /-! Axiom audit: every listed derivation uses only Lean's standard axioms
 (`propext`, `Quot.sound`, `Classical.choice`), and no `sorryAx`. -/
@@ -10,3 +11,9 @@ import IPRADerivations.Geometry.TriangleFormulas
 #print axioms LeanProofs.IPRA.Geometry.TriangleFormulas.heronFactor
 #print axioms LeanProofs.IPRA.Geometry.TriangleFormulas.heron
 #print axioms LeanProofs.IPRA.Geometry.TriangleFormulas.lawOfCosines
+#print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.mul_adjugate
+#print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.det_mul
+#print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.cayleyHamilton2
+#print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.cayleyHamilton3
+#print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.leftMul_hom
+#print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.euler_four_squares

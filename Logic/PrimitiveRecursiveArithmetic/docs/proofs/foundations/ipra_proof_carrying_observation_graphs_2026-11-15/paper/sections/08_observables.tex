@@ -1,0 +1,196 @@
+\section{Stable observables and guarded quantitative mathematics}
+\label{sec:observables}
+
+A certificate is usually more detailed than the theorem's public output.
+Different algorithms can produce different certificates for the same object.
+The correct notion of coherence is therefore often a comparison theorem for an
+\emph{observable} extracted from certificates.
+
+\subsection{Independent-certificate comparison}
+
+Let \(C(x,p,c)\) be a finite certificate predicate, \(O(c)\) a coded
+observation, and \(D_p(u,v)\) a decidable closeness relation.  Suppose iPRA
+proves
+\begin{equation}
+ C(x,p,c_1)\wedge C(x,p,c_2)
+ \longrightarrow D_p(O(c_1),O(c_2)).
+ \label{eq:independent-stability}
+\end{equation}
+Two producer nodes may generate \(c_1\) and \(c_2\) by entirely unrelated
+bounded traces.  Once both certificate formulas have been derived, two cuts
+with \eqref{eq:independent-stability} yield the observation theorem.  The
+witnesses never have to be identified.
+
+This is the abstract content of the checked
+\texttt{observableOfIndependentCertificates} and
+\texttt{twoLoopsStableObservable} combinators in the repository's
+stable-observables packet.
+
+\begin{theorem}[Witness-independent observation]
+\label{thm:witness-independent}
+If two trace nodes produce certificates \(c_1,c_2\) satisfying \(C\), and the
+comparison theorem \eqref{eq:independent-stability} is available as an embedded
+derivation, then the PCOG compiler produces an embedded derivation of
+\(D_p(O(c_1),O(c_2))\).
+\end{theorem}
+
+\begin{proof}
+Compile each trace node to its certificate formula using
+Corollary~\ref{cor:trace-finalization}.  Use the local stability rule as the
+next node in the proof graph.  Theorem~\ref{thm:proof-graph} composes the three
+proofs.
+\end{proof}
+
+The theorem seems elementary, but it removes a major source of formalization
+complexity.  One no longer needs to prove that pivot choices, root orderings,
+finite covers, or reduction paths coincide.
+
+\subsection{Regular rational balls}
+
+A convenient observation type for real quantities is a rational ball
+\((m,r)\), denoting all values within radius \(r\) of midpoint \(m\).  Validity
+at precision \(p\) requires \(r\leq2^{-p}\).  Restriction enlarges the allowed
+radius or simply reuses the same ball at a lower demand.
+
+Operations have local contracts.
+
+\paragraph{Addition.}
+From balls \((m_x,r_x)\), \((m_y,r_y)\), output
+\((m_x+m_y,r_x+r_y)\).  To achieve radius \(2^{-p}\), it suffices to request
+both inputs at \(p+1\).
+
+\paragraph{Multiplication.}
+If \(|x|\leq M_x\), \(|y|\leq M_y\), then
+\[
+ |xy-m_xm_y|
+ \leq M_xr_y+M_yr_x+r_xr_y.
+\]
+The demand transformer is computed from magnitude certificates and the target
+\(p\).  Without magnitude data, multiplication does not have a uniform modulus
+on all reals.
+
+\paragraph{Inverse.}
+If \(|x|\geq a>0\) and a ball for \(x\) has radius at most \(a/2\), then its
+entire interval avoids zero and
+\[
+ \left|\frac1x-\frac1m\right|
+ \leq \frac{2}{a^2}|x-m|.
+\]
+Thus the inverse node takes a rational apartness witness \(a\) and computes a
+precision demand large enough for both avoidance and final error.  A mere
+proof \(x\neq0\) is not accepted as a substitute.
+
+\paragraph{Composition.}
+If \(F\) has a certified modulus \(\omega_F(p,M)\) on a bounded region and
+\(G\) produces inputs in that region, then the demand for \(F\circ G\) is the
+composition of moduli.  The graph's reverse pass performs this calculation.
+
+Every inequality can be cleared of denominators and expressed as a bounded
+integer checker.  The analytic content lies in the local estimate, not in the
+coding.
+
+\subsection{Finite nets and approximate extrema}
+
+Let \(X\) be represented by finite \(\varepsilon\)-nets \(N_p\), and let
+\(f:X\to\Q\) have a certified modulus.  To approximate the infimum within
+\(2^{-p}\):
+\begin{enumerate}
+\item request a net radius small enough that the modulus error is at most
+\(2^{-(p+2)}\);
+\item evaluate \(f\) at every net point to error \(2^{-(p+2)}\);
+\item take the finite minimum of lower or midpoint bounds;
+\item combine net and evaluation errors.
+\end{enumerate}
+All loops and minima are bounded PR operations.  No minimizer need be chosen.
+
+\begin{theorem}[Finite-net infimum transfer]
+\label{thm:finite-net-infimum}
+Given PR finite-net producers, proofs of coverage, a certified modulus for
+\(f\), and bounded evaluation certificates, the PCOG compiler constructs a
+regular rational name for \(\inf f\) with an embedded error theorem.
+\end{theorem}
+
+\begin{proof}
+The reverse demand pass composes the target error with the modulus and
+splits the remaining budget between net and evaluation errors.  A trace node
+evaluates the finite table and maintains the invariant that the current
+minimum bounds all processed values.  Coverage supplies, for every point, a
+nearby net point; the modulus compares their values.  The terminal finalizer
+combines the lower and upper inequalities.  Every universal statement over the
+net is represented by a bounded fold.
+\end{proof}
+
+A coherent minimizer requires more.  If
+\[
+ f(x)\leq\inf f+\varepsilon\quad\Longrightarrow\quad
+ d(x,x_*)\leq\rho(\varepsilon)
+\]
+with a quantitative uniqueness modulus \(\rho\), then all sufficiently good
+finite minimizers form a shrinking cloud.  Theorem~\ref{thm:shrinking-viability}
+constructs a coherent point name.  Without such a modulus, the infimum value is
+the correct stable observable.
+
+\subsection{Polynomial and matrix observables}
+
+Finite algebra is especially well suited to observation nodes.
+
+\paragraph{Polynomial identity.}
+A coefficient list and a degree bound reduce identity to a finite conjunction
+of coefficient equations.  A certificate can be a straight-line derivation,
+a determinant, a remainder table, or a multiplication-closure table.  Its
+checker is bounded.
+
+\paragraph{Roots.}
+The stable output is generally a multiset of isolating regions with
+multiplicities.  Individual root labels require disjoint regions or a positive
+separation bound.  Symmetric functions of roots are exact observables even at
+collisions.
+
+\paragraph{Symmetric matrices.}
+Ordered eigenvalue lists are stable under perturbation, including repeated
+eigenvalues.  Eigenvectors are not.  A gap certificate permits a stable
+spectral projector or block count.  The repository's stable-observables packet
+already develops this application at the human level; the PCOG framework
+supplies the general composition and trace interfaces.
+
+\paragraph{Determinants and norms.}
+A determinant is a finite polynomial computation.  Nonvanishing used for
+division needs an apartness or exact integer nonzero certificate.  Weighted
+norms can convert common-zero questions on curves into degree bounds; a local
+norm certificate then becomes a node feeding a finite counting argument.
+
+\subsection{Metastability and finite windows}
+
+A metastable statement has the form
+\[
+ \forall g\ \exists N\leq B(g,p)\ \forall i,j\in[N,N+g(N)]\;
+ d(x_i,x_j)\leq2^{-p}.
+\]
+For each fixed coded \(g,p\), this is a finite observation theorem and can be
+handled by bounded search.  It should not be silently converted into a global
+Cauchy modulus; computable counterexamples show that such a conversion is not
+available in general.
+
+The graph therefore represents metastability as a finite witness-producing
+node.  If an application later supplies a quantitative principle that turns
+these witnesses into a modulus, that principle is a separate node with its own
+proof.
+
+\subsection{Exactness tiers}
+
+PCOG outputs should be labeled by one of four tiers.
+
+\begin{enumerate}
+\item \textbf{Exact code:} equality of finite data is proved.
+\item \textbf{Exact observable:} witnesses may differ, but the exported finite
+observable agrees exactly.
+\item \textbf{Quantitative observation:} outputs agree within a stated rational
+error with a PR modulus.
+\item \textbf{Finite relation:} a bounded cloud contains all valid outputs and
+compatibility is proved, but no stable collapse is claimed.
+\end{enumerate}
+
+Moving upward in this list requires an explicit theorem.  In particular,
+finite relation to quantitative observation requires shrinking or comparison;
+quantitative observation to exact observable requires a positive gap or
+integrality/discreteness argument.

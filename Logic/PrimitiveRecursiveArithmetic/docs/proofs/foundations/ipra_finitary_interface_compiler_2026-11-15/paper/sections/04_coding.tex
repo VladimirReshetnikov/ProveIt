@@ -1,0 +1,158 @@
+\section{Primitive-recursive coding library}
+
+\subsection{Why a common coding layer matters}
+
+Most ordinary mathematical objects used in the packets---finite lists,
+matrices, rational numbers, polynomials, simplicial complexes, proof traces,
+and finite covers---are easily coded by natural numbers.  The danger is not
+existence of a coding.  It is silent dependence on unbounded decoding,
+ill-formed inputs, or quotient representatives.  A common coding layer should
+therefore satisfy three properties:
+\begin{enumerate}
+\item all constructors and bounded destructors are primitive recursive;
+\item every algorithm is total on all natural-number inputs;
+\item correctness theorems are guarded by a primitive-recursive well-formedness
+predicate.
+\end{enumerate}
+
+\subsection{Sequences and bounded tables}
+
+Fix a primitive-recursive pairing function
+\(\langle x,y\rangle\) with primitive-recursive projections
+\(\pi_0,\pi_1\).  A finite sequence may be coded by nested pairing, by a prime-
+power code, or by a bounded binary block.  The exact choice is irrelevant to
+proof strength; the following abstract interface is sufficient:
+\[
+\operatorname{len}(a),\qquad
+\operatorname{get}(a,i),\qquad
+\operatorname{set}(a,i,x),\qquad
+\operatorname{push}(a,x).
+\]
+All operations are total.  Out-of-range reads return zero, and out-of-range
+writes leave the code unchanged.  The predicate \(\operatorname{Seq}(a)\)
+certifies canonical shape when canonicality matters.
+
+A rectangular table is represented by a triple \((r,c,a)\), with the entry at
+\((i,j)\) stored at offset \(ic+j\).  Matrix addition, multiplication, minors,
+and determinants of a fixed finite dimension are primitive recursive.  When
+dimension is variable, the algorithms remain primitive recursive because
+loops are bounded by the coded dimensions.
+
+\subsection{Integers and rationals}
+
+Represent an integer by a pair \((p,n)\), denoting \(p-n\).  This avoids a
+case distinction in subtraction.  Equality and order reduce to natural-number
+arithmetic:
+\[
+  (p,n)=(p',n')\quad\Longleftrightarrow\quad p+n'=p'+n.
+\]
+A rational code is a triple \((p,n,d)\) with \(d>0\), denoting
+\((p-n)/d\).  Algorithms are total even at \(d=0\), using a default value;
+well-formedness supplies the positive-denominator guard.  Rational equality
+uses cross multiplication and therefore does not require normalization.
+
+For uniqueness or finite enumeration, one may add the canonical predicate
+\[
+  d>0,\qquad \gcd(|p-n|,d)=1,
+\]
+with a fixed sign convention.  Canonicalization is primitive recursive by the
+Euclidean algorithm.  The framework does not force canonicalization in every
+inner loop; it uses observational equality where that is cheaper.
+
+\subsection{Finite algebraic data}
+
+A polynomial over a coded ring is a coefficient sequence.  Evaluation,
+derivative, truncated multiplication, Euclidean pseudo-division, resultants,
+and determinant-based certificates are bounded recursions on degree.
+A finitely presented algebra is encoded by:
+\begin{itemize}
+\item numbers of generators and relations;
+\item coefficient tables for the relations;
+\item a degree or monomial cap when a finite normal-form computation is used;
+\item a certificate that all reductions stay below that cap.
+\end{itemize}
+
+The cap is important.  ``Run Buchberger's algorithm until it terminates'' is
+not directly a primitive-recursive program unless a bound or a decreasing
+measure is supplied.  A finite Macaulay matrix at an explicitly given degree,
+by contrast, is a bounded object and its row-reduction certificate is directly
+verifiable.
+
+\subsection{Finite combinatorial and topological data}
+
+A finite graph is a vertex bound together with a Boolean edge table.  A finite
+simplicial complex is a vertex bound and a Boolean predicate on bounded finite
+subsets, with a downward-closure certificate.  Chains over \(\F_2\) are bit
+vectors; boundary maps are finite matrices.  Homology statements at a fixed
+finite level can be expressed using matrix equations:
+\[
+  \partial z=0,
+  \qquad z=\partial w,
+  \qquad f_\#\partial=\partial f_\#.
+\]
+No quotient type must be internalized.  ``Same homology class'' is a bounded
+existential statement about a chain \(w\), which can be Booleanized.
+
+Finite categories are coded by bounds on objects and arrows, source/target and
+composition tables, and Boolean laws for identity and associativity.  A
+functor is a pair of tables satisfying bounded equations; a natural
+transformation is another finite table.  Thus finite limits, finite colimits,
+and finite Yoneda calculations reduce to bounded search and equality.
+
+\subsection{Traces and certificates}
+
+A proof trace has a fixed state encoding.  Its code need not expose a list of
+all states: a primitive-recursive run term is often smaller.  For external
+certificate validation, however, a list form is convenient.  We use both:
+\begin{itemize}
+\item the object language defines \(\Run(i,u)\) by primitive recursion;
+\item a JSON or host-level certificate may list states
+\(s_0,\ldots,s_b\) and is checked against the same local step relation.
+\end{itemize}
+
+The trace invariant must be quantifier free.  Bounded subcertificates are
+therefore folded into a Boolean state component rather than quantified over in
+the induction predicate.
+
+\subsection{Observational setoids}
+
+Many mathematical objects have several codes.  Instead of forcing a global
+canonical form, define at each precision \(p\) a primitive-recursive relation
+\[
+      a\equiv_p b
+      \quad\Longleftrightarrow\quad
+      \Obs(a,p)=\Obs(b,p)
+\]
+or, more generally, a bounded back-and-forth relation between finite answer
+clouds.  The required laws are finite:
+\begin{enumerate}
+\item reflexivity, symmetry, and transitivity at each precision;
+\item monotonicity: equivalence at a stronger precision implies equivalence at
+weaker precision;
+\item congruence of every contracted operation.
+\end{enumerate}
+
+This setoid discipline resolves the frequent confusion between equality of
+codes and equality of represented objects.  It also permits efficient internal
+representations while preserving extensional theorem statements.
+
+\subsection{Coding theorem}
+
+\begin{theorem}[Bounded data are iPRA-ready]
+Fix a finite signature of sequence, table, integer, rational, graph, matrix, or
+finite-complex operations built from the interfaces above.  Every constructor,
+bounded destructor, well-formedness test, and bounded verifier is primitive
+recursive.  Every fixed equality or validity condition is representable by a
+quantifier-free Boolean equation in iPRA.
+\end{theorem}
+
+\begin{proof}
+Pairing and its projections are primitive recursive.  The listed operations
+are obtained by composition, bounded iteration, and primitive recursion on an
+explicit natural bound.  Boolean combinations preserve primitive
+recursiveness.  Each Boolean characteristic function is named by a symbol in
+\(\PR\); the equation to the Boolean value one is quantifier free.  No
+unbounded minimization is used.  Total default behavior handles malformed
+codes, while correctness theorems assume the corresponding well-formedness
+Boolean.
+\end{proof}

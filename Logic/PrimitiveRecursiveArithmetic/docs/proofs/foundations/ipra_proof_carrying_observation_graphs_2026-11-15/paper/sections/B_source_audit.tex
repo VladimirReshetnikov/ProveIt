@@ -1,0 +1,82 @@
+\section{Source audit and comparison}
+\label{app:sources}
+
+\subsection{Pinned repository state}
+
+The inspected public branch was
+\path{VladimirReshetnikov/ProveIt:main} at commit
+\path{9df5cbdf39e6220be823f611987bd584d37711fd}.  The report used the following
+source families.
+
+\begin{longtable}{@{}p{0.34\textwidth}p{0.58\textwidth}@{}}
+\toprule
+Path & Role in this report \\
+\midrule
+\endhead
+\path{Logic/PrimitiveRecursiveArithmetic/README.md} & directory-level status,
+separation of the checked library from delivered proof packets \\
+\path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/README.md} & packet index,
+reported scope, and unresolved application boundaries \\
+\path{ConciseIPRA/Lean/ConciseIPRA/Syntax.lean} & scoped terms/formulas,
+substitution, quantifier-free predicate \\
+\path{ConciseIPRA/Lean/ConciseIPRA/Deduction.lean} & embedded natural
+deduction, substitution, weakening, cut, equality transport \\
+\path{ConciseIPRA/Lean/ConciseIPRA/PR.lean} & primitive-recursive syntax,
+iPRA axioms, recursion equations, quantifier-free induction \\
+\path{docs/proofs/foundations/ipra_local_global/lean/ObjectIteration.lean} &
+checked object trace rule and specialization at fuel \\
+\path{docs/proofs/foundations/ipra_local_global/lean/ObjectExample.lean} &
+closed counting example with actual \texttt{Prf PRAAx} conclusion \\
+\path{docs/proofs/algebra/ipra_stable_observables/lean/ObjectObservation.lean} &
+checked certificate extraction and independent-witness combinators \\
+\path{docs/proofs/foundations/ipra_unified_finitary_framework_2026-11-15} &
+finite traces, relational viability, shrinking framework, theorem ledger \\
+\path{docs/proofs/foundations/ipra_cfp_contract_compiler_2026-11-15} &
+contract-DAG architecture and explicit open generic compiler \\
+\path{docs/proofs/foundations/ipra_embedding_framework} & finite observations,
+simple branches, finite stability, algebra certificates \\
+\path{docs/proofs/foundations/ipra_finite_observation} & bounded observation
+compiler and retained barriers \\
+\path{docs/proofs/foundations/ipra_coherent_methods_2026-11-15} & coherent
+presentations, filtered lifting, weighted norms, checked proof combinators \\
+\path{docs/proofs/foundations/ipra_resources_and_elimination_2026-11-15} &
+term compiler, backward demand equations, descent resources, complete bounded
+intersections \\
+\path{docs/proofs/algebra/ipra_stable_observables} & stable spectra and gap-
+dependent exact observables \\
+\bottomrule
+\end{longtable}
+
+\subsection{Comparison with prior framework packets}
+
+The report intentionally avoids rebranding prior contributions.
+
+\begin{itemize}
+\item Backward demand propagation appears in several earlier packets.  Here it
+is connected explicitly to a proof-producing graph fold and stated with a
+leastness theorem.
+\item Finite relational viability and shrinking clouds appear in the unified
+and finite-use packets.  Here the finite-horizon diagonal selection is proved
+in a form directly usable for regular names and connected to gap collapse.
+\item Proof-producing trace combinators exist in the local-global packet.  Here
+they become the recursive node interface of a general graph compiler.
+\item Stable observations from independent certificates exist in the spectral
+packet.  Here they become a generic node class and exactness tier.
+\item Height/list conversion and finite auxiliary exhaustion are developed in
+prior packets.  Here they are made standard resource interfaces and contrasted
+systematically with bare cardinality.
+\end{itemize}
+
+The synthesis is motivated by a concrete formal gap recorded repeatedly in the
+repository: many sophisticated packets stop before a completed embedded proof
+of their headline theorem.  A reusable compiler should reduce that gap to a
+finite list of local \texttt{Prf} obligations.
+
+\subsection{Audit limitations}
+
+This was a targeted architectural audit, not a line-by-line verification of
+all seventy-two packets.  Reported build statuses of inherited packet modules
+were read from their source documentation and inspected declarations; they
+were not rerun in this artifact environment.  The current package's Python and
+PDF builds were rerun locally.  The Lean source was not, because the executable
+was absent.

@@ -1,0 +1,171 @@
+\section{Resolution of reported difficulties and principled barriers}
+\label{sec:difficulties}
+
+This section maps the recurring repository difficulties to precise PFIG responses.  The goal is not to declare every deep theorem solved, but to identify which part is now generic, which part must be reformulated, and which part remains a theorem-specific producer.
+
+\subsection{Ambient evidence mistaken for object proof}
+
+\textbf{Problem.} A Lean theorem proves a semantic property of a finite computation, or Python tests pass, but the final theorem is stated only as a desired \(\Prf\ \PRAAx\) value.
+
+\textbf{Resolution.} Every node contract stores object derivations for base, step, reflection, and terminal extraction.  PFIG soundness composes those derivations using the existing substitution and cut lemmas.  Semantic execution remains a reference specification and test oracle.
+
+\textbf{Residual work.} Enter the theorem-specific arithmetic lemmas in object syntax.  The framework removes repeated control-flow proofs, not the local mathematics.
+
+\subsection{Quantifiers in induction invariants}
+
+\textbf{Problem.} Correctness is stated with bounded or unbounded quantifiers and therefore cannot be used as a QF induction matrix.
+
+\textbf{Resolution.} Compile every finite quantifier to an \(\mathsf{All}\), \(\mathsf{Any}\), search, sum, product, or table fold.  Induct on a literal equality or Boolean state invariant.  Reflect the resulting Boolean only after the loop.
+
+\textbf{Status.} Resolved as a general schema; a shared Lean Booleanization library remains to be completed.
+
+\subsection{All precisions inside one invariant}
+
+\textbf{Problem.} A proof attempts to maintain a statement about every future precision during a finite recursion.
+
+\textbf{Resolution.} Fix the terminal request as a free parameter, run backward demand, instantiate a finite query table, prove the finite run, then universally generalize over the request.  Uniformity comes from the PR request parameter, not from an infinitary invariant.
+
+\textbf{Status.} Resolved by the two-pass compiler.
+
+\subsection{Universal primitive-recursive evaluator}
+
+\textbf{Problem.} The construction treats arbitrary PR program codes as data and assumes a total PR evaluator.
+
+\begin{barrier}[No total PR universal evaluator]
+There is no total primitive-recursive function \(U(e,x)\) enumerating every unary primitive-recursive function by code \(e\).  Otherwise the diagonal function \(d(n)=U(n,n)+1\) would be primitive recursive and equal to some \(U(e,\cdot)\), giving \(d(e)=d(e)-1\).
+\end{barrier}
+
+\textbf{Resolution.} Statically specialize each fixed graph to fixed PR symbols, or verify a finite clocked trace.  The metatheoretic compiler may be general; the object theory receives specialized syntax.
+
+\textbf{Status.} The stronger interface is impossible; the specialized interface is resolved.
+
+\subsection{Non-unique witnesses and incoherent names}
+
+\textbf{Problem.} Independent least choices at each precision jump among branches.
+
+\textbf{Resolution.} Keep finite answer clouds, compute backward viability for fixed horizons, and either select a finite viable path or erase choices through a stable observer.  Construct a regular name only under explicit cloud-diameter and motion-tail bounds.
+
+\textbf{Status.} Finite composition is resolved.  Infinite name extraction is conditional on quantitative shrinking data, as it must be.
+
+\subsection{Root ordering and spectral labels}
+
+\textbf{Problem.} Individual roots or eigenvectors are labeled across collisions.
+
+\textbf{Resolution.} Return multisets, clusters, projective data, symmetric observables, or finite matchings.  Exact labels are derived under a separation gap using \cref{thm:branch-stability}.
+
+\textbf{Status.} Reformulated in the unrestricted case; resolved under a gap.
+
+\subsection{Exact sign, side, and axis selection}
+
+\begin{barrier}[Discontinuous binary choice]
+A total operation that, from an arbitrary Cauchy name of a real, decides whether it is nonnegative or nonpositive would imply a limited omniscience principle.  Similarly, a total exact rotation-axis selector at the identity must choose among an entire sphere of valid axes and cannot be continuous.
+\end{barrier}
+
+\textbf{Resolution.} Use a finite relation of admissible sides/axes, a projective or quaternion representation, a stable formula independent of the choice, or a positive separation guard.
+
+\textbf{Status.} The unrestricted selector is intentionally not implemented.
+
+\subsection{Partial operations from mere nonzero propositions}
+
+\textbf{Problem.} A proof divides by a represented quantity after assuming only \(x\ne0\).
+
+\textbf{Resolution.} Totalize the code function and require an apartness witness \(|x|\ge2^{-g}\).  Backward demand uses \(g\) to determine input precision.  If no margin is available, return a relation or retain the statement as noncomputational.
+
+\textbf{Status.} Resolved under quantitative guards.
+
+\subsection{Compactness and minimization}
+
+\textbf{Problem.} ``Choose a finite subcover'' or ``take a minimizer'' appears without a modulus or finite net.
+
+\textbf{Resolution.} Require a primitive-recursive net, coverage certificate, continuity modulus, and bounded argmin.  A unique exact minimizer additionally requires an isolation modulus.
+
+\textbf{Status.} Resolved for effective compact presentations; the net/modulus producer is theorem-specific.
+
+\subsection{Metastability treated as convergence}
+
+\begin{barrier}[Metastability does not uniformly yield a Cauchy modulus]
+Computable sequences can have primitive-recursive finite-window metastability information while lacking a computable tail modulus.  A uniform conversion would compute convergence rates for Specker-type sequences.
+\end{barrier}
+
+\textbf{Resolution.} Keep metastable output as a finite-window contract.  Upgrade to a regular name only with an explicit tail modulus, for example from shrinking viability.
+
+\textbf{Status.} The distinction is enforced by separate interface types.
+
+\subsection{Exact Puiseux or branch data from approximate coefficients}
+
+\textbf{Problem.} A uniform algorithm is asked to output exact branch coefficients or exact factorization type from arbitrary Cauchy coefficient names.
+
+\textbf{Resolution.} Use exact algebraic coefficient codes and splitting certificates, or produce approximate branch clouds.  Exact branch labels require discriminant/separation data.  Arbitrary Cauchy input supports only stable approximate observables.
+
+\textbf{Status.} Reformulated; the unrestricted producer is obstructed by discontinuity and exact-zero detection.
+
+\subsection{Finiteness confused with a height bound}
+
+\begin{barrier}[Cardinality does not locate solutions]
+A bound on the number of solutions of a decidable predicate does not provide a bound on where they occur.  If it did uniformly, one could encode a halting computation as a predicate with at most one solution and decide whether and where it halts.
+\end{barrier}
+
+\textbf{Resolution.} Separate the height producer from the bounded enumerator.  Use \cref{thm:height-to-list,thm:list-to-height} to move between explicit height bounds and complete lists.
+
+\textbf{Status.} The verifier is resolved; general Faltings/Siegel height producers remain open or theorem-specific.
+
+\subsection{Mordell--Weil and descent representatives}
+
+\textbf{Problem.} A finite cohomological or Selmer-class list is treated as though it contained rational points on every covering variety.
+
+\textbf{Resolution.} Make rational representatives and compatibility certificates explicit relational producer nodes.  Finite descent, group generation from a complete covering list, and certificate checking are generic after these nodes are supplied.
+
+\textbf{Status.} Verifier and relational descent are resolved; uniform representative production remains an honest open obligation.
+
+\subsection{Ineffective analytic constants}
+
+\textbf{Problem.} An asymptotic theorem hides constants or thresholds not computable from the input.
+
+\textbf{Resolution.} State a finite analytic certificate containing explicit rational constants, threshold, and error inequalities.  PFIG verifies the certificate and propagates precision.  A separate producer must generate the constants.
+
+\textbf{Status.} Verification architecture resolved; effectiveness of the source theorem remains substantive mathematics.
+
+\subsection{General probability spaces}
+
+\textbf{Problem.} A proof invokes arbitrary measures, discontinuous CDFs, or weak convergence without quantitative approximation data.
+
+\textbf{Resolution.} Work first with finite rational laws.  Approximation of a wider class requires quantization, tail, moment, and anti-concentration moduli.  The finite theorem and transfer error are separate nodes.
+
+\textbf{Status.} Resolved for effective presentations.
+
+\subsection{Continuous topology without numerical control}
+
+\textbf{Problem.} A continuous compact space and map are used without a modulus, grid, carrier, or finite invariant.
+
+\textbf{Resolution.} Represent each requested stage by a finite complex or grid, maps by carriers, and the theorem by parity, Sperner, winding, chain, or homology certificates.  Stable-observer arguments remove selection dependence.
+
+\textbf{Status.} Representation and finite proof layer resolved; theorem-specific approximation and separation estimates remain.
+
+\subsection{Code equality versus mathematical equality}
+
+\textbf{Problem.} Equivalent representatives are required to be literally equal, causing false canonicity or impossible normalization obligations.
+
+\textbf{Resolution.} Use observational setoids, finite back-and-forth for relation clouds, and explicit extensionality demands.  Quotients live in the semantics, not necessarily in the object syntax.
+
+\textbf{Status.} Resolved as a general interface.
+
+\subsection{Classical proof fragments}
+
+\textbf{Problem.} A finite arithmetic argument uses classical case analysis, and it is unclear which conclusions survive intuitionistically.
+
+\textbf{Resolution.} The negative translation of \cref{sec:negative-transfer} transfers classical PRA derivations whose assumptions and conclusions lie in the retained class.  Positive existential or disjunctive outputs must instead be made explicit by PFIG witnesses or relations.
+
+\textbf{Status.} Human proof complete; Lean implementation remains an engineering target.
+
+\subsection{A hierarchy of remaining obligations}
+
+After PFIG compilation, unresolved work falls into four clearly separated classes.
+
+\begin{enumerate}
+\item \textbf{Kernel engineering}: implementing Booleanization, viability reflection, graph elaboration, and negative translation in Lean.
+\item \textbf{Local arithmetic}: proving a finite inequality, identity, or certificate reflection theorem in object syntax.
+\item \textbf{Quantitative producers}: deriving a modulus, gap, height bound, cover, representative, or explicit constant.
+\item \textbf{Genuine barriers}: requests for discontinuous selectors, universal evaluators, or non-effective conversions that should be reformulated rather than pursued unchanged.
+\end{enumerate}
+
+This hierarchy is itself a useful research result.  It prevents effort from being spent on formalizing an interface that cannot exist, and it identifies which hard theorem would unlock an entire family of downstream iPRA results.

@@ -253,6 +253,18 @@ and then deleted. It leaves out four ignored `.log` files.
 `foundations/`, and then deleted. All 38 of its members are placed.
 `ipra_unified_finitary_framework_2026-11-15.zip` was placed the same way, under
 `foundations/`, and then deleted. It leaves out one ignored `.log` file.
+`ipra_certified_finitary_framework_2026-11-15.zip` was placed the same way, under
+`foundations/`, and then deleted. All 44 of its members are placed.
+`ipra_finitary_interface_compiler_2026-11-15.zip` was placed the same way, under
+`foundations/`, and then deleted. All 55 of its members are placed.
+`ipra_kernel_finite_use_framework_2026-11-15.zip` was placed the same way, under
+`foundations/`, and then deleted. All 34 of its members are placed.
+`ipra_pfig_framework_2026-11-15.zip` was placed the same way, under `foundations/`, and then
+deleted. All 46 of its members are placed.
+`ipra_proof_carrying_observation_graphs_2026-11-15.zip` was placed the same way, under
+`foundations/`, and then deleted. All 50 of its members are placed.
+`ocipra_framework_2026-11-15.zip` was placed the same way, under `foundations/`, and then
+deleted. It leaves out five ignored `.log` files.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

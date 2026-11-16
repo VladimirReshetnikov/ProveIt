@@ -38,12 +38,14 @@ The library is built bottom-up. Reusable layers come first:
 | [`Core/Semiring`](Lean/IPRADerivations/Core/Semiring.lean) | The commutative-semiring laws, additive cancellation and the successor axioms at arbitrary terms, each derived by induction |
 | [`Core/Quotient`](Lean/IPRADerivations/Core/Quotient.lean) | Terms modulo provable equality under a context `Γ` form a cancellative commutative semiring `Q Γ` |
 | [`Core/Integers`](Lean/IPRADerivations/Core/Integers.lean) | Integers as differences: integer terms `ZT` with their iPRA equation `ZT.eq`, and the ring of differences `Groth (Q Γ)`, in which integer identities are proved by `ring` and `linear_combination` |
-| [`Core/Tactic`](Lean/IPRADerivations/Core/Tactic.lean) | Universal closure `allN`, and the tactic `ipra_ring` for polynomial identities |
+| [`Core/Tactic`](Lean/IPRADerivations/Core/Tactic.lean) | Universal closures `allN` and `univ`, and the tactic `ipra_ring` for polynomial identities |
+| [`Core/LinearAlgebra`](Lean/IPRADerivations/Core/LinearAlgebra.lean) | Integer vectors and matrices: finite sums, dot and cross products, matrix products, traces, determinants by Laplace expansion and adjugates by cofactors, each evaluated to the corresponding Mathlib operation; matrix equations as finite conjunctions |
 
 The theorem modules are grouped by the areas of `docs/proofs/`:
 
 | Module | Packet | Theorems |
 |---|---|---|
+| [`Algebra/CayleyHamilton`](Lean/IPRADerivations/Algebra/CayleyHamilton.lean) | [`cayley_hamilton_ipra`](../docs/proofs/algebra/cayley_hamilton_ipra/) | Cayley–Hamilton for 2×2 and 3×3 integer matrices; `M · adj M = (det M) I` and `det (M N) = det M · det N` as schemas, one theorem for every size; `L(q r) = L(q) L(r)` for quaternions and Euler's four-square identity |
 | [`Geometry/TriangleFormulas`](Lean/IPRADerivations/Geometry/TriangleFormulas.lean) | [`triangle_formulas_ipra`](../docs/proofs/geometry/triangle_formulas_ipra/) | two-square identity, Heron factorisation, Heron's formula and the law of cosines in integer coordinates |
 
 ## How the ring tool yields iPRA derivations
@@ -60,6 +62,13 @@ differences of `Q Γ`, where Mathlib's `ring` proves the identity. Cancellation,
 derived in iPRA, makes the evaluation injective. Mathlib is used only in the
 metatheory, to find and check the derivation. The object-level proof uses only
 the axioms `PRAAx`.
+
+For larger identities, such as those of linear algebra, the term operations
+(`Mat.det`, `Mat.adj`, `Vec.cross`, …) are shown once to evaluate to Mathlib's
+`Matrix.det`, `Matrix.adjugate`, `crossProduct` and so on. An identity is then
+proved over an arbitrary commutative ring, for instance by `Matrix.mul_adjugate`,
+and read back as an iPRA derivation. This is how a single Lean theorem gives
+iPRA theorems for matrices of every size.
 
 ## Relation to other iPRA work in the repository
 

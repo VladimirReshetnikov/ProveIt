@@ -1,0 +1,196 @@
+{
+  "admissibility": {
+    "Faltings-style finite-point verifier without a height producer": {
+      "classification": "conditional-on-producer",
+      "reasons": [
+        "qualitative/cardinality finiteness supplies no stopping rule",
+        "the finite verifier is separated from an unproved certificate producer"
+      ],
+      "repairs": [
+        "supply a height bound or a complete finite list certificate",
+        "state the iPRA theorem conditionally on the certificate, or prove a producer theorem"
+      ]
+    },
+    "exact root label through a collision": {
+      "classification": "reformulate-relationally",
+      "reasons": [
+        "an exact branch selector is requested at possible collisions"
+      ],
+      "repairs": [
+        "return a finite cloud/quotient observable, or add an explicit separation gap"
+      ]
+    },
+    "fixed finite matrix identity": {
+      "classification": "object-internalizable",
+      "reasons": [
+        "all finite resources, verifiers, producers, and local derivations are explicit"
+      ],
+      "repairs": []
+    }
+  },
+  "bounded_search": {
+    "bound": 10,
+    "found": true,
+    "tested": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "witness": 6
+  },
+  "demand_closure": {
+    "result": [
+      6,
+      5
+    ],
+    "steps": [
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        5,
+        4
+      ],
+      [
+        5,
+        5
+      ],
+      [
+        6,
+        5
+      ]
+    ],
+    "verified": true
+  },
+  "deterministic_dag": {
+    "demands": {
+      "out": 2,
+      "square": 3,
+      "sum": 5,
+      "x": 6,
+      "y": 6
+    },
+    "goal": "out",
+    "inputs": {
+      "x": 3,
+      "y": 4
+    },
+    "output": 52,
+    "replay_valid": true,
+    "trace": [
+      {
+        "demand": 5,
+        "dependency_values": [
+          [
+            "x",
+            3
+          ],
+          [
+            "y",
+            4
+          ]
+        ],
+        "locally_valid": true,
+        "node": "sum",
+        "output": 7
+      },
+      {
+        "demand": 3,
+        "dependency_values": [
+          [
+            "sum",
+            7
+          ]
+        ],
+        "locally_valid": true,
+        "node": "square",
+        "output": 49
+      },
+      {
+        "demand": 2,
+        "dependency_values": [
+          [
+            "square",
+            49
+          ],
+          [
+            "x",
+            3
+          ]
+        ],
+        "locally_valid": true,
+        "node": "out",
+        "output": 52
+      }
+    ]
+  },
+  "relational_cloud": {
+    "endpoint_diameter": {
+      "denominator": 2030,
+      "numerator": 1
+    },
+    "floor_observable_invariant": true,
+    "floor_value": 1,
+    "least_path": [
+      {
+        "denominator": 1,
+        "numerator": 1
+      },
+      {
+        "denominator": 2,
+        "numerator": 3
+      },
+      {
+        "denominator": 5,
+        "numerator": 7
+      },
+      {
+        "denominator": 29,
+        "numerator": 41
+      }
+    ],
+    "terminal_residual": {
+      "denominator": 841,
+      "numerator": 1
+    },
+    "viable_indices": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        1
+      ]
+    ]
+  }
+}

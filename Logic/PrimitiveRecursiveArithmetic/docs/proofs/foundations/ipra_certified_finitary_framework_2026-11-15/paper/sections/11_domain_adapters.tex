@@ -1,0 +1,137 @@
+\section{Domain adapters}
+\label{sec:domains}
+
+The generic kernel becomes useful only when applications are translated into
+its interfaces.  This section records robust adapters for the main families of
+proofs represented in the repository.
+
+\subsection{Exact algebra and polynomial identities}
+
+Polynomials over integers or rationals are bounded coefficient lists.
+Evaluation, addition, multiplication, derivative, and coefficient comparison
+are primitive recursive.  A polynomial identity is checked by normalized
+coefficient equality, or by a supplied straight-line derivation whose local
+ring steps are verified.
+
+For degree-bounded algorithms, traces can carry coefficient-growth bounds and
+positive-denominator invariants.  Exact algebra is the easiest part of the
+framework because equality is decidable and all objects are finite.  The main
+formalization task is a canonical shared code library; parallel encodings
+should not be introduced packet by packet.
+
+\subsection{Roots, spectra, and branch data}
+
+For an exact polynomial, stable outputs are:
+\begin{itemize}
+\item the root multiset approximated by a finite family of disks;
+\item clusters with multiplicities;
+\item symmetric functions of roots; or
+\item individually labeled roots under a separation certificate.
+\end{itemize}
+A verifier checks disk coverage, disjointness where claimed, residual or
+Rouche-type inequalities, and multiplicity counts.  Independent valid
+certificates can be compared through a finite Hausdorff or matching estimate,
+so \cref{thm:stable-erasure} often avoids cross-precision branch tracking.
+
+For matrices, a rational iteration may return a diagonal or block-diagonal
+certificate.  Exact invariants such as trace, determinant, and characteristic
+polynomial are stable observations.  Ordered eigenvalues require a proved
+cross-certificate comparison; eigenvectors and projectors require spectral
+gaps.  At multiplicity, the stable object is the invariant subspace projector
+or cluster, not an individual eigenvector.
+
+Exact Puiseux coefficients from arbitrary Cauchy coefficients are not a valid
+uniform target.  Exact algebraic coefficient codes plus Newton-polygon and
+splitting data are a valid target; otherwise one returns approximate branch
+clusters or guarded simple branches.
+
+\subsection{Constructive analysis}
+
+A continuous function on a compact rational box is presented by:
+\begin{enumerate}[label=(\roman*)]
+\item a fixed dyadic evaluator;
+\item a modulus of continuity;
+\item a magnitude bound; and
+\item any domain or apartness guards needed by partial operations.
+\end{enumerate}
+Finite nets replace abstract compactness.  The minimum value is approximated by
+bounded minimization on a net plus the modulus error.  A minimizer is returned
+relationally; a coherent point requires strong convexity, isolation, or another
+shrinking estimate.
+
+Integration uses finite rational sums with a partition modulus.  Differentiation
+or inverse-function claims require quantitative derivative remainder and
+Jacobian guards.  ODE claims are formulated through a finite step method,
+local truncation estimates, and a discrete Gronwall accumulator.  The demand
+compiler computes how much input precision each step requires.
+
+\subsection{Geometry and topology}
+
+Coordinates are rational or regular names with explicit error budgets.
+Incidence, orientation, and side tests are exact only under separation margins;
+near a boundary, overlapping branches or relational orientation data are used.
+A rotation is stably represented by quaternion or matrix data.  A unit axis is
+exported only with a positive gap from the identity or an explicitly supplied
+nonzero vector part.
+
+Topological existence arguments are compiled to finite grids, simplicial or
+cubical complexes, and parity, Sperner, degree, or chain certificates.  The
+verifier checks a finite combinatorial identity.  Refinement relations and
+shrinking cells provide approximate points when a coherent location is needed.
+The abstract compact space is never manipulated as an infinite object inside
+iPRA.
+
+\subsection{Finite probability and statistics}
+
+Start with finite rational laws.  General distributions are accessed through
+finite approximations together with tail, truncation, quantization, moment, and
+anti-concentration moduli.  Expectations are finite sums.  Concentration bounds
+are rational inequalities.  Discontinuous CDF tests at an atom require an
+anti-concentration margin or an interval-valued conclusion.
+
+Limit theorems should be stated as finite quantitative approximation theorems:
+for requested tolerance \(2^{-n}\), explicit bounds and certificates imply a
+test-metric estimate.  A qualitative weak-convergence statement without a rate
+is not automatically a primitive-recursive name.
+
+\subsection{Arithmetic geometry and Diophantine finiteness}
+
+Let \(P(p,x)\) be a decidable predicate for coded points and let
+\(\height(p,x)\) be a primitive-recursive height.  Assume that all codes of
+height at most \(H\) can be enumerated below a primitive-recursive code bound.
+
+\begin{theorem}[Height bound--complete list equivalence]
+\label{thm:height-list}
+For such a presentation, the following finite data are interconvertible in
+iPRA:
+\begin{enumerate}[label=(\alph*)]
+\item a bound \(H\) with \(P(p,x)\to\height(p,x)\le H\); and
+\item a finite list containing every \(x\) satisfying \(P(p,x)\), together
+      with a proof of completeness.
+\end{enumerate}
+The conversions are primitive recursive in the supplied certificate.
+\end{theorem}
+
+\begin{proof}
+Given \(H\), enumerate every code in the finite height-bounded search region,
+filter by \(P\), and remove duplicates by bounded search.  The height bound
+proves completeness.  Conversely, from a complete list take the finite maximum
+of the heights of its entries.  For any \(x\) satisfying \(P\), completeness
+provides a matching list entry, so its height is bounded by the maximum.
+\end{proof}
+
+A cardinality bound alone supplies neither datum: a singleton solution set can
+have an uncomputably late code.  Thus Faltings- or Siegel-type packets should
+separate the fully formalizable bounded enumerator from the deep height-bound
+producer.  Mordell--Weil descent similarly separates finite Selmer data from
+certified rational representatives on the corresponding coverings.
+
+\subsection{Analytic number theory}
+
+Ineffective constants are handled by certificate interfaces.  A finite
+analytic certificate records explicit cutoffs, exceptional alternatives,
+zero-free margins, truncation parameters, and rational upper and lower bounds.
+The verifier proves that accepted constants imply the requested finite
+inequality.  A separate producer theorem establishes uniform availability of
+accepted certificates.  This preserves the exact quantifier order and makes
+ineffectivity visible rather than embedding it into an unspecified constant.

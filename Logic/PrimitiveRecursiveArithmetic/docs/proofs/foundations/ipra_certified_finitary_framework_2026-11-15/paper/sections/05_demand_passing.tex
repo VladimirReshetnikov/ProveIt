@@ -1,0 +1,152 @@
+\section{Backward demands and parameter-changing induction}
+\label{sec:demand}
+
+\subsection{Why ordinary uniform precision is wasteful}
+
+Many constructions transform an input approximation into an output
+approximation.  To establish the output at precision \(k\), a local step may
+need its predecessor at a different precision \(D(n,k)\).  Repeated products,
+ODE steps, root refinements, matrix iterations, and error-budget pipelines all
+have this shape.  A naive proof chooses one large precision valid for every
+intermediate stage.  This often introduces unnecessary monotonicity hypotheses,
+and it can place an all-precision assertion inside the induction formula.
+
+The correct finite object is a backward demand schedule.
+
+\subsection{The schedule}
+
+Fix a terminal time \(N\), requested output precision \(k\), and a
+primitive-recursive local demand function \(D(n,r)\).  Define
+\[
+ h_{N,k}(N)=k,
+ \qquad
+ h_{N,k}(t)=D(t,h_{N,k}(t+1))\quad(t<N).
+\]
+For primitive recursion it is convenient to compute backward distance:
+\begin{align*}
+ b(0)&=k,\\
+ b(j+1)&=D(N-j-1,b(j)),\\
+ h_{N,k}(t)&=b(N-t).
+\end{align*}
+Truncated subtraction handles the total numerical definition; the theorem is
+used only under \(t\le N\).
+
+\begin{lemma}[Demand equations]
+\label{lem:demand-equations}
+iPRA proves
+\[
+ h_{N,k}(N)=k
+ \quad\text{and}\quad
+ t<N\to h_{N,k}(t)=D(t,h_{N,k}(t+1)).
+\]
+It also proves the horizon coherence identity
+\[
+ h_{N+1,k}(t)=h_{N,D(N,k)}(t)\qquad(t\le N).
+\]
+\end{lemma}
+
+\begin{proof}
+The final equation is the zero recursion equation for \(b\).  For the step,
+\(N-t=(N-(t+1))+1\) under \(t<N\), so one unfolding of the recursion gives the
+claim.  Horizon coherence is induction on the backward distance; the numerical
+indices agree by elementary truncated-subtraction identities.  All statements
+are equations between fixed primitive-recursive terms.
+\end{proof}
+
+\subsection{Demand-passing transfer}
+
+Let \(P(n,r)\) be a bounded property saying that the stage-\(n\) object is
+correct at requested observation \(r\).  Assume
+\begin{align*}
+ P(0,h_{N,k}(0)),\tag{Base}\label{eq:demand-base}\\
+ P(n,D(n,r))\to P(n+1,r)\qquad(n<N).\tag{Step}\label{eq:demand-step}
+\end{align*}
+
+\begin{theorem}[Finite demand-passing transfer]
+\label{thm:demand-transfer}
+From \eqref{eq:demand-base} and \eqref{eq:demand-step}, iPRA proves
+\(P(N,k)\).  No monotonicity of \(D\) or of \(P\) is required.
+\end{theorem}
+
+\begin{proof}
+Induct on \(t\le N\) with the Booleanized quantifier-free invariant
+\[
+  P(t,h_{N,k}(t)).
+\]
+The base is \eqref{eq:demand-base}.  At a successor \(t+1\), the schedule
+equation rewrites the induction hypothesis as
+\(P(t,D(t,h_{N,k}(t+1)))\).  Apply \eqref{eq:demand-step} with
+\(r=h_{N,k}(t+1)\).  At \(t=N\), the final schedule equation rewrites the
+conclusion to \(P(N,k)\).
+\end{proof}
+
+The theorem is more than a semantic induction trick.  When \(P\) has been
+Booleanized and \(D\) is represented by a fixed \(\PR\) symbol, the proof is
+an instance of the checked \code{primitiveRecursionInvariant} transformer.
+The schedule is a first primitive recursion; the forward computation and proof
+are a second primitive recursion.  This compiles parameter-changing recursion
+into ordinary iPRA recursion without adding an induction schema.
+
+\subsection{Variable finite predecessor sets}
+
+Some outputs need several predecessor observations.  Let
+\(q(n,j,r)\), for \(r<c(n,j)\), list all predecessor queries needed to prove
+observation \(j\) at stage \(n+1\).  Define the finite envelope
+\[
+ E(n,h)=\max_{j\le h}\max_{r<c(n,j)} q(n,j,r).
+\]
+If the presentation provides all observations up to a prefix bound, the local
+step can use \(E(n,h)\) as one predecessor demand.
+
+\begin{theorem}[Finite-query induction]
+\label{thm:finite-query-induction}
+Suppose every base observation \(A(0,j)\) holds and
+\[
+ \bigl(\forall r<c(n,j)\;A(n,q(n,j,r))\bigr)\to A(n+1,j).
+\]
+Then iPRA proves \(A(N,j)\) for every \(N,j\), provided the bounded universal
+premise is compiled to a Boolean fold.
+\end{theorem}
+
+\begin{proof}
+Let \(P(n,h)\) mean that \(A(n,j)\) holds for every \(j\le h\).  The envelope
+ensures that every query needed for an output \(j\le h\) is covered by
+\(P(n,E(n,h))\).  Apply \cref{thm:demand-transfer} with demand \(E\), and
+recover the desired component by bounded elimination after the induction.
+\end{proof}
+
+\subsection{Adaptive finite queries}
+
+A query may depend on earlier finite comparison results.  There are two sound
+compilation strategies.
+
+\paragraph{Stateful strategy.}
+Include the query log in the trace state.  The invariant says that every entry
+recorded so far is an instance of the global input contract.  At a successor,
+the next query is a primitive-recursive term in the current state.  Universal
+hypotheses are instantiated at this term, and a Boolean fold updates the log
+validity bit.
+
+\paragraph{Certificate strategy.}
+An external producer supplies a query log and answer table.  A fixed checker
+verifies that every query follows the program, every answer satisfies the
+input contract at the recorded precision, and every state transition is valid.
+The object proof then reasons only about this finite table.
+
+Neither route places ``for every possible future precision'' inside the
+induction invariant.  The requested final precision is fixed during the finite
+proof and universally introduced afterward.
+
+\subsection{Demand and error ledgers}
+
+A useful implementation record attaches to every certified operation:
+\begin{enumerate}[label=(\roman*)]
+\item a backward demand transformer \(D_F(n)\);
+\item a finite error bound \(e_F(n)\);
+\item a list of guards that must hold at the demanded input precision; and
+\item an object proof that these data imply the output contract.
+\end{enumerate}
+For a composite \(G\circ F\), the demand is
+\(D_F(D_G(n))\), while the error ledger is obtained by substituting the
+intermediate magnitude and guard bounds.  Thus precision bookkeeping becomes
+an explicit compiler pass instead of ad hoc arithmetic in every theorem.

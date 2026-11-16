@@ -1,0 +1,137 @@
+\section{Finite relational presentations and witness amalgamation}
+\label{sec:relations}
+
+\subsection{Layered candidates}
+
+A finite relational presentation permits nonunique answers.  Fix a parameter
+\(p\).  At level \(k\), candidates are numbers \(a<B(p,k)\).  Primitive-
+recursive bits assert
+\[
+ \Good(p,k,a),
+ \qquad
+ \Compat(p,k,a,b),
+\]
+where the second relates level \(k\) to level \(k+1\).  A finite path is a
+coded list whose entries are in range and good and whose adjacent pairs are
+compatible.
+
+The central issue is dead ends.  Choosing the least good candidate at each
+level can fail even when a complete path exists.  Backward viability removes
+exactly the candidates that cannot reach the requested horizon.
+
+\subsection{Backward viability}
+
+Define viability at remaining depth \(d\) by
+\begin{align*}
+ \Viable(p,k,0,a)&=[a<B(p,k)]\wedge\Good(p,k,a),\\
+ \Viable(p,k,d+1,a)&=[a<B(p,k)]\wedge\Good(p,k,a)\wedge{}\\
+ &\quad\Any_{b<B(p,k+1)}
+ \bigl(\Good(p,k+1,b)\wedge\Compat(p,k,a,b)
+       \wedge\Viable(p,k+1,d,b)\bigr).
+\end{align*}
+All operations are Boolean folds, so this is a fixed primitive-recursive
+predicate.
+
+\begin{theorem}[Viability/path equivalence]
+\label{thm:viable-path}
+iPRA proves that \(\Viable(p,k,d,a)=1\) exactly when there exists a coded good
+compatible path of \(d\) edges beginning with \(a\) at level \(k\).  The path
+code has a primitive-recursive bound determined by \(B,p,k,d\).
+\end{theorem}
+
+\begin{proof}
+Induct on \(d\).  At zero, the singleton path condition is the definition.  At
+a successor, fold correctness extracts a compatible viable successor \(b\).
+Apply the induction hypothesis to the tail and prepend \(a\).  Conversely,
+split a path into its first edge and tail and use the same bounded witness in
+the viability fold.  For the formal induction, compare the viability bit with
+a bounded path-existence checker; the equality of bits is quantifier free.
+\end{proof}
+
+\subsection{Canonical finite paths}
+
+When \(a\) is viable at depth \(d+1\), bounded least search returns the least
+successor \(b\) that is good, compatible, and viable at depth \(d\).  Repeating
+this search by primitive recursion yields a canonical path.
+
+\begin{corollary}[Least viable path]
+\label{cor:least-path}
+There is a fixed primitive-recursive path constructor \(\mathsf{path}\) such
+that iPRA proves
+\[
+ \Viable(p,k,d,a)=1\to
+ \mathsf{PathOK}(p,k,d,a,\mathsf{path}(p,k,d,a))=1.
+\]
+\end{corollary}
+
+\begin{proof}
+Induct on the generated prefix length.  The invariant states that the current
+node is viable for the remaining depth and that the accumulated prefix passes
+the path checker.  Least-search correctness supplies the next viable edge.  At
+the last level, depth-zero viability gives goodness of the endpoint.
+\end{proof}
+
+This is finite dependent choice implemented by bounded search.  It has no
+infinite branch and no use of countable choice.
+
+\subsection{Full-horizon viability}
+
+For cross-level comparison, forward extendibility alone is insufficient.  A
+high-level candidate may extend indefinitely but be disconnected from the
+input.  Define
+\(\FullV(p,h,k,a)=1\) to mean that \(a\) occurs at level \(k\) on a complete
+good path from level zero to horizon \(h\).
+
+Let \(\mathsf{Reach}(p,k,a)\) be forward reachability from a good level-zero
+candidate.  Then, for \(k\le h\),
+\[
+ \FullV(p,h,k,a)
+ \quad\leftrightarrow\quad
+ \mathsf{Reach}(p,k,a)\wedge\Viable(p,k,h-k,a).
+\]
+The proof splits or concatenates finite paths.  This factorization supports a
+dynamic-programming implementation with a forward table and a backward table.
+A direct bounded path-code checker is simpler for certificates; both
+implementations have the same object specification.
+
+\subsection{Amalgamating finite requirements}
+
+Suppose a theorem has finitely many requirements: approximation bounds, chart
+membership, algebraic identities, compatibility with a second module, and a
+final residual test.  Conjoin them into the goodness and edge predicates.
+
+\begin{theorem}[Finite witness amalgamation]
+\label{thm:amalgamation}
+If
+\[
+ \Any_{a<B(p,0)}\Viable(p,0,h,a)=1,
+\]
+then bounded search followed by the least viable path constructor returns one
+finite witness family satisfying every compiled requirement simultaneously.
+Adding a requirement can only remove viable nodes; it cannot create a spurious
+path.
+\end{theorem}
+
+\begin{proof}
+The initial \(\Any\)-fold and least-search theorem produce a viable root.
+Apply \cref{cor:least-path}.  Soundness of Boolean conjunction exposes each
+component requirement.  For monotonicity, induct on remaining depth: every
+witness edge valid under the stronger goodness predicate is also valid under
+the weaker one.
+\end{proof}
+
+\subsection{When a relation is the final theorem}
+
+A finite relation is not merely an intermediate inconvenience.  It is often
+the correct stable output:
+\begin{itemize}
+\item a root multiset or a family of isolating clusters at collisions;
+\item a finite cover or parity certificate in topology;
+\item approximate rotation data at the identity;
+\item a collection of descent representatives with local compatibility;
+\item a finite interval of possible minimizers while the minimum value is
+      already stable.
+\end{itemize}
+Downstream statements should quantify over all accepted witnesses or consume a
+stable observable.  A selector is introduced only if a theorem proves that its
+choice is harmless.

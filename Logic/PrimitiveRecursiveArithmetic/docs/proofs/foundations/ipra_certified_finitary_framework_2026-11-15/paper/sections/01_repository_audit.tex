@@ -1,0 +1,122 @@
+\section{Repository audit and the common denominator}
+\label{sec:audit}
+
+\subsection{The checked base and the research layer}
+
+The repository has a useful but important split.  The \code{ConciseIPRA}
+subtree implements a scoped first-order syntax, intuitionistic natural
+deduction with equality, the ordinary presentation of iPRA, and translations
+to a compressed native scalar calculus.  In particular, a theorem of type
+\[
+  \Gamma\vdash[\PRAAx]\varphi
+\]
+is an actual derivation in the object theory, while
+\code{pra\_iff\_native} transports such a derivation to the native calculus.
+The direction of this bridge matters: it does not turn an arbitrary semantic
+Lean theorem into an iPRA proof.
+
+The \code{docs/proofs} subtree is a broad research laboratory.  It includes
+packets on exact algebra, roots and branches, constructive analysis, geometric
+certificates, finite probability, arithmetic geometry, analytic number theory,
+and several proposed foundations.  Many packets have polished mathematical
+reports and executable finite prototypes.  Some include checked semantic Lean
+lemmas; a smaller number contain combinators whose conclusions really have
+\code{Prf PRAAx} type.  Most large application claims, however, stop before a
+complete object-language derivation.
+
+This report treats that heterogeneity as data rather than as a defect.  The
+packets expose a repeated architecture, and the missing object proof is usually
+located at one of a small number of interfaces.
+
+\subsection{Recurring successful patterns}
+
+Across the packets, the following patterns repeatedly work.
+
+\begin{enumerate}[label=\textbf{P\arabic*.}]
+\item \textbf{Finite coding.}  Objects are represented by natural-number codes:
+      bounded lists, dyadic rationals, finite matrices, polynomials, boxes,
+      graphs, or certificate traces.
+\item \textbf{Boolean verification.}  A fixed primitive-recursive checker
+      verifies all finite side conditions.  Bounded quantifiers are folded into
+      finite conjunctions, disjunctions, and searches.
+\item \textbf{Quantifier-free invariant.}  A bounded computation is justified
+      by an equation-valued invariant; quantified assumptions stay in the
+      context and are instantiated only at the finitely many queried terms.
+\item \textbf{Guarded arithmetic.}  Division, normalization, root labels,
+      chart choices, and inverse functions are used only with explicit rational
+      margins.
+\item \textbf{Relational output.}  Near singularities or collisions, the output
+      is a finite relation, cluster, multiset, interval, or cover rather than a
+      discontinuously selected exact witness.
+\item \textbf{Certificate separation.}  A small verifier is distinguished from
+      the possibly deep theorem or algorithm that produces an accepted
+      certificate.
+\end{enumerate}
+
+These patterns are already sufficient for a large constructive fragment of
+ordinary mathematics.  Their weakness is not mathematical but architectural:
+several packets reimplement the same finite mechanisms, and the interface from
+the mechanism to \code{Prf PRAAx} is often left implicit.
+
+\subsection{Recurring gaps}
+
+The audit groups the reported difficulties into six classes.
+
+\paragraph{G1: semantic/object confusion.}
+A theorem about a host-language function, or a passing numerical test, is used
+as if it were a derivation in iPRA.  The remedy is to make every local premise
+and every exported endpoint explicitly typed as \(\Prf\,\PRAAx\).
+
+\paragraph{G2: wrong induction shape.}
+The intended invariant contains ``for every precision'', an unbounded
+existential, or a completed real-number assertion.  iPRA permits induction only
+for quantifier-free formulas.  The repair is to fix the requested precision,
+compile all bounded logic to Boolean equations, run the finite proof, and only
+then introduce universal quantifiers.
+
+\paragraph{G3: hidden infinite choice.}
+For each precision there exists a finite witness, but separately chosen
+witnesses may be incompatible.  Backward viability solves fixed finite
+horizons.  Coherent infinite names require either a direct pairwise stability
+estimate or a shrinking viable-cloud theorem with a modulus.
+
+\paragraph{G4: discontinuous selection.}
+Ordered roots at collisions, signs at zero, normalized axes at the identity,
+and branches at singular points cannot be chosen uniformly from approximate
+input.  The stable object must be changed, or a positive gap must be supplied.
+
+\paragraph{G5: ineffective producer.}
+Finiteness, existence, or a cardinality bound does not provide a search cutoff,
+height bound, zero-free constant, rational covering representative, or
+convergence rate.  A verifier can still be completely formalized, but the
+producer remains a separate theorem.
+
+\paragraph{G6: code extensionality.}
+Different codes may represent the same object.  Operations must respect an
+observational equivalence or a finite back-and-forth relation; raw code equality
+is generally too strong.
+
+\subsection{A single target architecture}
+
+The common denominator is a stack of four layers.
+
+\begin{center}
+\begin{tabularx}{0.94\textwidth}{@{}lX@{}}
+\toprule
+Layer & Responsibility \\
+\midrule
+Representation & Fixed natural-number codes and fixed \(\PR\) symbols. \\
+Finite proof kernel & Boolean folds, bounded search, traces, demands, paths,
+                      viability, rational error arithmetic. \\
+Mathematical adapter & The theorem-specific local inequalities, algebraic
+                       identities, separation estimates, or certificate
+                       soundness lemmas. \\
+Object export & A value of type \(\Prf\,\PRAAx\), followed only then by the
+                checked native translation. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The framework developed below makes the second layer reusable and forces the
+third layer to state its genuine missing obligations.  It does not pretend to
+solve an ineffective producer problem by changing notation.

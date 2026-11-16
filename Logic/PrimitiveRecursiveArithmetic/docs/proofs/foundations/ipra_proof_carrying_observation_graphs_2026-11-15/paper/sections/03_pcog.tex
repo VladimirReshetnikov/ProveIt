@@ -1,0 +1,204 @@
+\section{Proof-carrying observation graphs}
+\label{sec:pcog}
+
+This section defines the central architecture.  The graph is a meta-level
+finite object.  Its nodes compile to fixed primitive-recursive symbols and
+fixed first-order formulas.  The graph itself is not encoded as a number to be
+interpreted by iPRA.
+
+\subsection{Proof-producing rules}
+
+Fix an arity \(n\) for the free numerical parameters and an ambient context
+\(\Gamma\) of formulas.  A proof-producing rule has a finite list of required
+formulas \(A_1,\ldots,A_r\), an output formula \(B\), and a host-level
+constructor
+\[
+  (\Gamma\vdash A_1)\times\cdots\times(\Gamma\vdash A_r)
+  \longrightarrow (\Gamma\vdash B),
+\]
+where every judgment means \(\Prf\;\PRAAx\).  The constructor may use only the
+repository's proof rules and previously proved derived rules.
+
+\begin{definition}[Proof-carrying observation graph]
+A PCOG is a finite topologically ordered list of nodes.  Each node specifies:
+\begin{enumerate}
+\item a finite list of predecessor outputs;
+\item concrete primitive-recursive symbols and formulas for its finite data;
+\item a local proof-producing rule;
+\item optional demand transformers and resource bounds;
+\item one exported formula.
+\end{enumerate}
+The final graph output is one designated node formula.
+\end{definition}
+
+The word ``observation'' emphasizes that a node need not construct a canonical
+mathematical object.  It constructs enough finite evidence to support later
+observations.
+
+\subsection{Five node classes}
+
+The framework normalizes applications into five node classes.
+
+\paragraph{Exact equation nodes.}
+An exact node computes a PR term and exports defining equations or a
+quantifier-free property.  Examples include tuple projections, polynomial
+evaluation, matrix multiplication at fixed dimension, rational normalization,
+finite substitution, and restriction of a table.  Its proof uses defining
+equations, congruence, and finite algebraic lemmas.
+
+\paragraph{Trace nodes.}
+A trace node contains an initializer, step function, quantifier-free invariant,
+base derivation, step derivation, and fuel.  It exports the terminal invariant
+or a theorem-specific consequence.  Bounded search, bisection, Euclidean
+algorithms, coefficient recurrences, dynamic programming, finite products,
+and descent procedures all belong here.
+
+\paragraph{Relational cloud nodes.}
+A cloud node exports a finite bound and a validity predicate rather than one
+selected witness.  It may also export compatibility edges to another cloud.
+Backward viability and bounded least search can construct a finite path when
+needed, but the cloud remains available for witness-independent stability
+arguments.
+
+\paragraph{Observation nodes.}
+An observation node compresses certificates or clouds to a quantity that is
+stable under the relevant equivalence: an interval, ordered multiset, norm,
+residual bound, finite homology table, spectral block, or truth value of a
+bounded predicate.  It carries a theorem comparing observations from any two
+valid inputs.
+
+\paragraph{Finalizer nodes.}
+A finalizer converts terminal finite evidence into the public theorem formula.
+Typical examples instantiate a universal trace theorem at a fuel, eliminate
+certificate implications, apply a gap lemma, or filter a complete bounded
+enumeration.
+
+These node classes are not disjoint implementation types; they are a proof
+normal form.  A sophisticated operation can be decomposed into several nodes
+so that its hard mathematical estimate is isolated from routine execution.
+
+\subsection{Trace packages}
+
+The central recursive interface is deliberately identical to the checked
+repository theorem.
+
+\begin{definition}[Trace package]
+For \(k\) parameters and context \(\Gamma\), a trace package is a tuple
+\[
+  T=(f,g,I,h_I,h_0,h_S),
+\]
+where:
+\begin{itemize}
+\item \(f\) is a \(k\)-ary PR initializer;
+\item \(g\) is a \((k+2)\)-ary PR step;
+\item \(I(s,t,\vec x)\) is a formula with a proof \(h_I\) that it is
+quantifier-free;
+\item \(h_0\) is an embedded proof of the initialized invariant;
+\item \(h_S\) is an embedded proof that one step preserves the invariant.
+\end{itemize}
+\end{definition}
+
+A trace exit adds a fuel term \(F(\vec x)\), an output formula \(B(\vec x)\),
+and an embedded proof
+\[
+  I(\Run(F,\vec x),F,\vec x),\Gamma\ \vdash\ B(\vec x).
+\]
+The checked trace theorem and one cut produce \(\Gamma\vdash B\).
+
+This packaging has an important engineering advantage: the generic compiler
+never needs to inspect the internal syntax of \(I\)'s proof.  It only verifies
+that the required fields have the actual \texttt{Prf} types.
+
+\subsection{Static graph layer and recursive component layer}
+
+A large formal development should not force its entire computation into one
+giant induction invariant.  Instead, collapse each genuinely recursive
+component to one trace node.  The resulting component graph is acyclic and is
+composed by cut.
+
+\begin{principle}[One induction per recursive component]
+Use quantifier-free induction exactly where the mathematical algorithm has a
+uniform recurrence.  Use topological proof composition everywhere else.
+\end{principle}
+
+This gives smaller invariants, better reuse, and cleaner error localization.
+For example, a root-factorization proof can have separate trace nodes for
+coefficient evaluation, root isolation, deflation, and residual checking.
+Their precision demands are connected by the static graph.  A monolithic
+invariant over all phases is possible but harder to formalize and audit.
+
+\subsection{Local contract shape}
+
+A deterministic node \(v\) with predecessors \(u_1,\ldots,u_r\) and output
+demand \(q\) has a local theorem of the schematic form
+\begin{align*}
+ &\bigwedge_{j=1}^{r}
+ \Valid_{u_j}(x_j,\delta_{v,j}(q,\vec z))
+ \ \wedge\ \Cert_v(\vec x,q,c)
+ \\
+ &\hspace{8em}\longrightarrow
+ \Valid_v(E_v(\vec x,q,c),q).
+\end{align*}
+Here \(\vec z\) denotes parameters and any finite summaries explicitly
+allowed to influence demand.  The graph compiler never assumes this formula
+because it is true in \(\N\); the node package contains its embedded proof.
+
+For a relational node, the conclusion is
+\[
+  c<B_v(\vec x,q)\ \wedge\ R_v(\vec x,q,c),
+\]
+or a finite list containing all such \(c\).  Downstream nodes either consume
+all candidates by a bounded fold or request a viable finite path.
+
+For an observation node, the local theorem compares two valid certificates:
+\[
+ \Cert_v(c_1)\wedge\Cert_v(c_2)
+ \longrightarrow d(\Obs(c_1),\Obs(c_2))\leq\varepsilon(q).
+\]
+This statement deliberately does not require \(c_1=c_2\).
+
+\subsection{Contexts, assumptions, and parameters}
+
+The graph may be compiled under an ambient context \(\Gamma\).  This is
+essential for conditional theorems: positivity assumptions, a supplied height
+bound, a Jacobian inverse certificate, a cover, or a finite input-validity
+condition remain hypotheses.  The final public theorem can then universally
+close the numerical parameters and introduce the assumptions as implications.
+
+The graph compiler uses the existing substitution and weakening theorems to
+instantiate local rules.  No separate structural metatheory is needed.  The
+provided Lean core represents a compiled prefix by a list of output formulas
+and a function returning a proof of every member.  Extending the prefix with a
+node is a single case split on list membership followed by the node's
+proof-producing rule.
+
+\subsection{Why this is more general than a theorem-specific script}
+
+A theorem-specific formalization hard-codes one sequence of computations and
+proofs.  A PCOG factors the work along stable interfaces:
+
+\begin{itemize}
+\item Boolean folds and bounded search are shared by every finite verifier;
+\item trace reflection is shared by every uniform recurrence;
+\item backward demand propagation is shared by quantitative constructions;
+\item relational viability is shared by non-unique finite approximations;
+\item stable-observation comparison is shared across witnesses and producers;
+\item height/list conversion is shared by every bounded Diophantine search;
+\item graph composition is independent of the mathematics inside nodes.
+\end{itemize}
+
+The framework is therefore not a single universal mathematical theorem.  It
+is a small collection of compiler theorems whose premises are exactly the
+local mathematical obligations that vary by subject.
+
+\subsection{No hidden semantic bridge}
+
+At no point is there a function of type
+\[
+  (\N\models\varphi)\longrightarrow \Prf\;\PRAAx\;[]\;\varphi.
+\]
+Such a bridge would be unsound as a general principle.  The only inputs capable
+of producing a new object theorem are existing \texttt{Prf} terms, defining
+equations furnished by \(\PRAAx\), and applications of its induction axiom.
+Python tests, host evaluations, and mathematical prose help design and audit
+these inputs; they do not inhabit them.

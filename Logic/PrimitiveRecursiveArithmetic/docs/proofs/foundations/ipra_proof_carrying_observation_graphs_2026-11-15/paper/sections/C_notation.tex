@@ -1,0 +1,52 @@
+\section{Notation and interface glossary}
+\label{app:notation}
+
+\begin{longtable}{@{}p{0.22\textwidth}p{0.70\textwidth}@{}}
+\toprule
+Symbol or term & Meaning \\
+\midrule
+\endhead
+\(\Prf\;\PRAAx\;\Gamma\;\varphi\) & actual embedded derivation of \(\varphi\)
+from \(\Gamma\) in the repository's ordinary iPRA calculus \\
+\texttt{PR k} & syntax of a fixed \(k\)-ary primitive-recursive function \\
+\texttt{PTm n} & arithmetic term with \(n\) scoped free variables \\
+\texttt{Fm PTm n} & first-order arithmetic formula over those terms \\
+QF & quantifier-free, hence eligible as an iPRA induction invariant \\
+finite presentation & codes, validity, restriction, equality/compatibility,
+and their proofs \\
+certificate & bounded finite data checked by a PR predicate \\
+producer & PR algorithm constructing a candidate certificate or observation \\
+verifier & PR Boolean predicate plus an embedded soundness theorem \\
+demand & requested precision/resource level for an observation \\
+PCOG & fixed proof-carrying observation graph compiled at the host level \\
+trace package & initializer, step, QF invariant, base proof, and step proof \\
+cloud & finite set of all currently valid non-unique candidates \\
+viability & ability of a candidate to extend through a fixed finite horizon \\
+stable observable & output provably insensitive, exactly or quantitatively, to
+certificate choice \\
+apartness/gap & explicit positive rational lower bound enabling guarded
+division or exact branch collapse \\
+height bound & explicit search cutoff for coded objects, not a cardinality bound \\
+finite window & bounded interval location outside finitely many certified
+exceptional sets \\
+staged compilation & host traversal of fixed syntax producing concrete
+\texttt{PR} symbols and \texttt{Prf} terms \\
+\bottomrule
+\end{longtable}
+
+\subsection*{Logical conventions}
+
+All existential searches described as algorithms are bounded.  When an
+unbounded first-order existential occurs in a public theorem, its witness is
+usually a value of a named PR producer, so existential introduction is direct.
+No use is made of countable choice.  Classical reasoning about arbitrary
+propositions is not used in the compiler theorems; Boolean case splits concern
+predicates already equipped with reflection.
+
+\subsection*{Metric conventions}
+
+Metric observations are rationally coded.  Statements involving a completed
+real object are shorthand for first-order inequalities between its finite
+names.  Infinite sums in human estimates are used only when accompanied by a
+primitive-recursive finite-tail modulus that becomes the actual arithmetic
+statement.

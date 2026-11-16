@@ -1,0 +1,138 @@
+\section{Demand closure, changing parameters, and finite resource bounds}
+
+The reverse-demand pass of a directed acyclic graph is immediate because each edge is visited once.  More difficult presentations contain feedback at the level of \emph{precision requirements}: asking for a more accurate output at one interface may increase the precision needed from another, which in turn raises the first demand.  This is not computational nontermination if the demands are known to lie in a finite box.  The appropriate construction is a finite monotone closure, not an appeal to an abstract least-fixed-point theorem.
+
+\subsection{Monotone closure in a finite box}
+
+Fix a dimension $r>0$, a target vector $a\in\Nat^r$, a certified upper vector $H\in\Nat^r$ with $a\leq H$ componentwise, and a primitive-recursive map
+\[
+  F:\Nat^r\longrightarrow\Nat^r.
+\]
+The intended reading is that $d$ is the current demand vector and $F(d)$ is the additional demand forced by all local contracts.  Define the inflationary update
+\[
+  T(d)=\max(a,d,F(d)),
+\]
+where maximum is componentwise.  Starting at $d_0=a$, put $d_{n+1}=T(d_n)$.
+
+\begin{theorem}[Finite demand closure]\label{thm:demand-closure}
+Assume that $F$ is monotone on the finite box $[0,H]$ and that every iterate $d_n$ generated before stabilization lies below $H$.  Then the sequence stabilizes after at most
+\[
+  1+\sum_{i<r}(H_i-a_i)
+\]
+updates.  Its terminal value $d^*$ is the least vector in $[a,H]$ satisfying $F(d^*)\leq d^*$.  The sequence, terminal value, and replay certificate are primitive recursive, and the proof is formalizable by quantifier-free induction in iPRA.
+\end{theorem}
+
+\begin{proof}
+The update is inflationary, so $d_n\leq d_{n+1}$.  If $d_{n+1}\neq d_n$, at least one coordinate increases by at least one.  Hence the rank
+\[
+  R(d)=\sum_{i<r}(d_i-a_i)
+\]
+strictly increases at every nonstationary step and is bounded by
+$\sum_i(H_i-a_i)$.  Consequently a stationary point occurs within the stated number of updates.  At stationarity,
+$d^*=\max(a,d^*,F(d^*))$, so $a\leq d^*$ and $F(d^*)\leq d^*$.
+
+For minimality, let $e$ satisfy $a\leq e\leq H$ and $F(e)\leq e$.  We show by induction that $d_n\leq e$.  The base case is $a\leq e$.  If $d_n\leq e$, monotonicity gives $F(d_n)\leq F(e)\leq e$, and therefore
+$T(d_n)=\max(a,d_n,F(d_n))\leq e$.  Thus $d^*\leq e$.
+
+All vectors have externally fixed length $r$ and may be coded by nested pairing.  Componentwise comparison, maximum, sum, $F$, and iteration for the displayed fuel are fixed primitive-recursive programs.  The invariant
+\[
+ d_n\leq H\ \wedge\ a\leq d_n\ \wedge\
+ R(d_n)\leq \sum_i(H_i-a_i)
+\]
+is bounded.  Booleanize it and use quantifier-free induction.  A second bounded induction proves minimality relative to a coded candidate $e$.  No impredicative lattice construction occurs.
+\end{proof}
+
+The hypothesis that iterates remain below $H$ is itself a useful certificate boundary.  A producer can supply $H$ together with a bounded proof that $T$ preserves the box.  If an update exceeds $H$, the checker rejects the certificate rather than silently increasing its resources.
+
+\begin{remark}[Monotonicity need not be guessed]
+For a fixed small box, monotonicity can be checked exhaustively.  In serious applications it is preferable to prove monotonicity compositionally from the demand transformers of the nodes.  The Python companion offers exhaustive checking only as a diagnostic.
+\end{remark}
+
+\subsection{Precision-demand composition}
+
+Suppose a node $f$ consumes observations of $X_1,\ldots,X_k$ and produces an observation of $Y$.  Its demand transformer is
+\[
+  \delta_f(p)=(p_1,\ldots,p_k).
+\]
+If $g$ consumes the output of $f$ at demand $q=\delta_g(p)$, then the composite demand is
+$\delta_f(q)$.  If the same input is used at several sites, its global demand is the maximum of all incoming requirements.  Thus an acyclic network computes demands by reverse composition and maximum.  A cyclic specification computes the least closed demand by \cref{thm:demand-closure}, provided a finite upper box is certified.
+
+A resource transformer behaves similarly, except that resources add or take a maximum depending on whether subcomputations are sequential or reusable.  OCiPRA keeps the two effects separate:
+\[
+  f:X\xRightarrow[\rho_f]{\delta_f}Y.
+\]
+A precision guarantee without fuel does not define a primitive-recursive verifier, while fuel without sufficient input precision does not establish the mathematical postcondition.
+
+\subsection{Changing-parameter recursion}
+
+Several repository packets encounter recurrences in which the parameter needed by the preceding stage changes with the stage.  The schematic form is
+\begin{equation}\label{eq:changing-rec}
+ X(0,k)=b(k),\qquad
+ X(n+1,k)=G\bigl(n,k,X(n,D(n,k))\bigr),
+\end{equation}
+where $b,D,G$ are fixed primitive-recursive functions.  This is not directly the defining equation of ordinary primitive recursion in the displayed parameter $k$, because the recursive call is made at $D(n,k)$ rather than $k$.  A backward-demand/forward-replay compilation removes the difficulty.
+
+For a requested pair $(n,k)$, define a finite schedule
+\[
+ K_n=k,\qquad K_i=D(i,K_{i+1})\quad(i<n).
+\]
+Then compute forward
+\[
+ V_0=b(K_0),\qquad
+ V_{i+1}=G(i,K_{i+1},V_i).
+\]
+The output is $V_n$.
+
+\begin{theorem}[Changing-parameter recurrence compiler]\label{thm:changing-rec}
+For fixed primitive-recursive $b,D,G$, the backward schedule and forward replay above define a primitive-recursive function $\widehat X(n,k)$.  iPRA proves both equations in \eqref{eq:changing-rec}.  Moreover, any local invariant preserved by $G$ along the scheduled calls is preserved by $\widehat X$ through an object-language quantifier-free induction.
+\end{theorem}
+
+\begin{proof}
+The schedule can be stored as a bounded list.  Starting with the singleton list $[k]$, primitive recursion for $n$ steps prepends the value obtained by applying $D$ at the appropriate reversed stage.  Alternatively, encode the whole schedule by a finite table and fill positions from $n$ down to $0$.  Since the loop length is exactly $n$, the schedule function is primitive recursive.
+
+The forward replay is ordinary primitive recursion on $i\leq n$: read $K_i$ and $K_{i+1}$ from the table and apply $G$.  Thus $\widehat X$ is primitive recursive by composition.
+
+At $n=0$, the schedule contains $K_0=k$, so the forward base equation gives $\widehat X(0,k)=b(k)$.  For the successor equation, the schedule for $(n+1,k)$ has $K_{n+1}=k$ and $K_n=D(n,k)$.  Its prefix through stage $n$ is exactly the schedule used for $(n,D(n,k))$.  The forward final step therefore gives
+\[
+ \widehat X(n+1,k)
+ =G\bigl(n,k,\widehat X(n,D(n,k))\bigr).
+\]
+The object proof expands the two fixed primitive-recursive table programs, proves the prefix identity by quantifier-free induction, and transports the final equation.  For an invariant $I(i,K_i,V_i)$, prove the base instance from the contract for $b$ and the step from the contract for $G$; Booleanization followed by quantifier-free induction yields the result for every $i\leq n$.
+\end{proof}
+
+This theorem subsumes many ``adaptive precision'' recurrences.  The backward pass computes which input precision each stage will eventually need; the forward pass performs the actual arithmetic only after all demands are known.  It is also the right implementation model when a naive forward algorithm would repeatedly restart earlier stages at higher precision.
+
+\subsection{Variable-length loops}
+
+A fixed step program $S(x,i,s)$, initial state $s_0(x)$, and primitive-recursive length $L(x)$ define
+\[
+ s(x,0)=s_0(x),\qquad s(x,i+1)=S(x,i,s(x,i)).
+\]
+Because $L(x)$ is a term, quantifier-free induction proves an invariant for all $i$ and universal elimination instantiates it at $L(x)$.  The loop length may vary with the input; what matters is that it is a fixed primitive-recursive function.  This observation covers bounded scans, finite-grid methods, exact rational arithmetic routines, Jacobi sweeps with explicit fuel, finite elimination matrices, and certificate replay.
+
+\subsection{Controlled descent and the fixed-dimension boundary}
+
+A termination proof may use a rank in $\Nat^d$ with lexicographic decrease and a primitive-recursive envelope on each coordinate.  For every externally fixed $d$, a primitive-recursive fuel bound can be obtained by nested iteration: the last coordinate supplies an inner counter, the preceding coordinate controls how often that counter can reset, and so on.  The proof is a finite induction on the fixed dimension in the metatheory, producing one fixed primitive-recursive term.
+
+The qualifier ``fixed'' is essential.  An arbitrary input-dependent dimension can encode recursions beyond primitive recursion.  Therefore OCiPRA accepts one of the following:
+
+\begin{itemize}
+  \item a fixed rank dimension and proved coordinate envelopes;
+  \item a directly supplied primitive-recursive fuel bound;
+  \item a finite trace certificate whose length is separately bounded.
+\end{itemize}
+
+It rejects the informal assertion ``the lexicographic order is well founded, so the algorithm is primitive recursive.''  Well-foundedness establishes termination in a stronger metatheory; it does not by itself produce the primitive-recursive resource majorant required by iPRA.
+
+\subsection{Formalization obligations}
+
+A generic Lean implementation of \cref{thm:demand-closure,thm:changing-rec} needs four layers:
+
+\begin{enumerate}
+  \item fixed-length vector coding and object proofs for projections, update, maximum, and rank;
+  \item exact primitive-recursive syntax for the closure and schedule programs;
+  \item Booleanized box-preservation and monotonicity contracts;
+  \item generated \code{Prf PRAAx} proofs of stabilization, leastness, schedule-prefix equality, and recurrence equations.
+\end{enumerate}
+
+The existing repository already reports checked pieces of changing-parameter compilation and backward-demand equations.  The remaining value of a common OCiPRA module is to give those pieces one reusable interface and to connect them to relational viability and stable observables.

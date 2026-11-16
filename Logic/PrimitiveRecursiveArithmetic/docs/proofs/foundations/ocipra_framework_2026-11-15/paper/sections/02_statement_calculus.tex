@@ -1,0 +1,117 @@
+\section{The OCiPRA statement calculus}
+
+\subsection{Finite observation presentations}
+
+\begin{definition}[Deterministic observation presentation]
+A deterministic observation presentation \(X\) consists of fixed primitive-recursive data
+\[
+  \mathsf{Name}_X,\quad \mathsf{Query}_X,\quad
+  \Obs_X(n,q),\quad \Valid_X(n,q,a),
+\]
+together with a primitive-recursive refinement relation \(q'\succeq q\), restriction maps, and object-language proofs of the following local laws:
+\begin{enumerate}[label=(\roman*)]
+  \item \(\Valid_X(n,q,\Obs_X(n,q))\);
+  \item restriction of a valid finer observation is a valid coarser observation;
+  \item two valid observations of the same name and query agree in the chosen observable sense.
+\end{enumerate}
+All values are natural-number codes.  ``Name'' is therefore a role played by a number and fixed programs, not a new sort in the object language.
+\end{definition}
+
+\begin{definition}[Relational observation presentation]
+A relational presentation replaces the single output by a bounded relation
+\[
+  R_X(n,q,a),\qquad a\leq B_X(n,q),
+\]
+and proves bounded totality.  Coherence is expressed by a bounded compatibility relation between answers at related queries.  It is not part of the definition that one answer be canonically distinguished.
+\end{definition}
+
+\begin{definition}[Stable observable]
+Let \(R_X(n,q,a)\) be a relational presentation.  An exact stable observable is a primitive-recursive map \(O(a)\) with an object proof
+\[
+ R_X(n,q,a)\wedge R_X(n,q,b)\;\longrightarrow\;O(a)=O(b).
+\]
+A quantitative stable observable has a rational-valued code \(O(a)\), a requested precision \(p\), and a proof that every two valid outputs have distance at most \(2^{-p}\), or another explicitly coded error budget.
+\end{definition}
+
+This formulation contains exact finite objects as a degenerate case: there is one query and one exact observation.  It contains regular Cauchy names, jets, finite nets, rational distributions, polynomial truncations, root clusters, spectral lists, and finite covers by changing only the query type and coherence law.
+
+\subsection{Proof-carrying local contracts}
+
+A deterministic node with \(n\) numerical inputs is represented by:
+
+\begin{enumerate}
+  \item a precondition \(P(\vec x)\);
+  \item a fixed primitive-recursive program \(f(\vec x)\);
+  \item a postcondition \(Q(y,\vec x)\);
+  \item an object derivation
+  \[
+       P(\vec x)\vdash_{\PRAAx} Q(f(\vec x),\vec x).
+  \]
+\end{enumerate}
+
+This is exactly the logical content of the \code{ProgramContract} structure in the supplied Lean outline.  The existential result follows by the ordinary existential-introduction constructor:
+\[
+  P(\vec x)\vdash_{\PRAAx}\exists y\,Q(y,\vec x).
+\]
+No soundness reflection is used; the proof field is already a derivation.
+
+For a relational node the contract contains directly
+\[
+  P(\vec x)\vdash_{\PRAAx}\exists y\,R(y,\vec x).
+\]
+A later bounded-search compiler may turn this relation into a canonical least witness, but only when the relation and bound are explicit.  Otherwise the relational theorem is the honest endpoint.
+
+\subsection{Resource and demand effects}
+
+A contract carries two numerical effects.
+
+\begin{definition}[Demand]
+The demand transformer \(\delta_f(p)\) states how precise each input observation must be in order to produce output precision \(p\).  For several inputs it is a finite vector.  A node with several downstream consumers receives the componentwise maximum of their demands.
+\end{definition}
+
+\begin{definition}[Resource]
+The resource bound \(\rho_f(\vec x,p)\) is a primitive-recursive bound on all loops, trace lengths, table sizes, candidate ranges, or descent ranks used by the verifier and proof.  It is part of the theorem data, not an afterthought about implementation efficiency.
+\end{definition}
+
+The corresponding informal typing judgment is
+\[
+   \Gamma\vdash
+   f : X_1\times\cdots\times X_k
+   \xRightarrow[\rho_f]{\delta_f}
+   Y
+   \;\bigm|\; Q_f .
+\]
+It means that the fixed program \(f\), when supplied observations meeting \(\delta_f\), runs within \(\rho_f\) and satisfies the postcondition \(Q_f\), with an actual local object derivation.
+
+\subsection{The four theorem classes}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.19\textwidth}X X@{}}
+\toprule
+Class & Normal form & Typical output \\
+\midrule
+Deterministic & fixed PR program plus local \(\Prf\) proof & exact finite calculation, regular-name operation \\
+Bounded relational & bounded total relation plus viability/search proof & root cluster, finite cover, candidate witness \\
+Stable observable & relational output plus exact invariance or diameter proof & ordered eigenvalue multiset, quotient value, robust chart datum \\
+Conditional producer & \(\CertCheck(x,c)\to\mathsf{Goal}(x,c)\), with existence of \(c\) separate & height-bound verifier, analytic-constant verifier, descent representative \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Every proposed theorem should first be assigned one of these classes.  A large portion of formalization difficulty comes from insisting that a bounded relational or conditional-producer theorem be stated as an unconditional deterministic theorem.
+
+\subsection{Admissibility test}
+
+A theorem is ready for object internalization when all of the following are explicit:
+
+\begin{enumerate}
+  \item every program is fixed at compile time, or an input-coded computation has a fixed primitive-recursive clock and trace verifier;
+  \item every loop and search has a primitive-recursive bound;
+  \item every certificate predicate is bounded and decidable;
+  \item every local semantic correctness statement has been converted to \(\NPrf\) or \(\Prf\,\PRAAx\);
+  \item every external producer is either proved, supplied as an argument, or visibly left as a conditional hypothesis;
+  \item every exact selector is protected by bounded least search, branch invariance, or a separation gap;
+  \item every use of compactness, convergence, or finiteness has been replaced by a modulus, finite net, height bound, complete list, or fixed-precision formulation.
+\end{enumerate}
+
+The reference implementation turns this list into a diagnostic classifier.  The classifier is not a proof assistant.  Its role is to reject malformed theorem statements before expensive formalization begins.

@@ -1,0 +1,106 @@
+\section{Resolution matrix for the reported difficulties}
+\label{sec:matrix}
+
+``Resolved'' below means that a reusable finitary theorem removes the logical
+or representational obstacle.  It does not mean that every theorem-specific
+estimate or certificate producer is available.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.14\textwidth}>{\raggedright\arraybackslash}p{0.23\textwidth}>{\raggedright\arraybackslash}p{0.39\textwidth}>{\raggedright\arraybackslash}p{0.16\textwidth}@{}}
+\toprule
+Area & Difficulty & Framework response & Status \\
+\midrule
+\endhead
+Object theory & Host theorem or executable check is treated as an iPRA proof. &
+Require local and final values of type \(\Prf\,\PRAAx\); use the trace compiler
+and checked primitive-recursion transformer; invoke native transport only at the
+end. & Generic proof complete; integration pending.\\
+\addlinespace
+Induction & All-precision or completed-real assertion appears in the invariant. &
+Fix output precision, run a backward demand pass, Booleanize the finite
+invariant, prove the bounded trace, then quantify. & Resolved schema.\\
+\addlinespace
+Bounded logic & Bounded quantifiers complicate every step proof. & Compile them
+to shared \(\All\), \(\Any\), and least-search folds. & Resolved.\\
+\addlinespace
+Higher type & A total universal evaluator for arbitrary PR programs is assumed. &
+Use fixed symbol families, a bounded DSL, or a clocked trace certificate. &
+Stronger interface impossible.\\
+\addlinespace
+Changing precision & A local step requires a different predecessor precision. &
+Backward demand scheduling and parameter-changing transfer, with no monotonicity
+assumption. & Resolved for fixed PR demands.\\
+\addlinespace
+Nonunique witnesses & Separate witnesses do not form one coherent branch. &
+First test direct stable-observable erasure; otherwise use finite viability and
+shrinking clouds. & Finite case resolved; name needs a modulus.\\
+\addlinespace
+Root ordering & Labels jump at collisions. & Export multisets or clusters;
+recover labels only under a separation gap. & Resolved formulation.\\
+\addlinespace
+Puiseux data & Exact branches requested from arbitrary Cauchy coefficients. &
+Use exact algebraic/splitting data, or approximate relational branches. &
+Unrestricted producer obstructed.\\
+\addlinespace
+Rotation axis & Unit axis requested uniformly at the identity. & Export
+quaternion/matrix data or approximate axes; exact axis under a gap. & Exact
+selector obstructed.\\
+\addlinespace
+Partial operations & Division or normalization used from mere nonzeroness. &
+Totalize the function and consume a positive rational guard; use overlap
+branches. & Resolved under guards.\\
+\addlinespace
+Compactness & Abstract subcovers, minimizers, or subsequences are selected. &
+Use finite nets, coverage certificates, bounded minimization, and shrinking
+when a point is needed. & Resolved for effective presentations.\\
+\addlinespace
+Metastability & Stable windows are treated as a Cauchy rate. & Keep the window
+theorem; finite consumers use one demand-closed window.  A real name still
+requires a tail modulus. & Finite-consumer use resolved; conversion false.\\
+\addlinespace
+Diophantine finiteness & Cardinality is treated as a height cutoff. & Separate
+bounded enumerator from height producer; use the height/list equivalence. &
+Verifier resolved; producer open.\\
+\addlinespace
+Mordell--Weil & Selmer classes are treated as rational covering points. & Make
+representatives and local compatibility explicit certificates; use relational
+descent. & Representative producer open.\\
+\addlinespace
+Analytic constants & Ineffective constants are hidden. & Verify finite explicit
+constant certificates with correct quantifier order. & Verifier architecture
+resolved; producer theorem-specific.\\
+\addlinespace
+Probability & General measures and discontinuous tests hide finite content. &
+Finite rational laws plus tail, quantization, moment, and anti-concentration
+moduli. & Resolved for effective presentations.\\
+\addlinespace
+Topology & Continuous compact spaces lack numerical control. & Finite complexes,
+parity/Sperner certificates, and refinement relations. & Representation
+resolved.\\
+\addlinespace
+Exten\-sionality & Code equality is confused with object equality. & Observational
+relations with backward precision transformers and finite back-and-forth. &
+Resolved.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Residual-work taxonomy}
+
+After translation into this framework, every remaining gap should be classified
+as one of:
+
+\begin{enumerate}[label=\textbf{R\arabic*.}]
+\item \textbf{Finite-kernel engineering:} the theorem and invariant are known,
+      but a shared code, arithmetic, fold, or path library is not yet embedded.
+\item \textbf{Quantitative mathematics:} a separation bound, modulus,
+      contraction estimate, zero-free constant, or combinatorial invariant is
+      genuinely missing.
+\item \textbf{Producer problem:} a verifier is complete, but no uniform
+      primitive-recursive method is known for producing accepted certificates.
+\item \textbf{Impossible selector:} the requested exact output is discontinuous
+      or would decide a known noncomputable problem; the statement itself must
+      be changed or guarded.
+\end{enumerate}
+
+This taxonomy prevents library work from being misdiagnosed as a foundational
+obstruction and prevents ineffective mathematics from being hidden as routine
+encoding.

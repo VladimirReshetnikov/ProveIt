@@ -1,0 +1,42 @@
+{
+  "name": "proof-carrying observation graph",
+  "abbreviation": "PCOG",
+  "version": 1,
+  "graph_scope": "fixed finite host-level DAG specialized to concrete primitive-recursive syntax",
+  "node_classes": [
+    {
+      "kind": "exact",
+      "required": ["concrete PR symbols", "output formula", "embedded local equation/contract proof"]
+    },
+    {
+      "kind": "trace",
+      "required": ["initializer", "step", "QF invariant", "base Prf", "step Prf", "fuel", "finalizer Prf"]
+    },
+    {
+      "kind": "relational_cloud",
+      "required": ["finite bound", "validity checker", "compatibility checker", "reflection proofs"]
+    },
+    {
+      "kind": "observation",
+      "required": ["finite observation map", "comparison or stability Prf", "precision/error contract"]
+    },
+    {
+      "kind": "finalizer",
+      "required": ["input formulas", "public output formula", "embedded proof constructor"]
+    }
+  ],
+  "passes": [
+    "host specialization to concrete PR syntax",
+    "reverse precision/resource demand propagation",
+    "forward verified finite execution",
+    "one QF-induction proof per recursive component",
+    "topological composition of actual Prf PRAAx terms"
+  ],
+  "forbidden_shortcuts": [
+    "semantic truth-to-provability reflection",
+    "total PR evaluator for arbitrary encoded PR programs",
+    "unbounded witness selection without a finite cutoff",
+    "exact branch selection without a gap/apartness theorem",
+    "treating finite tests as object-theory proofs"
+  ]
+}

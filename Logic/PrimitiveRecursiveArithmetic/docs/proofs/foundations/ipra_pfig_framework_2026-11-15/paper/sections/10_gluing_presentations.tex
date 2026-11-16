@@ -1,0 +1,197 @@
+\section{Finite presentations, covers, and local-to-global gluing}
+\label{sec:gluing}
+
+Many advanced mathematical concepts appear to require sets, quotient objects, sheaves, manifolds, or categories.  In the intended applications, however, a proof uses only finitely many charts, generators, relations, overlaps, and observations at a fixed request.  PFIGs capture this finite-use content directly.
+
+\subsection{Certified finite presentations}
+
+A certified finite presentation consists of:
+
+\begin{enumerate}
+\item a natural-number code for finite generators or local pieces;
+\item primitive-recursive decoding functions and validity predicates;
+\item bounded relations expressing equations, incidences, or overlaps;
+\item finite certificates whose checkers reflect the desired mathematical laws;
+\item observation and restriction functions at requested precision.
+\end{enumerate}
+
+The presentation need not be canonical.  Its equivalence relation is part of the interface.  A proof may use a tuple of representatives throughout and invoke extensionality only when comparing outputs.
+
+\subsection{Finite cover data}
+
+Let a finite cover have indices \(i<C\).  A local object is coded by \(s_i\), and an overlap between \(i\) and \(j\) has a bounded compatibility predicate
+\[
+  \mathsf{Compat}(i,j,s_i,s_j,w_{ij}),
+\]
+where \(w_{ij}\) is an optional certificate.  The global code is the tuple
+\[
+  S=\langle s_0,\ldots,s_{C-1},w_{00},w_{01},\ldots\rangle.
+\]
+Validity is a bounded conjunction over all indices and overlaps, hence Booleanizable.
+
+A local operation \(F_i\) acts on each \(s_i\).  To define a global operation, prove an overlap theorem:
+\[
+ \mathsf{Compat}(s_i,s_j)	o
+ \mathsf{Compat}(F_i(s_i),F_j(s_j)).
+\]
+A bounded loop applies \(F_i\) to all pieces and checks all new overlaps.
+
+\subsection{Finite gluing theorem}
+
+\begin{theorem}[Certified finite gluing]
+\label{thm:finite-gluing}
+Suppose a fixed finite cover has:
+
+\begin{enumerate}
+\item primitive-recursive local code bounds and validity predicates;
+\item primitive-recursive overlap restrictions;
+\item a bounded compatibility checker with an object reflection theorem;
+\item a local construction on every chart with an object correctness proof;
+\item a proof that local outputs agree on every overlap;
+\item a finite uniqueness or observational extensionality theorem.
+\end{enumerate}
+
+Then PFIG compilation produces a global compatible tuple and an object-iPRA derivation of its global specification.  If a finite bounded set of global representatives is provided, least search can additionally produce a canonical representative; otherwise the compatible tuple itself is the global code.
+\end{theorem}
+
+\begin{proof}
+Run the local construction over \(i<C\) by bounded recursion, storing each output.  The loop invariant says that every completed local output is valid and satisfies its local specification.  Next run a bounded double loop over pairs \((i,j)\), checking overlap compatibility and reflecting each true Boolean to the overlap formula.  The supplied local-to-overlap theorem proves that every check succeeds.
+
+The resulting tuple is a global code by definition.  A global observer is evaluated componentwise and shown independent of equivalent tuples using the finite uniqueness/extensionality theorem.  If a separately bounded list of global representatives exists, search it for the least representative equivalent to the tuple.  No quotient construction or unbounded choice is needed.
+\end{proof}
+
+\subsection{Why tuples are often better than quotients}
+
+Inside weak arithmetic, quotient types create unnecessary proof obligations.  A compatible tuple already supports all finite observations required by downstream nodes.  Equality of global objects is defined by componentwise observational equivalence plus overlap compatibility.  Operations are proved extensional with respect to this relation.
+
+A quotient may still be used in the external semantics to explain the mathematics.  The object theory manipulates representatives and certificates.  This is analogous to representing rational numbers by integer pairs and proving cross-multiplication congruence instead of forming a quotient inside arithmetic.
+
+\subsection{Algebraic presentations}
+
+A finitely presented algebraic object can be encoded by generators, relations, and bounded expression trees.  Equality may be certified by a relation witness:
+
+\begin{itemize}
+\item an ideal-combination certificate for polynomial quotient rings;
+\item a word-reduction trace for finitely presented groups in decidable fragments;
+\item a row-operation certificate for modules;
+\item a basis-change matrix and inverse certificate for finite-dimensional spaces.
+\end{itemize}
+
+A checker verifies the certificate by finite arithmetic.  Composition of maps is substitution of expression trees followed by bounded normalization or direct certificate checking.  A PFIG node need not decide all equalities in the presented structure; it only verifies the finite equalities used by the proof.
+
+\subsection{Localization and denominators}
+
+Localization requires careful handling of zero divisors.  Rather than identify fractions solely by cross multiplication, use the appropriate finite certificate, for example a killing exponent \(n\) with
+\[
+ s^n(t a-s b)=0
+\]
+for denominators generated by \(s,t\).  The exponent and algebraic identity are finite data.  Operations on fraction codes are total, while correctness is conditioned on denominator validity and the equality certificate.
+
+When inversion of a represented analytic quantity is needed, use the guarded apartness interface of \cref{sec:guarded}; algebraic localization certificates and analytic lower bounds are different kinds of evidence and should not be conflated.
+
+\subsection{Finite categories and diagrams}
+
+A finite category is represented by:
+
+\begin{itemize}
+\item a bound on objects and morphisms;
+\item source, target, identity, and composition tables;
+\item Boolean checks of the category axioms over bounded indices.
+\end{itemize}
+
+A finite diagram is a bounded table of object and morphism codes satisfying functoriality checks.  Finite limits, colimits, natural transformations, and adjunction data can be represented by candidate cones/cocones and universal-property certificates over explicitly bounded hom-sets.
+
+For an arbitrary fixed program family, categorical composition is a PFIG composition theorem.  What is not available is an internal category of all primitive-recursive programs with a total universal evaluator.  The fixed finite presentation boundary remains essential.
+
+\subsection{Sheaf-like gluing}
+
+For a finite cover, a presheaf is represented by finite section codes and restriction maps.  The sheaf condition used by a concrete proof is:
+
+\begin{enumerate}
+\item a bounded compatibility check for a finite family of local sections;
+\item a primitive-recursive gluing constructor or a bounded relation of possible gluings;
+\item a reflection proof that the output restricts to each local section;
+\item a uniqueness theorem up to observational equality.
+\end{enumerate}
+
+This is exactly \cref{thm:finite-gluing}.  Infinite topological quantification is replaced by the finite cover actually used at the requested stage.  For compact metric presentations, a finite net or finite subcover certificate is supplied by a producer node.
+
+\subsection{Simplicial and cubical observation towers}
+
+Topology is represented through finite complexes at increasing resolution.  At precision \(p\), a space has a finite simplicial or cubical complex \(K_p\).  A map is represented by a finite carrier relation: each vertex maps to a nonempty finite cloud of target vertices lying in a certified carrier simplex.
+
+Any two selections from the same carrier are contiguous; an explicit prism operator gives a chain homotopy.  Thus the induced homology map is independent of tie-breaking.  This is a paradigmatic stable observer:
+
+\begin{itemize}
+\item internal vertex choices are relational;
+\item chain maps may differ at code level;
+\item the induced homology observable is stable under contiguity.
+\end{itemize}
+
+Finite boundary matrices, cycles, boundaries, and homology certificates are exact bounded algebra.  A theorem such as a Sperner parity argument becomes a Boolean certificate over a finite grid.
+
+\subsection{Local solutions and ODE patches}
+
+A local analytic construction may produce rational polynomial or interval enclosures on short time steps.  A global finite-time solution is a compatible list of patches.  Each patch has:
+
+\begin{itemize}
+\item an initial box;
+\item a polynomial or rational approximation;
+\item a residual bound;
+\item a Lipschitz or contraction certificate;
+\item an endpoint enclosure compatible with the next patch.
+\end{itemize}
+
+A bounded loop glues the patches.  The terminal result is valid on a supplied finite time interval.  No unbounded existence theorem is hidden: the step size, number of patches, and error budget are explicit.
+
+\subsection{Local-to-global descent}
+
+A finite descent argument has states \(s\), a rank \(r(s)\), local reduction steps, and a terminal normal-form relation.  If every nonterminal step decreases a rank bounded by a primitive-recursive function, totalize the update and run it for that bound.  The invariant records preservation of the mathematical class and rank decrease.  Terminal extraction yields the global conclusion.
+
+This pattern covers Euclidean algorithms, reduction of quadratic forms, finite descent on explicit covering data, and normalization of finite presentations.  It does not supply missing rational points on covering varieties; those remain producer obligations.
+
+\subsection{Complete finite lists from bounds}
+
+The most important local-to-global instance for Diophantine geometry is bounded enumeration.
+
+\begin{theorem}[Height bound implies complete list]
+\label{thm:height-to-list}
+Let \(P(x)\) be a decidable predicate on coded objects and let \(h(x)\) be a primitive-recursive height.  Suppose there is a primitive-recursive enumeration of all valid codes of height at most \(B\).  Then from a bound
+\[
+ P(x)\to h(x)\le B
+\]
+one can primitive-recursively produce a finite list containing exactly all \(P\)-objects up to code equivalence, together with an object-iPRA proof of completeness.
+\end{theorem}
+
+\begin{proof}
+Enumerate every code in the finite height box, test validity and \(P\), and retain the least representative of each decidable equivalence class.  Soundness follows from the checker.  For completeness, any \(P(x)\) has height at most \(B\), hence appears in the finite enumeration; duplicate elimination preserves an equivalent representative.  All loops and quantifiers are bounded.
+\end{proof}
+
+\begin{theorem}[Complete list implies height bound]
+\label{thm:list-to-height}
+If a supplied finite list is sound and complete for \(P\), then the maximum height of its members is a bound for every \(P\)-object.
+\end{theorem}
+
+\begin{proof}
+Compute the finite maximum.  Completeness gives, for every \(P(x)\), an equivalent list member.  Height invariance or a bounded comparison under equivalence yields the claim.
+\end{proof}
+
+Together, the two theorems show that, for decidable coded objects with finite height boxes, an explicit height bound and a complete finite list are computationally equivalent data.  Mere finiteness or a cardinality bound supplies neither.
+
+\subsection{Application to difficult Diophantine theorems}
+
+For Siegel- or Faltings-type statements, the PFIG framework completely resolves the verifier side:
+
+\begin{itemize}
+\item check a proposed height bound;
+\item enumerate the bounded height box;
+\item verify that each listed point lies on the variety;
+\item prove completeness from the bound;
+\item compute any finite observable of the point set.
+\end{itemize}
+
+The unresolved mathematical producer is an explicit primitive-recursive bound uniform in the intended input family.  A proof of abstract finiteness does not fill this slot.  Special families with an effective descent or Runge bound fit the framework immediately.
+
+\subsection{Summary}
+
+Finite presentations make sophisticated structures compatible with iPRA because every actual proof request uses only finitely many codes and checks.  The gluing theorem, observational setoids, bounded search, and trace reflection supply a general local-to-global mechanism.  The framework is not a claim that all global existence theorems are effective; it is a precise account of the finite data that would make them effective.

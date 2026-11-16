@@ -1,0 +1,152 @@
+\section{Finite relational presentations and backward viability}
+\label{sec:viability}
+
+Many mathematical constructions return a finite set of admissible answers rather than a unique code.  This is not a weakness.  It is often the correct constructive representation.  The problem is to compose such relations without silently assuming countable choice or a continuous labeling that does not exist.
+
+\subsection{Finite answer clouds}
+
+At level or precision \(i\), let
+\[
+  A_i(\vec{x})=\{a<B_i(\vec{x}) : \Good_i(a,\vec{x})\}
+\]
+be a finite nonempty set of valid codes.  Between consecutive levels, let
+\[
+  \Edge_i(a,b,\vec{x})
+\]
+mean that \(a\in A_i\) and \(b\in A_{i+1}\) are compatible.  All bounds, goodness predicates, and edge predicates are primitive recursive and Booleanized.
+
+Examples include:
+
+\begin{itemize}
+\item isolating boxes for roots at increasing precision;
+\item approximate eigenspaces or clusters;
+\item chart representatives and overlap witnesses;
+\item polygonal approximations to a curve;
+\item local algebraic branches;
+\item finite proof certificates with several valid normal forms.
+\end{itemize}
+
+The relation need not have a unique successor or predecessor.  A code may be locally valid but lead to a dead end at a later level.  Therefore choosing the least element of each \(A_i\) independently is unsound.
+
+\subsection{Finite-horizon viability}
+
+Fix a horizon \(H\).  Define viability backward:
+\begin{align*}
+ \Viable_H^H(a)&:\Longleftrightarrow \Good_H(a),\\
+ \Viable_i^H(a)&:\Longleftrightarrow
+   \Good_i(a)\ \wedge\
+   \exists b<B_{i+1}\,
+     \bigl(\Good_{i+1}(b)\wedge\Edge_i(a,b)
+                    \wedge\Viable_{i+1}^H(b)\bigr)
+\end{align*}
+for \(i<H\).  Since every existential is bounded and the recursion has finite depth, the viability table is primitive recursive.
+
+\begin{theorem}[Viability-path equivalence]
+\label{thm:viability-path}
+For \(i\le H\), \(\Viable_i^H(a)\) holds if and only if there exists a compatible finite path
+\[
+ a_i=a,a_{i+1},\ldots,a_H
+\]
+with \(\Good_j(a_j)\) for every \(j\) and \(\Edge_j(a_j,a_{j+1})\) for every \(j<H\).
+\end{theorem}
+
+\begin{proof}
+Use backward induction on \(H-i\).  At \(i=H\), a path consists only of \(a\), so the statement is exactly the definition of \(\Viable_H^H\).  Suppose the equivalence holds at \(i+1\).  If \(\Viable_i^H(a)\), choose the bounded witness \(b\) in its defining formula.  By the induction hypothesis, \(b\) extends to a path from \(i+1\) to \(H\); prepend \(a\).  Conversely, the second point of any path from \(a\) supplies a witness \(b\), and the remaining suffix implies \(\Viable_{i+1}^H(b)\) by the induction hypothesis.
+
+For the object-iPRA proof, do not induct on the existential formula.  Compute the viability bits in a reverse table.  The invariant states, by Boolean equality, that all completed cells equal the defining bounded Boolean recurrence.  Reflection of the table yields the displayed logical equivalence after the computation is complete.
+\end{proof}
+
+\subsection{Least viable path}
+
+If some code at level \(0\) is viable, bounded search can choose the least viable one.  Given a viable code at level \(i\), choose the least successor \(b\) satisfying the edge relation and \(\Viable_{i+1}^H(b)\).  Repeat to the horizon.
+
+\begin{theorem}[Finite dependent choice by viability]
+\label{thm:finite-choice}
+There is a primitive-recursive function that, from a coded finite relational presentation and horizon \(H\), returns either:
+
+\begin{enumerate}
+\item a least lexicographic compatible path of length \(H+1\), or
+\item a failure code certifying that no level-zero candidate is viable.
+\end{enumerate}
+
+If the input presentation proves nonempty viability, iPRA proves that the returned path is valid and compatible.
+\end{theorem}
+
+\begin{proof}
+First compute the full viability table by bounded reverse recursion.  Search the level-zero row for the least true cell.  Then move forward: at level \(i\), search the next row for the least \(b\) such that \(\Edge_i(a_i,b)\) and the viability bit of \(b\) is true.  The defining recurrence of the current viability bit proves such a \(b\) exists.  The loop invariant records that the constructed prefix is compatible and that its last point is viable to \(H\).  This invariant is Booleanized and hence quantifier-free.
+\end{proof}
+
+This is a genuine finite choice theorem and is fully acceptable in iPRA.  It makes no assertion about a branch through all infinitely many levels.
+
+\subsection{Relational composition}
+
+Suppose \(R(x,y)\) is a finite producer relation and \(S(y,z)\) is a finite consumer relation.  Their relational composite is
+\[
+ (S\circ R)(x,z)\;:\Longleftrightarrow\;
+ \exists y<B_R(x)\bigl(R(x,y)\wedge S(y,z)\bigr).
+\]
+The existential is bounded, so the composite is again a finite interface.  Nonemptiness follows by existential elimination from nonemptiness of \(R\) and the local totality of \(S\) under each valid \(y\).
+
+For a chain of relations, viability is the efficient implementation of this repeated bounded existential.  It removes intermediate values that cannot reach the final contract.  The graph compiler may either retain the relation as a Boolean table or select a least viable path at the final finite horizon.
+
+\subsection{Backward viability as proof search}
+
+The same dynamic program can be interpreted proof-theoretically.  A candidate is viable when there is a sequence of local certificates leading to a terminal certificate.  The reverse table is therefore a finite cut-elimination aid: it computes which local witnesses can participate in a completed derivation.
+
+This viewpoint is valuable for generated proofs.  The external reference program can output the least viable path, while Lean reconstructs the corresponding object derivation from local proof constructors.  Alternatively, Lean can reflect the whole viability table and use existential elimination.  The latter avoids trusting path extraction but may yield a larger proof term.
+
+\subsection{Dead ends and local validity}
+
+A candidate may satisfy \(\Good_i\) yet be incompatible with every candidate at the next level.  This happens naturally when finite approximations are too coarse or when local certificates omit future constraints.  The framework does not require every good candidate to extend.  It requires either:
+
+\begin{enumerate}
+\item at least one viable candidate at each requested finite horizon; or
+\item a refined goodness predicate strong enough to imply extension.
+\end{enumerate}
+
+The first condition is more flexible.  It allows a producer to overgenerate a finite cloud and lets the consumer's constraints prune it by backward viability.
+
+\subsection{Changing parameters}
+
+Sometimes the relation at level \(i+1\) is computed using parameters refined from level \(i\).  Encode the current parameter code into the state and let
+\[
+ \Edge_i(a,b,\theta_i,\theta_{i+1})
+\]
+check both the parameter update and candidate compatibility.  The viability recurrence remains bounded.  A common mistake is to state compatibility while silently holding parameters fixed; the encoded-state formulation makes all changing data explicit.
+
+\subsection{Amalgamation of several witness families}
+
+Suppose a theorem requires simultaneous choices from clouds \(A_i^{(1)},\ldots,A_i^{(k)}\) with cross-compatibility constraints.  Form the product cloud of tuples
+\[
+ A_i=A_i^{(1)}\times\cdots\times A_i^{(k)}
+\]
+and include all cross-constraints in \(\Good_i\) and \(\Edge_i\).  Because \(k\) is fixed and each component is bounded, the product bound is primitive recursive.  Backward viability then produces a compatible finite amalgamation.
+
+This handles, for example, simultaneous local branches on a finite cover, a polynomial root together with a multiplicity certificate, or an approximate minimizer together with a subgradient witness.
+
+\subsection{Stable terminal relations}
+
+A consumer may care only that the terminal code lies in a finite equivalence class.  Let \(\sim_H\) be a bounded equivalence or closeness relation on terminal candidates, and suppose the final observable \(O(a_H)\) is invariant under \(\sim_H\).  Then the path selector may be changed without changing the theorem.  The proof should state this invariance and use stable erasure whenever possible.
+
+\subsection{No infinite branch theorem is hidden here}
+
+The existence of a compatible path to every finite horizon does not, constructively and uniformly, provide a single infinite path.  Even classically, extracting such a path invokes a compactness principle; computationally, a family of finite paths may encode noncomputable information.  PFIGs avoid this issue in two ways:
+
+\begin{enumerate}
+\item a theorem at fixed precision asks only for a finite path to a primitive-recursive horizon;
+\item a coherent regular name is extracted only when shrinking-diameter and motion-tail estimates make the observable value independent of the exact finite path.
+\end{enumerate}
+
+The second method is developed in \cref{sec:shrinking}.  It constructs numerical approximants directly; it does not claim to choose an infinite path in the underlying witness tree.
+
+\subsection{Object-language implementation plan}
+
+A Lean module for viability should separate two layers.
+
+\paragraph{Semantic finite layer.}
+Define levels as finite lists or bounds with decidable predicates.  Prove the viability-path equivalence, least-path correctness, and product amalgamation in ordinary Lean.  These theorems validate the algorithm and guide testing.
+
+\paragraph{Object reflection layer.}
+Represent \(\Good\), \(\Edge\), bounds, table indexing, and table update by fixed PR symbols.  Define a quantifier-free formula saying that a table row satisfies the viability recurrence.  Use the object trace theorem to prove the final table correct.  Reflect true bits to bounded existential formulas.  The final theorem must conclude \(\Prf\ \PRAAx\), not merely the semantic Lean proposition.
+
+The two layers may share definitions of table layout, but their status should be recorded separately in the theorem ledger.

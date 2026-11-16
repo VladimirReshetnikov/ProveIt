@@ -1,0 +1,146 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.92in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\usepackage{caption}
+
+\definecolor{deepblue}{RGB}{22,55,92}
+\definecolor{softgray}{RGB}{245,246,248}
+\definecolor{codegreen}{RGB}{18,105,58}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=deepblue,
+  citecolor=deepblue,
+  urlcolor=deepblue,
+  pdftitle={OCiPRA: Observation-Contract Internalization for iPRA},
+  pdfauthor={Prepared for Vladimir Reshetnikov}
+}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{OCiPRA}
+\rhead{15 November 2026}
+\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{1.15em}
+\setlength{\parskip}{0.25em}
+\setlist{itemsep=0.2em,topsep=0.35em}
+\emergencystretch=2em
+
+\lstdefinelanguage{Lean}{
+  morekeywords={def,theorem,structure,inductive,namespace,end,where,by,exact,apply,have,let,import,open,variable,forall,exists,match,with},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[s]{/-}{-/},
+  morestring=[b]"
+}
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries\color{deepblue},
+  commentstyle=\itshape\color{codegreen},
+  backgroundcolor=\color{softgray},
+  frame=single,
+  framerule=0.2pt,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{principle}[theorem]{Principle}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{warning}[theorem]{Warning}
+\newtheorem{obligation}[theorem]{Formalization obligation}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\iPRA}{\mathsf{iPRA}}
+\newcommand{\PRAAx}{\mathsf{PRAAx}}
+\newcommand{\NPrf}{\mathsf{NPrf}}
+\newcommand{\Prf}{\mathsf{Prf}}
+\newcommand{\Nat}{\mathbb N}
+\newcommand{\Bool}{\mathbb B}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\Obs}{\mathsf{Obs}}
+\newcommand{\Valid}{\mathsf{Valid}}
+\newcommand{\CertCheck}{\mathsf{Check}}
+\newcommand{\Good}{\mathsf{Good}}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\pair}[2]{\langle #1,#2\rangle}
+\newcommand{\repo}{\textsc{ProveIt}}
+
+\title{\textbf{OCiPRA: Observation--Contract Internalization\\for Intuitionistic Primitive Recursive Arithmetic}\\[0.5em]
+\large A proof-producing framework for finite, relational, approximate, and conditional mathematics}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{15 November 2026 (America/Los\_Angeles)}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The current \repo{} iPRA collection contains a broad family of theorem packets and several increasingly capable finitary frameworks.  The recurring difficulty is no longer merely coding mathematics by natural numbers.  It is keeping four boundaries explicit at the same time: finite observation versus an infinite ideal object, verifier versus producer, semantic correctness versus an object-language derivation, and deterministic output versus a genuinely relational choice.  This report develops \emph{Observation--Contract Internalization for iPRA} (OCiPRA), a common framework for those boundaries.
+
+An OCiPRA construction is a typed finite contract.  It names the primitive-recursive programs used at each node, the reverse observation demand, a primitive-recursive resource bound, a bounded verifier, and local proofs whose conclusions are actual \(\NPrf\) or \(\Prf\,\PRAAx\) judgments.  A fixed contract DAG is compiled by a host-level proof-producing recursion.  Equation-heavy nodes use the repository's native scalar calculus and are transported by \code{native\_iff\_pra}; bounded logic and witness packaging use the full \(\Prf\,\PRAAx\) calculus.  No universal unclocked evaluator and no semantic reflection principle is assumed.
+
+The report proves, in full human-readable detail, bounded-formula Booleanization, least bounded search, deterministic contract-DAG composition, clocked trace reflection, monotone finite demand closure, finite relational viability, exact branch elimination under observable invariance, approximate elimination under a diameter certificate, and the producer--verifier--derivation factorization.  It then applies these results to the repository's reported obstacles in analysis, algebra, geometry, topology, probability, Diophantine geometry, descent, and prime distribution.  The accompanying exact-arithmetic Python reference implementation has eleven passing tests.  The Lean files give definitions, actual object-language interfaces, a small existential example, exact target signatures, and a dependency-ordered completion path.  Lean was not available in the artifact runtime, so no new kernel-checked application theorem is claimed.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{sections/01_status_and_baseline}
+\input{sections/02_statement_calculus}
+\input{sections/03_coding_booleanization}
+\input{sections/04_contract_compiler}
+\input{sections/05_demand_and_recursion}
+\input{sections/06_relational_observables}
+\input{sections/07_represented_mathematics}
+\input{sections/08_difficulty_resolutions}
+\input{sections/09_examples}
+\input{sections/10_lean_plan}
+\input{sections/11_limits_research}
+\input{sections/12_appendices}
+
+\begin{thebibliography}{99}
+\bibitem{ProveIt}
+V. Reshetnikov, \emph{ProveIt}, commit
+\code{9df5cbdf39e6220be823f611987bd584d37711fd}, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}
+
+\bibitem{ConciseIPRA}
+V. Reshetnikov, \emph{ConciseIPRA Lean library}, in \repo{}, files
+\code{PR.lean}, \code{Deduction.lean}, \code{Native.lean}, and
+\code{NativeBiInterpretation.lean}, 2026.
+
+\bibitem{BishopBridges}
+E. Bishop and D. Bridges, \emph{Constructive Analysis}, Springer, 1985.
+
+\bibitem{BridgesRichman}
+D. Bridges and F. Richman, \emph{Varieties of Constructive Mathematics}, Cambridge University Press, 1987.
+
+\bibitem{TroelstraVanDalen}
+A. S. Troelstra and D. van Dalen, \emph{Constructivism in Mathematics}, Volumes I--II, North-Holland, 1988.
+
+\bibitem{Kohlenbach}
+U. Kohlenbach, \emph{Applied Proof Theory: Proof Interpretations and their Use in Mathematics}, Springer, 2008.
+
+\bibitem{Kleene}
+S. C. Kleene, \emph{Introduction to Metamathematics}, North-Holland, 1952.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,160 @@
+\section{Limits, negative results, and further research}
+
+A useful foundational framework must say not only what it compiles, but also what it refuses to infer.  The restrictions below are not incidental implementation gaps.  They mark real differences between finite verification, effective production, and discontinuous choice.
+
+\subsection{What the framework does not manufacture}
+
+OCiPRA does not manufacture:
+
+\begin{itemize}
+  \item a primitive-recursive clock from a proof that an arbitrary computation terminates;
+  \item a height bound from qualitative finiteness or a cardinality bound;
+  \item a convergence modulus from bare convergence or metastability without a rate-producing argument;
+  \item a finite net from abstract compactness without presentation data;
+  \item rational points on descent coverings from their finite isomorphism classes;
+  \item effective analytic constants from an ineffective existence proof;
+  \item exact root, eigenvector, axis, sign, or chart selectors through collisions;
+  \item an object-language derivation from a successful Python or host-Lean computation alone.
+\end{itemize}
+
+When such data are supplied, the framework can often verify and propagate them.  When they are absent, the theorem should remain conditional or be reformulated.
+
+\subsection{Metastability and rate extraction}
+
+A metastable statement has the form
+\[
+ \forall p\,\forall g\,\exists N\leq B(p,g)\,
+ \forall i,j\in[N,N+g(N)]\;d(a_i,a_j)\leq2^{-p}.
+\]
+If $B$ is primitive recursive and the displayed relation is bounded after fixing $p,g,N$, least bounded search can produce $N$.  This is an excellent iPRA statement.  It does not automatically yield a Cauchy modulus $M(p)$ independent of $g$.  Extracting such a modulus needs an additional mathematical argument.  OCiPRA treats metastability as its own observation contract rather than silently strengthening it to convergence with rate.
+
+\subsection{Uniformity is theorem data}
+
+A proof for each fixed dimension, degree, modulus, or number of variables need not be uniform when that parameter becomes an input.  The generated object term may grow with the externally fixed parameter.  Claims of a single primitive-recursive algorithm require a uniform syntax construction and uniform resource bound.  The report therefore distinguishes:
+
+\begin{itemize}
+  \item a family of compiled theorems indexed externally by $d$;
+  \item one theorem with $d$ as an object-language variable.
+\end{itemize}
+
+This distinction is especially important for nested descent, elimination matrices, iterated differentiation, and combinatorial topology.
+
+\subsection{Statement maximality}
+
+For several obstruction classes, the relational or guarded theorem is plausibly the strongest generally valid constructive statement.  Examples include:
+
+\begin{itemize}
+  \item a root cluster rather than a globally labelled root;
+  \item a quaternion or projective axis rather than an exact normalized axis at singular rotations;
+  \item a finite cover rather than a selected chart;
+  \item a sorted spectrum rather than a coherent eigenbasis;
+  \item an open error interval rather than a sharp closed endpoint;
+  \item a conditional complete list from a height certificate rather than a list from finiteness alone.
+\end{itemize}
+
+A future proof of a stronger statement must identify the extra information that removes the obstruction.  The admissibility classifier is designed to make that information explicit.
+
+\subsection{Priority 1: finish the generic object compiler}
+
+The most valuable immediate project is not another large application packet.  It is a small, reusable Lean library completing:
+
+\begin{enumerate}
+  \item bounded formula syntax and Booleanization;
+  \item generic bounded least search;
+  \item a fixed-DAG proof composer;
+  \item a clocked trace invariant compiler;
+  \item finite viability and stable-observable elimination.
+\end{enumerate}
+
+These five modules would turn many existing packet outlines into a finite sequence of local arithmetic obligations.  They would also establish a common proof-status vocabulary: semantic theorem, local object contract, globally compiled derivation, and exported certificate.
+
+\subsection{Priority 2: consolidate existing object combinators}
+
+The repository reports object-language results for composition, variable-length iteration, relational simulation, repeated squaring, term compilation, backward-demand equations, and stable observations.  They currently live in separate packets.  A consolidation effort should:
+
+\begin{itemize}
+  \item port the strongest versions into one root Lean namespace;
+  \item deduplicate copied kernel sources;
+  \item standardize arity and substitution helpers;
+  \item add small cross-module examples;
+  \item document exact theorem dependencies with \code{\#print axioms} output.
+\end{itemize}
+
+The OCiPRA interfaces provide a target organization for that work.
+
+\subsection{Priority 3: an automated packet linter}
+
+The profile classifier can be extended into a repository tool.  Given a machine-readable theorem manifest, it would check for:
+
+\begin{itemize}
+  \item a fixed or clocked computation;
+  \item explicit primitive-recursive fuel;
+  \item bounded certificate predicates;
+  \item producer status;
+  \item collision and separation fields;
+  \item compactness and convergence moduli;
+  \item an intended object-proof endpoint;
+  \item exact status of every Lean declaration.
+\end{itemize}
+
+The linter should fail closed: an omitted field is a visible unresolved obligation, not an assumed theorem.  It cannot certify mathematical correctness, but it can prevent several recurring category errors.
+
+\subsection{Priority 4: proof-term size and normalization}
+
+A generic compiler may produce very large natural-deduction terms.  Research questions include:
+
+\begin{enumerate}
+  \item Which local proofs should remain native until the final transfer?
+  \item Can common equality transports be shared by a DAG proof representation?
+  \item How small are encoded proof trees after maximal compression?
+  \item Can a verified proof-term normalizer preserve the compact checker interface?
+  \item Is it better to compile a whole trace invariant or compose many local contracts directly?
+\end{enumerate}
+
+The answer may depend on whether the goal is kernel elaboration speed, standalone checker size, or certificate size.  OCiPRA separates the mathematical compiler from these optimization choices.
+
+\subsection{Priority 5: producer theorems}
+
+Once verifier layers are standardized, the remaining research questions become sharper:
+
+\begin{itemize}
+  \item Which classes of curves admit primitive-recursive height-certificate producers provable in iPRA?
+  \item Which descent coverings admit uniform rational representative production under explicit local hypotheses?
+  \item Which analytic number-theory estimates can be supplied with fully explicit constants and primitive-recursive thresholds?
+  \item Which singular algebraic branches admit finite chart producers without nonconstructive root labels?
+  \item Which compactness arguments can be replaced by computable finite-net moduli in the intended presentation?
+\end{itemize}
+
+These are mathematical producer problems, not bookkeeping.  A completed verifier makes their exact required output testable.
+
+\subsection{Further mathematical questions}
+
+The framework suggests several general investigations.
+
+\begin{enumerate}
+  \item \textbf{Minimal observation types.}  For a theorem, what is the coarsest stable observable that still implies the desired application?  Replacing representatives by invariants may drastically simplify formalization.
+  \item \textbf{Demand inference.}  Can precision transformers and finite error DAGs be synthesized from local rational inequalities and then verified in iPRA?
+  \item \textbf{Relational normalization.}  Is there a normal form turning any bounded nondeterministic finite computation into backward viability plus a stable observable?
+  \item \textbf{Certificate completeness.}  For which mathematical domains can every valid finite observation be accompanied by a bounded certificate whose checker has a small object proof?
+  \item \textbf{Negative calibration.}  Can omniscience reductions be formalized systematically to prove that proposed exact selectors exceed the intended constructive strength?
+  \item \textbf{Bi-interpretation-aware compilation.}  Which proofs are shortest in native scalar syntax, which in ordinary iPRA, and can backend selection be automated without increasing the trusted checker?
+  \item \textbf{Proof-producing interval arithmetic.}  A generic rational inequality compiler could discharge most analytic error bookkeeping and return native or ordinary derivations.
+  \item \textbf{Finite homotopy data.}  Develop stable observables for nerves, cubical chains, and subdivision certificates without selecting global points or paths.
+\end{enumerate}
+
+\subsection{Falsifiability criteria}
+
+A claimed OCiPRA formalization is refuted by any of the following:
+
+\begin{itemize}
+  \item a theorem endpoint that is only a host \code{Prop};
+  \item an unbounded loop or search hidden in a supposedly primitive-recursive program;
+  \item a certificate producer called by the verifier without a bound or proof;
+  \item an exact selector at a collision with no stability or gap theorem;
+  \item a ``finite'' set enumerated without a height/coding bound;
+  \item an all-precision property used directly as a quantifier-free induction invariant;
+  \item a compiled target proposition whose existence is confused with a proof of it;
+  \item an axiom audit containing \code{sorryAx}, a custom axiom, or an unintended choice principle.
+\end{itemize}
+
+These criteria make the framework operational rather than rhetorical.

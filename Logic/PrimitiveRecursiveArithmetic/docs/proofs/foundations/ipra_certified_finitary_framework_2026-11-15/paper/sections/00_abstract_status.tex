@@ -1,0 +1,56 @@
+\begin{abstract}
+The existing \code{PrimitiveRecursiveArithmetic} tree contains a checked core
+for intuitionistic primitive recursive arithmetic (iPRA), together with many
+research packets that encode algebra, analysis, geometry, number theory,
+probability, and topology by finite data.  The packets repeatedly encounter the
+same obstacles: an ambient Lean theorem is not yet an object-language proof;
+quantified precision contracts do not fit quantifier-free induction; separate
+finite witnesses need not form a coherent sequence; discontinuous branch
+choices are requested at singular inputs; and deep existence theorems are
+mistaken for effective certificate producers.
+
+This report develops one reusable framework around three interfaces.  First, a
+\emph{proof-producing finite-trace compiler} turns local derivations of type
+\(\Prf\,\PRAAx\) into a global derivation by quantifier-free induction.
+Second, a \emph{backward demand compiler} computes exactly which finite input
+observations are needed by a requested output, including parameter-changing and
+adaptive finite computations.  Third, a \emph{relational observation layer}
+retains finite clouds of admissible witnesses and removes choice only when a
+proved stability or shrinking estimate makes the observable independent of the
+witness.
+
+Two synthesis results are emphasized.  The demand-passing trace theorem
+combines backward precision propagation with the checked primitive-recursion
+invariant transformer already present in the repository.  The stable-observable
+shortcut shows that a coherent witness sequence is unnecessary whenever any
+two finite certificates yield close observations; independently selected
+least witnesses then form a regular name under an explicit cross-precision
+bound.  A finite-consumer metastability theorem similarly explains how stable
+windows can support a bounded downstream computation without falsely producing
+a global Cauchy modulus.
+
+The report gives complete human proofs of the generic theorems, identifies the
+remaining theorem-specific obligations, and supplies source-oriented Lean
+blueprints with explicit definitions and a dependency-ordered path to a
+kernel-checked implementation.  A Python reference implementation and tests
+exercise backward demands, finite traces, viability, stable observations,
+shrinking estimates, and height/list conversion.
+\end{abstract}
+
+\subsection*{Status and scope}
+This is a research framework, not a claim that every application packet in the
+repository has been formalized.  The human arguments below are complete for the
+generic finite theorems.  The accompanying Python tests check exact finite
+instances.  The Lean files are deliberately marked as blueprints because the
+artifact environment did not contain the repository's Lean toolchain or
+Mathlib dependency closure.  They contain the intended object-language types,
+formula constructors, and proof decomposition; they must be completed and
+checked in the ProveIt workspace before being cited as formal theorems.
+
+The repository revision surveyed for this report is
+\code{9df5cbdf39e6220be823f611987bd584d37711fd}.  The architecture is designed
+for the checked \code{ConciseIPRA} interfaces \code{Syntax.lean},
+\code{Deduction.lean}, \code{PR.lean}, and
+\code{NativeBiInterpretation.lean}, and for the already compiled proof
+combinators in the \code{ipra\_local\_global} and
+\code{ipra\_stable\_observables} packets.

@@ -1,0 +1,167 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{url}
+\usepackage{csquotes}
+\usepackage{caption}
+\usepackage{multicol}
+
+\definecolor{linkblue}{RGB}{30,80,145}
+\definecolor{codegray}{RGB}{245,245,245}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Proof-Producing Finitary Interface Graphs for iPRA},
+  pdfauthor={OpenAI research synthesis for the ProveIt project}
+}
+\setlist[itemize,enumerate]{nosep,leftmargin=*}
+\setlist[description]{nosep,leftmargin=2em,labelindent=0pt,style=nextline,font=\normalfont\bfseries}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.58em}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{PFIGs for iPRA}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  keywordstyle=\bfseries,
+  commentstyle=\itshape
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{principle}[theorem]{Principle}
+\newtheorem{barrier}[theorem]{Barrier}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{status}[theorem]{Status}
+
+\newcommand{\iPRA}{\mathrm{iPRA}}
+\newcommand{\PRA}{\mathrm{PRA}}
+\newcommand{\Nat}{\mathbb{N}}
+\newcommand{\Bool}{\mathbb{B}}
+\newcommand{\Prf}{\mathsf{Prf}}
+\newcommand{\Good}{\mathsf{Good}}
+\newcommand{\Edge}{\mathsf{Edge}}
+\newcommand{\Viable}{\mathsf{Viable}}
+\newcommand{\Obs}{\mathsf{Obs}}
+\newcommand{\Pre}{\mathsf{Pre}}
+\newcommand{\Post}{\mathsf{Post}}
+\newcommand{\Demand}{\mathsf{Demand}}
+\newcommand{\Code}{\mathsf{Code}}
+\newcommand{\PFIG}{\mathsf{PFIG}}
+\newcommand{\PRAAx}{\mathsf{PRAAx}}
+\newcommand{\PTm}{\mathsf{PTm}}
+\newcommand{\Fm}{\mathsf{Fm}}
+\newcommand{\qf}{\mathrm{qf}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\del}{\delta}
+
+\title{\textbf{Proof-Producing Finitary Interface Graphs}\\
+A General Framework for Embedding Mathematics in Intuitionistic Primitive Recursive Arithmetic}
+\author{Research synthesis prepared for the ProveIt iPRA development}
+\date{15 November 2026\\Repository snapshot: \texttt{34816faca8aa605999290b41d26210753b5c3b38}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The ProveIt repository contains a large collection of proposed reductions of algebra, analysis, number theory, geometry, probability, and topology to intuitionistic primitive recursive arithmetic (iPRA).  The recurring difficulty is not usually one isolated arithmetic identity.  It is the interface between ordinary mathematics and the very small object theory: approximate objects are represented by codes; computations must be primitive recursive; induction is restricted to quantifier-free formulas; non-unique witnesses must not be silently coerced into coherent choices; and a semantic Lean theorem is not yet an object-level derivation of type \(\Prf\ \PRAAx\ \Gamma\ \varphi\).
+
+This report develops \emph{proof-producing finitary interface graphs} (PFIGs).  A PFIG is a fixed finite acyclic graph of exact transducers, bounded loops, bounded searches, relational producers, guarded partial operations, and stable observers.  Each node carries a backward precision-demand transformer and a local object-iPRA certificate.  The main normalization theorem turns every fixed PFIG into a query-specialized encoded state machine with one bounded primitive recursion and one quantifier-free invariant.  Consequently, the already available object-language recursion theorem can serve as the generic proof-producing backend; no internal universal primitive-recursive evaluator is required.
+
+The framework gives complete human proofs of bounded Booleanization, least bounded search, trace reflection, demand propagation, relational viability, finite witness amalgamation, extraction of coherent regular names from shrinking viable clouds, stable-observer erasure, guarded branch stabilization, finite-cover gluing, and the equivalence between explicit height bounds and complete finite lists.  It also completes, at the mathematical level, the negative-translation argument needed to transfer retained classical PRA proofs into iPRA.  The report distinguishes genuine resolutions from principled reformulations and from open producer obligations such as general effective height bounds.  A detailed Lean development plan, source-oriented theorem signatures, exact-arithmetic Python reference implementation, regression tests, theorem ledger, and difficulty matrix accompany the paper.
+\end{abstract}
+
+\vspace{0.5em}
+\noindent\textbf{Verification status.}
+The mathematical arguments in this report are intended to be complete at the human level.  The Python reference tests included in the archive were executed successfully.  The Lean files are a source-oriented formalization blueprint and are not claimed to compile in this artifact environment.  Existing repository theorems explicitly cited as object-level results are inherited from the inspected snapshot; this packet does not claim to have rechecked the repository.
+
+\tableofcontents
+\newpage
+
+\input{sections/01_scope_audit}
+\input{sections/02_logical_base}
+\input{sections/03_pfig_definition}
+\input{sections/04_booleanization}
+\input{sections/05_trace_reflection}
+\input{sections/06_demand_graph_compiler}
+\input{sections/07_relational_viability}
+\input{sections/08_shrinking_names}
+\input{sections/09_guarded_extensionality}
+\input{sections/10_gluing_presentations}
+\input{sections/11_negative_transfer}
+\input{sections/12_domain_patterns}
+\input{sections/13_difficulties_barriers}
+\input{sections/14_lean_plan}
+\input{sections/15_conclusions_questions}
+\input{sections/appendix_ledger}
+
+\begin{thebibliography}{99}
+\bibitem{repo-pra-readme}
+V.~Reshetnikov, \emph{ProveIt: PrimitiveRecursiveArithmetic README}, repository snapshot \texttt{34816faca8aa605999290b41d26210753b5c3b38}, 2026.
+
+\bibitem{repo-concise}
+V.~Reshetnikov, \emph{Concise presentations of intuitionistic primitive recursive arithmetic}, ProveIt repository, 2026.
+
+\bibitem{repo-deduction}
+V.~Reshetnikov, \emph{ConciseIPRA/Deduction.lean}, object-language intuitionistic derivability and structural lemmas, ProveIt repository, 2026.
+
+\bibitem{repo-local-global}
+V.~Reshetnikov, \emph{ObjectIteration.lean}, proof-producing primitive recursion in object iPRA, ProveIt repository, 2026.
+
+\bibitem{repo-coherent}
+V.~Reshetnikov, \emph{ObjectComposition.lean}, exact term contracts and loop certificates, ProveIt repository, 2026.
+
+\bibitem{repo-observable}
+V.~Reshetnikov, \emph{ObjectObservation.lean}, object-iPRA stable-observer combinators, ProveIt repository, 2026.
+
+\bibitem{repo-unified}
+V.~Reshetnikov, \emph{Unified finitary-relational framework for mathematics in iPRA}, ProveIt research packet, 2026.
+
+\bibitem{bishop-bridges}
+E.~Bishop and D.~Bridges, \emph{Constructive Analysis}, Springer, 1985.
+
+\bibitem{bridges-richman}
+D.~Bridges and F.~Richman, \emph{Varieties of Constructive Mathematics}, Cambridge University Press, 1987.
+
+\bibitem{troelstra-vandalen}
+A.~S.~Troelstra and D.~van Dalen, \emph{Constructivism in Mathematics: An Introduction}, Vols.~I--II, North-Holland, 1988.
+
+\bibitem{kohlenbach}
+U.~Kohlenbach, \emph{Applied Proof Theory: Proof Interpretations and their Use in Mathematics}, Springer, 2008.
+
+\bibitem{kleene}
+S.~C.~Kleene, \emph{Introduction to Metamathematics}, North-Holland, 1952.
+\end{thebibliography}
+
+\end{document}

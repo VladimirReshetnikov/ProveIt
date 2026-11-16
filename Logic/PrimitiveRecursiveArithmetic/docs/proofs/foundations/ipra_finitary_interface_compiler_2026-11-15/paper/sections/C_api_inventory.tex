@@ -1,0 +1,40 @@
+\section{Pinned \texorpdfstring{\code{ConciseIPRA}}{ConciseIPRA} API inventory}
+
+This appendix records the upstream names used by the Lean outline.  It is not a
+substitute for the source files; it is a migration checklist.
+
+\begin{longtable}{p{0.29\textwidth}p{0.62\textwidth}}
+\toprule
+Name & Role \\
+\midrule
+\endfirsthead
+\toprule
+Name & Role \\
+\midrule
+\endhead
+\code{PR k} & primitive-recursive function symbols of arity \(k\) \\
+\code{PTm n} & terms with \(n\) free variables \\
+\code{PTm.app}, \code{PTm.zero}, \code{PTm.succ} & term constructors \\
+\code{Fm PTm n} & first-order formulas \\
+\code{Fm.QF} & quantifier-free syntactic predicate \\
+\code{PRAAx} & iPRA axiom family \\
+\code{Prf PRAAx Gamma phi} & object-language derivability \\
+\code{PRA.precZero} & primitive recursion zero equation at arbitrary terms \\
+\code{PRA.precSucc} & primitive recursion successor equation at arbitrary terms \\
+\code{PRA.qfInd} & quantifier-free induction rule \\
+\code{Prf.subst} & simultaneous substitution in a derivation \\
+\code{Prf.weaken} & context weakening \\
+\code{Prf.trans} & simultaneous cut / replacement of hypotheses \\
+\code{Prf.impI}, \code{Prf.impE} & implication rules \\
+\code{Prf.allI}, \code{Prf.allE} & universal quantifier rules \\
+\code{Prf.eqSubst1} & one-variable Leibniz transport \\
+\code{Prf.eqSymm}, \code{Prf.eqTrans} & equality symmetry and transitivity \\
+\code{Prf.eqCongr}, \code{Prf.eqCongr1} & term congruence \\
+\code{NFm.ofPRA} & translation from ordinary iPRA formula to native formula \\
+\code{pra_iff_native} & equivalence of ordinary and native derivability \\
+\bottomrule
+\end{longtable}
+
+The outline intentionally avoids private implementation details of the native
+calculus.  It constructs ordinary iPRA proofs first, so future changes to the
+compact presentation need affect only the already checked bridge.

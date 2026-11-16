@@ -1,0 +1,229 @@
+\section{Reusable domain templates}
+\label{sec:domains}
+
+The framework is useful only if domain experts can recognize where their
+ordinary proof enters it.  This section gives conversion templates rather than
+claiming that every deep producer theorem has already been proved.
+
+\subsection{Finite algebra and linear algebra}
+
+\paragraph{Objects.}
+Coded commutative rings, modules, matrices, polynomials, finite presentations,
+and bounded monomial tables.
+
+\paragraph{Primitive-recursive core.}
+Matrix arithmetic, determinants by Leibniz or fraction-free elimination,
+characteristic polynomials, polynomial evaluation, truncated power series,
+finite Gröbner/Macaulay calculations at a supplied degree, and verification of
+factorizations or syzygies.
+
+\paragraph{Typical contracts.}
+A matrix inverse consumes a determinant/pivot margin or an exact adjugate
+certificate.  A spectral projector consumes a gap separating the target
+cluster.  Polynomial roots are returned as clusters unless a separation
+certificate permits labels.
+
+\paragraph{What becomes straightforward.}
+Fixed-dimension identities and variable-dimension identities with bounded
+folds are ideal trace-compiler targets.  Cayley--Hamilton, determinant
+identities, finite module calculations, and exact certificate checking all
+reduce to polynomial identities and bounded sums.
+
+\subsection{Constructive analysis}
+
+\paragraph{Objects.}
+Regular rational names, interval or ball names, finite coefficient tables,
+moduli of continuity, derivative bounds, and tail estimates.
+
+\paragraph{Primitive-recursive core.}
+Rational interval arithmetic, finite sums and products, Taylor polynomials,
+quadrature rules, Euler--Maclaurin sums, bisection, and finite contour meshes.
+
+\paragraph{Contracts.}
+Every limiting theorem must expose a modulus or a finite error majorant.  A
+partial operation such as reciprocal or logarithm consumes an apartness or
+positivity margin.  An oscillatory or branch-sensitive construction returns a
+relation until a gap resolves it.
+
+\paragraph{Residual producer obligations.}
+A classical existence proof of a convergence constant does not automatically
+produce a primitive-recursive bound.  The framework can verify any proposed
+constant and compose its consequences, but it cannot erase ineffectivity.
+
+\subsection{Number theory and Diophantine geometry}
+
+\paragraph{Objects.}
+Integers, rationals, ideals in finite presentations, bounded-height points,
+finite descent data, local solubility certificates, and exact recurrence
+sequences.
+
+\paragraph{Primitive-recursive core.}
+Divisibility, gcd, modular arithmetic, continued fractions, finite lattice
+search, bounded rational-point enumeration, verification of descent maps, and
+finite prime sums.
+
+\paragraph{Deep interface.}
+A Diophantine finiteness theorem is split into:
+\begin{enumerate}
+\item a producer of an explicit height bound or complete list;
+\item a bounded enumerator and verifier;
+\item a proof that the list is complete below the bound.
+\end{enumerate}
+The last two are generic and iPRA-friendly.  The first contains the deep
+mathematics.  For Mordell--Weil descent, an abstract finite Selmer group is not
+enough: rational representatives on covering spaces, or a relational
+certificate explaining their absence, must be supplied.
+
+\subsection{Analytic number theory}
+
+\paragraph{Objects.}
+Finite prime tables, rational approximations to logarithms and exponentials,
+truncated Dirichlet sums, zero-free-region certificates, and explicit error
+budgets.
+
+\paragraph{Primitive-recursive core.}
+Sieve tables, divisor sums, partial summation, finite Euler products,
+Möbius transforms, and verification of contour or kernel estimates.
+
+\paragraph{Quantifier discipline.}
+A useful theorem states the exact dependence of the cutoff on all numerical
+parameters.  Phrases such as ``for sufficiently large \(x\), uniformly in
+\(q\)'' must be expanded into a primitive-recursive bound with the quantifier
+order fixed before compilation.
+
+\paragraph{Residual obligations.}
+Ineffective exceptional-zero arguments or unspecified constants remain
+producer obligations.  The framework can still formalize conditional versions
+and every finite verification step.
+
+\subsection{Combinatorics}
+
+Finite combinatorics is the most direct domain.  Graphs, set partitions,
+finite posets, words, tableaux, and recurrences are bounded data.  Enumeration,
+dynamic programming, involutions, sign-reversing pairings, and generating-
+function coefficient identities compile to bounded traces.  Asymptotic claims
+need explicit remainder estimates, but exact recurrences and congruences do
+not.
+
+For example, Bell-number recurrences and Touchard congruences are finite fold
+theorems.  Dobi\'nski-type formulas require a truncation bound and a rational
+tail estimate.  The interface cleanly separates the exact combinatorial core
+from the analytic producer.
+
+\subsection{Probability}
+
+\paragraph{Objects.}
+Finite rational probability laws, bounded random variables, rational moments,
+finite product spaces, and explicit tail or quantization bounds.
+
+\paragraph{Primitive-recursive core.}
+Expectation is a finite weighted sum.  Independence is a table identity.
+Convolution, characteristic-function samples, and finite couplings are
+bounded calculations.
+
+\paragraph{Approximation interface.}
+A general distribution is represented by finite rational laws at precision
+\(p\), together with a transport, tail, or anti-concentration modulus.  CDF
+comparisons at discontinuities are relational or guarded.  A central-limit
+statement becomes a finite estimate between rational laws plus explicit
+truncation and smoothing errors.
+
+\subsection{Topology}
+
+\paragraph{Objects.}
+Finite simplicial or cubical complexes, subdivision tables, chain complexes,
+carrier clouds, finite covers, and quantitative compact metric presentations.
+
+\paragraph{Primitive-recursive core.}
+Boundary matrices, chain maps, parity, Sperner labels, simplicial subdivision,
+finite homology certificates, and explicit prism homotopies.
+
+\paragraph{Continuity interface.}
+A map is observed through a modulus assigning a sufficiently fine source
+level to each target level.  The finite map may be a cloud of target vertices.
+A strong carrier condition makes every selection simplicial and any two
+selections contiguous, so the induced homology map is independent of choice.
+This resolves the noncanonical-selection issue without producing a global
+continuous selector.
+
+\subsection{Algebraic geometry}
+
+Algebraic geometry can be split into exact finite algebra and genuinely
+geometric producer theorems.
+
+\paragraph{Affine presentations.}
+An affine scheme of finite type is represented by a polynomial presentation
+\(A=R[x_1,\ldots,x_n]/I\) together with bounded algebraic certificates.  A
+morphism is a tuple of polynomials satisfying the target relations modulo
+\(I\), witnessed by explicit combinations.  Equality of morphisms on a finite
+presentation is another ideal-membership certificate.
+
+\paragraph{Standard opens and gluing.}
+A finite affine cover by standard opens \(D(f_i)\) carries an explicit cover
+identity, for example \(\sum_i a_i f_i^N=1\) for a supplied common exponent
+\(N\).  Local sections are fractions with synchronized
+denominators.  Overlap compatibility is checked by cross multiplication after
+a supplied localization exponent.  The finite affine-gluing theorem in
+\cref{sec:casestudies} then constructs or verifies a global section.
+
+\paragraph{Coherent sheaves.}
+On a fixed finite affine cover, a finitely presented module is a matrix.  A
+morphism is a matrix satisfying relation equations.  Kernels, cokernels, and
+\v{C}ech complexes at a fixed degree are finite matrix calculations.  Exactness
+is certified by explicit preimages or rank/minor data appropriate to the base
+ring.
+
+\paragraph{Points and dimensions.}
+Bounded-height rational points are finite enumerations.  Dimension at a fixed
+finite presentation can be certified through chains of prime ideals or finite
+Gröbner data when an explicit degree bound is available.  General uniform
+degree bounds and rational-point finiteness remain producer theorems, not
+consequences of the interface alone.
+
+\paragraph{Formal schemes and limits.}
+An inverse system is represented only through finite truncations and explicit
+transition maps.  A theorem about a requested truncation compiles directly.
+A completed inverse-limit point requires a coherence/diameter theorem; it is
+not obtained from levelwise nonemptiness alone.
+
+\subsection{Category theory}
+
+Finite categories, functors, natural transformations, adjunction data, and
+finite diagrams are bounded tables.  Yoneda components, finite limits and
+colimits, and finite Kan extensions reduce to table equations and bounded
+search.  For categories of infinite mathematical structures, use categories
+of finite presentations and contracted morphisms.  A categorical theorem is
+then a reusable compiler for finite diagrams, not a quantification over an
+uncoded universe of all objects.
+
+\subsection{Differential and Riemannian geometry}
+
+A charted object is represented by finitely many rational charts, overlap
+margins, transition approximations, and derivative bounds.  Tensor identities
+at rational sample points are finite algebra.  Curvature or geodesic
+statements over a compact region require moduli and finite nets.  Coordinate
+singularities are handled by relational chart clouds, while exact chart
+selection requires a positive distance-to-boundary margin.
+
+\subsection{Domain conversion table}
+
+\begin{longtable}{@{}p{0.15\textwidth}p{0.23\textwidth}p{0.28\textwidth}p{0.22\textwidth}@{}}
+\toprule
+Domain & Finite presentation & Critical quantitative input & Safe output \\
+\midrule
+\endfirsthead
+\toprule
+Domain & Finite presentation & Critical quantitative input & Safe output \\
+\midrule
+\endhead
+Algebra & coefficient/matrix tables & degree, pivot, or separation bound & exact certificate or cluster \\
+Analysis & rational names and intervals & modulus, tail, apartness margin & regular name or guarded result \\
+Diophantine geometry & bounded-height codes & height bound / covering representatives & complete finite list or conditional list \\
+Analytic number theory & finite sums and kernels & effective cutoff and constants & explicit inequality \\
+Probability & finite rational laws & tail and anti-concentration bounds & finite law approximation \\
+Topology & finite complexes/carriers & subdivision and mesh modulus & chain/homology certificate \\
+Algebraic geometry & finite presentations and affine covers & degree/localization/height bounds & finite algebra certificate or relational section \\
+Category theory & finite categories/diagrams & finite bounds only & exact table theorem \\
+Geometry & charts and rational nets & overlap and derivative margins & approximate invariant / guarded chart \\
+\bottomrule
+\end{longtable}

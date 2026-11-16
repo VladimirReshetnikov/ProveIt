@@ -1,0 +1,112 @@
+\section{Stable observables: eliminating choice without coherent witnesses}
+\label{sec:stable}
+
+\subsection{The shortcut}
+
+Backward viability is needed when local choices must be joined into a path.
+Some applications have a simpler structure: many independent certificates may
+exist, but every valid certificate determines essentially the same observable.
+Examples include the sorted spectrum of a matrix, the root multiset of a
+polynomial, the minimum value of a finite optimization problem, a determinant,
+or a homology rank.  In this situation a coherent witness sequence is
+unnecessary.
+
+For each precision \(n\), let candidates satisfy
+\(a<C(p,n)\) and a Boolean predicate \(\mathsf{Cert}(p,n,a)\).  Let
+\(\Obs(p,n,a)\) be a rational observation in a coded pseudometric \(d\).
+Assume nonemptiness and a direct cross-precision stability theorem
+\begin{equation}
+ \mathsf{Cert}(p,n,a)\wedge\mathsf{Cert}(p,m,b)
+ \quad\Longrightarrow\quad
+ d(\Obs(p,n,a),\Obs(p,m,b))\le E(p,n,m).
+ \label{eq:pairwise-stability}
+\end{equation}
+for all bounded candidates.
+
+Define \(s(p,n)\) as the least valid candidate and
+\(x(p,n)=\Obs(p,n,s(p,n))\).
+
+\begin{theorem}[Stable-observable choice erasure]
+\label{thm:stable-erasure}
+Under nonemptiness and \eqref{eq:pairwise-stability}, iPRA proves
+\[
+ d(x(p,n),x(p,m))\le E(p,n,m).
+\]
+If \(E(p,n,m)\le 2^{-r}\) whenever \(n,m\ge\mu(p,r)\), then
+\(r\mapsto x(p,\mu(p,r))\) is a regular Cauchy name with the displayed
+primitive-recursive modulus.
+\end{theorem}
+
+\begin{proof}
+Least-search correctness proves that \(s(p,n)\) and \(s(p,m)\) are valid
+certificates.  Substitute these two terms into the pairwise stability theorem.
+No compatibility relation between the witnesses is used.  The regular-name
+claim is immediate after substituting the modulus.
+\end{proof}
+
+This theorem is constructively stronger than choosing one infinite branch: it
+shows that the branch is irrelevant to the observable.  It is also easier to
+formalize.  The repository's checked combinator
+\code{observableOfIndependentCertificates} already performs the object-theory
+cut from two certificate derivations and a supplied stability derivation.  A
+completed module needs only the bounded-search proofs and the concrete
+stability inequality.
+
+\subsection{Exact stability}
+
+If \eqref{eq:pairwise-stability} has the exact conclusion
+\(\Obs(p,n,a)=\Obs(p,n,b)\) at a fixed level, then the least selector is
+extensionally canonical even when certificate codes are not.  This is useful
+for finite invariants.  The proof does not require quotient types inside iPRA:
+one proves an ordinary equality between observation terms.
+
+\begin{corollary}[Exact certificate independence]
+Suppose all valid certificates at input \(p\) have equal observations.  Then
+any proof-producing certificate generator may be substituted for any other in
+all theorems expressed solely through that observation.
+\end{corollary}
+
+\begin{proof}
+Apply the equality form of \cref{thm:stable-erasure} to the two generated
+certificates, then use equality substitution in the downstream formula.
+\end{proof}
+
+\subsection{Finite families and aggregate observables}
+
+The same argument handles a finite family of independent witnesses.  A
+certificate may contain several local pieces whose mutual compatibility is not
+needed because the final aggregate is stable under replacing any component.
+One proves replacement stability one component at a time and chains the
+resulting inequalities.  For exact observables, repeated equality substitution
+shows complete independence.
+
+This yields a practical proof pattern:
+\begin{enumerate}[label=(\arabic*)]
+\item run or verify each finite producer independently;
+\item extract its certificate by a trace theorem;
+\item prove one local replacement estimate for the observable;
+\item combine independent certificates by object-theory cut; and
+\item export only the observable.
+\end{enumerate}
+
+The pattern avoids building a large synchronized state when no mathematical
+synchronization is required.
+
+\subsection{Decision rule: stability before viability}
+
+For each nonunique construction, use the following order.
+
+\begin{enumerate}[label=\textbf{S\arabic*.}]
+\item Prove direct pairwise stability of the desired observable.  If successful,
+      use \cref{thm:stable-erasure}; no paths are needed.
+\item If only adjacent refinements are comparable, build finite paths with
+      viability and use the shrinking theorem of \cref{sec:shrinking}.
+\item If neither stability statement holds, retain the finite relation as the
+      result and formulate downstream theorems relationally.
+\item Demand an exact label only after proving a positive separation gap.
+\end{enumerate}
+
+This order often shortens proofs dramatically.  Root algorithms, for example,
+may produce unrelated isolating-disk orderings at different precisions while
+the induced root multiset is stable.  Sorting or matching individual roots is
+then unnecessary until a separation theorem is available.

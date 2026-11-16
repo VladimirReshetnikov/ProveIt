@@ -1,0 +1,196 @@
+\section{Representation discipline: finite data first}
+\label{sec:representation}
+
+A framework for mathematics in iPRA succeeds or fails at its interfaces.  The
+logic is intuitionistic and the only unbounded computational objects available
+uniformly are primitive-recursive functions.  It is therefore misleading to
+begin with an ambient real number, an arbitrary countable sequence, an
+unspecified algebraic closure, or a choice of one representative from every
+fiber.  The correct starting point is finite coded data together with the
+properties that later computations are allowed to inspect.
+
+\subsection{Codes and finite observations}
+
+A \emph{code sort} is represented by a natural number together with a
+quantifier-free validity predicate.  Tuples, lists with a declared length,
+finite tables, integer and rational numbers, polynomials of bounded degree,
+matrices of bounded dimensions, and finite simplicial data all fit this
+pattern.  The choice of pairing function is immaterial once fixed, but every
+read, write, length, and well-formedness operation must be primitive recursive
+and accompanied by its defining equations.
+
+\begin{definition}[Finite presentation]
+A finite presentation of a mathematical object class consists of:
+\begin{enumerate}
+\item a code predicate \(\Valid_X(x,a)\), where \(a\) is an observation or
+precision request;
+\item a restriction function \(\rho_X(x,a,b)\), defined when \(b\leq a\),
+which lowers an observation at demand \(a\) to demand \(b\);
+\item a bounded equality or compatibility predicate
+\(x\equiv_{X,a}y\);
+\item embedded iPRA proofs of identity, transitivity where needed,
+restriction validity, and restriction coherence.
+\end{enumerate}
+All functions and predicates are represented by fixed primitive-recursive
+symbols.
+\end{definition}
+
+The object being represented need not have a single canonical code.  In fact,
+forcing canonicality is often the source of nonconstructive behavior.  The
+framework uses two variants.
+
+\begin{itemize}
+\item A \emph{functional presentation} has a specified producer
+\(P_X(z,a)\) and proves \(\Valid_X(P_X(z,a),a)\).
+\item A \emph{relational presentation} has a finite bound \(B_X(z,a)\) and a
+predicate \(R_X(z,a,c)\); the valid outputs are the finite cloud
+\(\{c<B_X:R_X(z,a,c)\}\).
+\end{itemize}
+
+Functional output is convenient but relational output is the more general
+primitive.  A functional node is the singleton-cloud special case.  A
+relational node can later collapse to a function when an isolation or
+uniqueness certificate is available.
+
+\subsection{Quantitative names instead of completed infinities}
+
+For metric objects one works with regular finite observations.  A rational
+regular name for a real number is a primitive-recursive function
+\(a:\N\to\Q\) with a proved modulus, for example
+\[
+   |a(p)-a(q)|\leq 2^{-p}+2^{-q}.
+\]
+The theorem exported to iPRA is a first-order statement about the numerator and
+denominator codes returned by \(a\), not a quantification over an ambient set
+of real numbers.  Other representations---nested rational intervals, dyadic
+balls, polynomial jets, finite spectral lists, or finite covers---are often
+better suited to a particular operation.
+
+The key design rule is that every operation states its demand.  Addition of
+regular names may ask both inputs at \(p+1\).  Multiplication needs magnitude
+bounds in addition to precision.  Inversion needs a positive apartness
+certificate such as \(|x|\geq 2^{-a}\), and its demand depends on \(a\).
+Differentiation of a jet reads one extra coefficient.  A root deflation step
+can require a separation bound and a longer coefficient prefix.  These are
+mathematical hypotheses, not implementation details.
+
+\begin{principle}[Demand is part of meaning]
+A finite observation is meaningful only relative to the demand for which its
+validity has been proved.  A node that consumes an observation must expose a
+primitive-recursive transformer mapping its requested output demand to all
+input demands needed by its local proof.
+\end{principle}
+
+This principle rules out a common informal step: ``take sufficiently accurate
+approximations.''  In a PCOG, ``sufficiently'' is a concrete term computed by
+the reverse demand pass.
+
+\subsection{Apartness, equality, and guarded operations}
+
+Constructive mathematics distinguishes equality from quantitative
+separation.  A proof of \(x\neq0\) need not supply a computable lower bound on
+\(|x|\).  Operations whose modulus blows up at zero must therefore be guarded
+by explicit data.
+
+For a rational name \(x_p\), an apartness certificate can have the form
+\[
+  \mathsf{Apart}(x,a) :\equiv |x_{a+2}|>3\cdot 2^{-(a+2)},
+\]
+together with a comparison theorem implying \(|x|\geq 2^{-(a+2)}\).  An
+inverse node takes \(a\) as input, requests enough precision to keep the
+approximating interval away from zero, and proves the standard rational error
+estimate.  The operation is total on the coded pair \((x,a)\) satisfying the
+guard; it is not asserted total on an unguarded real name.
+
+The same pattern applies to:
+\begin{itemize}
+\item selecting a side of a root or an orientation of an axis;
+\item dividing by a determinant, discriminant, Jacobian, or leading
+coefficient;
+\item isolating a spectral block;
+\item choosing one analytic branch;
+\item turning an approximate minimizer into an exact discrete label.
+\end{itemize}
+
+When a guard is unavailable, the framework retains a finite relation: both
+sides, all nearby roots with multiplicity, the whole eigenspace block, or all
+compatible branch codes.  This is not a failure to finish the construction;
+it is the constructively correct output type.
+
+\subsection{Certificates and producers}
+
+A \emph{producer} constructs candidate data.  A \emph{verifier} checks a
+bounded certificate.  In iPRA the two should be separated even when the same
+algorithm happens to perform both tasks.
+
+A certificate predicate \(\Cert_X(z,a,c)\) must be primitive recursive.  A
+local soundness theorem has the form
+\[
+ \Cert_X(z,a,c)\longrightarrow \Valid_X(\Obs_X(c),a),
+\]
+and is supplied as an embedded derivation.  Completeness may be one of three
+kinds.
+
+\begin{enumerate}
+\item \emph{Constructive completeness}: a PR producer returns a certificate.
+\item \emph{Bounded exhaustive completeness}: a finite search bound is
+supplied and every valid witness occurs below it.
+\item \emph{Conditional completeness}: an external theorem supplies a
+height, cover, modulus, or separation certificate; the framework verifies and
+uses it.
+\end{enumerate}
+
+This distinction is critical for deep arithmetic geometry.  Once a valid
+height bound is given, enumeration is routine and formalizable.  Producing the
+bound is the deep theorem.  The framework should make the latter obligation
+small and visible rather than obscure it inside an unverified search routine.
+
+\subsection{Restriction coherence}
+
+Suppose \(c_a\) is valid at precision \(a\) and \(b\leq a\).  A coherent
+presentation proves
+\[
+ \Valid_X(c_a,a)\longrightarrow
+ \Valid_X(\rho_X(c_a,a,b),b).
+\]
+If producers are not canonical, one additionally proves finite uniqueness:
+any two valid observations at precision \(b\) are equal, equivalent, or close
+in the exported observation metric.  This yields two useful modes.
+
+\begin{description}
+\item[Exact coherence.] Restrictions agree as codes or under a decidable
+congruence.  This is typical of finite algebraic identities, modular lifting,
+and exact table computations.
+\item[Observable coherence.] Witnesses can differ, but their compressed
+observations are within a stated error.  This is typical of roots, spectra,
+minimizers, local analytic charts, and finite covers.
+\end{description}
+
+Observable coherence is strictly more flexible.  It avoids proving that two
+algorithms made the same arbitrary internal choices.  The final theorem
+compares what the user actually observes.
+
+\subsection{First-order statement design}
+
+A headline theorem must ultimately be a formula in the repository's syntax.
+The following checklist prevents a mathematically attractive statement from
+becoming impossible to internalize.
+
+\begin{enumerate}
+\item All infinite objects are represented by fixed PR names or families of
+finite observations.
+\item Every quantifier over a finite structure has an explicit bound or a
+coded list.
+\item Every analytic assertion includes a rational error target and a PR
+modulus or a finite certificate from which one is derived.
+\item Every use of division or exact branching names an apartness or gap
+witness.
+\item Every search has a cutoff whose provenance is part of the theorem.
+\item Every recursive proof identifies one quantifier-free invariant.
+\item The final Lean endpoint is written explicitly as a
+\texttt{Prf PRAAx} type.
+\end{enumerate}
+
+Following this discipline often changes the theorem's surface form, but it
+usually reveals a stronger computational result: not merely existence, but a
+uniform finite procedure and a verifiable quantitative contract.

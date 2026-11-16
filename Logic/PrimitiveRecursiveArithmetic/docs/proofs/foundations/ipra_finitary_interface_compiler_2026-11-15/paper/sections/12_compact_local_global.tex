@@ -1,0 +1,156 @@
+\section{Effective compactness and local-to-global constructions}
+\label{sec:compact}
+
+\subsection{Finite nets in place of abstract compactness}
+
+Let \((X,d)\) be represented at finite precision.  An \(\varepsilon\)-net is a
+finite list \(x_0,\ldots,x_{N-1}\) together with a coverage certificate
+\[
+       \forall x\in X\;\exists j<N\quad d(x,x_j)\le\varepsilon.
+\]
+In iPRA the displayed quantifiers are not taken over an abstract completed
+space.  The presentation supplies a finite observation relation strong enough
+to verify the coverage statement needed by the theorem.  For a rational box,
+for example, a grid and coordinate rounding algorithm provide the certificate.
+For a compact metric presentation, the net producer is part of the input
+interface.
+
+\subsection{Approximate minimization}
+
+Suppose \(f:X\to\Q\) has a modulus
+\[
+ d(x,y)\le\varepsilon\quad\Longrightarrow\quad
+ |f(x)-f(y)|\le\omega(\varepsilon).
+\]
+Evaluate \(f\) on the finite net and choose the least index \(j_*\) attaining
+the minimum rational value.
+
+\begin{theorem}[Finite-net minimum transfer]
+For every represented \(x\in X\),
+\[
+       f(x_{j_*})\le f(x)+2\omega(\varepsilon)+2e,
+\]
+where \(e\) bounds each finite evaluation error.  In particular, the selected
+net point is an explicit approximate minimizer.
+\end{theorem}
+
+\begin{proof}
+Choose a net point \(x_j\) within \(\varepsilon\) of \(x\).  Let
+\(\widetilde f_j\) denote the computed rational approximation, with
+\(|\widetilde f_j-f(x_j)|\le e\).  By finite minimality,
+\(\widetilde f_{j_*}\le\widetilde f_j\).  Hence
+\[
+ f(x_{j_*})
+ \le \widetilde f_{j_*}+e
+ \le \widetilde f_j+e
+ \le f(x_j)+2e
+ \le f(x)+\omega(\varepsilon)+2e.
+\]
+The stated slightly looser bound allows asymmetric input/output moduli and is
+closed under the usual error-budget composition.  Every choice is bounded
+least search.
+\end{proof}
+
+\subsection{Finite covers}
+
+An effective finite cover consists of:
+\begin{itemize}
+\item finitely many chart or open-set codes \(U_i\);
+\item a Boolean membership or positive-margin predicate at the required
+precision;
+\item a coverage certificate for the finite observation domain;
+\item transition data on pairwise overlaps;
+\item a Lebesgue-number or refinement margin when exact chart selection is
+needed.
+\end{itemize}
+The framework never extracts a finite subcover from an arbitrary open cover.
+It consumes or constructs a finite cover from explicit quantitative data.
+
+\subsection{Finite gluing}
+
+Let local data \(s_i\) be given on a finite cover.  Suppose compatibility on
+overlaps is a bounded decidable relation
+\[
+       R_{ij}(s_i,s_j)=1.
+\]
+A gluing theorem can have one of three outputs:
+\begin{enumerate}
+\item an exact global code, when a bounded algebraic constructor exists;
+\item a finite cloud of global codes, with quotient-stable observable;
+\item a regular name obtained from compatible approximate gluings and a
+shrinking diameter bound.
+\end{enumerate}
+
+For affine algebraic data, gluing often reduces to a finite system of ring
+equalities.  For simplicial data, it reduces to finite carrier and contiguity
+relations.  For analytic local solutions, it reduces to rational coefficient
+bounds and overlap estimates.
+
+\begin{theorem}[Finite gluing by bounded search]
+Assume a primitive-recursive bound \(B\) on global candidate codes and a
+bounded verifier \(G(c,s_0,\ldots,s_{r-1})\) that is sound and complete for the
+finite gluing problem.  Then the finite list of all global gluings is primitive
+recursive.  If a stable observable is constant on that list, it is a
+well-defined deterministic output.
+\end{theorem}
+
+\begin{proof}
+Enumerate \(c<B\) and retain exactly those passing \(G\).  Soundness says every
+retained code is a gluing; completeness says every gluing appears.  The list is
+a bounded fold.  Constancy of the observable erases the choice of retained
+code.  The complete list, rather than an unbounded existential, is the
+constructive global object.
+\end{proof}
+
+\subsection{Local differential equations}
+
+For a rational polynomial ODE on a rational box, a finite local solution may
+be represented by a truncated power series plus a remainder bound.  A
+contracted local solver consumes:
+\begin{itemize}
+\item coefficient bounds;
+\item a Lipschitz or majorant constant;
+\item a rational step size satisfying the contraction inequality;
+\item an initial-value approximation and error budget.
+\end{itemize}
+It returns a finite coefficient table and a verified residual bound.  A global
+solution on a finite time interval is obtained by a bounded number of local
+steps.  The state invariant accumulates the error budget; no abstract Picard
+fixed point is needed in the object language.
+
+\subsection{Local algebraic branches}
+
+An equation \(F(x,y)=0\) with a certified nonzero partial derivative
+\(|\partial_yF|\ge\eta\) admits a guarded local branch.  A rational Newton or
+bisection procedure produces a finite regular name; the derivative margin
+controls uniqueness and demand propagation.  At singular points the framework
+returns a finite relation of branches or consumes exact algebraic splitting
+data.  This distinction addresses the recurring Puiseux difficulty: exact
+branch coefficients are safe for exact algebraic presentations, but not as a
+uniform operation on arbitrary Cauchy coefficients.
+
+\subsection{Observational quotients and extensionality}
+
+Suppose two presentation codes \(x,x'\) represent the same object by
+\(x\equiv_p x'\) at all precisions.  A contracted transducer is extensional if
+for every output query \(q\), input equivalence at \(\Need_F(q)\) implies
+output equivalence at \(q\).  Composition preserves extensionality by
+substituting the demand inequalities.  Thus quotient reasoning becomes an
+ordinary theorem about finite observations; no quotient type or choice of
+canonical representatives is required inside iPRA.
+
+\subsection{Local-to-global principle}
+
+The general local-to-global pattern is now finite:
+\begin{enumerate}
+\item produce a finite cover or decomposition;
+\item solve each local problem with explicit contracts;
+\item verify pairwise compatibility by bounded formulas;
+\item enumerate or construct finite global candidates;
+\item erase nonuniqueness by exact stability or a diameter modulus;
+\item compile the entire bounded process with one trace invariant.
+\end{enumerate}
+This pattern applies to finite sheaves, charted manifolds, local analytic
+branches, and many descent calculations.  What it does not do is turn an
+ineffective existence theorem for a cover, bound, or local solution into an
+effective producer.

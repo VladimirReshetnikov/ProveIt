@@ -1,0 +1,176 @@
+\section{Backward demand and the graph compiler}
+\label{sec:demand}
+
+Continuous and approximate constructions fail in weak arithmetic when they are formulated ``at all precisions at once.''  The PFIG compiler instead starts with one terminal request, propagates a finite demand backward, and only then executes the finite forward construction.  This section proves the demand calculus and the soundness of the two-pass compiler.
+
+\subsection{Precision contracts}
+
+Let an input presentation have an observation operation \(\Obs_X(x,q)\), interpreted as finite information about \(x\) at precision \(q\).  A node \(F:X\to Y\) has a precision contract if it supplies a primitive-recursive demand map \(d_F(p,\vec{x})\) and proves:
+\[
+ \Obs_X(x,d_F(p,\vec{x}))\approx
+ \Obs_X(x',d_F(p,\vec{x}))
+ \quad\Longrightarrow\quad
+ \Obs_Y(Fx,p)\approx \Obs_Y(Fx',p).
+\]
+The equivalence relations may be exact equality, metric closeness, or a finite relational back-and-forth.  The contract is itself represented by a bounded formula or by a stable observer theorem.
+
+For a guarded operation, the demand may also depend on a guard.  For example, to compute \(1/x\) within \(2^{-p}\), one may require an apartness certificate \(|x|\ge 2^{-g}\) and input precision roughly \(p+2g+c\).  The exact bound is theorem-specific, but the composition law is generic.
+
+\subsection{Reverse demand equations}
+
+Let \(G=(V,E)\) be a finite acyclic graph, with a terminal request \(p\) at selected output nodes.  For an edge \(e:u\to v\), let \(d_e(r_v,\vec{x})\) be the request at \(u\) needed by \(v\).  Define requests in reverse topological order:
+\[
+ r_u=
+ \max\Bigl(r_u^{\mathrm{terminal}},
+       \max_{e:u\to v} d_e(r_v,\vec{x})\Bigr),
+\]
+where absent terminal requests are zero.
+
+\begin{theorem}[Primitive-recursive backward demand]
+\label{thm:backward-demand}
+For every fixed finite acyclic PFIG, the vector \(\vec r(p,\vec{x})\) solving the reverse demand equations is primitive recursive.  iPRA proves each defining equation and the following minimality property: if \(\vec s\) satisfies every terminal and edge demand, then \(r_v\le s_v\) for every vertex \(v\).
+\end{theorem}
+
+\begin{proof}
+Choose a reverse topological order \(v_{N-1},\ldots,v_0\).  Initialize all request fields with their terminal requests.  At stage \(i\), compute \(r_{v_i}\) as the maximum of its current value and the finitely many expressions \(d_e(r_v,\vec{x})\) for outgoing edges.  Since the graph and each adjacency list are fixed, this is a fixed primitive-recursive fold.  The equality invariant saying that all already processed fields satisfy their defining equation is quantifier-free.  The object proof uses the elementary algebra of maximum.
+
+For minimality, induct in the same reverse order.  Assume all successor requests satisfy \(r_v\le s_v\).  Monotonicity of each demand map gives
+\(d_e(r_v)\le d_e(s_v)\le s_u\), and the terminal request is also at most \(s_u\).  Therefore their maximum \(r_u\) is at most \(s_u\).  If a demand map is not monotone as originally written, replace it by its bounded monotone closure
+\[
+ d_e^*(p)=\max_{q\le p}d_e(q),
+\]
+which is primitive recursive and satisfies the same correctness contract.
+\end{proof}
+
+Minimality is useful but not required for soundness.  It shows that the compiler does not introduce arbitrary excess precision beyond the chosen contract maps.
+
+\subsection{Fix precision, then quantify}
+
+The reverse pass enforces the correct quantifier order.  Suppose a theorem ultimately says
+\[
+ \forall p\ \exists y\ R(p,y).
+\]
+The PFIG compiler proves a uniformly primitive-recursive witness or finite relation at each fixed \(p\).  The object proof first treats \(p\) as a free numerical parameter, computes all finite bounds depending on \(p\), runs quantifier-free loops, and only then universally generalizes over \(p\).
+
+It does \emph{not} place ``for every future precision'' in an induction invariant.  This distinction resolves many apparent strength problems.  The algorithm is uniform in \(p\), but every individual execution uses only a finite amount of information.
+
+\subsection{Forward execution}
+
+After the demand vector is known, execute vertices in topological order.  At a vertex \(v\):
+
+\begin{enumerate}
+\item read the finite observations requested on incoming edges;
+\item run its exact, loop, search, relation, guard, glue, or observer program;
+\item store its output code, finite table, or certificate flag;
+\item use the local object certificate to extend the global invariant.
+\end{enumerate}
+
+No vertex can read an uncomputed successor because of the topological order.  If several consumers need the same output at different precisions, the node is run at their maximum demand; restriction maps or stability prove that this output suffices for each smaller request.
+
+\subsection{Restriction coherence}
+
+A presentation often has restriction maps
+\[
+ \rho_{q,p}:A_q\to A_p\qquad(q\ge p),
+\]
+which forget excess precision.  Exact coherence would say
+\(\rho_{r,p}=\rho_{q,p}\circ\rho_{r,q}\).  In a relational presentation, coherence may instead be a compatibility relation between restricted clouds.
+
+The graph compiler needs one of the following:
+
+\begin{enumerate}
+\item an exact restriction term and object proof of its equations;
+\item a stable observer showing that either restriction path gives the same terminal result;
+\item a metric estimate bounding the discrepancy and a tail modulus that absorbs it.
+\end{enumerate}
+
+Demand sharing is sound under any of these forms.  Requiring literal code equality is unnecessarily strong and often false because codes may contain different but equivalent representatives.
+
+\subsection{Demand for finite relations}
+
+For a relational node, the consumer may ask for more than a numerical precision.  It may need:
+
+\begin{itemize}
+\item a horizon \(H\) for compatibility;
+\item a diameter target for the viable cloud;
+\item a separation margin for exact labels;
+\item a finite set of queries rather than one scalar precision.
+\end{itemize}
+
+Encode such requests as natural tuples.  The demand order is componentwise or given by an explicit primitive-recursive preorder.  Replace maximum by a primitive-recursive join operation.  The backward theorem then holds verbatim, provided demand maps are monotone with respect to that preorder.
+
+This generalization is important for multiscale arguments.  A consumer of a root cluster may request coefficient precision \(p\), a disk radius bound \(q\), and a multiplicity cutoff \(m\).  Scalarizing everything too early obscures dependencies and produces poor invariants; tuple requests keep them explicit while remaining first-order numerical data.
+
+\subsection{Graph soundness theorem}
+
+\begin{theorem}[Two-pass PFIG soundness]
+\label{thm:pfig-soundness}
+Let \(G\) be a fixed acyclic PFIG.  Assume:
+
+\begin{enumerate}
+\item every request type is naturally coded with primitive-recursive join and order;
+\item every edge demand map is primitive recursive and monotone;
+\item every node has a local object-iPRA correctness derivation at arbitrary free request parameters;
+\item each relational output is consumed by bounded search, finite-horizon viability, or stable erasure;
+\item each guarded operation receives the quantitative guard required by its local theorem;
+\item the terminal extraction theorem is an object-iPRA derivation from the terminal node contracts.
+\end{enumerate}
+
+Then a structural compiler constructs an object-iPRA derivation of the terminal theorem, uniformly in the input and terminal request.
+\end{theorem}
+
+\begin{proof}
+Compile the reverse pass using \cref{thm:backward-demand} and the trace theorem.  Its final state contains a demand vector satisfying every edge equation.  Substitute these demand terms into all local node contracts.
+
+Compile the forward pass by topological recursion over the finite graph.  Maintain a context containing the postconditions of completed nodes, or equivalently a single conjunction encoded in the state invariant.  For an exact node, apply its local certificate.  For a loop node, use \cref{thm:trace-invariant}.  For a search node, use \cref{thm:least-search}.  For a relational node, invoke the finite viability or stable-erasure theorem.  For a guarded node, cut in the guard certificate.  For a gluing node, use the finite gluing theorem of \cref{sec:gluing}.  At each stage, weakening retains previous contracts and simultaneous cut discharges local assumptions.
+
+At the terminal stage, the compiled context contains every premise of the extraction theorem.  Simultaneous cut produces the terminal derivation.  Universal introduction over the terminal request and input variables gives the advertised uniform theorem.
+\end{proof}
+
+\subsection{Branching and conditional nodes}
+
+A finite algorithm may branch on a decidable Boolean.  The graph can represent this as two subgraphs with a merge.  Boolean reflection gives \(B\vee\neg B\), and intuitionistic disjunction elimination combines the branch proofs.  If the branch predicate is an approximate sign without a separation guard, it is not decidable in the represented object and must not be used this way.  The alternatives are:
+
+\begin{itemize}
+\item refine until a supplied gap makes the sign decidable;
+\item carry both branch outputs as a finite relation;
+\item prove the merged observable independent of the branch.
+\end{itemize}
+
+Thus the graph syntax itself does not legitimize a discontinuous case split.  Every branch has a Boolean checker whose reflection theorem is part of the node contract.
+
+\subsection{Cycles and iterative refinement}
+
+A mathematical dependency graph may be cyclic, for example when a refinement step updates several mutually dependent approximations.  The PFIG dependency graph remains acyclic by packaging the cycle as one bounded-loop node.  Its state contains all mutually updated components.  This is not a loss of generality: any finitely scheduled iterative process has a primitive-recursive product state.
+
+Unbounded fixed-point iteration is not admitted merely because it converges semantically.  A node must supply a primitive-recursive fuel or a rank bound.  For approximate fixed points, the terminal theorem usually asks only for residual \(\le 2^{-p}\), and the fuel is derived from a contraction or descent modulus.
+
+\subsection{Contract DAG normalization}
+
+A graph with shared subcomputations can be duplicated into a tree, but that obscures resource bounds.  The encoded-state normal form preserves sharing by storing each completed output once.  Demand joining ensures it is computed at sufficient precision for all consumers.  The global invariant records one postcondition per stored node, so proof sharing is reflected as a single local derivation followed by several weakenings.
+
+\subsection{Generated proof terms versus a verified compiler}
+
+There are two practical deployment stages.
+
+\begin{description}
+\item[Generated theorem files.]  An external script emits Lean definitions and a proof term specialized to a particular graph.  Lean checks the resulting object derivation.  The generator need not initially be trusted for soundness because malformed output will fail to typecheck; nevertheless, completeness of generation is tested separately.
+\item[Internal verified elaborator.]  Define a PFIG syntax in Lean, elaborate it to PR terms and formulas, and prove by structural recursion that the generated derivation has the promised type.  This removes repetition and makes graph-level automation trustworthy.
+\end{description}
+
+The first stage is enough to complete repository theorem packets.  The second is a natural consolidation after the interfaces stabilize.
+
+\subsection{What the demand compiler resolves}
+
+The two-pass discipline resolves several reported obstacles at once:
+
+\begin{itemize}
+\item all-precision assertions are moved outside induction;
+\item only a finite query table is computed for each request;
+\item moduli and guards become explicit edge data;
+\item shared subcomputations receive a joined demand;
+\item exact code equality is replaced by restriction coherence or stable observation;
+\item the entire construction remains a fixed family of primitive-recursive symbols.
+\end{itemize}
+
+It does not invent missing moduli.  If a theorem supplies only qualitative continuity or ineffective convergence, the corresponding demand edge remains an open producer obligation.

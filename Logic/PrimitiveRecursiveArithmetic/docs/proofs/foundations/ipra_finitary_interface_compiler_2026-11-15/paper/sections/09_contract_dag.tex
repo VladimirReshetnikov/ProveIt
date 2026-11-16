@@ -1,0 +1,155 @@
+\section{Contract DAGs and reverse demand propagation}
+\label{sec:dag}
+
+\subsection{Why local composition is not enough}
+
+A large formalization is rarely a single loop.  It is a directed acyclic graph
+of constructions: coefficient approximation feeds root isolation and an error
+estimate; both feed a contour certificate; several branches share the same
+input observations.  Naive nested composition recomputes demands and may hide
+an illegal adaptive oracle call.  A contract-DAG compiler separates two
+passes:
+\begin{enumerate}
+\item a reverse pass determines every observation needed for the requested
+output;
+\item a forward pass executes each node once and records one bounded trace.
+\end{enumerate}
+
+\subsection{DAG model}
+
+Let nodes be topologically ordered \(0,\ldots,N-1\).  Node \(v\) has parents
+\(p_0(v),\ldots,p_{k_v-1}(v)<v\).  Its contract contains:
+\begin{itemize}
+\item an output query domain \(Q_v\);
+\item for each output query \(q\), a parent-demand tuple
+\(D_v(q)=(q_0,\ldots,q_{k_v-1})\);
+\item a primitive-recursive evaluator \(E_v\);
+\item a local validity predicate \(C_v\);
+\item a local \(\Prf\,\PRAAx\) derivation of contract preservation.
+\end{itemize}
+If query domains are numerical precision levels, join is maximum.  For richer
+finite queries, assume a primitive-recursive join \(q\sqcup q'\) with proofs
+that it dominates both.  The displayed \(D_v\) is static: it depends on the
+output query and fixed finite metadata, not on an as-yet uncomputed approximate
+value.  Data-dependent algorithms must provide a certified static majorant, a
+finite preliminary summary stage, or the joined demands of all unresolved
+branches.  This condition is what makes the reverse pass genuinely prior to
+the forward pass.
+
+\subsection{Reverse demand algorithm}
+
+Initialize every node demand to the least query \(\bot\), except the output
+nodes, which receive the user's requested queries.  Scan nodes in reverse
+topological order.  At node \(v\), compute \(D_v(q_v)\) and join each component
+into the demand of the corresponding parent.  Because the graph is finite and
+the scan length is \(N\), this is primitive recursive.
+
+\begin{theorem}[Soundness of reverse demand]
+\label{thm:demandsound}
+Let \(q_v\) be the demands produced by the reverse pass.  If each source
+presentation supplies a valid observation at its computed demand, then every
+node \(v\) can be evaluated at demand \(q_v\), and every requested output
+contract holds.
+\end{theorem}
+
+\begin{proof}
+Induct on the topological order.  Source nodes satisfy their contracts by the
+assumption.  For a non-source node \(v\), the reverse pass joined the demand
+\(D_v(q_v)_j\) into each parent \(p_j(v)\).  Hence the observation produced for
+that parent is at least as strong as the node's local requirement.  Restrict it
+if necessary, apply the local contract derivation, and obtain a valid output at
+\(q_v\).  Continue through the finite order.  The requested outputs have the
+queries with which the reverse pass was initialized, so their contracts hold.
+\end{proof}
+
+\subsection{Fan-out and sharing}
+
+Suppose a node feeds two consumers requiring precisions \(p\) and \(q\).  The
+producer is evaluated once at \(p\sqcup q\).  Restriction maps supply the two
+weaker observations.  This is more than an optimization: it ensures that both
+consumers see coherent data from one finite observation rather than unrelated
+witnesses.
+
+For relational presentations, sharing does not force a single exact candidate.
+The producer may return a cloud at the joined demand, and each consumer uses a
+compatible restriction cloud.  A global viability pass selects a finite
+compatible path only when needed.
+
+\subsection{The global forward trace}
+
+Encode in the trace state:
+\begin{itemize}
+\item the current node index;
+\item the complete demand table;
+\item the finite table of already computed observations;
+\item one accumulated validity Boolean;
+\item optional local certificate cursors.
+\end{itemize}
+At each step, the transition evaluates the next node from its parent entries
+and updates the validity bit by conjunction with \(C_v\).  The invariant says:
+\begin{enumerate}
+\item every completed node has a well-formed observation at its assigned
+demand;
+\item every completed local contract is true;
+\item untouched table entries retain the default value;
+\item the demand table equals the result of the reverse pass.
+\end{enumerate}
+Each clause is a bounded Boolean fold.  The invariant is one equation and can
+be fed to \cref{thm:tracereflection}.
+
+\begin{theorem}[Certified DAG compilation]
+A finite acyclic graph of proof-carrying contracted transducers with static or
+certifiably majorized demands compiles to one trace system.  From the local
+\(\Prf\,\PRAAx\) contract proofs, iPRA derives the global output contract at
+every requested finite query.
+\end{theorem}
+
+\begin{proof}
+The reverse-demand correctness theorem supplies the semantic invariant.
+Booleanize its bounded table clauses.  The base proof verifies the initialized
+tables.  The step proof is a finite case distinction on the current node,
+followed by the corresponding local contract proof and table-update equations.
+The final proof projects the accumulated output entries and their validity
+bits.  Apply finite-trace reflection and universally quantify the requested
+queries and source inputs.
+\end{proof}
+
+\subsection{Guarded branches}
+
+A branch node may be compiled in three safe ways.
+\begin{enumerate}
+\item If the condition is a decidable finite Boolean, execute exactly one
+branch.
+\item If an approximate quantity is separated from the branch boundary by a
+positive margin, refine until the finite guard certifies one side, then execute
+that branch.
+\item Without separation, execute or describe both finite branches and return
+a relational union whose observable output is proved stable.
+\end{enumerate}
+An exact branch on the sign of an arbitrary real name is not permitted.
+
+\subsection{Loops in a program graph}
+
+A bounded loop is represented as one trace node whose local proof is itself
+obtained from \cref{thm:tracereflection}.  Alternatively, the compiler can
+flatten all loops into the global state.  The modular route creates smaller
+local proof obligations; the flattened route permits stronger sharing.  Both
+are conservative because the proof terms are composed by substitution and cut.
+
+\subsection{Lean outline}
+
+The supplied \code{CertifiedProgram.lean} sketches a syntax with assignments,
+checks, sequential composition, bounded loops, and guarded or relational
+branches.  Completion should proceed by:
+\begin{enumerate}
+\item replacing abbreviated semantic fields by formula builders and
+\(\Prf\,\PRAAx\) derivations;
+\item defining a topological list representation with a bounded well-formedness
+checker;
+\item implementing the reverse pass as a \(\PR\) fold;
+\item proving the demand invariant by quantifier-free induction;
+\item compiling the forward table update to a \code{PRTraceSystem};
+\item invoking \code{traceReflection} once.
+\end{enumerate}
+No higher-order evaluator is needed: each certified program is a fixed Lean
+value from which fixed \(\PR\) symbols are constructed.

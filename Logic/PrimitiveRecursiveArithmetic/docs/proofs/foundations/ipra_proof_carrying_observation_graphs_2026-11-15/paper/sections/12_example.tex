@@ -1,0 +1,200 @@
+\section{Worked contract graph: the root of \texorpdfstring{\(y^3+y=x\)}{y cubed plus y equals x}}
+\label{sec:example}
+
+A small example demonstrates the complete architecture without relying on a
+large theorem-specific library.  Fix a rational input satisfying
+\[
+  2^{-a}\leq x\leq2
+\]
+for a supplied natural apartness parameter \(a\).  The function
+\(F(y)=y^3+y\) is strictly increasing on nonnegative rationals, with
+\(F(0)=0\) and \(F(1)=2\).  Hence there is a unique real root \(r\in[0,1]\)
+of \(F(r)=x\).  We construct finite rational observations of
+\[
+  r+\frac1r.
+\]
+The inverse is guarded by the quantitative lower bound on \(x\).
+
+\subsection{Root bisection node}
+
+Start with \([\ell_0,u_0]=[0,1]\).  Given a bracket with
+\[
+ F(\ell_n)\leq x\leq F(u_n),
+\]
+let \(m_n=(\ell_n+u_n)/2\).  If \(F(m_n)\leq x\), set
+\((\ell_{n+1},u_{n+1})=(m_n,u_n)\); otherwise set
+\((\ell_{n+1},u_{n+1})=(\ell_n,m_n)\).
+
+The state uses integer dyadic numerators with a common denominator \(2^n\), so
+all operations are primitive recursive and comparisons are exact after
+clearing denominators.
+
+\begin{lemma}[Bisection invariant]
+For every \(n\),
+\[
+ 0\leq\ell_n\leq u_n\leq1,
+ \qquad F(\ell_n)\leq x\leq F(u_n),
+ \qquad u_n-\ell_n=2^{-n}.
+\]
+\end{lemma}
+
+\begin{proof}
+The base case is immediate from \(0\leq x\leq2\).  At a step, monotonicity of
+\(F\) and the Boolean comparison determine which half still brackets the
+root.  Both halves have half the width.  All inequalities are polynomial
+inequalities over integers after multiplying by a positive power of two, so
+the invariant is quantifier-free.
+\end{proof}
+
+A trace package with fuel \(p\) therefore exports a valid root interval of
+width \(2^{-p}\).
+
+\subsection{Apartness for the reciprocal}
+
+For \(0\leq r\leq1\),
+\[
+ x=r^3+r\leq2r,
+\]
+so
+\[
+ r\geq x/2\geq2^{-(a+1)}.
+\]
+This is the crucial guard.  After at least \(a+1\) bisection steps, the dyadic
+comparison can certify a positive lower endpoint; more generally the inverse
+node requests enough precision that its input interval lies wholly above
+zero.
+
+If \([\ell,u]\) is a positive root interval, inversion reverses endpoints:
+\[
+  r^{-1}\in[1/u,1/\ell].
+\]
+Suppose the root bracket has width \(2^{-n}\).  If \(n\geq a+2\), its
+lower endpoint is at least \(2^{-(a+2)}\), so the reciprocal interval has
+width at most
+\[
+  2^{-n}\,2^{2a+4}.
+\]
+Consequently a sound reciprocal demand for output precision \(q\) is
+\[
+ \delta_{\mathrm{inv}}(q,a)=q+2a+4.
+\]
+The constant is conservative but uniform and is proved by the displayed
+rational estimate.
+
+\subsection{Observable node}
+
+Given the root interval \([\ell,u]\) and reciprocal interval
+\([1/u,1/\ell]\), output
+\[
+  B_p=[\ell+1/u,\;u+1/\ell].
+\]
+It contains \(r+1/r\) by interval arithmetic.  A local rational inequality
+bounds its width as a function of the root width and the lower bound
+\(2^{-(a+1)}\).  For a requested final precision \(p\), ask the root and reciprocal
+outputs at precision \(p+1\).  The backward pass therefore asks the root node at
+\[
+  p+2a+5.
+\]
+Each summand interval then has width at most \(2^{-(p+1)}\), so the sum interval
+has width at most \(2^{-p}\).
+
+\subsection{Graph and demand flow}
+
+The finite graph is:
+\[
+ \boxed{x,a}
+ \longrightarrow
+ \boxed{\text{root bracket}}
+ \longrightarrow
+ \boxed{\text{guarded reciprocal}}
+ \longrightarrow
+ \boxed{\text{sum interval}}.
+\]
+The sum node also reads the root bracket directly.  Backward propagation takes
+the maximum of the direct root demand and the stronger demand coming through
+the inverse.
+
+For the exact regression instance \(x=1\), \(a=0\), and requested observation
+precision \(10\), the supplied Python run computes demands
+\[
+ d_{\mathrm{observable}}=10,\qquad
+ d_{\mathrm{reciprocal}}=11,\qquad
+ d_{\mathrm{root}}=15.
+\]
+It returns the exact root bracket
+\[
+ \left[\frac{11179}{16384},\frac{22359}{32768}\right]
+\]
+after fifteen bisections.  The final observable interval has exact width
+\[
+ \frac{786822173}{8190402920448}<2^{-10}.
+\]
+These numbers are implementation evidence only; the universal proof is the
+bisection invariant plus rational interval estimates.
+
+\subsection{Object-language theorem target}
+
+A closed theorem should quantify over normalized rational codes \(x\), the
+apartness exponent \(a\), and requested precision \(p\).  Its conclusion says
+that the emitted interval code is well formed, contains every rational
+approximation satisfying the root relation at a sufficient finite tolerance,
+and has width at most \(2^{-p}\).  A stronger regular-name theorem compares
+outputs at two precisions and proves the Cauchy inequality.
+
+A schematic Lean endpoint is:
+
+\begin{lstlisting}[language={}]
+def cubicObservableSentence : Fm PTm 0 :=
+  all x. all a. all p.
+    InputGuard x a -->
+    ValidInterval (cubicObservable x a p) p
+
+theorem cubicObservable :
+  ([] : List (Fm PTm 0)) |-PRA cubicObservableSentence := by
+  exact (PCOG.compile cubicGraph).final
+\end{lstlisting}
+
+The actual syntax must expand normalized rational codes, interval validity, and
+the polynomial bracket predicate into the repository's \texttt{Fm PTm}
+constructors.
+
+\subsection{Proof-node decomposition}
+
+A practical formalization uses the following nodes.
+
+\begin{enumerate}
+\item \textbf{Input node}: normalize rational \(x\), prove denominator
+positivity, and expose the guard \(2^{-a}\leq x\leq2\).
+\item \textbf{Demand node}: compute the general root precision needed for the
+final interval width.
+\item \textbf{Bisection trace}: maintain bracket and width invariants.
+\item \textbf{Lower-bound node}: derive \(r\geq x/2\) at the finite interval
+level and prove positivity of the chosen lower endpoint.
+\item \textbf{Reciprocal node}: invert interval endpoints and prove
+containment.
+\item \textbf{Addition node}: add intervals.
+\item \textbf{Width node}: prove the final rational width inequality.
+\item \textbf{Finalizer}: assemble interval validity and universally close the
+parameters.
+\end{enumerate}
+
+Only nodes 3 and perhaps 2 require induction.  The rest are exact algebraic
+rules and cuts.  This illustrates the ``one induction per recursive component''
+principle.
+
+\subsection{What the example teaches}
+
+The example is deliberately modest, but it exhibits four general lessons.
+
+\begin{enumerate}
+\item An inverse operation is not justified by a bare nonzero statement; the
+input carries a quantitative apartness exponent.
+\item Precision flows backward through the graph and can depend on the guard.
+\item The root algorithm's correctness is one quantifier-free invariant,
+whereas interval arithmetic is acyclic proof composition.
+\item The final theorem concerns finite observations and their error, not an
+ambient real object.
+\end{enumerate}
+
+These are the same structural issues that arise in much larger analytic and
+algebraic applications.

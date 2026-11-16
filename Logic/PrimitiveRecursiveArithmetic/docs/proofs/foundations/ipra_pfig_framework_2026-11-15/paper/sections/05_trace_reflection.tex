@@ -1,0 +1,172 @@
+\section{Proof-producing bounded traces}
+\label{sec:traces}
+
+A bounded computation becomes useful to iPRA only when its execution proof is internalized.  The repository already contains the essential object theorem for primitive recursion.  This section packages it as a trace-reflection interface and shows how to incorporate imported finite computations without asserting an internal universal evaluator.
+
+\subsection{Deterministic state recursion}
+
+Fix parameters \(\vec{x}\).  Let \(f(\vec{x})\) be an initial state and let
+\[
+ g(t,s,\vec{x})
+\]
+be a primitive-recursive update.  Define
+\begin{align*}
+ \mathsf{run}(0,\vec{x}) &= f(\vec{x}),\\
+ \mathsf{run}(t+1,\vec{x}) &= g(t,\mathsf{run}(t,\vec{x}),\vec{x}).
+\end{align*}
+Let \(P(s,t,\vec{x})\) be quantifier-free.
+
+\begin{theorem}[Object trace invariant]
+\label{thm:trace-invariant}
+Suppose there are object-iPRA derivations
+\begin{align*}
+ \Gamma(\vec{x}) &\vdash P(f(\vec{x}),0,\vec{x}),\\
+ P(s,t,\vec{x}),\Gamma(\vec{x})
+ &\vdash P(g(t,s,\vec{x}),t+1,\vec{x}).
+\end{align*}
+Then, for every primitive-recursive fuel term \(F(\vec{x})\), there is an object-iPRA derivation
+\[
+ \Gamma(\vec{x})\vdash
+ P(\mathsf{run}(F(\vec{x}),\vec{x}),F(\vec{x}),\vec{x}).
+\]
+\end{theorem}
+
+\begin{proof}
+This is the mathematical content of the existing \texttt{primitiveRecursionInvariant} and \texttt{primitiveRecursionAt} theorems.  Apply quantifier-free induction to the formula
+\[
+ P(\mathsf{run}(t,\vec{x}),t,\vec{x}).
+\]
+It is quantifier-free because \(P\) is, and substitution of PR terms preserves quantifier-freeness.  The base case transports the supplied base proof along the zero equation for primitive recursion.  For the step, substitute \(s=\mathsf{run}(t,\vec{x})\) into the local preservation proof, then transport along the successor equation for primitive recursion.  Universal elimination at \(F(\vec{x})\) gives the conclusion.  The Lean implementation performs the necessary de Bruijn substitutions and equality congruence explicitly \cite{repo-local-global}.
+\end{proof}
+
+\subsection{Terminal extraction}
+
+A loop normally proves a state invariant, while the desired theorem is a property \(C(\vec{x})\).  Supply a final derivation
+\[
+  \Gamma\vdash P(\mathsf{run}(F),F,\vec{x})\to C(\vec{x}).
+\]
+Modus ponens with 
+\cref{thm:trace-invariant} yields \(C\).  The repository's stable-observer module calls this pattern \texttt{loopProducesCertificate} \cite{repo-observable}.
+
+This design avoids placing a complex specification into the induction matrix.  The loop invariant records only finite state facts.  Quantifiers, limits, or abstract mathematical conclusions appear in the terminal extraction theorem, where ordinary intuitionistic reasoning is available.
+
+\subsection{Multiple loop phases}
+
+Many constructions naturally have several phases: build a table, scan it, refine candidates, and verify a certificate.  There are two equivalent encodings.
+
+\paragraph{One tagged state.}
+Add a phase field to the state and define a transition by a fixed case distinction.  The invariant is a conjunction of phase-conditional clauses.
+
+\paragraph{Contract composition.}
+Treat each phase as a loop contract.  The terminal state of one loop is an exact term in the precondition of the next.  Substitute and cut.  This yields smaller local invariants and is usually preferable in Lean.
+
+The PFIG normal form permits either.  The reference compiler uses explicit phases because they are convenient to inspect, while the Lean roadmap recommends separate loop modules followed by contract composition.
+
+\subsection{Finite trace certificates}
+
+Sometimes the producer is not represented by a simple PR recurrence in the object theory.  It may be an external exact-arithmetic program, a SAT solver, a polynomial factorization routine, or a generated symbolic calculation.  The safe interface is a finite trace certificate.
+
+Let \(\mathsf{Local}(c_i,c_{i+1},i,\vec{x})\) be a quantifier-free relation checking one transition, and let \(T\) encode the list \((c_0,\ldots,c_F)\).  Define a primitive-recursive checker
+\[
+ \mathsf{TraceOK}(T,F,\vec{x})=
+ \mathsf{InitOK}(c_0,\vec{x})\wedge
+ \bigwedge_{i<F}\mathsf{Local}(c_i,c_{i+1},i,\vec{x})
+ \wedge \mathsf{FinalOK}(c_F,\vec{x}).
+\]
+Every operation here is a bounded fold over a coded list.
+
+\begin{theorem}[Trace reflection]
+\label{thm:trace-reflection}
+Suppose object-iPRA proves reflection lemmas for \(\mathsf{InitOK}\), \(\mathsf{Local}\), and \(\mathsf{FinalOK}\).  Then object-iPRA proves
+\[
+ [\mathsf{TraceOK}(T,F,\vec{x})]	o C(T,F,\vec{x}),
+\]
+where \(C\) is the terminal specification obtained by composing the reflected local transitions.
+\end{theorem}
+
+\begin{proof}
+Decode the current trace position and state by bounded projection.  Run a loop over \(i\le F\) whose invariant says that the decoded prefix is locally valid and that the semantic state relation holds at \(c_i\).  The checker equality \(\mathsf{TraceOK}=1\) supplies each local Boolean fact by bounded-table reflection.  Apply the local transition derivation in the step.  At \(F\), use \(\mathsf{FinalOK}\) to derive \(C\).  The invariant is quantifier-free after all prefix checks are represented by Boolean folds.
+\end{proof}
+
+This theorem does not assert that the external producer is correct.  It asserts that any accepted trace certifies the result.  Trust is reduced to the small primitive-recursive checker and its object reflection proof.
+
+\subsection{Proof-producing transducers}
+
+A more modular node returns both output data \(y\) and a certificate \(c\).  Its finite checker validates
+\[
+ \mathsf{check}(c,y,p,\vec{x})=1.
+\]
+Reflection derives the postcondition \(R(y,p,\vec{x})\).  Such a node may itself be deterministic or relational:
+
+\begin{itemize}
+\item deterministic: a fixed PR program computes \((y,c)\);
+\item externally certified: the graph receives \((y,c)\) as an input and verifies it;
+\item relational: a bounded search enumerates pairs \((y,c)\) whose checker accepts.
+\end{itemize}
+
+The downstream graph depends only on \(R\), not on how the certificate was produced.
+
+\subsection{The base, step, final triad}
+
+Every bounded algorithm should document exactly three object-level obligations.
+
+\begin{description}
+\item[Base.] The initial encoded state satisfies the invariant.
+\item[Step.] Under the invariant, one encoded transition preserves it.
+\item[Final.] The terminal invariant implies the advertised contract.
+\end{description}
+
+A recurring weakness in draft formalizations is that the base and step are proved semantically in Lean while the final target is merely declared as \(\Prf\ \PRAAx\).  The PFIG discipline requires all three to have the object type.  Semantic proofs may be used to discover the arithmetic argument, but the artifact ledger records the object theorem separately.
+
+\subsection{Trace composition}
+
+Suppose trace \(T_1\) establishes an intermediate relation \(Q(y,\vec{x})\), and trace \(T_2\), parameterized by \(y\), establishes \(R(z,y,\vec{x})\).  The combined trace concatenates the two coded lists with a phase tag.  Reflection can be proved either by a new loop or, more simply, by:
+
+\begin{enumerate}
+\item reflect \(T_1\) to obtain \(Q(y,\vec{x})\);
+\item substitute \(y\) into the reflection theorem for \(T_2\);
+\item cut the first proof into the second.
+\end{enumerate}
+
+This is why exact object contracts are the preferred boundary between phases.  Concatenating raw traces is an optimization, not a logical necessity.
+
+\subsection{Nondeterministic traces}
+
+A finite trace relation may admit several next states.  Do not immediately choose the least successor.  At a fixed horizon, one may compute viability backward and then choose a path, as in \cref{sec:viability}.  If the final property is stable under all accepted traces, use stable erasure and avoid path selection entirely.
+
+For example, a polynomial factorization checker may accept several orderings of irreducible factors.  A theorem about their product is stable under order and needs no canonical factor list.  A theorem referring to the ``first factor'' requires either a canonical sorting rule with decidable comparison or an explicit statement invariant under permutation.
+
+\subsection{Resource bounds}
+
+The fuel \(F(p,\vec{x})\), trace length, table sizes, and intermediate bit lengths are part of the interface.  iPRA does not require feasible complexity, but explicit bounds serve three purposes:
+
+\begin{enumerate}
+\item they make every search and fold primitive recursive;
+\item they make validity a bounded formula and hence Booleanizable;
+\item they prevent hidden uses of unbounded termination arguments.
+\end{enumerate}
+
+A termination proof by a lexicographic or weighted rank is compiled to a primitive-recursive fuel by bounding the rank range and proving that every nonterminal step decreases it.  The loop may continue with an identity transition after termination; totalization removes partiality from the state function.
+
+\subsection{Trace compiler interface}
+
+The generic Lean module should expose a structure morally equivalent to:
+
+\begin{lstlisting}[language={},caption={Source-level shape of a proof-producing loop contract}]
+structure LoopContract (Gamma : List (Fm PTm n)) where
+  init      : PR n
+  step      : PR (n + 2)
+  fuel      : PTm n
+  invariant : Fm PTm (n + 2)  -- state, time, parameters
+  qf        : invariant.QF
+  base      : Gamma |- invariant(init(params), 0, params)
+  preserve  : invariant(state,time,params), Gamma
+              |- invariant(step(time,state,params), time+1, params)
+  result    : Gamma |- invariant(run(fuel),fuel,params) -> post
+\end{lstlisting}
+
+The actual Lean syntax uses de Bruijn substitutions and the existing \(\PTm\), \(\Fm\), \(\Prf\), and \(\PRAAx\) types.  The important point is that \texttt{base}, \texttt{preserve}, and \texttt{result} are derivations, not semantic propositions.
+
+\subsection{Resolution achieved}
+
+The trace layer resolves the repository's most pervasive formal gap: how to turn a finite exact computation into an actual iPRA derivation.  It does not prove theorem-specific arithmetic estimates.  It gives a reusable route from those local estimates to a global proof, and it makes the remaining obligations visible and auditable.

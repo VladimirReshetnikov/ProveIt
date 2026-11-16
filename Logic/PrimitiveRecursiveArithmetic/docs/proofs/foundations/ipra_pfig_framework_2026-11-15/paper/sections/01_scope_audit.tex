@@ -1,0 +1,89 @@
+\section{Scope, repository audit, and the problem to be solved}
+\label{sec:scope}
+
+\subsection{The target theory}
+
+The repository uses \(\iPRA\) for first-order intuitionistic logic with equality, one function symbol for every primitive-recursive definition, the defining equations for those symbols, the usual successor properties, and induction restricted to quantifier-free formulas.  In the checked \texttt{ConciseIPRA} development, ordinary iPRA derivability is represented by
+\[
+   \Prf\ \PRAAx\ \Gamma\ \varphi,
+\]
+and is connected by a kernel-checked bi-interpretation to a much smaller native scalar calculus \cite{repo-pra-readme,repo-concise}.  This is a strong backend: ordinary mathematical arguments may be stated in the familiar \(\Prf\ \PRAAx\) layer and transported to the small native presentation only after a completed object derivation exists.
+
+The restriction that matters most is not merely the absence of classical logic.  It is that the induction schema accepts only quantifier-free matrices.  Consequently, a proof that says ``for every precision there exists a sufficiently accurate approximation'' cannot be inserted unchanged as an induction invariant.  It must first be compiled into finite numerical state, primitive-recursive Boolean checks, and a quantifier-free invariant.  Likewise, semantic truth in Lean or a successful Python computation is not, by itself, a value of the inductive type \(\Prf\ \PRAAx\ \Gamma\ \varphi\).
+
+\subsection{What is already present}
+
+At the inspected snapshot, the directory contains two very different classes of material.
+
+\begin{enumerate}
+\item The \texttt{ConciseIPRA} subtree contains checked Lean definitions of syntax, natural deduction, primitive-recursive terms, iPRA axioms, native calculi, normalization, and mutual interpretations.  In particular, \texttt{Deduction.lean} provides substitution, weakening, cut, equality transport, and the ordinary logical rules \cite{repo-deduction}.
+\item The \texttt{docs/proofs} subtree contains seventy-two delivered research packets across algebra, analysis, analytic and Diophantine number theory, geometry, probability, topology, combinatorics, and foundations.  The repository README explicitly records that these packets were filed as delivered and were not globally rerun or verified.  Most provide a mathematical reduction, reference code, and a Lean plan; only a small number construct actual \(\Prf\ \PRAAx\) values for framework combinators or toy examples, and none claims such a value for its main theorem \cite{repo-pra-readme}.
+\end{enumerate}
+
+Several foundation packets already identify the right ingredients: bounded Booleanization, proof-producing traces, finite observations, relational answer clouds, backward viability, coherent shrinking, precision contracts, stable observables, finite gluing, and explicit producer/verifier boundaries.  The most recent unified packet gives a broad synthesis, but its generic trace compiler and relational Lean files remain blueprints with visible gaps \cite{repo-unified}.  Other packets provide important checked or source-complete fragments.  Three are especially useful:
+
+\begin{itemize}
+\item \texttt{ObjectComposition.lean} defines exact term contracts and composes their actual object-iPRA derivations.
+\item \texttt{ObjectIteration.lean} proves a generic primitive-recursion invariant theorem whose hypotheses and conclusion are genuine \(\Prf\ \PRAAx\) derivations \cite{repo-local-global}.
+\item \texttt{ObjectObservation.lean} combines independently produced finite certificates through a local stability proof, again entirely at the object-derivation level \cite{repo-observable}.
+\end{itemize}
+
+These fragments suggest that the main missing bridge need not be a large new logical kernel.  It should instead be a disciplined compilation architecture that reduces diverse mathematics to a small collection of already-supported proof constructors.
+
+\subsection{Recurring failure modes}
+
+The repository reports are remarkably consistent about where reductions become unreliable.  The following list is not a list of unrelated defects; it is the design specification for a general framework.
+
+\paragraph{Ambient proof versus object proof.}
+A Lean theorem about natural numbers, lists, rationals, or finite graphs may establish the intended fact in the metatheory while never constructing the corresponding object formula or its \(\Prf\ \PRAAx\) derivation.  A trustworthy pipeline must make the change of level explicit.
+
+\paragraph{Quantifiers inside induction.}
+Ordinary correctness statements quantify over witnesses, precisions, partitions, roots, covers, or paths.  The iPRA induction predicate must instead be a quantifier-free relation on a finite encoded state.  Bounded quantifiers must be turned into primitive-recursive folds before induction is invoked.
+
+\paragraph{A hidden universal evaluator.}
+A proof plan may speak of ``the code of an arbitrary primitive-recursive program'' and then evaluate it by one total primitive-recursive function.  No such total universal evaluator exists.  Fixed families may be specialized externally, and clocked traces may be checked, but the framework must not smuggle in universality.
+
+\paragraph{Non-unique witnesses forced into a single name.}
+At each finite precision there may be many valid roots, eigenvectors, chart representatives, local solutions, or combinatorial certificates.  Choosing the least code independently at every precision generally destroys coherence.  A finite relation is legitimate; an infinite coherent branch requires additional quantitative hypotheses.
+
+\paragraph{Discontinuous labels.}
+Root orderings at collisions, eigenvector signs, rotation axes at the identity, exact sides of zero, and chart choices are not uniformly continuous.  They cannot be made total by notation.  One must use invariant observables, clusters, projective data, or an explicit separation guard.
+
+\paragraph{Partial operations justified by mere negation.}
+Division, normalization, pivot selection, logarithms, inverse charts, and spectral projectors require positive quantitative margins, not merely a proof of \(x\neq 0\).  A constructive interface must consume an apartness bound or return a relation of admissible outcomes.
+
+\paragraph{Compactness and convergence without data.}
+Abstract compactness, ``take a convergent subsequence,'' asymptotic notation with ineffective constants, and metastability do not provide primitive-recursive moduli.  Finite nets, covering certificates, tail bounds, and convergence rates must be present as inputs or separately produced certificates.
+
+\paragraph{Finiteness confused with a search cutoff.}
+A proof that a Diophantine set is finite does not yield a primitive-recursive height bound.  A cardinality bound does not locate the points.  The finite verifier and the height producer are different theorems.
+
+\subsection{Design goals}
+
+A useful general framework should satisfy all of the following.
+
+\begin{enumerate}
+\item \textbf{Object-level closure.}  Local correctness certificates have type \(\Prf\ \PRAAx\), and the generic compiler returns a term of the same type.
+\item \textbf{Fixed specialization.}  The mathematical construction is a fixed finite graph.  Its primitive-recursive symbols are generated externally; no universal evaluator is postulated internally.
+\item \textbf{Finite-use semantics.}  A terminal precision request causes a backward computation of exactly which finite observations are needed.
+\item \textbf{Relational honesty.}  Non-unique finite outputs remain finite relations unless uniqueness, a gap, or a shrinking condition justifies selection.
+\item \textbf{Quantifier-free execution invariants.}  All finite searches, folds, traces, and dynamic programs are represented by Boolean state and proved by quantifier-free induction.
+\item \textbf{Stable elimination.}  If the final theorem is independent of intermediate choices, the compiler should eliminate those choices directly rather than manufacture a global selector.
+\item \textbf{Explicit quantitative guards.}  Every discontinuous or partial operation states the margin it consumes.
+\item \textbf{Producer/verifier separation.}  Deep information such as a height bound, zero-free region, root separation, or finite cover may be an input certificate.  The generic layer proves that a valid certificate suffices; it does not claim to produce unavailable data.
+\item \textbf{A short Lean path.}  The proof architecture should reduce to a few reusable modules and exploit the existing object recursion, contract, and observer combinators.
+\end{enumerate}
+
+The PFIG framework introduced below meets these goals by adding one decisive normalization result: a fixed graph is compiled to one query-specialized encoded loop.  This removes the need for a highly dependent, node-by-node object-language graph compiler and makes the formalization path much more direct.
+
+\subsection{What ``resolve'' means in this report}
+
+Three outcomes must be distinguished.
+
+\begin{description}
+\item[Resolved.] A reusable theorem gives the desired construction from precisely stated finite data, and its proof uses only principles available in iPRA.
+\item[Reformulated.] The original unrestricted statement asks for a discontinuous or noncomputable selector.  A stable relational, projective, clustered, or guarded replacement is proved instead, together with a barrier explaining why the unrestricted version should not be expected.
+\item[Isolated.] The framework reduces the problem to a named quantitative producer, such as an explicit height bound.  The finite verifier and all subsequent construction are resolved, but the producer remains theorem-specific or open.
+\end{description}
+
+This vocabulary prevents a common form of overstatement: a framework can genuinely solve the logical and representational part of a theorem while leaving its deepest quantitative input untouched.

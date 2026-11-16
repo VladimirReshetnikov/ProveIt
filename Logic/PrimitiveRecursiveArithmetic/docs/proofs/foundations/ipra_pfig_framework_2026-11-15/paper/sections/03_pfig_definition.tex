@@ -1,0 +1,168 @@
+\section{Proof-producing finitary interface graphs}
+\label{sec:pfig}
+
+\subsection{Graph syntax}
+
+A proof-producing finitary interface graph, abbreviated PFIG, is a fixed finite directed acyclic graph.  Vertices are interfaces; edges carry numerical codes and precision demands.  ``Fixed'' means that the number and kinds of vertices belong to the theorem statement and are known to the metatheory.  Inputs such as a polynomial, a matrix dimension, a precision, or a finite complex remain variables inside the object theory.
+
+\begin{definition}[PFIG node kinds]
+A node is one of the following.
+
+\begin{enumerate}
+\item \textbf{Exact transducer.}  A fixed primitive-recursive term \(f\), with an object proof that its output satisfies a postcondition.
+\item \textbf{Bounded loop.}  A primitive-recursive initial state, step function, fuel, and quantifier-free invariant, with object proofs of initialization, preservation, and terminal extraction.
+\item \textbf{Bounded search.}  A primitive-recursive bound and quantifier-free predicate, together with an object proof of nonemptiness when the precondition holds.
+\item \textbf{Relational producer.}  A finite answer cloud \(R(y,p,\vec{x})\) with a bound and a proof that at least one valid answer exists.  The node does not promise a coherent selector across precisions.
+\item \textbf{Guarded operation.}  A total primitive-recursive operation whose intended algebraic law is proved under a positive numerical margin, such as \(|x|>2^{-g}\).
+\item \textbf{Stable observer.}  A consumer that proves a terminal formula \(O\) from the validity of one or more internal certificates, independently of their exact codes.
+\item \textbf{Finite gluing node.}  A bounded tuple of local codes and a quantifier-free overlap checker, with componentwise constructions and a local-to-global extraction proof.
+\end{enumerate}
+\end{definition}
+
+Every node specifies a backward demand map.  If the node must produce output precision \(p\), its incoming edge \(e\) requests precision \(d_e(p,\vec{x})\).  A node with several consumers receives the maximum of their requests.  Since the graph is finite and acyclic, all demands are computed by a reverse topological pass.
+
+\subsection{Why a graph rather than a single representation}
+
+No one data type is appropriate for all mathematical concepts.  Exact finite algebra is best represented by canonical integer or rational codes.  Continuous objects are best represented by regular names or finite observations.  Roots and eigenspaces are naturally finite relations near collisions.  Local geometric or sheaf data are naturally finite compatible families.  Proofs themselves often mix all of these.
+
+A graph makes this heterogeneity explicit while maintaining one compilation target.  A node may, for example, take an exact polynomial code, call a bounded subdivision loop, return a finite cloud of isolating boxes, pass those boxes to a symmetric coefficient observer, and finally produce a rational inequality.  The output of the whole graph is not required to have the same representational mode as any intermediate node.
+
+\subsection{Requests and active state}
+
+Fix a terminal request \(p\) and input \(\vec{x}\).  The reverse pass computes a demand \(r_v(p,\vec{x})\) at every vertex \(v\).  The forward pass then computes only the finite data needed at those requests.
+
+For a topological ordering \(v_0,\ldots,v_{N-1}\), define the active state after stage \(i\) to contain:
+
+\begin{itemize}
+\item the request values \(r_{v_j}\) for all relevant vertices;
+\item all exact outputs already computed;
+\item finite tables or traces required by later nodes;
+\item for relational nodes, either a bounded answer table and viability bits, or only a certificate sufficient for a stable observer;
+\item a Boolean flag for each local invariant and compatibility condition.
+\end{itemize}
+
+All tuples and finite tables are encoded by standard primitive-recursive pairing and bounded-sequence encodings.  Because the graph is fixed, the tuple shape is fixed.  Decoding an active state is therefore a fixed family of primitive-recursive projections, not a universal data interpreter.
+
+\subsection{The specialization discipline}
+
+The graph compiler is a metatheoretic function on the finite PFIG syntax.  Given a particular graph \(G\), it emits:
+
+\begin{enumerate}
+\item a fixed primitive-recursive demand function \(\mathsf{demand}_G\);
+\item a fixed primitive-recursive initial state \(\mathsf{init}_G\);
+\item a fixed primitive-recursive transition \(\mathsf{step}_G\);
+\item a primitive-recursive number of stages \(N_G\), or a request-dependent bounded fuel when a node contains a finite loop;
+\item a quantifier-free state invariant \(\mathsf{Inv}_G\);
+\item object derivations of the base, step, and final extraction formulas, assembled from local certificates.
+\end{enumerate}
+
+The resulting object theorem quantifies over \(p\) and \(\vec{x}\), but not over arbitrary graph syntax or arbitrary program codes.  This is the exact sense in which PFIGs are general without requiring an internal universal evaluator.
+
+\subsection{Graph normal form}
+
+The key simplification is that a fixed PFIG need not be formalized by a dependent object-language interpreter for graph nodes.  It can be normalized to a small number of ordinary primitive recursions.
+
+\begin{theorem}[PFIG normal form]
+\label{thm:pfig-normal-form}
+Let \(G\) be a fixed finite acyclic graph whose local operations, bounds, demand maps, and certificate checkers are primitive recursive.  Assume that every local correctness obligation is supplied as an object-iPRA derivation, and every relational node is consumed by finite search, finite-horizon viability, or stable erasure.  Then one can effectively construct:
+
+\begin{enumerate}
+\item a fixed primitive-recursive encoded state transition \(S_G\);
+\item a primitive-recursive fuel \(F_G(p,\vec{x})\);
+\item a quantifier-free invariant \(I_G(s,t,p,\vec{x})\);
+\item object-iPRA derivations of the base and preservation sequents for \(I_G\);
+\item a terminal extraction derivation from \(I_G\) at fuel \(F_G\).
+\end{enumerate}
+
+Consequently, the existing proof-producing primitive-recursion theorem yields an object derivation of the terminal PFIG contract.
+\end{theorem}
+
+\begin{proof}
+Choose a topological ordering of the graph.  We first normalize each node to one or more finite instructions of four elementary kinds:
+
+\begin{enumerate}[label=(\alph*)]
+\item assign a fixed primitive-recursive expression to a state field;
+\item update a bounded-loop state once;
+\item update one cell of a bounded search or viability table;
+\item set a Boolean certificate flag after checking a quantifier-free relation.
+\end{enumerate}
+
+An exact transducer gives an instruction of kind (a).  A bounded loop contributes its own finite sequence of kind-(b) instructions.  A bounded search is a left-to-right fold that stores whether a witness has been seen and, if so, the least one.  A relational finite-horizon computation contributes a finite table whose cells are filled in reverse level order; each cell uses bounded existential search over the next level.  A stable observer contributes no choice: it contributes a final implication whose premises are certificate flags.  A guarded operation is an exact assignment accompanied by a flag expressing its margin.  A finite gluing node is a bounded loop over charts or overlaps.
+
+The reverse demand pass is itself a fixed reverse topological fold.  Because \(G\) is fixed, its adjacency lists and edge transformers are compiled into the transition syntax.  At each instruction, the current request field is replaced by a maximum of finitely many primitive-recursive expressions.  Maximum, pairing, projections, bounded indexing, and bounded table update are primitive recursive.
+
+Concatenate the reverse-demand instructions and the forward-execution instructions into one schedule.  Encode the schedule position \(t\) and all active fields in one natural number \(s\).  Define \(S_G(s,t,p,\vec{x})\) by a finite case distinction on the schedule position.  Since the number of outer instruction schemas is fixed, this case distinction is compiled to primitive recursion or nested selectors.  Inner loops use counters and bounds stored in the state.  A single global fuel is obtained by summing the primitive-recursive lengths of all scheduled segments.  Thus both \(S_G\) and \(F_G\) are primitive recursive.
+
+The invariant \(I_G\) is the conjunction of the following quantifier-free clauses, encoded as one Boolean checker if desired:
+
+\begin{itemize}
+\item the schedule position and segment counters are within their bounds;
+\item every completed demand field equals the result of its compiled reverse equation;
+\item every completed exact field satisfies its local postcondition;
+\item every completed loop field satisfies the supplied loop invariant;
+\item every completed search field satisfies the standard least-search invariant;
+\item every completed viability cell satisfies its defining finite recurrence;
+\item every set certificate flag equals one and hence reflects its intended relation;
+\item untouched fields retain their previous values.
+\end{itemize}
+
+All quantification implicit in ``every completed cell'' is implemented by a bounded Boolean fold stored in the invariant checker.  Hence the displayed object formula is quantifier-free.
+
+For the base sequent, unfold \(\mathsf{init}_G\), the zero equations of the state constructors, and the empty-fold identities.  Each invariant clause is immediate.  For preservation, perform the finite case split on the schedule position.  In an exact assignment case, use the node's local object certificate and equality substitution.  In a loop case, use its supplied one-step proof.  In a search or viability case, use Boolean reflection and bounded arithmetic.  In a stable-observer case, no state choice is required; only the corresponding local implication is recorded.  The metatheoretic compiler builds these cases by repeated use of the object proof constructors and simultaneous cut.
+
+The object primitive-recursion theorem now proves \(I_G\) at every time and, in particular, at \(F_G(p,\vec{x})\).  By the definition of the final schedule position, all required node clauses and certificate flags are available.  Cut them into the terminal extraction derivation.  The conclusion is the desired terminal contract.
+\end{proof}
+
+\subsection{Two-loop refinement}
+
+For implementation, it is often clearer to use two loops rather than one:
+
+\begin{enumerate}
+\item \(S_G^-\) runs the reverse demand pass;
+\item \(S_G^+\) runs the forward certificate pass using the completed demand vector.
+\end{enumerate}
+
+The two-loop form produces smaller invariants and simpler Lean terms.  The one-loop theorem is a conceptual normal form, not a mandate to maximize compression.  Since exact term contracts compose, the output state of the first loop is simply substituted into the second loop's precondition.
+
+\subsection{Normal form for relational outputs}
+
+A relational node can be normalized in three different ways, matching the three elimination modes.
+
+\paragraph{Least finite witness.}
+At a fixed precision, compute the least \(y<B\) satisfying \(R(y)\).  The state stores \((\mathsf{found},y)\); the invariant says that no smaller valid witness was skipped and that, when \(\mathsf{found}=1\), \(R(y)\) holds.
+
+\paragraph{Finite-horizon path.}
+For levels \(0,\ldots,H\), compute a backward viability table, then follow the least viable successor.  Both passes are bounded.  This gives a coherent path only to the requested finite horizon.
+
+\paragraph{Stable erasure.}
+Do not select an internal code.  Prove
+\[
+  R_1(y_1)\wedge\cdots\wedge R_k(y_k)\to O
+\]
+for arbitrary valid codes, combine this implication with the independently produced certificates, and discard the codes.  This is often the mathematically strongest and computationally cheapest option.
+
+\subsection{Composition theorem}
+
+\begin{theorem}[PFIG composition]
+\label{thm:pfig-composition}
+Suppose \(G_1\) proves a finite interface contract from \(P\) to \(Q\), and \(G_2\) proves a contract from \(Q\) to \(R\), with compatible precision demands.  Then the graph obtained by connecting the output of \(G_1\) to the input of \(G_2\) has a PFIG compilation from \(P\) to \(R\).  The composite demand is the primitive-recursive composition of the two demands; the composite object proof is substitution followed by cut.
+\end{theorem}
+
+\begin{proof}
+For an exact output, this is the existing term-contract composition theorem.  For a bounded-search output, instantiate the second certificate at the least witness and cut with the search reflection theorem.  For a relational output that is stably erased by \(G_2\), combine existence from \(G_1\) with the stability implication of \(G_2\) by existential elimination.  Precision demands compose because a request \(p\) at the terminal node first induces \(d_2(p)\) at the interface and then \(d_1(d_2(p))\) at the original input.  All maps are fixed primitive-recursive terms, so substitution gives the object formulas at the composite request.
+\end{proof}
+
+\subsection{Why this normal form improves the formalization problem}
+
+A direct graph compiler in Lean must manage dependent vectors of node types, formulas with changing arities, substitutions along heterogeneous edges, and a proof that every generated program symbol has the right defining equations.  That is possible, but it front-loads a large amount of engineering before a single mathematical packet benefits.
+
+The normal form separates concerns.  A small external elaborator produces ordinary PR syntax and one ordinary invariant.  The Lean proof layer needs only:
+
+\begin{enumerate}
+\item reflection lemmas for Boolean folds and bounded search;
+\item the existing primitive-recursion invariant theorem;
+\item exact contract composition and stable-observer elimination;
+\item a correctness proof for the external elaborator's finite syntax translation, or initially a theorem-specific generated Lean file.
+\end{enumerate}
+
+Thus a first end-to-end theorem can be completed without first formalizing a universal PFIG AST.  Once several generated examples are stable, the elaborator itself can be internalized in Lean and proved sound by structural recursion.

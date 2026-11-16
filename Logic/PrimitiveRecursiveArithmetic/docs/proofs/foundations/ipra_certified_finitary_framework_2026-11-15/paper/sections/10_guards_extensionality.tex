@@ -1,0 +1,117 @@
+\section{Guards, extensionality, and precision contracts}
+\label{sec:guards}
+
+\subsection{Totalizing partial operations}
+
+Primitive-recursive function symbols are total, while mathematical operations
+such as division, normalization, chart inversion, and pivoting are partial.
+The sound pattern is to define an arbitrary total extension and state all
+correctness theorems under a numerical guard.
+
+For reciprocal, a guard may be
+\[
+  |x|\ge 2^{-g}.
+\]
+The reciprocal evaluator reads the input at a precision determined by \(g\)
+and the requested output precision.  Its object theorem has the form
+\[
+ \mathsf{Apart}(x,g)\wedge\mathsf{Name}(a,x)
+ \to \mathsf{Name}(\mathsf{inv}(a,g),x^{-1}).
+\]
+The total function's behavior outside the guard is irrelevant.
+
+A mere proposition \(x\ne0\) does not generally yield such a rational margin in
+constructive arithmetic.  The margin must be supplied, searched for in a
+bounded exact presentation, or retained as an explicit producer obligation.
+
+\subsection{Overlapping branches}
+
+Hard branch decisions are often unnecessary.  Suppose branch \(L\) is sound
+when \(x<\beta\), branch \(R\) is sound when \(x>\alpha\), and
+\(\alpha<\beta\).  In the overlap \(\alpha<x<\beta\), either branch proves the
+same output contract.  A finite-precision comparison can choose one branch
+without deciding an exact boundary case.
+
+\begin{principle}[Robust branching]
+Use overlapping guards whenever the conclusion is stable on the overlap.  Use
+an exact branch label only when a positive rational gap proves that one branch
+is uniquely valid.
+\end{principle}
+
+This principle covers interval subdivision, coordinate charts, matrix pivots,
+sign-dependent formulas, and approximate root labels.
+
+\subsection{Observational equivalence}
+
+Let \(p\approx_n q\) mean that two codes agree to observation precision \(n\).
+For regular rational names this can be a dyadic distance bound; for compact
+sets it can be finite Hausdorff distance; for root data it can be a matching or
+cluster relation; for finite probability laws it can be a rational test metric.
+
+A certified operation \(F\) carries a demand transformer \(D_F\) and proves
+\[
+ p\approx_{D_F(n)}q
+ \quad\Longrightarrow\quad
+ F(p)\approx_n F(q).
+\]
+This is the extensionality theorem.  It replaces quotient construction by a
+family of finite relations that is directly usable in iPRA.
+
+\begin{theorem}[Precision-contract composition]
+\label{thm:precision-composition}
+If \(F\) is extensional with demand \(D_F\) and \(G\) is extensional with
+demand \(D_G\), then \(G\circ F\) is extensional with demand
+\(D_F\circ D_G\).  The same holds for relational outputs when the component
+relations satisfy finite back-and-forth totality.
+\end{theorem}
+
+\begin{proof}
+From \(p\approx_{D_F(D_G(n))}q\), extensionality of \(F\) gives
+\(F(p)\approx_{D_G(n)}F(q)\).  Extensionality of \(G\) gives the desired
+output relation.  In the object calculus the proof is two implication
+eliminations after substituting the requested precision terms.  For relational
+outputs, choose bounded witnesses supplied by the two back-and-forth clauses
+and compose their certificates by finite search.
+\end{proof}
+
+\subsection{Error ledgers}
+
+A precision contract should report not only a demand but a numerical error
+budget.  For example, if
+\[
+ |x-x'|\le\epsilon_x,
+ \qquad |y-y'|\le\epsilon_y,
+ \qquad |x|,|x'|\le M_x,
+ \qquad |y|,|y'|\le M_y,
+\]
+then
+\[
+ |xy-x'y'|\le M_x\epsilon_y+M_y\epsilon_x.
+\]
+All quantities can be coded rationals, and cross multiplication removes
+ordered-field division under positive denominator guards.  Finite sums and
+products use accumulators whose local step is a polynomial inequality.
+
+The recommended module exposes each arithmetic rule in three forms:
+\begin{enumerate}[label=(\roman*)]
+\item an ambient exact rational lemma for testing;
+\item a fixed object-language formula over \(\PTm\); and
+\item a derivation constructor in \(\Prf\,\PRAAx\).
+\end{enumerate}
+Only the third form can close an application packet.
+
+\subsection{Regular names without quotient reals}
+
+A regular name can be represented by a fixed evaluator \(a(p,n)\) and the
+contract
+\[
+ |a(p,n)-a(p,m)|\le2^{-n}+2^{-m}.
+\]
+Arithmetic is formulated as transformations of such contracts.  There is no
+need to define a completed real-number quotient inside the object theory.
+Equality of represented reals is the observational relation
+\[
+ \forall n\quad |a(p,n)-a(q,n)|\le 2^{-n+c}
+\]
+for a fixed harmless shift \(c\).  Every theorem ultimately quantifies over
+natural codes and rational inequalities.

@@ -1,0 +1,174 @@
+\section{Worked finite examples}
+
+The examples in this section are deliberately small enough to replay exactly.  They exercise the generic algorithms rather than pretending to settle the deep application theorems.  The Python companion computes the same data with exact integers and rational fractions.
+
+\subsection{A deterministic contract DAG}
+
+Take external inputs $x=3$ and $y=4$.  The fixed graph has three nodes:
+\[
+ s=x+y,\qquad q=s^2,\qquad o=q+x.
+\]
+Assign conservative precision demands
+\[
+\begin{aligned}
+ \delta_s(p)&=(p+1,p+1),\\
+ \delta_q(p)&=(p+2),\\
+ \delta_o(p)&=(p+1,p+1),
+\end{aligned}
+\]
+where the two inputs to $o$ are $q$ and $x$.  Request output demand $2$.  The reverse pass yields
+\[
+ d_o=2,
+ \quad d_q=3,
+ \quad d_s=5,
+ \quad d_x=d_y=6.
+\]
+The forward values are
+\[
+ s=7,
+ \quad q=49,
+ \quad o=52.
+\]
+The replay certificate stores, for each node, its demand, dependency values, output, and local-validity bit.  The exact program checks that the reverse demands and every local equation recompute to the stored values.
+
+In an object proof, the three equations are proved by the defining equations for addition and multiplication programs.  Structural contract composition is enough; no global induction is required because the graph is fixed and has only three nodes.  The same representation scales to a generated finite DAG, where a single table invariant is more convenient.
+
+\subsection{Least bounded search}
+
+Consider the relation $R(n)\equiv n^2\geq30$ with bound $10$.  The scan tests
+\[
+ 0,1,2,3,4,5,6,7,8,9,10
+\]
+and obtains the Boolean trace
+\[
+ 0,0,0,0,0,0,1,1,1,1,1.
+\]
+The least witness is $6$.  The certificate contains the bound, found-bit, witness, and full test vector.  Its verifier recomputes the vector and checks both witness validity and absence of an earlier hit.  The object proof uses exactly the invariant in \cref{thm:least-search}.
+
+This pattern should replace an unspecified phrase such as ``choose the least valid certificate.''  The candidate bound and Booleanized relation are indispensable inputs.
+
+\subsection{Cyclic demand closure}
+
+Let
+\[
+ F(a,b)=\left(\min(10,b+1),
+               \min\left(10,\left\lfloor\frac{a+1}{2}\right\rfloor+2\right)
+        \right),
+\]
+with target $(2,1)$ and box upper bound $(10,10)$.  Iterating
+$T(d)=\max((2,1),d,F(d))$ gives
+\[
+\begin{split}
+ (2,1)&\to(2,3)\to(4,3)\to(4,4)\\
+      &\to(5,4)\to(5,5)\to(6,5).
+\end{split}
+\]
+The final vector is stationary.  Every strict update increases the coordinate sum, so the generic rank proof supplies fuel independently of this concrete run.  The Python checker also exhaustively verifies monotonicity on the finite box for this example.
+
+The mathematical point is that mutual precision dependencies need not be manually over-approximated when a certified finite box is available.  The least closed demand preserves more information and often reduces downstream computation.
+
+\subsection{A relational cloud for \texorpdfstring{$\sqrt2$}{sqrt(2)}}
+
+Use four finite layers of rational candidates:
+\[
+\begin{aligned}
+ C_0&=\left\{1,2\right\},\\
+ C_1&=\left\{\frac32,\frac43\right\},\\
+ C_2&=\left\{\frac75,\frac{17}{12}\right\},\\
+ C_3&=\left\{\frac{41}{29},\frac{99}{70}\right\}.
+\end{aligned}
+\]
+Candidates in layers $i$ and $i+1$ are compatible when their distance is at most $2^{-(i+1)}$.  A terminal candidate is good when
+$|q^2-2|\leq1/100$.  Both candidates are viable in every layer.  The least viable path is
+\[
+  1,\quad\frac32,\quad\frac75,\quad\frac{41}{29}.
+\]
+Its terminal residual is
+\[
+ \left|\left(\frac{41}{29}\right)^2-2\right|=\frac1{841}.
+\]
+The two viable terminal values differ by
+\[
+ \frac{99}{70}-\frac{41}{29}=\frac1{2030}.
+\]
+Thus their exact floor observable is invariant and equals $1$, while the rational endpoint itself is only determined up to diameter $1/2030$.  The example illustrates both branch-elimination theorems: exact invariance for a discrete observable and quantitative stability for an approximate one.
+
+No claim is made that these four layers alone define $\sqrt2$ as a real.  To obtain a name one supplies such clouds at every precision, cross-precision compatibility, and a shrinking diameter bound.
+
+\subsection{Regular-name reciprocal}
+
+Suppose a regular rational name $a(p)$ represents $x$ and a certificate gives $|x|\geq2^{-g}$.  Read $a$ at precision $m=p+2g+c$ for a fixed safety constant $c$.  Regularity makes
+$|a(m)-x|\leq2^{-(m+1)}$.  Choose $c$ so this is at most $2^{-(g+2)}$.  Then
+\[
+ |a(m)|\geq |x|-|a(m)-x|
+          \geq 2^{-g}-2^{-(g+2)}
+          \geq 2^{-(g+1)}.
+\]
+Define the output rational as $1/a(m)$.  The error is bounded by
+\[
+ \left|\frac1x-\frac1{a(m)}\right|
+ \leq 2^{2g+1}|x-a(m)|,
+\]
+which is below $2^{-p}$ by the choice of $m$.  All quantities are rational or dyadic; the checker clears positive denominators.  Without the gap $g$, the precision transformer cannot be uniform.
+
+\subsection{Complete bounded Diophantine enumeration}
+
+Let $F_1,\ldots,F_s\in\mathbb Z[X_1,\ldots,X_n]$, and suppose a certificate proves that every integer solution satisfies $|x_i|\leq H_i$.  Enumerate the box
+\[
+  \prod_{i=1}^n[-H_i,H_i],
+\]
+evaluate all polynomials exactly by Horner schemes, and retain precisely the common zeros.  The loop count is
+$\prod_i(2H_i+1)$, a primitive-recursive resource bound.  A table invariant proves that after scanning the first $k$ coded candidates, the output list contains exactly the solutions among those candidates.
+
+The verifier theorem is unconditional once the $H_i$ and their coverage proof are supplied.  Producing useful $H_i$ may require Runge estimates, norm identities, height theory, descent, or another deep argument.  OCiPRA records that dependency in the precondition rather than conflating it with the finite scan.
+
+\subsection{Spectral data}
+
+For a rational symmetric matrix, a finite Jacobi or grid certificate may produce an approximate orthogonal matrix $Q$ and diagonal $D$ with a small residual
+$\|A-QDQ^T\|$.  Eigenvectors are unstable at repeated eigenvalues, but the sorted diagonal list is stable under an explicit comparison estimate.  Therefore:
+
+\begin{itemize}
+  \item the certificate relation may retain many valid $Q$ values;
+  \item the stable observable is the sorted eigenvalue list with multiplicity;
+  \item a spectral projector onto a cluster is selected only under a gap separating that cluster.
+\end{itemize}
+
+The relational contract removes the need to choose a coherent eigenbasis through collisions.  Matrix-specific inequalities still require their own object derivations; this example explains the correct target statement.
+
+\subsection{A conditional Faltings/Siegel interface}
+
+For a curve code $C$, let $\mathsf{HeightCert}(C,c)$ assert that $c$ contains a bound $H$, a proof payload accepted by a fixed bounded checker, and the conclusion that every rational point has numerator and denominator height at most $H$.  Let $L(C,c)$ be the complete finite list obtained by bounded enumeration.
+
+The internal theorem has the form
+\[
+ \mathsf{Curve}(C)\wedge\mathsf{HeightCert}(C,c)
+ \longrightarrow
+ \forall P\;\bigl(P\in C(\mathbb Q)\leftrightarrow P\in L(C,c)\bigr).
+\]
+This is meaningful and useful: it turns any future height producer into a complete decision procedure by one cut.  It is not the general Faltings or Siegel theorem, because existence of $c$ has not been established uniformly.
+
+\subsection{An analytic-input certificate}
+
+A prime-distribution propagation theorem may accept a tuple containing:
+
+\begin{itemize}
+  \item a modulus range and numerical threshold;
+  \item zero-free-region constants;
+  \item an exceptional-character flag and exceptional-zero interval, when relevant;
+  \item verified finite bounds for short ranges;
+  \item rational upper bounds for every error term used in the proof.
+\end{itemize}
+
+The checker verifies the finite inequalities and then runs a contract DAG that combines them.  The result can be an explicit inequality for all $x$ above the supplied threshold, represented in integer/rational arithmetic.  A theorem producing such tuples uniformly is a separate analytic goal.  This formulation permits honest progress on the propagation and bookkeeping layer without claiming an effective constant that has not been derived.
+
+\subsection{Admissibility classifier output}
+
+The executable companion classifies three sample theorem profiles:
+
+\begin{enumerate}
+  \item a fixed finite matrix identity with explicit resources and local proofs is \emph{object-internalizable};
+  \item a Faltings-style verifier lacking a height producer is \emph{conditional on a producer};
+  \item an exact root label through a collision must be \emph{reformulated relationally} or guarded by a separation gap.
+\end{enumerate}
+
+The classifier is intentionally conservative and syntactic.  It cannot prove the mathematics.  Its purpose is to force the theorem author to name the missing datum before a long formalization begins.

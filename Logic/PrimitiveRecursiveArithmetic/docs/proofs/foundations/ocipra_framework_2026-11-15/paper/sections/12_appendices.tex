@@ -1,0 +1,204 @@
+\appendix
+\section{Packet-conversion workflow}
+
+This appendix gives a concrete procedure for converting a theorem packet into an OCiPRA development.
+
+\subsection{Step 1: normalize the theorem statement}
+
+Identify the externally quantified numerical inputs and the requested observation.  Replace ideal higher-type objects by finite presentations.  Decide whether the output is:
+
+\begin{enumerate}
+  \item deterministic;
+  \item bounded relational;
+  \item a stable observable of a relation;
+  \item conditional on a producer certificate.
+\end{enumerate}
+
+Record every exact selector and ask whether collisions or boundary cases are possible.  Add a gap hypothesis or weaken the output before coding begins.
+
+\subsection{Step 2: draw the contract graph}
+
+For every node, record:
+
+\begin{itemize}
+  \item fixed primitive-recursive program or bounded relation;
+  \item input and output code conventions;
+  \item precondition and postcondition;
+  \item precision demand transformer;
+  \item resource bound;
+  \item producer data;
+  \item local object-proof endpoint;
+  \item intended backend: native, full iPRA, or mixed.
+\end{itemize}
+
+Topologically sort deterministic dependencies.  For adaptive or input-coded computations, specify the fixed transition system and clock.
+
+\subsection{Step 3: make every verifier bounded}
+
+Rewrite certificate validity using bounded quantifiers and fixed primitive-recursive terms.  Supply explicit bounds for list lengths, coefficient ranges, matrix dimensions, denominators, trace lengths, and search boxes.  A malformed code receives a default interpretation and fails the validity bit; partial decoding is not allowed.
+
+\subsection{Step 4: isolate producers}
+
+For every modulus, height, finite cover, representative, exceptional zero, chart, or analytic constant, choose one of:
+
+\begin{itemize}
+  \item a proved primitive-recursive producer;
+  \item an explicit theorem input with a bounded verification relation;
+  \item an unresolved target, visibly preventing the unconditional theorem.
+\end{itemize}
+
+Do not place producer code inside the verifier unless its totality and resource bound are already proved.
+
+\subsection{Step 5: prove local contracts}
+
+Generate equational proofs in \code{NPrf} where possible.  Use ordinary \code{Prf PRAAx} for bounded logical structure, witnesses, and implications.  Every host theorem used to justify a local contract must be followed by an actual object derivation with the same statement.
+
+\subsection{Step 6: compile and audit}
+
+Run reverse demand and resource analysis.  Compile deterministic nodes, trace loops, and relational viability.  Apply stability only when its proof is present.  Then audit the result using the gates of \cref{sec:artifact-map} and the theorem ledger.
+
+\section{Reusable theorem schemas}
+
+\subsection{Deterministic schema}
+
+Data:
+\[
+ P(x),\quad f(x),\quad Q(y,x),\quad
+ P(x)\vdash Q(f(x),x).
+\]
+Conclusion:
+\[
+ \vdash P(x)\to\exists y\,Q(y,x).
+\]
+
+\subsection{Bounded relational schema}
+
+Data:
+\[
+ P(x),\quad B(x),\quad R(y,x),\quad
+ P(x)\vdash\exists y\leq B(x)\,R(y,x).
+\]
+Conclusion: a least witness program and proof of validity/minimality, or the relation itself when no canonical witness is needed.
+
+\subsection{Stable-observable schema}
+
+Data: a bounded successful-transcript relation $S(x,\tau)$, a proof of existence, and
+\[
+ S(x,\tau)\wedge S(x,\sigma)\vdash O(\tau)=O(\sigma).
+\]
+Conclusion: a deterministic primitive-recursive observation independent of the selected transcript.
+
+\subsection{Quantitative schema}
+
+Replace equality by
+\[
+ d(O(\tau),O(\sigma))\leq\varepsilon(p).
+\]
+Conclusion: an approximate observation with the certified diameter; a regular name follows from cross-precision coherence and a shrinking error budget.
+
+\subsection{Conditional producer schema}
+
+Data:
+\[
+ \mathsf{Cert}(x,c),\qquad
+ \mathsf{Cert}(x,c)\vdash\Phi(x,c).
+\]
+Conclusion:
+\[
+ \vdash (\exists c\,\mathsf{Cert}(x,c))\to\exists c\,\Phi(x,c).
+\]
+An unconditional theorem additionally requires a producer proof.
+
+\section{Machine-readable contract schema}
+
+The archive contains \path{schema/contract.schema.json}.  Its intended fields include:
+
+\begin{itemize}
+  \item theorem name and statement class;
+  \item fixed/clocked computation status;
+  \item primitive-recursive resource and demand descriptions;
+  \item bounded verifier status;
+  \item producer status;
+  \item collision and separation information;
+  \item compactness, convergence, height, and constant certificates;
+  \item local object-derivation status;
+  \item final Lean endpoint and audit status.
+\end{itemize}
+
+A manifest conforming to the schema is documentation, not a proof.  Its value is to make omitted boundaries machine-detectable.
+
+\section{Artifact map and reproduction}\label{sec:artifact-map}
+
+The archive is organized as follows.
+
+\begin{longtable}{@{}p{0.31\textwidth}p{0.65\textwidth}@{}}
+\toprule
+Path & Contents\\
+\midrule
+\endfirsthead
+\toprule
+Path & Contents\\
+\midrule
+\endhead
+\path{paper/ocipra_framework.tex} & Main LaTeX source.\\
+\path{paper/sections/} & Section sources containing all human arguments.\\
+\path{paper/ocipra_framework.pdf} & Compiled report.\\
+\path{lean/OCiPRA/Contracts.lean} & Proof-carrying object interfaces and native-to-PRA transfer.\\
+\path{lean/OCiPRA/TargetInterfaces.lean} & Exact packages whose proof fields remain to be instantiated.\\
+\path{lean/OCiPRA/CompilerBlueprint.lean} & Backend design and target compiler signatures.\\
+\path{lean/OCiPRA/Examples.lean} & Small actual object-language identity contract.\\
+\path{lean/FORMALIZATION_PLAN.md} & Dependency-ordered completion plan.\\
+\path{code/ocipra.py} & Exact finite reference algorithms.\\
+\path{code/test_ocipra.py} & Eleven regression tests.\\
+\path{code/demo.py} & Reproducible examples and JSON output.\\
+\path{schema/contract.schema.json} & Machine-readable theorem-profile schema.\\
+\path{metadata/THEOREM_LEDGER.md} & Claim-by-claim proof and implementation status.\\
+\path{metadata/DIFFICULTY_MATRIX.csv} & Repository obstruction map.\\
+\path{provenance/} & Pinned source inventory and audit notes.\\
+\path{validation/} & Test, PDF build, metadata, and visual-inspection records.\\
+\bottomrule
+\end{longtable}
+
+Run from the archive root:
+
+\begin{lstlisting}
+python3 verify.py
+bash build.sh
+\end{lstlisting}
+
+The verification command runs the Python unit tests and exact examples.  The build script compiles the PDF when a standard \code{pdflatex} is available and refreshes the manifest.  Lean is intentionally not downloaded by the script.  To test the Lean outline, place it in the pinned repository workspace with Lean 4.32.0 and resolve the local module path as described in \path{lean/FORMALIZATION_PLAN.md}.
+
+\section{Proof-status conventions}
+
+The archive uses the following labels.
+
+\begin{description}
+  \item[Human proof complete.] The report gives a detailed mathematical argument with finite data and induction audit.
+  \item[Executable finite check.] The Python program replays finite instances using exact arithmetic.  This is not a universal proof.
+  \item[Lean interface only.] Definitions and exact target signatures exist, but no kernel build or proof is claimed.
+  \item[Object derivation.] A declaration's conclusion is an actual \code{NPrf} or \code{Prf PRAAx} judgment.
+  \item[Producer open.] The verifier theorem is developed, but a uniform certificate-producing theorem is not supplied.
+  \item[Reformulated.] The original exact statement is replaced by a relational, approximate, quotient-level, or guarded form because the unrestricted selector is constructively invalid or unsupported.
+\end{description}
+
+The labels are intentionally asymmetric.  Compiling a Lean definition of a target proposition is not evidence that the proposition has been proved.  Passing finite tests is evidence about an implementation, not about all inputs.  A complete human proof is not advertised as kernel checked.
+
+\section{Source baseline}
+
+The primary source is the \repo{} repository at commit
+\path{9df5cbdf39e6220be823f611987bd584d37711fd}.  The source audit focused on:
+
+\begin{itemize}
+  \item the root primitive-recursive arithmetic status pages;
+  \item \code{ConciseIPRA} syntax, deduction, primitive-recursive, native, and bi-interpretation modules;
+  \item the foundation packets on finite observations, finite demand, contracts, relational composition, resources, local-to-global compilation, coherent methods, and presentations-to-witnesses;
+  \item selected application difficulty reports for algebra, geometry, probability, Diophantine geometry, descent, topology, and analytic number theory.
+\end{itemize}
+
+The audit is targeted, not a re-verification of all seventy-two packets.  Existing contributions are credited as inputs; the present report's addition is their proof-producing synthesis, finite demand-closure theorem, statement calculus, and conversion workflow.
+
+\section{Conclusion}
+
+The central lesson is simple but strict.  Mathematics fits iPRA when every purported infinity is accessed through a finite observation, every computation has primitive-recursive resources, every choice is bounded or relational, every nonuniform datum is exposed as a producer certificate, and every semantic argument ends in an actual object derivation.  Under those conditions, diverse proofs reduce to a small collection of compilers: Booleanization, bounded search, contract composition, clocked trace induction, finite demand closure, backward viability, and stable-observable elimination.
+
+The existing repository already contains substantial pieces of this program.  OCiPRA supplies a common architecture and a concrete completion order.  Its strongest practical recommendation is to finish the generic object-language compiler before adding further large application outlines.  That compiler would turn the collection from many parallel finitary arguments into a reusable proof-producing library.

@@ -1,0 +1,105 @@
+\begin{abstract}
+The ProveIt iPRA collection now contains a broad range of theorem-specific
+encodings and several increasingly general finite-observation frameworks.  Its
+most persistent formal bottleneck is not the absence of semantic algorithms:
+it is the absence of a uniform, honest passage from finite algorithms and local
+contracts to a completed derivation of the deeply embedded judgment
+\[
+   \Prf\;\PRAAx\;[]\;\Phi.
+\]
+This report develops a \emph{proof-carrying observation graph} (PCOG)
+framework aimed at that bottleneck.  A PCOG is a fixed finite graph whose nodes
+are exact primitive-recursive calculations, bounded traces with
+quantifier-free invariants, finite relational witness clouds, stable
+observations, or theorem-specific finalizers.  Every node carries a local
+object-theory proof constructor.  A host-level compiler computes backward
+precision demands, creates concrete primitive-recursive symbols for the fixed
+graph, proves recursive components by one quantifier-free induction each, and
+folds the resulting derivations by cut in topological order.  Because the graph
+is staged into concrete syntax, the construction needs no total universal
+primitive-recursive evaluator and no truth-to-provability reflection.
+
+Complete human proofs are given for bounded Booleanization and least search,
+finite-trace reflection, staged graph internalization, backward-demand
+minimality, finite relational viability, shrinking finite-horizon selection,
+stable-observable collapse under a positive gap, fixed-dimensional descent
+fuel, simultaneous finite-window selection, and the equivalence between an
+explicit height bound and a complete finite list for decidable coded objects.
+These results repair several recurrent interface failures in the repository:
+non-unique approximate witnesses are kept relational instead of being forced
+through an unstable selector; exact branching is performed only with a
+separation certificate; cardinality bounds are not confused with search
+cutoffs; and bounded runs are converted into actual object derivations rather
+than justified by ambient computation.
+
+The framework does not manufacture the deep quantitative producers absent
+from general Faltings, Siegel, Mordell--Weil, ineffective prime-distribution,
+or singular-branch arguments.  It instead isolates those producers as precise
+interfaces and proves that, once supplied, their verification, composition,
+finite search, and theorem extraction are primitive recursive and suitable
+for iPRA.  A dependency-ordered Lean plan is tied to the current
+\texttt{ConciseIPRA} API and reuses the repository's already checked
+\texttt{primitiveRecursionInvariant}, \texttt{primitiveRecursionAt}, and
+stable-observation combinators.
+\end{abstract}
+
+\section*{Executive conclusions}
+
+The central recommendation is to standardize future iPRA developments on the
+following four-layer boundary.
+
+\begin{enumerate}[label=\textbf{L\arabic*.}]
+\item \textbf{Finite presentation.}  Every mathematical object is exposed only
+through coded finite observations, bounded predicates, restriction maps, and
+explicit precision or resource demands.
+\item \textbf{Local proof package.}  Every operation supplies an actual
+\(\Prf\;\PRAAx\) derivation of its local contract.  A host theorem, a Python
+check, or a semantic Lean proposition is not accepted as a substitute.
+\item \textbf{Staged graph compiler.}  A fixed graph is elaborated to concrete
+primitive-recursive syntax.  Its recursive nodes are discharged by
+quantifier-free induction; its acyclic dependencies are discharged by
+proof-term composition.
+\item \textbf{Observation theorem.}  The exported result is exact when a finite
+certificate proves exactness, quantitative when a modulus is available, and
+relational when uniqueness or a gap is unavailable.  No hidden choice is
+inserted between these cases.
+\end{enumerate}
+
+The most important new theorem is the staged internalization theorem
+(Theorem~\ref{thm:staged-internalization}).  It explains exactly why a general
+framework can be broad without becoming a forbidden universal evaluator.  The
+compiler is universal as a \emph{Lean proof constructor over a fixed finite
+syntax tree}; the resulting arithmetic program is specialized to that tree.
+There is no primitive-recursive function inside arithmetic that interprets
+arbitrary encoded primitive-recursive programs.
+
+The framework resolves five recurrent difficulties at the architectural
+level.
+
+\begin{center}
+\begin{tabularx}{0.96\textwidth}{@{}p{0.25\textwidth}X@{}}
+\toprule
+Recurrent difficulty & Resolution in this report \\
+\midrule
+Semantic algorithm but no embedded theorem & A trace package contains base,
+step, and finalizer derivations and compiles to \(\Prf\;\PRAAx\) by the checked
+primitive-recursion invariant rule. \\
+Non-unique approximate witness & Carry the entire finite verified cloud and
+use backward viability; select only a finite-horizon path by bounded search. \\
+Unstable exact branch or sign & Export a relation or interval until a positive
+separation gap is proved; then use the gap-collapse lemma. \\
+Cardinality mistaken for effective search & Require a height/cutoff producer;
+prove that a cutoff and a complete list are interconvertible, while a bare
+cardinality bound is not used as one. \\
+Changing precision and nested algorithms & Run a reverse demand pass, then a
+forward verified trace, with one explicit invariant per recursive component. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The accompanying artifacts are intentionally auditable.  The Python module
+implements the finite graph, viability, gap, window, height, and descent
+algorithms over exact rationals; ten tests are recorded as passing.  The Lean
+folder contains a concrete proof-graph core plus blueprint interfaces and a
+milestone plan.  The report and theorem ledger never identify executable
+examples with universal proofs.

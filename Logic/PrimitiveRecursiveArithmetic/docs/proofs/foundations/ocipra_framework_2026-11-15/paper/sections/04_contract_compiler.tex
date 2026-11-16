@@ -1,0 +1,131 @@
+\section{The proof-producing contract compiler}
+
+\subsection{Two proof backends}
+
+OCiPRA uses two existing proof languages rather than forcing every local argument through one syntax.
+
+\paragraph{Native backend.}
+Equation-heavy primitive-recursive reasoning is generated in the native scalar calculus.  Iterator zero and successor equations, transport, and the native \(Q\) and \(D\) rules produce a term of \(\NPrf\).  The existing theorem \code{native\_iff\_pra} transports that term to an ordinary iPRA derivation.  The compiler does not first prove a semantic equation in Lean and then appeal to completeness; it constructs the native derivation.
+
+\paragraph{Full iPRA backend.}
+Bounded connectives, existential witnesses, finite relations, and contract packaging are generated directly in \(\Prf\,\PRAAx\).  Booleanized invariants are closed with \code{PRA.qfInd}; witnesses use existential introduction; preconditions are discharged by implication introduction.
+
+A mixed node may prove its computational equations natively, transport them to \(\PRAAx\), and combine them with a bounded logical proof.  This division follows the actual strengths of the repository interfaces.
+
+\begin{principle}[Typed proof production]\label{princ:typed}
+The compiler's result type is the desired derivability judgment.  Thus a function
+\[
+  \mathsf{compile}(D,h):\Prf\,\PRAAx\,\varphi_D
+\]
+is correct because every constructor branch returns a well-typed proof term.  A separate semantic soundness theorem is useful for the foundational library but is not a substitute for this type.
+\end{principle}
+
+\subsection{Fixed DAGs and reverse demand}
+
+Let \(D\) be a finite directed acyclic graph with topological order
+\(v_0,\ldots,v_{m-1}\).  Each node has:
+
+\begin{itemize}
+  \item predecessors \(\mathsf{pred}(i)\subseteq\{0,\ldots,i-1\}\);
+  \item a fixed primitive-recursive program \(f_i\);
+  \item a local demand vector \(\delta_i(p)\);
+  \item a primitive-recursive local resource bound \(\rho_i\);
+  \item a precondition \(P_i\), postcondition \(Q_i\), and local object proof.
+\end{itemize}
+
+Given a requested output precision \(p\) at the terminal node, define demands in reverse order.  The terminal demand is \(p\).  Whenever node \(i\) is required at demand \(d_i\), each predecessor \(j\) receives the corresponding component of \(\delta_i(d_i)\).  If several consumers require \(j\), take the maximum.  Because the graph and every \(\delta_i\) are fixed and primitive recursive, the reverse pass is primitive recursive.
+
+The forward pass evaluates the nodes in topological order at the computed demands.  Its global state is a finite coded table of demands, outputs, and local certificate bits.  A single invariant says:
+
+\begin{enumerate}
+  \item all processed nodes have valid outputs;
+  \item the stored demand of each processed dependency is at least the demand requested by every processed consumer;
+  \item every stored trace fragment is within its local resource bound;
+  \item unprocessed table entries retain their initialization values.
+\end{enumerate}
+
+For a fixed graph this invariant is a finite bounded formula and hence Booleanizable.
+
+\begin{theorem}[Deterministic contract-DAG composition]\label{thm:dag}
+Let \(D\) be a fixed finite acyclic contract graph.  Assume:
+
+\begin{enumerate}
+  \item every demand and resource function is primitive recursive;
+  \item every local validity predicate is bounded;
+  \item every node carries an actual \(\NPrf\) or \(\Prf\,\PRAAx\) proof of its local contract;
+  \item the external inputs satisfy the root preconditions.
+\end{enumerate}
+
+Then one can effectively construct a fixed primitive-recursive global program \(F_D\) and an object derivation of the global postcondition.  If the graph specification is presented at compile time, the proof compiler is a finite structural recursion and does not require an object-language universal evaluator.
+\end{theorem}
+
+\begin{proof}
+Compute the reverse-demand program by primitive recursion on the reversed topological list.  The maximum update is primitive recursive.  The demand-adequacy equations follow by a finite induction on that list; for a compile-time fixed graph, the proof generator may simply compose the local equations finitely.
+
+Construct the forward evaluator by primitive recursion on the node index.  At step \(i\), decode predecessor values from the table, apply the fixed term for \(f_i\), and store the result.  Booleanize the global invariant described above.  The base proof follows from table initialization and root assumptions.  For the step, use the demand-adequacy equation to instantiate the local contract of node \(i\); combine its object proof with the induction hypothesis; update the table; and prove that all older entries remain unchanged.  These are equations of fixed primitive-recursive operations and bounded tests.
+
+Apply quantifier-free induction to obtain the invariant after \(m\) steps.  Project the terminal postcondition.  Every step of this argument can be represented by the ordinary proof constructors and the existing primitive-recursion equations.  Equational subproofs may instead be generated in \(\NPrf\) and transferred.  Therefore the compiler returns an object derivation, not merely a host theorem about the evaluator.
+\end{proof}
+
+\subsection{Clocked traces for input-coded computations}
+
+A graph or computation may itself vary with the input.  OCiPRA does not attempt to evaluate arbitrary code without a clock.  It uses a fixed transition function
+\[
+  s_{t+1}=\mathsf{step}(x,s_t)
+\]
+with fixed initialization, fixed acceptance test, and primitive-recursive bound \(T(x)\).  A trace is a list of \(T(x)+1\) states.
+
+\begin{theorem}[Clocked trace reflection]\label{thm:trace}
+Suppose \(\mathsf{init}\), \(\mathsf{step}\), \(\mathsf{inv}\), \(\mathsf{accept}\), and \(T\) are fixed primitive-recursive symbols.  Suppose object proofs establish:
+\[
+\begin{aligned}
+ P(x)&\to \mathsf{inv}(x,\mathsf{init}(x)),\\
+ \mathsf{inv}(x,s)&\to \mathsf{inv}(x,\mathsf{step}(x,s)),\\
+ \mathsf{inv}(x,s_{T(x)})&\to Q(x,s_{T(x)}).
+\end{aligned}
+\]
+Then there is an effectively constructed \(\Prf\,\PRAAx\) derivation of
+\(P(x)\to Q(x,s_{T(x)})\).
+\end{theorem}
+
+\begin{proof}
+Define the state iterator by primitive recursion.  Booleanize \(\mathsf{inv}\) if it is not already an equality of a Boolean test.  Quantifier-free induction proves the invariant for every counter \(t\).  Universal elimination at \(T(x)\) and the finish proof give \(Q\).  The clock is essential: it makes the state iterator a fixed primitive-recursive function.  Nothing in the construction evaluates a purported program until it happens to halt.
+\end{proof}
+
+\subsection{Structural composition without a global loop}
+
+For a small fixed DAG, the global loop of \cref{thm:dag} is optional.  One may compose proof-carrying contracts directly.  If
+\[
+ P\vdash Q(f(x),x)
+ \quad\text{and}\quad
+ Q(y,x)\vdash R(g(y,x),y,x),
+\]
+substitute \(f(x)\) into the second proof, cut with the first, and package the composed program \(g(f(x),x)\).  This route yields shorter proof terms.  The clocked loop is preferable when the number of nodes is input-dependent or when one wants a uniform trace certificate.
+
+\subsection{Master internalization theorem}
+
+\begin{theorem}[OCiPRA internalization theorem]\label{thm:master-compiler}
+Consider a mathematical construction normalized into a finite contract specification with the following data:
+
+\begin{enumerate}
+  \item fixed primitive-recursive encodings for all finite objects;
+  \item either a fixed contract DAG or a fixed clocked transition system;
+  \item primitive-recursive demand and resource bounds;
+  \item bounded validity, compatibility, and acceptance predicates;
+  \item local object derivations for computational equations and logical contracts;
+  \item for relational outputs, either a bounded viability proof or a supplied witness certificate;
+  \item for representative-independent output, an exact stability proof or quantitative diameter bound;
+  \item every nonuniform producer datum exposed as an explicit hypothesis or certificate field.
+\end{enumerate}
+
+Then a proof-producing host compiler can construct an \(\NPrf\) or
+\(\Prf\,\PRAAx\) derivation of the normalized global theorem.  The construction uses no countable choice, no unbounded compactness, no universal unclocked evaluator, and no reflection from semantic truth.
+\end{theorem}
+
+\begin{proof}
+Apply \cref{lem:coding} to all finite states.  Apply \cref{thm:booleanization} to every bounded verifier and invariant.  Deterministic portions compile by \cref{thm:dag} or direct structural composition; input-dependent finite computations compile by \cref{thm:trace}.  Relational portions compile by the viability theorem proved in \cref{thm:viability}; a least viable successor is obtained from \cref{thm:least-search}.  Exact or approximate erasure of internal choices is justified only by \cref{thm:stable-exact} or \cref{thm:stable-approx}.  The remaining producer assumptions are present in the precondition, so implication introduction yields the advertised conditional theorem.  Equational proof fragments generated in the native backend transfer through \code{native\_iff\_pra}; all other fragments are already \(\Prf\,\PRAAx\).  Finite proof composition completes the derivation.
+\end{proof}
+
+\begin{warning}[No semantic shortcut]
+The premise ``the Python checker accepts'' is not a local object derivation.  The compiler theorem becomes applicable only after acceptance and each transition invariant have object-language proofs.  This is the principal remaining engineering task for many repository packets.
+\end{warning}

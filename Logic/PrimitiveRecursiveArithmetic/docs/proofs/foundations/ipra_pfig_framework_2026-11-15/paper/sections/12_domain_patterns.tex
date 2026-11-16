@@ -1,0 +1,197 @@
+\section{Reusable embedding patterns across mathematical domains}
+\label{sec:domains}
+
+The purpose of a general framework is not to replace theorem-specific mathematics but to make its reusable computational and logical skeleton explicit.  This section records standard PFIG patterns for the main domains represented in the repository.
+
+\subsection{Finite algebra and polynomial identities}
+
+\paragraph{Data.}
+Integers are signed pairs or a canonical sign-and-magnitude code.  Rationals are integer pairs with positive denominators; reduction to lowest terms is optional because equality and order are checked by cross multiplication.  Vectors, matrices, and polynomials are bounded tables.
+
+\paragraph{Operations.}
+Addition, multiplication, evaluation, differentiation, coefficient extraction, finite sums, determinants, resultants, and substitutions are primitive recursive.  Their algebraic identities are proved by equality induction or reflected certificates.
+
+\paragraph{PFIG pattern.}
+An exact transducer builds the expression, a bounded loop evaluates table entries, and a certificate checker verifies the final identity.  If a symbolic computation is imported, provide an expansion or row-operation trace.  The terminal theorem is stable under harmless representation choices such as unreduced fractions.
+
+\paragraph{Difficult cases.}
+Factorization and root extraction are relational.  Return a finite factor list modulo permutation, or root clusters with multiplicity certificates.  A canonical ordered list requires a decidable stable ordering or a separation bound.
+
+\subsection{Linear algebra and spectral theory}
+
+Matrices of variable finite dimension are coded by a dimension and a bounded entry table.  Matrix multiplication and characteristic polynomials are finite folds.  Gaussian elimination is totalized: pivot search is bounded, and a singularity/status bit is carried through the state.
+
+A proof of rank, determinant, inverse, or solution existence should use a certificate:
+
+\begin{itemize}
+\item a nonzero minor for a rank lower bound;
+\item a row-reduction trace for rank upper bounds and consistency;
+\item an adjugate identity for inversion under nonzero determinant;
+\item a kernel vector for singularity;
+\item a characteristic-polynomial identity for Cayley--Hamilton.
+\end{itemize}
+
+For spectral constructions, distinguish stable data from labels.  Eigenvalue multisets, characteristic coefficients, and separated spectral projectors are stable.  Individual eigenvectors require a simple-eigenvalue gap and a normalization guard.  At multiplicity, output a subspace presentation or projector relation.
+
+\subsection{Real and complex analysis}
+
+A real number is represented by a primitive-recursive rational name \(r(p)\) and a regularity certificate.  A function on a compact rational box is represented by an evaluation algorithm plus a modulus of uniform continuity.  Differentiable or analytic objects carry explicit derivative, remainder, or coefficient bounds.
+
+\paragraph{Arithmetic of names.}
+Addition and multiplication compose demands and error budgets.  Inversion consumes apartness.  Maximum and absolute value are stable; exact sign is guarded or relational.
+
+\paragraph{Integration.}
+A Riemann or quadrature node computes a finite sum on a mesh selected from the modulus.  The local theorem bounds the discretization error.  The graph's backward pass divides the terminal error budget among evaluation and mesh errors.
+
+\paragraph{Differentiation.}
+A derivative name requires a supplied effective remainder estimate.  Mere pointwise differentiability does not produce a modulus.  Finite difference quotients are exact rational nodes; the mathematical producer supplies the error bound.
+
+\paragraph{Power series and analytic branches.}
+Coefficients and convergence radii must be explicit.  A local inverse or implicit branch requires a derivative/apartness guard and a quantitative contraction or Newton bound.  Exact branch coefficients from arbitrary Cauchy coefficient names are not a uniform operation; use exact algebraic input or an approximate relational branch.
+
+\subsection{Complex integration and residues}
+
+A contour is represented by finitely many rational polynomial or piecewise-linear segments with separation and smoothness data.  A finite quadrature computes the integral to requested precision.  Cauchy and residue arguments can be represented by:
+
+\begin{itemize}
+\item a finite triangulation or homotopy certificate avoiding poles;
+\item local Taylor or Laurent coefficient bounds;
+\item winding-number certificates on a finite grid;
+\item explicit lower bounds for distance to singularities.
+\end{itemize}
+
+The topological content is finite and combinatorial; the analytic content is a modulus/remainder producer.  A statement that merely says the contour avoids a pole, without a positive distance certificate in a compact presentation, is not yet an executable interface.
+
+\subsection{Optimization and convexity}
+
+For a compact effective domain, a finite net and continuity modulus give an approximate minimizer by bounded argmin.  Convexity certificates can improve the bound but are not required by the generic compiler.
+
+An exact minimizer is generally not computable from approximate data.  Appropriate outputs are:
+
+\begin{itemize}
+\item a point with objective within \(2^{-p}\) of the infimum;
+\item an interval containing the infimum;
+\item a finite cloud of approximate minimizers;
+\item a unique minimizer name under a strong convexity or isolation modulus.
+\end{itemize}
+
+KKT or dual certificates are finite relational witnesses.  Their checker proves primal feasibility, dual feasibility, and a bounded gap.
+
+\subsection{Elementary and projective geometry}
+
+Coordinate geometry over rationals, signed integers, or explicit algebraic extensions is highly compatible with iPRA.  Incidence, collinearity, conic membership, cross ratios, determinants, and squared distances are polynomial identities.  Degenerate cases should be kept explicit rather than divided away.
+
+A robust theorem statement has:
+
+\begin{itemize}
+\item exact point/line/conic codes;
+\item Boolean nondegeneracy or incidence hypotheses;
+\item a division-free polynomial conclusion where possible;
+\item guarded rational operations when division is unavoidable.
+\end{itemize}
+
+Synthetic choice constructions, such as selecting an intersection or orientation, are represented by finite relations.  If the final theorem is a polynomial incidence identity, stable erasure removes the auxiliary choices.
+
+\subsection{Trigonometry and geometric constants}
+
+Transcendental functions are represented by rational names with explicit remainder bounds, not by exact function symbols.  Trigonometric identities can be proved by algebraic operations on simultaneous sine/cosine names or by finite Taylor certificates.  Division-based identities require denominator guards.
+
+Angles themselves need not be canonical.  Unit vectors, dot and cross products, or half-angle parameterizations often give better finite interfaces.  On the sphere, use exact vector identities and introduce inverse trigonometric functions only for approximate measurement outputs.
+
+Constants such as \(\pi\) are named by primitive-recursive rational sequences with proved error bounds, for example polygonal or arctangent constructions.  Equality to a geometric quantity is an observational statement between names.
+
+\subsection{Combinatorics}
+
+Finite combinatorial objects are naturally coded by bounded tables.  Counting functions, recurrences, generating-polynomial coefficients up to a finite degree, and congruences are primitive recursive.  Bijective proofs can be represented by mutually inverse finite transducers and checked identities.
+
+Asymptotic formulas require explicit constants and remainder bounds.  For each request \(p\) and parameter range, a certificate checker may verify the finite inequalities.  A qualitative \(O(\cdot)\) statement with ineffective constants is not itself a PFIG contract.
+
+Infinite generating functions are treated coefficientwise: fix a coefficient index, propagate a finite truncation demand, and prove the coefficient identity.  Universal generalization occurs after the finite computation.
+
+\subsection{Elementary, algebraic, and analytic number theory}
+
+Divisibility, gcd, primality certificates, modular arithmetic, finite products over primes below a bound, and recurrence sequences are primitive recursive.  Existential number-theoretic statements should expose witnesses or bounded searches.
+
+For analytic number theory, use a certificate format containing:
+
+\begin{itemize}
+\item rational approximations to finite sums or integrals;
+\item explicit truncation and tail bounds;
+\item zero-free or nonvanishing margins;
+\item finite interval verification data;
+\item the exact order of quantifiers for constants and thresholds.
+\end{itemize}
+
+The generic verifier can be formalized in iPRA.  Producing sharp effective constants may remain deep theorem-specific work.
+
+\subsection{Diophantine approximation}
+
+Dirichlet-type theorems are finite pigeonhole arguments and fit bounded search.  Continued fractions are bounded loops with exact integer invariants.  A finite convergent list and approximation inequalities can be certified directly.
+
+Statements that choose a best approximation from an infinite set must be reformulated at a finite denominator bound or equipped with a proof that a bounded search is complete.  Metric ``almost everywhere'' theorems require finite rational probability approximations and explicit measure-error bounds.
+
+\subsection{Diophantine geometry}
+
+A rational point is a normalized or unreduced integer tuple with a nonzero denominator and a polynomial equality certificate.  Bounded-height enumeration is primitive recursive.  Maps between varieties are guarded rational transducers, with exceptional loci recorded explicitly.
+
+Finite descent has the PFIG form:
+
+\begin{enumerate}
+\item enumerate or receive a finite list of covering classes;
+\item for each class, produce a relation of local/global representatives;
+\item check compatibility and descent equations;
+\item combine the surviving classes by finite viability;
+\item obtain generators or point lists under an explicit completeness bound.
+\end{enumerate}
+
+The representative construction is not automatic.  A Selmer-class code is not by itself a rational point on the covering variety.  The framework exposes this as a producer node rather than treating it as a harmless decoding step.
+
+\subsection{Probability}
+
+The native objects should be finite rational laws or finite random variables.  Expectations, moments, convolutions, characteristic functions at rational arguments, and tail probabilities are finite sums.
+
+For approximation of general distributions, require:
+
+\begin{itemize}
+\item a quantization map to a finite rational law;
+\item a tail bound;
+\item a moment or Lindeberg-type modulus;
+\item anti-concentration data when a discontinuous CDF metric is used.
+\end{itemize}
+
+Central-limit statements then become explicit inequalities between finite distributions with a Berry--Esseen-type bound.  Weak convergence without a rate is not a regular-name interface.
+
+\subsection{Topology}
+
+Use finite simplicial or cubical approximations, carriers, chain complexes, and parity certificates.  Continuous maps are accessed only through finite observations and a modulus/carrier condition.  Homotopies are finite prism operators or bounded sequences of contiguous maps.
+
+A Jordan, invariance-of-domain, or dimension theorem should identify the finite combinatorial invariant carrying the proof: winding parity, Sperner labeling, intersection number, or chain obstruction.  The continuum statement follows from the presentation's approximation theorem and separation data.
+
+\subsection{Differential geometry and mathematical physics}
+
+For coordinate calculations, metrics, connections, curvature tensors, and field equations are finite rational or symbolic expressions.  A checker can verify inverse-matrix, determinant, Bianchi, Maxwell, or Einstein identities exactly after clearing denominators.  Validity domains and nonzero determinants are guards.
+
+Global geometric conclusions require atlas compatibility, coverage, and analytic existence data.  A symbolic local identity should not be advertised as a global manifold theorem without those interfaces.  Finite chart gluing and observational equality provide the correct bridge.
+
+\subsection{Category-theoretic organization}
+
+Category language is valuable as a metatheoretic organizer of contracts.  Exact contracts compose, stable observers are natural with respect to observational equivalence, and finite covers form diagram shapes.  For fixed finite presentations, Yoneda-style and finite-limit arguments can be compiled to bounded tables.
+
+The categorical layer should not hide computational content.  Each hom-set used internally must be finite or represented by a fixed PR family with explicit evaluation.  Universal properties are certificate relations, not unbounded quantification over arbitrary programs.
+
+\subsection{A standard theorem-packet template}
+
+A repository theorem packet can be organized uniformly:
+
+\begin{enumerate}
+\item \textbf{Representation}: exact codes, observations, equivalence, restrictions.
+\item \textbf{Demand}: precision/resource transformers and quantitative guards.
+\item \textbf{Producer}: exact term, bounded loop, bounded search, relation, or imported certificate.
+\item \textbf{Local object proofs}: base, step, reflection, extensionality, stability.
+\item \textbf{Graph}: dependencies and terminal request.
+\item \textbf{Compilation}: generated PR state, quantifier-free invariant, and terminal \(\Prf\ \PRAAx\) theorem.
+\item \textbf{Audit}: theorem ledger distinguishing semantic, tested, object-level, and transferred claims.
+\item \textbf{Barriers}: any missing modulus, gap, height, representative, or effective constant.
+\end{enumerate}
+
+This template is broad enough for the repository's current areas while remaining specific enough to prevent logical ambiguity.
