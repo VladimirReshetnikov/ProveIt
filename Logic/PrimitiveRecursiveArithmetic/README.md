@@ -5,11 +5,12 @@ This directory holds ProveIt's work on intuitionistic primitive recursive arithm
 primitive recursive definition with its defining equations, successor axioms, and induction
 for quantifier-free formulas.
 
-It has two parts. They differ in what has been checked.
+It has three parts. They differ in what has been checked.
 
 | Part | What it is | Status |
 |---|---|---|
 | [`ConciseIPRA/`](ConciseIPRA/README.md) | Very small complete presentations of a theory bi-interpretable with iPRA, and a Lean formalization of the smallest | Lean library, checked by the kernel |
+| [`Derivations/`](Derivations/README.md) | Derivations in `ConciseIPRA`'s `Prf PRAAx` of theorems from the packets, with a reusable arithmetic library | Lean library, checked by the kernel |
 | [`docs/proofs/`](docs/proofs/README.md) | Delivered research packets giving finitary proofs of classical theorems, meant to be expressed in iPRA | Filed as delivered; nothing rerun, checked or compiled |
 
 ## ConciseIPRA
@@ -34,6 +35,26 @@ the two computation equations of the iterator.
 
 The [ConciseIPRA README](ConciseIPRA/README.md) states the results with their Lean names. It
 also records the intake of those packages.
+
+## Derivations
+
+[`Derivations/`](Derivations/README.md) is the Lake library `IPRADerivations`. Each of its
+theorems has the type `[] ⊢[PRAAx] φ` for an explicit iPRA sentence `φ`, and Lean's kernel
+checks it. The derivations use only the axioms `PRAAx`: defining equations, successor
+axioms and quantifier-free induction. Mathlib is used only in the metatheory, to find and
+check them. The library is built bottom-up:
+
+- semiring laws, order, truncated subtraction, division with remainder, gcd, parity,
+  bounded sums, bounded search, pairing and simultaneous recursion;
+- a ring tool that turns polynomial identities over the integers into iPRA derivations;
+- a generic infinite-descent theorem.
+
+On top of these it derives theorems from about thirty packets. Examples include the
+Cayley–Hamilton theorem in sizes 2 and 3, the universal Desargues identity, Heron's
+formula, Brahmagupta's identity and Pell powers, the five Platonic solids, the
+irrationality behind the impossibility of doubling the cube and trisecting `60°`,
+Euclid's theorem, `C(2n, n) ≤ 4ⁿ` and the Catalan identity. The
+[Derivations README](Derivations/README.md) lists every module with its packet.
 
 ## Proof packets
 
@@ -77,7 +98,8 @@ all for framework rules and small examples:
 
 The first six are in `foundations/`.
 
-No packet claims such a derivation for one of its main theorems. The proofs README also lists the
+No packet claims such a derivation for one of its main theorems; checked derivations of a
+number of them are in [`Derivations/`](Derivations/README.md). The proofs README also lists the
 members that were not placed, in
 [`OMITTED.tsv`](docs/proofs/OMITTED.tsv).
 
