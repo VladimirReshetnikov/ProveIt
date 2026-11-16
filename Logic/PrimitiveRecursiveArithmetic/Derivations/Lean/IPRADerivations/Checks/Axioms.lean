@@ -128,6 +128,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialIdentities.central_binomial
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialIdentities.catalan_ratio
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialIdentities.catalan
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialTheorem.sum_mul_snd
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialTheorem.binomial
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Fermat.absorption
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Fermat.prime_dvd_binom
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Fermat.dvd_sum
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Fermat.freshman
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Fermat.fermat
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
