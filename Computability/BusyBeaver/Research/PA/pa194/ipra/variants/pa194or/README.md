@@ -28,10 +28,11 @@ while preserving the resolved 3,673-instruction program.
   verifies the mark, zero and positive decrement, and increment operations
   used by the checker. Increment traverses and extends a spare list whose
   length may be nonstandard.
-- [`PA194ORController.halt_iff_controller`](PA194ORController.lean) proves
-  the modeled halting equivalence from the complete finite source
-  certificates and the literal register engine. Its `literalBoxes` theorem
-  supplies the register-engine premise.
+- [`PA194ORModelFinal.halt_iff_controller`](PA194ORModelFinal.lean) proves
+  that the literal PA194OR blank run halts exactly when the shared source
+  controller halts in every PRA expansion with an `IΣ₁) arithmetic reduct.
+  The proof uses the literal register engine and 51 generated certificate
+  modules covering all 3,673 source sites and their branches.
 
 Run from the repository root with fresh output directories.
 
@@ -40,14 +41,20 @@ pa=Computability/BusyBeaver/Research/PA
 literal=/dev/shm/pa194-primary-for-or
 shared=/dev/shm/pa194b-for-or
 execution=/dev/shm/pa194-execution-for-or
+or_base=/dev/shm/pa194or-replay
+or_controller=/dev/shm/pa194or-controller
+or_coverage=/dev/shm/pa194or-coverage
 bash "$pa/pa194/ipra/native-endpoint/check-literal.sh" "$PWD" "$literal"
 bash "$pa/pa194/ipra/variants/pa194b/check.sh" "$literal" "$shared"
 bash "$pa/shared/isigma1-machine/check-execution.sh" "$literal" "$shared" "$execution"
-bash "$pa/pa194/ipra/variants/pa194or/check.sh" "$literal" "$shared" "$execution" /dev/shm/pa194or-replay
+bash "$pa/pa194/ipra/variants/pa194or/check.sh" "$literal" "$shared" "$execution" "$or_base"
+bash "$pa/pa194/ipra/variants/pa194or/check-controller.sh" "$literal" "$shared" "$execution" "$or_base" "$or_controller"
+bash "$pa/pa194/ipra/variants/pa194or/check-coverage.sh" "$or_controller" "$or_coverage"
 ```
 
 The replay regenerates the data from the pinned delivered table, labels,
 source sites and instruction list. Lean checks the finite startup in 15
 chunks, the exact row correspondence, and the moved-site certificates.
-It also rebuilds the arithmetic root and register-engine proofs. The
-checker uses the retained lower dependencies of the primary stages.
+It also rebuilds the arithmetic root, register-engine proofs, full source
+coverage, and model-level equivalence. The checker uses the retained lower
+dependencies of the primary stages.
