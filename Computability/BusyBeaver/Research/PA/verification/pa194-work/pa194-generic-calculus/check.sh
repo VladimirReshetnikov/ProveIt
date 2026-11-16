@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Compile the two modules of this directory with every standalone module they import, one
+# lean process at a time, and check the number of axiom reports. Arguments are passed on to
+# check_bridge.py (for example --out DIR to reuse compiled objects). The two modules do not
+# import each other, so the driver runs once for each.
+set -euo pipefail
+here=$(cd "$(dirname "$0")" && pwd)
+if command -v py >/dev/null 2>&1; then py=py; else py=python3; fi
+"$py" -X utf8 -B "$here/../pa194-model-fairness/check_bridge.py" \
+  --top "$here/ConPAGenericCalculus.lean" --reports 5 "$@"
+"$py" -X utf8 -B "$here/../pa194-model-fairness/check_bridge.py" \
+  --top "$here/PA194SourceEqVacuity.lean" --reports 2 "$@"
