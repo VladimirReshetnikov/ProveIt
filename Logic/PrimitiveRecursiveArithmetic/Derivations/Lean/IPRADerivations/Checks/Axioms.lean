@@ -116,3 +116,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.Binomial.binom_spec
 #print axioms LeanProofs.IPRA.Combinatorics.Binomial.pascal
 #print axioms LeanProofs.IPRA.Combinatorics.Binomial.binom_edges
+#print axioms LeanProofs.IPRA.sum_shift
+#print axioms LeanProofs.IPRA.sum_add
+#print axioms LeanProofs.IPRA.sum_congr_bounded
+#print axioms LeanProofs.IPRA.term_le_sum
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialIdentities.binom_sum
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialIdentities.central_binomial
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialIdentities.catalan_ratio
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialIdentities.catalan
