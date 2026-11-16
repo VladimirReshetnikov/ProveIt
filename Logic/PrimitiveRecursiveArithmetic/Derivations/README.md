@@ -1,0 +1,74 @@
+# iPRA derivations of theorems from the proof packets
+
+This directory holds actual derivations, in intuitionistic primitive recursive
+arithmetic, of theorems whose proofs are outlined in the research packets of
+[`docs/proofs/`](../docs/proofs/README.md).
+
+The derivations are in the embedded calculus `Prf PRAAx` of
+[`ConciseIPRA`](../ConciseIPRA/README.md). This is iPRA in its usual
+form: a function symbol for every primitive recursive definition, its defining
+equations, the successor axioms, and induction for quantifier-free formulas, over
+intuitionistic natural deduction with equality. Every theorem here has the type
+
+```lean
+([] : List (Fm PTm 0)) ⊢[PRAAx] φ
+```
+
+for an explicit iPRA sentence `φ`, and is checked by Lean's kernel. Through
+`ConciseIPRA`'s transfer theorem `pra_iff_native` each one is also a theorem of
+the native scalar core. The audit file
+[`Checks/Axioms.lean`](Lean/IPRADerivations/Checks/Axioms.lean) prints the
+axioms of every listed theorem; they are Lean's standard `propext`,
+`Quot.sound` and `Classical.choice`, which are used in the metatheory, and no
+`sorry`.
+
+The Lake library is `IPRADerivations` (namespace `LeanProofs.IPRA`), built with
+
+```bash
+lake build IPRADerivations
+```
+
+## Layout
+
+The library is built bottom-up. Reusable layers come first:
+
+| Module | Contents |
+|---|---|
+| [`Core/Basic`](Lean/IPRADerivations/Core/Basic.lean) | Symbols for `+`, `*`, predecessor and truncated subtraction, their defining equations at arbitrary terms, congruence, quantifier-free induction on an open formula (`ind`), and instantiation of closed derivations (`inst`) |
+| [`Core/Semiring`](Lean/IPRADerivations/Core/Semiring.lean) | The commutative-semiring laws, additive cancellation and the successor axioms at arbitrary terms, each derived by induction |
+| [`Core/Quotient`](Lean/IPRADerivations/Core/Quotient.lean) | Terms modulo provable equality under a context `Γ` form a cancellative commutative semiring `Q Γ` |
+| [`Core/Integers`](Lean/IPRADerivations/Core/Integers.lean) | Integers as differences: integer terms `ZT` with their iPRA equation `ZT.eq`, and the ring of differences `Groth (Q Γ)`, in which integer identities are proved by `ring` and `linear_combination` |
+| [`Core/Tactic`](Lean/IPRADerivations/Core/Tactic.lean) | Universal closure `allN`, and the tactic `ipra_ring` for polynomial identities |
+
+The theorem modules are grouped by the areas of `docs/proofs/`:
+
+| Module | Packet | Theorems |
+|---|---|---|
+| [`Geometry/TriangleFormulas`](Lean/IPRADerivations/Geometry/TriangleFormulas.lean) | [`triangle_formulas_ipra`](../docs/proofs/geometry/triangle_formulas_ipra/) | two-square identity, Heron factorisation, Heron's formula and the law of cosines in integer coordinates |
+
+## How the ring tool yields iPRA derivations
+
+Provable equality under `Γ` is a congruence for `+` and `*`, and the semiring
+laws are derivable. So the quotient `Q Γ` is a commutative semiring, and
+`Q.exact` turns an equality of classes back into a derivation. Integers are
+encoded as pairs `(p, q)` standing for `p − q`. The integer equation
+`(p, q) = (p', q')` is the quantifier-free formula `p + q' ≐ p' + q`, and
+products and sums of pairs are the usual polynomial formulas. Thus an integer
+identity such as Heron's formula is a single iPRA equation between explicit
+natural-number terms. To derive it, the pairs are evaluated in the ring of
+differences of `Q Γ`, where Mathlib's `ring` proves the identity. Cancellation,
+derived in iPRA, makes the evaluation injective. Mathlib is used only in the
+metatheory, to find and check the derivation. The object-level proof uses only
+the axioms `PRAAx`.
+
+## Relation to other iPRA work in the repository
+
+`Computability/DiophantineConsistency` and `Computability/BusyBeaver/Research/PA`
+develop iPRA in Foundation's first-order framework (`LO.FirstOrder`, with
+`𝗜𝗻𝘁¹` and the language `DiophantineConsistency.PRALanguage`). They target the
+consistency equation and Busy Beaver statements, with their own PRA language
+and calculus. `DiophantineConsistency`'s `HA*Arithmetic` modules derive semiring
+laws in a further calculus, `SetTheory.PA`. None of these is stated in
+`ConciseIPRA`'s `Prf PRAAx`, and no bridge between the two systems exists. The
+packets of `docs/proofs/` target `Prf PRAAx` and `pra_iff_native`, so this
+library builds its arithmetic layer there.
