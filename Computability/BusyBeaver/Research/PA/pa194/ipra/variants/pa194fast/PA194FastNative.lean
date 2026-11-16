@@ -1,4 +1,4 @@
-import PA194FastSegment
+import PA194FastRows
 import PA194VariantNative
 
 set_option autoImplicit false
@@ -16,7 +16,7 @@ noncomputable def haltSentence := machineHaltSentence PA194FastRows.table 194
 theorem consistency_iff_literal_nonhalt :
     standardTheory ⊢ nativePAConsistency 🡘 ∼haltSentence :=
   PA194VariantNative.consistency_iff_nonhalt PA194FastRows.table 194
-    (fun V _ _ => PA194FastSegment.sameHalt (V := V))
+    (fun V _ _ => PA194GuardedShortcuts.sameHalt (V := V) PA194FastRows.certificate)
 
 #print axioms consistency_iff_literal_nonhalt
 end PA194FastNative

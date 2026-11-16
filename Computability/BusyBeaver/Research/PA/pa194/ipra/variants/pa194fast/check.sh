@@ -4,21 +4,30 @@ ulimit -s unlimited
 ulimit -c 0
 
 literal=$(cd -- "${1:?checked primary literal output directory required}" && pwd)
-shared=$(cd -- "${2:?checked PA194B output directory required}" && pwd)
+branch=$(cd -- "${2:?checked PA194B output directory required}" && pwd)
 out=${3:?fresh output directory required}
+select=${4:-}
 here=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
-repo=${4:-}
-if [[ -z "$repo" ]]; then
-  repo=$(git -C "$here" rev-parse --show-toplevel)
-fi
+repo=$(git -C "$here" rev-parse --show-toplevel)
 mkdir -p "$out"
 out=$(cd -- "$out" && pwd)
 
 test -f "$literal/PA194NativeLiteralFinal.olean"
-test -f "$shared/PA194VariantNative.olean"
-export LEAN_PATH="$out:$shared:$literal:$(cat "$literal/leanpath.txt")"
+test -f "$branch/PA194VariantNative.olean"
+modules=(PA194Fast)
+flags=()
+provider="$branch"
+if [[ -n "$select" ]]; then
+  select=$(cd -- "$select" && pwd)
+  test -f "$branch/PA194BHalting.olean"
+  test -f "$select/PA194SELHalting.olean"
+  provider="$select:$provider"
+  modules+=(PA194BFast PA194SELFast)
+  flags+=(--companions)
+fi
+export LEAN_PATH="$out:$provider:$literal:$(cat "$literal/leanpath.txt")"
 printf '%s\n' "$LEAN_PATH" > "$out/leanpath.txt"
-python3 -I "$here/generate.py" "$repo" "$out"
+python3 -I "$here/generate-rows.py" "$repo" "$out" "${flags[@]}"
 
 check() {
   local source=$1
@@ -36,9 +45,12 @@ check() {
   printf 'PASS %s\n' "$module"
 }
 
-check "$out/PA194FastRows.lean"
-for module in Invariant Segment Native; do
-  check "$here/PA194Fast$module.lean"
+check "$here/PA194GuardedShortcuts.lean"
+for candidate in "${modules[@]}"; do
+  check "$out/${candidate}Rows.lean"
 done
-rg -Fxq "'PA194FastNative.consistency_iff_literal_nonhalt' depends on axioms: [propext, Classical.choice, Quot.sound]" \
-  "$out/PA194FastNative.log"
+for candidate in "${modules[@]}"; do
+  check "$here/${candidate}Native.lean"
+  rg -Fxq "'${candidate}Native.consistency_iff_literal_nonhalt' depends on axioms: [propext, Classical.choice, Quot.sound]" \
+    "$out/${candidate}Native.log"
+done

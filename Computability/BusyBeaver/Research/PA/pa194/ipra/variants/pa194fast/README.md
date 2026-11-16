@@ -1,31 +1,35 @@
-# The primary_fast timing variant
+# Three PA194 timing variants
 
-`primary_fast.native.tm` is the 194-working-state primary PA194 table with
-the two literal shortcuts documented in the
+Each variant has 194 working states and uses the two literal shortcuts
+documented in the
 [core reductions report](../../../../docs/pa194_ax11gdh_research_2026-11-15/research/core_reductions/README.md).
-They replace the transitions at native control 26 reading 1 and control 101
-reading 0. The generator uses the pinned primary table and state map to
-reconstruct the native table with the archived SHA-256
-`d8f3b1b8e994cccb0ce2ce0950ff1ea0e1729570501538b6f0a6c110c8794233`
-and emits its dense rows for Lean.
+They replace native control 26 reading 1 with `1 R 91` and control 101
+reading 0 with `0 R 17`. The generator applies those edits to each pinned
+parent, retains its blank start at native control 74, and verifies the
+resulting bytes against the [archive catalogue](../../../../docs/MACHINE_FILES.tsv).
 
-[`PA194FastInvariant`](PA194FastInvariant.lean) proves the needed tape
-conditions throughout the blank run, using finite checks of the incoming
-rows. [`PA194FastSegment.sameHalt`](PA194FastSegment.lean) matches each
-fast step by one or three primary steps. The segment argument compares
-halting in both directions at arbitrary clocks in models of `IΣ₁`.
-[`PA194FastNative.consistency_iff_literal_nonhalt`](PA194FastNative.lean)
-proves `Con(PA) ↔ ¬Halt(primary_fast)` in standard iPRA. Its Lean axiom
-audit reports `propext`, `Classical.choice` and `Quot.sound`.
+| Table | Exact native SHA-256 | iPRA derivation |
+| --- | --- | --- |
+| `primary_fast` | `d8f3b1b8e994cccb0ce2ce0950ff1ea0e1729570501538b6f0a6c110c8794233` | [`PA194FastNative.consistency_iff_literal_nonhalt`](PA194FastNative.lean) |
+| PA194B with both shortcuts | `3310f1106c0d431cc7b56a8229cafa120f6030388cf8af4297cfd987136f5bc5` | [`PA194BFastNative.consistency_iff_literal_nonhalt`](PA194BFastNative.lean) |
+| PA194SEL with both shortcuts | `e93b8634951bf934569e43e418b4b2bfcb329d61c3720f6880bf05003b112be1` | [`PA194SELFastNative.consistency_iff_literal_nonhalt`](PA194SELFastNative.lean) |
 
-With the [primary literal](../../native-endpoint/README.md) and
-[PA194B](../pa194b/README.md) replay outputs, run from the repository root.
+[`PA194GuardedShortcuts.sameHalt`](PA194GuardedShortcuts.lean) proves a
+tape invariant along each blank run using kernel checks of the incoming
+rows. Each fast step matches one or three parent steps. The segment
+argument compares halting at arbitrary clocks in models of `IΣ₁`.
+All three native endpoints derive `Con(PA) ↔ ¬Halt` in standard iPRA.
+Their Lean axiom audits report `propext`, `Classical.choice`, and `Quot.sound`.
+
+Run with the [primary literal](../../native-endpoint/README.md),
+[PA194B](../pa194b/README.md), and [PA194SEL](../pa194sel/README.md)
+replay outputs.
 
 ```sh
 pa=Computability/BusyBeaver/Research/PA
-bash "$pa/pa194/ipra/variants/pa194fast/check.sh" "$literal" "$shared" /dev/shm/pa194fast-replay
+bash "$pa/pa194/ipra/variants/pa194fast/check.sh" "$literal" "$shared" /dev/shm/pa194fast-replay "$sel"
 ```
 
-The check regenerates the exact native bytes and rebuilds the candidate's
-four Lean modules. It uses the retained lower dependencies of the primary
-and PA194B stages.
+The fourth argument enables the two companion replays. With the first
+three arguments the checker replays `primary_fast`. Each invocation
+regenerates the selected native bytes and finite Lean certificates.
