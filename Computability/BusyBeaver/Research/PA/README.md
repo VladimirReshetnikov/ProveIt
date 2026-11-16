@@ -433,9 +433,18 @@ theory for every internal property. The closure of the parameters and the link
 to the source induction proof have replayed. The
 [conditional PA refutation transport](pa194-work/pa194-guarded-compiler/REFUTATION-TO-SCHEDULER.md)
 supplies all four remaining translated fixed axioms from the source facts and
-the two recursion clauses, then reaches modeled scheduler halting. The checked
-source assembly still needs addition and multiplication coherence, both
-recursion clauses, and a bridge from the scheduler to the literal machine.
+the two recursion clauses, then reaches modeled scheduler halting. The [native
+endpoint assembly](pa194-work/pa194-guarded-compiler/CONDITIONAL-NATIVE-ENDPOINT.md)
+uses the same literal halting sentence in both directions.
+
+Lean identifies literal blank-tape halting with the source controller reaching
+its absorbing halt, in every PRA model with a classical IΣ₁ arithmetic reduct.
+The proof [checks all 3,673 source ordinals](pa194/ipra/machine-code/COMPRESSED-CONTROLLER.md).
+At the next layer, the [controller and scheduler synchronization](pa194/ipra/machine-code/SCHEDULER-HALT-SOURCE.md)
+reduces their halting equivalence to the commands that return to a scheduler
+boundary. The [MP and SHIFT return proofs](pa194/ipra/machine-code/MODEL-MP.md)
+establish those cases for arbitrary model-valued stores. AX command alignment
+is still needed.
 
 [`pa194-source-semantics`](pa194-work/pa194-source-semantics/README.md) proves facts about
 the source theory in its models instead of by derivations: a fixed hypothesis of the guarded
@@ -454,7 +463,7 @@ states `ArithmeticCalibration` itself from `calibration`, for the models of the 
 PRA presentation, has not been compiled, because the module defining that statement has
 imports that are not compiled locally yet; the calibration in that form, and the
 scheduler-level implication that follows from it, are therefore not claimed here. The
-bridge from the scheduler to the literal machine is open.
+remaining AX controller command is the missing machine-level correspondence.
 
 [`isigma1-machine`](shared/isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
