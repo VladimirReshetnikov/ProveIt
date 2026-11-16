@@ -1,9 +1,15 @@
-"""Generate kernel-reduced finite source checks for the literal PA194-AD table."""
+"""Generate kernel-reduced coverage for each bounded primary source site."""
 
 from pathlib import Path
 import sys
 
-out = Path(sys.argv[1])
+checkers = {"PA194AD": "PA194ADCompressedChecks", "PA194LC": "PA194LCChecks"}
+if len(sys.argv) != 3 or sys.argv[1] not in checkers:
+    raise SystemExit("usage: generate-linear-coverage.py {PA194AD,PA194LC} OUTPUT")
+candidate, destination = sys.argv[1:]
+checker = checkers[candidate]
+coverage = f"{candidate}Coverage"
+out = Path(destination)
 out.mkdir(parents=True, exist_ok=True)
 sites = 3673
 block_size = 64
@@ -24,16 +30,16 @@ def choose_block(ranges):
 imports = []
 entire = []
 for index, (base, end) in enumerate(blocks):
-    name = f"PA194ADCoverage{index:02}"
+    name = f"{coverage}{index:02}"
     imports.append(f"import {name}")
     entire.append((end, f"{name}.checked i (by omega) (by omega)"))
     lines = [
-        "import PA194ADCompressedChecks",
+        f"import {checker}",
         "set_option autoImplicit false",
         "set_option maxRecDepth 65536",
         "set_option maxHeartbeats 0",
         f"namespace {name}",
-        "open PA194ADCompressedChecks",
+        f"open {checker}",
         "",
     ]
     part = []
@@ -55,12 +61,12 @@ aggregate = imports + [
     "",
     "set_option autoImplicit false",
     "set_option maxHeartbeats 0",
-    "namespace PA194ADCoverage",
+    f"namespace {coverage}",
     "",
-    f"theorem checked (i : Nat) (bound : i < {sites}) : PA194ADCompressedChecks.checkAt i = true := by",
+    f"theorem checked (i : Nat) (bound : i < {sites}) : {checker}.checkAt i = true := by",
     *choose_block(entire),
     "",
     "#print axioms checked",
-    "end PA194ADCoverage",
+    f"end {coverage}",
 ]
-(out / "PA194ADCoverage.lean").write_text("\n".join(aggregate) + "\n")
+(out / f"{coverage}.lean").write_text("\n".join(aggregate) + "\n")

@@ -45,8 +45,8 @@ private theorem atSite (i : Nat) (h : checkAt i = true) :
     ∃ code, resolveAt PA194SourceProgram.sites i = some code ∧ Contracts i code := by
   obtain ⟨code, hresolve, hcheck⟩ := checked_at i h
   refine ⟨code, hresolve, ?_⟩
-  cases code <;> simpa only [checkInstruction, Contracts, PA194FoldedSourceContracts.destination_eq,
-    Bool.and_eq_true, decide_eq_true_eq, and_assoc] using hcheck
+  cases code <;> simpa only [checkInstruction, PA194SourceContracts.checkInstruction, Contracts,
+    PA194FoldedSourceContracts.destination_eq, Bool.and_eq_true, decide_eq_true_eq, and_assoc] using hcheck
 
 section models
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]

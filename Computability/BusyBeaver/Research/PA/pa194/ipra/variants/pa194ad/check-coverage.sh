@@ -28,7 +28,7 @@ check() {
   printf 'PASS %s\n' "$mod"
 }
 
-python3 -I "$here/generate-coverage.py" "$out"
+python3 -I "$here/../generate-linear-coverage.py" PA194AD "$out"
 check "$here/PA194ADCompressedChecks.lean"
 for source in "$out"/PA194ADCoverage[0-9][0-9].lean "$out/PA194ADCoverage.lean"; do
   check "$source"

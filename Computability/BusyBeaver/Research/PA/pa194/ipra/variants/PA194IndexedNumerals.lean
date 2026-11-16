@@ -20,8 +20,19 @@ def indexedNext (values : List Action) (c : PackedConf) : PackedConf :=
     else (a.2.2,c.2.1/2,c.2.1%2+2*(a.1+2*(c.2.2/2)))
   else c
 
-def indexedRun (values : List Action) (n : Nat) : PackedConf :=
-  Nat.rec (0,0,0) (fun _ c => indexedNext values c) n
+def indexedRunFrom (values : List Action) (initial : PackedConf) (n : Nat) : PackedConf :=
+  Nat.rec initial (fun _ c => indexedNext values c) n
+
+def indexedRun (values : List Action) (n : Nat) : PackedConf := indexedRunFrom values (0,0,0) n
+
+theorem indexedRunFrom_add (values : List Action) (initial : PackedConf) (a b : Nat) :
+    indexedRunFrom values initial (a + b) = indexedRunFrom values (indexedRunFrom values initial a) b := by
+  induction b with
+  | zero => simp [indexedRunFrom]
+  | succ b ih =>
+    change indexedNext values (indexedRunFrom values initial (a + b)) =
+      indexedNext values (indexedRunFrom values (indexedRunFrom values initial a) b)
+    rw [ih]
 
 def BinaryDirections (values : List Action) : Prop :=
   ∀ (q : Fin 194) (b : Fin 2), (values.getD (2*q.val+b.val) (0,0,194)).2.1 ≤ 1

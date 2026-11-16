@@ -31,11 +31,13 @@ check() {
   printf 'PASS %s\n' "$mod"
 }
 
-python3 -I "$here/generate-table.py" "$repo" "$out"
-python3 -I "$here/generate-startup.py" "$repo" "$out"
+python3 -I "$here/../generate-source-table.py" PA194OR "$repo" "$out"
+python3 -I "$here/../generate-indexed-startup.py" PA194OR "$repo" "$out"
 check "$here/../../../../shared/isigma1-machine/ConPAMachineNumerals.lean"
 check "$here/../PA194IndexedNumerals.lean"
 check "$out/PA194ORData.lean"
+check "$here/../PA194TableRows.lean"
+check "$here/../PA194SourceContracts.lean"
 for module in Numerical Rows Checks Physical Mark MovedFirst MovedSecond; do
   check "$here/PA194OR$module.lean"
 done

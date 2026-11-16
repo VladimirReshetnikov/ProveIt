@@ -1,22 +1,40 @@
-"""Generate table/trie constants from the exact delivered PA194OR bytes."""
+"""Generate exact table and trie definitions for variants using the primary source."""
 from hashlib import sha256
 import json
 from pathlib import Path
 import sys
 
-repo, out = map(Path,sys.argv[1:])
-packets=repo/'Computability/BusyBeaver/Research/PA/docs'
-folder=packets/'PA194ORH_research_2026-11-15/machines/PA194OR'
-pins={
- 'machine.tm':'379e12957eafc5ecb1ec04868067fe931af913e7bc46e69a36b6067d83c4c79f',
- 'labels.json':'50201e76c668de9e019ba164cbfd8678afb9d0681a6082fe859a54acb1d9862c',
- 'sites.json':'2abdf5327f0048c9a7bf87367e3b0fabbfa7a848d68efdfa934b494ab78bdf35',
- 'instructions.json':'6c3127cd0da15fda49ed99cea199a009b9bc1e1707100846df9a2df02a22d507',
+variants = {
+    "PA194OR": (
+        "PA194ORH_research_2026-11-15/machines/PA194OR",
+        {
+            "machine.tm": "379e12957eafc5ecb1ec04868067fe931af913e7bc46e69a36b6067d83c4c79f",
+            "labels.json": "50201e76c668de9e019ba164cbfd8678afb9d0681a6082fe859a54acb1d9862c",
+            "sites.json": "2abdf5327f0048c9a7bf87367e3b0fabbfa7a848d68efdfa934b494ab78bdf35",
+        },
+    ),
+    "PA194LC": (
+        "pa194_loop_continuation_research_2026-11-14/machines/PA194LC",
+        {
+            "machine.tm": "9cb620ba1b869fb793fd9ba0a99e90dcc85d9a6d62a42f48109743a7fbeda3c8",
+            "labels.json": "86a4619d85d97849d0169c8c9773a37bcc8d1d05356451e6c761ab3bfcdda691",
+            "sites.json": "4ceafb0e8b1e7b983f2b25d7b4c0902c34a6544142f7fd8a715c4b9bb8ef0e6d",
+        },
+    ),
 }
-raw={n:(folder/n).read_bytes() for n in pins}
-for n, digest in pins.items(): assert sha256(raw[n]).hexdigest() == digest
-primary=(packets/'pa194_conpa_2026-11-13/construction/source/pa194.instructions.json').read_bytes()
-assert raw['instructions.json'] == primary
+if len(sys.argv) != 4 or sys.argv[1] not in variants:
+    raise SystemExit("usage: generate-source-table.py {PA194OR,PA194LC} REPO OUTPUT")
+variant = sys.argv[1]
+repo, out = map(Path, sys.argv[2:])
+packets = repo / "Computability/BusyBeaver/Research/PA/docs"
+relative, pins = variants[variant]
+folder = packets / relative
+raw = {name: (folder / name).read_bytes() for name in pins}
+for name, digest in pins.items():
+    assert sha256(raw[name]).hexdigest() == digest, name
+primary = (packets / "pa194_conpa_2026-11-13/construction/source/pa194.instructions.json").read_bytes()
+assert sha256(primary).hexdigest() == "6c3127cd0da15fda49ed99cea199a009b9bc1e1707100846df9a2df02a22d507"
+assert (folder / "instructions.json").read_bytes() == primary
 labels=json.loads(raw['labels.json'])
 assert len(labels)==195 and len(set(labels))==195 and labels[0]==74 and labels[-1]==254
 sites=json.loads(raw['sites.json'])
@@ -72,14 +90,14 @@ def build(node):
  return tree_cache[body]
 root=build(trie)
 out.mkdir(parents=True,exist_ok=True)
-(out/'PA194ORData.lean').write_text('''import PA194FoldedCache
+(out/f'{variant}Data.lean').write_text(f'''import PA194FoldedCache
 import PA194BModelSteps
 import PA194SourceProgram
 
 set_option autoImplicit false
 set_option maxRecDepth 65536
 
-namespace PA194ORData
+namespace {variant}Data
 
 '''+f'''def labels : List Nat := {lean_rows(labels)}
 def rows : List PA194BRows.Action := {lean_rows([str(rows[q,b]).replace(' ','') for q in range(194) for b in range(2)])}
@@ -98,5 +116,5 @@ def path (i : Nat) : M6.Source.Path :=
 def codeAt (i : Nat) : Option M6.Source.Instruction :=
   (M6.Source.PathTrie.nthSite sourceTrie i).bind (M6.FastResolve.resolveTree sourceTrie)
 
-end PA194ORData
+end {variant}Data
 ''')
