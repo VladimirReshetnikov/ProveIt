@@ -72,3 +72,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.Chebyshev.chebyshev_pell
 #print axioms LeanProofs.IPRA.Analysis.Chebyshev.chebyshev_recurrence
 #print axioms LeanProofs.IPRA.Geometry.PlatonicSolids.platonic_solids
+#print axioms LeanProofs.IPRA.pw_add
+#print axioms LeanProofs.IPRA.pw_le_pw
+#print axioms LeanProofs.IPRA.le_self_pw
+#print axioms LeanProofs.IPRA.no_square_between
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Siegel.siegel_nonneg
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Siegel.siegel_nonpos
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Siegel.power_gap

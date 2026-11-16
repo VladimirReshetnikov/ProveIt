@@ -9,12 +9,14 @@ import IPRADerivations.Core.Sums
 import IPRADerivations.Core.Monus
 import IPRADerivations.Core.Order
 import IPRADerivations.Core.Pairing
+import IPRADerivations.Core.Powers
 import IPRADerivations.Algebra.CayleyHamilton
 import IPRADerivations.Analysis.Chebyshev
 import IPRADerivations.Algebra.PolynomialFormulas
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
 import IPRADerivations.DiophantineNumberTheory.Recurrences
+import IPRADerivations.DiophantineNumberTheory.Siegel
 import IPRADerivations.Foundations.QuantitativeIdentities
 import IPRADerivations.Geometry.EulerRodrigues
 import IPRADerivations.Geometry.Morley
