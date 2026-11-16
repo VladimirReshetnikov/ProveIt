@@ -38,6 +38,7 @@ import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.Permutation
 import IPRADerivations.AnalyticNumberTheory.Euler
 import IPRADerivations.AnalyticNumberTheory.Order
+import IPRADerivations.AnalyticNumberTheory.OrderPower
 import IPRADerivations.DiophantineNumberTheory.Hurwitz
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
