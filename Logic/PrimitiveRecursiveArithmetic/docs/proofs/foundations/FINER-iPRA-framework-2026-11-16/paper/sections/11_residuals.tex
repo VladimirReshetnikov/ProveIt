@@ -1,0 +1,100 @@
+\section{Explicit residual producers}
+\label{sec:residuals}
+
+A verifier theorem and a producer theorem solve different problems.  The verifier proves that finite evidence has a stated consequence.  The producer proves that suitable evidence exists.  In elementary arithmetic both may be easy; in effective analysis or Diophantine geometry the producer may contain almost all of the depth.  FINER keeps the distinction visible in the final sequent.
+
+\subsection{Residual normal form}
+
+A compiled theorem has the form
+\begin{equation}
+  B_1(q),\ldots,B_r(q),\Gamma(q)
+  \;\vdash[\PRAAx]\;\Phi(q),
+  \label{eq:residual-normal-form}
+\end{equation}
+where each \(B_i\) is a concrete object formula, not a prose promise.  Typical residuals are:
+\begin{align*}
+ &\exists c<M(q)\;[\CertCheck(q,c)=1], &&\text{accepted certificate existence},\\
+ &\forall x\,[P_q(x)\to h(x)\leq H(q)], &&\text{height cutoff},\\
+ &0<\delta(q)\leq |a-b|, &&\text{separation gap},\\
+ &\mathsf{Covers}(N_k,X,\varepsilon_k)=1, &&\text{finite-net coverage},\\
+ &\forall n\geq N(k)\;E(n,k)\leq 2^{-k}, &&\text{tail modulus},\\
+ &\mathsf{RepresentativeComplete}(L,q)=1, &&\text{covering representatives},\\
+ &\mathsf{LocalEstimate}(v,d_v)=1. &&\text{node-specific quantitative estimate}
+\end{align*}
+The formulas may be universally closed or left open in parameters according to how they are consumed.  They should use the exact encoding, positivity convention, and error metric of the target theorem.
+
+\subsection{Closing residuals by checked simultaneous cut}
+
+\begin{theorem}[Residual closure]
+\label{thm:residual-closure}
+Suppose
+\[
+  h:B_1,\ldots,B_r,\Gamma\vdash\Phi
+\]
+and, under a context \(\Delta\), one has derivations of every formula in \(B_1,\ldots,B_r,\Gamma\).  Then \(\Delta\vdash\Phi\).
+\end{theorem}
+
+\begin{proof}
+This is exactly the existing theorem \texttt{Prf.trans}.  It simultaneously replaces every hypothesis of \(h\) by its derivation under \(\Delta\).
+\end{proof}
+
+In Lean, the closing step has the shape
+\begin{lstlisting}[language={}] 
+exact Prf.trans compiled fun psi hpsi => producerProof psi hpsi
+\end{lstlisting}
+No bespoke cut theorem or compiler-specific logic is needed.
+
+\subsection{Residual dependency graphs}
+
+Residuals themselves may consume other quantitative data.  For example, a reciprocal estimate consumes an apartness margin; a root-separation producer consumes coefficient heights; a finite-cover producer consumes a compactness modulus.  Their finite dependencies form the demand graph of \cref{sec:demand}.  The least demand closure fixes all parameters before residual formulas are generated.
+
+A residual graph is permitted to contain a genuine mathematical cycle only if it has a finite monotone capped interpretation.  Otherwise the interface is ill-founded and must be redesigned.  The overflow bit prevents arbitrary caps from being mistaken for a solution.
+
+\subsection{Producer classes}
+
+It is helpful to classify producers by how they can be discharged.
+
+\begin{description}[style=nextline,leftmargin=2.8em]
+\item[Arithmetic producer.]  The residual follows from existing checked arithmetic, perhaps after a new short derivation.  Example: a bound on a finite sum.
+
+\item[Algorithmic producer.]  A primitive-recursive construction yields a certificate and a trace proof.  Example: a rational bisection interval for a monotone polynomial.
+
+\item[Input contract.]  The theorem is intentionally conditional on supplied quantitative data.  Example: a continuous-function code together with a modulus.
+
+\item[Deep mathematical producer.]  Closing the residual is the substantive theorem.  Example: an effective height bound for all rational points on a general curve.
+
+\item[Obstructed producer.]  The requested object cannot be uniformly selected with the stated representation.  The consumer must be reformulated to use a relation, quotient, cluster, or guard.  Example: a globally exact ordering of colliding roots.
+\end{description}
+
+A good report states which class each residual belongs to.  Calling a deep or obstructed producer ``future engineering'' is misleading.
+
+\subsection{Producer/verifier equivalences}
+
+In several cases one can prove an exact equivalence that clarifies the missing ingredient.
+
+\begin{theorem}[Height bound and complete bounded list]
+\label{thm:height-list}
+Let \(P(q,x)\) be a decidable predicate and \(h(x)\) a primitive-recursive height.  The following data are interconvertible by primitive-recursive constructions with object proofs:
+\begin{enumerate}[label=(\roman*),leftmargin=2.3em]
+\item a bound \(H(q)\) such that \(P(q,x)\to h(x)\leq H(q)\);
+\item a finite list containing exactly all \(x\) satisfying \(P(q,x)\), provided each code with height at most \(H(q)\) lies below a primitive-recursive enumeration bound \(E(H(q))\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+From a height bound, enumerate all codes \(x<E(H(q))\), retain those with \(P(q,x)\), and remove duplicates by least occurrence.  Decidability and bounded search prove soundness and completeness.  Conversely, from a complete list \(x_0,\ldots,x_{n-1}\), take the maximum of the finitely many heights.  Completeness shows every solution's height is below that maximum.  All list operations and maxima are primitive recursive and their correctness follows by quantifier-free induction.
+\end{proof}
+
+The enumeration-bound premise is often implicit in a coding convention; it should be stated.  A cardinality bound alone is insufficient: the singleton predicate \(x=N\) has cardinality one for every arbitrarily large \(N\).
+
+\subsection{Residual minimization}
+
+The compiler should simplify residual lists without strengthening them.  Safe simplifications include:
+\begin{itemize}[leftmargin=2em]
+\item syntactic duplicate removal;
+\item replacing a residual by a checked equivalent normal form;
+\item discharging it immediately from inherited arithmetic;
+\item fusing several finite witnesses into one master certificate;
+\item replacing a family of local bounds by its checked finite maximum.
+\end{itemize}
+Unsafe simplifications include replacing an explicit modulus by qualitative convergence, replacing a positive margin by mere inequality, or replacing a height cutoff by a cardinality assertion.  The theorem ledger in the archive records residuals at their exact strength.

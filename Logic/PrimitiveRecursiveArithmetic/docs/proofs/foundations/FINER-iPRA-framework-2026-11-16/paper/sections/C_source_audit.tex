@@ -1,0 +1,62 @@
+\section{Source audit and relationship to prior packets}
+\label{app:audit}
+
+\subsection{Pinned repository state}
+
+The report was prepared against ProveIt main commit
+\begin{center}
+\texttt{64bc0e997df6b8dbdf43f5ac9b3d9f74b4047ee5}
+\end{center}
+on 16 November 2026.  The audit focused on:
+\begin{itemize}[leftmargin=2em]
+\item \texttt{Logic/PrimitiveRecursiveArithmetic/README.md};
+\item \texttt{UNIFICATION-PLAN.md};
+\item \texttt{ConciseIPRA/README.md} and ordinary calculus sources;
+\item \texttt{Derivations/README.md} and core arithmetic sources;
+\item \texttt{Bridge/README.md};
+\item the foundations packets, especially CFP, finite-use, FQNF, CBIP, KIFC-R, and their difficulty matrices.
+\end{itemize}
+
+\subsection{Inherited ideas}
+
+FINER deliberately inherits and consolidates the following ideas rather than claiming them as new:
+\begin{itemize}[leftmargin=2em]
+\item finite-query specialization;
+\item certified finitary presentations and explicit moduli;
+\item bounded Boolean reflection;
+\item master certificates and least search;
+\item reverse demand propagation;
+\item proof schedules composed by simultaneous cut;
+\item relational witness clouds and backward viability;
+\item stable or quotient observer erasure;
+\item producer/verifier separation;
+\item residual endpoints of the form \(B_1,\ldots,B_r,\Gamma\vdash\Phi\).
+\end{itemize}
+These themes occur in several packets.  The repository's current README correctly marks their new Lean files as uncompiled outlines or candidates unless a separate checked derivation exists.
+
+\subsection{Added synthesis}
+
+This report contributes the following sharper integration choices.
+
+\begin{enumerate}[label=(\arabic*),leftmargin=2.3em]
+\item The ordinary \texttt{Prf PRAAx} interface is fixed as the sole canonical endpoint; native or Foundation exports are downstream.
+\item Cyclic demands are handled by a fully stated least-prefixed-point theorem on finite products of chains, with an explicit \(\sum C_i\) rank bound and overflow discipline.
+\item Finite observational descent is isolated as a reusable theorem that avoids constructing global quotients or witnesses when only an invariant observation is needed.
+\item The selected-certificate theorem is tied directly to the already checked \texttt{Core.Search} API, avoiding duplicate search developments.
+\item The formalization plan begins with small fixed-dimension and fixed-horizon kernels, postponing a graph DSL until object derivations are checked.
+\item The theorem ledger treats external semantic evidence as a third status, neither derived nor residual, so it cannot silently enter the compiled proof.
+\end{enumerate}
+
+\subsection{Nonduplication with the unification plan}
+
+The repository's unification plan addresses transport between ordinary ConciseIPRA and Foundation, sharing arithmetic, and migrating application consumers.  FINER sits above the ordinary arithmetic library and below applications.  It does not replace the bridge plan.  In particular:
+\begin{itemize}[leftmargin=2em]
+\item formula and open-sequent Foundation transport remain bridge work;
+\item symbol-comparison lemmas remain shared-arithmetic work;
+\item FINER produces ordinary object proofs that those layers can later transport;
+\item application-specific tables, polynomial coefficients, and consistency predicates remain outside the generic compiler.
+\end{itemize}
+
+\subsection{Audit caveat}
+
+The repository was changing rapidly on 14--16 November 2026.  This archive pins the commit above and names exact source paths.  Later repository changes may rename declarations or complete some blueprints.  Such changes should update the source audit and theorem ledger rather than retroactively altering the status claimed here.

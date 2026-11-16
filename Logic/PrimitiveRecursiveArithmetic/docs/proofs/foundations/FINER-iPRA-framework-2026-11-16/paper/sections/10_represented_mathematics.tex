@@ -1,0 +1,105 @@
+\section{Representing mathematical concepts by finite observations}
+\label{sec:representations}
+
+FINER is not tied to one mathematical area.  Its generality comes from a strict rule: an ``object'' is used only through a primitive-recursive family of finite observations and explicit laws relating those observations.  This section gives reusable interfaces.
+
+\subsection{Natural and integer algebra}
+
+Natural-number algebra is native.  Signed integers are represented by differences \((a,b)\), denoting \(a-b\), with equality
+\[
+  (a,b)\sim(c,d)\quad\Longleftrightarrow\quad a+d=b+c.
+\]
+The existing \texttt{Core.Integers} development implements this representation and reduces polynomial identities to ring normalization in the metatheory followed by checked object derivations.  Rational numbers can be represented by signed numerators and positive denominators; equality and order are cleared by cross multiplication.  Division is never used without a positive denominator or a quantitative apartness guard.
+
+\subsection{Finite algebraic structures}
+
+A finite group, ring, category, graph, simplicial complex, or incidence structure is a tuple of bounds and operation/relation tables.  Its axioms are bounded formulas and therefore have reflected bits.  Theorems about one supplied finite structure reduce to finite table checks plus bounded induction.
+
+A family with size parameter \(n\) uses primitive-recursive table accessors and a variable-length fold.  A general theorem such as associativity of a generated operation still requires an object proof; merely checking finitely many instances does not establish a universal family theorem.  Conversely, a theorem about a particular finite presentation should not be burdened with an abstract infinite structure.
+
+\subsection{Regular rational names}
+
+A real-like quantity is represented by a primitive-recursive rational approximation \(a(k)\) and a regularity theorem such as
+\begin{equation}
+  |a(k)-a(\ell)|\leq 2^{-k}
+  \qquad(k\leq\ell).
+  \label{eq:regular-name}
+\end{equation}
+All powers of two and cleared rational inequalities are primitive recursive.  The name is not a completed set-theoretic real inside \iPRA; it is a family of finite claims.  Equality at precision \(k\) means a specified rational error bound, not literal code equality.
+
+Operations on names require precision transformers.  For addition, precision \(k+1\) for both inputs suffices for precision \(k\) of the sum.  Multiplication additionally needs magnitude bounds.  Reciprocal needs a positive apartness margin.
+
+\begin{principle}[Guarded totalization]
+Every partial operation is implemented as a total primitive-recursive program with a default output, together with a guard and a correctness theorem under that guard.  The guard must contain the numerical information needed by the error proof.
+\end{principle}
+
+For reciprocal, \(x\neq0\) is generally insufficient as finite numerical data.  A usable guard is
+\begin{equation}
+  |x|\geq 2^{-m}
+  \label{eq:apartness-margin}
+\end{equation}
+for an explicit \(m\).  From approximations to \(x\) finer than \(m+k+O(1)\), rational interval arithmetic produces a \(2^{-k}\)-approximation to \(1/x\).  The demand transformer records this dependence.
+
+\subsection{Functions and operators}
+
+A represented function is a fixed primitive-recursive evaluator
+\[
+  F(k,x_{\leq d(k)})
+\]
+together with an error or modulus theorem.  There is no higher-type oracle in the object language; the theorem-specific evaluator reads a finite code or a finite table.  Uniform continuity on a represented compact domain is expressed by a primitive-recursive modulus \(\omega(k)\), and a finite-net theorem uses that modulus explicitly.
+
+When an application genuinely needs an input function as a parameter, use one of three safe interfaces:
+\begin{enumerate}[label=(\roman*),leftmargin=2.3em]
+\item a fixed function symbol selected at the metalevel;
+\item a bounded table sufficient for the current query;
+\item a code for a restricted program class with a separately verified clocked evaluator.
+\end{enumerate}
+An unrestricted total universal primitive-recursive evaluator is unavailable by the diagonal barrier in \cref{sec:design}.
+
+\subsection{Finite measures and probability laws}
+
+A finite rational probability law is a list of natural weights \(w_i\) with positive total \(W\), and an observable is a rational table \(X_i\).  Expectations are represented without division by the pair
+\[
+  S=\sum_i w_iX_i,\qquad W=\sum_i w_i,
+\]
+or by cleared identities.  Linearity, monotonicity, indicators, variance identities, Markov and Chebyshev inequalities, finite conditioning, and finite independence are bounded-sum theorems.
+
+A countable or continuous law is not imported wholesale.  It is supplied through finite quantizations \(\mu_k\), tail bounds, moment bounds, anti-concentration data, or an integration modulus.  Every limit claim is reduced to a finite query whose error budget names the required residual data.  This prevents a semantic measure-theory theorem in Lean from being mistaken for an \iPRA{} derivation.
+
+\subsection{Compact spaces and finite nets}
+
+A compact metric presentation consists, for each mesh parameter \(k\), of:
+\begin{itemize}[leftmargin=2em]
+\item a finite list of points \(N_k\);
+\item a coverage certificate: every represented point lies within \(\delta_k\) of some element of \(N_k\);
+\item primitive-recursive distance approximations with error bounds;
+\item refinement or comparison data when cross-scale arguments need them.
+\end{itemize}
+Abstract compactness is replaced by the finite coverage formula actually consumed by the proof.  A minimum or finite subcover is then found by bounded search.  The production of \(N_k\) and its coverage proof may be trivial for boxes and finite complexes, or a serious residual for a general represented space.
+
+\subsection{Topology by finite complexes and carriers}
+
+A topological observation at precision \(k\) is a finite simplicial or cubical complex, together with carrier maps linking consecutive scales.  Chains, boundaries, cycles, homologies over a fixed finite coefficient ring, and simplicial maps are finite arrays.  A map that is not uniquely discretized may return a finite cloud; a strong carrier condition makes every selection simplicial, and contiguity yields an explicit finite chain homotopy.
+
+This interface supports finite homology observations and quantitative separation arguments.  It does not by itself prove that a given continuous space has a suitable tower or that the tower completely captures an infinitary topological invariant.  Those are producer and comparison theorems.
+
+\subsection{Algebraic and Diophantine geometry}
+
+Polynomial systems are exact finite data.  Localizations, ideal-membership witnesses, Macaulay matrices, resultants, and bounded-height point searches are finite algebraic certificates.  Quotient equality should be represented by explicit witnesses, such as an ideal combination or a killing exponent, rather than by a semantic quotient type.
+
+For rational or integral points, a verifier can check a point and can enumerate all points below a supplied height.  Completeness requires a height bound or a complete-list theorem.  Cardinality finiteness alone is not an enumeration bound; this issue is treated in \cref{sec:difficulties}.
+
+\subsection{Observational setoids}
+
+Code equality is usually too strict.  A represented concept should carry a reflected equivalence relation \(E\) and congruence proofs for every operation and observer used by the theorem.  This is an \emph{observational setoid}.  One works with codes throughout, transports predicates along \(E\), and uses quotient observers as in \cref{sec:observational-descent}.  There is rarely a need to construct an actual quotient sort inside the single-sorted arithmetic language.
+
+\subsection{A uniform interface record}
+
+The following metalevel data cover most applications:
+\begin{align*}
+ &\mathsf{Query},\quad \mathsf{CodeBound}(q),\quad \mathsf{Valid}(q,c),\\
+ &\mathsf{Observe}(q,c),\quad \mathsf{Equiv}(q,o,o'),\\
+ &\mathsf{Refine}(q,q',c,c'),\quad \mathsf{Error}(q),\\
+ &\mathsf{ProducerResiduals}(q),\quad \mathsf{ConsumerGoal}(q,o).
+\end{align*}
+After specialization, every item is a fixed primitive-recursive symbol or formula, and every law is either an inherited/derived object sequent or an explicit residual.  This record is not meant to be one monolithic Lean type imported by every theorem; it is a checklist for designing theorem-specific interfaces.

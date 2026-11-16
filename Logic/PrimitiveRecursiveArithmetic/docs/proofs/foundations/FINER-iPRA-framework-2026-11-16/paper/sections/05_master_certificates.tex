@@ -1,0 +1,92 @@
+\section{Master certificates and checked selection}
+\label{sec:certificates}
+
+\subsection{Why one certificate matters}
+
+A large finitary proof often introduces many local witnesses: a trace, a finite net, branch choices, error allocations, local algebraic identities, a spanning tree, and a list of bounded solutions.  Treating these as unrelated existential quantifiers invites hidden choice and makes the final theorem difficult to audit.  FINER instead assigns every local field a finite radix and packs all fields into one number \(c<M(q)\).
+
+The checker \(\CertCheck(q,c)\) performs four kinds of tests:
+\begin{enumerate}[label=(\roman*),leftmargin=2.3em]
+\item digit and array range checks;
+\item local defining-equation and arithmetic checks;
+\item edge checks linking dependent node certificates;
+\item terminal checks connecting the decoded observation to the target formula.
+\end{enumerate}
+The checker is normalized to a Boolean bit and reflected by \cref{thm:boolean-reflection}.  Therefore the semantic-looking statement ``the certificate passes'' is an object-language equation \(\CertCheck(q,c)=1\).
+
+\subsection{Least accepted code}
+
+Let
+\[
+  f_q(c)=1\dot{-}\CertCheck(q,c).
+\]
+The checked search module returns
+\[
+  \Sel(q)=\mu c<M(q)\,[f_q(c)=0].
+\]
+For a normalized checker bit, \(f_q(c)=0\) iff \(\CertCheck(q,c)=1\).
+
+\begin{theorem}[Selected-certificate theorem]
+\label{thm:selected-certificate}
+Assume the object theory derives
+\begin{equation}
+  \exists c<M(q)\;[\CertCheck(q,c)=1].
+  \label{eq:accepted-exists}
+\end{equation}
+Then it derives
+\begin{align}
+  &\Sel(q)<M(q),\label{eq:selected-bound}\\
+  &\CertCheck(q,\Sel(q))=1,\label{eq:selected-accept}\\
+  &c<\Sel(q)\;\to\;\CertCheck(q,c)=0.\label{eq:selected-minimal}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+From \eqref{eq:accepted-exists}, existential elimination supplies a witness \(c\) and proofs of \(c<M(q)\) and \(\CertCheck(q,c)=1\).  Bit normalization converts the latter to \(f_q(c)=0\).  Apply \texttt{Search.search\_found}; it gives that the search result is below the bound, is a zero of \(f_q\), and is no larger than the supplied witness.  Convert \(f_q(\Sel(q))=0\) back to \(\CertCheck(q,\Sel(q))=1\).  Minimality is \texttt{Search.search\_minimal} with the same conversion.
+\end{proof}
+
+The leastness is not mathematically necessary for soundness, but it has three practical benefits.  It makes outputs deterministic, gives a canonical regression fixture, and permits exact comparison of independently generated certificates.
+
+\subsection{Success and failure evidence}
+
+When a bounded problem is decidable, the framework can expose both outcomes.
+
+\begin{definition}[Dual certificate interface]
+A dual interface has a success checker \(C^+\), a failure checker \(C^-\), and object proofs that:
+\begin{align*}
+ C^+(q,c)=1 &\to \Phi(q),\\
+ C^-(q,d)=1 &\to \neg\Phi(q),\\
+ \bigl(\exists c<M^+(q)\,C^+(q,c)=1\bigr)
+ &\vee
+ \bigl(\exists d<M^-(q)\,C^-(q,d)=1\bigr).
+\end{align*}
+\end{definition}
+
+For a fixed bounded formula, the Boolean reflection construction supplies such an interface.  For a bounded existential, success is a witness and failure is a finite table of rejected candidates, or simply the reflected universal statement that every candidate fails.  For a finite game, success and failure are dual strategy trees.  The important property is not that every theorem has a short negative certificate, but that bounded classical case analysis becomes finite evidence on both branches.
+
+\subsection{Certificate soundness is compositional}
+
+Suppose a graph has nodes \(v_0,\ldots,v_{m-1}\) in a dependency order after demand closure and finite unrolling.  Let \(A_i(q,c)\) be the assertion that node \(i\)'s decoded block is valid.  The master checker is a Boolean conjunction of their reflected bits.  Reflection yields each \(A_i\) from master acceptance.
+
+For every node, provide a local sequent
+\begin{equation}
+  A_i,\;\{P_j:j\in\operatorname{pred}(i)\},\;\Gamma_i
+  \;\vdash[\PRAAx]\;P_i,
+  \label{eq:local-node-sequent}
+\end{equation}
+where \(P_j\) are predecessor postconditions and \(\Gamma_i\) are residual assumptions used locally.  Repeated simultaneous cut along the finite order yields the terminal postcondition.  At no point does the compiler need to inspect the semantic meaning of \(P_i\); it only substitutes terms and composes derivations.
+
+This is the proof-theoretic reason for using one master certificate.  Its accepted equation is a single reusable major premise from which all node facts are projected.
+
+\subsection{Bounds and enormous finite spaces}
+
+The certificate space may be astronomically large.  That does not invalidate the object theorem.  Primitive recursive arithmetic concerns total finite computations, not feasible ones.  Nevertheless, practical formalization benefits from factorization:
+
+\begin{itemize}[leftmargin=2em]
+\item deterministic fields should be recomputed rather than stored;
+\item independent blocks should use local searches whose results are then packed;
+\item bounds should be stated symbolically rather than expanded as numerals;
+\item proof checking should use reflected local equations, not execute the entire search in Lean's kernel.
+\end{itemize}
+
+The role of least search is logical witness extraction.  An external producer may directly supply a compact certificate for testing and replay; the object theorem remains valid because it proves the least accepted certificate exists whenever any accepted certificate exists.

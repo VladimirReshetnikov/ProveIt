@@ -1,0 +1,161 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{etoolbox}
+\usepackage{url}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!55!black,
+  pdftitle={FINER-iPRA: Finite-Interaction Normal Form with Explicit Residuals},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov}
+}
+
+\definecolor{codebg}{RGB}{247,247,247}
+\definecolor{statusgreen}{RGB}{28,110,70}
+\definecolor{statusamber}{RGB}{160,96,0}
+\definecolor{statusred}{RGB}{145,35,35}
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  frame=single,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  xleftmargin=0.5em,
+  xrightmargin=0.5em
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{principle}[theorem]{Principle}
+\newtheorem{barrier}[theorem]{Barrier}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{status}[theorem]{Status}
+
+\newcommand{\iPRA}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\PRAAx}{\ensuremath{\mathsf{PRAAx}}}
+\newcommand{\Prf}{\ensuremath{\mathsf{Prf}}}
+\newcommand{\Nat}{\ensuremath{\mathbb N}}
+\newcommand{\Bool}{\ensuremath{\mathbb B}}
+\newcommand{\True}{\ensuremath{\mathbf 1}}
+\newcommand{\False}{\ensuremath{\mathbf 0}}
+\newcommand{\seq}[3][]{\ensuremath{#2\vdash_{\PRAAx}^{#1}#3}}
+\newcommand{\objseq}[2]{\ensuremath{#1\;\vdash[\PRAAx]\;#2}}
+\newcommand{\FINER}{\textsc{Finer--iPRA}}
+\newcommand{\CertCheck}{\ensuremath{\mathsf{Check}}}
+\newcommand{\Obs}{\ensuremath{\mathsf{Obs}}}
+\newcommand{\Sel}{\ensuremath{\mathsf{Sel}}}
+\newcommand{\rank}{\ensuremath{\mathsf{rk}}}
+\newcommand{\code}{\ensuremath{\mathsf{code}}}
+\newcommand{\decode}{\ensuremath{\mathsf{decode}}}
+\newcommand{\Resid}{\ensuremath{\mathsf{Resid}}}
+\newcommand{\qf}{\ensuremath{\mathsf{QF}}}
+\newcommand{\ok}{\textcolor{statusgreen}{\textbf{checked/inherited}}}
+\newcommand{\human}{\textcolor{statusamber}{\textbf{human proof}}}
+\newcommand{\outline}{\textcolor{statusamber}{\textbf{Lean outline}}}
+\newcommand{\openstatus}{\textcolor{statusred}{\textbf{residual/open}}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\FINER}
+\rhead{Finite mathematics in \iPRA}
+\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+
+\title{\bfseries FINER--iPRA\\[0.35em]
+\Large Finite-Interaction Normal Form with Explicit Residuals\\[0.5em]
+\large A general framework for compiling mathematical proofs into intuitionistic primitive recursive arithmetic}
+\author{Prepared for Vladimir Reshetnikov\\OpenAI}
+\date{16 November 2026\\Repository baseline: \texttt{64bc0e997df6b8dbdf43f5ac9b3d9f74b4047ee5}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\input{sections/00_abstract}
+\end{abstract}
+
+\vspace{0.5em}
+\noindent\textbf{Verification notice.}
+This report distinguishes four statuses throughout: inherited Lean-kernel-checked results already in ProveIt, new human proofs, uncompiled Lean blueprints, and theorem-specific residual producer obligations.  The accompanying Python code is an exact semantic reference implementation and test suite; it is not an object-language proof checker.  No new Lean-kernel theorem is claimed by this archive.
+
+\tableofcontents
+\newpage
+
+\input{sections/01_baseline}
+\input{sections/02_design}
+\input{sections/03_finite_data}
+\input{sections/04_boolean_reflection}
+\input{sections/05_master_certificates}
+\input{sections/06_trace_reflection}
+\input{sections/07_demand_closure}
+\input{sections/08_relational_viability}
+\input{sections/09_observational_descent}
+\input{sections/10_represented_mathematics}
+\input{sections/11_residuals}
+\input{sections/12_compiler_theorem}
+\input{sections/13_difficulties}
+\input{sections/14_applications}
+\input{sections/15_lean_plan}
+\input{sections/16_status}
+\input{sections/17_conclusion}
+
+\appendix
+\input{sections/A_api_map}
+\input{sections/B_reference_algorithms}
+\input{sections/C_source_audit}
+
+\begin{thebibliography}{20}
+\bibitem{ProveItRoot}
+V.~Reshetnikov, \emph{ProveIt}, directory \texttt{Logic/PrimitiveRecursiveArithmetic}, repository snapshot \texttt{64bc0e997d}, 16 November 2026.
+
+\bibitem{ConciseIPRA}
+V.~Reshetnikov, \emph{Concise presentations of intuitionistic primitive recursive arithmetic}, ProveIt/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA.
+
+\bibitem{Derivations}
+V.~Reshetnikov, \emph{iPRA derivations of theorems from the proof packets}, ProveIt/Logic/PrimitiveRecursiveArithmetic/Derivations.
+
+\bibitem{Bridge}
+V.~Reshetnikov, \emph{The Foundation--ConciseIPRA bridge}, ProveIt/Logic/PrimitiveRecursiveArithmetic/Bridge.
+
+\bibitem{Unification}
+V.~Reshetnikov, \emph{ProveIt iPRA unification plan}, \texttt{UNIFICATION-PLAN.md}.
+
+\bibitem{FQNF}
+ProveIt research packet, \emph{Finite-Query Normal Forms for Mathematics in iPRA}, 16 November 2026.
+
+\bibitem{KIFCR}
+ProveIt research packet, \emph{KIFC-R: residualized finitary compilation for iPRA}, 16 November 2026.
+
+\bibitem{CBIP}
+ProveIt research packet, \emph{Certified Bounded Interaction Programs for iPRA}, 16 November 2026.
+
+\bibitem{FiniteUse}
+ProveIt research packet, \emph{Demand-Driven Relational Certificates for Mathematics in iPRA}, 15 November 2026.
+
+\bibitem{CFP}
+ProveIt research packet, \emph{Certified Finitary Presentations for Mathematics in iPRA}, 15 November 2026.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,150 @@
+\section{Stable observers and finite observational descent}
+\label{sec:observational-descent}
+
+The internal witness chosen by a finite search is often not mathematically canonical.  Roots can permute, eigenspaces can have many bases, charts can overlap, and local representatives can differ.  FINER does not force canonical witnesses.  It proves that the requested \emph{observation} is independent of the witness, invariant modulo an explicit equivalence, or stable within an explicit error.
+
+\subsection{Three observer interfaces}
+
+Let \(C(q,c)=1\) mean that \(c\) is an accepted certificate, and let \(O(q,c)\) be an observable code.
+
+\begin{definition}[Exact observer]
+An exact observer satisfies
+\begin{equation}
+ C(q,c)=1\wedge C(q,c')=1
+ \;\to\;
+ O(q,c)=O(q,c').
+ \label{eq:exact-observer}
+\end{equation}
+\end{definition}
+
+\begin{definition}[Quotient observer]
+Given a reflected equivalence relation \(E\), a quotient observer satisfies
+\begin{equation}
+ C(q,c)=1\wedge C(q,c')=1
+ \;\to\;
+ E(O(q,c),O(q,c'))=1.
+ \label{eq:quotient-observer}
+\end{equation}
+No quotient type need be constructed; downstream predicates are required to be congruent under \(E\).
+\end{definition}
+
+\begin{definition}[Metric observer]
+Given a rational-valued primitive-recursive pseudo-distance \(d\), a metric observer has a diameter bound \(\varepsilon(q)\) and satisfies
+\begin{equation}
+ C(q,c)=1\wedge C(q,c')=1
+ \;\to\;
+ d(O(q,c),O(q,c'))\leq\varepsilon(q).
+ \label{eq:metric-observer}
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Finite choice erasure]
+\label{thm:choice-erasure}
+Assume an accepted certificate exists.  Let \(c^*=\Sel(q)\).  Then:
+\begin{enumerate}[label=(\roman*),leftmargin=2.3em]
+\item under \eqref{eq:exact-observer}, every accepted certificate has observation \(O(q,c^*)\);
+\item under \eqref{eq:quotient-observer}, every accepted observation is \(E\)-equivalent to \(O(q,c^*)\);
+\item under \eqref{eq:metric-observer}, every accepted observation lies in the \(\varepsilon(q)\)-ball around \(O(q,c^*)\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By \cref{thm:selected-certificate}, \(c^*\) is accepted.  Instantiate the corresponding pairwise observer property with \((c,c^*)\).  No choice or coherence argument is needed.
+\end{proof}
+
+\subsection{Independent-certificate regularity}
+
+Suppose each precision \(k\) has a nonempty accepted set \(C_k\), and \(O_k(c)\) is a rational approximation.  A particularly robust name interface is
+\begin{equation}
+ C_k(c)=1\wedge C_\ell(c')=1\wedge k\leq\ell
+ \;\to\;
+ d(O_k(c),O_\ell(c'))\leq 2^{-k}.
+ \label{eq:independent-stability}
+\end{equation}
+Define \(a_k=O_k(\Sel(k))\).  The selected certificates need not refine one another: \eqref{eq:independent-stability} immediately gives
+\[
+ d(a_k,a_\ell)\leq2^{-k}\qquad(k\leq\ell).
+\]
+Thus \(a\) is a regular Cauchy name by a direct object-language theorem.  This is stronger than adjacent compatibility and should be used whenever available.
+
+If only adjacent relational compatibility is known, a bounded consumer should use backward viability to construct the finite compatible segment it actually needs.  An infinite coherent branch must not be inferred without an additional producer.
+
+\subsection{Finite observational descent}
+
+Local-to-global arguments often construct local witnesses on a finite cover and then invoke quotient, sheaf, or gluing language.  When the final theorem only asks for a stable observation, the global witness can be avoided.
+
+Let \(G=(V,E)\) be a finite connected graph.  Each vertex \(v\) has a local observation \(o_v\).  Supply a rooted spanning tree \(T\subseteq E\).  For each tree edge \(e=(u,v)\), suppose one has either exact agreement or a metric estimate.
+
+\begin{theorem}[Exact observational descent]
+\label{thm:exact-descent}
+If \(o_u=o_v\) on every edge of a rooted spanning tree, then \(o_v=o_r\) for every vertex \(v\), where \(r\) is the root.
+\end{theorem}
+
+\begin{proof}
+Each non-root vertex has a parent of smaller depth.  Induct on the depth.  At depth zero the statement is reflexivity.  If \(v\) has parent \(p(v)\), the edge hypothesis gives \(o_v=o_{p(v)}\), and the induction hypothesis gives \(o_{p(v)}=o_r\).  Equality transitivity yields \(o_v=o_r\).
+\end{proof}
+
+The object proof packs parent and depth arrays, checks that every non-root parent edge is present and decreases depth, and applies quantifier-free induction to a fold over depth or to the maximum depth.
+
+\begin{theorem}[Metric observational descent]
+\label{thm:metric-descent}
+Let \(d\) satisfy reflexivity and the triangle inequality on the represented observations.  Suppose each rooted tree edge \(e\) has
+\[
+ d(o_u,o_v)\leq\varepsilon_e.
+\]
+Then for each vertex \(v\),
+\begin{equation}
+ d(o_v,o_r)\leq
+ \sum_{e\in\operatorname{path}_T(v,r)}\varepsilon_e.
+ \label{eq:tree-error}
+\end{equation}
+In particular, every local observation lies in the ball of radius
+\[
+ E_T=\max_{v\in V}\sum_{e\in\operatorname{path}_T(v,r)}\varepsilon_e
+\]
+around the root observation.
+\end{theorem}
+
+\begin{proof}
+Induct on depth.  If \(v=r\), use reflexivity and the empty sum.  Otherwise let \(p=p(v)\).  The triangle inequality gives
+\[
+ d(o_v,o_r)\leq d(o_v,o_p)+d(o_p,o_r).
+\]
+Apply the edge estimate to the first term and the induction hypothesis to the second.  Their sum is exactly the path sum for \(v\).  The maximum conclusion follows by finite comparison.
+\end{proof}
+
+\subsection{Quotient descent}
+
+The exact theorem extends verbatim to a reflected equivalence relation \(E\) with object proofs of reflexivity and transitivity.  Edge hypotheses \(E(o_u,o_v)=1\) imply \(E(o_v,o_r)=1\).  A downstream predicate \(P\) may be transported from \(o_r\) to every \(o_v\) whenever it has a checked congruence theorem
+\[
+ E(x,y)=1\wedge P(x)\to P(y).
+\]
+This realizes quotient reasoning without constructing quotient objects inside the arithmetic language.
+
+\subsection{Why a spanning tree is enough}
+
+A full finite cover may have many redundant overlaps.  The spanning tree reduces the proof to \(|V|-1\) compatibility edges.  Non-tree edges can remain useful as independent validation but are unnecessary for descent.  A tree itself can be supplied as a certificate and checked by:
+\begin{itemize}[leftmargin=2em]
+\item one distinguished root;
+\item a parent for every other vertex;
+\item parent edges belong to the cover graph;
+\item depth decreases along parents;
+\item all depths are below \(|V|\).
+\end{itemize}
+These conditions imply connectedness and acyclicity by finite descent.  They are primitive-recursive and quantifier-free after reflection.
+
+\subsection{Applications of observational descent}
+
+The theorem directly addresses several recurring constructions.
+
+\begin{description}[style=nextline,leftmargin=2.4em]
+\item[Finite sheaf gluing.]  If the requested output is an invariant of local sections and overlap compatibility makes that invariant equal, use exact descent; do not build a global section unless the theorem needs one.
+
+\item[Charts and coordinate choices.]  Local coordinate formulas may differ, but a scalar, projective, or tensorial observation can descend through checked transition identities.
+
+\item[Root and eigenvalue clusters.]  Local orderings may permute.  Symmetric polynomials, cluster multisets, characteristic-polynomial factors, and spectral projectors are quotient observations.
+
+\item[Approximate geometry.]  Local reconstructions with overlap error bounds yield a root reconstruction and an explicit global error budget by \cref{thm:metric-descent}.
+\end{description}
+
+The method does not prove the existence of local data or overlap bounds; those remain producer obligations.  It proves that once finite local certificates exist, an unnecessary infinitary gluing step can often be eliminated.

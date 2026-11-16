@@ -1,0 +1,106 @@
+\section{The FINER compiler theorem}
+\label{sec:compiler}
+
+This section assembles the preceding components into a single metatheorem.  The theorem is deliberately stated for a \emph{fixed source graph}.  Its Lean formalization is a verified compiler that constructs object syntax and derivations, not an object-level interpreter.
+
+\subsection{Specialized source graph}
+
+A source graph \(G\) contains:
+\begin{enumerate}[label=(\roman*),leftmargin=2.3em]
+\item finitely many nodes of the six classes in \cref{sec:design};
+\item primitive-recursive query encoders and node-local programs;
+\item monotone capped demand transformers;
+\item local preconditions, postconditions, and residual formulas;
+\item local object derivations proving node soundness at arbitrary terms;
+\item a terminal formula \(\Phi_G(q,o)\).
+\end{enumerate}
+Every syntax tree in this list is ordinary Lean data whose leaves are fixed \texttt{PR} symbols or already constructed object derivations.
+
+\subsection{Compilation passes}
+
+The compiler performs the following finite metalevel passes.
+
+\begin{enumerate}[label=\textbf{P\arabic*.},leftmargin=3.2em]
+\item \textbf{Demand extraction.}  Collect every node's computation and justification demands into a monotone capped transformer \(F_G\).
+
+\item \textbf{Demand closure.}  Generate the primitive-recursive iteration of \(d\mapsto d\vee F_G(d)\), its rank bound, and the least-closure derivations of \cref{thm:demand-stabilization,thm:demand-least}.  Add overflow zero as a residual or a checked consequence.
+
+\item \textbf{Specialization.}  Substitute the closed demand vector into every node.  Clocked loops and relational interactions now have explicit finite horizons and bounds.
+
+\item \textbf{Certificate layout.}  Allocate mixed-radix fields for all non-recomputed evidence and define the master bound \(M_G(q)\), decoder, checker \(C_G(q,c)\), and observer \(O_G(q,c)\).
+
+\item \textbf{Checker reflection.}  Compile all bounded checks to a normalized bit and construct the reflection derivations.
+
+\item \textbf{Local proof schedule.}  Unroll finite cyclic execution into certified iterations or viability tables, then order the resulting local sequents.  Compose them by substitution and simultaneous cut to obtain
+\begin{equation}
+  C_G(q,c)=1,\;\vec B_G(q),\;\Gamma_G(q)
+  \vdash[\PRAAx]
+  \Phi_G(q,O_G(q,c)).
+  \label{eq:generic-certificate-soundness}
+\end{equation}
+
+\item \textbf{Selection.}  Use checked bounded search to define \(c_G^*(q)\).  From the certificate-existence residual, derive \(C_G(q,c_G^*)=1\) and substitute it into \eqref{eq:generic-certificate-soundness}.
+
+\item \textbf{Residual closure.}  Leave \(\vec B_G\) in the public endpoint or close selected members with supplied producer derivations using \texttt{Prf.trans}.
+\end{enumerate}
+
+\begin{theorem}[FINER compilation]
+\label{thm:finer-compilation}
+For every well-formed fixed source graph \(G\) whose local node derivations are values of the ordinary \(\Prf\;\PRAAx\) calculus, the passes above effectively construct primitive-recursive terms \(M_G,C_G,O_G,c_G^*\), an explicit finite residual list \(\vec B_G\), and an object derivation
+\begin{equation}
+  \vec B_G(q),\Gamma_G(q)
+  \;\vdash[\PRAAx]\;
+  \Phi_G(q,O_G(q,c_G^*(q))).
+  \label{eq:finer-compiled-theorem}
+\end{equation}
+No principle stronger than the axioms \(\PRAAx\) and intuitionistic first-order logic is introduced.
+\end{theorem}
+
+\begin{proof}
+We verify each pass.
+
+\paragraph{Passes P1--P2.}
+The global demand transformer is assembled from fixed primitive-recursive node transformers using componentwise maximum and clipping.  Monotonicity is proved from the node monotonicity derivations.  The finite demand-closure theorems provide a least prefixed point and a quantifier-free proof of adequacy.
+
+\paragraph{Pass P3.}
+Object-language substitution is admissible for every derivation.  Substituting the demand terms into node-local proofs therefore preserves their conclusions.  Metalevel specialization of fixed syntax creates fixed \texttt{PR} symbols; no universal evaluator is used.
+
+\paragraph{Pass P4.}
+Finite products and sums define the mixed-radix bound and decoders.  The correctness lemmas of \cref{sec:finite-data} prove that every field read by the checker is the stored field and that every code below the bound has a canonical field vector.
+
+\paragraph{Pass P5.}
+The checker is a fixed bounded formula.  Apply \cref{thm:boolean-reflection}.  Master acceptance then yields every local check formula by propositional elimination and bounded witness extraction.
+
+\paragraph{Pass P6.}
+Exact nodes rewrite by their defining equations.  Boolean and search nodes use reflection and the checked search theorems.  Iteration nodes use \cref{thm:trace-reflection}.  Relational nodes use \cref{thm:least-path}; observation nodes use \cref{thm:choice-erasure} or the descent theorems.  Every local result is an ordinary sequent.  The finite schedule is composed with substitution, weakening, implication elimination, and simultaneous cut, all already admissible in \(\Prf\).
+
+\paragraph{Pass P7.}
+The residual list includes an accepted-certificate existence formula, unless a producer derivation has already discharged it.  Apply \cref{thm:selected-certificate} to obtain master acceptance at \(c_G^*\).  Instantiate \eqref{eq:generic-certificate-soundness} with this term and cut in acceptance.
+
+\paragraph{Pass P8.}
+Retaining residuals gives \eqref{eq:finer-compiled-theorem}.  Supplying their derivations and applying \cref{thm:residual-closure} gives an unconditional theorem under the remaining context.  Every logical operation used is a constructor or proved structural theorem of the existing ordinary calculus.
+\end{proof}
+
+\subsection{Soundness of the metalevel compiler}
+
+A Lean implementation can make \cref{thm:finer-compilation} literal: define an inductive type of well-formed node packages whose fields include their local \texttt{Prf} derivations.  The compiler recursively returns a package containing terms, formulas, residuals, and a final \texttt{Prf}.  Because \texttt{Prf} is an inductive proposition checked by Lean's kernel, a bug in the metalevel compiler cannot create a proof unless it also constructs a valid derivation value.
+
+The compiler's semantic reference algorithms may still be tested independently, but those tests are not trusted by the object theorem.  Generated terms and derivations are the certificate.
+
+\subsection{Open contexts and portability}
+
+The theorem is intentionally stated under \(\Gamma_G(q)\), not only for closed sentences.  Local hypotheses may encode an input contract, algebraic assumptions, or a theorem-specific antecedent.  This makes the result reusable at arbitrary terms.
+
+The current public Foundation bridge primarily exposes closed-sentence transport.  A compiled open theorem can be universally closed before transport, or it can wait for the planned open-sequent bridge.  The canonical maintained proof should remain the ordinary \(\Prf\;\PRAAx\) endpoint; backend-specific statements are corollaries.
+
+\subsection{What is not claimed}
+
+The compiler theorem does not assert that every informal mathematical proof can be specialized automatically.  It assumes:
+\begin{itemize}[leftmargin=2em]
+\item a finite-query formulation;
+\item fixed primitive-recursive node programs;
+\item local object derivations;
+\item monotone capped demand data;
+\item explicit residual producer formulas.
+\end{itemize}
+Finding these ingredients may require substantial mathematics.  FINER's contribution is to make their composition uniform and the remaining gap exact.

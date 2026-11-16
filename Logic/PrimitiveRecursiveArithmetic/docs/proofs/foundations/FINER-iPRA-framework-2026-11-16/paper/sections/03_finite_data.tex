@@ -1,0 +1,94 @@
+\section{Finite data, coding, and local contracts}
+\label{sec:finite-data}
+
+\subsection{One numerical sort is enough}
+
+All finite data used by the framework are natural numbers.  Tuples, signed integers, rationals, arrays, finite sets, graphs, trees, matrices, formulas of a fixed grammar, and transcripts are represented by primitive-recursive codes.  There is no requirement that all applications share one global encoding.  A theorem-specific encoding is often smaller and easier to verify.
+
+The checked repository already supplies a pairing function
+\[
+  \langle a,b\rangle=(a+b)^2+a
+\]
+with primitive-recursive projections and object proofs of the projection equations.  Repeated pairing is adequate for fixed arity.  For arrays whose length is a query parameter, a mixed-radix or bounded-sequence representation is more convenient.
+
+\subsection{Mixed-radix arrays}
+
+Let \(r_0,\ldots,r_{m-1}\geq 1\) be radices and let \(0\leq d_i<r_i\).  Define
+\begin{equation}
+  \code(d_0,\ldots,d_{m-1})
+  =\sum_{i<m} d_i\prod_{j<i}r_j.
+  \label{eq:mixed-code}
+\end{equation}
+The total range is
+\[
+  R=\prod_{i<m}r_i.
+\]
+The \(i\)-th digit is obtained by quotienting by \(\prod_{j<i}r_j\) and taking remainder modulo \(r_i\).  All operations are primitive recursive.  The checked division-with-remainder library supplies the arithmetic needed for the object proof.
+
+\begin{lemma}[Mixed-radix correctness]
+For every bounded digit vector, \(\decode_i(\code(\vec d))=d_i\).  Conversely, if \(c<R\), then re-encoding its decoded digits gives \(c\).
+\end{lemma}
+
+\begin{proof}
+For the first direction, split the sum in \eqref{eq:mixed-code} below, at, and above \(i\).  Terms below \(i\) form a number smaller than the place value \(P_i=\prod_{j<i}r_j\).  The term at \(i\) is \(d_iP_i\).  Every term above \(i\) is divisible by \(P_ir_i\).  Division by \(P_i\), followed by remainder modulo \(r_i\), therefore leaves exactly \(d_i\).
+
+For the converse, repeatedly apply the quotient-remainder equation
+\[
+  c=r_0(c\mathbin{\mathrm{quo}}r_0)+(c\mathbin{\mathrm{rem}}r_0).
+\]
+After \(m\) steps the remaining quotient is zero because \(c<R\).  Substitution yields the expansion \eqref{eq:mixed-code}.  In \iPRA, the variable-length statement is proved by quantifier-free induction on \(m\), with the current quotient and place value carried in the state.
+\end{proof}
+
+Mixed radix makes a master certificate literal: each node receives one bounded digit block, and all blocks form one number below a primitive-recursive product.  It also makes certificate minimality meaningful, because the search order is fixed.
+
+\subsection{Finite predicates and characteristic bits}
+
+A predicate used inside a loop is represented by a normalized bit \(b\) satisfying
+\begin{equation}
+  b=0\;\vee\;b=1.
+  \label{eq:bit-normal}
+\end{equation}
+The repository's equality bit \texttt{eqb} and order development provide the atomic cases.  Boolean connectives are fixed primitive-recursive operations, for example
+\[
+\begin{aligned}
+  \mathsf{not}(b)&=1\mathbin{\dot{-}} b,\\
+  \mathsf{and}(b,c)&=bc,\\
+  \mathsf{or}(b,c)&=\mathsf{sg}(b+c).
+\end{aligned}
+\]
+Because inputs are normalized, their truth tables are derivable by finite case distinction in the intuitionistic object theory.
+
+\subsection{Local proof contracts}
+
+\begin{definition}[Finite contract]
+A finite contract for queries \(q\) and outputs \(y\) consists of:
+\begin{enumerate}[label=(\roman*),leftmargin=2.3em]
+\item a certificate bound \(M(q)\);
+\item a Boolean checker \(C(q,c)\);
+\item an output decoder \(O(q,c)\);
+\item residual formulas \(B_1(q),\ldots,B_r(q)\);
+\item an object derivation
+\[
+  C(q,c)=1,\;B_1(q),\ldots,B_r(q),\Gamma(q)
+  \;\vdash[\PRAAx]\;\Phi(q,O(q,c)).
+\]
+\end{enumerate}
+All displayed programs are fixed primitive-recursive symbols after theorem specialization.
+\end{definition}
+
+A contract deliberately separates \emph{soundness} from \emph{inhabitation}.  The checker may be perfectly sound even when no accepted certificate exists.  Inhabitation is either derived by a producer theorem or retained as the residual
+\begin{equation}
+  \exists c<M(q)\;[C(q,c)=1].
+  \label{eq:certificate-exists}
+\end{equation}
+This distinction is essential in Diophantine geometry, effective analysis, and compactness arguments: a finite verifier does not create a height bound, modulus, or cover.
+
+\subsection{Composition of contracts}
+
+Suppose contract \(A\) produces \(y\) from \(q\), and contract \(B\) produces \(z\) from \((q,y)\).  A composite master certificate is the pair \(\langle c_A,c_B\rangle\), or the corresponding mixed-radix block.  Its checker is
+\[
+ C_A(q,c_A)\wedge C_B(q,O_A(q,c_A),c_B),
+\]
+and its output is \(O_B(q,O_A(q,c_A),c_B)\).  The proof is a substitution of the first soundness theorem into the second, followed by simultaneous cut.  Residual lists concatenate, with duplicates optionally removed by a metalevel normalization.
+
+No categorical machinery is needed for this basic operation, though finite contracts do form a useful category at the metalevel.  The crucial point is that composition preserves the object-theory endpoint and exposes, rather than hides, the union of residual producers.

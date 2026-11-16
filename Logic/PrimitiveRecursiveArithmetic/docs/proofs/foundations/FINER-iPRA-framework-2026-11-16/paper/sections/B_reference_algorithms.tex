@@ -1,0 +1,53 @@
+\section{Executable reference algorithms}
+\label{app:reference}
+
+The Python module \path{reference/finer_reference.py} uses only the standard library and \path{fractions.Fraction}.  It is intentionally independent of Lean and contains no symbolic theorem prover.  Its role is to make the finite algorithms and certificate formats executable before object formalization.
+
+\subsection{Implemented algorithms}
+
+\begin{description}[style=nextline,leftmargin=2.7em]
+\item[Mixed-radix coding.] \texttt{mixed\_radix\_encode}, \texttt{mixed\_radix\_decode}, and \texttt{certificate\_space\_size}.
+
+\item[Least accepted search.] \texttt{least\_accepted} returns the least accepted code or the bound, and \texttt{verify\_search\_result} checks success or exhaustive failure.
+
+\item[Demand closure.] \texttt{monotone\_demand\_closure} computes the join iteration, and \texttt{verify\_demand\_closure} checks every step and the final prefix condition.  \texttt{verify\_least\_prefixed} brute-forces leastness for small examples.
+
+\item[Backward viability.] \texttt{backward\_viability} computes viable layers and the least viable path; \texttt{verify\_viability} checks the complete dynamic-programming table and path.
+
+\item[Observers.] Exact invariance, finite diameter, and spanning-tree error accumulation are implemented for finite values.
+
+\item[Height enumeration.] \texttt{bounded\_complete\_list} and its verifier illustrate the height-bound to list direction.
+
+\item[Cubic bisection.] Exact rational bisection for \(y^3+y=x\) returns a replayable certificate.  The verifier recomputes the complete trace and final bracket.
+\end{description}
+
+\subsection{Test coverage}
+
+The fourteen unit tests cover:
+\begin{enumerate}[label=(\arabic*),leftmargin=2.3em]
+\item mixed-radix round trip;
+\item overflow rejection;
+\item successful least search;
+\item exhaustive failed search;
+\item cyclic three-coordinate demand closure;
+\item leastness of a nontrivial two-coordinate closure;
+\item a viable relational path;
+\item a nonviable relational instance;
+\item exact observer invariance;
+\item metric observer diameter;
+\item spanning-tree metric gluing;
+\item bounded complete-list verification;
+\item cubic bisection;
+\item rejection of a tampered cubic certificate.
+\end{enumerate}
+The delivered run reports all tests passing.  Test output is stored in \texttt{validation/test\_output.txt}.
+
+\subsection{Relationship to the object proof}
+
+The reference functions mirror the primitive-recursive algorithms intended for Lean.  They do not establish that the corresponding \texttt{PTm} computes the same function or that the object theory proves the advertised contract.  Each formalization milestone therefore has three separate checks:
+\begin{enumerate}[label=(\roman*),leftmargin=2.3em]
+\item semantic tests of the reference algorithm;
+\item definitional/evaluation comparison between the Lean \texttt{PR} program and the reference on fixtures;
+\item a kernel-checked \texttt{Prf PRAAx} correctness theorem.
+\end{enumerate}
+Only the third changes theorem status.

@@ -1,0 +1,73 @@
+\section{Current ProveIt API map}
+\label{app:api}
+
+This appendix records the concrete repository declarations on which the formalization plan is based.  It is an integration map, not a substitute for checking the pinned sources.
+
+\begin{longtable}{@{}p{0.29\textwidth}p{0.27\textwidth}p{0.36\textwidth}@{}}
+\toprule
+Need & Declaration/module & Intended use \\
+\midrule
+\endfirsthead
+\toprule
+Need & Declaration/module & Intended use \\
+\midrule
+\endhead
+Ordinary derivability & \texttt{ConciseIPRA.Prf} & Public object-theory endpoint \\
+Substitution and weakening & \texttt{Prf.subst}, \texttt{Prf.weaken} & Specialize reusable local proofs \\
+Simultaneous cut & \texttt{Prf.trans} & Compose graph nodes and close residuals \\
+Closed theorem reuse & \texttt{Prf.ofNil} & Use shared arithmetic under local context \\
+Open induction & \texttt{LeanProofs.IPRA.ind} & Trace, fold, rank, and table invariants \\
+Closed derivation instantiation & \texttt{LeanProofs.IPRA.inst} & Arbitrary terms and contexts \\
+Primitive-recursive term compiler & \texttt{PTm.toPR}, \texttt{toPR\_eq} & Turn fixed terms into symbols \\
+Primitive recursion & \texttt{recDef}, \texttt{rec1}, \texttt{rec2} & States, folds, viability tables \\
+Finite sums/products & \texttt{sumF}, \texttt{prodF} & Boolean folds, ranks, error accumulation \\
+Equality bit & \texttt{eqb}, \texttt{eqb\_of\_eq}, \texttt{eqb\_of\_ne} & Atomic reflection and branching \\
+Pairing/projections & \texttt{pairT}, \texttt{fstT}, \texttt{sndT} & Packed states and certificates \\
+Simultaneous recursion & \texttt{Core.Pairing} simultaneous section & Multi-component state machines \\
+Order & \texttt{Core.Order} & Bounds, monotonicity, finite minima \\
+Bounded search & \texttt{Search.mu} & Least accepted certificate \\
+Search specification & \texttt{search\_spec} & Bound, success, minimality in one theorem \\
+Known witness search & \texttt{search\_found} & Derive selected certificate from existence \\
+Minimality & \texttt{search\_minimal} & No earlier accepted code \\
+Division/remainder & \texttt{Core.Division} & Mixed-radix digits and arrays \\
+Finite multi-sums & \texttt{Core.MultiSums} & Variable-size tables and error sums \\
+Ring normalization & \texttt{Core.Tactic.ipra\_ring} & Polynomial identities such as cubic monotonicity \\
+Foundation export & \texttt{IPRABridge} closed interfaces & Backend corollary after ordinary proof \\
+\bottomrule
+\end{longtable}
+
+\subsection{Representative exact theorem shapes}
+
+The checked open induction wrapper has the conceptual shape
+\begin{lstlisting}[language={}]
+theorem ind (phi : Fm PTm (k+1)) (hqf : phi.QF)
+    (h0 : [] |- [PRAAx] phi[0])
+    (hS : [phi] |- [PRAAx] phi[S(var 0)]) :
+    [] |- [PRAAx] phi
+\end{lstlisting}
+with precise repository substitution notation.
+
+The checked search theorem has the conceptual consequence
+\begin{lstlisting}[language={}]
+search_found
+  (hf : Gamma |- [PRAAx] f(i,x) = 0)
+  (hi : Gamma |- [PRAAx] i < N) :
+  Gamma |- [PRAAx]
+    mu(f,N,x) < N /\
+    f(mu(f,N,x),x) = 0 /\
+    mu(f,N,x) <= i
+\end{lstlisting}
+This is exactly the selected-certificate lemma after defining \(f=1\dot{-}\CertCheck\).
+
+The checked simultaneous-cut theorem has the conceptual shape
+\begin{lstlisting}[language={}]
+theorem Prf.trans
+    (h : Gamma |- [Ax] phi)
+    (s : forall psi in Gamma, Delta |- [Ax] psi) :
+    Delta |- [Ax] phi
+\end{lstlisting}
+which is the public residual-discharge operation.
+
+\subsection{Import-boundary recommendation}
+
+The generic FINER library should have a narrow dependency boundary: the ordinary calculus and only the small arithmetic modules it actually uses.  Application modules may import the bridge or Foundation, but the finite compiler kernels should not import Busy Beaver, ZFC-in-PA, Diophantine certificates, or packet-specific data.  This follows the repository's unification plan and keeps compilation costs and theorem provenance understandable.

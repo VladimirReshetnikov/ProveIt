@@ -1,0 +1,177 @@
+\section{Worked application patterns}
+\label{sec:applications}
+
+The examples below are not substitutes for theorem-specific developments.  They show how broad mathematical constructions factor through the common kernel and where their residual boundaries lie.
+
+\subsection{Exact rational bisection for \(y^3+y=x\)}
+\label{sec:cubic-example}
+
+Fix a rational input \(x\) and rationals \(L_0\leq U_0\) satisfying
+\begin{equation}
+  f_x(L_0)\leq0\leq f_x(U_0),
+  \qquad f_x(y)=y^3+y-x.
+  \label{eq:cubic-bracket}
+\end{equation}
+All rational statements are represented by cleared integer inequalities.
+
+\begin{lemma}[Strict monotonicity]
+If \(u<v\), then \(f_x(u)<f_x(v)\).
+\end{lemma}
+
+\begin{proof}
+Factor the difference:
+\[
+ f_x(v)-f_x(u)
+ =(v-u)(v^2+uv+u^2+1).
+\]
+The first factor is positive.  The second is positive because
+\[
+ v^2+uv+u^2
+ = (v-u)^2+3uv
+\]
+after one rearrangement is not uniformly nonnegative when \(uv<0\), so that form is not ideal.  Instead use
+\[
+ v^2+uv+u^2
+ = \left(v+\frac{u}{2}\right)^2+\frac{3u^2}{4}\geq0.
+\]
+To avoid division in the object proof, clear denominators:
+\[
+ 4(v^2+uv+u^2)=(2v+u)^2+3u^2\geq0.
+\]
+Thus \(v^2+uv+u^2+1>0\).  Multiplication by the positive factor \(v-u\) preserves positivity.  The identity is a polynomial identity suitable for the repository's ring tool; positivity uses the checked order library.
+\end{proof}
+
+Define the midpoint \(M_t=(L_t+U_t)/2\) and update
+\[
+ (L_{t+1},U_{t+1})=
+ \begin{cases}
+   (M_t,U_t),& f_x(M_t)\leq0,\\
+   (L_t,M_t),& f_x(M_t)>0.
+ \end{cases}
+\]
+For exact rational arithmetic, store dyadic-scaled endpoints so division by two is a shift in the denominator.  The branch bit is reflected by order; the update is a total primitive-recursive selector.
+
+\begin{theorem}[Bisection invariant]
+For every \(t\),
+\begin{align}
+ L_t&\leq U_t,\label{eq:bisect-order}\\
+ f_x(L_t)&\leq0\leq f_x(U_t),\label{eq:bisect-sign}\\
+ U_t-L_t&=2^{-t}(U_0-L_0).\label{eq:bisect-width}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Use quantifier-free induction on \(t\).  The base is \eqref{eq:cubic-bracket}.  For the step, split on the reflected comparison \(f_x(M_t)\leq0\).  In the first branch, the lower sign condition is the branch hypothesis and the upper condition is inherited; in the second, the lower condition is inherited and the upper condition follows from the negated comparison, using decidability to obtain \(0<f_x(M_t)\) and hence \(0\leq f_x(M_t)\).  The midpoint lies between the endpoints by rational arithmetic.  In either branch the width is halved.  All three clauses are equations or order formulas and can be compiled to a quantifier-free conjunction.
+\end{proof}
+
+For query \(k\), choose \(t\) so that \(2^{-t}(U_0-L_0)\leq2^{-k}\).  The observation is the interval \([L_t,U_t]\), or its midpoint with radius half the width.  No completed real root or exact branch selector is required.  Strict monotonicity proves any two valid brackets of width \(2^{-k}\) have compatible observations, yielding a regular name.
+
+The accompanying Python certificate records the initial bracket, number of steps, and final bracket; its verifier recomputes all steps exactly with \texttt{Fraction}.  The object formalization should recompute branch bits and endpoints rather than trust them.
+
+\subsection{Finite-net approximate minimization}
+
+Let \(X\) be represented at query \(k\) by a finite net \(N_k\), and let \(f\) have a modulus guaranteeing
+\begin{equation}
+ d(x,y)\leq\delta_k\quad\Longrightarrow\quad |f(x)-f(y)|\leq\eta_k.
+ \label{eq:min-modulus}
+\end{equation}
+Assume coverage:
+\begin{equation}
+ \forall x\in X\;\exists y\in N_k\;d(x,y)\leq\delta_k.
+ \label{eq:net-coverage}
+\end{equation}
+Finite search selects \(y^*\in N_k\) with the least approximated value, including enough evaluation precision to make comparison error at most \(\rho_k\).
+
+\begin{theorem}[Approximate minimum from a certified net]
+For every represented \(x\in X\),
+\begin{equation}
+ f(y^*)\leq f(x)+\eta_k+2\rho_k.
+ \label{eq:approx-min}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Coverage supplies a net point \(y\) within \(\delta_k\) of \(x\).  By \eqref{eq:min-modulus}, \(f(y)\leq f(x)+\eta_k\).  The selected approximate value is no larger than the approximate value at \(y\).  Replacing both approximations by true values costs at most \(\rho_k\) on each side, giving \eqref{eq:approx-min}.
+\end{proof}
+
+The generic verifier and search are resolved.  The residuals are exactly the finite net, coverage theorem, evaluation error, and modulus.  For a rational box they are primitive-recursive producers; for an abstract compact presentation they are input data or deeper theorems.
+
+\subsection{Root clusters and spectral data}
+
+For a monic polynomial with approximate coefficients, exact ordered roots are unstable at collisions.  A FINER interface can instead return:
+\begin{itemize}[leftmargin=2em]
+\item disjoint rational disks or intervals, each with a certified root count;
+\item the multiset of cluster centers and radii;
+\item symmetric polynomial observations;
+\item a factorization up to a stated coefficient error.
+\end{itemize}
+The master certificate contains contour, Sturm, resultant, or interval-arithmetic checks appropriate to the coefficient representation.  Internal root orderings are quotient witnesses under permutation.
+
+If a residual proves pairwise cluster separation by \(\delta>0\), least matching between consecutive precisions yields stable labels.  Without that residual, the public theorem remains at the cluster or multiset level.  The same principle applies to matrices: characteristic coefficients and invariant subspaces are unconditional finite observations; individual normalized eigenvectors require a spectral gap and a normalization guard.  Spectral projectors are often the best quotient observer because they remain stable through basis changes within an eigenspace.
+
+\subsection{Diophantine enumeration}
+
+Let \(P(q,x)=0\) be a fixed polynomial or finite Diophantine system and let \(h(x)\) be the chosen height.  Given a residual
+\[
+  P(q,x)=0\to h(x)\leq H(q),
+\]
+compute an enumeration bound \(E(H(q))\), scan every code below it, and retain exactly the solutions.  Boolean reflection proves every entry is a solution; the height residual proves every solution occurs.  Duplicate removal uses least occurrence.
+
+The final theorem may state:
+\begin{enumerate}[label=(\roman*),leftmargin=2.3em]
+\item the output list contains only solutions;
+\item every solution appears;
+\item a requested aggregate, such as cardinality, maximum height, or a finite sum over solutions, is correct.
+\end{enumerate}
+The finite enumeration layer is generic.  In Runge-type cases, an explicit estimate may discharge the height residual.  In a general Faltings or Siegel application, the residual identifies the actual missing effective theorem; a finite checker does not close it.
+
+\subsection{Mordell--Weil style finite descent}
+
+A bounded descent consumes:
+\begin{itemize}[leftmargin=2em]
+\item a finite list of covering classes;
+\item for each used class, a finite relation of rational representatives;
+\item local solubility and compatibility certificates;
+\item a descent map and a strictly decreasing height or rank;
+\item a terminal bounded list.
+\end{itemize}
+Backward viability chooses representatives only along successful branches.  A generic descent theorem proves termination from the decreasing rank and checks reconstruction.  The residual boundary is a representative-completeness theorem and, in general, a height or saturation bound.  This is more accurate than treating a finite cohomological class list as a point list.
+
+\subsection{Finite probability and expectation}
+
+For a finite weighted law \((w_i,X_i)_{i<n}\), define
+\[
+ W=\sum_{i<n}w_i,
+ \qquad
+ S=\sum_{i<n}w_iX_i.
+\]
+The expectation is the rational pair \((S,W)\).  Linearity is a finite-sum identity; monotonicity is a termwise order theorem plus sum monotonicity.  Markov's inequality can be cleared of division:
+\[
+ a\sum_i w_i[\,X_i\geq a\,]
+ \leq \sum_i w_iX_i
+\]
+after representing indicators by reflected bits.  Chebyshev follows from the same finite Markov argument applied to squared centered values and cleared rational arithmetic.
+
+For an approximated countable law, a query \(k\) supplies a finite truncation and a tail moment bound.  The finite theorem proves the truncated identity and adds the tail error.  The tail bound is a residual or a producer theorem.  Exact quantiles at atoms should be represented by median intervals or guarded by anti-concentration data.
+
+\subsection{Finite topology and carriers}
+
+Suppose a represented map between finite complexes sends each source vertex to a nonempty finite cloud of target vertices.  A strong carrier condition states that the union of clouds over every source simplex lies in one target simplex.  Then every vertexwise selection is simplicial.  Any two selections are contiguous because their combined image of a source simplex lies in the same carrier simplex.  The standard prism formula gives a finite chain homotopy.
+
+Every statement is a bounded array identity.  Backward viability is only needed when clouds at adjacent refinement levels must be compatible.  If the final homology map is invariant under every selection, exact observer erasure eliminates the choices independently.  The residuals are the carrier and refinement certificates, not abstract continuity.
+
+\subsection{Finite local algebra and observational gluing}
+
+Consider a finite affine cover with local module elements \(s_v\) and overlap witnesses.  If the terminal theorem asks only for a polynomial invariant \(I(s_v)\) known to agree on overlaps, choose a spanning tree and apply exact observational descent to obtain one global invariant value.  This avoids constructing a global module element.  If a global element is required, the usual finite equalizer or Cech kernel can itself be a bounded linear-algebra certificate; its existence remains a separate local-to-global producer.
+
+\subsection{Busy Beaver and consistency reductions}
+
+Machine simulations, proof predicates, and bounded searches are especially well suited to FINER:
+\begin{itemize}[leftmargin=2em]
+\item literal transition tables are finite exact data;
+\item run traces are certified iterations;
+\item syntax and proof checking are fixed primitive-recursive programs;
+\item reduction-specific arithmetic is composed from checked core lemmas;
+\item exact machine and theory identifiers remain in the residual/provenance record.
+\end{itemize}
+The framework does not change the strength of the consistency statement and should not conflate a semantic nonhalting proof, an object-theory equivalence, and a bridge export.  It does provide a disciplined route for sharing arithmetic and trace reflection across such reductions.

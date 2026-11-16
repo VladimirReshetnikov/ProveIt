@@ -1,0 +1,96 @@
+\section{Relational witnesses and backward viability}
+\label{sec:viability}
+
+Exact mathematical witnesses are often non-unique, discontinuous, or expensive to name.  A producer may nevertheless return a finite relation of locally valid answers.  A bounded consumer only needs a compatible finite run.  Backward viability converts that need into a deterministic finite calculation without assuming a global choice function.
+
+\subsection{Layered relational systems}
+
+Fix a horizon \(T\).  At time \(t\), states satisfy \(s<B_t(q)\).  Let
+\[
+  R_t(q,s,s')\in\{0,1\}
+\]
+be a reflected edge relation from layer \(t\) to layer \(t+1\), and let \(A(q,s)\) be the terminal acceptance bit.  Define viability backwards:
+\begin{align}
+ V_T(q,s)&=A(q,s),\label{eq:viable-terminal}\\
+ V_t(q,s)&=\bigvee_{s'<B_{t+1}(q)}
+   \bigl(R_t(q,s,s')\wedge V_{t+1}(q,s')\bigr).
+ \label{eq:viable-backward}
+\end{align}
+The disjunction is a finite Boolean fold.  Hence the complete table \(V_t(s)\) is primitive recursive.  For variable \(T\), compute it by recursion on the reversed time index, packing the current layer table into one number.
+
+\begin{theorem}[Viability correctness]
+\label{thm:viability-correct}
+For every state \(s<B_t(q)\), \iPRA{} proves
+\begin{equation}
+ V_t(q,s)=1
+ \quad\leftrightarrow\quad
+ \text{there is an accepted relational path from \(s\) of length \(T-t\)}.
+ \label{eq:viability-path-equivalence}
+\end{equation}
+Here the right side is represented by one bounded path code and a fixed primitive-recursive path checker.
+\end{theorem}
+
+\begin{proof}
+Induct on the remaining horizon \(h=T-t\).
+
+For \(h=0\), a path consists only of its initial state, and acceptance is exactly \eqref{eq:viable-terminal}.
+
+For the successor case, expand \eqref{eq:viable-backward}.  If \(V_t(q,s)=1\), Boolean reflection of the finite disjunction yields some \(s'<B_{t+1}\) such that \(R_t(q,s,s')=1\) and \(V_{t+1}(q,s')=1\).  The induction hypothesis supplies a path from \(s'\); prepend \(s\).  Conversely, any accepted path has a first successor \(s'\) satisfying the edge relation and an accepted tail.  The induction hypothesis gives \(V_{t+1}(q,s')=1\), so the corresponding disjunct makes \(V_t(q,s)=1\).
+
+The induction predicate is not the displayed existential formula.  In the object proof, both sides are reflected bits: one is the recursively computed viability bit and the other is the path-checker bit.  Their equality is quantifier-free.
+\end{proof}
+
+\subsection{Least viable replay}
+
+Define the chosen successor of a viable state to be the least \(s'<B_{t+1}\) such that
+\[
+  R_t(q,s,s')=1\quad\text{and}\quad V_{t+1}(q,s')=1.
+\]
+The body is reflected, so \cref{cor:least-bounded-witness} supplies the term.  Starting from an initial viable state \(s_0\), primitive recursion generates a canonical path.
+
+\begin{theorem}[Least successful transcript]
+\label{thm:least-path}
+If \(V_0(q,s_0)=1\), the forward least-viable replay produces a path \(s_0,\ldots,s_T\) such that every edge relation holds and \(A(q,s_T)=1\).
+\end{theorem}
+
+\begin{proof}
+Use quantifier-free induction on \(t\) with invariant
+\[
+  V_t(q,s_t)=1
+  \quad\wedge\quad
+  \mathsf{PrefixValid}(q,t,\tau)=1.
+\]
+after compiling prefix validity to a bit.  The base is the hypothesis and the empty-prefix equation.  In the step, viability correctness guarantees at least one viable successor; least search returns one and proves both the edge bit and next-layer viability.  Extend the prefix checker.  At \(T\), \eqref{eq:viable-terminal} converts viability to acceptance.
+\end{proof}
+
+This theorem is a finite replacement for choice.  It does not select a witness independently at every precision or for every input object.  It selects the least answer needed by one bounded interaction, after proving that this answer has a successful continuation.
+
+\subsection{Failure certificates}
+
+If \(V_0(q,s_0)=0\), the backward table is finite evidence that no accepted path exists.  A checker verifies the terminal table and every backward recurrence.  Soundness follows from the reverse direction of \cref{thm:viability-correct}.
+
+This dual evidence is useful in decision procedures.  A successful search returns a path; a failed search returns a table that closes all possible continuations.  Neither branch relies on an external assertion that the search was exhaustive.
+
+\subsection{Bounded alternation}
+
+Relational viability generalizes to fixed bounded games.  At an existential node, the winning bit is a finite disjunction of winning children; at a universal node, it is a finite conjunction.  A winning existential strategy stores one selected child at existential levels and child strategies for every universal response.  The dual certificate reverses these roles.
+
+\begin{proposition}[Fixed finite game reflection]
+For every fixed finite game grammar with primitive-recursive move bounds and reflected terminal atoms, there are primitive-recursive winning and losing bits, bounded strategy encodings, and object proofs that an accepted strategy has the claimed outcome.
+\end{proposition}
+
+\begin{proof}
+Structural induction on the fixed game tree constructor.  Terminal nodes use atomic reflection.  Existential and universal nodes use the bounded disjunction and conjunction cases of \cref{thm:boolean-reflection}; witness extraction and least counterexamples use bounded search.  Strategy soundness follows by the same induction.  If the horizon is a query variable, represent the backward evaluator as a clocked state machine and apply trace reflection.
+\end{proof}
+
+This proposition captures finite classical search, minimax arguments, bounded adversarial constructions, and finite back-and-forth comparisons.  It does not yield determinacy or strategies for unbounded games.
+
+\subsection{Compatible paths versus independent witnesses}
+
+A common invalid step is:
+\begin{quote}
+For every \(t\) there exists a valid witness \(w_t\); therefore choose witnesses that form a valid run.
+\end{quote}
+Pointwise existence does not imply compatibility.  Backward viability repairs the argument by testing continuations before choosing the current answer.  If the initial state is not viable, the desired compatible run simply does not exist within the declared finite bounds, even though every layer may be nonempty.
+
+For outputs that do not require a compatible run, a stronger and cheaper alternative is independent-certificate stability: prove directly that every accepted certificate at the relevant query has the same observation, or observations within a prescribed diameter.  Then least selection may be performed independently.  This is developed in \cref{sec:observational-descent}.
