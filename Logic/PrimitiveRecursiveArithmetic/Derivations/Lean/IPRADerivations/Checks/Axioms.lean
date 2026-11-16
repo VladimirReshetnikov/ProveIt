@@ -173,6 +173,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_cb
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_pos
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.moment_quotient
+#print axioms LeanProofs.IPRA.add_le_add₂
+#print axioms LeanProofs.IPRA.sum_le_params
+#print axioms LeanProofs.IPRA.Probability.MedianCounts.trichotomy_bits
+#print axioms LeanProofs.IPRA.Probability.MedianCounts.partition
+#print axioms LeanProofs.IPRA.Probability.MedianCounts.counts_le
+#print axioms LeanProofs.IPRA.Probability.MedianCounts.below_mono
+#print axioms LeanProofs.IPRA.Probability.MedianCounts.above_anti
+#print axioms LeanProofs.IPRA.Probability.MedianCounts.med_interval
 #print axioms LeanProofs.IPRA.pw_add
 #print axioms LeanProofs.IPRA.pw_le_pw
 #print axioms LeanProofs.IPRA.le_self_pw
