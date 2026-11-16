@@ -74,6 +74,8 @@ formula of arity zero and `trBody` of a formula under one binder, with no size c
 | `PA194FixedAxiomQuotes` | Imports `PA194PAeqTargetInventory`. `q_eq`, `q_add`, `q_mul`, `q_succ`, `q_implies`: quotes of the standard syntax of the arithmetic language as the codes used here. `tr_close_quote`: closing one standard quantifier. `addCongruence_tr`, `mulCongruence_tr`, `addSucc_tr`, `mulSucc_tr`: `GDerivable T {tr ⌜σ⌝}` for the four quoted axioms. |
 | `PA194GuardedClosed` | `discharge_step_of_shift`, `gd_provable_of_shift`: a guarded derivation of a formula that is not changed by the shift of free variables is a proof, when `T` proves that the domain is inhabited; the argument of `discharge_guards` with an arbitrary such formula in place of `⊥`. `tr_provable_of_closed`: the same for `tr φ` with `φ` invariant under shift. `addCongruence_provable`, `mulCongruence_provable`, `addSucc_provable`, `mulSucc_provable`: `Provable T (tr ⌜σ⌝)`. |
 | `PA194InductionWiring` | `indBody_valid`. `tr_close_iter`: for a `Σ₁` iteration `cl` of a binder `B` that inverts opening, a guarded derivation of `tr φ` gives one of `tr (cl n φ)` for every internal `n`, by `Σ₁` induction on `n`. `induction_closed`, `induction_closed_provable`: the translated induction axiom with `n` parameters closed. `indCode_quotes`: `indCode q` in terms of the quotes of `Ordinal.domain`, `Ordinal.zero` and `Ordinal.successor` at bound variables. |
+| `PA194SuccessorLaws` | The sentences `sAP`, `sMP`, `sAC` over the letters and their meaning in a structure (`ev_sAP`, `ev_sMP`, `ev_sAC`); `m_a3`, `m_m3`: the two successor facts follow from them under the twelve hypotheses; `a3_of_predecessor`, `m3_of_predecessor`: the corresponding internal proofs of `tHyp sA3` and `tHyp sM3`. |
+| `PA194SemanticSupply` | Imports `PA194TypedTheory` and `PA194AdjunctiveFullSep`. `letterStructure`, `eval_sinst`, `sinst_closed`, `tau0_closed`; `source_supply`: a fixed hypothesis `tHyp φ` is internally provable in `adjunctiveFullSepTheory` if `φ` holds in the letter structure of every structure with equality that satisfies weak adjunction and all separation instances. |
 | `PA194OrdinalInductionLink` | For models of the candidate PRA presentation, as in `pa194-model-axioms`. Imports `PA194UniformOrdinalFullSource` and `PA194SourceInhabited`. `ordinalInductionCode_eq : ordinalInductionCode q = indCode q`; `indCode_provable`: `adjunctiveFullSepTheory` proves `indCode q` for every internal property `q`; `induction_supplier_fullSource`: the induction supplier `hind` for that theory from its `TermFacts` and `SourceFacts`. |
 | `PA194InductionSupplier` | Imports `PA194PAeqClosedInduction`, `PA194PAeqOpeningFormulaInverse` and `PA194ClosedSentenceEnvironment`. `inductionBody_eq : inductionBody p = indBody p`. `closedInduction_tr_provable`: `Provable T (tr (closedInduction p))`, by `induction_closed_provable` with `close` and `bindFormula 0`. `induction_supplier`: the same at `rootParameters`, by `sentence_root_packet`. |
 
@@ -175,6 +177,26 @@ model. Of its three fields, `inhabited` is proved for these theories in `pa194-m
   connects these four axioms and the ordinal induction supplier to refutation
   transport and modeled scheduler halting. The actual source proofs of `sA3` and
   `sM3` remain open.
+
+  `PA194SuccessorLaws` reduces `sA3` and `sM3` to statements that follow the definition of
+  the addition and multiplication traces: `sAP` (if `u` is a successor of `t` and `o` a sum
+  of `u` and `b`, some member `d` of the domain is a sum of `t` and `b` and has `o` as a
+  successor; the shape of `addPredecessorResult` of the relational source development),
+  `sMP` (the same for products, with `o` a sum of `d` and `b`; `mulPredecessorResult`) and
+  `sAC` (sums of `a, b` and of `b, a` are isomorphic). `a3_of_predecessor` derives `sA3`
+  from `SourceFacts T` and `sAP`; `m3_of_predecessor` derives `sM3` from `SourceFacts T`,
+  `sMP` and `sAC`. The three statements are not proved for the actual source theory.
+- A second way to supply fixed facts. Every fixed hypothesis here is the typed quote of a
+  standard sentence of the source language, `tHyp φ = ⌜sinst tau0 φ⌝`. `PA194SemanticSupply`
+  proves `source_supply`: `adjunctiveFullSepTheory.internalize V ⊢ tHyp φ` holds in every
+  model `V` of `IΣ₁` if `φ` is true in the letter structure of every nonempty structure `N`
+  of the relational source language in which equality is equality, weak adjunction holds,
+  and every separation instance holds at every assignment of its parameters. It uses the
+  completeness theorem, the first derivability condition, the characterization
+  `fullSepTheory_mem_iff_typed` of the separation theory, `eval_sinst` (truth of a standard
+  instance is truth in the structure whose letters are the relations defined by the
+  standard formulas) and `sinst_closed`. So a fixed fact can be proved as a statement about
+  such structures, with no derivation written. No fixed fact is proved this way yet.
 - `inhabited` for the actual source theory is proved outside this directory
   (`PA194SourceInhabited.inhabited_provable` in `pa194-model-logic`), from the standard
   derivation of the empty-set formula.
@@ -201,7 +223,11 @@ facts about relations in `PA194NameSemantics` list `propext` alone and the other
 three axioms. `PA194InductionForms` and `PA194InductionSchema` were compiled the same way;
 their seven and nine reports are the same three axioms. So were `PA194ArithFacts` and
 `PA194FixedAxiomQuotes` (nine and six reports, the same three axioms), the latter also
-against a locally compiled `PA194PAeqTargetInventory`, `PA194OrdinalInductionLink` (three
+against a locally compiled `PA194PAeqTargetInventory`, `PA194SuccessorLaws` (six reports;
+`m_a3` and `m_m3` use `propext` only, the other four the same three axioms),
+`PA194SemanticSupply` (four reports, the same three axioms; five of its imports from
+`pa194-model-axioms` and `pa194-model-logic` were compiled locally for it),
+`PA194OrdinalInductionLink` (three
 reports, the same three axioms; its imports from `pa194-model-axioms` and `pa194-model-logic`
 were compiled locally from the repository sources, 211 modules), `PA194InductionSupplier` (three
 reports, the same three axioms; its imports from `pa194-model-logic` were compiled locally
