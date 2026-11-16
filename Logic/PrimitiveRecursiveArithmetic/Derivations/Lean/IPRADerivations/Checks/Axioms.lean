@@ -185,6 +185,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Euler.pointwise
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Euler.cop_prod
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Euler.euler
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Order.pw_rem_congr
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Order.gcd_pos_right
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Order.phi_pos
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Order.order_minimal
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Order.order_divides_totient
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
