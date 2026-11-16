@@ -3,9 +3,9 @@ set -euo pipefail
 ulimit -s unlimited
 ulimit -c 0
 
-candidate=${1:?candidate (PA194LC or PA1944L) required}
+candidate=${1:?candidate required}
 case "$candidate" in
-  PA194LC | PA1944L) ;;
+  PA194LC | PA1944L | PA194LCA | PA194M4R) ;;
   *) printf 'Unknown candidate %s\n' "$candidate" >&2; exit 2 ;;
 esac
 base=$(cd -- "${2:?verified table stage required}" && pwd)

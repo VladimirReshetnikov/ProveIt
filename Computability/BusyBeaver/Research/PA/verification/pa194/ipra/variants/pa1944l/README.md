@@ -37,6 +37,16 @@ that LC_A and M4R agree with PA1944L on every other working control.
 The [model startup theorems](../PA194CommonModelStartup.lean) transfer the
 same trace to the two pinned tables in every arithmetic `IΣ₁` model.
 
+The [LC_A](../pa194lca/PA194LCANative.lean) and
+[M4R](../pa194m4r/PA194M4RNative.lean) native derivations use their exact
+trie, register operations, and source root. Each takes the full finite
+site certificate as its premise.
+
 ```sh
-bash "$variants/check-common-startup.sh" "$four_l" /dev/shm/pa194-common-startup
+common=/dev/shm/pa194-common-startup
+bash "$variants/check-common-startup.sh" "$four_l" "$common"
+bash "$variants/check-shared-trie-model.sh" PA194LCA "$common" /dev/shm/pa194lca-model
+bash "$variants/check-shared-trie-model.sh" PA194M4R "$common" /dev/shm/pa194m4r-model
+bash "$variants/check-linear-coverage.sh" PA194LCA /dev/shm/pa194lca-model /dev/shm/pa194lca-coverage
+bash "$variants/check-linear-coverage.sh" PA194M4R /dev/shm/pa194m4r-model /dev/shm/pa194m4r-coverage
 ```

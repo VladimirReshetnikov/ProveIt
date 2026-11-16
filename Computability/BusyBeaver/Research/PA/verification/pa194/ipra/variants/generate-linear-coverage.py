@@ -8,6 +8,8 @@ checkers = {
     "PA194LC": "PA194LCChecks",
     "PA194LCC": "PA194LCCChecks",
     "PA1944L": "PA1944LChecks",
+    "PA194LCA": "PA194LCAChecks",
+    "PA194M4R": "PA194M4RChecks",
 }
 if len(sys.argv) != 3 or sys.argv[1] not in checkers:
     raise SystemExit(f"usage: generate-linear-coverage.py {{{','.join(checkers)}}} OUTPUT")
