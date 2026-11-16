@@ -118,7 +118,10 @@ the full source theory. The generic [reflexive naming](pa194-work/pa194-model-lo
 and [transfer from uniqueness](pa194-work/pa194-model-logic/NAME-OF-UNIQ.md)
 fields are also proved. A separately replayed generic reduction derives all naming
 fields from twelve fixed source facts and variable-name existence; the latter is
-proved for the full source theory, while the twelve facts are not yet all supplied.
+proved for the full source theory. Of the twelve fixed facts,
+[equality reflexivity and successor existence](pa194-work/pa194-model-axioms/SOURCE-FIXED-FACTS.md)
+and [domain-zero existence](pa194-work/pa194-model-axioms/SOURCE-Z1.md) are
+proved in the covered models; the remaining facts are open.
 A [successor-value transport](pa194-work/pa194-model-axioms/SUCC-VALUE-FULL-SOURCE.md)
 is proved in the covered models, including for nonstandard term codes. The
 remaining source axiom suppliers are open. Identity translation is independent
