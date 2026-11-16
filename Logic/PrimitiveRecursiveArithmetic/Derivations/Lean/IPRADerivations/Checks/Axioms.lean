@@ -363,6 +363,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SumReindex.cM_le
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SumReindex.reindex_eq
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SumReindex.reindex_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Smooth.dvd_mul_mul
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Smooth.pw_dvd_base
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Smooth.pw_dvd_exp
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Smooth.A_dvd_mono
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Smooth.prime_dvd_A
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Smooth.sm_core
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Smooth.smooth_self
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Smooth.smooth_all
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.iS_pair
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.nth_pair_succ
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.bell_zero
