@@ -1,4 +1,4 @@
-"""Generate kernel-reduced coverage for each bounded primary source site."""
+"""Generate kernel-reduced coverage for each bounded source site."""
 
 from pathlib import Path
 import sys
@@ -10,6 +10,8 @@ checkers = {
     "PA1944L": "PA1944LChecks",
     "PA194LCA": "PA194LCAChecks",
     "PA194M4R": "PA194M4RChecks",
+    "PA194LCB": "PA194LCBChecks",
+    "PA194AX11H": "PA194AX11HChecks",
 }
 if len(sys.argv) != 3 or sys.argv[1] not in checkers:
     raise SystemExit(f"usage: generate-linear-coverage.py {{{','.join(checkers)}}} OUTPUT")
@@ -18,7 +20,7 @@ checker = checkers[candidate]
 coverage = f"{candidate}Coverage"
 out = Path(destination)
 out.mkdir(parents=True, exist_ok=True)
-sites = 3673
+sites = 3671 if candidate == "PA194AX11H" else 3673
 block_size = 64
 kernel_size = 16
 blocks = [(base, min(base + block_size, sites)) for base in range(0, sites, block_size)]

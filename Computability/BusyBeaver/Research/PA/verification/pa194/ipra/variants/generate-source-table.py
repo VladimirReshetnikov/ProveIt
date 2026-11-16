@@ -5,6 +5,22 @@ from pathlib import Path
 import sys
 
 variants = {
+    "PA194LCB": (
+        "pa194_loop_continuation_research_2026-11-14/machines/PA194LC_B",
+        {
+            "machine.tm": "4b2b45e97fdd5f8a6e22c4f552dc3f26252c170e85cdb5ddb27ad5d5c580982a",
+            "labels.json": "fb3e694862543de6011c30dcc1b71be0a6b4082a310e03de72146597c77ef7bf",
+            "sites.json": "f8bbc75985b4e63bd1afe49ff8a7628cf45d1b8a2f0a309bdbef61b47165ecae",
+        },
+    ),
+    "PA194AX11H": (
+        "pa194_ax11h_research_2026-11-14/machine",
+        {
+            "machine.tm": "c5dfe1026d077d3e062eca11edb789597bfbbced4f6040f8828ae5d467b1167a",
+            "labels.json": "1d2af5a756e731ce2d8d88811a6c8d3c37373f0d5d51586f12ae49c53e40a37c",
+            "sites.json": "fd50d10d10052ddf5cd35cbbe221793366c1e3e703c18426596103ecd6b0edb7",
+        },
+    ),
     "PA194OR": (
         "PA194ORH_research_2026-11-15/machines/PA194OR",
         {
@@ -58,11 +74,17 @@ for name, digest in pins.items():
     assert sha256(raw[name]).hexdigest() == digest, name
 primary = (packets / "pa194_conpa_2026-11-13/construction/source/pa194.instructions.json").read_bytes()
 assert sha256(primary).hexdigest() == "6c3127cd0da15fda49ed99cea199a009b9bc1e1707100846df9a2df02a22d507"
-assert (folder / "instructions.json").read_bytes() == primary
+instructions = (folder / "instructions.json").read_bytes()
+site_count = 3673
+if variant == "PA194AX11H":
+    assert sha256(instructions).hexdigest() == "43a4ba0d62f95fe766d5369940b0aa8b7a4da04824feb8836905e289640f59f7"
+    site_count = 3671
+else:
+    assert instructions == primary
 labels=json.loads(raw['labels.json'])
 assert len(labels)==195 and len(set(labels))==195 and labels[0]==74 and labels[-1]==254
 sites=json.loads(raw['sites.json'])
-assert len(sites)==3673 and [r[0] for r in sites]==sorted(set(r[0] for r in sites))
+assert len(sites)==site_count and [r[0] for r in sites]==sorted(set(r[0] for r in sites))
 rows={}
 for line in raw['machine.tm'].decode('ascii').splitlines():
  q,b,w,d,n=line.split()
@@ -72,6 +94,12 @@ for line in raw['machine.tm'].decode('ascii').splitlines():
 assert set(rows)=={(q,b) for q in range(194) for b in range(2)}
 assert labels[24]==84
 native={(labels[q],b):(w,d,labels[n]) for (q,b),(w,d,n) in rows.items()}
+if variant == "PA194AX11H":
+    native_bytes = "".join(
+        f"{q} {b} {w} {'R' if d else 'L'} {n}\n"
+        for (q, b), (w, d, n) in sorted(native.items())
+    ).encode("ascii")
+    assert sha256(native_bytes).hexdigest() == "6022711dcc0a025eb4b7a5a8f690d6b52f45f3d963a0868afef10962ccc49bd3"
 
 def token(b): return 'true' if b else 'false'
 def action(q,b):
