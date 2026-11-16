@@ -258,6 +258,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiEvenPow.r_zero_of_none
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiEvenPow.ev_found
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiEvenPow.phi_even_pow
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct.peelE
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct.prod_extend
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct.pp_peel
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct.pp_one
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct.phi_one
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct.eu_found
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct.euler_product
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
