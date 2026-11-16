@@ -1,4 +1,4 @@
-import DiophantineConsistency.PRASubSuccSelfNonzero
+import DiophantineConsistency.SubSuccSelfNonzeroSyntax
 import IPRABridge.FoundationNormalization
 import IPRABridge.OrderSymbols
 
@@ -20,7 +20,7 @@ open LeanProofs.IPRA (neg not_succ_le_self)
 open Syn (var)
 
 def result : Sentenceᵢ language :=
-  ∀⁰ ∼(Semiformulaᵢ.rel .eq ![PRASubSuccSelfNonzero.term, PRASubSuccSelfNonzero.zero])
+  ∀⁰ ∼(Semiformulaᵢ.rel .eq ![SubSuccSelfNonzeroSyntax.term, SubSuccSelfNonzeroSyntax.zero])
 
 private theorem conciseNonzero :
     ([] : List (Fm PTm 1)) ⊢[PRAAx] neg (translatedApp subCode ![succ (var 0), var 0] ≐ zero) := by
@@ -32,7 +32,7 @@ private theorem image :
       Fm.all (neg (translatedApp subCode ![succ (var 0), var 0] ≐ zero)) := by
   simp only [result, toConciseSentence, toConciseClosed, Semiformulaᵢ.neg_def,
     IPRAOrderErasure.erase, IPRAOrderErasure.termsToReference,
-    PRASubSuccSelfNonzero.term, PRASubSuccSelfNonzero.zero, Semiterm.lMap_func,
+    SubSuccSelfNonzeroSyntax.term, SubSuccSelfNonzeroSyntax.zero, Semiterm.lMap_func,
     Matrix.cons_val_zero, Matrix.cons_val_one,
     toConciseFormula, toConciseTerm, toConciseCode, neg]
   congr 4 <;> funext i <;> fin_cases i <;> rfl

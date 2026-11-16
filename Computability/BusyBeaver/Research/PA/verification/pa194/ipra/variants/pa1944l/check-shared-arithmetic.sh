@@ -30,7 +30,7 @@ latest = (
     "IPRAStandardAxioms", "IPRAStandardTheory", "IPRAArithmeticTerms",
     "IPRAArithmeticInstantiation", "IPRASuccessorInduction",
     "IPRASuccessorInductionConverse", "IPRAAddOneGeneral",
-    "IPRASubSuccSelfNonzero", "IPRADifferenceSuccEq",
+    "SubSuccSelfNonzeroSyntax", "IPRASubSuccSelfNonzero", "IPRADifferenceSuccEq",
     "IPRADifferenceSuccLogic", "IPRADifferenceStepClosure",
 )
 legacy = [p for stage in (coverage, model) for p in
