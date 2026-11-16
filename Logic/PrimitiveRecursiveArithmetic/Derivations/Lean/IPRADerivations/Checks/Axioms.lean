@@ -326,6 +326,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Pigeonhole.phpJ_spec
 #print axioms LeanProofs.IPRA.Pigeonhole.firstMatch_spec
 #print axioms LeanProofs.IPRA.Pigeonhole.pigeonhole
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellModular.congrPX4
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellModular.at_code
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellModular.digit_lt
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellModular.digit_eq
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellModular.sig_range
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellModular.pell_modular
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
