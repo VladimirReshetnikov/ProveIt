@@ -1,0 +1,102 @@
+"""Generate table/trie constants from the exact delivered PA194OR bytes."""
+from hashlib import sha256
+import json
+from pathlib import Path
+import sys
+
+repo, out = map(Path,sys.argv[1:])
+packets=repo/'Computability/BusyBeaver/Research/PA/docs'
+folder=packets/'PA194ORH_research_2026-11-15/machines/PA194OR'
+pins={
+ 'machine.tm':'379e12957eafc5ecb1ec04868067fe931af913e7bc46e69a36b6067d83c4c79f',
+ 'labels.json':'50201e76c668de9e019ba164cbfd8678afb9d0681a6082fe859a54acb1d9862c',
+ 'sites.json':'2abdf5327f0048c9a7bf87367e3b0fabbfa7a848d68efdfa934b494ab78bdf35',
+ 'instructions.json':'6c3127cd0da15fda49ed99cea199a009b9bc1e1707100846df9a2df02a22d507',
+}
+raw={n:(folder/n).read_bytes() for n in pins}
+for n, digest in pins.items(): assert sha256(raw[n]).hexdigest() == digest
+primary=(packets/'pa194_conpa_2026-11-13/construction/source/pa194.instructions.json').read_bytes()
+assert raw['instructions.json'] == primary
+labels=json.loads(raw['labels.json'])
+assert len(labels)==195 and len(set(labels))==195 and labels[0]==74 and labels[-1]==254
+sites=json.loads(raw['sites.json'])
+assert len(sites)==3673 and [r[0] for r in sites]==sorted(set(r[0] for r in sites))
+rows={}
+for line in raw['machine.tm'].decode('ascii').splitlines():
+ q,b,w,d,n=line.split()
+ q,b,w,n=map(int,(q,b,w,n))
+ assert (q,b) not in rows and w in (0,1) and d in ('L','R') and 0<=n<=194
+ rows[q,b]=w,int(d=='R'),n
+assert set(rows)=={(q,b) for q in range(194) for b in range(2)}
+assert labels[24]==84
+native={(labels[q],b):(w,d,labels[n]) for (q,b),(w,d,n) in rows.items()}
+
+def token(b): return 'true' if b else 'false'
+def action(q,b):
+ w,d,n=native[q,b]
+ return f'(some ({token(w)},{token(d)},{n}))'
+
+def balanced(states):
+ if not states: return '.empty'
+ mid=len(states)//2
+ q=states[mid]
+ return f'(.node {q} {action(q,0)} {action(q,1)}\n{balanced(states[:mid])}\n{balanced(states[mid+1:])})'
+
+def lean_rows(records):
+ return '[\n'+',\n'.join(','.join(map(str,records[i:i+12])) for i in range(0,len(records),12))+'\n]'
+
+trie={}
+for path,op,arg in sites:
+ node=trie
+ for b in path:
+  assert b in '01' and 'leaf' not in node
+  node=node.setdefault(b,{})
+ assert not node and op in ('inc','dec','breakTo','continueTo','halt')
+ assert op not in ('inc','dec') or 0 <= arg < 9
+ node['leaf']=(op,arg)
+
+tree_cache={}
+definitions=[]
+def build(node):
+ if 'leaf' in node:
+  op,arg=node['leaf']
+  body=f'.leaf .halt' if op=='halt' else f'.leaf (.{op} {arg})'
+ else:
+  assert set(node)=={'0','1'}
+  l=build(node['0']); r=build(node['1'])
+  body=f'.node {l} {r}'
+ if body not in tree_cache:
+  name=f'sourceNode{len(definitions)}'
+  tree_cache[body]=name
+  definitions.append(f'def {name} : M6.Source.PathTrie.Tree := {body}')
+ return tree_cache[body]
+root=build(trie)
+out.mkdir(parents=True,exist_ok=True)
+(out/'PA194ORData.lean').write_text('''import PA194FoldedCache
+import PA194BModelSteps
+import PA194SourceProgram
+
+set_option autoImplicit false
+set_option maxRecDepth 65536
+
+namespace PA194ORData
+
+'''+f'''def labels : List Nat := {lean_rows(labels)}
+def rows : List PA194BRows.Action := {lean_rows([str(rows[q,b]).replace(' ','') for q in range(194) for b in range(2)])}
+def table : ConPA.Machine.Table := PA194BModelSteps.table rows
+def nativeTree : PA194FoldedCache.Tree := {balanced(sorted(labels[:-1]))}
+def machine : M6.Zip.TMN := nativeTree.read
+def denseControl (q : Nat) : Nat := labels.idxOf q
+
+'''+'\n'.join(definitions)+f'''
+
+def sourceTrie : M6.Source.PathTrie.Tree := {root}
+
+def path (i : Nat) : M6.Source.Path :=
+  ((M6.Source.PathTrie.nthSite sourceTrie i).map (·.path)).getD []
+
+def codeAt (i : Nat) : Option M6.Source.Instruction :=
+  (M6.Source.PathTrie.nthSite sourceTrie i).bind (M6.FastResolve.resolveTree sourceTrie)
+
+end PA194ORData
+''')
