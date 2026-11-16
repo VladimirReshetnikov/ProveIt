@@ -19,6 +19,15 @@ while preserving the resolved 3,673-instruction program.
   model-valued lengths.
 - [`PA194ORModelStartup.modeledStartup`](PA194ORModelStartup.lean) proves that
   58,170 steps from blank reach the common source seed in every `IΣ₁` model.
+- [`PA194ORRoot.sourceRoot_eval`](PA194ORRoot.lean) relates the arithmetic
+  root code to the checked OR trie, including model-valued header padding
+  and register data.
+  [`PA194ORInitializer.startup_root`](PA194ORInitializer.lean) identifies the
+  startup configuration with that root at source site 25.
+- [`PA194ORBoxAgreement.concreteBoxAgreement`](PA194ORBoxAgreement.lean)
+  verifies the mark, zero and positive decrement, and increment operations
+  used by the checker. Increment traverses and extends a spare list whose
+  length may be nonstandard.
 
 Run from the repository root with fresh output directories.
 
@@ -36,4 +45,5 @@ bash "$pa/pa194/ipra/variants/pa194or/check.sh" "$literal" "$shared" "$execution
 The replay regenerates the data from the pinned delivered table, labels,
 source sites and instruction list. Lean checks the finite startup in 15
 chunks, the exact row correspondence, and the moved-site certificates.
-The checker uses the retained lower dependencies of the primary stages.
+It also rebuilds the arithmetic root and register-engine proofs. The
+checker uses the retained lower dependencies of the primary stages.

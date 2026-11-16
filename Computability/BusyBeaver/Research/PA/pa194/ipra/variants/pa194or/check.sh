@@ -44,5 +44,10 @@ for chunk in "$out"/PA194ORStartupChunk*.lean; do
 done
 check "$out/PA194ORStartupComplete.lean"
 check "$here/PA194ORModelStartup.lean"
+for module in Root RegisterFile Decrement Increment SpareSweep BoxAgreement Initializer; do
+  check "$here/PA194OR$module.lean"
+done
 rg -Fxq "'PA194ORModelStartup.modeledStartup' depends on axioms: [propext, Classical.choice, Quot.sound]" \
   "$out/PA194ORModelStartup.log"
+rg -Fxq "'PA194ORBoxAgreement.concreteBoxAgreement' depends on axioms: [propext, Classical.choice, Quot.sound]" \
+  "$out/PA194ORBoxAgreement.log"
