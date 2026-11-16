@@ -22,8 +22,8 @@ The complete source dispatch assigns malformed ordinal 3,734 and halt ordinal
 3,735, both beyond the 3,734 instruction sites. `PA194M5Control.haltExecution`
 checks the delivered source halt at site 10. `haltedRun` and `malformedRun`
 prove that the respective configurations are fixed over every model-valued
-clock. The constructor proof uses this same dispatch and iterator. The literal
-binary tape simulation and radix-five consistency calibration remain open.
+clock. The constructor proof uses this same dispatch and iterator. The
+radix-five consistency calibration remains open.
 
 From the repository root, supply a checked PA194 model stage whose
 `leanpath.txt` exposes `PA194ModelMPDrain.olean`. A staged primary native
@@ -40,3 +40,4 @@ the ordered model providers and source and object hashes.
 The [constructor proof](README-constructor.md) covers all 61 archived
 source occurrences. The [literal machine proof](README-physical.md)
 connects the archived table to the revised source interpreter.
+The replay also accepts coefficient 6 for the [radix-six source](../pa194m6/README.md).
