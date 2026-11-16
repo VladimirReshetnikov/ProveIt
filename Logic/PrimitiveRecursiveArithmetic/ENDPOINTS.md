@@ -40,6 +40,19 @@ reported `propext`, `Classical.choice`, and `Quot.sound`. The
 the full portable library, the Foundation statement layer, and the
 public bridge and order-symbol comparison.
 
+The [zero-test comparison](Bridge/Lean/IPRABridge/ComparisonBits.lean)
+proves the translated `isZeroCode` application equal to `eqb a zero` at
+any `a : PTm n` in any finite context. The Foundation
+[`notBitConvention`](../../Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRANotBit.lean)
+retains its `extended nativeTheory` derivation for arbitrary PR code `c`
+and term family `v`. The bounded-child proof reaches it through
+`transferZeroCorrectness` and reaches the ordinary `eqb_of_ne` in the proof
+value. The source replay compiled the comparison, the native corollary,
+`IPRACharacteristicTransfer`, and `IPRABoundedChild`, with the standard
+three Lean axioms. The opt-in
+[comparison-bit audit](Bridge/Lean/IPRABridge/Checks/ComparisonBits.lean)
+checks those exact judgments. Run `lake build +IPRABridge.Checks.ComparisonBits`.
+
 ## BusyBeaver PA
 
 The standalone BusyBeaver default build was checked separately from the root
@@ -162,6 +175,9 @@ to check this boundary.
   ZFCinPA and K215 stages. The focused C222 replay used the migrated
   evaluator source with SHA-256
   `eab9a10f9cda777f5db0b207c9df60a4491198018bd878f7f2e1bac6b8df9f5e`.
+  A later root Lake build of the migrated endpoint completed 1,155 jobs
+  in 26 seconds with 800 MiB peak resident memory, reusing compiled
+  dependencies.
 - **Explicit nine-variable equation.**
   [`IPRAExplicitZFCFinal.standard_equivalence`](../../Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRAExplicitZFCFinal.lean)
   proves `standardTheory ⊢ nativeNoZero ExplicitZFCSyntax.expression 🡘

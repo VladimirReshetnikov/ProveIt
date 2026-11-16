@@ -5,8 +5,8 @@ ordinary ConciseIPRA. In the table, “object equality” refers to a derivation
 in `Prf PRAAx Γ` at arbitrary terms in the common finite scope. “Syntax”
 means the translated terms agree in Lean before deriving their reflexivity.
 The [arithmetic comparisons](Lean/IPRABridge/ArithmeticSymbols.lean) and
-[order comparisons](Lean/IPRABridge/OrderSymbols.lean) are separately
-importable.
+[order comparisons](Lean/IPRABridge/OrderSymbols.lean) and
+[comparison bits](Lean/IPRABridge/ComparisonBits.lean) are separately importable.
 
 | Foundation name | Arity and argument convention | Concise counterpart | Checked relation |
 | --- | --- | --- | --- |
@@ -21,12 +21,18 @@ importable.
 | `PRATheory.subCore` | Binary, recursion on the subtrahend first | `b ∸ a` | Object equality, `translated_subCore`. Keep the reversed argument order. |
 | `PRATheory.subCode` | Binary, minuend first | `a ∸ b` | Object equality, `translated_subCode`. |
 | `PRATheory.ltBitCode` | Binary, nonzero test of `b ∸ a` | `LeanProofs.IPRA.lt a b`, meaning `S a ∸ b = 0` | Provable biconditional for the comparison bit equal to `oneCode`, `translated_ltBitCode`. The module also checks strictness at zero and at equal arguments. |
+| `PRAIsZero.isZeroCode` | Unary. Returns `oneCode` at zero and zero at successors. | `LeanProofs.IPRA.eqb a PTm.zero` | Object equality, `translated_isZeroCode`. `IPRANotBit.notBitConvention` uses it after composing the code with an arbitrary PR function. |
 
 The translated order comparison uses the exact code which erases the native
 `<` relation. At a Foundation call site, compose it with the checked
 order-erasure biconditional. Foundation codes retain their original names
 in machine and equation statements. The shared proof can then be used at
 the terms and hypotheses already present.
+
+The zero-test comparison gives the original bit-complement theorem in the
+extended native theory, for arbitrary Foundation term assignments. The
+bounded-child proof uses it both for the free witness and for the selector's
+assigned witness.
 
 Further code families to compare at their first migrated uses include
 division and remainder, bounded search, pairing, sequence coding, and
