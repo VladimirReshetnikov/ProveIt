@@ -28,6 +28,10 @@ while preserving the resolved 3,673-instruction program.
   verifies the mark, zero and positive decrement, and increment operations
   used by the checker. Increment traverses and extends a spare list whose
   length may be nonstandard.
+- [`PA194ORController.halt_iff_controller`](PA194ORController.lean) proves
+  the modeled halting equivalence from the complete finite source
+  certificates and the literal register engine. Its `literalBoxes` theorem
+  supplies the register-engine premise.
 
 Run from the repository root with fresh output directories.
 
