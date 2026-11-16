@@ -39,6 +39,8 @@ import IPRADerivations.DiophantineNumberTheory.Recurrences
 import IPRADerivations.DiophantineNumberTheory.Siegel
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.DiophantineNumberTheory.Pythagoras
+import IPRADerivations.DiophantineNumberTheory.QuarticStep
+import IPRADerivations.DiophantineNumberTheory.FermatQuartic
 import IPRADerivations.Foundations.QuantitativeIdentities
 import IPRADerivations.Foundations.Termination
 import IPRADerivations.Foundations.ChineseRemainder
