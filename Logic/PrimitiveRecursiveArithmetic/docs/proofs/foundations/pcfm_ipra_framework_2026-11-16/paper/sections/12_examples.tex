@@ -1,0 +1,268 @@
+
+\section{Worked module patterns}
+\label{sec:examples}
+
+\subsection{Certified rational bisection for \texorpdfstring{\(y^3+y=q\)}{y3+y=q}}
+
+This example shows exact arithmetic, branching, iteration, and a quantitative
+output without invoking a completed real continuum.
+
+Let
+\[
+     F(y)=y^3+y-q
+\]
+for rational \(q\).  Suppose rational endpoints \(L_0<U_0\) satisfy
+\[
+       F(L_0)\le0\le F(U_0).
+\]
+All rational comparisons are decidable by integer cross multiplication.
+
+Define
+\[
+  M_t=\frac{L_t+U_t}{2}
+\]
+and update
+\[
+ (L_{t+1},U_{t+1})=
+ \begin{cases}
+  (M_t,U_t),&F(M_t)\le0,\\
+  (L_t,M_t),&F(M_t)>0.
+ \end{cases}
+\]
+The state is the pair of rational endpoints.  The branch bit is the reflected
+QF inequality \(F(M_t)\le0\).
+
+\begin{lemma}[Strict monotonicity certificate]
+For rationals \(u<v\),
+\[
+      u^3+u<v^3+v.
+\]
+\end{lemma}
+
+\begin{proof}
+The exact identity
+\[
+ (v^3+v)-(u^3+u)
+   =(v-u)(v^2+uv+u^2+1)
+\]
+is a ring calculation.  The first factor is positive.  For the second,
+\[
+ v^2+uv+u^2
+   = (v-u)^2+3uv
+\]
+is not a uniformly useful positivity decomposition when \(uv<0\), but
+\[
+ 4(v^2+uv+u^2)
+    =(2v+u)^2+3u^2
+\]
+is nonnegative.  Hence \(v^2+uv+u^2+1>0\).  Integer cross multiplication
+internalizes the rational inequalities.
+\end{proof}
+
+Use the quantifier-free invariant
+\[
+\Inv(L,U,t):
+  L<U\ \wedge\
+  F(L)\le0\ \wedge\
+  0\le F(U)\ \wedge\
+  2^t(U-L)=U_0-L_0.
+\]
+The last equation may be replaced by an inequality if denominator
+normalization makes exact equality inconvenient.
+
+\begin{theorem}[Bisection contract]
+For every \(T\), the run returns \(L_T,U_T\) satisfying the invariant and
+\[
+       U_T-L_T=2^{-T}(U_0-L_0).
+\]
+Moreover there is at most one rational \(y\in[L_T,U_T]\) with \(F(y)=0\).
+\end{theorem}
+
+\begin{proof}
+The base is the input certificate.  For the step, the midpoint lies strictly
+between the endpoints.  In the first branch, \(F(M)\le0\), so the new lower
+endpoint preserves the bracket; in the second branch, decidability yields
+\(F(M)>0\), so the new upper endpoint preserves it.  The width halves by
+rational arithmetic.  Apply fixed trace reflection.
+
+If \(u<v\) were two roots in the interval, strict monotonicity would give
+\(F(u)<F(v)\), contradicting both being zero.
+\end{proof}
+
+The midpoint \(a_T=(L_T+U_T)/2\) is a finite observation.  Choosing
+\[
+ T(k)=k+\left\lceil\log_2(U_0-L_0)\right\rceil+1
+\]
+gives an interval of width at most \(2^{-k}\).  The sequence \(a_{T(k)}\) is a
+regular rational name, and its modulus is explicit.  Existence of an abstract
+real root is not needed to prove every finite enclosure; alternatively, the
+name itself may be taken as the constructive root object.
+
+\paragraph{Lean path.}
+The implementation uses a rational setoid, a state packed by \code{pairT}, a
+step term built from a Boolean inequality bit, \code{recDef} for the run,
+\code{ipra_ring} for the width identity, and \code{IPRA.ind} for the invariant.
+No general real-analysis library is required.
+
+\subsection{Complete bounded rational-point enumeration}
+
+Let a curve or variety code \(C\) determine a decidable polynomial equation
+\(W(C,x)=1\) on canonical rational tuples.  Let \(h(C,x)\) be a natural height.
+
+Assume modules:
+\[
+\begin{aligned}
+ \mathsf{height}:&
+ \quad W(C,x)=1\vdash h(C,x)\le H(C),\\
+ \mathsf{cover}:&
+ \quad h(C,x)\le H(C)\vdash
+   \exists j<N(C)\ [E(C,j)\sim x],
+\end{aligned}
+\]
+where \(E\) enumerates canonical bounded tuples and \(\sim\) is code
+equivalence.
+
+The consumer scans \(j<N(C)\), checks \(W(C,E(C,j))\), and appends qualifying
+canonical codes to a duplicate-free list.
+
+\begin{theorem}[Bounded point-list correctness]
+From \(\mathsf{height}\) and \(\mathsf{cover}\), iPRA proves:
+\[
+ W(C,x)=1
+ \quad\iffc\quad
+ \exists j<\ell(L_C)\ [L_C[j]\sim x],
+\]
+where \(L_C\) is the computed finite list.
+\end{theorem}
+
+\begin{proof}
+Soundness follows from the append condition and extensionality of \(W\).
+For completeness, the height module gives the bounded region and the cover
+module gives an index \(j<N(C)\).  A scan invariant says:
+\[
+ \forall i<r,\quad
+ W(C,E(C,i))=1
+ \imp E(C,i)\text{ is represented in the partial list}.
+\]
+Compile the bounded universal statement to a Boolean product.  At the next
+scan step, either the candidate fails \(W\), or it is already equivalent to an
+entry, or it is appended.  All cases preserve the invariant.  At \(r=N(C)\),
+the covering index is included.
+\end{proof}
+
+The consumer is complete and object-theoretic.  If the height module is
+unknown, the theorem remains
+\[
+  \mathsf{HeightBound}(C,H),\mathsf{Cover}(C,H)
+   \vdash_{\PRAAx}\mathsf{CompleteList}(C,L_C).
+\]
+This is the exact form appropriate for general Faltings- and Siegel-related
+packets.
+
+\subsection{A finite nerve and certified homology observation}
+
+Let \(X\) be represented at scale \(k\) by centers
+\(x_0,\ldots,x_{m-1}\) and rational radii.  A certificate decides for every
+subset \(\sigma\subseteq\{0,\ldots,m-1\}\) of size at most \(d+1\) whether the
+corresponding finite intersection is declared nonempty.  Assume the declarations
+satisfy downward closure.
+
+Encode a simplex by a bit mask \(s<2^m\).  The predicate
+\[
+   \mathsf{Simplex}(s)=1
+\]
+checks the mask size and the supplied intersection certificate.  Boundary
+matrices over \(\mathbb F_2\) are bounded arrays.  Gaussian elimination is a
+fixed finite trace with an invariant that every row operation preserves the
+kernel and image dimensions.
+
+\begin{theorem}[Finite nerve homology]
+PCFM derives the ranks of the boundary maps, verifies
+\(\partial_{r-1}\partial_r=0\), and computes
+\[
+   \beta_r
+     = \dim C_r-\operatorname{rank}\partial_r
+       -\operatorname{rank}\partial_{r+1}
+\]
+for the certified finite nerve.
+\end{theorem}
+
+\begin{proof}
+The chain-complex equation is a bounded parity count: every codimension-two
+face occurs twice.  Boolean finite folds verify each matrix entry.  Row
+reduction uses exact XOR row operations; the trace invariant states that the
+current matrix is related to the original by invertible row operations and
+that pivot columns are distinct.  At terminal form, bounded search counts
+pivots.  The displayed dimension formula is integer arithmetic.
+\end{proof}
+
+To identify this finite answer with a topological invariant of \(X\), one needs
+a producer such as a good-cover theorem, a reach/separation bound, or a
+certified interleaving showing stability over a scale interval.  That producer
+is not part of finite linear algebra and remains explicit.
+
+\subsection{A truncated hypergeometric identity}
+
+Consider the finite polynomial
+\[
+  S_N(a,b;c;z)
+   =\sum_{n<N}
+      \frac{(a)_n(b)_n}{(c)_n\,n!}z^n
+\]
+under rational parameter guards that keep every denominator nonzero.
+Pochhammer symbols, powers, factorials, and the finite sum are primitive
+recursive rational terms.
+
+A contiguous relation has the form
+\[
+  A(a,b,c,z)S_N(\theta_1)
+  +B(a,b,c,z)S_N(\theta_2)
+  +C(a,b,c,z)S_N(\theta_3)
+  =R_N,
+\]
+where \(R_N\) is a boundary term.  After multiplying by a common denominator,
+the statement is an integer polynomial identity.
+
+\begin{theorem}[Finite contiguous relation]
+For every \(N\), the exact truncated identity with boundary term \(R_N\) is
+derivable in iPRA.
+\end{theorem}
+
+\begin{proof}
+Prove the equality at \(N=0\).  At the successor step subtract the \(N\)-case
+from the \(N+1\)-case.  Only the newly added summands and the update of
+\(R_N\) remain.  Clear denominators using the guard, normalize the resulting
+polynomial identity, and apply quantifier-free induction on \(N\).
+\end{proof}
+
+To obtain the infinite analytic identity at precision \(2^{-k}\), add tail
+modules for the three series and choose \(N(k)\) so that the weighted sum of
+tail bounds is at most \(2^{-k}\).  This cleanly separates the universally
+reusable finite algebra from domain-specific analytic estimates.
+
+\subsection{Guarded Euler--Rodrigues axis extraction}
+
+For a rational or regular-name rotation matrix \(R\), the antisymmetric part
+suggests an axis vector
+\[
+   v=(R_{32}-R_{23},R_{13}-R_{31},R_{21}-R_{12}).
+\]
+At the identity rotation, \(v=0\) and no oriented axis is determined.  An
+unrestricted exact-axis selector is therefore constructively invalid.
+
+PCFM offers two correct endpoints.
+
+\paragraph{Guarded exact endpoint.}
+Assume a separation certificate \(\|v\|\ge 2^{-g}\).  Normalize \(v\) using a
+guarded reciprocal/square-root module and prove the resulting vector is an
+eigenvector with eigenvalue \(1\), up to requested precision.
+
+\paragraph{Stable relational endpoint.}
+Return the projective line or a finite antipodal pair of approximate axes.
+Observations invariant under sign, such as the rank-one projector
+\(vv^\top/\|v\|^2\), are quotient-stable.  Near the identity return the
+rotation matrix itself or an error ball rather than choosing an axis.
+
+This example illustrates the framework's policy: repair an invalid global
+selection theorem by changing the output interface, not by hiding a classical
+choice inside a program.

@@ -1,0 +1,163 @@
+
+\section{Repository baseline and the actual gap}
+\label{sec:audit}
+
+\subsection{Four layers that must not be conflated}
+
+At the pinned repository baseline, the iPRA work has four logically different
+layers.
+
+\begin{enumerate}
+\item
+\textbf{The object theory.}
+\code{ConciseIPRA} defines the ordinary first-order presentation of iPRA:
+primitive-recursive function symbols \code{PR}, terms \code{PTm}, formulas
+\code{Fm}, the axiom family \code{PRAAx}, and intuitionistic natural-deduction
+derivations \code{Prf}.  It also proves translations to several small native
+calculi and, in particular, the equivalence
+\[
+  \Gamma\vdash_{\PRAAx}\varphi
+  \quad\Longleftrightarrow\quad
+  \mathsf{NPrf}(\Gamma^{\mathsf{native}},\varphi^{\mathsf{native}}).
+\]
+These are kernel-checked metatheorems.  For reusable mathematics, however, the
+most transparent public interface remains \code{Prf PRAAx}.
+
+\item
+\textbf{Checked arithmetic and theorem derivations.}
+\code{IPRADerivations} already contains a substantial object-language library:
+semiring arithmetic, integers as differences, truncated subtraction and order,
+pairing, bounded sums and products, division, greatest common divisors,
+B\'ezout, least bounded search, finite linear algebra, generic descent, and a
+growing family of theorem-specific derivations.  Its public theorems have the
+form
+\[
+       ([]:\mathsf{List}(\Fm\,\PTm\,n))\vdash_{\PRAAx}\varphi
+\]
+or the corresponding open-context form, and Lean checks the resulting proof
+terms.
+
+\item
+\textbf{A second checked backend and a bridge.}
+The Foundation-based development is used by arithmetization, consistency,
+Busy Beaver, and exact published sentences.  \code{IPRABridge} already
+translates Concise derivations to Foundation finite-context derivations under
+arbitrary assignments of free variables, and translates closed Foundation
+theorems into Concise derivations.  One composite translation is definitionally
+exact; the other differs at positive-arity zero symbols and therefore still
+needs an extensional code-normalization theorem before a completely symmetric
+open-sequent API can be advertised.
+
+\item
+\textbf{Research packets.}
+The proof-packet catalogue records 101 delivered archives.  They range from
+exact finite identities to very ambitious analysis, topology, algebraic
+geometry, and Diophantine geometry.  Most packets are valuable mathematical
+blueprints, but the catalogue explicitly warns that they were filed as
+delivered rather than globally rebuilt and that many Lean files are
+uncompiled scaffolds, specifications, or outlines.  The foundations area
+contains many overlapping languages for finite traces, contracts, relational
+witnesses, precision demands, observation graphs, bounded games, and residual
+obligations.
+\end{enumerate}
+
+The important methodological fact is that these layers do not have the same
+evidential status.  A true statement about standard natural numbers is not yet
+an object-iPRA theorem.  A Python checker is not a \code{Prf PRAAx} proof.  A
+Lean theorem about the semantics of an external data structure is not
+automatically a derivation in the embedded calculus.  A paper proof that says
+``the remaining verification is routine'' may still hide the exact use of
+induction on a formula containing quantifiers.  PCFM is designed to make these
+boundaries explicit rather than to blur them.
+
+\subsection{What the existing frameworks have already discovered}
+
+The foundation packets converge on a strong common picture.
+
+\begin{itemize}
+\item Mathematical arguments should be reduced to fixed, finite, theorem-
+specific computations rather than a universal interpreter.
+\item Exact calculations, bounded decisions, bounded search, certified
+iteration, finite relational choice, and stable observation are the recurring
+node types.
+\item Precision and resource requirements should be propagated backward before
+a forward computation is verified.
+\item A bounded run should be represented by primitive recursion and checked by
+a quantifier-free invariant.
+\item Relational witnesses are often unavoidable, but irrelevant choices may be
+erased when all admissible witnesses give the same exact or approximate
+observation.
+\item Missing deep input---a convergence modulus, a height bound, an isolation
+gap, an effective constant, or a finite-cover margin---must remain an explicit
+producer obligation.
+\item The final target should be a literal derivation
+\[
+      B_1,\ldots,B_r,\Gamma\vdash_{\PRAAx}\varphi ,
+\]
+not a host-level assertion that such a derivation ought to exist.
+\end{itemize}
+
+This convergence is an achievement.  The remaining bottleneck is narrower:
+there is not yet one small, compiled, reusable object-theory library that turns
+these ideas into \code{Prf PRAAx} terms.  Several packets propose a deep
+intermediate language and a general soundness theorem; others give source
+expressions but leave placeholders; still others prove a host-language
+semantic theorem while leaving the object derivation as an obligation.  The
+same trace, viability, Booleanization, and stable-observation lemmas are then
+redesigned in multiple packets.
+
+\subsection{The proposed change of level}
+
+PCFM changes the implementation level.  It does not begin by defining a large
+deep syntax of mathematical programs and then attempting one monolithic
+compiler-correctness proof.  It begins with a shallow Lean record whose most
+important field is already the object proof:
+\[
+\begin{split}
+\mathsf{Module}(n)=\{&
+  \mathsf{req}:\mathsf{List}(\Fm\,\PTm\,n),\\
+ &\mathsf{out}:\Fm\,\PTm\,n,\\
+ &\mathsf{proof}:\mathsf{req}\vdash_{\PRAAx}\mathsf{out}\}.
+\end{split}
+\]
+Every constructor must return this record.  The Lean kernel therefore checks
+the soundness of each composition as soon as it is implemented.  A
+theorem-specific graph compiler is simply a total Lean function that composes
+such records.  No generated proof can escape the object calculus because its
+type does not permit that.
+
+The deep languages of the existing packets remain useful as front ends,
+serialization formats, or optimization devices.  They are no longer a
+prerequisite for checking the first application.  One may add a deep syntax
+later and prove that its elaborator produces PCFM modules; until then, users
+can write the shallow constructors directly.
+
+\subsection{A realistic success criterion}
+
+A framework contribution should be judged by the following concrete test.
+
+\begin{quote}
+Can a theorem packet replace one of its informal ``finite computation''
+arguments by an imported constructor whose conclusion is visibly a
+\code{Prf PRAAx} judgment, without copying the proof kernel or introducing a
+new axiom?
+\end{quote}
+
+For PCFM the initial acceptance suite is:
+
+\begin{enumerate}
+\item a quantifier-free Boolean reflector for the actual \code{Fm PTm} syntax;
+\item a generic invariant theorem for a fixed primitive-recursive run;
+\item a least-witness constructor using the existing \code{Core.Search};
+\item a finite backward-viability theorem;
+\item exact and approximate stable-observation eliminators;
+\item a residual-obligation module and simultaneous discharge by
+\code{Prf.trans};
+\item public open-context bridge wrappers, with the remaining non-exact
+Foundation round trip isolated in one normalization theorem.
+\end{enumerate}
+
+Completing these seven items would do more for the repository than adding a
+twentieth uncompiled proof-graph language.  It would not settle every theorem
+packet, but it would turn their common finite core into maintained
+infrastructure.

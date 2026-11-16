@@ -1,0 +1,236 @@
+
+\section{Boolean reflection and bounded logical compilation}
+\label{sec:boolean}
+
+\subsection{Boolean terms inside iPRA}
+
+Write \(0\) and \(1=S0\) for the corresponding terms.  A term \(b\) is
+Boolean when
+\[
+       \mathsf{Bool}(b)\ \defeq\ (b=0)\vee(b=1).
+\]
+This is quantifier free.  On Boolean inputs define
+\[
+\begin{aligned}
+ \mathsf{bnot}(b) &\defeq 1\mathbin{\dotminus} b,\\
+ \mathsf{band}(b,c) &\defeq b\cdot c,\\
+ \mathsf{bor}(b,c) &\defeq
+   1\mathbin{\dotminus}
+      \bigl((1\mathbin{\dotminus}b)
+            (1\mathbin{\dotminus}c)\bigr),\\
+ \mathsf{bimp}(b,c) &\defeq
+   \mathsf{bor}(\mathsf{bnot}(b),c).
+\end{aligned}
+\]
+All operations are primitive recursive.  Their truth tables are finite
+derivations from the defining equations of addition, multiplication, and
+truncated subtraction.  They should be proved once in the object calculus.
+
+The existing equality test
+\[
+ \mathsf{eqb}(a,b)
+   =1\mathbin{\dotminus}
+      \bigl((a\mathbin{\dotminus}b)
+            +(b\mathbin{\dotminus}a)\bigr)
+\]
+already has checked theorems
+\[
+  a=b\ \vdash\ \mathsf{eqb}(a,b)=1,
+  \qquad
+  \neg(a=b)\ \vdash\ \mathsf{eqb}(a,b)=0.
+\]
+The arithmetic library also derives decidable equality
+\((a=b)\vee\neg(a=b)\).  Thus equality atoms have an internal Boolean
+characteristic term without invoking classical logic as an ambient principle.
+
+\subsection{Reflection for every fixed quantifier-free formula}
+
+\begin{theorem}[Quantifier-free Boolean reflection]
+For every fixed quantifier-free formula
+\(\varphi(\vec x):\Fm\,\PTm\,n\), one can construct a term
+\(\chi_\varphi(\vec x):\PTm\,n\) and object-iPRA derivations of
+\[
+\begin{aligned}
+ &\mathsf{Bool}(\chi_\varphi),\\
+ &\varphi\ \iffc\ \chi_\varphi=1,\\
+ &\neg\varphi\ \iffc\ \chi_\varphi=0.
+\end{aligned}
+\]
+The construction commutes with simultaneous term substitution.
+\end{theorem}
+
+\begin{proof}
+Proceed by structural recursion on the evidence that \(\varphi\) is
+quantifier free.
+
+For an equality \(s=t\), take
+\(\chi_\varphi=\mathsf{eqb}(s,t)\).  Split by the internally derived
+\((s=t)\vee\neg(s=t)\).  In the first branch
+\(\mathsf{eqb}=1\); in the second it is \(0\).  Successor nonzeroness excludes
+\(0=1\), so both directions of the two equivalences follow
+intuitionistically.
+
+For falsity take \(\chi_\bot=0\).  The formula \(0=1\) is contradictory, while
+\(0=0\) is reflexive.
+
+For conjunction, disjunction, and implication define
+\[
+\begin{aligned}
+ \chi_{\alpha\wedge\beta}
+    &=\mathsf{band}(\chi_\alpha,\chi_\beta),\\
+ \chi_{\alpha\vee\beta}
+    &=\mathsf{bor}(\chi_\alpha,\chi_\beta),\\
+ \chi_{\alpha\to\beta}
+    &=\mathsf{bimp}(\chi_\alpha,\chi_\beta).
+\end{aligned}
+\]
+By the induction hypotheses both arguments are Boolean.  Perform the finite
+four-case analysis on their values.  In each case the required equation is a
+defining-equation calculation and the logical equivalence is an
+intuitionistic propositional derivation.  The implication case is legitimate
+because its antecedent and consequent are decidable; no general law of
+excluded middle is assumed.
+
+Substitution compatibility follows in parallel.  Equality tests and Boolean
+operations commute definitionally with substitution, while the recursive
+formula compiler follows the already proved substitution laws for
+\(\Fm\).  Therefore
+\[
+    \chi_{\varphi[\sigma]}
+      = \chi_\varphi[\sigma]
+\]
+as terms, or at worst by a short congruence derivation if the implementation
+uses derived symbols.
+\end{proof}
+
+\begin{remark}
+The theorem is a \emph{metalevel compiler indexed by a fixed formula}.  It
+does not require a primitive-recursive universal evaluator for formulas.  Lean
+recurses over the concrete syntax and returns a concrete term and concrete
+proofs.
+\end{remark}
+
+\subsection{Bounded universal folds}
+
+Let \(\varphi(i,\vec x)\) be reflected by
+\(\chi(i,\vec x)\).  Define by primitive recursion
+\[
+\begin{aligned}
+  A(0,\vec x)&=1,\\
+  A(N+1,\vec x)&=A(N,\vec x)\cdot \chi(N,\vec x).
+\end{aligned}
+\]
+For Boolean factors, \(A\) is Boolean.
+
+\begin{theorem}[Bounded universal reflection]
+iPRA proves
+\[
+ A(N,\vec x)=1
+ \quad\iffc\quad
+ \forall i\,(i<N\to\varphi(i,\vec x)).
+\]
+It also proves that \(A(N,\vec x)=0\) yields a least counterexample
+\(i<N\) when one exists.
+\end{theorem}
+
+\begin{proof}
+For the forward direction, fix \(i<N\).  A prefix-factor lemma states that if
+a finite Boolean product is \(1\), every factor below its length is \(1\).
+Prove that lemma by quantifier-free induction on the product length, using the
+equation \(A(N+1)=A(N)\chi(N)\) and the finite cases \(i<N\) or \(i=N\).
+Reflection then gives \(\varphi(i,\vec x)\).
+
+For the reverse direction, work under the universal hypothesis.  Induct on
+\(N\) with the quantifier-free invariant \(A(N,\vec x)=1\).  The base equation
+is immediate.  At the successor step, instantiate the universal hypothesis at
+\(N\), obtain \(\chi(N,\vec x)=1\) by reflection, and use the recursion
+equation.
+
+For a counterexample, search below \(N\) for a zero of \(\chi\).  The checked
+least-search theorem returns a least index and proves its minimality.  If the
+product is zero, a finite-product zero lemma proves that such an index exists;
+alternatively the product itself may be implemented through an early-stopping
+search, making existence immediate.
+\end{proof}
+
+The crucial point is that the induction predicate is the single equation
+\(A(N,\vec x)=1\).  The quantified formula occurs only as a context hypothesis
+or final conclusion.
+
+\subsection{Bounded existential reflection and witness extraction}
+
+Define
+\[
+   f(i,\vec x)=\mathsf{bnot}(\chi(i,\vec x))
+\]
+and let
+\[
+   \mu_\varphi(N,\vec x)
+\]
+be the least \(i<N\) with \(f(i,\vec x)=0\), or \(N\) if none exists.  This is
+exactly the convention of the checked \code{Search.mu} construction.
+
+\begin{theorem}[Bounded least witness]
+iPRA proves:
+\[
+\begin{aligned}
+ \exists i<N\,\varphi(i,\vec x)
+   &\quad\iffc\quad \mu_\varphi(N,\vec x)<N,\\
+ \mu_\varphi(N,\vec x)<N
+   &\quad\imp\quad
+     \varphi(\mu_\varphi(N,\vec x),\vec x),\\
+ j<\mu_\varphi(N,\vec x)
+   &\quad\imp\quad
+     \neg\varphi(j,\vec x).
+\end{aligned}
+\]
+\end{theorem}
+
+\begin{proof}
+If a witness \(i<N\) exists, reflection gives \(\chi(i,\vec x)=1\), hence
+\(f(i,\vec x)=0\).  Apply \code{search_found}; it returns a least zero below
+\(N\).  Conversely, \code{search_spec} says that a returned index below \(N\)
+is a zero of \(f\), which for a Boolean \(\chi\) means
+\(\chi=1\), and reflection yields \(\varphi\).  Minimality is
+\code{search_minimal} followed by the same Boolean equivalence.
+\end{proof}
+
+This theorem is stronger than a bare bounded-existence equivalence: it gives a
+canonical least witness without any choice principle.
+
+\subsection{Fixed bounded alternation}
+
+A formula with a fixed number of bounded quantifier alternations can be
+compiled recursively.  Existential levels return a least successful move;
+universal levels return either success of every branch or a least failing
+challenge.  The result is a pair of finite certificates:
+
+\begin{itemize}
+\item a success strategy, containing a response to every bounded universal
+challenge encountered after an existential move;
+\item a failure counterstrategy, containing a challenge defeating every
+candidate move.
+\end{itemize}
+
+Both are finite arrays with explicit bounds.  Their verification is a Boolean
+finite fold.  This gives a constructive determinacy theorem for each fixed
+bounded game; it does not assert determinacy of arbitrary infinite games.
+
+\subsection{Recommended implementation boundary}
+
+The Boolean compiler should be implemented over the actual
+\code{Fm PTm n} syntax with an input proof \code{phi.QF}.  Its output should be a
+structure:
+\[
+\begin{split}
+\mathsf{ReflectedQF}(\varphi)=\{&
+  \mathsf{bit}:\PTm\,n,\quad
+  \mathsf{isBool}:\ []\vdash\mathsf{Bool}(\mathsf{bit}),\\
+ &\mathsf{trueIff}:\ []\vdash
+       \varphi\leftrightarrow(\mathsf{bit}=1),\\
+ &\mathsf{falseIff}:\ []\vdash
+       \neg\varphi\leftrightarrow(\mathsf{bit}=0)\}.
+\end{split}
+\]
+The compiler is metalevel structural recursion.  It should not add a
+\(\mathsf{reflect}\) axiom or an opaque semantic oracle.

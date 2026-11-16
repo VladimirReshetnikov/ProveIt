@@ -1,0 +1,234 @@
+
+\section{The proof-carrying module calculus}
+\label{sec:modules}
+
+\subsection{The basic record}
+
+Fix a free-variable scope \(n\).  A module has a finite list of requirements
+and one conclusion.
+
+\begin{definition}[PCFM module]
+A PCFM module in scope \(n\) is a triple
+\[
+   M=(\mathsf{req}_M,\mathsf{out}_M,\pi_M)
+\]
+where
+\[
+  \mathsf{req}_M:\mathsf{List}(\Fm\,\PTm\,n),\qquad
+  \mathsf{out}_M:\Fm\,\PTm\,n,
+\]
+and
+\[
+  \pi_M:
+  \mathsf{req}_M\vdash_{\PRAAx}\mathsf{out}_M.
+\]
+\end{definition}
+
+Requirements are not divided by the kernel into ``ordinary assumptions'' and
+``residual obligations''.  That is metadata used by the front end.  Logically,
+both are formulas in the context.  This is useful: the same simultaneous-cut
+operation discharges either kind.
+
+\subsection{Specialization and weakening}
+
+\begin{theorem}[Specialization]
+Let \(M\) be a module in scope \(n\), and let
+\(\sigma:\mathsf{Fin}\,n\to\PTm\,m\) be a simultaneous term substitution.
+Then there is a module \(M[\sigma]\) in scope \(m\) with
+\[
+  \mathsf{req}_{M[\sigma]}
+   = \{\psi[\sigma]:\psi\in\mathsf{req}_M\},
+  \qquad
+  \mathsf{out}_{M[\sigma]}=\mathsf{out}_M[\sigma].
+\]
+\end{theorem}
+
+\begin{proof}
+Apply \code{Prf.subst} to \(\pi_M\).  The theorem already proves
+capture-avoiding simultaneous substitution through every connective and
+quantifier, so no module-specific binder argument is needed.
+\end{proof}
+
+\begin{theorem}[Weakening]
+If every formula in \(\mathsf{req}_M\) belongs to a context \(\Delta\), then
+\[
+   \Delta\vdash_{\PRAAx}\mathsf{out}_M.
+\]
+\end{theorem}
+
+\begin{proof}
+Apply \code{Prf.weaken} to \(\pi_M\).  Contexts are lists, but the structural
+theorem uses list inclusion and hence ignores order and duplication.
+\end{proof}
+
+These two operations are already checked in \code{ConciseIPRA.Deduction}.  The
+PCFM implementation should re-export them with names appropriate to theorem
+assembly rather than reproving them.
+
+\subsection{Simultaneous discharge}
+
+\begin{theorem}[Module discharge]
+Let \(M\) have requirements \(\Gamma\).  Suppose a context \(\Delta\) derives
+every \(\psi\in\Gamma\).  Then
+\[
+   \Delta\vdash_{\PRAAx}\mathsf{out}_M.
+\]
+\end{theorem}
+
+\begin{proof}
+This is exactly \code{Prf.trans}.  Its proof repeatedly discharges context
+formulas by implication introduction and restores their supplied derivations by
+modus ponens.  It is a simultaneous cut theorem internal to the checked
+natural-deduction metatheory.
+\end{proof}
+
+The theorem is the engine of residualization.  If \(M\) proves
+\[
+  B_1,\ldots,B_r,A_1,\ldots,A_s\vdash C
+\]
+and modules \(N_i\) prove the \(B_i\) and \(K_j\) prove the \(A_j\) from a
+common context \(\Delta\), then one call to \code{Prf.trans} produces
+\(\Delta\vdash C\).
+
+\subsection{Unary contracts and categorical composition}
+
+For readability, many nodes use one precondition.
+
+\begin{definition}[Contract]
+A contract \(A\Rightarrow B\) is a derivation
+\[
+       [A]\vdash_{\PRAAx}B.
+\]
+\end{definition}
+
+\begin{theorem}[Identity and composition]
+Contracts form a category:
+\[
+  \mathsf{id}_A:[A]\vdash A,
+\]
+and from \(f:[A]\vdash B\) and \(g:[B]\vdash C\) one obtains
+\[
+  g\circ f:[A]\vdash C.
+\]
+Composition is associative and identities are neutral as derivations up to the
+propositional equality induced by their common conclusion.
+\end{theorem}
+
+\begin{proof}
+Identity is the hypothesis rule.  For composition, apply
+\code{Prf.trans} to \(g\), replacing its only hypothesis \(B\) by \(f\).
+Associativity is not required as an equality of proof syntax: either
+parenthesization has type \([A]\vdash C\).  If a definitional equality of
+compiler outputs is desired, it can be established separately; mathematical
+soundness needs only derivability.
+\end{proof}
+
+Multi-input contracts may either use a list context or package the inputs into
+a conjunction.  Lists are preferable for residual producer obligations
+because they can be discharged independently.  Conjunctions are useful when
+the formula itself is to be passed as a single node output.
+
+\subsection{Exact equations as rewrite modules}
+
+An equation proof
+\[
+   \Gamma\vdash s=t
+\]
+may be transported through any term or formula using the existing equality
+rules.  PCFM should expose specialized constructors:
+
+\[
+\begin{array}{ll}
+\mathsf{congrApp} &: (t_i=u_i)_i\mapsto f(\vec t)=f(\vec u),\\
+\mathsf{rewriteTerm} &: s=t,\ h(s)=v\mapsto h(t)=v,\\
+\mathsf{rewriteFormula} &: s=t,\ \Phi(s)\mapsto\Phi(t),\\
+\mathsf{chainEq} &: s=t,\ t=u\mapsto s=u.
+\end{array}
+\]
+
+The current derivation library already supplies congruence for application,
+addition, multiplication, predecessor, truncated subtraction, and many
+derived symbols.  The module layer should depend on those theorems rather than
+reimplementing algebra.
+
+\subsection{Residual contexts and provenance}
+
+A requirement should carry host-level metadata:
+\[
+   (\mathsf{name},\mathsf{kind},\mathsf{source},\mathsf{formula}).
+\]
+The metadata is not part of the trusted derivation.  Its purpose is audit and
+automation.  Recommended kinds are:
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Kind & Meaning\\
+\midrule
+\code{local} & ordinary theorem input or previously proved fact\\
+\code{resource} & bound, modulus, clock, finite cover, or precision demand\\
+\code{separation} & apartness, nonzero denominator, isolation, orientation\\
+\code{certificate} & validity of supplied finite evidence\\
+\code{external} & semantic input not yet internalized\\
+\code{bridge} & formula/code correspondence needed for backend transport\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The compiled theorem stores only the formulas.  A separate ledger records
+which module discharged each requirement.  This prevents a proof from silently
+changing status when an external assumption is renamed as a definition.
+
+\subsection{The local soundness theorem is enough}
+
+A node implementation need not establish a global semantic theorem about an
+entire graph.  It establishes its local contract in the object calculus.
+Global soundness follows by repeated discharge.
+
+\begin{theorem}[Acyclic assembly]
+Let \(G\) be a finite acyclic dependency graph.  Associate to each node \(v\)
+a module whose requirements are formulas produced by predecessor nodes or
+listed residuals.  If every predecessor edge supplies a derivation of the
+corresponding requirement, then the sink formula is derivable from precisely
+the undischarged residual requirements.
+\end{theorem}
+
+\begin{proof}
+Choose a topological order.  Induct through that finite list at the host level.
+At node \(v\), predecessor outputs have already been compiled.  Apply module
+discharge to the local proof.  Cache the resulting derivation as the output of
+\(v\).  Residual formulas are left in the common context and are available by
+the hypothesis rule.  The sink derivation has no other assumptions because
+each nonresidual requirement was replaced by a predecessor derivation.
+\end{proof}
+
+This is a metatheorem about the Lean assembler.  The trusted output is not the
+metatheorem but the generated \code{Prf PRAAx} value.  Consequently even a bug
+in graph scheduling cannot certify a false theorem: it can at worst fail to
+construct a term of the required type.
+
+\subsection{Why this is a substantial simplification}
+
+A monolithic compiler theorem must formalize syntax, typing, evaluation,
+substitution, environments, traces, and graph soundness before it produces one
+application proof.  PCFM reuses the existing object syntax and deduction
+metatheory.  Its structural core is almost entirely aliases for already
+checked lemmas:
+
+\[
+\begin{array}{c|c}
+\text{PCFM operation} & \text{existing checked theorem}\\
+\hline
+\text{specialize} & \code{Prf.subst}\\
+\text{weaken} & \code{Prf.weaken}\\
+\text{discharge/cut} & \code{Prf.trans}\\
+\text{open a binder} & \code{Prf.allOpen}\\
+\text{instantiate} & \code{Prf.allE},\ \code{IPRA.inst}\\
+\text{quantifier-free induction} & \code{PRA.qfInd},\ \code{IPRA.ind}\\
+\text{arithmetic recursion} & \code{recDef},\ \code{rec_zero},\ \code{rec_succ}
+\end{array}
+\]
+
+The genuinely new work is therefore concentrated in Boolean reflection,
+generic trace packaging, viability, stable observation, and public bridge
+wrappers.

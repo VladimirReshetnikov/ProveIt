@@ -1,0 +1,171 @@
+
+\section{Finitary presentations and observational mathematics}
+\label{sec:presentations}
+
+\subsection{Certified setoids rather than quotient choice}
+
+The object language of iPRA has one numerical sort.  A mathematical type is
+therefore presented by codes together with a validity predicate and an
+equivalence relation.
+
+\begin{definition}[Finitary presentation]
+A finitary presentation \(A\) with parameters \(p\) consists of fixed
+primitive-recursive data
+\[
+  \Valid_A(p,a)\in\Bool,\qquad
+  \Eqv_A(p,a,b)\in\Bool,
+\]
+and object-iPRA derivations establishing, on valid codes, reflexivity,
+symmetry, and transitivity of \(\Eqv_A=1\).  Every operation exported by the
+presentation carries proofs that it preserves validity and is extensional for
+\(\Eqv_A\).
+\end{definition}
+
+The equivalence is kept explicit.  There is no need for the object theory to
+form a quotient set or choose canonical representatives.  If canonicalization
+is available by a primitive-recursive normal form, it may be added as an
+optimization:
+\[
+   \Valid_A(a)\imp
+   \Eqv_A(a,\mathsf{norm}_A(a))=1,
+   \qquad
+   \mathsf{norm}_A(\mathsf{norm}_A(a))=\mathsf{norm}_A(a).
+\]
+But no theorem depends on such a normal form unless it is explicitly present.
+
+This pattern is sufficient for integers as differences, rationals as
+numerator--positive-denominator pairs, finite sets as duplicate-insensitive
+lists, matrices up to a chosen coding, localizations modulo killing
+exponents, and algebraic objects modulo certificate-defined equality.
+
+\subsection{Queries, answers, and compatibility}
+
+Many objects are known only through finite observations.
+
+\begin{definition}[Observation presentation]
+An observation presentation for \(A\) consists of:
+\begin{itemize}
+\item a query code \(q\);
+\item a primitive-recursive answer bound \(B_A(p,q)\);
+\item a Boolean relation
+  \(\ValidObs_A(p,q,a,z)\) saying that \(z<B_A(p,q)\) is a valid answer about
+  object code \(a\);
+\item a refinement relation
+  \(\mathsf{Ref}_A(p,q',z',q,z)\) used when \(q'\) demands more information
+  than \(q\);
+\item proof-carrying modules for bounded totality, extensionality in \(a\), and
+  compatibility of refinement.
+\end{itemize}
+\end{definition}
+
+The presentation may be deterministic, in which case exactly one answer is
+valid; relational, in which case a finite cloud of answers is valid; or
+guarded, in which case totality is assumed only under a decidable guard.  A
+real number, for example, may answer a precision query \(k\) with a rational
+interval of diameter at most \(2^{-k}\).  At a multiple algebraic root, an
+unordered finite root cloud may be the correct answer, while a named branch is
+not.
+
+\subsection{Four observer classes}
+
+The theorem consumer should declare how much witness identity it needs.
+
+\begin{definition}[Exact observer]
+An exact observer is a primitive-recursive function \(o(p,q,z)\) together with
+a proof that all valid answers \(z\) to the same query have equal outputs:
+\[
+ \ValidObs(p,q,a,z)=1\ \wedge\
+ \ValidObs(p,q,a,z')=1
+ \quad\imp\quad
+ o(p,q,z)=o(p,q,z').
+\]
+\end{definition}
+
+\begin{definition}[Quotient-stable observer]
+Given a presented output type \(C\), a quotient-stable observer satisfies
+\[
+  \ValidObs(\cdots,z)=\ValidObs(\cdots,z')=1
+  \quad\imp\quad
+  \Eqv_C(o(z),o(z'))=1.
+\]
+Thus the numerical representatives may differ although the mathematical
+answer is the same.
+\end{definition}
+
+\begin{definition}[Error-stable observer]
+An error-stable observer has a primitive-recursive metric numerator and
+denominator, or an equivalent integer inequality, and proves
+\[
+  d_C(o(z),o(z'))\le \varepsilon(p,q)
+\]
+for every two valid answers.  It yields a name or enclosure rather than an
+exact representative.
+\end{definition}
+
+\begin{definition}[Guarded observer]
+A guarded observer exports a result only under a Boolean guard
+\(\Guard(p,q)=1\), with a proof that the guard supplies every denominator,
+apartness, isolation, or orientation fact required by the operation.
+\end{definition}
+
+These classes prevent a common constructive error.  One may be able to prove
+that every finite approximation contains an acceptable root, axis, basis,
+phase, or minimizer without being able to choose a coherent exact sequence of
+such witnesses.  If the final observable is stable, no coherent selector is
+needed.  If it is not stable, a genuine selection principle or stronger input
+must be supplied.
+
+\subsection{Products, sums, functions, and dependent interfaces}
+
+Presentations compose by fixed primitive-recursive coding.
+
+\paragraph{Products.}
+Use the checked pairing operation and its projections.  Validity is the
+conjunction of component validity; equivalence is componentwise; a query
+contains the pair of component queries.  Totality and extensionality follow by
+composition.
+
+\paragraph{Finite sums.}
+A tag selects a summand.  Validity checks the tag and the corresponding
+payload.  Equality requires equal tags and equivalent payloads.  This is
+suitable for disjoint case analyses whose branch is decidable.
+
+\paragraph{Finite lists and arrays.}
+Length and index operations are primitive recursive.  A universal condition
+over entries is represented by a Boolean finite fold, and an existential
+condition by bounded search.  The representation must state an explicit
+length or capacity bound before it is consumed.
+
+\paragraph{Function presentations.}
+A function is not an arbitrary second-order object.  It is a fixed
+primitive-recursive code or a named symbol family together with an evaluation
+interface.  Extensionality is proved for the actual program family.  For
+continuous or analytic functions, the presentation also carries a modulus,
+tail bound, or local domain guard.
+
+\paragraph{Dependent outputs.}
+When the output bound depends on the input witness, encode the pair
+\(\langle x,y\rangle\) and verify the dependent bound as part of validity.
+The object theory still quantifies only over natural numbers.
+
+\subsection{A theorem as a finite observation transformer}
+
+A mathematical theorem is represented as a family of modules:
+\[
+  \mathsf{Thm}(p,q):
+  \Delta(p,q),\ \mathsf{InputValid}(p)
+  \ \vdash_{\PRAAx}\
+  \mathsf{OutputValid}(p,q,F(p,q)).
+\]
+Here \(q\) is the requested finite observation.  The output \(F(p,q)\) may be
+exact, relational, or approximate.  The residual list \(\Delta\) records
+producer data.  Uniformity means that the displayed terms and proof
+constructors are fixed and primitive recursive in the parameters; it does not
+mean that every semantic object has been compressed into one universal code.
+
+This form accommodates both ordinary universal theorems and schemas.  A
+special-function identity for a fixed rational domain and requested precision
+is a theorem schema indexed by the domain certificate and precision.  A
+polynomial identity is an exact theorem with no precision query.  A compactness
+argument is a theorem conditional on a finite-net producer.  The same module
+calculus composes all three.

@@ -1,0 +1,161 @@
+
+\section{Theorem and dependency ledger}
+\label{app:ledger}
+
+This appendix records the status intended by the present report.  ``Paper''
+means a complete human argument at the stated abstraction level.  ``Upstream''
+means the crucial derivation already exists in the checked repository.
+``Planned Lean'' means the exact object theorem still needs implementation.
+
+\begin{longtable}{p{0.27\textwidth}p{0.16\textwidth}p{0.49\textwidth}}
+\toprule
+Result & Status & Main dependencies / remaining work\\
+\midrule
+\endfirsthead
+\toprule
+Result & Status & Main dependencies / remaining work\\
+\midrule
+\endhead
+
+Module specialization &
+Upstream &
+\code{Prf.subst}; only a wrapper record is new.\\
+
+Module weakening &
+Upstream &
+\code{Prf.weaken}.\\
+
+Simultaneous residual discharge &
+Upstream &
+\code{Prf.trans}.\\
+
+Contract composition &
+Paper; trivial Lean &
+One-hypothesis specialization of simultaneous discharge.\\
+
+Acyclic assembly &
+Paper; metalevel &
+Topological traversal returning \code{Module}; soundness enforced by result
+type.\\
+
+Boolean truth tables &
+Paper; planned Lean &
+Arithmetic equations for \(0,1,\dotminus,\cdot\); reuse checked semiring/order
+library.\\
+
+Equality reflection &
+Mostly upstream &
+\code{eqb}, \code{eqb_of_eq}, \code{eqb_of_ne}, and internal
+\code{eq_or_ne}.\\
+
+QF Boolean reflection &
+Paper; planned Lean &
+Structural recursion on \code{Fm}; substitution compatibility.\\
+
+Bounded universal fold &
+Paper; planned Lean &
+QF reflection, finite products, prefix-factor lemma.\\
+
+Bounded least witness &
+Paper; backend upstream &
+\code{Search.search_spec}, \code{search_found},
+\code{search_minimal}; wrapper from reflected predicate.\\
+
+Fixed trace reflection &
+Paper; planned Lean &
+\code{recDef}, \code{rec_zero}, \code{rec_succ}, \code{IPRA.ind}.\\
+
+Ranked termination &
+Paper; planned Lean &
+Trace reflection, order arithmetic, explicit rank envelope.\\
+
+Finite-use compilation &
+Paper; metalevel &
+Module constructors and structural recursion; generated result is checked.\\
+
+Backward viability &
+Paper; planned Lean &
+Bounded arrays/table coding, reflected predicates, least search, trace
+invariant.\\
+
+Exact stable erasure &
+Paper; small planned Lean &
+Least witness and pairwise equality.\\
+
+Setoid-stable erasure &
+Paper; planned Lean &
+Certified equivalence and extensional downstream maps.\\
+
+Error-stable erasure &
+Paper; planned Lean &
+Rational metric inequalities and observer modulus.\\
+
+Concise-to-Foundation open transport &
+Upstream core &
+\code{toFoundation_provable_of_axioms}; add public standard-theory wrapper.\\
+
+Foundation-to-Concise open transport &
+Paper reduction; planned Lean &
+Finite-context deduction/closure, current closed translator,
+translation--closure commutation.\\
+
+Foundation code normalization &
+Paper; planned Lean &
+Structural induction on codes; QF induction in primitive-recursion case.\\
+
+Full open bridge equivalence &
+Planned Lean &
+Both directions, formula roundtrip, native-order roundtrip.\\
+
+Cubic bisection module &
+Paper example; planned Lean &
+Rational presentation, trace reflection, ring/order derivations.\\
+
+Height-to-list reduction &
+Paper example; planned Lean &
+Finite list coding, scan invariant, supplied height/cover modules.\\
+
+Finite nerve homology &
+Paper architecture &
+Finite-set and matrix libraries; topology identification remains a producer.\\
+
+Truncated special-function identity &
+Paper pattern &
+Finite sums and ring normalization; analytic tail remains domain-specific.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Trusted dependency diagram}
+
+\begin{center}
+\begin{tikzpicture}[
+  node distance=8mm and 13mm,
+  box/.style={draw,rounded corners,align=center,inner sep=5pt,font=\small},
+  arr/.style={-{Latex[length=2mm]},thick}
+]
+\node[box,fill=softblue] (kernel) {Lean kernel\\Mathlib primitives};
+\node[box,fill=softgreen,below=of kernel] (concise) {\code{ConciseIPRA}\\\code{Prf}, \code{PRAAx}, substitution, cut};
+\node[box,fill=softgreen,below left=of concise] (arith) {\code{IPRADerivations}\\arithmetic, pairing, search};
+\node[box,fill=softgreen,below right=of concise] (bridge) {\code{IPRABridge}\\translations and environments};
+\node[box,fill=softblue,below=14mm of concise] (pcfm) {PCFM checked core\\reflection, trace, viability, observers};
+\node[box,below left=of pcfm] (packets) {theorem packets\\finite consumers};
+\node[box,below right=of pcfm] (producers) {domain producers\\bounds, moduli, gaps};
+\node[box,fill=softblue,below=of pcfm] (endpoints) {\(\Gamma\vdash_{\PRAAx}\varphi\)\\checked endpoints};
+
+\draw[arr] (kernel) -- (concise);
+\draw[arr] (concise) -- (arith);
+\draw[arr] (concise) -- (bridge);
+\draw[arr] (concise) -- (pcfm);
+\draw[arr] (arith) -- (pcfm);
+\draw[arr] (bridge) -- (pcfm);
+\draw[arr] (pcfm) -- (packets);
+\draw[arr] (pcfm) -- (producers);
+\draw[arr] (packets) -- (endpoints);
+\draw[arr] (producers) -- (endpoints);
+\draw[arr] (pcfm) -- (endpoints);
+\end{tikzpicture}
+\end{center}
+
+External Python tests and PDF prose are deliberately absent from the trusted
+diagram.  They support development and review but do not justify an object
+theorem.

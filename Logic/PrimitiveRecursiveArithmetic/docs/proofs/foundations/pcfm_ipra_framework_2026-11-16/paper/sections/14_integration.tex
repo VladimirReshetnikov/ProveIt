@@ -1,0 +1,223 @@
+
+\section{Repository integration and migration strategy}
+\label{sec:integration}
+
+\subsection{One canonical endpoint}
+
+The unification plan correctly identifies the ordinary
+\code{Prf PRAAx} judgment as the canonical shared theorem interface.  PCFM
+adopts that decision.  The native scalar calculus remains an export target;
+Foundation remains an arithmetization and sentence backend; theorem packets
+remain research and application layers.
+
+A new theorem should therefore have one of the following statuses:
+
+\begin{enumerate}
+\item \textbf{Checked object theorem:}
+  a committed Lean declaration with conclusion
+  \(\Gamma\vdash_{\PRAAx}\varphi\).
+\item \textbf{Checked conditional object theorem:}
+  the same, with residual producer formulas in \(\Gamma\).
+\item \textbf{Checked metatheorem:}
+  a Lean theorem about translations or proof construction, explicitly
+  connected to an object derivation.
+\item \textbf{Executable evidence:}
+  a finite checker or test that has run but is not itself an object proof.
+\item \textbf{Paper proof / implementation blueprint:}
+  mathematically developed but not kernel checked.
+\item \textbf{Open producer:}
+  a precise quantitative theorem still needed.
+\end{enumerate}
+
+These labels should appear in packet READMEs and the aggregate catalogue.
+
+\subsection{Migration of an existing packet}
+
+A packet should migrate in the following order.
+
+\paragraph{Step 1: identify the endpoint.}
+Write the exact \code{Fm PTm n} formula or family of formulas.  Remove semantic
+phrases such as ``the encoded function has the expected meaning'' unless a
+formula states that meaning.
+
+\paragraph{Step 2: inventory finite consumers.}
+List every exact computation, bounded search, finite fold, trace, certificate,
+and observer.  Map each to a checked derivation or a PCFM constructor.
+
+\paragraph{Step 3: expose producers.}
+List every bound, modulus, isolation condition, finite-cover theorem, tail
+estimate, or descent clock.  Give each a formula and provenance.
+
+\paragraph{Step 4: compile one spine.}
+Choose the shortest dependency path to a nontrivial endpoint and construct its
+\code{Prf PRAAx} proof.  Do not first formalize every concept in the prose.
+
+\paragraph{Step 5: discharge or retain residuals.}
+Connect existing producers where available.  Publish the exact conditional
+theorem for the rest.
+
+\paragraph{Step 6: export.}
+Use \code{pra_iff_native} for a minimal native proof or the bridge for a
+Foundation sentence only after the ordinary theorem builds.
+
+\subsection{Recommended first migrations}
+
+The best initial consumers are those already closest to the checked library:
+
+\begin{itemize}
+\item exact sequence recurrences and polynomial identities;
+\item finite combinatorial enumeration;
+\item finite matrix calculations;
+\item bounded rational approximation loops;
+\item finite search theorems conditional on a supplied bound;
+\item finite nerves and simplicial calculations conditional on a supplied
+cover.
+\end{itemize}
+
+They exercise the module calculus without depending on unsolved analytic or
+Diophantine producers.
+
+Packets whose main claim is a global asymptotic, analytic continuation,
+effective height theorem, or infinitary topological equivalence should first
+extract their finite conditional core rather than attempt the whole endpoint
+at once.
+
+\subsection{CI gates}
+
+A repository integration should add separate targets.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{0.25\textwidth}X}
+\toprule
+Target & Gate\\
+\midrule
+\code{lake build ConciseIPRA} &
+Object syntax, deduction, alternative calculi, bi-interpretations.\\
+\code{lake build IPRADerivations} &
+Checked arithmetic, theorem derivations, and PCFM framework.\\
+\code{lake build IPRABridge} &
+Both backend translations and round trips.\\
+\code{python -m unittest} &
+Reference algorithms and certificate-format tests; evidence only.\\
+\code{latexmk} &
+Research reports compile; documentation only.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The catalogue should derive checked status from CI, not from the presence of a
+\code{.lean} filename.
+
+\subsection{Metrics that measure useful progress}
+
+Raw theorem count can reward tiny aliases and obscure the remaining boundary.
+More informative metrics are:
+
+\begin{itemize}
+\item number of public \code{Prf PRAAx} endpoints;
+\item number of theorem packets importing checked PCFM constructors;
+\item number and type of residual obligations per endpoint;
+\item size of the transitive checked dependency graph;
+\item percentage of packet main claims with exact object formulas;
+\item build success at the pinned commit;
+\item proof-term or native-certificate size when minimality matters.
+\end{itemize}
+
+For a conditional theorem, reducing a vague ``analytic facts'' assumption to
+two explicit tail inequalities is substantial progress even if the theorem is
+not yet unconditional.
+
+\subsection{Suggested directory layout}
+
+\begin{lstlisting}[language={}]
+Logic/PrimitiveRecursiveArithmetic/
+  Derivations/
+    Lean/IPRADerivations/
+      Framework/
+        Module.lean
+        Boolean.lean
+        ReflectQF.lean
+        BoundedQuantifier.lean
+        Trace.lean
+        Relation.lean
+        Viability.lean
+        Observer.lean
+        Data/
+        Analysis/
+        Topology/
+        Algebra/
+      Framework.lean
+  Bridge/
+    Lean/IPRABridge/
+      CodeNormalization.lean
+      FormulaRoundtrip.lean
+      OpenSequent.lean
+  docs/
+    framework/
+      PCFM.md
+      obligation-schema.json
+      migration-guide.md
+\end{lstlisting}
+
+The checked framework belongs under \code{Derivations}, not under
+\code{docs/proofs}.  Research papers and uncompiled proposals remain under
+documentation until they satisfy the no-placeholder rule.
+
+\subsection{A machine-readable obligation ledger}
+
+Each compiled theorem can emit a JSON sidecar:
+\begin{lstlisting}[language={}]
+{
+  "theorem": "packet.namespace.endpoint",
+  "object_formula": "...",
+  "repository_commit": "7fa3ba48...",
+  "status": "conditional-object-theorem",
+  "residuals": [
+    {
+      "name": "tail_bound",
+      "kind": "resource",
+      "formula": "...",
+      "source": "SpecialFunction.Tail",
+      "discharged_by": null
+    }
+  ]
+}
+\end{lstlisting}
+
+The ledger is not trusted proof data.  It supports dashboards, dependency
+queries, and honest status summaries.  A CI script can verify that every
+listed discharged residual corresponds to an imported theorem and that the
+endpoint declaration exists.
+
+\subsection{Immediate implementation milestones}
+
+The smallest high-value sequence is:
+
+\begin{enumerate}
+\item commit \code{Framework/Module.lean};
+\item commit Boolean truth tables and equality reflection;
+\item compile the first nontrivial QF formula;
+\item package \code{IPRA.ind} as fixed trace reflection;
+\item port one finite recurrence packet to PCFM;
+\item implement exact stable observer;
+\item port one bounded-search packet with a residual bound;
+\item prove code normalization for zero and composition cases;
+\item finish the primitive-recursion normalization case;
+\item expose the open bridge theorem.
+\end{enumerate}
+
+At each milestone there is a checked artifact that downstream work can use.
+No single all-or-nothing compiler proof blocks the sequence.
+
+\subsection{Relationship to the current CBIP and related proposals}
+
+PCFM does not reject the mathematical content of Certified Bounded Interaction
+Programs, finite-query normal forms, relational normal forms, contract DAGs,
+or observation graphs.  It provides a lower implementation layer for them.
+
+A CBIP front end may normalize to a trace and then call
+\code{Framework.Trace}.  A finite-query normal form may call
+\code{ReflectQF} and \code{Search}.  A relational normal form may call
+\code{Viability} and \code{Observer}.  A contract DAG may elaborate every node
+to \code{Module}.  This arrangement preserves the conceptual innovations of
+the packets while eliminating duplication in their trusted core.

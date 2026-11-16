@@ -1,0 +1,89 @@
+{
+  "artifact": "Proof-Carrying Finitary Modules for iPRA",
+  "date": "2026-11-16",
+  "repository": "VladimirReshetnikov/ProveIt",
+  "commit": "7fa3ba48e8f62e8018ed954faaa48b908217eaf1",
+  "claims": [
+    {
+      "name": "module structural calculus",
+      "status": "paper-and-upstream-reduction",
+      "dependencies": [
+        "Prf.subst",
+        "Prf.weaken",
+        "Prf.trans"
+      ]
+    },
+    {
+      "name": "QF Boolean reflection",
+      "status": "paper-proof-planned-lean",
+      "dependencies": [
+        "eqb",
+        "eq_or_ne",
+        "Boolean truth tables"
+      ]
+    },
+    {
+      "name": "bounded least witness",
+      "status": "paper-wrapper-upstream-backend",
+      "dependencies": [
+        "Search.search_spec",
+        "Search.search_found",
+        "Search.search_minimal"
+      ]
+    },
+    {
+      "name": "fixed trace reflection",
+      "status": "paper-proof-planned-lean",
+      "dependencies": [
+        "recDef",
+        "rec_zero",
+        "rec_succ",
+        "IPRA.ind"
+      ]
+    },
+    {
+      "name": "finite-use compilation",
+      "status": "paper-metatheorem",
+      "dependencies": [
+        "Module constructors",
+        "Lean kernel checks generated Prf"
+      ]
+    },
+    {
+      "name": "finite backward viability",
+      "status": "paper-proof-planned-lean",
+      "dependencies": [
+        "QF reflection",
+        "bounded arrays",
+        "least search",
+        "trace"
+      ]
+    },
+    {
+      "name": "stable witness erasure",
+      "status": "paper-proof-planned-lean",
+      "dependencies": [
+        "least witness",
+        "equality/setoid/metric stability"
+      ]
+    },
+    {
+      "name": "open bridge equivalence",
+      "status": "reduced-to-concrete-planned-lean",
+      "dependencies": [
+        "existing open reverse transport",
+        "context closure",
+        "code normalization"
+      ]
+    }
+  ],
+  "runtime_verification": {
+    "python_tests": "passed-10-tests",
+    "reference_demo": "passed-exact-rational-arithmetic",
+    "pdf_compile": "passed-latexmk-62-pages",
+    "pdf_preflight": "passed-openable-unencrypted-embedded-fonts",
+    "pdf_render_inspection": "passed-62-pages-pdftoppm-plus-manual-contact-sheet-and-spot-checks",
+    "lean_build": "not-run-lean-unavailable",
+    "archive_integrity": "passed-unzip-test-hash-manifest-and-reextracted-python-tests"
+  }
+}

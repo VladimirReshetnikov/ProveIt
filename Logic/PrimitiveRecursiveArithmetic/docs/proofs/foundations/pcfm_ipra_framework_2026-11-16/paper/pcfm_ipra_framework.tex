@@ -1,0 +1,228 @@
+
+\documentclass[11pt,oneside]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=0.88in]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit,calc}
+\usepackage{caption}
+\usepackage{url}
+
+\definecolor{linkblue}{RGB}{28,78,135}
+\definecolor{deepgreen}{RGB}{25,99,79}
+\definecolor{warmred}{RGB}{153,57,44}
+\definecolor{codegray}{RGB}{247,247,247}
+\definecolor{softblue}{RGB}{238,245,252}
+\definecolor{softgreen}{RGB}{239,248,244}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Proof-Carrying Finitary Modules for iPRA},
+  pdfauthor={OpenAI research synthesis for Vladimir Reshetnikov and ProveIt}
+}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.52em}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\setlist[itemize,enumerate]{leftmargin=*,topsep=0.25em,itemsep=0.16em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Proof-Carrying Finitary Modules for iPRA}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  keywordstyle=\bfseries\color{linkblue},
+  commentstyle=\itshape\color{deepgreen},
+  numbers=left,
+  numberstyle=\tiny,
+  xleftmargin=1.4em,
+  framexleftmargin=1.1em
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{principle}[theorem]{Principle}
+\newtheorem{barrier}[theorem]{Barrier}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{status}[theorem]{Status}
+\newtheorem{roadmap}[theorem]{Lean roadmap}
+
+\newcommand{\iPRA}{\mathrm{iPRA}}
+\newcommand{\PRA}{\mathrm{PRA}}
+\newcommand{\Nat}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Bool}{\mathbb{B}}
+\newcommand{\PCFM}{\mathsf{PCFM}}
+\newcommand{\Prf}{\mathsf{Prf}}
+\newcommand{\PRAAx}{\mathsf{PRAAx}}
+\newcommand{\PTm}{\mathsf{PTm}}
+\newcommand{\Fm}{\mathsf{Fm}}
+\newcommand{\Valid}{\mathsf{Valid}}
+\newcommand{\ValidObs}{\mathsf{ValidObs}}
+\newcommand{\Eqv}{\mathsf{Eqv}}
+\newcommand{\Obs}{\mathsf{Obs}}
+\newcommand{\CertCheck}{\mathsf{Check}}
+\newcommand{\Run}{\mathsf{Run}}
+\newcommand{\Inv}{\mathsf{Inv}}
+\newcommand{\Post}{\mathsf{Post}}
+\newcommand{\Need}{\mathsf{Need}}
+\newcommand{\Viable}{\mathsf{Viable}}
+\newcommand{\Good}{\mathsf{Good}}
+\newcommand{\Guard}{\mathsf{Guard}}
+\newcommand{\Res}{\mathsf{Res}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\defeq}{\mathrel{:=}}
+\newcommand{\imp}{\rightarrow}
+\newcommand{\iffc}{\leftrightarrow}
+\newcommand{\dotminus}{\mathbin{\dot{-}}}
+
+\title{\textbf{Proof-Carrying Finitary Modules}\\[0.22em]
+A Shallow Object-Theory Framework for Embedding Mathematics\\
+in Intuitionistic Primitive Recursive Arithmetic}
+\author{Research synthesis prepared for Vladimir Reshetnikov\\
+and the ProveIt iPRA development}
+\date{16 November 2026\\
+Repository baseline: \texttt{7fa3ba48e8f62e8018ed954faaa48b908217eaf1}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The ProveIt iPRA directory contains a mature checked logical kernel and arithmetic library, together with a much larger collection of theorem packets and general frameworks whose mathematical content is mostly not yet connected to kernel-checked object-theory derivations.  This report develops \emph{Proof-Carrying Finitary Modules} (PCFM), a deliberately shallow framework designed to close that gap.
+
+A PCFM module is not merely a program, a semantic contract, or a host-language proposition.  It contains a literal derivation of type
+\[
+   \Delta,\Gamma\ \vdash_{\PRAAx}\ \varphi
+\]
+in the ordinary \code{Prf PRAAx} calculus.  Here $\Gamma$ is the local input contract and $\Delta$ is an explicit list of residual producer obligations such as a convergence modulus, a height cutoff, a separation gap, a finite-cover margin, or a correctness theorem for an external certificate.  Modules specialize by \code{Prf.subst}, compose by \code{Prf.trans}, and remain conditional until every residual obligation has itself been supplied by a proof-carrying module.
+
+The main conceptual change is that PCFM is a \emph{shallow typed embedding}.  A fixed theorem-specific proof graph is assembled by Lean functions whose result type is already a \code{Prf PRAAx} judgment.  There is no object-level universal evaluator and no need to prove soundness of a large deep intermediate language before any application can be checked.  Fixed bounded loops are compiled to primitive recursion with one quantifier-free invariant; branches use a recursive Boolean reflection theorem for quantifier-free formulas; bounded existential claims use the checked least-search backend; finite relational choices use backward viability; and exact, quotient-stable, or error-stable observations erase irrelevant witness choices.  A finite-use compilation theorem shows that every well-typed finite graph built from these modules yields a derivation whose hypotheses are exactly its unresolved producer boundaries.
+
+We give complete human-readable proofs of the structural module calculus, quantifier-free Boolean reflection, bounded quantifier elimination, fixed trace reflection, finite relational viability, stable witness erasure, resource-demand composition, and the reduction of open-sequent bridge transport to the existing free-environment translations plus a single code-normalization theorem.  We then instantiate the framework for exact algebra, rational analysis, Cauchy names, finite topology, algebraic geometry by certified setoids, bounded Diophantine search, finite probability approximations, and special-function identities.  The framework resolves several recurring formalization difficulties, while sharply preserving the genuine barriers: a cardinality bound does not give a search cutoff; pointwise convergence does not give a primitive-recursive modulus; a finite compatible family need not yield a coherent infinite selector; exact branch choice fails at collisions without a gap; and unrestricted height bounds for general Faltings- or Siegel-type statements are not manufactured by compilation.
+
+The archive includes the article source and PDF, Lean-oriented module skeletons with exact proposed theorem signatures, an implementation dependency ledger, and executable exact-arithmetic regression tests.  The current artifact does not claim that its Lean skeletons have been compiled; it specifies a path in which each completed file becomes independently kernel-checkable against the current \code{ConciseIPRA}, \code{IPRADerivations}, and \code{IPRABridge} APIs.
+\end{abstract}
+
+\begin{center}
+\fcolorbox{linkblue}{softblue}{\parbox{0.92\textwidth}{
+\textbf{Central deliverable.}
+The first implementation target is not another universal proof language.  It is a small library of typed constructors that return actual \(\Prf\,\PRAAx\) terms: structural composition, Boolean reflection, trace induction, bounded search, viability, stable observation, and residual discharge.  Each theorem packet can then migrate one proof boundary at a time.
+}}
+\end{center}
+
+\tableofcontents
+\newpage
+
+\input{sections/01_repository_audit}
+\input{sections/02_design_principles}
+\input{sections/03_presentations}
+\input{sections/04_module_calculus}
+\input{sections/05_boolean_reflection}
+\input{sections/06_trace_reflection}
+\input{sections/07_graph_compilation}
+\input{sections/08_relational_stability}
+\input{sections/09_quantitative_objects}
+\input{sections/10_bridge}
+\input{sections/11_difficulties}
+\input{sections/12_examples}
+\input{sections/13_lean_plan}
+\input{sections/14_integration}
+\input{sections/15_conclusion}
+\appendix
+\input{sections/a_theorem_ledger}
+\input{sections/b_lean_signatures}
+\input{sections/c_audit_checklist}
+
+\begin{thebibliography}{99}
+
+\bibitem{repo}
+V.~Reshetnikov,
+\emph{ProveIt: Logic/PrimitiveRecursiveArithmetic},
+Git repository, baseline \texttt{7fa3ba48e8f62e8018ed954faaa48b908217eaf1},
+16 November 2026.
+
+\bibitem{concise}
+V.~Reshetnikov,
+\emph{Concise presentations of intuitionistic primitive recursive arithmetic},
+ProveIt repository, \code{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}, 2026.
+
+\bibitem{derivations}
+V.~Reshetnikov,
+\emph{iPRA derivations of theorems from the proof packets},
+ProveIt repository, \code{Logic/PrimitiveRecursiveArithmetic/Derivations}, 2026.
+
+\bibitem{bridge}
+V.~Reshetnikov,
+\emph{The Foundation--ConciseIPRA bridge},
+ProveIt repository, \code{Logic/PrimitiveRecursiveArithmetic/Bridge}, 2026.
+
+\bibitem{unification}
+V.~Reshetnikov,
+\emph{ProveIt iPRA unification plan},
+ProveIt repository, \code{Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md}, 2026.
+
+\bibitem{cbip}
+V.~Reshetnikov and collaborators,
+\emph{Certified Bounded Interaction Programs: A General Proof-Producing Framework for Mathematics in iPRA},
+ProveIt research packet, 16 November 2026.
+
+\bibitem{uniformity}
+V.~Reshetnikov and collaborators,
+\emph{Uniformity Gates and Bounded Refutation Frontiers},
+ProveIt research packet, 15 November 2026.
+
+\bibitem{bishop}
+E.~Bishop and D.~Bridges,
+\emph{Constructive Analysis},
+Springer, 1985.
+
+\bibitem{bridges}
+D.~Bridges and F.~Richman,
+\emph{Varieties of Constructive Mathematics},
+Cambridge University Press, 1987.
+
+\bibitem{troelstra}
+A.~S.~Troelstra and D.~van Dalen,
+\emph{Constructivism in Mathematics},
+North-Holland, 1988.
+
+\bibitem{kohlenbach}
+U.~Kohlenbach,
+\emph{Applied Proof Theory: Proof Interpretations and Their Use in Mathematics},
+Springer, 2008.
+
+\bibitem{kleene}
+S.~C.~Kleene,
+\emph{Introduction to Metamathematics},
+North-Holland, 1952.
+
+\end{thebibliography}
+\end{document}
