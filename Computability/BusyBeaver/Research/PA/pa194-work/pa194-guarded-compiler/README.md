@@ -153,7 +153,7 @@ incremental replay of `PA194Leibniz` against those objects passed with four axio
 reports and no `sorryAx`. The dispatcher, source theory and other listed overlays
 were prebuilt; these checks do not rebuild the full transitive dependency closure.
 The first replay used the preceding six-module version of `check-incremental.sh`;
-the current seven-module script has not been run as a whole. To replay the later
+the current eleven-module script has not been run as a whole. To replay the later
 module alone against the same checked staged dependencies:
 
 ```sh
