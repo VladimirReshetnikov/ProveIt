@@ -32,3 +32,19 @@ the staged Foundation, arithmetic and machine objects. The order of the
 lower stages matters when several build outputs contain the same module.
 The other check scripts replay the arithmetic calibration, its native
 endpoint, and the independently stated scheduler/refutation result.
+
+## ConciseIPRA export
+
+[`PA194NativeLiteralConcise.consistency_iff_literal_nonhalt`](PA194NativeLiteralConcise.lean)
+translates the checked endpoint into the object judgment
+`[] ⊢[PRAAx] PA194NativeLiteralConcise.sentence`. The translation uses
+the same Foundation PA refutation predicate and the same halting
+sentence for the literal 194-state machine.
+
+Build the `IPRABridge` Lake library, then supply the output of the
+literal replay above.
+
+```sh
+lake build IPRABridge
+bash "$dir/check-concise-export.sh" "$PWD" /path/to/checked-literal-output /path/to/fresh-concise-export
+```
