@@ -41,6 +41,13 @@ register operations as hypotheses. [`ConPAMachineSourceSimulation.lean`](ConPAMa
 uses such segments to synchronize a definable source run with an absorbing
 literal machine halt at arbitrary model-valued clocks.
 
+[`ConPAMachineGenericMark.lean`](ConPAMachineGenericMark.lean) proves a
+complete marking segment for any table with the specified literal rows
+and any of the first nine unary blocks.
+[`ConPAMachineGenericDecrement.lean`](ConPAMachineGenericDecrement.lean)
+proves both branches of decrement for any table with its specified rows.
+The segment clocks and register lengths are model-valued.
+
 [`ConPAMachineStutter.lean`](ConPAMachineStutter.lean) compares halting
 for two tables under a `Σ₁` configuration relation. The proof allows
 each step to be matched by a positive finite sequence and uses persistence
