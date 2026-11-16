@@ -14,8 +14,10 @@ identifies their finite numerical runs. Lean checks all 439 startup
 segments and their composition from blank.
 [`PA194HXSharedStartup.sharedSeed`](PA194HXSharedStartup.lean) proves that
 the HX run after 56,134 steps and the primary run after 58,154 steps reach
-the same full packed configuration in every `IΣ₁` model. The equivalence
-of their later execution through the changed routers remains open.
+the same full packed configuration in every `IΣ₁` model.
+[`PA194HXSeedFrame.reachesFrame`](PA194HXSeedFrame.lean) identifies that
+configuration with the HX register file at source site 25 and header gap 42.
+The equivalence of later execution through the changed routers remains open.
 
 Run from the repository root with fresh output directories.
 

@@ -60,6 +60,8 @@ with ThreadPoolExecutor(max_workers=2) as pool:
 check(out / "PA194HXDenseStartupComplete.lean")
 check(here / "PA194HXModelStartup.lean")
 check(here / "PA194HXSharedStartup.lean")
+check(here / "PA194HXFrame.lean")
+check(here / "PA194HXSeedFrame.lean")
 endpoint = "'PA194HXSharedStartup.sharedSeed' depends on axioms: [propext, Classical.choice, Quot.sound]"
 report = (out / "PA194HXSharedStartup.log").read_text().splitlines()
 if endpoint not in report:
