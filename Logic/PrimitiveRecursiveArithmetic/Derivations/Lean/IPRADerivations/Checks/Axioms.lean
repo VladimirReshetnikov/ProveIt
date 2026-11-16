@@ -232,6 +232,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.par_eq_of_add_even
 #print axioms LeanProofs.IPRA.par_replacement
 #print axioms LeanProofs.IPRA.sum_even_bounded
+#print axioms LeanProofs.IPRA.tele_nat
+#print axioms LeanProofs.IPRA.tele_signed
+#print axioms LeanProofs.IPRA.closed_signed
 #print axioms LeanProofs.IPRA.Probability.MedianCounts.trichotomy_bits
 #print axioms LeanProofs.IPRA.Probability.MedianCounts.partition
 #print axioms LeanProofs.IPRA.Probability.MedianCounts.counts_le
@@ -717,6 +720,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.BarnesInteger.barnes_power_form
 #print axioms LeanProofs.IPRA.Analysis.RationalClosure.succ_le_two_pow
 #print axioms LeanProofs.IPRA.Analysis.RationalClosure.closure
+#print axioms LeanProofs.IPRA.Analysis.TrapezoidAffine.edge_reverse_re
+#print axioms LeanProofs.IPRA.Analysis.TrapezoidAffine.edge_reverse_im
+#print axioms LeanProofs.IPRA.Analysis.TrapezoidAffine.edge_affine_re
+#print axioms LeanProofs.IPRA.Analysis.TrapezoidAffine.edge_affine_im
+#print axioms LeanProofs.IPRA.Analysis.TrapezoidAffine.edge_additive_re
+#print axioms LeanProofs.IPRA.Analysis.TrapezoidAffine.edge_additive_im
+#print axioms LeanProofs.IPRA.Analysis.TrapezoidAffine.edge_affine
+#print axioms LeanProofs.IPRA.Analysis.TrapezoidAffine.closed_polygon_zero
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.add_formula
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.pell_norm
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.cop_XY

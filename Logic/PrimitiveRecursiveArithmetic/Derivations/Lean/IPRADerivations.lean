@@ -26,6 +26,7 @@ import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.ParityArith
+import IPRADerivations.Core.Telescoping
 import IPRADerivations.Algebra.CayleyHamilton
 import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Analysis.Chebyshev
@@ -34,6 +35,7 @@ import IPRADerivations.Analysis.Pochhammer
 import IPRADerivations.Analysis.BetaIntegers
 import IPRADerivations.Analysis.BarnesInteger
 import IPRADerivations.Analysis.RationalClosure
+import IPRADerivations.Analysis.TrapezoidAffine
 import IPRADerivations.Analysis.PowerSums
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.Core.EuclidLemma
