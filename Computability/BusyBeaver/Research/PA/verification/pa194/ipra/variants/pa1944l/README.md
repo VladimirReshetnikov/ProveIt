@@ -29,6 +29,22 @@ bash "$variants/check-linear-coverage.sh" PA1944L "$four_l" "$four_l_coverage"
 bash "$variants/check-controller-final.sh" PA1944L "$four_l" "$four_l_coverage" /dev/shm/pa1944l-final
 ```
 
+## ConciseIPRA export
+
+[`PA1944LConcise.consistency_iff_literal_nonhalt`](PA1944LConcise.lean)
+transports the exact Foundation endpoint to a closed derivation in
+`Prf PRAAx`. Its source sentence retains the same PA refutation predicate
+and `machineHaltSentence PA1944LData.table 194`.
+
+Use the final stage from the preceding replay. The export verifies the
+delivered table hash above, preserves the stage's provider order, and
+rebuilds the standard bridge against the selected Foundation objects.
+
+```sh
+lake build +IPRABridge.Standard
+bash "$variants/pa1944l/check-concise-export.sh" /dev/shm/pa1944l-final /path/to/fresh-concise-export
+```
+
 ## Shared startup for LC_A and M4R
 
 Lean checks that the 58,320-step PA1944L startup avoids dense controls

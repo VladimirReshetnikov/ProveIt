@@ -54,13 +54,21 @@ public bridge and order-symbol comparison.
   `d81158ad314dbec493a8008fc15e6b80284eea7323b3af301d111ea429af39a3`
   and the export object SHA-256 was
   `ec777e8762969dce7e5c007b9312b9d5b4017657331b7253067b3665bd470f82`.
-  The replay reported the three standard Lean axioms.
+  The replay reported the three standard Lean axioms. The updated shared
+  launcher also replayed the primary export after the standard-theory
+  split, compiling the closed bridge against the original ordered
+  PA194 providers. It reported the same axioms.
 - **Separate PA1944L pilot.** [`PA1944LFinal.consistency_iff_literal_nonhalt`](../../Computability/BusyBeaver/Research/PA/verification/pa194/ipra/variants/pa1944l/PA1944LFinal.lean)
   proves `standardTheory ⊢ nativePAConsistency 🡘 ∼machineHaltSentence PA1944LData.table 194`.
   The table hash is
   `c5787c6f2350e77183ca0d3ff25d2733ba87e8bb52cd54092d7fa26fcf4d5253`.
   Use the [variant replay](../../Computability/BusyBeaver/Research/PA/verification/pa194/ipra/variants/pa1944l/README.md)
   for its Lean inputs and coverage check. The
+  [Concise export](../../Computability/BusyBeaver/Research/PA/verification/pa194/ipra/variants/pa1944l/PA1944LConcise.lean)
+  passed over the independently recompiled native variant endpoint. Its
+  checked source and object receipt records the original table hash and
+  the selected Foundation theory and bridge provider. The export's
+  axioms were `propext`, `Classical.choice`, and `Quot.sound`. The
   [PA inventory](../../Computability/BusyBeaver/Research/PA/README.md) links
   its other independently checked variants.
 - **Original PA195.** The

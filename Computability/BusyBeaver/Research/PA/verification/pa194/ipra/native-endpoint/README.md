@@ -45,10 +45,12 @@ translates the checked endpoint into the object judgment
 the same Foundation PA refutation predicate and the same halting
 sentence for the literal 194-state machine.
 
-Build the `IPRABridge` Lake library, then supply the output of the
-literal replay above.
+Build `IPRABridge.Standard`, then supply the output of the literal replay
+above. The export rebuilds the standard bridge in the recorded provider
+order and records the hashes of the bridge and selected standard-theory
+objects alongside the endpoint.
 
 ```sh
-lake build IPRABridge
+lake build +IPRABridge.Standard
 bash "$dir/check-concise-export.sh" "$PWD" /path/to/checked-literal-output /path/to/fresh-concise-export
 ```

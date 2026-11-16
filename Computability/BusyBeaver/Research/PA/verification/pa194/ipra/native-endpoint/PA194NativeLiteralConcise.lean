@@ -1,5 +1,5 @@
 import PA194NativeLiteralFinal
-import IPRABridge
+import IPRABridge.Standard
 
 set_option autoImplicit false
 
