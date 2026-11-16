@@ -178,10 +178,19 @@ a full transitive rebuild. Reproduce with a fresh output directory:
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-value-body.sh "$PWD" NEW_EMPTY_OUTPUT
 ```
 
-A separate incremental repository-source replay of `PA194Schematic` passed
-with six axiom reports and no `sorryAx`; its Foundation dependencies were
-prebuilt, so this is not a full transitive rebuild. Reproduce with a fresh output:
+A prior incremental replay of `PA194Schematic` passed six axiom audits. After
+the sentence-layer update, a fresh incremental replay of `PA194Schematic` and
+`PA194NameForms` passed nine and six audits respectively, with no `sorryAx`.
+Their Foundation dependencies were prebuilt, so this is not a full transitive
+rebuild. The standalone schematic checker now targets the updated nine reports. Reproduce with a fresh output:
 
 ```sh
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-schematic.sh "$PWD" NEW_EMPTY_OUTPUT
+```
+
+The updated schematic and name-form modules can be replayed together with a
+fresh output directory:
+
+```sh
+bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-name-forms.sh "$PWD" NEW_EMPTY_OUTPUT
 ```
