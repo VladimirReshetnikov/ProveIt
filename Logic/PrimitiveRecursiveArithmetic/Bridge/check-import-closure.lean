@@ -32,14 +32,14 @@ def main : IO Unit := do
   let searchPath ← getSrcSearchPath
   let applications := [`BusyBeaver, `Diophantine, `ZFCinPA, `BoundedPAConsistency,
     `BoundedZFCConsistency]
-  check searchPath [`ConciseIPRA.PR, `IPRADerivations.Core.Semiring, `IPRADerivations.Core.Order]
+  check searchPath [`ConciseIPRA.PR, `IPRADerivations]
     (applications ++ [`Foundation, `DiophantineConsistency, `IPRABridge])
   check searchPath [`DiophantineConsistency.IPRAStandardAxioms] (applications ++
     [`DiophantineConsistency.IPRAArithmeticInstantiation,
      `DiophantineConsistency.IPRASuccessorInduction,
      `DiophantineConsistency.IPRASuccessorInductionConverse,
      `DiophantineConsistency.IPRAStandardTheory])
-  check searchPath [`IPRABridge.Standard] (applications ++
+  check searchPath [`IPRABridge, `IPRABridge.OrderSymbols] (applications ++
     [`DiophantineConsistency.IPRAOpenDisjunctionWitness,
      `DiophantineConsistency.IPRADeepEqualityJoin,
      `DiophantineConsistency.IPRAExplicitZFCReduction,
