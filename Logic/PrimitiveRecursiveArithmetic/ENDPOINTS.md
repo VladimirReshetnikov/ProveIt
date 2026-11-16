@@ -399,6 +399,14 @@ covers `Diophantine.mrdp` and `mrdp_iff` over standard natural numbers.
 Use `lake build Diophantine` and the published `MRDPAxioms.lean` audit.
 The focused `lake env lean -j1` run of that audit passed all 18 axiom
 checks and the three explicit interface checks.
+The [September 21 complete build receipt](../../Computability/HilbertTenthProblem/Lean/STATUS.md#validation--2026-09-21-concise-mrdp-proof-transplanted-into-the-article-library),
+published at `f336c11954`, records 3,773 jobs. `Paper1974.TableBounds`
+and its six local dependencies match that snapshot byte for byte, as do
+the twelve PAListCoding modules in the current H10 closure. The current
+umbrella and Pell ratio sources differ from the historical snapshot.
+The root Lean toolchain and package manifest match the publication
+snapshot byte for byte.
+The fresh independent build is still at `Paper1974.TableBounds`.
 The [Pell slack row](../../Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRAPellSlack.lean)
 is the first object-theory client. It uses `Sys90.E10b` with
 `k = η + ζ` and a positive natural witness `ζ`, and proves both
