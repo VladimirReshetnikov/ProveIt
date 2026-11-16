@@ -1,4 +1,4 @@
-import DiophantineConsistency.PRANotBit
+import DiophantineConsistency.PRAOpenFormulaCompiler
 import DiophantineConsistency.IPRABitConvention
 import IPRABridge.ComparisonBits
 import IPRABridge.ScopedSequents
@@ -9,7 +9,7 @@ namespace DiophantineConsistency.IPRANotBit
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
 open scoped LO.FirstOrder LO.FirstOrder.Arithmetic LeanProofs.ConciseIPRA.Fm
 open PRAFiniteFunctionCodes PRALanguage PRATheory PRAAddOne PRAIsZero PRAOpenFormulaCompiler
-open IPRANativeFormula IPRANativeTheory IPRATheoryHilbertBridge IPRABitConvention PRANotBit
+open IPRANativeFormula IPRANativeTheory IPRATheoryHilbertBridge IPRABitConvention
 open IPRATheoryInstantiation IPRABridge
 open LeanProofs.ConciseIPRA (Fm PTm PR Prf PRAAx)
 open LeanProofs.IPRA (eqb eqb_of_eq eqb_of_ne succ_ne_zero)
