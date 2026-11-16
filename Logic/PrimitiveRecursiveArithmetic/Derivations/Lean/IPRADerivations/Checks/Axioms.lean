@@ -250,6 +250,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Valuation.isP_of_prime
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Valuation.prime_of_isP
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Valuation.isP_01
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiEvenPow.peel_point
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiEvenPow.sum_extend
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiEvenPow.r_peel
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiEvenPow.phi_ppow_even
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiEvenPow.wit_spec
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiEvenPow.r_zero_of_none
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiEvenPow.ev_found
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiEvenPow.phi_even_pow
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
