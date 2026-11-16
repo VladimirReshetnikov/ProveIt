@@ -1,10 +1,9 @@
-# PA194 bounded halting and conditional PA consistency endpoint
+# PA194 halting and consistency in iPRA
 
-This directory binds the primary PA194 transition table to an arithmetical
-halting sentence. It does **not** prove either machine-specific direction of
-`iPRA ⊢ Con(PA) ↔ ¬Halt(PA194)`; both reductions remain explicit hypotheses
-in the endpoint. The packet's claimed PA equivalence is not an end-to-end Lean
-proof or an iPRA proof.
+The primary literal table now has an unconditional Lean proof of
+`iPRA ⊢ Con(PA) ↔ ¬Halt(PA194)`. See [the native theorem and its staged
+replay](native-endpoint/README.md). The older bounded and conditional
+constructions below remain available as separate results.
 
 `generate.py` reads the placed packet file
 `../../docs/pa194_conpa_2026-11-13/construction/tables/pa194.tm` and checks its
@@ -30,7 +29,7 @@ reduction from classical PRA, where it remains a hypothesis.
 `PA194RefutationBridge.lean` binds the PA refutation formula to Foundation's
 PA proof-code predicate in models whose arithmetic reduct satisfies IΣ₁;
 this semantic assumption is stronger than the candidate PRA assumptions.
-None of these results proves the missing machine-specific reductions.
+These earlier modules expose the reduction premises for their own coding.
 
 `PA194PRAAssembly.lean` also reuses the completed machine-independent PA
 proof-code witness certificate. It derives the reverse iPRA implication

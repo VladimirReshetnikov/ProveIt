@@ -14,12 +14,11 @@ the PA196 and U208 comparison, and the imported upstream snapshots.
 `IΣ₁`. [`docs/`](docs/) holds the delivered research packets, whose scripts
 and notes may refer to the directory layout at the time of delivery.
 
-**Status:** Neither machine-specific direction of this equivalence has yet
-been established in iPRA for PA194, the original PA195, or the PA196 candidate. In
-particular, a Lean theorem about ordinary finite runs, a Python certificate,
-and a conditional iPRA theorem are not themselves an iPRA proof of the
-consistency equivalence. See the individual READMEs for assumptions, exact
-statements, and reproducibility instructions.
+**Status:** Lean proves the unconditional iPRA equivalence for the primary
+literal 194-state table. The theorem and staged replay are under
+[native-endpoint](pa194/ipra/native-endpoint/README.md). Other 194-state
+consistency candidates, the original PA195, and the PA196 candidate remain
+separate proof obligations.
 
 ## Primary 194-state candidate
 
@@ -446,8 +445,9 @@ boundary. The [MP and SHIFT return proofs](pa194/ipra/machine-code/MODEL-MP.md)
 establish those cases for arbitrary model-valued stores. The [AX command proof](pa194/ipra/machine-code/ax-controller/README.md)
 checks all 251 body blocks and interprets their result in the same model as the
 controller. It supplies the last return case, giving equivalence between literal
-halting and scheduler halting in the covered models. The combined native iPRA
-equivalence still needs a joint repository replay with the arithmetic endpoint.
+halting and scheduler halting in the covered models. The
+[native iPRA theorem](pa194/ipra/native-endpoint/README.md) combines the two
+machine and arithmetic directions.
 
 [`pa194-source-semantics`](pa194-work/pa194-source-semantics/README.md) proves facts about
 the source theory in its models instead of by derivations: a fixed hypothesis of the guarded
