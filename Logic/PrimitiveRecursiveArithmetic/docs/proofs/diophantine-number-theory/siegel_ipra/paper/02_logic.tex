@@ -1,0 +1,378 @@
+% Standalone section for inclusion in the main report.
+% Requires amsmath, amssymb, and bibliography keys Salehi2002, Wehmeier1997.
+\section{What constructive finiteness would assert}
+\label{sec:logical-audit}
+
+The word ``finite'' requires particular care in this problem.  Several
+classically equivalent statements about integral points have different
+intuitionistic meanings.  A proof of one of them must not silently be advertised
+as a proof of another.  In particular, a bound on the \emph{number} of integral
+points need not locate any point, whereas a bound on their \emph{height}
+immediately gives a complete finite search.  The distinction is relevant before
+one asks which induction principles a proof uses.
+
+\subsection{A finite arithmetic interface}
+
+For this discussion, work over $\mathbb Q$ and use a fixed affine presentation.
+An input $c$ encodes an integer $m\geq 1$ and finitely many polynomials
+$F_1,\ldots,F_r\in\mathbb Z[X_1,\ldots,X_m]$.  It may also contain a finite
+certificate $w$ of additional hypotheses.  Signed integers, finite sequences,
+and polynomial coefficient arrays are represented by natural-number codes.
+Use the concrete signed-integer encoding
+\[
+ \operatorname{enc}(z)=
+ \begin{cases}2z&z\geq0,\\-2z-1&z<0.\end{cases}
+\]
+Its inverse, absolute value, the elementary ring operations, polynomial
+evaluation, sequence length, and sequence entries are primitive recursive.
+Choose an injective canonical coding of finite tuples, so each tuple has
+exactly one accepted code.  The point predicate rejects noncanonical codes;
+equality and list membership therefore compare points rather than multiple
+representations of one point.  Malformed codes receive a harmless default
+interpretation in the arithmetic operations, so these operations are total
+functions on natural numbers.
+
+Let $P(c,p)$ mean that $p$ is a well-formed $m$-tuple of integers and
+$F_i(p)=0$ for every $i\leq r$.  Let
+\[
+ h(c,p)=\max_{1\leq j\leq m}|p_j|
+\]
+on well-formed tuples.  Both $P$ and $h$ are primitive recursive.  Here $h$ is
+an affine coordinate size; no theory of canonical heights is needed.  Finally,
+let $G(c)$ be a primitive recursive test for the supplied admissibility
+certificate.  We do \emph{not} assume that every desired geometric property has
+already been compiled into such a test.  That compilation, its soundness, and
+its coverage are separate obligations.
+
+This interface isolates the logical issue without assuming a constructive
+theory of algebraic curves.  It also permits statements conditional on a
+specific, independently verified certificate.  If a later development chooses
+a decidable geometric presentation directly, $G$ can instead be its validity
+test.  Conversely, an unbounded, nondecidable hypothesis must not be replaced
+by $G$ without justification.
+
+Write
+\[
+ \operatorname{Bound}(c,B):\equiv
+ \forall p\bigl(P(c,p)\longrightarrow h(c,p)\leq B\bigr).
+ \tag{\textsf{H}}
+\]
+The quantifier over $p$ is unbounded.  Consequently,
+$\operatorname{Bound}(c,B)$ is generally a $\Pi^0_1$ formula, although every
+individual polynomial evaluation and comparison is decidable.  Decidability
+of those individual tests does not make the universal assertion decidable.
+
+\subsection{Height bounds and complete lists}
+
+A positive finite-list statement has the form
+\[
+ \exists L\ \forall p\bigl(P(c,p)\longleftrightarrow p\in L\bigr),
+ \tag{\textsf{L}}
+\]
+where $L$ is a natural-number code for a finite sequence.  Repetitions may be
+removed by a primitive recursive filter.  Thus the sequence formulation is
+equivalent to a coded duplicate-free list, without invoking arbitrary sets.
+
+There are direct constructive transformations between $(\mathsf L)$ and
+$\exists B\,\operatorname{Bound}(c,B)$.  Given $L$, compute the maximum of the
+heights of its entries, with maximum $0$ for the empty list.  Every point
+occurs in the list, hence its height is at most this maximum.  This direction
+only needs the covering implication $P(c,p)\to p\in L$; if the list contains
+extraneous tuples, filtering by $P$ removes them.
+
+For the converse, suppose a particular $B$ and a proof of
+$\operatorname{Bound}(c,B)$ are available.  Enumerate the box
+\[
+ \{-B,-B+1,\ldots,B\}^{m}.
+\]
+It has exactly $(2B+1)^m$ entries.  For example, digits in base $2B+1$
+enumerate coordinate tuples, with each digit $d$ interpreted as $d-B$.
+Evaluate the defining polynomials on each tuple and retain the tuples for
+which every value is zero.  All loops have explicit finite limits.  Their
+composition is primitive recursive, including when $m$ and $B$ vary.
+Every retained tuple is a point by the filter test.  Every point lies in the
+box by the given bound and is therefore retained.  This proves completeness.
+
+The associated iPRA argument uses only elementary coding and induction on
+finite loops.  A statement that a loop has inspected its first $k$ entries is
+bounded; in the language with all primitive recursive functions it can be
+expressed by a quantifier-free characteristic equation.  Thus the usual
+induction proof of filter correctness does not require induction over an
+arbitrary unbounded formula.  This observation justifies the finite search
+\emph{after} a height bound has been proved; it does not supply that bound.
+
+For integral points over a number field, one must additionally specify a
+finite encoding of the field and integral elements and give an effective
+finite enumeration below the chosen height.  Those additions do not remove
+the distinction between bounding the number of points and bounding their
+locations.  The rational case already exhibits the logical issue.
+
+\subsection{A bound on the number of points is weaker}
+
+Define $\operatorname{AtMost}(c,N)$ by saying that every list of $N+1$ points
+contains a repeated entry.  More explicitly,
+\[
+ \forall s\Bigl(
+   \operatorname{length}(s)=N+1\ \wedge\
+   \operatorname{AllPoints}(c,s)
+   \ \longrightarrow\
+   \operatorname{HasRepeat}(s)\Bigr).
+ \tag{\textsf{C}}
+\]
+The two sequence predicates are primitive recursive: their internal
+quantification is bounded by the sequence length.  This is therefore also a
+$\Pi^0_1$ assertion.  A complete list gives $(\mathsf C)$ with its length as
+$N$, by the finite pigeonhole principle.  A height bound gives it with
+$N=(2B+1)^m$.
+
+The reverse implication is not intuitionistically valid in general, even
+for primitive recursive predicates.  To see the reason, let $R(e,t)$ mean
+that a deterministic program with code $e$, on a fixed input, halts
+\emph{for the first time} after exactly $t$ steps.  Bounded simulation makes
+$R$ primitive recursive.  Finite computation and determinism prove that
+there cannot be two different such times.  In particular the numerical
+bound $1$ works uniformly for the number of witnesses of $R(e,\cdot)$.
+
+Nevertheless, no total computable function $b(e)$ can bound every such
+halting time.  If it did, simulate program $e$ for $b(e)$ steps.  If it has
+halted, answer yes; otherwise the bound guarantees that it never halts, so
+answer no.  This would decide the halting problem.  Thus a uniform count
+bound, even the constant $1$, does not in general give a computable height
+bound or a complete list.
+
+This example concerns arbitrary decidable subsets of the natural numbers.
+It is \emph{not} a reduction of the halting problem to integral points on
+the curves under discussion.  It supplies no undecidability result for
+Siegel's theorem.  Its purpose is narrower: it rules out a purely logical
+passage from a cardinality bound to an exhaustive search bound.
+
+Knowing an upper bound $N$ also does not justify searching until $N$ points
+have been found.  There may be fewer than $N$ points, or none.  Such a
+search would then fail to stop.  A proof providing $N$ actual distinct
+points together with an upper bound $N$ is different: the provided points
+form a complete list.  The positive witnesses in the lower-bound statement
+are essential.
+
+Accordingly, the uniform assertion
+\[
+ \forall c\bigl(G(c)\to\exists N\,
+                         \operatorname{AtMost}(c,N)\bigr)
+ \tag{\textsf{CountSiegel}}
+\]
+would extract a primitive recursive bound on the \emph{number} of points.
+It need not solve the effective problem of locating all points.  It would
+still require a complete proof in the specified arithmetic.  The existence
+of classical quantitative results is not, by itself, such a proof.  The
+phrase ``finitely many'' in the requested theorem therefore leaves a real
+choice of constructive formulation; this report does not identify
+$(\mathsf{CountSiegel})$ with the stronger assertion below.
+
+\subsection{The precise witness-extraction consequence}
+
+For the usual presentation of iPRA, the relevant metatheorem is stronger
+than mere recursive realizability.  If
+\[
+ \mathrm{iPRA}\vdash\forall u\exists v\,A(u,v),
+\]
+where $A$ is an arbitrary arithmetical formula, then there is a primitive
+recursive function symbol $f$ such that
+\[
+ \mathrm{iPRA}\vdash\forall u\,A(u,f(u)).
+ \tag{\textsf{W}}
+\]
+Salehi records this as Fact~3.5, with a reference to Wehmeier's
+primitive-recursive choice theorem
+\cite{Salehi2002,Wehmeier1997}.  Multiple input variables are combined by
+primitive recursive pairing.  In particular, the theorem is not restricted
+to quantifier-free $A$; its applicability to a matrix containing an
+unbounded universal quantifier is exactly what is needed here.
+
+Here is the consequence for a hypothetical proof of positive Siegel
+finiteness.  Suppose
+\[
+ \mathrm{iPRA}\vdash
+ \forall c\bigl(G(c)\longrightarrow
+          \exists B\,\operatorname{Bound}(c,B)\bigr),
+ \tag{\textsf{PositiveSiegel}}
+\]
+and suppose iPRA proves the decidability of $G$.  For any fixed $c$, reason
+by that decidability.  If $G(c)$, use $(\mathsf{PositiveSiegel})$ and retain
+its witness $B$.  If $\neg G(c)$, take $B=0$; the implication from $G(c)$
+is vacuous.  These two cases prove, intuitionistically,
+\[
+ \mathrm{iPRA}\vdash\forall c\exists B
+       \bigl(G(c)\longrightarrow\operatorname{Bound}(c,B)\bigr).
+\]
+Apply $(\mathsf W)$ with
+$A(c,B)\equiv G(c)\to\operatorname{Bound}(c,B)$.  It supplies a primitive
+recursive $b$ and an iPRA proof of
+\[
+ \forall c\bigl(G(c)\longrightarrow
+                         \operatorname{Bound}(c,b(c))\bigr).
+ \tag{\textsf{ExtractedBound}}
+\]
+No unrestricted independence-of-premise principle has been used.  The
+case distinction on the explicitly decidable certificate predicate is
+what permitted moving the existential quantifier.
+
+Composing $b$ with the box enumeration and polynomial filter gives a
+primitive recursive procedure which outputs a complete list on every
+certified admissible input.  It also decides whether that input has any
+integral points, by checking whether the resulting list is empty.  The
+numerical bound need not be remotely practical; primitive recursiveness
+is a structural conclusion about its construction, not a claim of
+feasible running time.
+
+The same argument applies to $(\mathsf{CountSiegel})$, but with
+$A(c,N)=G(c)\to\operatorname{AtMost}(c,N)$.  Its extracted function only
+supplies $N$.  Substituting this function into a height-bounded search
+would be an error: no height bound occurs in the conclusion of the
+witness theorem.
+
+There are two further qualifications.  First, when $c$ contains a
+certificate, the extracted bound is allowed to depend on that certificate.
+Obtaining an algorithm from raw equations requires a procedure that
+produces a valid certificate for every admissible raw input.  A
+primitive recursive certificate checker alone does not supply such a
+procedure.  Second, if admissibility is instead represented by a
+nondecidable formula, a realizability argument may require a realizer of
+that hypothesis.  It is not legitimate to discard that additional input
+and announce a bound depending only on the curve's coefficients.
+
+\subsection{Fixed instances and external schemas}
+
+A proof for one specified curve and a uniform theorem over curve codes
+have different strengths.  If iPRA proves
+$\exists B\,\operatorname{Bound}(\bar c,B)$ for one fixed numeral
+$\bar c$, numerical existence provides a particular standard integer
+$b$ with an iPRA proof of $\operatorname{Bound}(\bar c,\bar b)$.
+There is no conclusion that the same bound works for other curves.
+For that particular curve, however, the proof supplies precisely the
+information required for a complete finite search.
+
+There is a subtle intermediate case.  Suppose one asserts externally
+that \emph{every} admissible standard curve code $c$ has some iPRA proof
+of $\exists B\,\operatorname{Bound}(\bar c,B)$, without presenting a
+uniform proof of $(\mathsf{PositiveSiegel})$.  This assertion still has
+an effectivity consequence.  On a given admissible input, enumerate iPRA
+proofs.  Numerical existence guarantees that eventually one finds a
+proof of $\operatorname{Bound}(\bar c,\bar b)$ for some numeral
+$\bar b$.  Return $b$ and perform the finite search.  Proof enumeration
+and recognition are effective, so this is a partial recursive algorithm
+which terminates on every admissible input covered by the asserted
+schema.  Its running time, and the resulting bound as a function of $c$,
+need not be primitive recursive.
+
+Thus a nonuniform assertion of \emph{provability of all instances}
+must not be confused with bare classical existence of a bound for
+each instance.  The latter does not furnish recognizable iPRA proofs
+to enumerate.  Nor does a collection of proofs for selected examples
+establish that all admissible instances are covered.  These distinctions
+prevent both an exaggerated impossibility claim and an understated
+claim about what a proposed constructive theorem would accomplish.
+
+\subsection{Negations, translations, and hidden induction}
+
+A possible weaker target is
+\[
+ \forall c\bigl(G(c)\longrightarrow
+              \neg\neg\exists B\,\operatorname{Bound}(c,B)\bigr).
+ \tag{\textsf{NegativeSiegel}}
+\]
+The witness theorem does not remove the double negation.  In particular,
+ordinary Markov-style reasoning for a decidable search predicate does
+not apply directly: the predicate being searched for is
+$\operatorname{Bound}(c,B)$, an unbounded universal assertion.  Checking
+a large finite region cannot verify it.
+
+The statement that points are not unbounded,
+\[
+ \neg\forall B\exists p\,
+                    \bigl(P(c,p)\wedge h(c,p)>B\bigr),
+\]
+is another possible negative formulation.  It follows from positive
+boundedness and also from its double negation.  One should not assume
+that all these negative formulations are intuitionistically equivalent;
+interchanging negation and unbounded quantifiers itself requires
+justification.  Likewise, the absence of a specified infinite sequence
+of distinct points is not a coded complete list of the points.
+
+Negative translation is useful only with the correct source theory.
+A classical \emph{PRA} proof can be translated into an iPRA proof of
+its negative translation, because the relevant defining equations and
+quantifier-free induction are preserved.  A proof in arbitrary classical
+mathematics does not automatically become an iPRA proof by the same
+operation.  Its induction, choice, comprehension, and algebraic
+existence principles must first be accounted for.  Therefore a classical
+proof of Siegel's theorem cannot simply be relabeled a proof of
+$(\mathsf{NegativeSiegel})$ in iPRA.
+
+Similar care is needed with formalization.  A Lean proof about
+$\mathbb Z$, polynomials, and finite lists can establish the correctness
+of a finite search.  A Lean theorem whose hypothesis already asserts a
+height bound is a conditional result.  Neither one, by itself, proves
+that iPRA derives the required height bound.  For the latter claim,
+one needs an explicit translation to object-language arithmetic and a
+derivation whose induction formulas satisfy the stated restriction.
+Using Lean's unrestricted natural-number induction in the metatheory
+does not discharge that obligation.
+
+\subsection{A finite kernel that can be completed independently}
+
+Several useful lemmas do not depend on the unresolved global argument.
+First, primitive recursive evaluation of a polynomial code agrees with
+the corresponding finite sum of monomials.  A proof proceeds through
+the coefficient list and then through each exponent vector; all
+intermediate identities are ring equations.  Second, decoding the
+base-$(2B+1)$ expansion of an index below $(2B+1)^m$ gives exactly one
+tuple in the box.  Conversely, encoding the shifted coordinates of
+any box tuple returns such an index.  Both assertions reduce to
+bounded division and remainder identities.
+
+Third, filtering a finite sequence by the point predicate is sound,
+and every original entry satisfying that predicate occurs in the
+filtered sequence.  Fourth, the maximum-height operation bounds the
+height of each list entry.  Finally, the pigeonhole argument converts
+a complete list into a bound on the number of distinct points.  These
+proofs may be organized with characteristic functions for bounded
+sequence predicates, so their loop induction remains quantifier-free.
+Their correctness is uniform in the coefficient data, the number of
+coordinates, and the supplied numerical bound.
+
+These results constitute a genuine computational kernel, but its
+interface must retain the hypothesis
+$\operatorname{Bound}(c,B)$.  An executable routine that receives $B$
+and returns the filtered box list is already useful; calling its
+output ``all integral points'' without verifying that hypothesis is
+not justified.  Likewise, checking finitely many examples of the
+routine checks implementation behavior, not the global theorem.
+
+An arithmetic proof checker can instead check a finite derivation of
+the universal bound.  This is a stronger certificate than merely
+testing points up to a chosen cutoff.  Its syntax, inference rules,
+and induction restriction must be specified and its soundness
+established in the metatheory.  Having such a checker does not create
+the required derivation.  Separating the finite search kernel, the
+proof checker, and the mathematical height-bound argument prevents a
+correct piece of infrastructure from concealing the missing theorem.
+
+\subsection{What this audit establishes}
+
+The established logical conclusion is conditional and precise: a
+uniform iPRA proof of positive, height-bounded Siegel finiteness on a
+decidably certified family yields a primitive recursive height bound
+and complete enumeration on that family.  A uniform iPRA proof of
+cardinality finiteness yields only a primitive recursive cardinality
+bound.  An admissible negative formulation has still different
+computational content.
+
+None of these observations proves that Siegel's theorem, in any of
+these formulations, is unprovable in iPRA.  They identify what must be
+proved and what cannot be supplied by a purely formal change of
+language.  In particular, stating that the positive version would
+settle an unresolved effective problem is not an independence theorem.
+A completed contribution would have to provide the missing arithmetic
+argument, or explicitly choose and prove a weaker constructive
+formulation.  The finite coding and extraction results above remain
+useful in either direction, while making the remaining mathematical
+work visible.

@@ -1,0 +1,188 @@
+\section{Why the elementary proofs fit iPRA}
+\label{sec:arithmetic-audit}
+
+This section explains the claimed weak-arithmetic status of the written
+proofs. It does not identify native Lean induction with induction inside
+iPRA. The intended object theory is the conventional first-order theory
+implemented by ProveIt's \texttt{PRAAx}.
+
+\subsection{Language, axioms, and rules}
+
+The underlying domain is $\N$. There is one function symbol for each
+primitive recursive construction: zero, successor, projections,
+composition, and primitive recursion. For $f$ of arity $k$ and $g$ of
+arity $k+2$, the recursion symbol obeys
+\[
+ \begin{split}
+ h(0,\vec u)&=f(\vec u),\\
+ h(n+1,\vec u)&=g(n,h(n,\vec u),\vec u).
+ \end{split}
+\]
+Composition and projections have their usual defining equations.
+The arithmetic axioms include $Sx\ne0$ and $Sx=Sy\to x=y$.
+For each quantifier-free formula $\theta(n,\vec u)$, the induction
+schema is
+\[
+ \theta(0,\vec u)\to
+ \bigl[\forall n\,(\theta(n,\vec u)\to\theta(n+1,\vec u))\bigr]
+ \to\forall n\,\theta(n,\vec u).
+\]
+The logic is intuitionistic first-order natural deduction with equality:
+the introduction and elimination rules for $\wedge,\vee,\to,\forall,\exists$,
+falsity elimination, equality reflexivity, and substitution of equals.
+There is no unrestricted excluded middle or double-negation elimination.
+Decidable arithmetic cases, such as the sign of an integer, are derived
+using primitive recursive characteristic functions.
+
+Signed integers use the canonical natural-number encoding in
+Section~\ref{sec:logical-audit}. The integer ring laws, order laws,
+absolute-value identities, and powers translate into equations and
+inequalities between these codes. Their familiar elementary proofs use
+only quantifier-free induction. Writing $x\in\Z$ in the arithmetic proofs
+abbreviates this representation, not a new unbounded sort or quotient
+principle added to the object theory.
+
+\subsection{Concrete finite data}
+
+Use dense coefficient arrays in increasing degree order. Normalize an
+array by deleting trailing zero coefficients, with the empty array as
+the zero polynomial. Length, entry lookup with default zero, truncation,
+normalization, coefficient sums, addition, scalar multiplication, and
+convolution are primitive recursive operations on finite sequence codes.
+Horner evaluation is the recursion
+\[
+ E([],x)=0,\qquad E(a::L,x)=a+xE(L,x).
+\]
+Every polynomial identity in a certificate is checked over a specified
+finite coefficient range. With array lengths $l_f,l_A,l_R$, it suffices
+to test indices below $\max(l_f,2l_A,l_R)$. Outside that range both
+sides are zero by their support bounds. This is why the certificate
+predicate is primitive recursive rather than a universally quantified
+semantic identity.
+
+Rational arithmetic can be represented by a signed numerator and a
+strictly positive denominator. Reduction to lowest terms is optional.
+Addition and multiplication use the usual cross-multiplication formulas;
+equality is checked by cross multiplication. If canonical rationals are
+desired, the greatest common divisor can be computed by scanning divisors
+up to the smaller nonzero input, with explicit finite fuel. None of the
+proofs needs an unbounded search for a rational square root.
+
+\subsection{Induction for coefficient estimates}
+
+Fix a degree bound $m\ge1$, an integer $x$, and $t=|x|\ge1$.
+For $k\le m$, define
+\[
+ T_k=\sum_{i<k}a_ix^i,\qquad S_k=\sum_{i<k}|a_i|.
+\]
+The required lower-coefficient estimate follows from the invariant
+\[
+ k\le m\quad\longrightarrow\quad |T_k|\le S_k t^{m-1}.
+\]
+The base case is $T_0=S_0=0$. At stage $k<m$, the triangle inequality
+and $t^k\le t^{m-1}$ give
+\[
+ |T_{k+1}|\le |T_k|+|a_k|t^k
+             \le(S_k+|a_k|)t^{m-1}.
+\]
+For $k>m$ the implication is inactive; alternatively, one freezes
+the state after $m$ steps. All sums, powers, comparisons, and
+absolute values are terms of primitive recursive functions. Thus the
+displayed invariant is quantifier-free after definitions are expanded.
+Monotonicity of powers for base $t\ge1$ follows by the same kind of
+equational induction; no induction over an arbitrary family of formulas
+is used.
+
+The corresponding estimate for $R$ uses its computed leading index and
+the same invariant. Its root bound is a finite sign/order argument at a
+given $x$, not a search for all roots. The factor lemma uses only
+\[
+ |uv|=|u||v|,\qquad u\ne0\Rightarrow |u|\ge1,
+ \qquad |s+t|\le|s|+|t|.
+\]
+When arguing by contradiction that $|x|\le B_x$, we use decidability
+of that integer inequality: either it holds, or the explicit alternative
+$|x|>B_x$ gives a contradiction. This is intuitionistically valid.
+
+\subsection{Induction for square completion}
+
+Let $u>0$ be the supplied integer square root of the leading coefficient
+of $f$. The constructor has exactly $m$ descending coefficient stages
+after the leading coefficient of $Q$ is set to $u$. Its state contains
+a finite rational array $Q_k$, frozen after stage $m$. For $0\le k\le m$,
+after $k$ stages the leading $k+1$ coefficients of $Q_k^2$ agree with
+those of $f$. Encode this as a guarded bounded coefficient test
+\[
+ k\le m\quad\longrightarrow\quad
+ \prod_{j=0}^{k}
+  \operatorname{eq}_{\Q}\bigl([X^{2m-j}]Q_k^2,
+                              [X^{2m-j}]f\bigr)=1.
+\]
+The product is an iterated Boolean conjunction. Its defining recursion
+makes the assertion an atomic equality of primitive recursive terms.
+The new coefficient occurs linearly with nonzero multiplier $2u$;
+cross multiplication verifies the update. A second invariant states
+that coefficients fixed in earlier stages are unchanged. Each step
+therefore has a quantifier-free proof.
+
+Representing denominators by products, rather than least common
+multiples, avoids any issue about finding a minimum. The resulting
+denominator $D$ and integer polynomial $A=DQ$ are primitive recursive
+in the input array and the supplied positive square root $u$ of its
+leading coefficient. Multiplying through the finite rational identities
+proves $D^2f=A^2+R$. The test that the residual array is nonzero is
+finite. If it is zero, the routine reports the square case and makes
+no finiteness claim. Testing whether the leading coefficient is a
+positive square itself requires only scanning up to that coefficient.
+
+Uniform primitive recursiveness here refers to this \emph{fixed}
+algorithm on variable input data. It is not a claim that one can
+evaluate every coded primitive recursive program by a single primitive
+recursive universal evaluator. There is no such general evaluator.
+The implementation task is to construct one finite \texttt{PR} expression
+for each fixed operation, then compose them.
+
+\subsection{Exhaustive enumeration and its invariant}
+
+Once $B_x$ is computed, one may scan $x=-B_x,\ldots,B_x$. For each
+$n=f(x)\ge0$, compute the greatest $s\le n$ with $s^2\le n$ by a
+bounded scan, or use a separately justified fast integer-square-root
+algorithm. Retain $(x,s)$ and, for $s>0$, $(x,-s)$ precisely when
+$s^2=n$. Every step has an explicit bound. This implementation avoids
+the larger rectangular scan using $B_y$, while the latter remains a
+simple proof-theoretic specification.
+
+After $k$ horizontal positions have been processed, the retained list
+contains exactly the solutions at those positions. In the rectangular
+version, encode this as the conjunction over the first $k$ box indices
+that each successful point test has its decoded tuple in the accumulated
+list, and that every accumulated tuple passes the test and has a
+processed index. All these quantifiers are bounded by the current code
+lengths or the explicit box size. Their characteristic functions turn
+the invariant into a quantifier-free formula. The single update either
+appends the next successful tuple or leaves the list unchanged, which
+proves the next invariant by finite membership identities.
+
+At termination, the invariant proves exactness within the box. The
+Runge theorem independently proves that every integral point lies in
+the box. Combining these two conclusions proves global completeness.
+The program is therefore an exhaustive solver on the stated certified
+family, not just an experimental search below a chosen cutoff.
+
+\subsection{What remains to be formalized}
+
+The written arguments give the elementary arithmetic proof and its
+allowed induction invariants. Completing the embedded derivation still
+requires coding those functions as actual \texttt{PR} terms, deriving
+their equations in \texttt{PRAAx}, constructing the characteristic
+formulas and their \texttt{QF} witnesses, and assembling natural-deduction
+proof terms. These are concrete finite tasks for the elementary family.
+Their completion is not asserted by the presence of a native Lean
+specification or by the Python checks.
+
+The external identification of the examples' projective genus uses
+standard algebraic geometry. The integral-point theorem itself does
+not invoke that identification as an axiom: its hypotheses and
+conclusion are directly arithmetic. A separate formalization of the
+geometric interpretation would be needed to make the genus statement
+part of the same internal arithmetic development.
