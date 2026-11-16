@@ -1,0 +1,78 @@
+\section{Theorem ledger and exact status}
+\label{sec:ledger}
+
+This ledger separates mathematical proofs, executable evidence, Lean source, and kernel-checked status.  It
+is intentionally conservative.
+
+\begin{longtable}{@{}p{0.23\textwidth}p{0.39\textwidth}p{0.28\textwidth}@{}}
+\toprule
+Result & Content & Status in this archive \\
+\midrule
+\endfirsthead
+\toprule
+Result & Content & Status in this archive \\
+\midrule
+\endhead
+Finite-code closure & Products, sums, bounded lists, folds, validity, equality, and searches are primitive recursive for fixed presentations. & Complete human proof; exercised by Python data structures. \\
+Bounded Booleanization & Every fixed bounded formula compiles to a concrete Boolean characteristic with true/false reflection. & Complete human proof and precise Lean plan; not formalized in Lean here. \\
+Least bounded search & Primitive-recursive least witness or certified failure, with a QF invariant. & Complete human proof; exact Python implementation/tests; Lean target specified. \\
+Complete bounded enumeration & Duplicate-free complete list below an explicit bound. & Complete human proof; exact Python implementation for bounded filtering; Lean target specified. \\
+Instantiation/alignment & Local \(\Prf\,\PRAAx\) theorem specialized by terms and weakened into a global context. & Lean proof supplied in \texttt{Kernel.lean}; not compiled in this runtime. \\
+Proof schedule step & A reverse-topological node is discharged by simultaneous cut from earlier proofs and base hypotheses. & Lean proof supplied; no placeholders; not compiled here. \\
+Staged graph compilation & Finite sequence of arity-normalized nodes yields a final \(\Prf\,\PRAAx\) theorem. & Complete human proof; Lean node compiler supplied; full list fold generated application-by-application. \\
+Loop compilation & QF invariant plus base, step, and finish proofs yields \(P\to Q\). & Lean proof supplied using \texttt{PRA.qfInd}; not compiled here. \\
+Finite trace reflection & Correctness of a concrete bounded trace. & Complete human proof as a loop corollary; Python traces exercised. \\
+Acyclic demand soundness & Reverse demand allocation plus local contracts yields final observation. & Complete human proof; graph implementation exercised in Python. \\
+Bounded cyclic demand closure & Inflationary monotone iteration in a finite box stabilizes at the least closed demand. & Complete human proof; exact Python implementation/tests; Lean plan specified. \\
+Finite viability & Backward table characterizes finite-horizon extendability and yields a least path. & Complete human proof; exact Python implementation/tests; Lean plan specified. \\
+Exact branch erasure & Branch-independent observation removes finite internal choice. & Complete human proof; generic Lean combinator supplied; Python test. \\
+Diameter erasure & Rational diameter bound validates any bounded selector up to the stated error. & Complete human proof; exact Python implementation/test; Lean plan specified. \\
+Gap-based exactness & Approximation plus separation identifies a discrete branch exactly. & Complete human proof; generic Lean wrapper supplied; domain inequality proof remains local. \\
+Mixed-radix descent & Fixed-dimensional strict lexicographic descent lowers a numerical rank. & Complete human proof; exact Python implementation/test; Lean plan specified. \\
+Height-to-list & An explicit cutoff yields complete bounded enumeration. & Complete human proof; exact Python implementation/test; Lean plan specified. \\
+List-to-height & Maximum of an explicitly complete list is a cutoff. & Complete human proof; exact Python implementation/test. \\
+Cardinality obstruction & A cardinality bound alone does not yield a uniform height cutoff. & Complete elementary argument. \\
+Cubic bisection & Exact bracket and width theorem for \(y^3+y=x\). & Complete human proof; exact Python implementation/test and demo evidence; Lean application not supplied. \\
+Native export & Completed ordinary-iPRA derivation transports to native calculus. & Lean wrapper supplied, relying on checked \texttt{pra\_iff\_native}. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Claims deliberately not made}
+
+The following are not counted as results of this archive:
+\begin{itemize}
+  \item compilation of the supplied Lean files;
+  \item a generic verified implementation of every \texttt{BForm} constructor;
+  \item automatic migration or verification of the 78 repository packets;
+  \item a new effective theorem supplying general Diophantine height bounds;
+  \item exact branch choice without a separation theorem;
+  \item a proof that the Python implementation and future Lean implementation are extensionally identical;
+  \item historical priority for the broad ideas of finite certificates, demand propagation, dynamic
+        programming, or proof-producing compilation.
+\end{itemize}
+
+\subsection{Source relationship}
+
+The report consolidates ideas already present in the repository---finite observations, producer/verifier
+separation, contract graphs, reverse demand, bounded traces, relational viability, stable observables,
+resource ranks, and finite algebra---but changes the center of gravity.  The principal new synthesis is to
+make \emph{arity normalization by checked proof substitution} the front door to the graph compiler.  This
+addresses the concrete mismatch between local application lemmas and one global theorem frame, and it
+reduces the generic trusted code to operations already proved in \texttt{Deduction.lean}.
+
+\subsection{Artifact validation}
+
+The package's Python validation performs eight test groups:
+\begin{enumerate}
+  \item bounded least search and complete filtering;
+  \item mixed-radix rank and lexicographic descent;
+  \item finite-box demand closure and error cases;
+  \item static proof-schedule validation and dependency rejection;
+  \item backward viability and least successful paths;
+  \item exact and diameter-stable observables;
+  \item height/list conversions;
+  \item exact rational cubic bisection.
+\end{enumerate}
+The tests use only the Python standard library.  The build script also checks that the Lean sources contain
+no admitted theorem keywords, compiles this PDF when \texttt{pdflatex} is available, verifies the manifest,
+and writes validation logs.  These checks increase reproducibility but do not replace Lean kernel checking.

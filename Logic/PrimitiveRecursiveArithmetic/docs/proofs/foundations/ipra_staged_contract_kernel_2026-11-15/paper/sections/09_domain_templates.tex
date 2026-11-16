@@ -1,0 +1,261 @@
+\section{Domain templates}
+\label{sec:domains}
+
+The generic kernel is useful only if it leads to recognizable mathematics.  This section gives reusable
+interfaces for the major domains represented in the repository.  The purpose is not to reprove every
+packet's theorem, but to show exactly how its finite content enters the staged graph and where nonuniform
+mathematical data remains.
+
+\subsection{Exact finite algebra}
+
+Finite algebra is the easiest domain because its operations are exact.  Integers use sign-and-magnitude or
+paired-natural codes.  Rationals use normalized triples \((s,a,b)\) with \(b>0\) and
+\(\gcd(a,b)=1\).  Polynomial codes contain a degree bound and a coefficient vector.  Matrices contain fixed
+or list-coded dimensions and entry arrays.
+
+A typical exact-algebra node has:
+\begin{itemize}
+  \item a validity formula for every code;
+  \item a concrete \(\PR\) operation, such as addition, multiplication, determinant, substitution, or
+        polynomial remainder;
+  \item an equation theorem characterizing the operation;
+  \item size bounds for its output code;
+  \item a local correctness proof usable by specialization.
+\end{itemize}
+
+For polynomial identities, the strongest certificate is often a finite coefficient identity.  An assertion
+\(f=g\) is reduced to equality of all coefficients below a known degree bound.  For matrix identities,
+entrywise equality below the supplied dimensions is Booleanized.  Determinants can be defined by a fixed
+permutation sum for fixed dimension or by a fraction-free elimination trace for variable dimension.  The
+latter should carry pivot and row-operation certificates, so no unguarded division is used.
+
+\paragraph{Zero-dimensional polynomial systems.}
+Suppose a packet supplies a nonzero resultant or multiplication-matrix certificate showing that an affine
+system has finitely many solutions, together with coordinate height bounds.  The framework enumerates all
+rational coordinate tuples inside those bounds and verifies the equations.  The output list is complete by
+the height theorem.  If only a dimension or cardinality bound is known, enumeration does not follow; the
+missing height is an explicit boundary datum.
+
+\paragraph{Finite quotient algebras.}
+A quotient algebra may be represented by a basis, multiplication matrices, and proofs of the defining
+relations.  Every polynomial expression reduces to finite matrix arithmetic.  Invertibility is guarded by
+a determinant or a supplied inverse matrix.  Trace, norm, characteristic polynomial, and finite-dimensional
+linear-algebra consequences are deterministic contracts.
+
+\subsection{Represented real and complex analysis}
+
+A quantitative real name is a primitive-recursive rational function \(a(q)\) with a displayed modulus, for
+example
+\[
+ |a(q)-a(r)|\le 2^{-q}+2^{-r}.
+\]
+A complex name is a pair of real names.  The public type is not a second-order function object inside iPRA;
+it is a fixed \(\PR\) symbol or a finite code for one member of a generated family, plus formulas describing
+its values.
+
+\paragraph{Arithmetic.}
+Addition and negation have direct demand transformers.  Multiplication needs magnitude envelopes:
+if \(|x|\le M_x\), \(|y|\le M_y\), and approximations have errors \(\delta_x,\delta_y\), then
+\[
+ |xy-\tilde x\tilde y|
+ \le M_x\delta_y+M_y\delta_x+\delta_x\delta_y.
+\]
+Choose rational internal errors by a primitive-recursive rule so that the right side is at most the requested
+output error.  Clear denominators to obtain integer inequalities suitable for Booleanization.
+
+\paragraph{Reciprocal and division.}
+A reciprocal is not total on names.  Supply an apartness guard \(|x|\ge g>0\).  If
+\(|x-\tilde x|\le g/2\), then \(|\tilde x|\ge g/2\), and
+\[
+ \left|\frac1x-\frac1{\tilde x}\right|
+ =\frac{|x-\tilde x|}{|x\tilde x|}
+ \le \frac{2|x-\tilde x|}{g^2}.
+\]
+The demand transformer chooses input precision from \(g\) and the output request.  The exact operation is
+therefore a gap contract.  Without \(g\), a relational interval avoiding no branch is the appropriate
+output.
+
+\paragraph{Limits and series.}
+An infinite series theorem must provide a primitive-recursive tail modulus
+\(N(q,x)\) satisfying a finite inequality
+\[
+ \left|\sum_{k=m}^{n}a_k(x)\right|\le 2^{-q}
+ \quad(n\ge m\ge N(q,x)).
+\]
+The name at precision \(q\) is a finite partial sum at \(N(q+c,x)\).  Algebraic identities between series
+are proved first for finite sums; tail bounds then transfer them to names.  Saying merely that a series
+converges is insufficient for a producer contract, though a metastable finite-window theorem may still be
+possible.
+
+\paragraph{Differentiation and integration.}
+A derivative contract consists of a local remainder bound, not an ideal limit:
+\[
+ |f(x+h)-f(x)-hD(x)|\le |h|\varepsilon(q).
+\]
+after a computed input demand.  An integral uses a finite quadrature rule and a modulus controlling the
+mesh error.  The fundamental theorem of calculus becomes a composition of finite partition identities,
+uniform continuity demands, and rational error budgets.  Quantifier-free induction handles partition sums.
+
+\subsection{Formal and truncated power series}
+
+Many generating-function arguments are finitary once stated coefficientwise.  A series at cutoff \(N\) is
+a coefficient vector \((a_0,\ldots,a_{N-1})\).  Addition and Cauchy multiplication are exact finite folds.
+Composition is guarded by a zero constant term or an explicit truncation discipline.  Inversion is guarded
+by invertibility of the constant coefficient.
+
+A theorem such as Lagrange inversion should first be stated as
+\[
+ [X^n]F(G(X))=R_n(a_0,\ldots,a_n)
+\]
+for arbitrary finite \(n\), where both sides are finite polynomial expressions.  Quantifier-free induction
+on \(n\) or a finite combinatorial certificate proves the identity.  Analytic convergence radii, when
+needed, are a separate represented-analysis layer with explicit tail bounds.  This separation prevents
+unnecessary appeal to completed infinite series for a theorem whose actual consumer inspects finitely many
+coefficients.
+
+\subsection{Polynomial roots and spectral data}
+
+For exact coefficients, a root certificate can be an isolating interval, disk, Sturm sequence, Rouch\'e
+count, or multiplication-matrix certificate.  A complete root output is a finite cloud of regions with
+multiplicities.  Refinement edges express containment and multiplicity preservation.
+
+For matrices, approximate spectra can be represented by rational intervals or disks plus residual and
+completeness certificates.  Ordered eigenvalues are stable for Hermitian matrices as a multiset and, with a
+quantitative perturbation theorem, as sorted approximate numbers.  Eigenvectors and spectral projectors
+need a gap when an individual eigenspace is requested.  At a collision, the invariant object is the combined
+spectral subspace or projector for a separated cluster.
+
+The relational-cloud framework therefore supplies a uniform vocabulary:
+\begin{itemize}
+  \item candidate cluster decompositions;
+  \item compatibility under refinement;
+  \item exact multiplicity and trace observables;
+  \item diameter-stable root or spectral sets;
+  \item exact labels only under separation.
+\end{itemize}
+
+\subsection{Finite combinatorics and probability}
+
+Finite combinatorial objects---graphs, partitions, tableaux, permutations, finite groups, and finite
+probability spaces---have direct list or bit-vector codes.  Counting identities are exact bounded sums.
+A probabilistic statement in iPRA is ordinarily a rational inequality on a finite distribution or on a
+finite approximation with explicit error.
+
+For asymptotic probability, the theorem must state a modulus.  A central-limit approximation, for example,
+is a family of finite inequalities
+\[
+ \sup_{t\in G_q}
+ |F_n(t)-\Phi_q(t)|\le 2^{-q}
+ \quad(n\ge N(q)),
+\]
+where \(G_q\) is a finite rational grid and \(\Phi_q\) is a finite approximation to the Gaussian
+cumulative distribution.  Interpolation and tail bounds transfer the grid estimate to the requested finite
+observation.  If a proof supplies only pointwise convergence without a modulus, the framework records it as
+metastable or conditional rather than inventing \(N\).
+
+\subsection{Finite topology}
+
+General topological spaces are not first-order finite objects, but many formalizable theorems use finite
+presentations:
+\begin{itemize}
+  \item finite simplicial or cubical complexes;
+  \item finite posets and Alexandrov spaces;
+  \item rational polyhedra with triangulations;
+  \item finite open covers with an explicit nerve;
+  \item mesh approximations with a modulus.
+\end{itemize}
+Boundary matrices, chain groups, incidence, subdivision, and simplicial maps are exact finite algebra.
+Homology computations are proof-replayed matrix reductions.  A topological theorem becomes a theorem about
+finite carriers plus approximation or invariance certificates.
+
+For a compact metric object represented by a name, a finite net at precision \(q\) must be produced with a
+coverage proof.  Compactness in ordinary prose does not automatically provide this net in iPRA.  If a net
+producer and modulus are supplied, minimization of a uniformly continuous function is a finite search
+followed by a quantitative transfer theorem.
+
+\subsection{Finite categories and diagrams}
+
+A finite category code consists of finite object and arrow sets, source and target maps, identities,
+composition, and Booleanized category-law checks.  A finite functor is a pair of finite maps with law
+certificates.  Natural transformations, limits of a fixed finite diagram, adjunction data, and finite Kan
+extensions become bounded algebraic structures with exact verifiers.
+
+The framework supports two kinds of uniformity:
+\begin{enumerate}
+  \item a theorem for all valid finite category codes, implemented by one list-coded primitive-recursive
+        program;
+  \item a generated theorem for each fixed finite presentation, in which the host compiler emits all
+        tables directly.
+\end{enumerate}
+It does not quantify over a completed category of all mathematical structures.  Yoneda-style statements are
+proved for coded hom-sets and finite diagrams, or for a fixed generated syntax whose operations have
+concrete \(\PR\) symbols.
+
+\subsection{Affine algebraic geometry and finite descent}
+
+A finite affine chart is represented by polynomial equations, localization data, and bounded algebraic
+certificates.  A principal open \(D(f)\) uses a witness to invert \(f\), usually an auxiliary variable
+\(u\) with equation \(uf=1\).  Equality in a localization is witnessed by a finite exponent:
+\[
+ f^N(a-b)=0.
+\]
+A finite principal cover has a unit-ideal certificate
+\[
+ \sum_i h_i f_i^{N_i}=1.
+\]
+This certificate is exact and verifies coverage algebraically.
+
+Gluing sections on a finite cover becomes a finite equalizer calculation.  Local sections have codes;
+overlap equality has exponent witnesses; a finite Cech-style compatibility table is checked; and an
+explicit algebraic gluing formula produces a global section.  The entire construction is a static proof
+graph of finite algebra nodes and bounded searches.
+
+Projective objects use homogeneous coordinate tuples with normalization or equivalence witnesses.  Heights
+are explicit integer bounds on primitive coordinates.  Descent arguments are finite when supplied with a
+finite cover of local cases, norm or resultant certificates, and height bounds.  The framework does not
+supply those deep bounds automatically.
+
+\subsection{Diophantine geometry}
+
+The framework's role in Diophantine geometry is best summarized by the chain
+\[
+\begin{aligned}
+ \text{global producer data}
+ &\Longrightarrow \text{height cutoff or finite envelope}\\
+ &\Longrightarrow \text{complete bounded enumeration}
+ \Longrightarrow \text{verified list of points}.
+\end{aligned}
+\]
+The last two implications are generic theorems.  The first is the substance of the deep mathematics.
+For Runge-type curves, elementary coefficient estimates may give the height producer.  For a particular
+elliptic curve, descent and finite covering data may give it.  For general Siegel or Faltings, the repository
+reports correctly identify missing uniform effective inputs.  The staged kernel allows all downstream work
+to be completed without claiming those inputs have been solved.
+
+\subsection{Analytic number theory}
+
+Finite sums over primes, divisor functions, and explicit sieve weights are directly primitive recursive.
+A theorem such as a prime-counting estimate must be stated with explicit numerical constants and a threshold
+\(N\).  If the analytic argument supplies them effectively, the finite inequality is an iPRA target.  If a
+classical proof gives existence of a constant without a computable bound, the theorem is boundary-
+conditional on a code for the constant and a finite verifier of the estimates it must satisfy.
+
+This treatment is not a weakness of the framework.  It distinguishes the constructive content of an
+explicit estimate from the nonuniform content of an ineffective existence proof.  It also permits partial
+results: finite identities, explicit ranges, or metastable estimates can be fully embedded while the global
+constant remains separate.
+
+\subsection{A uniform application recipe}
+
+Across all domains, a new application should proceed as follows.
+\begin{enumerate}
+  \item Choose exact finite codes and validity predicates.
+  \item State the consumer's finite observation and demand.
+  \item Separate producer, verifier, and soundness derivation.
+  \item Replace unstable exact outputs by relations or add a gap.
+  \item Compute backward demands and explicit resources.
+  \item Prove local deterministic, loop, search, or relational contracts.
+  \item Generate an arity-normalized static proof graph.
+  \item Compile to \(\Prf\,\PRAAx\), then export to the native calculus if desired.
+\end{enumerate}
+The appendix gives a detailed audit checklist for this recipe.

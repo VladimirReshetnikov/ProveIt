@@ -1,0 +1,159 @@
+\section{Bounded search, finite traces, and changing parameters}
+\label{sec:traces}
+
+Bounded search and trace reflection are the workhorses of the framework.  They cover direct finite
+algorithms, proof replay, approximation procedures, combinatorial enumeration, and most ``run the method
+for sufficiently many steps'' arguments once a concrete fuel has been supplied.
+
+\subsection{Trace packages}
+
+A trace package has input \(x\), request \(q\), packed state \(s\), initializer \(s_0(x,q)\), transition
+\(T(i,s,x,q)\), and fuel \(F(x,q)\).  The state after \(i\) steps is defined by primitive recursion:
+\[
+ s(0,x,q)=s_0(x,q),
+ \qquad
+ s(Si,x,q)=T(i,s(i,x,q),x,q).
+\]
+A verifier need not expose the entire sequence as a list.  The recursive symbol itself is the trace, and
+the defining equations are available as \(\PRAAx\) instances.
+
+The invariant \(I(i,s(i),x,q)\) must be quantifier-free after bounded formulas have been Booleanized.  It
+may contain many fields:
+\begin{itemize}
+  \item a well-formedness equation for the packed state;
+  \item arithmetic bounds on counters and coefficients;
+  \item an equality identifying a cached value with a recomputation;
+  \item a Booleanized universal statement about all positions already processed;
+  \item an error budget, encoded by integer inequalities after clearing denominators;
+  \item a resource rank or demand cap.
+\end{itemize}
+There is no need to force the mathematical prose into one small equation.  A finite conjunction of
+equations and decidable inequalities is still quantifier-free.
+
+\begin{theorem}[Finite trace reflection]
+\label{thm:trace-reflection}
+Suppose the initializer, transition, fuel, and invariant are fixed primitive-recursive terms, and there are
+object proofs of the invariant at zero, preservation at a successor step, and a final implication from the
+invariant at fuel to \(Q(x,q)\).  Then iPRA proves \(P(x,q)\to Q(x,q)\).
+\end{theorem}
+\begin{proof}
+Package the recursive trace term into the invariant formula.  Apply quantifier-free induction to obtain the
+universal invariant.  Eliminate the universal quantifier at the fuel term and cut with the final implication.
+Finally discharge the precondition.  This is Theorem~\ref{thm:loop-compile} specialized to the trace.
+\end{proof}
+
+\subsection{Fix precision before induction}
+
+An important discipline in several earlier reports is worth making explicit.  The requested precision
+\(q\) is a free parameter of the entire induction; it is not an unboundedly quantified object whose needed
+input precision is chosen during the proof.  A demand pass first computes all internal precisions from
+\(q\).  The forward trace then runs with those fixed values.  Consequently the induction invariant is a
+quantifier-free formula over \(i,x,q\), the current state, and the precomputed demands.
+
+This ordering prevents an invalid move sometimes hidden in informal constructive analysis: at stage \(i\),
+choose a new precision depending on an existential fact about all future stages.  Such a choice may be
+nonconstructive or not primitive recursive.  Backward demand followed by forward replay turns it into a
+finite calculation before induction begins.
+
+\subsection{Changing-parameter recursion}
+
+Many algorithms do not iterate a single map with fixed external parameters.  Newton-style methods update a
+center and radius; elimination algorithms replace a polynomial system; local-to-global arguments change a
+chart; a recursive proof may consume one resource and reset another.  This causes no logical problem if all
+changing data are part of the packed state.
+
+Let the mathematical recurrence be
+\[
+  a_{i+1}=F(i,a_i,p_i),
+  \qquad
+  p_{i+1}=G(i,a_i,p_i).
+\]
+Pack \((a_i,p_i)\) as one state and use transition
+\[
+  T(i,\langle a,p\rangle)=\langle F(i,a,p),G(i,a,p)\rangle.
+\]
+The invariant refers to both components at stage \(i\).  Primitive recursion permits the successor step to
+use the counter, previous state, and fixed original inputs, which is exactly what is required.
+
+The subtle issue is not changing parameters but \emph{future demand}.  If computing \(a_i\) to precision
+\(r_i\) requires \(p_i\) to precision \(s_i\), and \(p_i\) itself depends on later outputs, the demand
+relations must be solved first.  Section~\ref{sec:demand} gives both acyclic and finite cyclic closure.
+
+\subsection{Proof replay and certificate checking}
+
+A finite trace can carry more than numerical state.  It can replay a certificate.  Suppose a certificate is
+a list of instructions, and each instruction has a local soundness theorem.  The state stores the current
+instruction pointer, current mathematical data, and a Boolean ``all checks so far passed.''  The invariant
+says:
+\begin{enumerate}
+  \item the pointer is within the certificate length;
+  \item the stored data equal the result of executing the prefix;
+  \item if the Boolean is \(1\), every executed instruction satisfies its local verifier;
+  \item the mathematical relation advertised by the verified prefix holds.
+\end{enumerate}
+The step theorem uses the local soundness theorem for the next instruction.  At the final pointer, the
+invariant implies the public result.
+
+This pattern covers Gaussian elimination certificates, polynomial identities, factorization checks,
+finite homology computations, graph paths, finite category diagrams, and proof-carrying numerical
+approximations.  It also clarifies the producer--verifier distinction: the producer may be sophisticated or
+external, while replay remains a fixed primitive-recursive verifier with an iPRA soundness proof.
+
+\subsection{Search as a trace}
+
+Least bounded search from Theorem~\ref{thm:least-search} is a trace whose state is
+\((\mathit{found},\mathit{witness})\).  Complete enumeration is a trace whose state is a bounded list.
+Dynamic programming is a trace whose state is a finite table.  Consequently one generic loop compiler
+supports all of them.  Application libraries should prove reusable step lemmas for common state updates
+rather than restating whole searches.
+
+\subsection{Nested loops and finite products}
+
+A loop of \(A(x)\) outer iterations, each with \(B(x,i)\) inner iterations, can be treated in either of two
+ways.
+
+\paragraph{Hierarchical proof.}
+For a fixed outer state and index, compile the inner loop to a local contract.  Use that contract in the
+outer step proof.  This produces two uses of quantifier-free induction but keeps invariants modular.
+
+\paragraph{Flattened proof.}
+Use state \((i,j,s)\), where \(j\) advances until \(B(x,i)\), then resets while \(i\) advances.  A fuel
+bound is
+\[
+  \sum_{i<A(x)}(B(x,i)+1),
+\]
+which is a bounded primitive-recursive sum.  The invariant includes the relationship between flattened time
+and \((i,j)\).  This may produce a faster executable trace but a longer proof.
+
+Both methods are valid in iPRA.  The hierarchical method is normally preferable for formal development,
+because each local loop becomes a theorem node in the staged graph.
+
+\subsection{Bounded recursion versus unbounded termination}
+
+A statement that a transition relation is well founded is not by itself a primitive-recursive runtime
+bound.  To execute a total primitive-recursive program, the framework requires explicit fuel.  There are
+three acceptable sources:
+\begin{enumerate}
+  \item a direct primitive-recursive numerical bound;
+  \item a fixed-dimensional ranking function whose value bounds the run;
+  \item a finite state-space bound, so repetition or a terminal state must occur within the number of
+        states.
+\end{enumerate}
+A classical termination proof using an unspecified ordinal or compactness argument must be converted into
+one of these finite resources before it can drive a trace.  Section~\ref{sec:resources} develops the
+fixed-dimensional lexicographic case.
+
+\subsection{Uniformity and specialization}
+
+There are two distinct notions of uniformity.
+
+\begin{itemize}
+  \item A theorem can be uniform in numerical inputs: one fixed primitive-recursive program works for all
+        \(x,q\).
+  \item A compiler can be uniform over a family of finite syntax descriptions at the Lean meta-level: for
+        each description it generates a different concrete primitive-recursive program and proof.
+\end{itemize}
+The second does not imply that iPRA contains one evaluator for all descriptions.  For example, a matrix
+algorithm may be generated for every fixed dimension \(d\), producing a family of theorems.  If dimension
+is itself an input, the data must instead be list-coded and the algorithm must be a single primitive-
+recursive program over those codes.  Both are legitimate, but their resource and invariant proofs differ.

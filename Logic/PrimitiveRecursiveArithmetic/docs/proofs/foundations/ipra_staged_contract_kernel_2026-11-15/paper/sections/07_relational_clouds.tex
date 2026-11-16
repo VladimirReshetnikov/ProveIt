@@ -1,0 +1,206 @@
+\section{Relational witness clouds, backward viability, and stable erasure}
+\label{sec:clouds}
+
+Exact witness choice is one of the recurring obstructions in the repository.  Polynomial roots collide,
+eigenvectors are nonunique, local analytic branches merge, minimizers need not be isolated, and finite
+covers may admit many compatible refinements.  The right internal object is often a finite relation of
+certified possibilities rather than a purported canonical selector.
+
+\subsection{Layered finite clouds}
+
+Fix a finite horizon \(h\).  At level \(i\), let candidates be codes
+\[
+ C_i=\{c<B_i : V_i(c)=1\},
+\]
+where \(B_i\) and \(V_i\) are primitive recursive.  Adjacent levels have a decidable compatibility relation
+\(E_i(c,d)\).  A valid path is a sequence
+\[
+ c_0\in C_0,\ldots,c_h\in C_h,
+ \qquad E_i(c_i,c_{i+1})	ext{ for }i<h.
+\]
+Nonemptiness of every \(C_i\) is not enough.  The candidates may be disconnected across levels.  This
+simple observation invalidates several informal ``choose compatible approximations'' arguments unless a
+compatibility theorem is supplied.
+
+\subsection{Backward viability}
+
+Define viable sets recursively from the final level:
+\begin{align*}
+ W_h(c) &:= V_h(c),\\
+ W_i(c) &:= V_i(c)\wedge
+    \exists d<B_{i+1}\bigl(E_i(c,d)\wedge W_{i+1}(d)\bigr).
+\end{align*}
+All quantifiers are bounded, so Theorem~\ref{thm:booleanization} produces concrete Boolean checkers.  The
+tables can be computed by reverse primitive recursion over the fixed horizon.  A candidate is viable exactly
+when it extends to a complete valid path.
+
+\begin{theorem}[Finite viability]
+\label{thm:viability}
+For each \(i\le h\) and candidate \(c<B_i\), \(W_i(c)=1\) if and only if there exists a valid path from
+\(c\) at level \(i\) to level \(h\).  If some \(c_0\) satisfies \(W_0(c_0)=1\), bounded least search
+constructs a complete valid path.
+\end{theorem}
+
+\begin{proof}
+Use reverse induction on \(i\).  At \(h\), a path of length zero is exactly a valid final candidate.  For the
+step, \(W_i(c)=1\) says that \(c\) is valid and has a compatible viable successor \(d\).  The reverse
+induction hypothesis turns viability of \(d\) into a path from \(d\) to the final level; prepend \(c\).
+Conversely, any path from \(c\) has a first successor \(d\), and the tail path implies \(W_{i+1}(d)=1\), so
+\(W_i(c)=1\).  Once \(W_0\) is nonempty, choose the least viable initial code.  At each next level choose
+the least compatible viable successor by bounded search.  The defining equation of \(W_i\) guarantees that
+the search succeeds.  Iterating for \(h\) steps constructs the path, and the invariant records validity and
+compatibility of the prefix.
+\end{proof}
+
+The theorem is entirely finitary.  It uses no dependent choice, no compactness, and no infinite path
+principle.  When an application needs an infinite coherent name, it must provide a quantitative method for
+turning a sequence of finite-horizon paths into finite observations; this is addressed below.
+
+\subsection{Exact branch-independent observables}
+
+Suppose each valid final path \(p\) has an observation \(O(p)\), and the object theory proves
+\[
+  \operatorname{Path}(p)\wedge\operatorname{Path}(p')	o O(p)=O(p').
+\]
+Then choose the least viable path and return its observation.  The path is an internal implementation
+detail.  The independence theorem proves that every other valid path gives the same public value.
+
+\begin{theorem}[Exact branch erasure]
+A nonempty finite path relation plus object-theory branch independence yields a deterministic public
+observable.
+\end{theorem}
+\begin{proof}
+The viability theorem supplies one path \(p_0\).  Define the public producer to return \(O(p_0)\).  For an
+arbitrary valid path \(p\), branch independence yields \(O(p_0)=O(p)\).  Hence the public theorem is
+independent of the least-code convention.  At proof-term level, instantiate the comparison theorem at
+\(p_0,p\) and cut with their validity proofs.
+\end{proof}
+
+Typical exact stable observables include a polynomial's elementary symmetric functions, the dimension of a
+finite vector space, a determinant, a multiset of roots, a homology rank, or a quotient object represented
+by any of several equivalent finite presentations.
+
+\subsection{Diameter-stable observables}
+
+Exact independence is often too strong.  Let observations be rational codes with a primitive-recursive
+metric \(d\).  Suppose the cloud has certified diameter
+\[
+  \operatorname{Path}(p)\wedge\operatorname{Path}(p')	o
+  d(O(p),O(p'))\le\varepsilon(q).
+\]
+Selecting the least viable path gives an approximation determined up to \(\varepsilon(q)\).  This is enough
+for represented real or complex outputs, approximate spectra, root clusters, and finite-net minimizers.
+
+\begin{theorem}[Diameter erasure]
+If every valid path observation lies within rational diameter \(\varepsilon(q)\), then any bounded path
+selector is a valid \(\varepsilon(q)\)-observation of the cloud.  Two independent implementations of the
+selector return outputs within \(\varepsilon(q)\).
+\end{theorem}
+\begin{proof}
+Both selected paths satisfy the path verifier.  Apply the diameter theorem.  No equality of paths or
+coherent choice is required.
+\end{proof}
+
+The public formula should state the metric estimate, not exact equality.  Converting a diameter theorem into
+an exact label is valid only when an additional discrete separation bound is available.
+
+\subsection{Exact recovery under a gap}
+
+Assume candidate labels lie in a discrete finite set and distinct labels have observable separation greater
+than \(2\varepsilon\).  If the cloud diameter is at most \(\varepsilon\), all candidates must have the same
+label.  More generally, suppose a code \(\ell\) has a certified gap
+\[
+  d(z,Z_\ell)\le\varepsilon,
+  \qquad
+  d(Z_\ell,Z_j)>2\varepsilon\quad(j\ne\ell).
+\]
+Then every valid observation belongs to label \(\ell\).
+
+\begin{proposition}[Gap-based branch collapse]
+Approximation data plus an explicit separation certificate yields exact branch identification.
+\end{proposition}
+\begin{proof}
+If another label \(j\ne\ell\) were valid, choose observations \(z_\ell,z_j\) for the two labels.  The
+triangle inequality and the approximation bounds would give
+\(d(Z_\ell,Z_j)\le 2\varepsilon\), contradicting the gap.  All quantities are rationally coded, so the
+contradiction is a finite integer inequality after clearing denominators.
+\end{proof}
+
+This proposition is the legitimate form of ``precision eventually determines the branch.''  Without a
+separation certificate the conclusion is false near collisions.
+
+\subsection{Shrinking clouds and coherent names}
+
+For each precision \(q\), suppose there is a nonempty finite cloud \(C_q\) and a rational observation
+\(a_q(c)\).  There are two sufficient routes to a represented object.
+
+\paragraph{Common-center diameter.}
+If the object theory proves
+\[
+ \diam\{a_q(c):c\in C_q\}\le 2^{-q}
+\]
+and a cross-level compatibility estimate
+\[
+ c\in C_q,\quad d\in C_{q+1}
+ \quad\Longrightarrow\quad
+ |a_q(c)-a_{q+1}(d)|\le K2^{-q}.
+\]
+displayed for a fixed rational \(K\), then least-code selections form a Cauchy name with an explicit
+modulus.
+
+\paragraph{Summable motion.}
+Alternatively, finite viability may produce a path with
+\[
+ |a_{q+1}(c_{q+1})-a_q(c_q)|\le 2^{-q-2}.
+\]
+Then for \(r>q\), a finite geometric-sum calculation gives
+\[
+ |a_r-a_q|\le \sum_{i=q}^{r-1}2^{-i-2}<2^{-q-1}.
+\]
+The relevant theorem is a finite inequality for arbitrary \(q,r\), proved by induction; no completed
+infinite sum is required in iPRA.
+
+In both routes the selector is primitive recursive because each level is bounded.  The public meaning is
+determined by the diameter or motion theorem, not by the arbitrary least-code rule.
+
+\subsection{Root clusters}
+
+Let \(p(X)\) be a polynomial with exact rational or algebraic coefficients.  Near a multiple root, ordering
+individual roots continuously is impossible.  A finite root-cluster contract instead returns disjoint
+rational rectangles or disks, each with a multiplicity certificate and a completeness theorem.  As
+precision increases, clusters may split but must refine compatibly.  Stable observations include:
+\begin{itemize}
+  \item the multiset of clusters with multiplicities;
+  \item symmetric polynomials of all roots in a cluster;
+  \item the total number of roots in a region;
+  \item an approximate Hausdorff set of roots;
+  \item an individually labeled root only after a separation gap is certified.
+\end{itemize}
+Backward viability handles the refinement relation.  This directly resolves the exact-root-selection
+problem noted in Puiseux, spectral, and polynomial-factorization packets: do not demand a global label where
+mathematics supplies only a finite relation.
+
+\subsection{Finite covers and gluing}
+
+A cover problem fits the same pattern.  Level \(i\) may list local sections or chart data at precision or
+refinement \(i\); compatibility edges assert equality on overlaps or controlled discrepancy.  Backward
+viability finds a finite compatible family.  A gluing theorem then maps any compatible family to a global
+finite observation.  If gluing is unique, the result is exact branch independent.  If only approximate
+uniqueness holds, the output is diameter stable.
+
+The framework does not infer a finite subcover from arbitrary compactness.  The cover list or a bound on it
+must be supplied.  Once supplied, all compatibility and gluing checks are finite and primitive recursive.
+
+\subsection{What finite viability does not prove}
+
+It is important not to overread Theorem~\ref{thm:viability}.
+\begin{itemize}
+  \item Viability for every finite horizon, with no uniform bound or compatibility modulus, does not by
+        itself produce one infinite path in iPRA.
+  \item Nonempty levels do not imply a path.
+  \item Small cardinality does not imply that candidate codes have a bounded height.
+  \item A least-code path need not be mathematically continuous in parameters.
+\end{itemize}
+What is available is exactly what finite consumers need: for any supplied finite horizon, a verified path
+and a stable observation.  When a full represented object is required, a shrinking-diameter or summable-
+motion theorem must be included.

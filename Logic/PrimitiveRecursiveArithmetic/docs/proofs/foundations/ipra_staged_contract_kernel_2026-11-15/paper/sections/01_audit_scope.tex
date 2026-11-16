@@ -1,0 +1,130 @@
+\section{Repository audit, exact target, and scope}
+\label{sec:audit}
+
+\subsection{Pinned repository state}
+
+The source audit is pinned to ProveIt commit
+\[
+\texttt{38e83bc0d09647a98ce9fe5edf45d6b34f820dff}.
+\]
+Because the commit time is just after midnight UTC, it is dated 15 November 2026 in the user's
+Pacific time zone.  At this snapshot, the root README divides the subtree into two sharply different
+parts.  The \texttt{ConciseIPRA} library is presented as Lean-kernel checked, whereas the material under
+\texttt{docs/proofs} is filed as delivered and has not been independently rerun or verified.  The proof-packet
+index contains 78 packets, 23 of them in the foundations area.  The latest foundations packets include
+certified finitary interfaces, a finitary interface compiler, a kernel finite-use framework, proof-producing
+interface graphs, proof-carrying observation graphs, a unified finitary framework, and OCiPRA.
+
+The convergence is useful evidence.  Across these packets, essentially the same components recur:
+finite codes, bounded checkers, backward precision or resource demands, a forward primitive-recursive
+trace, finite relational witness sets, stable observables, explicit height or covering data, and a final
+bridge to the checked iPRA implementation.  Their status, however, varies.  Some Lean files are semantic
+models over ordinary Lean data.  Some are blueprints with named obligations or \texttt{sorry}.  Some avoid
+placeholders but were never typechecked.  A few derive small framework lemmas in the object system.  The
+index explicitly notes that no packet claims an embedded derivation of one of its main mathematical
+theorems.
+
+This report therefore treats earlier packets as research inputs rather than as axioms.  A claim is used in
+one of three ways:
+\begin{enumerate}
+  \item if it is already in the checked \texttt{ConciseIPRA} library, we use its stated Lean interface;
+  \item if it is a finite mathematical argument, we restate and prove it here;
+  \item if it is a domain-specific deep input, we expose it as a boundary contract rather than silently
+        assuming an effective producer.
+\end{enumerate}
+
+\subsection{The checked logical backend}
+
+The relevant checked interfaces are particularly favorable for a small compiler.
+
+\begin{itemize}
+  \item \texttt{PR.lean} defines \(\PR(k)\), the inductive syntax of \(k\)-ary primitive-recursive
+        symbols, and \(\PTm(n)\), arithmetic terms with \(n\) free variables.  The theory
+        \(\PRAAx\) contains the defining equations for projections, composition, and primitive recursion,
+        successor axioms, and induction for quantifier-free formulas.
+  \item \texttt{Deduction.lean} defines intuitionistic natural deduction with equality,
+        \(\Prf(\PRAAx,\Gamma,A)\).  It proves closure under simultaneous term substitution
+        (\texttt{Prf.subst}), context weakening (\texttt{Prf.weaken}), and simultaneous cut
+        (\texttt{Prf.trans}).
+  \item \texttt{PRA.qfInd} packages the allowed induction rule.  Given a quantifier-free invariant,
+        an object proof of the base case, and an object proof of the successor step, it returns an object
+        proof of the universal closure.
+  \item \texttt{pra\_iff\_native} transports a completed ordinary-iPRA derivation to the native scalar
+        core.  It transports an existing proof; it does not reify an arbitrary ambient Lean theorem.
+\end{itemize}
+
+The last distinction is decisive.  The desired endpoint for a theorem \(A\) is not merely a Lean theorem
+of type \texttt{A}, nor even a Lean proof that the standard natural numbers satisfy \(A\).  It is a Lean
+term of the syntactic judgment
+\[
+  \Prf(\PRAAx,\Gamma,A),
+\]
+usually written in the repository as \(\Gamma\vdash[\PRAAx]A\).  Once this term exists, native export is a
+small corollary.  Before it exists, invoking the bi-interpretation does not close the gap.
+
+\subsection{What the framework is meant to accomplish}
+
+The framework has two goals.
+
+First, it should be general enough to describe the finite content of many mathematical domains without
+pretending that iPRA contains completed real numbers, arbitrary sets, or unrestricted higher-order
+functions.  The public objects are finite observations and finite certificates: rational approximants,
+truncated series, finite matrices, finite covers, finite diagrams, bounded proof traces, or bounded lists of
+candidate witnesses.
+
+Second, it should make the final formal step routine.  A domain package should supply local object proofs
+for its primitive operations and invariants.  The generic compiler should then assemble those pieces by a
+small fixed collection of already checked logical operations.  It should not require every application to
+reimplement substitution under binders, context shuffling, cut, and quantifier-free induction.
+
+The proposed solution is a \emph{staged contract kernel}.  ``Staged'' has a precise meaning:
+\begin{enumerate}
+  \item At the host stage, Lean traverses a fixed finite graph, specializes each local theorem to concrete
+        terms, and emits a concrete primitive-recursive symbol and a concrete proof term.
+  \item At the object stage, iPRA reasons only about those fixed symbols.  No object-language interpreter
+        ranges over arbitrary program codes, formula codes, or proof graphs.
+\end{enumerate}
+This removes a recurring temptation in the drafts: to state a convenient universal evaluator and later
+claim that its use is harmless.  A universal evaluator for all primitive-recursive programs is not itself
+primitive recursive in the required uniform sense.  Static generation is both sufficient and faithful to
+the checked syntax.
+
+\subsection{What this report does not claim}
+
+No representational framework can manufacture mathematical information that is not effectively available.
+Accordingly, the report does not claim any of the following:
+\begin{itemize}
+  \item a uniform height bound for all curves in Siegel's or Faltings' theorem;
+  \item a uniform finite list of Mordell--Weil quotient representatives for arbitrary elliptic curves;
+  \item an effective replacement for an ineffective zero-free-region or exceptional-zero constant;
+  \item an exact branch selector through arbitrary root collisions or from arbitrary Cauchy-presented
+        coefficients;
+  \item a universal object-level evaluator for every coded primitive-recursive program;
+  \item a completed Lean verification of all 78 packets.
+\end{itemize}
+What the framework does provide is a sharp interface around each missing datum.  Once a height bound,
+covering list, separation gap, or effective constant is supplied together with its verifier and object
+proof, all downstream finite consequences become mechanically composable.
+
+\subsection{The principal improvement over the existing packets}
+
+The kernel finite-use packet already contains an insightful fixed-context structure \texttt{ProofBuild}:
+every formula in a reverse-topological list has a derivation from a permanent base context, and a new node
+is added by simultaneous cut.  The remaining practical problem is that real application lemmas do not all
+live in the same arity or syntactic context.  A polynomial lemma may use five local variables, a matrix
+lemma twelve, and the final theorem perhaps three global parameters.  Earlier blueprints often write
+``instantiate the lemma and compose'' without making the binder and context transformation explicit.
+
+The present report isolates that transformation in one theorem:
+\begin{equation}
+\label{eq:instantiate-into}
+  \frac{\Delta\vdash A \qquad
+        \Delta[\sigma]\subseteq\Theta}
+       {\Theta\vdash A[\sigma]}.
+\end{equation}
+The proof is exactly \texttt{Prf.subst} followed by \texttt{Prf.weaken}.  A graph node stores its local
+arity \(k\), local context \(\Delta\), local goal \(A\), global substitution
+\(\sigma:\mathrm{Fin}(k)\to\PTm(n)\), local proof, and an availability certificate saying that the
+instantiated hypotheses occur among prior node conclusions or base assumptions.  Simultaneous cut then
+closes the node.  This \emph{arity-normalized staged specialization} is the narrow addition that turns the
+convergent semantic architecture into a realistic object-proof compiler.

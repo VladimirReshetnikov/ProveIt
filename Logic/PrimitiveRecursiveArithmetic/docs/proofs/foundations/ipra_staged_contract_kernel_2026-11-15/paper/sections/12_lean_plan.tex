@@ -1,0 +1,228 @@
+\section{Lean formalization: definitions, main lemmas, and completion path}
+\label{sec:lean}
+
+The archive contains an integration-oriented Lean outline under \texttt{lean/}.  The runtime used to prepare
+this packet has no Lean executable, so the files were not compiled.  They contain no \texttt{axiom},
+\texttt{sorry}, or \texttt{admit}; unfinished mathematics is represented by proof-bearing structures and
+commented target signatures.  This section explains how to turn the outline into a complete formalization
+against the checked \texttt{ConciseIPRA} library.
+
+\subsection{Imported interfaces}
+
+The kernel imports
+\begin{lstlisting}[language={}]
+import ConciseIPRA.PR
+import ConciseIPRA.NativeBiInterpretation
+\end{lstlisting}
+and works in \texttt{LeanProofs.ConciseIPRA}.  The required checked declarations are:
+\begin{itemize}
+  \item \texttt{PR}, \texttt{PTm}, and \texttt{PRAAx};
+  \item \texttt{Prf.subst}, \texttt{Prf.weaken}, and \texttt{Prf.trans};
+  \item \texttt{PRA.qfInd};
+  \item the logical constructors \texttt{Prf.impI}, \texttt{Prf.impE},
+        \texttt{Prf.allE}, and \texttt{Prf.exI};
+  \item \texttt{pra\_iff\_native}.
+\end{itemize}
+No semantic interpretation of \(\PR\) functions is needed by the generic compiler.
+
+\subsection{The specialization kernel}
+
+The principal theorem is written directly with current repository types:
+\begin{lstlisting}[language={}]
+theorem instantiateInto
+    {k n : Nat}
+    {Delta : List (Fm PTm k)} {A : Fm PTm k}
+    (local : Delta |-[PRAAx] A)
+    (sigma : Fin k -> PTm n)
+    {Theta : List (Fm PTm n)}
+    (available : Delta.map (fun B => B.subst sigma) <= Theta) :
+    Theta |-[PRAAx] A.subst sigma :=
+  (local.subst sigma).weaken available
+\end{lstlisting}
+The ASCII listing uses \texttt{|-[...]} and \texttt{<=} as visual stand-ins for the repository notation
+\(\vdash[\cdot]\) and list inclusion; the supplied source uses the actual notation.
+
+A proof schedule is
+\begin{lstlisting}[language={}]
+structure ProofBuild (Gamma : List (Fm PTm n))
+    (done : List (Fm PTm n)) where
+  derive : forall A, A in done -> Gamma |-[PRAAx] A
+\end{lstlisting}
+The \texttt{step} method cuts a local derivation from \texttt{done ++ Gamma} against stored proofs and base
+hypotheses.  The arity-normalized node is:
+\begin{lstlisting}[language={}]
+structure NodeObligation (Gamma done : List (Fm PTm n)) where
+  arity : Nat
+  localContext : List (Fm PTm arity)
+  localGoal : Fm PTm arity
+  args : Fin arity -> PTm n
+  localProof : localContext |-[PRAAx] localGoal
+  available : localContext.map (fun B => B.subst args)
+              <= done ++ Gamma
+\end{lstlisting}
+Its compiler is compositionally tiny:
+\begin{lstlisting}[language={}]
+def NodeObligation.compile
+    (s : ProofBuild Gamma done)
+    (N : NodeObligation Gamma done) :
+    ProofBuild Gamma (N.goal :: done) :=
+  s.step (instantiateInto N.localProof N.args N.available)
+\end{lstlisting}
+This definition is the formal content of Theorem~\ref{thm:staged-graph}.  A generated application file
+repeatedly invokes it; the final theorem uses \texttt{ProofBuild.get}.
+
+\subsection{Loop compilation}
+
+The supplied \texttt{LoopObligation} record stores:
+\begin{itemize}
+  \item a formula \texttt{invariant : Fm PTm (n+1)};
+  \item a proof \texttt{invariantQF : invariant.QF};
+  \item a fuel term;
+  \item actual \(\Prf\,\PRAAx\) base, step, and finish proofs.
+\end{itemize}
+The compiler invokes \texttt{PRA.qfInd}, eliminates the universal invariant at the fuel term, and uses
+simultaneous cut for the finish step.  The intended first build task is to compile this generic file before
+formalizing any new domain algorithm.  Any API mismatch should be a local spelling issue, since the proof
+pattern was copied from the current checked interfaces and the existing kernel finite-use draft.
+
+\subsection{Boolean primitive library}
+
+Create \texttt{StagedContractKernel/BoolPR.lean}.  Define concrete symbols for:
+\[
+ \operatorname{isZero},\quad \dotminus,\quad \operatorname{eq},\quad
+ \operatorname{lt},\quad \wedge_B,\quad\vee_B,\quad\neg_B,
+\]
+using \texttt{PR.comp} and \texttt{PR.prec}.  For each, prove equations at arbitrary arguments by combining
+\texttt{PRA.comp}, \texttt{PRA.precZero}, and \texttt{PRA.precSucc}.  Then prove range lemmas such as
+\[
+ b(x)=0\vee b(x)=1
+\]
+and reflection lemmas.  These proofs use quantifier-free induction over the recursion counter and the
+successor axioms.
+
+It is useful to expose a common theorem shape:
+\begin{lstlisting}[language={}]
+structure ReflectedBool (n : Nat) where
+  term : PTm n
+  formula : Fm PTm n
+  qf : formula.QF
+  isBool : [] |-[PRAAx] (term = 0) or (term = 1)
+  trueIff : [] |-[PRAAx] iff (term = 1) formula
+\end{lstlisting}
+The exact formula constructors must use the repository's \texttt{Fm} notation.  The structure is a
+convenience; the final theorem remains a \texttt{Prf} term.
+
+\subsection{Bounded-formula compiler}
+
+The outline defines a host datatype \texttt{BForm n} with equality, order, propositional connectives, and
+bounded quantifiers.  Add:
+\begin{enumerate}
+  \item \texttt{BForm.toFormula : BForm n -> Fm PTm n};
+  \item \texttt{compileBForm : BForm n -> PR n};
+  \item a recursive function returning a \texttt{BooleanizationResult}.
+\end{enumerate}
+For propositional constructors, compose the Boolean primitive reflection theorems.  For bounded quantifiers,
+first prove generic finite-fold modules:
+\begin{lstlisting}[language={}]
+def allFold (p : PR (n+1)) : PR (n+1)
+def anyFold (p : PR (n+1)) : PR (n+1)
+
+theorem allFold_reflect ... : Prf PRAAx ...
+theorem anyFold_reflect ... : Prf PRAAx ...
+\end{lstlisting}
+The fold invariant states the equivalence between the accumulator and the bounded quantifier below the
+current counter.  Represent the bounded quantifier side by its already compiled Boolean, ensuring the
+induction invariant itself is quantifier-free.
+
+\subsection{Least search and enumeration}
+
+Create \texttt{BoundedSearch.lean}.  The state may be a pair encoded by a fixed pairing \(\PR\) symbol or a
+small vector code.  Define the transition from Section~\ref{sec:booleanization}.  The invariant should be
+implemented as a conjunction of reflected Boolean equations:
+\begin{align*}
+ f=0 &\to \operatorname{allFailBelow}(t)=1,\\
+ f=1 &\to w<t\wedge p(w)=1\wedge\operatorname{allFailBelow}(w)=1.
+\end{align*}
+Compile it through \texttt{LoopObligation}.  The final theorem should return a concrete witness term and
+actual proofs of correctness and leastness.  Complete enumeration uses a bounded list append function and a
+parallel exact-prefix invariant.
+
+\subsection{Demand closure}
+
+Create \texttt{Demand.lean} for each fixed vector arity, or write a generic list-coded version after the
+fixed case compiles.  Define mixed-radix vectors, componentwise order, join, sum, and cap validity.  Given a
+concrete transformer \(F\), the loop state is \((q,\mathit{stable})\).  The invariant includes:
+\begin{enumerate}
+  \item \(q\) is inside the cap;
+  \item \(q^0\le q\);
+  \item \(q\) is the current iterate;
+  \item if not stable, the coordinate sum strictly increases at the next step.
+\end{enumerate}
+The fuel is the sum of remaining coordinate capacity plus one.  A separate local proof establishes
+monotonicity of \(F\), enabling the least-fixed-point theorem.  Since \(F\) is an application-specific
+concrete \(\PR\) term, its cap and monotonicity proofs are local node obligations, not generic axioms.
+
+\subsection{Backward viability}
+
+Create \texttt{Cloud.lean}.  For a fixed horizon, bounded candidate tables and edge verifiers are concrete
+symbols.  Define a reverse table \(W\) by primitive recursion on distance from the final level.  Because the
+\texttt{PR.prec} recursion argument increases, store the reversed level index \(h-i\).  Prove
+Theorem~\ref{thm:viability} by induction on that distance.
+
+The least path constructor is a forward trace.  Its invariant says that the current candidate is viable and
+that the accumulated path prefix is valid.  The successor search uses \texttt{leastBoundedSearch\_correct}
+on the conjunction of the edge verifier and next-level viability.  The defining equation of \(W\) provides
+nonemptiness.
+
+\subsection{Stable and diameter observables}
+
+Exact branch erasure is already represented by \texttt{stableObservable}.  A richer module should define a
+rational metric formula and prove:
+\begin{lstlisting}[language={}]
+theorem diameterSelected
+  (selectedCorrect : ...)
+  (diameter : ... |-[PRAAx] dist (obs c) (obs d) <= eps) :
+  ... |-[PRAAx] dist (obs selected) (obs arbitrary) <= eps
+\end{lstlisting}
+Gap-based exactness is a finite triangle-inequality contradiction.  Provide reusable ordered-rational
+lemmas so applications need only instantiate the labels, approximation radius, and separation bound.
+
+\subsection{Resource library}
+
+Create \texttt{MixedRadix.lean}.  For each fixed arity, define \texttt{pack}, projections, and
+\texttt{rank}.  Prove the lower-coordinate geometric identity and lexicographic-rank lemma by induction on
+the finite coordinate index at the host level, generating a theorem for the fixed arity.  A later generic
+list-coded version may use a bounded fold and quantifier-free induction.
+
+Height-to-list conversion should be a corollary of bounded enumeration.  Complete-list-to-height uses a
+bounded maximum fold and the membership completeness proof.
+
+\subsection{Generated application modules}
+
+A domain compiler should generate a Lean module with this shape:
+\begin{enumerate}
+  \item concrete \texttt{PR} symbols and \texttt{PTm} abbreviations;
+  \item local equations and correctness lemmas;
+  \item a base context \(\Gamma\) exposing external boundary data;
+  \item one \texttt{NodeObligation} value per graph node;
+  \item a chain of \texttt{NodeObligation.compile} definitions;
+  \item a final theorem \(\Gamma\vdash[\PRAAx]A\);
+  \item an optional native corollary using \texttt{exportNative}.
+\end{enumerate}
+The generated source, not the generator, is checked by Lean.  This keeps the generator outside the trusted
+base while preserving convenience.
+
+\subsection{Validation sequence}
+
+A disciplined integration run should execute:
+\begin{enumerate}
+  \item \texttt{lake env lean} on the three generic modules;
+  \item \texttt{\#print axioms} on all exported compiler theorems;
+  \item unit examples for substitution from arities zero, one, and several;
+  \item examples with universal and existential formulas to exercise binder substitution;
+  \item a three-node graph and a graph with a loop node;
+  \item the cubic-bisection example;
+  \item native export of the final ordinary-iPRA theorem.
+\end{enumerate}
+Only after these pass should large domain packets be migrated.  The main risk is API alignment, not the
+mathematical proof of the structural kernel.

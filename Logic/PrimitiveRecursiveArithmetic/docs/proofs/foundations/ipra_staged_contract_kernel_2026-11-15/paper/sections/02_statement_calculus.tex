@@ -1,0 +1,214 @@
+\section{A statement calculus for finitary mathematics}
+\label{sec:statements}
+
+The first discipline is to state only what the arithmetic theory can actually express and prove.  This
+section gives a common public language for application packets.  It is not a new logical calculus replacing
+iPRA.  It is a classification of ordinary iPRA formulas and proof obligations, all eventually represented
+by \(\Prf\,\PRAAx\).
+
+\subsection{Finite presentations and observations}
+
+\begin{definition}[Finite presentation]
+A finite presentation of a mathematical object is a tuple
+\[
+  \mathcal P=(C,\operatorname{Valid},\operatorname{Eq},\operatorname{Restrict},\operatorname{Obs})
+\]
+with the following components.
+\begin{enumerate}
+  \item \(C\subseteq\Nat\) is a primitive-recursively decidable class of codes.
+  \item \(\operatorname{Valid}(c)\in\Bool\) checks well-formedness.
+  \item \(\operatorname{Eq}(q,c,d)\in\Bool\) is equality, compatibility, or indistinguishability at
+        demand \(q\).  It need not be exact equality of codes.
+  \item \(\operatorname{Restrict}(q,c)\) extracts the finite information visible at demand \(q\).
+  \item \(\operatorname{Obs}(q,c)\) returns a finite observation, often an integer, rational code,
+        finite list, matrix, or finite relation.
+\end{enumerate}
+Every operation is a fixed primitive-recursive program.  Its laws are represented by object-theory
+formulas and object proofs.
+\end{definition}
+
+This definition deliberately includes both exact and approximate objects.  An integer polynomial can use
+exact code equality.  A real number is better represented by a rational name \(a(q)\) with a Cauchy
+modulus.  A multiset of roots near a collision may be represented by a finite root cluster, where the
+stable observations are symmetric functions or a Hausdorff approximation rather than a continuously
+chosen ordering.
+
+\begin{definition}[Demand]
+A demand is finite data specifying what a consumer will inspect.  It may be a scalar precision
+\(q\), a tuple of precisions, a finite set of coefficients, a matrix dimension and tolerance, a list of
+chart indices, or a mixed resource vector.  Demands are codes in \(\Nat\), and their combination and
+propagation are primitive recursive.
+\end{definition}
+
+The key design rule is \emph{consumer first}.  A producer is not asked to construct an infinite ideal
+object.  It is asked to provide enough finite data for a particular downstream observation, together with a
+certificate that the data meets that demand.
+
+\subsection{Four public theorem classes}
+
+Most formalization difficulties become clearer when every theorem is assigned to one of four classes.
+
+\begin{definition}[Deterministic contract]
+A deterministic contract consists of formulas \(P(x)\) and \(Q(x,y)\), a fixed primitive-recursive
+producer \(f\), and an object proof
+\[
+  \iPRA\vdash \forall x\bigl(P(x)\to Q(x,f(x))\bigr).
+\]
+The producer may be a bounded search, a finite trace, a polynomial computation, or a rational
+approximation algorithm.
+\end{definition}
+
+\begin{definition}[Bounded relational contract]
+A bounded relational contract consists of a primitive-recursive bound \(B(x,q)\), a decidable verifier
+\(R(x,q,c)\), and an object proof of nonemptiness
+\[
+  \iPRA\vdash P(x,q)\to\exists c<B(x,q)\;R(x,q,c).
+\]
+The contract does not assert that a mathematically canonical or continuously varying selector exists.
+A least-code witness may be used internally because the search is bounded and the code order is fixed,
+but public theorems should not attach mathematical significance to that arbitrary selector.
+\end{definition}
+
+\begin{definition}[Stable-observable contract]
+Let \(R(x,q,c)\) be a bounded relational contract and \(O(x,q,c)\) an observation.
+An exact stable-observable theorem proves
+\[
+ R(x,q,c)\wedge R(x,q,d)\to O(x,q,c)=O(x,q,d).
+\]
+A quantitative version proves a rational metric estimate
+\[
+ R(x,q,c)\wedge R(x,q,d)\to
+ d\bigl(O(x,q,c),O(x,q,d)\bigr)\le \varepsilon(q).
+\]
+Thus any bounded selector can be erased from the public meaning, exactly or up to the displayed error.
+\end{definition}
+
+\begin{definition}[Boundary-conditional theorem]
+A boundary-conditional theorem exposes nonuniform or currently unavailable producer data as an explicit
+formula \(B(x,w)\).  It proves
+\[
+ \iPRA\vdash B(x,w)\to G(x,w),
+\]
+or, when a producer is separately available,
+\[
+ \iPRA\vdash B(x,p(x))\to G(x,p(x)).
+\]
+The framework verifies and composes \(w\); it does not misclassify a classical existence theorem as a
+primitive-recursive method for producing \(w\).
+\end{definition}
+
+These classes are exhaustive enough for the repository's recurring examples.  A rational-root search is
+deterministic once a height bound is known.  Root clusters are relational.  A coefficient symmetric in the
+roots is stable.  A general Diophantine result whose height bound is not known effectively is
+boundary-conditional.
+
+\subsection{Producer, verifier, and derivation are different objects}
+
+A frequent source of accidental overstatement is the collapse of three levels.
+
+\begin{enumerate}
+  \item A \emph{producer} is a primitive-recursive program returning candidate data.
+  \item A \emph{verifier} is a primitive-recursive Boolean predicate checking that data.
+  \item A \emph{derivation} is an object proof that a successful verification implies the advertised
+        mathematical conclusion.
+\end{enumerate}
+
+A fast verifier does not imply that a producer exists.  For example, given a purported factorization of an
+integer polynomial, multiplication verifies it.  Producing a factorization uniformly is a separate
+algorithmic theorem.  Given a finite list of generators and relations, many finite algebraic consequences
+are checkable; finding a suitable list is separate.  Given a height cutoff, all rational points below it can
+be enumerated; deriving the cutoff is separate.
+
+The clean interface is therefore a triple
+\[
+ (p,v,s):\qquad
+ p(x,q)=c,
+ \quad v(x,q,c)\in\Bool,
+ \quad \iPRA\vdash v(x,q,c)=1\to S(x,q,c).
+\]
+When \(p\) is unavailable, the verifier and soundness proof remain useful in a relational or conditional
+contract.
+
+\subsection{Exactness must be guarded}
+
+Classical mathematical prose often uses expressions such as ``choose the nearest root,'' ``take the sign,''
+``divide by the determinant,'' or ``order the eigenvalues.''  None is constructively uniform at a
+collision or zero.  The framework uses a guard formula.
+
+\begin{definition}[Gap or apartness guard]
+A gap guard for an operation is explicit positive rational data \(g>0\) and an object proof that the relevant
+quantity is separated from the unstable locus by at least \(g\).  Examples are
+\[
+ |x|\ge g,
+ \qquad |\det A|\ge g,
+ \qquad |\lambda_i-\lambda_j|\ge g,
+ \qquad |f'(a)|\ge g.
+\]
+\end{definition}
+
+Given such a guard, a precision transformer computes how accurately the input must be known before the
+branch is forced.  Without it, the correct output is a relation, cluster, interval, or stable symmetric
+observable.  This is not merely a conservative formalization choice.  It records the actual discontinuity
+of exact sign, reciprocal, root ordering, and eigenspace selection.
+
+\subsection{Finite observation versus ideal-object shorthand}
+
+A completed object may be convenient in the human discussion, but the arithmetic statement must unfold to
+finite inequalities.  For a real name \(a:\Nat\to\mathbb Q\), a typical contract is
+\[
+ |a(q)-a(r)|\le 2^{-q}+2^{-r}.
+\]
+The assertion that two names denote the same real is the schema
+\[
+ \forall q\; |a(q+2)-b(q+2)|\le 2^{-q}.
+\]
+Continuity of an operation is a primitive-recursive demand transformer \(D\) and a finite implication
+\[
+ x\equiv_{D(q)}x'\to F(x)\equiv_q F(x').
+\]
+The report may say ``the limit exists,'' but the theorem inserted into iPRA is a statement about the finite
+name, its modulus, and a requested precision.  The same policy applies to infinite series, integrals,
+compact spaces, sheaves, and categories: each public assertion expands into a bounded finite observation
+plus a displayed modulus or certificate.
+
+\subsection{Closure principles}
+
+The statement classes are designed to be closed under the operations needed in practice.
+
+\begin{proposition}[Deterministic composition]
+If \(P\to Q(f(x))\) and \(Q(y)\to R(g(y))\) are deterministic contracts, then
+\(P\to R(g(f(x)))\) is a deterministic contract.
+\end{proposition}
+\begin{proof}
+The composite producer is primitive recursive by composition.  In the object theory, specialize the second
+local proof at \(f(x)\) and cut it with the first.  The staged compiler implements exactly this argument.
+\end{proof}
+
+\begin{proposition}[Relational composition]
+Suppose \(R(x,c)\) has a finite nonempty candidate set and, for every valid \(c\), the relation
+\(S(x,c,d)\) has a finite nonempty candidate set.  Then
+\[
+ T(x,c,d):=R(x,c)\wedge S(x,c,d)
+\]
+is a finite nonempty relational contract.
+\end{proposition}
+\begin{proof}
+A bound for pairs is obtained from the two bounds using a fixed pairing code.  Bounded search finds a first
+valid \(c\), then a first valid \(d\) for that \(c\).  More symmetrically, bounded enumeration checks all
+pairs below the product bound.  Nonemptiness follows by two existential introductions and conjunction.
+All searches are bounded, so no choice principle is used.
+\end{proof}
+
+\begin{proposition}[Stable output after relational composition]
+If \(O(c,d)\) is independent of all valid pairs, the composite relational contract yields a deterministic
+public observation.
+\end{proposition}
+\begin{proof}
+Use any bounded selector to obtain one valid pair.  Compare its observation with that of an arbitrary valid
+pair using branch independence.  The selector disappears from the final formula.  The proof term is an
+existential elimination or, when concrete witnesses have already been generated, two cuts followed by the
+stability proof.
+\end{proof}
+
+These elementary closure principles become valuable only when their proof terms are generated reliably.
+Section~\ref{sec:compiler} gives the small kernel that performs that generation.

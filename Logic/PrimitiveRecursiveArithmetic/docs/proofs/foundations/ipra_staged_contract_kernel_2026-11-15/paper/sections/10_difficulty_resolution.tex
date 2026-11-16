@@ -1,0 +1,195 @@
+\section{Resolution of recurring repository difficulties}
+\label{sec:difficulties}
+
+The proof packets identify many obstacles, but a relatively small number of structural issues account for
+most of them.  This section states what the framework resolves, what it merely isolates, and why the
+remaining boundary is mathematically real.
+
+\subsection{Host truth versus object derivation}
+
+\paragraph{Difficulty.}
+A Lean theorem about natural-number functions does not automatically imply that the corresponding formula
+is derivable in iPRA.  Likewise, a Python test or exact-arithmetic computation is evidence about an
+implementation, not an object proof.
+
+\paragraph{Resolution.}
+Every public node must carry a local theorem whose conclusion literally has type
+\(\Delta\vdash[\PRAAx]A\).  The staged compiler uses only \texttt{Prf.subst},
+\texttt{Prf.weaken}, \texttt{Prf.trans}, logical introduction/elimination rules, and
+\texttt{PRA.qfInd}.  Host-level calculations may generate syntax or test examples, but cannot enter the
+trusted endpoint except through a checked proof term.
+
+\paragraph{Remaining work.}
+Domain packets still need to fill their local proof fields.  The framework makes this work modular and
+prevents the generic graph compiler from being reproved, but it cannot synthesize the mathematical local
+proofs from semantic truth alone.
+
+\subsection{Different arities, contexts, and binder shifts}
+
+\paragraph{Difficulty.}
+Application lemmas are naturally stated in different local variable frames.  Informal instructions to
+``specialize and compose'' conceal de Bruijn-index shifts, substitutions under quantifiers, and context
+reordering.
+
+\paragraph{Resolution.}
+The \texttt{NodeObligation} record stores local arity, local context, local goal, a substitution into the
+global frame, the local proof, and a context-inclusion certificate.  Lemma~\ref{lem:instantiate-into}
+performs specialization and alignment using the checked generic theorem, and the proof schedule performs
+simultaneous cut.  Binder handling is inherited from \texttt{Prf.substWeaken}.
+
+\subsection{Universal evaluation and illegal reflection}
+
+\paragraph{Difficulty.}
+A convenient blueprint may posit a function evaluating arbitrary coded primitive-recursive programs or
+arbitrary formulas, then reason as if this evaluator were a primitive-recursive symbol of iPRA.
+
+\paragraph{Resolution.}
+All syntax traversal occurs at the Lean host stage.  A fixed formula compiles to a fixed characteristic
+\(\PR\) symbol.  A fixed graph compiles to a finite nested proof term.  The object theory sees no program
+code and no graph interpreter.  Restricted evaluators with explicit syntax and depth bounds may be used
+when genuinely needed, but the default construction is static specialization.
+
+\subsection{Quantifier-free induction with bounded quantifiers}
+
+\paragraph{Difficulty.}
+Many useful invariants contain phrases such as ``all earlier positions are correct'' or ``there exists a
+valid candidate below the current bound.''  Written literally, these are quantified and seem unavailable to
+quantifier-free induction.
+
+\paragraph{Resolution.}
+Compile each bounded assertion to a Boolean fold.  Store the fold value in the state and state the invariant
+as term equations.  Theorem~\ref{thm:booleanization} gives reflection between the Boolean and the human
+bounded formula.  The induction itself remains quantifier-free.
+
+\subsection{Adaptive precision and circular demands}
+
+\paragraph{Difficulty.}
+An analytic or branch-sensitive operation may need input precision determined by an envelope or gap that is
+itself refined during the calculation.  Informal proofs choose precision dynamically or invoke a fixed point
+without a termination argument.
+
+\paragraph{Resolution.}
+For acyclic dependencies, run a reverse demand pass before the forward trace.  For cyclic monotone
+requirements, make the transformer inflationary and iterate it inside an explicit finite cap.  The sum of
+coordinates is a termination measure, giving Theorem~\ref{thm:demand-closure}.  The closed demand vector is
+then fixed during quantifier-free induction.
+
+\paragraph{Boundary.}
+If no finite cap exists near a singularity, the operation is not uniformly continuous in the requested
+exact representation.  The repair is a relational output or a gap assumption, not an unsupported larger
+precision.
+
+\subsection{Exact branch selection through collisions}
+
+\paragraph{Difficulty.}
+Root orderings, eigenspaces, minimizers, and analytic branches may be nonunique or discontinuous.
+
+\paragraph{Resolution.}
+Return a finite verified cloud with compatibility edges.  Backward viability constructs a finite path.
+Public outputs must be branch independent, diameter stable, or guarded by a separation theorem.  Root
+clusters and combined spectral subspaces survive collisions even when individual labels do not.
+
+\paragraph{Boundary.}
+There is no uniform exact selector in the absence of separation.  The framework intentionally does not
+claim one.
+
+\subsection{Finite cardinality versus effective enumeration}
+
+\paragraph{Difficulty.}
+Some drafts infer a bounded search or finite list from a theorem that only bounds the number of objects or
+places them in finitely many unspecified subspaces.
+
+\paragraph{Resolution.}
+The height/list theorem separates the concepts.  A height cutoff produces a complete list.  An explicitly
+complete list produces a cutoff.  A cardinality bound alone produces neither.  Finite envelopes are accepted
+when they include bounds on auxiliary codes and witnesses.
+
+\paragraph{Boundary.}
+General height producers in Siegel, Faltings, or Mordell--Weil settings remain domain-specific deep inputs.
+
+\subsection{Ineffective constants}
+
+\paragraph{Difficulty.}
+A classical theorem may prove that some constant or threshold exists without yielding a primitive-recursive
+method to compute it.
+
+\paragraph{Resolution.}
+Make the constant code and its finite verification obligations explicit in a boundary contract.  All
+consequences below that interface can be embedded.  A later effective theorem can supply a producer without
+changing downstream proofs.
+
+\paragraph{Boundary.}
+A verifier does not create the constant.  The conditional statement is the honest constructive content.
+
+\subsection{Variable-depth descent and resetting resources}
+
+\paragraph{Difficulty.}
+A single decreasing natural measure may not be apparent when an algorithm decreases a high-priority
+counter and resets lower counters.
+
+\paragraph{Resolution.}
+For fixed dimension, mixed-radix rank strictly decreases under lexicographic descent and supplies primitive-
+recursive fuel.  If dimension is input-dependent, require an explicit list-coded rank and numerical bound;
+do not smuggle in an unrestricted ordinal termination argument.
+
+\subsection{Finite local data versus global gluing}
+
+\paragraph{Difficulty.}
+Local solutions, chart sections, or finite approximations do not automatically form a compatible global
+object.
+
+\paragraph{Resolution.}
+Treat compatibility as a finite relation and compute backward viability or a finite equalizer.  Supply
+explicit overlap witnesses, unit-ideal certificates, or diameter estimates.  A gluing theorem is a local
+object proof in the graph.  The framework supports the assembly but does not infer finite cover data from
+bare compactness or existence.
+
+\subsection{Convergence without a modulus}
+
+\paragraph{Difficulty.}
+A classical proof may show convergence but provide no primitive-recursive Cauchy modulus.
+
+\paragraph{Resolution.}
+Use one of three honest outputs:
+\begin{enumerate}
+  \item a full quantitative name if a modulus is proved;
+  \item a metastable finite-window theorem with an explicit search bound;
+  \item a boundary-conditional theorem parameterized by a modulus or tail bound.
+\end{enumerate}
+Finite consumers frequently need only the second.
+
+\subsection{Open-ended mathematical universes}
+
+\paragraph{Difficulty.}
+Category theory, topology, algebraic geometry, or analysis are often described using arbitrary structures,
+function spaces, and completed objects not directly present in first-order arithmetic.
+
+\paragraph{Resolution.}
+Use finite presentations and generated families.  A theorem may quantify over all valid finite category
+codes, all finite simplicial complexes, all polynomial systems with bounded coefficient lists, or all
+finite observation demands.  For represented infinite objects, quantify over their finite names and
+moduli.  The framework does not need a second-order universe to express the finite theorem used by a
+consumer.
+
+\subsection{A maturity scale for packets}
+
+To make repository status comparable, we recommend six levels.
+
+\begin{longtable}{@{}p{0.08\textwidth}p{0.82\textwidth}@{}}
+\toprule
+Level & Meaning \\
+\midrule
+0 & Informal classical statement only. \\
+1 & Finitary restatement with explicit objects and boundaries. \\
+2 & Complete human proof with fixed algorithms, bounds, and quantifier-free invariants. \\
+3 & Executable exact reference code and regression tests. \\
+4 & Lean semantic formalization of the algorithms and host-level correctness. \\
+5 & Local conclusions are actual \(\Prf\,\PRAAx\) terms; the staged compiler yields the main theorem. \\
+6 & Native export, reproducible build, axiom audit, and integration into the checked library. \\
+\bottomrule
+\end{longtable}
+
+Most existing application packets lie between Levels 1 and 4.  The generic kernel in this archive is aimed
+at Level 5, but it is not claimed compiled because Lean was unavailable.  The report's human framework
+theorems and Python algorithms are at Levels 2--3.  This scale prevents a polished PDF or passing numerical
+test from being mistaken for an embedded arithmetic proof.

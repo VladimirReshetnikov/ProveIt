@@ -1,0 +1,173 @@
+\documentclass[10pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=0.86in]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{xurl}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+
+\definecolor{linkblue}{RGB}{20,70,130}
+\definecolor{codegray}{RGB}{248,248,248}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Staged Contract Kernels for Intuitionistic Primitive Recursive Arithmetic},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov},
+  pdfsubject={A proof-producing framework for embedding finitary mathematics in iPRA}
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  framerule=0.2pt,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  xleftmargin=0.5em,
+  xrightmargin=0.5em
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\iPRA}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\PR}{\ensuremath{\mathsf{PR}}}
+\newcommand{\QF}{\ensuremath{\mathsf{QF}}}
+\newcommand{\Nat}{\ensuremath{\mathbb N}}
+\newcommand{\Bool}{\ensuremath{\{0,1\}}}
+\newcommand{\code}[1]{\ulcorner #1\urcorner}
+\newcommand{\Prf}{\ensuremath{\mathsf{Prf}}}
+\newcommand{\PRAAx}{\ensuremath{\mathsf{PRAAx}}}
+\newcommand{\PTm}{\ensuremath{\mathsf{PTm}}}
+\newcommand{\NPrf}{\ensuremath{\mathsf{NPrf}}}
+\newcommand{\true}{\ensuremath{\mathsf{tt}}}
+\newcommand{\false}{\ensuremath{\mathsf{ff}}}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\List}{\operatorname{List}}
+\newcommand{\argmin}{\operatorname*{arg\,min}}
+\newcommand{\dotminus}{\mathbin{\dot{-}}}
+\newcommand{\st}{\;:\;}
+
+\setlist[itemize]{leftmargin=1.6em,itemsep=0.2em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=1.8em,itemsep=0.25em,topsep=0.4em}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{0.12em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Staged Contract Kernels for \iPRA}
+\rhead{15 November 2026}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+\title{\textbf{Staged Contract Kernels for Intuitionistic Primitive Recursive Arithmetic}\\[0.4em]
+\large A proof-producing framework for finite observations, relational witnesses, resource bounds, and domain-specific mathematics}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\input{sections/00_abstract}
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{sections/01_audit_scope}
+\input{sections/02_statement_calculus}
+\input{sections/03_coding_booleanization}
+\input{sections/04_static_compiler}
+\input{sections/05_search_traces}
+\input{sections/06_demand_closure}
+\input{sections/07_relational_clouds}
+\input{sections/08_resources_lists}
+\input{sections/09_domain_templates}
+\input{sections/10_difficulty_resolution}
+\input{sections/11_cubic_example}
+\input{sections/12_lean_plan}
+\input{sections/13_ledger}
+\input{sections/14_conclusion}
+\appendix
+\input{sections/A_contract_checklist}
+\input{sections/B_notation}
+
+\begin{thebibliography}{99}
+\bibitem{ProveItRoot}
+V. Reshetnikov, \emph{ProveIt: Primitive Recursive Arithmetic},
+\path{Logic/PrimitiveRecursiveArithmetic/README.md}, repository snapshot
+\texttt{38e83bc0d09647a98ce9fe5edf45d6b34f820dff}, 15 November 2026 (Pacific time).
+
+\bibitem{ConciseIPRA}
+V. Reshetnikov, \emph{Concise presentations of intuitionistic primitive recursive arithmetic},
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/}, 2026.
+
+\bibitem{Deduction}
+ProveIt, \path{ConciseIPRA/Lean/ConciseIPRA/Deduction.lean}, definitions and structural theorems for
+\(\Prf\), especially substitution, weakening, and simultaneous cut.
+
+\bibitem{PRlean}
+ProveIt, \path{ConciseIPRA/Lean/ConciseIPRA/PR.lean}, primitive-recursive symbols, arithmetic terms,
+\(\PRAAx\), and quantifier-free induction.
+
+\bibitem{NativeBridge}
+ProveIt, \path{ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}, theorems
+\texttt{native\_iff\_pra} and \texttt{pra\_iff\_native}.
+
+\bibitem{PacketIndex}
+ProveIt, \emph{Delivered iPRA proof packets},
+\path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/README.md}, snapshot as above.
+
+\bibitem{KFU}
+\emph{Kernel-facing finite-use compiler for iPRA},
+\path{docs/proofs/foundations/ipra_kernel_finite_use_framework_2026-11-15/}.
+
+\bibitem{OCiPRA}
+\emph{Observation-Contract Internalization for iPRA},
+\path{docs/proofs/foundations/ocipra_framework_2026-11-15/}.
+
+\bibitem{PCOG}
+\emph{Proof-Carrying Observation Graphs},
+\path{docs/proofs/foundations/ipra_proof_carrying_observation_graphs_2026-11-15/}.
+
+\bibitem{Resources}
+\emph{Finite mathematical interfaces in iPRA: resources and elimination},
+\path{docs/proofs/foundations/ipra_resources_and_elimination_2026-11-15/}.
+
+\bibitem{Troelstra}
+A. S. Troelstra and D. van Dalen, \emph{Constructivism in Mathematics}, Vols. I--II,
+North-Holland, 1988.
+
+\bibitem{HajekPudlak}
+P. H\'ajek and P. Pudl\'ak, \emph{Metamathematics of First-Order Arithmetic},
+Springer, 1993.
+
+\bibitem{Kohlenbach}
+U. Kohlenbach, \emph{Applied Proof Theory: Proof Interpretations and their Use in Mathematics},
+Springer, 2008.
+\end{thebibliography}
+
+\end{document}

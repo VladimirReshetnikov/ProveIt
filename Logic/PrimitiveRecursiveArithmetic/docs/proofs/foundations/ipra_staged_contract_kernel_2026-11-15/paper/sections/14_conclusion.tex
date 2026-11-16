@@ -1,0 +1,26 @@
+\section{Conclusion}
+
+The iPRA proof packets have already found the right broad strategy: replace completed objects by finite
+observations, replace arbitrary existence by finite certificates, compute demands before running a trace,
+use relations where exact choice is unstable, and expose nonuniform mathematical inputs.  The remaining
+bottleneck is proof production at the checked object-language boundary.
+
+The staged contract kernel addresses that bottleneck with a deliberately small construction.  Local
+theorems may keep their natural arities and contexts.  The compiler specializes them into one global frame
+using the checked substitution theorem, aligns assumptions by weakening, and composes them by simultaneous
+cut.  Bounded recursion is packaged once through quantifier-free induction.  The host traverses a fixed graph
+and emits concrete syntax, avoiding any universal evaluator in iPRA.
+
+Around this kernel, the report supplies a coherent library of human theorems: bounded Booleanization,
+least search, trace reflection, demand closure, relational viability, stable branch erasure, resource ranks,
+and height/list conversion.  These theorems explain both the positive reach of iPRA and the unavoidable
+boundaries.  Exact sign, reciprocal, root labels, and eigenspaces need separation.  Finite cardinality needs
+height data before it becomes enumeration.  Ineffective constants remain explicit.  Deep producer theorems
+are not replaced by a representation trick.
+
+The most useful next repository step is therefore narrow and testable: compile the supplied generic Lean
+kernel against \texttt{ConciseIPRA}, implement the Boolean fold and bounded-search modules, and migrate one
+complete application---the cubic bisection example is suitable---all the way to a literal
+\(\Prf\,\PRAAx\) conclusion and native export.  Once this vertical slice is checked, the same compiler can
+serve the much larger algebraic, analytic, topological, categorical, and Diophantine developments without
+reopening the structural proof-engineering problem in every packet.

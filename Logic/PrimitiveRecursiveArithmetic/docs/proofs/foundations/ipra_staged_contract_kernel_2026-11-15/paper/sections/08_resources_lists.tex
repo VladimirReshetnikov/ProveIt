@@ -1,0 +1,182 @@
+\section{Resource bounds, lexicographic descent, heights, and complete lists}
+\label{sec:resources}
+
+Constructive formalization often fails not because the local step is difficult, but because an informal
+proof says ``the process terminates'' or ``there are only finitely many possibilities'' without providing a
+search cutoff.  iPRA needs a primitive-recursive resource.  This section gives two reusable conversions:
+fixed-dimensional lexicographic descent to numerical fuel, and explicit height bounds to complete finite
+lists.
+
+\subsection{Mixed-radix rank for resetting counters}
+
+Let a state contain a fixed tuple
+\[
+ a=(a_0,\ldots,a_{r-1}),
+ \qquad 0\le a_i\le M_i.
+\]
+Coordinate \(0\) is most significant.  A strict lexicographic descent may decrease \(a_i\) while resetting
+all lower-priority coordinates \(a_j\) with \(j>i\) to arbitrary values below their caps.  Define
+\[
+ \rank(a)=
+ \sum_{i=0}^{r-1} a_i\prod_{j=i+1}^{r-1}(M_j+1).
+\]
+Equivalently, \(\rank\) is the mixed-radix packing operation.
+
+\begin{lemma}[Lexicographic rank]
+If \(b\) is strictly lexicographically smaller than \(a\), with both vectors inside the caps, then
+\(\rank(b)<\rank(a)\).
+\end{lemma}
+
+\begin{proof}
+Let \(i\) be the first coordinate at which they differ.  Then \(b_i<a_i\) and \(b_j=a_j\) for \(j<i\).
+The decrease contributed at coordinate \(i\) is at least
+\[
+  W_i=\prod_{j=i+1}^{r-1}(M_j+1).
+\]
+The maximum possible increase in all lower coordinates is
+\[
+ \sum_{j=i+1}^{r-1}M_j
+       \prod_{\ell=j+1}^{r-1}(M_\ell+1)
+ =W_i-1,
+\]
+a standard mixed-radix identity proved by finite induction.  Hence the net rank change is at most \(-1\).
+\end{proof}
+
+\begin{corollary}[Fuel from fixed-dimensional descent]
+A run that strictly decreases the capped lexicographic tuple has length at most
+\[
+  1+\rank(a^{0})
+  \le \prod_{i<r}(M_i+1).
+\]
+\end{corollary}
+
+For fixed \(r\), the rank, products, and comparison are primitive recursive, and the proof is formalizable
+by quantifier-free induction on the finite sum/product identities.  The algorithm can therefore execute for
+the displayed fuel and use the invariant ``every nonterminal step lowers rank.''
+
+\subsection{Fixed versus input-dependent dimension}
+
+The phrase ``lexicographic induction'' is ambiguous.  When the number of coordinates \(r\) is fixed by the
+algorithm or generated module, mixed-radix rank gives an elementary primitive-recursive bound.  When \(r\)
+is part of the input, the program must manipulate a list of counters and caps.  List packing, products, and
+rank are still primitive recursive, but a proof may require bounds on code growth and on the length of the
+list.  More sophisticated ordinal notations can exceed the strength or intended complexity of iPRA.
+
+The framework therefore records dimension explicitly:
+\begin{itemize}
+  \item a fixed-dimensional module may compile the rank expression directly;
+  \item a variable-dimensional theorem must supply a list-coded rank function and a proved numerical fuel;
+  \item an informal appeal to an unspecified well order is not accepted as executable fuel.
+\end{itemize}
+This distinction resolves the ``resetting counters'' difficulty in several resource-oriented drafts without
+claiming a general termination theorem beyond the supplied rank.
+
+\subsection{Finite state-space fuel}
+
+A second generic source of fuel is a finite state space.  If a deterministic transition remains inside
+\([0,S)\), then within \(S+1\) states either a terminal state appears or some state repeats.  If the
+application proves that a repeated nonterminal state is impossible---for example because a separate measure
+strictly decreases---then termination occurs within \(S\) steps.  If repetition is allowed, cycle detection
+itself is a finite theorem and may be the desired output.
+
+A state-space argument is often better than deriving a sharp runtime estimate.  For a finite graph search,
+Boolean table update, automaton, or bounded algebraic reduction, the number of valid packed states is an
+explicit product of field caps.
+
+\subsection{Height bounds and bounded enumeration}
+
+Let \(P(x,z)\) be a decidable predicate on coded objects, and let \(H(x)\) be a height cutoff such that
+\[
+  \forall z\bigl(P(x,z)\to z\le H(x)\bigr).
+\]
+Define
+\[
+  L(x)=\langle z\le H(x):P(x,z)\rangle,
+\]
+the bounded filter of all codes up to \(H(x)\).  The filter is primitive recursive and its invariant proves
+soundness, duplicate-freeness, and completeness.
+
+\begin{theorem}[Height-to-list conversion]
+\label{thm:height-list}
+A primitive-recursive height cutoff with an object proof of completeness yields a primitive-recursive
+complete finite list of all \(P\)-objects.
+\end{theorem}
+\begin{proof}
+Enumerate \(z=0,\ldots,H(x)\), appending \(z\) precisely when the Booleanized predicate is true.  The loop
+invariant says that the current list contains exactly the satisfying codes below the current counter.  At
+\(H(x)+1\), soundness and bounded completeness are immediate.  The height theorem turns unbounded
+completeness into bounded completeness: any satisfying \(z\) is below the cutoff and hence occurs.
+\end{proof}
+
+Conversely, suppose a finite list \(L(x)\) is explicitly complete:
+\[
+  \forall z\bigl(P(x,z)\to z\in L(x)\bigr).
+\]
+Then \(H(x)=\max L(x)\), with \(0\) for the empty list, is a height cutoff.  Thus, for decidable coded
+objects, \emph{a complete finite list and a height bound are constructively interconvertible} when the
+corresponding completeness proof is supplied.
+
+\subsection{Why a cardinality bound is not a height bound}
+
+A theorem of the form ``there are at most \(N\) objects'' does not provide a code cutoff.  The obstruction is
+already visible for singletons.  For each parameter \(h\), define
+\[
+  P_h(z)\;:\!\!\Longleftrightarrow\;z=h.
+\]
+Every fiber has cardinality one, but its unique code can be arbitrarily large.  A uniform cutoff independent
+of \(h\) cannot follow from cardinality one.  More generally, a finite set may occur at arbitrarily large
+heights.
+
+This distinction is crucial in Diophantine geometry.  A bound on the number of rational points, local
+sections, or exceptional subspaces does not automatically yield an algorithm to enumerate them.  An actual
+height bound, coefficient envelope, or complete list producer is stronger data.
+
+\begin{warning}[No hidden finite choice]
+A proof that for every input there exists some finite list covering all objects does not by itself define a
+primitive-recursive function returning such a list.  The theorem must either supply a producer or remain a
+boundary-conditional statement with the list as explicit input.
+\end{warning}
+
+\subsection{Finite envelopes}
+
+A useful intermediate notion is a finite envelope.  Suppose every desired object is represented by an
+auxiliary code \(a\) and a witness \(z\), and there is a bound \(A(x)\) on auxiliary codes plus a bound
+\(H(x,a)\) on witnesses for each auxiliary code.  Then enumerate all pairs
+\[
+ a\le A(x),\qquad z\le H(x,a)
+\]
+and filter by the verifier.  This converts pointwise finite searches into one uniform complete list.  It is
+the constructive content behind coefficient envelopes, finite covering families, bounded resultant
+systems, and finite lists of local branches.
+
+The envelope itself may be the missing deep theorem.  The framework makes its exact strength visible: a
+finite cardinality assertion for each auxiliary fiber is insufficient unless it comes with a height or
+list bound.
+
+\subsection{Resource contracts}
+
+A domain node should expose resource data through a contract such as
+\[
+  \operatorname{ValidInput}(x)\wedge\operatorname{ResourceCert}(x,r)
+  \to
+  \operatorname{RunCorrect}(x,r,F(x,r)).
+\]
+The resource certificate may contain caps, a rank function, coefficient heights, denominators, a gap, or a
+finite state-space size.  A separate producer theorem may construct \(r\).  Keeping these layers separate
+allows downstream proofs to be complete even when the best known global resource producer is conditional.
+
+\subsection{Complexity accounting}
+
+Primitive recursiveness alone can hide enormous growth.  The framework therefore records at least symbolic
+resource expressions:
+\begin{itemize}
+  \item search bound and list length;
+  \item loop fuel;
+  \item demand cap and closure iterations;
+  \item number of graph nodes and dependency uses;
+  \item code-height growth under constructors;
+  \item rational numerator and denominator bounds.
+\end{itemize}
+These bounds are not needed for logical soundness, but they prevent a proof from calling an operation
+``finite'' while leaving its finite range unspecified.  They also guide later optimizations and make it
+possible to compare alternative embeddings.
