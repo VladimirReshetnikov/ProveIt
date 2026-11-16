@@ -1,0 +1,90 @@
+\section{Substitution coherence and open use}
+\label{sec:naturality}
+
+\subsection{Instantiation, not recompilation}
+
+Let \(A\in\mathsf{BCode}(k)\) and let the compiler produce
+\(\chi_A\in\PR\,k\).  Given arbitrary terms
+\(\sigma:\mathrm{Fin}(k)\to\PTm\,n\), define
+\[
+  \chi_A[\sigma] := \mathsf{app}(\chi_A,\sigma),
+  \qquad
+  \llbracket A\rrbracket[\sigma]
+     := \llbracket A\rrbracket.\mathsf{subst}(\sigma).
+\]
+Because the symbol is fixed, the syntax law for term application gives
+\[
+ \mathsf{subst}(\tau,\mathsf{app}(\chi_A,\sigma))
+   = \mathsf{app}(\chi_A, i\mapsto\mathsf{subst}(\tau,\sigma_i)).
+\]
+There is no second compiler output to compare.
+
+\begin{theorem}[Open reflection]
+\label{thm:open-reflection}
+For every context \(\Gamma\), every term substitution \(\sigma\), and every
+bounded scheme \(A\), iPRA derives under \(\Gamma\)
+\begin{align*}
+ &\chi_A[\sigma]=0\vee\chi_A[\sigma]=1,\\
+ &\bigl(\chi_A[\sigma]=1\bigr)
+       \leftrightarrow\llbracket A\rrbracket[\sigma],\\
+ &\bigl(\chi_A[\sigma]=0\bigr)
+       \leftrightarrow\neg\llbracket A\rrbracket[\sigma].
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+Apply the checked arbitrary-term instantiation theorem \code{IPRA.inst} to the
+three closed generic derivations of \cref{thm:reflection}.  The formula
+substitution and term-application simplification laws put the conclusions in
+the displayed form.  Finally weaken from the empty context to \(\Gamma\).
+\end{proof}
+
+\subsection{Binders are handled once}
+
+The denotation of a bounded body uses the standard lifted substitution under a
+binder.  This law is part of the checked syntax implementation:
+\[
+  (\forall i\,B)[\sigma]
+    = \forall i\,B[\mathsf{up}(\sigma)].
+\]
+The reflection compiler does not need its own binder-substitution recursion.
+The body scheme has arity \(k+1\), and its characteristic symbol already takes
+\((i,\vec x)\) as formal arguments.  When the outer parameters are specialized,
+its argument vector becomes \((i,\sigma(\vec x))\) by ordinary application.
+
+This is the principal technical advantage of schema-first compilation.  The
+open obligation called ``arity-indexed PR abstraction and binder substitution''
+in the earlier outline is split into components already present in the
+repository:
+
+\begin{itemize}
+\item \code{PTm.toPR} closes each fixed term scheme to a symbol;
+\item \code{recDef} permits arbitrary parameter arity;
+\item \code{PTm.subst\_app} handles symbol application;
+\item \code{Fm.subst\_subst}, \code{up}, and the binder lemmas handle formulas;
+\item \code{IPRA.inst} transports closed derivations to arbitrary terms and
+  contexts.
+\end{itemize}
+
+Only the arity-generic search proof and the structural reflection recursion
+remain new object derivations.
+
+\subsection{Naturality of a compiled proof plan}
+
+Suppose a finite plan compiles to \(\Gamma\turnstilep G\).  For every
+simultaneous substitution \(\sigma\), applying \code{Prf.subst} yields
+\[
+  \Gamma[\sigma]\turnstilep G[\sigma].
+\]
+This theorem applies to the final plan, not only to individual reflected
+checks.  Therefore a theorem may be developed once at formal query parameters
+and reused at trace states, least-search outputs, tuple projections, or
+application-specific terms without rebuilding its proof graph.
+
+\subsection{Universal closure}
+
+An open theorem over parameters can be universally closed with repeated
+universal introduction when the context permits it.  The framework thus does
+not prove merely one theorem for each standard numeral.  It constructs a
+single open object derivation, from which the ordinary universally quantified
+mathematical statement follows inside iPRA.

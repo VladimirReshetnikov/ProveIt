@@ -1,0 +1,164 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[a4paper,margin=27mm,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{amsthm}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{graphicx}
+\usepackage{url}
+
+\definecolor{scopeblue}{RGB}{24,72,112}
+\definecolor{scopegreen}{RGB}{32,112,72}
+\definecolor{scopeorange}{RGB}{166,87,0}
+\definecolor{scopegray}{RGB}{245,247,249}
+\definecolor{codegray}{RGB}{70,75,80}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=scopeblue,
+  citecolor=scopegreen,
+  urlcolor=scopeblue,
+  pdftitle={SCOPE-iPRA: Scoped Observational Contracts and Proof Extraction},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small SCOPE-iPRA}
+\fancyhead[R]{\small Scoped observational contracts}
+\fancyfoot[C]{\thepage}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlist{itemsep=0.2em,topsep=0.3em}
+\renewcommand{\arraystretch}{1.15}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\iPRA}{\mathrm{iPRA}}
+\newcommand{\PRAAx}{\mathsf{PRAAx}}
+\newcommand{\Prf}{\mathsf{Prf}}
+\newcommand{\PTm}{\mathsf{PTm}}
+\newcommand{\Fm}{\mathsf{Fm}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\Scope}{\textsc{Scope-iPRA}}
+\newcommand{\turnstilep}{\mathrel{\vdash_{\PRAAx}}}
+\newcommand{\zero}{\mathbf{0}}
+\newcommand{\one}{\mathbf{1}}
+\newcommand{\bits}{\{\zero,\one\}}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\newcommand{\meta}{\mathrm{meta}}
+\newcommand{\obj}{\mathrm{obj}}
+\newcommand{\shift}{\mathord{\uparrow}}
+\newcommand{\Nat}{\mathbb{N}}
+\newcommand{\Bool}{\mathbb{B}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\res}{\mathsf{Res}}
+\newcommand{\Out}{\mathsf{Out}}
+\newcommand{\Valid}{\mathsf{Valid}}
+\newcommand{\Obs}{\mathsf{Obs}}
+\newcommand{\least}{\mathsf{least}}
+\newcommand{\Search}{\mathsf{Search}}
+\newcommand{\llbracket}{\mathopen{[\![}}
+\newcommand{\rrbracket}{\mathclose{]\!]}}
+\newcommand{\dotminus}{\mathbin{\dot{-}}}
+
+\lstdefinelanguage{LeanMini}{
+  morekeywords={structure,inductive,def,theorem,namespace,end,where,variable,open,import,by,apply,exact,match,with,if,then,else,forall},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[s]{/-}{-/},
+  morestring=[b]"
+}
+\lstset{
+  language=LeanMini,
+  basicstyle=\ttfamily\small\color{codegray},
+  keywordstyle=\bfseries\color{scopeblue},
+  commentstyle=\itshape\color{scopegreen},
+  backgroundcolor=\color{scopegray},
+  frame=single,
+  rulecolor=\color{scopegray},
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  xleftmargin=0.5em,
+  xrightmargin=0.5em
+}
+
+\title{\textbf{SCOPE-iPRA}\\[0.4em]
+\Large Scoped Observational Contracts and Proof Extraction\\
+\large A general framework for embedding finitary mathematics into intuitionistic primitive recursive arithmetic}
+\author{Prepared for Vladimir Reshetnikov}
+\date{16 November 2026\\Repository revision \texttt{8dfe26af18310f58aaff695fb0ce03ff5007d096}}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\vfill
+\begin{center}
+\begin{minipage}{0.88\textwidth}
+\small
+\textbf{Exact status.}  This document gives complete human proofs of the
+framework theorems and a concrete Lean formalization route against the pinned
+ProveIt APIs.  The structural Lean kernel in the accompanying archive has no
+placeholders but was not elaborated in this runtime because no Lean executable
+was available.  The bounded-reflection and compiler files are explicitly
+blueprints, not claimed kernel-checked developments.  The standard-library
+Python reference implementation passes all bundled regression tests; those
+tests validate finite algorithms only, not object-theory derivations.
+\end{minipage}
+\end{center}
+\vfill
+\newpage
+
+\begin{abstract}
+\input{sections/00_abstract}
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{sections/01_audit}
+\input{sections/02_thesis}
+\input{sections/03_baseline}
+\input{sections/04_presentations}
+\input{sections/05_observations}
+\input{sections/06_reflection}
+\input{sections/07_connectives}
+\input{sections/08_quantifiers}
+\input{sections/09_naturality}
+\input{sections/10_scopes}
+\input{sections/11_effects}
+\input{sections/12_compiler}
+\input{sections/13_traces}
+\input{sections/14_templates}
+\input{sections/15_difficulties}
+\input{sections/16_examples}
+\input{sections/17_lean}
+\input{sections/18_integration}
+\appendix
+\input{sections/A_ledger}
+\input{sections/B_sources}
+\input{sections/C_reference}
+
+\end{document}

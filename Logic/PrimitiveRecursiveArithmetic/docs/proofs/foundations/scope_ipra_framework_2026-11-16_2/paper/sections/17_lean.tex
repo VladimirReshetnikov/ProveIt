@@ -1,0 +1,251 @@
+\section{Lean formalization architecture}
+\label{sec:lean}
+
+\subsection{Imports and namespace}
+
+The reusable core should live beside \code{IPRADerivations}, not inside one
+proof packet.  A minimal first import closure is
+
+\begin{lstlisting}
+import IPRADerivations.Core.Search
+import IPRADerivations.Core.Pairing
+import IPRADerivations.Core.Definitions
+
+namespace LeanProofs.IPRA.SCOPE
+open LeanProofs.ConciseIPRA LeanProofs.IPRA Syn
+open scoped Fm
+\end{lstlisting}
+
+The generic library should not import Foundation, Busy Beaver, Diophantine
+Consistency, or theorem-specific packets.  The open bridge is used only by a
+separate export module after ordinary endpoints are stable.
+
+\subsection{Structural kernel}
+
+The accompanying \code{lean/SCOPE/Kernel.lean} records source-oriented wrappers
+around checked rules:
+
+\begin{lstlisting}
+structure Contract (n : Nat) (Gamma : List (Fm PTm n))
+    (goal : Fm PTm n) where
+  valid : Fm PTm (n + 1)
+  extract : valid :: Gamma.map Fm.shift
+      |- [PRAAx] goal.shift
+
+namespace Contract
+
+theorem close (C : Contract n Gamma goal)
+    (producer : Gamma |- [PRAAx] Fm.ex C.valid) :
+    Gamma |- [PRAAx] goal :=
+  .exE producer C.extract
+
+theorem conditional (C : Contract n Gamma goal) :
+    Gamma |- [PRAAx] (Fm.ex C.valid) --> goal := by
+  apply Prf.impI
+  apply Prf.exE Prf.hyp0
+  exact C.extract.weaken (by simp)
+end Contract
+\end{lstlisting}
+
+The file also wraps \code{Prf.trans}, \code{Prf.subst}, weakening, and boundary
+discharge.  It contains no placeholder proof.  The first formalization
+milestone is simply to elaborate it at the pinned revision and add it to the
+axiom audit.
+
+\subsection{Atomic schemas and bounded codes}
+
+The schema-first interface is represented by:
+
+\begin{lstlisting}
+structure AtomSchema (k : Nat) where
+  formula : Fm PTm k
+  bit : PR k
+  boolean : ([] : List (Fm PTm k)) |- [PRAAx]
+    (app bit var == zero) \/ (app bit var == one)
+  one_iff : ([] : List (Fm PTm k)) |- [PRAAx]
+    Fm.iff (app bit var == one) formula
+
+inductive BCode : Nat -> Type
+  | atom  : AtomSchema k -> BCode k
+  | conj  : BCode k -> BCode k -> BCode k
+  | disj  : BCode k -> BCode k -> BCode k
+  | impl  : BCode k -> BCode k -> BCode k
+  | neg   : BCode k -> BCode k
+  | exLt  : PTm k -> BCode (k + 1) -> BCode k
+  | allLt : PTm k -> BCode (k + 1) -> BCode k
+\end{lstlisting}
+
+The actual archive uses repository notation in the definition of
+\code{BCode.denote}.  An atom package stores only truth reflection; a generic
+lemma derives falsity reflection from Booleanity.
+
+\subsection{Arity-generic search}
+
+The critical arithmetic implementation task is a parameterized version of
+\code{Core/Search.lean}.  A suitable API is:
+
+\begin{lstlisting}
+namespace SearchN
+
+def muF (body : PTm (k + 1)) : PR (k + 1)
+def mu (body : PTm (k + 1)) (N : PTm n)
+    (xs : Fin k -> PTm n) : PTm n
+
+theorem search_spec (N i : PTm n) (xs : Fin k -> PTm n) :
+  Gamma |- [PRAAx]
+    le (mu body N xs) N /\
+    ((lt (mu body N xs) N -->
+       subst (Fin.cases (mu body N xs) xs) body == zero) /\
+     (lt i (mu body N xs) -->
+       neg (subst (Fin.cases i xs) body == zero)))
+
+end SearchN
+\end{lstlisting}
+
+The exact vector expressions will use the repository's \code{Fin.cases} and
+substitution conventions.  The proof should be obtained by parameterizing the
+existing \code{spec\_open}; no new mathematical idea is required.  A useful
+engineering strategy is to refactor the current two-argument search theorem as
+the \(k=1\) corollary of \code{SearchN}.
+
+\subsection{The reflection record}
+
+The target is:
+
+\begin{lstlisting}
+structure Reflection {k : Nat} (A : BCode k) where
+  char : PR k
+  boolean : ([] : List (Fm PTm k)) |- [PRAAx]
+    (app char var == zero) \/ (app char var == one)
+  one_iff : ([] : List (Fm PTm k)) |- [PRAAx]
+    Fm.iff (app char var == one) A.denote
+  zero_iff : ([] : List (Fm PTm k)) |- [PRAAx]
+    Fm.iff (app char var == zero) (neg A.denote)
+
+def reflect (A : BCode k) : Reflection A
+\end{lstlisting}
+
+For atoms, return the stored symbol and proofs.  For connectives, build symbols
+by \code{PR.comp} and proof terms by finite case analysis.  At bounded
+quantifiers, construct a \code{SearchN.muF} symbol from the body characteristic
+symbol and compose it with the bound's \code{PTm.toPR} symbol.
+
+The substitution theorem should be almost definitional:
+
+\begin{lstlisting}
+@[simp] theorem char_subst (A : BCode k)
+    (sigma : Fin k -> PTm n) :
+  Syn.subst sigma (app (reflect A).char var) =
+    app (reflect A).char sigma := by
+  rfl
+\end{lstlisting}
+
+Depending on elaboration, the right proof may be \code{rfl} or the existing
+\code{PTm.subst\_app} simplifier.  The main point is that no recursive theorem
+about recompilation appears.
+
+\subsection{Observer packages}
+
+Exact observer erasure should be implemented first:
+
+\begin{lstlisting}
+structure ObserverContract (n : Nat) where
+  valid : Fm PTm (n + 1)
+  obs : PTm (n + 1)
+  spec : Fm PTm (n + 1)
+  extract : valid :: Gamma.map Fm.shift |- [PRAAx] spec
+  coherent : valid.shift :: valid.reindexSecond ::
+      Gamma.map (fun A => A.shift.shift) |- [PRAAx]
+      obsFirst == obsSecond
+\end{lstlisting}
+
+The exact de Bruijn reindexing helpers should be defined once and tested on
+small examples.  A public \code{out} formula existentially binds the
+certificate and equates a public output variable with \code{obs}.  The module
+then proves output existence and uniqueness.  Quotient observers replace
+\code{==} by a reflected relation; metric observers add a rational distance and
+triangle-inequality library.
+
+\subsection{Indexed plan compiler}
+
+Implement \code{Plan} only after the structural kernel and reflection module
+compile.  Its first constructors are exact, specialize, supply, seal, and
+boundary.  A simple structural function returns \code{Prf}.  The graph DSL is
+strictly secondary: it should generate a \code{Plan}, not bypass it.
+
+The effect checker is ordinary decidable host code.  It rejects:
+
+\begin{itemize}
+\item an unknown dependency or cycle not packaged as a trace node;
+\item a missing producer with no named residual;
+\item a relational output without a coherence derivation;
+\item a named output without a direct producer or finite bound;
+\item a sealed node whose certificate-dependent term is requested publicly.
+\end{itemize}
+
+Soundness of the checker is not trusted as an axiom.  Even if it accepts an
+invalid plan, the invalid plan cannot produce a well-typed final \code{Prf}.
+
+\subsection{Trace and demand modules}
+
+A generic trace package stores fixed terms and local derivations:
+
+\begin{lstlisting}
+structure TraceSystem (k : Nat) where
+  init : PTm k
+  step : PTm (k + 2)
+  inv : Fm PTm (k + 2)
+  invQF : inv.QF
+  base : ...
+  next : ...
+\end{lstlisting}
+
+Use \code{recDef} for the state and \code{IPRA.ind} for the invariant theorem.
+For capped demand closure, begin with fixed dimension at the metalevel.  Store
+monotonicity as an object derivation, not as a semantic function property.  The
+rank, inflation, stabilization, and leastness proofs are quantifier-free.
+
+\subsection{Module layout}
+
+\begin{verbatim}
+IPRADerivations/Framework/SCOPE/
+  Kernel.lean             -- structural wrappers
+  Bits.lean               -- Boolean PR symbols and reflection
+  SearchN.lean            -- arbitrary parameter arity
+  BoundedCode.lean        -- schema, denotation, compiler
+  Selection.lean          -- least accepted code
+  Observer.lean           -- exact/quotient/metric output
+  Trace.lean              -- deterministic traces
+  Demand.lean             -- capped cyclic closure
+  Viability.lean          -- whole finite paths
+  Plan.lean               -- indexed proof plan and compiler
+  Normalize.lean          -- host graph normalization
+  Examples/
+    LeastDivisor.lean
+    CubicBisection.lean
+    StableObserver.lean
+    HeightList.lean
+IPRABridge/SCOPE.lean      -- optional backend corollaries
+\end{verbatim}
+
+\subsection{Formalization order and tests}
+
+The recommended order is:
+
+\begin{enumerate}[label=\textbf{M\arabic*.}]
+\item elaborate the structural kernel;
+\item refactor arity-generic search;
+\item prove bit combinators and atomic equality/order schemas;
+\item implement bounded reflection and nested-quantifier tests;
+\item add least selection;
+\item add exact relational observers;
+\item implement the indexed plan compiler;
+\item add traces, demand closure, and viability;
+\item migrate four pilot theorems;
+\item expose bridge corollaries and run the repository axiom audit.
+\end{enumerate}
+
+Every final theorem module must contain no \code{sorry}, no theorem-specific
+\code{axiom}, and a literal ordinary endpoint.  Tests should substitute
+nontrivial compound terms under two alternating bounded binders; this is the
+most direct regression test for the schema-first design.

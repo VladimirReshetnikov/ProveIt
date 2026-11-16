@@ -104,6 +104,7 @@ import IPRADerivations.Foundations.QuantitativeIdentities
 import IPRADerivations.Foundations.Termination
 import IPRADerivations.Foundations.ChineseRemainder
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.Geometry.EulerRodrigues
 import IPRADerivations.Geometry.Morley
 import IPRADerivations.Geometry.PlatonicSolids
@@ -114,6 +115,7 @@ import IPRADerivations.Geometry.SphericalPolar
 import IPRADerivations.Geometry.TriangleFormulas
 import IPRADerivations.Geometry.Circumcircle
 import IPRADerivations.Geometry.ConwayAlgebra
+import IPRADerivations.Geometry.PentagonArithmetic
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.Geometry.PowerOfPoint
 import IPRADerivations.Probability.Expectation

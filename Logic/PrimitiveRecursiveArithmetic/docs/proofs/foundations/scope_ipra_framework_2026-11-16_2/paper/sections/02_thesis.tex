@@ -1,0 +1,91 @@
+\section{The SCOPE thesis}
+\label{sec:thesis}
+
+\subsection{Finite observations, not completed universes}
+
+The phrase ``embed mathematics into iPRA'' should not be read as a demand to
+construct inside iPRA a completed set-theoretic universe of reals, manifolds,
+measures, or categories.  A theorem makes only finitely many observations at a
+time.  The appropriate object is therefore a query-indexed interface:
+\[
+  q \longmapsto \text{finite evidence accepted for query }q
+       \longmapsto \text{finite observable output}.
+\]
+The theorem may quantify over all queries, but each execution and each
+induction is finite.  Coherence between queries is stated explicitly when it
+is needed to form a name, a limit, or a global invariant.
+
+This observation separates two questions that are often conflated.
+
+\begin{description}[leftmargin=2.9cm]
+\item[Local verification.]  Given a finite certificate, can iPRA verify it and
+  extract the finite conclusion used by the theorem?
+\item[Global production.]  Can iPRA produce a certificate for every query, with
+  the required bound, modulus, separation, or compatibility?
+\end{description}
+
+The first question is frequently routine and reusable.  The second may contain
+the real theorem, an open quantitative problem, or an impossible selector.  A
+sound framework must allow the verifier to be completed while leaving the
+producer as a visible residual.
+
+\subsection{Three layers}
+
+\Scope separates the development into three layers.
+
+\paragraph{Representation layer.}
+A mathematical concept is given by query terms, a certificate formula or
+reflected checker, an observer, and a public specification.  Infinite objects
+are accessed through finite observations and coherence laws.
+
+\paragraph{Logical layer.}
+Proof-local certificates are introduced and eliminated by the ordinary
+quantifier rules.  Bounded logic is reflected to characteristic bits.  The
+output mode determines whether a certificate is sealed, exposed only through
+an observation relation, or converted to a named term by justified selection.
+
+\paragraph{Compilation layer.}
+A fixed host-side plan combines local object derivations using substitution,
+weakening, simultaneous cut, existential elimination, implication
+introduction, and the reusable arithmetic modules.  Compilation returns a
+\code{Prf PRAAx} value.  No object-level program interprets arbitrary proof
+syntax.
+
+\subsection{What is new relative to the earlier frameworks}
+
+The framework makes four concrete refinements.
+
+\begin{enumerate}[label=\textbf{N\arabic*.}]
+\item \textbf{Schema-first reflection.}  Earlier outlines compile a
+  \code{BForm n} to a term and then face a difficult theorem saying that
+  compilation commutes with substitution under bounded binders.  Here a fixed
+  formula scheme over \(k\) parameters is compiled once to a symbol
+  \(\chi_A:\PR\,k\).  An instance is always \(\chi_A(\vec t)\).  Substitution
+  changes \(\vec t\), not the compiler output.  Naturality is therefore the
+  checked substitution law for application.
+\item \textbf{Truth and falsity reflection.}  The compiler returns both
+  \(\chi_A=1\leftrightarrow A\) and
+  \(\chi_A=0\leftrightarrow\neg A\), as well as Booleanity.  The falsity half
+  is essential for bounded universal search and for intuitionistic treatment
+  of implication.
+\item \textbf{Escape effects.}  Every certificate is statically classified as
+  sealed, relational, or named.  This makes the presence or absence of a
+  selector a type-level issue rather than a prose promise.
+\item \textbf{Scope-minimal normal form.}  A finite acyclic proof graph is
+  normalized so that a witness scope surrounds exactly its consumers, named
+  selection is performed only at an actual escape, and unreachable producer
+  boundaries are removed.  A global mixed-radix master certificate becomes an
+  optional backend, not the default architecture.
+\end{enumerate}
+
+\subsection{Trust boundary}
+
+The trusted mathematical content remains small:
+\[
+  \PRAAx + \text{intuitionistic first-order logic with equality}.
+\]
+A Lean compiler may contain bugs, but a bug cannot manufacture a proof unless
+it also constructs a value accepted by the inductive \code{Prf} definition.
+Reference programs, JSON traces, and exhaustive finite tests are useful for
+engineering, yet they are deliberately outside the object-theory trust
+boundary.

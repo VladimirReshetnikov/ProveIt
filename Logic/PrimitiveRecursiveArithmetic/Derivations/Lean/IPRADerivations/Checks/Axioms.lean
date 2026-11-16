@@ -27,6 +27,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.ConwayAlgebra.zt_cancel_two
 #print axioms LeanProofs.IPRA.Geometry.ConwayAlgebra.central_path
 #print axioms LeanProofs.IPRA.Geometry.ConwayAlgebra.period_area_paths
+#print axioms LeanProofs.IPRA.Geometry.PentagonArithmetic.absurd_of
+#print axioms LeanProofs.IPRA.Geometry.PentagonArithmetic.local_obstruction
+#print axioms LeanProofs.IPRA.Geometry.PentagonArithmetic.hyperbolic_order
+#print axioms LeanProofs.IPRA.Geometry.PentagonArithmetic.type15_angle_sum
+#print axioms LeanProofs.IPRA.Geometry.PentagonArithmetic.dual_angle_sums
+#print axioms LeanProofs.IPRA.Geometry.PentagonArithmetic.dodecahedron_euler
 #print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.mul_adjugate
 #print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.det_mul
 #print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.cayleyHamilton2
@@ -190,6 +196,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.BoundedReflection.ex_least
 #print axioms LeanProofs.IPRA.Foundations.BoundedReflection.ex_none
 #print axioms LeanProofs.IPRA.Foundations.BoundedReflection.bounded_choice
+#print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.bitAt_subst
+#print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.fmAt_subst
+#print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.reflect
+#print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.bf_reflect
+#print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.bf_cases
+#print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.bf_dec
+#print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.bf_choice
+#print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.bf_least
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Hurwitz.denominator_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.gauss_lemma
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_dvd_left

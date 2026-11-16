@@ -1,0 +1,108 @@
+\section{Proof of reflection for Boolean connectives}
+\label{sec:connectives}
+
+We give the intuitionistic argument in detail because this is where an
+unmarked appeal to classical logic often enters a packet.  Throughout, suppose
+\(a,b\) are Boolean terms and
+\[
+  a=1\leftrightarrow A,
+  \qquad
+  b=1\leftrightarrow B,
+\]
+with the corresponding zero/falsity equivalences supplied by
+\cref{lem:atomic-zero} or the induction hypothesis.
+
+\subsection{Negation}
+
+Let \(\mathsf{notb}(a)=1\dotminus a\), where \(\dotminus\) is truncated
+subtraction.  On the two Boolean cases,
+\[
+  \mathsf{notb}(0)=1,
+  \qquad
+  \mathsf{notb}(1)=0.
+\]
+Booleanity of \(\mathsf{notb}(a)\) follows by eliminating the proof
+\(a=0\vee a=1\) and rewriting in each branch.
+
+If \(\mathsf{notb}(a)=1\), the branch \(a=1\) is arithmetically impossible, so
+\(a=0\), hence \(\neg A\).  Conversely, from \(\neg A\), falsity reflection
+gives \(a=0\), and therefore \(\mathsf{notb}(a)=1\).  This proves truth
+reflection for \(\neg A\); the zero half follows by the general Booleanity
+lemma.
+
+\subsection{Conjunction}
+
+Define \(\mathsf{andb}(a,b)=a\cdot b\).  Four object-level cases on the two
+Boolean disjunctions show that the product is Boolean.  If the product equals
+one, neither factor can be zero; eliminating their Boolean cases gives
+\(a=b=1\), hence \(A\wedge B\).  Conversely \(A\wedge B\) yields
+\(a=b=1\) and the product equation.
+
+This proof can be shortened with existing lemmas about products and zero, but
+the four-case proof is useful as a generic implementation pattern: it invokes
+only the reflected finite disjunctions and arithmetic rewriting.
+
+\subsection{Disjunction}
+
+Let \(\mathsf{orb}(a,b)=\mathsf{sg}(a+b)\), where \(\mathsf{sg}(0)=0\) and
+\(\mathsf{sg}(Sx)=1\).  Again the four Boolean cases show that
+\(\mathsf{orb}(a,b)=1\) exactly when at least one input is one.  Therefore
+\[
+  \mathsf{orb}(a,b)=1\leftrightarrow A\vee B.
+\]
+The converse direction is constructive: eliminate the given disjunction and
+rewrite the corresponding bit to one.
+
+An alternative implementation is
+\(a+b\dotminus(a\cdot b)\).  The sign form is usually shorter because the
+checked arithmetic library already exposes the zero/successor behavior of
+\(\mathsf{sg}\).
+
+\subsection{Implication}
+
+Implication is the subtle connective.  Define
+\[
+  \mathsf{impb}(a,b)=\mathsf{orb}(\mathsf{notb}(a),b).
+\]
+We prove
+\[
+  \mathsf{impb}(a,b)=1\leftrightarrow(A\to B)
+\]
+without unrestricted excluded middle.
+
+For the forward direction, assume the implication bit is one and assume
+\(A\).  Truth reflection gives \(a=1\), hence
+\(\mathsf{notb}(a)=0\).  The only way the disjunction bit can be one is then
+\(b=1\), so \(B\).  Discharging the assumption gives \(A\to B\).
+
+For the reverse direction, assume \(A\to B\) and eliminate the finite
+Booleanity disjunction \(a=0\vee a=1\).  If \(a=0\), then
+\(\mathsf{notb}(a)=1\), so the implication bit is one independently of \(b\).
+If \(a=1\), truth reflection gives \(A\), the assumed implication gives
+\(B\), and truth reflection for \(B\) gives \(b=1\).  Thus the implication bit
+is again one.  The case split is justified by a characteristic bit already
+inside iPRA; it does not assume that arbitrary formulas are decidable.
+
+\subsection{Structural recursion and proof objects}
+
+The host compiler recursively returns a record containing:
+\[
+  (\chi_A,\ \pi_A^{\mathrm{bool}},\ \pi_A^{1},\ \pi_A^{0}).
+\]
+At a connective it constructs a new fixed PR symbol by composition, then
+combines the child derivations using ordinary natural-deduction constructors
+and the checked arithmetic equations.  The recursion is over a finite Lean
+datatype.  Its result is a syntax symbol and actual \code{Prf} terms, not a
+semantic theorem about \(\Nat\).
+
+\begin{proposition}[Connective fragment]
+For every bounded-code expression formed from reflected atoms by
+\(\neg,\wedge,\vee,\to\), the three conclusions (R0)--(R2) of
+\cref{thm:reflection} hold.
+\end{proposition}
+
+\begin{proof}
+Structural induction on the code.  The atom case is the stored package plus
+\cref{lem:atomic-zero}; each connective case is the construction just given.
+All generated terms are fixed compositions of primitive-recursive symbols.
+\end{proof}

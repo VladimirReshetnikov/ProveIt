@@ -1,0 +1,33 @@
+\section{Executable reference artifacts}
+\label{app:reference}
+
+The archive's \code{reference/scope\_reference.py} is a standard-library model
+of the finite algorithms.  It includes:
+
+\begin{itemize}
+\item an AST and evaluator for equality, order, Boolean connectives, and nested
+  bounded quantifiers;
+\item least bounded witness search and a minimality certificate;
+\item monotone capped demand closure with a runtime rank check;
+\item a finite DAG checker for sealed, relational, and named escape modes;
+\item exact observer independence and metric diameter checks;
+\item a JSON demonstration generator.
+\end{itemize}
+
+The bundled unit suite has sixteen tests.  It includes two nested bounded
+quantifiers, implication truth tables, parameter environments under binders,
+least search with and without a witness, a cyclic demand system, rejection of
+an unjustified exact name, a missing observer-coherence proof, and exact and
+metric observer examples.
+
+Run from the archive root:
+
+\begin{verbatim}
+python3 -m unittest -v reference/test_scope_reference.py
+python3 reference/scope_reference.py --pretty > examples/demo.json
+\end{verbatim}
+
+Passing these tests shows that the reference algorithms and metadata checks
+behave as documented on the examples.  It does not prove the universal iPRA
+reflection or compiler theorems.  Those are certified only when the Lean
+modules construct accepted \code{Prf PRAAx} terms.

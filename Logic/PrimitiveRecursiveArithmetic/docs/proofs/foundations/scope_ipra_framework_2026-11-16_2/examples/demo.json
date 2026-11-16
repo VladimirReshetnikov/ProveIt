@@ -1,0 +1,121 @@
+{
+  "bounded_reflection": {
+    "bit": 1,
+    "formula": "forall i<5, exists j<7, j=i+1",
+    "truth": true
+  },
+  "demand_closure": {
+    "closure": [
+      4,
+      4,
+      3
+    ],
+    "fixed": true,
+    "prefixed": true,
+    "steps": 6,
+    "trace": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        1,
+        0
+      ],
+      [
+        2,
+        1,
+        1
+      ],
+      [
+        2,
+        2,
+        2
+      ],
+      [
+        3,
+        3,
+        2
+      ],
+      [
+        4,
+        3,
+        3
+      ],
+      [
+        4,
+        4,
+        3
+      ]
+    ]
+  },
+  "exact_observer": {
+    "codes": [
+      2,
+      4,
+      8
+    ],
+    "independent": true,
+    "values": [
+      0,
+      0,
+      0
+    ]
+  },
+  "least_search": {
+    "accepted": true,
+    "bound": 20,
+    "found": true,
+    "minimal": true,
+    "witness": 8
+  },
+  "metric_observer": {
+    "codes": [
+      3,
+      4,
+      5
+    ],
+    "diameter": 20,
+    "stable": true,
+    "tolerance": 20,
+    "values": [
+      30,
+      40,
+      50
+    ]
+  },
+  "rejected_escape": {
+    "issues": [
+      {
+        "code": "missing_boundary",
+        "message": "missing producer must be exposed as a residual",
+        "node": "branch_label"
+      },
+      {
+        "code": "unjustified_name",
+        "message": "a named witness needs a direct producer or a proved finite search bound",
+        "node": "branch_label"
+      }
+    ],
+    "ok": false,
+    "residuals": [],
+    "topological_order": [
+      "branch_label"
+    ]
+  },
+  "scope_graph": {
+    "issues": [],
+    "ok": true,
+    "residuals": [
+      "ExistsFiniteCover"
+    ],
+    "topological_order": [
+      "input",
+      "finite_cover",
+      "cluster_observer",
+      "goal"
+    ]
+  }
+}

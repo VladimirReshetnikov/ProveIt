@@ -1,0 +1,138 @@
+\section{Reusable domain templates}
+\label{sec:templates}
+
+This section describes how common mathematical concepts fit the same small
+interface.  The templates are not claims that every theorem in the domain is
+easy; they separate the routine finite verifier from the theorem-specific
+producer.
+
+\subsection{Finite algebra and combinatorics}
+
+A finite structure is encoded by a natural number or a bounded tuple.  Local
+relations---incidence, adjacency, multiplication tables, color constraints,
+permutation conditions---are fixed bounded formulas and hence have reflected
+checkers.  The preferred workflow is:
+
+\begin{enumerate}[label=(\arabic*)]
+\item use structural pairing for a fixed record and bounded arrays for
+  variable-length tables;
+\item reflect the well-formedness predicate;
+\item run bounded search or a certified trace;
+\item state the public theorem at arbitrary input terms;
+\item eliminate noncanonical auxiliary tables unless the output really needs
+  them.
+\end{enumerate}
+
+Counting arguments use finite sums, injections, and the checked pigeonhole and
+descent modules.  A host enumeration may suggest a certificate, but the object
+proof must verify every field and derive the conclusion from the reflected
+acceptance equation.
+
+\subsection{Rational and real analysis}
+
+Rational numbers are represented by signed integer numerators and positive
+denominators, with equality and order reduced to integer polynomial
+identities.  A finite real observation is an interval or rational
+approximation with a stated error.
+
+A regular-name presentation for a real \(x\) consists of a PR approximant
+\(a(k)\) and an object proof
+\[
+  |a(k)-a(\ell)|\le 2^{-k}+2^{-\ell}.
+\]
+Operations are implemented query-first.  Addition propagates the desired
+output precision to the two inputs.  Multiplication also requests magnitude
+bounds.  Reciprocal and normalization require an apartness resource
+\(|x|\ge2^{-r}\).  The reverse demand pass calculates the needed input
+precision from \(k,r\).
+
+For an existence proof that supplies only approximate witnesses, use a
+relational presentation at each precision and prove cross-precision stability.
+Do not infer a regular name from pointwise diameter alone.  A name requires an
+explicit compatible selector or a stability theorem strong enough that the
+least finite selector is coherent.
+
+\subsection{Algebraic and multivalued data}
+
+Polynomial roots, eigenvectors, logarithm branches, Puiseux expansions, and
+local inverse branches are naturally relational near degeneracies.  The
+certificate may contain:
+
+\begin{itemize}
+\item a factorization or approximate factorization;
+\item rational disks or boxes containing clusters;
+\item a root-count certificate on boundaries;
+\item Newton-polygon data;
+\item a separation gap;
+\item a permutation or matching between two refinements.
+\end{itemize}
+
+At collisions, export a multiset, cluster tree, spectral projector, invariant
+subspace, or symmetric polynomial observation.  Prove coherence modulo
+permutation or within a metric diameter.  If a named branch is genuinely
+required, add a positive gap and a deterministic ordering whose stability is
+proved from that gap.  The gap is a resource, not a cosmetic side condition.
+
+\subsection{Compactness, optimization, and topology}
+
+Replace abstract compactness by a finite-net interface:
+
+\begin{enumerate}[label=(\alph*)]
+\item a PR list of net points at precision \(k\);
+\item a reflected coverage relation;
+\item a modulus transferring estimates from a point to a nearby net point;
+\item bounded search for the least accepted point or least value code.
+\end{enumerate}
+
+The coverage theorem is a producer.  Once supplied, finite minimization is
+routine.  If minimizers are nonunique, export the minimum value exactly and a
+near-minimizer relation, or prove that all selected minimizers have close
+observations.
+
+For topology, use finite complexes, carriers, chain maps, and explicit prism
+homotopies.  A local-to-global construction should descend only the observation
+needed by the theorem.  A checked spanning tree can transport local data and
+accumulate rational edge errors; constructing a global quotient object is
+unnecessary unless it appears in the endpoint.
+
+\subsection{Probability and statistics}
+
+Begin with finite rational laws.  Expectation is a finite weighted sum;
+variance and moments are polynomial identities after denominator clearing.
+For larger spaces, a presentation must supply finite quantizations, tail
+bounds, integration moduli, and any anti-concentration data used by a
+discontinuous statistic.
+
+At an atom, an exact median or quantile may be nonunique or discontinuous.
+Export the interval of valid quantiles or a robust bracket.  A unique exact
+quantile can be named only under a gap or anti-concentration premise that a
+finite checker can consume.
+
+\subsection{Diophantine and arithmetic geometry}
+
+Given an explicit height bound \(H\), enumerate every code below an effective
+bound \(E(H)\), test the Diophantine relation, and return the complete list.
+The verifier proves:
+
+\begin{enumerate}[label=(\roman*)]
+\item every listed item is a solution;
+\item no list entry is duplicated under the chosen code normalization;
+\item every solution of height at most \(H\) occurs in the list.
+\end{enumerate}
+
+The remaining theorem is exactly
+\(P(x)\to h(x)\le H\).  It may be a Runge estimate, a descent theorem, a Baker
+bound, a supplied covering list, or an open effective producer.  Mordell--Weil
+and Selmer computations likewise separate finite class arithmetic from the
+existence of rational representatives on coverings.  The class verifier can
+be complete while the representative producer remains a residual.
+
+\subsection{Categories and abstract structures}
+
+For a fixed finite presentation, categorical constructions are finite tables
+with equation checkers.  Composition, finite limits and colimits, finite Kan
+extensions, and finite descent can therefore be treated by bounded reflection.
+The key restriction is ``fixed finite presentation.''  A universal evaluator
+for arbitrary categories or arbitrary PR programs is neither needed nor
+available.  Functoriality and naturality are public object derivations over the
+fixed codes.

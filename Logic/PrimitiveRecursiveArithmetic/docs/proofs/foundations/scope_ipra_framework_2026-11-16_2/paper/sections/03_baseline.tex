@@ -1,0 +1,80 @@
+\section{Formal baseline and notation}
+\label{sec:baseline}
+
+\subsection{Terms, formulas, and derivations}
+
+For each arity \(n\), \(\PTm\,n\) is the type of terms whose free variables are
+indexed by \(\mathrm{Fin}(n)\).  Primitive-recursive symbols have types
+\(\PR\,k\).  Formulas over \(n\) free variables form \(\Fm\,\PTm\,n\).
+A context \(\Gamma\) is a finite list of such formulas, and
+\[
+   \Gamma\turnstilep A
+\]
+abbreviates \code{Prf PRAAx Γ A}.  De Bruijn variable \(0\) is the newest
+variable.  Shifting a formula or context under a binder is written with a
+superscript \(\shift\).
+
+The following checked rules are the only structural operations required by the
+core compiler.
+
+\begin{align*}
+  &\text{Substitution:} &&
+  \Gamma\turnstilep A
+   \Longrightarrow \Gamma[\sigma]\turnstilep A[\sigma],\\
+  &\text{Weakening:} &&
+  \Gamma\subseteq\Delta,\ \Gamma\turnstilep A
+   \Longrightarrow \Delta\turnstilep A,\\
+  &\text{Simultaneous cut:} &&
+  \Gamma\turnstilep A,\quad
+  (\forall B\in\Gamma)\ \Delta\turnstilep B
+   \Longrightarrow \Delta\turnstilep A,\\
+  &\text{Existential elimination:} &&
+  \Gamma\turnstilep\exists x\,V(x),\quad
+  V(b),\Gamma^{\shift}\turnstilep A^{\shift}
+   \Longrightarrow \Gamma\turnstilep A.
+\end{align*}
+
+The last rule is the logical source of certificate scoping.  The conclusion
+\(A\) lives at the outer arity, so the local eigenvariable \(b\) cannot occur
+in it.
+
+\subsection{Quantifier-free induction}
+
+The induction axiom is available only for formulas recognized by
+\code{Fm.QF}.  This restriction is not an obstacle when finite data are
+represented by terms and bits.  A loop invariant should have the form
+\[
+  I(t,s,\vec p)=\one,
+\]
+possibly conjoined with equations and order relations on packed state terms.
+Such a formula is quantifier-free even when the human interpretation of
+\(I=1\) expresses a long bounded condition.  The reflection theorem later
+connects that equation to the human-facing bounded formula outside the
+induction.
+
+\subsection{Open derivations are the reusable unit}
+
+A lemma proved only for closed numerals is not an adequate library interface.
+The preferred shape is an open derivation under arbitrary local hypotheses and
+at arbitrary terms.  A closed generic derivation over formal variables can be
+instantiated by \code{IPRA.inst}; a derivation under a context can be
+specialized by \code{Prf.subst}.  This yields a simple discipline:
+
+\begin{quote}
+State every reusable arithmetic or verifier lemma at formal variables; use
+substitution only at the point where a theorem-specific plan supplies terms.
+\end{quote}
+
+This discipline is particularly important for reflected formula schemes.  A
+single characteristic symbol must remain valid when a query variable is later
+replaced by a complicated trace state, a search result, or an encoded tuple.
+
+\subsection{Metalevel specialization is legitimate}
+
+A fixed theorem packet may ask Lean to construct a fixed \(\PR\) symbol from a
+fixed syntax tree.  This is ordinary metaprogramming and introduces no
+universal evaluator into iPRA.  The resulting symbol and its defining
+object-theory equations are part of the generated proof.  What is unavailable
+in general is one total primitive-recursive function that receives arbitrary
+codes for all primitive-recursive programs and evaluates them.  \Scope never
+requires such a function.

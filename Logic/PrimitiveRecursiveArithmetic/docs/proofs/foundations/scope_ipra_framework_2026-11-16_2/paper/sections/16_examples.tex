@@ -1,0 +1,164 @@
+\section{Worked examples}
+\label{sec:examples}
+
+The examples are chosen to exercise different layers of the framework.  They
+are not substitutes for the full checked Lean developments proposed in
+\cref{sec:lean}; they show the complete human proof architecture and the exact
+object endpoints.
+
+\subsection{Least divisor as a named bounded certificate}
+
+Let \(z\ge2\).  Define the bounded predicate
+\[
+  V(z,d)\;:\!\Longleftrightarrow\;
+  2\le d\ \wedge\ d\le z\ \wedge\ \exists q\le z\;(d q=z).
+\]
+All quantifiers are bounded and all atoms are polynomial equalities or order
+relations, so \cref{thm:reflection} supplies a Boolean verifier.  The value
+\(d=z,q=1\) proves an accepted certificate below \(z+1\).  Apply
+\cref{thm:least-code} to obtain the least accepted \(d^*(z)\).
+
+The object theorem first proves that \(d^*\) divides \(z\) and is at least two.
+To show primality, suppose \(d^*=ab\) with \(1<a<d^*\) and \(1<b\).  Then
+\(a\) divides \(d^*\) and hence divides \(z\); the quotient can be composed
+from the witnesses.  Thus \(a\) is an accepted divisor smaller than \(d^*\),
+contradicting leastness.  Therefore \(d^*\) is prime.
+
+The public term is justified because the certificate space has the explicit
+bound \(z+1\).  If the theorem needed only ``some prime divides \(z\),'' the
+certificate could instead be sealed after the primality proof.
+
+\subsection{Rational bisection for the inverse of \texorpdfstring{\(y^3+y\)}{y cubed plus y}}
+
+Fix an integer or rational input \(x\) and define
+\(f_x(y)=y^3+y-x\).  The function is strictly increasing because
+\[
+ f_x(v)-f_x(u)
+  =(v-u)(v^2+uv+u^2+1),
+\]
+and the second factor is positive when \(u<v\).  Choose rational endpoints
+\(L_0,U_0\) with \(f_x(L_0)\le0\le f_x(U_0)\).  Such crude bounds are easy to
+compute from \(|x|+1\).
+
+At stage \(t\), let \(M_t=(L_t+U_t)/2\).  Exact rational sign comparison is a
+bounded integer calculation after clearing positive denominators.  Set
+\[
+ (L_{t+1},U_{t+1})=
+ \begin{cases}
+   (M_t,U_t),& f_x(M_t)\le0,\\
+   (L_t,M_t),& f_x(M_t)>0.
+ \end{cases}
+\]
+Encode the pair of endpoints and common denominator in one state term.  The
+reflected branch bit makes the step primitive recursive.
+
+Use the quantifier-free invariant
+\[
+  f_x(L_t)\le0\ \wedge\ 0\le f_x(U_t)
+   \ \wedge\
+  2^t(U_t-L_t)=U_0-L_0.
+\]
+The base case is the initial bracket.  In the successor case, monotonicity and
+the reflected sign branch preserve the bracket, while elementary rational
+arithmetic proves the width equation.  \cref{thm:trace} gives the invariant at
+an arbitrary query \(k\).  The midpoint or interval is therefore an
+approximation to the unique inverse value, with an explicit error
+\((U_0-L_0)2^{-k-1}\).
+
+This example has no noncanonical certificate: the trace is deterministic.  It
+exercises reflected branching, a packed state, query-first execution, and a
+quantifier-free invariant.  A regular name follows by choosing a computable
+number of bisection steps for each requested precision.
+
+\subsection{Root clusters instead of unstable branch labels}
+
+Suppose a finite algebra certificate produces disks
+\(D_1,\ldots,D_m\) with multiplicities whose union contains all roots of a
+polynomial and whose boundary tests certify the root counts.  At a collision,
+individual labels are unstable, but the following observations are stable:
+
+\begin{itemize}
+\item the multiset of cluster centers and radii modulo permutation;
+\item the multiplicity of each connected cluster;
+\item symmetric polynomials of roots in a cluster;
+\item the product factor associated with a cluster.
+\end{itemize}
+
+Let \(V(p,c)\) verify a cluster certificate and \(O(p,c)\) be one of these
+observations.  A refinement theorem proves that any two valid certificates
+have a common refinement and that their observations agree modulo permutation
+or lie within a stated error.  \cref{thm:observed-relation} then exports a
+coherent relational observation without choosing a branch.
+
+If a separation residual
+\[
+  \operatorname{dist}(D_i,D_j)\ge\delta>0\quad(i\neq j)
+\]
+is supplied, request enough coefficient precision to verify the gaps and order
+the disks lexicographically.  A bounded selector may then name each branch.
+The label theorem is explicitly conditional on \(\delta\); it does not pretend
+to pass continuously through a collision.
+
+\subsection{Finite-net approximate minimization}
+
+Let \(K\) be represented at precision \(r\) by a finite list
+\(N_r=(x_0,\ldots,x_{M-1})\), a coverage relation saying every point of \(K\)
+is within \(2^{-r}\) of some \(x_i\), and let \(f\) have a supplied modulus
+\(\omega\).  Evaluate rational approximations \(v_i\) with error at most
+\(2^{-s}\), and select the least index \(i^*\) minimizing the finite value
+codes.
+
+The finite search and comparison proof gives
+\(v_{i^*}\le v_i\) for all net indices.  For any \(x\in K\), open the coverage
+certificate to obtain a nearby \(x_j\).  The modulus gives
+\(|f(x)-f(x_j)|\le\omega(2^{-r})\), and approximation errors compare
+\(f(x_j)\) with \(v_j\) and \(v_{i^*}\) with \(f(x_{i^*})\).  Hence
+\[
+  f(x_{i^*})\le f(x)+2^{1-s}+\omega(2^{-r}).
+\]
+Seal the noncanonical nearby-net witness.  The public endpoint names the least
+finite minimizer only because the list is explicitly bounded.  The coverage
+and modulus formulas remain residuals unless separately produced.
+
+\subsection{Conditional complete enumeration of Diophantine points}
+
+Let \(P(\vec x)=0\) be an integer polynomial equation and let \(h(\vec x)\) be
+a coded height.  Suppose an external mathematical argument supplies the object
+producer
+\[
+  \Gamma\turnstilep
+  \forall\vec x\,[P(\vec x)=0\to h(\vec x)\le H].
+  \tag{HB}
+\]
+There is a primitive-recursive enumeration of every normalized integer or
+rational tuple of height at most \(H\).  Filter it using reflected polynomial
+equality and remove duplicates by reflected code equality.  Let \(L_H\) be the
+resulting list.
+
+A finite trace proves that each retained element is a solution and each
+rejected enumerated code is either malformed or not a solution.  Given an
+arbitrary solution \(x\), apply (HB) to place it below the enumeration bound;
+normalization yields its unique code, and the filter proof shows that code is
+retained.  Thus
+\[
+  \mathsf{HeightBound}(P,H),\Gamma
+    \turnstilep \mathsf{CompleteList}(P,L_H).
+\]
+
+The finite enumeration theorem is unconditional; completeness is conditional
+on the exact height producer.  Mere finiteness of the solution set cannot
+replace (HB).
+
+\subsection{A whole-path example}
+
+Consider three finite stages.  At stage zero, choices \(a\in\{0,1\}\) are both
+locally valid.  From \(a=0\), the only stage-one choice eventually dead-ends;
+from \(a=1\), an accepted terminal path exists.  A greedy ``least valid
+choice'' incorrectly selects \(0\).
+
+Backward viability marks the terminal accepted nodes, then marks exactly the
+stage-one nodes with accepted successors, and finally marks only \(a=1\) as
+viable.  Forward least selection among \emph{viable} successors constructs the
+accepted path.  The object proof is a fixed finite instance of the viability
+theorem.  This tiny example captures the general reason separate existential
+witnesses cannot simply be concatenated.

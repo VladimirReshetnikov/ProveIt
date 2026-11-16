@@ -1,0 +1,130 @@
+\section{Bounded quantifiers, witnesses, and least selection}
+\label{sec:quantifiers}
+
+\subsection{Bounded existential reflection}
+
+Let \(A(i,\vec x)\) have reflected bit \(a(i,\vec x)\).  Put
+\[
+  p(i,\vec x)=\mathsf{notb}(a(i,\vec x)),
+  \qquad
+  m=\mu_p(t(\vec x),\vec x).
+\]
+By reflection,
+\[
+   p(i,\vec x)=0\quad\leftrightarrow\quad A(i,\vec x).
+\]
+Let \(e\) be the characteristic bit of \(m<t\).
+
+\begin{lemma}[Existential reflection]
+\label{lem:exists-reflection}
+\[
+ e=1\quad\leftrightarrow\quad
+ \exists i\,(i<t\wedge A(i,\vec x)).
+\]
+\end{lemma}
+
+\begin{proof}
+Suppose \(e=1\).  Strict-order reflection gives \(m<t\).  By search property
+(S2), \(p(m,\vec x)=0\), and hence \(A(m,\vec x)\).  Introduce the existential
+with witness \(m\).
+
+Conversely, suppose \(\exists i(i<t\wedge A(i,\vec x))\).  Open this witness
+locally.  Reflection turns \(A(i,\vec x)\) into \(p(i,\vec x)=0\).  The found
+part of \cref{thm:searchN} gives \(m<t\).  Reflect strict order to obtain
+\(e=1\).  The formula \(e=1\) contains no local witness, so existential
+elimination closes the proof.
+\end{proof}
+
+Booleanity of \(e\) comes from the strict-order atom; falsity reflection follows
+from \cref{lem:atomic-zero}.  No quantified formula appears in the search
+induction invariant.
+
+\subsection{Bounded universal reflection}
+
+Search for a counterexample by applying least-zero search directly to the body
+bit:
+\[
+  r=\mu_a(t(\vec x),\vec x),
+  \qquad
+  u=\mathsf{eqb}(r,t(\vec x)).
+\]
+
+\begin{lemma}[Universal reflection]
+\label{lem:forall-reflection}
+\[
+ u=1\quad\leftrightarrow\quad
+ \forall i\,(i<t\to A(i,\vec x)).
+\]
+\end{lemma}
+
+\begin{proof}
+Assume \(u=1\), so \(r=t\).  Let an arbitrary \(i<t\) be given.  Eliminate
+Booleanity of \(a(i,\vec x)\).  If it is one, truth reflection yields \(A(i)
+\).  If it is zero, the found theorem gives \(r<t\), contradicting \(r=t\).
+Thus \(A(i)\), and universal introduction closes the argument.
+
+Conversely, assume every \(i<t\) satisfies \(A(i)\).  Eliminate the decidable
+order alternative \(r<t\vee t\le r\).  In the first branch, search property
+(S2) gives \(a(r,\vec x)=0\), while the universal premise gives \(A(r)\) and
+hence \(a(r,\vec x)=1\), a contradiction.  In the second branch combine
+\(r\le t\) from (S1) with \(t\le r\) to get \(r=t\), and reflect equality to
+obtain \(u=1\).
+\end{proof}
+
+The universal proof uses only decidability of natural-number order and of the
+reflected body bit.  It does not assert excluded middle for arbitrary
+unbounded formulas.
+
+\subsection{Completion of the reflection theorem}
+
+\begin{proof}[Proof of \cref{thm:reflection}]
+Proceed by structural induction on \(A\).  Atoms and Boolean connectives were
+handled in \cref{sec:connectives}.  The existential case is
+\cref{lem:exists-reflection}; the universal case is
+\cref{lem:forall-reflection}.  Their characteristic terms are fixed
+compositions of arity-generic search, bound symbols, and reflected order or
+equality bits.  Falsity reflection follows uniformly from Booleanity and truth
+reflection.  Every proof is built in the ordinary natural-deduction calculus.
+\end{proof}
+
+\subsection{Least accepted certificate}
+
+Reflection turns any fixed bounded certificate predicate \(V(q,c)\) into a
+Boolean verifier \(v(q,c)\).  Suppose a bound \(B(q)\) and a producer
+\[
+  \Gamma\turnstilep
+  \exists c\bigl(c<B(q)\wedge V(q,c)\bigr)
+\]
+are available.  Define
+\[
+  c^*(q)=\mu_{\mathsf{notb}(v)}(B(q),q).
+\]
+
+\begin{theorem}[Least accepted code]
+\label{thm:least-code}
+Under the producer above, iPRA derives
+\begin{align*}
+  &c^*(q)<B(q),\\
+  &V(q,c^*(q)),\\
+  &\forall d<c^*(q)\;\neg V(q,d).
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+Open the producer's witness \(c\).  Truth reflection gives a zero of the
+complement verifier below \(B\), so the found theorem proves
+\(c^*<B\) and that the complement verifier vanishes at \(c^*\).  Reflection
+gives \(V(q,c^*)\).  For \(d<c^*\), search minimality says the complement
+verifier is nonzero.  It is Boolean, so it must be one, hence \(v(q,d)=0\) and
+falsity reflection gives \(\neg V(q,d)\).  The conclusion no longer mentions
+the producer witness \(c\), so existential elimination seals it.
+\end{proof}
+
+\subsection{Selection is an upgrade, not a default}
+
+The theorem justifies a named public term only because both a numerical bound
+and accepted-code existence are present.  If the final theorem merely needs a
+consequence invariant under all accepted certificates, applying
+\cref{thm:least-code} is unnecessary.  One should open the existential locally,
+prove the consequence, and seal it.  This avoids artificial code bounds and
+canonical orders unrelated to the mathematics.
