@@ -1,0 +1,128 @@
+\section{Stable observations, quotients, and exactness gaps}
+
+A least-code selector is constructive, but it should not be confused with a
+mathematically canonical representative.  Many domains are better handled by
+proving that the requested observable is independent of the selected
+certificate.
+
+\subsection{Independent-certificate stability}
+
+Let \(C_p(c,q)\) mean that \(c\) is a valid certificate at precision \(p\),
+and let \(O_p(c,q)\) be a coded observable.  Suppose iPRA proves, for arbitrary
+valid certificates \(c,d\),
+\begin{equation}
+  C_p(c,q)\wedge C_r(d,q)
+  \;\longrightarrow\;
+  \dist(O_p(c,q),O_r(d,q))\le \varepsilon(p,r).
+  \label{eq:cross-stability}
+\end{equation}
+The two certificates need not refine one another, share auxiliary witnesses,
+or come from the same producer.
+
+\begin{theorem}[Stable observable from independent certificates]
+If valid certificates are produced independently at precisions \(p\) and
+\(r\), then their observations satisfy \eqref{eq:cross-stability}.  No coherent
+certificate stream is required.
+\end{theorem}
+
+\begin{proof}
+Produce or select the two certificates separately.  Specialize the local
+stability derivation to those codes and apply implication elimination twice.
+At the proof-theory level this is exactly the supplied theorem
+\leanname{stableOfIndependent}; the mathematical work is the domain-specific
+proof of \eqref{eq:cross-stability}.
+\end{proof}
+
+This simple rule is powerful.  It prevents an unnecessary dependent-choice
+problem from appearing when the theorem uses only compressed observations.
+
+\subsection{Witnessed setoids instead of quotient types}
+
+For a coded object type \(X\), let \(x\sim y\) be witnessed by a bounded or
+otherwise explicit certificate \(w\), checked by
+\(E(x,y,w)=1\).  Operations are supplied with congruence theorems:
+\[
+ E(x,x',w)=1\wedge E(y,y',v)=1
+ \to E(f(x,y),f(x',y'),u)=1
+\]
+
+after constructing an appropriate witness \(u\).
+
+One need not form a quotient object inside iPRA.  Statements are written
+extensionally, and final observables are proved invariant under witnessed
+equivalence.  When an actual representative is needed, bounded selection may
+choose one; the theorem should still state representative independence where
+possible.
+
+This pattern fits:
+
+\begin{itemize}
+\item rational numbers represented by integer pairs;
+\item localization fractions with a killing-exponent equality witness;
+\item polynomial ideals with combination witnesses;
+\item root clusters under permutation of component roots;
+\item chain representatives of a homology class;
+\item finite covers with different enumerations.
+\end{itemize}
+
+\subsection{Diameter-stable clouds}
+
+Sometimes a certificate describes a finite set or cloud of possible outputs.
+If every two points in every valid cloud, and every two points across valid
+clouds, are within diameter \(\delta(p)\), then any selected point is a valid
+observation to that tolerance.  The cloud itself can be a single-code array,
+and the cross-diameter property is a bounded universal checker.
+
+This gives a constructive replacement for an exact selector at collisions,
+branch points, or ties.  Refinement may shrink the cloud even when no coherent
+labeling of individual elements exists.
+
+\subsection{Exact labels require a gap}
+
+Let a finite set of labels have coded representatives
+\(v_0,\ldots,v_{m-1}\).  Suppose an approximate observation \(a\) is known to
+be within error \(e\) of the correct representative.  To recover the label,
+one needs a separation premise such as
+\[
+  i\ne j\to \dist(v_i,v_j)>2e.
+\]
+
+\begin{theorem}[Guarded exact recovery]\label{thm:gap-recovery}
+Assume:
+\begin{enumerate}
+\item an approximate observation \(a\) is within \(e\) of some label value
+\(v_i\);
+\item distinct label values are separated by more than \(2e\);
+\item all comparisons are represented by reflected bounded checkers.
+\end{enumerate}
+Then bounded search returns the unique label \(i\), and iPRA proves its
+correctness.
+\end{theorem}
+
+\begin{proof}
+Search the finite label set for a value within \(e\) of \(a\).  Existence comes
+from the first premise.  If two labels pass, the triangle inequality gives
+\(\dist(v_i,v_j)\le2e\), contradicting separation.  Thus the passing label is
+unique.  Bounded search selects it and checker reflection yields the exact
+label statement.
+\end{proof}
+
+Without the gap, the exact label may be discontinuous or encode a
+semi-classical principle.  The correct output is then a cloud, cluster,
+quaternion, interval, or other stable relational object.
+
+\subsection{Examples of gap-sensitive claims}
+
+\begin{itemize}
+\item A nonzero rotation angle gives an axis; near the identity, an exact
+uniform axis selector is not constructive.  Quaternion data remain stable.
+\item Distinct polynomial roots can be ordered after an explicit separation
+bound; colliding roots should be returned as clusters.
+\item The sign of a real number can be recovered from an approximation only
+after proving a positive apartness margin.
+\item A chart or branch may be selected only when the query point is separated
+from the overlap or singular locus.
+\end{itemize}
+
+The framework makes the gap a typed premise, so a packet cannot accidentally
+promote approximation to exactness.

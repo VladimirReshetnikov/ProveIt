@@ -1,0 +1,166 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{url}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=blue!55!black,
+  urlcolor=blue!55!black,
+  pdftitle={Finite-Query Normal Forms for Mathematics in iPRA},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Finite-query normal forms for iPRA}
+\rhead{2026-11-16}
+\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+
+\lstdefinelanguage{Lean}{
+  morekeywords={import,namespace,end,open,variable,structure,def,abbrev,theorem,lemma,where,by,exact,have,show,from,fun,forall,exists,inductive,opaque,if,then,else,match,with,let,in},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[s]{/-}{-/},
+  morestring=[b]"
+}
+\lstset{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  breaklines=true,
+  frame=single,
+  xleftmargin=0.5em,
+  xrightmargin=0.5em,
+  keepspaces=true,
+  showstringspaces=false
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{principle}[theorem]{Principle}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{interface}[theorem]{Interface}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\FQNF}{\mathsf{FQNF}}
+\newcommand{\PRAAx}{\mathsf{PRAAx}}
+\newcommand{\Prf}{\mathsf{Prf}}
+\newcommand{\Good}{\mathsf{Good}}
+\newcommand{\Valid}{\mathsf{Valid}}
+\newcommand{\Pre}{\mathsf{Pre}}
+\newcommand{\Goal}{\mathsf{Goal}}
+\newcommand{\Sel}{\mathsf{sel}}
+\newcommand{\Obs}{\mathsf{Obs}}
+\newcommand{\Code}{\mathsf{Code}}
+\newcommand{\Bound}{\mathsf{Bound}}
+\newcommand{\bad}{\mathsf{bad}}
+\newcommand{\dist}{\mathsf{dist}}
+\newcommand{\qf}{\mathrm{QF}}
+\newcommand{\mono}{\mathbin{\dot{-}}}
+\newcommand{\repo}{\textsc{ProveIt}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\leanname}[1]{\texttt{#1}}
+\newcommand{\pathref}[1]{\nolinkurl{#1}}
+\newcommand{\objectvdash}{\mathrel{\vdash_{\!\PRAAx}}}
+
+\allowdisplaybreaks
+\emergencystretch=2em
+\setlist[itemize]{topsep=3pt,itemsep=2pt,parsep=1pt}
+\setlist[enumerate]{topsep=3pt,itemsep=2pt,parsep=1pt}
+
+\title{\textbf{Finite-Query Normal Forms for Mathematics in iPRA}\\
+\large A kernel-integrated certificate, observation, and boundary framework}
+\author{Prepared for Vladimir Reshetnikov\\OpenAI}
+\date{16 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\input{sections/00_abstract}
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{sections/01_executive}
+\input{sections/02_repository_audit}
+\input{sections/03_backend}
+\input{sections/04_doctrine}
+\input{sections/05_fqnf}
+\input{sections/06_single_code}
+\input{sections/07_selection}
+\input{sections/08_paths}
+\input{sections/09_composition}
+\input{sections/10_loops}
+\input{sections/11_observations}
+\input{sections/12_names}
+\input{sections/13_domains}
+\input{sections/14_difficulties}
+\input{sections/15_lean}
+\input{sections/16_examples}
+\input{sections/17_limits}
+\input{sections/18_conclusion}
+\appendix
+\input{sections/A_formal_signatures}
+\input{sections/B_proof_details}
+\input{sections/C_status}
+
+\begin{thebibliography}{99}
+\bibitem{beeson}
+M. Beeson, \emph{Foundations of Constructive Mathematics}, Springer, 1985.
+
+\bibitem{bridges-richman}
+D. Bridges and F. Richman, \emph{Varieties of Constructive Mathematics},
+Cambridge University Press, 1987.
+
+\bibitem{hajek-pudlak}
+P. H\'ajek and P. Pudl\'ak, \emph{Metamathematics of First-Order Arithmetic},
+Springer, 1993.
+
+\bibitem{kohlenbach}
+U. Kohlenbach, \emph{Applied Proof Theory: Proof Interpretations and Their Use
+in Mathematics}, Springer, 2008.
+
+\bibitem{repo-root}
+V. Reshetnikov, \repo, \pathref{Logic/PrimitiveRecursiveArithmetic/README.md},
+repository snapshot audited at commit
+\pathref{31784f0710fa04ccd8ee863ce9bad91fb1d8cf88}, 2026-11-16.
+
+\bibitem{repo-concise}
+V. Reshetnikov, \repo, \pathref{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/},
+including \pathref{Deduction.lean} and \pathref{PR.lean}, 2026.
+
+\bibitem{repo-derivations}
+V. Reshetnikov, \repo,
+\pathref{Logic/PrimitiveRecursiveArithmetic/Derivations/}, 2026.
+
+\bibitem{repo-frameworks}
+V. Reshetnikov, \repo,
+\pathref{Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/}, 2026.
+\end{thebibliography}
+
+\end{document}

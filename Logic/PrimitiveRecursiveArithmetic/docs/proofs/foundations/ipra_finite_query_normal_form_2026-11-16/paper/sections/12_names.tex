@@ -1,0 +1,102 @@
+\section{Quantitative names and finite consumers}
+
+\subsection{Rational interval names}
+
+A real-valued observation is represented by a finite certificate containing
+rational endpoints \(\ell\le u\) with an explicit width bound.  At precision
+\(p\), validity includes
+\[
+  u-\ell\le 2^{-p}
+\]
+and a theorem-specific enclosure statement.  Signed integers and rationals are
+coded by natural tuples; positivity of denominators and cross-multiplication
+are QF arithmetic conditions.
+
+The selected-certificate theorem gives a fixed PR term
+\(c(p,q)\).  Define, for example, the midpoint observation
+\[
+  x_p(q)=\frac{\ell(c(p,q),q)+u(c(p,q),q)}2.
+\]
+If every valid interval contains the same target in the relevant constructive
+sense, then two independent intervals satisfy
+\[
+  |x_p(q)-x_r(q)|
+  \le \frac{\operatorname{width}(c(p,q))+
+                 \operatorname{width}(c(r,q))}{2}.
+\]
+This is a cross-certificate Cauchy estimate.
+
+\subsection{Operations by demand transformers}
+
+An operation on names is a finite contract.  For example, to compute
+\(x+y\) within \(2^{-p}\), request each input within \(2^{-(p+1)}\).  For
+multiplication, the demand additionally depends on explicit magnitude bounds.
+For inversion, it depends on an apartness bound
+\(|x|\ge2^{-g}\).  Composition of operations is handled by backward demand.
+
+\begin{interface}[Quantitative operation]
+A name operation provides:
+\begin{enumerate}
+\item a PR demand transformer \(d(p,q)\);
+\item a finite PR transducer on input certificates;
+\item an object proof that valid input certificates at demand \(d(p,q)\)
+produce a valid output certificate at demand \(p\);
+\item cross-certificate stability for the output observable.
+\end{enumerate}
+\end{interface}
+
+The demand need not be optimal.  It must be explicit and proved sufficient.
+
+\subsection{Finite consumers and metastable windows}
+
+A bounded downstream computation may inspect only finitely many approximations.
+It does not always require a global Cauchy modulus.  Suppose a consumer asks
+queries \(p_0,\ldots,p_{m-1}\) and its correctness is stable whenever all
+answers lie in specified tolerances.  Backward demand computes one finite
+window of producer requirements.  A theorem providing that window is enough.
+
+\begin{theorem}[Finite-consumer closure]\label{thm:finite-consumer}
+Let a fixed bounded consumer use at most \(m(q)\) observations, with every
+adaptive query bounded by a PR demand envelope.  If the producer supplies a
+valid, mutually stable family of certificates on that finite demand-closed
+window, then the consumer's output specification follows.  No global modulus
+outside the window is needed.
+\end{theorem}
+
+\begin{proof}
+Encode the complete interaction transcript as one certificate: consumer state,
+queries, producer answers, and local checker results.  The query envelope gives
+a numerical code bound.  The transcript checker verifies each transition and
+answer validity.  Existence of the finite stable window produces one valid
+transcript.  Apply whole-path selection and the terminal extractor.
+Alternatively, when the consumer and producer are deterministic fixed PR
+programs, use a packed-state trace and QF induction.  In neither proof is any
+claim made about precisions the consumer never requests.
+\end{proof}
+
+This theorem is the correct setting for metastability and ``finite use''
+arguments.  It must not be misread as a proof of a global Cauchy modulus.
+
+\subsection{When a genuine infinite name is justified}
+
+To claim a full quantitative name, the package should provide a PR modulus and
+a theorem such as
+\[
+  p,r\ge M(k,q)	o
+  \dist(x_p(q),x_r(q))\le2^{-k}.
+\]
+Cross-certificate stability often makes this easy once certificate errors have
+known rates.  The selected terms \(c(p,q)\) form a PR sequence, so no countable
+choice is needed.  What remains essential is the explicit modulus or rate.
+
+\subsection{Functions and higher-type-looking objects}
+
+A function is represented operationally: a query contains an input code and an
+output precision.  Uniform continuity, differentiability, or integrability is
+expressed through explicit moduli and finite remainder certificates.  A
+functional consuming another presented function is permitted only through a
+finite query protocol whose use bound is explicit.
+
+Thus the framework can express rich higher mathematics without postulating
+higher-type objects inside the first-order theory.  The price---and the
+constructive content---is that every finite use is visible.

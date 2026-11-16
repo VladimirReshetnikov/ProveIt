@@ -1,0 +1,95 @@
+\section{Repository audit and design choice}
+
+\subsection{Snapshot and checked layers}
+
+The close-out audit used \repo\ branch \code{main} at commit
+\code{31784f0710fa}.  The repository toolchain is
+Lean~4.32.0 with the matching Mathlib revision.  Three layers must be kept
+separate.
+
+\begin{enumerate}
+\item \textbf{The checked logical backend.}
+\code{ConciseIPRA} defines primitive-recursive syntax, intuitionistic natural
+deduction with equality, the iPRA axioms, and the bridge to the native scalar
+core.
+
+\item \textbf{The checked arithmetic derivation library.}
+\code{IPRADerivations} contains actual theorems of type
+\(\Gamma\objectvdash\varphi\): semiring arithmetic, order, bounded sums,
+pairing, division, gcd, bounded search, descent, matrices, and many theorem
+instances.
+
+\item \textbf{Research packets.}
+The packet tree contains broad mathematical arguments, reference programs, and
+Lean plans.  The repository README explicitly warns that these packets were
+filed as delivered and that many Lean files are uncompiled outlines.  Their
+claims must therefore be consumed through individual status ledgers, not by
+assuming the directory is a checked library.
+\end{enumerate}
+
+The current head also contains six binary archives in
+\pathref{docs/incoming/}.  They were not integrated into the inspectable packet
+tree at the audited snapshot, and the connector available for this work reads
+UTF-8 source rather than archive bytes.  Their contents are therefore not used
+in the novelty claim.
+
+\subsection{What the existing frameworks already solve}
+
+Across the integrated foundations packets there is broad agreement on the
+following principles.
+
+\begin{itemize}
+\item Fix the consumer's precision or finite query before using
+quantifier-free induction.
+\item Specialize fixed primitive-recursive programs; do not posit a total
+universal evaluator for arbitrary PR codes.
+\item Separate a finite verifier from a possibly deep producer of bounds or
+constants.
+\item Use relational outputs or stable observables when exact representatives
+are noncanonical.
+\item Require a positive gap before converting approximate data into an exact
+branch or label.
+\item Compile local object derivations by cut rather than treating host truth
+as object provability.
+\end{itemize}
+
+The strongest packets go further: they describe backward precision demand,
+bounded traces, proof-carrying DAGs, finite viability, and query-specialized
+state machines.  Some source files even contain direct
+\(\Prf\,\PRAAx\) combinators for recursion and stable observations.
+
+\subsection{The repeatedly recorded open layer}
+
+The existing kernel-facing theorem ledger lists the shared unfinished work in
+concrete terms: a PR coding library for bounded lists, tables, rationals, and
+resource vectors; Boolean reflection for that library; and object-level
+instances of bounded viability, least search, and worked traces.  This is the
+right target for a new framework.
+
+The design question is whether to build a large generic data-structure library
+first.  \(\FQNF\) takes a different route.  It chooses an intentionally crude
+but universal proof normal form:
+
+\begin{quote}
+Encode the complete finite evidence for one query as one bounded natural
+number; verify it with one fixed primitive-recursive checker; select the least
+accepted code.
+\end{quote}
+
+This is not always efficient.  Its value is proof-theoretic.  It gives every
+specialized efficient algorithm a common fallback specification and reduces the
+trusted reusable arithmetic to division, powers, bounded folds, search, and
+reflection---all close to modules already present in \code{IPRADerivations}.
+
+\subsection{Why not merely reuse a proof graph?}
+
+A proof graph is an excellent host-level organization of a construction, but
+it does not itself answer how a node's variable-length table, witness cloud, or
+trace is encoded and reflected in iPRA.  Conversely, once every node has a
+bounded code and reflected checker, graph composition is almost trivial:
+logical dependencies are discharged by \leanname{Prf.trans}, and the entire
+finite graph can, if desired, be flattened to one master certificate.
+
+Thus \(\FQNF\) is best viewed as an arithmetic and proof-theoretic
+\emph{substrate} for the graph frameworks, not a competing orchestration
+language.

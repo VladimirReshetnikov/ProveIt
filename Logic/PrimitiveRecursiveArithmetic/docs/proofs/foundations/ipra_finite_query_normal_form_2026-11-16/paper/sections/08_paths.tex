@@ -1,0 +1,103 @@
+\section{Finite relational paths without hidden choice}
+
+Finite paths are the clearest test of a constructive certificate framework.
+They expose the difference between a local choice rule and a complete witness.
+
+\subsection{The path problem}
+
+For a horizon \(T\), let the state at time \(t\) be bounded by
+\(N_t(q)>0\).  Let
+\[
+  S(x_0,q),\qquad
+  E(t,x_t,x_{t+1},q),\qquad
+  F(x_T,q)
+\]
+be fixed reflected predicates.  A complete path certificate is a tuple
+\((x_0,\ldots,x_T)\) satisfying the range conditions, start condition, every
+edge condition, and the final condition.
+
+Pack the tuple by mixed radix with radices \(N_0(q),\ldots,N_T(q)\), or by a
+uniform base \(b(q)\ge\max_tN_t(q)\).  The path checker decodes each state and
+folds all local checks into one Boolean value.
+
+\begin{theorem}[Whole-path certificate]\label{thm:whole-path}
+Assume an object-iPRA proof that a valid complete path exists for query \(q\).
+Then there is a fixed primitive-recursive term \(p(q)\) such that iPRA proves
+that \(p(q)\) decodes to a valid complete path.  One may take \(p(q)\) to be
+the least accepted path code.
+\end{theorem}
+
+\begin{proof}
+By the mixed-radix theorem, every valid path has a code below
+\(\prod_{t\le T}N_t(q)\), and every decoded field is within its stated radix.
+The reflected path checker is a fixed bounded conjunction.  Apply witness
+erasure, \cref{thm:witness-erasure}, to select the least accepted code.
+Checker soundness yields every range, start, edge, and final formula for the
+decoded path.
+\end{proof}
+
+This theorem is a finite, explicit substitute for dependent choice.  It does
+not assert an infinite path, and it does not select witnesses one stage at a
+time.  It searches a bounded set of complete finite objects.
+
+\subsection{Why greedy least choice is insufficient}
+
+Consider three levels, each with states \(\{0,1\}\).  Both states may start.
+At the first transition, \(0\to0\) and \(1\to1\).  At the second transition,
+only \(1\to0\).  The final state must be \(0\).  Choosing the least start
+produces \(0\), then \(0\), and gets stuck.  The complete path
+\((1,1,0)\) exists.
+
+The included reference implementation searches all three-bit path codes.  It
+finds code \(3\), whose little-endian digits are \((1,1,0)\), while the greedy
+algorithm returns failure.  This example is small, but it captures the exact
+reason a local selector cannot replace backward viability or whole-path
+search.
+
+\subsection{Stepwise construction under local seriality}
+
+Whole-path search is not always necessary.  Suppose iPRA proves, uniformly in
+\(t,x,q\), that whenever the current invariant holds there exists a bounded
+next state satisfying the next invariant.  Bounded search then defines the
+least valid successor as a PR term.  Primitive recursion iterates that term for
+\(T(q)\) steps.
+
+\begin{proposition}[Least-successor trace]\label{prop:stepwise-path}
+If a reflected bounded successor relation is locally serial under a QF
+invariant, then iPRA proves that the primitive-recursive least-successor trace
+preserves the invariant through every query-bounded stage.
+\end{proposition}
+
+\begin{proof}
+At a generic stage, local seriality and \cref{thm:witness-erasure} prove that
+the selected successor satisfies the transition and next invariant.  Package
+time, current state, and fixed parameters into the recursion state.  Apply the
+checked object theorem \leanname{primitiveRecursionInvariant} or its
+specialization \leanname{primitiveRecursionAt}.  The induction formula is the
+QF invariant on the packed state; the terminal path property is extracted at
+fuel \(T(q)\).
+\end{proof}
+
+\subsection{Future dependence and viability}
+
+When local admissibility does not guarantee extendibility to the final stage,
+there are three legitimate strategies.
+
+\begin{enumerate}
+\item Search the entire path code, as in \cref{thm:whole-path}.
+\item Compute backward viability sets and then select a viable successor.
+\item Prove a stronger local invariant that entails future extendibility.
+\end{enumerate}
+
+The first is the normal-form fallback.  The second may be exponentially more
+efficient and matches several existing packets.  The third is often the best
+mathematics.  What is not legitimate is to use an arbitrary locally valid
+selector and silently assume it extends.
+
+\subsection{Variable horizons}
+
+A horizon \(T(q)\) may be query dependent.  The path code bound is then a
+primitive-recursive product or power, and the checker is a bounded fold over
+the decoded states.  QF induction on the fold index proves reflection.  Thus
+the theorem is uniform in the horizon without invoking a schema of metalevel
+finite unrollings.

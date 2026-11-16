@@ -1,0 +1,131 @@
+\section{Reflected checkers and bounded selection}
+
+\subsection{Checker reflection}
+
+A Boolean program is not useful in an object proof until its acceptance
+condition is connected to a formula.
+
+\begin{definition}[Reflected checker]
+A reflected checker of arity \(k\) consists of a fixed PR symbol \(v\), a QF
+formula \(A(\vec x)\), and object-iPRA derivations
+\[
+ v(\vec x)=1\to A(\vec x),
+ \qquad
+ A(\vec x)\to v(\vec x)=1,
+ \qquad
+ v(\vec x)=0\vee v(\vec x)=1.
+\]
+\end{definition}
+
+The equivalence may be weakened if the compiler needs only soundness.  In
+practice completeness is valuable because it lets mathematical existence
+lemmas be converted into accepted-certificate existence.
+
+\subsection{A checker algebra}
+
+Fixed reflected checkers are closed under the finite logical operations needed
+by certificate verification.
+
+\begin{proposition}[Boolean closure]\label{prop:boolean-closure}
+Suppose \(a,b\in\{0,1\}\) reflect formulas \(A,B\).  Then fixed PR terms can
+be chosen to reflect
+\(\neg A\), \(A\wedge B\), \(A\vee B\), and \(A\to B\).
+\end{proposition}
+
+\begin{proof}
+Use
+\[
+ \neg a=1\mono a,
+ \qquad
+ a\wedge b=ab,
+ \qquad
+ a\vee b=1\mono((1\mono a)(1\mono b)).
+\]
+Implication is \(\neg a\vee b\).  Each truth table has four or fewer cases.
+Those cases are object-iPRA disjunction eliminations from the supplied
+Booleanity derivations, followed by semiring and monus equations already in the
+arithmetic library.  Composing the existing soundness and completeness
+implications gives reflection for the compound formula.
+\end{proof}
+
+Bounded quantifiers are finite folds.  For \(a(i,q)\in\{0,1\}\),
+\[
+  \forall i<N\ A(i,q)
+  \quad\text{is reflected by}\quad
+  \prod_{i<N}a(i,q)=1,
+\]
+and a bounded existential can be reflected by a nonzero bounded sum, a
+bounded disjunction fold, or a least-search success test.  The repository's
+bounded-sum and product libraries supply the required induction patterns.
+
+\begin{theorem}[Bounded-formula compilation]\label{thm:bounded-compile}
+Every formula built from reflected atomic equalities by intuitionistic
+propositional connectives and numerically bounded quantifiers admits a fixed PR
+Boolean checker with object-iPRA soundness and completeness.
+\end{theorem}
+
+\begin{proof}
+Induct on the bounded formula.  Atomic equalities use \(\mathsf{eqb}\).
+Propositional cases use \cref{prop:boolean-closure}.  For a bounded universal,
+use a primitive-recursive product and prove by QF induction on the bound that
+the product is one exactly when every previous factor is one.  For a bounded
+existential, either dualize the universal or use the least-search specification.
+All quantification introduced by the intended reading is removed from the
+induction matrix: the running fold equation is QF.  The final bounded formula
+is recovered by ordinary quantifier rules after the induction.
+\end{proof}
+
+\subsection{Selection from an explicit witness}
+
+We now spell out the arithmetic reduction used in
+\cref{thm:fqnf-compile}.  Let \(V(c,q)\) be Boolean and define
+\(F(c,q)=1\mono V(c,q)\).  The checked search term
+\(\mu_F(B,q)\) is the least \(c<B\) satisfying \(F(c,q)=0\), or \(B\) if no
+such code exists.
+
+\begin{theorem}[Least accepted certificate]\label{thm:least-cert}
+From object proofs
+\[
+ w<B(q),\qquad V(w,q)=1,
+\]
+iPRA derives
+\[
+ \mu_F(B(q),q)<B(q),
+ \qquad V(\mu_F(B(q),q),q)=1,
+ \qquad \mu_F(B(q),q)\le w.
+\]
+\end{theorem}
+
+\begin{proof}
+The equation \(V(w,q)=1\) gives \(F(w,q)=0\).  Apply the repository theorem
+\pathref{Search.search_found}; it returns a zero below the bound, no later
+than \(w\).  Its zero equation is \(F(\mu,q)=0\).  By Booleanity, if
+\(V(\mu,q)=0\) then \(F(\mu,q)=1\), contradicting the zero equation via
+successor separation.  Therefore \(V(\mu,q)=1\).
+\end{proof}
+
+\subsection{Selection from existential production}
+
+\begin{theorem}[Witness erasure]\label{thm:witness-erasure}
+If iPRA proves
+\[
+  \exists w\,[w<B(q)\wedge V(w,q)=1],
+\]
+then it proves the first two conclusions of \cref{thm:least-cert} for the fixed
+term \(\mu_F(B(q),q)\).
+\end{theorem}
+
+\begin{proof}
+Use intuitionistic existential elimination.  In the temporary witness context,
+apply \cref{thm:least-cert}.  The selected term depends on \(B,V,q\), not on the
+temporary witness, so the conclusion is invariant under discharge.
+\end{proof}
+
+\subsection{Canonicality is optional}
+
+The least-code convention yields a deterministic representative, but the
+mathematics need not depend on it.  If every two accepted codes produce the
+same or sufficiently close observable, later proofs should use that stability
+theorem rather than properties peculiar to the numerical least code.  This
+keeps the interface robust under changes of encoding and avoids introducing
+spurious order into quotient constructions.

@@ -1,0 +1,130 @@
+\section{Lean formalization architecture}
+
+The artifact's \pathref{lean/FORMALIZATION_PLAN.md} gives a file-by-file
+implementation schedule.  This section records the mathematical dependency
+structure and the intended theorem signatures.
+
+\subsection{Module graph}
+
+\begin{description}[leftmargin=3.4cm,style=nextline]
+\item[\leanname{FQNF/KernelCore}.]
+Logical proof bundles, simultaneous-cut compilation, reflected checker
+specialization, QF loop extraction, independent-certificate stability, and
+boundary/gap adapters.  This file contains no placeholder.
+
+\item[\leanname{FQNF/BoolReflection}.]
+Boolean arithmetic, reflected equality, propositional closure, bounded products
+and sums, and compilation of bounded formulas.
+
+\item[\leanname{FQNF/Digits}.]
+Power places, base digits, array encoders, mixed-radix prefix products, pack/get
+operations, code bounds, and decoding theorems.
+
+\item[\leanname{FQNF/CertificateSearch}.]
+Conversion from one-valued verifiers to the zero-valued convention of
+\leanname{Search.mu}; explicit-witness and existential selection theorems.
+
+\item[\leanname{FQNF/PathCode}.]
+Path-state decoding, bounded path checkers, whole-path selection, and the
+stepwise seriality adapter.
+
+\item[\leanname{FQNF/Query}.]
+The high-level package structure and the main compiler theorem.
+
+\item[\leanname{FQNF/Names}.]
+Rational intervals, cross-precision stability, demand transformers, and
+apartness-guarded exact operations.
+\end{description}
+
+\subsection{Structural core}
+
+The supplied core defines
+\[
+ \mathsf{Derives}(\Gamma,\Delta)
+  :\equiv \forall A\in\Delta\;\Gamma\objectvdash A.
+\]
+Its central theorem has the form
+\begin{lstlisting}[language=Lean]
+theorem compileLocal
+    (hDelta : Derives Gamma Delta)
+    (hlocal : Delta ++ Gamma |- [PRAAx] phi) :
+    Gamma |- [PRAAx] phi
+\end{lstlisting}
+and is a direct application of \leanname{Prf.trans}.  A reflected checker
+stores fixed syntax and closed soundness/completeness derivations.  Specializing
+those derivations at arbitrary object terms uses the existing
+\leanname{IPRA.inst} theorem.
+
+This core should be elaborated first because it tests imports and notation
+without depending on any new arithmetic.
+
+\subsection{Digit arithmetic proof order}
+
+The most substantial generic formalization is the digit theorem.  The safe
+order is:
+
+\begin{enumerate}
+\item prove positivity of powers under \(b\ge2\);
+\item define prefix sums and prove the partial-code bound;
+\item prove the lower/current/upper decomposition of an encoded array;
+\item apply \leanname{div\_mod\_unique} at \(b^i\);
+\item apply it again at \(b\);
+\item generalize powers to mixed-radix prefix products;
+\item prove substitution and congruence lemmas for every new term constructor.
+\end{enumerate}
+
+The decomposition is the point at which informal formalizations often rely on
+ring reasoning over semantic naturals.  The object proof should instead use the
+repository's \leanname{ipra\_ring}, bounded-sum index lemmas, and explicit
+\(\Prf\) congruence.
+
+\subsection{Selection adapter}
+
+The repository search theorem already proves the hard induction.  The new
+adapter needs only:
+
+\begin{enumerate}
+\item Booleanity of \(V\);
+\item \(V=1\to 1\mono V=0\);
+\item \(1\mono V=0\to V=1\) under Booleanity;
+\item specialization of \leanname{Search.search\_found};
+\item an existential-elimination proof whose conclusion contains the fixed
+selected term rather than the temporary witness.
+\end{enumerate}
+
+This should be implemented before any generic viability table.  Whole-path
+search then gives a correct fallback for every bounded finite relation.
+
+\subsection{Moving checked glue into the derivation library}
+
+Two relevant source files currently live under proof packets:
+\pathref{ObjectIteration.lean} and \pathref{ObjectObservation.lean}.  Their
+reported status is stronger than most packet blueprints: they construct actual
+\(\Prf\,\PRAAx\) terms, and the latter records a successful compilation audit.
+For long-term reuse, their generic theorems should be moved or rederived under
+\code{IPRADerivations/Core} or \code{IPRADerivations/FQNF}, with imports adjusted
+and axiom checks registered.
+
+\subsection{Axiom and placeholder audit}
+
+A completed integration should add every public theorem to
+\pathref{Derivations/Lean/IPRADerivations/Checks/Axioms.lean}.  The acceptance
+criteria are:
+
+\begin{itemize}
+\item no \code{sorryAx}, \code{admit}, or new logical axiom;
+\item conclusions are literal \code{Prf PRAAx} statements;
+\item host-side decidability or normalization is used only in the metatheory;
+\item every object computation has defining equations or a reflected checker;
+\item every package README distinguishes checked declarations from executable
+reference tests.
+\end{itemize}
+
+\subsection{Recommended first end-to-end theorem}
+
+The finite path example from \cref{thm:whole-path} is the best integration
+benchmark.  It exercises digits, bounded Boolean folds, search, existential
+elimination, and extraction, but requires no difficult domain mathematics.
+After that, formalize the exact rational cubic bisection example from
+\cref{sec:examples}; it adds a packed trace and a nontrivial arithmetic
+invariant.

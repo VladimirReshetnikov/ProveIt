@@ -1,0 +1,194 @@
+\section{Representing mathematical domains}
+
+This section gives a reusable design guide.  The point is not to claim that all
+listed deep theorems have thereby been proved.  It is to identify the exact
+finite-query interfaces through which their constructive content can be
+formalized.
+
+\subsection{Natural, integer, rational, and finite algebra}
+
+Naturals are native.  Integers may be represented as differences of naturals,
+with equality witnessed by cross-addition.  The checked derivation library
+already supplies a ring of differences for polynomial reasoning.  Rationals
+are pairs \((a,b)\) with signed numerator and positive denominator; equality is
+cross-multiplication, and reduced form is optional.
+
+A finite group, ring, module, or category can be encoded by operation tables and
+axiom checkers.  For a fixed presentation, tables may be computed rather than
+certified.  For query-dependent finite structures, a master code stores the
+tables, and bounded folds check associativity, identities, distributivity, or
+other axioms.
+
+\subsection{Polynomial algebra and linear algebra}
+
+A polynomial of bounded degree is a coefficient array.  Multivariate monomials
+use a fixed mixed-radix exponent code after the query specifies variable and
+degree bounds.  Polynomial identities reduce to coefficient equalities or to
+ring-normalized term identities.
+
+A matrix is a flattened coefficient array.  Determinants, adjugates, traces,
+and products are finite sums and products.  The existing linear-algebra module
+already proves many such identities in the object theory.  \(\FQNF\) is useful
+when a theorem supplies a matrix certificate: a rank minor, Smith reduction
+trace, eigenvalue cluster, or finite linear-combination witness.
+
+\subsection{Roots, algebraic numbers, and factorization}
+
+An algebraic root observation should normally be an isolating interval or disc,
+possibly containing a cluster with multiplicity.  A certificate contains:
+
+\begin{itemize}
+\item rational region data;
+\item a root-count or sign-variation witness;
+\item separation from excluded boundaries;
+\item an error or diameter bound;
+\item optional matching data between refinements.
+\end{itemize}
+
+At collisions, return clusters or symmetric functions.  Ordering individual
+roots is a gap-sensitive operation.  A complete factorization of bounded degree
+can be a coefficient-array certificate checked by multiplication; producing
+one uniformly requires a separate constructive factorization theorem.
+
+\subsection{Analysis}
+
+Limits, series, integrals, derivatives, and analytic continuations are stated
+with quantitative remainder data.
+
+\begin{itemize}
+\item A convergent series query asks for a partial sum and a tail bound at
+precision \(p\).
+\item An integral query asks for a rational partition, sample or enclosure data,
+and an error certificate.
+\item A derivative query asks for a finite difference or polynomial model with
+a remainder bound on a rational neighborhood.
+\item Analytic continuation uses a finite chain of overlapping rational discs,
+Taylor coefficients, and Cauchy estimates.
+\end{itemize}
+
+The verifier is elementary once the constants and moduli are supplied.  The
+hard theorem is often exactly the producer of those constants.
+
+\subsection{Probability}
+
+For finite rational laws, all expectations and moments are finite sums.  An
+effective limit theorem query can include:
+
+\begin{itemize}
+\item truncation and tail parameters;
+\item a rational threshold separated from atoms when a discontinuous CDF test
+is used;
+\item characteristic-function or moment error bounds;
+\item a finite coupling or martingale-difference table.
+\end{itemize}
+
+General measure spaces are not needed inside iPRA if the theorem is formulated
+through finite rational approximants, quantization moduli, and tail bounds.
+Exact threshold claims need anti-concentration or a separation margin.
+
+\subsection{Combinatorics and finite model theory}
+
+Finite colorings, graphs, hypergraphs, permutations, tableaux, and proof traces
+are direct single-code objects.  A counterexample or witness is selected by
+bounded search.  A universal finite theorem is reflected by a bounded product
+checker.  Ramsey-type existence arguments may be formalized by explicit
+finite bounds; without a bound, qualitative finiteness is insufficient.
+
+\subsection{Number theory and Diophantine equations}
+
+Divisibility, gcd, modular arithmetic, bounded factorization, and finite descent
+already have strong support in \code{IPRADerivations}.  A Diophantine search
+query consists of a height bound and a polynomial checker.  Descent certificates
+record each smaller solution and the strict measure decrease; the entire chain
+may be a trace code.
+
+For integral or rational points on a curve, the generic verifier can enumerate
+and check all points below a supplied height.  The general theorems of Siegel or
+Faltings require the producer of that height bound; \(\FQNF\) cannot and should
+not manufacture it from bare finiteness.
+
+\subsection{Algebraic geometry}
+
+A practical finitary interface uses finite affine charts and witnessed
+relations.
+
+\begin{itemize}
+\item An ideal is represented by finitely many generators.  Membership comes
+with coefficient polynomials witnessing a combination; a bounded search needs
+a degree/height envelope.
+\item A localization fraction \(a/s\) is coded by numerator and denominator
+terms.  Equality in the presence of zero divisors is witnessed by an exponent
+\(n\) such that a suitable power kills the cross difference.
+\item A principal-open cover carries a finite power-cover certificate.
+\item Gluing data are finite tuples of local sections with overlap equalities
+and a uniqueness proof.
+\item A finite affine atlas and a requested Cech degree determine a finite
+cochain complex.
+\end{itemize}
+
+The scheme-like object is therefore a protocol of finite chart and overlap
+queries.  General quasi-compactness or effective Nullstellensatz bounds remain
+producer theorems.
+
+\subsection{Topology and manifolds}
+
+A compact metric presentation supplies finite nets at requested scales and a
+modulus relating names to net points.  A topological query may request:
+
+\begin{itemize}
+\item a finite simplicial or cubical complex at mesh \(2^{-p}\);
+\item a carrier relation for a map;
+\item a chain, cycle, boundary, or homology certificate;
+\item a finite cover and its nerve;
+\item a chart list with overlap and orientation data.
+\end{itemize}
+
+Nonunique simplicial selections are harmless when any two are contiguous; the
+induced chain maps are then homotopic by an explicit finite prism operator.
+The difficult theorem-specific work is to connect the finite complex to the
+presented space with an explicit mesh/modulus argument.
+
+\subsection{Category theory}
+
+Category theory in iPRA should be read for fixed presentations and finite
+queries, not as a category of all mathematical objects.  A finite category is
+a bounded object/morphism table with reflected axioms.  A finite diagram,
+cone, natural transformation, adjunction on a finite presentation, or finite
+Kan extension is a bounded certificate problem.  Yoneda calculations reduce to
+finite component equations.
+
+For a fixed PR family of objects rather than a finite category, the query must
+bound every part actually inspected.  A ``universal'' construction is proved by
+an explicit mapping property over the bounded presented morphisms.
+
+\subsection{Geometry and general relativity}
+
+Coordinate geometry over rationals or coded algebraic extensions is exact.
+Incidence, determinant, conic, and metric identities reduce to polynomial or
+rational equations with denominator guards.  Differential-geometric claims are
+formulated for finite symbolic expressions or quantitative chart data.
+
+For Schwarzschild, Reissner--Nordstr\"om, Kerr, or Kerr--Newman calculations,
+a finite query fixes the coordinate chart, rational parameter codes, tensor
+component, and derivative order.  A certificate may consist of normalized
+rational expressions and denominator nonvanishing conditions.  This supports
+exact local tensor identities.  It does not by itself establish global
+analytic extension, causal structure, or existence of real-valued coordinate
+transformations without additional quantitative presentations.
+
+\subsection{A unifying adapter schema}
+
+Across all domains, an adapter should expose:
+
+\begin{enumerate}
+\item the packed query and its intended finite meaning;
+\item the certificate code bound;
+\item the fixed Boolean checker and reflected formula;
+\item the producer theorem or explicit boundary premise;
+\item the terminal extractor;
+\item stability, congruence, and gap theorems;
+\item the final declaration of type \(\Prf\,\PRAAx\).
+\end{enumerate}
+
+This schema is deliberately repetitive.  Repetition at the interface prevents
+hidden nonconstructive assumptions in the implementation.

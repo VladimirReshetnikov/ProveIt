@@ -1,0 +1,183 @@
+\section{Additional proof details}
+
+\subsection{Object-level digit recovery without semantic division}
+
+It is worth isolating the exact algebra needed for
+\cref{thm:uniform-code}, because this is the most important new arithmetic
+module.
+
+Let \(D=b^i\) and suppose
+\[
+ C=R+D(a+bU),\qquad R<D,
+\]
+with \(D>0\).  The repository theorem \leanname{div\_mod\_unique} is stated for
+a successor divisor.  Positivity of \(D\) supplies a predecessor \(D'\) with
+\(D=S(D')\).  Instantiate uniqueness with candidate quotient \(a+bU\) and
+remainder \(R\).  The required decomposition is exactly the displayed
+equality, and the remainder bound is \(R<D\).  Hence
+\[
+  \operatorname{quo}(C,D)=a+bU,
+  \qquad
+  \operatorname{rem}(C,D)=R.
+\]
+
+For the second division, instantiate uniqueness at divisor \(b\), quotient
+\(U\), and remainder \(a\):
+\[
+  a+bU=bU+a,
+  \qquad a<b.
+\]
+Commutativity of addition puts the equation in the library's expected order.
+Therefore
+\[
+ \operatorname{rem}(\operatorname{quo}(C,D),b)=a.
+\]
+
+The proof never reasons about Lean's natural-number quotient.  It reasons only
+with the object symbols \leanname{quo} and \leanname{rem} and their checked
+uniqueness theorem.
+
+\subsection{The split identity}
+
+For a uniform-base code,
+\[
+ C_L=\sum_{j<L}a_jb^j,
+\]
+define
+\[
+ R_i=\sum_{j<i}a_jb^j,
+ \qquad
+ U_i=\sum_{k<L-i-1}a_{i+1+k}b^k.
+\]
+Then
+\[
+ \begin{split}
+ C_L
+ &=R_i+a_ib^i+
+   \sum_{k<L-i-1}a_{i+1+k}b^{i+1+k}\\
+ &=R_i+b^i\left(a_i+bU_i\right).
+ \end{split}
+\]
+
+In Lean, avoid subtraction-heavy indices if they complicate QF arithmetic.
+Prove a recursive suffix decomposition instead:
+\[
+ C_{i+t+1}=C_i+b^i\bigl(a_i+bU_t\bigr),
+\]
+where \(U_t\) is built by a forward recursion over the \(t\) remaining
+entries.  The statement is QF and its step is a ring identity using
+\(b^{n+1}=b^n b\).  This formulation aligns better with the existing sum and
+power APIs.
+
+\subsection{Existential discharge with de Bruijn variables}
+
+The schematic producer is
+\[
+ \Gamma\objectvdash
+ \exists c\,[c<B(q)\wedge V(c,q)=1].
+\]
+The elimination branch lives over one extra free variable and shifted context:
+\[
+ [c<B(q)\wedge V(c,q)=1],\Gamma^{\uparrow}
+ \objectvdash
+ \bigl(\Sel(q)<B(q)\wedge V(\Sel(q),q)=1\bigr)^{\uparrow}.
+\]
+
+The selected term must ignore the new variable.  Concretely, its occurrence of
+\(q\) is shifted, and substitution by the existential variable does not alter
+it.  The existing lemmas \leanname{Fm.shift\_subst\_up},
+\leanname{Syn.subst\_shift}, and the pattern used in
+\leanname{Prf.substWeaken} handle this bookkeeping.  A robust implementation
+should first prove a helper lemma:
+
+\begin{lstlisting}[language=Lean]
+@[simp] theorem shift_selected (P : Package) (q : PTm n) :
+  Syn.shift (selected P q) = selected P (Syn.shift q) := by
+  simp [selected, selectT, failureBody]
+\end{lstlisting}
+
+Then the branch conclusion simplifies to the shift required by
+\leanname{Prf.exE}.
+
+\subsection{Bounded universal reflection}
+
+Let \(a(i,q)\) be Boolean and define
+\[
+ P(0,q)=1,
+ \qquad
+ P(n+1,q)=P(n,q)a(n,q).
+\]
+The QF invariant is
+\[
+ P(n,q)=1\quad\leftrightarrow\quad
+ \text{all previously exposed factors are one}.
+\]
+The right side should not be placed literally inside the induction matrix.
+Instead prove two object lemmas:
+
+\begin{enumerate}
+\item \(P(N,q)=1\) and \(i<N\) imply \(a(i,q)=1\), by a zero/product or
+factor-extraction theorem;
+\item a universally quantified bounded premise that each factor is one implies
+\(P(N,q)=1\), using QF induction on the running product.
+\end{enumerate}
+
+This is analogous to the existing \leanname{sum\_zero\_elim} and
+\leanname{sum\_zero\_of\_bounded} results.  A product version should be added to
+the shared core.
+
+\subsection{Master-certificate soundness}
+
+Let the graph checker be
+\[
+ V_{\mathrm{all}}(C,q)
+ =\prod_{i<m}V_i(c_i(C,q),\vec c_{\operatorname{par}(i)}(C,q),q).
+\]
+Assume it returns one.  Product reflection gives every factor equal to one.
+Local checker soundness yields every node contract.  Induct over the fixed node
+order and use local extractors to derive the node formulas.  At the terminal
+node, obtain the requested theorem.
+
+This gives two formalization styles:
+
+\begin{itemize}
+\item prove all local formulas from the global checker by a metalevel induction
+on the fixed node list;
+\item state a generic list of node descriptors and prove the induction inside
+Lean.
+\end{itemize}
+
+The first is simpler and fully compatible with fixed-program specialization.
+The second is worthwhile only after the arithmetic substrate is stable.
+
+\subsection{Complete-list converse}
+
+Suppose a finite list \(L\) is complete for a reflected predicate \(P(c,q)\),
+meaning every valid code equals one of its entries.  Let
+\[
+ H=1+\max L,
+\]
+with \(\max\varnothing=0\).  Then every valid code is below \(H\).  The proof
+uses existential elimination on list membership, bounded list traversal, and
+order transitivity.  Thus a complete list yields a numerical bound.  The
+converse from a bound is \cref{thm:height-list}.  This equivalence clarifies
+exactly what classical ``finiteness'' lacks: neither side follows without an
+explicit presentation of finite evidence.
+
+\subsection{Gap uniqueness}
+
+Suppose labels \(i,j<m\) both pass the approximation checker:
+\[
+ d(a,v_i)\le e,
+ \qquad
+ d(a,v_j)\le e.
+\]
+Symmetry and triangle inequality give
+\[
+ d(v_i,v_j)\le d(v_i,a)+d(a,v_j)\le2e.
+\]
+The separation premise says \(i\ne j\to d(v_i,v_j)>2e\), so \(i=j\).  In a
+natural/rational coding, strict and non-strict inequalities are reflected by
+monus/order terms, and the contradiction uses the repository's order lemmas.
+The uniqueness proof can therefore be internalized without decidability of an
+arbitrary real equality.

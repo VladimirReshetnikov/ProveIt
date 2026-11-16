@@ -1,0 +1,172 @@
+\section{Proposed formal signatures}
+
+This appendix presents the intended Lean-facing API in a compact form.  The
+artifact files contain fuller source-oriented versions.  Names may require
+minor adjustment to repository conventions; the mathematical dependencies are
+fixed.
+
+\subsection{Proof bundles and local compilation}
+
+\begin{lstlisting}[language=Lean]
+def Derives (Gamma Delta : List (Fm PTm n)) : Prop :=
+  forall {phi}, phi in Delta -> Gamma |- [PRAAx] phi
+
+theorem compileLocal
+    (hDelta : Derives Gamma Delta)
+    (hlocal : Delta ++ Gamma |- [PRAAx] phi) :
+    Gamma |- [PRAAx] phi :=
+  hlocal.trans (...)
+\end{lstlisting}
+
+The omitted function maps a formula in \code{Delta ++ Gamma} either to the
+corresponding member of \code{hDelta} or to \leanname{Prf.hyp}.
+
+\subsection{Reflected fixed checker}
+
+\begin{lstlisting}[language=Lean]
+structure ReflectedChecker (k : Nat) where
+  check : PR k
+  spec : Fm PTm k
+  qf : spec.QF
+  sound : ([] : List (Fm PTm k)) |- [PRAAx]
+    ((app check var = one) --> spec)
+  complete : ([] : List (Fm PTm k)) |- [PRAAx]
+    (spec --> (app check var = one))
+
+def ReflectedChecker.holds
+    (C : ReflectedChecker k) (ts : Fin k -> PTm n) : Fm PTm n :=
+  app C.check ts = one
+
+theorem ReflectedChecker.soundAt
+    (C : ReflectedChecker k) (ts : Fin k -> PTm n)
+    (h : Gamma |- [PRAAx] C.holds ts) :
+    Gamma |- [PRAAx] C.spec.subst ts
+\end{lstlisting}
+
+The proof specializes the closed derivation with
+\leanname{IPRADerivations.Core.Basic.inst} and applies modus ponens.
+
+\subsection{Digit terms}
+
+\begin{lstlisting}[language=Lean]
+def place (b i : PTm n) : PTm n := ap2 powF i b
+
+def digitT (z i b : PTm n) : PTm n :=
+  rem (quo z (place b i)) b
+\end{lstlisting}
+
+The array encoder should be a specialized bounded sum, not an opaque object in
+the finished module:
+
+\begin{lstlisting}[language=Lean]
+-- body has variables i, packedParameter
+def weightedBody (body : PTm 2) : PTm 3 :=
+  inst2 body (var 0) (var 2) * place (var 1) (var 0)
+
+-- exact arities may be reorganized for the existing MultiSums API
+def encodeArrayF (body : PTm 2) : PR 3 :=
+  boundedSumSymbol (weightedBody body)
+\end{lstlisting}
+
+Required public theorems:
+
+\begin{lstlisting}[language=Lean]
+theorem encodeArray_bound ... :
+  Gamma |- [PRAAx] encode body L x b < place b L
+
+theorem digit_encodeArray ... (hi : Gamma |- [PRAAx] i < L) :
+  Gamma |- [PRAAx] digitT (encode body L x b) i b = inst2 body i x
+\end{lstlisting}
+
+\subsection{Certificate search}
+
+\begin{lstlisting}[language=Lean]
+def failureBody (check : PTm 2) : PTm 2 := one monus check
+
+def selectT (check : PTm 2) (bound query : PTm n) : PTm n :=
+  Search.mu (failureBody check) bound query
+
+theorem select_of_witness
+    (hbool : Gamma |- [PRAAx] IsBool (inst2 check w q))
+    (hbound : Gamma |- [PRAAx] w < B)
+    (hgood : Gamma |- [PRAAx] inst2 check w q = one) :
+    Gamma |- [PRAAx]
+      selectT check B q < B /\
+      (inst2 check (selectT check B q) q = one /\
+       selectT check B q <= w)
+
+theorem select_of_exists
+    (hbool : Gamma |- [PRAAx] forall c, IsBool (check c q))
+    (hexists : Gamma |- [PRAAx]
+      exists c, c < B /\ check c q = one) :
+    Gamma |- [PRAAx]
+      selectT check B q < B /\
+      check (selectT check B q) q = one
+\end{lstlisting}
+
+The repository's actual formula constructors and de Bruijn substitutions should
+replace the schematic notation in the last theorem.
+
+\subsection{Finite-query package}
+
+\begin{lstlisting}[language=Lean]
+structure Package where
+  bound : PR 1
+  check : PR 2
+  pre : Fm PTm 1
+  goalAt : Fm PTm 2
+  checkerBoolean : Fm PTm 2
+
+structure PackageProof (P : Package) where
+  boolean : [] |- [PRAAx] P.checkerBoolean
+  producer : [] |- [PRAAx]
+    (P.pre --> exists c,
+      c < P.bound(query) /\ P.check(c,query) = one)
+  extractor : [] |- [PRAAx]
+    (P.check(c,query) = one --> P.goalAt(c,query))
+
+def selected (P : Package) (q : PTm n) : PTm n :=
+  selectT P.check (P.bound q) q
+
+theorem Package.compile
+    (HP : PackageProof P)
+    (hpre : Gamma |- [PRAAx] P.pre(q)) :
+    Gamma |- [PRAAx] P.goalAt(P.selected q,q)
+\end{lstlisting}
+
+\subsection{Whole paths}
+
+A path interface fixes PR symbols for horizon, per-level bounds, start, edge,
+and final checks.  The complete checker has schematic meaning
+\[
+ \begin{split}
+ \mathsf{PathOK}(c,q)\equiv{}&
+  x_0<N_0(q)\wedge S(x_0,q)\\
+ &\wedge\bigwedge_{t<T(q)}
+   \bigl(x_{t+1}<N_{t+1}(q)\wedge E(t,x_t,x_{t+1},q)\bigr)\\
+ &\wedge F(x_{T(q)},q),
+ \end{split}
+\]
+where \(x_t\) is decoded from \(c\).  The Boolean checker is a bounded product,
+and its code bound is the product of the level bounds or a uniform power.
+
+\subsection{Stable names}
+
+A minimal interface for interval observations is:
+
+\begin{lstlisting}[language=Lean]
+structure IntervalInterface where
+  valid : PR 3      -- precision, code, parameters
+  lower : PR 2
+  upper : PR 2
+  widthOK : PR 3
+
+structure StableNameProof (I : IntervalInterface) where
+  producer : ...
+  validityReflection : ...
+  crossStability : [] |- [PRAAx]
+    (valid(p,c,x) --> valid(r,d,x) -->
+      distance(obs(c,x),obs(d,x)) <= error(p,r))
+\end{lstlisting}
+
+Operations on names add demand transformers and local correctness proofs.

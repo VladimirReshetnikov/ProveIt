@@ -1,0 +1,187 @@
+\section{Resolution of the recurring difficulties}
+
+This section matches the framework to the obstacles recorded across the proof
+packets.  ``Resolved'' means that the generic logical or representational issue
+has a correct reusable treatment.  It does not mean that a missing deep
+mathematical producer has been proved.
+
+\subsection{Host truth versus object proof}
+
+\paragraph{Difficulty.}
+A semantic Lean function computes a trace or verifies a certificate, and the
+packet concludes that iPRA proves the corresponding theorem.
+
+\paragraph{Resolution.}
+The checker has a fixed PR symbol and an explicit reflection derivation.  The
+terminal result must literally be constructed in \(\Prf\,\PRAAx\).  Host code
+may generate the symbol, certificate, or proof script, but it is not a
+truth-to-provability rule.  Logical composition uses \leanname{Prf.trans}.
+
+\subsection{Induction over quantified or all-precision assertions}
+
+\paragraph{Difficulty.}
+The natural mathematical invariant says that approximations exist or are good
+at every precision, so it is not QF.
+
+\paragraph{Resolution.}
+Fix the finite precision query as a parameter.  Induct over a QF checker or
+state invariant for that query.  Extract the quantified conclusion at the
+terminal stage and quantify over the query last.  For multiple precisions, pack
+the finite demand window into one query.
+
+\subsection{Universal evaluation of encoded programs}
+
+\paragraph{Difficulty.}
+A packet treats arbitrary encoded PR programs as though a total universal PR
+evaluator existed.
+
+\paragraph{Resolution.}
+Every transducer and checker is specialized to a fixed \(\mathrm{PR}\) syntax
+tree before entering the object theory.  A finite family of programs can be
+compiled by metalevel case analysis or by a fixed tagged evaluator whose cases
+are individually specialized.  There is no unbounded interpreter field in an
+\(\FQNF\) package.
+
+\subsection{Hidden finite choice}
+
+\paragraph{Difficulty.}
+A proof knows that one of finitely many witnesses exists and silently uses a
+coherent choice of witnesses at many stages.
+
+\paragraph{Resolution.}
+For one stage, bounded least search gives an explicit selected term.  For a
+future-dependent finite sequence, search a complete path code.  Under local
+seriality, iterate the least valid successor by primitive recursion.  Across
+precisions, avoid coherent witness selection when a stable observable theorem
+suffices.
+
+\subsection{Lists, tables, and witness clouds}
+
+\paragraph{Difficulty.}
+Generic frameworks specify abstract finite data structures but do not build the
+object-iPRA arithmetic needed to decode and verify them.
+
+\paragraph{Resolution.}
+Uniform-base and mixed-radix normalization reduce all query-bounded data to one
+number.  The remaining Lean work is sharply focused: powers, prefix products,
+Euclidean division, bounded folds, and checker reflection.  Pairing remains a
+convenient alternative for small fixed tuples.
+
+\subsection{Cardinality versus search bound}
+
+\paragraph{Difficulty.}
+A theorem states that a set of points, roots, or auxiliary objects is finite,
+and a packet proceeds as if a complete enumeration bound were available.
+
+\paragraph{Resolution.}
+The producer must supply a numerical code or height bound.  Once supplied, the
+normal form gives complete bounded enumeration and least selection.  Bare
+finiteness remains a boundary theorem, not an algorithm.
+
+\begin{theorem}[Height bound to complete list]\label{thm:height-list}
+Let \(P(c,q)\) be a reflected Boolean predicate and let \(H(q)\) be a numerical
+bound such that every object of interest has a valid code \(c<H(q)\).  Then a
+fixed PR enumeration lists exactly all valid codes below \(H(q)\), and iPRA
+proves completeness of the list.
+\end{theorem}
+
+\begin{proof}
+For each \(c<H(q)\), include \(c\) precisely when the checker returns one.
+Encode the resulting Boolean mask or compacted list as a bounded array.  Bounded
+formula reflection proves that every listed item is valid.  Conversely, the
+height premise places any valid object's code below \(H(q)\), and the checker's
+completeness makes its mask bit one, so it appears.  The construction is a
+finite PR loop with a QF invariant.
+\end{proof}
+
+Conversely, a complete explicit finite list gives a bound by taking one plus
+the maximum code.  Thus ``height bound plus decidability'' and ``complete
+finite list'' are interconvertible in the finitary interface.  A qualitative
+finiteness proposition need not provide either.
+
+\subsection{Faltings and Siegel packets}
+
+The generic resolution is now precise.  Let the query code a curve and local
+parameters.  A boundary producer supplies \(H\) and proves that every rational
+or integral point has code below \(H\).  The checker verifies curve membership,
+denominator conditions, and normalization.  \cref{thm:height-list} returns a
+complete list.
+
+What remains unresolved is the general production of such an effective bound.
+The framework improves the packet by identifying the exact theorem needed and
+making all subsequent finite work routine; it does not convert classical
+finiteness into an effective height bound.
+
+\subsection{Mordell--Weil descent}
+
+Finite Selmer data alone may not produce rational representatives of covering
+classes.  In \(\FQNF\), each representative is a certificate checked by exact
+rational equations and local compatibility.  A complete set of representatives
+can be packed into one master code.  Once a producer supplies it, the descent
+and finite search are constructive.  Uniform representative production remains
+the deep boundary.
+
+\subsection{Ineffective analytic constants}
+
+Prime-distribution and related analytic packets may use constants or
+exceptional-zero data whose existence is known but not effectively bounded in
+the required theory.  The correct interface makes those values explicit
+certificate fields and checks every inequality used downstream.  The final
+theorem is conditional on an accepted analytic-input certificate unless iPRA
+itself proves its production.
+
+\subsection{Discontinuous exact branches}
+
+Exact axes, root labels, signs, chart choices, and threshold decisions can fail
+constructively at ties or collisions.  The framework returns stable relational
+data unconditionally and invokes \cref{thm:gap-recovery} only with an explicit
+separation premise.  This directly addresses the LLPO/LPO-style obstructions
+reported in rotation, density, and approximation packets.
+
+\subsection{Abstract compactness}
+
+Topology and analysis packets sometimes invoke compactness as an existence
+principle without a finite net.  A presented compact object must supply finite
+nets and a modulus at requested scales.  Covering, Lebesgue-number, or
+simplicial approximation arguments become finite certificate problems.  The
+modulus is the producer datum; the finite combinatorics are handled by the
+shared normal form.
+
+\subsection{Root collisions and exact ordering}
+
+A factorization or root-finding certificate should store clusters and
+multiplicities.  Symmetric polynomials and cluster regions are stable at
+collisions.  Exact ordering is a guarded adapter requiring pairwise separation.
+This avoids importing an exact global root selector into the constructive
+core.
+
+\subsection{Changing resources in recursion}
+
+Changing precision, height, chart, or denominator is encoded in the recursion
+state.  Query-first backward demand gives fixed target resources; paired-state
+QF induction proves the forward computation.  If adjacent refinements must be
+related, the complete refinement path is a certificate.
+
+\subsection{Summary table}
+
+\begin{longtable}{p{0.20\textwidth}p{0.32\textwidth}p{0.38\textwidth}}
+\toprule
+Obstacle & Generic response & Remaining theorem-specific work\\
+\midrule
+\endfirsthead
+\toprule
+Obstacle & Generic response & Remaining theorem-specific work\\
+\midrule
+\endhead
+Host truth & Reflected fixed checker; literal \(\Prf\,\PRAAx\) extraction & Object arithmetic proof of checker meaning\\
+Non-QF induction & Fix query; QF running invariant; quantify last & Invariant and terminal estimate\\
+Universal evaluator & Fixed-program specialization & None if packet obeys restriction\\
+Finite choice & Least bounded code or whole-path code & Existence/seriality proof\\
+Data coding & Single uniform/mixed-radix code & Formal digit and fold lemmas\\
+Finiteness vs cutoff & Explicit bound producer & Height/cutoff theorem\\
+Unstable representative & Cross-certificate observable stability & Domain stability estimate\\
+Exact branch & Gap-guarded recovery & Separation/apartness proof\\
+Convergence & Modulus or finite-consumer window & Quantitative rate/metastability data\\
+Deep global input & Conditional boundary field & Height, constant, cover, or compactness producer\\
+\bottomrule
+\end{longtable}

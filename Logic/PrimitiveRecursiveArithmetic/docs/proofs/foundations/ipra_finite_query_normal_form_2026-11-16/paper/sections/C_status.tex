@@ -1,0 +1,63 @@
+\section{Artifact status and reproduction}
+
+\subsection{Delivered files}
+
+The archive contains:
+
+\begin{itemize}
+\item this report as \pathref{paper/fqnf_ipra.tex}, section sources, and
+\pathref{paper/fqnf_ipra.pdf};
+\item Lean source scaffolds under \pathref{lean/FQNF/};
+\item a dependency-ordered formalization plan;
+\item exact Python reference algorithms and tests;
+\item machine-readable worked certificates;
+\item a source audit, theorem ledger, and difficulty matrix;
+\item build, validation, and integrity records.
+\end{itemize}
+
+\subsection{Reproduction commands}
+
+From the package root:
+
+\begin{lstlisting}[language=bash]
+PYTHONPATH=reference python3 -m unittest -v reference/test_fqnf_reference.py
+cd paper
+latexmk -pdf -interaction=nonstopmode -halt-on-error fqnf_ipra.tex
+\end{lstlisting}
+
+The top-level \pathref{build.sh} runs the tests, rebuilds the PDF, and refreshes
+validation output and hashes.  The PDF was additionally rendered to page images
+with the environment's PDF inspection utility.
+
+\subsection{Status labels}
+
+\begin{description}[leftmargin=3.2cm,style=nextline]
+\item[Human theorem complete.]
+The report supplies a full mathematical argument at the stated abstraction
+level.
+
+\item[Reference tested.]
+The finite Python algorithm was executed on exact data and its regression tests
+passed.
+
+\item[Lean source-oriented.]
+The file targets the current repository APIs but was not elaborated in this
+artifact environment.
+
+\item[Kernel checked upstream.]
+The report relies on a theorem already present in the checked repository layer
+or in a packet that records a successful object-proof compilation audit.
+
+\item[Open producer.]
+The reusable framework is complete conditional on a theorem-specific bound,
+modulus, representative, constant, or separation certificate that is not
+supplied here.
+\end{description}
+
+\subsection{Trust statement}
+
+The Python implementation is not an iPRA proof checker.  The PDF is not a
+formal proof object.  The Lean outlines with \code{sorry} do not establish new
+kernel-checked theorems.  A future integrated result should be claimed only
+after successful Lean elaboration and an axiom audit of the final
+\(\Prf\,\PRAAx\) declarations.
