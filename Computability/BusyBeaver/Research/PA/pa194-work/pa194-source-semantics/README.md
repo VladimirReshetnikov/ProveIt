@@ -63,5 +63,9 @@ three in `PA194SourceMulCoherence`, four in `PA194SourceAddComm`, three in
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-source-semantics/check.sh
 ```
 
-runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with each module as the top
-and these report counts. The script has not been run.
+runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) once, with
+`PA194SourceArithmetic` as the top module (it imports the other twelve), and checks these
+report counts from the logs of the thirteen modules. On 2026-11-16 it was run with
+`--out DIR` on a directory that already held the compiled objects of the imports: it
+recompiled the thirteen modules of this directory and passed. A run in a fresh directory,
+which compiles the whole closure of about 620 standalone modules, has not been done.
