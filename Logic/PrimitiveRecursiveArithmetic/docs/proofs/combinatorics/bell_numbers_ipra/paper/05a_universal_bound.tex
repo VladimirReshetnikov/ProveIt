@@ -1,0 +1,117 @@
+\section{The universal numerical upper bound}\label{sec:universal-bound}
+
+The constant $0.792$ on the source page is not merely an asymptotic claim.
+This section proves the exact all-positive-integer assertion of
+Berend--Tassa~\cite{berend-tassa}, using a simple analytic estimate followed
+by a small, completely rational certificate.  The estimate used here is
+independent of the detailed saddle-point expansion.
+
+\begin{theorem}[The $0.792$ bound]\label{thm:0792}
+For every integer $n\ge1$,
+\begin{equation}\label{eq:0792}
+ B_n<\left(\frac{99n}{125\log(n+1)}\right)^n
+     =\left(\frac{0.792n}{\log(n+1)}\right)^n.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Take $r=\tfrac12\log(n+1)$ in
+\eqref{eq:coefficient-bound}.  The elementary factorial estimate
+\eqref{eq:elementary-factorial-log} gives
+\begin{equation}\label{eq:0792-envelope}
+ \frac{B_n^{1/n}\log(n+1)}n
+ \le2\exp\left(-1+\frac{\log n+\sqrt{n+1}}n\right).
+\end{equation}
+The function $\log x/x$ decreases for $x\ge3$, since its derivative is
+$(1-\log x)/x^2<0$.  The function $\sqrt{x+1}/x$ also decreases for $x>0$,
+as direct differentiation gives
+$-(x+2)/(2x^2\sqrt{x+1})<0$.
+For $n\ge512$, therefore,
+\[
+ \frac{\log n+\sqrt{n+1}}n
+ \le\frac{\log512+\sqrt{513}}{512}
+ <\frac{7+23}{512}<\frac1{16}.
+\]
+Here $23^2>513$ and $e^7>512$ are elementary finite inequalities; for
+example $e>5/2$ gives $(5/2)^7>512$.  Finally
+\[
+ e^{15/16}>\sum_{j=0}^{4}\frac{(15/16)^j}{j!}>\frac{250}{99}.
+\]
+The last comparison is a rational inequality verified by clearing
+denominators.  Hence $2e^{-15/16}<99/125$, proving
+\eqref{eq:0792} for every $n\ge512$.
+
+The remaining finite assertion is
+\begin{equation}\label{eq:small-bound-certificate}
+ \bigwedge_{n=1}^{511}
+ B_n\left(\frac{u_n}{2^{40}}\right)^n
+       <\left(\frac{99n}{125}\right)^n,
+ \qquad \log(n+1)\le\frac{u_n}{2^{40}}.
+\end{equation}
+We specify the integers $u_n$ by an exact bounded algorithm and supply all
+511 values in \texttt{code/bound\_certificate.csv}.
+Write $n+1=2^k y$ with $1\le y<2$, and $z=(y-1)/(y+1)$.  Define
+\[
+ L_J(z)=2\sum_{j=0}^{J-1}\frac{z^{2j+1}}{2j+1},\qquad
+ U_J(z)=L_J(z)+\frac{2z^{2J+1}}{(2J+1)(1-z^2)}.
+\]
+With $J=24$, put
+\[
+ u_n=\left\lceil2^{40}\bigl(kU_J(1/3)+U_J(z)\bigr)\right\rceil.
+\]
+Formula \eqref{eq:log-series} proves the second inequality in
+\eqref{eq:small-bound-certificate}.  The first is checked using only integers:
+\begin{equation}\label{eq:certificate-integer-test}
+ B_n(125u_n)^n<(99n\,2^{40})^n.
+\end{equation}
+The Bell recurrence generates $B_1,\ldots,B_{511}$.  The included verifier
+performs precisely these 511 comparisons, without floating point arithmetic,
+and all are true.  This is a finite computation proof: the arithmetic input,
+all endpoints, and the complete algorithm are specified.  It can be expanded
+into ground defining equations of \ipra, followed by their finite conjunction.
+The Python run is independent reproducibility evidence, not a claim that a
+Python interpreter checks the object logic.  Combining this finite certificate
+with the already-proved infinite range proves the theorem.
+\end{proof}
+
+The near-maximal constant among these small indices occurs at $n=4$:
+$15^{1/4}\log5/4$ is close to $0.792$.  This explains why ordinary
+floating-point rounding is unsuitable as a proof of all the small cases.
+The certificate uses an upper enclosure for each logarithm and an exact
+strict integer comparison.
+
+\begin{corollary}[An explicit version of the eventual page bound]
+For every $n\ge2^{16}$,
+\begin{equation}\label{eq:eventual-six-tenths}
+ B_n<\left(\frac{e^{-3/5}n}{\log(n+1)}\right)^n.
+\end{equation}
+Consequently, for every positive rational $\eta$, the same threshold gives
+$B_n<(e^{-3/5+\eta}n/\log(n+1))^n$.
+\end{corollary}
+\begin{proof}
+Use $r=\tfrac34\log(n+1)$ in the coefficient bound.  The same cancellation
+as before yields
+\[
+ \frac{B_n^{1/n}\log(n+1)}n
+ \le\frac43\exp\left(-1+
+             \frac{\log n+(n+1)^{3/4}}n\right).
+\]
+For $n\ge2^{16}$, the decreasing logarithm quotient is at most
+$16/2^{16}$ because $\log2<1$.  Also
+\[
+ \frac{(n+1)^{3/4}}n
+ =n^{-1/4}(1+1/n)^{3/4}
+ \le\frac1{16}(1+2^{-16}).
+\]
+Their sum is less than $1/10$, by a rational comparison.
+Since $e^{3/10}>1+3/10+(3/10)^2/2>4/3$, we have
+$\log(4/3)<3/10$.  The displayed bound is therefore strictly less than
+$\exp(-1+1/10+3/10)=e^{-3/5}$.
+\end{proof}
+
+The source page also supplies a particular threshold using an inverse
+function $d^{-1}$.  The last corollary proves the same eventual inequality
+with a different, explicit integer threshold and without computing that
+inverse.  The sharper root-growth limit of Corollary~\ref{cor:root-growth}
+further yields the optimal asymptotic constant $e^{-1}$: for every rational
+$\eta>0$ there is a primitive recursively specified threshold beyond which
+$B_n<(e^{-1+\eta}n/\log(n+1))^n$.

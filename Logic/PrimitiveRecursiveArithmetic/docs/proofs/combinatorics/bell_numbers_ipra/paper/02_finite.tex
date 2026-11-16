@@ -1,0 +1,526 @@
+\section{Finite arithmetic and combinatorics}
+\label{sec:finite}
+
+\subsection{A primitive recursive definition}
+
+Write $[n]=\{0,\ldots,n-1\}$. A \emph{restricted growth word} of length $n$ is a word
+$a_0\cdots a_{n-1}$ with $a_0=0$ when $n>0$ and
+\[
+  a_i\leq 1+\max_{j<i}a_j\qquad(0<i<n).
+\]
+The empty word is allowed. Its number of blocks is zero; that of a nonempty
+word is $1+\max_i a_i$. Encode a word by its $n$ base-$(n+1)$ digits, retaining
+the length separately. Validity and block count are bounded-loop tests, and
+there are at most $(n+1)^n$ candidate codes. Let $S(n,k)$ count valid words
+with $k$ blocks, and put
+\begin{equation}\label{eq:bell-stirling}
+  B_n=\sum_{k=0}^{n}S(n,k).
+\end{equation}
+In particular $B_0=1$. This definition is primitive recursive without any
+unbounded search.
+
+The blocks of a word are the nonempty sets $\{i:a_i=j\}$. Conversely, order the
+blocks of a partition by their least elements and give them labels
+$0,1,\ldots$. These two algorithms are inverse. Consequently $B_n$ counts
+partitions of $[n]$, equivalence relations on $[n]$, and rhyme schemes after
+canonical relabelling. An equivalence relation is encoded by an $n$ by $n$
+Boolean matrix; its classes are found by scanning for their least members.
+This also proves the equivalence-relation interpretation without forming a
+quotient of an infinite set.
+
+\begin{proposition}[Stirling recurrence and positivity]\label{prop:stirling}
+With $S(n,k)=0$ outside $0\leq k\leq n$,
+\[
+ S(0,0)=1,\qquad S(n+1,k)=kS(n,k)+S(n,k-1).
+\]
+Thus $B_n\geq1$, and, for $n\geq1$,
+\[
+ 2^{n-1}\leq B_n\leq n^n.
+\]
+The first eleven values are
+\[
+ 1,1,2,5,15,52,203,877,4140,21147,115975.
+\]
+\end{proposition}
+\begin{proof}
+The last element of a partition either joins one of its $k$ pre-existing
+blocks or is the sole member of a new block. Deleting that element gives the
+displayed recurrence and its inverse construction. The all-singleton
+partition proves positivity. For the lower bound, choose any subset of the
+other $n-1$ elements to join the block containing $0$, and make every remaining
+element a singleton. These $2^{n-1}$ partitions are distinct. Every restricted
+growth word of positive length $n$ is a word over $[n]$, giving the upper bound.
+The numerical values follow by the recurrence, using only integer addition
+and multiplication.
+\end{proof}
+
+If $q_1,\ldots,q_n$ are distinct primes, partitions of $[n]$ correspond to
+unordered factorizations of $q_1\cdots q_n$ into factors exceeding one: a block
+is sent to the product of the primes it contains. In the inverse algorithm,
+test divisibility of every factor by each of the given primes. The elementary
+prime-divisor lemma, applied finitely often, makes these supports disjoint and
+exhaustive. Thus the squarefree-factorization statement also has a finite
+proof. The input includes the distinct primes; no general factorization oracle
+is needed.
+
+\subsection{Recurrences and finite summation formulas}
+
+The two familiar recurrences are unified by Spivey's finite identity
+\cite{spivey}; the proof below gives the explicit bijection.
+
+\begin{theorem}[Bell recurrence and Spivey's identity]\label{thm:spivey}
+For $n,m\geq0$, using $0^0=1$,
+\begin{align}
+ B_{n+1}&=\sum_{k=0}^{n}\binom nk B_k,\label{eq:bell-binomial}\\
+ B_{n+m}&=\sum_{k=0}^{n}\sum_{j=0}^{m}
+       \binom nk S(m,j)j^{n-k}B_k.\label{eq:spivey}
+\end{align}
+\end{theorem}
+\begin{proof}
+For the first identity, delete the entire block containing a distinguished
+element of an $(n+1)$-element set. If $k$ elements remain, their set can be
+chosen in $\binom nk$ ways and partitioned in $B_k$ ways. Putting the
+distinguished element together with the complement reverses the operation.
+
+For the second identity, first restrict a partition to a fixed $m$-element
+subset. If this restriction has $j$ blocks, there are $S(m,j)$ choices for it.
+Among the other $n$ elements choose the $k$ elements whose blocks do not meet
+the first subset. Partition those elements in $B_k$ ways. Each of the remaining
+$n-k$ elements chooses one of the $j$ old blocks. These choices are independent,
+and give $j^{n-k}$ possibilities. Restricting a completed partition recovers
+all the choices uniquely. The convention $0^0=1$ handles empty subsets.
+\end{proof}
+
+Here and below a combinatorial count is an equality between bounded sums of
+Boolean characteristic functions. Each displayed inverse map gives a
+primitive recursive permutation of the relevant finite codes; equality of
+their sums follows by finite reindexing.
+
+\begin{proposition}[Bell triangle]\label{prop:bell-triangle}
+Define $T(0,0)=1$ and, for $0\leq k\leq n$,
+\[
+  T(n,0)=B_n,\qquad
+  T(n,k)=T(n,k-1)+T(n-1,k-1)\quad(k>0).
+\]
+Then
+\[
+  T(n,k)=\sum_{i=0}^{k}\binom ki B_{n-i},\qquad
+  T(n,n)=B_{n+1}.
+\]
+In particular the next row begins with the preceding row's last entry.
+\end{proposition}
+\begin{proof}
+Pascal's identity shows that the displayed sum satisfies the defining
+addition rule, including its initial column. At $k=n$, replace $i$ by $n-i$
+and use \eqref{eq:bell-binomial}. These verifications use induction through a
+finite triangular table.
+\end{proof}
+
+For an indeterminate $X$, put $(X)_0=1$ and
+$(X)_k=X(X-1)\cdots(X-k+1)$. Comparing the recurrence in
+Proposition~\ref{prop:stirling} with
+$X(X)_k=(X)_{k+1}+k(X)_k$ proves the polynomial identity
+\begin{equation}\label{eq:power-falling}
+ X^n=\sum_{k=0}^{n}S(n,k)(X)_k.
+\end{equation}
+All polynomial identities here are statements about finite coefficient
+lists, not assertions requiring a theory of arbitrary functions.
+
+\begin{theorem}[Inclusion--exclusion and finite Dobinski forms]
+\label{thm:finite-dobinski}
+For all $n,k\geq0$,
+\begin{equation}\label{eq:stirling-ie}
+ k!S(n,k)=\sum_{i=0}^{k}(-1)^{k-i}\binom ki i^n.
+\end{equation}
+Consequently
+\begin{align}
+ B_n&=\sum_{k=0}^{n}\frac1{k!}
+        \sum_{i=0}^{k}(-1)^{k-i}\binom ki i^n,\label{eq:bell-ie}\\
+ B_n&=\sum_{i=0}^{n}\frac{i^n}{i!}
+        \sum_{j=0}^{n-i}\frac{(-1)^j}{j!}.\label{eq:bell-finite-dobinski}
+\end{align}
+If $D_t$ is the number of fixed-point-free permutations of $[t]$, then
+\begin{equation}\label{eq:bell-derangements}
+  B_n=\sum_{i=0}^{n}\frac{i^nD_{n-i}}{i!(n-i)!}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+There are $k!S(n,k)$ surjections from $[n]$ to $[k]$: label the blocks of a
+partition bijectively by the target labels. For a fixed function with image
+$I$, its contribution to the right side of \eqref{eq:stirling-ie} is
+\[
+ \sum_{I\subseteq A\subseteq[k]}(-1)^{k-|A|}
+       =(1-1)^{k-|I|}.
+\]
+This is one exactly when the function is onto and zero otherwise. Interchanging
+the two finite sums proves \eqref{eq:stirling-ie}; summing over $k$ proves
+\eqref{eq:bell-ie}. Put $j=k-i$ and use
+$\binom ki/k!=1/(i!j!)$ to obtain
+\eqref{eq:bell-finite-dobinski}.
+
+The same inclusion--exclusion calculation for forbidden fixed points gives
+$D_t=t!\sum_{j=0}^{t}(-1)^j/j!$: imposing a specified set of $j$ fixed points
+leaves $(t-j)!$ permutations. Substitution gives
+\eqref{eq:bell-derangements}. These rational formulas are finite arithmetic
+equalities; multiplication by a product of the relevant factorials removes
+all division.
+\end{proof}
+
+One may also group partitions by their block sizes. If $m_j$ blocks have size
+$j$, then the labels can be assigned to ordered slots in $n!$ ways. Permuting
+within each block and permuting equal-sized blocks gives exactly
+$\prod_{j=1}^{n}(j!)^{m_j}m_j!$ assignments with the same partition. Hence
+\begin{equation}\label{eq:block-profile}
+ B_n=\sum_{\substack{m_1,\ldots,m_n\leq n\\\sum_{j=1}^n jm_j=n}}
+       \frac{n!}{\prod_{j=1}^{n}(j!)^{m_j}m_j!}.
+\end{equation}
+The quotient is exact, justified by this explicit finite grouping. More
+generally, weighting a block of size $j$ by $x_j$ defines the complete Bell
+polynomial
+\[
+ C_n(x_1,\ldots,x_n)=\sum_{\pi}\prod_{A\in\pi}x_{|A|}.
+\]
+Its coefficient sum is $C_n(1,\ldots,1)=B_n$.
+The one-variable Touchard polynomial
+$\Phi_n(t)=\sum_kS(n,k)t^k$ similarly satisfies
+\[
+ \Phi_n(1)=B_n,\qquad
+ \Phi_{n+1}(t)=t\bigl(\Phi_n(t)+\Phi_n'(t)\bigr),
+\]
+by the Stirling recurrence. The derivative is the formal derivative of a
+finite polynomial.
+
+\subsection{A finite moment functional and the shift identities}
+\label{subsec:finite-functional}
+
+Because the falling-factorial polynomials are monic of successively increasing
+degrees, every polynomial $f\in\Q[X]$ has a unique finite expansion
+$f=\sum_jc_j(X)_j$. Define
+\[
+ \mathcal L(f)=\sum_jc_j.
+\]
+Triangular coefficient elimination computes $\mathcal L$. Identity
+\eqref{eq:power-falling} says $\mathcal L(X^n)=B_n$, while by definition
+$\mathcal L((X)_j)=1$.
+
+\begin{lemma}[Finite shift identity]\label{lem:finite-shift}
+For every polynomial $f$ and every $k\geq0$,
+\begin{equation}\label{eq:finite-shift}
+ \mathcal L\bigl((X)_k f(X)\bigr)
+          =\mathcal L\bigl(f(X+k)\bigr).
+\end{equation}
+\end{lemma}
+\begin{proof}
+First let $g(Y)=(Y)_j$. Then
+$(X)_k g(X-k)=(X)_{k+j}$, so applying $\mathcal L$ gives one on both sides of
+$\mathcal L((X)_k g(X-k))=\mathcal L(g(X))$. Expand an arbitrary $g$ in the
+falling-factorial basis and use linearity. Finally set $g(Y)=f(Y+k)$.
+\end{proof}
+
+This single finite lemma proves the additional summation identities on the
+Wikipedia page, attributed there to Komatsu--Pita-Ruiz~\cite{komatsu-pita}.
+For rational $a,b$ and natural $k,n$,
+\begin{equation}\label{eq:general-umbral-shift}
+ \mathcal L\bigl((aX+b)^n\bigr)
+ =\mathcal L\bigl((X)_k(aX+b-ak)^n\bigr).
+\end{equation}
+Define the signed first-kind Stirling coefficients by
+$(X)_k=\sum_i s(k,i)X^i$, equivalently
+$s(k,i)=(-1)^{k-i}\genfrac{[}{]}{0pt}{}{k}{i}$. Expanding both sides gives
+\begin{align}\label{eq:general-stirling-shift}
+ &\sum_{j=0}^{n}\binom nj a^j b^{n-j}B_j\notag\\
+ &\quad=\sum_{i=0}^{k}s(k,i)
+       \sum_{j=0}^{n}\binom nj a^j(b-ak)^{n-j}B_{j+i}.
+\end{align}
+In particular $k=1$ gives the displayed one-step identity of the source,
+and $a=1,b=k$ gives
+\[
+ \sum_{j=0}^{n}\binom nj k^{n-j}B_j
+       =\sum_{i=0}^{k}s(k,i)B_{n+i}.
+\]
+Using \eqref{eq:finite-shift} with $k=1$ and
+$f(X)=X^n(X-1)^r$ also gives
+\[
+ \mathcal L\bigl(X^{n+1}(X-1)^r\bigr)
+       =\mathcal L\bigl(X^r(X+1)^n\bigr).
+\]
+On expanding, this is
+\begin{equation}\label{eq:general-pascal-inversion}
+ \sum_{j=0}^{n}\binom nj B_{r+j}
+   =\sum_{i=0}^{r}(-1)^{r-i}\binom ri B_{n+i+1}.
+\end{equation}
+Its specialization $n=0$ is Pascal inversion for the Bell recurrence.
+No infinite moment representation was needed for these identities.
+
+\subsection{The Hankel determinant and strict log-convexity}
+
+\begin{theorem}[Hankel determinant]\label{thm:hankel}
+For every $N\geq0$,
+\begin{equation}\label{eq:hankel}
+ \det\bigl(B_{i+j}\bigr)_{0\leq i,j\leq N}
+       =\prod_{j=0}^{N}j!.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Define monic Charlier polynomials by the finite formula
+\[
+ P_r(X)=\sum_{j=0}^{r}(-1)^{r-j}\binom rj(X)_j.
+\]
+Let $\Delta f(X)=f(X+1)-f(X)$. The finite shift identity and the binomial
+formula for an iterated difference yield
+\[
+ \mathcal L(P_r f)
+   =\sum_{j=0}^{r}(-1)^{r-j}\binom rj\mathcal L(f(X+j))
+   =\mathcal L(\Delta^r f).
+\]
+If $\deg f<r$, its $r$th difference is zero. If $f$ is monic of degree $r$,
+the $r$th difference is the constant $r!$. Applying this to the $P_s$, and
+using symmetry when $r<s$, gives
+\[
+  \mathcal L(P_rP_s)=\begin{cases}r!&r=s,\\0&r\ne s.\end{cases}
+\]
+The coefficient matrix $U$ expressing $P_0,\ldots,P_N$ in the monomial basis
+is lower triangular with diagonal entries one. Thus, by multiplication of
+finite matrices,
+\[
+ U\,(B_{i+j})_{i,j=0}^{N}\,U^{\mathsf T}
+       =\operatorname{diag}(0!,1!,\ldots,N!).
+\]
+Taking determinants, defined by their finite permutation sums, proves
+\eqref{eq:hankel}, since $\det U=1$.
+\end{proof}
+
+\begin{corollary}[Strict log-convexity]\label{cor:strict-logconvex}
+For $n\geq1$,
+\begin{equation}\label{eq:strict-logconvex}
+ B_n^2<B_{n-1}B_{n+1}.
+\end{equation}
+Consequently the quotients $B_{n+1}/B_n$ increase, and
+$B_mB_n\leq B_{m+n}$ for $m,n\geq0$.
+\end{corollary}
+\begin{proof}
+If $f=\sum_jc_jP_j$, the orthogonality calculation gives
+$\mathcal L(f^2)=\sum_jj!c_j^2$, positive for nonzero $f$.
+For two independent polynomials $f,g$, write their coefficient vectors in this
+basis as $c,d$. Then the entirely finite identity
+\[
+ \mathcal L(f^2)\mathcal L(g^2)-\mathcal L(fg)^2
+       =\sum_{i<j}i!j!(c_id_j-c_jd_i)^2>0
+\]
+follows by expansion. At least one minor is nonzero, since otherwise the
+vectors would be proportional. The same conclusion holds for the bilinear
+form $\mathcal L(Xfg)$, because \eqref{eq:finite-shift} identifies it with
+$\mathcal L(f(X+1)g(X+1))$, and substitution $X\mapsto X+1$ preserves
+independence.
+
+Write $n-1=2q+\epsilon$ with $\epsilon\in\{0,1\}$. Take $f=X^q$ and
+$g=X^{q+1}$, using the ordinary bilinear form for $\epsilon=0$ and the shifted
+one for $\epsilon=1$. Their Gram determinant is precisely
+$B_{n-1}B_{n+1}-B_n^2$, proving strict positivity. Finally multiply the
+inequalities
+$B_{n+j+1}/B_{n+j}\geq B_{j+1}/B_j$ for $0\leq j<m$; the products telescope.
+All denominators are positive integers and can be cleared.
+\end{proof}
+
+\subsection{Normalized log-concavity, with a finite proof}
+\label{subsec:logconcavity}
+
+The complementary inequality also admits a finite proof. We give the
+coefficient argument underlying the Bender--Canfield method
+\cite{bender-canfield}, specialized enough that its arithmetic content is
+visible.
+
+\begin{lemma}[A finite coefficient inequality]\label{lem:coefficient-logconcave}
+Let $x_0=1,x_1,x_2,\ldots$ be nonnegative rational numbers such that
+\[
+ x_jx_{k-1}\geq x_{j-1}x_k\qquad(1\leq j<k).
+\]
+Let $a_0=1$, put $a_t=0$ for $t<0$, and define
+\[
+ r a_r=\sum_{j=1}^{r}x_j a_{r-j}\qquad(r\geq1).
+\]
+Then, for $1\leq m\leq n$,
+\begin{equation}\label{eq:general-logconcavity}
+ a_m a_n\geq a_{m-1}a_{n+1}.
+\end{equation}
+Only $x_0,\ldots,x_{n+1}$ and $a_0,\ldots,a_{n+1}$ occur in each assertion.
+\end{lemma}
+\begin{proof}
+The recurrence, with its $x_0a_r$ term restored, says
+$\sum_{j=1}^{r+1}x_{j-1}a_{r+1-j}=(r+1)a_r$.
+Expand the product of this identity and the defining recurrence, subtract
+the two resulting products, and pair indices $j,k$. One obtains the finite
+identity
+\begin{align}\label{eq:paired-logconcavity}
+ &m(n+1)(a_m a_n-a_{m-1}a_{n+1})\notag\\
+ &\quad=\sum_{1\leq j<k\leq n+1}
+ (x_jx_{k-1}-x_{j-1}x_k)
+ (a_{m-j}a_{n+1-k}-a_{m-k}a_{n+1-j}).
+\end{align}
+Indeed, before pairing, the summand is
+$(x_jx_{k-1}-x_{j-1}x_k)a_{m-j}a_{n+1-k}$; summands with $j>m$ vanish by the
+negative-index convention, and exchanging $j,k$ negates the first factor.
+
+Induct on $m$, retaining all $n\geq m$ as free parameters. If $k>m$, the
+second subtracted product in \eqref{eq:paired-logconcavity} is zero, so its
+bracket is nonnegative. Suppose $k\leq m$, and put
+\[
+ A=m-j,\quad C=m-k,\quad D=n+1-j,\quad E=n+1-k.
+\]
+Then $C\leq\min(A,E)$, $\max(A,E)\leq D$, and $A+E=C+D$.
+Starting with the pair $(\min(A,E),\max(A,E))$, move one unit at a time
+from its smaller index to its larger one until the pair becomes $(C,D)$.
+At each step the smaller index is less than $m$, so the induction hypothesis
+says the product of the two $a$'s cannot increase. Thus
+$a_Aa_E\geq a_Ca_D$. The case $m=1$ has only the already-settled
+$k>m$ terms. Every summand in \eqref{eq:paired-logconcavity} is therefore
+nonnegative. Since $m(n+1)>0$, this proves the lemma.
+
+For a literal quantifier-free induction implementation, fix a final bound
+$N$ and retain the Boolean conjunction of these inequalities for all
+$1\leq m\leq n\leq N$ reached so far. The above steps never require an index
+exceeding $N+1$. Clearing the product of denominators makes the invariant an
+integer inequality test on a finite table.
+\end{proof}
+
+\begin{theorem}[Normalized log-concavity]\label{thm:normalized-logconcavity}
+For every $n\geq1$,
+\begin{equation}\label{eq:normalized-logconcavity}
+ n B_{n-1}B_{n+1}\leq(n+1)B_n^2.
+\end{equation}
+Equivalently, $B_n/n!$ is log-concave. Moreover,
+\begin{equation}\label{eq:bell-product-bounds}
+ B_mB_n\leq B_{m+n}\leq\binom{m+n}{m}B_mB_n.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Set $a_n=B_n/n!$, $x_0=1$, and $x_j=1/(j-1)!$ for $j\geq1$.
+Dividing \eqref{eq:bell-binomial} by $n!$ gives
+$(n+1)a_{n+1}=\sum_{j=1}^{n+1}x_j a_{n+1-j}$.
+The successive ratios $x_j/x_{j-1}$ are
+$1,1,1/2,1/3,\ldots$, a decreasing sequence, so the hypothesis of
+Lemma~\ref{lem:coefficient-logconcave} holds. Its case $m=n$ is exactly
+\eqref{eq:normalized-logconcavity} after factorials are cleared.
+
+For the upper product bound, normalized log-concavity makes $a_{j+1}/a_j$
+decrease. Hence
+\[
+ \frac{a_{n+m}}{a_n}
+ =\prod_{j=0}^{m-1}\frac{a_{n+j+1}}{a_{n+j}}
+ \leq\prod_{j=0}^{m-1}\frac{a_{j+1}}{a_j}=a_m.
+\]
+Clearing factorials gives the upper inequality in
+\eqref{eq:bell-product-bounds}; the lower one was proved in
+Corollary~\ref{cor:strict-logconvex}. The empty product handles $m=0$.
+\end{proof}
+
+\subsection{Permutation interpretations and card shuffles}
+
+A generalized pattern $1$--$23$ means indices $i<j<j+1$ with
+$\pi_i<\pi_j<\pi_{j+1}$; $1$--$32$ instead means
+$\pi_i<\pi_{j+1}<\pi_j$. These definitions are bounded tests on a permutation.
+
+\begin{proposition}[Eight avoidance classes]\label{prop:pattern-avoidance}
+For each of
+\[
+ 1\text{--}23,\quad32\text{--}1,\quad3\text{--}21,\quad12\text{--}3,
+ \qquad
+ 1\text{--}32,\quad23\text{--}1,\quad3\text{--}12,\quad21\text{--}3,
+\]
+the number of avoiding permutations of $[n]$ is $B_n$.
+\end{proposition}
+\begin{proof}
+Given a partition, order its blocks by decreasing minima. For the first
+class, write each block with its minimum first and its remaining elements in
+decreasing order, then erase the block separators. An ascent can occur only
+immediately after a left-to-right minimum, so it cannot be preceded by a
+smaller element. The result avoids $1$--$23$. Conversely, cut such an avoiding
+permutation immediately before each left-to-right minimum. Within a segment,
+every adjacent pair after its first entry must decrease: otherwise the first
+entry would complete a forbidden pattern. The segments therefore recover
+exactly the original partition and its prescribed order.
+
+For the class $1$--$32$, use the same block order but write every block in
+increasing order. A descent can then end only at a left-to-right minimum.
+This is exactly the condition excluding $1$--$32$: a descent ending at an
+element that is not a new minimum has an earlier smaller element and gives
+the forbidden pattern. Cutting at the minima again supplies the inverse.
+Reversing the positions and complementing every value $v$ to $n-1-v$ are
+explicit involutions on permutations. Their four combinations take the first
+pattern to the first four listed patterns, and the second to the last four.
+\end{proof}
+
+\begin{proposition}[Extending every $321$ to a $3241$]
+\label{prop:barred-pattern}
+There are $B_n$ permutations of $[n]$ in which every triple of positions
+$i<j<k$ with $\pi_i>\pi_j>\pi_k$ has a position $j<\ell<k$ satisfying
+$\pi_\ell>\pi_i$.
+\end{proposition}
+\begin{proof}
+Cut a permutation immediately before each left-to-right maximum. Call these
+its record segments; each begins with its largest element. The stated
+property is equivalent to the tail of every record segment being increasing.
+For necessity, a decreasing pair in such a tail, together with the leading
+record, is a $321$ that cannot be extended: no larger value occurs before
+the end of the segment. Conversely, consider any $321$. Its middle element
+is not a left-to-right maximum. If its last element lay in the same segment,
+the increasing-tail condition would be violated. Otherwise a new record lies
+between the middle and last elements, and this record exceeds the first
+element of the triple, supplying the required fourth position.
+
+Given a set partition, order blocks by increasing maxima and write each block
+with its maximum first and the remaining elements in increasing order.
+Erasing separators produces exactly a permutation with the just-described
+record segments. Cutting at the records is its inverse. This is the required
+finite bijection.
+\end{proof}
+
+\begin{proposition}[Return shuffles]\label{prop:return-shuffles}
+For a deck of $n\geq1$ distinct cards, there are $n^n$ sequences of $n$
+operations that remove the top card and reinsert it in any of the $n$
+positions. Exactly $B_n$ return the deck to its original order. Thus the
+return probability under independent uniform choices is $B_n/n^n$.
+\end{proposition}
+\begin{proof}
+Reverse a path of operations. An inverse operation chooses a card and moves
+it to the top. Label the original order $1,\ldots,n$. After a word of such
+choices, the chosen cards occur first, in reverse order of their last
+occurrences in the word; untouched cards follow in their original order.
+This description follows by induction on the length of the word.
+
+To return to $1,\ldots,n$, the chosen labels must therefore be a prefix
+$\{1,\ldots,k\}$, and their last occurrences must be ordered from latest to
+earliest as $1,\ldots,k$. Partition the $n$ action times according to equal
+chosen labels. Conversely, given any partition of those times, label its
+blocks $1,\ldots,k$ in decreasing order of their maxima. The resulting choice
+word returns the deck to its original order. The constructions are inverse;
+reversing operations now proves the assertion for top-card reinsertion.
+\end{proof}
+
+The permutation bijection gives $B_n\leq n!$. A second useful comparison is
+$n^n\leq n!B_n$: partition functions $[n]\to[n]$ by their fibers and use
+\eqref{eq:power-falling} at $X=n$, noting $(n)_k\leq n!$.
+For $n\geq3$ this is strict, since the $k=1$ term has
+$(n)_1=n<n!$. Consequently the return probability exceeds $1/n!$ for
+$n\geq3$; equality holds for $n=1,2$.
+
+\paragraph{Arithmetic audit.}
+The largest finite objects used in this section are tables, words,
+permutations, and coefficient lists with explicitly bounded lengths.
+Their enumerations have primitive recursive bounds, such as $(n+1)^n$, $n!$,
+and products of factorials. Every appeal to induction can retain a finite
+table of the preceding assertions as one quantifier-free invariant. The
+positive-denominator convention turns all rational inequalities into integer
+inequalities. Thus the arguments use no unrestricted induction, choice,
+excluded middle for undecidable formulas, or existence principle for infinite
+sets.
+
+% Bibliography metadata:
+% bender-canfield: E. A. Bender and E. R. Canfield,
+% Log-Concavity and Related Properties of the Cycle Index Polynomials,
+% J. Combin. Theory Ser. A 74 (1996), 57--70,
+% https://mathweb.ucsd.edu/~ebender/reprints/93.pdf
+% Additional finite-sum statements match T. Komatsu and C. Pita-Ruiz,
+% Some formulas for Bell numbers, Filomat 32(11) (2018), 3881--3889,
+% https://doi.org/10.2298/FIL1811881K . Their proofs above follow directly
+% from the finite shift functional, without using the article as a premise.

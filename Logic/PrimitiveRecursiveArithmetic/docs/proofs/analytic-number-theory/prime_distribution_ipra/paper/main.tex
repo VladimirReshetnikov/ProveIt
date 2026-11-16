@@ -1,0 +1,75 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{xcolor,microtype,fancyhdr,enumitem}
+\usepackage{listings}
+\usepackage[unicode,colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!55!black,breaklinks=true]{hyperref}
+\usepackage{bookmark}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{obligation}[theorem]{Unfinished obligation}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\pra}{\mathsf{PRA}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Li}{\operatorname{Li}}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\rad}{rad}
+\DeclareMathOperator{\Rea}{Re}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{3pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Prime distribution in intuitionistic PRA}
+\fancyhead[R]{\small Research proof package}
+\fancyfoot[C]{\thepage}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false,frame=single,rulecolor=\color{black!15}}
+\hypersetup{pdftitle={Prime distribution in intuitionistic primitive recursive arithmetic},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={Explicit Dirichlet theorem, finite sieve bounds, constructive status of Chebotarev, Siegel--Walfisz and Bombieri--Vinogradov}}
+\begin{document}
+\begin{titlepage}
+\vspace*{12mm}
+{\Large\sffamily MATHEMATICAL RESEARCH PACKAGE\par}
+\vspace{10mm}
+{\Huge\bfseries Prime distribution in intuitionistic primitive recursive arithmetic\par}
+\vspace{8mm}
+{\Large Explicit Dirichlet and sharp Brun--Titchmarsh proofs;\par constructive obligations for three density theorems\par}
+\vspace{14mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large 15 November 2026\par}
+\vspace{12mm}
+\noindent\begin{minipage}{\textwidth}
+\textbf{Scope of this delivery.} The package proves Dirichlet's theorem with an explicit primitive recursive bound, a rational Selberg sieve inequality, and the sharp Brun--Titchmarsh bound with coefficient $2$ for every rational $x>q$. It gives a detailed finite arithmetic realization of these human proofs. It develops exact arithmetic targets and finite reductions for Chebotarev, Siegel--Walfisz, and Bombieri--Vinogradov, whose full $\ipra$ proofs remain unfinished here. This is a partial resolution of the five-theorem request.
+
+\medskip
+\textbf{Formalization status.} Human proofs and an explicit arithmetic realization are supplied. The Lean sources are an uncompiled specification and development outline. No completed object-language derivation is claimed.
+\end{minipage}
+\vfill
+\noindent\small Repository inspected at commit\par
+\texttt{7eeb3c0e821594d5d5ebcfbaf4bdba64819e3502}.\par
+\medskip
+\noindent\small All bounds favor transparent primitive recursion over numerical efficiency. The astronomical Dirichlet bound is specified symbolically and is not evaluated in the diagnostics.
+\end{titlepage}
+\tableofcontents
+\newpage
+\input{sections/01_scope}
+\input{sections/02_foundations}
+\input{sections/03_dirichlet}
+\input{sections/04_dirichlet_arithmetic}
+\input{sections/05_sieve}
+\input{sections/05b_sharp_bt}
+\input{sections/06_chebotarev}
+\input{sections/07_sw_bv}
+\input{sections/08_lean}
+\input{sections/09_validation}
+\input{sections/10_references}
+\end{document}

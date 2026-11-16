@@ -1,0 +1,614 @@
+\section{The sharp Brun--Titchmarsh inequality}
+\label{sec:sharp-bt}
+
+We now supply the additional argument needed for the constant $2$.
+Its essential analytic step is a finite inequality for points of a
+circle with specified separation.  A rational grid replaces the
+maximizing eigenvector that often appears in proofs of that inequality.
+The subsequent estimates use finite divisor sums and explicit
+logarithm bounds.  This follows the weighted large-sieve route to
+Brun--Titchmarsh, with a local-spacing proof tailored to the Farey
+fractions needed here. The classical weighted-sieve and Hilbert-inequality sources are \cite{MontgomeryVaughan1973,MontgomeryVaughan1974}; the finite-grid replacement and the explicit elementary completion are given in full below.
+
+\begin{theorem}[Sharp Brun--Titchmarsh, arithmetical inputs]
+\label{thm:sharp-bt}
+For a rational $x>q$, an integer $q\geq1$, and $\gcd(a,q)=1$,
+\begin{equation}
+ \boxed{\displaystyle
+ \pi(x;q,a)\leq\frac{2x}{\varphi(q)\log(x/q)}.}
+ \label{eq:sharp-bt}
+\end{equation}
+\end{theorem}
+
+Here $\pi(x;q,a)$ counts primes up to $\lfloor x\rfloor$.
+All logarithms in the proof have the rational-approximation meaning
+already specified.  Thus \eqref{eq:sharp-bt} means that, for every
+precision parameter $r$, the corresponding rational lower
+approximation $L_r(x/q)$ satisfies
+$\varphi(q)\pi(x;q,a)L_r(x/q)\leq2x$.
+The finite numerical side conditions below are checked using exact
+integers and rational enclosures; their reproducible certificate is
+included with the archive.  This numerical certificate checks the
+side conditions, not the universal proof or an iPRA derivation.
+
+\subsection{Three estimates from disjoint intervals}
+
+Let $x_1,\ldots,x_R$ be rational points distinct modulo $1$, with
+$R\geq2$.  Suppose positive rational numbers $\delta_r$ satisfy
+\begin{equation}
+ \delta_r\leq\min_{s\ne r}\|x_r-x_s\|,
+ \qquad \delta_r\leq\frac18.
+ \label{eq:local-spacing}
+\end{equation}
+Here $\|t\|$ is the distance to the nearest integer.  Write
+\[
+ K_{rs}=\csc\bigl(\pi(x_r-x_s)\bigr),\qquad
+ C_{rs}=\cot\bigl(\pi(x_r-x_s)\bigr)
+ \quad(r\ne s),
+\]
+and set both diagonal entries to zero.  Intervals $I_r$ of length
+$\delta_r$, centered at $x_r$ on the circle, have disjoint interiors:
+the center distance is at least each of $\delta_r,\delta_s$, hence at
+least $(\delta_r+\delta_s)/2$.
+
+The functions $\csc^2(\pi t)$ and $\csc^4(\pi t)$ are convex between
+their poles.  Their products with translated copies of
+$\csc^2(\pi t)$ are also convex there: the logarithmic second derivative
+of each positive factor is positive.  Applying the midpoint integral
+inequality on the intervals $I_r$ gives
+\begin{align}
+ \sum_{r\ne s}\delta_r K_{rs}^2
+ &\leq\frac4{\pi^2\delta_s},
+ \label{eq:spacing-two}\\
+ \sum_{r\ne s}\delta_r K_{rs}^4
+ &\leq\frac6{\pi^4\delta_s^3},
+ \label{eq:spacing-four}\\
+ \sum_{r\ne s,t}\delta_r K_{rs}^2K_{rt}^2
+ &\leq\frac4{\pi^2}
+ \left(\frac1{\delta_s}+\frac1{\delta_t}\right)K_{st}^2
+ \qquad(s\ne t).
+ \label{eq:spacing-mixed}
+\end{align}
+We verify the constants and the sign needed in the third estimate.
+
+For \eqref{eq:spacing-two}, translate $x_s$ to zero and put
+$b=\delta_s/2$.  The sum is bounded by
+\[
+ \int_b^{1-b}\csc^2(\pi t)\,dt
+ =\frac2\pi\cot(\pi b)
+ \leq\frac4{\pi^2\delta_s},
+\]
+using $\cot u\leq1/u$ for $0<u\leq\pi/2$.  For the fourth powers,
+the same integral calculation gives
+\[
+ \frac2\pi\left(\cot(\pi b)+\frac13\cot^3(\pi b)\right)
+ \leq\frac4{\pi^2\delta_s}
+       +\frac{16}{3\pi^4\delta_s^3}.
+\]
+After multiplication by $\pi^4\delta_s^3$, its right side is at most
+$16/3+4\pi^2\delta_s^2<143/24<6$, since
+$\delta_s\leq1/8$ and $\pi^2<10$.  This proves
+\eqref{eq:spacing-four}.
+
+For \eqref{eq:spacing-mixed}, take $x_s=0$, $x_t=a\in(0,1)$,
+$b=\delta_s/2$, and $c=\delta_t/2$.  The sum is at most the integral
+of $\csc^2(\pi t)\csc^2(\pi(t-a))$ over
+$[b,a-c]\cup[a+c,1-b]$.  The identity
+\begin{align*}
+ &\csc^2(\pi t)\csc^2(\pi(t-a))\\
+ &\quad=\csc^2(\pi a)
+ \left(\csc^2(\pi t)+\csc^2(\pi(t-a))
+       +2\cot(\pi a)\bigl(\cot(\pi t)-\cot(\pi(t-a))\bigr)\right)
+\end{align*}
+separates the integral into three parts.  The first two have the
+bounds in \eqref{eq:spacing-two}.  The integral of the difference of
+cotangents is
+\[
+ \frac1\pi\log
+ \frac{\sin(\pi(a-b))\sin(\pi(a-c))}
+      {\sin(\pi(a+b))\sin(\pi(a+c))}.
+\]
+All four sine factors are positive.  If $a\leq1/2$, each numerator
+factor is at most its matching denominator factor, whereas
+$\cot(\pi a)\geq0$.  If $a\geq1/2$, both comparisons reverse.
+In both cases the cotangent times this logarithm is nonpositive.
+Dropping that term proves \eqref{eq:spacing-mixed}.  The comparison of
+the paired sine factors is the identity
+$\sin(\pi(a+h))-\sin(\pi(a-h))
+=2\cos(\pi a)\sin(\pi h)$.
+
+\subsection{A weighted cosecant inequality, with finite maximization}
+
+\begin{lemma}[Local weighted cosecant inequality]
+\label{lem:weighted-cosecant}
+Under \eqref{eq:local-spacing}, for every finite complex vector $u$,
+\begin{equation}
+ \left|\sum_{r\ne s}u_r\overline{u_s}K_{rs}\right|
+ \leq\frac32\sum_r\frac{|u_r|^2}{\delta_r}.
+ \label{eq:weighted-cosecant}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+We first display the finite algebra behind the estimate, and then
+give the rational search that supplies the approximate vector used
+in that algebra.  Put $D=\operatorname{diag}(\delta_r)$ and
+$H=-iD^{1/2}KD^{1/2}$.  The matrix $H$ is Hermitian.
+Since $|\sin(\pi t)|\geq2\|t\|$ and
+$\sqrt{\delta_r\delta_s}\leq\|x_r-x_s\|$, every entry of $H$ has
+absolute value at most $1/2$.  In particular, the finite Cauchy
+inequality gives $\|Hv\|\leq R\|v\|$.
+
+Suppose temporarily that
+\[
+ \sum_r\frac{|u_r|^2}{\delta_r}=1,
+ \qquad Ku=i\mu D^{-1}u+e,
+ \qquad \sum_r\delta_r|e_r|^2\leq\epsilon^2,
+\]
+where $u=D^{1/2}v$, $\|v\|=1$, and
+$\mu=v^*Hv\in\mathbb R$.  If $w=Hv-\mu v$, then $v^*w=0$ and
+$e=iD^{-1/2}w$.  Hence
+\begin{equation}
+ \mu^2\leq\sum_r\delta_r|(Ku)_r|^2=T_1+T_2,
+ \label{eq:cosecant-expansion}
+\end{equation}
+where
+\[
+ T_1=\sum_s|u_s|^2\sum_{r\ne s}\delta_r K_{rs}^2
+ \leq\frac4{\pi^2}
+\]
+and
+\[
+ T_2=\sum_{\substack{r,s,t\text{ distinct}}}
+       \delta_r u_s\overline{u_t}K_{rs}K_{rt}.
+\]
+
+The identity $K_{rs}K_{rt}=K_{st}(C_{rs}-C_{rt})$ gives
+\begin{equation}
+ T_2=U-V+\sum_{s\ne t}(\delta_s+\delta_t)
+             u_s\overline{u_t}K_{st}C_{st},
+ \label{eq:cosecant-cross}
+\end{equation}
+where
+\[
+ U=\sum_{\substack{r\ne s\\s\ne t}}
+       \delta_r u_s\overline{u_t}K_{st}C_{rs},
+ \qquad
+ V=\sum_{\substack{r\ne t\\s\ne t}}
+       \delta_r u_s\overline{u_t}K_{st}C_{rt}.
+\]
+The $r=t$ terms added to $U$ and the $r=s$ terms added to $V$
+account exactly for the last sum in \eqref{eq:cosecant-cross}.
+Substituting $Ku=i\mu D^{-1}u+e$ shows that the $\mu$ terms in
+$U$ and $V$ are equal.  Their difference is
+\begin{equation}
+ U-V=2\sum_{r\ne s}\delta_r C_{rs}
+                     \operatorname{Re}(u_s\overline{e_s}).
+ \label{eq:cross-residual}
+\end{equation}
+For example, both $\mu$ contributions equal
+$-i\mu\sum_{r\ne s}(\delta_r/\delta_s)|u_s|^2C_{rs}$;
+this checks the cancellation including its signs.
+
+Let $B\geq1/\min_r\delta_r$ be an integer.  Then
+$|C_{rs}|\leq B/2$, $\delta_r\leq1$, and
+\[
+ \sum_s|u_se_s|=\sum_s|v_sw_s|\leq\epsilon.
+\]
+Thus $|U-V|\leq RB\epsilon$.  Since $|C_{st}|\leq|K_{st}|$,
+\eqref{eq:cosecant-cross} gives $T_2\leq E+RB\epsilon$, where
+\[
+ E=\sum_{s\ne t}(\delta_s+\delta_t)|u_su_t|K_{st}^2.
+\]
+Rewrite this as
+$E=2\sum_r|u_r|\sum_{s\ne r}\delta_s|u_s|K_{rs}^2$.
+Weighted Cauchy, followed by
+\eqref{eq:spacing-four} and \eqref{eq:spacing-mixed}, yields
+\begin{align*}
+ E^2
+ &\leq4\sum_{s,t}\delta_s\delta_t|u_su_t|
+           \sum_{r\ne s,t}\delta_rK_{rs}^2K_{rt}^2\\
+ &\leq\frac{24}{\pi^4}+\frac{16}{\pi^2}E.
+\end{align*}
+The diagonal $s=t$ contributes at most $6/\pi^4$ before the
+outer factor $4$; the other terms contribute at most $4E/\pi^2$.
+For $X=\pi^2E\geq0$, therefore, $X^2\leq24+16X$.
+It follows that $X<35/2$, because
+$(35/2)^2-16(35/2)-24=9/4>0$ and the quadratic is increasing
+beyond $8$.  Consequently, if $RB\epsilon\leq1/1000$,
+\begin{equation}
+ \mu^2\leq\frac{43}{2\pi^2}+\frac1{1000}
+ <\frac{2150}{961}+\frac1{1000}
+ <\left(\frac{1499}{1000}\right)^2.
+ \label{eq:approximate-spectral-bound}
+\end{equation}
+We used $\pi>31/10$.  Each last comparison is rational arithmetic.
+
+It remains to produce a sufficiently good approximate maximizer
+without an existence theorem for an eigenvector.  Choose
+\[
+ \epsilon=\frac1{1000RB},\qquad
+ \tau=\frac{\epsilon^2}{100R},\qquad
+ h=\frac{\tau}{100R^2}.
+\]
+Approximate $H$ by a Hermitian matrix $\widehat H$ with Gaussian
+rational entries, each within $h$ of the corresponding entry of
+$H$.  Enumerate the Gaussian rational grid of mesh $h$ in the
+coordinate box $[-2,2]^{2R}$, retaining vectors with squared norm
+between $1/4$ and $4$.  This is a nonempty finite set.  Maximize
+the rational quantity
+$w^*\widehat H w/(w^*w)$ by a finite comparison loop, and normalize
+the selected vector to obtain $v$.
+
+For any unit vector, rounding its coordinates to this grid changes
+its norm by at most $2Rh$, and normalization at most doubles that
+distance.  Even allowing an extra factor two for first approximating
+the input coordinates, the Rayleigh quotient changes by at most
+$16R^2h$.  The matrix approximation changes a normalized Rayleigh
+quotient by at most $Rh$ at either endpoint.  The chosen values of
+$h$ therefore give
+\begin{equation}
+ v^*Hv\geq u^*Hu-\tau
+ \quad\text{for every unit vector }u.
+ \label{eq:grid-maximizer}
+\end{equation}
+For the rounded vector the squared norm remains in $[1/4,4]$,
+so it is among the enumerated candidates.
+
+Put $\mu=v^*Hv$ and $w=Hv-\mu v$.  Then $v^*w=0$ and
+$\|w\|\leq2R$.  Substitute
+\[
+ u=\frac{v+w/(2R)}{\|v+w/(2R)\|}
+\]
+into \eqref{eq:grid-maximizer}.  Expanding its Rayleigh quotient,
+using $\|H\|\leq R$ and $|\mu|\leq R$, gives
+\[
+ u^*Hu-\mu\geq\frac{\|w\|^2}{4R}.
+\]
+Indeed the numerator of the difference is at least
+$\|w\|^2/(2R)$, and its denominator
+$1+\|w\|^2/(4R^2)$ is at most $2$.
+Thus $\|w\|^2\leq4R\tau$, so $\|w\|\leq\epsilon/5<\epsilon$.
+This is the approximate vector required above.
+
+Equation \eqref{eq:approximate-spectral-bound}, followed by
+\eqref{eq:grid-maximizer}, bounds every unit Rayleigh quotient by
+$1499/1000+\tau<3/2$.  Applying the same construction to $-H$
+bounds its negative.  Rescaling the vector gives
+\eqref{eq:weighted-cosecant}.  The entire search is finite, with
+mesh and approximation precision specified by rational formulas.
+\end{proof}
+
+\subsection{From the cosecant bound to a weighted sieve}
+
+For a positive integer $N$ and an arbitrary integer $M$, expanding
+a finite square sum and using the geometric identity
+\[
+ \sum_{n=M+1}^{M+N}e^{2\pi in\theta}
+ =\frac{e^{2\pi i(M+N+1/2)\theta}
+             -e^{2\pi i(M+1/2)\theta}}
+        {2i\sin(\pi\theta)}
+\]
+shows that
+\[
+ \sum_{n=M+1}^{M+N}\left|\sum_rv_re^{2\pi inx_r}\right|^2
+ \leq\sum_r\left(N+\frac3{2\delta_r}\right)|v_r|^2.
+\]
+The diagonal contribution is $N\sum|v_r|^2$; the other terms are a
+half-difference of two cosecant forms, each bounded by
+Lemma~\ref{lem:weighted-cosecant}.  Dividing matrix columns by the
+displayed positive square roots and applying finite Cauchy duality
+gives
+\begin{equation}
+ \sum_r\frac{\left|\sum_{n=M+1}^{M+N}a_ne^{2\pi inx_r}\right|^2}
+                  {N+3/(2\delta_r)}
+ \leq\sum_{n=M+1}^{M+N}|a_n|^2.
+ \label{eq:weighted-large-sieve}
+\end{equation}
+For completeness, if a finite matrix $A$ satisfies
+$\|Av\|\leq\|v\|$, then
+$\|A^*w\|^2=\langle AA^*w,w\rangle
+\leq\|A^*w\|\|w\|$, which gives the dual inequality.
+This step has no spectral or compactness hypothesis.
+
+Take all distinct reduced fractions $a/d$ modulo one with
+$1\leq d\leq z$, where $z\geq8$ is an integer, including $0/1$.
+Set $\delta_{a/d}=1/(dz)$.  Their circular distances are at least
+$1/(de)$, so \eqref{eq:local-spacing} holds.
+
+Let $\mathcal A$ be a set of $Z$ integers in an interval of $N$
+consecutive integers.  Suppose it omits one residue class modulo
+each prime $p\leq z$ not dividing $q$.  For squarefree
+$d\leq z$ coprime to $q$, CRT supplies $b_d$ such that
+$\gcd(n-b_d,d)=1$ for every $n\in\mathcal A$.  If
+$S(t)=\sum_{n\in\mathcal A}e^{2\pi int}$, the finite Ramanujan-sum
+identity gives
+\[
+ \sum_{\substack{a\bmod d\\\gcd(a,d)=1}}
+      e^{-2\pi iab_d/d}S(a/d)=\mu(d)Z.
+\]
+To verify the identity, expand the sum over reduced residues by
+M\"obius inclusion-exclusion and sum finite geometric progressions;
+when $\gcd(n-b_d,d)=1$, only the divisor $1$ remains.
+Cauchy therefore yields
+$\sum_{\gcd(a,d)=1}|S(a/d)|^2\geq Z^2/\varphi(d)$.
+Substitute these lower bounds into \eqref{eq:weighted-large-sieve},
+discard other nonnegative terms, and divide by $Z$ when $Z>0$.
+The case $Z=0$ is immediate.  We obtain
+\begin{equation}
+ Z\leq
+ \left(\sum_{\substack{d\leq z\\\gcd(d,q)=1}}
+       \frac{\mu(d)^2}{\varphi(d)(N+3dz/2)}\right)^{-1}.
+ \label{eq:weighted-arithmetic-sieve}
+\end{equation}
+
+For any positive decreasing weight $f$, a useful comparison is
+\begin{equation}
+ \sum_{d\leq z}\frac{\mu(d)^2f(d)}{\varphi(d)}
+ \leq\frac q{\varphi(q)}
+       \sum_{\substack{d\leq z\\\gcd(d,q)=1}}
+                  \frac{\mu(d)^2f(d)}{\varphi(d)}.
+ \label{eq:weighted-remove-modulus}
+\end{equation}
+Write each squarefree $d$ as $er$, with $e\mid\operatorname{rad}(q)$
+and $\gcd(r,q)=1$.  Then $f(er)\leq f(r)$ and $r\leq z/e\leq z$.
+Summing $1/\varphi(e)$ over these divisors gives $q/\varphi(q)$.
+This proves \eqref{eq:weighted-remove-modulus} by a finite calculation.
+
+\subsection{An explicit lower bound for the denominator}
+
+Write $G(u)=\sum_{d\leq u}\mu(d)^2/\varphi(d)$, with real $u\geq1$.
+We require
+\begin{equation}
+ G(u)>\log u+\frac{107}{100}\qquad(u\geq6).
+ \label{eq:strong-G-bound}
+\end{equation}
+Here is a proof with a small finite certificate.
+
+Define $\gamma$ by the monotone brackets
+$H_n-\log(n+1)\leq\gamma\leq H_n-\log n$.
+Their gap is at most $1/n$, giving an explicit Cauchy modulus.
+For $y\geq1$, $m=\lfloor y\rfloor$, these brackets imply
+\begin{equation}
+ |H_m-\log y-\gamma|\leq\frac1y.
+ \label{eq:harmonic-gamma-error}
+\end{equation}
+For the upper inequality, use
+$\gamma\geq H_m-\log(m+1)$ and
+$\log((m+1)/y)\leq(m+1-y)/y\leq1/y$.
+For the lower one use
+$\gamma\leq H_{m+1}-\log(m+1)$; the result is at least
+$-1/(m+1)\geq-1/y$.
+
+Let $H_6(y)=\sum_{n\leq y,\,\gcd(n,6)=1}1/n$.
+Inclusion-exclusion over $1,2,3,6$ and
+\eqref{eq:harmonic-gamma-error} give, for $y\geq6$,
+\[
+ H_6(y)=\frac13\log y+\frac13\gamma
+       +\frac13\log2+\frac16\log3+E(y),
+ \qquad |E(y)|\leq\frac4y.
+\]
+Decomposing squarefree integers according to their common divisor
+with $6$, and using the radical bound of the preceding section,
+gives, for $u\geq36$,
+\begin{equation}
+ G(u)\geq\log u+\gamma+\frac12\log2+\frac16\log3-\frac{30}{u}.
+ \label{eq:G-large-bound}
+\end{equation}
+The coefficients follow from
+$\sum_{m\mid6}1/\varphi(m)=3$ and
+$\sum_{m\mid6}m/\varphi(m)=15/2$.
+
+The certified rational inequalities
+$\gamma>577/1000$, $\log2>692/1000$, and
+$\log3>1098/1000$ show that
+\eqref{eq:G-large-bound} implies \eqref{eq:strong-G-bound} for
+$u\geq1000$.  For $6\leq u<1000$, let $n=\lfloor u\rfloor$.
+The $994$ finite inequalities
+\begin{equation}
+ G(n)>\log(n+1)+\frac{107}{100},
+ \qquad n=6,\ldots,999,
+ \label{eq:G-finite-certificate}
+\end{equation}
+prove the result on each interval $[n,n+1)$.
+They are verified using exact rational upper bounds for
+$\log(n+1)$.  The smallest certified lower bound for
+$G(n)-\log(n+1)$ exceeds $1.114081573$, at $n=9$.
+The certificate for $\gamma>577/1000$ is
+$H_{10000}-\operatorname{upperlog}(10001)>577/1000$;
+its certified lower bound exceeds $0.577165669$.
+
+The logarithm certificates use binary range reduction to $[1,2]$
+and $18$ terms of
+$2\sum_{j\geq0}w^{2j+1}/(2j+1)$, with its exact geometric-tail
+bound.  The full rational verification program accompanies this
+article.  Thus these are finite comparisons with proved error
+bounds, rather than floating-point tests.
+
+For $z\geq100$, define
+\[
+ J(z)=\sum_{d\leq z}\frac{\mu(d)^2}{\varphi(d)(1+d/z)}.
+\]
+Partial summation, using \eqref{eq:strong-G-bound} above $6$ and
+retaining the terms $d\leq5$ exactly, gives, with $C=107/100$,
+\begin{align*}
+ J(z)\geq{}&
+ \sum_{d\leq5}\frac{\mu(d)^2}{\varphi(d)}
+              \left(\frac z{z+d}-\frac z{z+6}\right)\\
+ &+\frac z{z+6}(\log6+C)
+   +\int_6^z\frac z{u(z+u)}\,du.
+\end{align*}
+The integral equals
+$\log z+\log(1+6/z)-\log12$.
+Moreover,
+$\sum_{d\leq5}\mu(d)^2(6-d)/\varphi(d)=43/4$,
+$z/(z+d)\geq9/10$, and
+$\log(1+6/z)\geq6/(z+6)$.
+Consequently
+\[
+ J(z)-\log z\geq C-\log2+
+             \frac{627/40-6(\log6+C)}{z+6}.
+\]
+The rational bounds $\log2<347/500$, $\log6<224/125$ and
+$z+6\geq106$ make the right side at least
+$38359/106000>361/1000$.  We have proved
+\begin{equation}
+ J(z)>\log z+\frac{361}{1000}\qquad(z\geq100).
+ \label{eq:weighted-J-bound}
+\end{equation}
+
+We also use
+\begin{equation}
+ \pi(z)\leq z/3\qquad\text{for integers }z\geq100.
+ \label{eq:weak-prime-count}
+\end{equation}
+For $z\geq165$, inclusion-exclusion with $2,3,5$ gives
+$\pi(z)\leq4z/15+11\leq z/3$.
+The $65$ integers $100\leq z<165$ are checked exactly in the
+same finite certificate.
+
+\subsection{The large range}
+
+Let $t=x/q>16000$.  Choose the representative $a_0$ in
+$\{1,\ldots,q\}$ and let $N$ be the number of integers
+$a_0+qj\leq x$, $j\geq0$.  Then
+$N-1\leq t<N+1$ and $N>15000$.
+Take the integer
+\[
+ z=\max\{n\leq N:3n^2\leq2N\}
+   =\left\lfloor\sqrt{2N/3}\right\rfloor\geq100.
+\]
+The indices of the primes exceeding $z$ omit one residue modulo
+each prime $p\leq z$ not dividing $q$.  Apply
+\eqref{eq:weighted-arithmetic-sieve} and
+\eqref{eq:weighted-remove-modulus}.  Since
+$3z^2/2\leq N$, we have
+$N+3dz/2\leq N(1+d/z)$, and hence
+\begin{equation}
+ \pi(x;q,a)\leq\frac q{\varphi(q)}
+                \left(\pi(z)+\frac N{J(z)}\right).
+ \label{eq:large-range-sieve}
+\end{equation}
+
+The other root inequality, $(z+1)^2>2N/3$, gives
+\[
+ \log z\geq\tfrac12\log N-\tfrac12\log(3/2)-1/z.
+\]
+Using $\log(3/2)<203/500$ and \eqref{eq:weighted-J-bound},
+\[
+ J(z)>\tfrac12\log N+\tfrac{361}{1000}
+                        -\tfrac{203}{1000}-\tfrac1{100}
+       >\tfrac12\log N+\tfrac7{50}.
+\]
+Set $u=\log N$.  By \eqref{eq:weak-prime-count},
+\[
+ \pi(z)+N/J(z)\leq\frac{\sqrt N}{3}
+                       +\frac{2N}{u+7/25}.
+\]
+For $N\geq15000$, we have $u\geq3$ and
+\[
+ \frac{2N}{u}-\frac{2N}{u+7/25}\geq\frac N{2u^2}.
+\]
+Also $u^2\leq\sqrt N$: if $w=N^{1/4}\geq10$, then
+$\log w\leq w/4$.  This holds at $10$ because
+$\log10<5/2$, and it persists thereafter by integrating
+$1/w\leq1/4$.  Thus $u=4\log w\leq w$.
+Finally $u\sqrt N\geq12$.  Combining these inequalities gives
+\[
+ \pi(z)+N/J(z)
+ \leq\frac{2N}{u}-\frac{\sqrt N}{6}
+ \leq\frac{2(N-1)}{\log N}.
+\]
+If $N-1\leq t\leq N$, then
+$(N-1)/\log N\leq t/\log t$ by separately comparing numerator
+and denominator.  If $t\geq N$, use the monotonicity of
+$t/\log t$ for $t\geq e$.  Equation
+\eqref{eq:large-range-sieve} now proves \eqref{eq:sharp-bt}
+throughout $t>16000$.
+
+\subsection{The small range}
+
+Finite inclusion-exclusion gives, for any fixed sieving endpoint $z$,
+\[
+ \pi(x;q,a)\leq\frac{x}{\varphi(q)}
+ \left(\prod_{p\leq z}(1-1/p)
+       +\frac{2^{\pi(z)}+\pi(z)}{t}\right).
+\]
+For the main term remove primes dividing $q$ and use
+$\prod_{p\mid q}(1-1/p)^{-1}=q/\varphi(q)$.
+The error counts at most $2^{\pi(z)}$ divisor terms, and the
+discarded small primes contribute at most $\pi(z)$.
+
+Taking $z=2,3,5,13$, it is enough that one of the following four
+functions is less than one:
+\[
+\begin{array}{ll}
+ f_1(t)=\log t\left(\frac14+\frac3{2t}\right),&
+ f_2(t)=\log t\left(\frac16+\frac3t\right),\\[3pt]
+ f_3(t)=\log t\left(\frac2{15}+\frac{11}{2t}\right),&
+ f_4(t)=\log t\left(\frac{96}{1001}+\frac{35}t\right).
+\end{array}
+\]
+The respective ranges are
+\[
+ (1,20],\qquad[18,270],\qquad[42,1000],\qquad[700,20000].
+\]
+They overlap and cover $(1,20000]$.
+
+For $f(t)=\log t(A+B/t)$, the sign of $f'$ is the sign of
+$g(t)=At+B(1-\log t)$.
+For $f_1$, the minimum of $g$ is attained at $6$ and equals
+$3-(3/2)\log6>0$, so $f_1$ is increasing.
+For each of the other intervals, its left endpoint is at least
+$B/A$.  There $g$ is increasing, so $f$ has no interior local
+maximum and is bounded by its endpoint values.
+The finite certificate verifies
+\[
+ f_1(20)<1,\quad f_2(18),f_2(270)<1,\quad
+ f_3(42),f_3(1000)<1,\quad f_4(700),f_4(20000)<1
+\]
+using rational upper logarithm bounds.  The smallest certified
+endpoint margin is greater than $0.004724985$.
+This proves \eqref{eq:sharp-bt} for $1<t\leq20000$, overlapping
+the large range and completing the proof.
+
+\subsection{Primitive recursive implementation and Lean obligations}
+
+The proof uses no unbounded search for a prime.  Trial division,
+totients, M\"obius values, CRT representatives, finite Fourier sums,
+the integer square root, grid enumeration, and exact comparison of
+rational Rayleigh quotients all have explicit primitive recursive
+implementations.  The numerical certificate uses finite loops with
+the stated bounds $10000$, $1000$, and $165$.
+
+For the Farey set, the spacing data are rational:
+$\delta_{a/d}=1/(dz)$ and $B=z^2$ suffice.  The number of points is
+at most $z^2+1$.  Thus the matrix grid parameters in the proof are
+explicit rational functions of $z$ and that point count.  Square
+roots of positive rational numbers use bounded bisection.
+Sine, cosine, and the exponential on bounded arguments use their
+factorial series.  Their reciprocal denominators are apart from
+zero by $|\sin(\pi(x_r-x_s))|\geq2/z^2$, which supplies a
+primitive recursive precision bound for every division.
+
+The integrations in the spacing estimates range over intervals at
+distance at least $1/(2z^2)$ from their poles.  On these intervals,
+the derivatives appearing in the midpoint and integration identities
+have explicit bounds obtained by differentiating rational expressions
+in sine and cosine.  Uniform Riemann-sum error bounds therefore
+reduce the integral inequalities to rational finite sums at a
+primitive recursive mesh.  The constants $\pi>31/10$ and
+$\pi^2<10$ have finite alternating-series certificates using
+$100$ terms of $\pi=4\arctan(1)$ and the next-term error bound.
+
+A Lean development can follow the proof in the following order:
+certified elementary functions; convex midpoint estimates for the
+three explicit kernels; rational finite-grid maximization;
+the residual cancellation \eqref{eq:cross-residual}; the weighted
+cosecant and large-sieve inequalities; the Ramanujan-sum identity;
+the decreasing-weight comparison; the exact side-condition
+certificate; and the two final ranges.  The finite grid is essential
+to the foundational audit: replacing it by an unrestricted spectral
+theorem would lose the explicit constructive justification supplied
+here.  No completed Lean or object-level iPRA proof is asserted by
+this mathematical reconstruction.

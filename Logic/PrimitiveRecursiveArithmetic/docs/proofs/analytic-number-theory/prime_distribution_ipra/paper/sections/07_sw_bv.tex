@@ -1,0 +1,511 @@
+\section{Siegel--Walfisz and Bombieri--Vinogradov}
+\label{sec:swbv}
+
+\paragraph{Status of this section.}
+The full two uniform distribution theorems are \emph{not proved here}.
+We give exact arithmetic targets, prove several finite ingredients, and
+locate a substantive missing uniformity step. This qualification does not
+apply to the separate Dirichlet proof elsewhere in this report.
+The distinction is essential: the usual full Siegel--Walfisz theorem has
+ineffective constants, and standard proofs of the full
+Bombieri--Vinogradov theorem inherit that issue. Akbary and Hambrook
+explain this dependence and prove an explicit restricted-modulus
+variant~\cite{AkbaryHambrook}. Johnston's 2026 paper still describes all
+known proofs of the unrestricted theorem as ineffective; its new
+effective conclusions concern sifting applications~\cite{Johnston2026}.
+These facts do not prove nonprovability in iPRA. They identify a proof
+obligation which neither a classical quotation nor a finite numerical
+check discharges.
+
+\subsection{The targets and their quantifiers}
+
+Throughout this section, $q\geq1$ and $a$ is a reduced residue modulo $q$.
+Put
+\[
+ \Lambda(n)=
+ \begin{cases}
+  \log p,&n=p^j\text{ for a prime }p\text{ and }j\geq1,\\
+  0,&\text{otherwise},
+ \end{cases}
+ \qquad
+ \psi(x;q,a)=\sum_{\substack{1\leq n\leq x\\n\equiv a\pmod q}}\Lambda(n).
+\]
+For an integer $X\geq1$, define the finite maximum
+\[
+ E(X;q)=
+ \max_{\substack{0\leq y\leq X\\y\in\mathbb N}}
+ \max_{\substack{0\leq a<q\\(a,q)=1}}
+ \left|\psi(y;q,a)-\frac{y}{\varphi(q)}\right|.
+\]
+The convention $a=0$ works when $q=1$. Replacing integer $y$ by real
+$y$ changes this maximum by at most $1$: on $[n,n+1)$ the sum is constant,
+whereas $y/\varphi(q)$ changes by at most $1$.
+
+An exponential Siegel--Walfisz target is
+\begin{equation}
+ \begin{gathered}
+ \forall D\geq1\ \exists c_D,C_D,X_D>0\ \forall x\geq X_D:\\
+ \left|\psi(x;q,a)-\frac{x}{\varphi(q)}\right|
+ \leq C_Dx\exp(-c_D\sqrt{\log x})
+ \quad(q\leq(\log x)^D).
+ \end{gathered}
+ \label{eq:sw-analytic-target}
+\end{equation}
+The quantification over $q,a$ in this and similar displays is universal.
+An equivalent customary choice of parameters may put ineffectivity in
+the multiplicative constant or threshold instead of the exponential
+constant. Moving it between parameters does not supply effective
+witnesses.
+
+A customary Bombieri--Vinogradov target is
+\begin{equation}
+ \forall A\geq1\ \exists B,C,X_0\ \forall X\geq X_0:
+ \qquad
+ \sum_{q\leq \sqrt X/(\log X)^B}E(X;q)
+ \leq \frac{CX}{(\log X)^A}.
+ \label{eq:bv-analytic-target}
+\end{equation}
+Even when a formula for $B$ is known, constructive content is still
+required for $C$ and $X_0$. A statement with the existential constants
+placed after $X$, or a computation for each prescribed finite interval,
+does not establish either target.
+
+\subsection{Rational names with a proved error bound}
+
+Here is one deliberately elementary implementation of the logarithms
+appearing in these targets. For $n\geq1$ and precision $s\geq0$, set
+\[
+ z_n=\frac{n-1}{n+1},\qquad M(n,s)=n(n+s+3),\qquad
+ L_s(n)=2\sum_{j=0}^{M(n,s)-1}\frac{z_n^{2j+1}}{2j+1}.
+\]
+These are primitive recursive rational expressions. We use signed
+integer numerators and positive integer denominators; every comparison
+is implemented by cross multiplication.
+
+\begin{lemma}[Finite logarithm enclosure]
+For $r\geq s$,
+\[
+ 0\leq L_r(n)-L_s(n)\leq2^{-s}.
+\]
+In the ordinary real interpretation,
+$0\leq\log n-L_s(n)\leq2^{-s}$.
+\end{lemma}
+\begin{proof}
+If $n=1$, all terms vanish. For $n\geq2$, extending a finite positive
+tail to its geometric majorant gives
+\[
+ L_r(n)-L_s(n)
+ \leq \frac{2z_n^{2M(n,s)+1}}{1-z_n^2}.
+\]
+This inequality follows directly by multiplying the finite geometric
+sum by $1-z_n^2$; no infinite sum is needed for the arithmetic assertion.
+Now $z_n\leq1-1/n$ and
+\[
+ \left(1-\frac1n\right)^n\leq\frac12,
+\]
+since the binomial theorem gives
+$(1+1/(n-1))^n\geq1+n/(n-1)>2$.
+Also
+\[
+ \frac{2}{1-z_n^2}=\frac{(n+1)^2}{2n}
+ \leq2n\leq2^{n+1}.
+\]
+Consequently the geometric majorant is at most
+\[
+ 2n\,2^{-2(n+s+3)}
+ \leq2^{-n-2s-5}\leq2^{-s}.
+\]
+The last estimate is a finite integer inequality. The external
+identification with $\log n$ follows by integrating the geometric
+identity for $2/(1-z^2)$, or by the usual power series for
+$\log((1+z)/(1-z))$. Internally the sequence $L_s(n)$ and the proved
+finite difference bound are the logarithm name; its external
+interpretation is not an additional arithmetic axiom.
+\end{proof}
+
+Set $\Lambda_s(n)=L_s(p)$ if $n=p^j$ is a prime power, and zero
+otherwise. Bounded trial division decides that case. Let
+$\Psi_s(y;q,a)$ be the corresponding finite progression sum, and let
+$E_s(X;q)$ be the finite maximum formed with $\Psi_s$ instead of $\psi$.
+For $r\geq s$ and $y\leq X$, the preceding lemma gives
+\begin{align}
+ 0&\leq\Psi_r(y;q,a)-\Psi_s(y;q,a)\leq X2^{-s},
+ \label{eq:psi-finite-error}\\
+ |E_r(X;q)-E_s(X;q)|&\leq X2^{-s}.
+ \label{eq:max-finite-error}
+\end{align}
+For the second inequality, use
+$\bigl||u|-|v|\bigr|\leq|u-v|$ and the analogous elementary inequality
+for finite maxima. Thus the error for a sum of $Q$ such maxima is
+\emph{$QX2^{-s}$}, not merely $X2^{-s}$.
+
+Define the integer functions
+\[
+ t(X)=\lfloor\log_2X\rfloor,\qquad
+ h(t,K)=\lfloor\sqrt t\rfloor\mathbin{\mathrm{div}}K,
+ \qquad
+ Q_B(t)=\left\lfloor\frac{2^{\lfloor t/2\rfloor}}{t^B}\right\rfloor.
+\]
+The logarithm notation in $t(X)$ is only descriptive: its implementation
+is bounded search for the largest $j\leq X$ with $2^j\leq X$.
+Integer square root is likewise bounded search.
+
+One positive arithmetic form of the exponential SW target is
+\begin{equation}
+\begin{split}
+ &\forall D\geq1\ \exists K,C,T\geq1\ \forall X\geq2^T
+       \ \forall s,q,a:\\[-2pt]
+ &\quad
+ 1\leq q\leq t(X)^D,\quad a<q,\quad(a,q)=1
+ \ \Longrightarrow\quad
+ \left|\Psi_s(X;q,a)-\frac{X}{\varphi(q)}\right|
+ \leq \frac{CX}{2^{h(t(X),K)}}+\frac{X}{2^s}.
+\end{split}
+\label{eq:sw-arithmetic-target}
+\end{equation}
+All variables here are natural numbers, and all displayed fractions are
+rational codes. Clearing denominators makes the matrix decidable.
+The scale $t(X)$ differs from $\log X$ by a constant factor; replacing
+$D$ by $D+1$ and increasing an explicit threshold interconverts the
+modulus ranges. The integer $h(t,K)$ differs from $\sqrt t/K$ by less
+than $2$. These observations explain the correspondence with
+\eqref{eq:sw-analytic-target}, including its exponential error.
+
+A dyadic positive arithmetic BV target is
+\begin{equation}
+\begin{split}
+ &\forall A\geq1\ \exists B\geq0,\ C,T\geq1
+       \ \forall t\geq T\ \forall s\geq0:\\
+ &\qquad
+ \sum_{1\leq q\leq Q_B(t)}E_s(2^t;q)
+ \leq \frac{C2^t}{t^A}+Q_B(t)2^{t-s}.
+\end{split}
+\label{eq:bv-arithmetic-target}
+\end{equation}
+Negative exponents in $2^{t-s}$ denote rational reciprocals, not integer
+subtraction. One may instead multiply through by $2^s t^A$.
+The universal precision quantifier encodes a closed inequality between
+Cauchy names. It does not request an unbounded search for a convenient
+precision. The dyadic presentation recovers arbitrary integer endpoints
+by taking the next power of two, using the maximum over $y$, and changing
+the constants and logarithmic exponents if necessary.
+
+\subsection{A complete implication from effective BV to a uniform SW input}
+
+The following reduction shows why one cannot remove the constructive
+issue merely by appealing to averaging. Its conclusion is the
+\emph{arbitrary logarithmic-power saving} form of SW, rather than the
+stronger single exponential estimate.
+
+\begin{proposition}[Witness-preserving BV reduction]
+Suppose witnesses $B(A),C(A),T(A)$ for
+\eqref{eq:bv-arithmetic-target} have been supplied. For any $D\geq1$ put
+\[
+ T'(A,D)=\max\{T(A),\,16(D+B(A)+1)^2,\,4\}.
+\]
+Then for $X\geq2^{T'(A,D)}$, $q\leq t(X)^D$, and $(a,q)=1$,
+\[
+ \left|\Psi_r(X;q,a)-\frac{X}{\varphi(q)}\right|
+ \leq \frac{2C(A)X}{t(X)^A}+X2^{-r}
+ \qquad\text{for every }r\geq0.
+\]
+All transformations of the supplied witnesses are primitive recursive.
+\end{proposition}
+\begin{proof}
+First, for integers $k\geq0$ and $t\geq16(k+1)^2$, we prove
+\begin{equation}
+ t^k\leq2^{\lfloor t/2\rfloor}.
+ \label{eq:integer-power-inclusion}
+\end{equation}
+Put $m=\lfloor\sqrt t\rfloor$. Then $m\geq4(k+1)$ and
+$t<(m+1)^2\leq2^{m+1}$. To check the last inequality, use $4^2=2^4$
+as the base case and $(u+1)^2\leq2u^2$ for $u\geq3$ as the induction
+step. Moreover $2k(m+1)\leq m^2\leq t$. Therefore
+$t^k\leq2^{k(m+1)}\leq2^{\lfloor t/2\rfloor}$, as required.
+
+Set $k=D+B(A)$. If $q\leq t^D$, then
+$qt^{B(A)}\leq t^k\leq2^{\lfloor t/2\rfloor}$, so
+$q\leq Q_{B(A)}(t)$. Since each summand in the BV bound is nonnegative,
+every individual $E_s(2^t;q)$ is bounded by that sum.
+
+For the stated $X$, let $t=\lceil\log_2X\rceil$ and
+$\ell=t(X)$. Thus $X\leq2^t<2X$, $\ell\leq t$, and
+$q\leq\ell^D\leq t^D$. For any $s\geq r$,
+\eqref{eq:psi-finite-error} and the BV inequality give
+\[
+ \left|\Psi_r(X;q,a)-\frac{X}{\varphi(q)}\right|
+ \leq X2^{-r}+\frac{C(A)2^t}{t^A}
+                 +Q_{B(A)}(t)2^{t-s}.
+\]
+We may remove the last term because this rational inequality holds for
+every $s\geq r$. Explicitly, if rational $u,v,c\geq0$ satisfy
+$u\leq v+c2^{-s}$ for every sufficiently large $s$, then $u\leq v$.
+If $u>v$, write $u-v=m/n>0$ and $c=a/b$ with positive denominators.
+Choose $s\geq r$ with $2^s>an$; then
+$c2^{-s}<1/n\leq u-v$, a contradiction. Such an $s$ is given by a
+primitive recursive expression, for example $\max(r,an+1)$.
+The case split is on decidable rational order. Finally,
+$C(A)2^t/t^A\leq2C(A)X/\ell^A$.
+\end{proof}
+
+This argument supplies no witnesses for BV. It proves that supplying
+them would also supply the uniform small-modulus power-saving estimates
+needed in standard analytic treatments. In particular, the aggregate
+precision allowance cannot be dropped when a single summand is taken.
+
+\subsection{The precise exceptional-zero obstruction in the usual route}
+
+Suppose a separately established explicit formula has given
+\begin{equation}
+ \left|\psi(x;q,a)-\frac{x}{\varphi(q)}
+        +\frac{\chi_*(a)x^\beta}{\beta\varphi(q)}\right|
+ \leq Kx\exp(-\kappa\sqrt{\log x}),
+ \label{eq:conditional-exceptional-formula}
+\end{equation}
+with the correction absent unless an exceptional primitive real
+character induces a character modulo $q$. This estimate, with its
+quantitative hypotheses, is an \emph{unproved analytic input in this
+section}. Assume $\beta\geq1/2$ and $1-\beta\geq\delta>0$.
+The fully elementary consequence is
+\[
+ \left|\psi(x;q,a)-\frac{x}{\varphi(q)}\right|
+ \leq Kx e^{-\kappa\sqrt{\log x}}
+             +\frac{2x e^{-\delta\log x}}{\varphi(q)}.
+\]
+If $q\leq(\log x)^D$ and an additional estimate supplied an explicit
+$c_D>0$ such that $1-\beta\geq c_Dq^{-1/(2D)}$, then
+\[
+ (1-\beta)\log x\geq c_D\sqrt{\log x}.
+\]
+The desired SW conclusion would follow with multiplier $K+2$ and
+exponential constant $\min(\kappa,c_D)$. The calculation locates the
+missing effective Siegel-type input; it does not establish that input.
+
+By contrast, a lower bound proportional to $q^{-1/2}$ produces only
+$(\log x)^{1-D/2}$ in the exponent at the endpoint
+$q=(\log x)^D$. This does not even grow when $D\geq2$.
+The still weaker bound with an extra logarithmic denominator cannot fix
+that defect. An exceptional primitive character also induces characters
+at multiples of its conductor. Removing one modulus therefore does not
+remove all exceptional contributions. Effective variants excluding
+\emph{every multiple} of an exceptional conductor are discussed by
+Tao~\cite{TaoBV2015,TaoANT2014}; they are different statements from the
+unrestricted targets above.
+
+\subsection{A complete rational-weight Vaughan identity}
+
+We now prove a useful ingredient which has no analytic uniformity gap.
+For a numerical bound $N$, supply a finite list of rational weights
+$w(p)$ for primes $p\leq N$, encoded by one integer. All assertions
+below concern $n\leq N$; no function quantifier is required. Equivalently,
+one may fix any primitive recursive weight function. Define
+\[
+ L_w(n)=\sum_{p\mid n}v_p(n)w(p),\qquad
+ \Lambda_w(n)=
+ \begin{cases}
+ w(p),&n=p^j,\ j\geq1,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+Let $\mu$ be the M\"obius function, $\mathbf1(n)=1$ for $n\geq1$, and
+$\varepsilon(n)=1$ for $n=1$ and zero otherwise. For functions on the
+positive integers, write
+\[
+ (f*g)(n)=\sum_{d\mid n}f(d)g(n/d),\qquad
+ f_{\leq U}(n)=f(n)\mathbf1_{n\leq U},\quad f_{>U}=f-f_{\leq U}.
+\]
+Every operation at argument $n$ is a bounded finite computation.
+
+\begin{proposition}[Weighted Vaughan identity]
+For positive integer cutoffs $U,V$,
+\begin{align*}
+ \Lambda_w={}&(\Lambda_w)_{\leq V}
+        +\mu_{\leq U}*L_w
+        -\mu_{\leq U}*\mathbf1*(\Lambda_w)_{\leq V}\\
+       &+\mu_{>U}*\mathbf1*(\Lambda_w)_{>V}.
+\end{align*}
+This identity holds over rational arithmetic for arbitrary $w$.
+\end{proposition}
+\begin{proof}
+Two finite divisor identities suffice:
+\[
+ \mu*\mathbf1=\varepsilon,\qquad
+ \mathbf1*\Lambda_w=L_w.
+\]
+For the first, the squarefree divisors of $n$ correspond to subsets of
+its distinct prime factors, and their M\"obius values sum to
+$(1-1)^r$. This is zero unless $n=1$. For the second, the prime powers
+$p,p^2,\ldots,p^{v_p(n)}$ contribute exactly $v_p(n)w(p)$.
+Associativity and commutativity of convolution follow by reindexing
+finite factorizations $abc=n$. Hence $\mu*L_w=\Lambda_w$, and
+\begin{align*}
+ \Lambda_w
+ &=\mu_{\leq U}*L_w+\mu_{>U}*\mathbf1*\Lambda_w\\
+ &=\mu_{\leq U}*L_w
+   +\mu_{>U}*\mathbf1*(\Lambda_w)_{\leq V}
+   +\mu_{>U}*\mathbf1*(\Lambda_w)_{>V}\\
+ &=\mu_{\leq U}*L_w
+   +(\varepsilon-\mu_{\leq U}*\mathbf1)*(\Lambda_w)_{\leq V}
+   +\mu_{>U}*\mathbf1*(\Lambda_w)_{>V}.
+\end{align*}
+Expanding the middle term proves the formula.
+\end{proof}
+
+The usual logarithmic identity is the specialization $w(p)=\log p$;
+the finite decomposition appears, for example, in Tao's Lemma
+18~\cite{TaoBV2015}. For arithmetic implementation take $w(p)=L_s(p)$.
+The identity then remains \emph{exact}. One must not replace $L_w(n)$
+by the independently computed $L_s(n)$ and assume exact logarithmic
+additivity. With the definition above,
+\[
+ |\log n-L_w(n)|
+ \leq \left(\sum_{p\mid n}v_p(n)\right)2^{-s}\leq n2^{-s},
+\]
+and the approximation allowance is explicit.
+
+\subsection{A finite Gram bound and a large-sieve consequence}
+
+The following version is formulated entirely with Gaussian rationals.
+It is a direct certificate theorem suitable for arithmetic coding.
+
+\begin{proposition}[Rational Gram certificate]
+Let $A$ be an $R\times N$ matrix over $\mathbb Q(i)$ and let
+$K=AA^*$. Suppose symmetric nonnegative rational numbers $k_{rs}$
+and a rational $L\geq0$ satisfy
+\[
+ |K_{rs}|^2\leq k_{rs}^2,\qquad \sum_s k_{rs}\leq L.
+\]
+Then, for every $a\in\mathbb Q(i)^N$,
+\[
+ \sum_r\left|\sum_n A_{rn}a_n\right|^2
+       \leq L\sum_n|a_n|^2.
+\]
+\end{proposition}
+\begin{proof}
+For $k>0$ and $|z|^2\leq k^2$, expanding the nonnegative square
+$|ku-zv|^2$ proves
+\[
+ 2\operatorname{Re}(\overline u zv)
+       \leq k(|u|^2+|v|^2).
+\]
+Indeed multiply the desired inequality by $k$, and bound
+$|z|^2|v|^2$ by $k^2|v|^2$. For $k=0$, the hypothesis forces $z=0$,
+so the conclusion still holds. Applying this inequality to each pair
+of Gram entries and using symmetry gives
+\[
+ \|A^*b\|^2
+   =\sum_{r,s}\overline b_rK_{rs}b_s
+   \leq\sum_r|b_r|^2\sum_s k_{rs}
+   \leq L\|b\|^2.
+\]
+Set $b=Aa$. Finite Cauchy--Schwarz now yields
+\[
+ \|b\|^4=|\langle a,A^*b\rangle|^2
+       \leq\|a\|^2\|A^*b\|^2
+       \leq L\|a\|^2\|b\|^2.
+\]
+If $\|b\|^2=0$, there is nothing to prove; otherwise divide by that
+positive rational. The needed Cauchy--Schwarz inequality has the exact
+sum-of-squares proof
+\[
+ \left(\sum_i|u_i|^2\right)\left(\sum_i|v_i|^2\right)
+  -\left|\sum_i\overline u_i v_i\right|^2
+   =\sum_{i<j}|u_iv_j-u_jv_i|^2\geq0.
+\]
+Thus the argument uses only finite rational identities, inequalities,
+and a decidable zero test.
+\end{proof}
+
+For clarity we also record the associated elementary Fourier estimate,
+while distinguishing its analytic notation from the rational theorem.
+Let $\alpha_1,\ldots,\alpha_R$ be rational points of
+$\mathbb R/\mathbb Z$ separated by a positive rational $\delta$, let
+$a_n$ be Gaussian-rational coefficients, and let $e(t)=\exp(2\pi it)$.
+If $R\geq2$, then
+\begin{equation}
+ \sum_{r=1}^R\left|
+  \sum_{n=M+1}^{M+N}a_ne(n\alpha_r)\right|^2
+ \leq\left(N+\delta^{-1}H_{R-1}\right)\sum_n|a_n|^2,
+ \qquad H_j=\sum_{v=1}^j\frac1v.
+ \label{eq:large-sieve-harmonic}
+\end{equation}
+For $R=1$, ordinary Cauchy--Schwarz gives the bound with coefficient $N$.
+
+Here is the complete elementary human argument for
+\eqref{eq:large-sieve-harmonic}. The diagonal Gram entries are $N$.
+For distinct frequencies the finite geometric identity gives
+\[
+ |K_{rs}|
+ \leq\frac{2}{|1-e(\alpha_r-\alpha_s)|}
+ =\frac1{|\sin\pi(\alpha_r-\alpha_s)|}
+ \leq\frac1{2\|\alpha_r-\alpha_s\|}.
+\]
+The last step uses $\sin(\pi u)\geq2u$ for $0\leq u\leq1/2$,
+the chord inequality from concavity of sine on $[0,\pi/2]$.
+Relative to a fixed frequency, divide the other frequencies into two
+semicircles. The $j$th closest point on either side has distance at least
+$j\delta$. If those sides contain $m$ and $n$ points, their row
+contribution is bounded by
+\[
+ \frac{H_m+H_n}{2\delta}\leq\frac{H_{R-1}}\delta.
+\]
+The Gram proof applies and gives the stated result. A literal iPRA
+translation additionally needs the elementary coded sine inequality
+and certified approximations to the matrix entries; importing a theorem
+about classical real sine into Lean would not constitute that
+translation.
+
+For distinct reduced fractions $a/q$ with $q\leq Q$, circular
+separation is at least $Q^{-2}$ and there are at most $Q^2$ points.
+Thus the weaker, logarithmically inflated large-sieve bound
+\[
+ \sum_{q\leq Q}\ \sum_{\substack{0\leq a<q\\(a,q)=1}}
+   \left|\sum_n a_ne(an/q)\right|^2
+ \leq \left(N+Q^2H_{Q^2}\right)\sum_n|a_n|^2
+\]
+follows. This establishes a useful mean-square ingredient. It does not
+establish the character-conductor bookkeeping, Type I and Type II
+bounds, or the uniform small-conductor estimates required by full BV.
+
+\subsection{Published effective substitutes and formalization boundary}
+
+A safe explicit alternative is Akbary--Hambrook's Theorem 1.3.
+For $x\geq4$ and $1\leq Q_1\leq Q\leq\sqrt x$, it bounds the
+average discrepancy from $\psi(y)/\varphi(q)$, over moduli
+$q\leq Q$ whose \emph{least prime factor exceeds $Q_1$}, by
+\[
+ c_1\left(
+ \frac{4x}{Q_1}+4\sqrt x\,Q+18x^{2/3}\sqrt Q
+       +5x^{5/6}\log\frac{eQ}{Q_1}
+ \right)(\log x)^{9/2},
+\]
+where the paper specifies $c_1$ explicitly~\cite{AkbaryHambrook}.
+We cite this as a further formalization target, not as an iPRA theorem
+proved in the present package. The least-prime-factor restriction must
+not be weakened to merely $q>Q_1$. Similar caution applies to
+exceptional-conductor formulations: a constructive implementation
+needs usable exceptional data or zero-free certificates, rather than a
+nonconstructive choice of whether a boundary zero exists.
+
+The Lean work for the proved finite results can be organized as follows.
+First implement bounded divisor enumeration, prime-power recognition,
+M\"obius values, valuations, rational codes, Gaussian-rational matrices,
+finite sums, and maxima. Prove the two divisor identities and reindexing
+lemmas; the weighted Vaughan formula then follows by the displayed
+algebra. Implement $L_s$, prove its finite geometric bound, and lift it
+to $\Psi_s$ and $E_s$. Encode
+\eqref{eq:sw-arithmetic-target} and
+\eqref{eq:bv-arithmetic-target} with their quantifier order unchanged.
+The integer lemma \eqref{eq:integer-power-inclusion}, the rational-gap
+argument, and the BV reduction are then finite arithmetic proofs.
+Finally implement the Gram certificate, using the displayed
+sum-of-squares identity in place of any infinite-dimensional
+functional analysis.
+
+For the original SW and BV conclusions, the outstanding work is
+mathematical: quantitative character theory, explicit formulas,
+zero-free estimates with verified moduli, complete mean-value bounds,
+and effective witnesses for the required uniform Siegel-type input.
+Their absence is recorded as an absence of proof, not disguised as
+ordinary Lean placeholders or inferred to be a theorem of
+nonprovability.

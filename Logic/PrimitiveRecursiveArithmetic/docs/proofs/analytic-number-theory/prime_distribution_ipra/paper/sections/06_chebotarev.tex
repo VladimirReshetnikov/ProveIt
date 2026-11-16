@@ -1,0 +1,195 @@
+\section{Chebotarev: an exact target and a proved effective reduction}
+\label{sec:chebotarev}
+
+\subsection{The theorem that remains to be internalized}
+
+Let $L/K$ be a finite Galois extension of number fields, let
+$G=\operatorname{Gal}(L/K)$, and let $C$ be a conjugacy class in $G$.
+For a nonzero prime ideal $\mathfrak p$ of $\mathcal O_K$ unramified in $L$,
+the Frobenius class is the conjugacy class of the automorphism determined
+modulo a prime $\mathfrak P$ above $\mathfrak p$ by
+\[
+ \operatorname{Frob}_{\mathfrak P}(z)\equiv
+ z^{N\mathfrak p}\pmod{\mathfrak P}.
+\]
+Set
+\[
+ \Pi_C(x)=\#\{\mathfrak p:N\mathfrak p\leq x,\
+      \mathfrak p\text{ unramified},\ \operatorname{Frob}_{\mathfrak p}=C\},
+ \qquad
+ \Pi_K(x)=\#\{\mathfrak p:N\mathfrak p\leq x\}.
+\]
+The natural-density conclusion is
+\[
+ \frac{\Pi_C(x)}{\Pi_K(x)}\longrightarrow\frac{|C|}{|G|}.
+\]
+The customary asymptotic $\Pi_C(x)\sim(|C|/|G|)\Li(x)$ implies it together
+with the prime ideal theorem. No density conclusion follows merely from
+the ability to enumerate the Frobenius classes below a finite bound.
+
+Put $g=|G|$ and $c=|C|$. Once the number-field input has been correctly
+coded, a completely integer target is
+\begin{equation}
+ \forall k\geq1\ \exists M\ \forall x\geq M:
+ \quad \Pi_K(x)>0\ \land\
+ k\,|g\Pi_C(x)-c\Pi_K(x)|\leq g\Pi_K(x).
+ \label{eq:chebotarev-integer-target}
+\end{equation}
+Its constructive version should provide $M$ as a specified primitive
+recursive function of the field data and $k$, with a proof of its matrix
+in $\ipra$. The existence of classical asymptotic notation alone does not
+supply that object.
+
+\subsection{A finite representation of the input}
+
+Here is a concrete representation to use in a formalization. It is a
+specification for the required algebraic layer, not an assertion that this
+layer has already been implemented.
+
+Represent each number field by a monic irreducible polynomial over $\Q$,
+the rational power-basis arithmetic, and a certified integral basis. An
+embedding $K\hookrightarrow L$ is a rational matrix preserving $1$ and
+multiplication. Represent $G$ by a list of rational matrices with a group
+multiplication table and certificates that these are all $K$-automorphisms
+of $L$; in a Galois presentation the list has length $[L:K]$. Represent $C$
+by a finite sublist and check conjugacy using this multiplication table.
+
+For a degree-$d$ field with a certified integral basis, an integral ideal
+of norm at most $x$ is represented by a Hermite normal form matrix. Its
+positive diagonal entries have product at most $x$, and the usual reduced
+off-diagonal entries are bounded by diagonal entries, hence by $x$.
+Thus enumeration over matrices with entries bounded by $x$ includes every
+such ideal. Multiplicative stability under the integral basis is a finite
+integer divisibility check. The quotient is a finite ring of at most $x$
+elements. A proper ideal is prime exactly when its quotient is a field;
+checking that every nonzero residue has an inverse is a bounded check.
+Norm is the determinant, and equality is equality of the canonical matrix.
+
+To inspect a prime above $\mathfrak p$ one may enumerate ideals of
+$\mathcal O_L$ of norm at most $(N\mathfrak p)^{[L:K]}$. The algebraic
+theorem ensuring that a prime above it occurs in this list is part of the
+required library. Ramification, decomposition and the Frobenius test then
+reduce to finite ideal and quotient calculations. The conjugacy-class
+answer is independent of the chosen prime above $\mathfrak p$ by the
+standard finite Galois argument, which must also be proved in the encoded
+setting.
+
+Certification of the full ring of integers, complete automorphism list,
+factorization of ideals, and these independence statements cannot simply
+be replaced by unchecked Boolean labels. Either they are established from
+the field presentation with explicit resource bounds, or the resulting
+theorem is explicitly conditional on supplied certificates whose meanings
+have themselves been proved. The present package chooses the second
+interface for its targets and does not discharge those obligations.
+
+\subsection{Effectivity does not fail merely because of a possible zero}
+
+Unconditional effective Chebotarev estimates exist. Their typical structure
+is a main term, a possible real exceptional-zero contribution, and a
+controlled decaying error. Effective bounds on the distance of that zero
+from $1$ in terms of field data then give an effective density modulus
+\cite{LagariasOdlyzko,ThornerZaman2019}. The much stronger uniform
+conductor dependence needed for Siegel--Walfisz is a different issue.
+
+The following proposition proves the numerical part of that passage
+completely. It is deliberately stated with an explicit analytic input, so
+that its conclusion cannot be mistaken for an independent proof of
+Chebotarev.
+
+\begin{proposition}[A primitive recursive density modulus from supplied estimates]
+\label{prop:chebotarev-modulus}
+Let $n,k\geq1$, $b\geq1$, $c_0,d,U_0\in\N$, and $0\leq\rho\leq1$.
+Suppose counting functions $P,Q$ satisfy, for $x\geq e^{U_0}$ and $x\geq4$,
+\begin{align*}
+ |P(x)-\rho\Li(x)|&\leq R(x),\\
+ |Q(x)-\Li(x)|&\leq R(x),
+\end{align*}
+where
+\[
+ R(x)=2x\exp(-2^{-b}\log x)
+       +2^{c_0}x\exp\!\left(-2^{-d}\sqrt{\frac{\log x}{n}}\right).
+\]
+Define
+\begin{align*}
+ P_0&=2\left(U_0+64k\,2^{2b}
+             +384k\,2^{c_0+4d}n^2+4\right),\\
+ X_0&=2^{P_0}.
+\end{align*}
+For every integer $x\geq X_0$ one has $Q(x)>0$ and
+\[
+ \left|\frac{P(x)}{Q(x)}-\rho\right|\leq\frac1k.
+\]
+If $P=\Pi_C$, $Q=\Pi_K$, and $\rho=c/g$, this gives the matrix of
+\eqref{eq:chebotarev-integer-target} with $M=X_0$.
+\end{proposition}
+
+\begin{proof}
+Put $u=\log x$. Since $\log2\geq1/2$, the assumption on $x$ gives
+$u\geq P_0/2$, so every assumed estimate applies. Integrating just from
+$\sqrt x$ to $x$ gives, for $x\geq4$,
+\[
+ \Li(x)\geq\frac{x-\sqrt x}{\log x}\geq\frac{x}{2u}.
+\]
+For $v>0$, positivity of the exponential series gives
+$e^v\geq v^2/2$ and $e^v\geq v^4/24$. Consequently
+\begin{align*}
+ \frac{2x e^{-2^{-b}u}}{\Li(x)}
+ &\leq4u e^{-2^{-b}u}
+ \leq\frac{8\,2^{2b}}u\leq\frac1{8k},\\
+ \frac{2^{c_0}x e^{-2^{-d}\sqrt{u/n}}}{\Li(x)}
+ &\leq 2^{c_0+1}u e^{-2^{-d}\sqrt{u/n}}
+ \leq\frac{48\,2^{c_0+4d}n^2}u\leq\frac1{8k}.
+\end{align*}
+Thus $R(x)\leq\eta\Li(x)$ with $\eta=1/(4k)\leq1/4$.
+It follows that $Q(x)\geq(1-\eta)\Li(x)>0$, and
+\[
+ \left|\frac{P(x)}{Q(x)}-\rho\right|
+ \leq\frac{|P(x)-\rho\Li(x)|+\rho|\Li(x)-Q(x)|}{Q(x)}
+ \leq\frac{2\eta}{1-\eta}\leq\frac1k.
+\]
+Every chosen threshold is a composition of integer sums, products and
+exponentials. The same computation with rational error allowances yields
+the integer conclusion by the rational-gap lemma.
+\end{proof}
+
+For example, an exceptional contribution bounded by
+$\Li(x^\beta)$ with $1/2\leq\beta\leq1-2^{-b}$ is covered by the first
+term in $R$: for $x\geq4$, $x^\beta\geq2$ and
+\[
+ \Li(x^\beta)\leq 2x^\beta
+ \leq2x\exp(-2^{-b}\log x).
+\]
+The first inequality uses $1/\log t\leq2$ for $t\geq2$.
+When no exceptional term occurs, the same bound remains valid by adding
+a nonnegative allowance. Thus the reduction need not decide the existence
+of an exceptional zero. It needs a proved estimate valid in both cases.
+
+\subsection{The remaining mathematical work}
+
+To turn Proposition~\ref{prop:chebotarev-modulus} into the requested
+unconditional $\ipra$ proof, one must supply all of the following with
+arithmetic derivations:
+\begin{enumerate}
+\item The certified number-field and prime-ideal algorithms described
+above, including the correctness of Frobenius and its conjugacy class.
+\item Quantitative analytic continuation, functional equations and
+explicit-formula estimates for the necessary Dedekind and Hecke
+$L$-functions, using finite contours with separation data.
+\item A zero-free estimate and an effective lower separation for any
+exceptional zero, with the dependence on the field presentation tracked.
+\item Primitive recursive integers $b,c_0,d,U_0$ and proofs that they
+give the two estimates required in the proposition, including the prime
+ideal main term for $K$ and the finitely many ramified primes.
+\end{enumerate}
+
+The cited effective theorems show that the classical analytic program is
+available. They do not certify its use of induction, the field-construction
+algorithms, or its formal translation to $\ipra$. These are substantial
+unfilled obligations in this package. No implication from ``effective'' to
+``proved in $\ipra$'' is being used.
+
+For a cyclotomic extension of $\Q$, Frobenius sends a root of unity to its
+$p$-th power, so its conjugacy condition is the familiar residue-class
+condition. Our direct Dirichlet theorem therefore supplies the corresponding
+\emph{infinitude} consequence. It does not supply the natural-density
+statement, even in this special case.

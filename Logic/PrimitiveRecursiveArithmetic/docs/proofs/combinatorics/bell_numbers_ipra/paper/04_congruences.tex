@@ -1,0 +1,216 @@
+\section{Congruences and constructive periods}
+\label{sec:congruences}
+
+All congruences in this section are decidable integer assertions.
+Polynomial calculations modulo $m$ mean coefficient-list calculations with
+entries in $\{0,\ldots,m-1\}$. For a polynomial $F(X)=\sum_jc_jX^j$, use the
+finite shorthand
+\[
+ (F(E)B)_n=\sum_jc_jB_{n+j}.
+\]
+The letter $E$ denotes a shift in the subscript, not an additional object
+quantified over in the arithmetic language.
+
+\subsection{Touchard's congruence}
+
+\begin{theorem}[Touchard]\label{thm:touchard}
+If $p$ is prime and $n\geq0$, then
+\begin{equation}\label{eq:touchard}
+ B_{n+p}\equiv B_{n+1}+B_n\pmod p.
+\end{equation}
+In particular $B_p\equiv2\pmod p$.
+\end{theorem}
+\begin{proof}
+Let a cyclic permutation rotate $p$ distinguished elements of an
+$(n+p)$-element set and fix the other $n$ elements. It acts, by a bounded
+relabel-and-normalize algorithm, on the finite codes of partitions. Each
+orbit has size one or $p$: the least positive return time divides the prime
+$p$. One can find that return time by testing the $p$ possibilities. Choosing
+the least code of each orbit therefore shows that, modulo $p$, only fixed
+partitions contribute to their total number.
+
+We classify the fixed partitions. A block meeting a fixed element must be
+fixed as a block, since its rotate contains the same fixed element. If that
+block meets the rotating set, it consequently contains the entire rotating
+set. More generally, the restriction of a fixed partition to the $p$
+rotating elements is a translation-invariant equivalence relation on
+$\mathbb Z/p\mathbb Z$. The class of zero is closed under differences:
+if $a$ and $b$ are equivalent to zero, translating $a\sim b$ by $-b$ gives
+$a-b\sim0$. Hence it is a subgroup. A subgroup containing a nonzero element
+contains all residues, because its first $p$ multiples are distinct;
+otherwise it is $\{0\}$. Thus the rotating elements are either all in one
+block or all in singleton blocks.
+
+In the first case, collapse their common block contribution to one
+distinguished element; this gives exactly $B_{n+1}$ partitions, allowing that
+element to join any fixed elements. In the singleton case no rotating element
+can share a block with a fixed element, by the preceding observation, leaving
+exactly $B_n$ choices. The classes are disjoint. This proves
+\eqref{eq:touchard}; setting $n=0$ gives the last assertion.
+\end{proof}
+
+There is also a short algebraic proof that is particularly convenient for
+formalization. Lemma~\ref{lem:finite-shift} gives
+\[
+ \mathcal L\bigl(((X)_p-1)X^n\bigr)
+  =\mathcal L((X+p)^n-X^n)\equiv0\pmod p.
+\]
+In $\mathbb F_p[X]$ one has
+\begin{equation}\label{eq:finite-field-product}
+ (X)_p=\prod_{a=0}^{p-1}(X-a)=X^p-X.
+\end{equation}
+To verify this last equality, the binomial theorem proves
+$(a+1)^p\equiv a^p+1\pmod p$; induction through the residues gives
+$a^p=a$ for all $a\in\mathbb F_p$. Both monic polynomials in
+\eqref{eq:finite-field-product} have degree $p$ and these $p$ roots. Repeated
+division by $X-a$ is legitimate because distinct residues have nonzero,
+invertible differences, so their difference of degree less than $p$ is zero.
+This proves \eqref{eq:touchard} by finite coefficient manipulation.
+
+\subsection{Prime-power shifts and the prime period}
+
+\begin{theorem}[Generalized Touchard congruence]\label{thm:touchard-power}
+For prime $p$ and $r,n\geq0$,
+\begin{equation}\label{eq:touchard-power}
+ B_{n+p^r}\equiv B_{n+1}+rB_n\pmod p.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Work with remainder polynomials modulo $Q(X)=X^p-X-1$ over
+$\mathbb F_p$. Each remainder has degree less than $p$ and is a finite list
+of residues. The binomial theorem in characteristic $p$ says
+$(U+V)^p=U^p+V^p$. Induction on $r$ therefore gives
+\[
+ X^{p^r}=X+r\quad\text{in }\mathbb F_p[X]/(Q):
+\]
+the case $r=0$ is immediate; raising to the $p$th power replaces $X+r$ by
+$X^p+r=X+(r+1)$, using the elementary residue identity $r^p=r$.
+Thus $X^{p^r}-X-r$ is a multiple of $Q$. Every shift of
+\eqref{eq:touchard} says $(Q(E)B)_n=0$ modulo $p$; multiplying by a polynomial
+and taking the corresponding finite linear combination of these shifts
+preserves zero. This gives \eqref{eq:touchard-power}.
+\end{proof}
+
+\begin{theorem}[An explicit period modulo a prime]\label{thm:prime-period}
+For every prime $p$, let
+\[
+  N_p=1+p+\cdots+p^{p-1}=\frac{p^p-1}{p-1}.
+\]
+Then, for all $n\geq0$,
+\begin{equation}\label{eq:prime-period}
+ B_{n+N_p}\equiv B_n\pmod p.
+\end{equation}
+The least positive period exists by bounded search and divides $N_p$.
+\end{theorem}
+\begin{proof}
+In the same finite quotient ring,
+\[
+ X^{N_p}=\prod_{r=0}^{p-1}X^{p^r}
+       =\prod_{r=0}^{p-1}(X+r)=X^p-X=1.
+\]
+The middle product equals $X^p-X$ by
+\eqref{eq:finite-field-product}, since $r\mapsto-r$ permutes the residues.
+Hence $Q$ divides $X^{N_p}-1$, and the shift calculation just used proves
+\eqref{eq:prime-period}. No field-extension existence theorem or
+irreducibility theorem is required: the ring consists explicitly of $p^p$
+remainder lists and need not first be shown to be a field.
+
+A candidate period $t$ can be tested by the $p$ congruences
+$B_{t+i}\equiv B_i$ for $0\leq i<p$. The order-$p$ recurrence
+\eqref{eq:touchard} propagates those congruences to every subsequent index.
+Search $1\leq t\leq N_p$ for the least passing value $T$; the preceding
+paragraph supplies a passing value. Divide $N_p=qT+s$, $0\leq s<T$.
+Repeated use of period $T$ and period $N_p$ gives
+$B_{n+s}\equiv B_n$ for every $n$. If $s>0$, it passes the same finite test,
+contrary to minimality. Therefore $s=0$.
+\end{proof}
+
+For $p=2$, $N_p=3$ and the initial residues are $1,1,0$. Thus
+\begin{equation}\label{eq:bell-parity}
+ B_n\text{ is even}\quad\Longleftrightarrow\quad n\equiv2\pmod3.
+\end{equation}
+For $p=3$, the analogous finite test shows that the least period is $13$:
+$13$ is prime, a period divides it, and period one fails since
+$B_1\not\equiv B_2\pmod3$. The statement that $N_p$ is the least period for
+every prime is not proved here; the proof establishes that it is a period
+and that the least period divides it.
+
+\subsection{Periodicity for every modulus}
+
+\begin{theorem}[A primitive recursive period for every modulus]
+\label{thm:all-moduli-period}
+For every integer $m\geq1$, the Bell sequence is purely periodic modulo $m$.
+There is a period $T$ with $1\leq T\leq m^m$, found by a bounded computation.
+In particular the following uniform period is valid:
+\begin{equation}\label{eq:all-moduli-period}
+ B_{n+(m^m)!}\equiv B_n\pmod m\qquad(n\geq0).
+\end{equation}
+\end{theorem}
+\begin{proof}
+For every polynomial $f\in\mathbb Z[X]$, the binomial theorem gives
+$f(X+m)\equiv f(X)\pmod m$, coefficientwise. Hence the finite shift identity
+gives
+\[
+ \mathcal L\bigl(((X)_m-1)f(X)\bigr)
+   =\mathcal L(f(X+m)-f(X))\equiv0\pmod m.
+\]
+Here $\mathcal L$ takes integer-coefficient polynomials to integers, because
+its values on monomials are the integer Bell numbers. Write
+\[
+ Q_m(X)=(X)_m-1=X^m+c_{m-1}X^{m-1}+\cdots+c_1X-1.
+\]
+Taking $f=X^n$ yields the order-$m$ recurrence
+\begin{equation}\label{eq:composite-recurrence}
+ B_{n+m}\equiv B_n-\sum_{j=1}^{m-1}c_jB_{n+j}\pmod m.
+\end{equation}
+Its state vector is
+$v_n=(B_n,\ldots,B_{n+m-1})\bmod m$, an element of a list of $m^m$ states.
+The transition shifts the entries left and appends the right side of
+\eqref{eq:composite-recurrence}. It is a bijection: from the new state,
+recover the discarded entry by adding
+$\sum_{j=1}^{m-1}c_jB_{n+j}$ to its last entry.
+
+Among $v_0,\ldots,v_{m^m}$ two states agree, by the finite pigeonhole
+principle. That principle here is proved by scanning the codes
+$0,\ldots,m^m-1$: if no code repeats, the number of entries cannot exceed the
+number of codes. If $v_a=v_b$ with $0\leq a<b\leq m^m$, apply the explicit
+inverse transition $a$ times to get $v_0=v_{b-a}$. Therefore
+$T=b-a$ is a period from the start; the forward recurrence proves
+$v_{n+T}=v_n$ for every $n$. Such a $T$ is found by scanning
+$1,\ldots,m^m$ for a return to $v_0$. Since every positive integer at most
+$m^m$ divides $(m^m)!$, repeating the period proves
+\eqref{eq:all-moduli-period}. The case $m=1$ is included, with its unique
+residue state.
+\end{proof}
+
+The general bound is deliberately generous. Its purpose is to give a
+uniform primitive recursive construction, while
+Theorem~\ref{thm:prime-period} provides the much sharper bound at prime
+moduli. The accompanying exact-arithmetic program certifies the source's
+least periods for moduli $1,\ldots,12$:
+\[
+ 1,3,13,12,781,39,137257,24,39,2343,28531167061,156.
+\]
+For every listed modulus other than $11$ it checks the complete orbit up to
+its first return. For $11$ it uses the shorter polynomial certificate
+\[
+ N_{11}=28531167061=15797\cdot1806113,
+ \qquad B_{15797}\equiv6,\quad B_{1806113}\equiv9\pmod{11}.
+\]
+Bounded trial division verifies primality of the two factors. Binary powering
+with the reduction rule $X^{11}=X+1$ verifies the residues; the output includes
+both remainder coefficient lists. Since $B_0\equiv1$, neither maximal proper
+divisor is a period. The least period divides $N_{11}$, so it must equal
+$N_{11}$. These are finite computation certificates with a specified checker,
+not claims that the accompanying Python program is an \ipra\ proof checker.
+Checks at selected moduli do not prove a universal least-period conjecture.
+
+\paragraph{Arithmetic audit.}
+Primality is the bounded test that no $2\leq d<p$ divides $p$. The proof of
+Touchard's congruence uses at most $p$ iterates per finite partition code.
+The quotient-ring proof uses lists of length $p$ with residue coefficients;
+raising to $p^r$ can be replaced by $r$ successive Frobenius steps.
+The general period proof scans at most $m^m+1$ state codes, each with $m$
+entries. Existence of a period therefore comes with a primitive recursive
+witness. The propagation arguments are quantifier-free inductions on the
+decidable congruences or on their bounded conjunctions.

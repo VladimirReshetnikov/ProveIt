@@ -1,0 +1,61 @@
+\clearpage
+\section{Exact numerical certificates}\label{sec:numeric}
+
+The program \texttt{code/verify\_numeric.py} computes the Bell recurrence
+\eqref{eq:bell-binomial} through index $1000$, using integer arithmetic only.
+Its output is \texttt{code/numeric\_validation.json}. The first values are:
+\begin{center}
+\begin{tabular}{r r@{\qquad}r r}
+\hline
+$n$&$B_n$&$n$&$B_n$\\
+\hline
+0&1&8&4140\\
+1&1&9&21147\\
+2&2&10&115975\\
+3&5&11&678570\\
+4&15&12&4213597\\
+5&52&13&27644437\\
+6&203&14&190899322\\
+7&877&15&1382958545\\
+\hline
+\end{tabular}
+\end{center}
+
+For the decimal counts reported in the source, the checker verifies the
+following exact integer inequalities; no logarithm or floating-point
+approximation enters the checks.
+\begin{center}
+\begin{tabular}{r r l}
+\hline
+$n$&Decimal digits of $B_n$&Verified interval\\
+\hline
+1&1&$10^0\leq B_1<10^1$\\
+10&6&$10^5\leq B_{10}<10^6$\\
+100&116&$10^{115}\leq B_{100}<10^{116}$\\
+1000&1928&$10^{1927}\leq B_{1000}<10^{1928}$\\
+\hline
+\end{tabular}
+\end{center}
+These intervals certify the digit counts. For compact reproducibility, the
+JSON retains each value's first and last at most $32$ decimal digits and a
+SHA-256 fingerprint of its full decimal expansion. The fingerprints are
+identifiers; the recurrence and the integer inequalities are the mathematical
+checks. No value $B_{10000}$ is computed or asserted here.
+
+Among $0\leq n\leq13$, precisely $n=2,3,7,13$ give primes:
+\[
+ B_2=2,\qquad B_3=5,\qquad B_7=877,\qquad B_{13}=27644437.
+\]
+For these four values $v$, the integer square roots are respectively
+$1,2,29,5257$. The checker verifies $r^2\leq v<(r+1)^2$ and that no integer
+$2\leq d\leq r$ divides $v$. This proves primality: if $v=ab$ with
+$a,b>1$, at least one factor is at most $r$. For every other index through
+$13$, the output records a divisor or the fact that the value is less than
+two. The checks make no primality assertion about later Bell numbers and no
+claim about infinitely many Bell primes.
+
+All these are fixed finite computation certificates. Their recurrence loops,
+exact divisions, decimal comparisons, and trial-divisor searches have explicit
+finite bounds and can be expanded into ground arithmetic derivations. The
+Python program is not a generic proof checker, and successful execution is
+not presented as a completed syntactic formalization in \ipra.

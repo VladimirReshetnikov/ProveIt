@@ -1,0 +1,89 @@
+\section{Artifacts, validation and reproducibility}
+
+\subsection{Exact finite diagnostics}
+
+The Python programs use the standard library, integer arithmetic and
+\texttt{fractions.Fraction}. They are deliberately independent finite
+diagnostics of the identities and coding choices. They are not proof
+checkers for $\ipra$ and do not establish any unproved analytic theorem.
+
+The Dirichlet program checks $78$ character-orthogonality instances on
+the explicitly listed small moduli, $4{,}400$ nonnegative real-character
+divisor coefficients, $220$ positive square coefficients, $1{,}320$
+factorial encodings of reciprocal-prime sums, and the rational constants
+used in the lower-margin argument. It verifies the finite certificate
+\[
+ 4\sum_{j=0}^{7}\frac{(-1)^j}{2j+1}
+ =\frac{135904}{45045}>3.
+\]
+The character diagnostic uses exact polynomial remainder arithmetic to
+test root sums; the human arithmetic realization instead supplies the
+explicit complex root names and their separation, so the diagnostic
+does not assume that a numerical comparison proves orthogonality.
+
+The Selberg program checks $288$ modulus/cutoff combinations, including
+weight normalization, the inverse transform, diagonalization, the
+coefficient bound and the harmonic denominator lower bound. It also
+tests progression endpoints at the listed finite sizes. The SW/BV
+algebra program checks $4{,}320$ weighted Vaughan instances, $4{,}096$
+Gaussian-rational Gram instances, $256$ Lagrange identities, and
+$1{,}750$ integer range-inclusion instances. Exact outputs are saved in
+\texttt{verification/}.
+
+The sharp Brun--Titchmarsh certificate checks all $994$ denominator cases
+from $6$ through $999$, all $65$ elementary prime-count cases from $100$
+through $164$, the seven small-range endpoint inequalities, and the
+stated logarithm, harmonic, $\pi$ and spectral constants. It uses rational
+series bounds throughout. These particular finite cases are ingredients
+of the human proof, rather than samples of the universal theorem.
+
+The astronomical Dirichlet cutoff is never materialized. The supplied
+next-prime examples search only to the stated cap $10{,}000$, without
+presenting that small experimental cap as the proved uniform bound.
+Likewise, no numerical test is offered as evidence that the missing
+Siegel--Walfisz or Bombieri--Vinogradov constants have been found.
+
+\subsection{How to reproduce the package}
+
+From the archive's root directory, run
+\begin{lstlisting}
+python3 code/dirichlet_checks.py
+python3 code/finite_sieve.py --self-check
+python3 code/finite_swbv.py
+python3 code/sharp_bt_certificates.py
+\end{lstlisting}
+All four should finish with a JSON report recording successful finite
+checks. The source includes the tested ranges.
+
+With a standard TeX Live installation, build the article using
+\begin{lstlisting}
+cd paper
+pdflatex -interaction=nonstopmode -halt-on-error main.tex
+pdflatex -interaction=nonstopmode -halt-on-error main.tex
+pdflatex -interaction=nonstopmode -halt-on-error main.tex
+\end{lstlisting}
+The root \texttt{build.sh} also records the finite diagnostic outputs
+and writes the PDF to its stable delivery name. The article has no
+external graphics or bibliography-generation dependency.
+
+For Lean, use a checkout of the pinned ProveIt commit with its declared
+toolchain and Mathlib dependencies. Check \texttt{Targets.lean} in that
+environment, and put \texttt{ObjectBridge.lean} on a path where the
+\texttt{ConciseIPRA} import is available. The blueprint still needs the
+internal modules and proof terms described in Section~\ref{sec:lean}.
+No Lean build result is included because none was obtained.
+
+\subsection{Review and provenance}
+
+Independent mathematical reviews checked the real-character coefficient
+argument, the finite sieve constants, the approximation allowances and
+the finite algebraic reductions. Corrections identified during review
+were incorporated before delivery. These reviews are human-level
+mathematical checks, not kernel verification.
+
+The source manifest lists the repository snapshot and the exact files
+inspected. The bibliography distinguishes primary research papers,
+author lecture notes, repository interfaces and the user-specified
+reference pages. The SHA-256 manifest records the delivered files for
+integrity checking. The package is a standalone research archive; no
+upstream repository mutation is part of this delivery.

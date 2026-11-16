@@ -1,0 +1,37 @@
+\section{The results and their exact status}
+
+The requested setting is first-order intuitionistic primitive recursive arithmetic: intuitionistic logic, symbols for primitive recursive functions, their defining equations, the successor axioms, and induction restricted to quantifier-free formulas. Merely proving a theorem in Lean about ordinary real numbers does not meet this requirement. A proof in the embedded arithmetic theory is a further mathematical object.
+
+This distinction has practical consequences for the five theorems. Dirichlet infinitude asks for a prime beyond any prescribed bound. An explicit primitive recursive search bound turns that assertion into a universal statement about a fixed bounded algorithm. The rational sieve inequality is already a finite statement. Density and asymptotic estimates, by contrast, contain existential thresholds that must precede every later size parameter. Those thresholds cannot be replaced by a new choice for each finite test.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{31mm}X@{}}
+\toprule
+Requested result & What is established in this package \\
+\midrule
+Dirichlet & A complete quantitative human proof for every reduced residue class, an explicit primitive recursive bound, divergence of the reciprocal-prime sum, and a detailed finite arithmetic realization. \\
+Brun--Titchmarsh & A complete human proof of the sharp coefficient $2$ for every rational $x>q$, including finite rational-grid maximization, exact numerical certificates, and a primitive recursive implementation route. A simpler Selberg proof also gives an explicit $2+1/k$ range. \\
+Chebotarev & Exact finite coding targets and a proved explicit modulus reduction from stated analytic estimates and exceptional-zero separation data. The number-field analytic estimates are not proved in $\ipra$ here. \\
+Siegel--Walfisz & Exact positive arithmetic targets and a proved reduction identifying the needed exceptional-zero input. The full uniform exponential estimate is not proved. \\
+Bombieri--Vinogradov & Exact arithmetic targets, a proved implication to effective logarithmic-power Siegel--Walfisz estimates, an exact weighted Vaughan identity, and a finite Gram inequality. The full mean-value theorem is not proved. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The partial status is substantive. The standard full Siegel--Walfisz theorem has ineffective constants, and the ordinary Bombieri--Vinogradov theorem inherits a small-conductor difficulty. Johnston's 2026 paper explicitly reports that every known proof of the full latter theorem remains ineffective; its effective conclusions concern specified sifting problems \cite{Johnston2026}. This does not establish unprovability in $\ipra$, or rule out a future effective proof. It prevents presenting the usual argument as if it already supplied the constructive constants required here.
+
+Chebotarev must be treated differently: unconditional effective versions do exist, with the exceptional-zero contribution controlled in terms of field data \cite{ThornerZaman2019}. Their availability gives a promising route to an arithmetic proof, but is not itself an internalization of their algebraic and analytic machinery.
+
+\subsection{What is reused from ProveIt}
+
+The inspected snapshot has a deeply embedded intuitionistic natural deduction calculus, a type of primitive recursive function symbols, and a theory named \texttt{PRAAx}. Its \texttt{pra\_iff\_native} theorem transfers a derivation in that theory to the concise native presentation \cite{ProveItPR,ProveItBridge}. Those are the relevant interfaces for the Lean plan.
+
+The repository also contains human proof packages for PNT, Brun's theorem, and zeta estimates. The inspected README and audit files explicitly distinguish their human proofs from unfinished Lean outlines. We use the repository's arithmetic interface, not an assumption that those packages already furnish an internal proof of character zero-free regions, Hecke $L$-functions, or the five present targets. The direct Dirichlet proof below is independent of those analytic packages.
+
+For historical context, Avigad records Cegielski's proof that Dirichlet infinitude is provable in classical PRA, via an $\mathsf{RCA}_0$ proof and $\Pi^0_2$ conservation \cite{Avigad2003,Cegielski1992}. The present argument supplies its own explicit bound and does not depend on access to the original 131-page report. The original report's bibliographic record was inspected; its text was not obtained.
+
+\subsection{Conventions}
+
+All unspecified size parameters are natural numbers. A modulus $q$ is positive. The residue $a$ may be any natural number, and congruence means equality of remainders modulo $q$. We always assume $\gcd(a,q)=1$ when counting primes in a reduced residue class. The modulus $q=1$ is included, with $\varphi(1)=1$ and its sole residue represented by $0$.
+
+Write $\pi(x;q,a)$ for the number of primes at most $x$ in that residue class. Arithmetic size parameters are integers, except that the sharp Brun--Titchmarsh proof explicitly allows rational $x>q$ and counts primes up to $\lfloor x\rfloor$. Rational inputs are encoded by numerator and positive denominator. The ordinary real-variable interpretation follows by continuity on each interval between integers; it is not used as an axiom of $\ipra$. We use $\Li(x)=\int_2^x dt/\log t$ for $x\geq2$.

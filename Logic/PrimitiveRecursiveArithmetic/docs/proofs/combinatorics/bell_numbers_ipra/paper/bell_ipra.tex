@@ -1,0 +1,193 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Bell Numbers in Intuitionistic Primitive Recursive Arithmetic},
+ pdfauthor={Research prepared for Vladimir Reshetnikov},
+ pdfsubject={Constructive Bell number proofs, effective asymptotics, and Lean formalization blueprint}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ipra}{\ensuremath{\mathrm{iPRA}}}
+\pdfstringdefDisableCommands{\def\ipra{iPRA}}
+\newcommand{\Bell}{B}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\setcounter{tocdepth}{2}
+\allowdisplaybreaks[2]
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{1.2cm}
+{\Large Constructive arithmetic research\par}
+\vspace{1.1cm}
+{\huge\bfseries Bell Numbers in Intuitionistic\\[8pt]
+Primitive Recursive Arithmetic\par}
+\vspace{0.8cm}
+{\Large Finite proofs, effective asymptotics,\\[5pt]
+and a Lean formalization blueprint\par}
+\vspace{1.1cm}
+{\large Prepared for Vladimir Reshetnikov\par}
+\vspace{0.3cm}
+{\large November 15, 2026\par}
+\vfill
+\begin{minipage}{0.88\textwidth}
+\textbf{Principal result.} The standard Bell identities and the principal
+growth formulas on the two requested pages admit proofs with finite
+primitive recursive content. We supply the combinatorial proofs, effective
+analytic estimates, both logarithmic-convexity inequalities, modular periods,
+the universal $0.792$ upper bound, and the two-correction saddle expansion.
+
+\medskip
+\textbf{Formal status.} A constructive Lean core is compiled and audited.
+The remaining targets have explicit arithmetic definitions and a detailed
+route through the inspected ProveIt proof calculus. The analytic theorems
+are proved here in human-readable arithmetic form; the package does not
+claim that their full Lean or object-language derivations have already
+been completed.
+\end{minipage}
+\vfill
+{\small ProveIt source snapshot:\quad
+\texttt{c0d0dc37f60aea10c0182ba4eece9eae8c7e13c6}\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+
+\begin{abstract}
+We develop the Bell numbers in intuitionistic primitive recursive
+arithmetic, with infinite expressions interpreted by specified rational
+approximants and primitive recursive error bounds. The finite development
+includes partition and permutation interpretations, all principal summation
+identities on the requested pages, a Charlier-polynomial Hankel determinant
+proof, strict log-convexity, normalized log-concavity, Touchard congruences,
+and constructive periods modulo every integer. The analytic development
+derives Dobi\'nski's formula, its ceiling truncation, generating functions,
+hypergeometric and integral representations, and effective growth results.
+In particular, it proves the de Bruijn logarithmic expansion with a numerical
+remainder, the Lambert $W$ equivalents with the explicit threshold
+$n\ge2^{64q^2}$ for relative error $1/q$, and a two-correction expansion
+uniform under logarithmic shifts. The all-$n$ bound with constant $0.792$
+uses an elementary estimate for $n\ge512$ and a reproducible exact rational
+certificate for the smaller cases. Checked Lean code establishes a finite
+core; executable arithmetic specifications and a module-by-module plan
+describe the remaining formalization.
+\end{abstract}
+
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+
+\section*{Reading guide and coverage}
+\addcontentsline{toc}{section}{Reading guide and coverage}
+
+The mathematical proofs are in Sections~\ref{sec:foundations}--\ref{sec:corrections}.
+Section~\ref{sec:formalization} states exactly what is already Lean-checked
+and defines the remaining arithmetic targets. The final numerical appendix
+records reproducible ground calculations. Throughout, a formal series means
+finite coefficient identities, and an analytic expression means its specified
+finite-precision arithmetic interpretation.
+
+\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.37\textwidth}>{\raggedright\arraybackslash}p{0.49\textwidth}p{0.08\textwidth}@{}}
+\toprule
+\textbf{Requested family} & \textbf{Result supplied} & \textbf{Section}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Requested family} & \textbf{Result supplied} & \textbf{Section}\\
+\midrule
+\endhead
+Partitions, equivalence relations, rhyme schemes, squarefree factorizations &
+Explicit bounded encodings and inverse maps & \ref{sec:finite}\\
+Permutation and shuffle interpretations &
+All eight listed generalized avoidance classes, the $321$ extension class,
+and return shuffles & \ref{sec:finite}\\
+Stirling and binomial recurrences; triangle &
+Finite proofs, initial values and Bell triangle & \ref{sec:finite}\\
+Finite summation formulas &
+Spivey, inclusion--exclusion, derangement form, Pascal and signed-Stirling
+identities & \ref{sec:finite}\\
+Hankel determinant &
+Exact product of factorials via finite orthogonality & \ref{sec:finite}\\
+Log-convexity and normalized log-concavity &
+Both inequalities, strictness of the first, and product bounds & \ref{sec:finite}\\
+Dobi\'nski and Comtet &
+Finite truncation identity, explicit tail, and ceiling formula & \ref{sec:series}\\
+Poisson moments and Bell polynomials &
+Specified weighted sums and finite polynomial identities & \ref{sec:series}\\
+Exponential generating function &
+Formal and entire identities, including tail estimates & \ref{sec:series}\\
+Ordinary generating series &
+Zero radius; negative-axis function with full asymptotic remainder & \ref{sec:series}\\
+Hypergeometric formulas &
+Factorial-series proofs of the Bell and confluent expressions, plus the
+alternating rising-factorial series & \ref{sec:series}\\
+Integral representations &
+Circle coefficient extraction and the corrected Ces\`aro integral & \ref{sec:series}\\
+Touchard and prime-power shifts &
+Explicit orbit and finite-polynomial proofs & \ref{sec:congruences}\\
+Periods &
+Prime period, arbitrary-modulus bounded search, and the listed least periods
+for moduli $1$ through $12$ & \ref{sec:congruences}\\
+de Bruijn expansion &
+The printed expansion with an explicit error and threshold & \ref{sec:growth}\\
+Lambert $W$ equivalents &
+All leading equivalents on the pages, with relative-error moduli & \ref{sec:growth}\\
+Moser--Wyman shifted expansion &
+All $P_i,Q_i$ displayed and an explicit uniform cubic remainder & \ref{sec:corrections}\\
+$0.792$ all-$n$ upper bound &
+Proof for $n\ge512$ and exact certificates for $1\le n\le511$ & \ref{sec:universal-bound}\\
+Eventual $e^{-0.6+\eta}$ upper bound &
+A different explicit threshold, $n\ge2^{16}$, already sufficient with
+$\eta=0$ & \ref{sec:universal-bound}\\
+Selected numerical data &
+Digit counts through $B_{1000}$ and primality checks through index $13$ &
+\ref{sec:numeric}\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\paragraph{Boundaries of the coverage.}
+We do not prove the conjecture that infinitely many Bell numbers are prime,
+or that the displayed prime period is always least. We do not reproduce the
+large primality computations, exhaustive prime searches, or the digit count
+for $B_{10000}$. The branch-dependent incomplete-gamma expression is omitted.
+The contour formula is established on circles around zero; a general contour
+deformation theorem is unnecessary for the Bell growth proof and is not
+claimed. The exact inverse-function threshold printed for the eventual
+$e^{-0.6+\eta}$ bound is replaced by the explicit threshold above. The
+Stanley--Wilf theorem, a separate general result about ordinary permutation
+avoidance, is not re-proved. These exclusions are recorded so that the broad
+coverage is not mistaken for a proof of every historical or computational
+sentence on the pages.
+
+\input{01_foundations}
+\input{02_finite}
+\input{03_series}
+\input{04_congruences}
+\input{05_growth}
+\input{05a_universal_bound}
+\input{05b_corrections}
+\input{06_formalization}
+\input{07_numeric}
+\input{references}
+\end{document}

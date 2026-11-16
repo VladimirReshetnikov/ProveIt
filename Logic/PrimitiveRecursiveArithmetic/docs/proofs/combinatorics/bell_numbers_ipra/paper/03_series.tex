@@ -1,0 +1,319 @@
+\section{Finite identities behind the analytic representations}\label{sec:series}
+
+Throughout, $0^0=1$, $B_0=1$, and a sum over an empty range is zero.  The
+Stirling numbers and Bell numbers are the primitive recursive integers defined
+in Section~\ref{sec:finite}.  We first prove exact truncation identities; the
+infinite notation is then a consequence with an explicit error, not a premise.
+
+\subsection{Dobi\'nski's formula with a uniform arithmetic error}
+
+Write $(x)_j=x(x-1)\cdots(x-j+1)$ and $(x)_0=1$.  The polynomial identity
+\[
+ x^n=\sum_{j=0}^n S(n,j)(x)_j
+\]
+follows either from the Stirling recurrence or by classifying functions
+$[n]\to[x]$ according to their nonempty fibers.  Substituting the integers
+$k=0,\ldots,M$ and interchanging two \emph{finite} sums gives, for $M\ge n$,
+\begin{equation}\label{eq:finite-dobinski}
+ A_{n,M}:=\sum_{k=0}^M\frac{k^n}{k!}
+ =\sum_{j=0}^n S(n,j) E_{M-j}(1).
+\end{equation}
+The cancellation $(k)_j/k!=1/(k-j)!$ is used only when $k\ge j$; for $k<j$
+the falling factorial vanishes.
+
+\begin{theorem}[Dobi\'nski, with a finite certificate]\label{thm:dobinski}
+For $M\ge n$,
+\begin{equation}\label{eq:dobinski-error}
+ 0\le B_n-e^{-1}A_{n,M}\le
+ \frac{2B_n}{(M-n+1)!}.
+\end{equation}
+Consequently
+\[
+ B_n=e^{-1}\sum_{k=0}^{\infty}\frac{k^n}{k!}.
+\]
+For absolute error at most $2^{-s}$, it is sufficient to take
+$M=n+s+(n+1)^2+2$, and to approximate $e^{-1}$ to the additional precision
+needed for multiplication by the explicit rational $A_{n,M}$.
+\end{theorem}
+\begin{proof}
+Subtract \eqref{eq:finite-dobinski} from
+$eB_n=e\sum_{j=0}^nS(n,j)$.  Each difference $e-E_{M-j}(1)$ is nonnegative
+and at most $2/(M-j+1)!\le2/(M-n+1)!$.  Sum the inequalities and divide by
+$e\ge1$.  Finally, $B_n\le(n+1)^{n+1}\le2^{(n+1)^2}$ and
+$d!\ge2^{d-1}$ for $d\ge1$, both by finite induction.  These inequalities
+verify the claimed truncation rule.  If the numerical value of $A_{n,M}$ is
+large, choose $t=s+\lceil A_{n,M}\rceil+3$ for the reciprocal's precision;
+then $A_{n,M}2^{-t}\le2^{-s-2}$.  Every operation in this rule is primitive
+recursive.
+\end{proof}
+
+\begin{corollary}[The Poisson interpretation and its polynomial extension]
+The weights $w_k=e^{-1}/k!$ have total mass $1$ and their $n$th moment is $B_n$.
+For a nonnegative rational parameter $u$, define
+$\Phi_n(u)=\sum_{j=0}^n S(n,j)u^j$.  Then
+\begin{equation}\label{eq:poisson-touchard}
+ e^{-u}\sum_{k=0}^{\infty}\frac{k^n u^k}{k!}=\Phi_n(u),
+ \qquad \Phi_{n+1}(u)=u\bigl(\Phi_n(u)+\Phi_n'(u)\bigr).
+\end{equation}
+\end{corollary}
+\begin{proof}
+For finite $M\ge n$ the weighted version of
+\eqref{eq:finite-dobinski} is
+$\sum_{k\le M}k^nu^k/k!=\sum_{j\le n}S(n,j)u^j E_{M-j}(u)$.
+Apply \eqref{eq:exp-tail}.  The derivative identity follows by substituting
+$S(n+1,j)=jS(n,j)+S(n,j-1)$ and collecting polynomial coefficients.  There is
+no construction of a sigma-algebra or arbitrary random variable here:
+``moment'' denotes this specified effective weighted sum.
+\end{proof}
+
+\subsection{A finite ceiling formula}
+
+\begin{theorem}[Comtet's truncation]\label{thm:comtet}
+For every integer $n\ge1$,
+\[
+ B_n=\left\lceil e^{-1}\sum_{k=1}^{2n}\frac{k^n}{k!}\right\rceil.
+\]
+\end{theorem}
+\begin{proof}
+Set $t_k=k^n/k!$.  For $k\ge2n+1$,
+\[
+ \frac{t_{k+1}}{t_k}
+ =\frac{(1+1/k)^n}{k+1}
+ \le\frac{e^{n/k}}{k+1}
+ <\frac2{k+1}\le\frac12.
+\]
+Here $e^{1/2}<2$, for example by squaring and using $e<3<4$.
+Let $a_n=(2n+1)^n/(2n+1)!$.  Then $a_1=1/2$ and
+\[
+ \frac{a_{n+1}}{a_n}
+ =\frac{(1+2/(2n+1))^n}{2n+2}
+ <\frac3{2n+2}\le\frac34.
+\]
+Thus $a_n\le1/2$, and the omitted positive tail is less than $2a_n\le1$.
+By Theorem~\ref{thm:dobinski}, the truncated expression lies strictly between
+$B_n-1$ and $B_n$.  This is precisely the ceiling assertion.  The constants
+$e<3$ and $(1+x)^m\le e^{mx}$ follow from the factorial series and the binomial
+expansion.  This proof does not assume that the ceiling of an arbitrary real
+name is computable: it proves a specific interval with an integer endpoint.
+\end{proof}
+
+\subsection{Exponential generating functions and complete Bell polynomials}
+
+A formal power series identity below means equality of every finite truncated
+coefficient list.  In $\Q[z]/(z^{N+1})$, substitution into an exponential is
+finite whenever the substituted polynomial has constant coefficient zero.
+
+\begin{theorem}[The exponential generating function]\label{thm:egf}
+As a formal series, and also as an effective complex analytic identity,
+\begin{equation}\label{eq:egf}
+ \sum_{n=0}^{\infty}\frac{B_n}{n!}z^n=\exp(e^z-1).
+\end{equation}
+In particular, for every real $r>0$ and every $n\ge0$,
+\begin{equation}\label{eq:coefficient-bound}
+ B_n\le n!\,r^{-n}\exp(e^r-1).
+\end{equation}
+\end{theorem}
+\begin{proof}
+The coefficient of $z^n$ in $(e^z-1)^k/k!$ counts ordered lists of $k$
+nonempty labeled blocks, divided by their $k!$ possible orders; it is
+$S(n,k)/n!$.  In detail, choose block sizes
+$d_1+\cdots+d_k=n$ with $d_i\ge1$.  The multinomial count is
+$n!/(d_1!\cdots d_k!)$; dividing by $n!k!$ gives exactly the coefficient
+obtained by multiplying the $k$ series.  All $k>n$ contribute zero.
+Summing $k=0,\ldots,n$ proves the formal identity.
+
+There is also a direct recurrence check: if $F(z)=\sum B_nz^n/n!$, the
+binomial recurrence gives $F'=e^zF$ and $F(0)=1$.  The formal exponential on
+the right of \eqref{eq:egf} has the same equations.  Coefficient induction
+therefore gives the same result without formal division by an unknown series.
+
+For $r>0$, every finite partial sum of $F(r)$ is bounded above by
+$\sum_{k\ge0}(e^r-1)^k/k!=\exp(e^r-1)$: expand the finite coefficients just
+computed, and only add nonnegative terms.  The single $n$th term yields
+\eqref{eq:coefficient-bound}.  For $|z|\le A$ and $R=2(A+1)$, the coefficient
+bound gives
+\begin{equation}\label{eq:egf-tail}
+ \sum_{n>N}\frac{B_n}{n!}|z|^n
+ \le 2\exp(e^R-1)\,2^{-(N+1)}.
+\end{equation}
+An explicit integer upper bound for the large constant is available by
+$e<3$: for integral $R$, take
+$\exp(e^R-1)<3^{3^R}$.  Hence choosing
+$N=s+2\cdot3^R+4$ suffices.  For rational $R$, first increase it to an integer.
+The finite coefficient identity, the exponential tails, and
+\eqref{eq:egf-tail} now justify the analytic identity.  They also justify all
+termwise differentiations on smaller bounded disks, by inserting the extra
+polynomial factors $n(n-1)\cdots$ in the same geometric tail argument.
+\end{proof}
+
+The complete Bell polynomial can be defined without analytic vocabulary by
+\[
+ C_n(x_1,\ldots,x_n)
+ =\sum_{\pi\text{ a partition of }[n]}
+       \prod_{C\in\pi}x_{|C|}.
+\]
+Grouping by the number $m_j$ of size-$j$ blocks proves the finite formula
+\begin{equation}\label{eq:block-multiplicity}
+ C_n(x_1,\ldots,x_n)
+ =\sum_{\substack{m_1,\ldots,m_n\ge0\\\sum j m_j=n}}
+   \frac{n!}{\prod_{j=1}^n m_j!(j!)^{m_j}}
+   \prod_{j=1}^n x_j^{m_j}.
+\end{equation}
+Indeed, order all $n$ labels, cut them into the indicated blocks, and quotient
+by the $j!$ orders within each block and the $m_j!$ orders of equal-sized blocks.
+Thus $C_n(1,\ldots,1)=B_n$, so the sum of its coefficients is $B_n$.
+Expanding a finite exponential also proves
+\[
+ \sum_{n\ge0}C_n(x_1,\ldots,x_n)\frac{z^n}{n!}
+ =\exp\left(\sum_{j\ge1}x_j\frac{z^j}{j!}\right)
+\]
+coefficientwise.  In the usual moment--cumulant language, all the cumulants of
+the specified Poisson weights are $1$.  This is exactly the preceding formal
+identity specialized to $x_j=1$.
+
+\subsection{Hypergeometric notation, without extra functions}
+
+For $n\ge1$, the hypergeometric statement on MathWorld is
+\[
+ B_n=e^{-1}\,{}_{n-1}F_{n-1}
+     (\underbrace{2,\ldots,2}_{n-1};
+      \underbrace{1,\ldots,1}_{n-1};1).
+\]
+Define the expression on the right by its factorial series.  Since the rising
+factorials satisfy $(2)^{\overline j}/(1)^{\overline j}=j+1$, its $j$th term is
+$(j+1)^{n-1}/j!=(j+1)^n/(j+1)!$.  Changing the index in
+Theorem~\ref{thm:dobinski} proves the formula with the same effective tail.
+For $n=1$ this includes ${}_0F_0(1)=e$.
+
+\subsection{The ordinary series and its negative-axis substitute}
+
+The ordinary generating series $\sum B_nx^n$ is formal.  It is not a
+convergent series away from $0$.  Nevertheless, on the negative real axis
+there is a useful function having that series as its asymptotic expansion.
+
+\begin{theorem}[A Stieltjes-type representation and its full remainder]
+For $x\le0$, define the effective name
+\[
+ G(x)=e^{-1}\sum_{k=0}^{\infty}\frac1{(1-kx)k!}.
+\]
+It is uniformly convergent on this half-line, with tail at most
+$2/(M+1)!$ after $k=M$.  For every $N\ge0$,
+\begin{equation}\label{eq:ordinary-asymptotic}
+ G(x)=\sum_{j=0}^N B_jx^j+\mathcal R_N(x),\qquad
+ |\mathcal R_N(x)|\le B_{N+1}|x|^{N+1}.
+\end{equation}
+The remainder has sign $(-1)^{N+1}$ for $x<0$.
+\end{theorem}
+\begin{proof}
+Use the exact finite identity
+\[
+ \frac1{1-kx}=\sum_{j=0}^N(kx)^j+
+                    \frac{(kx)^{N+1}}{1-kx}.
+\]
+Multiply by $e^{-1}/k!$, sum first over a finite range of $k$, and apply
+Theorem~\ref{thm:dobinski}.  For $x\le0$ the denominator is at least $1$,
+so the absolute value of the last sum is at most $B_{N+1}|x|^{N+1}$.
+The factorial tail proves existence of the name independently of the
+asymptotic expansion.  Each summand in the last sum has the claimed sign.
+\end{proof}
+
+For $x<0$ put $a=-1/x>0$.  Then
+$1/(1-kx)=a/(a+k)=(a)^{\overline k}/(a+1)^{\overline k}$.
+Consequently the confluent hypergeometric representation is exactly
+\[
+ G(x)=e^{-1}\,{}_1F_1(-1/x;1-1/x;1),
+\]
+with the defining series and the preceding tail bound.  We do not use the
+incomplete-gamma expression from MathWorld, whose written form involves
+complex branch conventions.
+
+The other convergent series displayed there also follows by finite algebra:
+\begin{equation}\label{eq:ordinary-rising-series}
+ G(x)=\sum_{k=0}^{\infty}\frac{(-1)^k}{(a+1)^{\overline k}}
+     =\sum_{k=0}^{\infty}
+       \frac{x^k}{(-x)^k((x-1)/x)^{\overline k}}
+       \qquad(x<0,\ a=-1/x).
+\end{equation}
+Here the rising factorial with index zero is one. To prove the identity,
+define the finite rational sum
+\[
+ H_n(a)=\sum_{j=0}^{n}(-1)^j\binom nj\frac{a}{a+j}.
+\]
+Pascal's identity gives
+\[
+ H_{n+1}(a)=H_n(a)-\frac{a}{a+1}H_n(a+1).
+\]
+Starting with $H_0(a)=1$, induction therefore gives
+\begin{equation}\label{eq:finite-beta-sum}
+ H_n(a)=\frac{n!}{(a+1)^{\overline n}}:
+\end{equation}
+indeed, the difference of the two proposed terms has numerator
+$n!((a+n+1)-a)=(n+1)!$ over
+$(a+1)\cdots(a+n+1)$. For quantifier-free induction, fix the final index
+$N$ and retain the finite table of assertions for arguments
+$a,a+1,\ldots,a+N-r$ at stage $r$; each next entry uses two entries already
+in that table. All denominators are positive and may be cleared.
+
+The coefficient of $z^n$ in the finite product
+$e^{-z}\,{}_1F_1(a;a+1;z)$ is
+\[
+ \frac1{n!}\sum_{j=0}^{n}(-1)^{n-j}\binom nj\frac{a}{a+j}
+   =\frac{(-1)^n}{(a+1)^{\overline n}},
+\]
+by \eqref{eq:finite-beta-sum}. Since $0<a/(a+j)\leq1$ and
+$(a+1)^{\overline n}\geq n!$, all three series and their product have
+factorial tail bounds on every fixed bounded disk. Thus the finite coefficient
+calculation passes to their effective names. Setting $z=1$ proves
+\eqref{eq:ordinary-rising-series}, with absolute tail at most
+$2/(M+1)!$ after index $M$. This adds no special-function assumption.
+
+To see directly that the ordinary series has radius zero, fix a positive
+rational $x$ and choose an integer $k$ with $kx\ge2$.  Dobi\'nski gives
+\[
+ B_nx^n\ge\frac{(kx)^n}{e\,k!}\ge\frac{2^n}{3k!}.
+\]
+An explicit $n$ makes this greater than any prescribed rational number.
+The terms therefore do not tend to zero.  The same absolute-value argument
+applies at nonzero complex $x$ with an explicit positive rational lower bound
+for $|x|$.  This is also an elementary proof that Bell numbers grow faster
+than every fixed exponential, independent of the sharper growth theorems.
+
+\subsection{Fourier coefficient integrals and Ces\`aro's formula}
+
+\begin{theorem}[Circular coefficient extraction]\label{thm:fourier-coefficient}
+For $r>0$ and $n\ge0$,
+\begin{equation}\label{eq:circular-extraction}
+ B_n=\frac{n!}{2\pi r^n}
+  \int_{-\pi}^{\pi}\exp(e^{r e^{i\theta}}-1)e^{-in\theta}\,d\theta.
+\end{equation}
+Equivalently, on the positively oriented circle $|z|=r$,
+\[
+ B_n=\frac{n!}{2\pi i e}\int_{|z|=r}
+                    \frac{\exp(e^z)}{z^{n+1}}\,dz.
+\]
+For $n\ge1$ the real integral representation is
+\begin{align}\label{eq:cesaro}
+ B_n=\frac{2n!}{\pi e}\int_0^\pi
+  &\exp\!\bigl(e^{\cos\theta}\cos(\sin\theta)\bigr)\notag\\[-3pt]
+  &\quad\cdot\sin\!\bigl(e^{\cos\theta}\sin(\sin\theta)\bigr)
+    \sin(n\theta)\,d\theta.
+\end{align}
+\end{theorem}
+\begin{proof}
+Insert the uniformly convergent series \eqref{eq:egf} on the circle.  The
+finite orthogonality identity
+$(2\pi)^{-1}\int_{-\pi}^{\pi}e^{i(m-n)\theta}\,d\theta=[m=n]$
+extracts the coefficient, and \eqref{eq:egf-tail} bounds the discarded part.
+Parametrizing the circle by $z=r e^{i\theta}$ proves the contour notation.
+No general Cauchy theorem is required.
+
+At $r=1$ the imaginary part of $\exp(e^{e^{i\theta}})$ is
+$e\sum_{m\ge1}B_m\sin(m\theta)/m!$.  Multiplication by $\sin(n\theta)$
+and the identity
+$\int_0^\pi\sin(m\theta)\sin(n\theta)\,d\theta=(\pi/2)[m=n]$
+give the result.  Finally expand the two nested complex exponentials into
+their sine and cosine parts to obtain \eqref{eq:cesaro}.  This agrees with
+the corrected formula in Callan~\cite{callan-cesaro}; the factor $n!$ is essential.
+All integral identities here are identities of the effective Riemann-sum
+names in Section~\ref{subsec:names}.
+\end{proof}
