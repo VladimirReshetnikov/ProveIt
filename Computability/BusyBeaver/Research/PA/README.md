@@ -68,6 +68,9 @@ in PRA models; the [site-45](pa194/ipra/machine-code/SITE45-POSITIVE-CLOCK-CODE.
 primitive-recursive codes. The [site-45 transfer and zero exit](pa194/ipra/machine-code/SITE45-NATIVE-EXIT.md)
 and [site-42 transfer and zero exit](pa194/ipra/machine-code/SITE42-NATIVE-EXIT.md)
 now have native iPRA sentences for their complete transfer loops. A
+[matched five-instruction macro](pa194/ipra/machine-code/TRANSFER-TO-SITE0-INVARIANT.md)
+preserves a repeated-spare frame and its gap under explicit branch and padding
+conditions; it is a model-uniform finite segment, not an all-site simulation. A
 complete reachable-state simulation remains open. Other native iPRA
 clocked equalities cover the [physical positive loop](pa194/ipra/machine-code/ACTUAL-PHYSICAL-NATIVE.md),
 [source fetch](pa194/ipra/machine-code/UNIFIED-FETCH-NATIVE.md),
@@ -126,11 +129,11 @@ proved for the full source theory. Of the twelve fixed facts,
 [guarded isomorphism symmetry](pa194-work/pa194-model-axioms/SOURCE-IS.md),
 [guarded isomorphism transitivity](pa194-work/pa194-model-axioms/SOURCE-IT.md),
 and [successor compatibility](pa194-work/pa194-model-axioms/SOURCE-S2.md)
-are proved in the covered models. The [assembly](pa194-work/pa194-model-axioms/SOURCE-FACTS-EIGHT.md)
-leaves four addition and multiplication facts as explicit premises. A separate
-[addition-existence supplier](pa194-work/pa194-model-axioms/SOURCE-A1.md)
-has passed an incremental replay; its older addition and induction dependencies
-remain prebuilt while their deeper source check runs.
+are proved in the covered models. A separate [addition-existence supplier](pa194-work/pa194-model-axioms/SOURCE-A1.md)
+has passed an incremental replay, and the [nine-fact assembly](pa194-work/pa194-model-axioms/SOURCE-FACTS-NINE.md)
+leaves addition coherence and multiplication existence and coherence as explicit
+premises. Older addition and induction dependencies remain prebuilt while their
+deeper source check runs.
 A [successor-value transport](pa194-work/pa194-model-axioms/SUCC-VALUE-FULL-SOURCE.md)
 is proved in the covered models, including for nonstandard term codes. The
 remaining source axiom suppliers are open. Identity translation is independent
