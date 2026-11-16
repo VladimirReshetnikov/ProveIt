@@ -49,10 +49,25 @@ argument, pushes the old top, copies the offset, and builds the
 radix-five implication at the last of the 61 constructor sites. The
 theorem gives the full resulting register file and a positive clock
 in each covered model, with the two scratch registers 6 and 7 zero on
-entry. The following comparison and returning branches are separate
-source segments.
+entry.
 
 ```sh
 dir=Computability/BusyBeaver/Research/PA/verification/pa194/ipra/variants/pa194m5
 bash "$dir/check-mp-prefix.sh" /path/to/checked-m5-cons-sites /path/to/fresh-mp-prefix
+```
+
+## Modus ponens return to dispatch
+
+The [comparison and cleanup](PA194M5MPGuard.lean) verify the branch
+at site 3682 against arbitrary modeled comparison operands. The
+[complete command](PA194M5MPCommand.lean) combines both outcomes
+with the prefix and proves positive-time execution from site 3614 to
+dispatch site 25. The [result identities](PA194M5MPFields.lean) give
+the radix-five equality test and the resulting scheduler fields.
+The command starts after the argument has been fetched into register
+8. Connecting the command to the model scheduler requires the
+preceding fetch and dispatch.
+
+```sh
+bash "$dir/check-mp-command.sh" /path/to/checked-mp-prefix /path/to/fresh-mp-command
 ```
