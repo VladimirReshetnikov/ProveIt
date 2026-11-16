@@ -11,20 +11,11 @@ open LO LO.FirstOrder LO.Entailment LeanProofs.ConciseIPRA
 open scoped LO.FirstOrder
 open DiophantineConsistency
 open PRAFiniteFunctionCodes (Code pack)
-open PRATheory (getCode)
 open IPRAEqualityOnlyReference
 
 local instance conciseAxiomLanguageDecidableEq : language.DecidableEq where
   func := fun k => by change DecidableEq (Code k); infer_instance
   rel := fun k => by change DecidableEq (EqualityRel k); infer_instance
-
-private theorem getCode_pack {n m : ℕ} (f : Fin m → Code n) (i : Fin m) :
-    getCode (pack m f) i = f i := by
-  induction m with
-  | zero => exact Fin.elim0 i
-  | succ m ih =>
-    refine Fin.cases rfl (fun j => ?_) i
-    exact ih (fun k => f k.succ) j
 
 private theorem term_var {n : ℕ} (i : Fin n) :
     toFoundationTerm (Syn.var i) = #i := rfl

@@ -12,6 +12,7 @@ open LO LO.FirstOrder LeanProofs.ConciseIPRA
 open scoped LO.FirstOrder
 open DiophantineConsistency
 open PRAFiniteFunctionCodes (Code Codes pack)
+open PRATheory (getCode)
 open IPRAEqualityOnlyReference (EqualityRel language TermN)
 
 mutual
@@ -37,6 +38,14 @@ def toFoundationCode : {n : ℕ} → PR n → Code n
   | _, .comp f gs => .comp (toFoundationCode f) (pack _ (fun i => toFoundationCode (gs i)))
   | _, .prec f g => .prec (toFoundationCode f) (toFoundationCode g)
 
+theorem getCode_pack {n m : ℕ} (f : Fin m → Code n) (i : Fin m) :
+    getCode (pack m f) i = f i := by
+  induction m with
+  | zero => exact Fin.elim0 i
+  | succ m ih =>
+    refine Fin.cases rfl (fun j => ?_) i
+    exact ih (fun k => f k.succ) j
+
 theorem toConciseCodes_pack {n : ℕ} (k : ℕ) (gs : Fin k → Code n) :
     toConciseCodes (pack k gs) = fun i => toConciseCode (gs i) := by
   induction k with
@@ -54,6 +63,14 @@ theorem toConciseCodes_pack {n : ℕ} (k : ℕ) (gs : Fin k → Code n) :
   | comp f gs ih hgs =>
     simp only [toFoundationCode, toConciseCode, toConciseCodes_pack, ih, hgs]
   | prec f g ihf ihg => simp only [toFoundationCode, toConciseCode, ihf, ihg]
+
+/-- The image of a Foundation function symbol after a round trip through ConciseIPRA. -/
+def normalizeCode {n : ℕ} (c : Code n) : Code n :=
+  toFoundationCode (toConciseCode c)
+
+@[simp] theorem normalizeCode_idem {n : ℕ} (c : Code n) :
+    normalizeCode (normalizeCode c) = normalizeCode c := by
+  simp only [normalizeCode, code_roundtrip]
 
 variable {ξ ζ : Type} {k l n m : ℕ}
 
