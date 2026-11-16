@@ -130,9 +130,11 @@ proved for the full source theory. Of the twelve fixed facts,
 [guarded isomorphism transitivity](pa194-work/pa194-model-axioms/SOURCE-IT.md),
 and [successor compatibility](pa194-work/pa194-model-axioms/SOURCE-S2.md)
 are proved in the covered models. A separate [addition-existence supplier](pa194-work/pa194-model-axioms/SOURCE-A1.md)
-has passed an incremental replay, and the [nine-fact assembly](pa194-work/pa194-model-axioms/SOURCE-FACTS-NINE.md)
-leaves addition coherence and multiplication existence and coherence as explicit
-premises. Older addition and induction dependencies remain prebuilt in that replay; a
+and a [multiplication-existence supplier](pa194-work/pa194-model-axioms/SOURCE-M1.md)
+have passed incremental replays. The [ten-fact assembly](pa194-work/pa194-model-axioms/SOURCE-FACTS-TEN.md)
+leaves addition and multiplication coherence as explicit premises. The
+multiplication source chain is independently rebuilding. Older addition and
+induction dependencies remain prebuilt in these replays; a
 separate standalone source check of the corresponding addition-output
 development passed with a Foundation overlay, without establishing byte identity
 with those earlier staged objects.
