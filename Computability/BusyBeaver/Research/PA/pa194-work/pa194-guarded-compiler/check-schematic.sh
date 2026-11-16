@@ -9,5 +9,5 @@ export LEAN_PATH="$out:/dev/shm/pa194-value-body-repo:/dev/shm/pa194-term-names-
 src="$repo/Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler"
 lean -j1 -R "$src" -M 7000 -o "$out/PA194Schematic.olean" "$src/PA194Schematic.lean" > "$out/PA194Schematic.log" 2>&1
 if rg -q "sorryAx|declaration uses 'sorry'" "$out/PA194Schematic.log"; then exit 1; fi
-[[ $(rg -c 'depends on axioms:' "$out/PA194Schematic.log") -eq 9 ]]
-printf 'PASS: schematic module with nine axiom audits; earlier stages prebuilt.\n'
+[[ $(rg -c 'depends on axioms:' "$out/PA194Schematic.log") -eq 10 ]]
+printf 'PASS: schematic module with ten axiom audits; earlier stages prebuilt.\n'

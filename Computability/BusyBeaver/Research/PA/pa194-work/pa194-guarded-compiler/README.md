@@ -200,7 +200,7 @@ A prior incremental replay of `PA194Schematic` passed six axiom audits. After
 the sentence-layer update, a fresh incremental replay of `PA194Schematic` and
 `PA194NameForms` passed nine and six audits respectively, with no `sorryAx`.
 Their Foundation dependencies were prebuilt, so this is not a full transitive
-rebuild. The standalone schematic checker now targets the updated nine reports. Reproduce with a fresh output:
+rebuild. The standalone schematic checker now targets the current ten reports. Reproduce with a fresh output:
 
 ```sh
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-schematic.sh "$PWD" NEW_EMPTY_OUTPUT
@@ -213,13 +213,13 @@ fresh output directory:
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-name-forms.sh "$PWD" NEW_EMPTY_OUTPUT
 ```
 
-A separate repository-source replay of `PA194NameSchema`, `PA194NameSemantics`
-and `PA194NameFactsProof` passed their eight, nine and fifteen axiom audits
-without `sorryAx`. It retains the independently replayed schematic/name-form
-objects and other prebuilt dependencies; it does not rebuild their full transitive
-closure. The result derives the naming fields from the twelve explicit
-`SourceFacts` and variable-name existence, which remain assumptions of the
-generic theorem. Reproduce with a fresh output directory:
+After the standard-quote extension, a repository-source replay rebuilt
+`PA194Schematic`, `PA194NameForms`, `PA194NameSchema`, `PA194NameSemantics`
+and `PA194NameFactsProof` in order, passing their ten, six, eight, nine and
+seventeen axiom audits without `sorryAx`. Earlier dependencies remain prebuilt;
+this is not a full transitive rebuild. The result derives the naming fields from
+the twelve explicit `SourceFacts` and variable-name existence, which remain
+assumptions of the generic theorem. Reproduce with a fresh output directory:
 
 ```sh
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-name-facts.sh "$PWD" NEW_EMPTY_OUTPUT
