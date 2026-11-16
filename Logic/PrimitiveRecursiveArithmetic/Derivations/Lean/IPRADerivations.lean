@@ -12,10 +12,12 @@ import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.Powers
 import IPRADerivations.Core.Parity
 import IPRADerivations.Core.BoundedSums
+import IPRADerivations.Core.Descent
 import IPRADerivations.Algebra.CayleyHamilton
 import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Analysis.Chebyshev
 import IPRADerivations.Algebra.PolynomialFormulas
+import IPRADerivations.Algebra.TrisectionCubic
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
 import IPRADerivations.DiophantineNumberTheory.Recurrences
