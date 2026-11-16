@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives on 14 and
-15 November 2026: 33 to `docs/drafts`, and 44 to
+15 November 2026: 33 to `docs/drafts`, and 45 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -32,7 +32,7 @@ reason. Its directory column gives `<area>/<directory>`.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `ignored` | 82 | The member matches the repository's `.gitignore`: 43 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests, 38 `.log` files from LaTeX and Lean builds, and 1 file under a `build/` directory. It is available only from the delivered archive, so it is lost for the archives that were not committed. |
+| `ignored` | 87 | The member matches the repository's `.gitignore`: 43 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests, 43 `.log` files from LaTeX and Lean builds, and 1 file under a `build/` directory. It is available only from the delivered archive, so it is lost for the archives that were not committed. |
 | `sibling-packet` | 21 | `puiseux_ipra` bundles `dependencies/FTA_iPRA/`, a byte-identical copy of the packet filed in [`algebra/FTA_iPRA`](algebra/FTA_iPRA/) (13 members). `ipra_finite_demand` bundles four of its files under the same path (4 members). `ipra_resources_and_elimination_2026-11-15` bundles `lean/BackwardDemand.lean` of [`foundations/ipra_finite_demand`](foundations/ipra_finite_demand/) (1 member). `ipra_stable_observables` bundles three `lean/ConciseIPRA/` files byte-identical to the `lean/upstream/` copies in [`foundations/ipra_coherent_methods_2026-11-15`](foundations/ipra_coherent_methods_2026-11-15/) (3 members). The reference column gives the placed file, except for the copy of `SHA256SUMS`, which is ignored in both. |
 | `sibling-archive` | 1 | `zeta_zeros_ipra_2026-11-15` bundles `dependencies/zeta_functional_equation_ipra.zip`, a byte-identical copy of the delivered archive filed in [`analytic-number-theory/zeta_functional_equation_ipra`](analytic-number-theory/zeta_functional_equation_ipra/). |
 | `repository-copy` | 25 | `zeta_zeros_ipra_2026-11-15` bundles `sources/Deduction.lean`, `sources/NativeBiInterpretation.lean` and `sources/PR.lean`; `ipra_presentations_to_witnesses` and `four_metrics_ipra_2026-11-15` bundle those three and `Syntax.lean`, under `lean/upstream/` and `lean/upstream_inspected/`; all byte-identical to the files of the same names in [`ConciseIPRA/Lean/ConciseIPRA`](../../ConciseIPRA/Lean/ConciseIPRA/). `isoperimetric_ipra_constructive_2026-11-15` bundles, under `reused/`, the earlier packet [`geometry/isoperimetric_ipra`](geometry/isoperimetric_ipra/) as filed here at `22afac4c9d`; 14 of its files are byte-identical to that packet. The reference column gives that file, relative to the repository root. |
@@ -61,7 +61,7 @@ manifests, build logs and `build/` files.
 
 ## Packets
 
-The 77 archives hold 2,247 members: 2,118 placed here, 82 ignored, 21 in bundled copies of
+The 78 archives hold 2,296 members: 2,162 placed here, 87 ignored, 21 in bundled copies of
 a sibling packet, 1 nested copy of a sibling archive and 25 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -167,6 +167,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | [`ipra_resources_and_elimination_2026-11-15`](foundations/ipra_resources_and_elimination_2026-11-15/) | *not committed* 2026-11-15 | `ipra_resources_and_elimination_2026-11-15` | Finite mathematical interfaces: changing-parameter recursion compiled to PR syntax, primitive recursive fuel for lexicographic descent, complete affine plane-intersection lists, and finite auxiliary envelopes. It states that four Lean declarations conclude `Prf PRAAx` derivability. Its `lean/build.sh` needs `BackwardDemand.lean`, omitted here as a copy from `ipra_finite_demand`. | 48 | 12 |
 | [`ipra_unified_finitary_framework_2026-11-15`](foundations/ipra_unified_finitary_framework_2026-11-15/) | *not committed* 2026-11-15 | `ipra_unified_finitary_framework_2026-11-15` | A unified finitary-relational framework: proof-producing finite traces, in which embedded base, step and final derivations combine into one `Prf PRAAx` derivation; finitary relational presentations as verified answer clouds with compatibility edges; finite witness amalgamation by backward viability; and shrinking viability, giving coherent PR names under a diameter modulus and a summable motion budget. It keeps height bounds, analytic constants and other deep data apart from their finite verifiers. Its Lean files are blueprints with `sorry` placeholders, and it claims no kernel-checked `Prf PRAAx` compiler. | 47 | 1 |
 | [`ipra_uniform_certificates`](foundations/ipra_uniform_certificates/) | *not committed* 2026-11-15 | `ipra_uniform_certificates` | Uniform certificates complementing the finite-contract frameworks here: finite-net lifting with an explicit modulus and rational error budgets, uniform root names from sign brackets and algebraic separation, and composition of precision contracts. Its Lean blueprint is not compiled. | 6 | 0 |
+| [`ocipra_framework_2026-11-15`](foundations/ocipra_framework_2026-11-15/) | *not committed* 2026-11-15 | `ocipra_framework_2026-11-15` | Observation-contract internalisation (OCiPRA): one statement calculus with four theorem classes (deterministic contracts, bounded relational contracts, branch-independent or diameter-stable observables, and conditional theorems with explicit producer data), with proofs of bounded-formula Booleanisation, least bounded search, contract-DAG composition, clocked trace reflection, demand closure and backward viability. Its Lean outline has no `sorry` and was not compiled. | 44 | 5 |
 
 ### Geometry
 

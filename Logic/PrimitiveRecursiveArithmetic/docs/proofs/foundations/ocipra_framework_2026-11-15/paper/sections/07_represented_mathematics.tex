@@ -1,0 +1,165 @@
+\section{Represented mathematics through finite observations}
+
+The statement calculus is useful only if it supports ordinary mathematical constructions.  This section develops a uniform treatment of real and complex quantities, formal series, measures, finite-dimensional geometry, and compact spaces.  The guiding rule is always the same: expose the finite observation actually consumed by the proof and prove its coherence with finer observations.
+
+\subsection{Regular rational names}
+
+A convenient real-number presentation is a primitive-recursive sequence of rationals $a(p)$ satisfying
+\[
+ |a(p+1)-a(p)|\leq 2^{-(p+2)}.
+\]
+The rational is encoded by a signed numerator and positive denominator.  Summing the tail gives
+\[
+ |a(q)-a(p)|\leq 2^{-(p+1)}\qquad(q\geq p).
+\]
+All inequalities become integer inequalities after multiplying by positive denominators.  Thus regularity at a fixed pair $(p,q)$ is bounded and decidable.  A theorem about the represented real is stated by quantifying $p$ last and proving the finite rational assertion at that precision.
+
+Two names $a,b$ represent the same real when
+\[
+ |a(p+c)-b(p+c)|\leq 2^{-p}
+\]
+for a fixed offset $c$.  An operation is extensional when it maps equivalent input names to equivalent output names.  The operation itself is a fixed primitive-recursive program on rational codes.
+
+\subsection{Arithmetic and precision budgets}
+
+For addition, output precision $p$ is obtained by reading both inputs at $p+2$ and adding their rational approximations.  The two input errors sum to at most $2^{-(p+1)}$, leaving a margin for normalization.  Negation has demand $p$.  For multiplication on a supplied bounded region $|x|,|y|\leq M$, use approximations at precision
+\[
+ p+c+\lceil\log_2(M+1)\rceil
+\]
+so that
+\[
+ |xy-x'y'|
+ \leq |x|\,|y-y'|+|y'|\,|x-x'|
+\]
+fits the output budget.  The bound $M$ is a producer datum or a previously proved invariant.
+
+Reciprocal is not uniformly continuous near zero.  It therefore has a guarded contract:
+\[
+ |x|\geq 2^{-g}
+ \quad\Longrightarrow\quad
+ \text{a regular name for }1/x.
+\]
+Read $x$ sufficiently accurately to preserve a lower bound, invert the nonzero rational approximation, and propagate the error using
+\[
+ \left|\frac1x-\frac1r\right|
+ =\frac{|x-r|}{|x|\,|r|}.
+\]
+The gap $g$ determines the precision offset.  This is a canonical example of an exact operation becoming available only under an explicit separation certificate.
+
+\begin{proposition}[Finite arithmetic DAG]\label{prop:real-dag}
+Every fixed expression built from regular names by addition, subtraction, bounded multiplication, and apartness-guarded reciprocal has a primitive-recursive reverse precision transformer and a finite rational evaluator.  Given object proofs of the input name laws and guards, OCiPRA compiles an iPRA proof of the output regularity and extensionality laws.
+\end{proposition}
+
+\begin{proof}
+Assign to each syntax node its elementary demand transformer and rational error inequality.  Reverse composition gives all leaf precisions; shared subexpressions take the maximum demand.  Evaluate forward with exact rational arithmetic.  The global error proof is a contract DAG whose local postconditions are the displayed rational inequalities.  Since the expression is fixed, the DAG compiler of \cref{thm:dag} applies.  Regularity compares two evaluations at adjacent output precisions after raising both to a common leaf demand.
+\end{proof}
+
+\subsection{Finite sums, products, and formal series}
+
+A finite sum or product with primitive-recursive length is a bounded fold.  A formal power series is represented by finite coefficient prefixes.  An operation states exactly how many input coefficients are required:
+
+\begin{itemize}
+  \item the coefficient of degree $n$ in a product uses coefficients through $n$;
+  \item differentiation through degree $n$ reads the input through degree $n+1$;
+  \item composition through degree $n$ reads only finite prefixes whose bound is computed from the valuation and truncation order;
+  \item a triangular recurrence computes coefficient $n+1$ from a finite prefix through $n$.
+\end{itemize}
+
+Consequently formal identities are particularly well suited to iPRA: at each degree they reduce to finite polynomial arithmetic.  Analytic convergence is a separate contract, requiring radius and tail data.  Keeping formal and analytic specifications separate prevents a common error in which a formal coefficient identity is treated as a statement about values of an infinite series.
+
+\subsection{Functions and finite grids}
+
+A represented function on a rational box may be given by:
+
+\begin{enumerate}
+  \item a primitive-recursive rational evaluator $f(q,p)$;
+  \item a uniform approximation guarantee at rational points;
+  \item a modulus of uniform continuity $\omega(p)$;
+  \item a range bound $M$.
+\end{enumerate}
+
+A finite grid of mesh $2^{-\omega(p+c)}$ then determines the function to precision $2^{-p}$.  Supremum bounds, positivity, integration, and finite-cover claims can be phrased as certificates on that grid plus the modulus margin.
+
+For integration over $[0,1]$, choose a rational Riemann sum at a mesh prescribed by the modulus.  The error between upper and lower cell values is bounded by the continuity modulus, and the sum uses exact rational arithmetic.  The output at precision $p$ is therefore primitive recursive.  A theorem about an antiderivative or a differential equation needs additional finite contracts for derivatives and truncation errors; it does not follow from the grid evaluator alone.
+
+\subsection{Roots, factors, and singular branches}
+
+For a polynomial with represented coefficients, exact continuous root labels generally do not exist through collisions.  OCiPRA uses one of three interfaces:
+
+\begin{enumerate}
+  \item a finite collection of rational disks whose union contains all roots, with multiplicity data and a residual/Rouché-style verifier;
+  \item a symmetric observable, such as coefficients, power sums, or a sorted real spectrum;
+  \item an isolated root name guarded by a separation disk or derivative lower bound.
+\end{enumerate}
+
+Refinement maps each coarse cluster to compatible finer clusters.  Backward viability resolves local ambiguity over a finite horizon; diameter stability yields approximate roots or factors.  A supplied simple-root certificate gives a contraction or Newton/Hensel contract and hence a single branch.  At a singular point the honest output remains a finite set of charts or a quotient-level object unless a producer supplies additional ramification and separation data.
+
+This formulation resolves the statement-level obstruction in Puiseux, algebraic-function, and eigenvalue packets.  It does not by itself prove the difficult producer theorem that finds all singular charts with the required uniform bounds.
+
+\subsection{Finite rational probability laws}
+
+A finite law is a list of rational outcomes and nonnegative rational weights summing to one.  Expectation, variance, convolution, characteristic-function samples at rational arguments, and tail probabilities at rational thresholds are finite sums.  A represented probability distribution is observed through finite quantization and tail certificates.
+
+For central-limit statements, a robust contract includes:
+
+\begin{itemize}
+  \item a finite rational approximation of each summand or of its law;
+  \item moment bounds and a truncation/tail modulus;
+  \item a quantization error budget;
+  \item an anti-concentration or continuity margin for the requested rational threshold;
+  \item a primitive-recursive sample size or error majorant.
+\end{itemize}
+
+The verifier proves a fixed-precision distributional inequality between finite rational laws.  It avoids treating an arbitrary higher-type measure or a discontinuous exact CDF test as primitive data.  Universal quantification over requested precision is introduced only after the finite proof is obtained.
+
+\subsection{Finite nets and topology}
+
+Abstract compactness is replaced by a finite-net presentation.  A compact metric object comes with a primitive-recursive net $N(p)$, a cover proof at radius $2^{-p}$, and finite comparison data.  A continuous map comes with a modulus converting output precision to input-net precision.  Composition is reverse demand composition.
+
+Many topological arguments have a combinatorial finite core:
+
+\begin{itemize}
+  \item polygonal or cubical approximations of curves and surfaces;
+  \item parity or degree on a finite grid;
+  \item nerve complexes of finite covers;
+  \item subdivision with an explicit mesh bound;
+  \item finite obstruction certificates for intersections or separation.
+\end{itemize}
+
+The theorem must state the approximation and stability margin that transport the finite invariant back to the represented object.  A qualitative appeal to compactness or uniform continuity without a modulus is not an iPRA implementation.
+
+\subsection{Geometry and projective data}
+
+Normalized vectors and angles are discontinuous at degenerate inputs.  A robust geometric presentation uses homogeneous or projective coordinates and finite residual tests.  For example, a rotation may be represented by a rational quaternion approximation rather than a globally selected unit axis.  The axis becomes exact only under a gap excluding the singular rotations.  Similarly, a line is often better represented by a nonzero homogeneous triple modulo scaling than by a slope with a vertical-line exception.
+
+The relational framework permits several locally valid charts.  Stable incidence, orientation with a nonzero determinant margin, squared distances, and polynomial identities descend without choosing one chart globally.
+
+\subsection{Diophantine objects}
+
+For a polynomial system with integer or rational coefficients, evaluation at a bounded candidate is primitive recursive.  Thus a supplied height bound $H$ yields a complete finite search.  More efficient certificates---resultants, norm matrices, annihilator identities, descent data, local solubility witnesses---may reduce the search box, but they remain finite verifiers.
+
+The framework therefore separates two statements:
+
+\begin{enumerate}
+  \item \emph{verification theorem}: from a height, cover, or algebra certificate, compute and prove a complete list;
+  \item \emph{producer theorem}: prove that every input in a class has such a certificate and compute one with a primitive-recursive bound.
+\end{enumerate}
+
+The first is often accessible in iPRA.  The second may contain the entire depth of Faltings, Siegel, Mordell--Weil, or analytic number theory and must not be hidden inside the word ``finite.''
+
+\subsection{Observation towers}
+
+A useful general abstraction is a tower
+\[
+ X_0 \xleftarrow{r_0} X_1 \xleftarrow{r_1} X_2\xleftarrow{}\cdots
+\]
+of finite observation sets with restriction maps.  A deterministic name chooses compatible elements; a relational name provides finite nonempty clouds with compatibility edges.  An operation consists, for every requested level $p$, of:
+
+\begin{enumerate}
+  \item a finite input level demand $\delta(p)$;
+  \item a primitive-recursive map or finite relation on observations;
+  \item a local validity proof;
+  \item a restriction/coherence proof.
+\end{enumerate}
+
+This tower language unifies Cauchy names, jets, finite distributions, covers, truncations, root clusters, spectra, and proof certificates.  OCiPRA contributes the compilation discipline that turns the finite-level proofs into an object derivation and records exactly where an external producer remains.

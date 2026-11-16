@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OCiPRA theorem contract",
+  "type": "object",
+  "required": ["name", "statement_kind", "programs", "resources", "verifier", "proof_backend"],
+  "properties": {
+    "name": {"type": "string"},
+    "statement_kind": {
+      "enum": ["deterministic", "bounded_relational", "stable_observable", "conditional_producer"]
+    },
+    "programs": {
+      "type": "object",
+      "required": ["fixed_or_clocked"],
+      "properties": {"fixed_or_clocked": {"type": "boolean"}}
+    },
+    "resources": {
+      "type": "object",
+      "required": ["primitive_recursive_bound"],
+      "properties": {"primitive_recursive_bound": {"type": "boolean"}}
+    },
+    "verifier": {
+      "type": "object",
+      "required": ["bounded_decidable"],
+      "properties": {"bounded_decidable": {"type": "boolean"}}
+    },
+    "proof_backend": {
+      "type": "object",
+      "required": ["local_object_derivations", "preferred"],
+      "properties": {
+        "local_object_derivations": {"type": "boolean"},
+        "preferred": {"enum": ["NPrf", "Prf-PRAAx", "mixed"]}
+      }
+    },
+    "producer": {
+      "type": "object",
+      "properties": {
+        "status": {"enum": ["proved", "supplied", "external", "missing"]},
+        "certificate_fields": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "choice_policy": {
+      "type": "object",
+      "properties": {
+        "exact_selector": {"type": "boolean"},
+        "collisions_possible": {"type": "boolean"},
+        "separation_gap": {"type": "boolean"},
+        "relational_fallback": {"type": "boolean"}
+      }
+    }
+  }
+}

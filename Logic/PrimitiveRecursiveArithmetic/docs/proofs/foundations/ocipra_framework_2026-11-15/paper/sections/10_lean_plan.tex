@@ -1,0 +1,241 @@
+\section{Lean formalization architecture}
+
+The formalization target is the repository's actual \code{LeanProofs.ConciseIPRA} namespace.  The package does not introduce a surrogate proof relation.  This section gives enough definitions and theorem signatures to make the path to a complete formalization explicit.
+
+\subsection{Existing endpoints to reuse}
+
+The current library supplies:
+
+\begin{itemize}
+  \item \code{PR n}, the syntax of fixed $n$-ary primitive-recursive functions;
+  \item \code{PTm n}, ordinary iPRA terms;
+  \item \code{Fm PTm n}, formulas with $n$ free variables;
+  \item \code{PRAAx}, the theory containing defining equations, successor facts, and quantifier-free induction;
+  \item the derivability judgment \code{Prf PRAAx}, written with the repository sequent notation;
+  \item \code{NFm} and \code{NPrf}, the native scalar formulas and proof relation;
+  \item \code{native\_iff\_pra}, transporting native derivability to and from ordinary iPRA;
+  \item \code{PRA.qfInd}, the exact object induction rule needed by the finite compilers.
+\end{itemize}
+
+The repository also contains examples constructing actual object derivations, including a proof of $\forall x\,(x+0=x)$ and an existential identity contract.  These examples are the right integration tests because their conclusions are sequents, not host-level arithmetic propositions.
+
+\subsection{Proof-carrying contract interfaces}
+
+The supplied file \code{OCiPRA/Contracts.lean} defines the following core structures.
+
+\begin{lstlisting}[language=Lean]
+structure Booleanized (n : Nat) where
+  formula : Fm PTm n
+  test : PR n
+  equivalent : [] |-[PRAAx]
+    Fm.iff formula (accepts test)
+
+structure ProgramContract (n : Nat) where
+  pre : Fm PTm n
+  program : PR n
+  post : Fm PTm (n + 1)
+  certified : [pre] |-[PRAAx]
+    post.subst (inst (PTm.app program Syn.var))
+
+structure NativeContract (n : Nat) where
+  assumptions : List (NFm n)
+  conclusion : NFm n
+  proof : NPrf assumptions conclusion
+\end{lstlisting}
+
+The theorem
+\begin{lstlisting}[language=Lean]
+theorem NativeContract.toPRA (c : NativeContract n) :
+  c.assumptions.map NFm.toPRA |-[PRAAx]
+    c.conclusion.toPRA :=
+  native_iff_pra.mp c.proof
+\end{lstlisting}
+implements the dual-backend bridge.  A deterministic contract obtains its existential consequence by \code{Prf.exI}, and a conditional theorem by \code{Prf.impI}.  A quantifier-free induction package stores the invariant, its \code{QF} proof, and actual base and step derivations; its \code{conclude} theorem calls \code{PRA.qfInd}.
+
+These structures are not axioms.  Their proof fields must be populated before an instance exists.
+
+\subsection{Phase A: bounded formula syntax}
+
+Introduce an inductive syntax that mentions fixed object terms rather than arbitrary host predicates.  One possible shape is:
+
+\begin{lstlisting}[language=Lean]
+inductive BFm : Nat -> Type
+  | eq  (s t : PTm n) : BFm n
+  | and (A B : BFm n) : BFm n
+  | or  (A B : BFm n) : BFm n
+  | imp (A B : BFm n) : BFm n
+  | bot : BFm n
+  | bex (bound : PTm n) (body : BFm (n+1)) : BFm n
+  | ball (bound : PTm n) (body : BFm (n+1)) : BFm n
+\end{lstlisting}
+
+Define \code{BFm.toFm}.  Define \code{BFm.test} by generating a \code{PR} program.  Atomic equality needs a reusable primitive-recursive equality test and object proof.  Connectives use Boolean combinators.  Bounded quantifiers generate folds whose state is a bit.
+
+The main endpoint is:
+
+\begin{lstlisting}[language=Lean]
+theorem BFm.booleanize (phi : BFm n) :
+  [] |-[PRAAx] Fm.iff phi.toFm (accepts phi.test)
+\end{lstlisting}
+
+The recursive connective cases use the intuitionistic proof constructors and finite Boolean truth-table lemmas.  The bounded-quantifier cases instantiate a generic fold-induction lemma.  It is preferable to prove that lemma once rather than reproduce de Bruijn substitution calculations in every quantifier case.
+
+\subsection{Phase B: a library of object-level folds}
+
+Define fixed PR syntax and object equations for:
+
+\begin{itemize}
+  \item Boolean conjunction, disjunction, complement under a Boolean guard;
+  \item pair-state projection and update;
+  \item bounded maximum and sum;
+  \item finite list/table lookup and update;
+  \item a generic fixed-step fold and its invariant rule.
+\end{itemize}
+
+A reusable fold theorem should have an endpoint analogous to:
+
+\begin{lstlisting}[language=Lean]
+def compileFold
+    (init step : PR ...)
+    (inv : Fm PTm ...)
+    (qf : inv.QF)
+    (base : ... |-[PRAAx] ...)
+    (preserve : ... |-[PRAAx] ...) :
+    ... |-[PRAAx] Fm.all inv
+\end{lstlisting}
+
+The precise arities should be calculated by helper definitions and checked with small examples.  The repository's de Bruijn representation makes scoping errors more likely than mathematical errors, so every helper needs substitution simp lemmas.
+
+\subsection{Phase C: least bounded search}
+
+Define the scan state as a coded pair \code{(found,witness)}.  The relation is supplied as a \code{Booleanized (n+1)} and the bound as a \code{PR n}.  Generate a PR program \code{least}.  The invariant is the Booleanization of:
+
+\begin{align*}
+ \mathsf{found}=0&\leftrightarrow
+      \forall z<k\;\neg R(z),\\
+ \mathsf{found}=1&\to
+      \mathsf{witness}<k\wedge R(\mathsf{witness})
+      \wedge\forall z<\mathsf{witness}\;\neg R(z).
+\end{align*}
+
+The exact endpoint is:
+
+\begin{lstlisting}[language=Lean]
+theorem leastBounded_correct
+    (R : BFm (n+1)) (B : PR n) :
+  [existsWithin R B] |-[PRAAx] leastPost R B
+\end{lstlisting}
+
+A second theorem exposes the failure convention with a found-bit, preventing downstream code from treating the default zero as a witness.
+
+\subsection{Phase D: fixed DAG compiler}
+
+The DAG syntax lives in Lean's metatheory.  It is a topologically sorted finite vector of typed nodes.  Each node records:
+
+\begin{itemize}
+  \item arity and predecessor indices;
+  \item a fixed \code{PR} program;
+  \item demand and resource syntax;
+  \item a \code{ProgramContract}, \code{NativeContract}, or \code{RelationalContract};
+  \item substitution maps identifying local variables with table entries.
+\end{itemize}
+
+For a small fixed DAG, define \code{compileDAG} by recursion on the host vector.  At each node, weaken and substitute its local proof, then compose by cuts and equality transport.  The return type is itself the desired sequent:
+
+\begin{lstlisting}[language=Lean]
+def compileDAG (D : FixedDAG n)
+    (local : D.LocalObjectProofs) :
+    [D.pre] |-[PRAAx] D.instantiatedPost
+\end{lstlisting}
+
+For an input-coded node list, generate one clocked table evaluator and use the fold compiler.  Do not define an object-level evaluator for arbitrary \code{PR} syntax.
+
+\subsection{Phase E: demand closure and changing parameters}
+
+Encode fixed-length vectors by nested pairs or bounded tables.  Implement
+\[
+ T(d)=\max(a,d,F(d))
+\]
+and the rank sum.  The stabilization theorem needs:
+
+\begin{enumerate}
+  \item a proof that the initial vector lies in the box;
+  \item an object proof that $T$ preserves the box;
+  \item an object proof of monotonicity for leastness;
+  \item a rank-increase lemma for every nonstationary step.
+\end{enumerate}
+
+The changing-parameter compiler should reuse the repository's existing term-to-symbol and backward-demand work.  Add the missing global prefix theorem and the forward replay invariant, then expose the result as a \code{ProgramContract}.
+
+\subsection{Phase F: finite viability}
+
+Define a fixed cloud interface by primitive-recursive candidate bounds, candidate decoding, compatibility, and terminal tests.  The backwards viability table is a bounded Boolean fold.  The main targets are:
+
+\begin{lstlisting}[language=Lean]
+theorem viability_iff_successfulSuffix
+    (C : FixedCloud n) :
+  [] |-[PRAAx] C.viabilitySpecification
+
+theorem viablePath_correct
+    (C : FixedCloud n)
+    (h : C.LocalObjectProofs) :
+  [C.initialViable] |-[PRAAx] C.pathPost
+\end{lstlisting}
+
+The second theorem uses the least-bounded-search compiler at each stage.  Its invariant records current viability and validity of the prefix.  A separate replay theorem should permit exported path certificates to be checked without re-running the producer.
+
+\subsection{Phase G: stable observables}
+
+Define exact and quantitative stability packages.  An exact package carries an actual derivation comparing two successful transcript codes.  The compiler instantiates it with the least transcript and an arbitrary transcript.  A quantitative package adds rational metric and triangle-inequality contracts.
+
+\begin{lstlisting}[language=Lean]
+theorem stableObservable_correct
+    (C : FixedCloud n) (s : C.ExactStable) :
+  [C.pre] |-[PRAAx] C.observablePost
+\end{lstlisting}
+
+There must be no default instance that turns any relational contract into a deterministic contract.  This negative design property prevents exact-choice claims from entering through typeclass inference or an unnoticed classical choice in host code.
+
+\subsection{Phase H: represented-object adapters}
+
+After the generic compiler exists, add adapters in increasing difficulty:
+
+\begin{enumerate}
+  \item fixed finite arithmetic and existing observation combinators;
+  \item regular rational names and guarded reciprocal;
+  \item finite coefficient prefixes and formal-series operations;
+  \item root clusters and stable spectral lists;
+  \item finite nets and finite rational laws;
+  \item height/list and descent certificate verifiers.
+\end{enumerate}
+
+Each adapter should expose its demand transformer, resource bound, object local proofs, and producer fields.  It should not import a large semantic theorem and then label a host proposition as the iPRA result.
+
+\subsection{Proof export and independent replay}
+
+The repository has encoded proof-tree machinery.  Once a generated \code{Prf PRAAx} value exists, a second export layer should:
+
+\begin{enumerate}
+  \item encode the formula, context, and proof tree;
+  \item write a compact certificate;
+  \item replay it with the existing checker;
+  \item compare the decoded conclusion with the intended target formula.
+\end{enumerate}
+
+This is not needed for logical soundness inside Lean, but it provides a small independently executable proof artifact and detects accidental dependence on host elaboration conveniences.
+
+\subsection{Audit gates}
+
+A theorem is marked complete only when all of the following hold:
+
+\begin{itemize}
+  \item the conclusion is an actual \code{Prf PRAAx} or \code{NPrf} judgment;
+  \item \code{\#print axioms} reports no \code{sorryAx} and no custom axiom;
+  \item every producer assumption occurs visibly in the formula or input record;
+  \item every loop has a fixed PR program or explicit primitive-recursive clock;
+  \item exact branch elimination cites a stability or isolation derivation;
+  \item a small integration example compiles against the root repository workspace;
+  \item ideally, the encoded proof tree also replays successfully.
+\end{itemize}
+
+The supplied Lean sources contain no \code{axiom} and no \code{sorry}.  They were not compiled in the artifact environment because no Lean executable was available.  That status is deliberately weaker than the status of the mathematical arguments and Python tests.

@@ -1,0 +1,154 @@
+\section{Finite relational computation and stable observables}
+
+Many constructive obstructions arise only because a classical proof insists on naming one representative.  Polynomial roots collide, eigenspaces rotate, chart choices overlap, local lifts are nonunique, and compactness arguments yield finite covers rather than a preferred point.  OCiPRA treats the finite relation as primary and eliminates the choice only when the final observable is certified to be stable.
+
+\subsection{Finite cloud systems}
+
+Fix a horizon $H$.  At stage $i\leq H$ there is a nonempty finite cloud
+\[
+ C_i=\{c_{i,0},\ldots,c_{i,B_i-1}\}.
+\]
+The candidates and bounds are produced by fixed primitive-recursive functions.  For $i<H$, let
+$E_i(a,b)$ be a bounded compatibility predicate between a candidate at stage $i$ and one at stage $i+1$.  Let $G(c)$ be a bounded terminal-good predicate.
+
+A successful transcript is a sequence
+$(a_0,\ldots,a_H)$ with $a_i<B_i$, all edges
+$E_i(c_{i,a_i},c_{i+1,a_{i+1}})$, and $G(c_{H,a_H})$.
+No infinite tree and no countable branch are involved.
+
+Define viability backwards:
+\[
+\begin{aligned}
+ V_H(a)&\;\Longleftrightarrow\;a<B_H\wedge G(c_{H,a}),\\
+ V_i(a)&\;\Longleftrightarrow\;a<B_i\wedge
+   \exists b<B_{i+1}\bigl(E_i(c_{i,a},c_{i+1,b})\wedge V_{i+1}(b)\bigr).
+\end{aligned}
+\]
+Each $V_i$ is bounded and therefore Booleanizable.
+
+\begin{theorem}[Finite backward viability]\label{thm:viability}
+For every fixed primitive-recursive finite cloud system, there are primitive-recursive Boolean programs computing all $V_i$.  iPRA proves:
+
+\begin{enumerate}
+  \item $V_i(a)$ holds exactly when $c_{i,a}$ begins a successful suffix to horizon $H$;
+  \item if some $V_0(a)$ holds, bounded least search constructs a least successful transcript;
+  \item replay of that transcript verifies every edge and the terminal predicate.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+At the terminal layer, viability is the Boolean conjunction of the index bound and $G$.  Given a Boolean program for $V_{i+1}$, compute $V_i(a)$ by scanning the bounded range $b<B_{i+1}$ and taking the Boolean disjunction of compatibility and successor viability.  This is a fixed primitive-recursive fold.
+
+Prove the suffix characterization by reverse induction on the finite distance $H-i$.  At distance zero it is exactly the definition of terminal viability.  In the successor case, $V_i(a)$ supplies a compatible viable successor, and the induction hypothesis supplies its successful suffix; concatenation gives a successful suffix from $a$.  Conversely, the first edge of any successful suffix points to a successor whose remaining suffix is successful; the induction hypothesis makes that successor viable, so the bounded existential defining $V_i(a)$ holds.  Reverse induction can be implemented as ordinary induction on $j=H-i$ using truncated subtraction and the coded viability table.
+
+Assume an initial viable index exists.  Choose the least one by \cref{thm:least-search}.  At stage $i$, scan the finite next layer and choose the least index satisfying both compatibility with the current candidate and $V_{i+1}$.  The defining equation of viability proves that this scan succeeds.  Primitive recursion for $H$ stages builds the transcript.  The maintained invariant states that the current index is viable and that the stored prefix has valid edges.  It is bounded and hence admits quantifier-free induction.  At the last stage, viability is terminal goodness.  This also proves replay correctness.
+\end{proof}
+
+\begin{remark}[Finite horizon, not dependent choice]
+The least successor at stage $i$ is chosen from a bounded nonempty set whose nonemptiness is proved by the already computed viability bit.  The construction performs $H$ bounded choices by primitive recursion.  It does not use countable choice or assert an infinite coherent branch.
+\end{remark}
+
+\subsection{Exact branch elimination}
+
+A successful transcript may be an implementation detail.  Let $O$ be a primitive-recursive observation of its terminal candidate or of the whole finite transcript.
+
+\begin{theorem}[Exact stable observable]\label{thm:stable-exact}
+Assume iPRA proves that any two successful transcripts $\tau,\sigma$ satisfy
+\[
+ O(\tau)=O(\sigma).
+\]
+If an initial viable candidate exists, the least viable transcript constructed by \cref{thm:viability} yields a deterministic primitive-recursive output $o$, and iPRA proves that every successful transcript has observable $o$.
+\end{theorem}
+
+\begin{proof}
+Let $\tau_*$ be the least viable transcript.  Its success is proved by \cref{thm:viability}.  Define $o=O(\tau_*)$.  For an arbitrary successful transcript $\sigma$, instantiate the invariance proof with $\tau_*$ and $\sigma$.  Hence $O(\sigma)=o$.  The construction is deterministic because all bounded searches use the least witness, but correctness depends on invariance, not on the arbitrary order of candidate codes.
+\end{proof}
+
+Examples of exact stable observables include a sorted list of eigenvalues despite nonunique eigenvectors, a polynomial factor as an unordered multiset of root clusters, a quotient class, an intersection number, a parity, a finite cardinality, and a Boolean decision separated from the branch boundary.
+
+\subsection{Quantitative branch elimination}
+
+Exact equality is often stronger than needed.  Suppose $O(\tau)$ is a rational code and $d$ is a primitive-recursive rational metric.
+
+\begin{theorem}[Diameter-stable observable]\label{thm:stable-approx}
+Assume every two successful transcripts satisfy
+\[
+ d\bigl(O(\tau),O(\sigma)\bigr)\leq \varepsilon(p)
+\]
+for an explicit primitive-recursive error bound $\varepsilon(p)$.  Then the observable of the least viable transcript is within $\varepsilon(p)$ of the observable of every successful transcript.  If $\varepsilon(p)\leq 2^{-p}$ and the construction is coherent as $p$ increases, these outputs form a regular name.
+\end{theorem}
+
+\begin{proof}
+The first assertion is immediate by applying the diameter hypothesis to the successful least transcript and an arbitrary successful transcript.  For coherence across precisions, compare the two selected transcripts by transporting both into a common finer cloud or by using a cross-precision compatibility theorem.  The triangle inequality combines the within-cloud diameter and the restriction error.  Predetermine a precision offset large enough that the sum is at most $2^{-p}$.  All estimates are rational inequalities checked by bounded integer arithmetic.
+\end{proof}
+
+The theorem is useful even without a global name.  A fixed-precision result such as ``all valid answers lie in an interval of width $2^{-p}$'' is often the strongest constructively valid statement and is sufficient for downstream finite computations.
+
+\subsection{Isolation gaps and exact selectors}
+
+Suppose a finite cloud approximates several objects.  An exact label can be recovered when a gap separates the desired class.  Let $P(c)$ be a bounded classification predicate and suppose a supplied rational $\gamma>0$ proves that candidates from different classes are at distance at least $\gamma$.  If the cloud diameter is below $\gamma/3$, then all candidates compatible with one seed lie in the same class, and bounded least search gives an exact class label.  This is the generic form of:
+
+\begin{itemize}
+  \item selecting a reciprocal only after an apartness bound from zero;
+  \item selecting a spectral projector only after a spectral gap;
+  \item ordering roots only after a separation bound;
+  \item selecting a rotation axis only away from the identity or half-turn singularity;
+  \item choosing a chart only after a positive margin inside its domain.
+\end{itemize}
+
+Without a gap, OCiPRA returns the cloud, quotient, symmetric invariant, or approximate observable.  It does not derive an exact discontinuous selector from a convergent approximation process.
+
+\subsection{Adaptive relational composition}
+
+A consumer may query a producer repeatedly, with later queries depending on earlier answers.  Fix a finite clock $L(x,p)$.  A consumer state contains the finite transcript so far.  At each step it either halts with an output or issues a query $q$; the producer returns one of finitely many answers satisfying a bounded relation.  Form the layered graph of all locally valid interaction states up to the clock and mark accepting terminal states.  Backward viability computes exactly those states from which some accepting continuation exists.
+
+\begin{theorem}[Finite-use relational composition]\label{thm:relational-composition}
+For a fixed clocked consumer and bounded finite producer relation, the set of successful interaction transcripts is primitive recursively enumerable within an explicit bound.  If the initial state is viable, iPRA proves existence of a least successful transcript.  If the final observable is exact- or diameter-stable across all successful transcripts, the internal producer choices can be erased according to \cref{thm:stable-exact,thm:stable-approx}.
+\end{theorem}
+
+\begin{proof}
+Code the consumer state, query, answer, and step counter as one natural.  The candidate layer at time $i$ is the bounded set of all states whose trace length is $i$ and whose local replay checks pass.  Compatibility is one consumer transition plus one valid producer answer.  Acceptance is the terminal consumer predicate.  Apply \cref{thm:viability}; then apply the relevant stability theorem.  Because the entire interaction is bounded by $L$, all quantifiers are finite.
+\end{proof}
+
+This theorem explains how local nonuniqueness can coexist with deterministic mathematics.  What must be deterministic is the claimed observable, not every hidden certificate choice.
+
+\subsection{Shrinking clouds without an infinite branch}
+
+At precision $p$, choose the least candidate that lies on a successful path to a finite horizon $h(p)$.  Suppose:
+
+\begin{enumerate}
+  \item every full viable cloud at precision $p$ has diameter at most $2^{-(p+c)}$;
+  \item compatible candidates at adjacent precisions move by at most a summable rational budget;
+  \item the horizon and all bounds are primitive recursive.
+\end{enumerate}
+
+Then the selected candidates form a regular name after choosing a fixed offset $c$.  The proof compares the two finite selected paths by extending both to a common finite horizon and summing the motion budgets.  At no point is one branch selected through all precisions simultaneously.  This finite-horizon formulation is the correct replacement for an informal appeal to Kőnig's lemma or dependent choice.
+
+\subsection{Quotients and presentation independence}
+
+A represented mathematical object often has many finite presentations.  Let $E(a,b)$ be a bounded equivalence or approximation relation.  A function on presentations descends to the quotient when an object proof establishes
+\[
+  E(a,b)\longrightarrow E'(f(a),f(b)).
+\]
+For exact observables, $E'$ may be equality; for approximate observables, it is a precision-indexed proximity relation.  The contract compiler composes these extensionality proofs just as it composes ordinary postconditions.  Thus ``presentation independence'' becomes a local proof obligation rather than a global set-theoretic quotient construction.
+
+\subsection{Lean target shape}
+
+The central Lean data should contain bounded candidate and compatibility tests as fixed \code{PR} symbols, not host predicates alone.  A useful target is schematically:
+
+\begin{lstlisting}[language=Lean]
+structure ViabilityPackage (n : Nat) where
+  horizon candidateBound candidate edge terminal : PR n
+  viabilityProgram : PR n
+  viability_correct : [] |-[PRAAx] viabilitySpec ...
+  leastPathProgram : PR n
+  leastPath_correct : [initialViable] |-[PRAAx] successfulPath ...
+
+structure StableObservablePackage (n : Nat) where
+  relational : ViabilityPackage n
+  observable : PR (...)
+  invariant : [successful tau, successful sigma] |-[PRAAx]
+    observe tau == observe sigma
+\end{lstlisting}
+
+The exact de Bruijn indices and arities must be supplied in the implementation.  The point of the structure is that no instance can be manufactured without the object derivations in the proof fields.
