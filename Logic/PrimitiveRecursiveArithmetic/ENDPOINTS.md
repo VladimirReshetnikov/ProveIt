@@ -108,6 +108,9 @@ The direct caller replay checked the bounded-search bridge, Euclidean
 arithmetic, and the modules using the earlier transitive imports. The
 source gate verifies that search, Gcd, Bézout, and the bounded-search
 bridge now share the core signum proof independently of `CubeRootTwo`.
+The root `IPRADerivations` build and its named axiom audit passed after
+the extraction. The integrated rebuild also passed `IPRABridge`, its
+arithmetic audit, and the comparison-bit and bounded-search audits.
 
 ## BusyBeaver PA
 
@@ -383,6 +386,11 @@ the [verification routine](UNIFICATION-PLAN.md#verification-routine).
 Both root targets subsequently completed 3,157 jobs after the finite search
 and C254 migrations. All four endpoint theorems and the three transfer
 reports again use the standard Lean axioms.
+Both targets passed again after the signum and native equality migrations.
+The standard audit took 10.29 seconds and the reference audit 7.13 seconds.
+The same root replay rebuilt the two nine-variable exports in 3 minutes
+0.32 seconds over 3,360 jobs, with 2,856,776 KiB peak resident memory.
+The export object retained the SHA-256 of the preceding run.
 
 ## Adjacent providers
 

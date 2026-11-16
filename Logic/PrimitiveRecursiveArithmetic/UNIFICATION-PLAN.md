@@ -116,11 +116,15 @@ encoding rules below.
   on a staged provider.
   The [endpoint receipts](ENDPOINTS.md) give the fresh and warm measurements
   and record the package and checkpoint providers used in each run.
-- [ ] Identify the direct and transitive import closures for the standalone
-  BusyBeaver, `Diophantine`, ConciseIPRA, and Foundation sides. Review the
-  inventory with the affected project maintainers before moving any shared
-  module. The migration list should map each active consumer to a verification
-  step and each archive to its maintained index.
+- [x] Identify the direct and transitive import closures for standalone
+  BusyBeaver and the ProveIt `Diophantine`, ConciseIPRA, and Foundation
+  targets. The [dependency inventory](DEPENDENCIES.md) records the
+  closures and the archive indexes. The [endpoint inventory](ENDPOINTS.md)
+  maps active consumers to their verification commands.
+- [ ] Review the inventory with the affected project maintainers. Record
+  their review of the import and archive boundaries, active proof judgments,
+  and verification commands. The inventories contain the implementation and
+  replay evidence for that review.
 
 ### Phase 1 · Specify names and split dependencies
 
@@ -243,12 +247,16 @@ truncated subtraction, and strict order.
   and the explicit ZFC equation, both through the exact `subCode` inequality
   and the original universal Foundation statement. The
   [endpoint receipts](ENDPOINTS.md) identify the production proof paths.
-- [ ] Repeat in dependency order. Prefer the smallest shared lemma set
+- [x] Repeat in dependency order. Prefer the smallest shared lemma set
   demanded by the next clients. Keep PR programs, proof predicates, and
   reduction-specific arithmetic local when their statements depend on those
   definitions. Completion for a lemma family means one maintained proof,
   comparison lemmas for the supported vocabulary, and checked public
   corollaries for its existing consumers.
+  After the subtraction and zero-test pilots, the finite selector now
+  shares the portable search proof. The native equality path also shares
+  the portable successor and subtraction proofs. Both exact ZFC exports
+  and the literal PA1944L replays passed with these changes.
 
 ### Phase 4 · Migrate consumers at their verified boundaries
 
@@ -279,12 +287,15 @@ and the [MRDP proof guide](../../Computability/HilbertTenthProblem/Lean/MRDP.md)
   open and closed forms. The native selector, literal PA and equation
   replays, and the C222 and C254 evaluator checks cover their existing
   published interfaces.
-- [ ] For each proposed removal, list its active callers, forwarding import
+- [x] For each proposed removal, list its active callers, forwarding import
   or theorem alias, replacement proof, and regression check. Remove duplicate
   implementations only when their two logical interfaces, exact published
   theorem types, and reproducibility requirements are covered. Preserve
   reference-cited historical paths through immutable objects or explicit
   compatibility, depending on how they are used.
+  The [forwarding inventory](ENDPOINTS.md#forwarding-imports-and-shared-proofs)
+  records the signum and native equality replacements, the other forwarded
+  proofs, and the corresponding current and historical checks.
 - [ ] Review the endpoint inventory for coverage. Each active consumer should
   have a verified migration or a documented backend boundary and checker.
   Close the migration after the targeted checks, standalone builds and

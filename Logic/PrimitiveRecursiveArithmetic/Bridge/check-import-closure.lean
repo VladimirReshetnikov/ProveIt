@@ -75,6 +75,9 @@ private def checkPortableLayers (searchPath : SearchPath) : IO Unit := do
   check searchPath [`IPRADerivations.Core.Search, `IPRADerivations.Core.Gcd,
     `IPRADerivations.Core.Bezout, `IPRABridge.BoundedSearch]
     [`IPRADerivations.Algebra.CubeRootTwo]
+  check searchPath [`Diophantine]
+    [`Foundation, `ConciseIPRA, `IPRADerivations, `IPRABridge, `BusyBeaver,
+     `DiophantineConsistency]
 
 def main (args : List String) : IO Unit := do
   let searchPath ← getSrcSearchPath
