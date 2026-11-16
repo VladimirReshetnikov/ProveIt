@@ -1,0 +1,65 @@
+\begin{abstract}
+The \repo\ repository now has three unusually strong ingredients: a checked
+ordinary presentation of intuitionistic primitive recursive arithmetic
+(iPRA), a growing library of literal \(\Prf\;\PRAAx\) arithmetic derivations,
+and checked translations to a small native calculus and to a separate
+Foundation formalization.  It also has a much larger collection of research
+packets whose human arguments are finite and constructive but whose Lean files
+usually stop before constructing the requested object-theory derivation.
+The bottleneck is therefore not another foundational presentation.  It is a
+proof-producing interface between finitary mathematics and the canonical
+judgment
+\[
+        \Gamma\turnstile A.
+\]
+
+This report proposes \emph{Scoped Certificate Realization} (SCR).  A finite
+mathematical component is represented by a quantifier-free validator
+\(\Valid(q,c)\), a local extractor proved under the temporary assumption that
+\(c\) is valid, and a producer for \(\exists c\,\Valid(q,c)\) when one is
+available.  Producer and extractor are joined by ordinary existential
+elimination.  The certificate is thus hidden at precisely the scope where it
+is noncanonical.  A bounded least search is used only when static
+\emph{certificate escape analysis} shows that the certificate itself, rather
+than a certificate-independent consequence, must occur in the public output.
+This distinction eliminates unnecessary choice terms, avoids global master
+certificates, and gives conditional theorems an exact boundary formula instead
+of a vague missing lemma.
+
+The generic results proved here include: scoped and dependent certificate
+composition; a boundary-normal-form theorem for unresolved producers; an
+optional bounded selector built from the repository's checked search theorem;
+a one-induction trace-reflection theorem for adaptive and relational finite
+computations; fixed-shape finite-strategy reflection for bounded quantifier
+alternation; exact and approximate observer-erasure theorems; and a disciplined
+classification of uniform, pointwise, conditional, and unavailable claims.
+We give detailed applications to exact rational bisection, colliding algebraic
+branches, finite carrier maps in topology, and height-bounded Diophantine
+enumeration.  We also give a concrete route from the existing closed
+Foundation bridge to open sequents.
+
+The archive contains complete human proofs of the generic mathematics, a
+no-placeholder Lean candidate for the small structural kernel, detailed Lean
+targets and a dependency-ordered implementation plan, a machine-readable graph
+schema, and exact standard-library reference programs with regression tests.
+The Lean candidate was not compiled in the artifact runtime because Lean was
+not installed; no new kernel-checked theorem is claimed.  Deep producer gaps---
+for example a general height bound for Faltings or Siegel, an absent convergence
+modulus, or a missing separation estimate---remain explicitly visible rather
+than being disguised as proof-engineering problems.
+\end{abstract}
+
+\begin{center}
+\begin{tabularx}{0.96\textwidth}{>{\bfseries}p{0.25\textwidth}X}
+\toprule
+Artifact component & Status \\
+\midrule
+Repository audit & Pinned to \code{f444b76e8480ebea128c15b4a59f158e14f478cc}. \\
+Generic SCR theorems & Fully argued in ordinary intuitionistic natural deduction and iPRA-compatible arithmetic. \\
+Lean structural kernel & No-placeholder source candidate; not elaborated in this runtime. \\
+Larger Lean development & Exact definitions, signatures, and dependency plan; not presented as proved. \\
+Reference implementation & Eight exact Python regression tests executed successfully. \\
+Application theorems & Finite examples verified; general producer theorems are marked conditional where appropriate. \\
+\bottomrule
+\end{tabularx}
+\end{center}

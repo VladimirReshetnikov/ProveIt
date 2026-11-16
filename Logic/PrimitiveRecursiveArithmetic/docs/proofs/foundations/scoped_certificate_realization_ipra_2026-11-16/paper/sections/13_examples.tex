@@ -1,0 +1,158 @@
+\section{Worked applications}
+\label{sec:examples}
+
+The examples are chosen to exercise different escape classes and different
+repository difficulties.  Exact reference computations are included in
+\code{reference/scr\_reference.py}; they illustrate finite encodings but do not
+replace the object proofs below.
+
+\subsection{Exact rational bisection for \(y^3+y=x\)}
+
+Let \(f(y)=y^3+y\).  Given rationals \(a\le b\), a rational \(x\), and a
+natural \(k\), assume
+\[
+       f(a)\le x\le f(b).
+\]
+Since
+\[
+ f(v)-f(u)=(v-u)(u^2+uv+v^2+1),
+\]
+\(f\) is strictly increasing over the rationals.  At stage \(i\), put
+\(m_i=(a_i+b_i)/2\).  If \(f(m_i)\le x\), set
+\((a_{i+1},b_{i+1})=(m_i,b_i)\); otherwise set
+\((a_{i+1},b_{i+1})=(a_i,m_i)\).
+
+All comparisons are exact after clearing positive denominators.  A branch bit
+can be deterministic, or a supplied trace may be checked.  The qf invariant is
+\[
+ f(a_i)\le x\le f(b_i)
+ \quad\wedge\quad
+ 2^i(b_i-a_i)=b-a.
+\]
+The first conjunct is preserved by the branch comparison.  The second follows
+by elementary rational arithmetic.  Quantifier-free induction yields
+\[
+ f(a_k)\le x\le f(b_k),
+ \qquad b_k-a_k=\frac{b-a}{2^k}.
+\]
+
+The certificate's branch code is \emph{observed}: its endpoints matter, but
+for deterministic exact comparison there is a direct PR producer.  If the
+comparison were approximate, different valid traces could be sealed and the
+output would be a diameter-controlled bracket.  The reference example for
+\(x=2\), \([a,b]=[0,2]\), and eight steps produces \([1,129/128]\) and verifies
+the exact width \(1/128\).
+
+For a full object development, use integer quadruples for rationals, define the
+state by primitive recursion, prove positivity of denominators, clear every
+comparison, and instantiate \cref{thm:trace}.  Uniqueness of the real solution
+is a separate monotonicity theorem; a Cauchy name follows with modulus
+\(k=n+c\) once the initial width is bounded by a fixed power of two.
+
+\subsection{Colliding algebraic branches}
+
+Consider a polynomial family whose valid root certificates are ordered lists
+of isolating boxes.  Away from the discriminant, a positive separation gap
+allows stable ordering and exact labels.  At a collision, different valid
+certificates may permute or merge boxes.
+
+A packet that exports ``root number 2'' everywhere is therefore asking for an
+unstable named certificate.  SCR instead uses the following layers.
+\begin{enumerate}[label=(\roman*)]
+\item Validate a finite cloud of boxes and multiplicities.
+\item Export symmetric observations---sum, product, power sums, resultant
+      factors---by exact observer erasure.
+\item Export the union of boxes with a diameter/refinement theorem.
+\item On a subdomain with a proved separation \(g\), apply the gap lemma and
+      recover exact labels.
+\end{enumerate}
+The Python example uses all six permutations of the rational roots
+\((-2,1,3)\).  The first-root observer is rejected as unstable, while sum,
+product, and sum of squares are certified as \((2,-6,14)\).
+
+The same pattern applies to eigenvectors: the eigenspace projector or
+characteristic polynomial is stable; a normalized eigenvector requires a
+simple eigenvalue and a sign/orientation convention with an apartness guard.
+For rotations, a quaternion or rotation matrix is stable; an exact axis vector
+requires exclusion of the identity/half-turn singular cases or an approximate
+axis cloud.
+
+\subsection{Finite carrier maps in topology}
+
+Let \(K,L\) be finite simplicial complexes and let \(C(v)\) be a nonempty
+finite set of vertices of \(L\) for every vertex \(v\) of \(K\).  Assume the
+strong carrier condition: for each simplex \(\sigma\) of \(K\), the union
+\(\bigcup_{v\in\sigma}C(v)\) spans a simplex of \(L\).  A selection certificate
+chooses \(f(v)\in C(v)\).
+
+The certificate validator is finite.  Every valid selection is simplicial.
+For two selections \(f,g\), the vertices of \(f(\sigma)\cup g(\sigma)\) lie in
+the same carrier simplex, so the maps are contiguous.  Over \(\mathbb F_2\),
+the standard prism operator is a finite chain homotopy between their induced
+chain maps.  Therefore their homology maps agree.
+
+The selection is sealed and the induced homology map is an exact observer.
+No canonical vertex choice is needed.  A geometric theorem about an actual
+compact space additionally needs a producer connecting a requested scale to
+\(K,L,C\): a finite net, cover, and modulus.  The combinatorial theorem can be
+fully formalized while that approximation producer remains a boundary.
+
+\subsection{Height-bounded Diophantine enumeration}
+
+For the curve
+\[
+       y^2=x^3-x+1,
+\]
+fix \(H\).  Enumerate all integer pairs \((x,y)\) with
+\(|x|,|y|\le H\), retain those satisfying the equation, and code the resulting
+list.  The validator checks:
+\begin{enumerate}[label=(\alph*)]
+\item every listed pair is in the box and satisfies the equation;
+\item there are no duplicates;
+\item every code in the finite box either appears or fails the equation.
+\end{enumerate}
+This is a primitive-recursive complete-list certificate for the box.  The
+reference program verifies ten points when \(H=12\).
+
+The theorem obtained unconditionally is
+\[
+  \text{``the list contains exactly the points of height at most }H\text{.''}
+\]
+To conclude that it contains \emph{all} integral points, supply a producer
+\[
+  \forall(x,y)\,[y^2=x^3-x+1\to |x|,|y|\le H].
+\]
+In a general Siegel packet, this is the missing height theorem.  The list
+verifier and all downstream finite consequences can nevertheless become
+literal iPRA derivations now, conditional on that exact formula.
+
+\subsection{Finite-consumer stability without a global modulus}
+
+Suppose a downstream proof uses an approximating sequence only at finitely many
+precision requests \(n_1,\ldots,n_r\), perhaps chosen adaptively from earlier
+finite observations.  A trace can record a common window
+\([N,N+g(N)]\) on which every requested observable is stable.  Exceptional-set
+budgets are added, and bounded search finds a window avoiding their union.
+The final consumer theorem is valid even when no global Cauchy modulus is
+known.
+
+This does not prove convergence of the entire sequence.  It proves the exact
+finite-use statement needed by the consumer.  If later mathematics supplies a
+uniform modulus, the same consumer contract upgrades to a uniform named real
+without changing its internal proof.
+
+\subsection{A finite categorical gluing example}
+
+Take a finite diagram of presented modules and a finite cover graph.  A section
+certificate gives one module element per chart; compatibility witnesses give
+equalities on each overlap.  A gluing certificate proposes a global presented
+element and local equality witnesses.  All checks are finite combinations of
+module relations.  If two global proposals have the same restrictions and a
+finite separation certificate proves injectivity of the restriction map, their
+observers agree.  Local representatives and equality witnesses are sealed.
+
+The generic theorem is a finite descent theorem for the specified
+presentations.  A claim about a broad geometric category additionally needs a
+producer that turns each requested object and cover into those finite
+presentations.  This separation prevents a finite calculation from being
+mistaken for an unrestricted scheme-theoretic theorem.

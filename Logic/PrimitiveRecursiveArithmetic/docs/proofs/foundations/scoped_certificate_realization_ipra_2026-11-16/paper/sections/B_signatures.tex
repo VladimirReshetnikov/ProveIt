@@ -1,0 +1,119 @@
+\section{Lean declaration ledger and target signatures}
+\label{app:signatures}
+
+This appendix separates exact upstream declarations from proposed declarations.
+Names in the first table were audited in the pinned tree.  Names in the second
+are targets; they are not claimed to exist.
+
+\subsection{Audited upstream interface}
+
+\begin{longtable}{@{}p{0.36\textwidth}p{0.57\textwidth}@{}}
+\toprule
+Declaration & Role \\
+\midrule
+\endfirsthead
+\toprule
+Declaration & Role \\
+\midrule
+\endhead
+\code{Prf.subst} & simultaneous term specialization of an open derivation \\
+\code{Prf.weaken} & context monotonicity \\
+\code{Prf.trans} & simultaneous cut / replacement of every local hypothesis \\
+\code{Prf.exE} & existential sealing with typed freshness \\
+\code{Prf.shift} & weaken free-variable scope under a binder \\
+\code{PRA.qfInd} & quantifier-free induction in the ordinary iPRA core \\
+\code{IPRA.inst} & instantiate an empty-context open derivation at arbitrary terms \\
+\code{IPRA.ind} & convenient open qf induction on variable zero \\
+\code{Search.mu} & bounded least-zero term with sentinel \\
+\code{Search.search\_spec} & bound, accepted-zero, and prefix minimality \\
+\code{Search.search\_found} & a supplied bounded zero yields the least bounded zero \\
+\code{Search.search\_minimal} & no earlier candidate is accepted \\
+\code{pra\_iff\_native} & ordinary iPRA sequent iff native reading \\
+\code{native\_iff\_pra} & native sequent iff ordinary reading \\
+\code{KPrf.subst} & substitution in the five-rule native clause calculus \\
+\code{KPrf.cut} & context cut in the native clause calculus \\
+\code{KPrf.toNPrf} & export a clause derivation to the native kernel \\
+\path{toFoundation_provable_of_axioms} & open Concise-to-Foundation finite-context transport under an environment \\
+\code{hilbertToConcise} & Foundation Hilbert derivation to empty-context Concise proof under arbitrary free assignment \\
+\bottomrule
+\end{longtable}
+
+\subsection{Proposed object declarations}
+
+\begin{longtable}{@{}p{0.36\textwidth}p{0.57\textwidth}@{}}
+\toprule
+Target & Required result \\
+\midrule
+\endfirsthead
+\toprule
+Target & Required result \\
+\midrule
+\endhead
+\code{Contract.close} & checked in candidate source: seal one producer/extractor \\
+\code{Contract.conditional} & checked in candidate source: expose missing producer as implication \\
+\code{Boolean.bexReflect} & bounded existential iff reflected least-search condition \\
+\code{Boolean.ballReflect} & bounded universal iff no reflected counterexample \\
+\code{Selection.leastAccepted} & validity and minimality of selected code below explicit cutoff \\
+\code{Trace.badSplit} & zero accumulated failure implies zero prefix and local failure \\
+\code{Trace.prefixInvariant} & one-qf-induction trace reflection \\
+\code{Trace.sealedFinal} & existential trace producer plus invariant implies outer goal \\
+\code{Strategy.sound} & accepted fixed-shape strategy implies bounded formula \\
+\code{Strategy.complete} & bounded formula implies existence of accepted strategy, fixed-shape schema \\
+\code{Observer.unique} & exact observer output relation is single-valued \\
+\code{Observer.mapDiameter} & modulus transports certificate-cloud diameter \\
+\code{Observer.gapLabel} & separation gap stabilizes an exact finite label \\
+\code{Boundary.collect} & collect unresolved producer formulas into context/implication theorem \\
+\path{IPRABridge.foundationToConciseOpen} & reverse finite-context transport under arbitrary environment \\
+\code{IPRABridge.openIff} & open sequent equivalence up to documented Foundation normalization \\
+\bottomrule
+\end{longtable}
+
+\subsection{Suggested structure records}
+
+The following records keep application code explicit while avoiding a large
+unverified DSL.
+
+\begin{lstlisting}[language=Lean]
+structure ReflectedAtom (n : Nat) where
+  formula : Fm PTm n
+  bit : PTm n
+  qf : formula.QF
+  bit_bool : [] |- [PRAAx] bit == zero \/ bit == one
+  of_true : bit == one :: [] |- [PRAAx] formula
+  to_true : formula :: [] |- [PRAAx] bit == one
+
+structure TraceData (n : Nat) where
+  queryArity : Nat
+  state : PTm (n + 2)       -- stage, trace, outer parameters
+  bad : PTm (n + 2)
+  invariant : Fm PTm (n + 2)
+  invariantQF : invariant.QF
+  state_zero : ...
+  state_succ : ...
+  bad_zero : ...
+  bad_succ : ...
+
+structure ObserverContract (n : Nat) where
+  valid : Fm PTm (n + 1)
+  observe : PTm (n + 1)
+  independent : valid(c) /\ valid(d) |- [PRAAx]
+    observe(c) == observe(d)
+\end{lstlisting}
+
+The exact arities should be implemented with the repository's \code{inst2},
+\code{repl}, and vector notation rather than ad hoc numeral indexing.  The
+records should store proof terms, not host propositions asserting that a proof
+could be built.
+
+\subsection{Substitution tests}
+
+Every record constructor needs simp lemmas showing that its terms and formulas
+commute with simultaneous substitution.  Tests should instantiate:
+\begin{itemize}
+\item a query variable by a nontrivial sum or product;
+\item a trace code by a paired term;
+\item a bound by a term containing the induction variable;
+\item an observer under two nested existential scopes.
+\end{itemize}
+These tests catch the most common de Bruijn errors before application proofs
+become large.

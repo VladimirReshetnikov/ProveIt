@@ -1,0 +1,127 @@
+\section{From a closed bridge to open sequents}
+\label{sec:bridge}
+
+A repository-wide framework should not force every reusable lemma to be closed
+merely to move between the Foundation and Concise developments.  The audited
+bridge is close to the desired result; the remaining work is an interface and
+round-trip problem, not a new interpretation of arithmetic.
+
+\subsection{The easy direction is already internally open}
+
+The theorem
+\code{toFoundation\_provable\_of\_axioms} has the form
+\[
+ \Prf\;Ax\;\Gamma\;p
+ \;\longrightarrow\;
+ \Gamma^{F,v}\;\vdash_{\Lambda}\;p^{F,v}
+\]
+for every assignment \(v\) of the \(n\) free Concise variables to Foundation
+terms.  Its proof already handles hypotheses, all logical rules, equality
+substitution, and binder lifting.  The public task is therefore:
+\begin{enumerate}[label=(\alph*)]
+\item specialize \(Ax\) to \(\PRAAx\) and discharge the already checked images
+      of its axioms;
+\item expose a theorem with a finite local context rather than immediately
+      universally closing an empty-context result;
+\item add rewrite lemmas showing compatibility with the repository's standard
+      formula/context translation names.
+\end{enumerate}
+No new induction on \(\Prf\) is necessary.
+
+\subsection{Reverse transport by finite deduction}
+
+The existing \code{hilbertToConcise} translates an empty-context Hilbert proof
+under an arbitrary assignment of free variables.  Let a Foundation
+finite-context derivation have hypotheses
+\(D_1,\ldots,D_r\) and conclusion \(P\).  Repeated use of the Foundation
+finite-context deduction theorem gives an empty-context Hilbert proof of
+\[
+       D_1\to D_2\to\cdots\to D_r\to P.
+\]
+Translate this implication chain by \code{hilbertToConcise}.  In the Concise
+calculus, reopen it with \code{Prf.impE} and the translated hypotheses.  This
+yields the target
+\[
+  D_1^C,\ldots,D_r^C\quad\turnstile\quad P^C
+\]
+under every chosen free-term environment.
+
+\begin{theorem}[Proposed open Foundation-to-Concise transport]
+\label{thm:open-bridge}
+For the reference Foundation iPRA theory and every finite context \(\Delta\),
+free-variable environment \(v\), and formula \(P\), a Foundation derivation
+\(\Delta\vdash P\) induces
+\[
+      \Delta^{C,v}\turnstile P^{C,v}.
+\]
+\end{theorem}
+
+\begin{proof}[Detailed implementation proof]
+Induct on the finite list \(\Delta\), using Foundation's \code{deduct} theorem
+to move its head into an implication until the context is empty.  Apply the
+existing Hilbert-to-Concise translator with the same environment \(v\).  The
+translation of implication is definitionally the Concise implication.  Now
+induct over \(\Delta\) in the opposite order and apply modus ponens with
+\code{Prf.hyp} at the corresponding list membership.  If the Foundation
+finite-context representation stores a proof object rather than only a
+provability proposition, the same construction is a direct recursion on that
+object.  Binder cases are already handled by \code{underBinder} and the
+proved image lemmas in \code{FoundationToConcise.lean}.
+\end{proof}
+
+\subsection{The free-variable environment}
+
+A closed theorem can assign every free Foundation variable to zero because
+there are none in the sentence.  An open reflection theorem cannot.  For a
+formula whose active free variables are \(0,\ldots,n-1\), choose the Concise
+environment
+\[
+        v(i)=\begin{cases}
+          \PTm.\mathsf{var}(i),&i<n,\\
+          0,&i\ge n.
+        \end{cases}
+\]
+and prove that the translation depends only on the active finite support.
+The analogous Foundation environment uses its first \(n\) free variables.
+Substitution compatibility then gives transport at arbitrary terms by
+specializing the open theorem, rather than re-running the bridge.
+
+\subsection{Round trips and reflection}
+
+Preservation in both directions does not by itself give an open-sequent
+\emph{equivalence}.  One also needs formula round trips.
+
+\begin{description}
+\item[Concise round trip.]  The current bridge reports that the
+Concise-to-Foundation-to-Concise translation is exact.  Expose this equality
+for open formulas and show it commutes with context maps.
+\item[Foundation round trip.]  The reverse round trip can replace a
+positive-arity zero symbol by a composition of the nullary zero.  Prove these
+terms equal in the Foundation theory, then prove formulas equivalent by
+structural induction and equality substitution.
+\end{description}
+
+With local equivalences \(D\leftrightarrow D^{FC}\) for every hypothesis and
+\(P\leftrightarrow P^{FC}\) for the goal, use simultaneous cut to replace the
+round-tripped context.  This yields the desired open-sequent reflection theorem
+up to the already documented zero-code normalization.
+
+Primitive-recursive function codes require a structural induction.  In the
+primitive-recursion constructor, compare the two interpreted iterators by qf
+induction on the recursion argument.  This is exactly the kind of theorem the
+bridge's closed API previously avoided but the ordinary iPRA core now supports.
+
+\subsection{Bridge acceptance tests}
+
+A convincing integration should include more than a closed sentence.
+\begin{enumerate}[label=(B\arabic*)]
+\item a two-variable equality theorem under a local equality hypothesis;
+\item substitution of non-variable arithmetic terms after transport;
+\item a theorem with a quantifier and one shifted local hypothesis;
+\item a qf-induction theorem with parameters;
+\item both round trips on a primitive-recursive symbol containing composition
+      and recursion;
+\item an SCR contract transported with its certificate hypothesis still open.
+\end{enumerate}
+The last test is important: the open bridge should preserve the very local
+producer boundaries that make the framework modular.

@@ -1,0 +1,203 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{xurl}
+\usepackage{cleveref}
+\usepackage{graphicx}
+
+\definecolor{deepblue}{RGB}{24,62,111}
+\definecolor{softblue}{RGB}{231,239,249}
+\definecolor{softgray}{RGB}{245,246,248}
+\definecolor{deepred}{RGB}{132,35,35}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=deepblue,
+  citecolor=deepblue,
+  urlcolor=deepblue,
+  pdftitle={Scoped Certificate Realization for iPRA},
+  pdfauthor={Research report for the ProveIt project}
+}
+\urlstyle{same}
+\setlist{nosep,leftmargin=*}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.58em}
+\setlength{\emergencystretch}{3em}
+\pagestyle{fancy}
+\setlength{\headheight}{14pt}
+\fancyhf{}
+\fancyhead[L]{Scoped Certificate Realization for iPRA}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\titleformat{\section}{\Large\bfseries\color{deepblue}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{deepblue}}{\thesubsection}{0.65em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.55em}{}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{principle}[theorem]{Principle}
+
+\newcommand{\PRAAx}{\mathsf{PRAAx}}
+\newcommand{\Prf}{\mathsf{Prf}}
+\newcommand{\PTm}{\mathsf{PTm}}
+\newcommand{\Fm}{\mathsf{Fm}}
+\newcommand{\NPrf}{\mathsf{NPrf}}
+\newcommand{\KPrf}{\mathsf{KPrf}}
+\newcommand{\SCR}{\mathsf{SCR}}
+\newcommand{\Valid}{\mathsf{Valid}}
+\newcommand{\ValidPath}{\mathsf{ValidPath}}
+\newcommand{\Trace}{\mathsf{Trace}}
+\newcommand{\Obs}{\mathsf{Obs}}
+\newcommand{\Bad}{\mathsf{bad}}
+\newcommand{\State}{\mathsf{state}}
+\newcommand{\Goal}{\mathsf{Goal}}
+\newcommand{\Boundary}{\mathsf{Boundary}}
+\newcommand{\qf}{\mathsf{QF}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\repo}{\textsc{ProveIt}}
+\newcommand{\turnstile}{\mathrel{\vdash_{\PRAAx}}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\up}{\mathord{\uparrow}}
+\newcommand{\status}[1]{\fcolorbox{deepblue}{softblue}{\strut\textsf{#1}}}
+
+\lstdefinelanguage{Lean}{
+  morekeywords={theorem,def,abbrev,structure,inductive,namespace,end,variable,where,by,exact,apply,have,show,import,open,private,instance,deriving},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[s]{/-}{-/},
+  morestring=[b]"
+}
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries\color{deepblue},
+  commentstyle=\itshape\color{gray!70!black},
+  backgroundcolor=\color{softgray},
+  frame=single,
+  framerule=0.2pt,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false
+}
+
+\begin{document}
+
+\hypersetup{pageanchor=false}
+\pagenumbering{gobble}
+\begin{titlepage}
+\centering
+\vspace*{2.2cm}
+{\Huge\bfseries\color{deepblue} Scoped Certificate Realization\par}
+\vspace{0.35cm}
+{\LARGE A General Proof-Producing Framework for Mathematics in\par}
+\vspace{0.15cm}
+{\LARGE Intuitionistic Primitive Recursive Arithmetic\par}
+\vspace{1.25cm}
+{\large A repository-grounded research report for the \repo\ project\par}
+\vspace{0.5cm}
+{\normalsize Baseline: \code{f444b76e8480ebea128c15b4a59f158e14f478cc}\par}
+\vfill
+\begin{minipage}{0.87\textwidth}
+\small
+This report develops a reusable method for turning finite, quantitative
+mathematical arguments into literal derivations of the checked judgment
+\(\Gamma\turnstile A\).  Its central device is \emph{certificate escape
+analysis}: auxiliary witnesses remain under the existential scope in which
+they are needed, and a bounded least selector is introduced only when a
+certificate itself must escape into the externally visible theorem.
+\end{minipage}
+\vfill
+{16 November 2026}
+\end{titlepage}
+\clearpage
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+
+\input{sections/00_abstract}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\input{sections/01_audit}
+\input{sections/02_constraints}
+\input{sections/03_scr}
+\input{sections/04_escape}
+\input{sections/05_compiler}
+\input{sections/06_reflection}
+\input{sections/07_selection}
+\input{sections/08_trace}
+\input{sections/09_strategy}
+\input{sections/10_observer}
+\input{sections/11_templates}
+\input{sections/12_difficulties}
+\input{sections/13_examples}
+\input{sections/14_bridge}
+\input{sections/15_lean}
+\input{sections/16_comparison}
+\input{sections/17_limits}
+\appendix
+\input{sections/A_proofs}
+\input{sections/B_signatures}
+\input{sections/C_status}
+
+\begin{sloppypar}
+\begin{thebibliography}{99}
+\bibitem{proveit-root}
+V. Reshetnikov, \emph{ProveIt: Logic/PrimitiveRecursiveArithmetic}, repository tree at commit
+\code{f444b76e8480ebea128c15b4a59f158e14f478cc}, 16 November 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/f444b76e8480ebea128c15b4a59f158e14f478cc/Logic/PrimitiveRecursiveArithmetic}
+
+\bibitem{concise}
+V. Reshetnikov et al., \emph{Concise presentations of intuitionistic primitive recursive arithmetic},
+\repo/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA, 2026.
+
+\bibitem{derivations}
+V. Reshetnikov et al., \emph{iPRA derivations of theorems from the proof packets},
+\repo/Logic/PrimitiveRecursiveArithmetic/Derivations, 2026.
+
+\bibitem{bridge}
+V. Reshetnikov et al., \emph{The Foundation--ConciseIPRA bridge},
+\repo/Logic/PrimitiveRecursiveArithmetic/Bridge, 2026.
+
+\bibitem{fqnf}
+\emph{Finite-Query Normal Forms for Mathematics in iPRA}, repository packet
+\texttt{ipra-finite-query-normal-form-2026-11-16}, 2026.
+
+\bibitem{cbip}
+\emph{Certified Bounded Interaction Programs for iPRA}, repository packet
+\texttt{ipra-cbip-framework-2026-11-16}, 2026.
+
+\bibitem{nativeclause}
+\emph{Native Clause Programs for iPRA}, repository packet dated 15 November 2026.
+
+\bibitem{beeson}
+M. Beeson, \emph{Foundations of Constructive Mathematics}, Springer, 1985.
+
+\bibitem{troelstra}
+A. S. Troelstra and D. van Dalen, \emph{Constructivism in Mathematics}, Vols. I--II,
+North-Holland, 1988.
+
+\bibitem{kohlenbach}
+U. Kohlenbach, \emph{Applied Proof Theory: Proof Interpretations and Their Use in Mathematics},
+Springer, 2008.
+\end{thebibliography}
+\end{sloppypar}
+
+\end{document}

@@ -1,0 +1,79 @@
+\section{Artifact status, reproducibility, and integration checklist}
+\label{app:status}
+
+\subsection{Delivered files}
+
+\begin{longtable}{@{}p{0.42\textwidth}p{0.51\textwidth}@{}}
+\toprule
+Path & Purpose \\
+\midrule
+\endfirsthead
+\toprule
+Path & Purpose \\
+\midrule
+\endhead
+\path{paper/scr_ipra_framework.tex} & complete LaTeX driver \\
+\path{paper/sections/*.tex} & editable report sections \\
+\path{paper/scr_ipra_framework.pdf} & compiled report \\
+\path{lean/ScopedCertificate/Kernel.lean} & no-placeholder structural kernel candidate \\
+\path{lean/ScopedCertificate/Blueprint.lean} & host metadata and commented object targets \\
+\path{lean/FORMALIZATION_PLAN.md} & dependency-ordered implementation and acceptance gates \\
+\path{reference/scr_reference.py} & exact finite encodings and examples \\
+\path{reference/test_scr_reference.py} & eight standard-library regression tests \\
+\path{examples/demo.json} & generated bisection, path, observer, and height-list evidence \\
+\path{schema/scr_program.schema.json} & machine-readable program metadata schema \\
+\path{metadata/THEOREM_LEDGER.md} & claim-by-claim status \\
+\path{metadata/DIFFICULTY_MATRIX.csv} & obstacle/resolution mapping \\
+\path{metadata/SOURCE_AUDIT.md} & pinned repository sources \\
+\path{validation/} & test, PDF, rendering, and static-audit records \\
+\path{MANIFEST.sha256} & checksums of delivered files \\
+\bottomrule
+\end{longtable}
+
+\subsection{Reproduction commands}
+
+From the archive root:
+\begin{verbatim}
+python3 -m unittest -v reference/test_scr_reference.py
+python3 reference/scr_reference.py > examples/demo.json
+bash build.sh
+\end{verbatim}
+The build script runs the Python tests and compiles the PDF.  Lean verification
+requires copying \code{lean/} into a checkout of the pinned \repo\ tree and
+following \path{lean/FORMALIZATION_PLAN.md}.
+
+\subsection{Integration checklist}
+
+A packet is ready for repository integration under SCR when all applicable
+boxes are checked.
+
+\begin{itemize}[label=$\square$]
+\item The public theorem is stated as a literal \(\Prf\;\PRAAx\) judgment.
+\item Every host algorithm has a fixed PR symbol and object defining equations.
+\item Every bounded logical condition has a reflected checker and proof.
+\item The qf proof for each induction invariant is explicit.
+\item Each certificate is marked sealed, observed, or named.
+\item Every named certificate has a direct producer or explicit code cutoff.
+\item Whole paths are used where greedy local selection can fail.
+\item Noncanonical outputs have an observer-invariance or diameter theorem.
+\item Exact labels include a uniqueness or separation premise.
+\item Cardinality bounds are not used as code cutoffs.
+\item Missing moduli, heights, covers, and constants occur as boundary formulas.
+\item Reusable lemmas work under local contexts and at arbitrary terms.
+\item New declarations pass focused builds and the repository axiom audit.
+\item Executable evidence is not described as an object proof.
+\item The source pin and all remaining assumptions are recorded.
+\end{itemize}
+
+\subsection{Claim policy}
+
+The generic human proofs in this document are intended to be complete, but
+formal scoping details can still reveal errors during Lean elaboration.  The
+archive therefore distinguishes mathematical confidence from kernel status.
+If a candidate theorem fails to elaborate, the report's claim remains a human
+proof proposal until repaired and checked.  Conversely, a passing Python test
+confirms only the finite reference algorithm, not its universal object theorem.
+
+This status discipline is part of the framework itself.  A proof-producing
+architecture is trustworthy only when its own artifacts obey the same
+producer/verifier separation that it recommends for mathematics.

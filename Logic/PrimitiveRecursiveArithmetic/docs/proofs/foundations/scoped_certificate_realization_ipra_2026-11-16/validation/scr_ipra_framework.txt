@@ -1,0 +1,2569 @@
+Scoped Certificate Realization
+A General Proof-Producing Framework for Mathematics in
+Intuitionistic Primitive Recursive Arithmetic
+
+A repository-grounded research report for the ProveIt project
+Baseline: f444b76e8480ebea128c15b4a59f158e14f478cc
+
+This report develops a reusable method for turning finite, quantitative mathematical arguments
+into literal derivations of the checked judgment Γ ⊢PRAAx A. Its central device is certificate
+escape analysis: auxiliary witnesses remain under the existential scope in which they are needed,
+and a bounded least selector is introduced only when a certificate itself must escape into the
+externally visible theorem.
+
+16 November 2026
+
+Scoped Certificate Realization for iPRA
+
+i
+
+Abstract
+The ProveIt repository now has three unusually strong ingredients: a checked ordinary
+presentation of intuitionistic primitive recursive arithmetic (iPRA), a growing library of literal
+Prf PRAAx arithmetic derivations, and checked translations to a small native calculus and to
+a separate Foundation formalization. It also has a much larger collection of research packets
+whose human arguments are finite and constructive but whose Lean files usually stop before
+constructing the requested object-theory derivation. The bottleneck is therefore not another
+foundational presentation. It is a proof-producing interface between finitary mathematics and
+the canonical judgment
+Γ ⊢PRAAx A.
+This report proposes Scoped Certificate Realization (SCR). A finite mathematical component is
+represented by a quantifier-free validator Valid(q, c), a local extractor proved under the temporary
+assumption that c is valid, and a producer for ∃c Valid(q, c) when one is available. Producer and
+extractor are joined by ordinary existential elimination. The certificate is thus hidden at precisely
+the scope where it is noncanonical. A bounded least search is used only when static certificate
+escape analysis shows that the certificate itself, rather than a certificate-independent consequence,
+must occur in the public output. This distinction eliminates unnecessary choice terms, avoids
+global master certificates, and gives conditional theorems an exact boundary formula instead of
+a vague missing lemma.
+The generic results proved here include: scoped and dependent certificate composition; a
+boundary-normal-form theorem for unresolved producers; an optional bounded selector built from
+the repository’s checked search theorem; a one-induction trace-reflection theorem for adaptive
+and relational finite computations; fixed-shape finite-strategy reflection for bounded quantifier
+alternation; exact and approximate observer-erasure theorems; and a disciplined classification
+of uniform, pointwise, conditional, and unavailable claims. We give detailed applications to
+exact rational bisection, colliding algebraic branches, finite carrier maps in topology, and heightbounded Diophantine enumeration. We also give a concrete route from the existing closed
+Foundation bridge to open sequents.
+The archive contains complete human proofs of the generic mathematics, a no-placeholder
+Lean candidate for the small structural kernel, detailed Lean targets and a dependency-ordered
+implementation plan, a machine-readable graph schema, and exact standard-library reference
+programs with regression tests. The Lean candidate was not compiled in the artifact runtime
+because Lean was not installed; no new kernel-checked theorem is claimed. Deep producer gaps—
+for example a general height bound for Faltings or Siegel, an absent convergence modulus, or
+a missing separation estimate—remain explicitly visible rather than being disguised as proofengineering problems.
+
+Artifact component
+
+Status
+
+Repository audit
+Generic SCR theorems
+Lean structural kernel
+Larger Lean development
+Reference implementation
+Application theorems
+
+Pinned to f444b76e8480ebea128c15b4a59f158e14f478cc.
+Fully argued in ordinary intuitionistic natural deduction and iPRAcompatible arithmetic.
+No-placeholder source candidate; not elaborated in this runtime.
+Exact definitions, signatures, and dependency plan; not presented
+as proved.
+Eight exact Python regression tests executed successfully.
+Finite examples verified; general producer theorems are marked
+conditional where appropriate.
+
+Scoped Certificate Realization for iPRA
+
+ii
+
+Contents
+1 Audited setting: what is already checked
+
+1
+
+1.1 The canonical endpoint . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+1
+
+1.2 The checked arithmetic substrate . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+1
+
+1.3 The checked bridge and its remaining asymmetry . . . . . . . . . . . . . . . . . . . .
+
+2
+
+1.4 The packet layer and the actual gap . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2
+
+1.5
+
+2
+
+Prior framework work . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2 Design constraints
+
+3
+
+2.1 Why quantifier-free induction is enough for the framework . . . . . . . . . . . . . . .
+
+4
+
+2.2 Three meanings of “general” . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4
+
+3 Scoped Certificate Realization
+3.1
+
+4
+
+Contracts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+4
+
+3.2 A missing producer becomes an exact theorem boundary . . . . . . . . . . . . . . . .
+
+5
+
+3.3
+
+Dependent composition . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5
+
+3.4
+
+Relational rather than functional interfaces . . . . . . . . . . . . . . . . . . . . . . .
+
+6
+
+3.5
+
+Contract families and fixed queries . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+6
+
+4 Certificate escape analysis
+
+6
+
+4.1 The escape theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+6
+
+4.2 Why a global master certificate is not the default . . . . . . . . . . . . . . . . . . . .
+
+7
+
+4.3
+
+Sharing a certificate without leaking it . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+7
+
+4.4 When observed becomes named . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+7
+
+5 The proof-producing compiler
+
+8
+
+5.1 A small program language . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+8
+
+5.2
+
+Boundary normal form . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+8
+
+5.3
+
+DAG sharing and proof size . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+9
+
+5.4
+
+Compositional correctness under substitution . . . . . . . . . . . . . . . . . . . . . .
+
+9
+
+6 Fixed bounded formulas and Boolean reflection
+
+9
+
+6.1
+
+Reflected atoms . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+
+6.2
+
+Bounded existential search . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+
+Scoped Certificate Realization for iPRA
+
+iii
+
+6.3
+
+Bounded universal verification . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+
+6.4
+
+Fixed bounded syntax . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+
+6.5 Arrays and finite tuples . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+7 Bounded selection, used only when a name escapes
+
+11
+
+7.1 The selector theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+7.2
+
+Selection policy . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+
+7.3 Whole paths, not greedy local witnesses . . . . . . . . . . . . . . . . . . . . . . . . . 12
+7.4
+
+Height versus cardinality . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+
+7.5
+
+Canonicalization is an additional theorem . . . . . . . . . . . . . . . . . . . . . . . . 13
+
+8 Trace-sealed primitive recursion
+
+13
+
+8.1
+
+Normalized trace data . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+
+8.2
+
+Prefix reflection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+
+8.3
+
+Sealed trace theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+
+8.4
+
+Changing precision and state-dependent demand . . . . . . . . . . . . . . . . . . . . 15
+
+8.5
+
+Producer modes for traces . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+
+9 Finite strategies for bounded quantifier alternation
+
+15
+
+9.1
+
+Strategy tables . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+
+9.2
+
+Completeness for finite decidable games . . . . . . . . . . . . . . . . . . . . . . . . . 16
+
+9.3
+
+Dual certificates and counterstrategies . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+
+10 Stable observers, quotients, and exact-label gates
+
+17
+
+10.1 Exact observer erasure . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+10.2 Quantitative clouds . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+10.3 The exact-label gate . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+10.4 Witnessed setoids . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+10.5 Coherent names across precision . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+11 Reusable mathematical representation templates
+
+19
+
+11.1 Finite algebra and exact linear algebra . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+11.2 Integers, rationals, and cleared inequalities . . . . . . . . . . . . . . . . . . . . . . . . 19
+11.3 Real numbers and functions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+11.4 Integration, infinite series, and asymptotics . . . . . . . . . . . . . . . . . . . . . . . 20
+
+Scoped Certificate Realization for iPRA
+
+iv
+
+11.5 Finite probability . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+11.6 Combinatorics and finite structures . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+11.7 Topology and geometry . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+11.8 Finite categories, diagrams, and gluing . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+11.9 Diophantine geometry and finite descent . . . . . . . . . . . . . . . . . . . . . . . . . 21
+11.10A compact template table . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+12 Resolution of the identified difficulty classes
+
+22
+
+12.1 What has genuinely been resolved . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+12.2 What no framework resolves . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+13 Worked applications
+
+24
+
+13.1 Exact rational bisection for y 3 + y = x . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+13.2 Colliding algebraic branches . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+13.3 Finite carrier maps in topology . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+13.4 Height-bounded Diophantine enumeration . . . . . . . . . . . . . . . . . . . . . . . . 25
+13.5 Finite-consumer stability without a global modulus . . . . . . . . . . . . . . . . . . . 26
+13.6 A finite categorical gluing example . . . . . . . . . . . . . . . . . . . . . . . . . . . . 26
+14 From a closed bridge to open sequents
+
+26
+
+14.1 The easy direction is already internally open . . . . . . . . . . . . . . . . . . . . . . . 27
+14.2 Reverse transport by finite deduction . . . . . . . . . . . . . . . . . . . . . . . . . . . 27
+14.3 The free-variable environment . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28
+14.4 Round trips and reflection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28
+14.5 Bridge acceptance tests . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28
+15 Lean architecture and path to completion
+15.1 Small trusted-facing kernel
+
+28
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+
+15.2 Proposed module layout . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+15.3 Representative target signatures . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 30
+15.4 Dependency order . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 30
+15.5 Axiom and status discipline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31
+15.6 Pilot migrations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31
+16 Relation to the repository’s prior frameworks
+
+31
+
+Scoped Certificate Realization for iPRA
+
+v
+
+16.1 Finite-query normal form . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+16.2 Certified bounded interaction programs . . . . . . . . . . . . . . . . . . . . . . . . . 32
+16.3 Native clause programs
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+
+16.4 Observation graphs and staged contract kernels . . . . . . . . . . . . . . . . . . . . . 32
+16.5 What is novel, and what is not . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+16.6 Decision guide
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+
+17 Limitations and conclusion
+
+33
+
+17.1 Limitations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+17.2 Conclusions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34
+A Expanded proofs of the generic theorems
+
+34
+
+A.1 One-certificate sealing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34
+A.2 Dependent sealing with exact shifts . . . . . . . . . . . . . . . . . . . . . . . . . . . . 35
+A.3 Boundary collection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 35
+A.4 Least accepted certificate . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 35
+A.5 Trace reflection in arithmetic detail . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36
+A.6 Exact observers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36
+A.7 Diameter and gap arithmetic . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 37
+A.8 Finite-strategy soundness . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 37
+B Lean declaration ledger and target signatures
+
+37
+
+B.1 Audited upstream interface . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 37
+B.2 Proposed object declarations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 38
+B.3 Suggested structure records . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 39
+B.4 Substitution tests . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 39
+C Artifact status, reproducibility, and integration checklist
+
+40
+
+C.1 Delivered files . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 40
+C.2 Reproduction commands . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 40
+C.3 Integration checklist . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 40
+C.4 Claim policy
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 41
+
+Scoped Certificate Realization for iPRA
+
+1
+
+1 Audited setting: what is already checked
+1.1 The canonical endpoint
+The correct endpoint for new work in this part of ProveIt is not a semantic claim that a host
+program terminates, nor a theorem in Mathlib about ordinary natural numbers. It is an inhabitant
+of the deeply embedded judgment
+Prf PRAAx Γ φ,
+
+written
+
+Γ ⊢PRAAx φ.
+
+The current ConciseIPRA/Lean/ConciseIPRA/PR.lean defines primitive recursive symbols PR(k),
+terms PTm(n), and the axiom family PRAAx. The latter contains the defining equations for
+projection, composition, and primitive recursion, the two successor axioms, and induction for
+quantifier-free formulas. The logic in Deduction.lean is intuitionistic natural deduction with
+equality, scoped simultaneous substitution, and the structural theorems
+Prf.subst,
+
+Prf.weaken,
+
+Prf.trans,
+
+Prf.shift.
+
+These are not mere conveniences. They are the generic proof compiler already present in the
+repository: substitution specializes a mathematical contract, weakening aligns local contexts, and
+Prf.trans performs simultaneous cut.
+The checked native scalar core remains valuable as a compact backend. The checked native
+bi-interpretation module proves both
+NPrf ∆ A
+
+⇐⇒
+
+∆.map(toPRA) ⊢PRAAx A.toPRA,
+
+Γ ⊢PRAAx φ
+
+⇐⇒
+
+NPrf Γ.map(ofPRA) (ofPRA(φ)).
+
+
+The five-rule clause calculus KPrf additionally has checked substitution, cut, and export to NPrf.
+SCR therefore treats KPrf as an optional compressed intermediate representation, not as a competing
+foundation. The portable public interface remains Prf PRAAx.
+
+1.2 The checked arithmetic substrate
+The IPRADerivations library has advanced beyond a toy arithmetic core. At the audited baseline
+it contains object-theory derivations for semiring algebra, cancellation, integers as differences, order
+and truncated subtraction, pairing and projections, powers, parity, bounded sums and products,
+descent, pigeonhole, permutations, quotient and remainder, gcd and Bézout, bounded search, finite
+Fubini, and finite linear algebra. The relevant engineering lesson is that a packet should import
+these results at arbitrary terms and under local hypotheses, not reproduce them in a private host
+model.
+Two checked tools are especially central here.
+(i) Core/Basic.lean supplies open quantifier-free induction
+⊢PRAAx ϕ(0, ⃗x)
+ϕ(z, ⃗x) ⊢PRAAx ϕ(Sz, ⃗x)
+⊢PRAAx ϕ(n, ⃗x)
+with all parameters explicit, together with instantiation of closed open-formula derivations at
+arbitrary terms.
+
+Scoped Certificate Realization for iPRA
+
+2
+
+(ii) Core/Search.lean defines the least bounded zero µf (N, x), returning the sentinel N when no
+zero occurs, and proves inside iPRA its bound, correctness, and minimality. Thus a certificate
+can be canonically named once—and only once—an actual numerical cutoff and a reflected
+verifier are available.
+
+1.3 The checked bridge and its remaining asymmetry
+The Foundation–Concise bridge translates closed theorems in both directions. Its implementation is
+already more general internally than the public API suggests. In the Concise-to-Foundation direction,
+toFoundation_provable_of_axioms transports an arbitrary Prf derivation with a finite local
+context under any assignment of free variables to Foundation terms. The public wrappers then close
+the free variables and specialize to an empty context. In the reverse direction, hilbertToConcise
+is uniform in the images of free variables, but theoryToConcise is exposed only for closed theory
+consequences. Section 14 explains how to finish the open-sequent interface without changing either
+object theory.
+
+1.4 The packet layer and the actual gap
+The proof-packet catalogue explicitly warns that the filed archives were not rerun, compiled, or
+checked during placement. Many packets have strong finite mathematics and exact reference
+programs, yet their Lean files are described as scaffolds, blueprints, or targets. The recurring gap
+has two different causes and they must not be conflated.
+Proof-production gap. The finite objects, bounds, and local lemmas are available, but no term
+of type Prf PRAAx Γ A has been assembled. This is the gap addressed by SCR.
+Producer gap. The theorem requires data not supplied by the argument: a uniform height bound,
+a complete list of covering representatives, an explicit convergence modulus, a separation gap, a
+finite subcover, or an effective exceptional constant. No generic compiler can manufacture such
+mathematics. SCR isolates it as a producer boundary.
+For example, the filed Faltings and Siegel packets explicitly stop at missing height information; the
+Mordell–Weil packet does not give a uniform generator algorithm; exact axis selection is restricted by
+a constructive obstruction; and several analytic packets state results only for fixed names equipped
+with moduli. A trustworthy framework must make those distinctions visible in its final theorem
+type.
+
+1.5 Prior framework work
+The repository already contains several ambitious interfaces: finite observations, certified finitary
+presentations, proof-carrying observation graphs, finite-query normal form (FQNF), certified bounded
+interaction programs (CBIP), and native clause programs. Their shared achievements are substantial:
+fixed finite queries, reflected checkers, whole-path certificates, relational witness clouds, stable
+observations, and explicit producer boundaries. Their shared unresolved point is also clear from
+their status files: the generic object-theory compiler remains largely a human proof or Lean blueprint.
+SCR does not discard those ideas. It changes the logical normal form beneath them. A global least
+certificate is no longer the default. The default is a locally scoped existential, eliminated by the
+
+Scoped Certificate Realization for iPRA
+
+3
+
+checked natural-deduction rule that was designed for exactly this purpose. Packing and bounded
+selection are recoverable optimizations for the cases in which static escape analysis proves they are
+needed.
+
+2 Design constraints
+A general iPRA framework is useful only if it respects the theory’s actual proof rules and the
+repository’s actual interfaces. The following constraints are therefore part of the specification, not
+after-the-fact cautions.
+Principle 2.1 (Object proof, not host truth). A Python test, a terminating Lean function, a theorem
+in the host logic, and an inhabitant of Γ ⊢PRAAx A are four different artifacts. Host computation
+may generate fixed syntax or test examples; every reusable mathematical conclusion must end in a
+literal object derivation.
+Principle 2.2 (Specialize first). There is no appeal to a total object-level universal evaluator for
+arbitrary primitive-recursive programs. A theorem compiler is a metatheoretic function which receives
+a fixed syntax tree and emits a fixed PTm, Fm, and proof term. Its soundness is proved by structural
+recursion in Lean. The resulting object theorem speaks only about the specialized symbols.
+Principle 2.3 (Finite query before induction). Precision, height, mesh, horizon, matrix size,
+diagram shape, and all other consumer demands are fixed as explicit natural-number parameters
+before the object induction is formed. The induction invariant is an equation, inequality, or Boolean
+combination of such atoms, hence quantifier-free.
+Principle 2.4 (No hidden choice). An existential proof is not silently converted into a primitiverecursive selector. A selector is introduced only with an explicit finite cutoff or a direct constructive
+term. Otherwise the witness remains under existential elimination.
+Principle 2.5 (No hidden compactness). Any use of compactness is replaced by the finite datum
+actually consumed: a net, cover, Lebesgue-number certificate, mesh, finite complex, truncation index,
+or metastable window. The theorem records which producer supplies that datum.
+Principle 2.6 (No unstable names). At a collision or singularity, one may export a cluster, a
+symmetric invariant, a quotient class, or a diameter-controlled cloud. One may export a specific root,
+eigenvector, chart, axis, or branch only after proving a uniqueness or separation premise sufficient
+to stabilize that name.
+Principle 2.7 (Uniformity is a theorem). The following claims are distinct and must carry different
+types:
+(a) one internal primitive-recursive producer works uniformly;
+(b) a conclusion follows from an explicit producer hypothesis;
+(c) for each fixed external name and supplied modulus there is an iPRA derivation schema;
+(d) only finite observations or a metastable form are presently justified.
+The report never upgrades one status to another by prose.
+
+Scoped Certificate Realization for iPRA
+
+4
+
+2.1 Why quantifier-free induction is enough for the framework
+The apparent obstacle is that a trace assertion often has the form “every stage below N is valid,”
+which is a bounded universal formula and therefore not quantifier-free in the object syntax. The
+solution is not to induct on that formula. Instead, define a primitive-recursive failure accumulator
+bad(0) = 0,
+
+bad(k + 1) = bad(k) + fail(k),
+
+where fail(k) ∈ {0, 1}. The invariant
+bad(k) = 0 −→ I(state(k)) = 1
+is quantifier-free. At a successor, bad(k + 1) = 0 yields both bad(k) = 0 and fail(k) = 0, using the
+checked arithmetic of nonnegative sums. This is the recurring compilation pattern: bounded logical
+structure is represented by a primitive-recursive certificate and a quantifier-free reflection invariant.
+
+2.2 Three meanings of “general”
+The framework is general in three precise, compatible senses.
+(G1) Logical generality. Contracts compose in arbitrary finite contexts using only the checked
+structural rules of intuitionistic natural deduction.
+(G2) Computational generality. Any fixed primitive-recursive validator, state transformer, finite
+strategy checker, or observer can be inserted once its defining equations and local reflection
+lemmas are supplied.
+(G3) Mathematical generality. Algebraic, analytic, probabilistic, topological, categorical, and
+Diophantine objects are represented by the finite observations actually used by a theorem,
+with domain-specific producer obligations separated from the generic verifier.
+It is deliberately not a universal internal interpreter for arbitrary mathematics, and it does not
+claim that every classical theorem has a uniform iPRA realization.
+
+3 Scoped Certificate Realization
+3.1 Contracts
+Fix an outer arity n, a local context Γ of formulas in Fm PTm n, and an outer goal G. A one-certificate
+SCR contract consists of:
+(C1) a formula V ∈ Fm PTm (n + 1), usually quantifier-free, whose variable 0 denotes a certificate
+and whose remaining variables are shifted query parameters;
+(C2) an extractor
+V :: Γ↑ ⊢PRAAx G↑ ;
+(C3) optionally, a producer
+
+Γ
+
+⊢PRAAx
+
+∃c V (c).
+
+The superscript ↑ denotes the checked de Bruijn shift. The goal has no free occurrence of the
+certificate because it lives in the outer scope.
+
+Scoped Certificate Realization for iPRA
+
+5
+
+Theorem 3.1 (Scoped realization). Every contract with a producer yields Γ ⊢PRAAx G.
+Proof. Apply the existential-elimination constructor of Prf to the producer and the extractor. Its
+eigenvariable is exactly the locally scoped certificate. No term denoting the certificate is formed,
+and no choice principle is used.
+This theorem is logically elementary; its architectural consequence is not. A noncanonical object
+may be used arbitrarily many times inside the extractor, may parameterize further local producers,
+and may be compared with another locally opened certificate. It simply cannot escape into G unless
+the output interface explicitly exposes it.
+
+3.2 A missing producer becomes an exact theorem boundary
+Even without a producer, the extractor has objective mathematical content.
+Theorem 3.2 (Conditional closure). From the extractor one obtains
+Γ ⊢PRAAx ∃c V (c) → G.
+
+
+Proof. Introduce the implication assumption, eliminate that existential, and use the extractor
+after weakening by the shifted implication assumption. This is the proof implemented by
+Contract.conditional in the supplied Lean kernel candidate.
+Thus a missing height theorem, modulus, cover, or separation bound does not force the rest of the
+packet to remain informal. The finite verifier and extractor can be proved now, while the exact
+missing producer is visible in the conclusion’s antecedent.
+
+3.3 Dependent composition
+Real mathematical pipelines are dependent: a certificate chosen at one stage changes the formula
+verified at the next. Suppose
+Γ ⊢PRAAx ∃x A(x),
+A(x), Γ↑ ⊢PRAAx ∃y B(x, y),
+B(x, y), A(x), Γ↑↑ ⊢PRAAx G↑↑ .
+Here the second producer is allowed to mention the first local certificate.
+Theorem 3.3 (Dependent sealing). The three derivations above compose to Γ ⊢PRAAx G.
+Proof. Eliminate the existential over x. In the resulting local context, eliminate the existential over
+y. The third derivation gives the shifted goal, after which the two existential-elimination rules close
+in reverse order. All context shifts are those already handled by Prf.exE and Prf.shift.
+Iterating this argument realizes any finite acyclic dependency graph. Unlike a global certificate
+pack, it does not require an a priori numerical bound for each internal witness. Only a witness that
+must be decoded by a variable- horizon object computation needs a finite code; fixed proof-level
+dependencies can remain as nested existential scopes.
+
+Scoped Certificate Realization for iPRA
+
+6
+
+3.4 Relational rather than functional interfaces
+A useful mathematical component is often a total relation rather than a canonical function. Let
+R(q, c) be a decidable certificate relation. SCR represents totality by
+∀q ∃c R(q, c)
+only at the point where a theorem needs it, and composes downstream consumers under the local
+assumption R(q, c). This is stronger constructively than silently postulating a global function c(q):
+it preserves all theorem consequences invariant under the relation without asserting a selector.
+When a concrete function is later needed, there are two legitimate upgrades. Either a direct
+primitive-recursive producer term is supplied, or Section 7’s bounded selector is invoked with an
+explicit cutoff. There is no third route.
+
+3.5 Contract families and fixed queries
+A theorem packet normally carries a family of contracts indexed by an outer query q: a requested
+precision, degree, height, or finite diagram. In the object theory, q is simply a tuple of natural-number
+terms. At the Lean metalevel, a contract family is a function returning fixed formulas and proof
+terms. Specialization to arbitrary query terms is performed by Prf.subst; the proof does not have
+to be rebuilt for numerals only.
+This distinction avoids two common errors. First, fixed-query reasoning is not merely a theorem
+for each standard numeral: the open derivation can still be universally closed over q. Second,
+specializing a fixed program family is not an object-level universal evaluator. Lean constructs the
+target syntax before the iPRA proof begins.
+
+4 Certificate escape analysis
+The central static analysis of SCR asks what part of a certificate appears in the public theorem.
+There are three classes.
+Definition 4.1 (Escape classes). Let c satisfy a contract V (q, c).
+Sealed. The final formula contains no data computed from c. The certificate is eliminated directly
+by theorem 3.1.
+Observed. The final interface uses only an observation o = O(q, c), and the proof establishes that
+all valid certificates give the same observation, or observations within a stated diameter.
+Named. The actual code c, its leastness, or a label depending on a particular representative occurs
+in the output. A direct producer or bounded selector is mandatory.
+
+4.1 The escape theorem
+Theorem 4.2 (Escape analysis). For a finite contract graph whose final goal is in the outer scope:
+(i) every sealed certificate can be removed by nested existential elimination, without a code bound;
+(ii) every exactly observed certificate can be replaced by its single-valued output relation, without
+selecting a representative;
+
+Scoped Certificate Realization for iPRA
+
+7
+
+(iii) a named certificate can be exported only from a supplied term producer or from a proved
+bounded search.
+Proof. Part (i) is repeated application of theorem 3.3. For part (ii), define
+Out(q, o) :⇐⇒ ∃c [V (q, c) ∧ O(q, c) = o].
+Existence follows by opening a valid certificate and introducing its observation. If o, o′ satisfy Out,
+open both certificates; observer independence yields o = o′ . All consumers formulated through Out
+therefore compose relationally. Part (iii) is a syntactic scope fact: an outer term cannot contain
+the eigenvariable introduced by existential elimination. To name it one must already have an outer
+term, or construct one by a total bounded operation whose correctness is proved.
+The theorem does not assert an impossibility result for every conceivable encoding. It states the exact
+proof obligations for this natural-deduction interface. Any purported third method of exporting a
+local eigenvariable will manifest either as an unproved choice axiom or as an omitted bound.
+
+4.2 Why a global master certificate is not the default
+Packing all witnesses in one natural number is sometimes valuable. It permits one reflected checker,
+one bounded search, and compact serialization. It also has costs:
+• every component needs a numerical range even when it is proof-local;
+• changing one producer changes the global radix and checker;
+• a least global code imposes a canonical order unrelated to the mathematics;
+• relational and quotient objects are prematurely forced into named representatives;
+• the final proof term reflects a monolithic verifier rather than the logical dependency structure.
+SCR therefore treats packing as a derived backend. If every internal certificate has a proved bound,
+nested scopes can be fused into one mixed-radix code; the resulting theorem is an FQNF-style
+master certificate. Conversely, a master certificate can always be opened once and its fields used in
+nested SCR scopes. The two representations are extensionally intertranslatable when bounds exist,
+but the scoped form remains meaningful when they do not.
+
+4.3 Sharing a certificate without leaking it
+A certificate may feed many downstream lemmas. Open it once, prove a conjunction of all required
+consequences in the same scope, and eliminate it after the last consumer. In Lean this amounts to
+constructing a local theorem under V :: Γ↑ and using Prf.andI or a downstream context. There is
+no need to select the certificate merely to avoid duplicating a proof. At the metalevel, a named
+Lean definition can share the derivation term.
+
+4.4 When observed becomes named
+Observer independence proves that a relation has at most one output, not that there is a primitiverecursive output term. If downstream mathematics accepts an existentially unique output relation,
+the observation remains relational. If the API insists on a term o(q), one still needs either a
+
+Scoped Certificate Realization for iPRA
+
+8
+
+direct observation producer or a bound from which an accepted certificate can be selected. This
+distinction is especially important for exact real numbers: a unique real specified by a predicate is
+not automatically a primitive-recursive Cauchy name with a modulus.
+
+5 The proof-producing compiler
+5.1 A small program language
+For exposition, an SCR program over context Γ and goal G is built from the following constructors.
+These are a metalevel organization of existing proof rules, not new object-language syntax.
+Local proof. Store an actual derivation Γ ⊢PRAAx G.
+Specialize. Substitute arbitrary terms for the free query variables.
+Supply. Replace each formula in a local context by a derivation of it, using Prf.trans.
+Seal. Combine Γ ⊢PRAAx ∃c V (c) with a continuation V, Γ↑ ⊢PRAAx G↑ .
+Boundary. When the producer is absent, retain ∃c V (c) as an assumption or implication antecedent.
+Loop/strategy/observer. Invoke one of the reusable arithmetic reflection modules developed in
+later sections; each invocation itself ends in an ordinary Prf derivation.
+A finite directed acyclic graph can be converted to such a program by reverse topological traversal.
+A node with proof-only outputs is cut into its consumers. A node with a certificate output wraps
+the remaining consumers in one existential scope. Boundary nodes become formulas in the outer
+context.
+Theorem 5.1 (SCR compiler soundness). Let P be a well-scoped finite SCR program. Suppose
+every local node carries an actual derivation of the judgment required by its constructor, and every
+arithmetic reflection node has its stated object-theory proof. Then structural recursion on P constructs
+a term
+compile(P ) : ΓP ⊢PRAAx GP .
+No host proposition about evaluator correctness is used as an object axiom.
+Proof. The local-proof case returns the stored term. Specialization is Prf.subst. Supply is
+Prf.trans; weakening aligns supercontexts. Seal is Prf.exE. A boundary is a hypothesis and
+may be moved to the right by repeated Prf.impI. The remaining constructors return the already
+supplied reflection derivation. Every recursion is on the finite host syntax of P , so termination is
+metatheoretic and does not require a universal object evaluator.
+
+5.2 Boundary normal form
+Let B1 , . . . , Br be the unresolved producer formulas reachable from the goal. Compilation produces
+B1 , . . . , Br , Γ ⊢PRAAx G.
+Repeated implication introduction gives
+Γ ⊢PRAAx B1 → · · · → Br → G.
+
+Scoped Certificate Realization for iPRA
+
+9
+
+Alternatively, a finite conjunction can be used. The context form is better for incremental discharge
+because Prf.trans can supply each boundary independently.
+The boundary set is dependency exact: it contains exactly the unresolved nodes used by the chosen
+program after dead-node elimination. It is not claimed logically minimal—one boundary may in
+principle follow from the others. Such minimization is ordinary theorem proving and should not be
+hidden inside the compiler.
+
+5.3 DAG sharing and proof size
+Flattening a large graph to one Boolean checker is one way to control proof size. SCR provides
+another. Local proof constructors are named Lean definitions; contexts record interfaces rather than
+expanding proofs; and Prf.trans composes them. Variable-length arithmetic work is compressed
+by a primitive-recursive trace plus one induction, while fixed logical work is shared by the host
+proof term. A later optimization may compile a connected subgraph to KPrf, use KPrf.cut and
+KPrf.subst, and export it through the checked bridges. This changes proof representation, not
+theorem meaning.
+
+5.4 Compositional correctness under substitution
+A frequent source of packet failure is proving a lemma only at generic variables and then informally
+using it at complex terms. Every SCR node is required either to be stated at arbitrary terms or
+to be an open theorem specialized by Prf.subst. Since substitution commutes with all formula
+constructors and the calculus proves closure under substitution, the compiler has the following
+property.
+Proposition 5.2 (Naturality). If P compiles to Γ ⊢PRAAx G, then for every simultaneous term
+substitution σ, the specialized program compiles to
+Γ[σ] ⊢PRAAx G[σ].
+Proof. Apply Prf.subst to the compiled derivation. Equivalently, prove the claim by induction on
+the program and use the checked substitution laws under binders in the seal case.
+
+6 Fixed bounded formulas and Boolean reflection
+The arithmetic compiler needs a uniform way to turn a finite verification condition into quantifier-free
+equations. The phrase “bounded formula” is potentially misleading: a bounded quantifier is still a
+quantifier in the syntax, whereas the induction scheme of PRAAx accepts only formulas recognized
+by Fm.QF. SCR therefore compiles bounded logic to primitive-recursive data and proves reflection
+separately.
+
+Scoped Certificate Realization for iPRA
+
+10
+
+6.1 Reflected atoms
+A reflected atom over n variables consists of a formula A, a bit term bA , a proof that bA is Boolean,
+and derivations connecting its two values with A:
+⊢PRAAx bA = 0 ∨ bA = 1,
+bA = 1 ⊢PRAAx A,
+A ⊢PRAAx bA = 1.
+Equality, order, divisibility with a supplied quotient, and all polynomial identities used by the packet
+layer have such characteristic terms in the checked arithmetic library or can be constructed from
+them. Negation is represented by complement, conjunction by multiplication of bits, and disjunction
+by the sign of their sum. Each combinator carries object proofs.
+This is intentionally a specialization-time interface. A Lean structure may hold (A, bA , πA ), and a
+recursive Lean function may combine these structures. It emits a fixed term and a fixed derivation.
+No natural number inside iPRA is asked to interpret arbitrary syntax.
+
+6.2 Bounded existential search
+Let b(i, q) be a Boolean term and put
+z(i, q) = 1 − b(i, q),
+using the repository’s truncated subtraction convention. A witness with b = 1 is a zero of z. Define
+µ(N, q) = Search.mu(z, N, q).
+The checked theorem search_spec gives
+µ(N, q) ≤ N,
+µ(N, q) < N → z(µ(N, q), q) = 0,
+i < µ(N, q) → z(i, q) ̸= 0.
+Thus the quantifier-free formula
+Eb (N, q) :⇐⇒ µ(N, q) < N ∧ b(µ(N, q), q) = 1
+serves as the reflected bounded existential. From Eb one introduces the ordinary existential with
+witness µ; from any ordinary witness i < N with b(i, q) = 1, search_found proves Eb . The proof of
+existential reflection therefore uses the existing qf induction hidden inside Search, not induction on
+a quantified formula.
+Theorem 6.1 (Bounded-existential reflection). For every fixed reflected atom family A(i, q), there
+is a fixed quantifier-free formula EA (N, q) and iPRA derivations
+EA (N, q) → ∃i (i < N ∧ A(i, q))
+
+extand
+
+i < N ∧ A(i, q) → EA (N, q).
+
+
+Consequently one may derive the expected biimplication after existential elimination on the reverse
+direction.
+Proof. Use the least-search construction above. Boolean reflection converts A(i, q) to z(i, q) = 0.
+In the forward direction instantiate the existential at µ(N, q). In the reverse direction retain the
+existential witness locally and apply search_found; the resulting formula does not mention the
+witness, so existential elimination closes it.
+
+Scoped Certificate Realization for iPRA
+
+11
+
+6.3 Bounded universal verification
+A bounded universal is handled by searching for a counterexample. Let c(i, q) = bA (i, q), interpreted
+so that c = 0 means failure. Put
+UA (N, q) :⇐⇒ µc (N, q) = N.
+If i < N and A(i, q) failed, the reflected zero and search_found would imply µc < N , contradicting
+UA . Conversely, if every i < N satisfies A, µc < N would expose a counterexample by search_spec.
+The reasoning is intuitionistic because equality and order on natural-number terms are decidable in
+the reflected fragment.
+For trace checking it is often cheaper to use a failure sum i<N fail(i, q) instead of a least counterexample. The two forms are interderivable for Boolean summands. Search is preferable when the
+counterexample index will be used; a sum is preferable when only global validity matters.
+P
+
+6.4 Fixed bounded syntax
+A useful Lean implementation has a host datatype with constructors
+atom,
+
+∧,
+
+∨,
+
+→,
+
+∃<t,
+
+∀<t.
+
+Each atom contains its reflected bit package. The compiler recursively emits:
+(a) the ordinary formula used for human-facing statements;
+(b) a quantifier-free characteristic formula or verifier term;
+(c) derivations in both directions;
+(d) a proof of quantifier-freeness for every invariant later passed to PRA.qfInd.
+The recursion is a Lean recursion on the fixed host syntax. Bounded quantifiers invoke the search
+adapters above. This precisely avoids the impossible requirement of a total universal primitiverecursive evaluator for all PR codes.
+
+6.5 Arrays and finite tuples
+The framework needs two coding modes.
+Structural tuples. For a fixed number of fields, use nested pairing and the checked projection
+equations. This is best for query and state records.
+P
+Bounded arrays. If every entry is below B, code a0 , . . . , aN −1 by i<N ai B i . Digit extraction is
+quotient and remainder by B i . This is best for traces and strategy tables.
+Mixed-radix coding is a derived optimization when field bounds differ. SCR requires a proof of
+every radix bound. It never infers a code cutoff from a statement that there are only finitely many
+mathematical objects.
+
+7 Bounded selection, used only when a name escapes
+
+Scoped Certificate Realization for iPRA
+
+12
+
+7.1 The selector theorem
+Let V (q, c) be a reflected quantifier-free validator and let B(q) be an explicit natural-number cutoff.
+Write zV (q, c) = 0 for the characteristic zero equation of validity, and define
+sel(q) = µzV (B(q), q).
+Theorem 7.1 (Least accepted certificate). If iPRA proves
+∃c [c < B(q) ∧ V (q, c)],
+then it proves
+sel(q) < B(q),
+V (q, sel(q)),
+∀d < sel(q) ¬V (q, d).
+The final bounded universal may equivalently be represented by its reflected counterexample search.
+Proof. Open the supplied witness locally and use Boolean reflection to obtain a zero of zV below
+B. Apply Search.search_found; its conclusion no longer depends on the witness, so close the
+existential. Validity of the selected code follows from search_spec; minimality is search_minimal.
+Convert zero equations back to V using the reflection package.
+The cutoff is not cosmetic. Without it, µ is not the repository’s total bounded-search symbol, and
+iPRA does not receive a primitive-recursive selector merely because a set is extensionally finite.
+
+7.2 Selection policy
+The compiler applies theorem 7.1 only under one of the following escape conditions.
+(S1) The certificate code itself occurs in the goal.
+(S2) A downstream variable-horizon computation must decode the code after its existential scope
+would otherwise close.
+(S3) The public API explicitly promises a canonical least representative.
+(S4) A certificate-independent observer is needed as a term and no direct primitive-recursive observer
+producer is available.
+None of these applies to an ordinary proof-local witness. In particular, selecting the least root
+isolation, least triangulation, least finite cover, or least descent representative is usually unnecessary.
+It introduces bounds and arithmetic obligations without strengthening the theorem.
+
+7.3 Whole paths, not greedy local witnesses
+Suppose a finite process has states s0 , . . . , sN and a decidable relation Ri (si , si+1 ). Choosing the
+least valid successor at each stage may get stuck even when a complete path exists. The correct
+named selector searches a code for the entire path:
+ValidPath(q, τ ) :⇐⇒ s0 = init(q) ∧
+
+^
+i<N
+
+Ri (si , si+1 ) ∧ Final(sN ).
+
+Scoped Certificate Realization for iPRA
+
+13
+
+If every state is below M , then the path code is below M N +1 , giving an explicit cutoff. Search for
+the least accepted τ , not for locally least edges. The supplied Python test includes a graph in which
+the least first move is a dead end while whole-path search finds (0, 2, 3, 4).
+If the path need not escape, even this global least search is unnecessary: ∃τ ValidPath(q, τ ) can be
+sealed and consumed by trace reflection.
+
+7.4 Height versus cardinality
+A statement “there are at most D solutions” gives a cardinality bound, not a bound on their
+natural-number codes. It cannot justify enumeration below D. To obtain a named complete list one
+needs either:
+• a height bound H from which a finite code box is computed;
+• an explicit complete list certificate; or
+• a direct producer that enumerates all solutions.
+This is the decisive distinction in the Faltings, Siegel, Mordell–Weil, and finite-algebra packets. The
+generic list verifier is easy; the producer of H or of the exhaustive list is the deep theorem.
+
+7.5 Canonicalization is an additional theorem
+A least code is canonical relative to an encoding, not necessarily invariant under the mathematical
+equivalence relation. If public output is supposed to be a canonical quotient representative, the
+proof must additionally show:
+(i) every equivalence class has an accepted representative below the cutoff;
+(ii) the selected code is equivalent to the input object;
+(iii) equivalent inputs yield equal selected codes, or the API explicitly accepts encoding-dependent
+normalization.
+Otherwise the proper output is an invariant observer or a witnessed setoid, not a silently normalized
+representative.
+
+8 Trace-sealed primitive recursion
+Adaptive algorithms and relational constructions are the point at which fixed proof graphs meet
+variable object parameters. A proof cannot contain one existential-elimination rule for each of an
+object-variable number N of steps. SCR packages the entire interaction as one finite trace certificate
+and reflects it by one quantifier-free induction.
+
+Scoped Certificate Realization for iPRA
+
+14
+
+8.1 Normalized trace data
+Fix a query q, horizon N , action bound M (q, N ), and an action code τ < M N . Let ai = digitM (τ, i).
+Define by primitive recursion
+state(q, τ, 0) = init(q),
+state(q, τ, i + 1) = next(q, i, state(q, τ, i), ai ),
+bad(q, τ, 0) = 0,
+bad(q, τ, i + 1) = bad(q, τ, i) + fail(q, i, state(q, τ, i), ai ).
+The failure bit includes the digit bound, the local relational checker, and any resource side condition.
+The trace validator is the quantifier-free equation
+Trace(q, N, τ ) :⇐⇒ bad(q, τ, N ) = 0.
+A final-state predicate may be included in fail at a terminal stage or checked separately.
+
+8.2 Prefix reflection
+Let I(q, s) be a reflected invariant bit. Assume object derivations of:
+I(q, init(q)) = 1,
+I(q, s) = 1 ∧ fail(q, i, s, a) = 0 −→ I(q, next(q, i, s, a)) = 1,
+bad(q, τ, i + 1) = 0 −→ bad(q, τ, i) = 0 ∧ fail(q, i, statei , ai ) = 0.
+The third line is a reusable arithmetic lemma about a sum of nonnegative Boolean values.
+Theorem 8.1 (Trace reflection). iPRA proves
+Trace(q, N, τ ) −→ I(q, state(q, τ, N )) = 1.
+Proof. Apply quantifier-free induction to
+Φ(i) ≡ bad(q, τ, i) = 0 → I(q, state(q, τ, i)) = 1.
+At zero use the initialization theorem. At a successor, assume bad(i + 1) = 0; split it into bad(i) = 0
+and local failure zero, invoke the induction hypothesis, then the local preservation theorem. Every
+displayed formula is a Boolean combination of equalities and inequalities between PTm terms, so
+Φ.QF is obtained structurally. Instantiate the result at N .
+
+8.3 Sealed trace theorem
+If a producer proves ∃τ Trace(q, N, τ ), open τ , apply theorem 8.1, derive a final goal not mentioning
+τ , and seal it. No trace code escapes. If the final result includes the computed endpoint, two
+alternatives are available:
+(a) expose the relational output ∃τ [Trace(q, N, τ ) ∧ o = O(stateN )];
+(b) prove observer independence or select a bounded least trace and define a term-valued endpoint.
+
+Scoped Certificate Realization for iPRA
+
+15
+
+8.4 Changing precision and state-dependent demand
+The state record may contain the current precision, mesh, error budget, remaining fuel, and any
+finite summary of previous observations. Therefore a changing precision does not change the
+induction formula; it changes a field of statei . The fixed invariant is a relation between those fields.
+This resolves the common packet mistake of trying to perform a separate induction whose formula
+changes with the stage.
+A reverse demand pass can itself be normalized as a trace. Start from the consumer’s final demand,
+apply primitive-recursive transfer functions backwards through a fixed graph, and store the resulting
+resource vector in the initial state of the forward replay. If demands are cyclic, use inflationary
+iteration on a bounded product lattice.
+Proposition 8.2 (Bounded cyclic demand closure). Suppose F : [0, R1 ] × · · · × [0, Rk ] → [0, R1 ] ×
+· · · × [0, Rk ] is componentwise inflationary. Starting at 0 and iterating F , a fixed point is reached in
+P
+at most 1 + j Rj stages.
+Proof. If a stage is not fixed, at least one component increases by at least one, so the rank j xj
+P
+strictly increases. It is bounded by j Rj . All comparisons and the rank invariant are quantifier-free,
+so the proof is a qf-induction template in iPRA.
+P
+
+8.5 Producer modes for traces
+There are three distinct trace producers.
+Deterministic. The action is a PR function of the state. No external certificate is needed; the
+state recursion itself is the trace.
+Boundedly searchable. A complete trace is below an explicit cutoff and has a reflected verifier.
+Use whole-trace least search if a name is required, or seal its existence otherwise.
+Relational boundary. The application proves or assumes only ∃τ Trace, perhaps from a deep
+finite-cover or descent theorem. Keep this exact existential as the producer boundary.
+
+9 Finite strategies for bounded quantifier alternation
+A finite theorem often has a bounded interactive form rather than a single existential certificate.
+For example,
+∀x < B0 (q) ∃y < B1 (q, x) ∀z < B2 (q, x, y) R(q, x, y, z).
+It is incorrect to replace the existential moves by an infinite choice function. For a fixed bounded
+formula, however, the complete finite strategy is itself one certificate.
+
+9.1 Strategy tables
+For each existential node, enumerate the preceding universal history in mixed radix and store one
+bounded response in a table. A strategy code s then has primitive-recursive accessors movej (s, h).
+The verifier checks:
+(i) every move is below its history-dependent bound;
+
+Scoped Certificate Realization for iPRA
+
+16
+
+(ii) for every complete universal history, the matrix bit is true after inserting the stored moves.
+The second condition is a bounded fold over all histories, represented by a zero failure sum or
+least-counterexample search.
+Theorem 9.1 (Strategy soundness, fixed shape). For every fixed alternation shape and reflected
+quantifier-free matrix, there is a specialized primitive-recursive verifier verifyα (q, s) and an iPRA
+derivation
+verifyα (q, s) = 1 −→ Φα (q).
+Proof. Proceed by structural induction on the fixed alternation shape at the Lean metalevel. An
+existential node reads the stored move, proves its bound from the verifier, and introduces the
+existential. A universal node opens an arbitrary bounded challenge and specializes the verifier’s
+no-failure result to its history code. At a leaf apply matrix reflection. The bounded-history
+specialization is obtained from the least-counterexample or failure-sum reflection of section 6; no
+object induction contains a quantified invariant.
+
+9.2 Completeness for finite decidable games
+When all move bounds are explicit and the leaf matrix is decidable, backward induction computes a
+winning bit and a least winning response at each existential node. Because the alternation shape is
+fixed, this is a primitive-recursive program family. The object proof uses nested bounded search
+and quantifier-free reflection.
+Theorem 9.2 (Finite strategy completeness, schema). For each fixed bounded alternation shape α,
+iPRA proves that if the bounded formula Φα (q) holds, then an accepted finite strategy code exists.
+Equivalently, the formula is interderivable with the existence of an accepted strategy certificate.
+Proof architecture. Induct metatheoretically on α. At an existential node, retain the formula’s
+witness in local scope and combine it with the recursively obtained sub-strategy; if a named table
+is desired, use the explicit move and table bounds to select the least accepted combined code. At
+a universal node, construct a table of sub-strategies for all finitely many challenges. This table
+construction is a primitive recursion on the challenge bound whose invariant states, in reflected form,
+that all completed entries verify. Since α is fixed, all table accessors and verifiers are specialized
+syntax. A complete Lean proof should first implement the ∀∃ case and then abstract the recurring
+fold.
+The completeness schema is a formalization target rather than a claimed kernel-checked declaration
+in this archive. Its human proof uses only the bounded search and trace lemmas already isolated
+above.
+
+9.3 Dual certificates and counterstrategies
+For diagnostic use, compile a dual certificate for failure: a universal challenge or counterstrategy
+exposing a rejected leaf. Since the finite game is decidable, the winning and losing bits are
+complementary. A packet can therefore separate three concerns:
+• a small checker for a positive strategy;
+
+Scoped Certificate Realization for iPRA
+
+17
+
+• a small checker for a negative counterexample;
+• the producer theorem deciding which certificate exists.
+This is useful for finite combinatorics, covering arguments, and bounded algebraic searches. It does
+not imply determinacy for infinite games or an unbounded choice principle.
+
+10 Stable observers, quotients, and exact-label gates
+Many mathematical objects have valid finite presentations but no natural canonical presentation:
+a polynomial’s roots may be permuted, an eigenspace may have many bases, a manifold may
+have many atlases, and a homotopy class may have many simplicial representatives. SCR treats
+presentation choice as a local certificate and exports only proved-invariant observations.
+
+10.1 Exact observer erasure
+Let V (q, c) validate certificates and let O(q, c) be a term-valued observer. Suppose iPRA proves
+V (q, c) ∧ V (q, d) −→ O(q, c) = O(q, d).
+Theorem 10.1 (Exact observer erasure). The relation
+Out(q, o) :⇐⇒ ∃c [V (q, c) ∧ O(q, c) = o]
+is single-valued. Every consumer invariant under equality of o can be composed with a sealed producer
+for V without selecting a certificate.
+Proof. Open witnesses c, d for two outputs. Observer independence gives O(q, c) = O(q, d); the
+defining equalities then give o = o′ . For a consumer, open one valid certificate, introduce its output
+relation, apply the consumer, and close the scope.
+For root sets, elementary symmetric polynomials are exact observers. For a finite matrix, the
+characteristic polynomial and traces of powers are exact observers under change of basis. For a finite
+chain map induced by a carrier, the homology map is an exact observer once any two selections are
+proved contiguous and the prism homotopy is verified.
+
+10.2 Quantitative clouds
+Exact equality is often too strong. Let d be an encoded rational metric or seminorm and suppose
+V (q, c) ∧ V (q, d) −→ d(O(q, c), O(q, d)) ≤ δ(q).
+Then valid certificates form an output cloud of diameter at most δ. Downstream operations carry
+moduli which transform input diameters into output diameters. Composition is by arithmetic on
+explicit error budgets.
+Theorem 10.2 (Diameter composition). Suppose F has modulus m:
+dX (x, x′ ) ≤ m(q, ε) → dY (F x, F x′ ) ≤ ε.
+If a certificate cloud for x has diameter at most m(q, ε), then the image observer cloud has diameter
+at most ε.
+
+Scoped Certificate Realization for iPRA
+
+18
+
+Proof. Open two valid certificates, apply their diameter premise, then the supplied modulus theorem.
+Since the conclusion contains neither certificate, close both existential scopes.
+This is the correct unconditional output at collisions. It supports finite precision consumers without
+pretending to have a globally coherent branch.
+
+10.3 The exact-label gate
+Suppose candidate labels ℓ0 , . . . , ℓr−1 are separated by g > 0, and every valid observation lies within
+e of one label. If 2e < g, two different labels cannot both explain valid observations.
+Lemma 10.3 (Gap stabilization). In a metric encoded by rational inequalities, if
+d(ℓi , ℓj ) ≥ g
+
+(i ̸= j),
+
+d(o, ℓi ) ≤ e,
+
+d(o′ , ℓj ) ≤ e,
+
+d(o, o′ ) ≤ δ,
+
+and 2e + δ < g, then i = j.
+Proof. If i =
+̸ j, the triangle inequality gives g ≤ d(ℓi , ℓj ) ≤ e + δ + e < g, a contradiction. The
+formal version clears rational denominators and uses the checked order library.
+The gate yields an exact branch label only on a region with a proved positive gap. At the discriminant
+locus the API falls back to a cluster or invariant. This resolves, in maximal constructive form, the
+recurring exact-root, eigenvector, rotation-axis, and chart-selection difficulties.
+
+10.4 Witnessed setoids
+A general quotient interface consists of:
+(a) a certificate type represented by natural codes;
+(b) a reflected validity predicate V (c);
+(c) a reflected equivalence witness E(c, d, w);
+(d) proofs of reflexivity, symmetry, and transitivity at the level needed by consumers;
+(e) observer invariance under E.
+No quotient representative is normalized unless a separate normalization contract is proved. This
+is often smaller than coding a full equivalence relation as a decidable Boolean: equality may be
+witnessed by an ideal combination, a chain homotopy, a coordinate transition, or a finite zigzag.
+The witness itself is sealed after observer invariance has been used.
+
+10.5 Coherent names across precision
+To obtain a primitive-recursive Cauchy name rather than unrelated finite clouds, an application
+must supply a coherence contract. A common sufficient form is
+d(ok+1 , ok ) ≤ 2−k−c
+for a fixed c, verified by a finite transition certificate. A summable motion budget gives a Cauchy
+modulus by a finite geometric-tail estimate. If only finite-horizon compatibility is known, SCR
+exports finite coherent paths or metastable windows, not an infinite name. Again, the missing tail
+modulus is a producer obligation, not a logical inference.
+
+Scoped Certificate Realization for iPRA
+
+19
+
+11 Reusable mathematical representation templates
+SCR is not a single coding of all mathematics. It is a disciplined way to connect domain-specific
+finite presentations to the same proof-producing kernel. This section records the templates that
+cover most current packets.
+
+11.1 Finite algebra and exact linear algebra
+A polynomial, matrix, finite module map, or chain complex is represented by a bounded coefficient
+table. A certificate may contain row operations, cofactor expansions, a null vector, an ideal
+combination, a multiplication table, or a basis change. The validator checks coefficientwise identities
+by bounded sums and products. The extractor uses the checked semiring, integer, and finite-linearalgebra library.
+Typical contracts include:
+PolyId(p, q, c)
+BezoutCert(a, b, u, v, g)
+InverseCert(A, B)
+SpanClosed(F1 , . . . , FD )
+
+⇒ p = q,
+⇒ ua + vb = g,
+⇒ AB = BA = I,
+⇒ #Solutions ≤ D.
+
+The last line is a cardinality theorem, not an enumeration cutoff. To list solutions, add a height or
+complete-list producer.
+Symbolic identities should be proved by reusable object tactics only after the tactic’s output is a
+checked derivation. Until then, a coefficient table plus a reflected equality checker is the conservative
+interface.
+
+11.2 Integers, rationals, and cleared inequalities
+Integers are represented by differences of naturals, as in the checked library. A rational is a
+signed numerator and positive denominator, with cross-multiplication used for equality and order.
+Every analytic or geometric packet should state denominator positivity in its validator and clear
+fractions before invoking iPRA arithmetic. Division is an interface operation with a nonzero or
+positive-denominator guard, not an ambient field axiom.
+A rational error bound |x−y| ≤ a/b is encoded after multiplying by the positive common denominator.
+This keeps all induction invariants quantifier-free and permits exact audit of strict versus non-strict
+estimates.
+
+11.3 Real numbers and functions
+A usable real name is a fixed primitive-recursive rational sequence r(k) with an explicit modulus,
+preferably in the normalized form
+|r(k) − r(ℓ)| ≤ 2−n
+
+whenever k, ℓ ≥ m(n).
+
+The name code is fixed at specialization time; iPRA quantifies over the natural precision arguments,
+not over arbitrary functions. Equality is an apartness or two-sided approximation relation at
+
+Scoped Certificate Realization for iPRA
+
+20
+
+requested precision. A continuous function is represented by an evaluator on names together with a
+precision transformer and a proof that equivalent inputs give equivalent outputs.
+There are four legitimate output levels.
+(R1) a fixed named real with a uniform modulus;
+(R2) a name conditional on supplied constants or moduli;
+(R3) a finite-precision cloud with a diameter theorem;
+(R4) a finite-consumer metastable window.
+Classical convergence without a computable rate normally yields only the last two levels in iPRA.
+
+11.4 Integration, infinite series, and asymptotics
+An integral theorem is compiled to finite quadrature plus an error certificate: partition data, sample
+values, local oscillation bounds, and a tail estimate if the domain is unbounded. A series uses a
+partial sum term and a remainder bound. An asymptotic statement uses a primitive-recursive
+threshold N (ε, parameters) and an explicit remainder inequality.
+If the packet has an exact symbolic antiderivative or telescoping identity, the finite algebra core
+may discharge most of the work. If it relies on a classically asserted dominated-convergence or
+compactness argument, the missing domination, tail, or finite-cover modulus must be made a
+producer. The framework can verify a proposed modulus; it does not conjure one.
+
+11.5 Finite probability
+A finite law is a list of natural weights wi , a positive total W = i wi , and a rational or integer
+observable. Expectations are represented in cleared form, so linearity, finite Fubini, variance identities,
+Markov, and Chebyshev avoid division. The recently checked IPRADerivations/Probability
+modules illustrate the desired endpoint: literal Prf PRAAx derivations for finite laws.
+P
+
+Countable or continuous laws require approximation contracts: truncation and tail bounds, quadrature data, or a coupling at requested precision. A sample path over a finite horizon is a trace
+certificate; almost-sure asymptotics must be replaced by a quantitative finitary probability bound
+or by an explicit rate producer.
+
+11.6 Combinatorics and finite structures
+Graphs, hypergraphs, words, tilings, permutations, and incidence structures are bounded tables.
+Local constraints are reflected bits; global validity is a failure sum. Pigeonhole, parity, descent, and
+finite sums should be imported from IPRADerivations. A finite search theorem should return a
+complete certificate or a countercertificate, not rely on a host exhaustive search as an axiom.
+An infinite combinatorial object is represented by coherent finite patches: for every requested radius
+r, a patch code pr satisfies a local checker, and a transition certificate relates pr to pr+1 . One fixed
+PR producer gives a genuine name; mere existence of every finite patch without coherence gives
+only a family of finite theorems.
+
+Scoped Certificate Realization for iPRA
+
+21
+
+11.7 Topology and geometry
+At a fixed mesh, a space is observed by a finite simplicial or cubical complex. A map is represented
+by a strong carrier or a finite cloud of possible target simplices. A selection certificate chooses one
+simplex per source vertex. The carrier theorem proves that every selection is simplicial and any two
+selections are contiguous; an explicit prism operator gives a chain homotopy. The induced homology
+map is therefore an exact observer and the selection can be sealed.
+Metric and manifold claims additionally require approximation data connecting the finite complexes
+to the presented space: moduli of continuity and injectivity, chart radii, finite covers, or separation
+data. A Jordan or dimension theorem may have a completely finite combinatorial core while still
+lacking this producer. SCR records the division precisely.
+Exact Euclidean/projective geometry over rational or constructible coordinates usually reduces to
+cleared polynomial identities plus nondegeneracy guards. A branch-dependent construction—angle
+bisectors, eigenaxes, oriented roots— uses the exact-label gate of section 10.
+
+11.8 Finite categories, diagrams, and gluing
+A fixed finite category is a table of objects, morphisms, sources, targets, identities, and composition,
+together with finite associativity and unit checks. Functors and natural transformations are tables
+with local equations. Finite limits, colimits, adjunctions, and Kan-extension calculations become
+finite universal-property certificates: proposed cones/cocones and mediating arrows, with uniqueness
+checked by enumeration under explicit hom-set bounds.
+For algebraic geometry, affine charts, localizations, and Čech diagrams are finite presentations.
+Equality in a localization or quotient is witnessed by an exponent, ideal combination, or module
+relation. Glue representatives locally, prove compatibility on overlaps, and seal the representatives
+after showing the global observer is invariant. General schemes or unbounded covers are not silently
+encoded by one finite atlas; the theorem states the presentation class to which it applies.
+
+11.9 Diophantine geometry and finite descent
+For a polynomial system F (⃗x) = 0, a height bound H produces a finite box and hence an exhaustive
+enumerator. A complete-list certificate contains the accepted points and either the full box scan
+or a compressed exclusion certificate. Soundness and completeness inside the box are primitive
+recursive. If a theorem proves every solution has height at most H, SCR seals the height certificate
+and exports finiteness or the exact list.
+Descent data—covering curves, Selmer representatives, local tests, and rank-decreasing measures—
+are finite certificates when their code ranges are explicit. A uniform Mordell–Weil theorem additionally needs a producer for a complete covering list and termination bounds. The verifier/producer
+split allows all finite descent arithmetic to be formalized without overstating that uniform result.
+
+11.10 A compact template table
+
+Scoped Certificate Realization for iPRA
+
+Domain
+
+Finite presentation
+
+Algebra
+
+coefficient and matrix tables
+Analysis
+rational name, modulus,
+quadrature, tail
+Probability
+finite weighted law, coupling table
+Topology
+finite complex, carrier,
+chain data
+Geometry
+coordinate table and
+guards
+Category the- finite category and diaory
+gram tables
+Diophantine
+bounded point list, descent certificate
+Infinite combi- coherent finite patches
+natorics
+
+22
+
+Generic extractor
+
+Typical producer
+gap
+
+identity, rank, span, ideal- degree/height or
+combination checks
+basis bounds
+error-budget composition convergence/tail
+modulus
+cleared moments and in- truncation or apequalities
+proximation rate
+simpliciality, contiguity, approximation or
+homology invariance
+cover modulus
+polynomial identity and nondegeneracy or
+branch stability
+gap
+universal-property verifi- hom-set or presencation
+tation bounds
+soundness, completeness global height/cover
+in box, rank decrease
+list
+local validity and restric- uniform coherent
+tion
+producer
+
+12 Resolution of the identified difficulty classes
+The following matrix consolidates the recurring obstacles recorded by the existing framework packets.
+“Resolved” means that the generic logical issue has a complete argument and a clear object-theory
+endpoint. It does not mean that every application-specific arithmetic lemma has already been
+elaborated.
+ID
+
+Difficulty
+
+SCR resolution
+
+D1
+
+Host correctness confused with iPRA proof
+
+D2
+
+Overlapping
+graph
+frameworks lack a common logical substrate
+Only qf induction is
+available
+A universal PR evaluator is assumed
+Finite existence hides
+choice
+
+Every node stores or constructs a literal Elaborate application
+Prf PRAAx term; host code only specializes nodes.
+syntax and tests examples.
+Ordinary contexts, Prf.trans, and Prf.exE Implement reusable
+are the substrate; graph syntax is optional wrappers.
+metadata.
+Bounded logic is reflected to bits; loops use Domain-specific local
+failure accumulators and qf prefix invariants. preservation.
+Compile fixed host syntax to fixed PR terms Audit packet-specific
+before internalization.
+evaluators.
+Sealed witnesses use existential elimination; A cutoff only when
+bounded least search is reserved for named naming is required.
+escapes.
+Seal or search a complete path/strategy code, Path bound or exisnever locally greedy successors.
+tential producer.
+Use fixed tuples for records and proved Digit/division library
+bounded arrays for variable horizons; conver- integration.
+sion is explicit.
+Cardinality supports finiteness only; enumera- Deep height/list protion requires height, code bound, or complete ducer.
+list.
+
+D3
+D4
+D5
+D6
+D7
+D8
+
+Greedy finite choice can
+fail
+Lists, traces, and tables
+have incompatible encodings
+Cardinality is mistaken
+for a code cutoff
+
+Residual obligation
+
+Scoped Certificate Realization for iPRA
+
+23
+
+ID
+
+Difficulty
+
+SCR resolution
+
+D9
+
+Approximation is collapsed to exact labels
+Roots, bases, charts,
+and representatives are
+noncanonical
+Stage-dependent precision changes the induction formula
+Classical convergence
+lacks a PR modulus
+Faltings/Siegel finiteness gives no effective
+list
+Mordell–Weil descent
+lacks uniform representatives
+Analytic constants and
+exceptional data are ineffective
+Exact branch/axis selection has constructive obstructions
+Abstract compactness is
+unavailable
+Proof DAG composition
+is repeatedly rebuilt
+
+Export diameter-controlled clouds; exact la- Separation estimate
+bels pass a positive-gap theorem.
+where desired.
+Seal the presentation and export exact/approx- Observer-invariance
+imate observers invariant across certificates.
+proof.
+
+D10
+D11
+D12
+D13
+D14
+D15
+D16
+D17
+D18
+D19
+D20
+
+Multiple iPRA implementations have only
+closed public transport
+Proof terms explode under finite iteration
+
+Precision and resources are state fields; one
+fixed prefix invariant handles all stages.
+
+Residual obligation
+
+Define
+record.
+
+the
+
+state
+
+Require named moduli or export finite- Modulus or honest
+consumer/metastable statements.
+weaker theorem.
+Formalize the complete-list verifier conditional General height theoon a height-bound producer.
+rem remains open.
+Treat covering representatives as sealed finite
+certificates and isolate their complete producer.
+Put constants in producer contracts with exact
+finite validators.
+
+Uniform covering-list
+theorem.
+
+Give invariant/cloud output unconditionally;
+named output only under apartness/gap.
+
+Gap data for exact
+naming.
+
+Consume finite nets, covers, complexes, and
+Lebesgue data at requested scale.
+Structural kernel packages substitution, context replacement, sealing, and boundaries;
+variable work is one reflected trace.
+Expose existing open Concise-to-Foundation
+transport and add reverse finite-context translation.
+Encode work as PR state/trace plus one qf induction; optionally use KPrf as compact backend.
+
+Produce finite approximation data.
+Lean integration and
+pilots.
+
+Effective constant theorem.
+
+Round-trip/code
+equality lemmas.
+Shared trace and
+Boolean libraries.
+
+12.1 What has genuinely been resolved
+Four improvements go beyond renaming prior contract graphs.
+(1) Choice is classified by escape, not by finiteness. Earlier normal forms tend to select a least
+accepted global code whenever finite witnesses appear. SCR proves that a proof-local witness
+needs no selector or bound at all. This materially reduces the obligations for noncanonical and
+conditionally produced objects.
+(2) The boundary theorem is already a final object theorem. A missing producer does not
+block the verifier and extractor: they compile to (∃c V ) → G or a context theorem now.
+(3) Dependent local witnesses compose without global packing. Nested existential elimination handles finite dependent DAGs directly. Whole trace coding is introduced only at
+object-variable horizons.
+(4) The open bridge is tied to the same contract interface. Local hypotheses and arbitrary
+query terms are first-class, so a packet need not close every theorem merely to cross between
+
+Scoped Certificate Realization for iPRA
+
+24
+
+repository formalizations.
+
+12.2 What no framework resolves
+A generic framework cannot prove a uniform height bound, discover a missing analytic rate, decide
+a singular branch continuously, or turn a non-effective compactness theorem into a finite cover.
+Its contribution is to reduce each application to a small, exact producer statement and to prove
+everything downstream of that statement in a reusable way. This is a stronger result than an
+informal claim of “formalizability”: it identifies the theorem whose absence is mathematically
+decisive.
+
+13 Worked applications
+The examples are chosen to exercise different escape classes and different repository difficulties.
+Exact reference computations are included in reference/scr_reference.py; they illustrate finite
+encodings but do not replace the object proofs below.
+
+13.1 Exact rational bisection for y 3 + y = x
+Let f (y) = y 3 + y. Given rationals a ≤ b, a rational x, and a natural k, assume
+f (a) ≤ x ≤ f (b).
+Since
+
+f (v) − f (u) = (v − u)(u2 + uv + v 2 + 1),
+
+f is strictly increasing over the rationals. At stage i, put mi = (ai + bi )/2. If f (mi ) ≤ x, set
+(ai+1 , bi+1 ) = (mi , bi ); otherwise set (ai+1 , bi+1 ) = (ai , mi ).
+All comparisons are exact after clearing positive denominators. A branch bit can be deterministic,
+or a supplied trace may be checked. The qf invariant is
+f (ai ) ≤ x ≤ f (bi )
+
+∧
+
+2i (bi − ai ) = b − a.
+
+The first conjunct is preserved by the branch comparison. The second follows by elementary rational
+arithmetic. Quantifier-free induction yields
+f (ak ) ≤ x ≤ f (bk ),
+
+bk − ak =
+
+b−a
+.
+2k
+
+The certificate’s branch code is observed: its endpoints matter, but for deterministic exact comparison
+there is a direct PR producer. If the comparison were approximate, different valid traces could be
+sealed and the output would be a diameter-controlled bracket. The reference example for x = 2,
+[a, b] = [0, 2], and eight steps produces [1, 129/128] and verifies the exact width 1/128.
+For a full object development, use integer quadruples for rationals, define the state by primitive
+recursion, prove positivity of denominators, clear every comparison, and instantiate theorem 8.1.
+Uniqueness of the real solution is a separate monotonicity theorem; a Cauchy name follows with
+modulus k = n + c once the initial width is bounded by a fixed power of two.
+
+Scoped Certificate Realization for iPRA
+
+25
+
+13.2 Colliding algebraic branches
+Consider a polynomial family whose valid root certificates are ordered lists of isolating boxes. Away
+from the discriminant, a positive separation gap allows stable ordering and exact labels. At a
+collision, different valid certificates may permute or merge boxes.
+A packet that exports “root number 2” everywhere is therefore asking for an unstable named
+certificate. SCR instead uses the following layers.
+(i) Validate a finite cloud of boxes and multiplicities.
+(ii) Export symmetric observations—sum, product, power sums, resultant factors—by exact
+observer erasure.
+(iii) Export the union of boxes with a diameter/refinement theorem.
+(iv) On a subdomain with a proved separation g, apply the gap lemma and recover exact labels.
+The Python example uses all six permutations of the rational roots (−2, 1, 3). The first-root observer
+is rejected as unstable, while sum, product, and sum of squares are certified as (2, −6, 14).
+The same pattern applies to eigenvectors: the eigenspace projector or characteristic polynomial is
+stable; a normalized eigenvector requires a simple eigenvalue and a sign/orientation convention with
+an apartness guard. For rotations, a quaternion or rotation matrix is stable; an exact axis vector
+requires exclusion of the identity/half-turn singular cases or an approximate axis cloud.
+
+13.3 Finite carrier maps in topology
+Let K, L be finite simplicial complexes and let C(v) be a nonempty finite set of vertices of L for
+every vertex v of K. Assume the strong carrier condition: for each simplex σ of K, the union
+S
+v∈σ C(v) spans a simplex of L. A selection certificate chooses f (v) ∈ C(v).
+The certificate validator is finite. Every valid selection is simplicial. For two selections f, g, the
+vertices of f (σ) ∪ g(σ) lie in the same carrier simplex, so the maps are contiguous. Over F2 , the
+standard prism operator is a finite chain homotopy between their induced chain maps. Therefore
+their homology maps agree.
+The selection is sealed and the induced homology map is an exact observer. No canonical vertex
+choice is needed. A geometric theorem about an actual compact space additionally needs a producer
+connecting a requested scale to K, L, C: a finite net, cover, and modulus. The combinatorial theorem
+can be fully formalized while that approximation producer remains a boundary.
+
+13.4 Height-bounded Diophantine enumeration
+For the curve
+
+y 2 = x3 − x + 1,
+
+fix H. Enumerate all integer pairs (x, y) with |x|, |y| ≤ H, retain those satisfying the equation, and
+code the resulting list. The validator checks:
+(a) every listed pair is in the box and satisfies the equation;
+(b) there are no duplicates;
+(c) every code in the finite box either appears or fails the equation.
+
+Scoped Certificate Realization for iPRA
+
+26
+
+This is a primitive-recursive complete-list certificate for the box. The reference program verifies ten
+points when H = 12.
+The theorem obtained unconditionally is
+“the list contains exactly the points of height at most H.”
+To conclude that it contains all integral points, supply a producer
+∀(x, y) [y 2 = x3 − x + 1 → |x|, |y| ≤ H].
+In a general Siegel packet, this is the missing height theorem. The list verifier and all downstream
+finite consequences can nevertheless become literal iPRA derivations now, conditional on that exact
+formula.
+
+13.5 Finite-consumer stability without a global modulus
+Suppose a downstream proof uses an approximating sequence only at finitely many precision requests
+n1 , . . . , nr , perhaps chosen adaptively from earlier finite observations. A trace can record a common
+window [N, N + g(N )] on which every requested observable is stable. Exceptional-set budgets are
+added, and bounded search finds a window avoiding their union. The final consumer theorem is
+valid even when no global Cauchy modulus is known.
+This does not prove convergence of the entire sequence. It proves the exact finite-use statement
+needed by the consumer. If later mathematics supplies a uniform modulus, the same consumer
+contract upgrades to a uniform named real without changing its internal proof.
+
+13.6 A finite categorical gluing example
+Take a finite diagram of presented modules and a finite cover graph. A section certificate gives one
+module element per chart; compatibility witnesses give equalities on each overlap. A gluing certificate
+proposes a global presented element and local equality witnesses. All checks are finite combinations
+of module relations. If two global proposals have the same restrictions and a finite separation
+certificate proves injectivity of the restriction map, their observers agree. Local representatives and
+equality witnesses are sealed.
+The generic theorem is a finite descent theorem for the specified presentations. A claim about a
+broad geometric category additionally needs a producer that turns each requested object and cover
+into those finite presentations. This separation prevents a finite calculation from being mistaken for
+an unrestricted scheme-theoretic theorem.
+
+14 From a closed bridge to open sequents
+A repository-wide framework should not force every reusable lemma to be closed merely to move
+between the Foundation and Concise developments. The audited bridge is close to the desired result;
+the remaining work is an interface and round-trip problem, not a new interpretation of arithmetic.
+
+Scoped Certificate Realization for iPRA
+
+27
+
+14.1 The easy direction is already internally open
+The theorem toFoundation_provable_of_axioms has the form
+Prf Ax Γ p −→ ΓF,v ⊢Λ pF,v
+for every assignment v of the n free Concise variables to Foundation terms. Its proof already handles
+hypotheses, all logical rules, equality substitution, and binder lifting. The public task is therefore:
+(a) specialize Ax to PRAAx and discharge the already checked images of its axioms;
+(b) expose a theorem with a finite local context rather than immediately universally closing an
+empty-context result;
+(c) add rewrite lemmas showing compatibility with the repository’s standard formula/context
+translation names.
+No new induction on Prf is necessary.
+
+14.2 Reverse transport by finite deduction
+The existing hilbertToConcise translates an empty-context Hilbert proof under an arbitrary
+assignment of free variables. Let a Foundation finite-context derivation have hypotheses D1 , . . . , Dr
+and conclusion P . Repeated use of the Foundation finite-context deduction theorem gives an
+empty-context Hilbert proof of
+D1 → D2 → · · · → Dr → P.
+Translate this implication chain by hilbertToConcise. In the Concise calculus, reopen it with
+Prf.impE and the translated hypotheses. This yields the target
+D1C , . . . , DrC
+
+⊢PRAAx
+
+PC
+
+under every chosen free-term environment.
+Theorem 14.1 (Proposed open Foundation-to-Concise transport). For the reference Foundation
+iPRA theory and every finite context ∆, free-variable environment v, and formula P , a Foundation
+derivation ∆ ⊢ P induces
+∆C,v ⊢PRAAx P C,v .
+Detailed implementation proof. Induct on the finite list ∆, using Foundation’s deduct theorem to
+move its head into an implication until the context is empty. Apply the existing Hilbert-to-Concise
+translator with the same environment v. The translation of implication is definitionally the Concise
+implication. Now induct over ∆ in the opposite order and apply modus ponens with Prf.hyp at
+the corresponding list membership. If the Foundation finite-context representation stores a proof
+object rather than only a provability proposition, the same construction is a direct recursion on
+that object. Binder cases are already handled by underBinder and the proved image lemmas in
+FoundationToConcise.lean.
+
+Scoped Certificate Realization for iPRA
+
+28
+
+14.3 The free-variable environment
+A closed theorem can assign every free Foundation variable to zero because there are none in
+the sentence. An open reflection theorem cannot. For a formula whose active free variables are
+0, . . . , n − 1, choose the Concise environment
+(
+
+v(i) =
+
+PTm.var(i),
+0,
+
+i < n,
+i ≥ n.
+
+and prove that the translation depends only on the active finite support. The analogous Foundation
+environment uses its first n free variables. Substitution compatibility then gives transport at
+arbitrary terms by specializing the open theorem, rather than re-running the bridge.
+
+14.4 Round trips and reflection
+Preservation in both directions does not by itself give an open-sequent equivalence. One also needs
+formula round trips.
+Concise round trip. The current bridge reports that the Concise-to-Foundation-to-Concise translation is exact. Expose this equality for open formulas and show it commutes with context maps.
+Foundation round trip. The reverse round trip can replace a positive-arity zero symbol by a
+composition of the nullary zero. Prove these terms equal in the Foundation theory, then prove
+formulas equivalent by structural induction and equality substitution.
+With local equivalences D ↔ DF C for every hypothesis and P ↔ P F C for the goal, use simultaneous
+cut to replace the round-tripped context. This yields the desired open-sequent reflection theorem
+up to the already documented zero-code normalization.
+Primitive-recursive function codes require a structural induction. In the primitive-recursion constructor, compare the two interpreted iterators by qf induction on the recursion argument. This is
+exactly the kind of theorem the bridge’s closed API previously avoided but the ordinary iPRA core
+now supports.
+
+14.5 Bridge acceptance tests
+A convincing integration should include more than a closed sentence.
+(B1) a two-variable equality theorem under a local equality hypothesis;
+(B2) substitution of non-variable arithmetic terms after transport;
+(B3) a theorem with a quantifier and one shifted local hypothesis;
+(B4) a qf-induction theorem with parameters;
+(B5) both round trips on a primitive-recursive symbol containing composition and recursion;
+(B6) an SCR contract transported with its certificate hypothesis still open.
+The last test is important: the open bridge should preserve the very local producer boundaries that
+make the framework modular.
+
+15 Lean architecture and path to completion
+
+Scoped Certificate Realization for iPRA
+
+29
+
+15.1 Small trusted-facing kernel
+The supplied lean/ScopedCertificate/Kernel.lean contains only structural wrappers around
+checked declarations. Its core is represented by the following source shape.
+structure Contract (n : Nat) (Gamma : List (Fm PTm n))
+(goal : Fm PTm n) where
+valid : Fm PTm (n + 1)
+extract : valid :: Gamma.map Fm.shift
+|- [PRAAx] goal.shift
+namespace Contract
+theorem close (C : Contract n Gamma goal)
+(producer : Gamma |- [PRAAx] Fm.ex C.valid) :
+Gamma |- [PRAAx] goal :=
+.exE producer C.extract
+theorem conditional (C : Contract n Gamma goal) :
+Gamma |- [PRAAx] (Fm.ex C.valid) --> goal := by
+apply Prf.impI
+apply Prf.exE Prf.hyp0
+exact C.extract.weaken (by simp)
+end Contract
+
+The ASCII rendering above abbreviates the repository’s Unicode notation; the archive contains
+the exact source. The file also packages boundary introduction, discharge, simultaneous context
+replacement, and specialization. It introduces no axiom, semantic model, or evaluator.
+The runtime used to create this archive did not contain Lean, so the file is a source-audited
+candidate rather than a compiled result. Its declarations use exact constructor shapes from the
+pinned Deduction.lean; the first repository milestone is to elaborate it and place every declaration
+in the axiom audit.
+
+15.2 Proposed module layout
+IPRADerivations/Framework/ScopedCertificate/
+Kernel.lean
+-- exE/trans/subst/weaken wrappers
+Boolean.lean
+-- reflected atoms and fixed bounded syntax
+Selection.lean
+-- adapter to Core.Search
+Coding.lean
+-- bounded arrays and digit equations
+Trace.lean
+-- state/failure recursion and prefix invariant
+Strategy.lean
+-- fixed bounded game shapes
+Observer.lean
+-- exact, diameter, and gap theorems
+Boundary.lean
+-- boundary collection and implication form
+Examples/
+CubicBisection.lean
+WholePath.lean
+CarrierMap.lean
+HeightList.lean
+
+Scoped Certificate Realization for iPRA
+
+IPRABridge/Open.lean
+
+30
+
+-- open finite-context transport
+
+15.3 Representative target signatures
+The concrete syntax will be adjusted to existing arity combinators, but the object-theory endpoints
+should have the following shapes.
+Least accepted code.
+theorem leastAccepted
+(check : PTm 2) (bound query : PTm n)
+(existsAccepted : Gamma |- [PRAAx]
+Fm.ex (lt (var 0) (shift bound) /\
+inst2 check (var 0) (shift query) == zero)) :
+Gamma |- [PRAAx]
+lt (Search.mu check bound query) bound /\
+inst2 check (Search.mu check bound query) query == zero
+
+The actual existential body must use the repository’s de Bruijn substitutions; Search.search_found
+supplies the proof.
+Trace prefix.
+theorem prefixInvariant
+(data : TraceData)
+(init_ok : ...)
+(step_ok : ...)
+(split_bad : ...) :
+[] |- [PRAAx]
+bad data (var 0) == zero -->
+inv data (state data (var 0)) == one
+
+The proof is one call to IPRA.ind; the formula’s QF proof is a structural tuple of the existing
+equality/order qf lemmas.
+Observer erasure.
+theorem observer_unique
+(independent : valid c /\ valid d |- [PRAAx]
+obs c == obs d) :
+out o :: out o’ :: Gamma |- [PRAAx] o == o’
+
+A practical version packages the existential output relation and handles the required shifts once.
+
+15.4 Dependency order
+The implementation should proceed bottom-up.
+(M1) Elaborate the structural kernel; this tests only scoping.
+(M2) Add reflected Boolean combinators using existing equality, order, sign, and bounded-sum
+lemmas.
+(M3) Implement the search adapter and a named-selector example.
+(M4) Add fixed-base digit extraction and prove its range and substitution equations.
+
+Scoped Certificate Realization for iPRA
+
+31
+
+(M5) Implement trace state/failure recursion and the one-induction theorem.
+(M6) Add exact and diameter observers; these depend only on the structural kernel and arithmetic
+metrics.
+(M7) Implement the ∀∃ strategy shape, then abstract fixed alternation.
+(M8) Expose the open bridge and run cross-formalization tests.
+(M9) Migrate packets only after the reusable layer passes the axiom audit.
+This order deliberately postpones a large graph DSL. A DSL is convenient only after its primitive
+combinators are checked. The repository already has several graph blueprints; another one would
+not close the core gap.
+
+15.5 Axiom and status discipline
+Every new file should be checked with the repository’s existing #print axioms infrastructure. The
+expected metatheoretic dependencies may include the same Mathlib principles already reported
+by IPRADerivations; there must be no sorryAx. A theorem signature, a structure containing a
+theorem field, or a host test must never be listed as an implemented object proof.
+The recommended ledger columns are:
+status
+upstream checked
+candidate
+human complete
+executable
+blueprint
+conditional
+
+meaning
+existingdeclarationcompiledinthepinnedrepo
+no − placeholdersource, notelaboratedhere
+f ullmathematicalproof inthisreport
+f initeref erencecomputation/testsonly
+exacttargetanddependencypath, proof notbuilt
+conclusiondependsonanexplicitproducerf ormula
+
+15.6 Pilot migrations
+Four pilots cover the framework’s essential cases.
+Finite arithmetic. Repackage an already checked finite-sum theorem as a contract, testing substitution and context composition without new arithmetic.
+Cubic bisection. Test state records, exact rational guards, and trace reflection.
+Carrier map. Test sealed noncanonical selections and an exact observer.
+Height list. Test a fully checked verifier whose global conclusion is conditional on one explicit
+producer boundary.
+Once these compile, later packets can share the same small trusted-facing API.
+
+16 Relation to the repository’s prior frameworks
+The proposal is best understood as a logical refactoring of existing strong ideas, with one new
+organizing analysis.
+
+Scoped Certificate Realization for iPRA
+
+32
+
+16.1 Finite-query normal form
+FQNF packs all evidence for an explicit finite query into one bounded natural certificate, verifies it
+with a fixed PR checker, and selects the least accepted code. This is an excellent serialization and
+reflection normal form when all bounds are available and a named computation is desired.
+SCR changes the default. Proof-local witnesses remain separate existential scopes; a master code is
+created only when variable-horizon decoding or a named output requires it. Therefore SCR can
+formalize a conditional theorem from an unbounded existential producer while FQNF must first
+obtain a code cutoff. Under explicit bounds the two are intertranslatable: fuse SCR scopes to obtain
+FQNF, or open one FQNF certificate and treat its fields as SCR contracts.
+
+16.2 Certified bounded interaction programs
+CBIP supplies a typed language of bounded interactions, finite strategies, relational viability, and
+stable witness erasure. SCR adopts these mathematical mechanisms but makes ordinary existential
+scope the primitive logical operation. The interaction language becomes an optional front end;
+its compiler target is a small collection of Prf.exE, Prf.trans, trace, strategy, and observer
+combinators. This reduces the amount of a large DSL that must be trusted or proved sound before
+applications can migrate.
+
+16.3 Native clause programs
+Native clause programs use the checked KPrf calculus as an intermediate representation, with
+checked cut, substitution, and export. SCR is compatible with that backend. A local quantifierfree arithmetic subgraph can carry a KPrf proof and export it to ordinary iPRA at the interface.
+Existential sealing and rich logical conclusions are most naturally organized in Prf PRAAx, which
+remains the canonical endpoint.
+
+16.4 Observation graphs and staged contract kernels
+Proof-carrying observation graphs already emphasize finite traces, backward demand, relational
+witness clouds, and stable observations. Staged contract kernels emphasize specialization by
+Prf.subst, context alignment by Prf.weaken, and composition by Prf.trans. SCR combines
+these with a missing criterion: whether a certificate escapes. That criterion selects among existential
+sealing, observer erasure, and bounded naming. It also supplies a direct proof of the conditional
+theorem when a producer is missing.
+
+16.5 What is novel, and what is not
+Existential elimination, least bounded search, and invariant induction are of course standard logical
+tools. The contribution claimed here is the repository-level synthesis:
+(i) a static escape classification tied to exact Prf constructors;
+(ii) a scoped alternative to mandatory global certificate packing;
+(iii) dependent composition without selectors for finite proof DAGs;
+
+Scoped Certificate Realization for iPRA
+
+33
+
+(iv) a uniform boundary-normal-form theorem for incomplete packets;
+(v) a single trace/strategy/observer architecture explaining when finite codes are genuinely
+necessary;
+(vi) an integration plan that reuses the current checked arithmetic and makes open bridge transport
+first-class.
+The novelty is architectural and proof-theoretic rather than a claim to a new intuitionistic logic.
+
+16.6 Decision guide
+Situation
+
+Preferred representation
+
+Auxiliary witness disappears from conclusion
+Several valid witnesses give
+the same invariant
+Valid outputs differ only by
+controlled error
+Certificate code or leastness
+is public
+Variable-horizon relational
+computation
+Fixed bounded quantifier alternation
+Large qf proof graph needs
+compact terms
+Deep datum not yet produced
+
+SCR sealed existential
+SCR exact observer relation
+SCR diameter cloud
+Bounded selector / FQNF
+Whole trace certificate + qf reflection
+Finite strategy certificate / CBIP front end
+Optional KPrf backend
+Explicit SCR boundary theorem
+
+17 Limitations and conclusion
+17.1 Limitations
+This report does not provide a completed Lean implementation of Boolean reflection, trace coding,
+strategy reflection, or the open bridge. It provides full human arguments, exact object-theory
+endpoints, a no-placeholder structural kernel candidate, and a dependency-ordered path to those
+proofs. The absence of a Lean executable in the artifact runtime prevented even the small candidate
+from being elaborated, so no new kernel-checked theorem is claimed.
+The framework does not prove the deep producer theorems identified in the packet catalogue.
+In particular, it proves no general Faltings, Siegel, Mordell–Weil, effective Roth, Chebotarev, or
+unrestricted analytic convergence result. It does not select exact branches through singularities,
+derive moduli from arbitrary classical convergence proofs, or infer an enumeration cutoff from finite
+cardinality.
+The fixed-bounded-formula compiler is a schema indexed by host syntax. This is intentional.
+Internalizing a universal interpreter would be a different and substantially harder arithmetization
+
+Scoped Certificate Realization for iPRA
+
+34
+
+project, and a total universal function for all primitive-recursive programs is not the interface needed
+by the applications.
+Finally, ordinary Prf proof terms may still be large. Trace compression, shared Lean definitions,
+and an optional KPrf backend address the main sources of blow-up, but empirical compilation will
+determine which subgraphs should be flattened or translated.
+
+17.2 Conclusions
+The current ProveIt tree already contains the logical and arithmetic machinery needed for a
+principled general framework. The missing step is to use that machinery at the right granularity.
+A mathematical proof in iPRA should be organized around finite queries and local contracts.
+Auxiliary certificates should remain existentially sealed unless something certificate-dependent must
+escape. Exact invariant observations should replace arbitrary representative choices; approximate
+clouds should replace unstable labels; a positive gap should be the explicit gate to exact naming.
+Variable-length work should be represented by a whole trace or finite strategy and reflected by
+a quantifier-free invariant. Missing height bounds, moduli, covers, or constants should appear as
+formulas in the final theorem, not as prose in a “future work” section.
+This organization produces a small, auditable compiler whose primitive steps are already checked:
+substitution, weakening, simultaneous cut, existential elimination, and qf induction. It also explains
+how the strongest ideas of the existing packet frameworks fit together. FQNF is the packed named
+backend; CBIP is a bounded-interaction front end; KPrf is a compact qf backend; SCR is the
+ordinary logical spine.
+The immediate practical recommendation is therefore narrow: elaborate the supplied structural
+kernel, implement the search and trace adapters against IPRADerivations, and migrate the four
+pilots before designing another large proof-graph language. Success at those gates would turn
+a substantial class of current “human-complete but uncompiled” packets into literal Prf PRAAx
+derivations, while leaving the genuinely deep mathematical boundaries visible and honest.
+
+A Expanded proofs of the generic theorems
+This appendix writes the central arguments at the level needed to translate them to the repository’s
+de Bruijn-scoped natural deduction. We suppress only routine reassociation of list contexts.
+
+A.1 One-certificate sealing
+Let V ∈ Fm PTm (n + 1), G ∈ Fm PTm n, and Γ ⊆ Fm PTm n. The constructor
+Prf.exE :
+
+Γ ⊢PRAAx ∃V
+V :: Γ↑ ⊢PRAAx G↑
+Γ ⊢PRAAx G
+
+is exactly theorem 3.1. The side condition traditionally expressed as “the eigenvariable is not free in
+G, Γ” is enforced by the types: G, Γ live at arity n, while V lives at arity n + 1. Consequently no
+separate freshness proof is needed.
+
+Scoped Certificate Realization for iPRA
+
+35
+
+For conditional closure, start under context (∃V ) :: Γ. The first premise of existential elimination is
+Prf.hyp0. Its second premise expects
+V :: (∃V )↑ :: Γ↑ ⊢PRAAx G↑ .
+Weakening the original extractor inserts (∃V )↑ . Close existential elimination, then implication
+introduction. This is why the source candidate’s proof is only three lines.
+
+A.2 Dependent sealing with exact shifts
+Let
+
+A ∈ Fm PTm (n + 1),
+
+Assume
+
+B ∈ Fm PTm (n + 2),
+
+G ∈ Fm PTm n.
+
+p : Γ ⊢PRAAx ∃A,
+q : A :: Γ↑ ⊢PRAAx ∃B,
+r : B :: A↑ :: Γ↑↑ ⊢PRAAx G↑↑ .
+
+The second premise for eliminating ∃B under the opened A is exactly r, because shifting the local
+context A :: Γ↑ gives A↑ :: Γ↑↑ . Thus
+q, r
+
+⇝
+
+A :: Γ↑ ⊢PRAAx G↑ .
+
+Eliminate ∃A with p to obtain G. For a chain of length k, repeat. For a DAG, choose a nesting
+order compatible with dependencies; all consumers of a certificate are proved before its scope closes.
+
+A.3 Boundary collection
+Suppose a compiled continuation has context Br :: · · · :: B1 :: Γ. Repeated implication introduction
+gives
+Γ ⊢PRAAx B1 → · · · → Br → G,
+with the order reversed relative to the context stack. If a user-facing order is required, use weakening
+and hypotheses to prove the desired permutation, or compile a conjunction B1 ∧ · · · ∧ Br and
+eliminate its fields. The context form is canonical for Lean because Prf.trans takes a family of
+derivations for all members.
+If a producer pi : Γ ⊢PRAAx Bi later becomes available, apply Prf.trans to replace that occurrence
+while leaving the other boundaries as hypotheses. Thus packet completion is monotone: adding
+producers does not change downstream extractors.
+
+A.4 Least accepted certificate
+Let z(c, q) = 0 reflect V (q, c), and abbreviate m = µz (B, q). The checked theorem search_found
+has, schematically,
+z(c, q) = 0, hinspacec < B
+
+⊢PRAAx
+
+m < B ∧ z(m, q) = 0 ∧ m ≤ c.
+
+Under an existential premise ∃c(c < B ∧ V (q, c)), open c, convert V to z = 0, and apply the theorem.
+Its conclusion contains no c except the optional m ≤ c field. Discard that field before closing the
+existential, obtaining m < B ∧ z(m, q) = 0. Reflect back to V (q, m).
+
+Scoped Certificate Realization for iPRA
+
+36
+
+For minimality, search_minimal gives
+d<m
+
+⊢PRAAx
+
+z(d, q) ̸= 0.
+
+Reflection yields ¬V (q, d). If a first-order bounded universal is needed, introduce arbitrary d, assume
+d < m, and derive the implication; if a qf consumer is enough, retain the reflected no-counterexample
+term.
+
+A.5 Trace reflection in arithmetic detail
+Take Boolean failure terms, so every failure is 0 or 1. Define
+b0 = 0,
+
+bi+1 = bi + ei .
+
+The checked natural-number arithmetic proves
+bi + ei = 0 → bi = 0 ∧ ei = 0.
+One proof uses bi ≤ bi + ei and ei ≤ bi + ei , then equality to zero and antisymmetry. Another
+uses the zero-or-success decomposition: if either summand were a successor, the sum would be a
+successor and hence nonzero. The first style reuses order lemmas; the second often gives a smaller
+proof term.
+The induction formula
+
+Φ(i) = bi = 0 → I(si ) = 1
+
+
+
+is qf because equality and implication preserve Fm.QF. At zero, s0 = init and b0 = 0; congruence
+transports the initialization proof. At a successor, assume bi+1 = 0, split it, apply the induction
+hypothesis to bi = 0, and instantiate local preservation at the current state and decoded action.
+Defining equations for si+1 complete the congruence step.
+If Trace(N, τ ) also contains a terminal check, put that check in eN and run the recursion for N + 1,
+or conjoin it after the prefix invariant. The latter keeps the state horizon conventional.
+
+A.6 Exact observers
+Assume
+
+V (c), V (d) ⊢PRAAx O(c) = O(d).
+
+Define the output formula with an existential certificate. To prove single-valuedness, start from two
+output hypotheses. Eliminate the first existential, then the second. The local context contains
+V (c), O(c) = o, V (d), O(d) = o′ .
+By independence, O(c) = O(d). Equality symmetry and transitivity give o = o′ . Since the result is
+in the outer scope, close both existential eliminations.
+The same proof works for an observed relation R(c, o) if pairwise valid certificates and their output
+witnesses imply output equality. Thus the observer need not be a term; it may itself be a small
+relational certificate.
+
+Scoped Certificate Realization for iPRA
+
+37
+
+A.7 Diameter and gap arithmetic
+Suppose a rational metric is represented by a nonnegative numerator after a common positive
+denominator is cleared. The triangle inequality has the form
+D(x, z) ≤ D(x, y) + D(y, z).
+Under the four assumptions of the gap lemma,
+g ≤ D(ℓi , ℓj )
+≤ D(ℓi , o) + D(o, o′ ) + D(o′ , ℓj )
+≤ e + δ + e < g,
+a contradiction by transitivity and irreflexivity of strict order. In object arithmetic, each rational is
+a numerator/denominator record and the final strict inequality is cross-multiplied by the product of
+positive denominators. All positivity assumptions belong to the validator.
+
+A.8 Finite-strategy soundness
+For a ∀x < B∃y < C(x) formula, a strategy table is simply a bounded array yx . Its verifier says
+every digit is below C(x) and the matrix holds at (x, yx ). To prove the formula, introduce arbitrary
+x, assume x < B, instantiate the verifier’s no-failure theorem at x, and introduce yx . For one more
+universal level, table entries are subtables indexed by the preceding history. Fixed-shape soundness
+is therefore a finite nesting of the same argument.
+Completeness uses bounded search for a winning response at each existential history. A universal
+node packages all finitely many recursively generated subtables. The proof that the package verifies
+is a qf induction over the history enumeration. The table code bound is the product of explicit
+move radices. No infinite strategy or function space occurs.
+
+B Lean declaration ledger and target signatures
+This appendix separates exact upstream declarations from proposed declarations. Names in the
+first table were audited in the pinned tree. Names in the second are targets; they are not claimed to
+exist.
+
+B.1 Audited upstream interface
+Declaration
+
+Role
+
+Prf.subst
+Prf.weaken
+Prf.trans
+Prf.exE
+Prf.shift
+PRA.qfInd
+
+simultaneous term specialization of an open derivation
+context monotonicity
+simultaneous cut / replacement of every local hypothesis
+existential sealing with typed freshness
+weaken free-variable scope under a binder
+quantifier-free induction in the ordinary iPRA core
+
+Scoped Certificate Realization for iPRA
+
+38
+
+Declaration
+
+Role
+
+IPRA.inst
+
+instantiate an empty-context open derivation at arbitrary
+terms
+convenient open qf induction on variable zero
+bounded least-zero term with sentinel
+bound, accepted-zero, and prefix minimality
+a supplied bounded zero yields the least bounded zero
+no earlier candidate is accepted
+ordinary iPRA sequent iff native reading
+native sequent iff ordinary reading
+substitution in the five-rule native clause calculus
+context cut in the native clause calculus
+export a clause derivation to the native kernel
+open Concise-to-Foundation finite-context transport under an environment
+Foundation Hilbert derivation to empty-context Concise
+proof under arbitrary free assignment
+
+IPRA.ind
+Search.mu
+Search.search_spec
+Search.search_found
+Search.search_minimal
+pra_iff_native
+native_iff_pra
+KPrf.subst
+KPrf.cut
+KPrf.toNPrf
+toFoundation_provable_of_axi
+oms
+hilbertToConcise
+
+B.2 Proposed object declarations
+Target
+
+Required result
+
+Contract.close
+Contract.conditional
+
+checked in candidate source: seal one producer/extractor
+checked in candidate source: expose missing producer as
+implication
+bounded existential iff reflected least-search condition
+bounded universal iff no reflected counterexample
+validity and minimality of selected code below explicit
+cutoff
+zero accumulated failure implies zero prefix and local
+failure
+one-qf-induction trace reflection
+existential trace producer plus invariant implies outer
+goal
+accepted fixed-shape strategy implies bounded formula
+bounded formula implies existence of accepted strategy,
+fixed-shape schema
+exact observer output relation is single-valued
+modulus transports certificate-cloud diameter
+separation gap stabilizes an exact finite label
+collect unresolved producer formulas into context/implication theorem
+reverse finite-context transport under arbitrary environment
+
+Boolean.bexReflect
+Boolean.ballReflect
+Selection.leastAccepted
+Trace.badSplit
+Trace.prefixInvariant
+Trace.sealedFinal
+Strategy.sound
+Strategy.complete
+Observer.unique
+Observer.mapDiameter
+Observer.gapLabel
+Boundary.collect
+IPRABridge.foundationToConci
+seOpen
+
+Scoped Certificate Realization for iPRA
+
+39
+
+Target
+
+Required result
+
+IPRABridge.openIff
+
+open sequent equivalence up to documented Foundation
+normalization
+
+B.3 Suggested structure records
+The following records keep application code explicit while avoiding a large unverified DSL.
+structure ReflectedAtom (n : Nat) where
+formula : Fm PTm n
+bit : PTm n
+qf : formula.QF
+bit_bool : [] |- [PRAAx] bit == zero \/ bit == one
+of_true : bit == one :: [] |- [PRAAx] formula
+to_true : formula :: [] |- [PRAAx] bit == one
+structure TraceData (n : Nat) where
+queryArity : Nat
+state : PTm (n + 2)
+-- stage, trace, outer parameters
+bad : PTm (n + 2)
+invariant : Fm PTm (n + 2)
+invariantQF : invariant.QF
+state_zero : ...
+state_succ : ...
+bad_zero : ...
+bad_succ : ...
+structure ObserverContract (n : Nat) where
+valid : Fm PTm (n + 1)
+observe : PTm (n + 1)
+independent : valid(c) /\ valid(d) |- [PRAAx]
+observe(c) == observe(d)
+
+The exact arities should be implemented with the repository’s inst2, repl, and vector notation
+rather than ad hoc numeral indexing. The records should store proof terms, not host propositions
+asserting that a proof could be built.
+
+B.4 Substitution tests
+Every record constructor needs simp lemmas showing that its terms and formulas commute with
+simultaneous substitution. Tests should instantiate:
+• a query variable by a nontrivial sum or product;
+• a trace code by a paired term;
+• a bound by a term containing the induction variable;
+• an observer under two nested existential scopes.
+These tests catch the most common de Bruijn errors before application proofs become large.
+
+Scoped Certificate Realization for iPRA
+
+40
+
+C Artifact status, reproducibility, and integration checklist
+C.1 Delivered files
+Path
+
+Purpose
+
+paper/scr_ipra_framework.tex
+paper/sections/*.tex
+paper/scr_ipra_framework.pdf
+lean/ScopedCertificate/Kernel.lean
+lean/ScopedCertificate/Blueprint.l
+ean
+lean/FORMALIZATION_PLAN.md
+
+complete LaTeX driver
+editable report sections
+compiled report
+no-placeholder structural kernel candidate
+host metadata and commented object targets
+
+reference/scr_reference.py
+reference/test_scr_reference.py
+examples/demo.json
+schema/scr_program.schema.json
+metadata/THEOREM_LEDGER.md
+metadata/DIFFICULTY_MATRIX.csv
+metadata/SOURCE_AUDIT.md
+validation/
+MANIFEST.sha256
+
+dependency-ordered implementation and acceptance gates
+exact finite encodings and examples
+eight standard-library regression tests
+generated bisection, path, observer, and height-list
+evidence
+machine-readable program metadata schema
+claim-by-claim status
+obstacle/resolution mapping
+pinned repository sources
+test, PDF, rendering, and static-audit records
+checksums of delivered files
+
+C.2 Reproduction commands
+From the archive root:
+python3 -m unittest -v reference/test_scr_reference.py
+python3 reference/scr_reference.py > examples/demo.json
+bash build.sh
+The build script runs the Python tests and compiles the PDF. Lean verification requires copying
+lean/ into a checkout of the pinned ProveIt tree and following lean/FORMALIZATION_PLAN.md.
+
+C.3 Integration checklist
+A packet is ready for repository integration under SCR when all applicable boxes are checked.
+□ The public theorem is stated as a literal Prf PRAAx judgment.
+□ Every host algorithm has a fixed PR symbol and object defining equations.
+□ Every bounded logical condition has a reflected checker and proof.
+□ The qf proof for each induction invariant is explicit.
+□ Each certificate is marked sealed, observed, or named.
+□ Every named certificate has a direct producer or explicit code cutoff.
+
+Scoped Certificate Realization for iPRA
+
+41
+
+□ Whole paths are used where greedy local selection can fail.
+□ Noncanonical outputs have an observer-invariance or diameter theorem.
+□ Exact labels include a uniqueness or separation premise.
+□ Cardinality bounds are not used as code cutoffs.
+□ Missing moduli, heights, covers, and constants occur as boundary formulas.
+□ Reusable lemmas work under local contexts and at arbitrary terms.
+□ New declarations pass focused builds and the repository axiom audit.
+□ Executable evidence is not described as an object proof.
+□ The source pin and all remaining assumptions are recorded.
+
+C.4 Claim policy
+The generic human proofs in this document are intended to be complete, but formal scoping details
+can still reveal errors during Lean elaboration. The archive therefore distinguishes mathematical
+confidence from kernel status. If a candidate theorem fails to elaborate, the report’s claim remains
+a human proof proposal until repaired and checked. Conversely, a passing Python test confirms
+only the finite reference algorithm, not its universal object theorem.
+This status discipline is part of the framework itself. A proof-producing architecture is trustworthy
+only when its own artifacts obey the same producer/verifier separation that it recommends for
+mathematics.
+
+References
+[1] V. Reshetnikov, ProveIt: Logic/PrimitiveRecursiveArithmetic, repository tree at commit
+f444b76e8480ebea128c15b4a59f158e14f478cc, 16 November 2026. https://github.com/Vla
+dimirReshetnikov/ProveIt/tree/f444b76e8480ebea128c15b4a59f158e14f478cc/Logic/Primiti
+veRecursiveArithmetic
+[2] V. Reshetnikov et al., Concise presentations of intuitionistic primitive recursive arithmetic,
+ProveIt/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA, 2026.
+[3] V. Reshetnikov et al., iPRA derivations of theorems from the proof packets,
+ProveIt/Logic/PrimitiveRecursiveArithmetic/Derivations, 2026.
+[4] V.
+Reshetnikov
+et
+al.,
+The
+Foundation–ConciseIPRA
+ProveIt/Logic/PrimitiveRecursiveArithmetic/Bridge, 2026.
+
+bridge,
+
+[5] Finite-Query Normal Forms for Mathematics
+ipra-finite-query-normal-form-2026-11-16, 2026.
+
+repository
+
+packet
+
+repository
+
+packet
+
+[6] Certified
+Bounded
+Interaction
+Programs
+ipra-cbip-framework-2026-11-16, 2026.
+
+for
+
+in
+
+iPRA,
+iPRA,
+
+[7] Native Clause Programs for iPRA, repository packet dated 15 November 2026.
+[8] M. Beeson, Foundations of Constructive Mathematics, Springer, 1985.
+[9] A. S. Troelstra and D. van Dalen, Constructivism in Mathematics, Vols. I–II, North-Holland,
+1988.
+
+Scoped Certificate Realization for iPRA
+
+42
+
+[10] U. Kohlenbach, Applied Proof Theory: Proof Interpretations and Their Use in Mathematics,
+Springer, 2008.
+
+

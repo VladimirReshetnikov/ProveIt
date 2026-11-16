@@ -1,0 +1,97 @@
+\section{Certificate escape analysis}
+\label{sec:escape}
+
+The central static analysis of SCR asks what part of a certificate appears in
+the public theorem.  There are three classes.
+
+\begin{definition}[Escape classes]
+Let \(c\) satisfy a contract \(V(q,c)\).
+\begin{description}
+\item[Sealed.]  The final formula contains no data computed from \(c\).  The
+certificate is eliminated directly by \cref{thm:seal}.
+\item[Observed.]  The final interface uses only an observation
+\(o=O(q,c)\), and the proof establishes that all valid certificates give the
+same observation, or observations within a stated diameter.
+\item[Named.]  The actual code \(c\), its leastness, or a label depending on a
+particular representative occurs in the output.  A direct producer or bounded
+selector is mandatory.
+\end{description}
+\end{definition}
+
+\subsection{The escape theorem}
+
+\begin{theorem}[Escape analysis]
+\label{thm:escape}
+For a finite contract graph whose final goal is in the outer scope:
+\begin{enumerate}[label=(\roman*)]
+\item every sealed certificate can be removed by nested existential
+      elimination, without a code bound;
+\item every exactly observed certificate can be replaced by its
+      single-valued output relation, without selecting a representative;
+\item a named certificate can be exported only from a supplied term producer
+      or from a proved bounded search.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Part (i) is repeated application of \cref{thm:dependent-seal}.  For part (ii),
+define
+\[
+   \mathsf{Out}(q,o)\;:\!\Longleftrightarrow\;
+      \exists c\,[V(q,c)\wedge O(q,c)=o].
+\]
+Existence follows by opening a valid certificate and introducing its
+observation.  If \(o,o'\) satisfy \(\mathsf{Out}\), open both certificates;
+observer independence yields \(o=o'\).  All consumers formulated through
+\(\mathsf{Out}\) therefore compose relationally.  Part (iii) is a syntactic
+scope fact: an outer term cannot contain the eigenvariable introduced by
+existential elimination.  To name it one must already have an outer term, or
+construct one by a total bounded operation whose correctness is proved.
+\end{proof}
+
+The theorem does not assert an impossibility result for every conceivable
+encoding.  It states the exact proof obligations for this natural-deduction
+interface.  Any purported third method of exporting a local eigenvariable
+will manifest either as an unproved choice axiom or as an omitted bound.
+
+\subsection{Why a global master certificate is not the default}
+
+Packing all witnesses in one natural number is sometimes valuable.  It permits
+one reflected checker, one bounded search, and compact serialization.  It also
+has costs:
+\begin{itemize}
+\item every component needs a numerical range even when it is proof-local;
+\item changing one producer changes the global radix and checker;
+\item a least global code imposes a canonical order unrelated to the
+      mathematics;
+\item relational and quotient objects are prematurely forced into named
+      representatives;
+\item the final proof term reflects a monolithic verifier rather than the
+      logical dependency structure.
+\end{itemize}
+SCR therefore treats packing as a derived backend.  If every internal
+certificate has a proved bound, nested scopes can be fused into one mixed-radix
+code; the resulting theorem is an FQNF-style master certificate.  Conversely,
+a master certificate can always be opened once and its fields used in nested
+SCR scopes.  The two representations are extensionally intertranslatable when
+bounds exist, but the scoped form remains meaningful when they do not.
+
+\subsection{Sharing a certificate without leaking it}
+
+A certificate may feed many downstream lemmas.  Open it once, prove a
+conjunction of all required consequences in the same scope, and eliminate it
+after the last consumer.  In Lean this amounts to constructing a local theorem
+under \(V::\Gamma^{\up}\) and using \code{Prf.andI} or a downstream context.
+There is no need to select the certificate merely to avoid duplicating a proof.
+At the metalevel, a named Lean definition can share the derivation term.
+
+\subsection{When observed becomes named}
+
+Observer independence proves that a relation has at most one output, not that
+there is a primitive-recursive output term.  If downstream mathematics accepts
+an existentially unique output relation, the observation remains relational.
+If the API insists on a term \(o(q)\), one still needs either a direct
+observation producer or a bound from which an accepted certificate can be
+selected.  This distinction is especially important for exact real numbers:
+a unique real specified by a predicate is not automatically a
+primitive-recursive Cauchy name with a modulus.

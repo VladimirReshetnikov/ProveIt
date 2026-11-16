@@ -1,0 +1,129 @@
+\section{Stable observers, quotients, and exact-label gates}
+\label{sec:observer}
+
+Many mathematical objects have valid finite presentations but no natural
+canonical presentation: a polynomial's roots may be permuted, an eigenspace
+may have many bases, a manifold may have many atlases, and a homotopy class may
+have many simplicial representatives.  SCR treats presentation choice as a
+local certificate and exports only proved-invariant observations.
+
+\subsection{Exact observer erasure}
+
+Let \(V(q,c)\) validate certificates and let \(O(q,c)\) be a term-valued
+observer.  Suppose iPRA proves
+\[
+ V(q,c)\wedge V(q,d)\;\longrightarrow\;O(q,c)=O(q,d).
+\]
+
+\begin{theorem}[Exact observer erasure]
+\label{thm:observer-exact}
+The relation
+\[
+  \mathsf{Out}(q,o)\;:\!\Longleftrightarrow\;
+  \exists c\,[V(q,c)\wedge O(q,c)=o]
+\]
+is single-valued.  Every consumer invariant under equality of \(o\) can be
+composed with a sealed producer for \(V\) without selecting a certificate.
+\end{theorem}
+
+\begin{proof}
+Open witnesses \(c,d\) for two outputs.  Observer independence gives
+\(O(q,c)=O(q,d)\); the defining equalities then give \(o=o'\).  For a consumer,
+open one valid certificate, introduce its output relation, apply the consumer,
+and close the scope.
+\end{proof}
+
+For root sets, elementary symmetric polynomials are exact observers.  For a
+finite matrix, the characteristic polynomial and traces of powers are exact
+observers under change of basis.  For a finite chain map induced by a carrier,
+the homology map is an exact observer once any two selections are proved
+contiguous and the prism homotopy is verified.
+
+\subsection{Quantitative clouds}
+
+Exact equality is often too strong.  Let \(d\) be an encoded rational metric
+or seminorm and suppose
+\[
+ V(q,c)\wedge V(q,d)\;\longrightarrow\;
+ d(O(q,c),O(q,d))\le\delta(q).
+\]
+Then valid certificates form an output cloud of diameter at most \(\delta\).
+Downstream operations carry moduli which transform input diameters into output
+diameters.  Composition is by arithmetic on explicit error budgets.
+
+\begin{theorem}[Diameter composition]
+Suppose \(F\) has modulus \(m\):
+\[
+  d_X(x,x')\le m(q,\eps)\to d_Y(Fx,Fx')\le\eps.
+\]
+If a certificate cloud for \(x\) has diameter at most \(m(q,\eps)\), then the
+image observer cloud has diameter at most \(\eps\).
+\end{theorem}
+
+\begin{proof}
+Open two valid certificates, apply their diameter premise, then the supplied
+modulus theorem.  Since the conclusion contains neither certificate, close
+both existential scopes.
+\end{proof}
+
+This is the correct unconditional output at collisions.  It supports finite
+precision consumers without pretending to have a globally coherent branch.
+
+\subsection{The exact-label gate}
+
+Suppose candidate labels \(\ell_0,\ldots,\ell_{r-1}\) are separated by
+\(g>0\), and every valid observation lies within \(e\) of one label.  If
+\(2e<g\), two different labels cannot both explain valid observations.
+
+\begin{lemma}[Gap stabilization]
+In a metric encoded by rational inequalities, if
+\[
+ d(\ell_i,\ell_j)\ge g\quad(i\ne j),
+ \qquad d(o,\ell_i)\le e,
+ \qquad d(o',\ell_j)\le e,
+ \qquad d(o,o')\le\delta,
+\]
+and \(2e+\delta<g\), then \(i=j\).
+\end{lemma}
+
+\begin{proof}
+If \(i\ne j\), the triangle inequality gives
+\(g\le d(\ell_i,\ell_j)\le e+\delta+e<g\), a contradiction.  The formal
+version clears rational denominators and uses the checked order library.
+\end{proof}
+
+The gate yields an exact branch label only on a region with a proved positive
+gap.  At the discriminant locus the API falls back to a cluster or invariant.
+This resolves, in maximal constructive form, the recurring exact-root,
+eigenvector, rotation-axis, and chart-selection difficulties.
+
+\subsection{Witnessed setoids}
+
+A general quotient interface consists of:
+\begin{enumerate}[label=(\alph*)]
+\item a certificate type represented by natural codes;
+\item a reflected validity predicate \(V(c)\);
+\item a reflected equivalence witness \(E(c,d,w)\);
+\item proofs of reflexivity, symmetry, and transitivity at the level needed by
+      consumers;
+\item observer invariance under \(E\).
+\end{enumerate}
+No quotient representative is normalized unless a separate normalization
+contract is proved.  This is often smaller than coding a full equivalence
+relation as a decidable Boolean: equality may be witnessed by an ideal
+combination, a chain homotopy, a coordinate transition, or a finite zigzag.
+The witness itself is sealed after observer invariance has been used.
+
+\subsection{Coherent names across precision}
+
+To obtain a primitive-recursive Cauchy name rather than unrelated finite
+clouds, an application must supply a coherence contract.  A common sufficient
+form is
+\[
+  d(o_{k+1},o_k)\le 2^{-k-c}
+\]
+for a fixed \(c\), verified by a finite transition certificate.  A summable
+motion budget gives a Cauchy modulus by a finite geometric-tail estimate.  If
+only finite-horizon compatibility is known, SCR exports finite coherent paths
+or metastable windows, not an infinite name.  Again, the missing tail modulus
+is a producer obligation, not a logical inference.

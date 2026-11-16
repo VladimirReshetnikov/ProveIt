@@ -1,0 +1,95 @@
+\section{Finite strategies for bounded quantifier alternation}
+\label{sec:strategy}
+
+A finite theorem often has a bounded interactive form rather than a single
+existential certificate.  For example,
+\[
+  \forall x<B_0(q)\;\exists y<B_1(q,x)\;
+  \forall z<B_2(q,x,y)\;R(q,x,y,z).
+\]
+It is incorrect to replace the existential moves by an infinite choice
+function.  For a fixed bounded formula, however, the complete finite strategy
+is itself one certificate.
+
+\subsection{Strategy tables}
+
+For each existential node, enumerate the preceding universal history in mixed
+radix and store one bounded response in a table.  A strategy code \(s\) then
+has primitive-recursive accessors \(\mathsf{move}_j(s,h)\).  The verifier checks:
+\begin{enumerate}[label=(\roman*)]
+\item every move is below its history-dependent bound;
+\item for every complete universal history, the matrix bit is true after
+      inserting the stored moves.
+\end{enumerate}
+The second condition is a bounded fold over all histories, represented by a
+zero failure sum or least-counterexample search.
+
+\begin{theorem}[Strategy soundness, fixed shape]
+\label{thm:strategy-sound}
+For every fixed alternation shape and reflected quantifier-free matrix, there
+is a specialized primitive-recursive verifier
+\(\mathsf{verify}_\alpha(q,s)\) and an iPRA derivation
+\[
+  \mathsf{verify}_\alpha(q,s)=1
+   \;\longrightarrow\;
+  \Phi_\alpha(q).
+\]
+\end{theorem}
+
+\begin{proof}
+Proceed by structural induction on the fixed alternation shape at the Lean
+metalevel.  An existential node reads the stored move, proves its bound from
+the verifier, and introduces the existential.  A universal node opens an
+arbitrary bounded challenge and specializes the verifier's no-failure result
+to its history code.  At a leaf apply matrix reflection.  The bounded-history
+specialization is obtained from the least-counterexample or failure-sum
+reflection of \cref{sec:reflection}; no object induction contains a quantified
+invariant.
+\end{proof}
+
+\subsection{Completeness for finite decidable games}
+
+When all move bounds are explicit and the leaf matrix is decidable, backward
+induction computes a winning bit and a least winning response at each
+existential node.  Because the alternation shape is fixed, this is a
+primitive-recursive program family.  The object proof uses nested bounded
+search and quantifier-free reflection.
+
+\begin{theorem}[Finite strategy completeness, schema]
+For each fixed bounded alternation shape \(\alpha\), iPRA proves that if the
+bounded formula \(\Phi_\alpha(q)\) holds, then an accepted finite strategy code
+exists.  Equivalently, the formula is interderivable with the existence of an
+accepted strategy certificate.
+\end{theorem}
+
+\begin{proof}[Proof architecture]
+Induct metatheoretically on \(\alpha\).  At an existential node, retain the
+formula's witness in local scope and combine it with the recursively obtained
+sub-strategy; if a named table is desired, use the explicit move and table
+bounds to select the least accepted combined code.  At a universal node,
+construct a table of sub-strategies for all finitely many challenges.  This
+table construction is a primitive recursion on the challenge bound whose
+invariant states, in reflected form, that all completed entries verify.  Since
+\(\alpha\) is fixed, all table accessors and verifiers are specialized syntax.
+A complete Lean proof should first implement the \(\forall\exists\) case and
+then abstract the recurring fold.
+\end{proof}
+
+The completeness schema is a formalization target rather than a claimed
+kernel-checked declaration in this archive.  Its human proof uses only the
+bounded search and trace lemmas already isolated above.
+
+\subsection{Dual certificates and counterstrategies}
+
+For diagnostic use, compile a dual certificate for failure: a universal
+challenge or counterstrategy exposing a rejected leaf.  Since the finite game
+is decidable, the winning and losing bits are complementary.  A packet can
+therefore separate three concerns:
+\begin{itemize}
+\item a small checker for a positive strategy;
+\item a small checker for a negative counterexample;
+\item the producer theorem deciding which certificate exists.
+\end{itemize}
+This is useful for finite combinatorics, covering arguments, and bounded
+algebraic searches.  It does not imply determinacy for infinite games or an
+unbounded choice principle.

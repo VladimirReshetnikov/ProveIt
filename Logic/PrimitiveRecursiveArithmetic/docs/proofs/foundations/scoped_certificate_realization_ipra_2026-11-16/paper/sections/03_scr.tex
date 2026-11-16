@@ -1,0 +1,130 @@
+\section{Scoped Certificate Realization}
+\label{sec:scr}
+
+\subsection{Contracts}
+
+Fix an outer arity \(n\), a local context \(\Gamma\) of formulas in
+\(\Fm\,\PTm\,n\), and an outer goal \(G\).  A one-certificate SCR contract
+consists of:
+\begin{enumerate}[label=(C\arabic*)]
+\item a formula \(V\in\Fm\,\PTm\,(n+1)\), usually quantifier-free, whose
+      variable \(0\) denotes a certificate and whose remaining variables are
+      shifted query parameters;
+\item an \emph{extractor}
+\[
+       V\;::\;\Gamma^{\up}\quad\turnstile\quad G^{\up};
+\]
+\item optionally, a \emph{producer}
+\[
+       \Gamma\quad\turnstile\quad \exists c\,V(c).
+\]
+\end{enumerate}
+The superscript \(\up\) denotes the checked de Bruijn shift.  The goal has no
+free occurrence of the certificate because it lives in the outer scope.
+
+\begin{theorem}[Scoped realization]
+\label{thm:seal}
+Every contract with a producer yields \(\Gamma\turnstile G\).
+\end{theorem}
+
+\begin{proof}
+Apply the existential-elimination constructor of \(\Prf\) to the producer and
+the extractor.  Its eigenvariable is exactly the locally scoped certificate.
+No term denoting the certificate is formed, and no choice principle is used.
+\end{proof}
+
+This theorem is logically elementary; its architectural consequence is not.
+A noncanonical object may be used arbitrarily many times inside the extractor,
+may parameterize further local producers, and may be compared with another
+locally opened certificate.  It simply cannot escape into \(G\) unless the
+output interface explicitly exposes it.
+
+\subsection{A missing producer becomes an exact theorem boundary}
+
+Even without a producer, the extractor has objective mathematical content.
+
+\begin{theorem}[Conditional closure]
+\label{thm:conditional}
+From the extractor one obtains
+\[
+   \Gamma\turnstile
+   \bigl(\exists c\,V(c)\bigr)\to G.
+\]
+\end{theorem}
+
+\begin{proof}
+Introduce the implication assumption, eliminate that existential, and use the
+extractor after weakening by the shifted implication assumption.  This is the
+proof implemented by \code{Contract.conditional} in the supplied Lean kernel
+candidate.
+\end{proof}
+
+Thus a missing height theorem, modulus, cover, or separation bound does not
+force the rest of the packet to remain informal.  The finite verifier and
+extractor can be proved now, while the exact missing producer is visible in the
+conclusion's antecedent.
+
+\subsection{Dependent composition}
+
+Real mathematical pipelines are dependent: a certificate chosen at one stage
+changes the formula verified at the next.  Suppose
+\[
+\begin{aligned}
+  &\Gamma\turnstile\exists x\,A(x),\\
+  &A(x),\Gamma^{\up}\turnstile\exists y\,B(x,y),\\
+  &B(x,y),A(x),\Gamma^{\up\up}\turnstile G^{\up\up}.
+\end{aligned}
+\]
+Here the second producer is allowed to mention the first local certificate.
+
+\begin{theorem}[Dependent sealing]
+\label{thm:dependent-seal}
+The three derivations above compose to \(\Gamma\turnstile G\).
+\end{theorem}
+
+\begin{proof}
+Eliminate the existential over \(x\).  In the resulting local context,
+eliminate the existential over \(y\).  The third derivation gives the shifted
+goal, after which the two existential-elimination rules close in reverse
+order.  All context shifts are those already handled by \(\Prf.\mathsf{exE}\)
+and \(\Prf.\mathsf{shift}\).
+\end{proof}
+
+Iterating this argument realizes any finite acyclic dependency graph.  Unlike
+a global certificate pack, it does not require an a priori numerical bound for
+each internal witness.  Only a witness that must be decoded by a variable-
+horizon object computation needs a finite code; fixed proof-level dependencies
+can remain as nested existential scopes.
+
+\subsection{Relational rather than functional interfaces}
+
+A useful mathematical component is often a total relation rather than a
+canonical function.  Let \(R(q,c)\) be a decidable certificate relation.  SCR
+represents totality by
+\[
+   \forall q\;\exists c\;R(q,c)
+\]
+only at the point where a theorem needs it, and composes downstream consumers
+under the local assumption \(R(q,c)\).  This is stronger constructively than
+silently postulating a global function \(c(q)\): it preserves all theorem
+consequences invariant under the relation without asserting a selector.
+
+When a concrete function is later needed, there are two legitimate upgrades.
+Either a direct primitive-recursive producer term is supplied, or
+Section~\ref{sec:selection}'s bounded selector is invoked with an explicit
+cutoff.  There is no third route.
+
+\subsection{Contract families and fixed queries}
+
+A theorem packet normally carries a family of contracts indexed by an outer
+query \(q\): a requested precision, degree, height, or finite diagram.  In the
+object theory, \(q\) is simply a tuple of natural-number terms.  At the Lean
+metalevel, a contract family is a function returning fixed formulas and proof
+terms.  Specialization to arbitrary query terms is performed by
+\code{Prf.subst}; the proof does not have to be rebuilt for numerals only.
+
+This distinction avoids two common errors.  First, fixed-query reasoning is not
+merely a theorem for each standard numeral: the open derivation can still be
+universally closed over \(q\).  Second, specializing a fixed program family is
+not an object-level universal evaluator.  Lean constructs the target syntax
+before the iPRA proof begins.

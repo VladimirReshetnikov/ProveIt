@@ -1,0 +1,61 @@
+\section{Limitations and conclusion}
+\label{sec:limits}
+
+\subsection{Limitations}
+
+This report does not provide a completed Lean implementation of Boolean
+reflection, trace coding, strategy reflection, or the open bridge.  It provides
+full human arguments, exact object-theory endpoints, a no-placeholder
+structural kernel candidate, and a dependency-ordered path to those proofs.
+The absence of a Lean executable in the artifact runtime prevented even the
+small candidate from being elaborated, so no new kernel-checked theorem is
+claimed.
+
+The framework does not prove the deep producer theorems identified in the
+packet catalogue.  In particular, it proves no general Faltings, Siegel,
+Mordell--Weil, effective Roth, Chebotarev, or unrestricted analytic convergence
+result.  It does not select exact branches through singularities, derive
+moduli from arbitrary classical convergence proofs, or infer an enumeration
+cutoff from finite cardinality.
+
+The fixed-bounded-formula compiler is a schema indexed by host syntax.  This is
+intentional.  Internalizing a universal interpreter would be a different and
+substantially harder arithmetization project, and a total universal function
+for all primitive-recursive programs is not the interface needed by the
+applications.
+
+Finally, ordinary \(\Prf\) proof terms may still be large.  Trace compression,
+shared Lean definitions, and an optional \(\KPrf\) backend address the main
+sources of blow-up, but empirical compilation will determine which
+subgraphs should be flattened or translated.
+
+\subsection{Conclusions}
+
+The current \repo\ tree already contains the logical and arithmetic machinery
+needed for a principled general framework.  The missing step is to use that
+machinery at the right granularity.
+
+A mathematical proof in iPRA should be organized around finite queries and
+local contracts.  Auxiliary certificates should remain existentially sealed
+unless something certificate-dependent must escape.  Exact invariant
+observations should replace arbitrary representative choices; approximate
+clouds should replace unstable labels; a positive gap should be the explicit
+gate to exact naming.  Variable-length work should be represented by a whole
+trace or finite strategy and reflected by a quantifier-free invariant.  Missing
+height bounds, moduli, covers, or constants should appear as formulas in the
+final theorem, not as prose in a ``future work'' section.
+
+This organization produces a small, auditable compiler whose primitive steps
+are already checked: substitution, weakening, simultaneous cut, existential
+elimination, and qf induction.  It also explains how the strongest ideas of the
+existing packet frameworks fit together.  FQNF is the packed named backend;
+CBIP is a bounded-interaction front end; \(\KPrf\) is a compact qf backend;
+SCR is the ordinary logical spine.
+
+The immediate practical recommendation is therefore narrow: elaborate the
+supplied structural kernel, implement the search and trace adapters against
+\code{IPRADerivations}, and migrate the four pilots before designing another
+large proof-graph language.  Success at those gates would turn a substantial
+class of current ``human-complete but uncompiled'' packets into literal
+\(\Prf\;\PRAAx\) derivations, while leaving the genuinely deep mathematical
+boundaries visible and honest.
