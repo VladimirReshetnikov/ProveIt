@@ -72,6 +72,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.Chebyshev.chebyshev_pell
 #print axioms LeanProofs.IPRA.Analysis.Chebyshev.chebyshev_recurrence
 #print axioms LeanProofs.IPRA.Geometry.PlatonicSolids.platonic_solids
+#print axioms LeanProofs.IPRA.zt_mul_cancel_sub
+#print axioms LeanProofs.IPRA.Geometry.PowerOfPoint.line_power
+#print axioms LeanProofs.IPRA.Geometry.PowerOfPoint.signed_power_closed
+#print axioms LeanProofs.IPRA.Geometry.PowerOfPoint.tangent_power
+#print axioms LeanProofs.IPRA.Geometry.PowerOfPoint.chords_secants
+#print axioms LeanProofs.IPRA.Geometry.PowerOfPoint.tangent_secant
 #print axioms LeanProofs.IPRA.pw_add
 #print axioms LeanProofs.IPRA.pw_le_pw
 #print axioms LeanProofs.IPRA.le_self_pw
