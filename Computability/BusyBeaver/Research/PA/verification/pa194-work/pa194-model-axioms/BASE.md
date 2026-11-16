@@ -1,0 +1,9 @@
+# Uniform induction-base proof shift
+
+`shift_inductionBaseCode` proves the code constructor commutes with a free-variable shift for arbitrary internally valid domain, zero, and property codes. `typed_quote_shift_fixed` shows the quotation of any fixed standard source template with no free variables is shift-invariant; `baseTemplate_shift` applies it to the actual ordinal domain and zero templates. The property p can be a nonstandard model code.
+
+`shiftBaseProofGraph` is one fixed parameter-free Σ₁ arithmetic formula. `shiftBaseProofGraph_defined` proves that it computes the explicit proof-code function `shiftBaseProofCode` throughout each covered candidate-PRA + induced-IΣ₁ model. For any internal Δ₁ source theory, any valid internal p, and any actual internal proof d of the ordinal induction base for p, `shiftBaseProofDirect` builds an internal proof of the base for shifted p; `shiftBaseProofDirect_val` checks that the resulting proof code is exactly the graph output. Fixed-template quotation is compositional and does not expand the enormous template Gödel numbers.
+
+This implements the model-level counterpart of the standard proof's `inductionBaseShift`. It does not supply an arbitrary-property ordinal induction sequent, the analogous step shift, a general PA compiler, or a native iPRA theorem.
+
+Run `Computability/BusyBeaver/Research/PA/verification/pa194-work/pa194-model-axioms/check-base-shift.sh "$REPO" FRESH_OUTPUT` to compile both new modules into one output, against the repository-replayed fixed-ordinal and fixed-quotation objects and prebuilt transitive overlays listed in the checker. The checker hashes both sources and immediate objects and checks six axiom reports for `sorryAx`. Passing output `/dev/shm/pa194-induction-base-shift-replay`; log `/tmp/pa194-induction-base-shift-replay.log`.

@@ -1,7 +1,0 @@
-# Equality premises and the remaining three-premise reduction
-
-`reflexivityProof`, `symmetryProof`, and `transitivityProof` are actual Foundation internal proofs in the classifier-defined adjunctive/full-separation union. The source's exact proposition forms are shown syntactically equal to the embedded corresponding Foundation equality axioms, so the model-internal axiom rule supplies each proof. No numeral representing a large formula code is expanded.
-
-Combining these three proofs with the previous standard ordinal derivation, `standardOrdinalProofOfThree` yields an internal proof of `⌜inductionStatement p⌝` for any **standard typed** p, conditional on internal proofs of exactly three fixed source formulas: `emptyFormula`, `adjunctionFormula` (exact adjunction), and `congruenceFormula` (membership congruence). These three hypotheses remain open; this result does not prove ordinal induction for nonstandard p or a uniform internal proof-code transformation.
-
-The covered models are nonempty models of candidate PRA whose induced ordered-ring arithmetic satisfies IΣ₁. Run `Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-axioms/check-equality-suppliers.sh "$REPO" FRESH_OUTPUT` to replay this source against the separately replayed six-premise reduction and its prebuilt transitive prerequisites. The checker hashes the source and immediate reduction object, and rejects `sorryAx` in four axiom reports. Passing output `/dev/shm/pa194-standard-equality-suppliers-replay`, log `/tmp/pa194-standard-equality-suppliers-replay.log`.

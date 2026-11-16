@@ -1,7 +1,0 @@
-# Successor cancellation in source natural deduction
-
-`orderIsoSuccessorCancelDirect` proves, in the actual Foundation source deduction system, that if a and b are order-isomorphic, p and q are displayed predecessors of a and b, b is in the ordinal domain, and the exact p-parameterized strict-cut Separation instance and source equality principles are available, then p and q are order-isomorphic. The proof derives the predecessor endpoint edge, uses Separation to build an actual strict graph cut, and proves all seven order-bijection clauses on the cut. `orderIsoSuccessorCancelClosed` replaces the parameterized Separation input with a single explicitly closed strict-Separation sentence and specializes it inside the proof.
-
-The equality principles and strict-Separation sentence remain explicit source-proof inputs here. Discharging them in the full source theory, instantiating arbitrary internal variables, the translated PA induction theorem, a native iPRA derivation, and the machine equivalence are not part of this handoff.
-
-Run `bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-axioms/check-iso-successor-cancel.sh "$PWD" /dev/shm/pa194-iso-successor-cancel-repo-NEW` from the repository root. It compiles all six source modules in a new output using hash-pinned prebuilt dependencies, including the repository-replayed seven-clause predecessor-bijection and successor-image witness. The successful output is `/dev/shm/pa194-iso-successor-cancel-replay`.

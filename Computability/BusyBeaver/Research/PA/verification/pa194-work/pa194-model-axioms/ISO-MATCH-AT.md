@@ -1,0 +1,7 @@
+# Contextual predecessor-matching application
+
+`PA194IsoMatchAtCode.lean` specializes the fixed three-binder predecessor-matching theorem at arbitrary model-valued free-variable indices a, b, p and applies three premise proofs in a shared context: domain(b), successor(p,a), and orderIso(a,b). The conclusion is an existential predecessor y of b which is in the domain and isomorphic to p. `isoMatchAtProof` gives the source derivation and `isoMatchAtProof_val` identifies its code; `isoMatchAtGraph_defined` gives one fixed Σ₁ graph defining the proof-code constructor for all PRA models with arithmetic IΣ₁ reduct.
+
+The source theory T, context Γ, all indices, and the four input proof codes (including the fixed universal theorem) are explicit. The formula components are literal substitutions of arity-three fixed templates; alignment with other encodings and construction of the input theorem proof code are separate obligations. The result is compatible with a guarded identity-packet context, but does not itself prove an induction instance for translated PA, closed-formula environment independence, a native iPRA theorem, or any machine correctness statement.
+
+Run `bash Computability/BusyBeaver/Research/PA/verification/pa194-work/pa194-model-axioms/check-iso-match-at.sh REPO NEW_OUTPUT`. This recompiles the module in a fresh output against pinned prebuilt inputs, including the repository-replayed predecessor-matching theorem and unified syntax; it is not a transitive source rebuild. Success includes three axiom reports without `sorryAx`.

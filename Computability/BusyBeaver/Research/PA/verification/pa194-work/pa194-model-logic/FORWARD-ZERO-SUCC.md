@@ -1,0 +1,7 @@
+`root_zeroNotSucc_provable` proves the second fixed source-axiom supplier for the actual compiler translation. In each candidate PRA model with IΣ₁ arithmetic reduct, for every model-valued d, if the PAeq `zeroNotSucc.univCl` code is below the free-vector length of `rootParameters d`, the model contains an `adjunctiveFullSepTheory` proof of its exact `translateFormula (rootParameters d)` image. The typed proof eliminates the three value witnesses from a putative translated equality of zero with a successor, uses the separately source-replayed `zeroFromIso` result to transport emptiness across the witnessed order isomorphism, and contradicts membership of the predecessor in its successor. The proof then quotes the fixed context derivation and discharges the eight already supplied source premises. This proves one source-axiom case, not the remaining fixed axioms, induction, quantifier/shift compiler rules, physical synchronization or the requested equivalence.
+
+The checker rebuilds the eight new source modules and an eleven-report axiom audit against the separately source-replayed unified dispatcher, forward root translation, reflexivity source supplies, and `zeroFromIso` proof, plus retained Foundation/workspace dependencies. It is not a clean workspace build. From the repository root with a fresh output:
+
+```sh
+bash Computability/BusyBeaver/Research/PA/verification/pa194-work/pa194-model-logic/check-forward-zero-succ.sh "$PWD" NEW_EMPTY_OUTPUT
+```

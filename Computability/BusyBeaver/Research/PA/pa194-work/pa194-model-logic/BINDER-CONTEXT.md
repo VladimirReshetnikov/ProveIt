@@ -1,7 +1,0 @@
-# PA194 binder context and translation
-
-`allocateBound_push_shift` proves by internal Σ₁ induction that pushing the first fresh label in advance commutes with allocating any model-valued number of later labels. The bounded `binderContext_bound`, `_label`, and `_atom` equations connect the remaining-budget environment to the environment with one binder consumed.
-
-`formulaReference_binder_context` uses Σ₁ structural induction over arbitrary internally valid source p (including nonstandard codes) to prove that the actual recursive formula translation agrees across those environments whenever p ≤ b ≤ ceiling. It handles all atomic, Boolean, and quantifier constructors and explicitly uses positive binder budgets. Combining it with root budget invariance proves `fixedFormulaTranslation_all` and `_ex`: translating a quantified root is exactly applying the numerical target quantifier to the independently root-translated body with the base label pushed onto its initial bound stack and the base incremented. The equations permit arbitrary model-valued initial/free stacks and labels and do not assert freshness, substitution, Sim quantifier-rule simulation, proof compilation, or a consistency implication. The retained-overlay same-output checker rebuilds local sources and audits eight reports; it is not an empty-overlay build.
-
-Run `bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check-binder-context.sh --out DIR` with matching retained prerequisites.

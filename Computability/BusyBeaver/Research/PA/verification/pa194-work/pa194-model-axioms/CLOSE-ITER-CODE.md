@@ -1,0 +1,5 @@
+# Model-length closure proof-code iterator
+
+For any internal theory, any internally valid arity-zero formula p and a proof of p, `closeProofIterProof` computes a proof of `modelClose n p`, for any internal model length n, including nonstandard ones. `closeProofIterGraph_defined` gives a fixed Σ₁ graph; `closeProofIterProof_val` is the exact code-value identity. Its invariant is proved by IΣ₁ induction over the internally definable proof predicate. The assumptions are a PRA model with IΣ₁ arithmetic reduct. This is a Lean model-level construction, not a native iPRA proof.
+
+Run `bash Computability/BusyBeaver/Research/PA/verification/pa194-work/pa194-model-axioms/check-close-iter-code.sh "$PWD" /dev/shm/pa194-close-iter-code-repo` from the repository root. The output directory must not exist. The checker compiles the source against hash-pinned prebuilt dependencies and checks the printed axiom reports; the one-step constructor is pinned to the repository replay. Successful output: `/dev/shm/pa194-close-iter-code-replay`.

@@ -1,0 +1,16 @@
+# Scheduler fetch/decode and source dispatch branches
+
+The two final Lean sources extend the 26-module source suffix described in `DISPATCH.md`:
+
+* `PA194SchedulerDispatch.lean`, `fetchDecodeDispatch`, composes the actual source-controller fetch and model-length Cantor decode with the source transfer segments to site 48. In any model of PRA + IΣ₁, if the scheduler's N/L match source regs 0/8 and source regs 3/6/7 initially equal zero, there exists a model-valued source time taking site 25 to site 48. At the output, reg3 equals the scheduler's actual `head` code, reg8 its actual `tail` code, reg0 the scheduler's next N, and regs 6/7 are zero. The source's independent file tail is arbitrary.
+* `PA194SchedulerBranches.lean`, `fetchDecodeBranches`, composes the preceding result with the pinned instructions at sites 48/49. When the scheduler head is 0, the source reaches site 3661 one step later; when head is 1 it reaches site 3554 two steps later; when head is c+2 it reaches site 50 two steps later with reg3=c. The scheduler tail and next-N alignments are retained.
+
+These are model-theoretic Lean theorems, not native iPRA proofs. They cover fetch, first Cantor decode and tag dispatch at the beginning of a scheduler iteration. They do not execute the selected command branches, prove complete scheduler-step correspondence, connect the source to all literal-machine steps, or establish a consistency direction. The initial zero-register and scheduler-field hypotheses are explicit and have not been shown as a global reachable-state invariant.
+
+The source files and their SHA-256 values are pinned by `check-scheduler-branches.sh`. Its staged baseline is `/dev/shm/pa194-dispatch-replay`, built by the exit-0 26-module `check-dispatch.sh` run documented in `DISPATCH.md`; `dispatch-receipt.json` pins all 26 resulting .olean files (receipt SHA-256 `e3b17c6b00287bfa4aeded197f4ce8772fe4da80ac110b13e1256744e66dae93`). The final checker verifies the prior PASS log, the entire 26-object receipt, and both new source hashes before and after compiling the two sources in one fresh output, using that source-built suffix and the common 270-module source-built machine/controller baseline. Six graph objects and general project/package/Lake foundations remain prebuilt, with exact provenance and limitations in `/dev/shm/pa194-scheduler-controller/SCHEDULER-FETCH-MODEL.md`. The receipt verifies the retained objects, not their complete transitive provenance by itself; reproduce the baseline first with `check-dispatch.sh` and expect byte-identical pinned objects.
+
+The final two-source suffix replay completed with exit status 0, log `/tmp/pa194-scheduler-branches-replay.log`, output `/dev/shm/pa194-scheduler-branches-replay`. To replay from the repository root with a fresh output:
+
+```sh
+Computability/BusyBeaver/Research/PA/verification/pa194/ipra/machine-code/check-scheduler-branches.sh "$PWD" Computability/BusyBeaver/Research/PA/verification/pa194/ipra/machine-code /dev/shm/pa194-fetch-coherent-full-v2 /dev/shm/pa194-dispatch-replay /tmp/pa194-dispatch-replay.log /tmp/current14-standard-fresh-build-20261104/lib /tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib Computability/BusyBeaver/Research/PA/verification/pa194/ipra/machine-code/dispatch-receipt.json /dev/shm/pa194-scheduler-branches-replay
+```

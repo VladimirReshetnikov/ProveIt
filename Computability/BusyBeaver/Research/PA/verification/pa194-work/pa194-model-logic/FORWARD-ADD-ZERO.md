@@ -1,0 +1,7 @@
+`root_addZero_provable` proves the third fixed source-axiom supplier for the actual compiler translation. In each candidate PRA model with IΣ₁ arithmetic reduct, for every model-valued d, if the PAeq `addZero.univCl` code is below the free-vector length of `rootParameters d`, the model contains an `adjunctiveFullSepTheory` proof of its exact `translateFormula (rootParameters d)` image. The typed proof constructs a zero representative and addition output from the source empty/adjunction premises, applies the existing zero-output law and source equality congruence, and constructs all value/equality witnesses using order-isomorphism reflexivity. The fixed derivation is quoted and its eight source assumptions are discharged using the separately verified full-source suppliers. This does not prove the remaining fixed axioms, arbitrary-code induction, quantifier/shift compiler rules, physical synchronization or the requested equivalence.
+
+The checker rebuilds the three current repository zero-output-law modules, eleven new source modules, and a fifteen-report axiom audit in one output against the separately source-replayed unified dispatcher, root quotation and source reflexivity supplies. It retains prebuilt addition-output/graph, Foundation and workspace dependencies; this is not a clean workspace build. All fifteen reports exclude `sorryAx`. From the repository root with a fresh output:
+
+```sh
+bash Computability/BusyBeaver/Research/PA/verification/pa194-work/pa194-model-logic/check-forward-add-zero.sh "$PWD" NEW_EMPTY_OUTPUT
+```

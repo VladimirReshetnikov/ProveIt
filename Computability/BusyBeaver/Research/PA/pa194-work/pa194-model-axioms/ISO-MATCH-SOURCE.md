@@ -1,7 +1,0 @@
-# Full-source successor predecessor matching
-
-The fixed statement `isoMatchStatement` says that if b is in the ordinal domain, p is a predecessor of a, and a and b are order-isomorphic, then some y is in the ordinal domain, is a predecessor of b, and is order-isomorphic to p. `isoMatchStatementProof` derives it in the source deduction system from the same five explicit equality/strict-Separation assumptions used by the checked cancellation theorem. `isoMatchOpenProof` discharges these assumptions with the existing full-source suppliers. `isoMatchUniversalProof` supplies the explicit three-binder universally closed statement in every PRA model whose arithmetic reduct models IΣ₁. Bound indices 0, 1, 2 are a, b, p.
-
-`isoMatchClosedGraph_defined` gives a fixed Σ₁ graph for the closed **formula code**. It is not a proof-code graph. The result is a fixed structural ingredient for the quotient-closed induction argument; arbitrary-index applications, translated-PA property/substitution compatibility, native iPRA internalization and the machine equivalence remain open.
-
-Run `bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-axioms/check-iso-match-source.sh "$PWD" /dev/shm/pa194-iso-match-source-repo-NEW` from the repository root. The four modules are compiled in one fresh output against pinned prebuilt dependencies, including the repository-replayed source predecessor-matching and full-source cancellation suppliers. The successful output is `/dev/shm/pa194-iso-match-source-replay`.

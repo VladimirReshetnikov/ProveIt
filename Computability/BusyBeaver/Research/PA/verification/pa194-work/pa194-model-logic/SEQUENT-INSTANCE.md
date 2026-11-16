@@ -1,0 +1,7 @@
+# PA194 numerical target sequent instance
+
+`PA194ModelSequentInstance` instantiates upstream `ConPA.Sequent.Calc` and `Quant` in every candidate-PRA model with IΣ₁, using the actual numerical target `impValue`, `allValue`, and `TargetProvable` and the existing model-uniform proof rules. It supplies explicit Σ₁ graphs for both constructors and the Σ₁ target provability predicate. `numericalTranslation` instantiates the upstream Σ₁ `Tr`, with a model-valued environment `pair bound (pair free (pair base reserve))`; `negatedTranslation_model` identifies its value exactly as the numerical negation of `fixedFormulaTranslation` for arbitrary source codes and stacks. Thus upstream nonstandard internal-list and finite-set structural sequent theorems apply to these concrete target codes.
+
+`translatedAxiom_sseq` proves that any internal finite source set containing model-valued p has a target sequent proving code 1, assuming the positive fixed translation of p is target-provable. This is a bridge to source-axiom suppliers; it does not by itself supply an internal choice of proof witnesses or show that Foundation's derivation rules are simulated, nor does it establish a consistency implication. The retained-overlay checker compiles local copies of the two upstream sequent modules plus target dependencies and audits eight reports; it is not an empty-overlay build.
+
+Run `bash Computability/BusyBeaver/Research/PA/verification/pa194-work/pa194-model-logic/check-sequent-instance.sh --out DIR` with matching retained prerequisites.

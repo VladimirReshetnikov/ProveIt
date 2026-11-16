@@ -1,7 +1,0 @@
-# Greatest-image theorem at arbitrary internal indices
-
-For any internal theory, context and five model-valued free-variable indices, `greatestImageAtProof` takes a contextual proof of the fixed five-binder greatest-image theorem and contextual proofs of the corresponding order-bijection, source-greatest and graph-edge premises. It derives the corresponding target-greatest formula. `greatestImageAtGraph_defined` provides one fixed Σ₁ graph for the constructor, and `greatestImageAtProof_val` checks its exact output proof code. The fixed universal theorem is separately proved in the full source theory, but its proof code remains an explicit input to this constructor.
-
-The statement components are substitutions into the literal arity-five templates; this module does not yet identify those substitutions with every independently coded domain/edge constructor. The theorem holds for PRA models whose arithmetic reduct models IΣ₁. Graph restriction, successor transport, PA induction and the native iPRA equivalence remain open.
-
-Run `bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-axioms/check-greatest-image-at.sh "$PWD" /dev/shm/pa194-greatest-image-at-repo-NEW` from the repository root. The checker compiles the module against hash-pinned prebuilt dependencies including the repository-replayed five-binder theorem and five-fold specialization. The successful output is `/dev/shm/pa194-greatest-image-at-replay`.

@@ -1,5 +1,0 @@
-# PA194 symmetry axiom translation
-
-`fixedFormulaTranslation_eqSymm_target` establishes target numerical-calculus provability of the actual `fixedFormulaTranslation` applied to the model-valued quote of Foundation's `Theory.Eq.symm` for the relational source language, in every candidate-PRA model satisfying IΣ₁. It permits arbitrary model-valued initial/free stacks and base/reserve labels; the symmetry target proof requires no freshness bound. The proof checks the quoted two-binder source code, internal source validity, sufficient root budget, model-uniform recursive translator evaluation and allocated bound variables, and the existing symmetry target supplier. This is one fixed standard source axiom, not arbitrary proof transport, machine simulation, or either consistency implication. The retained-overlay same-output checker rebuilds local sources and audits six reports; it is not an empty-overlay build.
-
-Run `bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check-eq-symm.sh --out DIR` with matching retained prerequisites.

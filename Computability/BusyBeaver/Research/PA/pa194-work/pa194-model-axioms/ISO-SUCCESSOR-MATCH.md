@@ -1,7 +1,0 @@
-# Isomorphic successors have matching domain predecessors
-
-`orderIsoSuccessorMatchClosed` is a Foundation natural-deduction proof: given source equality principles, the fixed closed strict-Separation instance, domain(b), successor(p,a) and orderIso(a,b), there exists y such that domain(y), successor(y,b) and orderIso(p,y). It opens the actual isomorphism graph, obtains the image of the source successor's top point, proves that the image lies in the ordinal domain, and applies the checked strict-cut predecessor isomorphism. A graph-explicit version and an unclosed parameterized-Separation version are also provided.
-
-This is the fixed structural predecessor-matching lemma needed by the proposed quotient-closed induction property. Equality and Separation remain explicit source-proof inputs here. The lemma does not itself derive the translated PA induction axiom, native iPRA equivalence, or machine equivalence.
-
-Run `bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-axioms/check-iso-successor-match.sh "$PWD" /dev/shm/pa194-iso-successor-match-repo-NEW` from the repository root. The module is source-compiled in a fresh output against pinned prebuilt dependencies including the repository-replayed cancellation/cut theorem; `PA194FoundationOrdinalInductionMembers.olean` comes from the hash-pinned induction probe and its transitive closure is not rebuilt by this checker. Successful output: `/dev/shm/pa194-iso-successor-match-replay`.

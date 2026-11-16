@@ -1,0 +1,7 @@
+# Q applied to an opened predecessor witness
+
+`PA194IsoWitnessProperty.lean` composes the opened predecessor-witness guard constructor with Q application. From explicit proofs in the same source context of `Q(p+1)` and the opened witness, it constructs a proof of `P(0)`, where zero is the fresh witness index and the original predecessor index has been shifted by one. The arity-one code for P may be any internally valid model element, including a nonstandard formula code.
+
+`isoWitnessPropertyProof_val` gives the exact proof code, and `isoWitnessPropertyGraph_defined` defines it uniformly by one fixed Σ₁ graph in every candidate-PRA model with IΣ₁ arithmetic reduct. The source context and both proof inputs are explicit. In particular, this result does not itself shift a proof of Q into the witness context, derive the successor case, identify the translated PA induction axiom, internalize the statement in iPRA, or verify the machine. Closed-formula environment independence is separately proved in [the packet bridge](../pa194-model-logic/CLOSED-SENTENCE.md).
+
+Run `bash Computability/BusyBeaver/Research/PA/verification/pa194-work/pa194-model-axioms/check-iso-witness-property.sh REPO NEW_OUTPUT`. The module is rebuilt in a fresh output against pinned prebuilt inputs, including the independent witness-components replay and the repository-replayed Q application. This is not a full transitive source rebuild. A successful output has three axiom reports without `sorryAx`.

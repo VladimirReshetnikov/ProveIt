@@ -1,0 +1,15 @@
+# Native iPRA source fetch
+
+The checked source modules `PA194FreshFetchNative.lean` and `PA194PositiveFetchNative.lean` each prove `nativeIPRA`, an actual derivation in `IPRAStandardTheory.standardTheory` of the universally closed equality `equalClosureI lhs rhs`. They describe the pinned encoded source controller, not literal physical Turing-machine execution.
+
+Write `S(q,r,t)` for the encoded source state at site q with registers r and independent tail t. With r6 and r8 substituted by zero, the fresh branch proves `run(7*r0+4, S(25,r,t)) = S(34,r[0:=r0+1,8:=r0],t)`. The positive branch instead substitutes `r8 := m+1`, with no restriction on r6, and proves `run(2, S(25,r,t)) = S(34,r[8:=m],t)`. These conditions are embodied by terms, so neither formula asserts a conditional under an unproved hypothesis. Other registers and t are arbitrary and preserved. The integer shorthand 7*r0+4 describes the precise addition term in the source.
+
+Both the model semantics and transfer to native intuitionistic derivations use PRA-model open induction, with no IΣ₁ assumption. Each of the three printed axiom reports (`modelSentence`, `classicalPRA`, `nativeIPRA`) excludes `sorryAx`; Lean lists only `propext`, `Classical.choice`, and `Quot.sound`. Neither theorem proves source scheduler iteration, physical simulation, or a consistency/halting implication.
+
+The independent two-source replay passed with exit 0, output `/dev/shm/pa194-fetch-native-replay`, log `/tmp/pa194-fetch-native-replay.log`. This fresh staged build checks the exact 26 dispatch, 10 decoder, and 6 fetch prerequisite objects against receipts and checks 270 baseline source hashes/object presence, and verifies new source hashes before and after building. The six graph fallback objects and general foundations remain prebuilt; exact provenance, the initial failed graph audit, and limitations are in `/dev/shm/pa194-scheduler-controller/SCHEDULER-FETCH-MODEL.md`. A receipt checks stability, not independent provenance of the machine baseline or the foundational transitive closure. The graph hashes are audited by the prior native-decoder replay, rather than rechecked here.
+
+After reproducing the staged baseline and fetch-open replay described in `DECODER-NATIVE.md` and `SCHEDULER-DECODE-OPEN.md`, run from the repository root with a fresh output path:
+
+```sh
+Computability/BusyBeaver/Research/PA/verification/pa194/ipra/machine-code/check-fetch-native.sh "$PWD" Computability/BusyBeaver/Research/PA/verification/pa194/ipra/machine-code /dev/shm/pa194-fetch-coherent-full-v2 /dev/shm/pa194-dispatch-replay /dev/shm/pa194-decoder-native-replay /dev/shm/pa194-scheduler-decode-open-replay /tmp/pa194-scheduler-decode-open-replay.log /tmp/current14-standard-fresh-build-20261104/lib /tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib Computability/BusyBeaver/Research/PA/verification/pa194/ipra/machine-code/dispatch-receipt.json Computability/BusyBeaver/Research/PA/verification/pa194/ipra/machine-code/native-decoder-receipt.json Computability/BusyBeaver/Research/PA/verification/pa194/ipra/machine-code/fetch-open-receipt.json /dev/shm/pa194-fetch-native-replay
+```
