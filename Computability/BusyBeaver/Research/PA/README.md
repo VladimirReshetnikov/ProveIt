@@ -14,7 +14,7 @@ The [verification directory](verification/) contains the
 [shared machine coding and IΣ₁ transfer](verification/shared/).
 The [research packets](docs/) retain the layout references from their delivery.
 
-Lean proves the unconditional iPRA equivalence for twenty-two literal 194-state
+Lean proves the unconditional iPRA equivalence for twenty-nine literal 194-state
 tables. The theorems and staged replay instructions are under
 [the primary endpoint](verification/pa194/ipra/native-endpoint/README.md),
 [PA1944L](verification/pa194/ipra/variants/pa1944l/README.md),
