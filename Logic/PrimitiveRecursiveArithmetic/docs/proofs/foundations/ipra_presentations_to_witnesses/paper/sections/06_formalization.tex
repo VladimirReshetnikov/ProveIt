@@ -1,0 +1,266 @@
+\section{Lean formalization: checked core and a complete path forward}
+\label{sec:formalization}
+
+\subsection{Pinned object syntax and standalone build}
+
+The archive builds with Lean 4.32.0 and its standard library. It includes
+unchanged copies of the pinned repository's \code{Syntax.lean},
+\code{Deduction.lean}, \code{PR.lean} and
+\code{NativeBiInterpretation.lean}. The first three module bodies are
+concatenated into \code{ObjectKernel.lean}; their imports are replaced
+by \code{import Std}, and a compatibility notation spells the
+natural-number type. No object definition, axiom constructor, inference
+rule or upstream theorem body is changed. A reproducible provenance
+checker verifies the embedded bodies and the pinned Git blob hashes.
+The full native bi-interpretation file is retained as a reference and
+is not rebuilt by the standalone core.
+
+This arrangement avoids downloading Mathlib merely to use the small
+deductive kernel. Integration into ProveIt replaces the compatibility
+import by the repository's \code{ConciseIPRA.PR} import and retains
+the new namespaces and proofs. The validation record is a standalone
+build against the verified upstream bodies, not a claim that the whole
+ProveIt workspace has been rebuilt.
+
+\begin{longtable}{P{.29\linewidth}P{.40\linewidth}P{.21\linewidth}}
+\toprule
+Module & Principal content & Status\\
+\midrule\endhead
+\path{ObjectKernel.lean} & The three upstream syntax, deduction and
+arithmetic module bodies. & Compiled; provenance checked.\\[3pt]
+\path{ObjectFusion.lean} & PR iteration equations and the fusion
+derivation builder. & Compiled object theorems.\\[3pt]
+\path{ObjectSimulation.lean} & Substitution preserves QF status;
+relational simulation builder. & Compiled object theorem.\\[3pt]
+\path{SquaringTransport.lean} & Repeated-squaring transport and an
+unconditional successor instance. & Compiled object theorems.\\[3pt]
+\path{PrimitiveEigenvalue.lean} & Finite weighted eigen-equations
+and the primitive-vector denominator lemma. & Compiled host integer
+theorems.\\[3pt]
+\path{EigenvalueBound.lean} & Finite absolute-column estimate and
+the eigenvalue bound. & Compiled host integer theorems.\\[3pt]
+\path{FiniteAlgebraTargets.lean} & Complete finite programs,
+remaining theorem specifications and the filter reduction. & Definitions
+compile; main completeness target open.\\[3pt]
+\path{FiniteAlgebraExamples.lean} & Exact execution of the elliptic
+section certificate and grid. & Compiled diagnostics.\\
+\bottomrule
+\end{longtable}
+
+There are no custom axioms, opaque placeholders, \code{sorry} or
+\code{admit} declarations in the new modules. The target file does
+not smuggle the desired theorem into a structure field: the remaining
+claims are explicitly named propositions and are not asserted.
+
+\subsection{The completed syntactic theorems}
+
+The important distinction is the type of a theorem's conclusion. In
+namespace \path{LeanProofs.ConciseIPRA.FiniteMethods}, the simplified
+shape of the checked fusion theorem is
+\begin{verbatim}
+theorem fusion (f g h : PR 1)
+    (hlocal : ([] : List (Fm PTm 1)) |-[PRAAx]
+      commutes f g h) :
+    ([] : List (Fm PTm 1)) |-[PRAAx]
+      Fm.all (fusionInvariant f g h)
+\end{verbatim}
+Here the printed ASCII turnstile is explanatory; the source uses the
+repository's scoped judgment notation. \code{commutes} is precisely
+$h(f(x))=g(h(x))$, and \code{fusionInvariant} is the equality in
+Theorem~\ref{thm:fusion}. No extra assumption about an evaluation
+function is present.
+
+For simulation the inputs are $R:\code{Fm PTm 2}$, a proof of
+\code{R.QF}, $f,g:\code{PR 1}$, and the local judgment
+$[R]\vdash_{\code{PRAAx}}R(f(x),g(y))$. The output is
+$[R]\vdash_{\code{PRAAx}}\forall n\,R(\iter_f(n,x),\iter_g(n,y))$.
+The code verifies every lifting of a substitution under a binder.
+Both modules use \code{PRA.qfInd}, \code{Prf.subst},
+\code{Prf.eqSubst} and the defining equations, exactly as the human
+proofs specify.
+
+The type \code{Prf} lives in Lean's proposition universe; this
+development proves derivability and supplies a checked derivation term.
+It does not serialize a numerical proof trace for the tiny Python
+checkers in the other project. Such serialization, if desired, is
+another implementation task. This distinction has no effect on the
+object judgment proved here.
+
+\subsection{The integer arithmetic already checked}
+
+\code{PrimitiveEigenvalue.lean} stores a finite list of triples
+$(e_i,w_i,z_i)$, representing a Bezout coefficient, a primitive-vector
+coordinate, and its integral matrix image. It defines
+\[
+          W=\sum_i e_iw_i,\qquad Z=\sum_i e_iz_i.
+\]
+From the finite eigen-equations $bz_i=aw_i$ it proves $bZ=aW$.
+If $W=1$, then $b\mid a$. A supplied reducedness certificate
+$ua+vb=1$ and $b>0$ force $b=1$. The proof is finite integer algebra,
+not a call to a spectral theorem.
+
+Equivalently, after primitive scaling the human argument may simply
+multiply $z_i=\lambda w_i$ by $e_i$ and add to get
+$\lambda=\sum_i e_i z_i\in\Z$. The denominator formulation
+matches the explicit integer-coded implementation conveniently.
+
+\code{EigenvalueBound.lean} defines the dot product with one matrix
+column and its absolute sum by list recursion. It proves
+\[
+ \left|\sum_iw_i a_i\right|\le W\sum_i|a_i|
+       \quad\hbox{if every }|w_i|\le W.
+\]
+Given a selected coordinate of absolute value $W>0$ and its eigenvalue
+equation, it proves $|\lambda|\le R$ when that column sum is at
+most $R$. Constructing the selected coordinate by a maximum scan,
+and constructing the primitive vector from rational evaluations, are
+explicit remaining host lemmas; neither is hidden in the current
+theorem statement.
+
+\subsection{Complete definitions for the rational target}
+
+The target module uses \code{Monomial n} with a rational coefficient
+and a length-$n$ natural exponent vector, and
+\code{Polynomial n := List (Monomial n)}. Repeated monomials are
+allowed. \code{coefficientAt} adds all coefficients with a given
+exponent vector. \code{polynomialEq} compares these sums on the
+union of the two finite supports; outside that union both sums are zero.
+Polynomial addition, subtraction, multiplication and evaluation are
+fully defined finite list programs.
+
+A \code{Certificate n s d} contains the $d$ generators, unit
+coefficients, unit ideal witnesses, $n$ positive integer denominators,
+$n$ integral action matrices and their ideal witnesses. The Lean
+representation stores the already-cleared identities
+\[
+ \Delta_kX_kb_j-\sum_i(A_k)_{ij}b_i
+                     =\sum_\ell H_{kj\ell}F_\ell.
+\]
+The Python representation initially stores rational $M_k$ and then
+computes $\Delta_k$; to convert it, multiply its residual witnesses
+by $\Delta_k$. Matrix storage order differs explicitly: Python stores
+rows; the Lean target stores columns. The mathematical convention is
+the same row-vector action $vM$.
+
+The executable target definitions then compute absolute column sums,
+the rational coordinate grids, their Cartesian product, the common-zero
+test, and its finite filter. The main target is
+\begin{verbatim}
+def EnumerationGoal : Prop :=
+  forall n s d (F : Vector (Polynomial n) s)
+      (C : Certificate n s d) (p : Vector Rat n),
+    certificateOK F C = true ->
+      (p.toList in enumerate F C <->
+       zeroTest F p.toList = true)
+\end{verbatim}
+Again the listing is a legible ASCII rendering; the source is valid
+Lean. Arity is enforced by vectors, and the executable zero test
+also checks the length of its list input. Invalid certificates produce
+an empty result in the target function; completeness is asserted only
+when the checker accepts.
+
+\subsection{A noncircular completion plan}
+
+The remaining host proof has the following concrete dependency order.
+\begin{enumerate}
+\item \textbf{Finite polynomial semantics.} Prove evaluation preserves
+addition, scaling and multiplication. Prove that collecting duplicate
+monomials preserves evaluation. These finite distributive identities
+establish \code{EvaluationTransportGoal}.
+\item \textbf{Certificate substitution.} Evaluate each accepted
+coefficient identity at the fixed common zero. The ideal-combination
+side vanishes by the previous multiplicativity lemma. This proves
+\code{CertificateSoundnessGoal} and extracts the unit and action laws.
+\item \textbf{Primitive scaling.} Compute a common denominator of the
+nonzero evaluation row; compute its gcd and Bezout coefficients. Prove
+the resulting integer row is primitive and preserves the eigen-equations.
+Instantiate the checked denominator lemma for each coordinate.
+\item \textbf{The maximum scan.} Track the first maximizing index of a
+nonzero integer row. Prove its entry has positive absolute value and
+dominates all entries. Apply the checked column estimate.
+\item \textbf{Grid membership.} If $-R_k\le z_k\le R_k$, the index
+$z_k+R_k$ belongs to the coordinate range of length $2R_k+1$.
+Prove that index returns $z_k/\Delta_k$. Cartesian membership follows
+by finite list induction. This establishes \code{GridCompletenessGoal}.
+\item \textbf{Filtering.} The checked theorem
+\code{enumeration\_of\_gridCompleteness} already derives
+\code{EnumerationGoal} from the previous target. Duplicate-freedom
+is a separate short consequence of injectivity of each fixed-denominator
+coordinate map, followed by product and filter preservation.
+\end{enumerate}
+The only premise of the final filter theorem is the location theorem,
+not the full desired enumeration assertion under a new name. Every
+mathematical step needed for that location theorem is proved in the
+human argument above.
+
+\subsection{From the host specification to object arithmetic}
+
+The final embedded theorem uses numerical codes, not Lean's types
+\code{Rat}, \code{Vector} or arbitrary predicates. Let
+$\CertCheck(F,C)$, $Z(F,p)$ and $E(F,C)$ be the specified PR checker,
+zero test and list-producing program. With validity and arity tests
+included, the target is the first-order sentence
+\[
+ \forall F,C,p\;\bigl(\CertCheck(F,C)=1\ \land\ \operatorname{Valid}(p)
+ \ \longrightarrow\
+ [\operatorname{mem}(p,E(F,C))=1\ \leftrightarrow\ Z(F,p)=1]\bigr).
+ \tag{E}\label{eq:object-enumeration}
+\]
+The syntax of the fixed programs is built from zero, successor,
+projections, composition and primitive recursion. For each program,
+prove its local equations in \code{Prf PRAAx}; then prove its loop
+invariant with \code{PRA.qfInd}. The useful invariants are recorded
+in Table~\ref{tab:invariants}.
+
+Bounds are computed values of fixed PR functions; they need not be
+small. A nested computation whose bound is obtained from an earlier
+finite computation remains a PR composition. Proofs keep $F,C,p$
+free and quantify only after the finite invariants are established.
+This avoids an induction hypothesis containing an unbounded universal
+claim about all rational zeros.
+
+\begin{longtable}{P{.22\linewidth}P{.43\linewidth}P{.25\linewidth}}
+\caption{Finite invariants needed for the full object derivation.}
+\label{tab:invariants}\\
+\toprule
+Program & Quantifier-free content after bounded Booleanization & Fuel\\
+\midrule\endfirsthead
+\toprule Program & Invariant content & Fuel\\\midrule\endhead
+Extended gcd & Current remainder equations and integer combinations
+of the two original inputs. & Sum of input magnitudes plus one.\\[3pt]
+Vector Bezout fold & The accumulated gcd is a linear combination of
+the processed entries and divides them. & Vector length.\\[3pt]
+Coefficient collection & Each processed monomial contributes its
+coefficient to the matching exponent slot. & Input list length and
+support size.\\[3pt]
+Polynomial evaluation & The accumulator is the sum of the values of
+the processed monomials. & List length, variable count and exponents.\\[3pt]
+Matrix action & Each partial sum agrees with the processed column
+terms at the fixed point. & Matrix dimension.\\[3pt]
+Maximum scan & The selected index is processed, its value is the
+current maximum, and all processed values are at most it. & Vector
+length.\\[3pt]
+Grid decoding & Each processed digit is in range and the quotient/
+remainder reconstruction equation holds. & Number of coordinates.\\[3pt]
+Filter & For each processed candidate, output membership is equivalent
+to passing the exact equation tests. & Product of coordinate-grid sizes.\\
+\bottomrule
+\end{longtable}
+
+Once \eqref{eq:object-enumeration} has a \code{Prf PRAAx}
+derivation, the existing theorem \code{pra\_iff\_native} transports
+it to the native scalar presentation \cite{NativeSource}. That bridge
+is a final step. It cannot replace construction of the object derivation.
+
+The printed axiom dependencies also distinguish the layers. The new
+object builders and integer eigenvalue lemmas use only the host kernel
+principles \code{propext} and \code{Quot.sound}; no
+\code{Classical.choice} occurs there. The standard rational-number
+implementation used for the host target programs does introduce
+\code{Classical.choice} into the host filter theorem's dependencies.
+That does not add a rule to \code{PRAAx}. The proposed arithmetic
+implementation uses explicit signed-integer and positive-denominator
+codes, so its constructive content is not inferred from that host
+dependency list. Lean's acceptance of a recursion definition likewise
+does not by itself prove primitive recursiveness or reify it into
+\code{PR} syntax.

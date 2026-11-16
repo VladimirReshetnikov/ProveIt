@@ -1,0 +1,257 @@
+\section{A framework based on finite presentations and proof transport}
+\label{sec:framework}
+
+\subsection{The arithmetic base and the meaning of an embedding}
+
+Our base theory is first-order intuitionistic logic with equality,
+one function symbol for each primitive recursive definition, their
+defining equations, successor injectivity and nonzeroness, and induction
+for quantifier-free formulas, with parameters. This is the presentation
+implemented by the repository's \code{PR}, \code{PTm}, \code{PRAAx}
+and \code{Prf} types \cite{PRSource,DeductionSource}. We do not add
+induction for an arbitrary universally quantified assertion, excluded
+middle for arbitrary propositions, choice, or an axiom of convergence.
+
+The term ``embedding'' here means a specified translation of the finite
+content of a mathematical statement into arithmetic. It does not mean
+that every theorem of a stronger ambient theory becomes a theorem of
+\ipra. The translation records the representation, the observations
+being requested, a concrete algorithm, and a derivation of its stated
+finite contract. Distinct translations can preserve different information.
+A bound on the number of points, a list of all points, a rational
+approximation and a coherent family of approximations are distinct outputs.
+
+Use any explicitly fixed PR pairing and list coding. For definiteness
+one may pair $a,b$ by $(a+b)(a+b+1)/2+b$, and encode a nonempty list
+by one plus the pair of its head and tail. Projections are bounded
+searches; a nonzero tail code decreases. All list folds therefore have
+PR definitions with fuel at most the input code. More efficient list
+implementations are extensionally interchangeable after their simulation
+law has been proved. Encode integers by a sign bit and magnitude, and
+rationals by a signed numerator and a positive denominator, normalized
+by gcd; zero has denominator one. A malformed code has a designated
+default and a separate validity flag. A theorem never relies on the
+default satisfying the specification of a valid mathematical object.
+
+Rational equality, order and arithmetic reduce to signed integer
+arithmetic and positive-denominator cross multiplication. The Euclidean
+algorithm can be run for $a+b+1$ steps on nonnegative inputs $a,b$,
+freezing the state when the second component becomes zero. Each active
+step strictly decreases a nonnegative component. Its invariant tracks
+the common divisors and, for extended gcd, two linear-combination
+identities. Thus division, gcd, lcm and rational normalization do not
+require unbounded minimization. Sparse multivariate polynomials are
+finite lists of coefficient/exponent-vector pairs; evaluation is a fixed
+fold using finite powers. These concrete data operations will also be
+defined in the Lean target file.
+
+\subsection{Bounded formulas and allowed induction}
+
+For a fixed PR Boolean predicate $P(a,i)$, put
+\[
+ A(a,0)=1,\qquad A(a,t+1)=A(a,t)\mathbin{\wedge}P(a,t).
+\]
+Then a bounded assertion $\forall i<t\,P(a,i)=1$ is represented by
+the atomic equality $A(a,t)=1$. A corresponding disjunction fold
+represents bounded existence. The familiar unfolding equivalences
+are proved with the queried index free. For the converse under a fixed
+bound $B$, use the guarded quantifier-free invariant
+$t\le B\to A(a,t)=1$, with the bounded-universal premise kept
+outside the induction formula. For nested bounded
+quantifiers the construction is repeated, from the inside outward.
+This is a schema for each fixed formula and its PR predicates.
+
+Finite-list correctness assertions, such as ``each processed coefficient
+agrees'' or ``all entries satisfy this divisibility equation'', can
+therefore be used as quantifier-free invariants. When a proof concerns
+an arbitrary solution $p$, keep $p$ as a free parameter during induction.
+Do not put ``for every rational point'' inside the induction invariant.
+This simple distinction matters in the enumeration proof: the finite
+matrix calculation is performed with one arbitrary point fixed, and
+universal generalization occurs afterwards.
+
+There is no total PR interpreter for arbitrary PR program codes. If
+one had $E(e,x)$ and every unary PR function were represented, the
+PR function $d(x)=E(x,x)+1$ would have a code $e$ and give
+$d(e)=d(e)+1$. Our constructions avoid that contradiction. The simulation
+theorems are schemas for specified PR syntax. The polynomial checker
+is uniform over arbitrary polynomial \emph{data}, because it interprets
+one fixed polynomial grammar with one fixed PR evaluation algorithm.
+The two forms of uniformity are compatible and must be stated separately.
+
+\subsection{Finite presentations and observations}
+
+A finite presentation has a validity predicate $V(a)$ and, when needed,
+a decidable equivalence relation $a\sim b$ on valid codes. A restricted
+operation has a total PR implementation and a separate guard under which
+its mathematical law holds. Examples include division with a nonzero
+denominator, a matrix inverse with a verified inverse table, and a
+localization coordinate with a nonzero polynomial value.
+
+An observation is a fixed PR function or relation on the representation.
+It may be an exact polynomial coefficient, a matrix entry, a residue
+modulo $q^n$, a rational number with an error bound, or membership in a
+finite combinatorial object. A mathematical proof is organized by the
+observations it actually uses. Infinite terminology is explanatory until
+the corresponding arithmetic observations and their precision demands
+have been specified.
+
+For example, a metric name $a(k)\in\Q$ can be required to satisfy
+$|a(k)-a(\ell)|\le2^{-k}+2^{-\ell}$ at the finitely many indices
+needed in a calculation. A formal series is observed by exact coefficient
+truncation. A residue tower is observed modulo a specified power. These
+are different contracts. There is no rule converting a formal series
+into an analytic function without a tail estimate, or a local residue
+tower into a rational point without a global argument.
+
+\subsection{Syntactic iteration fusion}
+
+For a specified unary PR operation $f$, define
+\[
+ \iter_f(0,x)=x,\qquad
+ \iter_f(n+1,x)=f(\iter_f(n,x)).
+\]
+This definition is itself primitive recursion. In the repository syntax,
+the recursion counter comes first and the previous result is the second
+input to the step. The Lean construction chooses exactly those projections.
+
+\begin{theorem}[Proof-preserving fusion]\label{thm:fusion}
+Let $f,g,h$ be specified unary PR function symbols. If an actual
+\ipra\ derivation of $h(f(x))=g(h(x))$ is supplied, a finite
+syntactic construction produces an actual \ipra\ derivation of
+\[
+ \forall n\;h(\iter_f(n,x))=\iter_g(n,h(x)).
+ \tag{F}\label{eq:fusion}
+\]
+\end{theorem}
+
+\begin{proof}
+Use the equality in \eqref{eq:fusion} as the quantifier-free invariant
+$I(n,x)$. At zero, the two recursion equations give $h(x)=h(x)$.
+For the successor step, start with the induction hypothesis and compute
+inside the object equality calculus:
+\begin{align*}
+ h(\iter_f(n+1,x))
+ &=h(f(\iter_f(n,x)))\\
+ &=g(h(\iter_f(n,x)))\\
+ &=g(\iter_g(n,h(x)))\\
+ &=\iter_g(n+1,h(x)).
+\end{align*}
+The second equality is the supplied local derivation after substituting
+$\iter_f(n,x)$ for its variable; the third is equality congruence
+applied to the induction hypothesis. The first and last use defining
+equations. Apply the object rule for quantifier-free induction, keeping
+$x$ free. The operations used on derivations are substitution,
+weakening, congruence, transitivity and the induction constructor.
+Every one is an existing operation on \code{Prf}; no semantic reflection
+step occurs. \code{ObjectFusion.fusion} implements this proof.
+\end{proof}
+
+The theorem also covers algorithms with numerical parameters. Put the
+parameter in the state and use the unary step $(a,x)\mapsto(a,F(a,x))$.
+A representation map can preserve that parameter. This is a fixed
+PR pair operation, not a family of programs selected by a universal
+interpreter. A step that depends on its iteration index is handled by
+also storing and incrementing the counter in the state.
+
+\subsection{Relations, guards and simulation}
+
+Equality is often too restrictive. Quotient representatives may differ,
+and rational approximations carry inequalities instead of exact equalities.
+The relational theorem gives the appropriate common statement.
+
+\begin{theorem}[Quantifier-free simulation]\label{thm:simulation}
+Let $R(x,y)$ be a specified quantifier-free arithmetic formula and let
+$f,g$ be specified unary PR steps. From a derivation
+\[
+                      R(x,y)\ \vdash\ R(f(x),g(y))
+\]
+one can construct a derivation
+\[
+       R(x,y)\ \vdash\ \forall n\,
+                      R(\iter_f(n,x),\iter_g(n,y)).
+ \tag{S}\label{eq:simulation}
+\]
+\end{theorem}
+
+\begin{proof}
+Substitution into a quantifier-free formula preserves its quantifier-free
+status, by structural inspection of the formula. Hence
+$R(\iter_f(n,x),\iter_g(n,y))$ is an allowed induction invariant.
+At zero, the hypothesis $R(x,y)$ and the two defining equations give
+the base case. Substitute the two current iterates for $x,y$ in the
+supplied local derivation. Its premise is the induction hypothesis;
+its conclusion becomes the next invariant after applying the successor
+equations. Quantifier-free induction proves \eqref{eq:simulation}.
+The formal proof keeps the shifted initial premise in the context under
+the counter binder. \code{ObjectSimulation.simulation} checks these
+substitution and variable-scope details explicitly.
+\end{proof}
+
+Guards should be part of $R$. For example,
+$R(x,y)$ may assert that both codes are valid and that their evaluations
+agree, or that both denominators are positive and an integer-cleared
+error inequality holds. A local lemma valid only on well-formed inputs
+then preserves the entire invariant. This prevents a later iteration
+from invoking a law outside its domain.
+
+\begin{corollary}[Transport through repeated squaring]
+\label{cor:squaring}
+Suppose a specified map $h$ between two coded multiplication systems
+satisfies the object derivation
+$h(a\cdot b)=h(a)\star h(b)$.
+Define $s_0=x$, $s_{n+1}=s_n\cdot s_n$, and
+$t_0=h(x)$, $t_{n+1}=t_n\star t_n$. Then \ipra\ proves
+$h(s_n)=t_n$ for every $n$.
+\end{corollary}
+\begin{proof}
+Substitute $a=b=x$ into the local multiplication derivation to obtain
+the premise of Theorem~\ref{thm:fusion} for the two squaring steps.
+Apply that theorem. No associativity is needed for this particular
+statement; an identification with $x^{2^n}$ may be proved separately
+in an associative system. The supplied Lean corollary performs the
+substitution and invokes the checked fusion builder.
+\end{proof}
+
+The same idea applies to a polynomial expression evaluated by an
+instruction list: store its program counter, stack and fixed parameters
+in the state. A local stack-operation simulation yields correctness of
+the whole finite evaluator. This is an interpretation of a fixed finite
+expression grammar, whose operations are specified; it is not an
+interpreter for all PR functions.
+
+\subsection{Exact witnesses from a finite observable image}
+
+The algebraic theorem in the next section supplies a finite grid
+containing all possible rational values of selected observables. Here
+is the general step that turns such a grid into object witnesses.
+
+\begin{proposition}[Finite reconstruction]\label{prop:reconstruction}
+Let $V(p)$ be a decidable predicate on finite codes, let
+$o(p)$ be a fixed PR observation, and let $G$ be an explicitly computed
+finite list. Suppose the following statements have \ipra\ proofs:
+\begin{enumerate}
+\item $V(p)$ implies $o(p)\in G$;
+\item for each $q\in G$, a fixed PR list producer $B(q)$ contains
+every valid $p$ with $o(p)=q$;
+\item membership in $B(q)$ and all validity and observation tests are
+finite decidable tests.
+\end{enumerate}
+Then filter $\bigcup_{q\in G}B(q)$ by $V$ and remove duplicates.
+The resulting PR list contains exactly the valid objects.
+\end{proposition}
+\begin{proof}
+A retained object satisfies $V$ by its filter test. Conversely, fix an
+arbitrary valid $p$. The first premise supplies its observation among
+the finite $G$; the second supplies $p$ in that observation's list.
+Therefore $p$ is visited and retained. A finite deduplication pass
+preserves membership. Its invariant equates membership in the output
+prefix with membership in the processed input prefix; bounded folds
+make that invariant quantifier-free. This proves both directions.
+\end{proof}
+
+When the observation is the full rational coordinate tuple, $B(q)$
+is the singleton $[q]$. This is the important algebraic specialization.
+When an observation is constant on an infinite family, there is no
+finite reconstruction list in general. The framework exposes the
+missing premise instead of concealing it in the word ``representation''.

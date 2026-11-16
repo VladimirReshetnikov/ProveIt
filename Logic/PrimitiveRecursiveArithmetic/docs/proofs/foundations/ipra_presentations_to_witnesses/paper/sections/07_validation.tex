@@ -1,0 +1,89 @@
+\section{Validation, deliverables, and the next decisive steps}
+\label{sec:validation}
+
+\subsection{Exact reference programs}
+
+The Python programs use standard-library arbitrary integers and
+\code{fractions.Fraction}; no floating-point decisions enter their
+certificate checks or solution lists. The main checker expands the
+unit and action residuals as sparse rational polynomials and compares
+coefficients. It computes positive common denominators and absolute
+column sums, enumerates the mixed-radix coordinate grid, and checks the
+original equations at every retained point. Accepted example certificates
+are exported as JSON files so the checked data can be inspected or
+processed by another implementation.
+
+The featured tests include a four-point elliptic section, rational
+coordinates with distinct denominators, a quotient with nilpotents,
+an empty rational zero set, a zero-radius grid, a unit expressed as a
+linear combination rather than a literal generator, noncommuting
+matrices on a redundant spanning family, and a localization that removes
+an irrelevant positive-dimensional component. Independent linear-system
+and factored-polynomial families compare against solutions known directly
+from the input construction. Malformed and altered certificates are
+rejected before enumeration. Grid decoding is separately compared with
+a Cartesian-product implementation.
+
+The separated-annihilator program also constructs multivariable monomial
+rectangles and all action witnesses from the supplied ideal identities.
+Its tests cover mixed degrees, degree one, tensor products, repeated roots
+and the elliptic section. The norm program independently constructs monic reductions, polynomial
+multiplication matrices and their determinants. Its determinant values
+are compared with scalar Gaussian elimination at rational sample inputs.
+It tests repeated and singular fibers, zero first coordinates, nonzero
+constant norms, extraneous norm roots, the final $G=0$ filter, and
+nontrivial rational denominators. Its norm-to-module constructor retains
+the division quotients and adjugate witnesses. The resulting certificates
+are checked by the separate coefficient checker, and its complete lists
+are compared with the coordinate-grid enumeration.
+
+These are implementation checks on finite cases. They do not establish
+the universal theorems by testing. The universal mathematical arguments
+are the proofs in Sections~\ref{sec:finite-observable-modules}
+and~\ref{sec:norm-enumeration}; the exact tests detect mistakes in
+the concrete programs and examples.
+
+\subsection{Lean and mathematical review}
+
+The standalone Lean build checks the eight modules listed in
+Section~\ref{sec:formalization}. The archive records the compiler
+version, successful module results, printed axiom dependencies and
+the source-provenance check. The example module evaluates the elliptic
+certificate independently: the checker returns true, the column bounds
+are $[2,1]$, the grid has fifteen candidates, and the result has the
+four displayed rational points. An evaluation diagnostic is kept distinct
+from a theorem and from an object \ipra\ derivation.
+
+Independent reviews checked the matrix orientation, use of the unit
+certificate, denominator divisibility, maximum-coordinate estimate,
+constructor residuals, elliptic example, localization identities,
+the norm bridge, and the distinction between global and tuple-local
+covers. The review records are included. They do not assert that all
+earlier repository packets are correct. The PDF is compiled from the
+included source and visually inspected after rendering; build and
+layout results are recorded separately from mathematical validation.
+
+\subsection{A useful integration order}
+
+The first integration target is the proof-transport core: it is already
+compiled and has a small dependency footprint. The next target is the
+integer/rational finite arithmetic library described in the formalization
+plan. Completing that library supports both enumeration methods and many
+existing theorem packets.
+
+For the mathematics, a particularly useful follow-up is a catalogue of
+explicit finite sections and their certificates. Each entry should provide
+the equations, the norm or action data, an independent identity check,
+the returned list, and the precise role of that section in a larger
+argument. This is more actionable than adding an abstract field saying
+that a desired cover exists. The harder global theorem should then state
+exactly which of those certificates it produces and how its coefficients
+are bounded.
+
+The current package completes a real interface improvement: finite
+algebraic data previously used to count points now supply their
+coordinates and complete lists, and a checked logical transformation
+preserves local arithmetic proofs through finite computations. The
+remaining global arithmetic and analytic obligations are exposed as
+specific theorems, with no claim that changing the representation has
+already proved them.

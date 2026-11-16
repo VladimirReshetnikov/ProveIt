@@ -228,6 +228,9 @@ repository copies. `ipra_finite_demand.zip` was placed the same way, under `foun
 then deleted. Its four `dependencies/FTA_iPRA/` files are byte-identical to
 `algebra/FTA_iPRA` and are not placed. `ipra_local_global.zip` was placed the same way, under
 `foundations/`, and then deleted. It leaves out only its ignored `SHA256SUMS`.
+`ipra_presentations_to_witnesses.zip` was placed the same way, under `foundations/`, and then
+deleted. It leaves out its ignored `SHA256SUMS.txt` and four `lean/upstream/` files that are
+byte-identical to ConciseIPRA sources.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

@@ -1,0 +1,562 @@
+\section{Finite observable modules produce complete rational point lists}
+\label{sec:finite-observable-modules}
+
+The earlier finite-algebra interface proves that a multiplication-closed
+spanning certificate of size $D$ bounds the number of rational zeros by
+$D$.  There is more information in the same certificate.  Its matrices
+also bound every coordinate and every reduced denominator.  The resulting
+finite search returns the complete rational zero set, with no externally
+supplied height bound.  This is a strengthening of that interface, not a
+claim that an arbitrary cardinality bound determines a search cutoff.
+The additional information is the supplied multiplication action.
+
+The central observation needs neither a determinant nor a linearly
+independent basis.  A rational eigenvalue of an integer matrix is an
+integer: after scaling an eigenvector to a primitive integer vector,
+the denominator would otherwise divide all its coordinates.  We give
+the finite proof because it both simplifies the argument and identifies
+exactly the arithmetic needed in iPRA.
+
+\subsection{Primitive integer eigenvectors}
+
+All finite vectors and matrices in this section have at least one
+coordinate.  A vector $w\in\mathbb Z^D$ is \emph{primitive} when the
+greatest common divisor of $|w_1|,\ldots,|w_D|$ is one.  Rational
+numbers are represented by reduced numerator--positive-denominator
+pairs.  Matrix multiplication uses row vectors: $(wA)_j=
+\sum_{i=1}^D w_i A_{ij}$.
+
+\begin{lemma}[Primitive scaling]
+\label{lem:primitive-scaling}
+From a supplied nonzero vector $v\in\mathbb Q^D$ one can primitively
+recursively construct a nonzero rational $c$ and a primitive integer
+vector $w$ such that $w=cv$.  If $vM=\lambda v$, then
+$wM=\lambda w$.
+\end{lemma}
+
+\begin{proof}
+Write the entries of $v$ with positive denominators, and let $L$ be
+their product.  Then $u=Lv$ is an integer vector and is nonzero.
+Compute $g=\gcd(|u_1|,\ldots,|u_D|)$ by the Euclidean algorithm,
+folded along the finite list.  Since $u$ is nonzero, $g>0$.
+Every $u_i$ is divisible by $g$, so $w_i=u_i/g$ is an integer and
+the gcd of its absolute coordinates is one.  Take $c=L/g$.
+Multiplying the displayed eigenvector equation by $c$ gives the final
+assertion.  Products, gcd, exact integer division with its failure
+branch, and finite folds are primitive recursive.  Extended gcd
+additionally produces integers $e_i$ satisfying
+$\sum_i e_iw_i=1$, if that form of primitivity is preferred.
+\end{proof}
+
+\begin{lemma}[Integer eigenvalue and an explicit bound]
+\label{lem:integer-eigenvalue}
+Let $A\in\mathbb Z^{D\times D}$, let $w\in\mathbb Z^D$ be
+primitive, and let $\lambda\in\mathbb Q$.  If
+$wA=\lambda w$, then $\lambda\in\mathbb Z$.  Moreover, with
+\[
+ R(A)=\max_{1\le j\le D}\sum_{i=1}^D|A_{ij}|,
+\]
+one has $|\lambda|\le R(A)$.
+\end{lemma}
+
+\begin{proof}
+Write $\lambda=a/b$ in reduced form, where $b>0$ and
+$\gcd(|a|,b)=1$.  For each coordinate $j$, multiplication by $b$
+in the eigenvector equation gives
+\[
+ a w_j=b\sum_iw_iA_{ij}.
+\]
+Thus $b$ divides $a w_j$, and coprimality gives $b\mid w_j$.
+One elementary justification uses a Bezout identity $ra+sb=1$:
+multiply it by $w_j$ and substitute the preceding divisibility.
+Since $w$ is primitive, there are integers $e_j$ with
+$\sum_j e_jw_j=1$.  Therefore $b\mid1$.  Positivity of $b$
+forces $b=1$.
+
+For the bound, choose the first index $j$ attaining
+$W=\max_i|w_i|$.  The finite maximum and its first maximizing
+index are obtained by a bounded scan.  Primitivity implies $W>0$.
+The $j$-th coordinate gives
+\[
+ |\lambda|W
+   =\left|\sum_iw_iA_{ij}\right|
+   \le\sum_i|w_i||A_{ij}|
+   \le W\sum_i|A_{ij}|
+   \le WR(A).
+\]
+Cancel the positive integer $W$.  No matrix inverse, determinant,
+characteristic polynomial, or spectral theorem was used.
+\end{proof}
+
+\begin{corollary}[A rational eigenvalue lies on a finite grid]
+\label{cor:eigenvalue-grid}
+Let $M\in\mathbb Q^{D\times D}$ and let $\Delta>0$ be an
+integer such that $A=\Delta M$ has integer entries.  If a nonzero
+$v\in\mathbb Q^D$ satisfies $vM=xv$, then
+\[
+ x=\frac z\Delta
+ \quad\text{for some }z\in\mathbb Z\text{ with }|z|\le R(A).
+\]
+In particular, if $x=a/q$ is reduced with $q>0$, then
+$q\mid\Delta$, $q\le\Delta$, and $|a|\le R(A)$.
+\end{corollary}
+
+\begin{proof}
+Primitive scaling gives $wM=xw$ with $w$ primitive, and hence
+$wA=(\Delta x)w$.  Lemma~\ref{lem:integer-eigenvalue} says that
+$z=\Delta x$ is an integer with the asserted bound.  To reduce
+$z/\Delta$, divide numerator and denominator by
+$\gcd(|z|,\Delta)$.  This proves the denominator divisibility
+and numerator bounds, including $z=0$.
+\end{proof}
+
+\subsection{The observable-module principle}
+
+This principle applies before choosing a particular polynomial geometry.
+Let $S$ be a class of finitely coded objects with a decidable validity
+predicate.  Let $u_1,\ldots,u_r:S\to\mathbb Q$ be the rational
+observables whose possible values are wanted.  Fix rational-valued
+functions $b_1,\ldots,b_D$, rational numbers $c_1,\ldots,c_D$,
+and rational matrices $M_1,\ldots,M_r$.  Suppose there are proved
+local contracts, for every valid $p$, of the form
+\begin{align}
+  1&=\sum_{i=1}^D c_i b_i(p),
+      \label{eq:observable-unit}\\
+  u_k(p)b_j(p)&=\sum_{i=1}^D (M_k)_{ij}b_i(p)
+      &&(1\le k\le r, 1\le j\le D).
+      \label{eq:observable-action}
+\end{align}
+The names ``observable module'' and ``spanning family'' refer only to
+these displayed finite identities.  One need not introduce an abstract
+module or assert that the functions $b_i$ are linearly independent.
+
+\begin{theorem}[Finite observable image]
+\label{thm:finite-observable-image}
+Choose positive common denominators $\Delta_k$ for the matrices,
+put $A_k=\Delta_kM_k\in\mathbb Z^{D\times D}$, and put
+$R_k=R(A_k)$.  Every valid $p$ satisfies
+\[
+ (u_1(p),\ldots,u_r(p))\in
+ \prod_{k=1}^r\left\{\frac z{\Delta_k}:z\in\mathbb Z,
+                                      -R_k\le z\le R_k\right\}.
+ \label{eq:observable-grid}
+\]
+Consequently the image has at most $\prod_k(2R_k+1)$ elements.
+If all functions and the validity test have specified primitive
+recursive implementations and the local contracts have iPRA proofs,
+the displayed implication also has an iPRA proof, uniformly in the
+finite matrix and denominator data.
+\end{theorem}
+
+\begin{proof}
+For a fixed valid $p$, let $v=(b_1(p),\ldots,b_D(p))$.
+The unit identity implies that $v\ne0$: if all entries vanished,
+their indicated linear combination would be zero, contradicting one.
+The action identity says precisely that $vM_k=u_k(p)v$.
+Apply Corollary~\ref{cor:eigenvalue-grid} separately to every $k$.
+The product of the finite coordinate grids contains every image value.
+Each grid has exactly $2R_k+1$ entries because $\Delta_k>0$,
+and finite tuple enumeration gives the cardinality bound.
+
+For the iPRA assertion, the arbitrary coded input $p$ is a parameter
+of the proof.  All remaining quantifiers in the matrix-vector
+identities, gcd folds, Bezout checks, and maximum searches range over
+supplied finite lists.  Compile them to Boolean folds.  The Euclidean
+and list identities just proved then use quantifier-free induction.
+There is no quantification over all functions or all possible programs.
+\end{proof}
+
+If observables fail to determine $p$, this theorem supplies a finite
+\emph{image}, not a list of all input objects.  An infinite set can
+have a constant observable.  Complete enumeration therefore needs
+actual rational coordinates, or a separately proved finite reconstruction
+procedure from the observable values.  This is a useful distinction:
+the theorem can also classify finite invariant values of an infinite
+family without pretending to enumerate that family.
+
+\subsection{Polynomial certificates and the enumeration theorem}
+
+Let $F_1,\ldots,F_s\in\mathbb Q[X_1,\ldots,X_r]$ be finitely
+encoded polynomials.  A \emph{unit-and-action certificate} comprises
+polynomials $b_1,\ldots,b_D$, a rational vector $c$, rational
+matrices $M_k$, and coefficient-polynomial witnesses for the identities
+\begin{align}
+ 1-\sum_i c_i b_i&=\sum_{\ell=1}^s h_\ell F_\ell,
+                \label{eq:module-unit-certificate}\\
+ X_kb_j-\sum_i (M_k)_{ij}b_i
+       &=\sum_{\ell=1}^s h_{kj\ell}F_\ell.
+                \label{eq:module-action-certificate}
+\end{align}
+The checker expands each side and compares the finitely many
+coefficients.  The earlier spanning-certificate interface is the
+special case $b_1=1$, $c_1=1$, and $c_i=0$ for $i>1$.
+Our relaxed unit condition is occasionally convenient when a generating
+family is supplied without a distinguished constant member.
+
+\begin{theorem}[Complete rational enumeration from a finite certificate]
+\label{thm:module-enumeration}
+From a valid unit-and-action certificate, a fixed primitive recursive
+algorithm produces a duplicate-free list $L$ satisfying
+\[
+  p\in L\quad\Longleftrightarrow\quad
+           F_1(p)=\cdots=F_s(p)=0
+       \qquad(p\in\mathbb Q^r).
+\]
+It examines at most $\prod_{k=1}^r(2R_k+1)$ candidate tuples,
+where $\Delta_k$, $A_k$, and $R_k$ are as in
+Theorem~\ref{thm:finite-observable-image}.  Every coordinate
+$p_k=a_k/q_k$ of a rational zero, in reduced form, obeys
+\[
+ q_k\mid\Delta_k,
+ \qquad |a_k|\le R_k,
+ \qquad \max(|a_k|,q_k)\le\max(R_k,\Delta_k).
+\]
+No linear independence of the $b_i$ and no pairwise commutation of
+the matrices is required by the checker or the proof.
+\end{theorem}
+
+\begin{proof}
+At a common zero $p$, substitute its coordinates into every checked
+polynomial identity.  The right sides vanish, leaving precisely
+\eqref{eq:observable-unit} and \eqref{eq:observable-action} with
+$u_k(p)=p_k$.  The finite observable image theorem yields the full
+coordinate grid and the reduced-height bounds.
+
+Now enumerate all integer tuples $(z_1,\ldots,z_r)$ with
+$-R_k\le z_k\le R_k$, replace them by
+$(z_1/\Delta_1,\ldots,z_r/\Delta_r)$ in canonical rational form,
+and retain exactly those tuples for which each $F_\ell$ evaluates
+to zero.  Every retained tuple is a common zero by the retention test.
+Every common zero is visited by the grid bound and retained, proving
+completeness.  Distinct integer tuples give distinct rational tuples
+because each denominator $\Delta_k$ is fixed and nonzero.  Thus no
+additional mathematical selection or deduplication principle is needed.
+
+To implement the Cartesian product with uniform arity, put
+$B_k=2R_k+1$ and $B=\prod_kB_k$.  For each $0\le n<B$, recover
+its mixed-radix digits $d_k<B_k$ by successive remainder and quotient
+operations, and set $z_k=d_k-R_k$.  These arithmetic operations and
+the finite decoding loop are PR.  Polynomial evaluation, rational
+normalization, list filtering, and the certificate check are also
+fixed PR algorithms.  On an invalid certificate the total program
+returns a failure flag; its soundness and completeness assertion is
+conditional on the checker accepting.
+
+Only the individual eigenvector equations were used.  Matrices that
+fail to commute on unused linear directions can therefore still be
+valid certificates, and redundant generators cause no difficulty.
+\end{proof}
+
+The theorem does \emph{not} find a certificate for an arbitrary input
+system.  Certificate production must come from a supplied algebraic
+construction, a separately bounded elimination algorithm, or an
+independently checked finite output.  A general curve cannot possess
+such a certificate for all of its coordinates when it has infinitely
+many rational points.  The theorem does not turn a finite rational-point
+cardinality assertion into a height bound for that curve.
+
+\paragraph{A stronger algebraic obstruction for a whole plane curve.}
+In fact, finite rational-point cardinality need not make the certificate
+exist at all.  Let $F\in\mathbb Q[X,Y]$ be monic of positive degree
+$m$ in $Y$.  Then $\mathbb Q[X]$ injects into
+$\mathbb Q[X,Y]/(F)$.  To prove this without any geometric theorem,
+suppose $q(X)=H(X,Y)F(X,Y)$.  If $H\ne0$, its leading
+$Y$-coefficient survives multiplication by the monic $F$, so the
+right side has $Y$-degree $\deg_YH+m\ge1$; a nonzero $q(X)$
+has $Y$-degree zero.  Therefore $H=0$ and $q=0$.
+
+A unit-and-action certificate of size $D$ for the sole equation
+$F=0$ would span the entire quotient over $\mathbb Q$: use the
+unit vector $c$ for the class of $1$, then the action matrices
+to reduce each successive variable multiplication, and add the
+reductions for a polynomial's finitely many monomials.  In particular,
+$1,X,\ldots,X^D$ would reduce to $D+1$ vectors of length $D$.
+Finite rational elimination gives a nontrivial dependence between
+them, yielding a nonzero $q(X)\in(F)$ and contradicting the preceding
+paragraph.  Thus no such full-coordinate certificate exists, even
+when the curve has only finitely many rational points.  For example,
+$Y^2+X^2+1=0$ has no rational points, by the order properties of
+$\mathbb Q$, yet its monic plane-curve quotient still has this
+obstruction.  This polynomial-identity certificate interface handles
+finite algebraic sections and systems with supplied finite spanning
+data; rational finiteness
+of a positive-dimensional algebraic curve is a different kind of
+information.  All parts of this obstruction can be read finitely:
+the contradiction uses only $D+1$ coefficient vectors, one rational
+dependence, and one polynomial degree comparison.
+
+The earlier size-$D$ zero-count theorem remains available.  Its
+interpolation argument extends to the relaxed unit condition by using
+$c$ as the starting vector for the reduction of the constant polynomial.
+Consequently the returned list has at most $D$ entries, although the
+coarser grid can be larger.  The grid is a search bound; the algebraic
+dimension bound is a stronger count bound.  They serve different roles.
+
+\subsection{A constructor from separated annihilator identities}
+\label{sec:separated-annihilators}
+
+The certificate interface becomes an algorithm rather than a mere input
+specification whenever one has separated polynomial annihilators with
+checked ideal-membership witnesses.  Suppose, for each $1\le k\le r$,
+the input supplies a monic univariate polynomial
+\[
+ q_k(T)=T^{d_k}+\sum_{i=0}^{d_k-1}a_{ki}T^i,
+ \qquad d_k\ge1,
+\]
+and multivariate polynomials $h_{k\ell}$ satisfying
+\[
+ q_k(X_k)=\sum_{\ell=1}^s h_{k\ell}(X)F_\ell(X).
+ \label{eq:separated-annihilator}
+\]
+These are exact finite polynomial identities.  Merely knowing that
+$q_k$ vanishes at some observed solutions is insufficient.
+
+\begin{theorem}[Constructing the spanning certificate]
+\label{thm:annihilator-to-module}
+From the identities \eqref{eq:separated-annihilator}, one fixed
+primitive recursive constructor produces a valid unit-and-action
+certificate of size
+\[
+                         D=\prod_{k=1}^r d_k.
+\]
+Consequently it produces a complete rational-point list for the
+original system.  If $\Delta_k$ clears the denominators of
+$a_{k0},\ldots,a_{k,d_k-1}$, a valid coordinate grid uses
+\[
+ R_k=\max\left(\Delta_k,
+               \sum_{i<d_k}|\Delta_k a_{ki}|\right).
+ \label{eq:annihilator-grid-radius}
+\]
+\end{theorem}
+
+\begin{proof}
+Index the spanning family by the exponent box
+\[
+ E=\{e=(e_1,\ldots,e_r):0\le e_k<d_k\},
+ \qquad b_e=X_1^{e_1}\cdots X_r^{e_r}.
+\]
+Use a mixed-radix enumeration of $E$, with the all-zero exponent vector
+first.  The unit certificate is $b_0=1$.
+
+Fix $k$ and $e$.  If $e_k<d_k-1$, multiplication by $X_k$
+simply sends $b_e$ to the next basis monomial $b_{e+\varepsilon_k}$.
+Its matrix column has one entry one and all other entries zero, and
+the action residual is identically zero.
+
+If $e_k=d_k-1$, put $\widehat b_e=\prod_{j\ne k}X_j^{e_j}$.
+Then
+\[
+ X_kb_e
+   -\left(-\sum_{i<d_k}a_{ki}b_{e[k\leftarrow i]}\right)
+   =\widehat b_e q_k(X_k)
+   =\sum_{\ell=1}^s
+       (\widehat b_e h_{k\ell})F_\ell.
+\]
+Thus the column of $M_k$ has entry $-a_{ki}$ at the distinct rows
+$e[k\leftarrow i]$, with zero elsewhere; the displayed products
+$\widehat b_eh_{k\ell}$ are its explicit residual witnesses.
+No repeated reduction or termination theorem is needed.  There is
+one case distinction and one polynomial multiplication per boundary
+column.
+
+After multiplication by $\Delta_k$, a non-boundary column has
+absolute sum $\Delta_k$, and a boundary column has absolute sum
+$\sum_{i<d_k}|\Delta_ka_{ki}|$.  Hence
+\eqref{eq:annihilator-grid-radius} bounds every column sum.
+When $d_k=1$ there are no non-boundary columns, so the first term
+of the maximum can be omitted; retaining it is harmless.
+Apply Theorem~\ref{thm:module-enumeration}.
+
+All exponent vectors, matrix entries, and residual witness polynomials
+are produced by finite loops over $E$, the coordinate list, and the
+input coefficient lists.  Mixed-radix decoding, multiplication of
+polynomials, and the product $D$ are PR uniformly in their finite
+input codes.  The correctness invariant is precisely the displayed
+action identity for every already generated column.  Its quantifiers
+are bounded by the constructed finite dimensions, so Booleanization
+gives the required iPRA induction formula.
+\end{proof}
+
+The input membership witnesses carry the real elimination information.
+The theorem does not assert that such witnesses can be found by an
+unbounded search.  It does prove a uniform bounded constructor from
+them.  If a supplied identity already has the form
+$1=\sum_\ell h_\ell F_\ell$, the correct special case returns the
+empty list immediately: substitution at a hypothetical common zero
+would give $1=0$.
+
+\paragraph{Optional converse through one adjugate identity.}
+The two algebraic interfaces are equivalent as certificate formats,
+although the direct coordinate-grid proof needs no determinant.
+Indeed, suppose a unit-and-action certificate is given.  Fix $k$,
+put $C= X_k I-M_k$, and put $q_k(T)=\det(TI-M_k)$.
+The action identities say, for the row $b=(b_1,\ldots,b_D)$,
+\[
+ bC=r,\qquad r_j=\sum_\ell h_{kj\ell}F_\ell.
+\]
+Multiply by $\operatorname{adj}C$ and use the finite cofactor
+identity $C\operatorname{adj}C=(\det C)I$.  Coordinate $j$ gives
+\[
+ q_k(X_k)b_j
+   =\sum_\ell
+       \left(\sum_t h_{kt\ell}(\operatorname{adj}C)_{tj}\right)
+       F_\ell.
+\]
+Multiply by $c_j$, sum over $j$, and use the unit identity
+$1-\sum_jc_jb_j=\sum_\ell h_\ell F_\ell$.  The result is an
+explicit identity $q_k(X_k)=\sum_\ell u_{k\ell}F_\ell$, with
+\[
+ u_{k\ell}
+   =q_k(X_k)h_\ell+
+     \sum_j c_j\sum_t h_{kt\ell}(\operatorname{adj}C)_{tj}.
+\]
+Here $q_k$ is monic of degree $D$.  Finite permutation sums compute
+the determinant and cofactors, so this is also a PR certificate
+conversion; the usual cofactor cancellation proves its correctness.
+The converse is useful when another application expects separate
+elimination polynomials.  It is not needed for denominator bounds,
+and it may produce a much larger certificate than the original one.
+
+\subsection{Worked example: a finite section of an elliptic curve}
+
+Consider the two integer polynomials
+\[
+ F_1=4y^2-4x^3+x-4,
+ \qquad F_2=2x^2-x.
+\]
+The first equation alone is the affine cubic
+$y^2=x^3-x/4+1$.  The second cuts out a finite section.  Use the
+four generators
+\[
+             (b_1,b_2,b_3,b_4)=(1,x,y,xy).
+\]
+This basis and its action witnesses can be constructed automatically
+from the two separated identities
+\[
+ x^2-x/2=F_2/2,
+ \qquad y^2-1=\bigl(F_1+(2x+1)F_2\bigr)/4.
+\]
+Theorem~\ref{thm:annihilator-to-module} uses degrees $(2,2)$
+and therefore returns precisely four monomial generators.
+The unit identity is $b_1=1$.  In the row-vector convention above,
+the multiplication matrices are
+\[
+ M_x=\begin{pmatrix}
+ 0&0&0&0\\
+ 1&1/2&0&0\\
+ 0&0&0&0\\
+ 0&0&1&1/2
+ \end{pmatrix},
+ \qquad
+ M_y=\begin{pmatrix}
+ 0&0&1&0\\
+ 0&0&0&1\\
+ 1&0&0&0\\
+ 0&1&0&0
+ \end{pmatrix}.
+\]
+For completeness, all nonzero residual identities are
+\begin{align*}
+ x b_2-\tfrac12 b_2&=\tfrac12 F_2,\\
+ x b_4-\tfrac12 b_4&=\tfrac12 yF_2,\\
+ y b_3-b_1&=\tfrac14 F_1+\tfrac14(2x+1)F_2,\\
+ y b_4-b_2&=\tfrac14 xF_1+\tfrac14x(2x+1)F_2.
+\end{align*}
+The other four action residuals are identically zero.  Expanding the
+third identity gives $y^2-1$ on both sides, and multiplying it by
+$x$ gives the fourth.  Thus the certificate is a collection of eight
+short polynomial identities, not an assumption about a quotient field.
+
+Take $\Delta_x=2$ and $\Delta_y=1$.  The absolute column sums of
+$A_x=2M_x$ are $(2,1,2,1)$, and those of $A_y=M_y$ are all one.
+Hence $R_x=2$ and $R_y=1$.  Every rational common zero lies among
+the fifteen candidate points
+\[
+ x\in\{-1,-1/2,0,1/2,1\},
+ \qquad y\in\{-1,0,1\}.
+\]
+Filtering the two equations gives exactly
+\[
+                 (0,1),\ (0,-1),\ (1/2,1),\ (1/2,-1).
+\]
+One can verify the last filter symbolically as well: $F_2=0$
+implies $x=0$ or $x=1/2$ by the integral-domain law; at either
+value $F_1=0$ reduces to $y^2=1$, and therefore $y=1$ or $y=-1$.
+The point count four attains the size of the spanning family.  The
+denominator information is genuinely part of the result: the argument
+forces $x$ to have reduced denominator dividing two and forces $y$
+to be an integer before any solution is selected.
+
+\subsection{Principal-open conditions and finite chart covers}
+
+A finite algebra certificate can also treat equations together with a
+polynomial inequation $G(x)\ne0$.  Introduce one extra rational
+coordinate $t$ and the equation
+\[
+                           tG(x)-1=0.
+\]
+Every solution of the original system with $G(x)\ne0$ lifts uniquely
+to the extended system by $t=1/G(x)$.  Conversely, an extended solution
+forces $G(x)\ne0$ and projects to an original solution.  A valid
+unit-and-action certificate for the extended system therefore gives
+a complete finite list for that principal-open part.  Projection may
+be followed by a bounded exact deduplication pass, although uniqueness
+of $t$ already prevents repetitions coming from a single chart.
+
+For projective equations, use the disjoint charts in which coordinate
+$j$ is the first nonzero coordinate.  Normalize it to one, set all
+earlier coordinates to zero, and substitute into the homogeneous
+equations.  A supplied finite algebra certificate for every resulting
+affine system gives a complete projective rational-point list: each
+projective point belongs to exactly one such chart and has exactly one
+normalized representative there.  Thus several small algebraic
+certificates can replace one large elimination, without an appeal to
+compactness.  This construction is conditional on the actual chart
+certificates; no claim of general rational-point decidability is hidden
+in the chart decomposition.
+
+\subsection{The exact iPRA and Lean obligations}
+
+The complete human proof reduces to finite arithmetic.  A practical
+formalization should use the following dependency order.
+\begin{enumerate}
+\item Define signed integer and reduced rational codes, finite vectors,
+matrix multiplication, mixed-radix tuple decoding, and sparse polynomial
+evaluation.  Invalid codes receive specified default values.  Prove
+normalization and Euclidean arithmetic by quantifier-free induction.
+\item Prove a signed finite-vector Bezout lemma: if the gcd of the
+absolute coordinates is one, the extended-gcd fold returns a coefficient
+vector $e$ with $e\cdot w=1$.  Track the current gcd and the coefficient
+identity as a bounded invariant.
+\item Prove primitive scaling, then the integer-eigenvalue lemma using
+the displayed coordinate divisibility identities.  The bound uses a
+finite maximum, the triangle inequality for integer sums, and cancellation
+of a positive integer.  No determinant library is required.
+\item Define the certificate checker by coefficient equality for
+\eqref{eq:module-unit-certificate} and
+\eqref{eq:module-action-certificate}.  Prove its substitution lemma:
+acceptance plus vanishing of the input equations implies the evaluated
+unit and action identities.
+\item Prove grid completeness and the finite filter specification.
+The grid invariant states that each processed mixed-radix index has
+been decoded correctly and retained exactly when all equation tests
+succeed.  The input rational point is a free parameter when proving
+that its grid index is visited.
+\item Give explicit PR syntax for these fixed algorithms, compile the
+bounded invariants to quantifier-free formulas, and build actual
+\texttt{Prf PRAAx} derivations.  Only then apply the repository's
+existing translation theorem into the native scalar presentation.
+\end{enumerate}
+
+The accompanying \path{lean/FiniteAlgebraTargets.lean} supplies
+fully defined sparse polynomial operations, the certificate checker,
+the Cartesian-grid producer, and the exact enumeration target.
+Section~\ref{sec:formalization} gives the complete dependency order,
+distinguishing checked host lemmas from the final object derivation.
+
+The general observable theorem is a schema for fixed PR observables
+with supplied local proofs.  The polynomial specialization is uniform
+over arbitrary finite polynomial and certificate codes because its
+evaluator executes one fixed polynomial grammar.  These two kinds of
+uniformity must not be confused with a total universal evaluator for
+all primitive recursive functions.

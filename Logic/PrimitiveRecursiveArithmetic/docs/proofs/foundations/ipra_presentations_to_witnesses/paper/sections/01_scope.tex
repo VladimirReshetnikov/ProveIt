@@ -1,0 +1,160 @@
+\section{Scope, source audit, and the contribution}
+\label{sec:scope}
+
+The purpose of this note is to make mathematical work in \ipra\ more
+composable while actually improving one of the repository's interfaces.
+The supplied repository is substantial: the inspected snapshot contains
+sixty theorem packets, including nine earlier frameworks. Their index
+explicitly distinguishes the checked ConciseIPRA development from packets
+filed as delivered without a repository-wide verification pass
+\cite{RepoIndex,PacketIndex}. Repeating their finite-observation vocabulary
+would not resolve an additional mathematical obligation.
+
+We therefore pin the audit to commit
+\begin{center}\small
+\path{b0f6f535ffc16324683fef2c263260a88ae03755}
+\end{center}
+and concentrate on two missing connections. The first connects a local
+proof about a change of representation to a derivation about an entire
+finite computation. The second connects an algebraic certificate of
+finite dimensionality to positive arithmetic witnesses: coordinate bounds
+and complete rational lists.
+
+\subsection{Results, in their exact logical forms}
+
+The main logical result has a deliberately syntactic premise. Let
+$f,g,h$ be fixed unary PR function symbols. From a supplied derivation
+in \ipra\ of
+\[
+                      h(f(x))=g(h(x))
+\]
+we construct a derivation of
+\[
+       \forall n\;h(\iter_f(n,x))=\iter_g(n,h(x)).
+\]
+The proof uses the displayed equality itself as a quantifier-free
+induction invariant. The companion theorem transports an arbitrary
+quantifier-free binary relation preserved by a pair of steps.
+These are checked Lean theorems with \code{Prf PRAAx} conclusions;
+they are not a rule promoting a theorem of the host logic to an
+arithmetic axiom. A concrete repeated-squaring corollary connects this
+infrastructure to polynomial evaluation, modular computations and
+truncated series.
+
+The main algebraic result starts with polynomial identities, all checked
+by finite coefficient arithmetic. Suppose $F_1,\ldots,F_s$ are rational
+polynomials in $r$ variables and we are supplied a finite family $b_i$,
+a unit combination, and multiplication matrices $M_k$. At a common
+zero $p$, the evaluation row $v=(b_i(p))$ is nonzero and satisfies
+\[
+                           vM_k=p_kv.
+\]
+Choose a positive integer $\Delta_k$ clearing the entries of $M_k$,
+and put
+\[
+ A_k=\Delta_kM_k,\qquad
+ R_k=\max_j\sum_i |(A_k)_{ij}|.
+\]
+We prove
+\[
+             p_k\in\{z/\Delta_k:-R_k\le z\le R_k\}.
+\]
+Consequently exhaustive exact filtering of at most
+$\prod_k(2R_k+1)$ tuples returns \emph{all} rational common zeros.
+No height bound is an extra input to this theorem: the accepted matrices
+compute it. An abstract assertion that there are finitely many rational
+zeros is not an adequate input.
+
+The norm result addresses a second existing interface. For a monic plane
+equation $F(X,Y)$ and a supplied section $G(X,Y)$, compute the norm of
+$G$ in the free $\Q[X]$-module $\Q[X,Y]/(F)$. If that polynomial
+norm is nonzero, bounded rational-root search gives a complete list of
+the common rational zeros. Thus a known section can be located, not
+merely counted. A global supplied finite covering list of sections can
+then be enumerated by finite union. A tuple-dependent covering assertion
+does not provide such a list.
+
+\subsection{Relationship with the existing frameworks}
+
+\begin{longtable}{P{.23\linewidth}P{.34\linewidth}P{.33\linewidth}}
+\toprule
+Inspected interface & Existing content & Additional result here\\
+\midrule\endhead
+Finite contracts and observations & Booleanized bounded invariants,
+precision demands and guarded constructions. & A compiled transformation
+of local object derivations into arbitrary finite simulations.\\[4pt]
+Coherent methods & Finite uniqueness, exact restriction maps, filtered
+lifting and object-level contract composition. & A general iteration
+transport theorem and its relational version.\\[4pt]
+Finite algebra certificates & A size-$D$ spanning certificate bounds
+the length of a list of distinct rational zeros by $D$. & The same
+action matrices give denominator divisibility, coordinate bounds and
+complete rational enumeration.\\[4pt]
+Finite norm certificates & Polynomial norms control the number of
+points in a supplied algebraic section. & A nonzero norm gives a
+complete section list by two finite rational-root searches.\\[4pt]
+Finite covers in the Siegel route & Tuple-local proper-subspace covers
+give a cardinality implication. & A precise stronger input, an actual
+global list or a coefficient bound for the sections, gives enumeration.\\
+\bottomrule
+\end{longtable}
+
+The direct finite-algebra predecessor is
+\path{foundations/ipra_embedding_framework/paper/05_diophantine.tex},
+especially its subsection on finite algebra certificates
+\cite{Embedding}. The most recent norm and cover interfaces occur in
+\path{ipra_finite_demand} and \path{ipra_coherent_methods_2026-11-15}
+\cite{Demand,Coherent}. The earlier
+\path{ipra_finite_observation/tex/sections.tex} explicitly explains
+why cardinality and finite-tuple certificates alone yield no global
+height cutoff \cite{Observation}. We use those distinctions and
+strengthen the data-rich algebraic cases; we do not contradict the
+general obstruction.
+
+Multiplication matrices and effective solving of zero-dimensional
+polynomial systems are established methods in computer algebra.
+Rouillier's rational univariate representation is an important example
+\cite{Rouillier}. This paper does not claim that these broad ideas are
+new. The contribution relative to the inspected repository is the
+small certificate-to-grid theorem, its weak-arithmetic proof,
+the explicit constructors and scope distinctions, and the checked
+object-language transport component.
+
+\subsection{Three levels of verification}
+
+We distinguish the following assertions throughout.
+\begin{enumerate}
+\item A \emph{human \ipra\ argument} describes fixed PR algorithms and
+proves them using finite identities and explicit quantifier-free
+induction invariants. The new algebraic and norm results have such
+arguments here.
+\item A \emph{host Lean theorem} proves an assertion about natural
+numbers, integers, lists or rational arithmetic in Lean. The compiled
+integer-eigenvalue lemmas and finite-filter reduction have this status.
+\item An \emph{object Lean theorem} has a conclusion in the inductively
+defined relation \code{Prf PRAAx}. The compiled simulation, fusion and
+repeated-squaring transport theorems have this stronger, syntactic status.
+\end{enumerate}
+The full rational enumeration theorem has not yet been reified as a
+\code{Prf PRAAx} derivation. Its Lean file defines the finite data and
+programs and states the remaining obligations as named propositions,
+without axioms or placeholder proofs. Section~\ref{sec:formalization}
+gives the dependency order and the precise final arithmetic formula.
+
+\subsection{What this does not resolve}
+
+The reported difficulty in general Mordell--Weil is producing and
+certifying the covering representatives, not running a descent after
+they have been supplied \cite{MordellWeil}. The general Siegel and
+Faltings packets do not supply the global effective data required for
+their original requests \cite{Siegel,Faltings}. The analytic
+prime-distribution packet leaves substantial uniform estimates open
+\cite{PrimeDistribution}. The present framework supplies neither those
+estimates nor a hidden choice procedure. It does supply new, fully
+proved algebraic subroutines and makes a completed formal arithmetic
+interface closer for them.
+
+The audit is targeted. We inspected the repository index, all nine
+framework descriptions, their relevant sections, the directly affected
+arithmetic-geometry reports, and the actual ConciseIPRA definitions.
+We did not independently verify every theorem in all sixty packets.
