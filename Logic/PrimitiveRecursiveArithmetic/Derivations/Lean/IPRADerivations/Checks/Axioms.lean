@@ -231,6 +231,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble.even_point
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble.phi_double_odd
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble.phi_double_even
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiPower.per_sum
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiPower.cop_of_pow
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiPower.pow_point
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiPower.phi_mul_pow
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiPower.phi_power
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiDivides.peel
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiDivides.viol_ge2
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiDivides.phi_dvd_mul
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiDivides.phi_divides
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
