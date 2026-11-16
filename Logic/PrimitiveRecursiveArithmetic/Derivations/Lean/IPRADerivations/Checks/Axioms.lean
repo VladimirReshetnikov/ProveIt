@@ -240,6 +240,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiDivides.viol_ge2
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiDivides.phi_dvd_mul
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiDivides.phi_divides
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Valuation.lt_pw
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Valuation.val_not_dvd
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Valuation.val_dvd
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Valuation.cof_eq
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Valuation.cof_not_dvd
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Valuation.prime_congr
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Valuation.lpf_of_prime
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Valuation.isP_of_prime
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Valuation.prime_of_isP
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Valuation.isP_01
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
