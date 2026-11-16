@@ -104,6 +104,7 @@ import IPRADerivations.Foundations.Termination
 import IPRADerivations.Foundations.ChineseRemainder
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Foundations.BoundedFormulas
+import IPRADerivations.Foundations.TraceInvariant
 import IPRADerivations.Geometry.EulerRodrigues
 import IPRADerivations.Geometry.Morley
 import IPRADerivations.Geometry.PlatonicSolids

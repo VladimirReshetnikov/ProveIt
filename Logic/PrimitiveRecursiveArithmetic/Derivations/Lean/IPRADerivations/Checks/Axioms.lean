@@ -204,6 +204,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.bf_dec
 #print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.bf_choice
 #print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.bf_least
+#print axioms LeanProofs.IPRA.Foundations.TraceInvariant.run_zero
+#print axioms LeanProofs.IPRA.Foundations.TraceInvariant.run_succ
+#print axioms LeanProofs.IPRA.Foundations.TraceInvariant.trace_invariant_all
+#print axioms LeanProofs.IPRA.Foundations.TraceInvariant.trace_invariant
+#print axioms LeanProofs.IPRA.Foundations.TraceInvariant.run_add
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Hurwitz.denominator_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.gauss_lemma
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_dvd_left
