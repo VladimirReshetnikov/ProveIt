@@ -1,0 +1,200 @@
+\section{Compositional bounded reflection}\label{sec:reflection}
+
+\subsection{The checked one-parameter backend}
+
+The pinned library already contains the essential object proofs for a body \(f(i,x)\):
+
+\begin{itemize}
+\item a least-zero search \(\mu_f(N,x)\) with its bound, success, and minimality specification;
+\item a universal bit
+\[
+ \mathsf{allB}_f(N,x)=\prod_{i<N}\operatorname{sg}(f(i,x));
+\]
+\item an existential bit \(\mathsf{exB}_f(N,x)\) and least nonzero witness;
+\item implications between bit equations and object-level bounded quantifiers;
+\item decidability of the bounded universal and bounded choice for the existential.
+\end{itemize}
+
+The key point is that these declarations already conclude \(\Prf\,\PRAAx\) judgments.  A new
+framework should import them, not restate them as future lemmas.
+
+\subsection{Arity-polymorphic search}\label{subsec:searchk}
+
+The present API packages all non-search parameters into one term \(x\).  This is adequate after
+pairing, but it creates avoidable encoding overhead and complicates theorem-specialized formulas.
+A direct generalization to \(k\) parameters is straightforward and is the first proposed upstream
+extension.
+
+Let \(f:\PTm(k+1)\), with variable \(0\) the candidate index and variables
+\(1,\ldots,k\) the parameters.  In the recursion step there are \(k+2\) variables:
+\(0=N\), \(1=\mu_N\), and \(2,\ldots,k+1\) the parameters.  Define the renaming
+\[
+ \rho(0)=0,\qquad \rho(j+1)=j+2,
+\]
+and \(f^{\uparrow}=f[\rho]\).  Put
+\[
+ s_f(N,m,\vec x)=m+[m=N]\,\operatorname{sg}(f(N,\vec x)).
+\]
+Primitive recursion with base zero and step \(s_f\) defines
+\(\mu_f(N,\vec x)\).
+
+The intended behavior is unchanged: if no zero has appeared before \(N\), then \(m=N\), and the
+step advances to \(N+1\) precisely when \(f(N,\vec x)\ne0\).  If a zero was found earlier, then
+\(m<N\), the equality bit vanishes, and the value remains fixed.
+
+\begin{theorem}[Arity-polymorphic search specification]\label{thm:searchk}
+For every fixed \(k\) and body \(f\), iPRA proves
+\[
+ \mu_f(N,\vec x)\le N,
+\]
+\[
+ \mu_f(N,\vec x)<N\;\to\; f(\mu_f(N,\vec x),\vec x)=0,
+\]
+and
+\[
+ i<\mu_f(N,\vec x)\;\to\;f(i,\vec x)\ne0.
+\]
+\end{theorem}
+
+\begin{proof}
+Use quantifier-free induction on \(N\) with the conjunction of the three displayed statements as the
+invariant; \(i\) and \(\vec x\) are parameters.  The zero case is immediate.  For the successor
+case, split on \(\mu_N<N\) or \(\mu_N=N\).  In the first branch the defining equation gives
+\(\mu_{N+1}=\mu_N\), so all clauses follow from the induction hypothesis.  In the second branch,
+split on \(f(N,\vec x)=0\) or nonzero.  In the zero branch, \(\mu_{N+1}=N\); in the nonzero branch,
+\(\mu_{N+1}=N+1\).  Order, equality-bit, and sign lemmas already used by the one-parameter proof
+establish each subcase.  The formula is quantifier free because all functions are represented by
+terms and all connectives are propositional.
+\end{proof}
+
+The Lean proof can be obtained by refactoring the current \code{Search.lean}: replace the two
+specialized application helpers by \code{app} with a \code{Fin.cases} vector, and replace the
+hard-coded simplification list by lemmas for the generic renaming \(\rho\).  The mathematical
+induction is identical.
+
+\subsection{Universal and existential aggregators at arbitrary arity}
+
+Define a product recursion
+\[
+ \mathsf{allB}_f(N,\vec x)=\prod_{i<N}\operatorname{sg}(f(i,\vec x))
+\]
+and
+\[
+ \mathsf{exB}_f(N,\vec x)=1\mathbin{\dot-}
+   \mathsf{allB}_{1\mathbin{\dot-}f}(N,\vec x).
+\]
+Here \(\dot-\) is truncated subtraction.  The proof that the universal bit equals the equality test
+\([\mu_f(N,\vec x)=N]\) is again quantifier-free induction.  The existing one-parameter proof then
+generalizes verbatim.
+
+\begin{theorem}[Arity-polymorphic bounded reflection]\label{thm:allk}
+For a fixed body \(f(i,\vec x)\), iPRA proves:
+\begin{align*}
+ \mathsf{allB}_f(N,\vec x)=1
+ &\quad\Longleftrightarrow\quad
+ \forall i<N\;f(i,\vec x)\ne0,\\
+ \mathsf{exB}_f(N,\vec x)=1
+ &\quad\Longleftrightarrow\quad
+ \exists i<N\;f(i,\vec x)\ne0,
+\end{align*}
+where each direction is represented by an ordinary object derivation.  In the existential case, the
+least witness is primitive recursive and satisfies the expected specification.
+\end{theorem}
+
+\begin{proof}
+The equality \(\mathsf{allB}= [\mu=N]\) reduces the universal statement to the search
+specification.  If the bit is one, then \(\mu=N\), so every \(i<N\) is below \(\mu\) and hence is not
+a zero.  Conversely, if the bit were zero, the search specification would produce a zero below
+\(N\), contradicting the universal premise.  The existential bit is the complement of the universal
+bit for the complement body.  Its least witness is the least zero of that complement, which is
+exactly the least nonzero of \(f\).
+\end{proof}
+
+This extension resolves the recurring ``one packed environment'' inconvenience while retaining the
+existing API as the case \(k=1\).
+
+\subsection{A reflected-formula interface}
+
+For theorem generation, the useful abstraction is not a universal formula code but a package for one
+fixed formula.
+
+\begin{definition}[Reflected formula]
+A reflected formula over \(n\) free variables is a tuple
+\[
+  (\varphi,b,C,S,T)
+\]
+where \(\varphi:\Fm\,\PTm\,n\), \(b:\PTm n\), and the object proofs establish:
+\begin{enumerate}
+\item \(C:\;b=0\lor b=1\);
+\item \(S:\;b=1\to\varphi\) (soundness);
+\item \(T:\;\varphi\to b=1\) (completeness).
+\end{enumerate}
+\end{definition}
+
+The package is produced by meta-level recursion on a fixed bounded formula.  It contains the concrete
+bit term and concrete object derivations; no formula code is evaluated inside iPRA.
+
+\subsection{Propositional combinators}
+
+Suppose \((\varphi,a)\) and \((\psi,b)\) are reflected.
+
+\paragraph{Conjunction.}
+Use \(a\cdot b\).  By case analysis on the two bit dichotomies, the product is one exactly when both
+bits are one.  Soundness applies the two component soundness proofs; completeness applies the two
+component completeness proofs and multiplication by one.
+
+\paragraph{Disjunction.}
+Use \(\operatorname{sg}(a+b)\).  If either formula holds, the corresponding bit is one, so the sum is
+nonzero and its sign is one.  Conversely, case analysis on \(a,b\in\{0,1\}\) shows that a nonzero sum
+forces at least one bit to be one; object-level disjunction elimination then yields
+\(\varphi\lor\psi\).
+
+\paragraph{Negation.}
+Because \(\varphi\) is decidable through its bit, use \(1\mathbin{\dot-}a\).  If the complement bit is
+one, then \(a=0\); assuming \(\varphi\) would give \(a=1\), contradiction.  Conversely, if
+\(\neg\varphi\), the case \(a=1\) contradicts soundness, hence \(a=0\), and the complement is one.
+This is intuitionistically valid because the reflected package supplies decidability.
+
+\paragraph{Implication.}
+For decidable antecedent \(\varphi\), \(\varphi\to\psi\) is equivalent intuitionistically to
+\(\neg\varphi\lor\psi\).  Compile it using the previous two constructions.  No classical law is
+used beyond the explicit decidability proof carried by the bit.
+
+\subsection{Bounded quantifier combinators}
+
+Let \(\theta(i,\vec x)\) have a reflected bit \(f(i,\vec x)\).  Apply
+\cref{thm:allk} to obtain a bit for
+\(\forall i<N\,\theta(i,\vec x)\).  Soundness first reflects the universal bit to
+\(f(i,\vec x)\ne0\) at an arbitrary \(i<N\); since \(f\) is a bit, nonzero implies one, and the body
+soundness proof gives \(\theta\).  Completeness starts from the bounded universal formula, applies
+the body completeness theorem at arbitrary \(i\), and invokes universal-bit introduction.
+
+The existential case uses \(\mathsf{exB}\).  Soundness extracts the least witness and applies body
+soundness.  Completeness opens an object-level existential witness, applies body completeness, and
+uses existential-bit introduction.  If the witness must not escape, the resulting existential is
+sealed.  If it must escape, the least-witness component is retained.
+
+\begin{theorem}[Static bounded-formula compilation]\label{thm:bounded-compile}
+Every fixed bounded formula built from primitive-recursive atomic equations, conjunction,
+disjunction, implication, negation, and bounded quantifiers admits a primitive-recursive bit and
+object derivations of soundness, completeness, and bit-valuedness.
+\end{theorem}
+
+\begin{proof}
+Meta-level structural induction on the fixed formula.  Atomic equality uses the checked equality bit;
+atomic nonzero uses the sign bit.  The propositional cases are the constructions above.  The bounded
+quantifier cases use the arity-polymorphic reflection theorem.  Every induction step constructs a
+finite \(\Prf\) term.  This is a theorem schema implemented by Lean recursion, not an object-level
+universal truth predicate.
+\end{proof}
+
+\subsection{Why this respects the limits of iPRA}
+
+The compilation theorem does not say that arbitrary encoded formulas have a primitive-recursive
+truth function.  For each fixed source formula, it constructs a specialized bit and proof.  Formula
+size and quantifier nesting are consumed at elaboration time.  The object theory sees only a finite
+term assembled from fixed primitive-recursive symbols.
+
+Likewise, boundedness is essential.  An unbounded existential cannot in general be converted to a
+primitive-recursive least witness.  It may still be eliminated locally by \cref{thm:seal}, but public
+naming requires a proved cutoff.

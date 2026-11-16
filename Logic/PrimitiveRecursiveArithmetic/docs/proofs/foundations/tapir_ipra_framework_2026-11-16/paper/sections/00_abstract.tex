@@ -1,0 +1,67 @@
+\begin{abstract}
+The ProveIt iPRA repository now contains a checked object calculus, a substantial library of
+ordinary derivations, and more than one hundred mathematical proof packets.  The packets repeatedly
+exhibit the same mismatch: finite search, exact arithmetic, trace checking, and certificate
+verification are easy to describe at the host level, but the final claim is often not a term of the
+canonical judgment \(\Prf\,\PRAAx\,\Gamma\,\varphi\).  Several prior frameworks solve the semantic
+part of the problem, yet leave a generic last-mile compiler as a blueprint.
+
+This report proposes \TAPIR-iPRA (\emph{Typed Arithmetic Proof Intermediate Representation}).  Its
+central idea is deliberately modest: do not internalize a universal syntax interpreter inside iPRA.
+Instead, specialize every mathematical construction at Lean elaboration time to concrete \(\PR\),
+\(\PTm\), and \(\Fm\) expressions, and represent the resulting argument by an indexed proof plan
+whose type already states its object-theory endpoint.  A total interpreter from plans to
+\(\Prf\,\PRAAx\) is then a structural recursion using only checked constructors and checked library
+lemmas.  An untrusted host generator may build plans, but it cannot manufacture a theorem because
+Lean must accept the generated term.
+
+The second ingredient is a typed sequential schedule.  A new node is allowed to use earlier outputs
+and a fixed list of residual producer hypotheses.  Simultaneous cut discharges all earlier outputs,
+so induction on the schedule produces a proof of every node from the residuals alone.  Consequently,
+a finite contract graph compiles to an ordinary sequent
+\[
+  B_1,\ldots,B_r,\Gamma\;\vdash_{\PRAAx}\;\Phi,
+\]
+with no hidden oracle.  Supplying object proofs of the \(B_i\) closes the theorem; otherwise the
+conditional endpoint precisely records what mathematics is still missing.
+
+The report integrates certificate escape analysis, bounded least-witness extraction, compositional
+bounded reflection, clocked traces, quantitative names, stable observations, and height-bounded
+enumeration.  It resolves several difficulties that older packets had left open by reusing current
+checked modules: \code{Prf.subst}, \code{Prf.weaken}, \code{Prf.trans}, quantifier-free induction,
+least bounded search, bounded universal and existential reflection, pairing, and measure-decreasing
+termination.  It does not claim ineffective height bounds, convergence moduli, separation constants,
+or uniform generator algorithms.  Those remain explicit producer boundaries rather than being
+smuggled into a purported compiler.
+
+The archive contains the complete \LaTeX{} source and PDF, Lean-oriented modules and a
+formalization plan, an executable reference implementation of graph slicing, schedule validation,
+escape analysis, finite strategy synthesis, demand closure, and traces, together with tests and
+machine-readable metadata.
+\end{abstract}
+
+\section*{Main contribution at a glance}
+\addcontentsline{toc}{section}{Main contribution at a glance}
+
+\begin{center}
+\resizebox{0.97\textwidth}{!}{%
+\begin{tikzpicture}[
+  node distance=8mm and 12mm,
+  box/.style={draw=tapirblue,rounded corners,fill=tapirgray,align=center,inner sep=6pt},
+  arr/.style={-{Stealth[length=2.2mm]},thick,tapirblue}]
+\node[box] (math) {Theorem-specific\\finite mathematics};
+\node[box,right=of math] (specialize) {Host specialization\\to fixed terms and formulas};
+\node[box,right=of specialize] (plan) {Typed \(\Plan\)\\and schedule};
+\node[box,right=of plan] (prf) {Literal\\\(\Prf\,\PRAAx\)};
+\draw[arr] (math) -- (specialize);
+\draw[arr] (specialize) -- (plan);
+\draw[arr] (plan) -- node[above,align=center]{structural\\interpreter} (prf);
+\node[box,below=of plan] (res) {Explicit residuals\\height bounds, moduli, gaps};
+\draw[arr] (res) -- (plan);
+\end{tikzpicture}%
+}
+\end{center}
+
+The framework is not a stronger theory.  It is a disciplined way to obtain ordinary iPRA
+proofs from the finite constructions that iPRA can actually express, while making every stronger
+input visible in the context.

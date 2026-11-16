@@ -1,0 +1,153 @@
+\section{Clocked traces, invariants, and termination}\label{sec:traces}
+
+\subsection{The trace normal form}
+
+Many finite mathematical proofs can be normalized to a primitive-recursive state machine:
+\[
+ s_0=\mathsf{init}(\vec x),\qquad
+ s_{t+1}=\mathsf{step}(t,s_t,\vec x).
+\]
+The state is one natural code, typically a nested pairing of fields.  A public theorem reads an
+observation from \(s_T\) at an explicit horizon \(T(\vec x)\).  The proof burden is:
+
+\begin{enumerate}
+\item defining equations for the trace;
+\item a quantifier-free invariant \(I(t,s_t,\vec x)\);
+\item a base derivation and a preservation derivation;
+\item a finalizer deriving the desired formula from \(I(T,s_T,\vec x)\).
+\end{enumerate}
+
+All rich mathematical structure is represented by finite fields and certificate predicates inside
+\(I\).  Quantifiers needed by the informal proof are either bounded-reflected before induction or
+moved into the finalizer.
+
+\subsection{Generic invariant theorem}
+
+Let \(r(t,\vec x)\) be defined by primitive recursion from a base term \(b(\vec x)\) and step term
+\(s(t,r,\vec x)\).  Let \(I(t,\vec x)\) abbreviate a quantifier-free formula in which occurrences of
+the current state are replaced by \(r(t,\vec x)\).
+
+\begin{theorem}[Clocked trace reflection]\label{thm:trace}
+If
+\[
+ []\vdash_{\PRAAx} I(0,\vec x)
+\]
+and
+\[
+ I(t,\vec x)\vdash_{\PRAAx} I(t+1,\vec x),
+\]
+then
+\[
+ []\vdash_{\PRAAx} I(t,\vec x)
+\]
+for all \(t\), with the other variables treated as parameters.  Hence every explicit horizon
+\(T(\vec x)\) may be substituted into the universal result.
+\end{theorem}
+
+\begin{proof}
+Apply quantifier-free induction to the formula \(I\).  The base and successor premises are exactly
+those required by \code{PRA.qfInd} (or by the open-variable wrapper \code{IPRA.ind}).  Universal
+elimination specializes the result to \(T(\vec x)\).  The defining equations of \(r\), proved by
+\code{rec_zero} and \code{rec_succ}, are used in the base and step derivations to rewrite the state.
+\end{proof}
+
+\subsection{State design}
+
+A robust state layout contains:
+
+\begin{itemize}
+\item the mathematical accumulator;
+\item the loop counter when it is not already the recursion variable;
+\item a failure bit that becomes one permanently after a local check fails;
+\item resource parameters whose values would otherwise change the induction formula;
+\item optional certificate fragments or a rolling hash/summary when the final theorem requires a
+      trace certificate.
+\end{itemize}
+
+A failure accumulator is particularly useful.  Let \(e_t\in\{0,1\}\) indicate whether the local
+condition at stage \(t\) succeeds, and define
+\[
+ F_0=0,\qquad F_{t+1}=\operatorname{sg}(F_t+(1\mathbin{\dot-}e_t)).
+\]
+Then \(F_T=0\) is equivalent to every local condition succeeding for \(t<T\).  The invariant remains
+quantifier free, while bounded universal meaning is recovered by a reflection theorem.
+
+\subsection{Measure-decreasing termination}
+
+The pinned repository already proves an object theorem for stopped runs.  Given primitive-recursive
+\(\mathsf{done}\), \(\mathsf{step}\), and measure \(m\), define a run that remains fixed after
+termination.  Under the hypothesis
+\[
+ \forall s\,[\mathsf{done}(s)=0\to m(\mathsf{step}(s))<m(s)],
+\]
+the checked theorem proves that the run is terminal by time \(m(s_0)+1\).
+
+\begin{corollary}[Fuel extraction]
+A deterministic local algorithm whose nonterminal steps strictly decrease an explicit natural
+measure can be compiled to a total fixed-horizon trace without postulating general well-founded
+recursion.
+\end{corollary}
+
+\begin{proof}
+Use the checked termination theorem with horizon \(m(s_0)+1\).  The trace is primitive recursive
+because it is a stopped bounded iteration.  Once terminality is known, a finalizer reads the result.
+\end{proof}
+
+Lexicographic or multicomponent measures can be encoded into one natural by a proved ranking
+function, or handled by an explicit finite capacity bound.  The measure theorem is a producer if its
+decrease proof uses domain-specific mathematics; the generic termination step is already checked.
+
+\subsection{Changing precision}
+
+Suppose step \(t\) needs precision \(p_t\), and an informal proof chooses \(p_{t+1}\) after seeing the
+current state.  Directly writing \(I_{p_t}(t)\) would change the induction formula.  There are two
+correct transformations.
+
+\paragraph{Reverse demand pass.}
+For a fixed final query, compute all required precisions before object induction.  Put the resulting
+finite table into a code and let the state read its \(t\)-th entry.
+
+\paragraph{Precision as state.}
+Add \(p_t\) to the state, define its primitive-recursive update, and strengthen the invariant to
+assert that the current mathematical data meet the current precision.  The formula is fixed because
+``current precision'' is a term projection, not a meta-level index.
+
+Both transformations turn a family of informal invariants into one quantifier-free formula.
+
+\subsection{Proof-size control}
+
+Unrolling \(T\) local steps produces a proof term linear or worse in \(T\).  The trace theorem uses
+one induction derivation independent of the numeric horizon.  The final proof contains the fixed
+base and step proofs plus a term denoting \(T\).  For large equational calculations, a native-clause
+backend can share common fragments, but the main asymptotic improvement already comes from primitive
+recursion plus one induction.
+
+\subsection{Nondeterministic traces}
+
+A relational computation is represented in one of three ways:
+
+\begin{enumerate}
+\item a sealed whole-trace certificate checked by a primitive-recursive verifier;
+\item a backward viability table followed by deterministic least choices;
+\item a cloud-valued state whose public observer is stable under all legal successors.
+\end{enumerate}
+
+The first is simplest when a producer supplies a complete path.  The second exposes a canonical path
+and therefore requires finite bounds.  The third is strongest constructively when only an invariant
+observation matters.
+
+\subsection{Lean integration pattern}
+
+A theorem-specific trace module should contain, in dependency order:
+
+\begin{enumerate}
+\item the state projections and substitution lemmas;
+\item the base and step \(\PTm\) definitions and their \code{rec_zero}/\code{rec_succ} equations;
+\item the quantifier-free invariant and a proof of \code{Fm.QF};
+\item base and preservation derivations;
+\item one call to \code{PRA.qfInd} or \code{IPRA.ind};
+\item a finalizer plan and schedule node.
+\end{enumerate}
+
+This layout localizes the only induction proof and makes residual producers visible in the context of
+base, step, or finalizer nodes.

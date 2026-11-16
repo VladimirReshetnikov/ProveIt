@@ -1,0 +1,226 @@
+\section{Lean formalization architecture}\label{sec:lean}
+
+\subsection{Target repository layout}
+
+The proposed checked development fits naturally under
+\path{Derivations/Lean/IPRADerivations/Foundations/TAPIR/}:
+
+\begin{center}
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+Module & Responsibility \\
+\midrule
+\code{Kernel.lean} & Indexed \code{Plan}, interpreter, structural macros. \\
+\code{Schedule.lean} & Sequential schedule and compile-all theorem. \\
+\code{Certificates.lean} & Sealing, observer escape, named bounded witnesses. \\
+\code{SearchK.lean} & Arity-polymorphic least search and compatibility aliases. \\
+\code{Reflection.lean} & Generic-arity bounded aggregators and reflected-formula combinators. \\
+\code{Trace.lean} & Generic clocked trace and invariant macro. \\
+\code{HeightList.lean} & Conditional bounded enumeration theorem. \\
+\code{Examples.lean} & Minimum, finite strategy, and bisection demonstrations. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The archive mirrors this plan in \code{lean/TAPIR/}.  \code{Kernel.lean} and
+\code{Schedule.lean} contain no placeholders.  Larger files are explicit source-oriented blueprints
+with every remaining milestone marked by \code{sorry}; they are not represented as compiled code.
+
+\subsection{Milestone 0: pin and audit}
+
+Use the pinned commit from the title page.  Before editing, run the existing derivation build and
+axiom audit.  Record the versions of Lean, Mathlib, and the repository lake files.  The implementation
+must preserve old declarations such as \code{Search.mu} and
+\code{BoundedReflection.bounded_choice}; generic-arity replacements should initially be additional
+modules or expose compatibility aliases.
+
+\subsection{Milestone 1: elaborate the plan kernel}
+
+The kernel imports only \code{ConciseIPRA.PR}.  Its proof obligations should all be definitional or a
+single call to an existing theorem:
+
+\begin{itemize}
+\item \code{Plan.weaken} maps to \code{Prf.weaken};
+\item \code{Plan.subst} maps to \code{Prf.subst};
+\item \code{Plan.cut} maps to \code{Prf.trans};
+\item logical constructors map to corresponding \code{Prf} constructors;
+\item \code{Plan.qfInd} maps to \code{PRA.qfInd}.
+\end{itemize}
+
+The first compile target is:
+
+\begin{lstlisting}[language=Lean]
+#check TAPIR.Plan.run
+-- expected:
+-- Plan Gamma phi -> Gamma |- [PRAAx] phi
+\end{lstlisting}
+
+No classical axioms, quotient types, or semantic interpretations should enter this file.
+
+\subsection{Milestone 2: elaborate schedules}
+
+The schedule module depends only on the kernel.  The key function is structurally recursive on the
+schedule.  Likely elaboration issues are limited to implicit indices and membership proofs.  A robust
+implementation can split helpers:
+
+\begin{enumerate}
+\item \code{Plan.hypOfMem : phi in R -> Plan R phi};
+\item \code{dischargeAppend} for \(O++R\);
+\item \code{Schedule.proveAll};
+\item \code{Schedule.head} as a convenience theorem.
+\end{enumerate}
+
+Unit examples should construct a two-node schedule where the second node uses the first, then inspect
+the type of \code{Plan.run (Schedule.head ...)}.
+
+\subsection{Milestone 3: certificate macros}
+
+Most declarations are wrappers around existing rules and should be placeholder-free:
+
+\begin{lstlisting}[language=Lean]
+def Plan.seal
+    (hex : Plan Gamma (Fm.ex theta))
+    (body : Plan (theta :: Gamma.map Fm.shift) psi.shift) :
+    Plan Gamma psi := Plan.exE hex body
+
+theorem namedWitness (f : PTm 2)
+    (h : Gamma |- [PRAAx]
+      Fm.ex (lt (var 0) (Syn.shift N) /\
+        neg (inst2 f (var 0) (Syn.shift x) = zero))) :
+    Gamma |- [PRAAx]
+      lt (wit f N x) N /\ neg (inst2 f (wit f N x) x = zero) :=
+  bounded_choice f h
+\end{lstlisting}
+
+The exact notation in the source uses the repository's scoped formula symbols.  Observer macros
+should be formulated first for exact equality, then for a user-supplied compatibility formula rather
+than hard-coding rational metrics.
+
+\subsection{Milestone 4: generic-arity search}
+
+Implement the body renaming \(\rho\) from \cref{subsec:searchk}.  Recommended helper definitions are:
+
+\begin{itemize}
+\item \code{paramsStep : Fin (k+1) -> PTm (k+2)};
+\item \code{liftBody (f : PTm (k+1)) : PTm (k+2)};
+\item \code{applyK (g : PR (k+1)) (N : PTm n) (xs : Fin k -> PTm n)};
+\item substitution lemmas for all three.
+\end{itemize}
+
+Define \code{muFK} using \code{recDef}; derive zero and successor equations from
+\code{rec_zero} and \code{rec_succ}.  Port the existing invariant proof one branch at a time.  The
+preferred regression test is to prove that \(k=1\) specializes to the current \code{Search.mu}
+up to a definitional or object equality, and then leave the old API untouched.
+
+\subsection{Milestone 5: reflection packages}
+
+A practical Lean record is:
+
+\begin{lstlisting}[language=Lean]
+structure Reflected {n : Nat} (phi : Fm PTm n) where
+  bit      : PTm n
+  cases    : ([] : List (Fm PTm n)) |- [PRAAx]
+               (bit = zero) \/ (bit = one)
+  sound    : ([] : List (Fm PTm n)) |- [PRAAx]
+               ((bit = one) --> phi)
+  complete : ([] : List (Fm PTm n)) |- [PRAAx]
+               (phi --> (bit = one))
+\end{lstlisting}
+
+For use under hypotheses and arbitrary substitutions, derive methods by applying
+\code{IPRA.inst} or \code{Prf.subst} followed by \code{Prf.ofNil}.  Implement atomic equality and
+nonzero first, then conjunction and disjunction.  Negation and implication should explicitly use the
+bit cases; do not invoke classical tactics.  Bounded quantifiers are added after \code{SearchK} and
+generic aggregators compile.
+
+A source-level bounded formula datatype is optional.  The safest first implementation builds
+\code{Reflected} packages directly in theorem-specific modules.  A later meta-program can recurse on
+a syntax tree and emit the same packages.
+
+\subsection{Milestone 6: traces}
+
+The generic trace module should use \code{recDef} rather than introduce a new recursion encoding.
+A useful theorem signature is:
+
+\begin{lstlisting}[language=Lean]
+theorem traceInvariant
+    (I : Fm PTm (k+1)) (hI : I.QF)
+    (h0 : ([] : List (Fm PTm k)) |- [PRAAx]
+      I.subst (Syn.inst zero))
+    (hS : [I] |- [PRAAx]
+      I.subst (Syn.repl (succ (var 0)))) :
+    ([] : List (Fm PTm (k+1))) |- [PRAAx] I :=
+  IPRA.ind I hI h0 hS
+\end{lstlisting}
+
+The theorem is essentially the existing \code{IPRA.ind}; the new module should focus on state
+projection and failure-accumulator combinators, not duplicate induction.
+
+\subsection{Milestone 7: conditional complete lists}
+
+Formalize a generic scan over \([0,C)\) whose membership bit is a reflected predicate.  Prove:
+
+\begin{enumerate}
+\item scan soundness;
+\item membership of every accepted code below \(C\);
+\item completeness from a residual formula \(S(z)\to z<C\).
+\end{enumerate}
+
+The first application should be a toy polynomial equation with an elementary coefficient/height
+bound.  Only after that compiles should theorem packets for difficult Diophantine problems import the
+generic module and expose their true height residual.
+
+\subsection{Milestone 8: examples and integration}
+
+Three examples should be required before merging:
+
+\begin{enumerate}
+\item finite minimum with a named least minimizer;
+\item a local certificate eliminated without any search bound;
+\item a three-node schedule ending in a conditional theorem with one residual, followed by a second
+      theorem that supplies the residual and closes the result.
+\end{enumerate}
+
+Then update \code{IPRADerivations.lean}, the derivation README, and the root unification plan.  Run
+all existing tests and the repository's axiom scan.  The final declaration should visibly have the
+form
+\[
+ ([]:\mathsf{List}(\Fm\,\PTm\,0))\vdash_{\PRAAx}\Phi
+\]
+or the intended finite residual context.
+
+\subsection{Expected formalization risks}
+
+\paragraph{Dependent pattern matching.}
+The indexed \code{Plan.run} definition may need explicit implicit arguments or separate equations.
+This is a Lean elaboration issue, not a mathematical gap.
+
+\paragraph{Binder simplification.}
+Generic reflection will require lemmas normalizing substitutions through shifted body terms.  These
+should be isolated as named equalities rather than handled by large brittle \code{simp} calls.
+
+\paragraph{Context order.}
+The schedule uses \(O++R\).  Domain nodes may naturally produce \(R++O\) or small subcontexts.  Add
+explicit permutation/weakening helpers and choose one canonical order.
+
+\paragraph{Proof-term size.}
+Compositional reflected formulas may duplicate bit-case proofs.  Mark common packages as definitions
+and let theorem-specific code reuse them.  If necessary, lower large equational blocks to the checked
+native clause calculus.
+
+\paragraph{API drift.}
+The branch advances quickly.  Keep all upstream declaration names and blob identifiers in the source
+audit, and repin before integration.
+
+\subsection{Definition of done}
+
+A module is complete only when:
+
+\begin{enumerate}
+\item it elaborates in the pinned repository with no \code{sorry};
+\item all public theorem endpoints are ordinary \code{Prf PRAAx};
+\item no new axiom appears in the axiom audit;
+\item every host algorithm is absent from the trust argument;
+\item residual producer formulas are listed in theorem statements and metadata;
+\item at least one theorem-specific client imports the module.
+\end{enumerate}

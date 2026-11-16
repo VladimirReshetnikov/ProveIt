@@ -1,0 +1,80 @@
+\section{Theorem and artifact ledger}\label{app:ledger}
+
+\subsection{New human proofs in this report}
+
+\begingroup
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{P{0.27\textwidth}P{0.48\textwidth}P{0.20\textwidth}}
+\toprule
+Result & Content & Formal status \\
+\midrule
+\endfirsthead
+\toprule
+Result & Content & Formal status \\
+\midrule
+\endhead
+Plan soundness & Structural interpreter from typed plans to \(\Prf\,\PRAAx\). & Full human proof; no-placeholder Lean candidate, unelaborated. \\
+Schedule compilation & Every prior output of a sequential schedule is derivable from residuals alone. & Full human proof; no-placeholder Lean candidate, unelaborated. \\
+Residual closure & Close a conditional theorem by simultaneous cut. & Immediate from checked \code{Prf.trans}. \\
+Syntactic residual exactness & Backward-sliced compiler reports exactly the external formulas referenced by reachable nodes. & Human proof; Python regression tests. \\
+Certificate sealing & Eliminate local witnesses without bounded search. & Immediate from checked \code{Prf.exE}. \\
+Exact/stable observer erasure & Export certificate-independent or quantitatively stable observations. & Full human proof schema; Lean blueprint. \\
+Arity-polymorphic search & Generalize least search from one parameter to a finite parameter vector. & Full mathematical proof; Lean blueprint. \\
+Arity-polymorphic bounded reflection & Generic-arity all/ex bits and least witness. & Full mathematical proof; Lean blueprint. \\
+Static bounded-formula compilation & Every fixed bounded formula obtains a bit plus object soundness/completeness proofs. & Structural human proof; Lean blueprint. \\
+Clocked trace reflection & One quantifier-free induction verifies a specialized state trace. & Reduction to checked \code{PRA.qfInd}/\code{IPRA.ind}. \\
+Conditional complete list & Height/code bounds imply a sound and complete bounded solution list. & Full human proof schema; Lean target. \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{Inherited checked dependencies}
+
+At the pinned repository commit, the report relies on the following upstream declarations as checked
+source, subject to the repository's own build and audit:
+
+\begin{itemize}
+\item \code{Prf.substWeaken}, \code{Prf.weaken}, \code{Prf.subst}, \code{Prf.trans},
+      \code{Prf.exE}, and the natural-deduction constructors;
+\item \code{PRA.qfInd};
+\item \code{IPRA.inst} and \code{IPRA.ind};
+\item \code{recDef}, \code{rec_zero}, \code{rec_succ}, bounded sums and products;
+\item pairing and projections;
+\item \code{Search.search_spec}, \code{search_found}, \code{search_minimal};
+\item bounded reflection: \code{all_reflect}, \code{all_intro}, \code{all_dec},
+      \code{ex_elim}, \code{ex_none}, and \code{bounded_choice};
+\item the measure-decreasing \code{Termination.termination} theorem;
+\item \code{KPrf.subst}, \code{KPrf.cut}, and export to the native kernel, as an optional backend.
+\end{itemize}
+
+\subsection{Executable reference artifacts}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+File & Purpose \\
+\midrule
+\code{reference/tapir_reference.py} & DAG validation, backward slicing, topological scheduling, residual collection, escape classification, bounded least search, strategy synthesis, monotone demand closure, traces, and observer diameter. \\
+\code{reference/test_tapir_reference.py} & Regression tests for all reference algorithms and failure modes. \\
+\code{examples/demo_contract.json} & Example graph containing local, observed, named, and residual nodes. \\
+\code{schema/tapir_plan.schema.json} & JSON schema for graph exchange. \\
+\code{metadata/*.md,csv,json} & Status, source audit, theorem ledger, difficulty matrix, and integration map. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+These artifacts are not part of the proof trust base.
+
+\subsection{Claim discipline}
+
+The archive uses the following labels.
+
+\begin{description}
+\item[checked upstream] declaration inspected in the pinned ProveIt source and reported by that
+repository as part of its checked core or derivation library;
+\item[human proof] a complete mathematical argument in this report;
+\item[source candidate] Lean code with no intentional placeholders, not elaborated in this runtime;
+\item[blueprint] Lean definitions/signatures with explicit \code{sorry} milestones;
+\item[reference tested] executable host algorithm whose tests passed;
+\item[residual] theorem-specific mathematical producer not supplied here.
+\end{description}

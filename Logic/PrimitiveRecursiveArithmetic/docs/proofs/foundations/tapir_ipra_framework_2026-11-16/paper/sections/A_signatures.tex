@@ -1,0 +1,186 @@
+\section{Lean target signatures}\label{app:signatures}
+
+This appendix records the intended declarations independently of implementation details.  Notation is
+adapted to the repository; exact elaboration may require minor implicit-argument adjustments.
+
+\subsection{Plan kernel}
+
+\begin{lstlisting}[language=Lean]
+namespace LeanProofs.IPRA.TAPIR
+
+open LeanProofs.ConciseIPRA
+open Syn
+open scoped Fm
+open ConciseIPRA.PTm (zero succ)
+
+inductive Plan : {n : Nat} -> List (Fm PTm n) -> Fm PTm n -> Type
+  | prf {n} {Gamma : List (Fm PTm n)} {phi : Fm PTm n}
+      (h : Gamma |- [PRAAx] phi) : Plan Gamma phi
+  | weaken {n} {Gamma Delta : List (Fm PTm n)} {phi : Fm PTm n}
+      (p : Plan Gamma phi) (s : Gamma subset Delta) : Plan Delta phi
+  | subst {n m} {Gamma : List (Fm PTm n)} {phi : Fm PTm n}
+      (p : Plan Gamma phi) (sigma : Fin n -> PTm m) :
+      Plan (Gamma.map (fun psi => psi.subst sigma)) (phi.subst sigma)
+  | cut {n} {Gamma Delta : List (Fm PTm n)} {phi : Fm PTm n}
+      (p : Plan Gamma phi)
+      (s : forall psi, psi in Gamma -> Plan Delta psi) : Plan Delta phi
+  | botE ...
+  | andI ... | andE1 ... | andE2 ...
+  | orI1 ... | orI2 ... | orE ...
+  | impI ... | impE ...
+  | allI ... | allE ... | exI ... | exE ...
+  | eqRefl ... | eqSubst ...
+  | qfInd {n} {Gamma : List (Fm PTm n)}
+      (theta : Fm PTm (n+1)) (hq : theta.QF)
+      (p0 : Plan Gamma (theta.subst (Syn.inst zero)))
+      (pS : Plan (theta :: Gamma.map Fm.shift)
+        (theta.subst (Syn.repl (succ (var 0))))) :
+      Plan Gamma (Fm.all theta)
+
+def Plan.run {n} {Gamma : List (Fm PTm n)} {phi : Fm PTm n} :
+    Plan Gamma phi -> (Gamma |- [PRAAx] phi)
+\end{lstlisting}
+
+The supplied candidate includes all displayed logical cases.  A smaller first merge could omit the
+logical wrappers and retain only \code{prf}, structural operations, \code{exE}, and \code{qfInd}; the
+schedule theorem needs only \code{prf} and \code{cut}.
+
+\subsection{Schedule}
+
+\begin{lstlisting}[language=Lean]
+inductive Schedule {n : Nat} (R : List (Fm PTm n)) :
+    List (Fm PTm n) -> Type
+  | nil : Schedule R []
+  | cons {outs : List (Fm PTm n)} {phi : Fm PTm n}
+      (tail : Schedule R outs)
+      (local : Plan (outs ++ R) phi) : Schedule R (phi :: outs)
+
+def Schedule.proveAll
+    (s : Schedule R outs) : forall psi, psi in outs -> Plan R psi
+
+def Schedule.head
+    (s : Schedule R (phi :: outs)) : Plan R phi :=
+  s.proveAll phi (by simp)
+
+theorem Schedule.sound
+    (s : Schedule R (phi :: outs)) : R |- [PRAAx] phi :=
+  Plan.run s.head
+\end{lstlisting}
+
+\subsection{Certificate macros}
+
+\begin{lstlisting}[language=Lean]
+def Plan.seal
+    (hex : Plan Gamma (Fm.ex theta))
+    (body : Plan (theta :: Gamma.map Fm.shift) psi.shift) :
+    Plan Gamma psi := Plan.exE hex body
+
+def Plan.closeResiduals
+    (p : Plan R phi)
+    (s : forall psi, psi in R -> Plan Delta psi) : Plan Delta phi :=
+  Plan.cut p s
+
+theorem boundedName
+    (f : PTm 2)
+    (h : Gamma |- [PRAAx]
+      Fm.ex (lt (var 0) (Syn.shift N) /\
+        neg (inst2 f (var 0) (Syn.shift x) = zero))) :
+    Gamma |- [PRAAx]
+      lt (wit f N x) N /\
+      neg (inst2 f (wit f N x) x = zero) :=
+  BoundedReflection.bounded_choice f h
+\end{lstlisting}
+
+\subsection{Generic-arity search}
+
+\begin{lstlisting}[language=Lean]
+namespace SearchK
+
+variable {k n : Nat}
+
+/-- Body variables: 0 = candidate, 1..k = parameters. -/
+def liftBody (f : PTm (k+1)) : PTm (k+2) :=
+  Syn.subst (Fin.cases (var 0) (fun j => var j.succ.succ)) f
+
+/-- Step variables: 0 = N, 1 = old least zero, 2.. = parameters. -/
+def muStep (f : PTm (k+1)) : PTm (k+2) :=
+  var 1 + eqb (var 1) (var 0) * sg (liftBody f)
+
+def muF (f : PTm (k+1)) : PR (k+1) := recDef zero (muStep f)
+
+def mu (f : PTm (k+1)) (N : PTm n)
+    (xs : Fin k -> PTm n) : PTm n :=
+  app (muF f) (Fin.cases N xs)
+
+theorem mu_zero ...
+theorem mu_succ ...
+theorem search_spec ...
+theorem search_found ...
+theorem search_minimal ...
+
+end SearchK
+\end{lstlisting}
+
+The exact type of \code{zero} in \code{muF} is \code{PTm k}; Lean may need an annotation.  The
+renaming shown is schematic; because of \code{Fin} coercions, a helper proved by \code{Fin.cases} is
+recommended.
+
+\subsection{Reflected formulas}
+
+\begin{lstlisting}[language=Lean]
+structure Reflected {n : Nat} (phi : Fm PTm n) where
+  bit : PTm n
+  cases : ([] : List (Fm PTm n)) |- [PRAAx]
+    ((bit = zero) \/ (bit = one))
+  sound : ([] : List (Fm PTm n)) |- [PRAAx]
+    ((bit = one) --> phi)
+  complete : ([] : List (Fm PTm n)) |- [PRAAx]
+    (phi --> (bit = one))
+
+namespace Reflected
+
+def eq (a b : PTm n) : Reflected (a = b) := ...
+def nonzero (a : PTm n) : Reflected (neg (a = zero)) := ...
+def and (A : Reflected phi) (B : Reflected psi) :
+    Reflected (phi /\ psi) := ...
+def or (A : Reflected phi) (B : Reflected psi) :
+    Reflected (phi \/ psi) := ...
+def neg (A : Reflected phi) : Reflected (neg phi) := ...
+def imp (A : Reflected phi) (B : Reflected psi) :
+    Reflected (phi --> psi) := ...
+
+def ball (body : Reflected theta) (N : PTm n) :
+    Reflected (Fm.all (lt (var 0) (Syn.shift N) --> theta)) := ...
+
+def bex (body : Reflected theta) (N : PTm n) :
+    Reflected (Fm.ex (lt (var 0) (Syn.shift N) /\ theta)) := ...
+
+end Reflected
+\end{lstlisting}
+
+The first version of \code{ball}/\code{bex} should be restricted to a body whose bit is explicitly a
+term in candidate plus parameters.  A later family record can package the binder arithmetic more
+elegantly.
+
+\subsection{Conditional complete-list theorem}
+
+\begin{lstlisting}[language=Lean]
+structure BoundedPresentation (k : Nat) where
+  sol : PTm (k+1)       -- variables: code, parameters
+  height : PTm 1
+  codeBound : PTm (k+1) -- H, parameters -> C
+  solReflected : ...
+
+theorem completeScan
+    (P : BoundedPresentation k)
+    (hBound : Gamma |- [PRAAx]
+      Fm.all (Sol P --> le (height P) (Syn.shift H)))
+    (hCode : Gamma |- [PRAAx]
+      Fm.all (le (height P) (Syn.shift H) -->
+        lt (var 0) (codeBound P H xs))) :
+    Gamma |- [PRAAx] CompleteList P H xs := ...
+\end{lstlisting}
+
+The report recommends beginning with characteristic membership rather than a packed list code.  A
+list encoder can be layered on after soundness and completeness of the bounded characteristic
+function compile.

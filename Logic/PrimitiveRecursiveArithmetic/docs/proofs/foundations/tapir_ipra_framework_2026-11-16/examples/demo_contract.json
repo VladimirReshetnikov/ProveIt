@@ -1,0 +1,123 @@
+{
+  "compiled": {
+    "escape_modes": [
+      {
+        "mode": "local",
+        "node": "local_chart"
+      },
+      {
+        "mode": "observed",
+        "node": "stable_observer"
+      },
+      {
+        "mode": "named",
+        "node": "least_solution"
+      }
+    ],
+    "reachable": [
+      "arithmetic",
+      "local_chart",
+      "stable_observer",
+      "bounded_scan",
+      "least_solution",
+      "root"
+    ],
+    "residuals": [
+      "HeightBound(q,H)",
+      "CodeCoverage(q,H)"
+    ],
+    "root": "root",
+    "topological_order": [
+      "arithmetic",
+      "local_chart",
+      "stable_observer",
+      "bounded_scan",
+      "least_solution",
+      "root"
+    ]
+  },
+  "description": "TAPIR demonstration contract; not an iPRA proof object.",
+  "nodes": [
+    {
+      "conclusion": "UnusedLemma",
+      "deps": [],
+      "id": "dead_experiment",
+      "kind": "local",
+      "residuals": [
+        "UnusedOracle"
+      ]
+    },
+    {
+      "conclusion": "ArithmeticInfrastructure",
+      "deps": [],
+      "id": "arithmetic",
+      "kind": "local",
+      "residuals": []
+    },
+    {
+      "certificate": {
+        "appears_in_public": false,
+        "explicitly_named": false,
+        "observer_proved": false
+      },
+      "conclusion": "ExistsValidChart",
+      "deps": [
+        "arithmetic"
+      ],
+      "id": "local_chart",
+      "kind": "local",
+      "residuals": []
+    },
+    {
+      "certificate": {
+        "appears_in_public": true,
+        "explicitly_named": false,
+        "observer_proved": true
+      },
+      "conclusion": "ChartIndependentObservation",
+      "deps": [
+        "local_chart"
+      ],
+      "id": "stable_observer",
+      "kind": "local",
+      "residuals": []
+    },
+    {
+      "conclusion": "CompleteBoundedSolutionScan",
+      "deps": [
+        "arithmetic"
+      ],
+      "id": "bounded_scan",
+      "kind": "local",
+      "residuals": [
+        "HeightBound(q,H)",
+        "CodeCoverage(q,H)"
+      ]
+    },
+    {
+      "certificate": {
+        "appears_in_public": false,
+        "explicitly_named": true,
+        "observer_proved": false
+      },
+      "conclusion": "LeastNamedSolution",
+      "deps": [
+        "bounded_scan"
+      ],
+      "id": "least_solution",
+      "kind": "local",
+      "residuals": []
+    },
+    {
+      "conclusion": "PublicTheorem",
+      "deps": [
+        "stable_observer",
+        "least_solution"
+      ],
+      "id": "root",
+      "kind": "local",
+      "residuals": []
+    }
+  ],
+  "schema_version": 1
+}

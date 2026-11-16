@@ -1,0 +1,45 @@
+\section{Conclusion}\label{sec:conclusion}
+
+The ProveIt iPRA development no longer primarily lacks semantic frameworks.  It has multiple mature
+accounts of finite certificates, quantitative names, stable observers, demand closure, traces, and
+residual producers.  The remaining general problem is compilation into the checked ordinary
+calculus.
+
+\TAPIR-iPRA addresses that problem with a deliberately small architecture:
+
+\begin{enumerate}
+\item specialize every fixed mathematical argument to concrete primitive-recursive syntax at host
+      elaboration time;
+\item represent the argument by an endpoint-indexed proof plan;
+\item interpret the plan structurally through checked \(\Prf\) operations;
+\item topologically order local proof nodes into a typed schedule;
+\item compile earlier outputs away by simultaneous cut;
+\item seal local and invariant certificates, and invoke bounded least search only for publicly named
+      witnesses;
+\item leave every genuinely unavailable producer as an explicit residual formula.
+\end{enumerate}
+
+The main mathematical theorem is small but decisive: a schedule whose local nodes are ordinary object
+plans compiles to an ordinary object proof of every output from the residual context.  This closes the
+last structural gap without internalizing a universal evaluator or inventing a second logic.
+
+The current repository already checks the arithmetic mechanisms that make the architecture useful:
+substitution, weakening, cut, quantifier-free induction, pairing, least search, bounded reflection,
+bounded choice, and measure-decreasing termination.  The proposed new formal work is therefore
+focused: elaborate the plan and schedule candidates, generalize bounded reflection to arbitrary
+parameter arity, package reflected formulas compositionally, and migrate theorem packets one root at
+a time.
+
+For deep applications, the resulting theorem may remain conditional.  That is a strength.  A
+statement such as
+\[
+  \mathsf{HeightBound}(q,H)\vdash_{\PRAAx}
+  \mathsf{CompleteList}(q,H,L)
+\]
+identifies exactly what a future effective theorem must provide.  It separates the finite arithmetic
+that iPRA can already verify from the domain theorem that has not yet been constructed.
+
+The recommended next repository step is to integrate \code{Kernel.lean} and \code{Schedule.lean},
+compile the three small examples listed in \cref{sec:lean}, and then use the schedule compiler to turn
+one existing unverified packet into a literal residual sequent.  That experiment will measure the
+true remaining cost of the last mile and provide a reusable pattern for the rest of the catalogue.

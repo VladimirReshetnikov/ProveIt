@@ -1,0 +1,191 @@
+\section{Certificates, scope, and witness escape}\label{sec:certificates}
+
+\subsection{Proof-local certificates require no search}
+
+Let \(C(c,\vec x)\) be a certificate formula and let \(O(\vec x)\) be a public conclusion that does
+not contain \(c\).  The scoped calculus gives the following theorem immediately.
+
+\begin{theorem}[Certificate sealing]\label{thm:seal}
+Assume
+\[
+ \Gamma\vdash_{\PRAAx}\exists c\,C(c,\vec x)
+ \quad\text{and}\quad
+ C(c,\vec x),\Gamma^{\uparrow}\vdash_{\PRAAx}O(\vec x)^{\uparrow}.
+\]
+Then \(\Gamma\vdash_{\PRAAx}O(\vec x)\).
+\end{theorem}
+
+\begin{proof}
+Apply existential elimination.  The shifted context in the second premise is exactly the eigenvariable
+condition enforced by the constructor \code{Prf.exE}.  Since the conclusion is a shift of a formula
+that did not mention the new variable, the witness disappears.
+\end{proof}
+
+The theorem is elementary, but it has a strong methodological consequence.  A finite cutoff is not
+needed merely because a proof says ``choose a chart'' or ``take one valid factorization.''  A cutoff
+is needed only if existence itself must be proved by bounded enumeration or if the chosen code occurs
+in the public result.
+
+\begin{example}[Local root]
+Suppose a polynomial certificate states that \(c\) is an isolating interval containing exactly one
+root and a later algebraic identity depends only on the existence of some such interval.  Once the
+existence theorem is available, the interval can be sealed.  Searching for the lexicographically
+least interval would add a denominator/height bound irrelevant to the identity.
+\end{example}
+
+\subsection{Observed certificates}
+
+Often the conclusion does depend on the witness through an observation, but the observation is
+invariant.
+
+\begin{theorem}[Exact observer erasure]\label{thm:observer-exact}
+Let \(C(c)\) mean that \(c\) is a valid certificate and let \(a(c)\) be a coded observation.  Assume:
+\begin{enumerate}
+\item \(\Gamma\vdash\exists c\,C(c)\);
+\item from \(C(c)\) one can derive a public predicate \(P(a(c))\);
+\item from \(C(c)\land C(d)\) one can derive \(a(c)=a(d)\).
+\end{enumerate}
+Then one may introduce a local witness, use \(a(c)\) inside the proof, and seal \(c\).  Any theorem
+stated solely in terms of the common observation is independent of the selected certificate.
+\end{theorem}
+
+\begin{proof}
+Existentially eliminate the first premise, obtaining a temporary \(c\) with \(C(c)\).  Derive the
+claim about \(a(c)\).  If the public statement existentially quantifies the observation, introduce
+\(a(c)\) and then seal \(c\).  If it names a previously defined observation \(a_0\), use the
+invariance premise with a certificate witnessing \(a_0\) and equality substitution.  At no point is
+an external selector for \(c\) required.
+\end{proof}
+
+The metric version replaces equality by a quantitative compatibility relation.
+
+\begin{theorem}[Stable observer erasure]\label{thm:observer-metric}
+Suppose every valid precision-\(p\) certificate \(c\) produces a rational observation \(a_p(c)\), and
+for all valid \(c,d\)
+\[
+  |a_p(c)-a_p(d)|\le \varepsilon(p).
+\]
+Then any locally chosen certificate defines an observation determined up to \(\varepsilon(p)\).  If
+certificates at successive precisions are also linked by
+\(|a_{p+1}(d)-a_p(c)|\le\eta(p)\), a locally selected coherent chain gives a quantitative name with
+Cauchy modulus bounded by the tail of \(\eta\).
+\end{theorem}
+
+\begin{proof}
+The first assertion is immediate from the diameter inequality.  For the second, telescope:
+\[
+ |a_q-a_p|\le\sum_{j=p}^{q-1}|a_{j+1}-a_j|
+             \le\sum_{j=p}^{q-1}\eta(j).
+\]
+All sums are finite and can be represented by the checked bounded-sum library.  A requested target
+error determines a finite precision at compile time.  The certificates are sealed after deriving the
+inequality, so no global infinitary quotient object is required.
+\end{proof}
+
+An exact label may escape only after a gap theorem.  If distinct labels have observations separated
+by more than \(2\varepsilon(p)\), every certificate cloud of diameter at most \(\varepsilon(p)\)
+meets at most one label region.  This is a separate producer statement and must not be inferred from
+small diameter alone.
+
+\subsection{Named bounded witnesses}
+
+When a witness must be public, the current checked bounded-reflection module provides the correct
+mechanism.  For a fixed primitive-recursive body \(f(i,x)\), the term
+\(\mathsf{wit}_f(N,x)\) is the least \(i<N\) with \(f(i,x)\ne0\), or \(N\) if none exists.
+
+\begin{theorem}[Checked bounded naming]\label{thm:named}
+If the object theory proves
+\[
+  \exists i\,[i<N\land f(i,x)\ne0],
+\]
+then it proves
+\[
+  \mathsf{wit}_f(N,x)<N
+  \quad\land\quad
+  f(\mathsf{wit}_f(N,x),x)\ne0.
+\]
+Moreover, every smaller index fails.
+\end{theorem}
+
+\begin{proof}
+This is the checked theorem \code{BoundedReflection.bounded_choice}, built on the checked least-search
+specification.  The leastness clause follows from \code{Search.search_minimal} after translating the
+nonzero predicate to the zero predicate used by the search recursion.
+\end{proof}
+
+\begin{remark}
+The premise is an object-level existential, not a host Boolean.  A finite checker can establish the
+premise only through a reflection proof.  Conversely, once that premise is available, there is no
+need to trust the host search algorithm: the witness term is primitive recursive and its
+specification is proved in iPRA.
+\end{remark}
+
+\subsection{The escape discipline}
+
+The compiler applies the following decision procedure to each certificate variable.
+
+\begin{enumerate}
+\item Compute its free occurrences in the intended public conclusion and in all data used to form
+      that conclusion.
+\item If there are no occurrences, mark it \emph{local} and generate an existential-elimination
+      node.
+\item If occurrences are only under an observer with a proved invariance or diameter theorem, mark
+      it \emph{observed}; generate the observer proof and then seal the certificate.
+\item Otherwise mark it \emph{named}.  Require an explicit search bound, a primitive-recursive
+      verifier, and a proof that some candidate below the bound is accepted.
+\end{enumerate}
+
+This is a syntactic conservative analysis.  A user may override a named classification by supplying a
+stronger invariance theorem, but the compiler never downgrades it on the basis of a semantic guess.
+
+\subsection{Finite relational composition}
+
+A producer may return a finite relation of valid answers rather than a function.  Let
+\(R_i(x,y)\) describe answers at stage \(i\), and let \(E_i(y,z)\) describe compatibility of adjacent
+answers.  A naive greedy choice can fail even when a full compatible path exists.  The correct finite
+certificate is a complete path or a backward viability table.
+
+For a horizon \(h\), define \(V_h(y)=1\) for valid final answers and recursively
+\[
+ V_i(y)=R_i(y)\land \exists z<B_{i+1}\,[E_i(y,z)\land V_{i+1}(z)].
+\]
+All quantifiers are bounded.  If \(\exists y<B_0\,V_0(y)\), checked bounded choice selects the least
+viable start; repeating the theorem at each stage yields a primitive-recursive path.  If the path is
+only proof-local, the entire path code can instead be existentially eliminated after the final
+observation is derived.
+
+\begin{proposition}[Finite-use relational composition]\label{prop:relational}
+Assume each candidate set has an explicit bound, the validity and compatibility predicates are
+primitive recursive, and an object proof establishes that a viable start exists.  Then iPRA proves
+the existence of a compatible path through the fixed horizon.  If the final observer is constant (or
+quantitatively stable) on all compatible paths, the path can be sealed.
+\end{proposition}
+
+\begin{proof}
+Backward recursion computes the viability bits.  Bounded existential reflection proves the recursive
+characterization.  At stage zero, bounded choice provides a viable candidate.  The defining equation
+of viability gives a bounded existential for the next candidate; iterate for the fixed horizon.
+Equivalently, encode the whole path by one mixed-radix number and use one bounded search.  The final
+observer theorem is then applied and the path is eliminated by \cref{thm:seal}.
+\end{proof}
+
+\subsection{Bounded quantifier strategies}
+
+Consider a fixed alternating formula
+\[
+ \forall x_0<N_0\;\exists x_1<N_1(x_0)\;\forall x_2<N_2(x_0,x_1)\;\cdots\;R(\vec x).
+\]
+Its constructive evidence is a finite strategy: existential moves are functions of the preceding
+universal history.  There are two useful compilation modes.
+
+\paragraph{Named strategy.}
+Encode all response tables below an explicit mixed-radix bound.  A primitive-recursive checker tests
+all universal histories.  Bounded choice selects the least accepted strategy code, which may occur in
+the public result.
+
+\paragraph{Sealed strategy.}
+Prove merely that an accepted strategy exists, open it locally, derive the public theorem by bounded
+universal reflection, and eliminate the code.  This avoids proving a canonical strategy theorem.
+
+The second mode is strictly more general when strategy existence is available but no useful uniform
+bound for a public code has been established.
