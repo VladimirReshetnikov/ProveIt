@@ -24,6 +24,7 @@ import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.ProdLemmas
+import IPRADerivations.Core.SumOrder
 import IPRADerivations.Algebra.CayleyHamilton
 import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Analysis.Chebyshev
@@ -37,6 +38,7 @@ import IPRADerivations.Core.EuclidLemma
 import IPRADerivations.Algebra.PolynomialFormulas
 import IPRADerivations.Algebra.TrisectionCubic
 import IPRADerivations.Algebra.Quintic
+import IPRADerivations.Algebra.QuadraticExtension
 import IPRADerivations.Combinatorics.Binomial
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Combinatorics.BinomialTheorem
@@ -121,6 +123,8 @@ import IPRADerivations.Geometry.TriangleFormulas
 import IPRADerivations.Geometry.Circumcircle
 import IPRADerivations.Geometry.ConwayAlgebra
 import IPRADerivations.Geometry.PentagonArithmetic
+import IPRADerivations.Geometry.PappusSegment
+import IPRADerivations.Geometry.KerrNewmanAlgebra
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.Geometry.PowerOfPoint
 import IPRADerivations.Probability.Expectation
@@ -129,4 +133,5 @@ import IPRADerivations.Probability.Independence
 import IPRADerivations.Probability.TailSum
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Probability.NormalMoments
+import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Topology.Sperner
