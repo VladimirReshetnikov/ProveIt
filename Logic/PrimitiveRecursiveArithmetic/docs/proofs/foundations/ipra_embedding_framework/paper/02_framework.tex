@@ -1,0 +1,689 @@
+\section{A finite-demand framework for first-order iPRA}
+\label{sec:finite-demand-framework}
+
+The central proposed interface is a theorem about a finite observation, accompanied
+by an explicit list of the input observations it uses.  Infinite objects may occur
+in the mathematical explanation, but the inductive argument is carried by a
+primitive recursive state and a decidable invariant.  This is useful in two
+ways.  It exposes exactly where an existence theorem needs a bound or a modulus,
+and it prevents the considerable metatheory available in Lean from being
+silently added to the object theory.
+
+The transfer results below are proved directly in intuitionistic arithmetic.
+Their role is narrower than a general conservation theorem: they compile a
+specified class of finite arguments, with their hypotheses visible.  They do
+not assert that every constructive proof, every computable procedure, or every
+Lean theorem has a translation into \ipra.  The ordinary PR presentation and its
+closure under bounded predicates are standard; see, for example,
+\cite[Section~2]{Avigad2002}.  All the finite-demand arguments given here are
+self-contained and do not invoke that paper's higher-type or classical
+conservation results.
+
+\subsection{The target theory and the permitted induction}
+
+For this chapter, \ipra\ means first-order intuitionistic predicate logic with
+equality, the natural-number constructors $0,S$, the successor axioms
+\[
+ Sx\ne0,\qquad Sx=Sy\longrightarrow x=y,
+\]
+and a function symbol for each fixed primitive recursive construction.  The
+defining equations include composition and
+\[
+ r(0,\boldsymbol x)=g(\boldsymbol x),\qquad
+ r(Sn,\boldsymbol x)=h(n,r(n,\boldsymbol x),\boldsymbol x).
+\]
+The induction schema is restricted to quantifier-free formulas $A$, with
+parameters allowed:
+\[
+ \bigl(A(0,\boldsymbol x)\land
+       \forall n(A(n,\boldsymbol x)\to A(Sn,\boldsymbol x))\bigr)
+       \longrightarrow \forall n\,A(n,\boldsymbol x).
+\]
+Only finitely many of the PR symbols occur in any individual derivation.
+A fresh name for a specified PR construction is legitimate in this all-PR
+presentation.  This does not license totality of arbitrary terminating
+programs.  When working in a smaller finite presentation, the introduction
+must instead be justified by its established representation or translation
+theorem.
+
+There is no restriction saying that every theorem or every hypothesis must be
+quantifier-free.  In particular, a statement such as
+$\forall k\,C(a,k)$ is a legitimate hypothesis.  The restriction concerns the
+formula to which induction is applied.  This distinction is indispensable:
+one may instantiate a global regularity hypothesis at finitely many demanded
+indices while using only a quantifier-free state invariant.
+
+Integers, rationals, finite tuples, lists, and polynomials will always mean
+natural-number codes.  Their operations are totalized on malformed codes; a
+separate validity predicate specifies the intended inputs.  For example, a
+rational is a pair $(z,d)$ with $z$ an integer code and $d>0$.  Equality is
+\[
+ (z,d)\simeq(w,e)\quad\Longleftrightarrow\quad ze=wd,
+\]
+so neither a quotient type nor a normalization algorithm is necessary.  Signs
+and order can be tested by integer cross-multiplication with positive
+denominators.  All these tests are primitive recursive.  An implementation
+should keep validity predicates in its contracts even when its executable
+functions return harmless default values on invalid data.
+
+\subsection{Bounded truth is an arithmetic operation}
+\label{sec:bounded-truth}
+
+A \emph{bounded formula} in this chapter is built from equality of PR terms,
+intuitionistic propositional connectives, and quantifiers of the form
+$\forall u<t$ and $\exists u<t$, where $t$ does not contain the bound variable.
+The bound may be any fixed PR term.  In particular, it need not be polynomial,
+elementary, or practically computable.
+
+\begin{lemma}[Booleanization of bounded formulas]
+\label{lem:bounded-booleanization}
+For every fixed bounded formula $B(\boldsymbol x)$ there is a PR function
+$b_B(\boldsymbol x)\in\{0,1\}$ and an \ipra\ proof of
+\[
+ B(\boldsymbol x)\longleftrightarrow b_B(\boldsymbol x)=1.
+\]
+Consequently bounded formulas are decidable in \ipra, and induction on a
+bounded formula is a derived rule of quantifier-free induction.
+\end{lemma}
+
+\begin{proof}
+The elementary PR development of natural-number equality provides a Boolean
+equality test.  Its usual correctness proof uses only the successor axioms and
+quantifier-free induction; the same applies to truncated subtraction, order,
+and the zero test.  Negation, conjunction, and disjunction are then Boolean
+complement, product, and maximum.  For implication use the Boolean function
+which returns $1$ when the antecedent test is $0$ and otherwise returns the
+consequent test.  Its equivalence to intuitionistic implication is valid
+because the antecedent is already decidable.  This step would be invalid for
+an arbitrary, undecided proposition.
+
+For bounded universal quantification use a prefix product, and for bounded
+existential quantification use a prefix maximum.  Here is an explicit way to
+justify the former without covert induction on a quantified formula.  Let
+$c(i)\in\{0,1\}$ and define
+\[
+ p(0)=1,\qquad p(t+1)=p(t)c(t).
+\]
+Quantifier-free induction proves $p(t)\in\{0,1\}$ and $p(t+1)\le p(t)$.
+With an arbitrary fixed $i$, another quantifier-free induction proves
+\[
+ i<t\land p(t)=1\quad\longrightarrow\quad c(i)=1.
+\]
+For the converse, fix $b$ and assume $c(i)=1$ for every $i<b$.  Induct on the
+quantifier-free formula $t\le b\to p(t)=1$.  In the step with $t<b$, the fixed
+hypothesis supplies $c(t)=1$.  Thus
+\[
+ p(b)=1\quad\longleftrightarrow\quad\forall i<b\;c(i)=1.
+\]
+The existential case can be proved by the explicit bounded search in
+Lemma~\ref{lem:bounded-choice} below, or by the same argument with a running
+maximum and a stored witness.  A structural induction on the fixed formula
+$B$, in the metatheory, now gives its Boolean function and an \ipra\ proof of
+its correctness.  Replacing $B(n)$ by $b_B(n)=1$ in the induction axiom proves
+the last assertion.
+\end{proof}
+
+The adjective ``fixed'' matters.  The lemma supplies a schema indexed by a
+finite formula and its fixed PR vocabulary.  It does not give a single PR truth
+function for arbitrary formulas containing arbitrary PR program codes.  That
+stronger assertion is false, as shown below.
+
+\begin{lemma}[Bounded search and finite choice]
+\label{lem:bounded-choice}
+Let $R(\boldsymbol x,y)$ be a fixed PR relation.  There is a PR function
+$\ell_R(\boldsymbol x,b)\le b$ such that \ipra\ proves
+\begin{align*}
+ \ell_R(\boldsymbol x,b)<b
+   &\longleftrightarrow \exists y<b\;R(\boldsymbol x,y),\\
+ \ell_R(\boldsymbol x,b)<b
+   &\longrightarrow R(\boldsymbol x,\ell_R(\boldsymbol x,b)),\\
+ y<\ell_R(\boldsymbol x,b)
+   &\longrightarrow \neg R(\boldsymbol x,y).
+\end{align*}
+For a fixed PR bound $B(\boldsymbol x,i)$ and relation
+$R(\boldsymbol x,i,y)$, a single PR finite-list function chooses all witnesses
+below their bounds whenever
+\[
+ \forall i<n\;\exists y<B(\boldsymbol x,i)\;R(\boldsymbol x,i,y)
+\]
+holds.  No choice axiom is used.
+\end{lemma}
+
+\begin{proof}
+Use $b$ as the sentinel value for failure and define
+\[
+ \ell(\boldsymbol x,0)=0,
+\]
+\[
+ \ell(\boldsymbol x,b+1)=
+ \begin{cases}
+   \ell(\boldsymbol x,b),&\ell(\boldsymbol x,b)<b,\\
+   b,&\ell(\boldsymbol x,b)=b\text{ and }R(\boldsymbol x,b),\\
+   b+1,&\text{otherwise}.
+ \end{cases}
+\]
+This is primitive recursion with decidable branches.  The three maintained
+facts are that the stored value is at most the current bound; that a value
+strictly below the bound is a successful witness; and that no earlier position
+succeeds.  The last fact may be written as a prefix product of the Boolean
+negations of $R$, so all three invariants are quantifier-free.
+
+At the next stage, an already successful value is retained.  If none has yet
+been found, the new position $b$ is tested.  A successful test stores $b$ and
+uses the earlier failure product; an unsuccessful test extends that product.
+This proves the invariants by quantifier-free induction.  In particular, the
+sentinel occurs exactly when every position below $b$ fails.  Conversely, a
+witness below $b$ precludes the sentinel: apply the earlier-failure invariant
+to that witness.  This proves the displayed equivalence, constructively.
+
+For finite choice, set
+$w_i=\ell_{R(\boldsymbol x,i,-)}(B(\boldsymbol x,i))$ and build the finite
+list $(w_0,\ldots,w_{n-1})$ by primitive recursion.  An entirely numerical
+encoding is available.  Put
+\[
+ M=\max\bigl(1,\max_{i<n}B(\boldsymbol x,i)\bigr),\qquad
+ W=\sum_{i<n}w_i(M+1)^i.
+\]
+Since $w_i\le M$, the base-$(M+1)$ digits of $W$ recover the $w_i$, and
+$W<(M+1)^n$.  Digit extraction, the finite maximum, and the finite sum are all
+PR.  Under the displayed hypothesis, each $w_i$ is strictly below its
+corresponding bound and satisfies $R$.  The argument verifies a finite table;
+it never chooses an unbounded sequence of witnesses.
+\end{proof}
+
+This lemma precisely identifies one frequent repair.  A finite family of
+existence assertions causes no difficulty once PR bounds for the witnesses
+have been proved.  Merely knowing $\forall i<n\,\exists y\,R(i,y)$ supplies no
+such bound, and an unbounded search cannot be relabelled as bounded search.
+Likewise, a terminating executable search has not yet been shown to be
+primitive recursive: its termination argument must give an appropriate
+bound or a PR construction of the output.
+
+\subsection{The local demand theorem}
+\label{sec:local-demand-theorem}
+
+We next make the observation interface precise.  Fix the PR functions
+\[
+ \operatorname{init}(x),\quad
+ \operatorname{step}(x,t,s),\quad
+ k(x,t,s),\quad q(x,t,s,j),\quad \operatorname{ret}(x,N,s),
+\]
+and define the run by primitive recursion:
+\[
+ S(x,0)=\operatorname{init}(x),\qquad
+ S(x,t+1)=\operatorname{step}(x,t,S(x,t)).
+\]
+The numerical parameter $x$ may contain all finite input data and parameters.
+A query $q$ is simply a natural-number code for a demanded input fact.  Let
+$U(x,q)$ be a fixed bounded predicate describing that fact.  At stage $t$,
+the run demands $k(x,t,S(x,t))$ such facts.  Define
+\begin{equation}
+\label{eq:demand-log}
+ L(x,N)\;:\!\Longleftrightarrow\;
+ \forall t<N\;\forall j<k(x,t,S(x,t))\;
+ U\bigl(x,q(x,t,S(x,t),j)\bigr).
+\end{equation}
+This is a bounded predicate, hence a single PR Boolean test.  Its query list
+may be adaptive: later queries can depend on the already computed state.
+
+\begin{theorem}[Finite-demand transfer]
+\label{thm:finite-demand-transfer}
+Let $P(x)$, $I(x,N,t,s)$, and $Q(x,N,z)$ be bounded predicates.  Suppose the
+following three implications have \ipra\ derivations:
+\begin{align}
+ P(x)&\longrightarrow I(x,N,0,\operatorname{init}(x)),
+   \label{eq:demand-base}\\
+ t<N\land I(x,N,t,s)\land
+ \bigl(\forall j<k(x,t,s)\;U(x,q(x,t,s,j))\bigr)
+ &\longrightarrow
+ I(x,N,t+1,\operatorname{step}(x,t,s)),
+   \label{eq:demand-step}\\
+ I(x,N,N,s)&\longrightarrow Q(x,N,\operatorname{ret}(x,N,s)).
+   \label{eq:demand-finish}
+\end{align}
+Then \ipra\ proves
+\begin{equation}
+\label{eq:demand-conclusion}
+ P(x)\land L(x,N)\quad\longrightarrow\quad
+ Q\bigl(x,N,\operatorname{ret}(x,N,S(x,N))\bigr).
+\end{equation}
+The induction required by this proof is quantifier-free.
+\end{theorem}
+
+\begin{proof}
+Fix $x,N$ and the two hypotheses in the antecedent of
+\eqref{eq:demand-conclusion}.  Use the invariant
+\[
+ J(t)\;:\!\Longleftrightarrow\;
+ t\le N\longrightarrow I(x,N,t,S(x,t)).
+\]
+By Lemma~\ref{lem:bounded-booleanization}, $J$ has a quantifier-free Boolean
+form.  Its base follows from \eqref{eq:demand-base}.  To prove its step,
+suppose $t+1\le N$.  Then $t<N$, so $J(t)$ gives the current invariant and
+$L(x,N)$ gives exactly the finitely many hypotheses needed in
+\eqref{eq:demand-step}.  Substitute the defining equation of $S$ to obtain
+$J(t+1)$.  When $t+1>N$, the implication defining $J(t+1)$ is immediate.
+Order is decidable, so this case distinction is intuitionistically valid.
+Quantifier-free induction now gives $J(N)$; apply
+\eqref{eq:demand-finish}.
+
+The global statement $L(x,N)$ was a fixed hypothesis during the induction.
+We did not induct on ``all inputs are valid'', on an unbounded universal
+assertion, or on the correctness of arbitrary programs.  Every occurrence of
+$U$ used by the proof is an entry of the finite demand log.
+\end{proof}
+
+\begin{corollary}[Global assumptions can be supplied locally]
+\label{cor:global-to-local}
+Under the hypotheses of Theorem~\ref{thm:finite-demand-transfer}, \ipra\ proves
+\[
+ P(x)\land\forall q\,U(x,q)
+ \longrightarrow
+ \forall N\;Q\bigl(x,N,\operatorname{ret}(x,N,S(x,N))\bigr).
+\]
+\end{corollary}
+
+\begin{proof}
+Fix $N$.  Instantiate the universal input assumption at each query in
+\eqref{eq:demand-log}, obtaining $L(x,N)$, and apply the theorem.  Universal
+generalization on $N$ completes the argument.  The quantifier-free induction
+has already taken place inside the theorem.
+\end{proof}
+
+The corollary permits a convenient mathematical language involving globally
+regular names.  The theorem is the more informative arithmetic statement:
+it remains meaningful for a partial or inconsistent proposed object as long
+as the particular finite observations required by this computation are
+certified.  This is especially useful for interfaces between independently
+developed theorem packets.
+
+\subsection{Prefix contracts and their composition}
+
+Many applications require all observations up to a stage rather than an
+arbitrary query list.  Let $V(x,n)$ be a bounded prefix-validity predicate and
+suppose \ipra\ proves
+\[
+ m\le n\land V(x,n)\longrightarrow V(x,m).
+\]
+An operation with an accuracy parameter $r$ has a \emph{prefix contract} when
+there is a PR demand bound $\beta(x,r)$ and an \ipra\ proof of
+\[
+ V(x,\beta(x,r))\longrightarrow W(x,r,F(x,r)),
+\]
+where $F$ is PR and $W$ is bounded.  This contract states an actual finite
+arithmetic implication.  Calling the output a real number, a function, a
+root, a chain, or a geometric object adds no theorem until its intended
+observations have been specified by $W$.
+
+\begin{proposition}[Composition of prefix contracts]
+\label{prop:prefix-composition}
+Suppose an intermediate family of observations $A(x,j)$ satisfies
+\[
+ V(x,\beta(x,j))\longrightarrow A(x,j),
+\]
+and a second construction satisfies
+\[
+ \bigl(\forall j\le\gamma(x,r)\;A(x,j)\bigr)
+       \longrightarrow B(x,r).
+\]
+All displayed matrices and functions are bounded or PR, and both implications
+have \ipra\ proofs.  Then \ipra\ proves
+\[
+ V(x,\delta(x,r))\longrightarrow B(x,r),\qquad
+ \delta(x,r)=\max_{j\le\gamma(x,r)}\beta(x,j).
+\]
+\end{proposition}
+
+\begin{proof}
+The finite maximum is PR.  For any $j\le\gamma(x,r)$, its defining property
+gives $\beta(x,j)\le\delta(x,r)$.  Monotonicity of prefix validity and the
+first contract imply $A(x,j)$.  Bounded universal introduction supplies the
+premise of the second contract.  Its conclusion is $B(x,r)$.
+\end{proof}
+
+If $\beta(x,j)$ is monotone in $j$, the maximum can be replaced by
+$\beta(x,\gamma(x,r))$.  Otherwise the maximum is necessary.  In particular,
+a demand transformer must not be composed by blindly substituting precision
+parameters when a later proof needs a whole prefix of earlier observations.
+Adaptive dependencies are handled by Theorem~\ref{thm:finite-demand-transfer}
+instead of by guessing a nonadaptive bound.
+
+\subsection{What a proof compiler may legitimately promise}
+\label{sec:proof-compiler}
+
+A small source language can make the preceding discipline systematic.  Its
+numeric computations are generated by fixed PR primitives, composition,
+decidable conditionals, and primitive recursion on a numerical loop count.
+Its assertions are bounded formulas.  Its proof rules are consequence,
+sequential composition, decidable case analysis, and the loop rule with a
+bounded invariant.  A primitive rule is available only together with an
+\ipra\ derivation of its contract.  A mathematical premise such as regularity
+of a named function must enter through a stated numerical observation
+predicate, not as an unexamined side condition.
+
+\begin{theorem}[Syntactic compilation of the finite proof discipline]
+\label{thm:syntactic-compilation}
+For every fixed well-formed source derivation built from the preceding rules,
+there is an effective construction of an \ipra\ derivation of its concluding
+contract.  Every numeric function introduced by the construction comes with
+a finite PR definition.  Every inductive proof obligation is discharged by
+quantifier-free induction after Booleanization.
+\end{theorem}
+
+\begin{proof}
+Proceed by induction on the finite source derivation in the metatheory.
+A primitive node already contains the required target derivation.  For
+sequential composition, substitute the term denoting the first output in the
+second contract and use intuitionistic implication elimination.  A
+conditional is handled by decidability of its Boolean guard and disjunction
+elimination; both branch functions and the combined conditional are PR.
+A consequence node is ordinary intuitionistic implication composition.
+
+For a loop, introduce a fresh function symbol with the displayed primitive
+recursion equations for its state.  Booleanize the supplied bounded invariant
+and apply Theorem~\ref{thm:finite-demand-transfer}.  The local premises used
+by the body form the loop's finite demand log.  All list formation, finite
+maximum, and Booleanization constructions use composition and primitive
+recursion.  Thus the induction constructs an actual finite target derivation
+at every node.
+
+This is a construction on syntax.  The source derivation can be checked, its
+new PR definition symbols can be emitted, and its target proof can be
+assembled without evaluating all programs represented by source syntax.
+Nothing in this construction supplies a universal semantic evaluator or a
+uniform internal soundness principle for \ipra.
+\end{proof}
+
+The theorem is useful as a design specification for an eventual proof
+compiler, but it is not a claim that such a compiler has been implemented in
+this archive.  In particular, a collection of Lean theorem statements about
+the intended semantic functions is not already an implementation of the
+syntactic construction.  The output that ultimately matters is a derivation
+in the chosen object-theory calculus, or a formally verified translation
+into that calculus.
+
+\subsection{Three distinct ways to represent a mathematical family}
+\label{sec:three-representations}
+
+The following distinctions remove a subtle source of overly strong claims.
+
+\paragraph{A schema for a fixed PR name.}
+Fix a particular PR function $a(k)$ and its definition.  A real-number name,
+for example, can be described by rational approximations $a(k)$ and
+arithmetical coherence assertions about pairs of indices.  An operation on
+that name is another PR definition built from this particular $a$.  The
+result is a theorem schema, one instance for every supplied PR definition.
+There is no quantifier over all such functions inside first-order \ipra.
+
+\paragraph{A uniformly PR numerical family.}
+One may instead fix a jointly PR function $A(e,k)$, where $e$ is an ordinary
+natural-number parameter.  Then \ipra\ can prove one theorem uniformly in
+$e$.  This genuinely permits quantification over the parameter family, but
+it covers only the family given by this one evaluator $A$.  It must not be
+identified with an enumeration of all PR functions.
+
+\paragraph{Certified finite observations.}
+A third, more general, interface accepts a finite transcript.  For a fixed
+register-machine or Turing-machine syntax, the relation
+\[
+ \operatorname{Trace}(e,u,v,t,c)
+\]
+asserts that $c$ is a length-at-most-$t$ computation of program $e$ on input
+$u$ with output $v$.  Checking it is PR: parse the finite list of
+configurations, verify the initial and final configurations, and verify each
+adjacent transition by a bounded scan.  Equivalently, bounded execution with
+an explicit numerical clock $t$ is PR.  A finite-demand theorem may
+therefore be uniform in arbitrary program indices when it is conditional on
+the relevant finite traces.
+
+This last interface does not assert that every requested trace exists.  To
+turn it into an unconditional theorem for a particular family, one must
+supply a PR clock or a PR trace generator, and prove its correctness in the
+object theory.  Passing the code of an arbitrary PR clock is insufficient:
+the clock itself must be evaluated, which recreates the same issue.
+
+\begin{proposition}[There is no universal PR evaluator]
+\label{prop:no-universal-pr-evaluator}
+There is no primitive recursive function $E(e,n)$ such that, for every unary
+PR function $f$, some index $e$ satisfies
+$E(e,n)=f(n)$ for all $n$.
+\end{proposition}
+
+\begin{proof}
+If $E$ were PR, so would be $d(n)=E(n,n)+1$.  By the assumed universality,
+there would be an index $e$ with $E(e,n)=d(n)$ for every $n$.  At $n=e$ this
+gives $E(e,e)=E(e,e)+1$, a contradiction.
+\end{proof}
+
+This is a metamathematical diagonal argument about actual PR functions.  It
+explains why even a perfectly decidable syntax for PR programs does not
+justify a single PR evaluation operation for them all.  The distinction is
+not a technical inconvenience to be hidden by notation; it is forced by the
+mathematics.
+
+Two useful operations nevertheless remain uniform.  A compiler can
+transform finite program syntax into finite program syntax, and a checker
+can verify a finite computation with a supplied clock.  Neither operation
+evaluates arbitrary PR programs to completion.  The proposed framework uses
+these two uniform operations together with fixed-name theorem schemas.
+
+\subsection{Presentations, equality, and observations}
+\label{sec:presentations}
+
+A \emph{finite arithmetic presentation} consists of a PR validity predicate
+$D(a)$, a PR equivalence test $a\simeq b$ on valid codes, and PR operation
+codes with object-theory proofs of their required laws.  Rationals,
+finite-dimensional rational vectors, finite polynomial expressions, and
+finite combinatorial structures fit this format directly.  This does not
+mean that every abstract countable structure has such a presentation; the
+operations, validity tests, and equality laws are hypotheses to be supplied.
+
+For completion-type objects, exact equality is usually an infinite relation.
+A name $a$ can instead have observations $a[r]$ and finite consistency
+predicates $V(a,n)$.  The informal assertion that it is a valid completed
+object is
+\[
+ \operatorname{Valid}(a)\;:\!\Longleftrightarrow\;\forall n\;V(a,n).
+\]
+Here $a[r]$ means either a fixed PR name, a member of a uniformly PR family,
+or a requested entry of a finite transcript, as distinguished above.
+Arithmetic operations are supplied by finite contracts.  Equality of two
+names is an observational assertion, such as an error inequality at every
+accuracy; it is never assumed decidable merely because each individual
+accuracy test is decidable.
+
+For example, suppose a fixed PR family of rational approximations satisfies
+\[
+ \forall p,q\quad
+ \abs{a[p]-a[q]}\le 2^{-p}+2^{-q}.
+\]
+For a finite demand $N$, all instances with $p,q\le N$ form a bounded
+predicate after denominators are cleared.  A proof that a computed output
+has a desired error at accuracy $r$ can request an appropriate finite
+prefix.  Once that local contract is proved, the global coherence hypothesis
+supplies it by instantiation.  There is no need to induct on the displayed
+universal assertion or to construct a quotient of all Cauchy sequences
+inside the arithmetic.
+
+The same pattern handles many other mathematical concepts.  A continuous
+map needs an approximation procedure and a supplied continuity modulus.
+An invertible element needs an explicit inverse or an apartness bound
+sufficient for the desired computation.  A compact set used for a search
+needs a finite net with an explicit mesh and coverage contract.  An algebraic
+extension can be presented by finite arithmetic data, but its field laws
+still require a proof; a finite multiplication table over an infinite base
+field is not automatically a field certificate.  These are interfaces with
+mathematical content, not declarations that erase the original hypotheses.
+
+\subsection{A reusable algebraic application: polynomial certificates}
+\label{sec:polynomial-certificates}
+
+The restriction against a universal PR evaluator does \emph{not} prohibit
+uniform evaluation of a fixed expression grammar.  This distinction gives a
+particularly useful reusable module for algebraic and geometric packets.
+
+Fix a PR-presented commutative ring: its carrier predicate $D$, equality
+$\simeq$, and operations $0,1,+,-,\cdot$ are fixed PR data, and their carrier-closure, ring,
+and congruence laws have \ipra\ proofs.  Expressions are finite trees built
+from variables, integer constants, addition, negation, and multiplication.
+Let $\operatorname{Eval}(e,a)$ evaluate the tree using a finite assignment
+$a$ of carrier elements.  Let $\operatorname{NF}(e)$ be the usual sparse
+commutative polynomial obtained by expanding products, representing each
+monomial by a finite exponent vector (padding with zeros when necessary),
+ordering these vectors, and collecting equal monomials.  Integer coefficients are stored as integer codes.
+
+\begin{proposition}[Uniform soundness of a fixed algebraic certificate language]
+\label{prop:polynomial-normalization}
+There are PR functions $\operatorname{Eval}$ and $\operatorname{NF}$, uniform
+in expression codes and finite assignments, for which \ipra\ proves
+\[
+ \operatorname{Good}(e,a)\quad\longrightarrow\quad
+ \operatorname{Eval}(e,a)\simeq
+ \operatorname{EvalPoly}(\operatorname{NF}(e),a).
+\]
+Consequently equality of normal forms is a sound PR certificate for equality
+of the two expressions, on valid assignments.
+\end{proposition}
+
+\begin{proof}
+Choose a tree coding in which every immediate subtree has smaller numerical
+code than its parent.  Such a coding is obtained, for example, by positive
+tagging of a pairing function that dominates its arguments.  Parsing and
+checking this property are bounded operations.  Evaluation can now be
+computed by course-of-values recursion on the numerical code: keep a finite
+table of values for all smaller codes, and use the already stored child
+values at the current code.  Invalid codes receive the default value $0$.
+The table step uses only the fixed ring operations, so the table and its
+lookup operation are PR.  This may be an inefficient evaluation method,
+but its PR status is immediate.
+
+Normal forms are computed by the same table construction.  A constant is a
+one-term polynomial, and a variable is a one-term monomial.  Addition
+concatenates the two coefficient lists and collects equal exponent vectors.
+Negation changes coefficient signs.  Multiplication forms the finite list
+of pairwise products: coefficients multiply and exponent vectors add.
+Insertion sorting and collection are finite recursions, hence PR.  The
+lengths and coefficient sizes can grow very rapidly, but all the stated
+operations are finite compositions and primitive recursions.
+
+We first verify the finite-list identities used by these operations.
+Associativity proves that concatenation evaluates as a sum.  Commutativity
+proves that adjacent swaps preserve the sum, so insertion sorting preserves
+it.  Distributivity and repeated addition prove that merging equal monomials
+adds their integer coefficients without changing evaluation.  For products,
+induction on the first list and then on the second list gives
+\[
+ \left(\sum_{i<m}u_i\right)\left(\sum_{j<n}v_j\right)
+       =\sum_{i<m}\sum_{j<n}u_i v_j.
+\]
+The induction formulas compare two coded ring elements, so they are
+quantifier-free.  The identity $a^{r+s}=a^r a^s$ is obtained by
+quantifier-free induction on $s$; applying it to the finitely many variables
+shows that adding exponent vectors multiplies monomial evaluations.
+Negative coefficients are handled by the additive inverse laws.  Each
+identity is interpreted using $\simeq$, with the supplied congruence laws
+justifying substitution.
+
+Finally, prove the normalization claim simultaneously for all valid
+expression codes below a numerical cutoff $b$.  The invariant is
+\[
+ \forall e<b\quad
+ \bigl(\operatorname{Good}(e,a)\to
+ \operatorname{Eval}(e,a)\simeq
+ \operatorname{EvalPoly}(\operatorname{NF}(e),a)\bigr).
+\]
+It is a bounded formula and therefore has a quantifier-free Boolean form.
+At a new code, every child code is smaller, so the induction hypothesis
+applies to all children.  The finite-list identities just proved establish
+the claim for the corresponding constructor.  An invalid code imposes no
+obligation.  This proves the invariant by permitted induction, and hence the
+claim for every expression code.  If two normal forms are equal as finite
+codes, substitute that equality and use symmetry and transitivity of
+$\simeq$ to obtain equality of the original expressions.
+\end{proof}
+
+This is an internal soundness theorem for one restricted certificate
+language, justified by a specific PR evaluation and a specific bounded
+invariant.  It is not uniform reflection for arithmetic proofs.  The
+expression grammar has a fixed finite set of already defined operations;
+it contains no constructor that executes an arbitrary coded primitive
+recursion program.
+
+The proposition is a common foundation for exact trigonometric polynomial
+identities, rational-coordinate geometry identities, determinant identities
+at a fixed dimension, and many of the repository's certificate-based
+arguments.  It proves \emph{soundness} of certificates.  A uniform theorem
+about all dimensions or all degrees additionally needs a PR certificate
+generator and an \ipra\ proof that its outputs pass the checker, or a direct
+uniform algebraic argument.  Running a generator on finitely many examples
+cannot establish that extra statement.
+
+\subsection{The Lean boundary and the object-theory goal}
+\label{sec:lean-boundary}
+
+A complete formalization should separate four layers.
+
+\begin{enumerate}
+\item \textbf{Executable finite arithmetic.}  Implement natural-number
+codes, rational and integer operations, finite lists, Boolean predicates,
+state recursions, and demand transformers.  These are ordinary Lean
+functions at this stage.
+\item \textbf{Mathematical correctness.}  Prove the local numerical
+contracts and the finite-demand lemmas in Lean.  This validates the
+mathematical arguments, but Lean's unrestricted induction is not itself an
+\ipra\ derivation.
+\item \textbf{PR syntax and bounded formulas.}  Give every used executable
+function an explicit construction in a syntactic PR language; relate that
+construction to the executable function.  Define object-language terms,
+formulas, substitution, the quantifier-free test, and derivations.  Compile
+bounded predicates to Boolean PR terms with derivations of the
+corresponding equivalences.
+\item \textbf{Object-theory derivations.}  Construct the syntactic proof of
+the relevant arithmetic contract.  If the final target is ConciseIPRA,
+compose with an established translation into its native derivability
+relation, with all hypotheses of that translation supplied.
+\end{enumerate}
+
+The principal compiler theorem has the schematic target
+\[
+ \operatorname{SourceDerivation}(d,\Gamma,\varphi)
+ \longrightarrow
+ \operatorname{Derivation}_{\ipra}
+       (\operatorname{compile}(d),\Gamma^*,\varphi^*),
+\]
+where the stars denote an explicitly defined syntax translation.  Its
+conclusion is a proposition \emph{in Lean about finite derivation objects}.
+The step from that conclusion to a native ConciseIPRA derivation must use a
+proved bridge, not an assumed semantic reflection rule.
+
+For the finite-demand theorem, the first genuinely arithmetic proof object
+should use precisely the Booleanization of
+\[
+ t\le N\to I(x,N,t,S(x,t))
+\]
+as its induction formula.  Its base and step are obtained by substitution
+from the supplied base and step derivations; its final inference substitutes
+$N$ and uses the finishing derivation.  These instructions fix the intended
+object-level proof rather than merely asking a theorem prover to rediscover
+it.
+
+For bounded search, the proof object should carry the running sentinel,
+its success test, and the prefix-failure product.  For prefix composition,
+it should carry the PR finite maximum and its elementary upper-bound
+lemma.  For polynomial normalization, it should carry the bounded-prefix
+invariant over subexpression codes displayed above.  These are concrete
+main lemmas with finite syntax, explicit induction formulas, and clear
+implementation paths.
+
+Finally, the assertion that a proof checker is PR does not justify
+\[
+ \operatorname{Check}(p,\ulcorner\varphi\urcorner)=1\longrightarrow\varphi
+\]
+uniformly for all arithmetic formulas inside the theory being checked.
+Such a statement is an additional reflection principle; at falsity it
+already supplies the theory's own consistency assertion.  Restricted
+reflection for a particular finite algebraic language can be established by
+the preceding normalization proof.  General arithmetic reflection cannot
+be silently substituted for that proof.  This boundary is essential when
+reusing repository results whose Lean statements already live in a rich
+ambient metatheory.

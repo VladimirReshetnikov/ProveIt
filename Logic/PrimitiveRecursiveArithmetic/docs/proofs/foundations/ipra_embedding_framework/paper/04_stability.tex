@@ -1,0 +1,204 @@
+\section{Finite stability when no convergence modulus is available}
+\label{sec:stability}
+
+An explicit modulus of convergence is excellent input when it is available.
+It should not, however, be made a prerequisite for every use of a bounded
+sequence. Many arguments inspect only a finite interval of indices. For
+such arguments a weaker, precisely quantified conclusion suffices. This
+section gives one arithmetic selection principle that handles several
+analytic observations and several finite exceptional sets at the same
+time. The principle is a finite version of standard proof-mining ideas
+\cite{ProofMining}; the additional purpose here is to expose exactly the
+finite hypotheses and the quantifier-free invariants needed for iPRA.
+
+\subsection{The finite data and the common-window theorem}
+
+Fix a primitive recursive function $g:\NN\to\NN$ and an initial index $b$.
+No monotonicity assumption on $g$ is required. Define
+\begin{equation}\label{eq:endpoints}
+ n_0=b,\qquad n_{i+1}=n_i+g(n_i)+1,
+ \qquad W_i=[n_i,n_i+g(n_i)]\cap\NN.
+\end{equation}
+The windows are disjoint and ordered. All the endpoints are primitive
+recursive, for a fixed primitive recursive definition of $g$.
+
+For $j<m$, let $a_j(t)=a(j,t)$ for one fixed primitive recursive rational
+evaluator $a$, let
+$\epsilon_j>0$ be rational, and let $V_j\geq0$ be rational. For $\ell<r$,
+let $E_\ell(t)=E(\ell,t)$ for one fixed primitive recursive Boolean
+evaluator $E$, with natural
+budget $C_\ell$. A successful window is one on which
+\begin{align}
+ |a_j(p)-a_j(q)|&\leq\epsilon_j
+   &&(j<m,\ p,q\in W_i),\label{eq:stable-window}\\
+ E_\ell(t)&=0 &&(\ell<r,\ t\in W_i).\label{eq:empty-window}
+\end{align}
+Additional natural parameters of these fixed evaluators are permitted;
+the indices $j,\ell$ do not range over arbitrary program codes.
+Every test in these formulas is finite and decidable. Use rational
+cross-multiplication for the comparisons, not floating-point arithmetic.
+Put
+\begin{equation}\label{eq:stability-budget}
+ K_j=\left\lfloor\frac{V_j}{\epsilon_j}\right\rfloor,
+ \qquad K=\sum_{j<m}K_j+\sum_{\ell<r} C_\ell,
+ \qquad T=n_{K+1}.
+\end{equation}
+
+\begin{theorem}[A common window from additive finite budgets]
+\label{thm:common-window}
+Suppose the following \emph{finite} inequalities hold:
+\begin{align}
+ \sum_{t<T}|a_j(t+1)-a_j(t)|&\leq V_j &&(j<m),\label{eq:finite-variation}\\
+ \sum_{t<T} E_\ell(t)&\leq C_\ell &&(\ell<r).
+ \label{eq:finite-exceptions}
+\end{align}
+Then a bounded search among $i=0,\ldots,K$ finds a successful window.
+In particular its starting point is at most $n_K$. For fixed primitive
+recursive evaluators $a_j,E_\ell,g$, this is an iPRA theorem with
+quantifier-free finite input and output predicates.
+\end{theorem}
+
+\begin{proof}
+For a fixed component $j$, call a window $j$-bad if the first test fails
+for that component. Bounded search then supplies $p,q\in W_i$ with
+$|a_j(p)-a_j(q)|>\epsilon_j$. Swapping $p,q$ if necessary and telescoping
+gives
+\[
+ \epsilon_j<|a_j(p)-a_j(q)|
+ \leq\sum_{t=p}^{q-1}|a_j(t+1)-a_j(t)|
+ \leq\sum_{t=n_i}^{n_i+g(n_i)-1}|a_j(t+1)-a_j(t)|.
+\]
+For different $i$ these ranges of increments are disjoint. Consequently,
+if $L$ windows are $j$-bad, then
+$L\epsilon_j<\sum_{t<T}|a_j(t+1)-a_j(t)|\leq V_j$ when $L>0$.
+There can therefore be at most $K_j$ such windows. This bound is slightly
+generous when $V_j/\epsilon_j$ is an integer; generosity avoids a special
+case and does no harm.
+
+For a fixed exceptional predicate $E_\ell$, every window failing its
+emptiness test contains a least exceptional index. The chosen indices
+are distinct because the windows are disjoint, so there are at most
+$C_\ell$ such windows by \eqref{eq:finite-exceptions}.
+
+If all $K+1$ windows failed, assign each window to its least failed test,
+in a fixed order of the $m+r$ tests. Each assigned class has size at most
+its budget by the preceding two paragraphs. Summing the class counts
+would give $K+1\leq K$, a contradiction. Because the tests are decidable,
+this proves a bounded positive existence statement: scan the $K+1$
+windows and retain the first success. If the scan returned failure,
+the finite argument just given would contradict its recorded failures.
+No double-negation elimination for an unbounded proposition is used.
+
+All proof loops have visible finite bounds. The triangle inequality is
+proved by induction on the number of increments; disjoint-range sums are
+proved by induction on the number of selected windows; the last counting
+identity is proved by induction on the list of assigned tests. Each
+invariant is a rational inequality, a bounded conjunction, or an equality
+of finite sums. After rational coding and Booleanization these are
+quantifier-free formulas. The endpoint $T$ is fixed before these
+inductions. Thus the proof has the required iPRA form.
+\end{proof}
+
+The use of variation through $T$ intentionally overestimates what is
+needed: the last tested window ends at $T-1$. This harmless extra
+increment makes the interface easy to compose. For $m=r=0$, $K=0$ and
+the first window succeeds vacuously. A zero-length window also behaves
+correctly: its oscillation is zero, while its exceptional-index test
+still inspects its single index.
+
+\subsection{Monotone sequences, finite variation, and simultaneous use}
+
+If $a(t)$ is nondecreasing and $0\leq a(t)\leq M$, then for every finite
+$T$ its variation telescopes to $a(T)-a(0)\leq M$. With
+$\epsilon=2^{-k}$, Theorem~\ref{thm:common-window} therefore gives
+\[
+ \exists i\leq \lfloor M2^k\rfloor\quad
+ \forall p,q\in[n_i,n_i+g(n_i)]\quad |a(p)-a(q)|\leq2^{-k}.
+\]
+The displayed quantifiers over $i,p,q$ are bounded; the search returns
+the particular $i$. This is often called \emph{metastability}. Its
+meaning is finite-window stability, not eventual stability on an
+infinite tail.
+
+The same theorem covers nonmonotone sequences with a proved finite
+variation bound. It also synchronizes several sequences without first
+finding a stable interval for one sequence and then searching inside it
+for another. Their budgets add. Exceptional sets can be included in
+the same selection. This matters when a proof needs, at one common
+scale, a small oscillation in several approximants and avoidance of a
+finite family of bad indices.
+
+For example, suppose two monotone rational sequences take values in
+$[0,1]$, both tolerances are $1/4$, and a decidable exceptional predicate
+has at most two values in the inspected prefix. Then $K=4+4+2=10$.
+Eleven candidate windows suffice for a common successful one. If
+$g(n)=n+1$ and $b=0$, then $n_i=2^{i+1}-2$, so the returned start is
+at most $2046$. This is a guaranteed bound; a particular input usually
+succeeds much earlier.
+
+\paragraph{Relation to the existing Roth packet.}
+The repository already observes that a bound on the number of good
+approximants yields a finite window with no such approximants
+\cite{ProveIt}. Theorem~\ref{thm:common-window} does not claim that
+observation as new, nor does it prove the missing quantitative Roth
+estimate. It generalizes the common last step to multiple exceptional
+predicates and analytic variation budgets, and supplies one precise
+finite interface usable by other proofs. An absent cardinality estimate
+remains an absent hypothesis.
+
+\subsection{Why the output cannot be silently upgraded to a modulus}
+
+The difference between a stable window and a Cauchy modulus is essential.
+Let $H(e,t)$ be the decidable predicate that a fixed universal machine
+with input $e$ has halted within $t$ steps. Bounded simulation is primitive
+recursive. The sequence $a_e(t)=H(e,t)$ is nondecreasing and lies in
+$[0,1]$. If a computable procedure uniformly returned a Cauchy cutoff
+$M(e)$ for tolerance $1/2$, simulating through $M(e)$ would decide
+halting: if the machine had not halted then, it could never halt later,
+since that would change the sequence from $0$ to $1$ after the cutoff.
+Thus even this very simple uniform family has no uniform computable
+Cauchy modulus, although the finite-window theorem applies to it.
+
+One can also see the obstruction in a single fixed primitive recursive
+rational sequence. Define
+\[
+ s_t=\sum_{e\leq t}4^{-(e+1)}H(e,t).
+\]
+It is nondecreasing, primitive recursive, and bounded by $1/3$. Suppose
+it had a computable Cauchy modulus. In the ordinary external real-number
+interpretation, that modulus would compute its limit $s$. To recover the
+halting status of machine $e$, first subtract the contributions of
+machines $0,\ldots,e-1$, which have already been recovered. Put
+$w=4^{-(e+1)}$. If $e$ never halts, the remaining value is at most $w/3$;
+if it halts, the remaining value is at least $w$. An approximation with
+error at most $w/6$ separates these cases, for example at threshold
+$2w/3$. Recursing through $e$ decides the halting problem, a contradiction.
+This establishes that a global modulus cannot in general be extracted
+even for a single primitive recursive bounded monotone rational sequence.
+
+The external impossibility argument is not used as an axiom in any
+positive iPRA proof. It diagnoses a proposed change of output contract.
+Nor does it license a blanket claim that an arbitrary mathematical
+theorem is unprovable in iPRA. One must first identify its exact input
+representation and exact conclusion.
+
+\subsection{The Lean and arithmetic boundaries of the selector}
+
+The shipped \texttt{FiniteCore.lean} defines the bounded scan
+\texttt{firstHit}, disjoint endpoints, and finite contracts. It proves
+that a successful index within the budget makes the scan succeed, that
+the scan stays within the budget, and that bounded contracts compose.
+It also proves a natural-valued energy termination lemma, a useful
+alternative implementation when the failed-test budget is already an
+integer potential.
+
+These are compiled ambient Lean theorems. The rational variation and
+multi-component counting proof above has a formalization outline, not a
+completed Lean proof. To finish it, represent the rational arrays by
+finite lists; prove interval telescoping, the disjoint-sum inequality,
+and the finite assignment count; and then apply
+\texttt{firstHit\_complete}. To finish the \emph{object-theory} proof,
+replace the arrays by natural codes and construct the corresponding
+\texttt{Prf PRAAx} derivations using the bounded invariants just listed.
+Compilation of the ambient selector alone does not perform that last
+step.

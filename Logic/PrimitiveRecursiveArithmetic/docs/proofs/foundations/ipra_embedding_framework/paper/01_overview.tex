@@ -1,0 +1,131 @@
+\section{What this framework changes}
+
+The repository's many proof packets already exhibit substantial common
+structure: rational approximations, finite algebra, explicit inequalities,
+primitive recursive algorithms, and an audit of the allowed induction.
+They also repeatedly encounter the same missing interfaces. A geometric
+argument may produce a finiteness assertion without a coordinate bound.
+An analytic argument may require an exact zero test on a Cauchy name.
+A Lean argument may prove a statement about natural numbers while leaving
+the object-language arithmetic derivation unconstructed. The useful next
+step is to make these interfaces reusable and then prove new instances.
+
+\subsection{The proposed unit of mathematical development}
+
+An observation request is a finite datum: a precision, a polynomial degree,
+a bounded list of points, a finite matrix, a requested range of indices,
+or a finite assertion about one of these. A construction should specify:
+\begin{enumerate}
+\item a fixed primitive recursive representation of its inputs and outputs;
+\item the finite observations of the input used for this request;
+\item an explicit primitive recursive output procedure;
+\item a finite correctness predicate, including all necessary promises;
+\item a proof whose loop invariants become quantifier-free arithmetic.
+\end{enumerate}
+Theorem~\ref{thm:finite-demand-transfer} supplies the general transfer step.
+It allows adaptive input demands and global hypotheses, provided the
+induction itself is performed at a fixed finite request. The global
+interpretation is recovered afterwards by universal introduction.
+
+This permits quite different objects to share one proof discipline. An
+exact rational algebraic object uses finite equality tests. A real or
+complex name uses finite coherence and error tests. A function uses an
+evaluator together with a quantitative continuity contract. A finite
+geometric configuration uses incidence and nondegeneracy certificates.
+A count bound uses a contradiction for a supplied list of too many
+distinct points. The framework does not collapse these representations
+into one stronger existence claim.
+
+\subsection{The main mathematical outcomes}
+
+The principal positive results are the following.
+\begin{enumerate}
+\item \textbf{A direct arithmetic transfer theorem.}
+Bounded truth, bounded witness selection, adaptive finite demand, and
+composition are proved explicitly. A restricted proof discipline has an
+effective syntactic compilation into iPRA. Its primitive contracts must
+already be proved; the theorem does not supply missing mathematics.
+
+\item \textbf{A separated simple branch for Cauchy coefficients.}
+Theorem~\ref{thm:simple-branch} replaces exact algebraic coefficient
+codes by a different sufficient interface: arbitrary fixed PR complex
+coefficient names, a supplied root at $X=0$, and an explicit separation
+of the derivative from zero. Finite polynomial iteration produces
+individually accessible coefficient names and quantitative convergence.
+The derivative witness is the exact point where the singular Puiseux
+obstruction is excluded.
+
+\item \textbf{Common finite windows without a global modulus.}
+Theorem~\ref{thm:common-window} combines finite variation bounds and
+finite exceptional-set bounds by addition of budgets. It gives one
+bounded search that satisfies all observations on the same window.
+It includes nonmonotone sequences. A halting example proves why this
+output cannot generally be promoted to a Cauchy modulus.
+
+\item \textbf{A concrete repair of a Diophantine geometric dependency.}
+Theorem~\ref{thm:hyperelliptic-fiber} supplies a sharp finite zero-count
+lemma on odd-degree hyperelliptic equations. It replaces a divisor-based
+argument in a specified part of the Siegel program. Conditional on the
+still-needed finite covering theorem, it gives the point-count bound
+$ML$ for the explicit evaluation vectors used in
+Corollary~\ref{cor:hyperelliptic-cardinality}.
+
+\item \textbf{A general finite algebra interface.}
+Theorem~\ref{thm:finite-algebra-zeros} converts explicit polynomial
+spanning identities into a bound on the number of rational solutions.
+The certificate can be checked by coefficient arithmetic. Its proof
+uses separator polynomials and finite row reduction, and does not
+assume a generic algebraic-geometry decision procedure.
+\end{enumerate}
+
+The elementary ingredients of these results are established mathematics.
+The contribution of this report is their integration into a common iPRA
+discipline, the explicit arithmetic and precision details, and their
+application to the specific unresolved contracts in the repository.
+No claim of priority for a new classical analytic or algebraic theorem
+is intended.
+
+\subsection{Three distinctions that preserve the intended theorem}
+
+\paragraph{Counting points versus finding all points.}
+A proof that every list of $C+1$ distinct solutions is impossible gives
+a cardinality bound. It does not tell a bounded search where the last
+solution lies. For an arbitrary decidable predicate, even a bound of
+one permits a sole solution at an arbitrarily late index. A global
+height bound is additional information. The finite algebra and
+hyperelliptic results in this report are count results.
+
+\paragraph{Proving a finite certificate sound versus producing one.}
+A coefficient identity can be verified and its consequence can be
+proved uniformly in a supplied certificate. This does not show that
+every input in a proposed theorem admits such a certificate. For a
+uniform positive result, either supply the certificate as input or
+prove a primitive recursive constructor and its correctness. This
+distinction applies to algebraic splitting, exceptional subspace
+covers, root isolation, and proof traces alike.
+
+\paragraph{Native Lean truth versus an embedded arithmetic proof.}
+Lean is the metatheory in the intended formalization. The target theory
+is represented by its syntax and derivation type. A theorem about
+\texttt{Nat}, \texttt{Rat}, or \texttt{Complex} in Lean is useful
+mathematics, but the required final endpoint is a value of the repository
+type \texttt{Prf PRAAx [] formula}. The archive's formalization plan
+keeps these obligations separate, including which files were actually
+compiled in this work.
+
+\subsection{How to read and use the report}
+
+Section~\ref{sec:finite-demand-framework} gives the common foundations.
+Section~\ref{sec:simplebranch} develops the analytic repair and a finite
+mesh method. Section~\ref{sec:stability} gives the stability selector.
+Section~\ref{sec:repository-repair} audits the hard packets and develops
+the geometric and finite algebra repairs. The final sections specify
+the exact Lean interfaces, remaining obligations, reproducible checks,
+and the boundaries of the claims.
+
+The manuscript is intended to stand on its own. The repository is used
+to identify the target foundations and the particular gaps; no unverified
+analytic theorem from another packet is a hidden premise of the new
+finite polynomial, stability, or zero-count proofs. The conditional
+covering corollary deliberately leaves its covering theorem as an
+explicit hypothesis.

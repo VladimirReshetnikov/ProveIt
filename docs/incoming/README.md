@@ -208,7 +208,9 @@ archive is deleted only after its SHA-256 is checked against the copy that was p
 a filename pattern or a path alone (Vladimir, 15 November 2026).
 `von_mangoldt_totient_ipra_2026-11-15.zip` was placed the same way, under
 `analytic-number-theory/`, and then deleted. It leaves out only `build/BUILD_REPORT.md`,
-which the root `.gitignore` rule `build/` ignores.
+which the root `.gitignore` rule `build/` ignores. `ipra_embedding_framework.zip`, a second
+cross-domain framework, was placed the same way, under `foundations/`, and then deleted. It
+leaves out only its ignored `SHA256SUMS.txt`.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

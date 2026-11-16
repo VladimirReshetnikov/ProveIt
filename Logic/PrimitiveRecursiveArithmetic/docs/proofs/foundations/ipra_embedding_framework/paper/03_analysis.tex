@@ -1,0 +1,610 @@
+\section{A positive repair for Puiseux data: a separated simple branch}
+\label{sec:simplebranch}
+
+The Puiseux packet in the repository identifies a precise obstruction:
+arbitrary Cauchy presentations of the coefficients do not uniformly supply
+individually accessible exact coefficients of a Puiseux root. Its example
+\(Y^2-X^2-a\) makes the distinction between \(a=0\) and \(a>0\) visible in
+one returned coefficient. Finite exact algebraic presentations avoid that
+particular problem, but they are not the only usable input interface.
+Here we establish a second interface: a supplied root of the constant
+polynomial together with a finite certificate separating its derivative
+from zero. The coefficients may otherwise be arbitrary primitive
+recursive complex names. The result gives one ordinary power-series
+branch, with ramification integer \(1\), explicit coefficient evaluators,
+and an explicit disk of convergence. It does not address the singular
+case where that derivative vanishes.
+
+The proof has a deliberately finite core. Every estimate first concerns
+finite polynomials with Gaussian-rational coefficients. Cauchy names are
+introduced only after those estimates have been proved. This order makes
+the quantifier-free induction requirements visible and avoids using a
+fixed-point theorem or analytic completeness as an arithmetic axiom.
+The repository motivation is
+\texttt{algebra/puiseux\_ipra/evidence/scope\_obstruction.md} in the
+proof collection \cite{ProveIt}.
+
+\subsection{The finite polynomial kernel}
+
+For a Gaussian rational \(z=u+iv\), put
+\(\lVert z\rVert_1=|u|+|v|\). This norm is submultiplicative:
+expanding the two coordinates of a product and applying the rational
+triangle inequality gives
+\(\lVert zw\rVert_1\leq\lVert z\rVert_1\lVert w\rVert_1\).
+For a finite polynomial \(U(X)=\sum_k u_kX^k\) and a positive rational
+\(r\), define its weighted coefficient norm by
+\[
+  \lVert U\rVert_r=\sum_k\lVert u_k\rVert_1r^k.
+\]
+Finite convolution gives
+\[
+ \lVert U+V\rVert_r\leq\lVert U\rVert_r+\lVert V\rVert_r,
+ \qquad
+ \lVert UV\rVert_r\leq\lVert U\rVert_r\lVert V\rVert_r.
+ \tag{A1}\label{eq:branch-norm}
+\]
+These are inequalities between rational numbers. To prove the product
+inequality, expand the coefficient at each degree, use
+\(r^{a+b}=r^ar^b\), and rearrange the resulting finite double sum.
+Induction on the lengths of the arrays proves each rearrangement.
+There is no assertion about an infinite sum in (A1).
+
+Let
+\[
+ Q(X,Z)=\sum_{i+j\leq D}q_{ij}X^iZ^j,
+ \qquad q_{00}=q_{01}=0,
+ \qquad D\geq2,
+ \qquad \sum_{i,j}\lVert q_{ij}\rVert_1\leq B,
+\]
+where \(B\geq1\) is rational. Define
+\[
+ s=\frac{1}{4DB},\qquad
+ r=\frac{s}{4B}=\frac{1}{16DB^2}.
+ \tag{A2}\label{eq:branch-radii}
+\]
+In particular, \(0<r\leq s\leq1\). All zero coefficients in this
+description are specified positions in a finite array. No procedure is
+asked to decide whether a represented coefficient vanishes.
+
+\begin{lemma}[A finite contraction estimate]
+\label{lem:finite-poly-contraction}
+If \(\lVert U\rVert_r,\lVert V\rVert_r\leq s\), then
+\[
+ \lVert Q(X,U)-Q(X,V)\rVert_r
+       \leq\tfrac14\lVert U-V\rVert_r,
+ \qquad
+ \lVert Q(X,U)\rVert_r\leq s/2.
+ \tag{A3}\label{eq:finite-poly-contraction}
+\]
+\end{lemma}
+\begin{proof}
+For every positive integer \(j\), the polynomial identity
+\[
+ U^j-V^j=(U-V)\sum_{h<j}U^hV^{j-1-h}
+\]
+follows by cancellation of consecutive terms. Its weighted norm is at
+most \(j s^{j-1}\lVert U-V\rVert_r\). In a term of \(Q\) that depends
+on \(Z\), the excluded position \((0,1)\) ensures
+\(i+j-1\geq1\). Consequently
+\[
+ r^i s^{j-1}\leq s,
+ \quad
+ \sum_{i\geq0,\,j\geq1}j\lVert q_{ij}\rVert_1r^i s^{j-1}
+ \leq DBs=\tfrac14.
+\]
+Here the sum is over terms with \(j\geq1\); the index \(i\) may be
+zero. This proves the first inequality. The other excluded position,
+\((0,0)\), gives
+\(\lVert Q(X,0)\rVert_r\leq Br=s/4\). Applying the first inequality
+with \(V=0\) gives
+\(\lVert Q(X,U)\rVert_r\leq s/4+s/4=s/2\).
+\end{proof}
+
+Define the finite polynomial iterates
+\[
+ U_0=0,\qquad U_{n+1}=Q(X,U_n).
+ \tag{A4}\label{eq:finite-iterates}
+\]
+Their degrees can be bounded by \(D^n\), so they can be constructed by
+primitive recursion on finite coefficient arrays. If only coefficients
+through degree \(K\) are required, truncating after every operation to
+that degree gives exactly the same retained coefficients. Truncation
+discards only terms of higher degree, and every exponent in \(Q\) is
+nonnegative.
+
+\begin{lemma}[Stabilization by degree]
+\label{lem:branch-stabilization}
+Every \(U_n\) has zero constant coefficient and
+\(\lVert U_n\rVert_r\leq s\). Moreover
+\[
+  X^{n+1}\mid U_{n+1}-U_n.
+ \tag{A5}\label{eq:degree-stabilization}
+\]
+Thus, if \(c_k=[X^k]U_k\) for \(k\geq1\), the coefficient of
+\(X^k\) in every \(U_N\), \(N\geq k\), is \(c_k\).
+\end{lemma}
+\begin{proof}
+The zero constant coefficient and the norm bound follow by induction,
+using \(q_{00}=0\), \(U_0=0\), and (A3). Suppose \(U,V\) have zero
+constant coefficient and \(X^n\mid U-V\). The factorization used in
+the preceding proof shows that
+\(Q(X,U)-Q(X,V)=(U-V)R(X)\). Every term of \(R\) has a factor
+\(X\): if \(i\geq1\), that factor is explicit; if \(i=0\), then
+\(j\geq2\), and each product in
+\(\sum_{h<j}U^hV^{j-1-h}\) contains at least one factor having zero
+constant coefficient. Hence \(X^{n+1}\mid Q(X,U)-Q(X,V)\).
+The initial difference \(U_1-U_0=Q(X,0)\) is divisible by \(X\).
+Induction gives (A5). Summing the finitely many later differences
+proves the assertion about each retained coefficient.
+\end{proof}
+
+Put \(S_K(X)=\sum_{1\leq k\leq K}c_kX^k\), with \(S_0=0\).
+
+\begin{theorem}[Finite majorant, tail, and residual]
+\label{thm:finite-branch}
+For every \(K\leq N\),
+\[
+ \sum_{1\leq k\leq N}\lVert c_k\rVert_1r^k\leq s.
+ \tag{A6}\label{eq:branch-majorant}
+\]
+If \(\lVert x\rVert_1\leq r/2\), then
+\[
+ \begin{split}
+ \lVert S_N(x)-S_K(x)\rVert_1&\leq s\,2^{-(K+1)},\\
+ \lVert Q(x,S_K(x))-S_K(x)\rVert_1&\leq s\,2^{-K}.
+ \end{split}
+ \tag{A7}\label{eq:branch-tail}
+\]
+The polynomial \(Q(X,S_K)-S_K\) has zero coefficients through
+degree \(K\).
+\end{theorem}
+\begin{proof}
+By stabilization, \(S_N\) is the truncation of \(U_N\), so (A6)
+follows from its norm bound. For the first estimate in (A7), expand the
+finite tail. For \(k>K\),
+\(\lVert x\rVert_1^k\leq r^k2^{-k}\leq r^k2^{-(K+1)}\).
+Summing and using (A6) gives the claimed bound.
+
+The coefficients through degree \(K\) of \(Q(X,S_K)\) agree with
+those of \(Q(X,U_K)=U_{K+1}\). Stabilization identifies these with
+the coefficients of \(S_K\). Write
+\(R_K=Q(X,S_K)-S_K\). Its low coefficients therefore vanish, while
+(A3) gives
+\(\lVert R_K\rVert_r\leq s/2+s\leq2s\). Every remaining degree
+is at least \(K+1\). The same finite-tail estimate gives
+\[
+ \lVert R_K(x)\rVert_1
+ \leq2^{-(K+1)}\lVert R_K\rVert_r
+ \leq s2^{-K}.
+\]
+This proves all claims without introducing an infinite series.
+\end{proof}
+
+\subsection{The precision loss is explicit and independent of iteration count}
+
+For the application to names, a perturbation estimate is essential.
+Let \(\widetilde Q\) have the same excluded coefficient positions,
+degree bound, and majorant \(B\), and suppose
+\(\lVert q_{ij}-\widetilde q_{ij}\rVert_1\leq\delta\) at every
+position. Set \(m=(D+1)^2\), a convenient upper bound on the number
+of positions. For \(\lVert U\rVert_r\leq s\),
+\[
+ \lVert Q(X,U)-\widetilde Q(X,U)\rVert_r\leq m\delta,
+ \tag{A8}\label{eq:coefficient-perturbation}
+\]
+because \(r,s\leq1\). Applying (A3) to the two sequences of
+iterates yields, with \(E_n=\lVert U_n-\widetilde U_n\rVert_r\),
+\[
+ E_0=0,\qquad E_{n+1}\leq E_n/4+m\delta,
+ \qquad E_n\leq2m\delta.
+ \tag{A9}\label{eq:iterate-perturbation}
+\]
+The last inequality is proved by induction: its right-hand side is
+preserved because \(2m\delta/4+m\delta\leq2m\delta\).
+Thus the dependence on the coefficient input does not get worse as the
+number of iterations grows.
+
+Let \(e_p=2^{-p}\). A regular complex name in this subsection is a
+primitive recursive Gaussian-rational function \(a(p)\) satisfying
+\[
+ \lVert a(p)-a(q)\rVert_1\leq e_p+e_q.
+ \tag{A10}\label{eq:branch-name}
+\]
+We work with a fixed primitive recursive family of such functions; this
+is a schema, not a universal evaluator for all primitive recursive
+programs. Assume each coefficient \(q_{ij}\) is supplied in this form,
+with the two excluded entries identically zero. A rational majorant
+valid at \emph{every} precision is available directly from the input:
+one may take
+\[
+ B=\max\left(1,\sum_{i+j\leq D}
+                 (\lVert q_{ij}(0)\rVert_1+2)\right).
+ \tag{A11}\label{eq:uniform-majorant}
+\]
+Indeed (A10) bounds \(\lVert q_{ij}(p)\rVert_1\) by
+\(\lVert q_{ij}(0)\rVert_1+1+e_p\leq\lVert q_{ij}(0)\rVert_1+2\).
+A sharper certified majorant can be used instead. This distinction
+matters: the finite proof now applies literally to the rational
+polynomial \(Q_p\) at each precision, without an informal passage from
+exact coefficient inequalities to floating-point ones.
+
+For a nonnegative rational \(u\), write \(\lambda(u)\) for the least
+\(h\leq\lceil u\rceil+1\) such that
+\(2^h\geq\max(1,u)\). This is a bounded primitive recursive search;
+\(2^h\geq h+1\) proves that the indicated bound suffices. Let
+\(U_k^p\) be the \(k\)-th iterate for \(Q_p\). An explicit name for
+the \(k\)-th coefficient is
+\[
+ \begin{split}
+ h_k&=\lambda(2m r^{-k}),\\
+ p(k,n)&=n+h_k+2,\\
+ C(k,n)&=[X^k]U_k^{p(k,n)}.
+ \end{split}
+ \tag{A12}\label{eq:coefficient-name}
+\]
+For \(k=0\), set \(C(0,n)=0\). The coefficient estimate from
+(A9) gives
+\[
+ \lVert [X^k]U_k^p-[X^k]U_k^q\rVert_1
+ \leq2m r^{-k}(e_p+e_q).
+\]
+Substituting (A12) bounds the difference between \(C(k,n)\) and
+\(C(k,n')\) by \((e_n+e_{n'})/4\). Therefore these are regular
+names, uniformly in the numerical index \(k\). All loops may be
+truncated at degree \(k\).
+
+There is also a uniform evaluator for the finite partial sums. Suppose
+\(\lVert x\rVert_1,\lVert x'\rVert_1\leq r/2\), and
+\(\lVert U\rVert_r\leq s\). Factoring \(x^k-(x')^k\) gives
+\[
+ \lVert U(x)-U(x')\rVert_1
+ \leq \frac{s}{r}\lVert x-x'\rVert_1.
+ \tag{A13}\label{eq:polynomial-eval-lipschitz}
+\]
+To check the constant, the \(k\)-th summand is bounded by
+\(\lVert u_k\rVert_1 k(r/2)^{k-1}\lVert x-x'\rVert_1\),
+and \(k2^{-(k-1)}\leq1\) for every \(k\geq1\).
+
+Let a name \(x(p)\) satisfy both (A10) and
+\(\lVert x(p)\rVert_1\leq r/2\) at every precision. Put
+\[
+ T_K(p)=\bigl(\text{truncation of }U_K^p
+                    \text{ through degree }K\bigr)(x(p)),
+ \qquad C_* =2m+s/r.
+\]
+Combining (A9), truncation, and (A13) gives the entirely finite estimate
+\[
+ \lVert T_K(p)-T_K(q)\rVert_1
+       \leq C_*(e_p+e_q),
+ \tag{A14}\label{eq:partial-sum-name}
+\]
+with no dependence of \(C_*\) on \(K\).
+The bounded-name presentation of the disk is harmless. For a rational
+radius \(R>0\), define the rational radial projection by
+\(\pi_R(z)=z\) when \(\lVert z\rVert_1\leq R\), and
+\(\pi_R(z)=Rz/\lVert z\rVert_1\) otherwise. It has Lipschitz
+constant at most \(2\). To see this, assume
+\(\lVert z\rVert_1\geq\lVert w\rVert_1\). If both are outside,
+subtract the two scaled vectors, keep \(R/\lVert z\rVert_1\) as
+the common factor, and bound the remaining scale difference using
+\(\lVert z\rVert_1-\lVert w\rVert_1\leq\lVert z-w\rVert_1\).
+If only \(z\) is outside, the same calculation uses
+\(\lVert z\rVert_1-R\leq\lVert z\rVert_1-\lVert w\rVert_1\).
+If both are inside, the claim is immediate. Thus applying \(\pi_R\)
+to a regular name at index \(n+1\) gives a regular name in the disk.
+It represents the original value whenever that value is in the disk,
+because \(\pi_R\) fixes that value and the same Lipschitz estimate
+controls approximation errors. Alternatively, one can require the
+bounded presentation directly in the input contract.
+
+If \(y_0\) is a further regular name, define
+\[
+ \begin{split}
+ K(n)&=n+3,\\
+ p(n)&=n+\lambda(C_*+1)+3,\\
+ Y(n)&=y_0(p(n))+T_{K(n)}(p(n)).
+ \end{split}
+ \tag{A15}\label{eq:root-name}
+\]
+This is a regular name. For example, if \(n\leq n'\), compare
+\(T_{K(n)}(p(n))\) first with \(T_{K(n)}(p(n'))\), using (A14),
+and then with \(T_{K(n')}(p(n'))\), using the finite tail in (A7)
+for the one rational polynomial \(Q_{p(n')}\). The sum of these
+errors and the error in \(y_0\) is at most
+\[
+ (C_*+1)(e_{p(n)}+e_{p(n')})
+          +s2^{-(n+4)}
+ \leq\tfrac18(e_n+e_{n'})+\tfrac1{16}e_n
+ \leq e_n+e_{n'}.
+\]
+The case \(n'\leq n\) is symmetric and is decided by natural-number
+comparison. This proof constructs the name; it does not extract it from
+an assertion that an unspecified sequence converges.
+
+\subsection{Normalization and inversion from one finite separation certificate}
+
+We now explain how the excluded entries of \(Q\) arise without an exact
+zero test. Let
+\(P(X,Y)=\sum_{i+j\leq D}a_{ij}X^iY^j\), let \(y_0\) be a
+supplied regular name, and assume the supplied arithmetic contracts
+prove \(P(0,y_0)=0\). Let
+\(d=P_Y(0,y_0)\). The additional input is a finite derivative
+separation witness. One convenient form consists of \(t\) and a
+coordinate \(j\in\{\operatorname{Re},\operatorname{Im}\}\) such that
+\[
+       |d_j(t)|\geq4e_t.
+ \tag{A16}\label{eq:finite-apartness}
+\]
+This is one decidable rational test, supplied as data; it is not a
+conclusion drawn from the negation of \(d=0\).
+
+For completeness, here is an explicit inverse construction. For every
+\(p\geq t+2\), regularity gives
+\[
+ |d_j(p)|\geq4e_t-e_t-e_p\geq\tfrac{11}{4}e_t>2e_t.
+\]
+Choose a rational \(M\geq1\) bounding
+\(\lVert d(t)\rVert_1+2\). Then
+\(\lVert d(p)\rVert_1\leq M\) at every precision, and, at the
+specified precisions,
+\[
+ |d(p)|_2^2\geq4e_t^2,
+ \qquad
+ \lVert d(p)^{-1}\rVert_1\leq
+ H:=\frac{M}{4e_t^2}.
+\]
+The rational inverse is
+\((u-iv)/(u^2+v^2)\). Its denominator is strictly positive by the
+displayed bound. The identity
+\(z^{-1}-w^{-1}=z^{-1}(w-z)w^{-1}\) gives
+\[
+ \lVert d(p)^{-1}-d(q)^{-1}\rVert_1
+             \leq H^2(e_p+e_q).
+\]
+Consequently
+\[
+ I(n)=d\bigl(\max(t+2,n+\lambda(H^2)+2)\bigr)^{-1}
+ \tag{A17}\label{eq:inverse-name}
+\]
+is a regular name. The exact rational identity
+\(d(p)d(p)^{-1}=1\), together with regularity and the magnitude
+bound, proves that it represents an inverse of \(d\). This proof uses
+only finite rational identities and explicit error estimates.
+
+Expand the following finite expression:
+\[
+ Q(X,Z)=Z-d^{-1}P(X,y_0+Z).
+ \tag{A18}\label{eq:normalized-branch}
+\]
+The constant coefficient is zero by the supplied root equation, and
+the coefficient at \(Z\) is \(1-d^{-1}d=0\). In the resulting
+coefficient array, put these two positions identically equal to the
+rational zero. The finite binomial expansion and the supplied equalities
+prove that this modified array represents (A18). All other coefficient
+names are obtained by finite sums, products, and the inverse (A17).
+Here are explicit schedules for those operations. If names \(a,b\)
+have rational bounds \(A,B\) at all precisions, addition uses
+\(a(n+1)+b(n+1)\), with bound \(A+B\). Multiplication uses
+\(a(p)b(p)\), where \(p=n+\lambda(A+B)+1\), with bound \(AB\).
+Indeed the product difference is at most
+\((A+B)(e_p+e_q)\). A finite expression is evaluated recursively
+using these shifts at every node; (A17) handles its only division.
+This gives a primitive recursive evaluator and a magnitude bound for
+each normalized coefficient. This construction
+uses a proof of the two zero identities; it never branches on a test of
+equality of arbitrary complex names.
+
+\begin{theorem}[One simple analytic branch with a primitive recursive name]
+\label{thm:simple-branch}
+For every fixed primitive recursive family of the preceding input data,
+the finite certificate (A16), the supplied equality \(P(0,y_0)=0\), and
+the regular-name contracts yield the following primitive recursive
+outputs and arithmetic contracts.
+There is a family of coefficient names \(c_k\), explicitly given by
+(A12), with \(c_0=0\), and the rational radii (A2), such that:
+\begin{enumerate}
+\item For every finite degree \(N\), substitution of
+      \(y_0+\sum_{k=1}^{N}c_kX^k\) into \(P\) has zero coefficients
+      through degree \(N\).
+\item The majorant (A6) holds for every finite coefficient prefix.
+      On the disk \(\lVert x\rVert_1\leq r/2\), the finite tail is
+      bounded by \(s2^{-(K+1)}\).
+\item If \(M\) is a rational bound on \(\lVert d\rVert_1\), then
+      \[
+       \left\lVert P\left(x,y_0+S_K(x)\right)\right\rVert_1
+          \leq Ms2^{-K}.
+       \tag{A19}\label{eq:original-residual}
+      \]
+\item The evaluator (A15) gives a regular root name \(Y(x)\).
+      It satisfies \(P(x,Y(x))=0\) in the represented equality
+      relation, and \(\lVert Y(x)-y_0\rVert_1\leq s\).
+\item It is the unique represented root in that ball.
+\end{enumerate}
+Thus the output is an ordinary power-series branch; its ramification
+integer is \(e=1\).
+\end{theorem}
+\begin{proof}
+The finite polynomial results apply to each rational approximation
+\(Q_p\), since the uniform majorant (A11) was chosen for every
+precision. The perturbation estimates identify the coefficient names
+defined in (A12) and prove that every finite coefficient prefix satisfies
+the asserted identities and bounds. In elementary real or complex
+notation, this says that \(S_K\) has the stabilized coefficients
+established in Lemma~\ref{lem:branch-stabilization}. In arithmetic
+notation, each assertion says that its rational approximations differ
+by at most the stated error at every requested precision.
+
+The finite low-coefficient identity for \(Q(X,S_N)-S_N\), multiplied
+by \(-d\), proves the first claim, using (A18). Multiplication of
+the second estimate in (A7) by the magnitude bound \(M\) proves
+(A19). Formula (A15) and its finite error calculation give the root
+name. To make the last error budget explicit, let \(A_{ij}\) bound
+the norms of the original coefficient names at every precision and
+let \(A_0\) bound the name of \(y_0\). Put
+\[
+ R_x=1,\qquad R_y=A_0+s+1,\qquad
+ L=\sum_{i+j\leq D,\,j\geq1}
+       jA_{ij}R_x^iR_y^{j-1}.
+\]
+Factoring differences of powers proves
+\(\lVert P(x,u)-P(x,v)\rVert_1\leq L\lVert u-v\rVert_1\)
+on these bounded disks. The tail and (A19) therefore give
+\[
+ \lVert P(x,Y(x))\rVert_1\leq s(M+L)2^{-K}
+\]
+at every finite cutoff \(K\), in the represented inequality
+notation. For a requested error \(e_n\), take
+\[
+ K=n+\lambda\bigl(s(M+L)+1\bigr)+2.
+ \tag{A19a}\label{eq:final-zero-budget}
+\]
+The right-hand side is at most \(e_n/4\). Evaluate the finite
+polynomial expressions and their equality certificates with error at
+most \(e_n/4\), using the recursive addition, multiplication, and
+inverse schedules just specified. This proves the rational zero
+certificate with room to spare. All choices are primitive recursive.
+The notation of a represented inequality is eliminated by exactly this
+requested-precision argument, rather than by an axiom about limits.
+
+Finally, suppose \(z,w\) are two roots after subtracting \(y_0\),
+with norms at most \(s\). Use the radial projection described above
+to choose equivalent names whose approximants lie in that ball.
+The identity (A18) makes them fixed points
+of \(Q(x,\cdot)\). The scalar version of (A3) gives
+\(\lVert z-w\rVert_1\leq\frac14\lVert z-w\rVert_1\), hence
+\(\lVert z-w\rVert_1=0\). At finite precision the same calculation
+has an additional known error \(\eta\) and gives
+\(\lVert z-w\rVert_1\leq4\eta/3\). Choosing the common input
+precision so that this is below \(e_n\) proves the represented
+equality. No test of whether either norm is zero occurs.
+\end{proof}
+
+\paragraph{What is internal to iPRA.}
+The theorem is a schema for fixed evaluator families, with ordinary
+numerical parameters for the degree, coefficient indices, precision,
+and separation witness. Gaussian rationals, arrays, binomial
+coefficients, convolutions, truncations, and finite sums have primitive
+recursive codes. The core of (A3)--(A9) is already a collection of
+rational inequalities. For a requested final cutoff, all array indices
+are bounded by explicitly constructed sizes. Induction on a running
+iteration count proves a quantifier-free invariant containing the norm
+bound and the bounded list of zero low coefficients. The perturbation
+invariant is \(E_n\leq2m\delta\), a rational inequality. Its precision
+indices are free numerical parameters during induction. Consequently
+no induction formula quantifies over all precisions, all complex
+numbers, or all functions. Universally quantified contracts are invoked
+only at their finitely many needed numerical instances.
+
+The notation involving represented values in the theorem is an
+explanation of these finite contracts. Formalizing those contracts as
+\(\mathrm{Prf}\) objects in the repository remains work to be done; a
+Lean theorem about complete complex numbers would not establish that
+object-language conclusion.
+
+\subsection{Two worked branches and the remaining singular boundary}
+
+For \(P(X,Y)=Y^2-1-X\) and \(y_0=1\), one has \(d=2\) and
+\[
+ Q(X,Z)=(X-Z^2)/2.
+\]
+Take \(D=2\), \(B=1\), \(s=1/8\), \(r=1/32\). The explicitly
+certified evaluation disk is \(\lVert x\rVert_1\leq1/64\). The
+first stabilized coefficients are
+\[
+ c_1=\frac12,\quad c_2=-\frac18,\quad c_3=\frac1{16},
+ \quad c_4=-\frac5{128},\quad c_5=\frac7{256}.
+\]
+They are obtained by finite polynomial iteration, without selecting a
+complex square root at each step. The root is the unique one in
+\(\lVert Y-1\rVert_1\leq1/8\), and
+\[
+ \lVert P(x,1+S_K(x))\rVert_1\leq\tfrac14\,2^{-K}.
+\]
+The radius is intentionally conservative; the theorem prioritizes a
+uniform finite proof over a sharp analytic radius.
+
+For \(P(X,Y)=Y+Y^3-X\), take \(y_0=0\), \(d=1\),
+\(Q(X,Z)=X-Z^3\), \(D=3\), and \(B=2\). The construction gives
+\(s=1/24\), \(r=1/192\), and coefficients beginning
+\[
+  c_1=1,\quad c_2=0,\quad c_3=-1,\quad c_4=0,
+  \quad c_5=3,\quad c_6=0,\quad c_7=-12.
+\]
+This is a concrete local inversion theorem with a fully specified
+primitive recursive precision schedule.
+
+Return now to the obstruction polynomial \(Y^2-X^2-a\). If a root
+\(y_0\) of \(Y^2-a\) is supplied together with a separation witness
+for \(2y_0\), the theorem gives its simple branch and exact
+coefficient names. When \(a=0\), that witness does not exist for
+\(y_0=0\), although the two branches \(Y=\pm X\) can be written
+down in that special case. There is no uniform rule here for deciding
+which case occurs. The theorem therefore resolves the regular branch
+construction for Cauchy-presented coefficients while preserving the
+repository's genuine obstruction at the singular transition.
+
+\subsection{Finite mesh certificates replace one common use of compactness}
+\label{sec:mesh-certificates}
+
+The preceding result uses a supplied quantitative hypothesis. A related
+repair applies whenever an argument invokes a positive minimum on a
+compact domain. A finite mesh and a continuity modulus can supply the
+needed lower bound, provided the finite numerical tests have enough
+margin. They do not manufacture that margin from the bare assertion
+that a function has no zeros.
+
+\begin{proposition}[A finite certificate of positivity]
+\label{prop:mesh-positivity}
+Let \(f\) be a fixed real evaluator on a rational box
+\([0,1]^d\), with an approximation procedure \(A(q,p)\) satisfying
+\(|A(q,p)-f(q)|\leq e_p\) in the represented sense. Suppose a
+primitive recursive modulus \(\mu\) certifies
+\[
+ \lVert x-y\rVert_\infty\leq2^{-\mu(k)}
+       \quad\Longrightarrow\quad
+ |f(x)-f(y)|\leq2^{-k}.
+\]
+Fix a positive rational \(\gamma\). Choose \(k,p\) so that
+\(2^{-k}\leq\gamma\) and \(e_p\leq\gamma\), and let
+\(M=2^{\mu(k)}\). If the finite tests
+\[
+ A(j_1/M,\ldots,j_d/M,p)\geq3\gamma
+       \quad(0\leq j_i\leq M)
+ \tag{A20}\label{eq:mesh-certificate}
+\]
+all hold, then \(f(x)\geq\gamma\) throughout the box.
+\end{proposition}
+\begin{proof}
+For a rational point of the box, choose in each coordinate a nearest
+grid point, or simply the lower grid point, with the endpoint \(1\)
+handled by the last grid index. The sup-norm distance is at most
+\(1/M\). Each tested grid value of \(f\) is at least
+\(3\gamma-e_p\geq2\gamma\). The modulus then gives
+\(f(x)\geq2\gamma-2^{-k}\geq\gamma\).
+The grid indices and the selected point are obtained by bounded
+integer division. The test (A20) is a bounded conjunction, and the
+argument is a rational inequality after denominator clearing.
+For a represented point, first clamp each coordinate of its rational
+approximants to \([0,1]\); this operation is rational and does not
+increase their distance from any point of the box. One can then apply
+this rational theorem to the resulting approximants and the supplied modulus,
+or search the finite grid against one approximant with an additional
+precision margin. There is no need to decide which exact grid cell
+contains an arbitrary real point.
+\end{proof}
+
+For a complex function, apply the proposition to a certified real
+quantity such as \(|g|_2^2\). Polynomial data supply the continuity
+modulus by finite difference estimates. A successful mesh certificate
+then supplies the denominator bound required for inversion, root
+separation, or a contour argument. An unsuccessful certificate proves
+nothing about the presence of a zero. In particular, increasing the
+mesh until a test succeeds is not justified as a primitive recursive
+algorithm without a separately supplied success bound.
+
+The same method yields a rational upper certificate for a supremum:
+the largest grid approximation plus its evaluation error plus the
+modulus error bounds every function value. A grid point attaining the
+finite maximum is an approximate maximizer. This supplies the
+quantitative consequence often used from an extreme-value theorem,
+while keeping the required continuity and precision data explicit.

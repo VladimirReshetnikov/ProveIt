@@ -1,0 +1,102 @@
+\section{Validation, scope, and a practical continuation order}
+
+\subsection{What was checked in this package}
+
+The standalone Lean files \texttt{FiniteCore.lean},
+\texttt{Targets.lean}, and \texttt{FiniteBranch.lean} were compiled
+with Lean 4.32.0. The first
+contains actual proofs of the bounded search, energy, endpoint, and
+contract lemmas. The second fixes concrete definitions and propositions
+for future proofs. Its successful compilation establishes that those
+definitions and statements are well-typed, not that the target
+propositions have been proved. The archive retains the compiler output
+and its scope declaration. The third supplies Gaussian-rational
+algorithms and five kernel-checked coefficient computations; its
+general analytic goal fields remain uninstantiated.
+
+The standard-library Python reference program uses exact
+\texttt{Fraction} arithmetic and checks the following.
+\begin{itemize}
+\item All $256$ binary sequences of length eight, extended constantly,
+are fed to the finite-variation selector with their actual variation
+budget. Nonmonotone examples are included. Two inputs violating the
+finite budget hypotheses are rejected. A two-sequence example with an
+exceptional set verifies the synchronized output and the bound $2046$.
+\item The simple branch of $Y^2=1+X$ is constructed through order $20$
+by truncated polynomial iteration. Its coefficients agree with the
+independent binomial recurrence. The run checks $21$ weighted bounds,
+$231$ stabilization comparisons, $924$ finite-tail inequalities, and
+$84$ residual inequalities, all exactly.
+\item The sharp four-point hyperelliptic example and a second example
+with $B\ne0$ verify the curve equations, norm polynomial, repeated
+synthetic divisions, and point count.
+\item All eight border identities for the size-four quotient certificate
+are verified by coefficient comparison. The evaluation matrix on the
+four displayed solutions has determinant $-4$, confirming that the
+example attains the dimension bound.
+\end{itemize}
+These are implementation and example checks. The proofs of the universal
+mathematical assertions are in the manuscript; their full machine
+formalization remains as described above. In particular, no numerical
+test has been used as evidence for an unresolved global height estimate.
+
+The mathematical chapters were also reviewed independently during
+preparation. The review checked the degree and multiplicity argument,
+the finite algebra dimension contradiction, the common-window endpoint
+conventions, the analytic norm and precision constants, and the
+quantifier-free induction boundaries. The report was compiled to PDF
+and its rendered pages inspected. The archive records reproducibility
+commands, source provenance, and file checksums.
+
+\subsection{Unresolved mathematical dependencies}
+
+The proposed framework does not establish the following stronger claims:
+\begin{enumerate}
+\item a uniform primitive recursive bound for all rational points of
+arbitrary genus-at-least-two curves, or for integral points on arbitrary
+curves covered by Siegel's theorem;
+\item a uniform generator algorithm for arbitrary Mordell--Weil groups
+from abstract finiteness or Selmer information alone;
+\item the finite-tuple quantitative Subspace Theorem required by the
+conditional hyperelliptic point-count corollary;
+\item a general effective Roth cutoff, or all of the analytic estimates
+and uniform witnesses left open by the prime-distribution packet;
+\item uniform exact singular Puiseux coefficient selection from arbitrary
+Cauchy presentations, or a generic zero test for such presentations;
+\item a global Cauchy modulus extracted from a finite-window selector;
+\item an implemented automatic compiler from arbitrary Lean proofs to iPRA.
+\end{enumerate}
+The first four entries are left open here. Their absence is not a proof
+of unprovability. The fifth and sixth contain precise representational
+or computability obstructions, explained in the inspected source and
+in this report. The last entry would require much more than the
+restricted proof-construction discipline established here.
+
+\subsection{Recommended implementation order}
+
+The best first complete embedded theorem is the hyperelliptic fiber
+bound. Its data are exact rationals, its new idea is isolated, and its
+induction invariants are short. It also produces an immediate usable
+contract for an existing research route. The size-four example supplies
+a small end-to-end test of both the norm and the finite algebra paths.
+
+Next implement polynomial certificate soundness and the spanning
+certificate theorem. These modules can serve a broad range of algebraic
+and geometric packets. In parallel, the bounded selector and
+common-window theorem can be translated into the object theory using
+only finite sums and counting.
+
+The analytic branch theorem should then reuse the same finite polynomial
+arithmetic, adding weighted norms and precision contracts. Its key
+advantage is that the perturbation bound is independent of iteration
+count. This provides a stable interface for later analytic applications,
+instead of requiring each application to rediscover how precision grows
+through a long iteration.
+
+The long-term integration point is a collection of reusable, proved
+finite contracts with explicit demand functions. Each existing packet
+can expose which of these contracts it supplies, which it consumes,
+and which it still lacks. That organization makes further mathematical
+progress concrete: a missing quantitative theorem remains visible,
+while previously established finite algebra and analytic estimates
+become reusable derivations.
