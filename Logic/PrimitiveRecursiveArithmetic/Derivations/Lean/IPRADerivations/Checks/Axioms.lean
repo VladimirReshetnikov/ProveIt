@@ -112,6 +112,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.FermatQuartic.flt4
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples.pw_pos
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples.flt_multiple_of_four
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.IrrationalSqrt.no_rational_sqrt
 #print axioms LeanProofs.IPRA.DescentEx.descent
 #print axioms LeanProofs.IPRA.Analysis.Products.pochhammer_shift
 #print axioms LeanProofs.IPRA.Analysis.Products.telescoping_sum
