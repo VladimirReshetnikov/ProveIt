@@ -125,4 +125,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialIdentities.catalan_ratio
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialIdentities.catalan
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
+#print axioms LeanProofs.IPRA.gcd_dvd_at
+#print axioms LeanProofs.IPRA.gcd_eq_zero
+#print axioms LeanProofs.IPRA.dvd_le
+#print axioms LeanProofs.IPRA.gcd_prime
+#print axioms LeanProofs.IPRA.euclid_lemma
 #print axioms LeanProofs.IPRA.bezout

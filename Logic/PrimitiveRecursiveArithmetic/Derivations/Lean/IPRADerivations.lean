@@ -23,6 +23,7 @@ import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Analysis.Chebyshev
 import IPRADerivations.Analysis.Products
 import IPRADerivations.AnalyticNumberTheory.Primes
+import IPRADerivations.Core.EuclidLemma
 import IPRADerivations.Algebra.PolynomialFormulas
 import IPRADerivations.Algebra.TrisectionCubic
 import IPRADerivations.Combinatorics.Binomial

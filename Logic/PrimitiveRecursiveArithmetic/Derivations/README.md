@@ -53,6 +53,7 @@ The library is built bottom-up. Reusable layers come first:
 | [`Core/Search`](Lean/IPRADerivations/Core/Search.lean) | Bounded search `μ_{i<N} [f(i, x) = 0]` by primitive recursion, with its specification: a zero below `N` is found, at or before it, and no earlier index is a zero |
 | [`Core/SumLemmas`](Lean/IPRADerivations/Core/SumLemmas.lean) | Index shift, additivity, congruence under a bounded hypothesis (with different parameters), and `term ≤ sum` |
 | [`Core/Bezout`](Lean/IPRADerivations/Core/Bezout.lean) | The extended Euclidean algorithm with sign-free coefficients and a parity, frozen after termination, and Bézout's identity with natural coefficients: `gcd(a, b) + v b = u a` or `gcd(a, b) + u a = v b` |
+| [`Core/EuclidLemma`](Lean/IPRADerivations/Core/EuclidLemma.lean) | The gcd theorems and Bézout's identity at arbitrary terms; `gcd(a, b) = 0 → a = 0`; `d ∣ x, x ≥ 1 → d ≤ x`; `gcd(p, a) = 1` for a prime `p ∤ a`; Euclid's lemma `prime p → p ∣ ab → p ∣ a ∨ p ∣ b` (uses `prime` from `AnalyticNumberTheory/Primes`) |
 | [`Core/LinearAlgebra`](Lean/IPRADerivations/Core/LinearAlgebra.lean) | Integer vectors and matrices: finite sums, dot and cross products, matrix products, traces, determinants by Laplace expansion and adjugates by cofactors, each evaluated to the corresponding Mathlib operation; matrix equations as finite conjunctions |
 
 The theorem modules are grouped by the areas of `docs/proofs/`:
