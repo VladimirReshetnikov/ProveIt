@@ -1,0 +1,119 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Mathematics in iPRA through finite observations},
+pdfauthor={Research report prepared for Vladimir Reshetnikov},
+pdfsubject={Finite observation contracts, constructive analytic branches, and algebraic point bounds}}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{0.3em}
+\setlist{itemsep=0.2em,topsep=0.4em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\ensuremath{\mathrm{iPRA}}}
+\newcommand{\PRA}{\ensuremath{\mathrm{PRA}}}
+\newcommand{\PR}{\ensuremath{\mathrm{PR}}}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\title{\textbf{Mathematics in iPRA through finite observations}\\[0.6em]
+\large A general framework, a constructive simple-branch theorem,\\
+and finite algebraic bounds on rational points}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop a common method for turning mathematical constructions and their
+proofs into first-order intuitionistic primitive recursive arithmetic. The
+basic unit is a finite observation together with a primitive recursive demand
+for input data and a proof using a bounded invariant. We prove bounded
+Booleanization and witness selection, an adaptive finite-demand transfer
+theorem, composition of observation contracts, and soundness of a restricted
+polynomial certificate language. These results separate the mathematical
+work from claims that merely a terminating program, a finite checker, or a
+native Lean theorem establishes an iPRA theorem.
+
+The framework yields concrete advances on difficulties recorded in the
+ProveIt proof collection. For a polynomial with primitive-recursive complex
+coefficient names, a supplied simple root and a finite derivative-separation
+certificate produce an ordinary analytic branch, with explicit coefficient
+precision schedules, a convergence disk, finite tails, and residual bounds.
+A finite budget theorem synchronizes stability windows for several
+bounded-variation sequences and avoids several finite exceptional sets.
+For an odd-degree equation $y^2=f(x)$, we give a finite polynomial proof
+that $A(x)+B(x)y$ has at most $\deg(A^2-fB^2)$ distinct rational zeros.
+More generally, an explicit spanning certificate of size $D$ for a polynomial
+quotient gives at most $D$ rational solutions. The first bound discharges a
+specific geometric contract left open in the Siegel packet for the indicated
+hyperelliptic systems.
+
+The archive includes human proofs, compiler-checked Lean definitions and
+finite-search lemmas, an explicit plan for the remaining embedded
+derivations, and exact rational validation code. General height bounds,
+quantitative approximation theorems, and singular Puiseux selection are
+not claimed to follow from this framework.
+\end{abstract}
+
+\noindent\textbf{Source baseline.} ProveIt commit
+\texttt{27a07921176bccbf630084b959700605783ff4aa}.
+The mathematical audit is targeted; it is not an independent verification
+of all 47 packets in the collection.\par
+\noindent\textbf{Formalization status.} The human arguments include explicit
+iPRA induction accounting. The new analytic and geometric theorems have
+not yet been implemented as complete \texttt{Prf PRAAx} derivations.
+\clearpage
+\tableofcontents
+\clearpage
+
+\input{paper/01_overview}
+\input{paper/02_framework}
+\input{paper/03_analysis}
+\input{paper/04_stability}
+\input{paper/05_diophantine}
+\input{paper/06_formalization}
+\input{paper/07_validation}
+
+\begin{thebibliography}{9}
+\bibitem{ProveIt}
+V. Reshetnikov and contributors, \emph{ProveIt},
+\path{Logic/PrimitiveRecursiveArithmetic}, inspected at commit
+\texttt{27a07921176bccbf630084b959700605783ff4aa}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/27a07921176bccbf630084b959700605783ff4aa/Logic/PrimitiveRecursiveArithmetic}.
+The accompanying source manifest identifies the files used in this report.
+
+\bibitem{Avigad2002}
+J. Avigad, \emph{Weak theories of nonstandard arithmetic and analysis},
+in S. G. Simpson (ed.), \emph{Reverse Mathematics 2001},
+Lecture Notes in Logic 21, A K Peters, 2005, pp.~19--46.
+Preprint dated 2 September 2002.
+\url{https://www.andrew.cmu.edu/user/avigad/Papers/nonstandard2.pdf}.
+
+\bibitem{ProofMining}
+U. Kohlenbach and P. B. Oliva,
+\emph{Proof Mining: A Systematic Way of Analysing Proofs in Mathematics},
+BRICS Report RS-02-31, June 2002.
+\url{https://www.brics.dk/RS/02/31/BRICS-RS-02-31.pdf}.
+
+\bibitem{Briseid}
+E. M. Briseid, \emph{On Rates of Convergence in Metric Fixed Point Theory},
+doctoral thesis, Technische Universit\"at Darmstadt, 2009.
+\url{https://www2.mathematik.tu-darmstadt.de/~kohlenbach/Briseid-phd.pdf}.
+\end{thebibliography}
+\end{document}

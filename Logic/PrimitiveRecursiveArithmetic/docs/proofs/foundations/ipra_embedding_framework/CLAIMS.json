@@ -1,0 +1,46 @@
+{
+  "theory": "First-order intuitionistic primitive recursive arithmetic, with quantifier-free induction",
+  "report_status": "Human proofs with explicit induction accounting; full object-theory Lean derivations not implemented",
+  "claims": [
+    {
+      "id": "finite_demand_transfer",
+      "result": "A fixed PR computation with proved bounded base, step, and finish contracts has an iPRA derivation conditional on its finite adaptive demand log.",
+      "hypotheses": ["Fixed PR state and query functions", "Proved local iPRA contracts", "Bounded invariant and finite request"],
+      "status": "Human proof complete; syntactic compiler specified, not implemented"
+    },
+    {
+      "id": "simple_branch",
+      "result": "One analytic power-series branch with PR coefficient and root names, explicit radii, tails, residuals, and uniqueness.",
+      "hypotheses": ["Fixed PR complex coefficient family", "Supplied root y0 with P(0,y0)=0", "Finite derivative separation certificate", "Regularity contracts"],
+      "status": "Human proof complete; finite algorithms and example coefficients compiled; general targets unproved in Lean",
+      "excludes": "Uniform singular Puiseux branch selection"
+    },
+    {
+      "id": "common_window",
+      "result": "A bounded search synchronizes several stable windows and avoids finite exceptional sets; budgets add.",
+      "hypotheses": ["Positive rational tolerances", "Finite variation bounds through explicit T", "Finite exceptional-set count bounds through T", "Fixed PR evaluator families and window function"],
+      "status": "Human proof complete; bounded selector compiled; general counting proof remains a Lean target",
+      "excludes": "A global Cauchy modulus"
+    },
+    {
+      "id": "hyperelliptic_fiber",
+      "result": "On y^2=f(x), distinct rational zeros of A(x)+B(x)y are at most degree(A^2-fB^2).",
+      "hypotheses": ["Rational finite polynomial data", "Positive odd degree of f", "A and B not both zero", "Supplied finite list of distinct common zeros"],
+      "status": "Human proof complete; exact example certificates checked; native and object Lean proofs remain targets",
+      "excludes": "A bound on point heights"
+    },
+    {
+      "id": "finite_algebra_count",
+      "result": "A size-D polynomial spanning certificate implies at most D distinct rational zeros.",
+      "hypotheses": ["Basis list contains 1", "Verified border identities for multiplication by each variable", "Exact rational polynomial data"],
+      "status": "Human proof complete; bivariate checker definitions compiled and a sharp example verified",
+      "excludes": "An unconditional bounded constructor of a certificate for every polynomial system"
+    },
+    {
+      "id": "conditional_hyperelliptic_count",
+      "result": "A finite cover by at most M proper subspaces gives at most M*L points for the displayed weighted-degree-L evaluation system.",
+      "hypotheses": ["The proved hyperelliptic fiber bound", "A separately proved finite-tuple quantitative covering contract"],
+      "status": "Conditional corollary; covering contract remains unproved"
+    }
+  ]
+}

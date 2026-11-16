@@ -1,0 +1,51 @@
+{
+  "repository_commit": "27a07921176bccbf630084b959700605783ff4aa",
+  "lean_version": "4.32.0",
+  "object_theory": "LeanProofs.ConciseIPRA; first-order intuitionistic PRA with quantifier-free induction",
+  "human_proofs": "Complete as presented, with finite coding and induction obligations explained in the report.",
+  "compiled_files": [
+    {
+      "file": "lean/FiniteCore.lean",
+      "result": "compiled",
+      "content": "Proved bounded search, energy, endpoint, composition, and selector lemmas.",
+      "axioms_observed": [
+        "propext",
+        "Quot.sound"
+      ],
+      "note": "compose_contracts has no axiom dependencies."
+    },
+    {
+      "file": "lean/Targets.lean",
+      "result": "compiled",
+      "content": "Concrete definitions, finite certificate checker, and unproved target propositions.",
+      "note": "A definition of a target proposition is not a proof of it."
+    },
+    {
+      "file": "lean/FiniteBranch.lean",
+      "result": "compiled",
+      "content": "Gaussian-rational branch algorithms and five kernel-checked coefficient computations.",
+      "axioms_observed": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "note": "KernelGoals has no asserted instance; native computations are not iPRA derivation certificates."
+    }
+  ],
+  "uncompiled_integration_outline": {
+    "file": "lean/ObjectInterface.lean",
+    "reason": "Requires the pinned repository and its Mathlib environment.",
+    "content": "Actual ConciseIPRA syntax, PR symbols, derivation types, and native transport interface."
+  },
+  "full_object_theory_derivations": "Not implemented for the new main analytic and geometric results.",
+  "unfinished_mathematics": [
+    "Uniform singular Puiseux branch selection",
+    "Quantitative covering contract needed by the full Siegel route",
+    "General height bounds or complete point enumeration",
+    "General effective Roth cutoffs",
+    "Outstanding prime-distribution estimates"
+  ],
+  "new_axioms_or_sorry": "None introduced by the supplied Lean files.",
+  "next_steps": "See paper/06_formalization.tex, lean/ANALYTIC_PLAN.md, and PROVEIT_INTEGRATION.md.",
+  "validation_scope": "Exact finite computations and compiled native components support implementation checks; they do not substitute for universal human proofs or embedded derivations."
+}

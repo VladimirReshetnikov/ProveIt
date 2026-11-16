@@ -1,0 +1,237 @@
+\section{Lean formalization: definitions, targets, and the completion path}
+\label{sec:lean-plan}
+
+The formalization has three distinct endpoints. First, executable native
+definitions fix the finite objects and prevent an informal theorem from
+changing shape during implementation. Second, native correctness lemmas
+establish the finite mathematics in Lean. Third, embedded derivations
+establish the same assertions in the specified iPRA calculus. This report
+provides a small compiled part of the second endpoint, compiled definitions
+for several of the remaining targets, and a detailed plan for the third.
+
+\subsection{The existing repository interfaces}
+
+The pinned repository's
+\path{ConciseIPRA/Lean/ConciseIPRA/PR.lean} defines an inductive type
+\texttt{PR k} with constructors for zero, successor, projection,
+composition, and primitive recursion. It also defines \texttt{PTm n},
+the terms over $n$ free variables. The syntax file supplies
+\texttt{Fm PTm n}; the deduction file supplies the derivation type
+\texttt{Prf Ax Gamma phi} for intuitionistic natural deduction with
+equality. The arithmetic axiom family is \texttt{PRAAx}.
+
+In particular, the repository's induction constructor accepts a proof
+that its formula is quantifier-free. The derived rule
+\texttt{PRA.qfInd} takes the base derivation and a derivation of the
+successor step under the shifted context. A completed theorem in the
+present report should end with a declaration of the following shape:
+\begin{verbatim}
+def target : Fm PTm parameterCount := ...
+theorem target_derivation : Prf PRAAx [] target := ...
+\end{verbatim}
+The ellipses here denote implementation work explicitly listed below;
+they are not part of a claimed compiled theorem.
+
+The module \texttt{NativeBiInterpretation.lean} supplies
+\texttt{pra\_iff\_native}. It transports an already supplied iPRA
+derivation to the native presentation, using \texttt{NFm.ofPRA}.
+It does not turn an arbitrary Lean proposition into an iPRA theorem.
+The archive's \texttt{ObjectInterface.lean} records these actual types,
+fixed PR name symbols, syntactic implication composition, and the
+transport step. That integration file has not been compiled here,
+because it requires the full repository library and Mathlib. Its status
+is separate from the three standalone compiled modules.
+
+\subsection{The compiled native definitions}
+
+\paragraph{Finite search and contracts.}
+\texttt{FiniteCore.lean} uses only Lean's standard distribution. It defines
+a bounded scan \texttt{firstHit p n} that retains the first successful
+index in $0,\ldots,n$. If no success exists it returns $n$; therefore
+success is always tested by applying \texttt{p} to the returned value,
+not inferred from the index alone. This convention differs from the
+sentinel implementation in Lemma~\ref{lem:bounded-choice}, but both
+are explicitly bounded and their success conditions are unambiguous.
+
+The file proves the bound on the returned index, completeness from a
+supplied successful index, and the failure certificate for every
+inspected index. Its \texttt{energy\_firstHit} lemma proves success
+whenever a natural-valued energy starts below $B$ and drops by at least
+one on each failed test through $B$. The proof maintains
+$E(i)+i\le B$ under a hypothetical all-failure prefix. At $i=B+1$
+that is impossible. The file also defines disjoint endpoints and
+proves their monotonicity, composes finite contracts, and packages the
+selected-window bound.
+
+\paragraph{Polynomial and observation targets.}
+\texttt{Targets.lean} fixes concrete native data:
+\begin{itemize}
+\item rational polynomials as coefficient lists, with coefficient lookup,
+evaluation, addition, multiplication, degree, nonzero tests, and weighted
+finite coefficient sums;
+\item rational point lists, exact pairwise distinctness, the common-zero
+test for $y^2=f(x)$ and $A(x)+B(x)y=0$, and the norm polynomial;
+\item finite lists of bivariate terms, coefficient collection, substitution,
+and polynomial iteration truncated modulo $X^{K+1}$;
+\item regular rational-name predicates, finite regularity tests, finite
+variation, and finite window-stability tests;
+\item bivariate spanning-certificate data, matrix rows, ideal-multiplier
+witnesses, dimension checks, exact border-identity checks, and the
+common-zero predicate.
+\end{itemize}
+Definitions named \path{HyperellipticFiberTarget},
+\path{ImplicitCoefficientStabilityTarget},
+\path{FiniteVariationTarget}, and \path{FiniteAlgebraTarget}
+are propositions specifying the remaining theorems. They are \emph{not}
+theorems or assumed axioms. The bivariate certificate target is a concrete
+two-variable instance of the general $r$-variable theorem in the paper.
+Its checker verifies that the basis is nonempty and begins with $1$,
+that all matrix and witness rows have the correct lengths, and that
+every required polynomial identity holds after coefficient collection.
+
+The finite-variation target uses the sufficient hypothesis
+\[
+ \operatorname{variation}(T)<(B+1)\epsilon
+\]
+to conclude that one of $B+1$ windows succeeds. This matches the
+floor-budget construction in Section~\ref{sec:stability}. The native
+functions in these statements can be arbitrary host functions. Their
+additional fixed-PR representation is required when constructing the
+object-theory schema; the native type alone does not certify it.
+
+The source convention for the degree of the zero polynomial is zero.
+This is harmless in the fiber target because its hypotheses imply
+that the norm polynomial is nonzero. Polynomial multiplication may
+retain trailing zero coefficients; coefficient comparison and the
+implemented degree ignore those zeros. Weighted-norm lemmas must assume
+their weight is nonnegative, and the analytic lemmas in the paper use
+a strictly positive rational weight.
+
+\paragraph{The Gaussian-rational branch prototype.}
+\texttt{FiniteBranch.lean} adds the paired-coordinate version of the
+polynomial algorithms and records the finite analytic goals in a
+\texttt{KernelGoals} structure. No instance of that structure is supplied.
+It also checks five individual coefficients of the branch of $Y^2=1+X$
+by kernel computation. The companion \texttt{ANALYTIC\_PLAN.md}
+specifies the finite norm, perturbation, and name proofs still required.
+
+\subsection{Constructing the embedded arithmetic layer}
+
+The following sequence gives concrete milestones. Each milestone has
+a finite correctness statement and an indicated proof method.
+
+\paragraph{1. Natural coding and arithmetic.}
+Choose one total PR pairing function with bounded projections and a
+finite-list code with PR length and entry functions. A radix list code
+with an explicitly stored base is sufficient whenever a finite maximum
+of the entries is available; a standard nested pairing is sufficient
+otherwise. Integers may be represented by pairs of naturals, with
+equality $(a,b)\simeq(c,d)$ defined by $a+d=b+c$. Represent rationals by
+an integer numerator and a positive denominator. Do not assume that
+arbitrary host \texttt{Rat} computations are already object-theory
+functions.
+
+Build the PR definitions and derivations for arithmetic, comparison,
+bounded sums, bounded maxima, and list operations. Prove validity
+preservation separately. Cross-multiplication turns the rational
+inequalities needed below into integer inequalities and then PR Boolean
+tests. No quotient construction is needed inside iPRA.
+
+\paragraph{2. Bounded formulas and proof construction.}
+Implement the formula-to-Boolean translation of
+Lemma~\ref{lem:bounded-booleanization} as a metalevel transformation
+on a fixed formula syntax, emitting both a PR definition and its
+equivalence derivation. Implement the bounded search derivations next.
+The syntactic compiler then uses substitution, intuitionistic logical
+rules, and \texttt{PRA.qfInd} on the emitted Boolean invariant. In
+particular, it must never invoke ordinary Lean induction on an arbitrary
+semantic proposition and declare the resulting proof to be an embedded
+derivation.
+
+\paragraph{3. Finite algebra.}
+Prove coefficient-array convolution, distributivity, the difference of
+powers identity, and synthetic division. The normal-form soundness
+argument in Proposition~\ref{prop:polynomial-normalization} gives a
+reusable source of finite identity derivations. Its ring operations are
+fixed PR definitions with supplied arithmetic laws. Parameterized matrix
+identities still need their uniform generators or direct proofs.
+
+\paragraph{4. Analytic finite kernels and names.}
+Use paired rational coordinates for Gaussian rationals. Prove their
+$\ell^1$ triangle and product bounds. Prove (A1)--(A9) on finite
+polynomial arrays; the induction invariants are the weighted norm bound,
+the bounded list of zero low coefficients, and the rational perturbation
+inequality. Fix the requested coefficient degree and both precision
+indices before induction. Then instantiate these finite lemmas at the
+explicit indices (A12)--(A17). The input regularity and root equation are
+universal arithmetic assumptions that are used at the finite numerical
+instances demanded by a particular conclusion.
+
+For represented equality, adopt one fixed convention. For example, two
+regular names $a,b$ represent the same value when for every requested
+$n$ their sufficiently reindexed approximants differ by at most
+$2^{-n}$. State the exact reindexing in each operation and verify its
+transitivity by a further fixed precision shift. No equality decision
+procedure is introduced. For root uniqueness, use the finite
+contraction-with-error inequality and choose its error below the
+requested tolerance.
+
+\paragraph{5. Finite stability.}
+Prove telescoping and the triangle inequality for a supplied finite
+sequence, then the disjoint-increment sum bound. A failed window
+contains a boundedly found witness pair. The finite assignment table
+records which component pays for each failed window. Its invariant is
+that all assigned indices lie in the processed prefix, that the classes
+partition that prefix, and that each count respects its proved budget.
+This produces the successful index needed by the already compiled
+native search theorem, and separately produces an embedded proof of
+the coded selector's correctness.
+
+\paragraph{6. Hyperelliptic and finite algebra counts.}
+For the norm theorem, carry the point groups, the removed product, and
+the residual polynomial. The central invariant is $N=CQ$ together with
+the degree sum and the number of points accounted for. The multiplicity
+two lemma is finite rational field arithmetic. For the certificate
+theorem, carry reduction vectors and the evaluation matrix of the
+separator polynomials on the supplied point list. Bounded rational row
+reduction tracks an invertible companion matrix, as described in
+Section~\ref{sec:repository-repair}. These invariants are Boolean
+equalities over finite codes, so their induction is permitted.
+
+\paragraph{7. Assembly and audit.}
+Construct the concluding \texttt{Prf PRAAx} terms. Audit every premise:
+the polynomial identities, root equation, derivative gap, continuity
+modulus, finite variation bound, spanning identities, or finite covering
+theorem must either be input data with the stated contract or have an
+actual preceding derivation. Only after this assembly invoke
+\texttt{pra\_iff\_native}. There is no need to reprove bi-interpretability
+for every application.
+
+\subsection{What the formalization does and does not certify}
+
+The lemmas in \texttt{FiniteCore.lean} prove native finite-search and contract
+facts. Their printed axiom dependencies include Lean's standard
+\texttt{propext} and \texttt{Quot.sound} for the arithmetic tactic
+proofs; the contract-composition proof has no axiom dependencies.
+They contain no \texttt{sorry}, no new axioms, and no use of
+\texttt{Classical.choice}. This does not by itself certify that these
+native proof terms belong to iPRA. The explicit arithmetic invariants
+and the planned construction of \texttt{Prf PRAAx} terms are what address
+that additional requirement.
+
+The five computation proofs in \texttt{FiniteBranch.lean} have a
+different printed dependency set: it includes \texttt{Classical.choice}
+as well as \texttt{propext} and \texttt{Quot.sound} through their
+native rational/container infrastructure. They are disclosed native
+metatheory computations. The intended object proof instead uses the
+raw integer/denominator representation and finite arithmetic arguments
+given in the report; these computation proofs are not imported as
+unexamined iPRA axioms.
+
+The report's human proofs are substantially more developed than the
+current Lean implementation. The remaining work is finite and specified
+for the proved lemmas, but it includes real implementation and proof
+construction: no blanket promise that a future \texttt{ring} or
+\texttt{simp} call will discharge it is being made. The general
+Diophantine approximation and height theorems identified in the audit
+are further mathematical problems, not merely this implementation work.

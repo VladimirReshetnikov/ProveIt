@@ -1,0 +1,432 @@
+\section{Repository difficulties and a concrete repair in Diophantine geometry}
+\label{sec:repository-repair}
+
+\subsection{What the inspected packets actually leave open}
+
+The audit in this section refers throughout to ProveIt commit
+\path{27a07921176bccbf630084b959700605783ff4aa}.
+The index under \path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/}
+lists 47 delivered packets and explicitly says that their placement did
+not rerun, compile, verify, or edit them.  A packet's own claim of a
+compiled native Lean theorem must therefore be distinguished both from an
+independent build in this project and from an object-language iPRA
+derivation.  We use the packets as inspectable mathematical arguments and
+interfaces, rather than treating their index as a correctness certificate
+\cite{ProveIt}.
+
+Several obstacles in the packets are already identified with considerable
+precision.  It would not advance the program to rename their existing
+solutions.  In particular, the Mordell--Weil packet already has contracting
+height descent, logarithmic fuel, explicit coordinates, and a method of
+obtaining a bounded selector from actual covering representatives.  The
+Siegel packet already has a finite-cover-to-cardinality lemma and observes
+that covering subspaces of a supplied tuple can be replaced by spans of
+subtuples.  Neither result is claimed here as a new repair.
+
+\begin{center}
+\small
+\begin{tabular}{p{0.19\linewidth}p{0.36\linewidth}p{0.36\linewidth}}
+\hline
+Packet & Identified missing information & Consequence for this framework\\
+\hline
+\texttt{puiseux\_ipra} & Arbitrary fast Cauchy names do not decide the
+exact coefficient branches needed for full Puiseux output. & Preserve the
+exact algebraic input interface; approximation alone does not supply
+its zero tests.\\[3pt]
+\texttt{mordell\_weil\_ipra} & A finite list of actual rational
+representatives for the quotient is still required. & The existing descent
+algorithm can consume the list, but does not manufacture it from Selmer
+information.\\[3pt]
+\texttt{faltings\_ipra} and \texttt{siegel\_ipra} & General positive
+height or complete-list bounds are not supplied. & A count bound cannot
+serve as a search cutoff.  We prove a useful count ingredient below,
+without claiming a height bound.\\[3pt]
+\texttt{diophantine\_ipra} & The general effective Roth cutoff is not
+proved; quadratic and Liouville-range cases are treated. & Keep the
+denominator cutoff distinct from the number of exceptional approximants.\\[3pt]
+\path{prime_distribution_ipra} & Chebotarev needs certified
+field arithmetic and quantitative analytic estimates; full SW and BV
+need the indicated uniform witnesses. & Finite prime enumeration and
+finite-precision logarithms do not provide those estimates.\\
+\hline
+\end{tabular}
+\end{center}
+
+These descriptions are claims about the inspected reports, not an
+assertion that every stronger theorem is unprovable in iPRA.  Their exact
+source paths and blob identifiers are recorded in the accompanying source
+manifest.  The following repair targets a specific obligation in
+\path{siegel_ipra/paper/05_general_route.tex}: the bounded number of curve
+points lying over a proper subspace.  That report sketches a divisor
+argument but leaves its arithmetic realization open.  For odd-degree
+hyperelliptic equations, the realization can be given directly by one
+polynomial norm, with an explicit finite proof.
+
+\subsection{A zero-count theorem from a polynomial norm}
+
+All polynomials and coordinates in this subsection are rational and
+finitely encoded.  Rational equality and order mean exact comparisons
+after cross multiplication; they are not comparisons of Cauchy names.
+Let $f\in\mathbb Q[X]$ have positive odd degree $d$, with nonzero leading
+coefficient.  Let
+\[
+             C_f=\{(x,y)\in\mathbb Q^2:y^2=f(x)\}.
+\]
+No smoothness assumption is needed for the arithmetic theorem.
+
+For $A,B\in\mathbb Q[X]$, not both zero, define
+\[
+ G(x,y)=A(x)+B(x)y,\qquad
+ N(X)=A(X)^2-f(X)B(X)^2.
+\]
+In degree inequalities, a zero polynomial simply contributes no term:
+thus $2\deg A\le L$ is required only when $A\ne0$, and
+$d+2\deg B\le L$ only when $B\ne0$.
+
+\begin{theorem}[Arithmetic fiber bound]
+\label{thm:hyperelliptic-fiber}
+The polynomial $N$ is nonzero.  Every finite list of pairwise distinct
+points of $C_f$ satisfying $G(x,y)=0$ has length at most $\deg N$.
+Consequently it has length at most $L$ whenever
+\[
+        2\deg A\le L,\qquad d+2\deg B\le L
+\]
+for the nonzero terms.  The theorem has a proof using rational polynomial
+arithmetic, bounded finite-list operations, and quantifier-free induction.
+\end{theorem}
+
+\begin{proof}
+First suppose $B=0$.  Then $A\ne0$ and $N=A^2\ne0$.  If $A=0$ and
+$B\ne0$, then $N=-fB^2\ne0$.  If both are nonzero, the degrees of $A^2$
+and $fB^2$ have different parity: the former is even and the latter odd.
+Their highest terms therefore cannot cancel.  This proves nonvanishing,
+and also
+\[
+ \deg N\le \max\{2\deg A,d+2\deg B\},
+\]
+with absent terms omitted.
+
+Now take a finite pairwise-distinct list of common zeros.  Group it by
+its $x$-coordinate using exact rational equality.  For each different
+$x$-coordinate $a$, write $m_a$ for the number of points in that group.
+The equation $y^2=f(a)$ has at most two distinct rational solutions:
+if $u^2=v^2$, then $(u-v)(u+v)=0$, and the rational field has no zero
+divisors.  Thus $m_a\le2$.
+
+Every nonempty group gives $N(a)=0$, by substituting
+$A(a)=-B(a)y$ and $y^2=f(a)$.  Hence $X-a$ divides $N$.
+If $m_a=2$, let the two different ordinates be $u,v$.  Subtracting the
+two equations $A(a)+B(a)u=0$ and $A(a)+B(a)v=0$ gives
+$B(a)(u-v)=0$.  Since $u-v\ne0$, we have $B(a)=0$, and then $A(a)=0$.
+The factor theorem yields $A=(X-a)A_1$ and $B=(X-a)B_1$, so
+\[
+          N=(X-a)^2(A_1^2-fB_1^2).
+\]
+This argument includes $B=0$ and handles branch points as well: a branch
+point has only one ordinate and requires only one factor.
+
+It follows that
+\[
+              \prod_a(X-a)^{m_a}\ \text{divides}\ N.
+ \label{eq:weighted-roots}
+\]
+For completeness, this simultaneous divisibility uses no factorization
+oracle.  Process the distinct $a$'s in their list order.  Suppose the
+product $C$ of the already processed factors has been removed, so
+$N=CQ$.  At the next coordinate $a$, every factor of $C$ has nonzero
+value at $a$; hence $C(a)\ne0$.  The equality $N(a)=0$ gives $Q(a)=0$,
+and synthetic division removes one $X-a$ from $Q$.  When $m_a=2$,
+the known divisibility of $N$ by $(X-a)^2$, followed by cancellation of
+one $X-a$, gives a second vanishing at $a$ and permits a second division.
+All cancellations are by nonzero polynomials in $\mathbb Q[X]$.
+This proves the displayed product divisibility by a finite induction.
+
+The product is monic and has degree $\sum_a m_a$, which is exactly the
+length of the original list.  Since $N\ne0$, division cannot increase
+degree.  Therefore
+\[
+           \#\text{points}=\sum_a m_a\le\deg N\le L.
+\]
+Every operation just described has an explicit finite implementation.
+Polynomial division by $X-a$ is synthetic division along the coefficient
+list, and testing $A=0$ or $B=0$ is a finite coefficient check.
+\end{proof}
+
+\paragraph{Why counting only distinct $x$-coordinates loses information.}
+A rough argument would count roots of $N$ and then multiply by two.  The
+theorem avoids that loss because a fiber containing two common zeros
+already consumes two factors of $N$.  This improvement is attained.
+Take
+\[
+       f=X^3-X+1,\qquad A=X(X-1),\qquad B=0.
+\]
+Then $N=X^2(X-1)^2$ has degree four.  Its common zeros on the curve are
+exactly
+\[
+                  (0,1),\ (0,-1),\ (1,1),\ (1,-1).
+\]
+Indeed $A(x)=0$ forces $x=0$ or $x=1$, and in either case $f(x)=1$.
+Thus the bound four is exact; the rough $2\deg N$ bound would be eight.
+
+\subsection{An explicit replacement for the divisor-based fiber contract}
+
+Fix $L\ge d$ and put
+\[
+ a=\lfloor L/2\rfloor,\qquad b=\lfloor(L-d)/2\rfloor,\qquad
+ n=a+b+2.
+\]
+Use the polynomial evaluation vector
+\[
+ \Phi_L(x,y)=(1,x,\ldots,x^a,\ y,xy,\ldots,x^b y)
+                      \in\mathbb Q^n.
+\]
+The weight two assigned to $x$ and the weight $d$ assigned to $y$
+are only a convenient organization of the norm degree in the proof;
+no theory of divisors is being assumed.
+
+\begin{corollary}[Proper subspaces have uniformly bounded fibers]
+\label{cor:subspace-fiber}
+For every proper rational linear subspace $W\subsetneq\mathbb Q^n$,
+at most $L$ distinct rational points of $C_f$ have $\Phi_L(x,y)\in W$.
+More precisely, every such finite list has length at most $L$.
+\end{corollary}
+
+\begin{proof}
+Represent $W$ by a finite matrix of spanning vectors and the assertion
+that its row rank is less than $n$.  Rational Gaussian elimination finds
+a nonzero vector in its annihilator: select a free column, assign its
+unknown the value one, assign the other free unknowns zero, and solve
+backwards for the pivot unknowns.  This is a bounded exact procedure.
+Write the resulting linear form on $\Phi_L$ as $A(x)+B(x)y$.
+Its coefficient vector is nonzero, so $A,B$ are not both zero, and
+its displayed degree bounds imply the hypotheses of
+Theorem~\ref{thm:hyperelliptic-fiber}.  Every point mapping into $W$
+is a zero of this form.  Apply that theorem.
+\end{proof}
+
+\begin{corollary}[A finite-tuple approximation theorem suffices]
+\label{cor:hyperelliptic-cardinality}
+Suppose a proved arithmetic contract says that for every finite list
+of distinct points in a specified decidable subset $S\subseteq C_f$,
+the corresponding vectors $\Phi_L$ can be covered by at most $M$ proper
+rational subspaces.  Then every finite list of distinct points in $S$
+has length at most $ML$.
+\end{corollary}
+
+\begin{proof}
+Given the finite covering list, assign each point to the first subspace
+containing its vector.  Membership is a finite rational rank test, and
+coverage makes the bounded scan succeed.  Each of at most $M$ groups
+contains at most $L$ points by Corollary~\ref{cor:subspace-fiber}.
+Adding the group sizes gives the bound $ML$.  Equivalently, applying
+this argument to a hypothetical list of $ML+1$ distinct points yields
+an arithmetic contradiction.
+\end{proof}
+
+This explicitly discharges the zero-count half of the proposed Siegel
+strategy for the odd-degree hyperelliptic evaluation systems above.
+It does not prove the quantitative approximation theorem needed for the
+covering contract, and hence does not prove general Siegel or Faltings.
+The result supplies a cardinality bound once that contract is established;
+it does not locate the points or give a coordinate cutoff.  The repair is
+nevertheless substantive: one entire geometric dependency, previously
+expressed through Riemann--Roch functions and zero/pole divisors, is
+replaced here by a proved finite arithmetic lemma on this class.
+
+\subsection{Finite algebra certificates as a general zero-count interface}
+
+The preceding norm argument is particularly efficient.  A more general
+interface works for arbitrary finite polynomial systems and can be reused
+where a small norm formula is unavailable.
+
+Let $F_1,\ldots,F_s\in\mathbb Q[X_1,\ldots,X_r]$.  A
+\emph{spanning certificate of size $D$}, with $D\ge1$, consists of
+polynomials $b_1=1,b_2,\ldots,b_D$, rational numbers $m_{kji}$, and
+polynomials $u_{kj\ell}$ satisfying the finitely many identities
+\[
+ X_k b_j-\sum_{i=1}^D m_{kji}b_i
+       =\sum_{\ell=1}^s u_{kj\ell}F_\ell
+ \quad(1\le k\le r,\ 1\le j\le D).
+ \label{eq:spanning-certificate}
+\]
+The checker expands and compares polynomial coefficients.  It checks
+fixed algebraic identities, not the truth of arbitrary formal proofs.
+Linear independence of the $b_i$ is not required; the certificate gives
+an upper bound on dimension and can therefore be deliberately redundant.
+
+\begin{theorem}[Certificate bound on rational zeros]
+\label{thm:finite-algebra-zeros}
+If a size-$D$ spanning certificate is valid, every finite list of distinct
+common rational zeros of the $F_\ell$ has length at most $D$.
+The checker, the reduction operations, and the finite contradiction
+procedure used in the proof are primitive recursive.
+\end{theorem}
+
+\begin{proof}
+The identities imply, by multiplying one variable at a time, that every
+polynomial is congruent modulo $(F_1,\ldots,F_s)$ to a rational linear
+combination of the $b_i$.  One can implement this reduction without a
+Gr\"obner-basis algorithm: start with the coefficient vector of $1$,
+apply the relevant matrix $m_k$ for each variable occurrence in a
+monomial, and add the resulting vectors with the monomial coefficients.
+For correctness, substitute a common zero $p$ in each certificate
+identity.  Induction on the finite multiplication sequence shows that
+the resulting coefficient vector $c$ satisfies
+\[
+                   H(p)=\sum_i c_i b_i(p)
+\]
+for the polynomial $H$ being reduced.  This equality is all that the
+argument needs.
+
+Suppose distinct common zeros $p_1,\ldots,p_t$ have been supplied.
+For each ordered pair $i\ne j$, scan the $r$ coordinates to choose
+the first $k(i,j)$ where $p_i$ and $p_j$ differ.  Their distinctness
+makes the scan succeed.  Form
+\[
+ H_i(X)=\prod_{j\ne i}
+ \frac{X_{k(i,j)}-(p_j)_{k(i,j)}}
+      {(p_i)_{k(i,j)}-(p_j)_{k(i,j)}}.
+\]
+Every displayed denominator is a witnessed nonzero rational.  Direct
+substitution gives $H_i(p_j)=1$ if $i=j$, and zero otherwise.
+Reduce $H_i$ to a coefficient vector $c_i\in\mathbb Q^D$ by the
+certificate matrices.  If a linear relation
+$\sum_i\lambda_i c_i=0$ holds, evaluation at $p_j$ gives
+\[
+       0=\sum_i\lambda_i H_i(p_j)=\lambda_j.
+\]
+Thus the $t$ coefficient vectors are linearly independent.
+
+Here the last dimension step is an explicit finite one.  If $t>D$,
+perform rational row reduction on the $t$ by $D$ matrix with rows $c_i$,
+carrying along the same row operations on the $t$ by $t$ identity matrix.
+There are at most $D$ pivot rows, so at least one resulting coefficient
+row is zero.  The corresponding row of the companion matrix is nonzero,
+because every elementary row operation is invertible.  It gives a
+nonzero rational relation among the $c_i$, contrary to the preceding
+evaluation argument.  This proves $t\le D$.
+
+All loops are bounded by the input lengths, numbers of variables,
+exponents, and matrix dimensions.  Arithmetic may create large rational
+coefficients, but addition, multiplication, normalization, and division
+by the selected nonzero pivots are primitive recursive on rational codes.
+No unbounded search for a basis, an algebraic closure, or a solution occurs.
+\end{proof}
+
+The finite common-zero theorem works uniformly in the encoded polynomial
+system and in the certificate.  This is legitimate uniformity: polynomial
+evaluation and coefficient comparison are specific primitive recursive
+algorithms.  It is not a universal evaluator for arbitrary primitive
+recursive programs.
+
+\paragraph{A size-four certificate for the sharp example.}
+For
+\[
+ F_1=y^2-x^3+x-1,\qquad F_2=x^2-x,
+\]
+take $b=(1,x,y,xy)$.  The elementary identities
+\[
+        x^2=x+F_2,\qquad
+        y^2=1+F_1+(x+1)F_2
+\]
+and their multiples by $x$ or $y$ give all eight required border
+identities.  Multiplication by $x$ sends the four basis entries, modulo
+the two equations, to $(x,x,xy,xy)$; multiplication by $y$ sends them
+to $(y,xy,1,x)$.  Therefore the certificate theorem gives at most four
+rational solutions, and the four displayed points show that this bound
+is attained.  The coefficient identities themselves can be checked by
+an exact polynomial program without any analytic or geometric premise.
+
+One should separate certificate \emph{verification} from certificate
+\emph{construction}.  A system can have infinitely many zeros and then
+admit no such certificate.  Even for a system known to be zero-dimensional,
+calling an unspecified Gr\"obner-basis implementation does not by itself
+prove a primitive recursive bound or an iPRA correctness theorem for its
+construction.  Supplying a concrete certificate, or proving a bounded
+constructor for the intended family, is the remaining input.
+
+\subsection{An induction audit and Lean completion path}
+
+Both zero-count arguments have particularly simple object-theory
+invariants.  For Theorem~\ref{thm:hyperelliptic-fiber}, encode a finite
+point list, its distinct-coordinate groups, a residual polynomial, and
+the product of the factors already removed.  The loop invariant is the
+conjunction of polynomial coefficient equalities
+\[
+ N=CQ,\qquad
+ \deg N=\deg C+\deg Q,
+\]
+the accumulated root multiplicity, and the finite validity checks on the
+processed groups.  It is used only while $N,Q$ are nonzero.  Nonzero
+coefficient tests, polynomial degrees, list membership, and bounded
+universal tests are all represented by primitive recursive Booleans.
+Synthetic division carries its own coefficient identity as a second
+finite invariant.  Consequently the induction formula contains no
+unbounded quantifier over points or polynomials.  The arbitrary input
+point list is a parameter.
+
+For Theorem~\ref{thm:finite-algebra-zeros}, the reduction invariant is
+evaluation equality for all entries of the supplied finite point list,
+expressed by one bounded Boolean fold.  Row reduction carries the
+coefficient matrix, the companion matrix, and its inverse; the equations
+that these two square matrices multiply to the identity prove that the
+companion row used at the end is nonzero.  Pivot selection is a bounded
+scan with an explicit failure branch.  A failed pivot means the column
+has no candidate, rather than an appeal to choice.  These are again
+quantifier-free equalities on coded finite objects.
+
+The formalization can be organized in the following order.
+\begin{enumerate}
+\item Define canonical rational codes, polynomial coefficient lists, finite
+multivariate monomial lists, their primitive recursive evaluation
+programs, and Boolean equality tests.  Prove the field and polynomial
+identities used by synthetic division and matrix arithmetic in the
+object theory.
+\item Prove the synthetic-division identity and its specialization to a
+root.  Prove nonvanishing and degree of products from leading coefficients.
+Implement the distinct-coordinate grouping procedure and its
+length-preservation identity.
+\item Formalize the multiplicity-two fiber lemma: two distinct ordinates
+annihilated by $A+B y$ force $A=B=0$ at that abscissa.  Combine its
+explicit factors with the root-removal invariant to obtain the
+hyperelliptic bound.
+\item Define the spanning-certificate Boolean by coefficientwise checks.
+Prove the reduction invariant, construct the finite separator vectors,
+and prove their evaluation matrix is the identity.
+\item Formalize bounded Gaussian elimination, including the tracked
+inverse for row operations.  Use it for both a proper-subspace
+annihilator and the finite-algebra dimension contradiction.
+\item Assemble actual embedded derivations of the zero-count formulas.
+Only after these are constructed should the existing ConciseIPRA
+interpretation machinery transport them to another presentation of the
+theory.
+\end{enumerate}
+
+For example, the native specification of the final fiber statement has
+the following shape, where every predicate in the hypotheses is a
+decidable finite-code predicate and \texttt{points.length} refers to an
+encoded list length:
+\begin{verbatim}
+def HyperellipticFiberBound : Prop :=
+  forall f A B points,
+    OddDegree f -> (Nonzero A || Nonzero B) = true ->
+    PairwiseDistinct points = true ->
+    AllCurveAndLinearZeros f A B points = true ->
+    points.length <= degree (A*A - f*B*B)
+
+def FiniteAlgebraZeroBound : Prop :=
+  forall equations certificate points,
+    CheckSpanning equations certificate = true ->
+    PairwiseDistinct points = true ->
+    AllCommonZeros equations points = true ->
+    points.length <= certificate.dimension
+\end{verbatim}
+This pseudocode specifies the mathematical types; it is not presented as
+a compiled Lean module.  In an actual implementation, the polynomial
+operators, code projections, and Boolean names must be replaced by the
+chosen concrete definitions.  The repository endpoint is a corresponding
+object-language formula together with a term of type
+\texttt{Prf PRAAx [] formula}, not merely a proof of the native
+\texttt{Prop}.  Neither a field in a Lean structure nor an uninstantiated
+contract should be counted as that derivation.
+

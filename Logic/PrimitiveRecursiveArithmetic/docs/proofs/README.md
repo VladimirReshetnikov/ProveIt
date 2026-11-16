@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives on 14 and
-15 November 2026: 33 to `docs/drafts`, and 18 to
+15 November 2026: 33 to `docs/drafts`, and 20 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -32,7 +32,7 @@ reason. Its directory column gives `<area>/<directory>`.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `ignored` | 50 | The member matches the repository's `.gitignore`: 37 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests and 13 `.log` files from LaTeX and Lean builds. It is available only from the delivered archive, so it is lost for the archives that were not committed. |
+| `ignored` | 52 | The member matches the repository's `.gitignore`: 38 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests, 13 `.log` files from LaTeX and Lean builds, and 1 file under a `build/` directory. It is available only from the delivered archive, so it is lost for the archives that were not committed. |
 | `sibling-packet` | 13 | `puiseux_ipra` bundles `dependencies/FTA_iPRA/`, a byte-identical copy of the packet filed in [`algebra/FTA_iPRA`](algebra/FTA_iPRA/). The reference column gives the placed file, except for the copy of `SHA256SUMS`, which is ignored in both. |
 | `sibling-archive` | 1 | `zeta_zeros_ipra_2026-11-15` bundles `dependencies/zeta_functional_equation_ipra.zip`, a byte-identical copy of the delivered archive filed in [`analytic-number-theory/zeta_functional_equation_ipra`](analytic-number-theory/zeta_functional_equation_ipra/). |
 | `repository-copy` | 17 | `zeta_zeros_ipra_2026-11-15` bundles `sources/Deduction.lean`, `sources/NativeBiInterpretation.lean` and `sources/PR.lean`, byte-identical to the files of the same names in [`ConciseIPRA/Lean/ConciseIPRA`](../../ConciseIPRA/Lean/ConciseIPRA/). `isoperimetric_ipra_constructive_2026-11-15` bundles, under `reused/`, the earlier packet [`geometry/isoperimetric_ipra`](geometry/isoperimetric_ipra/) as filed here at `22afac4c9d`; 14 of its files are byte-identical to that packet. The reference column gives that file, relative to the repository root. |
@@ -57,11 +57,11 @@ An archive whose Arrival is *not committed* was not committed, on Vladimir's ins
 was deleted after placement, so it cannot be restored from the history. Of those,
 `isoperimetric_ipra_constructive_2026-11-15` omits only its `reused/` copies, which are the
 files of `geometry/isoperimetric_ipra`. The others omit at most their ignored checksum
-manifests and build logs.
+manifests, build logs and `build/` files.
 
 ## Packets
 
-The 51 archives hold 1,159 members: 1,078 placed here, 50 ignored, 13 in the bundled copy of
+The 53 archives hold 1,205 members: 1,122 placed here, 52 ignored, 13 in the bundled copy of
 a sibling packet, 1 nested copy of a sibling archive and 17 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -106,6 +106,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | [`pnt_li_ipra_2026-11-15`](analytic-number-theory/pnt_li_ipra_2026-11-15/) | `d72c8b2463` 2026-11-15 | `pnt_li_ipra` | Logarithmic-integral strengthenings of the prime number theorem: an explicit stretched-exponential bound on π(n) − Li₂(n), and the full asymptotic expansion with explicit remainders. | 23 | 0 |
 | [`prime_distribution_ipra`](analytic-number-theory/prime_distribution_ipra/) | *not committed* 2026-11-15 | `ipra_prime_distribution_2026-11-15` | Prime distribution, which it calls a partial resolution: Dirichlet's theorem with an explicit bound and sharp Brun–Titchmarsh are proved, while Chebotarev, Siegel–Walfisz and Bombieri–Vinogradov get targets and reductions only. Its Lean files are an uncompiled outline. | 33 | 1 |
 | [`prime_reciprocal_ipra_2026-11-15`](analytic-number-theory/prime_reciprocal_ipra_2026-11-15/) | `52eb7d907b` 2026-11-15 | `prime_reciprocal_ipra_2026-11-15` | Divergence of the reciprocal-prime sum in the explicit form ∑_{p ≤ 2^(2·4^k)} 1/p > k. | 11 | 0 |
+| [`von_mangoldt_totient_ipra_2026-11-15`](analytic-number-theory/von_mangoldt_totient_ipra_2026-11-15/) | *not committed* 2026-11-15 | `von_mangoldt_totient_ipra_2026-11-15` | Identities for the von Mangoldt function and Euler's totient, uniformly for a primitive recursive prime weight: divisor, Möbius, lcm, Chebyshev and Dirichlet-series identities, Menon's identity and Euler orders. Its Lean files are uncompiled scaffolds. Its README cites `build/BUILD_REPORT.md`, which is ignored here. | 16 | 1 |
 | [`zeta_functional_equation_ipra`](analytic-number-theory/zeta_functional_equation_ipra/) | `db4b793b19` 2026-11-14 | `zeta_ipra` | Riemann's functional equation for ζ in quantitative form, with a formalization plan for its finite arithmetic content. | 31 | 0 |
 | [`zeta_ipra_proof_package`](analytic-number-theory/zeta_ipra_proof_package/) | *not committed* 2026-11-15 | `zeta_ipra` | Constructive zeta theory in 33 result families: Dirichlet convergence, Euler products, the entire regular part and Stieltjes constants, special values, both functional equations and ξ, the Euler–Hasse series, and an explicit lower bound on the modulus of ζ(1+it). Its Lean files are uncompiled candidates. | 26 | 1 |
 | [`zeta_zeros_ipra_2026-11-15`](analytic-number-theory/zeta_zeros_ipra_2026-11-15/) | `d72c8b2463` 2026-11-15 | `zeta_zeros_ipra` | Quantitative zero distribution of ζ: nonvanishing regions, trivial zeros, the Riemann–von Mangoldt estimate and local counts. It also certifies one critical-line zero near 1/2 + 14.1347i. | 25 | 5 |
@@ -143,6 +144,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 
 | Directory | Arrival | Wrapper in the archive | What the packet states | P | O |
 |---|---|---|---|---:|---:|
+| [`ipra_embedding_framework`](foundations/ipra_embedding_framework/) | *not committed* 2026-11-15 | `ipra_embedding_framework` | Mathematics in iPRA through finite observations: bounded-formula compilation, simple analytic branches with Cauchy coefficients, simultaneous finite-window stability, a hyperelliptic zero count for the Siegel strategy, and finite algebra certificates. It calls itself a targeted audit of the collection, not a verification of the packets. | 28 | 1 |
 | [`ipra_framework_2026-11-15`](foundations/ipra_framework_2026-11-15/) | *not committed* 2026-11-15 | `ipra_framework` | A cross-domain certificate-and-modulus framework for the packets here: bounded primitive recursive search and descent, certificate composition, arithmetic of quantitative real names and apartness-conditioned inverses. It says it is not a verified solution of the other packets. Its Lean files have not been typechecked. | 6 | 0 |
 
 ### Geometry

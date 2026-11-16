@@ -1,0 +1,2037 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{bm}
+\usepackage{needspace}
+\usepackage{url}
+
+\hypersetup{
+ colorlinks=true,
+ linkcolor=blue!55!black,
+ citecolor=blue!55!black,
+ urlcolor=blue!55!black,
+ pdftitle={Von Mangoldt and Euler totient identities in intuitionistic primitive recursive arithmetic},
+ pdfauthor={OpenAI}
+}
+\pagestyle{fancy}
+\setlength{\headheight}{14pt}
+\fancyhf{}
+\lhead{Mangoldt and totient in iPRA}
+\rhead{Constructive proof development}
+\cfoot{\thepage}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{convention}[theorem]{Convention}
+\newtheorem{example}[theorem]{Example}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\ph}{\varphi}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\lcmu}{\operatorname{lcmUpto}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Prime}{\operatorname{Prime}}
+\newcommand{\PP}{\operatorname{PrimePow}}
+\newcommand{\wtlog}{L_w}
+\newcommand{\wLambda}{\Lambda_w}
+\newcommand{\wPsi}{\Psi_w}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\newcommand{\StatusI}{\textsf{I}}
+\newcommand{\StatusF}{\textsf{F}}
+\newcommand{\StatusA}{\textsf{A}}
+\newcommand{\StatusO}{\textsf{O}}
+\newcommand{\ind}[1]{\mathbf 1_{#1}}
+
+\setlist[itemize]{leftmargin=1.5em,itemsep=0.25em,topsep=0.35em}
+\setlist[enumerate]{leftmargin=1.8em,itemsep=0.25em,topsep=0.35em}
+\setlength{\parskip}{0.25em}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\Urlmuskip=0mu plus 1mu
+
+\lstdefinelanguage{Lean}{
+ morekeywords={def,theorem,lemma,namespace,end,by,have,show,from,import,open,section,variable,where,if,then,else,let,in,match,with,case,induction,exact,refine,simp,rw,constructor,structure,inductive,axiom,noncomputable},
+ sensitive=true,
+ morecomment=[l]{--},
+ morecomment=[s]{/-}{-/},
+ morestring=[b]"
+}
+\lstset{language=Lean,basicstyle=\ttfamily\footnotesize,columns=fullflexible,breaklines=true,frame=single,showstringspaces=false,backgroundcolor=\color{black!2},xleftmargin=0.3em,xrightmargin=0.3em}
+
+\title{\textbf{The von Mangoldt Function and Euler's Totient Function}\\
+\large Finite, constructive proofs in intuitionistic primitive recursive arithmetic}
+\author{Research note prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This note reconstructs, in a form suitable for intuitionistic primitive
+recursive arithmetic (\(\ipra\)), the arithmetic content of the von Mangoldt
+and Euler totient reference pages listed in the bibliography.  The central
+point is that the elementary theorems do not need classical logic, unbounded
+choice, completed infinite sets, or real analysis.  Divisibility, primality,
+valuation, finite factorization, the M\"obius function, bounded sums and
+products, reduced residue systems, and finite Dirichlet convolution are all
+primitive recursive.  Their proofs can therefore be expressed by
+quantifier-free induction.
+
+For the von Mangoldt function we separate its exact arithmetic skeleton from
+the real logarithm.  Given any primitive-recursive weight \(w(p)\) on primes,
+we define the completely additive weight
+\(L_w(n)=\sum_p v_p(n)w(p)\) and the weighted Mangoldt function
+\(\Lambda_w(p^a)=w(p)\).  All divisor sums, M\"obius inversion formulas,
+least-common-multiple identities, Chebyshev sums, and formal Dirichlet-series
+identities are then literal \(\ipra\) theorems.  Taking \(w(p)=\log p\) is a
+constructive-analysis specialization, implemented internally at any requested
+finite precision by primitive-recursive rational bounds.
+
+For Euler's totient we prove the counting definition, prime and prime-power
+formulae, multiplicativity and the product formula, divisor-sum and M\"obius
+identities, parity and divisibility results, power/gcd/lcm/radical identities,
+Euler's theorem, RSA correctness, Menon's identity, the root-of-unity identity,
+Lambert and Dirichlet coefficient identities, exact summatory formulae,
+several elementary bounds, and finite witness forms of the limsup/liminf
+statements.  The archive also supplies a theorem-by-theorem status ledger, a
+Lean formalization blueprint tied to the current \code{ConciseIPRA}
+infrastructure, host-level Lean scaffolding, and an executable finite checker.
+No claim is made that the supplied Lean files are a completed formalization.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Scope, status labels, and the constructive reading}
+
+\subsection{What it means here to prove a reference-page statement in \(\ipra\)}
+
+The language of ordinary \(\ipra\) has one natural-number sort, a symbol for
+each primitive-recursive function, equality, intuitionistic first-order logic,
+and induction for quantifier-free formulas.  Consequently a theorem is in the
+native scope of \(\ipra\) when it can be written using natural-number codes,
+primitive-recursive operations, and quantifier-free induction.  Finite sets
+are represented by bounded characteristic functions; their cardinalities,
+sums, and products are bounded folds.  Integers are represented by pairs of
+naturals, and rational equalities or inequalities are denominator-cleared.
+
+Some reference-page formulas use real logarithms, complex roots of unity,
+infinite series, limits, or asymptotic notation.  These are not literally
+formulas of first-order \(\ipra\).  We therefore distinguish four statuses.
+
+\begin{center}
+\begin{tabularx}{0.94\textwidth}{>{\bfseries}c X}
+\toprule
+Label & Meaning \\
+\midrule
+\StatusI & A literal, denominator-cleared natural/integer statement whose proof uses primitive-recursive constructions and quantifier-free induction. \\
+\StatusF & An exact finite coefficient, polynomial-remainder, or convolution statement in \(\ipra\) which is the algebraic content of an infinite analytic notation. \\
+\StatusA & A constructive-analysis corollary obtained uniformly from finite \(\ipra\) certificates, such as rational upper and lower approximations to logarithms. \\
+\StatusO & Not claimed here: genuinely infinitary/complex-analytic material, an open problem, or a result whose complete constructive reduction would require a separate large development. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+This distinction is mathematical rather than cosmetic.  For example,
+\(\sum_{d\mid n}\Lambda(d)=\log n\) contains a real logarithm.  Its exact
+arithmetic content is the stronger weighted identity
+\[
+ \sum_{d\mid n}\Lambda_w(d)=L_w(n)
+\]
+for every primitive-recursive prime weight \(w\).  The usual formula follows
+by interpreting \(w(p)\) as \(\log p\).  The weighted identity is status
+\StatusI; the real specialization is status \StatusA.
+
+\subsection{Coverage summary}
+
+The report proves or reduces to exact finite form the following principal
+families.
+
+\begin{longtable}{@{}p{0.07\textwidth}p{0.78\textwidth}p{0.07\textwidth}@{}}
+\toprule
+No. & Statement family & Status \\
+\midrule
+\endfirsthead
+\toprule No. & Statement family & Status \\
+\midrule
+\endhead
+T1 & Definition of \(\varphi(n)\) as the number of residues below \(n\) coprime to \(n\); primitive recursiveness; \(\varphi(0)=0,\varphi(1)=1\). & \StatusI\\
+T2 & \(\varphi(p)=p-1\), \(\varphi(p^a)=p^{a-1}(p-1)\), multiplicativity, and Euler's product formula. & \StatusI\\
+T3 & \(\sum_{d\mid n}\varphi(d)=n\), M\"obius inversion, gcd-fiber counting, and summatory floor-square identities. & \StatusI\\
+T4 & Power, divisibility, gcd/lcm, doubling, radical, and squarefree-divisor identities. & \StatusI\\
+T5 & Evenness, powers of two dividing \(\varphi(n)\), sum of totatives, and Menon's identity. & \StatusI\\
+T6 & Euler's theorem, Fermat's theorem, RSA correctness, and \(m\mid\varphi(a^m-1)\). & \StatusI\\
+T7 & Root-of-unity/cosine identity through an exact cyclotomic polynomial congruence. & \StatusF\\
+T8 & Lambert-series and Dirichlet-series formulas through exact coefficient and convolution identities. & \StatusF\\
+T9 & Bounds \(\varphi(n)^2\ge n/2\), the sharper square-root exception theorem, composite upper bound, and \(\varphi(n)\sigma(n)/n^2>1/2\). & \StatusI\\
+T10 & Finite witness forms of \(\limsup\varphi(n)/n=1\) and \(\liminf\varphi(n)/n=0\). & \StatusI/\StatusA\\
+T11 & Odd nontotients, \(\varphi(n)=2\) classification, and the arithmetic restriction on prime-power constructibility. & \StatusI\\
+M1 & Primitive-recursive recognition of prime powers and the weighted Mangoldt function \(\Lambda_w\). & \StatusI\\
+M2 & Divisor sum and all standard M\"obius inversion/convolution identities. & \StatusI\\
+M3 & \(\exp(\Lambda(n))\) as an lcm quotient, in the exact weighted prime-factor form. & \StatusI/\StatusA\\
+M4 & Chebyshev sum \(\Psi_w(N)=L_w(\operatorname{lcm}(1,\dots,N))\). & \StatusI\\
+M5 & Formal logarithmic derivative of the zeta Dirichlet series and the prime-power coefficients of \(\log\zeta\). & \StatusF\\
+M6 & Finite Abel summation and explicit elementary linear bounds for the Chebyshev function. & \StatusI/\StatusA\\
+M7 & \(\sum_{n\le N}\Lambda(n)/n=\log N+O(1)\) with explicit constants, via denominator-cleared finite inequalities. & \StatusI/\StatusA\\
+M8 & Generalized Mangoldt functions \(\Lambda_k\), including \(\Lambda_1=\Lambda\). & \StatusI/\StatusF\\
+M9 & Riesz means, explicit formulas involving zeta zeros, RH equivalences, and oscillation theorems. & \StatusO\\
+\bottomrule
+\end{longtable}
+
+\section{Primitive-recursive arithmetic toolkit}
+
+\subsection{Bounded operations}
+
+\begin{lemma}[Bounded-fold closure]\label{lem:bounded-fold}
+Let \(f(\vec x,t)\) be primitive recursive.  Then the functions
+\[
+ \sum_{t<b}f(\vec x,t),\qquad
+ \prod_{t<b}f(\vec x,t),\qquad
+ \min\{t<b:P(\vec x,t)\},\qquad
+ \#\{t<b:P(\vec x,t)\}
+\]
+are primitive recursive whenever \(P\) has a primitive-recursive
+characteristic function.  The minimum is totalized by returning \(b\) when
+there is no witness.
+\end{lemma}
+
+\begin{proof}
+The sum and product are ordinary primitive recursions on \(b\).  A bounded
+minimum carries a register initially equal to \(b\); at stage \(t\), it is
+replaced by \(t\) exactly when no earlier witness has been stored and the
+Boolean characteristic of \(P(\vec x,t)\) is one.  A cardinality is the sum of
+the characteristic function.  Every update is obtained from composition,
+primitive recursion, truncated subtraction, and zero tests.  The defining
+invariants are equations between primitive-recursive terms, so their
+correctness proofs use quantifier-free induction.  No instance of excluded
+middle beyond decidable equality/order on naturals occurs.
+\end{proof}
+
+Division and remainder can be obtained by a bounded scan for the largest
+\(q\le x\) satisfying \(qy\le x\), with the convention \(x/0=0\).  Thus
+\(d\mid n\), gcd, lcm, primality, bounded lists of divisors, and exact quotient
+are primitive recursive.  Gcd may also be implemented by Euclid's algorithm
+with a fuel counter \(x+y+1\); its decreasing invariant is quantifier-free.
+
+\subsection{Valuations and a canonical finite factorization}
+
+For \(p,n\in\N\), put
+\[
+ v_p(n)=\max\{e\le n:p^e\mid n\},
+\]
+with \(v_p(0)=0\) for totality.  Let \(\ell(n)\) be the least divisor of
+\(n>1\) in \([2,n]\), and set \(\ell(0)=\ell(1)=1\).
+
+\begin{lemma}[Least-factor trace]\label{lem:factor-trace}
+There is a primitive-recursive trace \(x_0(n),\ldots,x_n(n)\) such that
+\[
+ x_0=n,
+ \qquad
+ x_{i+1}=\begin{cases}x_i/\ell(x_i),&x_i>1,\\1,&x_i\le1,
+ \end{cases}
+\]
+and, for \(n>0\), the trace reaches \(1\) by stage \(n\).  Every nontrivial
+factor selected by the trace is prime, and
+\[
+ n=\prod_{p=2}^{n}p^{v_p(n)}.
+\]
+All assertions admit quantifier-free induction proofs in \(\ipra\).
+\end{lemma}
+
+\begin{proof}
+If \(x_i>1\), then \(2\le\ell(x_i)\le x_i\), so
+\(x_{i+1}<x_i\).  The invariant
+\[
+ x_i+i\le n+1\quad\text{whenever }x_i>1
+\]
+is immediate by induction and implies termination within \(n\) stages.  If
+\(\ell(x_i)=ab\) with \(1<a<\ell(x_i)\), then \(a\mid x_i\), contradicting
+minimality; hence \(\ell(x_i)\) is prime.  Multiplying the exact division
+equations along the trace reconstructs \(n\).  Counting occurrences of each
+prime gives the valuation form.  Every counter, product, and assertion is
+bounded by a primitive-recursive term.
+\end{proof}
+
+The usual uniqueness of factorization can be proved without a classical
+minimal-counterexample argument.  If
+\(\prod p^{a_p}=\prod p^{b_p}\), apply the primitive-recursive valuation
+\(v_q\) to both sides; the elementary rules
+\(v_q(xy)=v_q(x)+v_q(y)\) and \(v_q(p^a)=a\ind{p=q}\) give \(a_q=b_q\).
+These valuation rules are proved by bounded induction on the exponents.
+
+\subsection{M\"obius function and finite inversion}
+
+Encode signed integers as pairs \((u,v)\), representing \(u-v\).  Define
+\(\mu(1)=1\).  For \(n>1\), let \(\mu(n)=0\) if some prime square divides
+\(n\), and otherwise let \(\mu(n)=(-1)^r\), where \(r\) is the number of
+prime divisors.  This is primitive recursive.
+
+\begin{lemma}[M\"obius cancellation]\label{lem:mobius-cancel}
+For every positive \(n\),
+\[
+ \sum_{d\mid n}\mu(d)=\begin{cases}1,&n=1,\\0,&n>1.
+ \end{cases}
+\]
+Consequently, for natural- or integer-valued primitive-recursive functions
+\(f,g\),
+\[
+ g(n)=\sum_{d\mid n}f(d)
+ \quad\Longleftrightarrow\quad
+ f(n)=\sum_{d\mid n}\mu(d)g(n/d).
+\]
+\end{lemma}
+
+\begin{proof}
+If \(n=\prod_{i<r}p_i^{a_i}\), only squarefree divisors contribute.  Choosing
+a squarefree divisor is choosing a bit vector \(e\in\{0,1\}^r\), and its
+contribution is \((-1)^{\sum e_i}\).  The sum is
+\(\prod_{i<r}(1-1)\), equal to one when \(r=0\) and zero otherwise.  This
+finite distributive identity is proved by induction on \(r\).
+
+For inversion, substitute the proposed expression and swap two bounded sums:
+\[
+ \sum_{d\mid n}\mu(d)\sum_{e\mid n/d}f(e)
+ =\sum_{e\mid n}f(e)\sum_{d\mid n/e}\mu(d).
+\]
+The inner sum is one exactly when \(e=n\), so only \(f(n)\) remains.  The
+reverse implication is identical with the roles exchanged.  Sum swapping is a
+bounded-rectangle induction, not an appeal to an infinite Fubini theorem.
+\end{proof}
+
+\subsection{Finite logarithms and prime weights}
+
+The real number \(\log p\) is not a natural number and cannot be a primitive
+symbol of first-order \(\ipra\).  The algebra needs only complete additivity,
+so we isolate it.
+
+\begin{definition}[Prime weight and finite logarithm]\label{def:weight}
+Let \(w:\N\to\N\) (or a signed/rational code) be primitive recursive.  Define
+\[
+ L_w(0)=0,
+ \qquad
+ L_w(n)=\sum_{p=2}^{n}\ind{\Prime(p)}v_p(n)w(p)
+ \quad(n>0).
+\]
+Then \(L_w(1)=0\) and \(L_w(ab)=L_w(a)+L_w(b)\) for positive \(a,b\).
+\end{definition}
+
+\begin{proof}
+The definition is a bounded sum.  Complete additivity follows termwise from
+\(v_p(ab)=v_p(a)+v_p(b)\), followed by finite distributivity.  This proof is
+uniform in the code of \(w\).
+\end{proof}
+
+For the classical specialization one may use rational interval codes
+\(\operatorname{LogLo}(p,t)\le\log p\le\operatorname{LogHi}(p,t)\) of width
+at most \(2^{-t}\).  A convenient construction reduces \(p\) by powers of two
+and uses
+\[
+ \log x=2\sum_{j=0}^{M-1}\frac{z^{2j+1}}{2j+1}+R_M,
+ \qquad z=\frac{x-1}{x+1}.
+\]
+A finite rational sum with a geometric bound on \(R_M\).  Numerators,
+denominators, powers, and the required \(M\) are primitive recursive.
+Therefore every finite identity in \(L_w\) yields certified lower and upper
+bounds for its logarithmic interpretation at arbitrary precision.
+
+\section{Euler's totient: definition and factorization}
+
+\begin{definition}[Totient]\label{def:totient}
+For \(n\in\N\), define
+\[
+ \varphi(n)=\sum_{a<n}\ind{\gcd(a,n)=1}.
+\]
+We use the totalization \(\varphi(0)=0\).  Thus \(\varphi(1)=1\), because the
+only \(a<1\) is \(0\), and \(\gcd(0,1)=1\).
+\end{definition}
+
+The definition is primitive recursive by Lemma~\ref{lem:bounded-fold}.  It is
+extensionally identical to the usual number of positive integers at most
+\(n\) that are relatively prime to \(n\), since for \(n>1\), zero is not
+coprime to \(n\), while the endpoint \(n\) is not coprime either.
+
+\begin{remark}[The value at zero]
+The requested sources concern positive inputs.  Extensions at zero are conventional: some tables set \(\varphi(0)=1\), while the Wolfram Language and the direct bounded-count definition use zero.  We adopt \(\varphi(0)=0\), matching \code{Nat.totient} and avoiding any effect on the positive-integer theorems.
+\end{remark}
+
+\begin{theorem}[Prime and prime-power formulae]\label{thm:phi-prime-power}
+If \(p\) is prime and \(a\ge1\), then
+\[
+ \varphi(p)=p-1,
+ \qquad
+ \varphi(p^a)=p^a-p^{a-1}=p^{a-1}(p-1).
+\]
+\end{theorem}
+
+\begin{proof}
+Every \(1\le x<p\) is coprime to the prime \(p\), so exactly the \(p-1\)
+nonzero residues are counted.  For \(p^a\), a residue fails to be coprime
+exactly when it is divisible by \(p\).  The map
+\(y\mapsto py\) is a bijection from \([0,p^{a-1})\) to the multiples of
+\(p\) below \(p^a\).  Hence there are \(p^{a-1}\) excluded residues and
+\(p^a-p^{a-1}\) included residues.  Injectivity, range, and the cardinality
+calculation are bounded equations and inequalities.
+\end{proof}
+
+\begin{theorem}[Constructive Chinese remainder theorem]\label{thm:crt}
+If \(m,n>0\) and \(\gcd(m,n)=1\), the map
+\[
+ x\bmod mn\longmapsto(x\bmod m,x\bmod n)
+\]
+is a primitive-recursive bijection between residue codes
+\([0,mn)\) and \([0,m)\times[0,n)\).  It restricts to a bijection of reduced
+residue systems.
+\end{theorem}
+
+\begin{proof}
+The extended Euclidean algorithm with bounded fuel computes \(u,v\in\Z\)
+with \(um+vn=1\).  Given \(a<m,b<n\), put
+\[
+ x\equiv b(um)+a(vn)\pmod{mn}.
+\]
+After taking the canonical remainder.  Modulo \(m\), the first term is zero
+and \(vn\equiv1\), so \(x\equiv a\); modulo \(n\), similarly
+\(x\equiv b\).  If two numbers in \([0,mn)\) have both residues equal, their
+difference is divisible by \(m\) and \(n\); coprimality gives divisibility by
+\(mn\), and the size bound gives equality.  Finally,
+\(\gcd(x,mn)=1\) iff \(\gcd(x,m)=\gcd(x,n)=1\), proved by the elementary
+prime-divisor criterion.  All searches and canonical remainders are primitive
+recursive.
+\end{proof}
+
+\begin{theorem}[Multiplicativity and Euler product]\label{thm:phi-product}
+If \(\gcd(m,n)=1\), then
+\[
+ \varphi(mn)=\varphi(m)\varphi(n).
+\]
+For every positive \(n=\prod_{p\mid n}p^{a_p}\),
+\[
+ \boxed{\displaystyle
+ \varphi(n)=\prod_{p\mid n}p^{a_p-1}(p-1)
+ =n\prod_{p\mid n}\left(1-\frac1p\right).}
+\]
+The second display is interpreted internally by its denominator-cleared first
+product.
+\end{theorem}
+
+\begin{proof}
+The restricted CRT bijection has domain size \(\varphi(mn)\) and codomain size
+\(\varphi(m)\varphi(n)\), proving multiplicativity.  Distinct prime powers in
+the factorization of \(n\) are pairwise coprime, so finite induction over the
+factor trace and Theorem~\ref{thm:phi-prime-power} yield the first product.
+Multiplying and dividing each local factor by \(p^{a_p}\) gives the familiar
+rational notation; no division is needed in the internal theorem.
+\end{proof}
+
+\begin{example}
+The formula gives
+\[
+ \varphi(24)=\varphi(2^3)\varphi(3)=4\cdot2=8,
+\]
+corresponding to \(1,5,7,11,13,17,19,23\).
+\end{example}
+
+\section{Divisor sums, M\"obius inversion, and exact summatory formulae}
+
+\begin{theorem}[Gcd fibers]\label{thm:gcd-fiber}
+If \(d\mid n\), then
+\[
+ \#\{0\le k<n:\gcd(k,n)=d\}=\varphi(n/d).
+\]
+\end{theorem}
+
+\begin{proof}
+Write \(n=dm\).  Every \(k<n\) with gcd \(d\) is uniquely \(k=da\) with
+\(a<m\), and
+\(\gcd(da,dm)=d\gcd(a,m)\).  Thus the gcd is \(d\) exactly when
+\(\gcd(a,m)=1\).  The maps \(a\mapsto da\) and exact division by \(d\) are
+inverse bounded maps.
+\end{proof}
+
+\begin{theorem}[Divisor-sum identity]\label{thm:sum-phi}
+For every positive \(n\),
+\[
+ \boxed{\displaystyle\sum_{d\mid n}\varphi(d)=n.}
+\]
+\end{theorem}
+
+\begin{proof}
+Partition the \(n\) residues \(k<n\) by \(d=\gcd(k,n)\).  By
+Theorem~\ref{thm:gcd-fiber}, the fiber at \(d\) has size \(\varphi(n/d)\).
+Hence
+\[
+ n=\sum_{d\mid n}\varphi(n/d)=\sum_{e\mid n}\varphi(e),
+\]
+where the last equality uses the primitive-recursive involution
+\(d\mapsto n/d\) on the divisor list.
+\end{proof}
+
+\begin{corollary}[M\"obius formula]\label{cor:phi-mobius}
+For positive \(n\),
+\[
+ \boxed{\displaystyle
+ \varphi(n)=\sum_{d\mid n}\mu(d)\frac nd
+ =\sum_{d\mid n}d\,\mu(n/d).}
+\]
+Every quotient displayed is exact.
+\end{corollary}
+
+\begin{proof}
+Apply Lemma~\ref{lem:mobius-cancel} to
+\(n=\sum_{d\mid n}\varphi(d)\), obtaining the first formula.  Substitute
+\(d\leftrightarrow n/d\) for the second.
+\end{proof}
+
+\begin{theorem}[Summatory floor-square identity]\label{thm:summatory-phi}
+For every \(N\ge1\),
+\[
+ \boxed{\displaystyle
+ 2\sum_{n=1}^{N}\varphi(n)-1
+ =\sum_{d=1}^{N}\mu(d)\left\lfloor\frac Nd\right\rfloor^2.}
+\]
+\end{theorem}
+
+\begin{proof}
+Let \(C_N\) be the number of ordered pairs \((a,b)\) with
+\(1\le a,b\le N\) and \(\gcd(a,b)=1\).  By M\"obius cancellation,
+\[
+ \ind{\gcd(a,b)=1}=\sum_{d\mid a,\ d\mid b}\mu(d).
+\]
+Summing over the finite square gives
+\[
+ C_N=\sum_{d\le N}\mu(d)\#\{a\le N:d\mid a\}^2
+ =\sum_{d\le N}\mu(d)\lfloor N/d\rfloor^2.
+\]
+On the other hand, the diagonal contributes only \((1,1)\).  Above the
+diagonal, for each \(b=2,\ldots,N\), there are \(\varphi(b)\) choices of
+\(a<b\) coprime to \(b\); reflection supplies the same number below the
+diagonal.  Thus
+\(C_N=1+2\sum_{b=2}^N\varphi(b)=2\sum_{b=1}^N\varphi(b)-1\).
+All exchanges are bounded sums.
+\end{proof}
+
+\begin{corollary}[Farey sequence count]
+The number of reduced fractions in \([0,1]\) with denominator at most \(N\)
+is
+\[
+ 1+\sum_{n=1}^{N}\varphi(n).
+\]
+\end{corollary}
+
+\begin{proof}
+Include \(0/1\).  For every denominator \(n\), the reduced fractions
+\(a/n\) with \(1\le a\le n\) are counted by \(\varphi(n)\), including
+\(1/1\) at \(n=1\).  Uniqueness follows from cross multiplication and
+coprimality.  This is a bounded enumeration theorem.
+\end{proof}
+
+\section{A calculus of totient identities}
+
+The following identities are most transparently proved by comparing the local
+prime-power factors from Theorem~\ref{thm:phi-product}.  Such comparison is
+constructive because the factor vector is explicitly computed.
+
+\begin{theorem}[Power identity]\label{thm:phi-power}
+For \(n\ge1\) and \(k\ge1\),
+\[
+ \boxed{\varphi(n^k)=n^{k-1}\varphi(n).}
+\]
+\end{theorem}
+
+\begin{proof}
+If \(n=\prod p^{a_p}\), then \(n^k=\prod p^{ka_p}\), so
+\[
+ \varphi(n^k)=\prod p^{ka_p-1}(p-1)
+ =\left(\prod p^{(k-1)a_p}\right)
+   \left(\prod p^{a_p-1}(p-1)\right).
+\]
+The two factors are \(n^{k-1}\) and \(\varphi(n)\).
+\end{proof}
+
+\begin{theorem}[Divisibility monotonicity]\label{thm:phi-divides}
+If \(a\mid b\) and \(a,b>0\), then \(\varphi(a)\mid\varphi(b)\).
+\end{theorem}
+
+\begin{proof}
+Write the prime exponents as \(\alpha_p\le\beta_p\).  For a prime already
+present in \(a\), the ratio of local factors is \(p^{\beta_p-\alpha_p}\).
+For a new prime of \(b\), its entire local factor
+\(p^{\beta_p-1}(p-1)\) is an integer factor.  Multiplying these finitely many
+ratios gives an explicit quotient \(Q\) satisfying
+\(\varphi(b)=Q\varphi(a)\).
+\end{proof}
+
+\begin{theorem}[Noncoprime multiplication formula]\label{thm:phi-general-mul}
+Let \(d=\gcd(m,n)>0\).  Then
+\[
+ \boxed{\varphi(mn)\varphi(d)=\varphi(m)\varphi(n)d.}
+\]
+Equivalently, in ordinary rational notation,
+\(
+ \varphi(mn)=\varphi(m)\varphi(n)d/\varphi(d).
+\)
+\end{theorem}
+
+\begin{proof}
+Fix a prime and write \(a=v_p(m), b=v_p(n)\), with
+\(r=\min(a,b)\).  If one exponent is zero, the local equality is immediate.
+If both are positive, the exponents of \(p\) and the two factors \((p-1)\)
+are
+\[
+ [a+b-1]+[r-1]
+ \quad\text{on the left, and}\quad
+ [a-1]+[b-1]+r
+ \quad\text{on the right},
+\]
+which are equal.  Multiplying the local equalities proves the result.
+\end{proof}
+
+\begin{corollary}[Gcd-lcm identity]\label{cor:phi-gcd-lcm}
+For positive \(m,n\),
+\[
+ \boxed{\varphi(\gcd(m,n))\varphi(\operatorname{lcm}(m,n))
+ =\varphi(m)\varphi(n).}
+\]
+\end{corollary}
+
+\begin{proof}
+Primewise, the gcd and lcm exponents are the minimum and maximum of the two
+exponents.  Their multiset is the same as the original pair, so the product of
+local totient factors is unchanged.
+\end{proof}
+
+\begin{theorem}[Doubling]\label{thm:phi-double}
+For \(n\ge1\),
+\[
+ \varphi(2n)=\begin{cases}
+ \varphi(n),&n\text{ odd},\\
+ 2\varphi(n),&n\text{ even}.
+ \end{cases}
+\]
+\end{theorem}
+
+\begin{proof}
+If \(n\) is odd, multiplicativity with \(\varphi(2)=1\) applies.  If
+\(n=2^a m\) with \(a\ge1\) and \(m\) odd, the local factor at two changes
+from \(2^{a-1}\) to \(2^a\), while every odd local factor is unchanged.
+\end{proof}
+
+\begin{theorem}[Radical identity]\label{thm:phi-rad}
+For \(n>0\),
+\[
+ \boxed{\varphi(n)\rad(n)=n\varphi(\rad(n)).}
+\]
+\end{theorem}
+
+\begin{proof}
+For each \(p^a\Vert n\), the local factor on the left is
+\(p^{a-1}(p-1)\cdot p=p^a(p-1)\), equal to the local factor on the right.
+\end{proof}
+
+\begin{theorem}[Squarefree-divisor identity]\label{thm:squarefree-divisor}
+For \(n>0\),
+\[
+ \boxed{\displaystyle
+ \sum_{d\mid n}\frac{\mu(d)^2}{\varphi(d)}=\frac n{\varphi(n)}.}
+\]
+Internally this denotes the equality obtained after multiplying by the product
+of the finitely many nonzero denominators.
+\end{theorem}
+
+\begin{proof}
+Only squarefree divisors contribute.  Finite distributivity gives
+\[
+ \sum_{d\mid n}\frac{\mu(d)^2}{\varphi(d)}
+ =\prod_{p\mid n}\left(1+\frac1{p-1}\right)
+ =\prod_{p\mid n}\frac p{p-1}
+ =\frac n{\varphi(n)}.
+\]
+Every step can be cross-multiplied prime by prime, so no rational object is
+needed internally.
+\end{proof}
+
+\section{Parity, reduced residues, and Menon's identity}
+
+\begin{theorem}[Evenness and powers of two]\label{thm:phi-even}
+If \(n>2\), then \(\varphi(n)\) is even.  More generally, if \(n\) has
+\(r\) distinct odd prime divisors, then \(2^r\mid\varphi(n)\).
+\end{theorem}
+
+\begin{proof}
+For evenness, pair each reduced residue \(a\) with \(n-a\).  Both are reduced,
+and they are equal modulo \(n\) only if \(2a\equiv0\pmod n\).  Since \(a\)
+is a unit, this would give \(n\mid2\), impossible for \(n>2\).  Hence the
+reduced residue set is partitioned into two-element orbits.
+
+For the stronger statement, each distinct odd prime divisor \(p\) contributes
+the even factor \(p-1\) to the product formula.  The remaining factors are
+integers, so their product contains at least \(r\) factors of two.
+\end{proof}
+
+\begin{theorem}[Sum of the totatives]\label{thm:sum-totatives}
+For \(n>1\), if
+\(S(n)=\sum_{1\le a<n,\ \gcd(a,n)=1}a\), then
+\[
+ \boxed{2S(n)=n\varphi(n).}
+\]
+Thus \(S(n)=n\varphi(n)/2\) in ordinary notation.
+\end{theorem}
+
+\begin{proof}
+For \(n>2\), use the fixed-point-free involution
+\(a\mapsto n-a\); every pair sums to \(n\), and there are
+\(\varphi(n)/2\) pairs.  For \(n=2\), the sole totative is one and the
+cross-multiplied identity reads \(2=2\).
+\end{proof}
+
+\begin{theorem}[Menon's identity]\label{thm:menon}
+For every positive \(n\),
+\[
+ \boxed{\displaystyle
+ \sum_{\substack{1\le a\le n\\\gcd(a,n)=1}}\gcd(a-1,n)
+ =\varphi(n)\tau(n),}
+\]
+where \(\tau(n)\) is the number of positive divisors of \(n\).
+\end{theorem}
+
+\begin{proof}
+Use Theorem~\ref{thm:sum-phi} in the form
+\(\gcd(a-1,n)=\sum_{d\mid\gcd(a-1,n)}\varphi(d)\).  Swapping bounded sums gives
+\[
+ \sum_{d\mid n}\varphi(d)N_d,
+ \qquad
+ N_d=\#\{a\bmod n:\gcd(a,n)=1,\ a\equiv1\pmod d\}.
+\]
+We show \(N_d=\varphi(n)/\varphi(d)\) by an explicit local count.  Write
+\(n=\prod p^{\alpha_p}\) and
+\(d=\prod p^{\delta_p}\), with
+\(0\le\delta_p\le\alpha_p\).  CRT makes the count a product over primes.
+For one prime power:
+\begin{itemize}
+\item if \(\delta=0\), all \(\varphi(p^\alpha)\) units are allowed;
+\item if \(\delta>0\), the residues congruent to one modulo \(p^\delta\)
+are \(1+p^\delta t\) with \(0\le t<p^{\alpha-\delta}\); all are units, so
+there are \(p^{\alpha-\delta}\) choices.
+\end{itemize}
+The quotient of these local counts by \(\varphi(p^\alpha)\) is exactly
+\(1/\varphi(p^\delta)\), interpreted by the explicit integer quotient.  Thus
+\(\varphi(d)N_d=\varphi(n)\) for every divisor \(d\).  There are \(\tau(n)\)
+divisors, and the result follows.
+\end{proof}
+
+\section{Euler's theorem, orders, and RSA}
+
+\begin{theorem}[Euler's theorem]\label{thm:euler}
+If \(n>0\) and \(\gcd(a,n)=1\), then
+\[
+ \boxed{a^{\varphi(n)}\equiv1\pmod n.}
+\]
+For prime \(p\), this gives Fermat's little theorem
+\(a^{p-1}\equiv1\pmod p\) whenever \(p\nmid a\).
+\end{theorem}
+
+\begin{proof}
+Let \(R\) be the bounded list of reduced residues modulo \(n\).  Multiplication
+by \(a\), followed by canonical remainder, is a permutation of \(R\): its
+inverse is multiplication by the Bezout inverse of \(a\).  Therefore
+\[
+ \prod_{r\in R}r\equiv\prod_{r\in R}ar
+ =a^{\varphi(n)}\prod_{r\in R}r\pmod n.
+\]
+For \(n=1\) the congruence is immediate.  For \(n>1\), the product of the elements of \(R\) is a unit modulo \(n\), so the extended
+Euclidean algorithm computes an inverse and permits cancellation.  This gives
+the desired congruence.  The permutation and product identities are finite
+bounded inductions.
+\end{proof}
+
+\begin{corollary}[Order divides the totient]\label{cor:order-divides}
+For \(\gcd(a,n)=1\), let \(r\) be the least positive exponent with
+\(a^r\equiv1\pmod n\).  Then \(r\mid\varphi(n)\).
+\end{corollary}
+
+\begin{proof}
+Euler's theorem supplies such an exponent.  Divide
+\(\varphi(n)=qr+s\) with \(s<r\).  Then
+\(1\equiv a^{\varphi(n)}\equiv(a^r)^q a^s\equiv a^s\).  Minimality of
+\(r\) forces \(s=0\).  Least positive search is bounded by \(\varphi(n)\),
+so the order function is primitive recursive on units.
+\end{proof}
+
+\begin{theorem}[Zsigmondy-type divisibility]\label{thm:order-am1}
+If \(a>1\) and \(m\ge1\), then
+\[
+ \boxed{m\mid\varphi(a^m-1).}
+\]
+\end{theorem}
+
+\begin{proof}
+Let \(N=a^m-1\).  Since \(a\) and \(N\) are coprime,
+\(a\) is a unit modulo \(N\), and \(a^m\equiv1\pmod N\).  If
+\(0<r<m\) also satisfied \(a^r\equiv1\pmod N\), then
+\(N\mid a^r-1\), but
+\(0<a^r-1<a^m-1=N\), impossible.  Hence the order of \(a\) modulo \(N\) is
+exactly \(m\), and Corollary~\ref{cor:order-divides} gives the result.
+\end{proof}
+
+\begin{theorem}[RSA correctness]\label{thm:rsa}
+Let \(p\ne q\) be primes, \(N=pq\), and suppose
+\(ed\equiv1\pmod{\varphi(N)}\).  Then for every message \(x\),
+\[
+ (x^e)^d\equiv x\pmod N.
+\]
+\end{theorem}
+
+\begin{proof}
+Write \(ed=1+t\varphi(N)\).  Modulo \(p\), either \(p\mid x\), in which case
+both sides are zero, or \(x\) is a unit.  Since
+\(p-1\mid\varphi(pq)=(p-1)(q-1)\), Fermat's theorem gives
+\(x^{t\varphi(N)}\equiv1\pmod p\), hence \(x^{ed}\equiv x\pmod p\).
+The same holds modulo \(q\).  The constructive CRT then combines the two
+congruences into one modulo \(pq\).  The proof handles nonunits explicitly and
+uses no classical group theory.
+\end{proof}
+
+
+\section{Further finite statements from the totient reference pages}
+
+\begin{theorem}[Subbarao congruence classification]\label{thm:subbarao}
+For every prime \(p\),
+\[
+ p\sigma(p)\equiv2\pmod{\varphi(p)}.
+\]
+The only composite positive integers satisfying
+\[
+ n\sigma(n)\equiv2\pmod{\varphi(n)}
+\]
+are \(4,6,22\).
+\end{theorem}
+
+\begin{proof}
+For a prime \(p\), \(\sigma(p)=p+1\) and \(\varphi(p)=p-1\).  Since
+\(p\equiv1\pmod{p-1}\), one has
+\(p(p+1)\equiv1\cdot2=2\).
+
+Now let composite \(n\) satisfy the congruence.  If an odd prime square
+\(q^2\) divides \(n\), then \(q\mid\varphi(n)\) and \(q\mid n\), so the
+congruence modulo \(q\) reads \(0\equiv2\), impossible.  If \(8\mid n\),
+then \(4\mid\varphi(n)\) and \(4\mid n\sigma(n)\), again impossible.  If
+\(4\Vert n\), write \(n=4m\) with \(m\) odd.  When \(m>1\), evenness of
+\(\varphi(m)\) gives \(4\mid\varphi(4m)=2\varphi(m)\), while
+\(4\mid n\sigma(n)\), a contradiction.  Therefore this case yields only
+\(n=4\), which directly satisfies the congruence.
+
+All remaining composite candidates are squarefree.  If two distinct odd
+primes \(p,q\) divide \(n\), then \((p-1)(q-1)\mid\varphi(n)\), so
+\(4\mid\varphi(n)\); also \((p+1)(q+1)\mid\sigma(n)\), so
+\(4\mid n\sigma(n)\).  This again contradicts a residue of two modulo four.
+Thus a composite candidate must be \(n=2p\) for one odd prime \(p\).  Here
+\[
+ \varphi(2p)=p-1,
+ \qquad
+ \sigma(2p)=3(p+1),
+\]
+so modulo \(p-1\),
+\[
+ n\sigma(n)=6p(p+1)\equiv12.
+\]
+The required congruence is equivalent to \(p-1\mid10\).  Since \(p\) is an
+odd prime, this gives \(p=3\) or \(p=11\), hence \(n=6\) or \(22\).  Direct
+calculation verifies both.  Every step is a factorization case distinction
+on bounded data and therefore formalizable in \(\ipra\).
+\end{proof}
+
+\begin{theorem}[The \(a^n+b^n\) totient congruence]\label{thm:plus-power}
+For distinct positive integers \(a,b\) and every \(n\ge1\),
+\[
+ \boxed{n\mid\varphi(a^n+b^n).}
+\]
+In fact, after dividing \(a,b\) by their gcd, the unit constructed below has
+order \(n\) when \(n\) is odd and order \(2n\) when \(n\) is even.
+\end{theorem}
+
+\begin{proof}
+Let \(g=\gcd(a,b)\), \(A=a/g\), \(B=b/g\), and
+\(C=A^n+B^n\).  Then \(\gcd(A,B)=1\), \(A\ne B\), and
+\(C\mid a^n+b^n=g^nC\).  By Theorem~\ref{thm:phi-divides}, it is enough to
+show \(n\mid\varphi(C)\).  Since
+\(\gcd(B,C)=\gcd(B,A^n)=1\), a Bezout inverse \(B^{-1}\pmod C\) is
+primitive-recursively available.
+
+Suppose first that \(n\) is odd and put
+\(u\equiv-A B^{-1}\pmod C\).  The relation
+\(A^n\equiv-B^n\pmod C\) gives \(u^n\equiv1\).  If
+\(0<k<n\) and \(u^k\equiv1\), then, after multiplying by \(B^k\), either
+\(C\mid A^k-B^k\) or \(C\mid A^k+B^k\), according to the parity of \(k\).
+The relevant nonzero absolute value is strictly smaller than
+\(A^n+B^n=C\), impossible.  Hence \(u\) has order exactly \(n\).
+
+If \(n\) is even, put \(u\equiv A B^{-1}\pmod C\).  Then
+\(u^n\equiv-1\) and \(u^{2n}\equiv1\).  No exponent
+\(0<k<n\) can give one, because that would make \(C\) divide the nonzero
+number \(A^k-B^k\) of smaller absolute value.  At \(k=n\) the value is
+minus one; note that \(C\ge5\).  If \(n<k<2n\), write \(k=n+r\) with
+\(0<r<n\); then \(u^k=1\) would imply \(u^r=-1\), so
+\(C\mid A^r+B^r\), again impossible by size.  Thus the order is exactly
+\(2n\).
+
+In either case, the order divides \(\varphi(C)\) by
+Corollary~\ref{cor:order-divides}; hence \(n\mid\varphi(C)\), and
+\(\varphi(C)\mid\varphi(a^n+b^n)\) completes the proof.  The argument is
+entirely finite and avoids using Zsigmondy's theorem as a black box.
+\end{proof}
+
+\begin{proposition}[Goldbach implication]\label{prop:goldbach-phi}
+Assume the strong Goldbach statement that every even integer at least four is
+a sum of two primes.  Then for every positive \(m\) there are primes \(p,q\)
+with
+\[
+ \varphi(p)+\varphi(q)=2m.
+\]
+\end{proposition}
+
+\begin{proof}
+Apply Goldbach to \(2m+2\), obtaining primes \(p+q=2m+2\).  Then
+\(\varphi(p)+\varphi(q)=(p-1)+(q-1)=2m\).  This is a constructive implication:
+a witness-producing Goldbach procedure immediately produces the totient
+witnesses.  It does not prove Goldbach itself.
+\end{proof}
+
+The congruence \(n-1\equiv0\pmod{\varphi(n)}\) is automatic for primes, but no
+composite solution is known; this is Lehmer's totient problem and remains
+status \StatusO.  Equal-totient examples, the unique reported triple below
+\(10^{10}\), arithmetic progressions of equal totients, and examples of
+\(\varphi(\sigma(n))=n\) are finite calculations.  They are reproduced by the
+archive's exact-integer checker rather than promoted to universal theorems.
+
+\section{Cyclotomic and generating-function identities}
+
+\begin{theorem}[Cyclotomic polynomial congruence]\label{thm:cyclotomic-gcd-sum}
+Define
+\[
+ P_n(X)=\sum_{k=1}^{n}\gcd(k,n)X^k\in\Z[X].
+\]
+For \(n\ge1\),
+\[
+ \boxed{P_n(X)\equiv\varphi(n)\pmod{\Phi_n(X)}.}
+\]
+Consequently, for every primitive \(n\)-th root of unity \(\zeta\),
+\[
+ \sum_{k=1}^{n}\gcd(k,n)\zeta^k=\varphi(n),
+\]
+and taking real parts yields the cosine identity on the reference page.
+\end{theorem}
+
+\begin{proof}
+In the quotient ring \(\Z[X]/(\Phi_n)\), let \(z\) be the class of \(X\).
+It satisfies \(z^n=1\), and for every proper divisor \(d<n\) of \(n\),
+\(z^d\ne1\) in the universal cyclotomic extension.  Use the divisor-sum
+identity on each coefficient:
+\[
+ \gcd(k,n)=\sum_{d\mid\gcd(k,n)}\varphi(d).
+\]
+Then
+\[
+ P_n(z)=\sum_{d\mid n}\varphi(d)
+          \sum_{1\le j\le n/d}z^{dj}.
+\]
+For \(d<n\), write \(m=n/d>1\).  The inner polynomial is
+\[
+ X^d+X^{2d}+\cdots+X^{md}
+ =X^d\frac{X^n-1}{X^d-1}.
+\]
+Because \(d\mid n\) is proper, the cyclotomic factor \(\Phi_n(X)\) occurs in
+\((X^n-1)/(X^d-1)\), so this entire inner polynomial is zero modulo
+\(\Phi_n\).  For \(d=n\), the inner polynomial is \(X^n\), congruent to one
+modulo \(\Phi_n\).  Thus only \(\varphi(n)\) remains.
+
+For a literal \(\ipra\) formulation, compute \(\Phi_n\) by the finite recursion
+\(X^n-1=\prod_{d\mid n}\Phi_d(X)\), perform signed polynomial remainder by
+bounded coefficient arrays, and assert that the remainder of
+\(P_n-\varphi(n)\) is zero.  Each degree is at most \(n\), so all loops are
+bounded and primitive recursive.  Evaluation at a complex root is the
+external algebraic corollary.
+\end{proof}
+
+\begin{theorem}[Lambert-series coefficient identity]\label{thm:lambert}
+As a formal power-series identity,
+\[
+ \boxed{\displaystyle
+ \sum_{n\ge1}\frac{\varphi(n)q^n}{1-q^n}=\frac q{(1-q)^2}.}
+\]
+Precisely, for every \(m\ge1\), the coefficient of \(q^m\) on each side is
+\(m\), and this coefficient equality is a theorem of \(\ipra\).
+\end{theorem}
+
+\begin{proof}
+The coefficient of \(q^m\) in
+\(q^n/(1-q^n)=q^n+q^{2n}+\cdots\) is one exactly when \(n\mid m\).  Therefore
+the left coefficient is \(\sum_{n\mid m}\varphi(n)=m\).  The formal identity
+\(q/(1-q)^2=\sum_{m\ge1}mq^m\) follows by a finite induction on coefficients,
+or from the product of the two finite geometric truncations with a remainder
+above degree \(m\).  Each fixed coefficient depends on only finitely many
+terms.
+\end{proof}
+
+\begin{theorem}[Formal Dirichlet-series identity]\label{thm:phi-dirichlet}
+Let \(\mathbf{id}(n)=n\), let \(\mathbf{1}(n)=1\), and use finite Dirichlet
+convolution
+\((f*g)(n)=\sum_{d\mid n}f(d)g(n/d)\).  Then
+\[
+ \boxed{\varphi=\mathbf{id}*\mu,\qquad
+        \varphi*\mathbf{1}=\mathbf{id}.}
+\]
+The analytic notation
+\[
+ \sum_{n\ge1}\frac{\varphi(n)}{n^s}
+ =\frac{\zeta(s-1)}{\zeta(s)}
+\]
+is the convergent-series interpretation of this exact coefficient theorem.
+\end{theorem}
+
+\begin{proof}
+The first equality is Corollary~\ref{cor:phi-mobius}; the second is
+Theorem~\ref{thm:sum-phi}.  Associativity and commutativity of convolution are
+proved by reindexing a finite divisor triangle.  Since
+\(\mu*\mathbf1=\varepsilon\), the identities are equivalent.  No convergence
+claim is part of the \(\ipra\) theorem.
+\end{proof}
+
+\section{Elementary bounds and extremal witness forms}
+
+\begin{theorem}[Elementary lower bound]\label{thm:phi-lower}
+For every positive \(n\),
+\[
+ \boxed{2\varphi(n)^2\ge n.}
+\]
+Moreover,
+\[
+ \varphi(n)^2\ge n
+ \quad\text{for every }n\notin\{2,6\}.
+\]
+The square-root statements on the reference pages follow externally because
+all quantities are nonnegative.
+\end{theorem}
+
+\begin{proof}
+From the prime-power formula,
+\[
+ \frac{\varphi(p^a)^2}{p^a}=p^{a-2}(p-1)^2.
+\]
+For \(p=2\), this is \(2^{a-2}\), at least \(1/2\).  For every odd prime,
+it is at least \((p-1)^2/p>1\).  Multiplying local inequalities proves
+\(\varphi(n)^2/n\ge1/2\).
+
+For the sharper assertion, a local ratio below one can occur only at the
+factor \(2^1\), whose ratio is \(1/2\).  If an odd prime \(p\ge5\) occurs, its
+local ratio is at least \(16/5>2\), overcoming that loss.  If a power
+\(3^a\) occurs, its local ratio is \(4/3\) for \(a=1\) and at least \(4\)
+for \(a\ge2\).  Thus the only products below one are \(n=2\) and
+\(n=2\cdot3=6\); the boundary case \(n=4\) has ratio one.  These comparisons
+are integer cross multiplications.
+\end{proof}
+
+\begin{theorem}[Composite upper bound]\label{thm:phi-upper-composite}
+If \(n>1\) is composite, then
+\[
+ \boxed{\varphi(n)\le n-\lceil\sqrt n\rceil}.
+\]
+Equivalently, if \(r\) is the least positive integer satisfying \(n\le r^2\),
+then \(\varphi(n)\le n-r\).  In particular, for \(n>1\),
+\(\varphi(n)\le n-1\), with equality exactly when \(n\) is prime.
+\end{theorem}
+
+\begin{proof}
+Let \(p\) be the least prime divisor of composite \(n\).  Then
+\(p\le\sqrt n\), for otherwise the complementary factor \(n/p\) would be a
+smaller divisor greater than one.  At least the \(n/p\) multiples of \(p\)
+below \(n\) are excluded from the totatives, so
+\(\varphi(n)\le n-n/p\le n-\sqrt n\).  Replace square roots by the displayed
+integer bound.  For a prime, Theorem~\ref{thm:phi-prime-power} gives equality
+\(n-1\); for a composite, the stronger bound is strict below \(n-1\).
+\end{proof}
+
+\begin{theorem}[Totient-sigma product]\label{thm:phi-sigma}
+Let \(\sigma(n)=\sum_{d\mid n}d\).  For \(n>1\),
+\[
+ \boxed{\displaystyle
+ \frac{\varphi(n)\sigma(n)}{n^2}
+ =\prod_{p^a\Vert n}\left(1-\frac1{p^{a+1}}\right),
+ \qquad
+ \frac12<\frac{\varphi(n)\sigma(n)}{n^2}<1.}
+\]
+Both inequalities have denominator-cleared \(\ipra\) forms.
+\end{theorem}
+
+\begin{proof}
+For a prime power,
+\(
+ \sigma(p^a)=(p^{a+1}-1)/(p-1)
+\), so multiplication by
+\(\varphi(p^a)=p^{a-1}(p-1)\) and division by \(p^{2a}\) gives the local
+factor.  Multiplicativity gives the product.  Every local factor is below one.
+For the lower bound,
+\[
+ \prod_{p^a\Vert n}\left(1-p^{-a-1}\right)
+ \ge\prod_{p\mid n}(1-p^{-2})
+ \ge\prod_{m=2}^{n}(1-m^{-2}).
+\]
+The last finite product telescopes:
+\[
+ \prod_{m=2}^{n}\frac{(m-1)(m+1)}{m^2}
+ =\frac{n+1}{2n}>\frac12.
+\]
+The telescoping product is already strictly greater than one half, so no
+strictness is needed in the preceding subset comparison.  All displayed
+rational inequalities are cross-multiplied finite products.
+\end{proof}
+
+The sharper classical constant \(6/\pi^2\) follows by identifying the infinite
+Euler product \(\prod_p(1-p^{-2})\).  The present theorem records the exact
+finite identity and a uniform rational constant provable in native \(\ipra\);
+the \(6/\pi^2\) refinement is status \StatusA because it requires a separate
+constructive development of \(\pi\), the Basel sum, and an infinite-product
+limit.
+
+\begin{theorem}[Finite limsup witnesses]\label{thm:limsup-phi}
+For every \(K\ge2\), one can primitive-recursively find \(n>K\) such that
+\[
+ K\varphi(n)\ge(K-1)n.
+\]
+Thus the usual statement \(\limsup_{n\to\infty}\varphi(n)/n=1\) has an exact
+finite witness form in \(\ipra\).
+\end{theorem}
+
+\begin{proof}
+Euclid's proof is an explicit bounded construction: take a prime divisor
+\(p\) of \(K!+1\).  Then \(p>K\).  Set \(n=p\).  Since
+\(\varphi(p)=p-1\),
+\[
+ K\varphi(p)=K(p-1)=(K-1)p+(p-K)\ge(K-1)p.
+\]
+A least prime divisor is obtained by bounded search.
+\end{proof}
+
+\begin{theorem}[Finite liminf witnesses]\label{thm:liminf-phi}
+For every \(K\ge1\), there is a primitive-recursively specified positive
+integer \(n\) such that
+\[
+ K\varphi(n)<n.
+\]
+Hence the finite content of
+\(\liminf_{n\to\infty}\varphi(n)/n=0\) is provable in \(\ipra\).
+\end{theorem}
+
+\begin{proof}
+Let \(n\) be the product of all primes at most a bound \(B\).  Then
+\[
+ \frac n{\varphi(n)}=\prod_{p\le B}\frac p{p-1}.
+\]
+The finite Euler-product argument used in the constructive proof of divergence
+of reciprocal primes shows, with an explicit primitive-recursive witness
+\(B=B(K)\), that this product exceeds \(K\).  One elementary choice follows
+from harmonic domination:
+\[
+ H_B\le\prod_{p\le B}\frac p{p-1},
+\]
+and a power-of-two block proof gives \(H_{2^{2K}}>K\).  Both inequalities are
+finite, denominator-cleared statements.  Taking the primorial up to
+\(B=2^{2K}\) therefore gives \(n/\varphi(n)>K\), which is the desired
+cross-multiplied inequality.  The factorization injection and finite Euler
+product are developed in the companion ProveIt prime-reciprocal package and
+can be reused verbatim.
+\end{proof}
+
+\section{Nontotients and finite classification results}
+
+\begin{theorem}[Odd nontotients]\label{thm:odd-nontotient}
+No odd integer greater than one is a value of \(\varphi\).
+\end{theorem}
+
+\begin{proof}
+The values at one and two are one.  For every input greater than two,
+Theorem~\ref{thm:phi-even} says the value is even.  Hence an odd value greater
+than one never occurs.
+\end{proof}
+
+\begin{theorem}[Solutions of \(\varphi(n)=2\)]\label{thm:phi-two}
+\[
+ \boxed{\varphi(n)=2\quad\Longleftrightarrow\quad n\in\{3,4,6\}.}
+\]
+\end{theorem}
+
+\begin{proof}
+Suppose \(\varphi(n)=2\).  Any odd prime divisor \(p\) contributes the factor
+\(p-1\), so \(p-1\mid2\), forcing \(p=3\).  Its exponent can only be one,
+because \(\varphi(3^a)=2\cdot3^{a-1}\).  The power of two dividing \(n\)
+can have exponent at most two; its local factor is \(2^{b-1}\) for \(b\ge1\).
+If no odd prime occurs, equality forces \(b=2\), giving \(n=4\).  If the
+factor three occurs, the two-local factor must be one, so \(b=0\) or \(1\),
+giving \(3\) or \(6\).  Direct calculation verifies all three.
+\end{proof}
+
+\begin{proposition}[Arithmetic part of the constructible prime-power criterion]
+Let \(p\) be an odd prime and \(a\ge1\).  If \(\varphi(p^a)\) is a power of
+two, then \(a=1\) and \(p-1\) is a power of two.
+\end{proposition}
+
+\begin{proof}
+The factorization
+\(\varphi(p^a)=p^{a-1}(p-1)\) contains an odd factor \(p^{a-1}\).  A power
+of two has no odd factor greater than one, so \(a-1=0\).  The remaining factor
+is \(p-1\), which must itself be a power of two.  The further conclusion that
+such a prime is a Fermat prime uses the elementary factorization of
+\(2^m+1\) when \(m\) has an odd divisor and is likewise formalizable in
+\(\ipra\).
+\end{proof}
+
+Carmichael's conjecture that no totient value occurs exactly once is not proved
+here and remains status \StatusO.  The finite checker in the archive verifies
+many equal-totient examples from the reference pages but, correctly, makes no
+claim about the conjecture.
+
+\section{The weighted von Mangoldt function}
+
+\begin{definition}[Prime-power recognizer]\label{def:primepow}
+For \(n\ge2\), define \(\operatorname{ppBase}(n)\) to be the least prime
+\(p\le n\) for which there is an exponent \(1\le a\le n\) with \(p^a=n\),
+and return zero if no such pair exists.  Define
+\(\operatorname{ppExp}(n)\) as the least such exponent for the selected base.
+Both are primitive recursive bounded searches.
+\end{definition}
+
+Uniqueness follows from valuations: if \(p^a=q^b>1\) with primes \(p,q\),
+then applying \(v_p\) shows \(p=q\), and then strict monotonicity of powers
+shows \(a=b\).
+
+\begin{definition}[Weighted von Mangoldt function]\label{def:weighted-lambda}
+For a primitive-recursive prime weight \(w\), put
+\[
+ \Lambda_w(n)=\begin{cases}
+ w(p),&n=p^a\text{ for a prime }p\text{ and }a\ge1,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+Thus \(\Lambda_w(1)=0\).  The classical function is the specialization
+\(w(p)=\log p\).
+\end{definition}
+
+For example, the support begins at
+\(2,3,4,5,7,8,9,11,13,16,17,19,23,25,27,\ldots\), and the value at every
+power of the same prime is the same weight.  The function is neither
+multiplicative nor additive: for distinct primes \(p,q\) with nonzero weights,
+\(\Lambda_w(pq)=0\), while both \(\Lambda_w(p)\) and
+\(\Lambda_w(q)\) are nonzero.
+
+\section{Mangoldt divisor sums and M\"obius identities}
+
+\begin{theorem}[Fundamental divisor sum]\label{thm:lambda-divsum}
+For every positive \(n\),
+\[
+ \boxed{\displaystyle
+ L_w(n)=\sum_{d\mid n}\Lambda_w(d).}
+\]
+For \(w(p)=\log p\), this is
+\(\sum_{d\mid n}\Lambda(d)=\log n\).
+\end{theorem}
+
+\begin{proof}
+Write \(n=\prod_pp^{a_p}\).  The divisors on which \(\Lambda_w\) is nonzero
+are exactly \(p,p^2,\ldots,p^{a_p}\) for the primes dividing \(n\).  Each of
+those \(a_p\) terms contributes \(w(p)\).  Therefore the divisor sum is
+\(\sum_p a_pw(p)=L_w(n)\).  This is a finite reindexing of the computed factor
+vector.
+\end{proof}
+
+\begin{theorem}[M\"obius forms of Mangoldt]\label{thm:lambda-mobius}
+For \(n>0\),
+\[
+ \boxed{\displaystyle
+ \Lambda_w(n)=\sum_{d\mid n}\mu(d)L_w(n/d)
+ =\sum_{d\mid n}\mu(n/d)L_w(d).}
+\]
+For \(n>1\), also
+\[
+ \boxed{\displaystyle
+ \Lambda_w(n)=-\sum_{d\mid n}\mu(d)L_w(d).}
+\]
+\end{theorem}
+
+\begin{proof}
+The first equality is M\"obius inversion applied to
+Theorem~\ref{thm:lambda-divsum}.  The second is the divisor substitution
+\(d\leftrightarrow n/d\).  For the third, complete additivity gives
+\(L_w(n/d)=L_w(n)-L_w(d)\) in signed arithmetic.  Hence
+\[
+ \Lambda_w(n)
+ =L_w(n)\sum_{d\mid n}\mu(d)-\sum_{d\mid n}\mu(d)L_w(d).
+\]
+For \(n>1\), the first sum is zero by Lemma~\ref{lem:mobius-cancel}.
+\end{proof}
+
+\begin{theorem}[M\"obius--Mangoldt convolution]\label{thm:mu-lambda}
+For positive \(n\),
+\[
+ \boxed{\displaystyle
+ \sum_{d\mid n}\mu(n/d)\Lambda_w(d)=-\mu(n)L_w(n).}
+\]
+\end{theorem}
+
+\begin{proof}
+It suffices to inspect the prime factorization.
+If \(n\) contains at least two distinct primes and is not squarefree, both
+sides are zero after cancellation; the finite proof below treats all cases
+uniformly.  Substitute the first formula of
+Theorem~\ref{thm:lambda-mobius}:
+\[
+ \sum_{d\mid n}\mu(n/d)\sum_{e\mid d}\mu(e)L_w(d/e).
+\]
+Reindex by \(d=er\) and use finite convolution associativity.  In convolution
+notation the left side is \(\mu*\Lambda_w=\mu*(\mu*L_w)\).  A direct local
+calculation on \(p^a\) shows that the convolution is zero unless \(n\) is
+squarefree; for squarefree \(n=p_1\cdots p_r\), only divisors \(d=p_i\)
+contribute to \(\Lambda_w(d)\), and
+\[
+ \sum_i\mu(n/p_i)w(p_i)=(-1)^{r-1}\sum_iw(p_i)
+ =-\mu(n)L_w(n).
+\]
+The nonsquarefree case is similarly paired by toggling one repeated-prime
+factor.  This pairing is a bounded bit-vector involution and formalizes by
+quantifier-free induction on the prime list.
+\end{proof}
+
+The three theorems above contain the standard formulas displayed by both
+Mangoldt reference pages.  They are exact \(\ipra\) theorems for every
+primitive-recursive weight, not merely identities of real-valued functions.
+
+\section{Least common multiples and the Chebyshev function}
+
+\begin{definition}
+Let
+\[
+ \lcmu(N)=\operatorname{lcm}(1,2,\ldots,N),
+ \qquad \lcmu(0)=1.
+\]
+This is a primitive-recursive bounded fold using
+\(\operatorname{lcm}(a,b)=ab/\gcd(a,b)\), with exact division.
+\end{definition}
+
+\begin{lemma}[Valuation of the initial lcm]\label{lem:lcm-valuation}
+For prime \(p\),
+\[
+ v_p(\lcmu(N))=\max\{a:p^a\le N\}.
+\]
+\end{lemma}
+
+\begin{proof}
+The valuation of an lcm is the maximum of the valuations.  Among
+\(1,\ldots,N\), an exponent at least \(a\) occurs exactly when \(p^a\le N\).
+Both maxima are bounded by \(N\), and the equality follows by induction over
+the lcm fold.
+\end{proof}
+
+\begin{theorem}[Lcm quotient]\label{thm:lcm-quotient}
+For \(N\ge1\),
+\[
+ \frac{\lcmu(N)}{\lcmu(N-1)}=
+ \begin{cases}
+ p,&N=p^a\text{ for a prime }p,\ a\ge1,\\
+ 1,&\text{otherwise}.
+ \end{cases}
+\]
+The quotient is exact.  Consequently
+\[
+ L_w(\lcmu(N))-L_w(\lcmu(N-1))=\Lambda_w(N).
+\]
+For logarithmic weight this is the MathWorld formula
+\(e^{\Lambda(N)}=\lcmu(N)/\lcmu(N-1)\).
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:lcm-valuation}, moving from \(N-1\) to \(N\) increases a
+prime valuation exactly when \(N\) itself is a new power \(p^a\); then it
+increases that single valuation by one.  Two different prime-power
+representations are impossible.  Thus the quotient is either one or the
+corresponding prime.  Complete additivity of \(L_w\) gives the difference
+formula.
+\end{proof}
+
+\begin{definition}[Weighted Chebyshev sum]
+\[
+ \Psi_w(N)=\sum_{1\le n\le N}\Lambda_w(n).
+\]
+\end{definition}
+
+\begin{theorem}[Chebyshev-lcm identity]\label{thm:psi-lcm}
+For every \(N\),
+\[
+ \boxed{\displaystyle
+ \Psi_w(N)=\sum_{p^a\le N}w(p)=L_w(\lcmu(N)).}
+\]
+For \(w(p)=\log p\), this is
+\(\psi(N)=\log(\operatorname{lcm}(1,\ldots,N))\).
+\end{theorem}
+
+\begin{proof}
+The first equality merely expands the support of \(\Lambda_w\).  Summing the
+successive-difference identity of Theorem~\ref{thm:lcm-quotient} telescopes:
+\[
+ \sum_{n=1}^{N}\Lambda_w(n)
+ =L_w(\lcmu(N))-L_w(\lcmu(0))=L_w(\lcmu(N)),
+\]
+because \(\lcmu(0)=1\) and \(L_w(1)=0\).  Telescoping is a primitive
+recursion identity.
+\end{proof}
+
+\section{Formal Dirichlet series and logarithmic differentiation}
+
+\begin{definition}[Finite Dirichlet convolution]
+For arithmetic functions with values in a commutative ring encoded in
+naturals or signed pairs, define
+\[
+ (f*g)(n)=\sum_{d\mid n}f(d)g(n/d).
+\]
+Let \(\mathbf1(n)=1\), \(\varepsilon(1)=1\) and
+\(\varepsilon(n)=0\) for \(n>1\).
+\end{definition}
+
+Finite divisor-triple reindexing proves associativity; divisor substitution
+proves commutativity; and \(\varepsilon\) is the identity.  Lemma
+\ref{lem:mobius-cancel} is exactly \(\mu*\mathbf1=\varepsilon\).
+
+\begin{definition}[Weighted derivation]
+For an arithmetic function \(f\), define
+\[
+ (D_wf)(n)=L_w(n)f(n).
+\]
+\end{definition}
+
+\begin{theorem}[Leibniz rule]\label{thm:dirichlet-leibniz}
+\[
+ \boxed{D_w(f*g)=(D_wf)*g+f*(D_wg).}
+\]
+\end{theorem}
+
+\begin{proof}
+For each divisor \(d\mid n\), complete additivity gives
+\(L_w(n)=L_w(d)+L_w(n/d)\).  Multiply this equality by
+\(f(d)g(n/d)\), sum over divisors, and distribute the finite sum.  The two
+resulting sums are precisely the two convolutions on the right.
+\end{proof}
+
+\begin{theorem}[Formal logarithmic derivative of zeta]\label{thm:zeta-logder}
+In coefficient form,
+\[
+ \boxed{\Lambda_w=\mu*L_w.}
+\]
+Equivalently, the formal Dirichlet series of \(\Lambda_w\) is the weighted
+logarithmic derivative of the formal zeta series.  For
+\(w(p)=\log p\), analytic interpretation in a convergent half-plane gives
+\[
+ -\frac{\zeta'(s)}{\zeta(s)}
+ =\sum_{n\ge1}\frac{\Lambda(n)}{n^s}.
+\]
+\end{theorem}
+
+\begin{proof}
+The coefficient equality is Theorem~\ref{thm:lambda-mobius}.  To see the
+logarithmic-derivative language, the zeta coefficient function is
+\(\mathbf1\), whose convolution inverse is \(\mu\).  Under the logarithmic
+specialization, differentiating \(n^{-s}\) contributes
+\(-\log(n)n^{-s}\), so the coefficient function of \(-\zeta'\) is \(L\).
+Multiplication by \(1/\zeta\) corresponds to convolution with \(\mu\), giving
+\(\mu*L=\Lambda\).  The last sentence is external analytic semantics; the
+coefficient identity itself is finite and exact.
+\end{proof}
+
+\begin{theorem}[Prime-power coefficients of \(\log\zeta\)]\label{thm:log-zeta-coeff}
+There is a rational-coded arithmetic function \(H\) given by
+\[
+ H(n)=\begin{cases}1/a,&n=p^a\text{ with }p\text{ prime},\\0,&\text{otherwise},\end{cases}
+\]
+such that \(D_wH=\Lambda_w\).  It is the coefficient function of the formal
+Dirichlet logarithm of zeta:
+\[
+ \log\zeta(s)=\sum_p\sum_{a\ge1}\frac1{a p^{as}}.
+\]
+\end{theorem}
+
+\begin{proof}
+If \(n=p^a\), then \(L_w(n)=aw(p)\), so
+\((D_wH)(n)=aw(p)\cdot(1/a)=w(p)=\Lambda_w(n)\); otherwise both sides are
+zero.  For a fixed coefficient index \(n\), only exponents
+\(a\le\lfloor\log_2 n\rfloor\) can contribute, so the formal logarithm is a
+finite rational calculation at that coefficient.  One may derive it from the
+finite Euler product over primes \(p\le n\) and the finite truncation
+\(-\log(1-X)=\sum_{a=1}^{A}X^a/a+X^{A+1}R_A(X)\), whose remainder has degree
+above the target coefficient.  This is status \StatusF.
+\end{proof}
+
+\begin{theorem}[Completely multiplicative twist]\label{thm:twist}
+If \(f(mn)=f(m)f(n)\) and \(f(1)=1\), then the weighted logarithmic derivative
+of the Euler product for \(f\) has coefficient
+\[
+ \boxed{f(n)\Lambda_w(n).}
+\]
+\end{theorem}
+
+\begin{proof}
+At a prime power \(p^a\), complete multiplicativity gives
+\(f(p^a)=f(p)^a\), while formal differentiation of the local geometric factor
+selects the coefficient \(w(p)f(p)^a\).  Non-prime-powers cancel under the
+formal logarithm.  Equivalently, apply Theorem~\ref{thm:dirichlet-leibniz} to
+the convolution inverse of the corresponding coefficient function.  Every
+coefficient calculation is over divisors of a fixed \(n\).
+\end{proof}
+
+\section{Finite Abel summation and elementary Chebyshev bounds}
+
+\begin{theorem}[Finite Abel summation]\label{thm:abel}
+Let \(a(1),\ldots,a(N)\) and \(b(1),\ldots,b(N)\) be coded integer or rational
+sequences, and put \(A(t)=\sum_{n\le t}a(n)\).  Then
+\[
+ \boxed{\displaystyle
+ \sum_{n=1}^{N}a(n)b(n)
+ =A(N)b(N)+\sum_{n=1}^{N-1}A(n)(b(n)-b(n+1)).}
+\]
+\end{theorem}
+
+\begin{proof}
+Replace \(a(n)\) by \(A(n)-A(n-1)\), distribute the finite sum, shift the
+index in the second term, and cancel adjacent terms.  This is a telescoping
+identity provable by induction on \(N\).  It is the exact finite core of
+partial summation/Mellin-transform arguments involving \(\Lambda\).
+\end{proof}
+
+The next theorem records integer inequalities first.  Their logarithmic forms
+are obtained with certified rational log bounds.
+
+\begin{theorem}[Central-binomial lcm bounds]\label{thm:binomial-lcm}
+For every \(n\ge1\),
+\[
+ \prod_{\substack{n<p^a\le2n\\p\text{ prime}}}p
+ \ \bigm|\ \binom{2n}{n}
+ \ \bigm|\ \lcmu(2n).
+\]
+Moreover,
+\[
+ \frac{4^n}{2n+1}\le \binom{2n}{n}\le4^n.
+\]
+All four statements are literal \(\ipra\) theorems.
+\end{theorem}
+
+\begin{proof}
+Legendre's finite valuation formula gives
+\[
+ v_p\!\binom{2n}{n}
+ =\sum_{j\ge1}
+ \left(\left\lfloor\frac{2n}{p^j}\right\rfloor
+      -2\left\lfloor\frac n{p^j}\right\rfloor\right),
+\]
+where the sum stops when \(p^j>2n\).  Each summand is zero or one.  If
+\(n<p^a\le2n\), the summand at \(j=a\) is one, proving the left divisibility.
+The total valuation is at most the number of powers \(p^j\le2n\), which is
+\(v_p(\lcmu(2n))\), proving the right divisibility.
+
+The upper bound follows because \(\binom{2n}{n}\) is one term in
+\((1+1)^{2n}=4^n\).  There are \(2n+1\) binomial coefficients whose sum is
+\(4^n\), and the central one is maximal: the ratio of successive coefficients
+is \((2n-k)/(k+1)\), at least one up to the center and at most one afterward.
+Thus the maximum is at least the average, giving the lower bound.  Factorials,
+valuations, and binomial coefficients are primitive recursive, and all
+arguments are bounded inductions.
+\end{proof}
+
+\begin{corollary}[Explicit Chebyshev bounds]\label{cor:chebyshev-bounds}
+Under the logarithmic specialization,
+\[
+ \psi(2n)-\psi(n)\le2n\log2,
+\]
+and for every integer \(x\ge6\),
+\[
+ \boxed{\frac{\log2}{3}x\le\psi(x)\le4(\log2)x.}
+\]
+The native \(\ipra\) content is the integer divisibility and power inequalities
+of Theorem~\ref{thm:binomial-lcm}; rational approximations to \(\log2\) give
+uniform finite certificates for the displayed real inequalities.
+\end{corollary}
+
+\begin{proof}
+The left divisibility and \(\binom{2n}{n}\le4^n\) give
+\(
+ \psi(2n)-\psi(n)\le\log\binom{2n}{n}\le2n\log2.
+\)
+Choose \(m\) with \(2^{m-1}<x\le2^m\).  Monotonicity and dyadic telescoping
+give
+\[
+ \psi(x)\le\psi(2^m)
+ =\sum_{j=0}^{m-1}\bigl(\psi(2^{j+1})-\psi(2^j)\bigr)
+ \le\sum_{j=0}^{m-1}2^{j+1}\log2
+ <2^{m+1}\log2<4x\log2.
+\]
+For the lower bound, the right divisibility gives
+\(\psi(2n)\ge\log\binom{2n}{n}\).  If \(n\ge3\), then
+\(2n+1\le2^n\), so the binomial lower bound yields
+\(\psi(2n)\ge n\log2\).  For \(x\ge6\), take
+\(n=\lfloor x/2\rfloor\); then \(n\ge3\), \(2n\le x\), and
+\(n\ge x/3\).  Monotonicity completes the proof.
+\end{proof}
+
+\section{The harmonic Mangoldt sum}
+
+\begin{definition}
+For logarithmic weight, let
+\[
+ A(N)=\sum_{n=1}^{N}\frac{\Lambda(n)}n.
+\]
+Internally, choose the common denominator \(N!\) and logarithm intervals; the
+claim below is represented by inequalities between integer numerators.
+\end{definition}
+
+\begin{theorem}[Exact factorial identity]\label{thm:factorial-lambda}
+For every \(N\ge1\),
+\[
+ \boxed{\displaystyle
+ \log(N!)=\sum_{d=1}^{N}\Lambda(d)\left\lfloor\frac Nd\right\rfloor.}
+\]
+More generally, for every weight \(w\),
+\[
+ L_w(N!)=\sum_{d=1}^{N}\Lambda_w(d)\left\lfloor\frac Nd\right\rfloor.
+\]
+The weighted identity is literal status \StatusI.
+\end{theorem}
+
+\begin{proof}
+Sum Theorem~\ref{thm:lambda-divsum} over \(m=1,\ldots,N\):
+\[
+ \sum_{m\le N}L_w(m)
+ =\sum_{m\le N}\sum_{d\mid m}\Lambda_w(d)
+ =\sum_{d\le N}\Lambda_w(d)\#\{m\le N:d\mid m\}.
+\]
+The count is \(\lfloor N/d\rfloor\).  Complete additivity makes the left side
+\(L_w(N!)\).  All sums are finite.
+\end{proof}
+
+\begin{theorem}[Explicit \(\log N+O(1)\) bound]\label{thm:harmonic-lambda}
+For every \(N\ge2\),
+\[
+ \boxed{\log N-2\log2\le
+ \sum_{n\le N}\frac{\Lambda(n)}n
+ \le\log N+4\log2.}
+\]
+Thus the reference-page assertion
+\(\sum_{n\le x}\Lambda(n)/n=\log x+O(1)\) has a uniform finite constructive
+proof with an explicit constant.
+\end{theorem}
+
+\begin{proof}
+Since \(\lfloor N/d\rfloor\le N/d\),
+Theorem~\ref{thm:factorial-lambda} gives
+\[
+ \frac{\log(N!)}N\le A(N).
+\]
+Also \(N/d<\lfloor N/d\rfloor+1\), so
+\[
+ A(N)<\frac{\log(N!)+\psi(N)}N.
+\]
+The elementary upper bound \(N!\le N^N\) gives
+\(\log(N!)/N\le\log N\), and
+The upper-bound half of Corollary~\ref{cor:chebyshev-bounds} is valid for every positive integer \(N\) by the same dyadic argument (and the finitely many values below six can also be checked directly), so
+\(\psi(N)/N\le4\log2\).
+
+For the lower factorial estimate, for each \(1\le k\le N\), let \(c(k)\) be
+the least \(j\) such that \(N\le2^jk\).  Then
+\(k\ge N/2^{c(k)}\), hence
+\[
+ \log k\ge\log N-c(k)\log2.
+\]
+For each \(j\ge1\), the number of \(k\) with \(c(k)\ge j\) is at most
+\(\lfloor N/2^{j-1}\rfloor\).  Summing these finite level sets gives
+\[
+ \sum_{k=1}^{N}c(k)
+ \le\sum_{j\ge1}\left\lfloor\frac N{2^{j-1}}\right\rfloor<2N.
+\]
+Therefore
+\(
+ \log(N!)\ge N\log N-2N\log2
+\), and division by \(N\) completes the lower bound.  Internally every
+logarithm is replaced by its certified rational interval, and all divisions
+are cleared by positive denominators.
+\end{proof}
+
+\section{Generalized Mangoldt functions}
+
+One standard generalization is defined by the formal Dirichlet identity
+\[
+ \frac{(-1)^k\zeta^{(k)}(s)}{\zeta(s)}
+ =\sum_{n\ge1}\frac{\Lambda_k(n)}{n^s}.
+\]
+Its finite coefficient content can be defined without derivatives.
+
+\begin{definition}[Generalized weighted Mangoldt]
+For \(k\ge0\), define the signed/rational-coded arithmetic function
+\[
+ \Lambda_{w,k}=\mu*(L_w)^k,
+\]
+where \((L_w)^k(n)\) means the ordinary value power, not convolution power.
+For logarithmic weight this is the usual generalized Mangoldt function.
+\end{definition}
+
+\begin{theorem}
+\[
+ \Lambda_{w,0}=\varepsilon,
+ \qquad
+ \Lambda_{w,1}=\Lambda_w,
+\]
+and every value \(\Lambda_{w,k}(n)\) is obtained by a finite divisor sum
+primitive recursive in \((k,n)\) whenever coded exponentiation in the value
+ring is available.
+\end{theorem}
+
+\begin{proof}
+For \(k=0\), the function \((L_w)^0\) is \(\mathbf1\), so
+\(\mu*\mathbf1=\varepsilon\).  For \(k=1\),
+Theorem~\ref{thm:zeta-logder} gives \(\mu*L_w=\Lambda_w\).  The general value
+is by definition
+\(\sum_{d\mid n}\mu(d)L_w(n/d)^k\), a bounded sum.
+\end{proof}
+
+Further identities involving Riesz means, residues of \(\zeta'/\zeta\), sums
+over nontrivial zeta zeros, or equivalences with the Riemann hypothesis are not
+asserted as native \(\ipra\) theorems here.  Their finite approximants may be
+primitive recursive, but a proof of the claimed limiting or zero-distribution
+properties needs a substantial constructive complex-analysis development and,
+in the RH cases, would settle an open problem.
+
+\section{Lean formalization architecture}
+
+\subsection{Existing ProveIt infrastructure}
+
+The current \code{ConciseIPRA} development already supplies the pieces needed
+for an object-theory formalization:
+\begin{itemize}
+\item \code{ConciseIPRA.PR}: primitive-recursive symbols \code{PR}, terms
+\code{PTm}, the axiom theory \code{PRAAx}, and quantifier-free induction
+\code{PRA.qfInd};
+\item \code{ConciseIPRA.TeqRec}: a derived primitive-recursion operator
+\code{Tm.prc} in the scalar equational theory, with zero and successor
+recursion equations;
+\item \code{ConciseIPRA.Interpretation}: sound term interpretations and the
+preservation theorem \code{Interp.sound};
+\item \code{ConciseIPRA.BiInterpretation}: the faithful equivalences
+\code{pra\_theorem\_iff} and \code{teq\_theorem\_iff} between ordinary iPRA
+and the concise scalar theory.
+\end{itemize}
+Thus the recommended strategy is to prove the arithmetic theorems first in
+\code{PRAAx}, where every primitive-recursive helper is a symbol, and then
+transfer the closed formulas to \code{TeqAx}.  Reimplementing all arithmetic
+directly in the tiny native calculus would obscure the number theory and
+create unnecessary proof-term bulk.
+
+\subsection{Proposed modules}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.58\textwidth}@{}}
+\toprule
+Module & Main contents \\
+\midrule
+\endfirsthead
+\toprule Module & Main contents \\
+\midrule
+\endhead
+\code{IPRA/BoundedFold.lean} & PR compilers for bounded sums, products, counts, minima, list encodings, and their recursion equations.\\
+\code{IPRA/Divisibility.lean} & Total division/remainder, divisibility Boolean, gcd/lcm, Bezout trace, congruence, exact quotient.\\
+\code{IPRA/Factorization.lean} & Least factor, prime Boolean, valuation, factor trace, reconstruction, uniqueness, prime-power recognizer.\\
+\code{IPRA/Mobius.lean} & Signed-pair integers, M\"obius function, squarefree Boolean, cancellation, finite inversion.\\
+\code{IPRA/Totient/Basic.lean} & Counting definition, prime-power count, CRT bijection, multiplicativity, product formula.\\
+\code{IPRA/Totient/Divisor.lean} & Gcd fibers, divisor sum, M\"obius formula, summatory floor-square identity.\\
+\code{IPRA/Totient/Identities.lean} & Power, divisibility, general product, gcd/lcm, doubling, radical, squarefree sum.\\
+\code{IPRA/Totient/Units.lean} & Reduced residue permutation, Euler theorem, order, sum of totatives, Menon identity.\\
+\code{IPRA/Totient/Applications.lean} & RSA, \(m\mid\varphi(a^m-1)\), bounds, nontotients, finite limsup/liminf witnesses.\\
+\code{IPRA/Polynomial.lean} & Integer polynomial codes, division/remainder, cyclotomic recursion, root-of-unity congruence.\\
+\code{IPRA/FormalSeries.lean} & Coefficientwise formal power and Dirichlet series, Lambert identity, convolution algebra.\\
+\code{IPRA/Mangoldt/Basic.lean} & \(L_w\), \(\Lambda_w\), complete additivity, divisor sum, M\"obius identities.\\
+\code{IPRA/Mangoldt/Lcm.lean} & \code{lcmUpto}, valuation, lcm quotient, \(\Psi_w\), factorial identity.\\
+\code{IPRA/Mangoldt/Bounds.lean} & Binomial valuations, lcm divisibilities, dyadic bounds, denominator-cleared harmonic estimate.\\
+\code{IPRA/Transfer.lean} & Closed theorem formulas and applications of \code{pra\_theorem\_iff}.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Proof representation discipline}
+
+A useful design is to make every mathematical predicate Boolean-valued at the
+PR level.  For example,
+\[
+ \operatorname{CoprimeB}(a,n)=\ind{\gcd(a,n)=1},
+ \qquad
+ \operatorname{Phi}(n)=\operatorname{bsum}(n,\lambda a.
+ \operatorname{CoprimeB}(a,n)).
+\]
+The main theorems are then equations between PR terms.  Universal closure of
+an equation is quantifier-free, so \code{PRA.qfInd} applies directly.  A
+bounded existential such as ``there is a prime-power representation'' is not
+left as a logical quantifier; it is compiled into a search function with a
+correctness equation.
+
+For finite bijections, avoid cardinality libraries in the object theory.
+Encode a map \(f:[0,A)\to[0,B)\) and prove:
+\begin{enumerate}
+\item a bounded range equation;
+\item a Boolean injectivity equation;
+\item a bounded inverse equation.
+\end{enumerate}
+A generic PR theorem then turns these data into equality of bounded counts.
+This single lemma supports CRT multiplicativity, gcd fibers, reduced-residue
+permutations, and Menon's local count.
+
+\subsection{Illustrative Lean skeleton}
+
+The following is schematic but follows the actual names in the repository:
+
+\begin{lstlisting}
+import ConciseIPRA.BiInterpretation
+import ConciseIPRA.TeqRec
+
+namespace LeanProofs.ConciseIPRA.NumberTheory
+open LeanProofs.ConciseIPRA
+open Syn
+open scoped Fm
+
+-- Each helper is ultimately a PR symbol assembled by comp/prec.
+def phiPR : PR 1 := by
+  -- bounded sum of the coprimality characteristic
+  sorry
+
+def lambdaWPR (w : PR 1) : PR 1 := by
+  -- bounded prime-power search followed by w(base)
+  sorry
+
+-- The formula is quantifier-free: equality of two PR applications.
+def sumPhiFormula : Fm PTm 1 := by
+  -- sum_{d | n} phi(d) = n
+  sorry
+
+-- The mathematical induction is performed in PRAAx.
+theorem sumPhi_pra : ([] : List (Fm PTm 1)) |- [PRAAx] sumPhiFormula := by
+  -- factor trace + gcd-fiber partition + PRA.qfInd
+  sorry
+
+-- Faithful transfer to the concise scalar theory.
+theorem sumPhi_teq :
+    ([] |- [TeqAx] sumPhiFormula.map (fun _ => FromPRA.sigma)) :=
+  (pra_theorem_iff sumPhiFormula).mp sumPhi_pra
+
+end LeanProofs.ConciseIPRA.NumberTheory
+\end{lstlisting}
+
+The exact parser notation may require the repository's scoped notation to be
+opened; the archive's Lean files are deliberately labeled scaffolds rather
+than compiled proofs.
+
+\subsection{Host-level validation versus object-theory proof}
+
+Mathlib already contains host theorems such as \code{Nat.totient\_mul},
+\code{Nat.sum\_totient}, \code{Nat.totient\_prime\_pow}, and
+\code{ArithmeticFunction.vonMangoldt\_sum}.  They are valuable specifications
+and regression oracles, but importing them does not prove the result in
+\(\ipra\).  The object proof must establish the corresponding encoded formula
+from \code{PRAAx}.  The archive separates these roles:
+\begin{itemize}
+\item \code{VonMangoldtTotientHost.lean} records host-level targets and
+cross-checks theorem names;
+\item \code{VonMangoldtTotientObjectTheory.lean} gives the staged object-level
+obligations and transfer endpoint;
+\item \code{FORMALIZATION_PLAN.md} lists every dependency and acceptance
+criterion.
+\end{itemize}
+
+\section{Constructive audit}
+
+\begin{longtable}{@{}p{0.25\textwidth}p{0.67\textwidth}@{}}
+\toprule
+Potential hidden principle & Why it is not used \\
+\midrule
+\endfirsthead
+\toprule Potential hidden principle & Why it is not used \\
+\midrule
+\endhead
+Excluded middle & Every case distinction is on a primitive-recursive Boolean: equality, order, divisibility, primality, or bounded membership. Intuitionistic logic proves \(b=0\vee b=1\) for a Boolean computed by recursion.\\
+Choice & Prime factors, inverses, orders, and CRT witnesses are selected by explicit least bounded search or Euclidean algorithms.\\
+Unbounded minimization & Every minimum has an explicit bound: a divisor is at most the input, an exponent is at most the input, and an order is at most \(\varphi(n)\).\\
+Infinite sets & ``Sets'' of divisors, primes, residues, and exponent vectors are bounded characteristic functions.\\
+Unique factorization as a black box & A least-factor trace reconstructs the input; valuations prove uniqueness.\\
+Rational quotient types & Equalities and inequalities are cross-multiplied using positive denominators; exact natural quotients are accompanied by divisibility proofs.\\
+Real logarithm & The exact theory is parameterized by a PR prime weight. Logarithms are finite rational interval specializations at a requested precision.\\
+Infinite series rearrangement & Lambert and Dirichlet identities are coefficientwise; a fixed coefficient sees finitely many divisors or multiples.\\
+Group cardinality theorems & Finite unit arguments are implemented by explicit permutations, inverses, and bounded counts.\\
+Square roots & Bounds are stated internally as squared inequalities or by an integer \(r\) satisfying \(r^2\le n<(r+1)^2\).\\
+\bottomrule
+\end{longtable}
+
+\section{Statements not claimed}
+
+The reference pages also mention material beyond the present native scope.
+This report does not claim:
+\begin{itemize}
+\item the prime number theorem, explicit formulas summing over nontrivial zeros
+of \(\zeta\), RH-equivalent error terms, or oscillation theorems for Riesz
+means;
+\item Carmichael's conjecture on the multiplicity of totient values;
+\item the full classification and density theory of totients/nontotients;
+\item asymptotic constants involving \(\pi\), \(e^\gamma\), or infinite Euler
+products unless replaced by the exact finite identities proved above;
+\item a completed, kernel-checked Lean formalization of the object theory.
+\end{itemize}
+These exclusions prevent analytic notation or a host theorem from being
+misreported as an \(\ipra\) derivation.
+
+\section{Conclusion}
+
+The arithmetic theories of \(\varphi\) and \(\Lambda\) are exceptionally well
+suited to \(\ipra\).  Their core is finite factorization, bounded counting,
+and finite convolution.  Once logarithm is abstracted to a prime weight, the
+Mangoldt formulas become exact primitive-recursive identities.  Once unit
+groups are replaced by explicit reduced-residue permutations, the central
+totient theorems become quantifier-free induction arguments.  Formal power
+series and Dirichlet series add no infinitary burden when interpreted
+coefficientwise.
+
+The remaining work is therefore engineering rather than a missing
+foundational idea: build a reusable bounded-fold and factorization library in
+\code{PRAAx}, prove the finite bijection and convolution lemmas once, instantiate
+them for the two functions, and invoke the existing faithful
+\code{PRAAx}\(\leftrightarrow\)\code{TeqAx} transfer.  The module plan in this
+archive gives a direct path to a complete Lean development.
+
+\begin{thebibliography}{99}
+\bibitem{wiki-mangoldt}
+Wikipedia contributors, ``Von Mangoldt function,'' accessed 15 November 2026,
+\url{https://en.wikipedia.org/wiki/Von_Mangoldt_function}.
+
+\bibitem{mw-mangoldt}
+Eric W. Weisstein, ``Mangoldt Function,'' MathWorld, accessed 15 November 2026,
+\url{https://mathworld.wolfram.com/MangoldtFunction.html}.
+
+\bibitem{wiki-totient}
+Wikipedia contributors, ``Euler's totient function,'' accessed 15 November 2026,
+\url{https://en.wikipedia.org/wiki/Euler%27s_totient_function}.
+
+\bibitem{mw-totient}
+Eric W. Weisstein, ``Totient Function,'' MathWorld, accessed 15 November 2026,
+\url{https://mathworld.wolfram.com/TotientFunction.html}.
+
+\bibitem{proveit}
+Vladimir Reshetnikov, \emph{ProveIt}, revision
+\code{5fb2ca5dda188a4a3c7ce9ba6f28030bd0fe8322}, 15 November 2026,
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{mathlib-totient}
+Mathlib contributors, \code{Mathlib/Data/Nat/Totient.lean}, inspected at
+revision \code{cbe1882f5b62496bdfc6bbe540a2b3f2db852440}.
+
+\bibitem{mathlib-mangoldt}
+Mathlib contributors,
+\code{Mathlib/NumberTheory/ArithmeticFunction/VonMangoldt.lean}, inspected at
+the same revision.
+
+\bibitem{mathlib-chebyshev}
+Mathlib contributors, \code{Mathlib/NumberTheory/Chebyshev.lean}, inspected at
+the same revision.
+\end{thebibliography}
+
+\appendix
+\section{Compact theorem checklist}
+
+\begin{longtable}{@{}>{\raggedleft\arraybackslash}p{0.04\textwidth}>{\raggedright\arraybackslash}p{0.68\textwidth}>{\raggedright\arraybackslash}p{0.18\textwidth}@{}}
+\toprule
+ & Claim & Location/status \\
+\midrule
+\endfirsthead
+\toprule & Claim & Location/status \\
+\midrule
+\endhead
+1 & \(\varphi(n)=\#\{a<n:\gcd(a,n)=1\}\) & Def.~\ref{def:totient}, \StatusI\\
+2 & \(\varphi(p)=p-1\), \(\varphi(p^a)=p^{a-1}(p-1)\) & Thm.~\ref{thm:phi-prime-power}, \StatusI\\
+3 & Coprime multiplicativity and product formula & Thm.~\ref{thm:phi-product}, \StatusI\\
+4 & Gcd-fiber count & Thm.~\ref{thm:gcd-fiber}, \StatusI\\
+5 & \(\sum_{d\mid n}\varphi(d)=n\) & Thm.~\ref{thm:sum-phi}, \StatusI\\
+6 & M\"obius formulas for \(\varphi\) & Cor.~\ref{cor:phi-mobius}, \StatusI\\
+7 & Summatory floor-square identity & Thm.~\ref{thm:summatory-phi}, \StatusI\\
+8 & Farey count & after Thm.~\ref{thm:summatory-phi}, \StatusI\\
+9 & \(\varphi(n^k)=n^{k-1}\varphi(n)\) & Thm.~\ref{thm:phi-power}, \StatusI\\
+10 & \(a\mid b\Rightarrow\varphi(a)\mid\varphi(b)\) & Thm.~\ref{thm:phi-divides}, \StatusI\\
+11 & General multiplication formula & Thm.~\ref{thm:phi-general-mul}, \StatusI\\
+12 & Gcd-lcm identity & Cor.~\ref{cor:phi-gcd-lcm}, \StatusI\\
+13 & Doubling formula & Thm.~\ref{thm:phi-double}, \StatusI\\
+14 & Radical identity & Thm.~\ref{thm:phi-rad}, \StatusI\\
+15 & Squarefree-divisor identity & Thm.~\ref{thm:squarefree-divisor}, \StatusI\\
+16 & Evenness and \(2^r\mid\varphi(n)\) & Thm.~\ref{thm:phi-even}, \StatusI\\
+17 & Sum of totatives & Thm.~\ref{thm:sum-totatives}, \StatusI\\
+18 & Menon's identity & Thm.~\ref{thm:menon}, \StatusI\\
+19 & Euler/Fermat theorem & Thm.~\ref{thm:euler}, \StatusI\\
+20 & Order divides totient & Cor.~\ref{cor:order-divides}, \StatusI\\
+21 & \(m\mid\varphi(a^m-1)\) & Thm.~\ref{thm:order-am1}, \StatusI\\
+22 & RSA correctness & Thm.~\ref{thm:rsa}, \StatusI\\
+23 & Cyclotomic gcd-sum identity & Thm.~\ref{thm:cyclotomic-gcd-sum}, \StatusF\\
+24 & Lambert series & Thm.~\ref{thm:lambert}, \StatusF\\
+25 & Totient Dirichlet series coefficients & Thm.~\ref{thm:phi-dirichlet}, \StatusF\\
+26 & Lower and upper bounds & Thms.~\ref{thm:phi-lower}, \ref{thm:phi-upper-composite}, \StatusI\\
+27 & Totient-sigma identity and \(1/2\) bound & Thm.~\ref{thm:phi-sigma}, \StatusI\\
+28 & Finite limsup/liminf witnesses & Thms.~\ref{thm:limsup-phi}, \ref{thm:liminf-phi}, \StatusI/\StatusA\\
+29 & Odd nontotients and \(\varphi(n)=2\) & Thms.~\ref{thm:odd-nontotient}, \ref{thm:phi-two}, \StatusI\\
+30 & Weighted Mangoldt definition & Def.~\ref{def:weighted-lambda}, \StatusI\\
+31 & Mangoldt divisor sum & Thm.~\ref{thm:lambda-divsum}, \StatusI\\
+32 & M\"obius forms & Thm.~\ref{thm:lambda-mobius}, \StatusI\\
+33 & M\"obius--Mangoldt convolution & Thm.~\ref{thm:mu-lambda}, \StatusI\\
+34 & Lcm quotient & Thm.~\ref{thm:lcm-quotient}, \StatusI/\StatusA\\
+35 & \(\Psi_w=L_w(\lcmu)\) & Thm.~\ref{thm:psi-lcm}, \StatusI\\
+36 & Dirichlet Leibniz rule & Thm.~\ref{thm:dirichlet-leibniz}, \StatusF\\
+37 & \(-\zeta'/\zeta\) coefficient identity & Thm.~\ref{thm:zeta-logder}, \StatusF/\StatusA\\
+38 & Coefficients of \(\log\zeta\) & Thm.~\ref{thm:log-zeta-coeff}, \StatusF\\
+39 & Finite Abel summation & Thm.~\ref{thm:abel}, \StatusI\\
+40 & Binomial-lcm divisibilities and Chebyshev bounds & Thm.~\ref{thm:binomial-lcm}, Cor.~\ref{cor:chebyshev-bounds}, \StatusI/\StatusA\\
+41 & Factorial Mangoldt identity & Thm.~\ref{thm:factorial-lambda}, \StatusI\\
+42 & \(\sum\Lambda(n)/n=\log N+O(1)\) with constants & Thm.~\ref{thm:harmonic-lambda}, \StatusI/\StatusA\\
+43 & Generalized \(\Lambda_k\) and \(\Lambda_1=\Lambda\) & Generalized Mangoldt section, \StatusI/\StatusF\\
+44 & Subbarao congruence classification & Thm.~\ref{thm:subbarao}, \StatusI\\
+45 & \(n\mid\varphi(a^n+b^n)\) & Thm.~\ref{thm:plus-power}, \StatusI\\
+46 & Goldbach-to-totient implication & Prop.~\ref{prop:goldbach-phi}, conditional \StatusI\\
+\bottomrule
+\end{longtable}
+
+\section{Repository and reproducibility notes}
+
+The archive was prepared against the ProveIt main-branch revision recorded in
+the bibliography.  The current \code{ConciseIPRA} README describes the
+calculus as bi-interpretable with full first-order iPRA; \code{PR.lean}
+contains the ordinary iPRA syntax and quantifier-free induction;
+\code{TeqRec.lean} derives primitive recursion in the scalar theory; and
+\code{BiInterpretation.lean} proves faithful theorem transfer.  The host
+mathlib files were used only as theorem inventories and cross-checks.
+
+The finite Python checker is not a proof of the universal theorems.  It is a
+regression artifact that tests definitions, identities, examples, and the
+polynomial congruence over a bounded range.  The universal proofs are the
+arguments above; a complete formal certification requires implementing the
+Lean roadmap.
+
+\end{document}
