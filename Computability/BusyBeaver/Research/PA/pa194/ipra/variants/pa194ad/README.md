@@ -43,8 +43,10 @@ SHA-256 is `27613aa92da79ba2ec6e2e88e0ac909fda218e06495ecc0af27201eac0e26c8f`.
   the finite source certificates.
 - [`PA194ADNative.consistency_iff_literal_nonhalt`](PA194ADNative.lean)
   derives the equivalence in standard iPRA given those same certificates.
-
-The remaining premise is successful checking of all 3,673 source sites.
+  The kernel-checked coverage now supplies all 3,673 certificates, and
+  [`PA194ADFinal.consistency_iff_literal_nonhalt`](PA194ADFinal.lean) gives the
+  unconditional derivation. Its axiom audit reports `propext`,
+  `Classical.choice`, and `Quot.sound`.
 
 Run from the repository root with a fresh output directory.
 
@@ -71,7 +73,10 @@ proofs.
 
 ```sh
 ad_registers=/dev/shm/pa194ad-registers
+ad_controller=/dev/shm/pa194ad-controller
+ad_coverage=/dev/shm/pa194ad-coverage
 bash "$dir/check-registers.sh" "$register" /dev/shm/pa194ad-replay "$ad_registers"
-bash "$dir/check-controller.sh" "$ad_registers" /dev/shm/pa194ad-model-run /dev/shm/pa194ad-controller
-bash "$dir/check-coverage.sh" "$ad_registers" /dev/shm/pa194ad-coverage
+bash "$dir/check-controller.sh" "$ad_registers" /dev/shm/pa194ad-model-run "$ad_controller"
+bash "$dir/check-coverage.sh" "$ad_registers" "$ad_coverage"
+bash "$dir/../check-controller-final.sh" PA194AD "$ad_controller" "$ad_coverage" /dev/shm/pa194ad-final
 ```

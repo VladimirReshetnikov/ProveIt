@@ -14,10 +14,12 @@ the PA196 and U208 comparison, and the imported upstream snapshots.
 `IΣ₁`. [`docs/`](docs/) holds the delivered research packets, whose scripts
 and notes may refer to the directory layout at the time of delivery.
 
-Lean proves the unconditional iPRA equivalence for seven literal 194-state
+Lean proves the unconditional iPRA equivalence for nine literal 194-state
 tables. The theorems and staged replay instructions are under
 [the primary endpoint](pa194/ipra/native-endpoint/README.md),
+[PA194-AD](pa194/ipra/variants/pa194ad/README.md),
 [PA194B](pa194/ipra/variants/pa194b/README.md),
+[PA194HX](pa194/ipra/variants/pa194hx/README.md),
 [PA194OR](pa194/ipra/variants/pa194or/README.md),
 [PA194SEL](pa194/ipra/variants/pa194sel/README.md), and
 the [three timing variants](pa194/ipra/variants/pa194fast/README.md).
@@ -36,9 +38,9 @@ The primary table is a seven-fold quotient of a 201-control parent with
 a ten-entry source interface. Lean has checked the exact packed seed reached
 from blank by [PA194-AD](pa194/ipra/variants/pa194ad/README.md) after 58,122
 steps and by [PA194HX](pa194/ipra/variants/pa194hx/README.md) after 56,134
-steps. For each table, Lean has also checked its literal register engine
-and derived the iPRA equivalence conditional on the 3,673 source-site
-certificates. The two certificate replays are in progress.
+steps. Their literal register engines and all 3,673 source-site certificates
+have passed Lean verification. The [PA194LC startup and register engine](pa194/ipra/variants/pa194lc/README.md)
+also passed, and its full source coverage replay is in progress.
 
 The [14 November incoming reports](INCOMING-2026-11-14.md) include another
 194-state candidate and do not report a verified sub-194 blank-start machine.

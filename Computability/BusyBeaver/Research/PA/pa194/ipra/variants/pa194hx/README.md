@@ -33,8 +33,10 @@ register updates in the H/X physical order.
 halting at arbitrary model-valued clocks from the exact HX startup seed.
 [`PA194HXNative.consistency_iff_literal_nonhalt`](PA194HXNative.lean)
 derives the equivalence in standard iPRA given the finite source
-certificates. The remaining premise is successful checking of all 3,673
-source sites.
+certificates. The kernel-checked coverage supplies all 3,673 certificates.
+[`PA194HXFinal.consistency_iff_literal_nonhalt`](PA194HXFinal.lean)
+gives the unconditional derivation, with `propext`, `Classical.choice`,
+and `Quot.sound` in its Lean axiom audit.
 
 Run from the repository root with fresh output directories.
 
@@ -60,7 +62,10 @@ interface.
 ```sh
 hx="$pa/pa194/ipra/variants/pa194hx"
 hx_registers=/dev/shm/pa194hx-registers
+hx_controller=/dev/shm/pa194hx-controller
+hx_coverage=/dev/shm/pa194hx-coverage
 bash "$hx/check-registers.sh" "$register" /dev/shm/pa194hx-replay "$hx_registers"
-bash "$hx/check-controller.sh" "$hx_registers" /dev/shm/pa194hx-controller
-bash "$hx/check-coverage.sh" "$hx_registers" /dev/shm/pa194hx-coverage
+bash "$hx/check-controller.sh" "$hx_registers" "$hx_controller"
+bash "$hx/check-coverage.sh" "$hx_registers" "$hx_coverage"
+bash "$hx/../check-controller-final.sh" PA194HX "$hx_controller" "$hx_coverage" /dev/shm/pa194hx-final
 ```
