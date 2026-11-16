@@ -180,6 +180,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.sum2_delta
 #print axioms LeanProofs.IPRA.Permutation.fiber
 #print axioms LeanProofs.IPRA.Permutation.prod_perm
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Euler.prod_rem_congr
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Euler.prod_pw
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Euler.pointwise
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Euler.cop_prod
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Euler.euler
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
