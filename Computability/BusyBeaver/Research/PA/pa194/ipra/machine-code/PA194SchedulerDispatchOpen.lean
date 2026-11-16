@@ -21,14 +21,15 @@ local instance : Mul M := ⟨fun x y => F mulCode ![x,y]⟩
 local instance : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
 local instance : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := standardModelIOpen
 
-theorem fetchDecodeDispatch (scheduler : M) (initial : Fin 11 → M) (tail : M)
+theorem fetchDecodeDispatchPreserving (scheduler : M) (initial : Fin 11 → M) (tail : M)
     (hn : F fN ![scheduler] = initial 0) (hl : F fL ![scheduler] = initial 8)
     (hx : initial 6 = (0 : M)) (hy : initial 7 = (0 : M)) (h3 : initial 3 = (0 : M)) :
     ∃ (clock : M) (out : Fin 11 → M),
       F PA194SourceControllerCode.run ![clock,sourceState 25 initial tail] = sourceState 48 out tail ∧
       F (head fN fL) ![scheduler] = out 3 ∧
       F (PA194SchedulerCode.tail fN fL) ![scheduler] = out 8 ∧
-      F fN ![F PA194SchedulerIteration.step ![scheduler]] = out 0 ∧ out 6 = 0 ∧ out 7 = 0 := by
+      F fN ![F PA194SchedulerIteration.step ![scheduler]] = out 0 ∧ out 6 = 0 ∧ out 7 = 0 ∧
+      ∀ i : Fin 11, i ≠ 0 → i ≠ 3 → i ≠ 6 → i ≠ 7 → i ≠ 8 → out i = initial i := by
   obtain ⟨t,mid,hfetch,hseed,hN,hxmid,hother⟩ := fetchPrefix scheduler initial tail hn hl hx
   have hymid : mid 7 = (0 : M) := by
     have h := hother (7 : Fin 11) (by decide) (by decide)
@@ -75,7 +76,7 @@ theorem fetchDecodeDispatch (scheduler : M) (initial : Fin 11 → M) (tail : M)
     rw [PA194SchedulerCode.tail,PA194PathIterator.modelUnary]
     have hv : (fun _ : Fin 1 => F (fetchSeed fN fL) ![scheduler]) = ![F (fetchSeed fN fL) ![scheduler]] := by funext i; fin_cases i; rfl
     rw [hv,hseed]
-  refine ⟨t+(tdecode+ttransfer),out,?_,?_,?_,?_,htransfer.2.2.2.1,htransfer.2.2.2.2.1⟩
+  refine ⟨t+(tdecode+ttransfer),out,?_,?_,?_,?_,htransfer.2.2.2.1,htransfer.2.2.2.2.1,?_⟩
   · change F (iterate PA194SourceControllerCode.step) ![t+(tdecode+ttransfer),sourceState 25 initial tail] = _
     rw [PA194IterateAddOpen.iterateAdd]
     change F (iterate PA194SourceControllerCode.step) ![tdecode+ttransfer,F PA194SourceControllerCode.run ![t,sourceState 25 initial tail]] = _
@@ -86,6 +87,25 @@ theorem fetchDecodeDispatch (scheduler : M) (initial : Fin 11 → M) (tail : M)
   · simpa [hout3] using hfirst'
   · simpa [hout8] using hsecond'
   · simpa [hout0] using hN
+  · intro i h0i h3i h6i h7i h8i
+    calc
+      out i = decoded i := htransfer.2.2.2.2.2 i h3i h6i h7i h8i
+      _ = mid i := by simp [decoded,argsAt,h6i,h7i,h8i]
+      _ = initial i := hother i h0i h8i
+
+theorem fetchDecodeDispatch (scheduler : M) (initial : Fin 11 → M) (tail : M)
+    (hn : F fN ![scheduler] = initial 0) (hl : F fL ![scheduler] = initial 8)
+    (hx : initial 6 = (0 : M)) (hy : initial 7 = (0 : M)) (h3 : initial 3 = (0 : M)) :
+    ∃ (clock : M) (out : Fin 11 → M),
+      F PA194SourceControllerCode.run ![clock,sourceState 25 initial tail] = sourceState 48 out tail ∧
+      F (head fN fL) ![scheduler] = out 3 ∧
+      F (PA194SchedulerCode.tail fN fL) ![scheduler] = out 8 ∧
+      F fN ![F PA194SchedulerIteration.step ![scheduler]] = out 0 ∧ out 6 = 0 ∧ out 7 = 0 := by
+  obtain ⟨clock,out,hr,hhead,htail,hn',hx',hy',_⟩ :=
+    fetchDecodeDispatchPreserving scheduler initial tail hn hl hx hy h3
+  exact ⟨clock,out,hr,hhead,htail,hn',hx',hy'⟩
+
+#print axioms fetchDecodeDispatchPreserving
 #print axioms fetchDecodeDispatch
 end models
 end PA194SchedulerDispatchOpen

@@ -24,8 +24,8 @@ check_inputs() {
  55ad14f36ddbc2833205910654beb3527a1b328da613e14de1b7a49b86774db9 "$source/PA194Transfer45Open.lean" \
  c3f8e4f0ad09e51263b716cfe17e13b2aa3929b61beeb55e595a4d892524b5a5 "$source/PA194Transfer45OpenComplete.lean" \
  5eee7c569cf013b61ea275200409ca116b73cfb83bc11fdb88db590e684e0b76 "$source/PA194DispatchTransfersOpen.lean" \
- 6ae06ab16bf1565e5b86a2fa06b5d0131304379db064122d6786dd3803eac0cf "$source/PA194SchedulerDispatchOpen.lean" \
- bc29383624632f1c5088240dab020428698580aebd161636b1635b175c5e4d3e "$source/PA194SchedulerBranchesOpen.lean" | sha256sum -c -
+ 4fc430268e30c0d4eef7c7f12299e122628ecc3f299d00975f4f5f11118c8aed "$source/PA194SchedulerDispatchOpen.lean" \
+ 13a63cb54fa16a5b0c0f7c268e7320f9ee84b1afd5631371b170ddb180b81fef "$source/PA194SchedulerBranchesOpen.lean" | sha256sum -c -
  python3 - "$dispatch" "$receipt" "$native" "$native_receipt" "$fetch" "$fetch_receipt" "$base" <<'PY'
 import hashlib,json,pathlib,sys
 dispatch,receipt,native,native_receipt,fetch,fetch_receipt,base=map(pathlib.Path,sys.argv[1:])
