@@ -23,6 +23,7 @@ import IPRADerivations.Analysis.Products
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.Algebra.PolynomialFormulas
 import IPRADerivations.Algebra.TrisectionCubic
+import IPRADerivations.Combinatorics.Binomial
 import IPRADerivations.DiophantineNumberTheory.Hurwitz
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell

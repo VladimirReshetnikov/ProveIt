@@ -99,4 +99,31 @@ theorem sum_zero_of_all (body : PTm 2) (x : PTm n)
       exact hf.wk
   simpa using Prf.allE N hall
 
+@[simp] theorem subst_repl_shift (s : PTm (n + 1)) (t : PTm n) :
+    Syn.subst (repl s) (Syn.shift t) = Syn.shift t := by
+  rw [Syn.subst_shift]; simp only [Syn.repl_succ]; rfl
+
+/-- `∀ i < N, f(i, x) = 0` gives `S(N, x) = 0`. -/
+theorem sum_zero_of_bounded (body : PTm 2) (x N : PTm n)
+    (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ (inst2 body (var 0) (Syn.shift x) ≐ zero))) :
+    Γ ⊢[PRAAx] ap2 (sumF body) N x ≐ zero := by
+  have hall : Γ ⊢[PRAAx]
+      Fm.all (le (var 0) (Syn.shift N) ⟶ (ap2 (sumF body) (var 0) (Syn.shift x) ≐ zero)) := by
+    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
+    · simpa using .impI (sum_zero (Γ := le zero N :: Γ) body x)
+    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero,
+        subst_repl_shift, ConciseIPRA.PTm.subst_zero]
+      have hf := h.allOpen
+      refine .impI ?_
+      refine (sum_succ' body (var 0) _).eqTrans ?_
+      have hle : (le (succ (var 0)) (Syn.shift N) ::
+          (le (var 0) (Syn.shift N) ⟶ (ap2 (sumF body) (var 0) (Syn.shift x) ≐ zero)) ::
+          Γ.map Fm.shift) ⊢[PRAAx] le (var 0) (Syn.shift N) :=
+        le_trans (le_succ_self _) Prf.hyp0
+      exact (congrAdd (.impE Prf.hyp1 hle) (.impE hf.wk.wk Prf.hyp0)).eqTrans (add_zero _)
+  have h2 := Prf.allE N hall
+  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero,
+    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
+  exact .impE h2 (le_refl N)
+
 end LeanProofs.IPRA
