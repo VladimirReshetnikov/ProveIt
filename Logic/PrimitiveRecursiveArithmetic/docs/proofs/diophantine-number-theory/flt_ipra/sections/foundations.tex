@@ -1,0 +1,214 @@
+\section{The exact constructive theory and the descent principle}
+\label{sec:foundations}
+
+Throughout, $\N=\{0,1,2,\ldots\}$ and $\Z$ is a coded set of signed natural
+numbers. For $n\geq 3$, write
+\[
+ \FLT(n):\quad
+ \forall x,y,z\in\N\;\bigl(x>0\wedge y>0\wedge z>0
+       \longrightarrow x^n+y^n\ne z^n\bigr).
+\]
+The main assertions concern unrestricted sizes of $x,y,z$. No finite search
+over possible counterexamples is being substituted for this assertion.
+
+\subsection{Language, axioms, and logical rules}
+
+Our $\ipra$ is first-order intuitionistic primitive recursive arithmetic.
+Its numerical language has $0$, successor $S$, and a function symbol for
+each specified primitive recursive construction, of every finite arity.
+Initial functions are zero, successor, and projections; functions are closed
+under composition and primitive recursion. For a recursion symbol $R$,
+with recursion argument first, the defining equations are
+\[
+ R(0,\vec a)=f(\vec a),\qquad
+ R(Sn,\vec a)=g(n,R(n,\vec a),\vec a).
+\]
+The other defining equations are those of projections and composition.
+The arithmetic axioms also include $Sx\ne0$, injectivity of $S$, and
+induction for every quantifier-free formula $A(n,\vec a)$:
+\[
+ A(0,\vec a)\ \longrightarrow\
+ \bigl(\forall n\,(A(n,\vec a)\longrightarrow A(Sn,\vec a))\bigr)
+ \ \longrightarrow\ \forall n\,A(n,\vec a).
+\]
+The logical language has equality, $\bot$, $\wedge$, $\vee$, $\to$,
+$\forall$, and $\exists$. Its rules are the usual intuitionistic introduction
+and elimination rules, assumption, equality reflexivity and substitution,
+and substitution instances of arithmetic axioms. Quantifier introduction
+and existential elimination have their usual fresh-variable conditions.
+Negation abbreviates implication to $\bot$. There is no unrestricted law of
+excluded middle, double-negation elimination, choice principle, or
+induction for arbitrary quantified formulas.
+
+This is precisely the presentation documented by the types
+\texttt{PR}, \texttt{PTm}, \texttt{PRAAx}, and \texttt{Prf} in the inspected
+ProveIt sources \cite{proveit}. In particular, \texttt{PRA.qfInd} is the
+appropriate formal rule for the inductions below. The repository's
+\texttt{pra\_iff\_native} translates an already constructed derivation to
+the native scalar calculus. It does not turn an arbitrary theorem about
+Lean's natural numbers into an $\ipra$ derivation.
+
+\subsection{Decidable notation and bounded constructions}
+
+For readability we use subtraction of integers, division with remainder,
+gcd, divisibility, order, finite lists, and bounded quantifiers. These are
+definitional conveniences. Integers can be encoded by $2a$ for $a\geq0$
+and $2a-1$ for $-a<0$. A pair can be encoded by
+$(a+b)^2+a$; both components of a valid code are bounded by the code, so
+decoding by bounded search is primitive recursive. Repeated pairing codes
+fixed tuples. Length and entries of a finite list can instead be coded by
+a length and a base-$B$ integer with $B$ larger than every entry.
+
+Every bounded loop here has a numerical clock fixed before the loop begins.
+The loop state is a tuple, its update is primitive recursive, and its final
+state is defined by primitive recursion on that clock. If an algorithm
+stops early, subsequent updates leave its state unchanged. Searches return
+the first satisfactory candidate and a success bit, or a fixed default.
+An existence proof is always accompanied by a bound that makes the success
+bit equal to one.
+
+A primitive recursive predicate $P$ is represented by a characteristic
+function $\chi_P\in\{0,1\}$. For example, a bounded universal quantifier is
+represented by the finite product of its characteristic values, and a
+bounded existential quantifier by a bounded scan. Induction on a formula
+containing such notation means induction on the corresponding
+quantifier-free formula involving these characteristic functions. The
+equivalences with the bounded notation follow from the same finite-product
+or scan recursions. Thus decidable case splits used below are legitimate
+intuitionistically.
+
+\begin{remark}[A necessary distinction]
+We are not claiming that every true primitive recursive identity is
+provable in $\ipra$, or that an arbitrary terminating algorithm is primitive
+recursive. We give concrete bounded constructions and their arithmetic
+invariants. Nor do we assume a primitive recursive universal evaluator for
+all primitive recursive function codes; there is no such evaluator. Each
+fixed construction used in a proof is expanded into its own function
+symbols and defining equations.
+\end{remark}
+
+\subsection{Finite descent, proved using only quantifier-free induction}
+
+\begin{lemma}[Clocked descent]\label{lem:clocked}
+Let $P(s)$ be a primitive recursive predicate on coded states, and let
+$D(s)$ and $r(s)$ be primitive recursive functions. Suppose that, by
+quantifier-free arithmetic and decidable case distinctions, one has proved
+\[
+ P(s)\longrightarrow
+ \bigl(P(D(s))\wedge r(D(s))<r(s)\bigr).
+\tag{D}
+\]
+Then $\ipra$ proves $\forall s\,\neg P(s)$.
+\end{lemma}
+
+\begin{proof}
+Define $s_0=s$ and $s_{k+1}=D(s_k)$ by primitive recursion. Fix a putative
+state $s$ satisfying $P(s)$, and put $R=r(s)$. Induct on $k$ with the
+quantifier-free invariant
+\[
+ k\leq R+1\ \longrightarrow\
+       \bigl(P(s_k)\wedge r(s_k)+k\leq R\bigr).
+\tag{I}
+\]
+The case $k=0$ is immediate. If $k+1\leq R+1$, the inductive hypothesis
+applies at $k$, and (D) gives
+$r(s_{k+1})+1\leq r(s_k)$. Adding $k$ proves the next case of (I),
+including preservation of $P$. At $k=R+1$ we obtain
+$r(s_{R+1})+R+1\leq R$, impossible for natural numbers. This is a
+derivation of $P(s)\to\bot$, followed by universal introduction. No
+infinite sequence and no least counterexample has been postulated.
+\end{proof}
+
+One can equally use a finite search for a least counterexample inside a
+box whose size is supplied by an alleged solution. The clocked version
+makes the induction formula and the computation bound more visible, so it
+will be used throughout.
+
+\subsection{Elementary integer arithmetic needed by the descents}
+\label{sec:integer-tools}
+
+Here are the elementary tools, including their constructive justifications.
+They will also fix what is meant by ``extract a coprime power'' later.
+
+\begin{lemma}[Division, gcd, and prime powers]\label{lem:integer-tools}
+The following operations and facts are available in $\ipra$.
+\begin{enumerate}
+ \item For $b>0$, division with remainder produces $a=bq+r$ with
+ $0\leq r<b$. Euclid's algorithm produces a gcd and integer Bezout
+ coefficients.
+ \item A positive integer can be factored into primes by bounded trial
+ division. If a prime $\ell$ divides $uv$, then it divides $u$ or $v$.
+ Valuations of nonzero integers obey
+ $v_\ell(uv)=v_\ell(u)+v_\ell(v)$.
+ \item If $m\geq1$ and pairwise coprime nonzero integers $a_1,\ldots,a_t$ have product
+ an $m$th power, then each $|a_i|$ is an $m$th power. When $m$ is odd,
+ each signed $a_i$ is an $m$th power. If $a,b>0$ are coprime and
+ $ab=2u^2$, the odd factor is a square and the even factor is twice a
+ square.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+The quotient is the largest $q\leq a$ with $bq\leq a$; its existence and
+remainder property follow by scanning $0,\ldots,a$. The Euclidean
+remainder decreases at every active step, so $a+b+1$ steps suffice for a
+gcd. At each step retain the two linear combinations of the original
+inputs. The identities $\gcd(u,v)=\gcd(v,u-qv)$ and
+$u-qv$ equal to the updated linear combination prove the invariant.
+This also proves Bezout's identity. For negative inputs apply the positive
+algorithm to absolute values and adjust the signs of its coefficients.
+
+For factorization, scan possible divisors $d=2,\ldots,a$. At a given
+$d$, divide out at most $a$ copies. The invariant states that the product
+of extracted factors times the current residual is $a$, and no previously
+processed $d$ divides the residual. Whenever a divisor is first extracted
+it is prime: a proper prime divisor would already have been removed.
+That assertion is proved using the bounded search for the least divisor
+of $d$ greater than one; the least divisor is prime because a nontrivial
+factor of it would be smaller. Every assertion quantifies only over
+integers bounded by $a$. Thus the finite invariant can be written with
+characteristic functions and proved by quantifier-free induction.
+
+If $\ell\nmid u$, primality gives $\gcd(\ell,u)=1$ by checking the
+possible divisors of $\ell$; Bezout then shows that
+$\ell\mid uv$ implies $\ell\mid v$. Repeated division by $\ell$, with
+clock $|u|+|v|+1$, proves the valuation identity. Applied to the
+factorizations already computed, it proves uniqueness of all prime
+exponents.
+
+In a coprime product, a prime occurs in at most one factor. Its valuation
+in that factor therefore equals its valuation in the product, which is
+divisible by $m$. Divide every exponent by $m$ and multiply the resulting
+prime powers to obtain the root. For odd $m$ restore the original sign.
+For $ab=2u^2$, all odd-prime valuations are even and the valuation at $2$
+is odd in exactly the even factor. This gives the last assertion.
+Each extracted root is bounded by the absolute value of its input; it may
+alternatively be found by testing every candidate up to that bound.
+\end{proof}
+
+All later occurrences of ``coprime'' can be checked by this gcd algorithm.
+All uses of valuation concern nonzero inputs and a fixed prime, or a
+bounded list of prime factors of a displayed integer. Assertions such as
+``every prime divisor has this property'' can therefore be read as bounded
+assertions about that list.
+
+\begin{lemma}[Primitive reduction]\label{lem:primitive}
+For $n\geq1$, a positive solution of $x^n+y^n=z^n$ gives a positive
+solution with pairwise coprime coordinates. Likewise, a positive solution
+of $x^4+y^4=z^2$ gives one with $\gcd(x,y)=1$.
+All divisions are bounded and the relevant right-hand coordinate does not
+increase.
+\end{lemma}
+
+\begin{proof}
+For the first equation take $d=\gcd(x,y)$. Prime valuations show
+$d\mid z$: if $\ell^e\mid d$, then $\ell^{ne}\mid z^n$, so
+$\ell^e\mid z$. Divide all three coordinates by $d$ and cancel $d^n$.
+The new first two coordinates are coprime. A common prime of either of
+them and the third divides the remaining one by the equation, a
+contradiction. For the second equation the same argument gives
+$d^2\mid z$; divide $x,y,z$ by $d,d,d^2$, respectively. The gcd algorithm
+and the power-divisibility facts in Lemma~\ref{lem:integer-tools} give all
+these witnesses constructively.
+\end{proof}
+

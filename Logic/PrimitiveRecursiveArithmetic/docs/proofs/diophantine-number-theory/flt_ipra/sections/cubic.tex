@@ -1,0 +1,392 @@
+\section{The cubic exponent: an explicit Eisenstein descent}
+\label{sec:three}
+
+We prove the stronger signed statement
+\[
+  xyz\ne0\quad\Longrightarrow\quad x^3+y^3+z^3\ne0
+  \qquad(x,y,z\in\mathbb Z).
+\]
+Signed integers here are finite codes for a sign and an absolute value.
+In particular, neither complex numbers nor an infinite number field is
+needed.  The descent decreases the absolute value of the coordinate
+divisible by~$3$.  Its construction and its termination both have
+primitive-recursive bounds.
+
+\subsection{The finite arithmetic needed below}
+
+For clarity, we record the parts of Lemma~\ref{lem:integer-tools} used
+below, in their algorithmic forms.  Trial division through $2,\ldots,|m|$
+produces a prime factorization of each nonzero $m$.  Euclid's algorithm
+produces $\gcd(u,v)$ and Bezout coefficients.  The usual proofs use division
+with remainder and the identity preserving the gcd at one Euclidean
+step.  They consequently use induction only over explicitly finite
+computations.  Comparing prime exponents in the resulting lists proves:
+
+\begin{enumerate}
+\item If $d^3\mid m^3$, with $d>0$, then $d\mid m$.
+\item If $u,v,w$ are pairwise coprime signed integers and $uvw$ is a cube,
+then each of $u,v,w$ is a signed cube.  Indeed, a prime occurs in at most
+one of their absolute values, so its exponent there is a multiple of
+three; attach the original sign after taking the positive cube root.
+\item If $\gcd(u,v)=1$ and $u^3+v^3+w^3=0$, the three coordinates are
+pairwise coprime.  A prime dividing any two divides the third.
+\end{enumerate}
+
+These facts do not require an unbounded search for a factor or a root.
+Divisors of $m$ are searched below $|m|$, and a cube root of a nonzero
+integer $m$ is searched in $[-|m|,|m|]$.  Later applications always supply
+the relevant nonzero integers.
+
+\subsection{The pair ring and its Euclidean algorithm}
+
+Let $E$ be the set of pairs of signed integers, written $a+b\omega$, with
+\[
+ \omega^2+\omega+1=0.
+\]
+This is a notation for the following explicit operations:
+\begin{align*}
+ (a,b)+(c,d)&=(a+c,b+d),\\
+ (a,b)(c,d)&=(ac-bd,\ ad+bc-bd),\\
+ \overline{(a,b)}&=(a-b,-b),\\
+ N(a,b)&=a^2-ab+b^2.
+\end{align*}
+Direct multiplication verifies
+\[
+ \alpha\bar\alpha=N(\alpha),\qquad
+ N(\alpha\beta)=N(\alpha)N(\beta),\qquad
+ 2N(a,b)=a^2+b^2+(a-b)^2.
+\]
+Thus $N\ge0$, and $N(\alpha)=0$ exactly when $\alpha=0$.
+In particular, this pair ring is an integral domain: if
+$\alpha\beta=0$, multiplication of natural-number norms gives
+$N(\alpha)N(\beta)=0$, and decidable arithmetic gives $\alpha=0$ or
+$\beta=0$.  The last displayed identity also gives the useful bound
+\begin{equation}
+ |a|,\ |b|,\ |a-b|\ \le 2N(a,b).
+ \label{eq:cubic-coordinate-bound}
+\end{equation}
+Here we used $|t|\le t^2$ for every signed integer $t$.
+
+We next give the division algorithm.  If $\beta=c+d\omega\ne0$, set
+$D=N(\beta)>0$.  In the rational pair ring the quotient $\alpha/\beta$,
+for $\alpha=a+b\omega$, has coordinates
+\[
+ u=\frac{ac-ad+bd}{D},\qquad v=\frac{bc-ad}{D}.
+\]
+Choose integers $q_0,q_1$ with $|u-q_0|,|v-q_1|\le1/2$, using signed
+integer division and a fixed tie convention.  Put
+$q=q_0+q_1\omega$ and $r=\alpha-q\beta$.  For rational numbers
+$s,t$ of absolute value at most $1/2$,
+\[
+ s^2-st+t^2\le\tfrac14+\tfrac14+\tfrac14=\tfrac34.
+\]
+Consequently
+\[
+ N(r)\le\tfrac34N(\beta)<N(\beta).
+\]
+The proof is entirely rational arithmetic; denominators can simply be
+cleared.  Thus Euclid's algorithm terminates after at most
+$N(\beta)+1$ divisions, including a possible initial exchange.  Repeated
+substitution in the division equations gives a gcd $g$ and a Bezout
+identity $g=s\alpha+t\beta$.
+
+Here are the precise consequences of this algorithm, with their proofs.
+An element is a unit exactly when its norm is~$1$: necessity follows
+from multiplicativity, and sufficiency from $\alpha\bar\alpha=1$.
+The six units are
+\[
+ \{1,-1,\omega,-\omega,\omega^2,-\omega^2\}.
+\]
+To check completeness of this list, write
+$4N(a,b)=(2a-b)^2+3b^2$.  When $N=1$, one has
+$b\in\{-1,0,1\}$, and checking these three possibilities gives exactly
+the six displayed elements.
+
+Every nonzero nonunit has a factorization into irreducibles.  To construct
+one, search for a nonunit proper divisor in the box
+$|a|,|b|\le2N(\alpha)$, and split when one is found.  A divisor of
+$\alpha$ has norm at most $N(\alpha)$, hence lies in this box by
+\eqref{eq:cubic-coordinate-bound}; divisibility is checked by the explicit
+quotient formula above.  If no such divisor exists, the element is
+irreducible.  A proper splitting replaces a norm by two smaller positive
+norms, both at least two.  Equivalently one may repeatedly split a
+factor list; after $k$ proper splittings its product has at least $k+1$
+nonunit factors, so $2^{k+1}\le N(\alpha)$.  In particular a loop with
+$N(\alpha)$ rounds suffices.
+
+Every irreducible is prime.  If an irreducible $\pi$ does not divide
+$\eta$, its gcd with $\eta$ is a unit.  The computed Bezout identity
+can then be normalized to $u\pi+v\eta=1$.  If $\pi\mid\eta\theta$,
+multiplying this identity by $\theta$ proves $\pi\mid\theta$.
+Finally, factorization is unique up to order and units: compare an
+irreducible in one factorization with the product in the other, use
+primality to find an associate, cancel it, and repeat through the finite
+factor lists.  This is the only unique-factorization result used below;
+it has just been proved for our explicit pair ring.
+
+\subsection{The prime above three}
+
+Put $\lambda=1-\omega=(1,-1)$.  Calculation gives
+\[
+ N(\lambda)=3,\qquad \lambda^2=-3\omega,
+ \qquad \bar\lambda=-\omega^2\lambda.
+\]
+The norm $3$ is an ordinary prime, so any nonunit proper divisor of
+$\lambda$ would have an impossible intermediate norm.  Thus $\lambda$
+is irreducible and therefore prime.  For $\alpha=a+b\omega$,
+\begin{equation}
+ \lambda\mid\alpha\ \Longleftrightarrow\ 3\mid a+b,
+ \qquad
+ \lambda^2\mid\alpha\ \Longleftrightarrow\ (3\mid a\ \text{and}\ 3\mid b).
+ \label{eq:cubic-lambda}
+\end{equation}
+The first equivalence follows from the quotient formula
+\[
+ \frac{a+b\omega}{1-\omega}
+ =\frac{2a-b}{3}+\frac{a+b}{3}\omega:
+ \quad 2a-b=2(a+b)-3b.
+\]
+The second follows from $\lambda^2=-3\omega$ and the fact that
+$\omega$ is a unit.  These observations also prove, without any
+abstract quotient-ring construction, all ramification facts needed here.
+
+\subsection{Normalization of a hypothetical solution}
+
+Suppose $x,y,z$ are nonzero signed integers with
+$x^3+y^3+z^3=0$.  Divide by $g=\gcd(|x|,|y|)>0$.
+Since $g^3\mid z^3$, the elementary cube-divisibility fact gives
+$g\mid z$.  The resulting integer triple is a solution with
+$\gcd(x,y)=1$, and hence is pairwise coprime.  We keep the same letters
+for this primitive triple.
+
+The cubes modulo~$9$ are $0,1,-1$.  If none of $x,y,z$ is divisible
+by~$3$, the sum of their cubes is one of $-3,-1,1,3$ modulo~$9$, never
+zero.  Thus one coordinate is divisible by~$3$, and pairwise coprimality
+shows that exactly one is.  Permute the coordinates to arrange
+\begin{equation}
+ 3\mid z,\qquad 3\nmid xy,\qquad 3\mid x+y.
+ \label{eq:cubic-normalization}
+\end{equation}
+In fact $9\mid x+y$.  Write $x+y=3k$.  Then
+\[
+ -z^3=x^3+y^3=(x+y)((x+y)^2-3xy)
+                  =9k(3k^2-xy).
+\]
+The left side is divisible by~$27$, while $3k^2-xy$ is not divisible
+by~$3$.  Cancellation of $9$ and primality of~$3$ give $3\mid k$.
+Also $x+y\ne0$, since otherwise the original equation would give $z=0$.
+
+\subsection{Extracting the cube in the pair ring}
+
+Set $\alpha=x+y\omega$.  It is nonzero, and
+\begin{equation}
+ (x+y)(x+y\omega)(x+y\omega^2)=-z^3.
+ \label{eq:cubic-factorization}
+\end{equation}
+By \eqref{eq:cubic-lambda} and
+\eqref{eq:cubic-normalization}, $\lambda$ divides $\alpha$ exactly once:
+$\lambda\mid\alpha$ but $\lambda^2\nmid\alpha$.
+
+Any irreducible $\pi$ not associate to $\lambda$ that divides $\alpha$
+divides neither of the other two factors on the left of
+\eqref{eq:cubic-factorization}.  Indeed, a common divisor of $\alpha$
+and $x+y$ divides their difference $-y\lambda$.  A common divisor of
+$\alpha$ and $\bar\alpha=x+y\omega^2$ divides
+$y(\omega-\omega^2)=y\omega\lambda$.  In either case primality and
+$\pi\nmid\lambda$ give $\pi\mid y$; subtracting $y\omega$ from
+$\alpha$ gives $\pi\mid x$.  Ordinary Bezout coefficients for
+$\gcd(x,y)=1$ would then make $\pi$ divide~$1$, a contradiction.
+
+Compare the finite irreducible factorizations of both sides of
+\eqref{eq:cubic-factorization}.  For every irreducible other than
+$\lambda$, its exponent in $\alpha$ is its entire exponent on the
+left, and so is a multiple of three.  The exponent of $\lambda$ in
+$\alpha$ is one.  Therefore there are a unit $\varepsilon$ and an
+element $\gamma=a+b\omega$ such that
+\begin{equation}
+ x+y\omega=\varepsilon\lambda(a+b\omega)^3,
+ \qquad \lambda\nmid(a+b\omega).
+ \label{eq:cubic-extraction}
+\end{equation}
+This is a constructive extraction from a factor list.  Alternatively,
+one can find the same witness by a bounded search: taking norms shows
+$3N(\gamma)^3=N(\alpha)$, so
+$|a|,|b|\le2N(\alpha)$; search this box and the six units.
+
+\subsection{The unit calculation, including the exceptional possibilities}
+
+Write
+\[
+ A=a^3-3ab^2+b^3,\qquad B=3ab(a-b).
+\]
+Direct multiplication gives
+\[
+ (a+b\omega)^3=A+B\omega,
+ \qquad
+ \lambda(a+b\omega)^3=(A+B)+(2B-A)\omega.
+\]
+The sums of the two coefficients after multiplication by the three
+units $1,\omega,\omega^2$ are, respectively,
+\[
+ 3B,\qquad 3(A-B),\qquad -3A.
+\]
+Multiplication by their negatives just changes the signs.  Now
+$3\mid B$, while
+\[
+ A\equiv a+b\not\equiv0\pmod3;
+\]
+the final inequality is exactly $\lambda\nmid\gamma$ from
+\eqref{eq:cubic-lambda}.  Since $9\mid x+y$, the choices
+$\varepsilon=\pm\omega,\pm\omega^2$ are impossible.  Consequently
+\begin{equation}
+ \varepsilon\in\{1,-1\},\qquad
+ x+y=\varepsilon\,9ab(a-b).
+ \label{eq:cubic-unit}
+\end{equation}
+This check is essential: discarding units without this argument would
+leave a gap in the descent.
+
+\subsection{The smaller solution}
+
+Put $M=N(a,b)>0$.  Norms in \eqref{eq:cubic-extraction} give
+$N(x+y\omega)=3M^3$.  Together with
+\eqref{eq:cubic-unit}, this gives
+\begin{equation}
+ -z^3=(x+y)N(x+y\omega)
+      =\varepsilon\,27M^3ab(a-b).
+ \label{eq:cubic-product}
+\end{equation}
+Thus $(3M)^3\mid z^3$, and hence $3M\mid z$.  Set
+$h=z/(3M)$.  Equation \eqref{eq:cubic-product} now says
+\[
+ ab(a-b)=-\varepsilon h^3=(-\varepsilon h)^3.
+\]
+None of $a,b,a-b,h$ is zero, since $x+y$ and $z$ are nonzero.
+
+The integers $a,b$ are coprime.  If a positive integer $d$ divides both,
+then $d^3$ divides both coordinates of
+$\varepsilon\lambda(a+b\omega)^3=x+y\omega$; hence $d^3$ divides
+$\gcd(x,y)=1$, so $d=1$.  It follows that $a,b,a-b$ are pairwise
+coprime.  The ordinary integer cube-splitting lemma therefore supplies
+nonzero signed integers $r,s,t$ with
+\[
+ a=r^3,\qquad b=s^3,\qquad a-b=t^3.
+\]
+We have obtained another cubic solution,
+\[
+ s^3+t^3+(-r)^3=0.
+\]
+It is primitive: any prime dividing two of $r,s,t$ would divide two of
+$a,b,a-b$.  By the same modulo-$9$ calculation as before, exactly one
+of $s,t,-r$ is divisible by~$3$.  Permute these three entries so that
+this coordinate is called $z'$.
+
+The decrease is explicit.  Since $|u|\le|u|^3$ for nonzero integers,
+\[
+ |r|\le|a|,\qquad |s|\le|b|,\qquad |t|\le|a-b|.
+\]
+By \eqref{eq:cubic-coordinate-bound} each right side is at most $2M$.
+On the other hand, $z=3Mh$ with $|h|\ge1$, so
+\begin{equation}
+ 0<|z'|\le2M<3M\le|z|.
+ \label{eq:cubic-descent}
+\end{equation}
+We have therefore constructed, from every normalized primitive
+solution, another such solution with a smaller positive distinguished
+coordinate.
+
+\subsection{Finite termination in iPRA}
+
+It remains to instantiate Lemma~\ref{lem:clocked} explicitly, rather
+than appeal to an infinite descending sequence or to a least
+counterexample.  Let $V(S)$ be the
+primitive-recursive Boolean predicate saying that a coded triple $S$
+has nonzero pairwise coprime signed coordinates, their cubes sum to
+zero, and the third coordinate alone is divisible by~$3$.  Let
+$m(S)$ be the absolute value of this third coordinate.  The algorithms
+above define a total primitive-recursive function $D$: when $V(S)$ is
+true, perform the bounded cube extraction and subsequent bounded
+integer root searches, and return the first resulting normalized
+triple in a fixed order; otherwise return a fixed dummy triple.  The
+proof above establishes
+\[
+ V(S)=1\quad\Longrightarrow\quad
+ V(D(S))=1\ \text{ and }\ 0<m(D(S))<m(S).
+\]
+Define $S_0=S$ and $S_{k+1}=D(S_k)$ by primitive recursion.  If
+$m=m(S)$ and $V(S)=1$, quantifier-free induction on $k$, with the
+guard $k\le m$, proves
+\[
+ k\le m\quad\Longrightarrow\quad V(S_k)=1\ \text{ and }\ m(S_k)+k\le m.
+\]
+At $k=m$ this gives $m(S_m)\le0$, whereas $V(S_m)=1$ gives
+$m(S_m)>0$.  This is a contradiction in decidable natural-number
+arithmetic.  The induction formula contains only primitive-recursive
+terms and decidable relations; bounded conjunctions, if used to check
+factor lists, are represented by Boolean folds.  No excluded middle
+for arbitrary formulas and no unbounded minimization have been used.
+
+For an explicit size audit, if both Euclidean inputs have norm at most
+$H\ge1$, their coordinates are bounded by $2H$.  In the quotient
+formula, the numerators are bounded in absolute value by $12H^2$,
+so rounded quotient coordinates are bounded by $Q=12H^2+1$.
+There are at most $H+2$ steps.  Bezout coefficients are therefore
+bounded, for example, by
+\[
+ (3Q+2)^{H+3}.
+\]
+Indeed a coefficient update is an old coefficient minus a product of
+a quotient and another coefficient, and pair multiplication increases
+the coordinate bound by at most a factor of $3Q$.
+Factorization uses at most $N(\alpha)$ factors and rounds; each
+candidate factor has coordinates bounded by $2N(\alpha)$.
+The cube-extraction box has the same bound.  These coarse bounds are
+all primitive recursive and suffice for coding every invariant by
+bounded searches and finite lists.  The descent itself takes only
+$m(S)$ steps; by \eqref{eq:cubic-descent}, after its first step all
+three coordinate absolute values are below the original $m(S)$.
+
+We have proved the signed cubic statement, and therefore
+\[
+ \forall x,y,z\in\mathbb N_{>0},\qquad x^3+y^3\ne z^3.
+\]
+Replacing $x,y,z$ by $x^k,y^k,z^k$ gives FLT for every positive
+multiple $3k$ of~$3$.  This final substitution is uniform in~$k$,
+since exponentiation itself is primitive recursive.
+
+\subsection{Lean obligations for this proof}
+
+A direct formalization should use a pair type with signed-integer
+coordinates, rather than import a general number-field construction.
+The following are the exact successive obligations.
+
+\begin{enumerate}
+\item Define pair addition, multiplication, conjugation and norm by the
+four displayed formulas.  Prove their ring identities and norm
+multiplicativity by polynomial normalization, and prove
+\eqref{eq:cubic-coordinate-bound} by integer inequalities.
+\item Implement signed nearest-integer division.  Prove the Euclidean
+remainder bound after clearing denominators.  Define the gcd computation
+with explicit norm fuel and prove its Bezout invariant.
+\item Implement bounded irreducible factorization.  Prove primality by
+the Bezout identity and uniqueness by finite cancellation.  Formalize
+the six-unit table and \eqref{eq:cubic-lambda} as coordinate lemmas.
+\item Define the Boolean predicate $V$, the bounded witness extractor
+in \eqref{eq:cubic-extraction}, and the descent function $D$.  The
+core theorem is the concrete implication
+$V(S)=1\Rightarrow V(D(S))=1\land m(D(S))<m(S)$.
+The unit table and polynomial identities above give its arithmetic
+part; integer coprime cube extraction gives its final three roots.
+\item Prove the guarded finite-iteration invariant and derive FLT for
+$3$, then for $3k$ by the exponent law $(x^k)^3=x^{3k}$.
+\item Separately translate these bounded programs, their defining
+equations and their quantifier-free induction instances into the
+chosen object-language presentation of iPRA.  A Lean proof about
+ordinary integers alone does not perform this last step automatically.
+\end{enumerate}
+
+The existing Mathlib declaration
+\texttt{fermatLastTheoremThree} in
+\nolinkurl{Mathlib.NumberTheory.FLT.Three} is a useful independent
+semantic comparison.  Its cyclotomic-field imports are not used as an
+unexamined certificate of iPRA-provability in the argument above.

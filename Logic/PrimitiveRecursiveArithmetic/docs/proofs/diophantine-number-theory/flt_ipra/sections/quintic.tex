@@ -1,0 +1,608 @@
+\section{The quintic specialization: a completely explicit Dirichlet descent}
+\label{sec:five}
+
+This section proves the exponent-five specialization, including both parity
+cases.  Its arithmetic takes place in the fixed quadratic ring
+\[
+ R=\mathbb Z[\varphi],\qquad
+ \varphi^2=\varphi+1,\qquad
+ \varphi=\frac{1+\sqrt5}{2}.
+\]
+The square-root notation is an abbreviation for integer-pair calculations,
+not an assumption that iPRA contains real numbers.  The proof below replaces
+the usual appeal to a least counterexample by a bounded iteration.
+
+\subsection{Arithmetic in the golden quadratic ring}
+
+Represent \(a+b\varphi\) by the integer pair \((a,b)\).  Addition is
+coordinatewise, and multiplication, conjugation, and norm are
+\[
+ (a,b)(c,d)=(ac+bd,\,ad+bc+bd),\qquad
+ \overline{(a,b)}=(a+b,-b),\qquad
+ N(a,b)=a^2+ab-b^2.
+\]
+Direct expansion proves
+\(\alpha\bar\alpha=N(\alpha)\) and
+\(N(\alpha\beta)=N(\alpha)N(\beta)\).
+The norm of a nonzero pair is nonzero: otherwise
+\((2a+b)^2=5b^2\), and cancelling the gcd of \(2a+b\) and \(b\)
+contradicts the fact that a prime dividing a square divides its base.
+All this uses only integer arithmetic.
+
+For a convenient presentation of inequalities we use the ordered quadratic
+field \(\mathbb Q(\sqrt5)\).  It too is an arithmetic coding device:
+the sign of \(A+B\sqrt5\), after clearing positive denominators, is decided
+by the signs of \(A,B\), and, when these have opposite signs, by comparing
+\(A^2\) with \(5B^2\).  Equality in the latter comparison is impossible
+unless \(A=B=0\).  The ordered-field laws follow by multiplying out these
+finite sign cases.  In particular, no principle about arbitrary real
+numbers, completeness, or choice is used.  The elementary inequalities
+\[
+ 2<\sqrt5<3,\qquad \frac32<\varphi<2,\qquad
+ \varphi^{-1}=\varphi-1
+\]
+are verified by squaring positive rational numbers.
+
+\paragraph{Euclidean division.}
+Write \(\alpha/\beta=x+y\varphi\) with rational \(x,y\) and
+\(\beta\ne0\).  Choose nearest integers \(m,n\) by quotient and remainder,
+breaking ties in a fixed direction.  Put
+\(r=x-m\), \(s=y-n\).  Since \(|r|,|s|\le1/2\),
+\[
+ |N(r+s\varphi)|
+ =|r^2+rs-s^2|\le r^2+|rs|+s^2\le\frac34.
+\]
+Consequently
+\[
+ \rho=\alpha-(m+n\varphi)\beta
+ \quad\Longrightarrow\quad
+ |N(\rho)|\le\frac34|N(\beta)|<|N(\beta)|.
+\]
+Thus the ordinary Euclidean algorithm works with the nonnegative integer
+measure \(|N|\).  If its initial second argument has norm magnitude \(M\),
+there are at most \(M+1\) divisions.  Back substitution gives a Bezout
+identity for its gcd.
+
+Here are the elementary consequences, with their constructive content
+made explicit.  An element is a unit exactly when its norm is \(1\) or
+\(-1\), since then \(\bar\alpha/N(\alpha)\) is its inverse.  An irreducible
+element \(\pi\) is prime: if \(\pi\nmid a\), its gcd with \(a\) is a unit,
+so a Bezout identity \(u\pi+va=1\), multiplied by \(b\), proves
+\(\pi\mid b\) whenever \(\pi\mid ab\).  Factorization terminates because
+a factorization into two nonunits splits the positive integer \(|N|\)
+into two factors each at least \(2\).  Uniqueness follows by repeatedly
+using this prime-divisor property and cancelling.
+
+It is useful to explain why this argument need not conceal unbounded
+search.  Let \(\alpha=a+b\varphi\ne0\) and
+\(H=|a|+|b|+1\).  In the positive embedding, both
+\(|\alpha|\) and \(1/|\alpha|\) are less than \(2H\): the first
+bound is immediate, and the second follows from
+\(|N(\alpha)|\ge1\) and \(|\bar\alpha|<2H\).
+The inequality
+\(\varphi^j\ge1+j/2\), proved by ordinary induction, shows that a
+signed exponent \(k\) with \(|k|\le4H\) normalizes a signed associate
+\[
+ 1\le v=\pm\alpha\varphi^k<\varphi.
+\]
+Explicitly, the endpoints \(\varphi^{-4H}|\alpha|<1\) and
+\(\varphi^{4H}|\alpha|>1\) bracket the crossing of \(1\).
+Scanning consecutive exponents and taking the first value at least \(1\)
+gives the required strict upper bound \(\varphi\).
+If \(M=|N(\alpha)|\), then \(|\bar v|\le M\).  Solving for the two
+integer coordinates of \(v\) bounds both by \(3M+6\).
+Therefore, if \(\alpha\) is reducible, a nonunit proper divisor can be
+found among the finitely many pairs in the box
+\([-(3M+6),3M+6]^2\), by checking divisibility and
+\(2\le |N(\delta)|<M\).
+Each quotient is computed by the conjugate formula and a test that its
+two rational coordinates are integers.  This supplies a bounded
+factorization procedure; at most \(M\) nonunit factors are needed.
+One can normalize factors as they are produced.  Thus the preceding
+existence and uniqueness arguments have primitive-recursive
+implementations, with quantifier-free invariants on finite lists.
+
+\paragraph{All units.}
+Every unit is \(\pm\varphi^j\), \(j\in\mathbb Z\).
+For completeness, normalize a unit as above to \(1\le v<\varphi\),
+and write \(v=a+b\varphi\).  If \(N(v)=1\), then
+\[
+ 0\le b=\frac{v-v^{-1}}{\sqrt5}
+ <\frac{\varphi-\varphi^{-1}}{\sqrt5}
+ =\frac1{\sqrt5}<1.
+\]
+Thus \(b=0\), and \(v=1\).  If \(N(v)=-1\), then
+\[
+ 0<b=\frac{v+v^{-1}}{\sqrt5}<1,
+\]
+which is impossible.  For the last strict inequality use
+\(\varphi+\varphi^{-1}=\sqrt5\) and the identity
+\[
+ (\varphi+\varphi^{-1})-(v+v^{-1})
+   =(\varphi-v)\left(1-\frac1{\varphi v}\right)>0.
+\]
+Undoing the normalization proves the assertion.
+In particular, every unit is \(u^5\varphi^r\) for a unit \(u\)
+and a uniquely selected \(r\in\{0,1,2,3,4\}\);
+the sign is absorbed in a fifth power and the exponent is divided by \(5\).
+
+\subsection{A fifth-power extraction lemma}
+
+We need to remove the unit in a coprime factorization.  Reduction modulo
+\(5\) is especially simple:
+\[
+ \varphi^5=3+5\varphi,\qquad
+ (a+b\varphi)^5\equiv a+3b\pmod{5R}.
+\]
+Thus a fifth power is a rational scalar modulo \(5R\).  The coordinate
+pairs of \(1,\varphi,\ldots,\varphi^4\) are
+\[
+ (1,0),\quad(0,1),\quad(1,1),\quad(1,2),\quad(2,3).
+\]
+Suppose \(\alpha=A+B\varphi\), \(5\mid B\), \(5\nmid A\), and
+\(\alpha\bar\alpha=c^5\), where \(\alpha,\bar\alpha\) are coprime in
+\(R\).  Unique factorization shows that each prime multiplicity in
+\(\alpha\) is a multiple of \(5\), since the prime occurs in no factor
+of \(\bar\alpha\).  Hence
+\(\alpha=\varepsilon\delta^5=\varphi^r\gamma^5\).
+Modulo \(5R\), \(\gamma^5\) is a nonzero scalar: a zero scalar
+would make both coordinates of \(\alpha\) divisible by \(5\).
+The displayed table and \(5\mid B\) now force \(r=0\).
+We have proved
+\[
+ \boxed{\quad
+ \alpha\bar\alpha=c^5,\quad
+ (\alpha,\bar\alpha)=1,\quad
+ 5\mid B,\quad5\nmid A
+ \quad\Longrightarrow\quad \alpha=\gamma^5.
+ \quad}
+ \tag{Q1}\label{eq:quintic-extraction}
+\]
+
+Set
+\[
+ F(t,s)=t^4+10t^2s^2+5s^4,\qquad
+ G(t,s)=t^4+50t^2s^2+125s^4.
+\]
+Expansion gives
+\[
+ (t+s\sqrt5)^5=tG(t,s)+5sF(t,s)\sqrt5.
+ \tag{Q2}\label{eq:quintic-expansion}
+\]
+We record the two precise forms of (Q1) that will be used.
+
+\begin{lemma}[Direct coordinates]\label{lem:quintic-direct}
+Let \(P,Q,c\) be positive integers with
+\[
+ (P,Q)=1,\quad P\text{ odd},\quad Q\text{ even},\quad
+ 5\mid Q,\quad5\nmid P,\quad P^2-5Q^2=c^5.
+\]
+Then there are positive coprime integers \(t,s\), with \(t\) odd,
+\(s\) even and \(5\nmid t\), such that
+\[
+ P=tG(t,s),\qquad Q=5sF(t,s).
+ \tag{Q3}\label{eq:quintic-direct}
+\]
+\end{lemma}
+
+\begin{proof}
+Put \(\alpha=P+Q\sqrt5=(P-Q)+2Q\varphi\).
+The integer \(\gcd(P^2-5Q^2,2P)\) is \(1\):
+an odd prime common divisor would divide \(P\) and \(5Q^2\),
+contrary to \((P,Q)=1\) and \(5\nmid P\), and the norm is odd.
+A Bezout identity between the product
+\(\alpha\bar\alpha=P^2-5Q^2\) and the sum
+\(\alpha+\bar\alpha=2P\) gives a Bezout identity between
+\(\alpha\) and \(\bar\alpha\).  Indeed
+\(u\alpha\bar\alpha+v(\alpha+\bar\alpha)=1\) becomes
+\((u\bar\alpha+v)\alpha+v\bar\alpha=1\).
+The coordinate hypotheses of (Q1) hold, so \(\alpha=\gamma^5\).
+
+Write \(\gamma=a+b\varphi\).  Modulo \(2R\) one has
+\(\gamma^4=\gamma\), by checking the four coordinate pairs, and hence
+\(\gamma^5=\gamma^2\).  The second coordinate of
+\(\gamma^2\) is \(b^2\equiv b\pmod2\).
+The second coordinate of \(\alpha\) is \(2Q\), so \(b\) is even.
+Thus \(\gamma=t+s\sqrt5\) with integers
+\(s=b/2\), \(t=a+b/2\).
+Its norm is odd, so \(t,s\) have opposite parity.
+
+Formula (Q2) proves (Q3).  Its two coefficient polynomials have positive
+even-power terms.  Since \(P,Q>0\), both \(t,s\) are positive.
+If \(t\) were even and \(s\) odd, \(5sF(t,s)\) would be odd,
+contrary to the parity of \(Q\).  Thus \(t\) is odd and \(s\) even.
+The first equation modulo \(5\) gives \(5\nmid t\).
+
+Finally, \(\gamma,\bar\gamma\) are coprime: a Bezout identity between
+their fifth powers is also a Bezout identity between them after
+absorbing fourth powers into the coefficients.  If a rational prime
+divided both \(t,s\), it would divide both \(\gamma,\bar\gamma\);
+that prime is a nonunit of \(R\), since its norm is its square.
+This is impossible.  Hence \((t,s)=1\).
+\end{proof}
+
+\begin{lemma}[Half-integral coordinates]\label{lem:quintic-half}
+Let \(P,Q,c\) be positive integers with
+\[
+ (P,Q)=1,\quad P,Q\text{ odd},\quad
+ 5\mid Q,\quad5\nmid P,\quad P^2-5Q^2=4c^5.
+\]
+Then there are positive coprime odd integers \(t,s\), with \(5\nmid t\),
+such that
+\[
+ 16P=tG(t,s),\qquad16Q=5sF(t,s).
+ \tag{Q4}\label{eq:quintic-half}
+\]
+\end{lemma}
+
+\begin{proof}
+Take
+\(\alpha=(P+Q\sqrt5)/2=(P-Q)/2+Q\varphi\).
+Its norm is \(c^5\), and its trace is \(P\).
+The gcd of these two integers is \(1\), because a prime dividing both
+would divide \(P\) and \(5Q^2\); also \(P\) is odd.
+The product-and-sum Bezout argument again proves that
+\(\alpha,\bar\alpha\) are coprime.  Its second coordinate is divisible
+by \(5\) and its first is not.  Thus (Q1) gives \(\alpha=\gamma^5\).
+
+Write \(\gamma=a+b\varphi=(t+s\sqrt5)/2\), where
+\(s=b\), \(t=2a+b\).  The modulo-two calculation in the preceding
+proof shows that \(b\) is odd, since the second coordinate of
+\(\alpha\) is \(Q\).  Hence \(t,s\) are odd.
+Multiplying \(\alpha=\gamma^5\) by \(32\) and applying (Q2) gives
+(Q4).  Positivity of \(P,Q\) gives positivity of \(t,s\), and the
+first coefficient modulo \(5\) gives \(5\nmid t\).
+If an odd prime divided both \(t,s\), then \(\gamma\) and
+\(\bar\gamma\) would both be divisible by that prime in \(R\);
+the quotients remain in \(R\), because division of both odd
+coordinates by an odd integer preserves their common parity.
+Coprimality of the conjugates excludes this.  The prime \(2\) is
+excluded because \(t,s\) are odd.
+\end{proof}
+
+The witnesses in these two lemmas can, if desired, be selected directly
+by searching
+\[
+ 1\le t,s\le16(P+Q+1).
+ \tag{Q5}\label{eq:quintic-root-bound}
+\]
+The coefficient equations just proved place the witnesses inside this
+box.  Thus no unbounded search for an algebraic fifth root occurs in
+the actual descent.
+
+\subsection{Two impossible families}
+
+For \(h\ge0\), define an \emph{odd state} to be positive integers
+\(t,s,w\) satisfying
+\[
+ \begin{gathered}
+ (t,s)=1,\quad t,s\text{ odd},\quad5\mid s,\quad5\nmid t,\\
+ 5^h sF(t,s)=16w^5.
+ \end{gathered}
+ \tag{Q6}\label{eq:quintic-oddstate}
+\]
+Define an \emph{even state} by
+\[
+ \begin{gathered}
+ (t,s)=1,\quad t\text{ odd},\quad s\text{ even},
+ \quad5\mid s,\quad5\nmid t,\\
+ 2\cdot5^h sF(t,s)=w^5.
+ \end{gathered}
+ \tag{Q7}\label{eq:quintic-evenstate}
+\]
+The coefficient \(2\) in the even family stays fixed throughout the
+descent; no additional parameter for its exponent is necessary.
+
+The gcd calculations used below are
+\[
+ (s,F(t,s))=1,\qquad (5,F(t,s))=1.
+ \tag{Q8}\label{eq:quintic-gcd}
+\]
+Indeed \(F(t,s)\equiv t^4\pmod s\) and
+\(F(t,s)\equiv t^4\pmod5\).
+For odd \(t,s\), \(16\mid F(t,s)\), since odd fourth powers are
+\(1\pmod {16}\) and odd squares are \(1\) or \(9\pmod {16}\).
+If \(t\) is odd and \(s\) even, \(F(t,s)\) is odd.
+
+In an odd state, divide \(F\) by \(16\) and use (Q8).
+The two coprime positive factors
+\(5^h s\) and \(F(t,s)/16\) have product \(w^5\); therefore
+\[
+ 5^h s=u^5,\qquad F(t,s)=16v^5
+ \tag{Q9}\label{eq:quintic-oddsplit}
+\]
+for positive integers \(u,v\).
+In an even state the corresponding conclusion is
+\[
+ 2\cdot5^h s=u^5,\qquad F(t,s)=v^5.
+ \tag{Q10}\label{eq:quintic-evensplit}
+\]
+These are ordinary integer prime-multiplicity arguments, with bounded
+factorization or bounded searches for \(u,v\).
+
+Now use the identity
+\[
+ (t^2+5s^2)^2-5(2s^2)^2=F(t,s).
+ \tag{Q11}\label{eq:quintic-normidentity}
+\]
+For an odd state set \(P=(t^2+5s^2)/2\), \(Q=s^2\).
+Both are odd, their gcd is \(1\), \(5\mid Q\), \(5\nmid P\), and
+\(P^2-5Q^2=4v^5\).
+Here \((P,s^2)=1\) follows from \((t,s)=1\), and the other claims
+follow directly by reduction modulo \(4\) and \(5\).
+Lemma~\ref{lem:quintic-half} produces positive coprime odd \(t',s'\)
+with \(5\nmid t'\) and
+\[
+ 16s^2=5s'F(t',s').
+ \tag{Q12}\label{eq:quintic-oddnext}
+\]
+For an even state set \(P=t^2+5s^2\), \(Q=2s^2\).
+Then \(P\) is odd, \(Q\) even, they are coprime, \(5\mid Q\),
+\(5\nmid P\), and \(P^2-5Q^2=v^5\).
+Lemma~\ref{lem:quintic-direct} gives positive coprime \(t',s'\),
+\(t'\) odd, \(s'\) even, \(5\nmid t'\), and
+\[
+ 2s^2=5s'F(t',s').
+ \tag{Q13}\label{eq:quintic-evennext}
+\]
+In either case \(5\mid s'\).  The left side is divisible by \(25\);
+cancelling one factor \(5\) on the right shows
+\(5\mid s'F(t',s')\), while \(5\nmid F(t',s')\).
+
+The new second coordinate is strictly smaller:
+\[
+ \boxed{s'<s.}
+ \tag{Q14}\label{eq:quintic-decrease}
+\]
+In fact \(F(t',s')>5s'^4\), because \(t'>0\).
+Writing either (Q12) or (Q13) as
+\(Ks^2=5s'F(t',s')\), with \(K=16\) or \(2\), gives
+\(25s'^5<Ks^2\).
+If \(s'\ge s\), positivity gives
+\(s^2\le s'^2\le s'^5\), contradicting \(K<25\).
+
+Finally, square the first equation in (Q9) or (Q10).
+For the odd state, (Q12) gives
+\[
+ 5^{2h+1}s'F(t',s')
+ =16(5^h s)^2
+ =16(u^2)^5.
+\]
+For the even state, (Q13) gives
+\[
+ 2\cdot5^{2h+1}s'F(t',s')
+ =4\cdot5^{2h}s^2
+ =(u^2)^5.
+\]
+Thus the successor is a state of the same type with
+\[
+ (h,t,s,w)\longmapsto(2h+1,t',s',u^2)
+ \quad\hbox{and}\quad0<s'<s.
+ \tag{Q15}\label{eq:quintic-transition}
+\]
+
+Neither state family has a member.  To see this in precisely the form
+needed for iPRA, totalize the successor by returning a fixed default
+on invalid input, and otherwise use the bounded searches described
+above.  Starting from a purported state with second coordinate \(s_0\),
+iterate this primitive-recursive function \(s_0\) times.
+Quantifier-free induction on the iteration number proves that each
+iterate remains a state and that
+\(s_i+i\le s_0\).
+At \(i=s_0\) this gives \(s_i\le0\), whereas every state has
+\(s_i>0\).  This is a finite contradiction, not an invocation of
+a well-ordering principle for arbitrary predicates.
+
+\subsection{A fifth-power Fermat equation enters one of the families}
+
+Suppose nonzero integers satisfy \(a^5+b^5=c^5\).
+Cancelling their common gcd gives a pairwise coprime solution.
+
+\paragraph{The modulo-25 preliminary.}
+A fifth power modulo \(25\) is one of
+\(0,1,7,-7,-1\); the nonzero four residues correspond exactly to
+bases not divisible by \(5\).
+No sum of three members of \(\{1,7,-7,-1\}\) is \(0\pmod {25}\).
+For instance, their pairwise sums are
+\(0,\pm2,\pm6,\pm8,\pm14\), none of which is
+\(1,7,-7,-1\pmod {25}\).
+Applying this to \(a^5+b^5+(-c)^5=0\) shows that one base is divisible
+by \(5\).
+
+Move that term to the right, changing signs if necessary, to obtain
+\[
+ x^5+y^5=5^5z^5,\qquad
+ (x,y)=1,\qquad xyz\ne0,\qquad z>0.
+ \tag{Q16}\label{eq:quintic-normalized}
+\]
+Neither \(x\) nor \(y\) is divisible by \(5\).
+They cannot both be even.
+
+\paragraph{Opposite parity.}
+If \(x,y\) have opposite parity, put
+\(p=x+y\), \(q=x-y\).  Then \(p,q\) are odd,
+\((p,q)=1\), and
+\[
+ p(p^4+10p^2q^2+5q^4)=16\cdot5^5z^5.
+\]
+The quartic factor is positive, so \(p>0\).
+Modulo \(5\) the left side is \(p^5\), hence \(p=5r\) with \(r>0\).
+Coprimality implies \(5\nmid q\) and \((q,r)=1\);
+in particular \(q\ne0\).
+Writing \(q_0=|q|\), we get positive coprime odd \(q_0,r\), with
+\(5\nmid q_0\), and
+\[
+ rG(q_0,r)=16\cdot5^3z^5.
+ \tag{Q17}\label{eq:quintic-core}
+\]
+
+\paragraph{Both odd.}
+If \(x,y\) are odd, put
+\(p=(x+y)/2\), \(q=(x-y)/2\).
+These are coprime and have opposite parity, and
+\[
+ 2p(p^4+10p^2q^2+5q^4)=5^5z^5.
+\]
+Again \(p>0\) and \(p=5r\) with \(r>0\).
+The right side is even, so \(z=2z_0\) with \(z_0>0\).
+Substitution and cancellation give exactly
+\[
+ rG(|q|,r)=16\cdot5^3z_0^5.
+\]
+If \(r\) were odd, \(q\) would be even, and the left side would be
+odd, a contradiction.  Thus \(r\) is even and \(|q|\) odd.
+Again \((|q|,r)=1\), \(5\nmid q\), and \(q\ne0\).
+
+We have therefore reached the common core
+\[
+ rG(q,r)=16\cdot5^3Z^5,\qquad
+ q,r,Z>0,\quad (q,r)=1,\quad q\text{ odd},\quad5\nmid q,
+ \tag{Q18}\label{eq:quintic-unified-core}
+\]
+where \(r\) is either odd or even.
+We now spell out the last allocation of coprime factors.
+
+The factors \(r,G(q,r)\) are coprime, since
+\(G(q,r)\equiv q^4\pmod r\), and \(5\nmid G(q,r)\).
+If \(r\) is odd, \(16\mid G(q,r)\); this follows from
+odd fourth powers modulo \(16\) and
+\(50\equiv2,\ 125\equiv13\pmod {16}\).
+Thus
+\[
+ (25r)\frac{G(q,r)}{16}=(5Z)^5
+\]
+is a product of coprime positive integers, and so
+\[
+ 25r=A^5,\qquad G(q,r)=16B^5.
+ \tag{Q19}\label{eq:quintic-initial-odd-split}
+\]
+If \(r\) is even, \(G(q,r)\) is odd; hence
+\[
+ (50r)G(q,r)=(10Z)^5
+\]
+is a coprime factorization and
+\[
+ 50r=A^5,\qquad G(q,r)=B^5.
+ \tag{Q20}\label{eq:quintic-initial-even-split}
+\]
+Both cases imply \(5\mid r\): in the first,
+\(5\mid A\) and \(r=125(A/5)^5\); in the second,
+\(2r=125(A/5)^5\), which has the same consequence.
+
+Use the second norm identity
+\[
+ G(q,r)=(q^2+25r^2)^2-5(10r^2)^2.
+ \tag{Q21}\label{eq:quintic-initial-norm}
+\]
+For odd \(r\), take
+\[
+ P=(q^2+25r^2)/2,\qquad Q=5r^2.
+\]
+Then \(P,Q\) are odd, positive, and coprime,
+\(5\mid Q\), \(5\nmid P\), and
+\(P^2-5Q^2=4B^5\).
+The coprimality is immediate from \((q,r)=1\), \(5\nmid q\),
+and the oddness of \(P\).
+Lemma~\ref{lem:quintic-half} gives positive coprime odd \(t,s\),
+\(5\nmid t\), with
+\[
+ 16r^2=sF(t,s).
+\]
+Since \(5\mid r\) and \(F(t,s)\equiv t^4\pmod5\), we have \(5\mid s\).
+Squaring \(25r=A^5\) proves
+\[
+ 5^4sF(t,s)=16(A^2)^5.
+\]
+This is an odd state with \(h=4\).
+
+For even \(r\), take
+\(P=q^2+25r^2\), \(Q=10r^2\).
+These are coprime with \(P\) odd and \(Q\) even;
+\(5\mid Q\), \(5\nmid P\), and
+\(P^2-5Q^2=B^5\).
+Lemma~\ref{lem:quintic-direct} gives positive coprime \(t,s\),
+\(t\) odd, \(s\) even, \(5\nmid t\), and
+\[
+ 2r^2=sF(t,s).
+\]
+Again \(5\mid s\).  Squaring \(50r=A^5\) yields
+\[
+ 2\cdot5^4sF(t,s)=(A^2)^5,
+\]
+an even state with \(h=4\).
+
+Both families were proved impossible.  This contradiction establishes:
+\[
+ \boxed{\forall a,b,c>0,\qquad a^5+b^5\ne c^5.}
+ \tag{Q22}\label{eq:flt-five}
+\]
+
+\subsection{Primitive-recursive and Lean audit for the quintic proof}
+
+All searches in the proof have explicit finite bounds.
+Integer factorization can use trial division through the input.
+The Euclidean algorithm in \(R\) has at most one more iteration than
+the initial absolute norm.  Normalization of an element with coordinate
+height \(H\) searches signed exponents between \(-4H\) and \(4H\).
+Factorization in \(R\) searches divisor coordinates bounded by \(3M+6\),
+where \(M\) is its absolute norm.  Algebraic-root extraction used by
+the descent can instead search the box (Q5).
+A fifth root of a positive integer \(D\) is sought only in \([1,D]\).
+The main descent is iterated exactly \(s_0\) times.
+
+For an especially simple envelope on the main states, if their four
+coordinates \(h,t,s,w\) are at most \(B\ge1\), the next coordinates
+are bounded by
+\[
+ T(B)=2^{100(B+1)}.
+\]
+Indeed \(h'=2h+1\), the two norm coordinates are bounded by
+\(6(B+1)^2\), (Q5) bounds \(t',s'\) polynomially in \(B\), and
+\(w'=u^2\le(2\cdot5^h s)^2\).
+Iterating \(T\) exactly \(s_0\) times supplies one primitive-recursive
+bound for the complete main-state trace.
+For the internal Euclidean calculations, one may bound a coordinate
+height after each division by
+\(E(H)=32(H+1)^3\), and iterate \(E\) for the already bounded
+number of divisions.  Efficiency is irrelevant; these bounds certify
+primitive recursiveness.
+
+A Lean completion should use integer-pair code for \(R\), not
+\texttt{Real.sqrt}, and should isolate the following interfaces:
+\[
+\begin{array}{ll}
+\texttt{goldenEuclideanStep}&
+  \text{explicit quotient, remainder, and norm decrease},\\
+\texttt{goldenUnitNormalForm}&
+  u=\pm\varphi^j\text{ with a bounded signed exponent},\\
+\texttt{goldenFifthExtraction}&
+  \text{the coprime extraction implication (Q1)},\\
+\texttt{fifthCoordinatesDirect}&
+  \text{the direct bounded coordinate lemma},\\
+\texttt{fifthCoordinatesHalf}&
+  \text{the half-integral coordinate lemma},\\
+\texttt{fifthOddStep},\ \texttt{fifthEvenStep}&
+  \text{the transitions (Q15)},\\
+\texttt{fifthInitialState}&
+  \text{the finite normalization (Q16)--(Q21)}.
+\end{array}
+\]
+The state predicates are decidable combinations of integer equalities,
+inequalities, gcd, parity, and remainders.
+Each interface should be proved as a quantifier-free correctness
+statement about a specified primitive-recursive selector.
+A final quantifier-free invariant on the bounded trace gives the iPRA
+derivation.  Proving the same mathematical implication in Lean's
+ambient logic is a separate, weaker deliverable than exhibiting that
+object-theoretic iPRA derivation.
+
+For orientation, the independently available source tree
+\texttt{isomorphic-ai/fermat}, under
+\texttt{Fermat/Five/}, separates the historical argument into
+\texttt{Coordinates}, \texttt{PowerExtraction}, \texttt{Initial}, and
+\texttt{Descent} modules.  It was inspected as a comparison source,
+not compiled as part of this package.  Its ambient use of real embeddings,
+choice, or least-counterexample formulations must not be counted as
+an iPRA formalization.  The explicit bounded normalization and fixed-length
+iteration above describe the replacements required here.
+

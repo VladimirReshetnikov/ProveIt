@@ -1,0 +1,209 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs,array,longtable}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+urlcolor=blue!45!black,pdfauthor={Research prepared for Vladimir Reshetnikov},
+pdftitle={Fermat Specializations in Intuitionistic Primitive Recursive Arithmetic}]{hyperref}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\FLT}{\operatorname{FLT}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{0.18em}
+\setlength{\parindent}{1.2em}
+\renewcommand{\arraystretch}{1.2}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Fermat specializations in $\ipra$}
+\fancyhead[R]{\small Exponents $3,4,5,7$ and their multiples}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\numberwithin{equation}{section}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{0.6in}
+{\Large\scshape Constructive number theory\par}
+\vspace{0.5in}
+{\Huge\bfseries Fermat specializations\par}
+\vspace{0.18in}
+{\LARGE in intuitionistic primitive\par recursive arithmetic\par}
+\vspace{0.4in}
+{\Large Explicit proofs for $3,4,5,7$\par and every positive multiple\par}
+\vspace{0.5in}
+{\large Research prepared for Vladimir Reshetnikov\par}
+\vspace{0.12in}
+{\large 15 November 2026\par}
+\vfill
+\begin{minipage}{0.89\textwidth}
+\textbf{Main result.} For every $n\geq3$ such that
+$3\mid n$, $4\mid n$, $5\mid n$, or $7\mid n$, the equation
+$x^n+y^n=z^n$ has no positive integral solution. The proofs use finite
+descent, explicit primitive recursive constructions, and quantifier-free
+induction. The covered exponents occupy $276$ of the $420$ residue
+classes, a proportion $23/35$.
+
+\medskip
+\textbf{Formalization status.} The mathematical arguments and their
+$\ipra$ audits are developed in full. The accompanying Lean sources give
+definitions, interfaces, and exact internal proof targets; they are an
+uncompiled blueprint, not a completed Lean formalization.
+\end{minipage}
+\vspace*{0.5in}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+
+\begin{abstract}
+We give human-readable constructive proofs of Fermat's last theorem for
+exponents $3$, $4$, $5$, and $7$, and prove uniformly that every positive
+multiple of one of these exponents is covered. The quartic theorem is
+strengthened to the impossibility of $x^4+y^4=z^2$. The cubic proof uses
+explicit Eisenstein pairs; the quintic proof uses the golden quadratic
+ring, including a bounded normalization of its infinitely many units; the
+seventh-power proof uses an integer quartic descent with Lebesgue's
+essential correction included. Each descent is converted to a finite
+iteration or bounded Boolean induction. We specify the language, axioms,
+decidable encodings, search bounds, and induction invariants needed by
+intuitionistic primitive recursive arithmetic. Finally we give concrete
+Lean definitions and a dependency plan targeting ProveIt's actual
+\texttt{Prf PRAAx} derivations. Exact algebra checks support the
+transcription; no finite experiment is presented as a proof of FLT, and
+no completed Lean or internal proof certificate is claimed.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Results and proof architecture}
+
+The target is Fermat's last theorem for a substantial, explicitly
+described family of exponents, under a restricted constructive arithmetic.
+The family proved here is
+\[
+ \mathcal E=\{n\geq3:3\mid n\ \vee\ 4\mid n\ \vee\ 5\mid n\ \vee\ 7\mid n\}.
+\]
+For every $n\in\mathcal E$ we prove the full assertion, with no upper
+bound on the positive integers $x,y,z$. The exponent family is uniform:
+it is one first-order theorem with variable $n$, not merely a metatheoretic
+list of separate statements. Its exact closure proof is given in
+Section~\ref{sec:coverage}.
+
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.12\textwidth}>{\raggedright\arraybackslash}p{0.54\textwidth}>{\raggedright\arraybackslash}p{0.23\textwidth}}
+\toprule
+Exponent & Main construction & Descent parameter\\
+\midrule
+$3$ & Factor $x+y\omega$ in the explicit pair ring;
+resolve all six possible units; extract three coprime cubes. &
+Absolute value of the coordinate divisible by $3$.\\
+$4$ & Apply primitive Pythagorean parametrization twice to
+$x^4+y^4=z^2$. & The positive right-hand square root $z$.\\
+$5$ & Extract fifth powers in $\Z[\varphi]$; use two parity-preserving
+families and explicit unit normalization. & The positive coordinate $s$.\\
+$7$ & Convert the Fermat equation to an integer quartic;
+treat all four factor allocations, including the corrected branch. &
+An integer $a\geq1$, decreasing by one.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The classical arguments are reorganized for the weaker theory. In
+particular, a sentence such as ``take a least solution'' does not serve as
+the final justification. We give a total primitive recursive transition,
+or a finite scan, and an explicit quantifier-free induction invariant.
+The number of iterations is bounded before the iteration begins.
+
+The results also exclude nonzero signed and rational solutions for the
+covered exponents, and yield mixed-exponent corollaries. These extensions
+are elementary substitutions and denominator clearing. No claim is made
+about general FLT in $\ipra$, about every regular prime, or about
+unprovability of the cases outside $\mathcal E$.
+
+The mathematical sources serve as reference and independent comparison:
+the direct cubic and quartic routes agree with familiar specializations
+represented in Mathlib \cite{mathlib3,mathlib4}; the quintic argument is
+compared with an inspected Lean source tree \cite{five-source}; and the
+seventh-power argument reconstructs both Lebesgue's original paper and its
+correction \cite{Lebesgue1840,Lebesgue1840Add}. All specialized lemmas
+needed by the proofs are established below.
+
+\input{sections/foundations.tex}
+\input{sections/quartic.tex}
+\input{sections/cubic.tex}
+\input{sections/quintic.tex}
+\input{sections/extensions.tex}
+\input{sections/coverage.tex}
+\input{sections/formalization.tex}
+
+\clearpage
+\begin{thebibliography}{9}
+
+\bibitem{proveit}
+Vladimir Reshetnikov and contributors,
+\emph{ProveIt: Concise presentations of intuitionistic primitive recursive
+arithmetic}, snapshot
+\texttt{bb4427b10219ad61e0d2875fdde04bcd23b47ec6}.
+Inspected modules include \texttt{Syntax.lean}, \texttt{Deduction.lean},
+\texttt{PR.lean}, \texttt{TeqRec.lean}, and
+\texttt{NativeBiInterpretation.lean}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/bb4427b10219ad61e0d2875fdde04bcd23b47ec6/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA}.
+
+\bibitem{mathlib3}
+The Mathlib community,
+\emph{Mathlib.NumberTheory.FLT.Three}, documentation and source for
+\texttt{fermatLastTheoremThree}.
+\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/FLT/Three.html}.
+Consulted 15 November 2026; used as a semantic comparison, not as an
+internal $\ipra$ derivation.
+
+\bibitem{mathlib4}
+The Mathlib community,
+\emph{Mathlib.NumberTheory.FLT.Four}, documentation and source for
+\texttt{not\_fermat\_42} and \texttt{fermatLastTheoremFour}.
+\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/FLT/Four.html}.
+Consulted 15 November 2026.
+
+\bibitem{five-source}
+Contributors to \texttt{isomorphic-ai/fermat},
+\emph{Fermat/Five}, including the modules \texttt{Coordinates},
+\texttt{PowerExtraction}, \texttt{Initial}, and \texttt{Descent}.
+Snapshot \texttt{07b35d10984632caa14b1af26ec5dec2363ee920}.
+\url{https://github.com/isomorphic-ai/fermat/tree/07b35d10984632caa14b1af26ec5dec2363ee920/Fermat/Five}.
+Inspected as a comparison source; not compiled in this package.
+
+\bibitem{Lebesgue1840}
+V.-A. Lebesgue,
+\emph{D\'emonstration de l'impossibilit\'e de r\'esoudre l'\'equation
+$x^7+y^7+z^7=0$ en nombres entiers},
+Journal de math\'ematiques pures et appliqu\'ees, first series,
+vol.~5 (1840), pp.~276--279.
+\url{https://www.numdam.org/item/JMPA_1840_1_5__276_0.pdf}.
+
+\bibitem{Lebesgue1840Add}
+V.-A. Lebesgue,
+\emph{Addition \`a la note sur l'\'equation $x^7+y^7+z^7=0$},
+Journal de math\'ematiques pures et appliqu\'ees, first series,
+vol.~5 (1840), pp.~348--349.
+\url{https://www.numdam.org/item/JMPA_1840_1_5__348_0.pdf}.
+This correction supplies a factor-allocation case missing from the
+original proof.
+
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,332 @@
+\section{A concrete path to complete Lean formalization}
+\label{sec:formalization}
+
+\subsection{Three distinct levels of completion}
+
+The mathematical proofs in this paper are complete human-readable
+arguments, with their computation and induction bounds given explicitly.
+The supplied Lean files are an implementation blueprint. They have not
+been compiled in this environment, and this package contains no finished
+Lean term proving the four base cases or their internal $\ipra$
+derivations. This distinction is part of the deliverable, not an implicit
+assumption about a future formalization.
+
+There are three levels to keep separate:
+\begin{enumerate}
+\item \textbf{Arithmetic semantics.} Prove the displayed integer identities,
+number-theoretic lemmas, and FLT assertions in Lean's ordinary logic.
+\item \textbf{Programs and restricted induction.} Represent every numerical
+operation by an explicit primitive recursive code, and identify every
+induction formula as quantifier free. A termination proof alone is not
+enough to establish this level.
+\item \textbf{An internal derivation.} Construct an inhabitant of
+\texttt{Prf PRAAx [] sentence} in ProveIt's actual syntax, using only
+the theory's defining equations and allowed rules.
+\end{enumerate}
+An ordinary Lean theorem at level 1 does not automatically give level 3.
+Even an ambient proof using no call to \texttt{classical} would not establish
+that its induction is restricted to the induction scheme of $\ipra$.
+
+\subsection{The exact repository target}
+
+The inspected ProveIt snapshot is
+\begin{center}\small\ttfamily
+bb4427b10219ad61e0d2875fdde04bcd23b47ec6.
+\end{center}
+Its root toolchain is Lean \texttt{v4.32.0}, and its Mathlib dependency is
+\texttt{v4.32.0}. The relevant modules are:
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.31\textwidth}>{\raggedright\arraybackslash}p{0.61\textwidth}}
+\toprule
+Module under \texttt{ConciseIPRA} & Role verified in the source\\
+\midrule
+\texttt{Syntax} & Scoped terms, formulas, substitution, and the predicate
+\texttt{Fm.QF}.\\
+\texttt{Deduction} & Intuitionistic derivations \texttt{Prf}, including
+quantifier rules and equality substitution.\\
+\texttt{PR} & Function codes \texttt{PR}, terms \texttt{PTm}, the theory
+\texttt{PRAAx}, and the rule \texttt{PRA.qfInd}.\\
+\texttt{NativeBiInterpretation} & The equivalence
+\texttt{pra\_iff\_native}, which translates a supplied internal proof.\\
+\texttt{TeqRec} & A derived primitive recursor in the iterator language,
+useful if implementing directly in the scalar core.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The snapshot and the inspected blob hashes are recorded in
+\texttt{evidence/repository\_snapshot.json}. No result about FLT has been
+assumed merely because these foundational modules are present.
+
+The file \texttt{lean/ObjectLanguageTargets.lean} defines explicit codes
+for addition, multiplication, and exponentiation using
+\texttt{PR.comp} and \texttt{PR.prec}. The convention is
+\[
+ \operatorname{addCode}(n,x)=n+x,\quad
+ \operatorname{mulCode}(n,x)=nx,\quad
+ \operatorname{powCode}(n,x)=x^n;
+\]
+the recursion argument is always first, as required by the repository.
+It then builds the actual formula
+\[
+ \operatorname{fixedSentence}(d)=
+ \forall x\,\forall y\,\forall z\,
+ \bigl(x\ne0\to y\ne0\to z\ne0\to
+            x^d+y^d=z^d\to\bot\bigr)
+\]
+using \texttt{Fm.eq}, \texttt{Fm.imp}, \texttt{Fm.bot}, and
+\texttt{Fm.all}. Its definition
+\[
+ \texttt{InternalFLT d}
+ :=\texttt{Prf PRAAx [] (fixedSentence d)}
+\]
+is the precise type of the missing formal proof object. It is not a
+synonym for an ambient Lean proposition about natural numbers.
+
+The uniform formula uses a free exponent, a nonzero guard, and a
+disjunction of the four formulas $\exists k\,dk=n$. A nonzero multiple of
+one of $3,4,5,7$ is automatically at least $3$, so this is equivalent to
+the stated main family. The bound for selecting $k$ is $k\leq n$.
+The code also gives the exact conditional translation to
+\texttt{NPrf [] (NFm.ofPRA sentence)} using
+\texttt{pra\_iff\_native}. This translation assumes an actual internal
+derivation as its input; it supplies none of the arithmetic work.
+
+\subsection{Required numerical definitions}
+
+The file \texttt{lean/ArithmeticBlueprint.lean} records the semantic
+definitions. The internal version should implement the same operations
+on numerical codes, in the following order.
+
+\paragraph{Natural arithmetic.}
+Define truncated subtraction, the zero test, comparison, quotient and
+remainder with a prescribed value at divisor zero, bounded sums and
+products, and a first-success bounded selector. For a predicate
+$\chi(i,\vec a)$, the selector returns the least $i\leq B$ with
+$\chi(i,\vec a)=1$, together with a success flag. Its invariant, after
+scanning $0,\ldots,j$, states that the returned candidate is either the
+least success in that interval or the flag is zero and all those tests
+are zero. The latter bounded universal is encoded by a product. The
+invariant is therefore quantifier free after the definitions are expanded.
+
+\paragraph{Signed arithmetic and tuples.}
+Use the signed code and pairing function from
+Section~\ref{sec:foundations}; implement addition, multiplication, negation,
+absolute value, and sign by finite case splits. Prove that the explicit
+operations satisfy the ring identities. A code for an integer is not a
+quantifier over a new infinite sort: every statement expands to a numerical
+formula. Rational quadratic coordinates used in the quintic proof can be
+stored as integer numerators with positive integer denominators, and all
+comparisons can be made after cross multiplication.
+
+\paragraph{Divisibility and roots.}
+Define the gcd computation with its clock, its Bezout accumulator, prime
+testing, valuation at nonzero input, finite factor lists, and an exact-root
+selector. For exponent $e\geq1$ the root selector only scans $0,\ldots,N$.
+Its correctness condition is a finite equality test. Its success in the
+proof follows from the coprime-factorization lemma, not from a numerical
+experiment. On the few invalid inputs where a valuation is not defined
+mathematically, the code returns a specified default, and every theorem
+has an explicit nonzero guard.
+
+\paragraph{The two quadratic pair rings.}
+Define multiplication, conjugation, norm, rational quotient coordinates,
+nearest-integer rounding, and a clocked gcd for each pair ring. Prove norm
+multiplicativity by expanding polynomial expressions. The Eisenstein norm
+is positive definite, so a norm bound directly bounds coordinates. The
+golden norm is indefinite, so one must first implement the bounded unit
+normalization from Section~\ref{sec:five}. Omitting this difference would
+invalidate the bounded-factorization claim for the quintic case.
+
+\subsection{State predicates and the central correctness contracts}
+
+Here are the complete mathematical contents of the main state predicates.
+They should be Boolean functions on encoded tuples; the corresponding
+Lean predicates in the blueprint are readable specifications.
+
+\begin{center}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.14\textwidth}>{\raggedright\arraybackslash}p{0.65\textwidth}>{\raggedright\arraybackslash}p{0.11\textwidth}}
+\toprule
+State & Predicate, in addition to the displayed equation & Rank\\
+\midrule
+Cubic $(x,y,z)$ & Nonzero signed pairwise coprime entries;
+$x^3+y^3+z^3=0$; $3\mid z$, $3\nmid xy$. & $|z|$\\
+Quartic $(x,y,z)$ & Positive entries; $\gcd(x,y)=1$;
+$x^4+y^4=z^2$. & $z$\\
+Quintic odd $(h,t,s,w)$ & $h\geq0$; $t,s,w>0$;
+$\gcd(t,s)=1$; $t,s$ odd; $5\mid s$, $5\nmid t$;
+$5^h sF(t,s)=16w^5$. & $s$\\
+Quintic even $(h,t,s,w)$ & Same positivity and coprimality;
+$t$ odd, $s$ even; $5\mid s$, $5\nmid t$;
+$2\cdot5^h sF(t,s)=w^5$. & $s$\\
+Septimal $(a,P,Q,R)$ & $a\geq1$; positive odd pairwise coprime
+$P,Q,R$; equation \eqref{eq:seven-quartic}. & $a$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For each of the first four rows, construct a total selector $D$ and prove
+\[
+ \chi(s)=1\quad\Longrightarrow\quad
+       \chi(D(s))=1\ \wedge\ r(D(s))+1\leq r(s).
+\tag{C}
+\]
+The object-level proof of (C) consists exactly of the corresponding
+descent section. Invalid states return a default and do not enter its
+hypotheses. The final contradiction is the shared quantifier-free
+invariant (I) from Lemma~\ref{lem:clocked}.
+
+For the septimal row one may also use the simpler fixed-box Boolean
+\[
+ \operatorname{bad7}(a,M)=
+ \max_{1\leq P,Q,R\leq M}\chi_{D_a}(P,Q,R).
+\]
+Here ``max'' means an explicitly nested finite Boolean fold. Prove
+$\operatorname{bad7}(1,M)=0$ and
+$\operatorname{bad7}(a+1,M)=0$ from
+$\operatorname{bad7}(a,M)=0$ for $a\geq1$. The fact that each new
+coordinate is at most the old $R$ keeps the same $M$ throughout.
+The induction formula is the literal equation
+$\operatorname{bad7}(a+1,M)=0$.
+
+In the natural-number implementation of the quartic polynomial, avoid
+truncated subtraction. Use the equivalent equality
+\[
+ P^2+3\cdot7^4\,2^{2a}Q^2R^2
+     =Q^4+7^7\,2^{4a+4}R^4.
+\]
+Intermediate square completions can use the signed-number code. This
+small representation decision prevents the formal statement from
+silently becoming a different equation.
+
+\subsection{Construction of internal proofs, in dependency order}
+
+The following is a finite implementation plan with identified proof
+obligations. It does not call for any new number-theoretic theorem beyond
+the arguments in this paper.
+
+\begin{enumerate}
+\item \textbf{Arithmetic equations.} Build internal proofs for addition,
+multiplication, powers, order, and signed operations. Prove the identities
+used by polynomial normalization. At this stage a normalizer may compute
+the two expanded polynomials, but it must also emit a derivation using
+these laws and \texttt{Prf.eqSubst}. Merely running the ambient Lean
+\texttt{ring} tactic does not emit an $\ipra$ proof automatically.
+
+\item \textbf{Bounded-search reflection.} Prove internally that the Boolean
+folds and first-success selector satisfy their specified equations and
+produce witnesses within their bounds. This is repeated use of
+\texttt{PRA.precZero}, \texttt{PRA.precSucc}, and \texttt{PRA.qfInd}.
+The invariants described above are explicit recipes for the required
+\texttt{Fm.QF} proofs.
+
+\item \textbf{Integer arithmetic tools.} Formalize
+Lemma~\ref{lem:integer-tools} and primitive reduction. Use bounded lists
+of prime factors; replace any induction over ``all smaller integers''
+by a Boolean invariant over the finite list or bounded range. Prove the
+valuation rule for a sum of unequal valuations by extracting the smaller
+power and reducing the remaining equality modulo the prime.
+
+\item \textbf{Quadratic arithmetic.} Formalize the coordinate identities,
+Euclidean gcd, primality of irreducibles, finite factorization, and units.
+For $E$ prove the two exact $\lambda$ divisibility tests and the six-unit
+table. For $R$ prove bounded unit normalization, the classification
+$\pm\varphi^j$, and the modulo-$5$ fifth-power scalar test. These are
+the precise algebraic inputs to the root-extraction routines.
+
+\item \textbf{Local transitions.} Prove (C) for cubic, quartic, and the two
+quintic states. For exponent $7$, prove the base residue contradiction,
+the complete four-way factor allocation, the row-III contradiction, and
+the transition to parameter $a-1$. All finite allocations are to be
+proved exhaustive before any branch is discharged.
+
+\item \textbf{Finite termination.} Apply the single generic clocked-descent
+derivation, or the septimal fixed-box induction. This yields the four
+impossibility lemmas without an unbounded minimality predicate.
+
+\item \textbf{Initial transformations.} Translate an arbitrary alleged
+Fermat solution to a valid state. Use the explicit gcd reduction,
+modulo-$9$ or modulo-$25$ calculations, two quintic parity branches,
+and the septimal symmetric-polynomial and valuation argument. All
+divisions must carry their already proved divisibility witnesses.
+
+\item \textbf{Closure and export.} Construct \texttt{InternalFLT 3},
+\texttt{InternalFLT 4}, \texttt{InternalFLT 5}, and \texttt{InternalFLT 7}.
+Formalize exponent lifting and the four-way divisibility split to obtain
+\texttt{InternalCoverage}. Finally apply \texttt{pra\_iff\_native} if a
+proof in ConciseIPRA's native scalar language is desired.
+\end{enumerate}
+
+The source file declares a structure listing the required proof objects,
+but does not supply an inhabitant. There are no axioms or admitted holes
+pretending to fill them. The ambient blueprint similarly makes any use
+of unimplemented base proofs an explicit hypothesis. This allows a future
+implementation to replace each interface with a checked definition while
+preserving an honest inventory of what remains.
+
+\subsection{Build and acceptance criteria}
+
+The \texttt{lean/README.txt} gives the commands for checking the blueprint
+against the pinned ProveIt environment. A completed implementation should
+be accepted only after all of the following have been checked:
+\begin{enumerate}
+\item The code compiles at the pinned toolchain, and the four base results
+are proved without placeholders or extra axioms.
+\item The completed deliverable contains the actual proof objects
+\texttt{InternalFLT d}, not only the semantic statements.
+\item Every inductive invariant used in those internal proofs has a
+checked \texttt{Fm.QF} derivation. All algorithms used as internal
+function symbols have actual \texttt{PR} codes.
+\item The proof audit lists dependencies of the final declarations.
+The internal proof rules must still be exactly \texttt{PRAAx} and
+\texttt{Prf}; a powerful ambient fact must not enter by an added
+object-language axiom.
+\end{enumerate}
+These criteria describe how to finish the requested formalization. They
+are not represented as checks already completed by this package.
+
+\section{Artifact verification and reproducibility}
+\label{sec:verification}
+
+The Python files serve three limited and useful roles: checking algebraic
+transcription, checking finite residue tables, and enumerating the exact
+exponent family. They are not proof checkers for $\ipra$ and do not replace
+the human proof.
+
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.36\textwidth}>{\raggedright\arraybackslash}p{0.56\textwidth}}
+\toprule
+Artifact & Verified role\\
+\midrule
+\texttt{verify\_cubic.py} & Pair-ring identities, 28,561 multiplication
+and Euclidean-division samples, and the six-unit coefficient table.\\
+\texttt{verify\_quintic.py} & Exact symbolic norm and fifth-power
+identities; finite modulo-$2$, modulo-$5$, and modulo-$25$ tables;
+bounded Euclidean and unit-normalization samples.\\
+\texttt{verify\_seven.py} & Seven exact symbolic identities, including
+both correction square completions and the Fermat-to-quartic substitution.\\
+\texttt{coverage.py} & Exact $276/420$ residue count, exponent-reduction
+witnesses, and a CSV through exponent $200$.\\
+\texttt{ObjectLanguageTargets.lean} & Actual function codes and target
+formulas for the internal formalization; uncompiled blueprint.\\
+\texttt{ArithmeticBlueprint.lean} & Readable arithmetic definitions and
+formalization interfaces; uncompiled blueprint.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The algebra scripts use exact integers or rational arithmetic; the
+symbolic checks use SymPy rather than floating point. Their output is
+recorded in \texttt{evidence/verification.txt}. Mathematical review also
+checked the unbounded arguments that sampling cannot establish: finite
+factorization, the golden-ring unit normalization, all four septimal
+factor allocations, the valuation extraction, the strict descent
+inequalities, and the quantifier-free induction formulas.
+
+The archive includes this article's complete modular LaTeX source,
+the compiled PDF, the Lean blueprint, the verification scripts, the
+source-snapshot manifest, and reproducibility instructions. The PDF was
+compiled and rendered for layout inspection. The Lean files were not
+compiled; there was no Lean executable in the delivery environment.
+\texttt{SHA256SUMS.txt} identifies the exact files in the package.
+

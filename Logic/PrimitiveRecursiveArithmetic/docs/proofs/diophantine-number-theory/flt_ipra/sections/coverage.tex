@@ -1,0 +1,111 @@
+\section{The resulting infinite family and further specializations}
+\label{sec:coverage}
+
+\begin{lemma}[Exponent lifting]\label{lem:lifting}
+For $d\geq1$ and $k\geq1$, $\ipra$ proves
+\[
+ \FLT(d)\longrightarrow\FLT(dk).
+\]
+\end{lemma}
+
+\begin{proof}
+Suppose $x,y,z>0$ and $x^{dk}+y^{dk}=z^{dk}$. The exponent law
+$(x^k)^d=x^{dk}$ is proved by quantifier-free induction from the defining
+recursion for powers and multiplication. The three positive integers
+$x^k,y^k,z^k$ then contradict $\FLT(d)$. Positivity of these powers is
+also proved by quantifier-free induction. All variables remain arbitrary,
+so the implication is uniform in $d,k$.
+\end{proof}
+
+\begin{theorem}[Main exponent family]\label{thm:main}
+The theory $\ipra$ proves the single uniform statement
+\[
+ \boxed{\quad
+ \forall n\geq3\quad
+ (3\mid n\ \vee\ 4\mid n\ \vee\ 5\mid n\ \vee\ 7\mid n)
+ \ \longrightarrow\ \FLT(n).
+ \quad}
+\]
+It also proves the equivalent nontrivial-solution exclusion over signed
+integers and over coded rational numbers.
+\end{theorem}
+
+\begin{proof}
+The four preceding proofs establish the four base exponents. In each
+branch of the displayed disjunction, division produces $k=n/d$ with
+$n=dk$ and $k\geq1$; apply Lemma~\ref{lem:lifting}.
+For even $n$, taking absolute values reduces a signed equation to the
+positive case. For odd $n$, write the signed equation as a sum of three
+signed $n$th powers equal to zero. The three nonzero terms cannot have
+the same sign. Move the term with the exceptional sign to the other side
+to obtain a positive equation. These are finite decidable sign cases.
+For nonzero rationals, choose the product of their three positive
+denominators as a common denominator. Multiplication by its $n$th power
+gives a nonzero signed integral solution, which has just been excluded.
+All denominator clearing and sign tests are primitive recursive.
+\end{proof}
+
+This is an infinite collection of full Fermat specializations, including
+all powers of $2$ of exponent at least two, all powers of $3,5,7$, and
+every positive multiple of any of the four base exponents. For example,
+up to $40$ it proves precisely
+\[
+ \begin{gathered}
+ 3,4,5,6,7,8,9,10,12,14,15,16,18,20,21,24,25,\
+ 27,28,30,32,33,35,36,39,40.
+ \end{gathered}
+\]
+The first exponents $\geq3$ outside this package are
+$11,13,17,19,22,23,26,29,31,34,37,38$.
+This list describes the reach of the proof, not the truth value of FLT
+at those exponents.
+
+\paragraph{Exact coverage.}
+The divisibility condition is periodic modulo $420=4\cdot3\cdot5\cdot7$.
+The complement has
+$3\cdot2\cdot4\cdot6=144$ residue classes: three allowed residues modulo
+$4$, two modulo $3$, four modulo $5$, and six modulo $7$. The elementary
+Chinese remainder bijection, or a direct scan of $0,\ldots,419$, therefore
+gives $420-144=276$ covered classes. Its natural density is
+\[
+ \frac{276}{420}=\frac{23}{35}\approx65.7142857\%.
+\]
+There is a completely finite version of this calculation: in every full
+block of $420$ consecutive integers exactly $276$ satisfy the divisibility
+test. If $N=420q+r$, $0\leq r<420$, the count among $1,\ldots,N$
+differs from $(23/35)N$ by less than $420$. Restricting to exponents
+$n\geq3$ affects only the initial terms. No analytic limit principle is
+needed for this counting estimate.
+
+\begin{corollary}[Mixed exponents]\label{cor:mixed}
+Let $a,b,c$ be positive integers. If one of $3,4,5,7$ divides all three
+of $a,b,c$, then $\ipra$ proves that
+\[
+ X^a+Y^b=Z^c
+\]
+has no positive integral solution. Independently, for all $i,j,k\geq1$
+it proves that
+\[
+ X^{4i}+Y^{4j}=Z^{2k}
+\]
+has no positive integral solution.
+\end{corollary}
+
+\begin{proof}
+For the first assertion write $a=d\alpha$, $b=d\beta$, and
+$c=d\gamma$ and apply $\FLT(d)$ to
+$X^\alpha,Y^\beta,Z^\gamma$. For the second apply
+Theorem~\ref{thm:four} to $X^i,Y^j,Z^k$.
+\end{proof}
+
+\paragraph{What has not been claimed.}
+This paper does not supply a proof of general FLT in $\ipra$. It does
+not establish exponent $11$, all regular prime exponents, or an
+equivalence between ordinary Lean provability and provability in $\ipra$.
+In particular, computing Bernoulli numerators or checking a regularity
+condition would not by itself supply an $\ipra$ proof of Kummer's theorem.
+We make no claim of independence or unprovability for the omitted cases.
+The additional work needed for a new prime exponent is a complete
+arithmetic argument with explicit constructions and induction invariants,
+comparable to those given here.
+
