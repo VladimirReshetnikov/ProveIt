@@ -1,0 +1,2595 @@
+A Certified Finitary Presentation Framework
+for Mathematics in Intuitionistic Primitive Recursive
+Arithmetic
+A common architecture for finite algebra, represented analysis,
+geometry, probability, number theory, and constructive obstruction audits
+Prepared for Vladimir Reshetnikov
+15 November 2026
+
+Abstract
+The proof packets under Logic/PrimitiveRecursiveArithmetic exhibit a stable positive
+pattern and a stable family of failures. Finite exact algebra, bounded search, finite sums, grid
+arguments, and explicit descents usually fit intuitionistic primitive recursive arithmetic once their
+loop invariants are written as quantifier-free Boolean equations. Difficulties arise when a textbook
+proof silently quantifies over arbitrary functions, invokes an unspecified limit or compactness
+principle, chooses an exact branch at a degenerate input, hides an ineffective constant, or stops at
+an ambient Lean theorem instead of producing an object-language derivation of type PrfPRAAx.
+This paper develops a unified Certified Finitary Presentation (CFP) framework. A mathematical
+object is presented by finite observations, primitive-recursive precision transformers, domain
+and apartness certificates, and bounded computation traces. The central finite-trace reflection
+theorem reduces correctness to a base equation, a quantifier-free step invariant, and a final checker
+implication. Regular names, finite nets, nested isolating certificates, robust overlapping branches,
+and height/covering certificates are then reusable modules rather than theorem-specific prose
+conventions.
+The framework yields fully explicit constructive replacements for several reported obstacles:
+all-precision induction is replaced by a finite query table at a free precision parameter; exact
+branch selection is replaced by an overlapping decision or by a decision under a supplied gap;
+abstract compactness is replaced by primitive-recursive nets; exact roots and axes are represented by
+coherent isolating data; and Diophantine finiteness is factored into a finite verifier plus the genuinely
+mathematical production of a height or covering certificate. It also proves sharp boundaries: there
+is no total universal primitive-recursive evaluator; a bound on the number of solutions does not
+provide a search cutoff; and exact selections known to imply LLPO, LPO, or Markov principles
+cannot be recovered by a change of encoding.
+A detailed Lean plan is given against the existing declarations PR, PTm, PRAAx, PRA.qfInd, NFm,
+NPrf, and pra_iff_native. The accompanying archive contains LaTeX and PDF, a machinereadable difficulty matrix, a Lean semantic prototype and object-language blueprint, and an exact
+Python certificate kernel with passing regression tests. The Lean files are an explicit completion
+plan, not a claim that the generic embedded reflection theorem has already been kernel-checked.
+
+Contents
+1 Scope, standard of proof, and snapshot
+1.1 The target is an arithmetic derivation . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.2 Repository snapshot and audit scope . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1
+
+5
+5
+5
+
+Certified finitary presentations in iPRA
+
+2
+
+1.3 Three notions that must not be conflated . . . . . . . . . . . . . . . . . . . . . . . . .
+1.4 What “general” can mean in a first-order theory . . . . . . . . . . . . . . . . . . . . .
+1.5 Contribution and limits . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5
+6
+6
+
+2 Diagnosis of the existing proof packets
+2.1 The successful pattern . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.2 The recurrent failure modes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.3 Representative packets . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.4 A unifying interpretation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+6
+6
+7
+7
+8
+
+3 The arithmetic base and its usable normal forms
+3.1 Ordinary iPRA . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3.2 The native scalar core . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3.3 Booleanization of bounded assertions . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3.4 Totalization and guarded laws . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3.5 A relation may be universal when a function cannot be . . . . . . . . . . . . . . . . . .
+
+8
+8
+9
+9
+9
+10
+
+4 Certified Finitary Presentations
+4.1 Definition of a presentation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.2 The proof-obligation record . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.3 Four theorem shapes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.4 Composition . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.5 Proof-producing versus proof-checking modes . . . . . . . . . . . . . . . . . . . . . . .
+
+10
+10
+10
+11
+12
+12
+
+5 The finite-trace embedding theorem
+5.1 Trace systems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.2 Finite query tables . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.3 Fix precision, then quantify . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.4 Certificate reflection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.5 Composition theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.6 Export to the native calculus . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+12
+12
+13
+14
+14
+14
+15
+
+6 Represented numbers, functions, and analytic operations
+6.1 Integers and rationals . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6.2 Regular names . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6.3 Operations and precision transformers . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6.4 Functions and continuity data . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6.5 Series and integrals . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6.6 Why no completeness axiom is needed . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+15
+15
+15
+16
+17
+17
+18
+
+7 Robust control flow, gaps, and charts
+7.1 Why exact trichotomy is the wrong interface . . . . . . . . . . . . . . . . . . . . . . .
+7.2 The overlapping branch lemma . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.3 Exact decisions from apartness . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.4 Stable finite pivoting . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.5 Overlapping atlases . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.6 Projective and homogeneous output . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.7 Partial operations as certified transducers . . . . . . . . . . . . . . . . . . . . . . . . .
+
+18
+18
+18
+18
+19
+19
+19
+20
+
+Certified finitary presentations in iPRA
+
+3
+
+8 Finite nets, search, and exact objects from nested certificates
+8.1 Effective finite nets . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8.2 Approximate existence by bounded minimization . . . . . . . . . . . . . . . . . . . . .
+8.3 Coherent nested certificates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8.4 Approximate minimizers without an exact minimizer theorem . . . . . . . . . . . . . .
+8.5 Finite covers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8.6 Search bounds and finite lists . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+20
+20
+20
+21
+21
+21
+22
+
+9 Reusable domain libraries
+9.1 Finite algebra and polynomial certificates . . . . . . . . . . . . . . . . . . . . . . . . .
+9.2 Linear algebra and geometry . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.3 Real and complex analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.4 Elementary and Diophantine number theory . . . . . . . . . . . . . . . . . . . . . . . .
+9.5 Analytic number theory . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.6 Finite and effective probability . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.7 Combinatorics and topology . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+22
+22
+23
+23
+24
+24
+24
+25
+
+10 Resolution of the principal reported difficulties
+10.1 Unbounded precision and quantifier-free induction . . . . . . . . . . . . . . . . . . . .
+10.2 Euler axes, eigenvectors, and discontinuous selectors . . . . . . . . . . . . . . . . . . .
+10.3 Dirichlet and Kronecker endpoints . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.4 Faltings and Siegel: finiteness versus a stopping rule . . . . . . . . . . . . . . . . . . .
+10.5 Mordell–Weil and covering representatives . . . . . . . . . . . . . . . . . . . . . . . . .
+10.6 Ineffective constants in prime distribution . . . . . . . . . . . . . . . . . . . . . . . . .
+10.7 Ambient Lean versus embedded proof . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.8 Root choice and the fundamental theorem of algebra . . . . . . . . . . . . . . . . . . .
+10.9 Central limits and arbitrary probability spaces . . . . . . . . . . . . . . . . . . . . . .
+
+25
+25
+25
+26
+26
+26
+26
+27
+27
+27
+
+11 Sharp boundaries and impossibility arguments
+11.1 No total universal primitive-recursive evaluator . . . . . . . . . . . . . . . . . . . . . .
+11.2 A cardinality bound does not yield a height bound . . . . . . . . . . . . . . . . . . . .
+11.3 Exact sign selection and LLPO . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11.4 Negative inequality is not positive apartness . . . . . . . . . . . . . . . . . . . . . . . .
+11.5 Ineffective existence cannot be repaired by a verifier . . . . . . . . . . . . . . . . . . .
+11.6 Semantic truth is not automatic iPRA provability . . . . . . . . . . . . . . . . . . . .
+11.7 Maximal positive statement principle . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+28
+28
+28
+28
+29
+29
+29
+29
+
+12 Lean formalization architecture
+12.1 Existing interfaces . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12.2 The trace-system data . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12.3 Embedded proof of trace reflection . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12.4 Boolean folds and bounded search . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12.5 Finite query tables for names . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12.6 Rational and interval kernel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12.7 Robust branch and finite-net modules . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12.8 Height and complete-list module . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12.9 Certificate mode and public formulas . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12.10Suggested module graph . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12.11Milestones and audits . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+30
+30
+30
+31
+31
+31
+31
+32
+32
+32
+33
+33
+
+Certified finitary presentations in iPRA
+
+4
+
+12.12Artifacts supplied in this archive . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+33
+
+13 Worked finite examples
+13.1 A bounded trace . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13.2 An overlapping decision . . .√. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13.3 Finite-grid approximation to 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13.4 Polynomial identity certificates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13.5 Height bound and list . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13.6 Finite probability . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13.7 Reproduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+34
+34
+34
+34
+35
+35
+35
+35
+
+14 Further research questions
+
+36
+
+A Object-language normal forms and packet checklist
+A.1 Finite exact endpoint . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+A.2 Regular-name endpoint . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+A.3 Approximate existential endpoint . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+A.4 Exact existential from nested certificates . . . . . . . . . . . . . . . . . . . . . . . . . .
+A.5 Certificate-relative endpoint . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+A.6 Status vocabulary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+A.7 Review checklist . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+37
+37
+37
+37
+37
+37
+38
+38
+
+B Repository source audit
+B.1 Snapshot . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+B.2 Foundation files . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+B.3 Proof-packet index and representative audits . . . . . . . . . . . . . . . . . . . . . . .
+B.4 Artifact verification . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+38
+38
+38
+39
+40
+
+Certified finitary presentations in iPRA
+
+5
+
+1
+
+Scope, standard of proof, and snapshot
+
+1.1
+
+The target is an arithmetic derivation
+
+The phrase “formalizable in iPRA” is used here in a strict sense. The final mathematical assertion
+must be a first-order formula over natural-number codes. Its functions are fixed primitive-recursive
+symbols, its logic is intuitionistic, and every use of induction has a quantifier-free induction formula.
+A completed Lean endpoint therefore has the shape
+Γ ⊢ [PRAAx] φ,
+not merely an ambient theorem about Lean’s Nat, Rat, or Real. The latter can validate an algorithm
+or an algebraic identity, but it does not by itself construct a derivation in the embedded theory.
+The existing ConciseIPRA development supplies both sides of this boundary. Its ordinary
+presentation has the types PR and PTm, the axiom family PRAAx, and the derived rule PRA.qfInd. Its
+native scalar calculus has iterator terms, equation formulas, the two binders Q and D, and derivations
+NPrf. The theorems pra_iff_native and native_iff_pra faithfully transport an already completed
+arithmetic derivation. They are bridges, not automatic mathematics compilers.
+
+1.2
+
+Repository snapshot and audit scope
+
+The public repository was inspected at main-branch commit
+7d492fbfc5fee3b2b9dec0b2623b0b82effe05f2.
+
+The proof-packet index at that snapshot records forty-eight delivered packets in algebra, analysis,
+analytic and Diophantine number theory, combinatorics, geometry, probability, and topology. The
+index also warns that packets were filed as delivered: placement did not rerun their code or compile
+their Lean files. Some contain complete finite arguments; some contain uncompiled blueprints, explicit
+sorry obligations, uninstantiated analytic contracts, or deliberately isolated impossibility results.
+This paper is therefore not a blanket certification of the packets. It uses them as a large empirical
+sample from which to extract common proof shapes and common failure modes. Statements about a
+particular packet are limited to the paths listed in section B. The positive theorems proved below are
+framework theorems: finite-trace reflection, regular-name calculus, robust branching, finite-net search,
+and certificate transformations. They do not supply the missing deep analytic or arithmetic estimates
+in a packet whose report explicitly leaves them open.
+
+1.3
+
+Three notions that must not be conflated
+
+There are three useful but distinct levels of completion.
+Definition 1.1 (Semantic implementation). A semantic implementation is executable code or an
+ambient Lean theorem that computes the intended finite object and proves a proposition about its
+ordinary meaning.
+Definition 1.2 (Arithmetic proof architecture). An arithmetic proof architecture specifies naturalnumber codes, fixed primitive-recursive functions, exact formulas, induction invariants, bounds, and a
+dependency-ordered route to an embedded derivation.
+Definition 1.3 (Embedded completion). An embedded completion is an actual derivation in PR AA x ,
+optionally transported to NP rf , with an axiom audit of the final Lean declaration.
+A packet may be strong at the first two levels while incomplete at the third. The framework is
+designed to make the transition from the second to the third mechanical enough that the remaining
+gap is visible and localized.
+
+Certified finitary presentations in iPRA
+
+1.4
+
+6
+
+What “general” can mean in a first-order theory
+
+A textbook theorem often begins “for every continuous function” or “for every real random variable.”
+Literal higher-type quantification is not available in first-order iPRA. There are three legitimate
+replacements.
+1. A fixed-evaluator schema: choose a primitive-recursive evaluator a(p, k) externally, add its
+regularity or domain assumptions, and prove the resulting first-order formula uniformly in the
+numerical parameters p.
+2. A finite-data theorem: make a rational table, finite law, polynomial, graph, triangulation, or
+certificate the numerical input. This is a single uniform first-order theorem.
+3. A trace-relative theorem: input a finite computation or proof trace and prove that acceptance by
+a primitive-recursive verifier implies the desired arithmetic conclusion. Trace production may be
+specialized, while verification remains uniform.
+The last form is central. It gives generic infrastructure without postulating a total universal
+evaluator for all primitive-recursive programs, which is impossible by diagonalization (theorem 11.1).
+
+1.5
+
+Contribution and limits
+
+The main contribution is a reusable normal form for positive proofs:
+fixed numerical input and precision −→ bounded trace
+−→ Boolean invariant −→ checked observation
+The exact or asymptotic theorem is recovered only after the finite observation has been proved for an
+arbitrary free precision parameter. This order is the logical discipline that prevents a hidden use of
+completeness, countable choice, or induction on a quantified Cauchy assertion.
+The framework resolves many formulation and compilation difficulties. It does not turn ineffective
+constants into effective ones, produce rational representatives from abstract Selmer data, or uniformly
+choose an axis at the identity rotation. In those cases it identifies a minimal positive theorem and
+isolates the missing producer or the constructive obstruction.
+
+2
+
+Diagnosis of the existing proof packets
+
+2.1
+
+The successful pattern
+
+Across the packets, the arguments most naturally internalized in iPRA share six properties.
+1. Every object used by the calculation has a finite code: an integer, rational, finite list, polynomial,
+matrix, finite probability law, triangulation, or bounded computation state.
+2. Every loop has a displayed primitive-recursive bound.
+3. Its invariant is an equality or inequality of coded finite objects. Bounded universal assertions are
+compressed into Boolean folds.
+4. Every analytic symbol is backed by a finite approximant and an explicit error estimate; no appeal
+is made to an abstract completion axiom.
+5. Every division, normalization, pivot, or chart carries a positive denominator or apartness certificate.
+6. The desired theorem is obtained by introducing the precision variable only after the finite
+calculation has been proved.
+Finite polynomial identities are the model case. Normalize both sides to a coefficient list, verify
+coefficient equality, and prove evaluation respects normalization by induction on the finite list. The
+same structure appears in finite sums, product telescoping, exact rational probability, grid parity,
+bounded point searches, and descent traces.
+
+Certified finitary presentations in iPRA
+
+2.2
+
+7
+
+The recurrent failure modes
+
+The negative pattern is equally stable. The following table gives the framework diagnosis, not a verdict
+on the mathematical truth of the classical statement.
+Failure mode
+
+Symptom
+
+Higher-type quantifi- “For every real/function/measure”
+cation
+is written as if the function itself
+were a first-order variable.
+All-precision induc- The induction predicate says that
+tion
+a sequence is Cauchy, equal, or
+correct at every precision.
+Exact branch at a
+boundary
+
+A proof chooses a sign, pivot,
+eigenvector, root ordering, argument, or chart when the datum
+may lie exactly on the boundary.
+
+Unqualified partial
+operation
+
+Division, square root, logarithm,
+or normalization is treated as total
+without carrying its domain proof.
+Abstract compact- A convergent subsequence, mininess
+mizer, root, or finite subcover is
+selected without a modulus or net.
+Ineffective threshold
+
+A classical proof says “there exists
+a constant” but no computable
+bound precedes later parameters.
+
+Cardinality in place
+of location
+
+Finiteness or a point-count bound
+is used as if it supplied a search
+cutoff.
+Lean proves an ordinary semantic
+theorem, but no PrfPRAAx object
+is constructed.
+
+Ambient/formal gap
+
+2.3
+
+Correct repair or boundary
+Use a fixed evaluator schema, finite input code, or finite trace relation. Never
+postulate a total universal PR evaluator.
+Fix the output precision; collect the
+finitely queried samples in a Boolean
+GoodTable; induct on a quantifier-free
+finite invariant; quantify precision last.
+Use overlapping branches, homogeneous/projective output, or a supplied
+positive gap. If exact selection implies
+LLPO/LPO/Markov, retain the obstruction.
+Define a totalized code-level operation
+and prove the intended law under a
+Boolean domain/apartness guard.
+Supply a primitive-recursive finite net
+and continuity modulus; return approximate witnesses or coherent nested certificates.
+Factor the result into a finite verifier
+plus an explicit analytic-input certificate. Proving a producer is separate
+mathematics.
+Require a height bound, complete list,
+or covering representatives. Cardinality
+alone has no stopping rule.
+Implement the fixed PR symbols,
+Boolean checker, and QF invariant; then
+use the existing faithful translation.
+
+Representative packets
+
+The diagnosis is especially visible in the following reports.
+Euler–Rodrigues. The unrestricted exact unit-axis selector for arbitrary represented rotations
+is reported to imply LLPO. The same packet obtains rational exact axes, separated exact axes,
+arbitrary-precision approximate axes, and uniform quaternion data. This is the canonical example of
+replacing a discontinuous selector by robust data rather than weakening arithmetic by an extra logical
+principle.
+Dirichlet and Kronecker approximation. Sharp closed endpoints, a real-valued denominator
+bound, and density from negative irrationality alone lead respectively to LLPO, LPO, and a Markovtype principle. Strict inequalities with margins and positive separation moduli survive. Thus “add a
+
+Certified finitary presentations in iPRA
+
+8
+
+quantitative margin” is not cosmetic; it changes a non-realizable selection problem into finite rational
+comparison.
+Faltings, Siegel, and Mordell–Weil. These reports isolate missing height bounds or covering
+representatives. Finite search below a supplied height is straightforward; producing the height is
+the hard theorem. A complete point list and a height bound are mutually convertible in the coded
+setting, while a mere cardinality bound is not. Mordell–Weil descent becomes constructive relative
+to actual quotient representatives, but finite abstract quotient data do not automatically produce
+rational points.
+Prime distribution. Dirichlet and finite sieve inequalities can be made explicit. The full Siegel–
+Walfisz and Bombieri–Vinogradov routes retain ineffective or exceptional-zero input. The correct
+modular theorem checks a supplied zero-free/exceptional certificate and propagates its constants; it
+must not pretend that verification also produces the certificate.
+Central limit theorems. Finite rational laws and finite product spaces give exact sums and exact
+independence. Infinite or continuous laws require tail, quantization, and continuity moduli. Rational
+thresholds avoid undecidable comparison with an irrational normalized sum; transfer to a CDF metric
+uses a continuity or anti-concentration estimate.
+
+2.4
+
+A unifying interpretation
+
+These examples suggest that the fundamental object is not a “real number” or “continuous map” in
+isolation. It is a bundle of finite interfaces:
+code and domain guard
+modulus
+
+finite observations
+
+bounded trace
+
+error or residual
+
+soundness certificate
+
+The CFP framework makes this bundle explicit. Once it is explicit, the same arithmetic lemmas
+support analysis, geometry, probability, and number theory, while the genuinely nonconstructive or
+ineffective step is no longer hidden inside notation.
+
+3
+
+The arithmetic base and its usable normal forms
+
+3.1
+
+Ordinary iPRA
+
+We use the repository’s ordinary first-order presentation. For each arity r, PRr contains symbols
+generated from zero, successor, projections, composition, and primitive recursion. Terms PTmn are
+built from n variables and these symbols. The theory PRAAx contains the defining equations, successor
+nonzeroness and injectivity, and induction for quantifier-free formulas. Intuitionistic natural deduction
+is provided by Deduction.lean.
+A bounded algorithm belongs to the theory in two different senses. First, its output function is a
+fixed PR symbol because bounded loops and finite folds are primitive recursive. Second, its correctness
+must be proved. That proof is usually an instance of PRA.qfInd; primitive recursiveness alone never
+implies correctness or truth.
+
+Certified finitary presentations in iPRA
+
+3.2
+
+9
+
+The native scalar core
+
+The native terms are generated by variables, 0, successor, and a scalar iterator
+I(0, a; u.h) = a,
+
+I(n, a; u.h),
+
+I(Sn, a; u.h) = h[I(n, a; u.h)/u].
+
+Native formulas are equations and two binders:
+Qy B(y) ≡ B(0) → ∀y B(y),
+
+Dx,y B(x, y) ≡ ∃x (B(x, 0) → ∀y B(x, y)).
+
+The existing development derives ordinary intuitionistic logic and proves faithful round trips between
+the native calculus, an equality theory, and iPRA. The certificate layer proposed below can therefore
+target ordinary PRAAx, where coding is readable, and export the finished theorem to the smaller native
+calculus at the end.
+
+3.3
+
+Booleanization of bounded assertions
+
+Let p(a, i) ∈ {0, 1} be a primitive-recursive characteristic function. Define
+Allp (a, 0) = 1,
+Allp (a, n + 1) = Allp (a, n) · p(a, n),
+Anyp (a, 0) = 0,
+Anyp (a, n + 1) = max(Anyp (a, n), p(a, n)).
+The intended bounded quantifiers become equations
+∀i < n P (i)
+
+⇝
+
+Allp (a, n) = 1,
+
+∃i < n P (i)
+
+⇝
+
+Anyp (a, n) = 1.
+
+Lemma 3.1 (Boolean-fold correctness). For a fixed characteristic symbol p, iPRA proves the usual
+introduction and elimination rules for Allp and Anyp , uniformly in all numerical parameters.
+Proof. For All, induction on n uses the quantifier-free invariant that the accumulator equals one exactly
+when all processed bits equal one. At the successor step, a product of two Boolean values is one exactly
+when both are one. Elimination at a particular i < n may be proved either by a second bounded scan
+or by an invariant storing the first failure index. For Any, use maximum or Boolean disjunction and
+store the least successful index when witness extraction is required. All state components are natural
+codes and every formula in the induction is an equation between primitive-recursive terms. Hence
+PRA.qfInd applies.
+This elementary lemma is the main syntactic device for keeping invariants quantifier free. A phrase
+such as “every previously processed coefficient is correct” should almost always mean an equation
+asserting that a finite Boolean fold is one.
+
+3.4
+
+Totalization and guarded laws
+
+The natural-number universe has no partial functions. Every partial mathematical operation is
+implemented by a total function plus a domain predicate. For example, rational division may return
+zero when the divisor code is invalid or zero, while its theorem states
+Rat(x) = 1 ∧ Rat(y) = 1 ∧ Nonzero(y) = 1 −→ x/y has the expected cross-multiplication law.
+This is preferable to trying to make every term intrinsically well typed. The domain bits become fields
+of GoodTable, and invalid behavior is irrelevant under the theorem’s antecedent.
+
+Certified finitary presentations in iPRA
+
+3.5
+
+10
+
+A relation may be universal when a function cannot be
+
+A total primitive-recursive evaluator U (e, x) enumerating all unary primitive-recursive functions cannot
+exist. Nevertheless, a finite relation EvalTrace(e, x, t, y) = 1 can check that t is a well-formed calculation
+tree for program code e on input x, ending in y. Checking a finite tree is primitive recursive. What
+fails to be primitive recursive is a uniform function that always produces a terminating trace for every
+code.
+This relation/function distinction allows a genuinely general certificate language. A theorem may
+be uniform in e, x, t, y and prove
+EvalTrace(e, x, t, y) = 1 → Post(e, x, y) = 1.
+For a fixed program, a separate compiler or proof constructs the trace or replaces the relation by a
+direct PR symbol. No diagonal contradiction arises because the verifier does not claim total trace
+production.
+
+4
+
+Certified Finitary Presentations
+
+4.1
+
+Definition of a presentation
+
+A Certified Finitary Presentation is a proof-oriented interface rather than a new foundational ontology.
+Definition 4.1 (CFP object). A CFP object family with numerical parameter p consists of:
+1. a decidable code-domain predicate Dom(p) = 1;
+2. finite observations obs(p, k), where k is a precision, scale, truncation, or grid parameter;
+3. a rational or integer error radius err(p, k);
+4. a regularity, consistency, or residual contract relating observations;
+5. primitive-recursive bounds on all finite tables and traces used to compute or verify an observation.
+The evaluator is fixed at the meta-level, or its individual computation is supplied by a finite trace.
+Definition 4.2 (Certified transducer). A certified transducer from presentations X to Y consists of a
+total primitive-recursive output algorithm, a primitive-recursive precision transformer µ, a bounded
+trace system, and a soundness theorem saying that valid input observations at the finitely many
+precisions requested by µ imply the requested output observation and error bound.
+The transducer need not consume a single sample. It may request an adaptive finite table: later
+indices can depend on earlier rational comparisons. The complete run is still a bounded trace. Its
+input contract records every query actually made, and its soundness proof is an induction on the trace
+length.
+
+4.2
+
+The proof-obligation record
+
+For each theorem package, the following record should be completed before writing a large formal
+proof.
+Field
+
+Required content
+
+Object presentation
+Domain guard
+
+Natural-number code or fixed evaluator schema.
+Boolean validity, denominator positivity, boundedness, nondegeneracy, or regularity assumptions.
+
+Certified finitary presentations in iPRA
+
+Field
+
+11
+
+Required content
+
+Finite observations
+
+Rational tables, residuals, grids, coefficient lists, finite laws, traces,
+or local charts.
+Precision transformer
+Exact primitive-recursive function mapping output precision to every
+requested input precision and truncation length.
+Trace system
+Initial state, step, primitive-recursive bound, and final acceptance
+predicate.
+QF invariant
+Equation to one for a Boolean checker, including folded bounded
+conditions.
+Branch margins
+Overlap or positive gap used for every decision affecting partial
+operations.
+Search/compactness cer- Finite net, height bound, covering list, isolating ball, or explicit finite
+tificate
+candidate set.
+Soundness bridge
+Arithmetic implication from accepted finite data to the stated observation.
+Object-language target
+Exact FmPTm formula and intended PrfPRAAx endpoint.
+Native transport
+Application of pra_iff_native only after the prior field is complete.
+The archive includes this record as a JSON schema and a CSV difficulty matrix. Its purpose is not
+bureaucratic: it prevents a theorem from being called “formalized” while its precision map, domain
+guard, or object-language target is still implicit.
+
+4.3
+
+Four theorem shapes
+
+The framework distinguishes four normal forms.
+Definition 4.3 (Finite exact theorem). A finite exact theorem is
+∀p [Dom(p) = 1 → Check(p, A(p)) = 1],
+where A and Check are primitive recursive.
+Definition 4.4 (Effective approximation theorem). An effective approximation theorem is
+∀p ∀k [Dom(p) ∧ InputContract(p, µ(p, k)) → OutputContract(p, k, A(p, k))].
+All quantities in the matrix are finite rational statements.
+Definition 4.5 (Certificate-relative existence theorem). A certificate-relative theorem is
+∀p, c [Certificate(p, c) = 1 → Conclusion(p, decode(c))].
+The verifier is uniform. A separate theorem may construct c.
+Definition 4.6 (Obstruction theorem). An obstruction theorem shows that a stronger uniform selector
+or modulus would realize a principle not validated by the intended constructive semantics, or would
+compute a known noncomputable function. The positive replacement is stated in one of the preceding
+forms.
+These forms make status compositional. A deep theorem can be incomplete only at its certificate
+producer while its finite verifier, error propagation, and formal bridge are finished and reusable.
+
+Certified finitary presentations in iPRA
+
+4.4
+
+12
+
+Composition
+
+Suppose F : X → Y requests input precision µF (p, j), and G : Y → Z requests Y -precision µG (q, k).
+The composite requests
+
+µG◦F (p, k) = µF p, µG (F0 (p), k) ,
+where F0 (p) denotes the finite bound and domain metadata needed to choose G’s precision. If those
+bounds are themselves computed during the run, concatenate the traces: first compute and certify the
+metadata, then run the second module. Pair the states, add the bounds, and conjoin the invariants by
+a Boolean product. Closure of primitive-recursive functions under composition and primitive recursion
+gives a new certified transducer.
+This observation turns the framework into a small category of proof-producing finite transducers.
+More importantly, it gives a practical library boundary: rational arithmetic, finite folds, regular-name
+operations, robust decisions, finite nets, and certificate checkers can be proved once and composed in
+many packets.
+
+4.5
+
+Proof-producing versus proof-checking modes
+
+There are two legitimate deployment modes.
+Compiled mode. For a fixed theorem, the algorithm and all helper functions are represented by
+fixed PR symbols. Its trace is not an input; primitive recursion computes it. This mode gives the
+strongest uniform theorem and usually the smallest final statement.
+Certificate mode. A finite trace, isolating region, factorization, covering list, or analytic constant
+table is input. A small uniform checker validates it. This mode is appropriate when production is
+expensive, theorem-specific, or presently unknown, and it is essential when no total universal producer
+can exist.
+A mature development should often support both: certificate mode first, then a producer theorem
+for the cases where an explicit construction is available.
+
+5
+
+The finite-trace embedding theorem
+
+5.1
+
+Trace systems
+
+All run-time parameters—the original input, requested precision, finite bounds, and externally supplied
+certificates—may be paired into one natural number u. A trace system consists of fixed primitiverecursive functions
+init(u),
+bound(u),
+step(u, i, s),
+inv(u, i, s) ∈ {0, 1},
+good(u) ∈ {0, 1}, accept(u, s) ∈ {0, 1}.
+Define the run by primitive recursion:
+run(u, 0) = init(u),
+
+run(u, i + 1) = step(u, i, run(u, i)).
+
+The intended proof obligations are the following quantifier-free formulas:
+good(u) = 1 → inv(u, 0, init(u)) = 1,
+good(u) = 1 ∧ inv(u, i, s) = 1 → inv(u, i + 1, step(u, i, s)) = 1,
+good(u) = 1 ∧ inv(u, bound(u), s) = 1 → accept(u, s) = 1.
+
+(T0)
+(T1)
+(T2)
+
+Certified finitary presentations in iPRA
+
+13
+
+Theorem 5.1 (Finite-trace reflection). If iPRA proves (T0)–(T2), then it proves
+∀u good(u) = 1 → accept(u, run(u, bound(u))) = 1 .
+
+
+Proof. Keep u free. Apply quantifier-free induction to
+A(i) :≡ good(u) = 1 → inv(u, i, run(u, i)) = 1.
+This is quantifier free: all functions are fixed primitive-recursive symbols, and implication is a
+propositional connective rather than a quantifier. The base case is (T0) after rewriting run(u, 0). For
+the successor case, assume A(i) and good(u) = 1. The induction hypothesis gives the invariant at
+run(u, i); (T1) gives the invariant after one step; the defining equation for run identifies that state with
+run(u, i + 1).
+Specialize the resulting universal statement to i = bound(u). Apply (T2) with s = run(u, bound(u)).
+Finally introduce u universally. No induction formula contains an unbounded quantifier.
+Remark 5.2. The theorem is intentionally modest. It does not say that every true primitive-recursive
+assertion is provable. It says that a supplied base case, local invariant proof, and final implication
+compose into the expected bounded algorithm theorem. The mathematical work lies in choosing an
+invariant for which (T1) is actually derivable.
+
+5.2
+
+Finite query tables
+
+A represented input may have a global contract such as
+Rega (p) :≡ ∀m, n R(a(p, m), a(p, n), m, n).
+Putting Rega (p) inside the induction predicate would violate the intended proof discipline. Instead, the
+trace declares a finite query list q(u, 0), . . . , q(u, L(u) − 1). Define GoodTable(p, u) = 1 as the Boolean
+conjunction of exactly the regularity, domain, and magnitude facts needed about those samples.
+Lemma 5.3 (Finite instantiation). For every fixed query generator, iPRA proves
+Rega (p) → GoodTable(p, u) = 1,
+provided each field of GoodTable is an instance or a finite algebraic consequence of the global contract.
+Proof. The query list is finite and primitive recursive. For each entry, eliminate the universal quantifiers
+in Rega (p) at the displayed numerical indices. The remaining rational equalities and inequalities are
+combined by the Boolean-fold correctness lemma. If later queries depend on earlier answers, perform
+the same argument along the actual trace: at stage i, the query is a primitive-recursive term in the
+previous state, and universal elimination permits that term. The accumulator invariant says that all
+facts queried so far have been inserted into the table. This invariant is a Boolean equation and is
+therefore quantifier free.
+This lemma explains how universally quantified name hypotheses can remain in the surrounding
+context while the induction formula itself stays finite.
+
+Certified finitary presentations in iPRA
+
+5.3
+
+14
+
+Fix precision, then quantify
+
+Theorem 5.4 (Fixed-precision compilation). Let k be a requested output precision and let u = ⟨p, k, c⟩
+encode all numerical inputs and finite certificates. Suppose:
+1. global hypotheses H(p) imply good(u) = 1 by finite instantiation;
+2. the trace system satisfies (T0)–(T2);
+3. acceptance implies a finite output observation Out(p, k, A(p, k)).
+Then iPRA proves
+H(p) → ∀k Out(p, k, A(p, k)).
+Proof. Keep both p and k free. From H(p), derive the finite good table for this particular k. Apply
+theorem 5.1, then the final soundness implication. At no point is induction applied to a formula
+containing ∀k. Once the finite derivation has been obtained with k free, apply universal introduction
+to k.
+This simple reordering resolves a large class of reported “iPRA induction is too weak” concerns.
+Frequently the problem is not the estimate but the attempt to induct on its completed all-precision
+interpretation.
+
+5.4
+
+Certificate reflection
+
+A computation need not be rerun inside the checker. Let a certificate c contain a state list s0 , . . . , sB .
+Define TraceOK(u, c) = 1 to assert
+s0 = init(u),
+
+si+1 = step(u, i, si ) (i < B),
+
+inv(u, i, si ) = 1 (i ≤ B),
+
+and the final acceptance equation. Every clause is checked by a finite fold.
+Corollary 5.5 (Uniform finite-certificate checker). For a fixed trace language, iPRA proves
+TraceOK(u, c) = 1 → Conclusion(u, output(c)).
+Proof. Use fold elimination to obtain every local transition and invariant clause. The final clause
+directly supplies acceptance, or alternatively reconstruct the run equality by induction on the list
+index and invoke theorem 5.1. Both routes use only finite list induction with a Boolean invariant.
+Certificate reflection is the right generic mechanism for externally produced polynomial normalizations, isolating regions, factorization traces, finite covers, and large numerical constant tables.
+
+5.5
+
+Composition theorem
+
+Theorem 5.6 (Composition of certified transducers). The sequential composition of two CFP transducers is a CFP transducer. Its precision transformer, trace bound, and checker are primitive recursive,
+and its soundness theorem is provable in iPRA from the two component soundness theorems.
+Proof. Encode a composite state as a phase bit together with the current component state and the finite
+metadata passed between components. In phase zero, run the first transducer for its primitive-recursive
+bound. Its final state contains the output code and every certified magnitude/domain bound needed
+by the second precision transformer. Switch the phase bit, initialize the second state, and run it for its
+bound. The total bound is the sum of the two bounds plus one switch step.
+The composite invariant is a Boolean case split on the phase bit. In phase zero it is the first invariant.
+At the switch it includes the first acceptance predicate and the second input-good predicate. In phase
+
+Certified finitary presentations in iPRA
+
+15
+
+one it is the second invariant together with the frozen metadata. Each case is a quantifier-free equation.
+Apply finite-trace reflection. The final soundness implication is exactly the second component theorem
+after substituting the certified first output. Primitive-recursive closure under pairing, composition,
+case distinction, addition, and primitive recursion supplies all new symbols.
+The same construction handles finite acyclic proof networks and bounded adaptive calls. A network
+is flattened into one phase-indexed trace.
+
+5.6
+
+Export to the native calculus
+
+Once the endpoint Γ ⊢ [PRAAx]φ has been constructed, the existing repository theorem gives
+NPrf(Γ translated, φ translated).
+No additional mathematical proof is required at this stage. Conversely, the native public/guarded
+calculi can serve as compact certificate targets when their formula restrictions are convenient. What
+must be avoided is invoking bi-interpretability before there is any object-language proof to transport.
+
+6
+
+Represented numbers, functions, and analytic operations
+
+6.1
+
+Integers and rationals
+
+An integer may be coded as a sign bit and magnitude, or by the standard zigzag map. A rational is a
+pair (z, d) with z ∈ Z and positive d ∈ N. Reduction to lowest terms is optional. Equality and order
+are checked by cross multiplication:
+(z, d) = (w, e) ⇐⇒ ze = wd,
+
+(z, d) ≤ (w, e) ⇐⇒ ze ≤ wd,
+
+under d, e > 0. Addition and multiplication use the unreduced formulas. Absolute value, maximum,
+powers, finite sums, and finite products are primitive recursive.
+Clearing denominators is more than an implementation detail. It converts the correctness predicates
+for rational algebra into integer equations and inequalities, which are directly suited to quantifier-free
+induction. Every rational theorem should therefore identify the common positive denominator or state
+its cross-multiplied form.
+
+6.2
+
+Regular names
+
+Let a(p, k) ∈ Q be a fixed primitive-recursive evaluator. Write δk = 2−k .
+Definition 6.1 (Regular real name). The parameter p is regular for a when
+Rega (p) :
+
+∀k, l
+
+|a(p, k) − a(p, l)| ≤ δk + δl .
+
+(R1)
+
+Definition 6.2 (Equality and apartness). Two fixed name families a, b are equal at parameters p, q
+when
+∀k, l |a(p, k) − b(q, l)| ≤ δk + δl .
+(R2)
+They are apart with witness d ∈ Q>0 when the finite-precision lower bounds certify |a − b| ≥ d; one
+convenient form is
+∀k, l d ≤ |a(p, k) − b(q, l)| + δk + δl .
+(R3)
+Stronger one-sample variants are often easier to use.
+
+Certified finitary presentations in iPRA
+
+16
+
+These are first-order formulas because a and b are fixed symbols and all quantifiers range over
+natural precision indices. They are schemas in the evaluators, not quantification over a function space.
+Lemma 6.3 (Equality is transitive). Under regularity, (R2) is an equivalence relation.
+Proof. Reflexivity is (R1); symmetry is immediate. For transitivity, suppose a = b and b = c. For
+arbitrary k, l, j,
+|a(k) − c(l)| ≤ δk + δl + 2δj .
+We must remove the extra 2δj without appealing to a real limit. Assume the desired rational inequality
+fails. Then the rational difference
+r = |a(k) − c(l)| − (δk + δl )
+is positive. From the numerator and denominator of r, bounded bit-length search produces j with
+2δj < r. The displayed upper bound then contradicts the definition of r. This is finite rational
+arithmetic. The argument formalizes as a decidable case split on the cross-multiplied target inequality
+and a primitive-recursive dyadic-below-positive-rational function.
+The same “positive rational gap” argument replaces every informal phrase “let the error tend to
+zero” used to prove an exact rational inequality between names.
+
+6.3
+
+Operations and precision transformers
+
+For every operation, the output algorithm and its error budget are recorded together. The following
+elementary contracts form a useful base library.
+Lemma 6.4 (Addition and finite sums). If ai , bi approximate xi , yi within εi , then
+|(a1 + a2 ) − (x1 + x2 )| ≤ ε1 + ε2 ,
+and for a finite sum the errors add. Thus a sum of m terms requested at precision k may request each
+term at precision k + ⌈log2 max(1, m)⌉ + 1.
+Proof. Use the triangle inequality. For the finite sum, induct on the accumulator index with the
+invariant that its error is at most the sum of the processed error radii. The invariant is an integer
+inequality after denominators are cleared. The displayed precision shift makes the total less than
+2−k .
+Lemma 6.5 (Products). If |xi | , |yi | ≤ B and |xi − yi | ≤ ε for i < m, then
+Y
+
+xi −
+
+i<m
+
+Y
+
+yi ≤ mB m−1 ε.
+
+i<m
+
+Proof. Insert one changed factor at a time:
+
+Y
+
+xi −
+
+Y
+
+yi =
+
+X
+
+
+Y
+
+
+j<m
+
+i<j
+
+
+
+xi  (xj − yj ) 
+
+
+Y
+
+yi  .
+
+j<i<m
+
+Each summand is bounded by B m−1 ε. The identity and bound are proved by finite induction; no
+infinite product theorem is involved.
+
+Certified finitary presentations in iPRA
+
+17
+
+Lemma 6.6 (Reciprocal under apartness). Suppose |x| ≥ d > 0 and |x − a| ≤ ε ≤ d/2. Then |a| ≥ d/2
+and
+2ε
+x−1 − a−1 ≤ 2 .
+d
+Proof. The first claim is the reverse triangle inequality. For the second,
+x−1 − a−1 =
+
+|a − x|
+ε
+≤
+.
+|x| |a|
+d(d/2)
+
+In the coded proof, division is absent from the invariant: multiply through by the known positive
+denominators and by the square of the rational lower bound d.
+Lemma 6.7 (Polynomial Lipschitz bound). For P (X) =
+absolute value at most B ≥ 1 and maxi |xi − yi | ≤ η, then
+
+P
+
+α cα X
+
+α , if every coordinate of x, y has
+
+!
+
+|P (x) − P (y)| ≤
+
+X
+
+|cα | |α| B
+
+|α|−1
+
+η.
+
+α
+
+Proof. For a monomial, telescope the product by replacing one factor at a time. There are |α|
+summands, each with one difference factor and at most |α| − 1 bounded factors. Multiply by |cα |
+and sum over the finite coefficient list. The proof is a nested finite induction over monomials and
+factors.
+These lemmas give an automatic precision compiler for expression trees made of finite sums,
+products, guarded inverses, and fixed polynomials. Each node returns both a value approximant and a
+certified magnitude bound for its parent.
+
+6.4
+
+Functions and continuity data
+
+A represented function is not merely an evaluator f (p, x, k). It carries a domain code and a modulus.
+On a rational box, a modulus is a primitive-recursive function µ(k) satisfying
+dist(x, y) ≤ 2−µ(k) → |f (x) − f (y)| ≤ 2−k .
+The arithmetic theorem uses rational approximants and slack, but the logical shape is the same.
+Composition uses µf ◦ µg . A Lipschitz constant supplies µ(k) = k + ⌈log2 L⌉ + 1.
+Derivatives should be represented by a local remainder contract, not by an unqualified limit:
+|f (x + h) − f (x) − hg(x)| ≤ |h| ω(|h|),
+with an explicit primitive-recursive modulus ω. This is exactly the form needed for a finite telescoping
+proof of the fundamental theorem on a mesh.
+
+6.5
+
+Series and integrals
+
+A series is represented by a finite partial sum and a tail bound T (N ). To name its value at precision
+k, compute a primitive-recursive N (k) with T (N (k)) ≤ 2−k−c , evaluate the finite sum, and allocate
+the remaining error to term approximation. Regularity of the resulting name follows by comparing
+two partial sums through the larger cutoff and using the two tail bounds.
+For an integral on [a, b], use a rational mesh sum. A Lipschitz constant L gives
+|IM − IM ′ | ≤ L(b − a)2 (M −1 + M ′
+
+−1
+
+).
+
+Comparison on a common refinement gives this estimate. The common refinement, double sum, and
+error estimate are finite. A primitive-recursive choice of M (k) gives a regular name. Changes of
+variable, integration by parts, and contour integrals are admitted only with explicit local remainder or
+distance-to-pole certificates; their proofs are finite telescoping calculations.
+
+Certified finitary presentations in iPRA
+
+6.6
+
+18
+
+Why no completeness axiom is needed
+
+The represented object is the evaluator and its regularity proof. Operations construct a new evaluator
+and prove its regularity. The theory never asserts that every abstract Cauchy sequence has a limit
+in a pre-existing real-number sort. Exact equality is the all-precision relation (R2); every use of it is
+reduced to arbitrary finite precision and then introduced universally. This is sufficient for the analytic
+identities in the packets that already carry effective approximation data.
+
+7
+
+Robust control flow, gaps, and charts
+
+7.1
+
+Why exact trichotomy is the wrong interface
+
+A finite algorithm can compare rationals exactly. It cannot in general decide whether two arbitrary
+regular names are equal, nor choose the sign of a name that may be zero. Many classical proofs
+use such a choice only to select a formula, pivot, or coordinate chart. The constructive repair is to
+make the charts overlap, or to require a positive gap when a genuinely exact decision is part of the
+conclusion.
+
+7.2
+
+The overlapping branch lemma
+
+Theorem 7.1 (Overlapping rational branch). Let x be represented by a rational approximation a with
+|x − a| ≤ e. Let q ∈ Q, d > 0, and suppose 4e ≤ d. A decidable comparison of a with q + d/2 produces
+one of the valid conclusions
+x<q+d
+or
+x > q.
+The conclusions overlap on (q, q + d).
+Proof. If a ≤ q + d/2, then
+If a > q + d/2, then
+
+x ≤ a + e ≤ q + d/2 + d/4 < q + d.
+x ≥ a − e > q + d/2 − d/4 > q.
+
+Only a rational comparison is performed. In a pure name formulation, replace strict inequalities by their
+rational-margin certificates. All displayed inequalities are checked after clearing denominators.
+This lemma is enough for overlapping analytic charts, small/large parameter cases, approximate
+sign tests, and robust pivot selection. It avoids the false demand that the boundary case be assigned
+uniquely.
+
+7.3
+
+Exact decisions from apartness
+
+Theorem 7.2 (Exact branch under a supplied gap). Suppose a contract supplies d > 0 with |x − q| ≥ d.
+If a approximates x within e < d/2, then the rational sign of a − q is nonzero and equals the sign of
+x − q.
+Proof. If x ≥ q + d, then a > q + d − e > q. If x ≤ q − d, then a < q − d + e < q. Conversely, an
+approximation equal to q would be within e < d of x, contradicting the gap. The two cases in the
+gap certificate may be encoded as a signed lower-bound witness or as a Boolean comparison already
+supplied by the certificate.
+Apartness is therefore the correct input to inversion, normalization, root ordering, exact sign, and
+uniqueness theorems. Negative information x ̸= q is not interchangeable with a positive rational gap.
+
+Certified finitary presentations in iPRA
+
+7.4
+
+19
+
+Stable finite pivoting
+
+Let v0 , . . . , vm−1 be rationally approximated candidate vectors, and let ri be a nonnegative residual or
+squared norm. A finite maximum scan returns the least index j attaining the largest sampled value.
+Lemma 7.3 (Robust pivot). Suppose some exact residual satisfies ri ≥ d, every sampled residual r̃i
+has error at most e, and 4e ≤ d. Then the selected maximum satisfies rj ≥ d/2. Consequently any
+operation requiring a positive lower bound may use the certified bound d/2.
+Proof. For the good index i, r̃i ≥ d − e. Maximality gives r̃j ≥ d − e. Hence rj ≥ r̃j − e ≥ d − 2e ≥ d/2.
+The maximum scan invariant says that the stored index dominates all processed samples and is a
+quantifier-free Boolean fold. No exact comparison of represented residuals is used.
+This is the generic core of stable column selection in matrix arguments, choice of a nonzero
+polynomial coefficient, denominator selection in projective coordinates, and finite chart selection on
+compact domains.
+
+7.5
+
+Overlapping atlases
+
+A constructive atlas should be designed so that every point has at least one chart with a quantitative
+denominator bound, and the chart-selection tests have overlap. For example, two formulas valid
+respectively when c > −3/4 and c < 3/4 cover all c ∈ [−1, 1]. Approximate c to error at most 1/16
+and compare it to zero. Either selected chart has a fixed denominator margin. On the overlap both
+are valid, so no proof of unique chart selection is needed.
+The same design applies to:
+• quaternion charts for rotations;
+• affine charts of projective space;
+• inverse trigonometric formulas;
+• root formulas with competing dominant coefficients;
+• contour decompositions and local power-series disks.
+Transition identities on overlaps should be finite polynomial/rational certificates. This replaces
+topological choice by a bounded rational decision.
+
+7.6
+
+Projective and homogeneous output
+
+Normalization often creates an artificial discontinuity. A nonzero kernel vector has a continuous
+projective class even when no canonical unit vector is available. A polynomial root can be returned
+as an isolating disk or cluster before an ordering is chosen. A rotation can be returned as a unit
+quaternion pair with vector part allowed to vanish at the identity. A line or conic can be represented
+by homogeneous coefficients with a positive maximum-norm certificate, postponing division until a
+chart has been selected.
+Principle 7.4 (Delay normalization). Whenever a theorem is invariant under scaling, sign, permutation, or another finite symmetry, state and prove the invariant conclusion first. Add a canonical
+representative only under a separation or orientation certificate.
+This principle converts many apparent logical obstacles into ordinary finite algebra.
+
+Certified finitary presentations in iPRA
+
+7.7
+
+20
+
+Partial operations as certified transducers
+
+A guarded inverse transducer takes a name x, a positive rational d, and a proof that |x| ≥ d. Its
+precision transformer requests enough input accuracy that the rational approximation is at least d/2
+away from zero; it then uses rational division. The trace records the comparison and cross-multiplied
+error inequality. Square root, logarithm, matrix inversion, and normalization have the same shape:
+domain/apartness bit −→ precision request −→ finite rational operation −→ error certificate.
+The operation itself remains total on all codes, but only the guarded theorem assigns it the intended
+mathematical meaning.
+
+8
+
+Finite nets, search, and exact objects from nested certificates
+
+8.1
+
+Effective finite nets
+
+Definition 8.1 (Certified net presentation). A bounded metric-object family has a certified net
+presentation when there are primitive-recursive functions N (k) and net(k, i), i < N (k), together with
+a theorem that every valid input object lies within 2−k of some listed point. The coverage theorem may
+compute the index from a finite approximation, or accept it as a certificate.
+For rational boxes, simplices, circles with overlapping charts, finite probability simplices, and
+coefficient-bounded polynomials, the standard grids are primitive recursive. Abstract compactness is
+not assumed; the finite net and its coverage modulus are data.
+Theorem 8.2 (Finite-net transfer). Let f have modulus µ on a certified net domain. If x is a valid
+named point and i < N (µ(k)) satisfies dist(x, net(µ(k), i)) ≤ 2−µ(k) , then
+|f (x) − f (net(µ(k), i))| ≤ 2−k .
+The corresponding arithmetic statement is provable in iPRA.
+Proof. This is the defining implication of the modulus instantiated at the finite net point. In the
+arithmetic proof, approximate both sides to a smaller error, use the finite coverage certificate, and clear
+denominators. All queried precisions are computed from k, so fixed-precision compilation applies.
+
+8.2
+
+Approximate existence by bounded minimization
+
+Let a nonnegative residual R(y) vanish exactly on desired solutions and have a known continuity
+modulus. Scan a finite net and return the least index with minimal sampled residual.
+Theorem 8.3 (Approximate witness from a net). Suppose a valid named x satisfies R(x) = 0, and
+|R(y) − R(z)| ≤ L dist(y, z) on the domain. On a net of radius r, the bounded minimizer y∗ satisfies
+R(y∗ ) ≤ Lr + 2e,
+where e is the error in each sampled residual. The algorithm and bound are primitive recursive.
+Proof. Choose a net point yi within r of x. Then R(yi ) ≤ Lr. Its sampled residual is at most Lr + e.
+The selected sample is no larger, and converting its sample back to the exact residual adds another e.
+The scan invariant records the least processed index with minimal rational sample. It is quantifier free
+after a bounded comparison fold.
+This theorem is often the strongest uniform constructive replacement for an exact minimizer,
+eigenvector, axis, or zero. It gives a witness at every requested accuracy without asserting that the
+selected witnesses converge.
+
+Certified finitary presentations in iPRA
+
+8.3
+
+21
+
+Coherent nested certificates
+
+An exact represented object can be obtained when the finite witnesses are coherent.
+Definition 8.4 (Nested isolating certificate). A nested certificate is a primitive-recursive sequence of
+rational balls Bk = B(ck , rk ) such that
+rk ≤ 2−k ,
+
+Bk+1 ⊆ Bk ,
+
+and a finite checker proves that every Bk has the desired existence property. If uniqueness is needed, a
+separation certificate says that at most one solution lies in Bk .
+Theorem 8.5 (Nested balls produce a regular name). The center sequence of a nested certificate is a
+regular name after a fixed precision shift. Every property stable under the certified residual bounds
+holds of that name. If each ball contains at most one solution, the represented solution is unique in
+the name equality relation.
+Proof. For l ≥ k, nesting puts cl in Bk , hence dist(ck , cl ) ≤ rk + rl ≤ 2−k + 2−l . For arbitrary k, l,
+use m = min(k, l) and the same estimate, or symmetrize. This is exactly the regular-name condition.
+A residual bound tending with the displayed dyadic rate yields the all-precision exact property by
+fixed-precision compilation. If two represented solutions lie in every isolating ball, the uniqueness
+clause at any requested precision bounds their distance; the positive-rational gap argument proves
+name equality.
+Applications include polynomial roots via isolating disks, solutions of well-conditioned implicit
+equations, normalized eigenvectors under a spectral gap, and limits of contractive iterations. The
+crucial input is not the word “compact” but the explicit refinement and isolation checker.
+
+8.4
+
+Approximate minimizers without an exact minimizer theorem
+
+On a finite net, a minimum always exists by bounded scan. With a uniform continuity modulus, these
+minima form an approximate-infimum name:
+mk =
+
+min
+
+i<N (µ(k))
+
+f (net(µ(k), i)).
+
+Comparing two net levels through a refinement or through the true pointwise infimum bounds |mk − ml |.
+Thus the infimum value can often be named without choosing a minimizing point. An exact minimizer
+requires additional coherence, a compact choice principle, or a quantitative uniqueness condition. This
+distinction is useful in optimization, spectral estimates, and extremal geometry.
+
+8.5
+
+Finite covers
+
+Suppose every net point has a certified neighborhood on which one member of a finite family of local
+assertions holds. A Lebesgue-number-style result is constructive only when the neighborhood radii
+have a positive finite minimum that is actually computed. The checker scans the finite list, verifies
+every radius, takes their minimum, and proves coverage by the net-transfer theorem. There is no
+appeal to an abstract open-cover compactness theorem.
+
+Certified finitary presentations in iPRA
+
+8.6
+
+22
+
+Search bounds and finite lists
+
+Let P (a, x) be decidable and let h(x) be a primitive-recursive height such that all codes of height at
+most B have a primitive-recursive finite enumeration.
+Theorem 8.6 (Height bound and complete list). The following data are primitively and intuitionistically interconvertible:
+1. a bound H(a) with P (a, x) → h(x) ≤ H(a);
+2. a finite list L(a) that is sound and complete for P (a, ·).
+Proof. Given H(a), enumerate all codes of height at most H(a) and retain exactly those passing the
+decidable predicate. Bounded-filter correctness is a Boolean-fold induction. Completeness follows from
+the height implication.
+Given L(a), take the maximum of the heights of its entries, with zero for the empty list. If P (a, x),
+completeness gives membership of x in the list; finite maximum correctness gives the height bound.
+No excluded middle or choice is used.
+A bound on the number of solutions is absent from this equivalence. It does not locate the solutions
+and supplies no stopping criterion; a precise computability obstruction is proved in theorem 11.2.
+
+9
+
+Reusable domain libraries
+
+The framework is most useful when it becomes a small collection of shared object-language libraries.
+This section describes the interfaces and the proof reductions they support.
+
+9.1
+
+Finite algebra and polynomial certificates
+
+A multivariate integer polynomial is a finite list of coefficient/exponent pairs in a canonical order.
+Addition and multiplication merge and convolve those lists. Normalization combines equal monomials
+and removes zero coefficients. Evaluation is a finite fold.
+Proposition 9.1 (Polynomial certificate reflection). There is a primitive-recursive checker
+PolyId(P, Q, c) such that iPRA proves: if c is an accepted normalization certificate for P − Q, then
+∀x
+
+P (x) = Q(x).
+
+The same method checks rational identities after multiplying by a certified positive common denominator.
+Proof. The certificate lists every normalization step: sorting, combining equal monomials, and deleting
+zeros. The checker verifies local list equations. Induction on the certificate length proves that evaluation
+is preserved. Acceptance says the final list is empty, whose evaluation is zero. The induction invariant
+is equality of two integer evaluations and is quantifier-free. Variables x remain free throughout and
+are universally introduced at the end.
+This library handles ring identities, determinant expansions, adjugate identities, trigonometric
+polynomial identities in sin and cos, and the finite coefficient parts of power-series proofs. It also
+separates two checks that are often conflated: a computer algebra system may produce the certificate,
+while the small arithmetic checker proves its soundness.
+Algebraic roots. A root should be represented first by an isolating rectangle or disk, a root count,
+and a refinement procedure. Polynomial arithmetic, interval bounds, and a finite argument-principle or
+subdivision certificate validate each region. Repeated roots are represented by clusters with multiplicity
+data. An ordered list of individual roots is added only under pairwise separation. This resolves the
+branch discontinuity at collisions without weakening the algebraic theorem.
+
+Certified finitary presentations in iPRA
+
+9.2
+
+23
+
+Linear algebra and geometry
+
+Matrices over coded rationals are finite lists. Matrix multiplication, transpose, determinant, minors,
+adjugate, dot products, and cross products are finite polynomial operations. Fixed-dimension identities
+are direct polynomial certificates; variable-dimension identities use fold invariants.
+Nonsingular systems. Cramer’s rule and adjugate inversion are constructive under a determinant
+apartness witness. The transducer carries a lower bound on |det A|, requests sufficient entry precision,
+and proves the inverse error by theorems 6.5 and 6.6. Gaussian elimination is also possible, but every
+pivot choice must use a robust lower-bound scan.
+Singular systems and eigenvectors. An exact nonzero kernel vector is not a continuous function
+of a singular matrix near rank changes. The unconditional output should be one of:
+• a projective kernel certificate;
+• a residual-small unit vector at requested precision;
+• an exact normalized vector under a supplied minor or spectral gap;
+• a coherent isolating subspace projector rather than a basis.
+Finite-net minimization of ∥Av∥2 on a rational sphere chart gives the approximate version. A gap
+promotes it to a stable exact name.
+Euclidean and projective geometry. Points, lines, circles, conics, and incidences are homogeneous
+coordinate codes. Classical incidence theorems often reduce to determinant or polynomial identities
+after nondegeneracy denominators are recorded. Power-of-a-point, Pappus, Ceva, Menelaus, and
+many circle theorems fit this pattern. The library should expose determinant certificates, signed-area
+predicates, and chart transitions, not a large opaque geometry ontology.
+Trigonometry and spherical geometry. Use regular names for sin and cos built from finite
+series or a circle parameter, and state identities first as polynomial equations in a pair (c, s) satisfying
+c2 + s2 = 1. Division-based tangent or half-angle forms require denominator gaps. Spherical theorems
+should prefer vector dot and triple products; inverse angles are added via overlapping charts and
+separation certificates.
+
+9.3
+
+Real and complex analysis
+
+The shared analytic library should have four layers.
+1. Regular names and interval arithmetic. This is the numerical kernel of section 6.
+2. Finite sums, products, and series tails. Every named special function exports a truncation
+algorithm, magnitude bound, and tail modulus.
+3. Mesh calculus. Integration, differentiation, and changes of variable use finite mesh sums plus
+local remainder moduli.
+4. Local analytic data. A holomorphic chart contains coefficient names and a majorant on a larger
+rational disk. Cauchy estimates and termwise operations become finite tail calculations.
+A contour is a finite polygonal or piecewise rationally parametrized path. A residue theorem
+instance needs a positive distance from the path to every pole, isolating disks for enclosed poles, local
+Laurent coefficient certificates, and a finite winding-number computation. These are exactly the inputs
+that a classical diagram tends to suppress.
+A uniform convergence theorem must include a primitive-recursive modulus. A pointwise statement
+without a modulus generally does not support interchange of limit, integral, or derivative in iPRA.
+Dominated convergence is replaced by finite truncation plus a tail or uniform-integrability modulus.
+
+Certified finitary presentations in iPRA
+
+9.4
+
+24
+
+Elementary and Diophantine number theory
+
+Bounded trial division, Euclid’s algorithm, extended gcd, modular arithmetic, finite factorization,
+valuations below a supplied bound, and Chinese remainder construction are primitive-recursive finite
+algorithms. Their proofs use state invariants such as
+ri = Aui + Bvi ,
+
+gcd(ri , ri+1 ) = gcd(A, B),
+
+encoded by integer equations and a bounded decreasing measure.
+Diophantine geometry adds a search interface:
+• a decidable point predicate;
+• a height and enumeration of bounded-height codes;
+• a height, descent, Runge, or covering certificate;
+• a finite verifier proving that the certificate applies to the input.
+The generic descent theorem can then be fully embedded even when the production of a global height
+certificate remains open.
+
+9.5
+
+Analytic number theory
+
+Analytic-number-theory proofs should be divided into a finite arithmetic core and an analytic input
+contract.
+Definition 9.2 (Analytic input certificate). An analytic input certificate is a finite code containing
+explicit constants, regions, exceptional cases, truncation lengths, and rational inequalities sufficient for
+the later finite estimate. Its checker validates every finite algebraic and numerical condition.
+For a zero-free region, for example, the certificate records the region parameters, a finite cover
+or local argument data, bounds on coefficients and tails, and any exceptional zero with a separation
+estimate. The downstream prime-counting proof is a certified transducer from this data to an explicit
+threshold. The theorem is valuable even before a uniform certificate producer is known: it states
+exactly which quantitative input is missing and prevents an ineffective existence statement from
+entering unnoticed.
+
+9.6
+
+Finite and effective probability
+
+A finite rational law is a finite list of rational values and natural weights with positive total weight.
+Expectation is an exact finite weighted sum. A product law is a mixed-radix enumeration; independence
+is an identity of finite sums rather than an axiom.
+Moments, characteristic functions at rational arguments, convolution, and events with rational
+thresholds are finite calculations. A Berry–Esseen or Lindeberg proof is then a chain of polynomial/trigonometric approximation certificates, finite product telescoping, and rational smoothing
+estimates.
+An infinite or continuous law is admitted only through finite rational approximants with explicit
+tail and quantization moduli. For weak convergence, a bounded-Lipschitz or characteristic-function
+metric is usually more robust than CDF comparison. Transfer to CDFs requires a continuity or
+anti-concentration modulus near the threshold. This cleanly separates the finite probabilistic theorem
+from the presentation of the input law.
+
+Certified finitary presentations in iPRA
+
+9.7
+
+25
+
+Combinatorics and topology
+
+Finite combinatorics is a natural fit: graphs, words, partitions, tableaux, simplicial complexes, and
+finite colorings are codes, while recurrences and injections are bounded traces. Generating-function
+proofs should be compiled to coefficient identities before analytic notation is introduced.
+Constructive topology uses subdivisions and parity certificates. Sperner, Brouwer-style approximate
+fixed points, polygonal Jordan separation, and finite-dimensional degree arguments can be stated on
+rational grids with explicit moduli. Exact points arise from nested cells only when coherence is proved.
+Dimension and invariance results require careful negative statements, but their local combinatorial
+certificates still fit finite-trace reflection.
+
+10
+
+Resolution of the principal reported difficulties
+
+This section applies the common framework to the difficulties identified in the repository. “Resolved”
+means that the logical and representation problem has a precise constructive replacement and a clear
+embedded-proof route. It does not mean that every deep theorem-specific estimate has been proved.
+
+10.1
+
+Unbounded precision and quantifier-free induction
+
+Problem. A report defines equality or convergence by a formula quantified over all precisions, then
+attempts to use that formula as an induction invariant. The invariant is not quantifier free.
+Resolution. Use theorem 5.4. Keep requested precision k free. Compute a finite query table
+containing only the samples needed at that k. Encode all bounded conditions as Boolean folds. Prove
+the finite accumulator theorem by PRA.qfInd. Introduce k universally at the end. Global name
+regularity is used only to derive the finite GoodTable by universal elimination.
+Consequence. Most explicit series, mesh integral, finite-product, regular-name operation, and
+finite probability proofs need no stronger induction. A genuine problem remains only when no
+primitive-recursive modulus or finite query bound is available.
+
+10.2
+
+Euler axes, eigenvectors, and discontinuous selectors
+
+Problem. At the identity rotation every unit vector is an axis. A uniform exact unit axis requires a
+discontinuous choice; the Euler–Rodrigues packet gives an LLPO reduction.
+Resolution. Use a four-tier interface:
+1. unconditional exact homogeneous quaternion data, allowing zero vector part at the identity;
+2. unconditional axis-and-angle approximation at every requested precision, with no claim that the
+axes converge;
+3. exact projective or normalized axis under a positive separation of the rotation from the identity
+or under a nonzero-minor certificate;
+4. exact rational axis for rational proper orthogonal matrices, where a finite nonzero cofactor or
+column can be found by exact comparison.
+Robust pivoting proves the separated case; polynomial certificates prove the Rodrigues identities. The
+unrestricted selector remains correctly marked obstructed.
+This pattern extends to eigenvectors at multiple eigenvalues, singular kernel vectors, root ordering
+at collisions, and orientation choices.
+
+Certified finitary presentations in iPRA
+
+10.3
+
+26
+
+Dirichlet and Kronecker endpoints
+
+Problem. Closed sharp endpoints or density from negative irrationality ask the arithmetic to decide
+a boundary or extract positive information from a double negation. The corresponding packet derives
+LLPO, LPO, or a Markov principle from several unrestricted formulations.
+Resolution. State strict approximation with a displayed rational margin, or accept a positive
+irrationality/separation modulus. Finite pigeonhole and grid arguments then return an exact rational
+witness. For matrix Kronecker, use a finite compatibility certificate and an approximation-or-smallrelation alternative. If the separation modulus rules out the relation branch, the approximation branch
+follows.
+The framework explanation is uniform: finite search can decide rational boxes; it cannot decide
+whether a represented boundary value is exactly attained. An overlap or gap removes the discontinuity.
+
+10.4
+
+Faltings and Siegel: finiteness versus a stopping rule
+
+Problem. A classical theorem says that a rational- or integral-point set is finite, or gives a bound on
+its cardinality. A constructive complete list requires a height cutoff. The Faltings and Siegel packets
+correctly do not claim a general cutoff.
+Resolution. Build and embed the following modular theorem:
+HeightCertificate(C, H) = 1 → CompleteList(C, Search(C, H)).
+The checker verifies the curve, certificate hypotheses, and all finite search steps. Conversely, a complete
+list supplies a maximum height by theorem 8.6. Thus the exact missing mathematical object is a
+height-certificate producer, not finite search or list verification.
+For Runge families, Fermat descents, or other explicit cases, the producer is available and the
+whole theorem can be embedded. For general Faltings or Siegel, the verifier and equivalence theorem
+remain useful while the producer is honestly open. A cardinality estimate is recorded as different data
+and is never used as a cutoff.
+
+10.5
+
+Mordell–Weil and covering representatives
+
+Problem. A finite quotient or Selmer computation need not provide rational points representing
+every relevant coset. Descent needs actual representatives to write P = 2Q + Ri .
+Resolution. Define a covering certificate consisting of a finite rational point list R, validity proofs
+for its entries, and a checked covering relation or a finite trace deriving the needed decomposition in
+the target family. From this certificate, a bounded rational-halving scan constructs a selector and the
+generic height descent is finite-trace reflection. The descent theorem is therefore unconditional relative
+to a checked covering certificate. Producing such certificates uniformly for arbitrary curves remains
+separate.
+This factorization improves the theorem interface: an uncheckable statement “assume representatives exist” is replaced by a finite object whose use is fully verified.
+
+10.6
+
+Ineffective constants in prime distribution
+
+Problem. An asymptotic theorem needs a threshold N (A, q) before the later variable x. A classical
+proof may only assert existence of a constant or may hide an exceptional-zero dependence. Choosing a
+new threshold after seeing each finite x proves the wrong quantifier order.
+
+Certified finitary presentations in iPRA
+
+27
+
+Resolution. Separate two modules:
+ProduceAnalyticCertificate(D) = c,
+VerifyAndPropagate(D, c, A) = N.
+The second is a finite arithmetic theorem and should be embedded first. Its input code contains every
+constant, exceptional object, separation margin, and local estimate used downstream. Its conclusion
+has the correct order
+∀A ∃N ∀x ≥ N E(D, A, x).
+When a primitive-recursive producer is later proved for a class of data, the composition theorem yields
+the unconditional result for that class.
+This resolves the formal architecture and prevents accidental ineffectivity. It does not manufacture
+the missing number-theoretic estimate.
+
+10.7
+
+Ambient Lean versus embedded proof
+
+Problem. Many packets provide compilable or plausible Lean theorems about native data but stop
+before an object-language derivation.
+Resolution. Use a three-stage artifact policy:
+1. semantic reference implementation and exact tests;
+2. object-language specification with fixed PR symbols, formulas, and QF invariants;
+3. actual PrfPRAAx construction, followed by pra_iff_native and an axiom audit.
+A status table must mark the highest completed stage for every main theorem. The generic tracereflection module reduces stage three to a small number of shared proofs rather than reimplementing
+induction plumbing in each packet.
+
+10.8
+
+Root choice and the fundamental theorem of algebra
+
+Problem. A classical FTA statement may return an unordered multiset of roots, while a formal
+development asks for a continuously ordered root list. Collisions make such ordering discontinuous;
+analytic existence may also be written without a computable radius or winding certificate.
+Resolution. Return finite root clusters with rational isolating disks and multiplicities. Refine each
+disk by a checked subdivision procedure. The centers yield names by theorem 8.5. Split and order
+clusters only under a positive separation certificate. Polynomial reconstruction from clusters is a
+finite coefficient certificate. Thus the algebraic content survives without a uniform labeling choice at
+collisions.
+
+10.9
+
+Central limits and arbitrary probability spaces
+
+Problem. The textbook theorem quantifies over measures and real random variables, and CDF
+events may involve irrational thresholds or discontinuities.
+Resolution. Use finite rational laws as the exact core. State the finite triangular-array estimate at
+rational raw thresholds. Present more general laws by finite rational approximants with primitiverecursive moment-tail and quantization moduli. Prove convergence first in a robust metric; transfer to
+CDFs with an explicit continuity or anti-concentration bound. The unrestricted qualitative theorem
+becomes a schema for effective presentations, not a literal higher-type sentence.
+
+Certified finitary presentations in iPRA
+
+11
+
+28
+
+Sharp boundaries and impossibility arguments
+
+A general framework is trustworthy only if it explains what it cannot encode. The following barriers
+show that several recurring difficulties are mathematical, not deficiencies of notation.
+
+11.1
+
+No total universal primitive-recursive evaluator
+
+Theorem 11.1 (Diagonal obstruction). There is no binary primitive-recursive function U (e, x) such
+that every unary primitive-recursive function f has an index e satisfying f (x) = U (e, x) for all x.
+Proof. If such U existed, then
+
+g(n) = U (n, n) + 1
+
+would be primitive recursive. By universality, choose e with g(n) = U (e, n) for every n. At n = e,
+U (e, e) = g(e) = U (e, e) + 1,
+a contradiction.
+Consequently, a first-order theorem cannot receive an arbitrary PR function code and evaluate
+it by one total PR symbol. Fixed evaluator schemas and finite trace verifiers are not a temporary
+workaround; they are the maximal uniform interface compatible with primitive recursiveness.
+
+11.2
+
+A cardinality bound does not yield a height bound
+
+Theorem 11.2 (No uniform conversion from “at most one” to a cutoff). There is a primitiverecursive decidable predicate P (e, t) such that for every e at most one t satisfies P (e, t), but there is no
+primitive-recursive function H(e) satisfying
+P (e, t) → t ≤ H(e)
+for all e, t.
+Proof. Let P (e, t) say that Turing machine e, on blank input, halts for the first time exactly at step t.
+Bounded deterministic simulation is primitive recursive, so P is primitive-recursive and decidable. A
+machine has at most one first halting time.
+If a primitive-recursive H bounded every possible first halting time, the halting problem would
+be decidable: simulate machine e for H(e) steps. If it has not halted by then, the implication says it
+never halts. This contradicts undecidability of the halting problem.
+Thus even a uniform cardinality bound of one carries no search-stopping information. The obstacle
+in the Faltings and Siegel packets is exactly the missing location/height data, not the finite filtering
+algorithm.
+
+11.3
+
+Exact sign selection and LLPO
+
+One standard form of LLPO says: for every binary sequence with at most one entry equal to one,
+either all even entries are zero or all odd entries are zero. From such a sequence α, construct the
+regular real name corresponding to
+x=
+
+X
+
+(α(2n) − α(2n + 1))2−n−1 .
+
+n≥0
+
+The at-most-one premise gives an explicit tail modulus. If a uniform procedure always decides x ≥ 0
+or x ≤ 0, then:
+
+Certified finitary presentations in iPRA
+
+29
+
+• x ≥ 0 rules out an odd-position one;
+• x ≤ 0 rules out an even-position one.
+When the sequence is all zero, both conclusions are valid. Hence real sign selection realizes LLPO.
+The exact-axis and sharp-endpoint obstruction arguments in the inspected packets reduce their
+selectors to this sign principle. Replacing the real encoding or choosing a different normal form cannot
+remove the obstruction. Overlapping branches avoid it because they do not decide which side of an
+exact boundary contains zero.
+
+11.4
+
+Negative inequality is not positive apartness
+
+Intuitionistically, ¬(x = 0) need not provide a rational d > 0 with |x| ≥ d. Algorithms for inversion,
+normalization, or density need the latter. A principle converting every negative nonzeroness proof
+into a positive modulus is a Markov-style principle for represented numbers. The framework therefore
+treats apartness witnesses as data and never derives them from bare negation unless the input class
+has a specific finite argument.
+For rationals and algebraic numbers with an isolating certificate, positive apartness can be computed.
+For arbitrary regular names, it cannot.
+
+11.5
+
+Ineffective existence cannot be repaired by a verifier
+
+A finite verifier may prove that any supplied constant table implies an asymptotic estimate. This does
+not imply a primitive-recursive function producing such a table. The difference mirrors proof checking
+versus theorem search: local verification may be elementary even when uniform production is open or
+noncomputable.
+Quantifier order detects the issue. The useful statement is
+∀D ∀A ∃N ∀x ≥ N E(D, A, x),
+with N produced before x. A family of proofs of ∀D, A, x ∃Nx ≤ x E(D, A, x) is not a substitute. The
+finite-trace framework preserves the former order by making the threshold an output of a certificate
+producer.
+
+11.6
+
+Semantic truth is not automatic iPRA provability
+
+A primitive-recursive function can have true arithmetic properties whose proofs require induction or
+consistency strength beyond a particular weak theory. Therefore the slogan “the algorithm is PR, so
+iPRA proves it” is false. The framework always asks for the local invariant derivations (T0)–(T2).
+The finite-trace theorem composes proofs; it does not create missing mathematical invariants.
+
+11.7
+
+Maximal positive statement principle
+
+When an unrestricted theorem meets one of these barriers, the goal is not to stop at “impossible.” One
+should determine the maximal positive family:
+• approximate witness at every precision;
+• exact invariant or projective data;
+• exact witness under a positive gap;
+• certificate-relative theorem;
+• theorem for rational or finitely presented inputs;
+• obstruction showing why the omitted uniform selector is stronger.
+The Euler–Rodrigues and Dirichlet–Kronecker packets already exemplify this pattern. The CFP
+framework makes it a standard deliverable for every future packet.
+
+Certified finitary presentations in iPRA
+
+30
+
+12
+
+Lean formalization architecture
+
+12.1
+
+Existing interfaces
+
+The implementation should extend, not duplicate, the following inspected modules.
+Module/declaration
+
+Role
+
+ConciseIPRA/PR.lean: PR, PTm
+
+Fixed primitive-recursive function symbols and arithmetic terms.
+Defining equations, successor axioms, and quantifier-free
+induction.
+Rewriting equations for a concrete primitive-recursive
+trace runner.
+The main invariant rule, with an explicit QF proof.
+Native scalar formulas and proofs.
+
+PRAAx
+PRA.precZero, PRA.precSucc
+
+PRA.qfInd
+ConciseIPRA/Native.lean: NFm, NP
+rf
+ConciseIPRA/NativeBiInterpreta Faithful export of a completed PRAAx derivation.
+tion.lean: pra_iff_native
+ConciseIPRA/NativePublic.lean: Optional compact, substitution-stable public certificate
+PGPrf, public gating
+language.
+
+The core arithmetic formalization should target PRAAx. This keeps rational coding and Boolean
+invariants readable. Native translation is the last step.
+
+12.2
+
+The trace-system data
+
+After pairing all numerical parameters into one code u, a Lean meta-level record can hold the fixed
+object-language symbols:
+structure PRTraceSystem where
+good
+: PR 1
+init
+: PR 1
+bound : PR 1
+step
+: PR 3
+-- arguments: i, previousState, u
+inv
+: PR 3
+-- arguments: i, state, u
+accept : PR 2
+-- arguments: state, u
+def PRTraceSystem.run (T : PRTraceSystem) : PR 2 :=
+.prec T.init T.step
+
+The order matches the repository’s primitive-recursion convention: the recursion argument comes
+first, and the step receives the predecessor, prior value, and parameters. Pairing can reduce larger
+arities to this interface.
+Define an object-language predicate IsOnet as the equation of a Boolean term with the chosen
+code for one. For a concrete T, construct terms
+Run(i, u),
+
+Good(u),
+
+Inv(i, u),
+
+Accept(u).
+
+Do not create a second Boolean or rational encoding if the repository already has one suitable for
+reuse.
+
+Certified finitary presentations in iPRA
+
+12.3
+
+31
+
+Embedded proof of trace reflection
+
+The dependency-ordered Lean proof is:
+1. Prove simplification lemmas for T.run by instantiating PRA.precZero and PRA.precSucc.
+2. Define the formula
+ϕ(u, i) = Good(u) → Inv(i, u).
+Prove phi.QF structurally. Every bounded assertion inside Inv must already be a Boolean-fold
+equation.
+3. Supply the base derivation from the concrete module’s base obligation.
+4. Under phi::Gamma.mapFm.shift, use the induction hypothesis, the concrete step obligation, and
+the successor equation for T.run to derive phi at successor.
+5. Invoke PRA.qfIndphihQFh0hS.
+6. Eliminate the universal at T.boundu, apply final soundness, and introduce u universally.
+The generic theorem should take the base, step, and final derivations as fields of a record. This
+makes theorem-specific files provide only local arithmetic lemmas.
+
+12.4
+
+Boolean folds and bounded search
+
+The first supporting module should implement object-language symbols and proofs for:
+• pair/list projections and length;
+• Boolean all, any, and implication;
+• finite sum, product, maximum, and argmin/argmax;
+• first successful bounded search;
+• table lookup with a total default.
+Each correctness theorem should be a PrfPRAAx object. In particular, argmin needs the invariant
+bestIndex < i + 1
+
+∧
+
+∀j < i + 1 v(bestIndex) ≤ v(j),
+
+where the bounded universal part is represented by a Boolean fold. A least-index tie rule makes the
+output deterministic.
+
+12.5
+
+Finite query tables for names
+
+For a fixed evaluator symbol a, define formulas RegularA, EqualAB, and ApartAB. A theorem-specific
+query planner produces a finite list of precision indices. The object-language GoodTable contains:
+• every instantiated regularity inequality;
+• every domain and magnitude bound;
+• every finite relation between repeated samples;
+• all externally supplied certificate checks.
+The proof of RegularA->GoodTable=1 is separate from trace induction. Universal elimination is
+applied at each generated index; a fold combines the facts. For adaptive queries, an induction on the
+trace stage derives the next instance at the term computed by the current state.
+
+12.6
+
+Rational and interval kernel
+
+A canonical object-language rational module should provide:
+1. signed integers and positive-denominator rationals;
+2. cross-multiplied equality and order;
+3. exact addition, multiplication, absolute value, min/max, powers;
+4. dyadics and a function finding a dyadic below a positive rational;
+
+Certified finitary presentations in iPRA
+
+32
+
+5. interval addition, multiplication with magnitude bounds, and guarded reciprocal;
+6. finite polynomial evaluation and the Lipschitz majorant of theorem 6.7.
+The key target is not an abstract ordered-field hierarchy. It is a small set of concrete derivations
+used by the trace checker. Ambient algebraic hierarchies may help validate formulas, but the endpoint
+must use coded natural-number operations.
+
+12.7
+
+Robust branch and finite-net modules
+
+The overlapping branch theorem is a short embedded rational inequality proof. Its implementation
+inputs codes a, e, q, d, checks 4e ≤ d, compares a with q + d/2, and returns a branch bit plus one of
+two checked margin inequalities. The exact-gap theorem consumes an apartness certificate.
+The finite-net module needs:
+• grid generation and a finite coverage theorem for each standard domain;
+• bounded argmin correctness;
+• a Lipschitz transfer lemma;
+• nested-ball regularity and uniqueness.
+Coverage is domain-specific. Boxes and simplices should be implemented first; sphere/projective charts
+can then reuse robust branch and normalization.
+
+12.8
+
+Height and complete-list module
+
+Formalize theorem 8.6 generically over fixed symbols for the point predicate, height, and bounded
+enumerator. The forward direction is a bounded filter theorem. The reverse direction is maximum-onlist correctness plus list completeness. This module provides a precise reusable endpoint for Faltings,
+Siegel, integral-point, and finite-generation packets: they need only supply the theorem-specific height
+or covering certificate.
+
+12.9
+
+Certificate mode and public formulas
+
+A finite certificate language can be checked in ordinary PRAAx and then translated. If a smaller external
+proof format is desired, the guarded public calculus in NativePublic.lean is relevant: equations are
+wrapped by a gating, transport sources are protected, and the public translation is interderivable with
+the native kernel on the intended language. A future proof compiler can emit public certificates while
+the trusted Lean theorem proves their equivalence to NPrf.
+This is an optimization, not the first milestone. The initial implementation should favor readable
+ordinary arithmetic derivations.
+
+Certified finitary presentations in iPRA
+
+12.10
+
+33
+
+Suggested module graph
+CFP/Codes.lean
+↓
+CFP/BooleanFold.lean, CFP/Rational.lean
+↓
+CFP/TraceReflection.lean
+↓
+CFP/RegularNames.lean, CFP/RobustBranch.lean
+↓
+CFP/FiniteNet.lean, CFP/PolynomialCertificate.lean, CFP/HeightSearch.lean
+↓
+domain packages and theorem-specific compilers
+↓
+pra_iff_native and optional public-certificate export.
+
+12.11
+
+Milestones and audits
+
+1. Compile the finite-trace semantic prototype and prove it without sorry. This checks the abstract
+recurrence only.
+2. Implement and compile the object-language Boolean-fold library.
+3. Construct the first generic PRA.traceReflection proof.
+4. Use it for the small recurrence and robust-branch examples in section 13; inspect #printaxioms.
+5. Formalize regular-name addition, multiplication, and reciprocal under apartness. These are the
+first all-precision tests of the query-table discipline.
+6. Formalize polynomial certificate reflection and finite-grid argmin.
+7. Port one existing packet’s rational core, preferably Euler–Rodrigues or finite probability, and
+replace theorem-specific induction plumbing by the generic modules.
+8. Add height/list equivalence and port one explicit Diophantine family.
+9. Only then optimize certificate size or target the public guarded calculus.
+Every milestone should run:
+• a source scan for sorry, admit, and new line-leading axiom;
+• #printaxioms on exported endpoints;
+• a clean build against the pinned Lean/Mathlib versions;
+• exact regression tests for independent semantic implementations;
+• a status ledger distinguishing semantic, architectural, and embedded completion.
+
+12.12
+
+Artifacts supplied in this archive
+
+lean/FiniteTraceSemantic.lean gives an ordinary Lean prototype of the trace invariant and
+complete-list-to-height argument. It is not an embedded proof. lean/IPRAObjectLanguageBluepri
+nt.lean imports the actual ConciseIPRA interfaces, defines the proposed fixed-symbol record, and
+states the completion path. The nontrivial embedded theorem is deliberately not claimed complete.
+lean/LEAN_PLAN.md gives the dependency order and target theorem names. Lean was unavailable in
+the artifact-building environment, so these files were not compiled.
+
+Certified finitary presentations in iPRA
+
+13
+
+34
+
+Worked finite examples
+
+The accompanying Python program is an exact reference implementation using integers and fraction
+s.Fraction. It is not a proof in iPRA, but its examples mirror the finite recurrences to be embedded.
+
+13.1
+
+A bounded trace
+
+Fix an input u and define
+
+s0 = 0,
+
+si+1 = si + u + i.
+
+The invariant is
+si = iu +
+
+i(i − 1)
+.
+2
+
+(E1)
+
+The base case is immediate. At successor,
+i(i − 1)
+i(i + 1)
++ u + i = (i + 1)u +
+.
+2
+2
+
+si+1 = iu +
+
+Because i(i − 1) is even, one may either use coded exact division by two or avoid division by storing
+2si = 2iu + i(i − 1). The latter is the cleaner quantifier-free invariant.
+For u = 3 and bound 8, the certified states are
+0, 3, 7, 12, 18, 25, 33, 42, 52.
+The checker validates every local step and every instance of (E1). The final value is 52.
+
+13.2
+
+An overlapping decision
+
+Take
+
+9
+1
+1
+1
+,
+e= ,
+q= ,
+d= .
+16
+32
+2
+8
+Here 4e = d, and a = q + d/2. The upper branch of theorem 7.1 returns
+a=
+
+5
+x<q+d= .
+8
+Indeed x ≤ a + e = 19/32 < 20/32 = 5/8. Had the approximation been larger than 9/16, the lower
+branch would certify x > 1/2. The interval (1/2, 5/8) is deliberately shared by both branches.
+This tiny example is the complete control-flow core of much larger chart and pivot arguments.
+
+13.3
+
+Finite-grid approximation to
+
+√
+
+2
+
+Let P (x) = x2 − 2 on [1, 2]. On this interval, theorem 6.7 gives Lipschitz constant 4. Scan the grid
+with denominator 16. The least point minimizing |P | is
+x∗ =
+
+23
+,
+16
+
+|P (x∗ )| =
+
+17
+.
+256
+
+√
+A nearest grid point to 2 is within 1/32, so the generic net bound gives residual at most 4/32 = 1/8;
+the exact residual above is smaller. The scan needs no square-root function. It uses only integer
+squares and rational comparison.
+To obtain an exact regular name, at precision k compute
+j √ k
+nk = 2k 2 = isqrt(2 · 22k ),
+
+Certified finitary presentations in iPRA
+
+35
+
+checked by
+
+n2k ≤ 2 · 22k < (nk + 1)2 .
+√
+The interval [nk /2k , (nk + 1)/2k ] has width 2−k , contains 2, and is nested up to a harmless index shift.
+Integer square root is a bounded search with a quantifier-free invariant. The archive’s regression test
+checks the resulting midpoint regularity through precision twelve; the general proof is the nested-ball
+theorem.
+
+13.4
+
+Polynomial identity certificates
+
+Consider
+
+(x + y)2 = x2 + 2xy + y 2 .
+
+A certificate producer expands the left side, sorts monomials (2, 0), (1, 1), (0, 2), and returns coefficients
+(1, 2, 1). The right side already has that normal form. The checker verifies each list transformation.
+Soundness is proved once by induction on the certificate list; the theorem for this identity is then one
+accepted finite certificate plus universal introduction of x, y.
+For a rational identity, the checker also records a positive common denominator. The final statement
+is the corresponding integer polynomial identity after multiplication. This is the recommended path
+for matrix, trigonometric, and algebraic identities in the packets.
+
+13.5
+
+Height bound and list
+
+Let P (a, x) be x2 ≤ a, with height h(x) = x. For a = 20, the height certificate H = 4 produces the
+complete list [0, 1, 2, 3, 4]. Conversely the maximum of the list is 4. The example is trivial, but its
+proof structure is identical to bounded rational-point search: a theorem-specific height implication
+feeds a generic finite filter.
+
+13.6
+
+Finite probability
+
+Let a law have rational values xj = aj /bj and natural weights wj , with W =
+is the exact rational
+1 X
+EX =
+wj xj .
+W j
+
+j wj > 0. Its expectation
+
+P
+
+For two laws, enumerate pairs by mixed radix. The identity
+X
+i,j
+
+wi vj f (xi )g(yj ) =
+
+X
+
+
+!
+X
+wi f (xi )  vj g(yj )
+
+i
+
+j
+
+is a finite polynomial certificate. It proves independence algebra, mean additivity, and variance
+addition for centered variables. There is no measure space and no appeal to Fubini; all sums are finite
+and their indices have explicit bounds.
+
+13.7
+
+Reproduction
+
+From the archive root, run
+cd code
+python3 -m unittest -v test_certificate_kernel.py
+python3 certificate_kernel.py ../examples/framework_certificate.json
+
+Certified finitary presentations in iPRA
+
+36
+
+The delivered run passes nine tests. The JSON certificate records the trace, branch, finite-grid, and
+regularity examples. These tests provide independent finite arithmetic checks; they do not replace the
+planned PrfPRAAx formalization.
+
+14
+
+Further research questions
+
+1. Generic object-language trace reflection. Can the proposed PRTraceSystem record be
+implemented with sufficiently clean arity and substitution lemmas that theorem-specific modules
+only supply base, step, and final derivations?
+2. Verified certificate compiler. Can a small external compiler translate polynomial normalizations, rational error calculations, and finite loop annotations into public guarded certificates
+whose checker is proved equivalent to NPrf?
+3. Canonical code library. Which existing ProveIt encodings of Booleans, pairs, lists, integers, and
+rationals should become canonical, so that proof packets stop rebuilding incompatible arithmetic
+kernels?
+4. Automatic precision synthesis. For expression trees with sums, products, guarded inverses,
+roots, and finite folds, can Lean synthesize a monotone primitive-recursive precision transformer
+and emit the corresponding error proof?
+5. Adaptive query extraction. Can a theorem-specific semantic program be instrumented to
+emit its finite query trace, after which a generic object-language checker proves that all queried
+regularity instances suffice?
+6. Constructive root clusters. Develop a complete isolating-cluster library for integer polynomials,
+including multiplicity, subdivision certificates, and exact coefficient reconstruction, without
+imposing a discontinuous global root order.
+7. Projective linear algebra. Develop projective kernel, eigenspace projector, and singularvalue residual interfaces that give unconditional approximate outputs and exact outputs under
+quantitative gaps. Compare their proof size with classical normalized-vector interfaces.
+8. Effective compact domains. Formalize certified nets for rational boxes, simplices, spheres,
+projective spaces, compact matrix groups, and finite probability simplices. Determine a minimal
+common interface for coverage and refinement.
+9. Analytic certificate formats. What finite certificate best represents zero-free regions, contour
+bounds, exceptional zeros, or saddle-point estimates so that downstream analytic number theory
+becomes a small verifier theorem?
+10. Height-certificate taxonomy. Classify Diophantine methods—Runge, descent, Baker bounds,
+Chabauty, Mordell–Weil sieve—by the finite certificate they can produce and the checker needed
+in iPRA.
+11. Witness extraction bounds. For restricted formula classes proved in ordinary or native iPRA,
+obtain explicit primitive-recursive bounds on extracted witnesses and compare them with direct
+CFP producers.
+12. Obstruction automation. Create reusable reductions from exact sign, exact root ordering,
+exact chart selection, or negative-only apartness to LLPO, LPO, or Markov principles. A packet
+could then test a proposed classical formulation before investing in a large positive proof.
+13. Proof-size engineering. Measure whether ordinary PRAAx certificates, native formulas, or
+guarded public certificates give the smallest checker and proof terms for large finite mathematics.
+14. Repository-wide status ledger. Can every proof packet expose a machine-readable record
+following metadata/framework_schema.json, allowing automated reports of which fields—
+producer, verifier, embedded proof, native export, axiom audit—are complete?
+15. A substantial end-to-end pilot. A strong first pilot would combine regular names, robust
+
+Certified finitary presentations in iPRA
+
+37
+
+pivots, polynomial certificates, and finite search: for example, the rational and separated-real
+Euler–Rodrigues theorems or a finite-law Berry–Esseen core. Completing one such packet with
+actual PrfPRAAx endpoints would test the entire architecture.
+
+A
+
+Object-language normal forms and packet checklist
+
+A.1
+
+Finite exact endpoint
+
+For input code p, algorithm A, and Boolean checker V :
+Dom(p) = 1 → V (p, A(p)) = 1.
+
+∀p
+
+Required proof objects:
+1. PR symbols for Dom, A, V ;
+2. defining-equation lemmas;
+3. QF loop invariant;
+4. checker soundness implication;
+5. closed PrfPRAAx theorem and native translation.
+
+A.2
+
+Regular-name endpoint
+
+For fixed evaluator symbols a, b:
+∀p Rega (p) ∧ Dom(p) → ∀k Close(b(p, k), Target(p), k).
+Here Target must itself be expressed through finite observations, or the conclusion should be equality
+of names. The proof at free k must list every queried input precision.
+
+A.3
+
+Approximate existential endpoint
+
+Instead of ∃y P (p, y) in a higher-type completion, use
+∀k ∃y < B(p, k)
+
+Residual(p, y) ≤ 2−k .
+
+A stronger computational form provides a fixed producer Y (p, k):
+∀p, k
+
+Dom(p) → Residual(p, Y (p, k)) ≤ 2−k .
+
+Coherence of Y (p, k) is a separate theorem; without it no exact name is claimed.
+
+A.4
+
+Exact existential from nested certificates
+
+Input or construct B(p, k), a nested family of finite regions, with checked existence and shrinking radius.
+Define the output name from their centers. Prove regularity, residual convergence, and uniqueness if
+supplied. The object-language theorem quantifies only over natural codes and precision.
+
+A.5
+
+Certificate-relative endpoint
+∀p, c CertOK(p, c) = 1 → Conclusion(p, decode(c)).
+
+The packet must state whether a certificate producer is:
+• proved uniformly primitive recursive;
+• proved for a restricted input class;
+• executable but not embedded;
+• assumed as explicit input;
+• unknown or obstructed.
+
+Certified finitary presentations in iPRA
+
+A.6
+
+38
+
+Status vocabulary
+
+Status
+
+Meaning
+
+Specified
+Finite core proved
+
+Exact codes, formulas, and proof obligations are written.
+Finite semantic algorithms and identities are checked, but no full
+embedded endpoint exists.
+Embedded proof com- A PrfPRAAx endpoint compiles and has an axiom audit.
+plete
+Conditional
+Verifier and consequence are proved relative to a finite certificate or
+modulus whose producer is separate.
+A stronger uniform statement implies an excluded constructive prinObstructed
+ciple or noncomputable function; a maximal positive replacement is
+given.
+
+A.7
+
+Review checklist
+
+Before accepting a new packet, answer:
+1. What is the exact first-order formula?
+2. Which function symbols are fixed, and which data are numerical inputs?
+3. Is any purported universal evaluator hidden in the notation?
+4. What is the requested precision and its dependency graph?
+5. Which denominators, pivots, or charts require positive margins?
+6. What is the primitive-recursive loop/search bound?
+7. What is the quantifier-free invariant, after Booleanization?
+8. Are all compactness/existence uses replaced by nets, bounds, or nested certificates?
+9. Is an ineffective constant being used as though it were produced?
+10. Is the Lean result semantic, embedded, or merely a target proposition?
+11. Has the final declaration been compiled and audited for axioms?
+12. If the literal classical statement fails constructively, is the maximal positive replacement and
+obstruction both recorded?
+
+B
+
+Repository source audit
+
+B.1
+
+Snapshot
+
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+Inspected main commit:
+7d492fbfc5fee3b2b9dec0b2623b0b82effe05f2.
+
+The inspection was read-only through the GitHub connector. A network clone was unavailable in
+the artifact runtime, so the report relies on the fetched files listed below rather than claiming an
+exhaustive local build.
+
+B.2
+
+Foundation files
+
+Certified finitary presentations in iPRA
+
+Path
+
+39
+
+Use in this report
+
+Native term and formula grammar, rule
+overview, and design intent.
+PR, PTm, PRAAx, PRA.qfInd, primitiverecursion equations.
+.../ConciseIPRA/Lean/ConciseIPRA/Native. NFm, NPrf, substitution and soundness.
+lean
+.../ConciseIPRA/Lean/ConciseIPRA/BiInter Faithful translation between equality theory
+pretation.lean
+and iPRA.
+.../ConciseIPRA/Lean/ConciseIPRA/NativeB pra_iff_native, native_iff_pra, round
+trips.
+iInterpretation.lean
+.../ConciseIPRA/Lean/ConciseIPRA/NativeP Guarded public certificate language and
+ublic.lean
+substitution-stable proof restrictions.
+Logic/PrimitiveRecursiveArithmetic/Conci
+seIPRA/README.md
+.../ConciseIPRA/Lean/ConciseIPRA/PR.lean
+
+B.3
+
+Proof-packet index and representative audits
+
+Path
+
+Finding used
+
+Forty-eight packets; placement did not rerun or compile them; area-by-area status
+and explicit partial results.
+.../geometry/euler_rodrigues_ipra/README.m LLPO obstruction to unrestricted exact
+d
+unit-axis choice; rational, separated, approximate, and quaternion positive results.
+.../geometry/euler_rodrigues_ipra/formaliz Fix precision before induction; finite Good
+ation_and_audit.tex
+Table; polynomial residual and precisioncompilation discipline.
+.../diophantine-number-theory/dirichlet_kr LLPO/LPO/Markov obstructions and
+onecker_ipra/README.txt
+strict/separated positive approximation
+forms.
+.../analytic-number-theory/zeta_ipra_proo Regular names, fixed evaluator schemas,
+f_package/paper/sections/01_foundations.te no universal PR evaluator, finite
+mesh/series discipline.
+x
+.../analytic-number-theory/prime_distribu Explicit bounds for positive results; intion_ipra/paper/sections/01_scope.tex
+complete Chebotarev, Siegel–Walfisz, and
+Bombieri–Vinogradov analytic inputs.
+.../diophantine-number-theory/faltings_ipr General Faltings not proved; height bound
+a/README.md
+versus list; cardinality does not give a stopping rule; ambient Lean versus embedded
+proof.
+.../diophantine-number-theory/siegel_ipra/ General Siegel not proved; explicit Runge
+certificate families; missing general size
+paper/01_scope.tex
+bound.
+.../diophantine-number-theory/mordell_weil Generic finite descent relative to ac_ipra/README.txt
+tual covering representatives; no uniform
+arbitrary-curve generator algorithm.
+Logic/PrimitiveRecursiveArithmetic/docs/pr
+oofs/README.md
+
+Certified finitary presentations in iPRA
+
+40
+
+Path
+
+Finding used
+
+.../probability/central_limit_ipra_2026-1
+1-15/paper/central_limit_ipra.tex
+
+Finite rational laws, effective completion
+with moduli, rational thresholds, and a
+Lean blueprint rather than a completed
+embedded proof.
+
+B.4
+
+Artifact verification
+
+The exact Python companion in this archive passed nine unit tests and verified the supplied JSON
+certificate. The PDF was compiled from the supplied LaTeX, rendered to images, and visually
+inspected. The Lean files were not compiled because no Lean executable was available. Their status is
+therefore exactly “semantic prototype and object-language blueprint.”
+
+

@@ -1,0 +1,84 @@
+\section{Further research questions}
+\label{sec:research}
+
+\begin{enumerate}
+\item \textbf{Generic object-language trace reflection.}
+Can the proposed \code{PRTraceSystem} record be implemented with sufficiently
+clean arity and substitution lemmas that theorem-specific modules only supply
+base, step, and final derivations?
+
+\item \textbf{Verified certificate compiler.}
+Can a small external compiler translate polynomial normalizations, rational
+error calculations, and finite loop annotations into public guarded
+certificates whose checker is proved equivalent to \code{NPrf}?
+
+\item \textbf{Canonical code library.}
+Which existing ProveIt encodings of Booleans, pairs, lists, integers, and
+rationals should become canonical, so that proof packets stop rebuilding
+incompatible arithmetic kernels?
+
+\item \textbf{Automatic precision synthesis.}
+For expression trees with sums, products, guarded inverses, roots, and finite
+folds, can Lean synthesize a monotone primitive-recursive precision transformer
+and emit the corresponding error proof?
+
+\item \textbf{Adaptive query extraction.}
+Can a theorem-specific semantic program be instrumented to emit its finite
+query trace, after which a generic object-language checker proves that all
+queried regularity instances suffice?
+
+\item \textbf{Constructive root clusters.}
+Develop a complete isolating-cluster library for integer polynomials, including
+multiplicity, subdivision certificates, and exact coefficient reconstruction,
+without imposing a discontinuous global root order.
+
+\item \textbf{Projective linear algebra.}
+Develop projective kernel, eigenspace projector, and singular-value residual
+interfaces that give unconditional approximate outputs and exact outputs under
+quantitative gaps.  Compare their proof size with classical normalized-vector
+interfaces.
+
+\item \textbf{Effective compact domains.}
+Formalize certified nets for rational boxes, simplices, spheres, projective
+spaces, compact matrix groups, and finite probability simplices.  Determine a
+minimal common interface for coverage and refinement.
+
+\item \textbf{Analytic certificate formats.}
+What finite certificate best represents zero-free regions, contour bounds,
+exceptional zeros, or saddle-point estimates so that downstream analytic
+number theory becomes a small verifier theorem?
+
+\item \textbf{Height-certificate taxonomy.}
+Classify Diophantine methods---Runge, descent, Baker bounds, Chabauty,
+Mordell--Weil sieve---by the finite certificate they can produce and the
+checker needed in \(\ipra\).
+
+\item \textbf{Witness extraction bounds.}
+For restricted formula classes proved in ordinary or native \(\ipra\), obtain
+explicit primitive-recursive bounds on extracted witnesses and compare them
+with direct \(\CFP\) producers.
+
+\item \textbf{Obstruction automation.}
+Create reusable reductions from exact sign, exact root ordering, exact chart
+selection, or negative-only apartness to LLPO, LPO, or Markov principles.  A
+packet could then test a proposed classical formulation before investing in a
+large positive proof.
+
+\item \textbf{Proof-size engineering.}
+Measure whether ordinary \code{PRAAx} certificates, native formulas, or guarded
+public certificates give the smallest checker and proof terms for large
+finite mathematics.
+
+\item \textbf{Repository-wide status ledger.}
+Can every proof packet expose a machine-readable record following
+\code{metadata/framework_schema.json}, allowing automated reports of which
+fields---producer, verifier, embedded proof, native export, axiom audit---are
+complete?
+
+\item \textbf{A substantial end-to-end pilot.}
+A strong first pilot would combine regular names, robust pivots, polynomial
+certificates, and finite search: for example, the rational and separated-real
+Euler--Rodrigues theorems or a finite-law Berry--Esseen core.  Completing one
+such packet with actual \code{Prf PRAAx} endpoints would test the entire
+architecture.
+\end{enumerate}

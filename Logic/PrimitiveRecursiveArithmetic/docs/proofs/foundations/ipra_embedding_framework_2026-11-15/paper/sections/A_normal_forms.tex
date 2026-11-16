@@ -1,0 +1,107 @@
+\section{Object-language normal forms and packet checklist}
+\label{app:normal-forms}
+
+\subsection{Finite exact endpoint}
+
+For input code \(p\), algorithm \(A\), and Boolean checker \(V\):
+\[
+ \forall p\quad \mathsf{Dom}(p)=1\to V(p,A(p))=1.
+\]
+Required proof objects:
+\begin{enumerate}
+\item \code{PR} symbols for \(\mathsf{Dom},A,V\);
+\item defining-equation lemmas;
+\item QF loop invariant;
+\item checker soundness implication;
+\item closed \code{Prf PRAAx} theorem and native translation.
+\end{enumerate}
+
+\subsection{Regular-name endpoint}
+
+For fixed evaluator symbols \(a,b\):
+\[
+ \forall p\quad
+ \mathsf{Reg}_a(p)\wedge\mathsf{Dom}(p)
+ \to \forall k\;\mathsf{Close}(b(p,k),\mathsf{Target}(p),k).
+\]
+Here \(\mathsf{Target}\) must itself be expressed through finite observations,
+or the conclusion should be equality of names.  The proof at free \(k\) must
+list every queried input precision.
+
+\subsection{Approximate existential endpoint}
+
+Instead of \(\exists y\,P(p,y)\) in a higher-type completion, use
+\[
+ \forall k\;\exists y<B(p,k)\quad
+ \mathsf{Residual}(p,y)\le2^{-k}.
+\]
+A stronger computational form provides a fixed producer \(Y(p,k)\):
+\[
+ \forall p,k\quad
+ \mathsf{Dom}(p)\to
+ \mathsf{Residual}(p,Y(p,k))\le2^{-k}.
+\]
+Coherence of \(Y(p,k)\) is a separate theorem; without it no exact name is
+claimed.
+
+\subsection{Exact existential from nested certificates}
+
+Input or construct \(B(p,k)\), a nested family of finite regions, with
+checked existence and shrinking radius.  Define the output name from their
+centers.  Prove regularity, residual convergence, and uniqueness if supplied.
+The object-language theorem quantifies only over natural codes and precision.
+
+\subsection{Certificate-relative endpoint}
+
+\[
+ \forall p,c\quad
+ \mathsf{CertOK}(p,c)=1\to
+ \mathsf{Conclusion}(p,\mathsf{decode}(c)).
+\]
+The packet must state whether a certificate producer is:
+\begin{itemize}
+\item proved uniformly primitive recursive;
+\item proved for a restricted input class;
+\item executable but not embedded;
+\item assumed as explicit input;
+\item unknown or obstructed.
+\end{itemize}
+
+\subsection{Status vocabulary}
+
+\begin{longtable}{@{}p{0.24\textwidth}p{0.68\textwidth}@{}}
+\toprule
+Status & Meaning \\
+\midrule
+\endhead
+Specified & Exact codes, formulas, and proof obligations are written.\\
+Finite core proved & Finite semantic algorithms and identities are checked,
+but no full embedded endpoint exists.\\
+Embedded proof complete & A \code{Prf PRAAx} endpoint compiles and has an
+axiom audit.\\
+Conditional & Verifier and consequence are proved relative to a finite
+certificate or modulus whose producer is separate.\\
+Obstructed & A stronger uniform statement implies an excluded constructive
+principle or noncomputable function; a maximal positive replacement is given.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Review checklist}
+
+Before accepting a new packet, answer:
+\begin{enumerate}
+\item What is the exact first-order formula?
+\item Which function symbols are fixed, and which data are numerical inputs?
+\item Is any purported universal evaluator hidden in the notation?
+\item What is the requested precision and its dependency graph?
+\item Which denominators, pivots, or charts require positive margins?
+\item What is the primitive-recursive loop/search bound?
+\item What is the quantifier-free invariant, after Booleanization?
+\item Are all compactness/existence uses replaced by nets, bounds, or nested
+      certificates?
+\item Is an ineffective constant being used as though it were produced?
+\item Is the Lean result semantic, embedded, or merely a target proposition?
+\item Has the final declaration been compiled and audited for axioms?
+\item If the literal classical statement fails constructively, is the maximal
+      positive replacement and obstruction both recorded?
+\end{enumerate}

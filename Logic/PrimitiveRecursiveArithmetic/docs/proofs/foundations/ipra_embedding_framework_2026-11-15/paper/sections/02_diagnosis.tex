@@ -1,0 +1,134 @@
+\section{Diagnosis of the existing proof packets}
+\label{sec:diagnosis}
+
+\subsection{The successful pattern}
+
+Across the packets, the arguments most naturally internalized in \(\ipra\)
+share six properties.
+
+\begin{enumerate}
+\item Every object used by the calculation has a finite code: an integer,
+      rational, finite list, polynomial, matrix, finite probability law,
+      triangulation, or bounded computation state.
+\item Every loop has a displayed primitive-recursive bound.
+\item Its invariant is an equality or inequality of coded finite objects.
+      Bounded universal assertions are compressed into Boolean folds.
+\item Every analytic symbol is backed by a finite approximant and an explicit
+      error estimate; no appeal is made to an abstract completion axiom.
+\item Every division, normalization, pivot, or chart carries a positive
+      denominator or apartness certificate.
+\item The desired theorem is obtained by introducing the precision variable
+      only after the finite calculation has been proved.
+\end{enumerate}
+
+Finite polynomial identities are the model case.  Normalize both sides to a
+coefficient list, verify coefficient equality, and prove evaluation respects
+normalization by induction on the finite list.  The same structure appears in
+finite sums, product telescoping, exact rational probability, grid parity,
+bounded point searches, and descent traces.
+
+\subsection{The recurrent failure modes}
+
+The negative pattern is equally stable.  The following table gives the
+framework diagnosis, not a verdict on the mathematical truth of the classical
+statement.
+
+\begin{longtable}{@{}p{0.20\textwidth}p{0.33\textwidth}p{0.39\textwidth}@{}}
+\toprule
+Failure mode & Symptom & Correct repair or boundary \\
+\midrule
+\endhead
+Higher-type quantification & ``For every real/function/measure'' is written as
+if the function itself were a first-order variable. & Use a fixed evaluator
+schema, finite input code, or finite trace relation.  Never postulate a total
+universal PR evaluator.\\[3pt]
+All-precision induction & The induction predicate says that a sequence is
+Cauchy, equal, or correct at every precision. & Fix the output precision;
+collect the finitely queried samples in a Boolean \(\mathsf{GoodTable}\);
+induct on a quantifier-free finite invariant; quantify precision last.\\[3pt]
+Exact branch at a boundary & A proof chooses a sign, pivot, eigenvector, root
+ordering, argument, or chart when the datum may lie exactly on the boundary. &
+Use overlapping branches, homogeneous/projective output, or a supplied
+positive gap.  If exact selection implies LLPO/LPO/Markov, retain the
+obstruction.\\[3pt]
+Unqualified partial operation & Division, square root, logarithm, or
+normalization is treated as total without carrying its domain proof. & Define a
+totalized code-level operation and prove the intended law under a Boolean
+domain/apartness guard.\\[3pt]
+Abstract compactness & A convergent subsequence, minimizer, root, or finite
+subcover is selected without a modulus or net. & Supply a primitive-recursive
+finite net and continuity modulus; return approximate witnesses or coherent
+nested certificates.\\[3pt]
+Ineffective threshold & A classical proof says ``there exists a constant'' but
+no computable bound precedes later parameters. & Factor the result into a
+finite verifier plus an explicit analytic-input certificate.  Proving a
+producer is separate mathematics.\\[3pt]
+Cardinality in place of location & Finiteness or a point-count bound is used as
+if it supplied a search cutoff. & Require a height bound, complete list, or
+covering representatives.  Cardinality alone has no stopping rule.\\[3pt]
+Ambient/formal gap & Lean proves an ordinary semantic theorem, but no
+\code{Prf PRAAx} object is constructed. & Implement the fixed PR symbols,
+Boolean checker, and QF invariant; then use the existing faithful translation.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Representative packets}
+
+The diagnosis is especially visible in the following reports.
+
+\paragraph{Euler--Rodrigues.}
+The unrestricted exact unit-axis selector for arbitrary represented rotations
+is reported to imply LLPO.  The same packet obtains rational exact axes,
+separated exact axes, arbitrary-precision approximate axes, and uniform
+quaternion data.  This is the canonical example of replacing a discontinuous
+selector by robust data rather than weakening arithmetic by an extra logical
+principle.
+
+\paragraph{Dirichlet and Kronecker approximation.}
+Sharp closed endpoints, a real-valued denominator bound, and density from
+negative irrationality alone lead respectively to LLPO, LPO, and a Markov-type
+principle.  Strict inequalities with margins and positive separation moduli
+survive.  Thus ``add a quantitative margin'' is not cosmetic; it changes a
+non-realizable selection problem into finite rational comparison.
+
+\paragraph{Faltings, Siegel, and Mordell--Weil.}
+These reports isolate missing height bounds or covering representatives.
+Finite search below a supplied height is straightforward; producing the height
+is the hard theorem.  A complete point list and a height bound are mutually
+convertible in the coded setting, while a mere cardinality bound is not.
+Mordell--Weil descent becomes constructive relative to actual quotient
+representatives, but finite abstract quotient data do not automatically
+produce rational points.
+
+\paragraph{Prime distribution.}
+Dirichlet and finite sieve inequalities can be made explicit.  The full
+Siegel--Walfisz and Bombieri--Vinogradov routes retain ineffective or
+exceptional-zero input.  The correct modular theorem checks a supplied
+zero-free/exceptional certificate and propagates its constants; it must not
+pretend that verification also produces the certificate.
+
+\paragraph{Central limit theorems.}
+Finite rational laws and finite product spaces give exact sums and exact
+independence.  Infinite or continuous laws require tail, quantization, and
+continuity moduli.  Rational thresholds avoid undecidable comparison with an
+irrational normalized sum; transfer to a CDF metric uses a continuity or
+anti-concentration estimate.
+
+\subsection{A unifying interpretation}
+
+These examples suggest that the fundamental object is not a ``real number''
+or ``continuous map'' in isolation.  It is a bundle of finite interfaces:
+
+\[
+\begin{gathered}
+\text{code and domain guard}\quad\text{finite observations}\quad
+\text{error or residual}\\
+\text{modulus}\quad\text{bounded trace}\quad
+\text{soundness certificate}
+\end{gathered}
+\]
+
+The \(\CFP\) framework makes this bundle explicit.  Once it is explicit, the
+same arithmetic lemmas support analysis, geometry, probability, and number
+theory, while the genuinely nonconstructive or ineffective step is no longer
+hidden inside notation.

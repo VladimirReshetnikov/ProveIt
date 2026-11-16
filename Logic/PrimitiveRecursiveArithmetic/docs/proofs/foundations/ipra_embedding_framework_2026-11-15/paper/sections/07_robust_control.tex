@@ -1,0 +1,153 @@
+\section{Robust control flow, gaps, and charts}
+\label{sec:control}
+
+\subsection{Why exact trichotomy is the wrong interface}
+
+A finite algorithm can compare rationals exactly.  It cannot in general decide
+whether two arbitrary regular names are equal, nor choose the sign of a name
+that may be zero.  Many classical proofs use such a choice only to select a
+formula, pivot, or coordinate chart.  The constructive repair is to make the
+charts overlap, or to require a positive gap when a genuinely exact decision
+is part of the conclusion.
+
+\subsection{The overlapping branch lemma}
+
+\begin{theorem}[Overlapping rational branch]
+\label{thm:overlap-branch}
+Let \(x\) be represented by a rational approximation \(a\) with
+\(\abs{x-a}\le e\).  Let \(q\in\Q\), \(d>0\), and suppose \(4e\le d\).
+A decidable comparison of \(a\) with \(q+d/2\) produces one of the valid
+conclusions
+\[
+ x<q+d\qquad\text{or}\qquad x>q.
+\]
+The conclusions overlap on \((q,q+d)\).
+\end{theorem}
+
+\begin{proof}
+If \(a\le q+d/2\), then
+\[
+ x\le a+e\le q+d/2+d/4<q+d.
+\]
+If \(a>q+d/2\), then
+\[
+ x\ge a-e>q+d/2-d/4>q.
+\]
+Only a rational comparison is performed.  In a pure name formulation, replace
+strict inequalities by their rational-margin certificates.  All displayed
+inequalities are checked after clearing denominators.
+\end{proof}
+
+This lemma is enough for overlapping analytic charts, small/large parameter
+cases, approximate sign tests, and robust pivot selection.  It avoids the
+false demand that the boundary case be assigned uniquely.
+
+\subsection{Exact decisions from apartness}
+
+\begin{theorem}[Exact branch under a supplied gap]
+\label{thm:exact-gap}
+Suppose a contract supplies \(d>0\) with
+\(\abs{x-q}\ge d\).  If \(a\) approximates \(x\) within \(e<d/2\), then the
+rational sign of \(a-q\) is nonzero and equals the sign of \(x-q\).
+\end{theorem}
+
+\begin{proof}
+If \(x\ge q+d\), then \(a>q+d-e>q\).  If
+\(x\le q-d\), then \(a<q-d+e<q\).  Conversely, an approximation equal to
+\(q\) would be within \(e<d\) of \(x\), contradicting the gap.  The two cases
+in the gap certificate may be encoded as a signed lower-bound witness or as a
+Boolean comparison already supplied by the certificate.
+\end{proof}
+
+Apartness is therefore the correct input to inversion, normalization, root
+ordering, exact sign, and uniqueness theorems.  Negative information
+\(x\ne q\) is not interchangeable with a positive rational gap.
+
+\subsection{Stable finite pivoting}
+
+Let \(v_0,\ldots,v_{m-1}\) be rationally approximated candidate vectors, and
+let \(r_i\) be a nonnegative residual or squared norm.  A finite maximum scan
+returns the least index \(j\) attaining the largest sampled value.
+
+\begin{lemma}[Robust pivot]
+\label{lem:robust-pivot}
+Suppose some exact residual satisfies \(r_i\ge d\), every sampled residual
+\(\tilde r_i\) has error at most \(e\), and \(4e\le d\).  Then the selected
+maximum satisfies \(r_j\ge d/2\).  Consequently any operation requiring a
+positive lower bound may use the certified bound \(d/2\).
+\end{lemma}
+
+\begin{proof}
+For the good index \(i\), \(\tilde r_i\ge d-e\).  Maximality gives
+\(\tilde r_j\ge d-e\).  Hence
+\(r_j\ge\tilde r_j-e\ge d-2e\ge d/2\).  The maximum scan invariant says that
+the stored index dominates all processed samples and is a quantifier-free
+Boolean fold.  No exact comparison of represented residuals is used.
+\end{proof}
+
+This is the generic core of stable column selection in matrix arguments,
+choice of a nonzero polynomial coefficient, denominator selection in projective
+coordinates, and finite chart selection on compact domains.
+
+\subsection{Overlapping atlases}
+
+A constructive atlas should be designed so that every point has at least one
+chart with a quantitative denominator bound, and the chart-selection tests
+have overlap.  For example, two formulas valid respectively when
+\(c>-3/4\) and \(c<3/4\) cover all \(c\in[-1,1]\).  Approximate \(c\) to
+error at most \(1/16\) and compare it to zero.  Either selected chart has a
+fixed denominator margin.  On the overlap both are valid, so no proof of
+unique chart selection is needed.
+
+The same design applies to:
+\begin{itemize}
+\item quaternion charts for rotations;
+\item affine charts of projective space;
+\item inverse trigonometric formulas;
+\item root formulas with competing dominant coefficients;
+\item contour decompositions and local power-series disks.
+\end{itemize}
+
+Transition identities on overlaps should be finite polynomial/rational
+certificates.  This replaces topological choice by a bounded rational decision.
+
+\subsection{Projective and homogeneous output}
+
+Normalization often creates an artificial discontinuity.  A nonzero kernel
+vector has a continuous projective class even when no canonical unit vector is
+available.  A polynomial root can be returned as an isolating disk or cluster
+before an ordering is chosen.  A rotation can be returned as a unit quaternion
+pair with vector part allowed to vanish at the identity.  A line or conic can
+be represented by homogeneous coefficients with a positive maximum-norm
+certificate, postponing division until a chart has been selected.
+
+\begin{principle}[Delay normalization]
+Whenever a theorem is invariant under scaling, sign, permutation, or another
+finite symmetry, state and prove the invariant conclusion first.  Add a
+canonical representative only under a separation or orientation certificate.
+\end{principle}
+
+This principle converts many apparent logical obstacles into ordinary finite
+algebra.
+
+\subsection{Partial operations as certified transducers}
+
+A guarded inverse transducer takes a name \(x\), a positive rational \(d\),
+and a proof that \(\abs{x}\ge d\).  Its precision transformer requests enough
+input accuracy that the rational approximation is at least \(d/2\) away from
+zero; it then uses rational division.  The trace records the comparison and
+cross-multiplied error inequality.  Square root, logarithm, matrix inversion,
+and normalization have the same shape:
+
+\[
+\text{domain/apartness bit}
+\;\longrightarrow\;
+\text{precision request}
+\;\longrightarrow\;
+\text{finite rational operation}
+\;\longrightarrow\;
+\text{error certificate}.
+\]
+
+The operation itself remains total on all codes, but only the guarded theorem
+assigns it the intended mathematical meaning.

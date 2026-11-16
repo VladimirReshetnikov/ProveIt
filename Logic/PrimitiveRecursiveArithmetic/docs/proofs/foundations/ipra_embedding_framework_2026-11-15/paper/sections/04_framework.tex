@@ -1,0 +1,156 @@
+\section{Certified Finitary Presentations}
+\label{sec:framework}
+
+\subsection{Definition of a presentation}
+
+A \emph{Certified Finitary Presentation} is a proof-oriented interface rather
+than a new foundational ontology.
+
+\begin{definition}[CFP object]
+A \(\CFP\) object family with numerical parameter \(p\) consists of:
+\begin{enumerate}
+\item a decidable code-domain predicate \(\mathsf{Dom}(p)=1\);
+\item finite observations \(\mathsf{obs}(p,k)\), where \(k\) is a precision,
+      scale, truncation, or grid parameter;
+\item a rational or integer error radius \(\mathsf{err}(p,k)\);
+\item a regularity, consistency, or residual contract relating observations;
+\item primitive-recursive bounds on all finite tables and traces used to
+      compute or verify an observation.
+\end{enumerate}
+The evaluator is fixed at the meta-level, or its individual computation is
+supplied by a finite trace.
+\end{definition}
+
+\begin{definition}[Certified transducer]
+A certified transducer from presentations \(X\) to \(Y\) consists of a total
+primitive-recursive output algorithm, a primitive-recursive precision
+transformer \(\mu\), a bounded trace system, and a soundness theorem saying
+that valid input observations at the finitely many precisions requested by
+\(\mu\) imply the requested output observation and error bound.
+\end{definition}
+
+The transducer need not consume a single sample.  It may request an adaptive
+finite table: later indices can depend on earlier rational comparisons.  The
+complete run is still a bounded trace.  Its input contract records every query
+actually made, and its soundness proof is an induction on the trace length.
+
+\subsection{The proof-obligation record}
+
+For each theorem package, the following record should be completed before
+writing a large formal proof.
+
+\begin{longtable}{@{}p{0.25\textwidth}p{0.67\textwidth}@{}}
+\toprule
+Field & Required content \\
+\midrule
+\endhead
+Object presentation & Natural-number code or fixed evaluator schema.\\
+Domain guard & Boolean validity, denominator positivity, boundedness,
+nondegeneracy, or regularity assumptions.\\
+Finite observations & Rational tables, residuals, grids, coefficient lists,
+finite laws, traces, or local charts.\\
+Precision transformer & Exact primitive-recursive function mapping output
+precision to every requested input precision and truncation length.\\
+Trace system & Initial state, step, primitive-recursive bound, and final
+acceptance predicate.\\
+QF invariant & Equation to one for a Boolean checker, including folded bounded
+conditions.\\
+Branch margins & Overlap or positive gap used for every decision affecting
+partial operations.\\
+Search/compactness certificate & Finite net, height bound, covering list,
+isolating ball, or explicit finite candidate set.\\
+Soundness bridge & Arithmetic implication from accepted finite data to the
+stated observation.\\
+Object-language target & Exact \code{Fm PTm} formula and intended
+\code{Prf PRAAx} endpoint.\\
+Native transport & Application of \code{pra_iff_native} only after the prior
+field is complete.\\
+\bottomrule
+\end{longtable}
+
+The archive includes this record as a JSON schema and a CSV difficulty matrix.
+Its purpose is not bureaucratic: it prevents a theorem from being called
+``formalized'' while its precision map, domain guard, or object-language target
+is still implicit.
+
+\subsection{Four theorem shapes}
+
+The framework distinguishes four normal forms.
+
+\begin{definition}[Finite exact theorem]
+A finite exact theorem is
+\[
+ \forall p\;[\mathsf{Dom}(p)=1\to\mathsf{Check}(p,A(p))=1],
+\]
+where \(A\) and \(\mathsf{Check}\) are primitive recursive.
+\end{definition}
+
+\begin{definition}[Effective approximation theorem]
+An effective approximation theorem is
+\[
+ \forall p\,\forall k\;
+ [\mathsf{Dom}(p)\wedge\mathsf{InputContract}(p,\mu(p,k))
+   \to \mathsf{OutputContract}(p,k,A(p,k))].
+\]
+All quantities in the matrix are finite rational statements.
+\end{definition}
+
+\begin{definition}[Certificate-relative existence theorem]
+A certificate-relative theorem is
+\[
+ \forall p,c\;[\mathsf{Certificate}(p,c)=1
+   \to \mathsf{Conclusion}(p,\mathsf{decode}(c))].
+\]
+The verifier is uniform.  A separate theorem may construct \(c\).
+\end{definition}
+
+\begin{definition}[Obstruction theorem]
+An obstruction theorem shows that a stronger uniform selector or modulus
+would realize a principle not validated by the intended constructive
+semantics, or would compute a known noncomputable function.  The positive
+replacement is stated in one of the preceding forms.
+\end{definition}
+
+These forms make status compositional.  A deep theorem can be incomplete only
+at its certificate producer while its finite verifier, error propagation, and
+formal bridge are finished and reusable.
+
+\subsection{Composition}
+
+Suppose \(F:X\to Y\) requests input precision \(\mu_F(p,j)\), and
+\(G:Y\to Z\) requests \(Y\)-precision \(\mu_G(q,k)\).  The composite requests
+\[
+ \mu_{G\circ F}(p,k)=
+ \mu_F\bigl(p,\mu_G(F_0(p),k)\bigr),
+\]
+where \(F_0(p)\) denotes the finite bound and domain metadata needed to choose
+\(G\)'s precision.  If those bounds are themselves computed during the run,
+concatenate the traces: first compute and certify the metadata, then run the
+second module.  Pair the states, add the bounds, and conjoin the invariants by
+a Boolean product.  Closure of primitive-recursive functions under
+composition and primitive recursion gives a new certified transducer.
+
+This observation turns the framework into a small category of proof-producing
+finite transducers.  More importantly, it gives a practical library boundary:
+rational arithmetic, finite folds, regular-name operations, robust decisions,
+finite nets, and certificate checkers can be proved once and composed in many
+packets.
+
+\subsection{Proof-producing versus proof-checking modes}
+
+There are two legitimate deployment modes.
+
+\paragraph{Compiled mode.}
+For a fixed theorem, the algorithm and all helper functions are represented by
+fixed \code{PR} symbols.  Its trace is not an input; primitive recursion
+computes it.  This mode gives the strongest uniform theorem and usually the
+smallest final statement.
+
+\paragraph{Certificate mode.}
+A finite trace, isolating region, factorization, covering list, or analytic
+constant table is input.  A small uniform checker validates it.  This mode is
+appropriate when production is expensive, theorem-specific, or presently
+unknown, and it is essential when no total universal producer can exist.
+
+A mature development should often support both: certificate mode first, then a
+producer theorem for the cases where an explicit construction is available.

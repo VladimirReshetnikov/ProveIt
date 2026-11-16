@@ -1,0 +1,159 @@
+\section{Finite nets, search, and exact objects from nested certificates}
+\label{sec:existence}
+
+\subsection{Effective finite nets}
+
+\begin{definition}[Certified net presentation]
+A bounded metric-object family has a certified net presentation when there are
+primitive-recursive functions \(N(k)\) and \(\mathsf{net}(k,i)\),
+\(i<N(k)\), together with a theorem that every valid input object lies within
+\(2^{-k}\) of some listed point.  The coverage theorem may compute the index
+from a finite approximation, or accept it as a certificate.
+\end{definition}
+
+For rational boxes, simplices, circles with overlapping charts, finite
+probability simplices, and coefficient-bounded polynomials, the standard grids
+are primitive recursive.  Abstract compactness is not assumed; the finite net
+and its coverage modulus are data.
+
+\begin{theorem}[Finite-net transfer]
+\label{thm:net-transfer}
+Let \(f\) have modulus \(\mu\) on a certified net domain.  If \(x\) is a
+valid named point and \(i<N(\mu(k))\) satisfies
+\(\dist(x,\mathsf{net}(\mu(k),i))\le2^{-\mu(k)}\), then
+\[
+ \abs{f(x)-f(\mathsf{net}(\mu(k),i))}\le2^{-k}.
+\]
+The corresponding arithmetic statement is provable in \(\ipra\).
+\end{theorem}
+
+\begin{proof}
+This is the defining implication of the modulus instantiated at the finite net
+point.  In the arithmetic proof, approximate both sides to a smaller error,
+use the finite coverage certificate, and clear denominators.  All queried
+precisions are computed from \(k\), so fixed-precision compilation applies.
+\end{proof}
+
+\subsection{Approximate existence by bounded minimization}
+
+Let a nonnegative residual \(R(y)\) vanish exactly on desired solutions and
+have a known continuity modulus.  Scan a finite net and return the least index
+with minimal sampled residual.
+
+\begin{theorem}[Approximate witness from a net]
+\label{thm:approx-witness}
+Suppose a valid named \(x\) satisfies \(R(x)=0\), and
+\(\abs{R(y)-R(z)}\le L\dist(y,z)\) on the domain.  On a net of radius \(r\),
+the bounded minimizer \(y_*\) satisfies
+\[
+ R(y_*)\le Lr+2e,
+\]
+where \(e\) is the error in each sampled residual.  The algorithm and bound
+are primitive recursive.
+\end{theorem}
+
+\begin{proof}
+Choose a net point \(y_i\) within \(r\) of \(x\).  Then
+\(R(y_i)\le Lr\).  Its sampled residual is at most \(Lr+e\).  The selected
+sample is no larger, and converting its sample back to the exact residual adds
+another \(e\).  The scan invariant records the least processed index with
+minimal rational sample.  It is quantifier free after a bounded comparison
+fold.
+\end{proof}
+
+This theorem is often the strongest uniform constructive replacement for an
+exact minimizer, eigenvector, axis, or zero.  It gives a witness at every
+requested accuracy without asserting that the selected witnesses converge.
+
+\subsection{Coherent nested certificates}
+
+An exact represented object can be obtained when the finite witnesses are
+coherent.
+
+\begin{definition}[Nested isolating certificate]
+A nested certificate is a primitive-recursive sequence of rational balls
+\(B_k=B(c_k,r_k)\) such that
+\[
+ r_k\le2^{-k},\qquad B_{k+1}\subseteq B_k,
+\]
+and a finite checker proves that every \(B_k\) has the desired existence
+property.  If uniqueness is needed, a separation certificate says that at
+most one solution lies in \(B_k\).
+\end{definition}
+
+\begin{theorem}[Nested balls produce a regular name]
+\label{thm:nested-name}
+The center sequence of a nested certificate is a regular name after a fixed
+precision shift.  Every property stable under the certified residual bounds
+holds of that name.  If each ball contains at most one solution, the represented
+solution is unique in the name equality relation.
+\end{theorem}
+
+\begin{proof}
+For \(l\ge k\), nesting puts \(c_l\) in \(B_k\), hence
+\(\dist(c_k,c_l)\le r_k+r_l\le2^{-k}+2^{-l}\).  For arbitrary \(k,l\), use
+\(m=\min(k,l)\) and the same estimate, or symmetrize.  This is exactly the
+regular-name condition.  A residual bound tending with the displayed dyadic
+rate yields the all-precision exact property by fixed-precision compilation.
+If two represented solutions lie in every isolating ball, the uniqueness
+clause at any requested precision bounds their distance; the positive-rational
+gap argument proves name equality.
+\end{proof}
+
+Applications include polynomial roots via isolating disks, solutions of
+well-conditioned implicit equations, normalized eigenvectors under a spectral
+gap, and limits of contractive iterations.  The crucial input is not the word
+``compact'' but the explicit refinement and isolation checker.
+
+\subsection{Approximate minimizers without an exact minimizer theorem}
+
+On a finite net, a minimum always exists by bounded scan.  With a uniform
+continuity modulus, these minima form an approximate-infimum name:
+\[
+ m_k=\min_{i<N(\mu(k))} f(\mathsf{net}(\mu(k),i)).
+\]
+Comparing two net levels through a refinement or through the true pointwise
+infimum bounds \(\abs{m_k-m_l}\).  Thus the infimum value can often be named
+without choosing a minimizing point.  An exact minimizer requires additional
+coherence, a compact choice principle, or a quantitative uniqueness condition.
+This distinction is useful in optimization, spectral estimates, and extremal
+geometry.
+
+\subsection{Finite covers}
+
+Suppose every net point has a certified neighborhood on which one member of a
+finite family of local assertions holds.  A Lebesgue-number-style result is
+constructive only when the neighborhood radii have a positive finite minimum
+that is actually computed.  The checker scans the finite list, verifies every
+radius, takes their minimum, and proves coverage by the net-transfer theorem.
+There is no appeal to an abstract open-cover compactness theorem.
+
+\subsection{Search bounds and finite lists}
+
+Let \(P(a,x)\) be decidable and let \(h(x)\) be a primitive-recursive height
+such that all codes of height at most \(B\) have a primitive-recursive finite
+enumeration.
+
+\begin{theorem}[Height bound and complete list]
+\label{thm:height-list}
+The following data are primitively and intuitionistically interconvertible:
+\begin{enumerate}
+\item a bound \(H(a)\) with \(P(a,x)\to h(x)\le H(a)\);
+\item a finite list \(L(a)\) that is sound and complete for \(P(a,\cdot)\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Given \(H(a)\), enumerate all codes of height at most \(H(a)\) and retain
+exactly those passing the decidable predicate.  Bounded-filter correctness is
+a Boolean-fold induction.  Completeness follows from the height implication.
+
+Given \(L(a)\), take the maximum of the heights of its entries, with zero for
+the empty list.  If \(P(a,x)\), completeness gives membership of \(x\) in the
+list; finite maximum correctness gives the height bound.  No excluded middle
+or choice is used.
+\end{proof}
+
+A bound on \emph{the number} of solutions is absent from this equivalence.  It
+does not locate the solutions and supplies no stopping criterion; a precise
+computability obstruction is proved in \cref{thm:cardinality-not-height}.

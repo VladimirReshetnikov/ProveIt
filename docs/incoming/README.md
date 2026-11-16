@@ -218,6 +218,9 @@ the same way, under `foundations/`, and then deleted. All 6 of its members are p
 `ipra_uniform_certificates.zip` was placed the same way, under `foundations/`, and then
 deleted. All 6 of its members are placed. `ipra_finite_observation.zip` was placed the same
 way, under `foundations/`, and then deleted. It leaves out only its ignored `SHA256SUMS`.
+`ipra_embedding_framework_2026-11-15.zip` is a different archive from
+`ipra_embedding_framework.zip`: a different SHA-256, and 45 members against 29. It was placed
+the same way, under `foundations/`, and then deleted. All 45 of its members are placed.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

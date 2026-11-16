@@ -1,0 +1,253 @@
+\section{Lean formalization architecture}
+\label{sec:lean}
+
+\subsection{Existing interfaces}
+
+The implementation should extend, not duplicate, the following inspected
+modules.
+
+\begin{longtable}{@{}p{0.37\textwidth}p{0.55\textwidth}@{}}
+\toprule
+Module/declaration & Role \\
+\midrule
+\endhead
+\code{ConciseIPRA/PR.lean}: \code{PR}, \code{PTm} & Fixed primitive-recursive
+function symbols and arithmetic terms.\\
+\code{PRAAx} & Defining equations, successor axioms, and quantifier-free
+induction.\\
+\code{PRA.precZero}, \code{PRA.precSucc} & Rewriting equations for a concrete
+primitive-recursive trace runner.\\
+\code{PRA.qfInd} & The main invariant rule, with an explicit \code{QF} proof.\\
+\code{ConciseIPRA/Native.lean}: \code{NFm}, \code{NPrf} & Native scalar
+formulas and proofs.\\
+\code{ConciseIPRA/NativeBiInterpretation.lean}: \code{pra_iff_native} &
+Faithful export of a completed \code{PRAAx} derivation.\\
+\code{ConciseIPRA/NativePublic.lean}: \code{PGPrf}, public gating & Optional
+compact, substitution-stable public certificate language.\\
+\bottomrule
+\end{longtable}
+
+The core arithmetic formalization should target \code{PRAAx}.  This keeps
+rational coding and Boolean invariants readable.  Native translation is the
+last step.
+
+\subsection{The trace-system data}
+
+After pairing all numerical parameters into one code \code{u}, a Lean
+meta-level record can hold the fixed object-language symbols:
+
+\begin{lstlisting}[style=leanstyle]
+structure PRTraceSystem where
+  good   : PR 1
+  init   : PR 1
+  bound  : PR 1
+  step   : PR 3   -- arguments: i, previousState, u
+  inv    : PR 3   -- arguments: i, state, u
+  accept : PR 2   -- arguments: state, u
+
+def PRTraceSystem.run (T : PRTraceSystem) : PR 2 :=
+  .prec T.init T.step
+\end{lstlisting}
+
+The order matches the repository's primitive-recursion convention: the
+recursion argument comes first, and the step receives the predecessor, prior
+value, and parameters.  Pairing can reduce larger arities to this interface.
+
+Define an object-language predicate \code{IsOne t} as the equation of a
+Boolean term with the chosen code for one.  For a concrete \code{T}, construct
+terms
+\[
+ \mathsf{Run}(i,u),\quad \mathsf{Good}(u),\quad
+ \mathsf{Inv}(i,u),\quad \mathsf{Accept}(u).
+\]
+Do not create a second Boolean or rational encoding if the repository already
+has one suitable for reuse.
+
+\subsection{Embedded proof of trace reflection}
+
+The dependency-ordered Lean proof is:
+
+\begin{enumerate}
+\item Prove simplification lemmas for \code{T.run} by instantiating
+      \code{PRA.precZero} and \code{PRA.precSucc}.
+\item Define the formula
+\[
+ \phi(u,i)=\mathsf{Good}(u)\to\mathsf{Inv}(i,u).
+\]
+      Prove \code{phi.QF} structurally.  Every bounded assertion inside
+      \code{Inv} must already be a Boolean-fold equation.
+\item Supply the base derivation from the concrete module's base obligation.
+\item Under \code{phi :: Gamma.map Fm.shift}, use the induction hypothesis,
+      the concrete step obligation, and the successor equation for
+      \code{T.run} to derive \code{phi} at successor.
+\item Invoke \code{PRA.qfInd phi hQF h0 hS}.
+\item Eliminate the universal at \code{T.bound u}, apply final soundness, and
+      introduce \code{u} universally.
+\end{enumerate}
+
+The generic theorem should take the base, step, and final derivations as fields
+of a record.  This makes theorem-specific files provide only local arithmetic
+lemmas.
+
+\subsection{Boolean folds and bounded search}
+
+The first supporting module should implement object-language symbols and
+proofs for:
+\begin{itemize}
+\item pair/list projections and length;
+\item Boolean \code{all}, \code{any}, and implication;
+\item finite sum, product, maximum, and argmin/argmax;
+\item first successful bounded search;
+\item table lookup with a total default.
+\end{itemize}
+
+Each correctness theorem should be a \code{Prf PRAAx} object.  In particular,
+\code{argmin} needs the invariant
+\[
+ \mathsf{bestIndex}<i+1\quad\wedge\quad
+ \forall j<i+1\;v(\mathsf{bestIndex})\le v(j),
+\]
+where the bounded universal part is represented by a Boolean fold.  A
+least-index tie rule makes the output deterministic.
+
+\subsection{Finite query tables for names}
+
+For a fixed evaluator symbol \code{a}, define formulas
+\code{RegularA}, \code{EqualAB}, and \code{ApartAB}.  A theorem-specific query
+planner produces a finite list of precision indices.  The object-language
+\code{GoodTable} contains:
+
+\begin{itemize}
+\item every instantiated regularity inequality;
+\item every domain and magnitude bound;
+\item every finite relation between repeated samples;
+\item all externally supplied certificate checks.
+\end{itemize}
+
+The proof of \code{RegularA -> GoodTable = 1} is separate from trace induction.
+Universal elimination is applied at each generated index; a fold combines the
+facts.  For adaptive queries, an induction on the trace stage derives the next
+instance at the term computed by the current state.
+
+\subsection{Rational and interval kernel}
+
+A canonical object-language rational module should provide:
+
+\begin{enumerate}
+\item signed integers and positive-denominator rationals;
+\item cross-multiplied equality and order;
+\item exact addition, multiplication, absolute value, min/max, powers;
+\item dyadics and a function finding a dyadic below a positive rational;
+\item interval addition, multiplication with magnitude bounds, and guarded
+      reciprocal;
+\item finite polynomial evaluation and the Lipschitz majorant of
+      \cref{lem:poly-lip}.
+\end{enumerate}
+
+The key target is not an abstract ordered-field hierarchy.  It is a small set
+of concrete derivations used by the trace checker.  Ambient algebraic
+hierarchies may help validate formulas, but the endpoint must use coded
+natural-number operations.
+
+\subsection{Robust branch and finite-net modules}
+
+The overlapping branch theorem is a short embedded rational inequality proof.
+Its implementation inputs codes \(a,e,q,d\), checks \(4e\le d\), compares
+\(a\) with \(q+d/2\), and returns a branch bit plus one of two checked margin
+inequalities.  The exact-gap theorem consumes an apartness certificate.
+
+The finite-net module needs:
+\begin{itemize}
+\item grid generation and a finite coverage theorem for each standard domain;
+\item bounded argmin correctness;
+\item a Lipschitz transfer lemma;
+\item nested-ball regularity and uniqueness.
+\end{itemize}
+Coverage is domain-specific.  Boxes and simplices should be implemented first;
+sphere/projective charts can then reuse robust branch and normalization.
+
+\subsection{Height and complete-list module}
+
+Formalize \cref{thm:height-list} generically over fixed symbols for the point
+predicate, height, and bounded enumerator.  The forward direction is a bounded
+filter theorem.  The reverse direction is maximum-on-list correctness plus
+list completeness.  This module provides a precise reusable endpoint for
+Faltings, Siegel, integral-point, and finite-generation packets: they need only
+supply the theorem-specific height or covering certificate.
+
+\subsection{Certificate mode and public formulas}
+
+A finite certificate language can be checked in ordinary \code{PRAAx} and
+then translated.  If a smaller external proof format is desired, the guarded
+public calculus in \code{NativePublic.lean} is relevant: equations are wrapped
+by a gating, transport sources are protected, and the public translation is
+interderivable with the native kernel on the intended language.  A future
+proof compiler can emit public certificates while the trusted Lean theorem
+proves their equivalence to \code{NPrf}.
+
+This is an optimization, not the first milestone.  The initial implementation
+should favor readable ordinary arithmetic derivations.
+
+\subsection{Suggested module graph}
+
+\begin{center}
+\begin{tabular}{@{}l@{}}
+\code{CFP/Codes.lean}\\
+\quad$\downarrow$\\
+\code{CFP/BooleanFold.lean}, \code{CFP/Rational.lean}\\
+\quad$\downarrow$\\
+\code{CFP/TraceReflection.lean}\\
+\quad$\downarrow$\\
+\code{CFP/RegularNames.lean}, \code{CFP/RobustBranch.lean}\\
+\quad$\downarrow$\\
+\code{CFP/FiniteNet.lean}, \code{CFP/PolynomialCertificate.lean},
+\code{CFP/HeightSearch.lean}\\
+\quad$\downarrow$\\
+\text{domain packages and theorem-specific compilers}\\
+\quad$\downarrow$\\
+\code{pra_iff_native} and optional public-certificate export.
+\end{tabular}
+\end{center}
+
+\subsection{Milestones and audits}
+
+\begin{enumerate}
+\item Compile the finite-trace semantic prototype and prove it without
+      \code{sorry}.  This checks the abstract recurrence only.
+\item Implement and compile the object-language Boolean-fold library.
+\item Construct the first generic \code{PRA.traceReflection} proof.
+\item Use it for the small recurrence and robust-branch examples in
+      \cref{sec:examples}; inspect \code{\#print axioms}.
+\item Formalize regular-name addition, multiplication, and reciprocal under
+      apartness.  These are the first all-precision tests of the query-table
+      discipline.
+\item Formalize polynomial certificate reflection and finite-grid argmin.
+\item Port one existing packet's rational core, preferably Euler--Rodrigues or
+      finite probability, and replace theorem-specific induction plumbing by
+      the generic modules.
+\item Add height/list equivalence and port one explicit Diophantine family.
+\item Only then optimize certificate size or target the public guarded
+      calculus.
+\end{enumerate}
+
+Every milestone should run:
+\begin{itemize}
+\item a source scan for \code{sorry}, \code{admit}, and new line-leading
+      \code{axiom};
+\item \code{\#print axioms} on exported endpoints;
+\item a clean build against the pinned Lean/Mathlib versions;
+\item exact regression tests for independent semantic implementations;
+\item a status ledger distinguishing semantic, architectural, and embedded
+      completion.
+\end{itemize}
+
+\subsection{Artifacts supplied in this archive}
+
+\code{lean/FiniteTraceSemantic.lean} gives an ordinary Lean prototype of the
+trace invariant and complete-list-to-height argument.  It is not an embedded
+proof.  \code{lean/IPRAObjectLanguageBlueprint.lean} imports the actual
+\code{ConciseIPRA} interfaces, defines the proposed fixed-symbol record, and
+states the completion path.  The nontrivial embedded theorem is deliberately
+not claimed complete.  \code{lean/LEAN_PLAN.md} gives the dependency order and
+target theorem names.  Lean was unavailable in the artifact-building
+environment, so these files were not compiled.

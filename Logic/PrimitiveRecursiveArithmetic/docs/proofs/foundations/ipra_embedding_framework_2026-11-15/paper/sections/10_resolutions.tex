@@ -1,0 +1,197 @@
+\section{Resolution of the principal reported difficulties}
+\label{sec:resolutions}
+
+This section applies the common framework to the difficulties identified in
+the repository.  ``Resolved'' means that the logical and representation
+problem has a precise constructive replacement and a clear embedded-proof
+route.  It does not mean that every deep theorem-specific estimate has been
+proved.
+
+\subsection{Unbounded precision and quantifier-free induction}
+
+\paragraph{Problem.}
+A report defines equality or convergence by a formula quantified over all
+precisions, then attempts to use that formula as an induction invariant.  The
+invariant is not quantifier free.
+
+\paragraph{Resolution.}
+Use \cref{thm:fixed-precision}.  Keep requested precision \(k\) free.  Compute
+a finite query table containing only the samples needed at that \(k\).  Encode
+all bounded conditions as Boolean folds.  Prove the finite accumulator theorem
+by \code{PRA.qfInd}.  Introduce \(k\) universally at the end.  Global name
+regularity is used only to derive the finite \(\mathsf{GoodTable}\) by
+universal elimination.
+
+\paragraph{Consequence.}
+Most explicit series, mesh integral, finite-product, regular-name operation,
+and finite probability proofs need no stronger induction.  A genuine problem
+remains only when no primitive-recursive modulus or finite query bound is
+available.
+
+\subsection{Euler axes, eigenvectors, and discontinuous selectors}
+
+\paragraph{Problem.}
+At the identity rotation every unit vector is an axis.  A uniform exact unit
+axis requires a discontinuous choice; the Euler--Rodrigues packet gives an
+LLPO reduction.
+
+\paragraph{Resolution.}
+Use a four-tier interface:
+\begin{enumerate}
+\item unconditional exact homogeneous quaternion data, allowing zero vector
+      part at the identity;
+\item unconditional axis-and-angle approximation at every requested precision,
+      with no claim that the axes converge;
+\item exact projective or normalized axis under a positive separation of the
+      rotation from the identity or under a nonzero-minor certificate;
+\item exact rational axis for rational proper orthogonal matrices, where a
+      finite nonzero cofactor or column can be found by exact comparison.
+\end{enumerate}
+Robust pivoting proves the separated case; polynomial certificates prove the
+Rodrigues identities.  The unrestricted selector remains correctly marked
+obstructed.
+
+This pattern extends to eigenvectors at multiple eigenvalues, singular kernel
+vectors, root ordering at collisions, and orientation choices.
+
+\subsection{Dirichlet and Kronecker endpoints}
+
+\paragraph{Problem.}
+Closed sharp endpoints or density from negative irrationality ask the
+arithmetic to decide a boundary or extract positive information from a double
+negation.  The corresponding packet derives LLPO, LPO, or a Markov principle
+from several unrestricted formulations.
+
+\paragraph{Resolution.}
+State strict approximation with a displayed rational margin, or accept a
+positive irrationality/separation modulus.  Finite pigeonhole and grid
+arguments then return an exact rational witness.  For matrix Kronecker, use a
+finite compatibility certificate and an approximation-or-small-relation
+alternative.  If the separation modulus rules out the relation branch, the
+approximation branch follows.
+
+The framework explanation is uniform: finite search can decide rational boxes;
+it cannot decide whether a represented boundary value is exactly attained.
+An overlap or gap removes the discontinuity.
+
+\subsection{Faltings and Siegel: finiteness versus a stopping rule}
+
+\paragraph{Problem.}
+A classical theorem says that a rational- or integral-point set is finite, or
+gives a bound on its cardinality.  A constructive complete list requires a
+height cutoff.  The Faltings and Siegel packets correctly do not claim a
+general cutoff.
+
+\paragraph{Resolution.}
+Build and embed the following modular theorem:
+\[
+ \mathsf{HeightCertificate}(C,H)=1
+ \to
+ \mathsf{CompleteList}(C,\mathsf{Search}(C,H)).
+\]
+The checker verifies the curve, certificate hypotheses, and all finite search
+steps.  Conversely, a complete list supplies a maximum height by
+\cref{thm:height-list}.  Thus the exact missing mathematical object is a
+height-certificate producer, not finite search or list verification.
+
+For Runge families, Fermat descents, or other explicit cases, the producer is
+available and the whole theorem can be embedded.  For general Faltings or
+Siegel, the verifier and equivalence theorem remain useful while the producer
+is honestly open.  A cardinality estimate is recorded as different data and
+is never used as a cutoff.
+
+\subsection{Mordell--Weil and covering representatives}
+
+\paragraph{Problem.}
+A finite quotient or Selmer computation need not provide rational points
+representing every relevant coset.  Descent needs actual representatives to
+write \(P=2Q+R_i\).
+
+\paragraph{Resolution.}
+Define a covering certificate consisting of a finite rational point list
+\(R\), validity proofs for its entries, and a checked covering relation or a
+finite trace deriving the needed decomposition in the target family.  From
+this certificate, a bounded rational-halving scan constructs a selector and
+the generic height descent is finite-trace reflection.  The descent theorem is
+therefore unconditional \emph{relative to a checked covering certificate}.
+Producing such certificates uniformly for arbitrary curves remains separate.
+
+This factorization improves the theorem interface: an uncheckable statement
+``assume representatives exist'' is replaced by a finite object whose use is
+fully verified.
+
+\subsection{Ineffective constants in prime distribution}
+
+\paragraph{Problem.}
+An asymptotic theorem needs a threshold \(N(A,q)\) before the later variable
+\(x\).  A classical proof may only assert existence of a constant or may hide
+an exceptional-zero dependence.  Choosing a new threshold after seeing each
+finite \(x\) proves the wrong quantifier order.
+
+\paragraph{Resolution.}
+Separate two modules:
+\begin{align*}
+ \mathsf{ProduceAnalyticCertificate}(D)&=c,\\
+ \mathsf{VerifyAndPropagate}(D,c,A)&=N.
+\end{align*}
+The second is a finite arithmetic theorem and should be embedded first.  Its
+input code contains every constant, exceptional object, separation margin, and
+local estimate used downstream.  Its conclusion has the correct order
+\[
+ \forall A\;\exists N\;\forall x\ge N\;E(D,A,x).
+\]
+When a primitive-recursive producer is later proved for a class of data, the
+composition theorem yields the unconditional result for that class.
+
+This resolves the formal architecture and prevents accidental ineffectivity.
+It does not manufacture the missing number-theoretic estimate.
+
+\subsection{Ambient Lean versus embedded proof}
+
+\paragraph{Problem.}
+Many packets provide compilable or plausible Lean theorems about native data
+but stop before an object-language derivation.
+
+\paragraph{Resolution.}
+Use a three-stage artifact policy:
+\begin{enumerate}
+\item semantic reference implementation and exact tests;
+\item object-language specification with fixed \code{PR} symbols, formulas,
+      and QF invariants;
+\item actual \code{Prf PRAAx} construction, followed by
+      \code{pra_iff_native} and an axiom audit.
+\end{enumerate}
+A status table must mark the highest completed stage for every main theorem.
+The generic trace-reflection module reduces stage three to a small number of
+shared proofs rather than reimplementing induction plumbing in each packet.
+
+\subsection{Root choice and the fundamental theorem of algebra}
+
+\paragraph{Problem.}
+A classical FTA statement may return an unordered multiset of roots, while a
+formal development asks for a continuously ordered root list.  Collisions make
+such ordering discontinuous; analytic existence may also be written without a
+computable radius or winding certificate.
+
+\paragraph{Resolution.}
+Return finite root clusters with rational isolating disks and multiplicities.
+Refine each disk by a checked subdivision procedure.  The centers yield names
+by \cref{thm:nested-name}.  Split and order clusters only under a positive
+separation certificate.  Polynomial reconstruction from clusters is a finite
+coefficient certificate.  Thus the algebraic content survives without a
+uniform labeling choice at collisions.
+
+\subsection{Central limits and arbitrary probability spaces}
+
+\paragraph{Problem.}
+The textbook theorem quantifies over measures and real random variables, and
+CDF events may involve irrational thresholds or discontinuities.
+
+\paragraph{Resolution.}
+Use finite rational laws as the exact core.  State the finite triangular-array
+estimate at rational raw thresholds.  Present more general laws by finite
+rational approximants with primitive-recursive moment-tail and quantization
+moduli.  Prove convergence first in a robust metric; transfer to CDFs with an
+explicit continuity or anti-concentration bound.  The unrestricted qualitative
+theorem becomes a schema for effective presentations, not a literal
+higher-type sentence.
