@@ -1,4 +1,3 @@
-import DiophantineConsistency.IPRASuccessorInduction
 import DiophantineConsistency.IPRAAddOneDirect
 /-! Direct add-one in an arbitrary theory with the native defining and equality schemas; no induction premise. -/
 set_option autoImplicit false

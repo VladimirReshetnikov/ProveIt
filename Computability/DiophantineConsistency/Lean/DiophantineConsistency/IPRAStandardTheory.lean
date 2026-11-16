@@ -95,7 +95,11 @@ lemma comp_sel {m : ℕ} (i : Fin m) (vars : Fin (m+2) → Term language ℕ) (w
 
 lemma shift_eqAt (u v : Term language ℕ) : shift (eqAt u v) = eqAt (Rew.shift u) (Rew.shift v) := by
   show (Rew.shift ▹ (Semiformulaᵢ.rel Language.ORing.Rel.eq ![u,v] : Propositionᵢ language)) = _
-  rw [Semiformulaᵢ.rew_rel]; unfold eqAt; congr 1; funext j; fin_cases j <;> simp
+  rw [Semiformulaᵢ.rew_rel]
+  unfold eqAt
+  congr 1
+  funext j
+  exact Fin.cases rfl (Fin.cases rfl (fun i => Fin.elim0 i)) j
 
 lemma free_q_embSubsts {m : ℕ} (x : Fin m → Term language ℕ) (ψ : Semisentenceᵢ language (m+1)) :
     free ((Rew.embSubsts x).q ▹ ψ) = Rew.embSubsts (&0 :> fun j => Rew.shift (x j)) ▹ ψ := by
@@ -157,11 +161,11 @@ def eqSymm (u v : Term language ℕ) : extended T ⊢! eqAt u u 🡒 eqAt u v �
   have h1 : (Rew.embSubsts (Function.update ![u,u] 0 u) ▹
       (Semiformulaᵢ.rel Language.ORing.Rel.eq ![#0,#1] : Semisentenceᵢ language 2)) = eqAt u u := by
     rw [Semiformulaᵢ.rew_rel]; unfold eqAt; congr 1; funext j
-    fin_cases j <;> simp [Function.update_apply]
+    refine Fin.cases ?_ (Fin.cases ?_ (fun i => Fin.elim0 i)) j <;> simp
   have h2 : (Rew.embSubsts (Function.update ![u,u] 0 v) ▹
       (Semiformulaᵢ.rel Language.ORing.Rel.eq ![#0,#1] : Semisentenceᵢ language 2)) = eqAt v u := by
     rw [Semiformulaᵢ.rew_rel]; unfold eqAt; congr 1; funext j
-    fin_cases j <;> simp [Function.update_apply]
+    refine Fin.cases ?_ (Fin.cases ?_ (fun i => Fin.elim0 i)) j <;> simp
   rw [h1, h2] at h
   exact deduct' (deduct (of h ⨀ byAxm₀ ⨀ byAxm₁))
 
@@ -170,7 +174,8 @@ def eqReflAt (u : Term language ℕ) : extended T ⊢! eqAt u u := by
   have hp := instantiateTheory (T := T)
     (Semiformulaᵢ.rel Language.ORing.Rel.eq ![#0,#0] : Semisentenceᵢ language 1) hrefl ![u]
   have he : (fun j : Fin 2 => Rew.embSubsts ![u] (![#0,#0] j)) = ![u,u] := by
-    funext j; fin_cases j <;> simp
+    funext j
+    exact Fin.cases rfl (Fin.cases rfl (fun i => Fin.elim0 i)) j
   rw [Semiformulaᵢ.rew_rel, he] at hp
   exact hp
 
@@ -247,7 +252,8 @@ def leibniz {n : ℕ} (φ : Semisentenceᵢ language (n+1)) : T ⊢! eqSubstitut
       | succ j => simp [Rew.comp_app, w]
     · exact Empty.elim j
   have he : (fun j : Fin 2 => Rew.embSubsts vars (![#0,#1] j)) = ![vars 0, vars 1] := by
-    funext j; fin_cases j <;> simp
+    funext j
+    exact Fin.cases rfl (Fin.cases rfl (fun i => Fin.elim0 i)) j
   simpa only [leibnizBody, eqLeft, eqRight, LogicalConnective.HomClass.map_imply,
     ← TransitiveRewriting.comp_app, hL, hR, Semiformulaᵢ.rew_rel, he, eqAt] using h
 

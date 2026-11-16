@@ -1,6 +1,5 @@
 import DiophantineConsistency.IPRADifferenceSuccLogic
-import DiophantineConsistency.IPRAAddOneDirect
-import DiophantineConsistency.IPRAEqualitySymmetryGG
+import DiophantineConsistency.IPRAArithmeticInstantiation
 /-! Close the native successor invariant using x+1, conditional on the positive branch. -/
 set_option autoImplicit false
 noncomputable section
@@ -52,41 +51,6 @@ def replaceOne (φ : Semisentenceᵢ language 2) (u v y : Term language ℕ) :
       | succ j => exact Fin.elim0 j
   simpa only [leibnizBody, eqLeft, eqRight, LogicalConnective.HomClass.map_imply,
     ← TransitiveRewriting.comp_app, hL, hR, Semiformulaᵢ.rew_rel, he, eqAt] using hp
-def addOneTerm (x : Term language ℕ) : Term language ℕ := .func addCode ![x, .func oneCode Fin.elim0]
-def addOneOpen (x : Term language ℕ) : extended nativeTheory ⊢! eqAt (addOneTerm x) (sx x) := by
-  let m : Semisentenceᵢ language 1 := .rel .eq ![stepTerm 0, .func Code.succ (fun _ => #0)]
-  have hp := instantiateTheory (T := nativeTheory) m (Classical.choice DiophantineConsistency.IPRAAddOneDirect.add_one_native) ![x]
-  have hv : (fun i : Fin 2 => Rew.embSubsts ![x] (![stepTerm 0, .func Code.succ (fun _ => #0)] i)) =
-      ![addOneTerm x,sx x] := by
-    funext i; cases i using Fin.cases with
-    | zero =>
-      simp [stepTerm, addOneTerm, Rew.func, Function.comp_def]
-      funext j; cases j using Fin.cases with
-      | zero => simp
-      | succ j => cases j using Fin.cases with
-        | zero => simp [Rew.func, Function.comp_def]; funext k; exact Fin.elim0 k
-        | succ j => exact Fin.elim0 j
-    | succ j => cases j using Fin.cases with
-      | zero => simp [Rew.func, Function.comp_def, sx]
-      | succ j => exact Fin.elim0 j
-  simpa [m, eqAt, Semiformulaᵢ.rewAux, Semiformulaᵢ.rew_rel, Function.comp_def, hv] using hp
-
-def symmetryOpen (x y : Term language ℕ) : extended nativeTheory ⊢! eqAt x y 🡒 eqAt y x := by
-  let m : Semisentenceᵢ language 2 := .rel .eq ![#1,#0] 🡒 .rel .eq ![#0,#1]
-  have hp := instantiateTheory (T := nativeTheory) m (Classical.choice DiophantineConsistency.IPRAEqualitySymmetryGG.symmetry_native) ![y,x]
-  have hv1 : (fun i : Fin 2 => Rew.embSubsts ![y,x] (![#1,#0] i)) = ![x,y] := by
-    funext i; cases i using Fin.cases with
-    | zero => simp
-    | succ j => cases j using Fin.cases with
-      | zero => simp
-      | succ j => exact Fin.elim0 j
-  have hv2 : (fun i : Fin 2 => Rew.embSubsts ![y,x] (![#0,#1] i)) = ![y,x] := by
-    funext i; cases i using Fin.cases with
-    | zero => simp
-    | succ j => cases j using Fin.cases with
-      | zero => simp
-      | succ j => exact Fin.elim0 j
-  simpa [m, eqAt, Semiformulaᵢ.rewAux, Semiformulaᵢ.rew_rel, Function.comp_def, hv1, hv2] using hp
 
 def invariantReplace (x y : Term language ℕ) : extended nativeTheory ⊢!
     (Rew.embSubsts ![sx x,y] ▹ invariant) 🡒 (Rew.embSubsts ![addOneTerm x,y] ▹ invariant) := by

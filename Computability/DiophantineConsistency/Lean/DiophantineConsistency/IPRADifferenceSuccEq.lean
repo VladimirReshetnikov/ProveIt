@@ -1,3 +1,4 @@
+import DiophantineConsistency.IPRAArithmeticTerms
 import DiophantineConsistency.IPRADifferenceInvariantBase
 import DiophantineConsistency.IPRASubSuccSelfNonzero
 import DiophantineConsistency.IPRAAllSpecialize
@@ -21,7 +22,6 @@ local instance : language.DecidableEq where
 local instance : Entailment.Int (extended nativeTheory) where
   efq := HilbertProofᵢ.eaxm (Or.inl (by simp [Hilbertᵢ.Intuitionistic]))
 
-def sx (x : Term language ℕ) : Term language ℕ := .func Code.succ (fun _ => x)
 def negativeMatrix : Semisentenceᵢ language 2 :=
   ∼(.rel .eq ![.func subCode ![.func Code.succ (fun _ => #1),#0], zeroTerm 2])
 set_option linter.unnecessarySeqFocus false in
