@@ -6,4 +6,4 @@ The result is a model-level internal-provability statement for the full-separati
 
 Replay: `bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-axioms/check-source-facts-nine.sh /home/codex/.codex/worktrees/62ff/Proofs /dev/shm/pa194-source-facts-nine-repo`.
 
-The direct repository source files and object files are hash-pinned. Other transitive dependencies are imported from staged paths in the checker. The retained older addition-output dependency closure is separately being rebuilt by a separate repository check.
+The direct repository source files and object files are hash-pinned. Other transitive dependencies are imported from staged paths in the checker. A separate standalone source check of the corresponding addition-output development passed, without establishing byte identity with the retained older objects.

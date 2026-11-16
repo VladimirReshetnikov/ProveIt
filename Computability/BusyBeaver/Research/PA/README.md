@@ -132,8 +132,10 @@ and [successor compatibility](pa194-work/pa194-model-axioms/SOURCE-S2.md)
 are proved in the covered models. A separate [addition-existence supplier](pa194-work/pa194-model-axioms/SOURCE-A1.md)
 has passed an incremental replay, and the [nine-fact assembly](pa194-work/pa194-model-axioms/SOURCE-FACTS-NINE.md)
 leaves addition coherence and multiplication existence and coherence as explicit
-premises. Older addition and induction dependencies remain prebuilt while their
-deeper source check runs.
+premises. Older addition and induction dependencies remain prebuilt in that replay; a
+separate standalone source check of the corresponding addition-output
+development passed with a Foundation overlay, without establishing byte identity
+with those earlier staged objects.
 A [successor-value transport](pa194-work/pa194-model-axioms/SUCC-VALUE-FULL-SOURCE.md)
 is proved in the covered models, including for nonstandard term codes. The
 remaining source axiom suppliers are open. Identity translation is independent

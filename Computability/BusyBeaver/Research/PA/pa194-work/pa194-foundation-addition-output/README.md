@@ -24,5 +24,8 @@ From the repository root, set `IPRA_FOUNDATION_OVERLAY` to the audited Lean
 Computability/BusyBeaver/Research/PA/pa194-work/pa194-foundation-addition-output/check.sh`.
 The script rebuilds the nested addition-totality prerequisites in tmpfs,
 checks upstream pins and rejects `sorryAx` in printed axiom dependencies.
-The new modules have passed an overlay check; the full standalone script has
-not yet completed.
+The standalone script completed successfully on 2026-11-15 using the retained
+Lean 4.32 Foundation overlay, with no `sorryAx` in its audited reports. It
+rebuilds the nested addition and induction source prerequisites but does not
+authenticate the Foundation overlay itself or establish byte identity with
+earlier staged objects.
