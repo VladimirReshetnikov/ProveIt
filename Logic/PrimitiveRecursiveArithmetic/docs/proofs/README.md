@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives on 14 and
-15 November 2026: 33 to `docs/drafts`, and 9 to
+15 November 2026: 33 to `docs/drafts`, and 10 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -48,11 +48,12 @@ To recover an omitted member, restore the archive from the commit that added it
 (the Arrival column). For `apery_ipra`, `faltings_ipra`, `gamma_ipra`,
 `ipra_polynomial_formulas_abel_ruffini` and `mollweide_circle_ipra`, replace `docs/drafts` with
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. The archives of
-`isoperimetric_ipra_constructive_2026-11-15`, `mordell_weil_ipra`, `zeta_ipra_proof_package`
-and `trigonometric_identities_ipra_2026-11-15` were not committed, on Vladimir's instruction,
-so they cannot be restored from the history. The only omitted members of the first are its
-`reused/` copies, which are the files of `geometry/isoperimetric_ipra`. The other three omit
-only their ignored checksum manifests:
+`isoperimetric_ipra_constructive_2026-11-15`, `mordell_weil_ipra`, `zeta_ipra_proof_package`,
+`trigonometric_identities_ipra_2026-11-15` and `lagrange_inversion_ipra` were not committed, on
+Vladimir's instruction, so they cannot be restored from the history. The only omitted members
+of the first are its `reused/` copies, which are the files of `geometry/isoperimetric_ipra`.
+Three of the others omit only their ignored checksum manifests, and `lagrange_inversion_ipra`
+omits nothing:
 
 ```bash
 git show <arrival>:docs/drafts/<archive>.zip > <scratch>/<archive>.zip
@@ -60,7 +61,7 @@ git show <arrival>:docs/drafts/<archive>.zip > <scratch>/<archive>.zip
 
 ## Packets
 
-The 42 archives hold 928 members: 853 placed here, 44 ignored, 13 in the bundled copy of
+The 43 archives hold 946 members: 871 placed here, 44 ignored, 13 in the bundled copy of
 a sibling packet, 1 nested copy of a sibling archive and 17 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -73,6 +74,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 |---|---|---|---|---:|---:|
 | [`FTA_iPRA`](algebra/FTA_iPRA/) | `ea3f6066cf` 2026-11-14 | `FTA_iPRA` | An arithmetized constructive fundamental theorem of algebra, with a Lean formalization blueprint and exact rational reference programs. | 12 | 1 |
 | [`ipra_polynomial_formulas_abel_ruffini`](algebra/ipra_polynomial_formulas_abel_ruffini/) | `6800f2d21a` 2026-11-15 | `ipra_polynomial_formulas_abel_ruffini` | Radical formulae for polynomials through degree four, and the Abel–Ruffini theorem for the generic quintic, with an iPRA arithmetization plan. Its Lean file is a blueprint whose `opaque` declarations are not yet defined. | 27 | 1 |
+| [`lagrange_inversion_ipra`](algebra/lagrange_inversion_ipra/) | *not committed* 2026-11-15 | `lagrange_inversion_ipra` | Lagrange inversion coefficientwise in truncated power series: the Lagrange–Bürmann formulas, Bell-polynomial and Good's multivariate forms, Puiseux-type inversion, explicit inverse radii, Lambert W and Catalan expansions. Its Lean file is a blueprint, not a kernel-checked proof. | 18 | 0 |
 | [`puiseux_ipra`](algebra/puiseux_ipra/) | `8c135f6f2a` 2026-11-15 | `puiseux_ipra` | Puiseux expansions for exactly presented algebraic coefficients, with explicit convergence radii and tail bounds. It bundles the FTA packet as a dependency. | 17 | 14 |
 | [`three_impossibilities_ipra`](algebra/three_impossibilities_ipra/) | `a28886c88e` 2026-11-15 | `three_impossibilities_ipra` | The impossibility of doubling the cube, trisecting 60° and squaring the circle by straightedge and compass. It is stated as a proof architecture. | 12 | 1 |
 

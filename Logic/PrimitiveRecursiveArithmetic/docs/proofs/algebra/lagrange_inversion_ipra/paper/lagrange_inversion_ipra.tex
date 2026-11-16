@@ -1,0 +1,1501 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor,microtype,fancyhdr,enumitem}
+\usepackage[hyphens]{url}
+\usepackage{xurl}
+\usepackage{listings}
+\usepackage[hypertexnames=false,colorlinks=true,linkcolor=blue!45!black,
+ citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,
+ columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!18}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Constructive Lagrange inversion}
+\fancyhead[R]{\small iPRA and finite coefficient algebra}
+\fancyfoot[C]{\thepage}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{claim}[theorem]{Claim}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{audit}[theorem]{Audit finding}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\fps}[1]{#1[\![X]\!]}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\coeff}[2]{[X^{#1}]\,#2}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\A}{\mathcal A}
+\newcommand{\B}{\mathcal B}
+\newcommand{\T}{\mathcal T}
+
+\title{Lagrange inversion in intuitionistic primitive recursive arithmetic\\
+Finite residue calculus, coefficient formulae, analytic lifting, and applications}
+\author{A constructive proof package prepared for Vladimir Reshetnikov}
+\date{November 15, 2026}
+\hypersetup{pdftitle={Lagrange inversion in intuitionistic primitive recursive arithmetic},
+ pdfauthor={Prepared for Vladimir Reshetnikov},
+ pdfsubject={Constructive proofs, exact coefficient checks, and a Lean formalization roadmap}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We give a constructive development of the mathematical assertions on the
+Wikipedia page ``Lagrange inversion theorem.''  The algebraic core is stronger
+than a merely analytic argument: for every requested truncation order it is a
+finite identity in the ring of truncated series.  The unique solution of
+\(G=Z\Phi(G)\) is produced by primitive iteration, and a finite Laurent-series
+change-of-variables lemma proves both standard Lagrange--B\"urmann coefficient
+formulae.  All sums, products, compositions, derivatives, determinants, Bell
+polynomials, and coefficient extractions are bounded algorithms.  Consequently
+their correctness is formalizable in first-order intuitionistic primitive
+recursive arithmetic using quantifier-free induction.
+
+From the core theorem we derive the inverse-series formula around an arbitrary
+base point, the Bell-polynomial expression, Good's multivariate formula, and a
+ramified/Puiseux version when the first derivative vanishes.  We then prove the
+page's algebraic equation example, the two displayed Lambert \(W\) expansions,
+the Catalan-number binary-tree count, and the coefficient transformation used
+in Laplace--Erd\'elyi asymptotics.  A quantitative contraction argument supplies
+an explicitly positive analytic inverse radius for primitive-recursively named
+analytic data.  Exact radii are established for the algebraic and Lambert
+examples.
+
+The source audit also detects a normalization mismatch in the page's
+associahedron display.  We prove the standard ordinary-coefficient face formula,
+translate it correctly to the exponential convention used immediately before
+it, and give a degree-two check showing that the displayed formula cannot be
+right as written.
+
+The archive contains this paper, a detailed Lean blueprint tied to Mathlib
+v4.32.0 and ProveIt's \code{ConciseIPRA} interfaces, and an exact-rational
+executable verifier.  A completed kernel-checked Lean formalization is not
+claimed.
+\end{abstract}
+
+\newpage
+\begingroup\small\tableofcontents\endgroup
+\newpage
+
+\section{Scope, interpretation, and result audit}\label{sec:scope}
+
+\subsection{What it means to prove an analytic statement in \(\ipra\)}
+
+First-order \(\ipra\) quantifies over natural numbers.  It has no object
+variables ranging over arbitrary complex functions, completed infinite
+sequences, or open subsets of \(\C\).  Therefore an assertion such as ``every
+analytic germ with nonzero derivative has an analytic inverse'' must be read as
+a theorem schema for effectively supplied data.
+
+A complex number is represented by a regular primitive-recursive sequence of
+Gaussian rationals.  An analytic germ is represented by a fixed
+primitive-recursive coefficient procedure, or by a fixed primitive-recursive
+rational evaluation procedure, together with explicit rational bounds and
+moduli.  Every occurrence of convergence has a supplied primitive-recursive
+rate.  Once these procedures are substituted, the theorem is an ordinary
+first-order arithmetic sentence.  This is the same constructive convention
+used by the existing ProveIt Taylor/Cauchy packet \cite{proveitTaylor}.
+
+The formal-power-series core is even simpler.  For a requested coefficient
+bound \(N\), a series is the finite vector
+\[
+ (a_0,a_1,\ldots,a_N),
+\]
+and every operation is performed modulo \(X^{N+1}\).  A uniform theorem in
+\(N\) is a theorem about natural-number codes of finite vectors and bounded
+folds.  No completed infinite object is needed inside the object theory.
+
+\begin{remark}[No hidden universal evaluator]
+A theorem can be uniform in a numerical parameter and in the values returned
+by a fixed primitive-recursive coefficient procedure.  It cannot quantify over
+``all primitive-recursive programs'' via a primitive-recursive universal
+evaluator: the usual diagonal function would contradict universality.  Thus the
+function symbols and their correctness hypotheses are fixed before the
+first-order theorem is formed.
+\end{remark}
+
+\subsection{Audit of the page's mathematical assertions}
+
+Table~\ref{tab:audit} records what is proved and in which sense.  ``Finite''
+means a coefficient identity in a truncated ring, uniformly primitive
+recursive in the truncation order.  ``Named analytic'' means the corresponding
+statement for primitive-recursively named complex data with explicit bounds and
+moduli.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.28\textwidth}
+                  >{\raggedright\arraybackslash}p{0.17\textwidth}
+                  >{\raggedright\arraybackslash}p{0.47\textwidth}}
+\caption{Status of the mathematical statements on the reference page.}
+\label{tab:audit}\\
+\toprule
+Statement & Status & Location and qualification\\
+\midrule
+\endfirsthead
+\toprule
+Statement & Status & Location and qualification\\
+\midrule
+\endhead
+Inverse coefficient formula at an arbitrary base point & Proved, finite &
+Theorem~\ref{thm:inverse-around-a}; exactly the derivative/limit formula after
+translating derivatives to coefficients.\\
+Analytic inverse has nonzero radius & Proved, named analytic &
+Theorem~\ref{thm:quant-inverse}; an explicit rational lower bound is given.\\
+Formal-power-series version & Proved, finite &
+Theorems~\ref{thm:lb-alt} and \ref{thm:lb-der}.\\
+Formula for \(H(G)\) & Proved, finite &
+Both displayed Lagrange--B\"urmann forms.\\
+Several variables & Proved, finite &
+Good's determinant formula, Theorem~\ref{thm:good}.\\
+Case \(f'(a)=0\) & Proved, finite ramified form &
+Puiseux branches after adjoining the required algebraic roots,
+Theorem~\ref{thm:puiseux}.\\
+Bell-polynomial coefficient formula & Proved, finite &
+Theorem~\ref{thm:bell}.\\
+Associahedron face formula & Corrected and proved &
+The standard ordinary-coefficient theorem is
+Theorem~\ref{thm:assoc}; the page's displayed normalization fails in degree two,
+Audit~\ref{audit:assoc}.\\
+Solution of \(x^p-x+z=0\) & Proved &
+Coefficient formula, boundary convergence, and largest inverse disk in
+Section~\ref{sec:algebraic-example}.\\
+Lambert \(W\) series at zero & Proved &
+Coefficients and exact radius \(e^{-1}\), Section~\ref{sec:lambert}.\\
+Shifted Lambert \(W\) series & Proved &
+Coefficients, exact radius \(\sqrt{4+\pi^2}\), real interval, and a rational
+certificate for \(W(1)\), Section~\ref{sec:shifted-lambert}.\\
+Binary trees and Catalan numbers & Proved, finite &
+Section~\ref{sec:catalan}; ``unlabelled'' is interpreted as plane rooted full
+binary trees, as required by the functional equation.\\
+Role in Laplace--Erd\'elyi asymptotics & Made explicit &
+The coefficient transformation and finite remainder route are proved in
+Section~\ref{sec:laplace}.\\
+\bottomrule
+\end{longtable}
+
+The page also contains historical attributions and comments about the diversity
+of proofs.  Those are source claims rather than mathematical propositions and
+are not objects of arithmetic proof here.
+
+\section{Finite series algebra inside \(\ipra\)}\label{sec:finite}
+
+\subsection{Codes and total operations}
+
+Fix a commutative coefficient ring \(R\) whose operations are represented by
+primitive-recursive functions.  The principal object-theory instances are
+\(\Z\), \(\Q\), Gaussian rationals, and finite algebraic extensions represented
+by reduced tuples.  For \(N\in\N\), write
+\[
+ T_N(R)=R[X]/(X^{N+1}).
+\]
+We implement an element by its vector \((a_0,\ldots,a_N)\).  Addition and
+Cauchy multiplication are
+\begin{align*}
+ (a+b)_n&=a_n+b_n,\\
+ (ab)_n&=\sum_{i=0}^{n}a_i b_{n-i}.
+\end{align*}
+The derivative and composition, when \(b_0=0\), are
+\begin{align*}
+ (Da)_n&=(n+1)a_{n+1},\\
+ a\circ b&=\sum_{k=0}^{N} a_k b^k \pmod {X^{N+1}}.
+\end{align*}
+Powers are computed by repeated squaring or primitive recursion.  All displayed
+sums are bounded.  Rational division is made total by returning a fixed default
+when the denominator is zero; every theorem includes the guard proving that a
+denominator actually used is nonzero.
+
+Integers may be coded by sign and magnitude, rationals by a signed numerator
+and a positive denominator, and finite vectors by any standard pairing/list
+code.  Equality of reduced rational codes and order of rational codes are
+decidable.  A finite conjunction \(\forall i<m\,P(i)\) is represented by the
+Boolean fold \(\operatorname{all}_{i<m}\chi_P(i)\).  Hence the induction
+invariants used below are literally quantifier-free.
+
+\subsection{The constructive fixed point}
+
+Let \(\Phi\in T_N(R)\), with no assumption yet on its constant coefficient.
+Define
+\[
+ \mathcal S_\Phi(A)=X\,\Phi(A),\qquad
+ G^{(0)}=0,\qquad G^{(r+1)}=\mathcal S_\Phi(G^{(r)}).
+\]
+For two truncated series, write \(A\equiv_m B\) when their coefficients below
+\(m\) agree.
+
+\begin{lemma}[One-degree improvement]\label{lem:improve}
+If \(A\equiv_m B\), then
+\[
+ \mathcal S_\Phi(A)\equiv_{m+1}\mathcal S_\Phi(B).
+\]
+\end{lemma}
+\begin{proof}
+For every \(k\), the coefficient of degree \(j<m\) in \(A^k\) is a finite sum
+of products of coefficients of \(A\) whose indices add to \(j\); every index is
+therefore below \(m\).  Replacing \(A\) by \(B\) leaves the coefficient
+unchanged.  The same holds for the finite sum \(\Phi(A)\).  Multiplication by
+\(X\) shifts the agreement bound from \(m\) to \(m+1\).  This is a bounded-sum
+argument and uses no case distinction on an undecidable proposition.
+\end{proof}
+
+\begin{theorem}[Constructive existence and uniqueness]\label{thm:fixed}
+The iterate \(G=G^{(N+1)}\) satisfies
+\[
+ G=X\Phi(G)\pmod {X^{N+1}}.
+\]
+It is the unique element of \(T_N(R)\) with zero constant coefficient satisfying
+this equation.  The map \((N,\Phi)\mapsto G\) is primitive recursive.
+\end{theorem}
+\begin{proof}
+Lemma~\ref{lem:improve}, applied successively to \(G^{(r)}\) and
+\(G^{(r+1)}\), shows
+\[
+ G^{(r)}\equiv_r G^{(r+1)}.
+\]
+Thus \(G^{(N+1)}=G^{(N+2)}\) in \(T_N(R)\), which is the fixed-point equation.
+
+If \(A\) and \(B\) are two fixed points with zero constant coefficient, then
+\(A\equiv_1B\).  Lemma~\ref{lem:improve} and the two fixed-point equations give
+successively \(A\equiv_2B,\ldots,A\equiv_{N+1}B\), hence \(A=B\).  The
+construction is an explicitly bounded iteration of explicitly bounded
+operations, so it is primitive recursive.
+\end{proof}
+
+\begin{remark}
+The fixed-point theorem works over an arbitrary commutative ring and does not
+require \(\Phi(0)\) to be invertible.  Invertibility enters only when one wants
+to rewrite the equation as compositional inversion of \(F(X)=X/\Phi(X)\).
+\end{remark}
+
+\section{Finite formal residues}\label{sec:residue}
+
+\subsection{Laurent vectors}
+
+For fixed bounds \(B,N\), a Laurent vector is
+\[
+ A(X)=\sum_{j=-B}^{N}a_jX^j.
+\]
+Its residue is \(\Res A=a_{-1}\).  Only a finite interval of exponents is ever
+needed in a coefficient proof, so multiplication and substitution are again
+bounded algorithms.  We use the elementary identities
+\[
+ [X^n]A(X)=\Res\bigl(A(X)X^{-n-1}\bigr),
+ \qquad \Res(DA)=0.
+\]
+The second identity is immediate: a derivative can contribute to \(X^{-1}\)
+only from differentiating the constant monomial, and its coefficient is zero.
+
+\subsection{Change of variable}
+
+Let
+\[
+ F(X)=XU(X),\qquad U(0)\in R^\times.
+\]
+The finite Laurent expression \(Q(F(X))F'(X)\) is well defined to every fixed
+requested degree.  The following lemma is the entire residue machinery needed
+for Lagrange inversion.
+
+\begin{lemma}[Formal residue substitution]\label{lem:res-subst}
+Over a commutative \(\Q\)-algebra,
+\[
+ \Res\bigl(Q(F(X))F'(X)\bigr)=\Res Q(X)
+\]
+for every finite Laurent polynomial \(Q\).  The identity is coefficientwise
+finite and uniform in all exponent bounds.
+\end{lemma}
+\begin{proof}
+By linearity it suffices to take \(Q(Y)=Y^k\).
+If \(k\ne-1\), then
+\[
+ F(X)^kF'(X)=\frac{1}{k+1}D\bigl(F(X)^{k+1}\bigr),
+\]
+so its residue is zero, which equals \(\Res Y^k\).
+For \(k=-1\),
+\[
+ \frac{F'}{F}=\frac1X+\frac{U'}{U}.
+\]
+The inverse of the unit series \(U\) is obtained recursively to the finite
+required degree.  The series \(U'/U\) has no negative powers, so the residue is
+one.  This is \(\Res Y^{-1}\).
+
+All denominators are fixed nonzero integers.  Equivalently, one may multiply
+the identity by their product before arithmetizing it.  Thus the proof is a
+finite rational polynomial identity and is intuitionistically valid.
+\end{proof}
+
+\begin{remark}[Integral version]
+The alternative Lagrange identity below has integral coefficients after
+clearing only unit inverses.  Therefore it can first be proved as a universal
+integer polynomial identity in finitely many coefficient variables and then
+interpreted in any desired commutative ring.  The \(\Q\)-algebra assumption in
+Lemma~\ref{lem:res-subst} is a convenient proof environment, not an essential
+source of nonconstructivity.
+\end{remark}
+
+\section{The constructive Lagrange--B\"urmann theorem}\label{sec:main}
+
+Let \(\Phi,H\in\fps{R}\), where \(R\) is a commutative \(\Q\)-algebra, and
+let \(G\) be the unique zero-constant solution
+\begin{equation}\label{eq:fixed}
+ G(Z)=Z\Phi(G(Z)).
+\end{equation}
+For each requested coefficient, this means the finite solution of
+Theorem~\ref{thm:fixed}.
+
+Assume first that \(\Phi(0)\) is a unit and put
+\[
+ F(W)=\frac{W}{\Phi(W)}.
+\]
+Then \(F(G(Z))=Z\) and \(G(F(W))=W\), coefficientwise.  The first identity is
+just \eqref{eq:fixed}; the second follows either from finite uniqueness or by
+applying the same recursive inverse construction.
+
+\begin{theorem}[Alternative Lagrange--B\"urmann formula]\label{thm:lb-alt}
+For \(n\ge1\),
+\begin{equation}\label{eq:lb-alt}
+ [Z^n]H(G(Z))
+ = [W^n]H(W)\Phi(W)^{n-1}
+       \bigl(\Phi(W)-W\Phi'(W)\bigr).
+\end{equation}
+The assertion for coefficient \(n\) depends only on coefficients through
+finite degree \(n\), and is formalizable uniformly in \(n\) in \(\ipra\).
+\end{theorem}
+\begin{proof}
+Use coefficient-as-residue and substitute \(Z=F(W)\) by
+Lemma~\ref{lem:res-subst}:
+\begin{align*}
+ [Z^n]H(G(Z))
+ &=\Res_Z H(G(Z))Z^{-n-1}\\
+ &=\Res_W H(G(F(W)))F(W)^{-n-1}F'(W)\\
+ &=\Res_W H(W)
+   \left(\frac{\Phi(W)}{W}\right)^{n+1}
+   \frac{\Phi(W)-W\Phi'(W)}{\Phi(W)^2}\\
+ &=\Res_W H(W)W^{-n-1}\Phi(W)^{n-1}
+       \bigl(\Phi(W)-W\Phi'(W)\bigr).
+\end{align*}
+The last residue is exactly the coefficient on the right of
+\eqref{eq:lb-alt}.  Although unit notation made the calculation compact, after
+multiplying out, the right side contains no negative power of \(\Phi\).  Hence
+both sides are universal polynomials in the finitely many coefficients involved.
+The identity therefore extends from the unit case to arbitrary \(\Phi\) by the
+standard polynomial-identity argument, or directly by adjoining an
+indeterminate unit and comparing coefficients.  This extension is again
+finite and constructive.
+\end{proof}
+
+\begin{theorem}[Derivative Lagrange--B\"urmann formula]\label{thm:lb-der}
+For \(n\ge1\),
+\begin{equation}\label{eq:lb-der-cleared}
+ n[Z^n]H(G(Z))=[W^{n-1}]H'(W)\Phi(W)^n.
+\end{equation}
+Over \(\Q\), equivalently,
+\begin{equation}\label{eq:lb-der}
+ [Z^n]H(G(Z))=\frac1n[W^{n-1}]H'(W)\Phi(W)^n.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Differentiate the finite product \(H\Phi^n\).  Since
+\([W^{n-1}](A')=n[W^n]A\),
+\begin{align*}
+ [W^{n-1}]H'\Phi^n
+ &=n[W^n]H\Phi^n
+   -n[W^{n-1}]H\Phi^{n-1}\Phi'\\
+ &=n[W^n]H\Phi^{n-1}(\Phi-W\Phi').
+\end{align*}
+Theorem~\ref{thm:lb-alt} identifies the last coefficient with
+\(n[Z^n]H(G)\).  This proof uses only the Leibniz rule and finite coefficient
+arithmetic.  Formula \eqref{eq:lb-der-cleared}, rather than division by \(n\),
+is the preferred object-theory statement.
+\end{proof}
+
+\begin{corollary}[Basic Lagrange inversion]\label{cor:basic}
+For \(n\ge1\),
+\begin{equation}\label{eq:basic}
+ [Z^n]G(Z)=\frac1n[W^{n-1}]\Phi(W)^n.
+\end{equation}
+More generally, for \(k\ge1\),
+\begin{equation}\label{eq:power}
+ [Z^n]G(Z)^k=\frac{k}{n}[W^{n-k}]\Phi(W)^n,
+\end{equation}
+where the right side is zero for \(n<k\).
+\end{corollary}
+\begin{proof}
+Take \(H(W)=W\) and \(H(W)=W^k\) in
+Theorem~\ref{thm:lb-der}.  In the second case
+\(H'=kW^{k-1}\), and shifting the extracted exponent gives
+\eqref{eq:power}.
+\end{proof}
+
+\subsection{The induction proof encoded by the finite construction}
+
+The residue proof is conceptually short, but the fixed-point construction also
+gives a direct quantifier-free induction route.  Define the candidate
+coefficient
+\[
+ L_n(\Phi)=\frac1n[W^{n-1}]\Phi(W)^n.
+\]
+The recurrence obtained by comparing coefficients in \(G=Z\Phi(G)\) expresses
+\(g_n\) as a bounded polynomial in \(\phi_0,\ldots,\phi_{n-1}\) and
+\(g_1,\ldots,g_{n-1}\).  Substitution of \(L_1,\ldots,L_{n-1}\) reduces the
+step to the finite derivative identity used above.  The invariant
+``all coefficients below \(r\) agree with \(L_i\)'' is a Boolean fold, so
+ProveIt's \code{PRA.qfInd} applies without adding bounded quantifiers to the
+induction formula.  This gives an alternative object-level proof if one prefers
+to avoid formal Laurent syntax.
+
+\section{Inverse series around an arbitrary point}\label{sec:inverse}
+
+Let \(f\) be a formal or analytic germ at \(a\), and put
+\[
+ F(X)=f(a+X)-f(a).
+\]
+Suppose \(F'(0)=f'(a)\) is a unit.  Define
+\[
+ \Phi(X)=\frac{X}{F(X)}.
+\]
+Let \(G\) solve \(G=Z\Phi(G)\).  Then
+\[
+ F(G(Z))=Z,
+\]
+so the inverse germ is
+\[
+ g(f(a)+Z)=a+G(Z).
+\]
+
+\begin{theorem}[Inverse coefficient formula at \(a\)]\label{thm:inverse-around-a}
+Write the inverse in exponential-coefficient convention as
+\[
+ g(z)=a+\sum_{n\ge1}g_n\frac{(z-f(a))^n}{n!}.
+\]
+Then
+\begin{equation}\label{eq:inverse-a-coeff}
+ g_n=(n-1)![X^{n-1}]
+ \left(\frac{X}{f(a+X)-f(a)}\right)^n.
+\end{equation}
+If derivatives are available, this is the page's formula
+\begin{equation}\label{eq:inverse-a-deriv}
+ g_n=\left.
+ \frac{d^{n-1}}{dw^{n-1}}
+ \left(\frac{w-a}{f(w)-f(a)}\right)^n
+ \right|_{w=a}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Corollary~\ref{cor:basic} gives
+\([Z^n]G=\frac1n[X^{n-1}]\Phi^n\).  Since
+\([Z^n]G=g_n/n!\), multiplication by \(n!\) gives
+\eqref{eq:inverse-a-coeff}.  For a formal power series, the coefficient--
+derivative relation
+\[
+ A^{(m)}(0)=m![X^m]A
+\]
+is proved by \(m\) finite differentiations.  Substituting \(X=w-a\) gives
+\eqref{eq:inverse-a-deriv}.  The ``limit'' notation on the page merely denotes
+evaluation at a removable singularity: the quotient has unit constant term
+\(1/f'(a)\).
+\end{proof}
+
+\section{Explicit coefficient formulae}\label{sec:explicit}
+
+\subsection{Bell polynomials}
+
+For \(m,k\in\N\), define the exponential partial Bell polynomial by the finite
+sum
+\begin{equation}\label{eq:bell-def}
+ B_{m,k}(x_1,x_2,\ldots)
+ =\sum_{\substack{r_1+r_2+\cdots=k\\
+                   r_1+2r_2+\cdots=m}}
+ \frac{m!}{r_1!r_2!\cdots}
+ \prod_{j\ge1}\left(\frac{x_j}{j!}\right)^{r_j}.
+\end{equation}
+Only \(j\le m-k+1\) occurs.  The sum is a bounded search over multiplicity
+vectors and is primitive recursive.  Its defining generating identity is
+\begin{equation}\label{eq:bell-power}
+ \left(\sum_{j\ge1}x_j\frac{W^j}{j!}\right)^k
+ =k!\sum_{m\ge k}B_{m,k}(x_1,x_2,\ldots)\frac{W^m}{m!}.
+\end{equation}
+It follows directly by the finite multinomial theorem.
+
+\begin{theorem}[Bell-polynomial inverse coefficients]\label{thm:bell}
+Suppose
+\[
+ f(W)=\sum_{j\ge0}f_j\frac{W^j}{j!},\qquad
+ g(Z)=\sum_{j\ge0}g_j\frac{Z^j}{j!},
+\]
+with \(f_0=0\), \(f_1\ne0\), and \(f(g(Z))=Z\).  Put
+\[
+ \widehat f_j=\frac{f_{j+1}}{(j+1)f_1},
+ \qquad n^{\overline{k}}=n(n+1)\cdots(n+k-1).
+\]
+Then \(g_1=f_1^{-1}\), and for \(n\ge2\),
+\begin{equation}\label{eq:bell-result}
+ g_n=f_1^{-n}\sum_{k=1}^{n-1}(-1)^k n^{\overline{k}}
+ B_{n-1,k}(\widehat f_1,\ldots,\widehat f_{n-k}).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Factor
+\[
+ f(W)=f_1W(1+A(W)),\qquad
+ A(W)=\sum_{j\ge1}\widehat f_j\frac{W^j}{j!}.
+\]
+Thus \(\Phi(W)=W/f(W)=f_1^{-1}(1+A)^{-1}\).  By
+Theorem~\ref{thm:inverse-around-a},
+\[
+ g_n=(n-1)!f_1^{-n}[W^{n-1}](1+A)^{-n}.
+\]
+To degree \(n-1\), the negative binomial expansion is the finite identity
+\[
+ (1+A)^{-n}
+ =\sum_{k=0}^{n-1}(-1)^k\frac{n^{\overline{k}}}{k!}A^k.
+\]
+For \(n\ge2\), the \(k=0\) term has no coefficient of degree \(n-1\).
+Equation~\eqref{eq:bell-power} gives
+\[
+ [W^{n-1}]A^k=\frac{k!}{(n-1)!}B_{n-1,k}.
+\]
+Substitution and cancellation yield \eqref{eq:bell-result}.  Every expansion is
+truncated before use, so no convergence or infinitary binomial theorem is
+invoked.
+\end{proof}
+
+\subsection{Associahedra and the normalization correction}\label{sec:assoc}
+
+Use the convention of Aguiar--Ardila: the associahedron \(\mathfrak a_n\) has
+dimension \(n-1\), and each face is combinatorially a product
+\[
+ F\cong \mathfrak a_{i_1}\times\cdots\times\mathfrak a_{i_r}.
+\]
+For
+\[
+ C(X)=X+\sum_{n\ge1}c_nX^{n+1},\qquad
+ D(X)=X+\sum_{n\ge1}d_nX^{n+1},
+ \qquad C(D(X))=X,
+\]
+write \(c_F=c_{i_1}\cdots c_{i_r}\).
+
+\begin{theorem}[Polytopal compositional inversion]\label{thm:assoc}
+For \(n\ge1\),
+\begin{equation}\label{eq:assoc-standard}
+ d_n=\sum_{F\text{ face of }\mathfrak a_n}
+       (-1)^{n-\dim F}c_F.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Faces of \(\mathfrak a_n\) are in bijection with plane rooted trees having
+\(n+1\) leaves and internal vertices of arity at least two.  A vertex of arity
+\(j+1\) contributes the factor \(c_j\).  If the tree has \(r\) internal
+vertices, the corresponding face has dimension \(n-r\), hence sign
+\((-1)^r=(-1)^{n-\dim F}\).
+
+Now expand the identity \(C(D)=X\).  For positive degree it is
+\[
+ D-X=-\sum_{j\ge1}c_jD^{j+1}.
+\]
+Repeatedly replacing every occurrence of \(D\) on the right by the same
+expression terminates at each fixed degree.  A term is exactly a plane rooted
+tree; every internal vertex contributes one minus sign and the coefficient
+\(c_j\) determined by its arity.  Therefore the coefficient of \(X^{n+1}\) is
+the signed tree sum, and the face--tree bijection turns it into
+\eqref{eq:assoc-standard}.  This is a finite expansion at each degree and is
+formalizable by induction on the number of leaves.
+\end{proof}
+
+\begin{audit}[The page's displayed associahedron formula is not normalized
+consistently]\label{audit:assoc}
+Immediately before its face formula, the page uses exponential coefficients
+\(f(W)=\sum f_nW^n/n!\) and \(g(Z)=\sum g_nZ^n/n!\), with \(f_1=1\).
+The standard theorem applies instead to ordinary coefficients
+\[
+ c_m=\frac{f_{m+1}}{(m+1)!},\qquad
+ d_m=\frac{g_{m+1}}{(m+1)!}.
+\]
+Consequently the correct translation is
+\begin{equation}\label{eq:assoc-exp-correct}
+ g_n=n!\sum_{F\text{ face of }\mathfrak a_{n-1}}
+ (-1)^{n-1-\dim F}
+ \prod_{\mathfrak a_j\text{ factor of }F}
+       \frac{f_{j+1}}{(j+1)!},\qquad n\ge2.
+\end{equation}
+For the degree-two test
+\(f(W)=W+cW^2/2\), direct inversion gives
+\(g(Z)=Z-cZ^2/2+\cdots\), hence \(g_2=-c\).  Formula
+\eqref{eq:assoc-exp-correct} gives exactly this.  The page's displayed product
+of unshifted, unscaled \(f_i\)'s does not.  Thus one cannot prove that display
+as written; the correct ordinary formula and its exponential translation are
+what is proved here.
+\end{audit}
+
+\section{Multivariate and ramified extensions}\label{sec:extensions}
+
+\subsection{Good's multivariate formula}
+
+Let \(d\ge1\), let \(\mathbf Z=(Z_1,\ldots,Z_d)\), and suppose the
+multivariate series \(G_i(\mathbf Z)\) are defined by
+\begin{equation}\label{eq:multi-fixed}
+ G_i=Z_i\Phi_i(G_1,\ldots,G_d),\qquad 1\le i\le d,
+\end{equation}
+where each \(\Phi_i(0)\) is a unit.  Iteration from the zero tuple improves
+total-degree agreement by one, exactly as in Lemma~\ref{lem:improve}; hence the
+solution exists uniquely at every finite truncation order.
+
+For a multi-index \(\mathbf n=(n_1,\ldots,n_d)\), use
+\(\mathbf Z^{\mathbf n}=\prod_iZ_i^{n_i}\).  Define the logarithmic Jacobian
+matrix
+\begin{equation}\label{eq:good-matrix}
+ L_{ij}(\mathbf W)=
+ \delta_{ij}-\frac{W_j}{\Phi_i(\mathbf W)}
+                    \frac{\partial\Phi_i}{\partial W_j}(\mathbf W).
+\end{equation}
+
+\begin{theorem}[Good's multivariate Lagrange formula]\label{thm:good}
+For every multivariate series \(H\),
+\begin{equation}\label{eq:good}
+ [\mathbf Z^{\mathbf n}]H(\mathbf G(\mathbf Z))
+ = [\mathbf W^{\mathbf n}]
+ H(\mathbf W)\prod_{i=1}^d\Phi_i(\mathbf W)^{n_i}
+ \det L(\mathbf W).
+\end{equation}
+For fixed requested degree and dimension, the formula is a finite identity.  A
+uniform-in-\(d\) version is also primitive recursive when vectors and matrices
+are coded as finite lists and the determinant is the bounded Leibniz sum.
+\end{theorem}
+\begin{proof}
+Put \(F_i(\mathbf W)=W_i/\Phi_i(\mathbf W)\).  Multivariate coefficient
+extraction is an iterated finite residue:
+\[
+ [\mathbf Z^{\mathbf n}]A
+ =\Res_{Z_1}\cdots\Res_{Z_d}
+ A(\mathbf Z)\prod_iZ_i^{-n_i-1}.
+\]
+The multivariate finite change-of-variables lemma is proved on Laurent
+monomials, one variable at a time, or by expanding the determinant and applying
+Lemma~\ref{lem:res-subst}.  Substituting \(\mathbf Z=\mathbf F(\mathbf W)\)
+gives \(\mathbf G(\mathbf F(\mathbf W))=\mathbf W\) and contributes the
+ordinary Jacobian determinant.
+
+A direct derivative calculation yields
+\[
+ \frac{\partial F_i}{\partial W_j}
+ =\frac1{\Phi_i}
+   \left(\delta_{ij}-\frac{W_i}{\Phi_i}
+                     \frac{\partial\Phi_i}{\partial W_j}\right).
+\]
+After multiplying by \(\prod_iF_i^{-n_i-1}\), the row factors
+\(\Phi_i^{-1}\) cancel one power from each \(\Phi_i^{n_i+1}\).  The remaining
+determinant may be written with row factors \(W_i/\Phi_i\), or in the
+logarithmic form \eqref{eq:good-matrix}.  The equality of the two determinants
+is \(\det(I-AB)=\det(I-BA)\), itself a finite polynomial identity.  The residue
+left after cancellation is exactly the coefficient on the right of
+\eqref{eq:good}.
+\end{proof}
+
+\subsection{Vanishing first derivative and Puiseux branches}
+
+Suppose, after translating the base point and value to zero, that
+\begin{equation}\label{eq:ramified-F}
+ F(X)=cX^mV(X),\qquad m\ge2,
+ \qquad c\in R^\times,\quad V(0)=1.
+\end{equation}
+Work in a finite algebraic extension containing a chosen \(m\)-th root
+\(\beta\) of \(c^{-1}\), all needed \(m\)-th roots of unity \(\zeta_j\), and
+\(1/m\).  The binomial series
+\[
+ V(X)^{-1/m}=\sum_{r\ge0}\binom{-1/m}{r}(V(X)-1)^r
+\]
+is finite to every requested degree because \(V-1\) has zero constant term.
+Set
+\[
+ \Phi_j(X)=\zeta_j\beta V(X)^{-1/m}.
+\]
+
+\begin{theorem}[Constructive ramified inversion]\label{thm:puiseux}
+For each \(m\)-th root of unity \(\zeta_j\), there is a unique formal series
+\(X_j(T)\) with zero constant term satisfying
+\[
+ X_j(T)=T\Phi_j(X_j(T)).
+\]
+It obeys
+\[
+ F(X_j(T))=T^m,
+\]
+and its coefficients are
+\begin{equation}\label{eq:puiseux-coeff}
+ [T^n]X_j(T)=\frac1n[X^{n-1}]\Phi_j(X)^n.
+\end{equation}
+Consequently
+\[
+ a+X_j\bigl((z-f(a))^{1/m}\bigr)
+\]
+are the formal Puiseux branches of the multivalued inverse near \(a\).
+\end{theorem}
+\begin{proof}
+Existence, uniqueness, and \eqref{eq:puiseux-coeff} are
+Theorem~\ref{thm:fixed} and Corollary~\ref{cor:basic}.  Raising the fixed-point
+equation to the \(m\)-th power gives
+\[
+ X_j(T)^m=T^m\zeta_j^m\beta^mV(X_j(T))^{-1}
+ =T^m c^{-1}V(X_j(T))^{-1}.
+\]
+Multiplication by \(cV(X_j(T))\) proves \(F(X_j(T))=T^m\).  Every operation in
+this argument is finite in a truncation, including construction of the
+binomial root.  Analytic branches require the corresponding effective choices
+of algebraic roots and a slit neighbourhood, but no new coefficient identity.
+\end{proof}
+
+\section{Quantitative analytic lifting}\label{sec:analytic}
+
+The formal theorem proves the Taylor coefficients of an inverse if an analytic
+inverse exists.  We now construct the inverse with an explicit positive radius.
+The constants are intentionally simple rather than optimal.
+
+Translate so that the base point and value are zero.  Suppose
+\begin{equation}\label{eq:analytic-F}
+ F(w)=a_1w+\sum_{n\ge2}a_nw^n
+\end{equation}
+comes with positive rationals \(R,M,K\) satisfying
+\begin{equation}\label{eq:analytic-bounds}
+ |a_n|\le MR^{-n}\quad(n\ge2),
+ \qquad |a_1^{-1}|\le K.
+\end{equation}
+The coefficients, the inequalities, and the tail modulus are assumed to be
+primitive-recursively named.  When \(M>0\), set
+\begin{equation}\label{eq:radii}
+ t=\min\left(\frac12,\frac{R}{16KM}\right),
+ \qquad \rho=Rt,
+ \qquad r=\frac{\rho}{2K}.
+\end{equation}
+When \(M=0\), take \(t=1/2\).  All numbers are positive rationals.
+
+\begin{lemma}[Derivative control]\label{lem:derivative-control}
+Writing \(h(w)=F(w)-a_1w\), one has on \(|w|\le\rho\)
+\[
+ |h'(w)|\le\frac1{2K}.
+\]
+\end{lemma}
+\begin{proof}
+For \(0\le t\le1/2\), finite geometric differentiation followed by the tail
+bound gives
+\[
+ \sum_{n\ge2}nt^{n-1}=\frac1{(1-t)^2}-1\le8t.
+\]
+Therefore
+\[
+ |h'(w)|
+ \le\frac{M}{R}\sum_{n\ge2}nt^{n-1}
+ \le\frac{8Mt}{R}\le\frac1{2K}.
+\]
+Each infinite-looking inequality means a rational partial-sum inequality plus
+a geometric remainder estimate with an explicit cutoff.  It is therefore an
+\(\ipra\) theorem for the supplied coefficient name.
+\end{proof}
+
+\begin{theorem}[Explicit constructive inverse radius]\label{thm:quant-inverse}
+For every \(|z|\le r\), the iteration
+\begin{equation}\label{eq:picard}
+ w_0(z)=0,
+ \qquad w_{q+1}(z)=a_1^{-1}\bigl(z-h(w_q(z))\bigr)
+\end{equation}
+converges uniformly to a unique \(g(z)\) with \(|g(z)|\le\rho\) and
+\(F(g(z))=z\).  Moreover
+\begin{equation}\label{eq:picard-error}
+ |w_q(z)-g(z)|\le\rho\,2^{-q}.
+\end{equation}
+The function \(g\) is analytic on \(|z|<r\), and its Taylor coefficients are
+those in Theorem~\ref{thm:inverse-around-a}.  Thus the inverse series has a
+nonzero, explicitly bounded radius of convergence.
+\end{theorem}
+\begin{proof}
+For \(|w|\le\rho\), Lemma~\ref{lem:derivative-control} and the segment integral
+estimate give \(|h(w)|\le\rho/(2K)\).  Hence, if \(|z|\le r\),
+\[
+ \left|a_1^{-1}(z-h(w))\right|
+ \le K r+K\frac{\rho}{2K}=\rho.
+\]
+Thus the closed radius-\(\rho\) ball maps into itself.  For two points in the
+ball,
+\[
+ \left|a_1^{-1}(h(u)-h(v))\right|\le\frac12|u-v|,
+\]
+so the map is a contraction with the displayed rational constant.  Since
+\(|w_1-w_0|\le Kr=\rho/2\), the geometric tail of successive differences gives
+\eqref{eq:picard-error}.  This directly constructs a regular name for \(g(z)\)
+and proves uniqueness.
+
+Every iterate \(w_q(z)\) is analytic in \(z\).  On any rational closed subdisk
+of \(|z|<r\), the error bound is uniform and primitive recursive, so termwise
+Cauchy estimates, or the existing constructive Cauchy package, show that the
+limit is analytic with a primitive-recursive modulus.  Passing to the limit in
+\eqref{eq:picard} gives \(F(g)=z\).
+
+Finally, the coefficient vector of \(w_q\) through degree \(N\) stabilizes once
+\(q>N\), by Lemma~\ref{lem:improve}.  It is therefore the finite formal fixed
+point, so Corollary~\ref{cor:basic} and
+Theorem~\ref{thm:inverse-around-a} give the Taylor coefficients of the analytic
+limit.  No appeal to excluded middle, compactness, or an unspecified inverse
+function theorem is made.
+\end{proof}
+
+\begin{remark}[Injectivity]
+The same estimate proves directly that, for \(u,v\) in the radius-\(\rho\)
+ball,
+\[
+ |F(u)-F(v)|\ge |a_1||u-v|-|h(u)-h(v)|
+ \ge\frac1{2K}|u-v|.
+\]
+Thus the local inverse is genuinely single-valued on the constructed disk.
+\end{remark}
+
+\section{The algebraic equation \(x^p-x+z=0\)}\label{sec:algebraic-example}
+
+Fix an integer \(p\ge2\).  The branch with \(x(0)=0\) satisfies
+\[
+ x=z(1-x^{p-1})^{-1}.
+\]
+Thus \(\Phi(w)=(1-w^{p-1})^{-1}\).  By
+Corollary~\ref{cor:basic},
+\[
+ [z^n]x(z)=\frac1n[w^{n-1}](1-w^{p-1})^{-n}.
+\]
+The finite negative-binomial identity shows that this coefficient vanishes
+unless \(n=(p-1)k+1\).  In that case
+\begin{align*}
+ [z^{(p-1)k+1}]x(z)
+ &=\frac1{(p-1)k+1}
+   \binom{(p-1)k+1+k-1}{k}\\
+ &=\frac1{(p-1)k+1}\binom{pk}{k}.
+\end{align*}
+Hence
+\begin{equation}\label{eq:algebraic-series}
+ x(z)=\sum_{k\ge0}\binom{pk}{k}
+       \frac{z^{(p-1)k+1}}{(p-1)k+1},
+\end{equation}
+which is the displayed series on the page.
+
+\subsection{Exact convergence disk}
+
+Put
+\[
+ q_p=\frac{(p-1)^{p-1}}{p^p},
+ \qquad \rho_p=q_p^{1/(p-1)}=(p-1)p^{-p/(p-1)}.
+\]
+For
+\(a_k=\binom{pk}{k}/((p-1)k+1)\), direct cancellation of factorials gives
+\[
+ \lim_{k\to\infty}\frac{a_{k+1}}{a_k}
+ =\frac{p^p}{(p-1)^{p-1}}=q_p^{-1}.
+\]
+The limit is constructive: after writing the ratio as a product of the fixed
+number \(p\) of rational factors, each factor differs from its limit by at most
+\(C_p/(k+1)\).  Therefore the series in the variable
+\(t=z^{p-1}\) has radius \(q_p\), and \eqref{eq:algebraic-series} has radius
+\(\rho_p\) in \(z\).
+
+The page includes the boundary.  A finite Wallis/Stirling estimate gives, for
+a rational constant \(C_p\) depending only on the fixed integer \(p\),
+\begin{equation}\label{eq:alg-boundary}
+ \binom{pk}{k}q_p^k\le\frac{C_p}{\sqrt{k+1}}.
+\end{equation}
+One constructive derivation expands the factorial quotient into finite products,
+applies the rational inequalities
+\(u-u^2/2\le\log(1+u)\le u\) for \(0\le u\le1\), and bounds the resulting
+harmonic sums by dyadic blocks.  Squaring clears the square root, and all log
+bounds are finite Taylor estimates with rational remainders.  Thus
+\[
+ a_kq_p^k\le\frac{C'_p}{(k+1)^{3/2}},
+\]
+and comparison with the telescoping dyadic grouping of
+\(\sum(k+1)^{-3/2}\) proves absolute convergence for \(|z|=\rho_p\).  This
+proof has a primitive-recursive cutoff for every requested error.
+
+Finally, for \(f(x)=x-x^p\),
+\[
+ f'(x)=1-px^{p-1}.
+\]
+Its critical points satisfy \(x^{p-1}=1/p\), and their critical values are
+\[
+ f(x)=\frac{p-1}{p}x,
+ \qquad |f(x)|=(p-1)p^{-p/(p-1)}=\rho_p.
+\]
+The branch point at each such value prevents analytic continuation of the local
+inverse through the corresponding point; conversely the convergent series
+constructs the inverse throughout the open disk.  Therefore this is the largest
+centered disk on which the local branch at zero is analytic.
+
+\section{Lambert \(W\)}\label{sec:lambert}
+
+The principal germ is defined by
+\[
+ W(z)e^{W(z)}=z,
+\]
+or equivalently
+\[
+ W(z)=ze^{-W(z)}.
+\]
+Thus \(\Phi(w)=e^{-w}\).  Corollary~\ref{cor:basic} gives
+\begin{align*}
+ [z^n]W(z)
+ &=\frac1n[w^{n-1}]e^{-nw}
+ =\frac1n\frac{(-n)^{n-1}}{(n-1)!}\\
+ &=\frac{(-n)^{n-1}}{n!}.
+\end{align*}
+Consequently
+\begin{equation}\label{eq:W-series}
+ W(z)=\sum_{n\ge1}\frac{(-n)^{n-1}}{n!}z^n
+ =z-z^2+\frac32z^3-\frac83z^4+\frac{125}{24}z^5-\cdots.
+\end{equation}
+Formal exponentiation to degree \(N\) uses only the rational coefficients
+\(1/j!\) for \(j\le N\), so the calculation is finite in \(\ipra\).
+
+For absolute coefficients \(c_n=n^{n-1}/n!\),
+\begin{equation}\label{eq:W-ratio}
+ \frac{c_{n+1}}{c_n}=\left(1+\frac1n\right)^{n-1}.
+\end{equation}
+The elementary binomial bounds defining the primitive-recursive name of \(e\)
+show that the right side tends to \(e\).  The radius of
+\eqref{eq:W-series} is therefore \(e^{-1}\).  At \(w=-1\), the map
+\(w\mapsto we^w\) has derivative zero and critical value \(-e^{-1}\), so the
+radius cannot be enlarged.  The branch obtained from the germ at zero is, by
+definition and by real monotonicity on \((-1,\infty)\), the principal branch.
+
+The same finite factorial estimate used in
+\eqref{eq:alg-boundary} gives
+\(c_ne^{-n}=O(n^{-3/2})\), so the series also converges absolutely at every
+point of the boundary circle \(\lvert z\rvert=e^{-1}\), since taking absolute
+values removes the phase.  This strengthens, but is not needed for, the page's radius claim.
+
+\section{The shifted Lambert series}\label{sec:shifted-lambert}
+
+Put
+\[
+ U(z)=W(e^{1+z})-1.
+\]
+Since \((1+U)e^{1+U}=e^{1+z}\), taking the local logarithm at \(U=0\) gives
+\begin{equation}\label{eq:shift-equation}
+ z=U+\log(1+U)=:A(U).
+\end{equation}
+Here
+\[
+ A(U)=2U-\frac{U^2}{2}+\frac{U^3}{3}-\frac{U^4}{4}+\cdots.
+\]
+Applying Theorem~\ref{thm:inverse-around-a}, or simply the finite inverse
+recursion, yields
+\begin{equation}\label{eq:shift-series}
+ \begin{split}
+ W(e^{1+z})={}&1+\frac z2+\frac{z^2}{16}-\frac{z^3}{192}
+ -\frac{z^4}{3072}+\frac{13z^5}{61440}\\
+ &-\frac{47z^6}{1474560}+O(z^7).
+ \end{split}
+\end{equation}
+The archive's exact verifier reproduces these rational coefficients.
+
+\subsection{Exact radius \(\sqrt{4+\pi^2}\)}
+
+A convenient global parameter is
+\[
+ s=\log(1+U),\qquad U=e^s-1.
+\]
+Then \eqref{eq:shift-equation} becomes inversion of the entire function
+\begin{equation}\label{eq:E}
+ E(s)=e^s+s-1.
+\end{equation}
+Its critical points and values are
+\begin{align*}
+ E'(s)=e^s+1=0
+ &\iff s=(2k+1)\pi i,\\
+ E((2k+1)\pi i)
+ &=-2+(2k+1)\pi i.
+\end{align*}
+The nearest critical values to zero therefore have modulus
+\begin{equation}\label{eq:rshift}
+ R_*=\sqrt{4+\pi^2}.
+\end{equation}
+
+For completeness, there is no missing finite asymptotic obstruction.  Suppose
+a continuous curve \(s(t)=x(t)+iy(t)\) tends to infinity while \(E(s(t))\)
+remains bounded.  From
+\[
+ e^{s(t)}=1+E(s(t))-s(t)
+\]
+one obtains \(e^{x(t)}\asymp |s(t)|\), hence
+\(x(t)=\log|s(t)|+O(1)\), \(|y(t)|\to\infty\), and
+\(x(t)/|y(t)|\to0\).  Dividing the displayed equation by its magnitude gives
+\[
+ e^{iy(t)}\longrightarrow -i\,\operatorname{sgn}(y(t)).
+\]
+For sufficiently large \(t\), the continuous value \(y(t)\) must therefore lie
+in a union of disjoint short intervals around
+\(3\pi/2+2\pi k\) when \(y>0\), or around \(\pi/2+2\pi k\) when \(y<0\).
+A connected tail of a continuous curve cannot move between these separated
+intervals, so \(y(t)\) would be bounded, a contradiction.  Thus \(E\) has no
+finite asymptotic value.
+
+It follows that over a disk avoiding the critical values, each component of the
+inverse surface is an unramified covering.  The disk \(|z|<R_*\) is simply
+connected, so the component containing \(s=0\) gives a single analytic inverse.
+At \(s=\pm\pi i\),
+\[
+ E''(s)=e^s=-1\ne0,
+\]
+so the inverse has a square-root branch point at the corresponding nearest
+critical value.  Hence the Taylor radius is exactly \(R_*\).
+
+This argument has a constructive arithmetic reading.  For each rational
+\(r<R_*\), cover the closed disk \(|z|\le r\) by finitely many rational boxes,
+use the explicit lower bound on \(|E'|\) over the finitely traced inverse branch,
+and continue by contraction from box to box.  The no-asymptotic estimate gives
+a computable bound on \(|s|\).  At the critical value, the nonzero quadratic
+term gives a finite certificate that no analytic inverse can cross.  Thus the
+claims ``converges below \(R_*\)'' and ``cannot have radius above \(R_*\)'' are
+families of first-order \(\ipra\) statements with primitive-recursive moduli.
+
+For positive real \(x\), substitute \(z=\log x-1\).  The series converges when
+\begin{equation}\label{eq:W-real-interval}
+ |\log x-1|<R_*,
+ \qquad	ext{equivalently}
+ \qquad e^{1-R_*}<x<e^{1+R_*}.
+\end{equation}
+Numerically this is
+\[
+ 0.0655991999994\ldots<x<112.639423941\ldots,
+\]
+consistent with the interval quoted on the page.
+
+\subsection{A fully rational certificate for \(W(1)\)}
+
+The function \(u\mapsto ue^u\) is strictly increasing for \(u\ge0\).  Let
+\[
+ L=\frac{5671432904097838}{10^{16}},\qquad
+ U=\frac{5671432904097840}{10^{16}}.
+\]
+For \(0\le x<1\), put
+\[
+ S_{30}(x)=\sum_{j=0}^{30}\frac{x^j}{j!}.
+\]
+The positive tail satisfies the rational bound
+\[
+ S_{30}(x)\le e^x\le
+ S_{30}(x)+\frac{x^{31}/31!}{1-x/32}.
+\]
+Exact integer arithmetic verifies
+\[
+ L\left(S_{30}(L)+\frac{L^{31}/31!}{1-L/32}\right)<1,
+ \qquad U S_{30}(U)>1.
+\]
+Therefore
+\begin{equation}\label{eq:omega-cert}
+ 0.5671432904097838<W(1)<0.5671432904097840.
+\end{equation}
+This is stronger than the six-decimal approximation on the page and is checked
+by \code{code/verify.py} without floating-point arithmetic.
+
+\section{Binary trees and Catalan numbers}\label{sec:catalan}
+
+The functional equation on the page counts plane rooted full binary trees with
+unlabelled nodes: a non-leaf consists of an ordered left subtree and an ordered
+right subtree.  Without the plane/order structure, the count would instead be
+the Wedderburn--Etherington sequence and the displayed product equation would
+not apply.
+
+Let \(B_n\) count these trees by internal nodes and
+\(B(z)=\sum_{n\ge0}B_nz^n\).  The root decomposition is a constructive
+bijection
+\[
+ \B\cong\{\text{leaf}\}\;\sqcup\;
+ \{\text{root}\}\times\B\times\B,
+\]
+which gives
+\[
+ B(z)=1+zB(z)^2.
+\]
+Set \(C=B-1\).  Then
+\[
+ C=z(1+C)^2.
+\]
+Corollary~\ref{cor:basic}, with \(\Phi(w)=(1+w)^2\), yields for \(n\ge1\)
+\begin{align*}
+ B_n=[z^n]C(z)
+ &=\frac1n[w^{n-1}](1+w)^{2n}\\
+ &=\frac1n\binom{2n}{n-1}
+ =\frac1{n+1}\binom{2n}{n}.
+\end{align*}
+This is the \(n\)-th Catalan number.  The divisibility implicit in the last
+fraction follows already from the tree bijection, or algebraically from
+\(\binom{2n}{n-1}=n\binom{2n}{n}/(n+1)\).  Finite trees can be coded by balanced
+parenthesis words, and the root decomposition and size calculation are
+primitive recursive, so both the generating-function and bijective proofs fit
+\(\ipra\).
+
+\section{The inversion step in Laplace--Erd\'elyi asymptotics}\label{sec:laplace}
+
+Consider, first in the regular case,
+\[
+ I(\lambda)=\int_0^b e^{-\lambda f(t)}h(t)\,dt,
+ \qquad f(0)=0,\quad f'(0)\ne0.
+\]
+Let \(u=f(t)\), \(t=g(u)\), and write \(f(t)=t/\Phi(t)\).  If \(K'(t)=h(t)\)
+and \(K(0)=0\), then the transformed amplitude is
+\[
+ A(u)=h(g(u))g'(u)=\frac{d}{du}K(g(u)).
+\]
+Theorem~\ref{thm:lb-der} gives, for \(m\ge0\),
+\begin{equation}\label{eq:laplace-coeff}
+ [u^m]A(u)
+ =(m+1)[u^{m+1}]K(g(u))
+ =[t^m]h(t)\Phi(t)^{m+1}.
+\end{equation}
+Thus the crucial inversion step produces the amplitude coefficients directly,
+without first computing all coefficients of \(g\).
+
+If
+\[
+ A(u)=\sum_{m=0}^{M-1}a_mu^m+u^MR_M(u)
+\]
+with a supplied bound \(|R_M(u)|\le C\) on \([0,\delta]\), then splitting the
+integral at \(\delta\) and integrating the finite polynomial gives
+\begin{equation}\label{eq:laplace-asymp}
+ I(\lambda)
+ =\sum_{m=0}^{M-1}\frac{m!a_m}{\lambda^{m+1}}
+ +\mathcal R_M(\lambda),
+\end{equation}
+where
+\[
+ |\mathcal R_M(\lambda)|
+ \le \frac{C M!}{\lambda^{M+1}}
+ +e^{-\lambda\delta}\int_\delta^{f(b)}|A(u)|\,du.
+\]
+With rational polygonal integration and the moduli used in the ProveIt
+Taylor/Cauchy development, this is a primitive-recursive error bound.  If the
+leading behavior is \(f(t)=ct^mV(t)\), use the ramified inverse from
+Theorem~\ref{thm:puiseux}; the resulting fractional powers are precisely the
+Erd\'elyi generalization.  This makes mathematically explicit the page's
+statement that function inversion is the crucial step.
+
+\section{Arithmetization in intuitionistic PRA}\label{sec:ipra}
+
+\subsection{Primitive-recursive content}
+
+For a fixed coefficient representation, the following functions are primitive
+recursive:
+\begin{enumerate}[label=(\roman*)]
+\item decoding and encoding finite coefficient vectors;
+\item addition, Cauchy product, powers, formal derivative, and composition;
+\item the fixed-point iteration of Theorem~\ref{thm:fixed};
+\item finite Laurent multiplication, residue, and the monomial checks in
+Lemma~\ref{lem:res-subst};
+\item bounded enumeration of Bell multiplicity vectors and plane rooted trees;
+\item finite matrix determinants and multivariate coefficient boxes;
+\item rational Taylor partial sums and geometric remainder bounds.
+\end{enumerate}
+Each item is built from composition and primitive recursion over a bounded list.
+The factorial and binomial coefficients in the applications are also primitive
+recursive.  Exponentially large values cause no foundational difficulty: PRA
+controls computability, not feasible running time.
+
+The cleanest object statement clears all rational denominators.  For example,
+Theorem~\ref{thm:lb-der} is represented as
+\[
+ n\,\operatorname{Coeff}(H\circ G,n)
+ =\operatorname{Coeff}(H'\Phi^n,n-1),
+\]
+using integer numerator/denominator pairs and cross multiplication.  The
+conditions ``the input code is a valid reduced rational vector,'' ``the
+constant coefficient is zero,'' and ``all equations below stage \(r\) hold''
+are decidable primitive-recursive predicates.
+
+\subsection{Quantifier-free induction}
+
+Let \(G_r\) be the coded \(r\)-th fixed-point iterate.  Define
+\[
+ \operatorname{Inv}(r,N,\Phi)
+ =\operatorname{all}_{i<\min(r,N+1)}
+   \bigl(\operatorname{Coeff}(G_r,i)=L_i(\Phi)\bigr),
+\]
+where \(L_i\) denotes the cleared-denominator Lagrange coefficient.  Because
+\(\operatorname{all}\), coefficient extraction, and \(L_i\) are function
+symbols for primitive-recursive operations, \(\operatorname{Inv}=1\) is a
+quantifier-free formula with parameters.  Its base and successor steps are the
+finite coefficient calculations of Sections~\ref{sec:finite}--\ref{sec:main}.
+Therefore quantifier-free induction proves the uniform assertion for all
+\(r\), and instantiating \(r=N+1\) proves the desired truncation theorem.
+
+The same device handles a bounded universal condition in a determinant,
+partition, or tree sum.  One never needs to strengthen the induction scheme to
+formulas containing unbounded quantifiers.
+
+\subsection{Why the proof is intuitionistic}
+
+No step uses excluded middle for an undecidable statement.  Case splits are on
+natural-number equality, rational order, finite-code validity, or an explicitly
+supplied nonzero guard, all decidable.  Existence assertions are witnessed by
+algorithms: fixed-point iteration, finite reciprocal recursion, Picard
+iteration, or a bounded search.  Uniqueness is proved by coefficient agreement
+or a rational contraction estimate.  Analytic equality is equality of regular
+names with a displayed precision schedule, not equality obtained by choosing a
+limit point from a compact set.
+
+\subsection{Analytic names}
+
+For completeness, a regular Gaussian-rational name \(X\) satisfies
+\[
+ \norm{X(p)-X(q)}_1\le2^{-p}+2^{-q}.
+\]
+Equality \(X\sim Y\) means
+\[
+ \norm{X(p)-Y(q)}_1\le2^{-p}+2^{-q}
+\]
+for all precision indices.  Addition and multiplication have elementary
+precision shifts determined by supplied magnitude bounds.  A reciprocal is
+formed only with a supplied positive lower bound on the modulus.  The Picard
+schedule in \eqref{eq:picard-error} requests
+\(q=p+\lceil\log_2\rho\rceil+2\) iterations to obtain precision \(2^{-p}\);
+the logarithm is implemented by a bounded search for a power of two.  Thus the
+inverse name and its modulus are primitive recursive.
+
+\section{Lean formalization plan}\label{sec:lean}
+
+\subsection{Repository interfaces already available}
+
+The inspected ProveIt snapshot is recorded in \code{SOURCES.md}.  Its
+\path{ConciseIPRA/Lean/ConciseIPRA/PR.lean} defines:
+\begin{itemize}
+\item \code{PR k}, primitive-recursive function symbols of arity \(k\);
+\item \code{PTm n}, terms over those symbols;
+\item \code{PRAAx}, the defining equations, successor axioms, and
+quantifier-free induction;
+\item \code{PRA.precZero}, \code{PRA.precSucc}, and \code{PRA.qfInd}.
+\end{itemize}
+The theorem \code{pra\_theorem\_iff} in
+\code{ConciseIPRA.BiInterpretation} transports a closed theorem of the ordinary
+\(\ipra\) presentation to the concise scalar theory \(T_{\rm eq}\).
+
+The repository pins Mathlib v4.32.0.  In that version the useful abstract APIs
+include \code{PowerSeries.HasSubst}, \code{subst}, \code{coeff\_subst},
+\code{substInv}, \code{derivative}, \code{coeff\_derivative},
+\code{derivative\_pow}, and \code{derivative\_subst}.  The archive's
+\path{lean/LagrangeInversionBlueprint.lean} imports these modules and states the
+intended architecture.
+
+\subsection{Recommended module decomposition}
+
+\begin{longtable}{>{\ttfamily}p{0.28\textwidth}p{0.64\textwidth}}
+\toprule
+Module & Main content\\
+\midrule
+TruncatedSeries.lean & Finite vectors, bounded Cauchy product, powers,
+derivative, composition, coefficient lemmas, and coefficient-ring encodings.\\
+FixedPoint.lean & One-degree improvement, stabilization after \(N+1\) steps,
+and uniqueness.\\
+FormalResidue.lean & Finite Laurent vectors, residue of a derivative, and
+change of variables.\\
+LagrangeBuermann.lean & Theorems~\ref{thm:lb-alt} and \ref{thm:lb-der}, plus
+specializations to \(G\) and \(G^k\).\\
+Inverse.lean & Translation to a general base point and connection with
+Mathlib's \code{substInv}.\\
+Bell.lean & Partial Bell polynomials and Theorem~\ref{thm:bell}.\\
+Associahedron.lean & Plane rooted trees, signed tree expansion, and the
+correctly normalized face formula.\\
+Good.lean & Multivariate truncation, Laurent residue, and determinant formula.\\
+Puiseux.lean & Finite binomial roots and ramified branches.\\
+Applications.lean & Algebraic equation, Lambert \(W\), shifted series, Catalan
+numbers, and exact rational certificates.\\
+IPRAEncoding.lean & Natural-number codes and \code{PR} symbols for every
+finite algorithm.\\
+IPRACorrectness.lean & Quantifier-free invariants and a term of type
+\code{Prf PRAAx [] phi}.\\
+Transfer.lean & Application of \code{pra\_theorem\_iff}.\\
+AnalyticLift.lean & Regular names, contraction bounds, and the explicit inverse
+radius; isolated from the algebraic core.\\
+\bottomrule
+\end{longtable}
+
+\subsection{First abstract targets}
+
+The denominator-free theorem should be formalized first.  In schematic Lean,
+with \code{g = X * phi.subst g}, its target is
+\begin{lstlisting}[language={}] 
+theorem lagrange_burmann_alternative (n : Nat) :
+  coeff (n+1) (H.subst g) =
+    coeff (n+1)
+      (H * phi^n * (phi - X * (d/dX R phi))) := by
+  ...
+\end{lstlisting}
+The exact derivative notation in Mathlib is \code{d\textfractionsolidus dX R}.
+The cleared derivative form is
+\begin{lstlisting}[language={}]
+theorem lagrange_burmann_integral (n : Nat) :
+  (n+1 : R) * coeff (n+1) (H.subst g) =
+    coeff n ((d/dX R H) * phi^(n+1)) := by
+  ...
+\end{lstlisting}
+The proof should use \code{coeff\_derivative}, \code{derivative\_pow}, and the
+Leibniz rule after the alternative theorem.  This order avoids forcing a field
+assumption into the core result.
+
+Mathlib's substitution implementation is noncomputable because it represents a
+completed power series.  The \(\ipra\) proof must not simply quote that object.
+Instead, prove the same identity for \code{TruncSeries}; then establish that
+Mathlib coefficient extraction agrees with the finite implementation.  This
+separates convenient metatheoretic algebra from the executable object theory.
+
+\subsection{Connection to \code{substInv}}
+
+For a series \(F\) with zero constant coefficient and invertible linear
+coefficient, Mathlib already constructs \code{substInv F} and proves the
+composition identities.  Define \(\Phi=X/F\) using the unit
+\(F/X\), prove
+\[
+ \operatorname{substInv}(F)=X\,\Phi(\operatorname{substInv}(F)),
+\]
+and specialize the abstract theorem.  The Catalan example can then be connected
+to existing Mathlib Catalan power-series lemmas, providing a useful integration
+test.
+
+\subsection{Object-theory target}
+
+After coding the algorithms, the central deliverable is not another meta-level
+Lean equality but a proof object
+\begin{lstlisting}[language={}]
+Prf PRAAx [] lagrangeCorrectnessFormula
+\end{lstlisting}
+where \code{lagrangeCorrectnessFormula : Fm PTm 0} is the closed arithmetic
+correctness statement.  Transport is then exactly
+\begin{lstlisting}[language={}]
+(pra_theorem_iff lagrangeCorrectnessFormula).mp proof
+\end{lstlisting}
+as shown in the blueprint.  Replacing its two \code{opaque} placeholders by
+this derivation is the decisive completion criterion.
+
+\section{Validation, limitations, and reproducibility}\label{sec:validation}
+
+The exact-rational program \code{code/verify.py} independently checks:
+\begin{itemize}
+\item both univariate Lagrange--B\"urmann forms through degree nine for
+nontrivial rational input series;
+\item the Bell-polynomial formula through degree eight;
+\item the equation \(x^p-x+z=0\) for \(2\le p\le6\) through degree 24;
+\item Lambert \(W\) through degree 12 and the shifted series through degree six;
+\item Catalan coefficients through degree 15;
+\item a bivariate instance of Good's formula on a \(4\times4\) coefficient box;
+\item the rational interval certificate \eqref{eq:omega-cert};
+\item the degree-two associahedron normalization correction.
+\end{itemize}
+The recorded output ends with \code{ALL EXACT CHECKS PASSED}.  These tests are
+not substitutes for proof, but they exercise the finite formulae and catch
+index, factorial, sign, and Jacobian transposition errors.
+
+The Lean file is a formalization blueprint, not a completed kernel-checked
+proof.  In particular, the exact analytic continuation argument for the shifted
+Lambert radius is the heaviest remaining Lean component.  The algebraic
+coefficient theorem, fixed-point iteration, Bell formula, and finite
+applications require only finite sums and should be completed first.
+
+\section{Further research questions}\label{sec:further}
+
+\begin{enumerate}
+\item Can the finite residue substitution lemma be packaged as a reusable
+\(\ipra\) library theorem for other coefficient-extraction arguments, such as
+Good inversion, diagonal extraction, and the residue theorem for rational
+functions?
+\item What is the smallest quantifier-free induction invariant that proves the
+full Lagrange--B\"urmann identity after denominator clearing?  A direct
+coefficient invariant may be substantially smaller than an explicit Laurent
+calculus.
+\item Can the associahedron proof be formalized through a cancellation-free
+antipode theorem for a finite Hopf algebra of faces, and can that proof be made
+shorter than the rooted-tree expansion in the \code{ConciseIPRA} checker
+metric?
+\item For the shifted Lambert series, can one derive a purely coefficientwise
+proof of the exact radius \(\sqrt{4+\pi^2}\), avoiding effective covering-space
+machinery?
+\item How far can the ramified construction be pushed toward a fully effective
+Newton--Puiseux theorem in \(\ipra\), with explicit denominator and coefficient
+bounds?
+\item Can the same finite formal-residue core prove the multivariate
+Lagrange--Good formula uniformly in a coded dimension without a prohibitive
+proof-size increase?
+\end{enumerate}
+
+\section{Conclusion}
+
+The essential content of Lagrange inversion is finite.  A coefficient of degree
+\(n\) is determined by at most degree \(n\) data, the implicit solution is
+created by \(n+1\) fixed-point iterations, and the residue proof reduces to a
+finite Laurent-polynomial identity.  This makes the theorem especially well
+suited to intuitionistic primitive recursive arithmetic.  Analytic existence
+requires additional quantitative data, but an explicit contraction supplies a
+primitive-recursive inverse name and a positive radius.  The page's principal
+examples and extensions then follow by finite algebra, with exact convergence
+arguments supplied where the page asserts radii.
+
+\begin{thebibliography}{99}
+
+\bibitem{WikipediaLagrange}
+Wikipedia contributors,
+``Lagrange inversion theorem,'' revision 1348379317, April 12, 2026.
+\url{https://en.wikipedia.org/w/index.php?title=Lagrange_inversion_theorem&oldid=1348379317}.
+
+\bibitem{Gessel}
+Ira M. Gessel,
+``Lagrange inversion,''
+\emph{Journal of Combinatorial Theory, Series A} 144 (2016), 212--249.
+\url{https://arxiv.org/abs/1609.05988}.
+
+\bibitem{SuryaWarnke}
+Erlang Surya and Lutz Warnke,
+``Lagrange Inversion Formula by Induction,''
+\emph{American Mathematical Monthly} 130 (2023), 944--948.
+\url{https://arxiv.org/abs/2305.17576}.
+
+\bibitem{AguiarArdila}
+Marcelo Aguiar and Federico Ardila,
+\emph{Hopf Monoids and Generalized Permutahedra},
+Memoirs of the American Mathematical Society 1437.
+\url{https://arxiv.org/abs/1709.07504}.
+
+\bibitem{CorlessJeffreyKnuth}
+Robert M. Corless, David J. Jeffrey, and Donald E. Knuth,
+``A sequence of series for the Lambert W function,''
+ISSAC 1997, 197--204.
+
+\bibitem{proveit}
+Vladimir Reshetnikov,
+\emph{ProveIt}, repository snapshot recorded in \code{SOURCES.md}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{proveitTaylor}
+Vladimir Reshetnikov,
+``Taylor's theorem and Cauchy's integral formula in intuitionistic primitive
+recursive arithmetic,'' ProveIt proof packet,
+\code{Logic/PrimitiveRecursiveArithmetic/docs/proofs/analysis/taylor\_cauchy\_ipra/}.
+
+\bibitem{mathlibSubst}
+Mathlib contributors,
+\code{Mathlib.RingTheory.PowerSeries.Substitution}, v4.32.0.
+\url{https://github.com/leanprover-community/mathlib4/blob/v4.32.0/Mathlib/RingTheory/PowerSeries/Substitution.lean}.
+
+\bibitem{mathlibDerivative}
+Mathlib contributors,
+\code{Mathlib.RingTheory.PowerSeries.Derivative}, v4.32.0.
+\url{https://github.com/leanprover-community/mathlib4/blob/v4.32.0/Mathlib/RingTheory/PowerSeries/Derivative.lean}.
+
+\end{thebibliography}
+
+\end{document}
