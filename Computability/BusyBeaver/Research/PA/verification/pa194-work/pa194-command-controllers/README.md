@@ -24,6 +24,10 @@ eleven-entry layout of PA194AX11 (`ax11 = true`,
 leaves the top `0` and sets `d` to a fourth field `z` of the command:
 `⟪0, [G, q₁, …, q₈, U(d, h), t; w], z, 0⟫`.
 
+A third layout field, `Sem.short`, says that AX pushes seven leaves instead of eight (the
+original PA195, whose diagonal is part of its gate). `Sem.m` is the number of leaves and
+`Sem.n` the number of pushed entries: `m + 2`, and one more when the gate is pushed.
+
 The leaves and the gate are the fields `Sem.leaf` and `Sem.axT`, of which only `≠ 1` is
 assumed. The label of the pushed generalization is the field `Sem.genL A d`, a function of
 the label argument `A` of the command and of the register `d`: it is `d` above, and `A` for
@@ -34,9 +38,10 @@ the candidates whose AX pushes `U(c, h)` (PA194G and its descendants). The only 
 of `𝗜𝚺₁`, that the scheduler of the primary protocol meets a halting SHIFT whenever some
 command word computes the contradiction code `1`, and that the formulas computed by command
 words are closed under the rules of the numerical calculus. This directory is that theory
-with the controller as a parameter: the fields `mp : MPKind`, `cacheTest : Bool` and
-`ax11 : Bool` of `Sem`. The theorems hold for all twelve combinations of the three fields,
-in particular for the four protocols above in either AX layout.
+with the controller as a parameter: the fields `mp : MPKind`, `cacheTest : Bool`,
+`ax11 : Bool` and `short : Bool` of `Sem`. The theorems hold for all twenty-four
+combinations of the four fields, in particular for the four protocols above in every AX
+layout.
 
 The modules started as copies of the six abstract modules of `pa194-model-fairness`, in the
 namespace `ConPA.Ctl`; the originals are kept unchanged because the proof for the primary
@@ -60,7 +65,7 @@ table is compiled against them. The differences are:
   final word ends with `TEST`: one SHIFT for the test `t + h = 1`, and POP for the test
   `h = 1`.
 - A command is `⟪tag, y, x, z⟫` in both layouts, and the words use `z = 0`. `Sem.n` is the
-  number of entries AX pushes (ten or eleven). `itemsL` is the list of entries and `topL` the
+  number of entries AX pushes (nine, ten or eleven). `itemsL` is the list of entries and `topL` the
   top after AX; `ax_shifts` is stated for a split of `itemsL`, and POP, PUSH and DISCARD use
   `Sem.n + 1`, `Sem.n - 1` and `Sem.n` SHIFTs, so the same words serve both layouts.
   `select_run` (AX, some SHIFTs, POPs of the rest) gives the leaves and the gate: in the
@@ -75,7 +80,7 @@ table is compiled against them. The differences are:
 
 | Module | Content |
 | --- | --- |
-| `ConPACtlWords` | `MPKind`, `mpStore`, `Sem V` with the fields `mp`, `cacheTest`, `ax11` and `genL`, `Sem.Halts`, `Sem.n`; `tstep`, `texec`; concatenation of words. |
+| `ConPACtlWords` | `MPKind`, `mpStore`, `Sem V` with the fields `mp`, `cacheTest`, `ax11`, `short` and `genL`, `Sem.Halts`, `Sem.m`, `Sem.n`; `tstep`, `texec`; concatenation of words. |
 | `ConPACtlFrame` | `follows_exec`, `Good S W r`, `G S r`, `good_run`. |
 | `ConPACtlGadgets` | `not_halts`; `itemsL`, `topL`; POP, PUSH, DISCARD; `ax_shifts`, `ax_all`, `ax_nine`. PUSH and DISCARD use only the failing MP. |
 | `ConPACtlClosure` | `select_run`; `G_leaf`, `G_axT`, `G_gen`, `G_mp`. |

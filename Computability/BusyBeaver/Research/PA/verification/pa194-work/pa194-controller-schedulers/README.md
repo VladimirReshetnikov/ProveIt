@@ -56,10 +56,11 @@ primary table. The same holds for the schedulers with a variant emitter below.
 
 ## Variant axiom emitters
 
-Later candidates change entries of the AX command. Four of these changes are independent of
+Other candidates change entries of the AX command. Five of these changes are independent of
 each other, of the command protocol and of the AX layout; `Emitter` of
-`PA194EmitterSchedulerCore` has one field for each. With `A` the label argument of the
-command, `D = d + x`, `H = h + y` and `W(D,H) = U(D, E(H,D) → 1)`:
+`PA194EmitterSchedulerCore` has one field for each, with default `false`. With `A` the label
+argument of the command, `D = d + x`, `H = h + y`, `W(D,H) = U(D, E(H,D) → 1)`, and
+`V = V(H,D,A)`, `Q = Q(H,D,A)` the two parts of the gate of the primary table:
 
 | Field | Entry | Primary | Variant |
 | --- | --- | --- | --- |
@@ -67,6 +68,11 @@ command, `D = d + x`, `H = h + y` and `W(D,H) = U(D, E(H,D) → 1)`:
 | `q` | sixth head | `U(D,A) → (U(D,A→H) → U(D,H))` | `U(D,A→H) → (U(D,A) → U(D,H))` |
 | `x` | fifth head | `W(D,H) → 1` | `W(D,H) → A` |
 | `ga` | generalization | `U(d, h)` | `U(A, h)` |
+| `bundled` | gate, diagonal | `¬(V → Q)`, `Γ` pushed | `¬(Γ(A) → (V → Q))`, no `Γ` pushed |
+
+With `bundled`, AX pushes seven leaves instead of eight (nine stack entries when the gate is
+the top). This is the emitter of the original PA195, from which the primary table was
+obtained by separating the diagonal.
 
 For every emitter `e`, with `k`, `ct` and `a` as above:
 
@@ -88,48 +94,67 @@ the calculus of the primary table.
 *Soundness.* Every entry of a variant AX is provable in that calculus: the exchanged sixth
 head by the exchange law `(a → (b → c)) → (b → (a → c))` of the implication basis
 (`PA194ModelPropositional.imp_exchange`), `W → A` from the fifth head and explosion, and
-`U(A, h)` by generalization of the provable cache `h`.
+`U(A, h)` by generalization of the provable cache `h`, and the bundled gate `¬(Γ → X)` from
+`Γ(A)` and the gate `¬X` of the primary table.
 
 *Completeness.* The formulas that a scheduler computes are closed under modus ponens and
 contain the restricted row, so the generic derivation `M6.Logic.RestrictedImplication`
 applies to them (`rulesG`) and its exchange law gives the sixth head back. The fifth head
 is `W → A` at `A = 1`. `Γ(B)` is the diagonal entry of an AX with `D = A = B`. The
 generalization word of `pa194-command-controllers` uses an AX whose label argument equals
-the register `d`, so it computes `U(i, a)` with either binder.
+the register `d`, so it computes `U(i, a)` with either binder. From a bundled gate
+`¬(Γ → X)`, the gate `¬X` follows by `X → (Γ → X)`, and `Γ` follows by Peirce's law and
+explosion `1 → Γ`, which the first head and `K` supply (`G_explosion`). Every `Γ(B)` is in
+the gate with the arguments `(B + 1, B + 1, B)`, whose guard `B ≠ B + 1` holds.
 
 The table lists the emitter, the kind of MP, the halting test and the layout that the
 proof documents of the packets under `docs/` state for some candidates. The table follows
 the displayed command equations of those documents; it has not been compared with the
 packets' source graphs or tables.
 
-| Candidate | Document | `gd` | `q` | `x` | `ga` | `k` | `ct` | `a` |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| PA194Q | `pa194q_conpa_2026-11-13/report/calibration_q.tex` | | ✓ | | | `cache` | ✓ | |
-| PA194DHS | `pa194dhs_conpa_2026-11-13/report/proof_dhs.tex` | ✓ | | | | `top` | ✓ | |
-| PA194G | `PA194B_PA194G_research_2026-11-14/generalizer/proof.tex` | | ✓ | | ✓ | `top` | | |
-| PA194GH | `pa194gh_research_2026-11-14/machines/PA194GH/proof.tex` | | ✓ | | ✓ | `top` | ✓ | |
-| GD | `pa194_gd_research_2026-11-14/report/gd_calibration.tex` | ✓ | | | ✓ | `top` | | |
-| GDH, GDHS | the same | ✓ | | | ✓ | `top` | ✓ | |
-| PA194AX11G | `pa194_ax11g_research_2026-11-14/proof/ax11g.tex` | | ✓ | | ✓ | `top` | | ✓ |
-| PA194AX11GH | `pa194_ax11gh_research_2026-11-14/proof/ax11gh_preservation.tex` | | ✓ | | ✓ | `top` | ✓ | ✓ |
-| PA194AX11GDH | `pa194_ax11gdh_research_2026-11-15/proof/ax11gdh_preservation.tex` | ✓ | | | ✓ | `top` | ✓ | ✓ |
-| PA194H5X | `pa194_witness_research_2026-11-15/report/implementation_proof.tex` | | | ✓ | ✓ | `top` | ✓ | ✓ |
+| Candidate | Document | `gd` | `q` | `x` | `ga` | `bundled` | `k` | `ct` | `a` |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| PA194Q | `pa194q_conpa_2026-11-13/report/calibration_q.tex` | | ✓ | | | | `cache` | ✓ | |
+| PA194DHS | `pa194dhs_conpa_2026-11-13/report/proof_dhs.tex` | ✓ | | | | | `top` | ✓ | |
+| PA194G | `PA194B_PA194G_research_2026-11-14/generalizer/proof.tex` | | ✓ | | ✓ | | `top` | | |
+| PA194GH | `pa194gh_research_2026-11-14/machines/PA194GH/proof.tex` | | ✓ | | ✓ | | `top` | ✓ | |
+| GD | `pa194_gd_research_2026-11-14/report/gd_calibration.tex` | ✓ | | | ✓ | | `top` | | |
+| GDH, GDHS | the same | ✓ | | | ✓ | | `top` | ✓ | |
+| PA194AX11G | `pa194_ax11g_research_2026-11-14/proof/ax11g.tex` | | ✓ | | ✓ | | `top` | | ✓ |
+| PA194AX11GH | `pa194_ax11gh_research_2026-11-14/proof/ax11gh_preservation.tex` | | ✓ | | ✓ | | `top` | ✓ | ✓ |
+| PA194AX11GDH | `pa194_ax11gdh_research_2026-11-15/proof/ax11gdh_preservation.tex` | ✓ | | | ✓ | | `top` | ✓ | ✓ |
+| PA194H5X | `pa194_witness_research_2026-11-15/report/implementation_proof.tex` | | | ✓ | ✓ | | `top` | ✓ | ✓ |
+| original PA195 | `pa195_conpa_2026-11-13/report/sections/pa_calibration.tex`, `pa195/build_verify.py` | | | | | ✓ | `push` | | |
+| PA195DC | `pa195_diagonal_combined_2026-11-13/report/sections/commands.tex` | | | | | ✓ | `cache` | ✓ | |
+| composite, nine entries | `PA195_ConPA_research_2026-11-14/independent_verification/composite_command_audit.tex` | | | | | ✓ | `cache` | ✓ | |
+| composite, ten entries (195C) | the same | | | | | | `cache` | ✓ | |
 
-For example, the scheduler for PA194AX11GH is
-`haltAfterE ⟨false, true, false, true⟩ .top true true`. The emitter with exchanged sixth
+The scheduler for the original PA195 is `haltAfterE { bundled := true } .push false false`
+(for its AX the table follows the free-algebra identity that the packet's
+`build_verify.py` checks: stack `[h₆, …, h₁, ρ, U(d,h), t]`, top `¬(Γ(A) → (V → Q))`). The
+scheduler for PA194AX11GH is
+`haltAfterE { q := true, ga := true } .top true true`. The emitter with exchanged sixth
 head is also used by PA194QH, PA194QN, PA194QNS and PA194AX11QH, and `Γ(D)` by PA194D;
 their command protocols have not been matched against their packets here.
 
+All these schedulers fetch and decode commands as the modeled scheduler of the primary
+table does (the pair `(n, l)` and its seed, from the same initial state). For the original
+PA195 the packet says that its scheduler is the one of PA196 with the AX block replaced; it
+has not been checked here that this is the same enumeration of commands. The comparison
+with `TargetProvable` does not depend on the enumeration, but a proof about the literal
+table has to match it.
+
 Not covered: PA194JH5X, which also replaces the first head; the fused head of the FW
-candidates; the bundled gate of the original PA195; and the candidates with another
-coefficient of the formula constructors.
+candidates; the gate of PA196, which bundles equality vacuity instead of the diagonal and
+belongs to another calculus; and the candidates with another coefficient of the formula
+constructors.
 
 ## Modules
 
 | Module | Content |
 | --- | --- |
-| `PA194EmitterSchedulerCore` | `Emitter`; the codes `head6Q`, `head5X`, `axStackCodeE`, `stepE`, `runE`, `haltAfterE`. Only codes; imports `PA194ControllerSchedulerCore`. |
-| `PA194EmitterScheduler` | `leafE`, `genLE`, `axStackE` and `axStackE_model`; `semE e k ct a`, `stepE_eq`; `rulesG`, `G_head6`, `G_head5`, `G_diagonal`, `G_of_provable`; `leafE_provable`, `axE_preserves`, `runE_sound`; `halts_iff_provable`, `halts_iff_primary`. |
+| `PA194EmitterSchedulerCore` | `Emitter`; the codes `head6Q`, `head5X`, `bundledGate`, `axStackCodeE`, `axTopCodeE`, `stepE`, `runE`, `haltAfterE`. Only codes; imports `PA194ControllerSchedulerCore`. |
+| `PA194EmitterScheduler` | `baseLeaf`, `leafE`, `genLE`, `axStackE`, `axTopE` and their model lemmas; `semE e k ct a`, `stepE_eq`; `G_base`, `rulesG`, `G_head6`, `G_head5`, `G_explosion`, `G_gate`, `G_diagonal`, `G_of_provable`; `leafE_provable`, `axTopE_provable`, `axE_preserves`, `runE_sound`; `halts_iff_provable`, `halts_iff_primary`. |
 | `PA194EmitterSchedulerPA` | `scheduler_iff_pa_refutation`; `haltSentenceE` and `consistency_iff_scheduler_nonhalt`. |
 | `PA194ControllerSchedulerCore` | The PRA code definitions for the scheduler step, its iteration, and its halt test, independent of the fairness and PA-interpretation proofs. |
 | `PA194ControllerScheduler` | `cstepCodeK`, `haltAfterK`; imports the shared core. `semK k ct a`: the command semantics of `ConPA.Ctl`; `stepK_eq`: the step code is `ConPA.Ctl.sstep (semK k ct a)`. `G_of_provable`: a target proof gives a command word (`targetProof_sound` with the closure lemmas of `ConPA.Ctl`). `cstepK_sound`, `runK_sound`: top, cache and stack entries stay provable along a run. `halts_iff_provable`, `halts_iff_primary`. |

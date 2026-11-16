@@ -57,11 +57,13 @@ lemma tstep_ax (A y x z t w d h δ : V) :
     tstep S ⟪A + 1 + 1, y, x, z⟫ ⟪⟪t, w, d, h⟫, δ, 0⟫ =
       ⟪(if S.ax11 then
           ⟪0, cantor (S.axT (h + y) (d + x) A)
-            (stack10 (fun i => S.leaf i (d + x) (h + y) A d) (4 * cantor h (S.genL A d) + 2) t w), z, 0⟫
+            (stackS S.short (fun i => S.leaf i (d + x) (h + y) A d)
+              (4 * cantor h (S.genL A d) + 2) t w), z, 0⟫
         else
           ⟪S.axT (h + y) (d + x) A,
-            stack10 (fun i => S.leaf i (d + x) (h + y) A d) (4 * cantor h (S.genL A d) + 2) t w, 0, 0⟫),
-        δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + (S.g : V), 0⟫ := by
+            stackS S.short (fun i => S.leaf i (d + x) (h + y) A d)
+              (4 * cantor h (S.genL A d) + 2) t w, 0, 0⟫),
+        δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + (S.s : V) + (S.g : V), 0⟫ := by
   simp [tstep, S.ax_eq]
 
 lemma texec_of_flag (W τ : V) (hf : π₂ (π₂ τ) ≠ 0) : texec S W τ = τ := by
@@ -116,6 +118,11 @@ lemma sameTop_stack10 {δ u v v₀ : V} (f : ℕ → V) (g t : V) (h : SameTop �
   exact sameTop_push _ (sameTop_push _ (sameTop_push _ (sameTop_push _ (sameTop_push _
     (sameTop_push _ (sameTop_push _ (sameTop_push _ (sameTop_push _ (sameTop_push _ h)))))))))
 
+lemma sameTop_stack9 {δ u v v₀ : V} (f : ℕ → V) (g t : V) (h : SameTop δ u v v₀) :
+    SameTop (δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1) (stack9 f g t u) (stack9 f g t v) v₀ := by
+  unfold stack9
+  exact sameTop_push _ (sameTop_push _ (sameTop_push _ (sameTop_push _ (sameTop_push _
+    (sameTop_push _ (sameTop_push _ (sameTop_push _ (sameTop_push _ h))))))))
 
 /-- `B` is `A` on the base `v₀` at the additional height `δ₀`. -/
 def Follows (δ₀ v₀ A B : V) : Prop :=
@@ -154,20 +161,28 @@ lemma follows_mp {δ₀ v₀ δ u v : V} (b : V) (hs : SameTop δ u v v₀) :
   · have h := follows_mk (δ₀ := δ₀) (t := (0 : V)) (d := (0 : V)) (h := b) (f := (0 : V)) hs
     simpa using h
 
-/-- The store after AX, in either layout, respects the base. -/
+/-- The store after AX, in every layout, respects the base. -/
 lemma follows_ax {δ₀ v₀ δ u v : V} (T z : V) (f : ℕ → V) (g t : V) (hs : SameTop δ u v v₀) :
     Follows δ₀ v₀
-      ⟪(if S.ax11 then ⟪0, cantor T (stack10 f g t u), z, 0⟫ else ⟪T, stack10 f g t u, 0, 0⟫),
-        δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + (S.g : V), 0⟫
-      ⟪(if S.ax11 then ⟪0, cantor T (stack10 f g t v), z, 0⟫ else ⟪T, stack10 f g t v, 0, 0⟫),
-        δ₀ + (δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + (S.g : V)), 0⟫ := by
-  unfold Sem.g
-  cases S.ax11
+      ⟪(if S.ax11 then ⟪0, cantor T (stackS S.short f g t u), z, 0⟫
+          else ⟪T, stackS S.short f g t u, 0, 0⟫),
+        δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + (S.s : V) + (S.g : V), 0⟫
+      ⟪(if S.ax11 then ⟪0, cantor T (stackS S.short f g t v), z, 0⟫
+          else ⟪T, stackS S.short f g t v, 0, 0⟫),
+        δ₀ + (δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + (S.s : V) + (S.g : V)), 0⟫ := by
+  unfold Sem.g Sem.s stackS
+  cases S.ax11 <;> cases S.short
   · have h := follows_mk (δ₀ := δ₀) (t := T) (d := (0 : V)) (h := (0 : V)) (f := (0 : V))
       (sameTop_stack10 f g t hs)
     simpa using h
+  · have h := follows_mk (δ₀ := δ₀) (t := T) (d := (0 : V)) (h := (0 : V)) (f := (0 : V))
+      (sameTop_stack9 f g t hs)
+    simpa using h
   · have h := follows_mk (δ₀ := δ₀) (t := (0 : V)) (d := z) (h := (0 : V)) (f := (0 : V))
       (sameTop_push T (sameTop_stack10 f g t hs))
+    simpa using h
+  · have h := follows_mk (δ₀ := δ₀) (t := (0 : V)) (d := z) (h := (0 : V)) (f := (0 : V))
+      (sameTop_push T (sameTop_stack9 f g t hs))
     simpa using h
 
 lemma follows_step {δ₀ v₀ A B : V} (c : V) (hf : flg(tstep S c A) ≠ 2)
@@ -203,8 +218,9 @@ lemma follows_step {δ₀ v₀ A B : V} (c : V) (hf : flg(tstep S c A) ≠ 2)
       · rw [ha] at hf ⊢
         obtain ⟨x', z, rfl⟩ : ∃ x' z : V, x = ⟪x', z⟫ := ⟨π₁ x, π₂ x, by simp⟩
         rw [tstep_ax S b y x' z t u d h δ, tstep_ax S b y x' z t v d h (δ₀ + δ)]
-        have he : δ₀ + δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + (S.g : V) =
-            δ₀ + (δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + (S.g : V)) := by simp [add_assoc]
+        have he : δ₀ + δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + (S.s : V) + (S.g : V) =
+            δ₀ + (δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + (S.s : V) + (S.g : V)) := by
+          simp [add_assoc]
         rw [he]
         exact follows_ax S _ z _ _ _ hs
   · rw [tstep_final S c _ δ f hfz, tstep_final S c _ (δ₀ + δ) f hfz]

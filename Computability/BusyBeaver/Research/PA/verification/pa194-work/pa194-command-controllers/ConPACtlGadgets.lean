@@ -132,41 +132,51 @@ lemma tstep_MP_no (y t w d h δ : V) (hm : 4 * cantor t (d + y) ≠ h) :
   unfold MP
   exact tstep_mp_no S y 0 t w d h δ hm
 
-/-- The ten entries pushed by AX, top first. -/
-def items (f : ℕ → V) (g t : V) : List V := [f 0, f 1, f 2, f 3, f 4, f 5, f 6, f 7, g, t]
+/-- The entries pushed by AX after the gate, top first: the leaves (eight, or seven in the
+short layout), the generalization and the old top. -/
+def items (f : ℕ → V) (g t : V) : List V :=
+  if S.short then [f 0, f 1, f 2, f 3, f 4, f 5, f 6, g, t]
+  else [f 0, f 1, f 2, f 3, f 4, f 5, f 6, f 7, g, t]
 
-lemma stack10_eq (f : ℕ → V) (g t w : V) : stack10 f g t w = (items f g t).foldr cantor w := rfl
+lemma stackS_eq (f : ℕ → V) (g t w : V) :
+    stackS S.short f g t w = (items S f g t).foldr cantor w := by
+  unfold stackS items
+  cases S.short <;> rfl
 
-/-- The entries pushed by AX, top first: in the eleven-entry layout the gate `T` comes
-first. -/
+/-- The entries pushed by AX, top first: when the gate `T` is pushed, it comes first. -/
 def itemsL (T : V) (f : ℕ → V) (g t : V) : List V :=
-  if S.ax11 then T :: items f g t else items f g t
+  if S.ax11 then T :: items S f g t else items S f g t
 
 /-- The entries without the saved top. -/
 def initL (T : V) (f : ℕ → V) (g : V) : List V :=
-  if S.ax11 then [T, f 0, f 1, f 2, f 3, f 4, f 5, f 6, f 7, g]
-  else [f 0, f 1, f 2, f 3, f 4, f 5, f 6, f 7, g]
+  if S.ax11 then
+    (if S.short then [T, f 0, f 1, f 2, f 3, f 4, f 5, f 6, g]
+      else [T, f 0, f 1, f 2, f 3, f 4, f 5, f 6, f 7, g])
+  else
+    (if S.short then [f 0, f 1, f 2, f 3, f 4, f 5, f 6, g]
+      else [f 0, f 1, f 2, f 3, f 4, f 5, f 6, f 7, g])
 
 /-- The top after AX: the gate, or `0` when the gate is pushed. -/
 def topL (T : V) : V := if S.ax11 then 0 else T
 
 lemma itemsL_length (T : V) (f : ℕ → V) (g t : V) : (itemsL S T f g t).length = S.n := by
-  unfold itemsL Sem.n
-  cases S.ax11 <;> simp [items]
+  unfold itemsL items Sem.n
+  cases S.ax11 <;> cases S.short <;> simp
 
 lemma initL_length (T : V) (f : ℕ → V) (g : V) : (initL S T f g).length = S.n - 1 := by
   unfold initL Sem.n
-  cases S.ax11 <;> simp
+  cases S.ax11 <;> cases S.short <;> simp
 
 lemma itemsL_split (T : V) (f : ℕ → V) (g t : V) :
     itemsL S T f g t = initL S T f g ++ [t] := by
-  unfold itemsL initL
-  cases S.ax11 <;> simp [items]
+  unfold itemsL initL items
+  cases S.ax11 <;> cases S.short <;> simp
 
 lemma ax_height (δ : V) :
-    δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + (S.g : V) = δ + (S.n : V) := by
-  unfold Sem.g Sem.n
-  cases S.ax11 <;> simp only [Bool.false_eq_true, ↓reduceIte] <;> push_cast <;> ring
+    δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + (S.s : V) + (S.g : V) = δ + (S.n : V) := by
+  unfold Sem.g Sem.s Sem.n
+  cases S.ax11 <;> cases S.short <;> simp only [Bool.false_eq_true, ↓reduceIte] <;>
+    push_cast <;> ring
 
 lemma tstep_AX (A y x t w d h δ : V) :
     tstep S (AX A y x) ⟪⟪t, w, d, h⟫, δ, 0⟫ =
@@ -175,7 +185,7 @@ lemma tstep_AX (A y x t w d h δ : V) :
             (4 * cantor h (S.genL A d) + 2) t).foldr cantor w,
           0, 0⟫, δ + (S.n : V), 0⟫ := by
   unfold AX
-  rw [tstep_ax S A y x 0 t w d h δ, stack10_eq, ax_height]
+  rw [tstep_ax S A y x 0 t w d h δ, stackS_eq, ax_height]
   unfold topL itemsL
   cases S.ax11 <;> simp
 
@@ -211,23 +221,23 @@ lemma shifts_run (xs : List V) : ∀ (a b w d δ W τ : V), NoHalt S a b xs →
 
 lemma last2_itemsL (T : V) (f : ℕ → V) (g t : V) :
     last2 (topL S T) 0 (itemsL S T f g t) = (g, t) := by
-  unfold topL itemsL
-  cases S.ax11 <;> simp [items, last2]
+  unfold topL itemsL items
+  cases S.ax11 <;> cases S.short <;> simp [last2]
 
 lemma last2_initL (T : V) (f : ℕ → V) (g : V) :
-    last2 (topL S T) 0 (initL S T f g) = (f 7, g) := by
-  unfold topL initL
-  cases S.ax11 <;> simp [last2]
+    last2 (topL S T) 0 (initL S T f g) = (f (S.m - 1), g) := by
+  unfold topL initL Sem.m
+  cases S.ax11 <;> cases S.short <;> simp [last2]
 
 lemma nohalt_itemsL (T : V) (f : ℕ → V) (x t : V) (hT : T ≠ 1) (hf : ∀ j, f j ≠ 1) :
     NoHalt S (topL S T) 0 (itemsL S T f (4 * x + 2) t) := by
-  unfold topL itemsL
-  cases S.ax11 <;> simp [NoHalt, items, halts_iff_false, hT, hf, allV_ne_one]
+  unfold topL itemsL items
+  cases S.ax11 <;> cases S.short <;> simp [NoHalt, halts_iff_false, hT, hf, allV_ne_one]
 
 lemma nohalt_initL (T : V) (f : ℕ → V) (g : V) (hT : T ≠ 1) (hf : ∀ j, f j ≠ 1) :
     NoHalt S (topL S T) 0 (initL S T f g) := by
   unfold topL initL
-  cases S.ax11 <;> simp [NoHalt, halts_iff_false, hT, hf]
+  cases S.ax11 <;> cases S.short <;> simp [NoHalt, halts_iff_false, hT, hf]
 
 /-- AX followed by SHIFTs through the first entries `xs` of its list. -/
 lemma ax_shifts (A y x t w d h δ : V) (xs ys : List V)
@@ -263,7 +273,8 @@ lemma ax_all (A y x t w d h δ W τ : V) (hW : texec S W τ = ⟪⟪t, w, d, h�
 pushed. -/
 lemma ax_nine (A y x t w d h δ W τ : V) (hW : texec S W τ = ⟪⟪t, w, d, h⟫, δ, 0⟫) :
     texec S (shifts (S.n - 1) (snoc W (AX A y x))) τ =
-      ⟪⟪S.leaf 7 (d + x) (h + y) A d, cantor t w, 0, 4 * cantor h (S.genL A d) + 2⟫, δ + 1, 0⟫ := by
+      ⟪⟪S.leaf (S.m - 1) (d + x) (h + y) A d, cantor t w, 0, 4 * cantor h (S.genL A d) + 2⟫,
+        δ + 1, 0⟫ := by
   have h := ax_shifts S A y x t w d h δ
     (initL S (S.axT (h + y) (d + x) A) (fun i => S.leaf i (d + x) (h + y) A d)
       (4 * cantor h (S.genL A d) + 2)) [t] (itemsL_split S _ _ _ _)
