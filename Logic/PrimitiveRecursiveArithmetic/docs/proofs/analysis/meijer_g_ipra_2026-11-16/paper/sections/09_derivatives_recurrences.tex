@@ -1,0 +1,172 @@
+\section{Derivatives, recurrences, and scaling series}\label{sec:derivatives}
+
+\subsection{Four first-order derivative formulas}
+
+The identity $\frac{\dd}{\dd z}z^s=sz^{s-1}$ combines with a single Gamma
+recurrence.  For example,
+\[
+ (s-a_1+1)\Gamma(1-a_1+s)=\Gamma(2-a_1+s),
+\]
+which lowers $a_1$ by one.  Depending on the block, the sign is reversed.
+
+\begin{theorem}[First-order formulas]\label{thm:first-derivatives}
+On every certified differentiability domain,
+\begin{align}
+\frac{\dd}{\dd z}\!
+ \left[z^{1-a_1}G(\mathbf a;\mathbf b\mid z)\right]
+&=z^{-a_1}G(a_1-1,a_2,\ldots;\mathbf b\mid z),&&n\ge1,
+\label{eq:d-a1}\\
+\frac{\dd}{\dd z}\!
+ \left[z^{1-a_p}G(\mathbf a;\mathbf b\mid z)\right]
+&=-z^{-a_p}G(a_1,\ldots,a_p-1;\mathbf b\mid z),&&n<p,
+\label{eq:d-ap}\\
+\frac{\dd}{\dd z}\!
+ \left[z^{-b_1}G(\mathbf a;\mathbf b\mid z)\right]
+&=-z^{-1-b_1}G(\mathbf a;b_1+1,b_2,\ldots\mid z),&&m\ge1,
+\label{eq:d-b1}\\
+\frac{\dd}{\dd z}\!
+ \left[z^{-b_q}G(\mathbf a;\mathbf b\mid z)\right]
+&=z^{-1-b_q}G(\mathbf a;b_1,\ldots,b_q+1\mid z),&&m<q.
+\label{eq:d-bq}
+\end{align}
+\end{theorem}
+\begin{proof}
+Differentiate a finite contour integral or finite residue partial sum.  In each
+case, collect the factor $s+1-a_i$ or $s-b_j$ with the affected Gamma or
+reciprocal-Gamma factor and use $\Gamma(w+1)=w\Gamma(w)$.  Uniform derivative
+tails follow from \cref{thm:analyticity}.  The sign in
+\eqref{eq:d-ap} and \eqref{eq:d-b1} is the sign obtained from
+$a_p-s=-(s-a_p)$ or $b_1-s=-(s-b_1)$.
+\end{proof}
+
+Expanding \eqref{eq:d-a1} gives the useful Euler-derivative identity
+\begin{equation}\label{eq:theta-shift}
+ \thetaop G(\mathbf a;\mathbf b\mid z)
+ =G(a_1-1,a_2,\ldots;\mathbf b\mid z)+(a_1-1)G(\mathbf a;\mathbf b\mid z).
+\end{equation}
+The other three analogous identities are obtained in the same finite way.
+
+\subsection{Arbitrary derivative order}
+
+For $h\in\N$, the falling factorial
+$s^{\underline h}=s(s-1)\cdots(s-h+1)$ is represented by adding a top parameter
+$0$ and a bottom parameter $h$, because
+\begin{equation}\label{eq:falling-gamma}
+ \frac{\Gamma(1+s)}{\Gamma(1-h+s)}=s^{\underline h}.
+\end{equation}
+
+\begin{theorem}[Higher derivatives]\label{thm:higher-derivatives}
+For each fixed $h$,
+\begin{align}
+z^h\frac{\dd^h}{\dd z^h}G_{p,q}^{m,n}(\mathbf a;\mathbf b\mid z)
+&=G_{p+1,q+1}^{m,n+1}(0,\mathbf a;\mathbf b,h\mid z)\label{eq:high-d-one}\\
+&=(-1)^hG_{p+1,q+1}^{m+1,n}(\mathbf a,0;h,\mathbf b\mid z).
+\label{eq:high-d-two}
+\end{align}
+For the inverse argument,
+\begin{align}
+z^h\frac{\dd^h}{\dd z^h}G_{p,q}^{m,n}(\mathbf a;\mathbf b\mid z^{-1})
+&=G_{p+1,q+1}^{m+1,n}(\mathbf a,1-h;1,\mathbf b\mid z^{-1})\notag\\
+&=(-1)^hG_{p+1,q+1}^{m,n+1}(1-h,\mathbf a;\mathbf b,1\mid z^{-1}).
+\label{eq:high-d-inverse}
+\end{align}
+\end{theorem}
+\begin{proof}
+The $h$th derivative of $z^s$ is $s^{\underline h}z^{s-h}$.
+Equation \eqref{eq:falling-gamma} inserts the two new parameters and proves
+\eqref{eq:high-d-one}.  The block-transfer identity
+\eqref{eq:block-transfer} with difference $h$ proves
+\eqref{eq:high-d-two}.  Apply inversion and the finite chain rule to obtain
+\eqref{eq:high-d-inverse}.  Since $h$ is externally fixed, all derivative
+error bounds remain primitive recursive.
+\end{proof}
+
+\subsection{Contiguous recurrences}
+
+Equating two versions of $\thetaop G$ gives the source page's recurrences.
+They are therefore not new analytic theorems; they are finite linear
+combinations of \cref{thm:first-derivatives}.
+
+\begin{theorem}[Four displayed contiguous relations]\label{thm:contiguous}
+Using the shorthand $G=G(\mathbf a;\mathbf b\mid z)$,
+\begin{align}
+(a_p-a_1)G
+&=G(a_1-1,a_2,\ldots;\mathbf b)
+ +G(a_1,\ldots,a_p-1;\mathbf b),&&1\le n<p,
+\label{eq:contig-aa}\\
+(b_1-b_q)G
+&=G(\mathbf a;b_1+1,b_2,\ldots)
+ +G(\mathbf a;b_1,\ldots,b_q+1),&&1\le m<q,
+\label{eq:contig-bb}\\
+(b_1-a_1+1)G
+&=G(a_1-1,a_2,\ldots;\mathbf b)
+ +G(\mathbf a;b_1+1,b_2,\ldots),&&m,n\ge1,
+\label{eq:contig-ab}\\
+(a_p-b_q-1)G
+&=G(a_1,\ldots,a_p-1;\mathbf b)
+ +G(\mathbf a;b_1,\ldots,b_q+1),&&n<p,\ m<q.
+\label{eq:contig-ba}
+\end{align}
+\end{theorem}
+\begin{proof}
+Expand the left derivatives in \eqref{eq:d-a1}--\eqref{eq:d-bq}, solve each for
+$\thetaop G$, and subtract the appropriate pair.  This uses only distributivity
+and integer/rational coefficient arithmetic, so it compiles to a short object
+proof once the four derivative lemmas are available.
+\end{proof}
+
+The two omitted diagonal recurrences mentioned by the page follow by adding or
+subtracting \eqref{eq:contig-aa}--\eqref{eq:contig-ba}; the checker can generate
+them automatically.
+
+\subsection{Scaling/Taylor formulas}
+
+The four source expansions are Taylor series in the scale parameter $w$ around
+$w=1$.  We prove one; the others follow from the corresponding first-order
+formula.  Put
+\[
+ H(w)=w^{-b_1}G(\mathbf a;\mathbf b\mid wz).
+\]
+Using \eqref{eq:d-b1} and the chain rule gives
+\[
+ H^{(h)}(w)=(-1)^h w^{-b_1-h}
+ G(\mathbf a;b_1+h,b_2,\ldots\mid wz),
+ \qquad
+ \frac{H^{(h)}(1)}{h!}
+ =\frac{(-1)^h}{h!}G(\mathbf a;b_1+h,b_2,\ldots\mid z).
+\]
+Rewriting $(-1)^h(w-1)^h=(1-w)^h$ gives the first displayed
+series.  The other three are identical after replacing the first-order shift
+identity.
+
+\begin{theorem}[Scaling series]\label{thm:scaling-series}
+On every rational disk in the $w$-plane for which the common branch and a
+uniform derivative bound are certified,
+\begin{align}
+G(\mathbf a;\mathbf b\mid wz)
+&=w^{b_1}\sum_{h\ge0}\frac{(1-w)^h}{h!}
+  G(\mathbf a;b_1+h,b_2,\ldots\mid z),&&m\ge1,
+\label{eq:scale-b1}\\
+G(\mathbf a;\mathbf b\mid wz)
+&=w^{b_q}\sum_{h\ge0}\frac{(w-1)^h}{h!}
+  G(\mathbf a;b_1,\ldots,b_q+h\mid z),&&m<q,
+\label{eq:scale-bq}\\
+G(\mathbf a;\mathbf b\mid z/w)
+&=w^{1-a_1}\sum_{h\ge0}\frac{(1-w)^h}{h!}
+  G(a_1-h,a_2,\ldots;\mathbf b\mid z),&&n\ge1,
+\label{eq:scale-a1}\\
+G(\mathbf a;\mathbf b\mid z/w)
+&=w^{1-a_p}\sum_{h\ge0}\frac{(w-1)^h}{h!}
+  G(a_1,\ldots,a_p-h;\mathbf b\mid z),&&n<p.
+\label{eq:scale-ap}
+\end{align}
+\end{theorem}
+\begin{proof}
+Taylor's formula with an integral or Cauchy remainder is applied on a certified
+rational disk.  The derivatives are replaced by shifted $G$-functions using
+\cref{thm:first-derivatives,thm:higher-derivatives}.  A uniform Cauchy bound
+$M/R^h$ gives the tail
+$M(\abs{w-1}/R)^{N+1}/(1-\abs{w-1}/R)$, with a primitive-recursive cutoff.
+This also explains why the page correctly warns that the radius depends on
+$z$ and on the function being expanded.
+\end{proof}

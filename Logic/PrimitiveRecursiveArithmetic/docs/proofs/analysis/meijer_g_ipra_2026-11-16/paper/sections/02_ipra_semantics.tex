@@ -1,0 +1,139 @@
+\section{What complex analysis means in iPRA}\label{sec:ipra}
+
+\subsection{The object theory}
+
+The repository snapshot used here is commit
+\code{85afffc93b2abbc1972fdfc98244052cbfbda1b3}.  Its ordinary presentation of
+iPRA has first-order intuitionistic logic with equality, a symbol for every
+primitive-recursive function, the defining equations for those symbols,
+successor axioms, and induction for quantifier-free formulas.  In Lean these
+are the types \code{PR}, \code{PTm}, and \code{PRAAx}; the induction constructor
+is \code{PRA.qfInd}.  Consequently, a proof may use an externally fixed
+primitive-recursive approximation algorithm, but it may not quantify over all
+algorithms by invoking a universal evaluator.
+
+This distinction controls the formulation of every theorem below.  A statement
+such as ``for every complex parameter $a$'' is read as a schema: fix a
+primitive-recursive name for $a$ and the certificates demanded by the theorem;
+then iPRA proves the resulting first-order sentence.  For rational parameters
+the package also gives a single uniform coded algorithm.
+
+\subsection{Rational and complex codes}
+
+A rational is represented by a sign and two natural numbers $(u,v)$ with
+$v>0$; normalization is optional.  Equality is the cross-multiplied equation
+$u_1v_2=u_2v_1$, so no gcd computation is logically required.  A rational
+complex number is a pair of rational codes.  We use the $\ell^1$ magnitude
+\[
+ \norm{x+\ii y}_1=\abs{x}+\abs{y},
+\]
+because all its upper-bound relations reduce to integer inequalities.  It is
+submultiplicative up to the exact estimate
+$\norm{zw}_1\le\norm z_1\norm w_1$.
+
+\begin{definition}[Dyadic ball equality]
+For rational complex codes $u,v$ and $k\in\N$,
+\[
+ \BallEq_k(u,v)\quad:\Longleftrightarrow\quad
+ \norm{u-v}_1\le 2^{-k}.
+\]
+After clearing positive denominators, this is quantifier-free arithmetic.
+\end{definition}
+
+A complex name is an externally fixed primitive-recursive function
+$u:\N\to\Q(\ii)$ satisfying
+\begin{equation}\label{eq:name-coherence}
+ \BallEq_k(u(k+2),u(k+1))
+ \quad\text{and}\quad
+ \BallEq_k(u(k+1),u(k)).
+\end{equation}
+After a harmless reindexing, the geometric series proves that all sufficiently
+accurate approximants represent one observational value.  No completed Cauchy
+real sort is added to the language.
+
+\subsection{Apartness, branches, and safe division}
+
+Division by $w$ is permitted only with an apartness witness
+$\norm w_1\ge2^{-r}$.  A branch certificate for $z$ consists of:
+\begin{enumerate}
+\item an apartness witness $\norm z_1\ge2^{-r}$;
+\item a rational angular interval $I$ of width below $2\pi$ containing the
+      argument of every allowed approximation to $z$;
+\item a rational clearance from the chosen branch cut;
+\item primitive-recursive approximants to $\Log z$ with a modulus derived from
+      those clearances.
+\end{enumerate}
+Then $z^a$ means $\exp(a\Log z)$ on that named branch.  All identities involving
+powers use the same branch on both sides.  This removes a frequent hidden
+classical error: $z^{a+b}=z^az^b$ is not a branch-free identity.
+
+For the positive real special cases, a branch certificate is just a positive
+rational lower bound, and the construction simplifies substantially.
+
+\subsection{Finite analytic contracts}
+
+\begin{contract}[Gamma]\label{con:gamma}
+For a fixed compact rational box $K$ with rational distance $\eta>0$ from the
+nonpositive integers, \code{GammaApprox} returns, from $(w,k)$, a rational
+complex ball of radius $2^{-k}$ containing $\Gamma(w)$ uniformly for $w\in K$.
+It also returns derivative jets of any externally fixed order and vertical-line
+bounds
+\begin{align}
+ \abs{\Gamma(\sigma+\ii t)}
+ &\le C(1+\abs t)^{\sigma-1/2}\e^{-\pi\abs t/2},\label{eq:gamma-upper}\\
+ \abs{1/\Gamma(\sigma+\ii t)}
+ &\le C'(1+\abs t)^{1/2-\sigma}\e^{\pi\abs t/2},\label{eq:recip-gamma-upper}
+\end{align}
+for $\abs t\ge T_0$, with rational $C,C',T_0$ computed from $K$ and $\eta$.
+\end{contract}
+The existing \code{gamma\_ipra} packet develops the finite Euler products and
+Stirling bounds needed for this contract.  That packet itself explicitly does
+not claim a completed analytic object derivation; our formalization plan treats
+\cref{con:gamma} as a module interface to be discharged.
+
+\begin{contract}[Power series]
+A series $\sum c_r$ is certified by a primitive-recursive index $N(k)$ and an
+upper bound $E(N)$ such that finite arithmetic proves
+$\sum_{r\ge N}\norm{c_r}_1\le E(N)\le2^{-k}$.  Differentiated series carry the
+same data for each externally fixed derivative order.
+\end{contract}
+
+\begin{contract}[Contour integral]
+A contour is a rational polygonal path, or a vertical segment with rational
+real part, together with: a lower distance from every pole and branch cut; a
+bound on the integrand and a fixed number of derivatives on each segment; a
+finite quadrature rule; and endpoint/tail errors.  The value at precision $k$
+is a finite rational sum with total error at most $2^{-k}$.
+\end{contract}
+
+\begin{contract}[Improper real integral and Fubini]
+An integral on $(0,\infty)$ is split at rational $0<\epsilon<1<R$.  The middle
+piece has a finite quadrature certificate; the two endpoint pieces have
+explicit majorants.  A change of integration order additionally supplies a
+majorant for the discarded rectangles and an error budget proving that both
+orders approximate the same finite double sum.
+\end{contract}
+
+All four contracts are arithmetical data.  For fixed analytic names, their
+verification consists of bounded loops and quantifier-free induction.
+
+\subsection{Formula shape in the object language}
+
+A typical analytic theorem is not written inside iPRA as an equality of
+abstract complex numbers.  Its precision-$k$ instance has the form
+\begin{equation}\label{eq:object-shape}
+ \forall x\le B(k)\;
+   \bigl(\Adm(d,x,k)\to
+   \BallEq_k(\Eval_{\rm left}(d,x,k+c),
+             \Eval_{\rm right}(d,x,k+c))\bigr),
+\end{equation}
+where $c$ is a fixed guard-bit budget.  Every symbol in
+\eqref{eq:object-shape} is primitive recursive.  Unbounded parameters are
+handled by a schema in the external choices $d$ and $B$, not by a universal
+program interpreter.
+
+The finite triangle inequality gives transitivity of ball equality.  Thus a
+proof graph may pass from a contour evaluator to a residue evaluator, then to a
+hypergeometric evaluator, and finally to an elementary evaluator.  The total
+precision budget is allocated backwards through that graph.  This is the
+mechanism by which the many special cases become ordinary iPRA derivations.

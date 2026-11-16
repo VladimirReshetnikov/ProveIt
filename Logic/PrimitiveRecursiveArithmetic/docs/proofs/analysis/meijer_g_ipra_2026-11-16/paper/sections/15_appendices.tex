@@ -1,0 +1,246 @@
+\appendix
+\section{Explicit estimates and certificate templates}\label{sec:appendices}
+
+This appendix records details that are routine in classical notation but
+important for an iPRA implementation: every ``eventually'', ``uniformly'', and
+``interchange the order'' is replaced by a bounded arithmetic inequality.
+
+\subsection{A uniform hypergeometric ratio bound}
+
+Let
+\[
+ T_k=\frac{\prod_{i=1}^{r}(\alpha_i)_k}
+           {\prod_{j=1}^{s}(\beta_j)_k}\frac{z^k}{k!}.
+\]
+Suppose rational bounds $\abs{\alpha_i}\le B$ and
+$\abs{\beta_j}\le B$ are certified and every $\beta_j+k$ is apart from zero.
+For $k\ge2B+1$,
+\[
+ \abs{k+\alpha_i}\le\frac32k,
+ \qquad
+ \abs{k+\beta_j}\ge\frac12k,
+ \qquad k+1\ge k.
+\]
+Consequently
+\begin{equation}\label{eq:appendix-ratio}
+ \abs{\frac{T_{k+1}}{T_k}}
+ \le \abs z\,\frac{3^r2^{s-r}}{k^{s+1-r}}.
+\end{equation}
+For $r\le s$, bounded search finds $N$ making the right side at most $1/2$;
+then
+\begin{equation}\label{eq:appendix-tail-half}
+ \abs{\sum_{k=N}^{\infty}T_k}\le2\abs{T_N}.
+\end{equation}
+For $r=s+1$ and $\abs z\le1-\epsilon$, use the sharper expansion
+\[
+ \frac{\prod_i(k+\alpha_i)}{(k+1)\prod_j(k+\beta_j)}
+ =1+O(1/k)
+\]
+with a rational constant $C$.  Choosing
+$N\ge2C/\epsilon$ gives ratio at most $1-\epsilon/2$ and tail
+$2\abs{T_N}/\epsilon$.  The $O(1/k)$ assertion is implemented by expanding the
+two monic integer-cleared polynomials and bounding their lower coefficients.
+No asymptotic notation appears in the checker.
+
+For $r>s+1$, the nonterminating power series generally has zero radius.  The
+report never calls this series convergent; the corresponding $G$-function is a
+contour/residue summation name.  If an upper parameter is a nonpositive integer,
+the series terminates and is a finite polynomial, covered by
+\cref{thm:polynomial-repair}.
+
+\subsection{Derivation of the right Slater coefficient}
+
+Put $s=b_h+k+u$.  Since
+\[
+ \Gamma(-k-u)=\frac{(-1)^{k+1}}{k!u}+O(1),
+\]
+the ordinary residue of the integrand has a leading minus sign.  The right
+loop is negatively oriented, so the contour integral contributes the positive
+coefficient $(-1)^k/k!$.  The remaining factors are rewritten using
+\begin{align*}
+ \Gamma(c+k)&=\Gamma(c)(c)_k,\\
+ \Gamma(c-k)&=(-1)^k\frac{\Gamma(c)}{(1-c)_k},\\
+ \frac1{\Gamma(c-k)}&=(-1)^k\frac{(1-c)_k}{\Gamma(c)}.
+\end{align*}
+After collecting signs, the argument is
+$(-1)^{p-m-n}z$ and the constant term is
+\begin{equation}\label{eq:appendix-Ch}
+ C_h=
+ \frac{\displaystyle
+   \prod_{\substack{1\le j\le m\\j\ne h}}\Gamma(b_j-b_h)
+   \prod_{j=1}^{n}\Gamma(1+b_h-a_j)}
+ {\displaystyle
+   \prod_{j=m+1}^{q}\Gamma(1+b_h-b_j)
+   \prod_{j=n+1}^{p}\Gamma(a_j-b_h)}.
+\end{equation}
+The $k$th coefficient is therefore
+\[
+ C_hz^{b_h}
+ \frac{\prod_{j=1}^{p}(1+b_h-a_j)_k}
+      {\prod_{\substack{1\le j\le q\\j\ne h}}
+       (1+b_h-b_j)_k}
+ \frac{[(-1)^{p-m-n}z]^k}{k!},
+\]
+which is exactly the $h$th hypergeometric term in
+\cref{thm:slater-right}.  Every equation above has a denominator-cleared
+factorial proof for rational parameters away from poles; for general certified
+complex parameters it is a finite Gamma recurrence ball equality.
+
+The left formula follows by setting $s=a_h-1-k+u$.  Here the left loop has
+positive orientation, and the same three Gamma identities produce the dual
+${}_qF_{p-1}$ expression.
+
+\subsection{Confluent residues without parameter limits}
+
+Suppose $r$ Gamma factors have a pole at $s_0$.  Write
+\[
+ F(s_0+u)=\sum_{j=-r}^{r-1}c_ju^j+u^rR(u),
+ \qquad \abs{R(u)}\le M
+ \quad(\abs u\le\rho).
+\]
+Multiplying by
+\[
+ z^{s_0+u}=z^{s_0}\sum_{j=0}^{r-1}
+ \frac{(u\Log z)^j}{j!}+u^rR_z(u)
+\]
+shows that the residue is
+\begin{equation}\label{eq:appendix-confluent-res}
+ z^{s_0}\sum_{j=0}^{r-1}c_{-1-j}\frac{(\Log z)^j}{j!}.
+\end{equation}
+Thus the degree in $\Log z$ is at most $r-1$.  To certify the remainder, use
+truncated convolution.  If
+$A=A_{<r}+u^rR_A$ and $B=B_{<r}+u^rR_B$ on $\abs u\le\rho$, then
+\[
+ \abs{R_{AB}}
+ \le \abs{A_{<r}}_\rho M_B+
+      \abs{B_{<r}}_\rho M_A+\rho^rM_AM_B,
+\]
+where $\abs{\sum a_ju^j}_\rho=\sum\abs{a_j}\rho^j$ after shifting away
+negative powers.  This formula is a primitive-recursive update of rational
+bounds.  It is the formal replacement for phrases such as ``take the limit as
+$b_2\to b_1$''.
+
+\subsection{The differential equation as a polynomial identity}
+
+Let $\thetaop=z\frac{\dd}{\dd z}$.  Acting on $z^s$ replaces $\thetaop$ by
+$s$.  Therefore the differential operator in \cref{thm:ode} multiplies
+the kernel by
+\[
+ P(s)=(-1)^{p-m-n}z\prod_{j=1}^{p}(s-a_j+1)
+      -\prod_{j=1}^{q}(s-b_j).
+\]
+Gamma recurrence gives the exact shift identity
+\begin{equation}\label{eq:appendix-kernel-shift}
+ \Phi(s-1)=(-1)^{p-m-n}
+ \frac{\prod_{j=1}^{p}(s-a_j)}
+      {\prod_{j=1}^{q}(s-b_j-1)}\Phi(s),
+\end{equation}
+with the convention of \eqref{eq:main-definition}.  After replacing $s$ by
+$s+1$ and multiplying by $z^{s+1}$, the first term in $P(s)$ is the shifted
+second term.  On a finite contour the substitution is exact; the two short
+connector segments cancel or tend below the allocated error by the same
+vertical estimate.  In a residue series, \eqref{eq:appendix-kernel-shift} is
+precisely the coefficient recurrence.  Hence the ODE is proved without a
+classical theorem about differentiating arbitrary improper integrals.
+
+\subsection{Why the nonresonance correction is necessary}
+
+For $p\le q$, the $h$th proposed local solution begins with
+$C_hz^{b_h}(1+O(z))$.  The first $q$ Euler derivatives at a positive rational
+base point have leading matrix
+\[
+ V=(b_h^{\ell})_{0\le\ell<q,\ 1\le h\le q}.
+\]
+Its determinant is the Vandermonde product
+$\prod_{i<j}(b_j-b_i)$.  A quantitative lower bound for this product proves
+linear independence and supplies a conditioning constant.  If two exponents
+coincide, or differ by an integer in a regular-singular equation, this argument
+fails and logarithmic solutions may occur.  The Laurent-jet construction
+produces those solutions.  Therefore the unqualified word ``fundamental'' on
+the source page cannot be accepted literally in resonant cases.
+
+\subsection{A finite Fubini budget}
+
+Consider a formally desired exchange
+\[
+ \int_0^\infty\int_{-\infty}^{\infty}F(x,t)\dd t\dd x
+ =\int_{-\infty}^{\infty}\int_0^\infty F(x,t)\dd x\dd t.
+\]
+At precision $2^{-p}$ choose rational $0<\epsilon<R$ and $T>0$ so that
+\begin{align*}
+ \int_0^\epsilon\int_{\R}\abs F&\le2^{-p-4},&
+ \int_R^\infty\int_{\R}\abs F&\le2^{-p-4},\\
+ \int_\epsilon^R\int_{\abs t>T}\abs F&\le2^{-p-4},&
+ E_{\rm quad}&\le2^{-p-4}.
+\end{align*}
+On the finite rectangle $[\epsilon,R]\times[-T,T]$, both iterated integrals
+are represented by the same finite double quadrature sum, so reordering is
+literal associativity/commutativity.  The four discarded errors total at most
+$2^{-p-2}$; the remaining budget covers the inner Gamma/Beta evaluation and
+rounding.  This is the pattern used in every integral theorem of
+\cref{sec:transforms}.
+
+\subsection{Branch transport by overlapping boxes}
+
+A branch certificate is not merely a symbolic choice of $\Arg$.  It contains a
+rational box $D$, a rational center $z_0$, a value $L_0$ approximating
+$\Log z_0$, and a margin $d>0$ separating $D$ from zero and the cut.  If
+$z_1$ lies in the same box and
+$\abs{(z_1-z_0)/(z_1+z_0)}\le r<1$, then
+\begin{equation}\label{eq:appendix-log-step}
+ \Log z_1-\Log z_0
+ =2\sum_{k=0}^{N-1}\frac{w^{2k+1}}{2k+1}+R_N,
+ \quad w=\frac{z_1-z_0}{z_1+z_0},
+\end{equation}
+with
+\[
+ \abs{R_N}\le\frac{2r^{2N+1}}{(2N+1)(1-r^2)}.
+\]
+A finite chain of overlapping boxes transports the branch.  Powers are then
+$z^a=\exp(a\Log z)$ with a propagated ball.  This construction proves every
+branch continuation used in the report and makes monodromy visible: a loop
+whose certified logarithm increment is $2\pi\ii$ changes $z^a$ by
+$\e^{2\pi\ii a}$ rather than pretending the function is globally
+single-valued.
+
+\subsection{Representative iPRA sentence schemas}
+
+For a fixed compiled cosine specification, the mathematical statement becomes
+\[
+ \forall x\,\forall p\,
+ \bigl(\Safe_{\cos}(x,p)\to
+ \BallEq(\sqrt\pi\,G(x^2/4),\cos(x),p)\bigr).
+\]
+The displayed quantifiers are ordinary first-order quantifiers over natural
+codes.  The functions \code{SafeCos}, \code{meijerCos}, \code{cosEval}, and
+\code{ballEq} are fixed primitive-recursive symbols.  The actual Lean target is
+a closed formula built from their graph equations and a proof
+\code{[] |- [PRAAx] phi}.
+
+For Mellin transformation, a fixed certificate producer $C$ gives
+\[
+ \forall u\,\forall p\,
+ \bigl(\operatorname{MellinCert}(C,u,p)\to
+ \BallEq(\operatorname{MellinEval}(u,p),
+         \operatorname{GammaRatio}(u,p),p)\bigr).
+\]
+This is not second-order quantification over functions or certificates.  The
+programs are compiled into the language before the theorem is stated.
+
+\subsection{Reproducibility and limitations}
+
+The archive contains:
+\begin{enumerate}
+\item the full LaTeX source and compiled PDF;
+\item a CSV ledger and its generated typeset table;
+\item a Lean-oriented host scaffold and explicit object-language targets;
+\item exact coefficient checks using rational arithmetic;
+\item high-precision numerical regression checks using \code{mpmath};
+\item source provenance, build logs, rendered PDF page images, and checksums.
+\end{enumerate}
+
+The executable checks do not prove the universal analytic theorems.  Conversely,
+the human proofs do not imply that a Lean file has been compiled.  The missing
+formal work is precisely the construction of the object-language derivations
+described in \cref{sec:formalization}.  This boundary is part of the result,
+not a hidden caveat.

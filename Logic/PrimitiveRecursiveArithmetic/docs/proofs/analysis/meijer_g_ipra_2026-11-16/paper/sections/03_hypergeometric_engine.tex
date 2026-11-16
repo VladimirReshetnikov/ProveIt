@@ -1,0 +1,127 @@
+\section{The finite hypergeometric engine}\label{sec:hypergeom}
+
+The residue formulas reduce most of the theory to generalized hypergeometric
+series.  We therefore prove their finite theory before mentioning contours.
+
+\subsection{Coefficients and primitive recursion}
+
+For complex parameters $\mathbf A=(A_1,\ldots,A_r)$ and
+$\mathbf B=(B_1,\ldots,B_s)$ define
+\begin{equation}\label{eq:hypergeom}
+ {}_rF_s\!\left(\left.\begin{matrix}\mathbf A\\\mathbf B\end{matrix}\right|w\right)
+ =\sum_{k=0}^{\infty}t_k,
+ \qquad
+ t_0=1,
+ \qquad
+ t_{k+1}=t_k\,w\,
+ \frac{\prod_{i=1}^{r}(A_i+k)}{(k+1)\prod_{j=1}^{s}(B_j+k)}.
+\end{equation}
+For rational complex inputs, the partial sum and the pair
+$(t_k,\sum_{j<k}t_j)$ are obtained by simultaneous primitive recursion.
+Denominators are protected by a certificate that no $B_j$ is a nonpositive
+integer, or by termination before the first zero when the series is a
+polynomial.
+
+\begin{lemma}[Rising-factorial form]\label{lem:rising}
+For every $k$ before a denominator zero,
+\[
+ t_k=\frac{\prod_{i=1}^{r}\poch{A_i}{k}}
+           {\prod_{j=1}^{s}\poch{B_j}{k}}\frac{w^k}{k!}.
+\]
+\end{lemma}
+\begin{proof}
+The assertion at $k=0$ is a finite ring identity.  Multiplication by the ratio
+in \eqref{eq:hypergeom} gives the successor case, using
+$\poch A{k+1}=\poch Ak(A+k)$ and $(k+1)!=k!(k+1)$.  This is precisely a
+quantifier-free induction invariant after clearing denominators.
+\end{proof}
+
+\subsection{A uniform ratio-tail certificate}
+
+Convergence is estimated with the ordinary complex modulus.  A rational
+certificate $\abs w\le W$ is checked without a square root by
+$(\Re w)^2+(\Im w)^2\le W^2$; center uncertainty is absorbed into $W$ by the
+triangle inequality.  The $\ell^1$ norm remains the representation used for
+output balls, and $\norm z_1\le2\abs z$ costs only one guard bit.
+
+Let $M_i\ge\abs{A_i}$, and let $L_j(k)>0$ be rational lower bounds for
+$\abs{B_j+k}$.  When $t_k\ne0$, the coefficient recurrence yields
+\begin{equation}\label{eq:ratio-majorant}
+ \frac{\abs{t_{k+1}}}{\abs{t_k}}
+ \le W\,
+ \frac{\prod_i(k+M_i)}{(k+1)\prod_jL_j(k)}.
+\end{equation}
+If $t_k=0$, every later term is zero under denominator apartness, so the same
+tail conclusion is immediate.  If a rational $0<\rho<1$ and an index $N$ make
+the right side at most $\rho$ for every $k\ge N$, then
+\begin{equation}\label{eq:geometric-tail}
+ \abs{\sum_{k=N}^{\infty}t_k}
+ \le\frac{\abs{t_N}}{1-\rho}.
+\end{equation}
+The proof is finite induction followed by the finite geometric-sum identity;
+for a requested precision one truncates the geometric sum after a further
+explicit number of terms and bounds its last term.  Converting the final bound
+to the $\ell^1$ ball uses the factor $2$ above.  No completed infinite sum is
+needed internally.
+
+\begin{theorem}[Primitive-recursive convergence]\label{thm:hyp-conv}
+For fixed parameter names with denominator-apartness certificates:
+\begin{enumerate}[label=(\alph*)]
+\item if $r\le s$, then for every bounded $w$ a primitive-recursive search
+      produces $N$ and $\rho=1/2$ satisfying \eqref{eq:ratio-majorant};
+\item if $r=s+1$ and a squared-modulus certificate proves $\abs w\le R<1$,
+      choose $R<\rho<1$; a primitive-recursive search produces $N$ satisfying
+      the ratio bound;
+\item if one upper parameter is $-h$ with $h\in\N$, then $t_k=0$ for $k>h$,
+      so the series is a finite polynomial without any convergence principle.
+\end{enumerate}
+The resulting truncation modulus is primitive recursive in the requested
+precision and all rational certificate data.
+\end{theorem}
+\begin{proof}
+After multiplying by all positive denominator bounds, the desired ratio
+inequality is a polynomial inequality in $k$.  In case (a) the denominator has
+strictly larger degree; in case (b) the leading-coefficient ratio is bounded by
+$R<\rho$.  A coarse explicit threshold is obtained by replacing every
+$k+M_i$ by $(1+M)k$ and each eventually positive $L_j(k)$ by $k/2$.
+The finitely many preceding indices are checked directly.  A bounded search up
+to the resulting threshold is primitive recursive.  Equation
+\eqref{eq:geometric-tail} supplies the modulus.  Case (c) follows from the
+factor $-h+h=0$.
+\end{proof}
+
+\subsection{Termwise algebra and derivatives}
+
+Uniform ratio bounds on a rational compact set persist after multiplying the
+$k$th term by any fixed polynomial in $k$.  Therefore one may differentiate an
+externally fixed number of times, multiply series, or shift parameters while
+retaining a primitive-recursive tail bound.
+
+\begin{lemma}[Coefficientwise identity principle]\label{lem:coeff-id}
+Suppose two certified power or power-log series on the same branch have equal
+coefficients by a quantifier-free arithmetic proof and have uniform tail
+moduli.  Then their evaluations are ball-equal to every requested precision.
+\end{lemma}
+\begin{proof}
+Given $k$, choose a common truncation index whose two tails are below
+$2^{-k-2}$.  The finite partial sums are exactly equal after clearing
+ denominators.  Two applications of the triangle inequality give error below
+$2^{-k-1}$, which is stronger than required after guard-bit reindexing.
+\end{proof}
+This finite lemma replaces almost every appeal to the classical identity
+theorem in the local part of the report.
+
+\subsection{Terminating and singular parameter cases}
+
+A lower parameter in $\{0,-1,-2,\ldots\}$ makes the naive recurrence undefined.
+There are three constructive resolutions, each recorded in the datum:
+\begin{enumerate}
+\item an upper $-h$ terminates earlier, so all used denominators are nonzero;
+\item a common factor is cancelled symbolically before evaluation;
+\item a confluent limit is represented by finite parameter jets and a
+      quantitative divided-difference bound.
+\end{enumerate}
+The polynomial formula on the source page is needed because the naive Gamma
+prefactor in the one-$G$ representation may vanish exactly when the
+hypergeometric series terminates.  We prove the repaired two-$G$ formula in
+\cref{sec:hypergeom-conversion} by finite coefficient extraction.

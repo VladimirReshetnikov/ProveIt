@@ -1,0 +1,235 @@
+\section{Convergence, contour comparison, and residues}\label{sec:convergence}
+
+\subsection{The vertical-line estimate}
+
+Let $s=\sigma+\ii t$ and let $\phi=\Arg z$ on the certified branch.  Applying
+the two Gamma bounds \eqref{eq:gamma-upper}--\eqref{eq:recip-gamma-upper} to
+each factor of \eqref{eq:phi-minus} gives a computable constant $C>0$ such
+that
+\begin{equation}\label{eq:master-vertical-bound}
+ \abs{\Phi(\sigma+\ii t)z^{\sigma+\ii t}}
+ \le C\abs z^\sigma(1+\abs t)^A
+      \exp\!\bigl(-[\pi\delta-\abs\phi]\abs t\bigr),
+\end{equation}
+where
+\begin{equation}\label{eq:A-exponent}
+ A=\Re\nu+(p-q)\left(\sigma+\frac12\right).
+\end{equation}
+Indeed, each numerator Gamma contributes $\e^{-\pi\abs t/2}$ and each
+reciprocal denominator Gamma contributes $\e^{\pi\abs t/2}$, leaving
+$\e^{-\pi\delta\abs t}$.  The powers of $1+\abs t$ from all $a$-parameters and
+$b$-parameters sum exactly to \eqref{eq:A-exponent}.  Finally,
+$\abs{z^s}=\abs z^\sigma\e^{-t\phi}$, whose symmetric upper bound is
+$\abs z^\sigma\e^{\abs\phi\abs t}$.
+
+\begin{theorem}[Constructive vertical convergence]\label{thm:vertical-convergence}
+Suppose the line $\Re s=\sigma$ has certified pole clearance.
+\begin{enumerate}[label=(\alph*)]
+\item If $\epsilon:=\pi\delta-\abs{\Arg z}>0$ with a rational lower bound,
+      then the vertical integral converges with a primitive-recursive tail
+      modulus.
+\item On the boundary $\epsilon=0$, it converges whenever a rational
+      $\eta>0$ certifies $A\le-1-\eta$; equivalently,
+      $(q-p)(\sigma+1/2)\ge\Re\nu+1+\eta$.
+\end{enumerate}
+These are the quantitative versions of the first contour conditions on the
+source page.
+\end{theorem}
+\begin{proof}
+In case (a), put $M=\max(0,\lceil A\rceil)$.  For
+$T\ge(4M/\epsilon)^2+1$, the elementary estimate
+$\log(1+t)\le\sqrt t$ gives
+$(1+t)^M\le\e^{\epsilon t/2}$.  Therefore the two tails are at most
+\[
+ \frac{4C\abs z^\sigma}{\epsilon}\e^{-\epsilon T/2}.
+\]
+A bounded search using the finite Taylor enclosure for $\exp$ finds a $T(k)$
+for which this is below $2^{-k}$.  In case (b),
+\[
+ \int_T^\infty C(1+t)^{-1-\eta}\dd t
+ \le \frac C\eta T^{-\eta}.
+\]
+Writing $\eta=r/s$ rational, choose $T$ by the integer inequality
+$T^r\ge(2^kC/\eta)^s$.  Integer powering and bounded root search are primitive
+recursive.  The finite central segment is covered by rational quadrature.
+\end{proof}
+
+\subsection{Right residues and Slater's formula}
+
+Assume no two $b_1,\ldots,b_m$ differ by an integer.  The right poles are
+$s=b_h+k$, $h=1,\ldots,m$, $k\ge0$.  The residue of
+$\Gamma(b_h-s)$ with respect to $s$ is
+$(-1)^{k+1}/k!$.  The right loop is negatively oriented, so its extra minus
+sign changes this to $(-1)^k/k!$.  Apply
+\begin{equation}\label{eq:gamma-shift-identities}
+ \Gamma(x+k)=\Gamma(x)\poch{x}{k},
+ \qquad
+ \Gamma(x-k)=\frac{(-1)^k\Gamma(x)}{\poch{1-x}{k}}
+\end{equation}
+to every remaining factor.
+
+\begin{theorem}[Right-residue expansion / Slater]\label{thm:slater-right}
+If $p<q$, or if $p=q$ and $\abs z<1$ with rational margin, and the right poles
+are nonconfluent, then
+\begin{align}
+&G_{p,q}^{m,n}\!\left(\left.\begin{matrix}\mathbf a\\\mathbf b\end{matrix}\right|z\right)
+ =\sum_{h=1}^{m}C_h z^{b_h}
+ {}_pF_{q-1}\!\left(
+ \left.\begin{matrix}1+b_h-\mathbf a\\
+ (1+b_h-\mathbf b)^{\!*}
+ \end{matrix}\right|(-1)^{p-m-n}z\right),\label{eq:slater-right}\\
+&C_h=
+ \frac{\prod_{j=1,\,j\ne h}^{m}\Gamma(b_j-b_h)
+       \prod_{j=1}^{n}\Gamma(1+b_h-a_j)}
+      {\prod_{j=m+1}^{q}\Gamma(1+b_h-b_j)
+       \prod_{j=n+1}^{p}\Gamma(a_j-b_h)}.
+\end{align}
+The star means that the lower parameter with index $h$ is omitted.  The equality
+has a primitive-recursive modulus on every certified compact branch domain.
+\end{theorem}
+\begin{proof}
+The residue calculation above gives the $k$th term.  Substituting
+\eqref{eq:gamma-shift-identities} and collecting the signs yields precisely the
+coefficient recurrence \eqref{eq:hypergeom}.  When $p<q$, the series on the
+right has at least as many lower parameters as upper parameters and converges
+for all bounded $z$ by \cref{thm:hyp-conv}; when $p=q$, it has radius one and
+the certified margin supplies a geometric tail.  A finite right-closing
+rectangle contains finitely many poles.  The residue theorem for that polygon
+is a finite triangulation identity plus local Laurent-jet calculations.  Gamma
+ratio bounds make the outer side smaller than the same hypergeometric tail.
+Given $k$, choose the rectangle and series cutoffs so that both errors are below
+$2^{-k-2}$; the finite residue sums agree exactly.  Ball transitivity proves
+\eqref{eq:slater-right}.
+\end{proof}
+
+\begin{corollary}[Empty right family]\label{cor:mzero}
+For the right-loop definition,
+$G_{p,q}^{0,n}=0$ when $p<q$, or when $p=q$ and $\abs z<1$.
+\end{corollary}
+\begin{proof}
+Every finite right contour contains no poles, so its integral is zero by the
+finite Cauchy theorem.  The closing-side error tends below every requested
+dyadic tolerance.  Equivalently, the sum in \eqref{eq:slater-right} is empty.
+\end{proof}
+
+\subsection{Left residues}
+
+The poles enclosed by the left loop are $s=a_h-1-k$ for $h\le n$.  The same
+calculation, or inversion from \cref{thm:inversion}, gives the reciprocal
+formula.
+
+\begin{theorem}[Left-residue expansion]\label{thm:slater-left}
+If $p>q$, or if $p=q$ and $\abs z>1$ with rational margin, and the left poles
+are nonconfluent, then
+\begin{align}
+&G_{p,q}^{m,n}\!\left(\left.\begin{matrix}\mathbf a\\\mathbf b\end{matrix}\right|z\right)
+ =\sum_{h=1}^{n}D_h z^{a_h-1}
+ {}_qF_{p-1}\!\left(
+ \left.\begin{matrix}1-a_h+\mathbf b\\
+ (1-a_h+\mathbf a)^{\!*}
+ \end{matrix}\right|(-1)^{q-m-n}z^{-1}\right),\label{eq:slater-left}\\
+&D_h=
+ \frac{\prod_{j=1,\,j\ne h}^{n}\Gamma(a_h-a_j)
+       \prod_{j=1}^{m}\Gamma(1-a_h+b_j)}
+      {\prod_{j=n+1}^{p}\Gamma(1-a_h+a_j)
+       \prod_{j=m+1}^{q}\Gamma(a_h-b_j)}.
+\end{align}
+\end{theorem}
+The proof is the reflected version of \cref{thm:slater-right}.  The argument of
+the hypergeometric series has norm below one when $p=q$ because it is
+proportional to $z^{-1}$.
+
+\begin{corollary}[Empty left family]\label{cor:nzero}
+For the left-loop definition, $G_{p,q}^{m,0}=0$ when $p>q$, or when $p=q$ and
+$\abs z>1$.
+\end{corollary}
+
+\begin{theorem}[Balanced unit-circle boundary]\label{thm:balanced-unit-circle}
+Suppose $p=q$, $\abs z=1$, and a rational margin $\eta>0$ certifies
+$\Re\nu\le-1-\eta$.  Then both the right-loop and left-loop residue
+presentations converge whenever their pole-separation data are admissible.
+For every fixed confluent multiplicity they have a primitive-recursive
+$p$-series tail modulus as well.
+\end{theorem}
+\begin{proof}
+Consider one right Slater summand.  Its $k$th coefficient, apart from its fixed
+prefactor and the unit-modulus phase, is a quotient of Pochhammer symbols.
+Writing each Pochhammer symbol as a Gamma quotient and using the fixed-strip
+Stirling bounds gives computable $C,N$ such that
+\begin{equation}\label{eq:unit-circle-coeff}
+ \abs{t_{h,k}}\le C(k+1)^{\Re\nu+\eta/2}
+ \le C(k+1)^{-1-\eta/2}\qquad(k\ge N).
+\end{equation}
+The exponent follows by direct cancellation:
+\[
+ \sum_{i=1}^{p}\Re(1+b_h-a_i)
+ -\sum_{j\ne h}\Re(1+b_h-b_j)-1=\Re\nu.
+\]
+The Stirling statement can alternatively be checked directly from the squared
+term-ratio polynomial: its leading coefficient is $1$ and its next coefficient
+is $2\Re\nu$, so bounded search finds the same $N$ with the prescribed margin.
+For $a=\eta/2$,
+\[
+ \sum_{k\ge N}(k+1)^{-1-a}\le a^{-1}N^{-a};
+\]
+when $a=r/s$ is rational, the required cutoff is obtained from an integer
+inequality after raising to the power $s$.  This is a primitive-recursive
+$p$-series certificate.
+
+A pole group of fixed multiplicity contributes an additional fixed polynomial
+in $\Log z$, harmonic sums, and $\log(k+1)$.  Since bounded search proves
+$(1+\log(k+1))^d\le(k+1)^{\eta/4}$ eventually for every fixed $d$, the same
+argument leaves exponent at most $-1-\eta/4$.  The left expansion is identical
+after inversion, because $\abs{z^{-1}}=1$ and the same $\nu$ occurs.  The
+closing-side estimates are bounded by these residue tails, completing the two
+loop integrals.
+\end{proof}
+
+\subsection{Confluent poles}
+
+If $b_j-b_h\in\Z$, several right-pole sequences overlap.  The simple constants
+$C_h$ then contain divergent Gamma factors, but the original contour integral
+need not diverge.  Group the overlapping poles and apply the jet algorithm
+\cref{def:jet}.  A multiplicity-$r$ group contributes
+\begin{equation}\label{eq:power-log-normal}
+ z^{\beta+k}\sum_{j=0}^{r-1}c_{k,j}(\Log z)^j.
+\end{equation}
+The coefficients $c_{k,j}$ are finite expressions in Gamma jets, factorials,
+and harmonic sums.  Their ratios are bounded by a fixed polynomial in $k$
+times the nonconfluent majorant, so the same convergence domains hold.  The
+left case is identical.  Thus the ``no confluent poles'' hypothesis belongs to
+the short closed form \eqref{eq:slater-right}, not to the existence of the
+$G$-function.
+
+\subsection{Agreement of contour types and analyticity}
+
+\begin{theorem}[Contour agreement]\label{thm:contour-agreement}
+Whenever two of the vertical, right-loop, and left-loop presentations satisfy
+their quantitative hypotheses on the same branch domain, they are ball-equal
+to every precision.
+\end{theorem}
+\begin{proof}
+Truncate both contours and join them by a rational rectangle avoiding every
+pole.  Finite triangulation cancels interior edges.  The remaining difference
+is the sum of residues in the strip plus the outer sides.  If no poles lie
+between the contours, the residue sum is empty.  Otherwise both presentations
+are compared with the same finite residue normal form.  The vertical estimate
+\eqref{eq:master-vertical-bound} and the right/left series tails make all outer
+pieces arbitrarily small with primitive-recursive cutoffs.
+\end{proof}
+
+\begin{theorem}[Quantitative analyticity]\label{thm:analyticity}
+On a compact rational domain that avoids $z=0$, the chosen branch cut, and in
+the balanced case the singular point selected by the differential equation,
+the certified $G$-name has Taylor coefficients and a primitive-recursive
+uniform remainder modulus.  Every externally fixed derivative order is
+therefore represented by a primitive-recursive name.
+\end{theorem}
+\begin{proof}
+In a residue domain, differentiate the uniformly convergent power-log series;
+polynomial factors in the summation index preserve the ratio tail.  In a
+vertical domain, differentiate $z^s$ an externally fixed number of times and
+use \eqref{eq:master-vertical-bound} with a larger polynomial exponent.  A
+finite Cauchy estimate on a rational circle converts derivative bounds into a
+Taylor remainder.  All precision choices are bounded searches.
+\end{proof}

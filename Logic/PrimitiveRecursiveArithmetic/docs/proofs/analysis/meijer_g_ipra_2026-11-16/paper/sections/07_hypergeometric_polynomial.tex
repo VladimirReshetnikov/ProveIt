@@ -1,0 +1,127 @@
+\section{Hypergeometric conversion and polynomial cases}\label{sec:hypergeom-conversion}
+
+\subsection{Every convergent generalized hypergeometric series is a \texorpdfstring{$G$}{G}}
+
+Put one bottom parameter $0$ in the right block and transform the others by
+$a_i\mapsto1-a_i$, $b_j\mapsto1-b_j$.  In
+\cref{thm:slater-right}, there is only the pole family $b_1=0$.  Its prefactor
+is
+\[
+ \frac{\prod_i\Gamma(a_i)}{\prod_j\Gamma(b_j)},
+\]
+and its hypergeometric argument is $z$.  Therefore:
+
+\begin{theorem}[Hypergeometric-to-Meijer conversion]\label{thm:hyp-to-g}
+Assume no upper parameter is a nonpositive integer, no denominator parameter
+is a nonpositive integer, and the series is in its convergence domain.  Common
+upper/lower factors may first be cancelled.  Then
+\begin{align}
+{}_pF_q\!\left(\left.\begin{matrix}\mathbf a\\\mathbf b\end{matrix}\right|z\right)
+&=\frac{\prod_{j=1}^{q}\Gamma(b_j)}
+        {\prod_{i=1}^{p}\Gamma(a_i)}
+G_{p,q+1}^{1,p}\!\left(
+ \left.\begin{matrix}1-\mathbf a\\0,1-\mathbf b\end{matrix}\right|-z\right),
+\label{eq:hyp-g-first}\\
+&=\frac{\prod_{j=1}^{q}\Gamma(b_j)}
+        {\prod_{i=1}^{p}\Gamma(a_i)}
+G_{q+1,p}^{p,1}\!\left(
+ \left.\begin{matrix}1,\mathbf b\\\mathbf a\end{matrix}\right|-z^{-1}\right).
+\label{eq:hyp-g-second}
+\end{align}
+The first equality holds for every finite $z$ when $p\le q$, and for
+$\abs z<1$ when $p=q+1$.  The second is the first followed by inversion and is
+read on the correspondingly transported branch.
+\end{theorem}
+\begin{proof}
+The calculation preceding the theorem turns \eqref{eq:slater-right} into
+$G=(\prod\Gamma(a_i)/\prod\Gamma(b_j)){}_pF_q$.  All coefficients are equal
+exactly by \cref{lem:rising}; the tails have the common modulus from
+\cref{thm:hyp-conv}.  Equation \eqref{eq:hyp-g-second} follows from
+\cref{thm:inversion}.  Gamma prefactors are evaluated only with pole-apartness
+witnesses.
+\end{proof}
+
+\subsection{Analytic continuation and the case \texorpdfstring{$p>q+1$}{p > q + 1}}
+
+When $p=q+1$, the series has radius one.  Formula
+\eqref{eq:hyp-g-first} supplies a continuation along every certified path that
+avoids the selected cut, because overlapping disks are compared by finite
+coefficient equality and explicit reexpansion bounds.  The familiar principal
+continuation has a cut from $1$ to $+\infty$ after the argument $-z$ and branch
+conventions are translated.
+
+For $p>q+1$, the generic hypergeometric power series diverges for every
+$z\ne0$.  A $G$-contour nevertheless defines sectorial solutions of the same
+formal differential equation.  This is a useful extension, but not a unique
+branch-free value: different admissible contours can encode different Stokes
+solutions.  The precise constructive statement is:
+
+\begin{proposition}[Sectorial extension]
+Fix a contour type, a branch sector, and all vertical or residue tail
+certificates.  Then \eqref{eq:hyp-g-first}, read as a definition rather than an
+equality to a convergent series, gives a primitive-recursive name solving the
+formal generalized hypergeometric equation and having the prescribed
+asymptotic/Frobenius data.  Two such names agree where their contours are
+certifiably deformable into one another.
+\end{proposition}
+This qualifies the page's phrase ``the natural extension'' without weakening
+the computational content.
+
+\subsection{Terminating series}
+
+If an upper parameter equals $-h$, the Gamma prefactor in
+\eqref{eq:hyp-g-first} contains $1/\Gamma(-h)=0$, while the contour parameters
+simultaneously become resonant.  The limiting product can be finite and
+nonzero; multiplying a formal infinity by zero is not a proof.  The source page
+repairs the problem with a sum of two $G$-functions.
+
+Let $0\le m\le q$, $0\le n\le p$, and write
+\[
+ R_{m,n}(\mathbf a,\mathbf b)=
+ \frac{\prod_{j=n+1}^{p}\Gamma(1-a_j)
+       \prod_{j=m+1}^{q}\Gamma(b_j)}
+      {\prod_{j=1}^{n}\Gamma(a_j)
+       \prod_{j=1}^{m}\Gamma(1-b_j)}.
+\]
+
+\begin{theorem}[Polynomial repair formula]\label{thm:polynomial-repair}
+For $h\in\N$, wherever the displayed prefactors are interpreted after the
+permitted cancellations,
+\begin{align}
+&{}_{p+1}F_q\!\left(\left.\begin{matrix}-h,\mathbf a\\\mathbf b\end{matrix}\right|z\right)
+=h!R_{m,n}(\mathbf a,\mathbf b)\,[\mathcal G_+(z)+(-1)^h\mathcal G_-(z)],
+\label{eq:poly-repair}\\
+&\mathcal G_+(z)=G_{p+1,q+1}^{m+1,n}\!\left(
+ \left.\begin{matrix}1-\mathbf a,h+1\\0,1-\mathbf b\end{matrix}\right|
+ (-1)^{p-m-n}z\right),\\
+&\mathcal G_-(z)=G_{p+1,q+1}^{m,n+1}\!\left(
+ \left.\begin{matrix}h+1,1-\mathbf a\\1-\mathbf b,0\end{matrix}\right|
+ (-1)^{p-m-n}z\right).
+\end{align}
+This is a finite iPRA identity: the left side has degree $h$, and the right side
+has the same coefficients through degree $h$ and zero coefficients afterward.
+\end{theorem}
+\begin{proof}
+Expand $\mathcal G_+$ by the right residues and $\mathcal G_-$ by the left
+residues, using Laurent jets if a chosen $m,n$ creates a collision.  Apply
+\eqref{eq:gamma-shift-identities} and the reflection formula
+$\Gamma(u)\Gamma(1-u)=\pi/\sin\pi u$.  For the coefficient of $z^r$, all
+parameter-dependent constants reduce to
+\[
+ \frac{\poch{-h}{r}\prod_i\poch{a_i}{r}}
+      {r!\prod_j\poch{b_j}{r}}.
+\]
+For $0\le r\le h$ this is the polynomial coefficient.  For $r>h$ the factor
+$\poch{-h}{r}$ is zero; in the residue presentation this zero is the exact
+cancellation of the two complementary terms.  The calculation is a finite
+ring identity after multiplying by the relevant Gamma products.  Since every
+coefficient after $h$ is zero, no infinite tail remains on the combined right
+side.  Quantifier-free induction on $r\le h$ proves the identity in iPRA.
+\end{proof}
+
+\begin{remark}
+The freedom to choose $m$ and $n$ is useful, not cosmetic.  One chooses blocks
+so that no individual prefactor asks for an undefined Gamma value; if a
+collision is unavoidable, the jet evaluator computes the finite combined
+limit before division.
+\end{remark}

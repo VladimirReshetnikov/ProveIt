@@ -1,0 +1,243 @@
+\section{Incomplete gamma, Bessel, and Lerch functions}\label{sec:higher-cases}
+
+The web pages state these formulas with ``for all $x$''.  Constructively, each
+formula has three pieces of domain data: a branch for the powers of $x$, an
+apartness certificate for parameter denominators, and either a convergent
+series disc or a contour/tail certificate.  The formulas below include those
+qualifications explicitly.
+
+\subsection{Lower and upper incomplete gamma functions}
+
+For $\Re\alpha>0$ and a path from $0$ to $x$ contained in a certified branch
+sector, define
+\[
+ \gamma(\alpha,x)=\int_0^x t^{\alpha-1}\e^{-t}\dd t,
+ \qquad
+ \Gamma(\alpha,x)=\int_x^\infty t^{\alpha-1}\e^{-t}\dd t.
+\]
+The integrals mean finite rational quadrature with endpoint and tail bounds.
+For other admissible parameters they are continued by the recurrence
+$\gamma(\alpha+1,x)=\alpha\gamma(\alpha,x)-x^\alpha\e^{-x}$ and the analogous
+upper relation.
+
+\begin{theorem}[Incomplete gamma representations]\label{thm:incomplete-gamma-g}
+On every such certified domain,
+\begin{align}
+ \gamma(\alpha,x)
+ &=G_{1,2}^{1,1}\!\left(
+   \left.\begin{matrix}1\\\alpha,0\end{matrix}\right|x\right),
+ \label{eq:lower-gamma-g}\\
+ \Gamma(\alpha,x)
+ &=G_{1,2}^{2,0}\!\left(
+   \left.\begin{matrix}1\\\alpha,0\end{matrix}\right|x\right).
+ \label{eq:upper-gamma-g}
+\end{align}
+\end{theorem}
+\begin{proof}
+The one-pole Slater formula gives
+\begin{equation}\label{eq:lower-hyp}
+G_{1,2}^{1,1}\!\left(
+ \left.\begin{matrix}1\\\alpha,0\end{matrix}\right|x\right)
+ =\frac{x^\alpha}{\alpha}{}_1F_1(\alpha;\alpha+1;-x).
+\end{equation}
+Its $k$th term is $(-1)^kx^{\alpha+k}/[k!(\alpha+k)]$.  Integrating the
+exponential series term by term on a finite segment gives the same series for
+$\gamma(\alpha,x)$, with a factorial tail bound, proving
+\eqref{eq:lower-gamma-g}.
+
+For the upper function, assume first that $\alpha\notin\Z$.  The two right pole
+families give
+\[
+G_{1,2}^{2,0}\!\left(
+ \left.\begin{matrix}1\\\alpha,0\end{matrix}\right|x\right)
+ =\Gamma(\alpha)-\frac{x^\alpha}{\alpha}
+ {}_1F_1(\alpha;\alpha+1;-x).
+\]
+Indeed the $b=0$ residue is the constant $\Gamma(\alpha)$, while
+$\Gamma(-\alpha)/\Gamma(1-\alpha)=-1/\alpha$ for the $b=\alpha$ family.
+The right side is $\Gamma(\alpha)-\gamma(\alpha,x)=\Gamma(\alpha,x)$.
+When the pole families coalesce, the finite Laurent-jet algorithm computes the
+same cancellation directly; alternatively both sides satisfy
+$\partial_xF=-x^{\alpha-1}\e^{-x}$ and have the same certified tail value at
+infinity.  This proves the integer and resonant cases without an illicit
+nonconfluent formula.
+\end{proof}
+
+\subsection{Bessel \texorpdfstring{$J,Y,I,K$}{J, Y, I, K}}
+
+\begin{theorem}[Bessel representations]\label{thm:bessel-g}
+With $\sqrt{x^2}=x$ on the indicated branch,
+\begin{align}
+ J_\nu(x)
+ &=G_{0,2}^{1,0}\!\left(
+  \left.\begin{matrix}-\\\frac\nu2,-\frac\nu2\end{matrix}\right|
+  \frac{x^2}{4}\right),
+ \label{eq:J-g}\\
+ Y_\nu(x)
+ &=G_{1,3}^{2,0}\!\left(
+  \left.\begin{matrix}-\frac{\nu+1}{2}\\
+  \frac\nu2,-\frac\nu2,-\frac{\nu+1}{2}\end{matrix}\right|
+  \frac{x^2}{4}\right),
+ \label{eq:Y-g}\\
+ I_\nu(x)
+ &=\ii^{-\nu}G_{0,2}^{1,0}\!\left(
+  \left.\begin{matrix}-\\\frac\nu2,-\frac\nu2\end{matrix}\right|
+  -\frac{x^2}{4}\right),
+ \label{eq:I-g}\\
+ K_\nu(x)
+ &=\frac12G_{0,2}^{2,0}\!\left(
+  \left.\begin{matrix}-\\\frac\nu2,-\frac\nu2\end{matrix}\right|
+  \frac{x^2}{4}\right).
+ \label{eq:K-g}
+\end{align}
+For $J,Y,K$ one may take $-\pi/2<\Arg x\le\pi/2$; for the displayed $I$
+formula one may take $-\pi<\Arg x\le0$.  Other sectors follow by certified
+branch transport.
+\end{theorem}
+\begin{proof}
+For \eqref{eq:J-g}, Slater's formula is
+\[
+ \frac{(x/2)^\nu}{\Gamma(\nu+1)}
+ {}_0F_1\!\left(;\nu+1;-\frac{x^2}{4}\right),
+\]
+which is the defining Bessel series.  Replacing $x$ by $\ii x$ and tracking the
+power branch gives \eqref{eq:I-g}.
+
+Suppose first that $\nu\notin\Z$.  The two residues for
+$G_{0,2}^{2,0}(z\mid\nu/2,-\nu/2)$ give
+\[
+ \Gamma(-\nu)z^{\nu/2}{}_0F_1(;1+\nu;z)
+ +\Gamma(\nu)z^{-\nu/2}{}_0F_1(;1-\nu;z).
+\]
+At $z=x^2/4$, one half of this is the standard constructive definition of
+$K_\nu(x)$.  Equivalently it follows from
+$K_\nu=\pi(I_{-\nu}-I_\nu)/(2\sin\pi\nu)$ and the reflection formula.  At
+integer $\nu$ the two pole families coalesce; \cref{def:jet} returns the usual
+power--log series and proves the limit without choosing a sequence of
+nonintegers.
+
+For \eqref{eq:Y-g}, the two nonconfluent residues reduce to
+\[
+ \cot(\pi\nu)J_\nu(x)-\csc(\pi\nu)J_{-\nu}(x)
+ =Y_\nu(x).
+\]
+Here the first coefficient follows from
+$\Gamma(\nu+\tfrac32)\Gamma(-\nu-\tfrac12)=-\pi/\cos\pi\nu$ and
+$\Gamma(-\nu)\Gamma(1+\nu)=-\pi/\sin\pi\nu$; the second follows from
+$\Gamma(\nu)\Gamma(1-\nu)=\pi/\sin\pi\nu$.  Integer orders again use the
+Laurent-jet normal form.  These calculations are finite Gamma identities plus
+hypergeometric coefficient recurrences and hence fit the iPRA contracts.
+\end{proof}
+
+\subsection{The Lerch transcendent at integer order}
+
+For a fixed $n\in\N$, $\abs x<1$, and $a$ quantitatively apart from
+$0,-1,-2,\ldots$, put
+\[
+ \Phi(x,n,a)=\sum_{k=0}^\infty\frac{x^k}{(a+k)^n},
+ \qquad
+ \Phi(x,-n,a)=\sum_{k=0}^\infty(a+k)^n x^k.
+\]
+The geometric tail, multiplied by a fixed polynomial in $k$, gives an explicit
+primitive-recursive modulus.
+
+\begin{theorem}[Lerch representations]\label{thm:lerch-g}
+For $n\in\N$ and initially $\abs x<1$,
+\begin{align}
+ \Phi(x,n,a)
+ &=G_{n+1,n+1}^{1,n+1}\!\left(
+ \left.\begin{matrix}0,\underbrace{1-a,\ldots,1-a}_{n}\\
+ 0,\underbrace{-a,\ldots,-a}_{n}\end{matrix}\right|-x\right),
+ \label{eq:lerch-positive}\\
+ \Phi(x,-n,a)
+ &=G_{n+1,n+1}^{1,n+1}\!\left(
+ \left.\begin{matrix}0,\underbrace{-a,\ldots,-a}_{n}\\
+ 0,\underbrace{1-a,\ldots,1-a}_{n}\end{matrix}\right|-x\right).
+ \label{eq:lerch-negative}
+\end{align}
+Outside the unit disc these formulas specify a branch continuation under the
+usual $G$-function certificates.  The source's phrase ``for all $x$'' is not a
+single-valued, branch-free assertion.
+\end{theorem}
+\begin{proof}
+The single right residue in \eqref{eq:lerch-positive} yields
+\[
+ a^{-n}{}_{n+1}F_n\!\left(
+ \begin{matrix}1,a,\ldots,a\\a+1,\ldots,a+1\end{matrix};x\right).
+\]
+Since $(a)_k/(a+1)_k=a/(a+k)$ and $(1)_k=k!$, its $k$th coefficient is
+$x^k/(a+k)^n$.  For \eqref{eq:lerch-negative}, the prefactor is $a^n$ and the
+hypergeometric quotient is
+$[(a+1)_k/(a)_k]^n=[(a+k)/a]^n$, giving $(a+k)^nx^k$.  Repeated parameters do
+not create repeated right poles because $m=1$; the repeated top parameters are
+ordinary finite products.  Thus the proof is a direct coefficient identity
+with a geometric-polynomial tail.
+\end{proof}
+
+\subsection{Parameter derivatives of incomplete gamma functions}
+
+The final sentence of the Wikipedia list says that derivatives with respect to
+$\alpha$ can also be written with $G$-functions.  A useful constructive form is
+more explicit than that sentence.
+
+\begin{theorem}[All fixed parameter derivatives]\label{thm:gamma-parameter-derivatives}
+Let $r\in\N$ be externally fixed, $\Re\alpha\ge\epsilon>0$, and let $x$ lie in
+a certified logarithm branch.  Then
+\begin{align}
+ \frac{\partial^r}{\partial\alpha^r}\gamma(\alpha,x)
+ &=x^\alpha\sum_{\ell=0}^{r}
+ \binom{r}{\ell}(\Log x)^{r-\ell}(-1)^\ell\ell!\,
+ \alpha^{-\ell-1}
+ {}_{\ell+1}F_{\ell+1}\!\left(
+ \begin{matrix}\alpha,\ldots,\alpha\\
+ \alpha+1,\ldots,\alpha+1\end{matrix};-x\right).
+ \label{eq:gamma-param-derivative}
+\end{align}
+There are $\ell+1$ copies in each parameter row.  Every hypergeometric term in
+\eqref{eq:gamma-param-derivative} has a Meijer $G$ representation by
+\cref{thm:hyp-to-g}; $\Log x$ has \eqref{eq:log-g}.  The corresponding upper
+incomplete-gamma derivative is
+\[
+ \partial_\alpha^r\Gamma(\alpha,x)
+ =\Gamma^{(r)}(\alpha)-\partial_\alpha^r\gamma(\alpha,x),
+\]
+with $\Gamma^{(r)}$ supplied by the fixed-order Gamma contract.  Equivalently,
+a single confluent $G$ expression can be produced by the Laurent-jet compiler.
+\end{theorem}
+\begin{proof}
+Differentiate the uniformly bounded series
+\[
+ \gamma(\alpha,x)=x^\alpha\sum_{k=0}^\infty
+ \frac{(-x)^k}{k!(\alpha+k)}.
+\]
+The finite Leibniz rule gives
+\[
+ \frac{\partial^r}{\partial\alpha^r}
+ \frac{x^\alpha}{\alpha+k}
+ =x^\alpha\sum_{\ell=0}^{r}\binom{r}{\ell}
+ (\Log x)^{r-\ell}\frac{(-1)^\ell\ell!}{(\alpha+k)^{\ell+1}}.
+\]
+Finally,
+\[
+ \sum_{k=0}^\infty\frac{(-x)^k}{k!(\alpha+k)^d}
+ =\alpha^{-d}{}_dF_d(\alpha,\ldots,\alpha;
+                    \alpha+1,\ldots,\alpha+1;-x).
+\]
+For a requested precision, a common factorial tail bound controls all
+$0\le\ell\le r$, so differentiation is replaced by a finite coefficient
+calculation plus an explicit remainder estimate.  This is exactly the fixed
+finite-use form permitted in iPRA.
+\end{proof}
+
+\subsection{What ``most special functions'' means constructively}
+
+The hypergeometric conversion theorem already covers every fixed generalized
+hypergeometric function away from polynomial singularities, and
+\cref{thm:polynomial-repair} covers the polynomial cases.  Products, Mellin
+convolutions, Laplace transforms, parameter shifts, derivatives, and rational
+power substitutions are closed by \cref{sec:algebra,sec:derivatives,sec:transforms}.
+Consequently any particular special-function identity obtained from a finite
+chain of those operations compiles to a finite iPRA certificate.  This is the
+precise content behind the informal claim that the $G$-function contains most
+classical special functions.  It is not a quantification over an undefined
+class of ``all special functions''.
