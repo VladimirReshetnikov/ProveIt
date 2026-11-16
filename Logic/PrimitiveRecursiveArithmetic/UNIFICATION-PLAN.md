@@ -115,7 +115,7 @@ encoding rules below.
 
 ### Phase 1 · Specify names and split dependencies
 
-- [ ] Publish a short interface guide in [Bridge](Bridge/README.md) with
+- [x] Publish a short interface guide in [Bridge](Bridge/README.md) with
   canonical names for ordinary iPRA judgments and shared lemmas, explicitly
   qualified names for backend theories, and examples for selecting a closed
   statement, an open proof, or a translated Foundation corollary. Use
@@ -149,13 +149,13 @@ encoding rules below.
 
 ### Phase 2 · Complete formula and sequent transport
 
-The exact Concise-to-Foundation-to-Concise round trip and Foundation's
-provable order-erasure biconditional are already checked. As yet the public
-bridge gives an equivalence of provability for a Concise sentence and its
-Foundation image. The proposed additional result reflects provability of
-every original Foundation sentence through its Concise translation.
+The baseline included the exact Concise-to-Foundation-to-Concise round trip
+and Foundation's provable order-erasure biconditional. The
+[closed reflection theorem](Bridge/Lean/IPRABridge/FoundationNormalization.lean)
+now also reflects provability of every original Foundation sentence through
+its Concise translation.
 
-- [ ] Prove an object-level extensional equality between each Foundation PR
+- [x] Prove an object-level extensional equality between each Foundation PR
   code and its round-trip image, at arbitrary parameters. Use the defining
   equations for the positive-arity zero case, the unchanged successor and
   projections, and substitution and congruence for composition. In the
@@ -164,7 +164,7 @@ every original Foundation sentence through its Concise translation.
   `ℕ` is a separate test of the implementation. Use the existing exact
   Concise PR code round trip to show that Foundation code normalization is
   idempotent.
-- [ ] Lift code equality to term equality and then to a provable biconditional
+- [x] Lift code equality to term equality and then to a provable biconditional
   for formulas, including equality atoms, implication, both quantifiers, and
   arbitrary parameters. Combine with `standardOrderRoundtrip` for primitive
   `<`. Derive the following public theorem shape and test it on nested
@@ -175,7 +175,7 @@ every original Foundation sentence through its Concise translation.
   (standardTheory ⊢ φ) ↔ Prf PRAAx [] (toConciseSentence φ)
   ```
 
-- [ ] Expose standard-theory transport for explicit finite open contexts. Use
+- [x] Expose standard-theory transport for explicit finite open contexts. Use
   [the existing reverse environment theorem](Bridge/Lean/IPRABridge/ConciseToFoundation.lean)
   and [Hilbert transport under free-term assignments](Bridge/Lean/IPRABridge/FoundationToConcise.lean).
   Specify how the context, free variables and bound indices map. For
@@ -185,7 +185,7 @@ every original Foundation sentence through its Concise translation.
   adding hypotheses, and closing and reopening a sequent. Make the
   existing closed interfaces corollaries where this simplifies their
   implementation and preserves their theorem types.
-- [ ] Test an open sequent with two hypotheses at nonvariable terms, an
+- [x] Test an open sequent with two hypotheses at nonvariable terms, an
   induction instance with a parameter that stays in scope under a binder,
   and existential elimination with a fresh variable. Include both directions
   and reuse a translated theorem under a destination theory's local context.
@@ -193,7 +193,11 @@ every original Foundation sentence through its Concise translation.
 
 ### Phase 3 · Share the arithmetic library
 
-- [ ] Make a symbol and theorem correspondence table. Start with zero,
+The [arithmetic symbol table](Bridge/SYMBOLS.md) records existing checked
+comparisons, including Foundation addition, multiplication, predecessor,
+truncated subtraction, and strict order.
+
+- [x] Make a symbol and theorem correspondence table. Start with zero,
   successor, numerals, addition, multiplication, predecessor, truncated
   subtraction and order. Extend it on demand to comparison bits, bounded
   search, division with remainder, pairing, sequence coding, and finite
@@ -201,7 +205,7 @@ every original Foundation sentence through its Concise translation.
   current consumers, and the Lean theorem used to rewrite between
   formulations. Mark entries as definitionally equal, provably equivalent,
   or needing a comparison proof.
-- [ ] Prove the first nontrivial comparisons at arbitrary terms in the object
+- [x] Prove the first nontrivial comparisons at arbitrary terms in the object
   theory. Include Foundation `addCode` as well as `addCore`, the analogous
   multiplication aliases, and Foundation's `ltBitCode = 1` versus
   ConciseIPRA's truncated-subtraction order. Include strictness at equal

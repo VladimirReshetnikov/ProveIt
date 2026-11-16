@@ -3,7 +3,8 @@
 This is the working inventory for the [unification plan](UNIFICATION-PLAN.md).
 It records the exact proof boundary for each pilot and links to project
 inventories for other variants and historical replays. Baseline source
-reference is `99221756b5`. The root toolchain is Lean `v4.32.0`, with
+reference is `99221756b5`, with the PA196 command-level result updated from
+`c92515a005`. The root toolchain is Lean `v4.32.0`, with
 Mathlib at `81a5d257c8e410db227a6665ed08f64fea08e997` and Foundation
 at `32e1a0956a8622fad067328ca1959729a7634428`.
 
@@ -48,7 +49,10 @@ at `32e1a0956a8622fad067328ca1959729a7634428`.
   bind the supplied table and retain explicit proof premises for the
   consistency endpoint. A verified link from the literal table to the
   command scheduler is a separate obligation.
-- **PA196.** [`PA196Endpoint.consistency_iff_nonhalting`](../../Computability/BusyBeaver/Research/PA/verification/other-machines/pa196-vs-u208/ipra/PA196Endpoint.lean)
+- **PA196.** The [emitter and scheduler proof](../../Computability/BusyBeaver/Research/PA/verification/pa194-work/pa194-controller-schedulers/README.md)
+  now includes the PA196 equality-vacuity gate. It proves the internal
+  equivalence at `haltSentenceE { delta := true } .push false false`.
+  [`PA196Endpoint.consistency_iff_nonhalting`](../../Computability/BusyBeaver/Research/PA/verification/other-machines/pa196-vs-u208/ipra/PA196Endpoint.lean)
   proves the biconditional for `PA196Bounded.haltSentence` from standard iPRA
   proofs of `Ref(PA) → Halt` and `Halt → ¬¬Ref(PA)`. Its second theorem
   accepts double negation in both conclusions. Reproduce with the
