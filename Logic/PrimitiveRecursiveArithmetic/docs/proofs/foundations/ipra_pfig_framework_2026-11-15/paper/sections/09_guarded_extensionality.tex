@@ -1,0 +1,191 @@
+\section{Guarded operations, extensionality, and discontinuous choices}
+\label{sec:guarded}
+
+An effective presentation is useful only if its operations respect the represented object rather than accidental code choices.  At the same time, many familiar operations are partial or discontinuous.  This section gives a uniform treatment: totalize the numerical program, state the mathematical law under an explicit guard, and formulate equality observationally.
+
+\subsection{Total programs with guarded laws}
+
+A primitive-recursive function is total on natural-number codes.  Division, normalization, chart inversion, pivoting, logarithms, and branch selection are therefore implemented with a default output on invalid inputs.  Correctness is stated conditionally.
+
+\begin{definition}[Guarded operation]
+A guarded operation from presentation \(X\) to presentation \(Y\) consists of:
+
+\begin{enumerate}
+\item a total primitive-recursive code function \(F\);
+\item a quantifier-free or bounded-decidable guard \(G(g,x)\), where \(g\) is quantitative margin data;
+\item a demand function \(d(p,g,x)\);
+\item an object proof that, under \(G(g,x)\), the output observations of \(F(x)\) satisfy the intended law at precision \(p\).
+\end{enumerate}
+\end{definition}
+
+The default branch is never used in the guarded theorem.  This keeps the program total without pretending that the mathematical operation is total.
+
+\subsection{Apartness is data}
+
+For a represented real \(x\), the proposition \(x\neq0\) is negative and may not reveal how accurately one must approximate \(x\) before its sign or reciprocal is determined.  A usable inverse interface consumes an integer \(g\) such that
+\[
+ |x|\ge 2^{-g}.
+\]
+If \(r_q\) approximates \(x\) within \(2^{-q}\), choosing \(q\ge g+2\) guarantees \(|r_q|\ge 2^{-g-1}\).  Rational inversion is then safe, and a direct estimate gives a demand for the desired output precision.
+
+The same principle applies to:
+
+\begin{itemize}
+\item a pivot: supply a lower bound on the pivot magnitude;
+\item a logarithm: supply a positive lower bound on the argument;
+\item a normalized vector: supply a lower bound on its norm;
+\item an inverse chart: supply a distance from the chart boundary;
+\item a spectral projector: supply a gap separating the cluster;
+\item a simple root: supply a derivative or separation bound.
+\end{itemize}
+
+A theorem that assumes only a nonzero proposition should either derive such a bound from stronger exact input data or remain a conditional relation rather than a computable operation.
+
+\subsection{Branch stabilization under a gap}
+
+Let alternatives be labeled by a finite set \(L\).  Suppose an exact score \(s_\ell(x)\) is represented by rational approximations \(\widehat s_\ell(q,x)\) with error at most \(e_q\).  Assume one label \(\ell_0\) satisfies
+\[
+ s_{\ell_0}(x)+\gamma\le s_\ell(x)
+ \qquad(\ell\ne\ell_0)
+\]
+for a supplied rational gap \(\gamma>0\).
+
+\begin{theorem}[Guarded branch stabilization]
+\label{thm:branch-stability}
+If \(2e_q<\gamma\), then the least approximate minimizer of \(\widehat s_\ell(q,x)\) is \(\ell_0\).  Hence the label is primitive-recursively selectable from sufficiently precise observations and the gap certificate.
+\end{theorem}
+
+\begin{proof}
+For \(\ell\ne\ell_0\),
+\[
+ \widehat s_{\ell_0}
+ \le s_{\ell_0}+e_q
+ \le s_\ell-\gamma+e_q
+ < s_\ell-e_q
+ \le \widehat s_\ell.
+\]
+Thus \(\ell_0\) is the unique approximate minimizer.  Every comparison is rational and bounded.  The object proof is a chain of coded integer inequalities.
+\end{proof}
+
+This theorem is the generic resolution for exact labels under separation.  Without \(\gamma\), the appropriate output is a finite set of near-minimizers or a stable aggregate.
+
+\subsection{Observational setoids}
+
+Codes are rarely canonical.  Define equality at precision \(p\) by a bounded relation
+\[
+ x\approx_p y.
+\]
+For exact algebraic codes this may be literal equality or an ideal-membership certificate.  For rational names it is metric closeness.  For finite covers it is local equivalence on every chart.  For root clouds it is a finite matching relation or equality of symmetric observations.
+
+A presentation should prove:
+
+\begin{enumerate}
+\item reflexivity at every precision;
+\item symmetry;
+\item a quantitative transitivity law, often
+\(x\approx_{p+c}y\wedge y\approx_{p+c}z\to x\approx_p z\);
+\item restriction monotonicity: higher-precision equivalence implies lower-precision equivalence;
+\item extensionality of every operation with an explicit demand map.
+\end{enumerate}
+
+These are finite contracts and can be compiled by PFIGs.  No quotient type is needed inside the object theory.  The quotient is a semantic interpretation of the observational setoid.
+
+\subsection{Relational extensionality}
+
+For a finite relation \(R(x,a,p)\), code equality of answer clouds is too strong.  The right extensionality notion is finite back-and-forth:
+\begin{align*}
+ x\approx_{d(p)}x'\ \wedge\ R(x,a,d(p))
+ &\to \exists a'<B'\bigl(R(x',a',p)\wedge a\sim_p a'\bigr),\\
+ x\approx_{d(p)}x'\ \wedge\ R(x',a',d(p))
+ &\to \exists a<B\bigl(R(x,a,p)\wedge a\sim_p a'\bigr).
+\end{align*}
+All quantifiers are bounded.  This says that equivalent inputs produce observationally equivalent answer clouds, even if their codes, cardinalities, or orderings differ.
+
+When a stable observer is invariant under \(\sim_p\), this back-and-forth is enough to prove extensionality of the observed output.
+
+\subsection{Permutation and symmetry}
+
+Many finite outputs are unordered collections.  Two practical representations are available.
+
+\paragraph{Canonical sorting.}
+If codes have a decidable total order that respects the desired identity, sort them and compare sorted lists.  This is suitable for exact rational factors or intervals with separated centers.
+
+\paragraph{Matching certificates.}
+Represent equivalence by a bounded permutation or bipartite matching certificate.  This is suitable near collisions, where canonical order can be unstable.  Hall-type conditions are finite and Booleanizable; in small fixed dimensions a direct permutation certificate is simplest.
+
+The framework does not force one representation.  It requires the operation's extensionality proof to match the chosen representation.
+
+\subsection{Projective and quotient-like outputs}
+
+A direction, eigenvector, homogeneous coordinate, or rotation axis is naturally defined only up to scaling or sign.  Instead of imposing a discontinuous normalization, represent it projectively:
+\[
+ v\sim w\quad\Longleftrightarrow\quad
+ \exists \lambda\ne0\; w=\lambda v,
+\]
+or, in finite exact arithmetic, by vanishing of all \(2\times2\) minors \(v_iw_j-v_jw_i\).  The latter is quantifier-free.  Approximate projective equivalence is expressed by small minors and positive norm guards.
+
+A chart may be selected only when a coordinate has a positive lower bound.  Otherwise, retain a finite relation of admissible charts.  Stable projective observables, such as the rank-one projector \(vv^*/\|v\|^2\), can be produced when the norm and spectral gap are guarded.
+
+\subsection{Rotation axes}
+
+At the identity rotation, every unit axis is valid.  A total exact axis selector would have to make a discontinuous choice.  The constructive output should instead be one of:
+
+\begin{itemize}
+\item a unit quaternion modulo sign;
+\item an antisymmetric infinitesimal or projective axis relation;
+\item a finite cloud of approximate axes;
+\item an exact axis under a positive distance-from-identity guard.
+\end{itemize}
+
+Rodrigues' formula itself is a polynomial/rational identity under a suitable parameterization and can be checked finitely.  The obstruction concerns the selector, not the identity.
+
+\subsection{Piecewise definitions}
+
+A piecewise operation with decidable exact branches is compiled by Boolean case analysis.  A piecewise operation whose branch depends on the sign of a represented real must use one of three interfaces:
+
+\begin{enumerate}
+\item \textbf{guarded branch}: a sign-separation bound is an input;
+\item \textbf{relational branch}: both branches are returned when zero cannot be excluded;
+\item \textbf{stable merge}: prove that both branches give the same observable near the boundary.
+\end{enumerate}
+
+This trichotomy should be recorded explicitly in theorem statements.  It prevents hidden uses of limited omniscience principles.
+
+\subsection{Extensional composition}
+
+\begin{theorem}[Composition of precision contracts]
+\label{thm:precision-composition}
+Suppose \(F:X\to Y\) is extensional with demand \(d_F\), and \(G:Y\to Z\) is extensional with demand \(d_G\).  Then \(G\circ F\) is extensional with demand
+\[
+ d_{G\circ F}(p,x)=d_F(d_G(p,Fx),x),
+\]
+or any primitive-recursive upper bound on this expression.
+\end{theorem}
+
+\begin{proof}
+If inputs agree at the composite demand, extensionality of \(F\) gives agreement of outputs at the precision requested by \(G\).  Extensionality of \(G\) then gives agreement at terminal precision \(p\).  In a code-dependent demand, the expression may refer to an approximate output of \(F\); the graph's backward pass computes a safe majorant using the guard and finite observations.  The object proof is substitution followed by cut.
+\end{proof}
+
+For relational functions, replace direct agreement by finite back-and-forth and compose the bounded witnesses.  For metric relations, add the error budgets and use a stronger internal precision.
+
+\subsection{The role of defaults}
+
+Defaults should be semantically inert.  Every theorem about a totalized operation has the form
+\[
+ G(g,x)\to \Post(F(g,x),x).
+\]
+No theorem should expose the default as a meaningful output when \(G\) fails.  If downstream nodes need to continue under guard failure, the output type should include an explicit status bit and the terminal statement should branch on that bit.  This makes failure observable and prevents accidental use of undefined data.
+
+\subsection{Resolution achieved}
+
+The guarded-extensional layer resolves several recurrent problems:
+
+\begin{itemize}
+\item code equality is replaced by observational equality;
+\item quotients are represented by certified setoids rather than object-theoretic quotient types;
+\item discontinuous labels become relations or guarded exact outputs;
+\item partial operations become total programs with conditional laws;
+\item precision bookkeeping composes through explicit demand maps.
+\end{itemize}
+
+The remaining obligation is mathematical: produce the relevant gap, apartness, coverage, or continuity modulus.  The framework makes this obligation impossible to hide.

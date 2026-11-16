@@ -1,0 +1,143 @@
+\section{Logical base and proof-level discipline}
+\label{sec:logical-base}
+
+\subsection{Three levels that must not be conflated}
+
+The framework uses three levels of description.  Keeping them separate is the first correctness invariant.
+
+\paragraph{Level 0: metatheory.}
+Lean proves facts about syntax, substitutions, lists, finite graphs, and derivation constructors.  At this level we may recurse structurally over a fixed graph and build a derivation tree.  Such recursion is not asserted to occur inside iPRA.
+
+\paragraph{Level 1: object derivability.}
+A theorem of the form
+\[
+  h : \Prf\ \PRAAx\ \Gamma\ \varphi
+\]
+is a syntactic iPRA derivation.  The constructors in \texttt{Deduction.lean} implement intuitionistic natural deduction with equality.  The derived lemmas for substitution, weakening, cut, and equality congruence allow these derivations to be assembled compositionally \cite{repo-deduction}.
+
+\paragraph{Level 2: external semantics and reference execution.}
+A Python program or a semantic Lean structure may evaluate a finite relation, test a dynamic program, or illustrate an error estimate.  This is useful evidence and a specification oracle, but it becomes an iPRA proof only after the corresponding primitive-recursive symbols, object formulas, and derivation constructors have been supplied.
+
+A file that proves a Level-2 statement and merely names the desired Level-1 theorem has not completed the formalization.  Conversely, a Level-1 proof transformer may be perfectly general while accepting theorem-specific arithmetic estimates as inputs.  This is not a defect: it is the intended producer/verifier boundary.
+
+\subsection{The ordinary object language}
+
+We use the checked ordinary iPRA layer rather than programming directly in the smallest native calculus.  Let \(\PTm_n\) be the primitive-recursive terms with \(n\) free variables and let \(\Fm_n\) be first-order formulas over those terms.  For a context \(\Gamma\subseteq\Fm_n\),
+\[
+  \Gamma\vdash_{\PRAAx}\varphi
+\]
+abbreviates \(\Prf\ \PRAAx\ \Gamma\ \varphi\).
+
+The proof system has the expected intuitionistic rules for \(\bot,\wedge,\vee,\to,\forall,\exists\), equality reflexivity, simultaneous Leibniz substitution, and universally instantiated theory axioms.  The key structural facts are:
+
+\begin{align*}
+\text{Substitution: }&
+  \Gamma\vdash\varphi
+  \Longrightarrow
+  \Gamma[\sigma]\vdash\varphi[\sigma],\\
+\text{Weakening: }&
+  \Gamma\vdash\varphi,\ \Gamma\subseteq\Delta
+  \Longrightarrow
+  \Delta\vdash\varphi,\\
+\text{Simultaneous cut: }&
+  \Gamma\vdash\varphi,\quad
+  (\forall\psi\in\Gamma)(\Delta\vdash\psi)
+  \Longrightarrow
+  \Delta\vdash\varphi.
+\end{align*}
+
+These are already proved by induction on derivations.  PFIG composition therefore does not require a new logic.  It needs a disciplined way to turn each numerical interface into formulas and then to feed its local proofs to these structural lemmas.
+
+\subsection{Quantifier-free induction as a programming rule}
+
+For a quantifier-free formula \(I(t,\vec{x})\), iPRA proves
+\[
+  I(0,\vec{x})\ \wedge\
+  \forall t\bigl(I(t,\vec{x})\to I(t+1,\vec{x})\bigr)
+  \to \forall t\,I(t,\vec{x}).
+\]
+At the object level, the repository provides a derived rule \texttt{PRA.qfInd}.  The existing \path{ObjectIteration.lean} theorem goes further: if a state is computed by primitive recursion and \(P(s,t,\vec{x})\) is a quantifier-free state invariant, then object derivations of the base and local update yield an object derivation of the invariant for the computed state at every time, and hence at any supplied fuel term \cite{repo-local-global}.
+
+This theorem should be treated as a verified loop rule.  It says that an ordinary proof of a finite algorithm need only provide:
+
+\begin{enumerate}
+\item a fixed primitive-recursive initial-state symbol;
+\item a fixed primitive-recursive update symbol;
+\item a quantifier-free formula describing the invariant;
+\item an object derivation of the initial invariant;
+\item an object derivation that one update preserves the invariant.
+\end{enumerate}
+
+Everything else---iteration to a variable fuel, specialization to a computed bound, and equality transport between the recursion symbol and the intended state---is generic.
+
+\subsection{Fixed symbols, not a universal interpreter}
+
+A primitive-recursive language may contain one symbol for every primitive-recursive function without containing a single primitive-recursive function that evaluates arbitrary codes for all primitive-recursive functions.  The distinction is essential.
+
+Suppose a mathematical construction uses a particular polynomial evaluator, a particular finite-state transition, and a particular Boolean certificate checker.  The metatheory generates three fixed \(\PRA\) terms for these functions.  Their defining equations are available as theory axioms.  A generic Lean compiler may inspect the finite syntax of the construction and output these terms.  Nothing in iPRA is asked to interpret an arbitrary program code.
+
+Alternatively, if a program family is data, one may use a \emph{clocked trace relation}.  The checker verifies a proposed trace of a fixed small machine for a supplied number of steps.  Trace verification is primitive recursive even when unbounded evaluation is not total.  The PFIG normal form uses both patterns:
+
+\begin{itemize}
+\item fixed mathematical libraries are statically specialized to fixed PR symbols;
+\item imported computations may be accepted through finite traces whose local transitions are checked.
+\end{itemize}
+
+\subsection{Formulas as interfaces}
+
+A PFIG node is not merely a function.  It carries an interface with four logically distinct components.
+
+\begin{definition}[Finitary interface]
+For input parameters \(\vec{x}\), a precision/resource request \(p\), and an output code \(y\), a finitary interface consists of:
+\begin{enumerate}
+\item a quantifier-free validity predicate \(D(\vec{x})\);
+\item a primitive-recursive bound \(B(p,\vec{x})\);
+\item a quantifier-free answer relation \(R(y,p,\vec{x})\), used only with \(y<B(p,\vec{x})\);
+\item a demand transformer \(d(p,\vec{x})\) describing the input precision needed to certify an output at request \(p\).
+\end{enumerate}
+The local totality contract is
+\[
+  D(\vec{x})\to \exists y<B(p,\vec{x})\ R(y,p,\vec{x}).
+\]
+An exact interface additionally supplies a term \(w(p,\vec{x})\) and a derivation of \(R(w(p,\vec{x}),p,\vec{x})\).
+\end{definition}
+
+The bound is not cosmetic.  It turns existential search, universal checking, and case analysis into primitive-recursive operations.  The relation is not cosmetic either: it allows honest representation of non-unique outputs.
+
+\subsection{Three elimination modes}
+
+Every internal output is consumed in one of three ways.
+
+\begin{description}
+\item[Exact selection.] A primitive-recursive term produces a witness, and its correctness proof is substituted directly into the consumer.
+\item[Finite search.] A bounded decidable relation is known nonempty.  The least valid code is found by bounded search, and a reflection theorem proves that it satisfies the relation.
+\item[Stable erasure.] The consumer proves the same terminal statement for every valid internal witness.  Existence plus this local stability proves the terminal statement; no selector is constructed.
+\end{description}
+
+These modes subsume most apparent differences among the repository packets.  For example, deterministic arithmetic is exact selection; a finite list of candidate roots is finite search; and an eigenvalue multiset identity that is independent of eigenvector choices uses stable erasure.
+
+\subsection{Object contracts}
+
+The simplest exact object contract is already present in the repository.  For precondition \(P(\vec{x})\) and postcondition \(Q(y,\vec{x})\), it consists of a term \(w(\vec{x})\) and a derivation
+\[
+   P(\vec{x})\vdash_{\PRAAx} Q(w(\vec{x}),\vec{x}).
+\]
+Substitution composes such contracts.  If the second contract is proved under \(Q\), instantiate its free output variable by \(w\), then cut with the first certificate.  This is exactly the construction implemented in \texttt{ObjectComposition.lean} \cite{repo-coherent}.
+
+The general framework will retain this exact core and add bounded-search and stable-erasure adapters.  Crucially, each adapter is proved once.  A theorem-specific package should not reimplement bounded induction, least search, witness elimination, or precision bookkeeping.
+
+\subsection{Correctness criterion for a completed embedding}
+
+A mathematical theorem has been embedded in iPRA only when all of the following are explicit.
+
+\begin{enumerate}
+\item The input and output objects are represented by natural-number codes or primitive-recursive names.
+\item Validity, finite observations, and certificate checking are primitive-recursive and represented by object formulas.
+\item Every use of induction has a displayed quantifier-free invariant.
+\item Every existential output is exact, bounded-searchable, or eliminated by stability.
+\item Every partial or discontinuous operation has a quantitative guard or a relational replacement.
+\item The final Lean theorem has conclusion \(\Prf\ \PRAAx\ \Gamma\ \varphi\), not merely a semantic proposition about standard naturals.
+\item Any transport to the native scalar core is applied only after item 6.
+\end{enumerate}
+
+This criterion is deliberately stronger than ``the algorithm is primitive recursive.''  Primitive recursiveness of the data path is necessary, but the proof path must also be represented and composed.

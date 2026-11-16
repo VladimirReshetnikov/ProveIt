@@ -1,0 +1,65 @@
+\appendix
+\section{Theorem and status ledger}
+\label{app:ledger}
+
+The table below distinguishes human proofs in this report, executable finite evidence, inherited repository object theorems, and proposed Lean targets.  ``Human-complete'' does not mean kernel-checked.
+
+\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.08\textwidth}>{\raggedright\arraybackslash}p{0.52\textwidth}>{\raggedright\arraybackslash}p{0.29\textwidth}@{}}
+\toprule
+ID & Claim & Status \\
+\midrule
+\endhead
+P1 & Structural Booleanization of every fixed bounded formula, with QF fold invariants. & Human-complete; Lean target. \\
+P2 & Least bounded search, validity, and minimality. & Human-complete; Python-tested; Lean target. \\
+P3 & Object trace invariant and specialization to a PR fuel. & Human proof; inherited object theorem in repository. \\
+P4 & Trace-certificate reflection from local transition reflection. & Human-complete; Lean target. \\
+P5 & Primitive-recursive reverse demand and minimality for fixed DAGs. & Human-complete; Python-tested; Lean target. \\
+P6 & PFIG normal form as a query-specialized encoded loop. & Human-complete at construction level; generated Lean target. \\
+P7 & Two-pass PFIG soundness from local object certificates. & Human-complete; depends on P1--P6 formalization. \\
+P8 & Viability iff existence of a compatible finite path. & Human-complete; Python-tested; Lean semantic/object targets. \\
+P9 & Least viable finite path and finite dependent choice. & Human-complete; Python-tested; Lean target. \\
+P10 & Adjacent coherence from viable-cloud diameter and edge motion. & Human-complete; Python-tested. \\
+P11 & Regular name from a primitive-recursive tail budget. & Human-complete; Lean rational-metric target. \\
+P12 & Stable-observer erasure for independent finite certificates. & Human proof; inherited object combinator in repository. \\
+P13 & Guarded branch stabilization under a positive gap. & Human-complete; Python-tested; Lean target. \\
+P14 & Precision-contract composition. & Human-complete; exact case inherited; relational case target. \\
+P15 & Certified finite-cover gluing. & Human-complete; Lean target. \\
+P16 & Height bound implies complete finite list. & Human-complete; Python-tested; Lean target. \\
+P17 & Complete finite list implies height bound. & Human-complete; Python-tested; Lean target. \\
+P18 & Equality stability and stability of every negative translation. & Human-complete; Lean target. \\
+P19 & Translation of every ClassicalPRAAx derivation to iPRA. & Human-complete; Lean target. \\
+P20 & Retained equivalence and retained transfer. & Human-complete; Lean target. \\
+B1 & No total primitive-recursive universal evaluator. & Diagonal barrier. \\
+B2 & No uniform exact sign/axis selector at discontinuities. & Constructive discontinuity barrier. \\
+B3 & Metastability alone does not yield a computable Cauchy modulus. & Computability barrier. \\
+B4 & Finiteness/cardinality alone does not yield a search cutoff. & Halting-style barrier. \\
+B5 & Exact arbitrary-Cauchy branch data is not uniformly available. & Discontinuity/exact-zero barrier. \\
+O1 & Shared object-level Booleanization compiler in Lean. & Open engineering task. \\
+O2 & Generic object viability table reflection. & Open engineering task. \\
+O3 & Verified internal PFIG AST compiler. & Open engineering task; generated specialization is interim route. \\
+O4 & General effective Faltings/Siegel height producer. & Open mathematical producer. \\
+O5 & Uniform rational representatives for general Mordell--Weil descent inputs. & Open mathematical producer. \\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\section{Notation and variable-order conventions}
+
+For object formulas with parameters \(\vec{x}\), the formalization should use the following uniform de Bruijn order:
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Formula & Free-variable order \\
+\midrule
+Loop invariant & state, time, parameters \\
+Good candidate & candidate, precision, parameters \\
+Compatibility edge & next candidate, current candidate, precision, parameters \\
+Metric comparison & first code, second code, tolerance, parameters \\
+Guarded operation & guard data, input code, request, parameters \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Named instantiation helpers should be the only code that constructs the corresponding \texttt{Fin.cases} substitutions.  All later proofs should use those helpers and their substitution lemmas.  This convention is not mathematically essential, but it is likely to eliminate a large class of formalization errors.

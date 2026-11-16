@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives on 14 and
-15 November 2026: 33 to `docs/drafts`, and 42 to
+15 November 2026: 33 to `docs/drafts`, and 43 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -61,7 +61,7 @@ manifests, build logs and `build/` files.
 
 ## Packets
 
-The 75 archives hold 2,151 members: 2,022 placed here, 82 ignored, 21 in bundled copies of
+The 76 archives hold 2,197 members: 2,068 placed here, 82 ignored, 21 in bundled copies of
 a sibling packet, 1 nested copy of a sibling archive and 25 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -161,6 +161,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | [`ipra_framework_2026-11-15`](foundations/ipra_framework_2026-11-15/) | *not committed* 2026-11-15 | `ipra_framework` | A cross-domain certificate-and-modulus framework for the packets here: bounded primitive recursive search and descent, certificate composition, arithmetic of quantitative real names and apartness-conditioned inverses. It says it is not a verified solution of the other packets. Its Lean files have not been typechecked. | 6 | 0 |
 | [`ipra_kernel_finite_use_framework_2026-11-15`](foundations/ipra_kernel_finite_use_framework_2026-11-15/) | *not committed* 2026-11-15 | `ipra_kernel_finite_use_framework_2026-11-15` | A kernel-facing finite-use framework: a reverse-topological proof schedule whose nodes store local `Prf PRAAx` derivations, compiled by simultaneous cut, with a quantifier-free induction loop compiler, bounded relational selection by backward viability, stable-observable erasure, branch collapse under a gap and an exact rational cubic-bisection certificate. It says its Lean source has no `sorry` but was not typechecked. | 34 | 0 |
 | [`ipra_local_global`](foundations/ipra_local_global/) | *not committed* 2026-11-15 | `ipra_local_global` | Local-to-global constructions: a `Prf PRAAx` rule for variable-length PR recursion, classical-to-intuitionistic transfer, uniform local solutions of rational polynomial ODEs, and integral points on split polynomial branches. It states that its Lean modules compile and that two of them construct embedded `Prf PRAAx` derivations. | 37 | 1 |
+| [`ipra_pfig_framework_2026-11-15`](foundations/ipra_pfig_framework_2026-11-15/) | *not committed* 2026-11-15 | `ipra_pfig_framework_2026-11-15` | Proof-producing finitary interface graphs: a fixed finite proof graph normalised to a query-specialised state machine, with a backward demand pass and a forward pass of exact transducers, bounded loops, searches and relational viability, all encoded as one primitive recursion with one quantifier-free invariant, and local `Prf PRAAx` certificates composed into the final derivation. Its Lean files are an uncompiled blueprint. | 46 | 0 |
 | [`ipra_presentations_to_witnesses`](foundations/ipra_presentations_to_witnesses/) | *not committed* 2026-11-15 | `ipra_presentations_to_witnesses` | From finite presentations to explicit witnesses: proof-preserving finite simulation, complete rational enumeration from finite action data, certificate constructors, and complete section lists from nonzero norms. It says it proves no general Siegel, Faltings or Mordell–Weil result. Its `lean/upstream/` copies are omitted; they are the ConciseIPRA sources. | 54 | 5 |
 | [`ipra_resources_and_elimination_2026-11-15`](foundations/ipra_resources_and_elimination_2026-11-15/) | *not committed* 2026-11-15 | `ipra_resources_and_elimination_2026-11-15` | Finite mathematical interfaces: changing-parameter recursion compiled to PR syntax, primitive recursive fuel for lexicographic descent, complete affine plane-intersection lists, and finite auxiliary envelopes. It states that four Lean declarations conclude `Prf PRAAx` derivability. Its `lean/build.sh` needs `BackwardDemand.lean`, omitted here as a copy from `ipra_finite_demand`. | 48 | 12 |
 | [`ipra_unified_finitary_framework_2026-11-15`](foundations/ipra_unified_finitary_framework_2026-11-15/) | *not committed* 2026-11-15 | `ipra_unified_finitary_framework_2026-11-15` | A unified finitary-relational framework: proof-producing finite traces, in which embedded base, step and final derivations combine into one `Prf PRAAx` derivation; finitary relational presentations as verified answer clouds with compatibility edges; finite witness amalgamation by backward viability; and shrinking viability, giving coherent PR names under a diameter modulus and a summable motion budget. It keeps height bounds, analytic constants and other deep data apart from their finite verifiers. Its Lean files are blueprints with `sorry` placeholders, and it claims no kernel-checked `Prf PRAAx` compiler. | 47 | 1 |

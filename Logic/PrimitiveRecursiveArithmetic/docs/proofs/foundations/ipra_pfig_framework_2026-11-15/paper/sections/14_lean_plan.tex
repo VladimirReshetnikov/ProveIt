@@ -1,0 +1,410 @@
+\section{Lean formalization architecture}
+\label{sec:lean-plan}
+
+This section gives a source-oriented plan against the checked \texttt{ConciseIPRA} API.  It is deliberately more precise than a list of theorem names: it fixes variable order, formula shapes, module dependencies, and the point at which each semantic construction becomes an actual object-iPRA derivation.
+
+\subsection{Pinned upstream interface}
+
+The intended imports are the repository modules providing:
+
+\begin{itemize}
+\item \texttt{Syn}, \texttt{Fm}, substitution, shifting, and de Bruijn utilities;
+\item \texttt{Prf} and notation \texttt{Gamma |-[PRAAx] phi};
+\item primitive-recursive syntax \texttt{PR} and terms \texttt{PTm};
+\item the iPRA axiom family \texttt{PRAAx} and \texttt{PRA.qfInd};
+\item the native transfer theorem \texttt{pra\_iff\_native}, used only after an ordinary derivation is complete.
+\end{itemize}
+
+The inspected repository examples import \path{ConciseIPRA.PR} and work in namespace \path{LeanProofs.ConciseIPRA}.  The packet's blueprint follows that convention.  Before integration, the exact commit should be pinned and every imported name checked against the current module tree.
+
+\subsection{Module graph}
+
+The proposed development is split into ten modules.
+
+\begin{longtable}{@{}p{0.27\textwidth}p{0.65\textwidth}@{}}
+\toprule
+Module & Responsibility \\
+\midrule
+\endhead
+\texttt{PFIG/Boolean.lean} & Boolean terms, range theorems, reflection of connectives, bounded \texttt{all}/\texttt{any}, least search, and QF formula Booleanization. \\
+\path{PFIG/ExactContract.lean} & Exact term contracts, specialization, composition, and stable-observer combinators.  Most proofs adapt existing repository code. \\
+\texttt{PFIG/ObjectLoop.lean} & Source-level wrapper around \texttt{primitiveRecursionInvariant} and \texttt{primitiveRecursionAt}; terminal extraction. \\
+\texttt{PFIG/Demand.lean} & Coded request semilattices, monotone demand maps, fixed-DAG reverse pass, and object reflection of demand equations. \\
+\texttt{PFIG/Relation.lean} & Finite relation codes, viability table layout, path checker, least viable path, and object reflection. \\
+\texttt{PFIG/Shrinking.lean} & Coded rational metrics, viable-cloud diameter, edge motion, adjacent coherence, finite triangle sums, and regular-name extraction. \\
+\texttt{PFIG/Guarded.lean} & Apartness guards, totalized operations, branch stabilization, observational setoids, and relational back-and-forth. \\
+\texttt{PFIG/Graph.lean} & Fixed graph syntax or generated-stage syntax, topological schedule, two-pass state compiler, invariant assembly, and soundness theorem. \\
+\path{PFIG/NegativeTransfer.lean} & Equality stability, stability of negative translations, proof translation, retained equivalence, and retained transfer. \\
+\texttt{PFIG/Applications.lean} & Worked end-to-end examples and adapters for height/list, finite gluing, root clusters, and finite nets. \\
+\bottomrule
+\end{longtable}
+
+The first complete milestone need not internalize the graph AST.  It may use generated theorem-specific stages and prove them with \texttt{ObjectLoop}.  \texttt{Graph.lean} can then abstract the repeated pattern.
+
+\subsection{Exact contracts}
+
+The exact interface should reuse the repository's type:
+
+\begin{lstlisting}[language={},caption={Exact object contract}]
+structure ExactContract {n : Nat}
+    (P : Fm PTm n) (Q : Fm PTm (n + 1)) where
+  witness   : PTm n
+  certified : [P] |-[PRAAx] Q.subst (inst witness)
+\end{lstlisting}
+
+Required derived operations are:
+
+\begin{lstlisting}[language={}]
+theorem ExactContract.existsOutput :
+  c : ExactContract P Q -> [P] |-[PRAAx] Fm.ex Q
+
+def ExactContract.compose
+    (c : ExactContract P Q)
+    (d : ExactContract Q R) :
+    ExactContract P (R.subst (up (inst c.witness)))
+
+def ExactContract.specialize
+    (c : ExactContract P Q) (sigma : Fin n -> PTm m) :
+    ExactContract (P.subst sigma) (Q.subst (up sigma))
+\end{lstlisting}
+
+The inspected \texttt{ObjectComposition.lean} already gives these constructions.  The new module should import or relocate them rather than duplicate proofs.
+
+\subsection{Loop contracts}
+
+Use a formula \(P\) with free variables ordered as state, time, then parameters.  Define helper substitutions exactly once.
+
+\begin{lstlisting}[language={}]
+def instStateTime {k n : Nat}
+    (P : Fm PTm (k + 2))
+    (state time : PTm n)
+    (params : Fin k -> PTm n) : Fm PTm n :=
+  P.subst (Fin.cases state (Fin.cases time params))
+\end{lstlisting}
+
+A source-facing contract is:
+
+\begin{lstlisting}[language={}]
+structure LoopContract {k : Nat}
+    (Gamma : List (Fm PTm k)) (Post : Fm PTm k) where
+  init      : PR k
+  step      : PR (k + 2)
+  fuel      : PTm k
+  invariant : Fm PTm (k + 2)
+  qf        : invariant.QF
+  base      : Gamma |-[PRAAx] baseFormula init invariant
+  preserve  : invariant :: (Gamma.map Fm.shift).map Fm.shift
+              |-[PRAAx] nextFormula step invariant
+  finish    : Gamma |-[PRAAx]
+              instStateTime invariant
+                (runTerm init step fuel var) fuel var --> Post
+\end{lstlisting}
+
+Then:
+
+\begin{lstlisting}[language={}]
+theorem LoopContract.sound (c : LoopContract Gamma Post) :
+  Gamma |-[PRAAx] Post :=
+  Prf.impE c.finish
+    (primitiveRecursionAt c.init c.step c.invariant
+      c.qf Gamma c.base c.preserve c.fuel)
+\end{lstlisting}
+
+All substitution lemmas required by \texttt{primitiveRecursionAt} already appear in the inspected \texttt{ObjectIteration.lean}.  The integration task is to make that theorem a stable library module and remove copied \texttt{ObjectKernel} snapshots from individual packets.
+
+\subsection{Boolean formulas}
+
+There are two useful layers.
+
+\paragraph{Term-level Boolean algebra.}
+Fix PR symbols \texttt{bnot}, \texttt{band}, \texttt{bor}, \texttt{beq}, and bounded folds.  Prove object theorems such as:
+
+\begin{lstlisting}[language={}]
+theorem band_reflect (a b : PTm n) :
+  [] |-[PRAAx]
+    ((band a b = 1) <-> ((a = 1) /\ (b = 1)))
+
+theorem bool_range (a : PTm n) :
+  BoolTerm a -> [] |-[PRAAx] ((a = 0) \/ (a = 1))
+\end{lstlisting}
+
+The concrete formula constructors use the repository's notation, not the ASCII shown in the schematic listing.
+
+\paragraph{Syntax-directed QF compiler.}
+Define a metalevel function from a quantifier-free \(\Fm\) to a PR Boolean expression.  Because arbitrary formula syntax contains term symbols already interpreted by \texttt{PTm}, the compiler may return a \texttt{PTm n} plus a derivation record:
+
+\begin{lstlisting}[language={}]
+structure BoolReflection {n : Nat} (A : Fm PTm n) where
+  code    : PTm n
+  range   : [] |-[PRAAx] (code = 0 \/ code = 1)
+  reflect : [] |-[PRAAx] Fm.iff (code = 1) A
+
+def booleanizeQF {n : Nat} (A : Fm PTm n) (h : A.QF) :
+  BoolReflection A
+\end{lstlisting}
+
+For a fully generic compiler, implication and disjunction cases use the already constructed decidability of subformulas.  A simpler first milestone provides reflection constructors and lets generated files assemble them.
+
+\subsection{Bounded search}
+
+Define a fixed PR state encoding a found bit and witness.  The theorem should expose both correctness and minimality:
+
+\begin{lstlisting}[language={}]
+structure SearchSpec {n : Nat} where
+  bound : PTm n
+  pred  : Fm PTm (n + 1)
+  qf    : pred.QF
+  bool  : BoolReflection pred
+
+def leastSearch (s : SearchSpec) : PTm n
+
+theorem leastSearch_sound
+    (nonempty : Gamma |-[PRAAx] Fm.exBounded s.bound s.pred) :
+  Gamma |-[PRAAx]
+    s.pred.subst (inst (leastSearch s))
+
+theorem leastSearch_minimal ...
+\end{lstlisting}
+
+If \texttt{Fm.exBounded} is not a library macro, define it as an ordinary existential conjoined with \(<\), and separately use the Booleanized bounded form for the loop invariant.
+
+\subsection{Finite relations and table layout}
+
+Keep object formulas independent of semantic finite types.  Use natural bounds and a fixed table encoding.
+
+\begin{lstlisting}[language={}]
+structure RelPresentation (n : Nat) where
+  candBound : PTm (n + 1)       -- precision, params
+  good      : Fm PTm (n + 2)    -- candidate, precision, params
+  edge      : Fm PTm (n + 3)    -- next, current, precision, params
+  goodQF    : good.QF
+  edgeQF    : edge.QF
+\end{lstlisting}
+
+Document the variable order in comments and provide named substitution functions:
+
+\begin{lstlisting}[language={}]
+def RelPresentation.goodAt
+    (R : RelPresentation n)
+    (a p : PTm m) (xs : Fin n -> PTm m) : Fm PTm m
+
+def RelPresentation.edgeAt
+    (R : RelPresentation n)
+    (b a p : PTm m) (xs : Fin n -> PTm m) : Fm PTm m
+\end{lstlisting}
+
+The viability table stores one bit per pair \((i,a)\) with \(i\le H\) and \(a<B_i\).  To avoid variable-length arrays in the object proof, use a rectangular bound
+\[
+ B^*(H,\vec{x})=\max_{i\le H}B_i(\vec{x})
+\]
+and mark out-of-range cells false.  Index \((i,a)\) by a primitive-recursive pairing function.  Reverse iteration can be implemented by the index \(H-i\).
+
+Target theorems are:
+
+\begin{lstlisting}[language={}]
+theorem viableTable_reflect :
+  Gamma |-[PRAAx]
+    TableOK R H table -->
+    (tableBit table i a = 1 <-> ViableFormula R H i a)
+
+theorem leastViablePath_sound :
+  Gamma |-[PRAAx] NonemptyViable R H -->
+    PathOK R H (leastViablePath R H)
+\end{lstlisting}
+
+\texttt{ViableFormula} may contain bounded existentials and is used only after Boolean reflection; \texttt{TableOK} and the induction invariant remain QF.
+
+\subsection{Shrinking metrics}
+
+Represent nonnegative rationals by numerator/positive-denominator pairs or scaled integers.  Define a metric observation interface:
+
+\begin{lstlisting}[language={}]
+structure ObservedRelation (n : Nat) extends RelPresentation n where
+  obs       : PR (n + 2)    -- candidate, precision, params -> rational code
+  distLe    : Fm PTm (n + 3)
+  diameter : PTm (n + 1)    -- precision, params -> rational code
+  motion   : PTm (n + 1)
+  diameterProof : ...       -- actual Prf PRAAx derivation
+  motionProof   : ...
+\end{lstlisting}
+
+The exact arity of \texttt{distLe} depends on the rational-code API; the blueprint file keeps the theorem signature schematic.  The key object targets are:
+
+\begin{lstlisting}[language={}]
+theorem adjacent_coherence :
+  Gamma |-[PRAAx]
+    distLe (x p) (x (p+1)) (diameter p + motion p)
+
+theorem regularName_of_tail :
+  Gamma |-[PRAAx] TailBudget diameter motion --> RegularName x
+\end{lstlisting}
+
+The finite triangle-sum theorem is proved by \texttt{PRA.qfInd} on an equality/inequality code, not by invoking a semantic metric-space hierarchy.
+
+\subsection{Observational setoids}
+
+Use a structure containing formulas rather than Lean quotient types:
+
+\begin{lstlisting}[language={}]
+structure Presentation (n : Nat) where
+  valid  : Fm PTm (n + 1)          -- code, params
+  equiv  : Fm PTm (n + 3)          -- x, y, precision, params
+  validQF : valid.QF
+  equivQF : equiv.QF
+  refl   : ...
+  symm   : ...
+  trans  : ...
+  restrict : PR ...
+  restrict_sound : ...
+\end{lstlisting}
+
+An operation record stores a code function, demand, guard, correctness, and extensionality derivation.  Relational operations replace a code function by a finite relation and extensionality by bounded back-and-forth.
+
+\subsection{Demand semilattices}
+
+Start with scalar requests \(\Nat\), where join is maximum.  After the scalar compiler works, generalize to coded tuples:
+
+\begin{lstlisting}[language={}]
+structure RequestCode where
+  join : PR 2
+  le   : PR 2
+  refl : ...
+  join_left  : ...
+  join_right : ...
+  join_least : ...
+\end{lstlisting}
+
+A fixed graph can initially carry plain Lean functions producing \texttt{PTm} demand expressions.  The object reverse pass is generated as one loop with a QF invariant.  Internalizing arbitrary graph syntax is not required for theorem-level soundness.
+
+\subsection{Graph syntax and compilation}
+
+After generated examples stabilize, define a typed metalevel graph.  One workable design separates numerical environments from proof obligations:
+
+\begin{lstlisting}[language={}]
+inductive NodeKind
+  | exact | loop | search | relation | guard | observe | glue
+
+structure Node where
+  id        : Nat
+  kind      : NodeKind
+  deps      : List Nat
+  request   : RequestSchema
+  stateSize : Nat
+  localCode : LocalProgram
+  contract  : LocalContractSchema
+
+structure Graph where
+  nodes : List Node
+  acyclic : AcyclicByIndex nodes
+\end{lstlisting}
+
+\texttt{LocalProgram} is not an arbitrary PR code evaluated internally.  It is metasyntax elaborated to a concrete \texttt{PR} term.  The compiler returns a package:
+
+\begin{lstlisting}[language={}]
+structure CompiledGraph (G : Graph) where
+  demandInit demandStep demandFuel : ...
+  execInit   execStep   execFuel   : ...
+  demandInv execInv : Fm PTm ...
+  demandQF : demandInv.QF
+  execQF   : execInv.QF
+  demandBase demandPreserve : Prf PRAAx ...
+  execBase execPreserve     : Prf PRAAx ...
+  extract : Prf PRAAx ...
+\end{lstlisting}
+
+\begin{lstlisting}[language={}]
+theorem CompiledGraph.sound (C : CompiledGraph G) :
+  InputContext G |-[PRAAx] TerminalFormula G := ...
+\end{lstlisting}
+
+The proof invokes the two loop soundness theorems and cuts \texttt{extract}.  Structural soundness of the compiler is an induction on \texttt{G.nodes}; acyclicity by index makes dependency lookup simple.
+
+\subsection{Negative translation modules}
+
+Use the existing definitions from \texttt{NegativeSyntax.lean}.  The target signatures are:
+
+\begin{lstlisting}[language={}]
+theorem equality_stable (s t : PTm n) :
+  [] |-[PRAAx] ~~(s = t) --> (s = t)
+
+theorem negative_stable (A : Fm PTm n) :
+  [] |-[PRAAx] ~~(negative A) --> negative A
+
+theorem translate_prf
+    (h : Gamma |-[ClassicalPRAAx] A) :
+  Gamma.map negative |-[PRAAx] negative A
+
+theorem retained_iff
+    (h : Retained A) :
+  [] |-[PRAAx] Fm.iff (negative A) A
+
+theorem retained_transfer
+    (hGamma : forall B in Gamma, Retained B)
+    (hA : Retained A) :
+  (Gamma |-[ClassicalPRAAx] A) <-> (Gamma |-[PRAAx] A)
+\end{lstlisting}
+
+The actual syntax for double negation is \texttt{negFormula (negFormula A)}.  The \texttt{orE} and \texttt{exE} branches of \texttt{translate\_prf} should be implemented with helper lemmas:
+
+\begin{lstlisting}[language={}]
+theorem neg_or_elim
+    (hOr : Gamma |- negative (A or B))
+    (hA  : negative A :: Gamma |- C)
+    (hB  : negative B :: Gamma |- C)
+    (stableC : Gamma |- ~~C --> C) : Gamma |- C
+
+theorem neg_ex_elim ...
+\end{lstlisting}
+
+This isolates the binder and context bookkeeping from the main induction.
+
+\subsection{Worked formalization milestones}
+
+The recommended order is proof-driven.
+
+\begin{enumerate}
+\item Re-export the existing exact contract, object iteration, and stable-observer files in one library without copied kernels.
+\item Complete Boolean range/reflection for a small fixed set of PR Boolean symbols.
+\item Formalize least bounded search and one example: choose the least divisor or least valid rational interval.
+\item Formalize a tiny viability table with fixed level bounds, then generalize to variable bounds.
+\item Prove shrinking coherence for exact rational observations and a geometric tail budget.
+\item Generate and check one two-pass PFIG: bisection for \(y^3+y=x\), including backward precision demand and a regular root name.
+\item Complete negative translation and retained transfer.
+\item Add finite gluing and height/list adapters.
+\item Only then internalize the general graph AST and prove compiler soundness.
+\end{enumerate}
+
+This order yields useful checked theorems early and keeps the generic compiler grounded in concrete examples.
+
+\subsection{Axiom and status audit}
+
+Every public theorem concluding \(\Prf\ \PRAAx\) should be followed in an audit file by \texttt{\#print axioms}.  Expected metatheoretic axioms inherited from Lean's quotient/propositional infrastructure should be recorded, and no new arithmetic axiom should be introduced.  Files containing \texttt{sorry}, \texttt{axiom}, or theorem propositions used as placeholders must be clearly marked blueprint-only.
+
+The build should produce a machine-readable status file with, for each theorem:
+
+\begin{itemize}
+\item semantic Lean checked;
+\item executable tests passed;
+\item object formula defined;
+\item \(\Prf\ \PRAAx\) derivation checked;
+\item native transfer checked;
+\item remaining producer assumptions.
+\end{itemize}
+
+This prevents a semantic theorem from being mistaken for completion of the object layer.
+
+\subsection{Clear path to a complete formalization}
+
+No new foundational principle is required.  The completion path consists of:
+
+\begin{enumerate}
+\item consolidating already existing object-level loop and contract code;
+\item implementing finite Boolean reflection and table libraries;
+\item proving viability and shrinking estimates by those libraries;
+\item generating fixed PR state transitions and QF invariants;
+\item composing local object certificates by substitution and cut;
+\item completing the standard negative-translation induction;
+\item applying the already checked ordinary-to-native equivalence at the end.
+\end{enumerate}
+
+The largest engineering risk is substitution bookkeeping for generated formulas, not proof-theoretic strength.  Named instantiation helpers, a fixed variable-order convention, and small regression examples should make that risk manageable.

@@ -1,0 +1,47 @@
+{
+  "name": "Proof-Producing Finitary Interface Graph",
+  "abbreviation": "PFIG",
+  "snapshot": "34816faca8aa605999290b41d26210753b5c3b38",
+  "node_kinds": [
+    "exact_transducer",
+    "bounded_loop",
+    "bounded_search",
+    "relational_producer",
+    "guarded_operation",
+    "stable_observer",
+    "finite_gluing"
+  ],
+  "elimination_modes": [
+    "exact_selection",
+    "finite_search_or_viability",
+    "stable_erasure"
+  ],
+  "compilation_passes": [
+    {
+      "name": "backward_demand",
+      "output": "finite request vector",
+      "proof_invariant": "quantifier-free request equations"
+    },
+    {
+      "name": "forward_certificate",
+      "output": "encoded node outputs and certificate flags",
+      "proof_invariant": "quantifier-free state contract"
+    }
+  ],
+  "normal_form": {
+    "program": "fixed primitive-recursive encoded state transition",
+    "fuel": "primitive-recursive in terminal request and inputs",
+    "invariant": "quantifier-free",
+    "proof_backend": "Prf PRAAx plus quantifier-free induction"
+  },
+  "required_audit_fields": [
+    "representation",
+    "demand",
+    "producer",
+    "local_object_certificates",
+    "terminal_object_theorem",
+    "quantitative_guards",
+    "remaining_producers",
+    "barriers"
+  ]
+}

@@ -1,0 +1,191 @@
+\section{Shrinking viable clouds, coherent names, and stable observers}
+\label{sec:shrinking}
+
+Finite-horizon viability solves composition at a fixed precision.  To represent a real number, a root, a compact set, or another infinitary object, one needs a coherent sequence of finite observations.  This section gives sufficient quantitative conditions for constructing such a sequence without selecting an infinite witness branch.
+
+\subsection{Observed values of candidates}
+
+Let \((M,d)\) be a coded metric target, typically rational vectors with an integer-valued scaled distance.  At level \(p\), every candidate \(a\in A_p\) has an observed value
+\[
+ q_p(a)\in M.
+\]
+All values and distance comparisons used below are primitive recursive on codes.  Exact real-valued inequalities are represented by rational upper bounds.
+
+Choose a nondecreasing primitive-recursive horizon \(H(p)\ge p\).  Let
+\[
+ V_p=\{a\in A_p:\Viable_p^{H(p)}(a)\}
+\]
+be the cloud of candidates that extend to the requested horizon.  Assume \(V_p\) is nonempty; this is a finite certificate obligation.
+
+Define \(a_p\) to be the least code in \(V_p\), and set
+\[
+ x_p=q_p(a_p).
+\]
+The choices \(a_p\) need not lie on one path.  Coherence will come from quantitative indistinguishability of viable candidates, not from branch choice.
+
+\subsection{Diameter and edge-motion hypotheses}
+
+Assume primitive-recursive rational bounds \(\del_p\) and \(\eps_p\) with the following properties.
+
+\begin{description}
+\item[Viable-cloud diameter.] For all \(a,b\in V_p\),
+\[
+ d(q_p(a),q_p(b))\le \del_p.
+\]
+\item[Compatible edge motion.] If \(\Edge_p(a,b)\), then
+\[
+ d(q_p(a),q_{p+1}(b))\le \eps_p.
+\]
+\end{description}
+
+The first condition says that all finite witnesses which can survive far enough already agree on the observable value.  The second bounds the change in observation along a compatible refinement.
+
+\begin{theorem}[Adjacent coherence from shrinking viability]
+\label{thm:adjacent-coherence}
+If \(H\) is nondecreasing, then
+\[
+ d(x_p,x_{p+1})\le \del_p+\eps_p.
+\]
+\end{theorem}
+
+\begin{proof}
+Because \(a_{p+1}\) is viable to \(H(p+1)\), choose a compatible path from level \(p+1\) to that horizon.  By the definition of viability at level \(p+1\), there is at least one predecessor \(b_p\in A_p\) on a path compatible with \(a_{p+1}\), or, if edges are oriented forward only, take the level-\(p\) member of a viable path whose next point is \(a_{p+1}\).  In implementations where not every viable next-level code has a predecessor, define \(a_{p+1}\) as the least endpoint of a viable pair; the same argument applies.
+
+Since \(H(p+1)\ge H(p)\), truncating this path shows that \(b_p\in V_p\).  Therefore the diameter hypothesis gives
+\[
+ d(q_p(a_p),q_p(b_p))\le\del_p.
+\]
+Compatibility of \(b_p\) and \(a_{p+1}\) gives
+\[
+ d(q_p(b_p),q_{p+1}(a_{p+1}))\le\eps_p.
+\]
+The triangle inequality yields the claim.
+\end{proof}
+
+The minor predecessor convention in the proof is worth making explicit in a formal development.  A clean representation stores viable \emph{pairs} when moving between horizons, so the chosen level-\(p+1\) endpoint always comes with a certified predecessor.
+
+\subsection{Regular-name extraction}
+
+A regular rational name for a real number is often required to satisfy
+\[
+ |r_p-r_q|\le 2^{-p}\qquad(q\ge p),
+\]
+or an equivalent adjacent-step condition with a summable tail.
+
+\begin{theorem}[Regular name from a motion budget]
+\label{thm:regular-name}
+Suppose a primitive-recursive tail modulus proves
+\[
+  \sum_{j=p}^{q-1}(\del_j+\eps_j)\le 2^{-p}
+  \qquad\text{for all }q\ge p.
+\]
+Then \((x_p)_p\) is a regular Cauchy name.  The function \(p\mapsto x_p\) is primitive recursive.
+\end{theorem}
+
+\begin{proof}
+Primitive recursiveness follows from bounded viability, least search, and the observation map.  For \(q>p\), repeatedly apply \cref{thm:adjacent-coherence} and the triangle inequality:
+\[
+ d(x_p,x_q)
+ \le\sum_{j=p}^{q-1}d(x_j,x_{j+1})
+ \le\sum_{j=p}^{q-1}(\del_j+\eps_j)
+ \le 2^{-p}.
+\]
+Every sum is finite and its inequality is a bounded arithmetic certificate.  The object-iPRA proof uses a finite-sum loop and quantifier-free induction on the equality/inequality code.
+\end{proof}
+
+A common convenient schedule is \(\del_p\le 2^{-p-3}\) and \(\eps_p\le 2^{-p-3}\).  Then the tail is at most \(2^{-p-1}\), leaving room for approximation errors in later operations.
+
+\subsection{No infinite witness branch is selected}
+
+The name \(x_p\) is computed afresh from the finite table for horizon \(H(p)\).  The underlying witnesses \(a_p\) may jump between branches.  The diameter hypothesis proves that the observable value is insensitive to this jumping.  Hence the theorem constructs an infinite numerical name without constructing an infinite path in the witness tree.
+
+This distinction resolves a major constructive difficulty.  Root boxes may exchange labels near a collision, local solution branches may bifurcate, and triangulations may refine in noncanonical ways.  If the target observable is stable and the viable clouds shrink, a coherent name still exists.
+
+\subsection{Stable observers}
+
+Often even a regular name is unnecessary.  Suppose two independent producers return certificates \(C_1(c_1)\) and \(C_2(c_2)\), while the desired theorem is \(O\).  A local stability proof has the form
+\[
+ C_1(c_1),C_2(c_2),\Gamma\vdash_{\PRAAx}O.
+\]
+Existence or exact production of the certificates, followed by implication introduction and modus ponens, yields \(O\).  The actual codes disappear.
+
+\begin{theorem}[Stable-observer erasure]
+\label{thm:stable-erasure}
+Let \(R_i(y_i)\) be finite producer relations and suppose object-iPRA proves:
+\begin{align*}
+ \Gamma&\vdash\exists y_i<B_i\ R_i(y_i)\qquad(1\le i\le k),\\
+ R_1(y_1),\ldots,R_k(y_k),\Gamma&\vdash O
+\end{align*}
+with the conclusion independent of the bound variables \(y_i\).  Then object-iPRA proves \(\Gamma\vdash O\).
+\end{theorem}
+
+\begin{proof}
+Apply existential elimination successively.  Freshness is satisfied because \(O\) and \(\Gamma\) do not contain the witness variables.  Equivalently, if exact certificate terms are already available, use the repository's \texttt{observableFromLocalStability} combinator, which implements the same proof by implication introduction and elimination \cite{repo-observable}.
+\end{proof}
+
+This theorem should be preferred to least selection whenever the consumer is genuinely witness-independent.  It produces smaller proof terms and avoids artificial canonicity claims.
+
+\subsection{Metric-stable observers}
+
+A terminal observable may not be exactly equal for all witnesses but may vary by a controlled amount.  Let \(O(y)\) be a rational observation and suppose all viable witnesses at precision \(p\) satisfy
+\[
+ d(O(a),O(b))\le\eta_p.
+\]
+Then any least-witness output is canonical up to \(\eta_p\).  If \(\eta_p\to0\) with an explicit modulus, the outputs define the same represented limit.  This is the approximate analogue of stable erasure.
+
+In the object theory, replace equality by a scaled rational inequality.  The proof is again finite: produce any two valid certificates and apply the local stability estimate.  Extensional equality of represented objects is then defined observationally rather than as equality of codes.
+
+\subsection{Root collisions}
+
+Consider a monic polynomial with approximate coefficients.  At precision \(p\), a certified root producer may output a multiset of rational disks whose union contains all roots with multiplicity.  Individual disk labels can permute or merge as coefficients vary.  The correct stable observables include:
+
+\begin{itemize}
+\item the multiset of disks modulo permutation;
+\item symmetric polynomials of root approximants;
+\item clusters separated from the remaining spectrum;
+\item root counts in regions whose boundary has a certified gap.
+\end{itemize}
+
+An ordered root name is legitimate only under a separation certificate showing that distinct clusters remain at least \(\gamma>0\) apart and the approximation error is less than, say, \(\gamma/3\).  Then nearest-cluster matching is unique and primitive recursive.
+
+\subsection{Spectral data}
+
+The same pattern applies to matrices.  Ordered eigenvalues of a self-adjoint matrix are stable as a multiset and can be named using variational or characteristic-polynomial data.  Eigenvectors are not stable at repeated eigenvalues.  Stable outputs are:
+
+\begin{itemize}
+\item the characteristic polynomial;
+\item the ordered eigenvalue list with multiplicity;
+\item spectral clusters;
+\item a projector onto a cluster separated by a positive gap;
+\item polynomial functions of the matrix.
+\end{itemize}
+
+A projector requires a gap guard.  An individual eigenvector additionally requires a one-dimensionality certificate and a sign convention separated from zero in a chosen coordinate.  The framework thereby turns an apparent logical obstruction into a precise interface condition.
+
+\subsection{Metastability versus a Cauchy modulus}
+
+A metastability statement has the form
+\[
+ \forall p\,\forall g\,\exists N\le\Phi(p,g)\,
+ \forall i,j\in[N,N+g(N)]\ d(x_i,x_j)\le2^{-p}.
+\]
+It gives arbitrarily long stable finite windows but not, in general, a computable tail modulus.  PFIGs can represent and prove the metastable theorem as a finite search contract: for fixed \(p,g\), search \(N\le\Phi(p,g)\) and check the bounded window.  They must not then advertise \((x_n)\) as a regular Cauchy name unless an additional tail modulus is supplied.
+
+Shrinking viability is stronger because its diameter and motion hypotheses directly give a summable tail.  The framework records the two outputs as different interface types:
+
+\begin{itemize}
+\item \texttt{MetastableSequence}: a finite-window search contract;
+\item \texttt{RegularName}: a primitive-recursive approximant with a tail modulus.
+\end{itemize}
+
+\subsection{Formalization shape}
+
+The Lean development should prove three layers.
+
+\begin{enumerate}
+\item A semantic theorem on finite lists or bounded predicates: viability, predecessor extraction, and the adjacent coherence inequality.
+\item An object-iPRA theorem reflecting the viability table and least-pair selection.
+\item A rational metric library proving finite triangle sums and converting the tail certificate into the regular-name formula.
+\end{enumerate}
+
+The first layer can be executable and tested independently.  The second and third are the proof-producing bridge.  The theorem ledger must not mark the regular-name result complete until the object reflection, not just the semantic inequality, has been constructed.
