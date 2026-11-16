@@ -16,6 +16,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.Circumcircle.radius
 #print axioms LeanProofs.IPRA.Geometry.Circumcircle.square_compare
 #print axioms LeanProofs.IPRA.Geometry.Circumcircle.square_compare_closed
+#print axioms LeanProofs.IPRA.Geometry.ConwayAlgebra.half_inv
+#print axioms LeanProofs.IPRA.Geometry.ConwayAlgebra.half_half
+#print axioms LeanProofs.IPRA.Geometry.ConwayAlgebra.half_trans
+#print axioms LeanProofs.IPRA.Geometry.ConwayAlgebra.det_translate
+#print axioms LeanProofs.IPRA.Geometry.ConwayAlgebra.det_half
+#print axioms LeanProofs.IPRA.Geometry.ConwayAlgebra.det_sym
+#print axioms LeanProofs.IPRA.Geometry.ConwayAlgebra.period_area
+#print axioms LeanProofs.IPRA.Geometry.ConwayAlgebra.centres
+#print axioms LeanProofs.IPRA.Geometry.ConwayAlgebra.zt_cancel_two
+#print axioms LeanProofs.IPRA.Geometry.ConwayAlgebra.central_path
+#print axioms LeanProofs.IPRA.Geometry.ConwayAlgebra.period_area_paths
 #print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.mul_adjugate
 #print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.det_mul
 #print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.cayleyHamilton2

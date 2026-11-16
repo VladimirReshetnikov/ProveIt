@@ -109,6 +109,7 @@ import IPRADerivations.Geometry.SphericalCore
 import IPRADerivations.Geometry.SphericalPolar
 import IPRADerivations.Geometry.TriangleFormulas
 import IPRADerivations.Geometry.Circumcircle
+import IPRADerivations.Geometry.ConwayAlgebra
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.Geometry.PowerOfPoint
 import IPRADerivations.Probability.Expectation
