@@ -1,0 +1,24 @@
+\section{Further research questions}
+\label{sec:further}
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=*]
+\item \textbf{Smallest object-theory proof.}  What is the smallest complete \(\Prf\,\PRA\) derivation of the PL criterion when measured by normalized Lean term size or by the concise proof-checker metrics used in \code{ConciseIPRA}?  The torus coefficient lemma may admit a very small generic library theorem.
+
+\item \textbf{Avoiding a full arrangement.}  Can the formal proof use only pairwise convex clipping, area additivity, and a finite separation lemma, thereby eliminating explicit face enumeration and dual spanning trees?  Which route produces the simpler proof object?
+
+\item \textbf{A general periodic-cycle principle.}  Formalize a reusable theorem: a finite family of positively oriented rational PL disks whose projected boundaries cancel on a lattice torus and whose total area equals the lattice covolume forms a tiling.  Conway's criterion would then be a short boundary-cancellation corollary.  The same principle may cover generalized parallelogons and other wallpaper-group constructions.
+
+\item \textbf{Other wallpaper groups.}  Replace half-turns by rotations of orders \(3,4,6\) or by glide reflections.  Which local boundary equations imply a finite orbifold cycle of multiplicity one?  A uniform ``orbifold chain certificate'' could subsume several classical tiling criteria.
+
+\item \textbf{Represented curved boundaries.}  Starting from the repository's constructive Jordan framework, identify minimal primitive-recursive moduli ensuring that a curved Conway datum has stable finite PL torus certificates.  Can one avoid a full constructive Schoenflies theorem?
+
+\item \textbf{Automatic criterion discovery.}  Given a rational polygonal tile, use bounded search to find six boundary breakpoints and normalized path correspondences satisfying \code{ConwayOK}.  The search is decidable for a fixed finite subdivision.  What is its complexity, and can symmetry hashing make it practical for large polyforms?
+
+\item \textbf{Certificate minimization.}  The worked example's cutter returns \(58\) convex pieces.  Find a canonical minimal torus subdivision or a proof-producing simplifier that merges adjacent pieces while preserving exact boundary tags.
+
+\item \textbf{Reverse characterization.}  Schattschneider discusses Conway tiles as those admitting suitable \(p2\)-ishedral tilings.  What finite arithmetic hypotheses on a periodic half-turn tiling suffice to reconstruct the six paths and prove the converse in iPRA?
+
+\item \textbf{Degenerate and self-contacting fundamental domains.}  The theorem assumes a disk with simple boundary.  Can the chain method classify when a non-simple generalized parallelogon still yields a legitimate tile after cancellation of retraced arcs?
+
+\item \textbf{Formal proof extraction to graphics.}  Generate SVG or TikZ tiling patches directly from the checked torus certificate, so that the illustration is a verified rendering of the same number-coded data used in the theorem.
+\end{enumerate}

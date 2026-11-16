@@ -1,0 +1,113 @@
+\section{Worked exact example}
+\label{sec:example}
+
+The packet includes a nonconvex-looking zigzag generalized hexagon whose boundary paths have several vertices.  It is deliberately more informative than a straight-sided hexagon: the local equations are path equations, not merely equal-length side equations.
+
+\subsection{Boundary data}
+
+The marked points are
+\[
+ A=(0,0),\quad B=(4,0),\quad C=(6,2),\quad
+ D=(5,6),\quad E=(1,6),\quad F=(-2,3).
+\]
+The oriented paths are:
+\begin{align*}
+ a={}&[(0,0),(1,-\tfrac12),(3,-\tfrac12),(4,0)],\\
+ b={}&[(4,0),(\tfrac92,\tfrac15),(\tfrac{11}2,\tfrac95),(6,2)],\\
+ c={}&[(6,2),(\tfrac{63}{10},3),(\tfrac{47}{10},5),(5,6)],\\
+ d={}&[(5,6),(4,\tfrac{11}2),(2,\tfrac{11}2),(1,6)],\\
+ e={}&[(1,6),(\tfrac45,\tfrac{53}{10}),(-\tfrac95,\tfrac{37}{10}),(-2,3)],\\
+ f={}&[(-2,3),(-\tfrac{11}5,2),(\tfrac15,1),(0,0)].
+\end{align*}
+The polygon is simple and positively oriented.  The first figure displays the six paths separately.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.91\textwidth]{zigzag_conway_tile.pdf}
+\caption{A rational PL Conway datum.  The path \(d\) is the translated reverse of \(a\); each of \(b,c,e,f\) is a two-sided zigzag around its endpoint midpoint.}
+\label{fig:exampletile}
+\end{figure}
+
+\subsection{Local equations}
+
+The first period is
+\[
+ t=E-A=(1,6)=D-B.
+\]
+Adding \(t\) to the vertices of \(a\) gives
+\[
+ [(1,6),(2,\tfrac{11}2),(4,\tfrac{11}2),(5,6)],
+\]
+which is exactly \(\rev(d)\).
+
+For \(b\), the doubled center is
+\[
+ B+C=(10,2).
+\]
+The half-turn exchanges \((4,0)\leftrightarrow(6,2)\) and
+\[
+ (\tfrac92,\tfrac15)\leftrightarrow(\tfrac{11}2,\tfrac95).
+\]
+Thus \(\half{B+C}(b)=\rev(b)\).  The other three paths were chosen in the same paired way, with doubled centers
+\[
+ C+D=(11,8),\qquad E+F=(-1,9),\qquad F+A=(-2,3).
+\]
+Every local Conway check is therefore an exact rational equality.
+
+\subsection{Periods and area}
+
+The second period is
+\[
+ u=E+F-B-C=(-11,7).
+\]
+Consequently
+\[
+ \det(t,u)=
+ \det\begin{pmatrix}1&-11\\6&7\end{pmatrix}
+ =1\cdot7-6(-11)=73.
+\]
+The shoelace sum of the eighteen effective boundary vertices is also \(73\), so
+\[
+ \Area(T)=\frac{73}{2}.
+\]
+The period parallelogram has area \(73\), exactly the area of two tile copies.
+
+The selected half-turn is
+\[
+ R(x)=E+F-x=(-1,9)-x.
+\]
+The explicit tiling is therefore
+\[
+ T+m(1,6)+n(-11,7),
+ \qquad
+ R(T)+m(1,6)+n(-11,7).
+\]
+A finite window is shown in \cref{fig:exampletiling}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{zigzag_conway_tiling.pdf}
+\caption{A window of the two-orbit tiling.  Alternating opacity distinguishes the direct and half-turned translation orbits.}
+\label{fig:exampletiling}
+\end{figure}
+
+\subsection{Exact executable certificate}
+
+The standard-library Python kernel performs the following checks with \code{fractions.Fraction}:
+\begin{enumerate}[label=(\arabic*)]
+\item cyclic endpoint continuity, at least three marked points, simplicity, and positive orientation;
+\item the translated-pair and four half-turn path equations;
+\item the four orbit boundary identities from \cref{lem:orbitpairs};
+\item \(\det(t,u)=\PathJ(\partial T)=73\);
+\item exact ear triangulation of the polygon;
+\item exact conversion of both orbit representatives to lattice coordinates;
+\item clipping of every relevant translated triangle to the unit square;
+\item total clipped area one and zero positive-area intersection for every pair.
+\end{enumerate}
+
+The run produces \(58\) nonzero convex pieces in the unit square.  Their total area is exactly \(1\), and the maximum pairwise intersection area is exactly \(0\).  The generated JSON report is included at
+\begin{center}
+\code{examples/zigzag\_conway\_tile\_report.json}.
+\end{center}
+
+The executable result is independent evidence for the worked example, not a substitute for the universal proof.  Its main value for formalization is that it fixes data formats and exercises the same finite algorithms proposed for \code{BuildTorus}.

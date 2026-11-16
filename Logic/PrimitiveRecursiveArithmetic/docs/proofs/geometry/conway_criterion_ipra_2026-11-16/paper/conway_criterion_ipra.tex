@@ -1,0 +1,97 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\graphicspath{{../figures/}}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=green!35!black,
+  urlcolor=blue!65!black,
+  pdftitle={The Conway criterion in intuitionistic primitive recursive arithmetic},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov},
+  pdfsubject={Constructive tiling theory and iPRA formalization plan},
+  pdfkeywords={Conway criterion, tiling, iPRA, primitive recursive arithmetic, Lean, torus}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Conway criterion in iPRA}
+\rhead{\thepage/\pageref{LastPage}}
+\setlength{\headheight}{14pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Torus}{\mathbb T}
+\newcommand{\Area}{\operatorname{area}}
+\newcommand{\detp}[2]{\det(#1,#2)}
+\newcommand{\rev}{\operatorname{rev}}
+\newcommand{\PathJ}{\mathcal J}
+\newcommand{\trans}[1]{\tau_{#1}}
+\newcommand{\half}[1]{H_{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\PRA}{\mathrm{PRAAx}}
+\newcommand{\Prf}{\mathrm{Prf}}
+\newcommand{\bool}{\mathbf B}
+
+\lstdefinestyle{leanstyle}{
+  language={},
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  frame=single,
+  breaklines=true,
+  showstringspaces=false,
+  backgroundcolor=\color{black!2}
+}
+\lstset{style=leanstyle}
+
+\title{\textbf{The Conway Criterion in Intuitionistic Primitive Recursive Arithmetic}\\[0.5ex]
+\large An explicit two-orbit construction and a finite torus-chain proof}
+\author{Research packet prepared for Vladimir Reshetnikov}
+\date{16 November 2026}
+
+\begin{document}
+\maketitle
+\input{sections/00_abstract}
+\tableofcontents
+\clearpage
+\input{sections/01_scope_statement}
+\input{sections/02_affine_path_algebra}
+\input{sections/03_explicit_orbit}
+\input{sections/04_area_identity}
+\input{sections/05_torus_cycle}
+\input{sections/06_main_theorem}
+\input{sections/07_ipra_encoding}
+\input{sections/08_lean_plan}
+\input{sections/09_example}
+\input{sections/10_constructive_audit}
+\input{sections/11_further_questions}
+\input{sections/12_appendices}
+\input{sections/13_references}
+\end{document}

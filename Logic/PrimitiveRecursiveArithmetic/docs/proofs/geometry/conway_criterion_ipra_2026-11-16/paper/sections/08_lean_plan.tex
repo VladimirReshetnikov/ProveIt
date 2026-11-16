@@ -1,0 +1,141 @@
+\section{Lean formalization outline}
+\label{sec:lean}
+
+The repository already separates three levels that should remain distinct:
+\begin{enumerate}[label=(\arabic*)]
+\item ordinary Lean structures used to test definitions and algebra;
+\item formulas and derivations in the embedded \(\Prf\,\PRA\) calculus; and
+\item transfer to the concise native presentation.
+\end{enumerate}
+A correct formalization must reach level~(2).  A host-level theorem alone does not establish provability in iPRA.
+
+\subsection{Reusable checked infrastructure}
+
+The following ProveIt modules are directly relevant.
+
+\begin{longtable}{@{}p{0.34\textwidth}p{0.60\textwidth}@{}}
+\toprule
+Module & Reuse \\
+\midrule
+\endhead
+\code{Core.Basic}, \code{Core.Semiring} & Defining equations, substitution, induction helpers, semiring laws, cancellation. \\
+\code{Core.Integers} & Signed values as differences and an interpreted commutative ring. \\
+\code{Core.Tactic} & Universal closure helpers and \code{ipra\_ring}. \\
+\code{Core.Definitions} & Turning finite recursive term definitions into primitive-recursive symbols. \\
+\code{Core.Pairing} & Pair/list coding, projections, equality test, simultaneous recursion. \\
+\code{Core.Order} & Decidable comparisons and monotonicity. \\
+\code{Core.Search} & Bounded least search for normalization, sorting, and graph traversal. \\
+\code{Core.BoundedSums}, \code{Core.MultiSums} & Shoelace sums, area sums, and coverage-count folds. \\
+\code{Core.LinearAlgebra} & Integer vectors, determinants, finite conjunctions, and the \code{ZT.derive} bridge from ring identities to \(\PRA\) proofs. \\
+\code{ConciseIPRA} & \code{PR}, \code{PTm}, \code{PRAAx}, \code{Prf}, cut/substitution, and \code{pra\_iff\_native}. \\
+\bottomrule
+\end{longtable}
+
+The existing constructive Jordan packet is useful as a design reference for rational arrangements and finite path certificates, but its main Lean scaffold is uncompiled.  The Conway development should not import an unproved Jordan theorem.  The torus-chain proof is deliberately self-contained.
+
+\subsection{Suggested file layout}
+
+\begin{lstlisting}
+IPRADerivations/Geometry/Conway/
+  Point.lean              -- coded signed/rational points and det
+  Path.lean               -- lists, reverse, transforms, PathJ
+  DiskCert.lean           -- finite triangulated-disk checker
+  ConwayData.lean         -- six paths and local criterion
+  PeriodArea.lean         -- det(t,u)=twiceArea
+  TorusPieces.lean        -- lattice coordinates and clipping
+  TorusRefinement.lean    -- arrangement, faces, dual tree
+  Multiplicity.lean       -- closed 2-chain => constant count
+  Criterion.lean          -- final Prf PRAAx theorem
+  NativeExport.lean       -- pra_iff_native corollary
+\end{lstlisting}
+
+A smaller first milestone can combine \code{Point}, \code{Path}, and \code{PeriodArea}; the torus refinement is the main engineering block.
+
+\subsection{Host-level definitions}
+
+The supplied \code{ConwayCriterionBlueprint.lean} begins with transparent definitions such as:
+
+\begin{lstlisting}
+structure IPoint where
+  x : Int
+  y : Int
+
+def IPoint.det (p q : IPoint) : Int :=
+  p.x * q.y - p.y * q.x
+
+def IPoint.halfTurn (s p : IPoint) : IPoint :=
+  s - p                         -- s is the doubled center
+
+def pathJ : List IPoint -> Int
+  | p :: q :: r => det p q + pathJ (q :: r)
+  | _           => 0
+\end{lstlisting}
+
+At this semantic layer, prove and test the affine identities, the exact example, and the behavior of the clipping algorithm.  These theorems help debug definitions but are not the final logical endpoint.
+
+\subsection{Object-language signatures}
+
+At the arithmetic layer, define a closed formula using fixed primitive-recursive symbols.  A schematic Lean signature is:
+
+\begin{lstlisting}
+def conwayCriterionFormula : Fm PTm 0 :=
+  univ 1 (
+    diskOK (var 0) = 1 /\ conwayOK (var 0) = 1 -->
+    torusOK (var 0) (buildTorus (var 0)) = 1)
+
+theorem conwayCriterion :
+    ([] : List (Fm PTm 0)) |- [PRAAx] conwayCriterionFormula := by
+  -- composition of the derivations listed below
+\end{lstlisting}
+
+The exact notation should follow the current repository API rather than the ASCII sketch above.  The important point is the theorem's type: it must be an empty-context object-theory derivation.
+
+\subsection{Named proof milestones}
+
+A robust formalization should expose the following lemmas rather than proving the final theorem monolithically.
+
+\begin{enumerate}[label=\textbf{L\arabic*.}]
+\item \code{halfTurn\_comp}: \(H_r(H_s(x))=x+(r-s)\).
+\item \code{pathJ\_translate}: the telescoping translation law.
+\item \code{pathJ\_reverse}: reversal negates \(\PathJ\).
+\item \code{pathJ\_central}: a centrally symmetric path has endpoint determinant.
+\item \code{translatedPair\_J}: the contribution of \(a,d\).
+\item \code{conwayBoundary\_J}: the six-path sum equals \(\det(t,u)\).
+\item \code{triangulationBoundary\_J}: triangle-edge cancellation equals twice area.
+\item \code{periodDet\_pos}: positive disk certificate implies \(0<\det(t,u)\).
+\item \code{orbitBoundary\_zero}: the two representatives form a torus cycle.
+\item \code{faceCoeff\_adjacent}: zero boundary equates adjacent counts.
+\item \code{faceCoeff\_constant}: tree induction propagates the count.
+\item \code{faceCoeff\_one}: finite area cancellation gives count one.
+\item \code{torusTwoOrbit\_exact}: the torus partition checker accepts.
+\item \code{boundedPatch\_exact}: every computed finite patch checker accepts.
+\end{enumerate}
+
+\subsection{Avoiding common formalization traps}
+
+\paragraph{Do not use real quotients in the object theory.}
+The host layer may describe \(\R^2/L\), but the arithmetic implementation should use rational lattice coordinates in a unit square with identified side tags.  Congruence modulo \(L\) is witnessed by integer index pairs.
+
+\paragraph{Do not hide planarity in an oracle.}
+The common refinement must be either produced by an explicit clipping/arrangement constructor or supplied as a certificate whose existence is then constructively generated.  A predicate named \code{isTiling} with no verified algorithm would merely rename the theorem.
+
+\paragraph{Do not use classical choice to select faces.}
+Use bounded least search and a generated spanning tree.  Every parent and traversal order is numerical data.
+
+\paragraph{Do not infer iPRA from a Lean computation.}
+A successful \code{\#eval} of \code{TorusOK} on examples is validation only.  The final theorem must inhabit \code{Prf PRAAx}.
+
+\paragraph{Do not overstate the curved-boundary scope.}
+The first formal target should be the rational PL theorem.  A represented-continuum extension needs explicit approximation and separation moduli and should be a separate module.
+
+\subsection{Final integration and audit}
+
+After the proof compiles:
+\begin{enumerate}[label=(\arabic*)]
+\item register the module in \code{IPRADerivations.lean};
+\item add the theorem to \code{Checks/Axioms.lean};
+\item run \code{lake build IPRADerivations};
+\item inspect \code{\#print axioms conwayCriterion}; and
+\item derive the native-calculus theorem through \code{pra\_iff\_native}.
+\end{enumerate}
+The completion criterion is an elaborated empty-context derivation with no \code{sorryAx}.  This packet does not claim that milestone has already been reached.

@@ -1,0 +1,117 @@
+\section{The determinant--area identity}
+\label{sec:area}
+
+The decisive numerical invariant is obtained from an \emph{open-path} version of the shoelace sum.  Keeping paths open makes the contribution of a translation visible.
+
+\subsection{The open-path shoelace functional}
+
+For a finite path \(P=(p_0,\ldots,p_k)\), define
+\begin{equation}
+ \PathJ(P)=\sum_{i<k}\det(p_i,p_{i+1}).
+ \label{eq:pathJ}
+\end{equation}
+If \(P\) is closed, \(\PathJ(P)\) is twice its oriented polygonal area.  More generally:
+
+\begin{lemma}[Elementary \(\PathJ\)-laws]
+\label{lem:Jlaws}
+Let \(P\) run from \(X\) to \(Y\).  Then
+\begin{align}
+ \PathJ(P*Q)&=\PathJ(P)+\PathJ(Q),\label{eq:Jconcat}\\
+ \PathJ(\rev P)&=-\PathJ(P),\label{eq:Jreverse}\\
+ \PathJ(\trans w P)&=\PathJ(P)+\det(w,Y-X),\label{eq:Jtranslate}\\
+ \PathJ(\half s P)&=\PathJ(P)+\det(s,X-Y).\label{eq:Jhalf}
+\end{align}
+\end{lemma}
+\begin{proof}
+The first two statements are finite-sum rearrangements.  For translation, each edge contributes
+\[
+ \det(p_i+w,p_{i+1}+w)
+ =\det(p_i,p_{i+1})+\det(w,p_{i+1}-p_i).
+\]
+The added terms telescope to \(\det(w,Y-X)\).  For \cref{eq:Jhalf}, first negate every point; this preserves each determinant, changes the endpoints to \(-X,-Y\), and then translate by \(s\).  Applying \cref{eq:Jtranslate} gives
+\[
+ \PathJ(\half s P)=\PathJ(P)+\det(s,(-Y)-(-X)).
+\]
+All proofs are inductions over the path list and polynomial normalization.
+\end{proof}
+
+\begin{lemma}[Centrally symmetric path]
+\label{lem:Jcentral}
+If \(P\) runs from \(X\) to \(Y\) and
+\[
+ \half{X+Y}(P)=\rev(P),
+\]
+then
+\begin{equation}
+ \PathJ(P)=\det(X,Y).
+ \label{eq:Jcentral}
+\end{equation}
+\end{lemma}
+\begin{proof}
+By \cref{eq:Jreverse,eq:Jhalf},
+\[
+ -\PathJ(P)
+ =\PathJ(P)+\det(X+Y,X-Y).
+\]
+Bilinearity and antisymmetry give
+\[
+ \det(X+Y,X-Y)=-2\det(X,Y).
+\]
+Therefore \(2\PathJ(P)=2\det(X,Y)\), and cancellation of the positive numeral \(2\) yields \cref{eq:Jcentral}.  In the object theory one can avoid a primitive division operation: this is integer cancellation in the difference ring, already supported by the ProveIt arithmetic layer.
+\end{proof}
+
+\subsection{The translated pair}
+
+The relation \(\trans t(a)=\rev(d)\), with \(a:A\to B\), gives by \cref{eq:Jreverse,eq:Jtranslate}
+\begin{equation}
+ \PathJ(a)+\PathJ(d)=-\det(t,B-A).
+ \label{eq:Jad}
+\end{equation}
+The four central paths give
+\begin{equation}
+ \PathJ(b)=\det(B,C),\quad
+ \PathJ(c)=\det(C,D),\quad
+ \PathJ(e)=\det(E,F),\quad
+ \PathJ(f)=\det(F,A).
+ \label{eq:Jcentralfour}
+\end{equation}
+
+\begin{theorem}[Period--area identity]
+\label{thm:periodarea}
+For every normalized PL Conway datum,
+\begin{equation}
+ \det(t,u)=2\Area(T)>0.
+ \label{eq:periodarea}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Add \cref{eq:Jad,eq:Jcentralfour}.  Since \(D=B+t\) and \(E=A+t\),
+\begin{align*}
+ \PathJ(\partial T)
+ &= -\det(t,B-A)
+    +\det(B,C)+\det(C,B+t)\\
+ &\qquad +\det(A+t,F)+\det(F,A)\\
+ &=\det(t,A+F-B-C).
+\end{align*}
+The terms \(\det(B,C)+\det(C,B)\) and \(\det(A,F)+\det(F,A)\) cancel.  Because
+\[
+ u=E+F-B-C=t+A+F-B-C
+\]
+and \(\det(t,t)=0\), the last expression is \(\det(t,u)\).
+
+It remains to identify \(\PathJ(\partial T)\) with twice the area.  Sum the oriented shoelace values of the certified triangles.  Every interior edge appears once in each direction, so its determinant terms cancel.  The uncancelled edges are exactly the oriented boundary cycle.  Thus
+\[
+ \PathJ(\partial T)=2\sum_{\Delta\in\mathcal D}\Area(\Delta)=2\Area(T).
+\]
+Every triangle in the disk certificate has nonnegative oriented area, and at least one has positive area; hence \(2\Area(T)>0\).  This proves \cref{eq:periodarea}.
+\end{proof}
+
+\begin{corollary}[Nondegenerate period lattice]
+\label{cor:lattice}
+The vectors \(t,u\) are linearly independent, the lattice \(L=\Z t+\Z u\) has a positively oriented fundamental parallelogram, and its area is exactly twice the tile area.
+\end{corollary}
+\begin{proof}
+In two dimensions, \(\det(t,u)>0\) is precisely positive linear independence.  The covolume of \(L\) is \(\det(t,u)\), which equals \(2\Area(T)\) by \cref{thm:periodarea}.
+\end{proof}
+
+This identity is stronger than a post hoc area check.  It derives the second period's nondegeneracy directly from the Conway boundary equations, even when some marked points coincide or some paths are empty.

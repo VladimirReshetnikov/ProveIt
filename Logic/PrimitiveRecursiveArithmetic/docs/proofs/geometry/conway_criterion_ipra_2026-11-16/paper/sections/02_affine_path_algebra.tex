@@ -1,0 +1,116 @@
+\section{Finite affine and path algebra}
+\label{sec:affine}
+
+Everything needed from Euclidean geometry reduces to polynomial identities in two coordinates and recursion over finite lists.
+
+\subsection{Points, translations, and half-turns}
+
+For points or vectors \(x=(x_1,x_2)\) and \(y=(y_1,y_2)\), write
+\[
+ \det(x,y)=x_1y_2-x_2y_1.
+\]
+For a vector \(w\), let \(\trans{w}(x)=x+w\).  For a doubled center \(s\), let
+\[
+ \half{s}(x)=s-x.
+\]
+Thus \(\half{s}\) is rotation by \(180^\circ\) about \(s/2\), but no midpoint division occurs in the formal language.
+
+\begin{lemma}[Half-turn algebra]
+\label{lem:halfturnalgebra}
+For all doubled centers \(p,q\) and all points \(x\),
+\begin{align}
+ \half{p}(\half{p}(x))&=x,\label{eq:hinv}\\
+ \half{q}(\half{p}(x))&=\trans{q-p}(x),\label{eq:hh}\\
+ \half{p}(\trans{w}(x))&=\trans{-w}(\half{p}(x)).\label{eq:conjugate}
+\end{align}
+\end{lemma}
+\begin{proof}
+Expand the definitions:
+\[
+ p-(p-x)=x,
+ \qquad
+ q-(p-x)=x+(q-p),
+ \qquad
+ p-(x+w)=(p-x)-w.
+\]
+These are ring identities over the integers.  Their iPRA translations are handled by the integer-difference layer and \code{ipra\_ring}.
+\end{proof}
+
+For an oriented finite path \(P=(p_0,\ldots,p_r)\), transformations act pointwise.  Its reverse is
+\[
+ \rev(P)=(p_r,\ldots,p_0).
+\]
+As an oriented one-chain we also write \(-P\) for \(\rev(P)\).  Concatenation is denoted by \(P*Q\) when the last vertex of \(P\) is the first vertex of \(Q\).
+
+\subsection{Doubled centers forced by endpoints}
+
+Introduce the doubled centers of the four centrosymmetric paths:
+\begin{equation}
+ p=B+C,
+ \qquad q=C+D,
+ \qquad r=E+F,
+ \qquad s=F+A.
+ \label{eq:centers}
+\end{equation}
+The translated-pair condition gives
+\begin{equation}
+ E=A+t,
+ \qquad D=B+t.
+ \label{eq:endpointtranslation}
+\end{equation}
+Hence
+\begin{equation}
+ q=p+t,
+ \qquad r=s+t.
+ \label{eq:centerrelations}
+\end{equation}
+The second period in \cref{eq:periods} is simply
+\begin{equation}
+ u=r-p.
+ \label{eq:u-centers}
+\end{equation}
+Combining \cref{eq:hh,eq:centerrelations,eq:u-centers} yields
+\begin{align}
+ \half{r}\half{p}&=\trans{u},
+ &\half{r}\half{q}&=\trans{u-t},
+ &\half{r}\half{r}&=\operatorname{id},
+ &\half{r}\half{s}&=\trans{t}.
+ \label{eq:fourcompositions}
+\end{align}
+These four identities are the whole group-theoretic content of the construction.
+
+\subsection{Oriented path identities}
+
+The Conway hypotheses say
+\[
+ \half{p}(b)=-b,
+ \quad \half{q}(c)=-c,
+ \quad \half{r}(e)=-e,
+ \quad \half{s}(f)=-f.
+\]
+Apply \(\half r\) and use \cref{eq:fourcompositions}.
+
+\begin{lemma}[Pairing with the second orbit]
+\label{lem:orbitpairs}
+The half-turned tile \(R(T)=\half r(T)\) has boundary paths satisfying
+\begin{align}
+ \half r(b)&=-\trans u(b),\label{eq:bpair}\\
+ \half r(c)&=-\trans{u-t}(c),\label{eq:cpair}\\
+ \half r(e)&=-e,\label{eq:epair}\\
+ \half r(f)&=-\trans t(f).\label{eq:fpair}
+\end{align}
+Moreover the translated-pair relation \(\trans t(a)=-d\) remains a translated-pair relation after applying \(\half r\).
+\end{lemma}
+\begin{proof}
+For \(b\), for example,
+\[
+ \trans u(b)=\half r\half p(b)=\half r(-b)=-\half r(b),
+\]
+which is \cref{eq:bpair}.  The other three calculations are identical, using the corresponding equations in \cref{eq:fourcompositions}.  Finally, applying \(\half r\) to \(\trans t(a)=-d\) and using \cref{eq:conjugate} gives
+\[
+ \trans{-t}(\half r(a))=-\half r(d).
+\]
+Thus the two paths of the turned tile pair under the lattice period \(t\), with the direction reversed as required.
+\end{proof}
+
+No angle, length, trigonometric function, or real-number limit appears.  The local matching equations are list equalities and affine polynomial identities.

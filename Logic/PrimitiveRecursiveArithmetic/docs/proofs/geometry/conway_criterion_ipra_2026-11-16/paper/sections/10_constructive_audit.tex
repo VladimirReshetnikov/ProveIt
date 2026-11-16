@@ -1,0 +1,72 @@
+\section{Constructive and foundational audit}
+\label{sec:audit}
+
+A proof can be finite in appearance while still relying on hidden classical principles.  This section records exactly what the argument uses.
+
+\subsection{Principles used}
+
+\begin{enumerate}[label=(\arabic*)]
+\item \textbf{Primitive recursion on finite lists.}  Path sums, triangle sums, normalization, clipping, and graph traversal are bounded folds or recursions.
+\item \textbf{Quantifier-free induction.}  This proves loop invariants, telescoping sums, interior-edge cancellation, and propagation along a finite tree.
+\item \textbf{Decidable integer and rational comparisons.}  Signs of determinants, segment intersections, and sort order are reduced to natural-number comparisons.
+\item \textbf{Finite bounded search.}  Used to select the least available ear, intersection, parent, or unvisited face.  Failure returns a default certificate and is excluded by the correctness premise.
+\item \textbf{Intuitionistic logic with explicit witnesses.}  The period vectors, half-turn, triangulation data, lattice shifts, and spanning tree are all computed or supplied as finite data.
+\item \textbf{Polynomial equality and cancellation.}  Determinant identities live in the signed-difference ring; positivity permits the final cancellation in natural arithmetic.
+\end{enumerate}
+
+\subsection{Principles not used}
+
+\begin{enumerate}[label=(\arabic*)]
+\item \textbf{No law of excluded middle for arbitrary propositions.}  Every case split is on a Boolean equality or order test for finite codes.
+\item \textbf{No choice.}  Finite selections use least bounded search, yielding explicit indices.
+\item \textbf{No compactness or infinite branch argument.}  Periodicity reduces the global problem to one finite torus cell.
+\item \textbf{No completeness of the real numbers.}  All coordinates and intersections are rational pairs; all equalities are exact.
+\item \textbf{No Jordan curve theorem.}  The input disk property is a finite triangulation certificate.  The conclusion is obtained from a torus subdivision, not from separation by an arbitrary curve.
+\item \textbf{No covering-space theorem or fundamental-group computation.}  The role of the torus fundamental class is replaced by \cref{lem:constantmultiplicity}, a dual-tree induction.
+\item \textbf{No measure theory.}  ``Area'' is a finite determinant sum.  Additivity follows from oriented edge cancellation.
+\item \textbf{No universal primitive-recursive evaluator.}  Every checker and constructor is a fixed symbol.
+\end{enumerate}
+
+\subsection{Where positivity enters}
+
+The cycle argument alone gives \(C=k[\Torus]\) for some \(k\in\mathbb N\).  Positivity enters twice:
+\begin{enumerate}[label=(\alph*)]
+\item the disk triangulation orients every input triangle positively, so the face coefficients are natural coverage counts rather than signed cancellation artifacts;
+\item \(\det(t,u)=2\Area(T)>0\) permits cancellation in \cref{eq:kcancel}.
+\end{enumerate}
+Both facts are witnessed by finite determinant inequalities.  There is no appeal to an abstract positivity cone.
+
+\subsection{Why the torus is safe in iPRA}
+
+The notation \(\R^2/L\) is explanatory.  The formal arithmetic proof need never construct an infinite quotient set.  It uses:
+\begin{itemize}
+\item the unit rational square in lattice coordinates;
+\item side tags recording the identifications \(\alpha=0\sim1\) and \(\beta=0\sim1\);
+\item finitely many clipped rational pieces;
+\item a finite edge/face incidence table; and
+\item integer witnesses for lattice congruence.
+\end{itemize}
+Thus every use of ``torus'' expands to a finite data structure and decidable relations.
+
+\subsection{Faithfulness to the traditional theorem}
+
+The local hypotheses are exactly the labelled Conway criterion, specialized only in representation: each boundary part is a rational PL path and the tile comes with a rational triangulation.  The output is stronger than mere existence because it gives the periods and placements explicitly.  What is not formalized here is a universal theorem over arbitrary topological embeddings with no finite presentation.  Such a statement is not literally a first-order arithmetic sentence until a representation of continuous objects is chosen.
+
+For an effectively presented curved tile, a separate theorem could assume primitive-recursive names, continuity and inverse-separation moduli, plus finite certificates that the relevant boundary symmetries hold.  The finite torus multiplicity argument should then be recovered by sufficiently fine stable PL approximations, but proving that stability is additional represented-topology work.
+
+\subsection{Verification boundary}
+
+The package distinguishes four levels:
+\begin{center}
+\begin{tabular}{@{}p{0.22\textwidth}p{0.68\textwidth}@{}}
+\toprule
+Level & Status \\
+\midrule
+Mathematical PL proof & Complete in this report. \\
+Exact example computation & Executed; seven tests pass and the torus certificate accepts. \\
+Lean host blueprint & Supplied, with no admitted facts; not elaborated in this runtime. \\
+Object-iPRA derivation & Specified in detail; not yet constructed and kernel-checked. \\
+\bottomrule
+\end{tabular}
+\end{center}
+This separation prevents executable evidence or a semantic Lean theorem from being reported as a finished \(\Prf\,\PRA\) proof.
