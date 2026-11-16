@@ -207,6 +207,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber.fiber_bwd
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber.fiber_point
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber.gcd_fiber
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SumPhi.prod2_pw_two
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SumPhi.sum2_eq_sum
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SumPhi.sum2_zero_of_bounded
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SumPhi.sum_ones
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SumPhi.sum_fiber
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SumPhi.q_iff
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SumPhi.count_point
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SumPhi.sum_phi
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
