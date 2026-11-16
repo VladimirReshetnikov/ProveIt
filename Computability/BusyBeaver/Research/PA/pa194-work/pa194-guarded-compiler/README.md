@@ -170,8 +170,11 @@ model. Of its three fields, `inhabited` is proved for these theories in `pa194-m
   of a formula invariant under shift into a proof, given that the domain is inhabited, and
   `addCongruence_provable`, `mulCongruence_provable`, `addSucc_provable`,
   `mulSucc_provable` state `Provable T (tr ⌜σ⌝)`. The identification of `tr ⌜σ⌝` with the
-  quote of the standard translation used by that supplier is not done here. `sA3` and `sM3`
-  are not proved for the actual source theory.
+  quote of the standard translation used by that supplier is proved by
+  `PA194RemainingFixedSupplier.tr_closed_quote`. The [conditional assembly](REFUTATION-TO-SCHEDULER.md)
+  connects these four axioms and the ordinal induction supplier to refutation
+  transport and modeled scheduler halting. The actual source proofs of `sA3` and
+  `sM3` remain open.
 - `inhabited` for the actual source theory is proved outside this directory
   (`PA194SourceInhabited.inhabited_provable` in `pa194-model-logic`), from the standard
   derivation of the empty-set formula.

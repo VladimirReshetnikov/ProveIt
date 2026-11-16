@@ -80,7 +80,11 @@ returns to the same path with its header width increased by one, so constant
 width does not describe the entire reachable run. A [conditional minimum-width
 lemma](pa194/ipra/machine-code/MINIMUM-WIDTH-SAFETY.md) shows that width at least
 48 gives a gap of at least 12 in every covered PRA model. Establishing that
-minimum for the run, and a complete simulation, remains open. Other native iPRA
+minimum for the run, and a complete simulation, remains open. A [checked
+symbolic prefix interpreter](pa194/ipra/machine-code/SOURCE-SYMBOLIC-ENTRY.md)
+starts at any standard source site and executes a bounded literal prefix over
+arbitrary model-valued tape data. It stops at unknown tape boundaries and does
+not yet prove completion of a source instruction. Other native iPRA
 clocked equalities cover the [physical positive loop](pa194/ipra/machine-code/ACTUAL-PHYSICAL-NATIVE.md),
 [source fetch](pa194/ipra/machine-code/UNIFIED-FETCH-NATIVE.md),
 [decoder](pa194/ipra/machine-code/DECODER-NATIVE.md),
@@ -106,7 +110,9 @@ now supply open and closed proofs uniformly in the property code, using an
 internally least tuple of auxiliary proofs. These are model-level results under
 the stated PRA and IΣ₁ assumptions, not native iPRA derivations. The source
 theory also [proves successor cancellation for ordinal isomorphism](pa194-work/pa194-model-axioms/ISO-CANCEL-SOURCE.md);
-the translated PA induction bridge remains open. A fixed
+the [translated PA induction bridge](pa194-work/pa194-guarded-compiler/PA194OrdinalInductionLink.lean)
+now supplies induction axioms at the root under the source naming and arithmetic
+premises. A fixed
 [universally closed least-point exclusion theorem](pa194-work/pa194-model-axioms/LEAST-EXCLUDES.md)
 has an internal proof in the covered models, and a separate
 [triple-specialization graph](pa194-work/pa194-model-axioms/CONTEXT-TRIPLE-SPECIALIZE.md)
@@ -421,10 +427,13 @@ support from naming facts, and derives those facts from twelve fixed source
 facts plus variable-name existence. A further reduction (`induction_body`) derives
 the translated induction axiom of every internal formula, before the closure of its
 parameters, from the term facts, the twelve facts and ordinal induction of the source
-theory for every internal property; the closure of the parameters and the connection
-to the existing induction supplier are not written. The twelve facts and four
-translated fixed axioms are not yet all supplied, so the unconditional compiler is
-not proved.
+theory for every internal property. The closure of the parameters and the link
+to the source induction proof have replayed. The
+[conditional PA refutation transport](pa194-work/pa194-guarded-compiler/REFUTATION-TO-SCHEDULER.md)
+supplies all four remaining translated fixed axioms from the source facts and
+the two recursion clauses, then reaches modeled scheduler halting. The checked
+source assembly still needs addition and multiplication coherence, both
+recursion clauses, and a bridge from the scheduler to the literal machine.
 
 [`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
