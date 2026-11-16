@@ -27,3 +27,9 @@ if command -v py >/dev/null 2>&1; then py=py; else py=python3; fi
   --top "$here/PA194Schematic.lean" --reports 9 "$@"
 "$py" -X utf8 -B "$here/../pa194-model-fairness/check_bridge.py" \
   --top "$here/PA194NameForms.lean" --reports 6 "$@"
+"$py" -X utf8 -B "$here/../pa194-model-fairness/check_bridge.py" \
+  --top "$here/PA194NameSchema.lean" --reports 8 "$@"
+"$py" -X utf8 -B "$here/../pa194-model-fairness/check_bridge.py" \
+  --top "$here/PA194NameSemantics.lean" --reports 9 "$@"
+"$py" -X utf8 -B "$here/../pa194-model-fairness/check_bridge.py" \
+  --top "$here/PA194NameFactsProof.lean" --reports 15 "$@"
