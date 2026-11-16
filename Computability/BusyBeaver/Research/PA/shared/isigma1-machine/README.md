@@ -1,8 +1,8 @@
 # Turing machines inside models of IΣ₁
 
-This directory states, for an arbitrary two-symbol transition table, the one obligation that
-is left for the iPRA equivalence with the consistency of PA, and derives the equivalence from
-it. No table is shown to meet the obligation.
+This directory defines two-symbol Turing machines in models of `IΣ₁` and
+transfers halting comparisons into iPRA. The [PA research index](../../README.md)
+links to the derivations for the literal consistency candidates.
 
 ## `ConPAMachine.lean`
 
@@ -21,6 +21,25 @@ Imports Foundation only. For `T : Table`, a list of rows `q b w d q'`, and any m
   `haltDef_iff : (haltDef T h).val.Evalb ![] ↔ ∃ t : V, π₁ (run T t) = h` in every model.
 - `haltDef_standard`: over the natural numbers the sentence is true exactly when the iterated
   step function reaches the state `h`.
+
+## Execution segments
+
+[`ConPAMachineSegments.lean`](ConPAMachineSegments.lean) uses a `Σ₁` graph
+to iterate the table from an arbitrary packed initial configuration.
+`runFrom_add` concatenates segments with model-valued clocks, and `run_add`
+relates those segments to the existing run from blank.
+
+[`ConPAMachineScans.lean`](ConPAMachineScans.lean) proves that a lookup in
+the finite transition table gives the actual step on model-valued tape
+halves. `scan` uses the corresponding self-loop to execute a whole run of
+identical bits, in either direction, including at nonstandard lengths.
+
+[`ConPAMachineStutter.lean`](ConPAMachineStutter.lean) compares halting
+for two tables under a `Σ₁` configuration relation. The proof allows
+each step to be matched by a positive finite sequence and uses persistence
+of the variant halt. [`ConPAISigma1Relative.lean`](ConPAISigma1Relative.lean)
+transfers an all-model comparison to an equivalence of nonhalting sentences
+inside iPRA.
 
 ## `ConPAMachineEndpoint.lean`
 
