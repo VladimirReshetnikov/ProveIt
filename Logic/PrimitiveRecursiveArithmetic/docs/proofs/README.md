@@ -5,7 +5,7 @@ gives the target interface for future verified
 derivations of these delivered proofs.
 
 This directory holds the research packets that were delivered as archives from 14 to
-16 November 2026: 33 to `docs/drafts`, and 66 to
+16 November 2026: 33 to `docs/drafts`, and 67 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -36,7 +36,7 @@ reason. Its directory column gives `<area>/<directory>`.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `ignored` | 107 | The member matches the repository's `.gitignore`: 47 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests, 59 `.log` files from LaTeX and Lean builds and from test and verification runs, and 1 file under a `build/` directory. It is available only from the delivered archive, so it is lost for the archives that were not committed. |
+| `ignored` | 108 | The member matches the repository's `.gitignore`: 48 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests, 59 `.log` files from LaTeX and Lean builds and from test and verification runs, and 1 file under a `build/` directory. It is available only from the delivered archive, so it is lost for the archives that were not committed. |
 | `checksum-manifest` | 45 | The member is a checksum manifest that `.gitignore` does not match: 40 `MANIFEST.sha256`, 2 `manifest.sha256` and the 3 `MANIFEST.txt` files that list SHA-256 digests (`eight_geometry_theorems_ipra`, `mollweide_circle_ipra`, `median_ipra_constructive_proofs`). These 45 were placed at first and removed on 16 November 2026 on Vladimir's instruction ("We don't need any checksum manifests"); a checksum manifest of a later packet is not placed at all. The 45 removed files are in the history up to `7c7f7874f7`. |
 | `sibling-packet` | 21 | `puiseux_ipra` bundles `dependencies/FTA_iPRA/`, a byte-identical copy of the packet filed in [`algebra/FTA_iPRA`](algebra/FTA_iPRA/) (13 members). `ipra_finite_demand` bundles four of its files under the same path (4 members). `ipra_resources_and_elimination_2026-11-15` bundles `lean/BackwardDemand.lean` of [`foundations/ipra_finite_demand`](foundations/ipra_finite_demand/) (1 member). `ipra_stable_observables` bundles three `lean/ConciseIPRA/` files byte-identical to the `lean/upstream/` copies in [`foundations/ipra_coherent_methods_2026-11-15`](foundations/ipra_coherent_methods_2026-11-15/) (3 members). The reference column gives the placed file, except for the copy of `SHA256SUMS`, which is ignored in both. |
 | `sibling-archive` | 1 | `zeta_zeros_ipra_2026-11-15` bundles `dependencies/zeta_functional_equation_ipra.zip`, a byte-identical copy of the delivered archive filed in [`analytic-number-theory/zeta_functional_equation_ipra`](analytic-number-theory/zeta_functional_equation_ipra/). |
@@ -70,7 +70,7 @@ manifests, ignored build logs and `build/` files.
 
 ## Packets
 
-The 99 archives hold 3,092 members: 2,893 placed here, 107 ignored, 45 removed checksum manifests, 21 in bundled copies of
+The 100 archives hold 3,121 members: 2,921 placed here, 108 ignored, 45 checksum manifests that are not kept, 21 in bundled copies of
 a sibling packet, 1 nested copy of a sibling archive and 25 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -103,6 +103,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | [`calculus_ipra`](analysis/calculus_ipra/) | `6ad3d9f371` 2026-11-14 | `calculus_ipra` | Effective versions of both parts of the fundamental theorem of calculus and the finite-order Euler–Maclaurin formula. | 12 | 1 |
 | [`cauchy_residue_ipra`](analysis/cauchy_residue_ipra/) | `4ea4d4a14a` 2026-11-15 | `cauchy_residue_ipra` | Quantitative constructive versions of Cauchy's integral theorem and the residue theorem, stated as schemas. | 13 | 1 |
 | [`gamma_ipra`](analysis/gamma_ipra/) | `7e8e6aad97` 2026-11-15 | `gamma_ipra` | The Gamma function built from finite Euler products, with explicit error bounds: the Euler integral, functional, reflection, multiplication and beta identities, Bohr–Mollerup, Stirling and Binet formulas. It says its Lean file compiles but leaves the analytic contracts uninstantiated. | 24 | 1 |
+| [`hypergeometric_ipra_2026-11-16`](analysis/hypergeometric_ipra_2026-11-16/) | `99221756b5` 2026-11-16 | `hypergeometric_ipra_2026-11-16` | The Gauss hypergeometric function at four levels: exact finite and formal algebra (Pochhammer identities, the coefficient recurrence, the Gauss differential equation, Euler and Pfaff pullbacks, contiguous relations, Chu–Vandermonde, orthogonal-polynomial specializations), effective analysis with explicit moduli (convergence in the disk, Euler's integral, the Gauss, Kummer and Bailey summations), connection and monodromy results conditional on displayed certificates, and a list of claims not proved. A 104-row inventory records the status of each source claim. Its Lean files are not compiled and mark planned theorems as explicit axioms in a `Planned` namespace; no kernel-checked derivation is claimed. | 28 | 1 |
 | [`stirling_ipra`](analysis/stirling_ipra/) | `38cafaa5be` 2026-11-14 | `stirling_ipra` | Stirling's formula, with finite rational estimates and an induction audit. | 10 | 1 |
 | [`taylor_cauchy_ipra`](analysis/taylor_cauchy_ipra/) | `daade03000` 2026-11-15 | `taylor_cauchy_ipra` | Taylor's theorem with integral and Peano remainders, and Cauchy's integral formula. | 13 | 1 |
 | [`trigonometric_identities_ipra_2026-11-15`](analysis/trigonometric_identities_ipra_2026-11-15/) | *not committed* 2026-11-15 | `trigonometric_identities_ipra_2026-11-15` | An atlas of trigonometric identities, with principal inverse-function identities, the derivatives of sine and cosine and the dyadic infinite cosine product. Its checker states 227 identities in 27 families verified exactly. Its Lean files are uncompiled, and two of them contain deliberate `axiom` declarations. | 16 | 1 |

@@ -1,0 +1,183 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,tabularx}
+\usepackage{xcolor,microtype,fancyhdr,enumitem}
+\usepackage[hyphens]{url}
+\usepackage{xurl}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage[hypertexnames=false,colorlinks=true,linkcolor=blue!45!black,
+  citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\setlength{\emergencystretch}{2.5em}
+\setlist{itemsep=2pt,topsep=4pt}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
+  keepspaces=true,frame=single,rulecolor=\color{black!20}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Hypergeometric functions in iPRA}
+\fancyhead[R]{\small Finite algebra and effective analysis}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{claim}[theorem]{Claim}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{contract}[theorem]{Effective contract}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{audit}[theorem]{Formalization audit}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\F}[4]{{}_2F_1\!\left(\begin{matrix}#1,#2\\#3\end{matrix};#4\right)}
+\newcommand{\PFQ}[4]{{}_{#1}F_{#2}\!\left(\begin{matrix}#3\end{matrix};#4\right)}
+\newcommand{\poch}[2]{\left(#1\right)_{#2}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert_1}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\thetaop}{\vartheta}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\StatusA}{\textsf{A}}
+\newcommand{\StatusB}{\textsf{B}}
+\newcommand{\StatusC}{\textsf{C}}
+\newcommand{\StatusD}{\textsf{D}}
+\newcommand{\bigO}{\mathcal O}
+\DeclareMathOperator{\RePart}{Re}
+\DeclareMathOperator{\ImPart}{Im}
+\DeclareMathOperator{\Coeff}{Coeff}
+\DeclareMathOperator{\Tail}{Tail}
+\DeclareMathOperator{\ord}{ord}
+
+\title{Gauss's Hypergeometric Function in Intuitionistic\\
+Primitive Recursive Arithmetic}
+\author{A constructive proof package prepared for Vladimir Reshetnikov}
+\date{16 November 2026}
+\hypersetup{pdftitle={Gauss's Hypergeometric Function in Intuitionistic Primitive Recursive Arithmetic},
+ pdfauthor={Prepared for Vladimir Reshetnikov},
+ pdfsubject={Human proofs, quantitative iPRA reductions, and Lean formalization plan}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We reconstruct a large portion of the standard theory of Gauss's
+hypergeometric function in a form suitable for intuitionistic primitive
+recursive arithmetic.  The central separation is between exact finite
+algebra and effective analysis.  The coefficient recurrence, termination,
+derivative identities, the hypergeometric differential equation, Frobenius
+solutions, Euler--Pfaff transformations, contiguous relations, finite
+continued fractions, Chu--Vandermonde, Jacobi and Legendre polynomial
+specializations, elementary reductions, and coefficientwise confluent limits
+are reduced to primitive recursive finite products, sums, and
+quantifier-free induction.  Convergence, differentiation of the infinite
+series, Euler's integral, Gauss--Kummer--Bailey summations, connection
+formulas, and analytic continuation are stated as first-order theorem schemas
+for fixed primitive recursive rational or complex-rational names carrying
+explicit bounds, moduli, and apartness margins.
+
+The result is deliberately not a classical assertion quantifying over a
+completed field of all real or complex numbers.  Every equality of analytic
+objects means a uniform family of rational inequalities with a primitive
+recursive precision schedule.  We give complete human arguments for the
+stated effective contracts, identify the finite induction invariants, and
+explain how to compile them into ProveIt's embedded calculus
+\code{Prf PRAAx} and then through its native bi-interpretation.  A companion
+Lean file contains executable finite definitions and theorem signatures; it
+is an outline, not a claimed kernel-checked analytic formalization.  Exact
+rational validation code, a coverage ledger, and source/provenance manifests
+are included.
+\end{abstract}
+
+\medskip
+\noindent\textbf{Status key.}
+\StatusA{} = exact finite/formal-power-series theorem in iPRA;
+\StatusB{} = effective analytic theorem with explicit primitive recursive
+certificates;
+\StatusC{} = conditional theorem whose additional contour, branch, or
+nonvanishing certificate is displayed;
+\StatusD{} = not proved here (usually a global topological or modular
+classification claim).
+
+\newpage
+\begingroup\small\tableofcontents\endgroup
+\newpage
+
+\input{sections/01_scope}
+\input{sections/02_arithmetic}
+\input{sections/03_series}
+\input{sections/04_convergence}
+\input{sections/05_ode}
+\input{sections/06_special}
+\input{sections/07_transformations}
+\input{sections/08_integrals_sums}
+\input{sections/09_contiguous}
+\input{sections/10_continuation}
+\input{sections/11_formalization}
+\input{sections/12_inventory}
+\input{sections/13_appendices}
+
+\begin{thebibliography}{99}
+\bibitem{wiki}
+Wikipedia contributors, ``Hypergeometric function,'' revision consulted
+16 November 2026. \url{https://en.wikipedia.org/wiki/Hypergeometric_function}.
+
+\bibitem{mathworld}
+E. W. Weisstein, ``Hypergeometric Function,'' MathWorld--A Wolfram Web
+Resource, consulted 16 November 2026.
+\url{https://mathworld.wolfram.com/HypergeometricFunction.html}.
+
+\bibitem{dlmf}
+A. B. Olde Daalhuis, ``Hypergeometric Function,'' in NIST Digital Library of
+Mathematical Functions, Chapter 15. \url{https://dlmf.nist.gov/15}.
+
+\bibitem{bailey}
+W. N. Bailey, \emph{Generalized Hypergeometric Series}, Cambridge University
+Press, 1935.
+
+\bibitem{erdelyi}
+A. Erd\'elyi, W. Magnus, F. Oberhettinger, and F. G. Tricomi,
+\emph{Higher Transcendental Functions}, Vol. I, McGraw--Hill, 1953.
+
+\bibitem{andrews}
+G. E. Andrews, R. Askey, and R. Roy, \emph{Special Functions}, Cambridge
+University Press, 1999.
+
+\bibitem{proveit}
+V. Reshetnikov, \emph{ProveIt}, repository snapshot of the main branch
+consulted 16 November 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{gamma-packet}
+\emph{Gamma in intuitionistic primitive recursive arithmetic}, in
+\cite{proveit}, directory
+\path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/analysis/gamma_ipra/},
+15 November 2026.
+
+\bibitem{taylor-cauchy}
+\emph{Taylor's theorem and Cauchy's integral formula in iPRA}, in
+\cite{proveit}, directory
+\path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/analysis/taylor_cauchy_ipra/},
+15 November 2026.
+
+\bibitem{zucker}
+I. J. Zucker and G. S. Joyce, papers on special values of hypergeometric
+series cited by MathWorld; the present package records their displayed
+values but does not reconstruct the modular-function proofs of all of them.
+\end{thebibliography}
+
+\end{document}

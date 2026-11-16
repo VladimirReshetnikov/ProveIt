@@ -1,0 +1,187 @@
+\section{Contiguous relations and Gauss's continued fraction}\label{sec:contiguous}
+
+Write \(F=\F a b c z\) and \(\theta=zD\).  A symbol such as \(F(a+)\)
+means that the indicated parameter is increased by one.
+
+\subsection{The basic contiguous identities}
+
+\begin{theorem}[Seven expressions for \(\theta F\)]\label{thm:contiguous-master}
+Under the relevant finite denominator guards,
+\begin{align}
+ \theta F
+ &=z\frac{ab}{c}F(a+,b+,c+),\label{eq:contig-der}\\
+ &=a(F(a+)-F),\label{eq:contig-a+}\\
+ &=b(F(b+)-F),\label{eq:contig-b+}\\
+ &=(c-1)(F(c-)-F),\label{eq:contig-c-}\\
+ &=\frac{(c-a)F(a-)+(a-c+bz)F}{1-z},\label{eq:contig-a-}\\
+ &=\frac{(c-b)F(b-)+(b-c+az)F}{1-z},\label{eq:contig-b-}\\
+ &=z\frac{(c-a)(c-b)F(c+)+c(a+b-c)F}{c(1-z)}.
+ \label{eq:contig-c+}
+\end{align}
+Every equality is a formal power-series identity and hence a \StatusA{}
+iPRA theorem schema.
+\end{theorem}
+
+\begin{proof}
+Equation \eqref{eq:contig-der} is the first derivative formula multiplied by
+\(z\).  For \eqref{eq:contig-a+}, compare coefficients:
+\[
+ \frac{\poch{a+1}n}{\poch a n}=\frac{a+n}{a},
+ \qquad
+ a\left(\frac{a+n}{a}-1\right)A_n=nA_n.
+\]
+The cross-multiplied calculation remains valid at \(a=0\).  The \(b\) formula
+is symmetric.  Similarly,
+\[
+ \frac{\poch c n}{\poch{c-1}n}=\frac{c+n-1}{c-1}
+\]
+gives \eqref{eq:contig-c-}.
+
+For \eqref{eq:contig-a-}, multiply by \(1-z\) and compare the coefficient of
+\(z^n\).  The coefficient from \(zF\) is the preceding coefficient
+\(A_{n-1}\), which is converted to \(A_n\) using
+\eqref{eq:ratio}.  Clearing
+\(n(n+c-1)\) reduces the assertion to a polynomial identity in
+\(n,a,b,c\).  The \(b\) identity follows by symmetry.  The last identity is
+proved in the same way using
+\(\poch{c+1}n/\poch c n=(c+n)/c\).  Thus all seven lines have direct bounded
+coefficient checkers.
+\end{proof}
+
+\begin{corollary}[The fifteen Gauss relations]
+Equating any two of the seven right-hand expressions in
+\cref{thm:contiguous-master} yields the usual relations expressing \(F\) as a
+linear combination of any two among its six contiguous functions.  After
+clearing the displayed denominators, every relation is a polynomial identity
+of formal series.
+\end{corollary}
+
+\subsection{Arbitrary integer shifts}
+
+\begin{theorem}[Constructive contiguous reduction]\label{thm:shift-reduction}
+For any integer triples \(r_i=(m_i,n_i,\ell_i)\), \(i=1,2,3\), there are
+rational functions \(R_1,R_2,R_3\), not all zero, such that
+\[
+ \sum_{i=1}^3R_i(a,b,c,z)
+ \F{a+m_i}{b+n_i}{c+\ell_i}{z}=0,
+\]
+relative to explicit guards for the finitely many denominators introduced by
+the reduction.  The coefficient lists of \(R_i\) are primitive recursive in
+the shift triples.
+\end{theorem}
+
+\begin{proof}
+Use \cref{thm:contiguous-master} to move one parameter at a time toward a
+chosen pair of basis functions, for example \(F\) and \(F(a+)\).  A measure
+\(|m|+|n|+|\ell|\) decreases at every step.  Each step is a \(2\times2\)
+rational matrix; multiply the finite matrices and clear their denominators.
+Three vectors in the resulting two-dimensional module are linearly dependent,
+and a cross-product gives \(R_1,R_2,R_3\).  The algorithm is a bounded loop
+whose length is controlled by the shift measure.  No appeal to the dimension
+of an abstract analytic solution space is needed, although the result mirrors
+that classical explanation.
+\end{proof}
+
+\subsection{Exact finite continued fractions}
+
+Define
+\begin{align*}
+ f_{2k}(z)&=\F{a+k}{b+k}{c+2k}{z},\\
+ f_{2k+1}(z)&=\F{a+k+1}{b+k}{c+2k+1}{z},
+\end{align*}
+and
+\begin{align*}
+ \alpha_{2k+1}
+ &=\frac{(a-c-k)(b+k)}{(c+2k)(c+2k+1)},\\
+ \alpha_{2k+2}
+ &=\frac{(b-c-k-1)(a+k+1)}{(c+2k+1)(c+2k+2)}.
+\end{align*}
+
+\begin{lemma}[Gauss difference chain]\label{lem:gauss-chain}
+For every \(j\ge1\),
+\begin{equation}\label{eq:gauss-chain}
+ f_{j-1}-f_j=\alpha_j z f_{j+1}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For odd and even \(j\), substitute the corresponding shifted parameters into
+a basic contiguous relation.  Coefficientwise, both cases reduce to the
+Pochhammer successor identity.  The checker needs only the parity function,
+the half function, and rational arithmetic, all available by primitive
+recursion.
+\end{proof}
+
+Let \(r_j=f_j/f_{j-1}\), relative to apartness certificates for the
+denominators.  Dividing \eqref{eq:gauss-chain} by \(f_{j-1}\) gives
+\begin{equation}\label{eq:ratio-tail}
+ r_j=\frac1{1+\alpha_jzr_{j+1}}.
+\end{equation}
+
+\begin{theorem}[Finite Gauss fraction with an exact tail]\label{thm:finite-cf}
+For every \(N\ge1\),
+\begin{equation}\label{eq:finite-cf}
+ \frac{\F{a+1}{b}{c+1}{z}}{\F a b c z}
+ =\cfrac1{1+\cfrac{\alpha_1z}{1+\cfrac{\alpha_2z}{1+
+ \cfrac{\ddots}{1+\alpha_Nzr_{N+1}}}}}.
+\end{equation}
+This is an exact finite rational identity of named functions.
+\end{theorem}
+
+\begin{proof}
+Iterate \eqref{eq:ratio-tail} exactly \(N\) times.  Formally one may avoid all
+divisions by using continuants.  Define numerator and denominator polynomials
+of the finite fraction by the two-term recurrence; induction shows that their
+cross-product difference with \(f_1/f_0\) is zero after the terminal tail
+\(f_{N+1}/f_N\) is inserted.
+\end{proof}
+
+\subsection{The infinite continued fraction}
+
+Replacing the exact terminal tail \(r_{N+1}\) by \(1\) gives the usual
+\(N\)-th convergent printed on the source page.
+
+\begin{contract}[Continued-fraction convergence certificate]\label{con:cf}
+A convergence certificate on a rational domain \(D\) consists of:
+\begin{enumerate}
+\item apartness margins for every \(f_j\) used up to the requested depth;
+\item a primitive recursive index \(J\) and rational \(\rho<1\) such that the
+Möbius maps \(T_j(w)=(1+\alpha_jzw)^{-1}\) map a fixed rational disk \(\Delta\)
+into itself and are \(\rho\)-Lipschitz there for all \(j\ge J\), uniformly in
+\(z\in D\);
+\item a proof that both the exact tail \(r_j\) and the substituted tail \(1\)
+lie in \(\Delta\).
+\end{enumerate}
+\end{contract}
+
+\begin{theorem}[Certified Gauss continued fraction]\label{thm:gauss-cf}
+Under \cref{con:cf}, the convergents obtained from
+\eqref{eq:finite-cf} by putting the terminal tail equal to \(1\) converge
+uniformly and effectively to
+\[
+ \frac{\F{a+1}{b}{c+1}{z}}{\F a b c z}.
+\]
+A valid depth for precision \(2^{-p}\) is
+\(J+m\), where bounded search finds \(m\) with
+\(L\rho^m\le2^{-p}\) and \(L\) bounds the finite prefix.
+\end{theorem}
+
+\begin{proof}
+The exact and substituted tails are propagated through the same composition
+\(T_1\circ\cdots\circ T_N\).  Beyond \(J\), each additional map contracts
+the discrepancy by \(\rho\).  The finite prefix has a computable Lipschitz
+constant because its denominators have apartness margins.  Thus the final
+error is at most \(L\rho^{N-J}\).  The proof is induction on a finite
+composition of rational maps.
+\end{proof}
+
+\begin{audit}[Why the infinite fraction is \StatusC]
+The finite identity \cref{thm:finite-cf} is unconditional apart from finitely
+many guards and is fully algebraic.  Convergence of the infinite fraction is
+not obtained merely by printing an ellipsis.  Zeros of denominator functions
+and parameter-dependent stability matter.  The certificate
+\cref{con:cf} isolates exactly the extra analytic content.  On many compact
+subdisks it can be discharged from explicit coefficient bounds, but a single
+uniform proof covering every parameter regime displayed classically is not
+claimed here.
+\end{audit}

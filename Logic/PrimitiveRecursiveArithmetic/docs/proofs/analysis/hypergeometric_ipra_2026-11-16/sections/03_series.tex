@@ -1,0 +1,287 @@
+\section{The finite hypergeometric algebra}\label{sec:series}
+
+\subsection{Rising factorials and coefficients}
+
+\begin{definition}[Rising factorial]\label{def:pochhammer}
+For an element \(x\) of a commutative ring, define
+\[
+  \poch{x}{0}=1,
+  \qquad
+  \poch{x}{n+1}=\poch{x}{n}(x+n).
+\]
+For coded rationals or complex rationals this is a primitive recursive finite
+product.
+\end{definition}
+
+\begin{lemma}[Elementary Pochhammer identities]\label{lem:pochhammer}
+Whenever the displayed operations are defined,
+\begin{align}
+ \poch{x}{m+n}&=\poch{x}{m}\poch{x+m}{n},\label{eq:poch-split}\\
+ \poch{x}{n+1}&=x\poch{x+1}{n},\label{eq:poch-shift}\\
+ \poch{-m}{n}&=(-1)^n\frac{m!}{(m-n)!}\quad(n\le m),\label{eq:poch-neg}\\
+ \poch{-m}{n}&=0\quad(n>m).\label{eq:poch-zero}
+\end{align}
+All four are provable in iPRA by quantifier-free induction.
+\end{lemma}
+
+\begin{proof}
+For \eqref{eq:poch-split}, induct on \(n\).  The successor step multiplies
+both sides by \(x+m+n\).  Formula \eqref{eq:poch-shift} is the case in which
+the first factor is separated.  For \eqref{eq:poch-neg}, write each factor
+\(-m+j=-(m-j)\) and induct while maintaining \(n\le m\); cross-multiplication
+avoids division.  At \(n=m+1\), the factor \(-m+m\) is zero, and every later
+product remains zero.  These are polynomial identities in integer codes.
+\end{proof}
+
+\begin{definition}[Gauss coefficient]\label{def:gauss-coeff}
+Assume \(\poch{c}{n}\ne0\).  Define
+\[
+ A_n(a,b;c)=\frac{\poch{a}{n}\poch{b}{n}}
+                 {\poch{c}{n}\,n!}.
+\]
+The guarded total definition uses \(\operatorname{qdiv}\).  The partial sum is
+\[
+ H_N(a,b;c;z)=\sum_{n<N}A_n(a,b;c)z^n.
+\]
+\end{definition}
+
+\begin{lemma}[Coefficient ratio]\label{lem:ratio}
+Under the denominator guards,
+\begin{equation}\label{eq:ratio}
+ (n+1)(n+c)A_{n+1}=(n+a)(n+b)A_n.
+\end{equation}
+If \((n+1)(n+c)\) is apart from zero, this is equivalently
+\[
+  \frac{A_{n+1}}{A_n}=\frac{(n+a)(n+b)}{(n+1)(n+c)}
+\]
+when \(A_n\ne0\).
+\end{lemma}
+
+\begin{proof}
+Expand the four successor recurrences for the rising factorials and factorial,
+then cancel only after multiplying through by the denominators.  The
+cross-multiplied identity \eqref{eq:ratio} is valid even when \(A_n=0\).
+\end{proof}
+
+\begin{definition}[Formal Gauss series]\label{def:formal-gauss}
+The formal object
+\[
+   \F{a}{b}{c}{z}:=\sum_{n\ge0}A_n(a,b;c)z^n
+\]
+means the primitive recursive coefficient table \(n\mapsto A_n\), together
+with the guards \(\poch c n\ne0\) needed at the observed indices.
+\end{definition}
+
+\begin{proposition}[Symmetry and normalization]\label{prop:symmetry}
+Formally,
+\[
+ \F{a}{b}{c}{z}=\F{b}{a}{c}{z},
+ \qquad
+ \F{a}{b}{c}{0}=1.
+\]
+\end{proposition}
+
+\begin{proof}
+The coefficient formula is symmetric in \(a,b\), and the constant coefficient
+is \(1\).  No limit is involved.
+\end{proof}
+
+\subsection{Termination and the polynomial formula}
+
+\begin{theorem}[Terminating series]\label{thm:termination}
+For \(m\in\N\),
+\begin{equation}\label{eq:terminating}
+ \F{-m}{b}{c}{z}
+   =\sum_{n=0}^{m}(-1)^n\binom mn\frac{\poch b n}{\poch c n}z^n
+\end{equation}
+as a polynomial identity, provided the finitely many denominator factors are
+nonzero.
+\end{theorem}
+
+\begin{proof}
+By \cref{lem:pochhammer},
+\[
+ \frac{\poch{-m}{n}}{n!}
+ =(-1)^n\frac{m!}{n!(m-n)!}=(-1)^n\binom mn
+ \quad(n\le m),
+\]
+and every coefficient with \(n>m\) vanishes.  Cross-multiplying by the finite
+product \(\prod_{j<m}(c+j)\) turns the whole statement into an integer
+polynomial identity.  The proof uses bounded products and induction only.
+\end{proof}
+
+\begin{corollary}[Binomial specialization]\label{cor:binomial-termination}
+For \(m\in\N\),
+\[
+ \F{-m}{b}{b}{z}=(1-z)^m.
+\]
+In particular, \((1+z)^m=\F{-m}{b}{b}{-z}\).
+\end{corollary}
+
+\begin{proof}
+The factors \(\poch b n\) cancel under the supplied guards, and
+\eqref{eq:terminating} becomes the finite binomial theorem.  The binomial
+theorem itself is a quantifier-free induction on \(m\).
+\end{proof}
+
+
+\subsection{Regularization at a singular denominator parameter}
+
+The ordinary series is singular when \(c\) approaches a nonpositive integer,
+but multiplication by the reciprocal gamma function removes the singularity.
+
+\begin{theorem}[Regularized limit at \(c=-m\)]\label{thm:regularized-c}
+Let \(m\in\N\).  Coefficientwise, and uniformly on every strict disk after
+supplying the effective reciprocal-gamma bounds,
+\begin{equation}\label{eq:regularized-c}
+ \lim_{c\to-m}\frac{\F a b c z}{\Gamma(c)}
+ =\frac{\poch a{m+1}\poch b{m+1}}{(m+1)!}z^{m+1}
+  \F{a+m+1}{b+m+1}{m+2}{z}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use the exact gamma recurrence identity
+\[
+ \frac1{\Gamma(c)\poch c n}=\frac1{\Gamma(c+n)}.
+\]
+Thus the coefficient of \(z^n\) on the left is
+\[
+ \frac{\poch a n\poch b n}{n!\,\Gamma(c+n)}.
+\]
+The reciprocal gamma function has a zero at every nonpositive integer.  At
+\(c=-m\), the coefficients with \(n\le m\) therefore tend to zero.  Write
+\(n=m+1+k\) for the remaining coefficients.  Since
+\(\Gamma(k+1)=k!\), their limits are
+\[
+ \frac{\poch a{m+1+k}\poch b{m+1+k}}
+      {(m+1+k)!\,k!}.
+\]
+Splitting both rising factorials at \(m+1\) and using
+\((m+2)_k=(m+1+k)!/(m+1)!\) gives exactly the coefficient on the right of
+\eqref{eq:regularized-c}.  This is a finite identity for each coefficient.
+For uniform convergence on \(\norm z\le r<1\), choose a small rational
+parameter disk around \(-m\), a common ratio cutoff for its tail, and then a
+finite head on which the reciprocal-gamma name converges effectively.  The
+gamma packet supplies the simple-zero and local modulus data.
+\end{proof}
+
+\subsection{Generalized hypergeometric coefficients}
+
+\begin{definition}[Generalized coefficient]\label{def:pfq}
+For finite parameter vectors
+\(\boldsymbol a=(a_1,\ldots,a_p)\) and
+\(\boldsymbol b=(b_1,\ldots,b_q)\), put
+\[
+ T_n(\boldsymbol a;\boldsymbol b;z)
+  =\frac{\prod_{i<p}\poch{a_i}{n}}
+         {n!\prod_{j<q}\poch{b_j}{n}}z^n.
+\]
+The associated formal series is \({}_pF_q\).  All vector products are bounded
+folds over the externally fixed or coded finite lengths \(p,q\).
+\end{definition}
+
+\begin{proposition}[Hypergeometric term ratio]\label{prop:pfq-ratio}
+The successive terms satisfy the cross-multiplied identity
+\[
+ (n+1)\prod_{j<q}(n+b_j)T_{n+1}
+ =z\prod_{i<p}(n+a_i)T_n.
+\]
+Thus the ratio of successive nonzero terms is a rational function of \(n\),
+as asserted on the MathWorld page.
+\end{proposition}
+
+\begin{proof}
+Apply the successor equation for every Pochhammer factor.  Bounded-product
+congruence and associativity suffice.
+\end{proof}
+
+\subsection{Formal differentiation}
+
+For a formal series \(F(z)=\sum_{n\ge0}f_nz^n\), define
+\(DF=\sum_{n\ge0}(n+1)f_{n+1}z^n\).  This is a primitive recursive operation
+on coefficient tables.
+
+\begin{theorem}[Derivative formulas]\label{thm:derivatives}
+For every \(r\in\N\) for which the denominator guards hold,
+\begin{equation}\label{eq:nth-derivative}
+ D^r\F{a}{b}{c}{z}
+ =\frac{\poch a r\poch b r}{\poch c r}
+   \F{a+r}{b+r}{c+r}{z}.
+\end{equation}
+The theorem is uniform in \(r\) when the shifted coefficient table and guards
+are jointly primitive recursive.
+\end{theorem}
+
+\begin{proof}
+For \(r=1\), the coefficient of \(z^n\) on the left is
+\[
+ (n+1)\frac{\poch a{n+1}\poch b{n+1}}
+                   {\poch c{n+1}(n+1)!}
+ =\frac{ab}{c}\frac{\poch{a+1}n\poch{b+1}n}
+                         {\poch{c+1}n n!},
+\]
+using \eqref{eq:poch-shift}.  This is an exact rational identity.  Induction
+on \(r\), together with
+\(\poch a{r+1}=\poch a r(a+r)\), gives
+\eqref{eq:nth-derivative}.  The induction invariant is a single
+cross-multiplied coefficient equality.
+\end{proof}
+
+\subsection{The coefficient recurrence as a characterization}
+
+\begin{theorem}[Formal uniqueness]\label{thm:formal-uniqueness}
+Let \((B_n)\) be a coefficient table satisfying
+\[
+ B_0=1,
+ \qquad
+ (n+1)(n+c)B_{n+1}=(n+a)(n+b)B_n,
+\]
+and suppose each \((n+1)(n+c)\) up to the observed index is apart from zero.
+Then \(B_n=A_n(a,b;c)\) for every \(n\).
+\end{theorem}
+
+\begin{proof}
+Induct on \(n\).  The base is \(1\).  In the successor step, both \(A_{n+1}\)
+and \(B_{n+1}\) solve the same linear equation with an apart coefficient.
+Cross-multiply and use cancellation in the coded rational field.  In the
+object theory one may avoid field cancellation by carrying numerator and
+denominator representatives and the nonzero product as a side assumption.
+\end{proof}
+
+\begin{remark}[Why uniqueness is powerful]
+To prove a transformation, it often suffices to show that a transformed
+series has constant term \(1\) and satisfies the same recurrence.  This turns
+an identity between infinite objects into a finite calculation with the
+chain rule, followed by \cref{thm:formal-uniqueness}.
+\end{remark}
+
+\subsection{Finite verification principle}
+
+\begin{proposition}[Certificate checker for identities]\label{prop:certificate-checker}
+Fix rational parameter maps
+\((a,b,c,z)\mapsto(a',b',c',\phi(z))\) and a prefactor \(P(z)\) whose formal
+coefficients are primitive recursive.  To prove
+\[
+ \F a b c z=P(z)\F{a'}{b'}{c'}{\phi(z)}
+\]
+it is enough to provide either:
+\begin{enumerate}
+\item a coefficient identity for the \(n\)-th coefficient, expressed as a
+finite sum and proved by induction in \(n\); or
+\item an algebraic certificate that the right side satisfies the same
+second-order differential equation and the same first two initial
+coefficients as the left side.
+\end{enumerate}
+Both certificate formats have primitive recursive checkers.
+\end{proposition}
+
+\begin{proof}
+In the first format, the checker expands products and substitutions in
+\(R_{n+1}\).  In the second, the differential expression has coefficients
+obtained by a finite number of Cauchy products and derivatives; equality to
+zero at each coefficient is decidable.  The ODE recurrence then determines
+all higher coefficients from the first two, or from the constant coefficient
+for the normalized regular solution.  The checker never manipulates an
+actual completed infinite series.
+\end{proof}

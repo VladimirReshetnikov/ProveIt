@@ -1,0 +1,411 @@
+\section{Euler integrals and summation theorems}\label{sec:integrals-sums}
+
+\subsection{The beta integral as effective data}
+
+For named complex parameters with positive real-part margins, define
+\[
+ B(x,y)=\int_0^1 t^{x-1}(1-t)^{y-1}\dd t.
+\]
+On the positive real axis, the powers use the real logarithm, so
+\[
+ \abs{t^{x-1}(1-t)^{y-1}}
+ =t^{\RePart x-1}(1-t)^{\RePart y-1}.
+\]
+If \(\RePart x,\RePart y\ge\delta>0\), endpoint tails are bounded by
+\(\eta^\delta/\delta\), up to an explicit branch-independent constant.
+Thus the cutoff \(\eta\), central quadrature mesh, and evaluation precision
+are primitive recursive functions of the requested accuracy.
+
+\begin{lemma}[Beta shift identities]\label{lem:beta-shift}
+Under positive real-part margins,
+\begin{align}
+ B(x+1,y)&=\frac{x}{x+y}B(x,y),\label{eq:beta-shift-x}\\
+ B(x,y+1)&=\frac{y}{x+y}B(x,y),\label{eq:beta-shift-y}\\
+ B(x+n,y)&=B(x,y)\frac{\poch x n}{\poch{x+y}n}.
+ \label{eq:beta-shift-n}
+\end{align}
+These are effective equalities of names.
+\end{lemma}
+
+\begin{proof}
+The identity
+\[
+ 1=t+(1-t)
+\]
+gives \(B(x,y)=B(x+1,y)+B(x,y+1)\).  Integration by parts, performed first
+on \([\eta,1-\eta]\), gives
+\(xB(x,y+1)=yB(x+1,y)\).  The endpoint terms tend effectively to zero by the
+positive margins.  Solving the two linear equations yields
+\eqref{eq:beta-shift-x} and \eqref{eq:beta-shift-y}; induction gives
+\eqref{eq:beta-shift-n}.  The finite-quadrature proof of integration by parts
+uses telescoping sums and a supplied derivative modulus, as in
+\cref{lem:finite-substitution}.
+\end{proof}
+
+The gamma package in the repository proves an effective version of
+\[
+ B(x,y)=\frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}
+\]
+in the positive chamber and extends it by the gamma recurrence.  The present
+arguments may take either the beta integral or that gamma quotient as the
+primary name.
+
+\subsection{Euler's hypergeometric integral}
+
+\begin{theorem}[Euler integral]\label{thm:euler-integral}
+Assume rational margins
+\[
+ \RePart b\ge\delta,
+ \qquad
+ \RePart(c-b)\ge\delta,
+ \qquad \delta>0,
+\]
+and suppose \(1-zt\) stays apart from zero and from the chosen logarithm cut
+for \(0\le t\le1\).  Then
+\begin{equation}\label{eq:euler-integral}
+ B(b,c-b)\F a b c z
+ =\int_0^1t^{b-1}(1-t)^{c-b-1}(1-zt)^{-a}\dd t.
+\end{equation}
+For \(\norm z\le r<1\), the proof supplies a primitive recursive error
+schedule uniform in \(z\).
+\end{theorem}
+
+\begin{proof}
+On \(\norm z\le r<1\), use the effective binomial expansion
+\[
+ (1-zt)^{-a}=\sum_{n<N}\frac{\poch a n}{n!}(zt)^n+R_N(t,z),
+\]
+with a uniform geometric remainder being available from
+\cref{thm:disk-convergence}.  Integrating the finite head gives
+\[
+ \sum_{n<N}\frac{\poch a n}{n!}z^nB(b+n,c-b).
+\]
+By \eqref{eq:beta-shift-n}, this is
+\[
+ B(b,c-b)\sum_{n<N}
+ \frac{\poch a n\poch b n}{\poch c n n!}z^n.
+\]
+The integral of the remainder is bounded by the uniform remainder times an
+effective bound for the beta weight.  Endpoint cutoffs and the central mesh
+are chosen first; then \(N\) is chosen so that the integrated remainder is at
+most the remaining error budget.  This proves equality of names.
+
+For a more general \(z\) satisfying the stated branch and apartness condition,
+one may either estimate the same integral directly with a local polynomial
+approximation to \((1-zt)^{-a}\), or continue the already proved identity
+along a certified path.  The latter is \cref{thm:path-continuation}.
+\end{proof}
+
+\begin{corollary}[The \([0,\infty)\) Euler form]\label{cor:euler-infty}
+Under the corresponding margins and branch data,
+\[
+ \F a b c z
+ =\frac1{B(b,c-b)}
+ \int_0^\infty
+ u^{b-1}(1+u)^{a-c}(1+(1-z)u)^{-a}\dd u.
+\]
+\end{corollary}
+
+\begin{proof}
+In \eqref{eq:euler-integral}, put \(t=u/(1+u)\).  The finite substitution
+principle applies after cutting the improper integral at a primitive
+recursive bound and estimating the algebraic tail.
+\end{proof}
+
+\subsection{Incomplete beta and elliptic integrals}
+
+\begin{corollary}[Incomplete beta]\label{cor:incomplete-beta}
+For positive real-part and branch margins,
+\begin{equation}\label{eq:incomplete-beta}
+ B_x(p,q)=\int_0^x t^{p-1}(1-t)^{q-1}\dd t
+ =\frac{x^p}{p}\F p{1-q}{p+1}{x}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Substitute \(t=xu\).  The remaining integral is Euler's integral with
+\(a=1-q\), \(b=p\), \(c=p+1\), and
+\(B(p,1)=1/p\).  The branch of \(x^p\) is part of the input data.
+\end{proof}
+
+\begin{corollary}[Complete elliptic integrals]\label{cor:elliptic}
+For \(|k|<1\),
+\begin{align}
+ K(k)&=\frac\pi2\F{1/2}{1/2}{1}{k^2},\label{eq:elliptic-K}\\
+ E(k)&=\frac\pi2\F{-1/2}{1/2}{1}{k^2}.
+ \label{eq:elliptic-E}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+Euler's integral with \(b=1/2\), \(c=1\) has beta factor
+\(B(1/2,1/2)=\pi\).  The substitution \(t=\sin^2\theta\) gives
+\[
+ \frac12t^{-1/2}(1-t)^{-1/2}\dd t=\dd\theta.
+\]
+For \(a=1/2\) and \(a=-1/2\), the remaining factors are respectively
+\((1-k^2\sin^2\theta)^{-1/2}\) and its positive square root.  In iPRA one can
+instead take the \(t\)-integrals as the definitions and verify the
+trigonometric substitution by finite quadrature; no existence theorem for an
+arbitrary antiderivative is needed.
+\end{proof}
+
+\subsection{Finite Chu--Vandermonde}
+
+\begin{theorem}[Chu--Vandermonde]\label{thm:vandermonde}
+For \(m\in\N\), under the finite denominator guards,
+\begin{equation}\label{eq:vandermonde}
+ \F{-m}{b}{c}{1}=\frac{\poch{c-b}m}{\poch c m}.
+\end{equation}
+This is a \StatusA{} theorem: no convergence or gamma function is involved.
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+ S_m(b,c)=\sum_{n=0}^m(-1)^n\binom mn\frac{\poch b n}{\poch c n}.
+\]
+We prove the formula by induction on \(m\), uniformly in \(b,c\).  Pascal's
+identity gives
+\begin{align*}
+ S_{m+1}(b,c)
+ &=S_m(b,c)-\frac bc S_m(b+1,c+1).
+\end{align*}
+By the induction hypothesis,
+\[
+ S_m(b,c)=\frac{\poch{c-b}m}{\poch c m},
+ \qquad
+ S_m(b+1,c+1)=\frac{\poch{c-b}m}{\poch{c+1}m}.
+\]
+Since
+\(\poch{c+1}m=\poch c m(c+m)/c\),
+\begin{align*}
+ S_{m+1}(b,c)
+ &=\frac{\poch{c-b}m}{\poch c m}
+   \left(1-\frac b{c+m}\right)\\
+ &=\frac{\poch{c-b}{m+1}}{\poch c{m+1}}.
+\end{align*}
+After cross-multiplication this is a quantifier-free identity between finite
+products and sums.  The base \(m=0\) is immediate.
+\end{proof}
+
+\begin{corollary}[MathWorld's Kummer first formula]
+For \(n\in\N\),
+\[
+ \F{1/2+m-k}{-n}{2m+1}{1}
+ =\frac{\Gamma(2m+1)\Gamma(m+1/2+k+n)}
+        {\Gamma(m+1/2+k)\Gamma(2m+1+n)},
+\]
+whenever the finite denominators are guarded.  The gamma notation is merely a
+rewriting of a quotient of two rising factorials.
+\end{corollary}
+
+\subsection{Gauss's summation theorem}
+
+\begin{theorem}[Effective Gauss summation in the Euler chamber]\label{thm:gauss}
+Assume positive rational margins for
+\(\RePart b\), \(\RePart(c-b)\), and
+\(\RePart(c-a-b)\).  Then
+\begin{equation}\label{eq:gauss}
+ \F a b c1
+ =\frac{\Gamma(c)\Gamma(c-a-b)}
+        {\Gamma(c-a)\Gamma(c-b)}.
+\end{equation}
+The equality has a primitive recursive modulus.
+\end{theorem}
+
+\begin{proof}
+Set \(z=1\) in Euler's integral.  The factor
+\((1-t)^{-a}\) combines with the beta weight, giving
+\[
+ B(b,c-b)\F a b c1=B(b,c-a-b).
+\]
+Use the beta--gamma identity twice and cancel the apart gamma factors.  The
+endpoint margins provide the integration modulus.  Thus the proof is not an
+appeal to a limiting value at the boundary; it directly evaluates an
+improper integral with an explicit tail estimate.
+\end{proof}
+
+\begin{remark}[Beyond the Euler chamber]
+The classical formula only requires \(\RePart(c-a-b)>0\), apart from poles.
+Starting from a parameter triple in the Euler chamber, contiguous relations
+shift \(a,b,c\) by integers, and symmetry interchanges \(a,b\).  A finite
+chain, together with nonzero coefficient certificates, proves many additional
+instances.  Full generic extension is a \StatusC{} continuation theorem in
+parameter space: the path must avoid the gamma poles and the singular
+hyperplanes of the recurrence.
+\end{remark}
+
+\subsection{Kummer's theorem at \(z=-1\)}
+
+\begin{theorem}[Kummer summation]\label{thm:kummer-sum}
+Under the margins needed by the transformed Gauss sum,
+\begin{equation}\label{eq:kummer-sum}
+ \F a b{1+a-b}{-1}
+ =\frac{\Gamma(1+a-b)\Gamma(1+a/2)}
+        {\Gamma(1+a)\Gamma(1+a/2-b)}.
+\end{equation}
+Equivalently,
+\[
+ \F a b{1+a-b}{-1}
+ =2^{-a}\sqrt\pi\,
+  \frac{\Gamma(1+a-b)}
+       {\Gamma((1+a)/2)\Gamma(1+a/2-b)}.
+\]
+\end{theorem}
+
+\begin{proof}
+Put \(z=-1\) in \eqref{eq:kummer-q1}.  The transformed argument is \(1\),
+so Gauss's theorem gives
+\[
+ 2^{-a}\frac{\Gamma(1+a-b)\Gamma(1/2)}
+ {\Gamma((1+a)/2)\Gamma(1+a/2-b)}.
+\]
+The gamma duplication formula
+\[
+ \Gamma((1+a)/2)\Gamma(1+a/2)
+ =2^{-a}\sqrt\pi\,\Gamma(1+a)
+\]
+turns this into \eqref{eq:kummer-sum}.  The quadratic transformation is a
+finite ODE certificate; the remaining analytic content is the effective
+Gauss sum and the already developed gamma identity.
+\end{proof}
+
+\subsection{Theorems at \(z=1/2\)}
+
+\begin{theorem}[Gauss's second summation theorem]\label{thm:gauss-second}
+Under the corresponding margins,
+\begin{equation}\label{eq:gauss-second}
+ \F a b{(1+a+b)/2}{1/2}
+ =\frac{\Gamma(1/2)\Gamma((1+a+b)/2)}
+        {\Gamma((1+a)/2)\Gamma((1+b)/2)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The pullback certificate of \cref{lem:pullback-certificate} verifies
+\begin{equation}\label{eq:gauss-second-quad}
+ \F a b{(1+a+b)/2}{z}
+ =\F{a/2}{b/2}{(1+a+b)/2}{4z(1-z)}
+\end{equation}
+near zero.  At \(z=1/2\), the right argument is \(1\).  Gauss's theorem
+applies because
+\[
+ \frac{1+a+b}{2}-\frac a2-\frac b2=\frac12,
+\]
+and gives exactly \eqref{eq:gauss-second}.  The path from zero to one half
+stays in the ordinary convergence disk, so no extra branch choice is needed.
+\end{proof}
+
+\begin{theorem}[Bailey's theorem]\label{thm:bailey}
+In an initial Euler chamber, and elsewhere by certified parameter
+continuation,
+\begin{equation}\label{eq:bailey}
+ \F a{1-a}c{1/2}
+ =\frac{\Gamma(c/2)\Gamma((c+1)/2)}
+        {\Gamma((c+a)/2)\Gamma((c+1-a)/2)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use Euler's integral with the second numerator parameter \(b=1-a\):
+\[
+ B(1-a,c+a-1)F
+ =\int_0^1t^{-a}(1-t)^{c+a-2}(1-t/2)^{-a}\dd t.
+\]
+Put \(u=1-t\).  Since
+\(t(1-t/2)=(1-u^2)/2\), the integral becomes
+\[
+ 2^a\int_0^1u^{c+a-2}(1-u^2)^{-a}\dd u.
+\]
+Then put \(v=u^2\), obtaining
+\[
+ 2^{a-1}B((c+a-1)/2,1-a).
+\]
+Divide by the original beta factor and rewrite with gamma functions:
+\[
+ F=2^{a-1}
+ \frac{\Gamma(c)\Gamma((c+a-1)/2)}
+      {\Gamma(c+a-1)\Gamma((c+1-a)/2)}.
+\]
+Apply the duplication formula once to \(\Gamma(c+a-1)\) and once to
+\(\Gamma(c)\).  The powers of two and \(\sqrt\pi\) cancel, leaving
+\eqref{eq:bailey}.  Every substitution is covered by
+\cref{lem:finite-substitution}; all endpoint exponents have supplied positive
+margins.
+\end{proof}
+
+
+\subsection{A further MathWorld value at \(z=-1\)}
+
+\begin{theorem}[The \(\F1{-a}a{-1}\) evaluation]\label{thm:minus-one-extra}
+In the initial chamber \(\RePart a>1\), and elsewhere by certified parameter
+continuation,
+\begin{equation}\label{eq:minus-one-extra}
+ \F1{-a}a{-1}
+ =1+\frac{\sqrt\pi}{2}\frac{\Gamma(a+1)}{\Gamma(a+1/2)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use symmetry and Euler's integral with numerator parameters \((-a,1)\):
+\[
+ F=(a-1)\int_0^1(1-t)^{a-2}(1+t)^a\dd t.
+\]
+Put \(t=2u-1\).  Then
+\[
+ F=(a-1)2^{2a-1}\int_{1/2}^1u^a(1-u)^{a-2}\dd u.
+\]
+Let \(J\) denote this last integral and let \(K\) be the corresponding
+integral from \(0\) to \(1/2\).  Clearly
+\(J+K=B(a+1,a-1)\).  Substituting \(u\mapsto1-u\) in \(J\) gives
+\[
+ J-K=\int_0^{1/2}[u(1-u)]^{a-2}(1-2u)\dd u
+ =\frac{4^{1-a}}{a-1},
+\]
+because the integrand is
+\((a-1)^{-1}\frac{d}{du}[u(1-u)]^{a-1}\).  Hence
+\[
+ J=\frac12\left(B(a+1,a-1)+\frac{4^{1-a}}{a-1}\right).
+\]
+After multiplication by \((a-1)2^{2a-1}\), the second term is \(1\), while
+the first is
+\[
+ 2^{2a-2}\frac{\Gamma(a+1)\Gamma(a)}{\Gamma(2a)}
+ =\frac{\sqrt\pi}{2}\frac{\Gamma(a+1)}{\Gamma(a+1/2)}
+\]
+by duplication.  Every integral substitution has an effective endpoint
+margin in the stated chamber.
+\end{proof}
+
+\subsection{The isolated MathWorld values}
+
+MathWorld lists the following evaluations:
+\begin{align*}
+ \F{1/3}{2/3}{5/6}{27/32}&=\frac85,\\
+ \F{1/4}{1/2}{3/4}{80/81}&=\frac95,\\
+ \F{1/8}{3/8}{1/2}{2400/2401}&=\frac{2\sqrt7}{3},\\
+ \F{1/6}{1/3}{1/2}{25/27}&=\frac{3\sqrt3}{4},\\
+ \F{1/6}{1/2}{2/3}{125/128}&=\frac43\,2^{1/6},\\
+ \F{1/12}{5/12}{1/2}{1323/1331}&=\frac34\,11^{1/4},
+\end{align*}
+and a further value at \(121/125\) involving
+\(\Gamma(1/3)^3/\Gamma(1/4)^2\).
+
+\begin{audit}[Status of the isolated values]\label{audit:isolated-values}
+The archive numerically validates the displayed values to high precision and
+represents every radical target by an isolated algebraic name.  A completed
+iPRA proof of each algebraic value would consist of either:
+\begin{enumerate}
+\item a finite algebraic pullback certificate reducing the value to a
+normalized point already covered above; or
+\item a modular-equation certificate, an AGM/modular transformation chain,
+and explicit convergence bounds.
+\end{enumerate}
+The source pages attribute these values to work on special hypergeometric
+values, but do not print the transformation certificates.  This package does
+not reconstruct all of those modular proofs, so the six displayed isolated
+values and the gamma quotient are marked \StatusD{}, not silently counted as
+proved.  This is the largest conspicuous omission from the finite list of
+formulas on the two pages.
+\end{audit}

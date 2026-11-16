@@ -310,7 +310,8 @@ deleted. It leaves out one ignored `.log` file. On 16 November 2026, on Vladimir
 instruction, the 45 checksum manifests that had been placed with these packets
 (`MANIFEST.sha256`, `manifest.sha256` and three `MANIFEST.txt` digest lists) were removed
 and recorded in `OMITTED.tsv` as `checksum-manifest`; later packets are placed without
-theirs.
+theirs. `hypergeometric_ipra_2026-11-16.zip` was placed the same way, under `analysis/`, and
+then deleted. It leaves out one ignored checksum manifest.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

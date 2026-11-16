@@ -1,0 +1,121 @@
+\section{Coverage ledger and limitations}\label{sec:inventory}
+
+\subsection{How the ledger is counted}
+
+The companion file \code{theorem\_inventory.csv} has one row for each
+mathematical assertion or displayed formula family identified on the two
+reference pages.  Closely related assertions appearing on both pages are kept
+as separate rows, so the ledger measures source coverage rather than the
+number of mathematically independent theorems.  There are 104 rows:
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Status & Rows & Interpretation \\
+\midrule
+\StatusA & 16 & complete finite/formal iPRA proof \\
+\textsf{A/B} & 32 & complete finite proof and effective analytic reading \\
+\textsf{A/C} & 11 & complete local/formal proof; branch/global part certified \\
+\StatusB & 20 & effective analytic proof with explicit moduli \\
+\StatusC & 14 & conditional proof with a displayed finite certificate contract \\
+\StatusD & 11 & not proved in this package \\
+\midrule
+Total & 104 & \\
+\bottomrule
+\end{tabular}
+\end{center}
+Thus 48 rows have a complete exact finite core (statuses \StatusA{} and
+\textsf{A/B}), another 20 are effective analytic theorems, and 25 have either
+a complete local theorem or a precise finite certificate reduction.  Eleven
+rows remain genuinely outside the present reduction.
+
+\subsection{What is strongest in the package}
+
+The broadest exact result is not any one special value but the reusable
+pullback--gauge checker of \cref{lem:pullback-certificate}.  It reduces a
+large class of transformations to two polynomial residuals.  In the same
+spirit, \cref{thm:contiguous-master,thm:shift-reduction} turn all integer
+parameter shifts into a bounded rational matrix computation, and
+\cref{thm:finite-cf} proves the finite continued fraction with its exact
+hypergeometric tail rather than treating the ellipsis as self-justifying.
+
+The main analytic contribution is the separation of convergence into an
+explicit rational cutoff and a geometric remainder
+(\cref{lem:ratio-cutoff,thm:disk-convergence}).  It supplies a direct route to
+object-theory Cauchy sentences and avoids importing a classical ratio-test
+library.  Euler's integral and the major summation theorems then use finite
+head--tail and endpoint-cutoff arguments, which are naturally compatible with
+iPRA.
+
+Two source formulas benefit from particularly economical constructive proofs:
+\begin{itemize}
+\item the cubic radical is the isolated branch of
+\(Y+x^2Y^3=1\), identified with the hypergeometric series by ODE uniqueness;
+\item the entire Glasser family is the Fuss--Catalan solution of
+\(y=1+f_k^kty^{k+1}\), with the hypergeometric coefficient obtained by finite
+factorial multiplication identities.
+\end{itemize}
+
+\subsection{The eleven \StatusD{} rows}
+
+The omissions fall into four groups.
+
+\paragraph{Seven isolated modular values.}
+MathWorld's equations (18)--(24) are verified numerically in the archive, but
+their published modular or algebraic transformation proofs are not
+reconstructed.  Numerical agreement is not counted as proof.
+
+\paragraph{Global modular inversion.}
+The lambda/theta inversion statement is reduced to the classical inversion of
+the elliptic integral ratio, but a complete effective modular-function
+library is absent.
+
+\paragraph{Finite-monodromy classification.}
+Local monodromy matrices and finite products are covered conditionally; the
+global classification by spherical triangle groups is not.
+
+\paragraph{Under-specified mentions.}
+The source page only mentions several other orthogonal polynomial families and
+a John-transform representation without printing formulas or normalization.
+No theorem is invented to fill that gap.
+
+\subsection{Full source-row table}
+
+The compact table below gives the row identifier, source claim, status, and
+report route.  The CSV adds source locators, formalization methods, and notes.
+
+\begingroup\scriptsize
+\setlength{\tabcolsep}{3pt}
+\input{sections/generated_inventory_table}
+\endgroup
+
+\subsection{Claims deliberately weakened or parameterized}
+
+Several classical statements are true in broader domains than the initial
+constructive theorem stated here.  The restriction is always visible:
+\begin{enumerate}
+\item Gauss summation is proved directly in the Euler chamber; broader
+instances use a certified parameter-continuation path.
+\item The connection formula excludes resonance and asks for a branch/path
+certificate.
+\item Boundary convergence asks for a positive rational witness
+\(\delta\le\RePart(c-a-b)\).
+\item Barnes's integral asks for explicit strip and contour-tail bounds.
+\item Infinite continued-fraction convergence asks for denominator apartness
+and a contraction domain; the finite identity is unconditional.
+\item The generic nonresonant Frobenius basis is not asserted in resonant
+integer-difference cases; those need logarithmic recurrences.
+\end{enumerate}
+These are not cosmetic qualifications.  They are the computational data that
+turn a classical existence proof into a theorem of primitive recursive
+arithmetic.
+
+\subsection{Trust boundary}
+
+The human proofs in this report are intended to be mathematically complete at
+the level indicated by their status.  The finite Python checker provides
+independent exact tests of coefficient identities and high-precision tests of
+selected analytic values.  It is not a proof assistant.  The Lean files are a
+formalization outline and were not compiled in the preparation environment.
+Only a future derivation in \code{Prf PRAAx}, audited with
+\code{\#print axioms} and no \code{sorry}, should be called a completed formal
+iPRA proof.

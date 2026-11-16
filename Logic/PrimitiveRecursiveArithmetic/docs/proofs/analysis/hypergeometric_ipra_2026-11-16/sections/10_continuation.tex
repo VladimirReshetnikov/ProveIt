@@ -1,0 +1,269 @@
+\section{Effective continuation, connection formulas, and global claims}\label{sec:continuation}
+
+\subsection{Taylor stepping along a coded path}
+
+A qualitative statement that a function ``can be analytically continued along
+any path avoiding the singularities'' must be replaced by a finite path and
+quantitative separation data.
+
+\begin{definition}[Continuation certificate]\label{def:continuation-cert}
+A continuation certificate from \(z_0\) to \(z_m\) consists of rational or
+complex-rational centers
+\(z_0,z_1,\ldots,z_m\), positive rational radii \(R_j\), and margins
+\(d_j>0\) such that
+\begin{align*}
+ \norm{z_{j+1}-z_j}&\le R_j/2,\\
+ \operatorname{dist}(\overline{D(z_j,R_j)},\{0,1\})&\ge d_j,
+\end{align*}
+plus initial names for \(y(z_0),y'(z_0)\).  If powers occur, the certificate
+also contains compatible logarithm branches on the disks and overlap
+constants.
+\end{definition}
+
+On a disk avoiding \(0,1\), rewrite the equation as
+\[
+ y''=P(z)y'+Q(z)y,
+ \quad
+ P(z)=-\frac{c-(a+b+1)z}{z(1-z)},
+ \quad
+ Q(z)=\frac{ab}{z(1-z)}.
+\]
+Expand \(P,Q\) at the center.  Their coefficients have geometric bounds from
+the separation margin.  The Taylor coefficients of \(y\) then satisfy a
+finite convolution recurrence determined by \(y(z_j),y'(z_j)\).
+
+\begin{theorem}[Primitive recursive path continuation]\label{thm:path-continuation}
+Given \cref{def:continuation-cert}, a primitive recursive algorithm computes
+names for \(y(z_j),y'(z_j)\) at every center and hence a name at the endpoint.
+The result is independent, up to effective equality, of refinements of the
+same certified disk chain.  Applied to the regular series at zero after an
+initial center inside \(|z|<1\), it gives an effective branch of
+\(\F a b c z\) along the path.
+\end{theorem}
+
+\begin{proof}
+For one step, majorize the coefficient recurrence by a scalar series
+\(M/(1-w/R)\) whose rational constants are computed from
+\(d_j,R_j,\norm a,\norm b,\norm c\) and the current value bounds.  Induction
+shows that the Taylor coefficient of order \(n\) is at most \(MR^{-n}\).
+At a point with displacement at most \(R/2\), the tail after \(N\) terms is
+at most \(2M2^{-N}\), and the differentiated tail has a similarly explicit
+bound.  Choose \(N\) by bounded search, evaluate the finite Taylor polynomial,
+and propagate the resulting intervals to the next center.  Repeat for the
+finite list of disks.
+
+If a disk chain is refined, both constructions solve the same local initial
+value problem on each overlap.  The coefficient recurrence proves uniqueness,
+and the two tail moduli transfer the coefficient equality to equality of
+names.  This is an induction over the finite refinement, not a compactness
+argument over all paths.
+\end{proof}
+
+\begin{corollary}[Branch cut convention]
+A conventional principal branch on
+\(\C\setminus[1,\infty)\) is represented by a family of rational polygonal
+paths from a base point, each carrying a positive distance from the cut and
+from \(0,1\).  Equality of two evaluations is proved when their paths are
+connected by an explicitly coded homotopy grid whose cells stay a positive
+distance from the singularities.
+\end{corollary}
+
+\subsection{The connection formula at one}
+
+For nonresonant parameters, define
+\begin{align*}
+ A&=\frac{\Gamma(c)\Gamma(c-a-b)}
+         {\Gamma(c-a)\Gamma(c-b)},\\
+ B&=\frac{\Gamma(c)\Gamma(a+b-c)}
+         {\Gamma(a)\Gamma(b)}.
+\end{align*}
+The classical connection formula is
+\begin{equation}\label{eq:connection-one}
+\begin{split}
+ \F a b c z={}&A\,
+ \F a b{a+b+1-c}{1-z}\\
+ &+B(1-z)^{c-a-b}
+ \F{c-a}{c-b}{1+c-a-b}{1-z}.
+\end{split}
+\end{equation}
+
+\begin{theorem}[Certified connection formula]\label{thm:connection}
+Equation \eqref{eq:connection-one} is a \StatusC{} iPRA theorem schema under:
+\begin{enumerate}
+\item apartness from the gamma poles and from the resonant hyperplanes
+\(c-a-b\in\Z\);
+\item a branch of \((1-z)^{c-a-b}\);
+\item a finite parameter-continuation chain from a chamber in which the
+connection coefficients are determined by effective Gauss evaluations;
+\item a path-continuation certificate in the \(z\)-plane.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Both terms on the right solve the original differential equation by
+\cref{prop:one-solutions}.  Thus it suffices to determine the two constants in
+one nonresonant parameter chamber.  One coefficient is the regular limit at
+\(z=1\) and equals \(A\) by \cref{thm:gauss}.  Applying Euler's
+transformation exchanges the two exponents at one; in a chamber where the
+transformed regular limit exists, Gauss's theorem gives \(B\).  To place both
+calculations in one formal proof, choose a finite path in parameter space that
+avoids poles and resonance, and use contiguous relations whenever an integer
+shift is more convenient.  Gamma recurrence and the ODE uniqueness theorem
+show that the constants continue along the same chain.  Finally continue in
+\(z\) with \cref{thm:path-continuation}.
+
+Every step has finite data.  What is conditional is the supplied path and its
+margins; no unrestricted theorem that the complement of all singular
+hyperplanes is path connected is used inside iPRA.
+\end{proof}
+
+\begin{remark}[Resonant connection formulas]
+When \(c-a-b\in\Z\), gamma coefficients in
+\eqref{eq:connection-one} have poles and the two Frobenius solutions coalesce.
+Taking an effective parameter limit produces a logarithmic formula involving
+finite harmonic sums and gamma derivatives.  This can be formalized for any
+fixed resonance and truncation order, but a uniform library of all resonant
+cases is not included.
+\end{remark}
+
+\subsection{Barnes's contour integral}
+
+The Barnes integrand is
+\[
+ G(s)=
+ \frac{\Gamma(a+s)\Gamma(b+s)\Gamma(-s)}{\Gamma(c+s)}
+ (-z)^s.
+\]
+A vertical contour must separate the poles
+\(s=0,1,2,\ldots\) from
+\(s=-a-n,-b-n\).  This separation is not expressible by a picture alone.
+
+\begin{contract}[Barnes contour data]\label{con:barnes}
+Supply:
+\begin{enumerate}
+\item a rational vertical line \(\RePart s=\sigma\), or a finite polygonal
+deformation, with positive distances from every relevant pole family;
+\item a branch of \(\log(-z)\) with
+\(|\ImPart\log(-z)|\le\pi-\eta\) for rational \(\eta>0\);
+\item explicit vertical-strip gamma bounds of the form
+\[
+ \norm{G(\sigma+it)}\le C(1+|t|)^M e^{-\eta|t|};
+\]
+\item for a closing rectangle, an explicit bound on the far vertical side,
+typically containing \(\norm z^N\) when \(\norm z<1\).
+\end{enumerate}
+The gamma/Stirling and Cauchy-residue packets in the repository provide the
+intended lower-level ingredients.
+\end{contract}
+
+\begin{theorem}[Certified Barnes integral]\label{thm:barnes}
+Under \cref{con:barnes},
+\begin{equation}\label{eq:barnes}
+ \frac1{2\pi i}\int_{-i\infty}^{i\infty}G(s)\dd s
+ =\frac{\Gamma(a)\Gamma(b)}{\Gamma(c)}\F a b c z
+\end{equation}
+with the contour interpreted as the supplied separating path.  The equality
+has a primitive recursive precision schedule.
+\end{theorem}
+
+\begin{proof}
+First truncate the contour at height \(T\) and close it after the first
+\(N\) poles of \(\Gamma(-s)\).  The finite residue theorem gives a finite sum
+of residues.  At \(s=n\), the residue, including the orientation sign, is
+\[
+ \frac{\Gamma(a+n)\Gamma(b+n)}{\Gamma(c+n)n!}z^n
+ =\frac{\Gamma(a)\Gamma(b)}{\Gamma(c)}
+   \frac{\poch a n\poch b n}{\poch c n n!}z^n.
+\]
+This is an exact gamma-recurrence calculation.  The horizontal edges and the
+infinite vertical tails are bounded by
+\(C(1+T)^Me^{-\eta T}\); bounded search chooses \(T\).  The far vertical edge
+and the uncollected series tail are bounded by the supplied \(N\)-estimate;
+choose \(N\) next.  The total error is allocated among the finitely many
+edges and the series tail.  Thus the ordinary contour proof becomes a finite
+residue identity plus primitive recursive inequalities.
+\end{proof}
+
+\begin{audit}
+The report specifies the complete proof architecture but does not contain a
+kernel-checked implementation of all complex gamma strip bounds and contour
+integration.  Accordingly Barnes's formula is counted as \StatusC{}, not as
+an unconditional finished analytic theorem.
+\end{audit}
+
+\subsection{Local monodromy and Schwarz ratios}
+
+For a nonresonant Frobenius basis at a singular point with exponents
+\(\rho_1,\rho_2\), continuation once around a small certified polygonal loop
+multiplies the basis by
+\[
+ \begin{pmatrix}e^{2\pi i\rho_1}&0\\0&e^{2\pi i\rho_2}\end{pmatrix}.
+\]
+The statement is effective for rational or algebraically named exponents,
+because the exponential has a Taylor modulus and the loop is finite.
+
+\begin{proposition}[Möbius action on a solution ratio]\label{prop:schwarz-local}
+Let \(s=\varphi_1/\varphi_0\) on a disk where \(\varphi_0\) is apart from
+zero.  If continuation changes the basis by
+\(\binom{\varphi_0}{\varphi_1}\mapsto
+ M\binom{\varphi_0}{\varphi_1}\), then
+\[
+ s\longmapsto\frac{M_{10}+M_{11}s}{M_{00}+M_{01}s}.
+\]
+Moreover,
+\[
+ s'=\frac{W(\varphi_0,\varphi_1)}{\varphi_0^2},
+\]
+so local conformality is certified by apartness of the Wronskian and
+\(\varphi_0\).
+\end{proposition}
+
+\begin{proof}
+Both identities are one-line cross-multiplications.  The Wronskian has the
+explicit form of \cref{lem:wronskian}, so its nonvanishing on a branch disk is
+quantitative once the leading constant is apart from zero.
+\end{proof}
+
+\begin{audit}[Global Schwarz and monodromy claims]
+The source page describes triangle maps, explicit monodromy matrices, and the
+classification saying that certain rational exponent differences give finite
+monodromy exactly when \(1/k+1/l+1/m>1\).  The local matrices and their finite
+products are arithmetic objects and can be checked once connection matrices
+are certified.  The global conformal mapping theorem and the complete finite
+group classification are not reconstructed here.  They remain \StatusD{}.
+\end{audit}
+
+\subsection{The modular-lambda statement}
+
+From \cref{cor:elliptic},
+\[
+ \F{1/2}{1/2}1z=\frac2\pi K(\sqrt z).
+\]
+Hence the ratio printed on the source page is
+\[
+ \tau=i\frac{K(\sqrt{1-z})}{K(\sqrt z)}
+\]
+for compatible square-root branches.  The assertion
+\(\lambda(\tau)=z\), where lambda is a quotient of theta series, is the
+classical elliptic-modular inversion theorem.
+
+\begin{audit}[Modular inversion]
+Theta series at an explicitly named \(\tau\) have elementary Gaussian tail
+moduli, so their values are representable in iPRA.  What is missing is a
+complete constructive proof that the theta quotient inverts the elliptic
+integral ratio for every certified domain point, including the modular
+transformation and global branch bookkeeping.  The package therefore proves
+the reduction to the elliptic-modular theorem but marks the inversion itself
+\StatusD{}.  The same missing modular infrastructure explains the status of
+several isolated MathWorld values in \cref{audit:isolated-values}.
+\end{audit}
+
+\subsection{The John-transform sentence}
+
+The Wikipedia page states that the Gauss function can be written as a John
+transform but does not display a formula or normalization.  A mathematical
+statement cannot be formalized from a bare reference to a transform with
+multiple conventions.  Once an explicit kernel, domain, and normalization
+are supplied, the intended proof is expected to be a finite change of
+variables reducing the transform to Euler's integral.  No such theorem is
+counted in the coverage total.
