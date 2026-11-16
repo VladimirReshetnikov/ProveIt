@@ -1,0 +1,184 @@
+
+\section{Finite-use graph compilation}
+\label{sec:graph}
+
+\subsection{Node inventory}
+
+A practical theorem graph needs only a small family of node constructors.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{0.20\textwidth}X}
+\toprule
+Node & Required proof payload\\
+\midrule
+Exact computation &
+Defining equation and preservation of validity/extensionality.\\
+Boolean decision &
+A reflected quantifier-free formula and Boolean truth-value proof.\\
+Bounded search &
+A bound, reflected predicate, least-witness specification.\\
+Certified iteration &
+Initial state, transition equations, QF invariant, clock or residual clock
+obligation.\\
+Finite relation &
+Bounded totality or viability and local compatibility.\\
+Guarded operation &
+A decidable guard plus proof that the guard implies every side condition.\\
+Stable observation &
+Pairwise exact, quotient, or error stability on valid witnesses.\\
+Residual producer &
+A named formula left in the output context with provenance metadata.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+This inventory is intentionally close to the common core of the existing
+foundation packets.  The difference is that each constructor returns a
+proof-carrying module immediately.
+
+\subsection{Adaptive finite use}
+
+Suppose a node queries an input oracle-like interface.  There is no actual
+oracle in the object language.  A bounded run stores every query and answer in
+its state.  Its transition uses an answer only after checking
+\(\ValidObs(q,z)=1\).  The theorem input contains precisely the finite
+instances needed along the accepted trace, or one uniform contract from which
+those instances are derived by specialization.
+
+If the trace is certificate supplied, the verifier scans its query--answer
+pairs.  If the trace is recomputed, the answer producer is a primitive-
+recursive function with a proof of its contract.  In either case the final
+proof mentions only finitely many specialized facts.
+
+\begin{lemma}[Finite support extraction]
+Every concrete \code{Prf PRAAx} derivation has a finite set of hypothesis and
+axiom occurrences.  Therefore every compiled theorem instance uses only
+finitely many observations of each input interface.
+\end{lemma}
+
+\begin{proof}
+A derivation is an inductively generated finite tree.  Associate to each
+constructor the finite union of the supports of its premises, adding the
+formula used by a hypothesis or axiom constructor.  Structural recursion on
+the derivation yields a finite list.  The claim is metatheoretic and needs no
+new object axiom.
+\end{proof}
+
+The significance is operational: an interface may be globally specified, but
+the compiler can report the exact finite query support of a generated theorem.
+
+\subsection{The compilation theorem}
+
+Define a well-typed PCFM graph recursively.
+
+\begin{itemize}
+\item A leaf is a primitive checked module or a residual requirement.
+\item A sequential node applies a local module to compiled predecessors.
+\item A branch uses a reflected Boolean condition and two branch modules with
+a common conclusion.
+\item A loop carries the data of the fixed trace theorem.
+\item A bounded existential node invokes least search.
+\item A relational node invokes backward viability.
+\item An observation node invokes a stability eliminator.
+\end{itemize}
+
+\begin{theorem}[Finite-use compilation]
+For every finite well-typed PCFM graph \(G\) in free-variable scope \(n\), the
+compiler constructs
+\[
+   \mathsf{compile}(G):
+   \Res(G)\vdash_{\PRAAx}\mathsf{Goal}(G),
+\]
+where \(\Res(G)\) is exactly the list of residual producer formulas not
+discharged by a predecessor node.  The construction is stable under term
+substitution.  No formula outside the finite support of \(G\) is required.
+\end{theorem}
+
+\begin{proof}
+Proceed by structural recursion on \(G\).
+
+A primitive module returns its stored derivation.  A residual leaf returns the
+hypothesis derivation of its formula.
+
+At a sequential node, recursively compile all predecessors.  The local module
+has a context consisting of predecessor outputs and local residuals.  Weaken
+the predecessor derivations to the union of residual contexts and apply
+\code{Prf.trans}.  Deduplicate residual metadata at the host level; logical
+duplication would be harmless.
+
+At a Boolean branch, reflection proves either the condition or its negation
+from the Boolean value.  Compile both branches in contexts extended by the
+appropriate assumption, then apply intuitionistic disjunction elimination.
+If the graph computes the Boolean value explicitly, use finite case analysis
+on its Booleanity proof.
+
+At a loop, apply fixed trace reflection from
+\cref{sec:trace}, then cut in the terminal contract and clock proof.  The loop
+invariant is part of the node's typing data, so compilation cannot proceed
+without a quantifier-free proof of the invariant and its base and step
+derivations.
+
+At a bounded existential node, invoke bounded least witness
+(\cref{sec:boolean}) and specialize the continuation at the returned witness.
+At a relational node use the viability theorem of
+\cref{sec:relational}.  At an observation node use exact, quotient, or
+error-stable erasure.
+
+All recursive calls return actual derivations, and every assembly step is a
+constructor or checked structural theorem of \code{Prf}.  Thus the result has
+the displayed type.  Substitution stability follows by applying
+\code{Prf.subst} to the compiled result; alternatively it can be proved
+constructor by constructor, using substitution compatibility of Boolean
+reflection, traces, and search.  Finiteness of support follows from finiteness
+of the graph and the preceding lemma.
+\end{proof}
+
+\subsection{No hidden semantic trust in the compiler}
+
+The compiler itself is ordinary Lean code and may contain bugs.  A scheduling
+bug can choose the wrong predecessor; a demand analysis bug can compute an
+insufficient precision; a serialization bug can parse a malformed graph.
+None of these bugs can produce a theorem of the wrong type unless the Lean
+kernel accepts a \code{Prf PRAAx} term.
+
+This is the main advantage of the shallow design.  The compiler is not in the
+trusted base for mathematical soundness.  The trusted base consists of Lean's
+kernel, the definitions of \code{Prf} and \code{PRAAx}, and the imported
+checked derivations.  Compiler correctness remains important for completeness,
+performance, and whether the intended theorem was formalized, but not for the
+validity of an accepted proof term.
+
+\subsection{Residual minimality}
+
+The phrase ``exactly the residual producer formulas'' should be understood
+operationally.  The compiler removes a requirement when a predecessor
+derivation is supplied.  It does not decide logical redundancy among the
+remaining formulas.  A later simplifier may prove that one residual follows
+from others and discharge it by another module.
+
+This choice avoids an undecidable minimization problem.  It also preserves
+provenance: a theorem's ledger records the boundaries the graph genuinely
+used, even if some are mathematically redundant.
+
+\subsection{Caching and theorem reuse}
+
+A compiled module may be cached by:
+\[
+  (\text{repository commit},\text{module name},
+    \text{normalized input syntax},\text{proof hash}).
+\]
+Caching proof terms is an engineering optimization.  On reuse, Lean still
+checks the imported theorem.  Frequently used nodes---finite folds, rational
+inequalities, matrix operations, power-series truncations, interval
+refinements---should live in \code{IPRADerivations}, while theorem-specific
+graphs remain near their packets.
+
+\subsection{From graphs to the native scalar calculus}
+
+Once a result has been proved as
+\(\Gamma\vdash_{\PRAAx}\varphi\), the checked theorem
+\code{pra_iff_native} translates it to the native scalar calculus.  PCFM
+therefore need not duplicate every constructor for the smaller calculus.
+The ordinary interface is better for development; the native endpoint remains
+available for proof-checker size experiments, Busy Beaver exports, or a final
+minimal certificate.

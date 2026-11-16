@@ -1,0 +1,106 @@
+
+\section{Audit checklist for future theorem packets}
+\label{app:checklist}
+
+Before a packet claims an iPRA theorem, answer every applicable question.
+
+\subsection*{Endpoint}
+
+\begin{enumerate}
+\item What is the exact \code{Fm PTm n} conclusion?
+\item What is the exact context of assumptions?
+\item Is the endpoint a checked \code{Prf PRAAx}, a conditional checked
+derivation, a host theorem, executable evidence, or a paper proof?
+\item If a schema is intended, which parameters and precision queries index it?
+\end{enumerate}
+
+\subsection*{Representation}
+
+\begin{enumerate}
+\item What are the natural-number codes?
+\item What is the validity predicate?
+\item What equivalence relation represents mathematical equality?
+\item Are all exported operations proved valid and extensional?
+\item Is a claimed canonical representative actually computed and proved
+canonical?
+\end{enumerate}
+
+\subsection*{Logic and induction}
+
+\begin{enumerate}
+\item Is every induction invariant quantifier free?
+\item Have bounded quantifiers been compiled to finite folds or search?
+\item Is any use of decidability restricted to reflected finite predicates?
+\item Is a branch guard proved, rather than tested only in the host runtime?
+\end{enumerate}
+
+\subsection*{Resources}
+
+\begin{enumerate}
+\item What clock, search bound, modulus, height, gap, tail cutoff, cover radius,
+or degree bound is used?
+\item Is it a fixed PR term?
+\item Where is its object-theory correctness proved?
+\item If it is not proved, is it listed as a residual producer formula?
+\item Has abstract finiteness been incorrectly treated as an effective bound?
+\end{enumerate}
+
+\subsection*{Witnesses and stability}
+
+\begin{enumerate}
+\item Is the output unique, setoid-unique, or only error-stable?
+\item If a least finite witness is selected, is the selection compatible with
+later refinement?
+\item Does the theorem really need a coherent infinite selector?
+\item Can a stable observable replace branch selection?
+\item Is every exact sign, inverse, orientation, or root label guarded by a
+separation certificate?
+\end{enumerate}
+
+\subsection*{Computation and certificates}
+
+\begin{enumerate}
+\item Is every computation a fixed primitive-recursive symbol or a bounded
+clocked interpreter?
+\item Are defining equations available in the object calculus?
+\item If a trace is externally produced, is every transition checked inside
+iPRA?
+\item Does a host-level normalizer synthesize an object proof, or only prove a
+Lean proposition?
+\end{enumerate}
+
+\subsection*{Composition}
+
+\begin{enumerate}
+\item Are local modules composed by \code{Prf.trans} or an equivalent checked
+constructor?
+\item Does substitution commute with the module's terms and formulas?
+\item Are residual obligations aligned with their provenance ledger?
+\item Can the final proof report its finite query support?
+\end{enumerate}
+
+\subsection*{Bridge and export}
+
+\begin{enumerate}
+\item Which backend contains the canonical theorem?
+\item Is bridge transport needed only at the boundary?
+\item Are free-variable environments documented?
+\item Is the relevant term/formula round trip exact or only extensionally
+proved?
+\item Has a native or Foundation export been kernel checked after translation?
+\end{enumerate}
+
+\subsection*{Verification}
+
+\begin{enumerate}
+\item Does the Lean target build at the stated repository commit?
+\item Are there any \code{sorry}, \code{admit}, new axioms, or opaque semantic
+oracles?
+\item Were Python tests labeled as evidence rather than proof?
+\item Was the PDF rendered and visually inspected?
+\item Does the README state limitations and remaining producer obligations?
+\end{enumerate}
+
+A packet that cannot answer one of these questions may still contain valuable
+mathematics.  It should simply use the correct status label and expose the
+missing boundary.

@@ -1,0 +1,166 @@
+
+\section{Design principles: specialize first, prove in the object theory}
+\label{sec:design}
+
+\subsection{Why there should be no universal primitive-recursive evaluator}
+
+A frequent temptation is to encode every primitive-recursive program by a
+number and postulate a single primitive-recursive evaluator
+\(U(e,x)\) that executes the program with code \(e\) on input \(x\).  That
+cannot be the foundation of this project.
+
+\begin{proposition}[Diagonal obstruction]
+There is no primitive-recursive function \(U:\Nat^2\to\Nat\) whose unary
+sections enumerate all unary primitive-recursive functions.
+\end{proposition}
+
+\begin{proof}
+If such \(U\) existed, then
+\[
+     d(e)=S(U(e,e))
+\]
+would itself be primitive recursive.  Hence \(d(x)=U(k,x)\) for some code
+\(k\).  Evaluating at \(k\) gives
+\[
+     U(k,k)=d(k)=S(U(k,k)),
+\]
+contrary to injectivity and nonzeroness of successor.  The argument is
+metatheoretic, but its arithmetic contradiction is exactly the kind already
+available in \(\iPRA\).
+\end{proof}
+
+There are universal \emph{partial recursive} evaluators, and bounded
+interpreters for a fixed finite instruction set and an explicit clock are
+primitive recursive.  The obstruction concerns a total primitive-recursive
+evaluator that captures all primitive-recursive functions without a clock.
+Consequently the correct workflow is:
+
+\begin{center}
+\fbox{\(\text{fixed theorem} \;\longrightarrow\;
+       \text{statically specialized PR symbols} \;\longrightarrow\;
+       \text{object proof}\).}
+\end{center}
+
+A bounded interpreter may still be used inside a particular theorem when its
+instruction set, program code, and clock are fixed parameters with verified
+bounds.  It is then an ordinary specialized primitive recursion, not a
+universal semantic oracle.
+
+\subsection{Shallow proof carrying versus deep syntax}
+
+A \emph{deep} embedding defines an inductive syntax of nodes, an evaluator, a
+typing judgment, and a soundness theorem.  This can be elegant, but it creates
+a large initial proof obligation.  Any missing binder lemma, substitution law,
+or induction invariant blocks every downstream theorem.
+
+A \emph{shallow} embedding uses the host type system to enforce the interface.
+For PCFM, a node constructor is a Lean function whose result includes the
+object derivation.  For example, a composition constructor has the schematic
+type
+\[
+\begin{aligned}
+&([A]\vdash_{\PRAAx}B)\ \to\
+  ([B]\vdash_{\PRAAx}C)\ \to\
+  ([A]\vdash_{\PRAAx}C).
+\end{aligned}
+\]
+Its implementation is \code{Prf.trans}.  There is no separate semantic
+soundness theorem to prove: the function cannot return a value unless Lean has
+constructed a derivation of the advertised conclusion.
+
+The two styles are compatible.  After the shallow library is established, a
+deep graph language can elaborate to it:
+\[
+   \mathsf{elaborate} :
+   \mathsf{WellTypedGraph}\,G
+   \longrightarrow
+   \mathsf{Module}\,n .
+\]
+The codomain of the elaborator supplies the soundness theorem.  The deep
+language then serves interchange, automation, and caching rather than acting
+as the only route to trusted proofs.
+
+\subsection{The four separations that preserve correctness}
+
+PCFM enforces four separations.
+
+\paragraph{Computation versus justification.}
+A primitive-recursive term computes a result.  A \code{Prf PRAAx} value proves
+the result satisfies its contract.  Testing the computation on examples is
+useful but not a substitute for the proof.
+
+\paragraph{Consumer versus producer.}
+A finite consumer may be completely verified conditional on a resource:
+a bound \(B\), modulus \(M\), gap \(g\), cover radius \(r\), or certificate
+\(c\).  The producer theorem establishing that resource is a separate module.
+The consumer must not infer a producer merely from abstract existence.
+
+\paragraph{Witness versus observable.}
+A relation can supply several witnesses.  A theorem may require only an
+observable invariant of the witness.  PCFM proves the observable stable and
+erases the choice; it does not silently promote a finite relational cloud to a
+canonical infinite selector.
+
+\paragraph{Object proof versus host proof.}
+A Mathlib theorem about natural numbers may guide the construction, but the
+published endpoint is a derivation in the embedded iPRA calculus.  Host-level
+ring normalization is acceptable when it synthesizes a checked object
+derivation, as the existing \code{ipra_ring} infrastructure does.  A host
+theorem whose conclusion is merely a Lean proposition remains a metatheorem
+until a bridge to \code{Prf PRAAx} is supplied.
+
+\subsection{The finite-query principle}
+
+Mathematical objects such as real numbers, continuous functions, compact
+spaces, or algebraic varieties are not represented by a completed infinitary
+set inside iPRA.  They are represented by finite interfaces.
+
+\begin{principle}[Finite-query discipline]
+For every theorem instance and every requested output precision or finite
+window, the proof must determine a finite set of queries, finite bounds for
+their answers, and a primitive-recursive verifier for the returned evidence.
+Only those queries occur in the final derivation.
+\end{principle}
+
+This principle is stronger than merely saying that a proof is finite.  It
+requires the formalizer to expose which observations are actually consumed.
+If a computation is adaptive, the finite trace records the queries it made.
+A proof of trace soundness then shows that every query was covered by the input
+contract.  One never assumes a completed table of answers to all possible
+future questions.
+
+\subsection{The residual theorem is a theorem}
+
+Suppose a proof needs a height bound \(H(C)\) for a curve \(C\).  PCFM first
+proves the exact conditional result
+\[
+  \mathsf{HeightBound}(C,H),\ \mathsf{ValidCurve}(C)
+     \ \vdash_{\PRAAx}\
+  \mathsf{CompletePointList}(C,\mathsf{enumerate}(C,H)).
+\]
+This is already a genuine object-theory theorem.  Its status is
+\emph{conditional}, not informal.  If a later module proves
+\(\mathsf{HeightBound}(C,H)\), simultaneous cut produces the unconditional
+endpoint.  If no such producer is known, the theorem remains an exact
+description of the mathematical frontier.
+
+This residual discipline has two benefits.  First, it prevents overclaiming.
+Second, it makes progress compositional: a difficult global theorem is
+factored into a verified finite consumer and a sharply stated producer
+problem, which may be attacked independently.
+
+\subsection{Induction is a scarce interface}
+
+The axiom family \(\PRAAx\) permits induction only for quantifier-free formulas.
+Therefore PCFM adopts the rule:
+
+\begin{center}
+\emph{Fix all resource demands before induction, compile every bounded logical
+condition to a Boolean equation, and induct only on that equation.}
+\end{center}
+
+Unbounded quantifiers may occur in a final theorem and in logical reasoning
+outside the induction invariant.  What is forbidden is hiding them inside the
+formula supplied to \code{PRA.qfInd}.  Sections
+\ref{sec:boolean} and \ref{sec:trace} give the systematic compilation that
+enforces this rule.

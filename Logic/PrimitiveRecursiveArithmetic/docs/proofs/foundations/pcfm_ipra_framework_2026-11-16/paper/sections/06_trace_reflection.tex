@@ -1,0 +1,227 @@
+
+\section{Fixed traces, loops, and quantifier-free invariants}
+\label{sec:trace}
+
+\subsection{State coding}
+
+A finite program state is encoded by a natural number.  Tuples are nested
+through the checked pairing function; bounded arrays may use a standard
+primitive-recursive sequence code.  The representation exports projections
+and proofs that packing followed by projection returns each component.
+
+For a theorem-specific loop, fix:
+\[
+   s_0(\vec p),\qquad
+   \mathsf{step}(t,s,\vec p),\qquad
+   \mathsf{run}(t,\vec p),
+\]
+where \(\mathsf{run}\) is defined by primitive recursion:
+\[
+\begin{aligned}
+ \mathsf{run}(0,\vec p)&=s_0(\vec p),\\
+ \mathsf{run}(t+1,\vec p)
+   &=\mathsf{step}(t,\mathsf{run}(t,\vec p),\vec p).
+\end{aligned}
+\]
+The current \code{recDef}, \code{rec_zero}, and \code{rec_succ} APIs construct
+the symbol and its two defining equations from open terms.
+
+\subsection{The generic invariant theorem}
+
+Let \(\Inv(s,\vec p)\) be quantifier free.  Define
+\[
+      J(t,\vec p)\defeq
+       \Inv(\mathsf{run}(t,\vec p),\vec p).
+\]
+Substitution of terms into a quantifier-free formula preserves
+quantifier-freeness, so \(J\) is an admissible induction formula.
+
+\begin{theorem}[Fixed trace reflection]
+Assume object-iPRA derivations of
+\[
+\begin{aligned}
+ &\Inv(s_0(\vec p),\vec p),\\
+ &\Inv(s,\vec p)
+    \ \imp\
+   \Inv(\mathsf{step}(t,s,\vec p),\vec p).
+\end{aligned}
+\]
+Then iPRA derives
+\[
+       \Inv(\mathsf{run}(T,\vec p),\vec p)
+\]
+for arbitrary \(T\).
+\end{theorem}
+
+\begin{proof}
+Use quantifier-free induction on \(J(t,\vec p)\).
+
+At zero, rewrite \(\mathsf{run}(0,\vec p)\) to \(s_0(\vec p)\) using
+\code{rec_zero}, then apply the base derivation and equality substitution.
+
+For the successor step, assume
+\(\Inv(\mathsf{run}(t,\vec p),\vec p)\).  Specialize the local step derivation
+at
+\[
+     s=\mathsf{run}(t,\vec p).
+\]
+This gives
+\[
+ \Inv(\mathsf{step}(t,\mathsf{run}(t,\vec p),\vec p),\vec p).
+\]
+Rewrite the state to \(\mathsf{run}(t+1,\vec p)\) using
+\code{rec_succ}.  The result is \(J(t+1,\vec p)\).
+
+Apply \code{IPRA.ind} or \code{PRA.qfInd} and instantiate the universally
+derived conclusion at \(T\).
+\end{proof}
+
+\begin{remark}
+The theorem is parameterized at the Lean metalevel by the concrete terms
+\(s_0\), \(\mathsf{step}\), and \(\Inv\).  It is not an object-language
+universal interpreter.  The generated primitive-recursive symbol is specific
+to the loop.
+\end{remark}
+
+\subsection{Terminal extraction}
+
+Often the invariant alone is not the desired theorem.  Add a terminal
+contract
+\[
+  \Inv(s,\vec p),\ \mathsf{halt}(s,\vec p)=1
+  \ \vdash_{\PRAAx}\
+  \Post(\mathsf{out}(s,\vec p),\vec p).
+\]
+If a clock theorem proves
+\[
+   \mathsf{halt}(\mathsf{run}(T,\vec p),\vec p)=1,
+\]
+then simultaneous cut with fixed trace reflection gives the postcondition.
+
+The clock may be:
+\begin{itemize}
+\item a literal input bound;
+\item a rank or lexicographic measure with explicit primitive-recursive fuel;
+\item a search capacity;
+\item a precision schedule computed by a backward demand pass;
+\item a residual producer obligation.
+\end{itemize}
+Strict descent by itself is not enough when no primitive-recursive envelope is
+known.  The clock is a first-class proof boundary.
+
+\subsection{Early stopping without partiality}
+
+A bounded loop that should stop when a condition becomes true is made total by
+freezing its state:
+\[
+ \mathsf{step}'(t,s)=
+ \begin{cases}
+   s,&\mathsf{halt}(s)=1,\\
+   \mathsf{step}(t,s),&\mathsf{halt}(s)=0.
+ \end{cases}
+\]
+The branch is a primitive-recursive selector built from the Boolean halt bit.
+The invariant includes stability of a halted state.  The run is total for
+every clock, while a separate theorem proves that the requested clock is long
+enough.  This avoids partial functions inside the object language.
+
+\subsection{Changing parameters and backward demands}
+
+Some loops consume a parameter that changes with time: precision \(k_t\),
+remaining budget \(b_t\), or a finite support demanded by future nodes.  Encode
+all changing parameters in the state.  The invariant is then a formula about
+the complete packed state.
+
+For a finite acyclic computation, demands can be computed backward.  If node
+\(v\) requires input precision
+\[
+  d_{u\leftarrow v}(q_v)
+\]
+from predecessor \(u\), define
+\[
+  \Need_u=\max_{v:u\to v} d_{u\leftarrow v}(\Need_v).
+\]
+The maximum over the finite outgoing list is primitive recursive.  A backward
+run computes all \(\Need_v\); a forward run performs the actual calculations
+at those fixed demands.  The backward run has its own quantifier-free
+invariant:
+every processed edge has been assigned enough precision for its consumer.
+
+For a cycle, a demand update need not stabilize.  PCFM permits two safe forms:
+\begin{enumerate}
+\item an explicit cap and a proof that the capped value is sufficient;
+\item a primitive-recursive iteration bound and a post-fixed-point
+certificate.
+\end{enumerate}
+It does not infer a fixed point from monotonicity alone.
+
+\subsection{Nested loops and flattening}
+
+Nested bounded loops may be handled compositionally or flattened.
+
+\paragraph{Compositional method.}
+Prove the inner loop as a module parameterized by the outer state.  Use that
+module in the outer step proof.  This is often easiest to read.
+
+\paragraph{Flattened method.}
+Pack the outer and inner program counters and registers into one state.  Define
+one transition and one clock.  This can reduce repeated binder and
+specialization work in Lean.
+
+Both methods yield the same kind of final derivation.  There is no requirement
+that every theorem use a single universal normal form.  PCFM treats
+normalization as an engineering choice.
+
+\subsection{Ranked finite descent}
+
+Let states satisfy a Boolean validity condition and let
+\(\rho(s)\) be a natural rank.  Suppose a nonterminal transition strictly
+decreases rank and all states remain within a primitive-recursive envelope.
+Set the clock to the initial rank plus one.
+
+\begin{theorem}[Ranked termination]
+If
+\[
+  \neg\mathsf{halt}(s)\imp
+  \rho(\mathsf{step}(s))<\rho(s),
+\]
+then the frozen run is halted by time \(\rho(s_0)+1\).
+\end{theorem}
+
+\begin{proof}
+Use the invariant
+\[
+  \mathsf{halt}(\mathsf{run}(t))=1
+  \ \vee\
+  \rho(\mathsf{run}(t))+t\le \rho(s_0).
+\]
+All relations are quantifier free.  At an unhalted step the rank decreases by
+at least one, so the sum with time does not increase.  At time
+\(\rho(s_0)+1\), the second disjunct would imply a natural number is strictly
+below zero; therefore the run is halted.
+\end{proof}
+
+Lexicographic descent is reduced to a single rank only after component bounds
+are known.  For bounded coordinates \(a_i<B_i\), mixed-radix encoding gives
+\[
+  \rho(a_0,\ldots,a_{r-1})
+    = a_0+B_0(a_1+B_1(\cdots)).
+\]
+If the number of coordinates or their bounds are not fixed by primitive-
+recursive data, no fuel theorem is claimed.
+
+\subsection{Trace certificates versus recomputation}
+
+A producer may supply a complete trace \(z_0,\ldots,z_T\).  A verifier checks
+the initial state, each local transition, and the terminal property.  This is
+often preferable when recomputing a large calculation in the object term
+would be expensive.  The trace checker is a bounded Boolean fold, and its
+reflection theorem gives:
+\[
+  \CertCheck(\vec z)=1
+   \ \vdash_{\PRAAx}\
+  z_T=\mathsf{run}(T).
+\]
+The certificate does not create trust: local transition equality is checked
+inside iPRA.  It changes only the cost profile and allows external search to be
+separated from internal verification.

@@ -1,0 +1,210 @@
+
+\section{Resolution of recurring difficulties}
+\label{sec:difficulties}
+
+The framework is useful only if it changes the status of concrete obstacles.
+The following table distinguishes resolved infrastructure problems from
+genuine mathematical producers.
+
+\begin{longtable}{p{0.19\textwidth}p{0.28\textwidth}p{0.45\textwidth}}
+\toprule
+Difficulty & Invalid shortcut & PCFM resolution or honest residual\\
+\midrule
+\endfirsthead
+\toprule
+Difficulty & Invalid shortcut & PCFM resolution or honest residual\\
+\midrule
+\endhead
+
+Quantifier-free induction &
+Induct directly on a formula containing bounded or unbounded quantifiers. &
+Compile every fixed QF body to a Boolean term; replace bounded quantifiers by
+finite products or least search; induct on one numerical equation.  Unbounded
+quantifiers remain outside the invariant.\\
+
+Universal program execution &
+Use one total PR evaluator for all PR codes. &
+Impossible by diagonalization.  Specialize every fixed theorem program into
+its own \code{PR} symbol; use a clocked interpreter only when the clock and
+instruction set are part of the fixed module.\\
+
+Proof-graph soundness &
+Prove only a host-language semantics theorem and infer an object theorem. &
+Every local node stores a \code{Prf PRAAx}; the graph compiler composes proof
+terms by substitution and cut.  The Lean result type enforces soundness.\\
+
+Adaptive global hypotheses &
+Assume a completed oracle answering every possible query. &
+Record the finite query--answer trace, verify every used answer, and expose the
+finite support of the compiled derivation.\\
+
+Changing precision &
+Choose ``sufficiently accurate'' inputs during the forward proof. &
+Run a primitive-recursive backward demand pass first; the forward run uses the
+fixed demands.  Cyclic demands require a cap or post-fixed-point certificate.\\
+
+Pointwise convergence &
+Extract a uniform PR modulus from eventual convergence. &
+No such extraction is uniform.  The modulus is part of the presentation or a
+residual producer.  Metastable finite-window conclusions may be proved when
+that is what the input supports.\\
+
+Metastability &
+Treat \(\forall g\,\exists N\,\forall i,j\in[N,N+g(N)]\) as a Cauchy modulus. &
+Keep the finite-window theorem as the endpoint, or add a separate quantitative
+principle that yields a rate.  PCFM does not upgrade it automatically.\\
+
+Finite cardinality &
+Infer a height/search cutoff from an upper bound on the number of solutions. &
+Impossible uniformly, even for predicates with at most one solution.  A height
+or complexity bound and a complete bounded enumeration are explicit
+producers.\\
+
+Faltings/Siegel packets &
+Use finite graph machinery to claim a general complete rational-point list. &
+PCFM proves the conditional height-to-list reduction.  General effective
+height producers remain open in the packet unless separately supplied.\\
+
+Strict descent &
+Infer primitive-recursive termination from an abstract well-founded measure. &
+Require a PR rank and an explicit envelope, then use ranked trace termination.
+Unknown dimension or unbounded coordinates remain a resource obligation.\\
+
+Exact real equality/sign &
+Decide whether an arbitrary regular real name equals zero. &
+Use finite observational equality, apartness guards, or interval outputs.
+Sign, reciprocal, and orientation are guarded by a separation witness.\\
+
+Root/eigenvalue branches &
+Choose an exact continuous labeling through collisions. &
+Represent a finite cloud or multiset; export symmetric and error-stable
+observations.  A named branch requires a certified isolation gap.\\
+
+Finite compatible paths &
+Pass from a path at every horizon to one coherent infinite path. &
+Use backward viability for the requested finite horizon.  For an infinitary
+endpoint require stabilization, unique extension, compactness/choice, or
+stable witness erasure.\\
+
+Quotients &
+Choose canonical representatives of every equivalence class. &
+Use certified setoids and extensional maps.  Normalize only where a PR
+canonicalization theorem is actually available.\\
+
+Guarded division &
+Define a total inverse and later assume the denominator was nonzero. &
+Use a guarded module; nonzeroness/apartness appears in the requirement context
+and is discharged explicitly.\\
+
+Compactness &
+Replace an arbitrary cover by a finite subcover without a computational
+functional. &
+Take a finite net/subcover certificate or effective compactness functional as
+a producer.  Verify the finite nerve and stability internally.\\
+
+Analytic continuation &
+Assume a global branch of a special function. &
+Use a finite chain of certified overlapping domains; select a viable chain and
+prove uniqueness/stability on overlaps.  Monodromy or branch data is explicit.\\
+
+Tail estimates &
+Treat numerical agreement of truncations as proof of an infinite identity. &
+Separate the exact truncation identity from a certified tail majorant and
+precision cutoff.  The latter may remain residual.\\
+
+Probability limits &
+Use measure-theoretic completeness as an implicit object. &
+Work with finite rational distributions, truncations, test-observer
+inequalities, and tail bounds.  Infinite-law claims are precision schemas.\\
+
+Algebraic geometry &
+Treat ideal membership, localization, and finite covers as semantic black
+boxes. &
+Use polynomial identity certificates, denominator guards, and finite
+principal-open cover certificates.  Completeness of algorithms requires degree
+or height bounds.\\
+
+Foundation bridge &
+Restrict all reuse to closed sentences or duplicate arithmetic libraries. &
+Use the existing arbitrary-environment reverse theorem; derive open forward
+transport by context internalization and closure; prove one extensional code
+normalization theorem.\\
+
+Status drift &
+Call an uncompiled Lean outline ``formalized.'' &
+Each artifact has a status ledger: kernel checked, object-proof candidate,
+host-executable evidence, paper proof, or residual/open.\\
+\bottomrule
+\end{longtable}
+
+\subsection{A precise impossibility behind the search-bound warning}
+
+The cardinality-versus-height distinction deserves a formal metamathematical
+argument.
+
+\begin{proposition}
+There is no total computable operator that takes an index \(e\) for a
+primitive-recursive Boolean predicate \(W_e(t)\), under the promise that at
+most one \(t\) satisfies \(W_e(t)=1\), and returns a bound containing every
+solution.
+\end{proposition}
+
+\begin{proof}
+Let \(W_e(t)=1\) exactly when the Turing machine with index \(e\) halts for the
+first time at step \(t\).  Bounded simulation and the first-time check are
+primitive recursive in \(e,t\), and there is at most one witness.  If a total
+operator returned a bound \(B(e)\), simulate the machine for \(B(e)\) steps.
+A halt decides yes; no halt decides that there is no witness, hence that the
+machine never halts.  This would decide the halting problem.
+\end{proof}
+
+This proposition concerns a uniform operator.  It does not rule out a height
+bound for a specific family proved by special mathematics.  It explains why a
+general compiler cannot manufacture that bound from a point-count theorem.
+
+\subsection{A precise impossibility behind the modulus warning}
+
+\begin{proposition}
+There is no computable procedure assigning a stabilization index to every
+bounded monotone primitive-recursive binary sequence that is eventually
+constant.
+\end{proposition}
+
+\begin{proof}
+For machine \(e\), define
+\[
+ a_e(n)=
+ \begin{cases}
+ 1,&\text{if \(e\) halts within \(n\) steps},\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+This sequence is primitive recursive, monotone, bounded, and eventually
+constant.  A computable stabilization index \(M(e)\) would decide halting by
+examining \(a_e(M(e))\).  Therefore no such uniform procedure exists.  A
+uniform Cauchy modulus at error below \(1\) would also be a stabilization
+index.
+\end{proof}
+
+Again, a particular convergence proof may contain a modulus.  PCFM requires
+that quantitative content to be exposed.
+
+\subsection{What is genuinely resolved}
+
+The framework does more than rename assumptions.  It fully resolves the
+following infrastructure questions at the mathematical level:
+
+\begin{itemize}
+\item how to compose theorem-specific finite proofs into an object derivation;
+\item how to keep induction quantifier free;
+\item how to extract least bounded witnesses constructively;
+\item how to verify fixed bounded traces and ranked descent;
+\item how to compose finite relations and extract a finite coherent path;
+\item how to eliminate irrelevant witness choice exactly or approximately;
+\item how to track and later discharge residual producer obligations;
+\item how to reduce the open bridge to existing translators plus one explicit
+normalization theorem.
+\end{itemize}
+
+The remaining work is implementation and domain mathematics, not uncertainty
+about the logical architecture.

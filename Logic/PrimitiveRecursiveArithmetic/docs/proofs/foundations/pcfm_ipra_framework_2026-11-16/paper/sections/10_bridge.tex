@@ -1,0 +1,235 @@
+
+\section{Completing the Foundation--Concise bridge}
+\label{sec:bridge}
+
+\subsection{What is already stronger than the public summary suggests}
+
+The current reverse translator contains a theorem of the following strength:
+for every Concise derivation
+\[
+        d:\Gamma\vdash_{\mathsf{Ax}}\varphi
+\]
+and every assignment \(v\) of the \(n\) free Concise variables to Foundation
+terms,
+\[
+   \Gamma^{v}\vdash_{\Lambda}\varphi^{v}.
+\]
+It handles arbitrary finite contexts, implication, both quantifiers, equality
+substitution, and environments under binders.  A second theorem universally
+closes the image when the Concise context is empty.  Thus the
+Concise-to-Foundation \emph{open} transport is essentially implemented; what
+is missing is a public wrapper specialized to \(\PRAAx\), the standard theory,
+and the native-order comparison.
+
+The syntax bridge also proves:
+\[
+\begin{aligned}
+ \mathsf{toConciseCode}(\mathsf{toFoundationCode}(f))&=f,\\
+ \mathsf{toConciseTerm}(\mathsf{toFoundationTerm}(t))&=t,\\
+ \mathsf{toConciseFormula}(\mathsf{toFoundation}(\varphi))&=\varphi.
+\end{aligned}
+\]
+Hence the Concise--Foundation--Concise composite is exact.
+
+\subsection{Open sequents by closure and internalization}
+
+The opposite direction is publicly exposed mainly for closed theory
+theorems.  It can be extended without a new proof calculus.
+
+Let
+\[
+   \Gamma=[\gamma_1,\ldots,\gamma_m]
+\]
+be a finite context of Foundation formulas with \(n\) free variables, and let
+\(\phi\) be the conclusion.  Define the implication chain
+\[
+ \mathsf{chain}(\Gamma,\phi)
+   =\gamma_1\to(\gamma_2\to\cdots(\gamma_m\to\phi)\cdots)
+\]
+and let \(\mathsf{close}_n\) universally quantify its free variables.
+
+\begin{lemma}[Finite-context internalization]
+A Foundation finite-context derivation
+\[
+   \Gamma\vdash_T\phi
+\]
+yields a theory theorem
+\[
+   T\vdash\mathsf{close}_n(\mathsf{chain}(\Gamma,\phi)).
+\]
+Conversely, opening the universal closure and applying the assumptions recovers
+the finite-context derivation.
+\end{lemma}
+
+\begin{proof}
+Repeatedly apply the Foundation deduction theorem to discharge the finite
+context.  Then apply generalization to the free-variable family in the fixed
+canonical order.  Conversely, specialize or open the quantifiers at the
+distinct free variables and apply modus ponens once for each context formula.
+All operations already exist in the Foundation finite-context and close-family
+libraries.
+\end{proof}
+
+Transport the closed sentence with the current Foundation-to-Concise theorem.
+A syntax lemma identifies its translation with the universal closure of the
+Concise translation of the implication chain.  Repeated \code{Prf.allOpen}
+opens the binders.  Repeated \code{Prf.impE} with hypotheses from the translated
+context yields the conclusion.
+
+\begin{theorem}[Open Foundation-to-Concise transport, reduced form]
+Assume the translated images of the Foundation theory axioms have
+\(\PRAAx\)-derivations and assume the source formula family is identified with
+its code-normalized image.  Then
+\[
+   \Gamma\vdash_T\phi
+   \quad\Longrightarrow\quad
+   \Gamma^{\mathsf C}\vdash_{\PRAAx}\phi^{\mathsf C}
+\]
+for every finite open context and every fixed assignment of free variables to
+distinct Concise variables.
+\end{theorem}
+
+\begin{proof}
+Internalize and close the source derivation, transport the closed theorem,
+open its quantifiers, and eliminate the implication chain.  The only
+nonlogical work is the translation/closure commutation lemma and the
+code-normalization identification.  Binder order is fixed once, so no choice
+of fresh variables is involved.
+\end{proof}
+
+An alternative implementation generalizes the existing
+\code{hilbertToConcise} induction to carry a target context.  Every case is
+unchanged except that hypotheses are available by \code{Prf.hyp} and the
+context is shifted under generalization.  The closure method is recommended
+first because it reuses more existing code and gives a small theorem surface.
+
+\subsection{The remaining code-normalization theorem}
+
+For a Foundation primitive-recursive construction code \(c\), define
+\[
+       \mathsf{norm}(c)
+        =\mathsf{toFoundationCode}(\mathsf{toConciseCode}(c)).
+\]
+This need not be syntactically equal to \(c\).  In particular, a positive-
+arity zero code becomes a composition of the nullary zero code with an empty
+tuple.  What is required is extensional equality.
+
+\begin{theorem}[Foundation code normalization]
+For every arity \(k\), code \(c\), and tuple of terms \(\vec t\), the
+Foundation reference theory proves
+\[
+       c(\vec t)=\mathsf{norm}(c)(\vec t).
+\]
+The proof is uniform in \(\vec t\).
+\end{theorem}
+
+\begin{proof}
+Use structural induction on \(c\).
+
+\paragraph{Zero.}
+For the nullary code the statement is reflexivity.  For positive arity,
+\(\mathsf{norm}(c)\) is the composition of nullary zero with an empty argument
+tuple.  The composition axiom reduces it to zero, as does the source zero code.
+
+\paragraph{Successor and projection.}
+Normalization is syntactically exact.
+
+\paragraph{Composition.}
+Use the defining equation for composition on both sides.  Apply the induction
+hypothesis to the outer function and to every member of the finite inner tuple,
+then use equality congruence.
+
+\paragraph{Primitive recursion.}
+Let the recursion variable be \(y\) and the remaining parameters be
+\(\vec x\).  Induct on \(y\) with the quantifier-free equality
+\[
+ c(y,\vec x)=\mathsf{norm}(c)(y,\vec x).
+\]
+At zero, unfold both recursion codes and apply the induction hypothesis for the
+base code.  At successor, unfold both step equations; use the arithmetic
+induction hypothesis for the recursive values, the structural induction
+hypothesis for the step code, and congruence for all parameters.  The invariant
+is one equality and is therefore admissible in iPRA/Foundation PRA.
+\end{proof}
+
+This is the precise missing theorem identified by the unification plan.  It is
+not a semantic appeal to standard natural numbers; it is an object-theory
+derivation for every construction code.
+
+\subsection{Lifting normalization to terms and formulas}
+
+\begin{corollary}[Term normalization]
+For every Foundation term \(t\), the reference theory proves
+\[
+  t=\mathsf{toFoundationTerm}(\mathsf{toConciseTerm}(t))
+\]
+under any assignment of its free and bound variables.
+\end{corollary}
+
+\begin{proof}
+Induct on the term.  Variables are reflexive.  At a function application, use
+code normalization and the induction hypotheses for all arguments.
+\end{proof}
+
+\begin{corollary}[Formula round trip]
+For every equality-only Foundation formula \(\phi\), the theory proves
+\[
+ \phi\leftrightarrow
+ \mathsf{toFoundation}(\mathsf{toConciseFormula}(\phi)).
+\]
+The result commutes with substitution, free-variable environments, and
+quantifiers.
+\end{corollary}
+
+\begin{proof}
+Induct on the formula.  Equality atoms use term normalization twice and
+substitutivity of equality.  Falsity is reflexive.  Connectives use
+intuitionistic congruence.  Under a quantifier, apply the induction hypothesis
+to the opened body and use the existing all/ex congruence lemmas.
+\end{proof}
+
+For the native standard language with order, compose this equality-only result
+with the already implemented theorem that replacing \(s<t\) by its comparison-
+bit equation and re-embedding preserves each sentence up to a provable
+biconditional.
+
+\subsection{The desired public theorem}
+
+After the preceding normalization lemmas, the bridge should expose:
+
+\[
+\boxed{
+ \Gamma\vdash_{\mathsf{standardTheory}}\phi
+ \quad\Longleftrightarrow\quad
+ \Gamma^{\mathsf C}\vdash_{\PRAAx}\phi^{\mathsf C}
+}
+\]
+for finite open contexts, with a documented variable environment.  The closed
+equivalence becomes the \(n=0,\Gamma=[]\) specialization.
+
+A Lean API should separate:
+\begin{itemize}
+\item equality-only reference formulas;
+\item native formulas with order;
+\item arbitrary assignments of free variables;
+\item the canonical distinct-variable assignment;
+\item closed sentences.
+\end{itemize}
+This avoids forcing downstream developments to unfold environment machinery.
+
+\subsection{Why the bridge matters for PCFM}
+
+PCFM should use \code{Prf PRAAx} as its canonical endpoint.  The completed
+bridge then permits:
+\begin{itemize}
+\item importing Foundation arithmetization theorems as module leaves;
+\item exporting PCFM endpoints to exact sentence encodings used by Busy Beaver
+and consistency projects;
+\item comparing arithmetic symbols once instead of maintaining duplicate
+theorem libraries;
+\item migrating one consumer at a time without a global backend rewrite.
+\end{itemize}
+
+No theorem packet should choose a backend merely because one arithmetic lemma
+is missing.  The common module interface and bridge make backend choice an
+implementation detail at the boundary.

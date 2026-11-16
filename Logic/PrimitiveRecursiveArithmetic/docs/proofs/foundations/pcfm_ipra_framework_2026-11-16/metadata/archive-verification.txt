@@ -1,0 +1,10 @@
+Archive verification procedure
+
+1. Create ZIP with maximum compression.
+2. Run `unzip -t` on every member.
+3. Extract to a fresh temporary directory.
+4. Run `sha256sum -c metadata/sha256sums.txt`.
+5. Re-run all 10 Python regression tests from the extracted copy.
+6. Confirm the extracted PDF is 62 pages, unencrypted, and Letter size.
+
+Result: passed.

@@ -1,0 +1,235 @@
+
+\section{Proposed Lean signatures}
+\label{app:signatures}
+
+The notation below is schematic but tracks current repository names.  The
+archive's \code{lean/} directory contains the same plan split into files.
+
+\subsection{Structural modules}
+
+\begin{lstlisting}[language={}]
+namespace LeanProofs.IPRA.Framework
+
+open LeanProofs.ConciseIPRA
+open scoped Fm
+
+structure Module (n : Nat) where
+  req : List (Fm PTm n)
+  out : Fm PTm n
+  proof : req |- [PRAAx] out
+
+namespace Module
+
+def specialize (M : Module n) (sigma : Fin n -> PTm m) :
+    Module m
+
+def weaken (M : Module n) {Delta : List (Fm PTm n)}
+    (h : List.Subset M.req Delta) :
+    Delta |- [PRAAx] M.out
+
+def discharge (M : Module n) {Delta : List (Fm PTm n)}
+    (h : forall p, List.Mem p M.req -> Delta |- [PRAAx] p) :
+    Delta |- [PRAAx] M.out
+
+def closed {p : Fm PTm n}
+    (h : ([] : List (Fm PTm n)) |- [PRAAx] p) :
+    Module n
+\end{lstlisting}
+
+A unary contract may be a separate structure or an abbreviation:
+\begin{lstlisting}[language={}]
+structure Contract (n : Nat) where
+  pre post : Fm PTm n
+  sound : [pre] |- [PRAAx] post
+
+def Contract.id (p : Fm PTm n) : Contract n
+def Contract.comp (f : Contract n) (g : Contract n)
+    (h : f.post = g.pre) : Contract n
+\end{lstlisting}
+An equality parameter in \code{comp} is avoidable by making pre/post explicit
+arguments to the type.
+
+\subsection{Boolean reflection}
+
+\begin{lstlisting}[language={}]
+def IsBool (b : PTm n) : Fm PTm n :=
+  (b = 0) OR (b = 1)
+
+def bnot (b : PTm n) : PTm n
+def band (b c : PTm n) : PTm n
+def bor  (b c : PTm n) : PTm n
+def bimp (b c : PTm n) : PTm n
+
+structure ReflectedQF {n : Nat} (phi : Fm PTm n) where
+  bit : PTm n
+  bool : ([] : List (Fm PTm n)) |- [PRAAx] IsBool bit
+  true_iff :
+    ([] : List (Fm PTm n)) |- [PRAAx]
+      Fm.iff phi (bit = 1)
+  false_iff :
+    ([] : List (Fm PTm n)) |- [PRAAx]
+      Fm.iff (phi --> Fm.bot) (bit = 0)
+
+def reflectQF (phi : Fm PTm n) (hq : phi.QF) :
+    ReflectedQF phi
+
+theorem reflectQF_subst
+    (R : ReflectedQF phi) (sigma : Fin n -> PTm m) :
+    -- the reflected bit after substitution is provably equal
+    -- to the substitution of R.bit
+    ...
+\end{lstlisting}
+
+The compiler may return a dependent pair containing the QF proof rather than
+accepting it separately.
+
+\subsection{Bounded folds and search}
+
+\begin{lstlisting}[language={}]
+structure BoundedPredicate (k : Nat) where
+  body : Fm PTm (k + 1)
+  qf : body.QF
+  reflected : ReflectedQF body
+
+def allBit (P : BoundedPredicate k) : PR (k + 1)
+def witnessF (P : BoundedPredicate k) : PR (k + 1)
+
+theorem allBit_spec
+    (P : BoundedPredicate k) :
+    -- allBit N xs = 1 iff every i < N satisfies P
+    ...
+
+theorem witness_spec
+    (P : BoundedPredicate k) :
+    -- witnessF N xs < N iff a witness exists;
+    -- returned witness satisfies P and is least
+    ...
+\end{lstlisting}
+
+For an initial implementation, pack the \(k\) parameters into one natural code
+and use the existing binary \code{Search.mu}.  A later generalized search can
+avoid packing overhead.
+
+\subsection{Traces}
+
+\begin{lstlisting}[language={}]
+structure TraceSpec (k : Nat) where
+  run : PR (k + 1)
+  runInv : Fm PTm (k + 1)
+  runInvQF : runInv.QF
+  zeroProof :
+    ([] : List (Fm PTm k)) |- [PRAAx]
+      runInv.subst (Syn.inst PTm.zero)
+  succProof :
+    [runInv] |- [PRAAx]
+      runInv.subst
+        (Syn.repl (PTm.succ (Syn.var 0)))
+
+theorem TraceSpec.invariant (S : TraceSpec k) :
+    ([] : List (Fm PTm (k + 1))) |- [PRAAx] S.runInv :=
+  IPRA.ind S.runInv S.runInvQF S.zeroProof S.succProof
+\end{lstlisting}
+
+This low-level record exactly matches \code{IPRA.ind}.  A higher-level
+constructor should generate \code{runInv}, \code{zeroProof}, and
+\code{succProof} from a state transition and invariant.
+
+\subsection{Stable observers}
+
+\begin{lstlisting}[language={}]
+structure BoundedWitness (n : Nat) where
+  bound : PTm n
+  good : Fm PTm (n + 1)
+  goodQF : good.QF
+  reflected : ReflectedQF good
+
+structure ExactObserver (W : BoundedWitness n) where
+  obs : PTm (n + 1)
+  stable :
+    -- two good witnesses below the bound have equal observations
+    ...
+
+theorem ExactObserver.select_spec
+    (O : ExactObserver W)
+    (nonempty : Gamma |- [PRAAx] boundedExists W.good W.bound) :
+    -- least selected witness is good and its observation
+    -- equals every good witness's observation
+    ...
+\end{lstlisting}
+
+Setoid and metric observers replace equality in \code{stable}.
+
+\subsection{Residual metadata}
+
+\begin{lstlisting}[language={}]
+inductive ObligationKind
+  | local | resource | separation | certificate | external | bridge
+  deriving Repr, DecidableEq
+
+structure ObligationInfo where
+  name : String
+  kind : ObligationKind
+  source : String
+  note : String
+  deriving Repr
+
+structure PackagedModule (n : Nat) where
+  module : Module n
+  info : List ObligationInfo
+  aligned : info.length = module.req.length
+\end{lstlisting}
+
+The alignment proof is bookkeeping only.  The formulas and \code{module.proof}
+remain the trusted content.
+
+\subsection{Bridge endpoints}
+
+\begin{lstlisting}[language={}]
+theorem codeNormalization
+    (c : FoundationCode k) :
+    referenceTheory |- forallClosure
+      (apply c vars = apply (normCode c) vars)
+
+theorem foundationFormulaRoundtrip
+    (p : FoundationFormula ...) :
+    referenceTheory |- p IFF
+      toFoundation (toConcise p)
+
+theorem standardToConciseCtx
+    (h : Gamma |- [standardTheory] p) :
+    mapToConcise Gamma |- [PRAAx] toConcise p
+
+theorem conciseToStandardCtx
+    (h : Gamma |- [PRAAx] p) :
+    mapToStandard Gamma |- [standardTheory] toStandard p
+
+theorem standard_concise_ctx_iff :
+    (Gamma |- [standardTheory] p) <->
+    (mapToConcise Gamma |- [PRAAx] toConcise p)
+\end{lstlisting}
+
+The exact Foundation notation should follow \code{IPRABridge}; these signatures
+state the intended public surface, not replacement syntax.
+
+\subsection{A compilation interface}
+
+A shallow assembler need not define a universal graph.  A minimal interface is:
+
+\begin{lstlisting}[language={}]
+def use (M : Module n)
+    (deps : forall p, List.Mem p M.req -> Delta |- [PRAAx] p) :
+    Delta |- [PRAAx] M.out :=
+  M.discharge deps
+\end{lstlisting}
+
+A later serialized graph can have:
+\begin{lstlisting}[language={}]
+structure WellTypedGraph (n : Nat) where
+  goal : Fm PTm n
+  residual : List (Fm PTm n)
+  elaborate :
+    residual |- [PRAAx] goal
+\end{lstlisting}
+In that form, the field \code{elaborate} already is the compilation theorem.
+A parser or optimizer may construct the structure, but cannot inhabit it
+without a proof.

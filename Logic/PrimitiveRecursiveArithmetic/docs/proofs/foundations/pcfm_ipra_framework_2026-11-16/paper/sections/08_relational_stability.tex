@@ -1,0 +1,232 @@
+
+\section{Finite relations, backward viability, and stable erasure}
+\label{sec:relational}
+
+\subsection{Why relations are first-class}
+
+Constructive formalization often fails at the point where a proof informally
+says ``choose one.''  The issue is not finite search itself: bounded least
+search can choose the least code satisfying a decidable predicate.  The issue
+is that a witness valid at one precision may not refine to the least witness
+at a finer precision, and an exact global branch may not exist at collisions.
+
+PCFM therefore distinguishes:
+
+\begin{itemize}
+\item \emph{local selection}: choose the least member of one finite nonempty
+set;
+\item \emph{finite coherent selection}: choose a path through a fixed finite
+sequence of compatibility relations;
+\item \emph{infinite coherent selection}: choose a path through every
+precision level.
+\end{itemize}
+
+The first two are primitive-recursive when explicit bounds are given.  The
+third is a genuinely stronger compactness or choice principle and is not
+silently inferred.
+
+\subsection{Backward viability}
+
+Let time range over \(0,\ldots,T\).  At time \(t\), candidates are codes
+\(a<B_t\).  Let
+\[
+  \Good_t(a)\in\Bool,\qquad
+  R_t(a,b)\in\Bool
+\]
+be reflected predicates, with \(R_t\) relating a candidate at \(t\) to one at
+\(t+1\).  Let \(\mathsf{Terminal}(a)\) be the final acceptance predicate.
+
+Define viability backward:
+\[
+\begin{aligned}
+ \Viable_T(a)
+   &\defeq \Good_T(a)\wedge\mathsf{Terminal}(a),\\
+ \Viable_t(a)
+   &\defeq \Good_t(a)\wedge
+      \exists b<B_{t+1}\,
+        (R_t(a,b)\wedge\Viable_{t+1}(b)).
+\end{aligned}
+\]
+Every existential is compiled by bounded search, so each \(\Viable_t\) has a
+Boolean characteristic term.  The complete table is computed by a bounded
+reverse fold.
+
+\begin{theorem}[Finite path extraction]
+If \(\exists a<B_0\,\Viable_0(a)\), then a primitive-recursive selector returns
+a path \(a_0,\ldots,a_T\) such that
+\[
+  \Good_t(a_t)=1,\qquad
+  R_t(a_t,a_{t+1})=1,\qquad
+  \mathsf{Terminal}(a_T)=1.
+\]
+iPRA proves each property of the selected path.
+\end{theorem}
+
+\begin{proof}
+Choose \(a_0\) as the least viable initial candidate.  Given a selected viable
+\(a_t\), the definition of \(\Viable_t(a_t)\) includes a bounded existential
+for a viable compatible successor.  Apply bounded least witness to obtain
+\(a_{t+1}\).  Primitive recursion on \(t<T\) constructs the finite path.
+
+For the object proof, the invariant says that the path prefix has valid nodes
+and edges and that its last node is viable.  This is a bounded Boolean
+equation.  The base follows from the initial search.  At the step, the
+least-witness specification supplies the next edge and viability.  At time
+\(T\), final viability yields terminal acceptance.
+\end{proof}
+
+\begin{corollary}[Finite dependent choice]
+For every fixed primitive-recursive horizon \(T\), bounded totality of each
+relation on viable nodes implies the existence of a compatible path of length
+\(T\).
+\end{corollary}
+
+This is the exact finite principle needed by theorem-specific computations.
+It is not countable dependent choice.
+
+\subsection{Failure certificates}
+
+If no viable initial state exists, the backward table is itself a finite
+refutation certificate.  At a failed node it records either:
+\[
+   \Good_t(a)=0
+\]
+or that every bounded successor is incompatible or nonviable.  Boolean
+reflection turns this into an object proof of failure.
+
+Thus a bounded game or search can return dual evidence:
+\begin{itemize}
+\item a successful path;
+\item a backward table proving that no successful path exists.
+\end{itemize}
+This is particularly useful for exact finite classifications and
+computer-generated counterexample searches.
+
+\subsection{Exact witness erasure}
+
+\begin{theorem}[Exact stable erasure]
+Suppose \(W(z)\) is a bounded nonempty witness predicate and \(O(z)\) a
+primitive-recursive observation.  If iPRA proves
+\[
+  W(z)=1\wedge W(z')=1\imp O(z)=O(z'),
+\]
+then the least witness
+\[
+  z_*=\mu z<B\,[W(z)=1]
+\]
+satisfies \(W(z_*)=1\), and \(O(z_*)\) is independent of the selection
+algorithm.  Any theorem proved from \(O(z_*)\) may be stated as a theorem
+about the witness relation rather than the chosen representative.
+\end{theorem}
+
+\begin{proof}
+Bounded least witness gives \(W(z_*)=1\).  For any other valid \(z\), apply the
+pairwise stability premise to \(z_*,z\).  Equality substitution transports
+every conclusion depending only on \(O\).
+\end{proof}
+
+This theorem handles symmetric polynomial data of a root cloud, a determinant
+computed from different row-reduction traces, a quotient class represented by
+different codes, and any finite certificate whose observable output is
+canonical.
+
+\subsection{Quotient-stable erasure}
+
+Let the output presentation \(C\) have equivalence
+\(\Eqv_C\).  Replace equality in the preceding theorem by
+\(\Eqv_C(O(z),O(z'))=1\).  Every downstream map must be extensional for
+\(\Eqv_C\).  Composition then yields a well-defined quotient-level result
+without forming a quotient object in iPRA.
+
+This is the recommended treatment of:
+\begin{itemize}
+\item rational numbers before denominator normalization;
+\item finite sets represented by lists;
+\item localizations represented by numerator--denominator pairs;
+\item modules or ideals represented by finite generating lists;
+\item homology classes represented by cycles modulo boundaries.
+\end{itemize}
+
+\subsection{Error-stable erasure}
+
+Suppose outputs are rational or integer-coded metric data and iPRA proves
+\[
+  W(z)=W(z')=1\imp d(O(z),O(z'))\le\varepsilon.
+\]
+
+\begin{theorem}[Diameter erasure]
+The least selected output \(O(z_*)\) is within \(\varepsilon\) of every valid
+output.  If a downstream observer \(F\) has a certified modulus
+\[
+  d(x,y)\le\varepsilon\imp
+  d'(F(x),F(y))\le\delta,
+\]
+then \(F(O(z_*))\) is \(\delta\)-stable across all witnesses.
+\end{theorem}
+
+\begin{proof}
+The first assertion is pairwise stability with \(z_*\) as one endpoint.  The
+second follows by specializing the modulus and composing inequalities.
+All rational inequalities are reduced to integer cross multiplication.
+\end{proof}
+
+Repeated composition accumulates errors according to explicit algebraic
+bounds.  The compiler should never use the phrase ``small enough'' without
+computing the requested precision backward.
+
+\subsection{Branch collapse under a gap}
+
+Let each valid witness have a label \(\ell(z)\) in a finite discrete set.
+Suppose distinct labels imply metric separation at least \(g>0\), while every
+two valid outputs have distance \(<g\).
+
+\begin{lemma}[Gap-based branch collapse]
+All valid witnesses have the same label.
+\end{lemma}
+
+\begin{proof}
+If two labels differed, the separation theorem would give distance at least
+\(g\), contradicting the strict diameter bound.  Equality of finite labels is
+decidable, so the argument is intuitionistic.
+\end{proof}
+
+This is the correct way to recover a named branch of roots, eigenvalues,
+connected components, signs, or orientations.  The gap is an explicit guard
+or producer obligation.  At a collision the guard fails, and only a
+symmetric or relational result is exported.
+
+\subsection{Why horizonwise viability does not give an infinite selector}
+
+\begin{barrier}[No automatic coherent limit]
+From
+\[
+  \forall T\ \exists (a_0,\ldots,a_T)\ \text{compatible}
+\]
+one may not infer a primitive-recursive infinite sequence
+\((a_t)_{t\in\Nat}\) that is compatible at every level.
+\end{barrier}
+
+The least path for horizon \(T+1\) can disagree with the least path for horizon
+\(T\) at early stages.  Producing a coherent infinite path is a form of
+compactness or choice.  PCFM offers three legitimate alternatives:
+
+\begin{enumerate}
+\item keep the theorem finite-horizon;
+\item prove a stabilization or unique-extension modulus;
+\item prove that the requested observable is stable, so no coherent path is
+needed.
+\end{enumerate}
+
+\subsection{Root clouds as the canonical example}
+
+For a monic polynomial with approximate coefficients, individual roots may
+collide and exchange labels.  Represent the answer at precision \(k\) by a
+finite multiset of rational boxes covering the root multiset, with certified
+Hausdorff or matching error.  Symmetric polynomials, root counts in regions
+separated from the boundary, and resultants are stable observers.  A named
+root branch requires an isolation disc or a separation gap.
+
+This pattern resolves many difficulties more honestly than forcing an exact
+global enumeration of roots.  It also fits the checked finite algebra
+infrastructure: the certificate consists of integer polynomial identities,
+winding or sign data on a finite boundary, and bounded inequalities.

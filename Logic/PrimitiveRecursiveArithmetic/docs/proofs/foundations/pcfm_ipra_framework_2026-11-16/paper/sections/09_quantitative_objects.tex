@@ -1,0 +1,252 @@
+
+\section{Domain presentations and reusable theorem patterns}
+\label{sec:quantitative}
+
+\subsection{Natural numbers, integers, and rationals}
+
+Natural numbers are native.  Integers may be represented by pairs
+\((a,b)\) denoting \(a-b\), with
+\[
+  (a,b)\sim(c,d)\quad\iffc\quad a+d=b+c.
+\]
+All operations are primitive recursive and extensionality reduces to semiring
+identities.  A normalization such as cancelling the minimum of the two
+coordinates is optional.
+
+A rational is represented by \((n^+,n^-,d)\) with \(d>0\), denoting
+\((n^+-n^-)/d\).  Equality is cross multiplication in the integer
+presentation.  Order and absolute-value bounds are likewise integer
+inequalities after multiplication by positive denominators.  Division is a
+guarded operation: the denominator proof is a required module.
+
+This representation is verbose but ideal for iPRA.  It turns every analytic
+error estimate into finite polynomial arithmetic and order.
+
+\subsection{Regular Cauchy names}
+
+A completed real number is replaced by a fixed primitive-recursive rational
+name \(a(k)\) with a strong regularity proof, for example
+\[
+       |a(k)-a(\ell)|\le 2^{-k}+2^{-\ell}.
+\]
+An equivalent presentation uses a modulus \(M(r)\):
+\[
+ m,n\ge M(r)\imp |a(m)-a(n)|\le2^{-r}.
+\]
+The function \(a\) and modulus \(M\) are part of the data, not extracted from
+pointwise convergence.
+
+\paragraph{Equality and apartness.}
+Exact equality of arbitrary names is not decidable.  The basic theorem
+relations should therefore be:
+\[
+\begin{aligned}
+ a =_{\!r} b
+   &:\quad |a(K(r))-b(K(r))|\le 2^{-r}
+        \quad\text{(finite observational equality)},\\
+ a\#_r b
+   &:\quad |a(K(r))-b(K(r))|> 2^{-r}
+        \quad\text{(finite apartness certificate)}.
+\end{aligned}
+\]
+A global equality statement is a schema over \(r\), while inversion and sign
+selection require an apartness witness.
+
+\paragraph{Arithmetic.}
+For addition, request inputs at precision \(r+1\).  For multiplication, first
+supply rational bounds \(|a|,|b|\le B\), then compute sufficient input
+precision from the inequality
+\[
+ |aa'-bb'|\le |a||a'-b'|+|b'||a-b|.
+\]
+For reciprocal, a lower bound \(|b|\ge 2^{-g}\) is a guard; the precision
+transformer depends on \(g\).
+
+Every one of these operations is a PCFM module with an explicit backward
+precision transformer and a finite integer inequality proof.
+
+\subsection{Functions and local analytic branches}
+
+A continuous function presentation consists of:
+\begin{itemize}
+\item an evaluator returning a rational approximation at rational input;
+\item a domain-validity predicate;
+\item an output error bound;
+\item a modulus of uniform continuity on the certified domain.
+\end{itemize}
+
+Composition computes the inner precision needed to meet the outer modulus,
+then adds the evaluator errors.  Differentiability is represented by a finite
+remainder contract:
+\[
+ |f(x+h)-f(x)-D(x)h|\le E(x,h),
+\]
+with a primitive-recursive bound \(E\).  Analyticity is represented by
+coefficients, a radius guard, and a tail majorant.
+
+A local inverse theorem needs:
+\[
+ |f'(x)|\ge m>0,\qquad
+ |f'(x)-f'(y)|\le L|x-y|,
+\]
+on a rational interval, together with a smallness condition.  Newton or
+bisection then becomes a certified loop.  There is no need to construct a
+global real function object before proving the requested finite inverse
+observation.
+
+\subsection{Power series and special functions}
+
+A special function should be presented by one or more guarded algorithms:
+series, continued fraction, integral quadrature, recurrence, or asymptotic
+expansion.  Each algorithm exports:
+\[
+  \mathsf{approx}(x,k),\qquad
+  \mathsf{domain}(x),\qquad
+  \mathsf{tail}(x,N)\le2^{-k}.
+\]
+The tail cutoff \(N(x,k)\) is a resource producer.  Once it is available,
+finite sums and products are handled by the checked recursive definitions.
+
+Identities are proved in two layers:
+\begin{enumerate}
+\item an exact finite identity for truncations or recurrence states;
+\item an error transfer theorem showing both sides lie in a common interval
+of the requested width.
+\end{enumerate}
+Analytic continuation is not represented by an unrestricted completed plane.
+It is a finite chain of overlapping certified discs or rectangles.  Backward
+viability selects a chain; uniqueness on overlaps makes the resulting
+observation stable.
+
+This pattern applies to hypergeometric, Meijer \(G\), Barnes \(G\), gamma,
+Airy, Bessel, and related functions.  A packet may prove many algebraic and
+recurrence statements before the strongest global continuation or asymptotic
+producer is available.
+
+\subsection{Finite topology and compactness interfaces}
+
+A compact metric object at precision \(k\) is represented by:
+\begin{itemize}
+\item a finite list of centers;
+\item a radius \(r_k\);
+\item a cover certificate;
+\item a separation or Lebesgue-number margin when refinement is required.
+\end{itemize}
+The nerve is a finite simplicial complex whose intersection predicates are
+bounded and decidable relative to supplied certificates.  Homology,
+cohomology over a finite ring, Euler characteristic, and simplicial maps are
+finite algebra.
+
+A theorem about the underlying space becomes a schema asserting stability of
+the finite invariant after a producer-supplied scale.  Without a scale
+stability theorem, PCFM proves only the finite-complex result, not an
+identification with an infinitary topological invariant.
+
+\paragraph{Open covers.}
+An arbitrary open cover is not a finite object.  A usable interface includes a
+finite subcover or an effective compactness functional.  The latter is a
+producer and must be proved for the particular space presentation.
+
+\subsection{Algebraic geometry by certified affine charts}
+
+A polynomial, ideal generator list, affine chart, and rational point are all
+finite codes.  Exact polynomial arithmetic is primitive recursive.  The main
+presentational choices are:
+
+\begin{itemize}
+\item ideals as finite generating lists with membership certificates
+(\(f=\sum h_i g_i\));
+\item localizations as numerator--denominator pairs with a nonvanishing guard;
+\item overlaps as explicit transition maps and extensionality proofs;
+\item finite covers as lists of principal opens with a certificate that a
+power of the unit lies in the generated ideal;
+\item finite \v{C}ech complexes as bounded matrices.
+\end{itemize}
+
+A Gr\"obner or Macaulay computation is a trace certificate.  Soundness is an
+exact polynomial identity.  Completeness requires a degree bound and is
+therefore a resource producer.  For a fixed zero-dimensional system with a
+certified bound, PCFM can enumerate all rational or finite-field solutions.
+For positive-dimensional or arbitrary varieties, no global classification is
+claimed.
+
+\paragraph{Sheaf-like gluing.}
+Given a fixed finite cover and compatible local sections, the gluing problem
+is finite.  A global section code and its restriction equalities form the
+certificate.  Uniqueness is quotient-stable.  General sheaf theory can be
+approached as a family of these finite contracts rather than an internal
+category of all opens.
+
+\subsection{Diophantine geometry}
+
+For a decidable equation \(W(C,x)=1\), a complete bounded enumeration needs:
+\[
+  W(C,x)=1\imp h(C,x)\le H(C)
+\]
+and a primitive-recursive enumeration of all canonical codes of height at most
+\(H(C)\).
+
+\begin{theorem}[Height-to-list reduction]
+From a proved height bound \(H\), iPRA derives a finite list containing exactly
+the solutions, up to the chosen code equivalence.
+\end{theorem}
+
+\begin{proof}
+Compute an enumeration bound \(N(C,H)\).  Scan the \(N\) candidate codes,
+retain those satisfying validity and \(W=1\), and deduplicate by decidable code
+equivalence.  Membership implies validity and the equation by construction.
+Conversely, the height theorem and cover theorem give a bounded index for any
+solution; induction on the scan proves it is retained.
+\end{proof}
+
+This theorem is broadly reusable.  It does not prove the height bound.  For
+Runge families, Pell equations, explicit descents, or a fixed curve with a
+verified covering list, the producer may be available.  For general Faltings
+or Siegel statements, the difficult producer remains.
+
+\subsection{Finite probability and distributions}
+
+A finitely supported rational distribution is a list of outcomes and rational
+weights summing to one.  Expectation, moments, convolution, and sampling from a
+bounded bit source are finite sums.
+
+An infinite distribution is represented by truncations plus a tail bound:
+\[
+  \sum_{|x|>B(k)}p(x)\le2^{-k}.
+\]
+A density is represented by rational quadrature data plus an integration error
+bound.  Distributional convergence is a finite-observer statement: for each
+bounded test family or rational interval query, provide an error estimate.
+
+For the normal distribution, PCFM can internalize rational approximations to
+the density, moments, symmetry, finite quadrature identities, and tail
+inequalities once their coefficient and remainder bounds are supplied.  It
+does not treat a completed measure space as a primitive object.
+
+\subsection{Combinatorics and finite structures}
+
+Finite graphs, hypergraphs, words, partitions, tableaux, and simplicial
+complexes are the easiest PCFM domain.  Their data are bounded arrays, and
+most properties are reflected Boolean formulas.  Counting functions are
+primitive-recursive folds.  Recurrences and bijections are exact modules.
+
+Asymptotic claims require quantitative finite inequalities.  A statement
+\(a_n\sim b_n\) is replaced by a schema:
+\[
+ n\ge N(k)\imp
+   |a_n/b_n-1|\le2^{-k},
+\]
+with explicit \(N(k)\) and denominator guards.  This makes clear where
+analytic estimates, rather than finite combinatorics, enter.
+
+\subsection{Category-theoretic language as notation, not an extra ontology}
+
+Finite categories and functors can be coded directly.  More generally,
+``category'' is useful metanotation for presentations and extensional maps:
+objects are interfaces, morphisms are proof-carrying extensional maps, and
+composition is module composition.  Yoneda, finite limits, adjunctions, and
+Kan extensions are available for fixed finite presentations.
+
+One should not infer from this notation that iPRA contains a universe of all
+mathematical categories.  PCFM uses category theory to organize fixed
+primitive-recursive data and its proofs.

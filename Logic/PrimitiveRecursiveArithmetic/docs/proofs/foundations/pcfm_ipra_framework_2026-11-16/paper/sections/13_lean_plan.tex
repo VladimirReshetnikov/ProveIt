@@ -1,0 +1,336 @@
+
+\section{Lean formalization plan}
+\label{sec:lean}
+
+\subsection{Target namespace and library placement}
+
+The implementation should become a new sublibrary under
+\[
+ \code{Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Framework}.
+\]
+The proposed namespace is
+\[
+       \code{LeanProofs.IPRA.Framework}.
+\]
+It should depend on \code{ConciseIPRA.PR} and selected checked
+\code{IPRADerivations.Core} files.  It should not depend on theorem packets.
+
+A first Lake target may import:
+\[
+\begin{array}{l}
+\code{IPRADerivations.Core.Basic},\\
+\code{IPRADerivations.Core.Definitions},\\
+\code{IPRADerivations.Core.Order},\\
+\code{IPRADerivations.Core.Pairing},\\
+\code{IPRADerivations.Core.Search}.
+\end{array}
+\]
+Later files may import bounded sums, rational coding, matrices, or bridge
+modules as needed.
+
+\subsection{Phase 0: structural wrapper}
+
+The first file is almost entirely checked reuse.
+
+\begin{lstlisting}[language={}]
+structure Module (n : Nat) where
+  req   : List (Fm PTm n)
+  out   : Fm PTm n
+  proof : req |- [PRAAx] out
+
+namespace Module
+
+def specialize (M : Module n) (sigma : Fin n -> PTm m) :
+    Module m where
+  req := M.req.map (fun p => p.subst sigma)
+  out := M.out.subst sigma
+  proof := M.proof.subst sigma
+
+def discharge (M : Module n) {Delta : List (Fm PTm n)}
+    (h : forall p, List.Mem p M.req -> Delta |- [PRAAx] p) :
+    Delta |- [PRAAx] M.out :=
+  M.proof.trans h
+\end{lstlisting}
+
+The actual source uses the repository's scoped turnstile notation.  The archive
+contains an uncompiled candidate spelling.  The acceptance test is:
+\[
+    \code{lake build IPRADerivations}.
+\]
+
+Add small theorems for:
+\begin{itemize}
+\item weakening a module context;
+\item turning a closed proof into a module with empty requirements;
+\item a unary \code{Contract};
+\item contract identity and composition;
+\item conjunction introduction/elimination modules;
+\item context permutation/union conveniences.
+\end{itemize}
+
+\subsection{Phase 1: Boolean core}
+
+Create:
+\[
+\begin{array}{l}
+\code{Framework/Boolean.lean},\\
+\code{Framework/ReflectQF.lean},\\
+\code{Framework/BoundedQuantifier.lean}.
+\end{array}
+\]
+
+\code{Boolean.lean} defines term operations \code{bnot}, \code{band},
+\code{bor}, and \code{bimp}, proves substitution lemmas, Boolean closure, and
+truth tables.  Reuse \code{eqb}, \code{eqb_of_eq}, and \code{eqb_of_ne} from
+\code{Core.Pairing}.
+
+The central structure should be close to:
+
+\begin{lstlisting}[language={}]
+structure ReflectedQF {n : Nat} (phi : Fm PTm n) where
+  bit       : PTm n
+  isBool    : ([] : List (Fm PTm n)) |- [PRAAx]
+                ((bit = 0) OR (bit = 1))
+  trueIff   : ([] : List (Fm PTm n)) |- [PRAAx]
+                iff phi (bit = 1)
+  falseIff  : ([] : List (Fm PTm n)) |- [PRAAx]
+                iff (phi --> bot) (bit = 0)
+\end{lstlisting}
+
+Use repository notation in the final source.  Implement:
+
+\begin{lstlisting}[language={}]
+def reflectQF (phi : Fm PTm n) (hphi : phi.QF) :
+    ReflectedQF phi
+\end{lstlisting}
+
+by recursion on \(\varphi\), with impossible quantifier cases eliminated by
+\code{hphi}.  A useful auxiliary theorem is internal decidability:
+
+\begin{lstlisting}[language={}]
+theorem qf_decidable (r : ReflectedQF phi) :
+    Gamma |- [PRAAx] phi OR (phi --> bot)
+\end{lstlisting}
+
+Then implement arbitrary-arity finite folds by encoding the parameter tuple
+with pairing, or generalize \code{recDef} directly.  The initial version can
+use one packed parameter because the existing \code{Search} API is binary.
+
+Acceptance tests:
+\begin{itemize}
+\item reflection of equality, conjunction, disjunction, implication, and
+falsity;
+\item substitution commutation on a formula with nested connectives;
+\item reflection of the order formulas already defined in \code{Core.Order};
+\item no new axioms and no \code{sorry}.
+\end{itemize}
+
+\subsection{Phase 2: trace invariant package}
+
+Create \code{Framework/Trace.lean}.  Rather than building a deep program
+syntax, define a record of the already specialized ingredients.
+
+A possible record is:
+
+\begin{lstlisting}[language={}]
+structure TraceSpec (k : Nat) where
+  base : PTm k
+  step : PTm (k + 2)
+  inv  : Fm PTm (k + 1)
+  invQF : inv.QF
+  baseProof :
+    ([] : List (Fm PTm k)) |- [PRAAx]
+      inv.subst (inst base)
+  stepProof :
+    [inv] |- [PRAAx]
+      inv.subst (repl (step.subst ...))
+\end{lstlisting}
+
+The indices in the sketch must be chosen to match the convention:
+variable \(0\) is the current state, variable \(1\) may be time, and the
+remaining variables are parameters.  It may be cleaner to store the fully
+formed induction formula \code{runInv : Fm PTm (k+1)} and its base/step
+derivations, then define a higher-level constructor that produces these from
+\code{base}, \code{step}, and \code{inv}.  This separates binder bookkeeping
+from the mathematical theorem.
+
+The endpoint theorem should be:
+
+\begin{lstlisting}[language={}]
+theorem TraceSpec.invariant (S : TraceSpec k) :
+    ([] : List (Fm PTm (k + 1))) |- [PRAAx] S.runInv
+\end{lstlisting}
+
+implemented by \code{IPRA.ind}.  Add a terminal contract combinator that
+specializes and cuts an invariant proof with a halt proof.
+
+Acceptance example: reprove a small checked bounded fold, not a theorem packet.
+For instance, prove the invariant of finite sum or a running maximum.  This
+tests substitution and state packing before a more complicated application.
+
+\subsection{Phase 3: bounded relations and stability}
+
+Create:
+\[
+\begin{array}{l}
+\code{Framework/Relation.lean},\\
+\code{Framework/Viability.lean},\\
+\code{Framework/Observer.lean}.
+\end{array}
+\]
+
+A bounded relation package stores a reflected predicate, candidate bound, and
+possibly a totality module.  Backward viability is a primitive recursion over
+time whose state is a bit table or a packed sequence.  For a first
+implementation, avoid a general array library by using a characteristic
+function encoded through a bounded table code with checked lookup/update
+equations.
+
+Required theorems:
+\[
+\begin{array}{ll}
+\code{viable_succ}:&
+ \Viable_t(a)=1\to
+ \exists b<B_{t+1}\,[R_t(a,b)=1\wedge\Viable_{t+1}(b)=1],\\
+\code{selectPath_spec}:&
+ \Viable_0(a_0)=1\to \mathsf{PathGood}(\mathsf{selectPath}(\cdots))=1,\\
+\code{stable_exact}:&
+ \text{pairwise equality}\to \text{selection-independent output},\\
+\code{stable_setoid}:&
+ \text{pairwise output equivalence}\to \text{extensional result},\\
+\code{stable_error}:&
+ \text{diameter bound}\to \text{observer error bound}.
+\end{array}
+\]
+
+The exact observer theorem should be short because it is mainly
+\code{Search.search_found}, hypothesis specialization, and equality
+substitution.  Implement it before the full viability table.
+
+\subsection{Phase 4: graph assembler}
+
+The first graph assembler may stay outside the object theory.  Define a Lean
+inductive type whose leaves contain \code{Module} values and whose internal
+nodes contain functions consuming predecessor proofs.  Alternatively, avoid
+an inductive syntax entirely and expose a combinator API.
+
+A minimal useful API includes:
+\[
+\begin{array}{l}
+\code{Module.specialize},\quad
+\code{Module.discharge},\quad
+\code{Module.and},\quad
+\code{Module.branch},\\
+\code{Module.loop},\quad
+\code{Module.search},\quad
+\code{Module.observe},\quad
+\code{Module.residual}.
+\end{array}
+\]
+
+A deep serialized graph can be added later.  Its elaborator must return
+\code{Module n}; that result type is the soundness boundary.
+
+Add a metadata structure outside the trusted proof:
+\begin{lstlisting}[language={}]
+structure ObligationInfo where
+  name   : String
+  kind   : ObligationKind
+  source : String
+  note   : String
+\end{lstlisting}
+A compiled artifact contains both the proof module and an obligation ledger.
+The ledger may be JSON for repository tooling.
+
+\subsection{Phase 5: open bridge wrappers}
+
+The bridge work should be split into small files.
+
+\paragraph{\code{CodeNormalization.lean}.}
+Prove extensional equality of each Foundation construction code with its
+Foundation--Concise--Foundation normal form.  The primitive-recursion case is
+the only induction.
+
+\paragraph{\code{FormulaRoundtrip.lean}.}
+Lift code equality to terms and formulas, first equality-only, then native
+order by composing with \code{nativeOrderRoundtrip}.
+
+\paragraph{\code{OpenSequent.lean}.}
+Package:
+\begin{lstlisting}[language={}]
+theorem conciseToStandardCtx ...
+theorem standardToConciseCtx ...
+theorem standard_concise_ctx_iff ...
+\end{lstlisting}
+with both arbitrary environments and a canonical variable environment.
+
+The existing \code{toFoundation_provable_of_axioms} should be reused directly.
+For the forward direction, initially use finite-context internalization,
+universal closure, the current closed translator, repeated
+\code{Prf.allOpen}, and implication elimination.  If performance is poor, add
+a direct context-carrying version of \code{hilbertToConcise}.
+
+\subsection{Phase 6: domain libraries}
+
+Only after the core compiles should domain presentations be added:
+
+\[
+\begin{array}{ll}
+\code{Framework/Data/Setoid.lean} & generic validity/equivalence interfaces,\\
+\code{Framework/Data/Rational.lean} & signed rationals and inequalities,\\
+\code{Framework/Data/FiniteSet.lean} & list setoids and deduplication,\\
+\code{Framework/Analysis/RegularName.lean} & rational names and moduli,\\
+\code{Framework/Topology/FiniteNerve.lean} & finite covers and nerves,\\
+\code{Framework/Algebra/PolynomialCert.lean} & identity and ideal certificates.
+\end{array}
+\]
+
+Existing theorem packets should migrate by importing these libraries rather
+than defining isolated encodings.
+
+\subsection{Proof order and dependency discipline}
+
+The recommended order is:
+
+\begin{enumerate}
+\item structural \code{Module};
+\item Boolean term truth tables;
+\item QF reflection;
+\item bounded universal/existential reflection;
+\item trace invariant;
+\item exact stable observer;
+\item finite viability;
+\item approximate observer;
+\item open bridge normalization;
+\item domain presentations;
+\item theorem-packet migration.
+\end{enumerate}
+
+Each step has a standalone test theorem.  Do not begin with a theorem packet
+that depends simultaneously on rational analysis, finite arrays, bridge
+transport, and relational stability; that would obscure which layer failed.
+
+\subsection{No-placeholder rule}
+
+A file is placed in the checked library only when:
+\begin{itemize}
+\item it builds under the pinned Mathlib and repository commit;
+\item it contains no \code{sorry}, \code{admit}, new axiom, or opaque semantic
+oracle;
+\item every public theorem concludes a \code{Prf PRAAx} judgment or a clearly
+labeled metatheorem used to construct one;
+\item its README distinguishes object-level theorems from host-level tests.
+\end{itemize}
+
+Blueprint files may live in a proposal directory, but they should not be
+counted as checked derivations.
+
+\subsection{Current artifact status}
+
+Lean is not installed in the execution environment used to prepare this
+archive.  The included \code{lean/} files are therefore source-oriented
+skeletons and exact signature proposals, not a claimed successful build.
+They intentionally avoid presenting placeholders as completed proofs.  The
+first repository-side action is to adapt \code{Core.lean} to exact notation
+and run the build target; subsequent files can then be filled in one theorem
+at a time.

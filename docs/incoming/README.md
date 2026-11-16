@@ -330,6 +330,9 @@ and one ignored `.log` file. `lambert_w_ipra_2026-11-16.zip` was placed the same
 `analysis/`, and then deleted; its wrapper directory is `lambert_w_ipra`. It leaves out one
 ignored checksum manifest. `ipra_kifcs_framework_2026-11-16.zip` was placed the same way,
 under `foundations/`, and then deleted. All 73 of its members are placed.
+`pcfm_ipra_framework_2026-11-16.zip` was not committed. It was placed the same way, under
+`foundations/`, and then deleted. It leaves out its ignored checksum manifest,
+`metadata/sha256sums.txt`, and two ignored `.log` files.
 
 ## Sub-exponential 3-SAT (ETH) reports
 
