@@ -1,0 +1,250 @@
+\section{Ballot, convolution, rational, Fuss, and super-Catalan extensions}
+\label{sec:generalizations}
+
+\subsection{Bertrand's ballot theorem at excess one}
+
+Consider words with $n+1$ votes $A$ and $n$ votes $B$.  Give $A$ weight $+1$
+and $B$ weight $-1$.  The cycle lemma says that a word with total weight
+$r>0$ has exactly $r$ distinguished cyclic starting positions whose nonempty
+partial sums are positive, counted with positions even when the underlying
+word is periodic.  For total weight one, every pointed word has exactly one
+good start.  Double counting pointed words gives
+\[
+ \frac1{2n+1}\binom{2n+1}{n}=\Cat_n.                             \tag{7.1}
+\]
+Removing the first $A$ from a positive word gives a Dyck word.  This proves the
+ballot interpretation and Equation~\eqref{eq:odd-binomial} simultaneously.
+
+For \ipra, the cycle lemma can be proved by the deletion algorithm mentioned
+on Wikipedia: place the letters on a circle, repeatedly delete adjacent
+$AB$ pairs, and record the surviving $A$ positions.  The deletion relation is
+bounded, a fixed least-pair strategy makes it primitive recursive, and an
+induction on word length proves that the survivors are exactly the good
+starts.  For total weight $r$, exactly $r$ survive.
+
+\subsection{The \(k\)-fold Catalan convolution}
+
+A forest of $k$ ordered full binary trees with a total of $n$ internal nodes is
+counted in two ways.  Splitting by the internal-node counts of the components
+gives
+\[
+ \sum_{i_1+\cdots+i_k=n}\Cat_{i_1}\cdots\Cat_{i_k}.              \tag{7.2}
+\]
+Encode the forest in Polish order, writing an internal node with weight $+1$
+and a leaf with weight $-1$.  There are $n$ internal nodes and $n+k$ leaves,
+so the word length is $2n+k$ and its total weight is $-k$.  The Raney form of
+the cycle lemma says that, among the $2n+k$ pointed rotations of every such
+word, exactly $k$ have all proper prefix sums greater than $-k$ in the order
+needed to cut the word uniquely into $k$ trees.  Hence
+\[
+ \boxed{\displaystyle
+ \sum_{i_1+\cdots+i_k=n}\Cat_{i_1}\cdots\Cat_{i_k}
+  =\frac{k}{2n+k}\binom{2n+k}{n}.}                               \tag{7.3}\label{eq:kfold}
+\]
+The internal theorem is
+$(2n+k)$ times the left side equals $k\binom{2n+k}{n}$.
+The pointed-word proof avoids any assumption that cyclic orbits have full
+size; periodic words cause no difficulty because the distinguished position is
+part of the code.
+
+Coefficientwise, Equation~\eqref{eq:kfold} is also Lagrange inversion for
+$C(x)^k$.  The forest proof is the smaller \ipra{} dependency.
+
+\subsection{Rational Catalan numbers}
+
+Let $r,s$ be coprime positive integers.  Give a right step weight $s$ and an up
+step weight $-r$.  A path from $(0,0)$ to $(r,s)$ has total weight zero.  Mark
+one step and perform the standard cycle-lemma normalization at the least
+partial sum.  Coprimality implies that the $r+s$ cyclic partial-sum ranks are
+distinct modulo $r+s$, so exactly one marked rotation stays on the required
+side of the line $ry=sx$.  Double counting gives
+\[
+ \operatorname{RatCat}(r,s)
+ =\frac1{r+s}\binom{r+s}{r}.                                    \tag{7.4}\label{eq:rational-cat}
+\]
+The proof is constructive: compute all $r+s$ partial sums, choose the least
+rank with the fixed tie convention, rotate, and invert by remembering the
+mark.  Coprimality is used through Bezout data obtained by the primitive-
+recursive extended Euclidean algorithm.  Equation~\eqref{eq:rational-cat}
+is represented after multiplication by $r+s$.
+
+The ordinary Catalan case is $(r,s)=(n,n+1)$ after the strict/weak boundary
+translation; Equation~\eqref{eq:odd-binomial} is the resulting formula.
+
+\subsection{Fuss--Catalan numbers}
+
+For $p\ge2$ and $k\ge0$, define
+\[
+ \Cat^{(p)}_0=1,
+ \qquad
+ \Cat^{(p)}_k
+ =\frac1{(p-1)k+1}\binom{pk}{k}
+ =\frac1k\binom{pk}{k-1}\quad(k\ge1).                           \tag{7.5}\label{eq:fuss}
+\]
+The two fractions are equal by adjacent-binomial arithmetic.
+
+A full ordered $p$-ary tree with $k$ internal nodes has $(p-1)k+1$ leaves.
+Its Polish word therefore has $k$ symbols of weight $p-1$ and
+$(p-1)k+1$ symbols of weight $-1$, total length $pk+1$ and total weight $-1$.
+The cycle lemma gives exactly one valid pointed rotation.  Thus the number of
+trees is
+\[
+ \frac1{pk+1}\binom{pk+1}{k}
+ =\frac1{(p-1)k+1}\binom{pk}{k},
+\]
+proving Equation~\eqref{eq:fuss}.  Recursive parsing of the Polish word is the
+primitive-recursive inverse.
+
+The same trees are syntax trees for $k$ applications of a fixed $p$-ary
+operator.  Rooting a dissection at a boundary edge and taking the incident
+$(p+1)$-gon gives a $p$-tuple of smaller dissections, so they also count
+partitions of a convex $((p-1)k+2)$-gon into $k$ nonoverlapping
+$(p+1)$-gons.  The Lukasiewicz height of the Polish word gives the $p$-good
+path interpretation.  These are explicit recursive bijections, not merely
+recurrence comparisons.
+
+The formal series $T=1+xT^p$ has coefficients $\Cat^{(p)}_k$.  For every $q\ge1$, finite Lagrange inversion gives
+\[
+ [x^k]T^q=\frac{q}{pk+q}\binom{pk+q}{k},                         \tag{7.6}\label{eq:fuss-power}
+\]
+with the denominator cleared.  Forests of $q$ $p$-ary trees give the same
+identity by the Raney lemma.
+
+\subsection{The two-parameter path numbers on MathWorld}
+
+The notation on MathWorld can be handled uniformly by formal reversion.  Fix
+$p>1$ and $0\le q\le p-1$.  Let $X=X(y)$ be the unique formal series with
+\[
+ X=y(1+X)^p.                                                      \tag{7.7}\label{eq:Xreversion}
+\]
+Define
+\[
+ D_{p,q}(y)=\frac{X}{(1+X)^q}=\sum_{k\ge1}d_{p,q}(k)y^k.          \tag{7.8}\label{eq:Dpq}
+\]
+Finite Lagrange inversion gives
+\[
+ d_{p,q}(k)=\frac{p-q}{pk-q}\binom{pk-q}{k-1}.                  \tag{7.9}\label{eq:Dexplicit}
+\]
+For $q=0$ this is the Fuss--Catalan number in
+Equation~\eqref{eq:fuss}.  The coefficient proof is a bounded sum: from
+\([y^k]\Phi(X)=k^{-1}[t^{k-1}]\Phi'(t)(1+t)^{pk}\), take
+$\Phi(t)=t(1+t)^{-q}$ and simplify by Pascal's identity.  Negative exponents
+are avoided by multiplying by a sufficiently large power of $1+t$ before
+coefficient extraction.
+
+Substituting $y=x/(1+x)^p$ in Equation~\eqref{eq:Dpq} gives
+\[
+ D_{p,q}\left(\frac{x}{(1+x)^p}\right)=\frac{x}{(1+x)^q}.        \tag{7.10}\label{eq:Dsub}
+\]
+Taking the coefficient of $x^k$ after multiplication by $(1+x)^n$ proves the
+generalized Jonah identity displayed by MathWorld:
+\[
+ \binom{n-q}{k-1}
+ =\sum_{i=1}^{k}d_{p,q}(i)\binom{n-pi}{k-i}.                    \tag{7.11}\label{eq:jonah}
+\]
+The natural generalized-binomial convention applies if an upper entry is
+negative; in the ordinary path range all terms are nonnegative and finite.
+
+For $r>0$ with $q<p-r$, Equation~\eqref{eq:Dpq} also gives
+\[
+ D_{p,q}(y)=\frac{D_{p,p-r}(y)D_{p,q+r}(y)}{y}.                  \tag{7.12}
+\]
+Comparing the coefficient of $y^k$ yields the MathWorld recurrence
+\[
+ d_{p,q}(k)=
+ \sum_{\substack{i,j>0\\i+j=k+1}}
+ d_{p,p-r}(i)d_{p,q+r}(j).                                      \tag{7.13}\label{eq:Dconvolution}
+\]
+Equations~\eqref{eq:Dexplicit}, \eqref{eq:jonah}, and
+\eqref{eq:Dconvolution} therefore have a single coefficientwise \ipra{} proof.
+The path interpretation follows by decomposing at the first contact with the
+appropriate $p$-slope boundary; the formal proof is independent of drawing
+conventions.
+
+\subsection{Super-Catalan integers}
+
+The two-parameter super-Catalan numbers on Wikipedia are
+\[
+ S(m,n)=\frac{(2m)!(2n)!}{m!n!(m+n)!}.                           \tag{7.14}\label{eq:supercat}
+\]
+Their integrality is not obvious from the quotient, but it has a short
+valuation proof suitable for \ipra.  For every prime power $a=p^j$,
+\[
+ \floor{\frac{2m}{a}}+\floor{\frac{2n}{a}}
+ \ge
+ \floor{\frac m a}+\floor{\frac n a}+\floor{\frac{m+n}{a}}.     \tag{7.15}\label{eq:super-floor}
+\]
+After removing integer parts, this is
+$\floor{2u}+\floor{2v}\ge\floor{u+v}$ for $0\le u,v<1$, verified by
+the four cases $u<1/2$ or $u\ge1/2$, and similarly for $v$.  Summing
+Equation~\eqref{eq:super-floor} over $j$ with Legendre's formula shows
+$\vp p(S(m,n))\ge0$ for every prime $p$, hence the denominator divides the
+numerator.  In bounded arithmetic, a least-prime-divisor induction supplies
+the final divisibility conclusion.
+
+Direct cancellation gives
+\[
+ S(1,n)=2\Cat_n,
+ \qquad
+ S(n,n)=\binom{2n}{n}.                                           \tag{7.16}
+\]
+The source correctly notes that a uniform combinatorial interpretation for
+all $(m,n)$ is open.  This report proves integrality and the displayed special
+cases but does not manufacture a nonexistent general bijection.
+
+\subsection{Coxeter Catalan statements: type \(A\) and two source corrections}
+
+For the standard generalized Catalan number of the rank-$n$ root system
+$A_n$ \cite{FominReading}, identify a positive root with an interval $[i,j]$.  Order ideals in the
+triangular interval poset are in primitive-recursive bijection with Dyck paths:
+trace the northeast boundary of the ideal.  Taking maximal elements and taking
+downward closure are inverse bounded maps between order ideals and antichains.
+Consequently
+\[
+              \operatorname{Cat}(A_n)=\Cat_{n+1}.               \tag{7.17}
+\]
+Thus, in the standard rank convention, the ordinary number $\Cat_n$
+corresponds to $A_{n-1}$, not $A_n$.
+
+Two sentences on the requested Wikipedia revision need correction.
+First, root-poset antichains are not equinumerous with fully commutative group
+elements in every finite crystallographic type \cite{StembridgeFC}.  The smallest counterexample
+is $B_2=I_2(4)$.  Its four positive roots have the two simple roots incomparable below $\alpha_1+\alpha_2$, which is below the highest root; their antichains are
+\[
+ \varnothing,\quad \{\alpha_1\},\quad \{\alpha_2\},\quad
+ \{\alpha_1+\alpha_2\},\quad \{\alpha_1+2\alpha_2\},\quad
+ \{\alpha_1,\alpha_2\},
+\]
+so there are $6$.  The dihedral Coxeter group has $8$ elements, and every
+one except the longest element is fully commutative, so there are $7$.
+The two counts do agree in type $A$: fully commutative permutations are the
+$321$-avoiding permutations already counted in Section~\ref{sec:combinatorics}.
+
+Second, the unweighted assertion that a standard generalized Catalan number
+is the sum over all maximal proper subdiagrams is false.  For $A_2$ the left
+side is $\Cat_3=5$, whereas the two deleted diagrams are $A_1$, each with
+Catalan number $\Cat_2=2$, giving $4$.  In type $A$ the correct weighted
+maximal-parabolic recurrence is
+\[
+ 2n\,\operatorname{Cat}(A_n)
+  =(n+3)\sum_{i=1}^{n}
+      \operatorname{Cat}(A_{i-1})\operatorname{Cat}(A_{n-i}).  \tag{7.18}\label{eq:coxeter-A-recurrence}
+\]
+Indeed, with $\operatorname{Cat}(A_j)=\Cat_{j+1}$ and
+$\operatorname{Cat}(A_0)=1$, the sum is
+\[
+ S_n=\sum_{i=1}^{n}\Cat_i\Cat_{n+1-i}
+     =\Cat_{n+2}-2\Cat_{n+1}
+     =\frac{2n}{n+3}\Cat_{n+1},
+\]
+where the middle equality is Segner and the last is the ratio recurrence.
+Clearing $n+3$ gives Equation~\eqref{eq:coxeter-A-recurrence} as a finite
+\ipra{} identity.  The unweighted Segner sum does hold for the shifted
+``positive'' type-$A$ Catalan invariant $\operatorname{Cat}^{+}(A_n)=\Cat_n$;
+this likely explains the conflation on the source page.
+
+The general root-poset theorem and the correctly normalized parabolic
+recurrence for every finite crystallographic type require the classification
+of finite root systems (or a uniform Coxeter-theoretic development).  They are
+recorded as formalization targets, not asserted as consequences of the false
+unweighted sentence.

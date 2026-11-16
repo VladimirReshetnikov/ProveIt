@@ -1,0 +1,275 @@
+\section{Lean formalization blueprint}
+\label{sec:formalization}
+
+\subsection{The exact checked starting point}
+
+The inspected repository snapshot is
+\texttt{00bbe871268c453903499fb6afe07519e87d9631}.  The relevant namespace is
+\begin{center}
+\texttt{LeanProofs.IPRA.Combinatorics.BinomialIdentities}.
+\end{center}
+It imports the exact binomial development and proves, without
+\texttt{sorry}, the following named results:
+\begin{itemize}[leftmargin=2em]
+\item \texttt{binomSumFormula}, \texttt{binom\_sum}: the row sum
+      $\sum_{k\le n}\binom nk=2^n$;
+\item \texttt{centralFormula}, \texttt{central\_binomial}: the central
+      binomial inequality used by that module;
+\item \texttt{catalanRatioFormula}, \texttt{catalan\_ratio}: the adjacent
+      binomial identity;
+\item \texttt{catalanFormula}, \texttt{catalan}: the universal closure of
+      Equation~\eqref{eq:checked-catalan}.
+\end{itemize}
+The binomial implementation in
+\texttt{Combinatorics/Binomial.lean} defines
+\(\binom nk=n!\mathbin{\mathrm{quo}}(k!(n\monus k)!)\), proves exactness by a
+bounded remainder sum, and derives Pascal's rule internally.  This is the
+right foundation for the present project; redefining binomial coefficients in
+ambient \texttt{Nat} would weaken the formal result.
+
+A minimal reuse file begins as follows.
+\begin{lstlisting}[language={},caption={Checked base import and Catalan term}]
+import IPRADerivations.Combinatorics.BinomialIdentities
+
+namespace LeanProofs.IPRA.Combinatorics.Catalan
+
+open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open LeanProofs.IPRA.Combinatorics.Binomial
+open LeanProofs.IPRA.Combinatorics.BinomialIdentities
+open Syn
+open scoped Fm
+open ConciseIPRA.PTm (app zero succ)
+open LeanProofs.IPRA.PTm (num monus)
+
+abbrev cat {m : Nat} (n : PTm m) : PTm m :=
+  monus (binom (n + n) n) (binom (n + n) (succ n))
+
+-- Existing checked theorem:
+#check LeanProofs.IPRA.Combinatorics.BinomialIdentities.catalan
+\end{lstlisting}
+The supplied \texttt{lean/CatalanProveItBlueprint.lean} records this import and
+unproved target formulas without inserting axioms or placeholders.
+
+\subsection{Proposed module graph}
+
+\begin{longtable}{@{}p{0.27\textwidth}p{0.66\textwidth}@{}}
+\toprule
+\textbf{New module} & \textbf{Responsibility and dependencies}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{New module} & \textbf{Responsibility and dependencies}\\
+\midrule
+\endhead
+\path{Catalan/Core.lean} & Define \texttt{cat} by binomial difference;
+prove $n=0$ and instantiate the checked \texttt{catalan}; derive factorial,
+odd-binomial, product, and ratio equations.  Depends only on
+\texttt{BinomialIdentities}.\\
+\path{Catalan/Dyck.lean} & Bit-word coding, prefix heights, Dyck Boolean,
+reflection at the first negative prefix, first-return split, and Segner.
+Depends on pairing, bounded search, and \texttt{Catalan/Core}.\\
+\path{Catalan/ProofVariants.lean} & Chung--Feller cut-and-swap with its
+backward-scan inverse, marked triangulation expansion/collapse, and the
+balanced-string convolution-cancellation proof.  Depends on
+\texttt{Catalan/Dyck} and \texttt{Catalan/Bijections}.\\
+\path{Catalan/Bijections.lean} & Binary and plane trees, parentheses,
+lattice paths, triangulations, matchings, restricted sequences, and tableaux.
+Each class is a bounded code with a \texttt{Valid} formula and explicit
+\texttt{encode}/\texttt{decode} inverse lemmas.\\
+\path{Catalan/FiniteSums.lean} & Two-colored Motzkin, weighted convolution,
+alternating transform, square sum, Narayana/hypergeometric identity, and
+Riordan transform.  Depends on \texttt{Core/SumLemmas} and Vandermonde.\\
+\path{Catalan/Permutations.lean} & Bounded permutation codes,
+standardization, $231$ decomposition, stack sorting, finite RSK, and all
+length-three patterns.\\
+\path{Catalan/Digits.lean} & Base-$p$ digits, digit sum, carries, Legendre,
+valuation formula, parity, base-five automaton, and prime Catalans.  Reuses
+\texttt{AnalyticNumberTheory/Primes}.\\
+\path{Catalan/Hankel.lean} & Ballot triangles, two Gram identities,
+triangular determinants, rectangular Cauchy--Binet, maximal-minor lemma, and
+uniqueness.  Reuses \texttt{Core/LinearAlgebra}.\\
+\path{Catalan/FormalSeries.lean} & Finite coefficient arrays, Cauchy
+product, substitution with zero constant term, $C=1+xC^2$, Bessel coefficient
+identities, and Lagrange inversion at fixed coefficient.\\
+\path{Catalan/Generalized.lean} & Cycle/Raney lemma, forests, rational and
+Fuss--Catalan numbers, generalized Jonah identity, convolution, and
+super-Catalan integrality.\\
+\path{Catalan/CoxeterAudit.lean} & Type-$A$ interval-root posets, the weighted
+maximal-parabolic recurrence, and the finite $A_2/B_2$ source counterexamples.
+The all-types theorem remains a separate dependency-heavy target.\\
+\path{Catalan/RealCodes.lean} & Rational interval codes for $\pi$, square
+root, logarithm, exponential, Riemann sums, Wallis, Stirling remainder,
+integrals, and asymptotic moduli.  This is the only genuinely new analytic
+infrastructure.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Representative object-language formulas}
+
+The ratio recurrence should be stored without division.  With variables
+$0=n$, a target formula is
+\begin{lstlisting}[language={}]
+abbrev ratioFormula : Fm PTm 1 :=
+  ((succ (succ (var 0))) * cat (succ (var 0)))
+    ≐ ((num 2 * succ (var 0 + var 0)) * cat (var 0))
+\end{lstlisting}
+Here $\doteq$ (written as \texttt{U+2250} in source) is the object-language equality constructor used by the
+imported ProveIt modules; the theorem target is the universal closure of this
+formula in \texttt{Prf PRAAx}.
+
+For Segner, define a two-variable term body
+\[
+ b(k,n)=\Cat_k\Cat_{n\monus k},
+\]
+then use the existing primitive-recursive bounded sum symbol
+\texttt{sumF}:
+\begin{lstlisting}[language={}]
+abbrev segnerBody : PTm 2 := cat (var 0) * cat (monus (var 1) (var 0))
+abbrev segnerRhs (n : PTm m) : PTm m :=
+  ap2 (sumF segnerBody) (succ n) n
+abbrev segnerFormula : Fm PTm 1 :=
+  cat (succ (var 0)) ≐ segnerRhs (var 0)
+\end{lstlisting}
+The proof can either formalize first return or show that both sides satisfy the
+checked ratio recurrence.  The bijective route is preferable because later
+modules reuse the split maps.
+
+A uniform finite-cardinality API should use
+\begin{lstlisting}[language={}]
+structure BoundedClass where
+  bound : Nat -> Nat
+  valid : Nat -> Nat -> Bool
+
+def count (A : BoundedClass) (n : Nat) : Nat :=
+  (List.range (A.bound n)).foldl
+    (fun s z => s + if A.valid n z then 1 else 0) 0
+\end{lstlisting}
+only in the executable layer.  The object-language layer mirrors these
+functions as primitive-recursive symbols and proves a generic bijection lemma
+once.  Subsequent combinatorial theorems instantiate that lemma rather than
+repeating sum rearrangements.
+
+\subsection{Formalizing reflection}
+
+Use a bit word $w<2^{2n}$.  Define
+\begin{align*}
+ \operatorname{up}(w,j)&=\sum_{i<j}\operatorname{bit}(w,i),\\
+ \operatorname{down}(w,j)&=j\monus\operatorname{up}(w,j),\\
+ \operatorname{dyck}(n,w)&\Longleftrightarrow
+   \operatorname{up}(w,2n)=n\ \wedge\
+   \sum_{j\le2n}[\operatorname{down}(w,j)>
+                         \operatorname{up}(w,j)]=0.
+\end{align*}
+The first bad position is
+\[
+ \operatorname{firstBad}(w)=
+ \min\{j\le2n:\operatorname{down}(w,j)>
+                    \operatorname{up}(w,j)\},
+\]
+implemented by bounded fold with a found flag, not by unbounded minimization.
+\texttt{reflectPrefix} toggles bits below that position.  Prove:
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item a bad balanced word maps to a word with $n+1$ up bits;
+\item the first positive position of the image is the same cut;
+\item applying the inverse prefix reflection recovers the input;
+\item the maps preserve the bit-length bound.
+\end{enumerate}
+The generic bijection theorem then gives Equation~\eqref{eq:cat-difference}.
+All four goals are bounded bit-count arithmetic and fit quantifier-free
+induction on the prefix length.
+
+\subsection{Hankel formalization without analytic dependencies}
+
+Define \texttt{evenBallot r k} and \texttt{oddBallot r k} by the two binomial
+differences.  The path-cut bijection first proves Equations
+\eqref{eq:even-gram} and \eqref{eq:odd-gram}.  Instantiate ProveIt's
+\texttt{det\_mul}, \texttt{det\_transpose}, and triangular determinant lemmas
+for each encoded dimension $n$.  If the existing determinant interface is
+awkward over natural numbers, work over the repository's integer-difference
+ring and coerce all nonnegative entries.
+
+For the third determinant, the only extra algebraic theorem is a rectangular
+Cauchy--Binet identity.  A smaller alternative, useful for a first milestone,
+is fraction-free elimination on
+$[\Cat_{i+j+2}]$: the ballot matrix gives an explicit sequence of unimodular
+row and column operations ending in
+$\operatorname{diag}(1,\ldots,1,n+1)$.  Both routes are primitive recursive;
+Cauchy--Binet better mirrors the human proof and generalizes to shifted
+Catalan Hankel polynomials already studied elsewhere in ProveIt.
+
+\subsection{Number-theoretic formalization}
+
+The exact factorial module already imports the prime infrastructure.  Add a
+fixed-base digit fold returning the triple
+\((\text{digit sum},\text{carry count},\text{next carry})\).  Prove the digit
+identity for addition by induction on the number of processed digits.  The
+valuation formula then consists of:
+\begin{enumerate}[label=(\arabic*),leftmargin=2em]
+\item Legendre's bounded sum over powers $p^j$;
+\item the finite digit-sum evaluation of that sum;
+\item exact valuation of Equation~\eqref{eq:factorial};
+\item the carry/digit identity;
+\item specialization to $p=2$ and $p=5$.
+\end{enumerate}
+No unique factorization theorem stronger than the existing least-prime-divisor
+induction is required.
+
+\subsection{Formal series and real-code layers}
+
+For formal series, use finite prefixes:
+\begin{lstlisting}[language={}]
+def coeff (a : Nat -> Int) (n : Nat) : Int := a n
+def cauchy (a b : Nat -> Int) (n : Nat) : Int :=
+  sumRange (n+1) (fun k => a k * b (n-k))
+\end{lstlisting}
+Every theorem quantifies over one requested coefficient $n$; there is no type
+of completed power series in the object language.  Lagrange inversion can be
+proved as a family of polynomial coefficient identities using rooted trees,
+which is smaller than a formal derivative library.
+
+For analytic claims, define a rational interval code
+\begin{lstlisting}[language={}]
+structure RealCode where
+  lo hi : Nat -> RatCode
+  ordered : forall q, lo q <= hi q
+  width : forall q, q * (hi q - lo q) <= 1
+  nested : ...
+\end{lstlisting}
+The ellipsis is not Lean code in the supplied scaffold; the report's
+mathematical contract is monotone nesting.  Use Machin intervals for $\pi$,
+integer bisection for square root, alternating intervals for logarithm, and
+Taylor intervals for exponential.  The target asymptotic theorem is not a
+statement about Lean's ambient \texttt{Real}; it is a formula saying that the
+computed rational intervals obey Equation~\eqref{eq:leading-modulus}.
+
+\subsection{Milestones and expected proof obligations}
+
+A practical completion order is:
+\begin{enumerate}[leftmargin=2em]
+\item \textbf{Core}: closed forms, ratio, values, and Segner.
+\item \textbf{Dyck/reflection}: one generic finite-bijection theorem and the
+      path encodings.
+\item \textbf{Finite identities}: all four MathWorld sums, product,
+      hypergeometric termination, and $k$-fold convolution.
+\item \textbf{Digits}: valuation, parity, final-digit rule, and Catalan primes.
+\item \textbf{Hankel}: ballot Gram factorizations and all three determinants.
+\item \textbf{Generalized}: rational, Fuss, Jonah, and super-Catalan results.
+\item \textbf{Analysis}: boundary sum first (it needs no real library), then
+      Bessel coefficient identities, integrals, Wallis, and Stirling.
+\end{enumerate}
+
+The finite milestones require only modules already present in the inspected
+ProveIt dependency cone plus the new object encodings.  The analytic milestone
+is larger, but every theorem statement and modulus has been reduced to
+primitive-recursive rational data in this report.
+
+\subsection{Status of the supplied Lean artifacts}
+
+\texttt{CatalanExecutable.lean} contains executable natural-number definitions
+and decidable small checks.  \texttt{CatalanProveItBlueprint.lean} records the
+exact import, the checked theorem name, and definitions of the first target
+terms.  The environment used to build this delivery did not contain a Lean
+binary, so these new files are not claimed to have been compiled.  They use no
+\texttt{sorry}, no new axioms, and no theorem declaration whose body is
+missing.  The already existing ProveIt theorem \texttt{catalan} is separately
+kernel checked in the repository.

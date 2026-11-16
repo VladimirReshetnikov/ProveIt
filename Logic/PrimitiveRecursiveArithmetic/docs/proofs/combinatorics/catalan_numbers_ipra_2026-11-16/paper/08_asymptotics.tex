@@ -1,0 +1,177 @@
+\section{Effective asymptotics and decimal digits}
+\label{sec:asymptotics}
+
+The expression $u_n\sim v_n$ is not taken as primitive notation.  We prove
+rational inequalities with explicit moduli for the Cauchy codes of $\pi$ and
+square roots.
+
+\subsection{A Wallis bound and the leading equivalent}
+
+Let
+\[
+ q_n=\frac1{4^n}\binom{2n}{n}.
+\]
+The finite Wallis inequalities give, for $n\ge1$,
+\[
+ \frac1{\sqrt{\pi(n+1/2)}}<q_n<\frac1{\sqrt{\pi n}}.             \tag{8.1}\label{eq:wallis-central}
+\]
+For completeness, one constructive derivation starts with
+$I_m=\int_0^{\pi/2}\sin^m t\,dt$.  Integration by parts gives
+$I_m=(m-1)I_{m-2}/m$, while
+$I_{2n+1}<I_{2n}<I_{2n-1}$ follows pointwise on $(0,\pi/2)$.  Substitute the
+finite product formulas for $I_{2n}$ and $I_{2n+1}$, square, and clear all
+positive factors.  Refining the elementary comparison with
+$\sin t$ on rational polygonal meshes gives Equation~\eqref{eq:wallis-central}
+and a primitive-recursive Cauchy code for $\pi$.  No impredicative completeness
+principle enters the proof.
+
+Define the normalized ratio
+\[
+ R_n=\frac{\sqrt\pi\,n^{3/2}\Cat_n}{4^n}
+     =\frac n{n+1}\sqrt{\pi n}\,q_n.                            \tag{8.2}
+\]
+Equation~\eqref{eq:wallis-central} implies
+\[
+ \frac n{n+1}\sqrt{\frac n{n+1/2}}<R_n<\frac n{n+1}<1.          \tag{8.3}\label{eq:Rbounds}
+\]
+The rational inequalities
+\[
+ \frac n{n+1}\ge1-\frac1n,
+ \qquad
+ \frac1{\sqrt{1+x}}\ge1-\frac x2\quad(x\ge0)
+\]
+then give
+\[
+ 0<1-R_n<\frac{5}{4n}<\frac2n.                                  \tag{8.4}\label{eq:leading-error}
+\]
+The square-root inequality is proved by squaring after checking both sides are
+nonnegative.  Therefore a convenient primitive-recursive modulus is
+\[
+ n\ge2q\quad\Longrightarrow\quad \abs{R_n-1}\le\frac1q.         \tag{8.5}\label{eq:leading-modulus}
+\]
+This proves, in the exact constructive sense,
+\[
+ \boxed{\displaystyle
+ \Cat_n\sim\frac{4^n}{\sqrt\pi\,n^{3/2}}.}                       \tag{8.6}
+\]
+
+\subsection{The first three displayed asymptotic terms}
+
+The source page prints
+\[
+ \Cat_n\sim\frac{4^n}{\sqrt\pi}
+ \left(n^{-3/2}-\frac98n^{-5/2}+\frac{145}{128}n^{-7/2}+\cdots\right).
+\tag{8.7}\label{eq:printed-expansion}
+\]
+We now give an effective remainder.
+
+\begin{lemma}[Two-term effective Stirling logarithm]
+For $m\ge1$,
+\[
+ \log(m!)=
+ \left(m+\frac12\right)\log m-m+\frac12\log(2\pi)
+ +\frac1{12m}-\frac1{360m^3}+\rho_m,                            \tag{8.8}
+\]
+where
+\[
+ 0<\rho_m<\frac1{1260m^5}.                                      \tag{8.9}
+\]
+\end{lemma}
+
+\begin{proof}
+Apply Euler--Maclaurin to $\log x$ through the Bernoulli-$B_4$ term.  The next
+derivative has fixed sign, so the integral remainder lies between zero and
+the first omitted Bernoulli term.  At this fixed order the Bernoulli
+polynomials, their maxima on $[0,1]$, and the integral comparison are rational
+polynomial calculations.  For an object-language proof, replace the integral
+by upper and lower rational Riemann sums; the derivative bound gives a mesh
+modulus primitive recursive in $(m,q)$.  The endpoint constant is fixed by the
+Wallis code for $\pi$.  This is the standard effective proof of Stirling, but
+all quantifiers have explicit finite bounds.
+\end{proof}
+
+Subtracting twice the formula at $n$ from the formula at $2n$ gives
+\[
+ \log\left(\frac{\binom{2n}{n}\sqrt{\pi n}}{4^n}\right)
+ =-\frac1{8n}+\frac1{192n^3}+\eta_n,
+ \qquad \abs{\eta_n}\le\frac1{600n^5}.                          \tag{8.10}\label{eq:central-log}
+\]
+Put $u=1/n$.  Since $R_n$ is the central-binomial ratio multiplied by
+$1/(1+u)$,
+\[
+ \log R_n=-\frac98u+\frac12u^2-\frac{21}{64}u^3+\delta_n,
+ \qquad \abs{\delta_n}\le\frac{13}{50}u^4                     \tag{8.11}\label{eq:Rlog}
+\]
+for $n\ge8$.  Here the alternating expansion of $\log(1+u)$ has remainder at
+most $u^4/4$, and Equation~\eqref{eq:central-log} supplies the smaller
+$u^5/600$ term.
+
+For $n\ge8$, Equation~\eqref{eq:Rlog} gives $\abs{\log R_n}<3/20$.
+Here is an explicit rational audit of the Taylor constant.  Put
+$z=\log R_n$, $a_1=-9/8$, and $a_2=1/2$.  Since $u\le1/8$,
+Equation~\eqref{eq:Rlog} implies
+\[
+ |z|\le\frac65u,\qquad
+ |z-a_1u|\le\frac{11}{20}u^2,\qquad
+ |z+a_1u|\le\frac{12}{5}u.
+\]
+Also $e^{3/20}<7/6$, as follows by summing its positive Taylor series with a
+geometric tail after the linear term.  Taylor's theorem therefore gives
+\begin{align*}
+ \left|e^z-\left(1+a_1u+
+          \left(a_2+\frac{a_1^2}{2}\right)u^2\right)\right|
+ &\le \left(\frac{21}{64}+\frac{13}{400}\right)u^3
+   +\frac12\frac{11}{20}\frac{12}{5}u^3
+   +\frac{7}{36}\left(\frac65\right)^3u^3\\
+ &<2u^3.
+\end{align*}
+The three summands respectively bound the cubic-and-$\delta_n$ part of $z$,
+the correction from $z^2-a_1^2u^2$, and the exponential remainder.  Hence
+\[
+ \boxed{\displaystyle
+ \abs{R_n-
+  \left(1-\frac9{8n}+\frac{145}{128n^2}\right)}
+ \le\frac2{n^3}\qquad(n\ge8).}                                 \tag{8.12}\label{eq:three-term-bound}
+\]
+The coefficient calculation is
+\[
+ \frac12+\frac12\left(\frac98\right)^2=\frac{145}{128}.
+\]
+Collecting one further coefficient gives the next term
+$-1155/(1024n^3)$.  It is not needed below; the report stops at
+Equation~\eqref{eq:three-term-bound} because that bound exactly certifies all
+terms printed by MathWorld.
+
+Every transcendental operation in this argument is evaluated by a rational
+interval.  For a requested accuracy $1/q$, choose the Taylor lengths by the
+explicit alternating/geometric tail bounds, and choose $n$ from the displayed
+polynomial inequalities.  Thus the proof has a primitive-recursive modulus
+and is admissible in the constructive setting.
+
+\subsection{Decimal digit ratios}
+
+Let $d(N)$ be the number of decimal digits of $\Cat_N$, so
+$d(N)=\floor{\log_{10}\Cat_N}+1$.  From Equation~\eqref{eq:Rbounds}, for
+$N\ge2$,
+\[
+ \log_{10}\Cat_N
+ =N\log_{10}4-\frac32\log_{10}N-\frac12\log_{10}\pi
+  +\log_{10}R_N.                                                 \tag{8.13}
+\]
+Since $1/2<R_N<1$ for $N\ge3$, the last two terms have bounded absolute value.
+Together with the one-unit floor error, a convenient explicit estimate is
+\[
+ \abs{\frac{d(N)}N-\log_{10}4}
+ \le\frac{\tfrac32\log_{10}N+3}{N}\qquad(N\ge3).                \tag{8.14}\label{eq:digit-bound}
+\]
+In particular, at $N=10^m$ with $m\ge1$,
+\[
+ \abs{\frac{d(10^m)}{10^m}-\log_{10}4}
+ \le\frac{\tfrac32m+3}{10^m},                                  \tag{8.15}\label{eq:digit-ratio}
+\]
+which proves the convergence claimed by MathWorld with a primitive-recursive
+modulus.  The logarithm base ten is a rational Cauchy code obtained from the
+series for $\log(1+x)$ after range reduction.  The finite digit values printed
+on the source page are computational data; the supplied checker independently
+certifies those within its configured feasible range, while
+Equation~\eqref{eq:digit-ratio} proves the general limiting statement.

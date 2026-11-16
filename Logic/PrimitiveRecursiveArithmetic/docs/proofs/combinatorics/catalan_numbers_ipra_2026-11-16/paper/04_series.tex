@@ -1,0 +1,210 @@
+\section{Formal series, boundary sums, special functions, and integrals}
+\label{sec:series}
+
+\subsection{The ordinary generating function}
+
+Let $C(x)=\sum_{n\ge0}\Cat_nx^n$ as a formal series.  Segner's recurrence is
+exactly
+\[
+ C(x)=1+xC(x)^2.                                                  \tag{4.1}\label{eq:Cquadratic}
+\]
+Multiplying the proposed closed form by its conjugate shows that the unique
+solution with constant term $1$ is
+\[
+ C(x)=\frac{1-\sqrt{1-4x}}{2x}
+     =\frac{2}{1+\sqrt{1-4x}}.                                   \tag{4.2}\label{eq:Cgf}
+\]
+Inside \ipra, Equation~\eqref{eq:Cgf} means the polynomial relation
+Equation~\eqref{eq:Cquadratic}, the initial coefficient $1$, and the recursive
+coefficient definition of the square root.  No choice between two completed
+infinite series is needed: coefficient uniqueness performs the choice.
+
+The elementary bound
+\(\Cat_n\le\binom{2n}{n}\le 4^n\) proves absolute convergence for
+$\abs{x}<1/4$.  The boundary is also absolutely convergent, by the exact tail
+identity below.  Therefore the analytic equality in Equation~\eqref{eq:Cgf}
+holds for complex $x$ with $\abs{x}\le1/4$, with the square root branch having
+value $1$ at zero.
+
+\subsection{An exact telescoping boundary identity}
+
+Put $a_n=\Cat_n/4^n$.  The ratio recurrence gives
+\[
+ \frac{a_{n+1}}{a_n}=\frac{2n+1}{2n+4}.
+\]
+Hence, with $b_n=2(n+1)a_n$,
+\[
+ b_n-b_{n+1}=a_n.                                                 \tag{4.3}\label{eq:telescoping-term}
+\]
+This yields more than the infinite sum printed on the source pages.
+
+\begin{theorem}[Exact partial sum and primitive-recursive tail]
+\label{thm:boundary-tail}
+For every $N\ge0$, writing $m=N+1$,
+\begin{align}
+ \sum_{n=0}^{N}\frac{\Cat_n}{4^n}
+   &=2-\frac{2(m+1)\Cat_m}{4^m}
+    =2-\frac{2\binom{2m}{m}}{4^m},                              \tag{4.4}\label{eq:partial-boundary}\\
+ 0\le 2-\sum_{n=0}^{N}\frac{\Cat_n}{4^n}
+   &\le \frac{2}{\sqrt{m+1}}.                                  \tag{4.5}\label{eq:tail-bound}
+\end{align}
+Consequently
+\[
+ \sum_{n=0}^{\infty}\frac{\Cat_n}{4^n}=2,
+ \qquad
+ \sum_{n=1}^{\infty}\frac{\Cat_n}{4^n}=1.                      \tag{4.6}\label{eq:boundary-sums}
+\]
+For error at most $1/q$, it is enough to take $m+1\ge4q^2$.
+\end{theorem}
+
+\begin{proof}
+Equation~\eqref{eq:partial-boundary} is the finite telescope of
+Equation~\eqref{eq:telescoping-term}, followed by
+$(m+1)\Cat_m=\binom{2m}{m}$.
+
+For the bound, put $u_m=\binom{2m}{m}/4^m$.  We prove
+$u_m^2\le1/(m+1)$ by induction.  It is true at $m=0$, and
+\[
+ \frac{u_{m+1}}{u_m}=\frac{2m+1}{2m+2}.
+\]
+The induction step is the integer polynomial inequality
+\[
+ (2m+1)^2(m+2)\le4(m+1)^3,
+ \qquad
+ 4(m+1)^3-(2m+1)^2(m+2)=3m+2.
+\]
+Thus the tail $2u_m$ has square at most $4/(m+1)$.  If
+$m+1\ge4q^2$, nonnegativity and square comparison give $2u_m\le1/q$.
+This is already a denominator-cleared \ipra{} modulus; the square-root notation
+in Equation~\eqref{eq:tail-bound} is only expository.
+\end{proof}
+
+\subsection{The random-walk interpretation}
+
+A simple symmetric walk first reaches $-1$ at time $2n+1$ exactly when its
+first $2n$ steps form a Dyck path after reversing the sign convention and the
+last step is downward.  There are $\Cat_n$ such step strings, each of
+probability $2^{-(2n+1)}$.  Therefore the probability of first capture by time
+$2N+1$ is
+\[
+ \sum_{n=0}^{N}\frac{\Cat_n}{2^{2n+1}}
+ =1-\frac{(N+2)\Cat_{N+1}}{4^{N+1}},                              \tag{4.7}
+\]
+with remaining probability at most $1/\sqrt{N+2}$.  The limit is $1$ by
+Theorem~\ref{thm:boundary-tail}.  Thus the recurrence of the one-dimensional
+walk is not imported as an external probabilistic theorem; it is supplied
+with a finite exact probability and an explicit modulus.
+
+\subsection{The exponential generating function}
+
+Define
+\[
+ F(x)=\sum_{n\ge0}\Cat_n\frac{x^n}{n!}.
+\]
+The factorial majorant $\Cat_n\le4^n$ gives a primitive-recursive tail bound
+for every bounded complex $x$, so $F$ is entire in the constructive sense.
+Multiplying Equation~\eqref{eq:ratio-cleared} by $x^n/n!$ and comparing
+coefficients gives the differential equation
+\[
+ xF''+(2-4x)F'-2F=0,
+ \qquad F(0)=F'(0)=1.                                            \tag{4.8}\label{eq:Fode}
+\]
+Let
+\[
+ I_0(2x)=\sum_{j\ge0}\frac{x^{2j}}{(j!)^2},
+ \qquad
+ I_1(2x)=\sum_{j\ge0}\frac{x^{2j+1}}{j!(j+1)!}.                 \tag{4.9}
+\]
+Termwise finite coefficient arithmetic shows that
+$G(x)=e^{2x}(I_0(2x)-I_1(2x))$ satisfies Equation~\eqref{eq:Fode} and the same
+initial coefficients.  The coefficient recurrence from the ODE is unique,
+so
+\[
+ \sum_{n\ge0}\Cat_n\frac{x^n}{n!}
+ =e^{2x}\bigl(I_0(2x)-I_1(2x)\bigr).                             \tag{4.10}\label{eq:egf}
+\]
+This is a formal coefficient proof first; convergence upgrades it to every
+complex $x$.  For $\abs{x}\le A$, once $j\ge2A$ the ratio of successive terms
+in either Bessel series is at most $1/4$, so four thirds of the first omitted
+term is a primitive-recursive uniform tail bound.
+
+The second Bessel identity is even simpler.  Equation~\eqref{eq:factorial}
+gives
+\[
+ \frac{\Cat_n}{(2n)!}=\frac1{n!(n+1)!},
+\]
+whence, coefficient by coefficient,
+\[
+ \sum_{n\ge0}\Cat_n\frac{x^{2n}}{(2n)!}
+ =\frac{I_1(2x)}x,                                                \tag{4.11}\label{eq:even-egf}
+\]
+where the value at $x=0$ is the constant coefficient $1$.
+
+\subsection{Integral and moment representations}
+
+\begin{theorem}[Catalan beta integrals]
+For $n\ge0$,
+\[
+ \Cat_n=\frac1{2\pi}\int_0^4 x^n\sqrt{\frac{4-x}{x}}\,dx
+ =\frac{2}{\pi}4^n\int_{-1}^{1}t^{2n}\sqrt{1-t^2}\,dt.           \tag{4.12}\label{eq:integrals}
+\]
+\end{theorem}
+
+\begin{proof}
+In the first integral substitute $x=4u$.  The result is
+\[
+ \frac{2\cdot4^n}{\pi}
+ B\left(n+\frac12,\frac32\right)
+ =\frac{2\cdot4^n}{\pi}
+ \frac{\Gamma(n+1/2)\Gamma(3/2)}{\Gamma(n+2)}.
+\]
+Use $\Gamma(3/2)=\sqrt\pi/2$ and the finite half-integer gamma calculation in
+Equation~\eqref{eq:gamma}.  This gives $\Cat_n$.  For the second formula, use
+$x=4t^2$ on $[0,1]$ and symmetry.
+
+For a direct constructive implementation, use the second integral.  The
+integrand is continuous on the compact interval after defining its endpoint
+values to be zero.  For $f_n(t)=t^{2n}\sqrt{1-t^2}$ and
+$\abs{s-t}\le\delta$ on $[-1,1]$,
+\[
+ \abs{f_n(s)-f_n(t)}\le 2n\delta+\sqrt{2\delta}.
+\]
+This follows from the telescoping bound for $s^{2n}-t^{2n}$ and
+$\abs{\sqrt a-\sqrt b}\le\sqrt{\abs{a-b}}$.  Hence a uniform mesh of
+width at most
+\[
+ \delta=\frac{1}{2048q^2(n+1)^2 16^n}
+\]
+gives upper and lower rational Riemann sums, after rational square-root
+bisection, whose contribution to the resulting Catalan interval has width
+below $1/(4q)$.  Approximate $2/\pi$ by its Machin-series interval finely
+enough that the product contributes below $1/(2q)$; the combined width is
+then below $1/q$.  Alternatively, repeated integration by parts reduces the integral to the
+Wallis recurrence and Equation~\eqref{eq:factorial}, so only rational
+endpoint data remain.
+\end{proof}
+
+The first density
+\[
+ d\mu(x)=\frac1{2\pi}\sqrt{\frac{4-x}{x}}\,\ind{0<x<4}\,dx       \tag{4.13}\label{eq:moment-density}
+\]
+has mass $\Cat_0=1$ and moments $\Cat_n$.  Thus the Catalan sequence is a
+compactly supported Stieltjes moment sequence on $[0,4]$.  To state the
+Hausdorff version precisely, put $x=4y$ and let
+\[
+ d\nu(y)=\frac2\pi\sqrt{\frac{1-y}{y}}\,\ind{0<y<1}\,dy.
+\]
+Then $\nu$ is a probability measure on $[0,1]$ and
+\[
+ \int_0^1 y^n\,d\nu(y)=\frac{\Cat_n}{4^n}.
+\]
+Hence the normalized Catalan sequence $(\Cat_n/4^n)$ is a Hausdorff moment
+sequence, which is the precise compact-interval formulation behind the source
+page's ``version of the Hausdorff moment problem.''  These formulas also give
+positivity of every finite Hankel quadratic form, although
+Section~\ref{sec:hankel} proves the exact determinants without analysis.
+
+The boundary sum follows from the integral by geometric summation under the
+integral, but Theorem~\ref{thm:boundary-tail} is stronger for \ipra: it avoids
+interchanging an integral and an infinite series and supplies a small exact
+tail.

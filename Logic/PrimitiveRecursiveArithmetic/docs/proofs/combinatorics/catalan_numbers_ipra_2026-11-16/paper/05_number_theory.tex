@@ -1,0 +1,185 @@
+\section{Divisibility, parity, prime Catalans, and final digits}
+\label{sec:number-theory}
+
+\subsection{Legendre and Kummer in bounded arithmetic}
+
+For a prime $p$, let $\vp p(m)$ be the largest $e\le m$ such that $p^e$ divides
+$m$; bounded search makes this primitive recursive.  Let $s_p(m)$ be the sum
+of the base-$p$ digits of $m$, obtained by repeated quotient and remainder.
+
+\begin{lemma}[Legendre]
+\label{lem:legendre}
+For every prime $p$ and $m\ge0$,
+\[
+ \vp p(m!)=\sum_{j=1}^{m}\floor{\frac{m}{p^j}}
+          =\frac{m-s_p(m)}{p-1}.                                 \tag{5.1}\label{eq:legendre}
+\]
+\end{lemma}
+
+\begin{proof}
+In the product $m!$, every multiple of $p$ contributes once, every multiple of
+$p^2$ contributes one additional time, and so on.  The sum may stop at $m$
+because the later floors are zero.  This is an equality of bounded counts.
+For the digit form, write $m=\sum d_ip^i$ and interchange the two finite sums:
+\[
+ \sum_{j\ge1}\floor{m/p^j}
+ =\sum_i d_i(1+p+\cdots+p^{i-1})
+ =\frac{m-\sum_i d_i}{p-1}.
+\]
+The internal statement is multiplied by $p-1$.
+\end{proof}
+
+The number of carries when adding $a$ and $b$ in base $p$ is
+\((s_p(a)+s_p(b)-s_p(a+b))/(p-1)\).  Applying this with $a=b=n$ and
+Equation~\eqref{eq:legendre} is the special Kummer theorem needed here.
+
+\begin{theorem}[Prime valuation of a Catalan number]
+\label{thm:valuation}
+For every prime $p$,
+\[
+ \vp p(\Cat_n)
+ =\frac{2s_p(n)-s_p(2n)}{p-1}-\vp p(n+1).                        \tag{5.2}\label{eq:valuation}
+\]
+Equivalently, it is the number of carries in the addition $n+n$ in base $p$,
+minus the number of trailing zero digits of $n+1$.
+\end{theorem}
+
+\begin{proof}
+Take $p$-adic valuations of
+$(n+1)!n!\Cat_n=(2n)!$ and apply Lemma~\ref{lem:legendre}.  The quotient in
+Equation~\eqref{eq:valuation} is exact because the digit-sum difference is a
+multiple of $p-1$.  The carry interpretation follows by the usual digit
+recurrence, which is a bounded induction over the digit positions.
+\end{proof}
+
+\subsection{Parity}
+
+Since $s_2(2n)=s_2(n)$,
+\[
+ \vp 2(\Cat_n)=s_2(n)-\vp 2(n+1).                                \tag{5.3}
+\]
+Adding one changes the terminal block of $1$ bits to zeros, so
+\[
+ s_2(n+1)=s_2(n)+1-\vp 2(n+1).
+\]
+Therefore
+\[
+ \boxed{\ \vp 2(\Cat_n)=s_2(n+1)-1\ }.                          \tag{5.4}\label{eq:v2}
+\]
+It follows constructively that $\Cat_n$ is odd exactly when $n+1$ has one
+binary $1$, that is,
+\[
+ \Cat_n\text{ is odd}\quad\Longleftrightarrow\quad n=2^k-1       \tag{5.5}\label{eq:odd}
+\]
+for some $k\le n+1$.  The witness $k$ is found by bounded search through
+powers of two.
+
+\subsection{The odd-prime digit automaton}
+
+The verbal odd-prime rule on Wikipedia is most precise as a two-state scan.
+Let $N=n+1=\sum_{i=0}^{L}d_ip^i$, with digits listed least significant first,
+and let $t$ be the least index with $d_t\ne0$.  The $t$ initial zero digits
+produce exactly $t$ carries when $N-1$ is doubled, and these are cancelled by
+$\vp p(N)=t$.  Define carry bits $c_i$ for the remaining positions as follows:
+\[
+ c_t=
+ \begin{cases}
+  1,&t=0\text{ and }d_0\ge(p+3)/2,\\
+  1,&t>0\text{ and }d_t\ge(p+1)/2,\\
+  0,&\text{otherwise},
+ \end{cases}                                                     \tag{5.6}\label{eq:carry-start}
+\]
+and, for $i>t$,
+\[
+ c_i=1\quad\Longleftrightarrow\quad
+ d_i\ge\frac{p+1}{2}
+ \ \text{or}\ 
+ \left(d_i=\frac{p-1}{2}\ \text{and}\ c_{i-1}=1\right).        \tag{5.7}\label{eq:carry-step}
+\]
+Then
+\[
+ \vp p(\Cat_n)=\sum_{i=t}^{L}c_i.                               \tag{5.8}\label{eq:digit-automaton}
+\]
+
+\begin{proof}
+The digits of $n=N-1$ are $p-1$ below $t$, $d_t-1$ at $t$, and $d_i$ above
+$t$.  Doubling a digit $e_i$ with incoming carry $c$ produces an outgoing
+carry exactly when $2e_i+c\ge p$.  For $i<t$ this always happens and is
+cancelled by the subtraction of $t$ in Equation~\eqref{eq:valuation}.  At
+$i=t$ the two cases in Equation~\eqref{eq:carry-start} distinguish whether there was
+an incoming borrow-created carry.  Above $t$, the threshold is
+$(p+1)/2$ without an incoming carry and $(p-1)/2$ with one, giving
+Equation~\eqref{eq:carry-step}.  Bounded induction proves Equation~\eqref{eq:digit-automaton}.
+\end{proof}
+
+Read from the most significant end, Equations~\eqref{eq:carry-start}--\eqref{eq:carry-step}
+are exactly the source-page rule: count digits above $(p+1)/2$; count a digit
+equal to $(p+1)/2$ except at the least-significant starting position; and
+propagate a count through a digit $(p-1)/2$ when the adjacent lower digit
+produced a carry.
+
+\subsection{Odd Catalans ending in five}
+
+For an odd Catalan number, $n=2^k-1$ and $N=n+1=2^k$ is not divisible by $5$.
+The automaton for $p=5$ begins at the least significant digit.  It produces no
+carry precisely when that digit is at most $3$ and every higher base-five
+digit is at most $2$.  Thus
+\[
+ 5\nmid\Cat_{2^k-1}
+ \Longleftrightarrow
+ \begin{array}{l}
+ \text{the base-five expansion of }2^k\text{ uses only }0,1,2,\\
+ \text{except that its least significant digit may be }3.
+ \end{array}                                                     \tag{5.9}\label{eq:base5-N}
+\]
+Subtracting one shows the equivalent MathWorld formulation:
+\[
+ 5\nmid\Cat_{2^k-1}
+ \Longleftrightarrow
+ \text{the base-five expansion of }2^k-1\text{ uses only }0,1,2. \tag{5.10}\label{eq:base5-n}
+\]
+An odd integer ends in $5$ exactly when it is divisible by $5$, so these are
+also the exact final-digit criteria.  The finite lists of exceptions reported
+by the web pages are computational records; the supplied verifier checks a
+configurable initial range from Equation~\eqref{eq:base5-N}, rather than
+promoting a search range to a universal theorem.
+
+\subsection{The only prime Catalan numbers}
+
+\begin{lemma}
+Every prime divisor of $\Cat_n$ is less than $2n$.
+\end{lemma}
+
+\begin{proof}
+The factorial equation shows that a prime divisor of $\Cat_n$ divides
+$(2n)!$, hence is at most $2n$.  Equality would make $2n$ prime.  For $n\ge2$
+this is an even number greater than $2$, and for $n=1$ the Catalan number is
+$1$.  Thus the inequality is strict.
+\end{proof}
+
+\begin{lemma}
+For every $n\ge4$, $\Cat_n>2n-1$.
+\end{lemma}
+
+\begin{proof}
+The base case is $\Cat_4=14>7$.  From
+Equation~\eqref{eq:ratio-cleared}, for $n\ge1$,
+\[
+ \Cat_{n+1}\ge2\Cat_n,
+\]
+because $2(2n+1)\ge2(n+2)$.  If $\Cat_n>2n-1$, then
+$\Cat_{n+1}>4n-2>2n+1=2(n+1)-1$ for $n\ge2$.
+\end{proof}
+
+\begin{theorem}[Catalan primes]
+The only prime Catalan numbers are
+\[
+ \Cat_2=2\quad\text{and}\quad\Cat_3=5.                          \tag{5.11}
+\]
+\end{theorem}
+
+\begin{proof}
+The small values are direct.  If $n\ge4$ and $\Cat_n$ were prime, it would be
+one of its own prime divisors and hence $\Cat_n<2n$, while the preceding lemma
+gives the integer inequality $\Cat_n\ge2n$.  This is a contradiction.
+\end{proof}

@@ -1,0 +1,151 @@
+\section{Hankel determinants and the moment problem}
+\label{sec:hankel}
+
+The source page states three determinant formulas:
+\[
+ \det[\Cat_{i+j}]_{0\le i,j<n}=1,
+ \qquad
+ \det[\Cat_{i+j+1}]_{0\le i,j<n}=1,                              \tag{6.1}\label{eq:hankel01}
+\]
+and
+\[
+ \det[\Cat_{i+j+2}]_{0\le i,j<n}=n+1.                           \tag{6.2}\label{eq:hankel2}
+\]
+They have a particularly economical constructive proof.
+
+\subsection{The ballot triangles}
+
+For $0\le k\le r$, define
+\[
+ E_{r,k}=\binom{2r}{r-k}-\binom{2r}{r-k-1},                      \tag{6.3}\label{eq:even-ballot}
+\]
+and
+\[
+ O_{r,k}=\binom{2r+1}{r-k}-\binom{2r+1}{r-k-1}.                  \tag{6.4}\label{eq:odd-ballot}
+\]
+Outside the displayed range put the value zero.  Reflection proves that
+$E_{r,k}$ counts nonnegative paths of $2r$ unit up/down steps ending at height
+$2k$, and $O_{r,k}$ counts such paths of length $2r+1$ ending at height
+$2k+1$.  Both arrays are lower triangular in $(r,k)$ and have diagonal entry
+$1$.
+
+Cut a Dyck path of semilength $r+s$ after $2r$ steps.  Its height there is
+$2k$ for a unique $k$; the prefix is counted by $E_{r,k}$ and the reversed
+suffix by $E_{s,k}$.  Therefore
+\[
+ \Cat_{r+s}=\sum_{k\ge0}E_{r,k}E_{s,k}.                          \tag{6.5}\label{eq:even-gram}
+\]
+Cutting a Dyck path of semilength $r+s+1$ after $2r+1$ steps similarly gives
+\[
+ \Cat_{r+s+1}=\sum_{k\ge0}O_{r,k}O_{s,k}.                        \tag{6.6}\label{eq:odd-gram}
+\]
+The cut, reversal, and gluing operations are primitive-recursive inverse maps,
+so these are finite combinatorial identities, not analytic moment arguments.
+
+\subsection{The two unit determinants}
+
+Let $E^{(n)}=(E_{r,k})_{0\le r,k<n}$ and similarly $O^{(n)}$.  Equations
+\eqref{eq:even-gram}--\eqref{eq:odd-gram} say
+\[
+ [\Cat_{i+j}]=E^{(n)}(E^{(n)})^{\mathsf T},
+ \qquad
+ [\Cat_{i+j+1}]=O^{(n)}(O^{(n)})^{\mathsf T}.                    \tag{6.7}
+\]
+Both factors are unit lower triangular.  Determinant multiplicativity and
+transpose invariance now give Equation~\eqref{eq:hankel01}.  In a minimal
+formalization, multiplicativity is needed only for triangular matrices and
+their transposes; it can also be proved by bounded Gaussian elimination using
+integer row operations.
+
+\subsection{The determinant starting at \(\Cat_2\)}
+
+Let $M^{(n)}$ be the $n$ by $(n+1)$ matrix
+\[
+ M^{(n)}_{r,k}=E_{r+1,k},
+ \qquad 0\le r<n,
+ \quad 0\le k\le n.
+\]
+Cutting after $2r+2$ steps gives
+\[
+ [\Cat_{r+s+2}]_{0\le r,s<n}=M^{(n)}(M^{(n)})^{\mathsf T}.       \tag{6.8}\label{eq:Mgram}
+\]
+Cauchy--Binet expresses its determinant as the sum of the squares of the
+$n+1$ maximal minors of $M^{(n)}$.  Every one of those minors is $1$.
+
+\begin{lemma}[Maximal minors of the shifted ballot matrix]
+\label{lem:maximal-minors}
+Deleting any one column of $M^{(n)}$ leaves an $n$ by $n$ matrix of determinant
+$1$.
+\end{lemma}
+
+\begin{proof}
+Deleting column $0$ leaves columns $1,\ldots,n$.  The result is unit lower
+triangular because $E_{r+1,k}=0$ for $k>r+1$ and
+$E_{r+1,r+1}=1$, so this minor is $1$.
+
+For every $r\ge1$,
+\[
+ \sum_{k=0}^{r}(-1)^k E_{r,k}=0.                                 \tag{6.9}\label{eq:alternating-ballot}
+\]
+To verify this, substitute Equation~\eqref{eq:even-ballot}, shift the second
+finite sum, and use the symmetry of the binomial coefficients in the expansion
+of $(1-1)^{2r}$.  Hence the alternating vector
+$(1,-1,1,\ldots,(-1)^n)^{\mathsf T}$ spans the kernel of $M^{(n)}$; the rank is
+$n$ because the minor just exhibited is nonzero.
+
+The signed cofactor vector
+\[
+ \bigl((-1)^j\det M^{(n)}_{\widehat j}\bigr)_{j=0}^{n}
+\]
+is also in that one-dimensional kernel.  Comparing its first coordinate with
+the known unit minor shows it equals the alternating vector.  Thus every
+unsigned maximal minor is $1$.  This argument uses only the Laplace expansion
+and cancellation in $\Z$, all available as finite primitive-recursive
+operations.
+\end{proof}
+
+Applying Cauchy--Binet to Equation~\eqref{eq:Mgram} now yields
+\[
+ \det[\Cat_{i+j+2}]_{0\le i,j<n}
+ =\sum_{j=0}^{n}1^2=n+1,
+\]
+which is Equation~\eqref{eq:hankel2}.
+
+\subsection{The two determinant conditions characterize the sequence}
+
+Suppose a sequence $a_0,a_1,\ldots$ satisfies, for every positive $n$,
+\[
+ \det[a_{i+j}]_{0\le i,j<n}=1,
+ \qquad
+ \det[a_{i+j+1}]_{0\le i,j<n}=1.                                \tag{6.10}\label{eq:characterizing-Hankel}
+\]
+The $1$ by $1$ cases give $a_0=a_1=1$.  Assume $a_0,\ldots,a_{2r-1}$ have
+already been determined.  In the first determinant of size $r+1$, the newest
+term $a_{2r}$ occurs only in the southeast corner.  Its cofactor is the
+preceding unshifted determinant, equal to $1$.  Therefore the equation
+``determinant $=1$'' is a linear equation with coefficient $1$ and uniquely
+determines $a_{2r}$.  The shifted determinant of size $r+1$ similarly
+determines $a_{2r+1}$, with cofactor $1$.
+
+Quantifier-free induction therefore proves uniqueness.  Since the Catalan
+sequence satisfies Equation~\eqref{eq:characterizing-Hankel}, the two
+conditions together characterize it, exactly as stated on Wikipedia.
+
+\subsection{Positive Hankel forms and compact moment representations}
+
+The Gram factorizations give a finite integral-free positivity theorem.  For
+any integer vector $z=(z_0,\ldots,z_{n-1})$,
+\[
+ \sum_{i,j<n}z_iz_j\Cat_{i+j}
+ =\sum_{k<n}\left(\sum_{i<n}z_iE_{i,k}\right)^2\ge0.             \tag{6.11}
+\]
+The determinant $1$ shows positive definiteness over $\Q$.  The density in Equation~\eqref{eq:moment-density} gives the compatible
+compactly supported Stieltjes representation on $[0,4]$:
+\[
+ \sum_{i,j}z_iz_j\Cat_{i+j}
+ =\int_0^4\left(\sum_i z_ix^i\right)^2d\mu(x).
+\]
+After $x=4y$, the normalized matrix
+$[\Cat_{i+j}/4^{i+j}]$ has a Hausdorff representation on $[0,1]$.
+Thus the finite combinatorial factorization and the constructive moment code
+prove the same positivity by independent routes.

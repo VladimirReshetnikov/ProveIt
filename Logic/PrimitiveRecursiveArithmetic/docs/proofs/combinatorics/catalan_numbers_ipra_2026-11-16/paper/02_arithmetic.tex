@@ -1,0 +1,394 @@
+\section{The arithmetic core and the explicit formulas}
+\label{sec:arithmetic}
+
+\subsection{Reflection, integrality, and the central formula}
+
+Let a balanced word of size $n$ be a word of $n$ letters $U$ and $n$ letters
+$D$.  Its height after $j$ letters is the number of $U$'s minus the number of
+$D$'s in the first $j$ positions.  A Dyck word has all heights nonnegative.
+There are $\binom{2n}{n}$ balanced words.
+
+\begin{theorem}[Andre reflection]
+\label{thm:reflection}
+The number of bad balanced words, those having a negative height, is
+$\binom{2n}{n+1}$.  Hence
+\[
+ \Cat_n:=\binom{2n}{n}\monus\binom{2n}{n+1}
+\tag{2.1}\label{eq:cat-difference}
+\]
+is the number of Dyck words of semilength $n$.
+\end{theorem}
+
+\begin{proof}
+For a bad word let $j$ be its least position of height $-1$.  The bounded
+search for $j$ is primitive recursive.  Interchange $U$ and $D$ in the first
+$j$ positions.  The resulting word has $n+1$ letters $U$ and $n-1$ letters
+$D$.  Conversely, a word with these multiplicities first reaches height $1$;
+reflect the prefix through that first visit.  The two bounded algorithms are
+inverse.  The target words can be chosen by the $n+1$ positions of their $U$'s,
+so their number is $\binom{2n}{n+1}$.  The binomial inequality needed for
+monus follows at the same time, or directly from the explicit factor relation
+below.
+\end{proof}
+
+Pascal arithmetic gives
+\[
+ (n+1)\binom{2n}{n+1}=n\binom{2n}{n}.
+\tag{2.2}\label{eq:adjacent-binomial}
+\]
+Subtracting after multiplication by $n+1$ proves the checked identity
+\[
+ (n+1)\Cat_n=\binom{2n}{n}.
+\tag{2.3}\label{eq:cat-central-cleared}
+\]
+Thus the usual fraction is a harmless abbreviation for a proven exact
+quotient.
+
+\begin{corollary}[Equivalent closed forms]
+For $n\ge0$, with each quotient read in denominator-cleared form,
+\begin{align}
+ \Cat_n
+ &=\frac1{n+1}\binom{2n}{n}
+  =\frac{(2n)!}{(n+1)!n!},                                      \tag{2.4}\label{eq:factorial}\\
+ &=\frac1{2n+1}\binom{2n+1}{n},                                 \tag{2.5}\label{eq:odd-binomial}\\
+ (n\ge1)\qquad
+ \Cat_n&=\frac1n\binom{2n}{n-1},                                \tag{2.6}\label{eq:n-binomial}\\
+ (n+1)!\Cat_n&=2^n(2n-1)!!=\prod_{j=1}^{n}(4j-2).                \tag{2.7}\label{eq:product}
+\end{align}
+Here $(-1)!!=1$.
+\end{corollary}
+
+\begin{proof}
+The factorial equation is the checked exactness theorem for binomial
+coefficients followed by Equation~\eqref{eq:cat-central-cleared}.  The two
+other binomial forms follow from
+\[
+ \binom{2n+1}{n}=\frac{2n+1}{n+1}\binom{2n}{n},\qquad
+ \binom{2n}{n-1}=\frac n{n+1}\binom{2n}{n}.
+\]
+For the product, split $(2n)!$ into even and odd factors:
+$(2n)!=2^n n!(2n-1)!!$, then multiply by $(n+1)!$.  Finally
+$2(2j-1)=4j-2$ term by term.  All displayed fraction equations can be
+replaced by cross multiplication, so the proof is quantifier-free algebra
+after the imported factorial and binomial lemmas.
+\end{proof}
+
+The generalized-binomial formula printed by MathWorld is
+\[
+ \Cat_n=(-1)^n2^{2n+1}\binom{1/2}{n+1}.                          \tag{2.8}\label{eq:half-binomial}
+\]
+It is a rational identity rather than a new analytic theorem.  Expanding the
+generalized binomial coefficient gives
+\[
+ \binom{1/2}{n+1}
+  =\frac{(1/2)(-1/2)(-3/2)\cdots(1/2-n)}{(n+1)!}
+  =\frac{(-1)^n(2n-1)!!}{2^{n+1}(n+1)!},
+\]
+and Equation~\eqref{eq:half-binomial} reduces to
+Equation~\eqref{eq:product}.  Clearing $2^{n+1}(n+1)!$ makes this an integer
+identity in \ipra.
+
+The gamma expression
+\[
+ \Cat_n=\frac{4^n\Gamma(n+1/2)}{\sqrt\pi\,\Gamma(n+2)}             \tag{2.9}\label{eq:gamma}
+\]
+has the same finite content.  The half-integer recurrence
+$\Gamma(x+1)=x\Gamma(x)$ and $\Gamma(1/2)=\sqrt\pi$ gives
+\(\Gamma(n+1/2)=(2n)!\sqrt\pi/(4^n n!)\); substituting and cancelling
+returns Equation~\eqref{eq:factorial}.  In an \ipra{} real-code library this is
+a theorem about the indicated Cauchy names, but no general theory of the gamma
+function is needed for integer $n$.
+
+\subsection{Ratio and Segner recurrences}
+
+\begin{theorem}[First-order recurrence]
+\label{thm:ratio-recurrence}
+For every $n\ge0$,
+\[
+ (n+2)\Cat_{n+1}=2(2n+1)\Cat_n.                                  \tag{2.10}\label{eq:ratio-cleared}
+\]
+Equivalently, since $n+2>0$,
+\(\Cat_{n+1}/\Cat_n=2(2n+1)/(n+2)\).
+\end{theorem}
+
+\begin{proof}
+Use Equation~\eqref{eq:factorial} twice and cancel the positive common factor
+$(2n)!/(n!)^2$ in denominator-cleared form.  Alternatively, use the adjacent
+central-binomial identity
+$(n+1)\binom{2n+2}{n+1}=2(2n+1)\binom{2n}{n}$ and then
+Equation~\eqref{eq:cat-central-cleared}.
+\end{proof}
+
+\begin{theorem}[Segner recurrence]
+\label{thm:segner}
+\[
+ \Cat_0=1,
+ \qquad
+ \Cat_{n+1}=\sum_{i=0}^{n}\Cat_i\Cat_{n-i}.                      \tag{2.11}\label{eq:segner}
+\]
+\end{theorem}
+
+\begin{proof}
+Every nonempty Dyck word has a unique first-return decomposition
+\[
+ U\,u\,D\,v,
+\]
+where $u$ and $v$ are Dyck words.  If $u$ has semilength $i$, then $v$ has
+semilength $n-i$.  The first return is found by bounded search; concatenation
+is the primitive-recursive inverse.  Lemma~\ref{lem:finite-bijection} gives the
+sum.  This proof is intuitionistic because it computes the decomposition; it
+does not merely infer that some splitting point exists.
+\end{proof}
+
+Equations~\eqref{eq:ratio-cleared} and \eqref{eq:segner} each determine the
+sequence from $\Cat_0=1$.  Their agreement can therefore also be proved by
+induction after either recurrence has been established from the closed form.
+The first values are
+\[
+ 1,1,2,5,14,42,132,429,1430,4862,16796,58786.
+\]
+The accompanying exact Python checker evaluates these from all three
+definitions.
+
+\subsubsection{The three remaining finite proof variants on the Wikipedia page}
+
+The first, second, and sixth proofs on the source page are respectively the
+generating-function proof of Section~\ref{sec:series}, the reflection proof
+above, and the cycle-lemma proof of Section~\ref{sec:generalizations}.  The
+other three also have direct bounded implementations.
+
+\paragraph{Chung--Feller exceedance classes.}
+View a balanced path as a word in east and north steps from $(0,0)$ to
+$(n,n)$, and let $e(P)$ be the number of north steps lying strictly above the
+diagonal.  For $e(P)>0$, scan to the first north step entering the region
+above the diagonal, then to the first east step $X$ that returns to the
+diagonal.  If the step word factors as $F X L$, perform the cyclic cut
+\[
+                  F X L\longmapsto L X F.                       \tag{2.11a}
+\]
+All pieces are merely translated.  A height calculation at the two cut
+points shows that precisely the distinguished north step ceases to be above
+the diagonal, so $e$ decreases by one.  In the image, $X$ is the last east
+step beginning on the diagonal; this property locates the inverse cut by a
+bounded backward scan.  Iterating gives explicit bijections between every two
+classes $e=r$ and $e=s$, for $0\le r,s\le n$.  The $n+1$ classes partition the
+$\binom{2n}{n}$ balanced paths, and the class $e=0$ is the Dyck class.  Hence
+$(n+1)\Cat_n=\binom{2n}{n}$.  This is the Chung--Feller proof in a form whose
+forward map, inverse map, and iteration bound are primitive recursive.
+
+\paragraph{The marked-triangulation ratio bijection.}
+A triangulation of a convex $(n+2)$-gon has $(n+2)+(n-1)=2n+1$ edges, including
+boundary edges and diagonals.  Thus triangulations with a marked oriented edge
+number $(4n+2)\Cat_n$.  On the other hand, fix a base side of an
+$(n+3)$-gon.  Its triangulations with one of the other $n+2$ boundary sides
+marked number $(n+2)\Cat_{n+1}$.  There is a local inverse pair.  Open the
+marked oriented edge of the first triangulated disk, insert one new boundary
+vertex, and fill the opening by a triangle; mark the new non-base side.
+Conversely, collapse the triangle incident with the marked non-base side and
+remember the orientation induced on the collapsed edge.  On finite planar
+codes, ``open'' and ``collapse'' are bounded list operations, and the two
+operations are visibly inverse.  Therefore
+\[
+            (4n+2)\Cat_n=(n+2)\Cat_{n+1},                       \tag{2.11b}
+\]
+which is exactly Equation~\eqref{eq:ratio-cleared}.
+
+\paragraph{Balanced strings and convolution cancellation.}
+Write $B_n=\binom{2n}{n}$ for all balanced parenthesis strings of size $n$.
+The first return of a nonempty balanced string is uniquely either
+$UuDv$ or $D\bar uUv$, where $u$ is Dyck, $\bar u$ is obtained by swapping
+$U,D$, and $v$ is balanced.  Consequently
+\[
+ B_{n+1}=2\sum_{j=0}^{n}\Cat_j B_{n-j}.                          \tag{2.11c}
+\]
+Subtracting Segner's recurrence gives
+\[
+ B_{n+1}-\Cat_{n+1}
+   =\sum_{j=0}^{n}\Cat_j\bigl(2B_{n-j}-\Cat_{n-j}\bigr).         \tag{2.11d}
+\]
+There is a second count of the left side.  In a bad balanced string, stop at
+the first down-step that reaches height $-1$.  The preceding word is a Dyck
+word of some size $j$, and the remaining suffix has one more $U$ than $D$;
+for $m=n-j$ it has $\binom{2m+1}{m}$ possible step words.  Hence
+\[
+ B_{n+1}-\Cat_{n+1}
+   =\sum_{j=0}^{n}\Cat_j\binom{2(n-j)+1}{n-j}.                  \tag{2.11e}
+\]
+Since $\Cat_0=1$, coefficientwise cancellation of the two convolutions is a
+plain induction: at stage $n$, every earlier summand is already equal, so the
+last terms are equal.  Thus
+\[
+        2B_n-\Cat_n=\binom{2n+1}{n}.
+\]
+Solving for $\Cat_n$ and using
+$\binom{2n+1}{n}=(2n+1)B_n/(n+1)$ yields
+$\Cat_n=B_n/(n+1)$.  This completes constructive versions of all six proof
+routes displayed on the Wikipedia page.
+
+\subsection{The terminating hypergeometric and Narayana formulas}
+
+For an integer $a$, let $(a)_k=a(a+1)\cdots(a+k-1)$, with $(a)_0=1$.
+MathWorld's terminating hypergeometric expression is
+\[
+ {}_2F_1(1-n,-n;2;1)
+ =\sum_{k=0}^{n}\frac{(1-n)_k(-n)_k}{(2)_k k!}.                   \tag{2.12}\label{eq:hypergeom}
+\]
+For $n\ge1$ the term $k=n$ vanishes.  For $0\le k<n$, cancellation of signed
+factorials gives
+\[
+ \frac{(1-n)_k(-n)_k}{(2)_k k!}
+ =\frac1{k+1}\binom{n-1}{k}\binom nk
+ =\frac1n\binom n{k+1}\binom nk.                                \tag{2.13}\label{eq:narayana-term}
+\]
+Vandermonde's identity now yields
+\[
+ \sum_{k=0}^{n-1}\binom n{k+1}\binom nk=\binom{2n}{n-1},
+\]
+so Equations~\eqref{eq:n-binomial} and \eqref{eq:narayana-term} prove
+\[
+ {}_2F_1(1-n,-n;2;1)=\Cat_n.                                    \tag{2.14}
+\]
+The summands
+\[
+ N(n,j)=\frac1n\binom nj\binom n{j-1}\quad(1\le j\le n)
+\]
+are the Narayana numbers.  The proof above also proves their sum is $\Cat_n$.
+All denominators divide the displayed integer numerators; the formal theorem
+uses $nN(n,j)=\binom nj\binom n{j-1}$.
+
+\subsection{The four additional finite sums on MathWorld}
+
+\begin{theorem}[Two-colored Motzkin sum]
+For $n\ge1$,
+\[
+ \Cat_n=\sum_{k=0}^{\floor{(n-1)/2}}
+  \Cat_k\,2^{n-2k-1}\binom{n-1}{2k}.                             \tag{2.15}\label{eq:motzkin-sum}
+\]
+Terms with $2k>n-1$ are zero.
+\end{theorem}
+
+\begin{proof}
+A two-colored Motzkin path of length $n-1$ consists of up, down, and two kinds
+of level steps, never below height zero and ending at zero.  If it has $k$ up
+steps, it has $k$ down steps.  Choose the $2k$ nonlevel positions, choose the
+Dyck skeleton in $\Cat_k$ ways, and color the remaining positions in
+$2^{n-1-2k}$ ways, giving the right side.
+
+There is a primitive-recursive bijection from Dyck paths of semilength $n$:
+remove the first $U$ and last $D$, group the remaining $2n-2$ letters into
+adjacent pairs, and map
+\[
+ UU\mapsto U,\quad DD\mapsto D,\quad UD\mapsto L_0,\quad
+ DU\mapsto L_1.
+\]
+Pair boundaries occur at even heights, so nonnegativity is preserved.  The
+four substitutions are invertible, and restoring the outside letters gives
+the inverse.
+\end{proof}
+
+\begin{theorem}[Weighted convolution]
+For $n\ge1$,
+\[
+ \Cat_n=\frac1n\sum_{k=0}^{n-1}
+ \Cat_{n-k-1}\binom{2k+1}{k+1}.                                 \tag{2.16}\label{eq:weighted-sum}
+\]
+\end{theorem}
+
+\begin{proof}
+Since $\binom{2k+1}{k+1}=(2k+1)\Cat_k$, the numerator is
+\[
+ \sum_{k=0}^{n-1}(2k+1)\Cat_k\Cat_{n-1-k}.
+\]
+Let $S=\sum k\Cat_k\Cat_{n-1-k}$.  Replacing $k$ by $n-1-k$ shows
+$2S=(n-1)\Cat_n$ by Segner's recurrence.  Therefore the displayed numerator
+is $2S+\Cat_n=n\Cat_n$.  The internal statement is this last equation, so no
+division by a variable is required.
+\end{proof}
+
+\begin{theorem}[Alternating binomial transform]
+For $n\ge0$,
+\[
+ \Cat_n=\sum_{k=0}^{n}(-1)^k2^{n-k}\binom nk
+               \binom{k}{\floor{k/2}}.                           \tag{2.17}\label{eq:alternating-sum}
+\]
+\end{theorem}
+
+\begin{proof}
+Put $a_k=\binom{k}{\floor{k/2}}$ and
+$A(t)=\sum_{k\ge0}a_kt^k$.  Separating even and odd indices gives, as a formal
+coefficient identity,
+\[
+ A(t)=\frac{1+2t}{\sqrt{1-4t^2}}-tC(t^2),                        \tag{2.18}\label{eq:A-series}
+\]
+because
+$\binom{2r+1}{r}=2\binom{2r}{r}-\Cat_r$.  Let the right side of
+Equation~\eqref{eq:alternating-sum} be $b_n$ and
+$B(z)=\sum b_nz^n$.  Interchanging two bounded coefficient sums gives
+\[
+ B(z)=\frac1{1-2z}A\left(\frac{-z}{1-2z}\right).                 \tag{2.19}\label{eq:Btransform}
+\]
+Use $\sqrt{1-4z}=1-2zC(z)$, itself just the polynomial relation
+$C=1+zC^2$, and substitute Equation~\eqref{eq:A-series} into
+Equation~\eqref{eq:Btransform}; after multiplication by $(1-2z)$ the result is
+$(1-2z)C(z)$.  Thus $B=C$ coefficientwise.  Every coefficient extraction in
+this calculation is a bounded sum, so the displayed formal-series proof is a
+uniform \ipra{} proof.
+\end{proof}
+
+\begin{theorem}[Square sum]
+For $n\ge0$,
+\[
+ \Cat_n=\sum_{k=0}^{\floor{n/2}}
+ \left[\frac{n-2k+1}{n-k+1}\binom n{n-k}\right]^2.              \tag{2.20}\label{eq:square-sum}
+\]
+\end{theorem}
+
+\begin{proof}
+Adopt the convention $\binom nk=0$ outside $0\le k\le n$, and put
+$d_k=\binom nk-\binom n{k-1}$.  For $k\le n/2$,
+\[
+ d_k=\frac{n-2k+1}{n-k+1}\binom nk.
+\]
+Symmetry gives $d_{n+1-k}=-d_k$, with a zero middle term when necessary.
+Hence the sum in the statement is half of $\sum_{k=0}^{n+1}d_k^2$.  Expanding
+and applying Vandermonde twice,
+\begin{align*}
+ \sum_{k=0}^{n+1}d_k^2
+ &=2\sum_k\binom nk^2-2\sum_k\binom nk\binom n{k-1}\\
+ &=2\binom{2n}{n}-2\binom{2n}{n-1}=2\Cat_n.
+\end{align*}
+This proof uses only integer identities.  Combinatorially, $d_k$ is the number
+of standard tableaux of shape $(n-k,k)$, and the same sum follows from the
+Robinson--Schensted correspondence for $123$-avoiding permutations; the
+algebraic proof avoids making that larger bijection a dependency.
+\end{proof}
+
+\subsection{Riordan inverse transform}
+
+Let $R_n$ be the number of noncrossing partitions of $[n]$ having no singleton
+blocks, with $R_0=1$.  Every noncrossing partition is obtained uniquely by
+choosing the elements that are not singleton blocks and placing a
+singleton-free noncrossing partition on the chosen cyclically ordered subset.
+Therefore
+\[
+ \Cat_n=\sum_{k=0}^{n}\binom nk R_k.                              \tag{2.21}\label{eq:riordan-transform}
+\]
+Binomial inversion gives
+\[
+ R_n=\sum_{k=0}^{n}(-1)^{n-k}\binom nk\Cat_k.                    \tag{2.22}
+\]
+Thus the two sequences are inverse under the binomial-transform operation.
+The formulas themselves remove a convention trap.  MathWorld calls
+\[
+ b_n=\sum_{k=0}^n(-1)^{n-k}\binom nk a_k
+ \quad\text{the binomial transform, and}\quad
+ a_n=\sum_{k=0}^n\binom nk b_k
+ \quad\text{its inverse}.
+\]
+With $a_n=\Cat_n$ and $b_n=R_n$, equations~\eqref{eq:riordan-transform}
+and~(2.22) therefore say exactly that the Catalan numbers are the inverse
+binomial transform of the Riordan numbers.  Under the alternative widespread
+convention that calls the positive-sum operation the ``binomial transform,''
+one instead says that Catalan is the binomial transform of Riordan.  The
+deletion and insertion of singleton blocks are bounded primitive-recursive
+inverse maps.

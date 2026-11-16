@@ -1,0 +1,174 @@
+\section{Coverage ledger, exclusions, and reproducibility}
+\label{sec:coverage}
+
+The detailed machine-readable ledger is
+\texttt{reference/claim\_map.csv}.  The following table summarizes the
+mathematical coverage.  ``Finite'' means an \ipra-ready proof by bounded
+arithmetic or primitive-recursive bijection.  ``Effective'' means rational
+Cauchy data and a primitive-recursive modulus have been supplied.  ``Target''
+means that the claim is recorded but a dependency-heavy source-specific
+formalization has not been completed.  ``Source correction means that the
+requested page statement is false or misindexed as written; an explicit
+counterexample and the corrected theorem are supplied.
+
+\small
+\begin{longtable}{@{}p{0.35\textwidth}p{0.15\textwidth}p{0.42\textwidth}@{}}
+\toprule
+\textbf{Claim family} & \textbf{Status} & \textbf{Location / method}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Claim family} & \textbf{Status} & \textbf{Location / method}\\
+\midrule
+\endhead
+Central-binomial, factorial, and difference formulas &
+Checked base + finite & Section~\ref{sec:arithmetic}; ProveIt theorem
+\texttt{catalan} plus reflection.\\
+Odd-binomial and $n^{-1}\binom{2n}{n-1}$ forms & Finite &
+Adjacent-binomial identities, Equations~\eqref{eq:odd-binomial}--\eqref{eq:n-binomial}.\\
+Double factorial and product $\prod(4j-2)$ & Finite &
+Equation~\eqref{eq:product}.\\
+Generalized half-binomial formula & Finite rational &
+Denominator-cleared expansion, Equation~\eqref{eq:half-binomial}.\\
+Half-integer gamma formula & Effective / finite core &
+Gamma recurrence reduces it to factorials, Equation~\eqref{eq:gamma}.\\
+Terminating ${}_2F_1$ formula & Finite & Narayana/Vandermonde proof,
+Equations~\eqref{eq:hypergeom}--\eqref{eq:narayana-term}.\\
+Ratio recurrence & Finite & Theorem~\ref{thm:ratio-recurrence}.\\
+Segner recurrence & Finite bijection & First-return decomposition,
+Theorem~\ref{thm:segner}.\\
+All six formula proofs displayed on Wikipedia & Finite & Generating functions,
+reflection, Chung--Feller cut-and-swap, marked triangulations, balanced-string
+convolution cancellation, and the cycle lemma.\\
+MathWorld sums (9)--(12) & Finite & Two-colored Motzkin, weighted symmetry,
+formal binomial transform, and Vandermonde square sum.\\
+Riordan inverse transform & Finite bijection & Remove singleton blocks,
+Equation~\eqref{eq:riordan-transform}.\\
+Dyck words, balanced parentheses, grid paths, mountains & Finite bijections &
+Sections~\ref{sec:arithmetic} and \ref{sec:combinatorics}.\\
+Complete parenthesizations, binary parse trees, full binary trees & Finite
+bijections & Recursive tree code, Equation~(3.2).\\
+Rooted plane trees and planted trivalent trees & Finite bijections & Contour
+traversal and left-child/right-sibling.\\
+Polygon triangulations / Euler--Segner problem & Finite bijection & Root-edge
+triangle split, Equation~(3.3).\\
+Noncrossing handshakes / pair partitions & Finite bijection & First chord and
+stack matching.\\
+Noncrossing set partitions; $\Cat_n\le B_n$ & Finite & Root block formal
+series and inclusion, Equations~\eqref{eq:NCseries}--\eqref{eq:bell-bound}.\\
+$2$-by-$n$ standard Young tableaux & Finite bijection & Row-membership Dyck
+word; hook specialization.\\
+Restricted height sequences & Finite bijection & Equation~\eqref{eq:restricted-seq}.\\
+All six length-three pattern classes & Finite & $231$ recursion, symmetries,
+and finite RSK / square-sum identity.\\
+Stack-sortable permutations & Finite & Recursive characterization equals
+$231$ avoidance.\\
+Staircase rectangle tilings & Finite bijection & Recursive antidiagonal split.\\
+Positive integral frieze admissible diagonals & Target & Reduces to a known
+triangulation correspondence, but exact frieze conventions are not encoded.\\
+Oakley--Wisner flexagon configurations & Target & Specialized ``pat'' object
+format is not reconstructed here.\\
+Ordinary generating function & Finite coefficients + effective convergence &
+$C=1+xC^2$, Equation~\eqref{eq:Cgf}.\\
+Exponential generating function with $I_0-I_1$ & Effective & ODE and unique
+coefficients, Equation~\eqref{eq:egf}.\\
+Even Bessel generating function & Effective & Direct factorial coefficient
+identity, Equation~\eqref{eq:even-egf}.\\
+$\sum\Cat_n/4^n=2$ and sum from $n=1$ equals $1$ & Finite tail + effective &
+Exact telescope, Theorem~\ref{thm:boundary-tail}.\\
+Random-walk first-trap probabilities and recurrence & Finite + effective &
+Equation~(4.7), tail at most $1/\sqrt{N+2}$.\\
+Two integral representations & Effective & Beta reduction and rational
+Riemann sums, Equation~\eqref{eq:integrals}.\\
+Compact moment / normalized Hausdorff representation & Effective & Density
+Equation~\eqref{eq:moment-density} and the rescaling $x=4y$.\\
+Prime valuation formula & Finite & Legendre plus carry count,
+Equation~\eqref{eq:valuation}.\\
+Odd-prime digit rule & Finite automaton & Equations~(5.6)--(5.8).\\
+Parity iff $n=2^k-1$ & Finite & Equation~\eqref{eq:v2} and
+Equation~\eqref{eq:odd}.\\
+Base-five last-digit criterion & Finite & Equations~\eqref{eq:base5-N}--\eqref{eq:base5-n}.\\
+Only prime Catalans are $2,5$ & Finite & Prime-divisor bound and elementary
+growth, Equation~(5.11).\\
+Reported long finite exception searches & Reproducible only in configured
+range & Criterion proved universally; source search ranges are not rebranded
+as symbolic proofs.\\
+Unshifted and once-shifted Hankel determinant $1$ & Finite & Ballot Gram
+factorizations, Equation~\eqref{eq:hankel01}.\\
+Twice-shifted Hankel determinant $n+1$ & Finite & Rectangular Gram,
+Cauchy--Binet, unit maximal minors, Equation~\eqref{eq:hankel2}.\\
+Two determinant sequences characterize Catalan & Finite & Southeast cofactor
+induction, Equation~\eqref{eq:characterizing-Hankel}.\\
+Ballot interpretation & Finite & Cycle lemma at excess one,
+Equation~(7.1).\\
+Catalan $k$-fold convolution & Finite & Ordered forests and Raney lemma,
+Equation~\eqref{eq:kfold}.\\
+Rational Catalan numbers & Finite & Ranked cyclic rotations,
+Equation~\eqref{eq:rational-cat}.\\
+Fuss--Catalan formula and $p$-ary trees & Finite & Polish words and cycle
+lemma, Equation~\eqref{eq:fuss}.\\
+$p$-ary operator associations, polygon dissections, $p$-good paths & Finite
+bijections & Recursive $p$-ary tree models.\\
+Generalized Jonah identity and explicit $d_{p,q}$ & Finite coefficients &
+Formal reversion and Lagrange coefficient identity,
+Equations~\eqref{eq:Dexplicit}--\eqref{eq:jonah}.\\
+Generalized convolution (MathWorld (28)) & Finite coefficients & Product
+identity, Equation~\eqref{eq:Dconvolution}.\\
+Super-Catalan integrality and special cases & Finite & Prime-power floor
+inequality, Equations~\eqref{eq:supercat}--(7.16).\\
+General combinatorial interpretation of all super-Catalans & Open problem &
+Explicitly not claimed.\\
+Coxeter generalized Catalans, fully commutative elements, and diagram
+deletion & Source corrections + type $A$ proof & Standard
+$\operatorname{Cat}(A_n)=\Cat_{n+1}$; $B_2$ disproves the claimed general
+fully-commutative identification; $A_2$ disproves the unweighted deletion
+formula.  The corrected weighted type-$A$ recurrence is
+Equation~\eqref{eq:coxeter-A-recurrence}; the all-types root-system development
+remains a target.\\
+Leading asymptotic & Effective & Wallis bound and modulus
+Equation~\eqref{eq:leading-modulus}.\\
+First three printed asymptotic terms & Effective & Stirling with remainder,
+Equation~\eqref{eq:three-term-bound}.\\
+Decimal digit ratio & Effective & Explicit error
+Equation~\eqref{eq:digit-ratio}.\\
+Complex-plane plots / unrestricted analytic continuation & Not a discrete
+claim & No attempt to formalize graphical statements; the integer gamma values
+needed here are covered.\\
+Historical priority statements & Out of mathematical proof scope & Sources
+are cited but historical claims are not re-proved in arithmetic.\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\subsection{Reproducibility artifacts}
+
+The package contains:
+\begin{itemize}[leftmargin=2em]
+\item \texttt{code/verify\_catalan.py}, an exact-integer and rational checker
+      for the closed forms, all finite sums, recurrences, valuations, Hankel
+      determinants, generalized identities, and selected numerical data;
+\item \texttt{verification/certificate.json}, generated by that script;
+\item \texttt{lean/CatalanExecutable.lean}, an executable specification with
+      small decidable checks;
+\item \texttt{lean/CatalanProveItBlueprint.lean}, the object-language import
+      and target-term scaffold;
+\item \texttt{reference/source\_audit.md} and
+      \texttt{reference/claim\_map.csv};
+\item \texttt{MANIFEST.sha256}, checksums of delivered files.
+\end{itemize}
+The Python program is not an \ipra{} proof checker.  Its purpose is to catch
+indexing and transcription errors and to generate finite certificates.  The
+mathematical report supplies the uniform proofs.
+
+\subsection{Conclusion}
+
+The essential reason Catalan mathematics fits \ipra{} so well is that its
+apparently analytic formulas rest on a small finite kernel: bounded words,
+reflection, first return, Pascal arithmetic, and cyclic rotations.  Even the
+boundary sum has an exact finite tail, the valuations are digit automata, and
+the Hankel determinants are unit-triangular ballot factorizations.  The
+remaining analytic notation can be compiled to rational intervals with
+primitive-recursive moduli.  Thus a substantial portion of both requested
+pages can be interpreted literally in intuitionistic primitive recursive
+arithmetic rather than merely proved in a stronger metatheory and then called
+``constructive.''
