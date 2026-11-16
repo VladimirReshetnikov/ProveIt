@@ -106,4 +106,5 @@ import IPRADerivations.Geometry.TriangleFormulas
 import IPRADerivations.Geometry.Circumcircle
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.Geometry.PowerOfPoint
+import IPRADerivations.Probability.Expectation
 import IPRADerivations.Topology.Sperner
