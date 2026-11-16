@@ -20,6 +20,7 @@ import IPRADerivations.Core.Bezout
 import IPRADerivations.Core.Search
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.SumReflect
+import IPRADerivations.Core.Fubini
 import IPRADerivations.Algebra.CayleyHamilton
 import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Analysis.Chebyshev
@@ -108,4 +109,5 @@ import IPRADerivations.Geometry.Circumcircle
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.Geometry.PowerOfPoint
 import IPRADerivations.Probability.Expectation
+import IPRADerivations.Probability.Lotus
 import IPRADerivations.Topology.Sperner

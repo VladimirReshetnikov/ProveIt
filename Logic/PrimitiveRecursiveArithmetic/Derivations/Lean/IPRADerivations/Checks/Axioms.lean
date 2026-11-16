@@ -107,6 +107,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.Expectation.two_mul_le
 #print axioms LeanProofs.IPRA.Probability.Expectation.cauchy_schwarz
 #print axioms LeanProofs.IPRA.Probability.Expectation.second_moment
+#print axioms LeanProofs.IPRA.sum_zeroB
+#print axioms LeanProofs.IPRA.fubini
+#print axioms LeanProofs.IPRA.sum_delta
+#print axioms LeanProofs.IPRA.Probability.Lotus.sum_const_mul
+#print axioms LeanProofs.IPRA.Probability.Lotus.row_eval
+#print axioms LeanProofs.IPRA.Probability.Lotus.col_eval
+#print axioms LeanProofs.IPRA.Probability.Lotus.lotus
+#print axioms LeanProofs.IPRA.Probability.Lotus.pushforward_total
 #print axioms LeanProofs.IPRA.pw_add
 #print axioms LeanProofs.IPRA.pw_le_pw
 #print axioms LeanProofs.IPRA.le_self_pw
