@@ -1,0 +1,376 @@
+\section{A proof-producing interface to iPRA}
+\label{logic:section}
+
+The repository already supplies a suitable foundational endpoint
+\cite{repoCore}.  In
+\path{ConciseIPRA/Lean/ConciseIPRA/PR.lean}, the inductive family
+\texttt{PR k} represents \emph{definitions} of primitive recursive functions
+of arity $k$, not arbitrary total functions.  Its constructors are zero,
+successor, projection, composition, and primitive recursion.  The recursion
+argument comes first:
+\[
+ R_{g,h}(0,\vec x)=g(\vec x),\qquad
+ R_{g,h}(n+1,\vec x)=h(n,R_{g,h}(n,\vec x),\vec x).
+\]
+Terms \texttt{PTm n} are applications of these symbols to terms and variables.
+The theory \texttt{PRAAx} has their defining equations, successor separation
+and injectivity, and induction for quantifier-free formulas.  The surrounding
+logic is the intuitionistic natural deduction of \texttt{Deduction.lean}, with
+equality, the propositional connectives, and first-order quantifiers.
+An actual formalization target is therefore
+\[
+   \texttt{Prf PRAAx}\;\Gamma\;\varphi,
+   \qquad\text{abbreviated }\Gamma\vdash_{\mathrm{iPRA}}\varphi.
+\]
+This is a statement about a derivation in the object theory.  A Lean proof of
+the standard numerical interpretation of $\varphi$ has a different type.
+The distinction is essential: the second proof may use induction or choice
+that the first theory does not possess.
+
+\subsection{Finite presentations and bounded formulas}
+
+A finite mathematical sort is presented by natural-number codes, a primitive
+recursive domain test $D$, and a primitive recursive equality test $E$.
+Equality need not be literal equality of codes.  For example, the rational
+pairs $(a,b)$ with $b>0$ may use cross multiplication; a proof that the
+operations respect this relation replaces any appeal to a quotient type.
+Each operation is a \emph{fixed} primitive recursive function, and its domain
+preservation and congruence laws are proved in iPRA.  Quantifiers are translated
+by
+\[
+ (\forall a\in A\,\theta)^*=
+ \forall u\,(D(u)\longrightarrow\theta^*(u)),\qquad
+ (\exists a\in A\,\theta)^*=
+ \exists u\,(D(u)\wedge\theta^*(u)).
+\]
+There is no new sort in the object theory.  A function with extra side
+conditions, such as rational inversion, is made total by a default value;
+its useful equations are asserted only under the advertised side conditions.
+
+We call a formula \emph{bounded} when all its quantifiers range below specified
+primitive recursive terms (each bound depends only on variables outside its
+own binder) and all its atomic predicates have primitive
+recursive characteristic functions with proved correctness.  This definition
+is syntactic.  It does not include a predicate merely because someone knows
+that its truth can be decided.
+
+\begin{theorem}[Booleanization of a fixed bounded formula]
+\label{logic:booleanization}
+For every fixed bounded formula $B(\vec x)$ constructed as above, there is a
+primitive recursive Boolean function $b_B(\vec x)$ and an intuitionistic iPRA
+derivation
+\[
+ B(\vec x)\ \longleftrightarrow\ b_B(\vec x)=1.
+\]
+The construction is effective on a finite syntax tree.  Each resulting
+function symbol is fixed before it is used in an object-theory theorem.
+\end{theorem}
+
+\begin{proof}
+The atomic case is part of the presentation.  Use Boolean conjunction and
+disjunction for $\wedge$ and $\vee$.  An implication is represented by
+$(1-b_A)\vee b_C$, and falsity by $0$.  The equivalence for implication is
+intuitionistically valid because $b_A$ is a Boolean: in the case $b_A=0$ the
+antecedent is refutable; in the case $b_A=1$ the implication supplies the
+consequent.  These are cases on a decidable numerical value, not an application
+of excluded middle to an arbitrary proposition.
+
+For a bounded universal quantifier use the primitive recursive fold
+\[
+ a(0,\vec x)=1,\qquad
+ a(t+1,\vec x)=a(t,\vec x)\wedge b_B(t,\vec x).
+\]
+Its elementary Boolean laws and the assertion that it is Boolean are proved
+by quantifier-free induction.  To avoid concealing a stronger induction in
+the explanation, fix the final bound $N$ as a parameter.  Under the hypothesis
+$\forall i<N\,b_B(i,\vec x)=1$, induct on the quantifier-free assertion
+\[
+       t\le N\ \longrightarrow\ a(t,\vec x)=1.
+\]
+At the step with $t+1\le N$, instantiate the fixed hypothesis at $t$.  The
+other case is vacuous.  This proves the forward direction at $t=N$.
+For the converse, fix also an index $i$ and prove by quantifier-free induction
+on $t$ that
+\[
+ i<t\ \wedge\ a(t,\vec x)=1
+       \ \longrightarrow\ b_B(i,\vec x)=1.
+\]
+At the successor step, decide whether $i=t$ or $i<t$ and use the defining
+equation of the fold.  Universal introduction over $i$ is a logical rule and
+is not an additional induction principle.
+
+For a bounded existential quantifier use the success flag of the bounded
+search described below.  The search invariant can be made quantifier-free
+\emph{directly}: write its assertions about failing prefixes as equations for
+the conjunction fold of $1-b_B$.  Thus this step does not presuppose the
+existential case being proved.  If the flag accepts, search returns a term
+below the bound whose atomic test accepts; existential introduction supplies
+the witness.  Conversely, a bounded witness contradicts the failing-prefix
+equation if the flag is zero, so the Boolean flag must be one.  Applying the
+induction hypothesis for the subformula completes this case.
+The metatheoretic structural recursion over the \emph{fixed} formula builds a
+finite derivation.  It does not introduce an object-level truth predicate.
+\end{proof}
+
+Thus a bounded universal over a coded vector, a finite sum inequality, a
+finite matrix identity, or a bounded minimum condition can be used as an
+induction invariant after replacement by its Boolean equation.  This argument
+does not justify induction on an unbounded formula such as
+$\forall m\,R(n,m)$, or on the bare statement that a real-coded object has a
+property at every precision.
+
+\subsection{Bounded search supplies its own witness}
+
+Let $p(i,\vec x)$ be a fixed primitive recursive Boolean test.  Search scans
+$0,\ldots,N-1$ and returns the first successful index, or a distinguished
+failure value.  An implementation may use the pair $(\mathrm{found},j)$,
+so no undecidable convention is involved.  At stage $t$ the invariant is
+\[
+\begin{split}
+ &\mathrm{found}=0\quad\Longrightarrow\quad
+      \forall i<t\,p(i,\vec x)=0,\\
+ &\mathrm{found}=1\quad\Longrightarrow\quad
+      j<t\ \wedge\ p(j,\vec x)=1\ \wedge\
+      \forall i<j\,p(i,\vec x)=0.
+\end{split}
+\]
+For a direct quantifier-free version, let $a(t)$ be the conjunction fold of
+$1-p(i,\vec x)$ for $i<t$, and replace the two universal prefix assertions by
+$a(t)=1$ and $a(j)=1$, respectively.  This construction uses only Boolean
+primitive recursion, so there is no circular dependence on the existential
+part of Theorem~\ref{logic:booleanization}.  Initially the first alternative
+holds vacuously.  A stored successful index is retained.  If no index is
+stored, the decidable test at $t$ either stores $t$ or extends the failing
+prefix.  These are all the cases, so quantifier-free induction proves the
+invariant.  The already proved universal-fold equivalence gives its displayed
+readable form.
+In particular,
+\[
+ \exists i<N\,p(i,\vec x)=1
+   \quad\Longrightarrow\quad
+ p(\mathrm{search}(N,\vec x),\vec x)=1
+ \ \wedge\ \mathrm{search}(N,\vec x)<N,
+\]
+where the displayed selector uses a fixed default on failure.
+Existence of a bounded witness is enough; unbounded minimization is never
+used.  If no bound $N$ is available, this lemma does not provide one.
+
+The same proof gives a useful finite-observation fact.  If two Boolean tables
+agree below $N$, their searches below $N$ are equal.  At stage $t<N$ the
+algorithms have equal stored states and read the same table entry; induction
+therefore preserves equality.  This makes the dependency on finite data
+explicit even though the search may stop at an input-dependent position.
+
+\subsection{A bounded-loop compilation theorem}
+
+Fix primitive recursive functions $s_0(\vec x)$, $F(t,s,\vec x)$ and
+$T(\vec x)$.  A tuple of state variables is coded by one number.  Define
+\[
+ s(0,\vec x)=s_0(\vec x),\qquad
+ s(t+1,\vec x)=F(t,s(t,\vec x),\vec x),\qquad
+ \operatorname{out}(\vec x)=s(T(\vec x),\vec x).
+\]
+All three are fixed primitive recursive functions.  The following theorem is
+the central reusable rule; it states exactly what an invariant proof must
+supply.
+
+\begin{theorem}[Bounded-loop rule in iPRA]
+\label{logic:boundedloop}
+Let $I(t,s,\vec x)$ be a fixed bounded formula and let $\Gamma(\vec x)$ be a
+finite context independent of $t$.  Suppose iPRA derives
+\[
+\begin{gathered}
+ \Gamma\vdash I(0,s_0(\vec x),\vec x),\\
+ \Gamma,\ t<T(\vec x),\ I(t,u,\vec x)
+       \vdash I(t+1,F(t,u,\vec x),\vec x).
+\end{gathered}
+\]
+Then iPRA derives
+\[
+             \Gamma\vdash
+             I(T(\vec x),\operatorname{out}(\vec x),\vec x).
+\]
+The context $\Gamma$ may contain unbounded assumptions; those assumptions
+remain explicit and are not asserted to be decidable.
+\end{theorem}
+
+\begin{proof}
+Replace $I$ by its proved Boolean equivalent $b_I=1$.  Induct on the
+quantifier-free formula
+\[
+ J(t,\vec x):\quad
+ t\le T(\vec x)\ \longrightarrow\ b_I(t,s(t,\vec x),\vec x)=1.
+\]
+The base follows from the initial contract and the equation for $s(0)$.
+For the successor step, assume $J(t,\vec x)$ and $t+1\le T(\vec x)$.
+Elementary numerical arithmetic gives $t<T(\vec x)$ and $t\le T(\vec x)$.
+The induction hypothesis gives $I(t,s(t,\vec x),\vec x)$.  Substitute the
+term $s(t,\vec x)$ for $u$ in the supplied transition derivation.  Its
+conclusion, the defining equation for $s(t+1)$, and Booleanization give
+$J(t+1,\vec x)$.  This argument is intuitionistic implication introduction;
+it needs no assertion about the state after the advertised bound.
+
+The repository's rule \texttt{PRA.qfInd} now gives $\forall t\,J(t,\vec x)$.
+Instantiate it at the term $T(\vec x)$ and use reflexivity of $\le$.
+Finally use the reverse direction of Booleanization.  Every induction used
+in this proof is on a quantifier-free formula.  Substitution, weakening and
+cut are already derived operations in \texttt{Deduction.lean}.
+\end{proof}
+
+An early exit is handled by a Boolean flag in the state and a transition that
+retains the state once the flag is set.  Nested loops are handled from the
+inside outward.  The nesting depth is fixed by the program.  No small
+complexity bound is needed: a tower of exponentials of primitive recursive
+height is permissible when supplied by a fixed primitive recursive
+definition and a valid invariant proof.
+
+\begin{theorem}[Finite contract compilation]
+\label{logic:compilation}
+Consider a fixed finite program built from fixed primitive recursive
+assignments, finite tuples, decidable branches, sequential composition and
+loops with primitive recursive bounds.  Suppose its leaf lemmas have iPRA
+derivations and every loop has the initial and transition derivations of
+Theorem~\ref{logic:boundedloop}.  Then its precondition-to-postcondition
+derivation can be assembled in iPRA.  If the result is advertised as an
+existential witness, the witness is the program's fixed primitive recursive
+output term.
+\end{theorem}
+
+\begin{proof}
+Proceed through the finite construction of the program.  At an assignment,
+substitute its defining term into the postcondition and use its supplied
+defining equations.  At a sequential composition, substitute the first
+output term into the second derivation and cut with the first contract.  At
+a branch, the Boolean condition is either $0$ or $1$; the two supplied
+branch derivations yield the selected postcondition by intuitionistic
+disjunction elimination.  At a loop apply Theorem~\ref{logic:boundedloop}.
+These constructions preserve the advertised context and produce a derivation
+of the postcondition with the output term substituted for the output
+variable.  The usual existential introduction rule then introduces that
+term.  This construction takes a finite supplied derivation description;
+it is not an assertion that arbitrary valid invariants can be found.
+\end{proof}
+
+This theorem deliberately proves a restricted, transparent compilation
+result.  It does \emph{not} rely on a general theorem extracting primitive
+recursive witnesses from every possible first-order iPRA proof.  Nor does it
+infer that a primitive recursive function's true specification is provable
+in iPRA.  The supplied derivations are indispensable.
+
+\subsection{Static definitions, clocks and the uniformity boundary}
+
+The phrase ``a primitive recursive code for a real'' can conceal an invalid
+universal evaluator.  The following elementary obstruction fixes the issue.
+
+\begin{theorem}[No primitive recursive universal evaluator]
+\label{logic:noeval}
+There is no primitive recursive $U(e,x)$ whose sections $U(e,\cdot)$ include
+every unary primitive recursive function.
+\end{theorem}
+\begin{proof}
+If such $U$ existed, then $d(n)=U(n,n)+1$ would be primitive recursive.
+Choose an index $e$ for $d$.  Substitution gives
+$d(e)=U(e,e)+1=d(e)+1$, a contradiction in elementary numerical arithmetic.
+\end{proof}
+
+There are three sound interfaces.  First, a \emph{static schema} fixes the
+primitive recursive approximation functions before stating its iPRA theorem.
+Numerical parameters may still vary uniformly.  Second, a theorem may take a
+\emph{finite observation table} as an ordinary numerical input, prove the
+result from its explicit bounded consistency conditions, and use no evaluator
+for an infinite object.  Third, a theorem may take a program code and an
+\emph{execution clock} or finite execution trace.  Simulating a fixed
+universal machine for a supplied number of steps and checking a finite trace
+are primitive recursive.  The theorem says what follows if the simulation
+finishes and the trace passes its checks; it does not remove the clock.
+
+For each \emph{fixed} primitive recursive definition $f$, a primitive
+recursive trace producer can be built by recursion on that fixed definition.
+For zero, successor and projection the trace is immediate.  For composition,
+produce the finitely many argument traces, then the outer trace, and
+concatenate.  For primitive recursion, primitive-recursively accumulate the
+current value together with the trace; append the fixed step program's trace
+at each iteration.  Concatenation and sequence coding are primitive recursive,
+so the new trace producer is primitive recursive.  Its correctness is proved
+using the invariant ``this accumulated trace is valid and ends with this
+current value'', a bounded trace predicate.  This is a metatheoretic
+construction for each fixed syntax tree, with an iPRA proof for the resulting
+program.  Theorem~\ref{logic:noeval} forbids turning it into a single
+primitive recursive unclocked evaluator over all such trees.
+
+An ordinary Lean structural evaluator can therefore be total while failing
+to be primitive recursive uniformly in its source code.  The same caution
+applies to full normalization in a compact proof checker.  For internal
+arithmetization use the raw defining equations, or explicit reduction traces,
+unless a separate bound on normalization has been proved.  This observation
+does not question the repository's interderivability theorems; it prevents
+an extra computational conclusion from being silently added to them.
+
+\subsection{Verifiers, producers and actual object proofs}
+
+A verifier with a soundness contract has the form
+\[
+ V(\vec x,c)=1\quad\Longrightarrow\quad R(\vec x).
+\]
+It does not by itself prove $R(\vec x)$.  For that, the proposed construction
+must additionally give a primitive recursive producer $c=C(\vec x)$ and an
+iPRA derivation of $V(\vec x,C(\vec x))=1$ under its advertised hypotheses.
+Cut then proves $R$.  A bounded-height point enumerator, for example, can
+verify every point it returns without proving that no point lies outside its
+search range.  That missing exhaustion argument is a different contract.
+
+Similarly, a Lean theorem saying that an accepted proof certificate yields
+\texttt{Prf PRAAx Gamma phi} is a metatheorem about derivability.  It is not an
+internal iPRA truth predicate or a global reflection principle.  The existing
+\texttt{pra\_iff\_native} transfers a supplied iPRA derivation to the native
+calculus, and \texttt{native\_iff\_pra} transfers it back.  Neither theorem
+turns a semantic Lean proof into an object-theory derivation.
+
+\subsection{Lean realization and its remaining obligations}
+
+The delivered \texttt{FiniteContracts.lean} proves, in ordinary Lean, the
+bounded-loop invariant, least bounded-search correctness, witness recovery
+under bounded existence, and dependence only on the finite tested prefix.
+The definitions use only \texttt{Std}; they have been compiled with Lean
+4.32.0.  These semantic lemmas help test the algorithms and their interfaces,
+but the file explicitly does not identify arbitrary Lean predicates with
+primitive recursive ones.
+
+The delivered \texttt{ObjectKernel.lean} concatenates the pinned repository's
+\texttt{Syntax.lean}, \texttt{Deduction.lean} and \texttt{PR.lean}, retaining
+their declarations and proofs.  The imports are replaced by \texttt{Std},
+with the notation $\mathbb N$ restored.  This standalone kernel compiles.
+\texttt{ObjectBridge.lean} then defines a contract by the data
+\[
+\begin{array}{l}
+ \texttt{pre : Fm PTm n},\quad \texttt{program : PR n},\\
+ \texttt{post : Fm PTm (n+1)},\\
+ \texttt{certified : [pre] |- post[program(x)/output]}.
+\end{array}
+\]
+It derives the existential output statement and records the exact
+\texttt{PRA.qfInd} interface.  These are genuine object-theory derivations.
+The proof fields are obligations, not axioms asserting that every program
+satisfies its desired contract.
+
+\texttt{ObjectExamples.lean} supplies an explicit primitive recursive symbol
+for addition and proves the closed object-iPRA theorem
+$\forall x\,(x+0=x)$ by quantifier-free induction, as well as a simple witness
+contract.  Thus the scoping, symbol equations, induction rule and witness
+introduction have been tested together.  The axiom audit lists no
+\texttt{sorryAx} and no \texttt{Classical.choice}; the object kernel uses the
+ordinary Lean principles \texttt{propext} and \texttt{Quot.sound} already used
+by the upstream development.  This concerns Lean's metatheory and does not
+add excluded middle to the embedded derivation rules.
+
+For the full formalization the next modules are precise: construct sequence
+and signed-rational symbols; build Booleanization by induction on bounded
+formula syntax; prove each loop's finite transition lemmas as
+\texttt{Prf PRAAx}; assemble the induction certificates; and instantiate the
+contract records with those proofs.  Finally the separately supplied
+\texttt{RepositoryBridge.lean} invokes \texttt{pra\_iff\_native}.  That small
+adapter has been checked against the source interface but was not compiled
+against the entire repository dependency closure.  A complete general
+Booleanization compiler and the object-iPRA derivations of the later analytic
+applications remain formalization work; they are not hidden in the compiled
+examples.

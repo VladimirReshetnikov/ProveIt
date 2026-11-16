@@ -1,0 +1,410 @@
+\section{Coherent witnesses from finite approximation}
+\label{ana:coherent}
+
+Several packets distinguish an approximate witness at each requested precision
+from one coherent name for an exact witness.  That distinction is essential:
+an approximate axis of a rotation can change completely as the precision
+increases \cite{repoRotation}.  We first isolate a sufficient condition for coherent selection.
+It involves only finite search and a supplied quantitative uniqueness bound.
+
+\begin{theorem}[Approximate witnesses with an isolation modulus]
+\label{ana:selection}
+For each natural number $s$, let $D_s$ be a nonempty, primitively recursively
+listed finite set of rational points in a fixed rational box.  Let $E_s(q)$
+be a fixed primitive recursive rational residual evaluator, and suppose
+its error relative to a
+nonnegative represented residual $E(q)$ is at most $2^{-s-2}$.
+Suppose that the following two hypotheses have arithmetic proofs:
+\begin{enumerate}
+\item some member $q$ of $D_s$ has $E(q)\le 2^{-s-1}$;
+\item a supplied nondecreasing primitive recursive function $\sigma$ satisfies
+\[
+ E(x),E(y)\le 2^{-\sigma(k)}
+ \quad\Longrightarrow\quad
+ \lVert x-y\rVert_\infty\le 2^{-k}
+\]
+for all rational points under consideration.
+\end{enumerate}
+There is a fixed primitive recursive sequence $a_s$ with
+$E(a_s)\le 2^{-s}$.  Set $\tau(k)=\max(k,\sigma(k))$.
+Then $b_k=a_{\tau(k)}$ is a fast Cauchy name:
+\[
+ k\le l\quad\Longrightarrow\quad
+ \lVert b_k-b_l\rVert_\infty\le 2^{-k}.
+\]
+If the residual has a supplied uniform continuity modulus, the named limit
+has residual zero.
+\end{theorem}
+
+\begin{proof}
+Scan the finite list $D_s$ and retain the first point with the smallest
+rational value of $E_s$.  The minimum is found by rational comparison;
+neither equality of represented reals nor a choice principle is used.
+For a point $q$ supplied by the first hypothesis,
+\[
+ E(a_s)\le E_s(a_s)+2^{-s-2}
+ \le E_s(q)+2^{-s-2}
+ \le E(q)+2^{-s-1}\le 2^{-s}.
+\]
+If $k\le l$, monotonicity of $\tau$ and $\tau(k)\ge\sigma(k)$ make both residuals
+$E(b_k),E(b_l)$ at most $2^{-\sigma(k)}$.  The second hypothesis gives the
+stated distance estimate.  To verify residual zero at precision $j$, choose
+$k$ at least the residual's continuity modulus for precision $j+2$ and
+at least $j+2$.  Since $\tau(k)\ge k$, the residual of the limit is bounded
+by the residual of $b_k$ plus its continuity error, each at most
+$2^{-j-2}$.  This is a finite estimate for each $j$, not an appeal to
+abstract completeness.
+\end{proof}
+
+The first hypothesis may be supplied by a finite combinatorial existence
+proof, or by a net estimate: an approximate solution together with a
+continuity modulus and an explicit grid produces such a point.  The second
+hypothesis is additional information, and is the part that prevents
+incompatible approximations.  Uniqueness without a primitive recursive
+isolation modulus is insufficient for this conclusion.  A merely
+qualitative compactness argument does not supply either modulus.
+
+For an arithmetic derivation, the loop invariant is that the retained index
+is in the scanned prefix and its rational residual estimate is no larger
+than every estimate in that prefix.  The conjunction over the prefix is a
+bounded Boolean fold.  Fixing $s$ and the list length before induction makes
+this a quantifier-free invariant.  The universal real hypotheses are used
+only through the finite observation bounds needed for the requested output.
+
+\section{A quantitative implicit branch from a finite certificate}
+\label{ana:implicit}
+
+The Puiseux packet proves a simple-root power-series lemma after exact
+algebraic preparation \cite{repoPuiseux}.  Its proof uses $H(0,0)=0$ and an exact nonzero
+derivative to make low-order coefficients vanish, so that coefficients
+stabilize after finitely many substitutions.  The same finite norm method
+admits a more general interface: a sufficiently accurate rational centre
+and approximate inverse suffice.  The low-order coefficients need not
+vanish.  Quantitative contraction replaces exact stabilization.
+
+This extension concerns local branches with an explicit certificate.  It
+does not compute the singularity type or decide whether an arbitrary
+Cauchy coefficient is zero.  Those tasks remain subject to the packet's
+computability obstruction.
+
+\subsection{Finite weighted norms and the certificate}
+
+Use the norm $|u+iv|_1=|u|+|v|$ on Gaussian rationals and their represented
+limits.  This norm is submultiplicative, so no square-root operation is
+needed.  For a finite polynomial $V(X)=\sum_k v_kX^k$, define
+\[
+ \lVert V\rVert_R=\sum_k |v_k|_1R^k\qquad (R>0).
+\]
+The triangle inequality and finite convolution give
+\begin{equation}
+ \lVert V+W\rVert_R\le\lVert V\rVert_R+\lVert W\rVert_R,
+ \qquad
+ \lVert VW\rVert_R\le\lVert V\rVert_R\lVert W\rVert_R.
+ \label{ana:normrules}
+\end{equation}
+To prove the second inequality, expand the coefficient of $X^k$ as
+$\sum_{a+b=k}v_aw_b$, apply the triangle inequality, and replace the
+finite sum over $a+b=k$ by the corresponding part of the product of the
+two weighted sums.  Truncation modulo $X^{K+1}$ can only decrease the norm.
+
+Let
+\[
+ F(X,Z)=\sum_{i,j} f_{ij}X^iZ^j
+\]
+be a finite polynomial whose coefficients are supplied by fixed primitive
+recursive Gaussian-rational Cauchy evaluators.  Choose dyadic
+$R=2^{-r}$ and $\rho=2^{-h}$, with $r,h\in\mathbb N$, and rational
+majorants $u_{ij}\ge |f_{ij}|_1$.  Require the two rational inequalities
+\begin{equation}
+ A_0:=\sum_i u_{i0}R^i\le\rho/2,
+ \qquad
+ Q:=\sum_{i,j\ge1}j u_{ij}R^i\rho^{j-1}\le1/2.
+ \label{ana:contract}
+\end{equation}
+These inequalities are the numerical certificate.  If a coefficient sample
+$\widehat f_{ij}$ has certified error at most $\delta$, then
+$u_{ij}=|\widehat f_{ij}|_1+\delta$ is an admissible majorant.  Thus the
+certificate is checked by finite rational arithmetic.  Name correctness
+is a hypothesis of the represented input interface; a finite sample by
+itself does not certify an otherwise arbitrary infinite sequence.
+
+\begin{lemma}[Finite polynomial contraction]
+\label{ana:contraction}
+Under \eqref{ana:contract}, if $\lVert V\rVert_R,\lVert W\rVert_R\le\rho$,
+then
+\[
+ \lVert F(X,V)\rVert_R\le\rho,
+ \qquad
+ \lVert F(X,V)-F(X,W)\rVert_R\le\tfrac12\lVert V-W\rVert_R.
+\]
+Both conclusions also hold after truncating every expression modulo
+$X^{K+1}$.
+\end{lemma}
+
+\begin{proof}
+The factorization
+$V^j-W^j=(V-W)\sum_{t<j}V^tW^{j-1-t}$ and
+\eqref{ana:normrules} give
+\[
+ \lVert V^j-W^j\rVert_R
+ \le j\rho^{j-1}\lVert V-W\rVert_R.
+\]
+Multiply by $|f_{ij}|_1R^i$ and sum to obtain the contraction bound.
+Taking $W=0$ gives
+$\lVert F(X,V)\rVert_R\le A_0+Q\lVert V\rVert_R\le\rho$.
+For truncated arrays the same finite convolution proof applies: discarding
+terms of degree greater than $K$ cannot increase a weighted sum.
+\end{proof}
+
+\subsection{The coefficient construction and all error bounds}
+
+Define finite polynomials
+\[
+ Z_0=0,\qquad Z_{n+1}=F(X,Z_n).
+\]
+When only coefficients through $K$ are needed, perform the recursion in
+the truncated polynomial ring modulo $X^{K+1}$.  Truncation is a ring
+homomorphism, so this gives exactly the same first $K+1$ coefficients.
+
+\begin{theorem}[Certified power-series branch]
+\label{ana:series}
+Under \eqref{ana:contract}, the following statements have finite arithmetic
+proofs:
+\begin{enumerate}
+\item for $m\ge n$,
+\begin{equation}
+ \lVert Z_n\rVert_R\le\rho,
+ \qquad
+ \lVert Z_m-Z_n\rVert_R\le\rho\,2^{-n};
+ \label{ana:iterate}
+\end{equation}
+\item each coefficient has a fixed primitive recursive Cauchy name $c_k$;
+when $[X^k]Z_{s+rk+3}$ is approximated with error at most $2^{-s-3}$,
+the resulting rational value is a valid stage-$s$ value of that name;
+\item for every finite $K$,
+\begin{equation}
+ \sum_{k=0}^K |c_k|_1R^k\le\rho;
+ \label{ana:coefficientbound}
+\end{equation}
+\item the formal series $C(X)=\sum_{k\ge0}c_kX^k$ satisfies
+$C=F(X,C)$ coefficient by coefficient;
+\item for $|x|_1\le R/2$ and $M>K$,
+\begin{equation}
+ \left|\sum_{k=K+1}^M c_kx^k\right|_1
+ \le\rho\,2^{-K-1}.
+ \label{ana:tail}
+\end{equation}
+In particular, the coefficient names specify a convergent branch with an
+explicit primitive recursive tail modulus.  Among series satisfying the
+finite weighted bounds \eqref{ana:coefficientbound}, it is the unique
+fixed point.  At each $|x|_1\le R/2$, its value is the unique fixed point
+in the ball $|z|_1\le\rho$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The norm bound is induction using Lemma~\ref{ana:contraction}.
+The first difference has norm at most $A_0\le\rho/2$; applying the
+contraction bound repeatedly gives
+\[
+ \lVert Z_{t+1}-Z_t\rVert_R\le (\rho/2)2^{-t}.
+\]
+Finite telescoping from $t=n$ to $m-1$ and the finite geometric-sum
+identity give \eqref{ana:iterate}.  Consequently
+\[
+ |[X^k](Z_m-Z_n)|_1\le\rho R^{-k}2^{-n}.
+\]
+Since $R^{-k}=2^{rk}$ and $\rho\le1$, the stage
+$n=s+rk+3$ makes the right side at most $2^{-s-3}$.
+If $s\le t$, the two chosen polynomial stages are ordered.  Adding their
+two rational evaluation errors yields a distance at most
+$3\cdot2^{-s-3}<2^{-s}$.  This proves the fast Cauchy condition directly
+for the declared name; no prior limit is used to define it.
+
+For \eqref{ana:coefficientbound}, fix $K$ and a precision $s$.
+Approximate all $K+1$ coefficient names to precision
+$p=s+K+3$ and compare them to one common stage
+$N=p+rK+3$.  The coefficient estimate bounds the comparison between a
+stage-$p$ name value and the common polynomial stage by $2^{-p-2}$
+per coefficient.  Adding the name error $2^{-p}$ gives at most
+$(5/4)2^{-p}$ per coefficient.  Because $R\le1$ and
+$K+1\le2^{K+1}$, the total weighted error is at most
+$(5/16)2^{-s}<2^{-s}$.  The common polynomial stage has norm at most $\rho$.
+This proves the rational meaning of
+$\sum_{k\le K}|c_k|_1R^k\le\rho$ at every precision.  The argument is a
+finite estimate with an arbitrary parameter $s$, rather than a
+completeness argument about a space of all series.
+
+Fix an output degree $K$.  Computation of the first $K+1$ coefficients
+of $F(X,V)$ uses only the first $K+1$ coefficients of $V$, by finite
+convolution.  Compare the truncation $C^{\le K}$ with $Z_n^{\le K}$.
+The preceding coefficient estimates give convergence of their finite
+weighted difference, with a primitive recursive modulus.  The contraction
+lemma bounds the difference of their images.  The identity
+$Z_{n+1}=F(X,Z_n)$ then makes every coefficient of $C-F(X,C)$ arbitrarily
+small.  This is exactly coefficientwise equality in the name semantics.
+
+The tail estimate is a finite sum:
+\[
+ \sum_{k=K+1}^M|c_k|_1|x|_1^k
+ \le 2^{-K-1}\sum_{k=K+1}^M|c_k|_1R^k
+ \le\rho\,2^{-K-1}.
+\]
+It defines the evaluated branch by its rational partial sums and an
+explicit error budget for finitely many coefficient evaluations.
+The finite partial-sum bounds also give $|C(x)|_1\le\rho$.
+To verify the pointwise fixed-point identity without presupposing that
+evaluation commutes with an infinite substitution, put
+$G_K=C_K-F(X,C_K)$, where $C_K=\sum_{k\le K}c_kX^k$.
+Coefficientwise equality makes its coefficients through $K$ vanish.
+Invariance gives $\lVert G_K\rVert_R\le2\rho$, hence
+$|G_K(x)|_1\le2\rho\,2^{-K-1}$ when $|x|_1\le R/2$.
+The tail estimate and scalar contraction now imply
+\[
+ |C(x)-F(x,C(x))|_1
+ \le\left(\frac32+2\right)\rho\,2^{-K-1}
+ =\frac72\rho\,2^{-K-1}.
+\]
+Taking $K=j+3$ makes this less than $2^{-j}$.
+This proves the pointwise identity by explicit finite residual bounds.
+For uniqueness of formal solutions, truncate two candidate fixed points
+through $K$.  The contraction estimate in the truncated ring gives
+$d\le d/2$ for their weighted distance $d$, hence $d=0$.
+This holds for every $K$.  The same factorization gives
+$|z-w|_1\le|z-w|_1/2$ for pointwise fixed points in the specified ball.
+Both are quantitative equalities; neither uses decidable real equality.
+\end{proof}
+
+\subsection{Application to arbitrary represented polynomial coefficients}
+
+Let $P(X,Y)$ have arbitrary fixed primitive recursive Cauchy coefficient
+names.  Supply rational Gaussian numbers $a,v$, with $v\ne0$, and form
+\[
+ F(X,Z)=Z-vP(X,a+Z).
+\]
+If a certificate \eqref{ana:contract} passes, the theorem constructs a
+branch
+\[
+ Y(X)=a+C(X),\qquad P(X,Y(X))=0.
+\]
+There is no assumed exact root at $X=0$ and no exact test of any input
+coefficient.  A convenient approximate inverse $v$ makes the coefficient
+of $Z$ small, and a sufficiently accurate centre $a$ makes the constant
+defect small.  The two certificate inequalities state exactly how small
+they must be.  The reciprocal of $v$ is finite rational data.
+
+If $C_K=\sum_{k\le K}c_kX^k$, the tail bound and contraction estimate give
+the useful residual certificate
+\begin{equation}
+ |P(x,a+C_K(x))|_1
+ \le |v^{-1}|_1\,\frac32\rho\,2^{-K-1}
+ \qquad(|x|_1\le R/2).
+ \label{ana:presidual}
+\end{equation}
+Indeed, $|C_K(x)|_1\le\rho$ by the finite weighted bound, and
+\[
+ |C_K-F(x,C_K)|_1
+ \le |C_K-C|_1+|F(x,C)-F(x,C_K)|_1
+ \le\tfrac32|C_K-C|_1.
+\]
+The equality $vP=C_K-F(x,C_K)$ gives \eqref{ana:presidual}.
+
+For a concrete example, let $\alpha$ be any represented real with
+$|\alpha|\le1/16$, and put
+\[
+ P(X,Y)=Y^2-(1+\alpha+X),\qquad a=1,\quad v=1/2.
+\]
+Then
+$F(X,Z)=\alpha/2+X/2-Z^2/2$.
+With $R=1/8$ and $\rho=1/4$,
+\[
+ A_0\le1/32+1/16=3/32<\rho/2,
+ \qquad Q=\rho=1/4<1/2.
+\]
+The construction gives the branch near $Y=1$ uniformly in the name of
+$\alpha$, including $\alpha=0$; it never decides that equality.
+The constant coefficient is computed by contraction and need not have an
+exact algebraic presentation.  This example also permits transcendental
+$\alpha$.
+
+The Puiseux packet's singular example
+$Y^2-X^2-\alpha$ remains outside any uniform regular-chart assertion at
+$(X,Y,\alpha)=(0,0,0)$: there the required derivative inverse disappears.
+If a particular ramified substitution and finite chart are supplied and
+verified, our theorem applies to its regularized polynomial as well.
+It does not discover such a chart uniformly from arbitrary coefficient
+names.  Thus it extends the usable coefficient representation on certified
+regular charts while preserving the exact boundary established by the
+existing obstruction \cite{repoObstruction}.
+
+\subsection{Arithmetic audit and formalization obligations}
+
+For rational coefficient arrays every displayed norm, certificate test,
+truncated convolution, and iteration is primitive recursive.  The core
+induction invariant is the conjunction of the norm bound and geometric
+increment bound at the current stage.  Rational denominators are cleared
+by their displayed positive products.  Each finite convolution inequality
+uses an induction on a bounded array length.  Multiple invariants are
+combined into one Boolean equality, so quantifier-free induction suffices.
+
+For represented coefficients, first fix the requested output degree,
+iteration horizon, and error tolerance.  The reduction to exact rational
+inputs must preserve the certificate, not only approximate its hypotheses.
+For a rational sample $q$ and a supplied majorant $u\ge0$, put
+\[
+ \pi_u(q)=
+ \begin{cases}
+ q,&|q|_1\le u,\\
+ (u/|q|_1)q,&|q|_1>u.
+ \end{cases}
+\]
+The second denominator is positive in its rational branch.  If
+$|f|_1\le u$ and $|q-f|_1\le\delta$, then
+$|q|_1-u\le\delta$ whenever clipping occurs.  Thus
+$|\pi_u(q)-f|_1\le2\delta$, while $|\pi_u(q)|_1\le u$ in every case.
+Clip each sample to its majorant.  The resulting rational polynomial
+satisfies exactly the original certificate, so the finite rational proof
+applies to every such approximation.
+
+When contraction is applied to arbitrary represented finite arrays
+$V,W$ with weighted norms at most $\rho$, their rational samples must
+also preserve that ball.  Clip each whole sampled array $v$ radially:
+retain it if $\lVert v\rVert_R\le\rho$, and otherwise replace it by
+$(\rho/\lVert v\rVert_R)v$.  The same calculation in the finite weighted
+norm shows that this has norm at most $\rho$ and increases an approximation
+error by at most a factor of two.  The estimate
+$\bigl||z|_1-|w|_1\bigr|\le|z-w|_1$ and a finite weighted sum transfer
+norm comparisons.  Thus all rational hypotheses needed for contraction,
+including in the uniqueness proof, hold exactly before transfer.
+
+Now use the arithmetic-circuit error lemma, Lemma~\ref{core:gate}, to
+transfer the desired finite output inequalities.  A concrete primitive
+recursive choice is obtained by executing the truncated iteration on
+formal expression trees: each array addition, product, and coefficient
+copy appends its fixed finite arithmetic circuit, so its gate count $N$
+is obtained by a bounded count.  Upper bounds for intermediate magnitudes
+are computed by the same circuit with addition of nonnegative bounds for
+$+$ and $-$ and multiplication for $\cdot$; take an integer $B\ge1$
+larger than all these finitely many bounds.  With $L=2B+3$, sample input
+coefficients so that, after clipping, their error is at most
+$\delta=2^{-s}/L^{N+1}$.  For example an additional factor of four in the
+input dyadic precision covers clipping and rounding.  The gate lemma then
+bounds the final error by $2^{-s}$.  All $N,B,L$ and precisions are
+primitive recursive functions of the fixed finite program, iteration
+count, degree cutoff, and input majorants.  This proves each requested
+name inequality from rational finite observations.  No induction over
+an infinite-series assertion or an unbounded universal real predicate is
+performed.
+
+The accompanying \texttt{SeriesTargets.lean} defines truncated rational
+arrays, convolution, iteration, weighted norms, and the principal finite
+target propositions.  Completion should prove, in order: convolution
+submultiplicativity; the finite power-difference identity; contraction and
+invariance; finite geometric telescoping; coefficient extraction bounds;
+the explicit Cauchy-name construction; finite substitution continuity;
+and the output formulas for the encoded arithmetic.
+The first four can be proved over rational arrays before any represented
+analysis is introduced.  A proof in Lean of those array lemmas is a useful
+prototype; constructing the corresponding object-theory derivations
+remains a separate required step.  No claim of a completed iPRA Lean
+formalization is made by a record of analytic assumptions.

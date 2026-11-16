@@ -1,0 +1,106 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage{xspace}
+\definecolor{ink}{HTML}{17364D}
+\definecolor{linkblue}{HTML}{125579}
+\usepackage[colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,
+  pdftitle={Finite contracts for mathematics in intuitionistic primitive recursive arithmetic},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov},
+  pdfsubject={Finite mathematical proofs, represented analysis, power gaps, and an iPRA formalization framework}]{hyperref}
+\newcommand{\ipra}{\ensuremath{\mathrm{iPRA}}\xspace}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\setcounter{tocdepth}{2}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{3pt plus 1pt minus 1pt}
+\setlength{\emergencystretch}{3em}
+\setlength{\LTpre}{8pt}
+\setlength{\LTpost}{8pt}
+\setlist{itemsep=4pt,topsep=6pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Finite contracts for mathematics in \ipra}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{1.4cm}
+{\small\sffamily\color{ink}RESEARCH REPORT\par}
+\vspace{0.7cm}
+{\Huge\bfseries\color{ink}Finite contracts for mathematics in intuitionistic primitive recursive arithmetic\par}
+\vspace{0.8cm}
+{\Large A common proof framework, quantitative analytic branches,\par
+and explicit Diophantine bounds\par}
+\vspace{1cm}
+{\large Prepared for Vladimir Reshetnikov\par}
+\vspace{0.25cm}
+{16 November 2026\par}
+\vspace{1.1cm}
+\begin{abstract}
+We develop a reusable arithmetic interface for finite mathematical objects,
+fixed primitive recursive approximation families, and certified numerical
+constructions.  Its core is a direct proof of bounded-formula
+Booleanization, a guarded bounded-loop rule, and composition of finite
+observation contracts.  Every induction is reduced to a quantifier-free
+invariant, while global hypotheses remain explicit first-order assumptions.
+
+Applications include an explicit stable-window selector for represented
+monotone sequences; a convergent implicit power-series branch for arbitrary
+primitive recursive Cauchy coefficients on a certified regular chart,
+including a primitive recursive certificate producer from simple-root
+data; and an all-exponent power-gap theorem giving integral-point height
+bounds, a certificate constructor, bounded-denominator transport, and a
+complete uniform family classification.
+
+The report distinguishes these results from the genuine remaining
+obstructions in the source collection.  Compiled Lean lemmas, an actual
+embedded iPRA induction proof, executable exact-arithmetic reference code,
+and precise unproved Lean targets accompany the full written arguments.
+The general compiler and the object-theory derivations of the major
+applications remain explicit formalization tasks.
+\end{abstract}
+\vfill
+\noindent\small
+Source snapshot: ProveIt\par
+\noindent\texttt{42c64ff3a9f56f2a9edc1525e75ece3b720c7f77}\par
+\medskip
+\noindent Written mathematical proofs and a formalization blueprint.\par
+\noindent Lean 4.32.0; exact integer and rational reference computations.
+\end{titlepage}
+
+\tableofcontents
+\clearpage
+\input{sections/01_scope}
+\input{sections/02_logic}
+\input{sections/03_representations}
+\input{sections/04_analytic_tools}
+\input{sections/05_metastability}
+\input{sections/06_analysis}
+\input{sections/06b_chart_producer}
+\input{sections/07_diophantine}
+\input{sections/08_formalization}
+\clearpage
+\input{sections/09_status}
+\clearpage
+\input{references}
+\end{document}
