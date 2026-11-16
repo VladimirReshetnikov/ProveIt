@@ -26,3 +26,17 @@ constructor replay.
 dir=Computability/BusyBeaver/Research/PA/verification/pa194/ipra/variants/pa194m5
 bash "$dir/check-cons.sh" /path/to/checked-safe-m5-source /path/to/fresh-cons-output
 ```
+
+The delivered source binding identifies all 61 M5 constructor occurrences.
+Its `source_binding.json` is pinned to SHA-256
+`a75d3c991682ea4ee5a55243303d97764bc72ac71fb6e41a2aa2e4b0818f10d9`.
+`PA194M5ConsSites.checked` verifies the complete 28-row source slice at each
+specified ordinal. `PA194M5ConsSites.constructors` applies the exact
+model-valued constructor theorem at any of the 61 sites.
+
+After the constructor replay, check all of those source slices and their
+execution theorem.
+
+```sh
+bash "$dir/check-cons-sites.sh" "$PWD" /path/to/checked-cons-output /path/to/fresh-sites-output
+```

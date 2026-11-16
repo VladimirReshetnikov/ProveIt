@@ -36,3 +36,7 @@ bash "$dir/check.sh" "$PWD" /path/to/checked-pa194-model /path/to/fresh-m5-outpu
 
 The checker regenerates the source list, builds the proof modules and records
 the ordered model providers and source and object hashes.
+
+The [constructor proof](README-constructor.md) covers all 61 archived
+source occurrences. The [literal machine proof](README-physical.md)
+connects the archived table to the revised source interpreter.
