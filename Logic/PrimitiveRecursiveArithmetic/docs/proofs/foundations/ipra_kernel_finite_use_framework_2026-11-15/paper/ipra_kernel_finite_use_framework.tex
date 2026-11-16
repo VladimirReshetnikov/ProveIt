@@ -1,0 +1,1248 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  citecolor=blue!45!black,
+  urlcolor=blue!45!black,
+  pdftitle={A Kernel-Facing Finite-Use Framework for Mathematics in iPRA},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Kernel-facing finite-use mathematics in iPRA}
+\rhead{15 November 2026}
+\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\setlist{nosep,leftmargin=2em}
+
+\definecolor{codebg}{RGB}{246,247,249}
+\definecolor{codekw}{RGB}{30,70,130}
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  frame=single,
+  rulecolor=\color{black!15},
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  keywordstyle=\color{codekw}\bfseries,
+  showstringspaces=false
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\B}{\{0,1\}}
+\newcommand{\PRA}{\mathsf{iPRA}}
+\newcommand{\PRAAx}{\mathsf{PRAAx}}
+\newcommand{\Prf}{\mathsf{Prf}}
+\newcommand{\QF}{\mathsf{QF}}
+\newcommand{\Code}{\mathsf{Code}}
+\newcommand{\True}{\mathsf{true}}
+\newcommand{\False}{\mathsf{false}}
+\newcommand{\dist}{\mathop{\mathrm{dist}}}
+\newcommand{\obs}{\mathop{\mathrm{obs}}}
+\newcommand{\valid}{\mathop{\mathrm{Valid}}}
+\newcommand{\viable}{\mathop{\mathrm{Viable}}}
+\newcommand{\pair}[2]{\langle #1,#2\rangle}
+\newcommand{\sequent}[3]{#1\vdash_{#2}#3}
+
+\title{\bfseries A Kernel-Facing Finite-Use Framework\\
+for Mathematics in Intuitionistic Primitive Recursive Arithmetic\\[0.4em]
+\large Proof-carrying DAGs, bounded relational choice, stable observables,\\
+and explicit boundaries for difficult mathematics}
+\author{Prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The current \texttt{Logic/PrimitiveRecursiveArithmetic} tree of the ProveIt
+repository contains a kernel-checked foundation and a large collection of
+research packets spanning algebra, analysis, geometry, topology, number
+theory, probability, category theory, and mathematical physics.  The packets
+share a productive finitary methodology---codes, bounded traces, finite
+certificates, rational approximations, and explicit resource budgets---but
+many stop one level before the formal target: they establish a host-language
+fact or design a semantic algorithm without constructing a derivation of the
+repository's deep-embedded judgment
+\[
+  \Gamma\vdash_{\PRAAx}\varphi.
+\]
+A recent contract-DAG packet identifies the right architecture but leaves its
+generic object compiler schematic.
+
+This report develops a kernel-facing finite-use framework that closes that
+generic logical layer.  A proof-carrying reverse-topological schedule records,
+for each node of a fixed finite contract graph, an actual local
+\(\Prf\,\PRAAx\) derivation from earlier nodes.  Simultaneous cut compiles a new
+node, and finite iteration compiles the whole graph.  A separate
+quantifier-free loop theorem packages the sole induction needed for bounded
+traces while permitting a quantified terminal result.  Bounded search and
+backward viability eliminate hidden finite choice; stable-observable
+comparison eliminates the need for coherent representatives; exact branch
+selection is permitted only under an explicit gap; and genuinely global or
+ineffective mathematics is isolated as a boundary theorem rather than
+misrepresented as an algorithm.
+
+The main arguments are given in full at the human level.  The archive includes
+Lean modules whose generic conclusions have the actual embedded
+\texttt{Prf PRAAx} type, a dependency-ordered formalization plan, a conservative
+Lean schedule generator, exact Python reference algorithms, and independently
+checked certificates.  Lean was unavailable in the build runtime, so source
+without placeholders is supplied but not claimed to have been typechecked.
+The framework does not manufacture missing height bounds, convergence moduli,
+separation estimates, or effective forms of deep global theorems; it makes
+those obligations precise and composable.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Executive summary}
+
+The useful question is not whether all mathematics can be encoded by natural
+numbers.  That is routine.  The useful question is:
+
+\begin{quote}
+What finite data, resource transformer, verifier, and object-language proof are
+sufficient for the particular observation demanded by a later theorem?
+\end{quote}
+
+The answer developed here is a six-layer compiler.
+
+\begin{enumerate}
+\item \textbf{Fixed coding.}  Select concrete primitive-recursive codes for the
+      objects used by one theorem family.  Do not postulate a universal total
+      interpreter for arbitrary codes.
+\item \textbf{Backward demand.}  Starting from the final finite observation,
+      compute the precision, fuel, height, support, and branch demands required
+      by predecessor nodes.
+\item \textbf{Finite production.}  Run a bounded trace, bounded search, or
+      finite relational computation.  Producers may return a cloud of valid
+      witnesses instead of a single coherent representative.
+\item \textbf{Local verification.}  Each node supplies a quantifier-free graph
+      predicate and actual embedded base/step/finish derivations.
+\item \textbf{Kernel composition.}  A reverse-topological proof schedule
+      composes local derivations by simultaneous cut, producing
+      \(\Prf\,\PRAAx\) theorems for all nodes.
+\item \textbf{Erasure.}  Stable comparison, a modulus, an isolation gap, or an
+      explicit boundary theorem converts certificate data into the requested
+      mathematical statement.
+\end{enumerate}
+
+The central advance is layer 5.  Earlier packets already contain excellent
+instances of layers 1--4 and 6, and a few isolated object-level combinators.
+The new \texttt{ProofBuild} construction turns those pieces into a genuine
+finite DAG compiler without weakening the formal target to \texttt{True}.
+
+\paragraph{Resolved at the generic level.}
+Finite DAG composition, bounded loop reflection, bounded relational choice,
+stable witness erasure, and gap-guarded branch selection all receive complete
+human proofs and kernel-facing Lean statements.
+
+\paragraph{Not resolved by abstraction alone.}
+A framework cannot create a missing effective Siegel bound, Faltings height
+bound, spectral gap, root-separation estimate, convergence modulus, or
+prime-distribution constant.  Such facts appear as explicit producer or
+boundary fields.  This is a feature: the formal statement now says exactly
+where the deep mathematics is used.
+
+\section{Repository baseline and diagnosis}
+\label{sec:audit}
+
+\subsection{The formal target}
+
+The audited foundation is \texttt{ConciseIPRA}.  Its ordinary presentation of
+intuitionistic primitive recursive arithmetic has:
+
+\begin{itemize}
+\item a type \texttt{PR k} of primitive-recursive function symbols of arity
+      \(k\);
+\item scoped terms \texttt{PTm n};
+\item scoped formulas \texttt{Fm PTm n};
+\item an inductive derivability relation \texttt{Prf PRAAx Gamma phi};
+\item defining equations for all fixed primitive-recursive symbols,
+      successor axioms, and induction for quantifier-free formulas;
+\item substitution, weakening, simultaneous cut, equality congruence, and a
+      bridge to the native scalar calculus.
+\end{itemize}
+
+Thus the formal target is not a host proposition of the form
+\texttt{Algorithm x = y}.  It is a term inhabiting
+\[
+  \Prf(\PRAAx,\Gamma,\varphi),
+\]
+written in the repository as
+\texttt{Gamma \(\vdash\)[PRAAx] phi}.  A semantic Lean proof may be useful
+for designing an algorithm, but it is not automatically a theorem of iPRA.
+The conversion must be exhibited through the deep-embedded deduction rules.
+
+\subsection{The current research corpus}
+
+At the audited revision, the proof index describes 72 independent theorem or
+framework packets and explicitly warns that they are not thereby verified by
+the maintained foundation.  The foundation subtable contains 17 general
+frameworks.  Several of the newest are highly relevant:
+
+\begin{itemize}
+\item finite observations, finite-use relations, evidence-indexed witnesses,
+      and stable observables;
+\item changing-parameter traces, resource vectors, lexicographic descent, and
+      bounded enumeration;
+\item coherent finite presentations, contract DAGs, and categorical finite
+      presentations;
+\item object-level loop and observation combinators, and small categorical
+      calculations concluding \texttt{Prf PRAAx}.
+\end{itemize}
+
+The recurring final gap is accurately summarized by the recent
+\texttt{ipra\_cfp\_contract\_compiler\_2026-11-15} packet: the architecture of
+reverse demand, forward trace, and local proof-producing nodes is present, but
+the generic object-language DAG theorem remains schematic.  In its Lean
+blueprint, the intended theorem still concludes \texttt{True}.  In contrast,
+\texttt{ObjectObservation.lean} and \texttt{ObjectCategory.lean} demonstrate
+that small, honest \texttt{Prf PRAAx} combinators can be written against the
+current API.
+
+\subsection{Twelve recurring difficulties}
+
+\begin{longtable}{p{0.06\textwidth}p{0.35\textwidth}p{0.50\textwidth}}
+\toprule
+ID & Difficulty & Required correction \\
+\midrule
+\endhead
+D1 & Host truth versus object proof & Require every formal claim to state
+whether it is a host theorem, a verified certificate, or an embedded
+\(\Prf\,\PRAAx\) derivation. \\
+D2 & Missing generic DAG compiler & Compile a fixed topological schedule by
+simultaneous cut, not by an object-level universal interpreter. \\
+D3 & Quantifier-free induction restriction & Put all changing data into one
+coded state and use one QF invariant; allow quantified extraction only after
+the finite loop. \\
+D4 & Hidden coherent choice & Compute finite viability tables and bounded least
+witnesses, or retain a relation when no canonical witness is needed. \\
+D5 & Approximation collapsed to exactness & Demand a separate gap, apartness,
+uniqueness radius, or rounding margin. \\
+D6 & Ineffectivity disguised as computation & Make the global theorem an
+explicit boundary premise. \\
+D7 & Universal evaluator assumption & Specialize every fixed program before
+formalization; a total PR universal evaluator cannot exist. \\
+D8 & Changing parameters in recursion & Store the current parameter and
+resource counters in the state, with fixed PR transition. \\
+D9 & Cardinality confused with enumeration & Require a code-height cutoff and
+a decidable validity predicate, not merely a finite-cardinality theorem. \\
+D10 & Quotients and tie-breaking & Compare observables from any two valid
+representatives; erase the representative only after stability is proved. \\
+D11 & Convergence without a rate & Use explicit moduli, backward precision
+demands, or finite metastable windows. \\
+D12 & Deep domain estimates absent & Separate reusable finite algebra from
+missing global estimates and record the latter as producer/boundary fields. \\
+\bottomrule
+\end{longtable}
+
+The framework below resolves D1--D5 and D7--D8 at the reusable level, clarifies
+D9--D11, and gives a disciplined interface for D6 and D12.
+
+\section{Design principles}
+
+\subsection{Fixed families, not universal interpretation}
+
+Every theorem packet uses finitely many concrete algorithms.  Their PR syntax
+can be generated outside the object theory and then inserted as fixed function
+symbols.  The defining equations already belong to \(\PRAAx\).  This is both
+simpler and mathematically necessary: a total primitive-recursive evaluator
+for all unary primitive-recursive programs would contradict diagonalization;
+see \cref{prop:no-universal}.
+
+\subsection{Finite use before global objects}
+
+A downstream proof rarely consumes an infinite object in full.  It asks for a
+finite observation: the first \(m\) coefficients, an interval of width
+\(2^{-p}\), a finite chain group, a bounded list of candidates, a sign, or a
+finite matrix identity.  The framework therefore specifies a demand
+\(d\) and proves only what the client uses.
+
+\subsection{Relations before canonical witnesses}
+
+Canonical representatives are expensive and often mathematically irrelevant.
+Roots collide; eigenvectors rotate inside an eigenspace; subdivisions admit
+many carrier maps; local analytic branches permute.  A finite relation of valid
+outputs is usually easier to compute constructively.  A comparison theorem can
+then show that all valid outputs have the same requested observation.
+
+\subsection{Exactness is a separate phase}
+
+Approximate data supports approximate conclusions.  Exact equality, exact zero,
+or a discrete branch requires a gap.  The gap may be as simple as the unit
+spacing of integers or as deep as a root-separation theorem.  It must be stated
+and proved separately.
+
+\subsection{Boundary honesty}
+
+Some classical theorems are finitary in conclusion but ineffective in their
+known proofs.  The correct iPRA result may therefore be conditional:
+\[
+  \mathsf{Boundary}(x)\longrightarrow \mathsf{FiniteConclusion}(x).
+\]
+This is a useful formalization.  It identifies the exact missing ingredient
+without pretending to have computed it.
+
+\section{Concrete finite coding and resource discipline}
+\label{sec:coding}
+
+The framework is independent of a particular Gödel coding, but an integration
+should choose one fixed library and prove its equations once.  An explicit
+option is the positive binary pair
+\[
+  \pair{a}{b}=2^a(2b+1).
+\]
+For positive \(z\), the left projection is the largest \(a\le z\) such that
+\(2^a\mid z\), found by bounded search; the right projection is
+\(\bigl(z/2^a-1\bigr)/2\).  Give zero a fixed default decoding.  Exponentiation,
+bounded divisibility tests, bounded search, and bounded division are primitive
+recursive, hence so are both projections.  Finite tuples and lists are nested
+pairs, preferably with a separately stored length.
+
+Signed integers may be encoded by parity,
+\[
+  \mathsf{int}(z)=
+  \begin{cases}
+  2z,&z\ge 0,\\
+  -2z-1,&z<0,
+  \end{cases}
+\]
+and a rational by a signed numerator and a positive denominator.  Normalization
+is useful but not always necessary: equality and order can be checked by
+cross-multiplication.  Exact rational arithmetic is therefore PR and its graph
+is quantifier-free when expressed as equality between fixed PR terms.
+
+\begin{definition}[Resource vector]
+A resource vector is a finite tuple
+\[
+  \rho=(p,f,h,s,b,\ldots)
+\]
+of requested precision, loop fuel, code-height cutoff, support bound, branch
+budget, and any domain-specific counters.  A node demand transformer is a fixed
+PR map from the requested output resource to the resources required of its
+parents.
+\end{definition}
+
+For a fixed acyclic graph, reverse traversal and coordinatewise maximum compute
+all demands.  This traversal is performed at code-generation time when the
+graph itself is fixed.  If the graph shape is input data, it is instead a
+bounded trace with a QF invariant, not a universal meta-interpreter.
+
+\begin{lemma}[Closure of fixed bounded data operations]
+For a fixed coding library, bounded list lookup, update, append, Boolean folds,
+bounded minimum, finite-table reversal, and reverse-demand propagation are
+primitive recursive.
+\end{lemma}
+
+\begin{proof}
+Each operation is a composition of projections, fixed arithmetic, and a finite
+primitive recursion whose recursion argument is the supplied bound or list
+length.  Lookup scans at most the stored length; update rebuilds the same
+bounded prefix; a Boolean fold carries one accumulator bit; bounded minimum
+carries a pair consisting of a found flag and the least witness seen so far.
+Reverse propagation carries a finite coded table and performs one bounded
+update per edge.  Closure of primitive-recursive functions under composition
+and primitive recursion gives the claim.  No unbounded minimization occurs.
+\end{proof}
+
+\section{Finite-use contracts}
+
+\begin{definition}[Operational contract]
+A finite-use operational contract for a node \(v\) consists of:
+\begin{enumerate}
+\item a premise formula \(P_v\) and result formula \(A_v\);
+\item a finite list of predecessor nodes \(\operatorname{par}(v)\);
+\item fixed PR codes for demand, production, and verification;
+\item a QF loop invariant when production is iterative;
+\item an embedded local derivation
+\[
+  (A_u)_{u\in\operatorname{par}(v)},P_v,\Gamma
+  \vdash_{\PRAAx} A_v;
+\]
+\item optional comparison, gap, and boundary derivations.
+\end{enumerate}
+\end{definition}
+
+The local derivation is the decisive field.  A Python checker or a theorem
+about host naturals is useful evidence but does not fill this field.  Conversely,
+the local derivation need not reprove generic logic: the kernel compiler below
+handles all cuts and context management.
+
+\begin{definition}[Reverse-topological proof build]
+Fix a base context \(\Gamma\).  A proof build for a list
+\(D=[A_{k-1},\ldots,A_0]\) is the assertion
+\[
+  \forall A\in D,\quad \Gamma\vdash_{\PRAAx}A.
+\]
+The list is reverse topological: newly compiled nodes are consed to its front.
+\end{definition}
+
+This definition is deliberately a metalevel Lean structure, not an arithmetic
+encoding inside iPRA.  Each theorem packet has a fixed finite dependency graph;
+Lean generates and checks the corresponding proof term.  Variable-size traces
+inside a theorem are handled by QF induction, not by asking iPRA to interpret
+arbitrary Lean graphs.
+
+\section{Kernel-facing proof-DAG compilation}
+\label{sec:dag}
+
+\begin{theorem}[Proof-carrying step]
+\label{thm:step}
+Let \(D\) be an existing proof build over \(\Gamma\), and suppose
+\[
+  D,\Gamma\vdash_{\PRAAx} A.
+\]
+Then \([A]D\) is a proof build over \(\Gamma\).
+\end{theorem}
+
+\begin{proof}
+Every old member of \(D\) retains its stored derivation.  For the new formula
+\(A\), apply simultaneous cut to the local derivation.  If a used hypothesis
+belongs to \(D\), replace it by the derivation stored in the old build.  If it
+belongs to \(\Gamma\), replace it by the hypothesis rule.  The result is
+\(\Gamma\vdash_{\PRAAx}A\).  All operations are constructors of the
+inductive relation \(\Prf\); no semantic soundness theorem is invoked.
+\end{proof}
+
+The supplied Lean definition is essentially the proof above:
+
+\begin{lstlisting}[language={}]
+def ProofBuild.step (s : ProofBuild Gamma done)
+    (local : done ++ Gamma |- [PRAAx] A) :
+    ProofBuild Gamma (A :: done) where
+  derive := by
+    intro C hC
+    rcases List.mem_cons.mp hC with rfl | hOld
+    * exact local.trans (fun D hD => by
+        rcases List.mem_append.mp hD with hDone | hBase
+        * exact s.derive D hDone
+        * exact Prf.hyp hBase)
+    * exact s.derive C hOld
+\end{lstlisting}
+
+Here the displayed ASCII \texttt{|-} abbreviates the repository's notation.
+The actual file uses the Unicode notation imported from
+\texttt{ConciseIPRA.Deduction}.
+
+\begin{theorem}[Dependency-restricted step]
+\label{thm:step-from}
+If \(E\subseteq D\) and
+\(E,\Gamma\vdash_{\PRAAx}A\), then \([A]D\) is a proof build.
+\end{theorem}
+
+\begin{proof}
+Apply the same simultaneous cut, using the inclusion certificate to retrieve
+stored derivations only for hypotheses in \(E\).  This is
+\texttt{ProofBuild.stepFrom}.  The inclusion proof is the metalevel witness
+that all dependencies precede the new node.
+\end{proof}
+
+\begin{theorem}[Finite DAG compilation]
+\label{thm:dag}
+Let \(G\) be a finite acyclic graph with a fixed topological order
+\(v_0,\ldots,v_{m-1}\).  Associate a formula \(A_i\) to each node and suppose
+that for each \(i\) there is an embedded local derivation of \(A_i\) from
+\(\Gamma\) and formulas attached to predecessors of \(v_i\).  Then for every
+\(i<m\),
+\[
+  \Gamma\vdash_{\PRAAx}A_i.
+\]
+\end{theorem}
+
+\begin{proof}
+Start with the empty proof build.  At stage \(i\), all predecessor formulas are
+already in the reverse-topological list.  Apply
+\cref{thm:step-from}.  Finite induction on \(i\) constructs a proof build
+containing all nodes.  Retrieval of any member gives the desired embedded
+derivation.
+\end{proof}
+
+\begin{corollary}[Untrusted generation, trusted checking]
+A program may generate the sequence of \texttt{ProofBuild.step} applications
+from a JSON dependency graph.  Correctness of the generator is not part of the
+trusted base: Lean checks the emitted term against the local derivation types.
+\end{corollary}
+
+This is the correct role for code generation.  It saves bookkeeping without
+introducing a universal object-level evaluator or a new axiom.
+
+\section{Quantifier-free loop compilation}
+\label{sec:loop}
+
+The DAG compiler composes local theorems.  We now show how a bounded iterative
+producer supplies one local theorem using the sole induction schema available
+in iPRA.
+
+Let \(P,Q\) be formulas over \(n\) free variables, let
+\(I\) be a formula over \(n+1\) variables whose index-0 variable is the loop
+stage, and let \(t\) be a term for the fuel.  Assume:
+\begin{align*}
+  & I\text{ is quantifier-free};\\
+  & P,\Gamma\vdash_{\PRAAx} I(0);\\
+  & I(i),P,\Gamma\vdash_{\PRAAx}I(i+1);\\
+  & I(t),P,\Gamma\vdash_{\PRAAx}Q.
+\end{align*}
+The exact scoped versions shift \(P\) and \(\Gamma\) in the induction step, as
+implemented in the Lean source.
+
+\begin{theorem}[Loop reflection under a precondition]
+\label{thm:loop}
+Under the four assumptions above,
+\[
+  \Gamma\vdash_{\PRAAx}P\to Q.
+\]
+\end{theorem}
+
+\begin{proof}
+Apply the iPRA QF-induction rule to the base and step derivations.  This yields
+\(P,\Gamma\vdash\forall i\,I(i)\).  Universal elimination at the fuel term
+\(t\) gives \(P,\Gamma\vdash I(t)\).  Cut this into the finish derivation to
+obtain \(P,\Gamma\vdash Q\).  Finally introduce the implication.
+\end{proof}
+
+The terminal formula \(Q\) may contain quantifiers.  Only the loop invariant
+must be QF.  This separation is crucial: bounded arithmetic facts are proved
+inside the invariant, then a concrete witness or finite code is exported by
+existential introduction.
+
+\subsection{Changing parameters}
+
+Suppose an algorithm changes a precision parameter, chart index, degree cap,
+or support bound during its run.  There is no need for a stronger induction
+schema.  Encode the entire configuration
+\[
+  s_i=\pair{i}{\pair{p_i}{\pair{\rho_i}{\text{domain state}_i}}}
+\]
+as one natural.  The transition \(s_{i+1}=\mathsf{step}(s_i,x)\) is a fixed PR
+function.  The invariant states, using fixed Boolean checkers, that:
+
+\begin{itemize}
+\item the stage component equals \(i\);
+\item all local transitions up to \(i\) passed their checkers;
+\item every resource component is within the reverse-computed budget;
+\item any lexicographic descent measure has decreased or the state is frozen.
+\end{itemize}
+
+Because bounded universal assertions are implemented by PR Boolean folds, the
+invariant is an equality of terms and hence QF.  A primitive-recursive fuel
+must be supplied.  General well-founded recursion is not smuggled in: the
+resource proof explicitly bounds the number of transitions.
+
+\section{Bounded search and finite relational choice}
+\label{sec:choice}
+
+\subsection{Least bounded witness}
+
+Let \(b(x,y)\in\B\) and \(B(x)\in\N\) be fixed PR functions.  Define a scan
+state \((f,w)\), where \(f\) is a found flag.  Initially \((0,0)\).  At stage
+\(i\le B(x)\), keep the state if \(f=1\); otherwise set \((1,i)\) when
+\(b(x,i)=1\), and keep \((0,0)\) when it is zero.
+
+\begin{theorem}[Bounded least search]
+\label{thm:bounded-search}
+The scan is primitive recursive.  After \(B(x)+1\) stages:
+\begin{enumerate}
+\item the flag is one iff some \(y\le B(x)\) satisfies \(b(x,y)=1\);
+\item when the flag is one, the stored \(w\) is the least such \(y\).
+\end{enumerate}
+Both assertions admit QF-induction proofs after bounded quantifiers are
+compiled to Boolean folds.
+\end{theorem}
+
+\begin{proof}
+Primitive recursiveness follows from the explicit finite-state transition.
+For correctness, use the stage invariant:
+\[
+\begin{split}
+ f_i=0 &\Longleftrightarrow \bigwedge_{y<i}(b(x,y)=0),\\
+ f_i=1 &\Longrightarrow b(x,w_i)=1\ \wedge\ w_i<i\ \wedge
+       \bigwedge_{y<w_i}(b(x,y)=0).
+\end{split}
+\]
+Replace both bounded conjunctions by fixed PR Boolean folds.  The base case is
+immediate.  In the step case, if a witness was already found the state is
+frozen; otherwise the value of \(b(x,i)\) gives the two branches and preserves
+the displayed clauses.  At stage \(B(x)+1\) the first equivalence proves
+existence detection, and the second clause proves minimality.
+\end{proof}
+
+This theorem eliminates finite choice only when the bound is explicit.  An
+unbounded existential does not become constructive merely because a classical
+proof says its solution set is finite.
+
+\subsection{Backward viability}
+
+Let layers \(L_0,\ldots,L_m\) be finite coded candidate tables.  Let
+\(C_i(x)\) say that \(x\) is a valid candidate in layer \(i\), and let
+\(E_i(x,y)\) be a decidable compatibility relation from layer \(i\) to
+\(i+1\).  Define viability backward:
+\begin{align*}
+ V_m(x)&=C_m(x),\\
+ V_i(x)&=C_i(x)\wedge
+  \bigvee_{y<N_{i+1}}\bigl(E_i(x,y)\wedge V_{i+1}(y)\bigr).
+\end{align*}
+The disjunction is a PR Boolean fold over the explicit next-layer bound.
+
+\begin{theorem}[Viability correctness]
+\label{thm:viability}
+For every \(i\le m\), \(V_i(x)=1\) iff \(x\) begins a compatible path through
+layers \(i,i+1,\ldots,m\).
+\end{theorem}
+
+\begin{proof}
+Proceed by backward induction on \(m-i\).  At \(i=m\), a path consists of the
+single candidate and the statement is the definition of \(V_m\).  For the
+step, if \(V_i(x)=1\), bounded least search yields a concrete \(y<N_{i+1}\)
+with \(E_i(x,y)=1\) and \(V_{i+1}(y)=1\).  The induction hypothesis extends
+\(y\) to a path, so prefixing \(x\) gives a path from layer \(i\).  Conversely,
+if a path begins with \(x,y\), then \(C_i(x)=1\), \(E_i(x,y)=1\), and the tail
+makes \(V_{i+1}(y)=1\) by induction.  Hence the finite disjunction in the
+definition of \(V_i\) is true.
+\end{proof}
+
+\begin{corollary}[Lexicographic viable path]
+\label{cor:lex-path}
+If a full path exists, repeatedly choosing the least viable compatible
+successor constructs a full path by a bounded primitive recursion.  No form of
+countable or dependent choice is used.
+\end{corollary}
+
+The proof is constructive because the viability table gives an explicit
+nonempty finite search domain at every step.  In applications where no single
+path is needed, one may stop earlier and reason directly with the relation.
+
+\section{Stable observables and guarded exactness}
+\label{sec:stable}
+
+\subsection{Witness-independent conclusions}
+
+\begin{theorem}[Stable-observable erasure]
+\label{thm:stable}
+Suppose
+\[
+  \Gamma\vdash C_1,\qquad \Gamma\vdash C_2,
+  \qquad C_1,C_2,\Gamma\vdash O.
+\]
+Then \(\Gamma\vdash O\).
+\end{theorem}
+
+\begin{proof}
+Introduce implications twice in the comparison derivation, obtaining
+\(\Gamma\vdash C_2\to(C_1\to O)\).  Apply modus ponens first to the derivation
+of \(C_2\), then to the derivation of \(C_1\).  This is exactly the supplied
+\texttt{stableObservable} proof term.
+\end{proof}
+
+Although logically elementary, this theorem changes the architecture of many
+formalizations.  Producers at different precisions may return unrelated roots,
+eigenvectors, charts, subdivisions, or minimizers.  The comparison theorem,
+not a coherent global selection, carries the mathematical burden.
+
+For a rational-valued observation, a common comparison formula is
+\[
+  \valid(c_1,p)\wedge\valid(c_2,p)
+  \longrightarrow
+  |\obs(c_1)-\obs(c_2)|\le 2^{-p}.
+\]
+A canonical name can be obtained by choosing the least valid certificate at
+each precision, but its correctness depends only on pairwise stability.  The
+chosen certificates need not form a coherent chain.
+
+\subsection{Exactness from a gap}
+
+\begin{theorem}[Gap decision]
+\label{thm:gap}
+Let \(z\) be known to satisfy the disjunction
+\[
+  z=0\quad\vee\quad |z|\ge\delta
+\]
+for a positive rational \(\delta\).  If a rational \(q\) satisfies
+\(|q-z|<\delta/3\), then the decidable comparison
+\(|q|<\delta/2\) distinguishes the two branches correctly.
+\end{theorem}
+
+\begin{proof}
+If \(z=0\), then \(|q|<\delta/3<\delta/2\).  If
+\(|z|\ge\delta\), the reverse triangle inequality gives
+\[
+  |q|\ge |z|-|q-z|>\delta-\delta/3=2\delta/3>\delta/2.
+\]
+Thus the rational threshold test returns different answers in the two cases.
+All inequalities are finite rational calculations.
+\end{proof}
+
+\begin{warning}
+An approximation alone does not decide exact zero.  The disjunction or an
+equivalent isolation theorem is an essential hypothesis.  When it is absent,
+the correct output remains an interval, a relation, or an apartness-conditional
+statement.
+\end{warning}
+
+Integer recovery is the special case \(\delta=1\): an approximation within
+\(1/2\) uniquely determines an integer.  Root labels require a root-separation
+bound; spectral projectors require a spectral gap; a unique minimizer requires
+a quantitative uniqueness radius.
+
+\subsection{Setoids and quotients}
+
+Arithmetic equality of codes is often too strong.  A finite presentation may
+have a setoid equality \(R(a,b)\), and a topological construction may admit
+many equivalent representatives.  The object development must provide
+embedded reflexivity, symmetry, transitivity, and operation congruence for
+\(R\).  Stable observations should be formulated in terms of \(R\), not Lean's
+host quotient.  This keeps all representative erasure visible in the object
+proof.
+
+\section{Boundary factorization and genuine obstructions}
+\label{sec:boundary}
+
+\begin{theorem}[Boundary factorization]
+\label{thm:boundary}
+If \(\Gamma\vdash B\) and \(B,\Gamma\vdash G\), then
+\(\Gamma\vdash G\).  If the first derivation is unavailable, the honest result
+is \(\Gamma\vdash B\to G\).
+\end{theorem}
+
+\begin{proof}
+Introduce the implication in the second derivation and apply it to the first.
+The conditional version is simply implication introduction without the final
+application.
+\end{proof}
+
+The theorem is trivial logically but decisive methodologically.  It gives a
+standard location for a global height theorem, a zero-free region, a compactness
+principle with a modulus, or any other ingredient not generated by the finite
+producer.
+
+\subsection{Cardinality is not a cutoff}
+
+A statement ``there are at most \(N\) solutions'' does not provide a number
+\(H\) such that every solution code is at most \(H\).  Enumeration requires:
+
+\begin{enumerate}
+\item a decidable validity checker \(V(x)\);
+\item a proved code-height cutoff \(H\);
+\item bounded search through \(x\le H\);
+\item a completeness proof that every solution appears below \(H\).
+\end{enumerate}
+
+Without item 2, finite cardinality cannot be converted into a primitive-
+recursive complete list.  This distinction is central for integral points,
+rational points, finitely generated groups, and classification statements.
+
+\subsection{No total PR universal evaluator}
+
+\begin{proposition}[Diagonal obstruction]
+\label{prop:no-universal}
+There is no primitive-recursive function \(U(e,x)\) that evaluates every unary
+primitive-recursive function from a code \(e\).
+\end{proposition}
+
+\begin{proof}
+Assume such \(U\) exists.  Then
+\(g(e)=U(e,e)+1\) is primitive recursive, so it has some code \(d\).  Universality
+would give \(g(d)=U(d,d)\), while the definition gives
+\(g(d)=U(d,d)+1\), a contradiction.
+\end{proof}
+
+This obstruction does not prevent syntax from being encoded or bounded
+interpreters from being PR.  It prevents the framework from using a total
+universal evaluator as a shortcut.  Fixed-program specialization is the right
+solution.
+
+\section{Domain adapters}
+\label{sec:domains}
+
+This section describes what the six compiler layers mean in several domains.
+It is a formalization map, not a claim that every deep theorem is already
+proved in iPRA.
+
+\subsection{Algebra and combinatorics}
+
+Finite groups, rings, matrices, graphs, partitions, and tableaux fit directly.
+Use bounded table codes; compute normalization or elimination traces; verify
+local equations; compile the trace; and export a finite witness.  Smith normal
+form, Gaussian elimination over rationals, determinant identities, finite
+orbit calculations, and combinatorial recurrences are natural early targets.
+The main care is to include explicit dimension and coefficient-height bounds.
+
+\subsection{Analysis and differential equations}
+
+Represent a real or complex quantity by a PR procedure returning rational
+approximations with an explicit error contract.  A client request \(p\) is
+pushed backward through operations.  Addition uses essentially the same
+precision; multiplication also needs magnitude bounds; inversion requires an
+apartness lower bound; composition uses the outer modulus to request inner
+precision.  For a polynomial ODE, a bounded Picard or Taylor trace can produce
+a finite interval certificate.  A global solution theorem requires explicit
+existence intervals and growth bounds, recorded as boundary data when not
+constructively available.
+
+When a full convergence rate is unavailable but every finite client uses only
+a finite window, a metastable contract is often sufficient:
+\[
+  \forall p,g\ \exists N\le F(p,g)\ \forall i,j\in[N,N+g(N)],
+  |a_i-a_j|\le 2^{-p}.
+\]
+To remain in iPRA, \(F\) must be explicit and the bounded window checker must be
+PR.  Metastability does not magically supply an ineffective \(F\).
+
+\subsection{Topology}
+
+For finite simplicial or cubical complexes, encode vertices, simplices,
+incidence, chains, and boundary matrices by bounded tables.  Subdivision and
+carrier maps are finite traces.  Different tie-breaking rules need not produce
+identical maps; it is enough to construct a bounded prism or chain homotopy and
+show that the induced homology observation is stable.  Global theorems such as
+Jordan separation or dimension theory then split into a finite combinatorial
+compiler plus a theorem-specific approximation or separation boundary.
+
+\subsection{Category theory}
+
+A finite category presentation consists of bounded object and arrow tables,
+source/target maps, composition, and setoid equality, together with checked
+laws.  Limits, representable functors, finite Kan extensions, and finite sheaf
+gluing become finite relational contracts.  The existing object-level inverse
+uniqueness and Yoneda component calculations can serve as local nodes.  The new
+DAG compiler composes such nodes without reimplementing category logic.
+
+\subsection{Algebraic geometry}
+
+Finite algebraic geometry separates cleanly from global arithmetic geometry.
+Polynomial evaluation, derivatives, resultants, Macaulay matrices, bounded
+row reduction, finite chart covers, and certificates of ideal membership are
+finite algebra and belong in trace nodes.  Complete rational or integral point
+lists require additional height/cutoff theorems.  Those theorems are producer
+fields when effective and boundary fields otherwise.  This prevents a finite
+Macaulay calculation from being mistaken for an effective form of Faltings or
+Siegel.
+
+\subsection{Number theory}
+
+Congruence checking, finite local solubility, bounded descent, explicit
+factorization certificates, and fixed-exponent searches are straightforward.
+Analytic distribution theorems require explicit error terms and constants.
+Exceptional-zero issues, ineffective constants, or merely existential height
+bounds must remain visible.  Conditional finite consequences are still
+valuable and can be compiled using \cref{thm:boundary}.
+
+\subsection{Probability and asymptotics}
+
+Finite distributions, exact moments, couplings on bounded sample spaces, and
+finite concentration checks are PR.  Limit theorems need a quantitative rate or
+a metastable bound.  A central-limit packet should therefore separate the
+finite characteristic-function or moment computation from the analytic
+uniformity theorem that turns it into a distributional approximation.
+
+\section{Worked example: exact cubic bisection}
+\label{sec:cubic}
+
+Consider
+\[
+  f_x(y)=y^3+y-x
+\]
+for rational \(x\).  The goal is not to invoke classical real analysis.  For
+each requested precision \(p\), we construct a finite rational interval
+\([a_p,b_p]\) of width at most \(2^{-p}\) with
+\(f_x(a_p)\le0\le f_x(b_p)\).  These intervals are a finite-use name for the
+unique root.
+
+\begin{lemma}[Quantitative strict monotonicity]
+\label{lem:cubic-monotone}
+If \(u<v\) are rational, then
+\[
+  f_x(v)-f_x(u)\ge v-u>0.
+\]
+\end{lemma}
+
+\begin{proof}
+Factor:
+\[
+ f_x(v)-f_x(u)=(v-u)(v^2+uv+u^2+1).
+\]
+The second factor is at least one because
+\[
+  4(v^2+uv+u^2)=(2u+v)^2+3v^2\ge0.
+\]
+Multiplying by the positive \(v-u\) gives the result.
+\end{proof}
+
+The stronger lower bound implies inverse stability:
+\[
+  |u-v|\le |f_x(u)-f_x(v)|.
+\]
+It also proves uniqueness without excluded middle: two exact zeros cannot be
+strictly ordered in either direction.
+
+Let
+\[
+  M=\lceil |x|\rceil+1.
+\]
+Then \(f_x(-M)<0<f_x(M)\).  Indeed \(M>|x|\), and the cubic terms only strengthen
+the inequalities.
+
+At each stage, put \(m=(a+b)/2\).  Rational sign is decidable.  If
+\(f_x(m)\le0\), replace \(a\) by \(m\); otherwise replace \(b\) by \(m\).
+
+\begin{lemma}[Bisection invariant]
+After every stage,
+\[
+  a\le b,\qquad f_x(a)\le0\le f_x(b),
+\]
+and the width is half its previous value.
+\end{lemma}
+
+\begin{proof}
+The midpoint lies between the endpoints.  In the first branch, the new lower
+endpoint has nonpositive value and the old upper endpoint retains nonnegative
+value.  In the second branch, the old lower endpoint is retained and the new
+upper endpoint has positive value.  In both branches the new interval is one
+of the two halves.
+\end{proof}
+
+Define
+\[
+  k=p+\left\lceil\log_2(2M)\right\rceil.
+\]
+The logarithm here is the least natural \(r\) with \(2M\le2^r\), computed by
+bounded search or bit length.
+
+\begin{theorem}[Cubic finite-use certificate]
+\label{thm:cubic}
+After \(k\) bisection stages, the sign bracket is preserved and
+\[
+  b-a=\frac{2M}{2^k}\le2^{-p}.
+\]
+The producer and verifier are primitive recursive on rational codes.
+\end{theorem}
+
+\begin{proof}
+The invariant follows by finite induction from the preceding lemma.  Repeated
+halving gives the exact width formula.  By the definition of the ceiling
+logarithm, \(2M\le2^{k-p}\), hence \(2M/2^k\le2^{-p}\).  Every stage uses exact
+integer/rational arithmetic and one decidable sign test, so the full trace and
+its checker are primitive recursive.
+\end{proof}
+
+\subsection{Object-iPRA compilation}
+
+A complete object development needs fixed PR codes for normalized rationals,
+addition, multiplication, comparison, ceiling, and ceiling logarithm.  Define
+the trace state to contain \((i,a_i,b_i)\).  The QF invariant is a conjunction
+of checker equalities asserting:
+
+\begin{enumerate}
+\item the state is the result of \(i\) transitions from \((-M,M)\);
+\item both rational codes are normalized;
+\item the sign bracket holds;
+\item the exact width equation \(2^i(b_i-a_i)=2M\) holds.
+\end{enumerate}
+
+The base and step proofs use only defining equations and rational order
+arithmetic.  The finish proof uses the fuel inequality to derive the requested
+width.  These fields instantiate \texttt{TraceObligations};
+\texttt{TraceObligations.compile} then produces the embedded implication.  The
+archive's Python certificate is an exact regression test for this design, not
+a substitute for those object derivations.
+
+\section{Worked example: relational paths without coherent choice}
+
+Use the finite layers
+\[
+  (0,1,2),\quad(1,2,3),\quad(3,4),\quad(4,5)
+\]
+and compatibility \(|y-x|\le1\) between adjacent layers.  Backward viability
+gives
+\[
+  (1,2),\quad(2,3),\quad(3,4),\quad(4,5).
+\]
+The lexicographically first viable path is
+\((1,2,3,4)\).  Other paths exist, so a proof architecture demanding a unique
+coherent path would create unnecessary work.
+
+Take the observation to be the normalized endpoint \(y/5\).  Across all valid
+paths its exact diameter is \(1/5\).  Thus any valid path determines the
+observation to tolerance \(1/5\), and a downstream client asking for coarser
+precision can ignore the tie entirely.  At finer precision it must request
+stronger compatibility or a gap.  This small example is structurally identical
+to root matching through collisions, chart gluing, or choosing a carrier map:
+backward viability proves extendibility; stable comparison, not coherent
+selection, proves the observable.
+
+\section{Lean formalization architecture}
+\label{sec:lean}
+
+\subsection{Exact upstream interfaces used}
+
+The supplied modules target the following current definitions:
+
+\begin{itemize}
+\item \texttt{Fm.QF} marks quantifier-free formulas;
+\item \texttt{Prf Ax Gamma phi} is inductive intuitionistic natural deduction;
+\item \texttt{Prf.trans} is simultaneous cut;
+\item \texttt{PRA.qfInd} applies QF induction;
+\item \texttt{Prf.allE}, \texttt{Prf.exI}, and implication rules perform final
+      extraction;
+\item \texttt{pra\_iff\_native.mp} transports a completed iPRA derivation to
+      the native calculus.
+\end{itemize}
+
+The source manifest records the audited commit and SHA of each relevant file.
+
+\subsection{Generic modules}
+
+\texttt{lean/KernelCompiler.lean} contains:
+
+\begin{enumerate}
+\item \texttt{checked}: equality of a fixed PR checker to one;
+\item \texttt{ProofBuild.nil}, \texttt{step}, \texttt{stepFrom}, and
+      \texttt{get};
+\item \texttt{invariantAtUnder}, \texttt{loopUnder}, and
+      \texttt{loopContract};
+\item explicit witness export;
+\item stable-observable, boundary, and exact-from-gap rules;
+\item native-calculus export.
+\end{enumerate}
+
+\texttt{lean/ArithmeticInterface.lean} defines obligation records.  A domain
+packet cannot instantiate them without providing actual embedded derivations.
+Their \texttt{compile} methods contain only generic logic.
+
+\subsection{Dependency-ordered completion plan}
+
+A complete integration should proceed in the following order.
+
+\begin{enumerate}
+\item Compile the generic modules against Lean 4.32.0 and run
+      \texttt{\#print axioms}.  Repair API mismatches only.
+\item Implement one shared fixed PR coding library for Boolean folds, bounded
+      lists/tables, signed integers, rationals, and resource vectors.
+\item Prove object-level defining equations and Boolean reflection lemmas.
+\item Implement bounded minimum and table folds with QF invariants.
+\item Implement a generic fixed trace runner from primitive recursion and fill
+      \texttt{TraceObligations} for one benchmark.
+\item Formalize backward viability and least viable path over coded tables.
+\item Add stable comparison and gap modules.
+\item Migrate domain packets one at a time, keeping global bounds as explicit
+      boundaries.
+\end{enumerate}
+
+This order prevents a large host-level development from drifting away from the
+deep embedding.  Every phase ends with a small theorem of type
+\texttt{Prf PRAAx}.
+
+\subsection{Expected proof obligations for the cubic benchmark}
+
+The first arithmetic instance should prove:
+
+\begin{enumerate}
+\item correctness of rational encoding and comparison;
+\item the algebraic identity in \cref{lem:cubic-monotone};
+\item initial bracket signs;
+\item preservation of sign and width by each branch;
+\item correctness of the PR ceiling-logarithm bound;
+\item terminal extraction of a width-\(2^{-p}\) bracket.
+\end{enumerate}
+
+All are elementary bounded arithmetic.  Completing this benchmark would test
+every generic layer without depending on a deep external theorem.
+
+\section{Migrating the existing theorem packets}
+
+For each packet, create a claim table with one row per advertised theorem and
+the following columns:
+
+\begin{longtable}{p{0.18\textwidth}p{0.23\textwidth}p{0.23\textwidth}p{0.25\textwidth}}
+\toprule
+Claim & Finite producer & Embedded verifier & Boundary/gap \\
+\midrule
+\endhead
+Statement consumed by clients & Fixed PR code and explicit resource bound &
+Exact \(\Prf\,\PRAAx\) base/step/finish or local DAG proof & Any global theorem,
+modulus, separation, or cutoff not generated by the producer \\
+\bottomrule
+\end{longtable}
+
+Then apply the following triage.
+
+\begin{enumerate}
+\item If all four columns are filled, generate the proof schedule and compile.
+\item If the producer is missing but a finite witness is supplied externally,
+      prove a conditional checker theorem.
+\item If only a comparison theorem is available, retain a relational/stable
+      observable rather than choosing a representative.
+\item If a deep bound is missing, state it as a boundary formula and stop
+      claiming unconditional effectivity.
+\item If exactness is requested without a gap, weaken the conclusion to the
+      strongest certified approximation.
+\end{enumerate}
+
+This procedure directly addresses the difficulty reports.  It does not discard
+ambitious packets: it separates completed finite mathematics from the exact
+open lemma blocking an unconditional object proof.
+
+\section{Limitations and nonclaims}
+
+The following limitations are mathematical, not merely engineering details.
+
+\begin{itemize}
+\item The framework does not prove effective forms of the major global
+      arithmetic theorems whose known arguments do not provide the required
+      bounds.
+\item Finite viability eliminates bounded choice, not arbitrary choice.
+\item Stable comparison gives an observable only at the proved tolerance.
+      Exact labels still require a gap.
+\item Fixed-program specialization avoids, rather than solves, the universal
+      evaluator obstruction.
+\item A human proof that an algorithm is primitive recursive is not yet its
+      object-iPRA correctness proof.  Defining equations, QF invariants, and
+      extraction derivations must be supplied.
+\item The included Lean source has not been compiled in the artifact runtime.
+      Its lack of placeholders is weaker than successful typechecking and
+      axiom auditing.
+\end{itemize}
+
+These limits make the package more useful: every future claim has a clear place
+in the architecture and a precise completion criterion.
+
+\section{Conclusion}
+
+The ProveIt iPRA corpus has converged on a strong insight: advanced mathematics
+must be reorganized around finite observations, explicit resources, bounded
+certificates, and quantitative stability.  The remaining systemic problem is
+not another semantic abstraction.  It is the final kernel-facing compiler that
+turns local proof objects into an actual theorem of the deep embedding.
+
+The proof-carrying schedule developed here supplies that compiler for every
+fixed finite acyclic contract graph.  Quantifier-free loop reflection supplies
+its iterative nodes.  Backward viability removes hidden finite choice.  Stable
+observables remove unnecessary coherent representatives.  Gap rules prevent
+invalid exactness claims.  Boundary formulas expose deep global mathematics
+instead of burying it inside an alleged algorithm.
+
+The immediate research program is therefore concrete: typecheck the generic
+modules, complete one shared coding library, formalize the cubic benchmark, and
+migrate existing packets by filling explicit obligation records.  Each step
+produces reusable \(\Prf\,\PRAAx\) theorems and converts an informal difficulty
+report into a sharply located mathematical task.
+
+\appendix
+
+\section{Theorem dependency graph}
+
+\begin{center}
+\begin{tabular}{p{0.23\textwidth}p{0.67\textwidth}}
+\toprule
+Result & Dependencies \\
+\midrule
+Proof-carrying step & \texttt{Prf.trans}, hypothesis rule, list membership \\
+Finite DAG compiler & Proof-carrying step, finite metalevel induction \\
+Loop compiler & \texttt{PRA.qfInd}, universal elimination, cut, implication introduction \\
+Bounded least search & Fixed PR coding, QF induction, Boolean folds \\
+Viability correctness & Bounded least search, backward finite induction \\
+Stable observable & Implication introduction and elimination \\
+Gap decision & Rational triangle inequalities and explicit separation \\
+Boundary factorization & Implication introduction and elimination \\
+Cubic certificate & Exact rational arithmetic, monotonicity identity, loop compiler \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Object-formula schemas}
+
+A practical library should standardize the following formulas, all with fixed
+PR symbols and explicit arities.
+
+\begin{align*}
+  \mathsf{Checked}_b(\vec x)
+    &:\equiv b(\vec x)=1,\\
+  \mathsf{Graph}_f(\vec x,y)
+    &:\equiv f(\vec x)=y,\\
+  \mathsf{TraceInv}(i,s,\vec x)
+    &:\equiv \mathsf{run}(i,\vec x)=s\ \wedge\
+      \mathsf{allLocalChecks}(i,s,\vec x)=1,\\
+  \mathsf{Viable}(i,x,T)
+    &:\equiv \mathsf{tableGet}(T,i,x)=1,\\
+  \mathsf{Gap}(q,\delta)
+    &:\equiv q=0\ \vee\ \delta\le |q|,\\
+  \mathsf{Stable}_p(c_1,c_2)
+    &:\equiv \dist(\obs(c_1),\obs(c_2))\le 2^{-p}.
+\end{align*}
+
+Bounded conjunctions and disjunctions are represented by checker terms rather
+than object quantifiers, preserving the QF status of induction invariants.
+
+\section{Source and verification status}
+
+The source baseline is ProveIt main commit
+\texttt{9df5b64f82b891640b2154bd14dcee251a25d37f}.  The exact file hashes used for
+the formal interface are recorded in
+\texttt{metadata/source\_manifest.json}.  The archive contains:
+
+\begin{itemize}
+\item this LaTeX source and compiled PDF;
+\item placeholder-free generic Lean source, not typechecked in the build
+      runtime;
+\item a generated Lean schedule example;
+\item exact Python reference algorithms and unit tests;
+\item JSON certificates and a reproducible verification report;
+\item a theorem ledger, difficulty matrix, formalization roadmap, and SHA-256
+      manifest.
+\end{itemize}
+
+\begin{thebibliography}{9}
+\bibitem{ProveItPRA}
+V. Reshetnikov,
+\emph{ProveIt: Logic/PrimitiveRecursiveArithmetic}, current repository tree,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic}.
+
+\bibitem{ConciseIPRA}
+V. Reshetnikov et al.,
+\emph{ConciseIPRA}, deep-embedded Lean formalization in the ProveIt repository,
+audited at the commit recorded in the source manifest.
+
+\bibitem{Kleene}
+S. C. Kleene,
+\emph{Introduction to Metamathematics},
+North-Holland, 1952.
+
+\bibitem{TroelstraVanDalen}
+A. S. Troelstra and D. van Dalen,
+\emph{Constructivism in Mathematics}, Volumes I--II,
+North-Holland, 1988.
+\end{thebibliography}
+
+\end{document}

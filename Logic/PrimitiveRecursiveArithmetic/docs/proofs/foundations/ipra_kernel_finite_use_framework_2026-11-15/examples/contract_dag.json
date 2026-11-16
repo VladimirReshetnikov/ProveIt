@@ -1,0 +1,30 @@
+{
+  "title": "Finite proof-carrying arithmetic pipeline",
+  "nodes": [
+    {
+      "name": "normalize_input",
+      "parents": [],
+      "description": "Check and normalize the external input code."
+    },
+    {
+      "name": "compute_resource_bound",
+      "parents": ["normalize_input"],
+      "description": "Compute the finite fuel and precision budget."
+    },
+    {
+      "name": "run_bounded_trace",
+      "parents": ["normalize_input", "compute_resource_bound"],
+      "description": "Run the fixed primitive-recursive trace."
+    },
+    {
+      "name": "verify_certificate",
+      "parents": ["normalize_input", "run_bounded_trace"],
+      "description": "Check the quantifier-free certificate predicate."
+    },
+    {
+      "name": "erase_to_observable",
+      "parents": ["compute_resource_bound", "verify_certificate"],
+      "description": "Use a modulus or gap to obtain the requested observable."
+    }
+  ]
+}

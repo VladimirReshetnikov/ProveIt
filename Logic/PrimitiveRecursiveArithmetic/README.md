@@ -37,7 +37,7 @@ also records the intake of those packages.
 
 ## Proof packets
 
-[`docs/proofs/`](docs/proofs/README.md) files 74 research packets, delivered on 14 and
+[`docs/proofs/`](docs/proofs/README.md) files 75 research packets, delivered on 14 and
 15 November 2026. Each gives a human-readable proof of a classical theorem in a finitary,
 quantitative form intended for iPRA. Most add exact-arithmetic reference code and a Lean plan
 or scaffold aimed at `ConciseIPRA`.
@@ -51,7 +51,7 @@ The packets are grouped by area:
 | [`analytic-number-theory/`](docs/proofs/analytic-number-theory/) | 10 | prime number theorem, Dirichlet's theorem, the zeta functional equation |
 | [`combinatorics/`](docs/proofs/combinatorics/) | 1 | Bell numbers |
 | [`diophantine-number-theory/`](docs/proofs/diophantine-number-theory/) | 12 | Pell equations, transcendence of e and π, Fermat for exponents divisible by 3, 4, 5 or 7, Siegel and Faltings analyses |
-| [`foundations/`](docs/proofs/foundations/) | 19 | cross-domain frameworks of certificates, moduli and finite contracts |
+| [`foundations/`](docs/proofs/foundations/) | 20 | cross-domain frameworks of certificates, moduli and finite contracts |
 | [`geometry/`](docs/proofs/geometry/) | 13 | isoperimetric inequality, Platonic solids, spherical trigonometry, Zariski descent |
 | [`probability/`](docs/proofs/probability/) | 1 | central limit theorems |
 | [`topology/`](docs/proofs/topology/) | 3 | Jordan curve theorem, invariance of dimension, observation towers |
@@ -60,12 +60,14 @@ The packets are grouped by area:
 [proofs README](docs/proofs/README.md) repeat what each packet says about itself. Many
 packets say that their Lean files are uncompiled outlines, or that they prove only part of
 what was asked; for example, the Faltings and Siegel packets do not prove the general
-theorems. Six packets state that they construct derivations in `ConciseIPRA`'s `Prf PRAAx`,
+theorems. Seven packets state that they construct derivations in `ConciseIPRA`'s `Prf PRAAx`,
 all for framework rules and small examples:
 - `ipra_categorical_methods`, in uncompiled source expressions, for inverse uniqueness,
   Yoneda components and contract cut;
 - `ipra_coherent_methods_2026-11-15`, for contract composition, specialization, a
   quantifier-free induction interface and identity iteration;
+- `ipra_kernel_finite_use_framework_2026-11-15`, in untypechecked source, for composing a
+  proof schedule by simultaneous cut and for a quantifier-free induction loop;
 - `ipra_local_global`, for a variable-length recursion rule and an example;
 - `ipra_presentations_to_witnesses`, for fusion, relational simulation, squaring transport
   and a successor instance;
@@ -73,7 +75,7 @@ all for framework rules and small examples:
   equations of a backward demand pass;
 - `algebra/ipra_stable_observables`, for five observation combinators.
 
-The first five are in `foundations/`.
+The first six are in `foundations/`.
 
 No packet claims such a derivation for one of its main theorems. The proofs README also lists the
 members that were not placed, in

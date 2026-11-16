@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives on 14 and
-15 November 2026: 33 to `docs/drafts`, and 41 to
+15 November 2026: 33 to `docs/drafts`, and 42 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -61,7 +61,7 @@ manifests, build logs and `build/` files.
 
 ## Packets
 
-The 74 archives hold 2,117 members: 1,988 placed here, 82 ignored, 21 in bundled copies of
+The 75 archives hold 2,151 members: 2,022 placed here, 82 ignored, 21 in bundled copies of
 a sibling packet, 1 nested copy of a sibling archive and 25 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -159,6 +159,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | [`ipra_finite_use_framework_2026-11-15_v2`](foundations/ipra_finite_use_framework_2026-11-15_v2/) | *not committed* 2026-11-15 | `ipra_finite_use_framework_v2` | A revision of [`ipra_finite_use_framework_2026-11-15`](foundations/ipra_finite_use_framework_2026-11-15/), with the same finite-use relational composition theorem. It adds `metadata/CURRENT_REPOSITORY_CHECK.md`, a check against the repository after that packet was placed, which proposes reusing the `Prf PRAAx` combinators of `algebra/ipra_stable_observables`. It also revises the report, Lean plan, theorem ledger, source audit and verification records. 22 of its files are byte-identical to the earlier packet's and are placed here too, so that each directory is complete. Its Lean files are uncompiled blueprints. | 38 | 0 |
 | [`ipra_framework`](foundations/ipra_framework/) | *not committed* 2026-11-15 | `ipra_framework` | Finite contracts for mathematics in iPRA, a different packet from `ipra_framework_2026-11-15`: bounded-formula Booleanization and guarded induction, then stable finite windows, coherent approximate witnesses, local analytic branches, and integral power-gap certificates for y^m = f(x). It says it gives no final convergence moduli. | 64 | 1 |
 | [`ipra_framework_2026-11-15`](foundations/ipra_framework_2026-11-15/) | *not committed* 2026-11-15 | `ipra_framework` | A cross-domain certificate-and-modulus framework for the packets here: bounded primitive recursive search and descent, certificate composition, arithmetic of quantitative real names and apartness-conditioned inverses. It says it is not a verified solution of the other packets. Its Lean files have not been typechecked. | 6 | 0 |
+| [`ipra_kernel_finite_use_framework_2026-11-15`](foundations/ipra_kernel_finite_use_framework_2026-11-15/) | *not committed* 2026-11-15 | `ipra_kernel_finite_use_framework_2026-11-15` | A kernel-facing finite-use framework: a reverse-topological proof schedule whose nodes store local `Prf PRAAx` derivations, compiled by simultaneous cut, with a quantifier-free induction loop compiler, bounded relational selection by backward viability, stable-observable erasure, branch collapse under a gap and an exact rational cubic-bisection certificate. It says its Lean source has no `sorry` but was not typechecked. | 34 | 0 |
 | [`ipra_local_global`](foundations/ipra_local_global/) | *not committed* 2026-11-15 | `ipra_local_global` | Local-to-global constructions: a `Prf PRAAx` rule for variable-length PR recursion, classical-to-intuitionistic transfer, uniform local solutions of rational polynomial ODEs, and integral points on split polynomial branches. It states that its Lean modules compile and that two of them construct embedded `Prf PRAAx` derivations. | 37 | 1 |
 | [`ipra_presentations_to_witnesses`](foundations/ipra_presentations_to_witnesses/) | *not committed* 2026-11-15 | `ipra_presentations_to_witnesses` | From finite presentations to explicit witnesses: proof-preserving finite simulation, complete rational enumeration from finite action data, certificate constructors, and complete section lists from nonzero norms. It says it proves no general Siegel, Faltings or Mordell–Weil result. Its `lean/upstream/` copies are omitted; they are the ConciseIPRA sources. | 54 | 5 |
 | [`ipra_resources_and_elimination_2026-11-15`](foundations/ipra_resources_and_elimination_2026-11-15/) | *not committed* 2026-11-15 | `ipra_resources_and_elimination_2026-11-15` | Finite mathematical interfaces: changing-parameter recursion compiled to PR syntax, primitive recursive fuel for lexicographic descent, complete affine plane-intersection lists, and finite auxiliary envelopes. It states that four Lean declarations conclude `Prf PRAAx` derivability. Its `lean/build.sh` needs `BackwardDemand.lean`, omitted here as a copy from `ipra_finite_demand`. | 48 | 12 |

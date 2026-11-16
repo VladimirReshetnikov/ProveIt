@@ -1,0 +1,55 @@
+{
+  "name": "Kernel-Facing Finite-Use (KFFU) framework",
+  "principle": "Specialize finite programs first; compile only explicit object-language proof obligations; erase witnesses only through proved stability or gaps.",
+  "layers": [
+    {
+      "name": "coding",
+      "objects": ["fixed PR symbols", "bounded tuples/lists/tables", "rational and finite-complex codes"],
+      "required_output": "defining equations and QF graph predicates"
+    },
+    {
+      "name": "resource",
+      "objects": ["fuel", "precision", "height", "support", "branch budget"],
+      "required_output": "primitive-recursive backward demand transformer"
+    },
+    {
+      "name": "producer",
+      "objects": ["bounded traces", "finite search", "finite relational clouds"],
+      "required_output": "certificate term or certificate relation"
+    },
+    {
+      "name": "verifier",
+      "objects": ["QF invariant", "local checker", "finish extractor"],
+      "required_output": "Prf PRAAx base/step/finish derivations"
+    },
+    {
+      "name": "composition",
+      "objects": ["reverse-topological ProofBuild schedule"],
+      "required_output": "Prf PRAAx theorem for every node"
+    },
+    {
+      "name": "erasure",
+      "objects": ["stable observable", "modulus", "isolation gap", "boundary theorem"],
+      "required_output": "requested exact or approximate statement"
+    }
+  ],
+  "contract_fields": [
+    "premise formula",
+    "result formula",
+    "explicit dependency list",
+    "fixed PR producer/checker codes",
+    "resource transformer",
+    "QF invariant",
+    "embedded local soundness derivation",
+    "boundary/gap assumptions",
+    "status and nonclaims"
+  ],
+  "forbidden_shortcuts": [
+    "host theorem substituted for Prf PRAAx",
+    "unbounded minimization",
+    "unrecorded classical choice",
+    "exact branch from approximation without a gap",
+    "enumeration completeness from cardinality alone",
+    "generic total evaluator for arbitrary PR codes"
+  ]
+}
