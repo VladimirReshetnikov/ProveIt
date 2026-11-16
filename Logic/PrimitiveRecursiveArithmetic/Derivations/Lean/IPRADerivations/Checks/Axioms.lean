@@ -332,6 +332,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellModular.digit_eq
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellModular.sig_range
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellModular.pell_modular
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Dirichlet.quo_le
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Dirichlet.box_range
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Dirichlet.quo_mono
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Dirichlet.caseA
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Dirichlet.caseB
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Dirichlet.dirichlet_at
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Dirichlet.dirichlet_rational
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
