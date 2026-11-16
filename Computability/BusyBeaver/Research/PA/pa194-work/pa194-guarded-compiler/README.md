@@ -175,3 +175,11 @@ a full transitive rebuild. Reproduce with a fresh output directory:
 ```sh
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-value-body.sh "$PWD" NEW_EMPTY_OUTPUT
 ```
+
+A separate incremental repository-source replay of `PA194Schematic` passed
+with six axiom reports and no `sorryAx`; its Foundation dependencies were
+prebuilt, so this is not a full transitive rebuild. Reproduce with a fresh output:
+
+```sh
+bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-schematic.sh "$PWD" NEW_EMPTY_OUTPUT
+```
