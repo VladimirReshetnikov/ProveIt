@@ -40,3 +40,19 @@ execution theorem.
 ```sh
 bash "$dir/check-cons-sites.sh" "$PWD" /path/to/checked-cons-output /path/to/fresh-sites-output
 ```
+
+## Modus ponens prefix
+
+[`PA194M5MPPrefix.throughConstructor`](PA194M5MPPrefix.lean) proves the
+exact source execution from site 3614 to site 3682. It decodes the
+argument, pushes the old top, copies the offset, and builds the
+radix-five implication at the last of the 61 constructor sites. The
+theorem gives the full resulting register file and a positive clock
+in each covered model, with the two scratch registers 6 and 7 zero on
+entry. The following comparison and returning branches are separate
+source segments.
+
+```sh
+dir=Computability/BusyBeaver/Research/PA/verification/pa194/ipra/variants/pa194m5
+bash "$dir/check-mp-prefix.sh" /path/to/checked-m5-cons-sites /path/to/fresh-mp-prefix
+```
