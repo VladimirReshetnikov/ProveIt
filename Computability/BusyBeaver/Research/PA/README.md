@@ -14,7 +14,7 @@ The [verification directory](verification/) contains the
 [shared machine coding and IΣ₁ transfer](verification/shared/).
 The [research packets](docs/) retain the layout references from their delivery.
 
-Lean proves the unconditional iPRA equivalence for twenty-nine literal 194-state
+Lean proves the unconditional iPRA equivalence for thirty-two literal 194-state
 tables. The theorems and staged replay instructions are under
 [the primary endpoint](verification/pa194/ipra/native-endpoint/README.md),
 [PA1944L](verification/pa194/ipra/variants/pa1944l/README.md),
@@ -23,8 +23,11 @@ tables. The theorems and staged replay instructions are under
 [PA194C32](verification/pa194/ipra/variants/pa194c32/README.md),
 [PA194HX](verification/pa194/ipra/variants/pa194hx/README.md),
 [PA194LC](verification/pa194/ipra/variants/pa194lc/README.md),
+[PA194LC_A](verification/pa194/ipra/variants/pa194lca/PA194LCAFinal.lean),
+[PA194LC_B](verification/pa194/ipra/variants/pa194lcb/README.md),
 [PA194LC_C](verification/pa194/ipra/variants/pa194lcc/README.md),
 [the companion selector overlays](verification/pa194/ipra/variants/pa194sel/companions/README.md),
+[M4R](verification/pa194/ipra/variants/pa194m4r/PA194M4RFinal.lean),
 [PA194OR](verification/pa194/ipra/variants/pa194or/README.md),
 [PA194P5](verification/pa194/ipra/variants/pa194p5/README.md),
 [PA194SEL](verification/pa194/ipra/variants/pa194sel/README.md),

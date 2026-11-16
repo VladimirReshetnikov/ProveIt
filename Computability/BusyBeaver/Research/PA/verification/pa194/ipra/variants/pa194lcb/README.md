@@ -11,6 +11,9 @@ register operations](PA194LCBBoxAgreement.lean), and [58,320-step blank
 startup to the source root](PA194LCBInitializer.lean). The
 [controller](PA194LCBController.lean) gives halting equivalence with the
 primary source in all covered models under the finite site-check premise.
+[The final theorem](PA194LCBFinal.lean) applies the checked certificate
+for all 3,673 sites and proves the unconditional consistency equivalence
+in iPRA.
 
 From the repository root, use the checked [trie controller
 stage](../pa194lcc/README.md).
@@ -20,4 +23,6 @@ variants=Computability/BusyBeaver/Research/PA/verification/pa194/ipra/variants
 lcb=/dev/shm/pa194lcb-model
 bash "$variants/pa194lcb/check.sh" /dev/shm/pa194lcc-controller "$lcb"
 bash "$variants/check-linear-coverage.sh" PA194LCB "$lcb" /dev/shm/pa194lcb-coverage
+bash "$variants/pa194lcb/check-native.sh" "$lcb" /dev/shm/pa194lcb-native
+bash "$variants/check-controller-final.sh" PA194LCB /dev/shm/pa194lcb-native /dev/shm/pa194lcb-coverage /dev/shm/pa194lcb-final
 ```

@@ -39,8 +39,10 @@ same trace to the two pinned tables in every arithmetic `IΣ₁` model.
 
 The [LC_A](../pa194lca/PA194LCANative.lean) and
 [M4R](../pa194m4r/PA194M4RNative.lean) native derivations use their exact
-trie, register operations, and source root. Each takes the full finite
-site certificate as its premise.
+trie, register operations, and source root. The final theorems for
+[LC_A](../pa194lca/PA194LCAFinal.lean) and
+[M4R](../pa194m4r/PA194M4RFinal.lean) apply the checked aggregate for all
+3,673 sites and prove both directions in iPRA.
 
 ```sh
 common=/dev/shm/pa194-common-startup
@@ -49,4 +51,6 @@ bash "$variants/check-shared-trie-model.sh" PA194LCA "$common" /dev/shm/pa194lca
 bash "$variants/check-shared-trie-model.sh" PA194M4R "$common" /dev/shm/pa194m4r-model
 bash "$variants/check-linear-coverage.sh" PA194LCA /dev/shm/pa194lca-model /dev/shm/pa194lca-coverage
 bash "$variants/check-linear-coverage.sh" PA194M4R /dev/shm/pa194m4r-model /dev/shm/pa194m4r-coverage
+bash "$variants/check-controller-final.sh" PA194LCA /dev/shm/pa194lca-model /dev/shm/pa194lca-coverage /dev/shm/pa194lca-final
+bash "$variants/check-controller-final.sh" PA194M4R /dev/shm/pa194m4r-model /dev/shm/pa194m4r-coverage /dev/shm/pa194m4r-final
 ```

@@ -5,7 +5,7 @@ ulimit -c 0
 
 candidate=${1:?candidate required}
 case "$candidate" in
-  PA194AD | PA194HX | PA194LC | PA194P5 | PA194TDY | PA194C32 | PA1944L)
+  PA194AD | PA194HX | PA194LC | PA194P5 | PA194TDY | PA194C32 | PA1944L | PA194LCA | PA194M4R | PA194LCB)
     suffix=Final
     theorem=consistency_iff_literal_nonhalt
     ;;
