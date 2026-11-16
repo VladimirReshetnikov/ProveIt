@@ -47,6 +47,9 @@ implementation files.
 
 ## Baseline and migration scope
 
+The [endpoint inventory](ENDPOINTS.md) records the theorem types, data
+bindings, and replay commands for the first clients.
+
 | Area | Existing interface and evidence | Migration boundary |
 | --- | --- | --- |
 | [ConciseIPRA](ConciseIPRA/README.md) and [Derivations](Derivations/README.md) | `PR`, `PTm`, `Fm`, `Prf PRAAx`, and checked arithmetic from semiring laws and cancellation through order, bounded search and number theory | Use the ordinary calculus for shared statements. The scalar calculus, article, checker formats, and experimental size comparisons keep their own versioned interfaces. |
