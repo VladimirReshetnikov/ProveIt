@@ -1,0 +1,68 @@
+\section{Reference algorithms}
+
+The archive's Python companion uses exact integers and
+\code{fractions.Fraction}.  The algorithms are included for reproducibility
+and for comparison with future Lean definitions.
+
+\subsection{Bounded witness}
+
+\begin{lstlisting}[language=Python]
+def first_true(bound, pred):
+    for i in range(bound):
+        if pred(i):
+            return i
+    return bound
+\end{lstlisting}
+The sentinel is the bound itself.  The object implementation uses primitive
+recursion rather than a Python loop, but has the same invariant.
+
+\subsection{Reverse demands}
+
+For topologically numbered nodes:
+\begin{lstlisting}[language=Python]
+req = external_requests[:]
+for v in reversed(range(number_of_nodes)):
+    for u, demand in parents[v]:
+        req[u] = max(req[u], demand(req[v]))
+\end{lstlisting}
+In a formal packet, the graph and demand functions are fixed data.  The
+Python function accepts them as ordinary objects only for testing.
+
+\subsection{Backward viability}
+
+\begin{lstlisting}[language=Python]
+viable[K] = set(candidates[K])
+for k in reversed(range(K)):
+    viable[k] = {
+        c for c in candidates[k]
+        if any(compat(k, c, d) and d in viable[k + 1]
+               for d in candidates[k + 1])
+    }
+\end{lstlisting}
+A forward pass chooses the least compatible viable successor.  The formal
+implementation represents each set by a Boolean table bounded by the
+candidate-list length.
+
+\subsection{Cubic bisection}
+
+\begin{lstlisting}[language=Python]
+lo, hi = Fraction(0), Fraction(1)
+for _ in range(steps):
+    mid = (lo + hi) / 2
+    if mid**3 + mid - x <= 0:
+        lo = mid
+    else:
+        hi = mid
+return lo, hi
+\end{lstlisting}
+The tests verify the sign bracket, exact dyadic width, residual bound,
+regularity across horizons, and quantitative uniqueness on a rational grid.
+
+\subsection{Validation interpretation}
+
+Passing tests establishes that the executable definitions behave as intended
+on the tested cases.  It does not establish the universal theorems and does
+not construct a \code{Prf PRAAx}.  The value of the reference code is narrower
+and still important: it detects encoding mistakes, wrong precision shifts,
+dead relational branches, invalid sentinels, and boundary-condition errors
+before the object proof is attempted.

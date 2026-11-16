@@ -1,0 +1,91 @@
+\section{Repository source audit}
+
+The repository was inspected read-only at
+\[
+ \code{b88e843c31b50dfe461bfbd0380166ca422cd3ab}.
+\]
+The following paths were central to this synthesis.
+
+\begin{longtable}{p{.39\linewidth}p{.52\linewidth}}
+\toprule
+\textbf{Path} & \textbf{Role in this report}\\
+\midrule
+\endhead
+\path{Logic/PrimitiveRecursiveArithmetic/README.md} &
+Defines the checked/research split, reports fifty-eight proof packets, and
+states that no packet currently contains a completed \code{Prf PRAAx}
+derivation of its main theorem.\\
+
+\path{ConciseIPRA/Lean/ConciseIPRA/PR.lean} &
+Defines \code{PR}, \code{PTm}, \code{PRAAx}, the defining-equation theorems,
+and \code{PRA.qfInd}.  These are the exact object-language interfaces used in
+the Lean plan.\\
+
+\path{ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean} &
+Provides \code{pra\_iff\_native}, \code{native\_iff\_pra}, and round-trip
+theorems.  It confirms that transport follows, rather than replaces, an
+object proof.\\
+
+\path{docs/proofs/foundations/ipra_framework_2026-11-15/} &
+Certificate-and-modulus framework: finite presentations, quantitative names,
+apartness, bounded search, finite descent, and a clear semantic/object proof
+boundary.\\
+
+\path{docs/proofs/foundations/ipra_embedding_framework/} &
+Finite observations and demand, local analytic branches, finite windows,
+hyperelliptic section counts, and finite algebra certificates.\\
+
+\path{docs/proofs/foundations/ipra_evidence_framework/} &
+Finite relational-output and compatibility interface; backward finite
+dynamic programming for witness amalgamation.\\
+
+\path{docs/proofs/foundations/ipra_finite_observation/} &
+Finite observation compiler, fixed-evaluator factorization, finite-net
+minimizers, and superelliptic section bounds, with explicit boundary
+statements.\\
+
+\path{docs/proofs/foundations/ipra_framework/} &
+Finite contracts, stable windows, coherent approximate witnesses, analytic
+branches, and integral power-gap certificates.\\
+
+\path{docs/proofs/foundations/ipra_uniform_certificates/} &
+Finite-net lifting, sign-bracket root names, and precision-contract
+composition.\\
+
+\path{docs/proofs/foundations/ipra_embedding_framework_2026-11-15/} &
+The current 40-page Certified Finitary Presentation baseline.  It develops
+finite traces, robust branching, finite nets, height/list conversion, and
+barrier theorems.  The present report adds the explicit contract-DAG
+compiler and packet-conversion architecture.\\
+
+\path{docs/proofs/algebra/puiseux_ipra/evidence/scope_obstruction.md} &
+Explicit fixed primitive-recursive halting-family obstruction to uniform
+exact Puiseux coefficient selection from arbitrary Cauchy coefficients.\\
+
+\path{docs/proofs/geometry/euler_rodrigues_ipra/README.md} &
+Records the LLPO obstruction to unrestricted exact axis selection and the
+positive rational, gap-conditioned, approximate, and quaternion variants.\\
+
+\path{docs/proofs/diophantine-number-theory/faltings_ipra/README.md} &
+Separates cardinality from height, explains the effective Mordell consequence
+of a positive uniform height theorem, and supplies constructive special
+cases only.\\
+
+\path{docs/proofs/diophantine-number-theory/siegel_ipra/README.txt} &
+Supplies a constructive Runge subcase and identifies the unresolved general
+height/list and cardinality targets.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Method of use}
+
+The foundational packet results are credited as prior components.  This
+report does not claim that the packet statements have been independently
+formalized or verified.  It uses their stated contracts and obstacle
+analyses as design input, cross-checks them against the actual object-language
+API, and gives new composition theorems at the human-proof level.
+
+The Git history changed during the audit: the Certified Finitary Presentation
+packet was placed on \code{main} while the work was in progress.  The final
+snapshot above includes that merge.  This is why the report treats that packet
+as baseline rather than presenting a parallel reinvention.

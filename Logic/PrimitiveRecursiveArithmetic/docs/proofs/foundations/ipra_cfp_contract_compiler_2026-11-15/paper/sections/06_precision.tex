@@ -1,0 +1,117 @@
+\section{Precision contracts and backward budgeting}
+
+\subsection{Local error contracts}
+
+A numerical node should state its error use as a monotone transformer.
+For example, if two real names satisfy
+\[
+ \abs{a-a'}\le 2^{-m},\qquad
+ \abs{b-b'}\le 2^{-m},
+\]
+then addition satisfies
+\[
+ \abs{(a+b)-(a'+b')}\le 2^{1-m}.
+\]
+To guarantee \(2^{-k}\) output error, request \(m=k+1\).  For multiplication,
+a bound on magnitudes is part of the contract:
+\[
+\begin{aligned}
+ \abs{ab-a'b'}
+ &\le \abs{a}\abs{b-b'}+\abs{b'}\abs{a-a'}\\
+ &\le (M_a+M_b)2^{-m}
+\end{aligned}
+\]
+when \(\abs a,\abs{b'}\le M_a,M_b\).  A crude primitive-recursive demand is
+obtained by choosing \(m\) so that
+\(2^m\ge 2^k(M_a+M_b)\).  The least such \(m\) can be found by bounded search
+under an explicit elementary upper bound; a larger direct formula is also
+acceptable.
+
+For reciprocal, a positive gap is indispensable.  If
+\(\abs{x}\ge\delta>0\) and
+\(\abs{x-a}\le\delta/2\), then \(\abs a\ge\delta/2\), and
+\[
+  \abs{\frac1a-\frac1x}
+   =\frac{\abs{x-a}}{\abs{a}\abs{x}}
+   \le \frac{2\abs{x-a}}{\delta^2}.
+\]
+Thus an input demand of
+\[
+  m\ge k+1+\left\lceil\log_2(\delta^{-2})\right\rceil
+\]
+suffices.  In the numerical coding, the logarithm is replaced by a bounded
+power-of-two search on the rational numerator and denominator.
+
+\subsection{The reverse precision theorem}
+
+Let a contract DAG have sink precision \(k\).  Each edge \(u\to v\) carries
+a monotone transformer \(D_{v,u}\).  The reverse recurrence from
+Section~4 computes \(r_u\).
+
+\begin{theorem}[Backward precision budgeting]
+Assume every local node theorem has the form:
+if each parent \(u\) is valid at precision \(D_{v,u}(r)\), then the node output
+is valid at precision \(r\).  Then observations at the reverse-computed
+requests \(r_u\) suffice for every sink at its external request.
+\end{theorem}
+
+\begin{proof}
+Proceed in topological order.  Source observations are valid at their
+computed requests by their presentation contracts.  Suppose every parent of
+\(v\) is valid at its request \(r_u\).  Demand adequacy gives
+\(r_u\ge D_{v,u}(r_v)\).  Each presentation includes a weakening lemma:
+validity at a finer precision implies validity at a coarser one.  Hence the
+parents satisfy the exact premises of the local theorem for \(v\), which
+yields validity at \(r_v\).  At a sink, \(r_v\ge q_v\), and one final weakening
+gives the requested precision.
+\end{proof}
+
+The proof is finitary because the graph is fixed and finite.  It also avoids
+the common circularity ``choose all approximations sufficiently accurate'':
+the required accuracies are explicit primitive-recursive functions of the
+final request and the input bounds.
+
+\subsection{All-precision conclusions}
+
+A theorem about a represented object typically has the external form
+\[
+        \forall k\; \mathsf{OutputValid}(d,k)=1.
+\]
+The internal proof should not induct on this formula.  Instead:
+
+\begin{enumerate}[label=\arabic*.]
+\item keep \(k\) as an arbitrary free variable;
+\item run the finite reverse demand pass at that \(k\);
+\item run the finite forward certificate trace;
+\item prove the quantifier-free output equality at \(k\);
+\item apply universal introduction to \(k\).
+\end{enumerate}
+
+The distinction is subtle but decisive.  Quantifier-free induction is used on
+a finite loop counter; universal quantification over precision is introduced
+only after the loop proof is complete.
+
+\subsection{Finite sums, products, and integrals}
+
+Let \(a_i\) be approximated by \(a_i'\) with error \(\eps_i\).  Exact rational
+arithmetic proves
+\[
+   \abs{\sum_{i<n} a_i-\sum_{i<n}a_i'}
+      \le \sum_{i<n}\eps_i.
+\]
+The proof is a quantifier-free induction on \(n\) with accumulator
+\[
+ E_j=\sum_{i<j}\eps_i,\qquad
+ S_j=\sum_{i<j}a_i',\qquad
+ \abs{S_j-\sum_{i<j}a_i}\le E_j.
+\]
+For a Riemann sum, the mesh, sampling points, local oscillation bounds, and
+tail budget are finite input data.  A verifier checks that:
+the cells cover the interval; the mesh is small enough for the supplied
+modulus; weights sum correctly; and the accumulated error is below the
+requested tolerance.  No completed real integral is needed inside iPRA.
+
+The same pattern handles truncated series, contour polygon sums, finite
+Fourier transforms, characteristic functions of finite laws, and
+Euler--Maclaurin remainders.  The difficult mathematical content is isolated
+in the producer of local bounds; the arithmetic composition is shared.

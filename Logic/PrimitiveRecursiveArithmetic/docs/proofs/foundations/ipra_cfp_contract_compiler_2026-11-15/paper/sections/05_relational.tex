@@ -1,0 +1,138 @@
+\section{Relational outputs and finite coherent selection}
+
+Many constructive failures arise from asking for a single exact output where
+the mathematics supplies only a finite family of locally valid outputs.
+Relational presentations make this explicit.
+
+\subsection{Finite candidate systems}
+
+Fix a requested final depth \(K\).  For each level \(k\le K\), let
+\(\Cand(k)\) be a finite coded list, and let
+\(\Compat(k,c,d)\in\B\) mean that the level-\(k+1\) candidate \(d\) refines
+the level-\(k\) candidate \(c\).  Membership and compatibility are
+primitive-recursive, and all list lengths have primitive-recursive bounds.
+
+There are two useful hypotheses.
+
+\begin{description}[leftmargin=2.7em,style=nextline]
+\item[Strong seriality.]
+Every candidate in \(\Cand(k)\) has a compatible successor in
+\(\Cand(k+1)\).
+\item[Rooted viability.]
+At least one candidate in \(\Cand(0)\) extends through level \(K\), but
+dead-end candidates may also be present.
+\end{description}
+
+Strong seriality permits greedy forward selection.  Rooted viability is
+strictly more general and is handled by backward dynamic programming.
+
+\subsection{Backward viability}
+
+Define a Boolean \(\mathsf{Viable}(K,k,c)\) by downward recursion:
+\[
+\begin{aligned}
+ \mathsf{Viable}(K,K,c)
+   &\defeq [c\in\Cand(K)],\\
+ \mathsf{Viable}(K,k,c)
+   &\defeq [c\in\Cand(k)]\wedge
+      \anyfold_{d\in\Cand(k+1)}
+      \bigl(\Compat(k,c,d)\wedge
+            \mathsf{Viable}(K,k+1,d)\bigr).
+\end{aligned}
+\]
+The recursion is implemented with fuel \(K-k\), so it is primitive recursive.
+For a fixed \(K\), the finite table of viability bits is computed from the
+last level backward.
+
+\begin{theorem}[Finite-horizon coherent selection]
+Suppose some \(c_0\in\Cand(0)\) is viable to level \(K\).  Then a primitive-
+recursive bounded search produces
+\[
+    c_0,c_1,\ldots,c_K
+\]
+such that \(c_k\in\Cand(k)\) and
+\(\Compat(k,c_k,c_{k+1})=1\) for every \(k<K\).
+The correctness proof uses only quantifier-free induction.
+\end{theorem}
+
+\begin{proof}
+Compute the viability table.  Choose the least viable element of
+\(\Cand(0)\) by bounded search.  Having chosen a viable \(c_k\), the defining
+equation for viability says that the finite existential fold at level
+\(k+1\) is \(1\).  The bounded witness lemma returns the least \(d\) for
+which both compatibility and viability hold; set \(c_{k+1}=d\).
+
+The induction invariant at stage \(j\le K\) states:
+the output list has length \(j+1\); its last member is viable to \(K\);
+every member belongs to its candidate list; and all adjacent pairs are
+compatible.  The invariant is a conjunction of Boolean folds over a list of
+length at most \(K+1\), hence quantifier-free.  The step follows from the
+witness property of viability.  At \(j=K\), viability reduces to membership.
+\end{proof}
+
+\begin{remark}[No hidden weak König lemma]
+The theorem is finite in the free parameter \(K\).  It does not assert a
+single infinite path through every infinite finitely branching tree.  For
+each requested precision, it computes only the finite compatibility chain
+needed at that precision.  An infinite regular name requires an additional
+deterministic refinement operator, nested isolating regions, or a quantitative
+uniqueness argument.
+\end{remark}
+
+\subsection{Compatibility as the semantic output}
+
+Suppose a mathematical object \(x\) is represented at level \(k\) by a finite
+family of regions \(R(k,c)\).  A candidate list is correct when the union of
+those regions covers every object satisfying the input contract.  A
+compatibility witness says that \(R(k+1,d)\subseteq R(k,c)\), or more
+generally that the two observations describe the same object to the stated
+tolerances.
+
+This is often the right final theorem.  Examples include:
+\begin{itemize}[leftmargin=1.6em]
+\item finite disks covering all polynomial roots, with multiplicity data;
+\item the two unit quaternions \(q,-q\) representing one rotation;
+\item a projective line rather than a signed unit eigenvector;
+\item a finite set of local analytic charts;
+\item several nearly minimizing grid cells rather than an exact minimizer.
+\end{itemize}
+
+The framework never discards the relation and silently picks a member.  A
+later consumer either accepts relational input, or supplies enough evidence
+to collapse the relation.
+
+\subsection{Isolation and collapse}
+
+\begin{definition}[Isolation certificate]
+At level \(k\), an isolation certificate for a candidate \(c\) consists of a
+positive rational \(\delta\) and a proof that:
+\begin{enumerate}[label=(\roman*)]
+\item the region \(R(k,c)\) contains an intended solution;
+\item every distinct candidate region is at distance at least \(\delta\);
+\item future approximation error is less than \(\delta/3\).
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}[Relational collapse under isolation]
+Given a finite relational presentation and an isolation certificate, bounded
+search selects the unique compatible branch at every sufficiently fine
+level.  The selected observations form a deterministic regular name.
+\end{theorem}
+
+\begin{proof}
+At a fine level, compare each candidate region with the isolating region
+using rational distance lower and upper bounds.  The true branch has distance
+at most the accumulated approximation error, less than \(\delta/3\).
+Every other branch has distance at least
+\(\delta-\delta/3=2\delta/3\).  The rational tests are separated, so bounded
+search returns exactly one branch.  Compatibility and the decreasing error
+budget show that the selected branch at level \(k+1\) refines the branch at
+level \(k\).  The centers therefore satisfy the regular-name estimate.
+All alternatives are finite and all comparisons are exact cross-multiplied
+rational inequalities.
+\end{proof}
+
+This theorem is the standard repair for exact Puiseux coefficients, rotation
+axes, eigenvectors, and local inverse branches: first prove a uniform
+relational theorem, then obtain a single exact branch only under explicit
+isolation data.

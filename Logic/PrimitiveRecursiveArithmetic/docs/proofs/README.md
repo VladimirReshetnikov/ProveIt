@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives on 14 and
-15 November 2026: 33 to `docs/drafts`, and 35 to
+15 November 2026: 33 to `docs/drafts`, and 36 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -61,7 +61,7 @@ manifests, build logs and `build/` files.
 
 ## Packets
 
-The 68 archives hold 1,842 members: 1,718 placed here, 77 ignored, 21 in bundled copies of
+The 69 archives hold 1,885 members: 1,761 placed here, 77 ignored, 21 in bundled copies of
 a sibling packet, 1 nested copy of a sibling archive and 25 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -146,6 +146,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | Directory | Arrival | Wrapper in the archive | What the packet states | P | O |
 |---|---|---|---|---:|---:|
 | [`ipra_categorical_methods`](foundations/ipra_categorical_methods/) | *not committed* 2026-11-15 | `ipra_categorical_methods` | Finite presentations and categorical methods: composition of finite-demand proof contracts; category theory for fixed PR presentations, coded finite categories and specified program families (Yoneda, finite limits and colimits, adjunctions, finite Kan extensions); finite sheaf gluing; a capped Macaulay-matrix procedure giving complete rational-zero lists; and two computability obstructions. Its Lean files are uncompiled. `ObjectCategory.lean` gives source expressions concluding `Prf PRAAx` for inverse uniqueness, Yoneda components and contract cut. Its `provenance/` snapshots of the root `lakefile.toml` and `lake-manifest.json` are placed. | 49 | 0 |
+| [`ipra_cfp_contract_compiler_2026-11-15`](foundations/ipra_cfp_contract_compiler_2026-11-15/) | *not committed* 2026-11-15 | `ipra_cfp_contract_compiler_2026-11-15` | A contract-DAG compiler over certified finitary presentations, building on the frameworks here: local proof-producing PR transducers, a reverse pass computing precision and observation demands, a forward bounded trace with one quantifier-free invariant, finite-horizon relational refinement, and branch collapse only under an explicit isolation gap, with an exact bisection benchmark for y^3 + y = x. Its semantic Lean file keeps `sorry` placeholders, and it says the generic `Prf PRAAx` trace and DAG theorems are not implemented. | 43 | 0 |
 | [`ipra_coherent_methods_2026-11-15`](foundations/ipra_coherent_methods_2026-11-15/) | *not committed* 2026-11-15 | `ipra_coherent_methods` | Coherent finite methods: coherent finite presentations with restriction maps, filtered lifting with a frozen inverse, ranked descent and weighted norms, with applications to Hurwitz-type targets. It credits the earlier frameworks here. Its `lean/upstream/` holds `Deduction.lean`, `PR.lean` and `Syntax.lean` as in ConciseIPRA at `052fbaebfc`, each with one extra blank line at the end, so they are placed. | 55 | 0 |
 | [`ipra_embedding_framework`](foundations/ipra_embedding_framework/) | *not committed* 2026-11-15 | `ipra_embedding_framework` | Mathematics in iPRA through finite observations: bounded-formula compilation, simple analytic branches with Cauchy coefficients, simultaneous finite-window stability, a hyperelliptic zero count for the Siegel strategy, and finite algebra certificates. It calls itself a targeted audit of the collection, not a verification of the packets. | 28 | 1 |
 | [`ipra_embedding_framework_2026-11-15`](foundations/ipra_embedding_framework_2026-11-15/) | *not committed* 2026-11-15 | `ipra_embedding_framework_2026-11-15` | Certified Finitary Presentations, a different packet from `ipra_embedding_framework`: fixed codes and evaluator schemas, finite observations with precision transformers, guarded operations, bounded traces and finite nets, ending in a `PRAAx` derivation. It also proves barriers, such as that no total universal PR evaluator exists. Its Lean files are a semantic core and a blueprint. | 45 | 0 |

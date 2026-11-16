@@ -1,0 +1,108 @@
+\section{Bounded search, height certificates, and finiteness}
+
+\subsection{Complete bounded enumeration}
+
+Let \(P(d,x)\in\B\) be a primitive-recursive predicate, and let \(H(d)\) be a
+primitive-recursive bound.
+
+\begin{construction}[Bounded enumerator]
+Scan \(x=0,\ldots,H(d)\).  Append \(x\) exactly when \(P(d,x)=1\).
+Call the resulting coded list \(L(d,H)\).
+\end{construction}
+
+\begin{theorem}[Bounded enumeration]
+The list \(L(d,H)\) is sound:
+every listed member satisfies \(P\).  It is complete below \(H\):
+if \(x\le H(d)\) and \(P(d,x)=1\), then \(x\) occurs in the list.
+Both claims have quantifier-free induction proofs.
+\end{theorem}
+
+\begin{proof}
+At stage \(t\), use the invariant:
+the accumulator contains exactly the successful indices below \(t\), in
+strictly increasing order.  ``Contains exactly'' is represented by two
+Boolean folds: every listed entry is below \(t\) and satisfies \(P\), and
+for every \(x<t\), \(P(d,x)=1\) implies a bounded membership test succeeds.
+All ranges are bounded by \(t\) and compile to primitive-recursive folds.
+The update at \(t\) preserves the invariant by a decidable test of \(P(d,t)\).
+\end{proof}
+
+\subsection{Height bounds and complete lists}
+
+Suppose \(\mathsf{Sol}(d,x)\) is the exact coded solution predicate.
+
+\begin{theorem}[Bound--list equivalence]
+For a fixed decidable coding:
+\begin{enumerate}[label=(\roman*)]
+\item a verified height bound \(H\) produces a complete finite solution list
+      by bounded enumeration;
+\item a verified complete finite list produces a height bound, namely the
+      maximum code height of its entries.
+\end{enumerate}
+The conversions are primitive recursive relative to the supplied
+certificates.
+\end{theorem}
+
+\begin{proof}
+Part (i) is the bounded enumeration theorem plus the certificate saying every
+solution has height at most \(H\).  For part (ii), fold maximum over the list.
+Completeness says every solution is equal to one of its finitely many
+entries, so its height is at most that maximum.  Equality and list membership
+are decidable in the numerical coding.
+\end{proof}
+
+The theorem does not turn an abstract statement
+\(\forall d\,\exists H\,\forall x(\mathsf{Sol}(d,x)\to h(x)\le H)\)
+into a primitive-recursive function \(H(d)\).  The production of \(H\) is a
+separate theorem.
+
+\subsection{Cardinality is not a cutoff}
+
+\begin{theorem}[Singleton obstruction]
+There is a uniformly primitive-recursive family of predicates \(P_e(t)\)
+such that each set
+\[
+        S_e=\{t:P_e(t)=1\}
+\]
+has cardinality at most one, but there is no total computable function
+\(B(e)\) bounding every member of \(S_e\).
+\end{theorem}
+
+\begin{proof}
+Let \(P_e(t)=1\) exactly when machine \(e\) halts for the first time at stage
+\(t\).  This is a primitive-recursive bounded simulation predicate, and
+\(S_e\) is empty or a singleton.  If a total computable \(B(e)\) bounded its
+member, simulate machine \(e\) for \(B(e)\) steps.  It halts eventually if and
+only if it halts within that bound, so this would decide the halting problem.
+\end{proof}
+
+Consequently, a cardinality estimate for rational points cannot by itself
+provide an enumeration algorithm or stopping criterion.  Pairwise separation
+also does not help unless the ambient search region is bounded.
+
+\subsection{Producer--verifier factorization}
+
+For Diophantine and analytic number-theoretic packets, every claimed result
+should be split into two modules.
+
+\begin{description}[leftmargin=3.2em,style=nextline]
+\item[Certificate producer.]
+The deep mathematical theorem computes a height, cover, zero-free region,
+exceptional modulus, or numerical constant.
+\item[Certificate verifier.]
+Finite arithmetic checks the certificate and derives the desired bounded
+conclusion.
+\end{description}
+
+The verifier is often readily formalizable in iPRA even when the producer is
+unknown, ineffective, or stronger than current mathematics.  This split is a
+positive result: it preserves all finitary consequences of a future producer
+and prevents the packet from disguising the missing theorem as an
+implementation detail.
+
+For general Faltings and Siegel targets, the framework supplies the exact
+bounded enumerator and the equivalence between height bounds and complete
+lists.  It does not supply the general height producer.  For prime
+distribution, a certificate may contain explicit constants and verified
+finite exceptional cases; the verifier proves the stated range once these are
+present, but does not make an ineffective constant effective.

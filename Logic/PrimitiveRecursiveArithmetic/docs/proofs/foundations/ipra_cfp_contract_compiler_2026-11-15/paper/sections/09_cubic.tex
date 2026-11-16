@@ -1,0 +1,175 @@
+\section{Worked benchmark: the stable cubic \(y^3+y=x\)}
+
+This section gives an end-to-end mathematical example suitable for the first
+full object-language implementation of the framework.  It uses only exact
+rational arithmetic, bounded bisection, and quantifier-free induction.
+
+Fix a rational input \(x\) satisfying \(0\le x\le1\), and set
+\[
+       F_x(y)=y^3+y-x.
+\]
+We construct a regular name for the unique solution in \([0,1]\).
+
+\subsection{Exact bisection}
+
+Set \(\ell_0=0\) and \(u_0=1\).  Given \(\ell_n,u_n\), let
+\[
+      m_n=\frac{\ell_n+u_n}{2}.
+\]
+Since \(F_x(m_n)\) is rational, its sign is decidable exactly.  Define
+\[
+(\ell_{n+1},u_{n+1})=
+\begin{cases}
+ (m_n,u_n),&F_x(m_n)\le0,\\
+ (\ell_n,m_n),&F_x(m_n)>0.
+\end{cases}
+\]
+
+\begin{lemma}[Bisection invariant]
+For every \(n\),
+\[
+  0\le\ell_n\le u_n\le1,\qquad
+  F_x(\ell_n)\le0\le F_x(u_n),\qquad
+  u_n-\ell_n=2^{-n}.
+\]
+\end{lemma}
+
+\begin{proof}
+At \(n=0\), \(F_x(0)=-x\le0\), while
+\(F_x(1)=2-x\ge1\).  Suppose the invariant holds.  The midpoint lies between
+the endpoints.  If \(F_x(m_n)\le0\), the left endpoint can be replaced by
+\(m_n\); otherwise the right endpoint can be replaced by \(m_n\), and exact
+rational order gives \(0<F_x(m_n)\).  In either case the sign bracket is
+preserved and the width is halved.  The entire invariant is a conjunction of
+rational cross-product inequalities and one dyadic-width equality, so its
+induction matrix is quantifier-free.
+\end{proof}
+
+Let
+\[
+        c_n=\frac{\ell_n+u_n}{2}.
+\]
+
+\begin{lemma}[Regularity]
+If \(m\ge n\), then
+\[
+          \abs{c_m-c_n}\le 2^{-n}.
+\]
+Consequently \(a(k)=c_{k+2}\) is a fast regular name.
+\end{lemma}
+
+\begin{proof}
+The bisection intervals are nested.  A finite induction on \(m-n\) proves
+\[
+       [\ell_m,u_m]\subseteq[\ell_n,u_n].
+\]
+Both centers lie in the latter interval, whose width is \(2^{-n}\).  For the
+shifted name,
+\[
+ \abs{a(j)-a(k)}
+ \le 2^{-(k+2)}<2^{-k}
+ \qquad(j\ge k).
+\]
+No completeness axiom is used in the internal statement; regularity is a
+family of exact rational inequalities.
+\end{proof}
+
+\subsection{Residual bound}
+
+For \(0\le r\le s\le1\),
+\[
+\begin{aligned}
+  F_x(s)-F_x(r)
+  &=(s-r)(s^2+sr+r^2+1),\\
+  s-r
+  &\le F_x(s)-F_x(r)\le4(s-r).
+\end{aligned}
+\]
+The upper bound uses \(s^2,sr,r^2\le1\).
+
+\begin{theorem}[Certified cubic name]
+For every \(n\),
+\[
+       \abs{F_x(c_n)}\le 4\cdot2^{-n}.
+\]
+In particular, \(a(k)=c_{k+3}\) satisfies
+\[
+       \abs{a(k)^3+a(k)-x}\le2^{-k-1}.
+\]
+\end{theorem}
+
+\begin{proof}
+Monotonicity places \(F_x(c_n)\) between
+\(F_x(\ell_n)\le0\) and \(F_x(u_n)\ge0\).  Hence
+\[
+ \abs{F_x(c_n)}
+ \le F_x(u_n)-F_x(\ell_n)
+ \le4(u_n-\ell_n)=4\cdot2^{-n}.
+\]
+All quantities are rational, and the factorization of the cubic difference
+is a polynomial identity.
+\end{proof}
+
+\subsection{Quantitative uniqueness}
+
+\begin{lemma}[Residual isolation]
+For rational \(p,q\in[0,1]\),
+\[
+       \abs{p-q}\le \abs{F_x(p)-F_x(q)}
+       \le \abs{F_x(p)}+\abs{F_x(q)}.
+\]
+Thus if both residuals are at most \(\eps\), then
+\(\abs{p-q}\le2\eps\).
+\end{lemma}
+
+\begin{proof}
+The factorization gives
+\[
+ \abs{F_x(p)-F_x(q)}
+ =\abs{p-q}\,(p^2+pq+q^2+1).
+\]
+The second factor is at least \(1\), proving the first inequality.  The
+second is the triangle inequality.
+\end{proof}
+
+It follows that any two regular names in \([0,1]\) whose residuals tend to
+zero with explicit moduli are extensionally equal.  The proof is quantitative:
+to establish distance at most \(2^{-k}\), request residuals at most
+\(2^{-k-2}\) and approximations accurate enough that their rounding errors
+consume the remaining half of the budget.
+
+\subsection{The exact certificate}
+
+A finite certificate for request \(k\) contains:
+\[
+  x,\quad n=k+3,\quad
+  (\ell_0,u_0),\ldots,(\ell_n,u_n),
+\]
+together with the branch bit at each stage.  A verifier checks:
+\begin{enumerate}[label=(\roman*)]
+\item \(x\) and every endpoint are valid rational codes;
+\item \(0\le x\le1\);
+\item the initial interval is \([0,1]\);
+\item each successor is the prescribed half selected by the recorded exact
+      sign test;
+\item every sign bracket and width equality holds;
+\item the final center and residual bound are correct.
+\end{enumerate}
+The trace length is \(k+3\), a primitive-recursive function of the free
+request.  The invariant is precisely the bisection invariant above.  This is
+therefore a complete instance of the finite-trace reflection theorem.
+
+\subsection{Extension to represented \(x\)}
+
+If \(x\) is itself given by a regular name, exact midpoint signs are
+unavailable near zero.  Use the overlapping-branch rule:
+at stage \(n\), approximate \(F_x(m_n)\) within \(\eta_n\).  A confidently
+negative value selects the right half, a confidently positive value selects
+the left half, and an ambiguous value returns a short central interval whose
+radius accounts for \(\eta_n\) using the lower slope bound \(1\).
+The output is initially relational; the residual isolation lemma proves that
+all accepted intervals are mutually close.  Reverse demand propagation picks
+the input precision needed to make the final interval width and residual
+smaller than \(2^{-k}\).  This demonstrates why the relational framework is
+not a concession: it is the stable uniform form of bisection on represented
+inputs.

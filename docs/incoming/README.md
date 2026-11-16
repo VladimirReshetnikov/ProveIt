@@ -244,7 +244,9 @@ was placed the same way, under `foundations/`, and then deleted. All 37 of its m
 placed. `ipra_algebraic_geometry_framework_2026-11-15.zip` was placed the same way, under
 `geometry/`, and then deleted. All 46 of its members are placed.
 `ipra_categorical_methods.zip` was placed the same way, under `foundations/`, and then
-deleted. All 49 of its members are placed.
+deleted. All 49 of its members are placed. `ipra_cfp_contract_compiler_2026-11-15.zip` was
+placed the same way, under `foundations/`, and then deleted. All 43 of its members are
+placed.
 
 ## Sub-exponential 3-SAT (ETH) reports
 
