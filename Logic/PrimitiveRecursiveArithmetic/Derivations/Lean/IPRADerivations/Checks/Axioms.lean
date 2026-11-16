@@ -380,6 +380,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellOneSided.lower_lt
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellOneSided.pell_upper
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellOneSided.pell_upper_strict
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellNegUnits.eq_one_of_sq
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellNegUnits.R_lt_A
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellNegUnits.RT_lt_AB
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellNegUnits.neg_square
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellNegUnits.A_eq
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellNegUnits.seed_unique
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
