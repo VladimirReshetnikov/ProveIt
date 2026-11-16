@@ -134,6 +134,18 @@ model. Of its three fields, `inhabited` is proved for these theories in `pa194-m
   latter is written with quoted templates, the former with `domainCode`, `zeroCode`,
   `successorCode`), the iteration of `tr_close_step` over `close n`, and the passage from
   `tr` to the `rootParameters` form of the induction supplier.
+
+  For four of the fixed axioms, `PA194FixedAxiomQuotes` gives guarded derivations of
+  `tr ⌜σ⌝` for the quoted sentences themselves: `addCongruence_tr` and `mulCongruence_tr`
+  from `SourceFacts T`, and `addSucc_tr`, `mulSucc_tr` from `SourceFacts T` and one more
+  fixed fact each, `T ⊢ tHyp sA3` and `T ⊢ tHyp sM3` (`PA194ArithFacts`): if `u'` is a
+  successor of `u`, `w` a sum of `u'` and `v`, `w₀` a sum of `u` and `v` and `w₁` a successor
+  of `w₀`, then `w` and `w₁` are order-isomorphic; and the same with products for `w`,
+  `w₀` and a sum of `v` and `w₀` for `w₁`. These four are the fixed axioms that the
+  supplier of `pa194-model-logic` still assumes
+  ([`FORWARD-FIXED-FOUR.md`](../pa194-model-logic/FORWARD-FIXED-FOUR.md)); that supplier
+  takes them as unguarded proofs of the quoted standard translation, so connecting the two
+  forms is not done. `sA3` and `sM3` are not proved for the actual source theory.
 - `inhabited` for the actual source theory is proved outside this directory
   (`PA194SourceInhabited.inhabited_provable` in `pa194-model-logic`), from the standard
   derivation of the empty-set formula.
@@ -158,7 +170,9 @@ three axioms. `PA194NameSchema`, `PA194NameSemantics` and `PA194NameFactsProof` 
 the same way, on top of those; of their eight, nine and seventeen reports, the six for the
 facts about relations in `PA194NameSemantics` list `propext` alone and the others the same
 three axioms. `PA194InductionForms` and `PA194InductionSchema` were compiled the same way;
-their seven and nine reports are the same three axioms. The script itself has not been run.
+their seven and nine reports are the same three axioms. So were `PA194ArithFacts` and
+`PA194FixedAxiomQuotes` (nine and six reports, the same three axioms), the latter also
+against a locally compiled `PA194PAeqTargetInventory`. The script itself has not been run.
 
 Two incremental replays against the repository sources were made for an earlier state of this
 directory, before `PA194GuardedCalculus` and `PA194TrCompile` existed and while the compiler
