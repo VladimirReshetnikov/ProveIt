@@ -1,0 +1,153 @@
+\section{Repository audit and diagnosis}
+
+\subsection{Pinned source snapshot}
+
+This report was prepared against the ProveIt main-branch snapshot
+\[
+\code{b88e843c31b50dfe461bfbd0380166ca422cd3ab}.
+\]
+At that snapshot, \code{Logic/PrimitiveRecursiveArithmetic/README.md}
+distinguishes the checked \code{ConciseIPRA} library from 58 delivered theorem
+packets under \code{docs/proofs}.  The repository's own index warns that the
+packets were filed as delivered, were not rerun during intake, and do not
+contain completed \(\Prf\,\PRAAx\) derivations of their advertised results.
+That warning is foundational to the present audit: a polished PDF, a passing
+Python test, a type-correct specification, or an ambient Lean theorem is not
+itself an iPRA proof.
+
+The collection spans algebra, real and complex analysis, analytic number
+theory, combinatorics, Diophantine number theory, geometry, probability, and
+topology.  Seven foundation packets already propose finite-contract,
+finite-observation, certificate, modulus, and evidence-indexed approaches.
+Their strongest common conclusions are sound and are retained here.  Their
+main common gap is also retained: the last step from a generic semantic
+argument to a constructed derivation in the actual \code{ConciseIPRA} object
+language is mostly planned rather than implemented.
+
+\subsection{Repeated proof-patterns}
+
+Across the packets, successful arguments have a remarkably stable shape.
+
+\begin{enumerate}
+\item A classical object is replaced by a numerical presentation: a finite
+      coefficient list, a fixed Cauchy evaluator, a rational law, a finite
+      grid, a coded matrix, a bounded trace, or a supplied certificate.
+\item The desired statement is rewritten as a family of finite inequalities,
+      coefficient identities, residual bounds, parity checks, or finite
+      search assertions, indexed by a requested precision or bound.
+\item Every non-total operation is guarded by a denominator, derivative,
+      separation, pivot, or compactness margin.
+\item A primitive-recursive calculation is justified by a local invariant.
+\item The final mathematical statement is recovered by universal introduction
+      over the previously free precision parameter or by an extensionality
+      theorem for the chosen presentation.
+\end{enumerate}
+
+The same pattern appears in the constructive prime number theorem, finite
+Euler products, polynomial factorization, exact coordinate geometry,
+finite-grid topology, rational probability laws, and bounded Diophantine
+enumeration.  This is evidence that a common framework is appropriate.
+
+\subsection{Repeated failure-modes}
+
+The difficult packets also repeat a small number of failure-modes.
+
+\paragraph{Ambient proof versus embedded derivation.}
+Many Lean files prove correct facts about \code{Nat}, \code{Rat}, arrays, or
+finite lists.  These are useful semantic prototypes, but they do not
+construct a term of type \(\Gamma\vdash[\PRAAx]\varphi\).  The bridge theorem
+\code{pra\_iff\_native} transports an already constructed iPRA derivation; it
+does not synthesize that derivation from an ambient theorem.
+
+\paragraph{Induction over an infinitary interpretation.}
+A represented-real contract may be written as an assertion quantified over
+all precisions.  Placing that assertion inside the induction predicate makes
+the predicate non-quantifier-free and creates the impression that iPRA is too
+weak.  The correct proof fixes the requested precision, instantiates only the
+finitely many name facts read by the computation, and inducts on a Boolean
+accumulator.
+
+\paragraph{Exact choice at unstable points.}
+Root ordering at collisions, a unit rotation axis at the identity, exact sign
+of an arbitrary real, a unique minimizer without a modulus, or a Puiseux
+branch from arbitrary Cauchy coefficients can be discontinuous.  Several
+packets correctly identify LLPO/LPO or computability obstructions.  The right
+repair is a relational or approximate output, or an exact output under an
+explicit positive gap.
+
+\paragraph{Compactness without data.}
+Statements such as ``take a finite subcover,'' ``choose a convergent
+subsequence,'' or ``minimize on a compact set'' have no direct computational
+content.  In the successful packets they are replaced by a finite net, a
+modulus of uniform continuity, a finite cover certificate, or a nested family
+of isolating regions.
+
+\paragraph{Finiteness without a cutoff.}
+A proof that a set has at most \(M\) elements does not identify where those
+elements occur.  General Faltings and Siegel packets isolate precisely this
+gap: bounded enumeration is straightforward once a height bound is supplied,
+but cardinality alone does not give a stopping rule.  The same issue appears
+in rational covering representatives for Mordell--Weil descent.
+
+\paragraph{Arbitrary program codes.}
+A theorem schema may be uniform in the numerical parameters of one fixed
+primitive-recursive evaluator.  It cannot quantify over arbitrary program
+codes and then invoke a total primitive-recursive universal evaluator.  A
+fixed evaluator or a finite trace verifier is required.
+
+\subsection{What the earlier foundation packets contribute}
+
+The existing foundation work can be organized as follows.
+
+\begin{longtable}{@{}p{0.24\textwidth}p{0.68\textwidth}@{}}
+\toprule
+Packet idea & Contribution retained here \\
+\midrule
+\endhead
+Certificate-and-modulus framework & Bounded search, certificate composition,
+regular-name arithmetic, apartness-conditioned inverse, and a clear
+producer/verifier split.\\
+Finite contracts & Booleanization, guarded induction, fixed evaluators,
+finite input tables, stable windows, local analytic branches, and explicit
+power-gap certificates.\\
+Finite observations & Separation of evaluation and verification demands,
+backward precision schedules, finite-net infima, and examples of checked
+finite-table Lean proofs.\\
+Certified Finitary Presentations & A clean trace-system master theorem,
+finite query tables, fixed-precision discipline, domain-specific resolution
+matrix, and explicit computability/constructive barriers.\\
+Evidence-indexed finite mathematics & Relational outputs and backward finite
+viability, avoiding an unjustified globally chosen approximate witness.\\
+Uniform certificates & Finite-net lifting, sign-bracket root names, and
+precision-contract composition.\\
+Targeted embedding framework & Simple analytic branches, simultaneous finite
+window stability, finite algebra certificates, and a hyperelliptic fiber
+count conditional on a missing covering theorem.\\
+\bottomrule
+\end{longtable}
+
+The present report does not claim priority over those ideas.  Its contribution
+is to combine them into one proof architecture, strengthen the relational
+component into a general shrinking-viability theorem, and state the
+object-language compiler in a form whose inputs and output are actual
+\(\Prf\,\PRAAx\) derivations.
+
+\subsection{A three-way status discipline}
+
+Every claim in a future packet should be classified as one of the following.
+
+\begin{description}[leftmargin=3.4cm,style=nextline]
+\item[Embedded theorem.] A checked object-language derivation, optionally exported to the native
+      calculus.
+\item[Semantic theorem.] A complete human proof or ambient Lean proof about
+      the coded structures, accompanied by an exact plan for the embedded
+      proof, but not yet a \(\Prf\) term.
+\item[Target or conditional theorem.] A well-formed proposition whose proof
+      depends on a named producer, modulus, height bound, covering list, or
+      analytic certificate not supplied by the packet.
+\end{description}
+
+This report's core mathematical arguments are semantic theorems with detailed
+embedded proof plans.  The accompanying Python checks are implementation
+examples.  No line of the report treats those checks as a replacement for a
+universal proof.

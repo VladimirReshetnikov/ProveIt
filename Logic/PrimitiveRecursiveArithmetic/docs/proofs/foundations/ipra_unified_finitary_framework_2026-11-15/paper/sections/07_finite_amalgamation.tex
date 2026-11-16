@@ -1,0 +1,222 @@
+\section{Finite witness amalgamation by viability}
+\label{sec:amalgamation}
+
+\subsection{Layered finite relations}
+
+Fix a numerical parameter \(p\) and a horizon \(h\).  At level \(k\le h\),
+answers are numbers \(a<B(p,k)\).  Two Boolean predicates are given:
+\[
+ \Good(p,k,a),\qquad
+ \Compat(p,k,a,b),
+\]
+where the second predicate is used only when
+\(a<B(p,k)\) and \(b<B(p,k+1)\).  A path of length \(d\) beginning at level
+\(k\) is a tuple
+\[
+ (a_0,\ldots,a_d),
+ \qquad a_j<B(p,k+j),
+\]
+such that every \(a_j\) is good and every adjacent pair is compatible.
+Tuples are coded by any fixed primitive-recursive list or bounded-sequence
+coding.  The exact coding is immaterial once projection, length, and bounded
+folds have their defining equations.
+
+A na\"ive attempt to construct a path chooses a good answer at each level and
+hopes that the choices remain extendible.  This can fail even in a finite
+binary tree: a locally good node may be a dead end.  Backward viability removes
+this failure without using any choice principle.
+
+\subsection{Backward viability}
+
+Define \(\Viable(p,k,d,a)\) recursively in the remaining depth \(d\):
+\begin{align*}
+ \Viable(p,k,0,a)
+   &:= [a<B(p,k)]\wedge \Good(p,k,a),\\
+ \Viable(p,k,d+1,a)
+   &:= [a<B(p,k)]\wedge \Good(p,k,a)\wedge{}\\
+   &\quad \Any_{b<B(p,k+1)}
+      \bigl(\Good(p,k+1,b)\wedge
+             \Compat(p,k,a,b)\wedge
+             \Viable(p,k+1,d,b)\bigr).
+\end{align*}
+Every connective and bounded existential in this definition is a Boolean fold,
+so \(\Viable\) is primitive recursive.  The changing level causes no problem:
+the recursion variable is \(d\), while \(k\) is an ordinary parameter.
+
+\begin{theorem}[Finite path--viability equivalence]
+\label{thm:path-viability}
+For every fixed layered presentation, iPRA proves
+\begin{align*}
+ \Viable(p,k,d,a)=1
+ \quad\Longleftrightarrow\quad&
+ \text{there is a coded compatible good path of length }d\\
+ &\text{beginning with }a\text{ at level }k.
+\end{align*}
+The witness path may be bounded by a primitive-recursive code bound depending
+only on \(p,k,d\) and the candidate bounds \(B\).
+\end{theorem}
+
+\begin{proof}
+Induct on \(d\).  At depth zero, the singleton path \([a]\) is valid exactly
+when \(a\) is in range and good.  For the successor direction, unfold the
+recursion equation for \(\Viable\).  Correctness of the finite \(\Any\)-fold
+gives a witness \(b<B(p,k+1)\) satisfying the edge condition and
+\(\Viable(p,k+1,d,b)=1\).  The induction hypothesis yields a path beginning
+with \(b\); prepend \(a\).  Conversely, a path beginning with \(a,b\) supplies
+the required bounded witness \(b\), while its tail supplies viability by the
+induction hypothesis.
+
+The induction formula can be Booleanized as equality of two checkers: the
+viability bit and the bounded path-existence bit.  Hence the formal proof uses
+quantifier-free induction.  The displayed existential statement is recovered
+from the search-correctness theorem after the Boolean induction is complete.
+\end{proof}
+
+\subsection{A canonical finite path}
+
+Let
+\[
+ \Next(p,k,d,a)
+\defeq \Search_{b<B(p,k+1)}
+  \bigl(\Good(p,k+1,b)\wedge\Compat(p,k,a,b)
+       \wedge\Viable(p,k+1,d,b)\bigr).
+\]
+When \(\Viable(p,k,d+1,a)=1\), bounded-search correctness proves that
+\(\Next(p,k,d,a)\) is a compatible viable successor.  Primitive recursion on
+\(j\le d\), repeatedly applying \(\Next\), gives a canonical path
+\(\mathsf{path}(p,k,d,a,j)\).
+
+\begin{corollary}[Least viable path selector]
+\label{cor:least-viable-path}
+There is a fixed primitive-recursive path constructor such that iPRA proves
+\[
+ \Viable(p,k,d,a)=1\to
+ \mathsf{PathOK}(p,k,d,a,\mathsf{path}(p,k,d,a))=1.
+\]
+No uniqueness hypothesis is needed.  The least-witness convention is only a
+finite implementation choice; the mathematical conclusion remains relational.
+\end{corollary}
+
+\begin{proof}
+Use quantifier-free induction on the number of generated edges.  The invariant
+states that the current node is viable for the number of edges still required
+and that the accumulated path is good and compatible.  Search correctness
+establishes the successor invariant.  At the final stage, depth-zero viability
+supplies goodness of the last node.  All path-prefix assertions are finite
+Boolean folds.
+\end{proof}
+
+\subsection{From local seriality to finite chains}
+
+Sometimes the input theorem supplies not a precomputed viable root but a
+seriality contract:
+\begin{align*}
+ &\exists a<B(p,0)\;\Good(p,0,a),\tag{I}\label{eq:serial-init}\\
+ &\forall k<h\;\forall a<B(p,k)\;
+   \bigl(\Good(p,k,a)\to
+     \exists b<B(p,k+1)\,[\Good(p,k+1,b)\wedge\Compat(p,k,a,b)]\bigr).
+   \tag{E}\label{eq:serial-step}
+\end{align*}
+For a fixed finite horizon, bounded search converts these assumptions to a
+path without countable choice.
+
+\begin{theorem}[Finite dependent choice is primitive recursive]
+\label{thm:finite-dependent-choice}
+For every horizon \(h\), assumptions \eqref{eq:serial-init} and
+\eqref{eq:serial-step} yield a primitive-recursively constructed compatible
+good path through levels \(0,\ldots,h\).  The theorem is provable in iPRA.
+\end{theorem}
+
+\begin{proof}
+Choose the least initial good candidate by bounded search.  At stage \(k<h\),
+specialize the seriality premise to the current candidate and choose the least
+compatible successor by bounded search.  Induct on \(k\) with the
+quantifier-free invariant that the coded prefix has the required length and
+its Boolean path checker equals one.  The horizon is a free numerical
+parameter; there is no infinite sequence and no appeal to countable choice.
+\end{proof}
+
+Backward viability is stronger than this serial construction.  It works when
+some good nodes are dead ends, and it supports additional global constraints
+that can be tested only after later levels are known.
+
+\subsection{Constraint propagation and witness amalgamation}
+
+Let \(C(p,k,a)\) be an additional Boolean constraint, perhaps a prescribed
+residual budget, chart membership, sign bracket, or compatibility with a
+second proof module.  Replace \(\Good\) by \(\Good\wedge C\) in the viability
+recursion.  This gives the following monotonicity and amalgamation principle.
+
+\begin{theorem}[Finite witness amalgamation]
+\label{thm:witness-amalgamation}
+Suppose a finite collection of requirements is compiled into one layered
+finite relation.  If the initial viability fold is nonempty,
+\[
+ \Any_{a<B(p,0)}\Viable(p,0,h,a)=1,
+\]
+then bounded search and the least viable path constructor produce one finite
+witness family satisfying all requirements simultaneously.  Adding a new
+Boolean requirement can only remove viable nodes; it cannot create a false
+path.
+\end{theorem}
+
+\begin{proof}
+Search supplies a viable initial node.  Apply
+\cref{cor:least-viable-path}.  Soundness of conjunction and of every folded
+requirement shows that the output path satisfies each component.  For
+monotonicity, an induction on remaining depth proves that viability under the
+stronger goodness predicate implies viability under the weaker one.  At the
+successor step, the same witness edge is used.
+\end{proof}
+
+This is a finite constraint-satisfaction theorem.  It applies not only to
+linear paths but, after coding the state of a bounded collection of pending
+requirements, to finite trees, finite acyclic proof networks, overlapping
+chart choices, and simultaneous approximation windows.  The state-space may
+be large, but it remains primitive recursive and its correctness proof is the
+same Boolean invariant.
+
+\subsection{Full-horizon viability}
+
+The next section needs to know not merely that a node extends forward, but that
+it occurs on a complete path from level zero to a specified horizon.  Define
+\[
+ \FullV(p,h,k,a)=1
+\]
+to mean that \(k\le h\) and there is a compatible good path
+\((a_0,\ldots,a_h)\) with \(a_k=a\).  This is a bounded path-existence
+predicate and hence primitive recursive.  It also admits a dynamic-programming
+factorization:
+\[
+ \FullV(p,h,k,a)
+ \quad\Longleftrightarrow\quad
+ \Reach(p,k,a)\wedge\Viable(p,k,h-k,a),
+\]
+where \(\Reach\) is the forward Boolean fold saying that \(a\) is reachable
+from some good level-zero node.  Both directions are proved by concatenating
+or splitting finite paths.
+
+This two-sided notion is crucial.  A merely forward-viable candidate at a high
+level need not be connected to the input data.  A merely reachable candidate
+may be a dead end.  Full-horizon viability records exactly the candidates that
+participate in a complete finite solution.
+
+\subsection{Object-language implementation}
+
+There are two efficient implementations, both suitable for the trace compiler.
+
+\paragraph{Path-code checker.}
+Bound a path code, search over all codes, and verify range, goodness,
+compatibility, and the distinguished coordinate by finite folds.  This version
+has the smallest correctness proof and is useful for certificates.
+
+\paragraph{Dynamic-programming table.}
+Build the forward reachable table and backward viable table, each represented
+as a bounded bit-vector code.  The local invariant states that the first
+\(j\) entries agree with the defining fold.  This version avoids exponential
+search and is appropriate for compiled algorithms.
+
+In either implementation, the mathematical theorem is an instance of
+\cref{thm:embedded-trace}.  The application module must supply object-language
+derivations for Boolean lookup, update, folds, and the local recurrence; the
+generic trace theorem then supplies the global soundness derivation.

@@ -1,0 +1,165 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\hypersetup{
+  pdftitle={A Unified Finitary-Relational Framework for Mathematics in iPRA},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov},
+  pdfsubject={Intuitionistic primitive recursive arithmetic, finite certificates, Lean formalization plan}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Finitary-relational mathematics in iPRA}
+\rhead{15 November 2026}
+\cfoot{\thepage\ of \pageref{LastPage}}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{principle}[theorem]{Principle}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{status}[theorem]{Status}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\B}{\{0,1\}}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\PRAAx}{\texttt{PRAAx}}
+\newcommand{\Prf}{\texttt{Prf}}
+\newcommand{\NPrf}{\texttt{NPrf}}
+\newcommand{\PR}{\texttt{PR}}
+\newcommand{\PTm}{\texttt{PTm}}
+\newcommand{\Fm}{\texttt{Fm}}
+\newcommand{\FRP}{\mathsf{FRP}}
+\newcommand{\True}{\mathsf{true}}
+\newcommand{\False}{\mathsf{false}}
+\newcommand{\angles}[1]{\langle #1\rangle}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\Close}{\mathsf{Close}}
+\newcommand{\Good}{\mathsf{Good}}
+\newcommand{\Compat}{\mathsf{Compat}}
+\newcommand{\Viable}{\mathsf{Viable}}
+\newcommand{\Obs}{\mathsf{Obs}}
+\newcommand{\Dom}{\mathsf{Dom}}
+\newcommand{\TraceOK}{\mathsf{TraceOK}}
+\newcommand{\All}{\mathsf{All}}
+\newcommand{\Any}{\mathsf{Any}}
+\newcommand{\Search}{\mathsf{Search}}
+\newcommand{\Run}{\mathsf{Run}}
+\newcommand{\Inv}{\mathsf{Inv}}
+\newcommand{\Accept}{\mathsf{Accept}}
+\newcommand{\GoodTable}{\mathsf{GoodTable}}
+\newcommand{\dist}{\mathsf{dist}}
+\newcommand{\FullV}{\mathsf{FullV}}
+\newcommand{\Reach}{\mathsf{Reach}}
+\newcommand{\Tail}{\mathsf{Tail}}
+\newcommand{\Next}{\mathsf{Next}}
+\newcommand{\defeq}{\mathrel{:=}}
+\newcommand{\dotminus}{\mathbin{\dot{-}}}
+
+\lstdefinestyle{lean}{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  keepspaces=true,
+  frame=single,
+  breaklines=true,
+  showstringspaces=false,
+  keywordstyle=\bfseries,
+  commentstyle=\itshape
+}
+\lstdefinestyle{python}{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  keepspaces=true,
+  frame=single,
+  breaklines=true,
+  showstringspaces=false,
+  language=Python
+}
+
+\title{\textbf{A Unified Finitary-Relational Framework\\for Embedding Mathematics into Intuitionistic Primitive Recursive Arithmetic}}
+\author{Prepared for Vladimir Reshetnikov}
+\date{15 November 2026\\Repository snapshot \code{b88e843c31b50dfe461bfbd0380166ca422cd3ab}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The ProveIt repository contains a kernel-checked presentation of intuitionistic
+primitive recursive arithmetic and a large collection of research packets that
+translate classical mathematics into finite, quantitative forms.  The packets
+repeatedly encounter the same boundaries: bounded induction is confused with
+induction over completed infinite objects; ambient Lean theorems are confused
+with object-language derivations; exact selectors are requested where only
+multivalued approximate data are constructively justified; compactness is used
+without a finite net or modulus; and deep finiteness theorems are used without
+a height bound or certificate producer.
+
+This report develops a single framework addressing these issues.  Its first
+layer is a proof-producing finite-trace compiler: fixed primitive-recursive
+algorithms, Boolean folds, bounded searches, and certificate verifiers are
+translated into actual \(\Prf\,\PRAAx\) derivations by quantifier-free induction.
+Its second layer is a finitary relational presentation of mathematical objects.
+Instead of forcing a globally chosen representative, a theorem may return a
+finite family of compatible approximate answers.  A backward viability dynamic
+program amalgamates finite witnesses.  A new shrinking-viability theorem gives
+a primitive-recursive coherent name when a quantitative determinacy modulus is
+available; without such a modulus the correct output remains relational.
+
+The report gives complete human proofs of the core compiler, Booleanization,
+composition, witness-amalgamation, shrinking-viability, guarded extensionality,
+finite-net transfer, and height-bound/list equivalence theorems.  It then shows
+how these tools reorganize analysis, algebra, geometry, topology, number theory,
+Diophantine geometry, and probability.  Exact selection principles known to
+imply LLPO/LPO, universal primitive-recursive evaluation, and search cutoffs
+from mere cardinality bounds are explicitly retained as barriers rather than
+hidden assumptions.  The accompanying Lean files give dependency-ordered,
+source-accurate blueprints against ProveIt's \code{ConciseIPRA} API; the generic
+object-language proofs are not claimed kernel-checked in this archive.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{sections/01_executive}
+\input{sections/02_repository_audit}
+\input{sections/03_logical_base}
+\input{sections/04_booleanization}
+\input{sections/05_trace_compiler}
+\input{sections/06_relational_presentations}
+\input{sections/07_finite_amalgamation}
+\input{sections/08_shrinking_viability}
+\input{sections/09_extensionality}
+\input{sections/10_quantitative_analysis}
+\input{sections/11_domain_libraries}
+\input{sections/12_difficulty_resolutions}
+\input{sections/13_lean_plan}
+\input{sections/14_examples}
+\input{sections/15_barriers}
+\input{sections/16_research_questions}
+\input{sections/A_exact_statements}
+\input{sections/B_source_audit}
+
+\end{document}

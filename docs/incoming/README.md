@@ -251,6 +251,8 @@ and then deleted. It leaves out four ignored `.log` files.
 `ipra_finite_use_framework_2026-11-15_v2.zip`, a revision of
 `ipra_finite_use_framework_2026-11-15`, was placed the same way, in its own directory under
 `foundations/`, and then deleted. All 38 of its members are placed.
+`ipra_unified_finitary_framework_2026-11-15.zip` was placed the same way, under
+`foundations/`, and then deleted. It leaves out one ignored `.log` file.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

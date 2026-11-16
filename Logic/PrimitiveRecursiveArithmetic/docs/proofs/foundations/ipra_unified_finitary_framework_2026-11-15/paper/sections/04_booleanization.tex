@@ -1,0 +1,184 @@
+\section{Bounded Booleanization and finite search}
+\label{sec:booleanization}
+
+\subsection{Boolean predicates}
+
+A numerical predicate \(P(\bar x)\) is represented by a primitive-recursive
+function \(b_P(\bar x)\in\B\).  We write
+\[
+  [P](\bar x) \quad\text{for the equation}\quad b_P(\bar x)=1.
+\]
+The Boolean operations are fixed primitive-recursive functions satisfying the
+truth tables for \(0\) and \(1\).  Their correctness is proved by the two
+numerical cases.  Equality and order are also represented by Boolean functions;
+for example, \(x\le y\) can be tested by whether truncated subtraction
+\(x\dotminus y\) is zero.
+
+A \emph{bounded formula} is built from atomic equations between
+primitive-recursive terms, propositional connectives, and quantifiers
+\(\forall i<B(\bar x)\) and \(\exists i<B(\bar x)\).  The bound and all terms
+are fixed primitive-recursive functions.
+
+\subsection{Finite folds}
+
+For a Boolean predicate \(b(i,\bar x)\), define
+\begin{align*}
+ \All_b(0,\bar x)&=1,\\
+ \All_b(n+1,\bar x)&=\All_b(n,\bar x)\wedge b(n,\bar x),\\[3pt]
+ \Any_b(0,\bar x)&=0,\\
+ \Any_b(n+1,\bar x)&=\Any_b(n,\bar x)\vee b(n,\bar x).
+\end{align*}
+Both are primitive recursive.  Define a first-witness search
+\(\Search_b(n,\bar x)\) that returns the least \(i<n\) with
+\(b(i,\bar x)=1\), and returns \(n\) when no such witness exists.  It can be
+computed by a primitive recursion carrying the current candidate and a found
+bit.
+
+\begin{theorem}[Correctness of Boolean folds]
+\label{thm:boolean-fold}
+For every fixed Boolean predicate \(b\), iPRA proves:
+\begin{align*}
+ \All_b(n,\bar x)=1
+  &\leftrightarrow \forall i\,(i<n\to b(i,\bar x)=1),\\
+ \Any_b(n,\bar x)=1
+  &\leftrightarrow \exists i\,(i<n\wedge b(i,\bar x)=1),
+\end{align*}
+and, under the existential premise,
+\[
+ \Search_b(n,\bar x)<n,
+ \qquad b(\Search_b(n,\bar x),\bar x)=1,
+\]
+with no smaller witness.
+\end{theorem}
+
+\begin{proof}
+We spell out the proof because it illustrates the permitted use of
+quantifier-free induction.
+
+For the forward direction of the universal fold, keep \(i\) free and induct on
+\(n\) with the quantifier-free formula
+\[
+  i<n\wedge \All_b(n,\bar x)=1\;\to\;b(i,\bar x)=1.
+\]
+The relation \(i<n\) and the Boolean equation are atomic equations between
+primitive-recursive terms.  At zero the antecedent is false.  At a successor,
+if \(i<n+1\), numerical case analysis gives either \(i<n\), where the induction
+hypothesis applies to the prefix fold, or \(i=n\), where the last Boolean
+factor gives \(b(n,\bar x)=1\).  Universal introduction over \(i\) is performed
+after the induction.
+
+For the reverse direction, place
+\(H:=\forall i(i<n\to b(i,\bar x)=1)\) in the context and induct on the fold
+length \(m\le n\) with the quantifier-free formula
+\(\All_b(m,\bar x)=1\).  The step specializes \(H\) to \(m\), uses the
+recursion equation of \(\All_b\), and the Boolean truth table for conjunction.
+Equivalently, one may prove the open theorem with \(n\) as induction variable,
+keeping \(\forall i(i<n\to\cdots)\) outside the induction predicate and using
+its successor decomposition in the context.
+
+The existential fold is dual.  For the forward direction, induction on \(n\)
+examines whether the last disjunct is true; the result is either the last index
+or a witness obtained from the prefix induction hypothesis.  For the reverse
+direction, a supplied witness \(i<n\) is propagated through the fold by
+quantifier-free induction on the difference between \(i+1\) and \(n\).
+
+For first-witness search, the invariant states that either the found bit is
+zero and every earlier predicate value is zero, or the found bit is one, the
+stored index is below the current length, its predicate value is one, and all
+smaller indices fail.  Every clause is a Boolean equation or bounded
+comparison, hence quantifier free.  At termination, an existential premise
+excludes the no-witness branch.  The minimality clause is read directly from
+the invariant.
+\end{proof}
+
+\subsection{Booleanization theorem}
+
+\begin{theorem}[Bounded Booleanization]
+\label{thm:booleanization}
+For every fixed bounded formula \(\theta(\bar x)\), one can construct a
+primitive-recursive Boolean function \(b_\theta\) such that iPRA proves
+\[
+  b_\theta(\bar x)=1\quad\leftrightarrow\quad\theta(\bar x).
+\]
+The construction is effective in the syntax of \(\theta\).
+\end{theorem}
+
+\begin{proof}
+Proceed by structural recursion on \(\theta\).  Atomic equations use the
+Boolean equality test.  Conjunction, disjunction, and implication use the
+corresponding Boolean truth functions; intuitionistic logic proves the finite
+truth-table equivalences because each input is known to equal zero or one.
+Negation is implication to the designated false equation.
+
+For \(\forall i<B(\bar x)\,\psi(i,\bar x)\), apply the induction hypothesis to
+obtain \(b_\psi\), and define
+\[
+ b_\theta(\bar x)=\All_{b_\psi}(B(\bar x),\bar x).
+\]
+The result follows from \cref{thm:boolean-fold}.  The existential case uses
+\(\Any\).  All constructions use composition and primitive recursion, so the
+resulting function is represented by a fixed \(\PR\) symbol.  The proof is
+uniformly assembled from the component equivalences by substitution and
+natural-deduction rules.
+\end{proof}
+
+\subsection{Bounded minimization}
+
+Let \(c(i,\bar x)\) be an integer or rational cost with a decidable comparison,
+and let \(C(\bar x)>0\) be a finite candidate bound.  Define
+\(\operatorname{argmin}_{i<C}c(i,\bar x)\) by primitive recursion, retaining
+the least index among equal minima.
+
+\begin{lemma}[Finite minimization]
+\label{lem:finite-min}
+I P R A proves that the returned index is below \(C\) and has cost no larger
+than every candidate below \(C\).  If a Boolean admissibility predicate is
+included and at least one candidate is admissible, the same holds among
+admissible candidates.
+\end{lemma}
+
+\begin{proof}
+The accumulator stores the current best index, a found bit, and optionally the
+current best cost.  The quantifier-free invariant states that the best index is
+admissible when the found bit is one and that every previously inspected
+admissible candidate has cost at least the stored cost; tie-breaking adds that
+no smaller equal-cost candidate was skipped.  The successor step is one
+comparison and a Boolean case split.  The existential admissibility premise
+eliminates the no-candidate final state.
+\end{proof}
+
+This lemma is the computational core of finite-net residual minimization,
+finite maximum and minimum, canonical certificate selection, and the backward
+viability algorithms below.
+
+\subsection{Bounded descent}
+
+A common proof has a measure \(m(s)\in\N\) that strictly decreases whenever a
+state is not terminal.  If the initial measure is bounded by \(M(u)\), then the
+state must terminate within \(M(u)\) steps.
+
+\begin{lemma}[Primitive-recursive descent]
+\label{lem:descent}
+Suppose fixed primitive-recursive functions \(\mathsf{step}\),
+\(\mathsf{terminal}\), and \(m\) satisfy, in iPRA,
+\[
+ \mathsf{terminal}(s)=0\to m(\mathsf{step}(s))<m(s).
+\]
+Then the bounded run of length \(m(s)+1\) reaches a terminal state.
+\end{lemma}
+
+\begin{proof}
+Induct on the step index with the quantifier-free invariant
+\[
+ \mathsf{terminal}(s_i)=1
+ \quad\vee\quad m(s_i)+i\le m(s_0).
+\]
+If the state is already terminal, keep it fixed.  Otherwise the strict measure
+decrease proves the second disjunct at the next stage.  At stage
+\(m(s_0)+1\), the nonterminal disjunct would imply a negative natural measure,
+so only terminality remains.
+\end{proof}
+
+The point is not that all mathematical descent arguments are easy, but that
+once a numerical measure and local decrease theorem are supplied, termination
+is a routine quantifier-free induction.

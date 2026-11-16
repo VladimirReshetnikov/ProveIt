@@ -1,0 +1,134 @@
+\section{Executive summary and exact scope}
+
+\subsection{The problem exposed by the repository}
+
+The repository separates two very different achievements.  The directory
+\code{ConciseIPRA} contains a Lean formalization of ordinary first-order
+intuitionistic primitive recursive arithmetic and its bi-interpretation with a
+small native scalar calculus.  In particular, the repository provides the
+object theory \(\PRAAx\), derivations \(\Prf\), quantifier-free induction
+\code{PRA.qfInd}, and the transfer theorem \code{pra\_iff\_native}.  By contrast,
+the theorem packets under \code{docs/proofs} are research reports: most contain
+mathematical arguments, executable finite checks, and Lean plans, but none is a
+completed derivation of its advertised theorem in \(\Prf\,\PRAAx\).
+
+The recurring difficulty is therefore not merely ``how to code real numbers''
+or ``how to avoid excluded middle.''  It is how to organize a proof so that
+all of the following are simultaneously explicit:
+
+\begin{enumerate}[label=(\arabic*)]
+\item the finite information a construction reads;
+\item the primitive-recursive algorithm or certificate checker operating on
+      that information;
+\item a quantifier-free invariant suitable for \(\ipra\)'s induction;
+\item the modulus, separation margin, height bound, finite net, or covering
+      data that makes an apparently infinitary step finite;
+\item the exact object-language formula and derivation to be transported to
+      the native calculus;
+\item the boundary between a completed verifier and an unconstructed producer.
+\end{enumerate}
+
+The existing foundation packets already contain many of these ingredients.
+The present report unifies them and adds two missing interfaces: a syntactic
+proof-producing compiler and a relational refinement layer for non-unique
+approximate witnesses.
+
+\subsection{The proposed architecture}
+
+The framework has five layers.
+
+\paragraph{Layer 1: fixed numerical presentations.}
+Every object family is represented by natural-number parameters and fixed
+primitive-recursive evaluators.  A represented object is not an arbitrary
+program supplied at run time.  If an external computation is not represented
+by a fixed evaluator, its finite trace is supplied as a certificate and checked
+by a fixed primitive-recursive verifier.  This distinction avoids the false
+idea of a total universal primitive-recursive evaluator.
+
+\paragraph{Layer 2: Boolean finite contracts.}
+All bounded quantifiers, list checks, finite sums, maxima, residual tests, and
+search predicates are compiled to primitive-recursive Boolean functions.
+Global name hypotheses remain ordinary assumptions in the context; induction
+uses only equations saying that a Boolean accumulator equals one.  Precision is
+kept free during the finite proof and universally quantified only afterward.
+
+\paragraph{Layer 3: proof-producing traces.}
+A bounded computation is presented by fixed functions
+\(\mathsf{init},\mathsf{step},\mathsf{bound},\mathsf{inv},\mathsf{accept}\).
+Given object-language derivations of the base, local step, and final soundness
+formulas, a generic theorem constructs an object-language derivation of the
+whole run.  The construction uses \code{PRA.qfInd}, the defining equations of
+primitive recursion, equality substitution, and ordinary natural deduction.
+Thus the result is not merely an ambient theorem about a Lean function.
+
+\paragraph{Layer 4: finitary relational presentations.}
+A challenge may admit several correct approximate answers.  The framework
+therefore permits a finite relation \(\Good(p,k,a)\) rather than insisting on a
+single canonical \(a\).  A compatibility relation connects answers at adjacent
+precision levels.  Bounded backward dynamic programming determines which
+answers can be extended to a finite horizon and constructs a compatible finite
+chain whenever one exists.  This is enough for all fixed-precision theorems and
+avoids a hidden choice principle.
+
+\paragraph{Layer 5: determinization only from quantitative data.}
+When a downstream theorem genuinely needs one coherent name, it must consume a
+quantitative determinacy hypothesis.  The shrinking-viability theorem assumes
+that all candidates viable to a stated horizon lie in a small observational
+ball.  The least viable candidate then defines a primitive-recursive name, and
+the shrinking condition proves regularity.  Root separation, strong convexity,
+isolating intervals, contraction estimates, or projective gaps are instances
+of this hypothesis.  Qualitative uniqueness alone is not silently converted
+into a modulus.
+
+\subsection{Principal theorems}
+
+The main general results proved in this report are:
+
+\begin{enumerate}[label=\textbf{T\arabic*.},leftmargin=4em]
+\item \textbf{Bounded Booleanization.} Every fixed bounded formula over
+      primitive-recursive terms has a Boolean evaluator whose correctness is
+      provable in \(\ipra\).
+\item \textbf{Finite-trace compiler.} Embedded base, step, and final
+      derivations yield an embedded theorem about the complete bounded run.
+\item \textbf{Contract composition.} Proof-producing transducers compose,
+      including adaptive finite query trees.
+\item \textbf{Finite witness amalgamation.} A bounded backward viability
+      computation constructs a compatible chain through finite candidate
+      levels whenever such a chain exists.
+\item \textbf{Shrinking viability.} Finite candidate relations plus a
+      quantitative shrinking horizon define a coherent primitive-recursive
+      approximate name.
+\item \textbf{Guarded extensionality.} Operations with precision transformers
+      descend to observational setoids, while partial operations are totalized
+      and guarded by explicit domain or apartness certificates.
+\item \textbf{Finite-net transfer.} A modulus and a finite net turn local
+      rational checks into uniform conclusions on a represented compact set.
+\item \textbf{Height bound/list equivalence.} For a decidable coded predicate,
+      an explicit height bound and a complete finite list are constructively
+      interconvertible; a mere cardinality bound is not enough.
+\end{enumerate}
+
+\subsection{What is and is not resolved}
+
+The framework resolves several obstacles at the level at which they are
+actually logical or architectural.  It gives a reusable path from finite
+algorithms to \(\Prf\,\PRAAx\), a correct treatment of all-precision hypotheses,
+a generic finite-search library, and a non-choice-based interface for
+non-unique approximations.  It also gives standard positive replacements for
+exact sign, root, axis, pivot, and branch selection.
+
+It does not manufacture missing mathematics.  In particular, it does not
+produce the unknown or ineffective height bounds needed for general Faltings
+or Siegel statements, rational covering representatives for arbitrary
+Mordell--Weil descent, or all constants in the strongest prime-distribution
+claims.  Instead, those results are factored into a uniform finite verifier and
+an explicit producer obligation.  This is progress: the verified downstream
+arithmetic can be completed once a producer is supplied, and no search cutoff
+is smuggled in through a qualitative theorem.
+
+The included Lean files are detailed blueprints against the current repository
+API.  They contain theorem statements, formula constructors, proof dependency
+order, and exact points where \code{PRA.qfInd}, \code{Prf.subst},
+\code{Prf.trans}, and \code{pra\_iff\_native} are used.  Lean was not available
+in the artifact environment, so this archive does not claim that those files
+have been elaborated or kernel-checked.

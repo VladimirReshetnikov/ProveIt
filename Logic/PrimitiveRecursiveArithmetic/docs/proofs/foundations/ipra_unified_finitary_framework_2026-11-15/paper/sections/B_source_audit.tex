@@ -1,0 +1,127 @@
+\section{Repository source audit and inheritance}
+\label{app:source-audit}
+
+\subsection{Snapshot and scope}
+
+The repository was inspected read-only at main commit
+\[
+ \code{b88e843c31b50dfe461bfbd0380166ca422cd3ab}.
+\]
+The audit focused on the checked iPRA backend, the proof-packet index, all
+foundation-packet summaries, and representative obstruction reports.  This is
+not a verification of all theorem packets.  Claims inherited from earlier
+packets are credited below; the present report's additions are the unified
+proof-producing compiler interface and the shrinking-viability synthesis.
+
+\subsection{Primary checked backend}
+
+\begin{longtable}{@{}p{0.38\textwidth}p{0.54\textwidth}@{}}
+\toprule
+Repository path & Use in this report\\
+\midrule
+\endhead
+\path{Logic/PrimitiveRecursiveArithmetic/README.md} & Status boundary between
+checked \code{ConciseIPRA} and delivered research packets; packet count and
+absence of completed packet derivations.\\
+\addlinespace
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md} & Native scalar
+calculus, ordinary iPRA presentation, and formalization overview.\\
+\addlinespace
+\path{ConciseIPRA/Lean/ConciseIPRA/PR.lean} & Exact definitions of
+\code{PR}, \code{PTm}, \code{PRAAx}, the defining-equation lemmas, and
+\code{PRA.qfInd}.\\
+\addlinespace
+\path{ConciseIPRA/Lean/ConciseIPRA/Deduction.lean} & Exact derivation type
+\code{Prf}, substitution, weakening, cut, quantifier rules, and equality
+transport.\\
+\addlinespace
+\path{ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean} & Exact
+statement of \code{pra\_iff\_native} and the native/ordinary translations.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Packet catalog and foundation reports}
+
+\begin{longtable}{@{}p{0.42\textwidth}p{0.50\textwidth}@{}}
+\toprule
+Repository path & Inherited contribution or status\\
+\midrule
+\endhead
+\path{docs/proofs/README.md} & Catalog of 58 packets, domain grouping, and
+packet-specific status summaries.\\
+\addlinespace
+\path{foundations/ipra_embedding_framework/} & Finite observations,
+bounded Boolean predicates, local analytic branches, stability windows, and
+finite algebra certificates.\\
+\addlinespace
+\path{foundations/ipra_embedding_framework_2026-11-15/} & Certified
+Finitary Presentations, finite-trace reflection at the human-proof level,
+precision transformers, guards, finite nets, and an explicit ledger saying the
+generic embedded \code{Prf PRAAx} proof is not yet implemented.\\
+\addlinespace
+\path{foundations/ipra_evidence_framework/} & Relational finite outputs,
+compatibility, and backward finite dynamic programming for witness
+amalgamation.\\
+\addlinespace
+\path{foundations/ipra_finite_observation/} & Uniform finite-table compiler,
+degree-uniform finite constructions, quantitative minimizers, and checked
+ambient finite-table prototypes.\\
+\addlinespace
+\path{foundations/ipra_framework/} & Finite contracts, guarded induction,
+regular-name arithmetic, stable windows, local branches, and compiled embedded
+examples.\\
+\addlinespace
+\path{foundations/ipra_framework_2026-11-15/} & Bounded search/descent,
+certificate composition, quantitative names, and guarded inverse.\\
+\addlinespace
+\path{foundations/ipra_uniform_certificates/} & Finite-net lifting, root
+names under sign/separation certificates, and precision-contract composition.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Representative difficulty reports}
+
+\begin{longtable}{@{}p{0.42\textwidth}p{0.50\textwidth}@{}}
+\toprule
+Repository path & Boundary used here\\
+\midrule
+\endhead
+\path{geometry/euler_rodrigues_ipra/README.md} & LLPO obstruction to a
+uniform exact unit axis and positive replacements using quaternions,
+approximation, or a separation gap.\\
+\addlinespace
+\path{algebra/puiseux_ipra/evidence/scope_obstruction.md} & Halting reduction
+against uniform exact Puiseux coefficient production from arbitrary Cauchy
+coefficient names.\\
+\addlinespace
+\path{diophantine-number-theory/faltings_ipra/README.md} & Distinction between
+finiteness/cardinality and a height bound; complete-list--bound equivalence;
+status of general Faltings.\\
+\addlinespace
+\path{foundations/ipra_embedding_framework_2026-11-15/metadata/difficulty_matrix.csv} & Cross-domain list of reported obstacles and residual
+status.\\
+\bottomrule
+\end{longtable}
+
+\subsection{What is new in this report}
+
+The following synthesis is not copied as a theorem from one prior packet:
+
+\begin{enumerate}
+\item a precise proof-producing interface in which the base, step, and final
+      trace obligations are themselves \(\Prf\,\PRAAx\) terms and the generic
+      compiler is a Lean function returning the completed derivation;
+\item the integration of relational finite outputs with two-sided
+      full-horizon viability;
+\item the shrinking-viability theorem, which chooses the least full-viable
+      candidate at changing finite horizons and proves coherence from cloud
+      diameter and edge-tail bounds, without selecting one infinite branch;
+\item a unified migration boundary separating finite kernel, certificate
+      producer, object-language endpoint, and native export; and
+\item a dependency-ordered implementation program against the exact current
+      \code{ConciseIPRA} API.
+\end{enumerate}
+
+The report makes no claim that these additions have already been kernel-checked
+in Lean.  The human proofs are intended to guide that implementation, and the
+accompanying exact Python examples validate finite definitions only.

@@ -1,0 +1,230 @@
+\section{Shrinking viability and coherent approximate names}
+\label{sec:shrinking}
+
+\subsection{The remaining coherence problem}
+
+Finite amalgamation solves every theorem with a fixed finite horizon.  It does
+not by itself produce one infinite coherent branch.  Nor should it: an
+infinite finitely branching tree can have paths of every finite length while a
+uniform choice of an infinite branch may require additional logical or
+computational strength, depending on how the tree is presented.
+
+Most mathematical applications need less.  They do not need a stable code for
+the same branch at every level; they need observations that become mutually
+close.  If every full finite solution has nearly the same observation at the
+requested level, then arbitrary finite choices can be determinized without
+choosing an infinite branch.  This is the content of the shrinking-viability
+theorem.
+
+\subsection{Metric observations}
+
+For each good candidate \(a<B(p,k)\), let
+\(\Obs(p,k,a)\) be a rational or coded metric observation.  Let
+\(d(x,y)\) be a primitive-recursive rational-valued pseudometric on such
+observations.  We require the ordinary finite metric laws as embedded
+inequalities.  Exact equality of codes is not required: different candidates
+may denote the same approximate object.
+
+Assume a primitive-recursive edge budget \(\delta(p,k)\ge0\) such that
+\begin{equation}
+ \Good(p,k,a)\wedge\Good(p,k+1,b)\wedge\Compat(p,k,a,b)
+ \quad\Longrightarrow\quad
+ d(\Obs(p,k,a),\Obs(p,k+1,b))\le\delta(p,k).
+ \label{eq:edge-budget}
+\end{equation}
+Let
+\[
+ \Tail(p,k,\ell)=\sum_{j=k}^{\ell-1}\delta(p,j)
+ \qquad(k\le\ell)
+\]
+be the finite telescoping budget.
+
+Choose a nondecreasing primitive-recursive horizon function \(H(p,k)\) with
+\(H(p,k)\ge k\).  Define the finite viable cloud
+\[
+ V_{p,k}:=\{a<B(p,k):\FullV(p,H(p,k),k,a)=1\}.
+\]
+It is a finite, decidable set.  Its canonical representative is
+\[
+ s(p,k)=\min V_{p,k},
+\]
+with any fixed default value when the set is empty.  In applications, a
+separate hypothesis proves nonemptiness.
+
+\subsection{The shrinking-viability theorem}
+
+\begin{theorem}[Shrinking viability]
+\label{thm:shrinking-viability}
+Suppose iPRA proves the following numerical contracts for every admissible
+parameter \(p\).
+
+\begin{enumerate}[label=(SV\arabic*)]
+\item \emph{Nonempty finite solutions:}
+      \(V_{p,k}\ne\varnothing\) for every \(k\).
+\item \emph{Monotone horizons:}
+      if \(k\le\ell\), then \(H(p,k)\le H(p,\ell)\).
+\item \emph{Horizontal shrinking:} for all \(a,b\in V_{p,k}\),
+      \[
+       d(\Obs(p,k,a),\Obs(p,k,b))\le\varepsilon(p,k).
+      \]
+\item \emph{Edge control:} every compatible edge satisfies
+      \eqref{eq:edge-budget}.
+\end{enumerate}
+Then the primitive-recursive selector
+\[
+ x(p,k):=\Obs(p,k,s(p,k))
+\]
+satisfies, for all \(k\le\ell\),
+\begin{equation}
+ d(x(p,k),x(p,\ell))
+ \le \varepsilon(p,k)+\Tail(p,k,\ell).
+ \label{eq:shrinking-bound}
+\end{equation}
+Consequently, if a primitive-recursive modulus \(r(p,n)\) satisfies
+\[
+ k\ge r(p,n)\to
+ \varepsilon(p,k)+\sum_{j=k}^{m-1}\delta(p,j)\le 2^{-n}
+ \quad\text{for every }m\ge k,
+\]
+then \(k\mapsto x(p,r(p,k))\) is a regular Cauchy name with an explicit
+primitive-recursive rate.
+\end{theorem}
+
+\begin{proof}
+Fix \(p\) and \(k\le\ell\).  By (SV1), the selected candidate
+\(s(p,\ell)\) lies on a complete good compatible path
+\[
+ c_0,c_1,\ldots,c_{H(p,\ell)}
+ \qquad c_\ell=s(p,\ell).
+\]
+Here and below the path is obtained by bounded search from the Boolean
+\(\FullV\) assertion; no unbounded choice is used.
+
+Let \(b=c_k\).  Since horizons are nondecreasing,
+\(H(p,k)\le H(p,\ell)\).  Truncating the displayed path at level \(H(p,k)\)
+shows that \(b\in V_{p,k}\).  The selected candidate \(s(p,k)\) also lies in
+\(V_{p,k}\), so horizontal shrinking gives
+\[
+ d(\Obs(p,k,s(p,k)),\Obs(p,k,b))\le\varepsilon(p,k).
+\]
+Along the segment \(c_k,c_{k+1},\ldots,c_\ell\), edge control and repeated
+triangle inequalities give
+\[
+ d(\Obs(p,k,b),\Obs(p,\ell,s(p,\ell)))
+ \le \sum_{j=k}^{\ell-1}\delta(p,j).
+\]
+One final triangle inequality proves \eqref{eq:shrinking-bound}.
+
+Every operation in this argument is finite.  In the object theory, the path
+is the least bounded path certified by \(\FullV\); membership in the two
+viable clouds is a Boolean equation; the telescoping inequality is proved by
+quantifier-free induction on \(\ell-k\).  Universal introduction over
+\(k,\ell\) is performed after that induction.  The final regularity claim is
+obtained by substituting the supplied modulus.
+\end{proof}
+
+\subsection{Where horizontal shrinking comes from}
+
+The hypothesis that a viable cloud has small diameter is quantitative
+uniqueness, not an unexplained compactness principle.  Several standard
+sources are reusable.
+
+\paragraph{Isolating intervals or balls.}
+If every full finite solution at level \(k\) is certified to lie in the same
+rational ball of radius \(\rho_k\), then
+\(\varepsilon_k=2\rho_k\).
+
+\paragraph{Strong convexity.}
+Suppose candidates satisfy
+\(f(a)\le m_k+\eta_k\), while
+\(f(x)\ge f(x_*)+\lambda d(x,x_*)^2\).  Then every viable candidate is within
+\(\sqrt{\eta_k/\lambda}\) of the unique minimizer, so the cloud diameter is at
+most twice that bound.  In a strictly finitary development, the square-root
+bound is replaced by a rational dyadic upper bound verified by squaring.
+
+\paragraph{Residual-to-distance estimates.}
+If a certified inequality
+\[
+ d(x,Z)\le C\,R(x)
+\]
+relates residual to distance from one isolated solution or one small cluster,
+and every viable candidate has residual at most \(\eta_k\), then the cloud
+diameter is bounded by twice \(C\eta_k\).
+
+\paragraph{Algebraic separation.}
+For a polynomial with exact algebraic coefficient data, isolating disks and a
+root-separation bound group approximations into disjoint clusters.  Within a
+cluster the viable cloud shrinks; at collisions the cluster or root multiset,
+not an ordered root, is the stable object.
+
+\paragraph{Contraction certificates.}
+If a rational box is mapped into itself by a contraction of factor
+\(q<1\), any two candidates surviving \(n\) refinement steps differ by at
+most \(q^n\) times the initial diameter plus the verified rounding budget.
+
+These mechanisms are exactly the data absent from a bare qualitative
+uniqueness statement.  The theorem refuses to infer a modulus from uniqueness
+alone.
+
+\subsection{Nested balls as a special case}
+
+\begin{corollary}[Nested-ball name]
+\label{cor:nested-ball-name}
+Suppose a certificate at level \(k\) is a rational center \(c_k\) and radius
+\(r_k\), every full path chooses nested balls, and every viable ball at level
+\(k\) intersects one common rational ball of radius \(r_k\).  If
+\(r_k\le 2^{-k-3}\) and compatible centers move by at most
+\(2^{-k-3}\), then the least full-viable center, shifted by a fixed number of
+precision levels, is a regular name.
+\end{corollary}
+
+\begin{proof}
+Intersecting balls of radius \(r_k\) have centers at distance at most
+\(2r_k\), so take \(\varepsilon_k=2r_k\).  The edge budgets form a geometric
+series.  Apply \cref{thm:shrinking-viability} and absorb the constant factor by
+shifting the requested precision.
+\end{proof}
+
+\subsection{Exact choice under a positive gap}
+
+Shrinking gives approximate coherence.  Exact labels can be recovered only
+when the labels are separated.
+
+\begin{corollary}[Eventual exact label stability]
+\label{cor:exact-label-gap}
+Suppose candidates carry labels in a finite set, candidates with different
+labels have observational distance at least \(g>0\), and the right side of
+\eqref{eq:shrinking-bound} is eventually less than \(g\).  Then the selected
+labels are eventually constant.  A primitive-recursive search for the first
+precision where the certified error is below \(g\) yields an exact label.
+\end{corollary}
+
+\begin{proof}
+Two selected candidates at sufficiently high precisions are closer than
+\(g\); therefore they cannot have different labels.  The threshold is found
+from the supplied numerical modulus, not from a qualitative assertion that a
+gap exists.
+\end{proof}
+
+This is the correct interface for root ordering, pivot choice, chart choice,
+sign, and projective orientation: approximate or relational data are
+unconditional; exact labels require a positive rational separation witness.
+
+\subsection{What happens without shrinking}
+
+If (SV3) is unavailable, the framework still yields strong conclusions.
+For every requested finite collection of precisions, finite amalgamation
+produces a compatible family.  Downstream theorems that are stable under all
+such families can consume the relation directly.  Examples include:
+
+\begin{itemize}
+\item existence of a root cluster meeting a residual bound;
+\item the minimum value of a function without a selected minimizer;
+\item approximate rotation data without a convergent axis;
+\item a finite cover or parity witness in topology;
+\item all representatives passing a finite test suite.
+\end{itemize}
+
+The absence of a coherent selector is then a property of the statement, not a
+failure of the encoding.  This distinction prevents hidden uses of choice,
+LLPO, or discontinuous branch selection.

@@ -1,0 +1,174 @@
+\section{Finitary relational presentations}
+\label{sec:relational}
+
+\subsection{Why single-valued names are sometimes the wrong interface}
+
+Many constructive failures arise because a theorem is asked to return one
+exactly selected representative when the mathematics only determines a finite
+family of approximations.
+
+\begin{itemize}
+\item A polynomial with colliding roots has an unambiguous root multiset but no
+      stable ordering of individual roots.
+\item A real rotation near the identity has stable quaternion or approximate
+      axis data, but no continuous choice of a unit axis at the identity.
+\item A minimization problem may have several nearly minimizing grid points,
+      even though the minimum value is stable.
+\item Local analytic charts can overlap, while an exact chart selector at a
+      boundary is discontinuous.
+\item A finite proof may establish a compatible witness at every requested
+      depth without supplying one globally chosen infinite branch.
+\end{itemize}
+
+Forcing a function in these situations either adds a separation hypothesis,
+imports a choice principle, or makes the theorem false as a uniform
+computational statement.  The framework therefore treats relations as a
+first-class output type.
+
+\subsection{Definition of a finitary relational presentation}
+
+\begin{definition}[Finitary relational presentation]
+A finitary relational presentation \(X\) consists of fixed
+primitive-recursive data:
+\begin{enumerate}
+\item a parameter-domain Boolean \(\Dom_X(p)\);
+\item a challenge-domain Boolean \(\mathsf{Chal}_X(p,q)\);
+\item a finite answer bound \(B_X(p,q)\);
+\item an answer verifier \(\Good_X(p,q,a)\in\B\), with the convention that
+      valid answers satisfy \(a<B_X(p,q)\);
+\item a refinement or compatibility verifier
+      \(\Compat_X(p,q,a,q',a')\in\B\); and
+\item optional observation and error decoders used to interpret an answer.
+\end{enumerate}
+All data are fixed symbols, not arbitrary run-time programs.
+\end{definition}
+
+The challenge \(q\) need not be a scalar precision.  It may encode a region,
+derivative order, finite test function, matrix entry, truncation length, or a
+bundle of such requests.  This makes the interface broad enough for analysis,
+probability, topology, and algebra without pretending that every object is
+merely a Cauchy sequence.
+
+A parameter \(p\) is \emph{finitely inhabited to depth \(h\)} when every
+challenge in the finite schedule up to \(h\) has an acceptable answer and the
+answers can be connected by the required compatibility edges.  The exact
+schedule is theorem-specific and primitive recursive.
+
+\subsection{Functional presentations as a special case}
+
+A usual fixed evaluator \(a(p,q)\) gives a relational presentation by setting
+\[
+ \Good_X(p,q,z)=1 \quad\Longleftrightarrow\quad z=a(p,q),
+\]
+and taking compatibility to be the desired regularity relation.  Thus no
+existing functional development is lost.  The relational form is strictly
+more flexible: it can represent finite root clusters, all valid pivots, all
+near-minimizers, all cells intersecting a curve, or all charts whose guards
+hold.
+
+\subsection{Relational transducers}
+
+\begin{definition}[Relational transducer]
+A finitary relational transducer \(F:X\rightsquigarrow Y\) consists of:
+\begin{enumerate}
+\item a primitive-recursive finite query strategy.  Given an input parameter
+      \(p\), output challenge \(r\), and current finite state, it either asks
+      for an \(X\)-answer to a challenge \(q\) or halts;
+\item a primitive-recursive output-answer bound and candidate generator;
+\item a Boolean trace invariant and acceptance predicate; and
+\item an embedded soundness derivation saying that any finite family of valid,
+      mutually compatible input answers accepted by the trace yields a valid
+      \(Y\)-answer.
+\end{enumerate}
+\end{definition}
+
+The transducer need not choose among all valid input answers.  Its theorem is
+relational: every accepted compatible input package leads to an acceptable
+output package, or it produces a finite set of output candidates with a
+verified nonemptiness and compatibility relation.
+
+\subsection{Composition without hidden choice}
+
+Suppose \(F:X\rightsquigarrow Y\) and \(G:Y\rightsquigarrow Z\).  A naive
+composition would select one \(Y\)-answer for each query made by \(G\).  That
+selection can destroy compatibility.  The relational composition instead
+records a finite family of \(Y\)-candidates produced by \(F\), together with
+their compatibility graph, and asks whether a compatible subfamily satisfies
+\(G\)'s finite demand.  This is a finite constraint problem and is solved by
+the viability dynamic program of \cref{sec:amalgamation}.
+
+\begin{theorem}[Relational composition]
+\label{thm:rel-composition}
+The composition of two finitary relational transducers is a finitary
+relational transducer.  Its verifier and finite candidate bounds are primitive
+recursive.  Its soundness derivation is obtained by the embedded trace
+compiler and the finite witness-amalgamation theorem.
+\end{theorem}
+
+\begin{proof}
+Flatten the two traces into one phase-indexed trace as in
+\cref{thm:trace-composition}.  Whenever \(G\) requests a \(Y\)-answer, invoke
+\(F\)'s finite candidate generator rather than an exact selector.  The
+composite state stores the finite candidate levels and compatibility edges.
+After all requests are known, run backward viability to mark candidates that
+can participate in a complete compatible assignment.  If at least one root
+candidate is viable, bounded search returns a compatible assignment; if the
+output is itself intended to remain relational, return all viable output
+candidates.  Soundness follows by first applying the viability theorem to get
+the finite compatible family, then applying the soundness derivations of
+\(F\) and \(G\) by substitution and cut.  Every loop is bounded by the supplied
+finite candidate bounds.
+\end{proof}
+
+\subsection{Three levels of output strength}
+
+A theorem should state the weakest output that supports its applications.
+
+\begin{description}[leftmargin=3.5cm,style=nextline]
+\item[Relational output.] For every requested finite challenge, return a
+      nonempty finite set of correct answers plus compatibility information.
+      This needs no global selector.
+\item[Approximate functional output.] Return one answer at each precision,
+      with a regularity theorem.  This requires a shrinking or determinacy
+      modulus as in \cref{sec:shrinking}.
+\item[Exact selected output.] Return a distinguished exact representative,
+      such as an ordered root, exact sign, normalized eigenvector, or branch.
+      This requires a canonical algebraic normalization or a positive
+      separation promise.  Without it the request may be obstructed.
+\end{description}
+
+The relational form is not a consolation prize.  Many classical theorems are
+naturally invariant under permutations, signs, projective scaling, or chart
+choices.  Stating the theorem at that invariant level often removes a
+constructive obstruction while preserving all mathematically meaningful
+content.
+
+\subsection{Challenge trees rather than fixed tables}
+
+An adaptive algorithm does not know its full input demand in advance.  Its
+finite demand is a tree: a rational comparison at one stage selects the next
+query.  A certificate can include one realized branch, while a uniform
+soundness theorem verifies every branch.  The trace state contains the branch
+history, and the invariant records that every answer on the history is valid.
+
+If the theorem must be robust under approximate comparisons, branch guards
+must overlap.  For example, given an approximation \(r\) to \(x\) within
+\(\varepsilon\), one branch may be certified for
+\(x\le c+2\varepsilon\) and the other for \(x\ge c-2\varepsilon\).  The
+algorithm branches on whether \(r\le c\), but both mathematical branches are
+valid in the overlap.  Exact branching is allowed only when an apartness gap
+separates \(x\) from \(c\).
+
+\subsection{Extensional interpretation}
+
+A relational presentation represents mathematical content through the family
+of accepted finite observations, not through the raw parameter code.  Two
+parameters are observationally equivalent when every accepted answer for one
+can be matched, at the requested precision, by an accepted answer for the
+other and conversely.  This is a finite Hausdorff-style relation at each
+precision.  Equality of represented objects is the universal closure over
+precisions.
+
+Operations should therefore be proved \emph{extensional}: matched input
+observations at the precision requested by a modulus produce matched output
+observations.  \Cref{sec:extensionality} gives the generic proof pattern.
