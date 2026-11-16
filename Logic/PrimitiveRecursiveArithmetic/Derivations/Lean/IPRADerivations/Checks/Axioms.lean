@@ -358,6 +358,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared.power_cleared
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared.sum_bounds_product
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared.sum_bounds_closed
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SumReindex.sum_le_bound
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SumReindex.le_quo_of_mul_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SumReindex.cM_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SumReindex.reindex_eq
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SumReindex.reindex_le
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.iS_pair
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.nth_pair_succ
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.bell_zero
