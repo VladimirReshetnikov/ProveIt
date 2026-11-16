@@ -66,3 +66,22 @@ recoded operands.
 ```sh
 bash "$dir/check-radix-rho8.sh" /path/to/radix-model /path/to/fresh-rho8-output
 ```
+
+The [constructor](PA194M5RecodeConstructors.lean) and
+[head](PA194M5RecodeHeads.lean) identities show that the recoder carries
+the primary logical constructors, emitted heads, guarded separation,
+and the diagonal formula to their radix-five values. Injectivity
+preserves and reflects the equality tests on variable labels.
+
+[`PA194M5ProofTransport.proofTransport`](PA194M5ProofTransport.lean)
+uses the primary proof-history induction in arbitrary modeled natural
+numbers. Given a Σ₁-definable predicate closed under the radix-five
+rules listed in `FiveClosure`, it sends any primary target theorem
+to that predicate at its recoded index. Its refutation specialization
+sends primary provability of 1 to the predicate at 1. The remaining
+connection is to instantiate the predicate with the M5 search and
+prove its closure and reverse soundness.
+
+```sh
+bash "$dir/check-radix-transport.sh" /path/to/recoding-output /path/to/rho8-output /path/to/fresh-transport-output
+```

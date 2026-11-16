@@ -11,7 +11,10 @@ open DiophantineConsistency PRAFiniteFunctionCodes PRALanguage PRATheory PRAAddO
 open PRAHistoryPairCode PRAModelIOpenPairing TableDispatch PRASelectCode
 open PA194SourceControllerCode PA194StateOne PRAEqualityCode PRABooleanOps
 open PA194SourceControllerBinding PA194SourceInstructionModel PA194SourceRegisters
-open PA194IteratedSimulation
+open PA194IteratedSimulation PA194ClockInvariantDefinable PRAExhaustion
+open PA194SchedulerFetchPositive (sourceState regsOfArgs)
+open PA194SourceFetchLoop (statePC)
+open PA194SourceRegisterRelation (pack)
 open ConfigurationStep (modelSelectAll)
 
 abbrev Program := List (Option M6.Source.Instruction)
@@ -111,6 +114,15 @@ theorem haltStep (q : Nat) (hq : q < program.length) (s : M)
   rw [actionAt program q hq s hpc,hrow]
   simp only [action,stateModel,fileModel]
 
+theorem haltSourceState (q : Nat) (hq : q < program.length)
+    (hrow : row program q = some .halt) (args : Fin 11 → M) (tail : M) :
+    F (step program) ![sourceState q args tail] = sourceState (halted program) args tail := by
+  rw [haltStep program q hq _ (statePC _ _ _) hrow]
+  change pair (modelNumeral M (halted program))
+    (pi₂ (pair (modelNumeral M q) (pack (regsOfArgs args) tail))) = _
+  rw [pi₂_pair]
+  rfl
+
 theorem outsideStep (s : M)
     (hs : ∀ j, j < program.length → F pc ![s] ≠ modelNumeral M j) :
     F (step program) ![s] =
@@ -137,6 +149,27 @@ theorem malformedFixed (s : M) (hs : F pc ![s] = modelNumeral M (malformed progr
     exact ne_of_gt (modelNumeralStrict j _ hj)
   rw [outsideStep program s hnone]
   simp [hs]
+
+variable [M↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+private theorem iterateFixed (next : Code 1) (s : M) (h : F next ![s] = s) :
+    ∀ c : M, F (iterate next) ![c,s] = s := by
+  haveI : 𝚺₁-Function₁ (fun c : M => F (iterate next) ![c,s]) :=
+    bindBinary _ s (binaryCodeDef (M := M) (iterate next))
+  have hdef : 𝚺₁-Predicate (fun c : M => F (iterate next) ![c,s] = s) := by definability
+  intro c
+  induction c using ISigma1.sigma1_succ_induction with
+  | hP => exact hdef
+  | zero => exact iterateZero next s
+  | succ c ih => rw [iterateSucc, ih, h]
+
+theorem haltedRun (s : M) (hs : F pc ![s] = modelNumeral M (halted program)) :
+    ∀ c : M, F (run program) ![c,s] = s :=
+  iterateFixed (step program) s (haltedFixed program s hs)
+
+theorem malformedRun (s : M) (hs : F pc ![s] = modelNumeral M (malformed program)) :
+    ∀ c : M, F (run program) ![c,s] = s :=
+  iterateFixed (step program) s (malformedFixed program s hs)
 
 #print axioms actionAt
 #print axioms haltStep

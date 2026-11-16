@@ -7,6 +7,12 @@ repo=$(cd -- "${1:?repository root required}" && pwd)
 model=$(cd -- "${2:?staged PA194 model dependencies required}" && pwd)
 out=${3:?fresh output directory required}
 here=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+case ${4:-5} in
+  5) coefficient=5; variant_dir=$here ;;
+  6) coefficient=6; variant_dir=$here/../pa194m6 ;;
+  *) printf 'Expected coefficient 5 or 6\n' >&2; exit 2 ;;
+esac
+module="PA194M${coefficient}"
 test ! -e "$out"
 mkdir -p "$out"
 out=$(cd -- "$out" && pwd)
@@ -24,7 +30,7 @@ print(":".join(ordered))
 PY
 )"
 printf '%s\n' "$LEAN_PATH" > "$out/leanpath.txt"
-python3 -I "$here/generate.py" "$repo" "$out" 5
+python3 -I "$here/generate.py" "$repo" "$out" "$coefficient"
 
 check() {
   local source=$1 module=$2
@@ -39,17 +45,18 @@ check() {
 }
 check "$here/PA194ProgramControl.lean" PA194ProgramControl
 check "$here/PA194ProgramDrain.lean" PA194ProgramDrain
-check "$out/PA194M5Program.lean" PA194M5Program
-check "$out/PA194M5Constructor.lean" PA194M5Constructor
-check "$here/PA194M5Control.lean" PA194M5Control
+check "$out/${module}Program.lean" "${module}Program"
+check "$out/${module}Constructor.lean" "${module}Constructor"
+check "$variant_dir/${module}Control.lean" "${module}Control"
 rg -Fxq "'PA194ProgramDrain.rowStep' depends on axioms: [propext, Classical.choice, Quot.sound]" "$out/PA194ProgramDrain.log"
 rg -Fxq "'PA194ProgramDrain.drain' depends on axioms: [propext, Classical.choice, Quot.sound]" "$out/PA194ProgramDrain.log"
 rg -Fxq "'PA194ProgramDrain.multiply' depends on axioms: [propext, Classical.choice, Quot.sound]" "$out/PA194ProgramDrain.log"
-rg -Fxq "'PA194M5Constructor.loopRows' depends on axioms: [propext]" "$out/PA194M5Constructor.log"
-rg -Fxq "'PA194M5Constructor.firstMultiply' depends on axioms: [propext, Classical.choice, Quot.sound]" "$out/PA194M5Constructor.log"
+rg -Fxq "'${module}Constructor.loopRows' depends on axioms: [propext]" "$out/${module}Constructor.log"
+rg -Fxq "'${module}Constructor.firstMultiply' depends on axioms: [propext, Classical.choice, Quot.sound]" "$out/${module}Constructor.log"
 rg -Fxq "'PA194ProgramControl.outsideStep' depends on axioms: [propext, Classical.choice, Quot.sound]" "$out/PA194ProgramControl.log"
-rg -Fxq "'PA194M5Control.haltExecution' depends on axioms: [propext, Classical.choice, Quot.sound]" "$out/PA194M5Control.log"
-rg -Fxq "'PA194M5Control.haltedRun' depends on axioms: [propext, Classical.choice, Quot.sound]" "$out/PA194M5Control.log"
-rg -Fxq "'PA194M5Control.malformedRun' depends on axioms: [propext, Classical.choice, Quot.sound]" "$out/PA194M5Control.log"
-sha256sum "$here"/*.lean "$here/generate.py" "$here/check.sh" \
-  "$out"/PA194M5{Program,Constructor}.lean "$out"/*.olean > "$out/sha256.txt"
+for theorem in haltExecution haltedRun malformedRun; do
+  rg -Fxq "'${module}Control.$theorem' depends on axioms: [propext, Classical.choice, Quot.sound]" "$out/${module}Control.log"
+done
+sha256sum "$here"/PA194Program{Control,Drain}.lean "$variant_dir/${module}Control.lean" \
+  "$here/generate.py" "$here/check.sh" "$out"/"${module}"{Program,Constructor}.lean \
+  "$out"/*.olean > "$out/sha256.txt"

@@ -40,7 +40,7 @@ reason and where the same bytes are. There are four reasons.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `upstream-copy` | 14,150 | The member is byte-identical to a file of the imported snapshots under [`jamesyc-upstream`](../jamesyc-upstream/README.md). The reference column gives that file. Licence and notice files are placed even when they are copies. |
+| `upstream-copy` | 14,150 | The member is byte-identical to a file of the imported snapshots under [`jamesyc-upstream`](../verification/other-machines/jamesyc-upstream/README.md). The reference column gives that file. Licence and notice files are placed even when they are copies. |
 | `sibling-archive` | 41 | The member is a nested archive that is byte-identical to another delivered archive. The reference column gives the directory of that archive here. |
 | `ignored` | 2,286 | The member matches the repository's `.gitignore` (`*.log` and `SHA256SUMS` files). It is available only from the delivered archive. |
 | `duplicate-machine` | 24,948 | The member is a machine table (`.tm`) and its machine is kept in another file, either with the same bytes or with its states renamed. The reference column gives the kept file and says which. See [`MACHINES.md`](MACHINES.md). |
