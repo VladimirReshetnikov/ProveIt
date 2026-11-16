@@ -283,6 +283,9 @@ placed the same way, under `foundations/`, and then deleted. It leaves out one i
 and then deleted. It leaves out one ignored checksum manifest; its wrapper directory is
 `ipra_frnf_framework`. `fibonacci_lucas_ipra.zip` was placed the same way, under
 `combinatorics/`, and then deleted. All 5 of its members are placed.
+`ipra_kifc_framework_2026-11-16.zip` was placed the same way, under `foundations/`, and then
+deleted. It leaves out one ignored `.log` file; 22 of its files are byte-identical to those
+of the 15 November edition and are placed in both.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

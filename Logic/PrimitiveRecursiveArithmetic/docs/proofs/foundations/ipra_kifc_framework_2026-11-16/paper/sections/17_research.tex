@@ -1,0 +1,48 @@
+\section{Further research questions}\label{sec:research}
+
+\subsection{Immediate formalization questions}
+
+\begin{enumerate}[label=\textbf{R\arabic*.}]
+  \item Can the Boolean reflection library be designed so that generated predicates share one small set of proof combinators rather than duplicating syntax-specific proofs?
+  \item What tuple/table encoding minimizes substitution overhead in \(\PTm\) while preserving simple projection equations?
+  \item Can \texttt{ipra\_ring} be extended to certified polynomial inequalities through sums-of-squares or ordered-semiring normal forms?
+  \item What is the best Lean representation of a topological proof schedule: an inductive family, a list with a dependency predicate, or generated nested cuts?
+  \item Can generated trace modules expose compact proof terms without stressing elaboration or kernel reduction?
+  \item Which parts of viability reflection can be proved once for a generic fixed-width table symbol, and which must be regenerated for each relation?
+  \item Can the existing \texttt{Core.Search} theorem be generalized cleanly to arbitrary packed parameter arities without increasing proof-term size, or is theorem-specific generation preferable?
+\end{enumerate}
+
+\subsection{Mathematical interface questions}
+
+\begin{enumerate}[label=\textbf{R\arabic*.},resume]
+  \item For which classes of algebraic coefficient presentations can exact Puiseux branch data be generated primitive recursively with explicit separation bounds?
+  \item Can root-cluster and spectral-projector presentations be unified by one finite matching/observer library?
+  \item Which constructive compactness principles admit useful finite-net producers in \iPRA\ for common analytic domains?
+  \item Can known effective Runge, Baker, or transcendence estimates be converted into reusable certified height producers for broad Diophantine families?
+  \item Which fragments of Mordell--Weil descent admit uniform finite rational representative relations rather than merely Selmer classes?
+  \item Can proof-mined metastability bounds be composed automatically with finite consumers through the reverse-demand compiler?
+\end{enumerate}
+
+\subsection{Proof translation and automation}
+
+\begin{enumerate}[label=\textbf{R\arabic*.},resume]
+  \item Complete the retained-transfer Lean blueprint against the existing \texttt{NegativeSyntax} layer.  Which larger stable formula classes admit recovery beyond the initial QF/\(\wedge,\to,\forall\) retained fragment?
+  \item Develop a certificate extractor that turns Mathlib proofs of fixed polynomial/rational identities into compact \(\Prf\,\PRAAx\) scripts, extending the current ring route.
+  \item Build a theorem-specific graph generator and compare generated proof size against hand-written derivations.
+  \item Investigate proof sharing: can repeated local certificates be represented once and reused by substitution without exponential proof growth?
+  \item Add a machine-readable theorem ledger whose statuses are checked by CI: formula present, proof type correct, no \texttt{sorry}, axiom audit clean, tests passed, PDF built.
+\end{enumerate}
+
+\subsection{Foundational questions}
+
+\begin{enumerate}[label=\textbf{R\arabic*.},resume]
+  \item Characterize the class of finite-use functionals captured by \KIFC\ graphs and compare it with standard proof-theoretic interpretations of \iPRA.
+  \item Determine whether the one-loop normal form admits a useful complexity hierarchy internal to \iPRA\ (fuel growth, state width, bounded-search depth).
+  \item Formalize a representation-independent notion of stable observer and prove a universal composition theorem for observational setoids.
+  \item Study lower bounds: which discontinuous mathematical outputs provably require relational or guarded interfaces over regular Cauchy names?
+  \item Relate the finite relational layer to realizability or dialectica interpretations, while retaining the concrete \(\Prf\,\PRAAx\) compiler.
+\end{enumerate}
+
+\subsection{A recommended next milestone}
+
+The most informative next artifact would be a fully compiled generated theorem for exact rational bisection of \(y^3+y=x\): reverse precision/fuel calculation, one packed loop, QF bracket invariant, algebraic monotonicity proof, terminal interval theorem, native transfer, and axiom audit.  It exercises every deterministic part of the framework without requiring deep external mathematics.  The second milestone should add one relational uncertainty branch for Cauchy input and eliminate it through a diameter-stable interval observer.  Only after both compile should a generic graph AST be introduced.

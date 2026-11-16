@@ -1,0 +1,64 @@
+{
+  "name": "relational_cauchy_bisection",
+  "version": 2,
+  "repository_snapshot": "7c1f2594117c15a980d24300593d625722812768",
+  "terminal": "stable_interval_observer",
+  "parameters": ["input_name", "terminal_precision"],
+  "external_producers": [
+    {
+      "name": "input_modulus",
+      "formula": "input approximations satisfy the declared regularity bound",
+      "role": "modulus"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "backward_precision",
+      "kind": "boolean",
+      "dependencies": [],
+      "demand": "terminal_precision + guard_slack",
+      "state": "precision table",
+      "formula": "every later sign/diameter test receives sufficient input precision",
+      "certificate": "local demand adequacy derivations",
+      "guard": null,
+      "witness_policy": "deterministic",
+      "status": "lean_interface"
+    },
+    {
+      "id": "candidate_intervals",
+      "kind": "relation",
+      "dependencies": ["backward_precision"],
+      "demand": "computed precision table",
+      "state": "rectangular interval table",
+      "formula": "each row contains all children not excluded by certified sign information",
+      "certificate": "Boolean validity and compatibility reflection",
+      "guard": null,
+      "witness_policy": "relation",
+      "status": "lean_interface"
+    },
+    {
+      "id": "viability",
+      "kind": "relation",
+      "dependencies": ["candidate_intervals"],
+      "demand": "terminal horizon",
+      "state": "backward viability table and least viable path",
+      "formula": "viable iff a compatible terminal suffix exists",
+      "certificate": "FiniteRelation row invariant and checked least-search adapter",
+      "guard": null,
+      "witness_policy": "least_bounded",
+      "status": "lean_interface"
+    },
+    {
+      "id": "stable_interval_observer",
+      "kind": "observer",
+      "dependencies": ["viability"],
+      "demand": "terminal_precision",
+      "state": "chosen terminal interval",
+      "formula": "all viable terminal intervals have diameter and mutual displacement within the declared budget",
+      "certificate": "diameter-stable observer elimination",
+      "guard": null,
+      "witness_policy": "diameter_stable",
+      "status": "conditional_producer"
+    }
+  ]
+}

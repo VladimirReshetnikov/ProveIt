@@ -1,0 +1,238 @@
+\section{Retained classical transfer and bounded witness recovery}
+\label{sec:retained-transfer}
+
+Some repository proofs are easiest to discover classically, even though their final arithmetic statement is stable and constructive.  A disciplined negative translation can recover such proofs in iPRA without adding excluded middle to the target theory.  The repository packet \path{docs/proofs/foundations/ipra_local_global/lean/NegativeSyntax.lean} defines the translation, proves its substitution laws, translates every arithmetic axiom and excluded-middle instance, and records the remaining proof-translation and stability statements as goals.  This section supplies the full mathematical argument and an exact Lean completion path.
+
+\subsection{The translation}
+
+Write \(\neg A\) for \(A\to\bot\).  Define an atom-preserving translation \(A\mapsto A^N\) by
+\begin{align*}
+ (s=t)^N&=(s=t),& \bot^N&=\bot,\\
+ (A\wedge B)^N&=A^N\wedge B^N,&
+ (A\to B)^N&=A^N\to B^N,\\
+ (A\vee B)^N&=\neg(\neg A^N\wedge\neg B^N),&
+ (\forall x A)^N&=\forall x A^N,\\
+ (\exists x A)^N&=\neg\forall x\neg A^N.
+\end{align*}
+This is the translation encoded by the repository packet; that packet already checks the syntax and source-axiom layer, while the proof-translation and retained-recovery layer remains the natural integration target.  It commutes with term substitution and preserves quantifier-freeness; those syntax lemmas are already proved there.
+
+Let \(\mathsf{CPRAAx}\) be the source theory consisting of the ordinary iPRA arithmetic axioms plus every excluded-middle instance \(A\vee\neg A\).  The target remains \(\PRAAx\), with intuitionistic logic only.
+
+\subsection{Decidability and stability of numerical equality}
+
+\begin{lemma}[Equality decidability]
+\label{lem:eq-decidable}
+For all primitive-recursive terms \(s,t\), iPRA proves
+\[
+  s=t\ \vee\ \neg(s=t).
+\]
+\end{lemma}
+
+\begin{proof}
+Use the primitive-recursive Boolean equality function \(\mathsf{eq}(s,t)\).  Bounded Booleanization gives
+\(
+ [\mathsf{eq}(s,t)]\leftrightarrow s=t
+\)
+and proves that the Boolean is either \(0\) or \(1\).  A finite Boolean case split yields the disjunction.
+\end{proof}
+
+\begin{corollary}[Equality stability]
+\label{cor:eq-stability}
+For all terms \(s,t\), iPRA proves
+\[
+  \neg\neg(s=t)\to s=t.
+\]
+\end{corollary}
+
+\begin{proof}
+Case-split using \cref{lem:eq-decidable}.  Equality is immediate in the positive case; in the negative case, the double negation produces a contradiction.
+\end{proof}
+
+This is the missing arithmetic fact that permits an atom-preserving negative translation.  No global excluded middle is used; only the decidability of natural-number equality, proved by a fixed Boolean computation.
+
+\subsection{Stability of every translated formula}
+
+\begin{theorem}[Negative stability]
+\label{thm:negative-stability}
+For every formula \(A\), iPRA proves
+\[
+  \neg\neg A^N\to A^N.
+\]
+\end{theorem}
+
+\begin{proof}
+Proceed by structural induction on \(A\).
+
+\paragraph{Atomic equality.}
+Use \cref{cor:eq-stability}.  For \(\bot\), note that \(\bot\to\bot\) is provable; applying \(\neg\neg\bot\) to it yields \(\bot\).
+
+\paragraph{Conjunction.}
+Assume \(\neg\neg(A^N\wedge B^N)\).  To obtain \(A^N\), by the induction hypothesis it suffices to prove \(\neg\neg A^N\).  If \(\neg A^N\), then \(\neg(A^N\wedge B^N)\), contradicting the assumption.  Similarly obtain \(B^N\), then introduce the conjunction.
+
+\paragraph{Disjunction.}
+The translation \((A\vee B)^N\) is itself a negation.  Every negation is intuitionistically stable: from \(\neg\neg\neg C\) and \(C\), derive \(\neg\neg C\), then contradiction; hence \(\neg C\).
+
+\paragraph{Implication.}
+Assume \(\neg\neg(A^N\to B^N)\) and suppose \(A^N\).  By stability of \(B^N\), it suffices to prove \(\neg\neg B^N\).  If \(\neg B^N\), then under the fixed assumption \(A^N\), every function \(A^N\to B^N\) yields a contradiction.  Thus \(\neg(A^N\to B^N)\), contradicting the double negation.  Hence \(B^N\).
+
+\paragraph{Universal quantification.}
+Assume \(\neg\neg\forall x A^N(x)\).  Fix arbitrary \(x\).  By the induction hypothesis, it suffices to prove \(\neg\neg A^N(x)\).  If \(\neg A^N(x)\), then any proof of \(\forall x A^N(x)\) yields a contradiction by specialization, contrary to the double negation.  Generalize over \(x\).
+
+\paragraph{Existential quantification.}
+The translation \((\exists x A)^N=\neg\forall x\neg A^N\) is a negation, hence stable as in the disjunction case.
+\end{proof}
+
+The proof uses only intuitionistic logic plus equality stability at atomic leaves.
+
+\subsection{Translation of derivations}
+
+\begin{theorem}[Proof translation]
+\label{thm:proof-translation}
+If
+\[
+  \Gamma\vdash_{\mathsf{CPRAAx}} A,
+\]
+then
+\[
+  \Gamma^N\vdash_{\PRAAx} A^N,
+\]
+where \(\Gamma^N\) is the pointwise translation of the context.
+\end{theorem}
+
+\begin{proof}
+Induct on the source derivation.  The hypothesis, conjunction, implication, universal, equality-reflexivity, and equality-substitution cases follow directly from the corresponding target rule, the induction hypotheses, and commutation of translation with substitution.  Explosion is immediate because \(\bot^N=\bot\).  Arithmetic axioms and excluded middle have already translated target derivations in the repository file: arithmetic equations are unchanged or translated structurally, and
+\[
+ (A\vee\neg A)^N
+ =\neg(\neg A^N\wedge\neg(A^N\to\bot))
+\]
+after simplification is intuitionistically derivable.
+
+It remains to spell out the nontrivial disjunction and existential rules.
+
+\paragraph{Disjunction introduction.}
+Suppose the induction hypothesis gives \(A^N\).  To prove
+\(\neg(\neg A^N\wedge\neg B^N)\), assume the conjunction and apply its first component to \(A^N\).  The right introduction case is symmetric.
+
+\paragraph{Disjunction elimination.}
+Suppose we have
+\begin{align*}
+ h&:\neg(\neg A^N\wedge\neg B^N),\\
+ f&:A^N\to C^N,\\
+ g&:B^N\to C^N.
+\end{align*}
+By \cref{thm:negative-stability}, it suffices to prove \(\neg\neg C^N\).  Assume \(k:\neg C^N\).  Then
+\[
+  \lambda a.\,k(f(a)):\neg A^N,
+  \qquad
+  \lambda b.\,k(g(b)):\neg B^N.
+\]
+Their conjunction contradicts \(h\).  Therefore \(\neg\neg C^N\), and stability yields \(C^N\).  In the natural-deduction formalization, \(f\) and \(g\) are the translated branch derivations under extended contexts; implication introduction internalizes them before the argument above.
+
+\paragraph{Existential introduction.}
+From \(A^N(t)\), prove \(\neg\forall x\neg A^N(x)\): assume the universal negation, specialize at \(t\), and obtain contradiction.
+
+\paragraph{Existential elimination.}
+Suppose
+\[
+ h:\neg\forall x\neg A^N(x)
+\]
+after translating the major premise, and suppose the translated branch proves \(C^N\) from a fresh assumption \(A^N(x)\).  By stability it suffices to prove \(\neg\neg C^N\).  Assume \(k:\neg C^N\).  For arbitrary \(x\), the branch derivation and \(k\) show \(\neg A^N(x)\).  Universal introduction gives \(\forall x\neg A^N(x)\), contradicting \(h\).  Hence \(\neg\neg C^N\), and stability gives \(C^N\).  The freshness condition is exactly the one already enforced by the source and target existential-elimination constructors.
+
+\paragraph{Equality substitution.}
+The translated equality premises are the same equalities.  Apply target equality substitution to the formula \(A^N\).  The syntax lemma
+\((A[\sigma])^N=A^N[\sigma]\)
+identifies the result with the induction-hypothesis conclusion.
+
+Thus every source constructor has a target derivation, completing the induction.
+\end{proof}
+
+\subsection{Quantifier-free equivalence}
+
+The translation is not generally equivalent to the original formula intuitionistically.  It is equivalent on decidable formulas.
+
+\begin{theorem}[Quantifier-free recovery]
+\label{thm:qf-recovery}
+For every quantifier-free formula \(A\), iPRA proves
+\[
+  A^N\leftrightarrow A.
+\]
+\end{theorem}
+
+\begin{proof}
+By \cref{thm:booleanization}, every fixed quantifier-free formula is decidable in iPRA.  One may prove the result structurally.
+
+Atomic equalities, \(\bot\), conjunctions, and implications follow directly from the induction hypotheses.  For disjunction, the forward direction is the only interesting one.  Suppose
+\(\neg(\neg A^N\wedge\neg B^N)\).  Decide \(A\).  If \(A\), take the left disjunct.  Otherwise decide \(B\).  If \(B\), take the right disjunct.  If neither holds, the induction equivalences give \(\neg A^N\) and \(\neg B^N\), contradicting the translated disjunction.  The reverse direction is disjunction introduction as in the proof-translation theorem.
+\end{proof}
+
+The use of formula-specific Booleanization is legitimate because the formal theorem is proved by recursion on formula syntax, generating the corresponding Boolean term and reflection proof.
+
+\subsection{The retained class}
+
+Define \(\mathsf{Retained}\) to be the least class containing all quantifier-free formulas and closed under \(\wedge\), \(\to\), and \(\forall\).  This is the class already specified in the audited repository packet.
+
+\begin{theorem}[Retained equivalence]
+\label{thm:retained-equivalence}
+If \(A\) is retained, then iPRA proves
+\[
+  A^N\leftrightarrow A.
+\]
+\end{theorem}
+
+\begin{proof}
+Induct on the retained derivation.  The quantifier-free case is \cref{thm:qf-recovery}.  Conjunction and implication use the induction equivalences and ordinary intuitionistic reasoning.  For universal quantification, use the pointwise equivalence under an arbitrary bound variable and introduce the universal in each direction.
+\end{proof}
+
+The class may be enlarged whenever another formula family is proved stable and equivalent to its translation.  For example, bounded formulas are retained after Booleanization, and certain existential statements with primitive-recursive unique witnesses can be rewritten as quantifier-free graph assertions.
+
+\subsection{Retained transfer theorem}
+
+\begin{theorem}[Classical-to-intuitionistic retained transfer]
+\label{thm:retained-transfer}
+Assume every formula in \(\Gamma\) and the conclusion \(A\) is retained.  Then
+\[
+ \Gamma\vdash_{\mathsf{CPRAAx}}A
+ \quad\Longrightarrow\quad
+ \Gamma\vdash_{\PRAAx}A.
+\]
+Conversely, every iPRA derivation lifts trivially to the classical source theory, so derivability agrees on retained sequents.
+\end{theorem}
+
+\begin{proof}
+Translate the classical derivation using \cref{thm:proof-translation}:
+\[
+ \Gamma^N\vdash_{\PRAAx}A^N.
+\]
+For every assumption \(B\in\Gamma\), retained equivalence gives a derivation \(B\vdash B^N\).  Apply simultaneous cut to replace the translated context by \(\Gamma\), obtaining \(\Gamma\vdash A^N\).  Retained equivalence for the conclusion gives \(A^N\to A\); modus ponens yields \(A\).
+
+For the converse, map each \(\PRAAx\) axiom constructor to the arithmetic constructor of \(\mathsf{CPRAAx}\) and recurse over the unchanged intuitionistic logical derivation.
+\end{proof}
+
+\subsection{Interaction with \KIFC contracts}
+
+The transfer theorem is useful in two ways.
+
+\begin{enumerate}
+\item A finite arithmetic lemma may be proved classically in a source development and transferred automatically when its assumptions and conclusion are retained.
+\item A \KIFC terminal theorem often has a retained shape: universal closure of implications between bounded or quantifier-free certificate assertions.  Classical finite combinatorics can therefore be used as a proof-discovery layer, while the final result is recovered in iPRA.
+\end{enumerate}
+
+This does not make arbitrary classical mathematics available in iPRA.  Conclusions with essential positive disjunctions or existentials may not be retained.  For such theorems, the \KIFC graph must expose explicit witnesses or finite relations.
+
+\subsection{Lean completion plan for the existing goals}
+
+The repository's \path{ipra_local_global/lean/NegativeSyntax.lean} already contains the syntax translation, substitution lemmas, translated induction axioms, translated excluded middle, and translated arithmetic axioms.  The remaining implementation can be organized as follows.
+
+\begin{enumerate}
+\item \texttt{QFDecidable.lean}: construct a PR Boolean for every QF formula and prove its object reflection.  Derive \texttt{equalityStability}.
+\item \texttt{NegativeStability.lean}: recurse on \(\Fm\) and implement \cref{thm:negative-stability}.  Package the standard triple-negation lemma and stable implication/universal combinators.
+\item \path{NegativeProof.lean}: recurse on \path{Prf ClassicalPRAAx}.  The \texttt{orE} and \texttt{exE} branches use \path{negativeStability}; all substitution equalities are discharged by the existing \texttt{negative\_subst} lemma.
+\item \texttt{Retained.lean}: prove QF recovery by structural recursion using decidability, then retained equivalence.
+\item \texttt{RetainedTransfer.lean}: use \texttt{Prf.trans} to replace translated assumptions and prove the source-theory lifting direction.
+\end{enumerate}
+
+The difficult part is de Bruijn bookkeeping in \texttt{exE} and \texttt{allI}, not a missing mathematical principle.  The theorem statements in the accompanying \path{RetainedTransferBlueprint.lean} match these milestones.
+
+\subsection{Status of the difficulty}
+
+At the human mathematical level, the five open goals named by the repository file are resolved by the arguments above.  At the formal level, they remain to be entered and kernel-checked.  The important point is that no additional axiom, Markov principle, or excluded-middle rule is required: numerical equality decidability and translated-formula stability suffice.

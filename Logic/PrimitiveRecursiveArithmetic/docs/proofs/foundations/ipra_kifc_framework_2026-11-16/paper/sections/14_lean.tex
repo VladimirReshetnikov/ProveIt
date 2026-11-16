@@ -1,0 +1,234 @@
+\section{Lean formalization architecture}\label{sec:lean}
+
+\subsection{Pinned upstream API}
+
+The outline targets the following namespaces and theorem interfaces in the audited snapshot:
+\begin{itemize}
+  \item \texttt{LeanProofs.ConciseIPRA.PR}, \texttt{PTm}, \texttt{PRAAx}, and \texttt{PRA.qfInd};
+  \item \texttt{LeanProofs.ConciseIPRA.Prf.subst}, \texttt{Prf.trans}, equality and logical constructors;
+  \item \texttt{LeanProofs.IPRA.inst} and \texttt{LeanProofs.IPRA.ind};
+  \item \texttt{LeanProofs.IPRA.Search.mu}, \texttt{search\_spec}, \texttt{search\_found}, and \texttt{search\_minimal};
+  \item the pairing, bounded-sum, order, quotient, integer, and descent libraries;
+  \item \texttt{LeanProofs.IPRA.closeAll}, \texttt{deriveNat}, and \texttt{ipra\_ring};
+  \item \texttt{pra\_iff\_native} for the final transfer.
+\end{itemize}
+The formalization should live beside \RepoPath{Derivations/Lean/IPRADerivations}, not copy the syntax or deduction kernel.
+
+\subsection{Module dependency graph}
+
+A concrete implementation order is:
+\begin{enumerate}[label=\textbf{M\arabic*.}]
+  \item \texttt{KIFC/KernelCore.lean}: local rules, proof schedules, implication contracts, loop certificates.
+  \item \texttt{KIFC/QFBoolean.lean}: Boolean symbols, range/reflection, and syntax-directed compilation of fixed formulas.
+  \item \texttt{KIFC/BoundedFold.lean}: \texttt{allB}, \texttt{anyB}, table folds, and reflection.
+  \item \path{KIFC/BoundedExists.lean}: truth-to-zero adapters and wrappers for the checked search theorems.
+  \item \texttt{KIFC/FiniteTable.lean}: fixed tuple/table coding and projection/write equations.
+  \item \texttt{KIFC/Trace.lean}: generic packed-state trace theorem using \texttt{IPRA.ind}.
+  \item \texttt{KIFC/Demand.lean}: reverse demand on a fixed generated DAG.
+  \item \texttt{KIFC/FiniteRelation.lean}: viability rows, path checker, and least viable path.
+  \item \texttt{KIFC/Observer.lean}: exact stability, diameter stability, guarded labels, and finite gluing.
+  \item \texttt{KIFC/RationalMetric.lean}: signed rational codes, triangle inequalities, finite sums, tail budgets.
+  \item \texttt{KIFC/RetainedTransfer.lean}: negative stability, proof translation, recovery, and retained transfer.
+  \item \texttt{KIFC/Compiler.lean}: typed metalevel graph and specialized proof-producing elaborator.
+  \item theorem-specific generated modules and \texttt{Checks/Axioms.lean}.
+\end{enumerate}
+The packet includes source-oriented artifacts for the kernel, Boolean/search adapter, bounded-existential, relational, graph, retained-transfer, and example layers.  \Cref{sec:repo-integration} maps these modules to the exact current repository services and gives exit criteria.
+
+\subsection{Kernel rules and schedules}
+
+The smallest useful object is a local rule.
+
+\begin{lstlisting}
+structure KernelRule (n : Nat) where
+  premises   : List (Fm PTm n)
+  conclusion : Fm PTm n
+  sound      : premises |- [PRAAx] conclusion
+
+def KernelRule.use (r : KernelRule n)
+    (supply : forall psi, psi in r.premises -> Gamma |- [PRAAx] psi) :
+    Gamma |- [PRAAx] r.conclusion :=
+  r.sound.trans supply
+\end{lstlisting}
+(The ASCII turnstile above abbreviates the repository notation.)  This wrapper makes the proof boundary visible in types.
+
+A source-complete schedule can be represented by an inductive family:
+
+\begin{lstlisting}
+inductive Schedule (n : Nat) (Gamma : List (Fm PTm n)) :
+    Fm PTm n -> Type
+  | done  (h : Gamma |- [PRAAx] phi) : Schedule n Gamma phi
+  | have_ (hpsi : Gamma |- [PRAAx] psi)
+      (rest : Schedule n (psi :: Gamma) phi) : Schedule n Gamma phi
+
+noncomputable def Schedule.compile : Schedule n Gamma phi ->
+    Gamma |- [PRAAx] phi
+  | .done h => h
+  | .have_ hpsi rest =>
+      (Schedule.compile rest).trans (fun chi hchi => by
+        cases hchi with
+        | head => exact hpsi
+        | tail h => exact Prf.hyp h)
+\end{lstlisting}
+The actual file uses the exact list-membership constructors available in the pinned Lean version.  This theorem should be compiled before any graph AST is attempted.
+
+\subsection{Loop certificates}
+
+The current derivation library already provides exactly the required induction wrapper.  A reusable structure is:
+
+\begin{lstlisting}
+structure LoopCertificate (k : Nat) where
+  inv  : Fm PTm (k + 1)
+  qf   : inv.QF
+  zero : ([] : List (Fm PTm k)) |- [PRAAx]
+           inv.subst (Syn.inst PTm.zero)
+  succ : [inv] |- [PRAAx]
+           inv.subst (Syn.repl (PTm.succ (Syn.var 0)))
+
+def LoopCertificate.compile (c : LoopCertificate k) :
+    ([] : List (Fm PTm (k + 1))) |- [PRAAx] c.inv :=
+  IPRA.ind c.inv c.qf c.zero c.succ
+\end{lstlisting}
+Instantiation at an arbitrary time and parameters is then \texttt{IPRA.inst c.compile sigma}.  The generated trace theorem should reduce to constructing this structure.
+
+\subsection{Boolean reflection API}
+
+Avoid a first attempt at a fully internal formula-code evaluator.  Start with fixed combinators:
+
+\begin{lstlisting}
+structure Reflected (n : Nat) where
+  formula : Fm PTm n
+  code    : PTm n
+  range   : ([] : List (Fm PTm n)) |- [PRAAx]
+              (code = 0) or (code = 1)
+  iff_one : ([] : List (Fm PTm n)) |- [PRAAx]
+              Fm.iff formula (code = 1)
+\end{lstlisting}
+Implement constructors \texttt{atomEq}, \texttt{not}, \texttt{and}, \texttt{or}, and later bounded folds.  The syntax-directed compiler can remain a metalevel function returning \texttt{Reflected n}; no object formula codes are needed.
+
+For bounded folds, define symbols using \texttt{PR.prec}.  The body predicate is a fixed \texttt{PR} symbol or fixed term template, so the fold symbol is generated per predicate.  Prove its zero/successor equations with \texttt{PRA.precZero} and \texttt{PRA.precSucc}.  Prove Boolean range and reflection once for the generated fold schema.
+
+\subsection{Checked-search adapter and bounded witness certificates}
+
+The audited repository already has the numerical least-zero function \texttt{Search.mu} and object theorems \texttt{search\_spec}, \texttt{search\_found}, and \texttt{search\_minimal}.  KIFC should not maintain a second generic search proof.  Given a reflected Boolean code \(\chi_P\), define the zero-on-truth body
+\[
+  z_P\defeq 1\mathbin{\dot-}\chi_P.
+\]
+The Boolean range theorem and monus equations prove \(z_P=0\leftrightarrow\chi_P=1\leftrightarrow P\).  Instantiate the checked search theorems with \(z_P\), then package the transported conclusions:
+
+\begin{lstlisting}
+structure SearchCertificate (n : Nat) where
+  pre : Fm PTm n
+  found witness : PTm n
+  hasWitness witnessValid witnessMinimal : Fm PTm n
+  foundIff : [pre] |- [PRAAx]
+    Fm.iff (found = 1) hasWitness
+  valid : [pre, found = 1] |- [PRAAx] witnessValid
+  minimal : [pre, found = 1] |- [PRAAx] witnessMinimal
+\end{lstlisting}
+
+The bounded-existential wrapper adds a quantifier-free certificate formula recording foundness, the witness bound, reflected validity, and the all-fold asserting no earlier witness.  Its two public equivalences are exactly \cref{thm:bounded-ex-normal}.  Multi-parameter bodies may be generated directly at the needed arity or use the checked pairing projections; no object-level syntax evaluator is involved.
+
+\subsection{Relational viability}
+
+Use a rectangular table code.  The fixed generated parameters are:
+\begin{itemize}
+  \item horizon term \(H\), maximum row width \(B\);
+  \item Boolean validity \(V(i,a)\), edge \(E(i,a,b)\), and terminal \(T(a)\);
+  \item table update writing row \(H-j\) at reverse time \(j\).
+\end{itemize}
+The core QF invariant states that all cells already written equal the corresponding bounded-\texttt{anyB} recurrence and all unwritten cells retain a default.  A semantic list theorem may be proved first, but the public object theorem must separately reflect the table equations.
+
+The target signatures are:
+
+\begin{lstlisting}
+theorem viable_iff_suffix :
+  [] |- [PRAAx] Fm.iff (viable H i a = 1)
+    (boundedPathExists H i a)
+
+theorem least_path_valid :
+  [anyStartViable H = 1] |- [PRAAx] pathChecker H (leastPath H) = 1
+\end{lstlisting}
+The path-existence formula is bounded and can be represented by a coded tuple plus a Boolean checker.  The theorem need not quantify over Lean lists.
+
+\subsection{Observers and metric budgets}
+
+An exact observer record can store the object theorem directly:
+
+\begin{lstlisting}
+structure ExactObserver (n : Nat) where
+  bound : PTm n
+  valid : Fm PTm (n + 1)
+  obs   : PTm (n + 1)
+  total : [pre] |- [PRAAx] boundedEx bound valid
+  stable : validA :: validB :: pre.shift.shift :: [] |- [PRAAx]
+             obsA = obsB
+\end{lstlisting}
+The exact binder/substitution layout should be hidden behind named helper substitutions; do not construct \texttt{Fin.cases} expressions in every application file.  First prove a version where candidate terms \(a,b\) are explicit free variables, then universally close it.
+
+For diameter observers, define signed rational codes and an integer inequality formula.  Reuse \texttt{IPRADerivations.Core.Integers}; prove triangle inequalities and finite-sum monotonicity as object derivations.  The shrinking theorem is a loop over a finite rational sum plus a supplied tail certificate.
+
+\subsection{Graph elaborator}
+
+Do not begin with a dependently typed universal AST.  First generate two or three concrete graph modules.  The metalevel generator should emit:
+\begin{enumerate}[label=(\arabic*)]
+  \item definitions of specialized \texttt{PR} symbols and \texttt{PTm} projections;
+  \item local node formulas;
+  \item local proof constructors invoking shared theorems;
+  \item a \texttt{LoopCertificate};
+  \item a \texttt{Schedule};
+  \item the terminal theorem and axiom-audit commands.
+\end{enumerate}
+After these compile, abstract the repeated code into:
+
+\begin{lstlisting}
+inductive NodeKind
+  | algebra | boolean | search | loop | relation | observer
+
+structure GraphNode where
+  kind : NodeKind
+  deps : Array Nat
+  -- metalevel descriptions of generated terms and theorem constructors
+
+structure CheckedGraph where
+  nodes : Array GraphNode
+  topological : Topological nodes
+  aritySafe : AritySafe nodes
+\end{lstlisting}
+The elaborator returns Lean syntax for a specialized module.  Its correctness is checked indirectly because all generated proof terms are elaborated and kernel checked.  A later theorem may verify an internal graph AST, but it is not a prerequisite for useful checked examples.
+
+\subsection{Algebra node adapter}
+
+The current example pattern is:
+
+\begin{lstlisting}
+import IPRADerivations.Geometry.TriangleFormulas
+
+open LeanProofs.ConciseIPRA LeanProofs.IPRA
+
+def twoSquaresRule : KernelRule 8 where
+  premises := []
+  conclusion := Geometry.TriangleFormulas.twoSquaresFormula
+  sound := Geometry.TriangleFormulas.twoSquares_open
+\end{lstlisting}
+New polynomial identities can define their formula and use \texttt{ipra\_ring} in the \texttt{sound} field.  This is the first node class that can immediately inherit a checked implementation.
+
+\subsection{Final native transfer}
+
+After constructing
+\[
+ h:\Gamma\vdash[\PRAAx]\varphi,
+\]
+the final native theorem is simply the forward direction of \texttt{pra\_iff\_native} applied to \(h\).  Do not perform the translation earlier: ordinary \iPRA\ has the most mature arithmetic and natural-deduction API, while the native core is best treated as the certified endpoint.
+
+\subsection{Formalization completion criteria}
+
+A module is complete only when:
+\begin{enumerate}[label=(\arabic*)]
+  \item every public mathematical formula is explicit;
+  \item every public theorem concludes \(\Prf\,\PRAAx\) or is clearly marked as a metatheorem about proof construction;
+  \item there is no \texttt{sorry}, theorem-specific \texttt{axiom}, or opaque semantic replacement for an object proof;
+  \item \texttt{\#print axioms} is recorded;
+  \item the module builds from the pinned repository commit;
+  \item native transfer occurs after the ordinary derivation;
+  \item reference tests are not cited as proof of object soundness.
+\end{enumerate}

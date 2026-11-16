@@ -1,0 +1,258 @@
+\section{Repository-specific Lean integration and completion map}
+\label{sec:repo-integration}
+
+This section turns the preceding architecture into a concrete implementation plan for the audited repository snapshot.  The main revision from earlier framework proposals is that several generic arithmetic components are no longer merely desiderata.  The current \texttt{IPRADerivations} library already exports object-level arithmetic, order, bounded search, pairing, simultaneous recursion, bounded sums, gcd and B\'ezout, polynomial normalization, and descent.  The shortest formalization path is therefore an adapter layer around those checked components, followed by only the genuinely missing contract machinery.
+
+\subsection{The exact target and the no-shortcut rule}
+
+Every public theorem produced by the new library should have the shape
+\[
+  \Gamma\vdash[\PRAAx]\varphi
+\]
+for an explicit formula \(\varphi\).  A metatheoretic theorem about \texttt{Nat}, a proof that a Python function passes tests, or a theorem about the standard model can be used to discover the proof term, but cannot replace it.  In particular, the compiler is allowed to recurse in Lean over a fixed graph and to emit a large term, formula, primitive-recursive symbol, and derivation tree.  It is not allowed to add an axiom saying that the emitted program is sound.
+
+There are three separate recursion principles, and keeping them separate avoids most foundational confusion.
+
+\begin{enumerate}[label=(\arabic*)]
+\item \emph{Metalevel recursion} traverses a finite graph, formula, or source derivation and constructs syntax and proof terms.  This is ordinary Lean programming.
+\item \emph{Object-level primitive recursion} defines numerical functions through \texttt{PR.prec} and obtains their zero and successor equations from \(\PRAAx\).
+\item \emph{Object-level induction} proves a quantifier-free invariant through \texttt{LeanProofs.IPRA.ind} or \texttt{PRA.qfInd}.
+\end{enumerate}
+
+The first may manipulate arbitrary syntax because it happens outside the target theory.  The second and third are the only recursions represented inside iPRA.  This is why specialization of a fixed graph is legitimate while a total object-level evaluator for arbitrary primitive-recursive codes is not.
+
+\subsection{Map from KIFC obligations to existing modules}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.29\textwidth}>{\raggedright\arraybackslash}p{0.36\textwidth}@{}}
+\toprule
+Repository module & Existing checked service & KIFC use \\
+\midrule
+\endfirsthead
+\toprule
+Repository module & Existing checked service & KIFC use \\
+\midrule
+\endhead
+\texttt{ConciseIPRA.Deduction} & Embedded intuitionistic natural deduction, equality transport, substitution, weakening, and simultaneous cut & Kernel rules, proof schedules, graph composition, and negative-translation proof recursion \\
+\texttt{ConciseIPRA.PR} & \texttt{PR}, \texttt{PTm}, \(\PRAAx\), defining equations, and quantifier-free induction & Generated numerical programs, state transitions, folds, and loop certificates \\
+\path{IPRADerivations.Core.Basic} & Arithmetic symbols, \texttt{ind}, \texttt{inst}, and congruence lemmas & Uniform instantiation of generated open theorems and the main QF loop wrapper \\
+\texttt{Core.Definitions} & Primitive-recursive definitions, finite sums/products, powers, and recursors & Clocked traces, packed state updates, demand passes, and table scans \\
+\texttt{Core.Pairing} & Pairing/projections and simultaneous recursion & Encoding fixed tuples, multiple accumulators, paths, and finite tables \\
+\texttt{Core.Monus}, \texttt{Core.Order} & Truncated subtraction, reflected order, equality decidability, and monotonicity & Boolean guards, bounded formulas, margins, and branch certificates \\
+\texttt{Core.Search} & A primitive-recursive least-zero operator with object proofs of bound, validity, and minimality & The least-search backend for bounded witnesses, pivots, viable successors, and finite cover cells \\
+\texttt{Core.BoundedSums}, \texttt{Core.MultiSums} & Bounded universal content represented by numerical sums/products & Quantifier-free encodings of prefix invariants and finite certificate conjunctions \\
+\texttt{Core.Quotient}, \texttt{Core.Integers}, \texttt{Core.Tactic} & Terms modulo provable equality, integer differences, and \texttt{ipra\_ring} & Exact-algebra nodes and normalization of polynomial side conditions \\
+\texttt{Core.Division}, \texttt{Core.Gcd}, \texttt{Core.Bezout} & Certified quotient/remainder, Euclidean algorithm, and B\'ezout identities & Number-theoretic verifier nodes and constructive cancellation under explicit hypotheses \\
+\texttt{Core.Descent}, \texttt{Core.DescentEx} & Generic bounded-count infinite descent, including existential successor steps & Descent-based theorem modules after witnesses have been compiled to bounded search \\
+\texttt{NativeBiInterpretation} & \texttt{pra\_iff\_native} & Final transfer after the ordinary object derivation is complete \\
+\bottomrule
+\end{longtable}
+
+This map changes the implementation priorities.  In particular, the generic least-search recurrence in \cref{sec:boolean-search} need not be reimplemented as a competing core theorem.  The current \texttt{Core.Search} module already defines \texttt{Search.mu} and proves \texttt{search\_spec}, \texttt{search\_found}, and \texttt{search\_minimal}.  KIFC only needs a formula-to-zero-test adapter and a convenient certificate wrapper.
+
+\subsection{Adapting reflected predicates to the checked search engine}
+
+The checked search engine looks for the least \(i<N\) at which a term \(f(i,x)\) is zero.  KIFC Booleanization conventionally represents truth by \(\chi_P=1\).  These conventions are interdefinable without changing the search proof.
+
+Assume the Boolean compiler produces \(\chi_P(i,x)\), a range theorem
+\[
+  \chi_P=0\ \vee\ \chi_P=1,
+\]
+and reflection \(P(i,x)\leftrightarrow \chi_P(i,x)=1\).  Define
+\[
+  z_P(i,x)\defeq 1\mathbin{\dot-}\chi_P(i,x),
+\]
+where \(\dot-\) is truncated subtraction.  The range theorem and the equations of monus give
+\[
+ z_P(i,x)=0\quad\leftrightarrow\quad \chi_P(i,x)=1
+ \quad\leftrightarrow\quad P(i,x).
+\]
+Instantiate \texttt{Search.mu} with \(z_P\).  Then \texttt{search\_found} gives a witness whenever one is supplied, \texttt{search\_spec} gives validity when the returned index is below the bound, and \texttt{search\_minimal} gives leastness.  Combining these with finite-fold reflection yields \cref{thm:bounded-ex-normal}.
+
+For several parameters, there are two equally legitimate compilation strategies.  A generator may emit a search symbol of the needed arity, following the proof pattern of \texttt{Core.Search}; or it may pack the parameter tuple into one number and use the checked pairing projections.  The first produces smaller object terms for fixed applications.  The second minimizes generic library code.  Neither requires an object-level evaluator.
+
+\begin{proposition}[Checked-search reuse]
+\label{prop:checked-search-reuse}
+Once Boolean reflection and the monus adapter above are available, the object-level validity and minimality parts of bounded-existential normalization reduce to instances of the existing \texttt{Core.Search} theorems.  The only new induction required by the generic layer is the reflection theorem for the formula-specific Boolean code.
+\end{proposition}
+
+\begin{proof}
+The monus equations prove that zeros of \(z_P\) are exactly witnesses to \(P\).  Substitute \(z_P\) for the body \(f\) in the three checked search theorems.  Transport each zero equation through the reflection equivalence.  The bound and minimality formulas are unchanged.  The implication from existence to foundness is obtained either from \texttt{search\_found} after existential elimination, or directly by comparing the search output with the existential fold.  Every step is substitution, equality transport, natural-deduction composition, or an inherited object theorem.
+\end{proof}
+
+\subsection{Proposed module boundary}
+
+The following decomposition keeps new trusted surface area small.
+
+\begin{description}[style=nextline,leftmargin=2.4em]
+\item[\texttt{KIFC/QFBoolean.lean}.]
+Syntax-directed Booleanization of fixed quantifier-free and bounded formulas.  Public output: a term, a Boolean-range derivation, and a derivation of formula iff term equals one.  The compiler itself is metalevel recursion on \(\Fm\); it emits specialized \(\mathsf{PR}\) syntax.
+
+\item[\texttt{KIFC/BoundedExists.lean}.]
+The monus adapter to \texttt{Core.Search}, the least-certificate matrix, and the bounded witness-extraction theorem.  No independent search implementation should remain after this adapter is complete.
+
+\item[\texttt{KIFC/CertifiedLoop.lean}.]
+A thin wrapper around \texttt{IPRA.ind} and \texttt{IPRA.inst}.  It packages a QF invariant, base derivation, and successor derivation, and returns the open and instantiated invariant theorems.
+
+\item[\texttt{KIFC/FiniteTable.lean}.]
+One fixed rectangular table code with lookup/write equations, row folds, and a path checker.  This is the main low-level prerequisite for relational viability.
+
+\item[\texttt{KIFC/FiniteRelation.lean}.]
+Backward viability, equivalence with a compatible finite suffix, and least viable path extraction.  Its induction invariant is a table-equation invariant, not an assertion containing bounded quantifiers.
+
+\item[\texttt{KIFC/Observer.lean}.]
+Exact observer independence, rational diameter bounds, adjacent-cloud estimates, guarded uniqueness, and finite gluing.
+
+\item[\texttt{KIFC/RetainedTransfer.lean}.]
+Completion of the atom-preserving negative translation: translated-formula stability, recursion over classical derivations, quantifier-free recovery, retained equivalence, and final context replacement by simultaneous cut.
+
+\item[\texttt{KIFC/Compiler.lean}.]
+A metalevel typed graph and code generator.  Its result is not a semantic execution theorem but a record containing generated symbols, formulas, local derivations, a loop certificate, a proof schedule, and the final \(\Prf\,\PRAAx\) term.
+
+\item[\texttt{KIFC/Checks.lean}.]
+Axiom audits for all public theorems and at least one generated deterministic and one generated relational application.
+\end{description}
+
+\subsection{Core Lean-facing records}
+
+The source files in the archive give more detail; the essential signatures are as follows.  They are shown schematically because de Bruijn layouts and generated arities are theorem-specific.
+
+\begin{lstlisting}
+structure Reflected (n : Nat) where
+  formula : Fm PTm n
+  code : PTm n
+  range : ([] : List (Fm PTm n)) |- [PRAAx]
+    (code = 0) or (code = 1)
+  iffOne : ([] : List (Fm PTm n)) |- [PRAAx]
+    formula iff (code = 1)
+
+structure LoopCertificate (k : Nat) where
+  inv : Fm PTm (k + 1)
+  qf : inv.QF
+  zeroCase : ([] : List (Fm PTm k)) |- [PRAAx]
+    inv[0]
+  succCase : [inv] |- [PRAAx] inv[S(var 0)]
+
+structure KernelRule (n : Nat) where
+  premises : List (Fm PTm n)
+  conclusion : Fm PTm n
+  sound : premises |- [PRAAx] conclusion
+
+structure CompiledGraph (n : Nat) where
+  external : List (Fm PTm n)
+  terminal : Fm PTm n
+  schedule : Schedule n external terminal
+\end{lstlisting}
+
+In actual Lean syntax the ASCII displays above are replaced by the repository notation \texttt{\(\vdash[\PRAAx]\)}, \texttt{\(\doteq\)}, \texttt{Fm.iff}, and explicit substitutions.  The important typing invariant is that every proof-bearing field already lives in \texttt{Prf PRAAx}.  Consequently graph soundness is not an extra axiom:
+\[
+  \mathsf{CompiledGraph.sound}(g)\defeq
+  \mathsf{Schedule.compile}(g.\mathsf{schedule}).
+\]
+
+\subsection{Formal proof of schedule compilation}
+
+The schedule compiler is deliberately elementary.  A schedule is either a completed derivation or a step that proves an intermediate formula \(\psi\) and continues under \(\psi::\Gamma\).  Define compilation by recursion on the schedule.  In the completed case return the stored derivation.  In the step case, recursively compile the continuation and apply \texttt{Prf.trans}: supply the new first assumption with the stored proof of \(\psi\), and supply every old assumption by \texttt{Prf.hyp}.  This proves
+\[
+  \mathsf{Schedule}\;n\;\Gamma\;\varphi
+  \longrightarrow
+  \Gamma\vdash[\PRAAx]\varphi.
+\]
+No theorem about program semantics enters this proof.  It is just simultaneous cut organized as a data structure.
+
+For loops, the implementation has two direct definitions.
+\begin{itemize}
+\item \path{LoopCertificate.compile} applies \texttt{IPRA.ind}.
+\item \path{LoopCertificate.at} applies \texttt{IPRA.inst}.
+\end{itemize}
+Thus the graph compiler's two global proof combinators reduce to two inherited structural theorems: open QF induction and simultaneous cut.  All mathematical complexity remains in the local node certificates, where it is visible and auditable.
+
+\subsection{Formalizing the one-loop normal form}
+
+A direct dependent compiler for arbitrary node-by-node executions would create substantial binder and arity bookkeeping.  The more economical route is the normalization theorem of \cref{sec:loop-normal}.  At the metalevel, enumerate the fixed graph, allocate fixed fields of a packed state, and generate one transition term
+\[
+  T(i,s,\vec x).
+\]
+The program counter determines which node update is active; completed nodes preserve their fields.  Demand propagation has already fixed all bounds, so the run has a primitive-recursive fuel term \(F(q,\vec x)\).
+
+Generate a single formula \(I(i,s,\vec x)\) as a conjunction of:
+\begin{itemize}
+\item state projection equations;
+\item Boolean range equations;
+\item reflected certificate flags;
+\item clock and program-counter bounds;
+\item table-prefix or fold equations; and
+\item guarded margin equations where a partial operation is used.
+\end{itemize}
+Every bounded assertion is represented by a term, so \(I\) is quantifier-free.  The generated base derivation unfolds the initial state.  The generated step derivation case-splits on the finite program counter and invokes the local certificate of the active node.  \texttt{LoopCertificate.compile} then proves the open invariant, and \texttt{LoopCertificate.at} instantiates it at \(F\).  Projection and equality transport extract the terminal node facts.
+
+A useful implementation discipline is to generate the state layout and the proof of each projection equation from the same typed field description.  Then a mismatch between program and invariant is rejected by Lean's types rather than discovered in a final arithmetic proof.
+
+\subsection{Relational viability as the first new substantial object proof}
+
+The missing generic theorem with the highest leverage is finite relational viability.  Represent level \(i\) by a row of width \(W\), padding unused cells with an invalid marker.  Let \(V_i(a)\) be validity and \(R_i(a,b)\) compatibility.  Define the terminal row by
+\[
+  W_H(a)=V_H(a)\wedge T(a),
+\]
+and the reverse recurrence by
+\[
+  W_i(a)=V_i(a)\wedge
+  \mathsf{Any}_{b<W}\bigl(W_{i+1}(b)\wedge R_i(a,b)\bigr).
+\]
+The implementation scans reverse time by a forward primitive recursion on \(r=H-i\).  The row at time \(r\) is a numerical table term.  The induction invariant states that each written cell equals the corresponding recurrence Boolean.  This is a finite conjunction encoded by a row-difference sum or all-fold term, hence quantifier-free.
+
+After the row theorem is available, define a bounded path checker and prove by induction on remaining horizon:
+\[
+ W_i(a)=1
+ \quad\leftrightarrow\quad
+ \text{there exists a checker-accepted suffix beginning with }a.
+\]
+The right-to-left direction follows by recurrence reflection.  For left-to-right, the row recurrence gives a bounded successor witness; the checked least-search adapter chooses one and the induction hypothesis extends the path.  Iterating this construction produces a path term.  This is a finite, explicitly bounded form of dependent choice and does not imply countable choice.
+
+\subsection{Retained transfer implementation order}
+
+The human proof of \cref{thm:retained-transfer} separates into five compilation units.
+
+\begin{enumerate}[label=(\arabic*)]
+\item \textbf{QF decidability.}  Reuse \texttt{QFBoolean} to derive equality stability and a decision theorem for every fixed QF formula.
+\item \textbf{Translated stability.}  Recurse on formulas.  Atomic equality uses the previous step; translated disjunctions and existentials are negations; implication and universal cases use stability of their consequents/matrices.
+\item \textbf{Proof translation.}  Recurse on the classical derivation.  The only conceptually nontrivial branches are \texttt{orE} and \texttt{exE}; both first derive double negation of the translated conclusion, then apply translated stability.
+\item \textbf{Recovery.}  Prove \(A^N\leftrightarrow A\) first for QF formulas by Boolean decidability, then for the retained closure under conjunction, implication, and universal quantification.
+\item \textbf{Context replacement.}  Translate the source proof, use retained equivalence to derive each translated assumption from its original assumption, apply \texttt{Prf.trans}, and recover the conclusion.
+\end{enumerate}
+
+The source packet already supplies much of the syntax and axiom layer.  The principal engineering risk is not a mathematical principle but de Bruijn bookkeeping across \texttt{allI}, \texttt{allE}, \texttt{exI}, and \texttt{exE}.  The formalization should therefore prove and register translation/substitution simp lemmas before attempting the recursion on derivations.
+
+\subsection{Dependency-ordered completion plan}
+
+A practical sequence with independently checkable exit criteria is:
+
+\begin{enumerate}[label=\textbf{Phase \arabic*.},leftmargin=5em]
+\item \textbf{Compile the kernel adapter.}  Place \texttt{KernelCore.lean} in the workspace, repair only namespace/API drift, and audit \texttt{Schedule.compile} and \texttt{LoopCertificate.compile}.  Exit: no \texttt{sorry}; conclusions are embedded derivations.
+\item \textbf{Reuse checked search.}  Implement Boolean range/reflection for equality, order, and connectives; prove the monus zero-test adapter; wrap \texttt{Core.Search}.  Exit: a closed theorem extracting the least divisor below a supplied bound.
+\item \textbf{Bounded formula compiler.}  Add finite folds and syntax-directed Booleanization.  Exit: generated reflection theorems for nested bounded quantifiers, with an axiom audit.
+\item \textbf{One generated deterministic loop.}  Compile exact rational bisection for \(y^3+y=x\).  Exit: an explicit terminal interval formula in \(\Prf\,\PRAAx\), not merely a semantic theorem.
+\item \textbf{Finite table and viability.}  Prove the row recurrence, path-checker equivalence, and least viable path.  Exit: the supplied dead-end example generates an object theorem saying only the extendable start survives.
+\item \textbf{Observers.}  Add exact and diameter-stable choice erasure, then adjacent motion and tail sums.  Exit: a relational bisection example exports a stable interval observation without selecting an exact branch at a zero test.
+\item \textbf{Retained transfer.}  Complete stability, proof translation, recovery, and context replacement.  Exit: transfer one retained classical finite-combinatorial proof and compare its terminal object theorem with a direct intuitionistic derivation.
+\item \textbf{Graph generator.}  Only after both deterministic and relational examples compile, generalize their shared metalevel code to a typed graph elaborator.  Exit: generated source is deterministic, the manifest records hashes, and a clean workspace build succeeds.
+\end{enumerate}
+
+\subsection{Acceptance criteria and trust audit}
+
+A KIFC theorem should be advertised as formalized only after all of the following hold.
+
+\begin{enumerate}[label=(\alph*)]
+\item The public formula and all external producer assumptions are printed explicitly.
+\item The public declaration has type \(\Prf\,\PRAAx\), or its notation-equivalent sequent type.
+\item No \texttt{sorry}, \texttt{admit}, theorem-specific axiom, or semantic soundness oracle occurs in the dependency closure.
+\item \texttt{\#print axioms} is recorded for the theorem and for the generic compiler lemmas it uses.
+\item A clean build from the pinned repository snapshot succeeds.
+\item Reference algorithms agree with independent finite checks, but those tests are reported as testing rather than proof.
+\item Native transfer is applied only after the ordinary object derivation has been obtained.
+\end{enumerate}
+
+This audit boundary is intentionally stricter than ``the Lean file typechecks.''  Mathlib and classical choice may be used in the metatheory to construct a derivation term, as the existing quotient/ring backend already does.  What matters for the object theorem is that the exported value is built only from the constructors of \(\Prf\) and instances of \(\PRAAx\), and that no theorem-specific premise is hidden in a new axiom constructor.
+
+\subsection{What this integration resolves}
+
+The integration map resolves three earlier ambiguities.  First, it identifies a concrete checked backend for exact algebra and bounded search, so the framework no longer depends on hypothetical generic arithmetic libraries.  Second, it reduces graph soundness to two small structural combinators---QF induction and simultaneous cut---rather than a monolithic semantic compiler theorem.  Third, it gives every remaining gap a module name and an acceptance test.  The substantial open implementation tasks are now finite-table reflection, relational viability, observer estimates, and the retained proof translator; theorem-specific quantitative producers remain explicitly outside the generic compiler.

@@ -1,0 +1,47 @@
+\section{Source audit}
+
+\subsection{Pinned repository snapshot}
+
+The report was developed against the main-branch snapshot
+\[
+\texttt{7c1f2594117c15a980d24300593d625722812768},
+\]
+observed through the GitHub repository interface on 16 November 2026.  The repository is active; later commits may change paths or APIs.  A formal implementation should therefore pin this commit or explicitly repeat the audit.
+
+\subsection{Primary inspected paths}
+
+\begin{sloppypar}
+\small
+\begin{itemize}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/README.md}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/Deduction.lean}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/Derivations/README.md}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Basic.lean}
+  \item \path{.../Core/Definitions.lean}, \path{.../Core/Pairing.lean}, \path{.../Core/Order.lean}
+  \item \path{.../Core/BoundedSums.lean}, \path{.../Core/Search.lean}
+  \item \path{.../Core/Quotient.lean}, \path{.../Core/Integers.lean}, \path{.../Core/Tactic.lean}
+  \item \path{.../Core/Descent.lean}, \path{.../Core/DescentEx.lean}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_local_global/lean/NegativeSyntax.lean}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/README.md}
+\end{itemize}
+\normalsize
+\end{sloppypar}
+
+The corresponding repository build and axiom-audit records were consulted when classifying inherited results.  This artifact did not independently run the repository Lean build.
+
+\subsection{Earlier framework packets consolidated}
+
+The design was compared with the prior \texttt{ipra\_kifc}, \texttt{ipra\_pfig}, unified-finitary, finite-use, certified-finitary, and OC-iPRA artifacts dated 15 November 2026.  Their demand propagation, relational viability, stable-observer, finite-net, guarded-operation, and producer/verifier ideas are retained.  The second edition adds:
+\begin{itemize}
+  \item bounded-existential normalization and constructive least-witness extraction;
+  \item a full human proof of retained classical-to-intuitionistic transfer;
+  \item reuse of the checked \texttt{Core.Search} backend rather than a duplicate generic search proof;
+  \item a module-by-module integration path for the current \texttt{IPRADerivations} workspace.
+\end{itemize}
+
+\subsection{Audit limitations}
+
+The repository contains many proof packets and changes rapidly.  This task inspected the central indexes, current logical APIs, checked derivation core, the negative-translation source layer, representative theorem files, and prior general-framework artifacts.  It did not independently rebuild every packet or verify every theorem claimed in packet prose.  The theorem ledger therefore distinguishes inherited checked components, human-complete arguments, finite-tested algorithms, uncompiled Lean outlines, placeholder-bearing formalization targets, conditional producer interfaces, and genuine open problems.
