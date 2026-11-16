@@ -101,6 +101,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_dvd_left
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_mul
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_square
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.sq_inj
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_quotients
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.dvd_of_sq_dvd_sq
+#print axioms LeanProofs.IPRA.DescentEx.descent
 #print axioms LeanProofs.IPRA.Analysis.Products.pochhammer_shift
 #print axioms LeanProofs.IPRA.Analysis.Products.telescoping_sum
 #print axioms LeanProofs.IPRA.Analysis.Products.wallis_product

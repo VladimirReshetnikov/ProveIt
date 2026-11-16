@@ -95,13 +95,60 @@ theorem coprime_mul {a c c' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (h
   have hdc' := gauss hd hdc (Prf.andE₂ hdd)
   exact eq_one_of_dvd_one hd (dvd_congr h₂ (gcd_greatest' hd (Prf.andE₁ hdd) hdc'))
 
-/-! ## Coprime factors of a square -/
+/-! ## Squares and quotients by the gcd -/
+
+/-- `x² ≤ y² → x ≤ y`. -/
+theorem le_of_sq_le {x y : PTm n} (h : Γ ⊢[PRAAx] le (x * x) (y * y)) : Γ ⊢[PRAAx] le x y := by
+  refine .orE (lt_or_le y x) ?_ Prf.hyp0
+  have h₁ : (lt y x :: Γ) ⊢[PRAAx] lt (y * y) (succ y * succ y) :=
+    le_of_eq_add (d := y + y) (by apply deriveNat; ipra_simps; ring)
+  exact le_lt_absurd _ h.wk (le_trans h₁ (sq_le_sq Prf.hyp0))
+
+/-- `x² = y² → x = y`. -/
+theorem sq_inj {x y : PTm n} (h : Γ ⊢[PRAAx] x * x ≐ y * y) : Γ ⊢[PRAAx] x ≐ y :=
+  le_antisymm (le_of_sq_le (le_congr (.eqRefl _) h (le_refl _)))
+    (le_of_sq_le (le_congr (.eqRefl _) h.eqSymm (le_refl _)))
+
+theorem gcd_comm_one {a b : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (h : Γ ⊢[PRAAx] gcd a b ≐ one) :
+    Γ ⊢[PRAAx] gcd b a ≐ one := by
+  have hd := gcd_pos (B := a) hb
+  have hdd := gcd_dvd' (b := a) hb
+  exact eq_one_of_dvd_one hd (dvd_congr h (gcd_greatest' hd (Prf.andE₂ hdd) (Prf.andE₁ hdd)))
+
+/-- A factor of a positive number is positive. -/
+theorem pos_of_eq_mul {x e q : PTm n} (hx : Γ ⊢[PRAAx] x ≐ succ (pred x)) (h : Γ ⊢[PRAAx] x ≐ e * q) :
+    Γ ⊢[PRAAx] q ≐ succ (pred q) := by
+  refine .orE (zero_or_succ q) ?_ Prf.hyp0
+  exact succ_ne_zero' _ (hx.wk.eqSymm.eqTrans (h.wk.eqTrans
+    ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))))
 
 theorem square_alg₁ {a a₁ u e t : PTm n} (eA : Γ ⊢[PRAAx] a ≐ u * a₁) (e₁ : Γ ⊢[PRAAx] a₁ ≐ e * t) :
     Γ ⊢[PRAAx] a ≐ (u * e) * t := by
   have h₁ := natEq eA; have h₂ := natEq e₁
   apply deriveNat; ipra_simps
   linear_combination h₁ + Groth.ι (IPRA.Q.mk Γ u) * h₂
+
+/-- `gcd(a / g, c / g) = 1` for `g = gcd(a, c)`, `a ≥ 1`. -/
+theorem coprime_quotients {a c : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) :
+    Γ ⊢[PRAAx] gcd (quo a (gcd a c)) (quo c (gcd a c)) ≐ one := by
+  have hu := gcd_pos (B := c) ha
+  have hud := gcd_dvd' (b := c) ha
+  have eA := eq_of_dvd' hu (Prf.andE₁ hud)
+  have eC := eq_of_dvd' hu (Prf.andE₂ hud)
+  have ha₁ := pos_of_eq_mul ha eA
+  have he := gcd_pos (B := quo c (gcd a c)) ha₁
+  have hed := gcd_dvd' (b := quo c (gcd a c)) ha₁
+  have hue := pos_mul hu he
+  have hueA := dvd_of_eq' hue (square_alg₁ eA (eq_of_dvd' he (Prf.andE₁ hed)))
+  have hueC := dvd_of_eq' hue (square_alg₁ eC (eq_of_dvd' he (Prf.andE₂ hed)))
+  have hle := dvd_le' hue (gcd_greatest' hue hueA hueC) hu
+  have hle' : Γ ⊢[PRAAx] le (succ (pred (gcd a c)) * gcd (quo a (gcd a c)) (quo c (gcd a c)))
+      (succ (pred (gcd a c)) * one) :=
+    le_congr (congrMul hu (.eqRefl _)) ((mul_comm _ _).eqTrans (one_mul _) |>.eqSymm.eqTrans
+      (congrMul hu (.eqRefl _))) hle
+  exact le_antisymm (mul_le_cancel hle') (one_le_of_pos he)
+
+/-! ## Coprime factors of a square -/
 
 theorem square_alg₂ {a b c a₁ c₁ u : PTm n} (h : Γ ⊢[PRAAx] a * b ≐ c * c) (eA : Γ ⊢[PRAAx] a ≐ u * a₁)
     (eC : Γ ⊢[PRAAx] c ≐ u * c₁) : Γ ⊢[PRAAx] u * (a₁ * b) ≐ u * (u * (c₁ * c₁)) := by
@@ -118,23 +165,8 @@ theorem square_of_coprime {a b c : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a
   have hud := gcd_dvd' (b := c) ha
   have eA := eq_of_dvd' hu (Prf.andE₁ hud)
   have eC := eq_of_dvd' hu (Prf.andE₂ hud)
-  -- `a₁ = a / u ≥ 1`.
-  have ha₁ : Γ ⊢[PRAAx] quo a (gcd a c) ≐ succ (pred (quo a (gcd a c))) := by
-    refine .orE (zero_or_succ (quo a (gcd a c))) ?_ Prf.hyp0
-    exact succ_ne_zero' _ (ha.wk.eqSymm.eqTrans (eA.wk.eqTrans
-      ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))))
-  -- `gcd(a₁, c₁) = 1`: `u e` divides `a` and `c`, hence `u`, so `e ≤ 1`.
-  have he := gcd_pos (B := quo c (gcd a c)) ha₁
-  have hed := gcd_dvd' (b := quo c (gcd a c)) ha₁
-  have hue := pos_mul hu he
-  have hueA := dvd_of_eq' hue (square_alg₁ eA (eq_of_dvd' he (Prf.andE₁ hed)))
-  have hueC := dvd_of_eq' hue (square_alg₁ eC (eq_of_dvd' he (Prf.andE₂ hed)))
-  have hle := dvd_le' hue (gcd_greatest' hue hueA hueC) hu
-  have hle' : Γ ⊢[PRAAx] le (succ (pred (gcd a c)) * gcd (quo a (gcd a c)) (quo c (gcd a c)))
-      (succ (pred (gcd a c)) * one) :=
-    le_congr (congrMul hu (.eqRefl _)) ((mul_comm _ _).eqTrans (one_mul _) |>.eqSymm.eqTrans
-      (congrMul hu (.eqRefl _))) hle
-  have he1 := le_antisymm (mul_le_cancel hle') (one_le_of_pos he)
+  have ha₁ := pos_of_eq_mul ha eA
+  have he1 := coprime_quotients (c := c) ha
   -- `a₁` is prime to `c₁²`, and `a₁ b = u c₁²`.
   have hcc := coprime_mul ha₁ he1 he1
   have eB := mul_cancel hu (square_alg₂ h eA eC)
@@ -146,6 +178,39 @@ theorem square_of_coprime {a b c : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a
   have ua₁ := gauss hu hub d₂
   have eq := le_antisymm (dvd_le' hu ua₁ ha₁) (dvd_le' ha₁ a₁u hu)
   exact eA.eqTrans (congrMul (.eqRefl _) eq.eqSymm)
+
+/-- `d² ∣ z² → d ∣ z` for `d, z ≥ 1`. -/
+theorem dvd_of_sq_dvd_sq {d z : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hz : Γ ⊢[PRAAx] z ≐ succ (pred z))
+    (h : Γ ⊢[PRAAx] dvd (d * d) (z * z)) : Γ ⊢[PRAAx] dvd d z := by
+  have he := gcd_pos (B := z) hd
+  have hed := gcd_dvd' (b := z) hd
+  have eD := eq_of_dvd' he (Prf.andE₁ hed)
+  have eZ := eq_of_dvd' he (Prf.andE₂ hed)
+  have hd₁ := pos_of_eq_mul hd eD
+  have hz₁ := pos_of_eq_mul hz eZ
+  have hcop := coprime_quotients (c := z) hd
+  have ew := eq_of_dvd' (pos_mul hd hd) h
+  -- `z₁² = d₁² w` after cancelling `g²`.
+  have e₁ : Γ ⊢[PRAAx] (gcd d z * gcd d z) * (quo z (gcd d z) * quo z (gcd d z) * one) ≐
+      (gcd d z * gcd d z) * (quo d (gcd d z) * quo d (gcd d z) * quo (z * z) (d * d)) := by
+    have h₁ := natEq ew; have h₂ := natEq eD; have h₃ := natEq eZ
+    apply deriveNat; ipra_simps
+    linear_combination h₁ -
+      (Groth.ι (IPRA.Q.mk Γ z) + Groth.ι (IPRA.Q.mk Γ (gcd d z)) * Groth.ι (IPRA.Q.mk Γ (quo z (gcd d z)))) * h₃ +
+      (Groth.ι (IPRA.Q.mk Γ d) + Groth.ι (IPRA.Q.mk Γ (gcd d z)) * Groth.ι (IPRA.Q.mk Γ (quo d (gcd d z)))) *
+        Groth.ι (IPRA.Q.mk Γ (quo (z * z) (d * d))) * h₂
+  have e₂ := mul_cancel (pos_mul he he) e₁
+  have hzz := pos_mul hz₁ hz₁
+  have hdd := pos_mul hd₁ hd₁
+  have c₁ := coprime_mul hd₁ hcop hcop
+  have c₂ := gcd_comm_one hzz c₁
+  have c₃ := coprime_mul hzz c₂ c₂
+  have c₄ := gcd_comm_one hdd c₃
+  have h1 := gauss hdd c₄ (dvd_of_eq' hdd e₂)
+  have d₁1 := sq_inj ((eq_one_of_dvd_one hdd h1).eqTrans ((mul_comm _ _).eqTrans (one_mul _)).eqSymm)
+  have ed : Γ ⊢[PRAAx] gcd d z ≐ d :=
+    ((mul_comm _ _).eqTrans (one_mul _)).eqSymm.eqTrans ((congrMul (.eqRefl _) d₁1.eqSymm).eqTrans eD.eqSymm)
+  exact dvd_congr_left ed (Prf.andE₂ hed)
 
 /-! ## Closed statements -/
 
