@@ -119,9 +119,10 @@ and [transfer from uniqueness](pa194-work/pa194-model-logic/NAME-OF-UNIQ.md)
 fields are also proved. A separately replayed generic reduction derives all naming
 fields from twelve fixed source facts and variable-name existence; the latter is
 proved for the full source theory. Of the twelve fixed facts,
-[equality reflexivity and successor existence](pa194-work/pa194-model-axioms/SOURCE-FIXED-FACTS.md)
-[domain-zero existence](pa194-work/pa194-model-axioms/SOURCE-Z1.md), and
-[isomorphism of zero representatives](pa194-work/pa194-model-axioms/SOURCE-Z2.md)
+[equality reflexivity and successor existence](pa194-work/pa194-model-axioms/SOURCE-FIXED-FACTS.md),
+[domain-zero existence](pa194-work/pa194-model-axioms/SOURCE-Z1.md),
+[isomorphism of zero representatives](pa194-work/pa194-model-axioms/SOURCE-Z2.md),
+and [guarded isomorphism symmetry](pa194-work/pa194-model-axioms/SOURCE-IS.md)
 are proved in the covered models; the remaining facts are open.
 A [successor-value transport](pa194-work/pa194-model-axioms/SUCC-VALUE-FULL-SOURCE.md)
 is proved in the covered models, including for nonstandard term codes. The
