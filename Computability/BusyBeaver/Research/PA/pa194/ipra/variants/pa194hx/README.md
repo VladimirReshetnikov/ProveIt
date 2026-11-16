@@ -17,7 +17,20 @@ the HX run after 56,134 steps and the primary run after 58,154 steps reach
 the same full packed configuration in every `IΣ₁` model.
 [`PA194HXSeedFrame.reachesFrame`](PA194HXSeedFrame.lean) identifies that
 configuration with the HX register file at source site 25 and header gap 42.
-The equivalence of later execution through the changed routers remains open.
+
+[`PA194HXRowAgreement.rowAgreement`](PA194HXRowAgreement.lean) links the
+symbolic native controls to the dense rows.
+[`PA194HXBoxAgreement.concreteBoxAgreement`](PA194HXBoxAgreement.lean)
+supplies the literal mark, increment and both decrement paths for the
+packed file, including arbitrary model-valued register and spare counts.
+[`PA194HXRootEncoding.contractFrames`](PA194HXRootEncoding.lean) converts
+a checked contract into a positive segment between exact HX source
+frames, given the corresponding file encodings and register effects.
+[`PA194HXSourceRoot.sourceRootCodeCorrect`](PA194HXSourceRoot.lean) and
+[`PA194HXSourceArgs`](PA194HXSourceArgs.lean) give those encodings and
+register updates in the H/X physical order.
+The end-to-end iPRA proof still requires full source-site coverage and
+composition along the source run.
 
 Run from the repository root with fresh output directories.
 
@@ -35,3 +48,11 @@ checkpoints from the pinned table. It rebuilds the natural-number to
 model-valued lift, the literal HX checks, and the shared-seed theorem. It
 uses prebuilt dependencies from the primary and PA194B stages, including
 the checked primary startup.
+
+With the [shared register stage](../../../../shared/isigma1-machine/README.md)
+and the HX startup output, replay the literal boxes and their source-root
+interface.
+
+```sh
+bash "$pa/pa194/ipra/variants/pa194hx/check-registers.sh" "$register" /dev/shm/pa194hx-replay /dev/shm/pa194hx-registers
+```
