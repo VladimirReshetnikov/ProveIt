@@ -1,0 +1,175 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,stmaryrd}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+
+\definecolor{deepblue}{RGB}{25,63,116}
+\definecolor{softgray}{RGB}{245,247,250}
+\definecolor{darkgreen}{RGB}{23,96,61}
+\definecolor{darkred}{RGB}{145,36,36}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=deepblue,
+  citecolor=deepblue,
+  urlcolor=deepblue,
+  pdftitle={Finitary interfaces and proof-producing compilation for mathematics in iPRA},
+  pdfauthor={OpenAI research report for Vladimir Reshetnikov}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Finitary interfaces for iPRA}
+\fancyhead[R]{\thepage}
+\setlength{\headheight}{14pt}
+
+\setlist[itemize]{leftmargin=*,topsep=3pt,itemsep=2pt}
+\setlist[enumerate]{leftmargin=*,topsep=3pt,itemsep=2pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt minus 1pt}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Bool}{\mathbf B}
+\newcommand{\iPRA}{\mathrm{iPRA}}
+\newcommand{\PRAAx}{\mathsf{PRAAx}}
+\newcommand{\Prf}{\mathsf{Prf}}
+\newcommand{\PTm}{\mathsf{PTm}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\Obs}{\mathsf{Obs}}
+\newcommand{\Val}{\mathsf{Val}}
+\newcommand{\Good}{\mathsf{Good}}
+\newcommand{\Need}{\mathsf{Need}}
+\newcommand{\Run}{\mathsf{Run}}
+\newcommand{\Inv}{\mathsf{Inv}}
+\newcommand{\Accept}{\mathsf{Accept}}
+\newcommand{\Cand}{\mathsf{Cand}}
+\newcommand{\Edge}{\mathsf{Edge}}
+\newcommand{\Viable}{\mathsf{Viable}}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\htop}{\operatorname{ht}}
+\newcommand{\RepoCommit}{\texttt{9df5cbdf39e6}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+
+\lstdefinelanguage{Lean}{
+  morekeywords={def,theorem,lemma,structure,inductive,namespace,end,where,by,exact,have,let,match,with,import,open,variable,forall,if,then,else},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[s]{/-}{-/},
+  morestring=[b]"
+}
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{softgray},
+  frame=single,
+  rulecolor=\color{black!15},
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false
+}
+
+\title{\textbf{Finitary Interfaces and Proof-Producing Compilation\\for Mathematics in Intuitionistic Primitive Recursive Arithmetic}\\[0.6em]
+\large Finite observations, relational certificates, guarded operations, and an object-language trace compiler}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{15 November 2026\\Repository snapshot: \RepoCommit}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\begin{minipage}{0.91\textwidth}
+\textbf{Exact status.} The mathematical arguments in this report are human-readable proofs and proof schemas. The included Python reference layer has been executed with exact rational arithmetic. The Lean files are an uncompiled, source-oriented outline against the pinned ProveIt API and contain visible \code{sorry} obligations. No new kernel-checked theorem is claimed. The already checked bridge \code{pra_iff_native} is inherited from \code{ConciseIPRA} and applies after an ordinary \(\Prf\,\PRAAx\) derivation has been completed.
+\end{minipage}}
+\end{center}
+
+\begin{abstract}
+The ProveIt iPRA tree contains many finitary reconstructions of classical mathematics and several cross-domain frameworks based on certificates, finite observations, explicit moduli, and relational witnesses. Their common difficulty is not the mere coding of finite mathematics. It is the simultaneous control of four boundaries: uniform primitive recursiveness, constructive choice, quantitative adequacy, and production of an actual object-language derivation of type \(\Prf\,\PRAAx\).
+
+This report develops a unified \emph{finitary interface calculus}. A mathematical object is represented only through primitive-recursive finite observations. A construction is a contracted transducer with an explicit backward precision demand, a bounded verifier, optional finite candidate clouds, and local object-language proofs. Fixed bounded formulas are Booleanized into quantifier-free equations. Bounded computations are internalized by a finite-trace reflection theorem using the existing \code{PRA.qfInd}. Contract DAGs are compiled by a reverse demand pass and one forward trace. Nonunique approximate witnesses are handled by backward viability and stable quotient erasure, not by hidden global selectors. Infinite objects arise only after a diameter or tail modulus proves that finite observations cohere.
+
+The framework resolves, at the level of complete mathematical arguments, the recurring issues of all-precision induction, partial operations, branch discontinuity, finite compactness, quotient extensionality, and the finite-list/height-bound interface. It also isolates genuine residual obligations: general height producers, rational covering representatives, ineffective analytic constants, and unrestricted exact branch selection. Detailed Lean definitions and a dependency-ordered path to a complete formalization are supplied, together with an exact Python reference kernel and reproducible certificates.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{sections/01_executive}
+\input{sections/02_repository_audit}
+\input{sections/03_logical_target}
+\input{sections/04_coding}
+\input{sections/05_presentations}
+\input{sections/06_booleanization}
+\input{sections/07_fixed_precision}
+\input{sections/08_trace_compiler}
+\input{sections/09_contract_dag}
+\input{sections/10_relational}
+\input{sections/11_names_and_guards}
+\input{sections/12_compact_local_global}
+\input{sections/13_domain_templates}
+\input{sections/14_case_studies}
+\input{sections/15_difficulty_matrix}
+\input{sections/16_lean_plan}
+\input{sections/17_barriers_status}
+
+\appendix
+\input{sections/A_theorem_summary}
+\input{sections/B_conversion_checklist}
+\input{sections/C_api_inventory}
+
+\begin{thebibliography}{20}
+\bibitem{ProveItRoot}
+V. Reshetnikov, \emph{ProveIt}, repository snapshot \RepoCommit,
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{ConciseIPRA}
+V. Reshetnikov, \emph{Concise presentations of intuitionistic primitive recursive arithmetic},
+\code{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA} in \cite{ProveItRoot}.
+
+\bibitem{PacketsIndex}
+V. Reshetnikov, \emph{Delivered iPRA proof packets},
+\path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/README.md} in \cite{ProveItRoot}.
+
+\bibitem{BishopBridges}
+E. Bishop and D. Bridges, \emph{Constructive Analysis}, Springer, 1985.
+
+\bibitem{BridgesRichman}
+D. Bridges and F. Richman, \emph{Varieties of Constructive Mathematics}, Cambridge University Press, 1987.
+
+\bibitem{TroelstraVanDalen}
+A. S. Troelstra and D. van Dalen, \emph{Constructivism in Mathematics}, Volumes I--II, North-Holland, 1988.
+
+\bibitem{Kohlenbach}
+U. Kohlenbach, \emph{Applied Proof Theory: Proof Interpretations and their Use in Mathematics}, Springer, 2008.
+
+\bibitem{Weihrauch}
+K. Weihrauch, \emph{Computable Analysis}, Springer, 2000.
+\end{thebibliography}
+
+\end{document}

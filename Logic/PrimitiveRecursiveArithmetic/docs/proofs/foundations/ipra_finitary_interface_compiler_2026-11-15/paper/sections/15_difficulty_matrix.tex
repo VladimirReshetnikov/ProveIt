@@ -1,0 +1,130 @@
+\section{Resolution matrix for the reported difficulties}
+\label{sec:difficulties}
+
+The following matrix consolidates the recurring difficulties in the repository
+and records the exact resolution supplied by the framework.  ``Resolved''
+means that the generic mathematical argument is complete; it does not mean
+that every domain-specific producer or every Lean proof has been completed.
+
+\begin{longtable}{@{}p{0.14\textwidth}p{0.22\textwidth}p{0.31\textwidth}p{0.21\textwidth}@{}}
+\toprule
+Issue & Failure mode & Framework response & Status \\
+\midrule
+\endfirsthead
+\toprule
+Issue & Failure mode & Framework response & Status \\
+\midrule
+\endhead
+Object-language gap & Host theorem or program is called an iPRA proof &
+Require local \(\Prf\,\PRAAx\) proofs and compile them by finite-trace reflection &
+Human proof complete; Lean milestones open \\
+
+All-precision induction & Invariant contains \(\forall p\) &
+Fix \(p\), build one finite query table, perform qf induction, quantify afterward &
+Resolved schema \\
+
+Bounded quantifiers & Induction predicate is not quantifier free &
+Compile bounded \(\forall,\exists\) to Boolean folds and one equation &
+Resolved; shared Lean fold library needed \\
+
+Higher-type evaluator & Assumes one total evaluator for all PR codes &
+Use fixed symbols, fixed families, or clocked traces &
+Unrestricted evaluator impossible \\
+
+Adaptive oracle use & Forward algorithm asks for unforeseen precision &
+Run a reverse demand pass before the forward trace &
+Resolved for static finite DAGs \\
+
+Nonunique witnesses & Independent choices fail to cohere &
+Finite candidate clouds, backward viability, stable quotient erasure &
+Finite case resolved \\
+
+Changing horizons & Least finite paths do not nest &
+Diameter control plus motion-tail bound; no infinite branch selected &
+Resolved conditional on modulus \\
+
+Root and eigenvalue labels & Labels jump at collisions &
+Return clusters/multisets; exact labels only under separation &
+Representation repaired \\
+
+Puiseux branches & Exact coefficients requested from arbitrary Cauchy input &
+Use exact algebraic splitting data or approximate relational branches &
+Unrestricted producer remains obstructed \\
+
+Rotation axis & Exact unit axis requested at identity &
+Use quaternion/projective cloud; exact axis only with gap from identity &
+Representation repaired \\
+
+Partial operations & Division or chart selection from mere \(x\ne0\) &
+Totalize and consume a positive rational apartness margin &
+Resolved under guard \\
+
+Compactness & Abstract subcover or minimizer &
+Finite net/cover producer, coverage certificate, modulus, bounded minimization &
+Resolved for effective presentations \\
+
+Metastability & Stable windows treated as a Cauchy rate &
+Retain window theorem; require an explicit tail modulus for a name &
+General conversion impossible \\
+
+Diophantine finiteness & Cardinality mistaken for a search bound &
+Separate height/list producer from generic enumeration and verification &
+Verifier resolved; producer theorem-specific \\
+
+Mordell--Weil descent & Selmer class mistaken for a rational covering point &
+Require certified rational representatives or a relational descent object &
+Producer open in general \\
+
+Ineffective constants & ``Sufficiently large'' hides noncomputable data &
+Make every cutoff and quantifier dependence explicit &
+Conditional verifier resolved \\
+
+Probability & General measures and discontinuous CDFs hide data &
+Finite rational laws plus tail, quantization, and anti-concentration moduli &
+Resolved for effective laws \\
+
+Topology & Compact spaces used without numerical control &
+Finite complexes, carriers, subdivisions, parity and chain certificates &
+Representation resolved; theorem invariant remains \\
+
+Algebraic geometry & Localizations and sheaves treated abstractly &
+Finite affine presentations, synchronized denominators, cover and gluing certificates &
+Strong finite gluing resolved; bounds conditional \\
+
+Exten\-sion\-al\-ity & Code equality confused with object equality &
+Observational setoids and contracted congruence proofs &
+Resolved \\
+
+Lexicographic descent & Termination asserted without a loop bound &
+Compile a rank bound and stuttering terminal transition to a bounded trace &
+Resolved with rank producer \\
+
+Classical case split & Exact sign/side selected from approximate data &
+Three-way guard or relational union; collapse under apartness &
+Unrestricted split implies LLPO-type principle \\
+\bottomrule
+\end{longtable}
+
+\subsection{Priority ordering for future work}
+
+The highest-value engineering milestone is the generic trace compiler, because
+it turns several existing source-level constructions into actual iPRA proofs.
+The next milestone is a shared bounded-Boolean library.  Third is the object-
+language viability dynamic program.  Only after these common layers should
+large domain packets be migrated.  Deep producer theorems should be tackled in
+parallel but kept in separate modules so that they do not block verification of
+the generic compiler.
+
+\subsection{Acceptance criterion for a migrated packet}
+
+A packet should be considered fully embedded only when it supplies:
+\begin{enumerate}
+\item a pinned source audit and exact target statement;
+\item fixed \(\PR\) symbols or clocked evaluators for every algorithm;
+\item explicit moduli, guards, bounds, and finite universes;
+\item a theorem ledger distinguishing producers, verifiers, and barriers;
+\item local \(\Prf\,\PRAAx\) derivations;
+\item a generic compiler invocation yielding the main derivation;
+\item a build with no \code{sorry}, \code{axiom}, or untracked external theorem;
+\item optional host-level tests clearly marked as regression evidence only.
+\end{enumerate}

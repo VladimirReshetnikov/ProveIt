@@ -1,0 +1,107 @@
+\section{Fix precision first, then quantify}
+\label{sec:fixedprecision}
+
+\subsection{The quantifier-order problem}
+
+Many packets describe a construction that must work at every requested
+precision \(p\).  A tempting induction predicate is
+\[
+   \forall p\;\Inv(i,p,u).
+\]
+This is not quantifier free, so it cannot be fed to \code{PRA.qfInd}.  Even when
+one can encode the universal quantifier by a bounded fold, the bound may depend
+on the loop counter in an inconvenient way.  The correct proof order is:
+\begin{enumerate}
+\item take a single arbitrary precision \(p\) as a free parameter;
+\item compute all finite queries needed at that precision;
+\item perform quantifier-free induction with \(p\) free;
+\item universally introduce \(p\) after the induction is complete.
+\end{enumerate}
+
+\subsection{Finite query tables}
+
+Suppose a construction at output precision \(p\) makes finitely many oracle
+queries to its input presentation.  Let
+\[
+   Q(p)=\langle q_0(p),\ldots,q_{m(p)-1}(p)\rangle
+\]
+be the primitive-recursive query table, and let
+\(A(p)\) encode the corresponding finite answers.  The condition that all
+answers are valid is the Boolean fold
+\[
+   \operatorname{TableOK}(x,p,A)
+   =\operatorname{All}\bigl(m(p),
+       j\mapsto \operatorname{AnswerOK}(x,q_j(p),A_j)\bigr).
+\]
+It is one quantifier-free equation.  The loop invariant may mention \(p,Q(p),A\)
+freely without quantifying over other precisions.
+
+\begin{theorem}[Fixed-precision induction]
+Let \(\Phi(i,p,u)\) be a fixed bounded formula and let
+\(b_\Phi(i,p,u)\) be its Booleanization.  If iPRA proves the base and successor
+steps uniformly with free parameters \(p,u\), then iPRA proves
+\[
+      \forall p\,\forall u\,\forall i\;\Phi(i,p,u).
+\]
+The only induction used is quantifier-free induction on the equation
+\(b_\Phi(i,p,u)=1\).
+\end{theorem}
+
+\begin{proof}
+Work with \(p,u\) as free variables.  By \cref{thm:booleanization}, replace
+\(\Phi\) by the equivalent equation \(b_\Phi=1\).  Apply quantifier-free
+induction on \(i\), using the supplied base and successor derivations after
+transport across the Booleanization equivalence.  This yields
+\(\forall i\,b_\Phi(i,p,u)=1\) with \(p,u\) still free.  Convert back to
+\(\Phi\), then use universal introduction first for \(u\) and then for \(p\).
+The eigenvariable conditions hold because the context was shifted exactly as
+required by the checked \code{Prf.allI} constructor.
+\end{proof}
+
+\subsection{Simultaneous finite windows}
+
+Sometimes a theorem needs a whole window of precisions
+\(p,p+1,\ldots,p+k\), for example to verify a tail estimate or a finite
+coherence condition.  Do not introduce \(k+1\) independent quantified
+invariants.  Extend the query table to contain the union of all queries needed
+by the window and fold their validity into one Boolean.  The window length may
+be a free parameter if its loop is bounded and compiled into the Boolean
+state.
+
+\subsection{Changing parameters in recursive algorithms}
+
+An algorithm may refine a precision or alter a denominator cap at each step.
+Let \(d(i,p,u)\) be the demand at stage \(i\), computed by primitive recursion.
+The invariant is not ``all demands have been met'' as a quantified formula; it
+is a Boolean statement about the finite state containing the answers already
+collected for the current demand table.  A reverse-demand pass, described in
+\cref{sec:dag}, computes a sufficiently strong initial table so that no new
+unbounded oracle call is needed during the forward run.
+
+\subsection{Examples}
+
+\paragraph{Taylor approximation.}
+Fix a requested error \(2^{-p}\).  Compute a derivative order \(N(p)\), a
+radius margin, and all coefficient precisions before proving the finite Taylor
+identity and remainder bound by induction on \(N(p)\).  Quantify over \(p\)
+last.
+
+\paragraph{Root clusters.}
+Fix a disk radius and coefficient precision.  The finite root-count verifier
+uses one grid and one finite boundary table.  It does not induct on a predicate
+saying that the count is correct at every smaller radius.
+
+\paragraph{Simplicial approximation.}
+Fix the output subdivision level.  Compute the source subdivision and carrier
+cloud required by the modulus.  Prove the chain-map and contiguity identities
+for those finite complexes, then quantify over subdivision level.
+
+\subsection{Why this resolves a recurring packet difficulty}
+
+The difficulty reports often identify an induction that appears to need a
+quantifier over all precisions.  In almost every such case, the quantifier is
+an artifact of proving too strong a statement inside the loop.  The finite
+computation only uses finitely many observations for a fixed requested
+output.  Encoding exactly that finite-use table restores a quantifier-free
+invariant and produces a theorem that is extensionally just as strong after
+universal introduction.

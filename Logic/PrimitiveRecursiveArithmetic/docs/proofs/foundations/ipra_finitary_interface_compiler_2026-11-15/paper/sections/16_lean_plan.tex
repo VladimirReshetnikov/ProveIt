@@ -1,0 +1,161 @@
+\section{Lean formalization plan}
+\label{sec:leanplan}
+
+\subsection{Pinned upstream API}
+
+The outline imports only checked repository modules and uses their public
+objects:
+\[
+\code{PR},\quad \code{PTm},\quad \code{PRAAx},\quad
+\code{Prf},\quad \code{PRA.qfInd},\quad
+\code{NFm.ofPRA},\quad \code{pra_iff_native}.
+\]
+The essential proof combinators are
+\code{Prf.subst}, \code{Prf.weaken}, \code{Prf.trans},
+\code{Prf.impI}, \code{Prf.impE}, \code{Prf.allI},
+\code{Prf.allE}, \code{Prf.eqSubst1}, \code{Prf.eqSymm}, and
+\code{Prf.eqCongr}.  Primitive-recursion equations come from
+\code{PRA.precZero} and \code{PRA.precSucc}.
+
+\subsection{File dependency graph}
+
+\begin{enumerate}
+\item \code{ObjectTraceCompiler.lean}: formula builders, trace system, run
+equations, four proof milestones, main compiler.
+\item \code{BoundedFormulaCompiler.lean}: Boolean symbols, folds, fixed bounded
+formula syntax, reflection theorem.
+\item \code{RelationalWitnesses.lean}: finite tower codes, viability, least
+path, stable observation.
+\item \code{CertifiedProgram.lean}: finite program/DAG syntax, reverse demands,
+forward compilation to a trace system.
+\item \code{ApplicationTargets.lean}: guarded reciprocal, height/list, cubic
+bisection, carrier, and affine-gluing targets.
+\end{enumerate}
+
+The first file can be completed independently and should be merged before the
+others.  It is the narrowest bridge to the checked backend.
+
+\subsection{Exact trace layouts}
+
+The object trace file uses these de Bruijn layouts:
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Formula & Arity & Variables by index \\
+\midrule
+\code{BaseFm} & 1 & \([u]\) \\
+\code{StepFm} & 3 & \([i,s,u]\) \\
+\code{FinalFm} & 2 & \([s,u]\) \\
+\code{InvRunFm} & 2 & \([i,u]\) \\
+\code{ResultFm} & 0 & closed, with one universal binder \\
+\bottomrule
+\end{tabular}
+\end{center}
+Term builders \code{app1}, \code{app2}, and \code{app3} make argument order
+visible and reduce substitution errors.
+
+\subsection{Milestone 1: base case}
+
+The target is
+\begin{lstlisting}[language=Lean]
+theorem trace_base (T : PRTraceSystem) (h : TraceProofs T) :
+  [GoodFm T] |- [PRAAx] (InvRunFm T).subst (inst zero)
+\end{lstlisting}
+The proof steps are:
+\begin{enumerate}
+\item instantiate \code{h.base} at \code{var 0};
+\item weaken it to context \code{[GoodFm T]};
+\item eliminate the implication using \code{Prf.hyp0};
+\item obtain \code{run_zero T (var 0)};
+\item transport the state argument with \code{Prf.eqSubst1};
+\item close substitution equalities by \code{simp} lemmas for \code{app1/2/3}.
+\end{enumerate}
+A useful helper is a congruence lemma for \code{IsTrue (app3 T.inv i - u)}.
+
+\subsection{Milestone 2: successor case}
+
+The target is exactly the successor premise expected by \code{PRA.qfInd}:
+\begin{lstlisting}[language=Lean]
+theorem trace_step (T : PRTraceSystem) (h : TraceProofs T) :
+  InvRunFm T :: [GoodFm T].map Fm.shift |- [PRAAx]
+    (InvRunFm T).subst (repl (succ (var 0)))
+\end{lstlisting}
+Instantiate \code{h.step} with
+\((i,\Run(i,u),u)\), eliminate implications using \code{Prf.hyp0} and
+\code{Prf.hyp1}, and transport along \code{run_succ}.  Most work is normalizing
+the shifted guard and the simultaneous substitution.
+
+\subsection{Milestone 3: induction and final contract}
+
+The induction theorem is already one line:
+\begin{lstlisting}[language=Lean]
+exact PRA.qfInd (InvRunFm T) (invRun_qf T)
+  (trace_base T h) (trace_step T h)
+\end{lstlisting}
+Then use
+\begin{lstlisting}[language=Lean]
+Prf.allE (app1 T.bound (var 0)) (trace_all T h)
+\end{lstlisting}
+to obtain the invariant at the terminal index.  Instantiate \code{h.final} with
+the terminal run and input, eliminate implications, discharge the guard, and
+close the input binder.
+
+\subsection{Milestone 4: bounded Boolean folds}
+
+Introduce canonical Boolean-valued symbols and equations.  For each fixed body
+symbol \(f\), define \code{allFold f}, \code{anyFold f}, and
+\code{leastFold f} by \code{PR.prec}.  Prove:
+\begin{itemize}
+\item zero and successor equations from \code{PRA.precZero/precSucc};
+\item Boolean range invariants;
+\item reflection against bounded formula abbreviations;
+\item least-witness soundness and minimality.
+\end{itemize}
+Use a fixed family indexed at the Lean level; do not define a universal PR
+evaluator internally.
+
+\subsection{Milestone 5: relational viability}
+
+Encode a tower by fixed symbols for level bounds, candidate validity, and
+edges.  Define viability by a backward recursion on the distance to horizon.
+The principal object theorem is a Boolean equivalence between viability and a
+bounded path verifier.  A second theorem proves correctness of least viable
+successor.  Both use quantifier-free induction on the finite distance.
+
+\subsection{Milestone 6: certified program compilation}
+
+Replace semantic \code{Prop} fields in the program outline by:
+\begin{itemize}
+\item formula builders over \code{PTm};
+\item local derivation fields;
+\item fixed arity and state-layout records;
+\item a compiler producing \code{PRTraceSystem} and \code{TraceProofs}.
+\end{itemize}
+Sequential composition uses \code{Prf.trans}.  Bounded loops invoke the trace
+compiler recursively.  A static DAG is first lowered to reverse-demand and
+forward-table loops, then compiled once.
+
+\subsection{Suggested build discipline}
+
+\begin{enumerate}
+\item Place the modules under the root Lake workspace, in namespace
+\code{LeanProofs.ConciseIPRA.}\allowbreak\code{FinitaryInterface}.
+\item Add a lint command rejecting \code{sorryAx}, explicit \code{axiom}, and
+unintended imports.
+\item Build after each milestone; keep formula-normalization lemmas separate
+from mathematical proofs.
+\item Add tiny closed examples: identity trace, addition fold, least witness,
+three-level viability tower, and cubic bisection step.
+\item Only after the generic modules are checked should large packets import
+them.
+\end{enumerate}
+
+\subsection{Estimated residual risk}
+
+The trace compiler is low mathematical risk and moderate de Bruijn-engineering
+risk.  Boolean folds are moderate risk because a clean fixed-family API must be
+chosen.  Relational viability is low mathematical risk but may produce large
+formula terms.  The program compiler is architectural rather than logical;
+its main risk is over-generalization.  It should initially support only static
+DAGs and bounded loops, adding richer syntax after concrete migrations expose
+a need.

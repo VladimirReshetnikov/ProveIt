@@ -1,0 +1,158 @@
+\section{Certified finitary presentations}
+
+\subsection{Deterministic presentations}
+
+A finitary presentation describes only the observations of an object that a
+finite proof can consume.
+
+\begin{definition}[Deterministic finitary presentation]
+A deterministic finitary presentation \(X\) consists of fixed primitive-
+recursive data:
+\begin{enumerate}
+\item a well-formedness predicate \(\Good_X(x)\);
+\item an observation function \(\Obs_X(x,p)\), where \(p\) is a precision or
+finite query code;
+\item a restriction function \(\operatorname{res}_X(p,q,a)\) for weakening an
+answer at precision \(p\) to a weaker precision \(q\);
+\item a primitive-recursive relation \(q\preceq_X p\);
+\item object-language proofs of identity and composition of restriction and of
+observation coherence.
+\end{enumerate}
+\end{definition}
+
+The precision order need not be ordinary numerical order.  It may be a tuple
+of a radius, derivative order, denominator cap, finite open cover, degree cap,
+or a finite list of requested observables.  All that matters is that its
+comparison and joins are primitive recursive.
+
+\begin{example}[Regular real name]
+A regular rational name has observations \(q_p\in\Q\) satisfying
+\(|q_p-q_{p+1}|\le 2^{-p}\).  Restriction simply discards excess precision.
+The presentation need not contain a completed real number; every theorem is a
+finite statement about rational approximations and an explicit error budget.
+\end{example}
+
+\subsection{Relational presentations}
+
+Deterministic observations are too strong when valid finite witnesses are not
+unique.  Root orderings, triangulations, branch choices, local charts, and
+finite covers may change discontinuously.
+
+\begin{definition}[Finitary relational presentation]
+A relational presentation \(X\) consists of:
+\begin{enumerate}
+\item a bound \(B_X(x,p)\) on candidate codes;
+\item a decidable validity predicate \(\Cand_X(x,p,a)\) for
+\(a<B_X(x,p)\);
+\item a compatibility relation
+\(\Edge_X(x,p,q,a,b)\) between candidates at related precisions;
+\item a finite observable \(\Val_X(x,p,a)\);
+\item optional diameter and motion bounds controlling variation among valid
+or compatible candidates.
+\end{enumerate}
+\end{definition}
+
+A candidate cloud is therefore a finite relation, not a set-valued object in a
+higher-type universe.  Existence means a bounded disjunction.  Compatibility
+means a Boolean table.  Backward viability, developed in \cref{sec:relational},
+turns these finite tables into coherent finite paths.
+
+\subsection{Contracted transducers}
+
+\begin{definition}[Contracted transducer]
+A contracted transducer \(F:X\to Y\) consists of:
+\begin{enumerate}
+\item a primitive-recursive backward demand
+\(\Need_F(x,p_Y)\), specifying the input precision needed for output precision
+\(p_Y\);
+\item a bounded state transition or finite relation producing output
+candidates from valid input candidates;
+\item a local verifier and a quantifier-free invariant;
+\item an object-language proof that valid input observations at the demanded
+precision yield a valid output observation at \(p_Y\);
+\item an extensionality proof showing that observationally equivalent inputs
+produce equivalent outputs.
+\end{enumerate}
+\end{definition}
+
+This definition makes precision flow contravariant and data flow covariant.
+The reverse demand is part of the theorem, not an informal estimate hidden in
+its proof.
+
+\subsection{Composition}
+
+Suppose \(F:X\to Y\) and \(G:Y\to Z\) are deterministic contracted
+transducers.  In the simplest, \emph{static-demand} case the demand of \(G\)
+depends only on the requested output query (and fixed finite metadata), so
+\[
+  \Need_{G\circ F}(x,p_Z)
+    =\Need_F\bigl(x,\Need_G(p_Z)\bigr).
+\]
+More generally, \(G\)'s demand may depend on a designated finite summary of its
+input.  Then the contract must also state a primitive-recursive preliminary
+demand sufficient to compute that summary, followed by a certified upper
+envelope for the final demand.  Equivalently, one may join the demands of all
+finitely possible guarded branches.  It is not legitimate to write
+\(\Need_G(F(x),p_Z)\) if computing that demand already requires an unbounded or
+unknown-precision observation of \(F(x)\).  For a finite program DAG,
+\cref{sec:dag} packages the static or majorized case into a reverse pass and a
+single forward trace.
+
+\begin{theorem}[Sequential contract composition]
+The composite of two contracted transducers is a contracted transducer.  Its
+local soundness derivation is obtained by substitution and simultaneous cut
+from the local derivations of the factors.
+\end{theorem}
+
+\begin{proof}
+Fix an output query \(p_Z\).  The contract of \(G\) produces a finite demand
+on \(Y\); the contract of \(F\) produces the corresponding demand on \(X\).
+Run \(F\) and then \(G\).  The first local derivation concludes the hypotheses
+required by the second.  In the repository calculus, instantiate both closed
+local proofs with \code{Prf.subst}, use \code{Prf.trans} to replace the
+intermediate assumptions, and discharge the input contract by implication
+introduction.  Since all formula builders are fixed and quantifier free, the
+composite verifier remains quantifier free.
+\end{proof}
+
+\subsection{Products, sums, and finite families}
+
+Products combine demands by componentwise join.  A finite family of consumers
+of the same producer combines demands by maximum or by a primitive-recursive
+join operation in the query preorder.  Tagged sums are safe when the tag is
+part of the finite input.  When a tag is selected by approximate numerical
+data, one must use a three-way guard or a relational output rather than exact
+binary branching.
+
+\subsection{Proof-carrying presentations}
+
+A presentation can carry two distinct kinds of proof.
+
+\begin{enumerate}
+\item A \emph{certificate verifier} is a fixed Boolean program.  It checks a
+finite witness such as a factorization identity, a matrix inverse, a cover, or
+a homotopy.
+\item A \emph{proof-producing compiler} is a Lean function whose input fields
+are local \(\Prf\,\PRAAx\) derivations and whose output is a global derivation.
+\end{enumerate}
+
+The first kind makes domain mathematics modular: a deep theorem may be
+isolated as a producer of a finite certificate.  The second kind prevents the
+framework itself from becoming merely semantic.
+
+\subsection{Adequacy and honesty}
+
+A presentation is adequate for a theorem only if its observations determine
+the theorem's conclusion at the claimed precision.  This requirement rules
+out several common shortcuts:
+\begin{itemize}
+\item a metastable window is not a Cauchy name without a tail modulus;
+\item a finite cardinality bound is not an enumerating cutoff;
+\item a nonzero proposition is not a numerical inverse guard;
+\item a multiset of roots is not an ordered list at a collision;
+\item a Selmer class is not a rational point on its covering curve.
+\end{itemize}
+
+The framework does not insist on stronger data than the theorem needs.  It
+instead insists that every consumed datum be named and verified.  This is the
+main sense in which the interface is both constructive and reusable.

@@ -1,0 +1,103 @@
+\section{Executive synthesis}
+
+\subsection{The problem is an interface problem}
+
+A proof in intuitionistic primitive recursive arithmetic is not obtained merely by observing that a familiar argument is finite ``in principle.'' Four distinct claims must be separated.
+
+\begin{enumerate}
+\item \textbf{Representability.} Every object manipulated by the argument must have a fixed natural-number coding, and every operation used by the argument must belong to a fixed primitive-recursive family.
+\item \textbf{Quantitative adequacy.} Whenever the ordinary theorem invokes convergence, compactness, continuity, a finite cover, an isolated branch, or a height bound, the formal statement must expose the numerical modulus or certificate actually consumed by the construction.
+\item \textbf{Constructive coherence.} Finite witnesses obtained at different precisions need not agree. One must either prove that all valid choices have the same observable effect or build a compatible finite path by bounded search. A hidden appeal to an infinite branch, an exact sign, or a canonical label is not acceptable.
+\item \textbf{Object-language reflection.} A correct Lean function, Python program, or external finite proof does not by itself yield an iPRA theorem. The end product must be an actual derivation of type
+\[
+   \Gamma \;\vdash[\PRAAx]\; \varphi,
+\]
+that is, a value of the repository's inductive relation \(\Prf\,\PRAAx\).
+\end{enumerate}
+
+The repository already addresses the first three points in many individual packets and several general frameworks. The most persistent cross-packet gap is the fourth. The central contribution of the present package is therefore a proof-producing interface whose semantic and syntactic sides meet at a small, explicit theorem: finite-trace reflection by quantifier-free induction.
+
+\subsection{The five-layer architecture}
+
+Every formalization target is divided into five layers. The division is not cosmetic: it is the main safeguard against accidentally treating a host-language theorem as an object-theory proof.
+
+\paragraph{Layer I: fixed presentation.}
+A presentation is a meta-level package of fixed primitive-recursive symbols. It may describe finite data exactly or infinite data by finite observations. It is deliberately not a natural-number code for an arbitrary program. This avoids the impossible demand for a total primitive-recursive universal evaluator.
+
+\paragraph{Layer II: quantitative contract.}
+A construction advertises the precision, search, guard, and certificate data it needs. Its contract consists of a primitive-recursive demand map, a bounded verifier, and an observable postcondition. A producer may be included, but a verifier is meaningful even when the difficult producer remains an open mathematical obligation.
+
+\paragraph{Layer III: finite execution.}
+The construction is executed as a bounded trace, a finite contract DAG, a bounded search, or a finite relational dynamic program. Every loop has an explicit primitive-recursive bound; every branch is Boolean or remains relational; every finite quantifier has a displayed bound.
+
+\paragraph{Layer IV: object proof.}
+The local base, step, and final contracts are themselves \(\Prf\,\PRAAx\) derivations. A generic compiler combines them using substitution, cut, the defining equations of primitive recursion, and \code{PRA.qfInd}. This layer contains no appeal to the intended standard model.
+
+\paragraph{Layer V: transport.}
+Only after the ordinary iPRA derivation is complete is it transported to the small native scalar core by the already checked theorem \code{pra_iff_native}. Keeping transport last makes the trust boundary visible.
+
+\subsection{A single normal form for many proofs}
+
+A large class of packet arguments can be reorganized into the following statement. Fix input \(x\), requested precision \(q\), and a bounded state evolution
+\[
+  s_0=I(x,q),\qquad s_{i+1}=S(i,s_i,x,q),\qquad i<N(x,q).
+\]
+Let \(\Phi(i,s,x,q)\) be a quantifier-free invariant after bounded-formula compilation. Suppose iPRA proves the three local obligations
+\begin{align*}
+  \Good(x)&\to \Phi(0,I(x,q),x,q),\\
+  \Good(x)\wedge \Phi(i,s,x,q)&\to \Phi(i+1,S(i,s,x,q),x,q),\\
+  \Good(x)\wedge \Phi(N(x,q),s,x,q)&\to \Accept(s,x,q).
+\end{align*}
+Then the primitive-recursive run symbol \(\Run\) satisfies
+\[
+  \iPRA\vdash \Good(x)\to
+  \Accept(\Run(N(x,q),x,q),x,q).
+\]
+The proof is a direct application of quantifier-free induction to
+\(
+  \Phi(i,\Run(i,x,q),x,q).
+\)
+The recursion equations rewrite the zero and successor cases. This is elementary mathematics, but it is exactly the elementary mathematics that turns a bounded algorithm into an object-language proof.
+
+The same normal form handles matrix elimination, finite search, interval bisection, finite-net minimization, construction of a simplicial chain map, bounded descent, certificate checking, and the forward pass of a contract DAG. A complicated theorem may still require difficult estimates, but once those estimates are presented as finite contracts, the proof-engineering problem becomes uniform.
+
+\subsection{What is genuinely resolved}
+
+The framework gives complete non-formalized proofs of the following reusable facts.
+
+\begin{itemize}
+\item Every \emph{fixed} bounded formula over primitive-recursive atomic predicates has a primitive-recursive Boolean characteristic function. Its truth is equivalent in iPRA to the quantifier-free equation that the characteristic function equals one.
+\item External parameters, including precision, should be fixed before induction and universally quantified afterward. This avoids putting a quantifier over all precisions inside an induction predicate.
+\item A finite contract DAG has a sound reverse demand pass. At fan-out, demands combine by maximum. A single forward bounded trace can check all local contracts.
+\item Backward viability on finite candidate clouds is equivalent to the existence of a complete compatible finite path. Choosing the least viable successor is primitive recursive and invokes no infinite dependent choice.
+\item If the terminal observable is constant on all viable paths, or has an explicit diameter bound, internal tie-breaking can be erased. This is the right replacement for a discontinuous canonical selector.
+\item A partial numerical operation becomes an iPRA construction after totalization and the addition of a positive rational guard. Mere negated equality is not enough for reciprocal, pivoting, chart selection, or branch isolation.
+\item Effective compactness is represented by finite nets, a coverage certificate, and a modulus. Approximate minimization is then bounded search.
+\item For a decidable coded-point predicate, an explicit height bound yields a complete finite list, and a certified complete finite list yields a height bound by finite maximum. Thus the deep and elementary parts of Diophantine finiteness separate cleanly.
+\end{itemize}
+
+\subsection{What remains honestly open}
+
+The framework does not manufacture data that the underlying mathematics does not supply. In particular it does not prove a general effective Faltings or Siegel height bound; it does not turn Selmer classes into rational points on covering spaces; it does not make ineffective constants effective; it does not uniformly choose a sign of an arbitrary real name, a Puiseux branch from arbitrary Cauchy coefficients, or a rotation axis at the identity; and it does not turn metastability into a Cauchy modulus.
+
+These are not implementation omissions of the same kind as a missing substitution lemma. They are producer obligations or computability barriers. The framework's value is that it makes the distinction machine-visible. A packet can now be classified as having
+\begin{enumerate}
+\item a complete finite verifier,
+\item an explicit but unproved producer theorem,
+\item a relational output that avoids the producer, or
+\item an impossible unrestricted specification that must be reformulated.
+\end{enumerate}
+
+\subsection{Deliverables in this archive}
+
+The archive contains:
+\begin{itemize}
+\item this report and its complete \LaTeX{} source;
+\item Lean source blueprints using the exact pinned \code{ConciseIPRA} API;
+\item a dependency-ordered Lean completion plan;
+\item an exact Python reference kernel implementing bounded folds, trace checking, contract-DAG demand propagation, finite viability, three-way guards, guarded reciprocal, finite-net minimization, height/list conversion, and cubic bisection;
+\item eleven passing regression tests and a serialized cubic-inverse certificate;
+\item a theorem ledger, a difficulty matrix, a machine-readable framework schema, source provenance, hashes, and PDF validation records.
+\end{itemize}
+
+The Python layer is deliberately modest. Its purpose is to expose finite algorithms and catch quantifier-order or certificate-format mistakes. It is not counted as a proof of an iPRA theorem. The Lean files are similarly explicit about their status: they give definitions, exact theorem signatures, and small remaining milestones, but retain visible \code{sorry} placeholders and were not compiled in the build environment.

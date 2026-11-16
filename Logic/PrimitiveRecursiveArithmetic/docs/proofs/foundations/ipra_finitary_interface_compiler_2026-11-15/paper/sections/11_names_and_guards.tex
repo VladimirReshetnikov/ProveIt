@@ -1,0 +1,162 @@
+\section{Regular names, shrinking viability, and guarded operations}
+\label{sec:namesguards}
+
+\subsection{Regular rational names}
+
+A convenient constructive real presentation is a rational sequence
+\(q:\N\to\Q\) with a fixed regularity law, for example
+\[
+       |q_{p+1}-q_p|\le 2^{-p}.
+\]
+The law implies a primitive-recursive tail estimate
+\[
+       |q_m-q_p|\le 2^{1-p}
+       \qquad(m\ge p).
+\]
+All statements are finite rational inequalities.  A completed real is never
+needed as a set-theoretic object inside iPRA.
+
+More generally, a name may come with a modulus \(M(p)\) such that
+\[
+ m,n\ge M(p)\quad\Longrightarrow\quad |q_m-q_n|\le 2^{-p}.
+\]
+The modulus must be explicit.  Mere convergence or metastability is not enough
+for operations requiring a uniform tail.
+
+\subsection{Names from relational towers}
+
+Let \(v(p,a)\in\Q\) be the value of candidate \(a\) at level \(p\).  For an
+increasing primitive-recursive horizon \(H(p)\), choose the least candidate at
+level \(p\) that lies on a viable path to \(H(p)\); call its value \(q_p\).
+Assume:
+\begin{align}
+ \diam\{v(p,a):V_{H}(p,a)\}&\le\delta_p
+   &&\text{for every }H\ge H(p),\label{eq:diambound}\\
+ E_p(a,b)&\Longrightarrow |v(p,a)-v(p+1,b)|\le\mu_p,
+   \label{eq:motionbound}
+\end{align}
+and there is a primitive-recursive tail bound
+\[
+       \sum_{j=p}^{m-1}\mu_j\le T(p)
+       \quad(m>p),
+       \qquad T(p)\to0
+\]
+in an explicit numerical form.
+
+\begin{theorem}[Shrinking viability gives a name]
+\label{thm:shrinkingname}
+For \(m>p\),
+\[
+      |q_m-q_p|\le \delta_p+T(p)+\delta_m.
+\]
+Consequently, if the right-hand side is at most \(2^{-r}\) whenever
+\(p,m\ge M(r)\), then \((q_p)\) is a Cauchy name with modulus \(M\).
+\end{theorem}
+
+\begin{proof}
+Take a viable path witnessing the choice at horizon \(H(m)\).  Its level-\(p\)
+candidate, call it \(a_p\), remains viable after truncating that path at
+horizon \(H(p)\), because \(H(m)\ge H(p)\).  The candidate defining \(q_p\) is
+also viable to \(H(p)\).  Apply \eqref{eq:diambound} at the common horizon
+\(H(p)\) to conclude that \(q_p\) and \(v(p,a_p)\) differ by at most
+\(\delta_p\).  Follow the longer path from level \(p\) to level \(m\);
+telescoping \eqref{eq:motionbound} bounds the change by \(T(p)\).  At level
+\(m\), the candidate on this path and the independently selected candidate
+defining \(q_m\) are both viable to the common horizon \(H(m)\), so their
+values differ by at most \(\delta_m\).  Add the three rational inequalities.
+Every path involved is finite, so the proof is a bounded certificate argument.
+\end{proof}
+
+This theorem avoids selecting one infinite branch.  Each \(q_p\) uses a finite
+horizon; shrinking diameter makes the horizon dependence observationally
+irrelevant.
+
+\subsection{Three-way guards}
+
+Exact binary branching on approximate data is generally discontinuous.  Given
+a rational approximation \(q\) to a quantity \(x\), an error bound
+\(|x-q|\le e\), and a positive margin \(\eta\), define
+\[
+ \operatorname{guard}(q,e,\eta)=
+ \begin{cases}
+  -,&q+e< -\eta,\\
+  +,&q-e> \eta,\\
+  ?,&\text{otherwise}.
+ \end{cases}
+\]
+The output is a finite tag computed by rational comparison.
+
+\begin{lemma}[Guard soundness]
+If the guard returns \(+\), then \(x>\eta\).  If it returns \(-\), then
+\(x<-\eta\).  If it returns \(?\), then the approximation has not certified a
+side; no conclusion is forced.
+\end{lemma}
+
+\begin{proof}
+For the positive case, \(x\ge q-e>\eta\).  The negative case is symmetric.
+The unknown case is deliberately information-preserving.
+\end{proof}
+
+As precision increases, the error budget decreases.  An unknown guard may
+later resolve, but a certified positive or negative guard remains sound.  When
+the theorem assumes an apartness margin \(|x|>\eta\), sufficiently strong
+precision guarantees resolution.
+
+\subsection{Guarded reciprocal}
+
+Let a regular name \(q_p\) represent \(x\), with
+\(|x-q_p|\le e_p\).  Suppose an explicit rational \(\eta>0\) satisfies
+\(|x|\ge\eta\).  Choose \(p\) with \(e_p\le\eta/2\).  Then
+\(|q_p|\ge\eta/2\), so rational division by \(q_p\) is safe.
+
+For two approximations \(q,r\) with
+\(|x-q|,|x-r|\le e\le\eta/2\),
+\[
+ \left|\frac1q-\frac1r\right|
+ =\frac{|q-r|}{|qr|}
+ \le \frac{2e}{(\eta/2)^2}
+ =\frac{8e}{\eta^2}.
+\]
+Thus, to obtain reciprocal precision \(2^{-k}\), it suffices to request an
+input error at most \(2^{-k}\eta^2/8\).  This yields a primitive-recursive
+backward demand once \(\eta\) is coded rationally.
+
+\begin{theorem}[Guarded reciprocal]
+There is a contracted transducer taking a regular rational name for \(x\), a
+positive rational \(\eta\), and a certificate \(|x|\ge\eta\), and returning a
+regular name for \(1/x\).  Its demand transformer is primitive recursive and
+its correctness proof uses only rational inequalities.
+\end{theorem}
+
+The same pattern handles matrix inversion from a determinant or singular-value
+margin, Gaussian pivots from a pivot margin, chart selection from a distance-to-
+boundary margin, logarithms on positive intervals, and isolated algebraic
+branches.
+
+\subsection{Root and eigenvalue labels}
+
+At a collision, an ordered list of roots or eigenvectors is not continuous.
+The correct unconditional outputs are:
+\begin{itemize}
+\item a multiset or cluster cloud;
+\item symmetric functions;
+\item invariant subspaces or spectral projectors for separated clusters;
+\item exact labels only with a separation gap.
+\end{itemize}
+If disks around roots are pairwise separated by \(\eta\), the least-disk
+ordering is stable under perturbations smaller than \(\eta/3\).  The gap is a
+guard and the label-selection proof is finite.  Without it, the framework
+retains the relational cloud.
+
+\subsection{Metastability versus a modulus}
+
+A metastability statement has the form
+\[
+  \forall k\,\forall g\,\exists N\le B(k,g)\,
+  \forall m,n\in[N,N+g(N)]\quad |q_m-q_n|\le2^{-k}.
+\]
+For each fixed \(k,g\), this is a finite-search theorem and fits the framework.
+It does not supply a tail modulus valid for every \(m,n\ge N\).  Therefore it
+supports finite-window conclusions but not, by itself, a regular name or
+operations such as guarded reciprocal.  The type of the interface must retain
+this distinction.

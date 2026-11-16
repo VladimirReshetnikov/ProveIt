@@ -1,0 +1,235 @@
+\section{The proof-producing finite-trace compiler}
+\label{sec:tracecompiler}
+
+\subsection{Trace systems}
+
+A finite computation is internalized by fixed primitive-recursive symbols.
+For clarity, consider one input parameter \(u\); tuples of parameters are
+paired.
+
+\begin{definition}[Trace system]
+A trace system consists of fixed symbols
+\[
+\begin{array}{rclcrcl}
+ \Good&:&\N\to\Bool, && \operatorname{init}&:&\N\to\N,\\
+ \operatorname{bound}&:&\N\to\N, &&
+ \operatorname{step}&:&\N^3\to\N,\\
+ \Inv&:&\N^3\to\Bool, &&
+ \Accept&:&\N^2\to\Bool.
+\end{array}
+\]
+The run is the primitive recursion
+\begin{align*}
+ \Run(0,u)&=\operatorname{init}(u),\\
+ \Run(Si,u)&=\operatorname{step}(i,\Run(i,u),u).
+\end{align*}
+\end{definition}
+
+All predicates are represented by equations to the Boolean value one.  We use
+the abbreviations
+\[
+\begin{aligned}
+ G(u)&:\equiv \Good(u)=1,\\
+ I(i,s,u)&:\equiv \Inv(i,s,u)=1,\\
+ A(s,u)&:\equiv \Accept(s,u)=1.
+\end{aligned}
+\]
+
+\subsection{Local proof interface}
+
+The compiler accepts three closed object-language derivations:
+\begin{align}
+ \mathsf{base}:&\quad []\vdash[\PRAAx]
+       G(u)\to I(0,\operatorname{init}(u),u),\label{eq:tracebase}\\
+ \mathsf{step}:&\quad []\vdash[\PRAAx]
+       G(u)\to I(i,s,u)\to
+       I(Si,\operatorname{step}(i,s,u),u),\label{eq:tracestep}\\
+ \mathsf{final}:&\quad []\vdash[\PRAAx]
+       G(u)\to I(\operatorname{bound}(u),s,u)\to A(s,u).
+       \label{eq:tracefinal}
+\end{align}
+Their displayed free variables are represented by de Bruijn indices.  The
+conclusion to construct is
+\begin{equation}
+ []\vdash[\PRAAx]
+ \forall u\,[G(u)\to
+ A(\Run(\operatorname{bound}(u),u),u)].
+ \label{eq:traceresult}
+\end{equation}
+
+\begin{theorem}[Finite-trace reflection]
+\label{thm:tracereflection}
+For every fixed trace system, the three derivations
+\eqref{eq:tracebase}--\eqref{eq:tracefinal} primitive-recursively determine a
+derivation of \eqref{eq:traceresult}.
+\end{theorem}
+
+\subsection{Human proof of trace reflection}
+
+We give the proof at the same granularity as the intended Lean constructor.
+No semantic induction outside iPRA is used.
+
+\paragraph{Step 1: open the input and assume the guard.}
+Work in one free variable \(u\) and context \([G(u)]\).  Because
+\(\mathsf{base}\) is closed, substitute the term \(u\) for its free variable
+and weaken it to this context.  Apply implication elimination to obtain
+\[
+    [G(u)]\vdash I(0,\operatorname{init}(u),u).
+\]
+The primitive-recursion zero equation gives
+\[
+    [G(u)]\vdash
+    \Run(0,u)=\operatorname{init}(u).
+\]
+Use Leibniz transport in the state position of \(I(0,-,u)\) to derive
+\begin{equation}
+   [G(u)]\vdash I(0,\Run(0,u),u).
+   \label{eq:invbase}
+\end{equation}
+
+\paragraph{Step 2: construct the induction step.}
+The induction formula, with free variables \((i,u)\), is
+\[
+      \Theta(i,u):\equiv I(i,\Run(i,u),u).
+\]
+It is an equation to one and hence quantifier free.  For the successor step,
+work in the shifted context
+\([\Theta(i,u),G(u)]\).  Instantiate \(\mathsf{step}\) with the terms
+\[
+     i,\\ \Run(i,u),\\ u.
+\]
+Eliminate the two implications using the guard and the induction hypothesis.
+This yields
+\[
+ I(Si,\operatorname{step}(i,\Run(i,u),u),u).
+\]
+The primitive-recursion successor equation gives
+\[
+ \Run(Si,u)=\operatorname{step}(i,\Run(i,u),u).
+\]
+Transport in the state argument, reversing the equality when necessary with
+\code{Prf.eqSymm}, to obtain
+\begin{equation}
+ [\Theta(i,u),G(u)]\vdash\Theta(Si,u).
+ \label{eq:invstep}
+\end{equation}
+
+\paragraph{Step 3: invoke quantifier-free induction.}
+Apply \code{PRA.qfInd} to \(\Theta\), using \eqref{eq:invbase} and
+\eqref{eq:invstep}.  The result is
+\begin{equation}
+       [G(u)]\vdash \forall i\,I(i,\Run(i,u),u).
+       \label{eq:allinv}
+\end{equation}
+The context shifting required by the induction rule is exactly the shifting
+already built into \code{Prf.allI} and \code{PRA.qfInd}; no informal
+renaming convention is needed.
+
+\paragraph{Step 4: specialize at the computed bound.}
+Use universal elimination in \eqref{eq:allinv} with the term
+\(\operatorname{bound}(u)\).  We obtain
+\begin{equation}
+ [G(u)]\vdash
+ I(\operatorname{bound}(u),
+   \Run(\operatorname{bound}(u),u),u).
+ \label{eq:boundinv}
+\end{equation}
+
+\paragraph{Step 5: apply the final contract.}
+Instantiate \(\mathsf{final}\) with
+\[
+ s=\Run(\operatorname{bound}(u),u)
+ \quad\text{and}\quad u=u.
+\]
+Weaken to the guard context and eliminate the two implications using the guard
+and \eqref{eq:boundinv}.  This gives
+\[
+  [G(u)]\vdash
+  A(\Run(\operatorname{bound}(u),u),u).
+\]
+Discharge \(G(u)\) by implication introduction and then close \(u\) by
+universal introduction.  This is exactly \eqref{eq:traceresult}.
+
+\subsection{Why the construction is primitive recursive on proofs}
+
+The derivation is assembled from a fixed finite pattern of constructors plus
+the three input derivations.  It performs no search through proofs.  Term and
+formula substitutions are structural recursive functions already defined in
+the checked library.  Hence, at the meta-level, \code{traceReflection} is an
+ordinary total Lean definition.
+
+\subsection{Multiple state components and certificate checks}
+
+A single natural state can encode a tuple containing:
+\begin{itemize}
+\item program variables;
+\item a current query-table index;
+\item accumulated Boolean validity bits;
+\item an error numerator and denominator;
+\item a lexicographic descent measure;
+\item a bounded certificate cursor.
+\end{itemize}
+The invariant remains a single Boolean equation checking all components.  A
+large conjunction should be compiled as a Boolean fold, not represented by a
+formula with a variable number of logical connectives.
+
+\subsection{Nested loops}
+
+Nested bounded loops may be flattened into one trace by pairing loop counters,
+or handled compositionally.  Flattening is useful when one global invariant is
+simpler than a hierarchy of intermediate theorems.  Composition is useful when
+local loop proofs are reusable.  Both routes stay inside quantifier-free
+induction because every loop is bounded and each local invariant has been
+Booleanized.
+
+\subsection{Termination by a ranked measure}
+
+Some algorithms are described as ``repeat until done'' but come with a
+primitive-recursive rank \(r(s)\) that strictly decreases when the terminal
+predicate fails.  If an initial bound \(R(u)\) on the rank is supplied, compile
+the algorithm to exactly \(R(u)\) steps, making terminal states stutter.  The
+invariant records
+\[
+ \operatorname{done}(s_i)=1
+ \quad\text{or}\quad r(s_{i+1})<r(s_i).
+\]
+A bounded induction proves that a nonterminal state cannot persist beyond
+\(R(u)\) decreases.  Thus ranked descent is a special case of trace reflection,
+not an additional induction principle.
+
+\subsection{Lean realization}
+
+The file \code{ObjectTraceCompiler.lean} contains arity-correct builders
+\code{app1}, \code{app2}, and \code{app3}; the trace-system structure; all five
+formula builders; the quantifier-free lemma; the run equations; and exact
+signatures for four milestones:
+\begin{enumerate}
+\item \code{trace_base};
+\item \code{trace_step};
+\item \code{trace_all};
+\item \code{trace_final}.
+\end{enumerate}
+The main definition \code{traceReflection} is then a short composition of
+those milestones.  The remaining \code{sorry} obligations are substitution
+normalizations and equality transports, not missing mathematical ideas.  The
+last theorem
+\[
+ \code{traceReflectionNative}
+\]
+is already one application of the checked \code{pra_iff_native} bridge once
+\code{traceReflection} is complete.
+
+\subsection{Consequence for the proof packets}
+
+Any packet whose main proof has been reduced to a fixed bounded algorithm with
+local iPRA derivations can use \cref{thm:tracereflection}.  It no longer needs a
+custom meta-argument that the algorithm ``ought to be formalizable.''  The
+packet must provide exactly three kinds of evidence:
+\begin{enumerate}
+\item primitive-recursive symbols for the state transition and bound;
+\item a quantifier-free invariant strong enough for the theorem;
+\item closed object-language derivations of base, preservation, and final
+soundness.
+\end{enumerate}
+This is the smallest reusable bridge between finite mathematics and the
+checked logical backend.

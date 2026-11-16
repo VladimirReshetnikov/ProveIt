@@ -1,0 +1,239 @@
+\section{Four developed case studies}
+\label{sec:casestudies}
+
+\subsection{Exact bisection for the inverse of \texorpdfstring{$y^3+y$}{y3+y}}
+
+Let
+\[
+        f(y)=y^3+y.
+\]
+For rational input \(x\), we construct a regular rational name for the unique
+solution of \(f(y)=x\).  The construction is useful because it exercises exact
+rational arithmetic, a bounded loop, a monotonicity certificate, and a final
+error contract without any transcendental machinery.
+
+\begin{lemma}[Strict monotonicity]
+For all rationals \(a<b\), \(f(a)<f(b)\).
+\end{lemma}
+
+\begin{proof}
+Factor the difference:
+\[
+ f(b)-f(a)
+ =(b-a)(a^2+ab+b^2+1).
+\]
+The first factor is positive.  The second is positive because
+\[
+ a^2+ab+b^2=\left(a+\frac b2\right)^2+\frac{3b^2}{4}\ge0.
+\]
+All identities are rational polynomial identities and are therefore suitable
+for iPRA after denominator clearing.
+\end{proof}
+
+Set \(B=|x|+1\).  Then
+\[
+        f(-B)\le -B\le x\le B\le f(B),
+\]
+so \([-B,B]\) brackets the unique solution.  Define a bisection trace.  At
+state \((\ell_i,h_i)\), let \(m_i=(\ell_i+h_i)/2\).  If
+\(f(m_i)\le x\), set \((\ell_{i+1},h_{i+1})=(m_i,h_i)\); otherwise set it to
+\((\ell_i,m_i)\).
+
+\begin{lemma}[Bisection invariant]
+For every \(i\),
+\[
+ f(\ell_i)\le x\le f(h_i),
+ \qquad
+ h_i-\ell_i=2B\cdot2^{-i}.
+\]
+\end{lemma}
+
+\begin{proof}
+The base case is the bracket above.  At a step, rational comparison decides
+\(f(m_i)\le x\).  In the first branch, the lower inequality is updated to
+\(f(m_i)\le x\), and the upper inequality is unchanged; the second branch is
+symmetric.  In either branch the interval width is halved.  The conjunction is
+a fixed Boolean combination of polynomial inequalities and rational equalities,
+so it can be the trace invariant.
+\end{proof}
+
+Let \(q_p\) be the midpoint after \(N(p)\) steps, where \(N(p)\) is the
+least integer satisfying
+\[
+       2B\cdot2^{-N(p)}\le 2^{-p-2}.
+\]
+Bounded doubling from the numerator and denominator of \(B\) computes this
+integer primitively recursively.  Taking the least such integer makes \(N\)
+nondecreasing, so the intervals used for successive precisions are nested.
+
+\begin{theorem}[Cubic inverse name]
+The sequence \((q_p)\) is a regular Cauchy name.  It determines the unique
+real solution of \(y^3+y=x\), and every finite assertion needed for this claim
+is provable from the bisection trace in iPRA.
+\end{theorem}
+
+\begin{proof}
+The solution lies in every bracketing interval.  Hence the midpoint is within
+half the interval width, at most \(2^{-p-3}\), of the solution.  For
+\(r>p\), both \(q_p\) and \(q_r\) are within their respective half-widths of
+the same nested solution interval, so
+\[
+       |q_r-q_p|\le 2^{-p-2}.
+\]
+This is stronger than the usual regularity requirement after a harmless index
+shift.  Strict monotonicity gives uniqueness.  Internally, one need not
+quantify over a completed real: the theorem states nested rational brackets,
+shrinking widths, and the Cauchy inequality between midpoint terms.  These are
+bounded rational calculations compiled by trace reflection.
+\end{proof}
+
+The included Python certificate for \(x=2\) and precision parameter \(12\)
+records every rational interval and is independently checked by exact
+cross-multiplication.
+
+\subsection{Height bounds and complete lists}
+
+Let \(P(c)\) be a decidable predicate on coded points, let \(h(c)\) be a
+primitive-recursive height, and suppose there is a primitive-recursive finite
+universe \(U(H)\) containing every well-formed code of height at most \(H\).
+
+\begin{theorem}[Height bound implies complete list]
+If
+\[
+        \forall c\,[P(c)\to h(c)\le H],
+\]
+then bounded filtering of \(U(H)\) by \(P\) produces a complete finite list of
+all points satisfying \(P\).
+\end{theorem}
+
+\begin{proof}
+Every retained code satisfies \(P\) by the filter definition.  Conversely, if
+\(P(c)\), the height assumption puts \(c\) in the represented finite universe
+\(U(H)\); the filter therefore retains it.  Duplicates may be removed by
+bounded equality search.  All loops are bounded by the size of \(U(H)\).
+\end{proof}
+
+\begin{theorem}[Complete list implies height bound]
+Suppose a finite list \(L\) is certified sound and complete:
+\[
+  c\in L\to P(c),
+  \qquad
+  P(c)\to c\in L.
+\]
+Then
+\[
+        H=\max\{h(c):c\in L\},
+\]
+with \(H=0\) for the empty list, is a height bound for every \(P\)-point.
+\end{theorem}
+
+\begin{proof}
+If \(P(c)\), completeness gives \(c\in L\).  The defining finite-maximum
+invariant says that the maximum is at least the height of every list entry.
+Therefore \(h(c)\le H\).  The maximum is a primitive-recursive fold.
+\end{proof}
+
+The equivalence is often misunderstood.  It does \emph{not} say that a proof
+of abstract finiteness yields a cutoff.  It says that either of two explicit
+quantitative witnesses---a height bound or a certified complete list---can be
+converted to the other by finite computation.
+
+\subsection{Choice-independent simplicial maps from carriers}
+
+Let \(K,L\) be finite simplicial complexes.  A strong carrier assigns to each
+vertex \(v\) of \(K\) a nonempty finite set \(C(v)\) of vertices of \(L\), with
+the property that for every simplex \(\sigma\in K\),
+\[
+      \bigcup_{v\in\sigma} C(v)
+\]
+is contained in a simplex of \(L\).  A selection chooses one
+\(f(v)\in C(v)\) for each vertex.
+
+\begin{theorem}[Carrier independence]
+Every selection is a simplicial map \(f:K\to L\).  Any two selections
+\(f,g\) are contiguous, and therefore induce the same homomorphism on homology
+over \(\F_2\).
+\end{theorem}
+
+\begin{proof}
+For a simplex \(\sigma\), the selected vertices \(f(v)\) lie in the union of
+its carrier clouds, which lies in a target simplex.  Thus \(f\) is simplicial.
+For two selections, the union
+\(f(\sigma)\cup g(\sigma)\) is still contained in the same union of carrier
+clouds, so it is a simplex; this is contiguity.
+
+Define the prism operator on an ordered \(k\)-simplex by
+\[
+ P[v_0,\ldots,v_k]
+ =\sum_{i=0}^k
+ [f(v_0),\ldots,f(v_i),g(v_i),\ldots,g(v_k)]
+ \quad\text{over }\F_2,
+\]
+omitting degenerate simplices according to the fixed normalization convention.
+A finite cancellation calculation gives
+\[
+       \partial P+P\partial=f_\#+g_\#.
+\]
+Hence, for a cycle \(z\),
+\(f_\#z+g_\#z=\partial Pz\), so the two images represent the same homology
+class.  Every chain group and sum is finite; the prism identity is a bounded
+matrix equality and can be certified directly.
+\end{proof}
+
+This theorem is the correct constructive replacement for choosing a canonical
+simplicial approximation.  A finite carrier cloud is enough, because the
+observable homology map is choice independent.
+
+\subsection{Strong finite affine gluing}
+
+Let \(R\) be a coded commutative ring and \(M\) a coded \(R\)-module.  Fix
+\(f_0,\ldots,f_{r-1}\in R\) and an exponent \(N\), together with a cover
+certificate
+\begin{equation}
+        \sum_{i<r} a_i f_i^N=1.
+        \label{eq:coveridentity}
+\end{equation}
+A local section on \(D(f_i)\) is represented by \(m_i/f_i^N\).  Assume the
+strong synchronized compatibility equations
+\begin{equation}
+        f_j^N m_i=f_i^N m_j
+        \qquad(i,j<r).
+        \label{eq:strongcompat}
+\end{equation}
+Define
+\[
+             m=\sum_{i<r}a_i m_i.
+\]
+
+\begin{theorem}[Finite affine gluing]
+Under \eqref{eq:coveridentity} and \eqref{eq:strongcompat}, the global element
+\(m\in M\) restricts to \(m_k/f_k^N\) on every \(D(f_k)\).  It is unique among
+global elements whose differences are annihilated by a supplied common cover
+power.
+\end{theorem}
+
+\begin{proof}
+In the localization at \(f_k\), use the cover identity:
+\[
+ \frac{m_k}{f_k^N}
+ =\sum_{i<r}a_i f_i^N\frac{m_k}{f_k^N}
+ =\sum_{i<r}a_i m_i
+ =m.
+\]
+The middle equality is exactly the localized form of
+\eqref{eq:strongcompat}.  For uniqueness, if \(m'\) has the same restrictions
+and a common exponent \(L\) satisfies
+\(f_i^L(m-m')=0\) for every \(i\), use a certified identity
+\(\sum b_i f_i^L=1\) to obtain
+\[
+ m-m'=\sum b_i f_i^L(m-m')=0.
+\]
+All sums, powers, and module equations are finite.
+\end{proof}
+
+Ordinary localization compatibility may require increasing denominators and
+finding a common annihilating exponent.  The framework treats that exponent
+and the associated cover identity as a finite producer certificate.  Once it
+is supplied, gluing is a bounded algebraic trace.  This yields a concrete entry
+point for affine schemes and coherent sheaves in iPRA without pretending that
+arbitrary localization witnesses have a uniform bound for free.

@@ -37,7 +37,7 @@ also records the intake of those packages.
 
 ## Proof packets
 
-[`docs/proofs/`](docs/proofs/README.md) files 73 research packets, delivered on 14 and
+[`docs/proofs/`](docs/proofs/README.md) files 74 research packets, delivered on 14 and
 15 November 2026. Each gives a human-readable proof of a classical theorem in a finitary,
 quantitative form intended for iPRA. Most add exact-arithmetic reference code and a Lean plan
 or scaffold aimed at `ConciseIPRA`.
@@ -51,7 +51,7 @@ The packets are grouped by area:
 | [`analytic-number-theory/`](docs/proofs/analytic-number-theory/) | 10 | prime number theorem, Dirichlet's theorem, the zeta functional equation |
 | [`combinatorics/`](docs/proofs/combinatorics/) | 1 | Bell numbers |
 | [`diophantine-number-theory/`](docs/proofs/diophantine-number-theory/) | 12 | Pell equations, transcendence of e and π, Fermat for exponents divisible by 3, 4, 5 or 7, Siegel and Faltings analyses |
-| [`foundations/`](docs/proofs/foundations/) | 18 | cross-domain frameworks of certificates, moduli and finite contracts |
+| [`foundations/`](docs/proofs/foundations/) | 19 | cross-domain frameworks of certificates, moduli and finite contracts |
 | [`geometry/`](docs/proofs/geometry/) | 13 | isoperimetric inequality, Platonic solids, spherical trigonometry, Zariski descent |
 | [`probability/`](docs/proofs/probability/) | 1 | central limit theorems |
 | [`topology/`](docs/proofs/topology/) | 3 | Jordan curve theorem, invariance of dimension, observation towers |

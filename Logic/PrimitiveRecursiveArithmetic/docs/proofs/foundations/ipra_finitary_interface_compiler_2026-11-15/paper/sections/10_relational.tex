@@ -1,0 +1,152 @@
+\section{Finite relational witnesses and backward viability}
+\label{sec:relational}
+
+\subsection{The coherence problem}
+
+For each precision \(p\), a proof may produce at least one valid finite witness,
+but witnesses at different precisions may be incompatible.  Choosing the least
+candidate independently at each level does not solve the problem.  It may jump
+between branches and fail to define a name.  Conversely, appealing to an
+infinite path through a finitely branching tree would import a choice or
+compactness principle stronger than the finite theorem being proved.
+
+The remedy is to select only a finite path to the finite horizon currently
+requested.
+
+\subsection{Finite tower}
+
+Fix a horizon \(h\).  For each level \(p\le h\), let
+\[
+ C_p=\{a<B_p:\Cand(p,a)=1\}
+\]
+be a finite candidate cloud.  Let \(E_p(a,b)\) be the compatibility relation
+from level \(p\) to \(p+1\).
+
+Define backward viability relative to \(h\):
+\begin{align*}
+ V_h(h,a)&:\equiv \Cand(h,a),\\
+ V_h(p,a)&:\equiv \Cand(p,a)\wedge
+   \exists b<B_{p+1}\,[E_p(a,b)\wedge V_h(p+1,b)].
+\end{align*}
+All existential quantifiers are bounded and are implemented by Boolean folds.
+
+\begin{theorem}[Viability/path equivalence]
+\label{thm:viability}
+For \(p\le h\), \(V_h(p,a)\) holds if and only if there is a compatible path
+\[
+ a=a_p,a_{p+1},\ldots,a_h
+\]
+with \(a_j\in C_j\) and \(E_j(a_j,a_{j+1})\) for every \(j<h\).
+\end{theorem}
+
+\begin{proof}
+Use backward induction on \(h-p\).  At \(p=h\), viability is exactly candidate
+validity and the one-element path suffices.  For the induction step, unfold
+\(V_h(p,a)\).  A viable successor \(b\) exists; by the induction hypothesis it
+extends to a compatible tail, which we prepend by \(a\).  Conversely, the
+second element of any compatible full path is a viable successor by the
+induction hypothesis, so the defining bounded existential holds.
+\end{proof}
+
+\subsection{Least viable path}
+
+Define \(a_p\) to be the least viable candidate at the initial level.  Given
+\(a_j\), choose the least \(a_{j+1}<B_{j+1}\) satisfying
+\[
+ E_j(a_j,a_{j+1})\wedge V_h(j+1,a_{j+1}).
+\]
+By \cref{thm:viability}, such a candidate exists whenever the initial
+viability test succeeds.  Bounded least search is primitive recursive.
+
+\begin{corollary}[Finite dependent choice]
+For every finite horizon, a nonempty viable tower has a primitive-recursively
+selected compatible path.  This construction uses only bounded search and
+quantifier-free induction; it does not imply an infinite choice principle.
+\end{corollary}
+
+\subsection{Stable quotient erasure}
+
+Often the theorem does not need the internal candidate; it needs an observable
+\(W_h(a_0,\ldots,a_h)\).  If every viable path has the same observable, then
+choice is irrelevant.
+
+\begin{theorem}[Exact stable erasure]
+Assume that for any two viable paths \(\alpha,\beta\) to horizon \(h\),
+\[
+       W_h(\alpha)=W_h(\beta).
+\]
+Then the output computed from the least viable path is independent of every
+tie-breaking convention and is extensionally characterized by the finite
+relation alone.
+\end{theorem}
+
+\begin{proof}
+The least viable path is viable.  Apply the stability assumption to it and to
+an arbitrary viable path.  Their observables are equal.  Since all quantifiers
+range over bounded path codes, the argument Booleanizes into a finite proof.
+\end{proof}
+
+Exact equality can be replaced by a metric diameter bound:
+\[
+ d(W_h(\alpha),W_h(\beta))\le\varepsilon_h.
+\]
+Then every tie-breaking convention yields outputs within \(\varepsilon_h\).
+This is the natural statement for approximate roots, eigenvalues, local
+solutions, and geometric selections.
+
+\subsection{Changing horizons}
+
+The path selected for horizon \(h+1\) need not extend the path selected for
+horizon \(h\).  This does not matter if the level-\(p\) candidates lying on
+full viable paths to either horizon have small diameter.  Define the selected
+observable at precision \(p\) using a horizon \(H(p)\ge p\).  Suppose:
+\begin{enumerate}
+\item full-horizon viable candidates at level \(p\) have diameter at most
+\(\delta_p\);
+\item every compatibility edge changes the represented value by at most
+\(\mu_p\);
+\item a primitive-recursive tail bound controls
+\(\sum_{j\ge p}\mu_j\).
+\end{enumerate}
+Then selections made with different future horizons are close.  The next
+section turns this fact into a regular name.
+
+\subsection{Applications}
+
+\paragraph{Polynomial roots.}
+At precision \(p\), candidates are finite rational disks or root clusters.
+Edges express refinement and preservation of multiplicity.  At collisions,
+there is no ordered label; symmetric observables or cluster data are stable.
+A separation certificate permits exact labels locally.
+
+\paragraph{Local charts.}
+Candidates are chart indices and approximate coordinates.  Edges assert that
+overlap transition maps agree within a rational budget.  A downstream theorem
+uses a stable observable, not a globally canonical chart.
+
+\paragraph{Finite sheaf data.}
+Candidates are local sections satisfying equations on a finite cover.  Edges
+are restriction compatibility.  A gluing certificate may return a cloud of
+global representatives; quotient equality erases nonuniqueness.
+
+\paragraph{Mordell--Weil descent.}
+Candidates can encode rational points on covering spaces together with maps to
+the base curve.  The framework verifies compatibility and descent.  It does
+not manufacture rational representatives from abstract Selmer classes; that
+remains a producer obligation.
+
+\subsection{Lean plan}
+
+The file \code{RelationalWitnesses.lean} defines finite bounds, validity,
+edges, and viability at the semantic level and records object-language targets.
+A complete migration should:
+\begin{enumerate}
+\item encode the level/horizon dynamic program as fixed \(\PR\) symbols;
+\item prove the viability recursion equations;
+\item Booleanize path validity;
+\item prove both directions of \cref{thm:viability} by quantifier-free
+induction on the remaining horizon;
+\item define least viable successor with the shared bounded-search library;
+\item formulate stability as a local finite theorem and compose it with the
+selected path proof.
+\end{enumerate}

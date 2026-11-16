@@ -1,0 +1,151 @@
+\section{Repository audit and the precise missing bridge}
+
+\subsection{Pinned source tree}
+
+This report was prepared against the public ProveIt repository at commit
+\RepoCommit.  The relevant subtree distinguishes two kinds of material.
+The \code{ConciseIPRA} directory is a Lean development whose kernel-checked
+results include the ordinary first-order presentation of iPRA, a compact native
+scalar calculus, and translations between them.  The neighboring
+\code{docs/proofs} directory is a research archive.  At the pinned snapshot its
+index records seventy-two delivered packets in algebra, analysis, analytic and
+Diophantine number theory, combinatorics, foundations, geometry, probability,
+and topology.  The index explicitly warns that these packets were filed as
+delivered: their Lean files were not systematically built, and their claims
+must not be confused with the checked core \cite{ProveItRoot,PacketsIndex}.
+
+This distinction determines the standard of evidence used here.  A theorem in
+this report is called \emph{embedded} only when there is a specified route to a
+value of the repository's inductive derivability relation
+\[
+        \Prf\,\PRAAx\,\Gamma\,\varphi.
+\]
+A host-language proof about natural numbers, a successful exact-arithmetic
+program, or a semantic theorem about a Lean structure is useful evidence, but
+it is not itself such a value.
+
+\subsection{What the existing frameworks already accomplish}
+
+The foundation packets are unusually convergent.  Although they use different
+terminology, they repeatedly discover the same useful replacements for
+classical infinitary objects.
+
+\begin{longtable}{p{0.21\textwidth}p{0.34\textwidth}p{0.37\textwidth}}
+\toprule
+Classical idiom & Finitary replacement & Recurring repository contribution \\
+\midrule
+\endfirsthead
+\toprule
+Classical idiom & Finitary replacement & Recurring repository contribution \\
+\midrule
+\endhead
+A completed infinite object & finite observations indexed by precision &
+certified finitary presentations, observation towers, finite names \\
+A canonical approximate witness & a finite cloud of verified answers &
+relational certificates, root clusters, stable observables \\
+Continuity ``by compactness'' & an explicit modulus plus a finite net &
+finite observation and uniform-certificate frameworks \\
+A long algorithmic argument & a bounded trace with a quantifier-free invariant &
+finite-demand, local--global, and compiler packets \\
+Nested numerical constructions & backward propagation of required precision &
+finite-demand and contract-DAG architectures \\
+A partial operation & a total program plus a positive rational guard &
+guarded inverses, pivots, charts, and branch rules \\
+Finiteness of a Diophantine set & a height producer plus bounded enumeration &
+height/list interfaces and finite witness packages \\
+Equality of abstract objects & observational equivalence at every finite level &
+setoid and relational back-and-forth methods \\
+\bottomrule
+\end{longtable}
+
+The most developed unified packet proves human-level theorems for bounded
+Booleanization, finite trace reflection, relational viability, shrinking
+candidate clouds, guarded arithmetic, finite nets, and height/list conversion.
+Its theorem ledger nevertheless marks the generic \code{Prf PRAAx} compiler as
+an open engineering task.  The subsequent contract-DAG packet strengthens the
+architecture with reverse demand propagation and a global trace, but again
+leaves the generic object-language theorem unimplemented.  This is the point
+at which the present work begins: it treats those semantic ideas as prior art
+and tightens the exact interface with the checked \code{ConciseIPRA} API.
+
+\subsection{The checked backend that can be reused}
+
+The file \code{PR.lean} supplies precisely the syntax needed for the target.
+It defines primitive-recursive symbols
+\[
+ \PR(k),
+\]
+terms \(\PTm(n)\), the axiom family \(\PRAAx\), and the derived rule
+\code{PRA.qfInd}.  Primitive recursion is represented by
+\code{PR.prec}; its zero and successor equations are available as theorems
+\code{PRA.precZero} and \code{PRA.precSucc}.  The generic deduction file
+provides substitution, weakening, simultaneous cut, implication and universal
+rules, and Leibniz transport.  In particular, the following operations are
+already checked:
+\[
+\begin{array}{ll}
+\code{Prf.subst}, & \text{substitute terms for all free variables},\\
+\code{Prf.weaken},& \text{enlarge a context},\\
+\code{Prf.trans}, & \text{replace hypotheses by their derivations},\\
+\code{Prf.eqSubst1},& \text{transport a formula along an equality},\\
+\code{PRA.qfInd},& \text{induct on a quantifier-free formula}.
+\end{array}
+\]
+Finally, \code{NativeBiInterpretation.lean} proves
+\code{pra_iff_native}: an ordinary iPRA derivation is equivalent to a
+derivation of its reading in the native scalar calculus.  Consequently no new
+bi-interpretation theorem is needed.  The missing work is entirely on the
+ordinary \(\Prf\,\PRAAx\) side.
+
+\subsection{Classification of the reported difficulties}
+
+The difficulty reports in the packets can be separated into four classes.
+This classification is essential because only the first class can be solved
+by ordinary Lean engineering.
+
+\begin{definition}[Four-way status classification]
+A target or subtarget has one of the following statuses.
+\begin{enumerate}
+\item \emph{Compiler obligation}: all mathematical data and local proofs are
+available, but the generic construction of an object-language derivation has
+not been implemented.
+\item \emph{Quantitative producer obligation}: a finite verifier is known,
+but an explicit bound, modulus, representative, or finite cover remains to be
+proved.
+\item \emph{Representation defect}: the requested output is discontinuous or
+noncanonical; a relational or guarded statement is required.
+\item \emph{Computability barrier}: the unrestricted producer would imply a
+nonconstructive principle or solve an undecidable problem.
+\end{enumerate}
+\end{definition}
+
+Examples of the first class are bounded-fold reflection and finite-trace
+induction.  Examples of the second are general Siegel/Faltings height bounds,
+representatives on Mordell--Weil covering curves, and effective constants in
+certain prime-distribution results.  Exact root labels at collisions and an
+axis for the identity rotation are representation defects.  A total primitive-
+recursive universal evaluator and a uniform conversion from mere finiteness to
+a search bound are barriers.
+
+The framework below solves the compiler obligations, gives a common interface
+for producer obligations, repairs representation defects, and records barriers
+rather than concealing them behind axioms.
+
+\subsection{Audit conclusion}
+
+The repository does not need another informal assertion that ``all the
+relevant computations are finite.''  It needs a small compilation theorem
+whose hypotheses are already the kind of local formulas the packets can
+produce and whose conclusion is an actual iPRA derivation.  Once that theorem
+is in place, the many domain-specific packets can share a single conversion
+workflow:
+\[
+\begin{aligned}
+\text{mathematical proof}
+&\longrightarrow \text{finite contracted program}\\
+&\longrightarrow \text{local }\Prf\,\PRAAx\text{ obligations}\\
+&\longrightarrow \text{global }\Prf\,\PRAAx\text{ derivation}.
+\end{aligned}
+\]
+The remaining sections develop this pipeline and prove its mathematical
+correctness.

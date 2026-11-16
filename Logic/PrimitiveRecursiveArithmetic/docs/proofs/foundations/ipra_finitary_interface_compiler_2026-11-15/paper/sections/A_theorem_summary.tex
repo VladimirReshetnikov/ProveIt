@@ -1,0 +1,39 @@
+\section{Theorem summary and dependency map}
+
+\begin{longtable}{p{0.11\textwidth}p{0.48\textwidth}p{0.31\textwidth}}
+\toprule
+ID & Theorem & Depends on \\
+\midrule
+\endfirsthead
+\toprule
+ID & Theorem & Depends on \\
+\midrule
+\endhead
+T1 & Bounded fold reflection & PR recursion equations, qf induction \\
+T2 & Fixed bounded formula Booleanization & T1, Boolean truth tables \\
+T3 & Fixed-precision induction & T2, universal introduction \\
+T4 & Finite-trace reflection & run equations, qf induction, equality transport \\
+T5 & Sequential contract composition & substitution and simultaneous cut \\
+T6 & Reverse-demand soundness & finite topological induction, restriction maps \\
+T7 & Certified DAG compilation & T2, T4, T6 \\
+T8 & Viability/path equivalence & bounded backward induction \\
+T9 & Least viable finite path & T1, T8 \\
+T10 & Stable quotient erasure & T8--T9, finite stability premise \\
+T11 & Shrinking viability gives a regular name & T8, diameter and tail bounds \\
+T12 & Guarded reciprocal & rational interval inequalities, apartness margin \\
+T13 & Finite-net minimization & bounded minimum, modulus \\
+T14 & Height bound implies complete list & bounded universe and filter \\
+T15 & Complete list implies height bound & finite maximum \\
+T16 & Cubic inverse regular name & trace reflection, monotonicity, bisection \\
+T17 & Carrier choice independence & finite contiguity prism identity \\
+T18 & Strong finite affine gluing & cover identity, synchronized compatibility \\
+\bottomrule
+\end{longtable}
+
+\subsection{Backend dependency}
+
+T1--T18 are intended to live in ordinary iPRA.  Their final checked transport
+to the native scalar calculus is not reproved here; it is supplied by the
+upstream theorem \code{pra_iff_native}.  Domain packets should depend on the
+ordinary compiler layer and invoke the native bridge only at their public
+boundary.
