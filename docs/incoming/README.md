@@ -213,7 +213,8 @@ cross-domain framework, was placed the same way, under `foundations/`, and then 
 leaves out only its ignored `SHA256SUMS.txt`. `ipra_framework.zip` is a different archive
 from `ipra_framework_2026-11-15.zip`: a different SHA-256, and 65 members against 6. It was
 placed the same way, under `foundations/ipra_framework/`, and then deleted. It leaves out only
-its ignored `SHA256SUMS`.
+its ignored `SHA256SUMS`. `ipra_evidence_framework.zip` has no wrapper directory. It was placed
+the same way, under `foundations/`, and then deleted. All 6 of its members are placed.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

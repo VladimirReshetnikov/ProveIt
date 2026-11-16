@@ -1,0 +1,120 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,longtable,hyperref}
+\usepackage[T1]{fontenc}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}\newtheorem{proposition}[theorem]{Proposition}\newtheorem{definition}[theorem]{Definition}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}\newcommand{\Q}{\mathbb Q}\newcommand{\ipra}{\mathrm{iPRA}}
+\title{Evidence-indexed finite mathematics in intuitionistic primitive recursive arithmetic\\\large A reusable proof interface, local compatibility theorem, and obstruction-aware applications}
+\author{Research note prepared against the ProveIt iPRA repository}\date{15 November 2026}
+\begin{document}\maketitle
+\begin{abstract}
+We propose an evidence-indexed translation discipline for finitary mathematical arguments into first-order intuitionistic primitive recursive arithmetic. Rather than identifying a semantic Lean proof with an object-theory proof, we expose four independent obligations: primitive-recursive evaluators, bounded observation contracts, quantitative evidence, and derivations in the object calculus. We prove a finite constraint-amalgamation principle with an explicit primitive-recursive dynamic program, show how it supports set-valued approximate algebraic solutions without discontinuous root selection, and give an exact rational square-root example. We provide a detailed Lean proof agenda with definitions and explicit unproved integration targets. This note extends rather than replaces several existing ProveIt framework packages and does not claim to solve their remaining large open problems.
+\end{abstract}
+\tableofcontents
+\section{Source scope and novelty boundary}
+The inspected source is \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic}. Its \texttt{docs/proofs/README.md} catalogues many contributed packets and explicitly warns that most Lean skeletons have not been built. Three existing frameworks are especially relevant: \texttt{foundations/ipra\_embedding\_framework}, \texttt{foundations/ipra\_framework}, and \texttt{foundations/ipra\_framework\_2026-11-15}. They already give bounded Booleanization, finite observations, quantitative names, stable windows, analytic branches, and power-gap certificates. Their results are not repeated as new discoveries. The additional organizing device here is \emph{finite relational outputs with proof-relevant dependency edges}: an algorithm can return a finite family of compatible approximate answers, with a rigorous correctness certificate, even when a uniform infinite coherent choice is not computable. This is a modest but concrete new cross-domain interface, not a general constructive choice theorem.
+
+\section{Logical base and required distinctions}
+We use first-order iPRA with a symbol for each fixed primitive recursive (PR) function, defining equations, intuitionistic first-order logic, and induction restricted to quantifier-free formulas. Parameters may occur in induction. For each fixed bounded formula built from PR-decidable atomic relations, bounded quantifiers are eliminable to a PR Boolean term by primitive recursion. Thus such a predicate is extensionally quantifier-free \emph{after definitional expansion}; the proof that the Boolean agrees with the formula is a separate structural derivation in iPRA.
+
+A standard Lean theorem over \texttt{Nat}, \texttt{Rat}, or \texttt{Complex} is not a proof in the object theory. The ProveIt \texttt{ConciseIPRA} project supplies native provability and bi-interpretation machinery, including the interface \texttt{Prf PRAAx [] phi} and the transport into \texttt{NPrf}. Our final endpoint must construct an inhabitant of this object-level proof type for every claimed internal theorem. A PR program with an unproved specification also does not establish an iPRA theorem. All translations below are \emph{schemata for fixed codes}, never an asserted universal unclocked PR interpreter.
+
+\begin{definition}[Evidence-indexed contract]
+A finite contract for a datum $x$ is a tuple $\mathcal C=(V,R,W,J)$ consisting of fixed PR terms for (i) a validation Boolean $V(x,e)$ of evidence $e$, (ii) a finite observation relation $R(x,e,k,z)$, (iii) a PR witness transformer $W$, and (iv) a family of quantifier-free loop invariants $J$ certifying the defining equations. Its asserted correctness is a formula of the form
+\[V(x,e)=1\to \forall k\le K(x,e)\,\exists z\le B(x,e,k)\,R(x,e,k,z)=1.\]
+The existential is bounded and is discharged by a concrete PR witness. An unbounded mathematical conclusion requires an explicitly quantified family of such finite contracts; the contract itself does not smuggle in choice or a convergence modulus.
+\end{definition}
+
+\begin{lemma}[Bounded Booleanization and first-witness search]
+Let $P(x,i)$ be a fixed PR Boolean predicate and $b(x)$ a fixed PR bound. The functions
+\[E(x)=\max_{i\le b(x)}P(x,i),\qquad s(x)=\min\{i\le b(x):P(x,i)=1\}\]
+with $s(x)=b(x)+1$ if no witness exists are PR. iPRA proves
+\[E(x)=1\leftrightarrow\exists i\le b(x)\,P(x,i)=1\]
+and $E(x)=1\to(s(x)\le b(x)\wedge P(x,s(x))=1)$.
+\end{lemma}
+\begin{proof}
+Compute prefix OR and a first-witness register by primitive recursion on the prefix length. The invariant says: if a successful index has occurred, the register contains the first such index; otherwise it equals the sentinel. Every conjunct is an equation or PR comparison, hence quantifier-free after Booleanization. Quantifier-free induction proves the invariant and its terminal consequences intuitionistically. No excluded middle for arbitrary propositions is used; each branch tests a PR Boolean.
+\end{proof}
+
+\section{Finite constraint amalgamation: a reusable theorem}
+Our construction handles approximate answers that should not be forced into a single infinite branch.
+\begin{definition}[Finite compatibility instance]
+Fix parameters $x$ and a finite horizon $h$. At level $i\le h$, candidate labels are $a<B(x,i)$; $G(x,i,a)$ is a PR Boolean asserting local validity. For $i<h$, $T(x,i,a,b)$ is a PR Boolean saying that candidate $b$ at level $i+1$ is compatible with candidate $a$ at level $i$. An admissible chain is $a_0,\dots,a_h$ satisfying all $G$ and $T$ tests.
+\end{definition}
+\begin{theorem}[PR backward viability and certified finite chain]
+For any fixed PR functions $B,G,T$, there are fixed PR functions $D(x,h,i,a)\in\{0,1\}$ and $S(x,h)$ returning a finite encoded chain (or a failure flag) such that iPRA proves, for every $i\le h$ and $a<B(x,i)$,
+\[D(x,h,i,a)=1\ \longleftrightarrow\ \text{there is an admissible chain from $(i,a)$ through level $h$}.\]
+In particular, if $\max_{a<B(x,0)}D(x,h,0,a)=1$, then $S(x,h)$ is a verified length-$(h+1)$ chain. Every test and returned certificate has an explicit primitive-recursive size bound.
+\end{theorem}
+\begin{proof}
+Define the last row by $D(x,h,h,a)=G(x,h,a)$. For $i<h$ let
+\[D(x,h,i,a)=G(x,i,a)\cdot\max_{b<B(x,i+1)}\bigl(T(x,i,a,b)\cdot D(x,h,i+1,b)\bigr).\tag{1}\]
+Reverse rows with a primitive recursion on $h-i$. Each bounded maximum is PR; no induction over infinite paths occurs. For the correctness proof use the reverse-row invariant: $D=1$ exactly when the current candidate admits a path of the remaining finite length. The terminal case is immediate. In the step, a path must choose its next label $b$, and conversely any successful $b$ followed by a successful tail constructs a path. The bounded existential is Booleanized via the previous lemma. Once $D(x,h,0,a)=1$, pick the least suitable $a$ by bounded search, and iteratively pick the least viable successor. A separate forward invariant states that the built prefix is admissible and its last label is viable. Both inductions concern PR predicates. The finite sequence can be coded by a bounded base or by standard PR sequence coding; since each label is below its explicit bound, a product of $(B(x,i)+1)$ provides a primitive-recursive encoding bound. The verifier replays $G$ and $T$ for each edge.
+\end{proof}
+\begin{remark}[Important limitation]
+The theorem does not say that compatible chains for \emph{every} $h$ yield a PR infinite path. A transformation requiring such a path is a separate principle, and in general cannot be justified by this finite algorithm. A full infinite tree may require noncomputable branch choice. Here the horizon $h$ is an explicit input, and choosing the lexicographically first path at each $h$ need not give compatible answers across different horizons.
+\end{remark}
+
+\begin{theorem}[Constraint refinement under stronger evidence]
+Suppose $G'(x,i,a)\le G(x,i,a)$ and $T'(x,i,a,b)\le T(x,i,a,b)$ as Boolean inequalities for all bounded inputs. Every chain certified by $(G',T')$ is also certified by $(G,T)$. In particular a collection of independently checkable requirements can be conjoined without changing the amortized proof principle: replace $G$ by $\prod_j G_j$ and $T$ by $\prod_j T_j$ for any explicitly bounded number of requirements.
+\end{theorem}
+\begin{proof}
+Boolean multiplication is conjunction on $\{0,1\}$. Apply each local inequality at each selected label and edge; bounded induction transfers the conjunction to the entire finite chain. This does \emph{not} guarantee existence after adding constraints, which must be established by an independent viability certificate.
+\end{proof}
+
+\section{Set-valued precision names instead of discontinuous choice}
+A \emph{finite relational name} of a possibly multivalued object at precision $n$ consists of a finite list $L_n$ of rational tuples, a decidable local predicate, and a compatibility relation between levels. The intended assertion is that every returned label satisfies a rational residual bound and every admissible chain at a requested horizon meets the prescribed pairwise consistency conditions. It is valid even if choosing one branch uniformly over all exact input parameters is impossible.
+
+\subsection{Worked example: square roots without zero testing}
+Let $a\in\Q_{\ge0}$ be exact, and fix a rational mesh step $\delta_n=2^{-n}$. Put $M_n=\lceil (a+1)2^n\rceil+1$ and
+\[L_n(a)=\{j2^{-n}:0\le j\le M_n,\ |(j2^{-n})^2-a|\le (2a+3)2^{-n}\}.\]
+The bound is intentionally coarse to avoid hidden root extraction in the enumerator. Let $q=\lfloor 2^n\sqrt a\rfloor 2^{-n}$ solely for the \emph{mathematical proof of nonemptiness}; do not treat $\sqrt a$ as an iPRA term. A constructive elementary replacement is to choose the least integer $j\le M_n$ with $j^2\ge a2^{2n}$, which exists because $M_n^2\ge a2^{2n}$, and take $q=(j-1)2^{-n}$ (with $j=0$ handled separately). Then $q^2\le a<(q+2^{-n})^2$ and, since $q\le a+1$, we have $0\le a-q^2\le(2a+3)2^{-n}$. Thus $L_n(a)$ is nonempty using only bounded rational arithmetic. The selected $q$ is in the list.
+
+For compatibility use $T(n,q,r)$ iff $|q-r|\le 3\cdot 2^{-n}$. The particular least-crossing choices at consecutive levels satisfy $|q_n-q_{n+1}|\le 2^{-n}+2^{-(n+1)}$ by their rational bracketing of the same $a$; alternatively, a direct integer comparison proves $|2j_n-j_{n+1}|\le2$ without mentioning $\sqrt a$. Hence there is an admissible path for every finite horizon. The finite constraint theorem independently certifies a path from the candidate lists, not the one used to prove nonemptiness.
+
+This example is purposefully \emph{not} a proof that arbitrary Cauchy-presented coefficients admit uniform Puiseux coefficient selection. For exact nonnegative rational input, bounded order decisions are available. For general represented $a$, enumeration must instead use one-sided approximate residual gates with a specified error margin. A robust gate for a name $A(n)$ satisfying $|A(n)-a|\le2^{-n}$ is
+\[ |q^2-A(n+c)|\le \varepsilon_n-2^{-(n+c)} \quad\Longrightarrow\quad |q^2-a|\le\varepsilon_n.\]
+The reverse implication needs slack and cannot be asserted at a sharp threshold. A finite list may preserve all borderline choices rather than forcing one exact equation test.
+
+\subsection{The Puiseux obstruction and a constructive repair}
+The ProveIt \texttt{puiseux\_ipra/evidence/scope\_obstruction.md} establishes a stronger boundary: from arbitrary Cauchy names of coefficients one cannot uniformly output a ramification degree and individually named exact Puiseux coefficients for $Y^2-X^2-a$. At $a=0$, a chosen coefficient at the output ramification index is of norm one; at $a>0$ it is zero. Such an operation would decide whether a PR-presented nonnegative real is zero, and hence decide a halting-encoded family. Our relational method avoids this problem because it does not output a single exact formal coefficient sequence. It yields finite approximate root candidates at requested precision only. Any theorem requiring a persistent Puiseux branch still needs finite exact algebraic presentations or a root-separation/regularity witness. This distinction avoids an invalid inference from approximate multivalued solvability to exact coefficient selection.
+
+\section{A finite witness-gluing principle for analytic estimates}
+Suppose $m$ independently established bounds on a finite set $I$ are given by $|e_j(t)|\le E_j(t)$, where each $E_j$ is a nonnegative rational PR expression. For a polynomial expression $F$ in the $e_j$, bound its change by a finite telescoping sum, substituting one argument at a time and using an explicit prior magnitude bound for the other factors. The resulting rational inequality is an identity plus order checks; the proof checker need only see finite coefficients and products. If a partial expression requires division by $d$, demand a \emph{witnessed apartness} bound $|d|\ge 2^{-k}$ and a numerator magnitude bound. It is not legitimate to use merely $\neg(d=0)$ intuitionistically as an effective inverse witness. The evidence graph records these denominators and their margins.
+
+For precision costs, define a dependency DAG whose node $v$ has local error $\eta_v$ and outgoing Lipschitz multipliers $L_{v,w}\in\Q_{\ge0}$. Finite backward recursion assigns each node an error budget $E_v=\eta_v+\sum_{w\to v}L_{v,w}E_w$ (provided the DAG is topologically ordered). This calculation is PR on bounded finite graphs and is proved correct by induction on graph size. It permits machine-checkable propagation of a desired final $2^{-n}$ bound without an unbounded existential modulus. Existence of a satisfactory assignment $\eta_v$ remains a separate constructive obligation; for a fixed DAG, a safe schedule follows from a known bound on path-length and product multipliers.
+
+\section{Conditional applications and unresolved difficulties}
+\begin{longtable}{p{.22\linewidth}p{.38\linewidth}p{.31\linewidth}}\toprule
+Domain & What the new finite interface can do & What it does not do\\\midrule\endhead
+Algebraic branches & Retain finite sets of approximate roots, with local residuals and compatible finite segments; avoid exact branch choice. & Produce singular Puiseux coefficients from arbitrary Cauchy inputs.\\
+Complex analysis & Combine rational contour-cell estimates, denominator margins, and precision DAGs. & Supply a missing global zero-free region or effective pole separation.\\
+Diophantine geometry & Combine finite height, algebra, and local-cover certificates; enumerate once a height bound is proved. & Prove a general Siegel/Faltings height bound or finite cover on its own.\\
+Prime distribution & Track finite Euler-product errors and contour estimates with shared resource budgets. & Validate unproved analytic estimates or automatically internalize them.\\
+Topology and geometry & Check finite incidence, coordinate, and nondegeneracy constraints in one finite compatibility instance. & Infer an effective global modulus from mere compactness.\\\bottomrule\end{longtable}
+
+A particularly tempting but invalid step is to say: for every precision there is a finite valid approximate solution, therefore a PR selector computes a coherent exact solution. Finite satisfiability supplies no such selector. Another is to call a Lean proof over higher types ``iPRA'' because it uses only computable-looking operations. The object proof must still be constructed and its induction restrictions checked.
+
+\section{Lean formalization specification and proof pipeline}
+The accompanying \texttt{lean/FiniteRelationalBlueprint.lean} gives concrete computational definitions and theorem statements in core Lean syntax; its unproved targets are explicitly written as comments, not as inhabitants of a proof type. The intended sequence is:
+\begin{enumerate}
+\item Encode finite rows as lists/arrays of Bool and define \texttt{viable} using a downward fold with a bounded existential (finite \texttt{Finset.range}). Prove Boolean soundness/completeness by backward induction.
+\item Extract the first successful candidate using bounded search; prove the produced finite chain checks all local and edge predicates. Bind each operation to a fixed PR definition: finite list operations need explicit primitive-recursive numerical encodings, not a generic arbitrary-function evaluator.
+\item Prove the rational least-square-crossing lemma using the exact \texttt{Nat} numerator/denominator representation. Prove a grid residual bound and adjacent-grid compatibility using integer arithmetic.
+\item Define an object-level bounded formula evaluator in the ProveIt arithmetic signature. For each fixed Boolean operation prove its defining equations in \texttt{Prf PRAAx}; build the loop-invariant proof by its quantifier-free induction constructor.
+\item Introduce an object formula \texttt{FiniteChainValid} and construct \texttt{Prf PRAAx [] (\dots)} for each fixed instance. Only then transport through \texttt{pra\_iff\_native}. Every use of metatheoretic \texttt{Classical.choice}, \texttt{sorry}, or opaque assumed contract must be reported as a gap, not counted as an embedded proof.
+\end{enumerate}
+
+\section{A falsifiable checklist for future packets}
+A claim of an iPRA proof is complete only after supplying: (1) exact input representation and fixed PR evaluators; (2) evidence/margin hypotheses; (3) fully specified finite bounds and precision schedules; (4) a quantifier-free invariant for each loop; (5) a verified proof object in \texttt{Prf PRAAx}, with its dependency inventory; and (6) explicit separation of conditional results and impossible uniform selections. Finite Python tests are useful smoke checks, not proofs of the universally quantified results.
+
+\section{Further research questions}
+Can the relational finite-output interface be equipped with a compositional proof-producing compiler over the \texttt{ConciseIPRA} native scalar core? Which analytic proof packets genuinely require globally coherent names, and which can be restated entirely through finite compatible families? Can a certified locally finite splitting oracle be weaker than exact algebraic presentations while still supporting Puiseux-style output? For arithmetic geometry, what effective local covering information suffices to turn finite relation certificates into a PR height bound? A particularly tractable milestone is an actual object-calculus proof of the finite viability recursion, including a generated exact proof term and a small checker run.
+
+\begin{thebibliography}{9}
+\bibitem{proveit} V. Reshetnikov, \emph{ProveIt, Logic/PrimitiveRecursiveArithmetic}, repository tree, accessed 15 November 2026. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic}.
+\bibitem{existing} ProveIt, \emph{Foundations proof packets}, \texttt{docs/proofs/foundations}, including \texttt{ipra\_embedding\_framework}, \texttt{ipra\_framework}, and \texttt{ipra\_framework\_2026-11-15}.
+\bibitem{puiseux} ProveIt, \emph{A uniform computability obstruction for arbitrary Cauchy-presented coefficients}, \texttt{docs/proofs/algebra/puiseux\_ipra/evidence/scope\_obstruction.md}.
+\bibitem{native} ProveIt, \emph{ConciseIPRA: native scalar core, provability and bi-interpretation}, \texttt{ConciseIPRA/README.md}.
+\end{thebibliography}
+\end{document}

@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives on 14 and
-15 November 2026: 33 to `docs/drafts`, and 21 to
+15 November 2026: 33 to `docs/drafts`, and 22 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -19,9 +19,9 @@ uncompiled specifications or outlines, or that part of what was asked for is not
   [Packets](#packets)). Within its area, each archive has one directory, named after the
   archive without `.zip`. The grouping is by the main theorem of each packet; several
   packets touch more than one area.
-- Every archive wraps its files in a single top directory. That directory is removed, so the
-  archive member `<wrapper>/<path>` is the file `<area>/<directory>/<path>` here. The tables
-  below give each wrapper.
+- Almost every archive wraps its files in a single top directory. That directory is removed,
+  so the archive member `<wrapper>/<path>` is the file `<area>/<directory>/<path>` here. The
+  tables below give each wrapper, or `none` for an archive without one.
 - Text files are stored under the repository's `.gitattributes`, which normalizes line
   endings to LF. Other bytes are as delivered.
 
@@ -61,7 +61,7 @@ manifests, build logs and `build/` files.
 
 ## Packets
 
-The 54 archives hold 1,270 members: 1,186 placed here, 53 ignored, 13 in the bundled copy of
+The 55 archives hold 1,276 members: 1,192 placed here, 53 ignored, 13 in the bundled copy of
 a sibling packet, 1 nested copy of a sibling archive and 17 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -145,6 +145,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | Directory | Arrival | Wrapper in the archive | What the packet states | P | O |
 |---|---|---|---|---:|---:|
 | [`ipra_embedding_framework`](foundations/ipra_embedding_framework/) | *not committed* 2026-11-15 | `ipra_embedding_framework` | Mathematics in iPRA through finite observations: bounded-formula compilation, simple analytic branches with Cauchy coefficients, simultaneous finite-window stability, a hyperelliptic zero count for the Siegel strategy, and finite algebra certificates. It calls itself a targeted audit of the collection, not a verification of the packets. | 28 | 1 |
+| [`ipra_evidence_framework`](foundations/ipra_evidence_framework/) | *not committed* 2026-11-15 | none | Evidence-indexed finite mathematics: a finite relational-output and compatibility interface for cases where only approximate witness families are justified, with a backward finite dynamic program for witness amalgamation. It credits the earlier frameworks here. Its Lean blueprint is not compiled. | 6 | 0 |
 | [`ipra_framework`](foundations/ipra_framework/) | *not committed* 2026-11-15 | `ipra_framework` | Finite contracts for mathematics in iPRA, a different packet from `ipra_framework_2026-11-15`: bounded-formula Booleanization and guarded induction, then stable finite windows, coherent approximate witnesses, local analytic branches, and integral power-gap certificates for y^m = f(x). It says it gives no final convergence moduli. | 64 | 1 |
 | [`ipra_framework_2026-11-15`](foundations/ipra_framework_2026-11-15/) | *not committed* 2026-11-15 | `ipra_framework` | A cross-domain certificate-and-modulus framework for the packets here: bounded primitive recursive search and descent, certificate composition, arithmetic of quantitative real names and apartness-conditioned inverses. It says it is not a verified solution of the other packets. Its Lean files have not been typechecked. | 6 | 0 |
 
