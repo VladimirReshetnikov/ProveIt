@@ -26,7 +26,41 @@ CANDIDATES = {
         "e9ff4746563f97efc655b1b3b5261d3fb87e5f62aeee3d2fc83cd8be6817d990",
         "e93b8634951bf934569e43e418b4b2bfcb329d61c3720f6880bf05003b112be1",
     ),
+    "AD": (
+        "pa194_conpa_2026-11-13/construction/tables/pa194_AD",
+        "27613aa92da79ba2ec6e2e88e0ac909fda218e06495ecc0af27201eac0e26c8f",
+        "b8c234a0c757cd1885f8fe8ecefc8198767b6d2c15ce0a01443a1e915fded964",
+        "d13760e39edeac19cb3312635b22aa29c3182668fac6fb97256e08a9ce626332",
+    ),
+    "HX": (
+        "pa194_research_2026-11-14/hx194/machine/pa194hx",
+        "3242a613d328d17c979ce3675a154733ea16a1949b4391cb824711b5aa46399a",
+        "3188b59b6479f9664074bb5371bcf2c5c0943f529be1496df35f5cbd2cb77d6c",
+        "88015058bd168c277130c7d804193f41302a6e031647da7fc39065458577c75c",
+    ),
+    "LC": (
+        "pa194_loop_continuation_research_2026-11-14/machines/PA194LC/machine",
+        "9cb620ba1b869fb793fd9ba0a99e90dcc85d9a6d62a42f48109743a7fbeda3c8",
+        "86a4619d85d97849d0169c8c9773a37bcc8d1d05356451e6c761ab3bfcdda691",
+        "dc03de52a78d09f016c6b16346fd4b93f20c87a44dc1e9efb6b7c6a8e6f5fc9f",
+    ),
+    "LCC": (
+        "pa194_loop_continuation_research_2026-11-14/machines/PA194LC_C/machine",
+        "7de80d804e5994db6008687421b0c5b4e96c9c87097fb293269406e9009a5753",
+        "dedb6297f4e43a0b6b1a3867be950ce9ca8ba8cc72c2a0297ce99fe071f11112",
+        "6f06fbe5a10834d0da06d35bf0ebfa16702f07f5cc6c7965d8bc3f30c98c7c47",
+    ),
 }
+
+REFERENCE_MODULES = {
+    "AD": "PA194ADCompressedData",
+    "LC": "PA194LCData",
+    "LCC": "PA194LCCData",
+}
+PHYSICAL_CORPUS = (
+    "pa194_comparison_and_new_designs_2026-11-15/research/physical/inputs/corpus"
+)
+
 CONTROLS = {
     26: "firstSource",
     42: "firstNext",
@@ -43,7 +77,8 @@ def generate(docs, out, candidate, pins):
     path, table_hash, labels_hash, fast_hash = pins
     stem = docs / path
     base = stem.with_suffix(".tm").read_bytes()
-    label_bytes = stem.with_suffix(".labels.json").read_bytes()
+    label_path = stem.with_name("labels.json") if candidate in ("LC", "LCC") else stem.with_suffix(".labels.json")
+    label_bytes = label_path.read_bytes()
     assert sha256(base).hexdigest() == table_hash
     assert sha256(label_bytes).hexdigest() == labels_hash
     labels = json.loads(label_bytes)
@@ -52,6 +87,8 @@ def generate(docs, out, candidate, pins):
 
     native = {}
     for line in base.decode("ascii").splitlines():
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
         q, b, write, move, target = line.split()
         native[labels[int(q)], int(b)] = int(write), move, labels[int(target)]
     assert set(native) == {(q, b) for q in labels[:-1] for b in (0, 1)}
@@ -65,6 +102,9 @@ def generate(docs, out, candidate, pins):
         for (q, b), (w, move, target) in sorted(native.items())
     ).encode("ascii")
     assert sha256(literal).hexdigest() == fast_hash
+    retained = docs / PHYSICAL_CORPUS / f"{fast_hash}.tm"
+    if retained.is_file():
+        assert literal == retained.read_bytes()
     basename = f"PA194{candidate}Fast" if candidate else "primary_fast"
     (out / f"{basename}.native.tm").write_bytes(literal)
 
@@ -80,8 +120,8 @@ def generate(docs, out, candidate, pins):
         f"  {role} := ⟨{dense[q]},by decide⟩" for q, role in CONTROLS.items()
     )
 
-    reference = f"PA194{candidate}Rows"
-    actions = "actions" if candidate else "rows"
+    reference = REFERENCE_MODULES.get(candidate, f"PA194{candidate}Rows")
+    actions = "actions" if candidate in ("B", "SEL") else "rows"
     module = f"PA194{candidate}FastRows"
     (out / f"{module}.lean").write_text(f"""import PA194GuardedShortcuts
 import {reference}
@@ -125,8 +165,14 @@ end {module}
 def main():
     repo, out = map(Path, sys.argv[1:3])
     flags = sys.argv[3:]
-    if flags not in ([], ["--companions"]):
-        raise SystemExit("usage: generate-rows.py REPO OUTPUT [--companions]")
+    if not flags:
+        selected = [""]
+    elif flags == ["--companions"]:
+        selected = ["", "B", "SEL"]
+    elif flags[0] == "--only" and len(flags) > 1 and all(name in CANDIDATES for name in flags[1:]):
+        selected = flags[1:]
+    else:
+        raise SystemExit("usage: generate-rows.py REPO OUTPUT [--companions | --only NAME ...]")
     docs = repo / "Computability/BusyBeaver/Research/PA/docs"
     catalogue = (docs / "MACHINE_FILES.tsv").read_text()
     core = docs / "pa194_ax11gdh_research_2026-11-15/research/core_reductions"
@@ -137,9 +183,8 @@ def main():
         manifest["inputs/primary_fast.native.tm"],
     )
     out.mkdir(parents=True, exist_ok=True)
-    for candidate, pins in CANDIDATES.items():
-        if candidate and not flags:
-            continue
+    for candidate in selected:
+        pins = CANDIDATES[candidate]
         assert f"\t{pins[-1]}\t" in catalogue
         generate(docs, out, candidate, pins)
 
