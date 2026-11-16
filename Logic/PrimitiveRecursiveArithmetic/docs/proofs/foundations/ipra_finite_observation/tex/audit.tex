@@ -1,0 +1,139 @@
+\section{What the framework repairs, and what it leaves open}
+\label{sec:audit}
+
+\subsection{Repairs supported by an explicit new argument}
+
+\paragraph{The FTA iteration restriction.}
+The baseline gives a one-root procedure uniform in degree, but restricts
+its deflation paragraph to an externally fixed degree
+\cite{repo-fta}. Theorem~\ref{thm:fta-uniform-factorization} supplies the
+missing uniform nested-evaluation argument. It has more content than a
+renaming of the schema: the output root evaluator has the numerical
+degree as an argument, its stage caps are computed in advance, and its
+verification horizons are composed before the stage induction.
+
+The zeta-zero report already constructs a different rational-polynomial
+root backend after identifying that restriction \cite{repo-zeta-roots}.
+Our result extends to the fixed Cauchy-coefficient schema. It does not
+replace the rational backend's exact gcd, multiplicity, or separation
+computations; those require different finite data.
+
+\paragraph{The Bohr--Mollerup candidate modulus.}
+The source asks whether its extra candidate modulus follows from the
+other hypotheses \cite{repo-bm}. Theorem~\ref{thm:convex-local-modulus}
+answers this for the source's rational presentation. It uses strong
+positivity and multiplicative convexity, and in fact does not need the
+normalization or recurrence. The modulus is a concrete expression in
+rational endpoints and two coarse evaluations. The finite AM--GM padding
+construction also answers the report's request for a simpler arithmetic
+certificate architecture; we make no claim of a measured reduction in
+checker bytes or native proof length.
+
+\paragraph{The finite geometric section bound.}
+The Siegel route separates an approximation/cover statement from a
+zero-count or fibre bound \cite{repo-siegel}. Theorem~\ref{thm:superelliptic-section}
+supplies that bound for $y^r=f(x)$, $\deg f>rs$, with explicit features.
+For the quintic family in the Faltings report \cite{repo-faltings}, the
+bound is five. A valid cover would yield $5M$ as a cardinality bound.
+The existence of such covers for the relevant set of points is not
+proved here. For some unrestricted point sets it is false; the geometric
+bound must therefore not be presented as a theorem of general finiteness.
+
+\paragraph{The common analytic interfaces.}
+The calculus and Taylor--Cauchy reports already state fixed rational
+samplers and modulus hypotheses \cite{repo-calculus,repo-taylor}.
+The finite-net theorem makes their useful compact-domain extremum module
+available once, with a precise output-value name. The coherent-minimizer
+theorem separates the additional quantitative uniqueness information
+needed to obtain a point. This is an extension of shared infrastructure,
+not a claim that those source arguments were incorrect.
+
+\subsection{Obstructions that cannot be repaired by changing the encoding alone}
+
+\paragraph{Exact Puiseux data from arbitrary coefficient names.}
+The Puiseux report gives a halting obstruction already in the family
+$Y^2-X^2-a$, with $a$ supplied only by a Cauchy name
+\cite{repo-puiseux}. Even the promise that the value happens to be a
+dyadic rational does not provide its exact finite presentation. A zero
+versus positive coefficient can alter the exact initial branch data.
+The finite-observation framework retains exact algebraic presentations
+or explicit discrete certificates when the requested output requires
+them. Returning coherent approximate complex roots, as our factorization
+theorem does, does not decide those branch data.
+
+\paragraph{Apartness and inversion.}
+A procedure dividing by a represented number needs quantitative
+nonvanishing. The source FTA discussion uses $az-1$ to explain this
+boundary \cite{repo-fta}. Proposition~\ref{prop:name-arithmetic} supplies
+an explicit reciprocal construction from an apartness certificate,
+while denominator-free identities and monic presentations can avoid some
+uses of division. No universal nonzero-to-apartness principle is added.
+
+\paragraph{Uniform evaluation of all PR program codes.}
+The diagonal argument in Section~\ref{sec:compiler} rules out a primitive
+recursive evaluator for every primitive recursive code. The
+zeta-functional-equation plan already recognizes this issue
+\cite{repo-zeta-plan}. Our theorem solves a variable-depth composition
+problem for a fixed uniform table routine; it does not invalidate that
+obstruction. The difference between a numerical degree and an arbitrary
+program code is essential.
+
+\paragraph{Metastability, cardinality, and cutoffs.}
+The one-jump sequence in Section~\ref{sec:quantitative-analysis} has a
+uniform finite-window procedure but no uniform computable Cauchy rate.
+The singleton predicate in Section~\ref{sec:finite-sections} has a
+uniform cardinality bound and vacuous pairwise gaps but no computable
+uniform height cutoff. These prove failures of general conversion
+principles. They do not establish that any named Diophantine theorem is
+unprovable in \iPRA, nor that a specific sequence cannot have a modulus.
+
+\subsection{Analytic number theory and probability: exposed dependencies}
+
+The following are examples of mathematical input still needed after the
+finite compiler is available. They are not an exhaustive classification
+of the proof-theoretic strength of the corresponding classical theorems.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.25\linewidth}>{\raggedright\arraybackslash}p{0.43\linewidth}>{\raggedright\arraybackslash}p{0.26\linewidth}@{}}
+\toprule
+Reported difficulty & What a shared finite framework supplies & What it does not supply\\
+\midrule
+\endhead
+Stronger prime number theorem error & Rational contour/error bookkeeping,
+precision allocation, and common finite induction invariants. & A
+stronger zero-free-region estimate. The inspected report establishes its
+own weaker exponent, not the optimal requested rate \cite{repo-pnt}.\\[5pt]
+Siegel--Walfisz and Bombieri--Vinogradov uniformity & Explicit contracts
+for exceptional terms and their parameter dependence. & An effective
+Siegel-type separation estimate, or the unproved exceptional-zero formula
+itself \cite{repo-prime-sw}.\\[5pt]
+Chebotarev estimates & Finite field-data and analytic-certificate
+interfaces. & The required field-dependent analytic estimates and
+exceptional-zero control \cite{repo-chebotarev}.\\[5pt]
+General-law and advanced central limit statements & Finite-law
+calculations can transfer through supplied PR tail, quantization, or
+Lindeberg moduli. & High-dimensional convex smoothing, entropy-power
+arguments, or a full stable-law classification \cite{repo-clt}.\\
+\bottomrule
+\end{longtable}
+
+One particularly important uniformity issue is that excluding a single
+exceptional modulus does not exclude all moduli divisible by its
+conductor. The inspected prime-distribution report explicitly keeps this
+problem visible \cite{repo-prime-sw}. Our framework preserves the
+quantifiers and parameter dependence; it does not simplify the claim by
+dropping the exceptional multiples.
+
+\subsection{A concrete integration sequence}
+
+A useful repository integration would proceed in three pieces. First
+add the finite data, Boolean reflection, and table-compilation modules
+under a shared arithmetic namespace; keep them independent of a single
+analytic theorem. Second add the factorization, convex-modulus, and
+superelliptic-section applications with their source-specific hypotheses.
+Third refactor existing packets to call those modules, preserving any
+remaining mathematical contracts.
+
+The supplied archive includes an integration note, not a repository
+mutation. Its priority is a reviewable mathematical and formalization
+package. Nothing in this report asserts that the existing repository's
+uncompiled outlines have thereby become completed object-theory proofs.

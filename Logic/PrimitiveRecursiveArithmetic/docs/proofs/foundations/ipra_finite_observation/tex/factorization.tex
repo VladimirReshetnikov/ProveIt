@@ -1,0 +1,481 @@
+\section{An application: factorization uniformly in the degree}
+\label{sec:fta-extension}
+
+The repository's one-root FTA proof is uniform in the numerical degree,
+but its complete-factorization paragraph deliberately claims only a
+fixed-degree schema.  It asks for an additional bound on nested precision
+requests before treating a variable number of deflations.  We supply that
+bound here.  The input coefficient evaluator remains one fixed primitive
+recursive program.  The result does not evaluate arbitrary codes of
+primitive recursive programs.
+
+The only substantive algebraic dependency is the repository's finite
+rational descent lemma, whose proof uses bounded radius selection, five
+fixed-length square-root bisections, and a finite binomial polynomial
+\cite{repo-fta}.  We state its complete contract, reproduce the monic
+one-root argument, and prove all additional estimates needed for uniform
+factorization.  This is a human mathematical extension of the repository
+proof, not an assertion that its outstanding deeply embedded Lean
+derivation has already been constructed.
+
+\subsection{Norms, finite names, and rounding}
+
+For a Gaussian rational $z=x+iy$, put $|z|_1=|x|+|y|$.
+Then $|zw|_1\le |z|_1|w|_1$, $|z|\le |z|_1\le 2|z|$, where
+$|z|$ is the Euclidean norm.  Euclidean inequalities in the descent
+argument are expressed arithmetically by squared rational comparisons.
+For a finite polynomial $F$, put
+\[
+ \|F\|_1=\sum_j |[X^j]F|_1.
+\]
+Finite convolution and the triangle inequality prove
+$\|FG\|_1\le\|F\|_1\|G\|_1$.
+
+Let $\operatorname{rd}_v(z)$ round each real coordinate down to the
+nearest multiple of $2^{-v}$.  This is a total primitive recursive
+Gaussian-rational operation, and
+\[
+ |\operatorname{rd}_v(z)-z|_1\le 2^{1-v}.
+ \tag{F1}\label{eq:fta-round}
+\]
+The convention for negative coordinates is ordinary rational floor.
+Its error estimate follows directly from the two division-with-remainder
+inequalities.  In particular $\operatorname{rd}_v(1)=1$.
+
+For $n\ge1$ and $M\ge2$, call a coefficient table
+$a_i(s)$, $0\le i\le n$, $0\le s\le h$, good through $h$ if
+\begin{align*}
+ a_n(s)&=1, & |a_i(s)|_1&\le M,\\
+ |a_i(s)-a_i(t)|_1&\le 2^{-s}+2^{-t}
+ &&(i\le n,\ s,t\le h).
+\end{align*}
+All quantifiers in this definition are bounded.  Its characteristic
+function is a finite Boolean conjunction, so goodness is expressed by
+one primitive recursive equation.  An infinite name is merely convenient
+notation for the corresponding family of finite tables.
+
+The use of $|\cdot|_1$ and an explicit coefficient cap is harmless for
+the repository's fast Euclidean names.  Given such names $a_i$, replace
+the lower coefficients by
+\[
+ \widetilde a_i(s)=\operatorname{rd}_{s+4}(a_i(s+3)),
+ \qquad \widetilde a_n(s)=1.
+\]
+The new names represent the same coefficients and satisfy the displayed
+$|\cdot|_1$ regularity.  Indeed the two source-name errors contribute at
+most $\tfrac14(2^{-s}+2^{-t})$, and rounding contributes at most
+$\tfrac18(2^{-s}+2^{-t})$.  A suitable cap is
+\[
+ M=4+\left\lceil\max_{i<n}|a_i(0)|_1\right\rceil.
+\]
+Here monicity is supplied as an exact presentation of the top coefficient;
+we do not try to decide whether an arbitrary coefficient name equals $1$.
+
+\subsection{A uniform finite root routine with an explicit query bound}
+
+The following finite rational lemma is the imported result.
+
+\begin{lemma}[Finite rational descent contract]\label{lem:fta-descent-contract}
+For $n\ge1$, put $D=2^n4^{2n^2}$ and $q=1-(4D)^{-1}$.
+There is one primitive recursive routine
+$\operatorname{Descent}(n,P,z)$ such that for every nonconstant Gaussian
+rational polynomial $P$ of degree at most $n$, it returns Gaussian rational
+$\Delta$ and nonnegative rational $r_0$ with
+\[
+ |P(z+\Delta)|\le q|P(z)|,\qquad |\Delta|\le r_0,
+ \qquad |b_i|r_0^i\le |P(z)|\quad(1\le i\le n),
+\]
+where $P(z+W)=\sum_i b_iW^i$.
+All loops and searches in this routine have explicit primitive recursive
+bounds in the input codes.  Failed searches and malformed inputs have
+fixed default outputs.
+\end{lemma}
+
+For clarity, the bound is uniform in $n$; it is not an external family
+of routines indexed by fixed $n$.  The source proves this lemma by
+testing a finite range of dyadic radii, finding a repeated maximizing
+index among $2n+1$ scales, and constructing the appropriate direction by
+the finite binomial identity.  These operations introduce no new calls
+to the coefficient-name evaluator.
+
+Fix $n,M$ as above and define
+\begin{align*}
+ B&=M+2, &D&=2^n4^{2n^2}, &K&=8nD,\\
+ \rho&=1-K^{-1}, &Q&=1-(8D)^{-1}, &R&=BK+1,\\
+ L&=2+\operatorname{bl}(16D(n+1)R^n),
+ &H&=\operatorname{bl}(BK),\\
+ J(t)&=K(t+H+2), &U(n,M,t)&=L+J(t).
+ \tag{F2}\label{eq:fta-constants}
+\end{align*}
+Here $\operatorname{bl}(b)$ is the binary digit count, so
+$b<2^{\operatorname{bl}(b)}$ for $b>0$.
+The symbols $B,D,K,R,L,H,J$ in subsequent formulas refer to these explicit
+functions of $n,M$.
+
+For the given coefficient table set
+\[
+ P_j(X)=\sum_{i=0}^n a_i(L+j)X^i,
+ \qquad z_0=0,
+ \qquad z_{j+1}=z_j+\operatorname{Descent}(n,P_j,z_j).\Delta.
+ \tag{F3}\label{eq:fta-trajectory}
+\]
+This is one fixed primitive recursion.  Define
+\[
+ \alpha(t)=z_{J(t)},\qquad
+ r(t)=\operatorname{rd}_{t+4}(\alpha(t+2)),\qquad A=2R+1.
+ \tag{F4}\label{eq:fta-root-normalized}
+\]
+
+\begin{lemma}[Finite monic root routine]\label{lem:fta-root-table}
+For an output horizon $h$, goodness of the input table through
+$U(n,M,h+2)$ suffices to prove
+\begin{align*}
+ |r(t)|_1&\le A &&(t\le h),\\
+ |r(t)-r(u)|_1&\le 2^{-t}+2^{-u} &&(t,u\le h).
+\end{align*}
+The value $r(t)$ reads coefficient entries only at indices at most
+$U(n,M,t+2)$, and it is unchanged if the input table is extended.
+In addition, setting
+\[
+ E=4(n+1)^2(M+1)(A+1)^{n+1},
+ \tag{F5}\label{eq:fta-E}
+\]
+the same finite hypotheses give
+\[
+ \left|\sum_{i=0}^n a_i(t)r(t)^i\right|_1\le E2^{-t}
+ \qquad(t\le h).
+ \tag{F6}\label{eq:fta-same-precision-residual}
+\]
+Every assertion has a quantifier-free-induction proof after the displayed
+finite horizons are fixed.
+\end{lemma}
+
+\begin{proof}
+The leading coefficient of every $P_j$ is $1$.  The radius certificate
+in Lemma~\ref{lem:fta-descent-contract} therefore gives
+$r_0^n\le |P_j(z_j)|$.  Finite Bernoulli arithmetic gives
+$Q\le\rho^n$, and hence
+\[
+ |P_j(z_j)|\le BQ^j\quad\Longrightarrow\quad
+ |\Delta_j|\le B\rho^j.
+\]
+Indeed $(B\rho^j)^n\ge B\rho^{nj}\ge BQ^j$, and positive integer
+powers reflect order on nonnegative rationals.  This argument avoids
+computing any $n$th root.
+
+Induct simultaneously on the finite inequalities
+\[
+ |P_j(z_j)|\le BQ^j,
+ \qquad |z_j|\le B\sum_{v<j}\rho^v\le BK<R.
+ \tag{F7}\label{eq:fta-monic-invariant}
+\]
+The base case uses $|a_0(L)|\le M\le B$.  The step bound just proved
+establishes the position bound at $j+1$.  At any point $|x|\le R$, the
+adjacent coefficient-name comparisons give
+\[
+ |P_{j+1}(x)-P_j(x)|
+ \le\frac32(n+1)R^n2^{-L-j}
+ \le\frac{3}{32D}2^{-j}
+ \le\frac{1}{8D}BQ^j.
+\]
+The choice of $L$ is stronger than the inequality used here.  Rational
+descent then changes the residual bound by the factor
+$q+(8D)^{-1}=Q$.  This proves \eqref{eq:fta-monic-invariant}.
+
+Finite geometric summation gives
+\[
+ |z_v-z_u|\le BK\rho^u\qquad(v\ge u).
+\]
+Also $\rho^K\le\tfrac12$: apply finite Bernoulli to
+$(1+(K-1)^{-1})^K$.  Thus
+\[
+ |\alpha(v)-\alpha(u)|\le 2^{-u-2}\qquad(v\ge u).
+ \tag{F8}\label{eq:fta-raw-root-cauchy}
+\]
+If $s\ge U(n,M,t)$ and the input table also contains row $s$, comparison
+with $P_{J(t)}$ gives
+\[
+ \left|\sum_{i=0}^n a_i(s)\alpha(t)^i\right|
+ \le BQ^{J(t)}+2(n+1)R^n2^{-L-J(t)}
+ \le 2^{-t}.
+ \tag{F9}\label{eq:fta-raw-root-residual}
+\]
+This is a finite statement about the specified $s$, not a limit argument.
+
+Rounding in \eqref{eq:fta-root-normalized} adds $|\cdot|_1$ error at
+most $2^{-t-3}$.  Combining this with twice the Euclidean bound
+\eqref{eq:fta-raw-root-cauchy} proves regularity of $r$ (in fact with
+slack), and $|r(t)|_1\le 2R+1=A$.
+
+For \eqref{eq:fta-same-precision-residual}, use
+\eqref{eq:fta-raw-root-residual} at $t+2$ and
+$s=U(n,M,t+2)$.  Replacing row $s$ by row $t$ costs at most
+$2(n+1)A^n2^{-t}$ in $|\cdot|_1$.  The residual in
+\eqref{eq:fta-raw-root-residual} costs at most $2^{-t-1}$ in that norm.
+Finally replacing $\alpha(t+2)$ by $r(t)$ costs at most
+\[
+ \frac18 M\left(\sum_{i=1}^n iA^{i-1}\right)2^{-t}
+\]
+by the finite difference-of-powers identity.  Their sum is less than
+$E2^{-t}$ for \eqref{eq:fta-E}.
+
+The largest coefficient index used in these arguments is the displayed
+$U(n,M,h+2)$.  In the trajectory, the invariant is a pair of rational
+inequalities; its Euclidean components can be squared.  Geometric-sum
+and coefficient comparisons are finite folds.  A Boolean conjunction
+stores all required assertions through the fixed horizon.  Quantifier-free
+induction therefore proves the finite contract.  Prefix compatibility
+follows because each run follows exactly the recursion
+\eqref{eq:fta-trajectory}, with no decision based on table length.
+\end{proof}
+
+\subsection{A normalized deflator and its complete finite contract}
+
+Use the following additional integer bounds:
+\begin{align*}
+ M^+&=2+(n+1)(M+1)(A+1)^n,\\
+ a&=\operatorname{bl}(4E),\\
+ D^+&=4(n+1)(M^++1)(A+1),\\
+ V(n,M,h)&=U(n,M,h+a+2).
+ \tag{F10}\label{eq:fta-deflation-budgets}
+\end{align*}
+The letter $a$ in this display denotes the precision shift, not a
+coefficient.  For $0\le j<n$ put
+\begin{align*}
+ q_j(v)&=\sum_{\ell=j+1}^n a_\ell(v)r(v)^{\ell-j-1},\\
+ b_j(t)&=\operatorname{rd}_{t+4}(q_j(t+a)),\\
+ P(t;X)&=\sum_{j=0}^n a_j(t)X^j,
+ &P^+(t;X)&=\sum_{j=0}^{n-1} b_j(t)X^j.
+ \tag{F11}\label{eq:fta-deflator}
+\end{align*}
+These are finite sums, and $b_{n-1}(t)=1$ exactly.
+
+\begin{lemma}[Finite deflation contract]\label{lem:fta-deflation-table}
+If the input coefficient table is good through $V(n,M,h)$, then the
+output table $b_j(t)$ is monic, bounded by $M^+$ in $|\cdot|_1$, and
+regular through $h$.  The normalized root is regular and bounded by $A$
+through $h$.  For every $t\le h$,
+\[
+ \|P(t;X)-(X-r(t))P^+(t;X)\|_1\le D^+2^{-t}.
+ \tag{F12}\label{eq:fta-defect}
+\]
+The complete calculation and every finite verification use only input
+indices at most $V(n,M,h)$.  Extending the input table changes none of the
+already computed output entries.
+\end{lemma}
+
+\begin{proof}
+Each $q_j$ has at most $n$ terms.  Hence
+\[
+ |q_j(v)|_1\le nM(A+1)^n<M^+-1.
+\]
+Rounding contributes at most $2^{-t-3}\le1$, proving the cap.
+For any two available indices $v,w$, subtract corresponding terms and
+apply the difference-of-powers identity.  Input and root regularity give
+\[
+ |q_j(v)-q_j(w)|_1
+ \le\left(\sum_{r<n} A^r+M\sum_{r<n}rA^{r-1}\right)
+       (2^{-v}+2^{-w})
+ \le E(2^{-v}+2^{-w}),
+\]
+where the $r=0$ term of the second sum is $0$.
+Since $E2^{-a}<1/4$, after the index shift and rounding this is at most
+$\tfrac38(2^{-t}+2^{-u})$ for $b_j(t),b_j(u)$, which implies the
+required regularity.
+
+Set $v=t+a$ and $Q_v(X)=\sum_{j<n}q_j(v)X^j$.  Synthetic division is
+the exact finite identity
+\[
+ P(v;X)=(X-r(v))Q_v(X)+P(v;r(v)).
+\]
+It follows by cancelling adjacent coefficients, including the constant
+coefficient.  The defect in \eqref{eq:fta-defect} is the sum of four
+terms:
+\begin{align*}
+ &[P(t;X)-P(v;X)] + P(v;r(v))\\
+ &\quad +(X-r(v))[Q_v(X)-P^+(t;X)]
+       +(r(t)-r(v))P^+(t;X).
+\end{align*}
+Their coefficient norms are bounded respectively by
+\[
+ 2(n+1)2^{-t},\qquad
+ E2^{-v}<\tfrac14 2^{-t},\qquad
+ (A+1)n2^{-t-3},\qquad
+ 2nM^+2^{-t}.
+\]
+Their sum is at most $D^+2^{-t}$.
+
+The residual and root regularity at indices at most $h+a$ require the
+source root contract through $U(n,M,h+a+2)=V(n,M,h)$.  All other
+coefficient queries are smaller.  Thus $V$ is a verification bound as
+well as an evaluation bound.  The proof consists of finite coefficient
+identities, bounded sums, and rational comparisons; no induction on a
+statement about all precisions has been used.
+\end{proof}
+
+\subsection{Variable-degree iteration by finite tables}
+
+Let the input degree be $d\ge1$ and initial cap be $M_0=M$.
+Compute the numeric caps and constants by the single primitive recursion
+\[
+ n_i=d-i,\qquad
+ M_{i+1}=M^+(n_i,M_i)\quad(0\le i<d).
+ \tag{F13}\label{eq:fta-cap-recursion}
+\]
+Write $A_i,D_i^+,V_i$ for the corresponding functions in
+\eqref{eq:fta-deflation-budgets}.  No coefficient evaluation is needed
+to compute these bounds.
+
+For a desired output horizon $t$, determine input horizons backwards:
+\[
+ h_d=t,\qquad h_i=V_i(h_{i+1})\quad(i=d-1,\ldots,0).
+ \tag{F14}\label{eq:fta-backwards}
+\]
+This is a primitive recursion over a reversed finite index list.  It is
+not recursion on a program code.  Each $V_i$ is monotone in its last
+argument and is at least that argument.
+
+Generate the original coefficient table through $h_0$ by the one fixed
+PR input evaluator.  At stage $i$, run the finite deflator on its current
+table to obtain its root entries and next coefficient entries through
+$h_{i+1}$.  After $d$ stages the residual polynomial is exactly $1$.
+Each stage is one application of the same fixed PR table routine to
+numeric inputs $n_i,M_i,h_{i+1}$ and the current finite table.  Therefore
+the entire staged calculation is primitive recursive uniformly in $d$.
+
+For an output root at index $i<d$ and precision $p$, use this algorithm
+with terminal horizon $p$ and select the $i$th root entry at $p$.
+Call it $r_i(p)$.  Prefix compatibility in the two local lemmas implies
+that computing with any larger terminal horizon gives the identical
+rational entry.  To verify this assertion, fix the two finite runs and
+induct on their common stage index: every lookup needed for a common
+output row has the same input value by the induction hypothesis, so the
+deterministic recursion returns the same value.  This finite argument establishes prefix consistency. For two output
+precisions $p,q$, run the construction at terminal horizon $\max(p,q)$,
+apply root regularity there, and identify its entries with the separately
+defined outputs. Thus the outputs are regular names; no compatible-root
+choice principle is needed.
+
+\subsection{The uniform factorization theorem}
+
+Set
+\[
+ G=1+\max_{i<d}A_i,\qquad
+ W=1+\max_{i<d}D_i^+,\qquad
+ c=\operatorname{bl}(1+dWG^d).
+ \tag{F15}\label{eq:fta-final-budget}
+\]
+
+\begin{theorem}[Degree-uniform constructive factorization schema]
+\label{thm:fta-uniform-factorization}
+Fix one primitive recursive coefficient evaluator
+$a(d,\mathbf p,i,s)$, with natural parameters $d,\mathbf p,i,s$.
+There is one primitive recursive root evaluator
+$r(d,M,\mathbf p,i,s)$, and the explicit primitive recursive bound
+$c=c(d,M)$ above, such that iPRA proves the following.
+If the input is monic of degree $d\ge1$, its coefficient names are
+regular, and $|a(d,\mathbf p,i,s)|_1\le M$ for $i\le d$, then the
+constructed $r_i$ are regular coefficient names and, for every $k$,
+\[
+ \left\|
+   \sum_{j=0}^d a(d,\mathbf p,j,k+c)X^j
+       -\prod_{i<d}(X-r_i(k+c))
+ \right\|_1\le2^{-k}.
+ \tag{F16}\label{eq:fta-uniform-factorization}
+\]
+In particular these names represent a full factorization, with
+multiplicities.  All degrees are handled by the same numeric program,
+not by a separately compiled evaluator for each degree.
+\end{theorem}
+
+\begin{proof}
+Fix $k$ and put $t=k+c$.  Use the finite schedule
+\eqref{eq:fta-backwards}.  The global input assumptions establish the
+finite good-table condition at $h_0$ by bounded Boolean-fold induction.
+Lemma~\ref{lem:fta-deflation-table} propagates the good-table conditions
+through the $d$ stages.  Keep only the finite coefficients at the common
+precision $t$.  Write $P_i$ for the degree-$d-i$ sampled polynomial,
+$L_i=X-r_i(t)$, and $e_i=P_i-L_iP_{i+1}$.
+Then $P_d=1$, $\|L_i\|_1\le G$, and
+$\|e_i\|_1\le W2^{-t}$.  Repeated substitution gives the exact identity
+\[
+ P_0-\prod_{i<d}L_i
+   =\sum_{i<d}\left(\prod_{j<i}L_j\right)e_i.
+ \tag{F17}\label{eq:fta-telescope}
+\]
+Finite convolution bounds therefore give
+\[
+ \left\|P_0-\prod_{i<d}L_i\right\|_1
+ \le W2^{-t}\sum_{i<d}G^i
+ \le dWG^d2^{-t}\le2^{-k}.
+\]
+This proves \eqref{eq:fta-uniform-factorization}.
+
+For the logical-strength claim, the stage invariant comprises the Boolean
+good-table checks through the fixed $h_i$, the finitely many local
+defect inequalities, and the finite coefficient identity
+\eqref{eq:fta-telescope} through the current stage.  Every quantified
+index is bounded by $d$, a listed $h_i$, or a coded array length.
+Their Booleanization is quantifier-free.  Quantifier-free induction is
+therefore enough.  Universal introduction over $k$ follows only after
+this finite proof.  There is no induction on represented-complex equality
+or on the assertion that a polynomial factors at all precisions.
+\end{proof}
+
+The dependence on the initial evaluator is exactly the dependence allowed
+by the original FTA schema: once that PR definition is fixed, the table
+generator is a composition with it.  For a finite rational-polynomial
+code, constant coefficient names give a single first-order specialization
+uniform in that code and its degree.  For an apart leading coefficient,
+the usual certified reciprocal and a fixed precision shift reduce to the
+monic formulation.  This does not decide which coefficient is leading
+when the degree has not been supplied.
+
+\subsection{Resource bounds and the remaining Lean work}
+
+The query bound and verification bound have different roles.
+The raw root at precision $t$ reads through $U(n,M,t)$; the normalized
+root reads through $U(n,M,t+2)$.  A deflation through output horizon $h$
+is verified from goodness through $V(n,M,h)$, which includes shifted
+coefficient comparisons and the same-precision residual estimate.
+Composing only the smaller query bound would not justify the theorem.
+
+No non-primitive-recursive search is hidden in rational encoding sizes.
+The fixed root table routine performs exactly $J(t)$ descent iterations;
+each descent has bounded loops in its current finite codes, as spelled
+out in the imported lemma.  The complete table map is therefore a fixed
+PR function.  Iteration over $d$ takes table \emph{values} as state; it
+never forms a growing PR program and asks a universal evaluator to run it.
+
+If a numerical arithmetic-operation envelope is desired, first use the dyadic
+normalization above.  A finite input table then has a primitive recursive
+code bound $Z(n,M,h)$: with any fixed tuple encoding, bound the signed
+dyadic numerators by $(M+1)2^{h+4}$ and the denominators by $2^{h+4}$,
+then bound the $(n+1)(h+1)$ entries by a positional digit code.  Instrument
+the one fixed table routine with an arithmetic-operation counter, using
+the same compositions and recursions.  Its counter function $T$ is PR. This counts operations of the fixed table
+transformer; the cost of generating the original coefficient table remains
+the cost of its particular fixed evaluator. No bit-cost estimate is claimed.
+The explicit bounded maximum
+\[
+ \max_{z\le Z(n,M,V(n,M,h))}
+      T(n,M,h,z)
+\]
+is a PR envelope, with malformed tables totalized as above.  This maximum
+is over finite input data for one fixed routine, not over arbitrary
+programs.  An independent complexity claim stronger than primitive
+recursiveness is not needed.
+
+A Lean implementation should define the finite table data, $U,V$, the
+cap recursion, rounding, and polynomial coefficient norm first.  The
+critical new lemmas are the finite normalized-root contract,
+the finite deflator contract, prefix compatibility, and the coefficient
+telescoping bound.  Their precise statements are
+Lemmas~\ref{lem:fta-root-table} and~\ref{lem:fta-deflation-table},
+\eqref{eq:fta-telescope}, and
+Theorem~\ref{thm:fta-uniform-factorization}.  Their arithmetic versions
+must then construct object-language proofs using the Booleanized finite
+invariants just described.  The repository's local descent derivation
+remains an imported human proof until that object derivation is finished;
+a Lean theorem that merely accepts the descent contract as a hypothesis
+must be labelled conditional.
