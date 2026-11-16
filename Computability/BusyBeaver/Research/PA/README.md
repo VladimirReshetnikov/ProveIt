@@ -394,9 +394,13 @@ cut, the shift rule, the universal rule and the existential rule for a variable 
 it, and removes the guards at the root of a refutation. Domain inhabitation is
 proved for the actual source theory. A separate reduction derives term-witness
 support from naming facts, and derives those facts from twelve fixed source
-facts plus variable-name existence. Those twelve facts, four translated fixed
-axioms and the arbitrary translated induction instances are not yet all supplied,
-so the unconditional compiler is not proved.
+facts plus variable-name existence. A further reduction (`induction_body`) derives
+the translated induction axiom of every internal formula, before the closure of its
+parameters, from the term facts, the twelve facts and ordinal induction of the source
+theory for every internal property; the closure of the parameters and the connection
+to the existing induction supplier are not written. The twelve facts and four
+translated fixed axioms are not yet all supplied, so the unconditional compiler is
+not proved.
 
 [`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
