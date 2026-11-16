@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives from 14 to
-16 November 2026: 33 to `docs/drafts`, and 54 to
+16 November 2026: 33 to `docs/drafts`, and 55 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -62,7 +62,7 @@ manifests, build logs and `build/` files.
 
 ## Packets
 
-The 87 archives hold 2,631 members: 2,486 placed here, 98 ignored, 21 in bundled copies of
+The 88 archives hold 2,636 members: 2,491 placed here, 98 ignored, 21 in bundled copies of
 a sibling packet, 1 nested copy of a sibling archive and 25 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -121,6 +121,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | Directory | Arrival | Wrapper in the archive | What the packet states | P | O |
 |---|---|---|---|---:|---:|
 | [`bell_numbers_ipra`](combinatorics/bell_numbers_ipra/) | *not committed* 2026-11-15 | `bell_ipra` | Bell numbers: finite identities, the Dobiński and Comtet formulas, generating functions, Hankel determinants, Touchard congruences, an all-n bound, and the de Bruijn and Moser–Wyman asymptotics with explicit remainders. It states that its finite Lean core compiles; the analytic results remain Lean targets. | 32 | 0 |
+| [`fibonacci_lucas_ipra`](combinatorics/fibonacci_lucas_ipra/) | `47a9ddd61e` 2026-11-16 | `fibonacci_lucas_ipra` | Fibonacci and Lucas numbers: a catalogue of constructive proofs covering the recurrence, addition and matrix laws, the Cassini, Catalan and d'Ocagne identities, Lucas products, finite sums, binomial transforms, formal generating series, parity, divisibility and gcd, modular periodicity, the prime-index Lucas congruence, tilings and independent-set counts on cycles, with a formalization plan aimed at the `Derivations` library. Its Lean file has definitions and commented proof interfaces; it was not typechecked and is not an iPRA derivation. Analytic convergence and deep Diophantine classifications are not claimed. | 5 | 0 |
 
 ### Diophantine number theory
 

@@ -281,7 +281,8 @@ directory is `ipra_observation_algebra`. `ipra_finite_query_normal_form_2026-11-
 placed the same way, under `foundations/`, and then deleted. It leaves out one ignored
 `.log` file. `ipra_frnf_framework_bundle.zip` was placed the same way, under `foundations/`,
 and then deleted. It leaves out one ignored checksum manifest; its wrapper directory is
-`ipra_frnf_framework`.
+`ipra_frnf_framework`. `fibonacci_lucas_ipra.zip` was placed the same way, under
+`combinatorics/`, and then deleted. All 5 of its members are placed.
 
 ## Sub-exponential 3-SAT (ETH) reports
 
