@@ -126,6 +126,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.Products.pochhammer_shift
 #print axioms LeanProofs.IPRA.Analysis.Products.telescoping_sum
 #print axioms LeanProofs.IPRA.Analysis.Products.wallis_product
+#print axioms LeanProofs.IPRA.Analysis.PowerSums.sum_le
+#print axioms LeanProofs.IPRA.Analysis.PowerSums.sum_mul_param
+#print axioms LeanProofs.IPRA.Analysis.PowerSums.lower
+#print axioms LeanProofs.IPRA.Analysis.PowerSums.upper
+#print axioms LeanProofs.IPRA.Analysis.PowerSums.power_sum_quadrature
 #print axioms LeanProofs.IPRA.div_mod
 #print axioms LeanProofs.IPRA.euclid_unique
 #print axioms LeanProofs.IPRA.div_mod_unique
