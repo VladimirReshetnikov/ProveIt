@@ -10,3 +10,5 @@ if command -v py >/dev/null 2>&1; then py=py; else py=python3; fi
   --also PA194EmitterScheduler:5 --also PA194EmitterSchedulerCore:3 \
   --also PA194ControllerSchedulerPA:4 \
   --also PA194ControllerScheduler:5 --also PA194ControllerSchedulerCore:3 "$@"
+"$py" -X utf8 -B "$here/../pa194-model-fairness/check_bridge.py" \
+  --top "$here/PA194EmitterStandard.lean" --reports 2 "$@"

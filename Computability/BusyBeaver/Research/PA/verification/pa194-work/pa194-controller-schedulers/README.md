@@ -151,7 +151,7 @@ packets' source graphs or tables.
 | PA195DC | `pa195_diagonal_combined_2026-11-13/report/sections/commands.tex` | | | | | ✓ | | `cache` | ✓ | |
 | composite, nine entries | `PA195_ConPA_research_2026-11-14/independent_verification/composite_command_audit.tex` | | | | | ✓ | | `cache` | ✓ | |
 | composite, ten entries (195C) | the same | | | | | | | `cache` | ✓ | |
-| PA196 | `conpa_tm_comparison_and_reduction_search/sources/theory_audit/pa196.tex`, upstream `PA196/Commands/Code.lean` | | | | | | ✓ | `push` | | |
+| PA196 | upstream `PA196/Commands/Store.lean`, `PA196/Commands/Code.lean` | | | | | | ✓ | `push` | | |
 | Combined196 | `conpa_tm_study_2026-11-13/report.tex` | | | | | | ✓ | `cache` | ✓ | |
 
 The scheduler for the original PA195 is `haltAfterE { bundled := true } .push false false`
@@ -161,10 +161,14 @@ scheduler for PA194AX11GH is
 `haltAfterE { q := true, ga := true } .top true true`. The emitter with exchanged sixth
 head is also used by PA194QH, PA194QN, PA194QNS and PA194AX11QH, and `Γ(D)` by PA194D;
 their command protocols have not been matched against their packets here. The scheduler
-for PA196 is `haltAfterE { delta := true } .push false false`. Its gate is the definition
-`gate` of the upstream Lean source; the order of its nine pushed entries is the one of the
-original PA195, whose packet builds its AX from the PA196 word by changing the gate only;
-the row for Combined196 follows a survey of its packet and was not re-read.
+for PA196 is `haltAfterE { delta := true } .push false false`. Its row follows the upstream
+Lean source: `PA196.Commands.step` (`PA196/Commands/Store.lean`) is the same store step,
+with `Code.gate (h + y) (d + x) c` on top, the list `Code.heads (d + x) (h + y) c d h` and
+the saved top pushed, the successful MP `⟨y, pair 0 w, y, 0⟩` and the SHIFT test
+`t + h = 1`. This agreement is by reading the two definitions; what is proved is
+`PA194EmitterStandard.eval_deltaGate`, the equality of the gate code with
+`PA196.Commands.Code.bundle` on standard numbers. The row for Combined196 follows a survey
+of its packet and was not re-read.
 
 All these schedulers fetch and decode commands as the modeled scheduler of the primary
 table does (the pair `(n, l)` and its seed, from the same initial state). For the original
@@ -184,6 +188,7 @@ the formula constructors.
 | `PA194EmitterSchedulerCore` | `Emitter`; the codes `head6Q`, `head5X`, `bundledGate`, `deltaGate`, `axStackCodeE`, `axTopCodeE`, `stepE`, `runE`, `haltAfterE`. Only codes; imports `PA194ControllerSchedulerCore`. |
 | `PA194EmitterScheduler` | `baseLeaf`, `leafE`, `genLE`, `axStackE`, `axTopE` and their model lemmas; `semE e k ct a`, `stepE_eq`; `G_base`, `rulesG`, `G_head6`, `G_head5`, `closedG`, `G_top`, `G_gate`, `atomVacG`, `G_diagonal`, `G_of_provable`, `provable_halts`; `Sound`, `leafE_in`, `axTopE_in`, `axE_preserves`, `runE_sound`, `halts_in`; `soundTarget`, `halts_iff_provable`, `halts_iff_primary`. |
 | `PA194EmitterSchedulerPA` | `good_gate`, `soundGood`, `good_one_refutes`, `scheduler_iff_pa_refutation`; `haltSentenceE` and `consistency_iff_scheduler_nonhalt`. |
+| `PA194EmitterStandard` | `eval_deltaGate`: on the standard numbers the code `deltaGate` evaluates to `PA196.Commands.Code.bundle` of the upstream snapshot. |
 | `PA194ControllerSchedulerCore` | The PRA code definitions for the scheduler step, its iteration, and its halt test, independent of the fairness and PA-interpretation proofs. |
 | `PA194ControllerScheduler` | `cstepCodeK`, `haltAfterK`; imports the shared core. `semK k ct a`: the command semantics of `ConPA.Ctl`; `stepK_eq`: the step code is `ConPA.Ctl.sstep (semK k ct a)`. `G_of_provable`: a target proof gives a command word (`targetProof_sound` with the closure lemmas of `ConPA.Ctl`). `cstepK_sound`, `runK_sound`: top, cache and stack entries stay provable along a run. `halts_iff_provable`, `halts_iff_primary`. |
 | `PA194ControllerSchedulerPA` | `scheduler_iff_pa_refutation`; `haltSentenceK` and `consistency_iff_scheduler_nonhalt`, by the transfers of `ConPAISigma1Directions`. |
@@ -210,11 +215,12 @@ provable when the guard allows it and is `0` otherwise. A halting SHIFT has `t +
 bash Computability/BusyBeaver/Research/PA/verification/pa194-work/pa194-controller-schedulers/check.sh [--out DIR]
 ```
 
-compiles all six modules with every standalone module they import (`check_bridge.py` of
+compiles all seven modules with every standalone module they import (`check_bridge.py` of
 `pa194-model-fairness`), one `lean` process at a time, and checks the number of axiom
 reports: three in each `…Core` module, five in `PA194ControllerScheduler`, in
-`PA194EmitterScheduler` and in `PA194EmitterSchedulerPA`, and four in
-`PA194ControllerSchedulerPA`. They are `propext`, `Classical.choice`, `Quot.sound`.
+`PA194EmitterScheduler` and in `PA194EmitterSchedulerPA`, four in
+`PA194ControllerSchedulerPA` and two in `PA194EmitterStandard`. They are `propext`,
+`Classical.choice`, `Quot.sound`.
 
 For a staged replay of the lightweight core against already checked providers, run
 `./check-core.sh PROVIDER-LEANPATH-FILE FRESH-OUTPUT` from this directory.
