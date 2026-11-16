@@ -285,7 +285,9 @@ and then deleted. It leaves out one ignored checksum manifest; its wrapper direc
 `combinatorics/`, and then deleted. All 5 of its members are placed.
 `ipra_kifc_framework_2026-11-16.zip` was placed the same way, under `foundations/`, and then
 deleted. It leaves out one ignored `.log` file; 22 of its files are byte-identical to those
-of the 15 November edition and are placed in both.
+of the 15 November edition and are placed in both. `ipra_kifcr_framework_2026-11-16.zip` was
+placed the same way, under `foundations/`, and then deleted. It leaves out three ignored
+`.log` files.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

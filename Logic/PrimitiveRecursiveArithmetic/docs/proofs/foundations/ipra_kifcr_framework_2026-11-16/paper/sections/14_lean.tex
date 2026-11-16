@@ -1,0 +1,323 @@
+\section{Lean formalization architecture against the current API}\label{sec:lean}
+
+\subsection{Target location and imports}
+
+The implementation should be added under
+\[
+\RepoPath{Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Framework/}
+\]
+and imported only after the existing core.  It should not copy \texttt{ConciseIPRA} syntax or define a parallel proof calculus.  The proposed root module is \texttt{IPRADerivations/Framework.lean}.
+
+The minimum current imports are:
+\begin{itemize}
+  \item \texttt{IPRADerivations.Core.Basic} for \texttt{PR}, \texttt{PTm}, \texttt{PRAAx}, \texttt{Prf}, \texttt{IPRA.ind}, and \texttt{IPRA.inst};
+  \item \texttt{IPRADerivations.Core.Order} and \texttt{Core.Monus} for arithmetic comparisons;
+  \item \texttt{IPRADerivations.Core.Pairing} for \texttt{eqb}, \texttt{pairT}, \texttt{fstT}, \texttt{sndT}, and two-track simultaneous recursion;
+  \item \texttt{IPRADerivations.Core.Search} for checked least bounded search;
+  \item \texttt{Core.BoundedSums}, \texttt{Core.SumLemmas}, and \texttt{Core.SumReflect} for finite folds;
+  \item \texttt{Core.Tactic}, \texttt{Core.Integers}, and \texttt{Core.LinearAlgebra} for algebraic local rules.
+\end{itemize}
+Application modules import additional checked mathematics only as needed.
+
+\subsection{Proposed module graph}
+
+\begin{enumerate}[label=\textbf{F\arabic*.}]
+  \item \texttt{Framework/Kernel.lean}: local rules, proof schedules, compiled conditional theorems, loop certificates.
+  \item \texttt{Framework/Bool.lean}: Boolean range, truth tables, reflected atoms and connectives.
+  \item \texttt{Framework/BoundedFormula.lean}: generated \texttt{allB}/\texttt{anyB} folds and syntax-directed fixed-formula reflection.
+  \item \texttt{Framework/SearchAdapter.lean}: thin success-at-one wrapper around checked \texttt{Search.mu}; bounded argmin and first-valid corollaries.
+  \item \texttt{Framework/FiniteCode.lean}: fixed tuples, sequences, finite tables, lookup/update, and proved equations, built on checked pairing.
+  \item \texttt{Framework/Trace.lean}: packed state, freeze-after-done, rank-bounded loop certificates.
+  \item \texttt{Framework/Residual.lean}: residual normalization metadata and proof-schedule closure.
+  \item \texttt{Framework/Demand.lean}: generated acyclic reverse demand and capped cyclic closure certificates.
+  \item \texttt{Framework/Relation.lean}: viability table, bounded path checker, least viable path.
+  \item \texttt{Framework/Observer.lean}: exact, diameter, and gap-guarded observer elimination.
+  \item \texttt{Framework/Rational.lean}: signed rational codes, dyadic error predicates, triangle inequalities, clipping, and finite error sums.
+  \item \texttt{Framework/Compiler.lean}: metalevel graph records, query specialization, source generation, and provenance.
+  \item \texttt{Framework/Benchmarks/*.lean}: small closed examples, then rational cubic bisection.
+\end{enumerate}
+The archive's Lean files are source-oriented blueprints for these modules.  They are not claimed to compile in this environment.
+
+\subsection{Kernel-facing core}
+
+The principal abstraction should remain small enough that its soundness is transparent.
+
+\begin{lstlisting}
+namespace LeanProofs.IPRA.Framework
+
+open LeanProofs.ConciseIPRA
+open Syn
+open scoped Fm
+
+structure Rule (n : Nat) where
+  premises : List (Fm PTm n)
+  conclusion : Fm PTm n
+  sound : premises |- [PRAAx] conclusion
+
+namespace Rule
+
+theorem use {Gamma : List (Fm PTm n)} (r : Rule n)
+    (supply : forall psi, psi in r.premises ->
+      Gamma |- [PRAAx] psi) :
+    Gamma |- [PRAAx] r.conclusion :=
+  r.sound.trans supply
+
+end Rule
+
+inductive Schedule (n : Nat) (Gamma : List (Fm PTm n)) :
+    Fm PTm n -> Type
+  | done (h : Gamma |- [PRAAx] phi) : Schedule n Gamma phi
+  | have_ (hpsi : Gamma |- [PRAAx] psi)
+      (rest : Schedule n (psi :: Gamma) phi) :
+      Schedule n Gamma phi
+
+noncomputable def Schedule.compile :
+    Schedule n Gamma phi -> Gamma |- [PRAAx] phi
+  | .done h => h
+  | .have_ hpsi rest =>
+      (Schedule.compile rest).trans
+        (List.forall_mem_cons.2
+          <| And.intro hpsi (fun chi hchi => Prf.hyp hchi))
+
+end LeanProofs.IPRA.Framework
+\end{lstlisting}
+The exact proof above matches the pattern already used successfully in the earlier source outline.  It should be the first compilation gate.
+
+A residualized endpoint is simply a proof-bearing record, not an axiom mechanism:
+
+\begin{lstlisting}
+structure ConditionalTheorem (n : Nat) where
+  residuals : List (Fm PTm n)
+  permanent : List (Fm PTm n)
+  conclusion : Fm PTm n
+  proof : residuals ++ permanent |- [PRAAx] conclusion
+\end{lstlisting}
+A closure theorem takes derivations of every residual formula and applies \texttt{Prf.trans}.  The metalevel compiler may store names, keys, and provenance separately; only the formula list and proof enter the trusted endpoint.
+
+\subsection{Loop certificates}
+
+The checked \texttt{IPRA.ind} interface should be used directly.
+
+\begin{lstlisting}
+structure LoopCertificate (k : Nat) where
+  inv : Fm PTm (k + 1)
+  qf : inv.QF
+  zeroCase : ([] : List (Fm PTm k)) |- [PRAAx]
+    inv.subst (Syn.inst PTm.zero)
+  succCase : [inv] |- [PRAAx]
+    inv.subst (Syn.repl (PTm.succ (Syn.var 0)))
+
+namespace LoopCertificate
+
+def compile (c : LoopCertificate k) :
+    ([] : List (Fm PTm (k + 1))) |- [PRAAx] c.inv :=
+  LeanProofs.IPRA.ind c.inv c.qf c.zeroCase c.succCase
+
+theorem at (c : LoopCertificate k)
+    (sigma : Fin (k + 1) -> PTm n) :
+    Gamma |- [PRAAx] c.inv.subst sigma :=
+  LeanProofs.IPRA.inst c.compile sigma
+
+end LoopCertificate
+\end{lstlisting}
+The main engineering rule is that the generated invariant contains only equations, order formulas, and Boolean equations.  Bounded quantifiers are represented by terms before this structure is built.
+
+\subsection{Boolean reflection}
+
+A fixed reflected formula can be represented by:
+
+\begin{lstlisting}
+structure Reflected (n : Nat) where
+  formula : Fm PTm n
+  code : PTm n
+  range : ([] : List (Fm PTm n)) |- [PRAAx]
+    (code = PTm.zero) or (code = PTm.one)
+  iffOne : ([] : List (Fm PTm n)) |- [PRAAx]
+    Fm.iff formula (code = PTm.one)
+\end{lstlisting}
+Here \texttt{PTm.one} is a local abbreviation for \texttt{succ zero}.  Equality reflection should reuse the checked \texttt{eqb} theorem from \texttt{Core.Pairing}.  Order reflection should be proved against the current \texttt{le}/\texttt{lt} definitions.  Boolean connectives are fixed arithmetic selectors with four-case truth-table derivations.
+
+For a fixed predicate term \(p(i,x)\), generate \texttt{allB} and \texttt{anyB} symbols with \texttt{PR.prec}.  Prove:
+\begin{enumerate}[label=(\arabic*)]
+  \item zero and successor equations;
+  \item Boolean range;
+  \item endpoint introduction/elimination lemmas such as
+  \[
+    \mathsf{allB}(N,x)=1\wedge i<N\to p(i,x)=1;
+  \]
+  \item witness introduction for \texttt{anyB}; and
+  \item full bounded-quantifier wrappers by combining those lemmas with checked search.
+\end{enumerate}
+The object induction matrices can remain QF because \(i\) is a free parameter and the fold is a term.
+
+The syntax-directed compiler is a Lean metalevel recursion on one concrete \texttt{Fm} value.  It returns a \texttt{Reflected}; it does not define a universal object-level evaluator for formula codes.
+
+\subsection{Search adapter: reuse, do not reprove}
+
+The current checked search API has the schematic form:
+
+\begin{lstlisting}
+namespace LeanProofs.IPRA.Search
+
+abbrev mu (f : PTm 2) (N x : PTm n) : PTm n
+
+theorem search_spec (N i x : PTm n) :
+  Gamma |- [PRAAx]
+    le (mu f N x) N and
+      ((lt (mu f N x) N -> inst2 f (mu f N x) x = zero) and
+       (lt i (mu f N x) -> not (inst2 f i x = zero)))
+
+theorem search_found
+    (hf : Gamma |- [PRAAx] inst2 f i x = zero)
+    (hi : Gamma |- [PRAAx] lt i N) :
+  Gamma |- [PRAAx]
+    lt (mu f N x) N and
+      ((inst2 f (mu f N x) x = zero) and le (mu f N x) i)
+
+end LeanProofs.IPRA.Search
+\end{lstlisting}
+The framework module should define only adapters.  For a Boolean success predicate \(p\), let \(f=1\dotminus p\).  Prove once that under the range theorem, \(f=0\leftrightarrow p=1\).  Then derive \texttt{firstValid}, \texttt{firstValid\_sound}, \texttt{firstValid\_minimal}, bounded argmin, and first covering chart by instantiating the checked theorems.  The old \texttt{SearchBlueprint.lean} should therefore be replaced, not completed as an independent recurrence.
+
+\subsection{Finite codes and packed state}
+
+Use the current checked pairing
+\[
+  \langle a,b\rangle=(a+b)^2+a
+\]
+with \texttt{fstT}/\texttt{sndT} projection theorems.  A fixed \(k\)-tuple is a right-nested pair; generate named projections and prove the projection equations by repeated congruence and \texttt{fst\_pair}/\texttt{snd\_pair}.  This is enough for fixed graph states.
+
+Dynamic finite sequences need a length-tagged list code and PR lookup/update.  Implement them only after fixed tuples compile.  Required public theorems are:
+\begin{itemize}
+  \item lookup at a written index;
+  \item lookup at other indices is unchanged;
+  \item update preserves length and out-of-range default;
+  \item a bounded fold over lookup agrees with its recursive accumulator;
+  \item all formulas used in these theorems have QF matrices.
+\end{itemize}
+
+For two mutually recursive tracks, reuse checked \texttt{sim\_1}/\texttt{sim\_2}.  For more tracks, either nest the pair state into one recursion or prove a generated fixed-arity wrapper.  No new simultaneous-recursion axiom is needed.
+
+\subsection{Residual compilation}
+
+The metalevel graph record separates data dependencies, proof dependencies, and residual boundaries:
+
+\begin{lstlisting}
+structure Boundary (n : Nat) where
+  key : String
+  formula : Fm PTm n
+  origin : String
+
+structure Node (n : Nat) where
+  name : String
+  dataParents : Array Nat
+  proofParents : Array Nat
+  boundaries : Array (Boundary n)
+  conclusion : Fm PTm n
+  build : NodeEnvironment n -> Rule n
+\end{lstlisting}
+The precise \texttt{build} type may be syntax-generating rather than an ordinary function, but its output must contain a \texttt{Rule.sound}.  Normalize residuals by backward reachability and stable keys.  Generate a \texttt{Schedule} whose base context is \texttt{residuals ++ permanent}.  The theorem \texttt{ConditionalTheorem.close} supplies boundary proofs by \texttt{Prf.trans}.
+
+No theorem about syntactic graph correctness has to be trusted initially: the generated proof term is independently checked.  A verified internal compiler can be a later optimization.
+
+\subsection{Capped demand closure}
+
+Implement two levels.
+
+\paragraph{Semantic prototype.}
+Prove in ordinary Lean, for \texttt{Fin N -> Nat}, that a monotone inflationary capped update stabilizes after
+\[
+  1+\sum_i(C_i-s_i)
+\]
+steps and yields the least pre-fixed point.  This validates the algorithm and gives executable tests; it is not yet an iPRA proof.
+
+\paragraph{Object certificate.}
+For each generated fixed system, emit PR terms for the vector state, update, rank, overflow flag, and bounded iteration.  The generator supplies a \texttt{LoopCertificate} with:
+\begin{itemize}
+  \item seed/cap preservation;
+  \item componentwise inflation;
+  \item changed \(=1\) implies rank increases;
+  \item rank is at most the cap sum;
+  \item once changed \(=0\), the state freezes.
+\end{itemize}
+At terminal fuel derive fixedness.  Prove leastness by a second QF induction with an arbitrary candidate vector as free parameters.  Export raw edge adequacy under an object proof that overflow is zero.  The cap proof may itself be a residual formula.
+
+\subsection{Relational viability}
+
+The first formal target should have a fixed rectangular width \(B\) and variable horizon \(H\).  Use a coded Boolean table with rows \(0,\ldots,H\).  The reverse recurrence is
+\begin{align*}
+ W_H(a)&=V_H(a)\wedge T(a),\\
+ W_i(a)&=V_i(a)\wedge \mathsf{Any}_{b<B}
+       (E_i(a,b)\wedge W_{i+1}(b)).
+\end{align*}
+Generate a reverse loop writing one row per step.  Its QF invariant says that all written cells satisfy the recurrence and unwritten cells have the default.  Prove a bounded coded-path checker and the equivalence between \(W_i(a)=1\) and existence of an accepted suffix code.  Use the checked search adapter to select the least viable start and successor.
+
+Suggested theorem endpoints are:
+
+\begin{lstlisting}
+theorem viable_iff_suffix :
+  Gamma |- [PRAAx] Fm.iff
+    (viable H i a = one)
+    (pathExistsFormula H i a)
+
+theorem selectedPath_valid :
+  (anyStartViable H = one :: Gamma) |- [PRAAx]
+    pathCheck H (selectedPath H) = one
+\end{lstlisting}
+The bounded existential formula is optional in internal consumers: the Boolean equation itself is often the cleaner certificate.
+
+\subsection{Stable observers}
+
+Begin with explicit candidate terms rather than binder-heavy records.
+
+\begin{lstlisting}
+theorem exactObserver_of_selected
+    (hsel : Gamma |- [PRAAx] valid selected)
+    (hstable : valid selected :: valid arbitrary :: Gamma
+      |- [PRAAx] obs selected = obs arbitrary) :
+    valid arbitrary :: Gamma |- [PRAAx]
+      obs selected = obs arbitrary
+\end{lstlisting}
+Then package totality plus checked search to hide \texttt{selected}.  For diameter observers, represent absolute rational inequalities by cross-multiplied natural equations/order formulas.  Prove triangle inequality once, then finite telescoping sums through checked sum lemmas.  The regular-name theorem takes an explicit tail-modulus term; it must not infer one from pointwise shrinking alone.
+
+\subsection{Rational and analytic contracts}
+
+Use a total code \((p,m,d)\) representing \((p-m)/(d+1)\).  Addition and multiplication are polynomial.  Reciprocal returns a default at zero and has a separate apartness guard.  Dyadic error
+\[
+  |r|\le 2^{-k}
+\]
+is represented by a cross-multiplied natural inequality, avoiding object-language division.  Required shared theorems are:
+\begin{itemize}
+  \item rational equality/order reflection;
+  \item triangle and product error inequalities;
+  \item clipping to a rational interval and nonexpansiveness;
+  \item finite sum/product error accumulation;
+  \item guard-strengthening and demand monotonicity.
+\end{itemize}
+These support finite nets, interval methods, series truncations, and the cubic benchmark.
+
+\subsection{Benchmark order}
+
+The formalization should proceed through endpoints of increasing strength.
+\begin{enumerate}[label=(\arabic*)]
+  \item Compile \texttt{Rule.use}, \texttt{Schedule.compile}, and \texttt{ConditionalTheorem.close}; audit axioms.
+  \item Build a Boolean predicate and the checked-search adapter; prove a closed least-witness example.
+  \item Generate a three-coordinate capped demand closure and prove fixedness/leastness in \(\Prf\,\PRAAx\).
+  \item Build a small layered relation with one dead branch; prove the selected path is valid and an exact observer is choice-independent.
+  \item Compile a deterministic finite graph combining an inherited algebra theorem, a guard, checked search, and a loop.
+  \item Implement rational bisection for \(y^3+y=x\) on \([0,1]\), first for rational \(x\), then for a represented input with an explicit precision schedule.
+\end{enumerate}
+Only after steps 1--5 should the generic source generator be generalized.
+
+\subsection{Axiom and build gates}
+
+Every completed module should satisfy all of the following.
+\begin{enumerate}[label=(\arabic*)]
+  \item Public mathematical endpoints are explicit formulas and actual \(\Prf\,\PRAAx\) values.
+  \item There is no \texttt{sorry}, theorem-specific \texttt{axiom}, or opaque semantic replacement for a derivation.
+  \item Every induction call supplies an explicit \texttt{Fm.QF} proof.
+  \item \texttt{\#print axioms} shows no \texttt{sorryAx}; metatheoretic axioms are recorded separately from object-theory assumptions.
+  \item The module builds from the pinned commit or a newly recorded re-audit.
+  \item Residual assumptions occur in theorem contexts and provenance, not as unproved fields masquerading as data.
+  \item Native transfer is applied only after the ordinary derivation is complete.
+  \item Python or semantic Lean tests are labeled as implementation evidence, never as object-level proof.
+\end{enumerate}

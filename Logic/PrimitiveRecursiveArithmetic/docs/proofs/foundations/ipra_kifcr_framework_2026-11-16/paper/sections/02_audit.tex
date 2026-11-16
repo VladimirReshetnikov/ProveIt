@@ -1,0 +1,97 @@
+\section{Current repository audit and diagnosis}\label{sec:audit}
+
+\subsection{Pinned snapshot and trust boundary}
+
+This report was prepared against the main-branch snapshot
+\[
+\texttt{31784f0710fa04ccd8ee863ce9bad91fb1d8cf88}
+\]
+observed on 16 November 2026.  The repository is active, so the commit is part of the specification.  Claims about the checked substrate refer to files at that snapshot; claims about the delivered packet corpus follow the repository's own status distinction.
+
+The root \RepoPath{Logic/PrimitiveRecursiveArithmetic/README.md} separates three layers.
+\begin{enumerate}[label=(\arabic*)]
+  \item \RepoPath{ConciseIPRA/} is a kernel-checked formalization of small calculi bi-interpretable with ordinary \iPRA.
+  \item \RepoPath{Derivations/} contains actual Lean-kernel-checked derivations whose public type is
+  \[
+    ([]:\operatorname{List}(\Fm\,\PTm\,0))\vdash[\PRAAx]\varphi.
+  \]
+  \item \RepoPath{docs/proofs/} files 78 delivered research packets.  They are valuable mathematical source material, but the directory explicitly says they were filed as delivered and were not collectively rebuilt or verified.
+\end{enumerate}
+The framework respects this classification.  A prose proof, native Lean theorem, or executable test is not silently promoted to a checked object derivation.
+
+\subsection{The checked logical substrate}
+
+The ordinary embedded theory provides primitive-recursive symbols \(\mathsf{PR}(k)\), terms \(\PTm(n)\), formulas \(\Fm(\PTm,n)\), intuitionistic natural deduction \(\Prf\), and the axiom family \(\PRAAx\).  The principal structural operations are simultaneous substitution, weakening, equality transport, logical introduction/elimination, and simultaneous cut \texttt{Prf.trans}.  Quantifier-free induction is exposed through \texttt{PRA.qfInd}; the derivation library packages the open-formula interface as \texttt{LeanProofs.IPRA.ind} and closed-theorem instantiation as \texttt{LeanProofs.IPRA.inst}.
+
+The native scalar core is not the recommended place to develop each mathematical proof directly.  The transfer theorem \texttt{pra\_iff\_native} is applied after an ordinary \(\PRAAx\) derivation has been built.  This preserves a clear division of labor: theorem-specific arithmetic is written against the convenient ordinary syntax, while logical minimality is inherited from the checked bi-interpretation.
+
+\subsection{The current checked derivation library}
+
+The present \RepoPath{Derivations} library is much richer than the substrate assumed by several 15 November framework packets.  The reusable core currently includes:
+\begin{itemize}
+  \item arithmetic definitions, semiring laws, truncated subtraction, order, powers, parity, division, gcd, B\'ezout, Euclid's lemma, and integer cancellation;
+  \item quotient and integer-difference semantics supporting proof-producing polynomial normalization through \texttt{ipra\_ring};
+  \item pairing with proved projections, integer square root, and simultaneous recursion of two tracks;
+  \item finite sums, products, multi-sums, reflection and reindexing lemmas, permutations, and pigeonhole infrastructure;
+  \item a checked least bounded-search routine with an open QF invariant, foundness, soundness, and minimality;
+  \item generic infinite descent, a branching existential descent, and finite-dimensional integer linear algebra.
+\end{itemize}
+On top of this core, the import manifest contains checked modules in algebra, analysis, analytic number theory, combinatorics, Diophantine number theory, geometry, topology, and foundations.  The axiom-audit file lists the exported derivations and reports no \texttt{sorryAx}; the metatheory uses Lean's standard quotient/propositional/classical infrastructure without adding those principles to \(\PRAAx\).
+
+Two consequences matter for the present design.
+\begin{enumerate}[label=(\arabic*)]
+  \item The generic framework must reuse \texttt{Search.search\_spec}, \texttt{Search.search\_found}, pairing, and simultaneous recursion.  Re-proposing them as missing work would be obsolete.
+  \item The remaining bottleneck is composition and representation: compiling bounded formulas, tables, proof graphs, residual assumptions, cyclic demands, relational clouds, and analytic error contracts into the existing derivation calculus.
+\end{enumerate}
+
+\subsection{Recurring difficulties in the packet corpus}
+
+The 78 packets vary widely, but their failures cluster around a short list.
+\begin{longtable}{@{}p{0.20\textwidth}p{0.32\textwidth}p{0.39\textwidth}@{}}
+\toprule
+Difficulty & Invalid or incomplete move & Correct repair \\
+\midrule
+\endhead
+Host/object mismatch & Prove a theorem about \texttt{Nat}, \texttt{Rat}, or \texttt{Real} and call it an iPRA proof. & State an explicit \(\Fm\) formula and construct a \(\Prf\,\PRAAx\) value; use the host theorem only to guide or generate that derivation. \\
+Unbounded precision in induction & Put ``correct at every later precision'' inside the induction hypothesis. & Fix the terminal query, compute all finite demands first, and induct on a QF trace invariant. \\
+Hidden partiality & Divide, invert, normalize a chart, or select a pivot without an apartness margin. & Totalize the operation and carry a Boolean guard plus a quantitative lower bound. \\
+Discontinuous exact choice & Select an ordered root, eigenvector sign, rotation axis, or branch through a collision. & Return a finite relation, cluster, projective object, or invariant observer; collapse only under an explicit positive gap. \\
+Finiteness without cutoff & Enumerate all points after proving only that there are finitely many. & Separate the bounded verifier from a height/cutoff producer; expose the latter as a residual formula. \\
+Pointwise existence without coherence & Choose one approximant independently at each precision. & Use finite-horizon viability for finite consumers; add shrinking diameter, adjacent motion, and a tail modulus before claiming a name. \\
+Qualitative compactness & Invoke compactness without a finite net or cover margin. & Supply a PR net, finite coverage certificate, and a Lebesgue-number-type quantitative transport estimate. \\
+Ineffective asymptotics & Use constants whose existence is known but whose values are unavailable. & Parameterize by the constants, prove the verifier/composition theorem, and retain their production as a residual boundary. \\
+Universal evaluation & Treat arbitrary program code as data for an unclocked PR evaluator. & Specialize syntax at the metalevel, or use a clocked finite trace with an explicit bound. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Relation to earlier framework packets}
+
+The existing foundations packets already introduced finite contracts, finite observations, proof-carrying graphs, backward precision propagation, relational viability, stable observables, finite nets, and producer/verifier separation.  The prior KIFC and CIFER reports moved closest to an object-proof compiler.  This report retains those ideas but updates four boundaries.
+\begin{enumerate}[label=(\arabic*)]
+  \item It is rebased on the current checked derivation library rather than an older snapshot.
+  \item It removes bounded search from the list of missing shared implementations.
+  \item It gives residual formulas a canonical role in the output sequent rather than leaving unavailable producers as prose annotations or host fields.
+  \item It extends reverse demand from acyclic graphs to capped monotone cyclic systems with a proved finite convergence bound.
+\end{enumerate}
+
+\subsection{Five audit principles}
+
+\begin{principle}[Object-proof boundary]
+A public theorem is checked only when its endpoint is an embedded derivability judgement.  Semantic Lean proofs, generated code, and tests may support that endpoint but cannot replace it.
+\end{principle}
+
+\begin{principle}[Query specialization]
+The graph, formulas, and evaluator schemas are fixed in the metatheory.  Object-level execution sees dedicated primitive-recursive terms, not arbitrary syntax codes.
+\end{principle}
+
+\begin{principle}[Finite use before infinity]
+Prove the finite observation theorem actually consumed by the target.  Export an infinite name only from explicit regularity and tail data.
+\end{principle}
+
+\begin{principle}[Residual honesty]
+Every unavailable quantitative producer appears as a formula in the antecedent of the compiled theorem.  It is never hidden inside a definition whose fields are assumed without derivation.
+\end{principle}
+
+\begin{principle}[Reuse checked infrastructure]
+Generic framework code should wrap current checked arithmetic and search modules rather than duplicate them.  New abstractions earn their place only when they reduce repeated object-level proof construction.
+\end{principle}

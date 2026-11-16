@@ -1,0 +1,91 @@
+\section{Logical substrate and admissible proof engineering}\label{sec:logic}
+
+\subsection{The object theory}
+
+Fix a number \(n\) of free numerical variables.  The type \(\PTm(n)\) contains terms built from variables and primitive-recursive function symbols.  A formula \(\varphi\in\Fm(\PTm,n)\) is interpreted only through the derivability relation
+\[
+  \Gamma\vdash[\PRAAx]\varphi.
+\]
+The metatheory is Lean.  The object theory is \iPRA.  This separation allows the metatheory to use finite types, inductive syntax, quotient constructions, and normalization tactics while still exporting a derivation whose leaves are exactly the axioms of \iPRA.
+
+The following derived operations are the backbone of the compiler.
+
+\begin{lemma}[Substitution]
+If \(\Gamma\vdash\varphi\) and \(\sigma\) substitutes terms for all free variables, then
+\[
+  \Gamma[\sigma]\vdash\varphi[\sigma].
+\]
+\end{lemma}
+
+\begin{proof}
+Induct on the given natural-deduction derivation.  The only nontrivial cases are binders.  Under a binder, lift \(\sigma\) by mapping the newly bound variable to itself and shifting every old image.  The syntax library proves the required substitution identities.  The axiom case follows because an open axiom is universally instantiated by the axiom rule.  This is the content of the current \texttt{Prf.substWeaken} and \texttt{Prf.subst} theorems.
+\end{proof}
+
+\begin{lemma}[Simultaneous cut]\label{lem:cut}
+If \(h:\Gamma\vdash\varphi\) and, for every \(\psi\in\Gamma\), one has \(k_\psi:\Delta\vdash\psi\), then \(\Delta\vdash\varphi\).
+\end{lemma}
+
+\begin{proof}
+Induct on the list \(\Gamma\).  The empty case is weakening.  For \(\Gamma=\psi::\Gamma'\), first discharge \(\psi\) from \(h\) by implication introduction, recursively cut all members of \(\Gamma'\), and finally apply modus ponens to \(k_\psi\).  This is exactly the current theorem \texttt{Prf.trans}.  Notice that no cut rule is added to the kernel; simultaneous cut is derived in intuitionistic natural deduction.
+\end{proof}
+
+\begin{lemma}[Quantifier-free induction interface]\label{lem:qfind}
+Let \(I(z,\vec x)\) be quantifier-free.  If
+\[
+  \vdash I(0,\vec x)
+  \qquad\text{and}\qquad
+  I(z,\vec x)\vdash I(Sz,\vec x),
+\]
+then \(\vdash I(z,\vec x)\) as an open theorem, and hence every term instance \(I(t,\vec u)\) is derivable.
+\end{lemma}
+
+\begin{proof}
+Apply the \(\PRAAx\) induction axiom to \(I\), use implication introduction for the step, and universally eliminate the resulting formula onto the open induction variable.  The repository packages this as \texttt{PRA.qfInd} and, in the derivation library, as \texttt{LeanProofs.IPRA.ind}.  Term instances then follow from substitution.
+\end{proof}
+
+The compiler is designed so that every recursive correctness argument terminates at \cref{lem:qfind}.  This is why Boolean reflection and state packing are not optional optimizations: they are the mechanism that makes the invariant quantifier-free.
+
+\subsection{Finite data inside one numerical sort}
+
+Every finite data type used by a fixed theorem is encoded by natural numbers together with primitive-recursive projections and a bounded well-formedness predicate.  There are several interchangeable choices:
+\begin{itemize}
+  \item iterated pairing, with a fixed arity known at compilation time;
+  \item mixed-radix tuples when component bounds are available;
+  \item tables encoded by bounded products of radices;
+  \item finite lists represented by a length and a bounded tuple code.
+\end{itemize}
+No coding theorem requires exponentiation as a primitive operation: exponentiation, bounded products, pairing, and table lookup are primitive recursive and therefore have symbols in the ordinary language.
+
+A coding package for a type \(X\) consists of a predicate \(\mathsf{WF}_X(c)\), projections, constructors, and object-level equations showing that projecting a constructed code returns its components.  Equality of codes is not automatically mathematical equality.  When multiple codes represent the same object, an explicit primitive-recursive equivalence relation \(c\sim_X d\) and congruence theorems for all observations are part of the interface.
+
+\subsection{Metalevel normalization is legitimate when it produces proof terms}
+
+The current algebraic derivation library illustrates a general pattern.  The metatheory forms a quotient of terms by provable equality, proves that the quotient is a cancellative commutative semiring, embeds it in a ring of differences, and invokes a ring normalizer.  The final theorem is recovered through injectivity as an object-level equality derivation.  The normalizer is not an extra axiom of \iPRA; it is a proof-producing metaprogram.
+
+The same standard applies to every \KIFCR compiler phase:
+\begin{enumerate}[label=(\arabic*)]
+  \item the metaprogram may inspect a fixed graph, calculate a topological order, allocate registers, and synthesize terms;
+  \item it must also synthesize or invoke derivations of all local equations and implications;
+  \item the exported theorem must have the embedded derivability type;
+  \item an axiom audit must show no theorem-specific opaque axiom or \texttt{sorryAx}.
+\end{enumerate}
+
+\subsection{A disciplined status vocabulary}
+
+To prevent semantic and object-level results from being conflated, this report uses the following labels.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Label & Meaning \\
+\midrule
+Inherited checked & Present in the audited repository as a kernel-checked \(\Prf\,\PRAAx\) theorem. \\
+Source-complete & Lean source is given with no intentional hole, but was not compiled in this packet. \\
+Lean outline & Types, definitions, dependency order, and proof strategy are given; obligations remain. \\
+Human-complete & A detailed ordinary mathematical proof is supplied. \\
+Finite-tested & The exact finite algorithm is covered by executable tests. \\
+Conditional producer & The verifier/composition theorem is complete assuming explicitly named quantitative data. \\
+Open & A mathematical or formalization problem remains without being hidden in the interface. \\
+\bottomrule
+\end{tabularx}
+\end{center}

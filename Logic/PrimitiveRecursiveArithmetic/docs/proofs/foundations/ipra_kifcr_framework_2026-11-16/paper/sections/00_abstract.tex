@@ -1,0 +1,15 @@
+The current ProveIt repository has crossed an important threshold.  It no longer contains only a small checked presentation of intuitionistic primitive recursive arithmetic and a collection of prose proof packets: it also contains a substantial kernel-checked derivation library, including arithmetic, bounded search, simultaneous recursion, Euclidean algorithms, finite sums and products, descent, finite-dimensional linear algebra, and many theorem modules.  The remaining general problem is therefore more precise.  Given a finite mathematical construction and some genuinely theorem-specific quantitative inputs, how can one systematically produce a value of the embedded judgement
+\[
+  \Gamma\vdash[\PRAAx]\varphi
+\]
+without confusing an ambient Lean theorem, a tested program, or an unavailable quantitative producer with an object-theory proof?
+
+This report develops \KIFCR, an updated residualized version of the Kernel-Integrated Finitary Contract framework.  A theorem is compiled query-by-query into fixed primitive-recursive terms, a finite proof graph, and an explicit list of residual boundary formulas.  Checked infrastructure is reused rather than reimplemented: in particular, the present repository already supplies least bounded search and simultaneous recursion inside \(\Prf\,\PRAAx\).  New generic components are isolated where the checked library is still thin: fixed-formula Booleanization, proof schedules, residual normalization, capped cyclic demand closure, trace reflection, finite relational viability, stable-observer elimination, and quantitative interfaces for guards, nets, names, and height-bounded enumeration.
+
+The central output is not an unconditional overstatement but a canonical conditional derivation
+\[
+  B_1,\ldots,B_r,\Gamma\vdash[\PRAAx]\Phi.
+\]
+Each \(B_i\) is an exact missing producer obligation: for example a separation gap, a height cutoff, a finite-cover margin, or an effective analytic constant.  Supplying derivations of the \(B_i\) closes the theorem by simultaneous cut; leaving them open records the precise research boundary.  Complete human-readable arguments are given for residualized graph compilation, least fixed points of capped monotone demand systems, one-loop trace normalization, finite path extraction by backward viability, exact and approximate choice erasure, regular-name extraction from shrinking clouds, guarded operations, finite-net transfer, and the equivalence between effective height bounds and complete bounded lists.
+
+The archive includes a current-API Lean formalization plan, source-oriented Lean modules, exact Python reference algorithms and tests, a theorem/status ledger, and a compiled PDF.  The new Lean modules are explicitly outlines rather than claimed kernel-checked additions; inherited checked results are identified separately.  General effective Faltings, Siegel, Roth, Mordell--Weil generation, Chebotarev, Siegel--Walfisz, and Bombieri--Vinogradov are not asserted.  Their finite verification and composition layers are resolved relative to the quantitative producers that those theorems would have to supply.

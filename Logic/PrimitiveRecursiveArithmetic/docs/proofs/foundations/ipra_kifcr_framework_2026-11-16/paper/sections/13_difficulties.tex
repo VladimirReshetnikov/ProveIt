@@ -1,0 +1,125 @@
+\section{Resolution of the reported difficulties}\label{sec:difficulties}
+
+This section states what the framework actually resolves.  A ``resolution'' may be a full generic theorem, a correct reformulation under additional data, or a proof that the stronger requested interface is unavailable.
+
+\subsection{Proof objects versus semantic theorems}
+
+\textbf{Difficulty.}  A Lean file defines a proposition expressing the intended theorem and proves a semantic fact about natural numbers, but no value of type \(\Gamma\vdash[\PRAAx]\varphi\) is constructed.
+
+\textbf{Resolution.}  Every node contains a local embedded derivation; \cref{thm:schedule} composes them.  Loops terminate at \texttt{IPRA.ind}; algebraic identities terminate at the checked quotient/ring backend.  The verification gates in \cref{sec:status} reject a theorem whose public conclusion is only a semantic proposition.
+
+\subsection{Quantifiers in induction predicates}
+
+\textbf{Difficulty.}  Correctness is phrased as ``all entries processed so far satisfy \(P\)'', leaving a bounded universal quantifier in the induction matrix.
+
+\textbf{Resolution.}  Compile the prefix property to \(\mathsf{All}\) and store the equation \(\mathsf{All}(i)=1\).  The recurrence for the Boolean accumulator and its state invariant are quantifier-free.  Fold reflection is applied outside the induction matrix.  The same pattern handles bounded existential search, table verification, path checking, and finite covers.
+
+\subsection{All-precision invariants}
+
+\textbf{Difficulty.}  An analytic loop tries to maintain correctness at every precision simultaneously.
+
+\textbf{Resolution.}  Treat the terminal precision as a parameter, propagate it backward through demand transformers, and run one finite computation at the resulting requests.  Universal quantification over the terminal precision is introduced after the open QF-induction theorem has been constructed.
+
+\subsection{Coherent choices from approximate witnesses}
+
+\textbf{Difficulty.}  For every precision there exists a valid approximant, but independently selected approximants may oscillate or be incompatible.
+
+\textbf{Resolution.}  For a finite consumer, build the finite interaction tower and use backward viability.  For a genuine infinite name, require within-level diameter, adjacent motion, and a summable tail modulus; then apply \cref{thm:shrinking}.  Without the tail data, retain a relational or metastable conclusion.
+
+\subsection{Root ordering and algebraic branches}
+
+\textbf{Difficulty.}  Ordered roots and branch labels are discontinuous at collisions.  Exact Puiseux branches are requested from arbitrary Cauchy coefficients.
+
+\textbf{Resolution.}  The unguarded presentation returns multisets, clusters, or finite relations of approximate branches.  Symmetric functions and cluster projectors are stable observers.  Exact labels require a certified separation/discriminant gap.  Exact Puiseux coefficients require an exact algebraic coefficient presentation and splitting data.  The unrestricted selector is rejected as a representation error rather than left as an unexplained formalization hole.
+
+\begin{barrier}[No total exact branch selector near collision]
+A total operation that assigns one of two colliding branches a persistent discrete label cannot be continuous at the collision.  Therefore it is not uniformly computable from ordinary Cauchy names, and no finite precision transformer can validate it there.
+\end{barrier}
+
+\begin{proof}[Explanation]
+Consider the roots \(\{ -\varepsilon,\varepsilon\}\).  At \(\varepsilon=0\) they coincide.  Any label that distinguishes ``left'' and ``right'' must swap when the sign of \(\varepsilon\) swaps, yet arbitrarily accurate finite observations near zero cannot determine that sign without a positive lower bound.  A computable operation to a discrete label is locally constant on names determined by a finite prefix, contradicting this behavior.  A gap \(|\varepsilon|\ge2^{-g}\) supplies the missing finite decision point.
+\end{proof}
+
+\subsection{Spectral vectors and rotation axes}
+
+\textbf{Difficulty.}  A unique normalized eigenvector is requested at a repeated eigenvalue, or a unique rotation axis is requested at the identity.
+
+\textbf{Resolution.}  Return invariant-subspace/projector data or a relation of admissible bases/axes.  A simple-eigenvalue gap plus a normalization margin recovers an exact eigenvector label.  A distance-from-identity guard recovers an axis; at the identity, the projective/quaternionic relation is the correct object.
+
+\subsection{Mere nonzeroness in partial operations}
+
+\textbf{Difficulty.}  Division or pivoting assumes \(x\ne0\) but needs a finite stage at which nonzeroness is visible.
+
+\textbf{Resolution.}  Consume an apartness witness \(g\) with \(|x|\ge2^{-g}\), totalize the program, and prove correctness only under the guard.  Mere negative nonzeroness remains a proposition and is not treated as an algorithmic modulus.
+
+\begin{barrier}[No uniform extraction of apartness from negative nonzeroness]
+For general represented reals, a uniform procedure transforming \(x\ne0\) into a numerical lower bound \(|x|\ge2^{-g}\) would validate a form of Markov-style search not available intuitionistically and would decide discontinuous sign information.
+\end{barrier}
+
+\subsection{Compactness and minimization}
+
+\textbf{Difficulty.}  A proof invokes an arbitrary finite subcover, minimum, or convergent subsequence.
+
+\textbf{Resolution.}  Require a finite net producer, a coverage certificate, and a continuity/stability modulus.  Then finite search finds the least acceptable cell or approximate minimizer.  If only sequential compactness is available without a modulus, the result remains relational or metastable.
+
+\subsection{Faltings and Siegel}
+
+\textbf{Difficulty.}  Finiteness of rational or integral points is treated as though it supplied a search cutoff.
+
+\textbf{Resolution.}  \Cref{thm:height-list} proves that an effective height bound is exactly the missing finite-search datum for a decidable presentation.  The bounded enumerator, duplicate elimination, and completeness proof are generic.  The general height producer is isolated as an open mathematical interface rather than hidden inside the framework.
+
+\begin{barrier}[Finiteness alone does not compute a cutoff]\label{barrier:finiteness}
+There is no computable procedure that, from an index for a uniformly computably enumerable set known to contain at most one natural number, always returns an upper bound for its possible member.
+\end{barrier}
+
+\begin{proof}
+Given a program \(e\), enumerate no number unless \(e\) halts; if it halts after exactly \(t\) steps, enumerate \(t\).  The resulting set contains at most one number, uniformly in \(e\).  If a computable bound \(H(e)\) were available, simulate \(e\) for \(H(e)\) steps.  If it has not halted, it can never halt later, because its halting time would be a member exceeding the bound.  This decides the halting problem.  Therefore a bare cardinality/finiteness theorem is not a uniform height producer.
+\end{proof}
+
+\subsection{Mordell--Weil descent}
+
+\textbf{Difficulty.}  A finite Selmer computation is followed by the assumption that every relevant class has a rational covering point.
+
+\textbf{Resolution.}  The covering-point step is a bounded or finitely presented relation with explicit local and global certificates.  If a finite candidate set is supplied, viability and stable observation complete the descent.  A uniform producer of rational representatives for arbitrary coverings is not implied by the Selmer cardinality computation and remains open.
+
+\subsection{Ineffective analytic constants}
+
+\textbf{Difficulty.}  An asymptotic theorem or compactness argument asserts the existence of constants but the algorithm needs them numerically.
+
+\textbf{Resolution.}  Put constants, thresholds, and error orders in the certificate.  The generic verifier checks the finite inequality.  If the literature proof is ineffective, the packet can still state a conditional theorem and identify the producer problem, but it cannot claim an unconditional PR algorithm.
+
+\subsection{Metastability}
+
+\textbf{Difficulty.}  A finite stable-window theorem is silently upgraded to a Cauchy rate.
+
+\textbf{Resolution.}  Keep metastability as a first-class finite-use contract.  A regular name is exported only after an explicit tail modulus or shrinking-cloud theorem.  This both preserves constructive validity and lets finite consumers use the available theorem.
+
+\subsection{Classical arguments}
+
+\textbf{Difficulty.}  A finite proof uses excluded middle, choice, or a contradiction argument without explaining recovery of witnesses.
+
+\textbf{Resolution.}  Decidable bounded predicates admit constructive case splits and least witnesses.  Classical external tools may produce finite certificates that are checked intuitionistically.  A general negative-translation compiler is a separate formalization target; it recovers negative/stable conclusions directly, while disjunctions and existentials require bounded decidability or an explicit witness extractor.
+
+\subsection{Summary matrix}
+
+\begin{longtable}{@{}p{0.20\textwidth}p{0.31\textwidth}p{0.20\textwidth}p{0.20\textwidth}@{}}
+\toprule
+Area & Correct interface & Framework status & Residual producer \\
+\midrule
+\endhead
+Object proof boundary & Local and terminal \(\Prf\,\PRAAx\) values & composition resolved & theorem-specific local derivations \\
+Bounded induction & Boolean folds and QF state & resolved & shared reflection library in Lean \\
+Precision & fixed terminal query, reverse demand & resolved & operation-specific moduli \\
+Nonunique witnesses & finite relation + viability & finite case resolved & bounds and relation certificates \\
+Infinite names & diameter + motion + tail & resolved conditionally & summable tail producer \\
+Roots/eigenvalues & clusters/projectors; labels under gap & reformulated & separation/gap producer \\
+Division/pivots & total program under apartness guard & resolved conditionally & margin producer \\
+Compactness & finite net + coverage + modulus & resolved conditionally & effective net/modulus \\
+Faltings/Siegel & height bound \(\leftrightarrow\) complete list & verifier resolved & general effective height bound \\
+Mordell--Weil & representative relation and compatibility & verifier resolved & rational representative producer \\
+Puiseux & exact algebraic data or approximate branch relation & reformulated & splitting/separation data \\
+Metastability & finite-window contract & resolved as weaker interface & tail modulus for stronger name \\
+Analytic constants & explicit certificate fields & verifier resolved & effective constants \\
+Classical transfer & finite certificate or stable negative translation & partial architecture & checked proof translator \\
+\bottomrule
+\end{longtable}

@@ -1,0 +1,31 @@
+{
+  "sinks": ["complete_list"],
+  "nodes": {
+    "curve_code": {"proof_parents": [], "boundaries": []},
+    "height_bound": {
+      "proof_parents": ["curve_code"],
+      "boundaries": [
+        {
+          "key": "height-bound",
+          "formula": "AllPointsHeightAtMost(C,H)",
+          "origin": "effective Diophantine producer"
+        }
+      ]
+    },
+    "bounded_enumerator": {
+      "proof_parents": ["curve_code", "height_bound"],
+      "boundaries": []
+    },
+    "complete_list": {
+      "proof_parents": ["bounded_enumerator"],
+      "boundaries": []
+    },
+    "unrelated_gap": {
+      "proof_parents": [],
+      "boundaries": [
+        {"key": "unused-gap", "formula": "Gap(x,g)", "origin": "unused"}
+      ]
+    }
+  },
+  "expected_residual_keys": ["height-bound"]
+}

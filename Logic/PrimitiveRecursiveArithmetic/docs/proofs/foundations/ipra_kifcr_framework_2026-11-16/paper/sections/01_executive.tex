@@ -1,0 +1,89 @@
+\section{Executive result and design summary}\label{sec:executive}
+
+\subsection{The current problem}
+
+A claim that a classical theorem has been embedded into \iPRA\ should separate four logically different achievements.
+\begin{enumerate}[label=(\arabic*)]
+  \item The familiar mathematical statement has been replaced by a finite numerical presentation with explicit moduli, bounds, margins, charts, or relations.
+  \item The finite construction has been compiled to fixed primitive-recursive symbols and quantifier-free loop invariants.
+  \item Lean has constructed an actual derivation of an explicit object formula from \(\PRAAx\).
+  \item An external interpretation theorem explains how that object formula recovers the familiar statement.
+\end{enumerate}
+The current repository provides many successful instances of (2)--(3), but most delivered packets remain at (1) or at a semantic version of (2).  It also contains hard targets for which a quantitative item in (1) is genuinely missing.  A useful general framework must therefore do two things simultaneously: automate the reusable proof engineering, and expose rather than conceal the missing mathematics.
+
+\subsection{The \KIFCR\ endpoint}
+
+Fix a finite theorem-specific interface graph \(G\), a numerical input \(x\), and a finite query \(q\).  Compilation produces:
+\begin{itemize}
+  \item fixed \(\mathsf{PR}\) symbols for every executable node;
+  \item a demand vector fixing all precision, fuel, finite-use, and table bounds before the main induction;
+  \item a packed forward trace and one quantifier-free invariant;
+  \item a proof schedule containing local derivations and their dependency order;
+  \item a duplicate-free list \(\Residual(G,q)=[B_1,\ldots,B_r]\) of residual boundary formulas;
+  \item an object-theory derivation
+  \[
+      B_1,\ldots,B_r,\Gamma_G\vdash[\PRAAx]\Phi_G(q,x).
+  \]
+\end{itemize}
+The graph and formula syntax are manipulated only in the Lean metatheory.  The object theory executes dedicated terms generated from that fixed graph.  This distinction avoids the impossible demand for a universal unclocked primitive-recursive evaluator.
+
+\subsection{Seven kernel-normal node classes}
+
+The updated normal form uses seven classes.  The first six are computational; the seventh represents a deliberate boundary.
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.21\textwidth}X@{}}
+\toprule
+Node class & Kernel-facing contract \\
+\midrule
+Exact algebra & An equality derivation, preferably discharged through the checked quotient/integer/ring backend. \\
+Boolean reflection & A Boolean-valued term plus derivations connecting value \(1\) with one fixed bounded formula. \\
+Checked search & An instance of the checked \texttt{Search.mu} interface, with foundness and leastness. \\
+Certified iteration & A primitive-recursive state transition with a QF base/step certificate. \\
+Finite relation & A bounded cloud or layered relation with validity, nonemptiness, and compatibility proofs. \\
+Stable observation & Exact independence, a rational diameter estimate, or a gap-guarded collapse theorem. \\
+Residual boundary & A formula consumed by downstream rules but not presently produced; it remains an explicit hypothesis. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Main metatheorems}
+
+\begin{theorem}[Residualized kernel compilation]\label{thm:residual-main}
+Let \(G\) be a fixed finite interface graph.  Suppose every executable node has a fixed primitive-recursive implementation and an object-level local soundness derivation; every recursion has a quantifier-free invariant; every finite relation has bounded validity and compatibility formulas; and every unresolved input is declared as a residual boundary formula.  Then a metalevel compiler can construct a finite list \(\Residual(G,q)\) and a derivation
+\[
+  \Residual(G,q),\Gamma_G\vdash[\PRAAx]\Phi_G(q).
+\]
+If each residual formula has a derivation from \(\Delta\), simultaneous cut produces
+\[
+  \Delta,\Gamma_G\vdash[\PRAAx]\Phi_G(q).
+\]
+The construction does not add an object-level graph interpreter, reflection axiom, choice principle, or induction scheme.
+\end{theorem}
+
+\begin{proof}
+Specialize the finite graph at the metalevel.  Traverse it backward to compute which assumptions and numerical demands are actually needed.  For acyclic resource dependencies, take finite maxima in reverse topological order.  For monotone cyclic dependencies with supplied caps, iterate the capped update map until its rank can no longer rise; \cref{thm:capped-closure} proves that this yields the least closed vector above the seed.  Generate a packed forward transition and prove its QF invariant by the checked induction interface.  Each node's local rule is instantiated with the generated terms.  Compose the instantiated rules in topological proof order using \texttt{Prf.trans}; where a premise is not produced by an executable node, retain it in the context.  Backward reachability removes unused residuals and duplicate formulas.  The resulting nested cuts are exactly the required derivation.  A final application of simultaneous cut supplies any residual proofs that later become available.
+\end{proof}
+
+\begin{theorem}[Finite relational elimination]\label{thm:finite-rel-main}
+For a bounded layered relation of finite horizon, backward viability holds at a candidate exactly when that candidate begins an accepted compatible suffix.  Hence a viable start yields a primitive-recursively selected finite path.  If a terminal observer is constant on all accepted candidates, the observed output is canonical without a canonical witness.  If its diameter is at most \(\delta(q)\), any selected output is canonical up to \(\delta(q)\).  A coherent infinite name follows only from an additional primitive-recursive adjacent-motion budget with a summable tail modulus.
+\end{theorem}
+
+\begin{proof}
+The viability equivalence is backward induction on the finite horizon.  The path is obtained by checked least bounded search at the first level and at each successor level.  Exact observer elimination instantiates the constancy theorem at the selected witness and an arbitrary valid witness.  Diameter elimination is the same argument with a metric inequality.  For an infinite name, telescoping the within-level and adjacent-motion estimates gives a finite tail bound; applying the supplied tail modulus turns it into the regular Cauchy estimate.  Without the motion and tail hypotheses, independently nonempty shrinking clouds need not yield a computable coherent choice.
+\end{proof}
+
+\subsection{What has genuinely improved over the earlier framework packets}
+
+The main update is not another renaming of the same semantic ideas.  It changes the formalization baseline and the output discipline.
+\begin{enumerate}[label=(\arabic*)]
+  \item The current checked \texttt{IPRADerivations.Core.Search} is treated as inherited infrastructure.  Least search no longer appears as an unimplemented generic aspiration.
+  \item Pairing, projections, integer square root, and two-track simultaneous recursion are inherited from the checked \texttt{Core.Pairing}; generic state encodings can start from proved projection equations.
+  \item The checked library now contains division, gcd, B\'ezout, pigeonhole, permutations, multi-sums, finite-dimensional linear algebra, and additional theorem modules.  Domain recipes target these actual APIs.
+  \item Residual obligations are first-class formulas in the final sequent.  This prevents a missing height bound or analytic constant from being hidden in a host-language structure.
+  \item Demand propagation handles capped monotone cycles, not only DAGs.  This covers mutually dependent precision schedules after a finite cap is justified.
+  \item Formalization work is narrowed to the missing shared layer: Boolean formula compilation, residual/proof scheduling, finite tables and traces, viability/observers, and worked application endpoints.
+\end{enumerate}
+
+\subsection{Scope}
+
+The framework resolves many proof-engineering difficulties and gives correct conditional forms for several deep targets.  It does not manufacture a height theorem, a spectral gap, an effective zero-free region, a branch-separation modulus, or rational covering representatives.  Such information must either be proved in \iPRA, supplied as finite evidence with a verifier, or remain in the residual context.  This is a feature: the final sequent says exactly what has and has not been established.

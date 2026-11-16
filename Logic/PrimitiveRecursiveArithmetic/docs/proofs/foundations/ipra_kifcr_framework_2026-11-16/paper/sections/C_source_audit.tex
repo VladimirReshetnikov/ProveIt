@@ -1,0 +1,50 @@
+\section{Source and provenance audit}\label{app:source-audit}
+
+\subsection{Pinned repository snapshot}
+
+The report was developed against the main-branch snapshot
+\[
+\texttt{31784f0710fa04ccd8ee863ce9bad91fb1d8cf88},
+\]
+observed through the GitHub repository interface on 16 November 2026.  The repository is active; later integration must pin this commit or record a fresh API audit.
+
+\subsection{Current primary sources inspected}
+
+\begin{sloppypar}
+\small
+\begin{itemize}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/README.md}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/Derivations/README.md}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations.lean}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Basic.lean}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Search.lean}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Pairing.lean}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Checks/Axioms.lean}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/README.md}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_framework/README.md}
+\end{itemize}
+\normalsize
+\end{sloppypar}
+
+The audit confirms a checked ordinary \(\PRAAx\) derivation layer, a current checked least-search implementation, checked pairing/simultaneous recursion, and a large current import manifest.  It also confirms the repository's own warning that the 78 delivered packets are a filed research corpus rather than a collectively verified build.
+
+\subsection{Earlier framework artifacts consolidated}
+
+The present report was compared with prior artifacts in the user's library and corresponding repository packets, including:
+\begin{itemize}
+  \item \texttt{ipra\_kifc\_framework\_2026-11-15};
+  \item \texttt{cfp\_contract\_compiler};
+  \item \texttt{cifer\_ipra\_framework};
+  \item \texttt{framework(1)} (uniform finite nets and stable implicit roots);
+  \item the current repository packet \texttt{foundations/ipra\_framework}.
+\end{itemize}
+Their finite-contract, proof-graph, residual, viability, stable-observer, finite-net, and producer/verifier ideas are retained with attribution as prior framework work.  The main changes here are the rebase to the current checked library, removal of search from the missing-work list, explicit residual formulas in the final sequent, and capped cyclic demand closure.
+
+\subsection{Use of sources}
+
+Repository code was used to identify exact public APIs and checked/inherited results.  Prior reports were used to avoid duplicating established framework arguments and to locate unresolved boundaries.  All new claims in this artifact are classified in the theorem ledger.  No claim of mathematical priority is made.
+
+\subsection{Audit limitations}
+
+A full repository clone and Lean build were unavailable in the artifact container.  The audit used repository API reads of current files and therefore did not independently compile every current module or packet.  The generated Lean files are consequently marked as outlines.  Inherited checked claims are based on the current source types and axiom-audit declarations; packet-specific deep claims remain targets or residual producers unless an actual checked derivation was inspected.

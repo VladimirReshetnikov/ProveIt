@@ -1,0 +1,114 @@
+\section{Kernel-Integrated Finitary Contracts with residual boundaries}\label{sec:contracts}
+
+\subsection{Observation presentations}
+
+A large mathematical object is useful to a finitary proof only through a finite set of questions.  This motivates the basic representation.
+
+\begin{definition}[Finitary observation presentation]
+A presentation \(X\) with parameters \(x\) consists of primitive-recursive data:
+\begin{enumerate}[label=(\roman*)]
+  \item a query code \(q\in\Nat\);
+  \item an answer bound \(B_X(x,q)\);
+  \item a validity Boolean \(V_X(x,q,a)\in\Bool\), used only for \(a<B_X(x,q)\);
+  \item an object-level totality contract
+  \[
+     P_X(x)\ \longrightarrow\ \exists a<B_X(x,q)\;V_X(x,q,a)=1.
+  \]
+\end{enumerate}
+The bounded existential is compiled by the Boolean/search machinery of \cref{sec:boolean-search}; it is not retained inside an induction invariant.
+\end{definition}
+
+The presentation is \emph{deterministic} when valid answers are provably equal.  It is \emph{observationally deterministic} for an observer \(O\) when \(O(x,q,a)=O(x,q,b)\) for all valid \(a,b\).  It is \emph{diameter bounded} when a rational-code metric satisfies
+\[
+ d(O(x,q,a),O(x,q,b))\leq \delta_X(x,q)
+\]
+for all valid answers.  These distinctions let a theorem consume exactly the amount of uniqueness it needs.
+
+\begin{example}[Real numbers]
+A real number need not be introduced as a completed quotient of all Cauchy codes.  For a theorem asking for precision \(q\), a presentation may return a dyadic rational \(a/2^{m(q)}\) together with a certified interval of radius \(2^{-q}\).  Two codes represent the same observed value at precision \(q\) when their intervals overlap within the prescribed tolerance.  An operation is proved by transforming finite intervals and error budgets.
+\end{example}
+
+\begin{example}[Polynomial roots]
+At a fixed precision, the answer may be an unordered finite multiset of rational boxes, each carrying a multiplicity and a Rouch\'e, Sturm, or interval certificate.  Ordered root labels are not part of the general presentation.  Under a supplied separation gap, matching becomes unique and labels can be recovered as a guarded observer.
+\end{example}
+
+\subsection{Deterministic contracts}
+
+Suppose \(X\) is an input presentation and \(Y\) an output presentation.  A deterministic contract for a fixed output query \(r\) consists of:
+\begin{enumerate}[label=(\alph*)]
+  \item a finite input demand \(\Dem_C(x,r)=(q_0,\ldots,q_{s-1})\);
+  \item a primitive-recursive transducer \(\Run_C\) from valid answers to an output answer;
+  \item a local object-level derivation showing that valid demanded answers imply output validity.
+\end{enumerate}
+Written schematically,
+\[
+  P_C(x,r)\wedge\bigwedge_{i<s}V_X(x,q_i,a_i)=1
+   \ \vdash[\PRAAx]\
+  V_Y(Cx,r,\Run_C(x,r,\vec a))=1.
+\]
+The conjunction is finite and, after Booleanization, quantifier-free.
+
+\begin{theorem}[Deterministic contract composition]\label{thm:det-comp}
+Let \(C:X\to Y\) and \(D:Y\to Z\) be deterministic contracts.  The composite demand is obtained by applying the demand of \(D\), then replacing every requested \(Y\)-observation by the finite \(X\)-demand required by \(C\).  The composite transducer is ordinary substitution of the output terms of \(C\) into the transducer of \(D\).  The local soundness derivation is obtained by substitution followed by simultaneous cut.
+\end{theorem}
+
+\begin{proof}
+Fix a terminal query \(r\).  The contract \(D\) requests finitely many observations \(q_j\) of \(Y\).  For each \(q_j\), the contract \(C\) requests a finite list of observations of \(X\).  Take the concatenation of these lists, retaining multiplicities or deduplicating by a bounded table if desired.  Given valid answers to this combined demand, instantiate the soundness proof of \(C\) separately for every \(q_j\).  These derivations provide every hypothesis needed by the instantiated soundness proof of \(D\).  Apply \cref{lem:cut}.  All index manipulation is metalevel specialization of a fixed finite list, so no object-level list interpreter is involved.
+\end{proof}
+
+\subsection{Relational contracts}
+
+Some constructions are total only as finite relations.  A relational contract replaces \(\Run_C\) by a bounded candidate relation
+\[
+  R_C(x,r,\vec a,b),\qquad b<B_C(x,r,\vec a),
+\]
+and proves bounded nonemptiness and validity of every accepted candidate.  A downstream consumer may depend on a candidate, but only through finitely many later compatibility checks.  It is unsound to choose candidates independently at each node; a locally valid candidate may lead to a dead end.
+
+The remedy is not an axiom of choice.  It is the finite dynamic program of \cref{sec:relational}: propagate viability backward from the terminal acceptance condition, then use least bounded search to select a path through the viable subrelation.
+
+\subsection{Stable observation contracts}
+
+A consumer often does not need the witness itself.  It needs an observation that all valid witnesses share.  A stable observation contract contains:
+\begin{enumerate}[label=(\roman*)]
+  \item a bounded total relation \(R(x,q,a)\);
+  \item an observer term \(O(x,q,a)\);
+  \item either an exact stability proof \(R(a)\wedge R(b)\to O(a)=O(b)\), a diameter estimate, or a guarded uniqueness proof.
+\end{enumerate}
+The observer can then be evaluated at the least valid candidate.  Exact stability removes the arbitrary internal choice from the theorem statement.  Diameter stability produces an approximate observation.  Guarded uniqueness produces an exact label only when the guard supplies a positive gap.
+
+\subsection{Demand transformers}
+
+An operation on approximations is accompanied by a backward precision transformer.  For example, addition of dyadic approximations may require input precision \(q+2\), while inversion under \(|x|\ge 2^{-g}\) may require \(q+2g+c\).  A demand transformer is not merely an implementation hint: its local adequacy is a theorem converting input error bounds into the requested output error bound.
+
+For a finite acyclic graph, terminal requests are propagated in reverse topological order.  When several consumers use the same provider, take the maximum of their demands.  Since maximum and every edge transformer are primitive recursive, the full reverse pass is primitive recursive.  Mutually dependent monotone requests are handled separately by the capped closure theorem of \cref{sec:cyclic-demand}; a cycle is never justified by circular reasoning.
+
+\begin{lemma}[Least reverse demand for an acyclic graph]\label{lem:demand-least}
+Let the nodes be topologically ordered and let every edge \(u\to v\) carry a monotone demand transformer \(d_{uv}\).  Define requests backward by
+\[
+ q_u=\max\left(q_u^{\mathrm{terminal}},\ \max_{u\to v}d_{uv}(q_v)\right).
+\]
+Then the resulting vector satisfies every terminal and edge inequality.  Moreover it is componentwise least among all satisfying request vectors.
+\end{lemma}
+
+\begin{proof}
+Satisfaction follows immediately from the defining maximum.  For minimality, perform reverse induction on the topological order.  At a terminal node, every satisfying vector dominates the terminal request.  Assume every later component of a satisfying vector \(r\) dominates the constructed component.  Monotonicity gives
+\(r_u\ge d_{uv}(r_v)\ge d_{uv}(q_v)\) for every outgoing edge, and \(r_u\) also dominates the terminal request at \(u\).  Therefore it dominates their maximum, which is \(q_u\).
+\end{proof}
+
+The computed demand is fixed before the forward induction.  This is the key move that replaces an all-precision invariant by one finite table of observations.
+
+\subsection{The seven kernel-normal node classes}
+
+A well-formed \KIFCR graph uses only the following classes.  The first six execute or verify finite data; the seventh records an unavailable producer without pretending to execute it.
+
+\begin{description}[style=nextline,leftmargin=2.4em]
+\item[Algebra node.] Computes a fixed term expression and carries a derivation of the required equality.  Polynomial equalities are routed through the checked quotient/ring backend.
+\item[Boolean node.] Computes a Boolean term and carries a reflection theorem relating \(b=1\) to a fixed bounded formula.
+\item[Search node.] Instantiates the checked \texttt{IPRADerivations.Core.Search} construction and carries its validity, foundness, and minimality derivations.
+\item[Loop node.] Executes primitive recursion and carries a quantifier-free invariant together with base and step derivations.
+\item[Relation node.] Produces or filters a bounded cloud and carries nonemptiness and compatibility derivations; finite towers are solved by viability.
+\item[Observer node.] Erases internal witness choice using exact stability, a diameter bound, or an explicit uniqueness gap.
+\item[Residual boundary node.] Retains an explicit formula for a missing height bound, modulus, separation estimate, representative list, or effective constant.  It contributes a hypothesis to the compiled sequent and is removed only by an actual producer derivation.
+\end{description}
+
+This inventory is expressive enough for the finitary parts of the proof corpus and for honest conditional forms of the remaining parts.  More elaborate constructions---finite nets, matrix elimination, interval Newton methods, chain-complex calculations, height enumeration---are graphs assembled from these nodes rather than new logical primitives.
