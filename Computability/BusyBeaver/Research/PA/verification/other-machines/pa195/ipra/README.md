@@ -1,5 +1,9 @@
 # PA195 bounded halting and conditional PA consistency endpoint
 
+See the [iPRA unification plan](../../../../../../../../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+for how the PA195 command-level result and a future literal-table proof are
+recorded and transported.
+
 This directory connects a precise PA195 transition table to an arithmetical
 halting sentence. It does **not** prove either direction of the claimed
 machine-specific equivalence in iPRA, PRA, or PA. The machine-specific

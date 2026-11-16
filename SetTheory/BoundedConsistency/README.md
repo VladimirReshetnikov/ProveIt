@@ -1,5 +1,9 @@
 # Bounded-complexity consistency for ZFC
 
+The [iPRA unification plan](../../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+tracks the proof-coding and consistency interfaces used
+by downstream iPRA projects.
+
 This project targets the **numeralwise consistency scheme** for Zermelo–Fraenkel
 set theory with choice: for every natural number `n` chosen in the metatheory,
 ZFC proves that no ZFC derivation in which every formula occurrence has at most

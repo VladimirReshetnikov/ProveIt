@@ -1,5 +1,9 @@
 # Smaller machines for Con(ZFC)
 
+The [iPRA unification plan](../../../../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+describes arithmetic reuse for candidate machines and
+preserves the exact Lean and Rocq verification boundaries.
+
 The literal [K215 machine](candidate-k215/README.md) now has **compiled Lean and Rocq
 correctness proofs**: blank-tape halting iff ZFC has a finite refutation, and
 nonhalting iff syntactic consistency of ZFC. Lean's original fresh build checked

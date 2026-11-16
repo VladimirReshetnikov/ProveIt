@@ -1,5 +1,9 @@
 # Con(ZFC) in Diophantine form
 
+The [iPRA unification plan](../../../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+applies to maintained proof clients for these proposals
+and records how to preserve the delivered evidence.
+
 This collection lives under `Computability/DiophantineConsistency`. It was
 moved there on 23 October 2026 (`ea8ae71167`, at Vladimir's request) from
 `SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms`.

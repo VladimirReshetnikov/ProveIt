@@ -33,6 +33,10 @@ the formal semantics.
 > [`Analysis/FabiusFunction/AGENTS.md`](Analysis/FabiusFunction/AGENTS.md)
 > for the driver, the retry rule, and the Windows traps.
 
+The [iPRA unification plan](Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+coordinates the shared arithmetic library and checked
+migrations in Logic and Computability.
+
 ## Repository map
 
 The top-level source directories are mathematical topics. Within each coherent

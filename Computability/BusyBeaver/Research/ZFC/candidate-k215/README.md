@@ -1,5 +1,9 @@
 # K215: 215 working states for ZFC consistency
 
+See the [iPRA unification plan](../../../../../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+for how this literal-machine verification is used alongside internal
+arithmetic results.
+
 **Accepted after full quantified runtime and independent blank-start verification.** This exact deterministic binary machine has **215 working states and 430 transition rows, including initialization**, with a separate halt. Its reviewed ordinary mathematical proof, using the inherited numerical-calculus calibration, establishes
 
 ```text

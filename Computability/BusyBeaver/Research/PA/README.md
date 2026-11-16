@@ -1,5 +1,9 @@
 # PA consistency machines
 
+The [iPRA unification plan](../../../../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+describes shared arithmetic reuse and replay checks at
+the exact published PA machine endpoints.
+
 This directory contains machine tables, imported research, and Lean proofs
 concerning small Turing machines associated with the consistency of Peano
 arithmetic, `Con(PA)`. The current goal is a Lean proof of

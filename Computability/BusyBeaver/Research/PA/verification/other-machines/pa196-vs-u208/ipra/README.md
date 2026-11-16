@@ -1,5 +1,9 @@
 # PA196 bounded halting in the iPRA language
 
+See the [iPRA unification plan](../../../../../../../../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+for reuse of shared arithmetic and preservation of the exact premises and
+proved directions for PA196.
+
 `PA196Bounded.lean` implements a primitive-recursive simulation of the literal
 PA196 machine using natural numbers for the two binary tape halves. Its finite
 table is proved equal, row by row in the Lean kernel, to the imported

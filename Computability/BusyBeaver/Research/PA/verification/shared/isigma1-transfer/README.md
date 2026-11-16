@@ -1,5 +1,9 @@
 # From IΣ₁ to iPRA for consistency machines
 
+The [iPRA unification plan](../../../../../../../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+records the distinction between this transfer to iPRA
+and translation between iPRA proof calculi.
+
 `ConPAISigma1Transfer.lean` proves a transfer theorem that does not depend on a machine.
 
 Let `δ` be a bounded (`Σ₀`) formula of the language of arithmetic in one variable. Read

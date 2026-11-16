@@ -1,5 +1,9 @@
 # Coding finite lists in Peano arithmetic
 
+The [iPRA unification plan](../../PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+records the `ExactTrace` boundary between these list-
+coding results, Hilbert’s tenth problem, and its iPRA clients.
+
 This project gives independent Lean 4 and Rocq/Coq proofs that finite lists of
 natural numbers can be coded by single natural numbers and that twenty-five
 standard list and number-theoretic predicates are definable by genuine

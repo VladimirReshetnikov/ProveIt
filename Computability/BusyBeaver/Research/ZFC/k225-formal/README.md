@@ -1,5 +1,9 @@
 # Formal endpoints for the K-family candidates
 
+The [iPRA unification plan](../../../../../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+identifies how new shared arithmetic clients should
+connect to the pinned K-family verification.
+
 **Current state (2026-10-21).** The exact [215-state machine](../candidate-k215/README.md)
 has compiled correctness proofs in both Lean and Rocq. The original fresh Lean
 build checked 204 project modules; the current

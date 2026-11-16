@@ -1,5 +1,9 @@
 # Computability
 
+The [iPRA unification plan](../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+covers the shared arithmetic used by BusyBeaver and
+DiophantineConsistency and the interfaces to Hilbert’s tenth problem.
+
 [`TuringDegrees/`](TuringDegrees/) formalizes Turing reducibility and
 equivalence for sets of natural numbers, the degree partial order and zero,
 the exact even/odd join, cardinality results, the halting degree and c.e.

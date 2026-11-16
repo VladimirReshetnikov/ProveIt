@@ -1,5 +1,9 @@
 # Intuitionistic PRA proof-existence target
 
+For the shared arithmetic and cross-framework work used by this project,
+see the [iPRA unification plan](../../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md). This document tracks the exact equation endpoints
+and their replay evidence.
+
 The active objective is a Lean proof that the chosen literal equation's
 no-positive-solution sentence is equivalent to the chosen formal `Con(ZFC)`
 sentence in **intuitionistic** primitive recursive arithmetic. This is a

@@ -1,5 +1,9 @@
 # Delivered iPRA proof packets
 
+The [iPRA unification plan](../../UNIFICATION-PLAN.md)
+gives the target interface for future verified
+derivations of these delivered proofs.
+
 This directory holds the research packets that were delivered as archives from 14 to
 16 November 2026: 33 to `docs/drafts`, and 64 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem

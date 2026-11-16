@@ -1,5 +1,9 @@
 # iPRA derivations of theorems from the proof packets
 
+The [iPRA unification plan](../UNIFICATION-PLAN.md)
+sets out how shared arithmetic proofs here are reused at
+Foundation symbols and in application endpoints.
+
 This directory holds actual derivations, in intuitionistic primitive recursive
 arithmetic, of theorems whose proofs are outlined in the research packets of
 [`docs/proofs/`](../docs/proofs/README.md).

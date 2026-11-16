@@ -1,5 +1,9 @@
 # PA194 halting and consistency in iPRA
 
+The [iPRA unification plan](../../../../../../../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+uses the primary literal PA194 equivalence as the
+baseline for adopting shared arithmetic and checking exports.
+
 The primary literal table now has an unconditional Lean proof of
 `iPRA ⊢ Con(PA) ↔ ¬Halt(PA194)`. See [the native theorem and its staged
 replay](native-endpoint/README.md). The older bounded and conditional

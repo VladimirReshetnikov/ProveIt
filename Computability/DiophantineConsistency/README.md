@@ -1,5 +1,9 @@
 # A Diophantine equation for syntactic consistency of ZFC
 
+The [iPRA unification plan](../../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+covers the Foundation arithmetic dependency split,
+shared proofs, and exact equation replays.
+
 Research started 23 October 2026, from repository commit `22e75dd6b8`.
 This directory contains active research, its Lean proofs, and the delivered
 manuscripts in [con-zfc-diophantine-forms](con-zfc-diophantine-forms/README.md).

@@ -98,10 +98,11 @@ loaded ancestry remain inherited. Newer source surveys and partial successor
 replays are documented in the [proof plan](IPRA_PROVABILITY_PLAN.md); a fully
 authenticated current-source closure remains open. The endpoint uses the native negation of
 Foundation's particular arithmetized ZFC refutation predicate, not an
-unverified identification with every possible proof coding. A Lean-checked
-comparison with any broader independently specified standard presentation of
-intuitionistic PRA also remains open; see
-[`IPRA_PROVABILITY_PLAN.md`](IPRA_PROVABILITY_PLAN.md).
+unverified identification with every possible proof coding. The checked
+[Foundation–ConciseIPRA bridge](../../Logic/PrimitiveRecursiveArithmetic/Bridge/README.md)
+now transports closed derivations in both directions. The
+[iPRA unification plan](../../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+records the scope of that comparison and the next steps.
 
 The newly added [`IPRAStandardTheory.lean`](Lean/DiophantineConsistency/IPRAStandardTheory.lean)
 states a same-language provability equivalence between the native candidate
@@ -125,9 +126,8 @@ matched all 16 additions and passed an [independent complete-result audit](revie
 A separate [finite PDF binding](reviews/equation14-historical-literal-binding/README.md)
 retains a manual decoder and rank-recipe boundary. The parent/provider
 limitations above remain.
-The distinct equality-only comparison described below has an author-built
-native-to-reference direction; its reverse direction and independent replay
-remain open.
+The historical equality-only comparison described below records the
+author-built native-to-reference direction and its replay qualifications.
 
 For the 14-variable degree-30 direct-square equation, the native endpoint is
 also present in the audited fresh AQ29 parent pair. A separate [guarded
@@ -210,6 +210,7 @@ Gödel–Gentzen image of Foundation's ZFC consistency sentence. Both report the
 same three axioms in their [checks](Lean/DiophantineConsistency/IPRAReferenceCurrentEndpointChecks.lean).
 `noZero14` has no `<` atom, so its erasure is the same no-zero formula read in
 the equality-only language. This is an author build, not an independent
-replay packet. The reverse reference-to-native transport (`IPRAReferenceTheoryTransfer`)
-is still conditional on the reference axiom images, so the two-way theory
-comparison remains open. The endpoint itself needs only the forward direction.
+replay packet. At that checkpoint the reverse reference-to-native transport
+(`IPRAReferenceTheoryTransfer`) was conditional on the reference axiom images.
+The current `IPRABridge` supplies those images for its closed theorem import.
+The 14-variable endpoint itself uses the forward direction.

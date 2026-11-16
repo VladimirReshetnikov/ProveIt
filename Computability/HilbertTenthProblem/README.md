@@ -1,5 +1,9 @@
 # Hilbert's tenth problem: Jones's articles on Diophantine representation
 
+The [iPRA unification plan](../../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+describes downstream adapters for selected reductions
+and their separate object-theory checks.
+
 Corrected editions and a Lean 4 formalization of six articles on Hilbert's
 tenth problem, Diophantine representation of recursively enumerable sets and
 universal Diophantine equations by James P. Jones and coauthors:

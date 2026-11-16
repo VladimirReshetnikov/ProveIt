@@ -1,5 +1,9 @@
 # Lean 4 formalization of the six articles
 
+The [iPRA unification plan](../../../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+keeps the `Diophantine` import boundary and places iPRA
+derivations of selected reductions in downstream clients.
+
 A Lean 4 / Mathlib project that formalizes the mathematical essence of the
 six corrected articles in [`../Papers/`](../Papers/README.md). **No new axioms may be introduced**
 under the project owner's updated 2026-09-14 policy. Existing verified

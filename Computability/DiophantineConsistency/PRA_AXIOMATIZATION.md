@@ -1,5 +1,9 @@
 # The classical PRA presentation used as an intermediate
 
+See the [iPRA unification plan](../../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+for the boundary between this classical theory and the shared intuitionistic
+arithmetic library.
+
 The active target is now existence of a proof in **intuitionistic PRA**; see
 [IPRA_PROVABILITY_PLAN.md](IPRA_PROVABILITY_PLAN.md). The intuitionistic theory
 has a candidate native definition. Its literal 14-variable equation endpoint

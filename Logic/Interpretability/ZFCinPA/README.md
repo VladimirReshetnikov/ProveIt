@@ -1,5 +1,9 @@
 # ZFCinPA — `PA ⊢ ∀ n, Prov_ZFC(⌜Conₙ(ZFC)⌝)`
 
+The [iPRA unification plan](../../PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+records how iPRA clients use the exact arithmetization
+and proof-code interfaces of this project.
+
 This project formalizes, in Lean 4, the claim that Peano Arithmetic proves the
 single arithmetic sentence
 

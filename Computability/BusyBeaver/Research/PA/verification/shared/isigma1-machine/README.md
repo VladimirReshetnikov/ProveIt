@@ -1,5 +1,9 @@
 # Turing machines inside models of IΣ₁
 
+The [iPRA unification plan](../../../../../../../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+specifies how these machine and halting interfaces are
+preserved when related iPRA arithmetic proofs are shared.
+
 This directory defines two-symbol Turing machines in models of `IΣ₁` and
 transfers halting comparisons into iPRA. The [PA research index](../../../README.md)
 links to the derivations for the literal consistency candidates.

@@ -1,5 +1,9 @@
 # Bounded-complexity consistency for Peano arithmetic
 
+The [iPRA unification plan](../../PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+records the boundary between shared iPRA arithmetic and
+this project’s exact PA proof predicates and strength claims.
+
 This project studies the following **numeralwise consistency scheme** for
 first-order Peano arithmetic (PA): for every natural number `n` chosen in the
 metatheory, PA proves that no PA derivation in which every formula occurrence

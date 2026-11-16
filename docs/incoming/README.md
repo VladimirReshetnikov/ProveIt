@@ -145,6 +145,10 @@ from the history.
 
 ## iPRA proof packets from `docs/drafts`
 
+The [iPRA unification plan](../../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+gives the interface for future verified derivations of
+delivered iPRA proofs.
+
 Thirty-three archives committed to [`docs/drafts`](../drafts/) on 14 and 15 November 2026
 give finitary proofs of classical theorems in intuitionistic primitive recursive arithmetic.
 They are placed, as delivered and without a write, in

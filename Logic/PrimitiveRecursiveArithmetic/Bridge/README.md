@@ -1,5 +1,9 @@
 # The Foundation–ConciseIPRA bridge
 
+The [iPRA unification plan](../UNIFICATION-PLAN.md)
+records the bridge baseline and specifies work on
+Foundation round trips, open sequents, and arithmetic symbol comparisons.
+
 `IPRABridge` translates closed object-theory derivations between
 `DiophantineConsistency.IPRAStandardTheory.standardTheory` and
 `LeanProofs.ConciseIPRA.Prf PRAAx []`. It is an opt-in Lake library.

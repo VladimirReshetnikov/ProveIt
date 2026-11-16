@@ -1,5 +1,9 @@
 # The native iPRA equivalence for literal PA194
 
+The [iPRA unification plan](../../../../../../../../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+uses this exact Foundation endpoint and its ConciseIPRA
+export as a regression check.
+
 `PA194NativeLiteralFinal.consistency_iff_literal_nonhalt` has type
 
 ```lean

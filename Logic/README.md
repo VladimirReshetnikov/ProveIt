@@ -1,5 +1,9 @@
 # Logic
 
+The [iPRA unification plan](PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+describes the canonical iPRA interface, shared proofs,
+and the Foundation and ConciseIPRA backend boundaries.
+
 - [`FoundationPort/`](FoundationPort/) maintains the exhaustive, conservative
   source-module ledger for the dependency-ordered Coq port of the pinned
   FormalizedFormalLogic/Foundation tree.

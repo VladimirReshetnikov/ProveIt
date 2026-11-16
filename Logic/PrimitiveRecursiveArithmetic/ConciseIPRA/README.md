@@ -1,5 +1,10 @@
 # Concise presentations of intuitionistic primitive recursive arithmetic
 
+The [iPRA unification plan](../UNIFICATION-PLAN.md)
+covers how the ordinary `Prf PRAAx` interface is shared
+with other projects and how the scalar-calculus research and certificate
+measurements are maintained.
+
 This project collects the research packages that look for a very small
 complete presentation of a theory bi-interpretable with full first-order
 intuitionistic primitive recursive arithmetic (iPRA), and the Lean
