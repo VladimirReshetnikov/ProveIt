@@ -192,6 +192,7 @@ noncomputable def semK (k : MPKind) (ct a : Bool) : ConPA.Ctl.Sem M where
   mp := k
   cacheTest := ct
   ax11 := a
+  short := false
   axT := fun H D A => axTop H D A
   leaf := leafM
   genL := fun _ d => d
@@ -206,10 +207,14 @@ noncomputable def semK (k : MPKind) (ct a : Bool) : ConPA.Ctl.Sem M where
   ax_eq := by
     intro A y x z t w d h
     rw [cstepK_eval, cA_model]
-    cases a <;> simp [axStack, ConPA.Ctl.stack10, leafM, allValue, impValue]
+    cases a <;> simp [axStack, ConPA.Ctl.stackS, ConPA.Ctl.stack10, leafM, allValue, impValue]
   axT_ne_one := axTop_ne_one
   leaf_ne_one := leafM_ne_one
   genL_self := fun _ => rfl
+
+/-- The semantics `semK` has eight leaves. -/
+theorem semK_lt (k : MPKind) (ct a : Bool) {i : ℕ} (hi : i < 8) :
+    i < (semK (M := M) k ct a).m := hi
 
 /-! ## The scheduler step -/
 
@@ -317,18 +322,18 @@ theorem G_of_provable (k : MPKind) (ct a : Bool) (r : M) (hp : TargetProvable r)
     ?_ ?_ ?_ ?_ program r hprog
   · intro x y
     rw [machineHead1_model]
-    exact ConPA.Ctl.G_leaf (semK k ct a) 6 (by norm_num) x y 0 0 (by simp)
+    exact ConPA.Ctl.G_leaf (semK k ct a) 6 (semK_lt k ct a (by norm_num)) x y 0 0 (by simp)
   · intro label x hx
     exact ConPA.Ctl.G_gen (semK k ct a) label x hx
   · intro x y hx hxy
     exact ConPA.Ctl.G_mp (semK k ct a) x y hx hxy
   · exact
-      { head2 := fun x y z => ConPA.Ctl.G_leaf (semK k ct a) 5 (by norm_num) x z y 0 (by simp)
-        head3 := fun x y z => ConPA.Ctl.G_leaf (semK k ct a) 4 (by norm_num) x z y 0 (by simp)
-        head4 := fun x y z => ConPA.Ctl.G_leaf (semK k ct a) 3 (by norm_num) x z y 0 (by simp)
-        head5 := fun x y => ConPA.Ctl.G_leaf (semK k ct a) 2 (by norm_num) x y 0 0 (by simp)
-        head6 := fun x y z => ConPA.Ctl.G_leaf (semK k ct a) 1 (by norm_num) x z y 0 (by simp)
-        rho8 := fun x y z u hu => ConPA.Ctl.G_leaf (semK k ct a) 7 (by norm_num) x z y u hu
+      { head2 := fun x y z => ConPA.Ctl.G_leaf (semK k ct a) 5 (semK_lt k ct a (by norm_num)) x z y 0 (by simp)
+        head3 := fun x y z => ConPA.Ctl.G_leaf (semK k ct a) 4 (semK_lt k ct a (by norm_num)) x z y 0 (by simp)
+        head4 := fun x y z => ConPA.Ctl.G_leaf (semK k ct a) 3 (semK_lt k ct a (by norm_num)) x z y 0 (by simp)
+        head5 := fun x y => ConPA.Ctl.G_leaf (semK k ct a) 2 (semK_lt k ct a (by norm_num)) x y 0 0 (by simp)
+        head6 := fun x y z => ConPA.Ctl.G_leaf (semK k ct a) 1 (semK_lt k ct a (by norm_num)) x z y 0 (by simp)
+        rho8 := fun x y z u hu => ConPA.Ctl.G_leaf (semK k ct a) 7 (semK_lt k ct a (by norm_num)) x z y u hu
         gate := fun x y z hx hy => by
           have h := ConPA.Ctl.G_axT (semK k ct a) x y z
           have he : (semK k ct a).axT x y z = oldBundleValue x y z := by
@@ -340,7 +345,7 @@ theorem G_of_provable (k : MPKind) (ct a : Bool) (r : M) (hp : TargetProvable r)
             · exact hx h1.symm
           rw [he] at h
           exact h
-        diagonal := fun x => ConPA.Ctl.G_leaf (semK k ct a) 0 (by norm_num) 0 0 x 0 (by simp) }
+        diagonal := fun x => ConPA.Ctl.G_leaf (semK k ct a) 0 (semK_lt k ct a (by norm_num)) 0 0 x 0 (by simp) }
 
 /-- A target proof of the contradiction code makes the scheduler halt. -/
 theorem provable_halts (k : MPKind) (ct a : Bool) (h : TargetProvable (1 : M)) :

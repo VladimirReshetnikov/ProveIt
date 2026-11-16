@@ -1,0 +1,89 @@
+\maketitle
+
+\begin{abstract}
+This report reconstructs as much as possible of the mathematical content of the
+Wikipedia article \emph{Expected value} inside intuitionistic primitive
+recursive arithmetic, abbreviated \(\ipra\).  The central observation is that a
+large majority of the article's algebraic probability theory is already
+finitary.  On a finite sample space with natural weights and rational-valued
+observables, expectation is one bounded sum divided by a positive integer.
+Normalization, linearity, monotonicity, the law of the unconscious statistician,
+indicator and tail formulas, variance identities, Markov and Chebyshev
+inequalities, Cauchy--Schwarz, independence, finite conditional expectation,
+and sample-mean formulas reduce to primitive-recursive calculations and
+quantifier-free induction.
+
+The article also discusses countable laws, densities, general Lebesgue
+integration, convergence theorems, characteristic functions, and applications.
+Those statements are not uniformly meaningful in a theory whose only objects
+are natural numbers.  We give precise effective replacements: every infinite
+object is a primitive-recursive stream of finite rational approximants together
+with an explicit tail, Cauchy, integrability, or continuity modulus.  The
+resulting claims are theorem schemata of \(\ipra\), not appeals to an ambient
+classical universe.  We isolate where a classical converse---most notably an
+existence-only Radon--Nikodym assertion---would require additional data and is
+therefore not claimed.
+
+The manuscript supplies complete human-readable arguments, a theorem-by-theorem
+coverage ledger, three Lean design files, a route to explicit derivations in
+ProveIt's \code{Prf PRAAx}, and an exact-rational regression program.  The Lean
+files are blueprints rather than a completed kernel-checked formalization.  The
+Python run checks 148,317 exact assertions and uses no floating-point value as a
+proof oracle.
+\end{abstract}
+
+\vspace{1em}
+\noindent\textbf{Formal status.}
+The mathematical proofs below are written so that every finite step can be
+compiled to bounded sums, products, comparisons, pairing, and
+quantifier-free induction.  The effective analytic arguments state all moduli
+needed for such a compilation.  Nevertheless, this packet does not contain the
+final explicit \code{PRAAx} proof terms.  Statements marked ``internal'' are
+intended iPRA theorems; statements marked ``effective analytic'' are iPRA
+schemata for a fixed primitive-recursive presentation and its certificates.
+
+\tableofcontents
+\newpage
+
+\section*{Executive theorem map}
+\addcontentsline{toc}{section}{Executive theorem map}
+
+The paper has three layers.
+
+\begin{enumerate}
+\item \textbf{Exact finite layer.}  \Cref{sec:coding,sec:finite,sec:properties,sec:inequalities,sec:independence,sec:samples}
+  develops expectation on a finite weighted law.  No real numbers, completed
+  infinite sets, or measure spaces are used.  After clearing denominators, the
+  statements are equations and inequalities over \(\N\).
+\item \textbf{Effective limiting layer.}  \Cref{sec:countable,sec:integration,sec:distributions,sec:convergence}
+  treats series and integrals through finite approximants and explicit moduli.
+  The finite kernel is applied at a precision computed from the requested output
+  precision.
+\item \textbf{Formalization layer.}  \Cref{sec:fourier,sec:lean,sec:conclusion}
+  covers finite Fourier methods and applications, records the Lean interfaces,
+  and identifies the remaining proof-engineering work.
+\end{enumerate}
+
+\begin{center}
+\begin{tabular}{@{}p{0.24\textwidth}p{0.66\textwidth}@{}}
+\toprule
+Class & Representative results \\
+\midrule
+Exact in \(\ipra\) & finite expectation and LOTUS; linearity; monotonicity;
+positive/negative parts; indicator and tail formulas; variance; Markov,
+Chebyshev and Cauchy--Schwarz; product-law independence; finite conditioning;
+sample mean; finite Kolmogorov inequality. \\
+Effective schema & absolutely convergent countable expectation; effective
+reordering; lower-real extended expectation; compact and improper integration;
+monotone/Fatou/uniform-integrability convergence; common continuous laws;
+characteristic-function differentiation. \\
+Constructive correction & conditionally convergent sums are order sensitive;
+Cauchy truncations are path dependent; pointwise convergence does not imply
+convergence of expectations; the article's ``about 53 percent'' die statement
+corresponds to an open interval, not the inclusive event. \\
+Not claimed uniformly & extraction of a density from bare absolute continuity;
+unwitnessed arbitrary Lebesgue objects; qualitative almost-sure convergence
+without a finite-error contract or a modulus presentation. \\
+\bottomrule
+\end{tabular}
+\end{center}

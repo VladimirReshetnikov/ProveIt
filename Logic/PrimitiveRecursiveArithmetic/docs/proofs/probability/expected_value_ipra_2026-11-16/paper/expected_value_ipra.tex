@@ -1,0 +1,111 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{verbatim}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  citecolor=green!35!black,
+  urlcolor=blue!55!black,
+  pdftitle={Expected value in intuitionistic primitive recursive arithmetic},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Expected value in iPRA}
+\fancyhead[R]{16 November 2026}
+\fancyfoot[C]{\thepage}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{contract}[theorem]{Effective contract}
+\newtheorem{audit}[theorem]{Audit}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\qfind}{\mathrm{QF\mbox{-}Ind}}
+\newcommand{\Fin}{\operatorname{Fin}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\liminfN}{\mathop{\mathrm{liminf}}}
+\newcommand{\limsupN}{\mathop{\mathrm{limsup}}}
+\newcommand{\defeq}{\mathrel{:=}}
+\newcommand{\dyad}[1]{2^{-#1}}
+
+\setlist[itemize]{leftmargin=2em,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=2pt,topsep=4pt}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,frame=single}
+
+\title{Expected Value in Intuitionistic Primitive Recursive Arithmetic\\
+\large Finite exact probability, effective limits, and a Lean formalization route}
+\author{OpenAI\\Prepared for Vladimir Reshetnikov}
+\date{16 November 2026}
+
+\begin{document}
+\input{sections/00_front}
+\input{sections/01_scope}
+\input{sections/02_coding}
+\input{sections/03_finite_kernel}
+\input{sections/04_examples}
+\input{sections/05_properties}
+\input{sections/06_inequalities}
+\input{sections/07_independence}
+\input{sections/08_samples_lln}
+\input{sections/09_countable}
+\input{sections/10_effective_integration}
+\input{sections/11_distributions}
+\input{sections/12_convergence}
+\input{sections/13_fourier_applications}
+\input{sections/14_lean}
+\input{sections/15_ledger_conclusion}
+\appendix
+\input{sections/appendix_proofs}
+
+\begin{thebibliography}{9}
+\bibitem{wikipediaEV}
+Wikipedia contributors, ``Expected value,'' revision consulted 16 November 2026.
+
+\bibitem{proveit}
+V. Reshetnikov, \emph{ProveIt}, repository revision
+\code{df3ff8cc28be} (full hash in provenance), 16 November 2026.
+
+\bibitem{conciseipra}
+V. Reshetnikov, ``Concise presentations of intuitionistic primitive recursive arithmetic,''
+ProveIt/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA.
+
+\bibitem{cltpacket}
+``Constructive central limit theorems in iPRA,'' ProveIt proof packet,
+15 November 2026.
+\end{thebibliography}
+
+\end{document}

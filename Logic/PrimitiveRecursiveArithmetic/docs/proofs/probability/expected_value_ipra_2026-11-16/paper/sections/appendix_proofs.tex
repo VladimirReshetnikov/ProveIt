@@ -1,0 +1,201 @@
+\section{Detailed algebraic certificates}\label{app:certificates}
+
+\subsection{Denominator-cleared linearity}
+
+Suppose \(X_i=a_i/D\) and \(Y_i=b_i/E\), where \(a_i,b_i\) are signed integer
+codes and \(D,E>0\).  A common denominator is \(DE\), and
+\[
+ X_i+Y_i=\frac{Ea_i+Db_i}{DE}.
+\]
+The equality \(\E[X+Y]=\E[X]+\E[Y]\) becomes
+\[
+ \sum_iw_i(Ea_i+Db_i)
+ =E\sum_iw_ia_i+D\sum_iw_ib_i.
+\]
+This is exactly \code{sum\_add} plus distributivity.  Notice that the total
+weight \(W\) cancels from both sides before the object-language proof begins.
+
+\subsection{Variance without field division}
+
+Let \(A=\sum_iw_ia_i\), \(B=\sum_iw_ia_i^2\), and let the observable have
+common denominator \(D\).  Then \(\mu=A/(WD)\).  Clearing the denominator
+\(W^3D^2\) from
+\(\operatorname{Var}(X)=\mathbb E[X^2]-\mu^2\) yields the economical
+identity
+\[
+ \sum_iw_i(Wa_i-A)^2
+ =W^2B-WA^2=W(WB-A^2).
+\]
+Indeed,
+\begin{align*}
+\sum_iw_i(W^2a_i^2-2Wa_iA+A^2)
+&=W^2B-2WA\sum_iw_ia_i+A^2\sum_iw_i\\
+&=W^2B-2WA^2+WA^2\\
+&=W^2B-WA^2.
+\end{align*}
+Thus the denominator-cleared variance formula is a natural polynomial identity
+using only \(A=\sum_iw_ia_i\) and \(\sum_iw_i=W\).
+
+\subsection{Tail indicators}
+
+For naturals \(x\le B\), define
+\(T_B(x)=\sum_{k<B}\ind_{k<x}\).  The recurrences are
+\[
+ T_0(x)=0,
+\]
+and
+\[
+ T_{B+1}(x)=T_B(x)+\ind_{B<x}.
+\]
+An induction on \(B\) proves
+\(T_B(x)=\min(x,B)\).  The successor step splits on the decidable comparison
+\(B<x\).  Under \(x\le B\), this gives \(T_B(x)=x\).  This formulation avoids
+an induction whose bound depends on the observable value and maps directly to
+a two-variable open formula.
+
+\subsection{Weighted Lagrange identity}
+
+For completeness, expand the pairwise-square right side:
+\begin{align*}
+&\sum_{i<j}w_iw_j(u_iv_j-u_jv_i)^2\\
+&=\sum_{i<j}w_iw_j(u_i^2v_j^2+u_j^2v_i^2-2u_iu_jv_iv_j)\\
+&=\frac12\sum_{i\ne j}w_iw_j
+  (u_i^2v_j^2-u_iu_jv_iv_j)\\
+&=\frac12\left[
+   \sum_{i,j}w_iw_j(u_i^2v_j^2-u_iu_jv_iv_j)
+   -\sum_iw_i^2(u_i^2v_i^2-u_i^2v_i^2)
+  \right]\\
+&=\left(\sum_iw_iu_i^2\right)
+  \left(\sum_jw_jv_j^2\right)
+ -\left(\sum_iw_iu_iv_i\right)^2.
+\end{align*}
+For an arithmetic formalization one should avoid the factor \(1/2\): split the
+full off-diagonal sum into the two ordered triangles and prove directly that
+they are equal under index swap.
+
+\subsection{Finite geometric derivative identity}
+
+For \(q\ne1\), the finite geometric sum is
+\[
+ G_N(q)=\sum_{k=0}^{N-1}q^k,
+ \qquad (1-q)G_N(q)=1-q^N.
+\]
+The weighted version needed for the geometric mean is proved without formal
+differentiation.  Let
+\(S_N=\sum_{k=1}^{N}kq^{k-1}\).  Then
+\begin{align*}
+(1-q)S_N
+ &=1+q+\cdots+q^{N-1}-Nq^N\\
+ &=G_N(q)-Nq^N.
+\end{align*}
+Multiplying again by \(1-q\) gives
+\[
+ (1-q)^2S_N=1-(N+1)q^N+Nq^{N+1}.
+\]
+Both equations follow by aligning two finite sums and canceling equal terms;
+they are ideal quantifier-free induction lemmas.
+
+\subsection{First-crossing indicators}
+
+For a finite path \(S_1,\ldots,S_n\), define
+\[
+ C_k=\ind_{\abs{S_k}\ge a}
+      \prod_{j<k}\ind_{\abs{S_j}<a}.
+\]
+Products of Boolean indicators are natural \(0/1\) terms.  Then
+\[
+ C_kC_l=0\quad(k\ne l),
+\]
+because the later first-crossing indicator contains a factor asserting that
+the earlier threshold was not crossed.  Furthermore,
+\[
+ \ind_{\max_{j\le n}\abs{S_j}\ge a}=\sum_{k=1}^{n}C_k.
+\]
+The right side is at most one by disjointness and is one exactly when bounded
+search finds a least crossing.  This explicit formula can replace an abstract
+finite-event partition in the Kolmogorov proof.
+
+\section{Validation and reproducibility}\label{app:validation}
+
+\subsection{Exact regression program}
+
+The file \code{code/validate\_expected\_value.py} uses Python's
+\code{fractions.Fraction} exclusively for pass/fail arithmetic.  The recorded
+run in \code{validation/validation.json} reports:
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Test group & Exact assertions \\
+\midrule
+Article examples & 3 \\
+Finite normalization, bounds, parts, indicators, variance & 24,220 \\
+Linearity and monotonicity & 37,462 \\
+Tail formulas & 12,784 \\
+Markov, Chebyshev, and die audit & 3,748 \\
+Cauchy--Schwarz and Lagrange identity & 63,750 \\
+Independence and dependence examples & 7 \\
+Finite conditional expectation & 1 \\
+Binomial and sample-mean formulas & 36 \\
+Geometric and Poisson identities & 110 \\
+Divergence and rearrangement diagnostics & 87 \\
+Convergence and sigma-additivity counterexamples & 21 \\
+Finite moment determinacy & 3,300 \\
+Center of mass & 2,744 \\
+Kolmogorov maximal inequality & 44 \\
+\midrule
+Total & 148,317 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The tests enumerate many small laws and observables, verify the algebraic
+identities exactly, and exercise counterexamples.  They do not prove universal
+quantification, and the Python interpreter is not part of the trusted theory.
+Their role is to detect transcription errors before Lean formalization.
+
+\subsection{Reproduction commands}
+
+From the archive root:
+
+\begin{verbatim}
+python3 code/validate_expected_value.py \
+  --output validation/validation.json
+cd paper
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  expected_value_ipra.tex
+\end{verbatim}
+
+The source tree records the consulted Wikipedia revision and the ProveIt commit
+in \code{provenance/SOURCES.md}.  The top-level \code{MANIFEST.txt} lists the
+intended archive contents.
+
+\section{A compact object-language checklist}\label{app:checklist}
+
+For each theorem file, a reviewer should be able to answer ``yes'' to all of
+the following.
+
+\begin{enumerate}
+\item Are all mathematical inputs natural-number codes with explicit validity
+  predicates?
+\item Is every rational denominator proved positive before cross
+  multiplication or cancellation?
+\item Are all finite arrays accessed through proved bounded decoders?
+\item Is each bounded sum/product recurrence represented by a named \code{PR}
+  term with proved defining equations?
+\item Does the theorem checker reject a mathematical counterexample rather
+  than return zero on every input?
+\item Is the open goal quantifier-free, so that every induction use is an
+  instance of the permitted rule?
+\item Are bounded universal conditions compiled to finite failure sums or an
+  equivalent quantifier-free code?
+\item Is the semantic correctness theorem separate from the internal
+  derivation?
+\item Is universal closure performed only after the open derivation is
+  complete?
+\item Is transport to the native calculus performed only through the existing
+  proved equivalence?
+\end{enumerate}
+
+Meeting this checklist would turn the present blueprint into a genuinely
+kernel-checked \(\ipra\) development.

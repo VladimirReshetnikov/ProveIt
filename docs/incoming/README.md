@@ -289,6 +289,12 @@ of the 15 November edition and are placed in both. `ipra_kifcr_framework_2026-11
 placed the same way, under `foundations/`, and then deleted. It leaves out three ignored
 `.log` files. `ipra_cbip_framework_2026-11-16.zip` was placed the same way, under
 `foundations/`, and then deleted. All 37 of its members are placed.
+`barnes_g_ipra_2026-11-16.zip` was placed the same way, under `analysis/`, and then deleted.
+It leaves out one ignored checksum manifest. `expected_value_ipra_2026-11-16.zip` was placed
+the same way, under `probability/`, and then deleted. It leaves out one ignored checksum
+manifest; its wrapper directory is `expected_value_ipra`.
+`median_ipra_constructive_proofs.zip` was placed the same way, under `probability/`, and
+then deleted. All 14 of its members are placed.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

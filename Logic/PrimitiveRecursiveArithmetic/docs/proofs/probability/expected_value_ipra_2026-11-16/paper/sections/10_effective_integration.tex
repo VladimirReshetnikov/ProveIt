@@ -1,0 +1,342 @@
+\section{Effective integration and continuous laws}\label{sec:integration}
+
+\subsection{Regular reals and simple-law names}
+
+\begin{definition}[Regular rational interval name]\label{def:regular}
+A regular real name is a pair of primitive-recursive rational functions
+\(\ell(p),u(p)\) such that
+\[
+ \ell(p)\le u(p),\qquad
+ [\ell(p+1),u(p+1)]\subseteq[\ell(p),u(p)],\qquad
+ u(p)-\ell(p)\le2^{-p}.
+\]
+Arithmetic is performed by rational interval operations with extra guard bits.
+\end{definition}
+
+\begin{definition}[Effective simple random variable]\label{def:simple-name}
+An effective \(L^1\) simple-law name is a primitive-recursive sequence of
+finite rational laws \(X^{(p)}\), together with couplings of any two levels and
+a modulus
+\[
+ \E\abs{X^{(p)}-X^{(q)}}\le2^{-p}
+ \qquad(q\ge p).
+\]
+The couplings are finite common refinements: a finite weighted law carrying
+both approximants and having the prescribed marginals.
+\end{definition}
+
+This presentation is deliberately operational.  It does not quantify over a
+set of measurable functions.  Each level is a finite object, and the stated
+\(L^1\) inequality is a rational certificate.
+
+\begin{theorem}[Expectation of an \(L^1\) simple-law name]
+\label{thm:l1-expect}
+The rational sequence \(e_p=\E[X^{(p)}]\) is a regular Cauchy name.  More
+precisely, for \(q\ge p\),
+\[
+ \abs{e_q-e_p}\le2^{-p}.
+\]
+Thus \(\E[X]\) is constructively defined.  Equivalent names at zero effective
+\(L^1\) distance have the same expectation.
+\end{theorem}
+
+\begin{proof}
+On the supplied common refinement,
+\[
+ \abs{e_q-e_p}
+ =\abs{\E[X^{(q)}-X^{(p)}]}
+ \le\E\abs{X^{(q)}-X^{(p)}}
+ \le2^{-p}.
+\]
+The first inequality is the exact finite absolute-expectation inequality.
+Intervals centered at \(e_{p+2}\) with radius \(2^{-(p+2)}\), followed by a
+nested-hull normalization, give \Cref{def:regular}.  If two names have
+arbitrarily small effective \(L^1\) distance, apply the same estimate across a
+common refinement.
+\end{proof}
+
+\begin{theorem}[Lifted algebra]\label{thm:l1-algebra}
+Finite linearity, monotonicity, almost-sure/zero-\(L^1\) congruence, the absolute
+expectation bound, and certified Jensen lift from finite laws to effective
+\(L^1\) names.  The output modulus is primitive-recursively computed from the
+input moduli and coefficient bounds.
+\end{theorem}
+
+\begin{proof}
+At output precision \(p\), choose a common finite level with enough guard bits.
+Apply the corresponding exact finite theorem.  Bound the discrepancy between
+that finite result and each limiting name by the \(L^1\) modulus and
+\(\abs{\E Z}\le\E\abs Z\).  For a coefficient \(c\), request \(q\) such that
+\(\abs c2^{-q}\le2^{-p}\).  Monotonicity is stated with an effective
+nonnegative-difference presentation, rather than an uncheckable pointwise
+order on completed limits.
+\end{proof}
+
+\subsection{Compact rational quadrature}
+
+\begin{definition}[Piecewise Lipschitz integrand]\label{def:lipschitz}
+On a rational compact interval \([a,b]\), a piecewise Lipschitz presentation
+contains rational breakpoints, a primitive-recursive rational evaluator
+\(g(q,p)\) enclosing \(g(q)\) to precision \(2^{-p}\) at rational \(q\), and
+rational constants \(L_j\) satisfying
+\[
+ \abs{g(x)-g(y)}\le L_j\abs{x-y}
+\]
+on each piece.  Endpoint values are supplied as one-sided names when needed.
+\end{definition}
+
+\begin{theorem}[Effective compact integration]\label{thm:compact-integral}
+A piecewise Lipschitz presentation has a regular Riemann integral.  On one
+piece of length \(T\), a mesh of width \(h\) gives a left-sum error at most
+\(LTh\), plus the accumulated evaluation interval error.  Therefore a
+primitive-recursive mesh size achieving error \(2^{-p}\) can be chosen.
+\end{theorem}
+
+\begin{proof}
+For each cell \([x_k,x_{k+1}]\),
+\[
+ \abs{\int_{x_k}^{x_{k+1}}g(t)\,dt-g(x_k)(x_{k+1}-x_k)}
+ \le\int_{x_k}^{x_{k+1}}L\abs{t-x_k}\,dt
+ \le Lh(x_{k+1}-x_k).
+\]
+Summing yields \(LTh\).  A fully arithmetic proof replaces the integral in
+this estimate by upper and lower rectangle sums: Lipschitz continuity bounds
+the oscillation on a cell by \(Lh\), so the difference of Darboux sums is at
+most \(LTh\).  The finite sums are rational and exact.  Split at the finitely
+many breakpoints and allocate the error budget among pieces.
+\end{proof}
+
+\begin{definition}[Improper integral with an absolute-tail modulus]
+\label{def:improper}
+A presentation of \(g:\R\to\R\) includes compact piecewise-Lipschitz data and a
+primitive-recursive radius \(R(p)\) satisfying
+\[
+ \int_{\abs x>R(p)}\abs{g(x)}\,dx\le2^{-p}.
+\]
+Its integral is the regular limit of compact integrals over
+\([-R(p),R(p)]\).
+\end{definition}
+
+\begin{theorem}[Effective improper integration]\label{thm:improper}
+The construction in \Cref{def:improper} produces a regular real independent of
+the certified exhaustion.  Addition, scalar multiplication, and effective
+changes of variables preserve it with computable moduli.
+\end{theorem}
+
+\begin{proof}
+Two truncations beyond \(R(p)\) differ by an integral over a subset of the
+absolute tail and hence by at most \(2^{-p}\).  Compact quadrature approximates
+each truncation.  For addition, split the tail budget; for a change of variable,
+transform the compact quadrature and the tail certificate.  Every output
+precision therefore reduces to finitely many rational inequalities.
+\end{proof}
+
+\subsection{Densities and expectation}
+
+\begin{definition}[Effective density]\label{def:density}
+An effective density is a nonnegative integrand \(f\) with an effective
+improper integral equal to one.  A function \(g\) is integrable against \(f\)
+when \(\abs g f\) has an absolute-tail modulus and a compact quadrature
+presentation.  Define
+\[
+ \E_f[g]=\int_{-\infty}^{\infty}g(x)f(x)\,dx.
+\]
+The random variable \(X(x)=x\) has mean \(\int xf(x)\,dx\) when
+\(\abs x f(x)\) is effectively integrable.
+\end{definition}
+
+\begin{theorem}[Agreement with simple-law expectation]\label{thm:density-agreement}
+Let \(f\) be an effective density and let \(g\) be effectively integrable
+against \(f\).  There is a primitive-recursive sequence of finite
+\emph{rational} laws whose values are rational cell representatives for
+\(g\), whose successive levels admit certified finite couplings, and whose
+\(L^1\) limit has expectation
+\[
+ \int_{-\infty}^{\infty}g(x)f(x)\,dx.
+\]
+Thus the density definition and the simple-law definition of expectation agree.
+\end{theorem}
+
+\begin{proof}
+Fix an output precision \(p\).  Choose a rational radius \(R\) so that both
+\(\int_{|x|>R}f\) and \(\int_{|x|>R}|g|f\) are below a small allocated
+budget \(\eta\).  On \([-R,R]\), compute a rational bound \(G\) for
+\(|g|\), and choose a rational partition so fine that the oscillation of
+\(g\) on every cell is at most \(\eta\).  These choices are primitive
+recursive from the compact-continuity and tail moduli.
+
+For each cell \(I_j\), compact quadrature gives rational bounds
+\(0\le l_j\le\int_{I_j}f\le u_j\) with
+\(u_j-l_j\le\eta/J\), where \(J\) is the number of cells.  Put
+\(q_j=l_j\) and add one residual atom of rational mass
+\(q_*=1-\sum_jq_j\ge0\), represented at value zero.  The resulting masses
+are nonnegative rationals summing exactly to one; a common denominator turns
+them into natural weights.  Moreover,
+\[
+ q_*\le \int_{|x|>R}f+\sum_j(u_j-l_j),
+\]
+so the residual mass is explicitly small.  If \(r_j\in I_j\) is rational,
+the expectation of the finite law is \(\sum_jq_jg(r_j)\).  Its difference
+from \(\int gf\) is bounded by three finite estimates: cell oscillation,
+\(G\sum_j(u_j-l_j)\), and the certified tail \(\int_{|x|>R}|g|f\).
+Choosing \(\eta\) with guard bits makes their sum at most \(2^{-p}\).
+
+For coherence between two levels, refine both rational partitions to their
+finite common grid.  Match the rational masses greedily inside common cells;
+the unmatched mass is bounded by the two quadrature deficits and the two tail
+masses.  Transporting matched mass within a cell costs at most the cell
+oscillation, while the unmatched compact mass costs at most \(2G\) times its
+mass; the tail contribution is controlled by the \(|g|f\) modulus.  This
+finite greedy transport is primitive recursive and supplies a rational
+coupling with the required \(L^1\) bound.  Hence the levels form an effective
+simple-law name.  The expectation estimate above and
+\Cref{thm:l1-expect} show that its regular expectation is exactly the improper
+integral.
+\end{proof}
+
+\begin{theorem}[Effective continuous LOTUS]\label{thm:continuous-lotus}
+For an effective density \(f\) and an effectively integrable \(g\),
+\[
+ \E[g(X)]=\int_{-\infty}^{\infty}g(x)f(x)\,dx.
+\]
+For a primitive-recursive effective transformation \(Y=h(X)\), the expectation
+of \(k(Y)\) is obtained by integrating \(k(h(x))f(x)\), without first
+constructing a separate density for \(Y\).
+\end{theorem}
+
+\begin{proof}
+The first statement is the definition justified by
+\Cref{thm:density-agreement}.  For the second, apply the same finite simple-law
+approximants with the composed evaluator \(k\circ h\).  This is the continuous
+analogue of finite LOTUS and avoids an unnecessary inverse-function theorem.
+\end{proof}
+
+\subsection{CDF, Stieltjes, and layer-cake formulas}
+
+\begin{definition}[Effective CDF name]\label{def:cdf}
+For a density presentation, define
+\[
+ F(t)=\int_{-\infty}^{t}f(x)\,dx
+\]
+with a two-argument modulus controlling the left tail and compact quadrature.
+More generally, a CDF/Stieltjes name consists of rational polygonal
+approximants with monotonicity, endpoint, and variation certificates.
+\end{definition}
+
+\begin{theorem}[Effective integration by parts]\label{thm:stieltjes}
+Let \(F\) be a certified CDF/Stieltjes name and let \(g\) be a compactly
+supported piecewise \(C^1\) name, or a piecewise linear rational function.
+Then
+\[
+ \int g\,dF=gF\big|_{a}^{b}-\int_a^bF(t)g'(t)\,dt
+\]
+with a primitive-recursive error modulus.  Passing to improper limits is valid
+when the boundary terms and absolute tails have supplied moduli.
+\end{theorem}
+
+\begin{proof}
+For polygonal approximants, the formula is finite summation by parts:
+\[
+ \sum_k g_k(F_{k+1}-F_k)
+ =g_bF_b-g_aF_a-\sum_kF_{k+1}(g_{k+1}-g_k),
+\]
+up to a fixed endpoint convention.  This is a finite algebraic identity.
+Uniform variation and continuity bounds control replacement of the names by
+finer approximants.  The improper statement follows from the tail certificates.
+\end{proof}
+
+\begin{theorem}[Nonnegative layer cake]\label{thm:layer-cake}
+For an effectively integrable nonnegative random variable,
+\[
+ \E[X]=\int_0^\infty\Pp(X>t)\,dt.
+\]
+For an integrable signed variable and any rational \(a\),
+\[
+ \E[X]-a
+ =\int_a^\infty\Pp(X>t)\,dt
+  -\int_{-\infty}^{a}\Pp(X\le t)\,dt.
+\]
+At \(a=\E[X]\), the two areas are equal.
+\end{theorem}
+
+\begin{proof}
+At a finite rational simple level with denominator \(D\), the first formula is
+exactly \Cref{thm:finite-layer-cake}: the integral is a sum of rectangles of
+width \(1/D\).  Truncate the variable at a rational height and apply the
+finite identity.  The integrability modulus bounds the discarded
+\(\E[(X-B)^+]\), which is exactly the corresponding tail area at the simple
+level.  Pass to the effective limit.
+
+For signed \(X\), apply the first formula to \((X-a)^+\) and \((a-X)^+\), then
+use \(X-a=(X-a)^+-(a-X)^+\).  The events defining the two positive parts are
+\(X>t\) above \(a\) and \(X\le t\) below \(a\), with endpoint differences
+confined to zero-width integration slices.  Setting \(a=\E[X]\) makes the left
+side zero.
+\end{proof}
+
+\subsection{Absolute continuity: what is and is not internalized}
+
+Classically, several formulations of absolute continuity are equivalent, and a
+Radon--Nikodym theorem produces a density.  A bare existence conclusion is not
+computational data.  We therefore use the following witnessed direction.
+
+\begin{proposition}[Consequences of an explicit density witness]
+\label{prop:ac-forward}
+Given a nonnegative effective density \(f\), the set function
+\(\mu([a,b])=\int_a^bf\) is effectively absolutely continuous with respect to
+length on rational finite unions of intervals.  Its CDF is an effectively
+absolutely continuous regular function, and its almost-everywhere derivative
+is represented by the supplied \(f\) at all certified continuity points.
+\end{proposition}
+
+\begin{proof}
+Given \(\varepsilon=2^{-p}\), first use the improper-tail modulus to choose
+\(R\) with \(\int_{|x|>R}f<\varepsilon/2\).  The piecewise-Lipschitz data
+on the compact interval \([-R,R]\) compute a rational upper bound \(M>0\)
+for \(f\) there: evaluate one rational point on each piece and add its
+Lipschitz constant times the piece length, with one guard bit for the evaluator.
+If a finite union of intervals has total length below
+\(\delta=\varepsilon/(2M)\), then its integral inside \([-R,R]\) is below
+\(\varepsilon/2\), while its part outside contributes below the certified
+spatial tail \(\varepsilon/2\).  This proves effective absolute continuity
+without adding an independent amplitude-tail oracle.  The CDF increment
+formula is its defining integral.  At a continuity point with a modulus, the
+difference quotient is trapped between local lower and upper values of
+\(f\), giving the derivative estimate.
+\end{proof}
+
+\begin{remark}[No uniform constructive Radon--Nikodym converse]
+From a code that merely asserts an epsilon--delta property, one cannot in
+general extract a primitive-recursive density evaluator and all its integration
+moduli.  This report therefore does not claim the classical converse without a
+witness.  If a density name is supplied as part of the certificate, all usual
+forward equivalences become formalizable.
+\end{remark}
+
+\subsection{Cauchy truncation ambiguity}
+
+\begin{proposition}[Cauchy expectation is undefined]\label{prop:cauchy-trunc}
+For the standard Cauchy density
+\(f(x)=1/(\pi(1+x^2))\), the positive and negative first moments both diverge.
+The symmetric truncated first moment is zero, whereas truncation over
+\([-R,2R]\) tends to \((\log2)/\pi\).  Thus a principal-value convention does
+not define the expectation.
+\end{proposition}
+
+\begin{proof}
+On a finite interval,
+\[
+ \int \frac{x}{\pi(1+x^2)}\,dx
+ =\frac{1}{2\pi}\log(1+x^2).
+\]
+Symmetric endpoints cancel.  For \([-R,2R]\), the value is
+\[
+ \frac{1}{2\pi}\log\frac{1+4R^2}{1+R^2}
+ \longrightarrow\frac{1}{2\pi}\log4=\frac{\log2}{\pi},
+\]
+with an explicit rational bound on the logarithmic ratio error.  On the
+positive half-line,
+\(x/(1+x^2)\ge1/(2x)\) for \(x\ge1\), so the positive moment dominates a
+logarithmically divergent integral; symmetry gives divergence of the negative
+part.  By \Cref{def:signed-extended}, the expectation is undefined.
+\end{proof}

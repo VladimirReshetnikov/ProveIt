@@ -1,0 +1,223 @@
+\section{Functional equation, integer values, and finite products}\label{sec:functional}
+
+The canonical product is now an independently defined object.  We derive its
+recurrence rather than building the recurrence into the definition.
+
+\subsection{Finite cancellation and the Gamma limit}
+
+Let \(F_N(z)\) be the product in \cref{eq:Fdef} truncated after \(k=N\).
+A direct cancellation gives
+\begin{align}
+ \frac{F_N(z)}{F_N(z-1)}
+ ={}&\sqrt{2\pi}\,
+ \exp\!\left(-(1+\gamma)z+\frac\gamma2-N+
+                 \left(z-\frac12\right)H_N\right)\notag\\
+ &\times
+ \frac{(N+z)^N}{z(z+1)\cdots(z+N-1)},
+ \label{eq:finite-ratio}
+\end{align}
+where \(H_N=\sum_{k=1}^N1/k\).  To see the only nontrivial algebra, note that
+\[
+ \prod_{k=1}^{N}
+ \left(\frac{k+z}{k+z-1}\right)^k
+ =\frac{(N+z)^N}{z\prod_{j=1}^{N-1}(z+j)}.
+\]
+This is a finite monomial identity and is proved by induction after clearing all
+denominators.
+
+The Gamma packet supplies the constructive Gauss limit
+\begin{equation}\label{eq:gauss-gamma}
+ \Gamma(z)=\lim_{N\to\infty}
+ \frac{(N-1)!N^z}{z(z+1)\cdots(z+N-1)}
+\end{equation}
+on every compact set apart from the nonpositive integers.  Divide
+\cref{eq:finite-ratio} by the finite approximation in
+\cref{eq:gauss-gamma}.  The remaining factor is
+\begin{equation}\label{eq:ratio-remnant}
+ R_N(z)=
+ \frac{\sqrt{2\pi}\,N^N}{(N-1)!N^z}
+ \exp\!\left(-(1+\gamma)z+\frac\gamma2-N+
+       \left(z-\frac12\right)H_N\right)
+ \left(1+\frac zN\right)^N.
+\end{equation}
+The three standard quantitative limits are
+\begin{align}
+ H_N-\log N&=\gamma+O(N^{-1}),\label{eq:harmonic-limit}\\
+ (N-1)!&=\sqrt{2\pi}\,N^{N-1/2}\e^{-N}(1+O(N^{-1})),
+ \label{eq:stirling-fac}\\
+ N\Log(1+z/N)&=z+O_R(N^{-1}).\label{eq:exp-limit}
+\end{align}
+Each has an explicit primitive-recursive modulus in \code{gamma\_ipra}.  On
+substituting their leading terms into \cref{eq:ratio-remnant}, the powers of
+\(N\) cancel, and the constant exponent is
+\[
+ -(1+\gamma)z+\frac\gamma2
+ +(z-\tfrac12)\gamma+z=0.
+\]
+The quantitative error is \(O_R(1/N)\), so \(R_N(z)\to1\) uniformly on every
+certified compact set.
+
+\begin{theorem}[Functional equation]\label{thm:functional}
+For every \(z\in\C\), with the identity interpreted by analytic continuation at
+Gamma's poles,
+\begin{equation}\label{eq:functional}
+ G(z+1)=\Gamma(z)G(z),\qquad G(1)=1.
+\end{equation}
+On a compact zero-free domain this is a quantitative equality of fast names;
+globally it is an identity of entire functions after multiplication by the
+entire reciprocal-Gamma function.
+\end{theorem}
+
+\begin{proof}
+Away from the nonpositive integers, combine the common product-tail modulus for
+\(F_N(z)\) and \(F_N(z-1)\), the Gauss Gamma modulus, and the estimate
+\(R_N(z)\to1\).  This proves \(F(z)=\Gamma(z)F(z-1)\), i.e.
+\(G(z+1)=\Gamma(z)G(z)\), on a nonempty connected open domain.  Multiply by
+\(1/\Gamma(z)\).  Both sides then extend to entire functions, and the equality
+extends across the excluded points by their local Taylor contracts.  The
+normalization is \cref{eq:G1}.
+\end{proof}
+
+For object iPRA, analytic continuation is not a black box.  At a requested
+input ball intersecting a nonpositive integer, use the factorization in
+\cref{thm:zeros} and the corresponding zero factor of \(1/\Gamma\).  The local
+cross-multiplied identity follows from polynomial cancellation and a tail ball.
+A finite cover of the input compact set combines the local proofs.
+
+\subsection{Positive and nonpositive integer values}
+
+Define the exact primitive-recursive sequence
+\begin{equation}\label{eq:gpos}
+ g_0=1,
+ \qquad g_{n+1}=n!\,g_n.
+\end{equation}
+By \cref{eq:functional} and \(G(1)=1\),
+\(G(n+1)=g_n\).  Induction yields
+\begin{equation}\label{eq:integerG}
+ G(n)=\prod_{j=0}^{n-2}j!
+ \quad(n\ge1),
+\end{equation}
+where the product is empty at \(n=1\).  Thus
+\[
+ G(1),G(2),G(3),G(4),G(5),\ldots
+ =1,1,1,2,12,288,34560,\ldots.
+\]
+Together with \cref{thm:zeros}, this proves
+\begin{equation}\label{eq:integer-all}
+ G(n)=
+ \begin{cases}
+ 0,&n=0,-1,-2,\ldots,\\
+ 0!1!\cdots(n-2)!,&n=1,2,3,\ldots.
+ \end{cases}
+\end{equation}
+
+\begin{theorem}[Exact iPRA integer theorem]\label{thm:integer-ipra}
+Let \(\operatorname{fac}\) and \(g\) be the primitive-recursive symbols defined
+by
+\[
+ \operatorname{fac}(0)=1,
+ \quad \operatorname{fac}(n+1)=(n+1)\operatorname{fac}(n),
+\]
+\[
+ g(0)=1,
+ \quad g(n+1)=\operatorname{fac}(n)g(n).
+\]
+Then iPRA proves every defining equation, the superfactorial identity
+\[
+ g(n+1)=\prod_{j\le n}j!,
+\]
+and all numeral instances of the sequence above by quantifier-free induction.
+\end{theorem}
+
+\begin{proof}
+The displayed recursions use the primitive-recursion constructor.  Their two
+equations are instances of the zero and successor recursion axioms in
+\code{PRAAx}.  Introduce a primitive-recursive accumulator for the finite
+product.  Equality of its value
+with \(g(n+1)\) has a quantifier-free graph formula.  The zero case is a
+computation equation, and the successor case multiplies the induction
+hypothesis by \((n+1)!\).  Therefore \code{PRA.qfInd} applies directly.
+\end{proof}
+
+\subsection{Superfactorials and the hyperfactorial identity}
+
+With \(\sfac(m)=\prod_{j=0}^{m}j!\), \cref{eq:integerG} says
+\begin{equation}\label{eq:superfactorial}
+ G(n)=\sfac(n-2)\qquad(n\ge2),
+\end{equation}
+with the conventional empty extension at \(n=1\).
+
+Let
+\[
+ \hyp(m)=\prod_{j=1}^{m}j^j
+\]
+be the hyperfactorial.  The exact finite identity on the target pages is
+\begin{equation}\label{eq:hyper-cross}
+ G(n)\hyp(n-1)=((n-1)!)^{n-1}\qquad(n\ge1).
+\end{equation}
+Indeed, count the exponent of each \(j\in\{1,\ldots,n-1\}\).  In
+\(G(n)=\prod_{r=1}^{n-2}r!\), the number \(j\) appears in
+\(j!, (j+1)!,\ldots,(n-2)!\), hence with exponent \(n-1-j\).  In
+\(\hyp(n-1)\) it has exponent \(j\).  The total exponent is \(n-1\), which is
+exactly the exponent in \(((n-1)!)^{n-1}\).
+
+This proof can be formalized either by bounded valuation counting or, more
+simply, by induction on \(n\).  The induction invariant is the division-free
+identity \cref{eq:hyper-cross}; the successor step uses
+\[
+ G(n+1)=(n-1)!G(n),
+ \quad
+ \hyp(n)=\hyp(n-1)n^n,
+ \quad
+ n!=n(n-1)!.
+\]
+After substituting the induction hypothesis, both sides normalize to
+\(n^n((n-1)!)^n\).  ProveIt's polynomial/power normalization modules are
+designed for exactly this step.
+
+At positive integers, \(\Gamma(n)=(n-1)!\), so
+\begin{equation}\label{eq:G-over-H}
+ G(n)=\frac{\Gamma(n)^{n-1}}{\hyp(n-1)}.
+\end{equation}
+The formal theorem is \cref{eq:hyper-cross}; the quotient form follows from the
+strict positivity of \(\hyp(n-1)\).
+
+\subsection{Finite products of Gamma values}
+
+Iterating \cref{eq:functional} \(n\) times gives
+\begin{equation}\label{eq:gamma-finite-product}
+ G(k+n+1)=G(k+1)\prod_{i=1}^{n}\Gamma(k+i).
+\end{equation}
+Therefore, on a domain where \(G(k+1)\) is apart from zero,
+\begin{equation}\label{eq:gamma-finite-quotient}
+ \prod_{i=1}^{n}\Gamma(k+i)
+ =\frac{G(k+n+1)}{G(k+1)}.
+\end{equation}
+The cross-multiplied form \cref{eq:gamma-finite-product} is global and is the
+primary iPRA target.
+
+\begin{proof}[Constructive proof]
+Define
+\(P_0(k)=1\) and
+\(P_{n+1}(k)=P_n(k)\Gamma(k+n+1)\).  The assertion
+\(G(k+n+1)=G(k+1)P_n(k)\) has the exact base case \(n=0\).  In the successor
+step, multiply by \(\Gamma(k+n+1)\) and apply the functional equation once.
+For named complex inputs, each multiplication is a ball operation with a
+backward precision allocation.  For positive integer \(k\), every quantity is
+an exact natural number, so this is ordinary quantifier-free induction.
+\end{proof}
+
+\subsection{A useful asymptotic ratio already visible from the recurrence}
+
+For later source correction, note the exact identity for fixed \(x>0\) and
+integer \(n\):
+\begin{equation}\label{eq:ratio-exact}
+ \frac{G(n+x)}{G(n)}
+ =G(x)\,\Gamma(n)
+   \prod_{j=0}^{n-1}\frac{\Gamma(x+j)}{\Gamma(j+1)}
+ \qquad(n\ge1).
+\end{equation}
+Indeed, the extra factor \(\Gamma(n)\) exactly compensates for the last
+factor introduced in the denominator product.  Gamma-ratio asymptotics, not a
+power \(\Gamma(x)^n\), control the remaining product.
+The precise result is proved in \cref{thm:corrected-characterization}.

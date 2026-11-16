@@ -63,31 +63,40 @@ lemma select_run (A H x d : V) (m : ℕ) (ys : List V) (r W : V) (hm : m ≤ S.n
 
 /-! ## Leaves -/
 
-lemma leaf_le (i : ℕ) (hi : i < 8) : i + 2 + S.g ≤ S.n := by
-  unfold Sem.g Sem.n
-  cases S.ax11 <;> simp <;> omega
+lemma leaf_le (i : ℕ) (hi : i < S.m) : i + 2 + S.g ≤ S.n := by
+  revert hi
+  unfold Sem.g Sem.n Sem.m
+  cases S.ax11 <;> cases S.short <;> simp <;> omega
 
-lemma leaf_window (f : ℕ → V) (g t T : V) (i : ℕ) (hi : i < 8) :
+lemma leaf_window (f : ℕ → V) (g t T : V) (i : ℕ) (hi : i < S.m) :
     (last2 (topL S T) 0 ((itemsL S T f g t).take (i + 2 + S.g))).1 = f i := by
-  unfold topL itemsL Sem.g
-  cases S.ax11 <;> interval_cases i <;> rfl
+  revert hi
+  unfold topL itemsL items Sem.g Sem.m
+  cases S.ax11 <;> cases S.short <;> intro hi <;>
+    simp only [Bool.false_eq_true, ↓reduceIte] at hi <;> interval_cases i <;> rfl
 
 lemma leaf_nohalt (f : ℕ → V) (g t T : V) (hT : T ≠ 1) (hf : ∀ j, f j ≠ 1) (i : ℕ)
-    (hi : i < 8) : NoHalt S (topL S T) 0 ((itemsL S T f g t).take (i + 2 + S.g)) := by
-  unfold topL itemsL Sem.g
-  cases S.ax11 <;> interval_cases i <;> simp [NoHalt, items, halts_iff_false, hT, hf]
+    (hi : i < S.m) : NoHalt S (topL S T) 0 ((itemsL S T f g t).take (i + 2 + S.g)) := by
+  revert hi
+  unfold topL itemsL items Sem.g Sem.m
+  cases S.ax11 <;> cases S.short <;> intro hi <;>
+    simp only [Bool.false_eq_true, ↓reduceIte] at hi <;> interval_cases i <;>
+    simp [NoHalt, halts_iff_false, hT, hf]
 
-lemma leaf_drop (f : ℕ → V) (g t T : V) (i : ℕ) (hi : i < 8) :
+lemma leaf_drop (f : ℕ → V) (g t T : V) (i : ℕ) (hi : i < S.m) :
     ∃ ys : List V, (itemsL S T f g t).drop (i + 2 + S.g) = ys ++ [t] ∧
-      ys.length + 1 = 8 - i := by
+      ys.length + 1 = S.m - i := by
   refine ⟨((itemsL S T f g t).drop (i + 2 + S.g)).dropLast, ?_, ?_⟩ <;>
-    (unfold itemsL Sem.g; cases S.ax11 <;> interval_cases i <;> rfl)
+    (revert hi; unfold itemsL items Sem.g Sem.m
+     cases S.ax11 <;> cases S.short <;> intro hi <;>
+       simp only [Bool.false_eq_true, ↓reduceIte] at hi <;> interval_cases i <;> rfl)
 
 /-- The word for the leaf `i` with the parameters `D H A d`. -/
 def LEAF (i : ℕ) (D H A d : V) : V :=
-  pops S (8 - i) (shifts (i + 2 + S.g) (snoc (offset d (DISCARD S)) (AX A H (D - d))))
+  pops S (S.m - i) (shifts (i + 2 + S.g) (snoc (offset d (DISCARD S)) (AX A H (D - d))))
 
-theorem G_leaf (i : ℕ) (hi : i < 8) (D H A d : V) (hd : d ≤ D) : G S (S.leaf i D H A d) := by
+theorem G_leaf (i : ℕ) (hi : i < S.m) (D H A d : V) (hd : d ≤ D) :
+    G S (S.leaf i D H A d) := by
   refine ⟨LEAF S i D H A d, Or.inr ?_⟩
   have h1 : texec S (offset d (DISCARD S)) ⟪⟪0, 0, 0, 0⟫, 0, 0⟫ = ⟪⟪0, 0, d, 0⟫, 0, 0⟫ :=
     offset_run S d 0 0 (DISCARD S) _ (discard_run S 0 0 0)
@@ -105,23 +114,23 @@ theorem G_leaf (i : ℕ) (hi : i < 8) (D H A d : V) (hd : d ≤ D) : G S (S.leaf
 
 lemma gate_le : 2 * S.g ≤ S.n := by
   unfold Sem.g Sem.n
-  cases S.ax11 <;> simp
+  cases S.ax11 <;> cases S.short <;> simp
 
 lemma gate_window (f : ℕ → V) (g t T : V) :
     (last2 (topL S T) 0 ((itemsL S T f g t).take (2 * S.g))).1 = T := by
-  unfold topL itemsL Sem.g
-  cases S.ax11 <;> rfl
+  unfold topL itemsL items Sem.g
+  cases S.ax11 <;> cases S.short <;> rfl
 
 lemma gate_nohalt (f : ℕ → V) (g t T : V) (hT : T ≠ 1) :
     NoHalt S (topL S T) 0 ((itemsL S T f g t).take (2 * S.g)) := by
-  unfold topL itemsL Sem.g
-  cases S.ax11 <;> simp [NoHalt, items, halts_iff_false, hT]
+  unfold topL itemsL items Sem.g
+  cases S.ax11 <;> cases S.short <;> simp [NoHalt, halts_iff_false, hT]
 
 lemma gate_drop (f : ℕ → V) (g t T : V) :
     ∃ ys : List V, (itemsL S T f g t).drop (2 * S.g) = ys ++ [t] := by
   refine ⟨((itemsL S T f g t).drop (2 * S.g)).dropLast, ?_⟩
-  unfold itemsL Sem.g
-  cases S.ax11 <;> rfl
+  unfold itemsL items Sem.g
+  cases S.ax11 <;> cases S.short <;> rfl
 
 /-- The gate: it is the top after AX, or the first stack entry in the eleven-entry layout,
 where two SHIFTs bring it to the top. -/

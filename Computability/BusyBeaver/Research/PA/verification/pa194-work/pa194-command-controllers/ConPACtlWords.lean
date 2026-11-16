@@ -101,6 +101,14 @@ def stack10 (f : ℕ → V) (g t w : V) : V :=
   cantor (f 0) (cantor (f 1) (cantor (f 2) (cantor (f 3) (cantor (f 4) (cantor (f 5)
     (cantor (f 6) (cantor (f 7) (cantor g (cantor t w)))))))))
 
+/-- The stack after a short AX command: seven leaf formulas, a generalization, the old top. -/
+def stack9 (f : ℕ → V) (g t w : V) : V :=
+  cantor (f 0) (cantor (f 1) (cantor (f 2) (cantor (f 3) (cantor (f 4) (cantor (f 5)
+    (cantor (f 6) (cantor g (cantor t w))))))))
+
+/-- The stack after AX: eight leaves, or seven when `short`. -/
+def stackS (short : Bool) (f : ℕ → V) (g t w : V) : V :=
+  if short then stack9 f g t w else stack10 f g t w
 /-- What a successful MP returns, with `b = d + y`: `push` is `⟪b, cantor 0 w, b, 0⟫`, `top` is
 `⟪b, w, b, 0⟫`, `cache` is `⟪0, w, 0, b⟫`. -/
 inductive MPKind where
@@ -131,6 +139,8 @@ structure Sem where
   /-- Whether AX pushes its gate as an eleventh stack entry, leaves the top `0` and sets `d`
   to its fourth argument (otherwise the gate is the top and `d` is cleared). -/
   ax11 : Bool
+  /-- Whether AX pushes seven leaf formulas instead of eight. -/
+  short : Bool
   /-- The top after AX, as a function of `H D A`. -/
   axT : V → V → V → V
   /-- The eight leaf formulas pushed by AX, as functions of `D H A d`. -/
@@ -144,10 +154,12 @@ structure Sem where
   ax_eq : ∀ A y x z t w d h : V, cstep ⟪A + 1 + 1, y, x, z⟫ ⟪t, w, d, h⟫ =
     if ax11 then
       ⟪0, cantor (axT (h + y) (d + x) A)
-        (stack10 (fun i => leaf i (d + x) (h + y) A d) (4 * cantor h (genL A d) + 2) t w), z, 0⟫
+        (stackS short (fun i => leaf i (d + x) (h + y) A d) (4 * cantor h (genL A d) + 2) t w),
+        z, 0⟫
     else
       ⟪axT (h + y) (d + x) A,
-        stack10 (fun i => leaf i (d + x) (h + y) A d) (4 * cantor h (genL A d) + 2) t w, 0, 0⟫
+        stackS short (fun i => leaf i (d + x) (h + y) A d) (4 * cantor h (genL A d) + 2) t w,
+        0, 0⟫
   axT_ne_one : ∀ H D A : V, axT H D A ≠ 1
   leaf_ne_one : ∀ (i : ℕ) (D H A d : V), leaf i D H A d ≠ 1
   genL_self : ∀ i : V, genL i i = i
@@ -167,11 +179,19 @@ def Sem.k (S : Sem V) : ℕ := if S.cacheTest then 0 else 1
 /-- The halting test of SHIFT on the top `t` and the cache `h`. -/
 def Sem.Halts (S : Sem V) (t h : V) : Prop := (S.k : V) * t + h = 1
 
-/-- The number of stack entries of AX beyond ten: `1` when the gate is pushed. -/
+/-- The number of gates among the stack entries of AX: `1` when the gate is pushed. -/
 def Sem.g (S : Sem V) : ℕ := if S.ax11 then 1 else 0
 
-/-- The number of stack entries that AX pushes. -/
-def Sem.n (S : Sem V) : ℕ := if S.ax11 then 11 else 10
+/-- The number of leaf formulas of AX beyond seven. -/
+def Sem.s (S : Sem V) : ℕ := if S.short then 0 else 1
+
+/-- The number of leaf formulas that AX pushes. -/
+def Sem.m (S : Sem V) : ℕ := if S.short then 7 else 8
+
+/-- The number of stack entries that AX pushes: the leaves, the generalization, the old top,
+and the gate when it is pushed. -/
+def Sem.n (S : Sem V) : ℕ :=
+  if S.ax11 then (if S.short then 10 else 11) else (if S.short then 9 else 10)
 
 variable (S : Sem V)
 
@@ -186,10 +206,11 @@ def tstep (c τ : V) : V :=
       if 4 * cantor (π₁ (π₁ τ)) (π₁ (π₂ (π₂ (π₁ τ))) + π₁ (π₂ c)) = π₂ (π₂ (π₂ (π₁ τ))) then
         ⟪S.cstep c (π₁ τ), π₁ (π₂ τ) + (S.up : V), 0⟫
       else ⟪S.cstep c (π₁ τ), π₁ (π₂ τ), 0⟫
-    else ⟪S.cstep c (π₁ τ), π₁ (π₂ τ) + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + (S.g : V), 0⟫
+    else ⟪S.cstep c (π₁ τ),
+      π₁ (π₂ τ) + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + (S.s : V) + (S.g : V), 0⟫
   else τ
 
-def tstepDef (k up g : ℕ) (cstepDef : 𝚺₁.Semisentence 3) : 𝚺₁.Semisentence 3 :=
+def tstepDef (k up s g : ℕ) (cstepDef : 𝚺₁.Semisentence 3) : 𝚺₁.Semisentence 3 :=
   .mkSigma “tn c tau. ∃ s, !pi₁Def s tau ∧ ∃ r, !pi₂Def r tau ∧ ∃ dl, !pi₁Def dl r ∧
     ∃ f, !pi₂Def f r ∧ ∃ tag, !pi₁Def tag c ∧ ∃ t, !pi₁Def t s ∧ ∃ s2, !pi₂Def s2 s ∧
     ∃ s3, !pi₂Def s3 s2 ∧ ∃ d, !pi₁Def d s3 ∧ ∃ h, !pi₂Def h s3 ∧ ∃ c2, !pi₂Def c2 c ∧
@@ -201,10 +222,10 @@ def tstepDef (k up g : ℕ) (cstepDef : 𝚺₁.Semisentence 3) : 𝚺₁.Semise
      (f = 0 ∧ tag = 1 ∧ 4 * p = h ∧ !pair₃Def tn sn (dl + ↑up) 0) ∨
      (f = 0 ∧ tag = 1 ∧ 4 * p ≠ h ∧ !pair₃Def tn sn dl 0) ∨
      (f = 0 ∧ tag ≠ 0 ∧ tag ≠ 1 ∧
-       !pair₃Def tn sn (dl + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + ↑g) 0))”
+       !pair₃Def tn sn (dl + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + ↑s + ↑g) 0))”
 
 lemma tstepDef_iff (tn c τ : V) :
-    (tstepDef S.k S.up S.g S.cstepDef).val.Evalb ![tn, c, τ] ↔ tn = tstep S c τ := by
+    (tstepDef S.k S.up S.s S.g S.cstepDef).val.Evalb ![tn, c, τ] ↔ tn = tstep S c τ := by
   unfold tstep
   by_cases hf : π₂ (π₂ τ) = 0
   · by_cases h0 : π₁ c = 0
@@ -225,11 +246,11 @@ lemma tstepDef_iff (tn c τ : V) :
 
 namespace Exec
 
-def blueprint (k up g : ℕ) (cstepDef : 𝚺₁.Semisentence 3) : VecRec.Blueprint 1 where
+def blueprint (k up s g : ℕ) (cstepDef : 𝚺₁.Semisentence 3) : VecRec.Blueprint 1 where
   nil := .mkSigma “y tau. y = tau”
-  adjoin := .mkSigma “y x xs ih tau. !(tstepDef k up g cstepDef) y x ih”
+  adjoin := .mkSigma “y x xs ih tau. !(tstepDef k up s g cstepDef) y x ih”
 
-def construction : VecRec.Construction V (blueprint S.k S.up S.g S.cstepDef) where
+def construction : VecRec.Construction V (blueprint S.k S.up S.s S.g S.cstepDef) where
   nil := fun v ↦ v 0
   adjoin := fun _ x _ ih ↦ tstep S x ih
   nil_defined := .mk fun v ↦ by simp [blueprint]
@@ -245,10 +266,10 @@ def texec (W τ : V) : V := (Exec.construction S).result ![τ] W
 @[simp] lemma texec_adjoin (c W τ : V) : texec S (c ∷ W) τ = tstep S c (texec S W τ) := by
   simp [texec, Exec.construction]
 
-def texecDef (k up g : ℕ) (cstepDef : 𝚺₁.Semisentence 3) : 𝚺₁.Semisentence 3 :=
-  (Exec.blueprint k up g cstepDef).resultDef
+def texecDef (k up s g : ℕ) (cstepDef : 𝚺₁.Semisentence 3) : 𝚺₁.Semisentence 3 :=
+  (Exec.blueprint k up s g cstepDef).resultDef
 
-instance texec_defined : 𝚺₁-Function₂ (texec S) via texecDef S.k S.up S.g S.cstepDef :=
+instance texec_defined : 𝚺₁-Function₂ (texec S) via texecDef S.k S.up S.s S.g S.cstepDef :=
   (Exec.construction S).result_defined
 
 instance texec_definable : 𝚺₁-Function₂ (texec S) := (texec_defined S).to_definable

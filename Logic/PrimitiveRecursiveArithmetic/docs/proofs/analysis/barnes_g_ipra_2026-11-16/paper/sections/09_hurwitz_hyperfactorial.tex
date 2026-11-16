@@ -1,0 +1,197 @@
+\section{Hurwitz zeta, negative polygamma, and the analytic hyperfactorial}\label{sec:hurwitz}
+
+\subsection{A constructive Hurwitz-zeta derivative}
+
+For \(\Re z>0\), the Hurwitz zeta function has the fixed-order
+Euler--Maclaurin representation
+\begin{align}
+ \zeta(s,z)={}&\sum_{k=0}^{N-1}(z+k)^{-s}
+ +\frac{(z+N)^{1-s}}{s-1}+\frac12(z+N)^{-s}\notag\\
+ &+\sum_{r=1}^{M}
+ \frac{B_{2r}}{(2r)!}(s)_{2r-1}(z+N)^{-s-2r+1}
+ +R_{M,N}(s,z),
+ \label{eq:hurwitz-EM}
+\end{align}
+where \((s)_j=s(s+1)\cdots(s+j-1)\).  On a compact box in \(s,z\), with
+\(\Re(z+N)\) positively bounded, the usual periodic-Bernoulli integral gives
+an explicit rational majorant for \(R_{M,N}\) and its derivative in \(s\).
+For fixed \(M\), all coefficients are rational; powers and logarithms use the
+branch path supplied with \(z\).  Thus \(\zeta'(-1,z)\) has a
+primitive-recursive fast name on every compact subset of \(\Re z>0\).
+
+The fundamental finite shift relation is
+\begin{equation}\label{eq:hurwitz-shift}
+ \zeta(s,z+1)=\zeta(s,z)-z^{-s}.
+\end{equation}
+Differentiating at \(s=-1\) gives
+\begin{equation}\label{eq:hurwitz-derivative-shift}
+ \zeta'(-1,z+1)-\zeta'(-1,z)=z\Log z.
+\end{equation}
+The differentiation can be avoided formally: apply a symmetric rational
+difference quotient in \(s\) to the exact shift identity, bound the Taylor
+remainder uniformly, and then let the precision parameter increase.  This is a
+schema of finite rational statements.
+
+\subsection{Vardi's formula}
+
+Define on \(\Re z>0\)
+\begin{equation}\label{eq:vardi-rhs}
+ V(z)=\frac1{12}-\zeta'(-1,z)+(z-1)\Log\Gamma(z)-\log A.
+\end{equation}
+Using \cref{eq:hurwitz-derivative-shift},
+\(\Log\Gamma(z+1)=\Log z+\Log\Gamma(z)\), and
+\(\log A=1/12-\zeta'(-1)\), one finds
+\begin{align*}
+ V(z+1)-V(z)
+ &=-z\Log z+z\Log\Gamma(z+1)-(z-1)\Log\Gamma(z)\\
+ &=\Log\Gamma(z).
+\end{align*}
+Also \(V(1)=0\).  The difference
+\(V(z)-\Log G(z)\) is therefore one-periodic.  Euler--Maclaurin applied to
+\cref{eq:vardi-rhs}, or the asymptotic theorem below, shows that this difference
+tends to zero as \(\Re z\to+\infty\) in a fixed horizontal strip.  Periodicity
+then forces it to be identically zero.
+
+\begin{theorem}[Hurwitz-zeta derivative formula]\label{thm:vardi}
+For \(\Re z>0\), with logarithms continued from the positive real axis,
+\begin{equation}\label{eq:vardi}
+ G(z)=\frac{
+ \exp(1/12-\zeta'(-1,z))\,\Gamma(z)^{z-1}}{A}.
+\end{equation}
+Equivalently,
+\[
+ \Log G(z)=\frac1{12}-\zeta'(-1,z)
+ +(z-1)\Log\Gamma(z)-\log A.
+\]
+\end{theorem}
+
+\begin{proof}[Effective periodicity argument]
+Given \(z\) in a certified compact subset of \(\Re z>0\) and precision \(p\),
+choose an integer \(m\) so that the explicit Euler--Maclaurin remainders for
+\(V(z+m)\) and \(\Log G(z+m)\) sum to less than \(2^{-p}\).  Repeated use of
+the exact shift equations gives
+\[
+ V(z)-\Log G(z)=V(z+m)-\Log G(z+m).
+\]
+The right side lies in the dyadic ball of radius \(2^{-p}\) around zero.  This
+is the precision instance of equality.  The shift count and every remainder
+bound are primitive recursive in the query data.
+\end{proof}
+
+This proves MathWorld equation (4), including its domain qualification.
+
+\subsection{Glaisher's constant as an iPRA name}
+
+Let
+\[
+ \hyp(N)=\prod_{k=1}^{N}k^k.
+\]
+Euler--Maclaurin for \(\sum_{k=1}^N k\log k\) gives
+\begin{equation}\label{eq:hyper-asymp}
+ \hyp(N)=A\,
+ N^{N^2/2+N/2+1/12}\e^{-N^2/4}
+ \bigl(1+\varepsilon_N\bigr),
+ \qquad |\varepsilon_N|\le \frac{C}{N^2}
+\end{equation}
+with an explicit rational \(C\) once a fixed truncation order is selected.
+Thus
+\begin{equation}\label{eq:A-limit}
+ \log A=\lim_{N\to\infty}
+ \left[
+ \sum_{k=1}^{N}k\log k
+ -\left(\frac{N^2}{2}+\frac N2+\frac1{12}\right)\log N
+ +\frac{N^2}{4}
+ \right]
+\end{equation}
+has a primitive-recursive modulus.  Evaluating the same Euler--Maclaurin
+constant through the analytic continuation of zeta gives
+\begin{equation}\label{eq:A-zeta-again}
+ \log A=\frac1{12}-\zeta'(-1).
+\end{equation}
+
+For formalization one may choose \cref{eq:A-limit} as the definition of the
+name \(A\), because it uses only finite sums, positive logarithms, and an
+explicit remainder.  Equation \cref{eq:A-zeta-again} then becomes a theorem.
+Alternatively, if the zeta module is already available, the right side of
+\cref{eq:A-zeta-again} is shorter.  Both names are proved equal by comparing
+their finite Euler--Maclaurin approximants.
+
+\subsection{The analytic hyperfactorial or K-function}
+
+To avoid confusing the K-function with the multiplication constant \(K(n)\),
+write \(\mathcal H(z)\) for the analytic continuation of the hyperfactorial,
+normalized by
+\begin{equation}\label{eq:analytic-hyper-recurrence}
+ \mathcal H(1)=1,
+ \qquad
+ \mathcal H(z+1)=z^z\mathcal H(z).
+\end{equation}
+On a branch domain define
+\begin{equation}\label{eq:analytic-hyper-def}
+ \mathcal H(z)=
+ \frac{\exp((z-1)\Log\Gamma(z))}{G(z)}.
+\end{equation}
+Then \(\mathcal H(1)=1\), and
+\begin{align*}
+ \frac{\mathcal H(z+1)}{\mathcal H(z)}
+ &=\frac{\exp(z\Log\Gamma(z+1))}{G(z+1)}
+   \frac{G(z)}{\exp((z-1)\Log\Gamma(z))}\\
+ &=\exp(z\Log z)=z^z.
+\end{align*}
+Therefore \(\mathcal H\) is the normalized analytic K-function and
+\begin{equation}\label{eq:analytic-hyper-relation}
+ \mathcal H(z)G(z)=\exp((z-1)\Log\Gamma(z)).
+\end{equation}
+At \(z=n\in\N_{>0}\), the recurrence gives
+\(\mathcal H(n)=\hyp(n-1)\), and \cref{eq:analytic-hyper-relation} reduces to
+the exact identity \cref{eq:hyper-cross}.
+
+The formal primary statement is the exponentiated, cross-multiplied equality.
+A global claim ``for all complex \(z\)'' must be read on the logarithmic
+cover, because \(z^z\) and \(\Gamma(z)^{z-1}\) are branch dependent.  On any
+fixed path domain, the continuation algorithm of \cref{sec:ipra} supplies the
+needed name.
+
+\subsection{Negative-order polygamma form}
+
+A normalized negative-order polygamma \(\psi_{-2}\) can be characterized by
+\begin{equation}\label{eq:negpoly-rec}
+ \psi_{-2}(z+1)-\psi_{-2}(z)
+ =z\Log z-z+\frac12\log(2\pi),
+ \qquad
+ \psi_{-2}(1)=\frac12\log(2\pi),
+\end{equation}
+plus the standard eventual higher-convexity or asymptotic normalization.  Set
+\begin{equation}\label{eq:negpoly-expression}
+ W(z)=-\binom z2+(z-1)\Log\Gamma(z)
+      +\frac z2\log(2\pi)-\Log G(z).
+\end{equation}
+Using the Gamma and Barnes recurrences, a finite calculation shows that \(W\)
+satisfies \cref{eq:negpoly-rec}; the asymptotic module supplies the normalization.
+Hence \(W=\psi_{-2}\), and
+\begin{equation}\label{eq:negative-polygamma}
+ \Log G(z)=
+ -\binom z2+(z-1)\Log\Gamma(z)
+ +\frac z2\log(2\pi)-\psi_{-2}(z).
+\end{equation}
+Exponentiating gives the MathWorld form
+\begin{equation}\label{eq:negative-polygamma-exp}
+ G(z)=(2\pi)^{z/2}
+ \exp\!\left((z-1)(\Log\Gamma(z)-z/2)-\psi_{-2}(z)\right).
+\end{equation}
+
+The qualification ``normalized'' is essential.  An indefinite second
+antiderivative is determined only up to an affine function; changing that
+normalization changes the right side.  The finite recurrence and value in
+\cref{eq:negpoly-rec} remove the ambiguity and provide the object-iPRA target.
+
+\begin{roadmap}[Lean modules \code{HurwitzZeta/DerivativeMinusOne} and
+\code{BarnesG/Vardi}]
+Implement \cref{eq:hurwitz-EM} for a fixed external Euler--Maclaurin order, with
+both value and \(s\)-derivative remainder checkers.  Prove the shift relation
+first at finite sums, then the derivative shift by a certified difference
+quotient.  The Vardi theorem is a generic lemma: two named solutions of the
+same first-order difference equation whose difference has an effective limit
+zero on right shifts are equal.  Reuse that lemma for the negative-polygamma
+and hyperfactorial normalizations.
+\end{roadmap}

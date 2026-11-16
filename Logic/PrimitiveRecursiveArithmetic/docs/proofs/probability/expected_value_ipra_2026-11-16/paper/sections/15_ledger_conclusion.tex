@@ -1,0 +1,172 @@
+\section{Coverage ledger, conclusions, and further research}\label{sec:conclusion}
+
+\subsection{Coverage of the source article}
+
+The accompanying \code{THEOREM\_LEDGER.md} contains 94 numbered mathematical
+items extracted from the consulted revision of the article.  The coverage is
+organized as follows.
+
+\begin{longtable}{@{}p{0.22\textwidth}p{0.68\textwidth}@{}}
+\toprule
+Article region & Constructive treatment \\
+\midrule
+\endhead
+Finite definition and examples & Exact natural-weight/rational-law
+formalization; die and roulette computations; equiprobable arithmetic mean;
+vector and matrix expectation. \\
+Countable definition & Absolute-tail regular sums; effective reindexing;
+conditional rearrangement counterexample; logarithmic law; extended
+expectations; St Petersburg divergence; undefined two-sided example. \\
+Density and general integral & Effective simple-law names, compact quadrature,
+improper tails, density agreement, LOTUS, Stieltjes integration, and layer
+cake.  Existence-only density extraction is replaced by a witness. \\
+Common distributions & Bernoulli and binomial exactly; Poisson, geometric,
+uniform, exponential, normal, Pareto, and Cauchy with explicit series or
+integration moduli. \\
+Basic properties & Nonnegativity, finite linearity, monotonicity,
+nondegeneracy, almost-sure congruence, constants, absolute-value bound,
+indicators, CDF/tail formulas, nonmultiplicativity, independence, and
+multidimensional LOTUS. \\
+Inequalities & Markov, Chebyshev, certified Jensen, Lyapunov, Holder,
+Cauchy--Schwarz, and Minkowski. \\
+Convergence & Effective monotone convergence, nonnegative countable additivity,
+Fatou, dominated convergence, uniform integrability, plus exact counterexamples
+when hypotheses are omitted. \\
+Characteristic functions & Derivative-at-zero estimate, finite cyclic Fourier
+expectation identity, and continuous effective inversion under explicit
+Fubini/tail hypotheses. \\
+Applications & Sample means, residual squares, moment determinacy on bounded
+support, expected utility, indicators and Monte Carlo, center of mass, beta
+balance, bounded Wald identity, variance, and finite-dimensional quantum
+expectation. \\
+\bottomrule
+\end{longtable}
+
+Historical claims, naming conventions, and etymology were not treated as
+mathematical proof obligations.  The report's aim is not to reconstruct the
+article's prose but to identify its formal mathematical core.
+
+\subsection{Main constructive conclusion}
+
+The expected-value operator is unusually well suited to \(\ipra\).  Its most
+important algebraic laws are consequences of one primitive-recursive bounded
+sum.  Even many probabilistic inequalities are pointwise finite inequalities
+followed by that same sum.  The logical strength lies not in measure theory but
+in the representation of the data.
+
+The exact finite theory therefore needs no completed real line, sigma-algebra,
+or countable additivity.  It already includes enough probability for
+finite experiments, exact randomized algorithms, finite statistical models,
+bounded stopping times, finite-dimensional quantum systems, and explicit
+finite-error laws of large numbers.
+
+For infinite objects, the correct constructive currency is a modulus.  An
+absolute-tail modulus makes a countable expectation order independent.  An
+\(L^1\) modulus makes expectations of simple approximants Cauchy.  A quadrature
+modulus and an improper-tail modulus turn an integral into a regular real.  A
+uniform-integrability modulus licenses limit interchange.  Once these data are
+present, the proofs again reduce to the finite kernel.
+
+\subsection{Corrections and cautions}
+
+Three points deserve emphasis.
+
+\begin{enumerate}
+\item A conditionally convergent weighted series is not an expectation merely
+  because one enumeration converges.  The outcomes have no canonical order;
+  absolute convergence or a positive/negative-part definition is essential.
+\item A symmetric principal value is not an expectation.  The Cauchy law has
+  zero symmetric truncations but different asymmetric limits, while both
+  absolute parts diverge.
+\item The die/Chebyshev value \(8/15\) concerns the strict event
+  \(1<X<6\), not the inclusive event that a die lies in its support.  The
+  exact strict-event probability is \(2/3\), and the inclusive probability is
+  one.
+\end{enumerate}
+
+\subsection{What the packet does not yet prove in Lean}
+
+The human proofs are designed for compilation, but the packet stops before the
+final kernel-checked endpoint.  In particular:
+\begin{itemize}
+\item the ambient Lean theorem-package records are not instantiated;
+\item the natural decoders and common-denominator compiler are not implemented;
+\item no concrete semantic checker has yet been compiled to \code{PR};
+\item no new \code{Prf PRAAx} derivation is present;
+\item the analytic modules are interfaces rather than completed interval
+  arithmetic.
+\end{itemize}
+These limitations are explicit so that standard-model mathematics is not
+mistaken for an internal proof.
+
+\subsection{Further research questions}
+
+\begin{enumerate}
+\item \textbf{Minimal finite expectation kernel.}
+  What is the smallest extension of the current ProveIt bounded-sum library
+  that makes linearity, finite LOTUS, and Markov one- or two-line internal
+  derivations?  A dedicated weighted-sum abstraction may reduce proof size
+  substantially without increasing trusted strength.
+
+\item \textbf{Canonical denominator compiler.}
+  Can a verified compiler transform ambient \code{Rat} finite-sum theorems
+  into signed-natural, denominator-cleared \code{PRAAx} goals automatically,
+  while exposing a compact proof certificate checked by the existing kernel?
+
+\item \textbf{Probability-specific reflection.}
+  The Lagrange identity, variance expansion, and binomial expectation are
+  polynomial identities after finite sums are normalized.  A reflection
+  tactic that combines \code{MultiSums} normalization with \code{deriveNat}
+  could cover a broad class of probability proofs.
+
+\item \textbf{First-crossing library.}
+  Kolmogorov's inequality, optional-stopping arguments, and bounded martingale
+  theorems share a primitive-recursive first-hit construction.  A reusable
+  first-crossing module may unlock many finitary stochastic-process results in
+  \(\ipra\).
+
+\item \textbf{Optimal effective hypotheses.}
+  The analytic theorems here use convenient \(L^1\), tail, and probability
+  moduli.  Which of these can be weakened while retaining a primitive-recursive
+  output modulus?  In particular, can effective almost-sure convergence be
+  represented more economically than convergence-in-probability plus uniform
+  integrability?
+
+\item \textbf{Constructive Radon--Nikodym fragments.}
+  For which finitely generated algebras, computable compact spaces, or bounded
+  density classes can a density be extracted in \(\ipra\) from a quantitative
+  absolute-continuity modulus?  The general classical converse is too weakly
+  specified, but important restricted forms may be fully effective.
+
+\item \textbf{Exact cyclotomic Fourier layer.}
+  Is a small verified cyclotomic-ring library simpler than regular sine/cosine
+  names for finite Fourier inversion?  Such a layer would also benefit finite
+  characteristic functions and discrete harmonic analysis.
+
+\item \textbf{Formal expected utility and games.}
+  The finite maximization theorem is immediate.  A natural next target is a
+  verified constructive account of the problem of points, finite zero-sum
+  games with rational mixed strategies, and backward induction, all phrased as
+  expectation theorems.
+
+\item \textbf{Moment problems at bounded complexity.}
+  Finite support is exactly determined by finitely many moments.  What useful
+  effective determinacy results hold for distributions with a supplied tail
+  envelope, finite mixture models, or compact algebraic supports, within
+  feasible \(\ipra\) proof size?
+
+\item \textbf{Compression of analytic certificates.}
+  The regular-real approach is transparent but potentially verbose.  Can
+  Taylor, quadrature, and tail certificates be compressed into a single
+  proof-producing evaluator whose correctness is established once in
+  \(\mathrm{PRAAx}\)?
+\end{enumerate}
+
+\subsection{Final assessment}
+
+A substantial portion of elementary expectation theory is not merely
+constructively acceptable; it is primitive-recursively explicit.  The finite
+kernel contains the conceptual heart of the subject, while the infinite theory
+is a disciplined closure under named limits.  The remaining challenge is
+proof engineering: implementing the encoders and turning the arguments already
+reduced to finite algebra into compact checked \code{PRAAx} derivations.

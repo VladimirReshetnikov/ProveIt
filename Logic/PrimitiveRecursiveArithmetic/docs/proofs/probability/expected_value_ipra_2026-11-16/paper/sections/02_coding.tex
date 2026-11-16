@@ -1,0 +1,153 @@
+\section{Coding finite probability in iPRA}\label{sec:coding}
+
+\subsection{Signed integers and rationals}
+
+A signed integer is represented by a pair \((a,b)\in\N^2\), denoting
+\(a-b\).  Equality and order are
+\[
+ (a,b)=(c,d) \quad\Longleftrightarrow\quad a+d=c+b,
+\]
+\[
+ (a,b)\le(c,d) \quad\Longleftrightarrow\quad a+d\le c+b.
+\]
+Addition, multiplication, negation, and absolute value are primitive recursive.
+For instance,
+\((a,b)(c,d)=(ac+bd,ad+bc)\), and a decidable comparison selects the positive
+or negative part for absolute value.
+
+A rational code is \((z,q)\), where \(z\) is a signed-integer code and
+\(q>0\).  It denotes \(z/q\).  Equality and order are again decided by positive
+cross-multiplication.  Reduction to lowest terms is optional; no proof below
+relies on unique representation.
+
+\begin{lemma}[Common denominator normalization]\label{lem:common-den}
+For every coded finite list of rational numbers
+\(x_0,\ldots,x_{m-1}\), there is a primitive-recursively computed positive
+integer \(D\) and signed integers \(a_i\) such that \(x_i=a_i/D\) for every
+\(i<m\).
+\end{lemma}
+
+\begin{proof}
+Take the product of the positive input denominators.  Multiplying each
+numerator by the product of the remaining denominators gives the required
+\(a_i\).  The bounded product and the transformed list are primitive recursive.
+All displayed equalities follow by distributivity; no gcd computation is
+needed.
+\end{proof}
+
+\subsection{Finite weighted laws}
+
+\begin{definition}[Finite law]\label{def:finlaw}
+A finite weighted law is coded by
+\[
+ m\in\N,\qquad w:\Fin(m)\to\N,
+ \qquad W=\sum_{i<m}w_i>0.
+\]
+The probability of an event \(A\subseteq\Fin(m)\), represented by a decidable
+indicator \(a_i\in\{0,1\}\), is
+\[
+ \Pp(A)=\frac{1}{W}\sum_{i<m}w_i a_i.
+\]
+A rational observable is a finite list \(X_i\in\Q\), and its expectation is
+\[
+ \E[X]=\frac{1}{W}\sum_{i<m}w_iX_i.
+\]
+\end{definition}
+
+The use of natural weights loses no finite rational law.  If the listed
+probabilities are \(p_i=r_i/s_i\), choose a common denominator \(W\), put
+\(w_i=Wp_i\), and delete zero-weight padding if desired.  Conversely, natural
+weights produce the rational probabilities \(w_i/W\).
+
+\begin{lemma}[Primitive-recursive evaluator]\label{lem:pr-evaluator}
+Given codes for a finite law and a rational observable, a code for
+\(\E[X]\) is primitive recursive.  Equality and order between two such
+expectations are quantifier-free after clearing the positive denominators.
+\end{lemma}
+
+\begin{proof}
+Use \Cref{lem:common-den} to write \(X_i=a_i/D\).  Then
+\[
+ \E[X]=\frac{\sum_{i<m}w_i a_i}{WD}.
+\]
+The numerator is a bounded sum of primitive-recursive signed products, and
+\(WD>0\).  Comparing two expectations is therefore a comparison of two signed
+cross-products.
+\end{proof}
+
+\subsection{Events, null sets, and almost-sure equality}
+
+\begin{definition}[Finite almost-sure equality]\label{def:ae}
+For observables \(X,Y\) on the same finite law, write \(X=Y\) almost surely
+when
+\[
+  \sum_{i<m} w_i\ind_{X_i\ne Y_i}=0.
+\]
+An event is null when its weighted indicator sum is zero.
+\end{definition}
+
+This definition is stronger computationally than merely saying that the
+probability quotient equals zero: its numerator is explicitly zero.  Since all
+summands are natural and nonnegative, zero-sum elimination gives
+\(w_i\ind_{X_i\ne Y_i}=0\) for every \(i<m\).  ProveIt already contains exactly
+this bounded-sum pattern: a zero bounded sum has zero terms, and conversely
+pointwise zero terms give a zero sum.
+
+\subsection{Compiling bounded algebra to quantifier-free induction}
+
+\begin{proposition}[Finite-sum compilation pattern]\label{prop:sum-compile}
+Each of the following has an explicit \(\ipra\) derivation by
+quantifier-free induction on the bound:
+\begin{align*}
+ \sum_{i<n+1}f(i)&=\sum_{i<n}f(i)+f(n),\\
+ \sum_{i<n}(f(i)+g(i))&=\sum_{i<n}f(i)+\sum_{i<n}g(i),\\
+ \left[\forall i<n\;f(i)=g(i)\right]&\Longrightarrow
+     \sum_{i<n}f(i)=\sum_{i<n}g(i),\\
+ j<n&\Longrightarrow f(j)\le\sum_{i<n}f(i)
+ \quad\text{when all values are natural.}
+\end{align*}
+The bounded universal premise is represented by a zero sum of decidable
+failure indicators.
+\end{proposition}
+
+\begin{proof}
+The first equation is the defining equation of the primitive-recursive sum.
+For the second, the induction invariant is the displayed equality.  The base
+case is \(0=0+0\); the successor step substitutes the first recurrence and
+uses associativity and commutativity.  For congruence, maintain equality of the
+partial sums and use the zero failure-count to obtain equality at the new
+index.  The final inequality follows because the target term occurs as one
+nonnegative summand; an induction on the upper bound gives the formal proof.
+All invariants are quantifier-free equations or inequalities.
+\end{proof}
+
+\begin{corollary}[Finite Fubini and regrouping]\label{cor:finite-fubini}
+For coded finite arrays,
+\[
+ \sum_{i<m}\sum_{j<n}a_{ij}
+ =\sum_{j<n}\sum_{i<m}a_{ij}
+ =\sum_{k<mn}a_{\lfloor k/n\rfloor,\,k\bmod n}.
+\]
+More generally, a finite sum may be regrouped by any primitive-recursive map
+between finite index sets, provided multiplicity is tracked.
+\end{corollary}
+
+\begin{proof}
+Induct on one rectangle dimension and use distributivity.  The mixed-radix
+map \(k\mapsto(\lfloor k/n\rfloor,k\bmod n)\) is primitive recursive by division
+with remainder.  The two directions of the bijection are verified by the
+usual quotient-remainder equations, which are available in the arithmetic
+library.
+\end{proof}
+
+\subsection{Rational inequalities without division}
+
+Whenever a theorem contains fractions, the formal target is its
+positive-denominator clearing.  For example, monotonicity
+\[
+ \frac{A}{WD}\le\frac{B}{WE}
+\]
+becomes \(AE\le BD\) after checking the correct denominators and signs.  A
+proof should never invoke an abstract ordered field when a direct natural
+identity is available.  This policy both shortens the object-language proof
+and makes the computational content visible.

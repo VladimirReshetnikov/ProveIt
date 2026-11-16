@@ -1,0 +1,308 @@
+\section{Algebraic properties, tails, and variance}\label{sec:properties}
+
+\subsection{Linearity and order}
+
+\begin{theorem}[Nonnegativity]\label{thm:nonneg}
+If \(X_i\ge0\) at every positive-weight outcome, then \(\E[X]\ge0\).
+\end{theorem}
+
+\begin{proof}
+Every weighted summand \(w_iX_i\) is nonnegative.  Their finite sum is
+nonnegative, and the denominator \(W\) is positive.  With rational codes,
+clear the common positive denominator of the \(X_i\) and prove the resulting
+natural inequality by repeated addition.
+\end{proof}
+
+\begin{theorem}[Additivity and homogeneity]\label{thm:linearity}
+For rational observables \(X,Y\) and \(a\in\Q\),
+\[
+ \E[X+Y]=\E[X]+\E[Y],\qquad
+ \E[aX]=a\E[X].
+\]
+\end{theorem}
+
+\begin{proof}
+For additivity,
+\[
+ W\E[X+Y]=\sum_iw_i(X_i+Y_i)
+ =\sum_iw_iX_i+\sum_iw_iY_i
+ =W(\E[X]+\E[Y]).
+\]
+The middle equality is the bounded-sum addition theorem proved by
+quantifier-free induction.  Since \(W>0\), the rational codes on both sides are
+equal.  Homogeneity follows by pulling the fixed factor \(a\) through each
+finite addition.  Internally one first chooses a common denominator for
+\(a,X_i,Y_i\), so only signed natural polynomial identities remain.
+\end{proof}
+
+\begin{corollary}[Finite linear combinations]\label{cor:finite-linearity}
+For a coded list \((a_j,X_j)_{j<r}\),
+\[
+ \E\left[\sum_{j<r}a_jX_j\right]
+ =\sum_{j<r}a_j\E[X_j].
+\]
+\end{corollary}
+
+\begin{proof}
+Use quantifier-free induction on \(r\).  The induction formula is an equality
+of coded rationals.  The successor step is \Cref{thm:linearity}.
+\end{proof}
+
+\begin{corollary}[Expectation as a linear form]\label{cor:linear-form}
+For a fixed finite law, \(X\mapsto\E[X]\) is a rational linear functional on
+the finite rational module of observables.
+\end{corollary}
+
+\begin{theorem}[Monotonicity]\label{thm:monotone}
+If \(X_i\le Y_i\) at every positive-weight outcome, then
+\(\E[X]\le\E[Y]\).
+\end{theorem}
+
+\begin{proof}
+The difference \(Y-X\) is pointwise nonnegative, so
+\(0\le\E[Y-X]=\E[Y]-\E[X]\) by nonnegativity and linearity.
+Equivalently, sum the pointwise inequalities directly.  The second proof is
+slightly shorter in the object language because it avoids introducing a
+signed subtraction term.
+\end{proof}
+
+\begin{corollary}[Constants and iterated expectation]\label{cor:constant}
+For constant \(c\), \(\E[c]=c\).  Consequently the expectation of the constant
+random variable \(\E[X]\) is again \(\E[X]\).
+\end{corollary}
+
+\begin{proof}
+\(\sum_iw_ic=c\sum_iw_i=cW\).  Apply the same equation with
+\(c=\E[X]\).
+\end{proof}
+
+\subsection{Positive and negative parts}
+
+\begin{definition}[Parts and absolute value]\label{def:parts}
+For a coded rational \(x\), define
+\[
+ x^+=\max(x,0),\qquad x^-=\max(-x,0),\qquad \abs{x}=x^++x^-.
+\]
+These operations are primitive recursive because rational order is decidable.
+Apply them pointwise to observables.
+\end{definition}
+
+\begin{lemma}[Pointwise part identities]\label{lem:part-identities}
+For every coded rational \(x\),
+\[
+ x=x^+-x^-,\qquad \abs{x}=x^++x^-,\qquad x^+x^-=0.
+\]
+\end{lemma}
+
+\begin{proof}
+Decide whether \(x\ge0\).  In the first branch, \(x^+=x\) and \(x^-=0\); in
+the second, \(x^+=0\) and \(x^-=-x\).  This is a permitted intuitionistic
+case split because the coded comparison is decidable.
+\end{proof}
+
+\begin{theorem}[Expectation and parts]\label{thm:expect-parts}
+For every finite rational observable,
+\[
+ \E[X]=\E[X^+]-\E[X^-],\qquad
+ \E[\abs X]=\E[X^+]+\E[X^-].
+\]
+Moreover,
+\[
+ \abs{\E[X]}\le\E[\abs X].
+\]
+\end{theorem}
+
+\begin{proof}
+The two equalities follow from \Cref{lem:part-identities} and linearity.  Since
+\(-\abs X\le X\le\abs X\), monotonicity gives
+\(-\E\abs X\le\E X\le\E\abs X\), which is equivalent to the final
+inequality by decidable rational order.
+\end{proof}
+
+\begin{theorem}[Zero absolute expectation]\label{thm:zero-abs}
+If \(\E[\abs X]=0\), then \(X=0\) almost surely.  More generally, if
+\(\E[\abs{X-Y}]=0\), then \(X=Y\) almost surely.
+\end{theorem}
+
+\begin{proof}
+After choosing a common denominator \(D\), the hypothesis is
+\[
+ \sum_{i<m}w_i\abs{a_i}=0,
+\]
+where \(X_i=a_i/D\).  Each term is a natural number.  Zero-sum elimination
+proves \(w_i\abs{a_i}=0\) for every \(i\).  Thus every positive-weight outcome
+has \(a_i=0\).  Equivalently, the weighted failure indicator has sum zero.
+Apply the same argument to \(X-Y\).
+\end{proof}
+
+\begin{theorem}[Almost-sure congruence]\label{thm:ae-congruence}
+If \(X=Y\) almost surely, then \(\E[X]=\E[Y]\).  If
+\(g:\Q\to\Q\) is a fixed primitive-recursive map on the finite input codes,
+then also \(g(X)=g(Y)\) almost surely and \(\E[g(X)]=\E[g(Y)]\).
+\end{theorem}
+
+\begin{proof}
+At every outcome with positive weight the values agree, by zero-sum
+elimination on the exceptional mass.  Hence the weighted summands agree and so
+do their bounded sums.  Equality is preserved by applying the function code
+\(g\), giving the second assertion.
+\end{proof}
+
+\subsection{Indicators and event algebra}
+
+\begin{theorem}[Indicator expectation]\label{thm:indicator}
+For every decidable finite event \(A\),
+\[
+ \E[\ind_A]=\Pp(A).
+\]
+For events \(A,B\),
+\[
+ \ind_{A\cup B}=\ind_A+\ind_B-\ind_{A\cap B},
+\]
+and therefore
+\[
+ \Pp(A\cup B)=\Pp(A)+\Pp(B)-\Pp(A\cap B).
+\]
+If \(A\cap B=\varnothing\), the intersection term vanishes.
+\end{theorem}
+
+\begin{proof}
+The first formula is the definition.  For the second, decide the four possible
+truth-value pairs of \(A(i),B(i)\) at each finite outcome.  The displayed
+identity holds in each case.  Apply expectation and linearity.  The formal
+version may avoid signed subtraction by moving the intersection term to the
+left.
+\end{proof}
+
+\begin{corollary}[Finite union bound]\label{cor:union-bound}
+For a coded list of events \(A_0,\ldots,A_{r-1}\),
+\[
+ \Pp\left(\bigcup_{j<r}A_j\right)\le\sum_{j<r}\Pp(A_j).
+\]
+\end{corollary}
+
+\begin{proof}
+Pointwise,
+\(\ind_{\cup_jA_j}\le\sum_j\ind_{A_j}\).  Sum and use monotonicity and finite
+linearity.  The union indicator is computed by bounded Boolean recursion.
+\end{proof}
+
+\subsection{Integer tail formulas}
+
+\begin{theorem}[Nonnegative integer tail sum]\label{thm:tail-sum}
+Let \(X_i\in\N\) and suppose \(X_i\le B\) for all outcomes.  Then
+\[
+ X_i=\sum_{k<B}\ind_{X_i>k}
+\]
+pointwise, and hence
+\[
+ \E[X]=\sum_{k<B}\Pp(X>k).
+\]
+Equivalently,
+\(\E[X]=\sum_{k=1}^{B}\Pp(X\ge k)\).
+\end{theorem}
+
+\begin{proof}
+For a fixed natural \(x\le B\), the indicators
+\(\ind_{x>0},\ldots,\ind_{x>B-1}\) consist of exactly \(x\) ones followed by
+zeros.  Prove
+\(x=\sum_{k<B}\ind_{x>k}\) by quantifier-free induction on \(x\), or by
+induction on \(B\) with the invariant truncated at \(\min(x,B)\).  Substitute
+\(x=X_i\), multiply by \(w_i\), sum over \(i\), and exchange the two finite
+sums.  The alternative form is the index shift \(k\mapsto k-1\).
+\end{proof}
+
+\begin{theorem}[Signed integer CDF formula]\label{thm:signed-tail}
+Suppose \(-A\le X_i\le B\) for natural \(A,B\).  Then
+\[
+ \E[X]
+ =\sum_{k=0}^{B-1}\Pp(X>k)
+  -\sum_{k=0}^{A-1}\Pp(X\le -k-1).
+\]
+\end{theorem}
+
+\begin{proof}
+Apply \Cref{thm:tail-sum} to \(X^+\) and \(X^-\), and use
+\(X=X^+-X^-\).  For natural \(k\),
+\(X^->k\) is equivalent to \(-X>k\), hence to \(X\le-k-1\) because \(X\) is
+integer-valued.  All comparisons are decidable.
+\end{proof}
+
+\begin{theorem}[Finite layer cake]\label{thm:finite-layer-cake}
+If \(X_i\ge0\) are rational with common denominator \(D\) and
+\(X_i\le B/D\), then
+\[
+ \E[X]=\frac1D\sum_{k<B}\Pp(DX>k).
+\]
+This is the exact finite precursor of
+\(\E[X]=\int_0^\infty\Pp(X>t)\,dt\).
+\end{theorem}
+
+\begin{proof}
+Apply \Cref{thm:tail-sum} to the natural-valued observable \(DX\), then divide
+the resulting identity by \(D>0\).
+\end{proof}
+
+\subsection{Variance and covariance}
+
+\begin{definition}[Variance and covariance]\label{def:variance}
+Let \(\mu=\E[X]\) and \(\nu=\E[Y]\).  Define
+\[
+ \Var(X)=\E[(X-\mu)^2],\qquad
+ \Cov(X,Y)=\E[(X-\mu)(Y-\nu)].
+\]
+\end{definition}
+
+\begin{theorem}[Second-moment identities]\label{thm:variance-identity}
+For finite rational observables,
+\[
+ \Var(X)=\E[X^2]-\E[X]^2,
+\]
+\[
+ \Cov(X,Y)=\E[XY]-\E[X]\E[Y],
+\]
+and
+\[
+ \Var(X+Y)=\Var(X)+\Var(Y)+2\Cov(X,Y).
+\]
+\end{theorem}
+
+\begin{proof}
+Expand the relevant squares and products and use finite linearity and the
+constant rule.  For example,
+\begin{align*}
+\E[(X-\mu)^2]
+ &=\E[X^2-2\mu X+\mu^2]\\
+ &=\E[X^2]-2\mu\E[X]+\mu^2
+ =\E[X^2]-\mu^2.
+\end{align*}
+The formal proof is a polynomial identity after replacing each expectation by
+its weighted numerator.  ProveIt's ring-normalization layer is designed for
+exactly such denominator-cleared identities.
+\end{proof}
+
+\begin{theorem}[Variance is nonnegative and detects constants]\label{thm:variance-zero}
+\(\Var(X)\ge0\).  Moreover \(\Var(X)=0\) if and only if \(X=\E[X]\) almost
+surely.
+\end{theorem}
+
+\begin{proof}
+The square \((X-\mu)^2\) is pointwise nonnegative.  If its expectation is zero,
+zero-sum elimination shows the square is zero at every positive-weight
+outcome, hence \(X_i=\mu\).  The converse is immediate.
+\end{proof}
+
+\begin{theorem}[The mean minimizes squared error]\label{thm:mean-minimizes}
+For every rational constant \(a\),
+\[
+ \E[(X-a)^2]=\Var(X)+(\E[X]-a)^2.
+\]
+Consequently \(a=\E[X]\) minimizes the expected squared error; equality at
+another \(a\) implies \(a=\E[X]\).
+\end{theorem}
+
+\begin{proof}
+Write \(X-a=(X-\mu)+(\mu-a)\).  After squaring, the cross term has expectation
+\(2(\mu-a)\E[X-\mu]=0\).  The remaining terms give the identity.  The final
+claim follows from nonnegativity of the square \((\mu-a)^2\).
+\end{proof}

@@ -1,0 +1,197 @@
+\section{Samples, averages, and finitary laws of large numbers}\label{sec:samples}
+
+\subsection{Sample means}
+
+Let \(X_0,\ldots,X_{n-1}\) be coordinates on a finite product law.  Their
+sample mean is
+\[
+ \overline X_n=\frac1n\sum_{j<n}X_j
+\]
+for \(n>0\).
+
+\begin{theorem}[Unbiased sample mean]\label{thm:sample-mean}
+If each \(X_j\) has expectation \(\mu\), then
+\[
+ \E[\overline X_n]=\mu.
+\]
+No independence assumption is needed.
+\end{theorem}
+
+\begin{proof}
+By finite linearity,
+\[
+ \E[\overline X_n]
+ =\frac1n\sum_{j<n}\E[X_j]
+ =\frac1n(n\mu)=\mu.
+\]
+In \(\ipra\), the identity \(\sum_{j<n}\mu=n\mu\) is proved by
+quantifier-free induction on \(n\), and the theorem is kept in
+cross-multiplied form \(n\E[\overline X_n]=n\mu\).
+\end{proof}
+
+\begin{theorem}[Variance of the independent sample mean]\label{thm:sample-var}
+If the coordinates are independent and identically distributed with variance
+\(\sigma^2\), then
+\[
+ \Var(\overline X_n)=\frac{\sigma^2}{n}.
+\]
+\end{theorem}
+
+\begin{proof}
+By independent variance additivity,
+\(\Var(\sum_{j<n}X_j)=n\sigma^2\).  Homogeneity of variance,
+\(\Var(aX)=a^2\Var(X)\), follows from its definition.  Therefore
+\[
+ \Var(\overline X_n)=\frac1{n^2}n\sigma^2=\frac{\sigma^2}{n}.
+\]
+All calculations are rational when the underlying finite law is rational.
+\end{proof}
+
+\begin{theorem}[Expected residual sum of squares]\label{thm:residual}
+For independent identically distributed coordinates with variance
+\(\sigma^2\),
+\[
+ \E\left[\sum_{j<n}(X_j-\overline X_n)^2\right]=(n-1)\sigma^2.
+\]
+Consequently, for \(n>1\),
+\(\frac1{n-1}\sum_{j<n}(X_j-\overline X_n)^2\) is an unbiased estimator of
+\(\sigma^2\).
+\end{theorem}
+
+\begin{proof}
+The pointwise polynomial identity
+\[
+ \sum_{j<n}(X_j-\overline X_n)^2
+ =\sum_{j<n}(X_j-\mu)^2-n(\overline X_n-\mu)^2
+\]
+is proved by expanding both sides and using
+\(\sum_j(X_j-\overline X_n)=0\).  Take expectations.  The first term has
+expectation \(n\sigma^2\); the second has expectation
+\(n\Var(\overline X_n)=\sigma^2\).  Subtract.
+\end{proof}
+
+\subsection{Weak law as a finite quantitative theorem}
+
+\begin{theorem}[Chebyshev weak-law bound]\label{thm:weak-law}
+Under the assumptions of \Cref{thm:sample-var}, for rational
+\(\varepsilon>0\),
+\[
+ \Pp(\abs{\overline X_n-\mu}\ge\varepsilon)
+ \le\frac{\sigma^2}{n\varepsilon^2}.
+\]
+Given rational \(\delta>0\), any natural \(n\) with
+\(n\varepsilon^2\delta\ge\sigma^2\) guarantees probability at most
+\(\delta\).
+\end{theorem}
+
+\begin{proof}
+Apply Chebyshev to \(\overline X_n\), insert
+\(\Var(\overline X_n)=\sigma^2/n\), and clear the positive denominators.  The
+last sentence is merely transitivity of rational order.  It is a direct
+\(\ipra\) contract: the input supplies \(n,\varepsilon,\delta,\sigma^2\) and
+a checker verifies one natural inequality.
+\end{proof}
+
+\subsection{Kolmogorov's finite maximal inequality}
+
+For a finite independent centered sequence put
+\(S_k=\sum_{j<k}X_j\).  Every product sample space is finite, so first-crossing
+events are decidable by bounded search.
+
+\begin{theorem}[Finite Kolmogorov maximal inequality]\label{thm:kolmogorov}
+Let \(X_0,\ldots,X_{n-1}\) be independent finite rational observables with
+\(\E[X_j]=0\).  For rational \(a>0\),
+\[
+ \Pp\left(\max_{1\le k\le n}\abs{S_k}\ge a\right)
+ \le\frac{\sum_{j<n}\Var(X_j)}{a^2}.
+\]
+\end{theorem}
+
+\begin{proof}
+Let \(A_k\) be the event that \(k\) is the first index with
+\(\abs{S_k}\ge a\).  The \(A_k\) are disjoint and their union is the maximal
+event.  On \(A_k\), \(S_k^2\ge a^2\), so
+\[
+ a^2\Pp(A_k)\le\E[S_k^2\ind_{A_k}].
+\]
+Write \(S_n=S_k+(S_n-S_k)\).  Since \(A_k\) depends only on the first \(k\)
+coordinates and the tail increment is independent of them with mean zero,
+\[
+ \E[S_k(S_n-S_k)\ind_{A_k}]=0.
+\]
+Also \(\E[(S_n-S_k)^2\ind_{A_k}]\ge0\).  Hence
+\[
+ \E[S_n^2\ind_{A_k}]\ge\E[S_k^2\ind_{A_k}]
+ \ge a^2\Pp(A_k).
+\]
+Sum over the disjoint first-crossing events:
+\[
+ a^2\Pp\left(\max_{k\le n}\abs{S_k}\ge a\right)
+ \le\E\left[S_n^2\sum_k\ind_{A_k}\right]
+ \le\E[S_n^2].
+\]
+The final second moment is \(\sum_{j<n}\Var(X_j)\) by independence and
+centering.  Every event and every sum in this proof is finite.  The only
+induction is the construction of partial sums and the bounded search for the
+first crossing.
+\end{proof}
+
+\subsection{A finitary strong-law contract}
+
+A qualitative statement ``\(\overline X_n\to\mu\) almost surely'' quantifies
+over an infinite sequence and does not by itself expose a usable rate.  The
+following theorem is the precise finite-error content needed by many
+applications.
+
+\begin{theorem}[Dyadic eventual-uniform bound]\label{thm:dyadic-slln}
+Let \(X_0,X_1,\ldots\) be presented as an iid finite rational law with mean
+\(\mu\) and variance \(\sigma^2\).  For naturals \(K\) and \(H\ge2^K\), and
+rational \(\varepsilon>0\),
+\[
+ \Pp\left(\exists n\in[2^K,H]\;:
+   \abs{\overline X_n-\mu}\ge 2\varepsilon\right)
+ \le \frac{4\sigma^2}{\varepsilon^2 2^K}.
+\]
+Consequently, if
+\(4\sigma^2\le\delta\varepsilon^2 2^K\), then with probability at least
+\(1-\delta\), every \(n\in[2^K,H]\) satisfies
+\(\abs{\overline X_n-\mu}<2\varepsilon\).
+\end{theorem}
+
+\begin{proof}
+Center the variables and write \(S_n=\sum_{j<n}(X_j-\mu)\).  Partition
+\([2^K,H]\) into dyadic blocks \([2^r,2^{r+1})\).  If for some
+\(n\in[2^r,2^{r+1})\) we have \(\abs{S_n}\ge2\varepsilon n\), then certainly
+\(\max_{k\le2^{r+1}}\abs{S_k}\ge2\varepsilon2^r\).  Kolmogorov's inequality
+gives
+\[
+ \Pp(\text{bad block }r)
+ \le\frac{2^{r+1}\sigma^2}{(2\varepsilon2^r)^2}
+ =\frac{\sigma^2}{2\varepsilon^2 2^r}.
+\]
+The union bound over \(r\ge K\) up to the last block is at most the infinite
+geometric majorant
+\[
+ \sum_{r=K}^{\infty}\frac{\sigma^2}{2\varepsilon^2 2^r}
+ =\frac{\sigma^2}{\varepsilon^2 2^K},
+\]
+which is stronger than the displayed constant \(4\).  We retain \(4\) to
+absorb endpoint conventions, non-power-of-two horizons, and a version obtained
+by controlling block increments rather than maxima from zero.  Formally, for a
+fixed finite \(H\), only a finite geometric sum is used, and it is bounded by
+\(2^{1-K}\) through an elementary induction.
+
+Finally, \(\abs{\overline X_n-\mu}=\abs{S_n}/n\).  The complement of the bad
+event therefore gives the simultaneous bound.  The theorem is a family of
+finite \(\ipra\) statements uniform in \(K,H,\varepsilon,\delta\).
+\end{proof}
+
+\begin{remark}[Relation to the classical strong law]
+The family in \Cref{thm:dyadic-slln} has a tail bound independent of the finite
+horizon \(H\).  Metamathematically, letting \(H\) grow and then \(K\) grow
+recovers the usual almost-sure convergence interpretation.  Inside \(\ipra\),
+the directly usable theorem is the finite contract: given an error tolerance,
+failure budget, and finite observation horizon, compute and verify a burn-in
+index.  This avoids silently importing countable additivity or an infinitary
+``eventually'' predicate.
+\end{remark}

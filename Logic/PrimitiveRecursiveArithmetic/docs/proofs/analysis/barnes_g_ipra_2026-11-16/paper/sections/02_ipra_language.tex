@@ -1,0 +1,193 @@
+\section{The constructive language: names, balls, and finite queries}\label{sec:ipra}
+
+The classical notation \(z\in\C\) is convenient in the proof, but it cannot be
+the primitive ontology of iPRA.  This section gives a uniform translation from
+that notation to natural-number data.
+
+\subsection{Exact finite arithmetic}
+
+Integers are represented by pairs \((a,b)\in\N^2\), denoting \(a-b\).
+Rationals are represented by triples \((a,b,d)\) with \(d>0\), denoting
+\((a-b)/d\).  Equality and order are checked by cross multiplication; gcd
+normalization is optional.  A complex rational is a pair of rationals.  All
+operations used below---addition, multiplication, conjugation, powers, finite
+sums and products---are primitive recursive.
+
+For analytic error estimates it is useful to avoid square roots.  We use the
+one-norm
+\[
+ \|(x,y)\|_1=|x|+|y|
+\]
+on complex rationals.  It majorizes the Euclidean norm and is submultiplicative
+up to the exact inequality
+\(\|zw\|_1\le \|z\|_1\|w\|_1\).  Thus every ball calculation can be reduced to
+rational arithmetic.  When a theorem is conventionally stated with the
+Euclidean modulus, the comparison
+\[
+ |z|\le \|z\|_1\le 2\max(|\Re z|,|\Im z|)
+\]
+changes only a harmless fixed guard in the precision budget.
+
+Factorials, superfactorials, hyperfactorials, Bernoulli numbers of fixed index,
+finite harmonic sums, and every finite product appearing in this report are
+primitive recursive.  Division is never used as an unguarded operation in an
+object theorem.  A quotient statement \(a/b=c\) is first represented by
+\(a=bc\), plus a certificate that \(b\ne0\) if the quotient itself is needed.
+
+\subsection{Fixed fast names rather than a real-number sort}
+
+\begin{definition}[Fast name]
+A \emph{complex fast name} is a fixed primitive-recursive function
+\(a:\N\to\Q^2\) satisfying
+\[
+ \|a(p+1)-a(p)\|_1\le 2^{-p}.
+\]
+Its intended value is the unique complex number in all nested tail balls.
+Two names \(a,b\) are equal when, for every \(p\),
+\[
+ \|a(p+2)-b(p+2)\|_1\le 2^{-p}.
+\]
+\end{definition}
+
+This definition is metatheoretic shorthand.  iPRA does not quantify over all
+functions \(a\).  For each concrete primitive-recursive symbol, the regularity
+inequality is a theorem; for each \(p\), equality at precision \(p\) is a
+finite rational inequality.  The statement ``the two represented numbers are
+equal'' is the schema consisting of all those precision theorems.
+
+\begin{definition}[Apartness]
+A name \(a\) is quantitatively apart from zero if finite data \((m,c)\), with
+\(c>0\), certify
+\[
+  \|a(m)\|_1-2^{-m+1}\ge c2^{-m}.
+\]
+The certificate supplies a primitive-recursive lower bound on the true
+modulus and hence a safe precision budget for reciprocal, logarithm and
+quotient computations.
+\end{definition}
+
+Unlike the classical disjunction \(z=0\lor z\ne0\), apartness is computational:
+it tells the evaluator how far it is from a singularity.  All quotient formulas
+in later sections are first proved in cross-multiplied form and converted only
+under an apartness hypothesis.
+
+\subsection{Compact domains and branch paths}
+
+A compact input domain is specified by rational data, for example
+\[
+ D(c,R)=\{z:\|z-c\|_1\le R\}.
+\]
+A branch of \(\Log\) is specified by a rational polygonal path from a positive
+base point to the input, together with a positive rational lower bound on the
+distance of every segment from the chosen cut and from zero.  The continuation
+algorithm subdivides the path until each logarithmic increment lies in a disk
+where the atanh series
+\[
+ \Log w=2\sum_{j=0}^{M-1}\frac{u^{2j+1}}{2j+1}+\text{tail},
+ \qquad u=\frac{w-1}{w+1},
+\]
+has a certified geometric tail.  The same pattern defines rational powers,
+square roots and continuously chosen arguments.
+
+Thus a formula such as
+\(\Log G(1-z)-\Log G(1+z)=\cdots\) is not asserted on an unspecified global
+branch.  Its finite input contains paths for both sides or, more economically,
+a single zero-free simply connected domain with a branch tree.  Exponentiating
+then produces a branch-independent identity.
+
+\subsection{Finite sums, products, integrals and derivatives}
+
+A continuous named function on a rational rectangle is represented by a fixed
+primitive-recursive evaluator
+\(E(q,p)\) returning a dyadic ball, plus a modulus of uniform continuity.
+A Riemann integral at precision \(p\) is computed on a mesh selected from that
+modulus.  The verifier checks:
+
+\begin{enumerate}
+\item every sample ball;
+\item the mesh bound;
+\item the oscillation bound on each cell;
+\item any endpoint or infinite-tail estimates;
+\item the final rational interval containment.
+\end{enumerate}
+
+Derivatives are represented either by a named derivative with a Taylor
+remainder certificate, or by symmetric difference quotients with an explicit
+modulus.  Holomorphy on a compact set is most efficient here as a Taylor-ball
+contract: around each point of a finite rational cover there are coefficients
+and a geometric remainder.  The canonical product supplies those coefficients
+by uniformly convergent derivative series.
+
+Improper integrals are always split at finite rational cutoffs.  For example,
+\(
+\int_0^\infty f(t)\dd t
+\)
+is replaced by
+\(
+\int_0^{2^{-M}}+\int_{2^{-M}}^T+\int_T^\infty
+\).
+The first and last pieces receive analytic majorants; only the middle piece is
+quadrature.  All cutoffs are primitive-recursive functions of the requested
+precision and domain parameters.
+
+\subsection{Finite-query normal form}
+
+The following organization matches the reusable framework in the repository.
+
+\begin{definition}[FQNF contract]
+A theorem family is in \emph{finite-query normal form} when it is described by
+primitive-recursive predicates and functions
+\[
+ \operatorname{Pre}(q),\quad B(q),\quad
+ \operatorname{Verify}(c,q),\quad \operatorname{Goal}(c,q),
+\]
+such that:
+\begin{enumerate}
+\item from \(\operatorname{Pre}(q)\), a primitive-recursive producer returns a
+certificate \(c\le B(q)\);
+\item \(\operatorname{Verify}(c,q)\) is quantifier-free;
+\item iPRA proves
+\(\operatorname{Verify}(c,q)\to\operatorname{Goal}(c,q)\);
+\item every loop invariant in the producer is quantifier-free, so its
+correctness is proved by the induction rule of \code{PRAAx}.
+\end{enumerate}
+\end{definition}
+
+For Barnes $G$, a typical query is
+\[
+ q=(\text{input code},\text{precision},\text{domain radius},
+    \text{branch path},\text{apartness data}).
+\]
+The certificate records a product cutoff, Taylor lengths, Gamma and exponential
+subcertificates, and a final dyadic ball.  A backward demand pass allocates
+precision to the subcomputations.  The soundness proof is a finite telescope of
+local ball inclusions.
+
+\begin{contract}[Canonical-product query]\label{contract:canonical-query}
+For a natural radius \(R\), precision \(p\), and an input name certified by
+\(|z|\le R\), choose
+\[
+ N\ge 2R,
+ \qquad
+ \frac{2R^3}{3N}\le 2^{-p-3}.
+\]
+The certificate contains the first \(N\) factors, the named constants
+\(\pi,\gamma\), and exponential/logarithm subcertificates.  The verifier checks
+the displayed rational inequality and the finite factor balls.  The tail
+lemma in \cref{lem:canonical-tail} then proves the requested enclosure.
+\end{contract}
+
+\subsection{Constructive logical discipline}
+
+No proof below uses excluded middle for an arbitrary real predicate.  All case
+splits are on decidable natural-number or rational comparisons.  Positivity is
+used only when accompanied by a rational lower bound.  Limits are never invoked
+without a modulus.  ``For sufficiently large \(n\)'' is replaced by an explicit
+primitive-recursive threshold.  A fixed asymptotic order \(M\) is a numeral (or
+an external schema parameter), so the finite list of Bernoulli coefficients is
+primitive recursive without a universal evaluator for all primitive-recursive
+functions.
+
+This is exactly the strength needed for the arguments: they are constructive
+analysis carried out by finite rational certificates, not classical analysis
+smuggled into arithmetic by an undefined real-number predicate.

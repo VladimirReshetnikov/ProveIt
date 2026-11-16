@@ -1,0 +1,207 @@
+\section{Reflection, Clausen formulas, half shifts, and absolute values}\label{sec:reflection}
+
+\subsection{Kinkelin's reflection formula}
+
+Let
+\[
+ \Phi(z)=\Log G(1-z)-\Log G(1+z)+z\log(2\pi)
+          -\int_0^z\pi x\cot(\pi x)\dd x.
+\]
+On a simply connected domain avoiding the integers and the zeros of the two
+Barnes factors, differentiate and use \cref{eq:phi-global}:
+\begin{align*}
+ \Phi'(z)
+ &=-\phi(1-z)-\phi(1+z)+\log(2\pi)-\pi z\cot(\pi z)\\
+ &=z\bigl(\psi(1-z)-\psi(1+z)\bigr)+1-\pi z\cot(\pi z).
+\end{align*}
+The digamma recurrence and reflection formulas are
+\[
+ \psi(1+z)=\psi(z)+\frac1z,
+ \qquad
+ \psi(1-z)-\psi(z)=\pi\cot(\pi z).
+\]
+They give \(\Phi'(z)=0\).  Since \(\Phi(0)=0\), we obtain:
+
+\begin{theorem}[Kinkelin reflection]\label{thm:kinkelin}
+With logarithms continued coherently from \(z=0\),
+\begin{equation}\label{eq:kinkelin}
+ \Log G(1-z)
+ =\Log G(1+z)-z\log(2\pi)
+  +\int_0^z\pi x\cot(\pi x)\dd x.
+\end{equation}
+On a certified real interval \(-1<z<1\) this uses the ordinary real branch
+away from zero crossings.  On a complex domain it is a path-dependent
+logarithmic identity whose exponential is branch independent.
+\end{theorem}
+
+\begin{proof}[Constructive content]
+The Gamma reflection and recurrence identities already have finite sine,
+product and apartness contracts in the Gamma development.  Cover the input path
+by rational disks separated from the integers.  On each disk, evaluate the
+derivative of \(\Phi\) in cross-multiplied form, so no unguarded cotangent or
+logarithmic derivative is used.  The resulting center is exactly zero; the
+radius is made smaller than the local demand.  Integrating the zero derivative
+along finitely many segments and using \(\Phi(0)=0\) gives the requested
+precision.  Alternatively, expand both sides into their absolutely convergent
+Taylor series on \(|z|<1\) and then continue by overlapping disks.  Every step
+has a finite branch and separation certificate.
+\end{proof}
+
+\subsection{Clausen forms}
+
+For \(0<\theta<2\pi\), define the Clausen function by either of the equivalent
+constructive names
+\begin{equation}\label{eq:clausen}
+ \Cl(\theta)=\sum_{n=1}^{\infty}\frac{\sin(n\theta)}{n^2}
+ =-\int_0^\theta\log\left(2\sin\frac t2\right)\dd t.
+\end{equation}
+The sine series has the uniform tail
+\[
+ \left|\sum_{n>N}\frac{\sin(n\theta)}{n^2}\right|\le\frac1N.
+\]
+On a rational compact subinterval of \((0,2\pi)\), integration of the finite
+Fourier sum and the same tail proves the equality of the two names.
+
+Integration by parts gives, for \(0<z<1\),
+\begin{align}
+ \int_0^z\pi x\cot(\pi x)\dd x
+ &=z\log(2\sin\pi z)
+   +\frac{1}{2\pi}\Cl(2\pi z).
+ \label{eq:cot-clausen}
+\end{align}
+Indeed, the endpoint \(x\log\sin(\pi x)\) tends to zero at \(0\); this limit has
+the explicit bound
+\(|x\log x|\le C_p2^{-p}\) once \(x\le2^{-M(p)}\), obtained from the log
+series and dyadic search.
+
+Substitute \cref{eq:cot-clausen} into \cref{eq:kinkelin}:
+\begin{equation}\label{eq:clausen-reflection}
+ 2\pi\log\frac{G(1-z)}{G(1+z)}
+ =2\pi z\log\left(\frac{\sin\pi z}{\pi}\right)
+  +\Cl(2\pi z),
+ \qquad 0<z<1.
+\end{equation}
+Using \(G(1+z)=\Gamma(z)G(z)\), this is equivalent to
+\begin{equation}\label{eq:clausen-reflection2}
+ \log\frac{G(1-z)}{G(z)}
+ =z\log\left(\frac{\sin\pi z}{\pi}\right)
+  +\log\Gamma(z)+\frac{1}{2\pi}\Cl(2\pi z).
+\end{equation}
+For iPRA, the primary form is exponentiated and cross-multiplied.  The real
+interval hypothesis supplies positive lower bounds for \(G(z),G(1-z)\),
+\(\Gamma(z)\), and \(\sin(\pi z)\) once the input box is separated from the
+endpoints.
+
+\subsection{The half-shift tangent identity}
+
+Put \(u=\tfrac12-z\) in \cref{eq:kinkelin}, use the Gamma reflection formula,
+and simplify.  On \(|z|<\tfrac12\), where \(\cos(\pi z)>0\), one convenient
+form is
+\begin{equation}\label{eq:halfshift}
+ \frac{G(\frac12+z)}{G(\frac12-z)}
+ =\frac{(2\pi)^z}{\Gamma(\frac12+z)}
+  \sqrt{\frac{\pi}{\cos(\pi z)}}
+  \exp\!\left(\pi\int_0^z x\tan(\pi x)\dd x\right).
+\end{equation}
+An equivalent Bernoulli-polynomial form is
+\begin{align}
+ \log\frac{G(\frac12+z)}{G(\frac12-z)}
+ ={}&\log\Gamma(\tfrac12-z)
+ +(z-\tfrac12)\log(2\pi)+\tfrac12\log2\notag\\
+ &+\pi\int_0^z(x-\tfrac12)\tan(\pi x)\dd x.
+ \label{eq:halfshift-B1}
+\end{align}
+To verify equivalence, integrate
+\(\frac{d}{dx}\log\cos(\pi x)=-\pi\tan(\pi x)\) and use
+\[
+ \Gamma(\tfrac12+z)\Gamma(\tfrac12-z)=\frac{\pi}{\cos(\pi z)}.
+\]
+
+The formal domain is not merely decorative.  A square-root evaluator needs a
+positive lower bound for \(\cos(\pi z)\) on real inputs, or a branch path for
+complex inputs.  On a rational interval
+\(|z|\le\tfrac12-\delta\), elementary sine/cosine bounds give a primitive-
+recursive positive lower bound depending on \(\delta\).  The tangent integral
+is then ordinary certified quadrature.
+
+\subsection{Conjugation and the squared absolute-value product}\label{sec:modulus}
+
+By \cref{eq:conj},
+\begin{equation}\label{eq:modsquare-basic}
+ |G(z)|^2=G(z)G(\overline z).
+\end{equation}
+This identity is preferable to an unsquared modulus in constructive arithmetic:
+it avoids square roots and sign choices.
+
+For real \(x\notin\{0,-1,-2,\ldots\}\), divide the canonical products at
+\(x+\ii y\), \(x-\ii y\), and \(x\), and simplify each conjugate pair.  The
+finite algebra yields
+\begin{align}
+ |G(x+\ii y)|^2
+ ={}&G(x)^2\exp((1+\gamma)y^2)
+ \left(1+\frac{y^2}{x^2}\right)\notag\\
+ &\times\prod_{k=1}^{\infty}
+ \left(1+\frac{y^2}{(x+k)^2}\right)^{k+1}
+ \exp\!\left(-\frac{y^2}{k}\right).
+ \label{eq:modsquare}
+\end{align}
+The logarithm of the tail again begins at order \(k^{-2}\).  On a box
+\(|x|,|y|\le R\) separated by \(\delta>0\) from the forbidden integers, expand
+\(\log(1+y^2/(x+k)^2)\); after subtracting \(y^2/k\), the apparent harmonic
+divergence cancels against the index shift and the finite head.  A direct
+comparison with the already proved product quotient gives an explicit
+\(C_{R,\delta}/N\) tail.
+
+Taking the positive square root of \cref{eq:modsquare} gives the target-page
+formula
+\begin{align}
+ |G(x+\ii y)|
+ ={}&|G(x)|\exp\left(\frac{1+\gamma}{2}y^2\right)
+ \sqrt{1+\frac{y^2}{x^2}}\notag\\
+ &\times\sqrt{\prod_{k=1}^{\infty}
+ \left(1+\frac{y^2}{(x+k)^2}\right)^{k+1}
+ \exp\!\left(-\frac{y^2}{k}\right)}.
+ \label{eq:modulus}
+\end{align}
+The squared identity is the primary iPRA theorem; the square-root corollary uses
+nonnegativity and the positive square-root name.
+
+At \(x=0\), extract the simple zero of \(G\) at the origin before taking the
+limit.  One obtains
+\begin{equation}\label{eq:pure-imag-square}
+ |G(\ii y)|^2
+ =y^2\exp((1+\gamma)y^2)
+ \prod_{k=1}^{\infty}
+ \left(1+\frac{y^2}{k^2}\right)^{k+1}
+ \exp\!\left(-\frac{y^2}{k}\right),
+\end{equation}
+and therefore
+\begin{equation}\label{eq:pure-imag}
+ |G(\ii y)|
+ =|y|\exp\left(\frac{1+\gamma}{2}y^2\right)
+ \sqrt{\prod_{k=1}^{\infty}
+ \left(1+\frac{y^2}{k^2}\right)^{k+1}
+ \exp\!\left(-\frac{y^2}{k}\right)}.
+\end{equation}
+The absolute value on \(y\) is forced by both symmetry and nonnegativity.  This
+is the corrected version of the source statement.
+
+\subsection{Formalization pattern}
+
+Reflection identities combine four reusable components: the derivative formula,
+Gamma reflection, path integration, and a normalization point.  Clausen and
+modulus formulas add only finite Fourier/product rearrangements.  A compact Lean
+plan is therefore:
+
+\begin{enumerate}
+\item prove a generic ``zero derivative along a certified path'' telescope;
+\item instantiate it with the cross-multiplied derivative of \(\Phi\);
+\item define \(\Cl\) by its sine series and prove the integral form with a
+finite Fourier sum plus the \(1/N\) tail;
+\item derive \cref{eq:modsquare} directly at the level of finite partial
+products, then pass to the common tail modulus;
+\item expose unsquared formulas only through a positive-square-root contract.
+\end{enumerate}
+
+All induction is over finite lists, cutoffs or mesh cells and is therefore
+quantifier-free after the fixed function symbols are introduced.

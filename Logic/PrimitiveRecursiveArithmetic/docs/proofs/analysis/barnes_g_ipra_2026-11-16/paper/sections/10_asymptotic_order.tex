@@ -1,0 +1,267 @@
+\section{Asymptotic expansion, explicit remainders, order, and type}\label{sec:asymptotic}
+
+The symbol \(\sim\) in an asymptotic series must be replaced in iPRA by a
+family of finite remainder inequalities.  For Barnes $G$, the most convenient
+starting point is the Ferreira--L\'opez form with Nemes' explicit remainder.
+
+\subsection{The Gamma-coupled expansion}
+
+For an integer \(N\ge1\), define
+\begin{align}
+ \mathcal B_N(z)={}&\frac14z^2+z\Log\Gamma(z+1)
+ -\left(\frac12z(z+1)+\frac1{12}\right)\Log z-\log A\notag\\
+ &+\sum_{k=1}^{N-1}
+ \frac{B_{2k+2}}
+ {2k(2k+1)(2k+2)z^{2k}}.
+ \label{eq:FL-trunc}
+\end{align}
+Then
+\begin{equation}\label{eq:FL-expansion}
+ \Log G(z+1)=\mathcal B_N(z)+R_N(z).
+\end{equation}
+For \(|\arg z|<\pi/2\), one exact remainder representation is
+\begin{equation}\label{eq:Nemes-remainder}
+ R_N(z)=\frac{(-1)^N}{2\pi^2z^{2N}}
+ \int_0^\infty
+ \frac{t^{2N-1}\operatorname{Li}_2(\e^{-2\pi t})}
+      {1+(t/z)^2}\dd t.
+\end{equation}
+Equivalent periodic-Bernoulli integrals continue it to the cut plane.  They use
+only a fixed Bernoulli polynomial, rational powers, and an improper integral
+with exponential or algebraic tails, so they fit the framework of
+\cref{sec:ipra}.
+
+\begin{theorem}[Explicit Barnes remainder]\label{thm:Nemes-bound}
+Let \(N\ge1\), \(z\ne0\), and \(\theta=\arg z\).  Then
+\begin{equation}\label{eq:Nemes-bound}
+ |R_N(z)|\le
+ \frac{|B_{2N+2}|}
+ {2N(2N+1)(2N+2)|z|^{2N}}
+ \sec^{2N+1}\!\left(\frac\theta2\right),
+ \qquad |\theta|<\pi.
+\end{equation}
+On \(|\theta|\le\pi/4\), the secant factor may be replaced by \(1\).  If
+\(z>0\), \(R_N(z)\) has the sign of the first omitted term and smaller absolute
+value.
+\end{theorem}
+
+\begin{proof}[Constructive reading of the remainder proof]
+In \(|\theta|<\pi/2\), use \cref{eq:Nemes-remainder} and bound
+\(1/|1+(t/z)^2|\) by a rational upper approximation to the appropriate angular
+factor.  Expand
+\(
+\operatorname{Li}_2(\e^{-2\pi t})
+ =\sum_{m\ge1}\e^{-2\pi mt}/m^2
+\), integrate each positive term, and use the standard Bernoulli evaluation of
+the resulting zeta value.  This produces exactly the coefficient in
+\cref{eq:Nemes-bound}.  For wider sectors, rotate the integration path or use
+the periodic-Bernoulli representation and the elementary inequality
+\[
+ |t+z|\ge (t+|z|)\cos(\theta/2).
+\]
+Raising it to the required power gives the secant factor.  On the positive
+axis the integrand in a sign-normalized representation has constant sign and a
+denominator strictly larger than one, proving both sign and first-omitted-term
+bounds.
+
+For a formal fixed-sector theorem, the input contains a rational
+\(c>0\) with
+\(
+\cos(\theta/2)\ge c
+\).
+The verifier uses \(c^{-(2N+1)}\), avoiding an angle or inverse-trigonometric
+function in the object language.  All integral cutoffs have primitive-recursive
+bounds because the kernel is exponentially decaying near infinity and
+polynomially regular at zero.
+\end{proof}
+
+Thus the DLMF expansion is not merely formal.  For every fixed \(N\), sector
+certificate and precision, \cref{eq:Nemes-bound} gives a decidable threshold on
+\(|z|\).
+
+\subsection{The Barnes--Stirling form on the target pages}
+
+Insert the fixed-order Stirling expansion
+\begin{equation}\label{eq:stirling-gamma-use}
+ \Log\Gamma(z+1)=
+ \left(z+\frac12\right)\Log z-z+\frac12\log(2\pi)
+ +\sum_{r=1}^{N}\frac{B_{2r}}{2r(2r-1)z^{2r-1}}
+ +S_N(z)
+\end{equation}
+into \cref{eq:FL-expansion}.  The \(r=1\) term contributes \(1/12\).  For
+\(k\ge1\), the \(r=k+1\) Gamma coefficient combines with the Barnes coefficient
+as
+\begin{align*}
+ &\frac{B_{2k+2}}{(2k+2)(2k+1)z^{2k}}
+ +\frac{B_{2k+2}}{2k(2k+1)(2k+2)z^{2k}}\\
+ &\hspace{3em}=\frac{B_{2k+2}}{4k(k+1)z^{2k}}.
+\end{align*}
+Therefore
+\begin{align}
+ \Log G(z+1)={}&
+ \frac{z^2}{2}\Log z-\frac{3z^2}{4}
+ +\frac z2\log(2\pi)-\frac1{12}\Log z
+ +\left(\frac1{12}-\log A\right)\notag\\
+ &+\sum_{k=1}^{N-1}
+ \frac{B_{2k+2}}{4k(k+1)z^{2k}}
+ +\widetilde R_N(z),
+ \label{eq:Barnes-asymptotic}
+\end{align}
+where
+\begin{equation}\label{eq:combined-remainder}
+ \widetilde R_N(z)=R_N(z)+zS_N(z).
+\end{equation}
+The Gamma packet supplies an explicit fixed-sector bound for \(S_N\), while
+\cref{eq:Nemes-bound} bounds \(R_N\).  Hence a fully explicit bound is
+\begin{align}
+ |\widetilde R_N(z)|\le{}&
+ \frac{|B_{2N+2}|}{|z|^{2N}}
+ \left[
+ \frac{C_N^{\Gamma}(\delta)}{(2N+1)(2N+2)}
+ +\frac{C_N^G(\delta)}{2N(2N+1)(2N+2)}
+ \right],
+ \label{eq:combined-bound}
+\end{align}
+where \(C_N^G(\delta)\) may be taken as the rational upper bound on
+\(\sec^{2N+1}(\theta/2)\), and \(C_N^\Gamma(\delta)\) is the corresponding
+Stirling-remainder factor from the fixed sector
+\(|\arg z|\le\pi-\delta\).  These constants are finite rational certificate
+fields, not implicit big-O constants.
+
+On the positive real axis both component remainders have the sign of their
+first omitted terms and smaller magnitude.  Their first omitted coefficients
+sum exactly to
+\[
+ \frac{|B_{2N+2}|}{4N(N+1)z^{2N}}.
+\]
+Thus the particularly clean bound
+\begin{equation}\label{eq:positive-Barnes-bound}
+ |\widetilde R_N(z)|
+ <\frac{|B_{2N+2}|}{4N(N+1)z^{2N}}
+ \qquad(z>0)
+\end{equation}
+holds, with the sign of the omitted Barnes term.  This is stronger than the
+big-O statement displayed on both target pages.
+
+Taking only the leading part of \cref{eq:Barnes-asymptotic} gives
+\begin{equation}\label{eq:leading-asymptotic}
+ \Log G(z+1)
+ =z^2\left(\frac12\Log z-\frac34\right)
+ +\frac z2\log(2\pi)-\frac1{12}\Log z+\zeta'(-1)
+ +O(z^{-2}),
+\end{equation}
+because \(\zeta'(-1)=1/12-\log A\).  The weaker \(O(1/z)\) displayed by one
+source is of course true, but the actual algebraic series contains only even
+negative powers.
+
+\subsection{An iPRA asymptotic contract}
+
+Fix externally:
+\begin{itemize}
+\item a truncation order \(N\ge1\);
+\item a rational sector-gap certificate \(c\le\cos(\arg z/2)\), \(c>0\);
+\item a requested precision \(p\);
+\item a rational lower bound \(|z|\ge L\).
+\end{itemize}
+The verifier computes the rational right side of
+\cref{eq:Nemes-bound} or \cref{eq:combined-bound} and checks that it is at most
+\(2^{-p}\) after clearing denominators.  It then checks finite balls for every
+term of the truncation.  This is a quantifier-free predicate.  A producer can
+increase \(L\) by bounded search until the inequality holds.  The theorem
+``the asymptotic expansion is valid'' is the schema asserting soundness of this
+procedure for every \(p\), not a formula containing a primitive big-O symbol.
+
+\subsection{Order two and infinite type}
+
+Let
+\(
+M_G(r)=\max_{|z|\le r}|G(z)|
+\)
+in classical notation.  Constructively, we need only an upper bound valid for
+all named inputs in the disk and a single lower-witness input.
+
+\begin{lemma}[Elementary global upper bound]\label{lem:order-upper}
+There is an explicit integer constant \(C\) such that for every real
+\(r\ge2\) and \(|z|\le r\),
+\begin{equation}\label{eq:order-upper}
+ \log|G(1+z)|\le C r^2\log(r+2).
+\end{equation}
+One may take a deliberately coarse value such as \(C=12\).
+\end{lemma}
+
+\begin{proof}
+Split the canonical product at \(2r\).  For \(k\le2r\),
+\[
+ \log|E_k(z)|
+ \le k\log(1+r/k)+r+\frac{r^2}{2k}.
+\]
+Sum the first term using
+\(\log(1+r/k)\le\log(r+1)\) and
+\(\sum_{k\le2r}k\le3r^2\).  The second contributes at most \(2r^2\), and the
+third at most
+\(
+\frac12r^2(1+\log(2r))
+\).
+The logarithmic tail beyond \(2r\) is at most \(r^2/3\) by
+\cref{eq:qtail}.  The prefactor is bounded by a fixed multiple of \(r^2\).
+Collecting the terms gives \cref{eq:order-upper}.  Every real inequality used
+has a rational majorant version.
+\end{proof}
+
+\begin{lemma}[Elementary integer lower bound]\label{lem:order-lower}
+For all sufficiently large integers \(n\),
+\begin{equation}\label{eq:order-lower}
+ \log G(n+1)\ge \frac{n^2}{20}\log(n/2).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+From the exact integer formula,
+\[
+ \log G(n+1)=\sum_{j=1}^{n-1}(n-j)\log j.
+\]
+Restrict to integers \(j\) with \(n/2\le j\le3n/4\).  There are at least
+\(n/5\) of them once \(n\) exceeds a fixed numeral, each satisfies
+\(n-j\ge n/4\), and \(\log j\ge\log(n/2)\).  Their contribution proves
+\cref{eq:order-lower}.  Floors and the small exceptional values are handled by
+bounded numeral checks.
+\end{proof}
+
+\begin{theorem}[Order and type]\label{thm:order-type}
+The Barnes $G$-function is entire of order exactly two and infinite type at
+order two.
+\end{theorem}
+
+\begin{proof}
+The upper bound implies
+\[
+ \limsup_{r\to\infty}\frac{\log\log M_G(r)}{\log r}\le2.
+\]
+The lower bound, using the witness \(z=n+1\), gives the reverse inequality.
+Moreover,
+\[
+ \frac{\log M_G(n+1)}{(n+1)^2}
+ \ge c\log(n/2)\longrightarrow\infty,
+\]
+so the type at order two is infinite.
+
+The constructive replacement is explicit.  Given a positive rational
+\(\varepsilon\), bounded search finds a threshold after which
+\(C r^2\log(r+2)\le r^{2+\varepsilon}\); the lower witness exceeds
+\(r^{2-\varepsilon}\) after another threshold.  Given an integer \(T\), choose
+an explicit power of two \(n=2^{a(T+1)}\), with fixed \(a\) large enough that a
+rational lower bound for \(\log2\) proves
+\(\frac1{20}\log(n/2)>T\).  Then
+\(\log|G(n+1)|>T(n+1)^2\) after increasing \(a\) to absorb the harmless ratio.
+All thresholds are primitive recursive.
+\end{proof}
+
+\subsection{What is and is not formalized here}
+
+The algebraic asymptotic expansion and the explicit remainder contracts are
+fully developed mathematically.  The package does not claim a completed Lean
+port of Nemes' periodic-Bernoulli integral.  The formalization plan is direct:
+fixed Bernoulli polynomials, a rational sector lower bound, finite quadrature,
+and algebraic tail integration.  Exponentially improved Stokes expansions are
+outside the two target pages and are not needed for any theorem in the coverage
+ledger.

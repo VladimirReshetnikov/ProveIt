@@ -1,0 +1,277 @@
+\section{Countable laws and effective series}\label{sec:countable}
+
+A countable probability law cannot be inserted into first-order arithmetic as
+an actual completed set.  It is presented by primitive-recursive rational
+terms and moduli.  The finite partial sums are exact objects of the preceding
+sections.
+
+\subsection{Regular sums from absolute-tail moduli}
+
+\begin{definition}[Absolutely summable rational series name]\label{def:abs-series}
+An absolute-series name consists of a primitive-recursive rational sequence
+\(a_n\) and a primitive-recursive modulus \(N(p)\) such that
+\[
+ \sum_{n=N(p)}^{M}\abs{a_n}\le2^{-p}
+ \qquad\text{for every }M\ge N(p).
+\]
+The value of the series is represented by the rational intervals
+\[
+ I_p=\left[\sum_{n<N(p+1)}a_n-2^{-(p+1)},
+          \sum_{n<N(p+1)}a_n+2^{-(p+1)}\right].
+\]
+\end{definition}
+
+The intervals are nested after a harmless monotone closure operation, and
+their widths are at most \(2^{-p}\).  Thus they form a regular-real name.  All
+interval endpoints and all checks are primitive recursive.
+
+\begin{theorem}[Effective Cauchy convergence]\label{thm:abs-convergence}
+Every absolute-series name determines a unique regular real.  Addition,
+scalar multiplication, and finite regrouping of such names preserve effective
+summability, with moduli computed from the input moduli.
+\end{theorem}
+
+\begin{proof}
+If \(M,L\ge N(p)\), then
+\[
+ \abs{\sum_{n<M}a_n-\sum_{n<L}a_n}
+ \le\sum_{n=\min(M,L)}^{\max(M,L)-1}\abs{a_n}
+ \le2^{-p}.
+\]
+This proves the Cauchy estimate using only a finite triangle inequality.
+For sums of two series, request one additional bit from each tail; for scalar
+multiplication by \(c\), request enough extra bits that
+\(\abs c\,2^{-q}\le2^{-p}\).  Finite regrouping is exact at every sufficiently
+large finite stage.
+\end{proof}
+
+\begin{definition}[Countable probability and expectation]\label{def:countable-law}
+A countable rational law is a primitive-recursive sequence
+\(p_n\ge0\) with an absolute-tail modulus and regular sum one.  A rational
+observable \(x_n\) is integrable when \(a_n=p_nx_n\) has an absolute-tail
+modulus.  Its expectation is the regular sum
+\[
+ \E[X]=\sum_{n=0}^{\infty}p_nx_n.
+\]
+\end{definition}
+
+\begin{theorem}[Effective invariance under reindexing]\label{thm:reindex}
+Let \(a_n\) have an absolute-tail modulus.  Suppose
+\(\pi:\N\to\N\) is a primitive-recursive bijection equipped with a coverage
+modulus \(C(N)\) satisfying
+\[
+ \{0,\ldots,N-1\}\subseteq
+ \{\pi(0),\ldots,\pi(C(N)-1)\}.
+\]
+Then \(\sum_na_{\pi(n)}\) has the same regular sum as \(\sum_na_n\), with a
+primitive-recursively derived modulus.
+\end{theorem}
+
+\begin{proof}
+Choose \(N=N(p+2)\) from the absolute-tail modulus and
+\(K=C(N)\).  The first \(K\) permuted terms contain every original term below
+\(N\).  Their difference from the first \(N\) original terms is a finite sum
+of terms whose indices are at least \(N\), hence has absolute value at most
+\(2^{-(p+2)}\).  Any additional permuted tail is bounded by the same absolute
+tail.  The triangle inequality gives the requested \(2^{-p}\) enclosure.
+No appeal to a completed permutation set is made; the finite coverage
+certificate is the essential constructive data.
+\end{proof}
+
+\subsection{Conditional convergence and rearrangement}
+
+\begin{proposition}[Alternating harmonic series]\label{prop:alt-harmonic}
+The alternating harmonic partial sums
+\[
+ A_N=\sum_{n=1}^{N}\frac{(-1)^{n+1}}n
+\]
+form a regular real with error at most \(1/(N+1)\).  This regular real is the
+effectively defined \(\log 2\).
+\end{proposition}
+
+\begin{proof}
+Group adjacent terms:
+\[
+ \frac1{2k-1}-\frac1{2k}=\frac1{(2k-1)2k}>0.
+\]
+The even partial sums increase and the odd partial sums decrease.  Their gap is
+the next term, at most \(1/(N+1)\).  Given precision \(p\), bounded search finds
+an \(N\) with \(N+1\ge2^p\), producing a regular interval.  We may define
+\(\log2\) by this name; equivalence with integral or Taylor definitions is a
+separate effective analytic theorem.
+\end{proof}
+
+\begin{theorem}[A concrete rearrangement changes the sum]\label{thm:rearrange}
+Rearrange the alternating harmonic series in blocks containing two positive
+terms followed by one negative term:
+\[
+ 1+\frac13-\frac12+\frac15+\frac17-\frac14+\cdots.
+\]
+The resulting block partial sums converge effectively to
+\(\tfrac32\log2\), not \(\log2\).
+\end{theorem}
+
+\begin{proof}
+After \(N\) complete blocks, the sum is
+\[
+ R_N=\sum_{k=1}^{2N}\frac1{2k-1}-\frac12H_N
+ =H_{4N}-\frac12H_{2N}-\frac12H_N,
+\]
+where \(H_n=\sum_{k=1}^n1/k\).  Write
+\(H_m=\log m+\gamma+\epsilon_m\), but do not assume an abstract constant
+\(\gamma\): use the elementary finite bounds obtained by comparing
+\(1/k\) with \(\int_k^{k+1}1/x\,dx\), which show that
+\(H_m-\log m\) is a Cauchy name and that the three error terms cancel with an
+explicit \(O(1/N)\) bound.  The logarithmic part is
+\[
+ \log(4N)-\tfrac12\log(2N)-\tfrac12\log N
+ =\tfrac32\log2.
+\]
+Compact rational quadrature for \(1/x\) supplies the needed regular log name
+and modulus.  Equivalently, one can compare \(R_N\) directly with three
+alternating-harmonic subsequences.  Every comparison is finite at precision
+\(p\), with \(N\) chosen larger than a primitive-recursive multiple of
+\(2^p\).
+
+The original series is not absolutely summable because its absolute partial
+sums are \(H_N\), which exceed any prescribed natural bound by a primitive-
+recursive block estimate.  Thus \Cref{thm:reindex} does not apply, exactly as it
+should not.
+\end{proof}
+
+\subsection{The logarithmic probability example}
+
+\begin{proposition}[A countable law normalized by \(\log2\)]
+\label{prop:log-law}
+For \(n\ge1\), put
+\[
+ p_n=\frac{1}{\log2}\frac1{n2^n}.
+\]
+Then \(\sum_{n\ge1}p_n=1\), and the integer-valued variable \(X(n)=n\) has
+\[
+ \E[X]=\frac1{\log2}.
+\]
+Both statements have explicit primitive-recursive tail moduli.
+\end{proposition}
+
+\begin{proof}
+The finite identity
+\[
+ \sum_{n=1}^{N}\frac{x^n}{n}
+\]
+after differentiation is the geometric sum
+\(\sum_{n=1}^{N}x^{n-1}=(1-x^N)/(1-x)\).  Integrating its rational polynomial
+identity from \(0\) to \(1/2\), with exact polynomial antiderivatives, yields
+\[
+ \sum_{n=1}^{N}\frac1{n2^n}
+ =\int_0^{1/2}\frac{1-t^N}{1-t}\,dt.
+\]
+The omitted tail is bounded by
+\[
+ \sum_{n>N}\frac1{n2^n}
+ \le\frac1{N+1}\sum_{n>N}2^{-n}
+ =\frac{2^{-N}}{N+1}.
+\]
+The integral limit is the regular \(\log2\).  Hence the \(p_n\) sum to one.
+For the expectation,
+\[
+ \sum_{n=1}^{N}np_n
+ =\frac1{\log2}\sum_{n=1}^{N}2^{-n},
+\]
+and the geometric tail is exactly \(2^{-N}\).  Taking the effective limit gives
+\(1/\log2\); the reciprocal is computed by interval bisection after a rational
+positive lower bound for \(\log2\) has been certified.
+\end{proof}
+
+\subsection{Extended nonnegative expectation}
+
+\begin{definition}[Lower-real expectation]\label{def:lower-expect}
+For a nonnegative countable observable, define the increasing rational partial
+expectations
+\[
+ E_N=\sum_{n<N}p_nx_n.
+\]
+The sequence \((E_N)\) is a lower-real name.  It is finite as a regular real if
+an upper-tail modulus is supplied; it is \(+\infty\) when a primitive-recursive
+divergence function \(D(B)\) satisfies \(E_{D(B)}\ge B\) for every natural
+\(B\).
+\end{definition}
+
+\begin{proposition}[St Petersburg game]\label{prop:st-petersburg}
+Let the payoff be \(2^n\) with probability \(2^{-n}\) for \(n\ge1\).  The
+partial expectation through outcome \(N\) is exactly \(N\); therefore the
+extended expectation is \(+\infty\), with divergence function \(D(B)=B\).
+\end{proposition}
+
+\begin{proof}
+Each term contributes \(2^{-n}2^n=1\).  Thus the first \(N\) terms sum to
+\(N\).  This is a quantifier-free induction on \(N\).  The probabilities
+normalize because \(\sum_{n=1}^{N}2^{-n}=1-2^{-N}\) with an explicit tail.
+\end{proof}
+
+\begin{definition}[Signed extended expectation]\label{def:signed-extended}
+For a signed countable observable, form the lower-real expectations of
+\(X^+\) and \(X^-\).  If both are finite, define
+\(\E[X]=\E[X^+]-\E[X^-]\).  If exactly one is infinite, define the corresponding
+signed infinity.  If both are infinite, the expectation is undefined.
+\end{definition}
+
+\begin{proposition}[Classification by positive and negative parts]
+\label{prop:parts-classification}
+The four cases in \Cref{def:signed-extended} are disjoint and exhaustive for a
+presentation whose two lower-real names are each certified finite or divergent.
+In the finite-finite case, the resulting regular real agrees with the absolute
+series \(\sum p_nx_n\), and \(\sum p_n\abs{x_n}\) is finite.
+\end{proposition}
+
+\begin{proof}
+The certificates make each part decidably classified at the level of the
+presentation.  In the finite-finite case,
+\(\abs{x}=x^++x^-\) termwise, so the absolute expectation is the sum of two
+finite regular reals.  Conversely, an absolute-tail modulus bounds both parts.
+The signed identity follows from finite partial sums and passage to regular
+limits using their moduli.
+\end{proof}
+
+\begin{proposition}[Undefined alternating unbounded example]
+\label{prop:undefined-alt}
+Let \(p_n=c/n^2\) for \(n\ge1\), where \(c\) is the regular reciprocal of
+\(\sum_{n\ge1}1/n^2\), and let \(X(n)=(-1)^{n+1}n\).  Then both
+\(\E[X^+]\) and \(\E[X^-]\) diverge, so \(\E[X]\) is undefined even though
+symmetric truncations may converge.
+\end{proposition}
+
+\begin{proof}
+For odd \(n\), the positive contribution is \(c/n\); for even \(n\), the
+negative contribution is \(c/n\).  The odd and even harmonic subseries both
+diverge.  A primitive-recursive divergence witness follows from grouping
+\(2^{r-1}<n\le2^r\): each full block contributes a fixed positive rational
+lower bound.  The constant \(c>0\) has a certified rational lower bound from a
+finite upper bound on \(\sum1/n^2\).  Thus each part exceeds any prescribed
+bound after a computable number of blocks.
+
+The Basel value \(\pi^2/6\) is unnecessary for divergence; only a positive
+normalizing regular real is used.  A wholly rational variant takes
+\(p_n=1/(n(n+1))\) and the same alternating magnitude \(n\), leading to the
+same two divergent parts.
+\end{proof}
+
+\subsection{Countable tail sums}
+
+\begin{corollary}[Effective integer tail formula]\label{cor:countable-tail}
+Let \(X\ge0\) be integer-valued under a countable law.  Suppose the expectation
+tail has a modulus.  Then
+\[
+ \E[X]=\sum_{k=0}^{\infty}\Pp(X>k)
+\]
+as equality of regular or lower reals.
+\end{corollary}
+
+\begin{proof}
+Truncate both the outcome index and the value at finite bounds.  Apply the exact
+finite tail formula.  Monotonicity makes the two truncation directions
+increasing.  The supplied expectation-tail modulus controls the discarded
+weighted values; this also controls the tail-probability double sum because it
+is termwise identical at every finite stage.  Hence the regular names agree.
+Without a finiteness modulus, the same argument gives equality of lower reals.
+\end{proof}

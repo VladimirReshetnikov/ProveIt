@@ -1,0 +1,252 @@
+\section{Coverage ledger and source-by-source audit}\label{sec:coverage-audit}
+
+This section records exactly what has been proved, in which sense, and where it
+occurs.  The letters in the last column use the four status levels of
+\cref{sec:scope-status}: \statusA{} is an exact arithmetic theorem already
+represented by executable finite code; \statusB{} is a fully quantified
+finite contract with explicit moduli; \statusC{} is a mathematically complete
+constructive reduction whose routine certificate compiler remains to be
+written; and \statusD{} is deliberately outside the mathematical target or is
+retained only as a source annotation.  No row labelled \statusA, \statusB, or
+\statusC{} is meant to assert that the final object-language derivation
+\( []\vdash_{\mathrm{PRAAx}}\varphi\) has already been checked by Lean.
+
+\renewcommand{\arraystretch}{1.17}
+\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.07\textwidth}
+                  >{\raggedright\arraybackslash}p{0.28\textwidth}
+                  >{\raggedright\arraybackslash}p{0.40\textwidth}
+                  >{\centering\arraybackslash}p{0.08\textwidth}}
+\toprule
+ID & Source statement & Constructive proof and qualification & Status\\
+\midrule
+\endfirsthead
+\toprule
+ID & Source statement & Constructive proof and qualification & Status\\
+\midrule
+\endhead
+\midrule
+\multicolumn{4}{r}{Continued on next page}\\
+\endfoot
+\bottomrule
+\endlastfoot
+
+W1 & Weierstrass canonical product for \(G(1+z)\) &
+The product is defined by finite logarithmic factors.  The estimate
+\(\lvert q_k(z)\rvert\le 2R^3/(3k^2)\), valid for
+\(\lvert z\rvert\le R\) and \(k\ge2R\), gives a primitive-recursive cutoff,
+uniform Cauchy modulus, and product enclosure; see \cref{lem:canonical-tail}.
+& \statusB\\
+
+W2 & Improper integral representation &
+Direct convergence is proved for \(\Re z>-1\).  The interval is split at a
+primitive-recursive truncation point; Taylor bounds near zero, exponential
+tails at infinity, and rational quadrature on the middle interval give a finite
+certificate.  Outside this half-plane one must use a separately certified
+analytic continuation path; see \cref{thm:improper}. & \statusB\\
+
+W3 & Entire function &
+Uniform convergence of the canonical product and all fixed derivatives on
+rational compact disks is reduced to explicit \(p\)-series tails.  The
+constructive statement is a compact-disk family, not an appeal to a completed
+space of holomorphic functions; see \cref{thm:entire}. & \statusB\\
+
+W4 & Order two and infinite type &
+The upper bound follows from the canonical product by splitting at
+\(k\le2r\); the lower bound uses exact integer values and elementary factorial
+bounds.  The resulting finite inequalities imply order two and infinite type;
+see \cref{thm:order-type}. & \statusB\\
+
+W5 & Functional equation \(G(z+1)=\Gamma(z)G(z)\) &
+Finite products cancel exactly.  Harmonic and Stirling remainders identify the
+remaining finite quotient with the Gamma Euler product.  Equality is exported
+as cross-multiplied complex-ball inclusions on apartness-certified domains;
+see \cref{thm:functional}. & \statusB\\
+
+W6 & Normalization \(G(1)=1\) &
+The defining product has its zero argument and every factor equal to one.  The
+claim is exact and needs no limit. & \statusA\\
+
+W7 & Integer values and superfactorials &
+Quantifier-free induction on the functional equation gives
+\(G(n+1)=\prod_{j<n}j!\).  The same recurrence proves the superfactorial
+identification and all displayed initial values; see
+\cref{thm:integer-ipra}. & \statusA\\
+
+W8 & Hyperfactorial/K-function relation &
+Both sides are reduced to finite products at integers and to the common
+Gamma--Barnes recurrence for named positive-real arguments.  Division is
+cleared before export to iPRA; see \cref{sec:hurwitz}. & \statusB\\
+
+W9 & Vign\'eras third-derivative characterization &
+The canonical product gives
+\((\log G)'''(x)=2\sum_{k\ge0}(k+1)/(x+k)^3>0\), with an explicit tail.
+For a competitor, the logarithmic quotient is periodic; positivity at large
+integer translates forces its third derivative to be nonnegative, while its
+period integral is zero.  Hence it is constant; see \cref{thm:vigneras}.
+The coded-function compiler is still a formalization task. & \statusC\\
+
+W10 & Duplication formula &
+This is the case \(n=2\) of the multiplication theorem.  All constants are
+obtained by exact finite rearrangement and the value at one half; see
+\cref{sec:multiplication}. & \statusB\\
+
+W11 & Asymptotic characterization &
+The source display is corrected to
+\(f(n+x)\sim\Gamma(n)^x n^{\binom{x}{2}}f(n)\).
+A uniform compact-\(x\) remainder follows from the digamma strip estimate and
+Euler--Maclaurin.  Periodicity of the quotient then gives uniqueness; see
+\cref{thm:corrected-characterization}. & \statusB\\
+
+W12 & Kinkelin reflection formula &
+Differentiate both sides on a rational path avoiding the integers, use the
+Gamma reflection identity, and fix the constant at the base point.  The
+proof is formulated as path integration with a zero-free certificate; see
+\cref{thm:kinkelin}. & \statusB\\
+
+W13 & Clausen reflection forms &
+Insert the finite sine-series approximation to the Clausen function in the
+reflection formula.  A geometric tail bound and rational trigonometric balls
+supply the modulus; see \cref{sec:reflection}. & \statusB\\
+
+W14 & Half-shift tangent identity &
+Subtract the reflection formulas at two translated arguments and use the
+functional equation and elementary trigonometric identities.  The domain is a
+compact interval quantitatively separated from half-integers. & \statusB\\
+
+W15 & Taylor series for \(\log G(1+z)\) &
+Termwise expansion of each finite canonical factor is justified first, then a
+uniform tail permits passage to the limit.  For \(\lvert z\rvert\le\rho<1\),
+the tail after degree \(M\) is at most
+\(2\rho^{M+1}/((M+1)(1-\rho))\); see \cref{thm:taylor}. & \statusB\\
+
+W16 & Exponentiated Taylor/product relation &
+A rational complex exponential polynomial with its explicit tail converts the
+logarithmic enclosure into an enclosure for \(G\).  No global logarithm is
+asserted. & \statusB\\
+
+W17 & General multiplication formula &
+A finite double product is regrouped by residue classes modulo \(n\).  The
+remaining quotient is periodic; the asymptotic formula fixes its constant.
+The result is exported in exponentiated form with branch data; see
+\cref{thm:multiplication}. & \statusB\\
+
+W18 & Multiplication constant &
+The constant is reduced to powers of \(2\pi\), \(n\), and the named Glaisher
+constant.  For each fixed \(n\), all integer exponents and products are
+primitive recursive; see \cref{sec:multiplication}. & \statusB\\
+
+W19 & Conjugation &
+Every rational finite product commutes exactly with conjugation, and the same
+cutoff works for \(z\) and \(\bar z\). & \statusA\\
+
+W20 & Absolute-value product &
+Multiply the product at \(z\) by its conjugate.  The preferred statement is
+for \(\lvert G(z)\rvert^2\), avoiding square roots.  Positivity and a lower
+bound permit extraction of the unsquared modulus when needed. & \statusB\\
+
+W21 & Pure-imaginary modulus &
+The source prefactor \(y\) is corrected to \(\lvert y\rvert\).  The squared
+identity has the exact factor \(y^2\) and is valid without a sign decision; see
+\cref{audit:modulus}. & \statusB\\
+
+W22 & Barnes asymptotic expansion &
+Euler--Maclaurin with the periodic Bernoulli remainder yields the target
+series.  The Nemes bound supplies a closed error term for every fixed order and
+sector; see \cref{thm:Nemes-bound}. & \statusB\\
+
+W23 & Log-Gamma integral &
+Alexeiewsky's identity is proved first for finite quadrature data by
+integration by parts and the functional equations, then by explicit mesh and
+tail estimates; see \cref{thm:alex}. & \statusB\\
+
+W24 & Logarithmic derivative and derivative formulas &
+Differentiate the canonical logarithm on an apartness-certified disk.  The
+quotient form is replaced by
+\(G'=G\cdot (G'/G)\) when no lower bound for \(G\) is available. & \statusB\\
+
+M1 & Integer hyperfactorial formula &
+Finite products and the recurrence give the identity by quantifier-free
+induction. & \statusA\\
+
+M2 & Initial integer sequence &
+The first values are numeral normalizations of the primitive-recursive
+superfactorial.  The companion checker verifies a wider range. & \statusA\\
+
+M3 & Hurwitz-zeta derivative formula &
+Euler--Maclaurin defines a fast name for \(\zeta'(s,a)\) at \(s=-1\), with an
+explicit remainder.  Subtracting the same recurrence on both sides and fixing
+the value at \(a=1\) proves Vardi's formula; see \cref{thm:vardi}. & \statusB\\
+
+M4 & Negative-order polygamma notation &
+The notation is made definitional rather than imported ambiguously: the
+chosen normalized antiderivative is tied to the Hurwitz-zeta derivative and a
+base value.  Under this normalization the displayed Barnes formula follows
+from M3. & \statusB\\
+
+M5 & Finite Gamma product &
+Repeated use of the functional equation gives a division-free product identity
+with exact finite induction. & \statusA\\
+
+M6 & Derivative formula &
+This is W24 rewritten using Alexeiewsky's identity and the digamma fast name.
+All divisions require an apartness witness. & \statusB\\
+
+M7 & Leading Stirling-like asymptotic &
+This is the first truncation of W22, with the remainder specialized to a closed
+bound. & \statusB\\
+
+M8 & Full Bernoulli asymptotic &
+For every externally fixed truncation order, the coefficients and the Nemes
+remainder bound are primitive-recursive names.  Uniformity is stated only on a
+fixed rational sector. & \statusB\\
+
+M9 & \(G(1/4)\) &
+Duplication, reflection, the Gamma quarter reflection formula, and the named
+Catalan and Glaisher constants determine the positive value.  Branches are
+fixed by positivity. & \statusB\\
+
+M10 & \(G(3/4)\) &
+The same system determines the value; the two MathWorld forms are equivalent by
+\(\Gamma(1/4)\Gamma(3/4)=\pi\sqrt2\). & \statusB\\
+
+M11 & \(G(1/2)\) &
+The duplication constant and normalization give the standard formula, with
+positive-real branches. & \statusB\\
+
+M12--M13 & \(G(3/2)\), \(G(5/2)\) &
+Apply the functional equation to M11 and use the exact Gamma half-integer
+values. & \statusB\\
+
+M14 & All odd half-integer values and \(c_k\) &
+Induction isolates an exact integer/rational coefficient \(c_k\) multiplying
+the fixed named constants.  The recurrence for \(c_k\) is primitive recursive;
+see \cref{thm:odd-half}. & \statusA/\statusB\\
+\end{longtable}
+\normalsize
+
+\subsection{Items on the pages that are not additional mathematical theorems}
+
+The historical notes, software syntax, graphs, decimal evaluations, and lists
+of applications are not independent identities to prove in iPRA.  A decimal
+printout is covered by a stronger statement here: a rational interval with a
+checked width and containment certificate.  Likewise, an implementation note
+about a computer algebra system is replaced by the explicit finite algorithms
+in the archive.  The report does not attempt to formalize bibliographic claims
+such as priority or naming conventions.
+
+The asymptotic Stokes analysis beyond a fixed closed sector is also not needed
+to establish the formulas on the two target pages.  It would require an
+additional exponentially improved expansion and branch-dependent terminant
+bounds.  Nothing in this report uses such a claim silently.
+
+\subsection{What the ledger establishes}
+
+The ledger covers every substantive displayed identity or characterization on
+the two target pages, after the two necessary corrections.  Exact finite
+identities are reduced to primitive recursion and quantifier-free induction;
+analytic identities are reduced to finite rational computations with explicit
+cutoffs, separation hypotheses, and error inequalities.  The remaining work is
+therefore not discovery of an unspecified constructive foundation: it is the
+mechanical Lean implementation of the indicated contracts and their export to
+ProveIt's \code{Prf PRAAx} calculus.

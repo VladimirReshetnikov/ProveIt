@@ -1,0 +1,267 @@
+\section{Lean formalization and object-language route}\label{sec:lean}
+
+\subsection{Repository interfaces reused}
+
+The ProveIt repository has two distinct levels that must not be conflated.
+The ambient Lean metatheory provides convenient finite sums, rationals, and
+proof automation.  The internal target is an explicit derivation
+\[
+ ([]:\operatorname{List}(\mathrm{Fm}\;\mathrm{PTm}\;k))
+ \;\vdash[\mathrm{PRAAx}]\;\varphi
+\]
+in the formalized \(\ipra\) calculus.  The existing
+\code{pra_iff_native} theorem then transports a closed \code{PRAAx} derivation
+to the concise native scalar core.
+
+The checked arithmetic library already contains the principal combinators
+needed here:
+\begin{itemize}
+\item \code{IPRADerivations.Core.BoundedSums}: elimination of terms from a
+  zero nonnegative sum and construction of a zero sum from pointwise zeros;
+\item \code{IPRADerivations.Core.SumLemmas}: sum shift, sum of pointwise sums,
+  bounded congruence, and ``a term is at most a nonnegative sum'';
+\item \code{IPRADerivations.Core.MultiSums}: rectangular finite Fubini and
+  reindexing;
+\item \code{IPRADerivations.Core.Pairing}: coding product outcomes;
+\item arithmetic, order, truncated subtraction, division with remainder, and
+  ring-normalization modules used by \code{deriveNat};
+\item \code{ConciseIPRA.NativeBiInterpretation}: the
+  \code{pra_iff_native} bridge.
+\end{itemize}
+
+The earlier constructive central-limit packet supplies compatible design
+patterns: a natural-weight \code{FinLaw}, nested rational interval
+\code{Regular} names, and an \code{InternalProof} structure separating a
+primitive-recursive checker from its actual \code{PRAAx} derivation.  The
+present packet follows those patterns but does not assume the uncompleted CLT
+blueprints as theorems.
+
+\subsection{Ambient finite API}
+
+The file \code{lean/ExpectedValueFinite.lean} begins with
+
+\begin{lstlisting}[language={}]
+structure FinLaw where
+  card : Nat
+  weight : Fin card -> Nat
+  total : Nat
+  total_pos : 0 < total
+  weight_sum : (sum i, weight i) = total
+
+def FinLaw.expect (L : FinLaw)
+    (X : Fin L.card -> Rat) : Rat :=
+  (sum i, (L.weight i : Rat) * X i) / L.total
+\end{lstlisting}
+
+It also defines event probability, moments, variance, finite CDFs, almost-sure
+equality, pushforward fiber weights, product-law data, partition cell weights,
+and conditional means.  The structures
+\code{FiniteExpectationProofPackage},
+\code{FiniteDependenceProofPackage}, and \code{SampleProofPackage} list the
+ambient theorems to be constructed.  They are records of obligations, not
+axioms: no inhabitant is provided.
+
+A good ambient implementation should avoid a single enormous proof.  The
+recommended module graph is
+
+\begin{verbatim}
+IPRADerivations/Probability/FiniteLaw.lean
+IPRADerivations/Probability/Expectation.lean
+IPRADerivations/Probability/TailSum.lean
+IPRADerivations/Probability/Variance.lean
+IPRADerivations/Probability/MarkovChebyshev.lean
+IPRADerivations/Probability/CauchySchwarz.lean
+IPRADerivations/Probability/Independence.lean
+IPRADerivations/Probability/Conditional.lean
+IPRADerivations/Probability/SampleMean.lean
+IPRADerivations/Probability/Kolmogorov.lean
+\end{verbatim}
+
+Each file should first prove the theorem over ordinary \code{Rat} and finite
+sums.  More importantly, it should state a denominator-cleared lemma whose
+shape already matches the natural-number object language.
+
+\subsection{Natural encodings}
+
+Introduce codes such as
+
+\begin{lstlisting}[language={}]
+structure ZCode where
+  pos neg : Nat
+
+structure QCode where
+  num : ZCode
+  den : Nat
+  denPos : 0 < den
+
+structure FinLawCode where
+  card total commonDen : Nat
+  weightCode valueCode : Nat
+\end{lstlisting}
+
+A finite list is encoded by the repository's pairing/list scheme.  Access
+outside the declared length returns zero.  The decoder validates:
+\begin{enumerate}
+\item positive total and positive common denominator;
+\item bounded weight sum equals the total;
+\item every observable entry has the declared common denominator;
+\item theorem-specific side conditions, such as nonnegativity or a positive
+  threshold.
+\end{enumerate}
+Invalid inputs return zero from the checker.  Thus a universally quantified
+open equation \code{check(args)=0} acts as an implication: malformed data pass
+vacuously, while valid data trigger the mathematical verification.
+
+The essential primitive-recursive functions are
+\begin{verbatim}
+weightSum       weightedNum      eventMass
+absWeightedNum secondMomentNum  fiberMass
+integerTailMass productIndex    cellMass
+firstCrossing  finiteMoment     regularIntervalCheck
+\end{verbatim}
+Their defining equations must be proved once and reused.  No semantic theorem
+should unfold a large decoder repeatedly.
+
+\subsection{Object-language theorem shapes}
+
+The file \code{lean/ObjectLanguageTargets.lean} defines a generic open target
+
+\begin{lstlisting}[language={}]
+def checkedOpen {k : Nat} (check : PR k) : Fm PTm k :=
+  PTm.app check Syn.var = PTm.zero
+
+structure InternalProof {k : Nat}
+    (semantic : (Fin k -> Nat) -> Nat)
+    extends Representation semantic where
+  derived : ([] : List (Fm PTm k))
+    |- [PRAAx] checkedOpen check
+\end{lstlisting}
+
+The concrete syntax in the source uses ProveIt's equality and derivability
+symbols; the ASCII display above is only schematic.  A completed theorem
+contains both:
+\begin{enumerate}
+\item \code{correct}: the \code{PR} term evaluates to the intended semantic
+  test; and
+\item \code{derived}: an actual derivation proving that the test always
+  returns zero.
+\end{enumerate}
+Standard-model truth establishes neither field automatically.
+
+\subsection{Proof plan for each finite theorem}
+
+\paragraph{Linearity.}
+Normalize \(X,Y\) to a common denominator.  The numerator for \(X+Y\) is the
+bounded sum of the pointwise numerator sum.  Instantiate \code{sum_add}, apply
+the ring tool to denominator products, and close universally.
+
+\paragraph{Monotonicity.}
+The checker stores nonnegative numerator differences
+\(d_i=Y_i-X_i\).  A bounded sum of nonnegative naturals is nonnegative.
+Equivalently, define the target as the existence of a natural slack
+\(s\) with \(\operatorname{num}(Y)-\operatorname{num}(X)=s\); the sum of the
+pointwise slacks supplies \(s\).
+
+\paragraph{Indicator and finite LOTUS.}
+Indicator expectation unfolds to \code{eventMass}.  For LOTUS, define
+\code{fiberMass(v)} as a bounded sum.  Apply \code{MultiSums} to the matrix
+\(w_i\ind_{f(i)=v}g(v)\), and use the proof that exactly one finite fiber
+indicator is active for each \(i\).
+
+\paragraph{Tail sum.}
+First derive the open identity
+\[
+ x=\sum_{k<B}\ind_{k<x}\qquad(x\le B)
+\]
+by quantifier-free induction on \(x\) or \(B\).  Substitute each encoded value,
+multiply by the weight, and use finite Fubini.
+
+\paragraph{Variance.}
+After common-denominator normalization, invoke ring normalization on the
+identity
+\[
+ W\sum_iw_i(X_i-\mu)^2
+ =W\sum_iw_iX_i^2-(\sum_iw_iX_i)^2.
+\]
+The displayed form avoids division and is polynomial over signed-natural
+codes.
+
+\paragraph{Markov and Chebyshev.}
+Compile the pointwise slack in
+\(a\ind_{a\le X_i}\le X_i\), sum it, and clear denominators.  Chebyshev is the
+same theorem applied to the encoded square deviation.  There is no need to
+formalize a general probability inequality framework before these two files.
+
+\paragraph{Cauchy--Schwarz.}
+Use the weighted Lagrange identity from \Cref{lem:lagrange}.  The double sum of
+squares is encoded by \code{MultiSums}; nonnegativity is a direct natural
+statement.  This is more proof-friendly than a minimization or quadratic-
+discriminant argument.
+
+\paragraph{Independence and conditioning.}
+For product laws, mixed-radix pairing and \code{MultiSums} prove factorization.
+For conditioning, split on the natural cell mass.  A positive cell uses exact
+cancellation; a zero cell uses \code{sum_zero_elim} to show all its weighted
+terms vanish.  Sum the cell identities for total expectation.
+
+\paragraph{Kolmogorov.}
+Encode the first-crossing index by bounded search through the partial sums.
+Prove disjointness of first-crossing indicators and factor the tail increment
+using the product-law theorem.  The remaining argument is finite sum algebra.
+This is the largest finite proof, so it should be attempted only after all
+previous modules compile.
+
+\subsection{Regular expectation API}
+
+The file \code{lean/RegularExpectation.lean} defines nested rational intervals,
+finite simple approximation levels, refinement maps preserving mass, an exact
+refinement \(L^1\) distance, absolute-series names, and compact/improper
+integrand interfaces.  The next implementation modules should be
+
+\begin{verbatim}
+IPRADerivations/Probability/RegularExpectation.lean
+IPRADerivations/Probability/Series.lean
+IPRADerivations/Probability/Integration.lean
+IPRADerivations/Probability/Distributions.lean
+IPRADerivations/Probability/Convergence.lean
+IPRADerivations/Probability/Fourier.lean
+\end{verbatim}
+
+At this level the object-language sentence always contains a precision
+variable.  A checker decodes a presentation and verifies one interval
+inclusion with dyadic slack.  The mathematical proof computes the finite level
+needed for that precision, invokes the finite kernel, and combines rational
+error bounds.  It does not quantify over an ambient \code{Real}.
+
+\subsection{Suggested milestone sequence}
+
+\begin{enumerate}
+\item Compile the ambient finite file against the repository's pinned Lean and
+  Mathlib version, replacing every proof-package field by an actual theorem.
+\item Add natural encoders and prove decoder/encoder round trips for valid
+  codes.
+\item Construct object-language derivations for normalization, constants,
+  additivity, homogeneity, and monotonicity.
+\item Add indicators, LOTUS, tail sums, and variance.
+\item Add Markov, Chebyshev, and Cauchy--Schwarz.
+\item Add product laws, conditioning, sample means, and Kolmogorov.
+\item Only then implement regular names, series, quadrature, convergence, and
+  Fourier modules.
+\item Universally close each theorem and transport it with
+  \code{pra_iff_native}; aggregate packages only after individual modules are
+  checked.
+\end{enumerate}
+
+\subsection{Completion criterion}
+
+The formalization is complete only when all of the following hold:
+\begin{itemize}
+\item the ambient files compile with the repository's pinned toolchain;
+\item every decoder and primitive-recursive evaluator has proved defining
+  equations;
+\item each main theorem contains an explicit \code{Prf PRAAx} derivation;
+\item no theorem is introduced through \code{axiom}, \code{sorry}, or a
+  constant-zero checker masquerading as the semantic verifier;
+\item the native proof is obtained through the existing proved bridge;
+\item the Python validation remains outside the trusted proof boundary.
+\end{itemize}

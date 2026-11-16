@@ -1,0 +1,159 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  citecolor=green!35!black,
+  urlcolor=blue!55!black,
+  pdftitle={The Barnes G-function in intuitionistic primitive recursive arithmetic},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov},
+  pdfsubject={Constructive quantitative proofs and Lean formalization plan}
+}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Barnes $G$ in iPRA}
+\rhead{16 November 2026}
+\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlist{nosep,leftmargin=2em}
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{contract}[theorem]{Finite contract}
+\newtheorem{audit}[theorem]{Source audit}
+\newtheorem{roadmap}[theorem]{Formalization step}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\e}{\mathrm e}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\Cl}{\operatorname{Cl}_2}
+\newcommand{\sfac}{\operatorname{sf}}
+\newcommand{\hyp}{\operatorname{H}}
+\newcommand{\BallEq}{\operatorname{BallEq}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\statusA}{\textbf{A}}
+\newcommand{\statusB}{\textbf{B}}
+\newcommand{\statusC}{\textbf{C}}
+\newcommand{\statusD}{\textbf{D}}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  breaklines=true,
+  frame=single,
+  backgroundcolor=\color{black!2}
+}
+
+\title{\textbf{The Barnes $G$-function in intuitionistic primitive recursive arithmetic}\\
+\large Quantitative constructive proofs, source audit, and a Lean-to-iPRA formalization plan}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{16 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We reconstruct, in a form suitable for intuitionistic primitive recursive
+arithmetic (iPRA), essentially every mathematical identity on the Wikipedia and
+MathWorld pages for the Barnes $G$-function.  The central device is not a
+classical completed real or complex universe, but a family of finite statements:
+for every fixed primitive-recursive name, compact rational domain, requested
+precision and branch-separation certificate, a bounded checker verifies a
+rational enclosure.  The Weierstrass product is given an explicit uniform tail
+bound; this yields the entire function, its zero multiplicities, the functional
+equation, integer and finite-product identities, Taylor and derivative series,
+integral and reflection formulas, multiplication and duplication formulas,
+quarter- and half-integer values, Hurwitz-zeta and hyperfactorial relations,
+and order two of infinite type.  Euler--Maclaurin and an explicit Barnes-$G$
+remainder integral give a fixed-order, fixed-sector asymptotic schema.
+
+Two source errors are corrected.  The asymptotic characterization uses
+$\Gamma(n)^x$, not $\Gamma(x)^n$, and the pure-imaginary absolute-value formula
+has the prefactor $|y|$, not $y$.  We also separate three levels of evidence:
+the human mathematical proof developed here, executable finite regression
+checks, and the still-to-be-completed compilation into ProveIt's object theory
+$[]\vdash_{\mathrm{PRAAx}}\varphi$.  The accompanying Lean files specify all
+necessary definitions, certificate interfaces and target formulas, but are not
+presented as a completed formal proof.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{sections/01_scope}
+\input{sections/02_ipra_language}
+\input{sections/03_canonical_product}
+\input{sections/04_functional_integer}
+\input{sections/05_taylor}
+\input{sections/06_integrals_derivatives}
+\input{sections/07_reflection_modulus}
+\input{sections/08_multiplication_special}
+\input{sections/09_hurwitz_hyperfactorial}
+\input{sections/10_asymptotic_order}
+\input{sections/11_characterization}
+\input{sections/12_formalization}
+\input{sections/13_coverage_audit}
+\input{sections/14_appendix_estimates}
+
+\begin{thebibliography}{99}
+\bibitem{Barnes1900}
+E. W. Barnes, \emph{The theory of the $G$-function}, Quarterly Journal of Pure and Applied Mathematics 31 (1900), 264--314.
+
+\bibitem{DLMF}
+NIST Digital Library of Mathematical Functions, \emph{Section 5.17: Barnes' $G$-Function (Double Gamma Function)},
+\url{https://dlmf.nist.gov/5.17}, inspected 16 November 2026.
+
+\bibitem{Wikipedia}
+Wikipedia contributors, \emph{Barnes $G$-function},
+\url{https://en.wikipedia.org/wiki/Barnes_G-function}, inspected 16 November 2026.
+
+\bibitem{MathWorld}
+E. W. Weisstein, \emph{Barnes $G$-Function}, MathWorld---A Wolfram Web Resource,
+\url{https://mathworld.wolfram.com/BarnesG-Function.html}, inspected 16 November 2026.
+
+\bibitem{Nemes2014}
+G. Nemes, \emph{Error bounds and exponential improvement for the asymptotic expansion of the Barnes $G$-function},
+\url{https://arxiv.org/abs/1406.2535}, 2014.
+
+\bibitem{MarichalZenaidi}
+J.-L. Marichal and N. Zena\"idi, \emph{A Generalization of Bohr--Mollerup's Theorem for Higher Order Convex Functions}, Springer, 2022; especially the chapter ``Applications to Some Standard Special Functions.''
+
+\bibitem{Adamchik}
+V. S. Adamchik, papers on the Barnes function, multiple gamma functions and related constants, as cited by MathWorld and DLMF.
+
+\bibitem{ProveIt}
+V. Reshetnikov, \emph{ProveIt}, commit
+\code{2a7a1cc230762eaa57df921e944a5443afeb0519},
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{GammaPacket}
+ProveIt, \emph{Gamma in intuitionistic primitive recursive arithmetic},
+\code{Logic/PrimitiveRecursiveArithmetic/docs/proofs/analysis/gamma\_ipra},
+commit as in \cite{ProveIt}.
+\end{thebibliography}
+
+\end{document}
