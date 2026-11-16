@@ -189,7 +189,11 @@ under `analysis/`, without committing the ZIP. It leaves out only its ignored `S
 the ZIP. All 18 of its members are placed. From here on, every archive is deleted from its
 drop directory after placement (Vladimir, 15 November 2026). `siegel_ipra.zip` was placed the
 same way, under `diophantine-number-theory/`, and then deleted. It leaves out only its
-ignored `SHA256SUMS`.
+ignored `SHA256SUMS`. `bell_numbers_ipra.zip` and `prime_distribution_ipra.zip` were placed
+the same way and then deleted:
+- `bell_numbers_ipra` is placed under a new area, `combinatorics/`. All its members are placed.
+- `prime_distribution_ipra` is placed under `analytic-number-theory/`. It leaves out only its
+  ignored `SHA256SUMS`.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

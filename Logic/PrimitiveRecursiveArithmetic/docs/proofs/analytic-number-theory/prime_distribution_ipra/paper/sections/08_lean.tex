@@ -1,0 +1,76 @@
+\section{Lean formalization: definitions, modules and final endpoints}
+\label{sec:lean}
+
+\subsection{What the supplied files are}
+
+\texttt{lean/Targets.lean} supplies executable natural and rational definitions and the theorem targets. \texttt{lean/ObjectBridge.lean} supplies the generic final transport interface into the repository's native calculus. These files are an \emph{uncompiled outline}. The environment had no Lean or Lake executable on its executable search path, and no successful Lean compilation is claimed. They introduce no axiom asserting any of the requested analytic theorems and contain no hidden replacement for their proofs.
+
+The inspected repository uses Lean \texttt{v4.32.0}. The names below are taken from its actual source at the pinned commit, rather than inferred from README prose:
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{48mm}X@{}}
+\toprule
+Interface & Role \\
+\midrule
+\texttt{PR : Nat -> Type} & Codes for fixed primitive recursive function symbols, with constructors \texttt{zero}, \texttt{succ}, \texttt{proj}, \texttt{comp}, \texttt{prec}. \\
+\texttt{PTm n} & Arithmetic terms with $n$ free numerical variables. \\
+\texttt{Fm PTm n} & First-order formulas over those terms. \\
+\texttt{PRAAx} & Defining equations, successor axioms and quantifier-free induction. \\
+\texttt{Prf PRAAx Gamma phi} & A derivation in intuitionistic first-order arithmetic. \\
+\texttt{pra\_iff\_native} & Faithful transport of an existing arithmetic derivation to \texttt{NPrf}. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+The namespace is \texttt{LeanProofs.ConciseIPRA}. The transfer theorem does not manufacture the input proof.
+
+\subsection{The first complete formal endpoint}
+
+Compile the Boolean matrix of~\eqref{eq:dirichlet-integer-target} to a fixed \texttt{PR 3} program, with parameters $q,a,B$ in the documented order. Let \texttt{dirichletMatrix} be that actual code, not an uninterpreted constant. The open formula says that its value equals $1$; its universally free variables give the intended universal theorem. The required Lean result is
+\begin{lstlisting}
+Prf PRAAx [] (boolFormula dirichletMatrix)
+\end{lstlisting}
+and then, by the inspected bridge,
+\begin{lstlisting}
+NPrf [] (NFm.ofPRA (boolFormula dirichletMatrix))
+\end{lstlisting}
+Correctness of the compilation must identify the program with the exact factorial-scaled sum. It is not enough to prove that an unrelated program always returns $1$.
+
+For the finite sieve, compile the rational matrix after cross multiplication, including $q,z\geq1$ and coprimality guards. For the logarithmic corollary, include the precision parameter and the supplied lower logarithm sum. For SW and BV, the outer existence of constants is part of the formula; it may not be erased by placing constants among free universally quantified variables or by assuming the desired estimate as an axiom.
+
+\subsection{A module plan with explicit proof obligations}
+
+\begin{longtable}{@{}p{38mm}p{107mm}@{}}
+\toprule
+Module & Definition and proof obligations \\
+\midrule
+\endhead
+\texttt{FiniteArithmetic} & Construct codes for signed integers, rationals, bounded lists, gcd, division, primality, factorial and finite sums. Prove their defining identities internally. Use Boolean encodings of bounded invariants, and record positive denominators. \\
+\texttt{RationalAnalysis} & Implement the logarithm and exponential polynomials in Section~\ref{sec:foundations}. Prove finite tail bounds, addition and product laws with error allowances, root bisection, rational-gap elimination, and rectangle quadrature bounds. \\
+\texttt{FiniteCharacters} & Enumerate unit groups and exponent tables; prove finite subgroup extension, character count, orthogonality, period cancellation and the real/nonreal split. Provide exact symbolic roots and compatible complex rational names. \\
+\texttt{LFunctionJets} & Define finite partial-summation expressions and Taylor jets. Prove their coefficient convolution identities and the uniform tails listed in Section~\ref{sec:dirichlet-arithmetic}. Avoid an ambient analytic-continuation theorem. \\
+\texttt{DirichletMargin} & Prove the positivity of $a_n$, the square lower bound, the finite exponential-polynomial estimate and the $272q$ majorant. Derive the real and nonreal $L$-value margins. \\
+\texttt{DirichletWitness} & Prove the uniform Euler-log bound, character-filtered prime-sum estimate, truncation at $Y$, the scaled rational inequality, and correctness of the bounded prime selector. Produce the embedded derivation. \\
+\texttt{SelbergFinite} & Prove the divisor and CRT identities, the exact M\"obius transform, diagonalization, the explicit weights, coefficient bounds, and the rational denominator estimate. Every result is finite and rational. \\
+\texttt{BrunTitchmarsh} & Implement the three kernel estimates, bounded rational-grid maximization, residual cancellation, weighted large sieve, Ramanujan sums, denominator certificates and the overlapping ranges in Section~\ref{sec:sharp-bt}. These give the exact coefficient $2$. The simpler Selberg module gives the separate $2+1/k$ bound. \\
+\texttt{VaughanFinite} & Define convolution over bounded divisors and weighted logarithms from prime valuations. Prove associativity, the two convolution identities, and Vaughan's identity for finite rational weight lists. \\
+\texttt{GramFinite} & Implement Gaussian rational arrays and finite sums of squares. Prove the certificate inequality, finite Cauchy--Schwarz and the stated duality argument. The Fourier approximation layer needs spacing margins. \\
+\texttt{SWBVTargets} & Define the rational maxima $E_s$ and positive quantified targets. Prove the approximation allowances and the witness-preserving BV reduction. Full analytic estimates and existential constants remain missing. \\
+\texttt{ChebotarevTargets} & Define certified field presentations, ideal enumerations, Frobenius count certificates and the integer density target. Prove the arithmetic modulus proposition. The field analytic estimates and their internal derivations remain missing. \\
+\texttt{ObjectAssembly} & Compile the precise matrices, combine the internal derivations, and apply \texttt{pra\_iff\_native}. Record all hypotheses and inspect the axioms of the final exported theorem. \\
+\bottomrule
+\end{longtable}
+
+For the completed human results this is a dependency-ordered route to formalization. For the full density theorems it is a research plan containing identified missing mathematics, not a claim that only transcription remains.
+
+\subsection{Ambient Lean can be a useful parallel check}
+
+Mathlib already contains an ordinary Dirichlet theorem. Its official documentation gives \cite{MathlibAP}
+\begin{lstlisting}
+import Mathlib.NumberTheory.LSeries.PrimesInAP
+
+Nat.forall_exists_prime_gt_and_modEq
+  (n : Nat) {q a : Nat} (hq : q != 0) (h : a.Coprime q)
+\end{lstlisting}
+with conclusion that a prime $p>n$ is congruent to $a$ modulo $q$.
+This is a useful comparison of statements and a possible semantic regression check. It neither provides our explicit bound nor proves derivability in the embedded $\ipra$ theory.
+
+At each stage, useful validation consists of matching the program to the displayed mathematical definition, checking the internal proof's induction formulas, and inspecting the final derivation type. A large collection of numerical examples cannot verify a uniform density modulus. Likewise, a file without \texttt{sorry} can still contain only definitions and conditional wrappers; the supplied status records make that distinction explicit.

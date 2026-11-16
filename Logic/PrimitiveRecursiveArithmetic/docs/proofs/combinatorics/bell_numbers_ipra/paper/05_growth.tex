@@ -1,0 +1,584 @@
+\section{Growth with explicit arithmetic error bounds}
+\label{sec:growth}
+
+The aim of this section is stronger than a statement that the usual
+asymptotic argument is effective.  We give inequalities with explicit
+errors, and, for the principal asymptotic equivalences, an explicit
+primitive recursive modulus.  The logarithms, exponentials, square roots,
+integrals, and the function $W$ in the displayed formulas denote the
+represented quantities described in the foundations section.  A
+non-strict inequality between them means the corresponding family of
+rational inequalities with arbitrarily small prescribed slack.  No
+quantification over an unrestricted space of real functions is needed.
+
+Throughout, for $n\geq3$, put
+\[
+ r=W(n),\qquad a=e^r=\frac nr,\qquad
+ b=n(r+1),\qquad L=\log n.
+\]
+Thus $r>1$, $r+\log r=L$, and
+\begin{equation}\label{eq:growth-r-bracket}
+ L-\log L\leq r\leq L.
+\end{equation}
+The lower inequality follows from $\log r\leq\log L$.  The function
+$W(n)$ can be computed without deciding equality between real numbers.
+For example, invert $x\mapsto xe^x$ on the rational interval $[0,n]$.
+If a current interval has width $w$ and midpoint $m$, approximate
+$me^m-n$ to error at most $w/8$.  An approximation greater than $w/4$
+or less than $-w/4$ certifies which half contains the root.  Otherwise
+the root is within $3w/8$ of $m$, since the derivative of $xe^x$ is at
+least one for $x\geq0$.  Intersect with that smaller interval.  Each
+step decreases the width by a factor at most $3/4$, so a predetermined
+primitive recursive number of steps suffices for any requested error.
+Existence here is the compatibility of these explicit brackets; it is
+not an application of an unrestricted intermediate value principle.
+
+\subsection{A logarithmic envelope requiring no saddle-point argument}
+
+We first record the elementary factorial bounds
+\begin{equation}\label{eq:elementary-factorial-log}
+ m\log m-m+1\leq\log(m!)
+ \leq m\log m-m+1+\log m\qquad(m\geq1).
+\end{equation}
+They follow by bounding the increasing function $\log x$ on each of
+the intervals $[j,j+1]$ and adding the resulting finite inequalities.
+The integral $\int_1^m\log x\,dx=m\log m-m+1$ is obtained from its
+explicit antiderivative.  Equivalently, the same proof uses rational
+Riemann sums and their explicit error bounds.
+
+\begin{theorem}[An explicit logarithmic envelope]\label{thm:log-envelope}
+For every integer $n\geq3$, let
+\[
+ H(n)=n\left(r-1+\frac1r\right),\qquad r=W(n).
+\]
+Then
+\begin{equation}\label{eq:log-envelope}
+ H(n)-r-4\leq\log B_n\leq H(n)+\log n.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:log-envelope-symmetric}
+ \left|\frac{\log B_n}{n}-
+ \left(r-1+\frac1r\right)\right|
+ \leq\frac{\log n+4}{n}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+All coefficients of the exponential generating function are
+nonnegative.  Consequently, for every positive $x$,
+\[
+ B_n\leq \frac{n!}{x^n}\exp(e^x-1).
+\]
+Set $x=r$ and use the upper bound in
+\eqref{eq:elementary-factorial-log}.  Because
+$\log(n/r)=r$ and $a=n/r$, this gives
+\[
+ \log B_n\leq n\log n-n+1+\log n+a-1-n\log r
+ =H(n)+\log n.
+\]
+
+For the lower bound take one positive term of Dobi\'nski's formula.
+There is a small constructive point in selecting that term: we do not
+take the floor of an arbitrary represented real.  Compute a rational
+lower approximation $u$ satisfying $a-1/4\leq u\leq a$, and take the
+ordinary rational floor $k=\lfloor u\rfloor$.  Then
+\[
+ a-\frac54<k\leq a,\qquad k\geq\frac a2,\qquad k\geq1.
+\]
+Define
+\[
+ g(x)=n\log x-x\log x+x.
+\]
+We have $g'(a)=0$, $g(a)=H(n)$, and, for $k\leq x\leq a$,
+\[
+ |g''(x)|=\frac n{x^2}+\frac1x
+ \leq\frac{6r}{a}.
+\]
+Taylor's formula with its integral remainder therefore gives
+\[
+ 0\leq g(a)-g(k)
+ \leq\frac{3r}{a}\left(\frac54\right)^2
+ =\frac{75r}{16e^r}<2.
+\]
+Here $re^{-r}\leq e^{-1}$ for $r\geq1$, and $e>5/2$ suffices for
+the last numerical bound.  Dobi\'nski and
+\eqref{eq:elementary-factorial-log} now give
+\[
+ \log B_n\geq n\log k-\log(k!)-1
+ \geq g(k)-\log k-2\geq H(n)-r-4.
+\]
+This proves both assertions.
+\end{proof}
+
+\subsection{The de Bruijn logarithmic expansion}
+
+\begin{theorem}[The displayed de Bruijn expansion, with constants]
+\label{thm:debruijn}
+Let $L=\log n\geq16$ and $\ell=\log L$.  Then
+\begin{align}
+ \left|\frac{\log B_n}{n}
+ -\left(L-\ell-1+\frac{\ell+1}{L}
+             +\frac{\ell^2}{2L^2}\right)\right|
+ &\leq\frac{6\ell^3}{L^3}+\frac{L+4}{n}
+ \label{eq:debruijn-sharp-error}\\
+ &\leq\frac{7\ell}{L^2}.
+ \label{eq:debruijn-displayed-error}
+\end{align}
+Thus, with the usual notation interpreted by these bounds,
+\[
+ \frac{\log B_n}{n}
+ =\log n-\log\log n-1+
+ \frac{\log\log n+1}{\log n}
+ +\frac12\left(\frac{\log\log n}{\log n}\right)^2
+ +O\!\left(\frac{\log\log n}{(\log n)^2}\right).
+\]
+The integer threshold $n\geq2^{24}$ is sufficient.
+\end{theorem}
+
+\begin{proof}
+We give the error calculation, so the order symbol conceals no
+ineffective threshold.  Set
+\[
+ r_0=L-\ell+\frac\ell L+
+             \frac{\ell^2/2-\ell}{L^2},\qquad
+ u=\frac{r_0-L}{L}.
+\]
+For $L\geq16$ one has $\ell\geq2$ and $0\leq-u\leq\ell/L\leq1/4$.
+The convergent geometric-series integral for $\log(1+u)$ gives
+\[
+ \left|\log(1+u)-u+\frac{u^2}{2}\right|
+ \leq\frac{|u|^3}{3(1-|u|)}
+ \leq\frac{\ell^3}{2L^3}.
+\]
+Also
+\[
+ 0\leq u+\frac\ell L\leq\frac{2\ell}{L^2},\qquad
+ \left|\frac{u^2}{2}-\frac{\ell^2}{2L^2}\right|
+ \leq\frac{2\ell^2}{L^3}.
+\]
+Substitution in $r_0+\log r_0-L$ cancels the terms through order
+$L^{-2}$ and yields
+\[
+ |r_0+\log r_0-L|
+ \leq\frac{(5/2)\ell^2+(1/2)\ell^3}{L^3}
+ \leq\frac{3\ell^3}{L^3}.
+\]
+The derivative of $x+\log x$ is at least one on $x>0$, so
+\begin{equation}\label{eq:W-expansion-error}
+ \left|r-\left(L-\ell+\frac\ell L+
+             \frac{\ell^2/2-\ell}{L^2}\right)\right|
+ \leq\frac{3\ell^3}{L^3}.
+\end{equation}
+
+For completeness, the reciprocal term can be controlled without
+substituting an unquantified expansion.  Put $v=(L-r)/L$.
+By \eqref{eq:growth-r-bracket}, $0\leq v\leq\ell/L\leq1/4$, and
+\[
+ 0\leq r-(L-\ell)=-\log(1-v)
+ \leq\frac{4\ell}{3L}.
+\]
+The exact identity $(1-v)^{-1}=1+v+v^2/(1-v)$ therefore gives
+\begin{equation}\label{eq:W-reciprocal-error}
+ \left|\frac1r-\left(\frac1L+\frac\ell{L^2}\right)\right|
+ \leq\frac{3\ell^2}{L^3}.
+\end{equation}
+Adding \eqref{eq:W-expansion-error} and
+\eqref{eq:W-reciprocal-error} shows that the error in
+$r-1+1/r$ is at most $6\ell^3/L^3$; the terms
+$-\ell/L^2$ and $+\ell/L^2$ cancel.  Theorem
+\ref{thm:log-envelope} proves
+\eqref{eq:debruijn-sharp-error}.
+
+Finally $\ell^2\leq L$ for $L\geq16$.  Also $e^L\geq L^5/120$,
+so
+\[
+ \frac{L+4}{e^L}\leq\frac{150}{L^4}
+ \leq\frac\ell{L^2}.
+\]
+This proves \eqref{eq:debruijn-displayed-error}.  The inequalities used
+here are elementary monotonicity inequalities on $L\geq16$, with
+their initial cases checked by the exponential series.
+\end{proof}
+
+\begin{corollary}[Principal logarithmic and root growth]
+\label{cor:root-growth}
+With explicit convergence rates supplied by
+\eqref{eq:debruijn-sharp-error},
+\[
+ \frac{\log B_n}{n\log n}\longrightarrow1,
+ \qquad
+ \log\left(\frac{B_n^{1/n}\log n}{n}\right)
+ \longrightarrow-1,
+ \qquad
+ \frac{B_n^{1/n}\log n}{n}\longrightarrow e^{-1}.
+\]
+In particular, the ordinary power series $\sum B_nx^n$ has zero
+radius of convergence.  These logarithmic conclusions alone do not
+imply a relative-error asymptotic formula for $B_n$; the next
+subsections supply the additional estimate.
+\end{corollary}
+
+\begin{proof}
+Divide the explicit expression in Theorem \ref{thm:debruijn} by $L$
+for the first assertion.  Add $\ell-L$ for the second, and use the
+exponential-series error bound for the third.  To see explicitly that
+the rates are primitive recursive, one may bound $\log L\leq\sqrt L$
+for $L\geq16$ and then choose $L$ larger than a fixed integer power of
+the reciprocal requested error.  The threshold $n=2^{2M}$ ensures
+$\log n\geq M$ because $\log2\geq1/2$.
+For zero radius, the third assertion makes $B_n^{1/n}$ larger than
+any prescribed positive rational number beyond an explicitly bounded
+index.  Hence, for every nonzero rational $x$, the terms $B_nx^n$
+fail the necessary condition of tending to zero.
+\end{proof}
+
+\subsection{The Gaussian constant and an effective Stirling estimate}
+
+Two elementary analytic calculations used below are included to make
+the normalization and the arithmetic content explicit.  First,
+\begin{equation}\label{eq:gaussian-integral}
+ \int_{-\infty}^{\infty}e^{-t^2/2}\,dt=\sqrt{2\pi},\qquad
+ \int_T^\infty e^{-t^2/2}\,dt\leq\frac{e^{-T^2/2}}T
+ \quad(T>0).
+\end{equation}
+For the tail bound, use $1\leq t/T$ and integrate
+$t e^{-t^2/2}$.  For the constant, square the integral truncated to
+$[-R,R]$.  The disk of radius $R$ is contained in that square, which
+is contained in the disk of radius $\sqrt2R$.  Integration over
+annuli, using their explicit areas, gives
+\[
+ 2\pi(1-e^{-R^2/2})
+ \leq\left(\int_{-R}^R e^{-t^2/2}\,dt\right)^2
+ \leq2\pi.
+\]
+Both the annular computation and multiplication of the two integrals
+are limits of finite Riemann sums with uniform elementary error
+bounds.  Taking a predetermined $R$ large enough for the displayed
+tail proves \eqref{eq:gaussian-integral}, without a completeness or
+choice principle.
+
+\begin{lemma}[Stirling's formula with an explicit remainder]
+\label{lem:stirling-effective}
+For every integer $m\geq1$ there is a represented number
+$\vartheta_m$ with $0\leq\vartheta_m\leq1/(12m)$ such that
+\begin{equation}\label{eq:stirling-effective}
+ m!=\sqrt{2\pi m}\left(\frac me\right)^m e^{\vartheta_m}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Define
+\[
+ A_m=\log(m!)-(m+1/2)\log m+m.
+\]
+For $x=(2m+1)^{-1}$, the geometric series for
+$\log((1+x)/(1-x))$ gives
+\[
+ A_m-A_{m+1}
+ =(m+1/2)\log(1+1/m)-1
+ =\sum_{j\geq1}\frac{x^{2j}}{2j+1}.
+\]
+This is positive and at most
+\[
+ \frac{x^2}{3(1-x^2)}=\frac1{12m(m+1)}.
+\]
+Consequently the sequence $A_m$ has a computable limit $c$, and
+\[
+ 0\leq A_m-c\leq\frac1{12m}.
+\]
+This notation for the limit abbreviates the finite estimate
+$0\leq A_m-A_M\leq1/(12m)-1/(12M)$ for $M\geq m$.
+
+We identify $c$ by the elementary Wallis calculation.  Put
+$I_j=\int_0^{\pi/2}\sin^j t\,dt$.  Integration by parts gives
+$jI_j=(j-1)I_{j-2}$, with $I_0=\pi/2$ and $I_1=1$.
+Since $0\leq\sin t\leq1$,
+\[
+ I_{2m+1}\leq I_{2m}\leq I_{2m-1}
+ =\frac{2m+1}{2m}I_{2m+1}.
+\]
+The recurrence also gives the exact identities
+\[
+ I_{2m}=\frac\pi2\frac{\binom{2m}{m}}{4^m},
+ \qquad I_{2m}I_{2m+1}=\frac\pi{2(2m+1)}.
+\]
+These inequalities, with error at most $1/(2m)$ in the ratio, imply
+\[
+ \sqrt m\,\frac{\binom{2m}{m}}{4^m}\longrightarrow\frac1{\sqrt\pi}.
+\]
+On the other hand, direct cancellation gives
+\[
+ A_{2m}-2A_m
+ =\log\left(\sqrt m\,\frac{\binom{2m}{m}}{4^m}\right)
+ -\frac12\log2.
+\]
+The left side tends to $-c$ with error at most $5/(24m)$.
+The explicit Wallis inequalities identify the right limit as
+$-\tfrac12\log(2\pi)$.  Thus $c=\tfrac12\log(2\pi)$, which proves
+\eqref{eq:stirling-effective}.  Every limiting step in this proof has
+the displayed reciprocal-integer error bound.
+\end{proof}
+
+\subsection{A quantitative saddle-point theorem}
+
+Fourier coefficient extraction from the exponential generating
+function gives
+\begin{equation}\label{eq:growth-fourier}
+ \frac{B_n}{\mathcal A_n}
+ =\sqrt{\frac b{2\pi}}\int_{-\pi}^{\pi}e^{\Phi(\theta)}\,d\theta,
+ \quad
+ \mathcal A_n=\frac{n!\,e^{a-1}}{r^n\sqrt{2\pi b}},
+ \quad
+ \Phi(\theta)=e^{r e^{i\theta}}-a-in\theta.
+\end{equation}
+This identity needs no general complex integration theorem.  Expand
+the entire function in its explicitly convergent power series on
+$|z|=r$ and integrate each finite truncation.  The integral of
+$e^{i(j-n)\theta}$ is zero for $j\ne n$ and is $2\pi$ for $j=n$.
+The exponential-series tail bounds justify the passage to the
+represented integral.  Although the integrand is complex, the
+integral is real because the values at $\theta$ and $-\theta$ are
+complex conjugates.
+
+\begin{theorem}[A four-term relative-error estimate]
+\label{thm:quantitative-saddle}
+Suppose $r\geq1$, $T\geq1$, and $T\leq\sqrt b/r$.  Put
+\[
+ \epsilon=T^3\sqrt{\frac rn}.
+\]
+Then
+\begin{align}\label{eq:saddle-error}
+ \left|\frac{B_n}{\mathcal A_n}-1\right|
+ \leq{}&e^\epsilon-1+e^{-T^2/2}
+       +\frac{24}{T}e^{-T^2/48}
+       +3\sqrt b\,e^{-n/(6r^2)}.
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Set $\delta=T/\sqrt b$.  The first two derivatives of the phase at
+zero are $\Phi'(0)=0$ and $\Phi''(0)=-b$.  For real $\theta$,
+\[
+ \left|\frac{d^3}{d\theta^3}e^{r e^{i\theta}}\right|
+ \leq e^r(r+3r^2+r^3)\leq5nr^2.
+\]
+Taylor's formula therefore gives, on $|\theta|\leq\delta$,
+\[
+ \Phi(\theta)=-\frac{b\theta^2}{2}+E(\theta),
+ \qquad |E(\theta)|\leq\frac56nr^2\delta^3\leq\epsilon.
+\]
+The difference between the normalized integral over this central
+interval and the corresponding Gaussian integral is at most
+$e^\epsilon-1$.  Completing the Gaussian integral to the whole line
+costs at most $e^{-T^2/2}$, by
+\eqref{eq:gaussian-integral}.
+
+There are two tail regions.  On $|\theta|\leq1/r$ we have
+$|r\sin\theta|\leq1$, $|\sin\theta|\geq|\theta|/2$, and
+$e^{r\cos\theta}\geq a/2$.  Since $\cos u\leq1-u^2/3$ for
+$|u|\leq1$,
+\begin{align}
+ \Re\Phi(\theta)
+ &=(e^{r\cos\theta}-a)
+   +e^{r\cos\theta}(\cos(r\sin\theta)-1)\notag\\
+ &\leq-\frac{ar^2\theta^2}{24}
+ \leq-\frac{b\theta^2}{48}.
+ \label{eq:growth-middle-tail}
+\end{align}
+Thus the two pieces $\delta\leq|\theta|\leq1/r$ contribute at most
+\[
+ \frac2{\sqrt{2\pi}}\int_T^\infty e^{-u^2/48}\,du
+ \leq\frac{24}{T}e^{-T^2/48}.
+\]
+
+For $1/r\leq|\theta|\leq\pi$, use
+$1-\cos\theta\geq2\theta^2/\pi^2\geq\theta^2/5$.
+Writing $s=r(1-\cos\theta)$, we get $s\geq1/(5r)$, and
+\begin{equation}\label{eq:growth-far-tail}
+ \Re\Phi(\theta)
+ \leq-a(1-e^{-s})
+ \leq-\frac a{6r}=-\frac n{6r^2}.
+\end{equation}
+We used $1-e^{-s}\geq s/(1+s)$, which follows from $e^s\geq1+s$.
+The normalized length of the full integration interval is
+$\sqrt{2\pi b}<3\sqrt b$.  This proves the final term in
+\eqref{eq:saddle-error} and completes the proof.
+\end{proof}
+
+\begin{theorem}[A primitive recursive modulus for the saddle formula]
+\label{thm:saddle-modulus}
+For integers $q\geq1$ and
+\begin{equation}\label{eq:saddle-modulus}
+ n\geq N(q):=2^{64q^2},
+\end{equation}
+one has
+\begin{equation}\label{eq:saddle-relative-modulus}
+ \left|\frac{B_n}{\mathcal A_n}-1\right|\leq\frac5{8q}.
+\end{equation}
+The threshold is deliberately generous; its role is to give a simple
+fully specified arithmetic modulus.
+\end{theorem}
+
+\begin{proof}
+Use $T=16q$.  At and above the threshold,
+\[
+ \frac n{\log n}\geq2^{30}q^8,
+ \qquad n\geq12(\log n)^3,
+ \qquad n\geq24q.
+\]
+For example, $n/\log n$ is increasing for $n>e$; at $N(q)$ its
+value is at least $2^{64q^2-6}/q^2$.  The inequality
+$q^{10}\leq2^{10q}$ and $64q^2-36\geq10q$ verify the first
+bound.  The second follows similarly from
+$q^6\leq2^{6q}$ and $64q^2-18-6q\geq40$.  These are elementary
+integer inequalities.
+
+Since $r\leq\log n$, the first bound gives
+$\epsilon=T^3\sqrt{r/n}\leq1/(8q)$ and also verifies
+$T\leq\sqrt b/r$.  Therefore $e^\epsilon-1\leq1/(4q)$.
+The next two terms in \eqref{eq:saddle-error} are each at most
+$1/(8q)$: for the third, it suffices to check
+$\exp(16q^2/3)\geq12$, already implied by the first three terms of
+the exponential series.  Finally $r+1\leq n$, so $\sqrt b\leq n$;
+and $n\geq12(\log n)^3$ gives
+\[
+ 3\sqrt b\,e^{-n/(6r^2)}
+ \leq3n e^{-2\log n}=\frac3n\leq\frac1{8q}.
+\]
+Adding the four bounds proves the assertion.
+\end{proof}
+
+\begin{corollary}[The Lambert $W$ equivalents on the source pages]
+\label{cor:lambert-asymptotic}
+As $n$ grows, with primitive recursive convergence moduli,
+\begin{align}
+ B_n&\sim\frac{n!\,e^{e^{W(n)}-1}}
+                  {W(n)^n\sqrt{2\pi n(1+W(n))}},
+ \label{eq:precise-saddle-equivalent}\\
+ B_n&\sim\frac{n!\,e^{e^{W(n)}-1}}
+                  {W(n)^n\sqrt{2\pi W(n)^2e^{W(n)}}},
+ \label{eq:odlyzko-equivalent}\\
+ B_n&\sim\frac1{\sqrt n}
+          \left(\frac n{W(n)}\right)^{n+1/2}
+          \exp\left(\frac n{W(n)}-n-1\right).
+ \label{eq:wikipedia-equivalent}
+\end{align}
+For each of the last two expressions, call it $\mathcal C_n$,
+the concrete assertion
+\begin{equation}\label{eq:lambert-relative-modulus}
+ q\geq1,\ n\geq2^{64q^2}\quad\Longrightarrow\quad
+ \left|\frac{B_n}{\mathcal C_n}-1\right|\leq\frac1q
+\end{equation}
+holds.
+\end{corollary}
+
+\begin{proof}
+The first formula is Theorem \ref{thm:saddle-modulus}.
+For the second, its denominator replaces $\sqrt{r+1}$ by
+$\sqrt r$, so its ratio with the first approximation is
+$\sqrt{(r+1)/r}$.  At the stated threshold,
+$L\geq32q^2$, and \eqref{eq:growth-r-bracket} gives
+$r\geq L/2\geq16q^2$.  In particular,
+\[
+ 0\leq1-\sqrt{\frac r{r+1}}\leq\frac1{2r}.
+\]
+For the last formula, substitute Lemma
+\ref{lem:stirling-effective} into
+\eqref{eq:precise-saddle-equivalent}.  If $R=B_n/\mathcal A_n$,
+the exact ratio to its proposed right side is
+\[
+ R\,e^{\vartheta_n}\sqrt{\frac r{r+1}}.
+\]
+Here $|R-1|\leq5/(8q)$, $0\leq\vartheta_n\leq1/(12n)$, and
+$1-1/(2r)\leq\sqrt{r/(r+1)}\leq1$.  The upper bound follows from
+$e^{\vartheta_n}\leq1+1/(6n)$; the lower bound follows by
+multiplying the nonnegative lower bounds.  Both differ from one by
+less than $1/q$, proving \eqref{eq:lambert-relative-modulus}.
+\end{proof}
+
+\subsection{Successive ratios}
+
+The logarithmic convexity established earlier is enough to obtain
+successive-ratio growth without differentiating an asymptotic error
+term.
+
+\begin{corollary}[A quantitative ratio estimate]\label{cor:bell-ratio}
+For every integer $n\geq16$,
+\begin{equation}\label{eq:bell-ratio-error}
+ \left|\log\frac{B_{n+1}}{B_n}-W(n)\right|
+ \leq\frac{4\log n+22}{\sqrt n}.
+\end{equation}
+Consequently
+\[
+ \frac{B_{n+1}}{B_n}\sim\frac n{W(n)}\sim\frac n{\log n}.
+\]
+\end{corollary}
+
+\begin{proof}
+Let $F(n)=\log B_n$ and $h=\lfloor\sqrt n\rfloor$; the latter is
+the integer square root, a bounded-search primitive recursive
+operation.  Logarithmic convexity says that the increments of $F$
+are nondecreasing.  Hence
+\[
+ \frac{F(n)-F(n-h)}h\leq F(n+1)-F(n)
+ \leq\frac{F(n+h)-F(n)}h.
+\]
+Extend the explicitly defined $H(x)=x(W(x)-1+1/W(x))$ to positive
+represented arguments.  Direct implicit differentiation of
+$W(x)e^{W(x)}=x$ gives
+\[
+ H'(x)=W(x),\qquad
+ 0<H''(x)=\frac{W(x)}{x(1+W(x))}\leq\frac1x.
+\]
+Thus either secant slope of $H$ differs from $W(n)$ by at most
+$h/(n-h)\leq2/\sqrt n$.  By
+Theorem \ref{thm:log-envelope}, each endpoint error $F(j)-H(j)$,
+for $n-h\leq j\leq n+h$, has absolute value at most
+$\log n+5$.  Since $h\geq\sqrt n/2$, the error in either secant is
+at most $(4\log n+20)/\sqrt n$.  This proves
+\eqref{eq:bell-ratio-error}.  Exponentiation and
+\eqref{eq:growth-r-bracket} give the two equivalents.
+All uses of derivatives can equivalently be read as the displayed
+finite increment bounds with integral remainders.
+\end{proof}
+
+\subsection{Why the growth proofs remain primitive recursive}
+
+The preceding proof uses a fixed finite collection of analytic
+functions on explicit bounded intervals, not a general theory of
+real analysis.  Exponentials and trigonometric functions are evaluated
+by finite Taylor sums with their elementary tails; logarithms use
+the geometric-series integral after rational range reduction;
+positive square roots and $W$ use bounded rational approximation.
+All argument-size and precision bounds are primitive recursive.
+
+For a particularly transparent integration bound, the phase in
+\eqref{eq:growth-fourier} satisfies
+$\Re\Phi(\theta)\leq0$ and $|\Phi'(\theta)|\leq2n$.
+Therefore the integrand $e^{\Phi(\theta)}$ has Lipschitz constant
+$2n$ on $[-\pi,\pi]$.  A uniform Riemann sum with $M$ intervals
+has error, after the normalization in
+\eqref{eq:growth-fourier}, at most $32n^2/M$.  Thus
+$M\geq2^{t+6}n^2$ suffices for error at most $2^{-t}$; approximating
+the finitely many endpoints and integrand values consumes a further
+explicit portion of the error budget.  Gaussian tails are bounded by
+\eqref{eq:gaussian-integral}, and all other tails were bounded in
+the proofs above.  Consequently every integral equality or
+inequality used here expands into rational finite-sum assertions at
+a prescribed precision.
+
+The arbitrary precision parameter is kept free during the finite
+proof.  Inductions establish bounds for finite sums, products,
+Taylor polynomials, and rational approximation programs; their
+invariants are decidable arithmetic inequalities.  After all
+represented expressions have been replaced by interval endpoints
+and denominators cleared, these are quantifier-free induction
+instances in the language with primitive recursive function
+symbols.  The moduli in \eqref{eq:saddle-modulus},
+\eqref{eq:debruijn-sharp-error}, and
+\eqref{eq:bell-ratio-error} prevent any hidden use of an unbounded
+search for an asymptotic threshold.  This is the intended iPRA
+reading of the human proof; compiling these finite certificates
+into the repository's object-language derivation type is a
+separate formalization task, specified in the formalization section.
+

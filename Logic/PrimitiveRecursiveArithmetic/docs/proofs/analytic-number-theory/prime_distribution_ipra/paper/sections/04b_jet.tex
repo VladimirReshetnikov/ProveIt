@@ -1,0 +1,208 @@
+\subsection{A finite coefficient calculation, without differentiating a limit}
+\label{sec:finite-jet-closure}
+
+The identity $c_j=\varepsilon+h_j$ deserves an explicit arithmetic
+justification.  The following calculation replaces coefficient comparison
+and repeated differentiation of infinite series by finite convolution and
+finite summation by parts.  Throughout this subsection logarithms stand for
+the rational names already specified; each displayed identity is verified
+to an arbitrarily assigned rational accuracy by a finite calculation.
+
+Put
+\[
+ b_j(t)=\frac{(\log t)^j}{j!t^2},\qquad
+ Z_j(N)=\sum_{n=1}^N b_j(n),\qquad
+ M_j(N)=\sum_{n=1}^N\chi(n)b_j(n).
+\]
+The convention is $(\log1)^0=1$.  Let $Z_j$ and $M_j$ denote the corresponding
+names with their stated tails.  The elementary exponential inequality gives
+\[
+ \frac{(\log t)^j}{j!}\leq4^j t^{1/4}\qquad(t\geq1),
+\]
+and hence, for both moment sums,
+\begin{equation}
+ |Z_j-Z_j(N)|,\ |M_j-M_j(N)|
+       \leq\frac43\,4^jN^{-3/4}
+       \leq2\,4^jN^{-3/4}.
+ \label{eq:moment-series-tail}
+\end{equation}
+These are bounds on ordinary positive tails, so they apply to complex
+characters without cancellation.  The coarser estimate
+\[
+ |Z_j|,\ |M_j|,\ |Z_j(N)|,\ |M_j(N)|\leq3\,2^j
+\]
+follows from $(\log t)^j/j!\leq2^j\sqrt t$ and
+$\sum_{n\geq1}n^{-3/2}\leq3$.
+
+\paragraph{Finite summation by parts identifies the integral coefficients.}
+For each integer $N\geq1$ one has the finite identity
+\begin{equation}
+ M_j(N)=A_\chi(N)b_j(N)-\int_1^N A_\chi(t)b'_j(t)\,dt.
+ \label{eq:finite-jet-partial-summation}
+\end{equation}
+Indeed, split at the integers and telescope
+\[
+ \sum_{n=1}^{N-1}A_\chi(n)\bigl(b_j(n+1)-b_j(n)\bigr).
+\]
+This is a bounded double-sum identity.  On each unit interval the formula
+for $b'_j$ is checked by the elementary product rule and the finite
+logarithm difference estimates.  Replacing its integral by rectangles
+leaves the explicitly bounded quadrature error; thus this argument does
+not presume an infinitary summation-by-parts theorem.
+
+For $j\geq1$,
+\[
+ -b'_j(t)=t^{-3}\left(\frac{2(\log t)^j}{j!}
+            -\frac{(\log t)^{j-1}}{(j-1)!}\right),
+\]
+and $-b'_0(t)=2t^{-3}$.  These are exactly the integrands defining $l_j$.
+The endpoint term in~\eqref{eq:finite-jet-partial-summation} is bounded by
+\[
+ |A_\chi(N)b_j(N)|\leq q4^jN^{-7/4}.
+\]
+Together with the moment tail and the integral tails previously given,
+this proves $M_j=l_j$ to any requested accuracy, with primitive recursive
+cutoffs.
+
+Apply the same finite identity with the constant sequence $1$ in place of
+$\chi$; its partial-sum function is $\lfloor t\rfloor=t-\{t\}$.  One more
+finite integration by parts gives
+\begin{equation}
+ Z_j(N)=\mathbf1_{j=0}+\int_1^N b_j(t)\,dt
+                         +\int_1^N\{t\}b'_j(t)\,dt.
+ \label{eq:finite-zeta-jet}
+\end{equation}
+Here the endpoint terms at $N$ cancel exactly.  The moment integral tends
+to $1$ with an explicit bound:
+\begin{equation}
+ \int_1^N b_j(t)\,dt
+     =1-\frac1N\sum_{i=0}^j\frac{(\log N)^i}{i!},
+ \qquad
+ 0\leq\frac1N\sum_{i=0}^j\frac{(\log N)^i}{i!}
+       \leq\frac{2^{j+1}}{\sqrt N}.
+ \label{eq:finite-log-moment}
+\end{equation}
+The first identity is proved by the finite recurrence
+$U_0(N)=1-1/N$ and
+$U_j(N)=U_{j-1}(N)-b_j(N)N$ for $j\geq1$.
+For comparison, the corresponding recurrence for
+$V_j(N)=\frac1{j!}\int_1^N t^{-3}(\log t)^jdt$ is
+\[
+ V_0(N)=\frac{1-N^{-2}}2,\qquad
+ V_j(N)=\frac12V_{j-1}(N)
+             -\frac{(\log N)^j}{2j!N^2}.
+\]
+This proves the coefficient estimate based on
+$V_j(\infty)=2^{-j-1}$ by a bounded-index recurrence, without induction on
+a formula quantifying over all real precisions.
+
+By the definition of $u_j$, equations~\eqref{eq:finite-zeta-jet} and
+\eqref{eq:finite-log-moment} give
+\begin{equation}
+ Z_j=1+u_j.
+ \label{eq:zeta-jet-identification}
+\end{equation}
+For $j=0$ the contribution $\mathbf1_{j=0}$ is the constant $1$ already
+included in $u_0$; for $j>0$ it is absent.
+
+\paragraph{A finite rectangle gives the product coefficients.}
+For a fixed $j$ the binomial identity and
+$\log(uv)=\log u+\log v$ give the finite convolution identity
+\begin{align}
+ \sum_{i=0}^jZ_i(N)M_{j-i}(N)
+  &=\sum_{u=1}^N\sum_{v=1}^N
+       \frac{\chi(v)}{u^2v^2}
+       \frac{(\log(uv))^j}{j!}.
+ \label{eq:finite-moment-convolution}
+\end{align}
+The terms with $uv\leq N$ are exactly
+\[
+ c_j(N)=\sum_{n=1}^N\frac{a_n(\log n)^j}{j!n^2},
+ \qquad a_n=\sum_{v\mid n}\chi(v).
+\]
+Every factor pair of $n\leq N$ occurs in the rectangle, so this last
+assertion is an equality of bounded divisor sums.  The remaining terms have
+$N<uv\leq N^2$, and their absolute sum is at most
+\[
+ \sum_{n>N}\frac{d(n)(\log n)^j}{j!n^2}
+       \leq8\,4^jN^{-1/4}.
+\]
+The same bound controls $|c_j-c_j(N)|$.  Thus taking the explicitly bounded
+tails in~\eqref{eq:finite-moment-convolution} proves
+\begin{equation}
+ c_j=\sum_{i=0}^j Z_i l_{j-i}
+     =\sum_{i=0}^j u_i l_{j-i}+\sum_{i=0}^j l_i.
+ \label{eq:finite-product-coefficient-identity}
+\end{equation}
+No rearrangement of an unbounded double series is needed: the exact
+identity is on an $N$-by-$N$ rectangle, and all its discrepancies have
+displayed positive tail bounds.
+
+For clarity, one common bound is available.  To establish these identities
+simultaneously for $j\leq K$ with final accuracy $2^{-r}$, first put
+$p=r+2K+10$ and take
+\[
+ N=2^{4(p+K+8)}(q+1)^4 7^{4(K+1)}.
+\]
+Each of the unweighted moment tails, coefficient-integral tails, boundary
+terms, and the bound in~\eqref{eq:finite-log-moment} is less than
+$2^{-p-7}$.  The sum of the positive coefficient tails after weighting by
+$(7/4)^j$ is also less than $2^{-p-7}$.  Passing from the truncated
+moments to one convolution amplifies its individual tail errors by at most
+$6(K+1)2^K\leq2^{2K+4}$.  These allowances are therefore smaller than
+$2^{-r}$, with room for the additional rational sample errors.  Assign
+those sample errors by the finite-operation budget before doing the
+calculation.  Separate smaller cutoffs are possible, but unnecessary.
+
+\paragraph{The endpoint coefficient sum.}
+The remaining equality $\varepsilon=\sum_{i\geq0}l_i$ can also be checked
+without a termwise interchange of unbounded operations.  Let
+$E_H(x)=\sum_{i=0}^H x^i/i!$, with $E_{-1}=0$.  A finite sum of the integral
+coefficient formulas gives
+\[
+ \sum_{i=0}^H l_i
+ =\int_1^\infty A_\chi(t)t^{-3}
+              \bigl(2E_H(\log t)-E_{H-1}(\log t)\bigr)dt.
+\]
+For $t\geq1$ both exponential polynomials are between $0$ and $t$.
+Consequently the tail of this whole finite sum of integrals after $N$ is
+at most $3q/N$, independently of $H$.  On $[1,N]$, choose $H$ large enough
+that both $E_H$ and $E_{H-1}$ approximate $\exp$ to the assigned accuracy
+on $[0,\log N]\subseteq[0,N]$.  The explicit exponential cutoff in the
+foundations section supplies such an $H$, with $H$ at least any previously
+specified coefficient index.  The integrand then approximates
+$A_\chi(t)t^{-2}$, whose integral is $L(1,\chi)$ and whose tail is at most
+$q/N$.  Both the interval and polynomial degree have thus been chosen by
+primitive recursive bounds.
+
+For a fixed $J$, split the finite sum at $J$ and use
+$|l_i|\leq2q2^{-i}$ on its remaining coefficients.  The result at every
+requested accuracy is
+\[
+ \left|\varepsilon-\sum_{i=0}^J l_i\right|
+       \leq2q2^{-J}.
+\]
+It follows that $b_j=\sum_{i=0}^jl_i-\varepsilon$ has the bound
+$|b_j|\leq2q2^{-j}$.  Substituting this definition into
+\eqref{eq:finite-product-coefficient-identity} gives precisely
+$c_j=\varepsilon+h_j$.
+
+\paragraph{The induction invariant.}
+Fix $q,K,r$ and the displayed cutoffs before beginning any of these loops.
+The entries of the arrays are Gaussian rationals approximating
+$Z_i(N),M_i(N),u_i,l_i$ and the partial integrals.  An invariant records
+the stated finite sum or recurrence and its rational error allowance for
+every index $i$ up to the current index.  This bounded conjunction is a
+Boolean product.  The recurrence for the $V_i$ multiplies the previous
+error by $1/2$ and adds the current local error; convolution has the finite
+amplification bound just displayed.  The same finite-operation budget
+handles powers of approximated logarithms.
+
+Thus induction is used on equations and inequalities between coded
+rationals, with bounded index assertions.  The accuracy $r$ is an external
+number parameter in that induction, not an unbounded quantifier inside
+its formula.  The resulting universally quantified error bounds are
+obtained only after that quantifier-free induction is complete.  At the
+final Dirichlet inequality the reserved positive slack lets one choose a
+single sufficiently fine rational accuracy; there is no need to decide
+equality of an arbitrary real name.

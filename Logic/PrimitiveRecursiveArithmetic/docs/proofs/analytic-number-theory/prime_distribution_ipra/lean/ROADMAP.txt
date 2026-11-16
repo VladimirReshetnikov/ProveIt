@@ -1,0 +1,56 @@
+LEAN DEVELOPMENT ROADMAP
+
+The full mathematical obligations and code interfaces are in the PDF’s
+Lean chapter and the preceding proof chapters. This file is a navigation aid.
+
+1. FiniteArithmetic: encode signed integers, rationals with positive
+   denominators, lists, bounded Boolean quantifiers, division, gcd, prime
+   tests, factorization, phi, mu, factorial and finite sums as fixed PR codes.
+   Verify their defining recurrences by quantifier-free induction.
+
+2. RationalAnalysis: finite logarithm/exponential polynomials, their tails,
+   finite telescoping calculus, bounded bisection, positive margins for
+   inversion, finite product/convolution rules and rational-gap elimination.
+   Fix precision before induction; never induct on an unbounded precision
+   quantifier or import arbitrary real order as decidable.
+
+3. FiniteCharacters: unit groups, exponent tables, subgroup extension,
+   orthogonality and compatible separated numerical root names.
+
+4. LFunctionJets: bounded partial summation, moment recurrences, the finite
+   N-by-N convolution rectangle, coefficient-tail allowances and the endpoint
+   identity. Then DirichletMargin and DirichletWitness, ending in the actual
+   factorial-scaled arithmetic matrix at Y(q,B).
+
+5. SelbergFinite: CRT, Mobius inversion, quadratic-form diagonalization,
+   exact weights and the harmonic lower denominator. The asymptotic BT
+   consequence uses an integer root and explicit threshold.
+
+6. SharpBrunTitchmarsh: three separated-kernel estimates, explicit rational
+   grid maximization and residual cancellation, weighted cosecant/large
+   sieve, Ramanujan sums, decreasing weights, exact finite denominator
+   certificate, and the two overlapping ranges. The integer endpoint is
+   the four-parameter lower-log matrix in Targets.lean; rational endpoints
+   use a numerator and positive denominator.
+
+7. VaughanFinite and GramFinite: exact finite algebra valid for rational
+   weights. Prove aggregate approximation slack before using finite maxima
+   or sums over moduli. SW and BV outer existential constants must remain
+   before ALL later endpoint and precision variables.
+
+8. NumberFields/Chebotarev: implement and certify the proposed field/ideal/
+   Frobenius interface. These are unfinished mathematical-library obligations.
+   The modulus reduction is conditional on estimates not proved here.
+
+9. ObjectAssembly: construct genuine PR programs, verify their semantics,
+   build Prf PRAAx [] of the actual formulas, and only then apply
+   pra_iff_native to obtain NPrf. Semantic Lean theorems about Nat/Rat/Real
+   or Mathlib’s ordinary Dirichlet theorem do not supply this derivation.
+
+There are no analytic theorem axioms or sorry-based proof claims in the
+supplied files. That is a status fact about a specification, not evidence
+that the specified theorems have been formally proved.
+
+Research gaps for full SW, BV and Chebotarev remain as stated in the report.
+Completing their Lean development requires solving those gaps first; it
+cannot be described as transcription of a complete proof in this package.

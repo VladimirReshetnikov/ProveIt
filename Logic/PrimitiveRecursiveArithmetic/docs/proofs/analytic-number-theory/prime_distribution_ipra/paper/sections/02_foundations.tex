@@ -1,0 +1,100 @@
+\section{Arithmetic foundations and constructive bookkeeping}
+\label{sec:foundations}
+
+\subsection{The theory and its finite data}
+
+The logical rules are intuitionistic first-order natural deduction with equality: assumption, introduction and elimination for $\land,\lor,\to,\forall,\exists$, absurdity elimination, equality reflexivity and substitution. For each fixed primitive recursive program there is a function symbol. Its axioms are the defining equations for zero, successor, projections, composition, and primitive recursion. The remaining arithmetic axioms are $Sx\ne0$, $Sx=Sy\to x=y$, and
+\[
+ A(0,\mathbf u)\land\forall n\bigl(A(n,\mathbf u)\to A(n+1,\mathbf u)\bigr)
+ \ \longrightarrow\ \forall n\,A(n,\mathbf u)
+\]
+for quantifier-free $A$. These are exactly the ingredients described by the inspected \texttt{PRAAx} interface.
+
+Encode a signed integer by a pair of naturals, interpreting $(a,b)$ as $a-b$; encode a rational by such a numerator and a positive denominator. Canonical reduction by gcd is convenient, but unnecessary for the proofs. Equality and order are tested by cross multiplication. Gaussian rationals are pairs of rationals. Finite lists can be encoded by iterated pairing with an explicit length. All sums, maxima, searches and products used here have displayed bounds.
+
+Primality is the Boolean test
+\[
+ \operatorname{prime}(n)=[n\geq2]\prod_{2\leq d<n}[n\bmod d\ne0].
+\]
+Divisibility, gcd, prime-power recognition, $\varphi$, $\mu$, factorization by trial division, and finite divisor lists are consequently primitive recursive. Factorization requires only a loop of length at most $n$: remove every possible factor from $2$ through $n$, carrying the partial product as an invariant. Its correctness is a quantifier-free induction after bounded index quantifiers are compiled into Boolean products.
+
+\begin{lemma}[Bounded logical operations]
+For a fixed primitive recursive Boolean predicate $b(\mathbf u,j)$ and primitive recursive bound $F(\mathbf u)$, its bounded universal and existential quantifications have primitive recursive characteristic functions. The usual finite search, maximum and summation identities are provable using quantifier-free induction.
+\end{lemma}
+\begin{proof}
+Use a Boolean product for the universal quantifier and the complement of a product of complements for the existential quantifier. Append one factor at each step. Search carries the first successful index and a flag saying whether one was found. The invariant says that all earlier tests have the required value; this is another bounded Boolean product. Maximum carries the largest value encountered; summation carries the partial sum. Their recurrences and invariants are equations or Boolean combinations of equations.
+\end{proof}
+
+This principle does not allow an unrestricted induction on a statement such as ``for every real precision the following analytic identity holds.'' The precision and all cutoffs are fixed first. The induction then verifies a bounded list of rational calculations. Different precisions are parameters in the same arithmetic proof.
+
+\subsection{Elementary real notation as explicit rational approximations}
+
+For a rational $u\geq1$ set $w=(u-1)/(u+1)$ and
+\begin{equation}
+ \ell_m(u)=2\sum_{j=0}^{m-1}\frac{w^{2j+1}}{2j+1}.
+ \label{eq:basic-log-name}
+\end{equation}
+The finite geometric identity, integrated over $[0,w]$, gives
+\[
+ 0\leq\log u-\ell_m(u)
+ \leq\frac{2w^{2m+1}}{(2m+1)(1-w^2)}\leq\frac{u}{m}.
+\]
+Indeed $(1-w^2)^{-1}=(u+1)^2/(4u)\leq u$. Thus
+$m=2^{r+2}\lceil u\rceil$ gives error at most $2^{-r-2}$.
+For $0<u<1$, use $\log u=-\log(1/u)$. The proof can be read entirely as a comparison of finite rational sums; the integral is the familiar interpretation of this Cauchy name.
+
+For a rational or Gaussian rational $z$ with $|z|\leq U$, where $U\geq1$ is an integer, use the exponential polynomial $\sum_{j=0}^{2m-1}z^j/j!$, with
+\[
+ m=2U^2+r+3.
+\]
+The first omitted absolute term is at most
+\[
+ \frac{U^{2m}}{(2m)!}\leq\left(\frac{U^2}{m}\right)^m\leq2^{-m},
+\]
+because the last $m$ factors of $(2m)!$ have product at least $m^m$.
+Successive tail terms have ratio at most $U/(2m+1)\leq1/2$, so the total tail is at most $2^{1-m}<2^{-r-1}$. This also gives sine and cosine by real and imaginary parts. Products, inverses with a supplied positive denominator margin, and positive rational roots obtained by bounded bisection preserve primitive recursive error bounds.
+
+The logarithm laws, the exponential addition law, and the integral comparisons used below admit finite proofs: multiply the finite series, use the binomial identity for matching coefficients, and bound the omitted terms by the displayed tails. Alternatively, integrate the finite geometric identity on a rational mesh. For an integrand with derivative bounded by $J$ on an interval of length $R$, an equal-step rectangle rule with $N$ cells has error at most $JR^2/N$. This follows by bounding the error on each cell by $J(R/N)^2$ and summing. Piecewise integrands are split at the stated break points.
+
+To avoid importing a general mean-value or Rolle theorem, the precise integration principle is finite telescoping. If each rational mesh cell has a certified residual
+\[
+ |f(x+h)-f(x)-h g(x)|\leq M h^2+\eta,
+\]
+then summing $N$ equal cells over $[a,b]$ gives
+\[
+ \left|f(b)-f(a)-h\sum_{j<N}g(a+jh)\right|
+ \leq \frac{M(b-a)^2}{N}+N\eta,
+ \qquad h=(b-a)/N.
+\]
+This is a finite sum identity and triangle inequality. For the elementary expressions used here, finite geometric identities for logarithms, binomial expansion and the exponential tails, the reciprocal identity with a positive denominator margin, and the finite product rule give these cell residuals with primitive recursive bounds. The same procedure gives quadrature, integration by parts, and the convex midpoint comparisons for the explicit kernels used later. All comparisons that choose a branch are on rational mesh inputs, or use overlapping rational thresholds. No decision of arbitrary real order is assumed.
+
+These elementary devices supply the logarithms, exponentials and derivatives in the Dirichlet and sieve proofs. They do not furnish a general theorem that every computable analytic object has an $\ipra$ proof.
+
+\subsection{Rational gaps and finite accuracy}
+
+\begin{lemma}[Eliminating a vanishing rational error]
+Let $u,v,c$ be rationals with $c\geq0$. If $u\leq v+c2^{-s}$ for every natural $s$, then $u\leq v$. The inference uses decidable rational order and a primitive recursive precision choice.
+\end{lemma}
+\begin{proof}
+Test whether $u\leq v$. If not, write the positive gap $u-v=A/B$ with positive integers $A,B$. Write $c=C/D$ with $D\geq1$. Choose $s=B(C+1)+2$. Since $2^s>B(C+1)\geq BC/D$, we have $c2^{-s}<1/B\leq A/B$, contradicting the assumed inequality. This is a finite rational contradiction, with no decision procedure for equality of arbitrary real names.
+\end{proof}
+
+When a computation has $m$ approximate entries, the error is multiplied by $m$ before a sum or maximum is used. A quotient requires a positive lower bound on its denominator. For example, if $|z|\geq b>0$ and an approximation has error at most $b/2$, its reciprocal error is at most $2b^{-2}$ times the input error. This is the identity
+\[
+ \frac1z-\frac1{z'}=\frac{z'-z}{zz'}.
+\]
+All approximation schedules below reserve additional factors for these operations.
+
+For a fixed expression consisting of a bounded list of arithmetic operations, a completely mechanical error budget can be made as follows. Obtain a rational upper bound $H\geq1$ on the magnitude of every intermediate quantity and a lower bound $2^{-b}$ on every denominator. Take a local amplification bound
+$L=8(H+1)2^{2b}$ and require each input error to be at most
+$\frac{2^{-r-b-3}}{(m+1)L^{m+1}}$. Induction along the list bounds the final error by $2^{-r}$ and keeps every denominator separated. All bounds are evaluated on the finite expression in question. This is not a universal primitive recursive evaluator for arbitrary primitive recursive programs.
+
+\subsection{Three levels of verification}
+
+\begin{enumerate}
+\item A conventional human proof proves the mathematical inequality.
+\item An arithmetic realization supplies bounded codes, explicit error moduli and quantifier-free induction invariants, so that the proof can be carried out in $\ipra$.
+\item A Lean proof constructs the actual embedded derivation, of type \texttt{Prf PRAAx [] phi}, or its open-variable equivalent, and checks it in Lean's kernel.
+\end{enumerate}
+
+This package supplies the first two levels for the direct Dirichlet and finite sieve results, and a detailed plan for the third. For the three density theorems, it supplies explicit targets and selected finite reductions, while identifying the missing mathematics. Finite computational diagnostics validate examples and identities; they do not substitute for universal proofs.

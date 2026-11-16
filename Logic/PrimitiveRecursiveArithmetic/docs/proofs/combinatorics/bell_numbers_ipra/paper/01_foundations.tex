@@ -1,0 +1,208 @@
+\section{Scope and the constructive arithmetic setting}\label{sec:foundations}
+
+The Bell numbers provide a particularly tractable test of how much apparent
+analysis can be expressed in intuitionistic primitive recursive arithmetic.
+Their defining objects are finite, and the analytic formulas used below have
+effective, explicitly bounded remainders.  Our aim is to give proofs of the
+statements, not merely to observe that their numerical instances can be tested.
+The target inventory is the two pages specified in the question
+\cite{mathworld,wikipedia}; attribution of an identity to these pages does not
+make either page an axiom of our argument.
+
+\subsection{What ``in \ipra'' means here}
+
+We use first-order intuitionistic logic with equality, symbols for primitive
+recursive functions, their defining equations, the usual elementary successor
+axioms, and induction for quantifier-free formulas.  An equivalent presentation
+may use Boolean characteristic functions and induction for equations.  There is
+no induction for arbitrary quantified formulas, no excluded middle for
+arbitrary propositions, and no quantification over arbitrary functions or real
+numbers.  Free numerical parameters are allowed in each induction instance.
+
+The paper has two kinds of assertions.
+\begin{enumerate}
+\item \emph{Exact finite assertions}: equations, inequalities, divisibility,
+finite counting statements and bounded algorithms, written directly using
+primitive recursive operations.
+\item \emph{Represented analytic assertions}: abbreviations for families of
+finite rational inequalities with specified errors and primitive recursive
+precision bounds.  For example, equality of two explicitly constructed real
+names means that their rational approximants differ by at most the sum of the
+declared errors, at every precision.  An asymptotic equivalence includes a
+primitive recursive threshold for each rational accuracy request.
+\end{enumerate}
+This convention does not assert that the first-order theory contains a complete
+ordered field of real numbers.  It also does not identify a theorem proved in
+Lean's ambient type theory with a syntactic derivation in \ipra.  The distinction
+is maintained in Section~\ref{sec:formalization}.
+
+\subsection{Finite objects and bounded induction}
+
+We encode a length-$l$ list of entries smaller than $b$ by its base-$b$ numeral,
+with its length recorded separately.  Take $b\ge2$; exceptional smaller bases
+are replaced by $2$.  Reading an entry uses division and remainder.  A table
+with variable row lengths can instead use nested pairing; either convention is
+primitive recursive.  A bounded sum, bounded product, bounded maximum and
+bounded search are defined by primitive recursion.  Integers are signed
+natural-number codes, and rationals are pairs $(z,d)$ with $d>0$.  Reduction to
+lowest terms is optional.  Comparisons are decided by cross multiplication.
+Polynomial and matrix computations use finite coefficient and entry lists.
+
+A bounded formula is replaced by its Boolean characteristic function.  For
+example, ``all $j\le m$ satisfy $P(j)$'' becomes the equation
+\[
+ \prod_{j=0}^{m}\chi_P(j)=1.
+\]
+Thus an induction on a bounded assertion is an instance of quantifier-free
+induction after this explicit translation.  Nested induction on fixed finite
+tuples is allowed: it is a finite sequence of induction arguments, not induction
+along a new transfinite ordering.  Induction on a table of length $m$ is made
+simultaneous by coding the whole table invariant in one characteristic function.
+
+For a finite injection or bijection we supply algorithms for the map and its
+inverse, together with bounds on their searches.  The counting lemma itself is
+proved by induction while scanning the bounded domain.  Likewise, finite
+pigeonhole is proved by keeping the Boolean table of already seen values.
+These observations justify the finite counting arguments below without using
+an infinitary set-existence principle.
+
+\begin{remark}[A limitation of the compilation claim]
+It is not true that every computable construction, every terminating Lean
+program, or every classical proof of a numerical identity automatically belongs
+to \ipra.  In this paper the loops have displayed primitive recursive bounds,
+and the invariants used in the arithmetic arguments are bounded.  The prose
+proof is an arithmetic proof blueprint; a complete generated object-language
+derivation is a separate formalization task, not a deliverable claimed to have
+already been checked.
+\end{remark}
+
+\subsection{Elementary analytic names}\label{subsec:names}
+
+Only fixed, explicitly given families of names occur.  There is no claimed
+primitive recursive evaluator for arbitrary primitive recursive programs.
+An error parameter $s\in\N$ means absolute error at most $2^{-s}$.
+When a named quantity is supplied as an argument, its data also include a
+certified rational range and, for a logarithm or reciprocal, a strictly
+positive rational lower bound. One first evaluates the argument to a
+predetermined precision and then the rational approximation program. A
+derivative bound $M$ on the certified range makes the propagated error at
+most $M$ times the input error, plus the program's own error. This explains
+composition of the names without exact sign tests on arbitrary real names.
+
+For $|x|\le A$, with $A$ a positive integer, let
+\[
+ E_M(x)=\sum_{j=0}^{M}\frac{x^j}{j!}.
+\]
+If $M+2\ge2A$, the absolute tail is bounded by
+\begin{equation}\label{eq:exp-tail}
+ \sum_{j>M}\frac{A^j}{j!}\le
+ \frac{2A^{M+1}}{(M+1)!}.
+\end{equation}
+The inequality means that every finite tail satisfies the bound; it follows
+from a geometric majorant because the successive ratios are at most $1/2$.
+One completely explicit precision rule is obtained by starting at $K=2A$:
+$A^K/K!\le A^{2A}\le2^{2A^2}$, so
+$M=2A+2A^2+s+3$ is more than sufficient.  This also proves convergence and the
+addition and multiplication formulas by comparing finite products and their
+tails.  Negative exponents may alternatively use the reciprocal of a positive
+exponential, whose lower bound is $1$.
+
+For $x>0$ rational, first find, by bounded integer comparisons, $k\in\mathbb Z$
+and $y\in[1,2]$ such that $x=2^k y$.  The magnitude of $k$ is bounded by the sum
+of the numerator and denominator of $x$.  With $z=(y-1)/(y+1)$, define
+\begin{equation}\label{eq:log-series}
+ \log y=2\sum_{j=0}^{J-1}\frac{z^{2j+1}}{2j+1}+R_J,
+ \qquad
+ 0\le R_J\le\frac{2z^{2J+1}}{(2J+1)(1-z^2)}.
+\end{equation}
+Here $0\le z\le1/3$.  The identity is obtained by integrating the finite
+geometric identity for $2/(1-z^2)$, retaining its remainder; equivalently it
+can be proved by finite differentiation of the displayed polynomials.  Set
+$\log x=k\log2+\log y$, using the same formula for $\log2$.  Taking
+$J=s+|k|+4$ suffices for the present absolute-error convention.  The derivative
+$1/x$, monotonicity, the product law and the inverse relation with $\exp$ follow
+by finite polynomial approximation on an interval with an explicit positive
+lower endpoint.  The error in replacing such an identity by a rational one is
+bounded by the displayed tails and a bound for the derivative on that interval.
+
+Square roots of nonnegative rational numbers are obtained by bisection using
+the rational test $q^2\le x$.  Positive $d$th roots use $q^d\le x$ in exactly the
+same way.  An initial interval $[0,1+\lceil x\rceil]$ and
+$s+\lceil x\rceil+2$ bisections suffice.  Powers $x^\alpha$ at positive named
+$x$ mean $\exp(\alpha\log x)$ unless a root construction is simpler.
+
+The sine and cosine names are their factorial series.  The same absolute-tail
+estimate as \eqref{eq:exp-tail} applies on a bounded interval.  One may define
+$\pi$ by the convergent arctangent construction
+$\pi=16\arctan(1/5)-4\arctan(1/239)$, where
+\[
+ \arctan t=\sum_{j=0}^{J-1}\frac{(-1)^j t^{2j+1}}{2j+1}
+             +\rho_J,\qquad |\rho_J|\le\frac{|t|^{2J+1}}{2J+1}.
+\]
+The addition formula for tangent verifies this normalization; it agrees with
+$4\arctan1$, whose alternating partial sums also give a slower primitive
+recursive name.  Polynomial approximation proves the addition formulas for
+sine and cosine, their derivatives, and $\exp(it)=\cos t+i\sin t$.
+In particular, orthogonality of integer Fourier modes follows by integrating
+their explicit sine and cosine antiderivatives.
+
+\subsection{Integration and Taylor estimates as finite statements}
+
+For the functions used here, an integral over a rational compact interval is a
+name given by equal-mesh Riemann sums.  If $|f'|\le M$ on an interval of length
+$L$, the error of a left-endpoint sum with $q$ subintervals is at most
+$ML^2/q$.  Indeed, on each subinterval the oscillation is at most its length
+times $M$; summing the $q$ resulting rectangles gives the bound.  The usual
+derivative bounds used below are obtained directly from factorial series.
+Endpoints such as $\pi$ are approximated with a certified error, adding at most
+$\sup|f|$ times the endpoint error.  Thus all integrations in the proofs have
+primitive recursive mesh bounds.
+
+Taylor's estimate
+\begin{equation}\label{eq:taylor-estimate}
+ \left|f(x+h)-\sum_{j=0}^{d}\frac{f^{(j)}(x)}{j!}h^j\right|
+ \le\frac{M|h|^{d+1}}{(d+1)!}
+\end{equation}
+holds when $|f^{(d+1)}|\le M$ on the segment.  A constructive proof integrates
+the derivative identity repeatedly and bounds the resulting simplex integral;
+the simplex has volume $|h|^{d+1}/(d+1)!$, verified by induction.  Equivalently,
+one first proves the formula for polynomials and then uses uniform factorial
+tails.  No intermediate-value theorem or selection of an unknown Taylor point
+is used.  The elementary estimates $1-u\le e^{-u}$,
+$|e^z-1|\le e^{|z|}-1$, and $1-\cos t\ge t^2/3$ for $|t|\le1$ follow from
+these same finite series estimates.
+
+Unbounded Gaussian integrals are notation for truncated integrals with the
+tail certificate
+\[
+ \int_T^\infty e^{-t^2/2}\,dt\le T^{-1}e^{-T^2/2}\quad(T>0).
+\]
+Integration by parts gives
+\[
+ \frac1{\sqrt{2\pi}}\int_{-\infty}^{\infty}t^{2j}e^{-t^2/2}\,dt
+ =(2j-1)!!,
+ \qquad \int_{-\infty}^{\infty}t^{2j+1}e^{-t^2/2}\,dt=0.
+\]
+For completeness, the normalizing integral is computed by squaring a truncated
+Gaussian integral, sandwiching the square between inscribed and circumscribed
+disks, and using finite radial annuli. Integration of
+$r e^{-r^2/2}$ gives the limit $2\pi$ for the square, with errors bounded by
+Gaussian tails. More explicitly, an inscribed regular $q$-gon has area
+$(q/2)R^2\sin(2\pi/q)$; for $q\ge8$, its difference from $\pi R^2$ is at
+most $4\pi^3R^2/(3q^2)$ by the cubic sine remainder. The circumscribed
+polygon has area $qR^2\tan(\pi/q)$, with excess at most
+$2\pi^3R^2/(3q^2)$: use
+$\sin x-x\cos x=\int_0^x t\sin t\,dt\le x^3/3$ and
+$\cos(\pi/q)\ge1/2$. These two
+polygonal computations first establish the disk-area name. On radial steps
+$R/M$, the function $e^{-r^2/2}$ oscillates by at most $R^2/M$; the total
+annular integration error is at most $4R^4/M$. Taking $q,M$ to be explicit
+powers of $2$, with the requested error and $R$ as parameters, therefore
+justifies the disk integral calculation by finite polygonal and rectangular
+sums. This is an effective calculation, not an appeal to general measure
+theory.
+
+Every passage to a limit below can consequently be read as follows: fix a
+rational requested error, choose the indicated finite truncations and meshes,
+prove the finite rational inequality, and add its explicit error allowances.
+The exact integer conclusions are unaffected by this notation.
