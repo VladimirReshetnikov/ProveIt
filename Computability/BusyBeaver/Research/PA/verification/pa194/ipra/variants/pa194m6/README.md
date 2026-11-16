@@ -18,6 +18,8 @@ constructor-site generator checks all 61 delivered constructor
 occurrences and instantiates the common Cantor-pair constructor proof at
 each entry and exit. The full arithmetic calibration of the radix-six
 proof search to PA consistency remains open.
+The [literal machine proof](README-physical.md) specifies the connection
+from the archived 194-state table to these resolved instructions.
 
 From the repository root, pass the checked primary native literal model
 stage that provides `PA194ModelMPDrain.olean`.

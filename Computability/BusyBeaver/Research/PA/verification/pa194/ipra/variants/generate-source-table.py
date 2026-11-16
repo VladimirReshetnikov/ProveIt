@@ -13,6 +13,15 @@ variants = {
             "sites.json": "bcdacaa1eb2f6be28cea742eb9d553d885a3ae490c9b307d2986fcde75d3b5b1",
         },
     ),
+    "PA194M6": (
+        "pa194_radix_family_2026-11-13/machines/6",
+        {
+            "machine.tm": "725ce8474d7b83473488fc9466548ed2de3744d9a80183467894f9d719103ab2",
+            "labels.json": "2890771c2db5c598d5f3f833feecf2903e01d69bdf626782e34196c34bfcb13b",
+            "sites.json": "57e57debadcfd4108cf96c4bcea8bab110ee68726bbc3eccb03f79ce1379e8cf",
+            "nodes.json": "766d660e161aa1f763d2d86080ba876062df990b4d5f65629c25f9240477b915",
+        },
+    ),
     "PA194LCB": (
         "pa194_loop_continuation_research_2026-11-14/machines/PA194LC_B",
         {
@@ -98,6 +107,9 @@ if variant in ("PA194AX11H", "PA194LCAX11H"):
 elif variant == "PA194M5":
     assert sha256(instructions).hexdigest() == "34375509c46552ff7f5c84e24d265cdf56ecd97b41fad3da14787232aa601ca4"
     site_count = 3734
+elif variant == "PA194M6":
+    assert sha256(instructions).hexdigest() == "03afe51960fe2345637a0e3ea25987a8544612124ad728874cbc45ef1de9126d"
+    site_count = 3795
 else:
     assert instructions == primary
 labels=json.loads(raw['labels.json'])
@@ -113,12 +125,16 @@ for line in raw['machine.tm'].decode('ascii').splitlines():
 assert set(rows)=={(q,b) for q in range(194) for b in range(2)}
 assert labels[24]==84
 native={(labels[q],b):(w,d,labels[n]) for (q,b),(w,d,n) in rows.items()}
-if variant == "PA194AX11H":
+native_pins = {
+    "PA194AX11H": "6022711dcc0a025eb4b7a5a8f690d6b52f45f3d963a0868afef10962ccc49bd3",
+    "PA194M6": "759255b48e7c2bd2e4c25e755639c6302ad14f5c33ed6fcc3af1a4534ba9ae5e",
+}
+if variant in native_pins:
     native_bytes = "".join(
         f"{q} {b} {w} {'R' if d else 'L'} {n}\n"
         for (q, b), (w, d, n) in sorted(native.items())
     ).encode("ascii")
-    assert sha256(native_bytes).hexdigest() == "6022711dcc0a025eb4b7a5a8f690d6b52f45f3d963a0868afef10962ccc49bd3"
+    assert sha256(native_bytes).hexdigest() == native_pins[variant]
 
 def token(b): return 'true' if b else 'false'
 def action(q,b):

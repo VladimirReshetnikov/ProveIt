@@ -38,6 +38,12 @@ the [seven timing variants](verification/pa194/ipra/variants/pa194fast/README.md
 The remaining 194-state candidates, the original PA195, and the PA196
 candidate still need equivalence proofs.
 
+The [LC_AX11H controller](verification/pa194/ipra/variants/pa194lcax11h/README.md)
+uses the same resolved source as AX11H and has its own checked blank startup.
+The [radix-five](verification/pa194/ipra/variants/pa194m5/README-radix.md)
+and [radix-six](verification/pa194/ipra/variants/pa194m6/README.md) proofs
+use revised source programs with different numerical constructors.
+
 The [AX11H source development](verification/pa194/ipra/variants/pa194ax11h/README-candidate.md)
 checks the exact revised push and field-reader outputs at model-valued clocks.
 
