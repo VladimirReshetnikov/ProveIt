@@ -48,11 +48,14 @@
   canonical list of distinct permutations.
 - [`PrimitiveRecursiveArithmetic/`](PrimitiveRecursiveArithmetic/README.md) gathers the
   intuitionistic primitive recursive arithmetic work: the checked ConciseIPRA
-  development and the unchecked proof packets below.
+  development, the checked derivations, and the unchecked proof packets below.
 - [`PrimitiveRecursiveArithmetic/ConciseIPRA/`](PrimitiveRecursiveArithmetic/ConciseIPRA/)
   collects the research packages on very small complete presentations of a
   theory bi-interpretable with intuitionistic primitive recursive arithmetic
   (one iterator, two binders, six rules), with their Lean formalization.
+- [`PrimitiveRecursiveArithmetic/Derivations/`](PrimitiveRecursiveArithmetic/Derivations/README.md)
+  derives in Lean, as kernel-checked iPRA derivations in `ConciseIPRA`'s `Prf PRAAx`,
+  theorems outlined in the proof packets, on top of a reusable iPRA arithmetic library.
 - [`PrimitiveRecursiveArithmetic/docs/proofs/`](PrimitiveRecursiveArithmetic/docs/proofs/README.md)
   files, as delivered and unchecked, 78 packets of finitary proofs of classical
   theorems (the fundamental theorem of algebra, the prime number theorem, the
