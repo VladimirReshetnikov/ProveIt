@@ -1,0 +1,88 @@
+\section{Relation to the repository's prior frameworks}
+\label{sec:comparison}
+
+The proposal is best understood as a logical refactoring of existing strong
+ideas, with one new organizing analysis.
+
+\subsection{Finite-query normal form}
+
+FQNF packs all evidence for an explicit finite query into one bounded natural
+certificate, verifies it with a fixed PR checker, and selects the least
+accepted code.  This is an excellent serialization and reflection normal form
+when all bounds are available and a named computation is desired.
+
+SCR changes the default.  Proof-local witnesses remain separate existential
+scopes; a master code is created only when variable-horizon decoding or a
+named output requires it.  Therefore SCR can formalize a conditional theorem
+from an unbounded existential producer while FQNF must first obtain a code
+cutoff.  Under explicit bounds the two are intertranslatable: fuse SCR scopes
+to obtain FQNF, or open one FQNF certificate and treat its fields as SCR
+contracts.
+
+\subsection{Certified bounded interaction programs}
+
+CBIP supplies a typed language of bounded interactions, finite strategies,
+relational viability, and stable witness erasure.  SCR adopts these
+mathematical mechanisms but makes ordinary existential scope the primitive
+logical operation.  The interaction language becomes an optional front end;
+its compiler target is a small collection of \code{Prf.exE},
+\code{Prf.trans}, trace, strategy, and observer combinators.  This reduces the
+amount of a large DSL that must be trusted or proved sound before applications
+can migrate.
+
+\subsection{Native clause programs}
+
+Native clause programs use the checked \(\KPrf\) calculus as an intermediate
+representation, with checked cut, substitution, and export.  SCR is compatible
+with that backend.  A local quantifier-free arithmetic subgraph can carry a
+\(\KPrf\) proof and export it to ordinary iPRA at the interface.  Existential
+sealing and rich logical conclusions are most naturally organized in
+\(\Prf\;\PRAAx\), which remains the canonical endpoint.
+
+\subsection{Observation graphs and staged contract kernels}
+
+Proof-carrying observation graphs already emphasize finite traces, backward
+demand, relational witness clouds, and stable observations.  Staged contract
+kernels emphasize specialization by \code{Prf.subst}, context alignment by
+\code{Prf.weaken}, and composition by \code{Prf.trans}.  SCR combines these
+with a missing criterion: whether a certificate escapes.  That criterion
+selects among existential sealing, observer erasure, and bounded naming.  It
+also supplies a direct proof of the conditional theorem when a producer is
+missing.
+
+\subsection{What is novel, and what is not}
+
+Existential elimination, least bounded search, and invariant induction are of
+course standard logical tools.  The contribution claimed here is the
+repository-level synthesis:
+\begin{enumerate}[label=(\roman*)]
+\item a static escape classification tied to exact \(\Prf\) constructors;
+\item a scoped alternative to mandatory global certificate packing;
+\item dependent composition without selectors for finite proof DAGs;
+\item a uniform boundary-normal-form theorem for incomplete packets;
+\item a single trace/strategy/observer architecture explaining when finite
+      codes are genuinely necessary;
+\item an integration plan that reuses the current checked arithmetic and makes
+      open bridge transport first-class.
+\end{enumerate}
+The novelty is architectural and proof-theoretic rather than a claim to a new
+intuitionistic logic.
+
+\subsection{Decision guide}
+
+\begin{center}
+\begin{tabularx}{0.96\textwidth}{p{0.28\textwidth}X}
+\toprule
+Situation & Preferred representation \\
+\midrule
+Auxiliary witness disappears from conclusion & SCR sealed existential \\
+Several valid witnesses give the same invariant & SCR exact observer relation \\
+Valid outputs differ only by controlled error & SCR diameter cloud \\
+Certificate code or leastness is public & Bounded selector / FQNF \\
+Variable-horizon relational computation & Whole trace certificate + qf reflection \\
+Fixed bounded quantifier alternation & Finite strategy certificate / CBIP front end \\
+Large qf proof graph needs compact terms & Optional \(\KPrf\) backend \\
+Deep datum not yet produced & Explicit SCR boundary theorem \\
+\bottomrule
+\end{tabularx}
+\end{center}

@@ -1,0 +1,835 @@
+{
+  "title": "Lambert W in iPRA — theorem ledger",
+  "date": "2026-11-16",
+  "status_labels": {
+    "F": "exact finite theorem in bounded coded algebra/combinatorics",
+    "A": "constructive analytic theorem on rapid names with primitive-recursive moduli",
+    "F/A": "finite identity plus constructive analytic lifting",
+    "C": "conditional on a separately named effective theorem",
+    "P": "partially reconstructed or checked; not claimed in full",
+    "D": "deferred, audited, corrected, or outside the native claim set"
+  },
+  "count": 82,
+  "claims": [
+    {
+      "id": "LW-001",
+      "family": "Definition",
+      "statement": "A branch value W_k(z) satisfies W_k(z) exp(W_k(z)) = z.",
+      "status": "A",
+      "native_level": "rapid real/complex names",
+      "proof_location": "Thm. 3.2; Sec. 5",
+      "guards": "named branch and branch-separation data",
+      "evidence": ""
+    },
+    {
+      "id": "LW-002",
+      "family": "Real branches",
+      "statement": "No real solution exists for x < -1/e.",
+      "status": "A",
+      "native_level": "rapid real names",
+      "proof_location": "Thm. 3.2",
+      "guards": "strict comparison with -1/e",
+      "evidence": ""
+    },
+    {
+      "id": "LW-003",
+      "family": "Real branches",
+      "statement": "At x = -1/e the unique real solution is -1.",
+      "status": "A",
+      "native_level": "rapid real names",
+      "proof_location": "Thm. 3.2",
+      "guards": "located equality at the named endpoint",
+      "evidence": ""
+    },
+    {
+      "id": "LW-004",
+      "family": "Real branches",
+      "statement": "For -1/e < x < 0 there are exactly two real roots, W_0(x) in (-1,0) and W_{-1}(x) in (-infinity,-1).",
+      "status": "A",
+      "native_level": "rapid real names",
+      "proof_location": "Thm. 3.2",
+      "guards": "positive separation from both endpoints",
+      "evidence": ""
+    },
+    {
+      "id": "LW-005",
+      "family": "Real branches",
+      "statement": "For x >= 0 there is exactly one real root, W_0(x) >= 0.",
+      "status": "A",
+      "native_level": "rapid real names",
+      "proof_location": "Thm. 3.2",
+      "guards": "none beyond input domain",
+      "evidence": ""
+    },
+    {
+      "id": "LW-006",
+      "family": "Real branches",
+      "statement": "W_0 is strictly increasing and W_{-1} is strictly decreasing on their real domains.",
+      "status": "A",
+      "native_level": "rapid real names",
+      "proof_location": "Lemma 3.1; Thm. 3.2",
+      "guards": "branch interval",
+      "evidence": ""
+    },
+    {
+      "id": "LW-007",
+      "family": "Real branches",
+      "statement": "The inverse-search construction gives primitive-recursive continuity moduli away from the branch point.",
+      "status": "A",
+      "native_level": "rapid real names",
+      "proof_location": "Cor. 3.3",
+      "guards": "compact branch interval with |F'| bounded below",
+      "evidence": ""
+    },
+    {
+      "id": "LW-008",
+      "family": "Complex branches",
+      "statement": "A local complex branch can be constructed by path continuation while F' stays apart from zero.",
+      "status": "A",
+      "native_level": "rapid complex names",
+      "proof_location": "Sec. 5",
+      "guards": "finite polygonal path and positive separation certificate",
+      "evidence": ""
+    },
+    {
+      "id": "LW-009",
+      "family": "Complex branches",
+      "statement": "The preimage of the real axis satisfies v cos v + u sin v = 0 and u = -v cot v off v=0.",
+      "status": "F/A",
+      "native_level": "finite algebra plus complex rapid names",
+      "proof_location": "Prop. 5.1",
+      "guards": "ordinary trigonometric side conditions",
+      "evidence": ""
+    },
+    {
+      "id": "LW-010",
+      "family": "Complex branches",
+      "statement": "The unique critical point of w exp(w) is w=-1 and its critical value is -1/e.",
+      "status": "A",
+      "native_level": "rapid complex names",
+      "proof_location": "Prop. 5.2",
+      "guards": "none",
+      "evidence": ""
+    },
+    {
+      "id": "LW-011",
+      "family": "Transcendence",
+      "statement": "For nonzero algebraic z, every W-value is transcendental.",
+      "status": "C",
+      "native_level": "conditional constructive number theory",
+      "proof_location": "Sec. 5",
+      "guards": "effective Lindemann-Weierstrass theorem imported; not developed here",
+      "evidence": ""
+    },
+    {
+      "id": "LW-012",
+      "family": "Identities",
+      "statement": "W(z exp z)=z when the selected branch contains z.",
+      "status": "A",
+      "native_level": "branch-safe rapid names",
+      "proof_location": "Thm. 4.1",
+      "guards": "branch selection",
+      "evidence": ""
+    },
+    {
+      "id": "LW-013",
+      "family": "Identities",
+      "statement": "exp(W(z)) = z/W(z) for z and W(z) apart from zero.",
+      "status": "A",
+      "native_level": "rapid names",
+      "proof_location": "Thm. 4.1",
+      "guards": "z # 0 and W(z) # 0",
+      "evidence": ""
+    },
+    {
+      "id": "LW-014",
+      "family": "Identities",
+      "statement": "log W(z) = log z - W(z) with compatible logarithm branches.",
+      "status": "A",
+      "native_level": "rapid complex names",
+      "proof_location": "Thm. 4.2",
+      "guards": "logarithm branch and nonzero arguments",
+      "evidence": ""
+    },
+    {
+      "id": "LW-015",
+      "family": "Identities",
+      "statement": "For n>0 and x>0, W_0(n x^n / W_0(x)^(n-1)) = n W_0(x).",
+      "status": "A",
+      "native_level": "rapid complex names",
+      "proof_location": "Thm. 4.3",
+      "guards": "integer n>0; x>0",
+      "evidence": ""
+    },
+    {
+      "id": "LW-016",
+      "family": "Identities",
+      "statement": "W(x)+W(y)=W(xy(1/W(x)+1/W(y))) under branch and apartness guards.",
+      "status": "A",
+      "native_level": "rapid names",
+      "proof_location": "Thm. 4.3",
+      "guards": "W(x), W(y) # 0; output branch selected",
+      "evidence": ""
+    },
+    {
+      "id": "LW-017",
+      "family": "Identities",
+      "statement": "The multiplication identity for W(x)W(y) follows from the defining equations with explicit branch guards.",
+      "status": "A",
+      "native_level": "rapid names",
+      "proof_location": "Thm. 4.3",
+      "guards": "denominators and branches separated",
+      "evidence": ""
+    },
+    {
+      "id": "LW-018",
+      "family": "Identities",
+      "statement": "The two real roots at a common negative argument admit the ratio parametrization in Proposition 4.4.",
+      "status": "A",
+      "native_level": "rapid real names",
+      "proof_location": "Prop. 4.4",
+      "guards": "parameter away from its removable singularities",
+      "evidence": ""
+    },
+    {
+      "id": "LW-019",
+      "family": "Special values",
+      "statement": "W_0(0)=0, W_0(e)=1, and W_0(-1/e)=W_{-1}(-1/e)=-1.",
+      "status": "A",
+      "native_level": "rapid real names",
+      "proof_location": "Thm. 4.5",
+      "guards": "none",
+      "evidence": ""
+    },
+    {
+      "id": "LW-020",
+      "family": "Special values",
+      "statement": "Omega=W_0(1) is the unique real fixed point of exp(-x), and satisfies Omega exp(Omega)=1.",
+      "status": "A",
+      "native_level": "rapid real names",
+      "proof_location": "Def. 4.6; Cor. 4.7",
+      "guards": "none",
+      "evidence": ""
+    },
+    {
+      "id": "LW-021",
+      "family": "Special values",
+      "statement": "The printed W_0(-pi/2)=i pi/2 requires an upper-boundary convention on the principal cut.",
+      "status": "D",
+      "native_level": "branch audit",
+      "proof_location": "Audit 4.8",
+      "guards": "boundary value convention; the unqualified identity is not asserted",
+      "evidence": ""
+    },
+    {
+      "id": "LW-022",
+      "family": "Calculus",
+      "statement": "z(1+W)W'=W.",
+      "status": "A",
+      "native_level": "constructive differentiation",
+      "proof_location": "Thm. 6.1",
+      "guards": "away from branch point",
+      "evidence": ""
+    },
+    {
+      "id": "LW-023",
+      "family": "Calculus",
+      "statement": "W'=W/(z(1+W))=1/(z+exp(W)).",
+      "status": "A",
+      "native_level": "constructive differentiation",
+      "proof_location": "Thm. 6.1",
+      "guards": "displayed denominators apart from zero",
+      "evidence": ""
+    },
+    {
+      "id": "LW-024",
+      "family": "Calculus",
+      "statement": "W_0'(0)=1 by removal of the apparent singularity.",
+      "status": "A",
+      "native_level": "rapid real names",
+      "proof_location": "Thm. 6.1",
+      "guards": "principal branch at zero",
+      "evidence": ""
+    },
+    {
+      "id": "LW-025",
+      "family": "Calculus",
+      "statement": "All higher derivatives have the polynomial form (6.5) with recurrence (6.4).",
+      "status": "F/A",
+      "native_level": "finite polynomial recurrence plus rapid names",
+      "proof_location": "Thm. 6.2",
+      "guards": "branch point excluded",
+      "evidence": ""
+    },
+    {
+      "id": "LW-026",
+      "family": "Calculus",
+      "statement": "A root w of P_n maps to a root w exp(w) of W^(n), when the denominator is nonzero.",
+      "status": "F/A",
+      "native_level": "finite polynomial algebra",
+      "proof_location": "Thm. 6.2",
+      "guards": "denominator apartness",
+      "evidence": ""
+    },
+    {
+      "id": "LW-027",
+      "family": "Calculus",
+      "statement": "W''=-exp(-2W)(W+2)/(W+1)^3.",
+      "status": "A",
+      "native_level": "constructive differentiation",
+      "proof_location": "Cor. 6.3",
+      "guards": "branch point excluded",
+      "evidence": ""
+    },
+    {
+      "id": "LW-028",
+      "family": "Calculus",
+      "statement": "W_0 is strictly concave on (-1/e,infinity).",
+      "status": "A",
+      "native_level": "rapid real order",
+      "proof_location": "Cor. 6.3",
+      "guards": "input in open branch domain",
+      "evidence": ""
+    },
+    {
+      "id": "LW-029",
+      "family": "Calculus",
+      "statement": "W_{-1} is convex on (-1/e,-2/e^2), concave on (-2/e^2,0), with inflection at -2/e^2.",
+      "status": "A",
+      "native_level": "rapid real order",
+      "proof_location": "Cor. 6.3",
+      "guards": "input separated from endpoints for strict signs",
+      "evidence": ""
+    },
+    {
+      "id": "LW-030",
+      "family": "Integrals",
+      "statement": "Integral W(x) dx = xW-x+exp(W)+C.",
+      "status": "A",
+      "native_level": "constructive Riemann integration",
+      "proof_location": "Thm. 7.1",
+      "guards": "fixed differentiable branch",
+      "evidence": ""
+    },
+    {
+      "id": "LW-031",
+      "family": "Integrals",
+      "statement": "Integral W(x)/x dx = W^2/2+W+C.",
+      "status": "A",
+      "native_level": "constructive Riemann integration",
+      "proof_location": "Thm. 7.1",
+      "guards": "x # 0 on the interval",
+      "evidence": ""
+    },
+    {
+      "id": "LW-032",
+      "family": "Integrals",
+      "statement": "Integral W(A exp(Bx)) dx = (W^2/2+W)/B+C.",
+      "status": "A",
+      "native_level": "constructive Riemann integration",
+      "proof_location": "Thm. 7.1",
+      "guards": "B # 0; fixed branch",
+      "evidence": ""
+    },
+    {
+      "id": "LW-033",
+      "family": "Integrals",
+      "statement": "Integral W(x)/x^2 dx = Ei(-W)-exp(-W)+C.",
+      "status": "A",
+      "native_level": "constructive named special function",
+      "proof_location": "Thm. 7.1",
+      "guards": "separated interval defining Ei and x # 0",
+      "evidence": ""
+    },
+    {
+      "id": "LW-034",
+      "family": "Integrals",
+      "statement": "Integral_0^e W_0(x) dx = e-1.",
+      "status": "A",
+      "native_level": "constructive Riemann integration",
+      "proof_location": "Cor. 7.2",
+      "guards": "none",
+      "evidence": ""
+    },
+    {
+      "id": "LW-035",
+      "family": "Integrals",
+      "statement": "For integer N>1, integral_0^infinity W_0(x^{-N}) dx = N^{1-1/N} Gamma(1-1/N).",
+      "status": "A",
+      "native_level": "constructive improper integration",
+      "proof_location": "Thm. 7.3",
+      "guards": "fixed N>1",
+      "evidence": ""
+    },
+    {
+      "id": "LW-036",
+      "family": "Integrals",
+      "statement": "Integral_0^infinity W_0(x^{-2}) dx = sqrt(2 pi).",
+      "status": "A",
+      "native_level": "constructive improper integration",
+      "proof_location": "Thm. 7.3",
+      "guards": "constructive Gamma(1/2)=sqrt(pi)",
+      "evidence": ""
+    },
+    {
+      "id": "LW-037",
+      "family": "Integrals",
+      "statement": "Integral_0^infinity W_0(x)/(x sqrt x) dx = 2 sqrt(2 pi).",
+      "status": "A",
+      "native_level": "constructive improper integration",
+      "proof_location": "Cor. 7.4",
+      "guards": "positive branch",
+      "evidence": ""
+    },
+    {
+      "id": "LW-038",
+      "family": "Integrals",
+      "statement": "Integral_0^pi W_0(2 cot^2 t) sec^2 t dt = 4 sqrt(pi).",
+      "status": "A",
+      "native_level": "constructive improper integration",
+      "proof_location": "Cor. 7.4",
+      "guards": "split at pi/2; endpoint tail moduli",
+      "evidence": ""
+    },
+    {
+      "id": "LW-039",
+      "family": "Series",
+      "statement": "The truncated equation G=X Phi(G) has a unique solution after N+1 primitive iterations.",
+      "status": "F",
+      "native_level": "finite truncated-series algebra",
+      "proof_location": "Lemma 8.1",
+      "guards": "commutative coefficient ring with coded operations",
+      "evidence": ""
+    },
+    {
+      "id": "LW-040",
+      "family": "Series",
+      "statement": "Finite Lagrange-Buermann coefficient extraction holds in Q[X]/(X^{N+1}).",
+      "status": "F",
+      "native_level": "finite truncated Laurent algebra",
+      "proof_location": "Thm. 8.2",
+      "guards": "division by n available",
+      "evidence": ""
+    },
+    {
+      "id": "LW-041",
+      "family": "Series",
+      "statement": "[x^n]W_0(x)=(-n)^{n-1}/n!.",
+      "status": "F/A",
+      "native_level": "finite coefficients plus analytic lifting",
+      "proof_location": "Thm. 8.3",
+      "guards": "n>=1",
+      "evidence": ""
+    },
+    {
+      "id": "LW-042",
+      "family": "Series",
+      "statement": "W_0(x)=sum_{n>=1}(-n)^{n-1}x^n/n! for |x|<1/e.",
+      "status": "A",
+      "native_level": "rapid analytic names",
+      "proof_location": "Thm. 8.3; Thm. 8.5",
+      "guards": "strict radius witness",
+      "evidence": ""
+    },
+    {
+      "id": "LW-043",
+      "family": "Series",
+      "statement": "W_0(x)^r has coefficient formula (8.5) for fixed integer r.",
+      "status": "F/A",
+      "native_level": "finite Laurent series plus analytic lifting",
+      "proof_location": "Thm. 8.4",
+      "guards": "Laurent interpretation when r<0",
+      "evidence": ""
+    },
+    {
+      "id": "LW-044",
+      "family": "Series",
+      "statement": "(W_0(x)/x)^r has coefficient formula (8.6) for fixed constructive complex r.",
+      "status": "F/A",
+      "native_level": "finite parameter-polynomial identity plus analytic lifting",
+      "proof_location": "Thm. 8.4",
+      "guards": "|x|<1/e; n=0 coefficient interpreted separately",
+      "evidence": ""
+    },
+    {
+      "id": "LW-045",
+      "family": "Series",
+      "statement": "The exact centered radius of the Maclaurin series is 1/e.",
+      "status": "A",
+      "native_level": "constructive convergence/divergence certificate",
+      "proof_location": "Thm. 8.5",
+      "guards": "none",
+      "evidence": ""
+    },
+    {
+      "id": "LW-046",
+      "family": "Series",
+      "statement": "The Maclaurin series converges absolutely on |x|=1/e.",
+      "status": "A",
+      "native_level": "constructive series with tail modulus",
+      "proof_location": "Thm. 8.5",
+      "guards": "finite Wallis/Stirling bound",
+      "evidence": ""
+    },
+    {
+      "id": "LW-047",
+      "family": "Series",
+      "statement": "Both real branches have the displayed Puiseux expansions at -1/e.",
+      "status": "F/A",
+      "native_level": "ramified finite inversion plus analytic remainder",
+      "proof_location": "Thm. 9.1",
+      "guards": "nonnegative p=sqrt(2(1+ez)) on real side",
+      "evidence": ""
+    },
+    {
+      "id": "LW-048",
+      "family": "Series",
+      "statement": "Every fixed Puiseux order has an explicit primitive-recursive remainder bound.",
+      "status": "A",
+      "native_level": "rapid analytic names",
+      "proof_location": "Thm. 9.1",
+      "guards": "computable neighborhood",
+      "evidence": ""
+    },
+    {
+      "id": "LW-049",
+      "family": "Asymptotics",
+      "statement": "For every fixed N, W_0(x) has expansion (10.3) with explicit residual bound.",
+      "status": "F/A",
+      "native_level": "finite series reversion plus rapid names",
+      "proof_location": "Thm. 10.1",
+      "guards": "x above computable threshold",
+      "evidence": ""
+    },
+    {
+      "id": "LW-050",
+      "family": "Asymptotics",
+      "statement": "The first four logarithmic correction terms are those in (10.4).",
+      "status": "F/A",
+      "native_level": "finite rational polynomial identity",
+      "proof_location": "Thm. 10.1",
+      "guards": "x above computable threshold",
+      "evidence": ""
+    },
+    {
+      "id": "LW-051",
+      "family": "Asymptotics",
+      "statement": "W_{-1}(x) as x->0- has the finite-order expansion beginning (10.5).",
+      "status": "F/A",
+      "native_level": "finite series reversion plus rapid names",
+      "proof_location": "Thm. 10.2",
+      "guards": "x<0 sufficiently close to zero",
+      "evidence": ""
+    },
+    {
+      "id": "LW-052",
+      "family": "Bounds",
+      "statement": "The Hoorfar-Hassani lower and upper bounds (11.2) hold for x>=e.",
+      "status": "A",
+      "native_level": "constructive real inequalities",
+      "proof_location": "Thm. 11.1",
+      "guards": "x>=e",
+      "evidence": ""
+    },
+    {
+      "id": "LW-053",
+      "family": "Bounds",
+      "statement": "The Iacono-Boyd enhanced bounds (11.3) hold for x>=e.",
+      "status": "A",
+      "native_level": "constructive real inequalities",
+      "proof_location": "Thm. 11.2",
+      "guards": "x>=e",
+      "evidence": ""
+    },
+    {
+      "id": "LW-054",
+      "family": "Bounds",
+      "statement": "For y>1/e and x>=-1/e, W_0(x)<=log((x+y)/(1+log y)), with equality iff x=y log y.",
+      "status": "A",
+      "native_level": "constructive real inequalities",
+      "proof_location": "Thm. 11.3",
+      "guards": "positive logarithm argument",
+      "evidence": ""
+    },
+    {
+      "id": "LW-055",
+      "family": "Bounds",
+      "statement": "The specialization y=x+1 gives bound (11.6).",
+      "status": "A",
+      "native_level": "constructive real inequalities",
+      "proof_location": "Thm. 11.3",
+      "guards": "x>=-1/e",
+      "evidence": ""
+    },
+    {
+      "id": "LW-056",
+      "family": "Bounds",
+      "statement": "For -1/e<=x<=0, sqrt(1+ex)-1 <= W_0(x) <= cbrt(1+ex)-1.",
+      "status": "A",
+      "native_level": "constructive real inequalities",
+      "proof_location": "Thm. 11.4",
+      "guards": "real square/cube roots",
+      "evidence": ""
+    },
+    {
+      "id": "LW-057",
+      "family": "Bounds",
+      "statement": "Near the common branch point, W_{-1} obeys both strict bounds in (12.1).",
+      "status": "A",
+      "native_level": "constructive real inequalities",
+      "proof_location": "Thm. 12.1",
+      "guards": "u>0 with positive witness",
+      "evidence": ""
+    },
+    {
+      "id": "LW-058",
+      "family": "Bounds",
+      "statement": "As x tends to zero on W_{-1}, the two logarithmic bounds in (12.5) hold.",
+      "status": "A",
+      "native_level": "constructive real inequalities",
+      "proof_location": "Thm. 12.2",
+      "guards": "u>1",
+      "evidence": ""
+    },
+    {
+      "id": "LW-059",
+      "family": "Representations",
+      "statement": "The nested exponential converges with a supplied invariant interval and contraction factor.",
+      "status": "A",
+      "native_level": "finite iteration with error modulus",
+      "proof_location": "Thm. 13.1",
+      "guards": "branch-safe invariant interval; q<1",
+      "evidence": ""
+    },
+    {
+      "id": "LW-060",
+      "family": "Representations",
+      "statement": "The nested logarithm converges with a supplied positive invariant interval and |W|>1 witness.",
+      "status": "A",
+      "native_level": "finite iteration with error modulus",
+      "proof_location": "Thm. 13.2",
+      "guards": "lower bound d>1",
+      "evidence": ""
+    },
+    {
+      "id": "LW-061",
+      "family": "Representations",
+      "statement": "The Poisson integral representation is not reconstructed.",
+      "status": "D",
+      "native_level": "audit",
+      "proof_location": "Audit 13.3",
+      "guards": "would require constructive Poisson/contour development",
+      "evidence": ""
+    },
+    {
+      "id": "LW-062",
+      "family": "Representations",
+      "statement": "The Kalugin-Jeffrey-Corless integral representation is not reconstructed.",
+      "status": "D",
+      "native_level": "audit",
+      "proof_location": "Audit 13.3",
+      "guards": "would require dedicated global integral proof",
+      "evidence": ""
+    },
+    {
+      "id": "LW-063",
+      "family": "Representations",
+      "statement": "The displayed continued fraction is not claimed beyond finite convergent checks.",
+      "status": "D",
+      "native_level": "audit",
+      "proof_location": "Audit 13.3",
+      "guards": "missing general recurrence and convergence majorant",
+      "evidence": ""
+    },
+    {
+      "id": "LW-064",
+      "family": "Equations",
+      "statement": "All branch solutions of x=a+b exp(cx) have formula (14.1).",
+      "status": "F/A",
+      "native_level": "finite algebra plus branch evaluation",
+      "proof_location": "Thm. 14.1",
+      "guards": "b,c # 0",
+      "evidence": ""
+    },
+    {
+      "id": "LW-065",
+      "family": "Equations",
+      "statement": "All branch solutions of ax+b=exp(cx) have formula (14.2).",
+      "status": "F/A",
+      "native_level": "finite algebra plus branch evaluation",
+      "proof_location": "Thm. 14.1",
+      "guards": "a,c # 0",
+      "evidence": ""
+    },
+    {
+      "id": "LW-066",
+      "family": "Equations",
+      "statement": "The two real solutions of 2x+2=3^x lie in the certified intervals printed in Example 14.2.",
+      "status": "A",
+      "native_level": "rapid interval evaluation",
+      "proof_location": "Example 14.2",
+      "guards": "real logarithm of 3",
+      "evidence": ""
+    },
+    {
+      "id": "LW-067",
+      "family": "Equations",
+      "statement": "The inverse of x^x has all branch solutions exp(W_k(log y)) and the complete real solution count.",
+      "status": "A",
+      "native_level": "rapid real names",
+      "proof_location": "Thm. 14.3",
+      "guards": "x,y>0; quotient form uses continuity at y=1",
+      "evidence": ""
+    },
+    {
+      "id": "LW-068",
+      "family": "Equations",
+      "statement": "All branch solutions of exp(-cx)=a_0(x-r) have formula (14.5).",
+      "status": "F/A",
+      "native_level": "finite algebra plus branch evaluation",
+      "proof_location": "Thm. 14.4",
+      "guards": "a_0,c # 0",
+      "evidence": ""
+    },
+    {
+      "id": "LW-069",
+      "family": "Equations",
+      "statement": "The displayed thermodynamic equilibrium equation has algebraic solution formula (14.6).",
+      "status": "F/A",
+      "native_level": "finite algebra plus branch evaluation",
+      "proof_location": "Thm. 14.5",
+      "guards": "positive T,K; c # 0; physical model premise not claimed",
+      "evidence": ""
+    },
+    {
+      "id": "LW-070",
+      "family": "Equations",
+      "statement": "The Wien-type stationary equation has solutions x=D+W_k(-D exp(-D)).",
+      "status": "F/A",
+      "native_level": "finite algebra plus branch evaluation",
+      "proof_location": "Thm. 14.6",
+      "guards": "integer D>0",
+      "evidence": ""
+    },
+    {
+      "id": "LW-071",
+      "family": "Equations",
+      "statement": "The Bernoulli-Todd equation yields the branch-difference formula (14.10).",
+      "status": "F/A",
+      "native_level": "finite algebra plus branch classification",
+      "proof_location": "Thm. 14.7",
+      "guards": "Y in (-infinity,-1) or (-1,0); removable endpoint treated separately",
+      "evidence": ""
+    },
+    {
+      "id": "LW-072",
+      "family": "Equations",
+      "statement": "The orthogonal-trajectory equation integrates to y^2=W_0(x^2 exp(-2C-x^2)).",
+      "status": "A",
+      "native_level": "constructive integration plus differentiation check",
+      "proof_location": "Thm. 14.8",
+      "guards": "sign-fixed interval and branch-safe square root",
+      "evidence": ""
+    },
+    {
+      "id": "LW-073",
+      "family": "Combinatorics",
+      "statement": "The number of rooted labeled trees on n vertices is n^{n-1}.",
+      "status": "F",
+      "native_level": "finite Prüfer bijection",
+      "proof_location": "Sec. 15",
+      "guards": "n>=1",
+      "evidence": ""
+    },
+    {
+      "id": "LW-074",
+      "family": "Combinatorics",
+      "statement": "The truncated rooted-tree EGF satisfies T_N=X exp(T_N) mod X^{N+1}.",
+      "status": "F",
+      "native_level": "finite exponential generating functions",
+      "proof_location": "Thm. 15.1",
+      "guards": "fixed truncation N",
+      "evidence": ""
+    },
+    {
+      "id": "LW-075",
+      "family": "Combinatorics",
+      "statement": "W_0(X)=-T(-X) as a formal series.",
+      "status": "F",
+      "native_level": "finite truncated-series uniqueness",
+      "proof_location": "Thm. 15.1",
+      "guards": "coefficientwise interpretation",
+      "evidence": ""
+    },
+    {
+      "id": "LW-076",
+      "family": "Numerics",
+      "statement": "Newton iteration is formula (16.1).",
+      "status": "F/A",
+      "native_level": "finite interval operations",
+      "proof_location": "Thm. 16.1",
+      "guards": "denominator separated from zero",
+      "evidence": ""
+    },
+    {
+      "id": "LW-077",
+      "family": "Numerics",
+      "statement": "Halley iteration is formula (16.2).",
+      "status": "F/A",
+      "native_level": "finite interval operations",
+      "proof_location": "Thm. 16.1",
+      "guards": "all displayed denominators separated from zero",
+      "evidence": ""
+    },
+    {
+      "id": "LW-078",
+      "family": "Numerics",
+      "statement": "Logarithmic Newton iteration is formula (16.3) and has exactly the branch-safe roots as fixed points.",
+      "status": "F/A",
+      "native_level": "finite interval operations",
+      "proof_location": "Thm. 16.2",
+      "guards": "x/w>0, w#0, w+1#0",
+      "evidence": ""
+    },
+    {
+      "id": "LW-079",
+      "family": "Numerics",
+      "statement": "A generic quadratic Newton error certificate follows from bounds m<=|f'| and |f''|<=M.",
+      "status": "A",
+      "native_level": "constructive Taylor remainder",
+      "proof_location": "Thm. 16.3",
+      "guards": "invariant interval and positive m",
+      "evidence": ""
+    },
+    {
+      "id": "LW-080",
+      "family": "Numerics",
+      "statement": "Interval Newton with bisection fallback preserves a real branch root and contracts quadratically away from -1/e.",
+      "status": "A",
+      "native_level": "primitive-recursive interval algorithm",
+      "proof_location": "Algorithm 16.4",
+      "guards": "branch bracket and derivative separation",
+      "evidence": ""
+    },
+    {
+      "id": "LW-081",
+      "family": "Numerics",
+      "statement": "Published universal starting-value constants are recorded and stress-tested, but not fully replayed.",
+      "status": "P",
+      "native_level": "partial external-certificate audit",
+      "proof_location": "Sec. 16.1",
+      "guards": "source-specific global inequalities remain",
+      "evidence": ""
+    },
+    {
+      "id": "LW-082",
+      "family": "Numerics",
+      "statement": "Quoted minimax rational bit accuracies are not claimed without external coefficient tables and uniform error proof.",
+      "status": "D",
+      "native_level": "audit",
+      "proof_location": "Sec. 16.1",
+      "guards": "external approximation certificate required",
+      "evidence": ""
+    }
+  ]
+}

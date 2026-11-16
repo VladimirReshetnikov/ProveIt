@@ -1,0 +1,63 @@
+\section{Repository baseline and the verification boundary}
+\label{sec:baseline}
+
+\subsection{The three repository layers}
+
+The present repository should be read as three logically distinct layers.
+
+\begin{enumerate}[label=\textbf{L\arabic*.},leftmargin=3.2em]
+\item \textbf{A checked object calculus.}  \texttt{ConciseIPRA} contains the ordinary first-order presentation \(\Prf\;\PRAAx\), together with the native scalar presentations and their bi-interpretations.  The ordinary presentation is the right portability boundary: formulas, local contexts, substitution, weakening, equality, quantifiers, and quantifier-free induction are explicit.
+
+\item \textbf{A checked arithmetic library.}  \texttt{IPRADerivations} contains actual values of type
+\[
+  ([] : \mathsf{List}(\mathsf{Fm}\;\mathsf{PTm}\;0))
+  \;\vdash[\PRAAx]\;\varphi.
+\]
+Its reusable core already includes semiring laws, order, monus, pairing, simultaneous recursion, bounded sums and products, bounded least search, division, gcd, Bezout, finite linear algebra, and several forms of descent.
+
+\item \textbf{Research packets.}  The proof-packet collection contains broad human reductions and Lean plans for many mathematical topics.  It is a source of definitions, quantitative reformulations, examples, and obstacle analyses.  It is not, merely by being in the repository, a checked extension of the object theory.  The repository README explicitly records that the packets were filed as delivered and that many Lean files are uncompiled specifications or outlines.
+\end{enumerate}
+
+The framework developed here uses L1 and L2 as trusted implementation dependencies and treats L3 as prior research to be consolidated, corrected, or specialized.  In particular, a host-level theorem about natural numbers, a Python test, and a theorem whose result type is literally \(\Prf\;\PRAAx\;\Gamma\;\varphi\) are different deliverables.
+
+\subsection{Canonical endpoint}
+
+For new portable work, the canonical endpoint is
+\begin{equation}
+  \Gamma\;\vdash[\PRAAx]\;\varphi,
+  \label{eq:canonical-endpoint}
+\end{equation}
+where \(\Gamma\) is an explicit finite list of object-language formulas and \(\varphi\) is an explicit object-language formula over the ordinary \texttt{PTm}/\texttt{Fm} syntax.  The scalar calculi are valuable for proof-checker minimization, but theorem development is easier to share through the ordinary calculus.  Foundation-side consumers may receive a translated corollary through the bridge after the ordinary endpoint exists.
+
+This choice has four consequences.
+
+\begin{enumerate}[leftmargin=2.2em]
+\item Every mathematical operation used by the proof is represented by a fixed primitive-recursive symbol or by a fixed term assembled from such symbols.
+\item Every induction invariant is quantifier-free in the object language.  Bounded quantifiers are first compiled to Boolean folds.
+\item Every unproved quantitative input appears in \(\Gamma\); it is not hidden in a Lean structure, a Python value, or an informal phrase such as ``choose the constant sufficiently large.''
+\item Reuse happens at arbitrary terms and under arbitrary local contexts whenever possible.  Closed theorems are useful, but open lemmas are the compositional currency.
+\end{enumerate}
+
+\subsection{Checked kernel operations already sufficient for composition}
+
+The following existing rules are enough to support the structural part of the proposed compiler.
+
+\begin{description}[style=nextline,leftmargin=2.2em]
+\item[Substitution and weakening.] If \(\Gamma\vdash\varphi\), then simultaneous substitution of object terms gives the substituted sequent; the context may also be weakened.
+
+\item[Instantiation of closed derivations.]  The checked theorem \texttt{LeanProofs.IPRA.inst} specializes a closed derivation with free parameters at arbitrary terms under an arbitrary context.
+
+\item[Quantifier-free induction.]  The checked theorem \texttt{LeanProofs.IPRA.ind} packages the \iPRA{} induction scheme for an open quantifier-free formula while retaining the other variables as parameters.
+
+\item[Simultaneous cut.]  The checked theorem \texttt{Prf.trans} states that if \(\Gamma\vdash\varphi\) and every member of \(\Gamma\) is derivable from \(\Delta\), then \(\Delta\vdash\varphi\).  This is exactly the operation needed to close a residualized compiler endpoint.
+
+\item[Bounded least search.]  \texttt{Core.Search} defines a primitive-recursive least-search term and proves its bound, success, and minimality contracts in the object theory.
+\end{description}
+
+Thus the largest missing component is not a stronger logic.  It is a library of proof-producing adapters that normalize finite mathematics to these existing operations.
+
+\subsection{What this report claims}
+
+The mathematical schemas in this report are proved at the human level with enough detail to guide a line-by-line formalization.  The archive's \texttt{lean/} directory then states implementation targets against the current API.  Except for a tiny wrapper file around already checked declarations, those files are explicitly blueprints and are not claimed to elaborate.  The Python companion demonstrates exact finite algorithms and independently checkable certificates; it supplies no additional axiom and no object proof.
+
+This status discipline is part of the framework, not an administrative afterthought.  A compiler for weak arithmetic is useful only if one can see, for every theorem, which pieces have reached the kernel and which pieces remain mathematical producers.

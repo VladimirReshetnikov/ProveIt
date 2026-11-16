@@ -1,0 +1,21 @@
+id,title,kind,status,repository_dependency,lean_target,residuals,notes
+T01,Ordinary derivability and simultaneous cut,inherited,checked,ConciseIPRA/Deduction.lean,Prf.trans,,Canonical composition rule
+T02,Open quantifier-free induction,inherited,checked,IPRADerivations/Core/Basic.lean,LeanProofs.IPRA.ind,,Used for traces folds rank and tables
+T03,Bounded least search,inherited,checked,IPRADerivations/Core/Search.lean,Search.search_found/search_minimal,,Backend for selected certificates
+T04,Pairing equality bits and simultaneous recursion,inherited,checked,IPRADerivations/Core/Pairing.lean,eqb/pairT/simultaneous recursion,,Arithmetic coding backend
+T05,Fixed bounded Boolean reflection,new schema,human-proof+lean-outline,T01-T04,FINER.BooleanReflectionBlueprint,none for fixed bounded syntax,Structural proof in report section 4
+T06,Selected master certificate,new schema,human-proof,T03+T05,FINER selected-certificate constructor,accepted-certificate existence,Direct reduction to checked search
+T07,Deterministic trace reflection,new schema,human-proof,T02+Core.Definitions,FINER.Trace,local base and step derivations,One quantifier-free induction
+T08,Finite monotone demand stabilization,new theorem,human-proof+tested-reference,T02+Core.MultiSums,FINER.DemandClosureBlueprint,monotonicity/cap adequacy,Stabilizes by sum of capacities
+T09,Least prefixed demand closure,new theorem,human-proof+tested-reference,T08,FINER.DemandClosureBlueprint,monotonicity,Minimal adequate specialization
+T10,Backward viability correctness,new theorem,human-proof+tested-reference,T05+T07,FINER.ViabilityBlueprint,finite relation and bounds,Finite dynamic programming
+T11,Least successful transcript,new theorem,human-proof+tested-reference,T03+T10,FINER.ViabilityBlueprint,initial viability,No hidden choice
+T12,Exact observer erasure,new theorem,human-proof,T06,FINER.ObservationBlueprint,pairwise invariance+inhabitation,Canonical observation
+T13,Metric observer erasure,new theorem,human-proof+tested-reference,T06,FINER.ObservationBlueprint,pairwise diameter+inhabitation,Quantitative choice erasure
+T14,Exact observational descent,new theorem,human-proof,T02+equality,FINER.ObservationBlueprint,spanning-tree certificate+edge agreement,No global quotient required
+T15,Metric observational descent,new theorem,human-proof+tested-reference,T02+finite sums,FINER.ObservationBlueprint,tree+triangle+edge errors,Path-sum error bound
+T16,Height bound to complete list,new schema,human-proof+tested-reference,T05+T03,application adapter,height bound+enumeration bound,Converse by finite maximum
+T17,Residual closure,inherited application,checked-rule,T01,FINER.KernelWrappers.dischargeResiduals,proofs of residual formulas,Literal Prf.trans
+T18,FINER fixed-graph compiler,new metatheorem,human-proof+lean-outline,T05-T17,FINER.CompilerBlueprint,exact generated producer formulas,Metalevel specialization not universal evaluator
+T19,Cubic inverse bisection,worked application,human-proof+tested-reference,T05+T07,benchmark target,initial rational bracket,Exact rational reference certificate
+T20,Generic deep Diophantine producers,application boundary,residual-open,T16,application-specific,effective height/representative bounds,No unconditional claim

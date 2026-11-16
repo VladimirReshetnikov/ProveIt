@@ -1,0 +1,162 @@
+\section{Lean formalization plan}
+\label{sec:lean}
+
+The formalization should be integrated as a new library beside \texttt{IPRADerivations}, not as copied source inside a packet.  This section gives concrete definitions, theorem shapes, and a dependency order.
+
+\subsection{Imports and namespace}
+
+A minimal first module can import:
+\begin{lstlisting}[language={}]
+import IPRADerivations.Core.Search
+import IPRADerivations.Core.Pairing
+import IPRADerivations.Core.MultiSums
+\end{lstlisting}
+and use
+\begin{lstlisting}[language={}]
+namespace LeanProofs.IPRA.FINER
+open LeanProofs.ConciseIPRA LeanProofs.IPRA Syn
+open scoped Fm
+\end{lstlisting}
+The first objective is to keep this import closure independent of Foundation, Busy Beaver, DiophantineConsistency, and application packets.
+
+\subsection{Kernel wrappers}
+
+The archive includes a small \texttt{KernelWrappers.lean} recording the intended API.  The relevant existing declarations are:
+\begin{lstlisting}[language={}]
+Prf.subst
+Prf.weaken
+Prf.trans
+Prf.ofNil
+LeanProofs.IPRA.inst
+LeanProofs.IPRA.ind
+Search.search_spec
+Search.search_found
+Search.search_minimal
+\end{lstlisting}
+No new structural proof calculus is required.
+
+\subsection{Phase 1: Boolean reflection}
+
+Define a small metalevel syntax whose terms are already \texttt{PTm} values:
+\begin{lstlisting}[language={}]
+inductive BFormula : (n : Nat) -> Type
+| eq  : PTm n -> PTm n -> BFormula n
+| lt  : PTm n -> PTm n -> BFormula n
+| and : BFormula n -> BFormula n -> BFormula n
+| or  : BFormula n -> BFormula n -> BFormula n
+| imp : BFormula n -> BFormula n -> BFormula n
+| bex : PTm n -> BFormula (n+1) -> BFormula n
+| ball : PTm n -> BFormula (n+1) -> BFormula n
+\end{lstlisting}
+Return a record:
+\begin{lstlisting}[language={}]
+structure Reflection (n : Nat) where
+  bit      : PTm n
+  formula  : Fm PTm n
+  bit01    : forall {Gamma}, Gamma |- [PRAAx] bit = 0 or bit = 1
+  one_iff  : forall {Gamma}, Gamma |- [PRAAx]
+               iff (bit = 1) formula
+  zero_iff : forall {Gamma}, Gamma |- [PRAAx]
+               iff (bit = 0) (neg formula)
+\end{lstlisting}
+The actual Lean syntax uses the repository notation \(\mathord{\simeq}\), \(\mathbin{\curlywedge}\), and \texttt{Fm.iff}; the pseudo-code above emphasizes the theorem shape.
+
+Implement atoms first.  Then conjunction, disjunction, and implication.  Add bounded existential by a finite sum or a direct adapter to \texttt{Search.mu}; add bounded universal by reflected absence of a counterexample.  At every constructor, prove substitution lemmas for the generated bit and formula.  Acceptance test: a closed example with two nested bounded quantifiers produces a literal \texttt{Prf PRAAx} theorem and passes the repository axiom audit.
+
+\subsection{Phase 2: packed arrays}
+
+Implement mixed-radix arrays or reuse an existing sequence code if its import closure is appropriate.  Required endpoints are:
+\begin{align*}
+ &\decode_i(\code(\vec d))=d_i,\\
+ &c<R\to\code(\decode(c))=c,\\
+ &\decode_i(c)<r_i,\\
+ &\text{fold equations for sum, maximum, and Boolean all/any.}
+\end{align*}
+For a first implementation, fix the vector length at the metalevel.  A later variable-length implementation can use \texttt{sumF}, \texttt{prodF}, division, and pairing.
+
+\subsection{Phase 3: trace reflection}
+
+Define a package whose fields are fixed terms and local derivations:
+\begin{lstlisting}[language={}]
+structure TraceSystem (k : Nat) where
+  init : PTm k
+  step : PTm (k+2)       -- time, state, parameters
+  inv  : Fm PTm (k+2)
+  invQF : inv.QF
+  base : [] |- [PRAAx] ...
+  next : [inv] |- [PRAAx] ...
+\end{lstlisting}
+Use \texttt{recDef} for the state and \texttt{ind} for \cref{thm:trace-reflection}.  Keep all parameters open.  Prove a separate terminal adapter, so applications can reuse the trace theorem without changing its definition.
+
+\subsection{Phase 4: finite demand closure}
+
+Start with fixed dimension \(m\).  Represent vectors by \texttt{Fin m -> PTm n} at the statement level and by one packed term for iteration.  Define:
+\begin{itemize}[leftmargin=2em]
+\item componentwise maximum and comparison bits;
+\item a fixed-capacity rank term;
+\item the inflationary step \(x\vee F(x)\);
+\item the trace by \texttt{rec1} or \texttt{rec2}.
+\end{itemize}
+Prove, in order:
+\begin{enumerate}[label=(\roman*),leftmargin=2.3em]
+\item coordinate bounds;
+\item inflation;
+\item strict-step rank increase;
+\item persistence after a fixed point;
+\item stabilization at \(H=\sum_iC_i\);
+\item leastness below an arbitrary prefixed point.
+\end{enumerate}
+The monotonicity proof of \(F\) should be a field of the system package, not a semantic Lean hypothesis about \(\Nat\).  It must be an object derivation at arbitrary terms.
+
+\subsection{Phase 5: relational viability}
+
+Implement one fixed-horizon version first.  A layer is a fixed bound, an edge is a reflected predicate, and acceptance is reflected.  Generate viability bits backward at the metalevel for a fixed number of layers, then prove path equivalence by structural recursion.  This version already covers many finite proof graphs.
+
+The variable-horizon version packs a viability table and uses a reverse-time iterator.  Its proof should reuse the trace kernel.  The least-path theorem calls \texttt{Search.search\_found} at each forward step.  Add a no-path theorem from viability zero.
+
+\subsection{Phase 6: observers and descent}
+
+Implement exact observer erasure first; it is one instantiation of pairwise invariance.  Then add a reflected equivalence relation with reflexivity/transitivity and congruence.  Metric observers require a rational distance representation, triangle inequality, and finite sums of edge errors.
+
+For observational descent, use a parent/depth certificate rather than a generic graph library.  Prove parent-depth termination and path-error accumulation by quantifier-free induction.  A fixed-size graph version can precede the packed variable-size version.
+
+\subsection{Phase 7: master certificates and compiler packages}
+
+Do not begin with a universal graph language.  Define a \texttt{CompiledQuery} record that stores already generated terms, formulas, local derivations, and residuals.  Prove the selected-certificate theorem and residual closure.  Then add metalevel constructors for exact, reflected, search, trace, relational, and observer nodes.  Each constructor returns a new \texttt{CompiledQuery} and a checked composition proof.
+
+Only after these constructors stabilize should a convenient graph DSL be added.  Its compiler is trusted only through the \texttt{Prf} value it returns.
+
+\subsection{Phase 8: benchmarks}
+
+Four benchmarks exercise different parts of the framework:
+\begin{enumerate}[label=(\arabic*),leftmargin=2.3em]
+\item rational bisection for \(y^3+y=x\): Boolean branching, trace reflection, regular-name observation;
+\item a genuinely cyclic three-coordinate demand system: stabilization and leastness;
+\item a finite relational path with a nonviable early choice: backward viability and least replay;
+\item a finite cover with rational edge errors: metric observational descent.
+\end{enumerate}
+The JSON fixtures and Python tests in this archive give exact expected outputs.
+
+\subsection{Phase 9: repository integration}
+
+After the generic library is checked:
+\begin{itemize}[leftmargin=2em]
+\item migrate one proof packet whose main theorem is already close to a checked derivation;
+\item replace its local search or trace code by FINER adapters;
+\item record a literal theorem name and axiom audit;
+\item preserve the packet report as provenance but make the new derivation the canonical result;
+\item expose a Foundation corollary only after the ordinary endpoint is stable.
+\end{itemize}
+A good first target is a finite algebraic or combinatorial theorem, not a deep analytical producer.  A second target should exercise a residual, such as finite-net minimization under a supplied coverage theorem.
+
+\subsection{Axiom and placeholder policy}
+
+Every final module should satisfy:
+\begin{enumerate}[label=(\roman*),leftmargin=2.3em]
+\item no \texttt{sorry};
+\item no theorem-specific \texttt{axiom};
+\item public endpoints are literal \texttt{Prf PRAAx};
+\item \texttt{\#print axioms} shows only the metatheoretic axioms already accepted by the repository audit;
+\item every semantic test is labeled separately from object derivation status.
+\end{enumerate}
+The blueprint files in this archive intentionally violate the first condition by visible milestones; they are not presented as finished modules.

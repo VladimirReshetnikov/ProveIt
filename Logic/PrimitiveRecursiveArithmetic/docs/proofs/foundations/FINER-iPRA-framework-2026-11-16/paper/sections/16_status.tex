@@ -1,0 +1,57 @@
+\section{Theorem ledger and exact status}
+\label{sec:status}
+
+\small
+\begin{longtable}{@{}p{0.28\textwidth}p{0.45\textwidth}p{0.19\textwidth}@{}}
+\toprule
+Result & Evidence in this archive/repository & Status \\
+\midrule
+\endfirsthead
+\toprule
+Result & Evidence in this archive/repository & Status \\
+\midrule
+\endhead
+Ordinary \(\Prf\;\PRAAx\) calculus, substitution, weakening, cut & Existing \path{ConciseIPRA/Deduction.lean} & \textcolor{statusgreen}{\textbf{checked}} \\
+Open quantifier-free induction and instantiation & Existing \path{IPRADerivations/Core/Basic.lean} & \textcolor{statusgreen}{\textbf{checked}} \\
+Bounded least search and minimality & Existing \path{IPRADerivations/Core/Search.lean} & \textcolor{statusgreen}{\textbf{checked}} \\
+Pairing, equality bits, simultaneous recursion & Existing \path{Core/Pairing.lean} & \textcolor{statusgreen}{\textbf{checked}} \\
+Finite sums/products and primitive-recursive definitions & Existing \path{Core/Definitions.lean} & \textcolor{statusgreen}{\textbf{checked}} \\
+Fixed bounded Boolean reflection & Full human proof, Lean blueprint & \human{} / \outline \\
+Selected master certificate & Human reduction to checked search API & \human{} \\
+Deterministic trace reflection & Full human proof, direct \texttt{ind} route & \human{} \\
+Finite monotone demand closure & Full rank and leastness proof; tested reference implementation & \human \\
+Backward viability and least successful path & Full finite proof; tested reference implementation & \human \\
+Exact/quotient/metric observer erasure & Full human proof & \human \\
+Finite observational descent & Full tree-induction proof; tested metric example & \human \\
+Residual closure & Direct wrapper around existing \texttt{Prf.trans} & \textcolor{statusgreen}{\textbf{checked rule}} \\
+Generic FINER compiler & Human metatheorem and source-oriented blueprint & \human{} / \outline \\
+Python algorithms & Fourteen exact tests pass & Semantic test only \\
+Cubic bisection benchmark & Exact Python certificate and developed object-proof plan & Semantic + \outline \\
+General Faltings/Siegel/Mordell--Weil producers & Not supplied & \openstatus \\
+Uniform exact Puiseux/root/eigenvector selector through collisions & Deliberately not claimed; interface reformulated & Obstructed \\
+General rate extraction from metastability & Deliberately not claimed & Obstructed \\
+Open-sequent Foundation bridge & Repository unification-plan work, not implemented here & Future integration \\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\subsection{Files in the archive}
+
+\begin{description}[style=nextline,leftmargin=2.5em]
+\item[\texttt{paper/}] Complete LaTeX source and compiled PDF.
+\item[\texttt{lean/FINER/}] A tiny kernel-wrapper file plus source-oriented theorem blueprints.  The blueprints visibly contain \texttt{sorry} and are not claimed compiled.
+\item[\texttt{lean/FORMALIZATION\_PLAN.md}] Dependency-ordered implementation checklist.
+\item[\texttt{reference/}] Exact standard-library Python algorithms and unit tests.
+\item[\texttt{examples/}] JSON fixtures for demand closure, relational viability, metric descent, and cubic bisection.
+\item[\texttt{metadata/}] Theorem ledger, difficulty matrix, schema, proof-status record, and source audit.
+\item[\texttt{validation/}] Test output, PDF build log, preflight information, rendered pages, and static scans.
+\end{description}
+
+\subsection{Reproduction commands}
+
+From the archive root:
+\begin{lstlisting}[language=bash]
+python3 -m unittest -v reference/test_finer_reference.py
+./build.sh
+\end{lstlisting}
+The build script runs tests, compiles the PDF, checks for missing references, renders the PDF, and refreshes checksums.  Lean validation requires placing \texttt{lean/} in the pinned ProveIt checkout and following the formalization plan; the current archive does not assert that the blueprint modules elaborate.

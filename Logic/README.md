@@ -61,7 +61,7 @@ and the Foundation and ConciseIPRA backend boundaries.
   derives in Lean, as kernel-checked iPRA derivations in `ConciseIPRA`'s `Prf PRAAx`,
   theorems outlined in the proof packets, on top of a reusable iPRA arithmetic library.
 - [`PrimitiveRecursiveArithmetic/docs/proofs/`](PrimitiveRecursiveArithmetic/docs/proofs/README.md)
-  files, as delivered and unchecked, 104 packets of finitary proofs of classical
+  files, as delivered and unchecked, 107 packets of finitary proofs of classical
   theorems (the fundamental theorem of algebra, the prime number theorem, the
   Jordan curve theorem, transcendence of e and π, …) intended for intuitionistic
   primitive recursive arithmetic.

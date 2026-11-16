@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FINER specialized proof graph",
+  "description": "Descriptive interchange schema for a theorem-specialized finite proof graph. It is not an object-language universal evaluator.",
+  "type": "object",
+  "required": ["name", "query", "capacities", "nodes", "residuals", "goal"],
+  "properties": {
+    "name": {"type": "string"},
+    "query": {
+      "type": "object",
+      "required": ["encoding"],
+      "properties": {
+        "encoding": {"type": "string"},
+        "parameters": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "capacities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "bound"],
+        "properties": {
+          "name": {"type": "string"},
+          "bound": {"type": "string"}
+        }
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "dependencies", "local_contract_status"],
+        "properties": {
+          "id": {"type": "string"},
+          "kind": {
+            "enum": ["exact", "boolean", "search", "iteration", "relational", "observation", "producer"]
+          },
+          "dependencies": {"type": "array", "items": {"type": "string"}},
+          "computation_demand": {"type": "string"},
+          "justification_demand": {"type": "string"},
+          "certificate_radix": {"type": "string"},
+          "checker": {"type": "string"},
+          "postcondition": {"type": "string"},
+          "local_contract_status": {"enum": ["derived", "residual", "external-only"]}
+        }
+      }
+    },
+    "residuals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "formula", "producer_class"],
+        "properties": {
+          "id": {"type": "string"},
+          "formula": {"type": "string"},
+          "producer_class": {"enum": ["arithmetic", "algorithmic", "input-contract", "deep", "obstructed"]}
+        }
+      }
+    },
+    "goal": {"type": "string"},
+    "canonical_endpoint": {"const": "Prf PRAAx"}
+  }
+}

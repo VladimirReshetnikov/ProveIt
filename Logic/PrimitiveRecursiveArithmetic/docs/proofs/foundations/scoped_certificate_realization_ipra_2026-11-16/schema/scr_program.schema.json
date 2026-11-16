@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/proveit/scr_program.schema.json",
+  "title": "Scoped Certificate Realization program",
+  "type": "object",
+  "required": ["name", "query", "nodes", "goal", "status"],
+  "properties": {
+    "name": {"type": "string", "minLength": 1},
+    "query": {
+      "type": "object",
+      "required": ["parameters"],
+      "properties": {
+        "parameters": {"type": "array", "items": {"type": "string"}},
+        "finite_demand": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "boundaries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "formula", "producer_status"],
+        "properties": {
+          "id": {"type": "string"},
+          "formula": {"type": "string"},
+          "producer_status": {
+            "enum": ["internal-prf", "conditional", "pointwise-schema", "absent"]
+          },
+          "notes": {"type": "string"}
+        },
+        "additionalProperties": false
+      },
+      "default": []
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "dependencies", "conclusion", "proof_status"],
+        "properties": {
+          "id": {"type": "string"},
+          "kind": {
+            "enum": [
+              "local-proof",
+              "sealed-certificate",
+              "bounded-selector",
+              "trace-reflection",
+              "strategy-reflection",
+              "stable-observer",
+              "boundary"
+            ]
+          },
+          "dependencies": {"type": "array", "items": {"type": "string"}},
+          "certificate_formula": {"type": "string"},
+          "escape_class": {"enum": ["sealed", "observed", "named"]},
+          "conclusion": {"type": "string"},
+          "proof_status": {
+            "enum": ["kernel-checked", "human-proof", "executable-evidence", "blueprint", "conditional"]
+          },
+          "lean_declaration": {"type": "string"},
+          "notes": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "goal": {"type": "string"},
+    "status": {
+      "enum": ["unconditional-prf", "conditional-prf", "human-complete", "blueprint"]
+    }
+  },
+  "additionalProperties": false
+}

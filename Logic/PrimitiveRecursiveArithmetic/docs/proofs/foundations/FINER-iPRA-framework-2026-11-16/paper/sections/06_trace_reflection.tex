@@ -1,0 +1,85 @@
+\section{Trace reflection with one quantifier-free induction}
+\label{sec:trace}
+
+Many proofs in the packets use a finite algorithm and then argue informally that each step preserves an invariant.  FINER isolates a generic object-theory theorem for this pattern.
+
+\subsection{Deterministic state recursion}
+
+Fix primitive-recursive terms
+\[
+  s_0(q,c),\qquad \mathsf{step}(t,s,q,c),
+\]
+and define the state sequence by primitive recursion:
+\begin{align*}
+ S(0,q,c)&=s_0(q,c),\\
+ S(t+1,q,c)&=\mathsf{step}(t,S(t,q,c),q,c).
+\end{align*}
+Let \(I(t,s,q,c)\) be a fixed bounded formula.  Compile it to a bit \(\chi_I\) and use the quantifier-free invariant
+\begin{equation}
+  \chi_I(t,S(t,q,c),q,c)=1.
+  \label{eq:qf-trace-invariant}
+\end{equation}
+
+\begin{theorem}[Deterministic trace reflection]
+\label{thm:trace-reflection}
+Suppose \iPRA{} derives, at arbitrary terms and under a context \(\Gamma\),
+\begin{align}
+ &\chi_I(0,s_0(q,c),q,c)=1,\label{eq:trace-base}\\
+ &\chi_I(t,s,q,c)=1\to
+   \chi_I(t+1,\mathsf{step}(t,s,q,c),q,c)=1.
+   \label{eq:trace-step}
+\end{align}
+Then it derives
+\begin{equation}
+  \chi_I(T,S(T,q,c),q,c)=1
+  \label{eq:trace-end}
+\end{equation}
+for every term \(T\).  If a terminal lemma derives \(\Phi(q,c)\) from \eqref{eq:trace-end}, then \(\Gamma\vdash\Phi(q,c)\).
+\end{theorem}
+
+\begin{proof}
+The formula in \eqref{eq:qf-trace-invariant} is an equation of primitive-recursive terms, hence quantifier-free.  Apply the checked open induction theorem \texttt{ind}.  The base case reduces by the zero equation of the state recursor to \eqref{eq:trace-base}.  In the successor case, the induction hypothesis is \(\chi_I(t,S(t,q,c),q,c)=1\).  Instantiate \eqref{eq:trace-step} with \(s=S(t,q,c)\), then rewrite its conclusion using the successor equation for \(S\).  Universal closure and instantiation give the result at arbitrary \(T\).  The terminal lemma is composed by implication elimination or simultaneous cut.
+\end{proof}
+
+The theorem is elementary, but making it a reusable object derivation removes a large amount of theorem-specific boilerplate.
+
+\subsection{Checked transcripts}
+
+A nondeterministic or externally generated run is represented by a packed transcript \(\tau\).  Let \(\mathsf{state}(\tau,t)\) decode its \(t\)-th state.  The transcript checker verifies
+\begin{align*}
+  \mathsf{state}(\tau,0)&=s_0,\\
+  R(t,\mathsf{state}(\tau,t),\mathsf{state}(\tau,t+1))&=1
+  \quad(t<T),\\
+  A(\mathsf{state}(\tau,T))&=1.
+\end{align*}
+All bounded universal content is reflected to a fold bit.  Soundness can be proved in either of two ways.
+
+\begin{enumerate}[label=(\alph*),leftmargin=2.3em]
+\item Use Boolean reflection to extract each edge equation on demand.  This is simplest when only finitely many fixed positions are used by a terminal proof.
+\item Prove by quantifier-free induction that every prefix up to \(t\) is valid.  The state consists of \(t\), the decoded current state, and an accumulated validity bit.  This is preferable for variable horizons.
+\end{enumerate}
+
+The transcript need not be trusted.  It is merely a finite input whose accepted bit implies the edge formulas in the object theory.
+
+\subsection{Normalized trace kernels}
+
+To minimize future Lean work, a node-specific trace proof should be normalized to four derivations:
+\begin{enumerate}[label=(\roman*),leftmargin=2.3em]
+\item the state recursor's zero equation;
+\item its successor equation;
+\item a base invariant derivation;
+\item a step invariant derivation under the invariant hypothesis.
+\end{enumerate}
+A generic theorem then produces the terminal invariant.  This design is preferable to a giant tactic that interprets arbitrary source code.  It keeps the trusted object proof small and lets theorem-specific normalizers remain ordinary Lean programs whose output is checked by the existing calculus.
+
+\subsection{Changing parameters}
+
+Some loops refine both a state and a demand parameter.  The correct state is their pair.  If
+\[
+  (d_{t+1},s_{t+1})=F(t,d_t,s_t),
+\]
+then pair the values and apply \cref{thm:trace-reflection}.  An invariant may mention projections, resource bounds, and an error budget, provided the final compiled formula is quantifier-free.  Simultaneous recursion from the checked pairing library is particularly useful when separate readable symbols for the components are desired.
+
+\subsection{Nested loops}
+
+Nested finite loops do not require nested logical induction if their combined machine is flattened.  Encode the program counter, local indices, and accumulators in one state; one outer clock bounds all transitions.  Alternatively, prove the inner loop once as a local contract and use it as the step lemma of the outer loop.  The second style usually yields smaller terms and more reusable lemmas.  In both cases, the logical requirement remains one quantifier-free induction per certified iterator, not induction over a formula containing bounded quantifiers.

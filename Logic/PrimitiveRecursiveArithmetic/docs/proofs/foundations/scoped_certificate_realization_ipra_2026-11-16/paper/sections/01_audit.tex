@@ -1,0 +1,136 @@
+\section{Audited setting: what is already checked}
+\label{sec:audit}
+
+\subsection{The canonical endpoint}
+
+The correct endpoint for new work in this part of \repo\ is not a semantic
+claim that a host program terminates, nor a theorem in Mathlib about ordinary
+natural numbers.  It is an inhabitant of the deeply embedded judgment
+\[
+   \Prf\;\PRAAx\;\Gamma\;\varphi,
+   \qquad\text{written}\qquad
+   \Gamma\turnstile\varphi.
+\]
+The current \code{ConciseIPRA/Lean/ConciseIPRA/PR.lean} defines primitive
+recursive symbols \(\mathsf{PR}(k)\), terms \(\PTm(n)\), and the axiom family
+\(\PRAAx\).  The latter contains the defining equations for projection,
+composition, and primitive recursion, the two successor axioms, and induction
+for quantifier-free formulas.  The logic in \code{Deduction.lean} is
+intuitionistic natural deduction with equality, scoped simultaneous
+substitution, and the structural theorems
+\[
+ \Prf.\mathsf{subst},\qquad
+ \Prf.\mathsf{weaken},\qquad
+ \Prf.\mathsf{trans},\qquad
+ \Prf.\mathsf{shift}.
+\]
+These are not mere conveniences.  They are the generic proof compiler already
+present in the repository: substitution specializes a mathematical contract,
+weakening aligns local contexts, and \code{Prf.trans} performs simultaneous
+cut.
+
+The checked native scalar core remains valuable as a compact backend.
+The checked native bi-interpretation module proves both
+\[
+\begin{aligned}
+  \NPrf\;\Delta\;A
+  &\quad\Longleftrightarrow\quad
+  \Delta.\mathsf{map}(\mathsf{toPRA})\turnstile A.\mathsf{toPRA},\\
+  \Gamma\turnstile\varphi
+  &\quad\Longleftrightarrow\quad
+  \NPrf\bigl(\Gamma.\mathsf{map}(\mathsf{ofPRA})\bigr)
+       (\mathsf{ofPRA}(\varphi)).
+\end{aligned}
+\]
+The five-rule clause calculus \(\KPrf\) additionally has checked substitution,
+cut, and export to \(\NPrf\).  SCR therefore treats \(\KPrf\) as an optional
+compressed intermediate representation, not as a competing foundation.  The
+portable public interface remains \(\Prf\;\PRAAx\).
+
+\subsection{The checked arithmetic substrate}
+
+The \code{IPRADerivations} library has advanced beyond a toy arithmetic core.
+At the audited baseline it contains object-theory derivations for semiring
+algebra, cancellation, integers as differences, order and truncated
+subtraction, pairing and projections, powers, parity, bounded sums and
+products, descent, pigeonhole, permutations, quotient and remainder, gcd and
+B\'ezout, bounded search, finite Fubini, and finite linear algebra.  The
+relevant engineering lesson is that a packet should import these results at
+arbitrary terms and under local hypotheses, not reproduce them in a private
+host model.
+
+Two checked tools are especially central here.
+
+\begin{enumerate}[label=(\roman*)]
+\item \code{Core/Basic.lean} supplies open quantifier-free induction
+\[
+  \frac{\;\turnstile \phi(0,\vec x)\qquad
+        \phi(z,\vec x)\turnstile\phi(Sz,\vec x)\;}
+       {\;\turnstile\phi(n,\vec x)\;}
+\]
+with all parameters explicit, together with instantiation of closed open-formula
+derivations at arbitrary terms.
+\item \code{Core/Search.lean} defines the least bounded zero
+\(\mu_f(N,x)\), returning the sentinel \(N\) when no zero occurs, and proves
+inside iPRA its bound, correctness, and minimality.  Thus a certificate can be
+canonically named once---and only once---an actual numerical cutoff and a
+reflected verifier are available.
+\end{enumerate}
+
+\subsection{The checked bridge and its remaining asymmetry}
+
+The Foundation--Concise bridge translates closed theorems in both directions.
+Its implementation is already more general internally than the public API
+suggests.  In the Concise-to-Foundation direction,
+\code{toFoundation\_provable\_of\_axioms} transports an arbitrary
+\(\Prf\) derivation with a finite local context under any assignment of free
+variables to Foundation terms.  The public wrappers then close the free
+variables and specialize to an empty context.  In the reverse direction,
+\code{hilbertToConcise} is uniform in the images of free variables, but
+\code{theoryToConcise} is exposed only for closed theory consequences.
+Section~\ref{sec:bridge} explains how to finish the open-sequent interface
+without changing either object theory.
+
+\subsection{The packet layer and the actual gap}
+
+The proof-packet catalogue explicitly warns that the filed archives were not
+rerun, compiled, or checked during placement.  Many packets have strong finite
+mathematics and exact reference programs, yet their Lean files are described
+as scaffolds, blueprints, or targets.  The recurring gap has two different
+causes and they must not be conflated.
+
+\begin{description}
+\item[Proof-production gap.]  The finite objects, bounds, and local lemmas are
+available, but no term of type \(\Prf\;\PRAAx\;\Gamma\;A\) has been assembled.
+This is the gap addressed by SCR.
+\item[Producer gap.]  The theorem requires data not supplied by the argument:
+a uniform height bound, a complete list of covering representatives, an
+explicit convergence modulus, a separation gap, a finite subcover, or an
+effective exceptional constant.  No generic compiler can manufacture such
+mathematics.  SCR isolates it as a producer boundary.
+\end{description}
+
+For example, the filed Faltings and Siegel packets explicitly stop at missing
+height information; the Mordell--Weil packet does not give a uniform generator
+algorithm; exact axis selection is restricted by a constructive obstruction;
+and several analytic packets state results only for fixed names equipped with
+moduli.  A trustworthy framework must make those distinctions visible in its
+final theorem type.
+
+\subsection{Prior framework work}
+
+The repository already contains several ambitious interfaces: finite
+observations, certified finitary presentations, proof-carrying observation
+graphs, finite-query normal form (FQNF), certified bounded interaction programs
+(CBIP), and native clause programs.  Their shared achievements are substantial:
+fixed finite queries, reflected checkers, whole-path certificates, relational
+witness clouds, stable observations, and explicit producer boundaries.  Their
+shared unresolved point is also clear from their status files: the generic
+object-theory compiler remains largely a human proof or Lean blueprint.
+
+SCR does not discard those ideas.  It changes the logical normal form beneath
+them.  A global least certificate is no longer the default.  The default is a
+locally scoped existential, eliminated by the checked natural-deduction rule
+that was designed for exactly this purpose.  Packing and bounded selection are
+recoverable optimizations for the cases in which static escape analysis proves
+they are needed.

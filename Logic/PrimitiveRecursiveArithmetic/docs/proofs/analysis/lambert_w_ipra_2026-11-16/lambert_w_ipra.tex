@@ -1,0 +1,2337 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.88in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{xcolor,microtype,fancyhdr,enumitem}
+\usepackage[hyphens]{url}
+\usepackage{xurl}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage[hypertexnames=false,colorlinks=true,linkcolor=blue!45!black,
+ citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,
+ columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!18}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Lambert \(W\) in intuitionistic PRA}
+\fancyhead[R]{\small constructive branches, series, and algorithms}
+\fancyfoot[C]{\thepage}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{audit}[theorem]{Audit finding}
+\newtheorem{algorithm}[theorem]{Algorithm}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\iPRA}{\mathsf{iPRA}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\Wz}{W_0}
+\newcommand{\Wm}{W_{-1}}
+\newcommand{\Lambert}{W}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\apart}{\mathrel{\#}}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\newcommand{\coeff}[2]{[X^{#1}]\,#2}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Ei}{\operatorname{Ei}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\cis}{\operatorname{cis}}
+\newcommand{\StatusF}{\textsf{F}}
+\newcommand{\StatusA}{\textsf{A}}
+\newcommand{\StatusC}{\textsf{C}}
+\newcommand{\StatusP}{\textsf{P}}
+\newcommand{\StatusD}{\textsf{D}}
+
+\title{\textbf{The Lambert \(W\) Function in Intuitionistic Primitive Recursive Arithmetic}\\
+\large Real branches, finite Lagrange inversion, calculus, inequalities, asymptotics, algorithms, and applications}
+\author{A constructive proof package prepared for Vladimir Reshetnikov}
+\date{16 November 2026}
+\hypersetup{pdftitle={The Lambert W Function in Intuitionistic Primitive Recursive Arithmetic},
+ pdfauthor={Prepared for Vladimir Reshetnikov},
+ pdfsubject={Constructive proofs and a Lean formalization roadmap for the Lambert W function}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We reconstruct a large part of the mathematical content of the Wikipedia article
+``Lambert W function'' in intuitionistic primitive recursive arithmetic
+(\(\iPRA\)).  The phrase ``in \(\iPRA\)'' is made literal: real and complex
+numbers are fixed primitive-recursive rapidly convergent rational names;
+strict inequalities and division carry positive separation witnesses; analytic
+functions are evaluation algorithms with explicit primitive-recursive moduli;
+and every infinite assertion is translated into a first-order statement about
+finite approximations.
+
+The real branches are constructed by certified dyadic search for the inverse of
+\(F(w)=w e^w\).  We prove their domains, ranges, uniqueness, monotonicity,
+curvature, defining identities, special values, derivative and higher-derivative
+formulae, elementary antiderivatives, and several definite integrals.  The
+finite Lagrange--Buermann theorem from the companion ProveIt development gives
+the exact Maclaurin coefficients, all integral powers, the analytic powers of
+\(W_0(x)/x\), the radius \(1/e\), and the rooted-tree generating function.
+Finite reversion at the critical point gives the square-root expansion.
+Formal reversion of \(w+\log w=\log x\), followed by an explicit residual
+estimate, gives every finite order of the logarithmic asymptotic expansion.
+
+We give short constructive proofs of the Hoorfar--Hassani bounds, the sharper
+Iacono--Boyd bounds, the square/cube-root bounds on \([-1/e,0]\), and both
+families of bounds for \(W_{-1}\).  Newton, Halley, logarithmic Newton, bisection,
+and interval-Newton evaluation are reduced to bounded rational algorithms with
+certified error bounds.  Algebraic substitutions prove the standard formulas
+for intersections of lines and exponentials, the inverse of \(x^x\), the
+Bernoulli--Todd equation, orthogonal trajectories, and the general equation
+\(e^{-cx}=a_0(x-r)\).
+
+The archive contains this paper, a theorem ledger, exact symbolic and numerical
+checks, and two detailed Lean blueprints tied to the current ProveIt
+\code{ConciseIPRA} interfaces.  The Lean files are implementation outlines with
+explicit \code{sorry} obligations, not a completed kernel-checked
+formalization.  Claims depending on a global complex branch convention,
+Lindemann--Weierstrass, specialized integral representations, or an external
+physical model are separated from the native \(\iPRA\) results.
+\end{abstract}
+
+\newpage
+\begingroup\small\tableofcontents\endgroup
+\newpage
+
+\section{Scope, status labels, and the main constructive theorem}\label{sec:scope}
+
+The reference page mixes finite algebra, real inverse-function facts, complex
+analytic continuation, inequalities, asymptotics, numerical recipes,
+combinatorics, and statements about external scientific models.  These do not
+all have the same logical status.  We use the following labels throughout.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{>{\bfseries}c X}
+\toprule
+\StatusF & A finite identity or bounded algorithm, uniform in its natural-number
+parameters, directly formalizable by quantifier-free induction in \(\iPRA\).\\
+\StatusA & A theorem about fixed primitive-recursive real or complex names,
+with explicit bounds and convergence moduli.  Substitution of the names gives a
+first-order \(\iPRA\) sentence.\\
+\StatusC & The reduction is constructive and arithmetized, but the conclusion
+uses an additional named theorem not developed here (for example an effective
+Lindemann--Weierstrass theorem).\\
+\StatusP & A source-specific claim is reconstructed only partially or checked
+computationally; the missing uniform certificate is stated explicitly.\\
+\StatusD & Not claimed: a bibliographic, software, or physical-model statement,
+or a specialized representation whose analytic certificate is not reconstructed
+in this archive.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{theorem}[Constructive Lambert atlas]\label{thm:atlas}
+For every fixed collection of primitive-recursive input names and every positive
+separation certificate required by a denominator or branch condition, \(\iPRA\)
+proves the translations of the following statements.
+\begin{enumerate}
+\item The complete real-branch classification for \(w e^w=x\), including
+constructive names for \(W_0\) and \(W_{-1}\), their domains, ranges,
+monotonicity, continuity, and inverse identities.
+\item The differential equation, the first and higher derivative formulae,
+curvature, elementary antiderivatives, and the displayed definite integrals
+whose auxiliary gamma or exponential-integral names are supplied with their
+standard effective integral definitions.
+\item The Maclaurin series, all finite coefficient identities for powers, the
+exact radius \(1/e\), boundary convergence, the branch-point Puiseux series,
+and every fixed finite order of the logarithmic asymptotic expansion.
+\item The bounds in Sections~\ref{sec:bounds-principal} and
+\ref{sec:bounds-secondary}, the algebraic identities and special values in
+Sections~\ref{sec:identities} and \ref{sec:special}, and the equation-solving
+and combinatorial applications in Sections~\ref{sec:equations} and
+\ref{sec:trees}.
+\item Certified bisection and interval-Newton evaluation on both real branches,
+and Newton, Halley, and logarithmic Newton on any rational interval carrying a
+positive lower bound for the relevant derivative.
+\end{enumerate}
+All uniformity is in numerical codes and bounded folds; there is no
+quantification over an open-ended class of algorithms.
+\end{theorem}
+
+\begin{proof}[Proof architecture]
+Sections~\ref{sec:meaning}--\ref{sec:realbranches} define the number codes,
+construct \(e^x\) and \(\log x\), and invert the monotone pieces of
+\(w\mapsto we^w\) by a primitive-recursive interval search.  The identities and
+calculus then use finite algebra and explicit limit moduli.  The power-series
+claims are consequences of a finite Lagrange--Buermann identity in
+\(\Q[X]/(X^{N+1})\); the analytic claims add explicit majorants.  Each
+inequality is reduced to monotonicity of \(F\) and one of a small set of
+rationally certified logarithm inequalities.  The numerical algorithms are
+bounded recursions whose invariants are interval inclusions.  Section
+\ref{sec:arithmetization} spells out the object-theory translation.
+\end{proof}
+
+\subsection{The central audit boundary}
+
+Three qualifications prevent overstatement.
+\begin{enumerate}
+\item A complex branch \(W_k\) is represented only after fixing a rational
+base point, a root enclosure there, and a polygonal continuation path separated
+from the critical value and the chosen cut.  This is enough for local branch
+identities but does not silently import the classical Riemann-surface picture.
+\item The page's formula \(W_0(-\pi/2)=i\pi/2\) lies on the conventional
+principal cut.  Both \(i\pi/2\) and \(-i\pi/2\) solve \(we^w=-\pi/2\).  The
+printed equality is therefore a boundary-value convention, not an
+unqualified single-valued identity.
+\item A displayed formula copied from a physical model is proved here only as
+an algebraic solution of the displayed equation.  The claim that the equation
+correctly models a fluid, circuit, epidemic, or quantum system requires the
+external scientific derivation and is not an arithmetic consequence of the
+formula.
+\end{enumerate}
+
+\section{What ``in \texorpdfstring{\(\iPRA\)}{iPRA}'' means}\label{sec:meaning}
+
+\subsection{The arithmetic base}
+
+The current ProveIt \code{ConciseIPRA} development supplies the syntax of
+primitive-recursive functions \code{PR}, arithmetic terms \code{PTm}, the
+axiom predicate \code{PRAAx}, intuitionistic derivability \code{Prf}, and the
+quantifier-free induction constructor \code{PRA.qfInd}.  Its native
+bi-interpretation exposes \code{NFm.ofPRA} and \code{pra_iff_native}.  The
+object theory has only natural numbers.  Signed integers, rationals, finite
+vectors, and analytic names below are codes.
+
+A rational is a signed numerator and a positive denominator, reduced only when
+convenient.  Equality and order are decided by cross multiplication.  A
+Gaussian rational is a pair.  Finite lists are coded by a standard pairing
+function; every fold has a displayed numerical bound.  Division is made total
+by returning zero on a zero denominator, while every theorem that uses a
+quotient also proves the denominator guard.
+
+\subsection{Rapid dyadic names}
+
+\begin{definition}[Regular rapid name]\label{def:rapid}
+A real name is a fixed primitive-recursive dyadic sequence
+\(p\mapsto x[p]\) with an integer bound \(B_x\ge1\) and a derivation of
+\[
+ \abs{x[p+1]-x[p]}\le 2^{-p-3},\qquad \abs{x[p]}\le B_x.
+ \tag{2.1}
+\]
+A complex name is a pair of real names.  We write \(x=_\R y\) when
+\[
+ \forall p\;\abs{x[p+4]-y[p+4]}\le2^{-p}.
+ \tag{2.2}
+\]
+An apartness witness \(x\apart0\) is finite data certifying that a rational
+interval containing all later approximants lies wholly above \(2^{-m}\) or
+wholly below \(-2^{-m}\), for some \(m\).
+\end{definition}
+
+Finite summation of (2.1) gives, for \(q\ge p\),
+\[
+ \abs{x[q]-x[p]}<2^{-p-2}.
+ \tag{2.3}
+\]
+Thus the interval \(I_x(p)=[x[p]-2^{-p-2},x[p]+2^{-p-2}]\) contains every
+later approximation.  Addition, multiplication on bounded names, reciprocal
+from apartness, nonnegative square root, and rational powers are computed by
+outward interval arithmetic.  Their regularity proofs are finite estimates.
+For example,
+\[
+ \abs{xy-x'y'}\le \abs{x}\abs{y-y'}+\abs{y'}\abs{x-x'},
+ \qquad
+ \abs{x^{-1}-y^{-1}}\le \frac{2\abs{x-y}}{d^2}
+ \tag{2.4}
+\]
+when \(d\le\abs{x},\abs{y}\).
+
+\subsection{Exponential and logarithm with explicit tails}
+
+For \(\abs z\le B\), put
+\[
+ E_N(z)=\sum_{j<N}\frac{z^j}{j!},\qquad
+ N(B,p)=2B^2+2B+p+4.
+\]
+For \(j\ge2B\), successive majorant terms have ratio at most \(1/2\), and
+\[
+ \sum_{j\ge N(B,p)}\frac{B^j}{j!}<2^{-p-3}.
+ \tag{2.5}
+\]
+The proof replaces the infinite tail by a finite geometric majorant; all
+factorials, powers, and sums are primitive recursive.  Outward evaluation of
+\(E_N\) at a rapid name defines \(\exp z\).  The finite binomial identity
+\[
+ \sum_{r+s=k}\frac{x^r y^s}{r!s!}=\frac{(x+y)^k}{k!}
+\]
+together with (2.5) proves \(e^{x+y}=e^x e^y\), positivity on real names, and
+\(e^{-x}=1/e^x\).
+
+For a positive name with an apartness lower bound, choose an integer \(k\) by
+bounded comparison so that \(y=2^{-k}x\in[1,2]\).  With
+\(u=(y-1)/(y+1)\), \(0\le u\le1/3\), define
+\[
+ \log y=2\sum_{j=0}^{M-1}\frac{u^{2j+1}}{2j+1}+R_M,
+ \qquad
+ 0\le R_M\le\frac{2u^{2M+1}}{(2M+1)(1-u^2)}.
+ \tag{2.6}
+\]
+Then \(\log x=k\log2+\log y\).  The tail bound supplies a primitive-recursive
+modulus, and finite Cauchy products prove \(\log(ab)=\log a+\log b\).  The
+inequalities used later,
+\[
+ \frac{t}{1+t}\le\log(1+t)\le t\quad(t>-1,\ t\ge0\text{ for the right bound}),
+ \tag{2.7}
+\]
+and
+\[
+ \log(1-r)\le-r,
+ \qquad
+ \log(1-r)\ge-\frac{r}{1-r}\quad(0\le r<1),
+ \tag{2.8}
+\]
+follow by differentiating finite Taylor polynomials and bounding their tails,
+or directly by rational Riemann sums for \(1/(1+t)\).
+
+\subsection{Derivatives and integrals as arithmetic statements}
+
+A derivative assertion is an explicit modulus statement for rational difference
+quotients.  For analytic names it is obtained by termwise differentiation plus
+a majorant.  On a compact rational interval, an integral is the regular name
+of midpoint Riemann sums; a supplied modulus of continuity determines the mesh.
+An improper integral additionally carries two primitive-recursive tail
+moduli.  Consequently substitution and the fundamental theorem are families of
+finite error inequalities, not appeals to a completed continuum.
+
+For later use, for positive rational \(a\) define
+\[
+ \Gamma(a)=\int_0^\infty t^{a-1}e^{-t}\,dt.
+ \tag{2.9}
+\]
+The contribution of \([0,\delta]\) is at most \(\delta^a/a\); after a rational
+cutoff, repeated integration by parts and (2.5) bound the tail.  This gives a
+rapid name.  The finite integration-by-parts proof yields
+\(\Gamma(a+1)=a\Gamma(a)\).  The usual constructive Gaussian-integral
+argument supplies \(\Gamma(1/2)=\sqrt\pi\) after \(\pi\) is defined by the
+located zero of cosine; the companion trigonometric packet contains that
+construction.
+
+\section{The map \texorpdfstring{\(F(w)=w e^w\)}{F(w)=w exp(w)} and the two real branches}\label{sec:realbranches}
+
+Put \(F(w)=we^w\).  The finite product rule and the exponential derivative give
+\[
+ F'(w)=e^w(1+w),\qquad F''(w)=e^w(2+w).
+ \tag{3.1}
+\]
+These are statements about difference quotients with explicit exponential
+remainders.  Since \(e^w>0\), the sign of \(F'\) is the sign of \(1+w\).
+
+\begin{lemma}[Constructive monotonicity and minimum]\label{lem:Fmono}
+The function \(F\) is strictly decreasing on \(( -\infty,-1]\), strictly
+increasing on \([-1,\infty)\), and has the unique global minimum
+\[
+ F(-1)=-e^{-1}.
+\]
+Moreover \(F(w)\to0^-\) as \(w\to-\infty\) and \(F(w)\to+\infty\) as
+\(w\to+\infty\), with primitive-recursive rates.
+\end{lemma}
+
+\begin{proof}
+For rational \(u<v\) in either interval,
+\[
+ F(v)-F(u)=\int_u^v e^t(1+t)\,dt.
+\]
+The integrand has the required sign; if the endpoints are positively separated
+and the interval is not the singleton \(-1\), a rational subinterval has a
+positive lower bound for its absolute value, proving strictness.  For
+\(M\ge1\), \(0<M e^{-M}<2^{-p}\) once, for example,
+\(M=4p+16\); use \(e>2\), proved from the first three terms of its series.
+For \(w\ge0\), \(F(w)\ge w\).  These are explicit rates.
+\end{proof}
+
+Near the minimum a quadratic modulus replaces the missing inverse Lipschitz
+constant.  If \(w=-1+s\), \(0\le s\le1\), then
+\[
+ eF(-1+s)+1=1+(s-1)e^s=\int_0^s t e^t\,dt,
+\]
+so
+\[
+ \frac{s^2}{2}\le eF(-1+s)+1\le\frac{e s^2}{2}.
+ \tag{3.2}
+\]
+This elementary estimate is the key to a uniform inverse construction at the
+branch point.
+
+\begin{algorithm}[Certified inverse search]\label{alg:inverse-search}
+For the principal branch and requested precision \(p\):
+\begin{enumerate}
+\item obtain a rational bracket \([-1,U]\), taking \(U=0\) for negative input
+and \(U=B_x+1\) for nonnegative input;
+\item subdivide the bracket into dyadic cells of width at most \(2^{-p-4}\);
+\item evaluate \(F\) and the input by outward intervals at precision
+\(2p+O(B_x+p)\), and retain the unique cell in which the monotone crossing can
+occur; if two neighboring value intervals overlap, retain their union;
+\item return the midpoint, with the retained cell as its error certificate.
+\end{enumerate}
+For the secondary branch, an input apartness witness
+\(x\le-2^{-m}<0\) gives the left bracket \(-M\), with
+\(M=4m+16\), since \(-M e^{-M}>-2^{-m}\).  Search the decreasing interval
+\([-M,-1]\).
+\end{algorithm}
+
+All loops in Algorithm~\ref{alg:inverse-search} are bounded.  Estimate (3.2)
+ensures that an unresolved comparison near \(-1/e\) still confines the inverse
+to the requested width.  Thus equality at a grid point does not require an
+undecidable real-number equality test.
+
+\begin{theorem}[Real branches, domains, and ranges]\label{thm:branches}
+The real solutions of \(we^w=x\) are exactly as follows.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If \(x<-1/e\), there is no real solution.
+\item If \(x=-1/e\), the unique solution is \(w=-1\).
+\item If \(-1/e<x<0\), there are exactly two solutions:
+\[
+ \Wz(x)\in(-1,0),\qquad \Wm(x)\in(-\infty,-1).
+\]
+\item If \(x\ge0\), the unique solution is \(\Wz(x)\in[0,\infty)\).
+\end{enumerate}
+The map \(\Wz:[-1/e,\infty)\to[-1,\infty)\) is a strictly increasing
+bijection.  The map \(\Wm:[-1/e,0)\to(-\infty,-1]\) is a strictly decreasing
+bijection.  Both are primitive-recursively named operations on inputs carrying
+the displayed domain certificates.
+\end{theorem}
+
+\begin{proof}
+Lemma~\ref{lem:Fmono} gives injectivity and the endpoint values on each monotone
+piece.  Algorithm~\ref{alg:inverse-search} supplies an inverse name and, by
+continuity, its graph equation.  Any other solution in the same range equals it
+by strict monotonicity.  The two ranges overlap only on \([-1/e,0)\), producing
+exactly the stated multiplicities.
+\end{proof}
+
+\begin{corollary}[Continuity moduli]\label{cor:Wmoduli}
+On every rational compact subinterval separated from \(-1/e\), each branch has
+an explicit Lipschitz modulus obtained from a positive lower bound for
+\(\abs{F'}\).  In an explicit rational neighbourhood of the common endpoint,
+\[
+ \abs{\Wz(x)+1}\le\sqrt{2e\abs{x+1/e}},
+\]
+and the analogous local estimate holds for \(\Wm\).  Thus both endpoint
+extensions have a primitive-recursive square-root modulus.  The neighbourhood
+restriction is essential for the secondary branch, since \(\Wm(x)\to-\infty\)
+as \(x\uparrow0\).
+\end{corollary}
+
+\section{Identities and branch discipline}\label{sec:identities}
+
+Every identity in this section is proved by substituting into \(we^w=x\) and
+then invoking uniqueness on the displayed branch range.  This branch check is
+not optional.
+
+\begin{theorem}[Inverse identities]\label{thm:inverse-identities}
+For real \(u\),
+\[
+ \Wz(ue^u)=u\quad(u\ge-1),
+ \qquad
+ \Wm(ue^u)=u\quad(u\le-1).
+ \tag{4.1}
+\]
+For a branch value \(w=W(x)\), with the necessary nonzero guards,
+\[
+ e^w=\frac{x}{w},\qquad e^{-w}=\frac{w}{x},\qquad
+ e^{nw}=\left(\frac{x}{w}\right)^n,
+ \tag{4.2}
+\]
+and, for \(x>0\),
+\[
+ \log \Wz(x)=\log x-\Wz(x).
+ \tag{4.3}
+\]
+\end{theorem}
+
+\begin{proof}
+Equation (4.1) follows because \(u\) lies in the selected inverse range.
+Equation (4.2) is cancellation in \(we^w=x\); the guards produce the required
+apartness witnesses.  Taking the constructive logarithm of the positive
+identity \(we^w=x\) gives (4.3).
+\end{proof}
+
+\begin{theorem}[Logarithmic substitution identities]\label{thm:log-subst}
+For positive \(x\),
+\begin{align}
+ \Wz(x\log x)&=\log x &&(x\ge1/e),\tag{4.4}\\
+ \Wm(x\log x)&=\log x &&(0<x\le1/e),\tag{4.5}\\
+ \Wz\!\left(-\frac{\log x}{x}\right)&=-\log x &&(0<x\le e),\tag{4.6}\\
+ \Wm\!\left(-\frac{\log x}{x}\right)&=-\log x &&(x\ge e).\tag{4.7}
+\end{align}
+At \(x=e\), both displayed branch candidates meet at \(-1\).
+\end{theorem}
+
+\begin{proof}
+Set \(u=\log x\).  Then \(ue^u=x\log x\).  The condition \(x\ge1/e\) is
+exactly \(u\ge-1\), while \(0<x\le1/e\) is \(u\le-1\).  For the second pair,
+put \(v=-\log x\); then \(ve^v=-\log x/x\), and the inequalities select the
+proper range in (4.1).
+\end{proof}
+
+\begin{theorem}[Multiplication and addition identities]\label{thm:compound-identities}
+For \(n\in\N_{>0}\) and \(x>0\),
+\[
+ \Wz\!\left(\frac{n x^n}{\Wz(x)^{n-1}}\right)=n\Wz(x).
+ \tag{4.8}
+\]
+For \(x,y>0\),
+\[
+ \Wz(x)+\Wz(y)
+ =\Wz\!\left(xy\left(\frac1{\Wz(x)}+\frac1{\Wz(y)}\right)\right).
+ \tag{4.9}
+\]
+More general signed or complex versions hold after the branch is supplied as
+part of the data.
+\end{theorem}
+
+\begin{proof}
+Let \(a=\Wz(x)>0\).  Then the argument in (4.8) is
+\(n(ae^a)^n/a^{n-1}=na e^{na}\), so uniqueness on the positive branch gives
+the result.  For (4.9), writing \(a=\Wz(x)\), \(b=\Wz(y)\), the argument is
+\[
+ (ae^a)(be^b)(a^{-1}+b^{-1})=(a+b)e^{a+b}.
+\]
+Since \(a+b>0\), the principal branch returns \(a+b\).
+\end{proof}
+
+\begin{proposition}[Ratio parametrization of the two roots]\label{prop:ratio}
+Let \(-1/e<c<0\), put \(a=\Wz(c)\), \(b=\Wm(c)\), and
+\(t=b/a>1\).  Then
+\[
+ a=\frac{\log t}{1-t},\qquad
+ b=\frac{t\log t}{1-t}.
+ \tag{4.10}
+\]
+\end{proposition}
+
+\begin{proof}
+The equality \(ae^a=be^b\) and \(b=ta\) give
+\(e^{(1-t)a}=t\).  Taking logarithms yields
+\((1-t)a=\log t\), and multiplying by \(t\) gives the second formula.  Every
+quantity has the displayed positive or negative separation, so the divisions
+are constructive.
+\end{proof}
+
+\section{Special values and a branch-cut correction}\label{sec:special}
+
+\begin{theorem}[Real special values]\label{thm:special-values}
+The following identities hold with the stated branch choices:
+\begin{align*}
+ \Wz(-1/e)&=-1,& \Wz(0)&=0,& \Wz(e)&=1,\\
+ \Wz(2\log2)&=\log2,&
+ \Wz(e^{1+e})&=e,&
+ \Wz(\sqrt e/2)&=1/2,\\
+ \Wz(e^{1/n}/n)&=1/n\quad(n\ge1),&&
+ \Wm(-\log2/2)&=-\log4.
+\end{align*}
+For every positive \(x\),
+\[
+ \Wz(x^{x+1}\log x)=x\log x.
+ \tag{5.1}
+\]
+\end{theorem}
+
+\begin{proof}
+Each right-hand side \(u\) is substituted into \(ue^u\).  For example,
+\((\log2)e^{\log2}=2\log2\),
+\((1/n)e^{1/n}=e^{1/n}/n\), and
+\((-\log4)e^{-\log4}=-(2\log2)/4=-\log2/2\).  The range condition selects the
+branch.  For (5.1), set \(u=x\log x\); then
+\(ue^u=x\log x\cdot x^x=x^{x+1}\log x\).  The elementary minimum
+\(x\log x\ge-1/e>-1\) puts \(u\) in the principal range.
+\end{proof}
+
+\begin{definition}[Omega constant]
+The rapid name \(\Omega\) is \(\Wz(1)\).  It is produced by the principal
+inverse search on \([0,1]\).
+\end{definition}
+
+\begin{corollary}[Omega identities]\label{cor:omega}
+\[
+ \Omega e^\Omega=1,
+ \qquad \Omega=e^{-\Omega},
+ \qquad \Omega=-\log\Omega.
+ \tag{5.2}
+\]
+A rational interval certificate in the accompanying verifier gives
+\(0.5671432904097838<\Omega<0.5671432904097840\).
+\end{corollary}
+
+\begin{audit}[The value at \(-\pi/2\)]\label{audit:pi-cut}
+Direct multiplication proves
+\[
+ \left(\frac{i\pi}{2}\right)e^{i\pi/2}=-\frac\pi2,
+ \qquad
+ \left(-\frac{i\pi}{2}\right)e^{-i\pi/2}=-\frac\pi2.
+\]
+Thus the two conjugate numbers are both Lambert roots.  Since
+\(-\pi/2<-1/e\) lies on the standard principal cut, the notation
+\(W_0(-\pi/2)\) is convention dependent there.  The upper boundary value is
+\(i\pi/2\) and the lower boundary value is \(-i\pi/2\); the unqualified
+single-valued equality on the reference page suppresses this choice.
+\end{audit}
+
+\section{A limited constructive complex-branch atlas}\label{sec:complex}
+
+A global complex branch is not a primitive object of first-order arithmetic.
+We instead fix a rational polygonal path \(\gamma\), a Gaussian-rational disk
+containing a chosen root at its initial point, and a rational separation
+\(\delta>0\) from \(w=-1\) along the lifted path.  Quantitative inverse
+estimates subdivide \(\gamma\) into a primitive-recursively bounded number of
+steps.  On each step, interval Newton produces the unique continued root.  This
+constructs a named branch along that path and proves the defining equation and
+derivative formula there.
+
+\begin{proposition}[Preimage of the real axis]\label{prop:quadratrix}
+For \(w=u+iv\),
+\[
+ \operatorname{Im}(we^w)=e^u(u\sin v+v\cos v).
+\]
+Away from \(\sin v=0\), the condition \(we^w\in\R\) is therefore
+\[
+ u=-v\cot v,
+ \tag{5.3}
+\]
+and the corresponding real value is
+\[
+ we^w=-v\csc v\,e^{-v\cot v}.
+ \tag{5.4}
+\]
+These are exact identities for constructive sine, cosine, and exponential
+names whenever the displayed denominator has an apartness witness.
+\end{proposition}
+
+\begin{proof}
+Expand
+\((u+iv)e^u(\cos v+i\sin v)\), equate the imaginary part to zero, and
+substitute (5.3) in the real part.  The calculation is finite Gaussian-rational
+algebra after replacing the functions by their names.
+\end{proof}
+
+\begin{proposition}[Critical value]\label{prop:critical}
+The only finite critical point of \(F(w)=we^w\) is \(w=-1\), and its critical
+value is \(-1/e\).  Hence every named local branch separated from that value is
+locally analytic, while the two real branches meet there with the square-root
+modulus (3.2).
+\end{proposition}
+
+\begin{remark}[Conditional transcendence statement]
+For a nonzero algebraic \(z\), if a value \(w\) of \(W(z)\) were nonzero and
+algebraic, then \(e^w=z/w\) would be algebraic, contradicting
+Lindemann--Weierstrass.  The reduction is elementary and formalizable in
+\(\iPRA\).  A proof that the value is transcendental is labelled \StatusC here,
+because this archive does not arithmetize an effective
+Lindemann--Weierstrass theorem.
+\end{remark}
+
+\section{Differential calculus}\label{sec:calculus}
+
+On a named branch separated from \(-1/e\), differentiate
+\(W(z)e^{W(z)}=z\).  The finite product and chain rules give
+\[
+ e^W(1+W)W'=1.
+ \]
+Because \(z=We^W\), this has several equivalent forms.
+
+\begin{theorem}[Differential equation and first derivative]\label{thm:derivative}
+For every named branch at a point separated from the critical value,
+\[
+ z(1+W)W'=W,
+ \tag{6.1}
+\]
+\[
+ W'(z)=\frac{W(z)}{z(1+W(z))}
+       =\frac1{z+e^{W(z)}}.
+ \tag{6.2}
+\]
+At the removable point on the principal branch,
+\[
+ \Wz'(0)=1.
+ \tag{6.3}
+\]
+\end{theorem}
+
+\begin{proof}
+The first two identities are the differentiated defining equation and
+cancellation with explicit denominator guards.  At zero, write the defining
+equation as \(W/z=e^{-W}\) for \(z\ne0\).  The branch continuity gives
+\(W(z)\to0\), hence \(W(z)/z\to1\) with the exponential modulus.  This is the
+difference quotient at zero.
+\end{proof}
+
+\begin{theorem}[All higher derivatives]\label{thm:higher-derivatives}
+Define integer polynomials by
+\[
+ P_1(w)=1,
+ \qquad
+ P_{n+1}(w)=(1+w)P_n'(w)+(1-3n-nw)P_n(w).
+ \tag{6.4}
+\]
+Then, for \(n\ge1\),
+\[
+ W^{(n)}(z)=
+ \frac{P_n(W(z))}
+ {(z+e^{W(z)})^n(1+W(z))^{n-1}}.
+ \tag{6.5}
+\]
+The coefficient vector of \(P_n\) is a primitive-recursive function of \(n\).
+Consequently the claim that a root \(w\) of \(P_n\) yields a root
+\(we^w\) of \(W^{(n)}\) is a finite algebraic theorem whenever the denominator
+is apart from zero.
+\end{theorem}
+
+\begin{proof}
+Using \(z=we^w\), the denominator in (6.5) is
+\(e^{nw}(1+w)^{2n-1}\).  Differentiation with respect to \(z\) is the operator
+\[
+ \frac{d}{dz}=\frac{e^{-w}}{1+w}\frac{d}{dw}.
+\]
+Applying it to
+\(P_n(w)e^{-nw}(1+w)^{-(2n-1)}\) and collecting the numerator gives exactly
+(6.4).  This is an induction on \(n\); polynomial differentiation and
+multiplication are bounded vector operations.
+\end{proof}
+
+The first polynomials are
+\[
+ P_1=1,\qquad P_2=-(w+2),\qquad
+ P_3=2w^2+8w+9,
+\]
+\[
+ P_4=-(6w^3+36w^2+79w+64).
+\]
+The accompanying symbolic checker verifies the recurrence and (6.5) through a
+user-selectable finite order.
+
+\begin{corollary}[Second derivative and curvature]\label{cor:curvature}
+For \(w=W(z)\),
+\[
+ W''(z)=-\frac{e^{-2w}(w+2)}{(w+1)^3}
+       =-\frac{w^2(w+2)}{z^2(w+1)^3}.
+ \tag{6.6}
+\]
+Hence \(W_0\) is strictly concave on \((-1/e,\infty)\).  On the secondary
+branch, it is convex when \(-2<W_{-1}(x)<-1\), that is
+\(-1/e<x<-2/e^2\), and concave when
+\(W_{-1}(x)<-2\), that is \(-2/e^2<x<0\).  Its unique inflection point is
+\((x,w)=(-2/e^2,-2)\).
+\end{corollary}
+
+\begin{proof}
+Formula (6.6) is (6.5) for \(n=2\).  The sign calculation uses only the
+ranges in Theorem~\ref{thm:branches}.  On the principal range, \(w+1>0\) and
+\(w+2>0\), so the expression is negative.  On the secondary range the cubic
+denominator is negative, so the sign equals that of \(w+2\).
+\end{proof}
+
+\section{Antiderivatives and definite integrals}\label{sec:integrals}
+
+The substitution
+\[
+ w=W(x),\qquad x=we^w,
+ \qquad dx=e^w(1+w)\,dw
+ \tag{7.1}
+\]
+is constructive on every compact interval lying in one monotone branch.  It is
+a theorem about Riemann-sum names with an explicit change-of-variables modulus.
+
+\begin{theorem}[Elementary antiderivatives]\label{thm:antiderivatives}
+On a fixed differentiable branch,
+\begin{align}
+ \int W(x)\,dx
+ &=xW(x)-x+e^{W(x)}+C,
+ \tag{7.2}\\
+ \int \frac{W(x)}x\,dx
+ &=\frac{W(x)^2}{2}+W(x)+C,
+ \tag{7.3}\\
+ \int W(Ae^{Bx})\,dx
+ &=\frac{W(Ae^{Bx})^2}{2B}+\frac{W(Ae^{Bx})}{B}+C
+ \quad(B\apart0),
+ \tag{7.4}\\
+ \int \frac{W(x)}{x^2}\,dx
+ &=\Ei(-W(x))-e^{-W(x)}+C.
+ \tag{7.5}
+\end{align}
+Here \(\Ei\) is the named antiderivative characterized on a separated interval
+by \(\Ei'(t)=e^t/t\).
+\end{theorem}
+
+\begin{proof}
+For (7.2), (7.1) changes the integrand to
+\(w e^w(1+w)\); a direct derivative shows that
+\(e^w(w^2-w+1)=xW-x+e^W\) is an antiderivative.  For (7.3),
+\(W(x)dx/x=(1+w)dw\).  In (7.4), put \(w=W(Ae^{Bx})\).
+Differentiating \(we^w=Ae^{Bx}\) gives
+\(w'=Bw/(1+w)\), and the derivative of
+\((w^2/2+w)/B\) is therefore \(w\).  Finally,
+\[
+ \frac{W(x)}{x^2}dx=e^{-w}\left(1+\frac1w\right)dw,
+\]
+and the derivative of \(\Ei(-w)-e^{-w}\) is the displayed integrand.  Each
+calculation can alternatively be checked by differentiating the proposed
+right-hand side, avoiding any global substitution theorem.
+\end{proof}
+
+\begin{corollary}[A basic definite integral]\label{cor:0e}
+\[
+ \int_0^e \Wz(x)\,dx=e-1.
+ \tag{7.6}
+\]
+\end{corollary}
+
+\begin{proof}
+The antiderivative in (7.2) has value \(e\) at \(x=e\), since \(W_0(e)=1\),
+and limiting value \(1\) at \(x=0\), since \(W_0(0)=0\).
+\end{proof}
+
+\begin{theorem}[Gamma family of improper integrals]\label{thm:gamma-integrals}
+For every fixed integer \(N>1\),
+\[
+ \int_0^\infty \Wz(x^{-N})\,dx
+ =N^{1-1/N}\Gamma(1-1/N).
+ \tag{7.7}
+\]
+In particular,
+\[
+ \int_0^\infty \Wz(x^{-2})\,dx=\sqrt{2\pi}.
+ \tag{7.8}
+\]
+All integrals in (7.7) have primitive-recursive tail moduli.
+\end{theorem}
+
+\begin{proof}
+Put \(u=W_0(x^{-N})\).  Then
+\(x=u^{-1/N}e^{-u/N}\), and reversing the endpoints gives
+\[
+ \int_0^\infty W_0(x^{-N})dx
+ =\frac1N\int_0^\infty
+ u^{-1/N}(1+u)e^{-u/N}\,du.
+\]
+Scale \(u=Nv\) and apply
+\(\Gamma(a+1)=a\Gamma(a)\):
+\begin{align*}
+ I_N
+ &=N^{-1/N}\Gamma(1-1/N)
+   +N^{1-1/N}\Gamma(2-1/N)\\
+ &=N^{1-1/N}\Gamma(1-1/N).
+\end{align*}
+The endpoint majorants are powers at zero and exponential tails at infinity,
+so the substitution is justified by explicit finite cutoffs.  For \(N=2\),
+use \(\Gamma(1/2)=\sqrt\pi\).
+\end{proof}
+
+\begin{corollary}[Two further displayed definite integrals]\label{cor:more-integrals}
+\[
+ \int_0^\infty\frac{\Wz(x)}{x\sqrt{x}}\,dx=2\sqrt{2\pi},
+ \tag{7.9}
+\]
+\[
+ \int_0^\pi \Wz(2\cot^2 t)\sec^2t\,dt=4\sqrt\pi.
+ \tag{7.10}
+\]
+\end{corollary}
+
+\begin{proof}
+For (7.9), put \(u=W_0(x)\).  Then
+\[
+ \frac{W_0(x)}{x\sqrt{x}}dx
+ =(u^{1/2}+u^{-1/2})e^{-u/2}\,du.
+\]
+Scaling by \(u=2v\) gives
+\(2\sqrt2\Gamma(3/2)+\sqrt2\Gamma(1/2)=2\sqrt{2\pi}\).
+For (7.10), split at \(\pi/2\), use \(s=\tan t\) on each half, and exploit
+evenness:
+\[
+ 2\int_0^\infty W_0(2/s^2)ds
+ =2\sqrt2\int_0^\infty W_0(x^{-2})dx=4\sqrt\pi.
+\]
+Every singular endpoint is controlled by the same majorants used in
+Theorem~\ref{thm:gamma-integrals}.
+\end{proof}
+
+\section{Finite Lagrange inversion and the Maclaurin series}\label{sec:series}
+
+The companion ProveIt package develops Lagrange inversion entirely in finite
+truncated rings.  We restate the exact portion needed here so that the Lambert
+argument is self-contained.
+
+For a commutative ring \(R\) and \(N\in\N\), let
+\(T_N(R)=R[X]/(X^{N+1})\).  Its elements are vectors
+\((a_0,\ldots,a_N)\); Cauchy multiplication, differentiation, powers, and
+composition by a series with zero constant term are bounded sums.
+
+\begin{lemma}[Finite fixed point]\label{lem:finite-fix}
+For \(\Phi\in T_N(R)\), define
+\[
+ G_0=0,\qquad G_{j+1}=X\Phi(G_j).
+\]
+Then \(G_{N+1}\) is the unique \(G\in XT_N(R)\) satisfying
+\(G=X\Phi(G)\).
+\end{lemma}
+
+\begin{proof}
+If two series agree below degree \(m\), their images under
+\(A\mapsto X\Phi(A)\) agree below degree \(m+1\).  Induction shows that the
+\(j\)-th iterate has stabilized through degree \(j-1\).  After \(N+1\) steps
+all represented coefficients are stable.  The same one-degree improvement
+proves uniqueness coefficient by coefficient.  The invariant is a finite
+conjunction of decidable rational equalities, hence quantifier free.
+\end{proof}
+
+\begin{theorem}[Finite Lagrange--Buermann formula]\label{thm:lagrange}
+Let \(G=X\Phi(G)\) in \(T_N(R)\), and let \(H\) be a polynomial or truncated
+series.  For \(1\le n\le N\), whenever division by \(n\) is available,
+\[
+ \coeff{n}{H(G)}=\frac1n\coeff{n-1}{H'(T)\Phi(T)^n}.
+ \tag{8.1}
+\]
+In particular,
+\[
+ \coeff{n}{G}=\frac1n\coeff{n-1}{\Phi(T)^n}.
+ \tag{8.2}
+\]
+\end{theorem}
+
+\begin{proof}
+Represent Laurent series by finite coefficient windows and define the residue
+as the coefficient of \(T^{-1}\).  The finite identity
+\[
+ \operatorname{Res}_T A(B(T))B'(T)=\operatorname{Res}_U A(U)
+\]
+for \(B(T)=b_1T+\cdots\), \(b_1\) invertible, follows by checking monomials:
+all terms except exponent \(-1\) are formal derivatives and have zero residue,
+while \(B'/B\) has residue one.  Apply this to the inverse relation
+\(X=G/\Phi(G)\), rewrite coefficient extraction as a residue, and use the
+finite product rule.  No limiting series or contour occurs; every coefficient
+window has a primitive-recursive size bound.  This is the residue proof in the
+companion archive, and it translates directly to quantifier-free induction.
+\end{proof}
+
+For Lambert \(W\), the equation \(W=Xe^{-W}\) has
+\(\Phi(T)=e^{-T}\), where exponential is truncated at degree \(N\).
+Theorem~\ref{thm:lagrange} gives the coefficient in one line.
+
+\begin{theorem}[Lambert series at zero]\label{thm:W-series}
+For every \(N\), \(\iPRA\) proves in \(\Q[X]/(X^{N+1})\) that
+\[
+ W_0(X)\equiv
+ \sum_{n=1}^{N}\frac{(-n)^{n-1}}{n!}X^n.
+ \tag{8.3}
+\]
+Analytically, for \(\abs{x}<1/e\),
+\[
+ W_0(x)=\sum_{n\ge1}\frac{(-n)^{n-1}}{n!}x^n
+ =x-x^2+\frac32x^3-\frac83x^4+\frac{125}{24}x^5-\cdots.
+ \tag{8.4}
+\]
+\end{theorem}
+
+\begin{proof}
+Equation (8.2) gives
+\[
+ \coeff{n}{W}=\frac1n\coeff{n-1}{e^{-nT}}
+ =\frac1n\frac{(-n)^{n-1}}{(n-1)!}
+ =\frac{(-n)^{n-1}}{n!}.
+\]
+For fixed \(N\) this uses only the finitely many rational coefficients
+\(1/j!\), \(j\le N\).  Analytic convergence and identification with the
+principal inverse are proved in Theorem~\ref{thm:radius} below.
+\end{proof}
+
+\begin{theorem}[Integral and complex powers]\label{thm:powers}
+For every fixed integer \(r\), as a Laurent series at zero,
+\[
+ W_0(x)^r
+ =\sum_{n\ge r}
+   \frac{-r(-n)^{n-r-1}}{(n-r)!}x^n.
+ \tag{8.5}
+\]
+For a fixed constructive complex parameter \(r\),
+\[
+ \left(\frac{W_0(x)}x\right)^r=e^{-rW_0(x)}
+ =1+\sum_{n\ge1}\frac{r(n+r)^{n-1}}{n!}(-x)^n,
+ \qquad \abs{x}<1/e.
+ \tag{8.6}
+\]
+In (8.5), the isolated expression \(0^0\) that occurs at \(n=0\) is read as
+\(1\).  The \(n=0\) coefficient in the frequently printed unified notation
+for (8.6) is likewise read as \(1\), including when \(r=0\).
+\end{theorem}
+
+\begin{proof}
+Apply (8.1) with \(H(T)=T^r\) for positive \(r\):
+\[
+ \coeff{n}{W^r}
+ =\frac{r}{n}\coeff{n-r}{e^{-nT}}
+ =\frac{r}{n}\frac{(-n)^{n-r}}{(n-r)!}
+ =\frac{-r(-n)^{n-r-1}}{(n-r)!}.
+\]
+Multiplication by the invertible unit \(W/x=e^{-W}\) extends the identity to
+all integral Laurent powers.  For (8.6), apply (8.1) to
+\(H(T)=e^{-rT}\), or expand the already established identity
+\((W/x)^r=e^{-rW}\).  Coefficient extraction gives
+\(r(n+r)^{n-1}(-1)^n/n!\).  The argument is polynomial in the parameter
+\(r\) at each positive degree, so a fixed complex rapid name is admissible.
+\end{proof}
+
+For example,
+\[
+ W_0(x)^2=x^2-2x^3+4x^4-\frac{25}{3}x^5+18x^6-\cdots.
+\]
+
+\begin{theorem}[Exact centered radius and boundary convergence]\label{thm:radius}
+The series (8.4) has radius of convergence exactly \(1/e\).  It converges
+absolutely on the boundary circle \(\abs{x}=1/e\), and on the open disk it is
+the principal analytic germ satisfying \(We^W=x\).
+\end{theorem}
+
+\begin{proof}
+Let \(c_n=n^{n-1}/n!\).  Direct cancellation gives
+\[
+ \frac{c_{n+1}}{c_n}=\left(1+\frac1n\right)^{n-1}.
+ \tag{8.7}
+\]
+The elementary binomial estimates used to define the rapid name of \(e\) give
+an explicit modulus for convergence of (8.7) to \(e\).  The ratio test, stated
+as finite upper and lower geometric comparisons, therefore gives radius
+\(1/e\).
+
+Inside the disk, finite multiplication of the series followed by an explicit
+tail estimate proves \(We^W=x\).  The value is near zero and hence lies in the
+principal local inverse range.  The radius cannot be larger: if the germ were
+analytic through \(-1/e\), continuity would give \(W(-1/e)=-1\), and
+differentiating \(F(W(z))=z\) there would give
+\(F'(-1)W'(-1/e)=1\), i.e. \(0=1\).
+
+Finally a finite Wallis/Stirling estimate supplies a rational constant \(C\)
+with
+\[
+ c_ne^{-n}\le\frac{C}{(n+1)^{3/2}}.
+ \tag{8.8}
+\]
+The proof expands the factorial quotient into products, bounds logarithms by
+finite Taylor inequalities, and groups the remaining positive series in
+dyadic blocks.  Since \(\sum(n+1)^{-3/2}\) has a primitive-recursive tail
+modulus, (8.8) proves absolute boundary convergence.
+\end{proof}
+
+\section{Square-root expansion at the branch point}\label{sec:puiseux}
+
+Put
+\[
+ p=\sqrt{2(1+ez)}.
+ \tag{9.1}
+\]
+If \(w=-1+s\), then
+\[
+ p^2=2\bigl(1+(s-1)e^s\bigr)
+ =s^2+\frac23s^3+\frac14s^4+\frac1{15}s^5+\cdots.
+ \tag{9.2}
+\]
+This is a ramified formal inverse with a nonzero linear term after taking the
+square root.  The finite ramified Lagrange construction computes any requested
+coefficient by bounded rational arithmetic.
+
+\begin{theorem}[Puiseux branches]\label{thm:puiseux}
+For \(z\) near \(-1/e\), with the nonnegative real square root in (9.1),
+\begin{align}
+ W_0(z)&=-1+p-\frac{p^2}{3}+\frac{11p^3}{72}
+       -\frac{43p^4}{540}+\frac{769p^5}{17280}+O(p^6),
+ \tag{9.3}\\
+ W_{-1}(z)&=-1-p-\frac{p^2}{3}-\frac{11p^3}{72}
+       -\frac{43p^4}{540}-\frac{769p^5}{17280}+O(p^6).
+ \tag{9.4}
+\end{align}
+For every fixed order, the \(O\)-term means an explicit rational constant and
+primitive-recursive neighborhood on which the remainder is bounded by that
+constant times the indicated power.
+\end{theorem}
+
+\begin{proof}
+Seek \(s=\pm p+a_2p^2+a_3p^3+\cdots+a_Np^N\), substitute in (9.2), and
+successively set the coefficients of \(p^3,\ldots,p^{N+1}\) to zero.  At each
+stage the new coefficient occurs linearly with coefficient \(\pm2\), so the
+recursion is primitive recursive and unique.  It gives the displayed numbers.
+On a rational disk in the \(p\)-plane, the omitted exponential tail and the
+finite substitution residual have explicit majorants.  Since the derivative
+of the normalized ramified map is separated from zero, the quantitative
+inverse lemma converts the residual into the stated remainder.  Replacing
+\(p\) by \(-p\) changes exactly the odd coefficients and exchanges the two
+real branches.
+\end{proof}
+
+\section{Logarithmic asymptotic expansions}\label{sec:asymptotic}
+
+For \(x>1\), write
+\[
+ L_1=\log x,\qquad L_2=\log\log x.
+\]
+The equation \(we^w=x\) is equivalent to
+\[
+ w+\log w=L_1.
+ \tag{10.1}
+\]
+Put \(w=L_1-L_2+s\), expand
+\(\log w=L_2+\log(1-(L_2-s)/L_1)\), and revert the resulting formal series in
+\(1/L_1\).  Let \(\genfrac{[}{]}{0pt}{}{n}{k}\) denote the unsigned Stirling
+number of the first kind, generated by the bounded recurrence
+\[
+ \genfrac{[}{]}{0pt}{}{n+1}{k}
+ =n\genfrac{[}{]}{0pt}{}{n}{k}+\genfrac{[}{]}{0pt}{}{n}{k-1}.
+\]
+
+\begin{theorem}[Every finite asymptotic order]\label{thm:asymptotic}
+For each fixed \(N\ge1\), define
+\[
+ A_\ell(Y)=\sum_{m=1}^{\ell}
+ \frac{(-1)^{\ell-m}}{m!}
+ \genfrac{[}{]}{0pt}{}{\ell}{\ell-m+1}Y^m.
+ \tag{10.2}
+\]
+There are primitive-recursive rational constants \(K_N,C_N\) such that, when
+\(L_1\ge K_N\),
+\[
+ \left|W_0(x)-\left(L_1-L_2+
+ \sum_{\ell=1}^{N}\frac{A_\ell(L_2)}{L_1^\ell}\right)\right|
+ \le C_N\frac{(1+L_2)^{N+1}}{L_1^{N+1}}.
+ \tag{10.3}
+\]
+The first terms are
+\begin{align*}
+ W_0(x)={}&L_1-L_2+\frac{L_2}{L_1}
+ +\frac{L_2(-2+L_2)}{2L_1^2}
+ +\frac{L_2(6-9L_2+2L_2^2)}{6L_1^3}\\
+ &+\frac{L_2(-12+36L_2-22L_2^2+3L_2^3)}{12L_1^4}
+ +O\!\left(\frac{(1+L_2)^5}{L_1^5}\right).
+ \tag{10.4}
+\end{align*}
+In particular,
+\(W_0(x)=\log x-\log\log x+o(1)\), in the finite witness sense supplied by
+(10.3).
+\end{theorem}
+
+\begin{proof}
+Formal substitution in (10.1) proves, by finite coefficient comparison, that
+the expression in parentheses has residual
+\(R_N\) bounded as on the right of (10.3).  The logarithm tail is bounded by a
+geometric series once \((L_2+\abs{s})/L_1\le1/2\), enforced by \(K_N\).
+The function \(H(w)=w+\log w\) has derivative
+\(1+1/w\ge1\) for positive \(w\).  Therefore the difference between the exact
+root and an approximate root is at most the absolute residual.  This is a
+constructive residual-to-error estimate, and all coefficient and cutoff
+functions are primitive recursive.
+\end{proof}
+
+\begin{theorem}[Secondary-branch asymptotics]\label{thm:wm-asymptotic}
+Let \(x\to0^-\), put \(U=-\log(-x)>1\) and \(V=\log U\).  For every fixed
+\(N\), \(-W_{-1}(x)\) has an expansion obtained from the same finite reversion
+applied to
+\[
+ v-\log v=U,
+\]
+starting with
+\[
+ W_{-1}(x)=-U-V-\frac{V}{U}
+ +\frac{V(-2+V)}{2U^2}
+ +O\!\left(\frac{(1+V)^3}{U^3}\right).
+ \tag{10.5}
+\]
+The remainder has an explicit primitive-recursive bound after a computable
+threshold.
+\end{theorem}
+
+\begin{proof}
+Write \(W_{-1}(x)=-v\).  The defining equation becomes
+\(v e^{-v}=-x\), hence \(v-\log v=U\).  Substitute
+\(v=U+V+s\), expand \(\log v\) as a finite Taylor polynomial with a geometric
+remainder, and compare coefficients.  Since the derivative of
+\(v-\log v\) is \(1-1/v\), it is at least \(1/2\) after \(v\ge2\), so twice
+the residual bounds the root error.
+\end{proof}
+
+\section{Bounds for the principal branch}\label{sec:bounds-principal}
+
+All bounds are proved by comparing a candidate \(a(x)\) with \(W_0(x)\)
+through the increasing map \(F\):
+\[
+ a\le W_0(x)\iff a e^a\le x,
+ \qquad
+ W_0(x)\le a\iff x\le a e^a,
+ \tag{11.1}
+\]
+provided \(a\ge-1\).  This turns every claim into elementary exponential and
+logarithm inequalities with explicit finite Taylor certificates.
+
+\begin{theorem}[Hoorfar--Hassani logarithmic bounds]\label{thm:HH}
+For \(x\ge e\), put \(t=\log x\ge1\) and \(u=\log t\ge0\).  Then
+\[
+ t-u+\frac{u}{2t}
+ \le W_0(x)
+ \le t-u+\frac{e}{e-1}\frac{u}{t}.
+ \tag{11.2}
+\]
+\end{theorem}
+
+\begin{proof}
+For the lower candidate
+\(a=t-u+u/(2t)\), set \(q=u/t\).  Since
+\(u/t\le1/e\) (the maximum of \(\log t/t\) occurs at \(t=e\)),
+\(a>0\).  Write
+\[
+ \frac{a}{t}=1-r,
+ \qquad r=q\left(1-\frac1{2t}\right)\ge\frac q2.
+\]
+Using \(\log(1-r)\le-r\),
+\[
+ \log a=u+\log(1-r)\le u-\frac{u}{2t}=t-a.
+\]
+Thus \(a+\log a\le t\), equivalently \(ae^a\le e^t=x\), proving the lower
+bound.
+
+For the upper candidate, set \(c=e/(e-1)\) and
+\(b=t-u+cu/t\).  Now
+\[
+ \frac bt=1-r,
+ \qquad r=q\left(1-\frac ct\right).
+\]
+If \(r\le0\), then \(\log(b/t)\ge0\ge-cq\).  If \(0<r<1\), use
+\(\log(1-r)\ge-r/(1-r)\).  Since \(0<r\le q\le1/e\),
+\[
+ \frac{r}{1-r}\le\frac{q}{1-q}\le\frac{e}{e-1}q=cq.
+\]
+Hence in both cases
+\(\log b=u+\log(b/t)\ge u-cu/t=t-b\).  Therefore
+\(b+\log b\ge t\), so \(be^b\ge x\).  Every inequality used is (2.7) or
+(2.8), with a rational tail certificate.
+\end{proof}
+
+The next pair, often presented as a more complicated formula, is simply a
+one-step enclosure for a scalar correction.
+
+\begin{theorem}[Iacono--Boyd bounds]\label{thm:IB}
+For \(x\ge e\), let
+\[
+ q=\frac{\log\log x}{\log x},\qquad
+ A=\log\left(\frac{x}{\log x}\right),
+ \qquad h=-\log(1-q).
+\]
+Then
+\[
+ A+\frac{A}{1+A}h\le W_0(x)
+ \le A+h-\log\left(1+\frac{h}{1+A}\right).
+ \tag{11.3}
+\]
+Equivalently, these are exactly the two expanded expressions displayed on the
+reference page.
+\end{theorem}
+
+\begin{proof}
+Write \(W_0(x)=A+d\).  Since
+\(A=\log x-\log\log x\) and \(A/\log x=1-q\), equation
+\(w+\log w=\log x\) becomes
+\[
+ d+\log\left(1+\frac dA\right)=h.
+ \tag{11.4}
+\]
+The left side is strictly increasing for \(d\ge0\).  Since
+\(\log(1+s)\le s\), (11.4) gives
+\(h\le d(1+1/A)\), hence
+\[
+ d\ge d_L:=\frac{A}{1+A}h.
+\]
+For the upper bound put
+\(r=h/(1+A)\) and
+\(d_U=h-\log(1+r)\).  The inequality \(\log(1+r)\le r\) gives
+\(d_U\ge h-r=Ah/(1+A)=Ar\).  Therefore
+\[
+ \log(1+d_U/A)\ge\log(1+r).
+\]
+Therefore
+\[
+ d_U+\log(1+d_U/A)\ge h.
+\]
+Monotonicity in (11.4) yields \(d\le d_U\).
+\end{proof}
+
+\begin{theorem}[General one-parameter upper bound]\label{thm:general-upper}
+For \(y>1/e\) and \(x\ge-1/e\),
+\[
+ W_0(x)\le
+ \log\left(\frac{x+y}{1+\log y}\right),
+ \tag{11.5}
+\]
+with equality exactly when \(x=y\log y\).  Taking \(y=x+1\) gives
+\[
+ W_0(x)\le
+ \log\left(\frac{2x+1}{1+\log(x+1)}\right)
+ \tag{11.6}
+\]
+whenever the displayed specialization is defined, in particular for
+\(x\ge-1/e\).
+\end{theorem}
+
+\begin{proof}
+Put
+\[
+ R=\frac{x+y}{1+\log y},\qquad s=\frac{R}{y},\qquad U=\log R.
+\]
+First \(U\ge-1\): at \(x=-1/e\) this is the inequality
+\(ey-2-\log y\ge0\), which vanishes at \(y=1/e\) and has positive derivative
+thereafter.  Now
+\begin{align*}
+ Ue^U-x
+ &=R\log R-x\\
+ &=y\bigl(s\log s-s+1\bigr).
+\end{align*}
+The function \(s\log s-s+1\) is nonnegative for \(s>0\), because its derivative
+is \(\log s\) and its unique minimum is zero at \(s=1\).  Thus
+\(F(U)\ge x\), and (11.1) proves (11.5).  Equality is equivalent to
+\(s=1\), i.e. \(x=y\log y\).
+\end{proof}
+
+\begin{theorem}[Square- and cube-root enclosure near the branch point]\label{thm:root-bounds}
+For \(-1/e\le x\le0\),
+\[
+ \sqrt{1+ex}-1\le W_0(x)\le\sqrt[3]{1+ex}-1.
+ \tag{11.7}
+\]
+\end{theorem}
+
+\begin{proof}
+Write \(W_0(x)=t-1\), \(0\le t\le1\).  Then
+\[
+ q:=1+ex=1+(t-1)e^t.
+ \tag{11.8}
+\]
+We prove \(t^3\le q\le t^2\).  The nonnegative power series
+\[
+ q=\sum_{n\ge2}\frac{n-1}{n!}t^n
+ \tag{11.9}
+\]
+shows
+\(q/t^2\le\sum_{n\ge2}(n-1)/n!=1\), hence \(q\le t^2\).
+For the other inequality, let \(r(t)=q-t^3\).  Then
+\[
+ r'(t)=t(e^t-3t).
+\]
+The ratio \(e^t/t\) is strictly decreasing on \((0,1]\), so
+\(e^t-3t\) changes sign at most once.  Since \(r(0)=r(1)=0\), \(r\) first
+increases and then decreases, and is nonnegative throughout.  The sign-change
+argument is implemented by a located rational bisection; alternatively a
+Bernstein-polynomial certificate on \([0,1]\) is finite.  Taking monotone
+square and cube roots gives (11.7).
+\end{proof}
+
+\section{Bounds for the secondary branch}\label{sec:bounds-secondary}
+
+\begin{theorem}[Bounds at the common branch point]\label{thm:wm-near}
+For \(u>0\),
+\[
+ -1-\sqrt{2u}-u
+ <W_{-1}(-e^{-u-1})
+ <-1-\sqrt{2u}-\frac23u.
+ \tag{12.1}
+\]
+\end{theorem}
+
+\begin{proof}
+Put \(W_{-1}(-e^{-u-1})=-1-s\), \(s>0\).  The defining equation reduces to
+\[
+ u=s-\log(1+s).
+ \tag{12.2}
+\]
+For the left inequality in (12.1), it suffices to prove
+\(s<\sqrt{2u}+u\), or
+\(\log(1+s)<\sqrt{2u}\).  Set \(v=\log(1+s)>0\).  Then
+\(u=e^v-1-v\), and
+\[
+ 2u-v^2=2\sum_{n\ge3}\frac{v^n}{n!}>0.
+\]
+
+For the right inequality it suffices to prove
+\(s>\sqrt{2u}+2u/3\).  With the same \(v\), this becomes
+\[
+ \frac{e^v-1+2v}{3}>\sqrt{2(e^v-1-v)}.
+ \tag{12.3}
+\]
+Both sides are positive.  After squaring and multiplying by nine, the
+difference is
+\[
+ Q(v)=(e^v-1+2v)^2-18(e^v-1-v).
+ \tag{12.4}
+\]
+Its Taylor expansion has zero coefficients through degree three and strictly
+positive coefficients thereafter.  Indeed, direct expansion gives
+\[
+ Q(v)=\sum_{n\ge4}\frac{2^n+4n-20}{n!}v^n>0,
+\tag{12.5a}
+\]
+because the numerator is positive for every $n\ge4$.  This coefficient
+identity and the exponential tail majorant are finite and are also checked by
+the accompanying exact verifier.  Thus (12.3) holds,
+and translating back to \(-1-s\) gives (12.1).
+\end{proof}
+
+\begin{theorem}[Bounds as the secondary branch tends to zero]\label{thm:wm-far}
+For \(u>1\),
+\[
+ -u-\log u-\frac{\log u}{u-1}
+ \le W_{-1}(-e^{-u})
+ \le -u-\log u-\frac{\log u}{u+\log u}.
+ \tag{12.5}
+\]
+\end{theorem}
+
+\begin{proof}
+Write \(W_{-1}(-e^{-u})=-v\), so \(v>1\) and
+\[
+ v-\log v=u.
+ \tag{12.6}
+\]
+Put \(v=u+\log u+d\), \(d>0\).  Equation (12.6) becomes
+\[
+ d=\log\left(1+\frac{\log u+d}{u}\right).
+ \tag{12.7}
+\]
+Dropping \(d\) inside the increasing logarithm and using
+\(\log(1+a)\ge a/(1+a)\) gives
+\[
+ d\ge\log\left(1+\frac{\log u}{u}\right)
+ \ge\frac{\log u}{u+\log u}.
+ \tag{12.8}
+\]
+Using \(\log(1+a)\le a\) in (12.7) gives
+\[
+ d\le\frac{\log u+d}{u},
+ \qquad d\le\frac{\log u}{u-1}.
+ \tag{12.9}
+\]
+Substitute these bounds in \(-v=-u-\log u-d\); the reversal of order under
+negation yields (12.5).
+\end{proof}
+
+\begin{remark}[Constructive strictness]
+The strict inequalities in (12.1) use the positive exponential tail after its
+first omitted term.  Thus an explicit lower rational witness can be extracted
+from any positive lower bound for \(u\).  The weak inequalities in (12.5) are
+valid without deciding equality of real names.
+\end{remark}
+
+\section{Nested representations and representations not reconstructed}\label{sec:representations}
+
+The defining equation may be read as either
+\[
+ W=x e^{-W}
+ \qquad\text{or}\qquad
+ W=\log(x/W).
+ \tag{13.1}
+\]
+Iterating these fixed-point maps produces the familiar nested exponential and
+nested logarithm.  A constructive statement must include a contraction
+certificate rather than treating the ellipsis as an object.
+
+\begin{theorem}[Certified nested exponential]\label{thm:nested-exp}
+Let \(x\) be a real input on the principal branch, and suppose a rational
+interval \(I\) and rational \(q<1\) are supplied such that
+\(W_0(x)\in I\), \(g(I)\subseteq I\), and
+\(\abs{g'(t)}\le q\) on \(I\), where \(g(t)=xe^{-t}\).  Then the finite
+recursion
+\[
+ a_0\in I,\qquad a_{n+1}=\frac{x}{e^{a_n}}
+ \tag{13.2}
+\]
+satisfies
+\[
+ \abs{a_n-W_0(x)}\le q^n\abs{a_0-W_0(x)}.
+ \tag{13.3}
+\]
+Consequently its limit is the nested exponential
+\[
+ W_0(x)=\cfrac{x}{\exp\!\cfrac{x}{\exp\!\cfrac{x}{\ddots}}}.
+ \tag{13.4}
+\]
+For every real \(x\) with \(\abs{W_0(x)}<1\) and a positive witness for that
+strict inequality, the inverse-search enclosure can compute a finite entry
+stage and an interval \(I\) satisfying the hypotheses.
+\end{theorem}
+
+\begin{proof}
+The derivative is \(g'(t)=-xe^{-t}=-g(t)\).  The interval hypotheses and the
+constructive mean-value estimate give
+\(\abs{g(a)-g(b)}\le q\abs{a-b}\), so induction proves (13.3).  If only
+\(\abs{W_0(x)}\le1-\delta\) is initially known, continuity of \(g'\) gives an
+explicit neighborhood of the fixed point on which \(\abs{g'}\le1-\delta/2\).
+The certified inverse name and finite iteration are searched until the current
+interval enters that neighborhood.  For real inputs in the stated stability
+range, the standard alternating monotone enclosure supplies that entry; all
+searches are bounded by the requested output precision and \(\delta\).
+\end{proof}
+
+\begin{theorem}[Certified nested logarithm]\label{thm:nested-log}
+Let \(x>0\), and suppose a positive interval \(I\) contains \(W_0(x)\), is
+invariant under \(h(t)=\log(x/t)\), and has a rational lower bound
+\(\abs t\ge d>1\).  Then
+\[
+ b_{n+1}=\log\frac{x}{b_n}
+\]
+converges to \(W_0(x)\) with error at most \(d^{-n}\) times the initial error.
+Thus, with an explicit stability witness for \(\abs{W_0(x)}>1\),
+\[
+ W_0(x)=\log\cfrac{x}{\log\cfrac{x}{\log\cfrac{x}{\ddots}}}.
+ \tag{13.5}
+\]
+\end{theorem}
+
+\begin{proof}
+On \(I\), \(\abs{h'(t)}=1/\abs t\le1/d<1\).  The same finite contraction
+induction as in Theorem~\ref{thm:nested-exp} applies.  The inverse-search name
+constructs a stable invariant interval from the positive separation of
+\(\abs{W_0(x)}\) from one.
+\end{proof}
+
+\begin{audit}[Poisson, Kalugin--Jeffrey--Corless, and continued-fraction forms]
+The reference page also displays two nontrivial integral representations and a
+continued fraction with specialized coefficients.  Their finite truncations
+are legitimate rational or quadrature objects, and the verifier can compare
+initial Taylor coefficients.  This archive does not claim the global integral
+identities or convergence of that continued fraction: a complete proof would
+require a dedicated constructive contour/Poisson-kernel development or an
+explicit continued-fraction recurrence and convergence majorant not given on
+the page.  They are labelled \StatusD rather than inferred from numerical
+agreement.
+\end{audit}
+
+\section{Solving transcendental equations}\label{sec:equations}
+
+\begin{theorem}[Affine function plus exponential]\label{thm:affine-exp}
+Let \(b,c\apart0\).  Every branch solution of
+\[
+ x=a+b e^{cx}
+\]
+is
+\[
+ x=a-\frac1c W_k(-bc e^{ac}),
+ \tag{14.1}
+\]
+and conversely every defined right-hand side solves the equation.  If
+\(a,c\apart0\), every branch solution of
+\[
+ ax+b=e^{cx}
+\]
+is
+\[
+ x=-\frac ba-\frac1c
+ W_k\!\left(-\frac ca e^{-bc/a}\right).
+ \tag{14.2}
+\]
+The real number of solutions is determined by whether the Lambert argument is
+below, at, or above \(-1/e\), together with the selected branch ranges.
+\end{theorem}
+
+\begin{proof}
+For the first equation set \(w=c(a-x)\).  Then
+\[
+ we^w=-bc e^{ac},
+\]
+which is equivalent to (14.1).  For the second set
+\(y=x+b/a\).  The equation becomes
+\(ay=e^{cy-bc/a}\), and multiplication by \(-c e^{-cy}/a\) gives
+\((-cy)e^{-cy}=-(c/a)e^{-bc/a}\).  Solving for \(x\) gives (14.2).  Reversing
+the algebra proves the converse; every division carries the displayed
+apartness guard.
+\end{proof}
+
+\begin{example}[The equation \(2x+2=3^x\)]
+Taking logarithms only through the positive base, or applying (14.2), gives the
+two real solutions
+\[
+ x=-1-\frac{W_0(-\log3/6)}{\log3},
+ \qquad
+ x=-1-\frac{W_{-1}(-\log3/6)}{\log3}.
+ \tag{14.3}
+\]
+The accompanying interval evaluator certifies respectively
+\(-0.79012<x<-0.79010\) and \(1.44455<x<1.44457\).
+\end{example}
+
+\begin{theorem}[Inverse of \(x^x\) with all real branches]\label{thm:superroot}
+For \(x>0\), the equation \(x^x=y\) is equivalent, after setting
+\(u=\log x\), to
+\[
+ ue^u=\log y.
+\]
+Hence every positive solution is
+\[
+ x=e^{W_k(\log y)}
+   =\frac{\log y}{W_k(\log y)},
+ \tag{14.4}
+\]
+with the quotient interpreted by continuity at \(y=1\).  There are no positive
+solutions for \(0<y<e^{-1/e}\), one at the minimum, two for
+\(e^{-1/e}<y<1\), and one for \(y\ge1\).  For \(y>1\) only the principal
+branch occurs.
+\end{theorem}
+
+\begin{proof}
+Taking the constructive logarithm gives \(x\log x=\log y\).  With
+\(u=\log x\), \(x=e^u\), so this is \(ue^u=\log y\).  The branch count follows
+from Theorem~\ref{thm:branches}.  The minimum of \(x\log x\) is \(-1/e\) at
+\(x=e^{-1}\), and exponentiation gives the threshold \(e^{-1/e}\).
+\end{proof}
+
+\begin{theorem}[The standard generalized equation]\label{thm:general-eqn}
+For \(a_0,c\apart0\), every branch solution of
+\[
+ e^{-cx}=a_0(x-r)
+\]
+is
+\[
+ x=r+\frac1c W_k\!\left(\frac{c e^{-cr}}{a_0}\right).
+ \tag{14.5}
+\]
+\end{theorem}
+
+\begin{proof}
+Put \(u=c(x-r)\).  Multiplying the equation by
+\(c e^{cx}/a_0\) gives \(ue^u=ce^{-cr}/a_0\).  Solve for \(u\) and reverse
+the substitutions.
+\end{proof}
+
+\begin{theorem}[Thermodynamic-equilibrium algebra]\label{thm:thermo}
+Suppose positive \(T,K\) satisfy
+\[
+ \log K=\frac aT+b+c\log T,
+ \qquad c\apart0.
+\]
+Then every branch solution is
+\[
+ T=\exp\!\left(
+ W_k\!\left(-\frac ac e^{(b-\log K)/c}\right)
+ +\frac{\log K-b}{c}\right).
+ \tag{14.6}
+\]
+The branch classification of the Lambert argument gives zero, one, or two
+positive algebraic candidates.  Whether the premise is the correct physical
+equilibrium law is external to this theorem.
+\end{theorem}
+
+\begin{proof}
+Set \(L=\log T\), multiply the original equation by \(T=e^L\), and rearrange:
+\[
+ -\frac ac e^{(b-\log K)/c}
+ =\left(L+\frac{b-\log K}{c}\right)
+ e^{L+(b-\log K)/c}.
+\]
+Apply a branch of \(W\) and exponentiate.
+\end{proof}
+
+\begin{theorem}[Wien-type stationary equation]\label{thm:wien}
+For fixed integer \(D>0\), the equation
+\[
+ e^{-x}=1-\frac{x}{D}
+\]
+has the Lambert form
+\[
+ x=D+W_k(-De^{-D}).
+ \tag{14.7}
+\]
+The branch yielding \(x=0\) is the algebraic endpoint solution; the other
+admissible real branch gives the positive stationary point when it exists.
+\end{theorem}
+
+\begin{proof}
+Set \(u=x-D\).  Then \(1-x/D=-u/D\), and the equation gives
+\((-u)e^{u}=De^{-D}\), equivalently \(u e^u=-De^{-D}\).
+\end{proof}
+
+\begin{theorem}[Bernoulli--Todd equation]\label{thm:todd}
+For
+\[
+ Y=\frac{X}{1-e^X},
+ \tag{14.8}
+\]
+put \(V=Y-X\).  Then
+\[
+ Ve^V=Ye^Y.
+ \tag{14.9}
+\]
+Excluding the removable limiting case \(Y=-1\), the nontrivial real solution is
+\[
+ X=\begin{cases}
+ Y-W_0(Ye^Y)=W_{-1}(Ye^Y)-W_0(Ye^Y),&Y<-1,\\
+ Y-W_{-1}(Ye^Y)=W_0(Ye^Y)-W_{-1}(Ye^Y),&-1<Y<0.
+ \end{cases}
+ \tag{14.10}
+\]
+\end{theorem}
+
+\begin{proof}
+Equation (14.8) is \(Y-X=Ye^X\).  With \(V=Y-X\) and
+\(X=Y-V\), this becomes \(V=Ye^Y e^{-V}\), hence (14.9).  If \(Y<-1\), then
+\(Y=W_{-1}(Ye^Y)\), so the other root is \(W_0(Ye^Y)\).  If
+\(-1<Y<0\), the roles reverse.  Substitution gives (14.10).
+\end{proof}
+
+\begin{theorem}[Orthogonal-trajectory formula]\label{thm:orthogonal}
+Every nonzero real solution of
+\[
+ \left(\frac1y+y\right)dy=
+ \left(\frac1x-x\right)dx
+ \tag{14.11}
+\]
+on a sign-fixed interval satisfies, for a constant \(C\),
+\[
+ y^2=W_0\!\left(x^2e^{-2C-x^2}\right),
+ \tag{14.12}
+\]
+after absorbing the sign convention into \(C\).  Conversely, every branch-safe
+square root of (14.12) solves (14.11).
+\end{theorem}
+
+\begin{proof}
+Integration gives
+\(\log\abs y+y^2/2=\log\abs x-x^2/2-C\).  Doubling and exponentiating yields
+\[
+ y^2 e^{y^2}=x^2e^{-2C-x^2}.
+\]
+The right side is nonnegative, so the unique nonnegative inverse is \(W_0\).
+Differentiate the identity to prove the converse.
+\end{proof}
+
+\section{Rooted trees and finite combinatorics}\label{sec:trees}
+
+Let \(t_n=n^{n-1}\) for \(n\ge1\), the number of rooted labeled trees on
+\(n\) vertices.  A completely finite proof uses the Prufer code: deleting the
+least labeled leaf at each step bijects labeled trees on \(n\) vertices with
+words of length \(n-2\) over \(\{1,\ldots,n\}\).  Choosing the root multiplies
+the count by \(n\).  Encoding and decoding are bounded loops, so the bijection
+and count are \StatusF theorems.
+
+Define the truncated exponential generating series
+\[
+ T_N(X)=\sum_{n=1}^{N}\frac{n^{n-1}}{n!}X^n.
+\]
+
+\begin{theorem}[Tree functional equation and Lambert series]\label{thm:trees}
+For every \(N\),
+\[
+ T_N(X)\equiv X e^{T_N(X)}\pmod{X^{N+1}}.
+ \tag{15.1}
+\]
+Consequently
+\[
+ W_0(X)=-T(-X)
+ \tag{15.2}
+\]
+as a formal series, and the Lambert coefficient formula is equivalent to the
+rooted Cayley count \(n^{n-1}\).
+\end{theorem}
+
+\begin{proof}
+Combinatorially, a rooted labeled tree is a root together with a finite set of
+rooted labeled subtrees.  Expanding the finite set construction gives the
+coefficient of \(Xe^T\); equivalently, one can verify (15.1) directly using
+the multinomial theorem and the Prufer count.  Replacing \(X\) by \(-X\) gives
+\((-T(-X))e^{-T(-X)}=X\).  Uniqueness in
+Lemma~\ref{lem:finite-fix} identifies this series with \(W_0\).  Comparing the
+coefficient of \(X^n\) yields
+\((-1)^{n-1}n^{n-1}/n!\), exactly (8.3).
+\end{proof}
+
+\section{Certified numerical evaluation}\label{sec:numerics}
+
+Algorithm~\ref{alg:inverse-search} already gives a globally reliable method on
+the two real branches.  Faster iterations are useful after a branch-safe
+starting enclosure has been obtained.
+
+\begin{theorem}[Newton and Halley formulae]\label{thm:newton-halley}
+For \(f(w)=we^w-x\), Newton's iteration is
+\[
+ w_{j+1}=w_j-
+ \frac{w_je^{w_j}-x}{e^{w_j}(1+w_j)}.
+ \tag{16.1}
+\]
+Halley's iteration is
+\[
+ w_{j+1}=w_j-
+ \frac{w_je^{w_j}-x}
+ {e^{w_j}(1+w_j)-
+ \dfrac{(w_j+2)(w_je^{w_j}-x)}{2(w_j+1)}}.
+ \tag{16.2}
+\]
+Both are primitive-recursive operations on dyadic intervals whenever every
+displayed denominator has a positive separation certificate.
+\end{theorem}
+
+\begin{proof}
+Newton's formula is \(w-f(w)/f'(w)\), using
+\(f'(w)=e^w(1+w)\).  Halley's formula
+\[
+ w-\frac{2ff'}{2(f')^2-ff''}
+\]
+with \(f''(w)=e^w(w+2)\) simplifies to (16.2).  Outward interval evaluation
+of the exponential and rational operations is primitive recursive.
+\end{proof}
+
+\begin{theorem}[Logarithmic Newton iteration]\label{thm:log-newton}
+On either real branch, when \(x/w>0\), \(w\apart0\), and \(w+1\apart0\), Newton's method for
+\[
+ g(w)=w+\log\abs w-\log\abs x
+\]
+is
+\[
+ w_{j+1}=
+ \frac{w_j}{1+w_j}
+ \left(1+\log\frac{x}{w_j}\right).
+ \tag{16.3}
+\]
+Its fixed points are exactly the branch-safe roots of \(we^w=x\).
+\end{theorem}
+
+\begin{proof}
+Since \(x/w_j>0\), the logarithm is defined.  Newton's update for
+\(g(w)=w+\log\abs w-\log\abs x\), with
+\(g'(w)=(1+w)/w\), is
+\begin{align*}
+ w-\frac{w}{1+w}
+ (w+\log\abs w-\log\abs x)
+ &=\frac{w}{1+w}\left(1+\log\frac{x}{w}\right).
+\end{align*}
+A fixed point with \(w\ne0\) gives
+\(w+\log\abs w=\log\abs x\), and the common sign of \(x,w\) restores
+\(we^w=x\).
+\end{proof}
+
+\begin{theorem}[Quadratic error certificate]\label{thm:newton-error}
+Let a rational interval \(I\) contain a unique root \(\alpha\) of a twice
+constructively differentiable function \(f\).  Suppose
+\[
+ \abs{f'(t)}\ge m>0,
+ \qquad \abs{f''(t)}\le M
+ \quad(t\in I),
+ \tag{16.4}
+\]
+and the Newton update remains in \(I\).  Then
+\[
+ \abs{w_{j+1}-\alpha}
+ \le\frac{M}{2m}\abs{w_j-\alpha}^2.
+ \tag{16.5}
+\]
+For Lambert \(W\), rational bounds for \(m,M\) are obtained from
+\(e^w(1+w)\) and \(e^w(2+w)\).  Thus the number of iterations required for
+\(p\) output bits is computed in advance.
+\end{theorem}
+
+\begin{proof}
+Taylor's formula with integral remainder, represented by finite Riemann sums,
+gives
+\[
+ 0=f(\alpha)=f(w)+f'(w)(\alpha-w)+R,
+ \qquad \abs R\le\frac M2\abs{\alpha-w}^2.
+\]
+Subtract the Newton update and divide by the lower bound \(m\).  All estimates
+are rational interval inequalities.
+\end{proof}
+
+\begin{algorithm}[Interval Newton with branch preservation]\label{alg:interval-newton}
+Start from a rational branch bracket \(I=[a,b]\) supplied by
+Algorithm~\ref{alg:inverse-search}.  Let \(m_I\) be an interval enclosure of
+\(F'(I)\), separated from zero.  With midpoint \(c\), set
+\[
+ N(I)=c-\frac{F(c)-x}{m_I}
+\]
+using interval division, and replace \(I\) by \(I\cap N(I)\).  If the
+intersection does not contract enough, take one bisection step.  Every update
+preserves the root; away from the branch point the width becomes quadratic.
+Near \(-1/e\), switch to the Puiseux coordinate \(p\) from (9.1) or retain
+bisection.
+\end{algorithm}
+
+\subsection{Published starting values and the audit line}
+
+The reference page lists branch-specific starting values for (16.3) and
+explicit doubly exponential error estimates, including constants
+\(\log(1+1/e)\), \((1-1/e)^{2^n-1}/5\), \(10^{-2^n}\), and
+\(2^{-2^n}\).  Each such estimate is, in principle, a \StatusA theorem: after
+substitution of the starting formula it reduces to finitely many inequalities
+for \(\exp,\log,\sqrt{\cdot}\) on rational intervals.  This archive records the
+formulas in \code{THEOREM_LEDGER.md} and numerically stress-tests them, but does
+not claim a complete replay of all source-specific global constants.  The
+generic certified scheme above supplies the same computational conclusion with
+constants calculated from the actual input enclosure.
+
+Likewise, the page's piecewise minimax rational approximants are finite
+polynomial evaluations, but their quoted bit accuracy depends on external
+coefficient tables and a uniform approximation proof.  They are diagnostics,
+not native theorems of this package.
+
+\section{Arithmetization in intuitionistic PRA}\label{sec:arithmetization}
+
+\subsection{Primitive-recursive data and bounded loops}
+
+The following operations are primitive recursive on natural-number codes:
+\begin{enumerate}
+\item signed integer, rational, dyadic, and Gaussian-rational arithmetic;
+\item bounded vectors, Cauchy products, polynomial derivative, composition,
+powers, and coefficient extraction;
+\item factorials, binomial and Stirling numbers, and the polynomials \(P_n\);
+\item outward interval evaluation of finite exponential and logarithm sums;
+\item dyadic grid search, bisection, interval intersection, and a fixed number
+of Newton or Halley steps;
+\item finite Riemann sums and the explicit mesh/tail functions appearing in the
+named integrals;
+\item the Prufer encoder/decoder and finite tree-counting bijections.
+\end{enumerate}
+
+Each theorem is first proved at a requested precision or truncation degree.
+The loop invariant is a quantifier-free formula about coded integers and
+bounded lists.  Quantifier-free induction proves it for the loop bound.
+Universal introduction over the precision parameter then yields extensional
+equality of rapid names.
+
+\subsection{No hidden classical principles}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.24\textwidth} X}
+\toprule
+Potential hidden principle & Constructive replacement\\
+\midrule
+Excluded middle for real order & Branch inputs carry located interval or
+apartness certificates.  Bisection uses interval overlap and never asks whether
+an arbitrary real is exactly zero.\\
+Countable or dependent choice & Every approximation is a value of one fixed
+primitive-recursive program; no sequence is selected from existential data.\\
+Unbounded minimization & Every search has a bound computed from the magnitude,
+apartness, precision, or truncation data.\\
+Completed infinite series & A finite partial sum plus a primitive-recursive
+tail bound defines each output approximation.\\
+Classical inverse-function theorem & Monotone dyadic search and quantitative
+residual-to-error estimates construct the inverse directly.\\
+Division by a merely nonzero real & Every quotient uses positive apartness,
+which computes a denominator lower bound.\\
+Complex branch selection & A base root, a path, a cut convention, and positive
+separation from the critical point are explicit inputs.\\
+Improper integrals & Compact quadrature plus two explicit endpoint/tail moduli.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{remark}[Schema discipline]
+There is no primitive-recursive universal evaluator for all primitive-recursive
+programs.  Therefore a theorem about a real name is a schema: the programs for
+the inputs and their certificates are fixed before the first-order formula is
+formed.  Uniformity remains available in ordinary numerical parameters such as
+precision, branch flag, truncation degree, and finite coefficient vectors.
+\end{remark}
+
+\subsection{Suggested object-language formula}
+
+At the lowest level, a principal-branch approximation theorem has the shape
+\[
+ \forall p\;\operatorname{W0Good}(xCode,p,w0Code(xCode,p)),
+ \tag{17.1}
+\]
+where \code{W0Good} is quantifier free after bounded quantifiers are expanded:
+it asserts a width bound, the range \([-1,U]\), and that the outward interval
+for \(w e^w-x\) contains zero.  Uniqueness is a separate formula saying that
+any two good intervals of sufficiently small width overlap after a fixed
+precision shift.  The branch-point estimate (3.2) is the only non-Lipschitz
+modulus needed.
+
+For the coefficient theorem, the target is even more direct.  With a code for
+truncated vectors,
+\[
+ \forall N\;\operatorname{mulTrunc}
+ (W_N,\operatorname{expTrunc}(W_N,N),N)=X_N,
+ \tag{17.2}
+\]
+where
+\(W_N[n]=(-n)^{n-1}/n!\) for \(1\le n\le N\).  Clearing the common factorial
+denominator turns (17.2) into integer equality, and the proof is quantifier-free
+induction on the coefficient index.
+
+\section{Lean formalization blueprint}\label{sec:lean}
+
+The separate \code{lean/} directory contains a host-level analytic scaffold and
+an object-language scaffold.  They deliberately contain \code{sorry}; no
+kernel-checked completion is claimed.  The current environment used to build
+this archive had no Lean executable, so syntax was reviewed but not compiled.
+
+\subsection{Repository interfaces to reuse}
+
+The target import is
+\code{ConciseIPRA.NativeBiInterpretation}.  The relevant existing declarations
+are \code{PR}, \code{PTm}, \code{PRAAx}, \code{Prf},
+\code{PRA.qfInd}, \code{NFm.ofPRA}, and \code{pra_iff_native}.  The prior
+Lagrange-inversion packet should be factored into reusable modules rather than
+reproved inside Lambert \(W\).
+
+\subsection{Recommended module order}
+
+\begin{longtable}{>{\ttfamily}p{0.30\textwidth} p{0.62\textwidth}}
+\toprule
+Module & Main declarations and proof obligations\\
+\midrule
+\endhead
+Codes.lean & Signed integers, rationals, dyadics, Gaussian rationals, bounded
+vectors, interval arithmetic, total division plus guards.\\
+RapidName.lean & Regular names, extensional equality, apartness, arithmetic,
+square root, compact interval maps.\\
+ExpLog.lean & Truncated exponential/logarithm evaluators, tail bounds,
+addition/multiplication laws, derivatives, inequalities (2.7)--(2.8).\\
+FiniteSeries.lean & Truncated Cauchy product, composition, derivative, formal
+residue, finite Lagrange--Buermann.  Reuse the existing packet.\\
+LambertReal.lean & \code{F}, monotonicity, branch-point quadratic modulus,
+certified inverse search, \code{W0Name}, \code{Wm1Name}, uniqueness and ranges.\\
+LambertSeries.lean & Coefficients, powers, radius majorants, Puiseux recursion,
+asymptotic coefficient generator.\\
+LambertCalculus.lean & First and higher derivatives, polynomial recurrence,
+curvature, antiderivative checks.\\
+LambertBounds.lean & Logarithm inequalities and the candidate comparisons in
+Sections~11--12.\\
+LambertIntegrals.lean & Effective Riemann sums, gamma name, change of variables,
+formulas (7.6)--(7.10).\\
+LambertNumerics.lean & Bisection, interval Newton, Newton/Halley/log-Newton,
+residual-to-error theorem.\\
+LambertApplications.lean & Equation transformations, Prufer codes, rooted tree
+series, Bernoulli--Todd and orthogonal trajectories.\\
+LambertObject.lean & \code{PR} codes, quantifier-free correctness formulas,
+\code{PRA.qfInd} proofs, and transfer through \code{pra_iff_native}.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Representative host-level interfaces}
+
+\begin{lstlisting}[language={}] 
+structure RapidName where
+  approx : Nat -> Rat
+  bound  : Nat
+  regular : forall p,
+    |approx (p+1) - approx p| <= 1 / (2:Rat)^(p+3)
+  bounded : forall p, |approx p| <= bound
+
+def ExtEq (x y : RapidName) : Prop :=
+  forall p, |x.approx (p+4) - y.approx (p+4)| <= 1/(2:Rat)^p
+
+structure Apart (x : RapidName) where
+  precision : Nat
+  exponent  : Nat
+  sign      : Bool
+  separated : IntervalSeparated x precision exponent sign
+
+structure BranchSpec (x w : RapidName) where
+  graph : ExtEq (mul w (expName w)) x
+  range : PrincipalRange w          -- or SecondaryRange w
+
+theorem W0_unique (h1 : BranchSpec x u) (h2 : BranchSpec x v) :
+  ExtEq u v := by
+  -- monotonicity plus the quadratic endpoint modulus
+  sorry
+\end{lstlisting}
+
+\subsection{Representative finite-series target}
+
+\begin{lstlisting}[language={}]
+def lambertCoeff (n : Nat) : Rat :=
+  if h : n = 0 then 0
+  else ((-(n : Int))^(n-1) : Rat) / factorial n
+
+theorem lambert_trunc_graph (N : Nat) :
+  mulTrunc (lambertVec N)
+    (expTrunc (lambertVec N) N) N = Xvec N := by
+  -- finite Lagrange inversion, or direct coefficient induction
+  sorry
+\end{lstlisting}
+
+After a native theorem is proved, the object-language file should instantiate
+the corresponding \code{PR} term, prove its defining equations with
+\code{PRA.qfInd}, and only then use \code{pra_iff_native}.  Treating a host
+Mathlib theorem as if it were already an object-theory derivation would be a
+category error.
+
+\section{Coverage audit against the reference page}\label{sec:audit}
+
+Table~\ref{tab:audit} is deliberately conservative.  ``Proved'' means that the
+paper contains the human argument and an explicit route to a first-order
+\(\iPRA\) derivation.  The machine-readable ledger in the archive separates
+individual formulas more finely.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.34\textwidth}
+                  >{\centering\arraybackslash}p{0.08\textwidth}
+                  >{\raggedright\arraybackslash}p{0.49\textwidth}}
+\caption{Coverage of the mathematical assertions on the Lambert \(W\) page.}
+\label{tab:audit}\\
+\toprule
+Claim family & Status & Result or qualification\\
+\midrule
+\endfirsthead
+\toprule
+Claim family & Status & Result or qualification\\
+\midrule
+\endhead
+Definition as inverse of \(we^w\) & \StatusA & Constructed by certified
+monotone interval search; Theorem~\ref{thm:branches}.\\
+Two real branches, domains, ranges, multiplicities & \StatusA & Complete proof,
+including endpoint moduli; Theorem~\ref{thm:branches}.\\
+Complex branch notation and cuts & \StatusA/\StatusD & Local path-based branches
+with explicit separation are constructed; a global Riemann-surface
+formalization is not claimed.\\
+Critical point and branch point & \StatusA & Proposition~\ref{prop:critical}
+and Puiseux Theorem~\ref{thm:puiseux}.\\
+Image/preimage curve for real values & \StatusF/\StatusA & Quadratrix equations
+(5.3)--(5.4), Proposition~\ref{prop:quadratrix}.\\
+Transcendence at nonzero algebraic arguments & \StatusC & Reduced to effective
+Lindemann--Weierstrass; that theorem is not developed here.\\
+Differential equation and first derivative & \StatusA & Equations
+(6.1)--(6.3), including the removable value at zero.\\
+Higher derivative polynomial recurrence & \StatusF/\StatusA & Full induction,
+Theorem~\ref{thm:higher-derivatives}.\\
+Monotonicity and curvature & \StatusA & Lemma~\ref{lem:Fmono} and
+Corollary~\ref{cor:curvature}.\\
+Antiderivative of \(W\) and \(\int_0^eW_0\) & \StatusA & Equations
+(7.2) and (7.6).\\
+Other displayed indefinite integrals & \StatusA & Equations (7.3)--(7.5), with
+guards and an effective \(\Ei\) name.\\
+Maclaurin series of \(W_0\) & \StatusF/\StatusA & Finite coefficient theorem
+and analytic lifting, Theorem~\ref{thm:W-series}.\\
+Radius \(1/e\) and boundary convergence & \StatusA & Ratio modulus, critical
+obstruction, and \(n^{-3/2}\) majorant; Theorem~\ref{thm:radius}.\\
+Integral powers of \(W_0\) & \StatusF/\StatusA & Laurent coefficient formula
+(8.5).\\
+Complex powers of \(W_0/x\) & \StatusF/\StatusA & Formula (8.6) for a fixed
+constructive complex parameter.\\
+Large-\(x\) logarithmic asymptotic expansion & \StatusF/\StatusA & Every fixed
+order with a residual bound, Theorem~\ref{thm:asymptotic}.\\
+\(W_{-1}\) asymptotic as \(x\to0^-\) & \StatusF/\StatusA & Every fixed order;
+Theorem~\ref{thm:wm-asymptotic}.\\
+Hoorfar--Hassani bounds & \StatusA & Short proof in
+Theorem~\ref{thm:HH}.\\
+Iacono--Boyd enhanced bounds & \StatusA & Reduced to the correction equation
+(11.4), Theorem~\ref{thm:IB}.\\
+General one-parameter upper bound and specialization & \StatusA &
+Theorem~\ref{thm:general-upper}.\\
+Square/cube-root bounds on \([-1/e,0]\) & \StatusA &
+Theorem~\ref{thm:root-bounds}.\\
+Both secondary-branch bound families & \StatusA & Theorems
+\ref{thm:wm-near} and \ref{thm:wm-far}.\\
+Defining, logarithmic, multiplication, and addition identities & \StatusA &
+Theorems~\ref{thm:inverse-identities}--\ref{thm:compound-identities}.\\
+Branch-ratio parametrization & \StatusA & Proposition~\ref{prop:ratio}.\\
+Real special values and omega identities & \StatusA &
+Theorem~\ref{thm:special-values} and Corollary~\ref{cor:omega}.\\
+\(W_0(-\pi/2)=i\pi/2\) & Audit & Correct only after an upper-boundary branch
+convention; Audit~\ref{audit:pi-cut}.\\
+Poisson integral representation & \StatusD & Not reconstructed; requires a
+constructive Poisson/contour certificate.\\
+Kalugin--Jeffrey--Corless integral representation & \StatusD & Not
+reconstructed; finite quadrature tests are not a proof.\\
+Displayed continued fraction & \StatusD & Initial convergents can be checked,
+but no general recurrence/convergence certificate was supplied.\\
+Nested exponential and logarithm & \StatusA & Proved with explicit invariant
+interval and contraction witness; Theorems~\ref{thm:nested-exp} and
+\ref{thm:nested-log}.\\
+Gamma-family improper integrals & \StatusA & Theorem~\ref{thm:gamma-integrals}
+and Corollary~\ref{cor:more-integrals}.\\
+Affine/exponential equations & \StatusF/\StatusA & Exact branch-safe formulas,
+Theorem~\ref{thm:affine-exp}.\\
+Inverse of \(x^x\) & \StatusA & Corrected full branch count,
+Theorem~\ref{thm:superroot}.\\
+Rooted-tree EGF and Cayley coefficients & \StatusF/\StatusA & Prufer bijection
+and finite series identity, Theorem~\ref{thm:trees}.\\
+Bernoulli--Todd equation & \StatusF/\StatusA & Theorem~\ref{thm:todd}.\\
+Thermodynamic formula & \StatusF/\StatusA & Algebraic solution of the displayed
+equation, not the physical premise; Theorem~\ref{thm:thermo}.\\
+Wien stationary equation & \StatusF/\StatusA & Theorem~\ref{thm:wien}.\\
+Orthogonal trajectories & \StatusA & Integrated and checked by differentiation;
+Theorem~\ref{thm:orthogonal}.\\
+General equation \(e^{-cx}=a_0(x-r)\) & \StatusF/\StatusA &
+Theorem~\ref{thm:general-eqn}.\\
+Newton, Halley, logarithmic Newton & \StatusF/\StatusA & Formulae, guards, and
+generic certified convergence; Section~\ref{sec:numerics}.\\
+Published universal starting-value error constants & \StatusP & Recorded and
+stress-tested, but the source-specific global inequality certificates are not
+fully replayed.\\
+Piecewise minimax rational approximants & \StatusD & Evaluation is finite; the
+quoted uniform bit accuracy needs the external coefficient tables and proof.\\
+Software availability table & \StatusD & A time-sensitive implementation list,
+not a mathematical theorem.\\
+Physical and engineering occurrence claims & \StatusD & The displayed algebraic
+solutions may be checked, but the model derivations require their cited domain
+literature.\\
+Generalized Lambert functions with quadratic/infinite products & \StatusD & New
+functions, outside the standard inverse treated here.\\
+\bottomrule
+\end{longtable}
+
+\section{Validation, limitations, and reproducibility}\label{sec:validation}
+
+The script \code{scripts/verify\_lambert\_w.py} performs exact rational checks
+of the following finite assertions:
+\begin{enumerate}
+\item the first configurable number of coefficients of
+\(W e^W=X\);
+\item the power formulae (8.5)--(8.6) for several integer parameters;
+\item the recurrence (6.4) and higher-derivative formula through a configurable
+order;
+\item the Puiseux coefficients in (9.3)--(9.4);
+\item the positive coefficient identity (12.5a);
+\item the first asymptotic polynomials from the Stirling formula;
+\item representative real-branch identities, bounds, integrals, and iteration
+residuals at high precision.
+\end{enumerate}
+Exact rational or symbolic checks are evidence for the finite algebra.  Floating
+point tests are explicitly labelled diagnostics and are not substituted for a
+proof.  The generated \code{evidence/verification\_report.txt} records the
+parameters and results.  In the archived run, all 55 exact checks and 130
+high-precision diagnostics passed (185/185 total).
+
+The PDF is built from this source by \code{latexmk -pdf}.  The archive includes
+a checksum ledger.  The rendered PDF was inspected page by page for clipping,
+overlap, and broken glyphs.  No Lean executable was available in the build
+environment; therefore the Lean blueprints were not compiled, and this fact is
+recorded both here and in \code{lean/STATUS.md}.
+
+\subsection{Remaining mathematical limitations}
+
+The principal remaining formalization burden is not Lambert-specific algebra.
+It is reusable infrastructure: an efficient object-language library for rapid
+names and interval arithmetic, effective compact integration with change of
+variables, and path-based complex analytic continuation.  Once those layers
+exist, most theorems in this paper become short compositions of generic lemmas.
+The highly specialized integral representations and continued fraction would
+still require separate analytic developments.
+
+\section{Further research questions}\label{sec:further}
+
+\begin{enumerate}
+\item Can the real-branch inverse be implemented in \code{ConciseIPRA} with a
+single common interval-search combinator that also serves inverse trigonometric
+and algebraic functions?
+\item What is the smallest collection of quantitative analytic lemmas needed to
+turn the local path-lifting construction into all integer-indexed complex
+branches on standard slit domains?
+\item Can the \(n^{-3/2}\) boundary majorant for the Lambert series be proved by
+a shorter Wallis-product certificate than a general constructive Stirling
+formula?
+\item Is there a direct finite combinatorial proof of the power coefficients
+(8.5)--(8.6), extending the rooted-tree interpretation beyond the first power?
+\item Can the Hoorfar--Hassani and Iacono--Boyd inequalities be generated
+automatically by a verified ``candidate through monotone inverse'' tactic?
+\item Can all published starting-value constants for logarithmic Newton be
+replayed by interval certificates small enough for a practical \(\iPRA\)
+proof checker?
+\item Which of the Poisson and Kalugin--Jeffrey--Corless integral
+representations has the shortest constructive proof after the trigonometric and
+Riemann-integration packets are available?
+\item Can an effective Lindemann--Weierstrass theorem be isolated in a form
+weak enough for \(\iPRA\) yet strong enough to prove transcendence of
+\(W_k(\alpha)\) for nonzero algebraic \(\alpha\)?
+\item Can the branch-point Puiseux evaluator and logarithmic asymptotic evaluator
+be combined into a formally verified near-optimal real implementation with a
+small certificate language?
+\item Which scientific applications on the reference page reduce to a common
+verified affine-exponential equation compiler, and which genuinely require a
+generalized Lambert function?
+\end{enumerate}
+
+\section{Conclusion}
+
+The Lambert \(W\) function is well suited to a constrained constructive
+foundation.  Its global real behavior comes from two monotone pieces of one
+explicit elementary map; its local series is a finite Lagrange-inversion
+identity; its branch point is a finite ramified inversion; its asymptotics are
+formal reversion plus a residual bound; and its numerical evaluation is bounded
+interval arithmetic.  None of these steps requires excluded middle for real
+numbers, countable choice, or an impredicative completed function space.
+
+The resulting package proves most of the reference page's reusable mathematical
+formulas in the precise named-data sense appropriate to \(\iPRA\), while
+leaving a visible boundary around global complex topology, deep transcendence,
+specialized representations, and external scientific claims.  That boundary is
+not a defect: it identifies the exact reusable libraries needed for a complete
+Lean and object-theory development.
+
+\section*{Artifact inventory}
+\addcontentsline{toc}{section}{Artifact inventory}
+\begin{itemize}
+\item \code{lambert\_w\_ipra.tex} and \code{lambert\_w\_ipra.pdf}: this report.
+\item \code{THEOREM\_LEDGER.md} and \code{claims.json}: formula-by-formula status,
+guards, and proof locations.
+\item \code{lean/LambertWHostBlueprint.lean}: host-level data structures and
+analytic theorem skeletons.
+\item \code{lean/LambertWObjectBlueprint.lean}: intended integration with
+\code{PR}, \code{PRAAx}, \code{PRA.qfInd}, and \code{pra\_iff\_native}.
+\item \code{lean/STATUS.md}: exact formalization status and recommended build
+order.
+\item \code{scripts/verify\_lambert\_w.py}: exact symbolic checks and numerical
+diagnostics.
+\item \code{evidence/verification\_report.txt}: generated check results.
+\item \code{README.md}, \code{SOURCE\_AUDIT.md}, and \code{SHA256SUMS}.
+\end{itemize}
+
+\begin{thebibliography}{99}
+\bibitem{wikipedia}
+Wikipedia contributors,
+\emph{Lambert W function}, revision inspected 16 November 2026.
+\url{https://en.wikipedia.org/wiki/Lambert_W_function}
+
+\bibitem{corless}
+R. M. Corless, G. H. Gonnet, D. E. G. Hare, D. J. Jeffrey, and D. E. Knuth,
+``On the Lambert W function,''
+\emph{Advances in Computational Mathematics} 5 (1996), 329--359.
+
+\bibitem{hoorfar}
+A. Hoorfar and M. Hassani,
+``Inequalities on the Lambert W function and hyperpower function,''
+\emph{J. Inequal. Pure Appl. Math.} 9 (2008), Article 51.
+
+\bibitem{iacono}
+R. Iacono and J. P. Boyd,
+``New approximations to the principal real-valued branch of the Lambert
+W-function,'' \emph{Advances in Computational Mathematics} 43 (2017),
+1403--1436.
+
+\bibitem{loczi}
+L. Loczi,
+``Guaranteed- and high-precision evaluation of the Lambert W function,''
+\emph{Applied Mathematics and Computation} 433 (2022), 127406.
+
+\bibitem{chatz}
+I. Chatzigeorgiou,
+``Bounds on the Lambert function and their application to the outage analysis
+of user cooperation,'' \emph{IEEE Communications Letters} 17 (2013),
+1505--1508.
+
+\bibitem{proveit}
+V. Reshetnikov,
+\emph{ProveIt}, especially
+\code{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA} and the constructive
+analysis proof packets, repository inspected 16 November 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}
+
+\bibitem{lagrangePacket}
+\emph{Lagrange inversion in intuitionistic primitive recursive arithmetic},
+companion artifact in the user's ProveIt research corpus, 15 November 2026.
+
+\bibitem{trigPacket}
+\emph{Trigonometric identities in intuitionistic primitive recursive
+arithmetic}, companion artifact supplying rapid names, exponential, sine,
+cosine, and \(\pi\), 2026.
+\end{thebibliography}
+
+\end{document}

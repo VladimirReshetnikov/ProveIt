@@ -63,7 +63,7 @@ Euclid's theorem, Bézout's identity, `C(2n, n) ≤ 2^{2n}` and the Catalan iden
 
 ## Proof packets
 
-[`docs/proofs/`](docs/proofs/README.md) files 104 research packets, delivered from 14 to
+[`docs/proofs/`](docs/proofs/README.md) files 107 research packets, delivered from 14 to
 16 November 2026. Each gives a human-readable proof of a classical theorem in a finitary,
 quantitative form intended for iPRA. Most add exact-arithmetic reference code and a Lean plan
 or scaffold aimed at `ConciseIPRA`.
@@ -73,11 +73,11 @@ The packets are grouped by area:
 | Area | Packets | Examples |
 |---|---:|---|
 | [`algebra/`](docs/proofs/algebra/) | 9 | fundamental theorem of algebra, Puiseux expansions, Abel–Ruffini, Cayley–Hamilton, Bring radicals and quintics |
-| [`analysis/`](docs/proofs/analysis/) | 12 | fundamental theorem of calculus, Stirling's formula, the Gamma, Beta and Barnes G functions, the Gauss hypergeometric and Meijer G functions, residues |
+| [`analysis/`](docs/proofs/analysis/) | 13 | fundamental theorem of calculus, Stirling's formula, the Gamma, Beta and Barnes G functions, the Gauss hypergeometric and Meijer G functions, the Lambert W function, residues |
 | [`analytic-number-theory/`](docs/proofs/analytic-number-theory/) | 10 | prime number theorem, Dirichlet's theorem, the zeta functional equation |
 | [`combinatorics/`](docs/proofs/combinatorics/) | 3 | Bell numbers, Catalan numbers, Fibonacci and Lucas numbers |
 | [`diophantine-number-theory/`](docs/proofs/diophantine-number-theory/) | 12 | Pell equations, transcendence of e and π, Fermat for exponents divisible by 3, 4, 5 or 7, Siegel and Faltings analyses |
-| [`foundations/`](docs/proofs/foundations/) | 35 | cross-domain frameworks of certificates, moduli and finite contracts |
+| [`foundations/`](docs/proofs/foundations/) | 37 | cross-domain frameworks of certificates, moduli and finite contracts |
 | [`geometry/`](docs/proofs/geometry/) | 16 | isoperimetric inequality, Platonic solids, spherical trigonometry, Zariski descent, the hat monotile, the Conway criterion, pentagonal tilings |
 | [`probability/`](docs/proofs/probability/) | 4 | central limit theorems, expected value, medians, the normal distribution |
 | [`topology/`](docs/proofs/topology/) | 3 | Jordan curve theorem, invariance of dimension, observation towers |
@@ -86,10 +86,12 @@ The packets are grouped by area:
 [proofs README](docs/proofs/README.md) repeat what each packet says about itself. Many
 packets say that their Lean files are uncompiled outlines, or that they prove only part of
 what was asked; for example, the Faltings and Siegel packets do not prove the general
-theorems. Sixteen packets state that they construct derivations in `ConciseIPRA`'s `Prf PRAAx`,
+theorems. Eighteen packets state that they construct derivations in `ConciseIPRA`'s `Prf PRAAx`,
 all for framework rules and small examples:
 - `cifer_ipra_framework_2026-11-15`, in uncompiled source, for residual proof-graph
   compilation and boundary discharge by simultaneous cut;
+- `FINER-iPRA-framework-2026-11-16`, in an uncompiled wrapper file, for residual discharge by
+  simultaneous cut and for reuse and specialisation of closed derivations;
 - `ipra_categorical_methods`, in uncompiled source expressions, for inverse uniqueness,
   Yoneda components and contract cut;
 - `ipra_cbip_framework_2026-11-16`, in an uncompiled candidate, for a normalised
@@ -117,9 +119,12 @@ all for framework rules and small examples:
   equations of a backward demand pass;
 - `ipra_staged_contract_kernel_2026-11-15`, in uncompiled source, for staged specialisation
   by `Prf.subst`, `Prf.weaken` and `Prf.trans`;
-- `algebra/ipra_stable_observables`, for five observation combinators.
+- `algebra/ipra_stable_observables`, for five observation combinators;
+- `scoped_certificate_realization_ipra_2026-11-16`, in an uncompiled candidate, for boundary
+  discharge, context replacement, specialisation and sealing a certificate by existential
+  elimination.
 
-The first fifteen are in `foundations/`.
+All but `ipra_stable_observables` are in `foundations/`.
 
 No packet claims such a derivation for one of its main theorems; checked derivations of a
 number of them are in [`Derivations/`](Derivations/README.md). The proofs README also lists the

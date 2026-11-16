@@ -1,0 +1,105 @@
+\section{The proof-producing compiler}
+\label{sec:compiler}
+
+\subsection{A small program language}
+
+For exposition, an SCR program over context \(\Gamma\) and goal \(G\) is built
+from the following constructors.  These are a metalevel organization of
+existing proof rules, not new object-language syntax.
+
+\begin{description}
+\item[Local proof.]  Store an actual derivation \(\Gamma\turnstile G\).
+\item[Specialize.]  Substitute arbitrary terms for the free query variables.
+\item[Supply.]  Replace each formula in a local context by a derivation of it,
+using \code{Prf.trans}.
+\item[Seal.]  Combine \(\Gamma\turnstile\exists c\,V(c)\) with a continuation
+\(V,\Gamma^{\up}\turnstile G^{\up}\).
+\item[Boundary.]  When the producer is absent, retain
+\(\exists c\,V(c)\) as an assumption or implication antecedent.
+\item[Loop/strategy/observer.]  Invoke one of the reusable arithmetic
+reflection modules developed in later sections; each invocation itself ends in
+an ordinary \(\Prf\) derivation.
+\end{description}
+
+A finite directed acyclic graph can be converted to such a program by
+reverse topological traversal.  A node with proof-only outputs is cut into its
+consumers.  A node with a certificate output wraps the remaining consumers in
+one existential scope.  Boundary nodes become formulas in the outer context.
+
+\begin{theorem}[SCR compiler soundness]
+\label{thm:compiler}
+Let \(P\) be a well-scoped finite SCR program.  Suppose every local node carries
+an actual derivation of the judgment required by its constructor, and every
+arithmetic reflection node has its stated object-theory proof.  Then structural
+recursion on \(P\) constructs a term
+\[
+        \mathsf{compile}(P):\quad \Gamma_P\turnstile G_P.
+\]
+No host proposition about evaluator correctness is used as an object axiom.
+\end{theorem}
+
+\begin{proof}
+The local-proof case returns the stored term.  Specialization is
+\code{Prf.subst}.  Supply is \code{Prf.trans}; weakening aligns supercontexts.
+Seal is \code{Prf.exE}.  A boundary is a hypothesis and may be moved to the
+right by repeated \code{Prf.impI}.  The remaining constructors return the
+already supplied reflection derivation.  Every recursion is on the finite host
+syntax of \(P\), so termination is metatheoretic and does not require a
+universal object evaluator.
+\end{proof}
+
+\subsection{Boundary normal form}
+
+Let \(B_1,\ldots,B_r\) be the unresolved producer formulas reachable from the
+goal.  Compilation produces
+\[
+       B_1,\ldots,B_r,\Gamma\turnstile G.
+\]
+Repeated implication introduction gives
+\[
+       \Gamma\turnstile B_1\to\cdots\to B_r\to G.
+\]
+Alternatively, a finite conjunction can be used.  The context form is better
+for incremental discharge because \code{Prf.trans} can supply each boundary
+independently.
+
+The boundary set is \emph{dependency exact}: it contains exactly the unresolved
+nodes used by the chosen program after dead-node elimination.  It is not
+claimed logically minimal---one boundary may in principle follow from the
+others.  Such minimization is ordinary theorem proving and should not be hidden
+inside the compiler.
+
+\subsection{DAG sharing and proof size}
+
+Flattening a large graph to one Boolean checker is one way to control proof
+size.  SCR provides another.  Local proof constructors are named Lean
+definitions; contexts record interfaces rather than expanding proofs; and
+\code{Prf.trans} composes them.  Variable-length arithmetic work is compressed
+by a primitive-recursive trace plus one induction, while fixed logical work is
+shared by the host proof term.  A later optimization may compile a connected
+subgraph to \(\KPrf\), use \code{KPrf.cut} and \code{KPrf.subst}, and export it
+through the checked bridges.  This changes proof representation, not theorem
+meaning.
+
+\subsection{Compositional correctness under substitution}
+
+A frequent source of packet failure is proving a lemma only at generic
+variables and then informally using it at complex terms.  Every SCR node is
+required either to be stated at arbitrary terms or to be an open theorem
+specialized by \code{Prf.subst}.  Since substitution commutes with all formula
+constructors and the calculus proves closure under substitution, the compiler
+has the following property.
+
+\begin{proposition}[Naturality]
+If \(P\) compiles to \(\Gamma\turnstile G\), then for every simultaneous term
+substitution \(\sigma\), the specialized program compiles to
+\[
+  \Gamma[\sigma]\turnstile G[\sigma].
+\]
+\end{proposition}
+
+\begin{proof}
+Apply \code{Prf.subst} to the compiled derivation.  Equivalently, prove the
+claim by induction on the program and use the checked substitution laws under
+binders in the seal case.
+\end{proof}

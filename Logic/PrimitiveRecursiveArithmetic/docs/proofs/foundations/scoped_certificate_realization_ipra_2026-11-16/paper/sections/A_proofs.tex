@@ -1,0 +1,188 @@
+\section{Expanded proofs of the generic theorems}
+\label{app:proofs}
+
+This appendix writes the central arguments at the level needed to translate
+them to the repository's de Bruijn-scoped natural deduction.  We suppress only
+routine reassociation of list contexts.
+
+\subsection{One-certificate sealing}
+
+Let \(V\in\Fm\,\PTm\,(n+1)\), \(G\in\Fm\,\PTm\,n\), and
+\(\Gamma\subseteq\Fm\,\PTm\,n\).  The constructor
+\[
+\Prf.\mathsf{exE}:
+ \frac{\Gamma\turnstile\exists V
+       \qquad V::\Gamma^{\up}\turnstile G^{\up}}
+      {\Gamma\turnstile G}
+\]
+is exactly \cref{thm:seal}.  The side condition traditionally expressed as
+``the eigenvariable is not free in \(G,\Gamma\)'' is enforced by the types:
+\(G,\Gamma\) live at arity \(n\), while \(V\) lives at arity \(n+1\).
+Consequently no separate freshness proof is needed.
+
+For conditional closure, start under context
+\((\exists V)::\Gamma\).  The first premise of existential elimination is
+\code{Prf.hyp0}.  Its second premise expects
+\[
+ V::(\exists V)^{\up}::\Gamma^{\up}\turnstile G^{\up}.
+\]
+Weakening the original extractor inserts \((\exists V)^{\up}\).  Close
+existential elimination, then implication introduction.  This is why the
+source candidate's proof is only three lines.
+
+\subsection{Dependent sealing with exact shifts}
+
+Let
+\[
+ A\in\Fm\,\PTm\,(n+1),
+ \qquad B\in\Fm\,\PTm\,(n+2),
+ \qquad G\in\Fm\,\PTm\,n.
+\]
+Assume
+\[
+\begin{array}{ll}
+ p:&\Gamma\turnstile\exists A,\\
+ q:&A::\Gamma^{\up}\turnstile\exists B,\\
+ r:&B::A^{\up}::\Gamma^{\up\up}\turnstile G^{\up\up}.
+\end{array}
+\]
+The second premise for eliminating \(\exists B\) under the opened \(A\) is
+exactly \(r\), because shifting the local context
+\(A::\Gamma^{\up}\) gives \(A^{\up}::\Gamma^{\up\up}\).  Thus
+\[
+  q, r\quad\leadsto\quad
+  A::\Gamma^{\up}\turnstile G^{\up}.
+\]
+Eliminate \(\exists A\) with \(p\) to obtain \(G\).  For a chain of length
+\(k\), repeat.  For a DAG, choose a nesting order compatible with dependencies;
+all consumers of a certificate are proved before its scope closes.
+
+\subsection{Boundary collection}
+
+Suppose a compiled continuation has context
+\(B_r::\cdots::B_1::\Gamma\).  Repeated implication introduction gives
+\[
+ \Gamma\turnstile B_1\to\cdots\to B_r\to G,
+\]
+with the order reversed relative to the context stack.  If a user-facing order
+is required, use weakening and hypotheses to prove the desired permutation,
+or compile a conjunction
+\(B_1\wedge\cdots\wedge B_r\) and eliminate its fields.  The context form is
+canonical for Lean because \code{Prf.trans} takes a family of derivations for
+all members.
+
+If a producer \(p_i:\Gamma\turnstile B_i\) later becomes available, apply
+\code{Prf.trans} to replace that occurrence while leaving the other boundaries
+as hypotheses.  Thus packet completion is monotone: adding producers does not
+change downstream extractors.
+
+\subsection{Least accepted certificate}
+
+Let \(z(c,q)=0\) reflect \(V(q,c)\), and abbreviate
+\(m=\mu_z(B,q)\).  The checked theorem \code{search\_found} has, schematically,
+\[
+  z(c,q)=0,	hinspace c<B
+   \quad\turnstile\quad
+  m<B\wedge z(m,q)=0\wedge m\le c.
+\]
+Under an existential premise
+\(\exists c(c<B\wedge V(q,c))\), open \(c\), convert \(V\) to \(z=0\), and
+apply the theorem.  Its conclusion contains no \(c\) except the optional
+\(m\le c\) field.  Discard that field before closing the existential, obtaining
+\(m<B\wedge z(m,q)=0\).  Reflect back to \(V(q,m)\).
+
+For minimality, \code{search\_minimal} gives
+\[
+ d<m\quad\turnstile\quad z(d,q)\ne 0.
+\]
+Reflection yields \(\neg V(q,d)\).  If a first-order bounded universal is
+needed, introduce arbitrary \(d\), assume \(d<m\), and derive the implication;
+if a qf consumer is enough, retain the reflected no-counterexample term.
+
+\subsection{Trace reflection in arithmetic detail}
+
+Take Boolean failure terms, so every failure is \(0\) or \(1\).  Define
+\[
+  b_0=0,\qquad b_{i+1}=b_i+e_i.
+\]
+The checked natural-number arithmetic proves
+\[
+ b_i+e_i=0\to b_i=0\wedge e_i=0.
+\]
+One proof uses \(b_i\le b_i+e_i\) and \(e_i\le b_i+e_i\), then equality to
+zero and antisymmetry.  Another uses the zero-or-success decomposition: if
+either summand were a successor, the sum would be a successor and hence
+nonzero.  The first style reuses order lemmas; the second often gives a smaller
+proof term.
+
+The induction formula
+\[
+ \Phi(i)=\bigl(b_i=0\to I(s_i)=1\bigr)
+\]
+is qf because equality and implication preserve \(\Fm.\qf\).  At zero,
+\(s_0=\mathsf{init}\) and \(b_0=0\); congruence transports the initialization
+proof.  At a successor, assume \(b_{i+1}=0\), split it, apply the induction
+hypothesis to \(b_i=0\), and instantiate local preservation at the current
+state and decoded action.  Defining equations for \(s_{i+1}\) complete the
+congruence step.
+
+If \(\Trace(N,\tau)\) also contains a terminal check, put that check in
+\(e_N\) and run the recursion for \(N+1\), or conjoin it after the prefix
+invariant.  The latter keeps the state horizon conventional.
+
+\subsection{Exact observers}
+
+Assume
+\[
+ V(c),V(d)\turnstile O(c)=O(d).
+\]
+Define the output formula with an existential certificate.  To prove
+single-valuedness, start from two output hypotheses.  Eliminate the first
+existential, then the second.  The local context contains
+\[
+ V(c), O(c)=o, V(d), O(d)=o'.
+\]
+By independence, \(O(c)=O(d)\).  Equality symmetry and transitivity give
+\(o=o'\).  Since the result is in the outer scope, close both existential
+eliminations.
+
+The same proof works for an observed relation \(R(c,o)\) if pairwise valid
+certificates and their output witnesses imply output equality.  Thus the
+observer need not be a term; it may itself be a small relational certificate.
+
+\subsection{Diameter and gap arithmetic}
+
+Suppose a rational metric is represented by a nonnegative numerator after a
+common positive denominator is cleared.  The triangle inequality has the
+form
+\[
+ D(x,z)\le D(x,y)+D(y,z).
+\]
+Under the four assumptions of the gap lemma,
+\[
+\begin{aligned}
+ g&\le D(\ell_i,\ell_j)\\
+  &\le D(\ell_i,o)+D(o,o')+D(o',\ell_j)\\
+  &\le e+\delta+e<g,
+\end{aligned}
+\]
+a contradiction by transitivity and irreflexivity of strict order.  In object
+arithmetic, each rational is a numerator/denominator record and the final
+strict inequality is cross-multiplied by the product of positive denominators.
+All positivity assumptions belong to the validator.
+
+\subsection{Finite-strategy soundness}
+
+For a \(\forall x<B\exists y<C(x)\) formula, a strategy table is simply a
+bounded array \(y_x\).  Its verifier says every digit is below \(C(x)\) and
+the matrix holds at \((x,y_x)\).  To prove the formula, introduce arbitrary
+\(x\), assume \(x<B\), instantiate the verifier's no-failure theorem at \(x\),
+and introduce \(y_x\).  For one more universal level, table entries are
+subtables indexed by the preceding history.  Fixed-shape soundness is therefore
+a finite nesting of the same argument.
+
+Completeness uses bounded search for a winning response at each existential
+history.  A universal node packages all finitely many recursively generated
+subtables.  The proof that the package verifies is a qf induction over the
+history enumeration.  The table code bound is the product of explicit move
+radices.  No infinite strategy or function space occurs.

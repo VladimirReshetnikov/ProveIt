@@ -321,6 +321,14 @@ deleted. It leaves out one ignored checksum manifest.
 way, under `foundations/`, and then deleted. All 5 of its members are placed.
 `meijer_g_ipra_2026-11-16.zip` was placed the same way, under `analysis/`, and then deleted.
 It leaves out one ignored checksum manifest and one ignored `.log` file.
+`FINER-iPRA-framework-2026-11-16.zip` was placed the same way, under `foundations/`, and
+then deleted; its wrapper directory is `finer_ipra_framework_2026-11-16`. It leaves out one
+ignored checksum manifest and one ignored `.log` file.
+`scoped_certificate_realization_ipra_2026-11-16.zip` was placed the same way, under
+`foundations/`, and then deleted. It leaves out its checksum manifest, `MANIFEST.sha256`,
+and one ignored `.log` file. `lambert_w_ipra_2026-11-16.zip` was placed the same way, under
+`analysis/`, and then deleted; its wrapper directory is `lambert_w_ipra`. It leaves out one
+ignored checksum manifest.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

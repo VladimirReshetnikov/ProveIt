@@ -1,0 +1,129 @@
+\section{Finite monotone demand closure}
+\label{sec:demand}
+
+Precision propagation is often presented as a reverse pass over an acyclic graph.  That is insufficient when two modules demand finer data from one another.  The apparent cycle need not be fatal: if demands are bounded, monotone, and combined by maximum, the least simultaneous solution is obtained by finite iteration.
+
+\subsection{Finite product of chains}
+
+Fix a dimension \(m\) and capacities \(C_0,\ldots,C_{m-1}\).  Let
+\[
+  D=\prod_{i<m}\{0,1,\ldots,C_i\}
+\]
+with componentwise order.  Write \(x\vee y\) for componentwise maximum.  Let \(F:D\to D\) be monotone:
+\begin{equation}
+  x\leq y\quad\Longrightarrow\quad F(x)\leq F(y).
+  \label{eq:demand-monotone}
+\end{equation}
+Define
+\begin{equation}
+  x^0=\vec 0,
+  \qquad
+  x^{t+1}=x^t\vee F(x^t).
+  \label{eq:demand-iteration}
+\end{equation}
+Let
+\begin{equation}
+  H=\sum_{i<m}C_i,
+  \qquad
+  \rank(x)=\sum_{i<m}x_i.
+  \label{eq:demand-rank}
+\end{equation}
+
+\begin{lemma}[Inflation and bounded rank]
+\label{lem:demand-inflation}
+For every \(t\), \(x^t\leq x^{t+1}\) and \(\rank(x^t)\leq H\).  If \(x^t\neq x^{t+1}\), then
+\[
+  \rank(x^{t+1})\geq \rank(x^t)+1.
+\]
+\end{lemma}
+
+\begin{proof}
+Inflation is immediate from the definition of componentwise maximum.  Every coordinate of every iterate lies between zero and its capacity because both arguments of the join do.  Summing gives the rank bound.  If the vectors differ, inflation implies that some coordinate strictly increases.  Natural-number strict increase means an increase by at least one; all other coordinates do not decrease.  Summing the coordinate inequalities gives the strict rank inequality.
+\end{proof}
+
+\begin{theorem}[Finite stabilization]
+\label{thm:demand-stabilization}
+The iteration is stable at time \(H\):
+\begin{equation}
+  x^{H+1}=x^H.
+  \label{eq:demand-stable}
+\end{equation}
+Consequently \(F(x^H)\leq x^H\).
+\end{theorem}
+
+\begin{proof}
+Assume for contradiction that \(x^{H+1}\neq x^H\).  We first show that every earlier transition is also strict.  If \(x^{t+1}=x^t\) for some \(t\), then \(F(x^t)\leq x^t\).  Hence the same update repeats \(x^t\), so by induction all later iterates are equal.  This would contradict strictness at \(H\).
+
+Thus the transitions \(0\to1,1\to2,\ldots,H\to H+1\) are all strict.  Repeated application of \cref{lem:demand-inflation}, starting from rank zero, gives
+\[
+  \rank(x^{H+1})\geq H+1.
+\]
+But every vector in \(D\) has rank at most \(H\), contradiction.  Therefore \eqref{eq:demand-stable} holds.  Expanding the update equation gives
+\[
+  x^H\vee F(x^H)=x^H,
+\]
+which is equivalent componentwise to \(F(x^H)\leq x^H\).
+\end{proof}
+
+The proof deliberately uses \(H+1\) transitions.  This avoids a subtle off-by-one ambiguity when the rank reaches its maximum exactly at time \(H\).
+
+\begin{theorem}[Least prefixed point]
+\label{thm:demand-least}
+Let \(y\in D\) satisfy \(F(y)\leq y\).  Then \(x^H\leq y\).  Hence \(x^H\) is the least prefixed point of \(F\), and also the least fixed point of the inflationary map \(G(x)=x\vee F(x)\).
+\end{theorem}
+
+\begin{proof}
+We prove \(x^t\leq y\) by induction on \(t\).  The base \(\vec0\leq y\) is immediate.  If \(x^t\leq y\), monotonicity gives \(F(x^t)\leq F(y)\leq y\).  Both \(x^t\) and \(F(x^t)\) are below \(y\), so their join \(x^{t+1}\) is below \(y\).  Instantiate at \(H\).  By \cref{thm:demand-stabilization}, \(x^H\) is itself prefixed, so it is least.
+\end{proof}
+
+\subsection{Why the theorem is available in iPRA}
+
+For fixed \(m\), all vector operations are tuples of primitive-recursive terms.  For variable \(m\), vectors are packed arrays, and componentwise comparison and sums are bounded folds.  The following formulas can therefore be made quantifier-free after Boolean reflection:
+\begin{itemize}[leftmargin=2em]
+\item every coordinate lies below its capacity;
+\item the current iterate is componentwise below the next;
+\item a strict vector change raises rank;
+\item an arbitrary prefixed point bounds the current iterate.
+\end{itemize}
+The trace \(x^t\) is a primitive-recursive iterator.  \cref{lem:demand-inflation} and the leastness induction use the checked \texttt{ind} rule.  The finite sum is supplied by \texttt{sumF} or a specialized fixed-arity term.  The final contradiction is arithmetic order reasoning.
+
+A particularly formalization-friendly invariant is
+\begin{equation}
+  \mathsf{Bounded}(x^t)\;\wedge\;
+  x^t\leq y\;\wedge\;
+  \rank(x^t)\geq \mathsf{strictCount}(t),
+  \label{eq:demand-invariant}
+\end{equation}
+where \(\mathsf{strictCount}\) counts transitions whose equality bit is zero.  One then proves \(\mathsf{strictCount}(H+1)\leq H\).  An even smaller proof avoids storing the count: assume the final step is strict, derive by backward persistence that all earlier steps are strict, and use a forward rank induction.  The first version is more uniform for generated proofs; the second is shorter for a fixed graph.
+
+\subsection{Capped transformers and invalid demands}
+
+Real demand functions may propose values larger than their declared capacities.  Define
+\[
+  \widehat F_i(x)=\min(F_i(x),C_i).
+\]
+The clipped transformer is primitive recursive and monotone.  Its least closure exists by the preceding theorem.  However, clipping can conceal an unsatisfied request.  FINER therefore adds an overflow bit
+\[
+  \mathsf{overflow}(x)=1
+  \quad\Longleftrightarrow\quad
+  \exists i<m\;F_i(x)>C_i.
+\]
+A successful contract requires overflow zero at the closure.  If the bit is one, the compiler reports a residual asking for larger capacities or rejects the specialization; it does not pretend the clipped demand is adequate.
+
+\subsection{From cyclic graph to finite schedule}
+
+Let every graph edge carry a monotone demand transformer.  The global \(F\) takes, for each node, the maximum of all demands received from its consumers and the node's intrinsic minimum.  The closure \(d^*=x^H\) simultaneously fixes all query precisions, horizons, mesh levels, and certificate bounds.  Every node can then be specialized at \(d^*\).  A computational cycle is handled separately by an explicit clocked iterator or relational transcript; the demand cycle itself has disappeared into a finite certificate.
+
+\begin{corollary}[Minimal adequate specialization]
+If \(d\) satisfies every declared demand constraint, then \(d^*\leq d\).  Thus FINER does not silently over-strengthen residual producer obligations beyond the least capped solution.
+\end{corollary}
+
+\begin{proof}
+The demand constraints say exactly \(F(d)\leq d\).  Apply \cref{thm:demand-least}.
+\end{proof}
+
+This minimality is useful for analytical estimates: a producer only has to meet the precision actually forced by the finite consumer, not a globally chosen all-purpose precision.
+
+\subsection{Executable certificate}
+
+The accompanying reference implementation returns the entire trace, the closure, and the stabilization index.  A separate verifier recomputes every join step, checks the final prefix condition, and checks the rank bound.  A brute-force routine verifies leastness on small examples.  These tests illustrate the theorem but do not replace its object-language proof.

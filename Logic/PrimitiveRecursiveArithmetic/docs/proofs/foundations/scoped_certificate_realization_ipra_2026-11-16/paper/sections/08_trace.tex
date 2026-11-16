@@ -1,0 +1,128 @@
+\section{Trace-sealed primitive recursion}
+\label{sec:trace}
+
+Adaptive algorithms and relational constructions are the point at which fixed
+proof graphs meet variable object parameters.  A proof cannot contain one
+existential-elimination rule for each of an object-variable number \(N\) of
+steps.  SCR packages the entire interaction as one finite trace certificate
+and reflects it by one quantifier-free induction.
+
+\subsection{Normalized trace data}
+
+Fix a query \(q\), horizon \(N\), action bound \(M(q,N)\), and an action code
+\(\tau<M^N\).  Let \(a_i=\mathsf{digit}_M(\tau,i)\).  Define by primitive
+recursion
+\[
+\begin{aligned}
+  \State(q,\tau,0)&=\mathsf{init}(q),\\
+  \State(q,\tau,i+1)&=\mathsf{next}(q,i,\State(q,\tau,i),a_i),\\
+  \Bad(q,\tau,0)&=0,\\
+  \Bad(q,\tau,i+1)&=\Bad(q,\tau,i)+
+     \mathsf{fail}(q,i,\State(q,\tau,i),a_i).
+\end{aligned}
+\]
+The failure bit includes the digit bound, the local relational checker, and
+any resource side condition.  The trace validator is the quantifier-free
+equation
+\[
+       \Trace(q,N,\tau)\;:\!\Longleftrightarrow\;
+       \Bad(q,\tau,N)=0.
+\]
+A final-state predicate may be included in \(\mathsf{fail}\) at a terminal
+stage or checked separately.
+
+\subsection{Prefix reflection}
+
+Let \(I(q,s)\) be a reflected invariant bit.  Assume object derivations of:
+\[
+\begin{aligned}
+  &I(q,\mathsf{init}(q))=1,\\
+  &I(q,s)=1\wedge\mathsf{fail}(q,i,s,a)=0
+      \;\longrightarrow\;
+    I(q,\mathsf{next}(q,i,s,a))=1,\\
+  &\Bad(q,\tau,i+1)=0
+      \;\longrightarrow\;
+    \Bad(q,\tau,i)=0\wedge\mathsf{fail}(q,i,\State_i,a_i)=0.
+\end{aligned}
+\]
+The third line is a reusable arithmetic lemma about a sum of nonnegative
+Boolean values.
+
+\begin{theorem}[Trace reflection]
+\label{thm:trace}
+iPRA proves
+\[
+  \Trace(q,N,\tau)\;\longrightarrow\;
+  I(q,\State(q,\tau,N))=1.
+\]
+\end{theorem}
+
+\begin{proof}
+Apply quantifier-free induction to
+\[
+  \Phi(i)\equiv
+  \Bad(q,\tau,i)=0\to I(q,\State(q,\tau,i))=1.
+\]
+At zero use the initialization theorem.  At a successor, assume
+\(\Bad(i+1)=0\); split it into \(\Bad(i)=0\) and local failure zero, invoke the
+induction hypothesis, then the local preservation theorem.  Every displayed
+formula is a Boolean combination of equalities and inequalities between
+\(\PTm\) terms, so \(\Phi.\qf\) is obtained structurally.  Instantiate the
+result at \(N\).
+\end{proof}
+
+\subsection{Sealed trace theorem}
+
+If a producer proves \(\exists\tau\,\Trace(q,N,\tau)\), open \(\tau\), apply
+\cref{thm:trace}, derive a final goal not mentioning \(\tau\), and seal it.
+No trace code escapes.  If the final result includes the computed endpoint,
+two alternatives are available:
+\begin{enumerate}[label=(\alph*)]
+\item expose the relational output
+\(\exists\tau\,[\Trace(q,N,\tau)\wedge o=O(\State_N)]\);
+\item prove observer independence or select a bounded least trace and define a
+      term-valued endpoint.
+\end{enumerate}
+
+\subsection{Changing precision and state-dependent demand}
+
+The state record may contain the current precision, mesh, error budget,
+remaining fuel, and any finite summary of previous observations.  Therefore a
+changing precision does not change the induction formula; it changes a field
+of \(\State_i\).  The fixed invariant is a relation between those fields.  This
+resolves the common packet mistake of trying to perform a separate induction
+whose formula changes with the stage.
+
+A reverse demand pass can itself be normalized as a trace.  Start from the
+consumer's final demand, apply primitive-recursive transfer functions
+backwards through a fixed graph, and store the resulting resource vector in the
+initial state of the forward replay.  If demands are cyclic, use inflationary
+iteration on a bounded product lattice.
+
+\begin{proposition}[Bounded cyclic demand closure]
+Suppose \(F:[0,R_1]\times\cdots\times[0,R_k]\to
+[0,R_1]\times\cdots\times[0,R_k]\) is componentwise inflationary.  Starting
+at \(0\) and iterating \(F\), a fixed point is reached in at most
+\(1+\sum_j R_j\) stages.
+\end{proposition}
+
+\begin{proof}
+If a stage is not fixed, at least one component increases by at least one, so
+the rank \(\sum_j x_j\) strictly increases.  It is bounded by
+\(\sum_jR_j\).  All comparisons and the rank invariant are quantifier-free,
+so the proof is a qf-induction template in iPRA.
+\end{proof}
+
+\subsection{Producer modes for traces}
+
+There are three distinct trace producers.
+\begin{description}
+\item[Deterministic.]  The action is a PR function of the state.  No external
+certificate is needed; the state recursion itself is the trace.
+\item[Boundedly searchable.]  A complete trace is below an explicit cutoff and
+has a reflected verifier.  Use whole-trace least search if a name is required,
+or seal its existence otherwise.
+\item[Relational boundary.]  The application proves or assumes only
+\(\exists\tau\,\Trace\), perhaps from a deep finite-cover or descent theorem.
+Keep this exact existential as the producer boundary.
+\end{description}

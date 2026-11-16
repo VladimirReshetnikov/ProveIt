@@ -1,0 +1,38 @@
+{
+  "name": "Exact rational bisection for y^3+y=x",
+  "query": {
+    "parameters": ["x", "lo", "hi", "k"],
+    "finite_demand": "a bracket of width (hi-lo)/2^k"
+  },
+  "boundaries": [],
+  "nodes": [
+    {
+      "id": "initial-bracket",
+      "kind": "local-proof",
+      "dependencies": [],
+      "conclusion": "f(lo) <= x <= f(hi)",
+      "proof_status": "human-proof",
+      "notes": "Application premise; exact after clearing rational denominators."
+    },
+    {
+      "id": "branch-trace",
+      "kind": "trace-reflection",
+      "dependencies": ["initial-bracket"],
+      "certificate_formula": "Trace(x,lo,hi,k,tau)",
+      "escape_class": "observed",
+      "conclusion": "BracketInvariant(x,lo_k(tau),hi_k(tau))",
+      "proof_status": "human-proof",
+      "notes": "One quantifier-free induction on the trace prefix."
+    },
+    {
+      "id": "final-width",
+      "kind": "stable-observer",
+      "dependencies": ["branch-trace"],
+      "escape_class": "observed",
+      "conclusion": "hi_k-lo_k=(hi-lo)/2^k and f(lo_k)<=x<=f(hi_k)",
+      "proof_status": "human-proof"
+    }
+  ],
+  "goal": "certified k-step rational bracket for the unique solution",
+  "status": "human-complete"
+}

@@ -1,0 +1,165 @@
+\section{Lean architecture and path to completion}
+\label{sec:lean}
+
+\subsection{Small trusted-facing kernel}
+
+The supplied \code{lean/ScopedCertificate/Kernel.lean} contains only structural
+wrappers around checked declarations.  Its core is represented by the
+following source shape.
+
+\begin{lstlisting}[language=Lean]
+structure Contract (n : Nat) (Gamma : List (Fm PTm n))
+    (goal : Fm PTm n) where
+  valid : Fm PTm (n + 1)
+  extract : valid :: Gamma.map Fm.shift
+      |- [PRAAx] goal.shift
+
+namespace Contract
+
+theorem close (C : Contract n Gamma goal)
+    (producer : Gamma |- [PRAAx] Fm.ex C.valid) :
+    Gamma |- [PRAAx] goal :=
+  .exE producer C.extract
+
+theorem conditional (C : Contract n Gamma goal) :
+    Gamma |- [PRAAx] (Fm.ex C.valid) --> goal := by
+  apply Prf.impI
+  apply Prf.exE Prf.hyp0
+  exact C.extract.weaken (by simp)
+end Contract
+\end{lstlisting}
+
+The ASCII rendering above abbreviates the repository's Unicode notation; the
+archive contains the exact source.  The file also packages boundary
+introduction, discharge, simultaneous context replacement, and specialization.
+It introduces no axiom, semantic model, or evaluator.
+
+The runtime used to create this archive did not contain Lean, so the file is a
+source-audited candidate rather than a compiled result.  Its declarations use
+exact constructor shapes from the pinned \code{Deduction.lean}; the first
+repository milestone is to elaborate it and place every declaration in the
+axiom audit.
+
+\subsection{Proposed module layout}
+
+\begin{verbatim}
+IPRADerivations/Framework/ScopedCertificate/
+  Kernel.lean          -- exE/trans/subst/weaken wrappers
+  Boolean.lean         -- reflected atoms and fixed bounded syntax
+  Selection.lean       -- adapter to Core.Search
+  Coding.lean          -- bounded arrays and digit equations
+  Trace.lean           -- state/failure recursion and prefix invariant
+  Strategy.lean        -- fixed bounded game shapes
+  Observer.lean        -- exact, diameter, and gap theorems
+  Boundary.lean        -- boundary collection and implication form
+  Examples/
+    CubicBisection.lean
+    WholePath.lean
+    CarrierMap.lean
+    HeightList.lean
+IPRABridge/Open.lean    -- open finite-context transport
+\end{verbatim}
+
+\subsection{Representative target signatures}
+
+The concrete syntax will be adjusted to existing arity combinators, but the
+object-theory endpoints should have the following shapes.
+
+\paragraph{Least accepted code.}
+\begin{lstlisting}[language=Lean]
+theorem leastAccepted
+    (check : PTm 2) (bound query : PTm n)
+    (existsAccepted : Gamma |- [PRAAx]
+      Fm.ex (lt (var 0) (shift bound) /\
+        inst2 check (var 0) (shift query) == zero)) :
+    Gamma |- [PRAAx]
+      lt (Search.mu check bound query) bound /\
+      inst2 check (Search.mu check bound query) query == zero
+\end{lstlisting}
+The actual existential body must use the repository's de Bruijn substitutions;
+\code{Search.search\_found} supplies the proof.
+
+\paragraph{Trace prefix.}
+\begin{lstlisting}[language=Lean]
+theorem prefixInvariant
+    (data : TraceData)
+    (init_ok : ...)
+    (step_ok : ...)
+    (split_bad : ...) :
+    [] |- [PRAAx]
+      bad data (var 0) == zero -->
+      inv data (state data (var 0)) == one
+\end{lstlisting}
+The proof is one call to \code{IPRA.ind}; the formula's \code{QF} proof is a
+structural tuple of the existing equality/order qf lemmas.
+
+\paragraph{Observer erasure.}
+\begin{lstlisting}[language=Lean]
+theorem observer_unique
+    (independent : valid c /\ valid d |- [PRAAx]
+      obs c == obs d) :
+    out o :: out o' :: Gamma |- [PRAAx] o == o'
+\end{lstlisting}
+A practical version packages the existential output relation and handles the
+required shifts once.
+
+\subsection{Dependency order}
+
+The implementation should proceed bottom-up.
+
+\begin{enumerate}[label=(M\arabic*)]
+\item Elaborate the structural kernel; this tests only scoping.
+\item Add reflected Boolean combinators using existing equality, order, sign,
+      and bounded-sum lemmas.
+\item Implement the search adapter and a named-selector example.
+\item Add fixed-base digit extraction and prove its range and substitution
+      equations.
+\item Implement trace state/failure recursion and the one-induction theorem.
+\item Add exact and diameter observers; these depend only on the structural
+      kernel and arithmetic metrics.
+\item Implement the \(\forall\exists\) strategy shape, then abstract fixed
+      alternation.
+\item Expose the open bridge and run cross-formalization tests.
+\item Migrate packets only after the reusable layer passes the axiom audit.
+\end{enumerate}
+
+This order deliberately postpones a large graph DSL.  A DSL is convenient only
+after its primitive combinators are checked.  The repository already has
+several graph blueprints; another one would not close the core gap.
+
+\subsection{Axiom and status discipline}
+
+Every new file should be checked with the repository's existing
+\code{\#print axioms} infrastructure.  The expected metatheoretic dependencies
+may include the same Mathlib principles already reported by
+\code{IPRADerivations}; there must be no \code{sorryAx}.  A theorem signature,
+a structure containing a theorem field, or a host test must never be listed as
+an implemented object proof.
+
+The recommended ledger columns are:
+\[
+\begin{array}{l|l}
+\text{status} & \text{meaning}\\\hline
+\mathsf{upstream\ checked} & existing declaration compiled in the pinned repo\\
+\mathsf{candidate} & no-placeholder source, not elaborated here\\
+\mathsf{human\ complete} & full mathematical proof in this report\\
+\mathsf{executable} & finite reference computation/tests only\\
+\mathsf{blueprint} & exact target and dependency path, proof not built\\
+\mathsf{conditional} & conclusion depends on an explicit producer formula
+\end{array}
+\]
+
+\subsection{Pilot migrations}
+
+Four pilots cover the framework's essential cases.
+
+\begin{description}
+\item[Finite arithmetic.]  Repackage an already checked finite-sum theorem as a
+contract, testing substitution and context composition without new arithmetic.
+\item[Cubic bisection.]  Test state records, exact rational guards, and trace
+reflection.
+\item[Carrier map.]  Test sealed noncanonical selections and an exact observer.
+\item[Height list.]  Test a fully checked verifier whose global conclusion is
+conditional on one explicit producer boundary.
+\end{description}
+Once these compile, later packets can share the same small trusted-facing API.

@@ -1,0 +1,137 @@
+\section{Fixed bounded formulas and Boolean reflection}
+\label{sec:reflection}
+
+The arithmetic compiler needs a uniform way to turn a finite verification
+condition into quantifier-free equations.  The phrase ``bounded formula'' is
+potentially misleading: a bounded quantifier is still a quantifier in the
+syntax, whereas the induction scheme of \(\PRAAx\) accepts only formulas
+recognized by \(\Fm.\qf\).  SCR therefore compiles bounded logic to
+primitive-recursive data and proves reflection separately.
+
+\subsection{Reflected atoms}
+
+A reflected atom over \(n\) variables consists of a formula \(A\), a bit term
+\(b_A\), a proof that \(b_A\) is Boolean, and derivations connecting its two
+values with \(A\):
+\[
+\begin{aligned}
+   &\turnstile b_A=0\;\vee\;b_A=1,\\
+   &b_A=1\turnstile A,\\
+   &A\turnstile b_A=1.
+\end{aligned}
+\]
+Equality, order, divisibility with a supplied quotient, and all polynomial
+identities used by the packet layer have such characteristic terms in the
+checked arithmetic library or can be constructed from them.  Negation is
+represented by complement, conjunction by multiplication of bits, and
+disjunction by the sign of their sum.  Each combinator carries object proofs.
+
+This is intentionally a \emph{specialization-time} interface.  A Lean
+structure may hold \((A,b_A,\pi_A)\), and a recursive Lean function may combine
+these structures.  It emits a fixed term and a fixed derivation.  No natural
+number inside iPRA is asked to interpret arbitrary syntax.
+
+\subsection{Bounded existential search}
+
+Let \(b(i,q)\) be a Boolean term and put
+\[
+  z(i,q)=1-b(i,q),
+\]
+using the repository's truncated subtraction convention.  A witness with
+\(b=1\) is a zero of \(z\).  Define
+\[
+   \mu(N,q)=\mathsf{Search.mu}(z,N,q).
+\]
+The checked theorem \code{search\_spec} gives
+\[
+\begin{aligned}
+  &\mu(N,q)\le N,\\
+  &\mu(N,q)<N\to z(\mu(N,q),q)=0,\\
+  &i<\mu(N,q)\to z(i,q)\ne 0.
+\end{aligned}
+\]
+Thus the quantifier-free formula
+\[
+   E_b(N,q)\;:\!\Longleftrightarrow\;
+   \mu(N,q)<N\;\wedge\;b(\mu(N,q),q)=1
+\]
+serves as the reflected bounded existential.  From \(E_b\) one introduces the
+ordinary existential with witness \(\mu\); from any ordinary witness
+\(i<N\) with \(b(i,q)=1\), \code{search\_found} proves \(E_b\).  The proof of
+existential reflection therefore uses the existing qf induction hidden inside
+\code{Search}, not induction on a quantified formula.
+
+\begin{theorem}[Bounded-existential reflection]
+For every fixed reflected atom family \(A(i,q)\), there is a fixed
+quantifier-free formula \(E_A(N,q)\) and iPRA derivations
+\[
+  E_A(N,q)\to\exists i\,(i<N\wedge A(i,q))
+  \qquad	ext{and}\qquad
+  \bigl(i<N\wedge A(i,q)\bigr)\to E_A(N,q).
+\]
+Consequently one may derive the expected biimplication after existential
+elimination on the reverse direction.
+\end{theorem}
+
+\begin{proof}
+Use the least-search construction above.  Boolean reflection converts
+\(A(i,q)\) to \(z(i,q)=0\).  In the forward direction instantiate the
+existential at \(\mu(N,q)\).  In the reverse direction retain the existential
+witness locally and apply \code{search\_found}; the resulting formula does not
+mention the witness, so existential elimination closes it.
+\end{proof}
+
+\subsection{Bounded universal verification}
+
+A bounded universal is handled by searching for a counterexample.  Let
+\(c(i,q)=b_A(i,q)\), interpreted so that \(c=0\) means failure.  Put
+\[
+  U_A(N,q)\;:\!\Longleftrightarrow\;\mu_c(N,q)=N.
+\]
+If \(i<N\) and \(A(i,q)\) failed, the reflected zero and
+\code{search\_found} would imply \(\mu_c<N\), contradicting \(U_A\).  Conversely,
+if every \(i<N\) satisfies \(A\), \(\mu_c<N\) would expose a counterexample by
+\code{search\_spec}.  The reasoning is intuitionistic because equality and
+order on natural-number terms are decidable in the reflected fragment.
+
+For trace checking it is often cheaper to use a failure sum
+\(\sum_{i<N}\mathsf{fail}(i,q)\) instead of a least counterexample.  The two
+forms are interderivable for Boolean summands.  Search is preferable when the
+counterexample index will be used; a sum is preferable when only global
+validity matters.
+
+\subsection{Fixed bounded syntax}
+
+A useful Lean implementation has a host datatype with constructors
+\[
+  \mathsf{atom},\quad \wedge,\quad\vee,\quad\to,\quad
+  \exists{<}t,\quad\forall{<}t.
+\]
+Each atom contains its reflected bit package.  The compiler recursively emits:
+\begin{enumerate}[label=(\alph*)]
+\item the ordinary formula used for human-facing statements;
+\item a quantifier-free characteristic formula or verifier term;
+\item derivations in both directions;
+\item a proof of quantifier-freeness for every invariant later passed to
+      \code{PRA.qfInd}.
+\end{enumerate}
+The recursion is a Lean recursion on the fixed host syntax.  Bounded
+quantifiers invoke the search adapters above.  This precisely avoids the
+impossible requirement of a total universal primitive-recursive evaluator for
+all PR codes.
+
+\subsection{Arrays and finite tuples}
+
+The framework needs two coding modes.
+
+\begin{description}
+\item[Structural tuples.]  For a fixed number of fields, use nested pairing and
+the checked projection equations.  This is best for query and state records.
+\item[Bounded arrays.]  If every entry is below \(B\), code
+\(a_0,\ldots,a_{N-1}\) by \(\sum_{i<N}a_i B^i\).  Digit extraction is quotient
+and remainder by \(B^i\).  This is best for traces and strategy tables.
+\end{description}
+
+Mixed-radix coding is a derived optimization when field bounds differ.  SCR
+requires a proof of every radix bound.  It never infers a code cutoff from a
+statement that there are only finitely many mathematical objects.

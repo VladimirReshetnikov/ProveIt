@@ -1,0 +1,189 @@
+\section{Reusable mathematical representation templates}
+\label{sec:templates}
+
+SCR is not a single coding of all mathematics.  It is a disciplined way to
+connect domain-specific finite presentations to the same proof-producing
+kernel.  This section records the templates that cover most current packets.
+
+\subsection{Finite algebra and exact linear algebra}
+
+A polynomial, matrix, finite module map, or chain complex is represented by a
+bounded coefficient table.  A certificate may contain row operations,
+cofactor expansions, a null vector, an ideal combination, a multiplication
+table, or a basis change.  The validator checks coefficientwise identities by
+bounded sums and products.  The extractor uses the checked semiring, integer,
+and finite-linear-algebra library.
+
+Typical contracts include:
+\[
+\begin{array}{ll}
+\mathsf{PolyId}(p,q,c) &\Rightarrow p=q,\\
+\mathsf{BezoutCert}(a,b,u,v,g) &\Rightarrow ua+vb=g,\\
+\mathsf{InverseCert}(A,B) &\Rightarrow AB=BA=I,\\
+\mathsf{SpanClosed}(F_1,\ldots,F_D) &\Rightarrow
+        \#\mathsf{Solutions}\le D.
+\end{array}
+\]
+The last line is a cardinality theorem, not an enumeration cutoff.  To list
+solutions, add a height or complete-list producer.
+
+Symbolic identities should be proved by reusable object tactics only after the
+tactic's output is a checked derivation.  Until then, a coefficient table plus
+a reflected equality checker is the conservative interface.
+
+\subsection{Integers, rationals, and cleared inequalities}
+
+Integers are represented by differences of naturals, as in the checked
+library.  A rational is a signed numerator and positive denominator, with
+cross-multiplication used for equality and order.  Every analytic or geometric
+packet should state denominator positivity in its validator and clear
+fractions before invoking iPRA arithmetic.  Division is an interface operation
+with a nonzero or positive-denominator guard, not an ambient field axiom.
+
+A rational error bound \(|x-y|\le a/b\) is encoded after multiplying by the
+positive common denominator.  This keeps all induction invariants
+quantifier-free and permits exact audit of strict versus non-strict estimates.
+
+\subsection{Real numbers and functions}
+
+A usable real name is a fixed primitive-recursive rational sequence \(r(k)\)
+with an explicit modulus, preferably in the normalized form
+\[
+      |r(k)-r(\ell)|\le 2^{-n}
+      \quad\text{whenever }k,\ell\ge m(n).
+\]
+The name code is fixed at specialization time; iPRA quantifies over the natural
+precision arguments, not over arbitrary functions.  Equality is an apartness
+or two-sided approximation relation at requested precision.  A continuous
+function is represented by an evaluator on names together with a precision
+transformer and a proof that equivalent inputs give equivalent outputs.
+
+There are four legitimate output levels.
+\begin{enumerate}[label=(R\arabic*)]
+\item a fixed named real with a uniform modulus;
+\item a name conditional on supplied constants or moduli;
+\item a finite-precision cloud with a diameter theorem;
+\item a finite-consumer metastable window.
+\end{enumerate}
+Classical convergence without a computable rate normally yields only the last
+two levels in iPRA.
+
+\subsection{Integration, infinite series, and asymptotics}
+
+An integral theorem is compiled to finite quadrature plus an error certificate:
+partition data, sample values, local oscillation bounds, and a tail estimate if
+the domain is unbounded.  A series uses a partial sum term and a remainder
+bound.  An asymptotic statement uses a primitive-recursive threshold
+\(N(\eps,\text{parameters})\) and an explicit remainder inequality.
+
+If the packet has an exact symbolic antiderivative or telescoping identity,
+the finite algebra core may discharge most of the work.  If it relies on a
+classically asserted dominated-convergence or compactness argument, the
+missing domination, tail, or finite-cover modulus must be made a producer.
+The framework can verify a proposed modulus; it does not conjure one.
+
+\subsection{Finite probability}
+
+A finite law is a list of natural weights \(w_i\), a positive total
+\(W=\sum_i w_i\), and a rational or integer observable.  Expectations are
+represented in cleared form, so linearity, finite Fubini, variance identities,
+Markov, and Chebyshev avoid division.  The recently checked
+\code{IPRADerivations/Probability} modules illustrate the desired endpoint:
+literal \(\Prf\;\PRAAx\) derivations for finite laws.
+
+Countable or continuous laws require approximation contracts: truncation and
+tail bounds, quadrature data, or a coupling at requested precision.  A sample
+path over a finite horizon is a trace certificate; almost-sure asymptotics
+must be replaced by a quantitative finitary probability bound or by an
+explicit rate producer.
+
+\subsection{Combinatorics and finite structures}
+
+Graphs, hypergraphs, words, tilings, permutations, and incidence structures
+are bounded tables.  Local constraints are reflected bits; global validity is
+a failure sum.  Pigeonhole, parity, descent, and finite sums should be imported
+from \code{IPRADerivations}.  A finite search theorem should return a complete
+certificate or a countercertificate, not rely on a host exhaustive search as
+an axiom.
+
+An infinite combinatorial object is represented by coherent finite patches:
+for every requested radius \(r\), a patch code \(p_r\) satisfies a local
+checker, and a transition certificate relates \(p_r\) to \(p_{r+1}\).  One
+fixed PR producer gives a genuine name; mere existence of every finite patch
+without coherence gives only a family of finite theorems.
+
+\subsection{Topology and geometry}
+
+At a fixed mesh, a space is observed by a finite simplicial or cubical complex.
+A map is represented by a strong carrier or a finite cloud of possible target
+simplices.  A selection certificate chooses one simplex per source vertex.
+The carrier theorem proves that every selection is simplicial and any two
+selections are contiguous; an explicit prism operator gives a chain homotopy.
+The induced homology map is therefore an exact observer and the selection can
+be sealed.
+
+Metric and manifold claims additionally require approximation data connecting
+the finite complexes to the presented space: moduli of continuity and
+injectivity, chart radii, finite covers, or separation data.  A Jordan or
+dimension theorem may have a completely finite combinatorial core while still
+lacking this producer.  SCR records the division precisely.
+
+Exact Euclidean/projective geometry over rational or constructible coordinates
+usually reduces to cleared polynomial identities plus nondegeneracy guards.
+A branch-dependent construction---angle bisectors, eigenaxes, oriented roots---
+uses the exact-label gate of \cref{sec:observer}.
+
+\subsection{Finite categories, diagrams, and gluing}
+
+A fixed finite category is a table of objects, morphisms, sources, targets,
+identities, and composition, together with finite associativity and unit
+checks.  Functors and natural transformations are tables with local equations.
+Finite limits, colimits, adjunctions, and Kan-extension calculations become
+finite universal-property certificates: proposed cones/cocones and mediating
+arrows, with uniqueness checked by enumeration under explicit hom-set bounds.
+
+For algebraic geometry, affine charts, localizations, and \v{C}ech diagrams are
+finite presentations.  Equality in a localization or quotient is witnessed by
+an exponent, ideal combination, or module relation.  Glue representatives
+locally, prove compatibility on overlaps, and seal the representatives after
+showing the global observer is invariant.  General schemes or unbounded
+covers are not silently encoded by one finite atlas; the theorem states the
+presentation class to which it applies.
+
+\subsection{Diophantine geometry and finite descent}
+
+For a polynomial system \(F(\vec x)=0\), a height bound \(H\) produces a finite
+box and hence an exhaustive enumerator.  A complete-list certificate contains
+the accepted points and either the full box scan or a compressed exclusion
+certificate.  Soundness and completeness inside the box are primitive
+recursive.  If a theorem proves every solution has height at most \(H\), SCR
+seals the height certificate and exports finiteness or the exact list.
+
+Descent data---covering curves, Selmer representatives, local tests, and
+rank-decreasing measures---are finite certificates when their code ranges are
+explicit.  A uniform Mordell--Weil theorem additionally needs a producer for a
+complete covering list and termination bounds.  The verifier/producer split
+allows all finite descent arithmetic to be formalized without overstating that
+uniform result.
+
+\subsection{A compact template table}
+
+\begin{longtable}{@{}p{0.16\textwidth}p{0.25\textwidth}p{0.26\textwidth}p{0.19\textwidth}@{}}
+\toprule
+Domain & Finite presentation & Generic extractor & Typical producer gap \\
+\midrule
+\endfirsthead
+\toprule
+Domain & Finite presentation & Generic extractor & Typical producer gap \\
+\midrule
+\endhead
+Algebra & coefficient and matrix tables & identity, rank, span, ideal-combination checks & degree/height or basis bounds \\
+Analysis & rational name, modulus, quadrature, tail & error-budget composition & convergence/tail modulus \\
+Probability & finite weighted law, coupling table & cleared moments and inequalities & truncation or approximation rate \\
+Topology & finite complex, carrier, chain data & simpliciality, contiguity, homology invariance & approximation or cover modulus \\
+Geometry & coordinate table and guards & polynomial identity and branch stability & nondegeneracy or gap \\
+Category theory & finite category and diagram tables & universal-property verification & hom-set or presentation bounds \\
+Diophantine & bounded point list, descent certificate & soundness, completeness in box, rank decrease & global height/cover list \\
+Infinite combinatorics & coherent finite patches & local validity and restriction & uniform coherent producer \\
+\bottomrule
+\end{longtable}

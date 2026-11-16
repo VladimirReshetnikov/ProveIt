@@ -1,0 +1,110 @@
+\section{Bounded selection, used only when a name escapes}
+\label{sec:selection}
+
+\subsection{The selector theorem}
+
+Let \(V(q,c)\) be a reflected quantifier-free validator and let \(B(q)\) be an
+explicit natural-number cutoff.  Write \(z_V(q,c)=0\) for the characteristic
+zero equation of validity, and define
+\[
+       \operatorname{sel}(q)=\mu_{z_V}(B(q),q).
+\]
+
+\begin{theorem}[Least accepted certificate]
+\label{thm:least}
+If iPRA proves
+\[
+  \exists c\,[c<B(q)\wedge V(q,c)],
+\]
+then it proves
+\[
+\begin{aligned}
+ &\operatorname{sel}(q)<B(q),\\
+ &V(q,\operatorname{sel}(q)),\\
+ &\forall d<\operatorname{sel}(q)\;\neg V(q,d).
+\end{aligned}
+\]
+The final bounded universal may equivalently be represented by its reflected
+counterexample search.
+\end{theorem}
+
+\begin{proof}
+Open the supplied witness locally and use Boolean reflection to obtain a zero
+of \(z_V\) below \(B\).  Apply \code{Search.search\_found}; its conclusion no
+longer depends on the witness, so close the existential.  Validity of the
+selected code follows from \code{search\_spec}; minimality is
+\code{search\_minimal}.  Convert zero equations back to \(V\) using the
+reflection package.
+\end{proof}
+
+The cutoff is not cosmetic.  Without it, \(\mu\) is not the repository's total
+bounded-search symbol, and iPRA does not receive a primitive-recursive
+selector merely because a set is extensionally finite.
+
+\subsection{Selection policy}
+
+The compiler applies \cref{thm:least} only under one of the following escape
+conditions.
+
+\begin{enumerate}[label=(S\arabic*)]
+\item The certificate code itself occurs in the goal.
+\item A downstream variable-horizon computation must decode the code after its
+      existential scope would otherwise close.
+\item The public API explicitly promises a canonical least representative.
+\item A certificate-independent observer is needed as a term and no direct
+      primitive-recursive observer producer is available.
+\end{enumerate}
+
+None of these applies to an ordinary proof-local witness.  In particular,
+selecting the least root isolation, least triangulation, least finite cover, or
+least descent representative is usually unnecessary.  It introduces bounds
+and arithmetic obligations without strengthening the theorem.
+
+\subsection{Whole paths, not greedy local witnesses}
+
+Suppose a finite process has states \(s_0,\ldots,s_N\) and a decidable relation
+\(R_i(s_i,s_{i+1})\).  Choosing the least valid successor at each stage may get
+stuck even when a complete path exists.  The correct named selector searches a
+code for the entire path:
+\[
+ \ValidPath(q,\tau)\;:\!\Longleftrightarrow\;
+ s_0=\mathsf{init}(q)\wedge
+ \bigwedge_{i<N}R_i(s_i,s_{i+1})\wedge
+ \mathsf{Final}(s_N).
+\]
+If every state is below \(M\), then the path code is below \(M^{N+1}\), giving
+an explicit cutoff.  Search for the least accepted \(\tau\), not for locally
+least edges.  The supplied Python test includes a graph in which the least
+first move is a dead end while whole-path search finds \((0,2,3,4)\).
+
+If the path need not escape, even this global least search is unnecessary:
+\(\exists\tau\,\ValidPath(q,\tau)\) can be sealed and consumed by trace
+reflection.
+
+\subsection{Height versus cardinality}
+
+A statement ``there are at most \(D\) solutions'' gives a cardinality bound,
+not a bound on their natural-number codes.  It cannot justify enumeration
+below \(D\).  To obtain a named complete list one needs either:
+\begin{itemize}
+\item a height bound \(H\) from which a finite code box is computed;
+\item an explicit complete list certificate; or
+\item a direct producer that enumerates all solutions.
+\end{itemize}
+This is the decisive distinction in the Faltings, Siegel, Mordell--Weil, and
+finite-algebra packets.  The generic list verifier is easy; the producer of
+\(H\) or of the exhaustive list is the deep theorem.
+
+\subsection{Canonicalization is an additional theorem}
+
+A least code is canonical relative to an encoding, not necessarily invariant
+under the mathematical equivalence relation.  If public output is supposed to
+be a canonical quotient representative, the proof must additionally show:
+\begin{enumerate}[label=(\roman*)]
+\item every equivalence class has an accepted representative below the cutoff;
+\item the selected code is equivalent to the input object;
+\item equivalent inputs yield equal selected codes, or the API explicitly
+      accepts encoding-dependent normalization.
+\end{enumerate}
+Otherwise the proper output is an invariant observer or a witnessed setoid,
+not a silently normalized representative.

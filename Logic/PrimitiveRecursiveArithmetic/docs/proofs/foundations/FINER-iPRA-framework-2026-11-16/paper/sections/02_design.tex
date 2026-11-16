@@ -1,0 +1,86 @@
+\section{The FINER normal form}
+\label{sec:design}
+
+\subsection{The slogan: query first, evidence second, object proof last}
+
+Many ordinary mathematical statements quantify over completed objects: real functions, infinite sequences, compact spaces, measures, branches of algebraic functions, or all stages of a construction.  Such a statement is usually not the right first object for \iPRA.  The correct first object is a \emph{finite query}.  A query asks for exactly the finite observation needed by the surrounding theorem: a precision, a height, a time horizon, a degree, a mesh, a finite diagram, or a bounded list of tests.
+
+For a query code \(q\), FINER constructs five theorem-specific objects:
+\begin{equation}
+  M(q),\qquad \CertCheck(q,c),\qquad \Obs(q,c),\qquad
+  \Resid_1(q),\ldots,\Resid_r(q),
+  \label{eq:finer-data}
+\end{equation}
+where \(M\), \(\CertCheck\), and \(\Obs\) are primitive recursive and \(c<M(q)\) is a single master certificate.  The central object-language theorem has the shape
+\begin{equation}
+ \Resid_1(q),\ldots,\Resid_r(q),\Gamma(q)
+ \;\vdash[\PRAAx]\;
+ \Phi\bigl(q,\Obs(q,\Sel(q))\bigr),
+ \label{eq:finer-endpoint}
+\end{equation}
+with
+\begin{equation}
+ \Sel(q)=\mu c<M(q)\,[\CertCheck(q,c)=1].
+ \label{eq:finer-selector}
+\end{equation}
+The least-search operation in \eqref{eq:finer-selector} is not an informal choice and is not a new axiom.  It is a fixed primitive-recursive program with an existing object-theory correctness proof.
+
+\subsection{The six node classes}
+
+A specialized finite proof graph is normalized to six node classes.  These classes are deliberately less expressive than a programming language: their purpose is to expose proof obligations.
+
+\begin{enumerate}[label=\textbf{N\arabic*.},leftmargin=3.2em]
+\item \textbf{Exact computation.}  A fixed primitive-recursive transducer computes a term or a finite array.  Its local certificate consists of defining equations.
+
+\item \textbf{Boolean decision.}  A fixed bounded formula is reflected by a bit.  The local certificate proves bit normalization and the two reflection directions.
+
+\item \textbf{Bounded search.}  A finite search returns the least accepted code or the bound on failure.  Its local certificate is obtained from the checked search library.
+
+\item \textbf{Certified iteration.}  A clocked loop is represented by primitive recursion.  Its safety or correctness invariant is quantifier-free, so one application of \iPRA{} induction reflects the run.
+
+\item \textbf{Finite relational interaction.}  A producer may supply several locally valid answers.  Backward viability determines whether a successful bounded continuation exists; forward least search then produces one transcript.  This avoids a global selector.
+
+\item \textbf{Observation.}  Internal certificates are erased only through an exact invariant, an explicit quotient congruence, a metric diameter bound, or a guard such as a positive separation margin.
+\end{enumerate}
+
+A source proof may contain cyclic precision dependencies.  FINER resolves these before execution by the finite monotone demand closure of \cref{sec:demand}.  Once the finite demands are fixed, the execution and justification graph is unrolled to a finite schedule.
+
+\subsection{No universal evaluator}
+
+The graph in FINER is \emph{metalevel finite data}.  Specialization generates a fixed \texttt{PR} syntax tree for each transducer and checker.  The object theory does not contain a total primitive-recursive interpreter for arbitrary primitive-recursive programs.
+
+\begin{barrier}[Diagonal obstruction]
+There is no primitive-recursive function \(U(e,x)\) that enumerates every unary primitive-recursive function as \(x\mapsto U(e,x)\).
+\end{barrier}
+
+\begin{proof}
+If such a \(U\) existed, then \(d(x)=U(x,x)+1\) would itself be primitive recursive, hence \(d(x)=U(e,x)\) for some \(e\).  Evaluating at \(e\) gives
+\[
+  U(e,e)+1=d(e)=U(e,e),
+\]
+contradicting successor injectivity and the fact that no successor is zero.  The contradiction can be rendered in very weak arithmetic once the alleged universal evaluator and its enumeration property are fixed.
+\end{proof}
+
+Consequently, a generic compiler theorem is a metatheorem about generating object syntax and proofs from a fixed graph.  Inside Lean, it may be represented by an inductive metalevel graph whose compiler returns \texttt{PR}, \texttt{PTm}, \texttt{Fm}, and \texttt{Prf} values.  It must not be confused with an object-language universal machine.
+
+\subsection{Two horizons}
+
+Every nontrivial finite node has two resource measures.
+
+\begin{definition}[Computation and justification horizons]
+The \emph{computation horizon} bounds the data actually inspected or generated.  The \emph{justification horizon} bounds the evidence needed to prove that the computation has the requested property.
+\end{definition}
+
+The two can differ.  An approximate root computation may inspect \(k\) bisection bits but require a derivative or separation estimate at a finer precision.  A finite cover computation may output one index but require a mesh and a modulus that justify coverage.  Keeping the two horizons explicit prevents a common circularity: increasing precision to justify a step can itself require stronger justification.  The demand-closure theorem computes the least simultaneous finite solution whenever all dependencies are monotone and capped.
+
+\subsection{Status as part of the type}
+
+FINER recommends that each node be tagged with one of three proof statuses.
+
+\begin{description}[leftmargin=3em,style=nextline]
+\item[Derived.] The local sequent is already a checked \(\Prf\;\PRAAx\) value.
+\item[Residual.] The local fact is retained as an explicit hypothesis of the final sequent.
+\item[External only.] A host-language theorem or executable test is available, but no object-language import has been built.  Such evidence may guide development but cannot silently populate either of the first two classes.
+\end{description}
+
+The compiler may compose Derived nodes and carry Residual nodes.  It must reject an External-only node as an object proof dependency until an adapter is provided.  This simple rule prevents most accidental overclaims found in broad formalization blueprints.

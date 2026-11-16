@@ -1,0 +1,104 @@
+\section{Design constraints}
+\label{sec:constraints}
+
+A general iPRA framework is useful only if it respects the theory's actual
+proof rules and the repository's actual interfaces.  The following constraints
+are therefore part of the specification, not after-the-fact cautions.
+
+\begin{principle}[Object proof, not host truth]
+A Python test, a terminating Lean function, a theorem in the host logic, and an
+inhabitant of \(\Gamma\turnstile A\) are four different artifacts.  Host
+computation may generate fixed syntax or test examples; every reusable
+mathematical conclusion must end in a literal object derivation.
+\end{principle}
+
+\begin{principle}[Specialize first]
+There is no appeal to a total object-level universal evaluator for arbitrary
+primitive-recursive programs.  A theorem compiler is a metatheoretic function
+which receives a fixed syntax tree and emits a fixed \(\PTm\), \(\Fm\), and
+proof term.  Its soundness is proved by structural recursion in Lean.  The
+resulting object theorem speaks only about the specialized symbols.
+\end{principle}
+
+\begin{principle}[Finite query before induction]
+Precision, height, mesh, horizon, matrix size, diagram shape, and all other
+consumer demands are fixed as explicit natural-number parameters before the
+object induction is formed.  The induction invariant is an equation,
+inequality, or Boolean combination of such atoms, hence quantifier-free.
+\end{principle}
+
+\begin{principle}[No hidden choice]
+An existential proof is not silently converted into a primitive-recursive
+selector.  A selector is introduced only with an explicit finite cutoff or a
+direct constructive term.  Otherwise the witness remains under existential
+elimination.
+\end{principle}
+
+\begin{principle}[No hidden compactness]
+Any use of compactness is replaced by the finite datum actually consumed:
+a net, cover, Lebesgue-number certificate, mesh, finite complex, truncation
+index, or metastable window.  The theorem records which producer supplies that
+datum.
+\end{principle}
+
+\begin{principle}[No unstable names]
+At a collision or singularity, one may export a cluster, a symmetric invariant,
+a quotient class, or a diameter-controlled cloud.  One may export a specific
+root, eigenvector, chart, axis, or branch only after proving a uniqueness or
+separation premise sufficient to stabilize that name.
+\end{principle}
+
+\begin{principle}[Uniformity is a theorem]
+The following claims are distinct and must carry different types:
+\begin{enumerate}[label=(\alph*)]
+\item one internal primitive-recursive producer works uniformly;
+\item a conclusion follows from an explicit producer hypothesis;
+\item for each fixed external name and supplied modulus there is an iPRA
+      derivation schema;
+\item only finite observations or a metastable form are presently justified.
+\end{enumerate}
+The report never upgrades one status to another by prose.
+\end{principle}
+
+\subsection{Why quantifier-free induction is enough for the framework}
+
+The apparent obstacle is that a trace assertion often has the form
+``every stage below \(N\) is valid,'' which is a bounded universal formula and
+therefore not quantifier-free in the object syntax.  The solution is not to
+induct on that formula.  Instead, define a primitive-recursive failure
+accumulator
+\[
+ \Bad(0)=0,
+ \qquad
+ \Bad(k+1)=\Bad(k)+\mathsf{fail}(k),
+\]
+where \(\mathsf{fail}(k)\in\{0,1\}\).  The invariant
+\[
+ \Bad(k)=0\;\longrightarrow\;I(\State(k))=1
+\]
+is quantifier-free.  At a successor, \(\Bad(k+1)=0\) yields both
+\(\Bad(k)=0\) and \(\mathsf{fail}(k)=0\), using the checked arithmetic of
+nonnegative sums.  This is the recurring compilation pattern: bounded logical
+structure is represented by a primitive-recursive certificate and a
+quantifier-free reflection invariant.
+
+\subsection{Three meanings of ``general''}
+
+The framework is general in three precise, compatible senses.
+
+\begin{enumerate}[label=(G\arabic*)]
+\item \textbf{Logical generality.}  Contracts compose in arbitrary finite
+contexts using only the checked structural rules of intuitionistic natural
+deduction.
+\item \textbf{Computational generality.}  Any fixed primitive-recursive
+validator, state transformer, finite strategy checker, or observer can be
+inserted once its defining equations and local reflection lemmas are supplied.
+\item \textbf{Mathematical generality.}  Algebraic, analytic, probabilistic,
+topological, categorical, and Diophantine objects are represented by the
+finite observations actually used by a theorem, with domain-specific producer
+obligations separated from the generic verifier.
+\end{enumerate}
+
+It is deliberately \emph{not} a universal internal interpreter for arbitrary
+mathematics, and it does not claim that every classical theorem has a uniform
+iPRA realization.

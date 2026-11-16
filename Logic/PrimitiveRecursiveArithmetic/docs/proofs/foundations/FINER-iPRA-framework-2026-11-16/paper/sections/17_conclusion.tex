@@ -1,0 +1,22 @@
+\section{Conclusion and recommended next steps}
+\label{sec:conclusion}
+
+The existing ProveIt development already contains the logical kernel and much of the arithmetic needed for a broad finitary mathematics program.  The main integration problem is to stop treating every theorem packet as a new foundational experiment.  FINER proposes one stable compilation boundary:
+\begin{center}
+finite query \(\longrightarrow\) least demand closure \(\longrightarrow\) one checked master certificate \(\longrightarrow\) ordinary \(\Prf\;\PRAAx\) endpoint with explicit residuals.
+\end{center}
+
+The framework resolves the shared engineering and proof-theoretic bottlenecks: bounded logic is reflected to bits; loops use one quantifier-free induction; finite choice is replaced by viability; witness dependence is erased only through exact, quotient, or metric observers; cyclic demands have a least finite solution; and missing quantitative mathematics remains visible in the context.  It also gives principled negative answers: no universal primitive-recursive evaluator, no unguarded exact branch selector through collisions, no general global rate from finite metastability, and no height cutoff from cardinality alone.
+
+The highest-value implementation sequence is now clear.
+
+\begin{enumerate}[label=\textbf{Step \arabic*.},leftmargin=4.2em]
+\item Check a compact Boolean-reflection library against the current \texttt{IPRADerivations} API.
+\item Formalize deterministic trace reflection and the fixed-dimensional demand-closure theorem.
+\item Formalize fixed-horizon viability and exact observer erasure.
+\item Package selected-certificate soundness and residual closure in a small \texttt{CompiledQuery} record.
+\item Replay the four benchmarks in \cref{sec:lean} with literal \texttt{Prf PRAAx} endpoints.
+\item Migrate one existing proof packet and publish a kernel-checked theorem ledger entry.
+\end{enumerate}
+
+This route is deliberately incremental.  Every completed phase creates useful checked lemmas even if the full graph DSL is never built.  Conversely, a large source-language compiler without these small object-theory kernels would merely add another unverified layer.  The framework therefore prioritizes a narrow trusted path and exact theorem status over breadth of front-end notation.
