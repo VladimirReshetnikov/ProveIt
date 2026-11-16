@@ -67,6 +67,21 @@ theorem eq_one_of_dvd_one {e : PTm n} (he : Γ ⊢[PRAAx] e ≐ succ (pred e)) (
     Γ ⊢[PRAAx] e ≐ one :=
   le_antisymm (dvd_le' he h (congrSucc (pred_succ zero).eqSymm)) (one_le_of_pos he)
 
+theorem dvd_self' {d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) : Γ ⊢[PRAAx] dvd d d :=
+  dvd_of_eq' hd (w := one) ((mul_comm _ _).eqTrans (one_mul _)).eqSymm
+
+theorem dvd_add' {d x y : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hx : Γ ⊢[PRAAx] dvd d x)
+    (hy : Γ ⊢[PRAAx] dvd d y) : Γ ⊢[PRAAx] dvd d (x + y) :=
+  dvd_congr_left hd.eqSymm (dvd_add (dvd_congr_left hd hx) (dvd_congr_left hd hy))
+
+theorem dvd_sub' {d x y : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hxy : Γ ⊢[PRAAx] dvd d (x + y))
+    (hy : Γ ⊢[PRAAx] dvd d y) : Γ ⊢[PRAAx] dvd d x :=
+  dvd_congr_left hd.eqSymm (dvd_sub (dvd_congr_left hd hxy) (dvd_congr_left hd hy))
+
+theorem dvd_mul' {d x : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (c : PTm n) (hx : Γ ⊢[PRAAx] dvd d x) :
+    Γ ⊢[PRAAx] dvd d (x * c) :=
+  dvd_congr_left hd.eqSymm (dvd_mul c (dvd_congr_left hd hx))
+
 /-! ## Gauss's lemma -/
 
 /-- `gcd(m, a) = 1 → m ∣ a y → m ∣ y`. -/
@@ -94,6 +109,11 @@ theorem coprime_mul {a c c' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (h
   have hdc := coprime_dvd_left hd (Prf.andE₁ hdd) h₁
   have hdc' := gauss hd hdc (Prf.andE₂ hdd)
   exact eq_one_of_dvd_one hd (dvd_congr h₂ (gcd_greatest' hd (Prf.andE₁ hdd) hdc'))
+
+/-- `gcd(d, y) = 1` and `d ∣ y` give `d = 1`. -/
+theorem eq_one_of_coprime_dvd {d y : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d))
+    (hg : Γ ⊢[PRAAx] gcd d y ≐ one) (hy : Γ ⊢[PRAAx] dvd d y) : Γ ⊢[PRAAx] d ≐ one :=
+  eq_one_of_dvd_one hd (dvd_congr hg (gcd_greatest' hd (dvd_self' hd) hy))
 
 /-! ## Squares and quotients by the gcd -/
 
