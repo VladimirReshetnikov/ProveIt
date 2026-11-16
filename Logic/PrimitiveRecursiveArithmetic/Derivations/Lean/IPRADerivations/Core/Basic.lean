@@ -130,6 +130,18 @@ variable {n : ℕ}
 @[simp] theorem inst_four (t : PTm (n + 4)) : Syn.inst t 4 = (var 3 : PTm (n + 4)) :=
   inst_succ t 3
 
+@[simp] theorem finCases_two {α : Sort _} (a : α) (f : Fin (n + 2) → α) :
+    (Fin.cases a f : Fin (n + 3) → α) 2 = f 1 := rfl
+@[simp] theorem finCases_three {α : Sort _} (a : α) (f : Fin (n + 3) → α) :
+    (Fin.cases a f : Fin (n + 4) → α) 3 = f 2 := rfl
+@[simp] theorem finCases_four {α : Sort _} (a : α) (f : Fin (n + 4) → α) :
+    (Fin.cases a f : Fin (n + 5) → α) 4 = f 3 := rfl
+@[simp] theorem finCases_five {α : Sort _} (a : α) (f : Fin (n + 5) → α) :
+    (Fin.cases a f : Fin (n + 6) → α) 5 = f 4 := rfl
+
+@[simp] theorem fin_succ_two : (Fin.succ (2 : Fin (n + 3)) : Fin (n + 4)) = 3 := rfl
+@[simp] theorem fin_succ_three : (Fin.succ (3 : Fin (n + 4)) : Fin (n + 5)) = 4 := rfl
+
 end Numerals
 
 /-! ## Structural tools -/

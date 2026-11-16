@@ -55,6 +55,11 @@ theorem deriveNat {s t : PTm n} (h : Groth.ι (Q.mk Γ s) = Groth.ι (Q.mk Γ t)
     Γ ⊢[PRAAx] s ≐ t :=
   Q.exact (Groth.ι_injective h)
 
+/-- Use a derived equation as a ring equation; the context is taken from the goal. -/
+theorem withEq {s t : PTm n} {φ : Fm PTm n} (e : Γ ⊢[PRAAx] s ≐ t)
+    (k : Groth.ι (Q.mk Γ s) = Groth.ι (Q.mk Γ t) → (Γ ⊢[PRAAx] φ)) : Γ ⊢[PRAAx] φ :=
+  k (natEq e)
+
 /-- `ι ∘ mk` applied to a variable. -/
 abbrev V (Γ : List (Fm PTm n)) (i : Fin n) : Groth (Q Γ) := Groth.ι (Q.mk Γ (var i))
 
