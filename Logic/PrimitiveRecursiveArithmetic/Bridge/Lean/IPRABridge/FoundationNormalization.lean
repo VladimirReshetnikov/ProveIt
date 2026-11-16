@@ -8,7 +8,7 @@ set_option autoImplicit false
 namespace IPRABridge
 
 open LO LO.FirstOrder LO.Entailment LeanProofs.ConciseIPRA
-open scoped LO.FirstOrder
+open scoped LO.FirstOrder IPRABridge
 open DiophantineConsistency
 open IPRAOrderErasure (embed erase)
 open IPRAStandardTheory (standardTheory)

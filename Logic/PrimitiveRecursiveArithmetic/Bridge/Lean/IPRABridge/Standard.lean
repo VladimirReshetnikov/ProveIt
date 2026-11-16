@@ -23,7 +23,7 @@ open IPRANativeTheory (nativeTheory)
 open IPRAStandardTheory (standardTheory)
 open IPRAEqualityOnlyReference (referenceTheory ReferenceAxiom)
 
-local instance standardBridgeLanguageDecidableEq : PRALanguage.language.DecidableEq where
+scoped instance standardBridgeLanguageDecidableEq : PRALanguage.language.DecidableEq where
   func k := by
     change DecidableEq (PRAFiniteFunctionCodes.Code k)
     infer_instance

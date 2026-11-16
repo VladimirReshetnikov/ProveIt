@@ -16,6 +16,30 @@ at `32e1a0956a8622fad067328ca1959729a7634428`.
 | [`IPRABridge.Checks.addCore_left_cancel`](Bridge/Lean/IPRABridge/Checks/Arithmetic.lean) | Foundation `standardTheory` proves `∀ a b c, addCore(a,b) = addCore(a,c) → b = c`, by transporting the ordinary Concise proof. This example uses the recursion-first symbol `PRALanguage.addCore`. | `lake build +IPRABridge.Checks.Arithmetic`. The baseline reports `propext`, `Classical.choice`, and `Quot.sound`. |
 | [`pra_iff_native`](ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean) | Ordinary Concise derivability of an arbitrary finite-context sequent is equivalent to `NPrf` of its scalar reading. | `lake build +ConciseIPRA.NativeBiInterpretation`. The [ConciseIPRA index](ConciseIPRA/README.md) identifies the article and checker benchmarks. |
 
+### Integrated replay of the lighter bridge
+
+The following focused runs used the normal root Lake providers after the
+standard-theory import split. They reused compiled toolchain, Mathlib and
+Foundation dependencies. The measurements use `/usr/bin/time -v` on each
+`lake build +<module>` command, with memory rounded to the nearest MiB.
+
+| Module | Elapsed | Peak resident memory |
+| --- | --- | --- |
+| `IPRABridge.Checks.Roundtrip` | 13.6 s | 1,732 MiB |
+| `IPRABridge.Checks.OpenSequents` | 9.3 s | 1,747 MiB |
+| `IPRABridge.Checks.ScopedSequents` | 5.9 s | 1,747 MiB |
+| `IPRABridge.Checks.Arithmetic` | 9.1 s | 1,757 MiB |
+| `BusyBeaver.PA196.IPRAAssembly` | 4.7 s | 1,729 MiB |
+| `IPRABridge` | 1.7 s | 791 MiB |
+| `DiophantineConsistency.IPRASubSuccSelfNonzeroChecks` | 14.4 s | 1,764 MiB |
+| `DiophantineConsistency.IPRADifferenceSuccEq` | 51.7 s | 1,797 MiB |
+
+All runs exited successfully. The axiom checks for the migrated proofs
+reported `propext`, `Classical.choice`, and `Quot.sound`. The
+[source closure check](Bridge/check-import-closure.lean) also passed for
+the full portable library, the Foundation statement layer, and the
+public bridge and order-symbol comparison.
+
 ## BusyBeaver PA
 
 - **Primary PA194.** [`PA194NativeLiteralFinal.consistency_iff_literal_nonhalt`](../../Computability/BusyBeaver/Research/PA/verification/pa194/ipra/native-endpoint/PA194NativeLiteralFinal.lean)

@@ -18,6 +18,15 @@ namespace BusyBeaver.PA196.IPRAAssembly
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
 open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
 open DiophantineConsistency.PRALanguage DiophantineConsistency.IPRAStandardTheory
+open DiophantineConsistency.PRAFiniteFunctionCodes (Code)
+
+local instance pa196AssemblyLanguageDecidableEq : language.DecidableEq where
+  func k := by
+    change DecidableEq (Code k)
+    infer_instance
+  rel k := by
+    change DecidableEq (Language.ORing.Rel k)
+    infer_instance
 
 /-- Given internal refutation-to-halt and halt-to-double-negated-refutation
     implications, standard iPRA derives the desired negative equivalence. -/
