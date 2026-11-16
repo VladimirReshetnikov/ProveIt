@@ -283,6 +283,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries.lt3_cases
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries.odd_nontotient
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries.phi_lt_closed
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLower.le_mul_mono
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLower.sq_pred_ge
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLower.prime_odd
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLower.prime_two
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLower.phi_ppow
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLower.ppow_sq
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLower.phi_sq_odd_closed
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLower.phi_lower
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
