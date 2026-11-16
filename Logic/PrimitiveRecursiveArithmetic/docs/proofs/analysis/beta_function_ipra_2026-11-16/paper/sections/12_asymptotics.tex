@@ -1,0 +1,120 @@
+\section{Quantitative asymptotics}
+\label{sec:asymptotics}
+
+An asymptotic statement is meaningful in iPRA only after it is replaced by a theorem with explicit integer thresholds and rational error bounds.  The Gamma packet supplies effective Stirling formulas with signed remainders.  We record the beta consequences in a form that is directly formalizable.
+
+\subsection{Both parameters large}
+
+Suppose $x,y\ge1$ are positive real names.  Use the effective logarithmic Stirling representation
+\[
+ \Gamma(u)=\sqrt{2\pi}\,
+ u^{u-1/2}e^{-u}e^{\rho(u)},
+ \qquad
+ 0<\rho(u)<\frac{1}{12u}
+ \quad(u\ge1).
+\]
+Substitution in the beta--gamma quotient gives the exact form
+\begin{equation}
+ \B(x,y)=
+ \sqrt{2\pi}\,
+ \frac{x^{x-1/2}y^{y-1/2}}
+      {(x+y)^{x+y-1/2}}
+ e^{E(x,y)},
+ \qquad
+ E=\rho(x)+\rho(y)-\rho(x+y).
+ \label{eq:beta-stirling-exact}
+\end{equation}
+Hence
+\begin{equation}
+ |E(x,y)|<
+ \frac1{12x}+\frac1{12y}+\frac1{12(x+y)}
+ =:\eta(x,y).
+ \label{eq:beta-stirling-error}
+\end{equation}
+Since $|e^E-1|\le2|E|$ when $\eta\le1$, we obtain a fully quantitative version of the Wikipedia asymptotic:
+\begin{equation}
+ \left|
+ \frac{\B(x,y)}
+ {\sqrt{2\pi}\,
+ x^{x-1/2}y^{y-1/2}/(x+y)^{x+y-1/2}}
+ -1\right|
+ \le2\eta(x,y).
+ \label{eq:beta-stirling-relative}
+\end{equation}
+For a requested relative error $2^{-p}$ it suffices, for example, to require
+$x,y\ge2^{p+5}$.  The bound is deliberately coarse.  All powers are positive-real powers and all logarithms are evaluated by the elementary primitive-recursive algorithms.
+
+\subsection{A fixed ratio}
+
+Let $x=\lambda N$, $y=(1-\lambda)N$ with a supplied rational margin
+$d\le\lambda\le1-d$.  Rearranging \eqref{eq:beta-stirling-exact} gives
+\[
+ \B(\lambda N,(1-\lambda)N)
+ =
+ \sqrt{\frac{2\pi}{N}}\,
+ \lambda^{\lambda N-1/2}
+ (1-\lambda)^{(1-\lambda)N-1/2}
+ e^{E}.
+\]
+The error satisfies $|E|\le C_d/N$ with a rational $C_d$.  This form isolates the exponential entropy factor and is often more useful in combinatorics.  It is a theorem schema for each fixed named $\lambda$ and its margins.
+
+\subsection{One parameter fixed}
+
+The source states
+\[
+ \B(x,y)\sim\Gamma(y)x^{-y}
+ \qquad(x\to\infty,\ y\text{ fixed}).
+\]
+A particularly clean iPRA version is on the natural grid.
+
+\begin{theorem}[Fixed-parameter beta limit]\label{thm:fixed-y-asymp}
+Fix a named $y$ with $\Rea y\ge\alpha>0$ and $|y|\le d$.  Then
+\[
+ N^y\B(y,N+1)\longrightarrow\Gamma(y)
+\]
+with the explicit modulus in \eqref{eq:beta-gamma-limit} (take $b=1$).  By symmetry,
+\[
+ \boxed{\B(N+1,y)=\Gamma(y)N^{-y}(1+\varepsilon_N),}
+\]
+where $|\varepsilon_N|$ is bounded by the right side of
+\eqref{eq:beta-gamma-limit} divided by a supplied positive lower bound for $\Gamma(y)$.
+\end{theorem}
+
+For a general real $x\to\infty$, supply an integer $N$ and a rational bracket
+$N\le x\le N+1$.  On positive real inputs, differentiation under the integral gives
+\[
+ \partial_x\log\B(x,y)
+ =\frac{\int_0^1 t^{x-1}(1-t)^{y-1}\log t\,dt}
+        {\B(x,y)}<0,
+\]
+so Beta is decreasing in $x$.  Bracketing between the two neighboring natural-grid values and using
+$(1+1/N)^y=1+O(1/N)$ transfers the limit effectively.  The comparison can alternatively be obtained directly from the Gamma ratio and Stirling.
+
+\subsection{Higher-order expansions}
+
+For every fixed $M$, the Gamma packet's finite Euler--Maclaurin theorem gives
+\[
+ \log\Gamma(z)
+ =
+ \left(z-\frac12\right)\log z-z+\frac12\log(2\pi)
+ +\sum_{r=1}^{M-1}
+   \frac{B_{2r}}{2r(2r-1)z^{2r-1}}
+ +R_M(z),
+\]
+with a signed rational majorant for $R_M$ on a positive real ray.  Taking the combination
+\[
+ \log\B(x,y)=\log\Gamma(x)+\log\Gamma(y)-\log\Gamma(x+y)
+\]
+produces an arbitrary fixed-order beta expansion.  Its coefficients are finite rational expressions in Bernoulli numbers and reciprocal powers of $x,y,x+y$.  No new analytic argument is needed: the three remainders are added.  In Lean, $M$ is an external theorem parameter or a natural parameter of a primitive-recursive coefficient generator; the induction invariant is the finite Euler--Maclaurin telescoper already required by the Gamma development.
+
+\subsection{Laplace concentration as a finite estimate}
+
+For large positive $x,y$, the integrand
+\[
+ \exp\!\bigl((x-1)\log t+(y-1)\log(1-t)\bigr)
+\]
+has its maximum near $t=x/(x+y)$.  A direct constructive Laplace proof can split the interval into a rational central window and two tails.  Concavity follows from the explicit negative second derivative
+\[
+ -\frac{x-1}{t^2}-\frac{y-1}{(1-t)^2}.
+\]
+Finite Taylor inequalities give a Gaussian central bracket and geometric tail decay.  This yields \eqref{eq:beta-stirling-relative} independently of Gamma.  The argument is useful for future work on beta distributions, but the Gamma/Stirling route is shorter and is the one chosen for the formalization dependency graph.

@@ -5,7 +5,7 @@ gives the target interface for future verified
 derivations of these delivered proofs.
 
 This directory holds the research packets that were delivered as archives from 14 to
-16 November 2026: 33 to `docs/drafts`, and 68 to
+16 November 2026: 33 to `docs/drafts`, and 69 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -36,7 +36,7 @@ reason. Its directory column gives `<area>/<directory>`.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `ignored` | 108 | The member matches the repository's `.gitignore`: 48 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests, 59 `.log` files from LaTeX and Lean builds and from test and verification runs, and 1 file under a `build/` directory. It is available only from the delivered archive, so it is lost for the archives that were not committed. |
+| `ignored` | 109 | The member matches the repository's `.gitignore`: 49 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests, 59 `.log` files from LaTeX and Lean builds and from test and verification runs, and 1 file under a `build/` directory. It is available only from the delivered archive, so it is lost for the archives that were not committed. |
 | `checksum-manifest` | 47 | The member is a checksum manifest that `.gitignore` does not match. The first 45 are 40 `MANIFEST.sha256`, 2 `manifest.sha256` and the 3 `MANIFEST.txt` files that list SHA-256 digests (`eight_geometry_theorems_ipra`, `mollweide_circle_ipra`, `median_ipra_constructive_proofs`). These 45 were placed at first and removed on 16 November 2026 on Vladimir's instruction ("We don't need any checksum manifests"). The 45 removed files are in the history up to `7c7f7874f7`. The rest belong to later packets and were never placed. |
 | `sibling-packet` | 21 | `puiseux_ipra` bundles `dependencies/FTA_iPRA/`, a byte-identical copy of the packet filed in [`algebra/FTA_iPRA`](algebra/FTA_iPRA/) (13 members). `ipra_finite_demand` bundles four of its files under the same path (4 members). `ipra_resources_and_elimination_2026-11-15` bundles `lean/BackwardDemand.lean` of [`foundations/ipra_finite_demand`](foundations/ipra_finite_demand/) (1 member). `ipra_stable_observables` bundles three `lean/ConciseIPRA/` files byte-identical to the `lean/upstream/` copies in [`foundations/ipra_coherent_methods_2026-11-15`](foundations/ipra_coherent_methods_2026-11-15/) (3 members). The reference column gives the placed file, except for the copy of `SHA256SUMS`, which is ignored in both. |
 | `sibling-archive` | 1 | `zeta_zeros_ipra_2026-11-15` bundles `dependencies/zeta_functional_equation_ipra.zip`, a byte-identical copy of the delivered archive filed in [`analytic-number-theory/zeta_functional_equation_ipra`](analytic-number-theory/zeta_functional_equation_ipra/). |
@@ -70,7 +70,7 @@ manifests, ignored build logs and `build/` files.
 
 ## Packets
 
-The 101 archives hold 3,158 members: 2,956 placed here, 108 ignored, 47 checksum manifests that are not kept, 21 in bundled copies of
+The 102 archives hold 3,187 members: 2,984 placed here, 109 ignored, 47 checksum manifests that are not kept, 21 in bundled copies of
 a sibling packet, 1 nested copy of a sibling archive and 25 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -99,6 +99,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 |---|---|---|---|---:|---:|
 | [`barnes_g_ipra_2026-11-16`](analysis/barnes_g_ipra_2026-11-16/) | `9235d0a81c` 2026-11-16 | `barnes_g_ipra_2026-11-16` | The Barnes G-function: constructive, quantitative proofs for the canonical product, the functional equation, zeros, integer and finite-product identities, Taylor and logarithmic-derivative series, integral and reflection formulas, multiplication and duplication formulas, special values, Hurwitz-zeta and hyperfactorial relations, the Barnes asymptotic expansion with explicit remainder contracts, order and type, and constructive forms of two uniqueness characterisations. Analytic assertions are schemas for fixed primitive-recursive names and requested precisions. Its Lean files are a scaffold; no compiled `Prf PRAAx` development is claimed. | 42 | 1 |
 | [`basel_ipra`](analysis/basel_ipra/) | `ea3f6066cf` 2026-11-14 | `basel_ipra` | The Basel identity, ∑ 1/j² = π²/6, as a universally quantified PRA inequality. Its Lean files are uncompiled specifications and an outline. | 17 | 1 |
+| [`beta_function_ipra_2026-11-16`](analysis/beta_function_ipra_2026-11-16/) | `7fa3ba48e8` 2026-11-16 | `beta_function_ipra_2026-11-16` | The Beta function as a family of arithmetical theorems about rational approximation programs: its definition and elementary identities, the relation to the Gamma function, transformations, series and products, derivatives, the multiplication formula, the incomplete and multivariate Beta functions, asymptotics and the complex continuation, each limit replaced by a displayed modulus and each division by an apartness margin. It reuses the effective contracts of the Gamma packet and comes with an exact-rational checker for the finite identities and a source-formula inventory. Its Lean file is an outline with explicit `sorry` obligations; no kernel-checked derivation is claimed. | 28 | 1 |
 | [`bohr_mollerup_ipra_2026-11-15`](analysis/bohr_mollerup_ipra_2026-11-15/) | `b2d7526ffc` 2026-11-15 | `bohr_mollerup_ipra` | A finitary constructive Bohr–Mollerup theorem, with a structured Lean scaffold and roadmap. | 12 | 1 |
 | [`calculus_ipra`](analysis/calculus_ipra/) | `6ad3d9f371` 2026-11-14 | `calculus_ipra` | Effective versions of both parts of the fundamental theorem of calculus and the finite-order Euler–Maclaurin formula. | 12 | 1 |
 | [`cauchy_residue_ipra`](analysis/cauchy_residue_ipra/) | `4ea4d4a14a` 2026-11-15 | `cauchy_residue_ipra` | Quantitative constructive versions of Cauchy's integral theorem and the residue theorem, stated as schemas. | 13 | 1 |

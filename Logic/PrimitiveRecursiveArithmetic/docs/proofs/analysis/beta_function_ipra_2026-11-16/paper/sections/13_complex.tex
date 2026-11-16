@@ -1,0 +1,108 @@
+\section{Complex continuation, contour formulas, and reciprocal-beta integrals}
+\label{sec:complex}
+
+\subsection{Meromorphic continuation through Gamma}
+
+The right-half-plane integral is only the initial definition.  The quotient
+\[
+ \B(a,b)=\Gamma(a)\Gamma(b)\,\Gamma(a+b)^{-1}
+\]
+extends Beta meromorphically to pairs of complex names on any certified compact region avoiding the relevant pole divisors.  Constructively, ``avoiding'' means that the input comes with lower bounds for its distances from the finitely many nonpositive integers in the region.  The reciprocal Gamma function is entire in the effective sense of the Gamma packet, so the cleared definition
+\[
+ \B(a,b)\Gamma(a+b)=\Gamma(a)\Gamma(b)
+\]
+remains preferable near cancellations.
+
+The possible singular divisors are $a\in\{0,-1,-2,\dots\}$ and
+$b\in\{0,-1,-2,\dots\}$; zeros of $1/\Gamma(a+b)$ can cancel some intersections.  A full local pole-order classification is finite once the relevant integers are bounded by the radius certificate.
+
+\subsection{The Pochhammer contour}
+
+The source states
+\begin{equation}
+ (1-e^{2\pi i\alpha})(1-e^{2\pi i\beta})\B(\alpha,\beta)
+ =
+ \int_C t^{\alpha-1}(1-t)^{\beta-1}\,dt,
+ \label{eq:pochhammer}
+\end{equation}
+where $C$ is a Pochhammer contour around $0$ and $1$.  The formula gives analytic continuation because the contour stays away from the branch points.
+
+A constructive implementation can be made as follows.
+
+\begin{enumerate}
+\item Replace $C$ by a rational polygon consisting of two small circles approximated by regular polygons, joined by upper and lower rational-offset segments.
+\item On each segment carry explicit branches of $\log t$ and $\log(1-t)$, together with rational bounds on their derivatives.
+\item Define the contour integral by finite line-segment Riemann sums.
+\item Pair the four traversals of the connecting interval.  Their branch multipliers are
+$1$, $e^{2\pi i\alpha}$, $e^{2\pi i\beta}$, and
+$e^{2\pi i(\alpha+\beta)}$; finite algebra leaves the prefactor in
+\eqref{eq:pochhammer}.
+\item Bound the two small loops by
+$C\rho^{\Rea\alpha}$ and $C\rho^{\Rea\beta}$ in the initial right-half-plane domain.  This proves \eqref{eq:pochhammer} there.
+\item Both sides have effective local power-series certificates off the integer divisors.  Continue along a finite chain of rational disks, using coefficient uniqueness on overlaps.
+\end{enumerate}
+
+Each step has a clear primitive-recursive realization, but the archive does not instantiate the polygonal branch and disk-chain certificates.  The Pochhammer formula is therefore \statusC{} here.  Meromorphic continuation through the Gamma quotient is already \statusB{} and suffices for all algebraic identities in the report.
+
+\subsection{Reciprocal-beta trigonometric integrals}
+
+The source displays, among others,
+\begin{equation}
+ \int_0^{\pi/2}\cos^{x-1}\theta\cos(y\theta)\,d\theta
+ =
+ \frac{\pi}
+ {2^x x\,
+ \B\!\left(\frac{x+y+1}{2},\frac{x-y+1}{2}\right)}.
+ \label{eq:reciprocal-beta-cos}
+\end{equation}
+Similar formulas over $[0,\pi]$ include factors
+$\sin(\pi y/2)$ or $\cos(\pi y/2)$.  The ordinary finite-interval integral in
+\eqref{eq:reciprocal-beta-cos} needs only $\Rea x>0$: for a fixed complex
+$y$, the cosine factor is bounded on $[0,\pi/2]$.  The stronger strip
+$\Rea x>|\Rea y|-1$ puts both displayed Beta arguments in the right half-plane
+and therefore supports a direct Beta-integral derivation.  Outside that strip,
+the reciprocal Beta on the right is read through its entire reciprocal-Gamma
+factors; no pole division is needed.
+
+For an integer frequency $y=m$, \eqref{eq:reciprocal-beta-cos} has a fully finite proof.  The multiple-angle recurrence expresses $\cos(m\theta)$ as a polynomial in $\cos\theta$; after multiplying by $\cos^{x-1}\theta$, every term is a trigonometric beta integral.  Gamma recurrence and duplication simplify the resulting finite sum to the right side.  The induction on $m$ and the polynomial coefficient identity are quantifier-free.
+
+For arbitrary named real or complex $y$, one route is:
+\[
+ \cos(y\theta)=
+ {}_2F_1\!\left(-\frac y2,\frac y2;\frac12;\sin^2\theta\right)
+\]
+or an equivalent exponential representation, followed by the beta integral and Gauss summation at $1$.  A constructive proof requires a uniform hypergeometric tail and a pole-margin version of Gauss summation.  Those contracts are not yet present in the inspected ProveIt arithmetic library, so the general-frequency formulas are \statusC{}; the integer-frequency family is \statusA/\statusB{}.
+
+\subsection{Reflection identities outside the integral strip}
+
+The formula
+\[
+ \B(x,1-x)=\frac{\pi}{\sin\pi x}
+\]
+is an ordinary integral identity only for $0<\Rea x<1$.  Outside that strip it is a meromorphic identity and requires a distance certificate from the integers before division by sine.  A bare hypothesis $x\notin\Z$ is not constructive enough.  Given a radius $R$ and
+\[
+ |x-k|\ge\delta>0
+ \quad\text{for }|k|\le2R+1,
+\]
+the effective sine product supplies a rational lower bound for
+$|\sin\pi x|$, and guarded inversion completes the formula.
+
+\subsection{Branches in incomplete-beta transformations}
+
+The source also writes
+\[
+ \B_x(a,b)=(-1)^a
+ \B_{x/(x-1)}(a,1-a-b).
+\]
+For noninteger complex $a$, the notation $(-1)^a$ is branch-dependent, and the transformed upper endpoint is negative for $0<x<1$.  A correct constructive statement must specify a branch of $\log(-1)$ and a path avoiding the branch points.  For integer $a$, the sign is unambiguous and the formula follows by the rational substitution $u=t/(t-1)$ on finite intervals.  The unqualified complex formula is classified \statusD{} as written, while a branch-certified version is \statusC{}.
+
+\subsection{Cleared identities as the preferred complex interface}
+
+When analytic continuation introduces poles, the most robust internal targets are cleared equations:
+\begin{align*}
+ \Gamma(a+b)\B(a,b)&=\Gamma(a)\Gamma(b),\\
+ \sin(\pi x)\B(x,1-x)&=\pi,\\
+ \pi\binom nk\prod_{j=0}^n(k-j)
+ &=(-1)^n n!\sin(\pi k).
+\end{align*}
+These formulas do not perform undefined division at removable singularities.  Local meromorphic statements are recovered only after the caller supplies the relevant apartness margins.

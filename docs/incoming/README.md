@@ -315,6 +315,8 @@ then deleted. It leaves out one ignored checksum manifest.
 `pentagonal_tiling_ipra_2026-11-16.zip` was placed the same way, under `geometry/`, and then
 deleted; its wrapper directory is `pentagonal_tiling_ipra`. It leaves out its two checksum
 manifests, `metadata/checksums.sha256` and `metadata/FILE_MANIFEST.txt`.
+`beta_function_ipra_2026-11-16.zip` was placed the same way, under `analysis/`, and then
+deleted. It leaves out one ignored checksum manifest.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

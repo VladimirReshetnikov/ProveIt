@@ -1,0 +1,46 @@
+\section{Further research questions}
+\label{sec:further}
+
+\begin{enumerate}
+\item \textbf{A direct beta library independent of Gamma.}
+Can reflection, duplication, and the full multiplication theory be derived from the beta integral and finite trigonometric factorization without passing through the effective Gamma packet?  This may shorten the object-theory dependency graph.
+
+\item \textbf{A sharp primitive-recursive beta evaluator.}
+The evaluator in \cref{sec:definition} is intentionally wasteful.  Develop interval arithmetic using tanh--sinh or Gauss--Jacobi quadrature with a proof whose checker is still small and whose moduli are elementary enough for iPRA.
+
+\item \textbf{Correct the symmetric-series source formula.}
+Determine the intended identity behind the false Wikipedia display, locate its primary source, and produce a corrected Abel-summation theorem with explicit convergence hypotheses.
+
+\item \textbf{Complete the incomplete-beta continued fraction.}
+Construct the positive integral remainder for each continuant and prove the $4m$/$4m+1$ lower and $4m+2$/$4m+3$ upper pattern in \code{Prf PRAAx}.  This would provide an efficient certified evaluator for beta-distribution tails.
+
+\item \textbf{Formalize Gauss hypergeometric summation.}
+A single effective ${}_2F_1(1)$ theorem would complete the general reciprocal-beta trigonometric integrals, simplify the continued-fraction proof, and provide a reusable bridge to many other special functions.
+
+\item \textbf{Branch-certified contour calculus.}
+Build a generic polygonal-contour library where a branch of a logarithm is positive data.  Use it to internalize the Pochhammer contour and compare the contour evaluator with the Gamma quotient on overlapping domains.
+
+\item \textbf{Variable-dimensional simplex integration.}
+The fixed-dimensional multivariate beta proof is straightforward.  Can a single coded theorem quantify over the dimension while retaining only quantifier-free induction invariants and avoiding a universal evaluator?
+
+\item \textbf{Probability without measure theory.}
+Develop the beta and Dirichlet distributions as finite weighted-sum names with explicit normalization and moment certificates.  Prove concentration and posterior-update formulas directly in iPRA.
+
+\item \textbf{Optimal proof-checker size.}
+Among the integral, Euler-product, and Gamma-quotient definitions of Beta, which yields the smallest complete certificate checker after all necessary arithmetic and elementary-function code is included?
+
+\item \textbf{Automated source auditing.}
+Extend the exact-rational checker so that a web formula is translated to a symbolic rising/falling-factorial convention and tested automatically at small rational parameters before it enters a proof packet.
+\end{enumerate}
+
+The most immediate completion target is the chain
+\[
+ \text{finite integral}
+ \longrightarrow
+ \text{recurrences}
+ \longrightarrow
+ \text{effective beta--gamma limit}
+ \longrightarrow
+ \text{object-theory derivations}.
+\]
+It would certify the majority of the source-page formulas without first building the contour or continued-fraction layers.

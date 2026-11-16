@@ -1,0 +1,143 @@
+\section{Series, products, and exact source checking}
+\label{sec:series-products}
+
+\subsection{The binomial-series representation}
+
+For $\Rea x,\Rea y>0$, the source pages give
+\begin{equation}
+ \B(x,y)=\sum_{n=0}^{\infty}
+ \frac{(1-x)_n}{(y+n)n!}.
+ \label{eq:beta-series}
+\end{equation}
+Here $(w)_n$ is the rising factorial.
+
+\begin{theorem}[Effective series formula]\label{thm:beta-series}
+Equation \eqref{eq:beta-series} holds as an equality of regular names.  On every certified compact domain
+\[
+ \Rea x\ge\alpha,\quad \Rea y\ge\beta,\quad |x|,|y|\le R,
+\]
+there is a primitive-recursive cutoff modulus.
+\end{theorem}
+
+\begin{proof}
+By symmetry write
+\[
+ \B(x,y)=\int_0^1 t^{y-1}(1-t)^{x-1}\,dt.
+\]
+Fix the requested precision.  Remove $t\in[1-\delta,1]$ using the endpoint bound $2\delta^\alpha/\alpha$.  On $[0,1-\delta]$ expand
+\[
+ (1-t)^{x-1}
+ =\sum_{n<N}\frac{(1-x)_n}{n!}t^n+R_N(t).
+\]
+This is the finite Taylor formula for $\exp((x-1)\log(1-t))$.  The elementary exponential remainder and the bound $|\log(1-t)|\le\log(1/\delta)$ give an explicit factorial cutoff $N$.  Integrating the finite polynomial gives
+\[
+ \sum_{n<N}\frac{(1-x)_n}{n!}\int_0^{1-\delta}t^{y+n-1}\,dt.
+\]
+Replacing the upper endpoint $1-\delta$ by $1$ contributes another explicitly bounded endpoint term, and
+$\int_0^1t^{y+n-1}\,dt=(y+n)^{-1}$.  The finite algebra is exact after guarded inversion because $\Rea(y+n)\ge\beta+n$.  All cutoffs are primitive recursive in the domain data and precision.
+\end{proof}
+
+For the incomplete beta function the same proof gives the more useful uniformly geometric series on $0\le z\le1-\delta$:
+\[
+ \B_z(a,b)=
+ \sum_{n=0}^{\infty}
+ \frac{(1-b)_n}{(a+n)n!}z^{a+n}.
+\]
+This will be used in \cref{sec:incomplete}.
+
+\subsection{A displayed symmetric series is false as written}
+
+The Wikipedia page currently displays
+\[
+ \B(z,z)=2\sum_{n\ge0}
+ \frac{(2z+n-1)_n(-1)^n}{(z+n)n!}
+ =\lim_{r\to1^-}2\sum_{n\ge0}
+ \frac{(-2z)_n r^n}{(z+n)n!},
+ \tag{S}
+\]
+while explicitly declaring $(\cdot)_n$ to be the rising factorial.
+
+\begin{warning}[Counterexample at $z=1$]\label{warn:false-series}
+Formula (S) is false with the stated rising-factorial convention.
+\end{warning}
+
+\begin{proof}
+For $z=1$, the magnitude of the $n$th term in the first series is
+\[
+ 2\frac{(n+1)_n}{(n+1)n!}
+ =2\frac{(2n)!}{(n+1)(n!)^2},
+\]
+which does not tend to zero; the series diverges.  In the second series, $(-2)_n$ vanishes for $n\ge3$, so the Abel limit is
+\[
+ 2\left(1-1+\frac{2}{3\cdot2}\right)
+ =\frac23,
+\]
+not $\B(1,1)=1$.  Thus neither equality can be used in a proof packet without correcting the source formula.
+\end{proof}
+
+The exact-rational checker in the archive records this counterexample.  We do not guess the intended correction.
+
+\subsection{The Euler product for Beta}
+
+The source pages give two algebraically equivalent products:
+\begin{align}
+ \B(x,y)
+ &=\frac{x+y}{xy}
+ \prod_{k=1}^{\infty}
+ \frac{1+(x+y)/k}{(1+x/k)(1+y/k)},
+ \label{eq:beta-product-1}\\
+ &=\frac{x+y}{xy}
+ \prod_{k=1}^{\infty}
+ \left(1+\frac{xy}{k(k+x+y)}\right)^{-1}.
+ \label{eq:beta-product-2}
+\end{align}
+The equivalence of their $k$th factors is the exact identity
+\[
+ \frac{(1+x/k)(1+y/k)}{1+(x+y)/k}
+ =1+\frac{xy}{k(k+x+y)}.
+\]
+
+\begin{theorem}[Effective infinite product]\label{thm:beta-product}
+On a certified compact domain separated from the poles and from $x=0$, $y=0$, and $x+y=0$, the finite products in
+\eqref{eq:beta-product-1}--\eqref{eq:beta-product-2} converge to $\B(x,y)$ with a primitive-recursive modulus.
+For positive real $x,y$, the tail after $N$ satisfies
+\[
+ 1\le
+ \prod_{k>N}\left(1+\frac{xy}{k(k+x+y)}\right)
+ \le\exp(xy/N).
+\]
+\end{theorem}
+
+\begin{proof}
+Insert the effective Weierstrass products for $\Gamma(x)$, $\Gamma(y)$, and $\Gamma(x+y)$ into the beta--gamma quotient.  The exponential normalization factors cancel exactly, leaving \eqref{eq:beta-product-1}.  This cancellation occurs already at each common finite cutoff, so only the Gamma product remainder needs to be bounded.
+
+For positive $x,y$, put $u_k=xy/[k(k+x+y)]$.  Then $u_k\ge0$ and
+\[
+ \sum_{k>N}u_k\le xy\sum_{k>N}\frac1{k^2}\le\frac{xy}{N}.
+\]
+The finite inequality $\prod(1+u_k)\le\exp(\sum u_k)$ follows by multiplying the finite inequalities $1+u\le e^u$.  The lower bound is immediate.  For complex parameters use $|u_k|\le C/k^2$ once $k$ exceeds the fixed radius, and the finite telescoping product estimate gives a tail bounded by a primitive-recursive multiple of $1/N$.
+\end{proof}
+
+For positive $x,y$ this product also gives monotone rational upper and lower approximations to Beta after the prefactor is bounded.  It is therefore an alternative evaluator to the integral name.
+
+\subsection{Finite products before limits}
+
+A useful formalization policy is to prove the identity
+\[
+ \frac{x+y}{xy}
+ \prod_{k=1}^{N}
+ \frac{1+(x+y)/k}{(1+x/k)(1+y/k)}
+ =
+ \frac{x+y}{xy}\,
+ \frac{N!\,(x+y+1)_N}{(x+1)_N(y+1)_N}
+\]
+only after clearing all denominators.  A simpler equivalent form is obtained directly from the Euler Gamma approximants.  The exact choice is not mathematically important; what matters is that the product regrouping is a quantifier-free induction invariant and the analytic content is isolated in an explicit $O(1/N)$ remainder.
+
+\subsection{Products and logarithms}
+
+On positive real domains,
+\[
+ \log\B(x,y)=\log(x+y)-\log x-\log y
+ -\sum_{k\ge1}\log\left(1+\frac{xy}{k(k+x+y)}\right).
+\]
+Since $0\le\log(1+u)\le u$, the same $xy/N$ bound controls the logarithmic tail.  Finite differentiation of this logarithmic product supplies an independent route to the digamma formulas in \cref{sec:derivatives}; the Gamma quotient is shorter, but the product route may be preferable in an object-theory development because every denominator is visibly separated on a positive compact domain.

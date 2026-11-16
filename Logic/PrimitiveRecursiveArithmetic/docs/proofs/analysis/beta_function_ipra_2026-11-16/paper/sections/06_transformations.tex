@@ -1,0 +1,115 @@
+\section{Integral transformations and central-beta formulas}
+\label{sec:transformations}
+
+Every substitution in this section is first performed on a closed rational subinterval, where its derivative has an explicit bound.  The removed endpoints are then controlled by the beta tail estimates.  Thus the formulas are consequences of finite telescoping sums, not of an unrestricted change-of-variables theorem.
+
+\subsection{Trigonometric and infinite-interval forms}
+
+\begin{theorem}[Standard transformed integrals]\label{thm:transformed-integrals}
+For $\Rea a,\Rea b>0$,
+\begin{align}
+ \B(a,b)
+ &=2\int_0^{\pi/2}
+       \sin^{2a-1}\theta\,\cos^{2b-1}\theta\,d\theta,
+ \label{eq:trig-beta}\\
+ &=\int_0^\infty
+       \frac{u^{a-1}}{(1+u)^{a+b}}\,du,
+ \label{eq:infinity-beta}\\
+ &=q\int_0^1
+       t^{qa-1}(1-t^q)^{b-1}\,dt
+ \qquad(q>0).
+ \label{eq:power-beta}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+For \eqref{eq:trig-beta}, use $t=\sin^2\theta$, so
+$dt=2\sin\theta\cos\theta\,d\theta$.  Positivity of sine and cosine on the first quadrant fixes the power convention.  The endpoint error after cutting off $\theta$ is bounded by the corresponding beta endpoint error because $t=\sin^2\theta$ is monotone and has an explicit primitive-recursive inverse obtained by bisection.
+
+For \eqref{eq:infinity-beta}, use $t=u/(1+u)$, so $dt=du/(1+u)^2$.  A lower cutoff $u=\eta$ contributes at most $\eta^\alpha/\alpha$; an upper cutoff $u=T$ contributes at most $T^{-\beta}/\beta$.
+
+For \eqref{eq:power-beta}, use $u=t^q$.  On a truncated interval the derivative is $qt^{q-1}$; the endpoint powers already provide the required tails.  A rational positive name for $q$ includes upper and lower margins, so the bisection evaluator for $t^q$ is primitive recursive.
+\end{proof}
+
+MathWorld's formula
+\[
+ \int_0^{\pi/2}\sin^n x\cos^m x\,dx
+ =\frac12\B\!\left(\frac{n+1}{2},\frac{m+1}{2}\right)
+\]
+is \eqref{eq:trig-beta} with renamed parameters.  For nonnegative integers $m,n$, \cref{thm:integer-values} reduces it to factorial arithmetic.
+
+\subsection{A fractional-linear one-parameter identity}
+
+Let $c<1$ be a real name with a supplied margin $1-c\ge d>0$.  Put
+\[
+ u=\frac{1-t}{1-ct}.
+\]
+As $t$ increases from $0$ to $1$, $u$ decreases from $1$ to $0$, and
+\[
+ 1-u=\frac{(1-c)t}{1-ct},
+ \qquad
+ \left|\frac{du}{dt}\right|=\frac{1-c}{(1-ct)^2}.
+\]
+Consequently
+\begin{equation}
+ \boxed{
+ \B(a,b)=(1-c)^b
+ \int_0^1\frac{(1-t)^{a-1}t^{b-1}}
+ {(1-ct)^{a+b}}\,dt.}
+ \label{eq:mobius-beta}
+\end{equation}
+The denominator is at least $d$ on the whole interval.  The Wikipedia page states $c\le1$; at $c=1$ the substitution degenerates and the displayed integrand/prefactor are not a valid ordinary formula.  The correct direct statement is $c<1$, with $c=1$ only as a separately justified limit in parameter ranges where such a limit exists.
+
+\subsection{The central radical integral}
+
+For positive real $z$, start from \eqref{eq:infinity-beta}:
+\[
+ \B(z,z)=\int_0^\infty\frac{r^{z-1}}{(1+r)^{2z}}\,dr.
+\]
+In
+\[
+ I_z=\int_0^{\pi/2}
+ \frac{d\theta}
+ {(\sin^{1/z}\theta+\cos^{1/z}\theta)^{2z}},
+\]
+put $s=\tan\theta$ and then $r=s^{1/z}$.  Since
+\[
+ \sin^{1/z}\theta+\cos^{1/z}\theta
+ =(1+s^2)^{-1/(2z)}(1+s^{1/z}),
+ \qquad d\theta=\frac{ds}{1+s^2},
+\]
+we obtain
+\[
+ I_z=\int_0^\infty\frac{ds}{(1+s^{1/z})^{2z}}
+ =z\int_0^\infty\frac{r^{z-1}}{(1+r)^{2z}}\,dr.
+\]
+Thus
+\begin{equation}
+ \boxed{
+ \B(z,z)=\frac1z\int_0^{\pi/2}
+ \frac{d\theta}
+ {(\sin^{1/z}\theta+\cos^{1/z}\theta)^{2z}}.}
+ \label{eq:central-radical}
+\end{equation}
+This proof is constructive for positive real $z$ with upper and lower margins.  The source's exclusion $z\ne1$ is unnecessary: at $z=1$ the integrand is $(\sin\theta+\cos\theta)^{-2}$ and the identity remains true.  For complex $z$, the radicals require branch data not stated on the page, so \eqref{eq:central-radical} should not be read branch-free.
+
+\subsection{Gaussian and generalized Gamma integrals}
+
+The effective Gamma scaling substitution $u=ct^q$ gives, for positive real $c,q$ and $\Rea a>0$,
+\begin{equation}
+ \boxed{
+ \int_0^\infty t^{a-1}e^{-ct^q}\,dt
+ =\frac{\Gamma(a/q)}{q\,c^{a/q}}.}
+ \label{eq:gamma-scaling}
+\end{equation}
+The special case $q=2$ is the Gaussian integral family used in MathWorld's polar-coordinate derivation.  In iPRA it is simpler to prove \eqref{eq:gamma-scaling} directly in one dimension and then derive the trigonometric beta integral, rather than formalize a two-dimensional polar Jacobian.
+
+\subsection{Finite-dimensional polar identities}
+
+For nonnegative integers $m,n$, the MathWorld calculation can nevertheless be reconstructed without a general measure theory.  Replace the double Gaussian integral over a square $[-T,T]^2$ by a finite rectangular grid.  Partition the first quadrant into rational angular sectors and radial shells.  The discrepancy between the grid and the polar sum is bounded by a Lipschitz constant times the mesh diameter; the Gaussian tail outside radius $T$ has the elementary factorial bound from the Gamma construction.  After the finite angular symmetry factor is extracted, the identity reduces to
+\[
+ m!n!
+ =2(m+n+1)!
+ \int_0^{\pi/2}\cos^{2m+1}\theta\sin^{2n+1}\theta\,d\theta.
+\]
+This route is formalizable, but it is longer than the one-dimensional proof and adds no new beta theorem.  We therefore classify the full polar-grid implementation as \statusC{}, while the resulting identity itself is already \statusA{} by \cref{thm:transformed-integrals,thm:integer-values}.

@@ -1,0 +1,112 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.82in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{etoolbox}
+
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=OliveGreen,urlcolor=BrickRed,pdfauthor={OpenAI},pdftitle={The beta function in intuitionistic primitive recursive arithmetic}}
+\setlist{nosep,leftmargin=1.5em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\renewcommand{\arraystretch}{1.15}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Beta function in iPRA}
+\rhead{16 November 2026}
+\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Source-audit warning}
+
+\newcommand{\B}{\mathrm B}
+\newcommand{\G}{\Gamma}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\dd}{\,d}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\I}{\mathrm I}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\rising}[2]{(#1)_{#2}}
+\newcommand{\statusA}{\textcolor{ForestGreen}{\textbf{A}}}
+\newcommand{\statusB}{\textcolor{MidnightBlue}{\textbf{B}}}
+\newcommand{\statusC}{\textcolor{BurntOrange}{\textbf{C}}}
+\newcommand{\statusD}{\textcolor{BrickRed}{\textbf{D}}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,frame=single,backgroundcolor=\color{gray!5},keywordstyle=\color{MidnightBlue},commentstyle=\color{ForestGreen}}
+
+\title{\textbf{The beta function in intuitionistic primitive recursive arithmetic}\\
+\large Effective proofs, source audit, and a Lean/ConciseIPRA formalization route}
+\author{Prepared for Vladimir Reshetnikov}
+\date{16 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This report reconstructs, in a finitary constructive form suitable for intuitionistic primitive recursive arithmetic, the mathematical claims appearing on the Wikipedia and MathWorld pages for Euler's beta function.  The basic object is not an abstract real-valued function.  It is a primitive-recursive rational approximation algorithm, parameterized by fixed primitive-recursive names for its inputs and accompanied by explicit endpoint, mesh, denominator, and tail certificates.  Within that reading we prove the effective beta integral, symmetry, positivity, Pascal and shift recurrences, integer and binomial values, the beta--gamma identity, transformed integrals, parameter derivatives, reflection and duplication consequences, infinite products, multiplication identities, both Gosper product formulas, incomplete and regularized beta identities, the binomial-CDF relation, multivariate beta recurrences, and quantitative asymptotics.  We also isolate claims requiring additional complex-analysis infrastructure and identify source formulas that need qualification or correction.  A Lean outline specifies the exact definitions, induction invariants, module order, and target formulas for completing a kernel-checked development in ProveIt's \code{Prf PRAAx} and transporting it through \code{pra_iff_native}.
+\end{abstract}
+
+\begin{center}
+\fbox{\begin{minipage}{0.94\textwidth}
+\textbf{Proof-status convention.}  \statusA{} means a complete finite proof is supplied here and its reduction to quantifier-free arithmetic induction is explicit.  \statusB{} means the proof is complete modulo the effective Gamma/elementary-function contracts already developed in ProveIt's Gamma research packet.  \statusC{} means a mathematically precise constructive route and Lean obligations are supplied, but a substantial analytic certificate remains to be built.  \statusD{} marks a false-as-written, branch-ambiguous, or out-of-scope source claim.  The report is a research packet, not a claim that all analytic obligations have already been checked by Lean.
+\end{minipage}}
+\end{center}
+
+\tableofcontents
+\newpage
+
+\input{sections/01_scope}
+\input{sections/02_foundations}
+\input{sections/03_definition}
+\input{sections/04_elementary}
+\input{sections/05_gamma}
+\input{sections/06_transformations}
+\input{sections/07_series_products}
+\input{sections/08_derivatives}
+\input{sections/09_multiplication}
+\input{sections/10_incomplete}
+\input{sections/11_multivariate}
+\input{sections/12_asymptotics}
+\input{sections/13_complex}
+\input{sections/14_source_audit}
+\input{sections/15_lean}
+\input{sections/16_inventory}
+\input{sections/17_questions}
+
+\begin{thebibliography}{99}
+\bibitem{wiki} Wikipedia contributors, ``Beta function,'' \url{https://en.wikipedia.org/wiki/Beta_function}, accessed 16 November 2026.
+\bibitem{mathworld} E. W. Weisstein, ``Beta Function,'' MathWorld--A Wolfram Web Resource, \url{https://mathworld.wolfram.com/BetaFunction.html}, accessed 16 November 2026.
+\bibitem{dlmf} NIST Digital Library of Mathematical Functions, Chapters 5 and 8, \url{https://dlmf.nist.gov/}, accessed 16 November 2026.
+\bibitem{proveit} V. Reshetnikov, \emph{ProveIt}, \url{https://github.com/VladimirReshetnikov/ProveIt}, inspected on the main branch 16 November 2026.
+\bibitem{gamma} ProveIt, \code{Logic/PrimitiveRecursiveArithmetic/docs/proofs/analysis/gamma_ipra}, effective Gamma research packet, inspected 16 November 2026.
+\bibitem{concise} ProveIt, \code{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}, Lean formalization of theories bi-interpretable with iPRA.
+\bibitem{derivations} ProveIt, \code{Logic/PrimitiveRecursiveArithmetic/Derivations}, kernel-checked embedded iPRA arithmetic library.
+\end{thebibliography}
+
+\end{document}
