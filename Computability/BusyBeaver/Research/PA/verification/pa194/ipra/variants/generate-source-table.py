@@ -1,4 +1,4 @@
-"""Generate exact table and trie definitions for variants using the primary source."""
+"""Generate exact table and trie definitions for pinned source variants."""
 from hashlib import sha256
 import json
 from pathlib import Path
