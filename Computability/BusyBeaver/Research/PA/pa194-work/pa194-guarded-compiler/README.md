@@ -200,7 +200,7 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/chec
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-translate-ext.sh "$PWD" NEW_EMPTY_OUTPUT
 ```
 
-`check-incremental.sh` now lists the current fourteen modules with their report counts, because
+`check-incremental.sh` now lists the current nineteen modules with their report counts, because
 `PA194GuardedEndpoint` no longer exists. In that form it has not been run. It writes
 `PA194TranslateExt` into its output directory, so `check-translate-ext.sh` is only needed to
 replay that module alone.
@@ -211,7 +211,7 @@ incremental replay of `PA194Leibniz` against those objects passed with four axio
 reports and no `sorryAx`. The dispatcher, source theory and other listed overlays
 were prebuilt; these checks do not rebuild the full transitive dependency closure.
 The first replay used the preceding six-module version of `check-incremental.sh`;
-the current fourteen-module script has not been run as a whole. To replay the later
+the current nineteen-module script has not been run as a whole. To replay the later
 module alone against the same checked staged dependencies:
 
 ```sh
@@ -275,4 +275,15 @@ remain open. Reproduce with a fresh output directory:
 
 ```sh
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-induction-body.sh "$PWD" NEW_EMPTY_OUTPUT
+```
+
+A separate repository-source replay of `PA194ArithFacts` and
+`PA194FixedAxiomQuotes` passed nine and six axiom reports without `sorryAx`,
+against the independently replayed naming and induction objects plus other
+prebuilt dependencies. It does not rebuild their full transitive closure. The
+results retain `SourceFacts` and, for the successor axioms, the explicit `sA3`
+and `sM3` recursion hypotheses. Reproduce with a fresh output directory:
+
+```sh
+bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-fixed-arithmetic.sh "$PWD" NEW_EMPTY_OUTPUT
 ```
