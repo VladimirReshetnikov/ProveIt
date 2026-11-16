@@ -46,6 +46,14 @@ variants = {
             "sites.json": "85947f638c6a4f922752982886c4442bcd75f9550be93412872d018ee5fafd60",
         },
     ),
+    "PA194GS": (
+        "PA194GS_research_2026-11-15/machine",
+        {
+            "machine.tm": "64ac4ba569b770688a39a1545d5536ad631d15dbb756a0584a8956a83943b3a8",
+            "labels.json": "3a002e260d5cbdf1f4750dfa3dc15ddb664046301f9ec1b1894d4f88e33e4fda",
+            "sites.json": "ffef7a1cb4562fc687fee2719b5aa5a75acfb9baf0bdb2b09cc11664e4517b42",
+        },
+    ),
     "PA194OR": (
         "PA194ORH_research_2026-11-15/machines/PA194OR",
         {
@@ -101,7 +109,7 @@ primary = (packets / "pa194_conpa_2026-11-13/construction/source/pa194.instructi
 assert sha256(primary).hexdigest() == "6c3127cd0da15fda49ed99cea199a009b9bc1e1707100846df9a2df02a22d507"
 instructions = (folder / "instructions.json").read_bytes()
 site_count = 3673
-if variant in ("PA194AX11H", "PA194LCAX11H"):
+if variant in ("PA194AX11H", "PA194LCAX11H", "PA194GS"):
     assert sha256(instructions).hexdigest() == "43a4ba0d62f95fe766d5369940b0aa8b7a4da04824feb8836905e289640f59f7"
     site_count = 3671
 elif variant == "PA194M5":
@@ -127,6 +135,7 @@ assert labels[24]==84
 native={(labels[q],b):(w,d,labels[n]) for (q,b),(w,d,n) in rows.items()}
 native_pins = {
     "PA194AX11H": "6022711dcc0a025eb4b7a5a8f690d6b52f45f3d963a0868afef10962ccc49bd3",
+    "PA194GS": "adef88c26ecaa0ab570e10a915fdf2e22a7c0b546fdac9deb1be9427350e60ee",
     "PA194M6": "759255b48e7c2bd2e4c25e755639c6302ad14f5c33ed6fcc3af1a4534ba9ae5e",
 }
 if variant in native_pins:

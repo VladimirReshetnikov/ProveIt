@@ -13,6 +13,7 @@ checkers = {
     "PA194LCB": "PA194LCBChecks",
     "PA194AX11H": "PA194AX11HChecks",
     "PA194LCAX11H": "PA194LCAX11HChecks",
+    "PA194GS": "PA194GSChecks",
     "PA194M5": "PA194M5Checks",
     "PA194M6": "PA194M6Checks",
 }
@@ -23,7 +24,10 @@ checker = checkers[candidate]
 coverage = f"{candidate}Coverage"
 out = Path(destination)
 out.mkdir(parents=True, exist_ok=True)
-sites = {"PA194AX11H": 3671, "PA194LCAX11H": 3671, "PA194M5": 3734, "PA194M6": 3795}.get(candidate, 3673)
+sites = {
+    "PA194AX11H": 3671, "PA194LCAX11H": 3671, "PA194GS": 3671,
+    "PA194M5": 3734, "PA194M6": 3795,
+}.get(candidate, 3673)
 block_size = 64
 kernel_size = 16
 blocks = [(base, min(base + block_size, sites)) for base in range(0, sites, block_size)]
