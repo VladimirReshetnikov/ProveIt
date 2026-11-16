@@ -59,7 +59,8 @@ are not covered: their numerical calculus is not `TargetProvable`.
 
 | Module | Content |
 | --- | --- |
-| `PA194ControllerScheduler` | `cstepCodeK`, `stepK`, `runK`, `haltAtK`, `haltAfterK`. `semK k ct a`: the command semantics of `ConPA.Ctl`; `stepK_eq`: the step code is `ConPA.Ctl.sstep (semK k ct a)`. `G_of_provable`: a target proof gives a command word (`targetProof_sound` with the closure lemmas of `ConPA.Ctl`). `cstepK_sound`, `runK_sound`: top, cache and stack entries stay provable along a run. `halts_iff_provable`, `halts_iff_primary`. |
+| `PA194ControllerSchedulerCore` | The PRA code definitions for the scheduler step, its iteration, and its halt test, independent of the fairness and PA-interpretation proofs. |
+| `PA194ControllerScheduler` | `cstepCodeK`, `haltAfterK`; imports the shared core. `semK k ct a`: the command semantics of `ConPA.Ctl`; `stepK_eq`: the step code is `ConPA.Ctl.sstep (semK k ct a)`. `G_of_provable`: a target proof gives a command word (`targetProof_sound` with the closure lemmas of `ConPA.Ctl`). `cstepK_sound`, `runK_sound`: top, cache and stack entries stay provable along a run. `halts_iff_provable`, `halts_iff_primary`. |
 | `PA194ControllerSchedulerPA` | `scheduler_iff_pa_refutation`; `haltSentenceK` and `consistency_iff_scheduler_nonhalt`, by the transfers of `ConPAISigma1Directions`. |
 
 ## How the two directions go
@@ -84,7 +85,10 @@ provable when the guard allows it and is `0` otherwise. A halting SHIFT has `t +
 bash Computability/BusyBeaver/Research/PA/verification/pa194-work/pa194-controller-schedulers/check.sh [--out DIR]
 ```
 
-compiles both modules with every standalone module they import (`check_bridge.py` of
+compiles all three modules with every standalone module they import (`check_bridge.py` of
 `pa194-model-fairness`), one `lean` process at a time, and checks the number of axiom
-reports: five in `PA194ControllerScheduler`, four in `PA194ControllerSchedulerPA`. They are
+reports: three in `PA194ControllerSchedulerCore`, five in `PA194ControllerScheduler`, and four in `PA194ControllerSchedulerPA`. They are
 `propext`, `Classical.choice`, `Quot.sound`.
+
+For a staged replay of the lightweight core against already checked providers, run
+`./check-core.sh PROVIDER-LEANPATH-FILE FRESH-OUTPUT` from this directory.
