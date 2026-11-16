@@ -19,6 +19,7 @@ import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.Bezout
 import IPRADerivations.Core.Search
 import IPRADerivations.Core.SumLemmas
+import IPRADerivations.Core.SumReflect
 import IPRADerivations.Algebra.CayleyHamilton
 import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Analysis.Chebyshev
@@ -57,7 +58,10 @@ import IPRADerivations.AnalyticNumberTheory.PhiTwo
 import IPRADerivations.AnalyticNumberTheory.PhiLowerSharp
 import IPRADerivations.AnalyticNumberTheory.PhiUpper
 import IPRADerivations.AnalyticNumberTheory.PhiLimsup
+import IPRADerivations.AnalyticNumberTheory.PhiPowTwo
 import IPRADerivations.Combinatorics.Bell
+import IPRADerivations.Combinatorics.BellBounds
+import IPRADerivations.Combinatorics.BellTriangle
 import IPRADerivations.DiophantineNumberTheory.PellGcd
 import IPRADerivations.Core.Pigeonhole
 import IPRADerivations.DiophantineNumberTheory.PellModular
@@ -65,6 +69,7 @@ import IPRADerivations.DiophantineNumberTheory.Dirichlet
 import IPRADerivations.DiophantineNumberTheory.PellNegDescent
 import IPRADerivations.DiophantineNumberTheory.PellGenDescent
 import IPRADerivations.DiophantineNumberTheory.PellOneSided
+import IPRADerivations.DiophantineNumberTheory.PellNegUnits
 import IPRADerivations.DiophantineNumberTheory.Hurwitz
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
@@ -75,6 +80,7 @@ import IPRADerivations.DiophantineNumberTheory.Pythagoras
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
 import IPRADerivations.DiophantineNumberTheory.FermatQuartic
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
+import IPRADerivations.DiophantineNumberTheory.FLTMixed
 import IPRADerivations.DiophantineNumberTheory.IrrationalSqrt
 import IPRADerivations.DiophantineNumberTheory.PellDescent
 import IPRADerivations.DiophantineNumberTheory.PellAll
