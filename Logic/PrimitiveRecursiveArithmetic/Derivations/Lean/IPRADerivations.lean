@@ -80,6 +80,7 @@ import IPRADerivations.DiophantineNumberTheory.Pythagoras
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
 import IPRADerivations.DiophantineNumberTheory.FermatQuartic
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
+import IPRADerivations.DiophantineNumberTheory.FLTMixed
 import IPRADerivations.DiophantineNumberTheory.IrrationalSqrt
 import IPRADerivations.DiophantineNumberTheory.PellDescent
 import IPRADerivations.DiophantineNumberTheory.PellAll

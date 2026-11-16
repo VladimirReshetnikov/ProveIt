@@ -118,6 +118,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.FermatQuartic.flt4
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples.pw_pos
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples.flt_multiple_of_four
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.FLTMixed.quartic_at
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.FLTMixed.pw_double
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.FLTMixed.mixed_quartic
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.FLTMixed.mixed_four
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.FLTMixed.mixed_quartic_closed
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.FLTMixed.mixed_four_closed
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.IrrationalSqrt.no_rational_sqrt
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellDescent.unit_descent
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellAll.inv_step
