@@ -26,3 +26,24 @@ bash Computability/BusyBeaver/Research/PA/pa194/ipra/machine-code/check-schedule
 The four repository sources replayed in a single output with no `sorryAx`
 or `Lean.ofReduceBool` in the reported axioms. Lower imports use the retained
 fetch, decoder and arithmetic stages.
+
+`PA194SourceSchedulerOrbit.synchronize` uses IΣ₁ induction to align any
+model length of ordinary commands with source execution. It carries the
+controller clock as an existential witness and uses the positive length of
+each command to bound that clock below by the scheduler index. Since the
+controller's halt state is absorbing, a segment whose endpoint is a normal
+root cannot have halted in its interior.
+
+`PA194SchedulerSourceFrame` checks the packed frame at the exact initial
+states of both programs and applies the local halt theorem at that frame.
+Its `equivalent_of_return` gives the model-level correspondence between
+controller halting and scheduler halting assuming that every command with a
+clear halt flag reaches the next scheduler frame in positive time.
+
+Both modules replayed from repository sources and reported only ordinary
+Lean axioms. Run the orbit checker with the previous four-source scheduler
+stage and the compressed-controller stages in place.
+
+```sh
+bash Computability/BusyBeaver/Research/PA/pa194/ipra/machine-code/check-scheduler-source-orbit.sh /dev/shm/pa194-source-scheduler-orbit-new
+```
