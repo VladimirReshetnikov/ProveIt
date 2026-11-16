@@ -1,0 +1,107 @@
+\section{Representative internal \(\ipra\) targets}
+\label{app:ipra-target}
+
+This appendix spells out the distinction between the finite exact kernel and a
+statement about represented real coordinates.
+
+\subsection{A single exact rational checker theorem}
+
+Let \(w\in\N\) encode a tuple of signed rational values for all symbols in
+(4.16).  Define primitive-recursive characteristic functions:
+\begin{itemize}
+\item \(\mathsf{CoreCert}(w)=1\) when all denominator codes are positive and
+all equations in (4.16) hold after cross multiplication;
+\item \(\mathsf{CoreConsequences}(w)=1\) when the cross-multiplied side and
+angle cosine laws, sine law, unit-angle equations, five-part identities and
+Cagnoli equations all hold.
+\end{itemize}
+Both functions use only bounded tuple decoding and natural arithmetic.  The
+first exact target is
+\begin{equation}
+ \ipra\vdash
+ \forall w\,
+ \bigl(\mathsf{CoreCert}(w)=1\to
+       \mathsf{CoreConsequences}(w)=1\bigr).                \tag{B.1}
+\end{equation}
+A verified polynomial normalizer can produce the derivation of (B.1).  No real
+numbers or limits occur here.
+
+For the tetrahedron, an analogous checker
+\(\mathsf{TetCert}\) verifies four coordinate face vectors, their closure,
+positive squared norms and the normalized dihedral dot equations.  Its target
+is
+\begin{equation}
+ \ipra\vdash
+ \forall w\,
+ \bigl(\mathsf{TetCert}(w)=1\to
+       \mathsf{TetCosine}(w)=1\bigr).                       \tag{B.2}
+\end{equation}
+
+\subsection{A fixed-name finite-precision theorem}
+
+Now fix, in the metatheory, particular primitive-recursive programs for the
+nine coordinates of \(u,v,w\), their moduli and bounds.  The programs are not
+object-language variables.  Compile particular PR symbols for all output names
+and let \(\mathsf{ApproxHyp}(n,\vec q)\) assert that the rational tuple
+\(\vec q\) consists of the finitely many input approximations requested by the
+precision schedule for output precision \(n\).  Let
+\(\mathsf{CosineError}(n,\vec q)\) be the natural-number inequality obtained
+by clearing positive denominators in
+\begin{equation}
+ \abs{\cos a-
+ (\cos b\cos c+\sin b\sin c\cos A)}\le2^{-n}.              \tag{B.3}
+\end{equation}
+The actual internal theorem has the form
+\begin{equation}
+ \ipra\vdash
+ \forall n\,\forall\vec q\,
+ \bigl(\mathsf{ApproxHyp}(n,\vec q)
+ \to\mathsf{CosineError}(n,\vec q)\bigr).                  \tag{B.4}
+\end{equation}
+The proof at free \(n\) instantiates input regularity only at explicitly
+computed indices, invokes the finite polynomial identity, and closes a rational
+error estimate.  Its induction calls are on bounded loops and use
+quantifier-free invariants.  Universal introduction of \(n\) comes last.
+
+The sine law, half formulas and all remaining identities use the same shape.
+A quotient conclusion additionally assumes a numerical apartness certificate;
+a positive-root conclusion includes the bounded-square-root bracket and the
+branch interval.
+
+\subsection{Lean object-language shape}
+
+Using the actual repository syntax, the intended endpoint is schematically
+\begin{lstlisting}[language={}]
+open LeanProofs.ConciseIPRA
+
+def sphericalHypotheses : Fm 0 := ...
+def sphericalConclusions : Fm 0 := ...
+
+theorem sphericalAtlas :
+  Prf PRAAx [] (Fm.imp sphericalHypotheses sphericalConclusions) := by
+  -- concrete PR defining equations
+  -- qf induction for bounded arithmetic and error loops
+  -- internally sound polynomial certificates
+  -- ordinary intuitionistic introduction/elimination rules
+  ...
+\end{lstlisting}
+The ellipsis denotes work, not an assumed theorem.  The supplied
+\code{IPRABridge.lean} defines the data interfaces and target signatures so
+that the remaining implementation obligations are visible rather than hidden
+behind host-level axioms.
+
+\subsection{Semantic presentation theorem}
+
+After the internal theorem is complete, the existing ProveIt
+bi-interpretation can present it in the concise native language.  Separately,
+a semantic theorem states that standard rapid dyadic names satisfying the
+premises denote the ordinary geometric quantities and hence validate the
+familiar real-number formulas.  The direction of justification is therefore
+\[
+ \text{finite arithmetic derivation}
+ \longrightarrow
+ \text{name equality at every precision}
+ \longrightarrow
+ \text{ordinary geometric presentation},
+\]
+not the reverse.

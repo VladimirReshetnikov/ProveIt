@@ -1,0 +1,163 @@
+\section{Tetrahedral trigonometry}
+\label{sec:tetrahedron}
+
+Let \(P_1,P_2,P_3,P_4\in\R^3\) be the vertices of a nondegenerate Euclidean
+tetrahedron.  Let \(F_i\) be the face opposite \(P_i\), let \(\Delta_i>0\) be
+its area, and let \(\theta_{ij}\in(0,\pi)\) be the interior dihedral angle
+along the edge \(P_iP_j\).
+
+\subsection{Oriented face-area vectors}
+
+For each face choose the outward unit normal \(n_i\) and define its doubled
+area vector
+\begin{equation}
+ N_i=2\Delta_i n_i.                                         \tag{11.1}
+\end{equation}
+
+\begin{lemma}[Closure of face-area vectors]
+\label{lem:face-closure}
+The four outward face-area vectors satisfy
+\begin{equation}
+ N_1+N_2+N_3+N_4=0.                                        \tag{11.2}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Translate \(P_4\) to the origin and put
+\(a=P_1-P_4\), \(b=P_2-P_4\), \(c=P_3-P_4\), with
+\(\detm[a\ b\ c]>0\).  The inward doubled normals of the first three faces
+are \(b\crossp c\), \(c\crossp a\), \(a\crossp b\).  The oriented normal of
+the face \(P_1P_2P_3\) is
+\begin{align*}
+ (b-a)\crossp(c-a)
+ &=b\crossp c+c\crossp a+a\crossp b.
+\end{align*}
+It points away from \(P_4\), so its inward normal is the negative of this sum.
+Thus the four inward vectors sum to zero; negating all four proves (11.2) for
+outward vectors.  This is a coordinate polynomial identity.
+\end{proof}
+
+Faces \(F_j\) and \(F_k\) meet along the edge joining the two remaining
+vertices \(P_i,P_l\).  The angle between their outward normals is
+\(\pi-\theta_{il}\).  Hence
+\begin{equation}
+ N_j\dotp N_k
+ =4\Delta_j\Delta_k\cos(\pi-\theta_{il})
+ =-4\Delta_j\Delta_k\cos\theta_{il}.                       \tag{11.3}
+\end{equation}
+This relation may itself be taken as the constructive definition of the
+circle-valued dihedral angle; the positive sine comes from the normalized
+cross product of the two face normals.
+
+\subsection{The tetrahedral cosine law}
+
+\begin{theorem}[Cosine-law analogue for a tetrahedron]
+\label{thm:tetra-cosine}
+For every permutation \(\{i,j,k,l\}=\{1,2,3,4\}\),
+\begin{align}
+ \Delta_i^2={}&\Delta_j^2+\Delta_k^2+\Delta_l^2\\
+ &-2\bigl(
+ \Delta_j\Delta_k\cos\theta_{il}
+ +\Delta_j\Delta_l\cos\theta_{ik}
+ +\Delta_k\Delta_l\cos\theta_{ij}
+ \bigr).                                                    \tag{11.4}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+By closure,
+\(N_i=-(N_j+N_k+N_l)\).  Take squared norms:
+\begin{align*}
+ 4\Delta_i^2
+ &=4\Delta_j^2+4\Delta_k^2+4\Delta_l^2\\
+ &\quad+2N_j\dotp N_k+2N_j\dotp N_l+2N_k\dotp N_l.
+\end{align*}
+Insert (11.3).  The pair \((j,k)\) leaves the edge \((i,l)\), the pair
+\((j,l)\) leaves \((i,k)\), and the pair \((k,l)\) leaves \((i,j)\).
+Division by \(4\) yields (11.4).
+\end{proof}
+
+This proof is the exact three-dimensional analogue of expanding
+\(\norm{x+y}^2\) in the planar cosine law.  The ``side lengths'' are now face
+areas and the relevant angles are supplements of the angles between outward
+normals.
+
+\begin{corollary}[Linear normal relation]
+\label{cor:tetra-linear}
+Dotting (11.2) with \(n_i\) gives the stronger first-degree relation
+\begin{equation}
+ \Delta_i=
+ \Delta_j\cos\theta_{kl}+
+ \Delta_k\cos\theta_{jl}+
+ \Delta_l\cos\theta_{jk}.                                 \tag{11.5}
+\end{equation}
+\end{corollary}
+
+For a regular tetrahedron, all four areas are equal and (11.5) gives
+\(3\cos\theta=1\), the familiar \(\cos\theta=1/3\).
+
+\begin{corollary}[Dihedral Gram determinant]
+Let \(G\) be the \(4\times4\) Gram matrix of the outward unit normals:
+\begin{equation}
+ G_{ii}=1,
+ \qquad
+ G_{ij}=-\cos\theta_{kl}
+ \quad(\{i,j,k,l\}=\{1,2,3,4\}).                           \tag{11.6}
+\end{equation}
+Then
+\begin{equation}
+ \detm G=0,
+ \qquad
+ G(\Delta_1,\Delta_2,\Delta_3,\Delta_4)^T=0.               \tag{11.7}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Four vectors in \(\R^3\) are linearly dependent, so their Gram determinant
+vanishes.  Equation (11.2), divided by \(2\), is precisely the displayed
+weighted null relation.
+\end{proof}
+
+\subsection{The tetrahedral sine-product identity}
+
+Let the vertices be denoted \(O,A,B,C\).  All angles in the next theorem are
+ordinary planar angles inside the triangular faces.
+
+\begin{theorem}[Tetrahedral sine law]
+\label{thm:tetra-sine}
+\begin{equation}
+ \sin\angle OAB\;\sin\angle OBC\;\sin\angle OCA
+ =\sin\angle OAC\;\sin\angle OCB\;\sin\angle OBA.          \tag{11.8}
+\end{equation}
+Choosing each of the four vertices in turn as \(O\) gives four relations, of
+which at most three are independent.
+\end{theorem}
+
+\begin{proof}
+Apply the ordinary planar sine law in the three faces through \(O\):
+\begin{align*}
+ \frac{\sin\angle OAB}{\sin\angle OBA}&=\frac{OB}{OA},\\
+ \frac{\sin\angle OBC}{\sin\angle OCB}&=\frac{OC}{OB},\\
+ \frac{\sin\angle OCA}{\sin\angle OAC}&=\frac{OA}{OC}.
+\end{align*}
+Multiplying the three equations makes all edge lengths cancel, leaving (11.8).
+The planar sine laws can be imported from ProveIt's constructive triangle
+package; every denominator is positive in a nondegenerate face.
+\end{proof}
+
+Multiplying any three of the four vertex-based equations and canceling the
+common positive sine factors yields the fourth.  This explains constructively
+why only three constraints are independent.
+
+\subsection{The \(\ipra\) interpretation}
+
+The tetrahedral proof is even more elementary than the spherical one.  Encode
+the four vertex coordinates by fixed rapid names.  Cross products give the
+unnormalized face-area vectors exactly.  A bounded square-root routine gives
+\(2\Delta_i=\norm{N_i}\), with positive lower bounds supplied by
+nondegeneracy.  Define \(\cos\theta_{ij}\) by the normalized negative dot
+product of the two outward normals.  Then (11.2) is a coordinate polynomial
+identity and (11.4) is one ring expansion.  Actual angle names are optional;
+the cosine law needs only their cosine values.  Consequently the object-level
+proof requires no analytic trigonometry beyond normalization by positive
+square roots.

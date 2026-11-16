@@ -1,0 +1,259 @@
+\section{Lean formalization plan and the object-language endpoint}
+\label{sec:formalization}
+
+The archive contains three Lean files.  They are deliberately separated by
+logical role.
+
+All three files are under the archive's \path{Lean/} directory.
+\begin{description}[style=nextline,leftmargin=0pt,labelindent=0pt]
+\item[\code{SphericalKernel.lean}]
+Coordinate-free finite algebra: vectors, dot/cross products, Gram and Lagrange
+identities, the core spherical numerators, polar involution, face-area closure,
+and the tetrahedral norm expansion.  It is intended to use only Mathlib's ring
+tactics.
+\item[\code{SphericalTrig.lean}]
+An abstract constructive trigonometric system, a record of spherical core data,
+and theorem interfaces for cosine, sine, haversine, half-angle, Delambre,
+Napier, special-triangle, differential, area, and tetrahedral statements.
+\item[\code{IPRABridge.lean}]
+The concrete representation boundary for ProveIt's \code{ConciseIPRA}: codecs,
+rapid names, apartness, fixed PR symbols, checker formulas, and the final
+\code{Prf PRAAx} targets.
+\end{description}
+
+No Lean executable is installed in the delivery environment, so these files
+were not compiled.  They contain an algebraic prototype and precise theorem
+interfaces; they do not constitute a completed object-level \(\ipra\) proof.
+The remaining tasks are explicit below.
+
+\subsection{Stage 1: finite vector algebra}
+
+Use a three-coordinate structure over an arbitrary commutative ring:
+\begin{lstlisting}[language={}]
+structure V3 (R : Type*) where
+  x : R; y : R; z : R
+
+def dot   (u v : V3 R) : R := ...
+def cross (u v : V3 R) : V3 R := ...
+def det3  (u v w : V3 R) : R := dot u (cross v w)
+\end{lstlisting}
+Prove by \code{ring}:
+\begin{enumerate}
+\item Lagrange:
+\[
+ (u\crossp v)\dotp(u\crossp w)
+ =(u\dotp u)(v\dotp w)-(u\dotp v)(u\dotp w).
+\]
+\item Gram:
+\[
+ \detm(u,v,w)^2=\detm((u_i\dotp u_j)_{i,j=1}^3).
+\]
+\item The tangent numerator identities and
+\((x-yz)^2+\tau^2=(1-y^2)(1-z^2)\).
+\item Polar involution:
+\((w\crossp u)\crossp(u\crossp v)=\tau u\).
+\item The coordinate face-area closure and the expansion of its squared norm.
+\end{enumerate}
+These theorems require neither an order nor a field.  They are the most stable
+part of the formalization and should be compiled first.  Run
+\code{#print axioms} on the final declarations; no custom axioms should occur.
+
+\subsection{Stage 2: an algebraic spherical core record}
+
+To avoid square roots in the main identity proofs, define a record over a
+commutative ring:
+\begin{lstlisting}[language={}]
+structure SphericalCore (R : Type*) [CommRing R] where
+  x y z sa sb sc tau : R
+  cA sA cB sB cC sC : R
+  sa_sq : sa^2 + x^2 = 1
+  sb_sq : sb^2 + y^2 = 1
+  sc_sq : sc^2 + z^2 = 1
+  gram  : tau^2 = 1 + 2*x*y*z - x^2 - y^2 - z^2
+  cA_num : sb*sc*cA = x - y*z
+  cB_num : sc*sa*cB = y - z*x
+  cC_num : sa*sb*cC = z - x*y
+  sA_num : sb*sc*sA = tau
+  sB_num : sc*sa*sB = tau
+  sC_num : sa*sb*sC = tau
+\end{lstlisting}
+The side cosine laws are just \code{cA_num} rearranged.  The angle cosine laws,
+unit-pair equations, sine cross-products, five-part rules and Cagnoli identities
+are proved by \code{ring} or \code{linear_combination} from these fields.  This
+record is also the semantic target of the exact Python checker.
+
+A second record adds order information only where needed:
+\begin{lstlisting}[language={}]
+structure ProperCore (R : Type*) [LinearOrderedField R]
+    extends SphericalCore R where
+  sa_pos : 0 < sa; sb_pos : 0 < sb; sc_pos : 0 < sc
+  tau_pos : 0 < tau
+\end{lstlisting}
+It supports guarded cancellation and positive-root uniqueness.  The finite
+algebra should remain in the weaker record whenever possible.
+
+\subsection{Stage 3: abstract constructive trigonometry}
+
+Reuse or import the class \code{TrigSystem} from the ProveIt trigonometric
+packet.  Its data are an additive angle group, a commutative coefficient ring,
+functions \code{sin}, \code{cos}, a quarter turn, the addition laws,
+Pythagorean identity and quarter-turn values.  It already supports parity,
+subtraction, periods, double-angle, product-to-sum and square half-angle laws.
+
+Define a named spherical triangle with six angle terms and a core realization:
+\begin{lstlisting}[language={}]
+structure NamedSphericalTriangle (Angle R : Type*)
+    [AddCommGroup Angle] [LinearOrderedField R]
+    [TrigSystem Angle R] where
+  a b c A B C : Angle
+  core : ProperCore R
+  cos_a : cos a = core.x
+  sin_a : sin a = core.sa
+  -- cyclic side equations
+  cos_A : cos A = core.cA
+  sin_A : sin A = core.sA
+  -- cyclic angle equations
+  half_side_positive : ...
+  half_angle_positive : ...
+\end{lstlisting}
+Then formalize the formula atlas in dependency order:
+\begin{enumerate}
+\item core cosine/sine laws and polar substitutions;
+\item half-square identities, followed by positive-root forms;
+\item cross-multiplied Delambre identities;
+\item Napier and tangent laws under denominator hypotheses;
+\item cotangent, five-part, Cagnoli, right and quadrantal rules;
+\item differential identities in a separate module parameterized by a
+constructive derivative interface.
+\end{enumerate}
+The recommended theorem statements expose cross forms first.  Quotient theorems
+should accept explicit hypotheses such as \code{cos x != 0} only at the ambient
+field level; the object-level version must instead accept an apartness witness.
+
+\subsection{Stage 4: codecs and primitive-recursive operations}
+
+Pin the implementation to the inspected ProveIt revision
+\code{a3c053cc6243}.  Within
+\code{LeanProofs.ConciseIPRA}, construct actual \code{PR} syntax trees for:
+\begin{enumerate}
+\item pairing, projections and fixed-length tuples;
+\item signed integers, positive-denominator rationals and dyadics;
+\item addition, multiplication, powers of two, absolute value and comparison;
+\item bounded sums, products, maximum, scan and finite-list folds;
+\item three-vector dot, cross and determinant operations;
+\item the bounded square-root scan (2.6);
+\item finite exponential and arctangent sums with their explicit cutoffs.
+\end{enumerate}
+Derive the defining equations with \code{PRA.proj}, \code{PRA.comp},
+\code{PRA.precZero} and \code{PRA.precSucc}.  Invalid rational codes should
+decode to a fixed harmless default so that every symbol remains total.
+
+\subsection{Stage 5: rapid-name arithmetic}
+
+Represent a fixed real input by particular lower- and upper-endpoint
+\code{PR 1} terms, an integer magnitude bound, and derivations of the interval
+regularity formulas.  Do not make a Lean function \code{Nat -> Rat} the object
+being quantified over.  For each operation, compile a new particular PR term
+and prove a finite rational error estimate at a free precision index.
+
+The essential numerical lemmas are:
+\begin{align*}
+ |xy-x'y'|&\le |x||y-y'|+|y'||x-x'|,\\
+ |x^{-1}-y^{-1}|&\le 2|x-y|/d^2\quad(|x|,|y|\ge d/2),\\
+ |\sqrt x-\sqrt y|&\le\sqrt{|x-y|},\\
+ \left|\sum_{j=N}^{M}\frac{z^j}{j!}\right|&\le2^{-p}
+ \quad\text{for the prescribed }N(B,p).
+\end{align*}
+Every induction invariant is a Boolean combination of natural equalities and
+inequalities, encoded by characteristic functions, so it is quantifier free.
+Only after the fixed-precision theorem is obtained should universal
+introduction quantify over the precision.
+
+\subsection{Stage 6: an object-language polynomial certificate checker}
+
+Encode sparse multivariate polynomials as finite lists of integer coefficients
+and exponent vectors.  Implement normalization by insertion, merging like
+monomials and deleting zero coefficients.  Prove inside \(\PRAAx\):
+\begin{enumerate}
+\item evaluation commutes with polynomial addition and multiplication;
+\item normalization preserves evaluation;
+\item a normalized zero polynomial evaluates to zero;
+\item each stored reduction certificate from the core ideal is sound.
+\end{enumerate}
+Prove these by structural primitive recursion and quantifier-free induction on
+list lengths.  The external Python and Lean ring checks are specifications and
+regressions.  Acceptance requires the internal soundness derivation, not merely
+a Boolean checker returning \code{true}.
+
+The existing \code{EqKernel}, \code{EqArith} and normalization modules in
+\code{ConciseIPRA} should be reused where their interfaces match; otherwise the
+small specialized normalizer above is sufficient.
+
+\subsection{Stage 7: geometry-to-core realization}
+
+Given fixed coordinate names for \(u,v,w\):
+\begin{enumerate}
+\item compute dot/cross/determinant names;
+\item prove the unit-vector and Gram identities from the polynomial checker;
+\item compute positive side-sine names with bounded square root;
+\item use supplied lower bounds to construct reciprocals;
+\item compute \((c_A,s_A)\), etc., and prove the unit-pair equations;
+\item construct the angle names once using the two-chart \(\atanTwo\) routine;
+\item prove their sine/cosine realization and branch intervals.
+\end{enumerate}
+The chart choice is made at one fixed certified precision and retained.  A
+fresh undecidable branch choice at every output precision would not define a
+Cauchy name.
+
+\subsection{Stage 8: area and finite polygons}
+
+Represent a geodesic polygon by a finite list of oriented great-circle normals
+and a triangulation certificate.  Implement the lower/upper dyadic cell counts
+in the equal-area chart (10.1).  The strip estimate (10.3) supplies the modulus.
+Prove finite additivity at the cell level, then derive the exact lune formula.
+The eight-region partition underlying Girard is finite combinatorics; encode
+its incidence table directly.  Polygonal excess follows by primitive recursion
+on the triangle list.
+
+As a computationally lighter alternative for triangles, define the area name
+by the solid-angle formula (10.12) and prove its agreement with the cell-area
+name through Girard.  The solid-angle route is preferable for executable
+geometry; the lune route establishes the intended surface-area semantics.
+
+\subsection{Stage 9: tetrahedra}
+
+The tetrahedral module needs only coordinate algebra and positive square
+roots.  Construct the four oriented doubled face vectors, prove their sum is
+zero by \code{ring}, define each dihedral cosine by a normalized negative dot
+product, and expand the squared closure.  The sine-product identity imports the
+already formalized planar sine law on three faces.  No spherical angle names or
+area integration are required.
+
+\subsection{Stage 10: the final derivability theorem}
+
+For each fixed collection of input PR terms, assemble a closed formula
+\(\mathsf{SphHyp}\to\mathsf{SphConclusion}\).  The final target has the shape
+\begin{lstlisting}[language={}]
+theorem spherical_atlas_derivable :
+  Prf PRAAx [] (Fm.imp sphericalHypotheses sphericalConclusions)
+\end{lstlisting}
+where every auxiliary function symbol is a concrete compiled \code{PR} term.
+After this theorem exists, apply \code{pra_theorem_iff} or
+\code{pra_iff_native} to transfer it to the desired concise native
+presentation.  The transport theorem is the final step, not a substitute for
+the derivation.
+
+\subsection{Validation commands}
+
+In a checkout with Lean/Mathlib 4.32.0 and the pinned ProveIt revision, the
+initial validation sequence is intended to be
+\begin{lstlisting}[language=bash]
+lake env lean Lean/SphericalKernel.lean
+lake env lean Lean/SphericalTrig.lean
+lake build ConciseIPRA.NativeBiInterpretation
+lake env lean Lean/IPRABridge.lean
+\end{lstlisting}
+Resolve elaboration or tactic-version differences before treating the files as
+checked.  Then audit the final ambient kernel theorems with \code{#print axioms}
+and, separately, require an actual closed \code{Prf PRAAx} term for the
+arithmetized theorem.  These are distinct acceptance criteria.

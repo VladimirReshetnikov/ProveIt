@@ -1,0 +1,98 @@
+\section{Scope, conventions, and the main theorem}
+\label{sec:scope}
+
+The formulas in the source pages are normally stated over ordinary real
+numbers and use total-looking notation for quotients, inverse functions and
+square roots.  Constructively these are not all statements of the same kind.
+We therefore separate a finite algebraic kernel from the analytic presentation
+layer.
+
+\begin{definition}[Proof levels]
+A formula in this report is one of the following.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item A \emph{polynomial identity}: after the displayed abbreviations are
+expanded, it is an equality in a commutative ring.  Such a theorem needs no
+order, excluded middle or real completeness.
+\item A \emph{guarded rational identity}: all denominators carry explicit
+apartness witnesses.  Its cross-multiplied form is polynomial.
+\item A \emph{positive-root identity}: the radicand is proved nonnegative and
+an interval or branch certificate selects the nonnegative square root.
+\item A \emph{limit or differential identity}: every derivative, integral or
+limit is represented by a fixed primitive-recursive rational-name program and
+an explicit primitive-recursive modulus.
+\end{enumerate}
+\end{definition}
+
+\begin{convention}[Proper oriented triangle]
+Unless stated otherwise, \(A,B,C\in S^2\) are three pairwise non-antipodal
+points joined by the shorter great-circle arcs.  Their side lengths satisfy
+\[
+ 0<a,b,c<\pi,\qquad a+b+c<2\pi,
+\]
+and their interior angles satisfy \(0<A,B,C<\pi\).  We choose the orientation
+so that the scalar triple product introduced in Section~\ref{sec:vector-model}
+is positive.  In the arithmetic interpretation, each strict inequality is
+positive data: a rational separation interval, not merely the negation of an
+equality.
+\end{convention}
+
+The symbol \(q\) denotes a quarter turn and \(\pi=2q\).  The constructive
+trigonometric packet cited in the bibliography constructs \(q\) as the unique
+zero of cosine in \([1,2]\) by bounded sign search and proves
+\(\sin q=1\), \(\cos q=0\).  Consequently no theorem below presupposes a
+classical definition of \(\pi\).
+
+\begin{theorem}[Constructive spherical-trigonometry atlas]
+\label{thm:main-atlas}
+For every fixed tuple of primitive-recursive regular dyadic names encoding a
+proper oriented spherical triangle, together with fixed unit-vector,
+orientation and apartness certificates, \(\ipra\) proves:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item the three spherical side cosine laws, the three angle cosine laws and the
+spherical sine law;
+\item the polar-triangle correspondences and involution;
+\item all cyclic instances of the half-angle, half-side, half-tangent,
+haversine, Delambre--Gauss, Napier, tangent, cotangent, five-part and Cagnoli
+identities stated in this report;
+\item the ten right-triangle and ten quadrantal-triangle rules, with explicit
+guards on quotient forms;
+\item the differential variation formulas for every fixed primitive-recursive
+differentiable one-parameter family of proper triangles;
+\item Girard's excess formula and the polygonal excess formula for every fixed
+finite geodesic polygon with a certified triangulation;
+\item the tetrahedral face-area cosine law and the tetrahedral sine-product
+identity for every fixed nondegenerate tetrahedron with oriented face data.
+\end{enumerate}
+Every output proof can be generated from the finite input programs and their
+certificates by a primitive-recursive metatheoretic proof transformer.
+\end{theorem}
+
+The quantification in Theorem~\ref{thm:main-atlas} is metatheoretic.  First-order
+\(\ipra\) has numerical variables but neither a real-number sort nor function
+variables.  Thus the theorem is a schema over fixed primitive-recursive terms;
+it is not an assertion that \(\ipra\) contains a universal evaluator for all
+primitive-recursive programs.  Section~\ref{sec:ipra} makes the translation
+precise, and Appendix~\ref{app:ipra-target} displays a representative
+object-language target.
+
+\subsection{What is genuinely new work in the reduction}
+
+The analytic sine/cosine layer can be reused from ProveIt's constructive
+trigonometric-identities packet.  The new spherical contribution is the
+following small kernel.
+\begin{enumerate}
+\item Encode a triangle by three unit vectors and retain the scalar triple
+product as an orientation witness.
+\item Derive all primary laws from two polynomial identities: Lagrange's
+cross-product identity and the Gram determinant.
+\item Use normalized face normals to construct the polar triangle without a
+choice of coordinates.
+\item Treat every familiar quotient formula as a cross-multiplied identity
+plus explicit apartness data.
+\item For tetrahedra, replace edge vectors by the four oriented face-area
+vectors; their sum is zero, so the advertised cosine law is an ordinary norm
+expansion.
+\end{enumerate}
+This organization makes the mathematical and formalization dependencies
+transparent: the bulk of spherical trigonometry is finite algebra, not real
+analysis.

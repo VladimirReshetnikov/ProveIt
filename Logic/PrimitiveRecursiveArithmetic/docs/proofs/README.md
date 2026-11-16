@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives on 14 and
-15 November 2026: 33 to `docs/drafts`, and 15 to
+15 November 2026: 33 to `docs/drafts`, and 16 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -32,7 +32,7 @@ reason. Its directory column gives `<area>/<directory>`.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `ignored` | 48 | The member matches the repository's `.gitignore`: 36 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests and 12 `.log` files from LaTeX and Lean builds. It is available only from the delivered archive. |
+| `ignored` | 50 | The member matches the repository's `.gitignore`: 37 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests and 13 `.log` files from LaTeX and Lean builds. It is available only from the delivered archive, so it is lost for the archives that were not committed. |
 | `sibling-packet` | 13 | `puiseux_ipra` bundles `dependencies/FTA_iPRA/`, a byte-identical copy of the packet filed in [`algebra/FTA_iPRA`](algebra/FTA_iPRA/). The reference column gives the placed file, except for the copy of `SHA256SUMS`, which is ignored in both. |
 | `sibling-archive` | 1 | `zeta_zeros_ipra_2026-11-15` bundles `dependencies/zeta_functional_equation_ipra.zip`, a byte-identical copy of the delivered archive filed in [`analytic-number-theory/zeta_functional_equation_ipra`](analytic-number-theory/zeta_functional_equation_ipra/). |
 | `repository-copy` | 17 | `zeta_zeros_ipra_2026-11-15` bundles `sources/Deduction.lean`, `sources/NativeBiInterpretation.lean` and `sources/PR.lean`, byte-identical to the files of the same names in [`ConciseIPRA/Lean/ConciseIPRA`](../../ConciseIPRA/Lean/ConciseIPRA/). `isoperimetric_ipra_constructive_2026-11-15` bundles, under `reused/`, the earlier packet [`geometry/isoperimetric_ipra`](geometry/isoperimetric_ipra/) as filed here at `22afac4c9d`; 14 of its files are byte-identical to that packet. The reference column gives that file, relative to the repository root. |
@@ -50,11 +50,11 @@ To recover an omitted member, restore the archive from the commit that added it
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. The archives of
 `isoperimetric_ipra_constructive_2026-11-15`, `mordell_weil_ipra`, `zeta_ipra_proof_package`,
 `trigonometric_identities_ipra_2026-11-15`, `lagrange_inversion_ipra`, `siegel_ipra`,
-`bell_numbers_ipra`, `prime_distribution_ipra`, `flt_ipra` and
-`central_limit_ipra_2026-11-15` were not committed, on Vladimir's instruction, so they cannot
-be restored from the history. The only omitted members of the first are its `reused/` copies,
-which are the files of `geometry/isoperimetric_ipra`. Seven of the others omit only their
-ignored checksum manifests, and `lagrange_inversion_ipra` and
+`bell_numbers_ipra`, `prime_distribution_ipra`, `flt_ipra`, `central_limit_ipra_2026-11-15` and
+`spherical_trigonometry_ipra_2026-11-15` were not committed, on Vladimir's instruction, so
+they cannot be restored from the history. The only omitted members of the first are its
+`reused/` copies, which are the files of `geometry/isoperimetric_ipra`. Eight of the others
+omit only their ignored checksum manifests and build logs, and `lagrange_inversion_ipra` and
 `bell_numbers_ipra` omit nothing:
 
 ```bash
@@ -63,7 +63,7 @@ git show <arrival>:docs/drafts/<archive>.zip > <scratch>/<archive>.zip
 
 ## Packets
 
-The 48 archives hold 1,090 members: 1,011 placed here, 48 ignored, 13 in the bundled copy of
+The 49 archives hold 1,129 members: 1,048 placed here, 50 ignored, 13 in the bundled copy of
 a sibling packet, 1 nested copy of a sibling archive and 17 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -153,6 +153,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | [`morley_ipra_constructive`](geometry/morley_ipra_constructive/) | `58087eb241` 2026-11-15 | `morley_ipra_constructive` | Morley's trisector theorem, stated over finite exact certificates. | 13 | 1 |
 | [`pappus_centroid_ipra_2026-11-15`](geometry/pappus_centroid_ipra_2026-11-15/) | `7b3c755844` 2026-11-15 | `pappus_centroid_ipra` | Pappus's surface and volume centroid theorems, with τ = 2π presented by nested regular polygons. | 16 | 1 |
 | [`platonic_solids_ipra`](geometry/platonic_solids_ipra/) | `58087eb241` 2026-11-15 | `platonic_solids_ipra` | Exactly five similarity classes of Platonic solids, for constructible-coordinate codes. | 25 | 2 |
+| [`spherical_trigonometry_ipra_2026-11-15`](geometry/spherical_trigonometry_ipra_2026-11-15/) | *not committed* 2026-11-15 | `spherical_trigonometry_ipra_2026-11-15` | Spherical trigonometry: the cosine, sine and tangent laws, polar duality, half-angle and Delambre–Napier formulas, right-triangle rules, Girard's theorem and L'Huilier's formula, triangle-solving procedures, and the tetrahedral face-area cosine law. Its checker states 68 identities in 14 families verified exactly. | 37 | 2 |
 | [`triangle_formulas_ipra`](geometry/triangle_formulas_ipra/) | `c1bda76f7f` 2026-11-14 | `triangle_ipra` | Heron's formula and the laws of sines and cosines, in explicit finite arithmetic versions. | 21 | 3 |
 
 ### Probability

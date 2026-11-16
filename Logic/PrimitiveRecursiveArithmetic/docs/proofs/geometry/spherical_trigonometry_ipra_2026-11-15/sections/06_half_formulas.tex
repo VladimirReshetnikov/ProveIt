@@ -1,0 +1,204 @@
+\section{Half-angle, half-side, half-tangent, and haversine formulas}
+\label{sec:half-formulas}
+
+Recall
+\[
+ p=\frac{a+b+c}{2},\qquad P=\frac{A+B+C}{2}.
+\]
+Every side and angle half lies in \((0,\pi/2)\).  Consequently all square roots
+in this section mean the nonnegative root and no independent sign choice is
+hidden in the notation.
+
+\subsection{Half-angle formulas}
+
+\begin{theorem}[Spherical half-angle formulas]
+\label{thm:half-angle}
+For the angle \(A\),
+\begin{align}
+ \sin^2\frac A2
+ &=\frac{\sin(p-b)\sin(p-c)}{\sin b\sin c},                \tag{6.1}\\
+ \cos^2\frac A2
+ &=\frac{\sin p\sin(p-a)}{\sin b\sin c},                  \tag{6.2}\\
+ \tan^2\frac A2
+ &=\frac{\sin(p-b)\sin(p-c)}{\sin p\sin(p-a)}.            \tag{6.3}
+\end{align}
+Hence
+\begin{align}
+ \sin\frac A2
+ &=\sqrt{\frac{\sin(p-b)\sin(p-c)}{\sin b\sin c}},        \tag{6.4}\\
+ \cos\frac A2
+ &=\sqrt{\frac{\sin p\sin(p-a)}{\sin b\sin c}},           \tag{6.5}\\
+ \tan\frac A2
+ &=\sqrt{\frac{\sin(p-b)\sin(p-c)}{\sin p\sin(p-a)}}.     \tag{6.6}
+\end{align}
+The formulas for \(B,C\) are cyclic.
+\end{theorem}
+
+\begin{proof}
+Subtract the side cosine law from the cosine difference formula:
+\begin{align*}
+ \cos(b-c)-\cos a
+ &=\sin b\sin c(1-\cos A)\\
+ &=2\sin b\sin c\sin^2(A/2).
+\end{align*}
+On the other hand, product-to-sum gives
+\[
+ \cos(b-c)-\cos a=2\sin(p-b)\sin(p-c).
+\]
+This proves (6.1).  Similarly,
+\begin{align*}
+ \cos a-\cos(b+c)
+ &=\sin b\sin c(1+\cos A)\\
+ &=2\sin b\sin c\cos^2(A/2),
+\end{align*}
+whereas
+\[
+ \cos a-\cos(b+c)=2\sin p\sin(p-a).
+\]
+This proves (6.2).  Divide (6.1) by (6.2), using the positive apartness of
+\(\cos(A/2)\), to obtain (6.3).  Positive-root uniqueness gives
+(6.4)--(6.6).  The proof uses only the cosine law and finite trigonometric
+identities already available in \(\ipra\).
+\end{proof}
+
+A useful common-factor form is obtained by setting
+\begin{equation}
+ k=\frac{1}{\sqrt{\sin p\sin(p-a)\sin(p-b)\sin(p-c)}}.     \tag{6.7}
+\end{equation}
+Then
+\begin{equation}
+ \tan\frac A2=k\sin(p-b)\sin(p-c),                         \tag{6.8}
+\end{equation}
+with cyclic companions.
+
+\subsection{Half-side formulas}
+
+\begin{theorem}[Spherical half-side formulas]
+\label{thm:half-side}
+For the side \(a\),
+\begin{align}
+ \sin^2\frac a2
+ &=-\frac{\cos P\cos(P-A)}{\sin B\sin C},                 \tag{6.9}\\
+ \cos^2\frac a2
+ &=\frac{\cos(P-B)\cos(P-C)}{\sin B\sin C},                \tag{6.10}\\
+ \tan^2\frac a2
+ &=-\frac{\cos P\cos(P-A)}{\cos(P-B)\cos(P-C)}.           \tag{6.11}
+\end{align}
+Consequently
+\begin{equation}
+ \tan\frac a2=K\cos(P-A),                                 \tag{6.12}
+\end{equation}
+where
+\begin{equation}
+ K=\sqrt{-\frac{\cos P}
+ {\cos(P-A)\cos(P-B)\cos(P-C)}}.                          \tag{6.13}
+\end{equation}
+The formulas for \(b,c\) are cyclic.
+\end{theorem}
+
+\begin{proof}
+Apply Theorem~\ref{thm:half-angle} to the polar triangle.  Its angle at
+\(A^*\) is \(\pi-a\), its opposite side is \(\pi-A\), and its half-sums are
+given by (5.7).  Thus
+\[
+ \cos^2\frac{A^*}{2}=\sin^2\frac a2
+ =\frac{\sin p^*\sin(p^*-a^*)}{\sin b^*\sin c^*}
+ =-\frac{\cos P\cos(P-A)}{\sin B\sin C},
+\]
+which is (6.9).  Likewise
+\[
+ \sin^2\frac{A^*}{2}=\cos^2\frac a2
+ =\frac{\cos(P-B)\cos(P-C)}{\sin B\sin C},
+\]
+giving (6.10).  Their quotient gives (6.11).  Equation (6.12) is simply the
+positive square root of (6.11) after extracting the common factor (6.13).
+Every sign is certified by the proper-triangle hypotheses and the polar
+construction.
+\end{proof}
+
+\begin{remark}[The Wikipedia half-side formula]
+Equation (6.11), followed by the positive square root, is the standard
+half-side formula
+\[
+ \tan\frac a2=
+ \sqrt{-\frac{\cos P\cos(P-A)}
+ {\cos(P-B)\cos(P-C)}}.
+\]
+The constructive statement includes the proof that the radicand is
+nonnegative and a branch certificate selecting \(0<a/2<\pi/2\).
+\end{remark}
+
+\subsection{Direct vector half-angle formulas}
+
+The vector certificate yields particularly short expressions:
+\begin{align}
+ \tan\frac A2
+ &=\frac{\sin A}{1+\cos A}
+ =\frac{\tau}{s_bs_c+x-yz},                                \tag{6.14}\\
+ \tan\frac a2
+ &=\frac{\sin a}{1+\cos a}
+ =\frac{s_a}{1+x}.                                         \tag{6.15}
+\end{align}
+The denominators are positive because \(A,a\in(0,\pi)\).  These formulas are
+well suited to computation: they use one square root for each side sine and no
+inverse trigonometric function.
+
+\subsection{Half-tangent rational forms}
+
+Put
+\[
+ t_a=\tan\frac a2,
+ \quad t_b=\tan\frac b2,
+ \quad t_c=\tan\frac c2,
+ \qquad
+ t_A=\tan\frac A2,
+ \quad t_B=\tan\frac B2,
+ \quad t_C=\tan\frac C2.
+\]
+Tangent addition, together with Theorems~\ref{thm:half-angle} and
+\ref{thm:half-side}, gives the entirely rational forms
+\begin{equation}
+ t_A^2=
+ \frac{(t_a-t_b+t_c+t_at_bt_c)(t_a+t_b-t_c+t_at_bt_c)}
+ {(t_a+t_b+t_c-t_at_bt_c)(-t_a+t_b+t_c+t_at_bt_c)},        \tag{6.16}
+\end{equation}
+and
+\begin{equation}
+ t_a^2=
+ \frac{(t_Bt_C+t_Ct_A+t_At_B-1)
+       (-t_Bt_C+t_Ct_A+t_At_B+1)}
+ {(t_Bt_C-t_Ct_A+t_At_B+1)
+       (t_Bt_C+t_Ct_A-t_At_B+1)}.                          \tag{6.17}
+\end{equation}
+All displayed denominator factors carry apartness witnesses.  The remaining
+five equations are obtained cyclically.  To verify (6.16), write every
+\(\sin(p-a)\) and \(\sin p\) using the tangent-of-a-sum formula and cancel the
+common positive products \(\prod(1+t_x^2)^{-1/2}\).  Formula (6.17) is its polar
+dual.  This derivation is finite rational algebra, so after cross multiplication
+it is directly suitable for an exact certificate checker.
+
+\subsection{Haversine formulas}
+
+Define
+\begin{equation}
+ \hav t=\sin^2\frac t2=\frac{1-\cos t}{2}.                 \tag{6.18}
+\end{equation}
+The side cosine law becomes the numerically stable navigation formula
+\begin{equation}
+ \hav a=\hav(b-c)+\sin b\sin c\,\hav A,                    \tag{6.19}
+\end{equation}
+with cyclic companions.  Indeed,
+\[
+ \cos(b-c)-\cos a=\sin b\sin c(1-\cos A),
+\]
+and division by \(2\) gives (6.19).  The dual angle form is
+\begin{equation}
+ \hav A=\hav(\pi-B-C)+\sin B\sin C\,\hav a.                \tag{6.20}
+\end{equation}
+When \(\sin b\sin c\apart0\), one may solve for the angle:
+\begin{equation}
+ \hav A=\frac{\hav a-\hav(b-c)}{\sin b\sin c}.             \tag{6.21}
+\end{equation}
+Equations (6.18)--(6.21), their cyclic forms, and their polar duals account for
+the standard haversine family without any loss of information from the cosine
+law.
