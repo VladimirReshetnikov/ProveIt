@@ -48,3 +48,8 @@ check "$here/PA194FastController.lean"
 check "$here/PA194${candidate}FastNative.lean"
 rg -Fxq "'PA194${candidate}FastNative.consistency_iff_literal_nonhalt' depends on axioms: [propext, Classical.choice, Quot.sound]" \
   "$out/PA194${candidate}FastNative.log"
+if [[ "$candidate" == LCC ]]; then
+  check "$here/PA194LCCFastFinal.lean"
+  rg -Fxq "'PA194LCCFastFinal.consistency_iff_literal_nonhalt' depends on axioms: [propext, Classical.choice, Quot.sound]" \
+    "$out/PA194LCCFastFinal.log"
+fi

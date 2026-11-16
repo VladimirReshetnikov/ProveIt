@@ -54,3 +54,4 @@ for candidate in "${modules[@]}"; do
   rg -Fxq "'${candidate}Native.consistency_iff_literal_nonhalt' depends on axioms: [propext, Classical.choice, Quot.sound]" \
     "$out/${candidate}Native.log"
 done
+printf '%s\n' "$LEAN_PATH" > "$out/leanpath.txt"

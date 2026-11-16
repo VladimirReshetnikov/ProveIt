@@ -14,24 +14,24 @@ The [verification directory](verification/) contains the
 [shared machine coding and IΣ₁ transfer](verification/shared/).
 The [research packets](docs/) retain the layout references from their delivery.
 
-Lean proves the unconditional iPRA equivalence for sixteen literal 194-state
+Lean proves the unconditional iPRA equivalence for twenty-two literal 194-state
 tables. The theorems and staged replay instructions are under
 [the primary endpoint](verification/pa194/ipra/native-endpoint/README.md),
+[PA1944L](verification/pa194/ipra/variants/pa1944l/README.md),
 [PA194-AD](verification/pa194/ipra/variants/pa194ad/README.md),
 [PA194B](verification/pa194/ipra/variants/pa194b/README.md),
+[PA194C32](verification/pa194/ipra/variants/pa194c32/README.md),
 [PA194HX](verification/pa194/ipra/variants/pa194hx/README.md),
 [PA194LC](verification/pa194/ipra/variants/pa194lc/README.md),
 [PA194LC_C](verification/pa194/ipra/variants/pa194lcc/README.md),
+[the companion selector overlays](verification/pa194/ipra/variants/pa194sel/companions/README.md),
 [PA194OR](verification/pa194/ipra/variants/pa194or/README.md),
 [PA194P5](verification/pa194/ipra/variants/pa194p5/README.md),
 [PA194SEL](verification/pa194/ipra/variants/pa194sel/README.md),
 [PA194TDY](verification/pa194/ipra/variants/pa194tdy/README.md), and
-the [six timing variants](verification/pa194/ipra/variants/pa194fast/README.md).
-The native derivations for
-[PA194C32](verification/pa194/ipra/variants/pa194c32/README.md) and
-[PA1944L](verification/pa194/ipra/variants/pa1944l/README.md) currently
-depend on their finite site certificates. The original PA195, PA196, and
-other 194-state candidates also need equivalence proofs.
+the [seven timing variants](verification/pa194/ipra/variants/pa194fast/README.md).
+The remaining 194-state candidates, the original PA195, and the PA196
+candidate still need equivalence proofs.
 
 ## Primary 194-state candidate
 

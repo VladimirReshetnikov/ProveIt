@@ -16,6 +16,9 @@ The logical registers use physical positions `[6,4,0,3,2,8,7,5,1]`.
   56,250-step blank run to the exact source root for this register allocation.
 - [`PA194C32Native.consistency_iff_literal_nonhalt`](PA194C32Native.lean)
   gives both iPRA directions from the 3,673 finite site checks.
+- [`PA194C32Final.consistency_iff_literal_nonhalt`](PA194C32Final.lean)
+  applies the complete checked certificate and proves the unconditional
+  iPRA equivalence for the literal table.
 
 From the repository root, use the checked
 [PA194P5 model stage](../pa194p5/README.md).
@@ -23,7 +26,10 @@ From the repository root, use the checked
 ```sh
 variants=Computability/BusyBeaver/Research/PA/verification/pa194/ipra/variants
 c32_model=/dev/shm/pa194c32-model
+c32_native=/dev/shm/pa194c32-native
+c32_coverage=/dev/shm/pa194c32-coverage
 bash "$variants/check-selector-model.sh" PA194C32 "$p5_model" "$c32_model"
-bash "$variants/check-selector-native.sh" PA194C32 "$c32_model" /dev/shm/pa194c32-native
-bash "$variants/check-selector-coverage.sh" PA194C32 "$c32_model" /dev/shm/pa194c32-coverage
+bash "$variants/check-selector-native.sh" PA194C32 "$c32_model" "$c32_native"
+bash "$variants/check-selector-coverage.sh" PA194C32 "$c32_model" "$c32_coverage"
+bash "$variants/check-controller-final.sh" PA194C32 "$c32_native" "$c32_coverage" /dev/shm/pa194c32-final
 ```

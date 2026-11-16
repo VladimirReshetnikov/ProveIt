@@ -13,6 +13,9 @@ Lean checks [the exact dense rows](PA1944LRows.lean), the model-valued
 [58,320-step blank run to the source root](PA1944LInitializer.lean).
 The [native iPRA theorem](PA1944LNative.lean) derives both directions of
 the consistency equivalence conditional on the finite site checks.
+[`PA1944LFinal.consistency_iff_literal_nonhalt`](PA1944LFinal.lean)
+applies the checked certificate for all 3,673 sites and proves the
+unconditional iPRA equivalence.
 
 From the repository root, use the checked
 [arbitrary-trie controller stage](../pa194lcc/README.md).
@@ -20,8 +23,10 @@ From the repository root, use the checked
 ```sh
 variants=Computability/BusyBeaver/Research/PA/verification/pa194/ipra/variants
 four_l=/dev/shm/pa1944l-model
+four_l_coverage=/dev/shm/pa1944l-coverage
 bash "$variants/pa1944l/check.sh" /dev/shm/pa194lcc-controller "$four_l"
-bash "$variants/check-linear-coverage.sh" PA1944L "$four_l" /dev/shm/pa1944l-coverage
+bash "$variants/check-linear-coverage.sh" PA1944L "$four_l" "$four_l_coverage"
+bash "$variants/check-controller-final.sh" PA1944L "$four_l" "$four_l_coverage" /dev/shm/pa1944l-final
 ```
 
 ## Shared startup for LC_A and M4R

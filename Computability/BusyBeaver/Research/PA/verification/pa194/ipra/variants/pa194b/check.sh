@@ -45,3 +45,4 @@ for module in Rows Finite ModelSteps Exceptions Relation Segment Halting Native;
 done
 rg -Fxq "'PA194BNative.consistency_iff_literal_nonhalt' depends on axioms: [propext, Classical.choice, Quot.sound]" \
   "$out/PA194BNative.log"
+printf '%s\n' "$LEAN_PATH" > "$out/leanpath.txt"
