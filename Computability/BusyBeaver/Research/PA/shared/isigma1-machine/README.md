@@ -67,6 +67,16 @@ bash Computability/BusyBeaver/Research/PA/shared/isigma1-machine/check-execution
   "$literal" "$shared" /dev/shm/pa194-execution-replay
 ```
 
+The shared PA194 box replay connects these machine segments to the packed
+register file. Pass the same execution directory and the base PA194OR
+stage from [the OR replay](../../pa194/ipra/variants/pa194or/README.md).
+
+```sh
+register=/dev/shm/pa194-register-replay
+bash Computability/BusyBeaver/Research/PA/pa194/ipra/variants/check-register-boxes.sh \
+  "$literal" "$shared" "$execution" "$or_base" "$register"
+```
+
 ## `ConPAMachineEndpoint.lean`
 
 ```lean

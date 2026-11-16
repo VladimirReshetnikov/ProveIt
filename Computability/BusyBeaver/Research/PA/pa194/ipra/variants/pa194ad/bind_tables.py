@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""Pin the delivered table bytes and bind both numeric Lean lists to them."""
+"""Pin the delivered tables and generate the Lean table representations."""
 import hashlib, json, re, sys
 from pathlib import Path
 root = Path(sys.argv[1])
 out = Path(sys.argv[2])
+flags = sys.argv[3:]
+if flags not in ([], ["--compressed"]):
+    raise SystemExit("usage: bind_tables.py REPO OUTPUT [--compressed]")
 base = root / 'Computability/BusyBeaver/Research/PA/docs/pa194_conpa_2026-11-13/construction/tables'
 expected = {
  'pa194.tm':'4bfea62b17aad7d8c8c5e682fe8942e0a86b93e4351f8e675e32705bdaae007f',
@@ -37,3 +40,49 @@ assert [tuple(map(int, x)) for x in re.findall(r'\((\d+),\s*(\d+),\s*(\d+)\)',bo
 out.mkdir(parents=True,exist_ok=True)
 (out/'PA194Rows.lean').write_text('import Std\nnamespace PA194Rows\ndef rows : List (Nat × Nat × Nat) := [\n'+''.join(f'  ({w}, {d}, {n}),\n' for w,d,n in p[:-1])+f'  ({p[-1][0]}, {p[-1][1]}, {p[-1][2]})\n]\nend PA194Rows\n')
 print('Pinned byte hashes, common state labels, and 388 companion rows: verified.')
+
+
+def render_list(values):
+    lines = [",".join(values[i:i + 12]) for i in range(0, len(values), 12)]
+    return "[\n" + ",\n".join(lines) + "\n]"
+
+
+def write_compressed():
+    native = {
+        (labels[i // 2], i % 2): (bool(write), bool(right), labels[target])
+        for i, (write, right, target) in enumerate(a)
+    }
+
+    def render_action(control, bit):
+        write, right, target = native[control, bit]
+        return f"(some ({str(write).lower()},{str(right).lower()},{target}))"
+
+    def render_tree(controls):
+        if not controls:
+            return ".empty"
+        middle = len(controls) // 2
+        control = controls[middle]
+        return (
+            f"(.node {control} {render_action(control, 0)} {render_action(control, 1)}\n"
+            f"{render_tree(controls[:middle])}\n{render_tree(controls[middle + 1:])})"
+        )
+
+    (out / "PA194ADCompressedData.lean").write_text(
+        "import PA194FoldedCache\n"
+        "import PA194BModelSteps\n"
+        "import PA194SourceProgram\n"
+        "set_option autoImplicit false\n"
+        "set_option maxRecDepth 65536\n"
+        "namespace PA194ADCompressedData\n"
+        f"def labels : List Nat := {render_list(list(map(str, labels)))}\n"
+        f"def rows : List PA194BRows.Action := {render_list([f'({w},{d},{n})' for w, d, n in a])}\n"
+        "def table : ConPA.Machine.Table := PA194BModelSteps.table rows\n"
+        f"def nativeTree : PA194FoldedCache.Tree := {render_tree(sorted(labels[:-1]))}\n"
+        "def machine : M6.Zip.TMN := nativeTree.read\n"
+        "def denseControl (q : Nat) : Nat := labels.idxOf q\n"
+        "end PA194ADCompressedData\n"
+    )
+
+
+if flags:
+    write_compressed()

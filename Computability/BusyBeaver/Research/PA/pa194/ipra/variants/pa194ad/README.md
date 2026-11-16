@@ -28,9 +28,16 @@ SHA-256 is `27613aa92da79ba2ec6e2e88e0ac909fda218e06495ecc0af27201eac0e26c8f`.
   clock agrees with the generic arithmetic run at every clock in the `IΣ₁`
   reducts of the covered PRA models. Its `startup_seed` places the same
   finite initialization theorem directly on that arithmetic run.
+- [`PA194ADCompressedRows.rowAgreement`](PA194ADCompressedRows.lean) relates
+  the symbolic native transition table to the literal dense AD table.
+  [`PA194ADBoxAgreement.concreteBoxAgreement`](PA194ADBoxAgreement.lean)
+  supplies the literal mark, increment, and both decrement paths for the
+  packed file, including arbitrary model-valued register and spare counts.
+  [`PA194ADCompressedPhysical`](PA194ADCompressedPhysical.lean) converts
+  checked source contracts into positive literal AD execution segments.
 
-The physical simulation across the changed rows is still needed for the
-halting equivalence and the derivation in iPRA.
+The full set of source-site contracts and the controller simulation are
+still needed for the end-to-end iPRA derivation.
 
 Run from the repository root with a fresh output directory.
 
@@ -49,4 +56,12 @@ The model-run replay also takes the checked primary and PA194B stages.
 
 ```sh
 bash "$dir/check-model-run.sh" "$literal" "$shared" /dev/shm/pa194ad-replay /dev/shm/pa194ad-model-run
+```
+
+With the [shared register stage](../../../../shared/isigma1-machine/README.md)
+and the AD startup output, replay the compressed table and literal register
+proofs.
+
+```sh
+bash "$dir/check-registers.sh" "$register" /dev/shm/pa194ad-replay /dev/shm/pa194ad-registers
 ```
