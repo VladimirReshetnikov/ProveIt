@@ -1,0 +1,145 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage{xcolor,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{fancyhdr}
+\hypersetup{pdftitle={Mathematics in iPRA: finite demands, root supports, and norm certificates},
+pdfauthor={Research report prepared for Vladimir Reshetnikov},
+pdfsubject={Primitive recursive finite observations, aggregate witnesses, and superelliptic zero counts}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Mathematics in intuitionistic primitive recursive arithmetic}
+\fancyhead[R]{\small 15 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{0.25em}
+\setlist{itemsep=0.25em,topsep=0.5em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\ensuremath{\mathrm{iPRA}}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+\newcommand{\dotminus}{\mathbin{\dot{-}}}
+
+\title{\textbf{Mathematics in iPRA}\\[0.55em]
+\large Finite demands, root supports, and norm certificates}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We extend the finite-observation approach in the ProveIt iPRA proof
+collection in three directions. First, a backward-demand theorem permits
+iteration of represented objects using only quantifier-free induction:
+one fixes a final precision, computes predecessor demands, and proves a
+bounded invariant. A related construction compiles a predetermined
+parameter-changing recurrence into two ordinary primitive recursions.
+Second, nonempty finite rational sets provide aggregate witnesses.
+We prove finite cover calculus, a prescribed-chain point constructor,
+and quantitative optimization. Applied to monic polynomials, bounded
+rational deflation and a product estimate produce a uniform PR name of
+the entire root support, including at collisions, together with explicit
+precision and adequacy bounds. Third, multiplication matrices give norm
+certificates for general monic plane equations. For
+$y^m=f(x)$ with $\gcd(m,\deg f)=1$, a unique top determinant term proves
+that the norm of $\sum_{i<m}A_i(x)y^i$ has degree exactly
+$\max_i(m\deg A_i+i\deg f)$. A finite Vandermonde argument converts
+this into a sharp zero-count and proper-subspace fiber bound.
+
+The report gives complete human arguments, identifies the inherited
+rational-descent lemma, and supplies concrete Lean definitions and a
+dependency-ordered formalization plan. The scheduling and finite-cover
+cores are proved in native Lean; the main analytic and algebraic
+applications remain named formalization targets, not completed embedded
+\texttt{Prf PRAAx} derivations. Exact arithmetic programs and validation
+records are included. Singular Puiseux coefficient selection, general
+Diophantine height cutoffs, and arbitrary rational quotient-cover
+producers remain outside the proved conclusions.
+\end{abstract}
+
+\vspace{0.5em}
+\noindent\textbf{Source baseline:}
+\texttt{052fbaebfc955294b4c02f6532ab7e7a3f760f7a}.\par
+\noindent\textbf{Scope:} a targeted extension of the current collection,
+including its three existing framework reports; not a certification of
+all 54 delivered packets.\par
+\noindent\textbf{Formal status:} five new Lean modules compile with
+Lean 4.32.0. Their proved lemmas and unproved proposition targets are
+distinguished throughout.
+
+\clearpage
+\section*{Result guide}
+\addcontentsline{toc}{section}{Result guide}
+
+The general method is to ask what finite observation a later argument
+needs, then construct and prove exactly that observation with a primitive
+recursive resource bound. Infinite names and abstract mathematical
+objects remain useful notation, but the induction takes place on finite
+codes. Three cases require different treatments: demands that grow under
+iteration, outputs whose identity is unstable under perturbation, and
+finite certificates whose nonvanishing carries genuine mathematical
+content.
+
+\begin{center}
+\begin{tabular}{@{}p{0.23\textwidth}p{0.66\textwidth}@{}}
+\toprule
+Main component & Concrete result\\
+\midrule
+Backward demands & From $C(n,D(n,k))\to C(n+1,k)$, compute
+$h_N=K$, $h_t=D(t,h_{t+1})$ and derive $C(N,K)$ from
+$C(0,h_0)$ by a guarded bounded invariant.\\[6pt]
+Aggregate witnesses & Nonempty finite lists with
+$H(S_s,S_t)\le2^{-s}+2^{-t}$ support PR distances, prescribed-chain
+points, finite images, and approximate minimization.\\[6pt]
+Root supports & For monic degree $n$, coefficient precision
+$E(t)=n(t+2)+b$ suffices to produce lists with
+$H(S_t,S_u)\le2^{-t-2}$ for $u\ge t$, once
+$2^b\ge4nR^{n-1}$.\\[6pt]
+Norm certificates & A computed nonzero norm bounds distinct common
+zeros by its degree. For coprime superelliptic exponents the exact degree
+is automatic, and every proper weighted-evaluation subspace has at most
+$L$ points in a supplied distinct list.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The root theorem uses the earlier FTA packet's explicit rational descent
+lemma, whose article is included unchanged. Its new construction performs
+all deflations on finite rational polynomials; it never invokes an
+unclocked evaluator for arbitrary PR programs. The norm theorem is an
+independent finite-algebra argument. It supplies a wider geometric
+fiber-count contract for the Siegel strategy, while preserving the
+distinction between cardinality and a global height bound.
+
+\clearpage
+{\footnotesize\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+\input{sections/01_framework}
+\input{sections/02_backward_induction}
+\input{sections/03_aggregates}
+\input{sections/04_root_sets}
+\input{sections/05_norm_certificates}
+\input{sections/06_formalization}
+\input{sections/07_audit}
+\clearpage
+\input{references}
+\end{document}

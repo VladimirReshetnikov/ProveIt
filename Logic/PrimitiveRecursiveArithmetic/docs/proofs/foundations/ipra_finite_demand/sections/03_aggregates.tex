@@ -1,0 +1,328 @@
+\section{Finite aggregates instead of premature witness selection}
+\label{sec:aggregates}
+
+\subsection{A representation with finite, decidable observations}
+
+Work first in $\Q^d$ with the sup metric
+$d(x,y)=\max_{i<d}|x_i-y_i|$. This metric is rational-valued and PR on
+finite vector codes. Everything below also applies to any fixed coded
+rational metric with proved triangle and symmetry laws. The complex
+root application uses squared Euclidean comparisons; its estimates
+imply the sup-metric estimates because $\|v\|_\infty\le|v|_2$.
+
+For nonempty finite lists $S,T$, repetitions allowed, put
+\[
+ h(S,T)=\max_{x\in S}\min_{y\in T}d(x,y),\qquad
+ H(S,T)=\max\bigl(h(S,T),h(T,S)\bigr).
+\]
+Minima and maxima mean finite scans with the first index breaking a tie.
+All comparisons are rational. Equivalently, $H(S,T)\le r$ says
+\[
+ (\forall x\in S\ \exists y\in T\ d(x,y)\le r)
+ \ \wedge\
+ (\forall y\in T\ \exists x\in S\ d(x,y)\le r).
+ \tag{H}\label{eq:finite-cover}
+\]
+This is a bounded formula, hence has a Boolean checker by
+Lemma~\ref{lem:booleanization}. Its existential quantifiers are finite
+searches, not choices of infinite point names.
+
+\begin{lemma}[Finite aggregate calculus]\label{lem:aggregate-calculus}
+The following statements have finite proofs on the supplied lists.
+\begin{enumerate}
+\item $H(S,U)\le H(S,T)+H(T,U)$.
+\item $H(S\mathbin{\|}S',T\mathbin{\|}T')\le
+ \max(H(S,T),H(S',T'))$, where $\|$ concatenates lists.
+\item With the sup product metric,
+ $H(S\times S',T\times T')\le\max(H(S,T),H(S',T'))$.
+\item If $d'(f(x),f(y))\le Ld(x,y)$ on the relevant finite inputs,
+ then $H(f[S],f[T])\le LH(S,T)$.
+\item Writing $d(z,S)=\min_{x\in S}d(z,x)$, one has
+ $|d(z,S)-d(w,T)|\le d(z,w)+H(S,T)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+For the first assertion, choose for each supplied $x\in S$ a nearest
+$y\in T$, then a nearest $z\in U$. The triangle inequality gives
+$d(x,z)\le H(S,T)+H(T,U)$. The reverse direction is identical with the
+lists reversed. These choices are least-index finite scans.
+
+For concatenation, inspect which part of the concatenated list contains
+the current index and use that part's cover. For products, choose the
+nearest candidate in each factor and use the sup product metric. For
+images, apply the assumed finite Lipschitz inequality to every selected
+cover pair. Finally choose a minimizing $y\in T$ for $d(w,T)$ and an
+$x\in S$ within $H(S,T)$ of it. Then
+$d(z,S)\le d(z,w)+d(w,T)+H(S,T)$. Interchanging the pairs gives the
+absolute-value bound. All statements about all list elements are bounded
+conjunctions; prefix induction verifies their construction.
+\end{proof}
+
+\begin{definition}[Regular aggregate name]\label{def:aggregate-name}
+A regular aggregate name is a fixed PR family $k\mapsto S_k$ of
+nonempty finite rational lists satisfying
+\[
+                      H(S_s,S_t)\le e_s+e_t,
+             \qquad e_j=2^{-j}.                 \tag{A}\label{eq:aggregate-name}
+\]
+The family can depend on numerical parameters. Its represented object
+is the completion of these finite observations, not a decision procedure
+for membership in a finite list of exact points.
+\end{definition}
+
+For a fixed rational point $z$, Lemma~\ref{lem:aggregate-calculus}(5)
+shows that $k\mapsto d(z,S_k)$ is a regular rational name. Denote its
+represented value by $D_S(z)$. If $z$ is itself a regular point name,
+use $d(z_{k+1},S_{k+1})$: its change between indices $k,\ell$ is at
+most $e_k+e_\ell$. This defines the same distance extension. In semantic
+notation,
+\[
+ |D_S(z)-d(z,S_s)|\le e_s,\qquad
+ |D_S(z)-D_S(w)|\le d(z,w).                       \tag{D}\label{eq:distance-name}
+\]
+The first inequality follows by comparing to $S_t$ and taking an
+arbitrarily fine \emph{explicit} later observation. For a finite desired
+slack $2^{-k}$, it is enough to take $t\ge k+1$ and a point precision
+at least $k+1$. Limits here are shorthand for those finite inequalities.
+
+One useful equality convention for aggregate names is
+\[
+                     S\simeq T\quad\Longleftrightarrow\quad
+              \forall k\ H(S_k,T_k)\le2e_k.     \tag{E}\label{eq:aggregate-equality}
+\]
+It is an equivalence relation. Only transitivity needs explanation.
+If $S\simeq T$ and $T\simeq U$, then for every $v\ge k$,
+\[
+ H(S_k,U_k)\le2e_k+6e_v.
+\]
+The left side and $2e_k$ are rationals. If their difference were positive,
+its numerator and denominator give an explicit binary-length bound for
+$v$ with $6e_v$ smaller than that difference, a contradiction. Thus
+$H(S_k,U_k)\le2e_k$. This uses rational decidability, not Markov's
+principle. Equivalent names give identical distance names by the same
+finite comparison. Equality \eqref{eq:aggregate-equality} is itself
+unbounded and is not a Boolean test on program indices.
+
+\subsection{Realizing a point by a prescribed chain}
+
+A fixed PR sequence of finite lists gives more than an arbitrary
+qualitative assertion of approximability. It permits the following
+explicit point constructor.
+
+\begin{theorem}[Least-neighbor chain]\label{thm:aggregate-chain}
+Given a regular aggregate name, an index $s$, and an entry $q\in S_s$,
+one can construct a PR point name $x^{s,q}$ such that
+\[
+                  D_S(x^{s,q})=0,
+                  \qquad d(x^{s,q},q)\le3\,2^{-s}.
+\]
+The construction is uniform in $s$, the entry index, and the numerical
+parameters of the fixed list evaluator. It does not assert extensional
+or continuous selection of a preferred point from the aggregate.
+\end{theorem}
+
+\begin{proof}
+Put $q_s=q$. Once $q_j\in S_j$ has been produced, let $q_{j+1}$ be
+the first nearest entry of $S_{j+1}$. Nonemptiness and
+\eqref{eq:aggregate-name} give
+\[
+ d(q_j,q_{j+1})\le e_j+e_{j+1}.
+\]
+For $s\le j<v$, a finite telescoping sum gives
+\[
+ d(q_j,q_v)\le\sum_{r=j}^{v-1}(e_r+e_{r+1})
+            =3e_j(1-2^{-(v-j)})\le3e_j.          \tag{C}\label{eq:chain-tail}
+\]
+This is induction on a finite table of rational points. Its invariant is
+membership of the last point in the last finite list, together with the
+displayed sum bound; it does not assert the existence of a limiting point.
+
+Define the output at precision $t$ to be $x^{s,q}(t)=q_{s+t+2}$.
+Equation~\eqref{eq:chain-tail} implies, for $u\ge t$,
+\[
+ d(x^{s,q}(t),x^{s,q}(u))\le3\,2^{-s-t-2}\le2^{-t}.
+\]
+Thus the output is a regular PR point name. The same finite bound gives
+its distance from $q_s$ at most $3e_s$. Membership has a particularly
+direct finite verification. Its distance-name sample at index $k$ is
+\[
+ d\bigl(x^{s,q}(k+1),S_{k+1}\bigr)
+ =d(q_{s+k+3},S_{k+1})
+ \le e_{s+k+3}+e_{k+1}\le\tfrac58 e_k,
+\]
+because $q_{s+k+3}\in S_{s+k+3}$. These nonnegative rational samples
+therefore name zero. The largest list index needed in this check is
+$s+k+3$; all evaluation indices and loop lengths are explicit.
+
+Every step calls the same fixed PR list evaluator and performs a finite
+minimum scan. Iteration is primitive recursion on $j$. If an invalid
+input produces an empty list, choose the zero vector as a default; the
+proof above concerns the stated valid-input hypotheses.
+\end{proof}
+
+Define membership in the represented support by $D_S(x)=0$. The theorem
+shows that each finite approximant lies within $3e_s$ of a represented
+member. Conversely, \eqref{eq:distance-name} shows that every member has
+distance at most $e_s$ from $S_s$. This is a statement about its minimum
+distance name, not a selection of an exact-radius witness for an arbitrary
+real point. Replacing $S_s$ by $S_{s+2}$ absorbs the factor
+three if a unit-error convention is desired. This semantic explanation
+uses a prescribed PR sequence; it is not an invocation of countable
+choice for arbitrary abstract approximation data. Richman's completed
+finite-set approach is a useful broader antecedent \cite{richman2000}.
+
+\subsection{Images and optimization, with their exact output meaning}
+
+Finite union and product of regular names remain regular by
+Lemma~\ref{lem:aggregate-calculus}. For an approximate represented map,
+suppose a fixed PR evaluator $f(q,p)$ obeys the numerical contract
+\[
+ d'\bigl(f(q,p),f(r,p')\bigr)
+          \le Ld(q,r)+2^{-p}+2^{-p'}              \tag{L}\label{eq:approx-lipschitz}
+\]
+on all rational inputs, with a given nonnegative rational $L$.
+A specified invariant domain containing every sample and intermediate
+point suffices instead if its membership is included in the contracts.
+Choose a natural number $c$ with $2^c\ge L+1$, using integer bit lengths
+after clearing the denominator, and put
+\[
+                  T_k=\bigl[f(q,k+c):q\in S_{k+c}\bigr].
+\]
+The finite covers and \eqref{eq:approx-lipschitz} give
+\[
+ H(T_s,T_t)\le(L+1)(e_{s+c}+e_{t+c})\le e_s+e_t.
+\]
+This proves a PR constructor for the completed finite-image object.
+The finite observation indices are exactly the displayed ones. If $S\simeq S'$, the same calculation gives $H(T_k,T'_k)\le2(L+1)e_{k+c}\le2e_k$, so the finite-image constructor is extensional on aggregate names.
+
+The action on represented point names is also explicit:
+\[
+             \widehat f(x)(k)=f(x(k+c),k+c).
+\]
+Contract \eqref{eq:approx-lipschitz} and regularity of $x$ bound its
+sample difference by $(L+1)(e_{s+c}+e_{t+c})\le e_s+e_t$.
+Equivalent point names give equivalent outputs by the same estimate,
+and $d'(\widehat f(x),\widehat f(y))\le Ld(x,y)$ in represented
+notation. Thus later occurrences of $f(x)$ refer to this prescribed
+extension, rather than to a separately assumed completed function.
+
+The word ``image'' does not conceal a preimage selection principle.
+If $D_S(x)=0$, then $D_T(f(x))=0$ by the Lipschitz contract.
+We have not proved a uniform constructor of $x$ from an arbitrary named
+$y$ with $D_T(y)=0$. Likewise, the distance for a union is
+$\min(D_S,D_T)$; a proof that it vanishes is not a decision of the
+disjunction $D_S=0\vee D_T=0$. This distinction lets aggregate
+representations preserve useful information without reintroducing the
+selection difficulty they were meant to avoid.
+
+\begin{theorem}[Value and approximate witnesses for optimization]
+\label{thm:aggregate-optimization}
+Let $f$ be a real-valued map satisfying \eqref{eq:approx-lipschitz}.
+Its infimum over the represented support has a PR regular name.
+For each $k$, one can produce a PR point name $x^{(k)}$ in that support
+whose value is within $2^{-k}$ above the infimum. No one exact minimizing
+point is selected by this theorem. The same assertions hold for the
+supremum by replacing $f$ with $-f$.
+\end{theorem}
+
+\begin{proof}
+Let $a_s=\min_{q\in S_s}f(q,s)$. Pick finite minimizers and use the
+two directed covers. Contract \eqref{eq:approx-lipschitz} gives
+\[
+                         |a_s-a_t|\le(L+1)(e_s+e_t).
+\]
+Thus $a_{k+c}$, with the same $c$ as above, is a regular PR name;
+write its value as $a$. In particular $|a-a_s|\le(L+1)e_s$.
+If $x$ belongs to the support, choose a nearest finite point to a
+sufficiently accurate rational observation of $x$. Equations
+\eqref{eq:distance-name} and \eqref{eq:approx-lipschitz} imply
+$a\le f(x)$ after making their explicit errors arbitrarily small.
+For a desired slack $\varepsilon$, it suffices to choose $s$ with
+$(4L+2)e_s<\varepsilon$ and point precision at least $s$.
+This proves the lower-bound part directly from finite observations.
+
+Choose $q_s\in S_s$ with $f(q_s,s)=a_s$ by a finite scan. The chain
+theorem gives $x_s$ in the support with $d(x_s,q_s)\le3e_s$.
+Writing $f(q_s)$ for its represented value, the same contract yields
+\[
+ f(x_s)\le f(q_s)+3Le_s
+          \le a_s+(3L+1)e_s
+          \le a+(4L+2)e_s.
+\]
+Choose $b$ with $2^b\ge4L+2$ and use $s=k+b$. Then $x^{(k)}=x_s$
+has the required error. Both the finite minimizing index and the
+subsequent point-name evaluator are PR. The approximating minimizers can
+switch components as $k$ changes; nothing in this proof asserts their
+coherence as a single minimizing name.
+\end{proof}
+
+\subsection{A reusable application to spectra}
+
+The root-support producer in Section~\ref{sec:rootsets} combines with
+this calculus to give an aggregate spectrum for an $n$ by $n$ matrix
+of PR complex names, $n\ge1$. This statement concerns the characteristic
+polynomial and its root support; it does not require eigenvectors,
+rank decisions, or a Jordan normal form.
+
+Here is an explicit coefficient precision budget. Use complex entry
+names regular in the Euclidean norm. Suppose every sampled
+entry has modulus at most an integer $B\ge1$; one can take
+$B=3+\lceil\max_{i,j}\|a_{ij}(0)\|_1\rceil$.
+For names given with a sup-coordinate convention, sample one extra
+precision bit to obtain the Euclidean convention. A characteristic
+coefficient is a signed sum of principal minors. There are at most
+$2^n$ such minors in any coefficient and at most $n!$ determinant terms
+per minor. A product of $r\le n$ entries changes by at most
+$rB^{r-1}\delta$ when corresponding entries change by at most $\delta$;
+expand the product difference one factor at a time. Thus the safe bound
+\[
+ A=2^n n!(B+1)^n,\qquad
+ C=2^n n!\,n(B+1)^{n-1}
+\]
+respectively bounds every lower coefficient and its sensitivity to the
+maximum entry error. Compute the characteristic coefficients by finite
+determinant sums, using entry precision $s+c$ with $2^c\ge C$.
+Their Cauchy error is then at most $e_s+e_t$. All loops and factorials
+are PR uniformly in $n$.
+
+Apply the root theorem, then the maximum construction to $z\mapsto|z|$.
+Rational square-root bisection supplies approximations to $|z|$, with
+the inequality $||z|-|w||\le|z-w|_2\le2\|z-w\|_\infty$;
+thus use the safe Lipschitz constant $L=2$ in the sup-metric calculus.
+The relevant disk bound is explicit.
+This gives a PR name for the spectral radius, and finite coverage of
+every spectral point, including at repeated eigenvalues. The result is
+a direct application of our proved interfaces, not a claim to have
+formalized the spectral theorem. The coefficient calculations are
+compatible with the generic-matrix approach of the Cayley--Hamilton
+packet \cite{repo-cayley}.
+
+\subsection{Lean realization of the finite interface}
+
+\path{lean/FiniteHausdorff.lean} defines directed covers, a finite
+Boolean checker, the two-sided relation, and regular aggregate names.
+It proves checker reflection, relational cover composition, finite union,
+finite image transport, and the rational-metric triangle theorem.
+Its exact axiom audit is included: the purely relational composition
+lemma uses no axioms, while the rational triangle instance inherits
+\texttt{Classical.choice} from Lean's standard rational-order lemmas.
+This is a native-library dependency, not an added object-iPRA axiom.
+The human finite rational proof above and its future arithmetization
+remain independent obligations.
+
+The companion \path{lean/AggregateTargets.lean} supplies concrete
+rational-vector distance, finite minimum, least-neighbor iteration,
+distance-name membership, represented-map evaluation, and approximate
+minimizer programs. Their full chain, value, and witness theorems are
+named unproved propositions. These definitions specify the remaining
+mathematical statements rather than assuming them as structure fields.
+
+To finish the object proof, encode the metric and lists, establish the
+arithmetic triangle law by rational cross multiplication, prove the
+finite-minimum specification by a prefix invariant, and replace every
+list quantifier in \eqref{eq:finite-cover} by its Boolean fold. For the
+chain theorem, the invariant is exactly membership plus
+\eqref{eq:chain-tail}. For optimization, use the finite minimum and
+the displayed $(L+1)$ and $(4L+2)$ budgets. No compactness theorem from
+an ambient classical real analysis library is needed.

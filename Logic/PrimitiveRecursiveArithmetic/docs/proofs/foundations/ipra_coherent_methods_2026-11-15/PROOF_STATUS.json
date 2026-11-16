@@ -1,0 +1,183 @@
+{
+  "title": "Coherent finite methods for intuitionistic primitive recursive arithmetic",
+  "date": "2026-11-15",
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "pinned_commit": "052fbaebfc955294b4c02f6532ab7e7a3f760f7a",
+  "review_scope": "Targeted audit of selected packets and core interfaces, not all repository proofs.",
+  "claims": [
+    {
+      "id": "booleanization",
+      "human_proof": "complete schema for each fixed bounded formula",
+      "lean_status": "object compiler not completed",
+      "source": "paper/sections/02_foundations.tex",
+      "scope": "Fixed PR symbols and a fixed bounded formula; no universal PR evaluator."
+    },
+    {
+      "id": "bounded_descent",
+      "human_proof": "complete",
+      "lean_status": "host theorems proved; explicit object formula and PR programs supplied; general object compiler unproved",
+      "source": "lean/RankedDescent.lean",
+      "target_source": "lean/DescentTargets.lean",
+      "scope": "Local validity, absorption, and rank decrease hypotheses are required; existing repository descent is credited."
+    },
+    {
+      "id": "coherent_finite_presentations",
+      "human_proof": "complete finite proof transformation",
+      "lean_status": "host coherent-tower and uniqueness theorems proved",
+      "source": "lean/CoherentTower.lean",
+      "scope": "A specified PR producer and local correctness, restriction, and uniqueness proofs are required."
+    },
+    {
+      "id": "object_contract_composition",
+      "human_proof": "complete",
+      "lean_status": "actual embedded derivation construction proved",
+      "source": "lean/ObjectComposition.lean",
+      "scope": "Composes supplied Prf PRAAx derivations by substitution and cut; no reflection principle."
+    },
+    {
+      "id": "object_identity_iteration",
+      "human_proof": "complete",
+      "lean_status": "actual embedded derivation proved",
+      "source": "lean/ObjectComposition.lean",
+      "declaration": "identityIteration_proved",
+      "scope": "A concrete instance using the actual quantifier-free induction axiom."
+    },
+    {
+      "id": "filtered_lifting",
+      "human_proof": "complete with bounded-induction audit",
+      "lean_status": "concrete definitions compile; universal application goals unproved",
+      "source": "paper/sections/04_lifting.tex",
+      "target_source": "lean/ApplicationTargets.lean",
+      "targets": [
+        "TaylorRemainderGoal",
+        "JacobianCongruenceGoal",
+        "PrecisionInvariantGoal",
+        "FrozenLiftingGoal"
+      ],
+      "scope": "Fixed PR-presented commutative ring, multiplicative decreasing filtration, F^N=0 with N>0, polynomial system, seed root and two-sided inverse Jacobian modulo F^1. Exactly N-1 updates."
+    },
+    {
+      "id": "jet_and_residue_coherence",
+      "human_proof": "complete",
+      "lean_status": "producers, projections, and target definitions compile; general targets unproved",
+      "source": "paper/sections/04_lifting.tex",
+      "target_source": "lean/ApplicationTargets.lean",
+      "targets": [
+        "EvaluationTransportGoal",
+        "LiftTransportGoal",
+        "JetPresentationGoal",
+        "JetTruncationGoal",
+        "ResiduePresentationGoal",
+        "ResidueProjectionGoal"
+      ],
+      "scope": "Ordinary rational jets and powers of every integer base q>=2; no analytic convergence or local-to-global theorem asserted."
+    },
+    {
+      "id": "hurwitz_polynomial_ode",
+      "human_proof": "complete for finite polynomial systems over a fixed PR-presented commutative ring",
+      "lean_status": "finite product and scalar rational ODE producer compile; general goals unproved",
+      "source": "paper/sections/04_lifting.tex",
+      "target_source": "lean/HurwitzTargets.lean",
+      "targets": [
+        "LeibnizGoal",
+        "PolynomialODEGoal"
+      ],
+      "scope": "Human theorem permits time-dependent polynomial data and finite systems. Concrete Lean ODE target covers scalar constant-coefficient rational polynomials. Derivative consumes one extra coefficient."
+    },
+    {
+      "id": "weighted_norm_degree",
+      "human_proof": "complete with finite algebra and induction audit",
+      "lean_status": "exact programs and targets compile; universal goals unproved",
+      "source": "paper/sections/05_norms.tex",
+      "target_source": "lean/WeightedNormTargets.lean",
+      "targets": [
+        "NormDegreeGoal"
+      ],
+      "scope": "m>=2,d>=1,gcd(m,d)=1,c nonzero rational; F=Y^m-cX^d plus strictly lower-weight terms; nonzero reduced G."
+    },
+    {
+      "id": "weighted_zero_count",
+      "human_proof": "complete including repeated abscissae",
+      "lean_status": "targets compile; universal goals unproved",
+      "source": "paper/sections/05_norms.tex",
+      "target_source": "lean/WeightedNormTargets.lean",
+      "targets": [
+        "FiberPowerGoal",
+        "CommonZerosGoal"
+      ],
+      "scope": "A supplied finite list of pairwise distinct common rational zeros; bound is the maximum monomial weight of G. No smoothness assumption."
+    },
+    {
+      "id": "weighted_dimension",
+      "human_proof": "complete residue-count argument",
+      "lean_status": "target definitions compile; universal goals unproved",
+      "source": "paper/sections/05_norms.tex",
+      "target_source": "lean/WeightedNormTargets.lean",
+      "targets": [
+        "WeightedBasisCountGoal",
+        "EventualDimensionGoal"
+      ],
+      "scope": "Explicit monomial space; eventual formula for L>=max(0,md-m-d). No arbitrary Riemann-Roch-space identification asserted."
+    },
+    {
+      "id": "proper_subspace_fiber_and_cover",
+      "human_proof": "complete conditional corollary",
+      "lean_status": "finite elimination construction and completion route described; general theorem not formalized",
+      "source": "paper/sections/05_norms.tex",
+      "scope": "Every proper-subspace fiber has at most L points. A supplied M-subspace cover gives ML. Producing a cover remains open here."
+    },
+    {
+      "id": "function_field_presentation",
+      "human_proof": "complete adjugate and norm argument",
+      "lean_status": "completion route described; no general Lean theorem supplied",
+      "source": "paper/sections/05_norms.tex",
+      "scope": "The stated coprime weighted curve class; nonzero reduced polynomials have nonzero norm, giving a domain and exact fraction-pair arithmetic."
+    },
+    {
+      "id": "noncoprime_initial_certificate",
+      "human_proof": "complete conditional extension",
+      "lean_status": "exact finite diagnostics only",
+      "source": "paper/sections/05_norms.tex",
+      "scope": "A nonzero explicit initial norm determinant for the individual F,G pair replaces automatic nonvanishing from coprimality."
+    },
+    {
+      "id": "finite_lean_examples",
+      "human_proof": "finite calculation",
+      "lean_status": "two kernel theorems and three separate executable diagnostics",
+      "source": "lean/ApplicationChecks.lean",
+      "additional_source": "lean/HurwitzTargets.lean",
+      "kernel_theorems": [
+        "compositeRoot_eq",
+        "basis_three_four_eight"
+      ],
+      "executable_diagnostics": [
+        "Catalan jet [1,1,2,5,14]",
+        "mixed-curve norm 1+X+X^4",
+        "Hurwitz ODE prefix [1,1,2,6,24,120,720,5040]"
+      ],
+      "scope": "These finite calculations do not prove universal application targets."
+    }
+  ],
+  "remaining_obligations": [
+    "Complete the numerical coefficient and matrix object-theory library and Boolean formula compiler.",
+    "Construct embedded Prf PRAAx derivations for the universal filtered-lifting and weighted-norm results.",
+    "Construct and prove suitable finite approximation covers in the Siegel route.",
+    "Supply global height/list bounds where the intended result demands them.",
+    "Construct actual quotient representatives required by the inspected Mordell-Weil route.",
+    "Prove the major analytic estimates and uniform witnesses missing from prime-distribution packets.",
+    "Handle singular branch selection only under appropriate additional exact input; arbitrary PR Cauchy names do not decide exact zero."
+  ],
+  "verification_claims": {
+    "lean_modules_compiled": 10,
+    "audited_sorryAx_dependency": false,
+    "audited_Classical_choice_dependency": false,
+    "host_axioms_present": [
+      "propext",
+      "Quot.sound"
+    ],
+    "new_axiom_declarations": false,
+    "all_general_application_goals_proved": false,
+    "all_object_application_derivations_completed": false,
+    "finite_diagnostics_replace_universal_proofs": false
+  }
+}

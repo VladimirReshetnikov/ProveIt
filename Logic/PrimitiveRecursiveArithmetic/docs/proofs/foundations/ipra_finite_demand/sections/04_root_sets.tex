@@ -1,0 +1,442 @@
+\section{An aggregate replacement for singular root selection}
+\label{sec:rootsets}
+
+The Puiseux packet identifies a real obstruction, rather than a missing
+estimate. For \(Y^2-X^2-a\), an exact Puiseux coefficient at the returned
+ramification index distinguishes \(a=0\) from \(a>0\). Such a constructor
+cannot be uniform in arbitrary fast coefficient names. The two existing
+framework packets therefore construct simple branches with a supplied
+derivative gap. Here we address a different output: the finite set of
+roots, observed at a specified precision \cite{repo-puiseux,repo-contracts}.
+Multiple roots and collisions
+are allowed. We do not recover a singular Puiseux expansion.
+
+The use of completed finite sets and multisets in constructive algebra
+has an established antecedent in Richman's \emph{The fundamental theorem
+of algebra: a constructive development without choice} (2000)
+\cite{richman2000}. The
+contribution here is the explicit first-order primitive recursive
+construction, its finite precision budget, and its application to the
+representation boundary recorded in this repository. In particular, the
+set representation below deliberately forgets multiplicity; a theorem
+about matching multisets would be a different result.
+
+\subsection{The finite metric relation}
+
+Write \(\mathbb Q[i]\) for the Gaussian rationals. For \(z=x+iy\), put
+\[
+ N(z)=x^2+y^2,\qquad \|z\|_1=|x|+|y|.
+\]
+The notation \(|z|\le r\), for rational \(r\ge0\), means the rational
+comparison \(N(z)\le r^2\). Euclidean norms used in intermediate estimates
+abbreviate their elementary squared-norm consequences; they are not
+additional input objects. We use
+\(N(zw)=N(z)N(w)\), \(|z|\le\|z\|_1\le2|z|\), and finite
+triangle and Cauchy--Schwarz inequalities.
+
+For nonempty finite lists \(S,T\) and rational \(r\ge0\), define
+\[
+ \operatorname{Cover}(S,T,r)
+ \;:\Longleftrightarrow\;
+ \forall z\in S\ \exists w\in T\; N(z-w)\le r^2.
+\]
+Put \(\operatorname{Close}(S,T,r)\) for the conjunction of both directed
+covers. This is a bounded decidable predicate. Repeated list entries are
+permitted and have no effect on the predicate. Thus this is precisely a
+finite presentation of Hausdorff closeness of the underlying supports.
+
+\begin{lemma}[Finite product stability]\label{lem:product-stability}
+Let \(S=(z_1,\ldots,z_n)\) and \(T=(w_1,\ldots,w_n)\), where \(n\ge1\),
+and suppose every entry has norm at most the rational \(R\ge1\). Write
+\[
+ F(X)=\prod_{j=1}^n(X-z_j),\qquad
+ G(X)=\prod_{j=1}^n(X-w_j).
+\]
+Suppose corresponding coefficients below degree \(n\) differ in norm
+by at most \(\delta\), where \(\delta\ge0\). Set
+\(C=nR^{n-1}\). If \(C\delta\le r^n\), then
+\(\operatorname{Close}(S,T,r)\).
+\end{lemma}
+
+\begin{proof}
+For \(z\in S\), finite polynomial evaluation gives
+\[
+ |G(z)|=|G(z)-F(z)|
+ \le\delta\sum_{i=0}^{n-1}|z|^i
+ \le C\delta\le r^n.
+\]
+But \(G(z)=\prod_j(z-w_j)\). Test the finitely many rational comparisons
+\(N(z-w_j)\le r^2\). If all fail, each squared distance is strictly
+greater than \(r^2\), and multiplication yields
+\(N(G(z))>r^{2n}\), a contradiction. Bounded search therefore produces
+the required index. Exchange the lists for the reverse cover. The
+argument also works when \(r=0\): a finite product of nonnegative
+rationals can vanish only if a factor vanishes. Every search and
+induction in this proof is on explicit finite data.
+\end{proof}
+
+No assignment pairing all roots injectively was used. For example,
+\((0,0,1)\) and \((0,1,1)\) have identical supports, although their
+multiplicities differ. The lemma must not be read as a multiplicity
+matching theorem.
+
+\subsection{A finite approximate-root dependency}
+
+We reuse one explicit human-proof result from
+\path{algebra/FTA_iPRA/FTA_iPRA.tex}, Section~4, ``Uniform descent
+for a rational polynomial'' \cite{repo-fta}. For a nonconstant Gaussian-rational
+polynomial of degree at most \(d\ge1\), its primitive recursive
+\(\operatorname{Descent}\) operation satisfies
+\[
+ |P(z+\Delta)|\le q_d|P(z)|,
+ \qquad q_d=1-\frac1{4D_d},\qquad D_d=2^d4^{2d^2}.
+ \tag{RD}\label{eq:rational-descent}
+\]
+The supplied argument uses a bounded dyadic radius search, a dominant
+term at three consecutive scales, and a bounded rational direction
+calculation. It does not assume the existence of a root. This is the
+only nontrivial algebraic-existence dependency of the construction below.
+It has a written proof in the repository; we do not claim its complete
+\texttt{Prf PRAAx} formalization is available.
+
+Here is the precise finite corollary we require, with its proof. Given
+\(0<\varepsilon\le1\), let
+\[
+ B=\max(1,\|P(0)\|_1),\quad
+ K=\lceil B/\varepsilon\rceil,\quad J=4D_dK.
+\]
+Start at zero and perform exactly \(J\) descent steps, assigning the
+zero step when the residual is already zero. Finite Bernoulli arithmetic
+gives \(q_d^{4D_d}\le1/2\). Hence the output \(z\) satisfies
+\[
+ |P(z)|\le Bq_d^J\le B2^{-K}\le\varepsilon,
+\]
+because \(2^K\ge K+1\ge B/\varepsilon\). This defines a single
+primitive recursive operation on rational polynomial codes, uniformly in
+the degree and requested precision. Only rational polynomials occur;
+there is no evaluation of an arbitrary primitive recursive program code.
+
+For a slower but simpler executable interface, the same corollary yields
+a completely bounded grid search. If \(P\) is monic and its lower
+coefficients have norm at most an integer \(A\ge1\), any point with
+residual at most one has norm at most \(R=A+2\). Indeed, for
+\(u=|z|>A+2\), the finite geometric identity gives
+\[
+ |P(z)|\ge u^d-A\frac{u^d-1}{u-1}>1.
+\]
+Set \(U=2R+1\) and
+\(L_P=\max(1,\sum_{i=1}^d i\|p_i\|_1U^{i-1})\).
+Take \(m=\lceil4L_P/\varepsilon\rceil\). Use the corollary at accuracy
+\(\varepsilon/2\), and round its output to the square grid of spacing
+\(1/m\) in \([-R,R]^2\). The distance moved is at most \(1/m\), and
+the finite power-difference identity bounds the residual change by
+\(L_P/m\le\varepsilon/4\). Thus the grid contains a point of residual
+at most \(\varepsilon\). Scanning its \((2Rm+1)^2\) points is another
+uniform PR approximate-root algorithm. This proof of grid completeness
+depends on (RD), not on a classical compactness or FTA principle.
+
+\subsection{Uniform finite factorization without nested coefficient names}
+
+For a polynomial with Gaussian-rational coefficients, let
+\(\|P\|_{\mathrm{coef},1}=\sum_i\|p_i\|_1\).
+This norm is rational, subadditive, and submultiplicative, as follows
+directly by expanding the finite convolution.
+
+\begin{theorem}[Uniform rational approximate factorization]
+\label{thm:approx-factor}
+Let \(P\in\mathbb Q[i][X]\) be monic of degree \(n\ge1\), and let
+\(0<\eta\le1\) be rational. From these finite inputs a primitive
+recursive operation returns \(z_1,\ldots,z_n\in\mathbb Q[i]\) such that
+\[
+ \left\|P-\prod_{j=1}^n(X-z_j)\right\|_{\mathrm{coef},1}\le\eta.
+\]
+The operation is uniform in \(n\). Its mathematical proof uses (RD).
+\end{theorem}
+
+\begin{proof}
+Choose an integer \(A_0\ge1\) bounding the \(\ell^1\) norm of every
+coefficient of \(P\). Before performing any deflation, compute
+\[
+ A_{j+1}=(A_j+1)(2A_j+5)^n\quad(0\le j<n),\qquad
+ L=\prod_{j=0}^{n-1}(2A_j+5),\qquad
+ \varepsilon=\frac{\eta}{2nL}.
+ \tag{AF}\label{eq:factor-budget}
+\]
+These are finite integer recursions. Let \(P_0=P\). At stage \(j<n\),
+\(P_j\) is monic of degree \(n-j\). Apply the approximate-root
+operation at tolerance \(\varepsilon\) and obtain \(z_{j+1}\). Perform
+synthetic division, an exact finite recurrence, to obtain
+\[
+ P_j(X)=(X-z_{j+1})P_{j+1}(X)+r_j,
+ \qquad r_j=P_j(z_{j+1}).
+ \tag{SD}\label{eq:synthetic-division}
+\]
+The quotient is monic of degree \(n-j-1\).
+
+Inductively, every coefficient of \(P_j\) has \(\ell^1\) norm at most
+\(A_j\). The just-proved residual radius bound gives
+\(|z_{j+1}|\le A_j+2\), because \(\varepsilon\le1\). Therefore
+\(\|z_{j+1}\|_1\le2A_j+4\). The synthetic recurrence, beginning with
+leading quotient coefficient one, bounds each quotient coefficient by
+\[
+ (A_j+1)(1+\|z_{j+1}\|_1)^n
+ \le (A_j+1)(2A_j+5)^n=A_{j+1}.
+\]
+For clarity, the elementary recurrence estimate is obtained by repeatedly
+expanding \(b_{k-1}=p_k+z_{j+1}b_k\): its right side is a sum of at
+most \(n\) terms, each dominated by a term of
+\((A_j+1)(1+\|z_{j+1}\|_1)^n\). Thus it does not require a loop
+invariant about infinitely many coefficients.
+
+After all \(n\) divisions, \(P_n=1\). Substituting
+\eqref{eq:synthetic-division} repeatedly gives the exact identity
+\[
+ P(X)-\prod_{k=1}^n(X-z_k)
+   =\sum_{j=0}^{n-1}r_j\prod_{k=1}^{j}(X-z_k).
+ \tag{TE}\label{eq:factor-telescoping}
+\]
+Here the empty product is one. Since \(\|r_j\|_1\le2\varepsilon\),
+submultiplicativity gives
+\[
+ \left\|P-\prod_{k=1}^n(X-z_k)\right\|_{\mathrm{coef},1}
+ \le 2\varepsilon\sum_{j=0}^{n-1}
+       \prod_{k=0}^{j-1}(2A_k+5)
+ \le2\varepsilon nL=\eta.
+\]
+Each division manipulates a finite rational coefficient list; the outer
+loop has exactly \(n\) stages. Consequently this construction avoids the
+higher-type iteration issue in repeatedly deflating exact Cauchy names.
+Its cost is large but primitive recursive.
+\end{proof}
+
+\subsection{A uniform finite-set name for all roots}
+
+Fix one primitive recursive Gaussian-rational coefficient evaluator
+\(a(i,s,\mathbf p)\). Parameters \(\mathbf p\), degree \(n\ge1\), and
+precision indices are ordinary numerical inputs. Assume, for \(i<n\),
+\[
+ |a(i,s,\mathbf p)-a(i,t,\mathbf p)|\le2^{-s}+2^{-t}.
+ \tag{CN}\label{eq:coefficient-name-root}
+\]
+The leading coefficient is exactly one. Suppress \(\mathbf p\) below.
+Let
+\[
+ A=3+\left\lceil\max_{i<n}\|a(i,0)\|_1\right\rceil,
+ \quad R=A+2,\quad C=nR^{n-1}.
+\]
+Then every sampled coefficient has Euclidean norm at most \(A-1\).
+In the approximate-factorization procedure one can use \(A_0=2A\),
+which bounds every sampled coefficient's \(\ell^1\) norm.
+Choose an integer \(b\) with \(2^b\ge4C\), by bounded binary-length
+calculation, and set
+\[
+ E(t)=n(t+2)+b,\qquad
+ P_t(X)=X^n+\sum_{i<n}a(i,E(t))X^i.
+\]
+Apply Theorem~\ref{thm:approx-factor} to \(P_t\) with
+\(\eta_t=2^{-E(t)}\). Denote its output list by \(S_t\) and its exact
+product polynomial by \(F_t\).
+
+\begin{theorem}[Collision-tolerant root-support names]
+\label{thm:root-support}
+The lists \(S_t\) form a primitive recursive finite-set name satisfying
+\[
+ u\ge t\quad\Longrightarrow\quad
+ \operatorname{Close}(S_t,S_u,2^{-t-2}).
+ \tag{RS}\label{eq:root-support-fast}
+\]
+All entries of all lists have norm at most \(R\). The construction is
+uniform in the numerical degree and parameters of the fixed evaluator.
+Its coefficient approximation and finite Hausdorff assertions have
+\(\ipra\) proofs relative to the written descent lemma (RD).
+\end{theorem}
+
+\begin{proof}
+Each lower coefficient of \(F_t\) has norm at most \(A\), because its
+distance from the sampled coefficient is at most \(\eta_t\le1\).
+Every entry of \(S_t\) is an exact rational root of the monic rational
+polynomial \(F_t\). The radius argument above, now with residual zero,
+therefore gives the common bound \(R=A+2\). This bound comes from the
+\emph{final product coefficients}; we do not confuse it with the much
+larger temporary bounds \(A_j+2\) used during deflation.
+
+For \(u\ge t\), corresponding coefficients of \(F_t,F_u\) differ by
+at most
+\[
+ 2^{-E(t)}+(2^{-E(t)}+2^{-E(u)})+2^{-E(u)}
+ \le4\cdot2^{-E(t)}.
+\]
+Consequently
+\[
+ C\,4\cdot2^{-E(t)}
+ \le2^{-n(t+2)}=(2^{-t-2})^n.
+\]
+Lemma~\ref{lem:product-stability} proves \eqref{eq:root-support-fast}.
+No equality or separation decision about represented coefficients or
+roots occurs anywhere in the construction.
+\end{proof}
+
+The exact retained information is a nonempty finite-set name, together
+with monic product polynomials converging coefficientwise to the input.
+The next proposition proves that its zero-distance locus is exactly the
+root locus, with an explicit finite-precision argument.
+
+\begin{proposition}[Adequacy of the root-support representation]
+\label{prop:root-adequacy}
+Let \(z\) be a represented point, and supply an integer bound
+\(Z\ge\max(R,1)\) with \(|z|\le Z\). Put
+\[
+ D_t(z)=\min_{w\in S_t}|z-w|,\quad
+ C_Z=nZ^{n-1},\quad
+ M_Z=A\sum_{i=1}^n iZ^{i-1}.
+\]
+The distance is a represented nonnegative real, computable by finite
+minimum and square-root operations with prescribed precision. Define
+\[
+ \operatorname{Member}(z,S)\;:\Longleftrightarrow\;
+ \forall k\ \exists t\ge k\;D_t(z)\le2^{-k}.
+\]
+Then \(\operatorname{Member}(z,S)\) holds if and only if \(P(z)=0\).
+The forward production of indices from a root is primitive recursive.
+Moreover the following error bounds hold:
+\begin{align}
+ |F_t(z)-P(z)|&\le2C_Z2^{-E(t)},\label{eq:root-eval-error}\\
+ |P(z)|&\le M_ZD_t(z)+2C_R2^{-E(t)}.
+ \label{eq:root-distance-residual}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Each lower coefficient of \(F_t\) differs from the represented input
+coefficient by at most \(2\cdot2^{-E(t)}\): one contribution is the
+approximate-factorization error and one is the sampled-name error.
+The finite sum of powers at \(|z|\le Z\) proves
+\eqref{eq:root-eval-error}. The power-difference identity proves
+\(|P(z)-P(w)|\le M_Z|z-w|\) on this disk. At \(w\in S_t\),
+\(F_t(w)=0\), and \(|w|\le R\), so
+\(|P(w)|\le2C_R2^{-E(t)}\). This proves the inequality in
+\eqref{eq:root-distance-residual} for each individual distance
+\(|z-w|\), hence also for their finite minimum. No exact minimizing
+index for represented distances has to be selected. For example a
+finite minimum of real names can be implemented with
+\(\min(u,v)=(u+v-|u-v|)/2\), with each arithmetic precision prescribed.
+
+For completeness, here is a fully finite precision budget in the
+root-to-membership direction. Let \(z(s)\) be its rational samples,
+with sample error at most \(2^{-s}\) in represented notation. Set
+\[
+ U=Z+1,\quad C_U=nU^{n-1},\quad
+ M_U=A\sum_{i=1}^n iU^{i-1},\quad T=C_U+M_U,
+\]
+and let \(\ell(v)\) be any primitive recursive integer choice with
+\(2^{\ell(v)}\ge\max(1,v)\), for example binary length after rounding
+\(v\) upwards. The rational polynomial evaluations
+\[
+ V_s=z(s)^n+\sum_{i<n}a(i,s)z(s)^i
+\]
+have error at most \(T2^{-s}\) relative to \(P(z)\); this follows by
+separately varying the coefficients and the point. Thus \(P(z)=0\)
+gives \(|V_s|\le T2^{-s}\). This is an explicit normalized
+vanishing-error formulation of the root equation, not an invocation
+of a limit principle. Direct coefficient comparison now gives the
+entirely finite inequality
+\[
+ |F_t(z(s))|
+ \le 2C_U2^{-E(t)}+(C_U+T)2^{-s}.
+ \tag{FE}\label{eq:finite-root-evaluation}
+\]
+Given \(k\), choose
+\[
+ t=k+1+\ell(2C_U),\qquad
+ s=\max\{k+1,\ n(k+3)+\ell(C_U+T)\}.
+\]
+The first summand in \eqref{eq:finite-root-evaluation} is at most
+\(2^{-n(k+3)}\), because
+\(E(t)\ge n(k+3)+\ell(2C_U)\); the second has the same bound.
+Their sum is at most \(2^{-n(k+1)}\). All points in this last
+calculation are rational. Testing their finitely many squared
+distances and applying the product argument produces \(w\in S_t\)
+with \(|z(s)-w|\le2^{-k-1}\). Since \(s\ge k+1\), adding the
+sample error gives \(|z-w|\le2^{-k}\), as required. Both indices
+and the successful finite search are fixed PR constructions. In a
+pure sample formulation, the displayed represented inequalities are
+obtained by substituting these precisions and the ordinary rational
+slack-removal lemma; no real trichotomy is used.
+
+Conversely, assume membership. Given a residual target \(2^{-k}\),
+take \(j=k+\ell(M_Z+2C_R)\), and instantiate membership to obtain
+\(t\ge j\) with \(D_t(z)\le2^{-j}\). Since \(E(t)\ge t\),
+\eqref{eq:root-distance-residual} yields
+\[
+ |P(z)|\le(M_Z+2C_R)2^{-j}\le2^{-k}.
+\]
+This proves the root equation at every requested precision. The
+existential index is used by intuitionistic existential elimination;
+no unbounded search for it is assumed.
+\end{proof}
+
+By \eqref{eq:root-support-fast}, the distances \(D_t(z)\) have the
+same explicit Cauchy error bound as the sets. Accordingly the displayed
+membership formula is equivalent to zero distance from the represented
+set. The generic finite-set chain construction supplies actual PR point
+names when such a realization is needed. No arbitrary infinite choice
+of labels is implicit in the root-support theorem.
+
+\subsection{What the new representation resolves}
+
+Lemma~\ref{lem:product-stability} is also a finite perturbation theorem.
+For two monic input polynomials whose sampled coefficient differences
+are at most \(\delta\), with splitting errors \(\eta,\eta'\), lists
+in a common radius \(R\) are \(r\)-close whenever
+\[
+ nR^{n-1}(\delta+\eta+\eta')\le r^n.
+ \tag{CP}\label{eq:coefficient-perturbation}
+\]
+This gives an explicit H\"older precision budget even at repeated roots.
+For coefficients depending on another represented variable, combine a
+supplied coefficient continuity modulus with
+\eqref{eq:coefficient-perturbation}; this produces a modulus for the
+root-support map. Neither a simple-root derivative bound nor root
+separation is required.
+
+For example, the obstruction family \(Y^2-X^2-a\) has a uniformly
+represented root support at every represented input pair \((X,a)\).
+For real \(X\), \(a\ge0\), the familiar semantic description is
+\(\{-\sqrt{X^2+a},\sqrt{X^2+a}\}\); at \((0,0)\) the support is the
+singleton \(\{0\}\). Coefficient perturbations of order \(\varepsilon^2\)
+suffice for root-support accuracy of order \(\varepsilon\). The theorem
+never has to decide whether the two roots coincide. It therefore repairs
+the output contract for tasks needing distances, images, approximate
+optimization, or coverage of all roots. It does not provide individually
+accessible singular Taylor/Puiseux coefficients, multiplicity matching,
+or a continuously labeled root on a parameter domain.
+
+\subsection{Formalization obligations}
+
+The file \path{lean/RootSetTargets.lean} defines Gaussian-rational
+arithmetic, finite products, coefficient error bounds, the bounded cover
+predicate, and the complete finite approximate-root constructor from a
+supplied descent map with the displayed \(q_d,J\) budget. It also defines
+point-name evaluation, normalized residual equality, and membership by
+rational sample coverage. The forward adequacy indices are actual
+definitions. Six named propositions specify the remaining correctness
+proofs, including the descent-to-root bridge and the adequacy equivalence.
+These propositions are \emph{unproved targets}, not axioms. The intended order
+is: (1) polynomial convolution and synthetic-division identities;
+(2) finite squared-norm inequalities and product stability;
+(3) the explicit (RD) proof from the FTA packet;
+(4) bounded approximate-root production; (5) the quantifier-free
+deflation invariant and telescoping error bound; and (6) the fixed-name
+precision substitution proving \eqref{eq:root-support-fast}.
+
+For an object-theory proof, encode lists and Gaussian rationals as natural
+numbers. Replace every list quantifier by its finite Boolean fold, retain
+\eqref{eq:coefficient-name-root} as a hypothesis instantiated only at
+the finitely needed indices, and induct on the finite deflation table.
+The invariant includes coefficient bounds, degree, monicity, the exact
+partial telescoping identity, and the accumulated rational error bound.
+An ordinary Lean theorem over \texttt{Rat} is a useful preliminary layer;
+the final goal is a derivation in the embedded \(\ipra\) calculus.
+The reference program checks finite certificates with exact fractions.
+It does not purport to execute the enormous worst-case descent schedule
+or to verify the complete object-theory derivation.

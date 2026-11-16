@@ -1,0 +1,92 @@
+{
+  "scope": "Finite implementation and compiler checks, not full embedded iPRA proofs",
+  "reference_programs": {
+    "finite_demands": {
+      "status": "passed",
+      "scope": "Exact finite implementation checks only",
+      "arithmetic": "fractions.Fraction",
+      "counts": {
+        "nonmonotone_schedules": 297,
+        "recursion_comparisons": 297,
+        "nonlinear_regularity_pairs": 2400,
+        "cover_reflections": 64,
+        "cover_triangles": 512,
+        "chain_bounds": 1820,
+        "approximate_optimization_cases": 24
+      }
+    },
+    "root_sets": {
+      "status": "passed",
+      "scope": "Exact finite certificate checks only",
+      "arithmetic": "fractions.Fraction; no floating point",
+      "counts": {
+        "factorizations": 12,
+        "stability_pairs": 24,
+        "collision_instances": 6,
+        "invalid_hypotheses_rejected": 2
+      }
+    },
+    "superelliptic_norm": {
+      "status": "passed",
+      "arithmetic": "exact fractions.Fraction",
+      "scope": "Finite implementation checks; not an iPRA proof checker",
+      "counts": {
+        "norm_degree_and_leading_coefficient": 57,
+        "independent_companion_matrices": 57,
+        "independent_determinant_evaluations": 171,
+        "hyperelliptic_norm_identities": 12,
+        "evaluation_row_identities": 42,
+        "fiber_multiplicity_checks": 3,
+        "sharp_examples": 1,
+        "necessary_hypothesis_checks": 1
+      },
+      "sharp_example": {
+        "m": 3,
+        "f": [
+          1,
+          -8,
+          14,
+          -7,
+          1
+        ],
+        "norm": [
+          0,
+          -8,
+          14,
+          -7,
+          1
+        ],
+        "bound": 4,
+        "common_points": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            4,
+            1
+          ]
+        ]
+      }
+    }
+  },
+  "lean": {
+    "compiler": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+    "compiled_modules": 5,
+    "embedded_main_derivations": "not implemented"
+  },
+  "pdf": {
+    "built": true,
+    "warnings": [],
+    "visual_review": "passed; see pdf_qa.json",
+    "pages": 34
+  }
+}

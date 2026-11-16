@@ -1,0 +1,479 @@
+\section{Finite filtered algebras: a common lifting theorem}
+\label{sec:filtered-lifting}
+
+The existing Lagrange-inversion packet constructs coefficient prefixes by
+fixed-point iteration, and the Puiseux packet reduces branches to simple-root
+equations before applying a coefficient recurrence.  The Bell packet uses
+finite exponential-series identities.  These are substantial existing
+arguments; the purpose of this section is to expose a common reusable
+arithmetic theorem, including simultaneous polynomial systems and modular
+lifting \cite{repoLagrange,repoPuiseux,repoBell}. The classical Hensel principle is not new. The contribution here
+is its organization as one division-free finite program, one bounded
+invariant, and one coherence argument suitable for iPRA.
+
+\subsection{The exact arithmetic interface}
+
+Fix a primitive-recursively presented commutative ring $B$.  Its element
+codes, validity predicate, equality test, and ring operations are fixed
+primitive recursive data, and the ring and congruence laws have supplied
+iPRA derivations.  The displayed equalities below mean equality in this
+presentation; a canonical representation is convenient but unnecessary.
+Let $N\ge1$ be a numerical precision parameter.  Assume that
+$F^kB$ is a uniformly primitive recursive membership test, with proofs of
+the following laws:
+\begin{enumerate}
+\item $F^0B=B$, $F^{k+1}B\subseteq F^kB$, and $F^NB=\{0\}$;
+\item every $F^kB$ is an additive subgroup;
+\item $uv\in F^{i+j}B$ whenever $u\in F^iB$ and $v\in F^jB$.
+\end{enumerate}
+One can set $F^kB=\{0\}$ for $k\ge N$.  Because $F^0B=B$, the last
+condition also gives closure under multiplication by an arbitrary ring
+element.  Matrices and vectors belong to a filtration level when each of
+their finitely many entries does.
+
+These are \emph{supplied numerical contracts}.  This definition does not
+assert that membership in powers of an arbitrary ideal is decidable.
+The ring and filtration may depend on numerical parameters, including
+$N$, provided all operations and membership tests are jointly primitive
+recursive and the same displayed laws are proved uniformly.  The concrete
+jet and residue-ring examples below have this property.
+
+A polynomial in $m$ variables is a finite list of terms
+$(c,e_1,\ldots,e_m)$, interpreted as
+$cX_1^{e_1}\cdots X_m^{e_m}$.  Missing coefficients are zero; duplicate
+monomials are allowed.  Evaluation, formal partial derivatives, vector
+evaluation, and finite matrix multiplication are primitive recursive
+bounded folds.  No general-purpose primitive recursive program evaluator
+is used.  The polynomials themselves, their dimensions, and their degrees
+may be variable numerical inputs.
+
+\begin{lemma}[Finite polynomial difference and Taylor identities]
+\label{lem:filtered-taylor}
+Let $P\in B[X_1,\ldots,X_m]^m$, and let $J(x)$ denote its Jacobian.
+If $h\in(F^kB)^m$, then
+\[
+ P(x+h)-P(x)-J(x)h\in(F^{2k}B)^m.                 \tag{T}
+\]
+If $x-a\in(F^1B)^m$, then every entry of $J(x)-J(a)$ belongs to $F^1B$.
+Both claims have uniform iPRA derivations from the presentation contracts.
+\end{lemma}
+
+\begin{proof}
+Expand one monomial
+$c\prod_j(x_j+h_j)^{e_j}$ by the finite binomial theorem.  The term using
+no $h_j$ is its value at $x$.  The terms using exactly one $h_j$ have sum
+equal to its formal derivative applied to $h$.  Every remaining term has
+at least two factors among the $h_j$, counted with multiplicity, and
+therefore belongs to $F^{2k}B$.  Multiplication by the other factors
+preserves membership, and summing finitely many such terms does so too.
+Adding the finitely many monomials proves (T).
+
+For the second assertion apply the elementary finite identity
+$u^r-v^r=(u-v)\sum_{j<r}u^jv^{r-1-j}$ to one variable at a time in
+each monomial of a partial derivative.  The resulting difference is a
+finite sum of multiples of the coordinates $x_j-a_j$, hence belongs to
+$F^1B$.  The proof uses no division and is valid in every characteristic.
+
+The binomial and telescoping identities are proved by induction on natural
+exponents.  Their induction formulas are equalities of coded ring elements.
+The further invariants assert that all terms in a finite accumulated list
+have the stated membership; they are bounded formulas and have Boolean
+quantifier-free forms.  Thus the finite expansion argument gives actual
+iPRA proof instructions uniformly in the polynomial code, rather than
+merely an appeal to a general algebra theorem in the ambient metatheory.
+\end{proof}
+
+\subsection{A frozen inverse is enough}
+
+\begin{theorem}[Finite filtered lifting]
+\label{thm:filtered-lifting}
+Let $a\in B^m$ and $U\in B^{m\times m}$ satisfy
+\[
+ P(a)\in(F^1B)^m,\qquad
+ I-J(a)U\in(F^1B)^{m\times m},\qquad
+ I-UJ(a)\in(F^1B)^{m\times m}.                 \tag{H}
+\]
+Define the primitive recursive sequence
+\[
+ b_0=a,\qquad b_{r+1}=b_r-U P(b_r).            \tag{L}
+\]
+Then $b_{N-1}$ is a root of $P$, and is the unique root $x$ satisfying
+$x-a\in(F^1B)^m$.  No derivative inverse is recomputed during the
+iteration, and no division occurs after the data $a,U$ are supplied.
+
+More precisely, for every $r<N$,
+\[
+ b_r-a\in(F^1B)^m,\qquad
+ P(b_r)\in(F^{r+1}B)^m,\qquad
+ b_{r+1}-b_r\in(F^{r+1}B)^m.                 \tag{I}
+\]
+The first two assertions suffice at $r=N-1$; the last assertion is also
+meaningful there if one more iterate is formed.
+\end{theorem}
+
+\begin{proof}[Existence and the precision invariant]
+Put $x=b_r$, $v=P(x)$, and $h=-Uv$.  Suppose $x-a\in F^1$ and
+$v\in F^k$, where $k\ge1$.  Matrix multiplication preserves membership
+in $F^k$, so $h\in F^k$.  In particular $x+h-a\in F^1$.
+Lemma~\ref{lem:filtered-taylor} gives
+\[
+ P(x+h)=(I-J(a)U)v-(J(x)-J(a))Uv+R,
+ \qquad R\in(F^{2k}B)^m.                    \tag{1}
+\]
+The first term belongs to $F^{k+1}$ by (H).  The second belongs to
+$F^{k+1}$ because $J(x)-J(a)\in F^1$.  The remainder does as well:
+$2k\ge k+1$ and the filtration is decreasing.  Thus one iteration
+raises the certified residual precision by at least one level.
+
+Initially the first two assertions of (I) hold by (H).  The preceding
+argument proves the induction step, and the defining equation (L) proves
+the increment assertion.  At $r=N-1$ the residual belongs to $F^NB=\{0\}$.
+If $N=1$, no update is performed and the hypothesis already says $P(a)=0$.
+The proof uses the right inverse congruence $J(a)U\equiv I$; the left
+inverse congruence will be used for uniqueness.
+\end{proof}
+
+\begin{proof}[Uniqueness]
+Let $x,y$ be roots with $x-a,y-a\in F^1$.  We show inductively that
+$d=x-y\in F^k$ for $1\le k\le N$.  The case $k=1$ is immediate.
+If $d\in F^k$, the Taylor identity at $y$ yields
+\[
+ 0=P(x)-P(y)=J(y)d+R,\qquad R\in F^{2k}.
+\]
+Multiplying by $U$ and rearranging gives
+\[
+ d=(I-UJ(a))d-U(J(y)-J(a))d-UR.              \tag{2}
+\]
+Each term on the right lies in $F^{k+1}$, for exactly the three reasons
+used in (1).  This proves the step.  At level $N$, $d=0$, hence $x=y$.
+The induction is finite and contains no least-counterexample principle,
+choice, field cancellation, or existence assertion about a completion.
+\end{proof}
+
+The linear precision gain is a deliberate safe bound.  It need not be
+quadratic when $U$ is only an inverse modulo $F^1$.  For example, in
+$B=\mathbb Z/q^N\mathbb Z$, take $P(X)=X-q$, $a=0$, and $U=1+q$.
+The residual satisfies $P(b_r)=(-q)^{r+1}$.  For $r+1<N$ it is generally
+nonzero modulo $q^N$, so the bound of $N-1$ updates is attained.
+
+\paragraph{Why this is an iPRA theorem scheme.}
+Fix the final precision $N$ before induction.  At stage $r$, use
+\[
+ r<N\ \longrightarrow\
+ \bigl(\operatorname{ValidVec}(b_r)\wedge
+       b_r-a\in F^1\wedge P(b_r)\in F^{r+1}\bigr)
+                                                               \tag{3}
+\]
+as the readable invariant.  Its vector and matrix conditions range only
+over their coded finite lengths.  Booleanization converts (3) to a
+quantifier-free equation.  The program symbols in (L) are obtained by one
+primitive recursion; matrix and polynomial operations are previously fixed
+PR definitions.  The existence proof consequently compiles by
+\texttt{PRA.qfInd}.  For uniqueness, fix $x,y,N$ as parameters and use the
+Booleanization of $k\le N\to x-y\in F^k$, treating the step from
+$k=0$ separately by the known congruence modulo $F^1$.
+The contracts for the ring and
+filtration remain explicit hypotheses or previously supplied iPRA lemmas.
+The argument does not deduce object-theory provability merely from a
+terminating Lean implementation.
+
+\subsection{Coherence without selecting an infinite object}
+
+\begin{corollary}[Transport of the unique lift]
+\label{cor:filtered-coherence}
+Suppose $\rho:B\to C$ is a fixed PR map between two PR-presented
+filtered rings, with supplied iPRA proofs that it is a ring homomorphism,
+sends $F^1B$ into $F^1C$, and sends the polynomial system
+$P$ to $Q$.  Let $b$ be the root produced in $B$.  Suppose a second valid
+lifting instance in $C$ has initial approximation $c$ satisfying
+$\rho(a)-c\in F^1C$.  Then $\rho(b)$ equals its produced root.
+\end{corollary}
+
+\begin{proof}
+Finite polynomial evaluation commutes with the homomorphism, so
+$Q(\rho(b))=\rho(P(b))=0$.  Moreover $\rho(b)-c\in F^1C$.
+The uniqueness part of Theorem~\ref{thm:filtered-lifting}, applied only in
+$C$, identifies this root with the one produced there.  Different lifts
+of the initial approximation or of the inverse matrix therefore give the
+same answer whenever they satisfy their local hypotheses.
+\end{proof}
+
+In a tower of finite quotients, construct the root independently at each
+requested precision.  The corollary proves that truncating one answer gives
+the answer at lower precision.  This produces a coherent family by one
+fixed PR formula.  There is no step of choosing one element from each of
+infinitely many nonempty sets.  Inside iPRA, coherence is an arithmetic
+statement about any two requested numerical precisions.
+
+\subsection{Ordinary jets and simultaneous implicit functions}
+
+Take
+\[
+ B_N=R[T]/(T^N),\qquad
+ F^kB_N=\{f:[T^j]f=0\text{ for every }j<\min(k,N)\},
+                                                               \tag{4}
+\]
+where $R$ is any fixed PR-presented commutative ring.  An element is a
+length-$N$ coefficient list.  Addition is entrywise and multiplication is
+the truncated convolution
+\[
+ [T^n](fg)=\sum_{j=0}^n [T^j]f\,[T^{n-j}]g\quad(n<N).
+\]
+All filtration laws follow by bounded sums.  For the product law, if
+$n<i+j$, every summand has either its first index below $i$ or its second
+index below $j$; that factor is zero.  This is a bounded decidable case
+split.  Truncation is a ring homomorphism.
+
+\begin{corollary}[Finite simultaneous formal implicit functions]
+\label{cor:formal-implicit}
+Let $P(T,Y_1,\ldots,Y_m)$ be a polynomial system over $R$.  Supply
+$a\in R^m$ and $V\in R^{m\times m}$ such that
+\[
+ P(0,a)=0,\qquad VJ_Y P(0,a)=J_Y P(0,a)V=I.
+\]
+For each $N\ge1$, a uniform primitive recursive construction returns the
+unique length-$N$ vector of coefficient lists $Y^{[N]}$ with constant
+coefficient $a$ and
+\[
+ P(T,Y^{[N]})=0\pmod {T^N}.
+\]
+The lists agree under truncation.  The result is valid in arbitrary
+characteristic and uses no division by coefficient indices.
+\end{corollary}
+
+\begin{proof}
+Embed $a,V$ as constant lists and apply Theorem~\ref{thm:filtered-lifting}
+in (4).  The hypotheses become its three membership tests at level one.
+Apply Corollary~\ref{cor:filtered-coherence} to the truncation maps.
+\end{proof}
+
+For a general system $Y=a+T G(T,Y)$, the Jacobian at $T=0$ is the identity.
+Thus the theorem handles mutually recursive algebraic coefficient
+definitions with no inversion input at all.  The single equation
+$Y=1+TY^2$ gives the Catalan recurrence.  The pair
+\[
+ Y=1+TZ^2,\qquad Z=1+TYZ
+\]
+illustrates that simultaneous recursion is treated by the same program
+and proof; no ordering of the unknown functions has to be chosen.
+
+For inversion, if $f(0)=c$ and $vc=1$, take $P(T,Y)=f(T)Y-1$ and
+$a=U=v$.  Put $q=1-vf\in F^1$.  Iteration gives explicitly
+\[
+ Y^{[N]}=v\sum_{j=0}^{N-1}q^j,
+ \qquad fY^{[N]}=(1-q)\sum_{j=0}^{N-1}q^j=1-q^N=1.
+\]
+This proves the usual inverse-series construction from a finite geometric
+identity.  For $P=Y^2-(1+T)$, $a=1$ and $U=1/2$ give the formal square-root
+coefficients over a ring where $2$ has a supplied inverse.  Over a ring
+where it has none, this particular instance does not satisfy the theorem's
+hypotheses; the interface does not hide the obstruction.
+
+These are statements about exact finite jets.  They do not imply an
+analytic convergence radius, a real root, or completeness of all singular
+branches.  The Puiseux packet's ramification and exact coefficient-field
+backend, and its majorant estimates, remain separate mathematics.
+Likewise, this theorem does not reprove the Lagrange coefficient formulas;
+it supplies a common construction and uniqueness layer beneath them.
+
+\subsection{Modular Hensel lifting, including composite bases}
+
+Let $q\ge2$ and
+\[
+ B_N=\mathbb Z/q^N\mathbb Z,\qquad
+ F^kB_N=\{x:q^{\min(k,N)}\mid x\},            \tag{5}
+\]
+using the canonical representative $0\le x<q^N$ in the membership test.
+Changing a representative by a multiple of $q^N$ preserves this test.
+Divisibility, modular operations, powers, and their finite arithmetic
+laws are primitive recursive.  The filtration product law follows by
+multiplying two divisibility witnesses; if $i+j\ge N$, the product
+is zero in $B_N$.
+
+\begin{corollary}[Finite modular lifting]
+\label{cor:modular-hensel}
+Let $P\in\mathbb Z[Y_1,\ldots,Y_m]^m$ and supply an integer vector $a$
+and matrix $U$ satisfying
+\[
+ P(a)\equiv0\pmod q,\qquad
+ J(a)U\equiv UJ(a)\equiv I\pmod q.
+\]
+For each $N\ge1$, the recurrence
+\[
+ b_0=a\bmod q^N,\qquad
+ b_{r+1}=b_r-UP(b_r)\bmod q^N
+\]
+returns after $N-1$ updates the unique root modulo $q^N$ in the residue
+class of $a$ modulo $q$.  These outputs are compatible under reduction.
+No primality assumption on $q$ is required.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:filtered-lifting} in (5), and use the natural
+reduction homomorphism for compatibility.  All inverse information is
+contained in the displayed finite congruence, which can be checked before
+the iteration.  No claim is made that every root modulo $q$ has such a
+Jacobian inverse.
+\end{proof}
+
+For example, take $q=4$, $P(X)=X^3-X-2$, $a=2$, $U=3$, and $N=3$.
+Here $P(2)=4$ and $3P'(2)=33\equiv1\pmod4$.  Modulo $64$ the two
+updates are $2\mapsto54\mapsto22$.  Directly,
+$22^3-22-2=10624=166\cdot64$.  The theorem proves uniqueness among the
+residues congruent to $2$ modulo $4$, not uniqueness among all residues.
+
+\subsection{Hurwitz coefficients and differential equations without division}
+
+There is a second coefficient algebra particularly suitable for integral
+combinatorics.  A length-$N$ Hurwitz list has multiplication
+\[
+ (a\star b)_n=\sum_{j=0}^n\binom nj a_jb_{n-j}\qquad(n<N),       \tag{6}
+\]
+with identity $(1,0,\ldots,0)$.  Binomial coefficients are defined by
+Pascal recursion.  This algebra is valid over any commutative ring and
+does not require factorial denominators.  Commutativity follows from
+$\binom nj=\binom n{n-j}$.  Associativity follows by collecting the terms
+$a_i b_j c_k$ with $i+j+k=n$ and using
+\[
+ \binom n{i+j}\binom{i+j}i
+   =\binom ni\binom{n-i}j.
+\]
+This identity counts the same ordered division of $n$ positions into
+three labeled parts; alternatively it follows by Pascal induction.  Both
+the counting sets and the induction invariants are finite.  The filtration
+by vanishing initial coefficients satisfies exactly the laws used above,
+so Theorem~\ref{thm:filtered-lifting} applies to this algebra too.
+
+Differentiation is the shift $(Da)_n=a_{n+1}$.  Its finite-precision type
+must be respected:
+\[
+ D:\operatorname{Hurwitz}_{N+1}(R)\longrightarrow
+       \operatorname{Hurwitz}_{N}(R).                         \tag{7}
+\]
+It is not an endomorphism of a fixed truncation. Explicitly, with
+$a,b$ of length $N+1$, the typed identity is
+\[
+ D(a\star_{N+1}b)=Da\star_N\pi_N(b)+\pi_N(a)\star_N Db,
+\]
+where $\pi_N$ truncates to length $N$. Pascal's identity gives
+$D(a\star b)=Da\star b+a\star Db$ at every coefficient for which the
+needed input coefficients have been supplied.  Indeed, split
+$\binom{n+1}j$ into $\binom nj+\binom n{j-1}$ and reindex the two finite
+sums.  The demand for one extra coefficient is part of the contract.
+
+\begin{theorem}[Triangular Hurwitz differential systems]
+\label{thm:hurwitz-ode}
+Fix a PR-presented commutative ring $R$, an initial vector $c\in R^m$,
+and a polynomial system $G(T,Y)$ whose coefficient lists are supplied at
+the requested finite precision.  There is a unique coefficient prefix
+through degree $N$ satisfying
+\[
+ Y_0=c,\qquad DY=G(T,Y)\quad\text{through degree }N-1.          \tag{8}
+\]
+The prefix is produced by a PR recurrence, uniformly in $N$, the finite
+polynomial code, and the finite coefficient input.  Compatible input
+prefixes give compatible output prefixes.  No integer division is used.
+\end{theorem}
+
+Here the time variable $T$ is the Hurwitz list $(0,1,0,\ldots)$.
+If the coefficients of $G$ are themselves time-dependent lists, they
+are additional finite inputs, with their prefixes supplied through
+degree $N-1$. Evaluation uses the Hurwitz product throughout. In
+particular $T^{\star r}$ has coefficient $r!$ in position $r$;
+one does not identify it with the ordinary monomial basis in positive
+characteristic.
+
+\begin{proof}
+Assume coefficients $Y_0,\ldots,Y_n$ are already stored.  Form each
+coefficient of the finite expression $G(T,Y)$ through degree $n$, using
+(6) and the stored lists, and set
+\[
+ Y_{n+1}=[G(T,Y)]_n.                                           \tag{9}
+\]
+This expression only reads coefficients through degree $n$: at a product,
+every convolution index is at most $n$, and addition and constants have
+the same property.  Thus (9) is a triangular recurrence, not an implicit
+unbounded search.  A single recursion accumulates the finite vector of
+prefixes.  Each step makes one new instance of (8) true and preserves all
+earlier instances because the earlier coefficients are unchanged.
+
+For uniqueness, suppose another finite prefix satisfies (8).  Its zeroth
+coefficient is $c$.  If its coefficients agree through $n$, finite
+evaluation of $G$ agrees at coefficient $n$, so (9) forces agreement at
+$n+1$.  Bounded-prefix induction proves equality of the whole requested
+prefix.  The same argument proves compatibility upon shortening the
+coefficient input.  The invariants are conjunctions over $j\le n$ and
+$i<m$ of coded ring equalities, so they have quantifier-free Boolean forms.
+\end{proof}
+
+For $Y'=A\star Y$, $Y_0=1$, formula (9) becomes
+\[
+ Y_{n+1}=\sum_{j=0}^n\binom nj A_jY_{n-j}.                      \tag{10}
+\]
+Taking $A_j=1$ gives the Bell recurrence, while $Y'=Y\star Y$, $Y_0=1$,
+gives $Y_n=n!$: every one of the $n+1$ summands
+$\binom nj j!(n-j)!$ equals $n!$.
+The simultaneous system $Y'=Z$, $Z'=-Y$ gives the usual sine and cosine
+coefficient patterns from their initial values without dividing by any
+factorial.
+
+Over a ring containing the rationals, the map
+$a\mapsto\sum a_n T^n/n!$ identifies (6) with ordinary multiplication
+of exponential generating functions.  Over $\mathbb Z$ or a ring of
+positive characteristic, that notation is only a motivation; the
+division-free algebra (6) is the definition.  Analytic convergence and
+tail estimates are additional contracts.  This recovers the finite
+recurrence layer of the Bell packet and generalizes it to arbitrary
+polynomial differential systems, without claiming its analytic asymptotic
+results anew.
+
+\subsection{Lean definitions and completion obligations}
+
+The finite data layer should define the following objects before invoking
+any host-language theorem about rings:
+\begin{enumerate}
+\item \texttt{RingCode}: numerical validity and equality tests; codes for
+zero, one, addition, negation and multiplication; explicit PR syntax for
+each of these fixed operations.
+\item \texttt{FilteredCode}: a precision parameter, the Boolean predicate
+\texttt{member k x}, and the supplied object-iPRA derivations of the
+filtration laws above.  \texttt{VecMember} and \texttt{MatMember} are
+bounded Boolean conjunctions.
+\item \texttt{PolyCode}: a list of coefficient/exponent-vector pairs;
+\texttt{eval}, \texttt{partial}, \texttt{jacobian},
+\texttt{matVec}, and \texttt{matMul} are explicit PR folds.  A
+\texttt{GoodPoly} predicate checks every arity and carrier condition.
+\item \texttt{liftState P U a r}: the recursion (L), with a default value
+on malformed input; \texttt{LiftHyp} is the bounded conjunction (H).
+\item \texttt{JetCode N} and \texttt{ModCode q N}: the concrete
+implementations (4) and (5), each with proofs of the abstract interface.
+\texttt{HurwitzCode N} replaces ordinary convolution by (6).
+\end{enumerate}
+
+The main mathematical targets are the following explicit propositions,
+with all variables understood as numerical codes:
+\begin{align*}
+ &\operatorname{LiftHyp}(N,P,U,a)\ \longrightarrow\
+   \operatorname{Eval}(P,\operatorname{liftState}(P,U,a,N-1))=0,\\
+ &\operatorname{LiftHyp}(N,P,U,a)\wedge P(x)=0\wedge x-a\in F^1
+      \ \longrightarrow\
+   x=\operatorname{liftState}(P,U,a,N-1).
+\end{align*}
+Their deep endpoints are terms of
+\texttt{Prf PRAAx [] (allClose LiftExistence)} and
+\texttt{Prf PRAAx [] (allClose LiftUniqueness)}, after the supplied
+presentation laws have been discharged or retained explicitly as premises.
+They are not statements that an arbitrary host ring can be automatically
+turned into an arithmetic presentation.
+
+The required intermediate lemmas are, in order: finite sum and matrix
+filtration closure; the uniform finite Taylor expansion in
+Lemma~\ref{lem:filtered-taylor}; residual precision improvement (1);
+the Boolean invariant (3); difference improvement (2); homomorphism
+commutation with finite evaluation; and the two concrete implementations.
+For Hurwitz equations add Pascal's identity, the triple-binomial identity,
+coefficient causality for \texttt{eval}, and the bounded-prefix invariant
+for (9).  Each item has its numerical definition and its exact induction
+formula specified above.  The general theorem and these implementations
+are supplied here as human proofs and a detailed formalization plan;
+they are not reported as already compiled deep iPRA derivations.

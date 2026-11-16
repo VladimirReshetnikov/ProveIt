@@ -1,0 +1,413 @@
+\section{Weighted polynomial norms: an arithmetic zero-count engine}
+\label{sec:weighted-norm}
+
+The previous framework packet proves a sharp zero count for equations
+$Y^2=f(X)$ with $\deg f$ odd \cite{repoEmbedding}. The construction below extends that
+mechanism to an entire class of plane curves, including equations with
+mixed $X,Y$ terms.  It also gives an exact dimension formula for a family
+of finite spaces of functions.  The arguments require only polynomial
+arithmetic, determinants, exact rational comparisons, and induction on
+bounded lists.  They use neither a divisor theorem nor a choice of
+algebraic branches.
+
+\subsection{Input data and the exact norm degree}
+
+Fix coprime positive integers $m,d$ with $m\geq2$, and a nonzero rational
+$c$.  Give $X$ weight $m$ and $Y$ weight $d$.  Consider
+\begin{equation}\label{eq:weighted-curve}
+ F(X,Y)=Y^m-cX^d+
+       \sum_{mi+dj<md} f_{ij}X^iY^j,
+ \qquad f_{ij}\in\mathbb Q.
+\end{equation}
+The sum is a finite coefficient table; missing coefficients mean zero.
+All its $Y$ exponents are less than $m$.  Consequently $F$ is monic of
+$Y$ degree $m$ and the quotient
+\[
+ \mathcal A=\mathbb Q[X,Y]/(F)
+\]
+is a free $\mathbb Q[X]$ module with the explicit basis
+$1,Y,\ldots,Y^{m-1}$.  Here freeness is proved directly by division by a
+monic polynomial: subtract the leading multiple of $F$ until the $Y$
+degree is below $m$; a nonzero multiple of the monic $F$ cannot itself
+have $Y$ degree below $m$.
+
+A reduced polynomial is an expression
+\[
+ G(X,Y)=\sum_{j<m} A_j(X)Y^j.
+\]
+Suppose $G\ne0$ and let
+\begin{equation}\label{eq:weighted-size}
+ W(G)=\max\{mi+dj:[X^iY^j]G\ne0\}.
+\end{equation}
+Write $M_G(X)$ for the $m$ by $m$ matrix of multiplication by $G$ on
+$\mathcal A$ in the displayed basis, and put
+\[
+ N_G(X)=\det M_G(X).
+\]
+These are explicit polynomials.  To compute column $j$, reduce $GY^j$
+by the equation $Y^m=cX^d-\sum f_{ij}X^iY^j$.  Its starting $Y$ degree
+is at most $2m-2$; each reduction lowers the largest remaining $Y$
+exponent.  The determinant can be defined by its finite permutation sum.
+This definition is useful even when a faster elimination algorithm is
+used by an implementation.
+
+\begin{theorem}[Exact weighted norm degree]\label{thm:weighted-norm-degree}
+There is a unique monomial $aX^kY^j$ of $G$ of maximum weight, with
+$a\ne0$ and $0\le j<m$.  Its norm satisfies
+\[
+ \deg N_G=W(G)=mk+dj,
+ \qquad
+ \operatorname{lc}(N_G)
+   =a^m\bigl((-1)^{m-1}c\bigr)^j\ne0.
+\]
+In particular the matrix determinant is nonzero, including when the curve
+has singular affine points.
+\end{theorem}
+
+\begin{proof}
+If $mi+dj=mi'+dj'$ with $0\le j,j'<m$, then $m$ divides
+$d(j-j')$.  Coprimality implies that $m$ divides $j-j'$, and its absolute
+value is less than $m$.  Thus $j=j'$ and $i=i'$.  Distinct reduced
+monomials therefore have distinct weights.  This proves the uniqueness
+of the maximum.
+
+The leading determinant can be calculated without guessing which of its
+summands cancel.  Introduce an indeterminate $t$ and define
+\begin{align*}
+ F_t(Z)&=t^{md}F(t^{-m},t^{-d}Z),\\
+ G_t(Z)&=t^{W(G)}G(t^{-m},t^{-d}Z).
+\end{align*}
+The weight inequalities show that both expressions lie in
+$\mathbb Q[t,Z]$: a monomial of weight $v$ is multiplied by
+$t^{md-v}$ or by $t^{W(G)-v}$.  Moreover $F_t$ is monic of degree $m$
+in $Z$, and specialization at $t=0$ gives
+\[
+ F_0(Z)=Z^m-c,\qquad G_0(Z)=aZ^j.
+\]
+Let $D(t)$ be the determinant of multiplication by $G_t$ on
+$\mathbb Q[t,Z]/(F_t)$ in its monic-remainder basis.  This is a polynomial
+in $t$.  Over the Laurent polynomial ring, the change of basis
+$Y=t^{-d}Z$ is invertible, so conjugating the multiplication matrices and
+factoring the scalar $t^{-W(G)}$ out of their $m$ columns gives
+\begin{equation}\label{eq:weighted-rescaling}
+ D(t)=t^{mW(G)}N_G(t^{-m}).
+\end{equation}
+This identity can alternatively be verified directly on the $m$ basis
+vectors; no semantic assertion about a field of algebraic functions is
+needed.
+
+At $t=0$, multiplication by $Z$ in
+$\mathbb Q[Z]/(Z^m-c)$ has the cyclic companion matrix whose determinant
+is $(-1)^{m-1}c$.  Multiplication by $aZ^j$ is $a$ times the $j$th power
+of that matrix.  Determinant multiplicativity therefore yields
+\[
+ D(0)=a^m\bigl((-1)^{m-1}c\bigr)^j\ne0.
+\]
+Write $N_G(X)=\sum_{v=0}^{q}n_vX^v$ with $n_q\ne0$, if the
+polynomial is nonzero.  Equation~\eqref{eq:weighted-rescaling} first
+shows that it cannot be zero.  Its right side has terms
+$n_vt^{m(W(G)-v)}$.  Distinct $v$ have distinct exponents.  Since the
+left side has no negative powers, $q\le W(G)$.  Since its constant
+coefficient is nonzero, $q=W(G)$, and that coefficient is the displayed
+leading coefficient of $N_G$.  This proves all assertions.
+\end{proof}
+
+\paragraph{An immediate algebraic benefit.}
+The quotient $\mathcal A$ has no zero divisors.  Indeed, for a nonzero
+reduced $G$, the adjugate identity says
+$\operatorname{adj}(M_G)M_G=N_G I$.  If $GH=0$, it follows that every
+coefficient of the reduced $H$ is annihilated by the nonzero polynomial
+$N_G$.  Rational polynomial arithmetic has no zero divisors, so $H=0$.
+Thus an exact function-field interface can be built from pairs of
+reduced polynomials with a nonzero denominator.  Equality is tested by
+reducing cross products, and operations are finite polynomial
+computations.  This observation supplies an algebraic interface; it does
+not claim a general implementation of divisors or Riemann--Roch spaces.
+
+\subsection{Counting points with repeated first coordinates}
+
+A determinant root bound by itself counts distinct $X$ coordinates, not
+points.  The following argument records the necessary multiplicities.
+
+\begin{lemma}[A fiber contributes its full cardinality]\label{lem:weighted-fiber}
+Fix $u\in\mathbb Q$.  If the distinct rationals
+$v_1,\ldots,v_r$ satisfy
+\[
+ F(u,v_i)=G(u,v_i)=0\qquad(1\le i\le r),
+\]
+then $(X-u)^r$ divides $N_G(X)$.
+\end{lemma}
+
+\begin{proof}
+The polynomial $F(u,Y)$ is monic of degree $m$, so the elementary
+polynomial root bound gives $r\le m$.  Define row vectors
+\[
+ e(v_i)=(1,v_i,\ldots,v_i^{m-1}).
+\]
+Evaluation is compatible with reduction modulo $F(u,Y)$, because
+$F(u,v_i)=0$.  Applying the evaluation row to each column of the
+multiplication matrix therefore gives
+\[
+ e(v_i)M_G(u)=G(u,v_i)e(v_i)=0.
+\]
+Form an $m$ by $m$ rational matrix $U$ whose first $r$ rows are these
+vectors and whose remaining rows are the standard basis rows with
+indices $r,r+1,\ldots,m-1$.  Its determinant is the determinant of the
+first $r$ columns of its first $r$ rows, namely
+\[
+ \det U=\prod_{1\le i<j\le r}(v_j-v_i)\ne0.
+\]
+The empty product is one.  Thus no unspecified basis extension is used.
+
+The first $r$ rows of $UM_G(X)$ vanish at $X=u$.  The factor theorem
+makes every entry of those rows divisible by $X-u$.  Factoring this
+factor from each of the $r$ rows shows that $(X-u)^r$ divides
+$\det(UM_G)=(\det U)N_G$.  Since $\det U$ is a nonzero rational,
+it is invertible, and the same divisibility holds for $N_G$.
+\end{proof}
+
+\begin{theorem}[Sharp arithmetic zero count]\label{thm:weighted-zero-count}
+Every finite list of pairwise distinct rational points satisfying
+$F(x,y)=G(x,y)=0$ has length at most $W(G)$.
+\end{theorem}
+
+\begin{proof}
+Sort the given finite list by its rational first coordinate, and let
+$u_1,\ldots,u_s$ be the distinct first coordinates, with fiber sizes
+$r_1,\ldots,r_s$.  Inside each fiber the second coordinates are distinct,
+because the points are distinct.  Lemma~\ref{lem:weighted-fiber} gives
+$(X-u_i)^{r_i}\mid N_G$ for every $i$.
+
+The powers belonging to different $u_i$ are coprime.  For completeness,
+this can be checked without factoring a general polynomial.  If
+$P=(X-u)^r Q$ and $(X-v)^s\mid P$ with $u\ne v$, write the identity
+in powers of $T=X-v$.  The first factor has the nonzero constant
+coefficient $(v-u)^r$.  If the first $s$ coefficients of $P(v+T)$
+vanish, the constant coefficient equation first forces $Q(v)=0$;
+the coefficient equation at $T^k$ then forces the $k$th coefficient
+of $Q(v+T)$ to vanish once the earlier ones vanish.  Induction on
+$k<s$ proves $(X-v)^s\mid Q$.  Repeating this removal for the finite
+list of fibers proves
+\[
+ \prod_{i=1}^s(X-u_i)^{r_i}\mid N_G.
+\]
+The product has degree $\sum_i r_i$, the length of the input list.
+Theorem~\ref{thm:weighted-norm-degree} says that the nonzero polynomial
+$N_G$ has degree $W(G)$, so $\sum_i r_i\le W(G)$.
+\end{proof}
+
+The proof handles ramification and singular fibers automatically.  It does
+not assume that $F(u,Y)$ has $m$ distinct roots, that it splits over the
+rationals, or that the roots can be selected continuously.
+
+\subsection{Finite spaces and an elementary dimension formula}
+
+For a numerical budget $L\ge0$ define the explicit monomial list
+\[
+ \mathcal B_L=\{X^iY^j:0\le j<m,\ i\ge0,\ mi+dj\le L\}.
+\]
+Every entry has $i\le L$ and $j<m$, so a rectangular bounded scan
+constructs it.  Its elements are linearly independent in $\mathcal A$
+by the monic-remainder uniqueness proved above.  Hence the dimension of
+their span equals the directly computable integer
+\begin{equation}\label{eq:weighted-dimension}
+ n(L)=\sum_{j=0}^{m-1}
+       \max\left(0,1+\left\lfloor\frac{L-dj}{m}\right\rfloor\right).
+\end{equation}
+In this displayed formula the floor is the signed integer floor.  A
+natural-number program uses the equivalent branch: contribute zero if
+$L<dj$, and otherwise contribute $1+\lfloor(L-dj)/m\rfloor$.
+
+\begin{proposition}[Exact eventual dimension]\label{prop:weighted-dimension}
+Put $g_0=(m-1)(d-1)/2$.  This is an integer.  For every
+$L\ge\max(0,md-m-d)$,
+\[
+ n(L)=L+1-g_0.
+\]
+\end{proposition}
+
+\begin{proof}
+Since $m,d$ are coprime, they cannot both be even, so
+$(m-1)(d-1)$ is even.  Under the stated lower bound on $L$,
+$L-dj\ge -m$ for all $j<m$.  Therefore each summand
+$1+\lfloor(L-dj)/m\rfloor$ is nonnegative and the maximum with zero
+can be removed.
+
+The residues $r_j$ of $L-dj$ modulo $m$ are a permutation of
+$0,1,\ldots,m-1$, by coprimality.  Write
+$L-dj=mq_j+r_j$, $0\le r_j<m$.  Summing these $m$ equations gives
+\[
+ m\sum_{j<m}q_j
+   =mL-\frac{dm(m-1)}2-\frac{m(m-1)}2.
+\]
+Adding $m$ to $\sum_jq_j$ proves the claimed formula.
+Every calculation is an identity of finite sums; no geometric dimension
+or genus theorem is invoked.
+\end{proof}
+
+The number $g_0$ agrees with familiar geometric formulas in suitable
+smooth cases, but no identification with the genus is needed here.  The
+proposition proves exactly the numerical dimension assertion stated.
+
+For a rational point $P=(x,y)$ of the curve, let
+$\Phi_L(P)$ be the vector of the values of the monomials in
+$\mathcal B_L$, in the scan order.  Because $1\in\mathcal B_L$,
+this vector is nonzero.
+
+\begin{corollary}[Uniform bound over a proper subspace]\label{cor:weighted-subspace}
+Let $V$ be a proper rational linear subspace of
+$\mathbb Q^{n(L)}$, specified by a finite rational basis or matrix.
+Any finite list of distinct curve points whose evaluation vectors lie
+in $V$ has length at most $L$.
+\end{corollary}
+
+\begin{proof}
+Exact Gaussian elimination produces a nonzero rational row vector
+$\lambda$ annihilating $V$: reduce the finite system of linear
+equations for the annihilator, choose a free variable, set it to one,
+and solve backwards with witnessed nonzero pivots.  Properness means
+that a free variable exists.  Define
+\[
+ G_\lambda(X,Y)=\sum_{b\in\mathcal B_L}\lambda_b b(X,Y).
+\]
+It is a nonzero reduced polynomial, because the monomials are distinct
+and $\lambda\ne0$, and it has weight at most $L$.  All the given points
+are zeros of $G_\lambda$.  Apply
+Theorem~\ref{thm:weighted-zero-count}.
+\end{proof}
+
+\begin{corollary}[The remaining approximation contract is isolated]\label{cor:weighted-cover}
+Let $S$ be a decidable class of points on the curve.  Suppose every
+finite list of distinct points in $S$ has its $\Phi_L$ vectors covered
+by at most $M$ supplied proper rational subspaces.  Then every such list
+has length at most $ML$.
+\end{corollary}
+
+\begin{proof}
+For each point scan the finite list of subspaces and assign it to the
+first one containing its vector.  Subspace membership is decidable by
+finite exact elimination, and the assumed cover proves that the scan
+succeeds.  The points assigned to one subspace form a distinct sublist,
+so the preceding corollary bounds that sublist by $L$.  The original
+length is the sum of at most $M$ such lengths, hence at most $ML$.
+\end{proof}
+
+This resolves the zero-count side of a finite-cover argument for every
+curve of the displayed weighted form.  Producing or proving the stated
+approximation cover is a separate dependency.  Neither the norm theorem
+nor the dimension formula produces that cover.  The conclusion is a
+cardinality bound on arbitrary supplied lists, not a height bound or a
+complete enumeration of all points.
+
+\subsection{Examples and sharpness}
+
+Take $m=3$, $d=4$ and
+\[
+ F(X,Y)=Y^3-X(X-1)(X-2)(X-3).
+\]
+All terms other than $Y^3-X^4$ have weight below $12$.  For $G=Y$,
+$W(G)=4$ and
+\[
+ N_G(X)=X(X-1)(X-2)(X-3).
+\]
+The four points $(0,0),(1,0),(2,0),(3,0)$ are distinct common zeros.
+Thus the zero-count bound is attained.  Here
+$\mathcal B_4=(1,X,Y)$ in a suitable order, and the proper subspace
+with last coordinate zero has exactly four points in its inverse image.
+
+The same method includes mixed equations such as
+\[
+ Y^3=X^4+XY+X+1.
+\]
+The mixed monomial $XY$ has weight $7<12$.  Every nonzero linear form
+$\alpha+\beta X+\gamma Y$ has at most four rational zeros on this
+curve, and every nonzero combination of
+$1,X,Y,X^2,XY,Y^2$ has at most eight.  These assertions follow from the
+weight bounds, with no test of smoothness and no root isolation.
+For $m=3,d=4$ the dimension formula gives $n(L)=L-2$ for $L\ge5$;
+for example $\mathcal B_8$ has six elements.
+
+\subsection{A broader finite certificate when coprimality fails}
+
+The rescaling argument has a useful form that does not assume
+$\gcd(m,d)=1$.  Allow any monic $F$ of $Y$ degree $m$ whose monomials
+have weight at most $md$, and any reduced nonzero $G$ of maximum
+weight $W$.  Form $F_t,G_t$ by the same formulas, and compute
+\[
+ C(F,G)=\det\left(\text{multiplication by }G_0
+                 \text{ on }\mathbb Q[Z]/(F_0)\right).
+\]
+Here $F_0$ is still monic of degree $m$.  If the exact rational test
+$C(F,G)\ne0$ succeeds, the identical proof gives
+\[
+ \deg N_G=W,\qquad
+ \#\{\text{distinct supplied common zeros}\}\le W.
+\]
+Thus coprimality is a simple sufficient condition making this test
+succeed for every nonzero reduced $G$ in our principal family.  For
+more general weighted curves the finite initial determinant is a usable
+certificate on individual linear forms.  Failure of the test means only
+that this leading-degree certificate did not apply; it does not decide
+the number of zeros or the irreducibility of the original curve.
+
+\subsection{The iPRA translation and a Lean development path}
+
+The theorem is uniform in finite rational coefficient tables and in the
+natural numbers $m,d,L$.  It must not be represented by a hypothetical
+universal evaluator for arbitrary primitive recursive programs.  Instead
+fix the finitely many algorithms below and represent each by its own
+primitive recursive definition.
+
+\begin{enumerate}
+\item Encode signed integers, normalized fractions, coefficient lists,
+matrices and point lists.  Implement rational comparison and equality by
+cross multiplication with positive denominators.  Prove the totalized
+operations correct on the decidable valid-code predicate.
+\item Define rational polynomial addition, multiplication, coefficient
+lookup, degree, evaluation, monic division in $Y$, and the finite
+permutation determinant.  Prove their coefficient identities with
+bounded folds.  A determinant specialization lemma and determinant
+multiplicativity are explicit finite identities, not imported reflection
+principles.
+\item Construct $M_G$ column by column.  Prove the basis evaluation
+identity $e(v)M_G(u)=G(u,v)e(v)$ from the monic-remainder identity,
+under the two numerical polynomial-evaluation hypotheses.
+\item Formalize the weight uniqueness lemma, the nonnegative exponent
+checks for $F_t,G_t$, and the diagonal change-of-basis identity.  Negative
+powers can be encoded as a finite Laurent coefficient table with a signed
+starting exponent.  Alternatively multiply the identity by a computed
+power of $t$ and work exclusively with ordinary polynomial coefficients.
+\item Prove the explicit cyclic-matrix determinant, obtaining the nonzero
+constant term.  Compare coefficients in the rescaling identity to derive
+the norm degree and leading coefficient.
+\item Prove the Vandermonde determinant and the fiber-divisibility lemma
+using the explicit matrix $U$.  Prove the successive factor-removal
+lemma by the triangular coefficient argument.  Apply it to the sorted
+input point list to obtain the zero-count inequality.
+\item Prove the finite count of monomials and the residue-permutation
+identity.  Define a matrix presentation of a proper subspace, implement
+rational row elimination with at most the matrix dimensions many pivot
+steps, and build the annihilating row.  This gives the subspace and
+finite-cover corollaries.
+\end{enumerate}
+
+For the object-language proof, every loop invariant can be expressed as
+a Boolean equation about a bounded prefix: coefficient identities,
+nonzero pivots, the residual factorization, and the current degree bound.
+Parameters such as a point, a coefficient table or an input list remain
+free during the induction.  Universal quantification over those
+parameters is introduced afterwards.  No induction over an unbounded
+statement about all points or all polynomials is required.
+
+The accompanying \path{WeightedNormTargets.lean} defines exact rational
+tables and states the propositions \path{NormDegreeGoal},
+\path{FiberPowerGoal}, \path{CommonZerosGoal},
+\path{WeightedBasisCountGoal}, and \path{EventualDimensionGoal}.
+The proper-subspace corollary additionally uses the finite row-elimination
+construction specified above. An ambient Lean proof of these
+statements verifies their mathematical algebra.  To establish their
+asserted iPRA derivability, the coefficient and loop proofs still have
+to be translated into the repository's embedded proof judgment, and
+then transported through its checked theory translation.  This section
+specifies that route and gives the human proof; it does not assert that
+those embedded derivation objects have already been constructed.

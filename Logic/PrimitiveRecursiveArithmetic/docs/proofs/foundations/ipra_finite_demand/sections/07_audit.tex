@@ -1,0 +1,128 @@
+\section{Repository comparison, validation, and remaining difficulties}
+\label{sec:audit}
+
+\subsection{The inspected snapshot}
+
+The source baseline is ProveIt commit
+\texttt{052fbaebfc955294b4c02f6532ab7e7a3f760f7a}, retrieved on
+15 November 2026 in the user's Pacific-time date convention. The
+collection index lists 54 delivered packets and expressly says that
+their filing did not rerun, compile, or independently check them
+\cite{repo-index}. Our review was targeted. A catalog of packet
+descriptions is not an audit of every proof in every packet.
+
+The archive records the selected source paths, pinned URLs, byte sizes,
+Git blob identities, and SHA-256 hashes in
+\path{provenance/source_manifest.json}. The original FTA article is
+included unchanged under \path{dependencies/FTA_iPRA/}; it is the
+only substantial inherited existence proof used by the new root
+producer. Hash agreement identifies a source; it does not certify its
+mathematical correctness.
+
+\clearpage
+\subsection{What this adds to the existing reports}
+
+\begin{longtable}{@{}p{0.25\textwidth}p{0.34\textwidth}p{0.34\textwidth}@{}}
+\toprule
+Earlier result or difficulty & Contribution here & Remaining boundary\\
+\midrule
+\endhead
+Finite contracts and guarded induction; one backwards field-tower
+budget in the Platonic-solids packet. & A general nonmonotone backward
+transfer rule and a two-recursion compiler for predetermined changing
+parameters; scheduling theorems checked in Lean. & A PR demand and
+local object derivations must still be supplied.\\[4pt]
+Singular Puiseux coefficients cannot be selected uniformly from arbitrary
+coefficient names; regular charts already have a derivative-gap method.
+& A uniform monic root-support name with explicit coefficient and
+Hausdorff budgets, valid through collisions. & No singular Puiseux
+coefficient constructor, global branch labels, or multiplicity-matching
+theorem.\\[4pt]
+Finite observations do not automatically identify one coherent exact
+witness. & An explicit aggregate calculus, a least-neighbor point-name
+constructor, and approximate optimization over the represented support.
+& Point selection is not claimed extensional; approximate minimizers
+need not form one exact minimizing name.\\[4pt]
+The Siegel route needs a zero-count proof for functions in a finite
+evaluation space; the earlier framework handles odd hyperelliptic degree.
+& A norm constructor for general monic plane equations, and automatic
+sharp degree and zero bounds for every coprime superelliptic pair
+$(m,\deg f)$. & The approximation cover, lifting data, and global height
+bound are separate mathematical obligations.\\[4pt]
+General Mordell--Weil needs actual rational quotient representatives;
+Faltings and Roth reports distinguish finite counts from effective
+cutoffs. & The framework specifies which finite outputs can be composed
+and what the new geometric count supplies. & None of those missing
+global producers or cutoffs is obtained here.\\
+\bottomrule
+\end{longtable}
+
+This comparison makes no mathematical priority claim. Backward budgeting,
+completed finite sets, synthetic division, norms, and Vandermonde
+determinants are established ideas. The advances relative to this
+snapshot are the proved interfaces, explicit PR constructions and
+budgets, checked scheduling core, and the broader automatically certified
+zero-count family. In particular, the new norm theorem treats coprime
+degrees; the preceding power-gap theorem treats a different degree
+regime and gives a height conclusion. They are complementary results.
+
+\subsection{What was actually checked}
+
+All five new Lean modules were compiled with Lean 4.32.0. The build
+script records the compiler version, return codes, output, source hashes,
+and printed axiom dependencies. The distinction between proved native
+lemmas and named unproved targets is recorded in
+\texttt{proof\_status.json}. No compilation result is presented as a
+completed embedded derivation of the main mathematical applications.
+
+The reference programs use integer arithmetic and
+\texttt{fractions.Fraction}. The root program checks 12 finite
+approximate factorizations, 24 perturbation pairs, six collision cases,
+and two rejected invalid hypothesis sets. Its generic finite grid
+fallback is specified, but the tests use certified elementary shortcuts
+to avoid its enormous worst-case runtime. This validates finite
+implementation behavior, not the full descent theorem.
+
+The norm program checks 57 exact degree and leading-coefficient cases,
+57 independently constructed companion matrices, 171 independent
+determinant evaluations, 12 hyperelliptic specializations, 42
+evaluation-row identities, three multiplicity or ramification cases,
+the sharp four-point example, and a failed-coprimality example. The
+determinants are checked against rational Gaussian elimination,
+providing an independent arithmetic computation rather than simply
+calling the same determinant routine twice.
+
+The additional aggregate and scheduling reference program checks finite
+cover composition, nearest-neighbor chains, nonlinear iteration budgets,
+and predetermined parameter-changing recursions. Exact counts and the
+reproduction commands are in the validation records. These checks are
+useful for finding coding and constant errors; the universal theorems
+rest on the written arguments and, where stated, the native Lean proofs.
+
+The PDF was compiled from the delivered sources, its pages were rendered
+and visually checked, and the final log was inspected for unresolved
+references and layout warnings. Build scripts, code, machine-readable
+status, and validation output are included so the result can be
+reviewed and extended inside ProveIt.
+
+\subsection{The next mathematical tasks}
+
+The most direct formalization step is the object-level bounded-formula
+and guarded-induction compiler. It would serve all three applications
+and many existing packets. The deepest analytic dependency in this
+package is the rational descent proof; formalizing it would turn the
+root-support construction into a reusable deeply embedded theorem.
+The determinant and weighted-degree argument is a separate finite
+algebra project with no analytic dependency.
+
+For the larger Diophantine program, the new subspace-fiber count now
+supplies the geometric bound for the stated superelliptic evaluation
+spaces. The finite-tuple approximation cover remains the next genuinely
+new arithmetic ingredient. A cardinality bound obtained after that step
+would still have a different logical form from a positive coordinate
+height bound. For general rational-group generators, an actual
+quotient-covering list remains the missing input identified in the
+Mordell--Weil packet \cite{repo-mordell}. The unresolved positive
+height targets in the Faltings packet remain unresolved
+\cite{repo-faltings}; this report draws no independence or unprovability
+conclusion from that fact.
