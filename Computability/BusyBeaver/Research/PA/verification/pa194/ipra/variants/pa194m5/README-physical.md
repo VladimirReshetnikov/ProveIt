@@ -16,7 +16,8 @@ bounds, and verifies that halt occurs only at site 10.
 
 The [controller theorem](PA194M5Controller.lean) compares literal
 halting with reachability of site 10 in the [M5 source](README.md) at
-model-valued clocks. It takes the finite site certificate as a premise.
+model-valued clocks. The [final literal theorem](PA194M5PhysicalFinal.lean)
+applies the certificate for all 3,734 sites to discharge that premise.
 Relating the radix-five source to PA consistency requires the separate
 arithmetic calibration of its command interpreter.
 
@@ -28,4 +29,5 @@ variants=Computability/BusyBeaver/Research/PA/verification/pa194/ipra/variants
 literal=/dev/shm/pa194m5-literal
 bash "$variants/pa194m5/check-physical.sh" /dev/shm/pa194m5-source /dev/shm/pa1944l-model "$literal"
 bash "$variants/check-linear-coverage.sh" PA194M5 "$literal" /dev/shm/pa194m5-coverage
+bash "$variants/check-controller-final.sh" PA194M5 "$literal" /dev/shm/pa194m5-coverage /dev/shm/pa194m5-final
 ```
