@@ -122,8 +122,9 @@ proved for the full source theory. Of the twelve fixed facts,
 [equality reflexivity and successor existence](pa194-work/pa194-model-axioms/SOURCE-FIXED-FACTS.md),
 [domain-zero existence](pa194-work/pa194-model-axioms/SOURCE-Z1.md),
 [isomorphism of zero representatives](pa194-work/pa194-model-axioms/SOURCE-Z2.md),
-[guarded isomorphism symmetry](pa194-work/pa194-model-axioms/SOURCE-IS.md), and
-[guarded isomorphism transitivity](pa194-work/pa194-model-axioms/SOURCE-IT.md)
+[guarded isomorphism symmetry](pa194-work/pa194-model-axioms/SOURCE-IS.md),
+[guarded isomorphism transitivity](pa194-work/pa194-model-axioms/SOURCE-IT.md),
+and [successor compatibility](pa194-work/pa194-model-axioms/SOURCE-S2.md)
 are proved in the covered models; the remaining facts are open.
 A [successor-value transport](pa194-work/pa194-model-axioms/SUCC-VALUE-FULL-SOURCE.md)
 is proved in the covered models, including for nonstandard term codes. The
