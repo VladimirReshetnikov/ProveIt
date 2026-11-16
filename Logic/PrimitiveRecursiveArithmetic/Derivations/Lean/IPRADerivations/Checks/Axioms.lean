@@ -48,3 +48,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.QuantitativeIdentities.zeta_zeros_cosine
 #print axioms LeanProofs.IPRA.Foundations.QuantitativeIdentities.circle_parametrisation
 #print axioms LeanProofs.IPRA.Geometry.Morley.trisector_identity
+#print axioms LeanProofs.IPRA.Sums.gauss
+#print axioms LeanProofs.IPRA.Sums.odd_sum
+#print axioms LeanProofs.IPRA.Sums.telescope
+#print axioms LeanProofs.IPRA.Sums.abel_summation

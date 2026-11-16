@@ -4,6 +4,8 @@ import IPRADerivations.Core.Quotient
 import IPRADerivations.Core.Integers
 import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.LinearAlgebra
+import IPRADerivations.Core.Definitions
+import IPRADerivations.Core.Sums
 import IPRADerivations.Algebra.CayleyHamilton
 import IPRADerivations.Algebra.PolynomialFormulas
 import IPRADerivations.DiophantineNumberTheory.Identities
