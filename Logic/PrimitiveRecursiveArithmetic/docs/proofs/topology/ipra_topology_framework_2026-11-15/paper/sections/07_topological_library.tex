@@ -1,0 +1,139 @@
+
+\section{A topology library built from finite certificates}
+\label{sec:library}
+
+This section lists the principal topological notions and gives an \ipra-compatible formulation.  The goal is not to force all topology into one definition, but to expose exactly which finite observations and positive certificates each theorem uses.
+
+\subsection{Open information and continuity}
+
+At scale $k$, a basic open is a vertex of $K_k$.  A finite union is a bitset.  Membership of a presented point is positive when its observation simplex meets the bitset in a certified way.  Arbitrary subsets of points are not internal objects.
+
+A continuous map is represented by a modulus and carriers as in \cref{sec:towers}.  This formulation has three advantages:
+\begin{enumerate}
+  \item it is pointfree at the finite level;
+  \item it permits multiple valid target cells at boundaries;
+  \item composition is finite relational composition.
+\end{enumerate}
+
+For metric presentations, the familiar evaluator/modulus formulation induces the carrier formulation.  Conversely, if the tower is spatially complete and has a shrinking mesh, a coherent carrier map determines the usual continuous action on regular point names.  That converse is a semantic theorem about the chosen presentation, not a generic fact of first-order arithmetic.
+
+\subsection{Compactness}
+
+Abstract compactness says every open cover has a finite subcover.  Quantifying over arbitrary open covers is higher-type and often nonconstructive.  The usable data are instead:
+
+\begin{definition}[Finite compactness contract]
+A compactness contract supplies a primitive-recursive net $N(k)$, a finite cover $\mathcal U_k$, and a verifier proving that every represented point is observed in at least one member, with mesh or Lebesgue data sufficient for the intended theorem.
+\end{definition}
+
+If an application receives a finite candidate cover by basic opens, coverage reduces to a bounded statement about the net plus a supplied uniform-continuity or inclusion margin.  Bounded search extracts a subcover when the list is redundant.  The contract does not turn an arbitrary infinite enumeration of opens into a finite subcover without a bar, modulus, or stopping bound.
+
+\subsection{Separation and apartness}
+
+A Hausdorff-style effective presentation supplies a separation procedure:
+\[
+  \operatorname{Apart}(x,y,s)=1
+  \Longrightarrow
+  \text{disjoint basic neighborhoods of scale }s.
+\]
+For regular fast metric names, a witnessed lower distance bound provides this procedure.  Negated name equality alone does not.
+
+At the tower level, two observation clouds are apart at scale $k$ when no simplex contains a vertex from each cloud, or when an explicit disjointness certificate is supplied.  Separation propagates under refinement by a bounded proof.
+
+\subsection{Connectedness and paths}
+
+There are several constructive strengths.
+
+\begin{definition}[Finite chain connection]
+Two vertices of $K_k$ are chain connected when they lie in the same component of the $1$-skeleton.  A certificate is a finite vertex path whose consecutive pairs are edges.
+\end{definition}
+
+A presented space is \emph{uniformly chain connected} when a fixed primitive-recursive procedure produces such paths between observation clouds at every requested scale.  This positive statement is stronger and more computational than merely denying a separation into two opens.
+
+A represented path is a tower map from an interval tower.  Polygonal paths with rational vertices are especially convenient: evaluation, subdivision, and clearance tests are primitive recursive.  Homotopies are tower maps from a product with an interval tower.
+
+\subsection{Products}
+
+Given covers $\mathcal U_k$ and $\mathcal V_k$, use the product cover $U_i\times V_j$.  A finite family of product cells has nonempty intersection exactly when both coordinate families do, provided the factor intersection certificates are available.  Thus the product nerve is a finite combinatorial construction on pairs.  Refinement and map carriers are componentwise.
+
+The construction proves that products of certified towers are certified towers.  For metric spaces, the max metric gives a simple mesh bound.  All dimension bounds, bitset encodings, and demand transformations are explicit.
+
+\subsection{Subspaces and closed conditions}
+
+A subspace cannot in general be formed merely from a negative predicate.  The tower needs a positive answer to ``which cells meet the subspace?''  Suitable inputs include:
+\begin{itemize}
+  \item a finite decidable subset of a finite space;
+  \item an zero set with isolating boxes and sign/degree certificates;
+  \item a compact set with a distance-name and positive intersection witnesses;
+  \item a supplied finite subcomplex.
+\end{itemize}
+Cells with certified intersection become vertices; inherited intersection certificates define the subcomplex.  Ambiguous cells remain as clouds rather than being discarded.
+
+\subsection{Quotients}
+
+For finite spaces and finite complexes, quotients by a decidable equivalence relation are bounded constructions.  For represented spaces, a quotient presentation requires more:
+\begin{enumerate}
+  \item a fixed evaluator for the equivalence relation or orbit action;
+  \item finite saturation of observation clouds;
+  \item compatibility of refinement;
+  \item separation data if a Hausdorff quotient is claimed.
+\end{enumerate}
+Without these fields, a quotient may destroy effective separation or make equality undecidable.  The framework therefore treats quotient quality as a certificate, not as an automatic theorem.
+
+\subsection{Homology and cohomology}
+
+At each scale, mod-$2$ homology is computed from finite boundary matrices.  Gaussian elimination is a bounded loop.  Its invariant records:
+\begin{itemize}
+  \item the processed pivot columns;
+  \item preservation of row space under elementary operations;
+  \item pivot distinctness;
+  \item rank accounting.
+\end{itemize}
+The Betti formula is
+\[
+  \beta_q(K)=n_q-\operatorname{rank}\partial_q-
+  \operatorname{rank}\partial_{q+1}.
+\]
+
+Cohomology uses transposed boundary matrices.  Cup products are finite formulas on simplex tables; associativity and the Leibniz rule can be proved by bounded index manipulations.  Integral torsion is added by checked Smith certificates as described after \cref{thm:prism}.
+
+The tower does not force Betti numbers to stabilize.  Stabilization, pro-isomorphism, or identification with singular/Cech homology is a semantic theorem requiring hypotheses on the cover system.  McCord's finite-space results and classical nerve theorems indicate the relevant bridges \cite{McCord1966}, but each effective use must supply finite good-cover or acyclicity certificates.
+
+\subsection{Fundamental groups}
+
+For a finite complex, an edge loop is a finite list of vertices.  Elementary edge homotopies insert or delete backtracks and triangle moves.  A bounded sequence of such moves is a positive null-homotopy certificate.  Van Kampen presentations can be produced from a finite spanning tree and $2$-simplex relations.
+
+What is not available uniformly is a decision procedure for the word problem in arbitrary finitely presented groups.  The \ipra\ interface is therefore asymmetric:
+\begin{itemize}
+  \item a supplied bounded homotopy is verifiable;
+  \item bounded search can find one below a stated bound;
+  \item absence of a bounded certificate is not a proof of non-null-homotopy;
+  \item special classes with a proven normal-form algorithm may add a decision contract.
+\end{itemize}
+
+\subsection{Manifolds and atlases}
+
+A compact effective $d$-manifold can be presented by a finite atlas at each scale:
+\[
+  (U_i,\phi_i,\psi_i,r_i),
+\]
+where $\phi_i$ and $\psi_i$ are fixed rational evaluators for a chart and its inverse on guarded domains, $r_i$ is a positive interior margin, and overlap transitions have explicit moduli.  Finite cover certificates prove that the shrunken chart domains cover the space.  Carriers handle points lying in several charts.
+
+Local topological proofs reduce to rational boxes.  Differential topology adds rational derivative names, determinant gaps for inverse-function steps, and transversality margins.  Smooth partitions of unity require explicit bump-function approximants and denominator lower bounds.  None of these should be hidden inside the word ``smooth.''
+
+For noncompact manifolds, add a primitive-recursive exhaustion by compact charted pieces.  A theorem at precision $k$ advertises the exhaustion stage it needs.  This is the same finite-demand discipline used throughout.
+
+\subsection{Fixed-point theorems}
+
+A Sperner labeling on a finite triangulation is a bounded object.  The parity proof yields an approximate fixed-point simplex.  Given a uniformly continuous map on a compact presented simplex, a mesh choice turns this into
+\[
+  \|f(x)-x\|<2^{-k}
+\]
+for an explicitly produced rational point $x$.
+
+An exact fixed point is a different claim.  To construct a coherent name, one needs nested compatible approximate witnesses.  This can be obtained from an isolation/uniqueness modulus, from a relational viability dynamic program, or from an explicit compact choice principle available for the particular presentation.  Unrelated approximate fixed points at each scale do not automatically form one point.
+
+\subsection{Dimension and local degree}
+
+Dimension obstructions are particularly suitable for finite topology.  The repository's staggered-grid theorem is already a quantitative finite alternative.  Invariance of domain can be approached similarly: triangulate a rational box, represent a map by a sufficiently fine carrier, compute a local mod-$2$ degree on a boundary complex, and use an injectivity-separation modulus to prevent cancellation.  The finite degree calculation is within \ipra; producing the required uniform separation data is the substantive application hypothesis.
+
+One must not silently infer unrestricted classical invariance theorems from the finite core.  Reverse-mathematical work shows that some unrestricted Brouwer invariance statements have weak-Koenig-lemma strength over standard base theories \cite{Kihara2020}.  The present goal is the maximal explicit, effectively presented version: fixed evaluators, positive moduli, and finite certificates.

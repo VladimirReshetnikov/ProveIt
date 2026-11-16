@@ -1,0 +1,137 @@
+\section{Domain libraries and resolution of reported obstacles}
+\label{sec:domains}
+
+\subsection{Geometry and linear algebra}
+
+Coordinate geometry over rationals is naturally finitary.  Incidence, determinants, cross products, and polynomial identities are exact.  The constructive difficulty arises when an algebraic vector must be interpreted as an actual point, line, unit axis, or normalized eigenvector.
+
+The recommended interface is:
+\begin{enumerate}[label=\arabic*.]
+\item prove the universal polynomial identity without nondegeneracy assumptions;
+\item represent geometric objects projectively or by subspaces/projectors;
+\item attach explicit apartness to every claimed nonzero coordinate or determinant;
+\item use robust overlapping pivots to choose a chart;
+\item state exact normalized outputs only under a positive gap.
+\end{enumerate}
+
+For an orthogonal rotation matrix, for example, one may always output approximate/projective axis data or a quaternion chart family.  A unique normalized axis with a prescribed sign is requested only when a quantitative spectral or coordinate gap distinguishes it.  At the identity and half-turn boundaries, a relational family is the honest uniform output.  An exact selector over arbitrary represented rotations can encode weak sign choice and therefore cannot be justified merely by a clever normalization formula.
+
+\subsection{Analysis}
+
+Derivatives, integrals, power series, and contour arguments can be compiled when every limiting step has an explicit finite remainder.
+
+\begin{itemize}
+\item Riemann integration uses a supplied modulus of continuity, a rational mesh, and upper/lower finite sums.
+\item Differentiation uses a finite difference estimate with a quantified remainder and an apartness guard when dividing by an increment.
+\item Power series use coefficient majorants and a finite tail bound.
+\item Cauchy and residue theorems use rational polygonal contours, denominator separation, finite cell estimates, and a certified winding/root count.
+\item Euler--Maclaurin, Stirling, Gamma, and zeta formulas require explicit truncation schedules and rational bounds for every analytic input.
+\end{itemize}
+
+The relational layer is useful when the proof admits several contours, saddle regions, or local branches.  A certificate may retain all robust choices; a bounded consumer selects a viable one.  It does not supply a missing zero-free region or an ineffective constant.
+
+\subsection{Analytic number theory}
+
+A reusable analytic-number-theory certificate should separate four layers:
+\begin{enumerate}[label=(\alph*)]
+\item exact finite arithmetic identities (Dirichlet convolution, divisor sums, Euler factors);
+\item finite truncation and tail estimates;
+\item zero-free/exceptional-zero or contour certificates;
+\item the final finite numerical inequality.
+\end{enumerate}
+The first and fourth layers are well suited to generic Boolean/rational checkers.  The second is suited when an explicit majorant is known.  The third is often the substantive theorem.  A proof packet must not replace it by a field in a record and then call the record's type a proof.
+
+For prime-distribution results, the framework can verify a supplied zero-free region, density estimate, or explicit-formula error table and compose it with the finite arithmetic downstream.  It does not establish general Chebotarev, Siegel--Walfisz, Bombieri--Vinogradov, or an ineffective exceptional constant on its own.
+
+\subsection{Probability}
+
+Finite rational probability laws are ideal inputs.  Expectations, moments, convolutions, and characteristic functions at rational mesh points are finite sums.  A central-limit proof can be organized as:
+\begin{enumerate}[label=\arabic*.]
+\item normalize using a positive variance certificate;
+\item compute a finite characteristic-function or smoothing trace;
+\item use explicit Taylor remainders and moment bounds;
+\item evaluate a finite integral/grid estimate;
+\item combine errors in a precision DAG.
+\end{enumerate}
+For nonidentically distributed or martingale variants, the state records the accumulated variance, moment budget, and conditional finite tables.  Any conditioning over an infinite probability space must be replaced by a finite law presentation or an explicit approximation contract.
+
+\subsection{Topology and combinatorics}
+
+Sperner, parity, winding on finite meshes, and discrete Jordan arguments have quantifier-free invariants.  The main obligation is to expose the mesh and separation hypotheses that make the discrete result imply the represented geometric statement.  Exact boundary classification is replaced by staggered grids or overlapping cells.  A finite-use chart consumer is particularly natural in cubical and simplicial subdivisions.
+
+Pure combinatorial identities are usually Type I formalization debt: finite lists, recurrences, determinants, and generating-function coefficients can be handled by Boolean folds and polynomial certificates.  Asymptotic claims still need explicit remainder schedules.
+
+\subsection{Diophantine geometry: height before enumeration}
+
+Let $P(x,z)$ be a fixed PR-decidable predicate for a coded rational or integral point and let $H(z)$ be its height.  A bound $B(x)$ gives a finite enumerator
+\[
+ L(x)=\{z:H(z)\le B(x)\ \wedge\ P(x,z)=1\}.
+\]
+
+\begin{theorem}[Height bound and complete list]
+\label{thm:height-list}
+For a fixed coded point predicate and height:
+\begin{enumerate}[label=(\roman*)]
+\item a primitive-recursive height bound yields a primitive-recursive complete finite list by bounded filtering;
+\item a primitive-recursive complete finite list yields a primitive-recursive height bound by taking the maximum listed height (with a default for the empty list).
+\end{enumerate}
+Both implications are provable in iPRA.
+\end{theorem}
+
+\begin{proof}
+For (i), enumerate the finite box of normalized codes of height at most $B(x)$, test $P$, and retain successful codes.  The completeness proof substitutes the assumed bound for an arbitrary point and shows its normalized code occurs in the box.  For (ii), compute the maximum height in the list.  Completeness says every point equals one of the listed codes, hence its height is at most the maximum.  Finite-list membership, filtering, and maximum correctness are proved by quantifier-free induction.
+\end{proof}
+
+A numerical bound on the \emph{number} of points is not enough.  Points may occur at arbitrarily large heights, and seeing the claimed number during a search does not certify that no further point exists unless the list theorem itself supplies completeness.
+
+\subsection{Runge, descent, and power-gap certificates}
+
+Several explicit families in the repository already fit the framework.  A polynomial identity such as
+\[
+ D^m f(X)=A(X)^m+R(X),
+ \qquad \deg R<(m-1)\deg A,
+\]
+can imply a power gap for sufficiently large $\abs{X}$.  The certificate checker verifies the coefficient identity, degree inequalities, and derived height formula.  Bounded enumeration then lists all solutions.  The finite checker is generic; construction of the identity is a rational polynomial algorithm in Runge-type cases but not a solution of general Siegel.
+
+Descent certificates similarly contain a measure that strictly decreases, local solubility/cover data, and terminal cases.  If a finite covering list is supplied, relational composition can select viable local covers without globally naming representatives.  Producing a uniform covering list or Mordell--Weil generators for every curve remains a separate theorem.
+
+\subsection{Faltings, Siegel, and Mordell--Weil}
+
+The framework improves the statements but not the missing global theorems.
+
+\begin{itemize}
+\item For Faltings-type finiteness, it proves the equivalence between a positive height bound and a complete bounded list for the explicit coded predicate.  A cardinality theorem alone does not yield either.
+\item For Siegel, it packages Runge and other effective subcases as height-certificate producers, followed by a common verifier.  It does not produce the general height bound.
+\item For Mordell--Weil, it verifies descent relative to supplied covers and combines finite local choices.  It does not uniformly compute generators absent an effective covering theorem.
+\end{itemize}
+
+These are not failures of the framework.  They are precise factorizations of the remaining mathematics.
+
+\subsection{Resolution matrix}
+
+\begin{longtable}{@{}p{0.25\textwidth}p{0.42\textwidth}p{0.25\textwidth}@{}}
+\toprule
+Reported difficulty & Resolution supplied here & Status \\
+\midrule
+\endhead
+All-precision hypothesis inside induction & Adaptive finite query table; fix precision, then quantify & Resolved generically \\
+\addlinespace
+Multivalued approximate witnesses & Backward viability and finite-use relational composition & Resolved for bounded consumers \\
+\addlinespace
+Branch labels/orderings & Quotient data, confluence, or diameter stability & Resolved when conclusion is invariant/stable \\
+\addlinespace
+Division from nonzero & Apartness-guarded total inverse & Requires quantitative gap \\
+\addlinespace
+Compactness/minimizers & Certified nets, argmin, nested isolation & Requires coverage and uniqueness/modulus \\
+\addlinespace
+Metastability used as a rate & Ranked window theorem plus explicit prohibition of upgrade & Local use resolved; final rate remains extra \\
+\addlinespace
+Puiseux from arbitrary Cauchy coefficients & Finite residual clusters; exact series only on certified strata & Exact global selector obstructed \\
+\addlinespace
+Exact rotation axis/sign & Projective/relational output; exact under gap & Unrestricted selector obstructed \\
+\addlinespace
+General Siegel/Faltings enumeration & Height/list verifier and certificate interface & Height producer unresolved \\
+\addlinespace
+Semantic Lean proof called iPRA & Explicit \code{Prf PRAAx} module graph and trace wrapper & Engineering milestone, not completed here \\
+\bottomrule
+\end{longtable}

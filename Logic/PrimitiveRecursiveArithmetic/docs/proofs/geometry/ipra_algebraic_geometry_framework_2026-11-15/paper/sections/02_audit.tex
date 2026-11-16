@@ -1,0 +1,113 @@
+\section{Repository audit and the missing geometric layer}
+
+\subsection{Pinned repository state}
+
+The mathematical audit is pinned to commit
+\code{bce5113f44d613f5625c274128ee761f35486fc5}.  During final verification, \code{main} had advanced to
+\code{a2f72b0cdf57f8a3fefd34b272c3d471385e819c}, but a direct contents-API comparison showed that the three entries under
+\code{Logic/PrimitiveRecursiveArithmetic} were unchanged: \code{ConciseIPRA} had Git object
+\code{622927389849d1e4c3b5f813b8481b7674974acc}, \code{README.md} had object
+\code{1340d58e7f9c97cc8593341f5e80452633a2b77d}, and \code{docs} had object
+\code{996363773c5e9f09fa826e0cc943f55af059d8dd} at both commits.  Thus unrelated repository activity did not alter the
+audited iPRA subtree.
+
+At the pinned snapshot the root iPRA README listed sixty-six research packets.  It also stated an
+important caveat: the packets were filed as delivered and were not independently rerun, compiled,
+or verified by the indexing commit.  Consequently this report treats packet claims as research
+inputs, not as automatically certified facts.
+
+The checked foundation is \code{ConciseIPRA}.  The relevant Lean layers are:
+
+\begin{center}
+\begin{tabularx}{0.94\textwidth}{@{}lX@{}}
+\toprule
+Module/interface & Role \\
+\midrule
+\code{Syntax.lean} & First-order terms and formulas, substitution, and quantifier-free formulas. \\
+\code{Deduction.lean} & Intuitionistic natural deduction with equality; derivations \code{Prf}. \\
+\code{PR.lean} & The inductive family \code{PR}, terms \code{PTm}, axioms \code{PRAAx}, and the quantifier-free induction interface. \\
+\code{NativeBiInterpretation.lean} & The bridge \code{pra_iff_native}. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+This package therefore targets the usual iPRA calculus first.  Native export is the last step, not a
+substitute for an embedded derivation.
+
+\subsection{Prior frameworks that are treated as baseline}
+
+The repository already contains a substantial general methodology.  The following table records the
+parts most relevant here.
+
+\begin{longtable}{@{}p{0.25\textwidth}p{0.31\textwidth}p{0.36\textwidth}@{}}
+\toprule
+Packet & Existing contribution & Boundary retained here \\
+\midrule
+\endfirsthead
+\toprule
+Packet & Existing contribution & Boundary retained here \\
+\midrule
+\endhead
+\code{ipra_framework} & Finite contracts, bounded Booleanization, bounded search, quotient-free finite presentations, and a compiler outline. & A contract does not by itself provide geometric overlap objects, localization equality, or a sheaf gluing formula. \\
+\code{ipra_embedding_framework} & Demand-driven finite observations, certificate-relative interpretation, finite windows, simple Cauchy branches, and finite algebra interfaces. & Exact global branch data and general height bounds remain separate producer problems. \\
+\code{ipra_finite_observation} & Precise diagnosis of illegal universal evaluation, Cauchy-induction mistakes, computation/proof horizons, and exact-output demands. & All algorithms below are fixed PR constructions; no universal interpreter is introduced. \\
+\code{ipra_coherent_methods} & Coherent finite presentations and several small genuine \code{Prf PRAAx} derivations. & The weighted and object-specific applications are not automatically embedded. \\
+\code{ipra_local_global} & Variable-length recursion and numerical local-to-global rules. & Zariski localization and module descent require additional algebraic witness calculus. \\
+\code{ipra_finite_use_framework} & Relational finite-use composition, backward viability, branch-invariant outputs, robust covers, and root clusters. & The present package uses that philosophy but adds exact localization, unit-ideal covers, and sheaf equalizers. \\
+\code{ipra_stable_observables} & Exact or stable observables, matrix certificates, and impossibility of complete effective bound certificates in general. & A certificate verifier is not a certificate producer; this distinction remains explicit. \\
+\code{diophantine_geometry_ipra} & Rational projective point codes, heights, conics, local obstructions, explicit descent, and conditional finite generation. & It treats points and heights rather than a general scheme/atlas/sheaf layer. \\
+\bottomrule
+\end{longtable}
+
+The most recent finite-use packet is especially close in spirit.  It allows a producer to return a
+finite relation of locally valid answers and lets a bounded consumer choose a viable transcript.
+That is useful for chart selection and root clusters.  It does not, however, supply the algebraic
+identity that makes a principal-open cover jointly monic or the formula that glues compatible module
+fractions.  Those are the central additions here.
+
+\subsection{Difficulties recorded by theorem-specific packets}
+
+The theorem packets identify several logically distinct obstacles.
+
+\begin{enumerate}[label=\arabic*.]
+\item \textbf{No universal PR evaluator.}  An inductive Lean datatype of PR programs does not give
+      an iPRA function evaluating arbitrary program codes.  Every evaluator in this package is fixed
+      syntactically, or a finite trace is supplied and checked.
+\item \textbf{No induction on infinitary predicates.}  Cauchy convergence, sheafhood over all opens,
+      or ideal equality by unbounded search cannot be the induction formula.  Finite prefix folds and
+      explicit witnesses replace them.
+\item \textbf{Exact choice can be discontinuous.}  Singular Puiseux branches and arbitrary Cauchy
+      coefficient zero tests remain outside a uniform exact interface.  Relational chart data or
+      supplied separation witnesses are required.
+\item \textbf{Cardinality does not locate points.}  The Faltings and Siegel packets stress that a
+      bound on the number of rational or integral points is not a height cutoff and does not terminate
+      enumeration.
+\item \textbf{Descent requires actual representatives.}  The Mordell--Weil packet can consume a
+      finite list covering a quotient but does not manufacture rational representatives from abstract
+      Selmer data.
+\item \textbf{Native Lean is not object iPRA.}  Several packets check host-level finite arithmetic
+      but do not construct the corresponding \code{Prf PRAAx} value.
+\end{enumerate}
+
+The geometric framework below resolves none of the genuinely missing height or representative
+producer theorems.  It does resolve a different structural difficulty: how to represent quotient
+rings, localizations, finite covers, gluing, and projective cohomology without silently using
+classical quotient types, prime spectra, arbitrary choice, or induction beyond iPRA.
+
+\subsection{Why the Wikipedia checklist is useful but insufficient}
+
+The user-specified overview divides algebraic geometry into polynomial zero sets, affine and
+projective varieties, computational methods, and the modern scheme/sheaf viewpoint.  Each item
+requires a different iPRA representation:
+
+\begin{itemize}
+\item polynomial zero sets use finite polynomial evaluation and bounded point searches;
+\item affine geometry uses finitely presented coordinate rings;
+\item projective geometry uses homogeneous presentations and finite standard charts;
+\item computational geometry uses certificate-checked reductions rather than an assumed terminating
+      universal algorithm;
+\item schemes and sheaves use finite affine atlases and descent equalizers rather than an internally
+      completed topology of prime ideals.
+\end{itemize}
+
+The rest of the report supplies one common architecture for these representations.

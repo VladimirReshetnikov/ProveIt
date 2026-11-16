@@ -1,0 +1,412 @@
+\section{Producing finite algebra certificates by bounded linear algebra}
+\label{sec:macaulay}
+
+The inspected packet \texttt{ipra\_presentations\_to\_witnesses} already proves
+that finite multiplication identities yield a complete list of rational
+zeros~\cite{repo-witnesses}. Its constructors start with separated annihilator identities or a
+nonzero plane norm. We add a more general producer: a single finite linear
+algebra test at supplied degree caps constructs all required identities.
+This is a new interface relative to the inspected packets, not a claim of
+historical novelty for polynomial linear algebra. It is related to
+Macaulay and border-basis methods \cite{mourrain2008}. We do not need a quotient basis, a
+normal form, or commuting matrices; those are stronger conclusions than
+the finite-image argument needs.
+
+\subsection{The input and the exact acceptance test}
+
+Fix $r\geq1$ and a finite list $f_1,\ldots,f_s$ in
+$\mathbb Q[X_1,\ldots,X_r]$. A polynomial is a finite coefficient table;
+its entries are reduced signed numerators and positive denominators.
+Let $d,D$ be supplied natural numbers with $D\geq d+1$.
+Write $P_e$ for the rational vector space with monomial list
+\[
+ B_e=\{X^\alpha: \alpha\in\mathbb N^r,\ |\alpha|\leq e\},
+ \qquad N_e=|B_e|.
+\]
+Here $P_e$ is only convenient notation for coefficient vectors of length
+$N_e$; it does not introduce a new object-theory sort.
+Enumerate $B_e$ by scanning the $(e+1)^r$ exponent tuples with coordinates
+at most $e$ and retaining those of total degree at most $e$.
+
+Inside $P_D$, form the finite list
+\[
+ S_D=\{X^\alpha f_i:|\alpha|+\deg f_i\leq D\}.
+\]
+Zero input polynomials may be omitted. No generator of degree above $D$
+contributes a column. Let $A$ be the rational matrix whose columns are,
+first, $B_d$ and, second, the members of $S_D$, padded by zero to the
+coefficient coordinates $B_D$. For each monomial $b$ of total degree
+$d+1$, solve the finite linear system
+\begin{equation}
+                       A c_b=[b]_{B_D}.
+\label{eq:border-linear-system}
+\end{equation}
+Accept precisely when every one of these systems is solvable.
+The required solutions are produced by rational Gaussian elimination.
+There is no enumeration of arbitrary rational coefficients and no
+coefficient-height guessing.
+
+\begin{lemma}[A bounded solver with success and failure evidence]
+\label{lem:bounded-linear-solver}
+Given $A\in\mathbb Q^{m\times n}$ and $v\in\mathbb Q^m$, a fixed
+primitive recursive program returns either $c\in\mathbb Q^n$ with
+$Ac=v$, or $u\in\mathbb Q^m$ with $uA=0$ and $uv\ne0$.
+Its finite arithmetic correctness can be proved in iPRA.
+\end{lemma}
+
+\begin{proof}
+Perform Gaussian elimination on the augmented matrix $[A\mid v]$, using
+only its first $n$ columns for pivot selection. Scan columns in order; in
+each column scan the unused rows for the first nonzero entry. If there is
+none, continue. Otherwise swap that row into the next pivot position,
+divide by its nonzero pivot, and subtract its suitable multiples from all
+other rows. Carry along an initially identity matrix $U$, subject to the
+same row operations. The invariant is
+\[
+             [R\mid w]=U[A\mid v].
+\]
+There are at most $m$ pivots and exactly $n$ column scans. Every pivot
+operation and every coefficient update has an explicitly bounded finite
+index set. The invariant and the maintained pivot pattern are bounded
+conjunctions of rational equalities and inequalities.
+
+If a final row of $R$ is zero while the corresponding entry of $w$ is
+nonzero, the same row of $U$ is the desired $u$. Indeed $uA=0$ and
+$uv\ne0$. A putative solution $c$ would give $uv=uAc=0$, so this is
+a genuine incompatibility certificate for this linear system.
+Otherwise set every free variable to zero and every pivot variable to
+the corresponding right-hand entry. The reduced pivot pattern then gives
+$Rc=w$. Since row swaps, nonzero row rescalings, and row additions are
+invertible, their inverse operations show $Ac=v$. One may track a second
+matrix for the inverse operations; both products being identity are finite
+matrix equalities. Alternatively replay the finite operation log backwards.
+
+Finite sums, rational arithmetic, canonical normalization, finite matrix
+updates, and bounded scans are primitive recursive. Rational inversion is
+used only after an exact nonzero test. Gcd normalization may itself be
+implemented by a bounded divisor scan, so no unbounded termination claim
+is needed. Booleanize the bounded matrix invariants, apply quantifier-free
+induction to the fixed loops, and afterwards generalize the free entries
+of $A,v,c$. This gives the stated iPRA proof route without induction on a
+formula quantifying over all possible solutions.
+\end{proof}
+
+Failure of one instance of \eqref{eq:border-linear-system} means that the
+supplied caps did not establish closure. It says nothing by itself about
+whether the polynomial system has rational zeros, or about whether larger
+caps would succeed. The returned separating vector certifies exactly this
+finite failure.
+
+\subsection{From closure to a multiplication certificate}
+
+Put $B=B_d=(b_1,\ldots,b_N)$, ordered so that $b_1=1$.
+An accepted solution gives, for each degree-$d+1$ monomial $b$, explicit
+rational coefficients $c_{bi}$ and explicit polynomials $h_{b\ell}$ with
+\begin{equation}
+       b-\sum_{i=1}^N c_{bi}b_i
+                  =\sum_{\ell=1}^s h_{b\ell} f_\ell .
+\label{eq:border-identity}
+\end{equation}
+The $h_{b\ell}$ are assembled from the coefficients of the columns
+$X^\alpha f_\ell$ in $c_b$. Every such summand has degree at most $D$.
+Equation \eqref{eq:border-identity} is therefore checked coefficient by
+coefficient in the same finite coordinate space $P_D$.
+
+For each coordinate $k$ define an $N\times N$ matrix $M_k$ columnwise.
+If $X_kb_j$ has degree at most $d$, use its exact unit coordinate vector
+in $B$. Otherwise use the coefficient vector furnished by
+\eqref{eq:border-identity}. This produces identities
+\begin{equation}
+        X_k b_j-\sum_i(M_k)_{ij}b_i
+                       =\sum_\ell h_{kj\ell}f_\ell.
+\label{eq:border-action}
+\end{equation}
+The unit identity is simply $b_1=1$.
+
+\begin{theorem}[A complete producer at supplied degree caps]
+\label{thm:border-producer}
+There is one primitive recursive program, uniform in the numbers of
+variables and equations, their finite coefficient tables, and $d,D$,
+which decides the finite closure test and, upon acceptance, produces
+the explicit identities \eqref{eq:border-action}. These identities yield
+a duplicate-free finite list $L$ of exactly the rational common zeros:
+\[
+ p\in L\quad\Longleftrightarrow\quad
+ f_1(p)=\cdots=f_s(p)=0\qquad(p\in\mathbb Q^r).
+\]
+The soundness and completeness implication is an iPRA theorem after
+the finite arithmetic contracts in this proof are compiled.
+No independence or commutation assertion about the $M_k$ is assumed.
+\end{theorem}
+
+\paragraph{The finite divisibility lemma used in the proof.}
+We record the elementary arithmetic behind the coprimality steps, rather
+than treating them as unanalysed number-theory calls. Given $a,b\in\mathbb N$
+with $b>0$, initialize remainders $(r_0,r_1)=(a,b)$ and coefficient rows
+$(s_0,t_0)=(1,0)$, $(s_1,t_1)=(0,1)$. At an active step, put
+\[
+ q=r_0\mathbin{\mathrm{div}}r_1,\qquad
+ r_2=r_0-q r_1,\qquad
+ (s_2,t_2)=(s_0-q s_1,t_0-q t_1),
+\]
+and replace rows zero and one by rows one and two. Freeze once $r_1=0$.
+The positive second remainder strictly decreases at every active step,
+so exactly $b$ fuel steps suffice. The invariants
+$r_i=s_i a+t_i b$ and preservation of the common divisors of the two
+remainders are finite arithmetic statements. The latter follows in both
+directions from $r_2=r_0-q r_1$. A possible common divisor is kept as a
+free parameter during induction and generalized afterwards; alternatively
+one scans divisors up to $\max(a,b)$. Thus no unbounded universal
+quantifier enters the induction formula. The final positive remainder is
+$g=\gcd(a,b)$ and its row supplies $s a+t b=g$.
+When one input is zero, the same computation or the immediate zero case
+supplies the corresponding identity. Signs are incorporated by changing
+the coefficient of a negative input.
+
+Consequently $\gcd(|a|,b)=1$ supplies $s a+t b=1$. If $b\mid a w$,
+multiplication by $w$ proves $b\mid w$. Folding the same bounded
+extended-Euclid construction along a nonzero integer vector supplies
+coefficients $e_i$ with $\sum_i e_i u_i=g$, where $g$ is the gcd of its
+absolute coordinates. On dividing the vector by $g>0$, this becomes
+$\sum_i e_i(u_i/g)=1$. These are fixed PR computations with bounded
+loop invariants, even though their integer coefficients can be large.
+They justify both coprimality cancellation and the primitive-vector
+Bezout combination below.
+
+\begin{proof}
+Construction of the identities was just given. It remains to prove that
+they supply a finite and complete coordinate grid. This repeats the
+finite-image argument from the inspected packet so that the present
+result is self-contained.
+
+For a common zero $p$, evaluation of \eqref{eq:border-action} gives
+\[
+       vM_k=p_kv,\qquad v=(b_1(p),\ldots,b_N(p)),\qquad v_1=1.
+\]
+Thus $v$ is nonzero. Multiply $v$ by the product of its denominators,
+then divide the resulting integer vector by the gcd of its coordinates.
+This gives a primitive nonzero integer row vector $w$ satisfying the
+same eigenvector equations.
+
+Choose a positive common denominator $\Delta_k$ for $M_k$ and put
+$A_k=\Delta_kM_k\in\mathbb Z^{N\times N}$. We have
+$wA_k=\lambda_kw$ with $\lambda_k=\Delta_kp_k$ rational.
+Write $\lambda_k=a/b$ in lowest terms, $b>0$. The coordinate equations
+give $b\mid a w_j$, hence $b\mid w_j$ by coprimality of $a,b$.
+A Bezout combination of the primitive coordinates of $w$ equals one,
+so $b\mid1$ and $b=1$. Consequently $\lambda_k$ is an integer.
+
+Let
+\[
+        R_k=\max_j\sum_i|(A_k)_{ij}|.
+\]
+Choose a first coordinate with $|w_j|=W=\max_i|w_i|>0$. Then
+\[
+ |\lambda_k|W
+ =\left|\sum_iw_i(A_k)_{ij}\right|
+ \le W\sum_i|(A_k)_{ij}|\le WR_k.
+\]
+Cancellation of the positive $W$ yields $|\lambda_k|\le R_k$.
+Every common zero therefore lies in the explicit grid
+\begin{equation}
+       \prod_{k=1}^r
+          \{z/\Delta_k:z\in\mathbb Z,\ -R_k\le z\le R_k\}.
+\label{eq:border-grid}
+\end{equation}
+Each coordinate in reduced form has denominator dividing $\Delta_k$
+and numerator of absolute value at most $R_k$.
+
+Enumerate the $\prod_k(2R_k+1)$ grid tuples by mixed-radix decoding,
+evaluate every $f_\ell$ exactly, and retain precisely the common zeros.
+The retention test proves soundness and the grid argument proves
+completeness. Fixed nonzero denominators make distinct grid numerators
+produce distinct rational coordinates, so the list has no duplicates.
+
+This argument used a separate eigenvector equation for each matrix.
+The matrices need not define an algebra structure on the whole ambient
+vector space: redundant spanning elements may permit noncommutation on
+directions which no evaluation vector detects. The ordinary theory of
+border \emph{bases} imposes further conditions to obtain a unique normal
+form and a true basis; the present certificate does not assert these
+stronger conclusions.
+
+For the uniform PR claim, $N_e\le(e+1)^r$, and the number of generator
+columns is at most $s(D+1)^r$. Coefficient generation, each pivot loop,
+all identity checks, denominator products, gcd folds, and the final grid
+scan have finite bounds computed from input data. Arbitrarily large
+intermediate coefficients do not obstruct primitive recursion: each
+finite update is a fixed PR operation and the iteration counts are fixed
+PR terms. Uniform polynomial evaluation is a fixed bounded interpreter
+for coefficient tables and powers; it is not a universal evaluator for
+arbitrary primitive recursive program codes.
+
+For the object-theory proof, keep $p$ and its coded evaluation vector as
+free parameters. Use bounded conjunctions for coefficient and matrix
+identities, convert them to Boolean equalities, and induct on the finite
+elimination, normalization, maximum, and grid loops. The correctness
+theorem of the final filter is proved for this arbitrary $p$ and then
+universally generalized. No global assertion that every accepted formal
+proof is true is used.
+\end{proof}
+
+\begin{lemma}[Finite span without a canonical reduction]
+\label{lem:action-finite-span}
+Suppose $b_1=1$ and the identities \eqref{eq:border-action} hold for a
+fixed finite family $b_1,\ldots,b_N$. Every polynomial is congruent,
+modulo the ideal generated by the $f_\ell$, to a rational linear
+combination of this family. An explicit PR procedure produces both the
+coefficient vector and the ideal-membership identity. It need not
+produce a unique vector.
+\end{lemma}
+
+\begin{proof}
+First consider a monomial $X^\alpha$. Choose the fixed ordered word
+consisting of $\alpha_1$ copies of $X_1$, followed by $\alpha_2$ copies
+of $X_2$, and so on. For the empty word, use coefficient vector $c=e_1$
+and witnesses $h_\ell=0$, so that
+\[
+                  1-\sum_j c_jb_j=\sum_\ell h_\ell f_\ell.
+\]
+Maintain, for the word prefix whose monomial is $m$, the explicit identity
+\[
+                  m-\sum_j c_jb_j=\sum_\ell h_\ell f_\ell.
+\]
+On appending $X_k$, put
+\[
+ c'_i=\sum_j(M_k)_{ij}c_j,\qquad
+ h'_\ell=X_kh_\ell+\sum_j c_jh_{kj\ell}.
+\]
+Multiply the previous identity by $X_k$ and substitute
+\eqref{eq:border-action}. The result is exactly the maintained identity
+with $m'=X_km$, $c'$, and $h'$. After $|\alpha|$ steps it gives the
+required reduction of the monomial. Reduce each of a polynomial's
+finitely many terms in this fixed order, multiply its coefficient vector
+and witnesses by the term coefficient, and add them.
+
+The input coefficient tables bound every loop; each update is a finite
+polynomial or matrix operation. Coefficientwise identities are the
+quantifier-free induction invariants. Different variable orders may give
+different coefficient vectors, since the family may be dependent. The
+fixed order suffices for existence of a reduction, so commutation of the
+matrices on the full coordinate space is unnecessary. In ordinary
+quotient notation, the classes of the $b_j$ therefore span
+$\mathbb Q[X_1,\ldots,X_r]/(f_1,\ldots,f_s)$ and its dimension is at
+most $N$.
+\end{proof}
+
+\subsection{Two worked examples and a rejected cap}
+
+Consider
+\[
+ f_1=XY-1,\qquad f_2=X^2-Y.
+\]
+For $d=1,D=2$, the list $B=(1,X,Y)$ and the generator columns cannot
+span $Y^2$: its coefficient is zero in every column. The coordinate
+functional extracting the $Y^2$ coefficient is a failure certificate.
+Increasing $D$ to three succeeds, because
+\[
+       X^2=Y+f_2,\qquad XY=1+f_1,
+       \qquad Y^2=X+Xf_1-Yf_2.
+\]
+The matrices in the order $(1,X,Y)$ are
+\[
+ M_X=\begin{pmatrix}0&0&1\\1&0&0\\0&1&0\end{pmatrix},
+ \qquad
+ M_Y=\begin{pmatrix}0&1&0\\0&0&1\\1&0&0\end{pmatrix}.
+\]
+Here $\Delta_X=\Delta_Y=R_X=R_Y=1$.
+Exactly nine grid points are tested; the complete rational solution list
+is $\{(1,1)\}$. Independently, the equations imply $X^3=1$ and hence
+$(X-1)(X^2+X+1)=0$. Since
+$X^2+X+1=(X+1/2)^2+3/4>0$ over the rationals, $X=Y=1$.
+The failed cap did not mean that the system was inconsistent.
+
+For a denominator-sensitive example let
+\begin{align*}
+ f_1&=2(X+Y)^2-(X+Y),\\
+ f_2&=3(X-Y)^2-(X-Y),\\
+ f_3&=X^2-Y^2.
+\end{align*}
+The caps $d=1,D=2$ suffice. Exact identities are
+\begin{align*}
+ X^2-\frac{5X+Y}{24}&=\frac18f_1+\frac1{12}f_2+\frac12f_3,\\
+ XY-\frac{X+5Y}{24}&=\frac18f_1-\frac1{12}f_2,\\
+ Y^2-\frac{5X+Y}{24}&=\frac18f_1+\frac1{12}f_2-\frac12f_3.
+\end{align*}
+They produce
+\[
+ M_X=\begin{pmatrix}0&0&0\\1&5/24&1/24\\0&1/24&5/24\end{pmatrix},
+ \quad
+ M_Y=\begin{pmatrix}0&0&0\\0&1/24&5/24\\1&5/24&1/24\end{pmatrix}.
+\]
+Taking both denominators to be $24$ gives both column bounds $24$.
+The grid has $49^2=2401$ points. The complete list is
+\[
+              (0,0),\qquad (1/4,1/4),\qquad(1/6,-1/6).
+\]
+Indeed put $u=X+Y,v=X-Y$. Then $u\in\{0,1/2\}$,
+$v\in\{0,1/3\}$, and $uv=0$. These three possibilities give exactly
+the displayed points. The exact reference program independently produces
+the reduction identities and filters the full grid.
+
+The program also accepts $X^2-1=0$, $Y-X=0$ using $B=(1,X,Y)$ and
+$d=1,D=2$. This spanning family is redundant and its produced matrices
+do not commute, yet the complete list is correctly
+$\{(-1,-1),(1,1)\}$. For $X^2-2=0$, $Y-X=0$ it accepts the same
+caps and returns an empty rational list. These examples check the precise
+difference between an algebraic certificate, independence of its
+generators, and existence of rational points.
+
+\subsection{What has been resolved and what has not}
+
+The new step removes the need to guess coefficient heights or hand-build
+the action identities once finite degree caps have been supplied.
+It also provides independently checkable negative evidence when those
+caps fail. It covers finite polynomial systems in any input dimension,
+with equality decided on exact rational coefficient tables.
+
+No unbounded loop increasing $d,D$ is included in the PR theorem.
+General termination or a uniform cap would require an additional
+effective algebraic argument. Even success for every zero-dimensional
+ideal would not prove general Faltings: a positive-dimensional curve
+can have finitely many rational points while its coordinate algebra is
+infinite-dimensional. This is the precise boundary relevant to the
+inspected Siegel and Faltings routes~\cite{repo-siegel,repo-faltings}.
+
+For completeness, take $F=Y^2+X^2+1$. There are no rational zeros, since
+$X^2+Y^2\geq0$. Nevertheless monic division in $Y$ gives each polynomial
+a remainder $a(X)+b(X)Y$ modulo $F$. The division algorithm subtracts
+successive multiples of the monic leading term and decreases $Y$-degree
+at each active step, so an explicit degree fuel makes it primitive
+recursive. The remainder is unique: if a nonzero $H(X,Y)$ existed with
+$HF$ of $Y$-degree below two, its leading $Y$-coefficient would remain
+the nonzero leading coefficient of $H$, and
+$\deg_Y(HF)=\deg_Y H+2\geq2$, a contradiction. Thus the quotient is
+the free $\mathbb Q[X]$-module on $1,Y$. In particular its elements
+$1,X,X^2,\ldots$ are linearly independent over $\mathbb Q$.
+
+A finite action certificate of size $N$ would contradict this using only
+finite data. Lemma~\ref{lem:action-finite-span} would reduce
+$1,X,\ldots,X^N$ to $N+1$ vectors of length $N$. Rational Gaussian
+elimination supplies a nontrivial rational dependence among those
+vectors. Combining their explicit ideal-membership witnesses yields a
+nonzero $q(X)\in(F)$. Its remainder under the preceding monic division
+is $q(X)$ itself, whereas every member of $(F)$ has zero remainder.
+This contradiction shows that a full coordinate multiplication
+certificate cannot exist for that sole equation, despite its empty
+rational zero set. A finite algebra section or a supplied finite cover
+by such sections is a valid use of the producer; existence of the cover
+remains a separate theorem.
+
+\paragraph{Lean implementation targets.}
+Use finite coefficient lists over a coded rational type. Define
+\texttt{monomials}, \texttt{macaulayColumns}, \texttt{rrefWithTrace},
+\texttt{closureCertificate}, \texttt{checkAction}, and
+\texttt{rationalGrid} as fuelled list programs. The main successive lemmas
+are the row-operation invariant, the solution-or-separator specification,
+coefficientwise construction of \eqref{eq:border-action}, the primitive
+eigenvector denominator lemma, the column bound, and filter completeness.
+The host Lean statements are ordinary arithmetic lemmas; the object
+targets must explicitly conclude \texttt{Prf PRAAx} for their encoded
+Boolean contracts. The supplied Python checks establish only exact
+finite examples. They are not a Lean proof or an iPRA proof checker.

@@ -1,0 +1,157 @@
+\section{Finite component bounds and constructive skeletons}
+\label{sec:groupoid-skeletons}
+
+Finite category tables have an explicit list of all their objects. A
+primitively recursively presented category may instead have natural
+numbers as objects, even when a finite numerical bound on its
+isomorphism classes is known. Extracting representatives in this setting
+is a genuine mathematical operation. The distinction also appears in
+the inspected Mordell--Weil packet: its PR rational-halving routine
+decides individual instances of division by two, while its generator
+theorem requires a supplied complete list of representatives modulo
+doubling~\cite{repo-mw}.
+
+\subsection{A uniformly decidable two-class obstruction}
+
+Fix a standard finite coding of Turing machines, configurations and
+transitions. Let $h(e,n)\in\{0,1\}$ be one exactly when the machine
+with code $e$, on blank input, has halted within $n$ steps. This is a
+fixed primitive recursive function: simulate exactly $n$ transitions,
+freezing a halted configuration. Define
+\[
+                 m\,E_e\,n\quad\Longleftrightarrow\quad
+                            h(e,m)=h(e,n).
+\]
+For every $e$, this is a decidable equivalence relation. Its reflexivity,
+symmetry and transitivity are equality laws for Boolean values. Among
+any three natural numbers, two have the same Boolean value, so no three
+pairwise inequivalent objects exist.
+This is a counting bound, expressed by the failure of any three-element
+list to be pairwise inequivalent; no covering list is included in it.
+
+Define a thin groupoid $\mathcal G_e$ with objects $\mathbb N$ and an
+arrow $m\longrightarrow n$ precisely when $E_e(m,n)$. Such an arrow
+is encoded by its endpoint pair. Its identity is $(m,m)$, its inverse
+is $(n,m)$, and the composite of $(m,n)$ followed by $(n,p)$ is
+$(m,p)$. Validity is checked by $E_e$, and the groupoid laws reduce
+to equality of endpoint pairs. Hence this is a uniform PR family of
+presentations, with at most two isomorphism classes. It uses only one
+fixed bounded machine simulator, not a universal total evaluator for
+primitive recursive functions.
+
+\begin{theorem}[No uniform finite representative producer]
+\label{thm:no-two-class-skeleton}
+There is no total computable procedure which, given $e$, returns a
+finite list of objects meeting every isomorphism class of
+$\mathcal G_e$. In particular there is no such primitive recursive
+procedure, even though the presentations have decidable arrow validity
+and a uniform bound of two on the number of isomorphism classes.
+\end{theorem}
+
+\begin{proof}
+Suppose such a procedure existed, returning $L_e$. Add $0$ if necessary,
+which preserves coverage, and compute the largest entry $H_e$.
+Run the finite test $h(e,H_e)$. If it is one, the machine halts.
+If it is zero, suppose instead that the machine halts at some later
+time $t>H_e$. Every entry $a$ of $L_e$ satisfies $a\leq H_e$, so the
+machine has not halted within $a$ steps and $h(e,a)=0$. But
+$h(e,t)=1$. Thus $t$ is inequivalent to every member of $L_e$,
+contradicting coverage. Therefore the zero answer implies that the
+machine never halts.
+
+The proposed procedure would decide halting. To recall the elementary
+diagonal contradiction, a total decider for whether a program halts on
+its own code would allow a program which loops when the decider says
+that it halts and halts when the decider says that it loops. Applying
+the decider to the code of that program contradicts either answer.
+A blank-input decider yields this self-input decider by effectively
+constructing a machine which first writes the fixed input and then
+simulates the given program. Thus the assumed covering-list procedure
+cannot exist.
+\end{proof}
+
+The theorem rules out a uniform algorithm; it is not an independence
+claim about a particular elliptic curve or a particular presented
+category. It also does not concern finite category tables, whose entire
+object list is already available. The obstruction is precisely the
+missing positive information in a bound on the number of components.
+
+\subsection{A supplied finite cover gives an explicit skeleton}
+
+Let $E$ be a fixed PR decidable equivalence relation on natural-number
+objects, with its equivalence laws proved in iPRA. Suppose a finite list
+$L$ is supplied together with the covering assertion
+\begin{equation}
+            \forall x\ \exists j<|L|\ E(x,L_j).
+\label{eq:groupoid-cover}
+\end{equation}
+This assertion is an explicit hypothesis or a previously proved
+theorem. It is not treated as a decidable property of the finite list.
+
+\begin{theorem}[Finite-cover skeleton construction]
+\label{thm:finite-cover-skeleton}
+There is a PR algorithm producing a sublist $R$ of $L$ whose elements
+are pairwise inequivalent and still satisfy \eqref{eq:groupoid-cover}.
+The corresponding thin groupoid is explicitly equivalent to the
+discrete finite category on the indices of $R$. The proof uses only
+bounded scans and quantifier-free induction, followed by generalization
+over the arbitrary object.
+\end{theorem}
+
+\begin{proof}
+Scan $L$ in order. Retain the next entry exactly when it is inequivalent
+to every entry retained so far. Since $E$ is decidable and the retained
+list has length at most $|L|$, every test is bounded. Keep the following
+finite invariant: the retained entries are pairwise inequivalent, and
+each already scanned entry is equivalent to some retained entry.
+The invariant holds for the empty prefix. A newly retained entry is
+inequivalent to all its predecessors by the test. A discarded entry
+has, by failure of the bounded test, an equivalent retained entry.
+Thus the invariant is preserved. At the end it gives pairwise
+inequivalence and coverage of the original list.
+
+For an arbitrary object $x$, the hypothesis supplies an index $j$ with
+$E(x,L_j)$. The finite invariant supplies an index $i$ with
+$E(L_j,R_i)$. Transitivity gives $E(x,R_i)$. This proves coverage of
+all objects without choosing from an unbounded family: define $q(x)$
+by scanning the finite list $R$ for the first equivalent representative.
+The covering proof shows that the scan succeeds. Formally totalize the
+scan with a failure flag; its failure branch is ruled out by the same
+argument. Since the object set contains $0$, coverage also proves
+$|R|>0$.
+
+Let $\mathcal D_R$ be the discrete category with object indices
+$0,\ldots,|R|-1$. Define $F$ from the thin groupoid of $E$ to
+$\mathcal D_R$ by $F(x)=q(x)$. If $E(x,y)$, then both representatives
+$R_{q(x)}$ and $R_{q(y)}$ are equivalent to $x$, using symmetry and
+transitivity. Pairwise inequivalence forces $q(x)=q(y)$, so $F$ maps
+the arrow $x\to y$ to the identity of that common index. This also
+proves functoriality directly.
+
+Define $U:\mathcal D_R\to\mathcal G_E$ by $U(i)=R_i$ and by mapping
+each identity to the corresponding identity. The first-match scan gives
+$q(R_i)=i$, because no other retained entry is equivalent to $R_i$.
+Consequently $FU$ is exactly the identity functor. For every object $x$,
+the covering relation gives the unique arrow
+\[
+                       R_{q(x)}\longrightarrow x.
+\]
+Its inverse is the reversed endpoint pair. These arrows form a natural
+isomorphism $UF\cong\mathrm{Id}$: both sides of every naturality
+equation are arrows with the same endpoints, and the groupoid is thin.
+This supplies the equivalence data explicitly.
+
+The list invariant is a bounded Boolean formula. Its induction never
+contains the unbounded covering assertion; that assertion remains a
+hypothesis and is instantiated only after fixing $x$. Hence the
+construction respects quantifier-free induction. When the thin groupoid
+has a known finite object enumeration, that enumeration may itself be used as
+$L$; no further choice principle is required.
+\end{proof}
+
+This positive theorem and Theorem~\ref{thm:no-two-class-skeleton}
+locate the boundary sharply. A complete finite cover supplies enough
+data for an explicit skeleton and equivalence. A numerical upper bound
+on the number of components does not supply that cover. The same
+discipline should be applied to finite lists, heights and exceptional
+sets in the inspected arithmetic routes~\cite{repo-mw,repo-siegel,repo-faltings}.

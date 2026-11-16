@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "iPRA theorem-packet finitary framework record",
+  "type": "object",
+  "required": [
+    "source_snapshot",
+    "statement_class",
+    "parameter_codes",
+    "fixed_evaluators",
+    "finite_contract",
+    "object_language_target",
+    "proof_status"
+  ],
+  "properties": {
+    "source_snapshot": {
+      "type": "object",
+      "required": ["repository", "commit"],
+      "properties": {
+        "repository": {"type": "string"},
+        "commit": {"type": "string", "minLength": 40, "maxLength": 40},
+        "paths": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "statement_class": {
+      "enum": ["exact", "approximate", "relational", "certificate-relative", "conditional", "obstruction"]
+    },
+    "parameter_codes": {
+      "type": "object",
+      "required": ["description", "domain_guard"],
+      "properties": {
+        "description": {"type": "string"},
+        "domain_guard": {"type": "string"}
+      }
+    },
+    "fixed_evaluators": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "arity", "meaning"],
+        "properties": {
+          "name": {"type": "string"},
+          "arity": {"type": "integer", "minimum": 0},
+          "meaning": {"type": "string"}
+        }
+      }
+    },
+    "finite_contract": {
+      "type": "object",
+      "properties": {
+        "challenges": {"type": "string"},
+        "answer_bound": {"type": "string"},
+        "good": {"type": "string"},
+        "compatibility": {"type": "string"},
+        "observation": {"type": "string"},
+        "precision_ledger": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "trace": {
+      "type": "object",
+      "properties": {
+        "good": {"type": "string"},
+        "init": {"type": "string"},
+        "bound": {"type": "string"},
+        "step": {"type": "string"},
+        "invariant": {"type": "string"},
+        "accept": {"type": "string"}
+      }
+    },
+    "producer_status": {
+      "enum": ["proved", "external-certificate", "conditional", "open", "not-applicable"]
+    },
+    "object_language_target": {
+      "type": "object",
+      "required": ["context", "formula"],
+      "properties": {
+        "context": {"type": "string"},
+        "formula": {"type": "string"},
+        "lean_name": {"type": "string"}
+      }
+    },
+    "proof_status": {
+      "type": "object",
+      "required": ["human", "lean"],
+      "properties": {
+        "human": {"enum": ["complete", "outline", "target"]},
+        "lean": {"enum": ["kernel-checked", "compiled-semantic-only", "blueprint", "absent"]},
+        "placeholders": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "audit": {
+      "type": "object",
+      "properties": {
+        "build_log": {"type": "string"},
+        "axiom_report": {"type": "string"},
+        "executable_checks": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

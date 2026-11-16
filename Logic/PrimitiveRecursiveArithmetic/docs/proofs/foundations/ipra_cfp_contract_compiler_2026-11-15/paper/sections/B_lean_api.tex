@@ -1,0 +1,126 @@
+\section{Exact Lean API map}
+
+This appendix records the minimum interface needed to complete the formal
+development.
+
+\subsection{\code{PR} and terms}
+
+The repository defines:
+\begin{lstlisting}[language={}]
+inductive PR : Nat -> Type
+  | zero : PR 0
+  | succ : PR 1
+  | proj {k : Nat} (i : Fin k) : PR k
+  | comp {m k : Nat} (f : PR m) (gs : Fin m -> PR k) : PR k
+  | prec {k : Nat} (f : PR k) (g : PR (k + 2)) : PR (k + 1)
+
+inductive PTm (n : Nat) : Type
+  | var (i : Fin n) : PTm n
+  | app {k : Nat} (f : PR k) (ts : Fin k -> PTm n) : PTm n
+\end{lstlisting}
+The recursion argument of \code{prec} comes first:
+\[
+\begin{aligned}
+ \mathsf{prec}(f,g)(0,\vec x)&=f(\vec x),\\
+ \mathsf{prec}(f,g)(S y,\vec x)
+   &=g(y,\mathsf{prec}(f,g)(y,\vec x),\vec x).
+\end{aligned}
+\]
+
+\subsection{\PRAAx}
+
+The axiom family has constructors for projections, composition, zero and
+successor recursion equations, \(Sx\ne0\), successor injectivity, and
+quantifier-free induction:
+\begin{lstlisting}[language={}]
+PRAAx.proj
+PRAAx.comp
+PRAAx.precZero
+PRAAx.precSucc
+PRAAx.succNeZero
+PRAAx.succInj
+PRAAx.ind (phi : Fm PTm (n + 1)) (h : phi.QF)
+\end{lstlisting}
+The namespace \code{PRA} provides substitution-ready theorem wrappers:
+\begin{lstlisting}[language={}]
+PRA.proj
+PRA.comp
+PRA.precZero
+PRA.precSucc
+PRA.succNeZero
+PRA.qfInd
+\end{lstlisting}
+
+The signature of \code{PRA.qfInd} is conceptually:
+\[
+\frac{
+ \Gamma\vdash\varphi(0)
+ \qquad
+ \varphi(y),\Gamma^\uparrow\vdash\varphi(Sy)
+ \qquad \varphi\text{ quantifier-free}
+}{
+ \Gamma\vdash\forall y\,\varphi(y)
+}.
+\]
+The formalization should use this theorem directly rather than rebuild
+induction from the raw axiom.
+
+\subsection{Proof composition}
+
+The deduction library supplies hypothesis, axiom, implication introduction
+and elimination, conjunction operations, universal introduction and
+elimination, and substitution.  Local node contracts should be packaged as
+ordinary Lean values of the relevant \code{Prf} type.  The graph compiler is
+then a meta-level recursive function that combines those values.
+
+A useful first representation is:
+\begin{lstlisting}[language={}]
+structure LocalContract (n : Nat) where
+  premise : Fm PTm n
+  result  : Fm PTm n
+  premiseQF : premise.QF
+  resultQF  : result.QF
+  proof : [premise] |-[(PRAAx)] result
+\end{lstlisting}
+The actual context notation and universe parameters should follow
+\code{ConciseIPRA.Deduction}; the blueprint file keeps these details explicit.
+
+\subsection{Native transfer}
+
+The repository theorem
+\begin{lstlisting}[language={}]
+pra_iff_native :
+  (Gamma |-[(PRAAx)] phi) <->
+  NPrf (Gamma.map NFm.ofPRA) (NFm.ofPRA phi)
+\end{lstlisting}
+is the final bridge.  It should appear at the end of the dependency graph.
+Using it earlier does not reduce the obligation to construct the left-hand
+derivation.
+
+\subsection{Recommended theorem names}
+
+\begin{longtable}{p{.34\linewidth}p{.56\linewidth}}
+\toprule
+\textbf{Name} & \textbf{Statement}\\
+\midrule
+\endhead
+\code{PRA.allBelow\_correct} &
+Boolean fold equals \(1\) exactly when all bounded tests succeed.\\
+\code{PRA.firstTrue\_correct} &
+Bounded witness routine returns a valid least witness or the sentinel.\\
+\code{PRA.tableRun\_zero}, \code{tableRun\_succ} &
+Defining equations of the coded trace.\\
+\code{PRA.traceReflection} &
+Base/step/final local proofs imply the final trace verifier.\\
+\code{PRA.reverseDemand\_adequate} &
+Every upstream request dominates each outgoing demand.\\
+\code{PRA.relationalPath} &
+Finite viability yields a compatible path through a requested horizon.\\
+\code{PRA.gapDecision} &
+A fine approximation plus zero-or-gap evidence decides the alternative.\\
+\code{PRA.contractDAGReflection} &
+Local node proof objects compose to the global sink contract.\\
+\code{PRA.cubicBisection} &
+The cubic trace returns a regular residual name with quantitative uniqueness.\\
+\bottomrule
+\end{longtable}

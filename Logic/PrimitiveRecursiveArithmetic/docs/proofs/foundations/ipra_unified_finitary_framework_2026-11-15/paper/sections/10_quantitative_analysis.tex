@@ -1,0 +1,231 @@
+\section{A quantitative library for analysis and approximation}
+\label{sec:analysis-library}
+
+This section records the shared analytic lemmas that should be formalized once
+and reused.  The purpose is not to recreate a set-theoretic real-analysis
+library inside iPRA.  It is to isolate finite rational contracts sufficient for
+the theorem packets.
+
+\subsection{Dyadic and rational names}
+
+A fast rational name is a fixed evaluator \(a(p,k)\in\Q\) satisfying
+\begin{equation}
+ |a(p,k)-a(p,\ell)|\le 2^{-k}+2^{-\ell}.
+ \label{eq:regular-name}
+\end{equation}
+Rationals are coded by signed numerators and positive denominators, or by
+normalized dyadics where convenient.  Absolute value, cross-multiplied order,
+addition, multiplication, and finite sums are primitive recursive on the
+codes.  Denominator positivity is part of every rational-domain guard.
+
+The relation \eqref{eq:regular-name} is a first-order schema for each fixed
+evaluator symbol.  It does not quantify over functions.  Equality of two
+names is expressed by
+\[
+ |a(p,k)-b(q,\ell)|\le 2^{-k}+2^{-\ell}
+\]
+for all \(k,\ell\), or by an equivalent one-precision formulation with a
+constant shift.
+
+\subsection{Addition, multiplication, and inverse}
+
+Addition needs only a constant precision shift.  Define
+\[
+ c(p,q,k)=a(p,k+2)+b(q,k+2).
+\]
+Two applications of \eqref{eq:regular-name} and the triangle inequality show
+that \(c\) is again regular.  Negation is immediate.
+
+Multiplication additionally needs a magnitude contract.  If all queried
+samples of \(a\) and \(b\) have absolute value at most \(M\), then
+\[
+ |a_kb_k-a_\ell b_\ell|
+ \le M|a_k-a_\ell|+M|b_k-b_\ell|.
+\]
+A primitive-recursive shift \(r(M,k)\) making the right side at most the
+requested dyadic error yields a multiplication name.  The magnitude bound may
+be supplied globally or computed from a coarse sample plus the regularity
+radius.
+
+For inverse, suppose a positive rational \(d\) certifies
+\(|a_k|\ge d\) at every precision queried by the algorithm.  Then
+\[
+ \left|\frac1{a_k}-\frac1{a_\ell}\right|
+ =\frac{|a_k-a_\ell|}{|a_ka_\ell|}
+ \le d^{-2}|a_k-a_\ell|.
+\]
+Choose the input precision so that the final expression meets the output
+budget.  Numerically, inverse is totalized; correctness is asserted only under
+the apartness guard.  Division is multiplication followed by guarded inverse.
+
+\begin{theorem}[Arithmetic of guarded regular names]
+\label{thm:regular-name-arithmetic}
+For every fixed family of input evaluators, iPRA proves regularity and
+extensionality of addition, negation, multiplication under a magnitude bound,
+and inverse under a positive apartness bound.  The required precision
+transformers are primitive recursive and compose.
+\end{theorem}
+
+\begin{proof}
+Fix an output precision and instantiate the finitely many input regularity,
+magnitude, and apartness facts used at that precision.  Clear positive
+rational denominators and prove the resulting integer inequalities.  Each
+calculation is a bounded trace whose invariant is the current rational error
+budget.  Apply the trace compiler, then universally quantify the output
+precision.  The displayed elementary inequalities give the local soundness
+proofs.
+\end{proof}
+
+\subsection{Finite sums, products, and polynomial evaluation}
+
+A finite sum carries the invariant
+\[
+ \left|\sum_{i<j}\widetilde x_i-
+       \sum_{i<j}x_i\right|
+ \le \sum_{i<j}e_i.
+\]
+A finite product carries a magnitude bound and the telescoping identity
+\[
+ \prod_{i<n}x_i-\prod_{i<n}y_i
+ =\sum_{j<n}(x_j-y_j)
+   \left(\prod_{i<j}x_i\right)
+   \left(\prod_{j<i<n}y_i\right).
+\]
+Both are proved by quantifier-free induction on the finite length after all
+error quantities have been rationally encoded.  Horner evaluation gives a
+particularly compact polynomial trace and error recurrence.  Matrix
+multiplication, determinants by a permutation sum or fraction-free
+elimination, truncated power series, and finite convolutions are instances of
+the same library.
+
+\subsection{Finite-net transfer}
+
+Let \(K(p)\) be a represented compact domain only in the following concrete
+sense: for each rational radius \(\rho\), a primitive-recursive function
+returns a finite list \(N(p,\rho)\), and a certificate proves
+\[
+ \forall x\in K(p)\;\exists y\in N(p,\rho)\; d(x,y)\le\rho.
+\]
+The quantifiers over represented points are interpreted through the finite
+presentation used by the theorem; in a fully embedded statement, coverage is
+a certificate-relative first-order formula.
+
+Let \(f\) have a modulus \(\omega\): if \(d(x,y)\le\rho\), then
+\(|f(x)-f(y)|\le\omega(\rho)\).
+
+\begin{theorem}[Finite-net transfer]
+\label{thm:finite-net-transfer}
+If \(N\) is a \(\rho\)-net, \(f(y)\ge L\) for every \(y\in N\), and
+\(\omega(\rho)\le\eta\), then \(f(x)\ge L-\eta\) throughout the represented
+domain.  Likewise, a grid point whose value is within \(\eta\) of the finite
+grid minimum is within \(2\eta\) of the global infimum.
+\end{theorem}
+
+\begin{proof}
+For an arbitrary represented \(x\), the finite coverage certificate and
+bounded search give a net point \(y\) with \(d(x,y)\le\rho\).  The modulus
+gives \(f(x)\ge f(y)-\eta\ge L-\eta\).  For minimization, compare the selected
+grid point to a net point near an arbitrary \(x\), then take the finite minimum
+using bounded search.  No abstract compactness or completed infimum object is
+used.
+\end{proof}
+
+The minimum \emph{value} needs no unique minimizer.  A coherent minimizer name
+requires a quantitative uniqueness or shrinking-viability hypothesis.
+
+\subsection{Riemann sums and integration}
+
+An integral theorem is represented by a quadrature algorithm plus two finite
+contracts:
+
+\begin{enumerate}
+\item a modulus controlling the change of the integrand within each cell; and
+\item a tail or truncation estimate if the interval or series is unbounded.
+\end{enumerate}
+
+For a bounded interval and a mesh of width \(\rho\), upper and lower rational
+sums differ by at most interval length times \(\omega(\rho)\).  The trace
+computes the finite sum, while the invariant accumulates rounding and mesh
+errors.  Additivity, linearity, and change of variables for explicitly
+monotone rational maps reduce to finite sum rearrangements and modulus bounds.
+
+The fundamental theorem of calculus should therefore be split into finite
+statements.  For the derivative-to-integral direction, telescope finite
+increments and control each local remainder.  For the integral-to-derivative
+direction, compare a difference quotient to cell averages using a continuity
+modulus.  A theorem packet that states merely that a derivative is continuous
+has not yet supplied the numerical input required by the iPRA proof.
+
+\subsection{Series and analytic functions}
+
+A series-defined function is a fixed finite-sum evaluator together with a
+primitive-recursive tail bound
+\[
+ \left|\sum_{j\ge N}t_j(p,z)\right|\le T(p,z,N).
+\]
+All algebraic identities are first proved for finite truncations.  Tail bounds
+then transfer them to the represented function at a fixed requested
+precision.  This pattern covers exponential, sine, cosine, logarithm on a
+guarded domain, Euler products over bounded primes, and many special-function
+identities.
+
+Local analytic inversion uses a finite certificate: a center, rational box,
+derivative or Jacobian gap, contraction constant, coefficient or derivative
+bounds, and a radius.  Finite iteration constructs approximations; the
+contraction estimate gives horizontal shrinking.  Singular branch discovery
+is a separate producer problem and must not be hidden in the local theorem.
+
+\subsection{Approximate extrema}
+
+For a finite rational grid, bounded search returns a least residual or least
+value point.  Let \(m_k\) denote the finite minimum.  The finite-net theorem
+turns \(m_k\) into a name for the infimum value.  To obtain a point:
+
+\begin{itemize}
+\item retain the relation of all \(\eta_k\)-near-minimizers; or
+\item provide a quantitative uniqueness estimate, such as strong convexity,
+      and apply shrinking viability.
+\end{itemize}
+
+This resolves a common constructive mismatch.  The operation
+``take the infimum value'' is often stable, while ``take the unique point where
+it is attained'' needs more data.
+
+\subsection{Finite probability laws}
+
+A finite rational law is a list of outcomes and nonnegative rational weights
+summing to one.  Expectation, variance, characteristic functions at rational
+arguments, convolution, and distribution values at rational thresholds are
+finite sums.  Approximation of an unbounded or continuous law requires
+explicit tail and quantization moduli.  Approximation of a discontinuous CDF
+at a threshold additionally requires an anti-concentration or boundary-mass
+bound.
+
+Thus a constructive central-limit statement has a transparent shape:
+finite rational laws, a finite convolution or characteristic-function trace,
+a quantitative error estimate, and a rational threshold protected by a
+boundary budget.  Higher-type measures are unnecessary unless they are given
+through a fixed finite-observation evaluator with the corresponding moduli.
+
+\subsection{Precision ledgers}
+
+Every analytic module should export a machine-readable precision ledger:
+
+\begin{longtable}{@{}p{0.24\textwidth}p{0.68\textwidth}@{}}
+\toprule
+Field & Meaning\\
+\midrule
+\endhead
+Output challenge & Requested error, region, derivative order, or test.\\
+Input queries & Exact finite list or adaptive trace of samples.\\
+Magnitude data & Bounds needed for products, tails, or matrix operations.\\
+Apartness data & Positive margins needed by inverses and exact branches.\\
+Truncation bound & Number of series terms, grid cells, or iterations.\\
+Roundoff budget & Rational allocation to every finite operation.\\
+Analytic remainder & Tail, modulus, contraction, or residual estimate.\\
+Final inequality & Arithmetic implication proving the output contract.\\
+\bottomrule
+\end{longtable}
+
+The ledger is not auxiliary documentation.  It is the numerical content from
+which the fixed-precision object-language proof is built.

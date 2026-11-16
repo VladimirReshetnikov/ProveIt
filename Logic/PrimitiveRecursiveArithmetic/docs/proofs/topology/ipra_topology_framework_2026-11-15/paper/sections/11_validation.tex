@@ -1,0 +1,57 @@
+
+\section{Executable finite validation}
+\label{sec:validation}
+
+\subsection{Reference kernel}
+
+The file \code{code/topology\_kernel.py} is an exact standard-library implementation of:
+\begin{itemize}
+  \item finite abstract simplicial complexes and downward closure;
+  \item strong carriers and relational composition;
+  \item least and greatest selections;
+  \item mod-$2$ boundary matrices and Gaussian rank;
+  \item Betti numbers;
+  \item simplicial chain maps;
+  \item the mod-$2$ prism operator and matrix identity;
+  \item finite preorders, upward opens, monotonicity, and continuity;
+  \item finite prefixes of observation towers.
+\end{itemize}
+
+All computations use integers and finite sets.  There is no floating-point arithmetic and no random test dependence.
+
+\subsection{Test results}
+
+The delivered run passes 15 unit tests.  They include:
+\begin{enumerate}
+  \item Betti numbers of an interval, a cycle, and two isolated points;
+  \item $\partial^2=0$ on a filled triangle;
+  \item mod-$2$ matrix rank;
+  \item rejection of an invalid carrier;
+  \item chain-map commutation with boundary;
+  \item carrier composition and tower composition;
+  \item contiguity of least and greatest circle-refinement selections;
+  \item the full prism matrix identity;
+  \item the Sierpinski topology and the discrete two-point topology;
+  \item exhaustive equivalence of monotonicity and continuity for all maps among three representative two-point preorders;
+  \item validation of the JSON circle carrier certificate.
+\end{enumerate}
+
+The recorded circle certificate has source $C_8$, target $C_4$, Betti vectors $(1,1)$ on both sides, and two distinct selections.  The kernel confirms that the selections are contiguous and that
+\[
+  \partial P+P\partial=f_\#+g_\#
+\]
+holds as an equality of finite matrices in every source dimension.
+
+\subsection{What the tests establish}
+
+The tests establish that the supplied reference implementation behaves as described on the covered finite instances.  They are useful for detecting indexing, normalization, parity, and boundary errors.  They do not prove the universal carrier or prism theorems, and they do not check a $\Prf\ \PRAAx$ derivation.  The universal proofs are the human arguments in \cref{sec:carriers}; their formalization path is \cref{sec:lean}.
+
+\subsection{Reproduction}
+
+From the package root:
+\begin{lstlisting}[language=bash]
+python3 -m unittest -v code/test_topology_kernel.py
+python3 code/topology_kernel.py --example
+python3 code/topology_kernel.py examples/circle_carrier.json
+\end{lstlisting}
+The validation directory contains the captured outputs.

@@ -1,0 +1,90 @@
+\section{Status, limitations, and further research}
+
+\subsection{What is proved in this report}
+
+The human-readable arguments establish:
+\begin{itemize}[leftmargin=1.6em]
+\item Boolean compilation of bounded quantifiers and bounded witness search;
+\item finite-trace reflection from base and step contracts;
+\item the contract-DAG composition theorem with reverse demands;
+\item finite-horizon coherent selection for relational outputs;
+\item collapse to deterministic output under an isolation certificate;
+\item overlapping-branch soundness and exact gap decision;
+\item backward precision budgeting;
+\item bounded enumeration and the bound--list equivalence;
+\item the impossibility of deriving a cutoff from a uniform cardinality-one
+      bound;
+\item an exact bisection certificate and quantitative uniqueness theorem for
+      \(y^3+y=x\) on \(0\le x\le1\).
+\end{itemize}
+
+The proofs are finitary and explicitly identify quantifier-free invariants.
+They are designed to be formalized with the inspected \code{ConciseIPRA}
+interfaces.
+
+\subsection{What is not claimed}
+
+No complete generic \(\Prf\,\PRAAx\) implementation is included.  The Lean
+files are blueprints and semantic prototypes, not compiler-checked object
+proofs.  The report does not prove:
+\begin{itemize}[leftmargin=1.6em]
+\item general effective Siegel or Faltings;
+\item a primitive-recursive generator of Mordell--Weil bases for arbitrary
+      elliptic curves;
+\item effective versions of every prime-distribution estimate in the packet
+      catalog;
+\item uniform exact Puiseux branches from arbitrary Cauchy coefficients;
+\item exact unit-axis selection for arbitrary represented rotations;
+\item an infinite-path principle for arbitrary finitely branching trees.
+\end{itemize}
+
+In each case, the framework gives either a conditional verifier theorem, a
+weaker stable output, or a barrier explaining why the stronger interface
+requires additional data.
+
+\subsection{Priority formalization targets}
+
+\begin{enumerate}[label=\arabic*.]
+\item \textbf{Object Boolean folds.}  They unlock bounded quantifiers,
+      finite lists, search, and graph invariants.
+\item \textbf{Generic finite trace.}  This should be the first substantial
+      reusable \code{Prf PRAAx} theorem.
+\item \textbf{Cubic benchmark.}  It exercises rational codes, branching,
+      recursion, inequalities, and all-precision introduction without deep
+      external mathematics.
+\item \textbf{Relational finite roots.}  A polynomial disk-cover benchmark
+      tests compatibility and multivalued outputs.
+\item \textbf{One existing packet.}  Basel-type finite inequalities or a
+      Runge bounded-enumeration case would test end-to-end integration.
+\end{enumerate}
+
+\subsection{Research questions}
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=3em]
+\item Can the local contract language be chosen so that quantifier-freeness
+      and proof composition are guaranteed by construction?
+\item Can an untrusted Lean metaprogram compile a contract graph to compact
+      \code{Prf PRAAx} terms whose size is polynomial in the graph and local
+      proofs?
+\item Which classical single-valued theorems admit uniform finite relational
+      reformulations, and what quantitative isolation data collapses them?
+\item Can proof mining systematically extract the reverse demand maps from
+      existing constructive Lean proofs?
+\item Which ineffective analytic theorems have independently verifiable
+      finite certificates even when no known uniform producer exists?
+\item Can a common finite-cover interface serve topology, complex analysis,
+      algebraic root isolation, and Diophantine subspace arguments?
+\item What is the smallest native-core proof checker needed for the generated
+      contract proofs, measured after maximal gzip compression?
+\end{enumerate}
+
+\subsection{Conclusion}
+
+The right general framework for mathematics in iPRA is not a library of
+completed infinite objects.  It is a calculus of finite observations,
+explicit demands, guarded operations, relational outputs, and bounded proof
+traces.  The contract-DAG theorem gives these ingredients a compositional
+form.  It makes successful packet proofs reusable and failed packet proofs
+diagnosable: every gap appears as a missing producer, missing verifier,
+missing quantitative margin, or impossible selector.  That is enough to move
+from isolated outlines toward a genuine formal library.

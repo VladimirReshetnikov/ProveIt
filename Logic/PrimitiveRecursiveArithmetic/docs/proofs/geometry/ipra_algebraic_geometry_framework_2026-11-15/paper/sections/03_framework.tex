@@ -1,0 +1,168 @@
+\section{A general framework: certified presentations and finite descent}
+
+\subsection{The five-layer architecture}
+
+A reusable embedding of mathematics into iPRA should make the transition from ordinary mathematical
+language to arithmetic explicit.  The following five layers are sufficient for the examples in this
+report and subsume the earlier finite-contract methodology.
+
+\begin{description}[style=nextline]
+\item[Layer 1: numerical representation.]
+Every datum is a natural-number code.  Lists, trees, signed integers, polynomials, matrices, and
+finite diagrams have primitive-recursive constructors and bounded accessors.  Malformed inputs are
+handled by total default values; a separate predicate $\Valid(x)$ states the intended domain.
+
+\item[Layer 2: proof-relevant equality.]
+An object code need not have a canonical normal form.  Equality is witnessed by a code $w$ satisfying
+$\EqW(x,y,w)$.  The checker is primitive recursive, and fixed primitive-recursive transformers
+produce witnesses for reflexivity, symmetry, transitivity, and congruence.
+
+\item[Layer 3: static algebra and finite diagrams.]
+Operations are fixed PR functions on codes.  A finite diagram consists of finitely many objects,
+arrows, and compatibility witnesses.  There is no quantification over an open-ended universe of
+programs or objects.
+
+\item[Layer 4: observations, covers, and descent.]
+A theorem asks only for a finite observation: a bounded coefficient identity, a local section on a
+finite cover, a finite \v{C}ech class, or a finite error bound.  Local answers are composed using
+explicit compatibility and gluing certificates.
+
+\item[Layer 5: object-theory reflection.]
+The finite checker and constructor are represented by $\PR$ terms.  Their loop invariants are
+quantifier-free formulas.  The result is assembled as a term of type $\Prf\ \PRAAx\ \Gamma\ \varphi$.
+\end{description}
+
+The architecture is deliberately asymmetric.  A witness may certify a correct output even when no
+uniform procedure can discover that witness from the raw input.  This is not a defect: it isolates
+the actual mathematical producer theorem.
+
+\subsection{Certified setoids}
+
+\begin{definition}[Certified setoid]
+A certified setoid consists of fixed primitive-recursive functions
+\[
+\Valid(x),\qquad \EqW(x,y,w),\qquad
+\mathsf{refl}(x),\quad \mathsf{sym}(x,y,w),\quad
+\mathsf{trans}(x,y,z,u,v),
+\]
+together with iPRA derivations of
+\begin{align*}
+  \Valid(x)&\to \EqW(x,x,\mathsf{refl}(x)),\\
+  \EqW(x,y,w)&\to \EqW(y,x,\mathsf{sym}(x,y,w)),\\
+  \EqW(x,y,u)\wedge\EqW(y,z,v)
+    &\to \EqW(x,z,\mathsf{trans}(x,y,z,u,v)).
+\end{align*}
+The existential relation $x\simeq y :\Leftrightarrow \exists w\,\EqW(x,y,w)$ is the represented
+equality.
+\end{definition}
+
+No decision procedure for $x\simeq y$ is required.  A theorem using an equality carries the witness
+it needs.  This representation is stronger than merely declaring an equivalence relation: it makes
+proof composition an explicit finite operation.
+
+\begin{definition}[Certified map]
+A certified map $F:A\to B$ is a fixed PR function on codes, a domain-preservation proof, and a PR
+witness transformer $F_*$ satisfying
+\[
+   \EqW_A(x,y,w)\to \EqW_B(Fx,Fy,F_*(x,y,w)).
+\]
+\end{definition}
+
+Certified maps compose by ordinary function composition and composition of witness transformers.
+Identity maps use the supplied reflexivity witness.  Thus represented objects and certified maps
+form a category at the metalevel, while every individual composition is a finite arithmetic
+construction.
+
+\begin{proposition}[Finite extensional compilation]
+Fix certified setoids, certified maps, and a finite expression tree built from their operations.  A
+witness that corresponding leaves are equal can be transformed primitive-recursively into a witness
+that the two expression values are equal.  The correctness proof uses only structural recursion on
+the fixed expression and quantifier-free induction for the bounded list folds occurring in the
+code.
+\end{proposition}
+
+\begin{proof}
+At each operation node apply its congruence transformer.  At a finite-list node fold the binary
+transformer while maintaining the quantifier-free invariant that the current accumulator pair has a
+valid equality witness.  Since the expression tree is fixed before the theorem is formed, the
+metalevel structural recursion produces a finite derivation; it is not an object-level truth
+predicate.
+\end{proof}
+
+\subsection{Algebraic structures without quotient types}
+
+A certified ring is a certified setoid equipped with PR operations $0,1,+,-,\cdot$ and witness
+transformers for congruence.  Its ring laws are finite families of equality witnesses.  A certified
+module similarly supplies addition, negation, scalar multiplication, and their congruence data.
+
+This formulation accommodates several common representations:
+
+\begin{itemize}
+\item rational numbers as numerator/positive-denominator pairs with cross-multiplication witnesses;
+\item projective points as primitive coordinate tuples with scaling witnesses;
+\item quotient rings as polynomial codes with ideal-combination witnesses;
+\item localization fractions with annihilator witnesses;
+\item Cauchy names observed only to a finite precision, with quantitative closeness witnesses;
+\item chain complexes whose equality is coefficientwise certificate equality.
+\end{itemize}
+
+The key gain is uniformity.  Once an operation has a congruence transformer, all later constructions
+can use it without deciding a quotient equality or selecting a canonical representative.
+
+\subsection{Finite diagrams and descent objects}
+
+A finite diagram has a natural-number bound $r$ on its objects and finitely coded arrows.  Source,
+target, identity, and composition are fixed PR functions.  Equality of arrows is proof-relevant.
+A diagram-valued construction supplies object and arrow codes together with finite commutativity
+witnesses.
+
+For geometry, a cover is represented by a finite index set $i<r$, local objects $A_i$, overlap
+objects $A_{ij\alpha}$, and restriction maps.  A descent datum is a tuple $s_i$ with equality
+witnesses between its restrictions on each overlap, plus cocycle witnesses where needed.  A gluing
+contract consists of
+\begin{enumerate}[label=(\alph*)]
+\item a PR constructor producing a candidate global code;
+\item PR constructors for the restriction-equality witnesses;
+\item a PR uniqueness transformer taking local equality witnesses to a global one.
+\end{enumerate}
+
+The principal-open case will supply all three explicitly.  More general finite sites can take them
+as verified primitives or reduce them to principal refinements.
+
+\subsection{Exact, relational, and approximate outputs}
+
+The framework has three output modes.
+
+\begin{description}[style=nextline]
+\item[Exact certificate mode.]
+A quotient identity, localization equality, or matrix equation is returned with an exact finite
+witness.  This is the main mode of the algebraic geometry developed below.
+
+\item[Relational finite-use mode.]
+A producer supplies a finite relation of possible charts, branches, or refinements.  A bounded
+consumer uses the repository's finite-use viability construction.  The final output must be
+branch-invariant or quantitatively stable.
+
+\item[Approximation mode.]
+A represented infinite object is queried only to finitely many precisions.  A modulus, apartness
+witness, or error DAG determines the demanded input precision.  Exact algebraic conclusions may not
+be inferred without exact separation data.
+\end{description}
+
+These modes can be mixed.  For example, a singular variety may be covered by a finite relation of
+candidate charts, while each chosen chart carries exact polynomial and localization certificates.
+The finite-use framework handles chart choice; the certified atlas handles algebraic gluing.
+
+\subsection{The no-universal-evaluator discipline}
+
+Nothing above licenses a PR function that evaluates arbitrary encoded PR programs.  There are two
+sound implementation patterns:
+
+\begin{enumerate}[label=\arabic*.]
+\item the theorem fixes a particular function code built from the constructors of $\PR$;
+\item the input contains a finite execution trace and a fixed checker verifies each transition.
+\end{enumerate}
+
+A degree parameter, number of variables, cover size, or matrix dimension may be an ordinary numerical
+input to one fixed evaluator.  What is forbidden is replacing that evaluator by a universal
+interpreter whose termination or primitive recursiveness has not been established.

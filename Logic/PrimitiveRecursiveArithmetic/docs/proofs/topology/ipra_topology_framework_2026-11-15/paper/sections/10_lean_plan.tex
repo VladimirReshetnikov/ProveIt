@@ -1,0 +1,124 @@
+
+\section{Lean formalization plan}
+\label{sec:lean}
+
+\subsection{Target repository interfaces}
+
+The current ProveIt API needed by this work is small:
+\begin{itemize}
+  \item \code{PR k}: fixed primitive-recursive function syntax;
+  \item \code{PTm n}: arithmetic terms;
+  \item \code{Fm PTm n}: formulas;
+  \item \code{PRAAx}: defining equations, successor axioms, and quantifier-free induction;
+  \item \code{Prf}: intuitionistic derivations;
+  \item \code{PRA.proj}, \code{PRA.comp}, \code{PRA.precZero}, \code{PRA.precSucc}: defining-equation lemmas;
+  \item \code{PRA.qfInd}: object quantifier-free induction;
+  \item \code{pra\_iff\_native}: the final native transport.
+\end{itemize}
+
+The supplied file \code{lean/IPRAObjectLanguageBlueprint.lean} imports these actual modules and states the intended endpoints.  It deliberately does not replace them by a surrogate proof relation.
+
+\subsection{Phase 1: primitive-recursive data structures}
+
+Implement explicit \code{PR} syntax trees for:
+\begin{enumerate}
+  \item pair, left, right, list length, bounded list access;
+  \item bit membership, bounded union/intersection, popcount;
+  \item bounded all/any/search and least witness;
+  \item signed integers and mod-$2$ arithmetic;
+  \item finite vectors and matrices;
+  \item lexicographic enumeration of bitsets and simplices.
+\end{enumerate}
+
+For each symbol, prove its defining equations using the existing composition and primitive-recursion lemmas.  Malformed codes return defaults.  Domain predicates are separate Boolean terms.
+
+\subsection{Phase 2: bounded Booleanization}
+
+Define a metalevel inductive syntax of bounded formulas.  Its compiler returns:
+\begin{lstlisting}[language={},caption={Required Booleanization interface}]
+structure Booleanized (n : Nat) where
+  formula    : Fm PTm n
+  test       : PR n
+  equivalent : [] |- [PRAAx] (formula <-> accepts test)
+\end{lstlisting}
+The displayed notation is schematic; the actual file uses \code{Fm.iff} and equality with the numeral one.  Prove the compiler correct by syntax recursion.  Bounded quantifier nodes emit finite folds and close them with \code{PRA.qfInd}.
+
+This phase is the most reusable missing component in the repository.  Once it exists, preorder, simplex, carrier, path, and matrix invariants become equalities of Boolean terms.
+
+\subsection{Phase 3: finite complexes and carriers}
+
+Represent a complex by a vertex bound and a simplex-test symbol.  Its contract proves empty-simplex and downward-closure laws.  Represent a carrier by a cloud symbol.  Prove:
+\begin{enumerate}
+  \item cloud nonemptiness and bounds;
+  \item the strong carrier condition;
+  \item correctness of least selection;
+  \item selection simpliciality;
+  \item contiguity of any two bounded selections;
+  \item validity and associativity of relational composition.
+\end{enumerate}
+
+All formulas are bounded by the vertex counts.  The human proofs in \cref{thm:carrier-composition,thm:selection} translate directly to bitset inclusions and downward closure.
+
+\subsection{Phase 4: finite preorders}
+
+Define a Boolean relation $\leq_X$ and bounded formulas for reflexivity and transitivity.  An open bitset is upward closed.  Define inverse image by a bounded fold.  Formalize \cref{thm:finite-preorder,thm:finite-continuity}.
+
+One convenient route avoids enumerating all $2^n$ opens in the continuity theorem: prove monotonicity implies preservation of every upward bitset by taking an arbitrary numerical bitset variable.  Conversely use the principal upward set $U_{f(x)}=\{y:f(x)\leq y\}$, whose characteristic function is a fixed Boolean term.
+
+\subsection{Phase 5: chain complexes and the prism}
+
+Enumerate $q$-simplices by bounded search over bitsets.  A mod-$2$ chain is a bitset over this enumeration.  Define:
+\[
+  \partial_q,\quad f_{\#,q},\quad P_q
+\]
+as bounded parity folds.  Prove:
+\begin{enumerate}
+  \item $\partial^2=0$ by pairing the two deletion orders;
+  \item $f_\#$ commutes with boundary;
+  \item the prism identity by the explicit tag involution from \cref{thm:prism}.
+\end{enumerate}
+
+The invariant for a parity fold is an equality modulo $2$ between the processed prefix and a specification fold.  It is quantifier-free after Booleanization.
+
+\subsection{Phase 6: homology certificates}
+
+Implement bounded Gaussian elimination over $\Ftwo$.  The state contains the matrix, current row and column, pivot list, and accumulated transformation data.  The invariant states that elementary operations preserve row space and that processed pivots are distinct.  The exit theorem yields rank.
+
+A direct internal quotient construction for homology is unnecessary for numerical Betti results.  For induced-map equality, represent a cycle and two image chains explicitly; the prism provides a boundary witness.  If a reusable finite vector-space quotient API is desired, encode reduced bases and normal forms by elimination certificates.
+
+\subsection{Phase 7: tower schemas}
+
+A generic Lean structure may quantify over host functions $k\mapsto K_k$, but an object-\ipra\ theorem must instantiate fixed symbols or finite prefixes.  Therefore provide two layers:
+\begin{enumerate}
+  \item semantic structures in \code{TopologySemanticBlueprint.lean};
+  \item an object compiler that consumes a finite expression describing a fixed family and emits \code{PR} terms and $\Prf\ \PRAAx$ derivations.
+\end{enumerate}
+
+For each requested precision $k$, the theorem computes the finite demand $\mu(k)$ and constructs only the required prefix.  Universal quantification over $k$ is introduced at the end.
+
+\subsection{Phase 8: application modules}
+
+Suggested repository modules are:
+\begin{lstlisting}[language={},caption={Proposed module layout}]
+ConciseIPRA/Applications/FiniteCoding.lean
+ConciseIPRA/Applications/BoundedBoolean.lean
+ConciseIPRA/Applications/FinitePreorder.lean
+ConciseIPRA/Applications/SimplicialComplex.lean
+ConciseIPRA/Applications/Carrier.lean
+ConciseIPRA/Applications/ChainsF2.lean
+ConciseIPRA/Applications/Prism.lean
+ConciseIPRA/Applications/GaussianF2.lean
+ConciseIPRA/Applications/ObservationTower.lean
+ConciseIPRA/Applications/Topology/JordanKernel.lean
+ConciseIPRA/Applications/Topology/DimensionKernel.lean
+\end{lstlisting}
+
+The first end-to-end milestone should be small but genuine:
+\begin{quote}
+construct an object-\ipra\ proof that the two least/maximal selections of the $C_8\multimap C_4$ circle carrier induce homologous images of the fundamental mod-$2$ cycle.
+\end{quote}
+This exercises bitsets, complexes, selections, chains, boundary, prism, and the native bridge without requiring represented analysis.
+
+\subsection{No false completion claim}
+
+The supplied Lean files are uncompiled and contain explicit \code{sorry} obligations.  The build environment used for this package had no Lean executable.  The Python kernel checks the intended finite definitions but is not a Lean compiler and not an \ipra\ proof checker.  These boundaries are recorded in the theorem ledger.

@@ -1,0 +1,140 @@
+\section{Lean formalization architecture}
+
+The archive contains two Lean blueprints.  They are deliberately separated
+into a semantic algorithm layer and a deeply embedded object-theory layer.
+
+\subsection{Layer 1: executable semantic algorithms}
+
+The file \code{lean/FiniteContractSemantic.lean} defines:
+\begin{itemize}[leftmargin=1.6em]
+\item bounded Boolean folds and first-witness search;
+\item finite trace execution;
+\item reverse demand propagation on a topologically ordered finite graph;
+\item fuelled backward viability and coherent finite paths;
+\item bounded enumeration;
+\item rational cubic bisection specifications.
+\end{itemize}
+Its intended theorems are ordinary Lean statements about \code{Nat},
+\code{List}, and \code{Bool}.  They serve three purposes: test the definitions,
+clarify invariants, and provide external semantics lemmas.  They are not the
+iPRA proof.
+
+\subsection{Layer 2: actual ProveIt interfaces}
+
+The object blueprint imports:
+\begin{lstlisting}[language={}]
+import ConciseIPRA.PR
+import ConciseIPRA.NativeBiInterpretation
+\end{lstlisting}
+and works in \code{LeanProofs.ConciseIPRA}.  The relevant existing declarations
+are:
+\begin{lstlisting}[language={}]
+PR.zero   PR.succ   PR.proj   PR.comp   PR.prec
+PTm.var   PTm.app
+PRAAx.proj  PRAAx.comp  PRAAx.precZero  PRAAx.precSucc
+PRAAx.succNeZero  PRAAx.succInj  PRAAx.ind
+PRA.proj  PRA.comp  PRA.precZero  PRA.precSucc
+PRA.qfInd
+pra_iff_native
+\end{lstlisting}
+
+The first implementation milestone is a small object-level arithmetic
+library: numerals, addition, multiplication, truncated subtraction, order
+Booleans, pair/list coding, Boolean folds, and table lookup.  Each function is
+a concrete \code{PR} term, and each defining equation is a
+\(\Prf\,\PRAAx\) theorem composed from \code{PRA.comp},
+\code{PRA.precZero}, and \code{PRA.precSucc}.
+
+\subsection{Object trace structure}
+
+A practical record is:
+\begin{lstlisting}[language={}]
+structure PRTraceSystem (p : Nat) where
+  init    : PR p
+  step    : PR (p + 2)   -- stage, state, parameters
+  guard   : PR (p + 1)   -- state, parameters -> Boolean
+  finish  : PR (p + 1)
+  horizon : PR p
+\end{lstlisting}
+The exact arities can be adjusted to the repository's convention that the
+recursion argument comes first.  The invariant is not a Lean predicate on
+natural numbers; it is an \code{Fm PTm} whose atomic components assert that
+the Boolean \code{guard} term equals \(1\).
+
+The core target has the schematic shape:
+\begin{lstlisting}[language={}]
+theorem PRA.traceReflection
+    (S : PRTraceSystem p)
+    (hQF : (traceInv S).QF)
+    (hBase : Gamma |-[(PRAAx)] baseFormula S)
+    (hStep : stepContext S Gamma |-[(PRAAx)] stepFormula S)
+    (hFinish : finishContext S Gamma |-[(PRAAx)] outputFormula S) :
+    Gamma |-[(PRAAx)] finalFormula S := by
+  -- instantiate PRA.qfInd with the trace invariant;
+  -- use S.init/S.step defining equations;
+  -- compose hBase, hStep, hFinish.
+\end{lstlisting}
+The actual file uses ASCII comments rather than claiming the notation above
+already elaborates.
+
+\subsection{Compilation milestones}
+
+\begin{enumerate}[label=\textbf{M\arabic*.},leftmargin=3em]
+\item \textbf{Boolean folds.}
+      Define \code{prAllBelow}, \code{prAnyBelow}, and \code{prFirst}.
+      Prove their zero/successor equations and object-level correctness.
+\item \textbf{Coded tables.}
+      Define pair, projections, list length, lookup, append, and update as
+      \code{PR} terms.  Prove the lookup-after-update equations needed by the
+      trace invariant.
+\item \textbf{Generic trace.}
+      Encode \code{run} by primitive recursion.  Prove its zero and successor
+      equations using \code{PRA.precZero}/\code{PRA.precSucc}.
+\item \textbf{Trace reflection.}
+      Express the invariant as an \code{Fm PTm}; prove quantifier-freeness;
+      invoke \code{PRA.qfInd}.
+\item \textbf{Reverse demand compiler.}
+      For a fixed graph descriptor generated at Lean elaboration time, build
+      the concrete \code{PR} reverse fold and prove edge adequacy.
+\item \textbf{Node combinators.}
+      Implement identity, deterministic map, product, guarded branch,
+      bounded search, relational refinement, and sequential composition.
+\item \textbf{DAG theorem.}
+      Generate the global invariant from the node list and compose the local
+      \code{Prf} objects.
+\item \textbf{Cubic benchmark.}
+      Instantiate the generic trace with rational bisection and export the
+      all-precision residual theorem.
+\item \textbf{Native transfer.}
+      Only after the \PRAAx\ theorem is complete, apply
+      \code{pra\_iff\_native} or \code{NFm.ofPRA} to obtain a theorem in the
+      native scalar core.
+\end{enumerate}
+
+\subsection{Reflection versus theorem generation}
+
+There are two complementary strategies.
+
+\paragraph{Concrete certificate reflection.}
+For one closed input and one requested precision, a small verified checker
+can reduce the certificate to computation.  A checker soundness theorem then
+converts successful evaluation into a proof.
+
+\paragraph{Uniform theorem generation.}
+For all inputs, finite computation is not enough.  The generated proof must
+contain the base case, step case, and quantifier-free induction.  A
+meta-level compiler may construct these proof terms from a graph descriptor,
+but the resulting terms are checked by Lean's kernel against the \PRAAx\
+rules.
+
+The second strategy is the long-term goal.  It avoids trusting a large tactic:
+the compiler may be untrusted because it emits explicit \code{Prf} objects.
+
+\subsection{Formalization status}
+
+The Lean sources supplied here are a detailed blueprint and semantic
+prototype.  Lean 4.32.0 was not available in the artifact-building runtime,
+so the files were not compiler-checked.  The archive marks every unfinished
+object theorem with \code{sorry} and never treats it as established.
+The mathematical proofs in this report identify the required invariants and
+the exact existing constructors needed to remove those placeholders.

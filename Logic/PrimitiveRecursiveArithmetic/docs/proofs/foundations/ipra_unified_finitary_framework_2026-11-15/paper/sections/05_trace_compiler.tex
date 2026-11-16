@@ -1,0 +1,274 @@
+\section{The proof-producing finite-trace compiler}
+\label{sec:trace-compiler}
+
+\subsection{Trace systems}
+
+All run-time data are paired into one natural number \(u\): original inputs,
+requested precision, numerical bounds, and externally supplied certificate
+codes.  A \emph{trace system} consists of fixed primitive-recursive functions
+\[
+\begin{array}{lll}
+ \mathsf{good}(u), & \mathsf{init}(u), & \mathsf{bound}(u),\\
+ \mathsf{step}(i,s,u), & \mathsf{inv}(i,s,u), &
+ \mathsf{accept}(s,u),
+\end{array}
+\]
+where the Boolean-valued functions are normalized to \(0\) or \(1\).  Its run
+is the primitive recursion
+\begin{align*}
+ \Run(0,u)&=\mathsf{init}(u),\\
+ \Run(i+1,u)&=\mathsf{step}(i,\Run(i,u),u).
+\end{align*}
+In the repository's \(\PR\) syntax this is exactly
+\(\code{PR.prec init step}\), with one parameter after the recursion argument.
+
+The local proof obligations are open object-language formulas:
+\begin{align}
+ \mathsf{good}(u)=1 &\to
+   \mathsf{inv}(0,\mathsf{init}(u),u)=1,
+   \tag{B}\label{eq:trace-base}\\
+ \mathsf{good}(u)=1\wedge\mathsf{inv}(i,s,u)=1 &\to
+   \mathsf{inv}(i+1,\mathsf{step}(i,s,u),u)=1,
+   \tag{S}\label{eq:trace-step}\\
+ \mathsf{good}(u)=1\wedge
+   \mathsf{inv}(\mathsf{bound}(u),s,u)=1 &\to
+   \mathsf{accept}(s,u)=1.
+   \tag{F}\label{eq:trace-final}
+\end{align}
+The essential requirement is not merely that these implications be true in
+\(\N\).  A proof-producing trace package contains actual derivations
+\[
+ []\vdash[\PRAAx]\eqref{eq:trace-base},\qquad
+ []\vdash[\PRAAx]\eqref{eq:trace-step},\qquad
+ []\vdash[\PRAAx]\eqref{eq:trace-final},
+\]
+with the displayed free variables.  They may themselves be generated from
+smaller proof-producing components.
+
+\subsection{The compiler theorem}
+
+\begin{theorem}[Embedded finite-trace reflection]
+\label{thm:embedded-trace}
+From object-language derivations of \eqref{eq:trace-base}--\eqref{eq:trace-final}
+one can construct an object-language derivation
+\[
+ []\vdash[\PRAAx]
+ \forall u\;\bigl(
+  \mathsf{good}(u)=1\to
+  \mathsf{accept}(\Run(\mathsf{bound}(u),u),u)=1
+ \bigr).
+\]
+The construction is primitive recursive on the supplied proof terms.
+\end{theorem}
+
+\begin{proof}
+We give the proof at the level of the repository's derivation constructors.
+Keep \(u\) free and place \(G(u):\mathsf{good}(u)=1\) in the context.  Define
+the induction formula with free variables \(i,u\):
+\[
+ A(i,u):\equiv
+ \mathsf{inv}(i,\Run(i,u),u)=1.
+\]
+It is quantifier free because it is one equation between terms formed from
+fixed primitive-recursive symbols.
+
+For the base derivation, instantiate \eqref{eq:trace-base} at the current
+\(u\), apply it to the context hypothesis \(G(u)\), and use the defining
+zero equation
+\[
+ \Run(0,u)=\mathsf{init}(u)
+\]
+provided by \code{PRA.precZero}.  Equality substitution changes the resulting
+invariant at \(\mathsf{init}(u)\) into \(A(0,u)\).
+
+For the successor derivation, enter the induction context containing
+\(A(i,u)\) and the shifted copy of \(G(u)\).  Instantiate
+\eqref{eq:trace-step} with
+\(s:=\Run(i,u)\).  Modus ponens gives
+\[
+ \mathsf{inv}(i+1,
+   \mathsf{step}(i,\Run(i,u),u),u)=1.
+\]
+The successor defining equation supplied by \code{PRA.precSucc} is
+\[
+ \Run(i+1,u)=\mathsf{step}(i,\Run(i,u),u).
+\]
+Use \code{Prf.eqSubst1} (or simultaneous \code{Prf.eqSubst}) to rewrite the
+state argument.  This produces \(A(i+1,u)\).
+
+Apply \code{PRA.qfInd} to obtain, in context \(G(u)\),
+\(\forall i\,A(i,u)\).  Eliminate the universal quantifier at the term
+\(\mathsf{bound}(u)\).  Instantiate \eqref{eq:trace-final} with
+\(s:=\Run(\mathsf{bound}(u),u)\) and apply it to \(G(u)\) and the specialized
+invariant.  Discharge \(G(u)\) by implication introduction and close \(u\) by
+universal introduction.
+
+Every operation in this construction---substitution of terms into a supplied
+derivation, weakening, implication elimination, equality substitution,
+quantifier-free induction, and universal introduction---is a constructor or a
+proved transformation in \code{ConciseIPRA.Deduction} and
+\code{ConciseIPRA.PR}.  Consequently the construction can be implemented as a
+Lean function producing a \(\Prf\) term, not merely as a metatheoretic
+soundness argument.
+\end{proof}
+
+\begin{remark}[Why the theorem is nontrivial but modest]
+The theorem does not assert that every true primitive-recursive statement is
+provable in iPRA.  Its inputs already include proofs of the local arithmetic
+obligations.  It states that bounded execution and invariant propagation add
+no further logical strength: they are compiled by quantifier-free induction.
+The mathematical burden is to design an invariant for which the local step is
+actually derivable.
+\end{remark}
+
+\subsection{Finite query tables}
+
+Suppose an input object is supplied through a fixed evaluator \(a(p,k)\) and a
+global contract such as
+\[
+ H_a(p):\equiv\forall k\,\forall\ell\;
+ R(a(p,k),a(p,\ell),k,\ell).
+\]
+A trace at requested precision \(n\) reads only finitely many samples.  Queries
+may be adaptive: the next precision can depend on previous rational
+comparisons.  Include in the trace state a query log and a Boolean accumulator
+recording all instantiated contract facts.
+
+Define \(\GoodTable(p,n,c)=1\) to be the finite conjunction of exactly the
+regularity, domain, magnitude, and separation facts needed along the run coded
+by \(c\).  If the algorithm computes its own query log, \(c\) may simply be the
+run state.
+
+\begin{lemma}[Finite instantiation]
+\label{lem:finite-query}
+For every fixed query generator, iPRA proves
+\[
+ H_a(p)\to \GoodTable(p,n,c)=1
+\]
+for the actual finite query table, provided each table field is an instance or
+a finite algebraic consequence of \(H_a(p)\) and any other global hypotheses.
+\end{lemma}
+
+\begin{proof}
+Induct over the finite query trace with a Boolean equation saying that all
+entries recorded so far are valid.  At a successor stage, the next query
+indices are primitive-recursive terms in the previous state.  Universal
+elimination instantiates \(H_a(p)\) at those terms.  The resulting finite
+arithmetic fact is inserted into the accumulator using a proved Boolean
+conjunction lemma.  The induction formula contains only the accumulator
+equation; the quantified hypothesis remains in the context.
+\end{proof}
+
+This is the exact repair for ``induction over all precisions.''  The requested
+precision \(n\) is free, the run consumes a finite table, and only after the
+fixed-\(n\) proof is complete is \(n\) universally introduced.
+
+\begin{corollary}[Fix precision, then quantify]
+\label{cor:fix-precision}
+Suppose global hypotheses imply the finite input table for every free precision
+\(n\), the trace laws are embedded derivations, and acceptance implies a finite
+output contract \(\mathsf{Out}(p,n,A(p,n))\).  Then iPRA proves
+\[
+ H(p)\to\forall n\;\mathsf{Out}(p,n,A(p,n)).
+\]
+No induction formula contains \(\forall n\).
+\end{corollary}
+
+\subsection{Certificate mode}
+
+A large computation need not be rerun by primitive recursion inside the final
+theorem.  A certificate may contain the state sequence
+\(s_0,\ldots,s_B\), local arithmetic witnesses, and the output.  A fixed
+Boolean verifier checks
+\begin{align*}
+ s_0&=\mathsf{init}(u),\\
+ s_{i+1}&=\mathsf{step}(i,s_i,u)\quad(i<B),\\
+ \mathsf{inv}(i,s_i,u)&=1\quad(i\le B),\\
+ \mathsf{accept}(s_B,u)&=1.
+\end{align*}
+Every clause is a bounded fold over the coded list.
+
+\begin{theorem}[Certificate reflection]
+\label{thm:certificate-reflection}
+For a fixed certificate language and checker, one can construct an embedded
+derivation
+\[
+ []\vdash[\PRAAx]\forall u\,\forall c\;
+ \bigl(\TraceOK(u,c)=1\to
+       \mathsf{Conclusion}(u,\mathsf{output}(c))\bigr),
+\]
+provided the local checker clauses have embedded soundness derivations.
+\end{theorem}
+
+\begin{proof}
+Boolean-fold correctness exposes each checked list clause.  There are two
+proof routes.  The direct route reads the final acceptance clause and applies
+its embedded soundness theorem.  The reconstructive route proves by
+quantifier-free induction on the list index that the certified state equals the
+canonical run, then invokes \cref{thm:embedded-trace}.  The direct route is
+usually smaller; the reconstructive route is useful when later theorems need
+the canonical run equality.
+\end{proof}
+
+Certificate mode is appropriate for polynomial identities, isolating disks,
+factorization traces, finite covers, high-precision analytic constants, and
+large numerical inequalities.  A separate producer theorem may later show
+that a certificate exists for a given input family.
+
+\subsection{Sequential and network composition}
+
+A proof-producing transducer \(F:X\to Y\) consists of a primitive-recursive
+output algorithm, a finite input-demand function, and an embedded soundness
+derivation.  If \(G:Y\to Z\) is another transducer, their composite first runs
+\(F\), extracts the finite metadata needed to determine \(G\)'s demand, and
+then runs \(G\).
+
+\begin{theorem}[Composition]
+\label{thm:trace-composition}
+Proof-producing finite transducers are closed under sequential composition,
+finite products, finite case splits with overlapping guards, and finite
+acyclic networks.  The composite has primitive-recursive demand and bound
+functions and an embedded soundness derivation.
+\end{theorem}
+
+\begin{proof}
+For sequential composition, encode the state as a phase bit, a component state,
+and frozen metadata.  Phase zero executes \(F\).  On its final step, the state
+stores the certified output and all magnitude/domain data needed to initialize
+\(G\).  Phase one executes \(G\).  The total bound is the sum of the two bounds
+plus a switch step.
+
+The invariant is a Boolean case split on the phase.  In phase zero it is
+\(F\)'s invariant.  At the switch it includes \(F\)'s acceptance and \(G\)'s
+input contract.  In phase one it is \(G\)'s invariant together with the frozen
+metadata.  The local step proof is assembled from the component step proofs,
+the switch soundness proof, and Boolean case analysis.  Apply
+\cref{thm:embedded-trace}.  The final implication is \(G\)'s soundness after
+substituting \(F\)'s certified output.
+
+Products pair states and conjoin invariants.  Overlapping cases use a total
+selector whose branch-correctness proof is supplied in each overlap.  A finite
+acyclic network is topologically ordered and flattened into phases.  All proof
+composition is substitution plus \code{Prf.trans} or ordinary implication
+elimination.
+\end{proof}
+
+\subsection{The exact compiler boundary}
+
+The trace compiler is a disciplined boundary between semantic mathematics and
+formal arithmetic.
+
+\begin{itemize}
+\item Outside the boundary one proves local rational inequalities,
+      coefficient identities, error budgets, and invariant preservation.
+\item At the boundary each local theorem is expressed as a formula of
+      \(\Fm\,\PTm\) and supplied as a \(\Prf\,\PRAAx\) derivation.
+\item Inside the boundary generic code combines those derivations into the
+      complete bounded-run theorem.
+\item Only after that theorem exists is \code{pra\_iff\_native} applied.
+\end{itemize}
+
+This organization makes missing work visible.  A semantic Lean theorem can be
+used as a guide for constructing a local derivation, but it cannot be inserted
+as an unexamined premise.  Conversely, once the local obligations are embedded,
+the generic control-flow proof should not be repeated theorem by theorem.

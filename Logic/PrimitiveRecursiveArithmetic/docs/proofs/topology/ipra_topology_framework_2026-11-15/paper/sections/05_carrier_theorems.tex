@@ -1,0 +1,158 @@
+
+\section{The carrier calculus and choice-independent invariants}
+\label{sec:carriers}
+
+\subsection{Composition}
+
+\begin{theorem}[Carrier composition]
+\label{thm:carrier-composition}
+If $C:K\multimap L$ and $D:L\multimap M$ are strong carriers, then $D\circ C:K\multimap M$ is a strong carrier.  Composition is associative, and singleton identity clouds are identities.
+\end{theorem}
+
+\begin{proof}
+For every source vertex $v$, $C(v)$ is nonempty and every $D(w)$ with $w\in C(v)$ is nonempty.  Therefore their finite union $(D\circ C)(v)$ is nonempty.
+
+Let $\sigma$ be a simplex of $K$.  By the carrier property for $C$,
+\[
+  \tau=C(\sigma)=\bigcup_{v\in\sigma}C(v)
+\]
+is a simplex of $L$.  Apply the carrier property for $D$ to $\tau$:
+\[
+  D(\tau)=\bigcup_{w\in\tau}D(w)
+\]
+is a simplex of $M$.  Reassociating finite unions gives
+\[
+  D(\tau)
+  =\bigcup_{v\in\sigma}\bigcup_{w\in C(v)}D(w)
+  =(D\circ C)(\sigma).
+\]
+Hence the composite is a carrier.  Associativity and identity follow from associativity and identity of finite union.  Every equality can be proved bit-by-bit by bounded induction.
+\end{proof}
+
+\subsection{Selections and contiguity}
+
+\begin{definition}[Selection]
+A selection of $C:K\multimap L$ is a vertex map $f:V(K)\to V(L)$ with $f(v)\in C(v)$ for all $v$.
+\end{definition}
+
+The least member of each nonempty finite cloud gives a canonical primitive-recursive selection.  This selection is used for execution; correctness does not depend on it.
+
+\begin{theorem}[Selection theorem]
+\label{thm:selection}
+Every selection $f$ of a strong carrier $C:K\multimap L$ is simplicial.  Any two selections $f,g$ are contiguous: for every simplex $\sigma$ of $K$, the vertex set
+\[
+  f(\sigma)\cup g(\sigma)
+\]
+is a simplex of $L$.
+\end{theorem}
+
+\begin{proof}
+For each $v\in\sigma$, $f(v)\in C(v)$.  Hence
+\[
+  f(\sigma)\subseteq \bigcup_{v\in\sigma}C(v)=C(\sigma).
+\]
+The right side is a simplex by the carrier condition, and every subset of a simplex is a simplex.  Thus $f$ is simplicial.
+
+The same argument applied simultaneously to $f$ and $g$ gives
+\[
+  f(\sigma)\cup g(\sigma)\subseteq C(\sigma),
+\]
+so the union is a simplex.  This is exactly contiguity.
+\end{proof}
+
+\subsection{Chains over $\Ftwo$}
+
+For an ordered finite complex $K$, let $C_q(K;\Ftwo)$ be the finite-dimensional vector space with basis the $q$-simplices.  The boundary is
+\[
+  \partial[v_0,\ldots,v_q]
+  =\sum_{i=0}^{q}[v_0,\ldots,\widehat{v_i},\ldots,v_q]
+\]
+with coefficients modulo $2$.  Each $(q-2)$-face appears exactly twice in $\partial^2$, so $\partial^2=0$.
+
+A simplicial vertex map $f$ sends a simplex to the sorted set of image vertices; if two source vertices have the same image, the normalized term is zero.  Extending linearly gives a chain map $f_\#$.
+
+All operations are bounded parity folds over finite simplex tables.  No quotient type is needed inside arithmetic: a chain is simply a bitset indexed by the enumerated simplices.
+
+\subsection{The prism operator}
+
+Let $f,g:K\to L$ be contiguous.  For a basis simplex $\sigma=[v_0,\ldots,v_q]$, define over $\Ftwo$
+\[
+  P_q(\sigma)=
+  \sum_{i=0}^{q}
+  [f(v_0),\ldots,f(v_i),g(v_i),\ldots,g(v_q)],
+\]
+where a term with a repeated vertex is normalized to zero.  Contiguity ensures that every nondegenerate term is a simplex of $L$.
+
+\begin{theorem}[Finite prism identity]
+\label{thm:prism}
+For contiguous simplicial maps $f,g:K\to L$,
+\[
+  \partial P+P\partial=f_\#+g_\#
+\]
+as maps of mod-$2$ chain complexes.
+\end{theorem}
+
+\begin{proof}
+Fix $\sigma=[v_0,\ldots,v_q]$ and expand $\partial P_q(\sigma)$.  A term of $P_q(\sigma)$ has an $f$-block ending at $v_i$ and a $g$-block beginning at the same $v_i$.  Deleting a vertex strictly inside the $f$-block or strictly inside the $g$-block produces exactly the corresponding term of $P_{q-1}(\partial\sigma)$.  These terms therefore occur once in $\partial P$ and once in $P\partial$ and cancel modulo $2$.
+
+At the seam, deleting $g(v_i)$ from the $i$-th prism term produces the same normalized simplex as deleting $f(v_{i+1})$ from the $(i+1)$-st prism term.  These adjacent seam terms also cancel in pairs.  The two unpaired end terms are obtained by deleting $f(v_0)$ from the first prism and deleting $g(v_q)$ from the last prism.  They are precisely $g_\#(\sigma)$ and $f_\#(\sigma)$.  Thus
+\[
+  (\partial P+P\partial)(\sigma)=f_\#(\sigma)+g_\#(\sigma).
+\]
+
+If a tuple has repeated vertices, normalization maps it to zero.  The cancellation pairing respects this normalization: paired words have the same multiset of vertices, so either both normalize to the same simplex or both vanish.  Therefore the identity survives degeneracies.  Linearity proves it for every chain.
+
+For formalization, the preceding prose becomes a bounded index pairing.  Each emitted term is tagged by $(i,j)$, where $i$ is the prism seam and $j$ is the deleted position.  A primitive-recursive involution pairs every tag except the two endpoints; a parity fold proves cancellation by quantifier-free induction.
+\end{proof}
+
+\begin{corollary}[Choice-independent homology map]
+\label{cor:choice-independent}
+Any two selections of a strong carrier induce the same map
+\[
+  H_q(K;\Ftwo)\longrightarrow H_q(L;\Ftwo)
+\]
+for every $q$.
+\end{corollary}
+
+\begin{proof}
+Let $z$ be a cycle.  By \cref{thm:prism},
+\[
+  f_\#z+g_\#z=\partial Pz+P\partial z=\partial Pz.
+\]
+Thus $f_\#z$ and $g_\#z$ differ by a boundary and represent the same homology class.
+\end{proof}
+
+\subsection{Functorial tower homology}
+
+Every refinement carrier $R_k:K_{k+1}\multimap K_k$ now induces a canonical homology map $r_k$, because the chosen selection is irrelevant by \cref{cor:choice-independent}.  Composition of carriers induces composition of homology maps: selecting from a composite and composing selections are both selections of a common composite carrier, hence contiguous.
+
+\begin{theorem}[Tower homology]
+\label{thm:tower-homology}
+A certified observation tower determines, for every $q$, an inverse system of finite-dimensional $\Ftwo$-vector spaces
+\[
+  \cdots\longrightarrow H_q(K_{k+1};\Ftwo)
+  \xrightarrow{r_k}
+  H_q(K_k;\Ftwo)
+  \longrightarrow\cdots.
+\]
+A coherent tower map determines a morphism of inverse systems, independent of all finite selections.  Composition of tower maps is functorial.
+\end{theorem}
+
+\begin{proof}
+Choose least selections for execution.  The refinement maps are well defined on homology by \cref{cor:choice-independent}.  The coherence certificate for a tower map says that the two finite vertex maps around each naturality square are carried by a common carrier.  They are therefore contiguous and induce equal homology maps.  This is exactly commutativity of the square on homology.  Carrier composition represents map composition, and \cref{thm:carrier-composition,cor:choice-independent} prove associativity and independence of all selection choices.
+\end{proof}
+
+\subsection{Integer coefficients}
+
+Integer chains require signs.  One can use the signed prism
+\[
+  P_q(\sigma)=\sum_{i=0}^{q}(-1)^i
+  [f(v_0),\ldots,f(v_i),g(v_i),\ldots,g(v_q)]
+\]
+and the identity $\partial P+P\partial=g_\#-f_\#$.  Signed integers are coded by pairs of naturals or a parity-magnitude code.  Homology groups can be computed by Smith normal form.
+
+For \ipra, the easiest robust interface is a \emph{checked Smith certificate}: matrices $U,D,V$ with $UAV=D$, determinants $\pm1$, diagonal $D$, and the divisibility chain.  A bounded verifier checks the certificate.  A separate bounded Euclidean algorithm may produce it when desired.  The mod-$2$ theory is the minimal core because Gaussian elimination and parity cancellation are especially transparent.
+
+\subsection{Acyclic carriers as an extension}
+
+Strong carriers may be generalized.  Assign to each source simplex $\sigma$ a target subcomplex $A(\sigma)$ with face monotonicity and a supplied finite contraction or acyclicity certificate.  The usual acyclic-carrier induction constructs a chain map and a chain homotopy \cite{Munkres}.  In \ipra, ``acyclic'' must not be an unexamined semantic adjective: the certificate must provide bounded filling operators in the required dimensions.  The strong carrier is the special case where $A(\sigma)$ is one simplex and filling is canonical.

@@ -1,0 +1,332 @@
+\section{Lean formalization: exact definitions and a route to \texorpdfstring{$\Prf\,\PRAAx$}{Prf PRAAx}}
+
+\subsection{The formal endpoint}
+
+The repository distinguishes three formal systems that must not be conflated.  Lean's ambient type
+ theory is used to define syntax and metatheorems; the ordinary first-order presentation of iPRA has
+primitive-recursive terms \code{PTm}, axioms \code{PRAAx}, and derivations \code{Prf}; and the
+smaller native scalar core has its own derivation relation.  The checked bridge is of the form
+\begin{lstlisting}[language={}] 
+theorem pra_iff_native
+    {Gamma : List (Fm PTm n)} {phi : Fm PTm n} :
+  (Gamma |- [PRAAx] phi) <->
+    NPrf (Gamma.map NFm.ofPRA) (NFm.ofPRA phi)
+\end{lstlisting}
+Consequently a host theorem such as
+\begin{lstlisting}[language={}] 
+theorem power_cover_semantic : ...
+\end{lstlisting}
+is not yet an iPRA formalization.  The relevant endpoint is a term such as
+\begin{lstlisting}[language={}] 
+def powerCoverObjectProof :
+    Prf PRAAx [] powerCoverFormula := ...
+\end{lstlisting}
+and only afterwards may \code{pra_iff_native} transport it to the native calculus.
+
+The source files in this archive are blueprints.  No Lean executable or complete repository
+dependency closure was available in the preparation environment, so they are not claimed to
+compile.  They contain no \code{axiom}, \code{sorry}, or \code{admit}; unfinished results are named
+\emph{targets}, not asserted theorems.
+
+\subsection{Two formalization layers}
+
+The proposed development has two deliberately separate layers.
+
+\paragraph{Host certificate layer.}
+A \code{CertSetoid} contains numerical codes, a Boolean validity predicate, a proof-relevant
+relation \code{eqW x y w}, and explicit witness transformers for reflexivity, symmetry, and
+transitivity.  A certified map carries equality witnesses to equality witnesses.  Certified rings
+and modules add congruence transformers for their operations.  This layer is useful for testing the
+interfaces and for proving generic metatheorems, but its quantifiers live in Lean rather than in the
+object theory.
+
+\paragraph{Object-iPRA layer.}
+Every numerical operation is replaced by one fixed \code{PR} code.  Its application is a
+\code{PTm}; every checker and invariant is an \code{Fm PTm n}; and all correctness theorems are
+values of \code{Prf PRAAx}.  A theorem schema may fix the definitions of a presented ring or module
+externally and remain uniform in ordinary numerical parameters.  It must not evaluate arbitrary
+codes for primitive-recursive programs, since there is no primitive-recursive universal evaluator
+for all such codes.
+
+\subsection{Codecs and totalization}
+
+All objects of the internal theory are natural numbers.  The first module should therefore supply
+fixed primitive-recursive codecs for:
+\begin{itemize}
+\item signed integers and finite tuples;
+\item lists with length, bounded lookup, update, append, map, fold, maximum, and least bounded search;
+\item exponent vectors, monomials, sparse polynomials, and Laurent polynomials;
+\item finite matrices and bit-mask subsets of $\{0,\ldots,n\}$;
+\item ideal-combination witnesses, localization witnesses, cover certificates, and descent data.
+\end{itemize}
+Every operation is total.  Malformed input receives a default output together with a failure flag.
+Theorems assume the finite validity predicate, so no partial function is hidden in the object
+language.  The basic reconstruction lemmas have the shape
+\[
+  \Valid(x)=1\;\longrightarrow\;
+  \operatorname{decode}(\operatorname{encode}(x))=x,
+\]
+and bounded access lemmas are proved by quantifier-free induction on the list prefix.
+
+\subsection{Certified-setoid library}
+
+For each presentation $A$, introduce fixed primitive-recursive predicates
+\[
+        \Valid_A(x),\qquad \EqW_A(x,y,w).
+\]
+The object library should construct the following derivations, uniformly in the displayed codes:
+\begin{align*}
+\Valid_A(x)&\to \EqW_A(x,x,\mathsf{reflW}(x)),\\
+\EqW_A(x,y,w)&\to \EqW_A(y,x,\mathsf{symmW}(x,y,w)),\\
+\EqW_A(x,y,u)\wedge\EqW_A(y,z,v)
+ &\to \EqW_A(x,z,\mathsf{transW}(x,y,z,u,v)).
+\end{align*}
+For every operation $F$, add a witness transformer
+\[
+   \EqW_A(x,x',u)\wedge\EqW_B(y,y',v)
+   \to \EqW_C(F(x,y),F(x',y'),\mathsf{mapW}(u,v)).
+\]
+The library never asserts $\exists w\,\EqW_A(x,y,w)$ merely because two semantic quotient classes
+are equal in Lean.  The witness is part of the finite mathematical data.
+
+A useful generic lemma is bounded-fold congruence.  Suppose two lists have the same length and each
+pair of corresponding entries comes with an equality witness.  Quantifier-free induction on the
+prefix produces a witness between the two additive or multiplicative folds.  This lemma will be
+used repeatedly in ideal identities, multinomial expansions, and \v{C}ech differentials.
+
+\subsection{Presented quotient rings}
+
+For
+\[
+ A=\Z[X_1,\ldots,X_s]/(g_0,\ldots,g_{r-1}),
+\]
+a code for an element is a polynomial code.  A witness that $p=q$ is a tuple
+$(h_0,\ldots,h_{r-1})$ satisfying the coefficientwise identity
+\[
+                     p-q=\sum_{i<r}h_i g_i.
+\]
+The checker expands every product and compares a bounded coefficient range determined from the
+input supports.  The soundness proof uses only finite polynomial arithmetic.
+
+The witness transformers are explicit.  Negation negates every multiplier; addition concatenates
+or adds multiplier lists; and multiplication uses
+\[
+ pq-p'q'=(p-p')q+p'(q-q').
+\]
+Associativity, commutativity, distributivity, and the unit laws can be witnessed by the zero
+multiplier list once the corresponding polynomial identity is normalized coefficientwise.  No
+Gr\"obner basis is needed for soundness.  A Gr\"obner or elimination algorithm is a separate
+\emph{producer} that may find witnesses in useful subclasses.
+
+The principal object theorem should be exposed as a derivation of a formula asserting:
+\begin{quote}
+if the ideal-certificate checker accepts, then the represented quotient elements are equal, and
+all quotient operations preserve accepted equality certificates.
+\end{quote}
+
+\subsection{Localization witnesses}
+
+Fix a presented ring $A$ and an element $f$.  A fraction is a pair $(a,n)$ representing $a/f^n$.
+Equality of $(a,n)$ and $(b,m)$ is witnessed by a number $k$ and a base-ring witness for
+\[
+                       f^k(f^m a-f^n b)=0.                 \tag{14.1}\label{eq:loc-witness-object}
+\]
+The object formalization should implement the following witness algebra.
+
+\begin{itemize}
+\item Reflexivity uses $k=0$ and the zero witness.
+\item Symmetry negates the witness in \eqref{eq:loc-witness-object}.
+\item For transitivity, suppose $k$ kills
+      $f^m a-f^n b$ and $\ell$ kills $f^r b-f^m c$.  Multiplying the first
+      relation by $f^{\ell+r}$ and the second by $f^{k+n}$ and adding cancels
+      the middle term.  The result supplies a safe killing exponent
+      $k+\ell+m$ for $f^r a-f^n c$; a slightly smaller exponent can be used
+      after a more exact bookkeeping proof.
+\item Addition and multiplication expand the cross differences and combine the supplied witnesses
+      by finite ring identities.
+\end{itemize}
+
+Every exponentiation is a fixed primitive recursion.  The loop invariant records the current power,
+the accumulated product, and an accepted equality witness.  The induction formula is
+quantifier-free.
+
+\subsection{The power-cover constructor}
+
+The most important generic producer starts with a checked identity
+\[
+                         \sum_{i<r}c_i f_i=1               \tag{14.2}\label{eq:unit-cover-object}
+\]
+and a number $N\geq1$.  Set $M=r(N-1)+1$.  Enumerate every weak composition
+$\alpha\in\N^r$ of $M$ and expand $(\sum c_i f_i)^M$.  The pigeonhole bound gives an index
+$i$ with $\alpha_i\geq N$; choose the least such index and assign that monomial to the accumulator
+$d_i$ after factoring $f_i^N$.  The output satisfies
+\[
+                         \sum_{i<r}d_i f_i^N=1.             \tag{14.3}\label{eq:power-cover-object}
+\]
+
+A direct object implementation uses nested bounded loops rather than an abstract multinomial
+polynomial.  Its state contains:
+\begin{enumerate}[label=(\roman*)]
+\item the current exponent vector and its remaining sum;
+\item the partial multinomial coefficient;
+\item the chosen least large coordinate;
+\item the coefficient accumulators $d_0,\ldots,d_{r-1}$;
+\item the partial expansion value and the partial factored value.
+\end{enumerate}
+The invariant says that the two partial values are equal and that every processed composition was
+assigned to exactly one accumulator.  All quantifiers are bounded folds represented by Boolean
+prefix predicates.  A final finite-power calculation rewrites the expansion by \eqref{eq:unit-cover-object} to
+$1^M=1$.
+
+The endpoint should be
+\begin{lstlisting}[language={}] 
+def powerCoverObjectProof :
+  Prf PRAAx [] powerCoverFormula := ...
+\end{lstlisting}
+where \code{powerCoverFormula} states validity of the input certificate, $N\geq1$, and acceptance
+of the output identity checker.
+
+\subsection{Principal-cover uniqueness and gluing}
+
+For joint monicity, the input contains for each $i<r$ a local annihilation exponent $k_i$ and a
+witness for $f_i^{k_i}m=0$.  Let $K=\max_i k_i$.  Raise each equation to the common exponent,
+construct $d_i$ with $\sum d_i f_i^K=1$, and calculate
+\[
+                    m=\sum_i d_i f_i^K m=0.
+\]
+The induction invariant for the last fold records a witness that the accumulated partial sum equals
+zero.
+
+For existence, first homogenize the denominators of local sections to a common exponent $N$.
+Take a maximum $K$ of the overlap-killing exponents and a safe $q=N+K+1$.  Form numerators $b_i$
+so that the accepted overlap certificates imply
+\[
+                         f_j^q b_i=f_i^q b_j                \tag{14.4}
+\]
+for every $i,j$.  Construct $d_i$ with $\sum_i d_i f_i^q=1$ and output
+\[
+                              m=\sum_i d_i b_i.              \tag{14.5}\label{eq:glue-formula-object}
+\]
+For a fixed $j$, a bounded fold proves
+\[
+ f_j^q m=\sum_i d_i f_j^q b_i
+          =\sum_i d_i f_i^q b_j=b_j.
+\]
+This equation is itself the localization equality witness between $m/1$ and the given local
+section on $D(f_j)$.  A double-loop invariant covers all pairs $(i,j)$; no induction formula says
+``for every localization''.
+
+The two final statements should have types analogous to
+\begin{lstlisting}[language={}] 
+def principalCoverUniqueObjectProof :
+  Prf PRAAx [] principalCoverUniqueFormula := ...
+
+def principalCoverGlueObjectProof :
+  Prf PRAAx [] principalCoverGlueFormula := ...
+\end{lstlisting}
+
+\subsection{Finite atlases and quasi-coherent data}
+
+A finite affine atlas is a natural-number code containing:
+\begin{itemize}
+\item finitely presented chart rings $A_i$;
+\item for each ordered pair $(i,j)$, finite principal-open refinements of the overlap;
+\item forward and inverse localization homomorphisms with accepted composition witnesses;
+\item triple-overlap cocycle witnesses;
+\item a finite cover certificate wherever a family of principal opens is asserted to cover.
+\end{itemize}
+A quasi-coherent module contains chart modules $M_i$ and transition isomorphisms after the same
+localizations.  Validity is one Boolean fold over the finite atlas.  The gluing theorem above gives
+the equalizer law on every chart, and finite-family composition gives the corresponding law on the
+atlas.  Morphisms, kernels, finite direct sums, and tensor products can then be added by certified
+module operations.
+
+This layer should be formalized as a library of certificate transformations, not as an internal
+quantification over prime ideals or over all open subsets.  A separate semantic theorem in Lean may
+interpret a valid atlas as a conventional glued scheme.
+
+\subsection{The projective-line modules}
+
+The $\mathbf P^1$ development uses sparse Laurent-polynomial codes.  Define
+\[
+       \delta_d(a,b)=a(t)-t^d b(t^{-1}).
+\]
+For a cocycle $c=\sum_e c_e t^e$, one bounded scan places:
+\begin{align*}
+ e\geq0 &\quad\hbox{in the first chart polynomial }a,\\
+ e\leq d&\quad\hbox{in the second chart polynomial }b,\\
+ d<e<0&\quad\hbox{in the obstruction }h.
+\end{align*}
+The invariant after processing a prefix of the finite support is
+\[
+       c_{<s}=\delta_d(a_s,b_s)+h_s,
+       \qquad \operatorname{supp}(h_s)\subseteq\set{e:d<e<0}.
+\]
+This yields an object proof of \code{p1LaurentSplitFormula}.  Uniqueness is coefficientwise: neither
+chart coboundary contains a monomial in the middle interval.  The $H^0$ theorem uses the same support
+separation on a compatible pair.  In particular, at $d=0$ the global functions on $\mathbf P^1_R$
+are exactly the constants in $R$.
+
+\subsection{The projective-space homotopy}
+
+Encode a subset $I\subseteq\{0,\ldots,n\}$ as a bit mask and an exponent vector as a signed list.
+For one exponent vector $e$, let $N(e)$ be the negative-coordinate mask.  A component occurs at
+$I$ exactly when $N(e)\subseteq I$.  The differential is a bounded alternating sum over deleted
+bits.
+
+When $N(e)$ is nonempty and not full, choose the least $i_*\notin N(e)$.  The homotopy inserts that
+bit with sign determined by the number of smaller elements.  To prove
+\[
+                              dh+hd=\mathrm{id},             \tag{14.6}\label{eq:cech-homotopy-object}
+\]
+fix one output mask and scan all deletion positions.  The state records the unmatched term, the
+paired contribution below $i_*$, and the paired contribution above $i_*$.  Terms not deleting
+$i_*$ occur twice with opposite parity; the deletion of $i_*$ is the unique identity contribution.
+The parity and bit-mask cases are decidable numerical predicates, so the induction is
+quantifier-free.
+
+The all-nonnegative case is the full simplex complex: the same insertion homotopy contracts the
+positive degrees, while a coefficient projection identifies degree-zero constants.  The all-negative
+case contains only the full mask.  A finite scan over the input cochain's support applies the
+appropriate normalizer to each exponent vector.  This gives the object formula
+\code{pnOdCechFormula} and the binomial-rank calculations by bounded counting of weak
+compositions.
+
+\subsection{Suggested module order}
+
+A practical repository integration order is:
+\begin{longtable}{@{}p{0.27\textwidth}p{0.65\textwidth}@{}}
+\toprule
+Module & Main contents and endpoint \\
+\midrule
+\endfirsthead
+\toprule
+Module & Main contents and endpoint \\
+\midrule
+\endhead
+\code{AlgebraicGeometry/Codecs.lean} & Signed/list/polynomial/Laurent/matrix/subset codes and their PR graphs. \\
+\code{AlgebraicGeometry/CertSetoid.lean} & \code{Valid}, \code{EqW}, witness transformers, bounded-fold congruence. \\
+\code{AlgebraicGeometry/PresentedRing.lean} & Ideal-combination checker and quotient-operation witnesses. \\
+\code{AlgebraicGeometry/Localization.lean} & Fraction codes and localization equivalence/congruence proofs. \\
+\code{AlgebraicGeometry/PowerCover.lean} & Weak compositions, multinomial fold, and \code{powerCoverObjectProof}. \\
+\code{AlgebraicGeometry/PrincipalDescent.lean} & Joint monicity and \code{principalCoverGlueObjectProof}. \\
+\code{AlgebraicGeometry/Atlas.lean} & Finite affine atlases, refinements, morphisms, and module descent data. \\
+\code{AlgebraicGeometry/ProjectiveLine.lean} & Two-chart atlas and Laurent normal forms for every $\cO(d)$. \\
+\code{AlgebraicGeometry/ProjectiveCech.lean} & Exponent decomposition, insertion homotopy, and projective-space table. \\
+\code{AlgebraicGeometry/NativeBridge.lean} & Applications of \code{pra_iff_native} to already constructed object derivations. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Completion criteria}
+
+The formalization should be called complete only when all of the following hold:
+\begin{enumerate}[label=\arabic*.]
+\item the modules compile against the current \code{ConciseIPRA} sources;
+\item the advertised formulas use the actual repository syntax and not a surrogate proof relation;
+\item the principal theorems are inhabited \code{Prf PRAAx} values;
+\item an axiom audit reports no \code{sorryAx}, custom axiom, or hidden native decision oracle;
+\item finite executable tests agree with the object-level producers on a representative corpus;
+\item the native translations are performed only after the preceding object proofs exist.
+\end{enumerate}
+The present archive supplies the mathematical derivations, numerical algorithms, host interfaces,
+and this dependency order, but does not claim these completion criteria have already been met.

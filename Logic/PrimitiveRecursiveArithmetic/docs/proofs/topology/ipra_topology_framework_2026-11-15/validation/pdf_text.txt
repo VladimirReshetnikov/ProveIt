@@ -1,0 +1,2287 @@
+Certified Observation Towers
+A general framework for embedding mathematics into intuitionistic
+primitive recursive arithmetic, with topology as a case study
+Prepared for Vladimir Reshetnikov
+15 November 2026
+
+Abstract
+This report develops a reusable method for placing mathematical concepts and proofs
+inside intuitionistic primitive recursive arithmetic (iPRA). The method begins with the
+current ProveIt infrastructure—fixed primitive-recursive symbols, bounded Boolean tests,
+quantifier-free induction, finite contracts, and the existing bridge from ordinary iPRA
+derivations to the concise native calculus—and adds a missing topological and choice-stable
+layer.
+The central new organizing object is a certified observation tower: an inverse tower of
+finite nerves whose refinement maps are represented not by arbitrary exact choices but by
+finite simplicial carriers. A carrier assigns a nonempty cloud of possible target cells to every
+source cell. Its strong simplex condition implies that every deterministic selection is simplicial,
+any two selections are contiguous, and their chain maps are related by an explicit finite
+prism homotopy. Consequently homology maps are independent of boundary choices. Carrier
+composition is finite relational composition, so continuous maps and their compositions can
+be represented without a discontinuous global selector.
+The report gives complete human-readable proofs of the bounded Booleanization principle,
+finite-space/preorder equivalence, carrier composition, selection independence, the mod-2
+prism identity, functorial homology for observation towers, and several closure constructions.
+It explains how compactness, connectedness, separation, products, subspaces, quotients,
+homotopies, manifolds, fixed-point arguments, Jordan separation, and dimension obstruction
+should be stated as arithmetic schemas with explicit finite data and moduli. It also identifies
+genuine boundaries: unrestricted quantification over open sets or functions is not first-order
+arithmetic, exact choice at collisions is not constructively free, and finite verification never
+manufactures a missing modulus, height bound, or exhaustion theorem.
+The package includes an exact Python kernel and 15 passing tests for finite preorders,
+simplicial carriers, tower composition, mod-2 homology, and the prism identity. It also
+includes two Lean blueprints: a semantic finite-topology layer and an object-language
+completion plan using the actual ProveIt declarations PR, PTm, PRAAx, PRA.qfInd, Prf,
+NFm.ofPRA, and pra_iff_native. The Lean files are deliberately marked as uncompiled
+outlines; no unfinished semantic theorem is presented as an iPRA derivation.
+
+Contents
+1 Repository audit and exact proof status
+1.1 The arithmetic backend . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.2 What the existing proof packets already achieve . . . . . . . . . . . . . . . . . . .
+1.3 The topology packets and their remaining gap . . . . . . . . . . . . . . . . . . . .
+1.4 Audit conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+1
+
+5
+5
+5
+6
+6
+
+Certified Observation Towers in iPRA
+
+2
+
+2 Statement discipline: what an iPRA theorem may say
+2.1 First-order schemas rather than hidden higher types . . . . . . . . . . . . . . . .
+2.2 All-precision statements . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.3 Total operations with guarded meaning . . . . . . . . . . . . . . . . . . . . . . .
+2.4 Positive data versus negated equality . . . . . . . . . . . . . . . . . . . . . . . . .
+2.5 Finite verification does not produce global bounds . . . . . . . . . . . . . . . . .
+2.6 Four proof layers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+7
+7
+7
+7
+8
+8
+8
+
+3 Finite contracts and a proof-producing compiler
+9
+3.1 Numerical coding . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+3.2 Bounded formulas are Boolean . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+3.3 Contracts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+3.4 Bounded loops . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+3.5 Syntax-directed proof programs . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+4 Certified observation towers
+4.1 Finite nerves . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.2 Strong simplicial carriers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.3 Observation towers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.4 Presented points . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.5 Presented maps . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.6 How classical spaces produce towers . . . . . . . . . . . . . . . . . . . . . . . . .
+4.7 Pointfree interpretation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+11
+11
+11
+11
+12
+12
+12
+13
+
+5 The carrier calculus and choice-independent invariants
+5.1 Composition . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.2 Selections and contiguity . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.3 Chains over F2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.4 The prism operator . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.5 Functorial tower homology . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.6 Integer coefficients . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.7 Acyclic carriers as an extension . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+13
+13
+13
+14
+14
+15
+16
+16
+
+6 Finite topology inside iPRA
+6.1 From a finite topology to a preorder . . . . . . . . . . . . . . . . . . . . . . . . .
+6.2 Continuous maps are monotone maps . . . . . . . . . . . . . . . . . . . . . . . .
+6.3 Basic constructions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6.4 What finite topology does and does not solve . . . . . . . . . . . . . . . . . . . .
+
+16
+16
+17
+17
+18
+
+7 A topology library built from finite certificates
+7.1 Open information and continuity . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.2 Compactness . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.3 Separation and apartness . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.4 Connectedness and paths . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.5 Products . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.6 Subspaces and closed conditions . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.7 Quotients . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.8 Homology and cohomology . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.9 Fundamental groups . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.10 Manifolds and atlases . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.11 Fixed-point theorems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.12 Dimension and local degree . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+18
+18
+18
+18
+19
+19
+19
+19
+20
+20
+20
+21
+21
+
+Certified Observation Towers in iPRA
+
+3
+
+8 Topology case studies
+8.1 The Sierpinski space . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8.2 A carrier tower for the circle . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8.3 Jordan separation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8.4 Invariance of dimension . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8.5 Nerve computations from good covers . . . . . . . . . . . . . . . . . . . . . . . .
+8.6 Surfaces and Euler characteristic . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+21
+21
+21
+22
+22
+23
+23
+
+9 Resolution of recurring difficulties beyond topology
+9.1 Root and eigenvalue collisions . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.2 Local analytic branches . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.3 Integration and measure . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.4 Diophantine finiteness . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.5 Prime-distribution and analytic constants . . . . . . . . . . . . . . . . . . . . . .
+9.6 Metastability and convergence . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.7 A unified difficulty matrix . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+23
+24
+24
+24
+24
+24
+25
+25
+
+10 Lean formalization plan
+10.1 Target repository interfaces . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.2 Phase 1: primitive-recursive data structures . . . . . . . . . . . . . . . . . . . . .
+10.3 Phase 2: bounded Booleanization . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.4 Phase 3: finite complexes and carriers . . . . . . . . . . . . . . . . . . . . . . . .
+10.5 Phase 4: finite preorders . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.6 Phase 5: chain complexes and the prism . . . . . . . . . . . . . . . . . . . . . . .
+10.7 Phase 6: homology certificates . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.8 Phase 7: tower schemas . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.9 Phase 8: application modules . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.10No false completion claim . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+25
+25
+26
+26
+27
+27
+27
+27
+28
+28
+28
+
+11 Executable finite validation
+11.1 Reference kernel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11.2 Test results . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11.3 What the tests establish . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11.4 Reproduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+28
+28
+29
+29
+30
+
+12 Limits, residual obligations, and research directions
+12.1 What has been resolved . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12.2 What remains theorem-specific . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12.3 Logical boundaries . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12.4 Recommended next formal milestones . . . . . . . . . . . . . . . . . . . . . . . .
+12.5 Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+30
+30
+30
+31
+31
+31
+
+A Explicit coding primitives
+A.1 Pairs and lists . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+A.2 Signed integers and rationals . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+A.3 Bitsets . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+A.4 Matrices . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+A.5 Finite complexes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+A.6 Bounded breadth-first search . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+31
+32
+32
+32
+32
+32
+33
+
+Certified Observation Towers in iPRA
+
+4
+
+B Object-language formula schemas
+B.1 Finite complex . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+B.2 Strong carrier . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+B.3 Selection and contiguity . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+B.4 Prism identity . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+B.5 Gaussian elimination . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+B.6 Tower naturality . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+33
+33
+33
+33
+33
+34
+34
+
+C Theorem and artifact ledger
+
+34
+
+Certified Observation Towers in iPRA
+
+1
+
+Repository audit and exact proof status
+
+1.1
+
+The arithmetic backend
+
+5
+
+The relevant ProveIt development has a precise formal core. In its ordinary presentation, iPRA
+has one function symbol for every primitive-recursive definition, the defining equations for those
+symbols, the successor axioms, intuitionistic first-order natural deduction with equality, and
+induction restricted to quantifier-free formulas. The Lean types are PR k for a k-ary primitiverecursive symbol, PTm n for terms with n free variables, PRAAx for the axiom family, and Prf for
+derivations. The theorem PRA.qfInd is the actual induction endpoint. The current library also
+proves
+(Γ ⊢PRAAx φ) ⇐⇒ NPrf(ofPRA(Γ), ofPRA(φ)),
+under the name pra_iff_native. Thus the correct workflow is to construct an ordinary
+object-language derivation first and transport it only afterwards. The bridge does not turn a
+true statement about natural numbers, or an ambient Lean theorem, into an iPRA derivation
+automatically [1].
+This distinction is the main quality gate for the present report. Every mathematical algorithm
+described below has three possible statuses:
+(i) a human proof that a finite algorithm is correct;
+(ii) a semantic Lean theorem about that algorithm;
+(iii) an actual object-language term of type Γ ⊢PRAAx φ.
+Only (iii) is an internal iPRA proof. The supplied Lean files specify a path from (i) to (iii), but
+do not claim to have completed it.
+
+1.2
+
+What the existing proof packets already achieve
+
+The repository contains a large collection of delivered packets. They establish a strong common
+style:
+• replace arbitrary real objects by fixed primitive-recursive evaluators, rational approximants,
+and explicit moduli;
+• replace compactness by finite grids or finite nets;
+• replace exact sign or branch tests by strict margins, overlap, or positive separation data;
+• package algorithms as bounded traces with Boolean invariants;
+• state explicitly that exact reference programs and semantic Lean lemmas do not by
+themselves constitute an object-language proof.
+The strongest current foundational packet, “finite contracts”, already gives compiled semantic
+lemmas, a copied and audited object kernel, actual object-iPRA examples, and a contract record
+that contains both a fixed PR program and a Prf PRAAx certificate. Other packets contribute
+variable-length recursion, coherent finite presentations, relational outputs, backward demand
+analysis, and finite observation compilers. These ingredients are not repeated here; they are
+reorganized into one topological calculus.
+
+Certified Observation Towers in iPRA
+
+1.3
+
+6
+
+The topology packets and their remaining gap
+
+Two existing topology packets are particularly important.
+The dimension packet proves a finite rational theorem. A table F : {0, . . . , N }d → Qm whose
+opposite source faces stay h apart, and whose image on every Kuhn simplex has diameter below
+h/d, must satisfy d ≤ m. The positive alternative extracts either a close opposite-face pair or a
+large same-simplex oscillation. A cubical Sperner parity argument and staggered target grids
+drive the proof. The passage to presented homeomorphisms uses fixed evaluators and explicit
+local uniform moduli.
+The Jordan packet works with a circle embedding given by rational approximation routines,
+a forward continuity modulus, and a positive inverse-separation modulus. It constructs a stable
+inside/outside bit only for points with positive clearance, uses finite crossing parity, and produces
+polygonal routes with certified clearance. Crossing paths yield arbitrarily accurate approximate
+contacts; the packet does not silently assert an exact intersection parameter.
+Both reports give substantial complete human arguments, but their Lean files are explicitly
+scaffolds. Moreover, they solve theorem-specific finite combinatorics. They do not yet supply a
+reusable answer to the following common question:
+When a point, cell, root, chart, or branch lies on a finite boundary and several exact
+choices are compatible with all available observations, how can a map be composed
+and a topological invariant be proved independent of the choice, without invoking a
+discontinuous selector?
+The new ingredient of this report is a finite relational answer: retain the whole compatible
+cloud as a simplicial carrier; prove that all selections are contiguous; and use an explicit prism
+homotopy to show choice independence on homology. This is a classical topological mechanism
+in finite, proof-producing form. It is closely related to the carrier methods of algebraic topology
+[3], but the point here is its exact role as an iPRA interface.
+
+1.4
+
+Audit conclusion
+
+The repository’s recurring difficulties can be divided into three classes.
+A1. Representation difficulties. Arbitrary functions, open sets, measures, or infinite
+structures are higher-type. They must be replaced by fixed evaluators, finite observations,
+or explicit finite tables.
+A2. Constructive stability difficulties. Exact boundary choice, exact sign at zero, eigenvector selection at multiplicity, and branch selection at collision may be discontinuous. They
+require overlap, a relational output, or an apartness gap.
+A3. Proof-internalization difficulties. A finite algorithm may be mathematically correct
+yet still lack Booleanization lemmas, defining-equation derivations, loop invariants, or the
+final Prf PRAAx term.
+Certified observation towers address A1 and A2 uniformly for topology and many adjacent
+subjects. The bounded proof compiler described in Sections 3 and 10 addresses A3 at the level
+of a precise implementation plan. The framework does not pretend that missing analytic moduli,
+Diophantine height bounds, or theorem-specific parity arguments can be obtained by encoding
+alone.
+
+Certified Observation Towers in iPRA
+
+7
+
+2
+
+Statement discipline: what an iPRA theorem may say
+
+2.1
+
+First-order schemas rather than hidden higher types
+
+A first-order arithmetic theory quantifies over natural numbers. It does not quantify directly
+over arbitrary functions N → N, arbitrary subsets of a space, or arbitrary topological spaces.
+There are three legitimate ways to express such data.
+Definition 2.1 (Fixed-symbol schema). Choose a particular primitive-recursive evaluator e and
+add its fixed PR syntax tree to the statement. Prove the theorem uniformly in the numerical
+inputs to e, but not by quantifying over the set of all evaluator codes.
+Definition 2.2 (Finite-table input). For a requested precision k, pass a number coding exactly
+the finite table read by the proof. A bounded verifier checks the table and the local compatibility
+laws.
+Definition 2.3 (Clocked trace). Pass a code for a bounded computation trace together with its
+time bound. Verify each transition and the exit condition by bounded Boolean tests.
+A total primitive-recursive universal evaluator for all primitive-recursive program codes
+cannot exist: if U (e, x) uniformly evaluated every such program, then n 7→ U (n, n) + 1 would be
+primitive recursive and disagree with its own index. Thus “a code for an arbitrary PR program”
+is not a harmless substitute for a fixed evaluator. The framework uses fixed symbols, finite
+tables, or clocked simulations, exactly as the existing ProveIt reports recommend.
+
+2.2
+
+All-precision statements
+
+A represented-real assertion often has the form
+∀k ∃w R(k, w),
+where R is a bounded numerical predicate. The constructive and iPRA-friendly order is:
+1. keep k as a free numerical input;
+2. compute a finite demand bound D(k);
+3. read or produce only the finite observations below D(k);
+4. run a bounded algorithm and prove a quantifier-free invariant;
+5. output w(k) and prove R(k, w(k));
+6. universally quantify k only after the finite proof is complete.
+One must not perform induction on a formula that itself quantifies over all future precisions.
+That formula is not quantifier-free. The finite-demand pass converts it into a finite Boolean
+table at the current precision.
+
+2.3
+
+Total operations with guarded meaning
+
+Division, normalization, chart inversion, and partial geometric constructions should be made
+total on codes. For example, define guarded rational division by
+(
+
+qdiv(a, b) =
+
+a/b,
+0,
+
+b ̸= 0,
+b = 0.
+
+Certified Observation Towers in iPRA
+
+8
+
+The theorem carries the Boolean guard b ̸= 0. Totalization ensures that every operation
+is represented by a total primitive-recursive symbol; the guard records where the intended
+mathematics applies.
+The same pattern is used for malformed lists, invalid simplices, singular matrices, and absent
+chart data. A decoder returns a default value on malformed input, while a separate predicate
+Valid certifies meaningful use. This separation prevents hidden partiality from entering the
+object theory.
+
+2.4
+
+Positive data versus negated equality
+
+Constructive topology and analysis require careful use of apartness. The proposition “x ̸= y” is
+negative. It need not provide a numerical scale at which x and y can be separated. Algorithms
+instead require positive data such as
+d(x, y) > 2−s
+with an explicit s, or a pair of disjoint basic neighborhoods with certified membership. Likewise,
+“a point is outside a closed set” should be replaced by a positive clearance witness when a routing
+algorithm needs room to move.
+The framework therefore distinguishes:
+• equality of names, which is generally a universal all-precision relation;
+• apartness, which is witnessed at a finite scale;
+• ambiguity, represented by a finite cloud rather than resolved by arbitrary choice.
+
+2.5
+
+Finite verification does not produce global bounds
+
+A verifier for a candidate subcover does not produce a subcover. A verifier for a list of all rational
+points does not produce a height bound. A verifier for a contraction certificate does not discover
+a contraction region. These distinctions are logical, not merely engineering details.
+Every interface in this report separates:
+producer
+
++
+
+finite verifier
+
++
+
+correctness proof.
+
+If the producer requires a modulus, a separation bound, a finite exhaustion, or a height certificate,
+that datum is an explicit premise. The framework can compose such certificates and eliminate
+finite bookkeeping; it cannot conjure missing mathematical information.
+
+2.6
+
+Four proof layers
+
+For clarity, every application should name four layers.
+Layer
+
+Required content
+
+Semantic presentation
+
+What classical or constructive object the finite data are intended to
+represent.
+A theorem solely about coded finite data, bounded searches, and exact
+arithmetic.
+A formula of iPRA and a derivation in Prf PRAAx.
+Application of pra_iff_native to an already constructed derivation.
+
+Finite theorem
+Object arithmetic
+Native transport
+
+The finite theorem is usually the reusable mathematical core. The semantic presentation is
+application-specific. The object arithmetic is the formalization obligation. The native transport
+is generic and should be the final, not the first, step.
+
+Certified Observation Towers in iPRA
+
+9
+
+3
+
+Finite contracts and a proof-producing compiler
+
+3.1
+
+Numerical coding
+
+Fix once and for all primitive-recursive coding operations for pairs, finite lists, signed integers,
+rationals, bitsets, and matrices. Appendix A gives one explicit route. The exact coding is
+secondary; the essential requirements are:
+1. constructors and destructors are fixed primitive-recursive functions;
+2. malformed data decode to total defaults;
+3. length, bounded access, membership, equality, and bounded folds are primitive recursive;
+4. the elementary coding laws have object-language derivations.
+A finite subset of {0, . . . , n − 1} is represented by a bitset s < 2n . Membership is
+s
+mod 2.
+2i
+Union is bitwise disjunction, but it can equally be defined by a bounded fold over bits. This
+makes every set operation a finite numerical computation.
+bit(s, i) =
+
+3.2
+
+
+
+
+
+Bounded formulas are Boolean
+
+Let a bounded formula be built from equality and order between fixed primitive-recursive terms,
+intuitionistic connectives, and quantifiers of the forms
+∀u < B(⃗x) φ(u, ⃗x),
+
+∃u < B(⃗x) φ(u, ⃗x).
+
+Theorem 3.1 (Bounded Booleanization). For every fixed bounded formula φ(⃗x) there is a fixed
+primitive-recursive Boolean term bφ (⃗x) and an iPRA derivation
+iPRA ⊢ φ(⃗x) ↔ bφ (⃗x) = 1.
+The construction is uniform by metalevel recursion on the finite syntax tree of φ.
+Proof. Atomic equality and order have primitive-recursive decision procedures. Their correctness
+is proved from the defining equations and quantifier-free induction. Boolean conjunction, disjunction, and implication are represented by fixed truth-table functions. Since their arguments have
+already been proved equivalent to Boolean equalities, the corresponding connective equivalences
+follow intuitionistically.
+For a bounded existential, define the finite disjunction fold
+E(0, ⃗x) = 0,
+
+E(t + 1, ⃗x) = max(E(t, ⃗x), bψ (t, ⃗x)).
+
+Quantifier-free induction on t proves
+E(t, ⃗x) = 1 ↔ ∃u < t bψ (u, ⃗x) = 1.
+The existential direction uses the least successful index from bounded search; the reverse direction
+is immediate from the fold. Evaluate at t = B(⃗x).
+For a bounded universal, use the finite conjunction fold
+A(0, ⃗x) = 1,
+
+A(t + 1, ⃗x) = min(A(t, ⃗x), bψ (t, ⃗x)).
+
+Quantifier-free induction proves the corresponding universal equivalence. Every induction formula
+is an equality between Boolean primitive-recursive terms, hence quantifier-free. This completes
+the syntax recursion.
+Remark 3.2. The theorem concerns each fixed bounded formula. It does not assert a primitiverecursive truth predicate uniform over arbitrary formula codes. The metalevel compiler emits a
+particular PR syntax tree and a particular derivation.
+
+Certified Observation Towers in iPRA
+
+3.3
+
+10
+
+Contracts
+
+Definition 3.3 (Finite contract). A finite contract from input code x to output code y consists
+of:
+1. a fixed primitive-recursive producer p(x);
+2. bounded formulas Pre(x) and Post(x, y);
+3. an object-language derivation
+iPRA ⊢ Pre(x) → Post(x, p(x)).
+Contracts compose by substitution and cut. Suppose p establishes M (x, p(x)) from P (x), and
+q establishes Q(x, y, q(x, y)) from P (x) ∧ M (x, y). Then x 7→ q(x, p(x)) establishes the composite
+postcondition. At the program level, primitive-recursive symbols are closed under composition.
+At the proof level, the construction uses conjunction introduction, universal elimination or
+substitution, and implication elimination.
+
+3.4
+
+Bounded loops
+
+Let s(0, x) = s0 (x) and
+
+s(t + 1, x) = F (t, s(t, x), x)
+
+be a fixed primitive recursion. Let I(t, s, x) be bounded and let bI be its Booleanization.
+Theorem 3.4 (Finite-trace reflection). If iPRA proves the base instance I(0, s0 (x), x) and the
+one-step preservation
+t < T (x) ∧ I(t, s, x) → I(t + 1, F (t, s, x), x),
+then iPRA proves I(T (x), s(T (x), x), x).
+Proof. Use the quantifier-free induction formula
+J(t, x) : ⇐⇒ t ≤ T (x) → bI (t, s(t, x), x) = 1.
+All symbols are fixed primitive-recursive terms and the formula is quantifier-free. The base
+follows from Booleanization and the supplied base proof. For the successor step, split the
+decidable comparison t < T (x). In the positive branch use the preservation proof and the
+defining equation for s(t + 1, x). In the negative branch the antecedent t + 1 ≤ T (x) is false.
+Apply PRA.qfInd, then instantiate the universal conclusion at T (x) and use reflexivity of ≤.
+This theorem is the proof-producing replacement for the phrase “run the algorithm and
+observe that the invariant remains true.” Every topological algorithm below—carrier composition,
+simplex enumeration, breadth-first search, parity accumulation, Gaussian elimination—is a
+bounded loop of this form.
+
+3.5
+
+Syntax-directed proof programs
+
+A convenient metalevel source language has commands:
+assign,
+
+sequence,
+
+if,
+
+boundedLoop(I),
+
+return.
+
+Each leaf carries an object proof of its local contract. The compiler recursively combines those
+proofs using substitution, cut, disjunction elimination for Boolean branches, and Theorem 3.4
+for loops. Its output is not merely executable code; it is a pair
+(p, π),
+
+π : Pre ⊢PRAAx Post(p).
+
+This is the general framework into which the topological layer will fit. The remaining question
+is how to represent maps when exact finite choices are unstable. Certified observation towers
+answer that question.
+
+Certified Observation Towers in iPRA
+
+11
+
+4
+
+Certified observation towers
+
+4.1
+
+Finite nerves
+
+A finite cover or finite family of observations is represented by a finite abstract simplicial complex.
+Definition 4.1 (Coded finite complex). A coded finite complex K consists of a vertex bound
+NK and a Boolean predicate
+SimplexK (s) ∈ {0, 1},
+
+s < 2NK ,
+
+such that the empty bitset is a simplex and every subset of a simplex is a simplex. All laws are
+supplied as bounded arithmetic proofs.
+Semantically, vertices may be basic opens, rational boxes, cells, chart domains, algebraic
+clusters, or any finite observations. A bitset s is a simplex when its observations are jointly
+compatible. If the vertices are open sets Ui , the intended condition is
+\
+
+Ui ̸= ∅.
+
+i∈s
+
+Constructively, the complex need not decide this condition from an arbitrary topology. Instead,
+the application supplies a finite positivity/intersection certificate and proves downward closure.
+
+4.2
+
+Strong simplicial carriers
+
+Definition 4.2 (Strong carrier). Let K, L be finite complexes. A strong simplicial carrier
+C : K ⊸ L assigns to every vertex v of K a nonempty bitset C(v) of vertices of L such that, for
+every simplex σ of K,
+[
+C(σ) :=
+C(v)
+v∈σ
+
+is a simplex of L.
+The adjective “strong” distinguishes this particularly finite form from a general acyclic carrier.
+Here the entire union lies in one simplex and is therefore contractible. This stronger condition is
+exactly what cover refinements and sufficiently fine continuous-map images naturally provide.
+A carrier is a finite relational map. It records all currently valid target choices rather than
+selecting one. The relation may narrow at finer scales. The crucial advantage is that its algebra
+is total and constructive.
+Definition 4.3 (Carrier composition). For C : K ⊸ L and D : L ⊸ M , define
+(D ◦ C)(v) =
+
+[
+
+D(w).
+
+w∈C(v)
+
+Every union is bounded by the finite vertex sets. Therefore composition is primitive recursive
+on the codes.
+
+4.3
+
+Observation towers
+
+Definition 4.4 (Certified observation tower). A certified observation tower X consists of:
+1. a fixed primitive-recursive family of finite complexes KkX ;
+2. a fixed primitive-recursive family of strong refinement carriers
+X
+⊸ KkX ;
+RkX : Kk+1
+
+Certified Observation Towers in iPRA
+
+12
+
+3. object-language proofs that every level is a complex and every refinement is a carrier;
+4. optional quantitative fields such as a mesh bound, cover radius, positivity witness, or
+exhaustion index.
+A theorem never quantifies over the class of all such towers inside first-order arithmetic.
+Instead, it is a schema for each fixed family of PR symbols, or it accepts a finite prefix as
+numerical input together with a bounded verification certificate.
+Kk+2
+
+Rk+1
+
+Kk+1
+
+Rk
+
+Kk
+
+Rk ◦ Rk+1
+finite nerves; refinement is relational,
+not an arbitrary exact selector
+
+4.4
+
+Presented points
+
+A point of a represented space can be observed at scale k by a nonempty simplex Ox (k) of Kk .
+It contains every basic cell consistent with the current finite information. Coherence means that
+Ox (k) ⊆ Rk (Ox (k + 1))
+up to the appropriate bitset relation, with a converse “no observation is lost” clause when the
+presentation needs it. The observation is a cloud, not a single cell.
+For a fixed point name, k 7→ Ox (k) is a fixed primitive-recursive evaluator. A variable point
+can be passed by a finite observation table at the current demand horizon. If an application
+can prove that Ox (k) eventually becomes a singleton, it may recover an exact cell. The general
+theory does not assume this.
+
+4.5
+
+Presented maps
+
+Definition 4.5 (Tower map). A tower map F : X → Y consists of:
+1. a primitive-recursive precision demand µF (k);
+2. carriers
+
+Fk : KµXF (k) ⊸ KkY ;
+
+3. a finite coherence certificate saying that refining the source and then applying Fk , or
+applying a finer Fk+1 and then refining the target, gives two selections carried by a
+common carrier.
+The last clause is naturality up to contiguity. Strict equality of chosen vertex maps is neither
+needed nor desirable. At the chain level, contiguity yields a finite homotopy, so the induced
+homology map is strictly well defined.
+
+4.6
+
+How classical spaces produce towers
+
+Suppose a presented space X comes with finite covers
+Uk = {Uk,0 , . . . , Uk,N (k)−1 }
+and finite certificates for nonempty intersections. Let Kk be the nerve. Suppose every fine open
+Uk+1,j has a nonempty finite list of certified coarse containers Uk,i . Let Rk (j) be that list. If fine
+
+Certified Observation Towers in iPRA
+
+13
+
+opens Uk+1,j for j ∈ σ meet at a point x, every chosen coarse container also contains x. Hence
+their union is a simplex of the coarse nerve. Thus Rk is a strong carrier.
+Now let f : X → Y have an explicit uniform continuity modulus. Choose a source scale µ(k)
+fine enough that f (Uµ(k),i ) is contained in at least one target basic open of scale k. Let Fk (i)
+be the finite list of all certified containers. If source cells in σ meet at x, all target containers
+attached to them contain f (x), so their union is a target simplex. Again Fk is a strong carrier.
+This proof is entirely local and finite. Abstract compactness is used only in the external
+theorem that produces the finite covers and a computable modulus. Inside iPRA, those data are
+explicit symbols or certificate fields.
+
+4.7
+
+Pointfree interpretation
+
+The tower may be used without a pre-existing set of points. Its vertices are basic observations,
+its simplices are positive finite intersections, and its refinement carriers are cover relations. This
+is close in spirit to formal topology, where basic opens, covers, and positivity are primary and
+arbitrary point sets are not assumed [5]. It is also compatible with represented-space practice,
+where topological properties are expressed through the computability of operations on names
+and open information [4].
+The present construction is deliberately more finitary: at each requested scale, only a finite
+complex and finite carrier are manipulated. This is what makes quantifier-free induction and
+bounded verification available.
+
+5
+
+The carrier calculus and choice-independent invariants
+
+5.1
+
+Composition
+
+Theorem 5.1 (Carrier composition). If C : K ⊸ L and D : L ⊸ M are strong carriers, then
+D ◦ C : K ⊸ M is a strong carrier. Composition is associative, and singleton identity clouds
+are identities.
+Proof. For every source vertex v, C(v) is nonempty and every D(w) with w ∈ C(v) is nonempty.
+Therefore their finite union (D ◦ C)(v) is nonempty.
+Let σ be a simplex of K. By the carrier property for C,
+τ = C(σ) =
+
+[
+
+C(v)
+
+v∈σ
+
+is a simplex of L. Apply the carrier property for D to τ :
+D(τ ) =
+
+[
+
+D(w)
+
+w∈τ
+
+is a simplex of M . Reassociating finite unions gives
+D(τ ) =
+
+[
+
+[
+
+D(w) = (D ◦ C)(σ).
+
+v∈σ w∈C(v)
+
+Hence the composite is a carrier. Associativity and identity follow from associativity and identity
+of finite union. Every equality can be proved bit-by-bit by bounded induction.
+
+5.2
+
+Selections and contiguity
+
+Definition 5.2 (Selection). A selection of C : K ⊸ L is a vertex map f : V (K) → V (L) with
+f (v) ∈ C(v) for all v.
+
+Certified Observation Towers in iPRA
+
+14
+
+The least member of each nonempty finite cloud gives a canonical primitive-recursive selection.
+This selection is used for execution; correctness does not depend on it.
+Theorem 5.3 (Selection theorem). Every selection f of a strong carrier C : K ⊸ L is simplicial.
+Any two selections f, g are contiguous: for every simplex σ of K, the vertex set
+f (σ) ∪ g(σ)
+is a simplex of L.
+Proof. For each v ∈ σ, f (v) ∈ C(v). Hence
+f (σ) ⊆
+
+[
+
+C(v) = C(σ).
+
+v∈σ
+
+The right side is a simplex by the carrier condition, and every subset of a simplex is a simplex.
+Thus f is simplicial.
+The same argument applied simultaneously to f and g gives
+f (σ) ∪ g(σ) ⊆ C(σ),
+so the union is a simplex. This is exactly contiguity.
+
+5.3
+
+Chains over F2
+
+For an ordered finite complex K, let Cq (K; F2 ) be the finite-dimensional vector space with basis
+the q-simplices. The boundary is
+∂[v0 , . . . , vq ] =
+
+q
+X
+
+[v0 , . . . , vbi , . . . , vq ]
+
+i=0
+
+with coefficients modulo 2. Each (q − 2)-face appears exactly twice in ∂ 2 , so ∂ 2 = 0.
+A simplicial vertex map f sends a simplex to the sorted set of image vertices; if two source
+vertices have the same image, the normalized term is zero. Extending linearly gives a chain map
+f# .
+All operations are bounded parity folds over finite simplex tables. No quotient type is needed
+inside arithmetic: a chain is simply a bitset indexed by the enumerated simplices.
+
+5.4
+
+The prism operator
+
+Let f, g : K → L be contiguous. For a basis simplex σ = [v0 , . . . , vq ], define over F2
+Pq (σ) =
+
+q
+X
+
+[f (v0 ), . . . , f (vi ), g(vi ), . . . , g(vq )],
+
+i=0
+
+where a term with a repeated vertex is normalized to zero. Contiguity ensures that every
+nondegenerate term is a simplex of L.
+Theorem 5.4 (Finite prism identity). For contiguous simplicial maps f, g : K → L,
+∂P + P ∂ = f# + g#
+as maps of mod-2 chain complexes.
+
+Certified Observation Towers in iPRA
+
+15
+
+Proof. Fix σ = [v0 , . . . , vq ] and expand ∂Pq (σ). A term of Pq (σ) has an f -block ending at vi
+and a g-block beginning at the same vi . Deleting a vertex strictly inside the f -block or strictly
+inside the g-block produces exactly the corresponding term of Pq−1 (∂σ). These terms therefore
+occur once in ∂P and once in P ∂ and cancel modulo 2.
+At the seam, deleting g(vi ) from the i-th prism term produces the same normalized simplex
+as deleting f (vi+1 ) from the (i + 1)-st prism term. These adjacent seam terms also cancel in
+pairs. The two unpaired end terms are obtained by deleting f (v0 ) from the first prism and
+deleting g(vq ) from the last prism. They are precisely g# (σ) and f# (σ). Thus
+(∂P + P ∂)(σ) = f# (σ) + g# (σ).
+If a tuple has repeated vertices, normalization maps it to zero. The cancellation pairing
+respects this normalization: paired words have the same multiset of vertices, so either both
+normalize to the same simplex or both vanish. Therefore the identity survives degeneracies.
+Linearity proves it for every chain.
+For formalization, the preceding prose becomes a bounded index pairing. Each emitted
+term is tagged by (i, j), where i is the prism seam and j is the deleted position. A primitiverecursive involution pairs every tag except the two endpoints; a parity fold proves cancellation
+by quantifier-free induction.
+Corollary 5.5 (Choice-independent homology map). Any two selections of a strong carrier
+induce the same map
+Hq (K; F2 ) −→ Hq (L; F2 )
+for every q.
+Proof. Let z be a cycle. By Theorem 5.4,
+f# z + g# z = ∂P z + P ∂z = ∂P z.
+Thus f# z and g# z differ by a boundary and represent the same homology class.
+
+5.5
+
+Functorial tower homology
+
+Every refinement carrier Rk : Kk+1 ⊸ Kk now induces a canonical homology map rk , because
+the chosen selection is irrelevant by Theorem 5.5. Composition of carriers induces composition
+of homology maps: selecting from a composite and composing selections are both selections of a
+common composite carrier, hence contiguous.
+Theorem 5.6 (Tower homology). A certified observation tower determines, for every q, an
+inverse system of finite-dimensional F2 -vector spaces
+r
+
+k
+· · · −→ Hq (Kk+1 ; F2 ) −→
+Hq (Kk ; F2 ) −→ · · · .
+
+A coherent tower map determines a morphism of inverse systems, independent of all finite
+selections. Composition of tower maps is functorial.
+Proof. Choose least selections for execution. The refinement maps are well defined on homology
+by Theorem 5.5. The coherence certificate for a tower map says that the two finite vertex maps
+around each naturality square are carried by a common carrier. They are therefore contiguous
+and induce equal homology maps. This is exactly commutativity of the square on homology.
+Carrier composition represents map composition, and Theorems 5.1 and 5.5 prove associativity
+and independence of all selection choices.
+
+Certified Observation Towers in iPRA
+
+5.6
+
+16
+
+Integer coefficients
+
+Integer chains require signs. One can use the signed prism
+Pq (σ) =
+
+q
+X
+
+(−1)i [f (v0 ), . . . , f (vi ), g(vi ), . . . , g(vq )]
+
+i=0
+
+and the identity ∂P + P ∂ = g# − f# . Signed integers are coded by pairs of naturals or a
+parity-magnitude code. Homology groups can be computed by Smith normal form.
+For iPRA, the easiest robust interface is a checked Smith certificate: matrices U, D, V with
+U AV = D, determinants ±1, diagonal D, and the divisibility chain. A bounded verifier checks
+the certificate. A separate bounded Euclidean algorithm may produce it when desired. The
+mod-2 theory is the minimal core because Gaussian elimination and parity cancellation are
+especially transparent.
+
+5.7
+
+Acyclic carriers as an extension
+
+Strong carriers may be generalized. Assign to each source simplex σ a target subcomplex A(σ)
+with face monotonicity and a supplied finite contraction or acyclicity certificate. The usual
+acyclic-carrier induction constructs a chain map and a chain homotopy [3]. In iPRA, “acyclic”
+must not be an unexamined semantic adjective: the certificate must provide bounded filling
+operators in the required dimensions. The strong carrier is the special case where A(σ) is one
+simplex and filling is canonical.
+
+6
+
+Finite topology inside iPRA
+
+Finite topological spaces are a useful exact test: no limiting representation is required, yet
+nontrivial homotopy and homology already occur. McCord showed that finite spaces and finite
+simplicial complexes capture the same weak homotopy types in a precise sense [2]. For iPRA,
+the key point is even more elementary: a finite topology has a compact preorder presentation.
+
+6.1
+
+From a finite topology to a preorder
+
+Let X = {0, . . . , n − 1} and let τ be a finite topology, coded as a finite list of bitsets. For x ∈ X,
+define its minimal open neighborhood
+Ux =
+
+\
+
+{U ∈ τ : x ∈ U }.
+
+The intersection is finite, hence open. Define
+x⪯y
+
+⇐⇒
+
+y ∈ Ux ,
+
+equivalently: every open set containing x also contains y.
+Theorem 6.1 (Finite topology/preorder equivalence). The relation ⪯ is a preorder. The open
+sets of τ are exactly the upward-closed subsets for ⪯. Conversely, the upward-closed subsets of
+any finite preorder form a topology. These constructions are mutually inverse. The topology is
+T0 exactly when the preorder is antisymmetric.
+Proof. Reflexivity holds because x ∈ Ux . If x ⪯ y and y ⪯ z, every open containing x contains
+y, and then contains z; hence x ⪯ z.
+Every open U is upward closed: if x ∈ U and x ⪯ y, the definition of ⪯ gives y ∈ U .
+Conversely let A be upward closed. For each x ∈ A, Ux ⊆ A, because y ∈ Ux means x ⪯ y.
+Since x ∈ Ux , we have
+[
+A=
+Ux ,
+x∈A
+
+Certified Observation Towers in iPRA
+
+17
+
+so A is open.
+For a preorder, arbitrary unions and finite intersections of upward-closed sets are upward
+closed, so they form a topology. Its minimal neighborhood of x is {y : x ⪯ y}, recovering the
+relation.
+Finally, x and y have the same open neighborhoods exactly when x ⪯ y and y ⪯ x. The T0
+axiom says this forces x = y, which is antisymmetry.
+Every assertion in the proof is a bounded formula over x, y, z < n and bit membership.
+Therefore Theorem 3.1 and quantifier-free induction suffice for a direct object proof.
+
+6.2
+
+Continuous maps are monotone maps
+
+Theorem 6.2 (Finite continuity). For finite spaces presented by their specialization preorders,
+a function f : X → Y is continuous if and only if it is monotone:
+x ⪯X x′ =⇒ f (x) ⪯Y f (x′ ).
+Proof. Assume f is continuous and x ⪯X x′ . Let V be any open neighborhood of f (x). Then
+f −1 (V ) is open and contains x, so it contains x′ . Thus f (x′ ) ∈ V . Since this holds for every
+such V , f (x) ⪯Y f (x′ ).
+Conversely assume f is monotone and V ⊆ Y is upward open. If x ∈ f −1 (V ) and x ⪯X x′ ,
+monotonicity gives f (x) ⪯Y f (x′ ). Upward closure of V yields f (x′ ) ∈ V , so f −1 (V ) is upward
+open.
+The preorder encoding is exponentially smaller than listing all open sets in the worst case
+and makes continuity a bounded pairwise condition. It is therefore the preferred exact finite
+representation.
+
+6.3
+
+Basic constructions
+
+All of the following are primitive-recursive on finite codes.
+Products. The product preorder on X × Y is coordinatewise: (x, y) ⪯ (x′ , y ′ ) iff x ⪯ x′ and
+y ⪯ y ′ . The standard product topology on finite spaces is recovered.
+Subspaces. For a bitset A ⊆ X, restrict the preorder to selected vertices. A coded reindexing
+produces a finite preorder on {0, . . . , |A| − 1}.
+Quotients. Given a finite equivalence relation E compatible with the preorder, choose the
+least representative of each class and define the quotient relation by bounded existential search.
+A verifier checks well-definedness and the universal property for supplied maps.
+Connected components. The undirected comparability graph has an edge between x and
+y when x ⪯ y or y ⪯ x. Its graph components are the topological connected components of a
+finite space. Breadth-first search with a visited-bitset invariant computes them.
+Order complex. For a finite T0 space, the order complex has a simplex for every finite chain
+x0 < · · · < xq . Its construction is bounded. It supplies the bridge from finite spaces to simplicial
+homology used in McCord’s theory [2].
+
+Certified Observation Towers in iPRA
+
+6.4
+
+18
+
+What finite topology does and does not solve
+
+Finite spaces provide exact models, regression tests, and finite approximants. They do not imply
+that every infinite topological theorem reduces to one finite space. The missing information is
+carried by the observation tower: how finite covers refine, how maps act at every requested scale,
+and what quantitative condition connects the tower to the intended space.
+
+7
+
+A topology library built from finite certificates
+
+This section lists the principal topological notions and gives an iPRA-compatible formulation.
+The goal is not to force all topology into one definition, but to expose exactly which finite
+observations and positive certificates each theorem uses.
+
+7.1
+
+Open information and continuity
+
+At scale k, a basic open is a vertex of Kk . A finite union is a bitset. Membership of a presented
+point is positive when its observation simplex meets the bitset in a certified way. Arbitrary
+subsets of points are not internal objects.
+A continuous map is represented by a modulus and carriers as in Section 4. This formulation
+has three advantages:
+1. it is pointfree at the finite level;
+2. it permits multiple valid target cells at boundaries;
+3. composition is finite relational composition.
+For metric presentations, the familiar evaluator/modulus formulation induces the carrier
+formulation. Conversely, if the tower is spatially complete and has a shrinking mesh, a coherent
+carrier map determines the usual continuous action on regular point names. That converse is a
+semantic theorem about the chosen presentation, not a generic fact of first-order arithmetic.
+
+7.2
+
+Compactness
+
+Abstract compactness says every open cover has a finite subcover. Quantifying over arbitrary
+open covers is higher-type and often nonconstructive. The usable data are instead:
+Definition 7.1 (Finite compactness contract). A compactness contract supplies a primitiverecursive net N (k), a finite cover Uk , and a verifier proving that every represented point is
+observed in at least one member, with mesh or Lebesgue data sufficient for the intended theorem.
+If an application receives a finite candidate cover by basic opens, coverage reduces to
+a bounded statement about the net plus a supplied uniform-continuity or inclusion margin.
+Bounded search extracts a subcover when the list is redundant. The contract does not turn
+an arbitrary infinite enumeration of opens into a finite subcover without a bar, modulus, or
+stopping bound.
+
+7.3
+
+Separation and apartness
+
+A Hausdorff-style effective presentation supplies a separation procedure:
+Apart(x, y, s) = 1 =⇒ disjoint basic neighborhoods of scale s.
+For regular fast metric names, a witnessed lower distance bound provides this procedure. Negated
+name equality alone does not.
+At the tower level, two observation clouds are apart at scale k when no simplex contains
+a vertex from each cloud, or when an explicit disjointness certificate is supplied. Separation
+propagates under refinement by a bounded proof.
+
+Certified Observation Towers in iPRA
+
+7.4
+
+19
+
+Connectedness and paths
+
+There are several constructive strengths.
+Definition 7.2 (Finite chain connection). Two vertices of Kk are chain connected when they lie
+in the same component of the 1-skeleton. A certificate is a finite vertex path whose consecutive
+pairs are edges.
+A presented space is uniformly chain connected when a fixed primitive-recursive procedure
+produces such paths between observation clouds at every requested scale. This positive statement
+is stronger and more computational than merely denying a separation into two opens.
+A represented path is a tower map from an interval tower. Polygonal paths with rational
+vertices are especially convenient: evaluation, subdivision, and clearance tests are primitive
+recursive. Homotopies are tower maps from a product with an interval tower.
+
+7.5
+
+Products
+
+Given covers Uk and Vk , use the product cover Ui × Vj . A finite family of product cells has
+nonempty intersection exactly when both coordinate families do, provided the factor intersection
+certificates are available. Thus the product nerve is a finite combinatorial construction on pairs.
+Refinement and map carriers are componentwise.
+The construction proves that products of certified towers are certified towers. For metric
+spaces, the max metric gives a simple mesh bound. All dimension bounds, bitset encodings, and
+demand transformations are explicit.
+
+7.6
+
+Subspaces and closed conditions
+
+A subspace cannot in general be formed merely from a negative predicate. The tower needs a
+positive answer to “which cells meet the subspace?” Suitable inputs include:
+• a finite decidable subset of a finite space;
+• an zero set with isolating boxes and sign/degree certificates;
+• a compact set with a distance-name and positive intersection witnesses;
+• a supplied finite subcomplex.
+Cells with certified intersection become vertices; inherited intersection certificates define the
+subcomplex. Ambiguous cells remain as clouds rather than being discarded.
+
+7.7
+
+Quotients
+
+For finite spaces and finite complexes, quotients by a decidable equivalence relation are bounded
+constructions. For represented spaces, a quotient presentation requires more:
+1. a fixed evaluator for the equivalence relation or orbit action;
+2. finite saturation of observation clouds;
+3. compatibility of refinement;
+4. separation data if a Hausdorff quotient is claimed.
+Without these fields, a quotient may destroy effective separation or make equality undecidable.
+The framework therefore treats quotient quality as a certificate, not as an automatic theorem.
+
+Certified Observation Towers in iPRA
+
+7.8
+
+20
+
+Homology and cohomology
+
+At each scale, mod-2 homology is computed from finite boundary matrices. Gaussian elimination
+is a bounded loop. Its invariant records:
+• the processed pivot columns;
+• preservation of row space under elementary operations;
+• pivot distinctness;
+• rank accounting.
+The Betti formula is
+
+βq (K) = nq − rank ∂q − rank ∂q+1 .
+
+Cohomology uses transposed boundary matrices. Cup products are finite formulas on simplex
+tables; associativity and the Leibniz rule can be proved by bounded index manipulations. Integral
+torsion is added by checked Smith certificates as described after Theorem 5.4.
+The tower does not force Betti numbers to stabilize. Stabilization, pro-isomorphism, or
+identification with singular/Cech homology is a semantic theorem requiring hypotheses on the
+cover system. McCord’s finite-space results and classical nerve theorems indicate the relevant
+bridges [2], but each effective use must supply finite good-cover or acyclicity certificates.
+
+7.9
+
+Fundamental groups
+
+For a finite complex, an edge loop is a finite list of vertices. Elementary edge homotopies
+insert or delete backtracks and triangle moves. A bounded sequence of such moves is a positive
+null-homotopy certificate. Van Kampen presentations can be produced from a finite spanning
+tree and 2-simplex relations.
+What is not available uniformly is a decision procedure for the word problem in arbitrary
+finitely presented groups. The iPRA interface is therefore asymmetric:
+• a supplied bounded homotopy is verifiable;
+• bounded search can find one below a stated bound;
+• absence of a bounded certificate is not a proof of non-null-homotopy;
+• special classes with a proven normal-form algorithm may add a decision contract.
+
+7.10
+
+Manifolds and atlases
+
+A compact effective d-manifold can be presented by a finite atlas at each scale:
+(Ui , ϕi , ψi , ri ),
+where ϕi and ψi are fixed rational evaluators for a chart and its inverse on guarded domains, ri is
+a positive interior margin, and overlap transitions have explicit moduli. Finite cover certificates
+prove that the shrunken chart domains cover the space. Carriers handle points lying in several
+charts.
+Local topological proofs reduce to rational boxes. Differential topology adds rational derivative
+names, determinant gaps for inverse-function steps, and transversality margins. Smooth partitions
+of unity require explicit bump-function approximants and denominator lower bounds. None of
+these should be hidden inside the word “smooth.”
+For noncompact manifolds, add a primitive-recursive exhaustion by compact charted pieces.
+A theorem at precision k advertises the exhaustion stage it needs. This is the same finite-demand
+discipline used throughout.
+
+Certified Observation Towers in iPRA
+
+7.11
+
+21
+
+Fixed-point theorems
+
+A Sperner labeling on a finite triangulation is a bounded object. The parity proof yields an
+approximate fixed-point simplex. Given a uniformly continuous map on a compact presented
+simplex, a mesh choice turns this into
+∥f (x) − x∥ < 2−k
+for an explicitly produced rational point x.
+An exact fixed point is a different claim. To construct a coherent name, one needs nested
+compatible approximate witnesses. This can be obtained from an isolation/uniqueness modulus,
+from a relational viability dynamic program, or from an explicit compact choice principle
+available for the particular presentation. Unrelated approximate fixed points at each scale do
+not automatically form one point.
+
+7.12
+
+Dimension and local degree
+
+Dimension obstructions are particularly suitable for finite topology. The repository’s staggeredgrid theorem is already a quantitative finite alternative. Invariance of domain can be approached
+similarly: triangulate a rational box, represent a map by a sufficiently fine carrier, compute a
+local mod-2 degree on a boundary complex, and use an injectivity-separation modulus to prevent
+cancellation. The finite degree calculation is within iPRA; producing the required uniform
+separation data is the substantive application hypothesis.
+One must not silently infer unrestricted classical invariance theorems from the finite core.
+Reverse-mathematical work shows that some unrestricted Brouwer invariance statements have
+weak-Koenig-lemma strength over standard base theories [6]. The present goal is the maximal
+explicit, effectively presented version: fixed evaluators, positive moduli, and finite certificates.
+
+8
+
+Topology case studies
+
+8.1
+
+The Sierpinski space
+
+Let X = {0, 1} with preorder 0 ⪯ 1 and no converse relation. The upward opens are
+{1},
+
+∅,
+
+{0, 1}.
+
+The exact Python kernel reconstructs these opens from the relation. Exhaustive enumeration of
+all maps between three representative two-point preorders confirms the theorem “monotone iff
+continuous” in every case; the human proof is Theorem 6.2.
+This example is small but instructive. Open information is directional: observing 0 forces
+compatibility with 1. A preorder code expresses this directly, while an open-set list obscures it.
+It also illustrates why non-Hausdorff finite spaces remain topologically meaningful.
+
+8.2
+
+A carrier tower for the circle
+
+Let Cn be the one-dimensional cycle complex with vertices 0, . . . , n−1 and edges {j, j +1 mod n}.
+Define a binary refinement carrier
+R : C2n ⊸ Cn
+by
+
+R(2i) = {i},
+
+R(2i + 1) = {i, i + 1 mod n}.
+
+For every fine edge, the union of its endpoint clouds is one coarse edge, so R is a strong carrier.
+There are two obvious selections: choose the smaller or the larger endpoint of each ambiguous
+cloud. They differ exactly at subdivision vertices. By Theorem 5.3, both are simplicial and
+
+Certified Observation Towers in iPRA
+
+22
+
+contiguous. The prism theorem proves they induce the same map on H1 . The exact kernel
+verifies
+β(C4 ) = β(C8 ) = β(C16 ) = (1, 1)
+and checks the prism matrix identity for the two selections.
+This is the model for a boundary point in a cover: the point belongs to two adjacent cells,
+and no exact convention should affect the topological invariant.
+
+8.3
+
+Jordan separation
+
+The constructive Jordan theorem is naturally expressed with positive clearance. Let γ be a
+circle embedding with:
+• a fixed rational approximation evaluator;
+• a forward continuity modulus;
+• an inverse separation modulus ensuring that separated parameters have separated images.
+For a rational query point p with a positive lower distance bound from the curve, a sufficiently fine
+polygonal approximation has stable crossing parity. Triangle replacement proves independence
+from further refinement. A finite grid or honeycomb flood computes a route within the equalparity region; failure would extract a separating cycle whose parity change contradicts equality
+of the endpoint bits. This is the constructive strategy of Berg–Julian–Mines–Richman in finite
+arithmetic form [7], consistent with the discrete bounded-arithmetic analyses of Nguyen and
+Cook [8] and later constructive treatments [9].
+The carrier framework improves the interface in four ways.
+1. A curve sample lying on a grid boundary belongs to all adjacent safe cells. Keep that
+cloud rather than imposing a global tie-break.
+2. Polygon refinements are carriers between finite cycle complexes. Crossing parity invariance
+is a finite chain statement.
+3. Safe-region routes are finite edge chains in a complement complex; alternative routing
+choices are related by finite 2-cell fillings when available.
+4. The inside/outside bit is defined on the apartness complement. No decision at zero
+clearance is asserted.
+A complete object proof still needs the theorem-specific crossing and flood-fill invariants.
+The tower/carrier library removes repeated map-choice, refinement, and homology bookkeeping;
+it does not replace the Jordan parity argument itself.
+
+8.4
+
+Invariance of dimension
+
+For a presented map f : [0, 1]d → Rm , choose a rational grid fine enough that the oscillation on
+each Kuhn simplex is below a requested threshold. Encode its vertex values as rational integer
+tuples after clearing denominators. The repository’s finite theorem gives the positive alternative:
+if d > m, then either opposite source faces have images closer than the claimed
+separation, or one Kuhn simplex has image oscillation at least the local bound.
+
+Certified Observation Towers in iPRA
+
+23
+
+Both conclusions are finite witnesses. Applied to a presented homeomorphism and its inverse
+with explicit moduli, they force equality of dimensions.
+In the tower language, Kuhn triangulations are levels, subdivision is a refinement carrier,
+and the map evaluator induces a target-grid carrier. Staggered grid labels are Boolean functions
+on vertices. The cubical Sperner parity theorem becomes a reusable finite contract. Boundary
+ambiguity is harmless because adjacent target cells form a carrier simplex.
+The restriction to explicitly presented maps is essential. The statement is a schema for fixed
+evaluators and moduli, not a first-order universal quantification over all real functions. This
+matches the logical boundary highlighted by the existing packet and by reverse-mathematical
+results on unrestricted invariance principles [6].
+
+8.5
+
+Nerve computations from good covers
+
+Suppose a compact presented space has a finite cover U such that every nonempty finite
+intersection comes with a contraction certificate. The nerve N (U) is finite. An effective nerve
+theorem can be organized by two acyclic carriers:
+1. a carrier from a sufficiently fine spatial triangulation to the nerve, assigning all cover
+elements containing a cell;
+2. a carrier back, using supplied contraction/filling operators for cover intersections.
+The carrier composites are chain homotopic to identities. Therefore the finite nerve and the
+spatial complex have isomorphic homology. If the intersections are literally represented by one
+simplex at the finite level, strong carriers suffice; otherwise use the certified acyclic extension.
+The phrase “good cover” must therefore expand to finite data: an intersection table, positivity
+witnesses, and bounded contractions or filling matrices. With those fields, the proof is finite and
+iPRA-compatible.
+
+8.6
+
+Surfaces and Euler characteristic
+
+A triangulated compact surface is a finite complex with local-link certificates. The Euler
+characteristic
+χ=V −E+F
+is exact integer arithmetic. Edge-incidence checks verify that each edge has two incident faces
+in the closed case, and vertex links verify the local manifold condition. Mod-2 Betti numbers
+provide
+χ = β0 − β1 + β2 .
+The equality follows from rank cancellation in the finite chain complex and is formalizable by
+bounded matrix arithmetic.
+Classification of surfaces requires more: a finite sequence of certified elementary moves
+reducing a triangulation to a normal form, or an algorithm with a well-founded finite measure
+and invariant. The framework can verify such traces and prove their invariants. It does not
+treat the classification theorem as a one-line consequence of coding.
+
+9
+
+Resolution of recurring difficulties beyond topology
+
+The carrier idea is topological in origin but addresses a general problem: finite evidence may
+determine a compatible family rather than a unique output. This section records how the
+framework applies across the repository.
+
+Certified Observation Towers in iPRA
+
+9.1
+
+24
+
+Root and eigenvalue collisions
+
+At precision k, let vertices be rational boxes or spectral intervals. A simplex is a jointly
+compatible cluster. Refinement relates fine isolating boxes to every coarse box containing them.
+Polynomial evaluation or a matrix algorithm returns a carrier of possible clusters.
+Symmetric observables—root multisets, elementary symmetric functions, spectral projectors
+separated by a gap—are invariant under selections. An individual ordered root or eigenvector is
+produced only when an isolation or apartness certificate collapses the cloud. This avoids exact
+choice at collisions and matches the existing root-cluster and stable-observable recommendations.
+
+9.2
+
+Local analytic branches
+
+A local implicit-function proof typically has several overlapping rational charts. Let vertices be
+certified chart domains; a simplex means a common subdomain is nonempty. Transition maps
+form carriers because a point on a chart boundary may admit several valid target charts. Carrier
+composition proves that finite analytic continuation does not depend on tie-breaking, while a
+monodromy invariant can be computed on the resulting nerve.
+The producer still needs a simple-root or invertible-Jacobian gap. At a singular point, a
+chart cloud may fail to contract to one branch. The framework represents this honestly rather
+than asserting a hidden selector.
+
+9.3
+
+Integration and measure
+
+Use finite partitions with rational interval enclosures for function values and cell masses. Refinement carriers relate subcells to containing cells. Lower and upper sums are finite rational
+folds. A modulus or variation bound controls the gap. Measures are not quantified as arbitrary
+higher-type functionals; a fixed mass evaluator and additivity certificates are supplied.
+Discontinuous tests, such as a cumulative distribution function exactly at an atom, require
+an anti-concentration margin or one-sided interval output. A relational interval is the measuretheoretic analogue of a carrier cloud.
+
+9.4
+
+Diophantine finiteness
+
+For a bounded region, candidate points form a finite complex with discrete vertices. A verifier can
+check equations and distinctness. A height certificate turns qualitative finiteness into complete
+bounded enumeration. Carrier methods help with local charts or descent representatives, but
+they do not produce the height bound.
+Thus the correct contract remains:
+height/cover producer
+
++
+
+finite enumeration verifier.
+
+The framework clarifies exactly which part is missing in general Siegel- or Faltings-type applications.
+
+9.5
+
+Prime-distribution and analytic constants
+
+A finite verifier can check zero-free rectangles, explicit coefficient inequalities, or an exceptionalzero certificate. It cannot derive ineffective constants from a qualitative classical theorem. The
+theorem should be parameterized by an analytic-input certificate whose fields are consumed
+by bounded computations. Precision demands are propagated backward through the contract
+graph.
+
+Certified Observation Towers in iPRA
+
+9.6
+
+25
+
+Metastability and convergence
+
+A metastable window theorem returns, for every control function and precision, a finite stable
+interval. It does not automatically return a Cauchy modulus. Observation towers record windows
+and their refinement compatibility. A coherent limit name requires additional uniqueness or
+compactness data. This prevents an invalid conversion from “there are arbitrarily stable windows”
+to “there is a computable final stage.”
+
+9.7
+
+A unified difficulty matrix
+
+Difficulty
+
+Invalid shortcut
+
+Arbitrary functions
+or spaces
+
+Quantify over evaluator codes
+and assume a universal PR
+evaluator
+All-precision induc- Induct on a Cauchy statement
+tion
+containing unbounded quantifiers
+Exact boundary Choose one containing cell,
+choice
+root, chart, or axis globally
+
+Framework response
+Fixed-symbol schemas, finite tables,
+or clocked traces
+
+Fix precision, compute a finite demand horizon, Booleanize the finite
+table
+Return a carrier cloud; select only
+for execution; prove invariant independence by contiguity/prism
+Abstract compact- Invoke a finite subcover with- Supply finite nets/covers, a Lebesgue
+ness
+out a bound
+or mesh modulus, and a bounded
+coverage verifier
+Semantic
+Lean Apply native transport to an Build an actual Prf PRAAx term,
+proof
+ambient theorem
+then apply pra_iff_native
+Finiteness without Enumerate until nothing new Separate bound producer from finite
+cutoff
+appears
+verifier; accept explicit height/exhaustion certificate
+Ineffective
+con- Treat existence as a numerical Parameterize by a checked analytic
+stants
+input
+certificate with correct quantifier order
+Negated equality
+Infer a numerical gap from Require apartness, strict margins, or
+x ̸= y
+disjoint basic neighborhoods
+Map composition Compose independently se- Compose carriers relationally; natuat boundaries
+lected approximants
+rality holds up to contiguity
+Homology of ap- Assume Betti numbers even- Work with the inverse system; prove
+proximants
+tually stabilize
+stabilization or a nerve equivalence
+as a separate certificate
+The central pattern is “do not destroy finite ambiguity prematurely.” A cloud is often easier
+to compose, more constructive, and more invariant than a selected representative.
+
+10
+
+Lean formalization plan
+
+10.1
+
+Target repository interfaces
+
+The current ProveIt API needed by this work is small:
+• PR k: fixed primitive-recursive function syntax;
+• PTm n: arithmetic terms;
+
+Certified Observation Towers in iPRA
+
+26
+
+• Fm PTm n: formulas;
+• PRAAx: defining equations, successor axioms, and quantifier-free induction;
+• Prf: intuitionistic derivations;
+• PRA.proj, PRA.comp, PRA.precZero, PRA.precSucc: defining-equation lemmas;
+• PRA.qfInd: object quantifier-free induction;
+• pra_iff_native: the final native transport.
+The supplied file lean/IPRAObjectLanguageBlueprint.lean imports these actual modules
+and states the intended endpoints. It deliberately does not replace them by a surrogate proof
+relation.
+
+10.2
+
+Phase 1: primitive-recursive data structures
+
+Implement explicit PR syntax trees for:
+1. pair, left, right, list length, bounded list access;
+2. bit membership, bounded union/intersection, popcount;
+3. bounded all/any/search and least witness;
+4. signed integers and mod-2 arithmetic;
+5. finite vectors and matrices;
+6. lexicographic enumeration of bitsets and simplices.
+For each symbol, prove its defining equations using the existing composition and primitiverecursion lemmas. Malformed codes return defaults. Domain predicates are separate Boolean
+terms.
+
+10.3
+
+Phase 2: bounded Booleanization
+
+Define a metalevel inductive syntax of bounded formulas. Its compiler returns:
+Listing 1: Required Booleanization interface
+structure Booleanized (n : Nat) where
+formula : Fm PTm n
+test : PR n
+equivalent : [] |- [PRAAx] (formula <-> accepts test)
+
+The displayed notation is schematic; the actual file uses Fm.iff and equality with the numeral
+one. Prove the compiler correct by syntax recursion. Bounded quantifier nodes emit finite folds
+and close them with PRA.qfInd.
+This phase is the most reusable missing component in the repository. Once it exists, preorder,
+simplex, carrier, path, and matrix invariants become equalities of Boolean terms.
+
+Certified Observation Towers in iPRA
+
+10.4
+
+27
+
+Phase 3: finite complexes and carriers
+
+Represent a complex by a vertex bound and a simplex-test symbol. Its contract proves emptysimplex and downward-closure laws. Represent a carrier by a cloud symbol. Prove:
+1. cloud nonemptiness and bounds;
+2. the strong carrier condition;
+3. correctness of least selection;
+4. selection simpliciality;
+5. contiguity of any two bounded selections;
+6. validity and associativity of relational composition.
+All formulas are bounded by the vertex counts. The human proofs in Theorems 5.1 and 5.3
+translate directly to bitset inclusions and downward closure.
+
+10.5
+
+Phase 4: finite preorders
+
+Define a Boolean relation ≤X and bounded formulas for reflexivity and transitivity. An open
+bitset is upward closed. Define inverse image by a bounded fold. Formalize Theorems 6.1 and 6.2.
+One convenient route avoids enumerating all 2n opens in the continuity theorem: prove
+monotonicity implies preservation of every upward bitset by taking an arbitrary numerical bitset
+variable. Conversely use the principal upward set Uf (x) = {y : f (x) ≤ y}, whose characteristic
+function is a fixed Boolean term.
+
+10.6
+
+Phase 5: chain complexes and the prism
+
+Enumerate q-simplices by bounded search over bitsets. A mod-2 chain is a bitset over this
+enumeration. Define:
+∂q , f#,q , Pq
+as bounded parity folds. Prove:
+1. ∂ 2 = 0 by pairing the two deletion orders;
+2. f# commutes with boundary;
+3. the prism identity by the explicit tag involution from Theorem 5.4.
+The invariant for a parity fold is an equality modulo 2 between the processed prefix and a
+specification fold. It is quantifier-free after Booleanization.
+
+10.7
+
+Phase 6: homology certificates
+
+Implement bounded Gaussian elimination over F2 . The state contains the matrix, current
+row and column, pivot list, and accumulated transformation data. The invariant states that
+elementary operations preserve row space and that processed pivots are distinct. The exit
+theorem yields rank.
+A direct internal quotient construction for homology is unnecessary for numerical Betti
+results. For induced-map equality, represent a cycle and two image chains explicitly; the prism
+provides a boundary witness. If a reusable finite vector-space quotient API is desired, encode
+reduced bases and normal forms by elimination certificates.
+
+Certified Observation Towers in iPRA
+
+10.8
+
+28
+
+Phase 7: tower schemas
+
+A generic Lean structure may quantify over host functions k 7→ Kk , but an object-iPRA theorem
+must instantiate fixed symbols or finite prefixes. Therefore provide two layers:
+1. semantic structures in TopologySemanticBlueprint.lean;
+2. an object compiler that consumes a finite expression describing a fixed family and emits
+PR terms and Prf PRAAx derivations.
+For each requested precision k, the theorem computes the finite demand µ(k) and constructs
+only the required prefix. Universal quantification over k is introduced at the end.
+
+10.9
+
+Phase 8: application modules
+
+Suggested repository modules are:
+Listing 2: Proposed module layout
+ConciseIPRA/Applications/FiniteCoding.lean
+ConciseIPRA/Applications/BoundedBoolean.lean
+ConciseIPRA/Applications/FinitePreorder.lean
+ConciseIPRA/Applications/SimplicialComplex.lean
+ConciseIPRA/Applications/Carrier.lean
+ConciseIPRA/Applications/ChainsF2.lean
+ConciseIPRA/Applications/Prism.lean
+ConciseIPRA/Applications/GaussianF2.lean
+ConciseIPRA/Applications/ObservationTower.lean
+ConciseIPRA/Applications/Topology/JordanKernel.lean
+ConciseIPRA/Applications/Topology/DimensionKernel.lean
+
+The first end-to-end milestone should be small but genuine:
+construct an object-iPRA proof that the two least/maximal selections of the C8 ⊸ C4
+circle carrier induce homologous images of the fundamental mod-2 cycle.
+This exercises bitsets, complexes, selections, chains, boundary, prism, and the native bridge
+without requiring represented analysis.
+
+10.10
+
+No false completion claim
+
+The supplied Lean files are uncompiled and contain explicit sorry obligations. The build
+environment used for this package had no Lean executable. The Python kernel checks the
+intended finite definitions but is not a Lean compiler and not an iPRA proof checker. These
+boundaries are recorded in the theorem ledger.
+
+11
+
+Executable finite validation
+
+11.1
+
+Reference kernel
+
+The file code/topology_kernel.py is an exact standard-library implementation of:
+• finite abstract simplicial complexes and downward closure;
+• strong carriers and relational composition;
+• least and greatest selections;
+• mod-2 boundary matrices and Gaussian rank;
+
+Certified Observation Towers in iPRA
+
+29
+
+• Betti numbers;
+• simplicial chain maps;
+• the mod-2 prism operator and matrix identity;
+• finite preorders, upward opens, monotonicity, and continuity;
+• finite prefixes of observation towers.
+All computations use integers and finite sets. There is no floating-point arithmetic and no
+random test dependence.
+
+11.2
+
+Test results
+
+The delivered run passes 15 unit tests. They include:
+1. Betti numbers of an interval, a cycle, and two isolated points;
+2. ∂ 2 = 0 on a filled triangle;
+3. mod-2 matrix rank;
+4. rejection of an invalid carrier;
+5. chain-map commutation with boundary;
+6. carrier composition and tower composition;
+7. contiguity of least and greatest circle-refinement selections;
+8. the full prism matrix identity;
+9. the Sierpinski topology and the discrete two-point topology;
+10. exhaustive equivalence of monotonicity and continuity for all maps among three representative two-point preorders;
+11. validation of the JSON circle carrier certificate.
+The recorded circle certificate has source C8 , target C4 , Betti vectors (1, 1) on both sides,
+and two distinct selections. The kernel confirms that the selections are contiguous and that
+∂P + P ∂ = f# + g#
+holds as an equality of finite matrices in every source dimension.
+
+11.3
+
+What the tests establish
+
+The tests establish that the supplied reference implementation behaves as described on the
+covered finite instances. They are useful for detecting indexing, normalization, parity, and
+boundary errors. They do not prove the universal carrier or prism theorems, and they do not
+check a Prf PRAAx derivation. The universal proofs are the human arguments in Section 5; their
+formalization path is Section 10.
+
+Certified Observation Towers in iPRA
+
+11.4
+
+30
+
+Reproduction
+
+From the package root:
+python3 -m unittest -v code/test_topology_kernel.py
+python3 code/topology_kernel.py --example
+python3 code/topology_kernel.py examples/circle_carrier.json
+
+The validation directory contains the captured outputs.
+
+12
+
+Limits, residual obligations, and research directions
+
+12.1
+
+What has been resolved
+
+At the level of statement design and finite mathematics, the framework resolves the following
+recurring obstacles.
+1. Boundary ambiguity. Replace exact choice by a finite carrier cloud. Composition
+remains total, and homology is choice independent.
+2. Map composition. Relational union composes finite approximations without coordinating
+arbitrary tie-breaks.
+3. Topological invariants. The prism identity gives an explicit finite witness that contiguous
+choices induce the same homology map.
+4. Finite topology. Preorders give a compact exact coding, and continuity becomes bounded
+monotonicity.
+5. Compactness usage. Finite covers, nets, and mesh/Lebesgue certificates replace an
+unbounded open-cover quantifier.
+6. All-precision reasoning. Finite demand analysis and Booleanization keep induction
+quantifier-free.
+7. Formal endpoint. Every main theorem has a stated Prf PRAAx target and a dependency
+order.
+
+12.2
+
+What remains theorem-specific
+
+The framework deliberately does not claim completed object proofs for:
+• cubical Sperner parity and staggered-grid dimension obstruction;
+• the complete Jordan crossing, flood-fill, and boundary-density argument;
+• a general effective nerve theorem with produced contraction data;
+• invariance of domain or general manifold classification;
+• stabilization of homology for arbitrary observation towers;
+• production of finite atlases, triangulations, or good covers from weak input presentations.
+These are mathematical modules to be built on the common kernel.
+
+Certified Observation Towers in iPRA
+
+12.3
+
+31
+
+Logical boundaries
+
+The following stronger principles are not obtained by better coding alone.
+1. There is no uniform total primitive-recursive evaluator for arbitrary PR program codes.
+2. Negated equality does not uniformly yield a positive apartness scale.
+3. A finite verifier does not produce a missing global bound or modulus.
+4. Independent approximate witnesses at every precision do not necessarily form one coherent
+point.
+5. Unrestricted classical topological statements may have proof-theoretic strength exceeding
+the intended finitistic base; effective hypotheses must be stated explicitly [6].
+
+12.4
+
+Recommended next formal milestones
+
+The most valuable immediate work is foundational rather than another large theorem outline.
+1. Complete and compile the bounded Booleanization library in the actual ConciseIPRA
+environment.
+2. Formalize strong carriers and the circle refinement example end to end, including the
+object prism identity.
+3. Add bounded Gaussian elimination and a verified Betti-number contract.
+4. Refactor the Jordan and dimension packets so that their finite complexes and refinement
+maps use the shared carrier API.
+5. Develop certified acyclic carriers with explicit finite filling operators; this unlocks effective
+nerve theorems and chain-level local-to-global arguments.
+6. Build a compact metric-space tower interface with rational covers, mesh bounds, positive
+intersections, and map moduli.
+
+12.5
+
+Conclusion
+
+The most robust way to place topology in iPRA is not to encode an arbitrary powerset topology
+as one enormous natural number. It is to identify the finite observations actually used by a
+proof, arrange them in certified refinement towers, preserve ambiguity as relational carriers, and
+compile every finite invariant into bounded Boolean arithmetic.
+This yields a coherent division of labor. Topology supplies covers, nerves, carriers, chain
+homotopies, and local-to-global structure. iPRA supplies primitive recursion, bounded search,
+exact arithmetic, and quantifier-free induction. The representation theorem connecting a tower
+to a classical or constructive space remains explicit. The object-language derivation remains
+explicit. Under these rules, sophisticated topological arguments can be developed without
+importing hidden choice, compactness, or higher-type quantification.
+
+A
+
+Explicit coding primitives
+
+This appendix records one concrete coding route. Other fixed primitive-recursive codings may
+be substituted if their laws are proved.
+
+Certified Observation Towers in iPRA
+
+A.1
+
+32
+
+Pairs and lists
+
+Use
+
+⟨a, b⟩ = 2a (2b + 1) − 1.
+
+Then a is the 2-adic valuation of ⟨a, b⟩ + 1 and
+b=
+
+(⟨a, b⟩ + 1)/2a − 1
+.
+2
+
+Bounded search computes the valuation, so pairing and both projections are primitive recursive.
+Encode the empty list by 0 and
+cons(a, ℓ) = ⟨a, ℓ⟩ + 1.
+The tail is smaller than the list code. Course-of-values recursion gives length and access.
+Alternatively, bounded arrays may use mixed-radix digits when an entry bound is already known.
+
+A.2
+
+Signed integers and rationals
+
+Encode
+
+(
+
+z ∈ Z as
+
+2z,
+z ≥ 0,
+−2z − 1, z < 0.
+
+Addition and multiplication are primitive recursive by sign cases. A rational is a pair (a, b) with
+signed numerator a and positive denominator b + 1. Equality and order use cross multiplication.
+Reduction by gcd is optional: unreduced rationals are sufficient for exact verification.
+
+A.3
+
+Bitsets
+
+For a declared bound n, a finite set is s < 2n . Define:
+i ∈ s ⇐⇒
+
+j
+
+k
+
+
+
+s/2i mod 2 = 1.
+
+Subset, union, intersection, popcount, and finite image are bounded folds over i < n. A simplex
+is a bitset with a Boolean validity predicate.
+
+A.4
+
+Matrices
+
+A matrix stores dimensions and a row-major list. Access outside the declared dimensions returns
+zero. Matrix addition and multiplication are bounded nested folds. Over F2 , every entry is
+reduced modulo 2. Row swaps and row additions are fixed primitive-recursive state transitions.
+
+A.5
+
+Finite complexes
+
+A level record contains:
+(n, d, N0 , . . . , Nd , simplexCode, simplexTest).
+One may either enumerate all simplices or enumerate them on demand by scanning bitsets below
+2n . The latter has a large but primitive-recursive bound and is simplest for a first formalization.
+Performance improvements can be proved extensionally later.
+
+Certified Observation Towers in iPRA
+
+A.6
+
+33
+
+Bounded breadth-first search
+
+A graph on n vertices is an n × n Boolean matrix. A BFS state is (seen, frontier, parent). At
+most n rounds are needed because every successful round adds a new vertex. The invariant says:
+1. every seen vertex is reachable by the recorded parent chain;
+2. every edge from a processed vertex leads to a seen vertex;
+3. the frontier is contained in seen;
+4. parent indices are bounded.
+All clauses are bounded Boolean formulas. This supplies path certificates for finite connectedness
+and flood-fill algorithms.
+
+B
+
+Object-language formula schemas
+
+The following are schematic mathematical presentations of formulas that the Lean compiler
+should emit. Every displayed bounded quantifier is replaced by its Boolean fold when used as
+an induction invariant.
+
+B.1
+
+Finite complex
+
+For parameters a describing the level:
+Complex(a) : ⇐⇒ Simplex(a, 0) = 1
+∧ ∀s < 2N (a) ∀t < 2N (a) Simplex(a, s) = 1 ∧ t ⊆ s → Simplex(a, t) = 1 .
+
+
+B.2
+
+Strong carrier
+
+For cloud evaluator C(a, v):
+Carrier(a) : ⇐⇒ ∀v < NK (a) C(a, v) ̸= 0 ∧ C(a, v) < 2NL (a)
+
+
+
+∧ ∀s < 2NK (a) SimplexK (a, s) = 1 → SimplexL (a, foldCloud(s, C)) = 1 .
+
+
+B.3
+
+Selection and contiguity
+Selects(f, C) : ⇐⇒ ∀v < NK bit(C(v), f (v)) = 1,
+Simplicial(f ) : ⇐⇒ ∀s < 2NK (SimplexK (s) = 1 → SimplexL (f [s]) = 1),
+Contiguous(f, g) : ⇐⇒ ∀s < 2NK (SimplexK (s) = 1 → SimplexL (f [s] ∪ g[s]) = 1).
+
+The selection theorem is a short bounded derivation from bitset inclusion and downward closure.
+
+B.4
+
+Prism identity
+
+Let eq enumerate q-simplices. For every basis index j < Nq (K) and every target basis index
+r < Nq (L), the coefficient equality
+[∂P (eq (j))]r + [P ∂(eq (j))]r = [f# (eq (j))]r + [g# (eq (j))]r
+
+(mod 2)
+
+is a bounded equality. Universal bounded folds over j, r give the matrix identity. The proof
+invariant pairs emitted terms in the processed prefix of the (i, j) tag enumeration.
+
+Certified Observation Towers in iPRA
+
+B.5
+
+34
+
+Gaussian elimination
+
+Let S(t) be the elimination state after t bounded transitions. The invariant contains Booleanized
+formulas for:
+1. S(t) is obtained from the input by a product of recorded elementary row operations;
+2. all earlier pivot positions contain 1 and are zero elsewhere in their columns;
+3. pivot columns are strictly increasing;
+4. unprocessed rows and columns remain in bounds.
+At the fixed exit bound, pivot count equals rank. Combined with simplex counts, this proves
+the Betti formula.
+
+B.6
+
+Tower naturality
+
+For each requested target level k, let m = µ(k + 1) and n = µ(k). The two composites
+RkY ◦ Fk+1
+
+X
+and Fk ◦ Rm→n
+
+are finite carriers from a common fine source level to KkY . A coherence certificate supplies
+a super-carrier containing both. The selection theorem and prism identity imply equality on
+homology. This formula is instantiated at free variable k and universally closed only after the
+finite construction.
+
+C
+
+Theorem and artifact ledger
+
+Item
+
+Status
+
+Bounded Booleanization
+
+Complete human
+proof; Lean target
+
+Finite-trace reflection
+Carrier composition
+
+Selection and contiguity
+
+Prism identity over F2
+Choice-independent
+homology
+Finite topology/preorder
+equivalence
+
+Exact meaning
+
+Metalevel syntax compiler plus object
+Prf PRAAx equivalence remains to be implemented.
+Complete human Uses fixed PR state and PRA.qfInd; analproof; existing API ogous object rules exist in current frameendpoint
+work packets.
+Complete
+hu- Universal object derivation remains.
+man proof; exact
+Python implementation
+Complete
+hu- Least/max selections checked on examman proof; exact ples; generic Lean/object proof remains.
+Python implementation
+Complete human Generic Lean proof and object parity-fold
+proof; exact matrix derivation remain.
+tests
+Proven from prism A
+reusable
+object
+homology
+identity
+quotient/normal-form layer remains.
+Complete human Generic Lean and object proof remain.
+proof; finite tests
+
+Certified Observation Towers in iPRA
+
+35
+
+Item
+
+Status
+
+Exact meaning
+
+Monotone iff continuous
+
+Generic Lean and object proof remain.
+
+Python kernel
+
+Complete human
+proof; exhaustive
+small tests
+Complete mathematical derivation
+conditional
+on
+carrier/coherence
+data
+Framework reduction plus inherited
+human theorem
+Framework reduction plus inherited
+human theorem
+Executed
+
+Semantic Lean blueprint
+
+Uncompiled outline
+
+Object-language
+blueprint
+
+Uncompiled outline
+against actual API
+names
+Compiled and ren- Human-readable mathematical argument
+dered
+and formalization plan.
+
+Tower homology functor
+
+Jordan integration
+Dimension integration
+
+PDF report
+
+Lean
+
+Formal inverse-system API remains.
+
+The theorem-specific object parity and
+routing derivations are not completed
+here.
+The theorem-specific cubical Sperner object proof is not completed here.
+15 tests pass; exact finite regression evidence only.
+Contains explicit sorry; no completion
+claim.
+Names exact Prf PRAAx endpoints and
+final native transport.
+
+Overall claim. The package supplies a developed general framework, complete finite mathematical proofs for its core topological calculus, executable exact evidence, and a detailed route
+to Lean/iPRA completion. It does not claim a fully kernel-checked formalization of the main
+topology theorems.
+
+References
+[1] V. Reshetnikov, ProveIt: Primitive Recursive Arithmetic development, repository commit
+c88269a745aedaca1235895c4d5e3e97056a1636, 2026. https://github.com/VladimirR
+eshetnikov/ProveIt
+[2] M. C. McCord, Singular homology groups and homotopy groups of finite topological spaces,
+Duke Mathematical Journal 33 (1966), 465–474. https://doi.org/10.1215/S0012-709
+4-66-03352-7
+[3] J. R. Munkres, Elements of Algebraic Topology, Addison–Wesley, 1984. See the chapters on
+chain complexes, contiguity, and acyclic carriers.
+[4] A. Pauly, On the topological aspects of the theory of represented spaces, Computability 5(2)
+(2016), 159–180. https://doi.org/10.3233/COM-150049
+[5] G. Sambin and S. Gebellato, A preview of the basic picture, a constructive and pointfree
+account of basic opens, covers, and positivity. https://www.math.unipd.it/~sambin/tx
+t/preview.pdf
+[6] T. Kihara, The Brouwer invariance theorems in reverse mathematics, Forum of Mathematics,
+Sigma 8 (2020), e51. https://doi.org/10.1017/fms.2020.52
+
+Certified Observation Towers in iPRA
+
+36
+
+[7] G. Berg, W. Julian, R. Mines, and F. Richman, The constructive Jordan curve theorem,
+Rocky Mountain Journal of Mathematics 5(2) (1975), 225–236. https://doi.org/10.121
+6/RMJ-1975-5-2-225
+[8] P. Nguyen and S. Cook, The complexity of proving the discrete Jordan curve theorem, ACM
+Transactions on Computational Logic 13(1) (2012), Article 2; preprint arXiv:1002.2954.
+[9] D. S. Bridges, On the constructive theory of Jordan curves, arXiv:2502.09784, 2025.
+
+

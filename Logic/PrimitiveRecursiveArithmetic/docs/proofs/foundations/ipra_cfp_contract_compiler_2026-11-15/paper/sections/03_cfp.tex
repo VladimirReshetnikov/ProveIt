@@ -1,0 +1,127 @@
+\section{Certified finitary presentations}
+
+\subsection{Request-indexed observations}
+
+The central representation is not an completed infinite object but the finite
+information needed to answer one finite request.
+
+\begin{definition}[Certified finitary presentation]
+A \emph{certified finitary presentation} \(X\) consists of fixed
+primitive-recursive data:
+\[
+  \mathsf{WF}_X(x),\quad
+  B_X(x,q),\quad
+  \mathsf{Obs}_X(x,q,o),\quad
+  \mathsf{Ref}_X(x,q,o,q',o'),
+\]
+where \(x\) is an input code, \(q\) is a request, and \(o\le B_X(x,q)\) is a
+finite observation.  The intended contracts are:
+\begin{enumerate}[label=(\roman*)]
+\item \(\mathsf{WF}_X(x)=1\) implies that every requested observation can be
+      constructed or found within the stated bound;
+\item \(\mathsf{Obs}_X(x,q,o)=1\) is an exact, decidable verifier;
+\item when \(q'\) refines \(q\), \(\mathsf{Ref}_X\) certifies compatibility of
+      the two observations.
+\end{enumerate}
+The coverage and refinement properties must be accompanied by object-language
+proofs, not merely asserted in the semantic interpretation.
+\end{definition}
+
+The request may be a precision, a finite list of test functions, a grid scale,
+a degree bound, a desired residual, or a tuple of these.  The observation may
+be a rational interval, a finite root cover, a truncated series, a path in a
+finite graph, a list of points below a height, or a proof certificate.
+
+\subsection{Three output modes}
+
+\begin{definition}[Deterministic presentation]
+A deterministic presentation has a primitive-recursive constructor
+\(a_X(x,q)\) and proves
+\[
+  \mathsf{WF}_X(x)=1
+  \;\Longrightarrow\;
+  \mathsf{Obs}_X(x,q,a_X(x,q))=1.
+\]
+\end{definition}
+
+\begin{definition}[Finite relational presentation]
+A relational presentation returns a finite coded list
+\(C_X(x,q)\).  It proves nonemptiness, verifies every member, and states the
+coverage property of the whole list.  It does \emph{not} assert that a
+distinguished exact member can be chosen continuously.
+\end{definition}
+
+\begin{definition}[Evidence-indexed presentation]
+An evidence-indexed presentation accepts an additional finite certificate
+\(e\).  A Boolean guard \(\mathsf{Guard}(x,e)\) is verified first; stronger
+operations may then be used.  Typical evidence is a lower bound
+\(\delta>0\) on a denominator, derivative, discriminant, singular-value gap,
+or distance from a branch boundary.
+\end{definition}
+
+These modes should not be collapsed.  An approximate finite root set can be
+uniform even when an exact root branch is not.  A projective eigenline can be
+uniform even when a signed unit eigenvector is not.  A bounded enumeration can
+be complete relative to a height certificate even when no uniform producer of
+that certificate is known.
+
+\subsection{Names for represented quantities}
+
+A convenient regular real name is a fixed primitive-recursive rational
+evaluator \(a(x,k)\) with the proved estimate
+\[
+        \abs{a(x,k+1)-a(x,k)}\le 2^{-k}.
+\]
+Telescoping gives, for \(m\ge k\),
+\[
+        \abs{a(x,m)-a(x,k)}
+          \le \sum_{j=k}^{m-1}2^{-j}
+          < 2^{1-k}.
+\]
+A shifted convention can make the final constant \(2^{-k}\).  The point is
+that the estimate is a finite rational inequality at arbitrary free
+\(k,m\), proved by quantifier-free induction on \(m-k\).
+
+Equality of names is not literal equality of programs.  One useful
+extensional relation is
+\[
+   a\simeq b
+   \quad:\Longleftrightarrow\quad
+   \abs{a(k+2)-b(k+2)}\le 2^{-k}
+   \text{ for every }k.
+\]
+Reflexivity and symmetry are immediate.  Transitivity is obtained by spending
+one additional bit of precision on each input:
+\[
+ \abs{a(k+3)-c(k+3)}
+ \le \abs{a(k+3)-b(k+3)}
+    +\abs{b(k+3)-c(k+3)}
+ \le 2^{-(k+1)}+2^{-(k+1)}=2^{-k}.
+\]
+This accounting should be encoded in explicit demand transformers, rather
+than repeated ad hoc in every analytic packet.
+
+\subsection{Higher-type data without a universal evaluator}
+
+A theorem may be uniform over a \emph{fixed} evaluator schema
+\(F(p,n,k)\), where \(p\) is ordinary numerical input.  This gives a family of
+PR functions while staying within one \code{PR} term.  What is unavailable is
+a total primitive-recursive function \(U(e,x)\) evaluating every unary
+primitive-recursive program code \(e\).
+
+\begin{proposition}[No universal PR evaluator]
+There is no primitive-recursive \(U:\N^2\to\N\) such that for every unary
+primitive-recursive \(f\) there is \(e\) with \(U(e,x)=f(x)\) for all \(x\).
+\end{proposition}
+
+\begin{proof}
+If such \(U\) existed, then \(g(x)=U(x,x)+1\) would be primitive recursive.
+Choose \(e\) coding \(g\).  Then
+\(g(e)=U(e,e)+1=g(e)+1\), a contradiction.
+\end{proof}
+
+Thus a packet may quantify over numerical parameters of a fixed algorithm,
+finite tables, or bounded traces.  It may not silently turn arbitrary source
+code into input for a universal unclocked interpreter.  A clocked evaluator
+is harmless: evaluation for exactly \(t\) steps is primitive recursive and
+its finite trace can be verified.

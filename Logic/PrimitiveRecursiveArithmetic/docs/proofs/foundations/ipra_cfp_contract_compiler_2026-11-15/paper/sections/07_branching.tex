@@ -1,0 +1,102 @@
+\section{Robust branching and discontinuity barriers}
+
+\subsection{Overlapping branches}
+
+Exact comparison of a represented real with zero is generally discontinuous.
+A robust program replaces a partition by an overlap.  Suppose a rational
+approximation \(a\) satisfies \(\abs{x-a}\le\eta\).  Define:
+\[
+  L(a): a\le \eta,\qquad
+  R(a): a\ge-\eta.
+\]
+At least one branch holds, and both may hold in the overlap
+\([-\eta,\eta]\).  A node contract must prove that either branch gives an
+acceptable output when its guard holds.  The constructor may choose the first
+passing guard by bounded Boolean search.
+
+\begin{lemma}[Overlapping-branch soundness]
+If \(\abs{x-a}\le\eta\), \(L(a)\) implies \(x\le2\eta\), and \(R(a)\) implies
+\(x\ge-2\eta\).  Moreover \(L(a)\vee R(a)\) is decidable and always true.
+\end{lemma}
+
+\begin{proof}
+The first two claims are triangle inequalities.  For coverage, if
+\(a\le\eta\) then \(L\) holds.  Otherwise the decidable rational inequality
+gives \(a>\eta\ge-\eta\), so \(R\) holds.  This is a case split on an exact
+rational Boolean.
+\end{proof}
+
+This suffices whenever the two branch outputs agree up to the allowed error
+on the overlap.  It is the constructive analogue of a stable conditional.
+
+\subsection{Exact decision from a gap}
+
+\begin{theorem}[Gap-decision theorem]
+Let \(x\) have a rational approximation \(a\) with
+\(\abs{x-a}<\delta/4\), where \(\delta>0\).  Assume the finite evidence
+\[
+           x=0\quad\vee\quad \abs{x}\ge\delta.
+\]
+Then the rational test \(\abs a<\delta/2\) decides which alternative holds.
+\end{theorem}
+
+\begin{proof}
+If \(\abs a<\delta/2\), the apart alternative would imply
+\[
+ \delta\le\abs x\le\abs{x-a}+\abs a
+ <\delta/4+\delta/2<\delta,
+\]
+a contradiction; hence \(x=0\).  If \(\abs a\ge\delta/2\), then \(x=0\)
+would give \(\abs a=\abs{a-x}<\delta/4\), a contradiction; hence
+\(\abs x\ge\delta\).  The proof uses the supplied disjunction, not an
+unrestricted law of excluded middle.
+\end{proof}
+
+The same proof decides among finitely many regions separated by a rational
+margin.  It is the basis for exact pivot selection, inversion, square-free
+decomposition with a discriminant bound, exact chart choice, and branch
+collapse.
+
+\subsection{Why the gap is not optional}
+
+\begin{obstruction}[Uniform zero decision]
+There is no total computable procedure that decides whether an arbitrary fast
+Cauchy name of a nonnegative real represents zero.
+\end{obstruction}
+
+\begin{proof}
+Let \(H(e,t)\) be the primitive-recursive Boolean saying that machine \(e\)
+halts within \(t\) steps, and define
+\[
+  A(e,s)=\sum_{t<s}2^{-t-1}H(e,t).
+\]
+The omitted tail is at most \(2^{-s}\), so \(A(e,\cdot)\) is one fixed
+primitive-recursive family of fast Cauchy names.  If the machine never halts,
+the limit is zero.  If it first halts at stage \(h\), then \(H(e,t)=1\) for
+all \(t\ge h\), and the limit is \(2^{-h}>0\).  A uniform zero decider would
+therefore decide the halting problem.
+\end{proof}
+
+This metatheoretic statement does not prove that every first-order sentence
+called ``root selection'' is unprovable in iPRA.  It identifies a particular
+impossible interface: individually accessible exact choices from arbitrary
+Cauchy names.  Approximate sets, finite covers, projective outputs, and
+gap-conditioned selectors are different and often valid.
+
+\subsection{Projective and quotient outputs}
+
+Some apparent choices are artifacts of representation.  A rotation has two
+unit-quaternion representatives \(q,-q\).  An eigenline has many nonzero
+vectors and two unit vectors of opposite sign.  A polynomial's unordered
+root multiset has many orderings.  The primary output should therefore be a
+quotient-invariant certificate:
+\[
+  qq^\ast=1,\qquad R=R(q),
+\]
+or a rank-one projector, or a symmetric list code.  Normalization and sign
+selection are secondary operations guarded by nonzero and orientation
+evidence.
+
+This move is not merely philosophical.  Quotient-invariant polynomial
+identities are exact finite arithmetic and compose well in iPRA, while a
+canonical representative may force a discontinuous branch.

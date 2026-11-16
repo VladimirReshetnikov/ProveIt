@@ -1,0 +1,166 @@
+\section{The contract-DAG compiler}
+
+This section is the main compositional result.  It packages a long proof into
+local nodes and reduces global correctness to a single bounded trace
+invariant.
+
+\subsection{Local certified transducers}
+
+\begin{definition}[Contract node]
+A contract node \(v\) has:
+\begin{enumerate}[label=(\alph*)]
+\item a fixed list of parent nodes \(\mathrm{par}(v)\);
+\item a request code \(r_v\);
+\item for each parent \(u\), a monotone demand transformer
+      \(D_{v,u}(r_v)\);
+\item a primitive-recursive constructor or finite candidate-list constructor
+      \(G_v\);
+\item a primitive-recursive Boolean verifier \(V_v\);
+\item an internally provable local soundness sequent saying that verified
+      parent observations at the demanded requests imply verification of the
+      node output.
+\end{enumerate}
+All arities and the graph itself are fixed.  Ordinary numerical parameters
+remain inputs.
+\end{definition}
+
+A local theorem may use several premises, but those premises are finite
+equalities or Boolean checks.  The node is therefore a small proof-producing
+transducer.  Examples include rational addition, a Taylor remainder step, one
+bisection update, polynomial deflation under a nonzero leading coefficient,
+and verification of one chart in a finite cover.
+
+\subsection{Reverse demand propagation}
+
+Let the nodes be numbered topologically \(0,\ldots,N-1\), so every parent of
+\(v\) has a smaller number.  Suppose the sinks receive external requests
+\(q_v\), with \(q_v=0\) for unrequested sinks.  Define required requests
+backward:
+\[
+  r_u =
+  \max\left(
+       q_u,\;
+       \max_{\substack{v>u\\u\in\mathrm{par}(v)}}
+       D_{v,u}(r_v)
+      \right).
+\]
+Because \(N\) and the edge relation are fixed, this is a primitive-recursive
+finite reverse loop.  Monotonicity of the demand transformers guarantees that
+over-approximating a downstream request never invalidates an upstream
+observation.
+
+\begin{lemma}[Demand adequacy]
+For every edge \(u\to v\),
+\[
+        r_u\ge D_{v,u}(r_v).
+\]
+\end{lemma}
+
+\begin{proof}
+The right-hand side is one of the entries included in the finite maximum
+defining \(r_u\).  Internally, the maximum is a primitive-recursive fold and
+the claim follows from its standard quantifier-free invariant:
+after processing the first \(j\) outgoing edges, the accumulator dominates
+their \(j\) demands.
+\end{proof}
+
+\subsection{The forward trace}
+
+The evaluator stores a table \(T_t\) after processing the first \(t\) nodes.
+At node \(t\), it reads the already stored parent observations, applies
+\(G_t\) at request \(r_t\), and appends the output.  Relational nodes append a
+finite candidate list and, when necessary, a finite compatibility witness.
+The trace has exactly \(N\) stages; it is not an unbounded search.
+
+Define \(\Inv(t,T_t)\) to say:
+\begin{enumerate}[label=(\roman*)]
+\item \(T_t\) has the expected length and every stored code is within its
+      node's primitive-recursive bound;
+\item for every \(v<t\), \(V_v\) accepts the stored output at request \(r_v\);
+\item every parent-child compatibility check whose endpoints are below \(t\)
+      succeeds;
+\item the table entries used by later nodes are the entries produced by the
+      indicated earlier nodes.
+\end{enumerate}
+Each universal phrase is a Boolean fold over a range bounded by \(N\) or by a
+stored finite-list length.  Hence \(\Inv\) is represented by a
+primitive-recursive Boolean term and the formula \(\Inv=1\) is
+quantifier-free.
+
+\begin{theorem}[Finite-trace reflection]
+Assume an internally proved base sequent
+\[
+      \mathsf{InputGuard}(d)=1 \;\vdash\; \Inv(0,T_0)=1
+\]
+and, uniformly in \(t<N\), an internally proved step sequent
+\[
+      \Inv(t,T_t)=1
+      \;\vdash\;
+      \Inv(t+1,T_{t+1})=1.
+\]
+Then iPRA proves \(\Inv(N,T_N)=1\).  If the final verifier is a component of
+\(\Inv(N,T_N)\), iPRA proves the requested output contract.
+\end{theorem}
+
+\begin{proof}
+Totalize the step after stage \(N\) by leaving the state unchanged, and
+strengthen the invariant to
+\[
+   J(t,T)=
+   \bigl(t\le N\wedge \Inv(t,T)=1\bigr)
+   \;\vee\;
+   \bigl(N<t\wedge T=T_N\wedge\Inv(N,T_N)=1\bigr).
+\]
+All comparisons and occurrences of \(\Inv\) are primitive-recursive Boolean
+equalities, so the matrix is quantifier-free.  The base proof gives \(J(0)\).
+For the successor step, decide the Boolean \(t<N\).  In the first branch use
+the supplied local step theorem; in the second use the frozen-state defining
+equation.  Applying quantifier-free induction yields \(\forall t\,J(t)\).
+Instantiate at \(N\) and project the desired conjunct.  No induction formula
+quantifies over future precisions or over arbitrary functions.
+\end{proof}
+
+\begin{theorem}[Contract-DAG composition]
+For a fixed finite acyclic graph of contract nodes, suppose:
+\begin{enumerate}[label=(\arabic*)]
+\item every numerical operation, demand map, constructor, bound, and verifier
+      is represented by a fixed \code{PR} code;
+\item every local node soundness theorem is supplied as a
+      \(\Prf\,\PRAAx\) derivation;
+\item the input guards and source presentations are internally certified.
+\end{enumerate}
+Then there is a fixed primitive-recursive global evaluator, a fixed
+quantifier-free global verifier, and a \(\Prf\,\PRAAx\) derivation of the
+global verifier for every requested sink precision.
+\end{theorem}
+
+\begin{proof}
+First run the fixed reverse loop computing the request table.  Demand adequacy
+is proved by a quantifier-free fold invariant.  Next run the fixed forward
+trace.  Its base case consists of the source-presentation contracts.  At step
+\(v\), the trace invariant supplies the verified parent observations;
+demand adequacy supplies enough precision; substitution into the local
+soundness derivation yields \(V_v=1\).  Table length, bounds, and compatibility
+are preserved by the defining equations of append and lookup.  The
+finite-trace reflection theorem proves the final invariant.
+
+All proof composition is intuitionistic: conjunction introduction collects
+verified premises, implication elimination applies a local contract, and
+bounded case splits are performed on explicit Boolean equalities.  The
+external request remains a free number throughout the induction.  Universal
+introduction over that request is performed only after the finite trace proof.
+\end{proof}
+
+\subsection{Why a DAG rather than a monolithic proof}
+
+The graph exposes precisely where a packet fails.  A node may be missing:
+a constructor, a numerical modulus, a separation guard, a local arithmetic
+lemma, or an object-language proof.  The rest of the graph remains reusable.
+It also permits shared subcomputations and shared error budgets.  Most
+importantly, it gives a single formalization target:
+\[
+       \code{PRA.contractDAGReflection}.
+\]
+Once that theorem and a library of node contracts are available, future
+packets should assemble proof objects rather than reproduce a bespoke
+induction argument.

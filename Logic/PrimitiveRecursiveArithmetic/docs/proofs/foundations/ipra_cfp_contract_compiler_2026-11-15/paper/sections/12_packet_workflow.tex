@@ -1,0 +1,125 @@
+\section{A conversion workflow for existing proof packets}
+
+The repository's packets differ greatly in maturity.  The following workflow
+turns each into a comparable, auditable artifact.
+
+\subsection{Step 1: state the constructive theorem}
+
+Replace a classical slogan by an explicit input/output contract.  State:
+the numerical input code, well-formedness test, request, output relation,
+error metric, and every extra evidence item.  Separate unconditional
+approximate output from gap-conditioned exact output.
+
+\subsection{Step 2: classify every dependency}
+
+Each dependency receives one of five labels:
+\[
+\begin{array}{ll}
+\mathsf{PR}&\text{fixed primitive-recursive computation},\\
+\mathsf{LOCAL}&\text{proved finite arithmetic contract},\\
+\mathsf{CERT}&\text{supplied finite certificate with verifier},\\
+\mathsf{PRODUCER}&\text{theorem that constructs such a certificate},\\
+\mathsf{BARRIER}&\text{interface ruled out or known to require stronger data}.
+\end{array}
+\]
+This prevents a missing producer from being mistaken for a coding problem.
+
+\subsection{Step 3: build the contract graph}
+
+Make each substantive lemma a node.  Edges record both mathematical
+dependence and precision demand.  Common nodes---rational arithmetic,
+polynomial evaluation, finite sums, bounded search, interval refinement,
+finite nets---should point to shared libraries rather than being copied.
+
+\subsection{Step 4: totalize operations}
+
+Every operation must be total on all number codes.  Division, normalization,
+chart inversion, and array access return a harmless default outside their
+domain.  A Boolean guard is carried in the invariant and proves that the
+default branch is never used in a valid run.
+
+\subsection{Step 5: compute reverse demands}
+
+Starting from the theorem's requested output precision, compute every
+upstream precision, grid scale, cutoff, and iteration count.  Record these
+functions explicitly.  Phrases such as ``take \(N\) large enough'' are not
+accepted as a contract.
+
+\subsection{Step 6: isolate discontinuities}
+
+For every exact branch ask:
+\begin{enumerate}[label=(\alph*)]
+\item Can the output be quotient-invariant or relational?
+\item Can overlapping guards make the approximate theorem uniform?
+\item Which positive gap would make the exact branch decidable?
+\item Is the requested selector contradicted by a known computability or
+      constructive-logic reduction?
+\end{enumerate}
+
+\subsection{Step 7: define the finite trace invariant}
+
+The invariant must mention only:
+loop counters, coded states, Boolean verifiers, bounds, and finite folds.
+If it contains ``for every precision'' or quantification over a function, the
+proof has not yet been compiled to the correct level.
+
+\subsection{Step 8: prove semantic algorithms}
+
+Implement exact reference code and ordinary Lean definitions.  Test malformed
+inputs and boundary cases.  These artifacts discover mistakes, but their
+status is explicitly ``semantic'', not ``embedded''.
+
+\subsection{Step 9: construct object proofs}
+
+Translate each fixed algorithm to \code{PR}; prove defining equations;
+construct local \code{Prf PRAAx} contracts; use the generic trace theorem.
+Record the remaining \code{sorry} count and axiom audit.  A file containing
+only proposition definitions belongs in the ``targets'' category.
+
+\subsection{Step 10: transport and interpret}
+
+After the \PRAAx\ proof exists, transport it to the native core if desired.
+Then prove an external interpretation theorem connecting the codes to the
+ordinary theorem.  This last theorem may use a richer Lean mathematics
+library without changing what was proved internally.
+
+\subsection{Recommended machine-readable status}
+
+Every packet should contain a ledger with fields:
+\begin{lstlisting}[language={}]
+{
+  "claim": "...",
+  "input_presentation": "...",
+  "output_relation": "...",
+  "producer_status": "proved | conditional | missing | obstructed",
+  "verifier_status": "human | semantic_lean | object_prf",
+  "precision_transformer": "...",
+  "barriers": ["..."],
+  "source_commit": "..."
+}
+\end{lstlisting}
+
+The status values are monotone.  A semantic Lean theorem does not upgrade
+itself to \code{object\_prf}; compiled definitions do not upgrade a target to
+a theorem; and a finite example does not upgrade a universal claim.
+
+\subsection{Suggested repository library}
+
+A reusable library could be organized as:
+\begin{lstlisting}[language={}]
+Logic/PrimitiveRecursiveArithmetic/CFP/
+  Coding.lean
+  BoolFold.lean
+  Rational.lean
+  FiniteTrace.lean
+  Contract.lean
+  Demand.lean
+  Relational.lean
+  BoundedSearch.lean
+  FiniteNet.lean
+  ObjectCompiler.lean
+  Examples/Cubic.lean
+\end{lstlisting}
+The research packets would import this library and provide only their
+domain-specific nodes and producers.  This is the principal engineering gain
+of the framework: the difficult proof-theoretic plumbing is done once.

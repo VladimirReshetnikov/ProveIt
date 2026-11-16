@@ -1,0 +1,98 @@
+
+\section{Statement discipline: what an \ipra\ theorem may say}
+\label{sec:discipline}
+
+\subsection{First-order schemas rather than hidden higher types}
+
+A first-order arithmetic theory quantifies over natural numbers.  It does not quantify directly over arbitrary functions $\N\to\N$, arbitrary subsets of a space, or arbitrary topological spaces.  There are three legitimate ways to express such data.
+
+\begin{definition}[Fixed-symbol schema]
+Choose a particular primitive-recursive evaluator $e$ and add its fixed \code{PR} syntax tree to the statement.  Prove the theorem uniformly in the numerical inputs to $e$, but not by quantifying over the set of all evaluator codes.
+\end{definition}
+
+\begin{definition}[Finite-table input]
+For a requested precision $k$, pass a number coding exactly the finite table read by the proof.  A bounded verifier checks the table and the local compatibility laws.
+\end{definition}
+
+\begin{definition}[Clocked trace]
+Pass a code for a bounded computation trace together with its time bound.  Verify each transition and the exit condition by bounded Boolean tests.
+\end{definition}
+
+A total primitive-recursive universal evaluator for all primitive-recursive program codes cannot exist: if $U(e,x)$ uniformly evaluated every such program, then $n\mapsto U(n,n)+1$ would be primitive recursive and disagree with its own index.  Thus ``a code for an arbitrary PR program'' is not a harmless substitute for a fixed evaluator.  The framework uses fixed symbols, finite tables, or clocked simulations, exactly as the existing ProveIt reports recommend.
+
+\subsection{All-precision statements}
+
+A represented-real assertion often has the form
+\[
+  \forall k\; \exists w\; R(k,w),
+\]
+where $R$ is a bounded numerical predicate.  The constructive and \ipra-friendly order is:
+
+\begin{enumerate}
+  \item keep $k$ as a free numerical input;
+  \item compute a finite demand bound $D(k)$;
+  \item read or produce only the finite observations below $D(k)$;
+  \item run a bounded algorithm and prove a quantifier-free invariant;
+  \item output $w(k)$ and prove $R(k,w(k))$;
+  \item universally quantify $k$ only after the finite proof is complete.
+\end{enumerate}
+
+One must not perform induction on a formula that itself quantifies over all future precisions.  That formula is not quantifier-free.  The finite-demand pass converts it into a finite Boolean table at the current precision.
+
+\subsection{Total operations with guarded meaning}
+
+Division, normalization, chart inversion, and partial geometric constructions should be made total on codes.  For example, define guarded rational division by
+\[
+  \operatorname{qdiv}(a,b)=
+  \begin{cases}
+    a/b,&b\neq 0,\\
+    0,&b=0.
+  \end{cases}
+\]
+The theorem carries the Boolean guard $b\neq0$.  Totalization ensures that every operation is represented by a total primitive-recursive symbol; the guard records where the intended mathematics applies.
+
+The same pattern is used for malformed lists, invalid simplices, singular matrices, and absent chart data.  A decoder returns a default value on malformed input, while a separate predicate \Valid\ certifies meaningful use.  This separation prevents hidden partiality from entering the object theory.
+
+\subsection{Positive data versus negated equality}
+
+Constructive topology and analysis require careful use of apartness.  The proposition ``$x\neq y$'' is negative.  It need not provide a numerical scale at which $x$ and $y$ can be separated.  Algorithms instead require positive data such as
+\[
+  d(x,y)>2^{-s}
+\]
+with an explicit $s$, or a pair of disjoint basic neighborhoods with certified membership.  Likewise, ``a point is outside a closed set'' should be replaced by a positive clearance witness when a routing algorithm needs room to move.
+
+The framework therefore distinguishes:
+\begin{itemize}
+  \item equality of names, which is generally a universal all-precision relation;
+  \item apartness, which is witnessed at a finite scale;
+  \item ambiguity, represented by a finite cloud rather than resolved by arbitrary choice.
+\end{itemize}
+
+\subsection{Finite verification does not produce global bounds}
+
+A verifier for a candidate subcover does not produce a subcover.  A verifier for a list of all rational points does not produce a height bound.  A verifier for a contraction certificate does not discover a contraction region.  These distinctions are logical, not merely engineering details.
+
+Every interface in this report separates:
+\[
+  \text{producer} \quad + \quad \text{finite verifier} \quad + \quad \text{correctness proof}.
+\]
+If the producer requires a modulus, a separation bound, a finite exhaustion, or a height certificate, that datum is an explicit premise.  The framework can compose such certificates and eliminate finite bookkeeping; it cannot conjure missing mathematical information.
+
+\subsection{Four proof layers}
+
+For clarity, every application should name four layers.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Layer & Required content \\
+\midrule
+Semantic presentation & What classical or constructive object the finite data are intended to represent. \\
+Finite theorem & A theorem solely about coded finite data, bounded searches, and exact arithmetic. \\
+Object arithmetic & A formula of \ipra\ and a derivation in $\Prf\ \PRAAx$. \\
+Native transport & Application of \code{pra\_iff\_native} to an already constructed derivation. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The finite theorem is usually the reusable mathematical core.  The semantic presentation is application-specific.  The object arithmetic is the formalization obligation.  The native transport is generic and should be the final, not the first, step.

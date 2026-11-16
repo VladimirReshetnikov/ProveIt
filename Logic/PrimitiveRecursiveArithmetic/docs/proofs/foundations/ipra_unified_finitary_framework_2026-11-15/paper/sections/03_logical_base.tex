@@ -1,0 +1,149 @@
+\section{Logical base and the meaning of an embedded proof}
+
+\subsection{The repository's ordinary presentation of iPRA}
+
+The checked backend uses the following objects.
+
+\begin{itemize}
+\item \(\PR\,k\) is the inductively generated type of primitive-recursive
+      function symbols of arity \(k\), with zero, successor, projections,
+      composition, and primitive recursion.
+\item \(\PTm\,n\) is the first-order term language with \(n\) free variables,
+      formed by variables and applications of \(\PR\) symbols.
+\item \(\PRAAx\) contains the defining equations for every primitive-recursive
+      symbol, successor separation and injectivity, and induction for
+      quantifier-free formulas.
+\item \(\Prf\,\PRAAx\,\Gamma\,\varphi\), written
+      \(\Gamma\vdash[\PRAAx]\varphi\), is intuitionistic natural deduction
+      with equality, substitution, and open axioms.
+\end{itemize}
+
+The crucial repository theorem is
+\[
+(\Gamma\vdash[\PRAAx]\varphi)
+\quad\Longleftrightarrow\quad
+\NPrf(\Gamma^{\mathrm{nat}},\varphi^{\mathrm{nat}}),
+\]
+implemented as \code{pra\_iff\_native}.  It is a faithful transport theorem,
+not a reflection principle from arbitrary Lean propositions.
+
+\subsection{Schemas versus single first-order theorems}
+
+A fixed primitive-recursive evaluator \(a:\N^{r+1}\to\N\) can be represented
+by one fixed \(\PR\) symbol.  A theorem may then be uniform in its ordinary
+numerical parameter \(p\) and precision \(k\):
+\[
+  \forall p\,\forall k\;\Phi_a(p,k).
+\]
+This is a single first-order theorem for that fixed symbol.  A Lean theorem
+polymorphic in a meta-level value \code{a : PR (r+1)} is instead a schema
+generator: for each fixed symbol it produces a first-order formula and proof.
+The distinction is benign and should be explicit.
+
+What is not legitimate is to quantify over arbitrary program codes \(e\) and
+pretend that there is a total primitive-recursive function
+\(U(e,x)\) evaluating every primitive-recursive program.  The diagonal
+argument in \cref{sec:barriers} rules this out.  A theorem about an external
+algorithm must therefore use one of two interfaces:
+
+\begin{enumerate}
+\item its evaluator is fixed in the theorem's language; or
+\item a finite computation trace is supplied and checked by a fixed verifier.
+\end{enumerate}
+
+\subsection{Definitional extensions are harmless when fixed}
+
+The usual mathematical presentation of iPRA has a function symbol for every
+primitive-recursive function.  The repository instead represents these
+symbols by syntax trees in \(\PR\), with defining equations in \(\PRAAx\).
+This means that introducing a named helper such as pairing, list lookup,
+integer addition, rational comparison, bounded maximum, or a particular trace
+runner is not an additional axiom.  One defines a fixed \(\PR\) term and uses
+its generated defining equations.
+
+For proof engineering it is useful to distinguish three levels.
+
+\begin{description}[leftmargin=3.2cm,style=nextline]
+\item[Meta-level definition.] A Lean function constructs a \(\PR\) syntax
+      tree.  This is not yet a theorem.
+\item[Object term.] Applying the resulting symbol gives a \(\PTm\) term.
+\item[Object proof.] Theorems such as \code{PRA.comp}, \code{PRA.precZero},
+      and \code{PRA.precSucc} expose the defining equations as
+      \(\Prf\,\PRAAx\) derivations.
+\end{description}
+
+A formalization should avoid duplicating encodings.  The same Boolean, pair,
+list, signed-integer, and positive-denominator rational codes should be reused
+across all packets, because every additional representation creates a new
+extensionality and conversion burden.
+
+\subsection{Quantifier-free induction with quantified context}
+
+A frequent misunderstanding is that quantifier-free induction forbids the use
+of represented-object hypotheses containing quantifiers.  It does not.  The
+restriction applies to the induction formula, not to the surrounding context.
+For example, suppose the context contains a regularity hypothesis
+\[
+  H(p):\equiv \forall k\,\forall \ell\;
+    \dist(a(p,k),a(p,\ell))\le 2^{-k}+2^{-\ell}.
+\]
+Inside the successor step one may instantiate \(H(p)\) at primitive-recursive
+terms computed from the current finite state.  The induction predicate itself
+can remain the equation
+\[
+  \mathsf{accumulator}(i,p)=1.
+\]
+Thus a global quantified contract may be consumed stage by stage while the
+formula on which induction acts is quantifier free.
+
+This observation is the logical basis of the finite query-table discipline.
+A computation declares or records every sample it reads.  The global contract
+is instantiated only at those samples, and the resulting finite facts are
+folded into a Boolean table.  The induction invariant says that the prefix of
+the table already constructed is valid.
+
+\subsection{The proof-producing interface}
+
+The correct reusable abstraction is not an ambient proposition asserting that
+an algorithm is sound.  It is a structure whose soundness field is already an
+object-language derivation.
+
+At a schematic level, a proof-producing transducer from a contract \(A\) to a
+contract \(B\) consists of:
+\[
+  \text{an output term }F(\bar x),
+  \qquad
+  A(\bar x)\ \vdash[\PRAAx]\ B(\bar x,F(\bar x)).
+\]
+Composition is object-language cut.  If
+\[
+ A\vdash B(F) \quad\text{and}\quad B(y)\vdash C(G(y)),
+\]
+then substitution followed by \code{Prf.trans} gives
+\[
+ A\vdash C(G(F)).
+\]
+This simple formulation prevents a whole class of category mistakes.  The
+semantic development may be large, but its reusable interface ends in a term
+of the repository's derivation type.
+
+\subsection{What the generic framework may assume}
+
+The core theorems below assume a small arithmetic library whose existence is
+standard and whose completion is a finite formalization task:
+
+\begin{enumerate}
+\item primitive-recursive pairing and finite-list coding, with projection and
+      length equations;
+\item Boolean values \(0,1\), Boolean conjunction/disjunction/negation, and
+      normalization lemmas;
+\item zero test, equality test, order, truncated subtraction, and bounded
+      search;
+\item signed integers and rationals represented by normalized or guarded
+      codes; and
+\item dyadic radii and elementary error-budget arithmetic.
+\end{enumerate}
+
+Nothing in the master trace theorem depends on the details of these codes.
+For a concrete Lean implementation, however, selecting one canonical library
+before building domain-specific modules is the first milestone.

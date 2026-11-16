@@ -1,0 +1,141 @@
+\section{Precision transformers, error graphs, and metastability}
+\label{sec:precision}
+
+\subsection{Demand transformers}
+
+A finite numerical operation should advertise not only its output evaluator but also the input observations it demands.  A deterministic contract has:
+\[
+  \mathsf{need}(x,k),\qquad
+  \mathsf{compute}(x,k,\text{queried data}),\qquad
+  \mathsf{error}(x,k)\le2^{-k}.
+\]
+For multiple inputs, $\mathsf{need}$ is a finite tuple.  The transformer must be primitive recursive and monotone after harmless closure
+\[
+ \mathsf{need}^{\uparrow}(k)=\max_{j\le k}\mathsf{need}(j).
+\]
+This closure costs only a bounded maximum and simplifies composition.
+
+\begin{theorem}[Precision-contract composition]
+\label{thm:precision-compose}
+Let $F$ have demand transformer $N_F$ and error contract $E_F$, and let $G$ have transformer $N_G$ and contract $E_G$.  Suppose the magnitude/domain data produced by $F$ suffice to evaluate $N_G$.  Then $G\circ F$ has primitive-recursive demand transformer
+\[
+  N_{G\circ F}(k)=N_F(N_G(k),\text{metadata for }F),
+\]
+possibly enlarged by a finite maximum for the metadata queries, and its error proof is the composition of the two finite contracts.
+\end{theorem}
+
+\begin{proof}
+At output precision $k$, first compute the precision $n=N_G(k)$ required of the intermediate value.  Request from the original input whatever $F$ requires to certify an $n$-precision intermediate value and its metadata.  The $F$ contract supplies exactly the hypotheses consumed by the $G$ contract.  Substitute the certified finite output into the latter proof.  If $G$ is Lipschitz rather than exact on the intermediate representation, allocate its input error according to the displayed Lipschitz factor.  Closure of primitive-recursive functions under composition and bounded maximum gives the transformer; proof substitution gives the object-theory theorem.
+\end{proof}
+
+\subsection{Finite error-budget DAGs}
+
+Large proofs are more naturally represented by a finite acyclic dependency graph.  Each node $v$ computes a quantity $z_v$ from predecessors.  A local certificate gives
+\[
+  \abs{\Delta z_v}\le \eta_v+
+  \sum_{w\to v}L_{v,w}\abs{\Delta z_w},
+\]
+where $\eta_v$ is local rounding/truncation error and $L_{v,w}$ is a certified nonnegative rational sensitivity bound.
+
+Topologically order the graph and define the propagated budget by forward recursion
+\[
+  E_v=\eta_v+
+  \sum_{w\to v}L_{v,w}E_w.
+  \tag{B}\label{eq:budget-recurrence}
+\]
+
+\begin{theorem}[Error-DAG soundness]
+\label{thm:error-dag}
+For a fixed bounded graph code, the budgets $E_v$ in \eqref{eq:budget-recurrence} are primitive recursively computable.  If every local certificate is valid and every source error is below its assigned budget, iPRA proves by finite induction that $\abs{\Delta z_v}\le E_v$ for every node, in particular at the output node.
+\end{theorem}
+
+\begin{proof}
+The state of the induction contains the table of budgets and the Boolean assertion that all processed node errors satisfy their entries.  At the next node, every predecessor has a smaller topological index.  Substitute the induction bounds into the local inequality and use the defining equation for $E_v$.  The finite sum is a primitive-recursive fold.  Booleanize all rational comparisons and apply quantifier-free induction on the number of processed nodes.
+\end{proof}
+
+A backward scheduler can synthesize safe local tolerances.  If all path products and the number of paths are bounded by a rational $C$, choosing every $\eta_v\le2^{-k}/(C(N+1))$ suffices.  The coarse bound is often preferable to a numerically optimal but formally expensive optimization.
+
+\subsection{Finite windows and ranked descent}
+
+A convergence rate gives a final cutoff.  Many constructive arguments provide only a stable finite window.  Let $x_n$ be a coded sequence, $g$ a challenge function, and $\eps_k=2^{-k}$.  A window starting at $n$ is stable when
+\[
+  \forall i,j\in[n,n+g(n)]\quad d(x_i,x_j)\le\eps_k.
+\]
+This bounded universal is a Boolean fold once $n,k,g$ are fixed.
+
+\begin{definition}[Ranked instability certificate]
+For fixed $k$ and $g$, a rank certificate consists of a primitive-recursive rank $\rho(n)\le R(k,g)$ such that whenever the window at $n$ is not stable, the next candidate
+\[
+  n'=n+g(n)+1
+\]
+satisfies $\rho(n')<\rho(n)$.
+\end{definition}
+
+\begin{theorem}[Rank-to-metastability]
+\label{thm:rank-metastability}
+Given a ranked instability certificate, the iteration
+\[
+ n_0=0,
+ \qquad n_{t+1}=n_t+g(n_t)+1
+\]
+finds a stable window by some $t\le R(k,g)$.  The selector and bound are primitive recursive, and the theorem is provable in iPRA.
+\end{theorem}
+
+\begin{proof}
+Assume all first $R+1$ windows are unstable.  Repeatedly apply the rank-decrease premise to obtain
+\[
+ \rho(n_{R+1})<\rho(n_R)<\cdots<\rho(n_0)\le R,
+\]
+a strictly descending chain of $R+2$ natural numbers starting at most $R$, impossible.  Internally, maintain the quantifier-free invariant
+\[
+  t\le R+1\;\wedge\;
+  \bigl(\text{no stable window among the first $t$ candidates}
+  \to \rho(n_t)+t\le R\bigr).
+\]
+The bounded statement about previous windows is Booleanized.  At $t=R+1$, the consequent would say a natural number is at most $-1$ in the equivalent subtraction-free coding, contradiction.  A first-success search returns the least stable $t$.
+\end{proof}
+
+This theorem subsumes common energy-decrement and finite-variation arguments.  The rank may be an integer energy bucket, an exceptional-set count, the number of unresolved cells, or a finite descent measure.
+
+\subsection{Why metastability is not a rate}
+
+\begin{warning}[No silent rate extraction]
+\label{warn:meta-rate}
+A primitive-recursive bound for every challenged stable window does not in general provide a primitive-recursive $N(k)$ such that all $i,j\ge N(k)$ are close.  The challenge function describes one finite future interval, not the entire tail.
+\end{warning}
+
+A final Cauchy rate can be recovered only from additional data, for example:
+\begin{enumerate}[label=(\alph*)]
+\item a monotone tail majorant $T(n)$ with a primitive-recursive search proving $T(N(k))\le2^{-k}$;
+\item a summable finite-variation bound with explicit tail modulus;
+\item a contraction with a known ratio and initial radius;
+\item a well-founded rank whose exhaustion implies permanent stability, not merely one stable window.
+\end{enumerate}
+The theorem statement must say which mechanism supplies the final rate.
+
+\subsection{Simultaneous stability}
+
+Suppose $m$ finite-window properties have ranks $\rho_j$ and bounds $R_j$.  Conjoin their Boolean stability tests and use the sum rank
+\[
+  \rho=\sum_{j<m}\rho_j.
+\]
+Whenever the conjunction fails, at least one component rank decreases, provided the update rule is designed not to increase the others.  More generally, use a lexicographic or weighted rank with explicit finite bounds.
+
+\begin{corollary}[Common stable window]
+\label{cor:common-window}
+If a common update candidate decreases a bounded aggregate rank whenever any of finitely many Boolean window conditions fails, then a primitive-recursive bounded search returns a window satisfying all conditions simultaneously.
+\end{corollary}
+
+This is the correct way to combine finite exceptional-set, variation, and approximation arguments.  It does not imply simultaneous eventual stability beyond the returned window.
+
+\subsection{Precision synthesis as certificate generation}
+
+The error-DAG theorem suggests an automation boundary.  An untrusted compiler may traverse an expression graph, propose magnitude bounds, apartness guards, node tolerances, and input query indices, and emit a certificate.  The trusted object-language checker verifies:
+\begin{itemize}
+\item graph acyclicity and topological order;
+\item every local arithmetic error inequality;
+\item every guard and magnitude bound;
+\item the budget recurrence;
+\item the final output budget.
+\end{itemize}
+Thus automatic precision synthesis need not be trusted.  Only the small finite checker and its \code{Prf PRAAx} soundness theorem enter the trusted base.

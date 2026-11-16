@@ -1,0 +1,157 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,stmaryrd}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=MidnightBlue,
+  citecolor=ForestGreen,
+  urlcolor=BrickRed,
+  pdftitle={Demand-Driven Relational Certificates for Mathematics in iPRA},
+  pdfauthor={OpenAI research synthesis for Vladimir Reshetnikov}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Demand-Driven Relational Certificates for iPRA}
+\rhead{Research report, 15 November 2026}
+\cfoot{\thepage}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{principle}[theorem]{Principle}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\B}{\{0,1\}}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\PRAAx}{\texttt{PRAAx}}
+\newcommand{\Prf}{\texttt{Prf}}
+\newcommand{\NPrf}{\texttt{NPrf}}
+\newcommand{\PR}{\mathrm{PR}}
+\newcommand{\CFP}{\mathrm{CFP}}
+\newcommand{\FUC}{\mathrm{FUC}}
+\newcommand{\angles}[1]{\langle #1\rangle}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\True}{\mathsf{true}}
+\newcommand{\False}{\mathsf{false}}
+\newcommand{\Viable}{\mathsf{Viable}}
+\newcommand{\Local}{\mathsf{Local}}
+\newcommand{\Next}{\mathsf{Next}}
+\newcommand{\Halt}{\mathsf{Halt}}
+\newcommand{\Post}{\mathsf{Post}}
+\newcommand{\Ans}{\mathsf{Ans}}
+\newcommand{\Run}{\mathsf{Run}}
+\newcommand{\Inv}{\mathsf{Inv}}
+\newcommand{\Good}{\mathsf{Good}}
+\newcommand{\Accept}{\mathsf{Accept}}
+\newcommand{\Out}{\mathsf{Out}}
+\newcommand{\eps}{\varepsilon}
+
+\lstdefinestyle{leanstyle}{
+  language={},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{MidnightBlue}\bfseries,
+  commentstyle=\color{ForestGreen},
+  stringstyle=\color{BrickRed},
+  columns=fullflexible,
+  keepspaces=true,
+  breaklines=true,
+  frame=single,
+  framerule=0.3pt,
+  rulecolor=\color{gray!55},
+  backgroundcolor=\color{gray!4},
+  showstringspaces=false,
+  tabsize=2
+}
+\lstset{style=leanstyle}
+
+\title{\textbf{Demand-Driven Relational Certificates for Mathematics in iPRA}\\[0.4em]
+\large A compositional extension of finite-observation and certified-finitary frameworks}
+\author{Research synthesis prepared for Vladimir Reshetnikov}
+\date{15 November 2026 (repository-check revision)}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The ProveIt iPRA collection contains many mathematically substantial packets, but the same formal obstruction appears repeatedly: a classical proof asks for an exact global choice, an unbounded compactness principle, an unspecified convergence modulus, or a semantic Lean theorem, whereas intuitionistic primitive recursive arithmetic can directly justify only fixed primitive-recursive computations and quantifier-free induction. Existing ProveIt foundation packets already develop bounded Booleanization, finite traces, quantitative names, robust branches, finite nets, and certified finitary presentations. This report consolidates those results and adds a missing compositional layer: \emph{demand-driven relational certificates}. A producer may expose finitely many locally valid answers rather than one discontinuously chosen exact object; a bounded adaptive consumer is compiled together with the producer by a primitive-recursive backward-viability computation. The resulting finite-use composition theorem is proved in detail, including certificate reflection, branch-invariant elimination, quantitative stability, and the precise boundary beyond which an infinite coherent choice would be required.
+
+The framework yields developed human proofs for deterministic trace reflection, relational finite-use composition, guarded arithmetic on represented objects, precision-DAG compilation, ranked metastability, finite-net witness search, branch-invariant algebraic data, and height-bound enumeration. It gives explicit repairs for several recurring difficulties while retaining genuine obstructions: nonzero does not supply apartness, metastability does not supply a final rate, arbitrary Cauchy coefficients do not permit exact Puiseux branch selection, and cardinality bounds do not supply Diophantine search cutoffs. A Lean architecture is specified against the actual \code{ConciseIPRA} API, with precise theorem signatures, substitutions, invariants, and a dependency-ordered completion path. The archive includes a tested exact-arithmetic Python kernel, two Lean source blueprints, a theorem ledger, and a source/difficulty audit. No unproved general Siegel, Faltings, Mordell--Weil, Chebotarev, or prime-distribution theorem is claimed.
+\end{abstract}
+
+\paragraph{Revision note.}
+The primary technical audit used ProveIt main commit
+\code{0edaf721b175}; the full revision identifier is recorded in
+\Cref{app:source-audit}.  Before packaging this revision, the current main
+branch was checked again at \code{bce5113f44d6}.  That later tree preserves
+the inspected \code{ConciseIPRA} interfaces, files this framework packet under
+\path{docs/proofs/foundations/}, and adds a related stable-observables packet
+whose five reported object-level glue combinators sharpen the Lean completion
+path described in \Cref{sec:lean}.  The repository still classifies delivered
+proof packets as unverified; no independent Lean build is claimed here.
+
+\tableofcontents
+\clearpage
+
+\input{sections/01_scope}
+\input{sections/02_logic}
+\input{sections/03_diagnosis}
+\input{sections/04_deterministic}
+\input{sections/05_relational}
+\input{sections/06_quantitative}
+\input{sections/07_precision}
+\input{sections/08_algebraic}
+\input{sections/09_compactness}
+\input{sections/10_domains}
+\input{sections/11_lean}
+\input{sections/12_examples}
+\input{sections/13_status}
+\input{sections/14_research}
+\appendix
+\input{sections/A_normal_forms}
+\input{sections/B_source_audit}
+\input{sections/C_notation}
+
+\begin{thebibliography}{99}
+\bibitem{BridgesRichman}
+D. Bridges and F. Richman, \emph{Varieties of Constructive Mathematics}, London Mathematical Society Lecture Note Series 97, Cambridge University Press, 1987.
+
+\bibitem{Kohlenbach}
+U. Kohlenbach, \emph{Applied Proof Theory: Proof Interpretations and Their Use in Mathematics}, Springer Monographs in Mathematics, Springer, 2008.
+
+\bibitem{KohlenbachLeustean}
+U. Kohlenbach and L. Leu\c{s}tean, Effective metastability of Halpern iterates in CAT(0) spaces, \emph{Advances in Mathematics} 231 (2012), 2526--2556.
+
+\bibitem{MannaaCoquand}
+B. Mannaa and T. Coquand, Dynamic Newton--Puiseux theorem, \emph{Journal of Logic and Analysis} 5 (2013), Paper 5.
+
+\bibitem{ProveIt}
+V. Reshetnikov, \emph{ProveIt}, repository directory
+\code{Logic/PrimitiveRecursiveArithmetic}; primary technical audit at main
+commit \code{0edaf721b175de6aa219755df18b1588be803a16} and post-snapshot
+integration check at \code{bce5113f44d613f5625c274128ee761f35486fc5},
+15 November 2026 (Pacific time).
+\end{thebibliography}
+
+\end{document}

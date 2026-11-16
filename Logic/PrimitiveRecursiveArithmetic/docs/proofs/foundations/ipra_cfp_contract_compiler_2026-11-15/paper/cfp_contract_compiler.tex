@@ -1,0 +1,178 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.92in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+
+\definecolor{codegray}{gray}{0.95}
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{obstruction}[theorem]{Obstruction}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\B}{\{0,1\}}
+\newcommand{\iPRA}{\ensuremath{\mathrm{iPRA}}}
+\newcommand{\PR}{\ensuremath{\mathrm{PR}}}
+\newcommand{\CFP}{\ensuremath{\mathrm{CFP}}}
+\newcommand{\PRAAx}{\ensuremath{\mathtt{PRAAx}}}
+\newcommand{\Prf}{\ensuremath{\mathtt{Prf}}}
+\newcommand{\PTm}{\ensuremath{\mathtt{PTm}}}
+\newcommand{\NFm}{\ensuremath{\mathtt{NFm}}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\pair}[2]{\langle #1,#2\rangle}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\defeq}{\mathrel{:=}}
+\newcommand{\bits}{\mathsf{bit}}
+\newcommand{\allfold}{\mathsf{All}}
+\newcommand{\anyfold}{\mathsf{Any}}
+\newcommand{\first}{\mathsf{first}}
+\newcommand{\verify}{\mathsf{Verify}}
+\newcommand{\demand}{\mathsf{Demand}}
+\newcommand{\run}{\mathsf{Run}}
+\newcommand{\Inv}{\mathsf{Inv}}
+\newcommand{\Good}{\mathsf{Good}}
+\newcommand{\Compat}{\mathsf{Compat}}
+\newcommand{\Cand}{\mathsf{Cand}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Certified finitary presentations in iPRA}
+\rhead{\thepage}
+\setlength{\headheight}{14pt}
+
+\title{\textbf{Certified Finitary Presentations and a Contract-DAG Compiler}\\
+\large A compositional framework for embedding mathematics into intuitionistic primitive recursive arithmetic}
+\author{Research report and Lean formalization blueprint}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The ProveIt repository contains a kernel-checked presentation of intuitionistic
+primitive recursive arithmetic and a large collection of research packets that
+recast classical mathematics in finite, quantitative form.  The packets also
+expose recurring failures: induction hypotheses that quantify over unbounded
+precision, discontinuous exact choices from Cauchy data, compactness arguments
+without finite nets, finiteness statements without search cutoffs, and ambient
+Lean proofs that do not yet produce object-language derivations.
+
+This report develops a common framework, called a \emph{certified finitary
+presentation} (\CFP), and extends the repository's existing CFP work by giving
+a contract-DAG calculus with reverse precision propagation.  A finite acyclic
+network of primitive-recursive nodes, each equipped with a quantifier-free
+local contract, compiles into one bounded trace, one quantifier-free invariant,
+and therefore one reusable \PRAAx\ proof obligation.  The report proves the
+finite-trace theorem, the contract-DAG composition theorem, finite-horizon
+coherent selection for relational outputs, exact branch collapse under a
+positive gap, backward precision budgeting, bounded enumeration from height
+certificates, and the separation between cardinality and height bounds.
+
+The framework does not claim general effective Faltings, Siegel,
+Bombieri--Vinogradov, or a uniform exact Puiseux selector.  It identifies the
+missing producer in each case and supplies the verifier, composition law, and
+formalization route around it.  A complete worked benchmark constructs the
+unique root of \(y^3+y=x\) for rational \(0\le x\le1\) by an exact bisection
+certificate.  Lean files in the archive give all central definitions, a
+semantic prototype, and a dependency-ordered blueprint for constructing
+\(\Prf\,\PRAAx\) terms using the repository's actual \code{PR},
+\code{PTm}, \code{PRA.qfInd}, and \code{pra\_iff\_native} interfaces.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{sections/01_scope}
+\input{sections/02_codings}
+\input{sections/03_cfp}
+\input{sections/04_contract_dag}
+\input{sections/05_relational}
+\input{sections/06_precision}
+\input{sections/07_branching}
+\input{sections/08_search_height}
+\input{sections/09_cubic}
+\input{sections/10_applications}
+\input{sections/11_lean}
+\input{sections/12_packet_workflow}
+\input{sections/13_status_research}
+
+\appendix
+\input{sections/A_source_audit}
+\input{sections/B_lean_api}
+\input{sections/C_reference_algorithms}
+
+\begin{thebibliography}{99}
+
+\bibitem{BishopBridges}
+E.~Bishop and D.~Bridges,
+\emph{Constructive Analysis},
+Springer, 1985.
+
+\bibitem{BridgesRichman}
+D.~Bridges and F.~Richman,
+\emph{Varieties of Constructive Mathematics},
+Cambridge University Press, 1987.
+
+\bibitem{TroelstraVanDalen}
+A.~S.~Troelstra and D.~van Dalen,
+\emph{Constructivism in Mathematics}, Volumes I--II,
+North-Holland, 1988.
+
+\bibitem{Weihrauch}
+K.~Weihrauch,
+\emph{Computable Analysis},
+Springer, 2000.
+
+\bibitem{Kohlenbach}
+U.~Kohlenbach,
+\emph{Applied Proof Theory: Proof Interpretations and Their Use in Mathematics},
+Springer, 2008.
+
+\bibitem{HajekPudlak}
+P.~Hájek and P.~Pudlák,
+\emph{Metamathematics of First-Order Arithmetic},
+Springer, 1993.
+
+\bibitem{Lean}
+L.~de Moura, S.~Kong, J.~Avigad, F.~van Doorn, and J.~von Raumer,
+The Lean theorem prover,
+in \emph{Automated Deduction---CADE-25}, 2015.
+
+\bibitem{ProveIt}
+V.~Reshetnikov,
+\emph{ProveIt}, repository snapshot
+\code{b88e843c31b50dfe461bfbd0380166ca422cd3ab},
+15 November 2026 (Pacific time).
+
+\end{thebibliography}
+
+\end{document}

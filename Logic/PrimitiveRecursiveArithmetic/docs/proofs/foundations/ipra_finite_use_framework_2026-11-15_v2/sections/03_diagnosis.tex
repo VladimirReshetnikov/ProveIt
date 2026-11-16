@@ -1,0 +1,59 @@
+\section{Diagnosis of recurring difficulties}
+\label{sec:diagnosis}
+
+The packets exhibit several superficially different failures that reduce to a small number of interface mismatches.  The following classification matters because only some failures are repaired by better coding.
+
+\begin{longtable}{@{}p{0.20\textwidth}p{0.28\textwidth}p{0.24\textwidth}p{0.20\textwidth}@{}}
+\toprule
+Difficulty & Invalid classical move & Constructive replacement & Residual obligation \\
+\midrule
+\endhead
+Unbounded-precision induction & Put a Cauchy or uniformity quantifier inside the induction invariant & Fix the requested precision; instantiate only the finite query table; quantify afterward & Prove a primitive-recursive query bound and local error inequalities \\
+\addlinespace
+Exact boundary choice & Decide $x<0$, $x=0$, or $x>0$ for a represented real & Use overlapping branches; exact branch only with a positive gap & Supply a margin or accept a relational output \\
+\addlinespace
+Nonzero used as invertible & Infer a numerical inverse modulus from $\neg(x=0)$ & Carry an apartness witness $\abs{x}\ge 2^{-m}$ & Prove or assume the quantitative gap \\
+\addlinespace
+Abstract compactness & Select a convergent subsequence or finite subcover without data & Supply a finite net, coverage modulus, and bounded search & Prove coverage and stability on the domain \\
+\addlinespace
+Exact root/eigenvector ordering & Globally label branches across collisions & Root clusters, projective data, or finite relational candidates & Isolation/separation if an exact label is required \\
+\addlinespace
+Metastability upgraded to convergence rate & Treat one stable window as eventual stability & Use the window only locally, or supply a tail/rank certificate & A true final modulus is extra data \\
+\addlinespace
+Cardinality upgraded to search cutoff & Enumerate until the asserted number of points has appeared & Supply a height bound or a complete-list certificate & Effective height/covering theorem \\
+\addlinespace
+Ambient Lean theorem called iPRA & Rely on computability-looking definitions in the metatheory & Reify programs and build \code{Prf PRAAx} derivations & Object-level Boolean/rational libraries and invariants \\
+\bottomrule
+\end{longtable}
+
+\subsection{Logical obstructions versus missing estimates}
+
+It is useful to distinguish three kinds of open edge.
+
+\begin{description}[style=nextline]
+\item[Type I: finite formalization debt.]  The mathematics is already a bounded calculation, but no reusable object-language library exists.  Examples include Boolean folds, rational cross-multiplication, finite sums, and trace reflection.  These are difficult engineering tasks but not conceptual obstructions.
+
+\item[Type II: missing quantitative hypotheses.]  A classical statement is true only after silently invoking exact choice or a qualitative condition.  The constructive theorem becomes valid once supplied with an apartness, isolation, modulus, compactness, or chart certificate.  Root selection at a simple separated root is the standard example.
+
+\item[Type III: missing mathematics or genuine nonuniformity.]  No known effective height bound, zero-free constant, or global selector is available, or a proposed selector would imply a principle such as LLPO/LPO or decide a halting-encoded family.  No encoding layer can replace the absent theorem.
+\end{description}
+
+The framework is designed to eliminate Type I debt, make Type II inputs explicit and compositional, and expose Type III boundaries in theorem statements.
+
+\subsection{A diagnostic test for a proposed theorem}
+
+Before formalization, write the intended output as a data type and ask four questions.
+
+\begin{enumerate}[label=\arabic*.]
+\item Is the output uniquely and continuously determined by the represented input?  If not, can it be replaced by a finite relation, a projective class, a cluster, or a branch-invariant observation?
+\item Does every use of division, normalization, sign, or ordering carry a rational margin that a finite checker can verify?
+\item Does every compactness or convergence step expose a primitive-recursive finite bound, net, modulus, rank, or certificate?
+\item Is the substantive producer known, or has only its finite verifier been described?
+\end{enumerate}
+A negative answer to the first three suggests a reformulation.  A negative answer to the fourth identifies a genuine unresolved theorem rather than a formalization problem.
+
+\subsection{Why finite relational data are the missing middle layer}
+
+The existing deterministic trace framework expects every upstream component to return one code.  The evidence framework permits finite compatible families but does not explicitly characterize the downstream computations that can safely consume them.  Many packets lie exactly between these interfaces.  A proof of an identity may need one approximate root for five bounded computations but need not name the same root at every future precision.  A projective theorem may need a direction only up to sign.  A symmetric polynomial theorem may use all roots but be invariant under permutation.  For these cases, demanding a global selector introduces a discontinuity that is absent from the mathematical conclusion.
+
+The correct middle layer is therefore not ``choose an infinite branch'' but ``compile the finite interaction required by this consumer.''  The next two sections first recall deterministic traces and then prove the relational extension.

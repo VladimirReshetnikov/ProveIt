@@ -1,0 +1,57 @@
+\section{Repository source audit and novelty boundary}
+\label{app:source-audit}
+
+The repository was inspected read-only at main commit
+\path{0edaf721b175de6aa219755df18b1588be803a16}.  The most relevant paths were:
+
+\begin{itemize}
+\item \path{Logic/PrimitiveRecursiveArithmetic/README.md} and \path{docs/proofs/README.md}: checked/unverified status boundary and packet catalog.
+\item \path{ConciseIPRA/Lean/ConciseIPRA/PR.lean}: \code{PR}, \code{PTm}, \code{PRAAx}, \code{PRA.qfInd}, and defining equations.
+\item \path{ConciseIPRA/Lean/ConciseIPRA/Deduction.lean}: \code{Prf}, substitution, weakening, cut, equality, and quantifier rules.
+\item \path{ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}: \code{native_iff_pra}, \code{pra_iff_native}, and round trips.
+\item \path{docs/proofs/foundations/ipra_embedding_framework}: finite observations, simple analytic branches, stability, finite algebra certificates.
+\item \path{docs/proofs/foundations/ipra_evidence_framework}: finite relational outputs and backward finite compatibility.
+\item \path{docs/proofs/foundations/ipra_finite_observation}: finite observation compiler, degree-uniform factorization, continuity and section bounds.
+\item \path{docs/proofs/foundations/ipra_framework}: finite contracts, represented arithmetic, metastability, local branches, and power gaps.
+\item \path{docs/proofs/foundations/ipra_framework_2026-11-15}: certificate-and-modulus summary and obstruction discipline.
+\item \path{docs/proofs/foundations/ipra_uniform_certificates}: finite-net lifting, separated roots, and precision composition.
+\item \path{docs/proofs/foundations/ipra_embedding_framework_2026-11-15}: Certified Finitary Presentations, deterministic finite-trace theorem, robust branches, nets, barriers, and object-language plan.
+\item \path{docs/proofs/algebra/puiseux_ipra/evidence/scope_obstruction.md}: exact Puiseux selection obstruction for arbitrary Cauchy coefficients.
+\item \path{docs/proofs/diophantine-number-theory/faltings_ipra} and \path{siegel_ipra}: height/list boundaries and effective subcases.
+\end{itemize}
+
+The report credits and consolidates the prior techniques.  The principal additional contribution is the consumer-oriented finite-use relational composition theorem, including adaptive state, certificate reflection, branch-invariant elimination, and quantitative diameter elimination.  The source-level object trace wrapper is also more explicit than the prior plans, but is not claimed compiled.
+
+No priority claim is made for general bounded dynamic programming, proof mining, metastability, constructive analysis, or finite certificate checking.  The novelty asserted is only the specific synthesis and interface tailored to the inspected ProveIt iPRA program.
+
+
+\subsection{Post-snapshot repository integration check}
+
+Immediately before packaging this revision, main was checked again at commit
+\path{bce5113f44d613f5625c274128ee761f35486fc5}.  The current
+\path{Logic/PrimitiveRecursiveArithmetic/README.md} reports 66 delivered proof
+packets, including 13 foundations packets, and retains the explicit warning
+that the packets were filed as delivered and were not rerun, checked, or
+compiled.  The commit history for the core \path{ConciseIPRA/Lean/ConciseIPRA/PR.lean}
+shows no change after 12 November 2026, so the \code{PR}, \code{PTm},
+\code{PRAAx}, \code{PRA.qfInd}, \code{PRA.precZero}, and
+\code{PRA.precSucc} interfaces used in this report remain current at the
+post-snapshot commit.
+
+Two additions are directly relevant.  First, the present packet has itself
+been placed under
+\path{docs/proofs/foundations/ipra_finite_use_framework_2026-11-15}; this is an
+integration event, not new evidence for its claims.  Second,
+\path{docs/proofs/algebra/ipra_stable_observables/lean/ObjectObservation.lean}
+reports five compiled \code{Prf PRAAx} combinators for finite-fuel induction,
+certificate extraction, and stable observations from independent bounded
+computations.  \Cref{sec:observable-glue} explains how to reuse that glue.
+The repository's global caveat applies: this revision did not independently
+rebuild the packet, and none of its matrix-specific estimates is imported as a
+proved theorem here.
+
+No post-snapshot change invalidates the mathematical framework.  The new glue
+narrows Type-I formalization debt, while the Type-II and Type-III boundaries
+identified in \Cref{sec:diagnosis} remain: apartness, isolation, moduli, height
+bounds, and genuinely nonuniform selectors still require explicit data or new
+mathematics.

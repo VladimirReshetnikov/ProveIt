@@ -1,0 +1,195 @@
+\section{Retained barriers and impossibility results}
+\label{sec:barriers}
+
+A general framework is credible only if it states what encoding cannot repair.
+The following barriers explain why the positive interfaces in earlier sections
+are deliberately guarded, relational, or certificate-relative.
+
+\subsection{No total universal primitive-recursive evaluator}
+
+\begin{theorem}[Diagonal barrier]
+\label{thm:no-universal-pr}
+There is no binary primitive-recursive function \(U(e,x)\) such that every
+unary primitive-recursive function \(f\) has an index \(e\) with
+\(f(x)=U(e,x)\) for all \(x\).
+\end{theorem}
+
+\begin{proof}
+If such \(U\) existed, then
+\[
+ g(x)=U(x,x)+1
+\]
+would be primitive recursive.  By universality, \(g(x)=U(e,x)\) for some
+\(e\).  Substitution of \(x=e\) gives
+\[
+ U(e,e)+1=g(e)=U(e,e),
+\]
+a contradiction.
+\end{proof}
+
+This does not prevent a syntax of primitive-recursive programs with a
+partial, clocked, or complexity-bounded interpreter.  It prevents one fixed
+total primitive-recursive evaluator from uniformly evaluating every such
+program.  Therefore the framework uses fixed evaluator schemas or finite
+traces whose individual steps are checked.
+
+\subsection{A cardinality bound is not a search cutoff}
+
+Let \(T(e,t)\) be the primitive-recursive predicate saying that machine \(e\)
+halts for the first time at exactly stage \(t\).  For each \(e\), at most one
+\(t\) satisfies \(T(e,t)\).  Thus the solution set has the uniform cardinality
+bound one.
+
+\begin{theorem}[No uniform cutoff from cardinality]
+\label{thm:cardinality-no-cutoff}
+There is no total computable function \(H(e)\) such that
+\[
+ T(e,t)\to t\le H(e)
+\]
+for every \(e,t\).
+\end{theorem}
+
+\begin{proof}
+Given such \(H\), simulate machine \(e\) for \(H(e)\) stages.  If it halts,
+answer yes.  If it has not halted, it can never halt later, because its first
+halting stage would exceed the promised bound.  This decides the halting
+problem.
+\end{proof}
+
+Consequently, a theorem proving that a curve has at most \(N\) rational points
+does not give a height bound, an enumeration stopping rule, or the points
+themselves.  Additional arithmetic structure may produce a height bound, but
+cardinality alone cannot.
+
+\subsection{Exact sign and LLPO}
+
+Suppose a total operation on arbitrary fast Cauchy names returned one of the
+two valid conclusions
+\[
+ x\le0\qquad\text{or}\qquad x\ge0.
+\]
+Given a binary sequence \(\alpha\) with at most one nonzero term, form the fast
+Cauchy real
+\[
+ x_\alpha=\sum_{n\ge0}(-1)^n\alpha_n2^{-n-1}.
+\]
+If the operation returns \(x_\alpha\ge0\), no odd-indexed term can be one; if
+it returns \(x_\alpha\le0\), no even-indexed term can be one.  At the zero
+sequence both conclusions are valid, so either answer is acceptable.  This is
+exactly the lesser limited principle of omniscience (LLPO).
+
+Thus an exact side, sign, orientation, or branch selector at a zero boundary
+is not obtained merely by taking more approximations.  A positive gap makes
+the finite comparison valid; an overlap makes either branch sound; otherwise
+the output should remain relational.
+
+The rotation-axis obstruction is an instance.  Near the identity, the
+oriented vector part of a quaternion can approach zero from incompatible
+directions.  Exact unit-axis selection would decide a discontinuous side
+problem.  Quaternion data with a possibly zero vector part, or approximate
+axes, remain stable.
+
+\subsection{Arbitrary Cauchy coefficients do not yield exact Puiseux data}
+
+Consider, for a nonnegative represented real \(a\),
+\[
+ P_a(X,Y)=Y^2-X^2-a.
+\]
+Suppose a uniform algorithm returned a ramification exponent \(e>0\), a
+finite Laurent lower bound, and exact computable names of coefficients of a
+formal root
+\[
+ y(t)=\sum_j y_jt^j,
+ \qquad y(t)^2=t^{2e}+a.
+\]
+Finite coefficient comparison gives the following dichotomy.
+
+If \(a=0\), all coefficients below degree \(e\) vanish and
+\(y_e^2=1\), so \(|y_e|=1\).  If \(a>0\), then \(y_0^2=a\) is apart from zero;
+induction through degrees below \(2e\) forces \(y_e=0\).  An approximation to
+the algorithm's own coefficient \(y_e\) therefore decides whether \(a=0\).
+
+Now let \(a_m\) have the fixed primitive-recursive fast Cauchy approximation
+\[
+ A(m,s)=\sum_{k<s}2^{-k-1}H(m,k),
+\]
+where \(H(m,k)\) says that machine \(m\) has halted by stage \(k\).  If the
+machine never halts, \(a_m=0\); if its first halting stage is \(h\), then
+\(a_m=2^{-h}>0\).  The hypothetical Puiseux producer would decide halting.
+
+The obstruction concerns exact individually accessible branch coefficients
+from arbitrary Cauchy input.  It does not rule out approximate root clusters,
+conditional simple branches, or exact Puiseux computation from finite
+algebraic presentations supplying equality and splitting data.
+
+\subsection{Metastability does not supply a Cauchy modulus}
+
+There are primitive-recursive increasing bounded rational sequences with no
+computable Cauchy modulus.  One standard construction uses stage-bounded
+halting information:
+\[
+ s_n=\sum_{e<n\,:\,e\text{ halts within }n\text{ stages}}2^{-e-1}.
+\]
+The map \(n\mapsto s_n\) is primitive recursive, rational, increasing, and
+bounded by one.  If a computable modulus \(M(r)\) made every later variation
+smaller than \(2^{-r}\), then to decide whether machine \(e\) ever halts one
+would inspect stage \(M(e+2)\).  A later first contribution of weight
+\(2^{-e-1}\) would exceed the allowed future variation; hence absence by that
+stage would imply nonhalting.  This is impossible.
+
+Finite stable-window or metastability theorems can still be primitive
+recursive and useful.  What fails is the uniform conversion of such windows
+into one global convergence rate.  The shrinking-viability theorem therefore
+requires a tail modulus as an explicit input.
+
+\subsection{Qualitative uniqueness is not a quantitative selector}
+
+A statement that exactly one mathematical object satisfies a predicate does
+not automatically give a primitive-recursive rate at which finite candidate
+clouds shrink.  The unique object may be encoded by a computation whose
+convergence has no computable modulus.  To construct a name, the framework
+requires an isolation radius, strong-convexity constant, residual-to-distance
+bound, contraction factor, or equivalent quantitative determinacy data.
+
+This is why the report distinguishes:
+
+\begin{enumerate}
+\item uniqueness as a logical proposition;
+\item finite near-uniqueness at a requested scale; and
+\item a primitive-recursive modulus witnessing how the scale improves.
+\end{enumerate}
+
+Only the third supports a uniform coherent-name constructor.
+
+\subsection{A semantic Lean proof does not automatically reflect into iPRA}
+
+Lean can prove an ambient theorem about a recursive function using induction,
+quotients, classical choice, algebraic hierarchies, or library facts.  There is
+no general reflection principle turning an arbitrary such theorem into a term
+of \(\Prf\,\PRAAx\).  A soundness theorem goes in the other direction: an
+object-language proof has a semantic interpretation.
+
+The positive solution is deliberately smaller.  For the restricted DSL of
+Boolean folds, bounded traces, and certified arithmetic transducers, define a
+syntax-directed compiler that constructs the object-language proof from local
+object-language obligations.  This is feasible because every proof step and
+induction invariant is exposed.  It is not a universal reflection theorem for
+Lean.
+
+\subsection{Boundary summary}
+
+The framework does not claim:
+
+\begin{itemize}
+\item a universal total primitive-recursive evaluator;
+\item exact discontinuous selectors from arbitrary Cauchy names;
+\item height cutoffs from cardinality bounds;
+\item a Cauchy rate from metastability alone;
+\item quantitative isolation from qualitative uniqueness alone; or
+\item automatic reflection of arbitrary semantic Lean proofs.
+\end{itemize}
+
+Each refused claim has a positive replacement: fixed evaluators or trace
+certificates, relational output or positive gaps, explicit height producers,
+finite-window theorems or tail moduli, shrinking certificates, and a restricted
+proof-producing compiler.

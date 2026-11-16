@@ -1,0 +1,76 @@
+\section{Theorem ledger, limitations, and validation status}
+\label{sec:status}
+
+\subsection{Main claims}
+
+\begin{longtable}{@{}p{0.44\textwidth}p{0.48\textwidth}@{}}
+\toprule
+Claim & Status in this archive \\
+\midrule
+\endhead
+Bounded Booleanization and least bounded witness & Fully developed human proof; object-library path specified \\
+Deterministic finite-trace reflection & Fully developed human proof; source-level \code{PRA.qfInd} wrapper supplied; not compiler-checked here \\
+Adaptive finite instantiation of name contracts & Fully developed human proof and invariant design \\
+Finite-use viability and relational composition & Fully developed human proof; exact Python implementation/tests; Lean semantic blueprint \\
+Relational certificate reflection & Fully developed human proof; checker format specified \\
+Branch-invariant and diameter-stable elimination & Fully developed human proofs \\
+Stable-observable logical glue & Current repository packet reports five compiled \code{Prf PRAAx} combinators; not independently rebuilt here; finite-use arithmetic instances remain to be supplied \\
+Regular-name arithmetic and guarded inverse & Fully developed quantitative arguments; object arithmetic library remains to be built \\
+Precision-DAG composition & Fully developed human proof; Python exact implementation \\
+Rank-to-metastability & Fully developed human proof; Python finite test \\
+Root clusters and finite-use consumers & Generic theorem and certificate interface proved; domain-specific root-count producers remain inputs \\
+Exact Puiseux branch from arbitrary Cauchy coefficients & Not claimed; retained as obstructed \\
+Finite-net transfer and approximate witness search & Fully developed human proofs \\
+Nested balls produce a regular name & Fully developed human proof \\
+Height bound $\leftrightarrow$ complete finite list & Fully developed human proof; exact finite implementation \\
+General Faltings/Siegel/Mordell--Weil producer & Not claimed; isolated as missing height/covering/generator theorem \\
+Full \code{Prf PRAAx} relational library & Not completed or compiled \\
+Native export of new theorems & Not claimed before object derivations exist \\
+\bottomrule
+\end{longtable}
+
+\subsection{What has genuinely been resolved}
+
+The report resolves a structural gap between prior deterministic and relational frameworks.  It identifies the exact class of downstream proofs that can consume multivalued evidence without a global selector: bounded adaptive consumers with a finite viability certificate.  It proves that class closed under composition and shows two ways to erase the internal branch---exact observational confluence and quantitative diameter stability.  This directly repairs many formulations involving approximate roots, projective charts, local pivots, and finite covers.
+
+It also gives a more concrete generic object-language wrapper than the existing plans: once theorem-specific base, step, and finish derivations are provided in normalized form, the use of \code{PRA.qfInd}, specialization at the computed bound, cut, and universal introduction is uniform.  The later stable-observables packet supplies reported compiled object-level combinators for precisely this induction/certificate/stability plumbing.  This materially shortens the remaining path, but it does not supply the viability-table arithmetic, rational estimates, or theorem-specific invariants.  The Lean files in this archive are not claimed compiled, so the new result remains an architectural and human-proof advance until those instances are built.
+
+\subsection{What has not been resolved}
+
+The following boundaries remain.
+
+\begin{enumerate}[label=\arabic*.]
+\item An infinite coherent branch is not derived from finite viability at every horizon.  A contraction, nested isolation, exact splitting, or uniqueness modulus must supply coherence.
+\item Qualitative nonzero does not produce a rational apartness bound.  The inverse theorem is conditional on such a bound.
+\item A metastability bound does not become an eventual convergence rate without a tail certificate.
+\item Finite root clusters do not become individually named exact Puiseux coefficients for arbitrary Cauchy coefficients.
+\item A finite verifier does not produce a missing height bound, zero-free region, covering list, or Mordell--Weil basis.
+\item The Lean source has not been built in this artifact environment.  Any declaration whose proof is represented only as a goal proposition or comment remains unfinished.
+\end{enumerate}
+
+\subsection{Trust boundary}
+
+The intended trusted chain is:
+\[
+ \text{small object-language checker soundness}
+ \;\Longrightarrow\;
+ \Prf\ \PRAAx\ \Gamma\ \varphi
+ \;\Longrightarrow\;
+ \NPrf\ (\text{translated sequent}).
+\]
+External certificate generators, numerical optimizers, interval solvers, and precision schedulers may be untrusted.  Their outputs are accepted only after the finite checker verifies every field used by the soundness theorem.
+
+A JSON schema or Lean structure describing a theorem packet is not part of the logical trusted base unless a theorem proves that accepted records imply the object formula.
+
+\subsection{Artifact validation}
+
+The archive records:
+\begin{itemize}
+\item the exact Python unit-test output;
+\item PDF build and text-preflight logs;
+\item rendered-page inspection notes;
+\item SHA-256 hashes of delivered files;
+\item a source audit identifying the repository declarations and packets used as prior art;
+\item a machine-readable obstacle matrix and theorem ledger.
+\end{itemize}
+The Python implementation uses only the standard library and exact integers/\code{Fraction}.  Passing tests checks implementation behavior on finite instances, not the universal human proofs.

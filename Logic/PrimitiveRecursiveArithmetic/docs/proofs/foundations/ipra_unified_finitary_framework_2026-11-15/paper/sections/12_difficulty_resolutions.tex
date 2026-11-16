@@ -1,0 +1,151 @@
+\section{Resolution matrix for the reported difficulties}
+\label{sec:resolutions}
+
+The following matrix distinguishes a general resolution from a conditional
+interface and from a genuine retained barrier.  ``Resolved'' means that the
+logical or representational obstacle has a reusable finitary theorem; it does
+not mean that every theorem-specific estimate has been proved.
+
+\begin{longtable}{@{}p{0.15\textwidth}p{0.24\textwidth}p{0.35\textwidth}p{0.18\textwidth}@{}}
+\toprule
+Area & Reported difficulty & Framework treatment & Status\\
+\midrule
+\endhead
+
+Object theory & An ambient Lean theorem or passing executable check is treated
+as an iPRA proof. & Require local premises and the endpoint to have type
+\(\Gamma\vdash[\PRAAx]\varphi\).  The proof-producing trace compiler builds
+this derivation; \code{pra\_iff\_native} is invoked only afterward. & Generic
+human construction complete; Lean implementation pending.\\
+\addlinespace
+
+Induction & A completed all-precision real assertion is not quantifier-free. &
+Fix the requested precision, instantiate a finite query table, induct on a
+Boolean trace invariant, then universally introduce precision. & Resolved as a
+general schema.\\
+\addlinespace
+
+Bounded quantifiers & Finite assertions are written with logical quantifiers
+inside an invariant. & Compile bounded universal and existential quantifiers
+to \(\All\), \(\Any\), and least-witness folds; prove fold correctness once. &
+Resolved.\\
+\addlinespace
+
+Higher-type input & A universal total evaluator for arbitrary primitive-
+recursive program codes is assumed. & Use fixed evaluator schemas; otherwise
+supply a clocked finite trace and verify it. & Stronger universal interface is
+impossible by diagonalization.\\
+\addlinespace
+
+Approximate witnesses & Separate witnesses exist at every precision but no
+coherent choice is justified. & Use an FRP, backward viability, and finite
+witness amalgamation.  Apply shrinking viability only with a quantitative
+cloud-diameter modulus. & Finite case resolved; infinite name conditional on
+quantitative determinacy.\\
+\addlinespace
+
+Root ordering & Roots collide, so individual labels are unstable. & Return a
+multiset, clusters, or relational approximations.  Recover labels only under a
+root-separation certificate. & Resolved formulation.\\
+\addlinespace
+
+Puiseux branches & Exact branch coefficients are requested from arbitrary
+Cauchy-presented coefficients. & Use exact algebraic coefficient codes or
+explicit splitting/nondegeneracy certificates; otherwise retain approximate
+or multivalued data. & Unrestricted producer remains obstructed by a halting
+reduction.\\
+\addlinespace
+
+Rotation axis & A unit axis is requested uniformly, including the identity. &
+Return quaternion data or approximate axes; exact unit axis only with a gap
+from the identity or a supplied nonzero axis. & Unrestricted exact selector
+remains LLPO-obstructed.\\
+\addlinespace
+
+Partial operations & Division, normalization, pivots, and charts are used from
+mere nonzeroness. & Totalize numerical operations and consume an explicit
+positive rational guard.  Use overlapping branches near boundaries. &
+Resolved under guards; nonzero-to-apartness conversion not assumed.\\
+\addlinespace
+
+Compactness & A finite subcover, minimizer, or convergent subsequence is chosen
+abstractly. & Supply primitive-recursive finite nets, coverage certificates,
+moduli, and bounded minimization.  Use shrinking viability for coherent points.
+& Resolved for effective presentations.\\
+\addlinespace
+
+Metastability & Stable finite windows are mistaken for a global Cauchy rate. &
+Keep the finite-window theorem as its own output.  A Cauchy name requires an
+additional modulus or shrinking condition. & Distinction resolved; general
+conversion is false.\\
+\addlinespace
+
+Faltings/Siegel & Finiteness or a cardinality bound is used as a search cutoff.
+& Separate a uniform finite verifier/enumerator from the height-bound producer;
+use the height-bound--complete-list equivalence. & Verifier resolved; general
+height producer remains open.\\
+\addlinespace
+
+Mordell--Weil & Finite Selmer data are treated as rational covering
+representatives. & Make representatives and local compatibility a checked
+certificate; use relational descent and viability. & Uniform representative
+producer remains open.\\
+\addlinespace
+
+Prime distribution & Classical proofs contain ineffective constants or
+exceptional-zero alternatives. & State a finite analytic-certificate verifier
+with correct quantifier order; prove the arithmetic implication from accepted
+constants. & Verifier architecture resolved; full constant producer remains
+theorem-specific and sometimes ineffective.\\
+\addlinespace
+
+Probability & General measures and discontinuous CDF tests obscure finite
+content. & Start with finite rational laws; add tail, quantization, variance,
+and anti-concentration moduli; use rational thresholds. & Resolved for
+effective presentations.\\
+\addlinespace
+
+Topology & Continuous compact spaces are used without numerical control. &
+Compile to finite rational grids, cubical complexes, parity/Sperner
+certificates, and refinement relations. & Representation resolved;
+theorem-specific combinatorics remain.\\
+\addlinespace
+
+Analytic branches & A local inverse or zero is selected without a derivative
+or boundary gap. & Consume a contraction, Jacobian, Rouch\'e, or boundary
+apartness certificate.  Return clusters when the gap vanishes. & Resolved
+conditionally; singular chart production separate.\\
+\addlinespace
+
+Extensionality & Equality of codes is confused with equality of represented
+objects. & Use observational setoids or finite back-and-forth relations; prove
+operations congruent with explicit precision transformers. & Resolved.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Three kinds of residual work}
+
+After applying the framework, every remaining gap should fall into one of three
+categories.
+
+\paragraph{Finite-kernel engineering.}
+The required theorem is elementary and finitary, but the object-language
+library for tuples, rationals, finite folds, or error arithmetic has not yet
+been implemented.  This is substantial formalization work, but its statement
+and induction invariant are known.
+
+\paragraph{Quantitative mathematical estimate.}
+The representation is adequate, but a theorem-specific modulus, separation
+bound, zero-free estimate, contraction constant, or combinatorial invariant is
+missing.  This is the genuine mathematics of the application.
+
+\paragraph{Producer problem.}
+A small checker is complete, but no uniform primitive-recursive procedure is
+known for producing the accepted certificate.  Height bounds, rational
+covering representatives, effective analytic constants, and singular branch
+data often live here.  The packet should expose this producer as a separate
+theorem rather than weakening the verifier's status.
+
+This classification is itself useful: it prevents a missing library lemma
+from being described as a foundational obstruction, and prevents a deep
+ineffective theorem from being described as routine encoding.

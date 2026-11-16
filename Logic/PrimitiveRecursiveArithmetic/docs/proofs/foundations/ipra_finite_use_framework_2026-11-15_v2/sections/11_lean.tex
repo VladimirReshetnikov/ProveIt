@@ -1,0 +1,315 @@
+\section{Lean formalization architecture}
+\label{sec:lean}
+
+\subsection{Target the checked repository interfaces}
+
+The implementation should extend the current \code{LeanProofs.ConciseIPRA} library rather than define another arithmetic logic.  The central declarations are:
+
+\begin{longtable}{@{}p{0.37\textwidth}p{0.55\textwidth}@{}}
+\toprule
+Repository declaration & Use in this framework \\
+\midrule
+\endhead
+\code{PR k} & Fixed primitive-recursive symbols of arity $k$ \\
+\code{PTm n} & Arithmetic terms with $n$ free variables \\
+\code{Fm PTm n} & First-order formulas over those terms \\
+\code{PRAAx} & Defining equations, successor axioms, and quantifier-free induction \\
+\code{Prf PRAAx Gamma phi} & The required object-level endpoint \\
+\code{PRA.precZero}, \code{PRA.precSucc} & Rewriting a concrete primitive-recursive runner \\
+\code{PRA.qfInd} & Quantifier-free invariant induction \\
+\code{Prf.subst}, \code{Prf.weaken}, \code{Prf.trans} & Structural proof composition \\
+\code{Prf.allE}, \code{Prf.allI} & Specialization at a computed bound and final universal introduction \\
+\code{pra_iff_native} & Export only after a \code{PRAAx} derivation exists \\
+\bottomrule
+\end{longtable}
+
+The ordinary iPRA language is preferable for the first implementation because arithmetic formulas and finite invariants are readable.  Native/public certificate compression is a later optimization.
+
+\subsection{Concrete primitive-recursive trace symbols}
+
+A runner with one parameter has the repository arities
+\begin{lstlisting}
+structure PRTraceSystem where
+  good   : PR 1
+  init   : PR 1
+  bound  : PR 1
+  step   : PR 3   -- predecessor, previous value, parameter
+  inv    : PR 3   -- counter, state, parameter
+  accept : PR 2   -- state, parameter
+
+def PRTraceSystem.run (T : PRTraceSystem) : PR 2 :=
+  .prec T.init T.step
+\end{lstlisting}
+The order is dictated by \code{PR.prec}: the recursion argument comes first, followed by the ordinary parameters.  Larger inputs and states are paired into one code.
+
+The archive's \code{lean/ObjectTraceReflection.lean} defines term constructors \code{app1}, \code{app2}, and \code{app3}, then the terms
+\[
+ \Good_T(u),\quad \Run_T(i,u),\quad
+ \Inv_T(i,\Run_T(i,u),u),\quad
+ \Accept_T(\Run_T(\mathsf{bound}_T(u),u),u).
+\]
+The loop formula has two free variables, with de Bruijn variable $0$ as the induction counter and variable $1$ as the parameter:
+\[
+ \phi_T(i,u)=\bigl(\Good_T(u)=1\bigr)\to
+ \bigl(\Inv_T(i,\Run_T(i,u),u)=1\bigr).
+\]
+It is quantifier free by construction.
+
+\subsection{The generic object-level wrapper}
+
+The theorem-specific file should supply exactly three pieces of proof data after all defining-equation rewriting:
+
+\begin{lstlisting}
+structure TraceObligations (T : PRTraceSystem) where
+  base : [] |-[PRAAx] (tracePhi T).subst (inst PTm.zero)
+  step : [tracePhi T] |-[PRAAx]
+    (tracePhi T).subst (repl (PTm.succ (Syn.var 0)))
+  finish : [phiAtBound T] |-[PRAAx] traceGoal T
+\end{lstlisting}
+
+Here \code{phiAtBound T} substitutes \code{T.bound u} for the counter and \code{traceGoal T} is the one-free-variable formula
+\[
+ \Good_T(u)=1\to
+ \Accept_T(\Run_T(\mathsf{bound}_T(u),u),u)=1.
+\]
+The generic wrapper is mathematically:
+
+\begin{lstlisting}
+theorem traceReflection (O : TraceObligations T) :
+    [] |-[PRAAx] Fm.all (traceGoal T) := by
+  have hall : [] |-[PRAAx] Fm.all (tracePhi T) :=
+    PRA.qfInd (tracePhi T) (tracePhi_qf T) O.base O.step
+  have hbound : [] |-[PRAAx] phiAtBound T :=
+    Prf.allE (boundTerm T) hall
+  have hgoal : [] |-[PRAAx] traceGoal T :=
+    O.finish.trans (fun psi hpsi => by
+      simpa using hbound)
+  exact Prf.allI hgoal
+\end{lstlisting}
+
+The precise syntax of the final \code{simpa} may require a one-line lemma about singleton membership or substitution normalization, but no new mathematical idea is missing.  The base and step proofs remain theorem specific because they contain the real invariant arithmetic.  The generic wrapper closes the CFP packet's first formalization milestone: the use of \code{PRA.qfInd}, specialization at the computed bound, cut with final soundness, and universal closure are uniform.
+
+\subsection{Reuse of the current stable-observable glue}
+\label{sec:observable-glue}
+
+After the primary audit snapshot, ProveIt main acquired the packet
+\path{docs/proofs/algebra/ipra_stable_observables}.  Its file
+\path{lean/ObjectObservation.lean} reports five compiled inference-rule
+combinators whose conclusions have the actual object-level type
+\code{Prf PRAAx Gamma phi}.  The repository itself still marks the packet as
+filed-as-delivered and unverified, and this archive did not rerun its Lean
+build.  Nevertheless, its interfaces are directly useful for the present
+completion plan:
+
+\begin{longtable}{@{}p{0.40\textwidth}p{0.52\textwidth}@{}}
+\toprule
+Reported theorem & Role in the finite-use framework \\
+\midrule
+\endhead
+\path{boundedInvariantAt} & specialize quantifier-free induction at an explicit finite fuel \\
+\path{loopProducesCertificate} & turn base, step, and terminal extraction derivations into a certificate derivation \\
+\path{observableOfIndependentCertificates} & combine two independently derived certificates with an object proof of a stable observation \\
+\path{observableFromLocalStability} & discharge stability proved under the two certificate assumptions \\
+\path{twoLoopsStableObservable} & compose two bounded loops and erase their witnesses through a local stability derivation \\
+\bottomrule
+\end{longtable}
+
+These combinators validate the logical skeleton of the generic wrapper above
+and suggest avoiding a second, competing implication/induction plumbing
+library.  The remaining work is mathematical rather than structural: define
+the finite-use viability-table loop as fixed \code{PR} syntax; prove its base,
+step, and finish formulas; define the selected forward execution; and prove the
+confluence or diameter estimate as an object formula.
+
+\begin{proposition}[Finite-use stable-observable fusion]
+\label{prop:finite-use-observable-fusion}
+Suppose two bounded primitive-recursive loops produce certificates $C_1$ and
+$C_2$, and iPRA proves under assumptions $C_1,C_2$ a finite observation $O$.
+Then iPRA proves $O$ without exposing either loop witness.  In particular, one
+loop may construct or check a backward viability table and the other may run
+the selected transcript; if $O$ is confluence, quotient invariance, or a
+certified diameter bound, the final theorem is independent of the internal
+branch.
+\end{proposition}
+
+\begin{proof}
+Apply finite-fuel quantifier-free induction to each loop, use its terminal
+extraction implication to derive $C_1$ and $C_2$, introduce the two certificate
+assumptions in the stability proof, and eliminate the implications.  This is
+exactly the proof pattern exposed by the five combinators above.  No choice
+principle and no infinite coherent branch are used.
+\end{proof}
+
+For integration, first promote the independently rebuilt glue into a normal
+module of the root \code{ConciseIPRA} workspace, or import it through a packet
+adapter with a pinned source hash.  Then make \code{FUC/TraceReflection.lean}
+and \code{FUC/Relational.lean} depend on that module.  Run a clean build and
+\texttt{\#print axioms} on every exported theorem.  The matrix-specific Jacobi,
+square-root, and projector estimates of the stable-observables packet remain
+separate applications; only its generic proof combinators belong in the common
+foundation.
+
+\subsection{Rewriting the runner}
+
+For a concrete $T$, the following object equations are derived from the repository library:
+\begin{align*}
+ \Run_T(0,u)&=\mathsf{init}_T(u),\\
+ \Run_T(i+1,u)&=\mathsf{step}_T(i,\Run_T(i,u),u).
+\end{align*}
+In Lean, instantiate \code{PRA.precZero} and \code{PRA.precSucc} with \code{T.init} and \code{T.step}.  Small helper lemmas normalize the finite argument functions passed to \code{PTm.app}.  The theorem-specific \code{base} proof uses the first equation; \code{step} uses the induction hypothesis, local preservation, the second equation, and equality substitution.
+
+It is useful to expose a second record with raw local obligations (D0)--(D2) and prove a constructor that fills \code{TraceObligations}.  That constructor is more algebraically involved because it must open implications and perform the run rewrites, but it is still generic.  The suggested staging is:
+\begin{enumerate}[label=\arabic*.]
+\item compile the wrapper above, taking already rewritten \code{base}/\code{step}/\code{finish};
+\item implement run-zero and run-successor lemmas;
+\item implement implication plumbing from raw local formulas;
+\item add a syntax-generating record that constructs those formulas automatically.
+\end{enumerate}
+
+\subsection{Boolean folds}
+
+The next module should define fixed symbols and object proofs for:
+\begin{itemize}
+\item Boolean not/and/or/implication;
+\item \code{allBelow}, \code{anyBelow}, and first successful search;
+\item finite list fold, lookup with default, length, append, and bounded table update;
+\item finite sum, product, maximum, and least-index argmin;
+\item pairing and bounded sequence codes.
+\end{itemize}
+
+A generic fold theorem has the form
+\[
+ \mathsf{allBelow}(p,n)=1
+ \leftrightarrow \forall i<n\;p(i)=1,
+\]
+where the right side is used in human statements and the left side in induction invariants.  The internal proof can avoid a literal bounded quantifier entirely by using elimination/intro lemmas for the fold.  For example:
+\begin{align*}
+ \mathsf{allBelow}(p,n+1)=1&\to\mathsf{allBelow}(p,n)=1,\\
+ \mathsf{allBelow}(p,n+1)=1&\to p(n)=1,\\
+ \mathsf{allBelow}(p,n)=1\wedge p(n)=1&\to
+   \mathsf{allBelow}(p,n+1)=1.
+\end{align*}
+These equations are sufficient for most object proofs and keep formulas quantifier free.
+
+\subsection{Semantic relational core}
+
+The standalone file \code{lean/FiniteUseSemantic.lean} contains the host-level design:
+
+\begin{lstlisting}
+structure EvidenceMachine where
+  answerBound : Nat -> Nat -> Nat
+  halt        : Nat -> Nat -> Bool
+  local       : Nat -> Nat -> Nat -> Bool
+  next        : Nat -> Nat -> Nat -> Nat
+  post        : Nat -> Nat -> Bool
+
+def viable (M : EvidenceMachine) : Nat -> Nat -> Bool
+  | 0, s => M.halt 0 s && M.post 0 s
+  | r+1, s =>
+      if M.halt (r+1) s then M.post (r+1) s
+      else anyBelow (M.answerBound (r+1) s)
+        (fun a => M.local (r+1) s a && viable M r (M.next (r+1) s a))
+\end{lstlisting}
+
+The file defines proposition-valued targets for viability correctness, selector soundness, transcript replay, confluence, and diameter stability.  It intentionally does not pretend that arbitrary host functions are primitive recursive.  The object module will replace every field by a fixed \code{PR} symbol and every target by a \code{Prf PRAAx} theorem.
+
+\subsection{Object-level relational record}
+
+A first object-language implementation can pair $(r,s,x)$ into one state and use a deterministic trace that fills a finite viability table.  This reduces relational composition to \Cref{thm:det-trace}; no new induction rule is needed.  The record should contain:
+
+\begin{lstlisting}
+structure PRRelMachine where
+  start       : PR 1
+  answerBound : PR 3
+  halt        : PR 3
+  local       : PR 4
+  next        : PR 4
+  post        : PR 3
+  stateBound  : PR 2
+\end{lstlisting}
+
+The additional \code{stateBound} bounds all states encountered at a fixed input/horizon and permits a rectangular dynamic-programming table.  A more compact sparse certificate mode can be added later.
+
+The proof stages are:
+\begin{enumerate}[label=\arabic*.]
+\item define a table row by bounded reverse recursion;
+\item prove the row equation from Boolean-fold correctness;
+\item use quantifier-free induction on remaining depth to prove semantic viability;
+\item define least viable answer and prove its local/successor properties;
+\item define forward execution and apply the generic trace wrapper;
+\item prove confluence or diameter stability as a separate bounded theorem;
+\item export only the invariant/stable observation.
+\end{enumerate}
+
+\subsection{Quantitative libraries}
+
+The recommended module graph is:
+
+\begin{center}
+\begin{tabular}{@{}l@{}}
+\code{FUC/Codes.lean}\\
+$\downarrow$\\
+\code{FUC/BooleanFold.lean}\quad \code{FUC/Integer.lean}\quad \code{FUC/Rational.lean}\\
+$\downarrow$\\
+\code{FUC/TraceReflection.lean}\\
+$\downarrow$\\
+\code{FUC/Relational.lean}\quad \code{FUC/ErrorDAG.lean}\\
+$\downarrow$\\
+\code{FUC/RegularNames.lean}\quad \code{FUC/FiniteNet.lean}\\
+$\downarrow$\\
+\code{FUC/RootCluster.lean}\quad \code{FUC/Projective.lean}\quad
+\code{FUC/HeightSearch.lean}\\
+$\downarrow$\\
+Theorem-specific packet adapters\\
+$\downarrow$\\
+\code{pra_iff_native} and optional compact public certificates
+\end{tabular}
+\end{center}
+
+The rational layer should favor direct integer identities over a large abstract ordered-field hierarchy.  The necessary endpoints are cross-multiplied equality/order, finite sums/products, absolute value, powers, guarded inverse, intervals, and polynomial evaluation.  Semantic Mathlib lemmas may validate calculations, but the exported theorem must be about coded natural numbers.
+
+\subsection{An end-to-end proof record}
+
+A theorem packet should expose machine-readable status fields:
+\begin{lstlisting}
+structure PacketStatus where
+  fixedEvaluators      : Bool
+  finiteBounds         : Bool
+  certificateChecker   : Bool
+  humanSoundnessProof  : Bool
+  semanticTestsRun     : Bool
+  objectDerivation     : Bool
+  nativeExport         : Bool
+  axiomAuditRun        : Bool
+  unresolvedProducer   : Option String
+\end{lstlisting}
+A record value is metadata, not a proof.  Its purpose is to prevent a compiled specification or a passing finite test from being reported as a completed object theorem.
+
+\subsection{Milestones and audits}
+
+The dependency-ordered plan is:
+\begin{enumerate}[label=\arabic*.]
+\item compile the generic rewritten trace wrapper in \code{ObjectTraceReflection.lean};
+\item add run-zero/run-successor and raw-obligation constructors;
+\item compile Boolean folds and least bounded search as \code{Prf PRAAx};
+\item prove one recurrence and one robust two-branch example end to end;
+\item compile relational viability on a bounded rectangular state space;
+\item formalize regular-name addition, product, and apartness-guarded inverse;
+\item formalize error-DAG and finite-net argmin;
+\item port one substantial packet, preferably a separated Euler--Rodrigues theorem or a finite-law probability theorem;
+\item add root clusters and a height/list adapter;
+\item only after correctness, optimize proof/certificate size or target the native public calculi.
+\end{enumerate}
+
+Every exported endpoint should be checked by:
+\begin{itemize}
+\item a source scan for \code{sorry}, \code{admit}, and new line-leading \code{axiom};
+\item \texttt{\#print axioms} on all public theorems;
+\item a clean build against the pinned repository toolchain;
+\item independent exact finite regression tests;
+\item a theorem ledger distinguishing host semantics, object derivation, and native export.
+\end{itemize}
+
+\subsection{Status of the supplied Lean files}
+
+The two Lean files in this archive are formalization blueprints.  \code{FiniteUseSemantic.lean} gives executable-looking host definitions and explicit goal propositions.  \code{ObjectTraceReflection.lean} is written against the inspected \code{ConciseIPRA} API and includes the generic wrapper design.  The artifact environment did not contain Lean or the repository dependency closure, so the files are not claimed compiler-checked.  The report and \code{lean/FORMALIZATION_PLAN.md} identify the exact likely elaboration points and the shortest path to a checked implementation.

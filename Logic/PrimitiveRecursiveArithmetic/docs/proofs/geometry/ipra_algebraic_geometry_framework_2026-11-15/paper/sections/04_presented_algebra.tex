@@ -1,0 +1,154 @@
+\section{Finitely presented algebra with proof-relevant equality}
+
+\subsection{Polynomial codes}
+
+Fix a number $n$ of variables.  A monomial is a vector
+$\alpha=(\alpha_0,\ldots,\alpha_{n-1})\in\N^n$, encoded by a finite tuple.  A polynomial over
+$\Z$ is a finite list of coefficient--monomial pairs.  The code need not be normalized: duplicate
+monomials and zero coefficients are allowed.  Evaluation, addition, negation, multiplication,
+substitution, coefficient collection on a supplied finite degree box, and equality of collected
+coefficient vectors are primitive recursive.
+
+There are two legitimate equality interfaces.
+
+\begin{enumerate}[label=\arabic*.]
+\item A canonical normalization algorithm may be used when coefficient equality is decidable and the
+      required sorting/collection procedure has been represented.
+\item More generally, a coefficientwise identity is supplied as a finite certificate.  This avoids
+      requiring a global normal form and extends directly to coefficients in a certified ring.
+\end{enumerate}
+
+The second interface is foundational below.  Gröbner bases can accelerate witness production, but
+are not required for the definition of quotient equality.
+
+\subsection{Quotient rings by ideal-combination witnesses}
+
+Let
+\[
+ A=\Z[X_0,\ldots,X_{n-1}]/(g_0,\ldots,g_{r-1}).
+\]
+An element of $A$ is represented by a polynomial code.  A witness that $p$ and $q$ represent the
+same element is a vector of polynomial codes $h=(h_0,\ldots,h_{r-1})$ satisfying
+\begin{equation}\label{eq:ideal-witness}
+        p-q=\sum_{i<r} h_i g_i
+\end{equation}
+coefficientwise.
+
+\begin{theorem}[Exact certified presentation of a quotient ring]\label{thm:quotient-setoid}
+The checker for \eqref{eq:ideal-witness} and the following witness transformers make polynomial
+codes into a certified commutative ring presenting $A$:
+\begin{align*}
+\mathsf{refl}(p)&=(0,\ldots,0),\\
+\mathsf{sym}(h)&=(-h_0,\ldots,-h_{r-1}),\\
+\mathsf{trans}(h,k)&=(h_0+k_0,\ldots,h_{r-1}+k_{r-1}).
+\end{align*}
+Addition, negation, and multiplication admit primitive-recursive congruence transformers.
+\end{theorem}
+
+\begin{proof}
+Reflexivity, symmetry, and transitivity follow by the corresponding polynomial identities.  Suppose
+$p-p'=\sum h_i g_i$ and $q-q'=\sum k_i g_i$.  Then
+\[
+ (p+q)-(p'+q')=\sum_i(h_i+k_i)g_i,
+\]
+and
+\[
+ pq-p'q'=(p-p')q+p'(q-q')
+         =\sum_i(h_iq+p'k_i)g_i.
+\]
+These formulas are the required witness transformers.  Negation sends $h_i$ to $-h_i$.  Ring laws
+are literal polynomial identities and therefore have fixed zero or elementary coefficient
+certificates.  Every operation is a bounded fold over finite polynomial lists, so its correctness is
+proved by quantifier-free induction on a list index.
+\end{proof}
+
+The relation is complete by definition of the generated ideal: $p$ and $q$ have equal quotient
+classes exactly when some finite list $h_i$ satisfies \eqref{eq:ideal-witness}.  Completeness does not
+imply a primitive-recursive search that finds $h$ from $p,q$ in every presentation.  The certificate
+may be an input or the output of a separately justified algorithm.
+
+\subsection{Presented algebras over a certified base ring}
+
+The same construction works over any fixed certified commutative ring $R$.  Polynomial coefficients
+are $R$-codes; coefficient identities carry $R$-equality witnesses; and the ideal witness includes
+both multiplier polynomials and the coefficientwise equality certificates.  A uniform theorem may
+quantify over a finite presentation code only when the base-ring operations and their correctness
+proofs are supplied through a fixed interface.  It may not call an arbitrary ring program stored in
+the input.
+
+Nested presentations can be flattened.  If
+$R=\Z[Y]/J$ and $A=R[X]/I$, replace every coefficient by a $Y$-polynomial and present $A$ directly
+as a quotient of $\Z[Y,X]$ by $J$ together with lifted generators of $I$.  The flattening algorithm
+is primitive recursive and preserves every supplied ideal witness by substitution.
+
+\subsection{Morphisms and their certificates}
+
+Let
+\[
+ A=\Z[X_0,\ldots,X_{n-1}]/(g_0,\ldots,g_{r-1}),\qquad
+ B=\Z[Y_0,\ldots,Y_{m-1}]/(h_0,\ldots,h_{s-1}).
+\]
+A presented ring map $\phi:A\to B$ consists of polynomials
+$p_0(Y),\ldots,p_{n-1}(Y)$ and, for each $g_i$, a witness
+\[
+  g_i(p_0,\ldots,p_{n-1})=\sum_{j<s} a_{ij}h_j.
+\]
+The induced map sends $q(X)$ to $q(p(Y))$.  If $q-q'=\sum b_i g_i$, then substitution gives
+\[
+ q(p)-q'(p)=\sum_i b_i(p)g_i(p)
+           =\sum_j\left(\sum_i b_i(p)a_{ij}\right)h_j,
+\]
+so the map has an explicit equality-witness transformer.
+
+Composition substitutes the image tuple of one map into the other and composes the relation
+certificates by the displayed formula.  Identity maps use the coordinate variables.  An isomorphism
+certificate is a pair of presented maps plus coordinatewise witnesses that both composites equal the
+identities.  Thus affine morphisms and affine isomorphisms are finite arithmetic data.
+
+\subsection{Modules, matrices, kernels, and cokernels}
+
+A finitely presented $A$-module is given by a matrix
+$R:A^u\to A^v$ and the cokernel presentation $A^v/\im R$.  A vector equality witness is a coefficient
+vector $z\in A^u$ satisfying $x-y=Rz$, with componentwise ring witnesses.  The same witness algebra
+as in Theorem~\ref{thm:quotient-setoid} gives a certified module.
+
+Matrix multiplication, direct sums, tensor-presentation matrices, dual maps, Koszul differentials,
+and finite chain complexes are all primitive recursive on finite codes.  Kernel membership is
+expressed by a checked equation $Rx=0$; image membership by a witness $x=Ry$; and exactness at a
+particular element by an explicit preimage witness.  This is exactly the level needed for finite
+\v{C}ech arguments.
+
+\subsection{Gröbner bases as optional certificates}
+
+A Gröbner basis is valuable for producing ideal witnesses and normal forms, but the foundational
+interface should not assume that a uniform unbounded Buchberger run is a primitive-recursive
+oracle.  Three safe modes are available.
+
+\begin{description}[style=nextline]
+\item[Verification mode.]
+The input contains a proposed basis, representations of its elements in the original ideal,
+reduction traces for the original generators, and reductions of all relevant $S$-polynomials to
+zero.  A fixed checker verifies Buchberger's criterion and every identity.
+
+\item[Fuelled mode.]
+A fixed Buchberger evaluator runs for a supplied bound and returns its finite trace.  Soundness of a
+successful output is proved; failure to finish within the bound makes no completeness claim.
+
+\item[Bounded-family mode.]
+For a family with a separately proved degree/size bound, the bound becomes the fuel for a total
+primitive-recursive constructor.
+\end{description}
+
+This separation matters for computational algebraic geometry.  Ideal membership certificates,
+Hilbert-function tables, elimination identities, and finite standard-monomial bases can all be
+checked in iPRA even when their general-purpose discovery algorithm is not part of the theorem.
+
+\subsection{A small exact example}
+
+In $\Z[x]/(x^2-2)$ the equality $x^4=4$ is certified by
+\[
+ x^4-4=(x^2+2)(x^2-2).
+\]
+The executable companion represents each polynomial sparsely and verifies this coefficientwise.
+Nothing is inferred from an approximate root of $x^2-2$; the quotient identity is exact finite
+algebra.

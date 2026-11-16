@@ -1,0 +1,114 @@
+\section{Finite compactness, witness search, and coherent names}
+\label{sec:compactness}
+
+\subsection{Effective compact presentations}
+
+A compact domain should be presented by finite data rather than by a higher-type compactness axiom.
+
+\begin{definition}[Certified net presentation]
+A certified net presentation of a domain $X$ consists of:
+\begin{enumerate}[label=(\alph*)]
+\item a primitive-recursive finite list $N(k)$ of coded points;
+\item a rational radius $\delta_k$;
+\item a Boolean membership/domain predicate;
+\item an iPRA proof that every admissible input point is within $\delta_k$ of some element of $N(k)$;
+\item optional refinement and neighbor relations between $N(k)$ and $N(k+1)$.
+\end{enumerate}
+\end{definition}
+Boxes, simplices, finite probability simplices, rational polytopes, sphere charts, and projective charts each need their own coverage proof.  There is no single abstract compactness axiom in the object theory.
+
+\subsection{Finite-net transfer}
+
+Let $F:X\to\Q$ have a certified modulus: $d(x,y)\le\delta\Rightarrow\abs{F(x)-F(y)}\le\omega(\delta)$.  Suppose a finite net satisfies $F(q)\ge -\eta$ at every $q\in N(k)$.
+
+\begin{theorem}[Finite-net transfer]
+\label{thm:finite-net}
+If $N(k)$ covers $X$ within $\delta_k$, then iPRA proves
+\[
+  \forall x\in X\qquad F(x)\ge-\eta-\omega(\delta_k).
+\]
+The conclusion is understood through the represented finite-observation formulation appropriate to $x$.
+\end{theorem}
+
+\begin{proof}
+For an arbitrary coded/represented point $x$, the coverage theorem supplies a bounded witness $q\in N(k)$ with $d(x,q)\le\delta_k$.  Apply the modulus to obtain $F(x)\ge F(q)-\omega(\delta_k)$, then the checked finite-net inequality.  Internally, the coverage witness is returned by a bounded search or supplied in a certificate.  All arithmetic is rational.  If $x$ is represented, fix the required output precision first and instantiate only the samples needed to verify membership, distance, and the modulus.
+\end{proof}
+
+\subsection{Approximate witness search}
+
+Let $R(x,y)$ be a nonnegative residual on a compact represented domain $Y$, with modulus $\omega$.  Evaluate $R$ on a finite net and choose a least minimizer.
+
+\begin{theorem}[Finite approximate witness]
+\label{thm:approx-witness}
+Suppose there exists $y_*$ with $R(x,y_*)\le\eta$, and $N(k)$ covers $Y$ within $\delta_k$.  The finite argmin $q_k$ satisfies
+\[
+  R(x,q_k)\le\eta+\omega(\delta_k)+\text{evaluation error}.
+\]
+The selector and proof are primitive recursive.
+\end{theorem}
+
+\begin{proof}
+Choose a net point $q_*$ within $\delta_k$ of $y_*$.  The modulus bounds $R(x,q_*)$ by $\eta+\omega(\delta_k)$.  Approximate evaluation adds the certified finite error.  Since $q_k$ is a checked finite argmin, its evaluated residual is no larger than that of $q_*$.  Transfer the evaluation error once more if needed.  The argmin invariant stores the current least index and the Boolean fold asserting minimality over the processed prefix.
+\end{proof}
+
+The theorem does not require uniqueness.  It gives a finite relational output if several net points tie or if approximate comparisons overlap.
+
+\subsection{Nested isolating regions}
+
+A sequence of finite regions can define one coherent represented object when genuine quantitative uniqueness is available.
+
+\begin{definition}[Nested-ball certificate]
+A nested-ball certificate consists of centers $c_k$, radii $r_k$, and Boolean proofs that
+\[
+  B(c_{k+1},r_{k+1})\subseteq B(c_k,r_k),
+  \qquad r_k\le2^{-k-c},
+\]
+and that the target relation has at least one solution in every ball.  A uniqueness modulus asserts that any two admissible solutions in $B(c_k,r_k)$ are within a prescribed diameter.
+\end{definition}
+
+\begin{theorem}[Nested balls produce a regular name]
+\label{thm:nested-name}
+The centers of a nested-ball certificate form a regular name after a fixed precision shift.  If the uniqueness modulus tends to zero with a primitive-recursive rate, every admissible solution is extensionally equal to that name.
+\end{theorem}
+
+\begin{proof}
+For $m\ge n$, nesting gives $c_m\in B(c_n,r_n)$ up to the rational inclusion convention, hence $d(c_m,c_n)\le r_n+r_m\le2^{-n-c}+2^{-m-c}$.  Choose $c$ so this is below the regularity budget.  For an arbitrary admissible solution, place it in the same isolating region and apply the uniqueness diameter.  All statements at a fixed pair $(m,n)$ are finite; universal introduction follows after the rational proof.
+\end{proof}
+
+Nestedness is the missing structure that upgrades separate finite viability at every precision to a coherent infinite name.  It must be proved, not inferred from nonempty candidate sets alone.
+
+\subsection{Strong convexity instance}
+
+If a rationally presented function $F$ satisfies a quantitative strong-convexity inequality
+\[
+ F\left(\frac{x+y}{2}\right)
+ \le\frac{F(x)+F(y)}2-\mu d(x,y)^2
+\]
+with $\mu>0$, then approximate minimizers are quantitatively close.  If $F(x),F(y)\le I+\eta$, where $I$ is the infimum, then
+\[
+ \mu d(x,y)^2\le\eta.
+\]
+Thus finite-net argmin points at successively smaller residuals have a computable diameter and can be turned into nested or regular names.
+
+\begin{corollary}[Coherent minimizer from strong convexity]
+\label{cor:strong-minimizer}
+An effective compact presentation, a modulus for $F$, a positive strong-convexity constant, and a primitive-recursive error schedule yield a regular name for the unique minimizer.  Without quantitative uniqueness, the framework yields only finite approximate minimizer sets or values of the infimum.
+\end{corollary}
+
+\subsection{Finite covers and local charts}
+
+A global theorem may be proved by finitely many charts.  A cover certificate contains charts $U_j$, local guards $G_j$, and a coverage fold asserting every net cell lies in at least one robustly enlarged chart.  Exact chart selection at a boundary is unnecessary: the relational producer retains all charts whose robust guard passes, and the bounded consumer chooses a viable one.  If local conclusions agree on overlaps, \Cref{thm:branch-invariant} exports a chart-independent result.
+
+This pattern applies to sphere atlases, projective geometry, matrix groups, contour subdivisions, and piecewise analytic estimates.  It is safer than a hard ``first chart containing $x$'' rule, which can be discontinuous at chart boundaries.
+
+\subsection{Limits of finite compactness}
+
+Finite nets do not prove a missing modulus, and a nonempty net-level candidate set at every precision does not by itself produce a coherent point.  A valid global conclusion needs at least one of:
+\begin{itemize}
+\item stability of the desired observation across all candidates;
+\item a quantitative uniqueness/isolation modulus;
+\item certified nested refinement;
+\item an exact finite algebraic representation;
+\item a theorem that the particular bounded consumer uses only one finite level.
+\end{itemize}
+These alternatives correspond exactly to the branch-invariant, stable-output, nested-name, exact-code, and finite-use theorems developed above.

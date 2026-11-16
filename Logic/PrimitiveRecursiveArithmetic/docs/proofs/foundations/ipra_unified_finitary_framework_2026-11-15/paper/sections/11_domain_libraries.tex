@@ -1,0 +1,204 @@
+\section{Domain libraries built on the common kernel}
+\label{sec:domain-libraries}
+
+The framework is useful only if domain proofs share substantial infrastructure.
+This section gives the intended library boundaries and the preferred statement
+forms for the main areas represented in the repository.
+
+\subsection{Exact finite algebra}
+
+Polynomial and matrix identities should be proved first over coded coefficient
+rings by finite sums and products.  A polynomial is a bounded coefficient list;
+addition, multiplication, derivative, composition, and evaluation are
+primitive-recursive list operations.  Equality is coefficientwise equality,
+checked by a finite fold.
+
+The generic matrix layer contains dimensions, entry lookup, matrix products,
+permutation or fraction-free determinants, minors, and polynomial matrices.
+Cayley--Hamilton is best stated as a uniform finite identity for the generic
+matrix, then specialized by coefficient substitution.  This avoids analytic
+or field assumptions.  Trace identities, adjugate formulas, and finite linear
+recurrences can use the same coefficientwise kernel.
+
+Factorizations and radical expressions are certificate-relative unless a
+producer has been formalized.  A factorization certificate consists of a
+finite factor list, degree and leading-coefficient data, and a coefficientwise
+product identity.  Its verifier is small and uniform.  Irreducibility and
+Galois-theoretic impossibility results need finite permutation/group
+certificates plus a fully specified arithmetization; a semantic field-theory
+proof in ambient Lean is not yet an iPRA derivation.
+
+\subsection{Roots, branches, and algebraic functions}
+
+For approximate roots, the stable primary output is one of:
+
+\begin{enumerate}
+\item a finite multiset of isolating boxes with multiplicities;
+\item a root cluster whose residual and diameter meet a requested budget;
+\item a relational family of approximate roots; or
+\item an individual root name under a separation or simple-root certificate.
+\end{enumerate}
+
+Ordering roots is deferred until a positive separation witness is available.
+Local implicit or inverse functions consume a derivative gap, a rational box,
+and a contraction or majorant certificate.  Puiseux expansions from exact
+algebraic coefficient codes may use finite Newton-polygon and splitting
+certificates.  The stronger demand for exact Puiseux coefficients from
+arbitrary Cauchy coefficient names is not a library goal; the repository
+contains a computability obstruction even for a fixed evaluator family.
+
+\subsection{Number theory and combinatorics}
+
+Divisibility, primality below a bound, valuations, finite divisor sums,
+M\"obius inversion, totients, von Mangoldt weights, binomial coefficients,
+Bell recurrences, and congruences are all exact finite arithmetic.  Their
+preferred proofs use Boolean divisibility predicates and double-counting
+bijections between bounded coded sets.
+
+Asymptotic statements are expressed by explicit inequalities with a free
+numerical parameter and a displayed threshold function.  A proof of
+\(f(n)\sim g(n)\) becomes
+\[
+ \forall r\;\forall n\ge N(r)\quad
+ |f(n)-g(n)|\le 2^{-r}|g(n)|,
+\]
+with a suitable integer formulation after clearing denominators.  The
+threshold \(N\) must be primitive recursive or supplied as a certificate.
+Divergence is stated by a primitive-recursive witness function: for every
+height \(K\), a displayed cutoff makes the finite partial sum exceed \(K\).
+
+Analytic number theory should separate a uniform finite verifier from the
+producer of difficult constants.  Zero-free regions, exceptional-zero data,
+contour bounds, and explicit estimates can be represented by rational tables
+whose checker verifies all local inequalities.  This does not solve the
+problem of producing effective constants in results where current proofs are
+ineffective; it makes the residual obligation exact.
+
+\subsection{Diophantine geometry}
+
+A rational point is encoded by a normalized integer tuple with a height.
+Polynomial satisfaction is decidable after clearing denominators.  Once a
+height bound \(H\) is supplied, complete enumeration is a bounded search.
+Conversely, from a complete finite list one obtains a height bound by taking a
+finite maximum.
+
+\begin{theorem}[Height bound--complete list equivalence]
+\label{thm:height-list}
+For every fixed primitive-recursive point predicate \(P(p,x)\) and height
+function \(h(x)\), iPRA proves:
+
+\begin{enumerate}
+\item a bound \(H\) satisfying \(P(p,x)\to h(x)\le H\) yields a complete
+      finite list of all points by bounded enumeration; and
+\item a complete finite list yields the height bound equal to the maximum
+      height of its members.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+For the first direction, enumerate every normalized code of height at most
+\(H\), retain exactly those passing the Boolean predicate, and prove
+completeness by specializing the bound hypothesis.  For the second, compute
+the finite maximum.  If \(P(p,x)\), list completeness gives an index at which
+\(x\) occurs, so its height is below the maximum.  Both directions are finite
+folds and bounded searches.
+\end{proof}
+
+This theorem sharpens the boundary in the Faltings, Siegel, and Mordell--Weil
+packets.  A verifier and enumerator can be completed independently of the
+deep theorem that produces the height bound, finite cover, or rational
+covering representatives.  A cardinality bound alone supplies neither.
+
+Descent arguments should be packaged as a well-founded numerical measure,
+a primitive-recursive descent step, and a proof that every nonterminal state
+strictly decreases.  Primitive-recursive descent then yields the terminal
+certificate.  Covering descents are relational when several next coverings
+are possible; backward viability handles finite compatibility constraints.
+
+\subsection{Geometry}
+
+Coordinate geometry is naturally finite.  Points, lines, circles, conics, and
+projective incidences are coded by rational or represented coordinates.
+Determinantal incidence identities, Ceva--Menelaus-type products, power of a
+point, and many triangle formulas reduce to polynomial identities plus
+nondegeneracy guards.
+
+Angle-based theorems require more care.  Prefer dot products, determinants,
+complex phases, quaternions, or sine/cosine pairs to a globally chosen angle.
+Normalization needs a positive norm gap.  For rotations, exact quaternion data
+can remain meaningful when the vector part vanishes, whereas a unit axis at
+the identity is discontinuous.  Approximate axes may be returned relationally;
+exact axes require separation from the identity or a supplied nonzero vector.
+
+Spherical and trigonometric identities should be split into exact polynomial
+identities in sine/cosine variables and analytic existence/branch statements.
+The first belong to the algebraic checker.  The second consume quadrant,
+nonvanishing, or interval certificates.  This avoids importing classical
+inverse-function conventions into the algebraic part.
+
+\subsection{Topology}
+
+Abstract compactness is replaced by finite combinatorics.  A quantitative
+Jordan or invariance-of-dimension theorem should specify:
+
+\begin{itemize}
+\item a rational grid scale obtained from a continuity and separation modulus;
+\item a finite cell or cubical complex;
+\item a Boolean labeling rule;
+\item a local parity or Sperner invariant; and
+\item a finite path, chain, or parity certificate producing the conclusion.
+\end{itemize}
+
+The global proof is quantifier-free induction over cells or a finite trace.
+Refinement from one grid to the next is a relational presentation; a coherent
+geometric point is extracted only when nested cells shrink quantitatively.
+
+\subsection{Analysis and special functions}
+
+Calculus, Gamma and zeta identities, residues, and asymptotics should be
+organized around finite sums, rational contours or meshes, and explicit
+remainders.  A complex contour is a finite polygonal path or a fixed evaluator
+with a modulus.  Cauchy and residue statements become finite telescoping
+identities plus bounds on local approximation errors.  Winding and zero counts
+are exact only under a boundary-apartness certificate.
+
+Special functions are best given by a fixed family of finite approximants and
+one or more interchangeable certificates: series tails, product tails,
+integral quadrature errors, or functional-equation residuals.  Identities are
+proved at finite precision through whichever representation has the easiest
+error ledger.  Extensionality then shows that the alternatives describe the
+same represented value.
+
+\subsection{Probability}
+
+The base probability library consists of finite rational laws, products,
+convolutions, moments, and rational test functions.  Limit theorems are
+quantitative approximation theorems.  Tail truncation, lattice spacing,
+variance lower bounds, third-moment bounds, and anti-concentration are explicit
+inputs or derived certificates.  Multivariate laws use finite rational vectors
+and finite nets of test directions.  Martingale statements use bounded finite
+filtrations and transition tables.
+
+This formulation captures the effective finite content of central-limit
+arguments while avoiding an unsupported higher-type measure object.  A more
+general represented measure can be added later as an FRP whose challenges are
+finite rational test functions and whose answers are certified approximate
+integrals.
+
+\subsection{A uniform package boundary}
+
+Every domain theorem should be split into four files or namespaces:
+
+\begin{enumerate}
+\item \emph{Data}: codes, guards, evaluators, candidate bounds, and challenges;
+\item \emph{Finite kernel}: Boolean folds, arithmetic identities, local
+      invariants, and certificate checking;
+\item \emph{Producer}: optional algorithm constructing the certificate or
+      viable relation; and
+\item \emph{Export}: the exact \(\Prf\,\PRAAx\) theorem and its transport by
+      \code{pra\_iff\_native}.
+\end{enumerate}
+
+A packet may honestly complete the finite kernel while leaving the producer
+open.  This is materially stronger and more reusable than an all-or-nothing
+outline, provided the status is stated explicitly.

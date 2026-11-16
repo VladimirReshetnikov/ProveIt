@@ -1,0 +1,134 @@
+
+\section{Finite contracts and a proof-producing compiler}
+\label{sec:contracts}
+
+\subsection{Numerical coding}
+
+Fix once and for all primitive-recursive coding operations for pairs, finite lists, signed integers, rationals, bitsets, and matrices.  Appendix~\ref{app:coding} gives one explicit route.  The exact coding is secondary; the essential requirements are:
+\begin{enumerate}
+  \item constructors and destructors are fixed primitive-recursive functions;
+  \item malformed data decode to total defaults;
+  \item length, bounded access, membership, equality, and bounded folds are primitive recursive;
+  \item the elementary coding laws have object-language derivations.
+\end{enumerate}
+
+A finite subset of $\{0,\ldots,n-1\}$ is represented by a bitset $s<2^{n}$.  Membership is
+\[
+  \operatorname{bit}(s,i)=\left\lfloor\frac{s}{2^{i}}\right\rfloor\bmod2.
+\]
+Union is bitwise disjunction, but it can equally be defined by a bounded fold over bits.  This makes every set operation a finite numerical computation.
+
+\subsection{Bounded formulas are Boolean}
+
+Let a \emph{bounded formula} be built from equality and order between fixed primitive-recursive terms, intuitionistic connectives, and quantifiers of the forms
+\[
+  \forall u<B(\vec x)\;\varphi(u,\vec x),
+  \qquad
+  \exists u<B(\vec x)\;\varphi(u,\vec x).
+\]
+
+\begin{theorem}[Bounded Booleanization]
+\label{thm:booleanization}
+For every fixed bounded formula $\varphi(\vec x)$ there is a fixed primitive-recursive Boolean term $b_{\varphi}(\vec x)$ and an \ipra\ derivation
+\[
+  \ipra\vdash
+  \varphi(\vec x)\leftrightarrow b_{\varphi}(\vec x)=1.
+\]
+The construction is uniform by metalevel recursion on the finite syntax tree of $\varphi$.
+\end{theorem}
+
+\begin{proof}
+Atomic equality and order have primitive-recursive decision procedures.  Their correctness is proved from the defining equations and quantifier-free induction.  Boolean conjunction, disjunction, and implication are represented by fixed truth-table functions.  Since their arguments have already been proved equivalent to Boolean equalities, the corresponding connective equivalences follow intuitionistically.
+
+For a bounded existential, define the finite disjunction fold
+\[
+  E(0,\vec x)=0,
+  \qquad
+  E(t+1,\vec x)=\max(E(t,\vec x),b_{\psi}(t,\vec x)).
+\]
+Quantifier-free induction on $t$ proves
+\[
+  E(t,\vec x)=1
+  \leftrightarrow
+  \exists u<t\; b_{\psi}(u,\vec x)=1.
+\]
+The existential direction uses the least successful index from bounded search; the reverse direction is immediate from the fold.  Evaluate at $t=B(\vec x)$.
+
+For a bounded universal, use the finite conjunction fold
+\[
+  A(0,\vec x)=1,
+  \qquad
+  A(t+1,\vec x)=\min(A(t,\vec x),b_{\psi}(t,\vec x)).
+\]
+Quantifier-free induction proves the corresponding universal equivalence.  Every induction formula is an equality between Boolean primitive-recursive terms, hence quantifier-free.  This completes the syntax recursion.
+\end{proof}
+
+\begin{remark}
+The theorem concerns each fixed bounded formula.  It does not assert a primitive-recursive truth predicate uniform over arbitrary formula codes.  The metalevel compiler emits a particular \code{PR} syntax tree and a particular derivation.
+\end{remark}
+
+\subsection{Contracts}
+
+\begin{definition}[Finite contract]
+A finite contract from input code $x$ to output code $y$ consists of:
+\begin{enumerate}
+  \item a fixed primitive-recursive producer $p(x)$;
+  \item bounded formulas $\operatorname{Pre}(x)$ and $\operatorname{Post}(x,y)$;
+  \item an object-language derivation
+  \[
+    \ipra\vdash
+    \operatorname{Pre}(x)\to\operatorname{Post}(x,p(x)).
+  \]
+\end{enumerate}
+\end{definition}
+
+Contracts compose by substitution and cut.  Suppose $p$ establishes $M(x,p(x))$ from $P(x)$, and $q$ establishes $Q(x,y,q(x,y))$ from $P(x)\wedge M(x,y)$.  Then $x\mapsto q(x,p(x))$ establishes the composite postcondition.  At the program level, primitive-recursive symbols are closed under composition.  At the proof level, the construction uses conjunction introduction, universal elimination or substitution, and implication elimination.
+
+\subsection{Bounded loops}
+
+Let $s(0,x)=s_{0}(x)$ and
+\[
+  s(t+1,x)=F(t,s(t,x),x)
+\]
+be a fixed primitive recursion.  Let $I(t,s,x)$ be bounded and let $b_I$ be its Booleanization.
+
+\begin{theorem}[Finite-trace reflection]
+\label{thm:trace}
+If \ipra\ proves the base instance $I(0,s_{0}(x),x)$ and the one-step preservation
+\[
+  t<T(x)\wedge I(t,s,x)
+  \to
+  I(t+1,F(t,s,x),x),
+\]
+then \ipra\ proves $I(T(x),s(T(x),x),x)$.
+\end{theorem}
+
+\begin{proof}
+Use the quantifier-free induction formula
+\[
+  J(t,x)\;:\!\iff\;
+  t\leq T(x)\to b_I(t,s(t,x),x)=1.
+\]
+All symbols are fixed primitive-recursive terms and the formula is quantifier-free.  The base follows from Booleanization and the supplied base proof.  For the successor step, split the decidable comparison $t<T(x)$.  In the positive branch use the preservation proof and the defining equation for $s(t+1,x)$.  In the negative branch the antecedent $t+1\leq T(x)$ is false.  Apply \code{PRA.qfInd}, then instantiate the universal conclusion at $T(x)$ and use reflexivity of $\leq$.
+\end{proof}
+
+This theorem is the proof-producing replacement for the phrase ``run the algorithm and observe that the invariant remains true.''  Every topological algorithm below---carrier composition, simplex enumeration, breadth-first search, parity accumulation, Gaussian elimination---is a bounded loop of this form.
+
+\subsection{Syntax-directed proof programs}
+
+A convenient metalevel source language has commands:
+\[
+  \mathsf{assign},\quad
+  \mathsf{sequence},\quad
+  \mathsf{if},\quad
+  \mathsf{boundedLoop}(I),\quad
+  \mathsf{return}.
+\]
+Each leaf carries an object proof of its local contract.  The compiler recursively combines those proofs using substitution, cut, disjunction elimination for Boolean branches, and \cref{thm:trace} for loops.  Its output is not merely executable code; it is a pair
+\[
+  (p,\ \pi),
+  \qquad
+  \pi: \operatorname{Pre}\vdash_{\PRAAx}\operatorname{Post}(p).
+\]
+
+This is the general framework into which the topological layer will fit.  The remaining question is how to represent maps when exact finite choices are unstable.  Certified observation towers answer that question.

@@ -1,0 +1,119 @@
+\section{Localization as a certified setoid}
+
+\subsection{Fractions and equality witnesses}
+
+Let $A$ be a certified commutative ring and fix $f\in A$.  A code for an element of $A_f$ is a pair
+$(a,n)$, written $a/f^n$.  The pair is valid when $a$ is a valid $A$-code.  Equality is not defined by
+normalizing fractions.  A witness from $a/f^n$ to $b/f^m$ is
+\begin{enumerate}[label=(\alph*)]
+\item a natural number $k$, and
+\item an $A$-equality witness for
+\begin{equation}\label{eq:loc-equality}
+             f^k\bigl(f^m a-f^n b\bigr)=0.
+\end{equation}
+\end{enumerate}
+This is the standard equality relation for localization at
+$\{1,f,f^2,\ldots\}$, made proof-relevant.
+
+\begin{theorem}[Localization witness calculus]\label{thm:localization-calculus}
+The relation \eqref{eq:loc-equality} is an equivalence relation.  Addition and multiplication
+\[
+ \frac a{f^n}+\frac b{f^m}
+   =\frac{f^m a+f^n b}{f^{n+m}},\qquad
+ \frac a{f^n}\frac b{f^m}=\frac{ab}{f^{n+m}}
+\]
+are certified congruent operations.  All witness transformers are primitive recursive.
+\end{theorem}
+
+\begin{proof}
+For reflexivity choose $k=0$ and the certificate for $f^n a-f^n a=0$.  Symmetry uses the same
+$k$ and negates the base equality.
+
+For transitivity, suppose
+\begin{align*}
+ f^k(f^m a-f^n b)&=0,\\
+ f^\ell(f^r b-f^m c)&=0.
+\end{align*}
+Multiply the first identity by $f^{\ell+r}$ and the second by $f^{k+n}$, then add.  The middle
+terms cancel and give
+\[
+ f^{k+\ell+m}(f^r a-f^n c)=0.
+\]
+Thus a valid killing exponent for the composite witness is $k+\ell+m$, where $m$ is the
+denominator exponent of the middle fraction.  The new base-ring witness is constructed from the old
+ones using multiplication congruence, addition, and the distributive-law certificates.
+
+For addition and multiplication, expand the cross-multiplied difference of the outputs.  It is a
+finite sum of multiples of the two input differences.  If input witnesses kill those differences by
+$f^k$ and $f^\ell$, then multiplying by a sufficiently large explicit power, for example
+$f^{k+\ell+n+m+n'+m'}$, kills the output difference.  A sharper exponent is easy but unnecessary.
+The expansion and witness combination are fixed polynomial identities, hence primitive recursive.
+\end{proof}
+
+The theorem remains valid with zero divisors.  The killing exponent is essential precisely because
+cross multiplication need not be cancellative.
+
+\subsection{Localization of modules}
+
+For an $A$-module $M$, represent an element of $M_f$ by $x/f^n$ and witness equality by
+\[
+             f^k(f^m x-f^n y)=0_M.
+\]
+The preceding proof uses only additivity and scalar multiplication, so it carries over verbatim.
+The restriction map $M\to M_f$ sends $x$ to $x/f^0$.  Equality of two restricted elements is
+witnessed by a local annihilation equation $f^k(x-y)=0$.
+
+If $g\in A$, restriction from $M_f$ to $M_{fg}$ sends
+\[
+             \frac{x}{f^n}\longmapsto \frac{g^n x}{(fg)^n}.
+\]
+This formula is preferable to an abstract universal property in an object-theory implementation:
+it is a fixed primitive-recursive map, and its functoriality is a finite polynomial identity.
+
+\subsection{Universal property in certificate form}
+
+Suppose $\phi:A\to B$ is a certified ring map and $u$ is a supplied inverse witness for $\phi(f)$,
+that is, a code $v\in B$ with certificates
+\[
+          \phi(f)v=1,
+          \qquad v\phi(f)=1.
+\]
+Then
+\[
+       \widetilde\phi(a/f^n)=\phi(a)v^n
+\]
+defines a certified map $A_f\to B$.  If \eqref{eq:loc-equality} holds, applying $\phi$ and multiplying
+by the appropriate power of $v$ proves equality of the images.  Uniqueness is checked on a supplied
+fraction by the equation
+\[
+ a/f^n=(a/1)(1/f)^n.
+\]
+Thus the universal property can be used in iPRA as a family of finite witness transformations,
+without quantifying over a completed class of all ring maps.
+
+\subsection{Localizing a presented quotient}
+
+Let $A=R[X]/I$ be represented by ideal-combination witnesses.  A localization equality witness for
+$p/f^n$ and $q/f^m$ consists of a killing exponent $k$ and multipliers $h_i$ satisfying
+\[
+ f^k(f^m p-f^n q)=\sum_i h_i g_i
+\]
+in the polynomial ring.  This is a single coefficientwise certificate.  Hence quotient formation and
+localization compose without choosing normal forms.
+
+The same presentation can be flattened algebraically:
+\[
+        (R[X]/I)_f \cong R[X,T]/(I,\,Tf-1).
+\]
+The map from a fraction sends $p/f^n$ to $pT^n$; the inverse sends $T$ to $1/f$.  Both composites have
+explicit relation witnesses.  The fraction presentation is usually smaller for gluing, while the
+polynomial presentation is convenient for elimination and finite-presentation libraries.
+
+\subsection{Primitive-recursive implementation and induction audit}
+
+The code operations needed here are bounded exponentiation, tuple access, polynomial addition and
+multiplication, and witness-vector combination.  Exponentiation is primitive recursion on $n$ with
+the quantifier-free invariant that the accumulator equals the requested finite power.  Polynomial
+operations are bounded folds over finite lists.  No induction formula asserts that two localization
+classes are equal; it asserts only that a concrete, checked equality witness has been transformed
+correctly.

@@ -1,0 +1,164 @@
+\section{Application patterns and repairs of packet difficulties}
+
+The framework is intended as a shared substrate.  This section states what it
+does and does not resolve in the principal domains represented in the
+repository.
+
+\subsection{Algebraic equations and Puiseux expansions}
+
+For a polynomial with exact rational or exact algebraic coefficient codes,
+finite algebraic operations, resultants, discriminants, square-free
+factorization certificates, and coefficient identities are decidable finite
+data.  A root theorem should first output a finite list of rational disks with:
+coverage of all roots, multiplicity counts, and a refinement relation between
+precisions.  A separation certificate collapses an isolated disk to one root
+name.
+
+For arbitrary Cauchy-presented coefficients, exact Puiseux coefficient
+selection is too strong.  The repository gives an explicit fixed-family
+halting reduction using
+\[
+       P_a(X,Y)=Y^2-X^2-a.
+\]
+The repair is one of:
+\begin{enumerate}[label=(\alph*)]
+\item exact algebraic coefficient presentations with decidable zero and
+      certified splitting;
+\item a finite family of truncated approximate branches with residual and
+      coverage bounds;
+\item a theorem conditional on a simple-root or discriminant gap.
+\end{enumerate}
+The contract-DAG compiler handles the coefficient recursion once the branch
+guard is legitimate; it does not create the missing exact equality oracle.
+
+\subsection{Euler--Rodrigues, eigenvectors, and projective geometry}
+
+Rodrigues' formula for a supplied axis and angle is a polynomial/trigonometric
+error-contract problem.  Exact Euler-axis selection for an arbitrary
+represented rotation is discontinuous at the identity and can encode LLPO.
+The stable outputs are:
+\begin{itemize}[leftmargin=1.6em]
+\item a unit quaternion modulo \(q\sim-q\);
+\item a projective axis or finite approximate axis set;
+\item an exact axis under a supplied lower bound separating the rotation from
+      the identity;
+\item rational exact axes for rational proper orthogonal matrices.
+\end{itemize}
+The same projective-first discipline applies to eigenvectors.  Use a
+projector, kernel certificate, or finite set of charts; normalize only under a
+nonzero coordinate or singular-value gap.
+
+Many Euclidean and projective geometry theorems become polynomial identities
+after homogeneous coordinates are introduced.  Denominators should not be
+cancelled silently.  Either clear them and retain nondegeneracy guards, or
+work entirely with cross-products and determinants.  A finite incidence
+certificate then fits directly into the contract calculus.
+
+\subsection{Analysis and special functions}
+
+A valid analysis node has:
+\[
+   \text{approximant},\quad
+   \text{cutoff},\quad
+   \text{tail/error verifier},\quad
+   \text{precision demand}.
+\]
+For a series, the producer supplies \(N(k,d)\) and a rational proof that the
+tail after \(N\) is at most \(2^{-k}\).  For an integral, it supplies a mesh
+and local oscillation modulus.  For analytic continuation, it supplies a
+finite chain of overlapping disks and derivative bounds.  The compiler adds
+the budgets and verifies the finite chain.
+
+This resolves a common formal difficulty in trigonometric, Gamma, zeta, and
+residue packets: one never inducts on a completed real identity.  One proves
+a rational inequality at arbitrary requested precision.  It does not, by
+itself, prove a missing global zero-free region or manufacture an effective
+constant from an ineffective theorem.
+
+\subsection{Probability}
+
+Finite probability laws are rational mass arrays with a Boolean check that
+masses are nonnegative and sum to one.  Convolution, moments, and
+characteristic-function samples are exact finite sums.  A constructive CLT
+packet should separate:
+\begin{enumerate}[label=(\roman*)]
+\item the exact finite convolution engine;
+\item moment and variance guards;
+\item a finite-grid comparison or characteristic-function approximation;
+\item the analytic smoothing and tail estimates with explicit constants.
+\end{enumerate}
+The first three are generic contract nodes.  The fourth is the substantive
+analytic producer.
+
+\subsection{Topology}
+
+For Jordan-curve and invariance-of-dimension arguments, use finite grids,
+rational boxes, adjacency graphs, parity or degree certificates, and explicit
+separation margins.  A finite grid calculation at a few scales is evidence,
+not a proof for every scale.  The reusable theorem must show that the
+quantifier-free grid invariant is preserved under refinement.
+
+Degenerate boundary cases should be handled by overlap: several adjacent
+cells may be valid.  A positive distance from the boundary collapses the
+finite relation to one cell.  This is the topological instance of the same
+branching theorem used for roots and axes.
+
+\subsection{Diophantine geometry}
+
+Runge-type arguments often do produce explicit polynomial identities and
+height inequalities.  These are ideal evidence-indexed nodes: verify the
+identity, derive the bound, then enumerate.  The general Siegel and Faltings
+packets correctly identify the missing general height producer.  The
+framework contributes:
+\begin{itemize}[leftmargin=1.6em]
+\item exact encodings of rational and integral points;
+\item complete bounded enumeration;
+\item conversion between a verified bound and a complete list;
+\item finite-cover and finite-algebra verifiers;
+\item a precise interface for any future height or covering theorem.
+\end{itemize}
+A cardinality theorem, even a strong one, cannot be plugged into the height
+input slot.
+
+\subsection{Analytic number theory}
+
+Prime-distribution statements must expose all dependencies:
+modulus range, exceptional characters, zero-free constants, conductor cutoff,
+density estimate, and finite small cases.  A certificate verifier can check
+the finite exceptional list and derive a claimed numerical range from
+explicit inequalities.  The quantifier order is crucial:
+\[
+  \exists C\;\forall x\ge X(C)\;\Phi(C,x)
+\]
+is useful only when \(C\) is produced or supplied.  A proof of mere existence
+in a stronger classical theory does not automatically yield a PR constant in
+iPRA.  The framework therefore records ``analytic constant producer'' as a
+first-class dependency rather than burying it in a phrase such as ``take
+\(x\) sufficiently large.''
+
+\subsection{Summary matrix}
+
+\begin{longtable}{p{.22\linewidth}p{.34\linewidth}p{.34\linewidth}}
+\toprule
+\textbf{Domain} & \textbf{Uniform output supported} &
+\textbf{Additional evidence for exact choice}\\
+\midrule
+\endhead
+Polynomial roots & finite disk cover, residuals, multiplicities &
+root separation or exact algebraic splitting\\
+Puiseux & finite approximate truncations &
+exact coefficient field and branch isolation\\
+Rotations & quaternion modulo sign, approximate axis set &
+distance from identity / nonzero vector part\\
+Eigenvectors & projective line or projector &
+spectral gap and normalization chart\\
+Limits and integrals & rational approximants with moduli &
+none beyond the quantitative hypotheses\\
+Topology & finite grid/parity relation &
+boundary separation for unique cell/branch\\
+Diophantine points & complete list below supplied height &
+height or covering certificate producer\\
+Prime distribution & verifier for explicit constants/ranges &
+effective constant and exceptional-set producer\\
+\bottomrule
+\end{longtable}

@@ -1,0 +1,119 @@
+\section{What this framework adds}
+\label{sec:scope}
+
+The aim is to make mathematical interfaces reusable inside a weak arithmetic
+theory. A successful interface should say which finite data represent an object,
+what a construction computes, which facts it needs from its inputs, and why
+its proof uses only the permitted induction. Category theory is especially
+useful for this purpose: composition, naturality, and universal properties
+identify the same proof pattern across algebra, analysis, and finite geometry.
+Their use must preserve the computational meaning of the presentations.
+
+The repository inspected for this report is ProveIt, at commit
+\begin{center}
+\small\texttt{bb86091690bc4f920f046a37cfc87719299b4019}.
+\end{center}
+Its iPRA directory defines
+the target as intuitionistic first-order logic with equality, defining equations
+for specified primitive recursive functions, successor axioms, and
+quantifier-free induction \cite{repo-main,repo-pr}. The main README catalogs
+63 research packets, including twelve foundations packets, and explicitly
+distinguishes the kernel-checked ConciseIPRA library from contributed packets
+that have not been rerun or verified by the repository intake
+\cite{repo-index}. A packet's own build report is evidence of what its authors
+claim, not a validation performed in this report.
+
+\subsection{The existing foundation is substantial}
+
+All twelve foundations READMEs were examined, along with selected underlying
+proof sections and the actual ConciseIPRA syntax and deduction modules. The
+application review is targeted: it includes the Puiseux obstruction and the
+Mordell--Weil, Siegel, and Faltings difficulty reports. It is not a verification
+of every theorem packet. The source inventory accompanies the archive.
+
+\begin{longtable}{@{}P{.24\linewidth}P{.69\linewidth}@{}}
+\toprule
+Existing work & Contribution retained and credited\\
+\midrule\endhead
+Finite contracts and embedding packets & Bounded Booleanization, guarded
+operations, quantitative names, finite nets, explicit moduli, and the distinction
+between a PR algorithm and a proof of its specification.\\
+Finite demand and finite observation packets & Backward precision requests,
+changing-parameter recursion, aggregate root data, and finite observations that
+avoid an unjustified exact branch choice.\\
+Evidence and coherent methods & Finite compatibility problems, coherent
+restriction maps, filtered lifting, and explicit finite algebraic invariants.\\
+Presentations to witnesses & Finite multiplication identities, rational
+enumeration, and complete section lists obtained from appropriate algebraic
+certificates.\\
+Resources and elimination & Actual PR syntax for some recursions, controlled
+descent bounds, finite intersection lists, and auxiliary envelopes whose coverage
+remains an independent obligation.\\
+\bottomrule
+\end{longtable}
+
+The relevant original packets are credited throughout
+\cite{repo-demand,repo-observation,repo-evidence,repo-coherent,repo-witnesses,repo-resources}.
+Simply repeating that mathematical objects can be coded by numbers would add
+little. This report adds a common categorical language for the interfaces and
+proves concrete uniform constructions that this language supports.
+
+\subsection{Main results and their meaning}
+
+The first result is a \emph{category of finite-demand contracts}. An arrow
+contains a PR forward transformation and a PR finite set of backward queries,
+together with an arithmetic proof that answering those queries suffices.
+Composition explicitly substitutes the queries. The categorical equations are
+proved from finite-set union and ordinary composition. This has close historical
+relatives in Dialectica and Diller--Nahm constructions
+\cite{depaiva1991,depaiva2015}; the contribution here is the restricted arithmetic
+implementation and its connection to the inspected proof packets, not a claim
+to have invented that categorical idea.
+
+The second group of results gives a substantial portion of category theory in
+iPRA. For fixed PR presentations, the theory proves elementary diagram
+calculations, presentation-wise Yoneda, the unit--counit description of
+adjunctions, and an equivalence criterion with explicit splittings. For
+uniformly coded finite tables, it additionally constructs functor categories,
+finite limits and colimits, finite function objects, bounded choices of
+quasi-inverses, and left and right Kan extensions along finite functors.
+The ordinary categorical theorems are standard \cite{riehl2016}; the numerical
+representations, uniformity boundaries, and induction audits are the point here.
+
+The third result addresses a concrete production gap. Given rational
+polynomials and degree caps, a finite matrix test either produces multiplication
+identities or a separating linear functional showing that the proposed cap
+fails. A successful test yields explicit rational coordinate bounds and a
+complete list of rational common zeros. No search over coefficient heights,
+unproved Groebner-basis termination, or independent quotient basis is used.
+The matrices need not commute. This extends the action-certificate route in
+\cite{repo-witnesses}; it does not settle a missing finite-cover or height theorem
+for general curves.
+
+Finally, two constructions explain limits that a representation framework
+cannot remove. A uniform PR family of decidable equivalence relations, each
+with at most two classes, need not admit a computable procedure producing
+finite covering lists from the family parameter.
+Likewise, a PR binary tree can have an explicitly PR-selected node at every
+level but no computable coherent branch. These are precise obstructions to
+two tempting uses of categorical language: extracting a finite skeleton merely
+from a component count, and replacing a tower of finite observations by a
+computably available inverse-limit point.
+
+\subsection{How to read the proof claims}
+
+An \emph{iPRA human proof} in this report specifies numerical operations and
+gives an intuitionistic argument whose inductions are quantifier-free or are
+explicitly reduced to that case. A \emph{conditional result} retains its
+mathematical hypotheses, such as a valid category presentation or a successful
+border-closure test. A \emph{Lean target} states what remains to be constructed
+in Lean. An executable finite check verifies only the listed finite instances.
+These four statuses are not interchangeable.
+
+The archive includes source-level constructions using the real
+\texttt{Prf PRAAx} interface for inverse uniqueness, the determining Yoneda
+calculation, and logical composition. They have not been compiled in this
+environment. The larger arithmetic encodings and main theorem derivations
+remain a formalization plan. The user requested at least such an outline;
+the paper gives the mathematical arguments independently of those unfinished
+formal steps.

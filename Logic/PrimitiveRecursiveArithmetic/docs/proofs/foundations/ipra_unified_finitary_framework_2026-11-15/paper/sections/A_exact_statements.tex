@@ -1,0 +1,162 @@
+\appendix
+\section{Exact theorem schemas and packet checklist}
+\label{app:schemas}
+
+This appendix collects the core theorem shapes in a form suitable for direct
+translation into Lean declarations.
+
+\subsection{Boolean bounded-formula compiler}
+
+For every bounded formula \(\theta(\bar x)\) formed from equations between
+fixed primitive-recursive terms, propositional connectives, and bounded
+quantifiers, construct a primitive-recursive Boolean
+\(b_\theta(\bar x)\) and derivations
+\[
+ []\vdash[\PRAAx]
+ \bigl(b_\theta(\bar x)=1\to\theta(\bar x)\bigr),
+ \qquad
+ []\vdash[\PRAAx]
+ \bigl(\theta(\bar x)\to b_\theta(\bar x)=1\bigr).
+\]
+The construction is structural recursion on \(\theta\).  The bounded
+quantifier cases use the fold-correctness derivations.
+
+In the compiled Lean implementation, the source syntax should be a restricted
+inductive type carrying its free-variable arity.  Compilation returns the
+Boolean \(\PR\) symbol, the object-language formula, and both derivations.
+
+\subsection{Proof-producing trace reflection}
+
+Given fixed symbols \(T=(g,i,b,s,v,a)\), where \(g\) is the good-input bit,
+\(i\) the initial state, \(b\) the bound, \(s\) the step, \(v\) the invariant,
+and \(a\) the acceptance bit, let \(r=\code{PR.prec }i\ s\).  The input record
+contains derivations of:
+\begin{align*}
+ g(u)=1&\to v(0,i(u),u)=1,\\
+ g(u)=1\wedge v(j,z,u)=1&\to v(j+1,s(j,z,u),u)=1,\\
+ g(u)=1\wedge v(b(u),z,u)=1&\to a(z,u)=1.
+\end{align*}
+The output is a derivation of
+\[
+ \forall u\;\bigl(g(u)=1\to a(r(b(u),u),u)=1\bigr).
+\]
+No semantic premise about the standard natural numbers appears in the theorem
+signature; every premise is already an object-language derivation.
+
+\subsection{Finite path compiler}
+
+For fixed \(B,\Good,\Compat\), define the path checker
+\(\mathsf{PathOK}(p,k,d,a,c)\).  Its fields assert:
+
+\begin{enumerate}
+\item the code \(c\) has length \(d+1\);
+\item its first entry is \(a\);
+\item every entry is below the candidate bound and good; and
+\item every adjacent pair is compatible.
+\end{enumerate}
+
+The viability theorem is the pair of derivations
+\begin{align*}
+ \Viable(p,k,d,a)=1
+ &\to
+ \exists c<C(p,k,d)\;\mathsf{PathOK}(p,k,d,a,c)=1,\\
+ \mathsf{PathOK}(p,k,d,a,c)=1
+ &\to \Viable(p,k,d,a)=1,
+\end{align*}
+where \(C\) is a displayed primitive-recursive code bound.  The existential
+witness in the first formula can be the least path code or the recursively
+constructed least viable path.
+
+\subsection{Shrinking viability}
+
+The exact numerical conclusion is
+\[
+ \forall k\le\ell\quad
+ d(\Obs(p,k,s(p,k)),\Obs(p,\ell,s(p,\ell)))
+ \le\varepsilon(p,k)+
+       \sum_{j=k}^{\ell-1}\delta(p,j).
+\]
+The assumptions are:
+
+\begin{enumerate}
+\item \(s(p,k)\) is the least member of the nonempty cloud
+      \(\FullV(p,H(p,k),k,-)\);
+\item \(H\) is nondecreasing and dominates its level;
+\item the cloud diameter is at most \(\varepsilon(p,k)\);
+\item compatible edges move observations by at most \(\delta(p,k)\); and
+\item the coded distance satisfies symmetry and triangle inequality on the
+      guarded domain used in the theorem.
+\end{enumerate}
+
+The regular-name corollary takes a separate tail modulus.  The theorem does not
+infer summability of \(\delta\) or convergence of \(\varepsilon\).
+
+\subsection{Finite-net transfer}
+
+A net certificate has a finite point list \(N\), a coverage checker, and a
+radius \(\rho\).  A modulus certificate has a bound \(\eta\) at radius
+\(\rho\).  The embedded target is:
+\[
+ \mathsf{NetOK}(p,N,\rho)=1\wedge
+ \mathsf{ModulusOK}(p,\rho,\eta)=1\wedge
+ \All_{y\in N}[f(y)\ge L]=1
+ \to
+ \mathsf{GlobalLower}(p,f,L-\eta)=1.
+\]
+The meaning of \(\mathsf{GlobalLower}\) depends on the represented domain; its
+proof must reduce an arbitrary challenge to one finite coverage witness.
+
+\subsection{Height bound and list}
+
+For a normalized point-code predicate \(P(p,x)\) and height \(h(x)\), define:
+\begin{align*}
+ \mathsf{BoundOK}(p,H)&:=\forall x\,[P(p,x)\to h(x)\le H],\\
+ \mathsf{ListOK}(p,L)&:=
+   \bigl(\forall i<|L|\;P(p,L_i)\bigr)\wedge
+   \bigl(\forall x\;P(p,x)\to\exists i<|L|\;x=L_i\bigr).
+\end{align*}
+The two constructors are:
+\begin{align*}
+ \mathsf{enumerate}(p,H)&:\mathsf{BoundOK}(p,H)	o
+     \mathsf{ListOK}(p,\mathsf{enumerate}(p,H)),\\
+ \mathsf{maxHeight}(L)&:\mathsf{ListOK}(p,L)	o
+     \mathsf{BoundOK}(p,\mathsf{maxHeight}(L)).
+\end{align*}
+The first depends on a primitive-recursive finite bound on normalized codes of
+height at most \(H\), which must be stated for the chosen coding.
+
+\subsection{Uniform packet checklist}
+
+Before a theorem packet is called embedded, record all fields below.
+
+\begin{longtable}{@{}p{0.28\textwidth}p{0.64\textwidth}@{}}
+\toprule
+Field & Required evidence\\
+\midrule
+\endhead
+Pinned source & ProveIt commit and exact imported module paths.\\
+Statement class & Exact, approximate, certificate-relative, relational, or
+obstruction theorem.\\
+Parameter codes & Natural-number coding and domain guard.\\
+Fixed evaluators & Exact \(\PR\) symbols; no unmentioned program input.\\
+Challenges/answers & Bounds, verifier, and observational meaning.\\
+Compatibility & Adjacent or finite-diagram relation, if outputs are relational.\\
+Precision ledger & All input queries, shifts, truncations, margins, and errors.\\
+Trace & Initial state, step, bound, invariant, and acceptance predicate.\\
+Local proofs & Actual \(\Prf\,\PRAAx\) derivations of base, step, and final
+contracts.\\
+Search data & Net, height bound, isolating region, cover, or finite candidate
+bound where required.\\
+Producer status & Proved, conditional, externally certified, or open.\\
+Object endpoint & Exact \code{Fm PTm} conclusion and context.\\
+Native export & Lean theorem applying \code{pra\_iff\_native} to the completed
+endpoint.\\
+Audit & Build log, axiom report, placeholder scan, and theorem ledger.\\
+Executable checks & Exact examples and negative tests, explicitly labeled as
+regression evidence.\\
+\bottomrule
+\end{longtable}
+
+A packet failing one field may still contain valuable mathematics.  The
+checklist identifies the missing layer without conflating it with the layers
+already complete.

@@ -1,0 +1,139 @@
+\section{Numerical encodings and bounded formulas}
+
+Everything in iPRA ultimately lives in one numerical sort.  This section
+fixes explicit encodings so that later statements do not hide higher-type or
+set-theoretic data.
+
+\subsection{Pairs, finite sequences, and tables}
+
+A convenient primitive-recursive pairing is
+\[
+   \pair{a}{b}=2^a(2b+1)-1.
+\]
+For \(n=\pair{a}{b}\), the first projection is the exponent of \(2\) in
+\(n+1\), and the second is
+\[
+   \frac{(n+1)/2^a-1}{2}.
+\]
+The exponent is found by a bounded loop of length \(n+1\), so both projections
+are primitive recursive.  A finite sequence
+\((x_0,\ldots,x_{\ell-1})\) is coded recursively: set
+\(L_{\ell}=0\), set \(L_i=\pair{x_i}{L_{i+1}}\) for
+\(i<\ell\), and use \(\pair{\ell}{L_0}\) as the sequence code.
+Length, lookup with a default value, update, append, and bounded folds are
+primitive recursive.  The exact pairing is not mathematically important; the
+availability of proved projection equations is.
+
+A finite table is a sequence whose indices are node numbers or query numbers.
+Every algorithm in the report is first described with ordinary arrays and
+then understood through this code.  No appeal is made to an unbounded finite
+map.
+
+\subsection{Booleans and bounded quantifiers}
+
+Booleans are represented by \(0,1\).  We totalize every Boolean operation:
+\[
+  \mathsf{not}(b)=1-\min(1,b),\qquad
+  b\wedge c=\min(1,b)\min(1,c),\qquad
+  b\vee c=\min(1,b+c).
+\]
+For a primitive-recursive Boolean \(P(d,i)\), define
+\[
+\begin{aligned}
+ \allfold_P(d,0)&=1, &
+ \allfold_P(d,n+1)&=\allfold_P(d,n)\wedge P(d,n),\\
+ \anyfold_P(d,0)&=0, &
+ \anyfold_P(d,n+1)&=\anyfold_P(d,n)\vee P(d,n).
+\end{aligned}
+\]
+These are primitive recursions.  Quantifier-free induction proves
+\[
+\begin{aligned}
+ \allfold_P(d,n)=1
+ &\;\longleftrightarrow\; P(d,i)=1\text{ for every }i<n,\\
+ \anyfold_P(d,n)=1
+ &\;\longleftrightarrow\; P(d,i)=1\text{ for some }i<n.
+\end{aligned}
+\]
+The right-hand descriptions are expository abbreviations.  Inside the object
+theory, the bounded quantifiers are represented by the left-hand
+primitive-recursive terms.  Thus a bounded formula is compiled to a
+quantifier-free equality.
+
+\begin{lemma}[Bounded witness extraction]
+Let \(P(d,i)\in\B\) and \(B(d)\) be primitive recursive.  There is a primitive
+recursive function \(\first_P(d)\le B(d)\) such that
+\[
+ \first_P(d)<B(d)\;\Longleftrightarrow\;
+ \anyfold_P(d,B(d))=1,
+\]
+and, whenever \(\first_P(d)<B(d)\),
+\(P(d,\first_P(d))=1\).
+\end{lemma}
+
+\begin{proof}
+Initialize \(w_0=B(d)\).  At stage \(i<B(d)\), retain \(w_i\) if it is already
+less than \(B(d)\); otherwise set \(w_{i+1}=i\) when \(P(d,i)=1\), and retain
+\(B(d)\) when it is zero.  The invariant is
+\[
+  \bigl(w_i=B(d)\wedge \allfold_{\neg P}(d,i)=1\bigr)
+  \;\vee\;
+  \bigl(w_i<i\wedge P(d,w_i)=1\bigr).
+\]
+It is a Boolean combination of primitive-recursive equalities and therefore
+quantifier-free.  The base case is immediate.  The step is a case split on
+two decidable Booleans, not an appeal to excluded middle for an arbitrary
+proposition.  At \(i=B(d)\) the invariant gives the result.
+\end{proof}
+
+\subsection{Integers and rationals}
+
+An integer is represented by a pair \((p,m)\) with value \(p-m\).  We do not
+require a canonical sign representation.  Addition and multiplication are
+implemented by
+\[
+ (p,m)+(q,n)=(p+q,m+n),
+ \qquad
+ (p,m)(q,n)=(pq+mn,pn+mq).
+\]
+Equality is \(p+n=m+q\), and order is a natural-number cross inequality.
+
+A rational is a triple \((p,m,d)\), representing
+\[
+        \frac{p-m}{d+1}.
+\]
+The positive denominator avoids partiality.  Equality and order are reduced
+to integer cross-products.  All field operations are totalized: a reciprocal
+routine returns a default value when the numerator is zero, while a separate
+Boolean domain guard records that the intended input is apart from zero.
+This ``operation plus guard'' discipline is essential.  A partial operation
+hidden in the metalanguage cannot be used as a \code{PR} symbol.
+
+Dyadic errors are represented without division by the relation
+\[
+       \abs{r}\le 2^{-k}
+       \quad\Longleftrightarrow\quad
+       2^k\abs{\mathrm{num}(r)}\le \mathrm{den}(r).
+\]
+Every inequality in the later error calculus can therefore be checked using
+natural addition, multiplication, exponentiation, and order.
+
+\subsection{Primitive-recursive formulas}
+
+For a fixed primitive-recursive code \(f:\PR\,k\), an application to terms is
+a \(\PTm\).  Atomic assertions are equalities of such terms.  Boolean
+predicates are represented by a term that is proved to take values in
+\(\B\); the assertion that the predicate holds is equality to \(1\).
+Conjunction, disjunction, and implication are formulas in the intuitionistic
+natural-deduction layer.  A loop invariant is designed so that its matrix is
+quantifier-free, allowing direct use of \code{PRA.qfInd}.
+
+A useful engineering rule is:
+
+\begin{quote}
+Every phrase ``for all entries of this finite object'' should have a named
+Boolean fold, a defining recursion, and a correctness lemma.
+\end{quote}
+
+This rule turns many apparently bounded-quantifier-heavy proofs into ordinary
+equational induction.

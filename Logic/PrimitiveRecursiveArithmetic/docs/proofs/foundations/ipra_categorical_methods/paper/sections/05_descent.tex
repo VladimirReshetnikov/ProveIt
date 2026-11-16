@@ -1,0 +1,264 @@
+\section{Finite descent, modular gluing, and the boundary of inverse limits}
+\label{sec:descent}
+
+The categorical layer becomes useful when it identifies the exact local
+information required to assemble a mathematical object. This section gives
+two positive gluing results, an explicit obstruction, and a constructive
+resolution under a stronger local lifting hypothesis. All inputs are numerical
+tables or fixed PR families of such tables.
+
+\subsection{A finite sheaf of function tables}
+
+Let $X=[n]$, let $U_0,\ldots,U_{k-1}$ be subsets represented by Boolean masks,
+and let the codomain be $[m]$. A section on $U_i$ is a finite table
+$f_i:U_i\to[m]$. Suppose the masks cover $X$ and the sections agree on
+overlaps:
+\begin{align}
+ &\forall x<n\ \exists i<k\ (x\in U_i),\label{eq:finite-cover}\\
+ &x\in U_i\cap U_j\quad\Longrightarrow\quad f_i(x)=f_j(x).
+ \label{eq:overlap}
+\end{align}
+Both assertions have bounded Boolean tests. A finite table $f:X\to[m]$
+restricts to compatible sections on every such cover.
+
+\begin{theorem}[Uniform finite gluing]
+\label{thm:finite-glue}
+There is a PR algorithm which, from data satisfying
+\eqref{eq:finite-cover}--\eqref{eq:overlap}, constructs the unique table
+$f:X\to[m]$ restricting to every $f_i$. The construction and its
+uniqueness are provable in iPRA. The correspondence between global sections
+and compatible local sections is a PR bijection.
+\end{theorem}
+
+\begin{proof}
+For $x<n$, let $i(x)$ be the first mask containing $x$, obtained by a scan of
+the $k$ masks. Coverage proves that the scan succeeds. Define
+$f(x)=f_{i(x)}(x)$. If $x\in U_j$, overlap compatibility gives
+$f_{i(x)}(x)=f_j(x)$, so $f$ has the required restrictions.
+Any other global table $g$ with those restrictions satisfies
+$g(x)=f_{i(x)}(x)=f(x)$ at each $x<n$, proving uniqueness by finite
+extensionality. Restriction followed by this gluing recovers a global table
+entry by entry. Gluing followed by restriction recovers each local table by
+the overlap equation. The two maps are therefore inverse.
+
+The selector uses a bounded first-success register and the output uses a
+loop of length $n$. The invariant says that every output entry constructed
+so far agrees with every supplied section defined there. It is a bounded
+conjunction over at most $nk$ pairs; Lemma~\ref{lem:booleanization} turns it
+into a QF invariant. The empty case $n=0$ yields the empty table. If $m=0$
+and $n>0$, the hypotheses cannot hold, since some nonempty covered domain
+would have to map to the empty set.
+\end{proof}
+
+In categorical terms, restriction is an equalizer presentation:
+\[
+ \operatorname{Map}(X,[m])\ \cong\
+ \operatorname{Eq}\!\left(
+  \prod_i\operatorname{Map}(U_i,[m])
+  \rightrightarrows
+  \prod_{i,j}\operatorname{Map}(U_i\cap U_j,[m])\right).
+\]
+The two arrows restrict the first and second member of an overlapping pair.
+All products and function sets here are finite and were constructed explicitly
+in the preceding section. This is a finite sheaf condition, with a proved
+gluing operation rather than an axiom asserting that a global section exists.
+
+It also respects changes of cover. Given a refinement $V_j\subseteq
+U_{a(j)}$, restrict the old sections to the new masks. If the refined masks
+still cover $X$, both old and new gluing give the same table, because their
+restrictions agree at every point. Composing an output table with a fixed
+map $[m]\to[q]$ also commutes with gluing, by evaluating at $i(x)$.
+These two naturality statements are finite pointwise equalities. Thus a
+choice of the first covering patch affects the implementation but not the
+represented result.
+
+\begin{example}
+Take $X=[5]$, $U_0=\{0,1,2\}$, $U_1=\{2,3,4\}$, and values in $[7]$.
+The local tables $(0,1,4)$ and $(4,2,2)$ agree at the overlap $2$.
+Their unique gluing is $(0,1,4,2,2)$, the table of $x^2\bmod7$.
+If one overlap value is changed, the algorithm detects a failed compatibility
+equation. It does not manufacture a section from inconsistent local data.
+\end{example}
+
+For finite observations of an analytic object, exact overlap equality may be
+unavailable. One may replace it by a bounded relation of compatible error
+intervals and compute a finite matching family, using the existing
+finite-demand methods \cite{repo-evidence,repo-demand}. The theorem above
+should not be applied by replacing exact equality with a tolerance and
+retaining the same uniqueness conclusion. Approximate compatibility is a
+different contract whose error propagation must be proved.
+
+\subsection{A modular pullback with an explicit inverse}
+
+For positive integers $a,b$, put $g=\gcd(a,b)$ and $\ell=ab/g$.
+Represent $\Z/a\Z$ by its canonical residues $[a]$. Reduction modulo $g$
+gives a cospan, and its finite pullback is
+\[
+ P=\{(r,s):r<a,\ s<b,\ r\equiv s\pmod g\}.
+\]
+The map $\theta:[\ell]\to P$ sends $x$ to $(x\bmod a,x\bmod b)$.
+This example shows how a local compatibility condition gives an actual
+global constructor.
+
+\begin{theorem}[Constructive two-modulus Chinese remainder isomorphism]
+\label{thm:crt}
+The map $\theta$ is a PR bijection uniformly in $a,b>0$, with PR inverse
+provable correct in iPRA. Pairwise coprimality is unnecessary; agreement
+modulo $g$ is exactly the compatibility condition.
+\end{theorem}
+
+\begin{proof}
+Bounded extended Euclid produces integers $u,v$ such that
+$ua+vb=g$. Its remainder sequence decreases whenever it is nonzero, so at
+most $a+b+1$ updates suffice; the two tracked linear-combination identities
+are bounded arithmetic invariants. Write $a'=a/g$, $b'=b/g$.
+Then $ua'+vb'=1$.
+
+For $(r,s)\in P$, let $q=(s-r)/g\in\Z$ and choose the canonical residue
+$t=(uq)\bmod b'$. Define
+\[
+ x=(r+at)\bmod\ell.
+\]
+Since $a'u\equiv1\pmod {b'}$, one has
+$a't\equiv q\pmod {b'}$, hence $at\equiv s-r\pmod b$.
+Thus $x\equiv r\pmod a$ and $x\equiv s\pmod b$.
+This proves surjectivity with the displayed constructor.
+
+If $x,y$ have the same residues, let $z=x-y$. Both $a$ and $b$ divide $z$.
+Write $z=ak$. From $b\mid ak$ follows $b'\mid a'k$.
+Multiplying $ua'+vb'=1$ by $k$ shows that $b'\mid k$.
+Consequently $\ell=ab'$ divides $z$. If $0\le x,y<\ell$, their
+difference has absolute value below $\ell$; divisibility then forces $z=0$.
+The constructed $x$ is therefore the unique representative, and the two
+maps are inverse. All arithmetic, gcd, signed division by a known divisor,
+and residue operations are fixed PR operations; the preceding argument uses
+only their finite arithmetic contracts.
+\end{proof}
+
+For example, residues $5\bmod12$ and $11\bmod18$ agree modulo $6$.
+The inverse gives $29\bmod36$. In diagrammatic form the theorem says that
+the square
+\[
+\begin{tikzcd}[column sep=large,row sep=large]
+ \Z/\ell\Z \arrow[r] \arrow[d] & \Z/a\Z \arrow[d] \\
+ \Z/b\Z \arrow[r] & \Z/g\Z
+\end{tikzcd}
+\]
+is a pullback in the finite table category. The result assembles compatible
+finite residues. It says nothing about whether an infinite compatible
+congruence tower is the expansion of a rational or ordinary integer solution
+of a separate equation. That remains a distinct adequacy problem.
+
+\subsection{Every finite horizon may be solvable without a computable branch}
+
+The following direct construction makes the boundary precise. Fix a standard
+enumeration $\varphi_e$ of partial computable functions and a PR bounded
+Turing-machine simulation predicate. Concretely, finite configuration codes
+have fixed PR initialization, one-step, halting, and output functions, and
+\[
+ \operatorname{run}(e,x,0)=\operatorname{init}(e,x),\qquad
+ \operatorname{run}(e,x,t+1)
+   =\operatorname{step}(e,\operatorname{run}(e,x,t)).
+\]
+Halted configurations are absorbing. Determinism and persistence of a
+halted output are finite equations proved by QF induction on the run.
+A binary word of length $n$ is a number
+$c<2^n$, with bit $\sigma(e)$ at position $e<n$. Declare it admissible when
+\[
+ \begin{array}{ll}
+ \sigma(e)=1,&\text{if }\varphi_e(e)\text{ has halted with output }0
+                      \text{ within }n\text{ steps},\\
+ \sigma(e)=0,&\text{if }\varphi_e(e)\text{ has halted with output }1
+                      \text{ within }n\text{ steps}.
+ \end{array}                                             \tag{T}
+\]
+Other outputs impose no condition. The simulations are deterministic, so
+the two constraints never conflict. The finite admissibility test is PR.
+
+\begin{theorem}[Finite solvability does not give computable coherence]
+\label{thm:tree}
+There is a uniformly PR sequence of nonempty finite sets $A_n$ of binary
+words of length $n$, with PR restriction maps $A_{n+1}\to A_n$ and a PR
+selector choosing one element of each $A_n$, but no computable binary
+sequence whose length-$n$ prefix belongs to $A_n$ for every $n$.
+\end{theorem}
+
+\begin{proof}
+Let $A_n$ consist of the words satisfying (T). Choose bit one when output
+zero has been seen by time $n$, and bit zero otherwise. This produces a
+member of $A_n$ by a loop of $n$ bounded simulations. Its uniform
+correctness is a bounded, hence QF-inductible, assertion. Thus even the
+levelwise witness producer is PR, not merely an unproved existence claim.
+
+If a word of length $n+1$ satisfies (T), its length-$n$ prefix does also:
+every computation seen within $n$ steps is still seen within $n+1$ steps
+with the same output. Prefix truncation is the required PR restriction.
+
+Suppose a total computable binary sequence $h$ had every prefix admissible.
+Take an index $d$ computing $h$, and let $t$ be the halting time of
+$\varphi_d(d)=h(d)$. For $n>\max(d,t)$, the admissibility of the
+length-$n$ prefix forces $h(d)=1$ if its computed value is zero, and
+$h(d)=0$ if its computed value is one. Both possibilities are contradictory.
+No such computable coherent sequence exists.
+\end{proof}
+
+The nonexistence conclusion is a metatheoretic computability statement;
+the construction and levelwise witnesses are explicit arithmetic data.
+It does not say that the finite limits constructed earlier fail, that no
+classical infinite branch exists, or that the bonding maps are surjective.
+It says that one cannot replace all finite observation problems by a
+computably available inverse-limit point without additional information.
+The bounded interpreter used here is consistent with the impossibility
+of an \emph{unbounded total} PR evaluator for all PR programs.
+
+\subsection{The missing positive resource: finite liftings}
+
+There is a useful constructive repair. Suppose a fixed PR family gives
+finite sets
+\[
+ A_n=\{a<b(n):V(n,a)=1\}
+\]
+and bonding maps $p(n,-):A_{n+1}\to A_n$, with iPRA proofs of their
+validity. The bounds $b$ and tests $V$ are fixed PR functions, not
+uncoded families. Suppose a member $a_0\in A_0$ is supplied, and iPRA
+proves
+\begin{equation}
+ a<b(n)\wedge V(n,a)=1\ \longrightarrow\
+ \exists c<b(n+1)\bigl(V(n+1,c)=1\wedge p(n,c)=a\bigr).
+ \label{eq:surjective-lifting}
+\end{equation}
+
+\begin{theorem}[Coherent points from bounded surjective liftings]
+\label{thm:tower}
+Under these hypotheses a fixed PR function $a(n;a_0)$, with the supplied
+$a_0$ retained as a numerical parameter, produces a coherent
+point: writing $a(n)$ for $a(n;a_0)$, one has $a(n)\in A_n$ and
+$p(n,a(n+1))=a(n)$ for every $n$.
+These assertions have iPRA derivations from the displayed contracts.
+\end{theorem}
+
+\begin{proof}
+Let $s(n,a)$ be the first $c<b(n+1)$ satisfying the conjunction in
+\eqref{eq:surjective-lifting}, with a default if no such $c$ exists.
+This is a bounded PR scan. The first-success lemma and the surjectivity
+proof imply that, for valid $a$, it returns a valid lift and
+$p(n,s(n,a))=a$. Define by ordinary primitive recursion
+\[
+ a(0)=a_0,\qquad a(n+1)=s(n,a(n)).
+\]
+Induct on the Boolean validity equation for $a(n)$, with its numerical
+bound included as a PR comparison. The initial assertion is the supplied
+one, and the local lifting contract proves the successor assertion.
+Instantiate that contract once more at the resulting $a(n)$ to obtain
+the adjacent coherence equation. Generalizing $n$ completes the proof.
+There is no induction on an unbounded assertion that a whole tail exists.
+\end{proof}
+
+This explains exactly how some coherent analytic or algebraic towers are
+available in iPRA. A valid local lifting algorithm, or bounded surjectivity
+of the finite stages, is enough. Merely knowing that each finite stage is
+inhabited is weaker. The counterexample in Theorem~\ref{thm:tree} lacks
+the surjective lifting contract. Existing filtered-lifting constructions
+\cite{repo-coherent} provide stronger local data in their particular rings;
+they are examples of the positive mechanism, not applications of an
+unrestricted inverse-limit principle.

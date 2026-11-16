@@ -1,0 +1,307 @@
+\section{Lean formalization architecture}
+\label{sec:lean-plan}
+
+\subsection{Target environment}
+
+The formalization should live inside the existing ProveIt Lean workspace and
+import the checked modules rather than copying a second kernel:
+
+\begin{lstlisting}[style=lean]
+import ConciseIPRA.PR
+import ConciseIPRA.NativeBiInterpretation
+
+namespace LeanProofs.ConciseIPRA.Finitary
+open Syn
+open scoped Fm
+open PTm (app zero succ)
+\end{lstlisting}
+
+The source-accurate interfaces used by the plan are:
+
+\begin{itemize}
+\item \code{PR}, \code{PTm}, and \code{PRAAx};
+\item \code{PRA.precZero}, \code{PRA.precSucc}, and \code{PRA.qfInd};
+\item the constructors and structural lemmas of \code{Prf}, including
+      substitution, weakening, cut, universal introduction/elimination, and
+      equality substitution; and
+\item \code{pra\_iff\_native} for final transport.
+\end{itemize}
+
+The development should not start with Mathlib real numbers.  Ambient finite
+models are useful for testing, but the primary endpoint of each generic lemma
+is a value of type \code{Prf PRAAx Gamma phi}.
+
+\subsection{Canonical code library}
+
+The first module, proposed as \code{Finitary/Codes.lean}, chooses exactly one
+code for each recurring data type:
+
+\begin{enumerate}
+\item Booleans normalized to zero and one;
+\item pairs and bounded tuples;
+\item bounded lists and bit vectors;
+\item signed integers;
+\item positive-denominator rationals and dyadics;
+\item finite maps represented by bounded tables.
+\end{enumerate}
+
+For every operation there are three layers:
+
+\begin{enumerate}
+\item a \code{PR} symbol;
+\item a \code{PTm} notation/helper for applying the symbol; and
+\item embedded defining/correctness derivations.
+\end{enumerate}
+
+Parallel encodings should be avoided.  Most proof-packet integration failures
+would be amplified if each packet introduced its own rational or list code.
+
+\subsection{Boolean folds and bounded search}
+
+The next modules are \code{Boolean.lean}, \code{Fold.lean}, and
+\code{Search.lean}.  Suggested theorem signatures are schematic generators:
+
+\begin{lstlisting}[style=lean]
+/-- Object-language proof that a fixed PR Boolean fold is correct. -/
+def allFoldCorrect (b : PR (r + 1)) :
+  [] |-[PRAAx] allFoldSpec b := ...
+
+def anyFoldCorrect (b : PR (r + 1)) :
+  [] |-[PRAAx] anyFoldSpec b := ...
+
+def leastSearchCorrect (b : PR (r + 1)) :
+  [] |-[PRAAx] leastSearchSpec b := ...
+\end{lstlisting}
+
+The formulas \code{allFoldSpec}, \code{anyFoldSpec}, and
+\code{leastSearchSpec} are built from equations and bounded numerical
+relations, not Lean propositions about function values.  Their proofs use
+\code{PRA.qfInd}; the logical bounded-quantifier corollaries are derived after
+the Boolean equations.
+
+\subsection{Trace-system definitions}
+
+The fixed symbols of a trace are represented directly:
+
+\begin{lstlisting}[style=lean]
+structure PRTraceSystem where
+  good   : PR 1
+  init   : PR 1
+  bound  : PR 1
+  step   : PR 3      -- (i, previous, u)
+  inv    : PR 3      -- (i, state, u)
+  accept : PR 2      -- (state, u)
+
+def PRTraceSystem.run (T : PRTraceSystem) : PR 2 :=
+  .prec T.init T.step
+\end{lstlisting}
+
+Application helpers for arities one through three should be defined using
+\code{Fin.cases}.  Define \code{IsOne t := t = succ zero}.  With the de Bruijn
+convention documented in the source, define open formulas:
+
+\begin{lstlisting}[style=lean]
+def BaseFm  (T : PRTraceSystem) : Fm PTm 1 := ... -- free u
+def StepFm  (T : PRTraceSystem) : Fm PTm 3 := ... -- free i,s,u
+def FinalFm (T : PRTraceSystem) : Fm PTm 2 := ... -- free s,u
+def ResultFm (T : PRTraceSystem) : Fm PTm 0 :=
+  Fm.all (... Good(u) -> Accept(run(bound u,u),u) ...)
+
+structure TraceProofs (T : PRTraceSystem) where
+  base  : [] |-[PRAAx] BaseFm T
+  step  : [] |-[PRAAx] StepFm T
+  final : [] |-[PRAAx] FinalFm T
+\end{lstlisting}
+
+The intended central theorem is:
+
+\begin{lstlisting}[style=lean]
+def traceReflection (T : PRTraceSystem) (h : TraceProofs T) :
+    [] |-[PRAAx] ResultFm T := by
+  -- instantiate h.base at u
+  -- rewrite run(0,u) using PRA.precZero
+  -- apply PRA.qfInd to Inv(i, run(i,u), u)
+  -- in the step, instantiate h.step and rewrite with PRA.precSucc
+  -- specialize the universal invariant at bound(u)
+  -- instantiate h.final and cut
+  -- discharge Good(u), then universally introduce u
+  ...
+\end{lstlisting}
+
+This theorem is deliberately a \code{def}, not merely an existence theorem:
+it computes the final derivation from the three premise derivations.  The
+construction should use only the existing proof constructors, so its axiom
+audit is inherited from \code{ConciseIPRA}.
+
+\subsection{Proof-producing finite-program DSL}
+
+After the raw trace theorem works, define a small typed syntax of finite
+programs:
+
+\begin{lstlisting}[style=lean]
+inductive FProg (input output : Nat) where
+  | pure    : PR input -> FProg input output
+  | seq     : FProg a b -> FProg b c -> FProg a c
+  | loop    : PR input -> PR state -> PR (...) -> FProg input output
+  | branch  : PR (...) -> FProg input output ->
+              FProg input output -> FProg input output
+  | check   : PR (...) -> FProg input input
+\end{lstlisting}
+
+The actual indices should track state arities and contracts more carefully than
+this sketch.  Compile every program to a \code{PRTraceSystem}.  A
+\code{CertifiedProg} pairs syntax with local \code{Prf PRAAx} obligations.
+Prove by structural recursion that compilation returns the global soundness
+proof.  This automates phase composition and eliminates repeated hand-written
+induction scaffolding across theorem packets.
+
+\subsection{Relational finite kernel}
+
+A semantic prototype can use ordinary Lean finite data, but the integrated
+module should expose fixed numerical symbols:
+
+\begin{lstlisting}[style=lean]
+structure PRLayeredRelation where
+  bound  : PR 2       -- (k,p)
+  good   : PR 3       -- (a,k,p)
+  compat : PR 4       -- (b,a,k,p)
+
+def viable (R : PRLayeredRelation) : PR 4 := ...
+def reach (R : PRLayeredRelation) : PR 3 := ...
+def fullViable (R : PRLayeredRelation) : PR 4 := ...
+\end{lstlisting}
+
+Suggested embedded endpoints are:
+
+\begin{lstlisting}[style=lean]
+def viableIffPath (R : PRLayeredRelation) :
+  [] |-[PRAAx] viablePathSpec R := ...
+
+def leastViablePathSound (R : PRLayeredRelation) :
+  [] |-[PRAAx] leastPathSpec R := ...
+
+def fullViableSplit (R : PRLayeredRelation) :
+  [] |-[PRAAx] fullViableSpec R := ...
+\end{lstlisting}
+
+Implement viability first as a depth recursion, then add the table algorithm
+and prove the two implementations equal.  The depth recursion has the simplest
+proof; the table version has the useful execution complexity.
+
+\subsection{Shrinking-viability module}
+
+The module \code{Finitary/Shrinking.lean} should parameterize over coded
+rational observations and a coded pseudometric.  All assumptions are
+object-language derivations:
+
+\begin{lstlisting}[style=lean]
+structure ShrinkingProofs (R : PRLayeredRelation)
+    (obs : PR 3) (dist eps delta horizon : ...) where
+  nonempty : [] |-[PRAAx] NonemptyCloudFm ...
+  monotone : [] |-[PRAAx] HorizonMonotoneFm ...
+  diameter : [] |-[PRAAx] CloudDiameterFm ...
+  edge     : [] |-[PRAAx] EdgeBoundFm ...
+  metric   : MetricProofs dist
+
+def shrinkingViability (h : ShrinkingProofs ...) :
+  [] |-[PRAAx] ShrinkingBoundFm ... := ...
+\end{lstlisting}
+
+The proof dependencies are:
+
+\begin{enumerate}
+\item least bounded search in the full-viable cloud;
+\item extraction of a least path certificate from \code{fullViable};
+\item truncation of a valid path;
+\item finite telescoping of edge distances; and
+\item one triangle inequality combining cloud diameter and path motion.
+\end{enumerate}
+
+A corollary consumes a tail modulus and constructs a regular-name theorem.
+Do not define a quotient real or invoke classical choice.
+
+\subsection{Rational and precision modules}
+
+The modules \code{Rational.lean}, \code{ErrorBudget.lean}, and
+\code{RegularName.lean} should prove:
+
+\begin{itemize}
+\item cross-multiplication correctness under positive denominators;
+\item triangle and product-error inequalities;
+\item finite-sum and finite-product accumulators;
+\item regularity/extensionality of addition and multiplication;
+\item totalized inverse under an apartness guard;
+\item overlap branching and exact branching under a gap; and
+\item composition of precision ledgers.
+\end{itemize}
+
+Most proofs should normalize to polynomial integer inequalities and use small
+reusable order lemmas.  A reflection tactic may generate proof terms for
+closed numeral calculations, but the universal algebraic lemmas must remain
+explicit derivations in the object theory.
+
+\subsection{Application interface}
+
+Each theorem packet should expose a record of the following form:
+
+\begin{lstlisting}[style=lean]
+structure PacketTarget where
+  params : Nat
+  assumptions : List (Fm PTm params)
+  conclusion  : Fm PTm params
+  derivation  : assumptions |-[PRAAx] conclusion
+
+ def PacketTarget.toNative (T : PacketTarget) :
+   NPrf (T.assumptions.map NFm.ofPRA) (NFm.ofPRA T.conclusion) :=
+   (pra_iff_native).mp T.derivation
+\end{lstlisting}
+
+For an incomplete packet, replace \code{derivation} by an explicitly named
+\code{Goal} proposition or a structure of missing producer obligations.  Do
+not fill the field with an axiom, \code{opaque} placeholder, or proof of an
+ambient semantic surrogate.
+
+\subsection{Dependency-ordered milestones}
+
+A realistic implementation order is:
+
+\begin{enumerate}
+\item application helpers and Boolean truth;
+\item pairing, bounded lists, signed integers, rationals;
+\item folds, bounded minimization, path codes;
+\item embedded trace reflection;
+\item compiler composition and finite-program DSL;
+\item reachability, viability, and least paths;
+\item rational metric and shrinking viability;
+\item regular names, guards, robust branching, finite nets;
+\item exact polynomial/matrix kernel;
+\item domain adapters and packet migrations;
+\item native export and proof-size measurements.
+\end{enumerate}
+
+The first vertical slice should be deliberately small: formalize a finite sum
+trace, produce its exact \(\Prf\,\PRAAx\) theorem, and transport it to
+\(\NPrf\).  The second slice should be the square-root interval example from
+\cref{sec:worked-examples}, because it exercises relational candidates,
+viability, shrinking, and rational error bounds.
+
+\subsection{Audit requirements}
+
+For every completed endpoint:
+
+\begin{enumerate}
+\item run the repository Lake build;
+\item scan source for \code{sorry}, \code{admit}, and new \code{axiom}
+      declarations;
+\item use \code{\#print axioms} on public theorems;
+\item distinguish definitions of goals from proofs of goals;
+\item record the pinned ProveIt commit and Lean toolchain;
+\item preserve a theorem ledger mapping human claims to Lean names; and
+\item retain exact executable checks as regression tests, not as replacements
+      for universal proofs.
+\end{enumerate}
+
+The accompanying Lean files in this archive are intentionally blueprints: no
+Lean executable is available in the build environment, and the generic
+\(\Prf\,\PRAAx\) compiler has not been kernel-checked here.  Their purpose is
+to make the remaining implementation path explicit and source-accurate.

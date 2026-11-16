@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "barriers": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "claim": {
+      "type": "string"
+    },
+    "input_presentation": {
+      "type": "string"
+    },
+    "output_relation": {
+      "type": "string"
+    },
+    "precision_transformer": {
+      "type": "string"
+    },
+    "producer_status": {
+      "enum": [
+        "proved",
+        "conditional",
+        "missing",
+        "obstructed"
+      ]
+    },
+    "request": {
+      "type": "string"
+    },
+    "source_commit": {
+      "type": "string"
+    },
+    "verifier_status": {
+      "enum": [
+        "prose",
+        "python",
+        "semantic_lean",
+        "object_prf"
+      ]
+    }
+  },
+  "required": [
+    "claim",
+    "input_presentation",
+    "request",
+    "output_relation",
+    "producer_status",
+    "verifier_status",
+    "source_commit"
+  ],
+  "title": "Certified Finitary Presentation packet record",
+  "type": "object"
+}

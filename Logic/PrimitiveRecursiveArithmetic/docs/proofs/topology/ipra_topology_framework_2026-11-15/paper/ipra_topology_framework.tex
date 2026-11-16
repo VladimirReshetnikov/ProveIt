@@ -1,0 +1,175 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,decorations.pathreplacing}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  citecolor=green!35!black,
+  urlcolor=blue!50!black,
+  pdftitle={Certified Observation Towers: a general iPRA embedding framework with topology as a case study},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Certified Observation Towers in iPRA}
+\fancyhead[R]{\thepage}
+\setlength{\headheight}{14pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{principle}[theorem]{Design principle}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{construction}[theorem]{Construction}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Ftwo}{\mathbb{F}_{2}}
+\newcommand{\ipra}{\ensuremath{\mathrm{iPRA}}}
+\newcommand{\PRAAx}{\ensuremath{\mathsf{PRAAx}}}
+\newcommand{\Prf}{\ensuremath{\mathsf{Prf}}}
+\newcommand{\bits}{\ensuremath{\mathsf{Bits}}}
+\newcommand{\carrier}{\ensuremath{\mathcal{C}}}
+\newcommand{\obs}{\ensuremath{\mathsf{Obs}}}
+\newcommand{\Simplex}{\ensuremath{\mathsf{Simplex}}}
+\newcommand{\Valid}{\ensuremath{\mathsf{Valid}}}
+\newcommand{\mesh}{\ensuremath{\mathsf{mesh}}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\Set}[1]{\left\{#1\right\}}
+\newcommand{\angles}[1]{\left\langle #1\right\rangle}
+\newcommand{\restr}{\mathord{\upharpoonright}}
+\newcommand{\defeq}{\mathrel{:=}}
+\newcommand{\powerset}{\mathcal{P}}
+\newcommand{\todoformal}{\textsc{object-proof target}}
+
+\lstdefinestyle{lean}{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  breaklines=true,
+  frame=single,
+  showstringspaces=false,
+  keywordstyle=\bfseries,
+  commentstyle=\itshape
+}
+\lstset{style=lean}
+
+\title{\textbf{Certified Observation Towers}\\
+A general framework for embedding mathematics into intuitionistic primitive recursive arithmetic, with topology as a case study}
+\author{Prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This report develops a reusable method for placing mathematical concepts and proofs inside intuitionistic primitive recursive arithmetic (\ipra).  The method begins with the current ProveIt infrastructure---fixed primitive-recursive symbols, bounded Boolean tests, quantifier-free induction, finite contracts, and the existing bridge from ordinary \ipra\ derivations to the concise native calculus---and adds a missing topological and choice-stable layer.
+
+The central new organizing object is a \emph{certified observation tower}: an inverse tower of finite nerves whose refinement maps are represented not by arbitrary exact choices but by finite simplicial carriers.  A carrier assigns a nonempty cloud of possible target cells to every source cell.  Its strong simplex condition implies that every deterministic selection is simplicial, any two selections are contiguous, and their chain maps are related by an explicit finite prism homotopy.  Consequently homology maps are independent of boundary choices.  Carrier composition is finite relational composition, so continuous maps and their compositions can be represented without a discontinuous global selector.
+
+The report gives complete human-readable proofs of the bounded Booleanization principle, finite-space/preorder equivalence, carrier composition, selection independence, the mod-2 prism identity, functorial homology for observation towers, and several closure constructions.  It explains how compactness, connectedness, separation, products, subspaces, quotients, homotopies, manifolds, fixed-point arguments, Jordan separation, and dimension obstruction should be stated as arithmetic schemas with explicit finite data and moduli.  It also identifies genuine boundaries: unrestricted quantification over open sets or functions is not first-order arithmetic, exact choice at collisions is not constructively free, and finite verification never manufactures a missing modulus, height bound, or exhaustion theorem.
+
+The package includes an exact Python kernel and 15 passing tests for finite preorders, simplicial carriers, tower composition, mod-2 homology, and the prism identity.  It also includes two Lean blueprints: a semantic finite-topology layer and an object-language completion plan using the actual ProveIt declarations \code{PR}, \code{PTm}, \code{PRAAx}, \code{PRA.qfInd}, \code{Prf}, \code{NFm.ofPRA}, and \code{pra\_iff\_native}.  The Lean files are deliberately marked as uncompiled outlines; no unfinished semantic theorem is presented as an \ipra\ derivation.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+
+\input{sections/01_audit}
+\input{sections/02_statement_discipline}
+\input{sections/03_finite_contracts}
+\input{sections/04_observation_towers}
+\input{sections/05_carrier_theorems}
+\input{sections/06_finite_topology}
+\input{sections/07_topological_library}
+\input{sections/08_case_studies}
+\input{sections/09_cross_domain}
+\input{sections/10_lean_plan}
+\input{sections/11_validation}
+\input{sections/12_limits}
+\appendix
+\input{sections/A_coding}
+\input{sections/B_formula_schemas}
+\input{sections/C_ledger}
+
+\begin{thebibliography}{99}
+
+\bibitem{ProveIt}
+V. Reshetnikov,
+\emph{ProveIt: Primitive Recursive Arithmetic development},
+repository commit \code{c88269a745aedaca1235895c4d5e3e97056a1636}, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}
+
+\bibitem{McCord1966}
+M. C. McCord,
+\emph{Singular homology groups and homotopy groups of finite topological spaces},
+Duke Mathematical Journal 33 (1966), 465--474.
+\url{https://doi.org/10.1215/S0012-7094-66-03352-7}
+
+\bibitem{Munkres}
+J. R. Munkres,
+\emph{Elements of Algebraic Topology},
+Addison--Wesley, 1984.  See the chapters on chain complexes, contiguity, and acyclic carriers.
+
+\bibitem{Pauly2016}
+A. Pauly,
+\emph{On the topological aspects of the theory of represented spaces},
+Computability 5(2) (2016), 159--180.
+\url{https://doi.org/10.3233/COM-150049}
+
+\bibitem{Sambin}
+G. Sambin and S. Gebellato,
+\emph{A preview of the basic picture},
+a constructive and pointfree account of basic opens, covers, and positivity.
+\url{https://www.math.unipd.it/~sambin/txt/preview.pdf}
+
+\bibitem{Kihara2020}
+T. Kihara,
+\emph{The Brouwer invariance theorems in reverse mathematics},
+Forum of Mathematics, Sigma 8 (2020), e51.
+\url{https://doi.org/10.1017/fms.2020.52}
+
+\bibitem{Berg1975}
+G. Berg, W. Julian, R. Mines, and F. Richman,
+\emph{The constructive Jordan curve theorem},
+Rocky Mountain Journal of Mathematics 5(2) (1975), 225--236.
+\url{https://doi.org/10.1216/RMJ-1975-5-2-225}
+
+\bibitem{NguyenCook}
+P. Nguyen and S. Cook,
+\emph{The complexity of proving the discrete Jordan curve theorem},
+ACM Transactions on Computational Logic 13(1) (2012), Article 2; preprint arXiv:1002.2954.
+
+\bibitem{Bridges2025}
+D. S. Bridges,
+\emph{On the constructive theory of Jordan curves},
+arXiv:2502.09784, 2025.
+
+\end{thebibliography}
+
+\end{document}

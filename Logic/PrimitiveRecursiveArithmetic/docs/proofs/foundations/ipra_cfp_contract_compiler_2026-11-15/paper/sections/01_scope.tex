@@ -1,0 +1,130 @@
+\section{Scope, repository audit, and proof boundary}
+
+\subsection{The checked core and the research layer}
+
+At the inspected snapshot
+\[
+  \code{b88e843c31b50dfe461bfbd0380166ca422cd3ab},
+\]
+the directory \code{Logic/PrimitiveRecursiveArithmetic} has two deliberately
+different layers.  The first is \code{ConciseIPRA}, a Lean development of
+small systems bi-interpretable with ordinary intuitionistic primitive
+recursive arithmetic.  The second is a catalog of fifty-eight delivered
+research packets.  The repository warns that these packets were filed as
+delivered and were not collectively rebuilt or verified.  In particular, no
+packet currently supplies a completed derivation of its main mathematical
+theorem in the object type
+\[
+       \Gamma\;\vdash[\PRAAx]\;\varphi.
+\]
+This report takes that distinction as a design constraint, not as a clerical
+detail.
+
+The object language actually available in the repository is unusually useful
+for this project.  The inductive type \code{PR k} contains zero, successor,
+projections, composition, and primitive recursion.  Terms \code{PTm n} are
+applications of those symbols to variables.  The axiom family \PRAAx\ contains
+the defining equations, successor separation and injectivity, and induction
+for quantifier-free formulas.  The theorem \code{PRA.qfInd} is therefore the
+principal internal engine.  The theorem \code{pra\_iff\_native} transports an
+already completed \PRAAx\ derivation to the tiny native calculus; it is not a
+device for turning an arbitrary semantic Lean proof into such a derivation.
+
+\subsection{What ``embedding mathematics in iPRA'' means}
+
+A mathematically serious claim of an iPRA proof should contain four separate
+objects.
+
+\begin{enumerate}[label=\textbf{(\arabic*)},leftmargin=2.2em]
+\item A finite numerical presentation of the input, including every modulus,
+      separation constant, height cutoff, chart, or cover used by the proof.
+\item Fixed primitive-recursive algorithms for the finite computations.
+      ``Fixed'' matters: a universal evaluator taking an arbitrary PR program
+      code as data is not itself primitive recursive.
+\item A quantifier-free invariant and an object-language derivation from
+      \PRAAx.  A native theorem about Lean's \code{Nat}, even a constructive
+      one, is only a semantic lemma until this derivation is built.
+\item An external interpretation theorem connecting the numerical
+      presentation to the familiar mathematical statement.
+\end{enumerate}
+
+The order is important.  One proves the arithmetic certificate first and
+transports it through the repository's bi-interpretation only afterward.
+This prevents three common category errors: treating type checking of a goal
+as a proof, treating a finite test run as a universal theorem, and treating a
+classical existence theorem as if it supplied a primitive-recursive witness.
+
+\subsection{Recurring difficulties}
+
+The proof packets reveal a stable list of obstacles.
+
+\begin{longtable}{p{.20\linewidth}p{.34\linewidth}p{.36\linewidth}}
+\toprule
+\textbf{Obstacle} & \textbf{Typical invalid move} & \textbf{Required repair}\\
+\midrule
+\endhead
+Unbounded precision &
+Induct on a proposition saying that an identity holds at every future
+precision. &
+Fix a free requested precision, compute the finite observations it demands,
+prove a bounded invariant, then universally introduce the request.\\
+
+Discontinuous exact choice &
+Select the sign, root, eigenvector, rotation axis, or Puiseux branch of
+arbitrary Cauchy data. &
+Use overlapping branches, finite relational outputs, projective data, or
+supply a positive separation certificate.\\
+
+Abstract compactness &
+Invoke compactness or completeness without exhibiting a finite cover. &
+Provide a primitive-recursive net, a Lebesgue-number-type margin, and a
+finite refinement verifier.\\
+
+Finiteness without a cutoff &
+Enumerate all rational or integral points from a theorem saying only that
+there are finitely many. &
+Separate the bounded verifier from the missing height or covering
+certificate producer.\\
+
+Ineffective constants &
+Use an asymptotic theorem whose constants are not given effectively. &
+Make the constants part of the input certificate and prove a verifier theorem
+with the correct quantifier order.\\
+
+Semantic/object mismatch &
+Prove the intended theorem in ambient Lean and call it an iPRA proof. &
+Compile the algorithm to \code{PR}, express its invariant as an
+\code{Fm PTm}, and construct a \code{Prf PRAAx} term.\\
+\bottomrule
+\end{longtable}
+
+These obstacles are not interchangeable.  A missing analytic estimate is not
+fixed by better coding; a discontinuous selector is not fixed by a faster
+search; and a semantic Lean proof is not made internal by adding more test
+cases.
+
+\subsection{Contribution of this report}
+
+The current repository already contains several compatible frameworks:
+certificate-and-modulus interfaces, finite observations, evidence-indexed
+outputs, uniform certificates, and the newly placed Certified Finitary
+Presentation report.  The present contribution is an integration layer.
+
+\begin{itemize}[leftmargin=1.7em]
+\item A \emph{contract-DAG} packages a whole proof as a fixed finite acyclic
+      network of local certified transducers.
+\item A reverse pass computes all precision and observation demands.
+\item A forward bounded trace evaluates the nodes.
+\item One quantifier-free trace invariant composes the local proof objects.
+\item Relational outputs are handled by a finite-horizon compatibility
+      theorem rather than by hidden choice.
+\item A packet-conversion protocol identifies, for every theorem, the exact
+      missing producer and the exact reusable verifier.
+\end{itemize}
+
+The result is deliberately modular.  It does not make the general Faltings or
+Siegel theorem effective, does not manufacture the missing constants in
+ineffective prime-distribution estimates, and does not produce exact Puiseux
+branches from arbitrary Cauchy coefficient names.  It does show precisely
+what can be proved once the appropriate finite certificate is supplied and
+how that proof should be assembled in the repository's actual object theory.

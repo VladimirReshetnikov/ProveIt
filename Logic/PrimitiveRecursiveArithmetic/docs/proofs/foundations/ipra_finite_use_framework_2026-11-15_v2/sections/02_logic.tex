@@ -1,0 +1,89 @@
+\section{Logical target and compilation discipline}
+\label{sec:logic}
+
+\subsection{The object theory}
+
+Fix a finite tuple of numerical parameters $x\in\N^r$.  A \emph{fixed primitive-recursive symbol} means a symbol obtained from zero, successor, projections, composition, and primitive recursion.  The syntax may contain one such symbol for each definition used in a theorem.  It does not contain a single total evaluator that takes an arbitrary program code and runs it without a clock.  This fixed-program convention is essential: a universal unclocked evaluator for all primitive-recursive programs cannot itself be primitive recursive, by diagonalization.
+
+The permitted induction rule has the schematic form
+\[
+  A(0,x)\;\wedge\;\forall i\bigl(A(i,x)\to A(i+1,x)\bigr)
+  \;\Longrightarrow\;\forall i\,A(i,x),
+\]
+where $A$ is quantifier free.  Parameters $x$ may remain free.  Thus the common phrase ``iPRA cannot reason about a Cauchy name because its contract is universally quantified'' is too coarse.  The global name contract may remain as a hypothesis outside the induction predicate.  At stage $i$, universal elimination instantiates it at the finitely computed query indices required by the current state.  The induction invariant itself records only the resulting Boolean facts.
+
+\subsection{Bounded Booleanization}
+
+A relation is \emph{PR-decidable} when it is represented by a fixed Boolean-valued primitive-recursive term.  Let bounded formulas be generated from PR-decidable atoms using propositional connectives and bounded quantifiers
+\[
+  \exists j<b(x)\,\varphi(x,j),\qquad
+  \forall j<b(x)\,\varphi(x,j).
+\]
+
+\begin{theorem}[Bounded Booleanization]
+\label{thm:booleanization}
+For every fixed bounded formula $\varphi(x)$ there is a Boolean-valued primitive-recursive function $\llbracket\varphi\rrbracket(x)$ such that iPRA proves
+\[
+  \varphi(x)\;\leftrightarrow\;\llbracket\varphi\rrbracket(x)=1.
+\]
+Moreover, the construction is compositional and produces a quantifier-free equation suitable for an induction invariant.
+\end{theorem}
+
+\begin{proof}
+Proceed by structural recursion on $\varphi$.  Atomic formulas already have Boolean tests.  Negation, conjunction, disjunction, and implication are represented by the corresponding truth-table functions on $\{0,1\}$.  For a bounded existential define the prefix fold
+\[
+ E(x,0)=0,\qquad
+ E(x,n+1)=\max(E(x,n),\llbracket\psi\rrbracket(x,n)).
+\]
+Quantifier-free induction on $n$ proves
+\[
+ E(x,n)=1\leftrightarrow \exists j<n\,\psi(x,j).
+\]
+The successor step is a finite case split on the two Boolean values.  Substitute $n=b(x)$.  Bounded universal quantification is compiled either by a minimum/product fold or by negating the existential of the Boolean complement.  All definitions are fixed primitive recursions, and the correctness derivations are intuitionistic because the only case distinctions are on numerical Booleans.
+\end{proof}
+
+\begin{corollary}[Least bounded witness]
+\label{cor:first-witness}
+For every Boolean test $P(x,j)$ and bound $b(x)$ there is a primitive-recursive function $s(x)$, with sentinel $b(x)$, such that iPRA proves
+\[
+\begin{split}
+  &s(x)<b(x)\to P(x,s(x))=1,\\
+  &s(x)<b(x)\to \forall j<s(x)\;P(x,j)=0,\\
+  &s(x)=b(x)\leftrightarrow\forall j<b(x)\;P(x,j)=0.
+\end{split}
+\]
+Each displayed bounded universal may itself be represented by its Boolean fold.
+\end{corollary}
+
+\begin{proof}
+Maintain a register initially equal to the sentinel.  At stage $j$, if the register is still the sentinel and $P(x,j)=1$, replace it by $j$; otherwise retain it.  The invariant says that the register is the least successful index in the processed prefix, or the sentinel if none exists.  Booleanize the bounded clauses and apply quantifier-free induction.
+\end{proof}
+
+\subsection{Totalization and guards}
+
+Primitive-recursive programs are total.  Mathematical operations such as reciprocal, normalization, or decoding of a nonempty list are partial.  The correct compilation is therefore:
+\begin{enumerate}[label=(\alph*)]
+\item define a total program with a harmless default outside its domain;
+\item define a Boolean guard certifying that the intended domain condition holds;
+\item prove the mathematical specification under that guard.
+\end{enumerate}
+For instance, an integer-coded rational reciprocal may return $0$ when the numerator is $0$.  Every theorem using it carries a positive lower-bound or nonzero integer premise that proves the guard.  Totalization never licenses cancellation without the guard.
+
+\subsection{Fixed precision, then universal introduction}
+
+Suppose a theorem about a represented object has the external form
+\[
+  H(p)\to\forall k\;\Out(p,k,A(p,k)).
+\]
+The preferred derivation keeps $p$ and $k$ free, constructs a finite trace specialized to that $k$, and proves $\Out(p,k,A(p,k))$.  Only after the finite proof is complete is $k$ universally introduced.  Induction is never applied to a formula already containing the completed $\forall k$ conclusion.  This order is not cosmetic: it is the mechanism by which all-precision statements remain compatible with quantifier-free induction.
+
+\subsection{Semantic proof versus embedded proof}
+
+A semantic theorem can guide the object proof, but the bridge has four explicit steps:
+\begin{enumerate}
+\item choose concrete \code{PR} symbols and \code{PTm} terms;
+\item formulate every loop invariant as a quantifier-free \code{Fm PTm};
+\item construct base and step derivations using defining equations and \code{PRA.qfInd};
+\item only then apply \code{pra_iff_native} if a native proof object is wanted.
+\end{enumerate}
+The final bridge is faithful, but it is not a reflection tactic that turns arbitrary host-Lean propositions into object formulas.

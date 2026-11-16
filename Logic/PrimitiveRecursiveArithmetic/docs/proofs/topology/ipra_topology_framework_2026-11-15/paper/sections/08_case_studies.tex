@@ -1,0 +1,93 @@
+
+\section{Topology case studies}
+\label{sec:cases}
+
+\subsection{The Sierpinski space}
+
+Let $X=\{0,1\}$ with preorder $0\preceq1$ and no converse relation.  The upward opens are
+\[
+  \varnothing,\quad\{1\},\quad\{0,1\}.
+\]
+The exact Python kernel reconstructs these opens from the relation.  Exhaustive enumeration of all maps between three representative two-point preorders confirms the theorem ``monotone iff continuous'' in every case; the human proof is \cref{thm:finite-continuity}.
+
+This example is small but instructive.  Open information is directional: observing $0$ forces compatibility with $1$.  A preorder code expresses this directly, while an open-set list obscures it.  It also illustrates why non-Hausdorff finite spaces remain topologically meaningful.
+
+\subsection{A carrier tower for the circle}
+
+Let $C_n$ be the one-dimensional cycle complex with vertices $0,\ldots,n-1$ and edges $\{j,j+1\bmod n\}$.  Define a binary refinement carrier
+\[
+  R:C_{2n}\multimap C_n
+\]
+by
+\[
+  R(2i)=\{i\},
+  \qquad
+  R(2i+1)=\{i,i+1\bmod n\}.
+\]
+For every fine edge, the union of its endpoint clouds is one coarse edge, so $R$ is a strong carrier.
+
+There are two obvious selections: choose the smaller or the larger endpoint of each ambiguous cloud.  They differ exactly at subdivision vertices.  By \cref{thm:selection}, both are simplicial and contiguous.  The prism theorem proves they induce the same map on $H_1$.  The exact kernel verifies
+\[
+  \beta(C_4)=\beta(C_8)=\beta(C_{16})=(1,1)
+\]
+and checks the prism matrix identity for the two selections.
+
+This is the model for a boundary point in a cover: the point belongs to two adjacent cells, and no exact convention should affect the topological invariant.
+
+\subsection{Jordan separation}
+
+The constructive Jordan theorem is naturally expressed with positive clearance.  Let $\gamma$ be a circle embedding with:
+\begin{itemize}
+  \item a fixed rational approximation evaluator;
+  \item a forward continuity modulus;
+  \item an inverse separation modulus ensuring that separated parameters have separated images.
+\end{itemize}
+For a rational query point $p$ with a positive lower distance bound from the curve, a sufficiently fine polygonal approximation has stable crossing parity.  Triangle replacement proves independence from further refinement.  A finite grid or honeycomb flood computes a route within the equal-parity region; failure would extract a separating cycle whose parity change contradicts equality of the endpoint bits.  This is the constructive strategy of Berg--Julian--Mines--Richman in finite arithmetic form \cite{Berg1975}, consistent with the discrete bounded-arithmetic analyses of Nguyen and Cook \cite{NguyenCook} and later constructive treatments \cite{Bridges2025}.
+
+The carrier framework improves the interface in four ways.
+
+\begin{enumerate}
+  \item A curve sample lying on a grid boundary belongs to all adjacent safe cells.  Keep that cloud rather than imposing a global tie-break.
+  \item Polygon refinements are carriers between finite cycle complexes.  Crossing parity invariance is a finite chain statement.
+  \item Safe-region routes are finite edge chains in a complement complex; alternative routing choices are related by finite $2$-cell fillings when available.
+  \item The inside/outside bit is defined on the apartness complement.  No decision at zero clearance is asserted.
+\end{enumerate}
+
+A complete object proof still needs the theorem-specific crossing and flood-fill invariants.  The tower/carrier library removes repeated map-choice, refinement, and homology bookkeeping; it does not replace the Jordan parity argument itself.
+
+\subsection{Invariance of dimension}
+
+For a presented map $f:[0,1]^d\to\R^m$, choose a rational grid fine enough that the oscillation on each Kuhn simplex is below a requested threshold.  Encode its vertex values as rational integer tuples after clearing denominators.  The repository's finite theorem gives the positive alternative:
+\begin{quote}
+if $d>m$, then either opposite source faces have images closer than the claimed separation, or one Kuhn simplex has image oscillation at least the local bound.
+\end{quote}
+Both conclusions are finite witnesses.  Applied to a presented homeomorphism and its inverse with explicit moduli, they force equality of dimensions.
+
+In the tower language, Kuhn triangulations are levels, subdivision is a refinement carrier, and the map evaluator induces a target-grid carrier.  Staggered grid labels are Boolean functions on vertices.  The cubical Sperner parity theorem becomes a reusable finite contract.  Boundary ambiguity is harmless because adjacent target cells form a carrier simplex.
+
+The restriction to explicitly presented maps is essential.  The statement is a schema for fixed evaluators and moduli, not a first-order universal quantification over all real functions.  This matches the logical boundary highlighted by the existing packet and by reverse-mathematical results on unrestricted invariance principles \cite{Kihara2020}.
+
+\subsection{Nerve computations from good covers}
+
+Suppose a compact presented space has a finite cover $\mathcal U$ such that every nonempty finite intersection comes with a contraction certificate.  The nerve $N(\mathcal U)$ is finite.  An effective nerve theorem can be organized by two acyclic carriers:
+\begin{enumerate}
+  \item a carrier from a sufficiently fine spatial triangulation to the nerve, assigning all cover elements containing a cell;
+  \item a carrier back, using supplied contraction/filling operators for cover intersections.
+\end{enumerate}
+The carrier composites are chain homotopic to identities.  Therefore the finite nerve and the spatial complex have isomorphic homology.  If the intersections are literally represented by one simplex at the finite level, strong carriers suffice; otherwise use the certified acyclic extension.
+
+The phrase ``good cover'' must therefore expand to finite data: an intersection table, positivity witnesses, and bounded contractions or filling matrices.  With those fields, the proof is finite and \ipra-compatible.
+
+\subsection{Surfaces and Euler characteristic}
+
+A triangulated compact surface is a finite complex with local-link certificates.  The Euler characteristic
+\[
+  \chi=V-E+F
+\]
+is exact integer arithmetic.  Edge-incidence checks verify that each edge has two incident faces in the closed case, and vertex links verify the local manifold condition.  Mod-$2$ Betti numbers provide
+\[
+  \chi=\beta_0-\beta_1+\beta_2.
+\]
+The equality follows from rank cancellation in the finite chain complex and is formalizable by bounded matrix arithmetic.
+
+Classification of surfaces requires more: a finite sequence of certified elementary moves reducing a triangulation to a normal form, or an algorithm with a well-founded finite measure and invariant.  The framework can verify such traces and prove their invariants.  It does not treat the classification theorem as a one-line consequence of coding.
