@@ -60,6 +60,7 @@ import IPRADerivations.AnalyticNumberTheory.PhiUpper
 import IPRADerivations.AnalyticNumberTheory.PhiLimsup
 import IPRADerivations.AnalyticNumberTheory.PhiPowTwo
 import IPRADerivations.AnalyticNumberTheory.Harmonic
+import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.Combinatorics.Bell
 import IPRADerivations.Combinatorics.BellBounds
 import IPRADerivations.Combinatorics.BellTriangle

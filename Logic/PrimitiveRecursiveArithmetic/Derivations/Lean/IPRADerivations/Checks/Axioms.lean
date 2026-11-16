@@ -326,6 +326,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Harmonic.dyadic
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Harmonic.harmonic_dyadic
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Harmonic.harmonic_dyadic_closed
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.pw_mul_base
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.bernoulli
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.decr
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.local_factor
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.local_factor_closed
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.iS_pair
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.nth_pair_succ
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.bell_zero
