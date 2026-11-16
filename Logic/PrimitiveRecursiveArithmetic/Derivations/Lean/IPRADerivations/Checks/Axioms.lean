@@ -97,6 +97,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ChineseRemainder.crt_exists
 #print axioms LeanProofs.IPRA.Foundations.ChineseRemainder.crt_unique
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Hurwitz.denominator_bound
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.gauss_lemma
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_dvd_left
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_mul
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_square
 #print axioms LeanProofs.IPRA.Analysis.Products.pochhammer_shift
 #print axioms LeanProofs.IPRA.Analysis.Products.telescoping_sum
 #print axioms LeanProofs.IPRA.Analysis.Products.wallis_product
