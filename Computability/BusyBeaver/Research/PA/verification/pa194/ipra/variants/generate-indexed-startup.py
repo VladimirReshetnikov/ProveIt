@@ -9,6 +9,11 @@ CHUNK_SIZE = 4096
 SEED = (24, 1, 152919395647067130113387679226998336721518593)
 RESTRICTED_CONTROLS = [107, 123]
 variants = {
+    "PA194M5": (
+        "pa194_radix_family_2026-11-13/machines/5/machine.tm",
+        "180a0fd1f046d4cbd687b43979f0605619ad5f53054d32b9f62f33e7a3bccab8",
+        58320,
+    ),
     "PA194LCB": (
         "pa194_loop_continuation_research_2026-11-14/machines/PA194LC_B/machine.tm",
         "4b2b45e97fdd5f8a6e22c4f552dc3f26252c170e85cdb5ddb27ad5d5c580982a",

@@ -57,33 +57,39 @@ theorem path_short (tree : M6.Source.PathTrie.Tree) (depth : trieDepth tree ≤ 
 
 variable (path : Nat → M6.Source.Path)
 
-def pathCodes : List (Code 1) := (List.range 3673).map (wordCode ∘ path)
+private def pathCodesFor (sites : Nat) : List (Code 1) := (List.range sites).map (wordCode ∘ path)
 
-def offsets : List Nat := (List.range 3673).map (fun i => 48-(path i).length)
+private def offsetsFor (sites : Nat) : List Nat := (List.range sites).map (fun i => 48-(path i).length)
 
-def rightHalf : Code 3 := bin (indexed (pathCodes path)) (.proj 0)
-  (bin zeros (bin addCode (.proj 1) (unary (lookupCode 0 (offsets path)) (.proj 0))) (unary pushOne (.proj 2)))
+private def rightHalfFor (sites : Nat) : Code 3 := bin (indexed (pathCodesFor path sites)) (.proj 0)
+  (bin zeros (bin addCode (.proj 1) (unary (lookupCode 0 (offsetsFor path sites)) (.proj 0))) (unary pushOne (.proj 2)))
 
 /-- The physical root as a function of the source ordinal, extra gap, and register file. -/
-def rootCode : Code 3 :=
+def rootCodeFor (sites : Nat) : Code 3 :=
   bin pairCode (unary (constantCode 24) (.proj 0))
-    (bin pairCode (unary (constantCode 1) (.proj 0)) (rightHalf path))
+    (bin pairCode (unary (constantCode 1) (.proj 0)) (rightHalfFor path sites))
 
 /-- Use the common register file with a table-specific address lookup. -/
-def sourceRootCode : Code 4 := .comp (rootCode path) (pack 3 ![unary pc (.proj 0),.proj 1,
+def sourceRootCodeFor (sites : Nat) : Code 4 := .comp (rootCodeFor path sites) (pack 3 ![unary pc (.proj 0),.proj 1,
   .comp packedFileCode (pack 3 ![.proj 0,.proj 2,.proj 3])])
 
-private theorem pathCodeAt (i : Fin 3673) :
-    (pathCodes path).getD i.val (.proj 0) = wordCode (path i.val) := by
-  have hi : i.val < (pathCodes path).length := by simpa [pathCodes] using i.isLt
-  rw [List.getD_eq_getElem _ _ hi]
-  simp [pathCodes]
+abbrev pathCodes : List (Code 1) := pathCodesFor path 3673
+abbrev offsets : List Nat := offsetsFor path 3673
+abbrev rightHalf : Code 3 := rightHalfFor path 3673
+abbrev rootCode : Code 3 := rootCodeFor path 3673
+abbrev sourceRootCode : Code 4 := sourceRootCodeFor path 3673
 
-private theorem offsetAt (i : Fin 3673) :
-    (offsets path).getD i.val 0 = 48-(path i.val).length := by
-  have hi : i.val < (offsets path).length := by simpa [offsets] using i.isLt
+private theorem pathCodeAt {sites : Nat} (i : Fin sites) :
+    (pathCodesFor path sites).getD i.val (.proj 0) = wordCode (path i.val) := by
+  have hi : i.val < (pathCodesFor path sites).length := by simpa [pathCodesFor] using i.isLt
   rw [List.getD_eq_getElem _ _ hi]
-  simp [offsets]
+  simp [pathCodesFor]
+
+private theorem offsetAt {sites : Nat} (i : Fin sites) :
+    (offsetsFor path sites).getD i.val 0 = 48-(path i.val).length := by
+  have hi : i.val < (offsetsFor path sites).length := by simpa [offsetsFor] using i.isLt
+  rw [List.getD_eq_getElem _ _ hi]
+  simp [offsetsFor]
 
 section models
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
@@ -137,26 +143,31 @@ theorem root_advanced_gap (rootControl : label 84 = 24)
   have h : 48+1-(path i).length = 1+(48-(path i).length) := by omega
   rw [h, modelNumeralAdd, modelNumeralOne, Nat.add_zero, add_assoc]
 
-theorem rootCode_eval (rootControl : label 84 = 24) (i : Fin 3673) (gap file : M) :
-    F (rootCode path) ![modelNumeral M i.val,gap,file] =
+theorem rootCodeFor_eval {sites : Nat} (rootControl : label 84 = 24) (i : Fin sites) (gap file : M) :
+    F (rootCodeFor path sites) ![modelNumeral M i.val,gap,file] =
       PA194SourceContracts.root label path gap (fun _ => file) i.val := by
   rw [root_eval _ _ rootControl]
-  simp only [rootCode, rightHalf, modelBin, modelUnary, modelProjection,
+  simp only [rootCodeFor, rightHalfFor, modelBin, modelUnary, modelProjection,
     modelConstant, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
     modelLookupNumeral, offsetAt, modelPairCode, modelNumeralOne]
   rw [indexedCorrect, pathCodeAt, wordCodeCorrect]
   simp only [Nat.add_zero, modelNumeralCast, Nat.cast_ofNat, Nat.cast_one] <;> rfl
+
+theorem rootCode_eval (rootControl : label 84 = 24) (i : Fin 3673) (gap file : M) :
+    F (rootCode path) ![modelNumeral M i.val,gap,file] =
+      PA194SourceContracts.root label path gap (fun _ => file) i.val :=
+  rootCodeFor_eval path label rootControl i gap file
 
 theorem root_initial_file (rootControl : label 84 = 24) (gap : M) (box : BoxSt → M) (i : Nat) (effect : Eff) :
     PA194SourceContracts.root label path gap box i 0 effect =
       PA194SourceContracts.root label path gap (fun _ => box (.plain effect)) i := by
   rw [root_eval _ _ rootControl, root_eval _ _ rootControl]
 
-theorem sourceRoot_eval (rootControl : label 84 = 24) (s gap count spare : M) (i : Fin 3673)
+theorem sourceRootFor_eval {sites : Nat} (rootControl : label 84 = 24) (s gap count spare : M) (i : Fin sites)
     (hpc : F pc ![s] = modelNumeral M i.val) :
-    F (sourceRootCode path) ![s,gap,count,spare] =
+    F (sourceRootCodeFor path sites) ![s,gap,count,spare] =
       PA194SourceContracts.root label path gap (fun _ => F PA194RegisterPermutation.sourceFileCode (args s count spare)) i.val := by
-  rw [sourceRootCode, modelComposition, getCode_pack]
+  rw [sourceRootCodeFor, modelComposition, getCode_pack]
   have he : (fun j : Fin 3 => F (![unary pc (.proj 0),.proj 1,
       .comp packedFileCode (pack 3 ![.proj 0,.proj 2,.proj 3])] j : Code 4) ![s,gap,count,spare]) =
       ![modelNumeral M i.val,gap,F PA194RegisterPermutation.sourceFileCode (args s count spare)] := by
@@ -178,8 +189,15 @@ theorem sourceRoot_eval (rootControl : label 84 = 24) (s gap count spare : M) (i
         funext j
         fin_cases j <;> exact modelProjection _ _
       rw [hv, packedFileCodeCorrect] <;> rfl
-  rw [he, rootCode_eval _ _ rootControl]
+  rw [he, rootCodeFor_eval _ _ rootControl]
 
+theorem sourceRoot_eval (rootControl : label 84 = 24) (s gap count spare : M) (i : Fin 3673)
+    (hpc : F pc ![s] = modelNumeral M i.val) :
+    F (sourceRootCode path) ![s,gap,count,spare] =
+      PA194SourceContracts.root label path gap (fun _ => F PA194RegisterPermutation.sourceFileCode (args s count spare)) i.val :=
+  sourceRootFor_eval path label rootControl s gap count spare i hpc
+
+#print axioms sourceRootFor_eval
 #print axioms sourceRoot_eval
 #print axioms root_advanced_gap
 end models

@@ -63,12 +63,16 @@ def BoundedContracts (bound i : Nat) : Instruction → Prop
 
 abbrev Contracts := BoundedContracts d 3673
 
+theorem checkedInstructionContracts (bound i : Nat) (code : Instruction)
+    (h : PA194SourceContracts.checkInstructionFor bound d.machine d.path i code = true) :
+    BoundedContracts d bound i code := by
+  cases code <;> simpa only [PA194SourceContracts.checkInstructionFor, BoundedContracts,
+    PA194FoldedSourceContracts.destination_eq, Bool.and_eq_true, decide_eq_true_eq, and_assoc] using h
+
 private theorem atSite (i : Nat) (h : checkAt d i = true) :
     ∃ code, resolveAt PA194SourceProgram.sites i = some code ∧ Contracts d i code := by
   obtain ⟨code, hresolve, hcheck⟩ := PA194SourceContracts.checked_at d.machine d.path d.codeAt i h
-  refine ⟨code, hresolve, ?_⟩
-  cases code <;> simpa only [checkInstruction, PA194SourceContracts.checkInstruction, Contracts, BoundedContracts,
-    PA194FoldedSourceContracts.destination_eq, Bool.and_eq_true, decide_eq_true_eq, and_assoc] using hcheck
+  exact ⟨code, hresolve, checkedInstructionContracts d 3673 i code hcheck⟩
 
 section models
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
@@ -99,11 +103,17 @@ private theorem root_advanced_gap (gap : M) (box : BoxSt → M) (i : Nat) (effec
     root d gap box i 1 effect = root d (gap+1) box i 0 effect :=
   PA194TrieRoot.root_advanced_gap d.path d.label d.rootControl d.pathShort gap box i effect
 
+theorem sourceRootFor_eval {sites : Nat} (s gap count spare : M) (i : Fin sites)
+    (hpc : F pc ![s] = modelNumeral M i.val) :
+    F (PA194TrieRoot.sourceRootCodeFor d.path sites) ![s,gap,count,spare] =
+      root d gap (fun _ => F PA194RegisterPermutation.sourceFileCode (args s count spare)) i.val :=
+  PA194TrieRoot.sourceRootFor_eval d.path d.label d.rootControl s gap count spare i hpc
+
 private theorem sourceRoot_eval (s gap count spare : M) (i : Fin 3673)
     (hpc : F pc ![s] = modelNumeral M i.val) :
     F (sourceRootCode d) ![s,gap,count,spare] =
       root d gap (fun _ => F PA194RegisterPermutation.sourceFileCode (args s count spare)) i.val :=
-  PA194TrieRoot.sourceRoot_eval d.path d.label d.rootControl s gap count spare i hpc
+  sourceRootFor_eval d s gap count spare i hpc
 
 private theorem root_control (gap : M) (box : BoxSt → M) (i extra : Nat) (effect : Eff) :
     π₁ (root d gap box i extra effect) = (24 : M) := by
@@ -112,20 +122,25 @@ private theorem root_control (gap : M) (box : BoxSt → M) (i extra : Nat) (effe
   rw [d.rootControl]
   rfl
 
+theorem sourceRootFor_control {sites : Nat} (s gap count spare : M) (i : Fin sites)
+    (hpc : F pc ![s] = modelNumeral M i.val) :
+    π₁ (F (PA194TrieRoot.sourceRootCodeFor d.path sites) ![s,gap,count,spare]) = (24 : M) := by
+  rw [sourceRootFor_eval d s gap count spare i hpc, root_control]
+
 private theorem contract_sound (gap : M) {br : Branch} {box : BoxSt → M}
     (boxes : BoxAgreement d.table d.label br box) (i j extra fuel : Nat) (effect : Eff)
     (cert : contract d br i j extra fuel effect = true) :
     Reach1 d.table (root d gap box i) (root d gap box j extra effect) :=
   PA194SourceContracts.contract_sound d.rows d.path gap boxes i j extra fuel effect cert
-private theorem stepAt (s s' gap count spare nextCount : M) (i j : Fin 3673)
+private theorem stepAt {sites : Nat} (s s' gap count spare nextCount : M) (i j : Fin sites)
     (hi : F pc ![s] = modelNumeral M i.val) (hj : F pc ![s'] = modelNumeral M j.val)
     (boxes : Boxes d spare) (br : Branch) (hb : BranchOK (tapeArgs s count spare) br)
     (extra : Bool) (eff : Eff)
     (cert : contract d br i.val j.val (if extra then 1 else 0) 512 eff = true)
     (hout : boxValue (tapeArgs s count spare) (incremented (tapeArgs s count spare) count)
       (.plain eff) = file (tapeArgs s' nextCount spare)) :
-    Reach1 d.table (F (sourceRootCode d) ![s,gap,count,spare])
-      (F (sourceRootCode d) ![s',(if extra then gap+1 else gap),nextCount,spare]) := by
+    Reach1 d.table (F (PA194TrieRoot.sourceRootCodeFor d.path sites) ![s,gap,count,spare])
+      (F (PA194TrieRoot.sourceRootCodeFor d.path sites) ![s',(if extra then gap+1 else gap),nextCount,spare]) := by
   let a := tapeArgs s count spare
   let box := boxValue a (incremented a count)
   have hin : box (.plain .none) = F PA194RegisterPermutation.sourceFileCode (args s count spare) :=
@@ -140,7 +155,7 @@ private theorem stepAt (s s' gap count spare nextCount : M) (i j : Fin 3673)
     rw [root_initial_file d g box j.val eff, hout]
   have h := contract_sound d gap (boxes s count br hb) i.val j.val (if extra then 1 else 0) 512 eff cert
   change Reach1 d.table (root d gap box i.val) (root d gap box j.val (if extra then 1 else 0) eff) at h
-  rw [sourceRoot_eval d s gap count spare i hi, sourceRoot_eval d _ _ _ _ j hj]
+  rw [sourceRootFor_eval d s gap count spare i hi, sourceRootFor_eval d _ _ _ _ j hj]
   cases extra with
   | false =>
     change Reach1 d.table (root d gap box i.val) (root d gap box j.val 0 eff) at h
@@ -152,17 +167,16 @@ private theorem stepAt (s s' gap count spare nextCount : M) (i j : Fin 3673)
     exact h
 
 /-- A checked physical instruction implements the supplied register and PC
-    results. The supplied instruction can come from a different resolved
-    source list with at most 3,673 sites. -/
-theorem advanceAt (bound : Nat) (boundOK : bound ≤ 3673)
-    (s s' gap count spare : M) (i : Fin 3673) (instr : Instruction)
+    results for any finite address lookup containing the source list. -/
+theorem advanceAtBound {sites : Nat} (bound : Nat) (boundOK : bound ≤ sites)
+    (s s' gap count spare : M) (i : Fin sites) (instr : Instruction)
     (hi : F pc ![s] = modelNumeral M i.val) (boxes : Boxes d spare)
     (hc : BoundedContracts d bound i.val instr) (hnormal : instr ≠ .halt)
     (hpc' : F pc ![s'] = modelNumeral M (execute (some instr) (regs s)).1)
     (hl : regs s' = (execute (some instr) (regs s)).2) :
     ∃ nextGap nextCount : M, F pc ![s'] < modelNumeral M bound ∧
-      Reach1 d.table (F (sourceRootCode d) ![s,gap,count,spare])
-        (F (sourceRootCode d) ![s',nextGap,nextCount,spare]) := by
+      Reach1 d.table (F (PA194TrieRoot.sourceRootCodeFor d.path sites) ![s,gap,count,spare])
+        (F (PA194TrieRoot.sourceRootCodeFor d.path sites) ![s',nextGap,nextCount,spare]) := by
   classical
   let a := tapeArgs s count spare
   let inc := incremented a count
@@ -174,7 +188,7 @@ theorem advanceAt (bound : Nat) (boundOK : bound ≤ 3673)
     exact hnormal rfl
   | jump next =>
     obtain ⟨hb,hc⟩ := hc
-    let j : Fin 3673 := ⟨destination next,lt_of_lt_of_le hb boundOK⟩
+    let j : Fin sites := ⟨destination next,lt_of_lt_of_le hb boundOK⟩
     refine ⟨gap,count,?_,?_⟩
     · rw [hpc']
       exact modelNumeralStrict _ _ hb
@@ -184,7 +198,7 @@ theorem advanceAt (bound : Nat) (boundOK : bound ≤ 3673)
       exact stepAt d s s' gap count spare count i j hi hpc' boxes none trivial false .none hc hout
   | inc r next =>
     obtain ⟨hb,hc⟩ := hc
-    let j : Fin 3673 := ⟨destination next,lt_of_lt_of_le hb boundOK⟩
+    let j : Fin sites := ⟨destination next,lt_of_lt_of_le hb boundOK⟩
     refine ⟨gap,count+1,?_,?_⟩
     · rw [hpc']
       exact modelNumeralStrict _ _ hb
@@ -198,7 +212,7 @@ theorem advanceAt (bound : Nat) (boundOK : bound ≤ 3673)
     obtain ⟨hzbound,hpbound,hzcheck,hpcheck⟩ := hc
     by_cases hz : regs s r = (0 : M)
     · simp only [execute,hz,if_true] at hpc' hl
-      let j : Fin 3673 := ⟨destination zero,lt_of_lt_of_le hzbound boundOK⟩
+      let j : Fin sites := ⟨destination zero,lt_of_lt_of_le hzbound boundOK⟩
       have hb : BranchOK a (some (physicalRegister r,true)) := by
         intro hr
         change a (slot (position r)) = 0
@@ -209,7 +223,7 @@ theorem advanceAt (bound : Nat) (boundOK : bound ≤ 3673)
         rfl
       exact stepAt d s s' gap count spare count i j hi hpc' boxes _ hb false .none hzcheck hout
     · simp only [execute,hz,if_false] at hpc' hl
-      let j : Fin 3673 := ⟨destination positive,lt_of_lt_of_le hpbound boundOK⟩
+      let j : Fin sites := ⟨destination positive,lt_of_lt_of_le hpbound boundOK⟩
       have hb : BranchOK a (some (physicalRegister r,false)) := by
         intro hr
         change a (slot (position r)) ≠ 0
@@ -221,6 +235,17 @@ theorem advanceAt (bound : Nat) (boundOK : bound ≤ 3673)
         simp only [boxValue,bslot r,dite_true,decrement,←read r,position]
         rfl
       exact stepAt d s s' gap count spare count i j hi hpc' boxes _ hb true _ hpcheck hout
+
+theorem advanceAt (bound : Nat) (boundOK : bound ≤ 3673)
+    (s s' gap count spare : M) (i : Fin 3673) (instr : Instruction)
+    (hi : F pc ![s] = modelNumeral M i.val) (boxes : Boxes d spare)
+    (hc : BoundedContracts d bound i.val instr) (hnormal : instr ≠ .halt)
+    (hpc' : F pc ![s'] = modelNumeral M (execute (some instr) (regs s)).1)
+    (hl : regs s' = (execute (some instr) (regs s)).2) :
+    ∃ nextGap nextCount : M, F pc ![s'] < modelNumeral M bound ∧
+      Reach1 d.table (F (sourceRootCode d) ![s,gap,count,spare])
+        (F (sourceRootCode d) ![s',nextGap,nextCount,spare]) :=
+  advanceAtBound d bound boundOK s s' gap count spare i instr hi boxes hc hnormal hpc' hl
 
 /-- Execute each nonterminal instruction and reach the next source root. -/
 theorem advance (checks : AllContracts d) (spare : M) (boxes : Boxes d spare) :
@@ -247,18 +272,24 @@ theorem advance (checks : AllContracts d) (spare : M) (boxes : Boxes d spare) :
     exact hnormal (by rwa [resolvedHaltIndex i.val hinst] at hi)
   exact advanceAt d 3673 le_rfl s s' gap count spare i instr hi boxes hc hnot hpc' hl
 
-theorem terminal (spare : M) (boxes : Boxes d spare) (s gap count : M)
-    (hpc : F pc ![s] = modelNumeral M 10) :
-    ∃ k : M, π₁ (ConPA.Machine.runFrom d.table k (F (sourceRootCode d) ![s,gap,count,spare])) = (194 : M) := by
+theorem terminalAt {sites : Nat} (spare : M) (boxes : Boxes d spare) (s gap count : M)
+    (i : Fin sites) (cert : haltContract d i.val 512 = true)
+    (hpc : F pc ![s] = modelNumeral M i.val) :
+    ∃ k : M, π₁ (ConPA.Machine.runFrom d.table k (F (PA194TrieRoot.sourceRootCodeFor d.path sites) ![s,gap,count,spare])) = (194 : M) := by
   let a := tapeArgs s count spare
   let box := boxValue a (incremented a count)
   obtain ⟨last, ⟨k, _, hrun⟩, hend⟩ :=
-    PA194SourceContracts.halt_sound d.rows d.path d.haltControl gap (boxes s count none trivial) 10 512 d.haltCheck
-  change ConPA.Machine.runFrom d.table k (root d gap box 10) = last at hrun
+    PA194SourceContracts.halt_sound d.rows d.path d.haltControl gap (boxes s count none trivial) i.val 512 cert
+  change ConPA.Machine.runFrom d.table k (root d gap box i.val) = last at hrun
   have hin : box (.plain .none) = F PA194RegisterPermutation.sourceFileCode (args s count spare) :=
     (frameFile s count spare).symm
-  rw [root_initial_file d, hin, ←sourceRoot_eval d s gap count spare ⟨10,by decide⟩ hpc] at hrun
+  rw [root_initial_file d, hin, ←sourceRootFor_eval d s gap count spare i hpc] at hrun
   exact ⟨k, by rw [hrun]; exact hend⟩
+
+theorem terminal (spare : M) (boxes : Boxes d spare) (s gap count : M)
+    (hpc : F pc ![s] = modelNumeral M 10) :
+    ∃ k : M, π₁ (ConPA.Machine.runFrom d.table k (F (sourceRootCode d) ![s,gap,count,spare])) = (194 : M) :=
+  terminalAt d spare boxes s gap count ⟨10, by decide⟩ d.haltCheck hpc
 
 /-- Shared source controller for any checked primary-layout table and trie.
     Only startup, halt absorption, the concrete boxes and finite site checks
@@ -282,6 +313,8 @@ theorem halt_iff_controller (checks : AllContracts d) (boxes : Boxes d (initialS
     obtain ⟨nextGap, nextCount, hpc, k, hk, hrun⟩ := advance d checks _ boxes s hs hn gap count
     exact ⟨k, nextGap, nextCount, hk, hpc, hrun⟩
 
+#print axioms advanceAtBound
+#print axioms terminalAt
 #print axioms advanceAt
 #print axioms advance
 #print axioms terminal

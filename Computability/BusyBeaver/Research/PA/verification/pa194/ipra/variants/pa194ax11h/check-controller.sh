@@ -10,7 +10,8 @@ mkdir -p "$out"
 out=$(cd -- "$out" && pwd)
 export LEAN_PATH="$out:$(cat "$physical/leanpath.txt")"
 
-for source in "$here/../PA194VariantController.lean" "$here/../PA194TrieSourceController.lean" \
+for source in "$here/../PA194SourceContracts.lean" "$here/../PA194TrieRoot.lean" \
+    "$here/../PA194VariantController.lean" "$here/../PA194TrieSourceController.lean" \
     "$here/PA194AX11HController.lean"; do
   mod=${source##*/}
   mod=${mod%.lean}

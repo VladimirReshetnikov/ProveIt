@@ -5,6 +5,14 @@ from pathlib import Path
 import sys
 
 variants = {
+    "PA194M5": (
+        "pa194_radix_family_2026-11-13/machines/5",
+        {
+            "machine.tm": "180a0fd1f046d4cbd687b43979f0605619ad5f53054d32b9f62f33e7a3bccab8",
+            "labels.json": "2890771c2db5c598d5f3f833feecf2903e01d69bdf626782e34196c34bfcb13b",
+            "sites.json": "bcdacaa1eb2f6be28cea742eb9d553d885a3ae490c9b307d2986fcde75d3b5b1",
+        },
+    ),
     "PA194LCB": (
         "pa194_loop_continuation_research_2026-11-14/machines/PA194LC_B",
         {
@@ -79,6 +87,9 @@ site_count = 3673
 if variant == "PA194AX11H":
     assert sha256(instructions).hexdigest() == "43a4ba0d62f95fe766d5369940b0aa8b7a4da04824feb8836905e289640f59f7"
     site_count = 3671
+elif variant == "PA194M5":
+    assert sha256(instructions).hexdigest() == "34375509c46552ff7f5c84e24d265cdf56ecd97b41fad3da14787232aa601ca4"
+    site_count = 3734
 else:
     assert instructions == primary
 labels=json.loads(raw['labels.json'])

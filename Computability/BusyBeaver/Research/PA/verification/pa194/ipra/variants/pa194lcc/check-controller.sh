@@ -20,6 +20,7 @@ check() {
   if rg -q "error:|sorryAx|Lean.ofReduceBool|declaration uses 'sorry'" "$log"; then return 1; fi
   printf 'PASS %s\n' "$mod"
 }
+check "$here/../PA194SourceContracts.lean"
 check "$here/../PA194TrieRoot.lean"
 check "$here/../PA194VariantController.lean"
 check "$here/../PA194TrieSourceController.lean"

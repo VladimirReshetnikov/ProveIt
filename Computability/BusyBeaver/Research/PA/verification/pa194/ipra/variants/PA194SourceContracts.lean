@@ -15,15 +15,17 @@ def haltContract (machine : M6.Zip.TMN) (path : Nat → Path) (i fuel : Nat) : B
   (exec machine none (fun s => s.1 == 254) fuel
     (PA194RuntimeContracts.rootFrame (path i)) false).isSome
 
-def checkInstruction (machine : M6.Zip.TMN) (path : Nat → Path) (i : Nat) : Instruction → Bool
-  | .inc r next => decide (next.getD 0 < 3673) &&
+def checkInstructionFor (bound : Nat) (machine : M6.Zip.TMN) (path : Nat → Path) (i : Nat) : Instruction → Bool
+  | .inc r next => decide (next.getD 0 < bound) &&
     contract machine path none i (next.getD 0) 0 512 (.inc (physicalRegister r))
-  | .dec r z p => decide (z.getD 0 < 3673 ∧ p.getD 0 < 3673) &&
+  | .dec r z p => decide (z.getD 0 < bound ∧ p.getD 0 < bound) &&
     (contract machine path (some (physicalRegister r, true)) i (z.getD 0) 0 512 .none &&
     contract machine path (some (physicalRegister r, false)) i (p.getD 0) 1 512 (.dec (physicalRegister r)))
-  | .jump next => decide (next.getD 0 < 3673) &&
+  | .jump next => decide (next.getD 0 < bound) &&
     contract machine path none i (next.getD 0) 0 512 .none
   | .halt => haltContract machine path i 512
+
+abbrev checkInstruction := checkInstructionFor 3673
 
 /-- Check both the resolved source instruction and every applicable physical branch. -/
 def checkAt (machine : M6.Zip.TMN) (path : Nat → Path) (codeAt : Nat → Option Instruction)
