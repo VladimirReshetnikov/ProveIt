@@ -11,6 +11,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.TriangleFormulas.heronFactor
 #print axioms LeanProofs.IPRA.Geometry.TriangleFormulas.heron
 #print axioms LeanProofs.IPRA.Geometry.TriangleFormulas.lawOfCosines
+#print axioms LeanProofs.IPRA.Geometry.Circumcircle.equidistB
+#print axioms LeanProofs.IPRA.Geometry.Circumcircle.equidistC
+#print axioms LeanProofs.IPRA.Geometry.Circumcircle.radius
+#print axioms LeanProofs.IPRA.Geometry.Circumcircle.square_compare
+#print axioms LeanProofs.IPRA.Geometry.Circumcircle.square_compare_closed
 #print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.mul_adjugate
 #print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.det_mul
 #print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.cayleyHamilton2
