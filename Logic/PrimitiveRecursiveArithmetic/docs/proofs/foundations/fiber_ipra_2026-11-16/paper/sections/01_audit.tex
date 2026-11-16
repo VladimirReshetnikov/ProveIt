@@ -1,0 +1,114 @@
+\section{Repository audit and the actual problem}
+\label{sec:audit}
+
+\subsection{Audited baseline}
+
+The report was prepared against the public \texttt{main} branch of
+\texttt{VladimirReshetnikov/ProveIt} at commit
+\texttt{58627ed89814ba122e1f0f012f1aba10\allowbreak 3cda267b}.  At that
+snapshot the \path{Logic/PrimitiveRecursiveArithmetic} directory has four logically
+distinct layers.
+
+\begin{longtable}{p{0.20\linewidth}p{0.47\linewidth}p{0.24\linewidth}}
+\toprule
+Layer & Role & Status at the audited snapshot\\
+\midrule
+\endfirsthead
+\toprule
+Layer & Role & Status at the audited snapshot\\
+\midrule
+\endhead
+\texttt{ConciseIPRA} & Ordinary first-order \(\ipra\), its small native scalar core, and a bi-interpretation.  The portable judgment is \(\Gamma\vdash_{\PRAAx}\varphi\), written in Lean as \texttt{Prf PRAAx Gamma phi}. & Lean library checked by the kernel.\\
+\texttt{Derivations} & Reusable arithmetic and theorem-specific derivations: semiring laws, order, monus, pairing, bounded search, division, gcd, B\'ezout, finite sums, descent, linear algebra, and many completed packet theorems. & Lean library checked by the kernel.\\
+\texttt{Bridge} & Translation between ordinary ConciseIPRA and the Foundation \(\ipra\) used by several computability projects, including open-sequent transport and arithmetic symbol comparison. & Lean library checked by the kernel.\\
+\texttt{docs/proofs} & 107 delivered packets in algebra, analysis, number theory, geometry, probability, topology, and foundations.  They contain human arguments, executable checks, and many Lean blueprints. & Filed as delivered; the directory README explicitly says that packets were not rerun or compiled on intake.\\
+\bottomrule
+\end{longtable}
+
+The distinction is decisive.  A theorem of Lean about \texttt{Nat}, a Python
+calculation, a verified polynomial identity in the host, or a structure whose
+field asks for a proof is not yet an \(\ipra\) theorem.  The acceptance test is
+literal: after all adapters have been expanded, the endpoint must have type
+\[
+        \Gamma\;\vdash_{\PRAAx}\;\varphi.
+\]
+The repository's checked \texttt{Derivations} library meets this test.  Most
+new proof packets do not, and their own status notes are generally careful
+about that fact.
+
+\subsection{What the existing foundation packets already solve}
+
+The most recent foundation packets converge on a strong common picture.
+Finite-query normal form packs all evidence for a fixed query into one bounded
+certificate.  KIFC-R and FINER add explicit residual producers and finite
+demand closure.  CBIP isolates bounded interaction programs and finite
+strategy certificates.  Scoped Certificate Realization observes that most
+certificates should remain local and be eliminated by existential elimination.
+The observation-algebra packets replace discontinuous labels by stable
+invariants or guarded labels.  These are genuine advances, and the present
+work deliberately reuses them rather than renaming them.
+
+Their recurring unresolved obligations are also remarkably stable:
+
+\begin{enumerate}
+\item a host-level finite algorithm has not been turned into an object-level
+      derivation;
+\item a bounded formula is placed inside an induction predicate, making the
+      predicate non-quantifier-free;
+\item finite witnesses are chosen independently without a compatibility proof;
+\item a missing modulus, separation bound, height cutoff, effective constant,
+      or representative is hidden in host data;
+\item a noncanonical witness escapes into a public conclusion;
+\item an infinitary object (a completion, compact space, quotient, sheaf, or
+      probability space) is invoked where the actual proof uses only finitely
+      many observations;
+\item metastability or pointwise approximation is silently promoted to a
+      coherent name or a global rate;
+\item a uniform evaluator or exact selector is demanded even though the
+      proposed interface cannot exist.
+\end{enumerate}
+
+The current repository already contains the arithmetic ingredients needed for
+most of the finite part: arbitrary-term defining equations, quantifier-free
+induction, substitution, simultaneous cut, order, bounded search, pairing,
+simultaneous recursion, bounded sums and products, and finite linear algebra.
+The missing shared layer is therefore not a larger arithmetic library.  It is
+a disciplined compiler interface connecting a finite mathematical argument to
+those checked derivations.
+
+\subsection{Why another framework is justified}
+
+A new framework is useful only if it removes a repeated source of work rather
+than adding another vocabulary.  FIBER-iPRA makes three changes.
+
+\paragraph{First, interfaces are query-indexed and typed.}
+A ``real number'', ``root'', ``finite cover'', or ``cohomology class'' is not
+represented by one global code.  It is represented by what can be verified at
+a requested precision, degree, horizon, mesh, or finite diagram.  The
+certificate space is allowed to vary with that query.  This makes resource
+flow explicit and prevents a proof at one precision from being confused with
+a coherent name at every precision.
+
+\paragraph{Second, composition is an object-theory theorem.}
+Every reusable node comes with a local derivation.  The compiler specializes
+these derivations, substitutes actual terms, and composes them using the
+checked \texttt{Prf.subst}, \texttt{Prf.weaken}, \texttt{Prf.exE}, and
+\texttt{Prf.trans} operations.  ``The checker is correct'' is not left as an
+informal bridge from executable truth to \(\ipra\).
+
+\paragraph{Third, residuals have a calculus.}
+A missing producer is neither concealed nor automatically fatal.  It is a
+formula in the final sequent.  The report classifies when it can be eliminated
+by bounded search, master-certificate formation, finite-net construction,
+adjacent-motion estimates, or finite strategy realization.  Residuals that
+encode genuinely unavailable effective mathematics remain explicit.
+
+\subsection{Conservative design rule}
+
+FIBER-iPRA does not add axioms to \(\ipra\) and does not propose an internal
+universal interpreter.  A fixed external source generator produces fixed
+primitive-recursive symbols, formulas, and proof terms.  Lean checks the
+resulting derivations.  This is exactly the same trusted-boundary pattern used
+successfully by the checked arithmetic library: metatheory may help construct
+a proof, but the object theorem is accepted only through the inductive
+\texttt{Prf} datatype.

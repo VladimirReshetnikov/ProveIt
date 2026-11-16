@@ -1,0 +1,123 @@
+\section{The formal boundary: ordinary iPRA and finite specialization}
+\label{sec:boundary}
+
+\subsection{The object theory used in the report}
+
+We use the ordinary presentation already selected by the repository
+unification plan.  Its terms are built from a symbol for every primitive
+recursive function.  Its formulas use intuitionistic first-order logic with
+equality.  The theory \(\PRAAx\) contains the defining equations for primitive
+recursive symbols, the successor axioms, and induction for quantifier-free
+formulas.  In Lean the central judgment is
+\[
+       \Prf\;\PRAAx\;\Gamma\;\varphi,
+\]
+with notation \(\Gamma\vdash_{\PRAAx}\varphi\).
+
+The checked deduction layer provides, among other rules:
+
+\begin{itemize}
+\item substitution of arbitrary terms for free variables;
+\item weakening of the hypothesis list;
+\item simultaneous cut, called \texttt{Prf.trans};
+\item universal and existential introduction and elimination;
+\item simultaneous equality substitution;
+\item quantifier-free induction through \texttt{PRA.qfInd};
+\item the convenient open induction wrapper \texttt{LeanProofs.IPRA.ind};
+\item instantiation of closed derivations at arbitrary terms through
+      \texttt{LeanProofs.IPRA.inst}.
+\end{itemize}
+
+The framework never reasons by saying that a primitive recursive function has
+the intended standard value and then applying a semantic completeness
+principle.  Instead, every use of a program is mediated by its defining
+equations and an object derivation.
+
+\subsection{Four levels that must not be conflated}
+
+For a fixed algorithm \(f\), formula \(A\), and certificate \(c\), there are
+four different statements.
+
+\begin{enumerate}
+\item \textbf{Host computation:} a Python or Lean evaluator returns a value.
+\item \textbf{Host theorem:} Lean proves a proposition about the standard
+      natural-number interpretation of \(f\).
+\item \textbf{Object equation:} \(\ipra\) derives the defining or correctness
+      equation for the term denoting \(f\).
+\item \textbf{Object conclusion:} \(\ipra\) derives \(A\), perhaps after
+      eliminating the certificate and discharging residual assumptions.
+\end{enumerate}
+
+Levels 1 and 2 are useful for discovering invariants and regression testing,
+but only levels 3 and 4 prove the requested theorem.  FIBER metadata records
+all four separately.
+
+\subsection{Why the compiler is specialized}
+
+One might try to internalize the entire framework by adding a
+primitive-recursive universal evaluator \(U(e,x)\) for codes of arbitrary
+primitive-recursive functions.  This cannot work.
+
+\begin{theorem}[No primitive-recursive universal evaluator]
+There is no binary primitive-recursive function \(U\) such that for every
+unary primitive-recursive function \(f\) there is an index \(e\) satisfying
+\(U(e,x)=f(x)\) for every \(x\).
+\end{theorem}
+
+\begin{proof}
+If such \(U\) existed, the diagonal function
+\[
+             g(x)=U(x,x)+1
+\]
+would be primitive recursive.  Hence \(g(x)=U(e,x)\) for some \(e\).  Setting
+\(x=e\) gives \(U(e,e)+1=U(e,e)\), impossible.  The argument is constructive
+and uses only closure of primitive recursive functions under composition and
+successor.
+\end{proof}
+
+Consequently a framework that quantifies internally over all primitive
+recursive source programs is asking for the wrong interface.  FIBER uses
+\emph{metalevel specialization}: a finite source description is compiled to
+specific \(\mathsf{PR}\) terms, specific formulas, and a specific proof term.
+For a bounded dynamic trace, the trace checker itself is a fixed primitive
+recursive symbol.  The generated proof is then checked by Lean's kernel.
+
+\subsection{Finite-use discipline}
+
+A proof of a fixed finite-query conclusion can inspect only finitely much
+source data.  FIBER makes that finite use explicit through a demand map.  This
+is not merely an implementation optimization.  It is the logical reason that
+objects such as Cauchy reals, analytic functions, compact spaces, and quotient
+objects can be handled in weak arithmetic: the theorem does not need the
+completed infinitary object; it needs a finite observation and a proof that
+this observation is stable under the chosen representation.
+
+The discipline has two forms.
+
+\begin{description}
+\item[Static finite use.] The compiler knows a finite list of source queries
+      from the target query.
+\item[Adaptive finite use.] A bounded interaction program chooses its next
+      query from previous answers, but a primitive-recursive fuel or a finite
+      monotone closure bounds the complete trace.
+\end{description}
+
+Both forms produce one finite master certificate.  No appeal to countable
+choice or bar induction is needed for the compiled theorem.
+
+\subsection{Portable versus backend-specific statements}
+
+The canonical portable conclusion is an ordinary \(\Prf\;\PRAAx\) sequent.
+When an application is stated in the Foundation syntax, the checked bridge
+transports the resulting open or closed sequent.  This separation avoids two
+common mistakes:
+
+\begin{enumerate}
+\item proving the right mathematics in a nonportable host representation and
+      never obtaining an object theorem;
+\item rebuilding arithmetic inside every application-specific Foundation
+      development.
+\end{enumerate}
+
+The framework therefore compiles first to the ordinary calculus, imports the
+checked arithmetic library, and translates only at the application boundary.

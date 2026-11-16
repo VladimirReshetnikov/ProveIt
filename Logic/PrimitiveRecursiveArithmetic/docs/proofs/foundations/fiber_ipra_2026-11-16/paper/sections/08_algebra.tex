@@ -1,0 +1,176 @@
+\section{Algebraic objects, branches, and stable observations}
+\label{sec:algebra}
+
+Several packet difficulties are caused not by weak arithmetic but by asking
+for a discontinuous name.  Ordered roots at a collision, a normalized
+eigenvector for a repeated eigenvalue, a rotation axis at the identity, and an
+exact sign for an arbitrary Cauchy real are not stable observations.  FIBER
+separates the finite relation from a guarded label.
+
+\subsection{A finite-use obstruction to exact sign}
+
+\begin{theorem}[No unguarded finite-use exact sign selector]
+\label{thm:no-sign}
+No deterministic procedure that, on each input Cauchy name, inspects only
+finitely many approximants can return the exact trichotomy
+\(-1,0,+1\) correctly for every real represented by an arbitrary rapidly
+convergent rational name.
+\end{theorem}
+
+\begin{proof}
+Run the procedure on the zero name.  During this computation it inspects a
+finite set of indices; let \(N\) exceed all of them.  Construct a valid name
+for the positive real \(2^{-N-3}\) whose first \(N\) queried approximants are
+identical to those of the zero name and whose later approximants converge with
+the required rate.  The procedure follows the same finite computation and
+returns the same output on both names, so it is wrong on one of them.  The same
+argument works for a negative perturbation.
+\end{proof}
+
+The theorem is a continuity argument about representations, not a statement
+that signs can never be decided.  A positive separation witness
+\(|x|\ge2^{-k}\) makes the sign decidable from sufficiently precise
+approximants.  Therefore the correct interface is
+\[
+  \mathsf{Sign}(x,k,s):
+  |x|\ge2^{-k}\longrightarrow s=\operatorname{sign}(x),
+\]
+or a relational output ``\(x\) lies in this interval'' when no gap is known.
+
+\subsection{Root clusters instead of global labels}
+
+Let \(P(T)\) be a monic polynomial of fixed degree \(d\).  The coefficient
+vector is stable under perturbation; an ordered list of roots is not stable at
+collisions.  FIBER therefore uses one of three outputs.
+
+\begin{description}
+\item[Symmetric observation.] Elementary symmetric functions, power sums,
+      resultants, or the companion matrix.  These remain exact at collisions.
+\item[Cluster observation.] A finite list of disjoint boxes with multiplicities
+      and a coverage verifier.  The ordering of boxes is irrelevant.
+\item[Guarded labels.] Under a positive separation residual between clusters,
+      a canonical ordering and individual root names can be selected.
+\end{description}
+
+\begin{theorem}[Stable cluster transport]
+Suppose two valid certificates for a polynomial at mesh \(\epsilon\) give
+cluster families \(\mathcal C\) and \(\mathcal C'\).  If both certificates
+prove complete coverage with multiplicity and every cluster has diameter at
+most \(\epsilon\), then the bipartite overlap relation has a finite
+multiplicity-preserving matching after clusters within distance
+\(2\epsilon\) are merged.  Every symmetric or \(2\epsilon\)-stable observation
+therefore agrees.
+\end{theorem}
+
+\begin{proof}
+Form the finite incidence graph whose vertices are clusters from the two
+certificates and whose edges record nonempty overlap of their inflated boxes.
+A root counted by one complete certificate must be counted by the other, and
+multiplicity is conserved on each connected component.  The component totals
+therefore agree.  Merging each component gives a common coarsening with the
+same multiplicities.  A stable observation changes by at most the prescribed
+modulus under the diameter and inflation bounds.  The graph, component labels,
+and multiplicity equations are finite objects; a certificate can contain a
+spanning forest and the checker can verify every equation.
+\end{proof}
+
+This theorem is deliberately relational.  It does not construct a globally
+ordered root list at a collision.
+
+\subsection{Guarded exact labels}
+
+\begin{proposition}[Gap-guarded labeling]
+Suppose a cluster certificate gives \(d\) singleton clusters and a rational
+gap \(\eta>0\) such that distinct clusters are separated by at least \(\eta\).
+At any precision finer than \(\eta/4\), lexicographic ordering of the rational
+boxes is independent of the valid certificate.  Hence individual labels are
+certificate-independent and may be exported.
+\end{proposition}
+
+\begin{proof}
+Two valid boxes for the same root overlap after inflation by their error
+radius.  Boxes for different roots cannot cross or exchange order because the
+total uncertainty is less than half the certified gap.  Thus the overlap
+matching is unique and preserves lexicographic order.  The proof consists of
+rational order inequalities and finite matching verification.
+\end{proof}
+
+The same pattern applies to eigenvalues.  Without a gap, export the
+characteristic polynomial, spectral clusters, or projectors onto a cluster.
+With a gap and a normalization guard, export a labeled eigenvector.  For
+rotations, export a unit quaternion modulo sign or a projective axis relation;
+only away from the identity should an exact axis label be requested.
+
+\subsection{Finite algebra certificates}
+
+A powerful branch-free representation of a zero-dimensional algebra is a
+finite spanning certificate.  Let
+\[
+ A=R[x_1,\ldots,x_n]/(f_1,\ldots,f_s)
+\]
+and suppose a certificate gives polynomials
+\(b_0=1,b_1,\ldots,b_{D-1}\) and, for every \(i,j\), coefficients
+\(m_{i,j,k}\) and quotient polynomials witnessing
+\[
+  x_i b_j-\sum_{k<D}m_{i,j,k}b_k\in(f_1,\ldots,f_s).
+\]
+All equalities are finite polynomial identities and can be checked by ring
+normalization with supplied quotient witnesses.
+
+\begin{theorem}[Finite-algebra observation]
+From such a certificate, multiplication by each \(x_i\) is represented by a
+\(D\times D\) matrix.  Every polynomial observation is represented by a
+matrix polynomial.  Traces, determinants, characteristic polynomials,
+resultants, and Newton power sums are finite, functorial observations.  If the
+certificate is transported under a coefficient substitution or quotient map,
+these observations transport by the corresponding matrix identities.
+\end{theorem}
+
+\begin{proof}
+Closure under multiplication by the generators implies closure under every
+monomial and hence every polynomial, by induction on term construction.  The
+supplied quotient identities show that the action descends modulo the ideal.
+Matrix multiplication represents composition of multiplication operators.
+The determinant, trace, and characteristic polynomial are finite polynomial
+expressions in the matrix entries.  Substitution preserves all verified
+polynomial identities, so it preserves the matrix representation and its
+polynomial observations.  No basis independence is needed for the spanning
+claim; if a basis or exact dimension is required, add a linear-independence
+certificate.
+\end{proof}
+
+This representation addresses several Puiseux, elimination, and algebraic
+geometry packets.  It gives stable finite observations before any branch is
+selected.
+
+\subsection{Exact versus approximate Puiseux output}
+
+A uniform exact Puiseux branch selector from arbitrary Cauchy coefficient
+names is obstructed for the same reason as exact sign: arbitrarily small
+coefficient perturbations can split or permute branches.  Three corrected
+interfaces are available.
+
+\begin{enumerate}
+\item With exact algebraic or splitting data, output a finite list of Puiseux
+      expansions and a permutation-invariant certificate.
+\item With approximate coefficients, output clusters of truncated expansions
+      and residual bounds.
+\item Under a discriminant or resultant separation guard, refine clusters to
+      labeled branches.
+\end{enumerate}
+
+At each finite truncation the Newton polygon, coefficient equations, and
+residual checks are finite.  What fails without additional data is not the
+finite algebra; it is stable global naming.
+
+\subsection{Descent and representative relations}
+
+Arithmetic geometry often produces a finite class set but then informally
+chooses rational representatives.  FIBER uses a relation
+\(R(c,w)\) between a class code and a representative witness.  A finite
+strategy or viability certificate verifies compatibility along the proof
+graph.  Public conclusions that depend only on the class seal the witness.
+Conclusions that require an actual rational point retain
+\(\exists w\,R(c,w)\) as a residual unless a representative producer is
+proved.  This prevents Selmer classes from being silently identified with
+rational covering points.

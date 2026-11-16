@@ -1,0 +1,217 @@
+\section{Effective analysis: from local certificates to coherent names}
+\label{sec:analysis}
+
+Many analysis packets correctly replace limits by rational approximants and
+error bounds, but a repeated gap remains: separately certified approximants
+are treated as one coherent real name.  FIBER distinguishes three levels:
+pointwise approximation, finite-window stability, and a global Cauchy modulus.
+Only the third is a completed name.
+
+\subsection{Dyadic names and adjacent motion}
+
+Represent a dyadic rational at precision \(n\) by a signed integer
+\(a_n\), interpreted as \(a_n/2^n\).  Signed integers can be represented by the
+existing difference terms in \texttt{IPRADerivations.Core.Integers}.  Define
+the scaled discrepancy, for \(m\ge n\), by
+\[
+       \Delta(n,m)=\left|2^{m-n}a_n-a_m\right|.
+\]
+This is an integer quantity and therefore avoids division in the object
+language.
+
+\begin{theorem}[Dyadic adjacent-motion theorem]
+\label{thm:dyadic}
+Suppose a sequence of signed integers satisfies
+\[
+        |2a_k-a_{k+1}|\le 1
+        \qquad\text{for every }k.
+\]
+Then for all \(m\ge n\),
+\[
+        \Delta(n,m)\le 2^{m-n}-1.
+\]
+Consequently
+\[
+        \left|\frac{a_n}{2^n}-\frac{a_m}{2^m}\right|<2^{-n}.
+\]
+Thus \(n\mapsto a_n/2^n\) is a Cauchy name with modulus \(n\mapsto n\).
+\end{theorem}
+
+\begin{proof}
+Write \(r=m-n\) and induct on \(r\).  For \(r=0\), the discrepancy is zero,
+which equals \(2^0-1\).  For the successor step, use
+\begin{align*}
+\Delta(n,m+1)
+ &=|2^{m+1-n}a_n-a_{m+1}|\\
+ &=|2(2^{m-n}a_n-a_m)+(2a_m-a_{m+1})|\\
+ &\le 2\Delta(n,m)+|2a_m-a_{m+1}|\\
+ &\le 2(2^{m-n}-1)+1\\
+ &=2^{m+1-n}-1.
+\end{align*}
+The induction invariant is an inequality between integer-coded terms, hence
+quantifier-free.  The object proof uses integer triangle inequality, powers of
+two, order monotonicity, and quantifier-free induction.
+
+Dividing the scaled inequality by \(2^m\) is only an explanatory
+interpretation.  The formal endpoint can remain
+\(\Delta(n,m)<2^{m-n}\), an integer inequality.  This is exactly the usual
+Cauchy estimate after clearing denominators.
+\end{proof}
+
+\begin{corollary}[Independent certificates become coherent]
+Suppose that for each precision \(n\) a local certificate produces \(a_n\), and
+a pair certificate proves \(|2a_n-a_{n+1}|\le 1\).  Then the certificates may
+be sealed while the sequence of observations exports a Cauchy name.
+\end{corollary}
+
+\begin{proof}
+Use local existential elimination to obtain each adjacent pair only inside the
+proof of its inequality.  The public conclusion depends solely on the
+observations \(a_n,a_{n+1}\).  Apply \cref{thm:dyadic}.  No single global
+certificate choosing all pointwise witnesses is necessary unless the name
+itself must be returned as a code; in that case bounded least selection and a
+master certificate provide one.
+\end{proof}
+
+\subsection{General summable-tail theorem}
+
+The dyadic estimate is a special case of a finite telescoping principle.
+Let \(e_k\ge0\) be integer or rational error majorants, and let \(T(n)\) be a
+primitive-recursive tail certificate satisfying, for every \(m\ge n\),
+\[
+        \sum_{k=n}^{m-1}e_k\le T(n).
+\]
+If \(|x_{k+1}-x_k|\le e_k\), then
+\[
+        |x_m-x_n|\le T(n).
+\]
+The proof is finite induction using the triangle inequality and the bounded
+sum equations.  A global rate therefore follows from an explicit summable
+tail majorant; it does not follow from pointwise convergence or metastability
+alone.
+
+\subsection{Metastability is a separate interface}
+
+A metastable contract has the form
+\[
+ \forall k,g\;\exists N\le\Phi(k,g)\;
+ \forall i,j\in[N,N+g(N)]\;d(x_i,x_j)\le2^{-k}.
+\]
+For fixed \(k,g\) this is a finite query and fits FIBER directly: a certificate
+contains \(N\) and a finite table or checker for the window.  It is often
+provable when no useful global rate is known.  The framework keeps it as a
+metastable interface.  Converting it to a Cauchy name requires additional
+data, such as a summable adjacent-motion estimate or an independently supplied
+tail modulus.  This prevents an invalid strengthening found in several
+informal proof plans.
+
+\subsection{Finite-net lifting}
+
+Abstract compactness should be replaced by the finite data actually consumed
+at a target precision.
+
+\begin{theorem}[Finite-net lifting]
+\label{thm:net}
+Fix encoded domains \(X,Y\), discrepancy functions \(d_X,d_Y\), a function
+\(f:X\to Y\), and a predicate \(P(y)\).  For a target query suppose there are:
+
+\begin{enumerate}
+\item a finite list \(z_0,\ldots,z_{L-1}\) and a coverage certificate
+\[
+       \forall x\in X\;\exists i<L\;d_X(x,z_i)\le\epsilon;
+\]
+\item a modulus certificate
+\[
+       d_X(x,z)\le\epsilon\longrightarrow
+       d_Y(f(x),f(z))\le\delta;
+\]
+\item a stability theorem
+\[
+       P(f(z))\wedge d_Y(f(x),f(z))\le\delta
+       \longrightarrow P_\delta(f(x));
+\]
+\item finite proofs of \(P(f(z_i))\) for all \(i<L\).
+\end{enumerate}
+
+Then \(\ipra\) proves \(P_\delta(f(x))\) for every encoded \(x\in X\).
+The chosen net point is local and need not be exported.
+\end{theorem}
+
+\begin{proof}
+Introduce an arbitrary \(x\) satisfying the domain predicate.  Open the
+coverage existential to obtain an index \(i<L\) with the distance bound.
+Instantiate the finite net theorem at \(i\), apply the modulus, then apply
+stability.  The conclusion does not mention \(i\), so existential elimination
+seals it.  The finite family of net-point proofs can be represented by a
+master certificate or by a reflected bounded universal.  Every induction used
+to verify list lookup or the finite family is quantifier-free after
+Booleanization.
+\end{proof}
+
+\begin{remark}
+This theorem does not assert that an arbitrary compact metric space has an
+effective net in the selected coding.  Net production and coverage are
+explicit hypotheses or residuals.  Once supplied, the remainder of the usual
+compactness argument is a finite object-theory proof.
+\end{remark}
+
+\subsection{Guarded partial operations}
+
+A statement such as \(d\ne0\) is generally too weak for stable numerical
+division.  The useful interface is a positive apartness margin:
+\[
+             |d|\ge\eta>0.
+\]
+At target precision \(n\), the demand transformer requests enough precision on
+\(d\) and the numerator to keep interval error below a fixed fraction of
+\(\eta\).  Interval or Newton certificates then verify the reciprocal and the
+quotient.  The same pattern applies to pivots, logarithms, square roots away
+from zero, normalized eigenvectors, and branch labels.  The guard is a
+residual if no effective lower bound is known.
+
+\subsection{Modulus calculus}
+
+FIBER realizers carry a demand map, which functions as a compositional modulus.
+For metric interfaces, common operations have the following finite rules.
+
+\begin{center}
+\begin{tabularx}{0.96\linewidth}{Y{0.29\linewidth}X}
+\toprule
+Operation & Sufficient upstream demand\\
+\midrule
+addition & enough precision that the two errors sum below the target\\
+multiplication on a bounded box & input errors divided by a certified magnitude bound\\
+composition \(g\circ f\) & first apply the modulus of \(g\), then that of \(f\)\\
+finite sum of \(L\) terms & target precision plus a binary-length allowance for \(L\)\\
+division & target precision plus an apartness margin for the denominator\\
+root label & cluster precision plus a positive separation gap\\
+finite integral or quadrature & mesh and local error sufficient for the requested total error\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+These are not semantic continuity assumptions hidden in a typeclass.  Each is
+a finite arithmetic contract with an object derivation.  Composition of the
+demand maps is the proof-mining content of the framework.
+
+\subsection{Worked analytic pattern: certified bisection}
+
+For a rational polynomial \(p\), an interval \([l_0,r_0]\), and a target
+precision \(n\), a certificate contains the bisection trace
+\((l_k,r_k)_{k\le n}\).  The verifier checks:
+\[
+ p(l_k)\le0\le p(r_k),\qquad
+ r_k-l_k=2^{-k}(r_0-l_0),
+\]
+and verifies that \((l_{k+1},r_{k+1})\) is the half selected by the exact
+rational sign of the midpoint.  These are finite polynomial and order
+calculations.  A uniqueness claim additionally requires a guard: for example,
+a certificate that
+\[
+ p(y)-p(x)=(y-x)Q(x,y)
+ \quad\text{and}\quad Q(x,y)\ge\lambda>0
+\]
+throughout the interval.  Then two zeros satisfy
+\((y-x)Q(x,y)=0\), and positive cancellation gives \(x=y\).  This avoids an
+appeal to the classical mean-value theorem and fits the checked ring/order
+library.

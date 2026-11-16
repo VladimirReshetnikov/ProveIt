@@ -1,0 +1,290 @@
+\section{Lean formalization architecture}
+\label{sec:lean}
+
+\subsection{Target repository location}
+
+A complete implementation should live under
+\begin{center}
+\texttt{Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/FIBER/}
+\end{center}
+with a small public import
+\texttt{IPRADerivations.FIBER}.  The compiler metadata and source generator may
+live under \texttt{Tools/}, but every accepted theorem must end in the ordinary
+\texttt{Prf PRAAx} calculus.  Foundation translations belong in a separate
+bridge module so the portable library remains independent of application
+closures.
+
+\subsection{Existing declarations to reuse}
+
+The implementation should import, rather than duplicate, the following checked
+components.
+
+\begin{longtable}{p{0.35\linewidth}p{0.56\linewidth}}
+\toprule
+Module/declaration & Use in FIBER\\
+\midrule
+\endfirsthead
+\toprule
+Module/declaration & Use in FIBER\\
+\midrule
+\endhead
+\texttt{ConciseIPRA.Deduction} & \texttt{Prf.subst}, \texttt{weaken}, \texttt{trans}, \texttt{exE}, logical constructors, equality substitution.\\
+\texttt{IPRADerivations.Core.Basic} & \texttt{inst}, open quantifier-free induction \texttt{ind}, arithmetic symbols and congruence.\\
+\texttt{Core.Semiring}, \texttt{Core.Order}, \texttt{Core.Monus} & State arithmetic, bounds, comparison, monotonicity, cancellation.\\
+\texttt{Core.Pairing} & Pairing, projections, and simultaneous recursion for sequence coding.\\
+\texttt{Core.Search} & \texttt{Search.mu}, \texttt{search\_spec}, \texttt{search\_found}, and \texttt{search\_minimal}.\\
+\texttt{Core.BoundedSums}, \texttt{Core.MultiSums} & Boolean folds, finite potentials, and master-verifier aggregation.\\
+\texttt{Core.Integers}, \texttt{Core.Powers} & Dyadic names and the adjacent-motion theorem.\\
+\texttt{Core.LinearAlgebra} & Matrix observations for finite algebras and spectral clusters.\\
+\texttt{IPRABridge.OpenSequents}, \texttt{ScopedSequents} & Transport of completed open interface theorems to Foundation clients.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Module dependency order}
+
+\begin{enumerate}
+\item \texttt{FIBER/Kernel.lean}: structural aliases for residual discharge,
+      specialization, local sealing, and context replacement.  This file
+      should contain no arithmetic.
+\item \texttt{FIBER/Bool.lean}: Boolean operations and reflection for atomic
+      equality/order predicates.
+\item \texttt{FIBER/Fold.lean}: bounded conjunction/disjunction folds and
+      indexing lemmas.
+\item \texttt{FIBER/BoundedFormula.lean}: external syntax for a restricted
+      bounded formula language, generated checker terms, and reflection.
+\item \texttt{FIBER/Sequence.lean}: one canonical bounded sequence coding,
+      append, lookup, concatenation, and mixed-radix alternative.
+\item \texttt{FIBER/SearchAdapter.lean}: one-success adapter on top of
+      \texttt{Core.Search}.
+\item \texttt{FIBER/Master.lean}: least local witnesses and the
+      master-certificate theorem.
+\item \texttt{FIBER/Demand.lean}: capped product orders, potential, monotone
+      closure, and least prefixed point.
+\item \texttt{FIBER/Strategy.lean}: fixed bounded games and strategy
+      realization.
+\item \texttt{FIBER/Interface.lean}: metadata structures at the Lean
+      metalevel and corresponding object formula constructors.
+\item \texttt{FIBER/Compile.lean}: proof-producing recursion over the finite
+      source graph.
+\item \texttt{FIBER/Analysis/Dyadic.lean} and
+      \texttt{FiniteNet.lean}: the two principal cross-domain examples.
+\item \texttt{FIBER/Algebra/Clusters.lean}: stable cluster observations and
+      gap-guarded labels.
+\item \texttt{FIBER/Checks/*.lean}: small closed examples, \texttt{\#print
+      axioms}, and bridge round trips.
+\end{enumerate}
+
+This order deliberately completes the object kernel before a large metadata
+language is introduced.
+
+\subsection{Structural kernel signatures}
+
+The first file can use the current API almost verbatim.
+
+\begin{lstlisting}[language={},caption={Core structural targets}]
+import IPRADerivations.Core.Basic
+
+namespace LeanProofs.IPRA.FIBER
+
+open LeanProofs.ConciseIPRA
+open LeanProofs.IPRA
+open Syn
+open scoped Fm
+
+variable {n : Nat}
+variable {Gamma Delta : List (Fm PTm n)}
+variable {phi : Fm PTm n}
+
+/-- Simultaneous residual discharge. -/
+theorem discharge
+    (h : Gamma |- [PRAAx] phi)
+    (hs : forall psi, psi in Gamma -> Delta |- [PRAAx] psi) :
+    Delta |- [PRAAx] phi :=
+  h.trans hs
+
+/-- Reuse a closed theorem at arbitrary terms and hypotheses. -/
+theorem specialize
+    {k : Nat} {theta : Fm PTm k}
+    (h : ([] : List (Fm PTm k)) |- [PRAAx] theta)
+    (sigma : Fin k -> PTm n) :
+    Gamma |- [PRAAx] theta.subst sigma :=
+  LeanProofs.IPRA.inst h sigma
+
+/-- Certificate sealing is the native existential-elimination rule. -/
+theorem seal
+    {A : Fm PTm (n + 1)} {B : Fm PTm n}
+    (hex : Gamma |- [PRAAx] Fm.ex A)
+    (hbody : A :: Gamma.map Fm.shift |- [PRAAx] B.shift) :
+    Gamma |- [PRAAx] B :=
+  Prf.exE hex hbody
+
+end LeanProofs.IPRA.FIBER
+\end{lstlisting}
+
+The ASCII notation in the distributed Lean file uses the repository's actual
+Unicode/scoped notation.  The proof terms are direct aliases, so this is the
+first file to elaborate and audit.
+
+\subsection{One-success search adapter}
+
+\texttt{Core.Search} searches for a zero of a binary term \(f(i,x)\).  FIBER
+verifiers conventionally accept when \(v(i,x)=1\).  Define
+\[
+       f_v(i,x)=1\mathbin{\dot-}v(i,x).
+\]
+Then instantiate \texttt{Search.search\_found} and prove:
+
+\begin{lstlisting}[language={},caption={Target theorem for the search adapter}]
+theorem leastAccepted_found
+    {v : PTm 2} {N i x : PTm n}
+    (hvBit : BitValued v)
+    (hi : Gamma |- [PRAAx] lt i N)
+    (hacc : Gamma |- [PRAAx] inst2 v i x == num 1) :
+    Gamma |- [PRAAx]
+      lt (leastAccepted v N x) N /\
+      (inst2 v (leastAccepted v N x) x == num 1 /\
+       le (leastAccepted v N x) i)
+\end{lstlisting}
+
+Here \texttt{BitValued} should be a proved object formula, not a host
+proposition silently used to rewrite values.  The implementation needs the
+existing monus and parity/Boolean lemmas to show that the complement is zero
+exactly when \(v=1\).
+
+\subsection{Bounded formula syntax}
+
+A convenient external datatype is:
+
+\begin{lstlisting}[language={},caption={Metalevel fixed bounded formulas}]
+inductive BFm (n : Nat)
+  | eq   : PTm n -> PTm n -> BFm n
+  | lt   : PTm n -> PTm n -> BFm n
+  | and  : BFm n -> BFm n -> BFm n
+  | or   : BFm n -> BFm n -> BFm n
+  | imp  : BFm n -> BFm n -> BFm n
+  | bEx  : PTm n -> BFm (n+1) -> BFm n
+  | bAll : PTm n -> BFm (n+1) -> BFm n
+\end{lstlisting}
+
+Define \texttt{BFm.toFm} and a compiler \texttt{BFm.bit : BFm n -> PTm n}.
+The main theorem is an external recursion producing a proof:
+
+\begin{lstlisting}[language={},caption={Reflection endpoint}]
+def BFm.reflect (A : BFm n) :
+  ([] : List (Fm PTm n)) |- [PRAAx]
+    (A.bit == num 1 <-> A.toFm)
+\end{lstlisting}
+
+The bounded-quantifier cases should call fixed fold theorems rather than place
+\texttt{A.toFm} in an induction predicate.  The generated proof is accepted
+because \texttt{BFm} is a Lean metatype; there is no object-level universal
+truth predicate.
+
+\subsection{Interface metadata versus object theorems}
+
+A Lean structure may organize the generator, but proof fields must be genuine
+\texttt{Prf} values.
+
+\begin{lstlisting}[language={},caption={Schematic interface record}]
+structure Interface where
+  arity      : Nat
+  queryOK    : PR (arity + 1)
+  certBound  : PR (arity + 1)
+  verifier   : PR (arity + 2)
+  observe    : PR (arity + 2)
+  validFm    : Fm PTm (arity + 2)
+  soundFm    : Fm PTm (arity + 2)
+  sound      : ([] : List (Fm PTm (arity + 2)))
+                 |- [PRAAx] soundFm
+  -- plus equivalence/stability and substitution equations
+\end{lstlisting}
+
+Merely declaring a field named \texttt{sound} is not a proof of a concrete
+instance.  Every instance must construct it without \texttt{sorry}, an
+unproved \texttt{axiom}, or a host-level semantic cast.
+
+\subsection{Demand closure target}
+
+Use a fixed number of coordinates in the first implementation.  Encode a
+vector by nested pairing or a bounded sequence.  Define:
+
+\begin{lstlisting}[language={},caption={Demand closure theorem shape}]
+structure DemandSystem (r : Nat) where
+  cap      : Fin r -> PTm n
+  step     : Fin r -> PTm (n + r)
+  monotone : ObjectMonotoneProof step
+
+theorem closure_fixed
+    (S : DemandSystem r) :
+    ([] : List (Fm PTm n)) |- [PRAAx]
+      IsLeastPrefixedPoint S (iterate S (sumCaps S))
+\end{lstlisting}
+
+For a first checked milestone, take \(r=2\).  This exercises pairing,
+coordinatewise maximum, the potential argument, and open induction without
+requiring a generic variable-length array library.  Generalize only after the
+fixed-arity proof is stable.
+
+\subsection{Dyadic theorem target}
+
+The formal endpoint should avoid rational division:
+
+\begin{lstlisting}[language={},caption={Cleared-denominator Cauchy endpoint}]
+/-- a : precision and parameter |-> signed numerator -/
+theorem dyadic_scaled_cauchy
+    (a : ZTerm 2)
+    (hstep : AdjacentUnitProof a) :
+    ([] : List (Fm PTm 3)) |- [PRAAx]
+      (le (var 0) (var 1) -->
+       zabs (zsub (zscalePow2 a (var 0) (var 1))
+                  (a.at (var 1) (var 2)))
+         < pow two (monus (var 1) (var 0)))
+\end{lstlisting}
+
+The implementation should first prove the exact geometric bound
+\(2^{m-n}-1\), then derive the strict inequality.  This module provides a
+small but meaningful demonstration that a framework theorem closes a reported
+coherence gap in the object theory.
+
+\subsection{Compiler implementation strategy}
+
+There are two reasonable stages.
+
+\paragraph{Stage A: trusted Lean generator.}
+Represent a well-formed finite program as an inductive Lean datatype whose
+constructors contain the local \texttt{Prf} proofs.  Define
+\texttt{compile} by recursion, returning a \texttt{Prf} term.  Lean's kernel
+checks the result; the generator itself need not be verified as an object
+program.
+
+\paragraph{Stage B: certificate-producing external frontend.}
+A Python or Lean elaborator may parse JSON metadata, synthesize primitive
+recursive terms, and emit Lean source.  Its output is still checked by Lean.
+The external tool is not in the trusted base.  Keep generated formulas and
+node IDs deterministic so proof artifacts can be diffed and replayed.
+
+Do not begin with an internal self-interpreter.  The diagonal obstruction and
+the size of syntax-substitution proofs make that interface both impossible in
+the strongest form and unnecessary for the repository's goals.
+
+\subsection{Required checks}
+
+Each completed module should pass:
+
+\begin{enumerate}
+\item \texttt{lake build +IPRADerivations.FIBER.<Module>};
+\item a no-placeholder scan for \texttt{sorry}, \texttt{admit}, and new
+      theorem-specific axioms;
+\item \texttt{\#print axioms} on every public endpoint;
+\item at least one open-term specialization test;
+\item at least one nonempty-context test;
+\item a native-scalar transfer test via \texttt{pra\_iff\_native};
+\item and, for a Foundation client, an open-sequent bridge round trip.
+\end{enumerate}
+
+Lean's standard metatheoretic axioms may appear in the report.  The current
+checked repository already uses \texttt{propext},
+\texttt{Classical.choice}, and \texttt{Quot.sound}.
+
+The important audit is that no new object axiom or placeholder enters the
+theorem.

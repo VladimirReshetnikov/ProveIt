@@ -1,0 +1,67 @@
+\section{Lean theorem target catalogue}
+\label{app:signatures}
+
+The following catalogue is a dependency-ordered checklist.  Names are
+provisional, but the conclusion type of every proof theorem should contain
+\texttt{Prf PRAAx} explicitly.
+
+\small
+\begin{longtable}{Y{0.35\linewidth}Y{0.53\linewidth}}
+\toprule
+Target & Intended statement\\
+\midrule
+\endfirsthead
+\toprule
+Target & Intended statement\\
+\midrule
+\endhead
+\texttt{Kernel.discharge} & Alias of \texttt{Prf.trans} specialized to ordinary \(\ipra\).\\
+\texttt{Kernel.specialize} & Alias of \texttt{IPRA.inst}: closed open-formula theorem specialized at arbitrary terms and context.\\
+\texttt{Kernel.seal} & Alias of \texttt{Prf.exE}.\\
+\texttt{Bool.bit\_cases} & A bit-valued term is zero or one, with object derivation.\\
+\texttt{Fold.any\_sound} & Accepted bounded disjunction fold yields an index and reflected body.\\
+\texttt{Fold.any\_complete} & A supplied bounded witness forces the disjunction fold to one.\\
+\texttt{Fold.all\_sound} & Conjunction fold one implies every bounded reflected body.\\
+\texttt{Fold.all\_complete} & Bounded universal body implies conjunction fold one.\\
+\texttt{BFm.reflect} & For fixed bounded syntax \(A\), \([A]=1\leftrightarrow A\).\\
+\texttt{Search.leastAccepted\_found} & One-success wrapper over \texttt{Search.search\_found}.\\
+\texttt{Search.leastAccepted\_minimal} & No earlier accepted index.\\
+\texttt{Sequence.lookup\_append} & Appended entry and prior entries decode correctly.\\
+\texttt{Master.valid} & Pointwise bounded totality yields one valid master code.\\
+\texttt{Demand.iter\_mono} & Demand iteration is increasing.\\
+\texttt{Demand.potential\_strict} & A nonfixed update strictly raises the coordinate sum.\\
+\texttt{Demand.stabilizes} & Iteration stabilizes by the sum of caps.\\
+\texttt{Demand.least} & Stabilized vector is below every prefixed point.\\
+\texttt{Strategy.realize} & Verified fixed bounded strategy implies its quantified formula.\\
+\texttt{Interface.localSound} & Valid demanded inputs and residuals imply valid output.\\
+\texttt{Interface.obsIndependent} & Two valid output certificates give equivalent observations.\\
+\texttt{Compile.sound} & Compiled program returns the final \texttt{Prf PRAAx} sequent.\\
+\texttt{Compile.compose} & Composition of realizers and proof terms.\\
+\texttt{Dyadic.scaledBound} & Adjacent unit discrepancies imply \(\Delta(n,m)\le2^{m-n}-1\).\\
+\texttt{Dyadic.cauchy} & Cleared-denominator Cauchy inequality.\\
+\texttt{FiniteNet.lift} & Coverage, modulus, stability, and finite checks imply the global approximate property.\\
+\texttt{Clusters.commonCoarsening} & Two complete cluster certificates admit a verified common coarsening.\\
+\texttt{Clusters.labelUnderGap} & Positive gap makes labels certificate-independent.\\
+\texttt{Bridge.fiberOpen} & Transport a compiled open FIBER sequent to Foundation syntax.\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\subsection{Small regression examples}
+
+Before a domain-scale application, the implementation should close these
+examples:
+
+\begin{enumerate}
+\item choose the least even number in a supplied bounded interval;
+\item combine two local divisibility witnesses into a certificate-independent
+      gcd observation;
+\item compute a two-coordinate cyclic demand closure;
+\item verify a depth-two \(\forall\exists\) finite strategy;
+\item form a master certificate for three independent polynomial evaluations;
+\item export a dyadic Cauchy estimate from independently certified adjacent
+      approximants;
+\item lift an inequality from a rational finite net to all points represented
+      by a coverage certificate;
+\item transport one open theorem through IPRABridge and back.
+\end{enumerate}
