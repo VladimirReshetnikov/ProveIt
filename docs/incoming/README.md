@@ -195,6 +195,9 @@ the same way and then deleted:
 - `prime_distribution_ipra` is placed under `analytic-number-theory/`. It leaves out only its
   ignored `SHA256SUMS`.
 
+`flt_ipra.zip` was placed the same way, under `diophantine-number-theory/`, and then deleted.
+It leaves out only its ignored `SHA256SUMS.txt`.
+
 ## Sub-exponential 3-SAT (ETH) reports
 
 Forty-three arrivals of 26–27 October 2026 about sub-exponential 3-SAT, that

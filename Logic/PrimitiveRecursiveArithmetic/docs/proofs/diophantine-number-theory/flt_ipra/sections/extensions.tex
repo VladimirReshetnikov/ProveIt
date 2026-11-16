@@ -1,0 +1,364 @@
+\section{The seventh exponent: Lebesgue's descent, with the missing case repaired}
+\label{sec:seven}
+
+This section gives a complete elementary proof for exponent $7$.  The algebraic
+route is due to Lebesgue, including his published correction
+\cite{Lebesgue1840,Lebesgue1840Add}.  We spell out the factor allocations that
+make the correction indispensable.  All factorizations below are factorizations
+of ordinary integers; no number field, ideal class group, or algebraic number
+theory is used.
+
+We use the following elementary finite-arithmetic conventions.  For a prime
+$\ell$ and a nonzero integer $m$, $v_\ell(m)$ is the largest $j\leq |m|$ for
+which $\ell^j\mid m$.  The value is obtained by bounded search.  Trial division
+gives prime factorizations of positive integers, and if two positive coprime
+factors have product $w^k$, each is a $k$th power: each prime occurs in exactly
+one factor and its exponent is a multiple of $k$.  These assertions admit
+bounded proofs by scanning integers up to the integer being factored.  Signs
+are treated separately.
+
+\subsection{An elementary quartic descent}
+
+\begin{lemma}[Lebesgue's quartic obstruction]
+\label{lem:seven-quartic}
+There are no integers $a,P,Q,R$ such that $a\geq1$, $P,Q,R$ are positive odd
+and pairwise coprime, and
+\begin{equation}\label{eq:seven-quartic}
+ P^2=Q^4-3\cdot7^4\,2^{2a}Q^2R^2
+              +7^7\,2^{4a+4}R^4.
+\end{equation}
+The same conclusion holds when $P,Q,R$ are nonzero signed odd integers, by
+taking absolute values.
+\end{lemma}
+
+\begin{proof}
+Write $D_a(P,Q,R)$ for the displayed conditions.  If $a=1$, the right side of
+\eqref{eq:seven-quartic} is $1-4\equiv5\pmod8$, whereas the square of an odd
+integer is $1\pmod8$.  Hence $a\geq2$.
+
+Put
+\[
+ C=Q^2-3\cdot7^4\,2^{2a-1}R^2.
+\]
+Completing the square gives
+\begin{equation}\label{eq:seven-first-product}
+ (P+C)(P-C)=7^7\,2^{4a-2}R^4.
+\end{equation}
+Both factors are positive, since $P^2-C^2>0$ and $P>0$.  They have greatest
+common divisor $2$.  To check this last assertion, first $7\nmid Q$: otherwise
+the original equation gives $7\mid P$, contrary to $\gcd(P,Q)=1$.  Any odd
+prime dividing both factors would divide $7R$, by their product, and would
+also divide $C$.  A prime dividing $R$ cannot divide $C$, since
+$C\equiv Q^2$ modulo that prime and $\gcd(Q,R)=1$.  The prime $7$ cannot divide
+$C$ either.  Finally, $P,C$ are odd and $(P+C)+(P-C)=2P$ has exactly one factor
+of $2$.  Thus one factor in \eqref{eq:seven-first-product} has $2$-valuation
+$1$, the other $4a-3$.
+
+Unique factorization in the integers now gives positive odd coprime $s,t$,
+with $R=st$, in one of the following four allocations:
+\begin{center}
+\begin{tabular}{c|cc}
+ & $P+C$ & $P-C$ \\
+\hline
+I   & $2s^4$ & $2^{4a-3}7^7t^4$ \\
+II  & $2\cdot7^7s^4$ & $2^{4a-3}t^4$ \\
+III & $2^{4a-3}s^4$ & $2\cdot7^7t^4$ \\
+IV  & $2^{4a-3}7^7s^4$ & $2t^4$
+\end{tabular}
+\end{center}
+These four rows include the possibility that $7$ already divides $R$:
+the factor receiving $7^7$ then receives the entire additional fourth power
+of $7$ from $R^4$.  The factors in the other column are coprime to $7$.
+
+Since $C\equiv1\pmod4$, rows II and IV are impossible: subtracting the
+columns and dividing by $2$ gives $C\equiv3\pmod4$ in both.  Row III is
+\emph{not} ruled out by this congruence.  We first treat row I, then eliminate
+row III separately.
+
+\paragraph{Row I produces a smaller descent parameter.}
+Subtracting its two equations gives
+\[
+ Q^2=s^4+3\cdot7^4\,2^{2a-1}s^2t^2
+                    -7^7\,2^{4a-4}t^4.
+\]
+Let $B=s^2+3\cdot7^4\,2^{2a-2}t^2$.  Direct multiplication gives
+\begin{equation}\label{eq:seven-second-product}
+ (B+Q)(B-Q)=7^7\,2^{4a+2}t^4.
+\end{equation}
+Here $B>|Q|$ and both factors are positive.  Their gcd is $2$: an odd common
+prime would divide $7t$ and $B$, but modulo such a prime $B$ is a nonzero
+multiple of $s^2$.  For $7$ we use $7\nmid s$, which follows from row I
+and the gcd-$2$ assertion for its two factors.  For a divisor of $t$ we use
+$\gcd(s,t)=1$.  Exactly one of $B+Q,B-Q$ has $2$-valuation $1$; we may replace
+$Q$ by $-Q$ to make it the first.  Consequently, for positive odd coprime
+$u,v$ with $t=uv$, either
+\[
+ B+Q=2u^4,\qquad B-Q=2^{4a+1}7^7v^4,
+\]
+or
+\[
+ B+Q=2\cdot7^7u^4,\qquad B-Q=2^{4a+1}v^4.
+\]
+The second possibility gives $B\equiv3\pmod4$, whereas the definition of
+$B$ gives $B\equiv1\pmod4$.  The first possibility therefore holds.  Adding
+its two equations yields
+\[
+ s^2=u^4-3\cdot7^4\,2^{2a-2}u^2v^2
+                    +7^7\,2^{4a}v^4.
+\]
+This is exactly $D_{a-1}(s,u,v)$.  All three new integers are positive and
+odd.  They are pairwise coprime because $R=st=suv$, $\gcd(s,t)=1$, and
+$\gcd(u,v)=1$.  Moreover
+\begin{equation}\label{eq:seven-descent-bound}
+ s,u,v\leq R.
+\end{equation}
+
+\paragraph{Row III is impossible: the correction.}
+In this row subtraction instead gives
+\[
+ Q^2=2^{4a-4}s^4+3\cdot7^4\,2^{2a-1}s^2t^2-7^7t^4.
+\]
+Set $E=2^{2a-2}s^2+3\cdot7^4t^2$.  Then
+\begin{equation}\label{eq:seven-correction-product}
+ (E+Q)(E-Q)=2^6\,7^7t^4.
+\end{equation}
+Again both factors are positive and their gcd is $2$.  The proof is the
+same explicit prime-divisor argument: an odd common prime divides $7t$;
+$7\nmid s$ follows from row III; and $\gcd(s,t)=1$.
+Choose the sign of $Q$ so that $E+Q$ has $2$-valuation $1$.  With $t=uv$ and
+$u,v$ positive odd coprime, the two possible allocations are
+\begin{align*}
+ E+Q=2v^4,&\qquad E-Q=2^5\,7^7u^4,\\
+ \text{or}\qquad E+Q=2\cdot7^7v^4,&\qquad E-Q=2^5u^4.
+\end{align*}
+The first gives
+\[
+ 2^{2a-2}s^2=v^4-3\cdot7^4u^2v^2+2^4\,7^7u^4,
+\]
+whose left side is $0\pmod4$ and right side $2\pmod4$.  Hence only the
+second allocation remains, giving
+\[
+ 2^{2a-2}s^2=7^7v^4-3\cdot7^4u^2v^2+2^4u^4.
+\]
+Multiplying by $2^6$ and completing the square once more gives
+\begin{equation}\label{eq:seven-final-correction}
+ (2^{a+2}s)^2-(2^5u^2-3\cdot7^4v^2)^2=7^7v^4.
+\end{equation}
+Put $F=2^{a+2}s$ and $G=2^5u^2-3\cdot7^4v^2$.  The factors $F+G,F-G$
+are positive odd and coprime.  Indeed, any common odd prime divides $7v$;
+if it divides $v$, the expression for $G$ and $\gcd(u,v)=1$ exclude it;
+if it is $7$, the second allocation above shows $7\nmid u$, also excluding
+it.  Integer factorization therefore gives positive odd $m,n$ with $v=mn$
+such that, in some order, $F+G=m^4$ and $F-G=7^7n^4$.  Adding yields
+\[
+ 2^{a+3}s=m^4+7^7n^4.
+\]
+Every odd fourth power is $1\pmod{16}$ and $7^7\equiv7\pmod{16}$.
+The right side is therefore $8\pmod{16}$, while the left side is
+$0\pmod{16}$.  This contradiction eliminates row III.
+
+Thus every solution with $a\geq2$ produces a solution with parameter $a-1$,
+and parameter $1$ is impossible.  The iteration has at most $a-1$ steps.
+It is a bounded descent, and proves the lemma.
+\end{proof}
+
+\subsection{Reducing a seventh-power equation to the quartic}
+
+\begin{theorem}\label{thm:flt-seven}
+For positive integers $A,B,C$ one has $A^7+B^7\ne C^7$.
+\end{theorem}
+
+\begin{proof}
+Suppose $A^7+B^7=C^7$.  Divide by the gcd to make the triple primitive;
+prime divisibility shows that it is then pairwise coprime.  Put
+$x=A$, $y=B$, $z=-C$, so $x^7+y^7+z^7=0$, and define
+\begin{align*}
+ s&=x+y+z, &
+ u&=x^2+y^2+z^2+xy+xz+yz,\\
+ v&=(x+y)(y+z)(z+x), &
+ t&=u^2+xyzs.
+\end{align*}
+The elementary symmetric identities we require are
+\begin{equation}\label{eq:seven-symmetric-identities}
+ s^7=7vt,\qquad
+ v=s(xy+xz+yz)-xyz,\qquad
+ u=s^2-(xy+xz+yz).
+\end{equation}
+The first follows by expanding
+$(x+y+z)^7-(x^7+y^7+z^7)$; its factorization is
+$7(x+y)(y+z)(z+x)(u^2+xyzs)$.  The other two follow by multiplication.
+
+There is exactly one even member of $x,y,z$: there cannot be two in a
+primitive triple, and the sum of three odd seventh powers is odd.  Hence
+$s,v$ are even, $u$ is odd, and $t\equiv1\pmod4$.
+Furthermore $C>A,B$ and $C<A+B$.  The latter follows from
+$(A+B)^7>A^7+B^7$ and the strict monotonicity of the seventh power.
+Consequently $s>0$, $v=(A+B)(B-C)(A-C)>0$, and the first identity gives
+$t>0$.  Also $u>0$, since
+$2u=s^2+x^2+y^2+z^2$.
+
+\paragraph{The coprimality information.}
+We claim
+\begin{equation}\label{eq:seven-coprimality}
+ \gcd(t,xyz)=1,\qquad \gcd(t,v)=1.
+\end{equation}
+If a prime $\ell$ divides $t$, then $\ell\mid s$ by $s^7=7vt$, and
+$\ell\mid u$ by $t=u^2+xyzs$.  If it also divides, say, $x$, then
+$z\equiv-y\pmod\ell$, and $u\equiv y^2\pmod\ell$ gives $\ell\mid y$,
+contrary to pairwise coprimality.  This proves the first assertion.  If
+$\ell$ divides both $t$ and $v$, then $\ell\mid s$, and the middle identity
+in \eqref{eq:seven-symmetric-identities} gives $\ell\mid xyz$, contradicting
+the first assertion.  This proves the second.
+
+\paragraph{Why $t$ is a fourteenth power.}
+Fix a prime $\ell\mid t$.  Write
+\[
+ d=v_\ell(s),\qquad e=v_\ell(u),\qquad f=v_\ell(t),\qquad
+ \epsilon=\begin{cases}1&\ell=7,\\0&\ell\ne7.\end{cases}
+\]
+Here $d,e,f>0$.  As $\ell\nmid v$, the first identity gives
+$f=7d-\epsilon>d$.  As $\ell\nmid xyz$, the terms in
+$t=u^2+xyzs$ have valuations $2e$ and $d$.  If these valuations were
+unequal, the valuation of their sum would be their minimum, which is at
+most $d$, a contradiction.  Thus $d=2e$, and
+\begin{equation}\label{eq:seven-valuations}
+ f=14e-\epsilon.
+\end{equation}
+For completeness, the unequal-valuation rule is obtained by extracting
+the smaller power of $\ell$: the remaining summand of lower valuation is
+nonzero modulo $\ell$, whereas the other summand is zero modulo $\ell$.
+
+If $7\nmid t$, equation \eqref{eq:seven-valuations} says that every prime
+exponent in $t$ is a multiple of $14$.  If $7\mid t$, it instead says that
+every prime exponent in $7t$ is a multiple of $14$.  The latter alternative
+is impossible, since $7t\equiv3\pmod4$ is not a square.  We have therefore
+proved
+\[
+ t=q^{14},\qquad 7\nmid q
+\]
+for a positive odd integer $q$.  Moreover, for every prime dividing $q$,
+equation \eqref{eq:seven-valuations} shows that its exponent in $u$ is
+exactly its exponent in $q$.  We may write
+\[
+ u=qr,\qquad \gcd(q,r)=1,
+\]
+with $r$ positive odd.  The assertion includes $q=1$, where it is immediate.
+The same valuation calculation gives $q^2\mid s$.  On writing $s=q^2k$,
+the identity $s^7=7vq^{14}$ becomes $k^7=7v$.  Thus $7\mid k$, and for a
+positive integer $h$ we obtain
+\begin{equation}\label{eq:seven-parameters}
+ s=7hq^2,\qquad v=7^6h^7,\qquad u=qr,\qquad t=q^{14}.
+\end{equation}
+The integer $h$ is even.  Also $\gcd(h,q)=1$, since $\gcd(t,v)=1$.
+
+We need one more gcd: $\gcd(h,r)=1$.  Suppose a prime $\ell$ divided both.
+Then it would divide $s,u,v$, by \eqref{eq:seven-parameters}, and would
+divide $xyz$ by $v=s(xy+xz+yz)-xyz$.  If it divided $x$, then
+$z\equiv-y\pmod\ell$ and $u\equiv y^2\pmod\ell$, forcing $\ell\mid y$.
+The other choices are identical.  This contradicts primitivity.
+
+\paragraph{The final square completion.}
+Using $xy+xz+yz=s^2-u$ and $xyz=s(s^2-u)-v$ in $t=u^2+xyzs$, and then
+substituting \eqref{eq:seven-parameters} and dividing by $q^2$, gives
+\[
+ q^{12}=r^2+7^2h^2q^3(7^2h^2q^3-r)-7^7h^8.
+\]
+Consequently
+\begin{equation}\label{eq:seven-reduction-square}
+ \left(r-\frac{7^2h^2q^3}{2}\right)^2
+ =q^{12}-3\left(\frac{7^2h^2q^3}{2}\right)^2+7^7h^8.
+\end{equation}
+Extract the power of $2$ from $h^2$, writing $h^2=2^{a+1}R$ with $R$ odd.
+Since $h$ is even, $a\geq1$.  Define
+\[
+ P=\left|r-\frac{7^2h^2q^3}{2}\right|,\qquad Q=q^3.
+\]
+The integer $P$ is positive odd: $r$ is odd and $h^2/2$ is even.
+The three integers $P,Q,R$ are pairwise coprime.  Indeed $\gcd(Q,R)=1$
+follows from $\gcd(q,h)=1$; reducing $P$ modulo any prime divisor of $Q$
+reduces it to $\pm r$; and reducing it modulo any prime divisor of $R$
+does the same.  We use $\gcd(q,r)=\gcd(h,r)=1$ in these last two cases.
+Finally, \eqref{eq:seven-reduction-square} is exactly
+\[
+ P^2=Q^4-3\cdot7^4\,2^{2a}Q^2R^2+7^7\,2^{4a+4}R^4.
+\]
+This contradicts Lemma~\ref{lem:seven-quartic}.
+\end{proof}
+
+\subsection{The iPRA audit and Lean implementation path for exponent 7}
+
+Every search used above has a primitive-recursive bound.  Integer powers,
+signed arithmetic, gcd, prime testing, valuations of nonzero integers,
+factorization by trial division, and extraction of a verified exact root
+are primitive recursive.  An exact $k$th root of $N>0$ is searched for only
+in $[1,N]$; its existence is proved by the prime-exponent calculation, not
+assumed from the search.  The prime-exponent calculation itself scans a
+finite list of divisors of $N$.
+
+There is also a simple bound in terms of the original input alone.  Put
+$N=\max(A,B,C)$.  Primitive reduction does not increase $N$; the displayed
+definitions give $s\leq3N$ and $u\leq6N^2$.  From
+$s=7hq^2$ and positivity, both $h,q\leq3N$, while $r\leq6N^2$.
+Consequently the final quartic has
+\[
+ a\leq h^2\leq9N^2,\qquad
+ P,Q,R\leq M:=2^{14}(N+1)^5.
+\]
+For example $Q=q^3\leq27N^3$, $R\leq h^2\leq9N^2$, and
+$P\leq r+49h^2q^3/2<2^{14}(N+1)^5$.  The outer descent therefore has
+at most $9N^2$ steps, and all its coordinates remain bounded by $M$.
+The larger integers temporarily used in the square completions have
+explicit bounds obtained by substituting these bounds into their displayed
+polynomials and powers of $2$.  Such bounds are primitive recursive.
+
+The logical point in the quartic descent merits explicit treatment.  Fix a
+bound $M$ and let
+\[
+ \operatorname{Bad}_7(a,M)=1
+\]
+mean that the bounded scan of $1\leq P,Q,R\leq M$ finds a triple satisfying
+$D_a(P,Q,R)$.  This is a primitive-recursive Boolean function.  The proof
+above gives $\operatorname{Bad}_7(1,M)=0$ and, by
+\eqref{eq:seven-descent-bound},
+\[
+ \operatorname{Bad}_7(a,M)=0\ \Longrightarrow\
+ \operatorname{Bad}_7(a+1,M)=0 \qquad(a\geq1).
+\]
+The induction formula is the equation
+$\operatorname{Bad}_7(a+1,M)=0$, hence quantifier free.  The parameter $M$
+is arbitrary but fixed during induction.  Given an alleged quartic
+solution, take $M=\max(P,Q,R)$ and instantiate the result.  This is ordinary
+iPRA induction; it is not induction on an unbounded existential assertion
+and does not use a least counterexample principle.
+
+All intermediate implications in this proof are intuitionistically valid.
+Prime divisibility, comparisons of integer valuations, parity, and the four
+factor allocations are decidable finite alternatives.  A contradiction is
+derived from a supplied counterexample; no double-negation elimination for
+an arbitrary formula is invoked.
+
+For a transparent Lean development the suggested dependency order is:
+\begin{enumerate}
+\item Define signed-integer coding, the Boolean prime and coprime tests,
+      bounded valuation, and bounded factorization.  Prove multiplication
+      and unequal-sum valuation laws and the coprime power-splitting lemma.
+\item Define the integer polynomial \texttt{quartic7 a P Q R}.  Check the
+      four square-completion identities by ring normalization.  Store the
+      four allocations as a finite inductive type, or four Boolean cases.
+\item Prove \texttt{quartic7\_base}, \texttt{quartic7\_caseIII\_false}, and
+      \texttt{quartic7\_step}.  The step returns an explicit triple
+      $(s,u,v)$ and the three inequalities $s,u,v\leq R$.
+\item Define the finite Boolean scan \texttt{bad7 a M} and prove its
+      quantifier-free induction invariant.  This supplies the quartic
+      obstruction internally to the chosen iPRA syntax.
+\item Verify the symmetric polynomial identity and prove the valuation
+      extraction lemma yielding \eqref{eq:seven-parameters}, including the
+      two possible $7$-valuations and their modulo-$4$ separation.
+\item Build the explicit transformation from a positive primitive
+      seventh-power solution to $(a,P,Q,R)$, and compose it with the
+      quartic obstruction.  Add the ordinary gcd reduction first or last.
+\end{enumerate}
+The equations proved by Lean's ambient kernel are a convenient intermediate
+check.  A claim of an iPRA derivation additionally requires the finite scans,
+induction formulas, and their proofs to be represented in the object theory;
+the preceding construction specifies these data.

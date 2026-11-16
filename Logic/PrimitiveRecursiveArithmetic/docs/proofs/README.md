@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives on 14 and
-15 November 2026: 33 to `docs/drafts`, and 13 to
+15 November 2026: 33 to `docs/drafts`, and 14 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -32,7 +32,7 @@ reason. Its directory column gives `<area>/<directory>`.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `ignored` | 46 | The member matches the repository's `.gitignore`: 34 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests and 12 `.log` files from LaTeX and Lean builds. It is available only from the delivered archive. |
+| `ignored` | 47 | The member matches the repository's `.gitignore`: 35 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests and 12 `.log` files from LaTeX and Lean builds. It is available only from the delivered archive. |
 | `sibling-packet` | 13 | `puiseux_ipra` bundles `dependencies/FTA_iPRA/`, a byte-identical copy of the packet filed in [`algebra/FTA_iPRA`](algebra/FTA_iPRA/). The reference column gives the placed file, except for the copy of `SHA256SUMS`, which is ignored in both. |
 | `sibling-archive` | 1 | `zeta_zeros_ipra_2026-11-15` bundles `dependencies/zeta_functional_equation_ipra.zip`, a byte-identical copy of the delivered archive filed in [`analytic-number-theory/zeta_functional_equation_ipra`](analytic-number-theory/zeta_functional_equation_ipra/). |
 | `repository-copy` | 17 | `zeta_zeros_ipra_2026-11-15` bundles `sources/Deduction.lean`, `sources/NativeBiInterpretation.lean` and `sources/PR.lean`, byte-identical to the files of the same names in [`ConciseIPRA/Lean/ConciseIPRA`](../../ConciseIPRA/Lean/ConciseIPRA/). `isoperimetric_ipra_constructive_2026-11-15` bundles, under `reused/`, the earlier packet [`geometry/isoperimetric_ipra`](geometry/isoperimetric_ipra/) as filed here at `22afac4c9d`; 14 of its files are byte-identical to that packet. The reference column gives that file, relative to the repository root. |
@@ -50,10 +50,10 @@ To recover an omitted member, restore the archive from the commit that added it
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. The archives of
 `isoperimetric_ipra_constructive_2026-11-15`, `mordell_weil_ipra`, `zeta_ipra_proof_package`,
 `trigonometric_identities_ipra_2026-11-15`, `lagrange_inversion_ipra`, `siegel_ipra`,
-`bell_numbers_ipra` and `prime_distribution_ipra` were not committed, on Vladimir's
-instruction, so they cannot be restored from the history. The only omitted members of the
-first are its `reused/` copies, which are the files of `geometry/isoperimetric_ipra`. Five of
-the others omit only their ignored checksum manifests, and `lagrange_inversion_ipra` and
+`bell_numbers_ipra`, `prime_distribution_ipra` and `flt_ipra` were not committed, on
+Vladimir's instruction, so they cannot be restored from the history. The only omitted members
+of the first are its `reused/` copies, which are the files of `geometry/isoperimetric_ipra`.
+Six of the others omit only their ignored checksum manifests, and `lagrange_inversion_ipra` and
 `bell_numbers_ipra` omit nothing:
 
 ```bash
@@ -62,7 +62,7 @@ git show <arrival>:docs/drafts/<archive>.zip > <scratch>/<archive>.zip
 
 ## Packets
 
-The 46 archives hold 1,045 members: 968 placed here, 46 ignored, 13 in the bundled copy of
+The 47 archives hold 1,072 members: 994 placed here, 47 ignored, 13 in the bundled copy of
 a sibling packet, 1 nested copy of a sibling archive and 17 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -129,6 +129,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | [`diophantine_ipra_2026-11-15`](diophantine-number-theory/diophantine_ipra_2026-11-15/) | `b5a3ad0377` 2026-11-15 | `diophantine_ipra` | Størmer's theorem, a constructive Davenport–Schmidt theorem, and Roth cutoffs for quadratic irrationals. It says the general effective Roth cutoff is not proved and its Lean files are not compiled. | 23 | 1 |
 | [`dirichlet_kronecker_ipra`](diophantine-number-theory/dirichlet_kronecker_ipra/) | `db4b793b19` 2026-11-14 | `dirichlet_kronecker_ipra` | Logical obstructions to the unrestricted statements, with constructive scalar and simultaneous Dirichlet approximation and quantitative Kronecker theorems. | 23 | 1 |
 | [`faltings_ipra`](diophantine-number-theory/faltings_ipra/) | `12ab5b00c1` 2026-11-15 | `faltings_ipra` | Faltings' theorem: it says it does not prove the general theorem in iPRA. It analyses the missing height bound and proves special cases, among them the rational points of the Fermat quartic. It states that its three Lean modules compile. | 20 | 8 |
+| [`flt_ipra`](diophantine-number-theory/flt_ipra/) | *not committed* 2026-11-15 | `flt_ipra` | Fermat's Last Theorem for every exponent divisible by 3, 4, 5 or 7, by descents for the base exponents and uniform lifting. It says it does not prove FLT in general; the first exponent it leaves out is 11. Its Lean files are an uncompiled outline. | 26 | 1 |
 | [`hurwitz_khinchin_ipra`](diophantine-number-theory/hurwitz_khinchin_ipra/) | `b5a3ad0377` 2026-11-15 | `hurwitz_khinchin_ipra` | Sharp constructive Hurwitz approximation and quantitative constructive Khinchin approximation. | 18 | 1 |
 | [`minkowski_ipra`](diophantine-number-theory/minkowski_ipra/) | `057b790401` 2026-11-14 | `minkowski_ipra` | Minkowski's convex-body theorem. | 37 | 1 |
 | [`mordell_weil_ipra`](diophantine-number-theory/mordell_weil_ipra/) | *not committed* 2026-11-15 | `mordell_weil_ipra` | Constructive Mordell–Weil descent: a general primitive-recursive finite-descent theorem, generators for an elliptic curve relative to a supplied covering list, and an unconditional computation of E(Q) for y² = x³ − u⁴x and products of these. It says it does not give a uniform generator algorithm for arbitrary elliptic curves. | 33 | 1 |

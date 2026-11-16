@@ -1,0 +1,108 @@
+\section{Exponent four: an explicit Pythagorean descent}
+\label{sec:four}
+
+We prove the stronger assertion that
+\begin{equation}\label{eq:fermat42}
+ x^4+y^4=z^2
+\end{equation}
+has no solution in positive integers. This is Fermat's classical descent,
+here written with a concrete smaller state and a finite clock.
+
+\begin{lemma}[Primitive Pythagorean parametrization]\label{lem:pythagoras}
+Suppose $A,B,C>0$, $A^2+B^2=C^2$, $\gcd(A,B)=1$, and $B$ is even.
+Then $A,C$ are odd and there are coprime integers $m>n>0$ of opposite
+parity such that
+\[
+ A=m^2-n^2,\qquad B=2mn,\qquad C=m^2+n^2.
+\]
+The parameters can be found by a search bounded by $C$.
+\end{lemma}
+
+\begin{proof}
+An odd square is $1$ modulo $4$. Thus two odd legs are impossible, and
+coprimality excludes two even legs. The designated even leg makes $A,C$
+odd. Put $U=(C+A)/2$ and $V=(C-A)/2$, positive integers with
+$UV=(B/2)^2$. A common divisor of $U,V$ divides $C,A$. Any prime
+dividing $C,A$ divides $B^2$, hence $B$, contradicting coprimality. Thus
+$U,V$ are coprime squares: $U=m^2$, $V=n^2$ by
+Lemma~\ref{lem:integer-tools}. Since $U>V$, $m>n>0$; since $C$ is odd,
+their parities differ. Finally $B^2=4m^2n^2$ and positivity give
+$B=2mn$. Root search up to $C$ finds both parameters. This proof gives
+the displayed identities, rather than invoking a classification theorem
+with an unbounded choice of parameters.
+\end{proof}
+
+\begin{theorem}[Fermat's stronger quartic theorem]\label{thm:four}
+The theory $\ipra$ proves
+\[
+ \forall x,y,z\in\N\quad x>0\wedge y>0
+          \longrightarrow x^4+y^4\ne z^2.
+\]
+Consequently it proves $\FLT(4)$.
+\end{theorem}
+
+\begin{proof}
+Start with a putative solution. Its right-hand coordinate $z$ is positive
+because $x,y>0$; apply primitive reduction. Exchange
+$x,y$ if necessary so that $x$ is odd and $y$ even. The parity conclusion
+follows directly from fourth powers modulo $16$: two odd fourth powers
+sum to $2$, which is not a square residue, and coprimality excludes two
+even coordinates. Lemma~\ref{lem:pythagoras}, applied to $x^2,y^2,z$,
+gives
+\begin{equation}\label{eq:four-first}
+ x^2=m^2-n^2,\qquad y^2=2mn,\qquad z=m^2+n^2,
+\end{equation}
+where $m>n>0$ are coprime and have opposite parity.
+If $m$ were even and $n$ odd, then $x^2\equiv-1\pmod4$, impossible.
+Hence $m$ is odd and $n$ even. The equality $y^2=2mn$ and coprimality
+give
+\[
+ m=u^2,\qquad n=2v^2,
+\]
+with $u,v>0$, $u$ odd, and $\gcd(u,v)=1$. More explicitly,
+$m(n/2)=(y/2)^2$, the two factors are coprime, and both are squares.
+Substitute these expressions into the first equation of
+\eqref{eq:four-first}:
+\[
+ x^2+(2v^2)^2=(u^2)^2.
+\]
+The two legs are coprime. Indeed, a common odd prime divisor of $x,v$
+would divide $u$ by this equation, while $2\nmid x$.
+Apply Lemma~\ref{lem:pythagoras} a second time. There are coprime
+$r>s>0$ with
+\[
+ x=r^2-s^2,\qquad 2v^2=2rs,\qquad u^2=r^2+s^2.
+\]
+Now $rs=v^2$ and $\gcd(r,s)=1$, so $r=a^2$ and $s=b^2$ for
+positive coprime integers $a,b$. The final identity becomes
+\[
+ a^4+b^4=u^2.
+\]
+Thus $(a,b,u)$ is another positive primitive solution of
+\eqref{eq:fermat42}. Its last coordinate is strictly smaller:
+\[
+ u\leq u^4=m^2<m^2+n^2=z.
+\]
+
+This construction uses only gcd, division, and bounded root searches.
+One can define its total step function on every coded triple by first
+checking the state predicate, then performing the indicated searches, and
+returning a default on an invalid state. On a valid state each search
+succeeds by the preceding lemmas. Let the state predicate be positivity,
+coprimality, and \eqref{eq:fermat42}, with rank $z$; orient the two legs
+inside the step function. Lemma~\ref{lem:clocked} now yields a
+contradiction after at most $z+1$ iterations. Finally a solution of
+$x^4+y^4=z^4$ would give \eqref{eq:fermat42} with right-hand coordinate
+$z^2$.
+\end{proof}
+
+\paragraph{Numerical bounds for formalization.}
+In a valid state, $x,y\leq z$. The first Pythagorean parameters are at
+most $z$; the roots $u,v$ and the second parameters $r,s,a,b$ are also at
+most $z$. All searches can therefore scan the box $[0,z]^2$ or the
+interval $[0,z]$. Products used in checking the identities are bounded by
+a fixed polynomial in $z$, for example $8(z+1)^8$ is more than enough.
+The outer descent has the fixed clock $z+1$. This makes both the state
+transition and the invariant in Lemma~\ref{lem:clocked} explicit
+primitive recursive constructions.
+
