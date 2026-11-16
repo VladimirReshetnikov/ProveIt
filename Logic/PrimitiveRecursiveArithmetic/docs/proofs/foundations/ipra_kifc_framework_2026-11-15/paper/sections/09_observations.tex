@@ -1,0 +1,130 @@
+\section{Stable observations, shrinking clouds, and finite consumers}\label{sec:observations}
+
+\subsection{Exact choice erasure}
+
+Let \(R(x,q,a)\) be a bounded total relation and \(O(x,q,a)\) an observer.
+
+\begin{theorem}[Exact stable-observer elimination]\label{thm:stable-exact}
+Assume \iPRA\ proves:
+\begin{align*}
+ P(x,q)&\longrightarrow \exists a<B(x,q)\;R(x,q,a),\\
+ P(x,q)\wedge R(x,q,a)\wedge R(x,q,b)&\longrightarrow O(x,q,a)=O(x,q,b).
+\end{align*}
+Let \(a_*(x,q)\) be the least bounded valid candidate.  Then \iPRA\ proves
+\[
+ P(x,q)\longrightarrow R(x,q,a_*)
+\]
+and
+\[
+ P(x,q)\wedge R(x,q,a)\longrightarrow O(x,q,a_*)=O(x,q,a).
+\]
+Thus \(O(x,q,a_*)\) is a canonical primitive-recursive output even when no witness is intrinsically canonical.
+\end{theorem}
+
+\begin{proof}
+Booleanize \(R\) and apply least bounded search.  Totality implies that the found flag is one, so search soundness gives \(R(a_*)\).  Instantiate exact stability with \(a_*\) and an arbitrary valid \(a\).  The internal choice has disappeared from the public theorem: changing the search order or producer changes the hidden witness but not the observed value.
+\end{proof}
+
+A typical example is a symmetric polynomial in an unordered root list.  The list order is arbitrary, but elementary symmetric functions are stable observers.
+
+\subsection{Diameter-stable observations}
+
+Exact equality is often unnecessary.  Suppose a rational-code pseudometric \(d\) and a bound \(\delta(x,q)\) satisfy
+\[
+ P(x,q)\wedge R(a)\wedge R(b)
+ \longrightarrow d(O(a),O(b))\le\delta(x,q).
+\]
+The least valid candidate again gives a canonical program output.  The theorem now says that it is within \(\delta\) of every valid realization, not that all realizations are equal.
+
+\begin{theorem}[Approximate choice erasure]\label{thm:stable-approx}
+Under bounded totality and the diameter hypothesis, \iPRA\ derives
+\[
+ P(x,q)\wedge R(x,q,a)
+ \longrightarrow d(O(x,q,a_*),O(x,q,a))\le\delta(x,q).
+\]
+If a downstream observer is uniformly stable with modulus \(m\), the composite error is obtained by the corresponding demand transformation and triangle inequality.
+\end{theorem}
+
+\begin{proof}
+Search soundness proves \(R(a_*)\); instantiate the diameter theorem at \((a_*,a)\).  For composition, request enough upstream precision that the observer's modulus turns the upstream diameter into the downstream tolerance, and combine local error inequalities.  All sums and comparisons are rational-code arithmetic.
+\end{proof}
+
+\subsection{From clouds to a regular name}
+
+Pointwise approximate answers do not automatically form a coherent sequence.  Let \(C_q\) be a nonempty finite cloud of valid observations at level \(q\).  Assume:
+\begin{enumerate}[label=(\alph*)]
+  \item \(\operatorname{diam}(C_q)\le\delta_q\);
+  \item there exists at least one compatible edge between \(C_q\) and \(C_{q+1}\), and every valid edge \((u,v)\) satisfies \(d(u,v)\le\mu_q\);
+  \item a primitive-recursive tail modulus \(T(k)\) certifies
+  \[
+    \sum_{q=T(k)}^{m-1}\bigl(\delta_q+\mu_q+\delta_{q+1}\bigr)\le 2^{-k}
+    \quad\text{for every }m>T(k).
+  \]
+\end{enumerate}
+The finite sums are exact rational-code inequalities; a geometric or telescoping closed form normally supplies the tail certificate.
+
+Choose any primitive-recursive valid representative \(a_q\in C_q\), for example the least one.  Independent choices at adjacent levels need not form an edge.  Nevertheless, select for the proof one valid edge \((u_q,v_{q+1})\).  Then
+\begin{align*}
+ d(a_q,a_{q+1})
+ &\le d(a_q,u_q)+d(u_q,v_{q+1})+d(v_{q+1},a_{q+1})\\
+ &\le \delta_q+\mu_q+\delta_{q+1}.
+\end{align*}
+The edge is used only existentially in the proof; the output algorithm may keep choosing least representatives.
+
+\begin{theorem}[Shrinking-cloud name extraction]\label{thm:shrinking}
+Under assumptions (a)--(c), the subsequence
+\[
+ r_k=a_{T(k)}
+\]
+is a regular Cauchy name in the sense that, for \(\ell\ge k\),
+\[
+ d(r_k,r_\ell)\le 2^{-k},
+\]
+provided \(T\) is nondecreasing.  All values and the modulus are primitive recursive.
+\end{theorem}
+
+\begin{proof}
+For consecutive levels, use the preceding three-term estimate.  For \(n<m\), repeatedly apply the triangle inequality to obtain
+\[
+ d(a_n,a_m)\le
+ \sum_{q=n}^{m-1}(\delta_q+\mu_q+\delta_{q+1}).
+\]
+Set \(n=T(k)\) and \(m=T(\ell)\); monotonicity gives \(m\ge n\), and the tail certificate bounds the sum by \(2^{-k}\).  The finite telescoping proof is a bounded loop with a QF rational-inequality invariant, so it is admissible in \iPRA.
+\end{proof}
+
+\subsection{Why a diameter estimate alone is not enough}
+
+Even if \(\delta_q\to0\), the centers of the clouds may oscillate.  Motion control is required.  Conversely, edge motion without shrinking diameter does not make independent choices close.  The three-term budget in \cref{thm:shrinking} isolates the exact information needed: within-level ambiguity, one-step motion, and the next within-level ambiguity.
+
+\subsection{Metastability as a final interface}
+
+A metastable statement has the form
+\[
+  \forall k,F\;\exists n\le B(k,F)\;
+  \forall i,j\in[n,F(n)]\ d(x_i,x_j)\le 2^{-k}.
+\]
+For fixed \(k,F\), the witness \(n\) is a bounded search problem.  Booleanize the finite window condition and use \cref{thm:least-search}.  This produces a valid finite-use contract.
+
+It is generally invalid to infer a global Cauchy modulus \(N(k)\) from metastability alone.  A finite consumer, however, only supplies finitely many control functions \(F\) and tolerances.  The framework may propagate these requests backward and search the required windows.  Thus metastability is not a failure: it is a different, weaker interface that composes with finite consumers.
+
+\begin{barrier}[Metastability is not a modulus]\label{barrier:metastability}
+There is no general uniform transformation taking an arbitrary computable metastability bound for a sequence to a computable Cauchy modulus for that sequence.
+\end{barrier}
+
+\begin{proof}[Reason]
+Computable sequences can converge without a computable modulus.  For each fixed finite control function, a finite stable window may still be found effectively.  A uniform transformation would turn these window procedures into a modulus and contradict the known computability separation.  In the present framework the conclusion is operational: retain the metastable contract unless an explicit tail argument such as \cref{thm:shrinking} is supplied.
+\end{proof}
+
+\subsection{Stable labels under a gap}
+
+Suppose finitely many true scores \(s_i\) have a unique minimum \(s_{i_*}\) and a certified gap
+\[
+ s_j-s_{i_*}\ge\gamma>0\qquad(j\ne i_*).
+\]
+If approximations \(\tilde s_i\) have error at most \(\varepsilon\) with \(2\varepsilon<\gamma\), then the least approximate minimizer is \(i_*\).  Indeed,
+\[
+ \tilde s_j-\tilde s_{i_*}
+ \ge (s_j-\varepsilon)-(s_{i_*}+\varepsilon)
+ \ge\gamma-2\varepsilon>0.
+\]
+This elementary estimate is the generic guarded-label theorem.  It applies to root matching, eigenvalue ordering, pivot choice, chart choice, nearest-cell selection, and sign determination.  At \(\gamma=0\), the exact label is removed from the general interface rather than chosen discontinuously.

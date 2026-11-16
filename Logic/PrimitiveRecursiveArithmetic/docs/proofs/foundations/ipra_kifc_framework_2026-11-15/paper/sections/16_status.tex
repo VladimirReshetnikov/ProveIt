@@ -1,0 +1,73 @@
+\section{Claim status, validation, and limitations}\label{sec:status}
+
+\subsection{Theorem ledger}
+
+\begin{longtable}{@{}p{0.06\textwidth}p{0.48\textwidth}p{0.37\textwidth}@{}}
+\toprule
+ID & Claim & Status in this packet \\
+\midrule
+\endhead
+K1 & Deterministic contract composition by substitution and simultaneous cut & Human-complete; source-oriented Lean core \\
+K2 & Kernel proof schedule compilation & Human-complete; source-complete outline \\
+K3 & Loop certificate compilation through \texttt{IPRA.ind} & Human-complete; source-complete outline \\
+K4 & Structural Booleanization of fixed bounded formulas & Human-complete; Lean outline \\
+K5 & Least bounded search, validity, and minimality & Human-complete; finite-tested; Lean outline \\
+K6 & One-loop normal form for fixed bounded constructions & Human-complete metaconstruction \\
+K7 & Reverse-demand leastness for acyclic graphs & Human-complete; finite-tested \\
+K8 & Kernel-integrated graph compilation relative to local certificates & Human-complete metatheorem; Lean graph elaborator open \\
+K9 & Viability iff compatible finite suffix & Human-complete; finite-tested; Lean outline \\
+K10 & Least viable path / finite dependent choice & Human-complete; finite-tested; Lean outline \\
+K11 & Exact stable-observer elimination & Human-complete; Lean outline \\
+K12 & Diameter-stable choice erasure & Human-complete; finite-tested \\
+K13 & Shrinking-cloud extraction of a regular name & Human-complete conditional theorem \\
+K14 & Guarded totalization and precision composition & Human-complete \\
+K15 & Certified finite-net transfer and finite gluing & Human-complete conditional theorems \\
+K16 & Height bound and complete-list interconversion & Human-complete; finite-tested \\
+K17 & Polynomial algebra node via \texttt{ipra\_ring} & Inherited checked backend; adapter outline \\
+K18 & Native transfer through \texttt{pra\_iff\_native} & Inherited checked theorem \\
+B1 & No total universal PR evaluator & Human-complete diagonal argument \\
+B2 & No unguarded exact branch selector at collisions & Constructive/computability barrier \\
+B3 & Metastability does not generally yield a modulus & Computability barrier \\
+B4 & Finiteness/cardinality alone does not yield a cutoff & Human-complete halting reduction \\
+B5 & Negative nonzero does not uniformly yield apartness & Constructive/computability barrier \\
+\bottomrule
+\end{longtable}
+
+\subsection{Artifact validation}
+
+The packet's validation is intentionally stratified.
+\begin{itemize}
+  \item The Python unit tests exercise Boolean folds, least search, trace invariants, reverse demand, viability versus brute force, stable observers, shrinking budgets, guarded argmin, rational bisection, and height enumeration.
+  \item The LaTeX source is compiled with a clean PDF build.  The resulting PDF is preflighted and rendered to images for visual inspection.
+  \item The Lean files are formalization outlines against an exact audited API.  This environment does not contain Lean, so the packet does not claim they were compiled.  Files that are intended as source-complete core adapters contain no deliberate \texttt{sorry}; blueprint files mark unimplemented theorem targets in comments rather than adding axioms.
+  \item Inherited checked claims are tied to exact repository paths and commit in the source audit.  They were inspected, not independently rebuilt in this packet.
+\end{itemize}
+
+\subsection{What this report does not claim}
+
+The framework is not a proof of every theorem in the packet corpus.  In particular, it does not claim:
+\begin{itemize}
+  \item a general effective Faltings or Siegel height bound;
+  \item a uniform rational representative algorithm for arbitrary Selmer classes;
+  \item exact branch labels from arbitrary Cauchy coefficients;
+  \item a Cauchy modulus from metastability alone;
+  \item a universal primitive-recursive interpreter;
+  \item a completed checked graph compiler in Lean;
+  \item that executable tests substitute for object-level derivations.
+\end{itemize}
+What it provides is a sharper decomposition: when a theorem fails to enter \iPRA, one can identify whether the missing item is an object proof, a QF invariant, a quantitative modulus, a separation guard, a relational compatibility certificate, or a genuinely deep producer.
+
+\subsection{Recommended verification gates for future packets}
+
+Every future theorem packet should ship the following ledger entries:
+\begin{enumerate}[label=(\arabic*)]
+  \item exact object formula and representation contract;
+  \item local theorem list and which are actual \(\Prf\,\PRAAx\) values;
+  \item induction inventory, showing every matrix is QF;
+  \item precision-demand table and all margin assumptions;
+  \item witness policy: deterministic, relational, exact-stable, diameter-stable, or guarded;
+  \item producer/verifier split for every nontrivial bound or modulus;
+  \item clean Lean build and \texttt{\#print axioms};
+  \item exact-arithmetic tests for algorithms, clearly labeled as tests;
+  \item native transfer theorem, if desired, applied only after the ordinary derivation.
+\end{enumerate}

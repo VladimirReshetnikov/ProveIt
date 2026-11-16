@@ -1,0 +1,106 @@
+\section{Reusable proof templates}
+
+\subsection{Template 1: bounded verifier}
+
+\textbf{Input:} a fixed Boolean predicate \(p(i,x)\), a bound \(B(x)\), and a target that all entries satisfy \(P\).
+
+\textbf{Construction:}
+\begin{enumerate}[label=(\arabic*)]
+  \item generate \(p\) and prove \(p=1\leftrightarrow P\);
+  \item generate \(\mathsf{All}_p\) by primitive recursion;
+  \item prove its zero/successor equations and Boolean range;
+  \item prove fold reflection;
+  \item use the QF equation \(\mathsf{All}_p(B,x)=1\) inside larger invariants.
+\end{enumerate}
+
+\subsection{Template 2: least certified witness}
+
+\textbf{Input:} bounded total relation \(R(x,a)\), \(a<B(x)\).
+
+\textbf{Construction:}
+\begin{enumerate}[label=(\arabic*)]
+  \item Booleanize \(R\);
+  \item run the \((found,witness)\) search loop;
+  \item prove the QF prefix invariant;
+  \item cut in bounded totality to derive \(found=1\);
+  \item export validity and minimality.
+\end{enumerate}
+
+\subsection{Template 3: certified loop}
+
+\textbf{Input:} initializer, transition, fuel, QF invariant, terminal rule.
+
+\textbf{Construction:}
+\begin{enumerate}[label=(\arabic*)]
+  \item define the specialized \texttt{PR.prec} symbol;
+  \item prove computation equations at arbitrary terms;
+  \item construct \texttt{LoopCertificate};
+  \item call \texttt{IPRA.ind};
+  \item instantiate at fuel and cut the terminal rule.
+\end{enumerate}
+
+\subsection{Template 4: relational finite use}
+
+\textbf{Input:} finite candidate bounds, validity, edge compatibility, terminal acceptance.
+
+\textbf{Construction:}
+\begin{enumerate}[label=(\arabic*)]
+  \item choose a rectangular width;
+  \item compute viability rows backward;
+  \item prove row recurrence by QF trace reflection;
+  \item prove viability/path reflection;
+  \item search least viable start and successor;
+  \item verify the selected path by a Boolean fold;
+  \item feed path certificates to the consumer schedule.
+\end{enumerate}
+
+\subsection{Template 5: stable observer}
+
+\textbf{Input:} bounded total relation and exact/diameter stability theorem.
+
+\textbf{Construction:}
+\begin{enumerate}[label=(\arabic*)]
+  \item choose the least valid candidate;
+  \item derive candidate validity;
+  \item instantiate stability against an arbitrary valid candidate;
+  \item export only the observer value, not the witness code.
+\end{enumerate}
+
+\subsection{Template 6: guarded operation}
+
+\textbf{Input:} total implementation, positive margin guard, precision demand, local estimate.
+
+\textbf{Construction:}
+\begin{enumerate}[label=(\arabic*)]
+  \item reflect the guard Boolean;
+  \item compute the upstream demand from output precision and margin;
+  \item execute the total program;
+  \item under the guard, prove the successful branch and quantitative estimate;
+  \item leave behavior outside the guard unspecified in the public mathematical contract.
+\end{enumerate}
+
+\subsection{Template 7: bounded-height completeness}
+
+\textbf{Input:} point verifier, canonicalization/equivalence, height, global bound.
+
+\textbf{Construction:}
+\begin{enumerate}[label=(\arabic*)]
+  \item enumerate the bounded code box;
+  \item filter by well-formedness and the point verifier;
+  \item canonicalize and deduplicate;
+  \item prove soundness by verifier reflection;
+  \item prove completeness by the height hypothesis and enumeration coverage.
+\end{enumerate}
+
+\subsection{Template 8: finite net}
+
+\textbf{Input:} net generator, coverage checker, operation modulus, local verifier.
+
+\textbf{Construction:}
+\begin{enumerate}[label=(\arabic*)]
+  \item fix terminal tolerance and compute mesh demand;
+  \item verify every net point by a finite fold;
+  \item for an open arbitrary point, search a covering cell using the supplied coverage certificate;
+  \item transport the local estimate through the modulus;
+  \item sum explicit error budgets.
+\end{enumerate}
