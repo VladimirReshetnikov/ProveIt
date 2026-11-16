@@ -63,6 +63,7 @@ import IPRADerivations.DiophantineNumberTheory.PellModular
 import IPRADerivations.DiophantineNumberTheory.Dirichlet
 import IPRADerivations.DiophantineNumberTheory.PellNegDescent
 import IPRADerivations.DiophantineNumberTheory.PellGenDescent
+import IPRADerivations.DiophantineNumberTheory.PellOneSided
 import IPRADerivations.DiophantineNumberTheory.Hurwitz
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
