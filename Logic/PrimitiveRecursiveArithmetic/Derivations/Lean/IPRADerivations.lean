@@ -26,6 +26,7 @@ import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Analysis.Chebyshev
 import IPRADerivations.Analysis.Products
 import IPRADerivations.Analysis.Pochhammer
+import IPRADerivations.Analysis.BetaIntegers
 import IPRADerivations.Analysis.PowerSums
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.Core.EuclidLemma
