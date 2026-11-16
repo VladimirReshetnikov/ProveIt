@@ -1,0 +1,92 @@
+\section{Repository audit and the remaining problem}
+\label{sec:audit}
+
+\subsection{The checked base is already strong}
+
+The correct target is not an informal claim that a construction is primitive
+recursive.  It is the ordinary embedded sequent
+\[
+   \Gamma \turnstilep \varphi,
+\]
+implemented by \code{Prf PRAAx}.  At the pinned revision the repository
+already supplies the following checked components.
+
+\begin{itemize}
+\item \code{ConciseIPRA/Lean/ConciseIPRA/Deduction.lean} defines intuitionistic
+  natural deduction with equality and proves substitution, weakening, shifting,
+  simultaneous cut \code{Prf.trans}, and the usual equality conveniences.
+\item \code{ConciseIPRA/Lean/ConciseIPRA/PR.lean} defines \(\PR\), \(\PTm\),
+  \(\PRAAx\), and quantifier-free induction.
+\item \code{Derivations/Lean/IPRADerivations/Core/Basic.lean} supplies open
+  induction \code{ind} and arbitrary-term instantiation \code{inst}.
+\item The checked arithmetic layer contains semiring laws, truncated
+  subtraction, order, pairing, finite sums and products, bounded search,
+  division, gcd, finite linear algebra, descent, and many other reusable
+  results.
+\item \code{Core/Definitions.lean} contains the crucial operation
+  \code{PTm.toPR}: every open term is converted into the fixed primitive-
+  recursive symbol that computes it, together with an object-theory equation
+  \code{toPR\_eq}.  Its generic \code{recDef} supports arbitrary parameter
+  arity.
+\item The repository's bridge work now includes open-sequent transport between
+  the ordinary presentation and the Foundation backend.  The maintained proof
+  should therefore remain an ordinary \code{Prf PRAAx} derivation; a backend
+  statement is a corollary rather than a competing source of truth.
+\end{itemize}
+
+These facts change the appropriate research strategy.  It is unnecessary to
+invent another logic, another universal evaluator, or another monolithic proof
+certificate format.  The missing framework should be a thin layer that turns
+finite mathematical interfaces into values of the calculus that already
+exists.
+
+\subsection{What the packet corpus reveals}
+
+The delivered packets repeatedly find the same finite mathematical core:
+explicit rational arithmetic, finite enumerations, bounded traces, finite
+covers, finite relations, and error budgets.  They also repeatedly encounter
+the same failures.
+
+\begin{enumerate}[label=\textbf{F\arabic*.}]
+\item A Python check, a Mathlib theorem, or a host-level proposition is
+  described as though it were an iPRA derivation.
+\item A bounded quantifier is placed directly in an induction invariant, even
+  though \(\PRAAx\) induction accepts only syntactically quantifier-free
+  formulas.
+\item Existential witnesses from different stages are silently assumed to be
+  compatible, or an arbitrary witness is turned into a global function.
+\item A noncanonical object---a root at collision, an eigenvector at repeated
+  eigenvalue, a local chart, or a finite cover---is forced into an exact named
+  representative although only invariant observations are needed.
+\item An operation with quantitative error propagation is justified by mere
+  negated equality rather than an apartness margin or denominator lower bound.
+\item A qualitative existence theorem is used as an executable cutoff: finite
+  becomes bounded height, compact becomes a supplied finite net, or convergence
+  becomes a rate.
+\item A proof packet gives an attractive graph compiler but leaves the generic
+  Boolean reflection, binder substitution, or final \code{Prf} construction as
+  an uncompiled outline.
+\end{enumerate}
+
+Recent FINER and scoped-certificate packets diagnose these issues accurately.
+Their status ledgers also identify the remaining reusable kernel: generic open
+bounded reflection, checked scope combinators, and a compiler that returns an
+ordinary derivation.  \Scope is deliberately concentrated on that kernel.
+
+\subsection{The design test}
+
+A framework is successful only if it passes all of the following tests.
+
+\begin{enumerate}[label=(\roman*)]
+\item Its public endpoint is literally \(\Gamma\turnstilep\varphi\).
+\item Every induction invariant is quantifier-free by construction.
+\item Substitution by arbitrary compound terms is a theorem, not an informal
+  convention.
+\item Noncanonical certificates cannot escape their scope accidentally.
+\item Exact names are created only from explicit producers or bounded search.
+\item Missing global mathematics is retained as an exact residual formula.
+\item The host compiler is trusted only because it constructs a kernel-checked
+  \code{Prf}; its own semantic evaluation is not an axiom.
+\item The framework can express relational and quotient-valued mathematics,
+  not only total functions on codes.
+\end{enumerate}

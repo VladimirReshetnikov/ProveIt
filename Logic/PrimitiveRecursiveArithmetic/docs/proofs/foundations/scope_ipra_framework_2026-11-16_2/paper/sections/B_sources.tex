@@ -1,0 +1,49 @@
+\section{Pinned source audit}
+\label{app:sources}
+
+The analysis and Lean signatures were pinned to ProveIt revision
+\begin{center}
+\code{8dfe26af18310f58aaff695fb0ce03ff5007d096}
+\end{center}
+on 16 November 2026.  The following files were used directly.
+
+\begin{longtable}{@{}p{0.47\textwidth}p{0.46\textwidth}@{}}
+\toprule
+Repository path & Role in this report \\
+\midrule
+\endfirsthead
+\toprule
+Repository path & Role in this report \\
+\midrule
+\endhead
+\code{Logic/PrimitiveRecursiveArithmetic/README.md} & canonical architecture and
+status of packet versus checked layers \\
+\code{Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md} & ordinary
+open-sequent target, bridge plan, and migration priorities \\
+\code{Logic/PrimitiveRecursiveArithmetic/ENDPOINTS.md} & pinned build endpoints
+and bridge status \\
+\code{ConciseIPRA/Lean/ConciseIPRA/Deduction.lean} & exact constructors and
+structural theorem signatures \\
+\code{ConciseIPRA/Lean/ConciseIPRA/PR.lean} & \(\PR\), \(\PTm\),
+\(\PRAAx\), and induction \\
+\code{Derivations/Lean/IPRADerivations/Core/Basic.lean} & \code{inst},
+\code{ind}, and arithmetic terms \\
+\code{Core/Definitions.lean} & \code{PTm.toPR}, \code{recDef}, sums and products \\
+\code{Core/Order.lean} & quantifier-free order and decidability results \\
+\code{Core/Pairing.lean} & equality bit, pairing, and simultaneous recursion \\
+\code{Core/Search.lean} & least-zero implementation and proof pattern \\
+\code{docs/proofs/README.md} & survey of proof packets and their status \\
+\code{docs/proofs/foundations/FINER-iPRA-framework-2026-11-16/} & finite-query
+compiler, demand, viability, observer, and difficulty analysis \\
+\code{docs/proofs/foundations/scoped_certificate_realization_ipra_2026-11-16/}
+& certificate escape analysis and structural kernel candidate \\
+\code{docs/proofs/foundations/ipra_bounded_reflection_2026-11-16/} & earlier
+bounded-reflection plan and its open obligations \\
+\bottomrule
+\end{longtable}
+
+The present report does not claim that the accompanying Lean blueprint was
+compiled.  The runtime used for artifact generation had \LaTeX{} and Python but
+no \code{lean} or \code{lake} executable.  Repository integration must repeat
+the source audit at the then-current revision and run focused builds plus
+\texttt{\#print axioms}.

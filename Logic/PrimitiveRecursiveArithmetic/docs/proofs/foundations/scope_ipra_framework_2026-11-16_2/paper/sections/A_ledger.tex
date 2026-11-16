@@ -1,0 +1,55 @@
+\section{Theorem and artifact ledger}
+\label{app:ledger}
+
+\small
+\begin{longtable}{@{}p{0.30\textwidth}p{0.43\textwidth}p{0.19\textwidth}@{}}
+\toprule
+Result & Evidence & Status \\
+\midrule
+\endfirsthead
+\toprule
+Result & Evidence & Status \\
+\midrule
+\endhead
+Ordinary \(\Prf\;\PRAAx\) calculus, substitution, weakening, cut & Existing
+\code{ConciseIPRA/Deduction.lean} & Upstream checked \\
+Quantifier-free induction and arbitrary-term instantiation & Existing
+\code{IPRADerivations/Core/Basic.lean} & Upstream checked \\
+Open-term closure to PR symbols and generic recursion & Existing
+\code{Core/Definitions.lean} & Upstream checked \\
+Bounded least search with one parameter & Existing
+\code{Core/Search.lean} & Upstream checked \\
+Scoped realization and conditional boundary & Direct use of \code{Prf.exE} and
+\code{Prf.impI}; source candidate in archive & Human complete / candidate \\
+Parameterized least-zero search & Full reduction to existing search proof with
+arbitrary parameters & Human complete / Lean work \\
+Schema-first bounded reflection & Full construction and proof in
+\cref{sec:reflection,sec:connectives,sec:quantifiers} & Human complete / blueprint \\
+Open substitution coherence & Fixed-symbol argument plus checked syntax laws &
+Human complete \\
+Least accepted certificate & Search and reflection proof in
+\cref{thm:least-code} & Human complete / blueprint \\
+Exact relational observer theorem & Nested existential elimination and
+coherence & Human complete \\
+Quotient/metric observer variants & Same scope proof with reflected relation or
+distance & Human complete schema \\
+Scope-minimal normal form & Finite commuting-conversion argument & Human complete \\
+Indexed plan compiler & Structural recursion into checked proof constructors &
+Human complete / blueprint \\
+Deterministic trace invariant & Direct quantifier-free induction & Human complete \\
+Capped cyclic demand closure & Rank and least-prefixed-point proof & Human complete;
+reference tested \\
+Backward viability and whole path & Bounded reflection and least search & Human
+complete schema \\
+Python reference algorithms & Sixteen standard-library tests & Executable only \\
+Structural Lean kernel & No placeholders; source-audited against pinned API & Not
+elaborated here \\
+Bounded-code and compiler Lean files & Definitions and exact target signatures &
+Blueprint, not checked \\
+General height/modulus/cover producers & Theorem-specific, not supplied by the
+framework & Explicit residuals \\
+Exact selectors through degeneracy & Deliberately rejected without gap/producer &
+Barrier; reformulated \\
+\bottomrule
+\end{longtable}
+\normalsize

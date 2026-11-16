@@ -1,0 +1,120 @@
+\section{Escape effects and scope-minimal normal form}
+\label{sec:effects}
+
+\subsection{Static effect information}
+
+A proof graph node that introduces a certificate is annotated with one of the
+following effects.
+
+\begin{center}
+\begin{tabularx}{0.94\textwidth}{@{}lXl@{}}
+\toprule
+Effect & Permitted public dependence & Required evidence \\
+\midrule
+\(\mathsf{sealed}\) & none & producer or residual; local extractor \\
+\(\mathsf{rel}(O,\approx)\) & existential observation relation modulo \(\approx\) & producer or residual; coherence proof \\
+\(\mathsf{named}(p)\) & concrete PR term \(p(q)\) & direct validity proof \\
+\(\mathsf{named}(\mu,B)\) & least accepted code below \(B(q)\) & reflected verifier and bounded existence \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The first two modes do not move a certificate eigenvariable to the outer
+scope.  The named modes replace it with an outer term already defined without
+that eigenvariable.
+
+A host-side checker also records whether a missing producer has a named
+residual.  A node with no producer and no residual is rejected; otherwise the
+residual becomes an explicit context formula in the compiled theorem.
+
+\subsection{Scope regions}
+
+For an acyclic dependency graph, the \emph{consumer region} of a certificate
+node is the subgraph consisting of all nodes whose local derivations depend on
+that certificate before it is sealed or converted to a justified public
+output.  Opening the witness outside this region is harmless but bloats the
+proof and may force unrelated code bounds.  Opening it inside the region would
+leave some consumer without the witness.
+
+A scope-minimal plan opens the certificate immediately before the least proof
+region containing all its consumers and closes it immediately after that
+region's result has become certificate-independent.
+
+\begin{theorem}[Scope-minimal normal form]
+\label{thm:scope-normal-form}
+Let \(G\) be a finite acyclic proof graph in which every certificate node has a
+valid escape effect and every local edge is backed by an object-iPRA derivation.
+Then \(G\) can be transformed effectively into a nested proof plan with the
+following properties.
+
+\begin{enumerate}[label=(\roman*)]
+\item Every sealed certificate is introduced by one existential elimination
+  surrounding exactly its live consumer region.
+\item Every relational certificate is hidden inside its public output relation;
+  no representative occurs free outside that relation's eliminator.
+\item Every named certificate has been replaced by a direct producer term or a
+  least bounded selector before it appears in an outer formula.
+\item Unreachable nodes and their producer residuals are absent.
+\item All remaining unresolved producer formulas occur in the outer context.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Choose a reverse topological order of the graph.  Remove every node not
+reachable from the final goal.  For a live certificate \(c\), collect all edges
+whose derivations require its validity formula.  Replace the finite collection
+of downstream conclusions by one continuation deriving their conjunction or
+the final joined result under the single local assumption \(V(c)\).  This is
+possible because weakening permits unrelated local assumptions and ordinary
+conjunction introduction shares the witness inside one scope.
+
+Now move the existential elimination inward across any inference whose other
+premises and conclusion do not contain the certificate.  The standard
+commuting conversion is valid because the eigenvariable is fresh there.  Each
+move strictly decreases the number of graph edges crossed by the scope, so the
+finite process terminates at the least consumer region.  Repeat in reverse
+nesting order for dependent certificates.
+
+For a relational effect, replace the certificate-dependent observer term in
+the outer interface by the existential relation \(\Out\); the proofs of
+\cref{thm:observed-relation} justify all public comparisons.  For a named
+effect, insert the supplied producer or \cref{thm:least-code}, yielding a term
+whose free variables are outer parameters only.  Finally move unresolved
+producer assumptions outward by implication/context introduction.  Every
+transformation is a composition of weakening, cut, conjunction rules,
+existential rules, and substitution, so the resulting plan has the same
+object-theory conclusion.
+\end{proof}
+
+\subsection{No-escape safety}
+
+\begin{corollary}[No dangling certificate]
+A well-effected plan cannot compile to a public formula containing a proof-local
+certificate variable.
+\end{corollary}
+
+\begin{proof}
+In the sealed and relational cases the certificate is bound by an existential
+inside the plan.  In the named cases it is replaced by an outer term.  The
+indexed type of existential elimination requires the final formula to live at
+the outer arity, so no unbound local variable can occur.
+\end{proof}
+
+In Lean this property does not need a separate free-variable checker.  It is a
+consequence of the indices of \code{Fm}, contexts, and \code{Prf.exE}.  The
+host effect checker adds a mathematical policy: it rejects an exact public
+representative when the formal scope could only support a relation.
+
+\subsection{Master certificates as an optional backend}
+
+If every internal witness has an explicit finite bound, the nested plan can be
+packed into one mixed-radix master code.  Its checker is the conjunction of all
+local checks, and bounded search selects the least accepted master code.
+Conversely, a master code can be opened once and its fields used in nested
+scopes.  Thus bounded scoped and packed presentations are extensionally
+intertranslatable.
+
+The scoped representation is strictly more general as an interface: it remains
+meaningful when a proof-local existential witness has no useful numerical
+bound.  It also avoids changing every radix when one local certificate format
+changes.

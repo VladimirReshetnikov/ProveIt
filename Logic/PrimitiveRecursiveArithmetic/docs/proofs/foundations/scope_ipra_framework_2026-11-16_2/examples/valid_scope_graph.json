@@ -1,0 +1,21 @@
+{
+  "nodes": [
+    {"id": "query", "kind": "proof", "escape": "sealed"},
+    {
+      "id": "cover",
+      "deps": ["query"],
+      "kind": "certificate",
+      "escape": "sealed",
+      "has_producer": false,
+      "residual": "ExistsFiniteCover"
+    },
+    {
+      "id": "cluster",
+      "deps": ["cover"],
+      "kind": "observer",
+      "escape": "relational",
+      "observer_coherent": true
+    },
+    {"id": "goal", "deps": ["cluster"], "kind": "proof", "escape": "sealed"}
+  ]
+}

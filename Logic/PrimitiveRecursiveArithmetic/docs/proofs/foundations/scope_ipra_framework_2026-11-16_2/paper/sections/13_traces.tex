@@ -1,0 +1,116 @@
+\section{Certified traces, cyclic demands, and relational paths}
+\label{sec:traces}
+
+\subsection{Deterministic trace reflection}
+
+Let a fixed state machine have primitive-recursive initial state
+\(s_0(\vec q)\), step
+\(s_{t+1}=F(t,s_t,\vec q)\), and a quantifier-free invariant
+\(I(t,s,\vec q)\).  The state sequence is defined by \code{recDef}.
+
+\begin{theorem}[Trace invariant]
+\label{thm:trace}
+Assume object derivations
+\begin{align*}
+ &\Gamma\turnstilep I(0,s_0(\vec q),\vec q),\\
+ &I(t,s_t,\vec q),\Gamma^{\shift}
+     \turnstilep I(t+1,F(t,s_t,\vec q),\vec q).
+\end{align*}
+Then iPRA proves \(I(T,s_T,\vec q)\) for every term \(T\).
+\end{theorem}
+
+\begin{proof}
+Use quantifier-free induction on the formula
+\(I(t,s_t,\vec q)\).  The zero and successor equations of \code{recDef}
+rewrite the two induction cases to the supplied derivations.  Instantiate the
+open result at \(T\).
+\end{proof}
+
+A human invariant containing bounded quantifiers is first compiled to a bit
+\(i(t,s,\vec q)\); induction is applied to the equation \(i=1\).  Open
+reflection recovers the human statement at the terminal state.
+
+\subsection{Query-first precision scheduling}
+
+An analytic or geometric computation should not carry an entire infinite name
+through one loop.  Fix the terminal query \(q\) first, propagate the finite
+input precision and resource requirements backward, and specialize every node
+to those demands.  The forward trace then manipulates only finite state.  The
+final theorem may quantify over \(q\) outside the trace.
+
+This order is logically important.  It turns ``for every precision there is a
+finite computation'' into one open theorem parameterized by precision, without
+placing a universal quantifier inside the induction invariant.
+
+\subsection{Finite monotone cyclic demand closure}
+
+A reverse demand graph may have cycles.  Let
+\[
+  D=\prod_{j<m}\{0,\ldots,C_j\}
+\]
+with componentwise order, and let \(F:D\to D\) be monotone.  Define the
+inflationary step
+\[
+  T(d)=d\vee F(d)
+\]
+with componentwise maximum and clipping at capacities.  Starting from a base
+demand \(d_0\), put \(d_{r+1}=T(d_r)\).
+
+\begin{theorem}[Capped demand stabilization]
+\label{thm:demand}
+Let \(H=\sum_{j<m}C_j\).  Then \(d_H\) is a prefixed point of \(F\).  It is the
+least prefixed point above \(d_0\).
+\end{theorem}
+
+\begin{proof}
+The sequence is componentwise nondecreasing.  Define the rank
+\(\rho(d)=\sum_j d_j\).  If \(d_{r+1}\neq d_r\), at least one coordinate
+strictly increases, so \(\rho(d_{r+1})\ge\rho(d_r)+1\).  The rank is at most
+\(H\).  Therefore there can be at most \(H-\rho(d_0)\) strict steps; by stage
+\(H\), \(T(d_H)=d_H\), hence \(F(d_H)\le d_H\).
+
+For leastness, let \(p\ge d_0\) satisfy \(F(p)\le p\).  Induct on \(r\).  If
+\(d_r\le p\), monotonicity gives \(F(d_r)\le F(p)\le p\), so
+\(d_{r+1}=d_r\vee F(d_r)\le p\).  Thus \(d_H\le p\).
+\end{proof}
+
+For fixed dimension, all coordinates, comparisons, maxima, and the rank are PR
+terms.  The two inductions use quantifier-free vector equations and order
+formulas.  An overflow bit records whether the chosen caps were adequate; its
+vanishing is either proved or retained as a residual.
+
+\subsection{Relational paths and backward viability}
+
+Pointwise existence at successive stages does not imply that independently
+chosen witnesses form a compatible path.  Let finite layers
+\(X_0,\ldots,X_T\) have reflected validity predicates and reflected edge
+relations \(E_t(x,y)\).  Define viability backward:
+\[
+\begin{aligned}
+  \mathsf{viable}_T(x)&=\mathsf{accept}(x),\\
+  \mathsf{viable}_t(x)&=1
+   \quad\Longleftrightarrow\quad
+   \exists y<B_{t+1}\,[E_t(x,y)\wedge\mathsf{viable}_{t+1}(y)=1].
+\end{aligned}
+\]
+Each existential is a bounded reflected search.
+
+\begin{theorem}[Least viable path]
+If an initial viable node exists, bounded least search at each forward stage
+constructs a whole path whose edges and terminal acceptance are verified.
+Conversely, viability zero implies that no accepted path begins there.
+\end{theorem}
+
+\begin{proof}
+Backward induction establishes the equivalence between the viability bit and
+existence of an accepted suffix.  In the forward pass, the current node's
+viability supplies an accepted successor below the finite bound; choose the
+least one by \cref{thm:least-code}.  Continue for the fixed horizon.  The
+terminal viability equation is exactly acceptance.  The no-path direction
+opens any purported path and propagates its suffix backward, contradicting
+viability zero.
+\end{proof}
+
+This theorem resolves hidden finite choice.  A greedy locally valid choice is
+never assumed compatible; the whole finite interaction is verified before any
+representative path is named.

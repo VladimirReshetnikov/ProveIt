@@ -1,0 +1,41 @@
+The ProveIt iPRA corpus now contains a checked ordinary proof calculus, a large
+library of checked arithmetic derivations, and more than one hundred research
+packets that translate mathematics into finite quantitative claims.  The
+persistent gap is no longer the slogan that ``infinite mathematics should be
+made finite.''  It is a small but technically decisive proof-engineering gap:
+bounded verification conditions must be reflected into quantifier-free iPRA
+without losing substitution, noncanonical witnesses must be used without being
+silently chosen, and the final construction must be an actual value of
+\(\Prf\;\PRAAx\), with every unresolved modulus, height bound, separation gap,
+or compactness datum visible as a theorem boundary.
+
+This report proposes \Scope, a framework with three mutually reinforcing
+ideas.  First, mathematical concepts are represented by \emph{query-indexed
+observation presentations}: a requested finite observation, a certificate
+relation, a primitive-recursive verifier, an observer, and object-iPRA
+extraction and coherence derivations.  Second, bounded logic is compiled in a
+\emph{schema-first} form.  A formula scheme over \(k\) formal parameters is
+compiled to a fixed symbol of type \(\PR\,k\), rather than to a term that must
+be recompiled after substitution.  Specialization therefore changes only the
+arguments of one fixed symbol, and substitution naturality follows from the
+checked syntax laws.  This removes the hardest open obligation in the earlier
+bounded-reflection outlines.  Third, certificates carry an escape effect:
+\emph{sealed}, \emph{relational}, or \emph{named}.  Sealed certificates are
+removed by existential elimination; relational outputs expose only a coherent
+observation relation; named outputs require either a direct primitive-recursive
+producer or a proved finite search bound.
+
+We prove, at the human level, a uniform bounded-reflection theorem with both
+truth and falsity reflection, least bounded selection, scoped realization,
+relational observer elimination, a scope-minimal normal-form theorem for finite
+proof graphs, and a proof-producing compilation theorem whose output is an
+open \(\Prf\;\PRAAx\) judgment.  We also give finite trace and cyclic-demand
+lemmas, domain templates for analysis, algebra, geometry, probability, and
+Diophantine arguments, and explicit barrier arguments explaining why exact
+branch labels, global rates from metastability, or height cutoffs from mere
+finiteness must not be synthesized without additional quantitative data.
+
+The accompanying archive contains the full \LaTeX{} source and PDF, a
+source-oriented Lean kernel and detailed blueprints, an executable reference
+model, sixteen passing regression tests, examples, a theorem ledger, and a
+source audit pinned to the current repository revision.

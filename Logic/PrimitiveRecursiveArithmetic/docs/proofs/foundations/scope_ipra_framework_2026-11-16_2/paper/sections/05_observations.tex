@@ -1,0 +1,96 @@
+\section{Observation modes and constructive barriers}
+\label{sec:observations}
+
+\subsection{Three escape modes}
+
+Each certificate occurrence is assigned one of three public modes.
+
+\begin{description}[leftmargin=2.9cm]
+\item[Sealed.]  The public formula contains no certificate-dependent data.  A
+  producer and extractor are composed by existential elimination.
+\item[Relational.]  The public theorem mentions only an existential output
+  relation or an observation modulo an explicit exact, quotient, or metric
+  coherence law.  No representative is selected.
+\item[Named.]  A concrete certificate code, representative, label, or observer
+  term occurs in the public result.  A direct primitive-recursive producer or a
+  proved finite selection bound is mandatory.
+\end{description}
+
+The distinction between relational and named output is substantive.  A
+relation may be uniquely inhabited without providing a primitive-recursive
+term naming its inhabitant.  Unique existence in intuitionistic arithmetic is
+not a hidden description operator.
+
+\subsection{Exact sign at zero}
+
+Consider regular Cauchy names for real numbers and suppose a finite-query
+algorithm claims to return the exact sign \(-1,0,+1\) for every name.  Run it
+on the zero name.  Only finitely many approximation indices are inspected; let
+\(m\) exceed all of them.  Construct a positive regular name and a negative
+regular name that agree with zero at every inspected index and begin separating
+only after \(m\).  The algorithm follows the same finite computation on all
+three names and returns the same sign, which is incorrect for at least two.
+
+This is not a defect of iPRA.  It is a continuity barrier for the proposed
+interface.  Correct replacements are:
+
+\begin{itemize}
+\item return a sign set or interval containing all possible signs;
+\item return an approximate value and postpone the branch;
+\item require an apartness residual \(|x|\ge 2^{-r}\), after which a finite
+  precision determines the sign;
+\item formulate a branch-independent observer.
+\end{itemize}
+
+The same argument applies to an ordered root through a collision, an eigenvector
+at a repeated eigenvalue, or a rotation axis at the identity.
+
+\subsection{Metastability is not a rate}
+
+A metastable statement has the finite-consumer form
+\[
+  \forall k\,\forall g\,\exists N\le B(k,g)\,
+  \forall i,j\in[N,N+g(N)]\ d(a_i,a_j)\le 2^{-k}.
+\]
+It can be exactly what a finite proof needs.  It does not in general supply a
+Cauchy rate \(R(k)\) controlling all \(i,j\ge R(k)\).  Any procedure depending
+on a finite prefix can be fooled by a sequence that agrees on that prefix and
+moves afterward.  To construct a regular name one must add a tail modulus, a
+summable adjacent-motion bound, monotonicity plus a quantitative bound, or some
+other global producer.
+
+\subsection{Finiteness is not a height cutoff}
+
+The assertion that a set of integer or rational solutions is finite does not
+locate those solutions.  Even singleton sets can occur at arbitrarily large
+codes or heights.  Bounded enumeration needs a theorem of the form
+\[
+  P(x)\longrightarrow h(x)\le H(\text{parameters}),
+\]
+or an equivalent complete-list producer.  \Scope can verify and consume such a
+bound, but it does not manufacture one from cardinality alone.
+
+\subsection{Mere nonzeroness is not an error budget}
+
+From \(x\neq0\) intuitionistically one does not obtain a numeral \(r\) with
+\(|x|\ge 2^{-r}\).  Yet a reciprocal approximation, normalization, pivot, or
+Newton step consumes exactly such a lower bound.  The operation should be
+totalized, and the theorem should carry a quantitative guard.  Reverse demand
+propagation can then calculate the input precision required from the guard.
+
+\subsection{Barrier-aware interface selection}
+
+The framework uses the following decision rule.
+
+\begin{enumerate}[label=(\arabic*)]
+\item If the final theorem is independent of the witness, seal it.
+\item If only an invariant or stable observation is needed, expose a relation
+  and prove coherence.
+\item If a concrete term is required, first look for a direct PR producer.
+\item Otherwise require a finite bound, reflect the verifier, and select the
+  least accepted code.
+\item If none of these applies, retain a residual or reformulate the theorem.
+\end{enumerate}
+
+This rule prevents a large class of false ``constructive'' proofs while still
+allowing every genuinely finite part of the argument to be formalized.

@@ -1,0 +1,120 @@
+\section{The proof-producing compiler}
+\label{sec:compiler}
+
+\subsection{A small indexed plan language}
+
+The compiler does not need a universal graph interpreter.  A compact host
+language suffices:
+
+\begin{description}[leftmargin=3.0cm]
+\item[Exact.] Store an existing derivation \(\Gamma\turnstilep A\).
+\item[Specialize.] Apply a simultaneous term substitution.
+\item[Weaken.] Enlarge the local context.
+\item[Supply.] Replace every assumption of a derivation by a derivation under a
+  new context, using simultaneous cut.
+\item[Seal.] Combine a producer of \(\exists c\,V(c)\) with a continuation under
+  \(V(c)\).
+\item[Boundary.] Retain a missing producer as an assumption or implication.
+\item[Reflect/search/trace.] Invoke a reusable module whose endpoint is already
+  an ordinary object derivation.
+\end{description}
+
+A Lean GADT can index a plan by its arity, context, and goal:
+
+\begin{lstlisting}
+inductive Plan : {n : Nat} -> List (Fm PTm n) -> Fm PTm n -> Type
+  | exact (h : Gamma |- [PRAAx] A) : Plan Gamma A
+  | specialize (p : Plan Gamma A) (sigma : Fin n -> PTm m) :
+      Plan (Gamma.map (fun C => C.subst sigma)) (A.subst sigma)
+  | supply (p : Plan Gamma A)
+      (s : forall C, C in Gamma -> Plan Delta C) : Plan Delta A
+  | seal (producer : Plan Gamma (Fm.ex V))
+      (consumer : Plan (V :: Gamma.map Fm.shift) A.shift) : Plan Gamma A
+  | boundary (body : Plan (B :: Gamma) A) : Plan Gamma (B --> A)
+\end{lstlisting}
+
+The notation in the archive uses the repository's Unicode symbols; the display
+above emphasizes the indices.
+
+\subsection{Compilation theorem}
+
+\begin{theorem}[Plan soundness]
+\label{thm:plan-soundness}
+There is a total structural function
+\[
+  \mathsf{compile}:\mathsf{Plan}(\Gamma,A)
+     \longrightarrow (\Gamma\turnstilep A).
+\]
+\end{theorem}
+
+\begin{proof}
+The exact case returns its stored derivation.  Specialization is
+\code{Prf.subst}; weakening is \code{Prf.weaken}; supply is
+\code{Prf.trans}; seal is \code{Prf.exE}; boundary is \code{Prf.impI}.
+Reflection, search, and trace constructors store the object derivations
+returned by their corresponding modules.  Structural recursion terminates on
+the finite host syntax.
+\end{proof}
+
+This theorem is intentionally almost tautological.  That is a virtue: the
+compiler's trusted-facing kernel consists of a handful of already checked
+constructors.  Sophisticated scheduling, packing, optimization, or graph
+normalization may be wrong at the host level, but its output is accepted only
+when it contains a valid \code{Prf} value with the declared indices.
+
+\subsection{Graph compilation}
+
+A graph frontend performs the following metalevel passes.
+
+\begin{enumerate}[label=\textbf{C\arabic*.}]
+\item Remove nodes unreachable from the requested public goal.
+\item Check every edge's arity and local formula interface.
+\item Assign and validate certificate escape effects.
+\item Compute finite precision/resource demands where the graph contains
+  quantitative nodes.
+\item Normalize witness scopes by \cref{thm:scope-normal-form}.
+\item Topologically schedule exact proof nodes and combine them by
+  \code{Prf.trans}.
+\item Insert reflected checks, bounded selectors, certified traces, or
+  relational observer eliminators.
+\item Collect reachable unresolved producer formulas in a residual context.
+\item Build a \code{Plan} and call \(\mathsf{compile}\).
+\end{enumerate}
+
+No pass is an object-theory evaluator.  The graph is fixed data at the Lean
+metalevel; each pass constructs fixed syntax and derivations.
+
+\subsection{Boundary-exact endpoint}
+
+Let \(R_1(q),\ldots,R_s(q)\) be the unresolved producer formulas reachable from
+the goal after dead-node elimination.  The compiler returns
+\[
+   R_1(q),\ldots,R_s(q),\Gamma(q)
+      \turnstilep G(q).
+\]
+Repeated implication introduction yields a closed conditional form if desired.
+A supplied producer derivation discharges its boundary by simultaneous cut.
+
+\begin{proposition}[Dependency exactness]
+The residual list contains no producer node that is unreachable in the chosen
+plan, and every reachable node without a producer contributes a residual.
+\end{proposition}
+
+\begin{proof}
+The first claim follows from the initial reachability pass.  The second is the
+static well-formedness rule for certificate nodes.  Compilation has no
+constructor for silently assuming a producer.
+\end{proof}
+
+Dependency exactness is not logical minimality.  One residual may follow from
+another by a nontrivial theorem.  Proving such an implication is ordinary
+mathematics and should not be hidden in a compiler optimization.
+
+\subsection{Proof sharing and size}
+
+Fixed logical structure is shared by Lean definitions.  Variable-length
+computation is represented by a primitive-recursive trace and one induction,
+not an unrolled proof.  A connected subgraph may later be compiled to the
+repository's native clause calculus for compression, provided its export back
+to ordinary \code{Prf PRAAx} is checked.  These are representation
+optimizations; the canonical theorem remains the ordinary sequent.

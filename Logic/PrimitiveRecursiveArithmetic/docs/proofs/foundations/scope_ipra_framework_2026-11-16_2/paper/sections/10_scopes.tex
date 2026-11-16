@@ -1,0 +1,150 @@
+\section{Scoped certificates and relational observers}
+\label{sec:scopes}
+
+\subsection{The fundamental sealing theorem}
+
+Fix an outer context \(\Gamma\) over \(n\) variables, a certificate formula
+\(V\) over \(n+1\) variables, and an outer goal \(G\).  The certificate is the
+newest variable in \(V\).
+
+\begin{theorem}[Scoped realization]
+\label{thm:scoped-realization}
+If
+\[
+  \Gamma\turnstilep\exists c\,V(c)
+  \qquad\text{and}\qquad
+  V(b),\Gamma^{\shift}\turnstilep G^{\shift},
+\]
+then \(\Gamma\turnstilep G\).
+\end{theorem}
+
+\begin{proof}
+This is exactly the existential-elimination constructor \code{Prf.exE}.  The
+arity of the second premise enforces the eigenvariable condition: \(b\) is
+available inside the extractor, while \(G\) is an outer formula and cannot
+contain it.
+\end{proof}
+
+The logical proof is elementary; the architectural conclusion is powerful.  A
+certificate can be used many times, can feed dependent local producers, and
+can support arbitrary finite reasoning.  It need not have a numerical code
+bound unless it is used by an object-level variable-horizon computation or
+must escape as a public name.
+
+\begin{corollary}[Conditional boundary]
+\label{cor:conditional}
+From an extractor
+\(V(b),\Gamma^{\shift}\turnstilep G^{\shift}\) alone, one obtains
+\[
+  \Gamma\turnstilep (\exists c\,V(c))\to G.
+\]
+\end{corollary}
+
+\begin{proof}
+Introduce the producer formula as a hypothesis, eliminate its existential, and
+use the extractor after weakening by the shifted implication hypothesis.
+\end{proof}
+
+This is the correct endpoint when a height bound, cover, modulus, or analytic
+constant has not yet been produced.  The verifier and all downstream
+mathematics can still be formalized completely.
+
+\subsection{Dependent scoped composition}
+
+Suppose the second certificate depends on the first:
+\begin{align*}
+ &\Gamma\turnstilep\exists x\,A(x),\\
+ &A(x),\Gamma^{\shift}\turnstilep\exists y\,B(x,y),\\
+ &B(x,y),A(x),\Gamma^{\shift\shift}\turnstilep G^{\shift\shift}.
+\end{align*}
+
+\begin{theorem}[Dependent sealing]
+\label{thm:dependent-sealing}
+The three derivations compose to \(\Gamma\turnstilep G\).
+\end{theorem}
+
+\begin{proof}
+Eliminate the outer existential over \(x\).  Within that scope eliminate the
+existential over \(y\).  Apply the final extractor and close the scopes in
+reverse order.  The shifts are exactly those already managed by the two
+\code{exE} constructors.
+\end{proof}
+
+Iterating this proof realizes any finite acyclic dependency tree.  A DAG with
+shared consumers is handled by opening a certificate once around the combined
+continuation, or by deriving a conjunction of all required consequences inside
+one scope.
+
+\subsection{Exact relational output}
+
+Let \(O(c)\) be an observer term and define
+\[
+  \Out(o)\;:\!\Longleftrightarrow\;
+    \exists c\,(V(c)\wedge o=O(c)).
+\]
+
+\begin{theorem}[Existence and uniqueness of an observed relation]
+\label{thm:observed-relation}
+Assume a producer \(\Gamma\turnstilep\exists c\,V(c)\) and observer coherence
+\[
+  V(c),V(d),\Gamma^{\shift\shift}
+     \turnstilep O(c)=O(d).
+\]
+Then iPRA proves:
+\begin{enumerate}[label=(\roman*)]
+\item \(\exists o\,\Out(o)\);
+\item \(\Out(o)\wedge\Out(o')\to o=o'\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+For existence, open a valid certificate and introduce the witness \(O(c)\) for
+\(o\), then introduce \(c\) in the definition of \(\Out\).  The outer
+conclusion contains neither local variable, so both existential eliminations
+close.
+
+For uniqueness, open the certificate hidden in each output relation.  Their
+validity hypotheses permit the coherence derivation, and the two equations
+identifying \(o,o'\) with the observers transfer that equality to the public
+outputs.  Close both certificate scopes.
+\end{proof}
+
+The theorem proves a uniquely inhabited relation.  It does not by itself
+construct a primitive-recursive term naming the unique output.  A downstream
+theorem may consume the relation directly.
+
+\subsection{Quotient and metric output}
+
+Replace equality in the coherence premise by a reflected equivalence relation
+\(\approx\).  The same proof yields
+\[
+  \Out(o)\wedge\Out(o')\longrightarrow o\approx o'.
+\]
+This is the appropriate endpoint for projective directions, multisets, roots
+modulo permutation, charts modulo transition, or codes modulo observational
+equality.
+
+For a metric observer, suppose
+\[
+  V(c)\wedge V(d)\longrightarrow
+  \operatorname{dist}(O(c),O(d))\le e.
+\]
+Opening two output relations gives the same diameter estimate for all public
+outputs.  A finite consumer whose own modulus tolerates \(e\) can therefore use
+any local representative and seal it afterward.  A canonical representative
+is not required.
+
+\subsection{Named output}
+
+There are exactly two supported ways to export a concrete term.
+
+\begin{enumerate}[label=(\arabic*)]
+\item A direct primitive-recursive producer term \(p(q)\) together with a proof
+  of \(V(q,p(q))\).
+\item A finite bound and accepted-code existence, followed by the least selector
+  of \cref{thm:least-code}.
+\end{enumerate}
+
+An existential eigenvariable cannot be moved into an outer term.  Any apparent
+third method hides either an unproved choice principle, an omitted bound, or a
+change of theorem to a relational output.

@@ -1,0 +1,121 @@
+\section{Query-indexed presentations of mathematical concepts}
+\label{sec:presentations}
+
+\subsection{The basic presentation}
+
+Fix an outer parameter arity \(k\), a context \(\Gamma\), and a query tuple
+\(\vec q\).  A \emph{finitary observation presentation} contains the following
+data.
+
+\begin{enumerate}[label=(P\arabic*)]
+\item A certificate formula \(V(\vec q,c)\), usually a fixed bounded formula or
+  the equation that its characteristic bit equals \(1\).
+\item An observer term \(O(\vec q,c)\), possibly a tuple code.
+\item A public specification \(S(\vec q,o)\).
+\item An extractor derivation
+  \[
+     V(\vec q,b),\Gamma^{\shift}
+       \turnstilep S(\vec q^{\shift},O(\vec q^{\shift},b)).
+  \]
+\item Optionally, a producer
+  \(\Gamma\turnstilep\exists c\,V(\vec q,c)\), or a named residual formula
+  asserting exactly that producer.
+\item Optionally, a coherence derivation comparing two valid certificates.
+\end{enumerate}
+
+The verifier and observer are fixed primitive-recursive constructions.  Their
+mathematical interpretation may involve a finite cover, a polynomial
+factorization certificate, a mesh, a path in a finite relation, a trace, a
+local coordinate chart, or a rational error budget.
+
+\subsection{Public output relations}
+
+A noncanonical certificate naturally defines a relation rather than a
+function:
+\[
+  \Out(\vec q,o)\;:\!\Longleftrightarrow\;
+  \exists c\bigl(V(\vec q,c)\wedge o=O(\vec q,c)\bigr).
+\]
+This relation is a first-class mathematical interface.  It may be total,
+single-valued modulo an equivalence, or merely small in diameter.  A downstream
+consumer can be proved from \(\Out(\vec q,o)\) by opening the certificate
+locally.  No global representative is needed.
+
+\begin{definition}[Exact observer coherence]
+An observer is exactly coherent when iPRA derives
+\[
+  V(\vec q,c)\wedge V(\vec q,d)
+      \longrightarrow O(\vec q,c)=O(\vec q,d).
+\]
+\end{definition}
+
+\begin{definition}[Quotient observer coherence]
+Given a reflected equivalence relation \(\approx_{\vec q}\), the observer is
+quotient coherent when
+\[
+  V(\vec q,c)\wedge V(\vec q,d)
+      \longrightarrow O(\vec q,c)\approx_{\vec q}O(\vec q,d).
+\]
+\end{definition}
+
+\begin{definition}[Metric observer coherence]
+Given an integer or rational distance code and a tolerance \(e(\vec q)\), the
+observer is metrically coherent when
+\[
+  V(\vec q,c)\wedge V(\vec q,d)
+      \longrightarrow d(O(\vec q,c),O(\vec q,d))\le e(\vec q).
+\]
+\end{definition}
+
+These three forms correspond respectively to exact invariants, quotient-valued
+objects, and stable finite observations.
+
+\subsection{Coherence across queries}
+
+A family of correct answers at each precision is not yet a coherent name.  To
+represent an infinite object one adds cross-query laws.  Typical forms are
+\[
+  q\preceq q'\ \wedge\ \Out(q,o)\ \wedge\ \Out(q',o')
+   \longrightarrow d(r_{q,q'}(o'),o)\le e(q),
+\]
+where \(r_{q,q'}\) is a restriction or rounding map, or
+\[
+  d(o_q,o_{q+1})\le 2^{-q-2}
+\]
+with a summable motion budget.  These laws are quantitative producers, not
+consequences of pointwise existence.
+
+For a regular real name, for example, the public object is a primitive-
+recursive function \(a(k)\) of rational codes together with a proved estimate
+\(|a(k)-a(\ell)|\le 2^{-k}+2^{-\ell}\).  Merely proving
+\(\forall k\,\exists a\,P(k,a)\) does not produce such a function.  \Scope
+keeps the pointwise relation until a direct producer, bounded selector, or
+compatibility theorem justifies a name.
+
+\subsection{Compositional contracts}
+
+Presentations compose relationally.  Suppose \(P\) produces a relation
+\(R(q,x)\) and, under a local assumption \(R(q,x)\), presentation \(Q\)
+produces \(T(q,x,y)\).  Their composite output is
+\[
+  \exists x\bigl(R(q,x)\wedge T(q,x,y)\bigr).
+\]
+A finite proof graph is therefore naturally a nest of existential scopes and
+ordinary cuts.  Functional composition is recovered as a special case when
+both relations have named primitive-recursive producers.
+
+\subsection{Examples of presentations}
+
+\begin{longtable}{@{}p{0.19\textwidth}p{0.32\textwidth}p{0.39\textwidth}@{}}
+\toprule
+Concept & Certificate & Preferred public observation \\
+\midrule
+Finite combinatorial object & code plus local incidence checks & exact code or invariant \\
+Algebraic roots & factor/cluster and separation certificates & multiset, cluster, symmetric functions \\
+Real function value & rational approximation plus error proof & interval or regular-name approximant \\
+Compact optimization & finite net, coverage and value table & approximate minimum and near-minimizer relation \\
+Probability law & finite rational law plus tail/quantization data & bounded expectations or robust quantile interval \\
+Topological map & finite complex, carrier and homotopy checks & induced finite-chain observation \\
+Diophantine solution set & height bound and checked enumeration & complete finite list \\
+\bottomrule
+\end{longtable}
