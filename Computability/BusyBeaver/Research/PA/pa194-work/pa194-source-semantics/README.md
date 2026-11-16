@@ -38,11 +38,15 @@ source theory in this chain is proved in structures and transferred by `source_s
 The ten members of `SourceFacts` other than `sA2`, `sM2` also have internal proofs by
 derivations in `pa194-model-axioms`; they are not used here.
 
-Not done in the committed modules: `ArithmeticCalibration` itself is a statement about all
-models of the candidate PRA presentation with an `IΣ₁` reduct, defined in a module of
-`pa194-guarded-compiler` whose imports are not all compiled locally. The module that states
-it from `calibration` is written but not compiled, and is not in the repository yet; its
-wrapper over those models was checked against a stand-in only.
+Used by: `ArithmeticCalibration` of `pa194-guarded-compiler` is a statement about all models
+of the candidate PRA presentation with an `IΣ₁` reduct. It is stated from `calibration` in
+`PA194ArithmeticCalibrationSemantic` of
+[`pa194/ipra/native-endpoint`](../../pa194/ipra/native-endpoint/README.md), and
+`PA194ModeledSchedulerSemanticIFF` there uses `sourceFacts_semantic` and `calibration` for
+the equivalence between a halt of the modeled scheduler and an internal refutation of
+arithmetic. The equivalence in iPRA between the consistency sentence and non-halting of the
+literal 194-state machine, `PA194NativeLiteralFinal.consistency_iff_literal_nonhalt`, is
+proved in that directory; no module of this directory states it.
 
 ## Checking
 

@@ -461,12 +461,13 @@ facts (isomorphism is an equivalence compatible with successor; zero, successors
 products exist). Its `calibration` and `sourceFacts_semantic` state, with no hypothesis and
 for every model of `IΣ₁`, internal proofs in the source theory of the four facts of the
 arithmetic calibration and of all twelve source facts; no internal proof from
-`pa194-model-axioms` is used. Each module has been compiled separately. The module that
-states `ArithmeticCalibration` itself from `calibration`, for the models of the candidate
-PRA presentation, has not been compiled, because the module defining that statement has
-imports that are not compiled locally yet; the calibration in that form, and the
-scheduler-level implication that follows from it, are therefore not claimed here. The
-literal machine and modeled scheduler now agree by the model-level proof above.
+`pa194-model-axioms` is used. Each module has been compiled separately.
+`ArithmeticCalibration` itself, for the models of the candidate PRA presentation, is stated
+from `calibration` in `PA194ArithmeticCalibrationSemantic` of the
+[native endpoint](pa194/ipra/native-endpoint/README.md), which also uses
+`sourceFacts_semantic` for the equivalence between a halt of the modeled scheduler and an
+internal refutation of arithmetic. The literal machine and modeled scheduler agree by the
+model-level proof above.
 
 [`isigma1-machine`](shared/isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
