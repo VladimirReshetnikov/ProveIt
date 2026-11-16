@@ -20,15 +20,19 @@ derivation is written. The structures are not assumed extensional.
 | `PA194SourceInduction` | `dom_mem`: members of ordinal representatives are ordinal representatives; `dom_zero_or_succ`; `dom_induction`: induction over ordinal representatives for a property whose complement is defined by a formula with parameters; `letter_induction`: the same for a formula over the letters. |
 | `PA194SourceKnown` | `sWith10`, `MTheta10`, `ev_sWith10`: a sentence under the ten source facts other than `sA2`, `sM2`; `TenFacts T` and `with_ten`: internal provability of the ten, and their discharge; `Known N`, `known_of`: their consequences as statements about a structure. |
 | `PA194SourceAddCoherence` | `add_zero_left`: a sum of an empty representative and `b` is `b`; `sem_a2`: coherence of addition in a structure, by `letter_induction`; `a2_supply`: `adjunctiveFullSepTheory.internalize V ⊢ tHyp sA2` from `TenFacts`. |
+| `PA194SourceMulCoherence` | `mul_zero_left`: a product with an empty first factor is that factor; `sem_m2`: coherence of multiplication in a structure, from coherence of addition; `m2_supply`: `⊢ tHyp sM2` from `TenFacts` and `⊢ tHyp sA2`. |
+| `PA194SourceAddComm` | `sem_r0` (a sum of `b` and an empty representative is isomorphic to `b`), `sem_rs` (the sum with a successor as second summand, up to isomorphism), `sem_ac` (commutativity), each by `letter_induction`; `ac_supply`: `⊢ tHyp sAC` from `TenFacts`. |
 
 ## Status
 
-Proved here for the actual source theory: `sAP` and `sMP` outright, and `sA2` from
-`TenFacts` (the ten members of `SourceFacts` other than `sA2` and `sM2`; this directory
-does not import their internal proofs from `pa194-model-axioms`).
+Proved here for the actual source theory, in every model of `IΣ₁`: `sAP` and `sMP`
+outright; `sA2` and `sAC` from `TenFacts`; `sM2` from `TenFacts` and `sA2`. `TenFacts` is
+internal provability of the ten members of `SourceFacts` other than `sA2` and `sM2`.
 
-Not proved here: `sM2` (products of isomorphic members of the domain are isomorphic) and
-`sAC` (sums in the two orders are isomorphic).
+Not done here: `TenFacts` is a hypothesis. Its ten members have internal proofs in
+`pa194-model-axioms`, for models of the candidate PRA presentation with an `IΣ₁` reduct;
+this directory does not import them, and the combination with
+`PA194FullSourceRefutationReduction.refutation_of_source_facts` is not written here.
 
 ## Checking
 
@@ -36,5 +40,6 @@ The modules were compiled directly with `lean`, one process at a time, against l
 compiled objects of their imports (`PA194SemanticSupply`, `PA194SuccessorLaws` and their
 closure). All axiom reports are `[propext, Classical.choice, Quot.sound]`: five in
 `PA194SourceModelBase`, four in `PA194SourcePredecessor`, two in `PA194SourceModelIso`, four
-in `PA194SourceInduction`, two in `PA194SourceKnown`, three in `PA194SourceAddCoherence`.
+in `PA194SourceInduction`, two in `PA194SourceKnown`, three in `PA194SourceAddCoherence`,
+three in `PA194SourceMulCoherence`, four in `PA194SourceAddComm`.
 There is no check script in this directory yet.
