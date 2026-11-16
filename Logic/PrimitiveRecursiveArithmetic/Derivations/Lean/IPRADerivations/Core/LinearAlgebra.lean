@@ -194,6 +194,15 @@ theorem derive {M N : Mat k n} (h : toZ Γ M = toZ Γ N) : Γ ⊢[PRAAx] eqFm M 
 
 end Mat
 
+/-- The integer vector of length `k` whose entries are the integer variables read
+from the natural-number variables `o, o + 1, …, o + 2k − 1`. -/
+def Vec.vars (k o : ℕ) {n : ℕ} (h : o + 2 * k ≤ n) : Vec k n := fun i =>
+  ZT.var2 ⟨o + 2 * i, by have := i.isLt; omega⟩ ⟨o + 2 * i + 1, by have := i.isLt; omega⟩
+
+/-- A hypothesis that is an integer equation, as an equation of evaluations. -/
+theorem ZT.toZ_mem {u v : ZT n} (h : ZT.eq u v ∈ Γ) : ZT.toZ Γ u = ZT.toZ Γ v :=
+  ZT.toZ_eq (.hyp h)
+
 /-- `k` integer variables read from `2k` natural-number variables: the `i`-th
 integer has positive part `2i` and negative part `2i + 1`, after an offset. -/
 def intVar (off : ℕ) (i : ℕ) (h : off + 2 * i + 1 < n) : ZT n :=
