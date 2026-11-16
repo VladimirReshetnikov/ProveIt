@@ -1,0 +1,371 @@
+\section{Primitive-recursive fuel for fixed-dimensional lexicographic descent}
+\label{sec:lex-fuel}
+\label{sec:descent}
+
+This section addresses a recurring gap between an ordinary termination
+argument and an argument usable in intuitionistic primitive recursive
+arithmetic.  A process may have a decreasing pair or a decreasing finite
+tuple of natural numbers, while a lower coordinate is reset to a much larger
+value whenever a higher coordinate decreases.  Its termination is familiar,
+but neither an induction on an existential termination assertion nor an
+unbounded while-loop is automatically available in iPRA.  We give an
+explicit primitive-recursive fuel function.  The mathematical ingredients
+are standard fixed-depth nested recursion (compare the broader length-function analysis in~\cite{schmitz2014}); the useful point is the fully
+specified interface and the automatic construction of its growth envelope.
+
+Throughout this section, the dimension $d$ is a fixed external natural
+number.  It is part of a theorem instance, not an unrestricted input to the
+resulting primitive-recursive program.  Tuple operations, finite sequence
+operations, bounded maxima, bounded searches, and finite iteration are
+primitive recursive.  Their bounded assertions are represented by their
+primitive-recursive Boolean characteristic functions, so the inductions
+below have quantifier-free representatives in iPRA.
+
+\subsection{A bound on controlled descending chains}
+
+Write $v>_{\mathrm{lex}}w$ when, at the first coordinate at which the two
+$d$-tuples differ, the coordinate of $v$ is larger.  The first coordinate
+is the most significant one.  There are no strict comparisons between
+empty tuples.
+
+Let $h(x,t)$ be a primitive-recursive function, where $x$ denotes an
+arbitrary finite tuple of numerical parameters.  Suppose that iPRA proves
+that $h(x,t)$ is nondecreasing in $t$.  Define, separately for each fixed
+$d$, the following primitive-recursive functions:
+\begin{align}
+ F_0(x,s)&=s+1,\\
+ F_{d+1}(x,s)&=F_d(x,\cdot)^{[h(x,s)+1]}(s).
+ \label{eq:lex-fuel-recursion}
+\end{align}
+Here $f^{[r]}(s)$ means $r$ successive applications of $f$ to $s$, with
+$f^{[0]}(s)=s$.  Formula~\eqref{eq:lex-fuel-recursion} describes a sequence
+of primitive-recursive definitions.  It does not assert that the
+three-variable function $(d,x,s)\mapsto F_d(x,s)$ is primitive recursive.
+
+\begin{lemma}[Monotonicity of the bounds]
+For every fixed $d$, iPRA proves
+\[
+ F_d(x,s)\ge s+1,
+ \qquad
+ s\le t\ \Longrightarrow\ F_d(x,s)\le F_d(x,t).
+\]
+\end{lemma}
+
+\begin{proof}
+The assertion for $d=0$ is immediate.  Suppose it has been proved for
+$d$.  Iterating a nondecreasing function preserves inequalities between
+starting points.  Iterating a function $f(u)\ge u+1$ more times cannot
+decrease its value, and one iteration already gives a value at least one
+larger than its starting point.  These two assertions follow by
+quantifier-free induction on the iteration counter.  If $s\le t$, then
+$h(x,s)+1\le h(x,t)+1$, and hence
+\[
+ F_d(x,\cdot)^{[h(x,s)+1]}(s)
+ \le F_d(x,\cdot)^{[h(x,s)+1]}(t)
+ \le F_d(x,\cdot)^{[h(x,t)+1]}(t).
+\]
+There is at least one iteration in the definition of $F_{d+1}$, so its
+successor bound follows as well.  The induction on $d$ here constructs a
+separate finite iPRA proof for each fixed dimension.
+\end{proof}
+
+\begin{theorem}[Controlled lexicographic chain bound]
+\label{thm:controlled-lex}
+Fix $d$.  Let
+\[
+ v_s,v_{s+1},\ldots,v_{s+L-1}\in\mathbb N^d
+\]
+be a finite sequence such that $v_t>_{\mathrm{lex}}v_{t+1}$ whenever both
+terms occur, and every coordinate of $v_t$ is at most $h(x,t)$.  Then
+\[
+                         s+L\le F_d(x,s).
+\]
+For each fixed $d$, this statement, with the finite sequence represented
+by a numerical code, is provable in iPRA.
+\end{theorem}
+
+\begin{proof}
+An empty sequence causes no difficulty.  If $d=0$, a strictly descending
+sequence of empty tuples contains at most one term, and $s+L\le s+1$.
+
+For the passage from $d$ to $d+1$, partition the sequence into its
+maximal consecutive blocks on which the first coordinate is constant.
+The first coordinate never increases, and it strictly decreases at
+every boundary between blocks.  Its initial value is at most $h(x,s)$.
+Consequently there are at most $h(x,s)+1$ blocks.
+
+Let the block boundaries, as exclusive endpoints, be
+\[
+ s=s_0<s_1<\cdots<s_p=s+L.
+\]
+Within the $i$th block the remaining $d$ coordinates form a strictly
+lexicographically descending sequence, with the same coordinate envelope.
+The already established $d$-dimensional theorem therefore gives
+\[
+                         s_{i+1}\le F_d(x,s_i).
+\]
+By monotonicity and induction on the number of blocks,
+\[
+ s_i\le F_d(x,\cdot)^{[i]}(s).
+\]
+Since $p\le h(x,s)+1$, this gives
+\[
+ s+L=s_p
+ \le F_d(x,\cdot)^{[p]}(s)
+ \le F_d(x,\cdot)^{[h(x,s)+1]}(s)
+ =F_{d+1}(x,s).
+\]
+
+For the iPRA implementation, a block boundary is the first index at
+which the first coordinate changes, found by bounded search within the
+given sequence.  A block subcode is obtained by a primitive-recursive
+slice operation.  The block-count inequality is proved by induction on
+the bounded list of boundaries: after $i$ boundaries, the initial first
+coordinate is at least the current first coordinate plus $i$.  All
+conditions on sequence positions and block numbers are bounded and are
+compiled into quantifier-free predicates.  No induction on an assertion
+of the form ``there exists a terminating computation'' is used.
+\end{proof}
+
+The bound is exact for the stated class of chains.  This is useful for
+understanding why the dimension restriction matters.  For $d=0$, use the
+one-term sequence of empty tuples.  Having constructed a maximal
+$d$-dimensional chain starting at any time $t$, make a $(d+1)$-dimensional
+chain with $h(x,s)+1$ blocks.  In block $i$, use first coordinate
+$h(x,s)-i$ and the maximal $d$-dimensional suffix chain starting at
+$F_d(x,\cdot)^{[i]}(s)$.  The envelope holds because $h$ is nondecreasing;
+the first coordinate drops at each block boundary; and the final
+exclusive endpoint is exactly $F_{d+1}(x,s)$.  For each fixed dimension
+this construction is itself primitive recursive.
+
+\subsection{From a transition system to a bounded witness}
+
+Let $\tau(x,u)$ be a total primitive-recursive one-step transition on
+numerically coded states, and let $u_0(x)$ be the initial state.  Define
+the finite simulation before proving termination:
+\[
+ u(x,0)=u_0(x),\qquad
+ u(x,t+1)=\tau(x,u(x,t)).
+\]
+This is ordinary primitive recursion.  A finite simulation remains
+defined even when the corresponding unbounded while-loop would fail to
+halt.  Let $A(x,u)$ be a primitive-recursive activity predicate, and make
+inactive states absorbing.  Let $I(x,u)$ be a quantifier-free invariant
+whose initialization and preservation have iPRA proofs.  Let
+\[
+ r(x,u)=(r_0(x,u),\ldots,r_{d-1}(x,u))
+\]
+be a fixed tuple of primitive-recursive rank functions.  Assume iPRA
+proves the local obligation
+\begin{align*}
+ I(x,u)\wedge A(x,u)\wedge A(x,\tau(x,u))
+ \ \Longrightarrow\ 
+ r(x,u)>_{\mathrm{lex}}r(x,\tau(x,u)).
+\end{align*}
+
+\begin{theorem}[Automatic fuel for fixed-dimensional descent]
+\label{thm:automatic-lex-fuel}
+Under these assumptions there is an explicitly defined
+primitive-recursive $B(x)$ such that iPRA proves
+\[
+                         \neg A(x,u(x,B(x))).
+\]
+If iPRA additionally proves
+$I(x,u)\wedge\neg A(x,u)\to R(x,\operatorname{out}(x,u))$,
+then $w(x)=\operatorname{out}(x,u(x,B(x)))$ is a
+primitive-recursive witness and iPRA proves $R(x,w(x))$.
+\end{theorem}
+
+\begin{proof}
+Define the trajectory envelope
+\[
+ h(x,t)=\max\bigl(\{0\}\cup
+ \{r_j(x,u(x,q)):q\le t,\ j<d\}\bigr).
+\]
+This is a bounded maximum of explicitly given primitive-recursive
+values, so it is primitive recursive.  Its monotonicity and the
+coordinate-envelope property are proved by quantifier-free induction on
+the bounded maximum.  Set $B(x)=F_d(x,0)$ using this $h$.
+
+Quantifier-free induction on $t$ establishes $I(x,u(x,t))$.  Suppose
+that $u(x,B(x))$ were active.  Since inactive states are absorbing, all
+states $u(x,0),\ldots,u(x,B(x))$ would then be active.  This finite
+backward implication may be proved by contraposition of the direct
+forward persistence of inactivity; activity is decidable, so this uses
+only decidable reasoning.  The local rank obligation gives a controlled
+strictly descending chain of $B(x)+1$ rank tuples.  Theorem
+\ref{thm:controlled-lex} would imply
+$B(x)+1\le F_d(x,0)=B(x)$, a contradiction.  Therefore the final state
+is inactive.  The postcondition follows by applying the given local
+output theorem to this state and its invariant.
+
+There is no circularity in the envelope: $u(x,t)$ executes an already
+total one-step map for an externally supplied finite number of steps.
+Its definition does not inspect a termination proof.  The fixed-depth
+definitions of $F_d$ then compose and iterate this particular
+primitive-recursive $h$.  The resulting bound can be extremely large;
+its purpose is a primitive-recursive proof of totality, not an efficient
+runtime estimate.
+\end{proof}
+
+This theorem is a proof transformer, not an internal reflection principle.
+For a particular transition system it consumes iPRA derivations of the
+invariant and local rank conditions and produces a derivation of its
+bounded termination and postcondition.  Merely proving these conditions
+in Lean's ambient logic does not by itself establish their derivability
+in iPRA.
+
+\subsection{A reset example}
+
+Consider a state $(a,b,z)\in\mathbb N^3$ and the following transition:
+\[
+ \tau(a,b,z)=
+ \begin{cases}
+ (a,b,z),&a=b=0,\\
+ (a,b-1,z+1),&b>0,\\
+ (a-1,2^z,z+1),&b=0<a.
+ \end{cases}
+\]
+The active predicate is $a+b>0$.  The pair $(a,b)$ strictly decreases
+lexicographically at every active step, although $a+b$ can increase
+drastically at a reset.  The unused coordinate $z$ records elapsed work
+and can make later resets much larger than earlier ones.
+
+With initial data $(a_0,b_0,z_0)$, direct quantifier-free induction gives
+\[
+ a_t\le a_0,\qquad z_t\le z_0+t,\qquad
+ b_t\le b_0+2^{z_0+t}.
+\]
+Thus one can use the explicit monotone envelope
+$h(t)=a_0+b_0+2^{z_0+t}$ instead of the automatic maximum.  The theorem
+provides primitive-recursive fuel without an induction on a termination
+formula.
+
+For this particular example one can also calculate the exact runtime.
+First consume the initial $b_0$ countdown steps.  Put
+\[
+ T_0=b_0,\qquad T_{i+1}=T_i+1+2^{z_0+T_i}.
+\]
+At time $T_i$, for $i\le a_0$, the state is
+$(a_0-i,0,z_0+T_i)$.  If $i<a_0$, one reset step and then exactly
+$2^{z_0+T_i}$ countdown steps establish the next displayed state.
+Consequently the process halts at $T_{a_0}$.  These assertions are proved
+by quantifier-free inductions on the countdown length and then on $i$.
+For $b_0=z_0=0$, the first runtimes as $a_0$ varies are
+$0,2,7,136,2^{136}+137$.  The rapid growth is still primitive recursive:
+$i\mapsto T_i$ is a fixed primitive recursion.
+
+There cannot be a natural-valued rank that decreases under every
+lexicographic decrease in $\mathbb N^2$.  Such a rank $\rho$ would satisfy
+$\rho(0,b)\ge b$ and
+$\rho(1,0)>\rho(0,b)$ for every $b$, which is impossible at
+$b=\rho(1,0)$.  The theorem therefore does not flatten the whole order
+$\omega^2$ into $\mathbb N$.  It uses the particular transition system,
+its input, and its controlled finite trajectory to obtain a fuel bound.
+
+\subsection{Why dimension must remain fixed}
+
+The restriction is substantive, even for a simple coordinate envelope.
+Take $h(t)=t+1$, suppress $x$, and write
+\[
+ G_0(t)=t+1,\qquad G_{d+1}(t)=G_d^{[t+2]}(t).
+\]
+Each fixed $G_d$ is primitive recursive, nondecreasing, and at least the
+successor function.  Also $G_{d+1}(t)>G_d(t)$.
+
+\begin{proposition}[The uniform diagonal is not primitive recursive]
+The function $D(n)=G_n(n)$ is not primitive recursive.
+\end{proposition}
+
+\begin{proof}
+We first prove by structural induction on primitive-recursive
+definitions that, for every primitive-recursive function $f$ of any
+fixed finite arity, there are fixed numbers $m,N$ such that
+\[
+ t\ge N,\quad x_1,\ldots,x_k\le t
+ \quad\Longrightarrow\quad f(x_1,\ldots,x_k)\le G_m(t).
+ \tag{$*$}
+\]
+Zero, successor, and projections satisfy this property.  Increase the
+indices and thresholds to a common value whenever finitely many
+functions are involved; this is legitimate because $G_m(t)$ is
+nondecreasing in $m$ as well as in $t$.
+
+For composition, if the component functions and the outer function are
+majorized by $G_m$, the composite is majorized by
+$G_m(G_m(t))\le G_{m+1}(t)$.
+
+For primitive recursion, suppose
+$f(0,\vec x)=g(\vec x)$ and
+$f(n+1,\vec x)=q(n,f(n,\vec x),\vec x)$, with $g$ and $q$ majorized by
+$G_m$ above a common threshold.  Fix $t$ above that threshold and
+$\vec x\le t$.  Induction on $i\le t$ gives
+\[
+ f(i,\vec x)\le G_m^{[i+1]}(t).
+\]
+Indeed, the arguments of $q$ at the next step are bounded by the current
+iterate, which is at least $t$.  For $n\le t$ this yields
+\[
+ f(n,\vec x)\le G_m^{[t+1]}(t)\le G_{m+1}(t).
+\]
+This proves $(*)$ for all primitive-recursive definitions.
+
+If $D$ were primitive recursive, $(*)$ would provide fixed $m,N$ with
+$D(n)\le G_m(n)$ for all sufficiently large $n$.  Choose
+$n\ge\max(N,m+1)$.  Monotonicity in the level and strict growth between
+successive levels give
+\[
+ D(n)=G_n(n)\ge G_{m+1}(n)>G_m(n),
+\]
+a contradiction.
+\end{proof}
+
+Consequently a proof that every fixed-dimensional instance has
+primitive-recursive fuel does not furnish a primitive-recursive fuel
+function whose inputs include arbitrary dimension.  In particular, an
+implementation that represents the rank by a list of input-dependent
+length needs an additional argument.  This distinction remains even if
+Lean accepts a total definition of $(d,t)\mapsto G_d(t)$ by recursion
+whose intermediate values are functions.  Lean's acceptance of such a
+definition is not a certificate that it belongs to the first-order
+primitive-recursive function algebra.
+
+In fact, there is no primitive-recursive function of $(d,s)$ that bounds
+the lengths of \emph{all} chains with this envelope and arbitrary
+dimension.  Exactness would give
+$G_d(s)\le s+B(d,s)$ for any such bound $B$.  The primitive-recursive
+diagonal $n\mapsto n+B(n,n)$ would then majorize $G_n(n)$, contrary to
+the same majorization argument.  Particular families with a
+variable-length rank can still admit better bounds because of
+additional structure; the conclusion concerns the unrestricted
+lexicographic criterion.
+
+\subsection{Lean implementation obligations}
+
+The semantic development can use fixed tuples, a Boolean lexicographic
+comparison, finite lists, and the iterator.  Its essential lemmas are:
+\begin{enumerate}
+ \item monotonicity and the successor lower bound for each $F_d$;
+ \item the bounded block decomposition of a lexicographic chain;
+ \item the controlled-chain bound, by external induction on $d$;
+ \item primitive recursiveness of finite simulation, running maxima, and
+       $F_d$ for each fixed $d$;
+ \item preservation of a quantifier-free invariant under finite
+       simulation;
+ \item the contradiction from $F_d(x,0)+1$ active rank states;
+ \item the output postcondition for the resulting bounded execution.
+\end{enumerate}
+The important typing distinction is between the defensible statement
+\[
+ \texttt{\textup{for every }d,\ Primrec\ (fun\ s\ =>\ fuel\ d\ s)}
+\]
+and the false general assertion
+\[
+ \texttt{Primrec\ (fun\ (d,s)\ =>\ fuel\ d\ s)}.
+\]
+For the object-theoretic layer, encode each fixed tuple and finite list
+by natural numbers, compile each bounded assertion to a Boolean
+predicate, and attach iPRA derivations of the local invariant and rank
+conditions.  The fixed-dimensional construction then yields object
+derivations, rather than an inference from semantic truth in Lean to
+provability in iPRA.

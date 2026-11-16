@@ -1,0 +1,96 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[obeyspaces,spaces]{xurl}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!15}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\PR}{\mathrm{PR}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\bool}{\{0,1\}}
+\newcommand{\dotminus}{\mathbin{\dot-}}
+\newcommand{\len}{\operatorname{len}}
+\newcommand{\Height}{\operatorname{ht}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\Supp}{\operatorname{Supp}}
+\newcommand{\Iter}{\operatorname{Iter}}
+\newcommand{\Run}{\operatorname{Run}}
+\newcommand{\Good}{\operatorname{Good}}
+\newcommand{\coeff}{\operatorname{coeff}}
+\newcommand{\code}[1]{\ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
+\DeclareMathOperator{\Lex}{Lex}
+\setlength{\emergencystretch}{2em}
+\hypersetup{pdftitle={Finite mathematical interfaces in iPRA},pdfauthor={Research report prepared for Vladimir Reshetnikov},pdfsubject={Demand compilation, controlled descent, and effective plane elimination}}
+\setlist{itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Finite mathematical interfaces in iPRA}
+\fancyhead[R]{\small Research report}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\title{\textbf{Finite mathematical interfaces in iPRA}\\[5pt]
+\large Demand compilation, controlled descent,\\and effective plane elimination}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop a reusable discipline for expressing mathematical constructions in
+first-order intuitionistic primitive recursive arithmetic. The starting point
+is ProveIt's existing finite-observation work, rather than a replacement for
+its kernel-checked presentation of arithmetic. The new work addresses three
+specific gaps. We construct primitive-recursive syntax for a recursion whose
+precision parameter changes in the recursive call, and provide a checked
+term-to-symbol compiler with an actual embedded arithmetic correctness proof.
+We give explicit primitive-recursive execution bounds for a fixed number of
+lexicographically descending counters, even when lower counters reset and no
+runtime bound was supplied in advance. Finally, bounded coordinate changes
+and Sylvester determinants give a finite-list B\'ezout theorem and a complete
+rational-point algorithm for certified plane intersections. A finite bound
+on auxiliary equations then converts pointwise auxiliary witnesses into a
+complete point list without requiring a chosen global cover.
+
+All main mathematical arguments are developed explicitly. The archive
+separates kernel-checked Lean results, concrete unproved Lean targets, written
+object-theory proof transformations, and finite executable diagnostics.
+General Siegel, Faltings, effective Roth, and the remaining prime-distribution
+problems are not claimed solved. The framework identifies the exact extra
+arithmetic data their proposed routes still require.
+\end{abstract}
+\vspace{4pt}
+\noindent\textbf{Source baseline.} ProveIt commit
+\code{b0f6f535ffc16324683fef2c263260a88ae03755}.
+\par\noindent\textbf{Reading guide.} Sections~\ref{sec:framework}--\ref{sec:descent}
+give the general method; Sections~\ref{sec:elimination}--\ref{sec:applications}
+give the mathematical applications and their limits;
+Section~\ref{sec:lean} gives the formalization path and exact proof status.
+\tableofcontents
+\newpage
+\input{sections/01_scope}
+\input{sections/02_framework}
+\input{sections/03_demand}
+\input{sections/04_descent}
+\input{sections/05_elimination}
+\input{sections/06_applications}
+\input{sections/07_lean}
+\input{sections/08_validation}
+\input{references}
+\end{document}

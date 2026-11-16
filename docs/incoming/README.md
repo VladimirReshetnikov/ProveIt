@@ -230,7 +230,10 @@ then deleted. Its four `dependencies/FTA_iPRA/` files are byte-identical to
 `foundations/`, and then deleted. It leaves out only its ignored `SHA256SUMS`.
 `ipra_presentations_to_witnesses.zip` was placed the same way, under `foundations/`, and then
 deleted. It leaves out its ignored `SHA256SUMS.txt` and four `lean/upstream/` files that are
-byte-identical to ConciseIPRA sources.
+byte-identical to ConciseIPRA sources. `ipra_resources_and_elimination_2026-11-15.zip` was
+placed the same way, under `foundations/`, and then deleted. It leaves out 11 ignored `.log`
+files and `lean/BackwardDemand.lean`, which is byte-identical to the file of that name in
+`foundations/ipra_finite_demand`.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

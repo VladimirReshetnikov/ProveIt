@@ -1,0 +1,149 @@
+{
+  "title": "Finite mathematical interfaces in iPRA",
+  "repository_commit": "b0f6f535ffc16324683fef2c263260a88ae03755",
+  "status_convention": "A defined Prop target is not a proved theorem. Human proof and checked host semantics do not automatically imply an actual embedded Prf PRAAx derivation.",
+  "lean_summary": {
+    "modules_checked": 10,
+    "audited_theorems": 11,
+    "new_object_theorems": 4,
+    "unproved_object_targets": 7,
+    "unproved_host_targets": 21,
+    "repository_integration_build_run": false
+  },
+  "claims": [
+    {
+      "id": "finite_interface_compilation",
+      "statement": "Finite observations, local iPRA contracts, bounded invariants and permitted recursion compose to give an internal result.",
+      "paper_section": "2",
+      "human_proof": "Detailed Booleanization and restricted proof-transformation argument.",
+      "implementation": "Specified numerical encodings, bounded Boolean predicates, contracts, resource rules.",
+      "lean_status": "General compiler pass not implemented.",
+      "limits": "Only the explicitly allowed constructions with proved local contracts, invariant initialization/preservation, and postcondition. No semantic reflection."
+    },
+    {
+      "id": "term_to_symbol",
+      "statement": "Every finite PTm term compiles to an equivalent PR symbol.",
+      "paper_section": "3.3",
+      "human_proof": "Structural proof from projection/composition axioms and equality rules.",
+      "implementation": "lean/TermCompiler.lean",
+      "lean_status": "Checked object proofs: symbol_correct and transport_equation.",
+      "limits": "Host syntax induction constructs an object proof; not an internal universal evaluator."
+    },
+    {
+      "id": "changing_demand_syntax",
+      "statement": "Fixed D,b,F compile to a PR 2 symbol with changing-parameter recurrence.",
+      "paper_section": "3.1-3.4",
+      "human_proof": "Backward horizon coherence and forward replay developed explicitly; credits prior semantic construction.",
+      "implementation": "lean/DemandCompiler.lean and reused lean/BackwardDemand.lean",
+      "lean_status": "PR syntax, denote_compiled, compiled_zero and compiled_succ checked.",
+      "limits": "Semantic recurrence checked; full object recurrence still pending."
+    },
+    {
+      "id": "backward_object_equations",
+      "statement": "Generic backward-pass zero and successor equations have actual iPRA proofs.",
+      "paper_section": "3.4, 7.3",
+      "human_proof": "Defining-equation and term-compiler construction.",
+      "implementation": "lean/ObjectDemand.lean",
+      "lean_status": "Checked object_backward_zero and object_backward_succ.",
+      "limits": "Seven remaining object targets for the full construction are defined in ObjectTargets.lean."
+    },
+    {
+      "id": "controlled_chain",
+      "statement": "A controlled lexicographic d-tuple chain starting s has length at most F_d(x,s)-s.",
+      "paper_section": "4.1",
+      "human_proof": "Full monotonicity, bounded block decomposition, chain bound, and sharpness argument.",
+      "implementation": "lean/LexFuel.lean; code/lex_reference.py",
+      "lean_status": "Explicit PR syntax and denotation checked; chain and growth correctness remain target propositions.",
+      "limits": "d fixed externally; h primitive recursive and monotone with the required internal proof."
+    },
+    {
+      "id": "automatic_fuel",
+      "statement": "Fixed-dimensional PR ranking of a PR transition system yields a PR execution bound from its finite-trajectory envelope.",
+      "paper_section": "4.2-4.3",
+      "human_proof": "Full finite-simulation, invariant, running-maximum, inactivity and witness argument; worked reset example.",
+      "implementation": "lean/LexFuel.lean definitions; code/lex_reference.py",
+      "lean_status": "BoundedTerminationTarget and WitnessTarget defined, unproved.",
+      "limits": "Consumes internal invariant, absorbing-state, local rank and output proofs. Fuel may be enormous."
+    },
+    {
+      "id": "dimension_boundary",
+      "statement": "No uniform primitive-recursive length bound exists for unrestricted dimension and envelope h(t)=t+1.",
+      "paper_section": "4.4",
+      "human_proof": "Full structural majorization of PR definitions and diagonal contradiction.",
+      "implementation": "Symbolic mathematical result; small finite diagnostics only.",
+      "lean_status": "No Lean proof supplied.",
+      "limits": "Does not exclude better bounds for variable-rank families with extra structure."
+    },
+    {
+      "id": "rational_roots",
+      "statement": "Every nonzero rational polynomial has a PR complete duplicate-free rational-root scan.",
+      "paper_section": "5.3",
+      "human_proof": "Full denominator clearing, rational-root divisibility and bounded-enumeration proof; credits earlier packet.",
+      "implementation": "lean/RationalRoots.lean; code/plane_intersections.py",
+      "lean_status": "Concrete program compiled; three correctness targets unproved.",
+      "limits": "Zero polynomial is unsupported; nonzero constants have empty root list."
+    },
+    {
+      "id": "generic_shear",
+      "statement": "A bounded c in 0..d+e makes both highest V coefficients constant nonzero.",
+      "paper_section": "5.1",
+      "human_proof": "Finite root bound and homogeneous-coefficient proof.",
+      "implementation": "lean/EliminationTargets.lean; code/plane_intersections.py",
+      "lean_status": "Concrete definitions compiled; ShearEvalTarget and CanonicalShearTarget unproved.",
+      "limits": "Nonzero positive-degree polynomials."
+    },
+    {
+      "id": "finite_bezout",
+      "statement": "Every supplied distinct rational common-point list has length at most d*e under Good(F,G).",
+      "paper_section": "5.2",
+      "human_proof": "Permutation degree audit, adjugate evaluation, Vandermonde fibre multiplicity and coprime cancellation.",
+      "implementation": "Concrete determinant/shear programs; exact sharp examples.",
+      "lean_status": "Corresponding degree, root, fibre and cardinality targets unproved.",
+      "limits": "Good includes a computed nonzero resultant; no general coprimality characterization assumed."
+    },
+    {
+      "id": "complete_plane_list",
+      "statement": "A fixed PR procedure computes exactly all affine rational common points and a height/code bound on the successful domain.",
+      "paper_section": "5.3",
+      "human_proof": "Full two-level root enumeration and inverse-shear completeness argument.",
+      "implementation": "lean/EliminationTargets.lean; code/plane_intersections.py",
+      "lean_status": "Concrete definitions compiled; complete/cardinality/height targets unproved.",
+      "limits": "Unsupported and empty are distinct. No complete-list claim for all polynomial pairs."
+    },
+    {
+      "id": "auxiliary_envelope",
+      "statement": "Pointwise good auxiliaries in a bounded degree-and-coefficient-height box give a complete target list without a selector.",
+      "paper_section": "5.4",
+      "human_proof": "Finite box coverage, exhaustive intersection union, PR filtering and maxima.",
+      "implementation": "lean/EliminationTargets.lean; code/auxiliary_envelope.py",
+      "lean_status": "Concrete box/envelope definitions compiled; count, coverage, complete/cardinality/height targets unproved.",
+      "limits": "Coverage and coefficient-height envelope must be supplied and proved. Algorithm does not establish those hypotheses."
+    },
+    {
+      "id": "generic_exhaustive_witnesses",
+      "statement": "Pointwise finite bounded witnesses and complete finite certificate lists compose to a complete filtered target list.",
+      "paper_section": "6.1",
+      "human_proof": "Full soundness, completeness and bounded-loop proof.",
+      "implementation": "Abstract finite algorithm specified in the report.",
+      "lean_status": "No standalone general theorem implemented.",
+      "limits": "Requires bounded candidate envelope and PR predicates/finite witness lists."
+    },
+    {
+      "id": "cardinality_not_listing",
+      "statement": "Uniform bound one on distinct satisfying lists does not yield a uniform computable complete list or height bound.",
+      "paper_section": "6.2",
+      "human_proof": "First-halting-time predicate and contradiction with undecidability; affine auxiliary realization.",
+      "implementation": "Boundary theorem; no unbounded enumeration program supplied.",
+      "lean_status": "No Lean formalization supplied.",
+      "limits": "Degree-only tuple-local auxiliary covers give a cardinality bound, not a uniform coefficient envelope."
+    }
+  ],
+  "not_claimed": [
+    "A proof audit of all 60 repository packets",
+    "A complete general verified iPRA embedding compiler",
+    "Completed object-iPRA proofs of the lexicographic and elimination extensions",
+    "General Siegel, Faltings, effective Roth, Mordell-Weil or prime-distribution theorems in iPRA",
+    "Independence of the unresolved named mathematical theorems from iPRA",
+    "Historical priority for standard termination or elimination ingredients"
+  ]
+}
