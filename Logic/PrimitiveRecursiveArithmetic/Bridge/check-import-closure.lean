@@ -18,7 +18,7 @@ private partial def visit (searchPath : SearchPath) (forbidden : List Name)
   if visited.contains mod then
     return visited
   if forbidden.any (·.isPrefixOf mod) then
-    throw <| IO.userError s!"application import in an iPRA core: {renderPath path}"
+    throw <| IO.userError s!"excluded dependency: {renderPath path}"
   let source ← findLean searchPath mod
   let header ← parseImports' (← IO.FS.readFile source) source.toString
   header.imports.foldlM (fun checked imp => visit searchPath forbidden checked imp.module path)
@@ -68,6 +68,10 @@ private def checkPortableLayers (searchPath : SearchPath) : IO Unit := do
      `DiophantineConsistency.IPRADeepEqualityJoin,
      `DiophantineConsistency.IPRAExplicitZFCReduction,
      `DiophantineConsistency.ModelJonesNine])
+  check searchPath [`DiophantineConsistency.IPRASubSuccSelfNonzero]
+    [`DiophantineConsistency.PRASubSuccSelfNonzero]
+  check searchPath [`DiophantineConsistency.IPRANotBit]
+    [`DiophantineConsistency.PRANotBit]
 
 def main (args : List String) : IO Unit := do
   let searchPath ← getSrcSearchPath

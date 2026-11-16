@@ -4,9 +4,9 @@ The [bridge](README.md) maps the existing Foundation construction codes to
 ordinary ConciseIPRA. In the table, “object equality” refers to a derivation
 in `Prf PRAAx Γ` at arbitrary terms in the common finite scope. “Syntax”
 means the translated terms agree in Lean before deriving their reflexivity.
-The [arithmetic comparisons](Lean/IPRABridge/ArithmeticSymbols.lean) and
-[order comparisons](Lean/IPRABridge/OrderSymbols.lean) and
-[comparison bits](Lean/IPRABridge/ComparisonBits.lean) and
+The [arithmetic comparisons](Lean/IPRABridge/ArithmeticSymbols.lean),
+[order comparisons](Lean/IPRABridge/OrderSymbols.lean),
+[comparison bits](Lean/IPRABridge/ComparisonBits.lean), and
 [bounded search](Lean/IPRABridge/BoundedSearch.lean) are separately importable.
 
 | Foundation name | Arity and argument convention | Concise counterpart | Checked relation |
@@ -40,7 +40,10 @@ The bounded-search comparison covers `N = 0` and the failed-search result.
 It follows the original Foundation recursion and the portable least-witness
 invariant, including the case where a previous witness must be retained.
 
-Further code families to compare at their first migrated uses include
-division and remainder, pairing, sequence coding, and
-finite sums/products. Record output conventions at zero and the empty or
-failed-search case before using a comparison in a reduction.
+## Coding interfaces used by the current clients
+
+| Client operation | Existing contract | Comparison status |
+| --- | --- | --- |
+| C222 and C254 tag and payload | A positive code has the form `raw + 1`, with tag `raw % 12` and payload `raw / 12`. Both represented graphs use Foundation's `remDef` and `divDef` at divisor `12` over the ambient model. Code zero yields invalid output zero. | [`Core.Division`](../Derivations/Lean/IPRADerivations/Core/Division.lean) proves quotient and remainder uniqueness at positive divisors. A common zero-divisor convention has yet to be checked across these interfaces. |
+| C222 and C254 pairing | `ArithmeticCantor.cantor a b = triangle (a + b) + b`, with represented projections `firstDef` and `secondDef`. | The portable [`pairT`](../Derivations/Lean/IPRADerivations/Core/Pairing.lean) uses `(a + b)² + a`. The two codes give `1` and `2` at `(1, 0)`, respectively. A comparison would require a separate translation between encodings. |
+| C222 and C254 histories | Sequence reads and appends use the same Foundation HFS code, with the representation evaluated at arbitrary model inputs. | The portable bounded search packs a finite family of Lean-scoped terms. A model-internal HFS sequence translation has its own encoding and theorem obligations. |

@@ -389,6 +389,17 @@ ambient model. An ordinary iPRA proof could be used at this interface with
 a checked symbol and axiom interpretation over every such model. Retain
 the existing shared model theorem at these call sites.
 
+## Forwarding imports and shared proofs
+
+| Existing entry point | Current callers and implementation | Compatibility and regression check |
+| --- | --- | --- |
+| Foundation finite codes, equality-only language, and open syntax | `IPRABridge.Syntax` and the arithmetic image modules import the small code and syntax providers directly. | The original `PRAFiniteFunctionCodes`, `PRATheory`, `IPRAEqualityOnlyReference`, and `IPRAQuantifierFree` imports still expose their declarations. The literal PA launcher checks compiled declaration ownership and supplies import-only modules for legacy providers. The bridge and both pinned literal replays check these paths. |
+| Foundation `standardTheory` and native conversion | The bridge's standard transport uses the statement layer and the checked reference and native conversions. | The original `IPRAStandardTheory` import retains the theory and `provable_iff`. The source closure gate and the closed and open bridge checks cover the new import boundary. |
+| `IPRASubSuccSelfNonzero.native` | The difference proofs, the PA1944L comparison, and the ZFC reduction reach `not_succ_le_self`. | The original classical term names forward to the common syntax provider. The exact native formula and classical theorem were checked together. The closure gate excludes `PRASubSuccSelfNonzero` from the native proof path, and the PA1944L proof-value check reaches the shared lemma. |
+| `IPRANotBit.notBitConvention` | `IPRACharacteristicTransfer.transferZeroCorrectness` and the bounded-child stability proof use the checked equality-bit comparison. | `IPRANotBitChecks` still checks both the native result and `PRANotBit.PRA_proves_sentence`. The closure gate checks the native proof's independence from `PRANotBit`. The [historical bounded-induction replay](../../Computability/DiophantineConsistency/reviews/ipra-bounded-induction-postmerge-replay/README.md) identifies the immutable checkout for that proof family. |
+| `IPRABoundedSelector.selectorOpen` | The bounded-refutation clients for the ZFC equation and PA1944L use `Search.Finite.search_found` through the exact code comparison. | The existing Foundation search code and native statement both retain their original names. `IPRABoundedSelectorChecks` still audits the classical theorem. The bounded-search audit and PA1944L proof-value check cover the new derivation. The same historical bounded-induction checkout preserves the earlier selector proof. |
+| `ArithmeticRow254.{pred_add_one,pred_le,predecessor_witness}` | The C222 and C254 evaluators and the permuted proof-word history share the IOpen interpretation. | The old qualified statements forward with their original model assumptions. The active evaluator builds and proof-word check passed. The validator and R2Gic historical receipts refer to their frozen row source and object. |
+
 When adding a migration entry, record the original and translated types,
 proof premises, exact table or expression identifier, provider order,
 replay command, and the proof's axiom audit. A running or partial build

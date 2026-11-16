@@ -30,7 +30,7 @@ sources. The printed header list includes two implicit `Init` entries.
 | Root | Transitive imports | Observed boundary |
 | --- | ---: | --- |
 | `ConciseIPRA.PR` | 1,975 | Canonical ordinary syntax and proof system with no Foundation or application dependency. |
-| `IPRADerivations` | 3,088 | Ordinary Concise proof library, Mathlib, and the Lean runtime. The closure checker excludes Foundation, the bridge, and application modules. |
+| `IPRADerivations` | 3,095 | Ordinary Concise proof library, Mathlib, and the Lean runtime. The closure checker excludes Foundation, the bridge, and application modules. |
 | `Foundation` | 3,088 | Vendored library umbrella. The upstream standalone manifest at the pinned revision uses Lean and Mathlib `v4.31.0`. ProveIt builds its own targets with the root toolchain. |
 | `DiophantineConsistency.IPRAStandardAxioms` | 2,543 | Foundation and the local arithmetic statement modules. The closure excludes the successor-induction proofs, `IPRAStandardTheory`, and application endpoints. |
 | `IPRABridge` | 2,606 | ConciseIPRA and Foundation arithmetic. The checker excludes the deep witness path, machines, consistency endpoints, and polynomial certificates. |
@@ -44,6 +44,10 @@ sources. The printed header list includes two implicit `Init` entries.
 
 The [endpoint inventory](ENDPOINTS.md) records the exact theorem statements,
 checks, and inputs associated with these roots.
+The source gate also checks that `IPRASubSuccSelfNonzero` can be built with
+its common term syntax and without the separate classical proof module,
+and that `IPRANotBit` imports its code compiler without `PRANotBit`. The
+classical interfaces retain their own checks.
 
 ## Tracked direct imports
 
