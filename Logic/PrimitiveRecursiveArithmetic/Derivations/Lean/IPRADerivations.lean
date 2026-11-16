@@ -130,6 +130,7 @@ import IPRADerivations.Geometry.PentagonArithmetic
 import IPRADerivations.Geometry.PappusSegment
 import IPRADerivations.Geometry.TriangularNorm
 import IPRADerivations.Geometry.LocalizationWitness
+import IPRADerivations.Geometry.HypercubeSplit
 import IPRADerivations.Geometry.KerrNewmanAlgebra
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.Geometry.PowerOfPoint
