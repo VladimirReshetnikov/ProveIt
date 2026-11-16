@@ -241,3 +241,15 @@ assumptions of the generic theorem. Reproduce with a fresh output directory:
 ```sh
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-name-facts.sh "$PWD" NEW_EMPTY_OUTPUT
 ```
+
+An independent repository-source replay of `PA194InductionForms` and
+`PA194InductionSchema` passed their seven and nine axiom reports without
+`sorryAx`, against the separately replayed naming modules and other prebuilt
+dependencies. It does not rebuild their full transitive closure. The translated
+induction-body theorem is conditional on `TermFacts`, `SourceFacts` and the
+source ordinal-induction supplier; parameter closure and the compiler connection
+remain open. Reproduce with a fresh output directory:
+
+```sh
+bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-induction-body.sh "$PWD" NEW_EMPTY_OUTPUT
+```
