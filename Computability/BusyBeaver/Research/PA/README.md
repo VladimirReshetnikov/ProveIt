@@ -435,6 +435,20 @@ the two recursion clauses, then reaches modeled scheduler halting. The checked
 source assembly still needs addition and multiplication coherence, both
 recursion clauses, and a bridge from the scheduler to the literal machine.
 
+[`pa194-source-semantics`](pa194-work/pa194-source-semantics/README.md) proves facts about
+the source theory in its models instead of by derivations: a fixed hypothesis of the guarded
+compiler is the typed quote of a standard sentence, and `source_supply` (completeness and
+the first derivability condition) makes it internally provable in every model of `IΣ₁` once
+the sentence is true in every structure with equality that satisfies weak adjunction and
+all separation instances. The directory reduces the two recursion clauses to predecessor
+laws of the addition and multiplication traces and commutativity of addition, and proves
+those three, addition coherence and multiplication coherence in such structures; the last
+three and addition coherence are proved under the ten source facts that already have
+internal proofs. Each module has been compiled separately. The module that combines them
+with those ten internal proofs and the refutation transport into the compiler of arithmetic
+refutations (`PA194OrdinaryCompilerProof`) has not been compiled yet, so that compiler is
+not claimed. The bridge from the scheduler to the literal machine is open.
+
 [`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
 `Calibrated T h` from which the iPRA equivalence follows. No table is shown to be calibrated.
