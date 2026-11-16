@@ -32,6 +32,7 @@ import IPRADerivations.Analysis.Products
 import IPRADerivations.Analysis.Pochhammer
 import IPRADerivations.Analysis.BetaIntegers
 import IPRADerivations.Analysis.BarnesInteger
+import IPRADerivations.Analysis.RationalClosure
 import IPRADerivations.Analysis.PowerSums
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.Core.EuclidLemma
@@ -106,6 +107,7 @@ import IPRADerivations.DiophantineNumberTheory.IrrationalSqrt
 import IPRADerivations.DiophantineNumberTheory.PellDescent
 import IPRADerivations.DiophantineNumberTheory.PellAll
 import IPRADerivations.DiophantineNumberTheory.AperyNumbers
+import IPRADerivations.DiophantineNumberTheory.CoprimeModulus
 import IPRADerivations.Foundations.QuantitativeIdentities
 import IPRADerivations.Foundations.Termination
 import IPRADerivations.Foundations.ChineseRemainder

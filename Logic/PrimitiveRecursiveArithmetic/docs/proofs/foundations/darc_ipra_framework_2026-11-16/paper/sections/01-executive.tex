@@ -1,0 +1,176 @@
+\section{Executive overview}
+\label{sec:executive}
+
+The working problem is not merely to encode one more theorem in arithmetic.
+It is to build a reusable route from a broad class of mathematical arguments
+to a literal derivation in the ordinary ProveIt judgment
+\[
+  \Gamma \vdash_{\PRAAx} \varphi,
+\]
+while respecting the severe but mathematically useful discipline of
+intuitionistic primitive recursive arithmetic.  In particular, every function
+used in the object language must be primitive recursive, induction is
+available only for quantifier-free formulas, and existential information must
+be handled constructively rather than extracted by an unrestricted appeal to
+choice.
+
+The repository already contains many of the ingredients needed for such a
+route.  The ordinary calculus has substitution, weakening, simultaneous cut,
+existential elimination, equality transport, and quantifier-free induction.
+The checked arithmetic library contains order, bounded search, pairing,
+simultaneous recursion, finite sums and products, division with remainder,
+gcd, and several higher-level proof patterns.  The checked bridge transports
+closed and open sequents to the Foundation presentation used by several
+applications.  The difficult part is now architectural: how should a large,
+heterogeneous, partly quantitative proof be organized so that only the
+resources genuinely needed by a requested conclusion survive into the final
+theorem?
+
+\subsection{The new organizing invariant}
+
+DARC answers this question by assigning each fixed proof plan a finite product
+of chains
+\[
+  L = \prod_{r\in R} \{0,1,\ldots,c_r\}.
+\]
+The coordinates are not all of one kind.  They include:
+\begin{enumerate}
+  \item public query coordinates, indicating which outputs are requested;
+  \item certificate-liveness coordinates, indicating which fields of an
+        internal witness must escape its local existential scope;
+  \item precision coordinates, recording the finite accuracy required from
+        approximation subroutines;
+  \item guard coordinates, such as denominator apartness, root separation, a
+        spectral gap, or finite-net coverage;
+  \item residual coordinates, indicating quantitative producer theorems that
+        have not been supplied and must therefore remain hypotheses of the
+        compiled endpoint;
+  \item optional backend coordinates, when a consumer requires a translated
+        vocabulary or a particular published presentation.
+\end{enumerate}
+Each local proof node contributes a monotone backward transfer rule.  Starting
+from the public query, DARC iterates
+\[
+  d_{s+1}=d_s\join F(d_s).
+\]
+Because the lattice is a finite product of chains, every strict step increases
+the sum of the coordinates.  Hence the process stabilizes after at most
+\(\sum_r c_r\) strict steps.  Its value is the least prefixed point above the
+query seed.  The word ``least'' is relative to the declared transfer summaries:
+DARC does not claim that no cleverer proof could use fewer resources.  It does
+prove that no state satisfying those summaries can omit a resource retained by
+the analysis.
+
+This one invariant subsumes several analyses that otherwise tend to drift
+apart.  A branch label is retained exactly when the public result names that
+branch.  A tail modulus is exposed exactly when the requested precision reaches
+a node whose proof needs it.  A quantitative nonzero margin is requested only
+when a live operation divides or pivots.  A height bound is absent from a
+purely observational theorem but appears if the theorem asks for a complete
+list of witnesses.  Dead nodes and dead certificate fields are erased before
+proof assembly.
+
+\subsection{Compilation in two levels}
+
+The framework deliberately separates two levels.
+
+\paragraph{Metalevel specialization.}
+Lean or another trusted generator traverses one fixed finite proof plan,
+computes its demand closure, specializes every fixed bounded formula to
+concrete primitive-recursive symbols, and constructs an explicit derivation
+term.  This traversal may recurse on the plan's syntax because it happens in
+the metatheory.
+
+\paragraph{Object-level proof.}
+The generated theorem is an ordinary \(\Prf\;\PRAAx\) derivation.  It does not
+quantify over proof plans, program codes, or formula syntax.  It uses only the
+specific primitive-recursive symbols generated for that plan, their defining
+equations, successor axioms, intuitionistic logic, and quantifier-free
+induction.
+
+This distinction is the clean resolution of the universal-evaluator problem.
+There is no primitive-recursive total evaluator for all primitive-recursive
+programs with their unbounded running time.  DARC needs none.  It produces a
+new fixed symbol for each fixed program, exactly as the ordinary \(\iPRA\)
+language permits.
+
+\subsection{Three certificate export modes}
+
+Every internal certificate is classified after demand closure.
+
+\begin{description}
+  \item[Sealed.] The public result is independent of the certificate.  A local
+  producer \(\Gamma\vdash\exists c\,V(c)\) and a consumer
+  \(V(c),\Gamma\vdash\Phi\) are joined by existential elimination.  No
+  canonical certificate is constructed.
+
+  \item[Observed.] The result depends only on an invariant observation
+  \(O(c)\), and the proof establishes that all valid certificates yield the
+  same observation, or yield observations related by a specified tolerance.
+  The certificate remains hidden; only the stable observation escapes.
+
+  \item[Named.] The public statement really names a witness or code.  DARC
+  requires a finite search bound and a primitive-recursive validity bit, then
+  uses the checked least-search theorem to select the least valid code.  The
+  expense and additional hypotheses of canonicalization occur only in this
+  mode.
+\end{description}
+This trichotomy prevents a common source of unnecessary strength: choosing a
+canonical representative merely because an external proof assistant happens
+to store one.
+
+\subsection{The main conditional theorem}
+
+Informally, the global theorem proved in \cref{sec:global} is the following.
+
+\begin{theorem}[DARC compilation, informal]
+Let \(P\) be a fixed finite proof plan whose cyclic computational components
+have been isolated as bounded loop blocks.  Suppose that:
+\begin{enumerate}
+  \item every demand transfer is monotone and sound for its local node;
+  \item every active acyclic node has an ordinary open derivation from the
+        conclusions of its dependencies and the residual formulas selected by
+        the final demand;
+  \item every loop block has a quantifier-free invariant with base and step
+        derivations;
+  \item every retained named certificate has a finite bound and a reflected
+        validity bit;
+  \item every retained residual formula is either left as a hypothesis or is
+        supplied by an ordinary derivation.
+\end{enumerate}
+Then the DARC algorithm terminates and constructs an ordinary derivation
+\[
+  \Res(P,d^*)\vdash_{\PRAAx}\Phi_P,
+\]
+where \(d^*\) is the least demand state above the public query.  Supplying any
+subset of the residual producers eliminates the corresponding hypotheses by
+simultaneous cut.  Dead certificates, guards, precisions, and proof nodes do
+not occur in the generated endpoint.
+\end{theorem}
+
+The theorem is conditional in the right way.  It does not hide deep mathematics
+inside a compiler.  For example, a general effective height bound for a
+Diophantine problem remains a producer theorem.  Once such a theorem is
+provided, the same compiler can use it; until then, the endpoint states it
+exactly as a residual.
+
+\subsection{What the framework resolves and what it refuses to blur}
+
+DARC resolves the routine but pervasive difficulties of context management,
+finite bounded quantification, proof-local witness handling, precision
+bookkeeping, and finite relational compatibility.  It also makes several
+negative results operational:
+\begin{itemize}
+  \item finite-horizon compatible paths do not by themselves produce an
+        infinite path;
+  \item metastable finite windows do not by themselves produce a convergence
+        rate;
+  \item a coherent approximation chain is not automatically a regular real
+        name without a tail modulus;
+  \item a multiset of colliding roots does not support continuous ordered
+        labels without a separation condition;
+  \item qualitative finiteness does not produce an effective search cutoff.
+\end{itemize}
+Instead of treating these as failures, the framework turns the missing data
+into typed residual interfaces.  This is essential for trustworthy use of a
+weak constructive arithmetic.

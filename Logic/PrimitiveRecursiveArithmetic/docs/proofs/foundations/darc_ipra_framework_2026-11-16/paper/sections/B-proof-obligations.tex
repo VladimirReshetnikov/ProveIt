@@ -1,0 +1,100 @@
+\section{Application proof-obligation template}
+\label{app:obligations}
+
+A new application should fill the following checklist.  It is designed to keep
+mathematical status and compiler status separate.
+
+\subsection{Public theorem}
+
+\begin{enumerate}
+  \item State the exact ordinary \(\iPRA\) formula, including free parameters,
+        coding conventions, and requested precision.
+  \item State whether the endpoint is an open sequent, closed sentence, or a
+        backend translation.
+  \item Identify every public witness or code that must be named.
+\end{enumerate}
+
+\subsection{Representations}
+
+For each mathematical object:
+\begin{enumerate}
+  \item give its numerical code and primitive-recursive operations;
+  \item give validity and equality/compatibility formulas;
+  \item specify failed or singular-case conventions;
+  \item list checked upstream symbols that are reused;
+  \item provide reflection theorems for every atom used in bounded formulas.
+\end{enumerate}
+
+\subsection{Plan nodes}
+
+For each node record:
+\begin{enumerate}
+  \item node identifier and kind;
+  \item dependency formulas;
+  \item output formula;
+  \item local \(\Prf\;\PRAAx\) theorem name or explicit residual status;
+  \item certificate scope: none, local, observed, or named;
+  \item transfer summary with a human proof of soundness;
+  \item imports and replay command.
+\end{enumerate}
+
+\subsection{Loops and relations}
+
+For every loop:
+\begin{enumerate}
+  \item list state registers and step terms;
+  \item display the quantifier-free invariant after Boolean compilation;
+  \item provide base and step derivations;
+  \item provide a fuel or termination-bound theorem.
+\end{enumerate}
+For every relational cloud:
+\begin{enumerate}
+  \item state layer bounds and edge bits;
+  \item state terminal acceptance;
+  \item decide whether the path is local, observed, or named;
+  \item state any extension or tail producer separately from finite viability.
+\end{enumerate}
+
+\subsection{Quantitative producers}
+
+For every approximation operation:
+\begin{enumerate}
+  \item state the error predicate;
+  \item prove the precision transfer and its monotonicity;
+  \item state magnitude, apartness, gap, coverage, and tail requirements;
+  \item classify each requirement as checked, to be proved, or residual.
+\end{enumerate}
+
+\subsection{Compilation audit}
+
+The generated record should include:
+\begin{enumerate}
+  \item resource shape, query seed, fixed point, and iteration history;
+  \item monotonicity evidence for every transfer;
+  \item retained and pruned nodes;
+  \item final residual formulas;
+  \item exact ordinary endpoint;
+  \item theorem names used in the simultaneous-cut schedule;
+  \item axiom audit and absence of \code{sorryAx};
+  \item backend symbol comparisons and translated endpoint, if any.
+\end{enumerate}
+
+\subsection{Status vocabulary}
+
+Use only the following status labels:
+\begin{description}
+  \item[Checked upstream.] A declaration was built and audited in the pinned
+  repository or a recorded compatible baseline.
+  \item[Checked in application.] A new declaration was built and audited by
+  the application replay.
+  \item[Human proof.] A complete nonformal argument is supplied but no Lean
+  elaboration is claimed.
+  \item[Source candidate.] A no-placeholder source file exists but has not
+  been elaborated in the recorded environment.
+  \item[Lean blueprint.] Signatures and proof plan exist with explicit
+  milestones.
+  \item[Executable finite test.] Host code verifies finite examples only.
+  \item[Residual.] The exact producer theorem remains an assumption.
+\end{description}
+This vocabulary prevents a compiled PDF, passing Python test, or no-placeholder
+text file from being mistaken for a kernel-checked object theorem.

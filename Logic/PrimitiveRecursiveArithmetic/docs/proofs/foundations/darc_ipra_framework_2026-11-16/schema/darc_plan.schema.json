@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/darc-plan.schema.json",
+  "title": "DARC-iPRA query-specialized compilation plan",
+  "type": "object",
+  "required": ["name", "public_query", "resources", "rules", "nodes"],
+  "properties": {
+    "name": {"type": "string", "minLength": 1},
+    "public_query": {"type": "string", "minLength": 1},
+    "resources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "kind", "capacity"],
+        "properties": {
+          "name": {"type": "string", "minLength": 1},
+          "kind": {"enum": ["query", "certificate", "precision", "guard", "residual", "backend"]},
+          "capacity": {"type": "integer", "minimum": 0},
+          "meaning": {"type": "string"}
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["label", "triggers", "requirements"],
+        "properties": {
+          "label": {"type": "string"},
+          "triggers": {"$ref": "#/$defs/demand"},
+          "requirements": {"$ref": "#/$defs/demand"},
+          "source_node": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "conclusion", "dependencies", "lean_target"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "kind": {"enum": ["producer", "compute", "verify", "case", "bounded_formula", "loop", "relation", "observer", "bridge"]},
+          "conclusion": {"type": "string"},
+          "dependencies": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "boundary_formulas": {"type": "array", "items": {"type": "string"}},
+          "certificate_scope": {"enum": ["none", "local", "named", "observed"]},
+          "lean_target": {"type": "string"},
+          "status": {"enum": ["checked-upstream", "human-proof", "lean-blueprint", "residual"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "seed": {"$ref": "#/$defs/demand"},
+    "expected_endpoint": {"type": "string"}
+  },
+  "$defs": {
+    "demand": {
+      "type": "object",
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    }
+  },
+  "additionalProperties": false
+}

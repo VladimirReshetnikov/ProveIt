@@ -1,0 +1,170 @@
+\section{Certificate scope, observers, and canonical export}
+\label{sec:certificates}
+
+Certificates are unavoidable in constructive mathematics: factorizations,
+paths, finite covers, branch choices, approximation traces, and bounded-search
+witnesses all carry information.  The mistake is to make every internal
+certificate part of the public theorem.  DARC performs certificate escape
+analysis within the same demand lattice used for precision and residuals.
+
+\subsection{Scoped certificates}
+
+A scoped certificate contract over an outer context \(\Gamma\) and public goal
+\(\Phi\) consists of:
+\begin{enumerate}
+  \item a validity formula \(V(c)\) in a scope with one additional variable;
+  \item a consumer derivation
+        \(V(c),\Gamma^+\vdash\Phi^+\).
+\end{enumerate}
+A producer proves \(\Gamma\vdash\exists c\,V(c)\).  By
+\cref{lem:exseal}, the certificate is sealed.
+
+\begin{theorem}[Local certificate erasure]
+\label{thm:local-cert-erasure}
+If no demanded public formula or live observer contains the certificate
+variable, then a valid local certificate can be eliminated without selecting a
+canonical code.
+\end{theorem}
+
+\begin{proof}
+The demand condition ensures that all active uses of the certificate occur
+inside its consumer subgraph and that the subgraph's exported conclusion is in
+the outer scope.  Compile that subgraph to
+\(V(c),\Gamma^+\vdash\Phi^+\), then apply existential elimination to the
+producer.  Since the conclusion is scoped outside the binder, the certificate
+cannot occur in it.
+\end{proof}
+
+This is stronger and simpler than finding a least certificate.  In particular,
+nonuniqueness causes no difficulty when only an invariant consequence is
+needed.
+
+\subsection{Observed certificates}
+
+Sometimes the public result depends on an observation \(O(c)\) but not on the
+full certificate.  There are three common compatibility modes.
+
+\paragraph{Exact stability.}
+For all valid \(c,c'\), prove \(O(c)=O(c')\).  One may seal a local
+certificate, define the public value by any valid witness inside the proof,
+and use stability to show independence.
+
+\paragraph{Quotient stability.}
+Prove an explicit equivalence relation \(E(O(c),O(c'))\).  The public theorem
+states a quotient-invariant property or uses a canonical finite code for the
+equivalence class only when such a code has a bounded constructive
+normalization.
+
+\paragraph{Metric stability.}
+At requested precision \(p\), prove
+\(\operatorname{dist}(O(c),O(c'))\le 2^{-p}\) or another explicit tolerance.
+The observation is then well-defined at that finite precision.  A global exact
+object requires additional coherence and a tail modulus; DARC does not infer
+one automatically.
+
+\begin{theorem}[Stable observer elimination]
+\label{thm:observer-elimination}
+Let \(V(c)\) be a local certificate predicate and let \(P(z)\) be a public
+property.  Suppose:
+\begin{enumerate}
+  \item \(\Gamma\vdash\exists c\,V(c)\);
+  \item \(V(c),\Gamma^+\vdash P(O(c))\);
+  \item the public conclusion is invariant under the chosen exact, quotient,
+        or finite-precision compatibility relation.
+\end{enumerate}
+Then the certificate may remain scoped, and only the observation contract is
+exported.
+\end{theorem}
+
+\begin{proof}
+Open the existential certificate.  Derive the observed property from the local
+consumer.  Use the compatibility theorem whenever the public statement
+compares this observation with one obtained through another local witness.
+Finally close the existential.  No representative is selected outside the
+scope.
+\end{proof}
+
+The theorem is a schema because the exact public formula differs by
+compatibility mode.  Its logical core is always existential elimination plus
+an ordinary compatibility derivation.
+
+\subsection{Named certificate export by bounded least search}
+
+A public theorem may genuinely require a witness: for example, a least prime
+factor, a smallest repeated index, a canonical finite path, or a literal code
+used by a downstream endpoint.  Then canonicalization is appropriate, but it
+requires two pieces of constructive data:
+\begin{enumerate}
+  \item a finite bound \(N(x)\);
+  \item a fixed primitive-recursive validity bit \(f(i,x)\), with
+        \(f(i,x)=0\) reflecting validity.
+\end{enumerate}
+The checked search symbol \(\mu_f(N,x)\) returns the least zero below \(N\), or
+\(N\) if none exists.
+
+\begin{theorem}[Named export]
+\label{thm:named-export}
+Assume
+\[
+  \Gamma\vdash f(i,x)=0,
+  \qquad
+  \Gamma\vdash i<N.
+\]
+Then \(\Gamma\) proves
+\begin{align*}
+  \mu_f(N,x)&<N,\\
+  f(\mu_f(N,x),x)&=0,\\
+  \mu_f(N,x)&\le i.
+\end{align*}
+Consequently the least valid code is a legitimate public term.
+\end{theorem}
+
+\begin{proof}
+This is the checked theorem \code{Search.search\_found}.  Its proof uses the
+primitive-recursive search recurrence and one quantifier-free induction.  The
+DARC wrapper merely exposes it as the named-certificate operation.
+\end{proof}
+
+The theorem requires existence below a bound.  It does not turn unbounded
+existence into a witness.  A height bound or finite enumeration theorem must be
+proved or left residual.
+
+\subsection{Escape analysis as a demand transfer}
+
+For each certificate field \(c_j\), introduce a Boolean coordinate
+\(\Cert(c_j)\).  A public field occurrence seeds that coordinate.  An observer
+transfer may replace demand for the full certificate by demand for a stable
+observation.  A named-export transfer adds the validity checker, bound, and any
+guards needed by canonicalization.  If no rule reaches \(\Cert(c_j)\), the
+field is dead and must not occur in the compiled endpoint.
+
+This analysis is field-sensitive.  A certificate may contain:
+\[
+  c=(\text{trace},\text{branch label},\text{error bound},\text{provenance}).
+\]
+A value query may need only the error bound; a replay query may need the trace;
+a labeled-root query may need the branch and separation guard.  Treating the
+certificate as one indivisible code would retain unnecessary information and
+residuals.
+
+\subsection{Certificate fusion}
+
+Suppose two adjacent nodes produce certificates \(c\) and \(d\), and the
+consumer uses only a relation \(R(c,d)\) and a stable observation.  Rather than
+naming both separately, form one scoped certificate
+\(\exists c,d\,[V(c)\wedge W(d)\wedge R(c,d)]\) and eliminate it locally.
+This is particularly useful for finite relational runs.  It prevents the
+invalid move of choosing a valid \(c\) and a valid \(d\) independently when no
+compatible pair exists.
+
+\subsection{No hidden choice}
+
+The three export modes make choice obligations visible:
+\begin{itemize}
+  \item sealed mode uses no choice beyond an existential proof;
+  \item observed mode uses a compatibility theorem;
+  \item named mode uses bounded least search.
+\end{itemize}
+There is no fourth mode that silently extracts an arbitrary witness from an
+unbounded existential.  This restriction is not bureaucratic; it is what keeps
+the compiled proof intuitionistic and primitive recursive.

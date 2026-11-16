@@ -1,0 +1,3394 @@
+DARC-iPRA
+Demand-Aware Residualizing Compilation for
+Intuitionistic Primitive Recursive Arithmetic
+Research artifact prepared by OpenAI
+16 November 2026
+Repository baseline: 2ef31aa3e313d792df6b63bb28babfe48e1f982e
+
+Abstract
+This report develops a general method for translating fixed, finite, quantitative mathematical
+arguments into the ordinary object-theory judgment Prf PRAAx Γ φ used by the ProveIt
+formalization of intuitionistic primitive recursive arithmetic. The central device is a single
+finite product-lattice analysis whose least prefixed point records, at once, which certificate
+fields must escape local scope, which approximation precisions are demanded, which guards or
+apartness margins are necessary, and which unproved quantitative producers must remain as
+explicit residual hypotheses. This demand state prunes and specializes the proof graph before
+object-proof assembly. Local noncanonical witnesses are eliminated by existential elimination;
+public named witnesses are canonicalized only when needed, using checked bounded search; fixed
+bounded formulas are compiled to primitive-recursive truth bits and finite strategy certificates;
+loops are normalized to quantifier-free trace invariants; and finite relational witness problems are
+solved by backward viability rather than incompatible independent choices.
+The report proves stabilization and leastness of the demand analysis, the opencontract/sequent equivalence, certificate escape and residualization theorems, bounded
+reflection and strategy soundness schemas, trace and viability schemas, and a global conditional
+compilation theorem. It also isolates genuine barriers: no total universal evaluator is assumed,
+no infinite path follows from horizonwise existence, no regular name follows without a tail
+modulus, and no ordered root or eigenvector is selected through collisions. A source-oriented
+Lean kernel, dependency-ordered Lean blueprints, exact finite reference algorithms, tests, and a
+machine-readable plan schema accompany the paper. No new Lean-kernel-checked theorem is
+claimed by this artifact.
+
+Verification status. The mathematical arguments below are complete at the human-proof
+level for the stated generic conditional schemas. The small Lean structural kernel has no
+placeholders but was not elaborated in this runtime. The larger Lean files are blueprints
+with explicit milestones. Python tests validate finite metalevel algorithms only; they are not
+proofs in iPRA.
+
+Contents
+1 Executive overview
+
+7
+
+1.1 The new organizing invariant . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1
+
+7
+
+DARC-iPRA
+1.2
+
+Demand-aware proof compilation
+
+Compilation in two levels . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+8
+
+1.3 Three certificate export modes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+8
+
+1.4 The main conditional theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+8
+
+1.5 What the framework resolves and what it refuses to blur . . . . . . . . . . . . . . . .
+
+9
+
+2 Repository audit and design constraints
+2.1 The canonical endpoint is ordinary Prf PRAAx
+2.2
+
+9
+. . . . . . . . . . . . . . . . . . . . . 10
+
+Checked structural and arithmetic support . . . . . . . . . . . . . . . . . . . . . . . . 10
+
+2.3 The bridge is no longer merely closed . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+2.4
+
+Prior framework packets and the remaining gap . . . . . . . . . . . . . . . . . . . . . 11
+
+2.5 Acceptance criteria derived from the audit . . . . . . . . . . . . . . . . . . . . . . . . 11
+3 Formal setting: ordinary intuitionistic primitive recursive arithmetic
+
+12
+
+3.1 Terms, formulas, and axioms . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+3.2 The object/metalevel separation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+3.3
+
+Open sequents as the unit of reuse . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+
+3.4
+
+Structural lemmas used by the compiler . . . . . . . . . . . . . . . . . . . . . . . . . 13
+
+3.5 A note on metatheoretic classical axioms . . . . . . . . . . . . . . . . . . . . . . . . . 14
+4 The fixed proof-plan language
+
+14
+
+4.1
+
+Nodes and interfaces . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+
+4.2
+
+Resource declarations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+
+4.3 Transfer rules . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+4.4
+
+Plan normalization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+
+4.5
+
+Machine-readable representation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+
+5 Unified backward demand analysis
+
+17
+
+5.1
+
+Finite product of resource chains . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+
+5.2
+
+Leastness . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+
+5.3
+
+Cycles are harmless when they are monotone . . . . . . . . . . . . . . . . . . . . . . 18
+
+5.4
+
+Soundness of transfer summaries . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+
+5.5
+
+Pruning theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+
+5.6
+
+Compositionality of demand analyses . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+
+6 Static specialization and the universal-evaluator barrier
+
+2
+
+20
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+6.1 Why a total universal evaluator is the wrong target . . . . . . . . . . . . . . . . . . . 20
+6.2
+
+Specialization theorem schema . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+
+6.3
+
+Fixed instruction sets and clocked traces . . . . . . . . . . . . . . . . . . . . . . . . . 21
+
+6.4
+
+Specialization of bounded formulas . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+
+6.5
+
+Specialization cache and theorem reuse . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+
+6.6 What is and is not uniform . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+7 Open contracts and proof-graph compilation
+
+22
+
+7.1
+
+Open contracts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+
+7.2
+
+Substitution and context independence . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+
+7.3 Acyclic schedule compilation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+7.4
+
+Multiple outputs and shared subproofs . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+
+7.5
+
+Residual boundary discharge . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+
+7.6
+
+Local theorem strengthening
+
+7.7
+
+Proof-producing versus proof-checking architectures . . . . . . . . . . . . . . . . . . 24
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+
+8 Certificate scope, observers, and canonical export
+
+24
+
+8.1
+
+Scoped certificates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+
+8.2
+
+Observed certificates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+
+8.3
+
+Named certificate export by bounded least search . . . . . . . . . . . . . . . . . . . . 25
+
+8.4
+
+Escape analysis as a demand transfer . . . . . . . . . . . . . . . . . . . . . . . . . . . 26
+
+8.5
+
+Certificate fusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 26
+
+8.6
+
+No hidden choice . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 26
+
+9 Fixed bounded formulas, truth bits, and finite strategies
+
+27
+
+9.1
+
+Reflected atoms . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 27
+
+9.2
+
+Boolean operations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 27
+
+9.3
+
+Finite folds for bounded quantifiers . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28
+
+9.4
+
+Structural reflection theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28
+
+9.5
+
+Positive strategy certificates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+
+9.6
+
+Negative certificates and two-sided decisions . . . . . . . . . . . . . . . . . . . . . . . 29
+
+9.7 Alternation without nested ad hoc searches . . . . . . . . . . . . . . . . . . . . . . . 30
+9.8
+
+Example used by the artifact . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 30
+
+10 Normalized traces and quantifier-free loop reflection
+3
+
+30
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+10.1 Trace normal form . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 30
+10.2 Removing bounded formulas from invariants . . . . . . . . . . . . . . . . . . . . . . . 31
+10.3 Trace invariant theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31
+10.4 Trace certificates versus trace functions
+
+. . . . . . . . . . . . . . . . . . . . . . . . . 31
+
+10.5 Demand-directed state slicing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+10.6 Termination and fuel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+10.7 Worked invariant: sum of odd numbers . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+11 Finite relational viability and coherent witness clouds
+
+33
+
+11.1 Layered finite relations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+11.2 Least compatible path . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+11.3 Backward viability before choice . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34
+11.4 Stable observations on witness clouds . . . . . . . . . . . . . . . . . . . . . . . . . . . 34
+11.5 The infinite-path barrier . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34
+11.6 The regular-name barrier . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 35
+11.7 Applications . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 35
+12 Quantitative names, moduli, guards, and residual producers
+
+35
+
+12.1 Finite-precision contracts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 35
+12.2 Addition and subtraction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36
+12.3 Multiplication and magnitude bounds . . . . . . . . . . . . . . . . . . . . . . . . . . 36
+12.4 Reciprocal and division . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36
+12.5 Roots, branches, and collisions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 37
+12.6 Finite nets instead of abstract compactness . . . . . . . . . . . . . . . . . . . . . . . 37
+12.7 Series, integrals, and tail moduli . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 37
+12.8 Metastability versus convergence rates . . . . . . . . . . . . . . . . . . . . . . . . . . 37
+12.9 Diophantine finiteness and height bounds . . . . . . . . . . . . . . . . . . . . . . . . 38
+12.10Quantitative transfer as an auditable interface . . . . . . . . . . . . . . . . . . . . . . 38
+13 The global DARC compilation theorem
+13.1 Well-formed plans
+
+38
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 38
+
+13.2 Compiler output . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 39
+13.3 Residual exactness . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 40
+13.4 Producer substitution and monotone improvement . . . . . . . . . . . . . . . . . . . 40
+
+4
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+13.5 Query monotonicity . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 40
+13.6 Plan composition . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 41
+13.7 Backend preservation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 41
+14 Worked application templates
+
+41
+
+14.1 A value query with a dead branch witness . . . . . . . . . . . . . . . . . . . . . . . . 41
+14.2 A cyclic precision closure
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 42
+
+14.3 Bounded alternation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 42
+14.4 A deterministic recurrence . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 42
+14.5 Finite compatible approximation clouds . . . . . . . . . . . . . . . . . . . . . . . . . 43
+14.6 Special functions and analytic packets . . . . . . . . . . . . . . . . . . . . . . . . . . 43
+14.7 Diophantine enumeration . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 43
+14.8 Geometry and finite nets . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 43
+14.9 Busy Beaver and exact coded endpoints . . . . . . . . . . . . . . . . . . . . . . . . . 44
+15 Resolution of the identified difficulty classes
+
+44
+
+15.1 What is genuinely resolved . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 45
+15.2 What no generic framework can supply . . . . . . . . . . . . . . . . . . . . . . . . . . 46
+16 Lean formalization architecture
+
+46
+
+16.1 Module graph . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47
+16.2 Structural kernel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47
+16.3 Demand formalization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 48
+16.4 Bounded reflection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 48
+16.5 Trace formalization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 48
+16.6 Relational formalization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49
+16.7 Proof plan and compiler . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49
+16.8 Axiom and dependency audit . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49
+16.9 Suggested integration milestones . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49
+17 Verification status, limitations, and research program
+
+50
+
+17.1 Established at the human-proof level . . . . . . . . . . . . . . . . . . . . . . . . . . . 50
+17.2 Executable finite evidence . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 50
+17.3 Lean status . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 51
+17.4 Deliberate nonclaims . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 51
+5
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+17.5 Research priorities . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 51
+17.6 Conclusion
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 52
+
+A Reference algorithms and worked finite instance
+
+52
+
+A.1 Demand closure pseudocode . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 52
+A.2 Strategy checker pseudocode
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 53
+
+A.3 Backward viability pseudocode . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 53
+A.4 Generated demand instance . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 53
+A.5 Test inventory . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 54
+B Application proof-obligation template
+
+54
+
+B.1 Public theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 54
+B.2 Representations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 54
+B.3 Plan nodes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 54
+B.4 Loops and relations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 55
+B.5 Quantitative producers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 55
+B.6 Compilation audit . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 55
+B.7 Status vocabulary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 56
+
+6
+
+DARC-iPRA
+
+1
+
+Demand-aware proof compilation
+
+Executive overview
+
+The working problem is not merely to encode one more theorem in arithmetic. It is to build a
+reusable route from a broad class of mathematical arguments to a literal derivation in the ordinary
+ProveIt judgment
+Γ ⊢PRAAx φ,
+while respecting the severe but mathematically useful discipline of intuitionistic primitive recursive
+arithmetic. In particular, every function used in the object language must be primitive recursive,
+induction is available only for quantifier-free formulas, and existential information must be handled
+constructively rather than extracted by an unrestricted appeal to choice.
+The repository already contains many of the ingredients needed for such a route. The ordinary
+calculus has substitution, weakening, simultaneous cut, existential elimination, equality transport,
+and quantifier-free induction. The checked arithmetic library contains order, bounded search, pairing,
+simultaneous recursion, finite sums and products, division with remainder, gcd, and several higherlevel proof patterns. The checked bridge transports closed and open sequents to the Foundation
+presentation used by several applications. The difficult part is now architectural: how should a
+large, heterogeneous, partly quantitative proof be organized so that only the resources genuinely
+needed by a requested conclusion survive into the final theorem?
+
+1.1
+
+The new organizing invariant
+
+DARC answers this question by assigning each fixed proof plan a finite product of chains
+L=
+
+Y
+
+{0, 1, . . . , cr }.
+
+r∈R
+
+The coordinates are not all of one kind. They include:
+1. public query coordinates, indicating which outputs are requested;
+2. certificate-liveness coordinates, indicating which fields of an internal witness must escape its
+local existential scope;
+3. precision coordinates, recording the finite accuracy required from approximation subroutines;
+4. guard coordinates, such as denominator apartness, root separation, a spectral gap, or finite-net
+coverage;
+5. residual coordinates, indicating quantitative producer theorems that have not been supplied
+and must therefore remain hypotheses of the compiled endpoint;
+6. optional backend coordinates, when a consumer requires a translated vocabulary or a particular
+published presentation.
+Each local proof node contributes a monotone backward transfer rule. Starting from the public
+query, DARC iterates
+ds+1 = ds ⊔ F (ds ).
+Because the lattice is a finite product of chains, every strict step increases the sum of the coordinates.
+P
+Hence the process stabilizes after at most r cr strict steps. Its value is the least prefixed point
+above the query seed. The word “least” is relative to the declared transfer summaries: DARC does
+not claim that no cleverer proof could use fewer resources. It does prove that no state satisfying
+those summaries can omit a resource retained by the analysis.
+7
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+This one invariant subsumes several analyses that otherwise tend to drift apart. A branch label
+is retained exactly when the public result names that branch. A tail modulus is exposed exactly
+when the requested precision reaches a node whose proof needs it. A quantitative nonzero margin
+is requested only when a live operation divides or pivots. A height bound is absent from a purely
+observational theorem but appears if the theorem asks for a complete list of witnesses. Dead nodes
+and dead certificate fields are erased before proof assembly.
+
+1.2
+
+Compilation in two levels
+
+The framework deliberately separates two levels.
+Metalevel specialization. Lean or another trusted generator traverses one fixed finite proof plan,
+computes its demand closure, specializes every fixed bounded formula to concrete primitive-recursive
+symbols, and constructs an explicit derivation term. This traversal may recurse on the plan’s syntax
+because it happens in the metatheory.
+Object-level proof. The generated theorem is an ordinary Prf PRAAx derivation. It does not
+quantify over proof plans, program codes, or formula syntax. It uses only the specific primitiverecursive symbols generated for that plan, their defining equations, successor axioms, intuitionistic
+logic, and quantifier-free induction.
+This distinction is the clean resolution of the universal-evaluator problem. There is no primitiverecursive total evaluator for all primitive-recursive programs with their unbounded running time.
+DARC needs none. It produces a new fixed symbol for each fixed program, exactly as the ordinary
+iPRA language permits.
+
+1.3
+
+Three certificate export modes
+
+Every internal certificate is classified after demand closure.
+Sealed. The public result is independent of the certificate. A local producer Γ ⊢ ∃c V (c) and
+a consumer V (c), Γ ⊢ Φ are joined by existential elimination. No canonical certificate is
+constructed.
+Observed. The result depends only on an invariant observation O(c), and the proof establishes
+that all valid certificates yield the same observation, or yield observations related by a specified
+tolerance. The certificate remains hidden; only the stable observation escapes.
+Named. The public statement really names a witness or code. DARC requires a finite search
+bound and a primitive-recursive validity bit, then uses the checked least-search theorem to
+select the least valid code. The expense and additional hypotheses of canonicalization occur
+only in this mode.
+This trichotomy prevents a common source of unnecessary strength: choosing a canonical representative merely because an external proof assistant happens to store one.
+
+1.4
+
+The main conditional theorem
+
+Informally, the global theorem proved in section 13 is the following.
+8
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+Theorem 1.1 (DARC compilation, informal). Let P be a fixed finite proof plan whose cyclic
+computational components have been isolated as bounded loop blocks. Suppose that:
+1. every demand transfer is monotone and sound for its local node;
+2. every active acyclic node has an ordinary open derivation from the conclusions of its dependencies
+and the residual formulas selected by the final demand;
+3. every loop block has a quantifier-free invariant with base and step derivations;
+4. every retained named certificate has a finite bound and a reflected validity bit;
+5. every retained residual formula is either left as a hypothesis or is supplied by an ordinary
+derivation.
+Then the DARC algorithm terminates and constructs an ordinary derivation
+Res(P, d∗ ) ⊢PRAAx ΦP ,
+where d∗ is the least demand state above the public query. Supplying any subset of the residual
+producers eliminates the corresponding hypotheses by simultaneous cut. Dead certificates, guards,
+precisions, and proof nodes do not occur in the generated endpoint.
+The theorem is conditional in the right way. It does not hide deep mathematics inside a compiler.
+For example, a general effective height bound for a Diophantine problem remains a producer theorem.
+Once such a theorem is provided, the same compiler can use it; until then, the endpoint states it
+exactly as a residual.
+
+1.5
+
+What the framework resolves and what it refuses to blur
+
+DARC resolves the routine but pervasive difficulties of context management, finite bounded quantification, proof-local witness handling, precision bookkeeping, and finite relational compatibility. It
+also makes several negative results operational:
+• finite-horizon compatible paths do not by themselves produce an infinite path;
+• metastable finite windows do not by themselves produce a convergence rate;
+• a coherent approximation chain is not automatically a regular real name without a tail modulus;
+• a multiset of colliding roots does not support continuous ordered labels without a separation
+condition;
+• qualitative finiteness does not produce an effective search cutoff.
+Instead of treating these as failures, the framework turns the missing data into typed residual
+interfaces. This is essential for trustworthy use of a weak constructive arithmetic.
+
+2
+
+Repository audit and design constraints
+
+The framework was designed against the state of VladimirReshetnikov/ProveIt at commit
+2ef31aa3e313d792df6b63bb28babfe48e1f982e. This matters because the repository changed
+substantially during the sequence of earlier research packets. The present architecture should be
+judged against the checked interfaces now available, not against an earlier packet-only picture.
+
+9
+
+DARC-iPRA
+
+2.1
+
+Demand-aware proof compilation
+
+The canonical endpoint is ordinary Prf PRAAx
+
+The directory Logic/PrimitiveRecursiveArithmetic separates four roles.
+1. ConciseIPRA contains checked presentations and proves their relation to ordinary iPRA.
+2. Derivations contains actual Lean-kernel-checked object derivations whose theorem types are
+explicit judgments Γ ⊢PRAAx φ.
+3. Bridge transports closed and open derivations between the ordinary presentation and the
+Foundation presentation used by other projects.
+4. docs/proofs stores delivered research packets. These are valuable mathematical design inputs,
+but their Lean sources were generally not rerun or integrated when filed.
+The unification plan explicitly selects ordinary Prf PRAAx as the shared interface for new portable
+statements. Therefore a new framework that ends only in an external certificate checker, a semantic
+theorem about N, or an uncompiled custom calculus would not close the central gap. DARC requires
+every local node and the global result to target the ordinary judgment.
+
+2.2
+
+Checked structural and arithmetic support
+
+The ordinary deduction file supplies precisely the structural operations needed for compositional
+proof generation:
+• Prf.substWeaken, combining substitution and weakening;
+• Prf.subst and Prf.weaken;
+• Prf.trans, a simultaneous-cut theorem replacing every hypothesis by a derivation of it;
+• Prf.exE, the primitive operation for sealing local existential certificates;
+• equality congruence and substitution;
+• introduction and elimination rules for the intuitionistic connectives and quantifiers.
+The ordinary arithmetic theory supplies a symbol for every primitive-recursive definition, defining
+equations for projection, composition and primitive recursion, successor separation and injectivity,
+and quantifier-free induction. The reusable derivation library builds semiring laws, order, pairing,
+bounded sums and products, simultaneous recursion, finite descent, division, gcd, Bezout, and
+bounded least search on this foundation.
+Two checked interfaces are especially important.
+Open induction. The helper IPRA.ind packages quantifier-free induction for an open formula
+with parameters in scope. DARC’s loop reflection theorem is designed to reduce to this exact shape.
+Bounded least search. For a fixed binary primitive-recursive body f (i, x), the checked search
+code µf (N, x) has an ordinary derivation of:
+µf (N, x) ≤ N,
+µf (N, x) < N → f (µf (N, x), x) = 0,
+i < µf (N, x) → f (i, x) ̸= 0,
+and the theorem search_found proves that a known zero below N is found no later than that zero.
+This is exactly the right primitive for named-certificate export. It should not be reimplemented by
+an unchecked host-language search.
+10
+
+DARC-iPRA
+
+2.3
+
+Demand-aware proof compilation
+
+The bridge is no longer merely closed
+
+The Bridge library now exposes translation under finite open contexts and explicit assignments, as
+well as scoped round-trip theorems. This removes an earlier reason to force every reusable lemma
+into a closed sentence. DARC can therefore keep local parameters and hypotheses visible, compile
+in ordinary iPRA, and translate only at a client boundary. The recommended order is:
+prove once in ordinary iPRA
+
+−→
+
+compare client symbols
+
+−→
+
+transport the open or closed sequent.
+
+This order is built into the backend layer of the proposed Lean architecture.
+
+2.4
+
+Prior framework packets and the remaining gap
+
+Several recent packets identify the right components:
+• open context-polymorphic contracts equivalent to sequents;
+• finite interaction programs and bounded strategy certificates;
+• least finite demand closures, including cyclic monotone demands;
+• certificate escape analysis and existential sealing;
+• normalized trace reflection;
+• backward relational viability and stable observers;
+• explicit residuals for missing moduli, margins, and height bounds.
+Their exact status is also important. The generic mathematics is often written in detail, and small
+source candidates may contain no placeholders, but the larger compiler files are generally blueprints
+and the packages do not claim new kernel-checked main theorems. The ideas also remain partly
+orthogonal: one analysis decides precision, another decides certificate escape, and another tracks
+residuals. A proof generator can become inconsistent if those analyses disagree about which node is
+live.
+DARC’s distinctive step is to put all four decisions in one least finite state. A single transfer network
+answers:
+What must be true, how accurately must it be true, which local data must be public,
+and which producer hypotheses remain, in order to answer this exact query?
+The pruned proof schedule is then derived from that same state. This avoids a class of mismatches
+in which, for example, a precision pass removes a branch but a witness pass still tries to name it, or
+a residual producer is declared unnecessary even though a retained guard depends on it.
+
+2.5
+
+Acceptance criteria derived from the audit
+
+The audit yields the following nonnegotiable criteria.
+1. The final theorem type is literally an ordinary Prf PRAAx sequent.
+2. Metalevel code is evidence about the compiler, not a replacement for an object derivation.
+3. Every fixed formula or algorithm is statically specialized; no total object-level universal evaluator
+is postulated.
+11
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+4. Quantifier-free induction remains quantifier-free after compilation.
+5. Missing deep mathematics is visible in residual formulas.
+6. Local noncanonical witnesses are not canonicalized unless demanded by the public statement.
+7. Backend translation is a separate checked step, preserving exact client symbols and theorem
+direction.
+8. Verification status is claim-by-claim: inherited checked theorem, human argument, uncompiled
+Lean target, executable finite test, or open producer.
+These criteria shape every definition in the following sections.
+
+3
+
+Formal setting: ordinary intuitionistic primitive recursive arithmetic
+
+This section fixes the proof-theoretic target and clarifies which constructions belong to the object
+theory and which belong to the metatheory.
+
+3.1
+
+Terms, formulas, and axioms
+
+For each arity k, let PRk be the inductively generated class of primitive-recursive function symbols:
+zero, successor, projections, composition, and primitive recursion. A term over n free variables
+is a variable or an application of one such symbol. The formula language is ordinary first-order
+intuitionistic logic with equality over these terms.
+The axiom family PRAAx contains:
+1. defining equations for projections, composition, and primitive recursion;
+2. Sx ̸= 0 and injectivity of successor;
+3. induction for every quantifier-free formula, with arbitrary free parameters.
+A derivation is written
+
+Γ ⊢PRAAx φ.
+
+In Lean this is a proposition whose inhabitants are derivation trees. The metatheory may use
+ordinary mathematics to construct such a tree. Soundness of the final mathematical statement
+comes from the fact that the tree uses only the constructors of the embedded calculus and instances
+of PRAAx.
+
+3.2
+
+The object/metalevel separation
+
+The same word “primitive recursive” appears at two levels, and confusing those levels causes
+overclaims.
+Object level. A concrete symbol f ∈ PRk occurs in a term and has defining axioms. The object
+theory can reason about f (⃗x), prove its equations, and apply quantifier-free induction to formulas
+mentioning it.
+
+12
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+Metalevel. Lean can inspect a finite syntax tree describing a formula, proof plan, or primitiverecursive definition and produce a concrete symbol or derivation. This inspection need not itself be
+represented by one total object-language function. Each generated result is finite and fixed.
+The framework uses metalevel recursion on plans and formulas, but the emitted proof contains only
+concrete object-level symbols. Thus a theorem schema of the form “for each fixed bounded formula
+A, there is a bit bA and a derivation of A ↔ bA = 1” does not assert an object theorem about a
+universal formula evaluator.
+
+3.3
+
+Open sequents as the unit of reuse
+
+A reusable theorem should usually remain open. For example, cancellation is most useful in the
+form
+a + b = a + c ⊢PRAAx b = c
+with a, b, c arbitrary terms under an arbitrary surrounding context. If one closes the theorem too
+early by universal quantification and implications, then every downstream use must repeatedly
+instantiate and reopen it. The ordinary deduction API already supports the cleaner open form
+through substitution and weakening.
+DARC therefore treats an open sequent as the basic node interface. A local node has:
+• a finite list of dependency formulas Av ;
+• a finite list of residual boundary formulas Bv (d) selected by demand d;
+• a conclusion ϕv (d);
+• a derivation Av , Bv (d) ⊢PRAAx ϕv (d).
+The same local derivation can be specialized at arbitrary terms and inserted into any larger context.
+
+3.4
+
+Structural lemmas used by the compiler
+
+We record the logical facts on which proof assembly depends.
+Lemma 3.1 (Substitution). If Γ ⊢ φ over n free variables and σ maps those variables to terms
+over m variables, then
+Γ[σ] ⊢ φ[σ].
+Lemma 3.2 (Weakening). If Γ ⊢ φ and every member of Γ occurs in ∆, then ∆ ⊢ φ.
+Lemma 3.3 (Simultaneous cut). If Γ ⊢ φ and, for every ψ ∈ Γ, ∆ ⊢ ψ, then ∆ ⊢ φ.
+Proof. The checked proof proceeds by induction on the list Γ. For the empty list, weaken the
+closed derivation to ∆. For Γ = ψ :: Γ′ , introduce ψ as an implication in the given derivation,
+apply the induction hypothesis to replace all assumptions in Γ′ , then use modus ponens with the
+supplied derivation of ψ. No cut rule is added to the calculus; the lemma is derived from implication
+introduction and elimination.
+Lemma 3.4 (Existential sealing). If
+Γ ⊢ ∃c V (c)
+
+and
+
+V (c), Γ+ ⊢ Φ+ ,
+
+where + denotes the standard shift under the binder and Φ does not contain c, then Γ ⊢ Φ.
+13
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+Proof. This is exactly existential elimination. The freshness condition is enforced by the scoped
+representation of formulas: V lives over one more variable, while Φ lives in the outer scope.
+Lemma 3.5 (Quantifier-free induction interface). Let I(t, ⃗x) be quantifier-free. If
+⊢ I(0, ⃗x)
+
+and
+
+I(t, ⃗x) ⊢ I(St, ⃗x),
+
+then ⊢ I(t, ⃗x) as an open formula.
+This is the checked IPRA.ind wrapper around the induction axiom. A central obligation of DARC
+normalization is that every loop invariant supplied to this lemma is genuinely quantifier-free, not
+merely semantically bounded.
+
+3.5
+
+A note on metatheoretic classical axioms
+
+The existing Lean developments may report standard Lean axioms such as propositional extensionality, quotient soundness, or choice in the metatheory. This does not add those principles to iPRA.
+The object proof remains a finite value of the inductive type Prf PRAAx. DARC’s claim ledger
+therefore distinguishes:
+1. which object axioms a derivation uses;
+2. which Lean axioms were used while constructing or representing the derivation;
+3. which mathematical producer lemmas remain assumptions of the object endpoint.
+This separation is necessary for an honest strength audit.
+
+4
+
+The fixed proof-plan language
+
+DARC compiles one fixed finite plan at a time. The plan language is broad enough to organize proofs
+from discrete mathematics, algebra, bounded number theory, effective analysis, and finite geometry,
+but deliberately small enough that every construct has a direct ordinary-iPRA interpretation.
+
+4.1
+
+Nodes and interfaces
+
+A plan consists of a finite directed graph G = (V, E), a public query node q, and declarations for
+resources and local proof interfaces. Nodes have one of the following roles.
+Producer. Establishes an input theorem, modulus, bound, finite net, apartness margin, or
+certificate-existence formula. A producer may be proved, supplied as a hypothesis, or classified
+as an open residual.
+Compute. Applies a fixed primitive-recursive transformation and exposes its defining equations.
+Examples are polynomial evaluation, bounded sums, a recurrence step, code projections, and
+rational arithmetic.
+Verify. Checks a fixed decidable relation through a characteristic bit and an object-level reflection
+theorem.
+Case or bounded-formula node. Compiles finite conjunction, disjunction, implication under
+decidability, and bounded quantifier alternation to truth bits or strategy certificates.
+
+14
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+Loop. Encapsulates a bounded iteration with a fixed state type, primitive-recursive step, and
+quantifier-free invariant.
+Relation. Represents a finite cloud of possible witnesses and a compatibility relation between
+adjacent layers. It is compiled by backward viability.
+Observer. Maps a possibly nonunique local witness to the public data that actually matter. Its
+contract includes exact, quotient, or metric compatibility.
+Bridge. Translates a completed ordinary sequent to a client presentation and proves comparison
+lemmas for the client’s symbols.
+Every node v has a conclusion formula ϕv , dependency list dep(v), and local contract
+ϕu : u ∈ dep(v) , Bv (d) ⊢PRAAx ϕv ,
+
+
+where Bv (d) is the list of boundary formulas demanded at state d. A node is active only if its output
+or one of its resource effects is demanded. The graph is a proof graph, not an execution graph: a
+compute node denotes a proved equation for a fixed primitive-recursive symbol, and a loop node
+denotes an induction proof.
+
+4.2
+
+Resource declarations
+
+A resource coordinate has a name, kind, finite capacity, and intended theorem meaning. Boolean
+coordinates have capacity one. A precision coordinate has capacity chosen for the requested theorem
+instance. This finite cap is not a claim that an analytic object has only finitely many precisions; the
+theorem being compiled has a fixed finite target precision, so only the finite interval needed for that
+instance appears in the plan.
+Typical declarations are:
+Name
+
+Kind
+
+Capacity
+
+query:value
+cert:branch
+precision:f
+guard:denom
+residual:tail
+backend:foundation
+
+query
+certificate
+precision
+guard
+residual
+backend
+
+Meaning
+
+1
+1
+
+approximate value is requested
+an ordered branch label must escape
+accuracy requested from f
+positive denominator margin is needed
+tail-modulus producer is not yet supplied
+Foundation export is requested
+
+pmax
+1
+1
+1
+
+A level may encode more than presence. For example, a guard coordinate can record one of finitely
+many margin classes, and a precision coordinate records an integer level. The only structural
+requirement is a finite chain with a clear monotone meaning: a larger value requests at least as
+much resource.
+
+4.3
+
+Transfer rules
+
+A local transfer summary says what a node needs when one of its outputs is needed. The most
+transparent executable form is a finite family of threshold rules:
+^
+
+dr ≥ ar
+
+=⇒
+
+ds ≥ bs
+
+r∈T
+
+15
+
+(s ∈ U ).
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+For example:
+Prec(g) ≥ p =⇒ Prec(f ) ≥ p + 1,
+Cert(ordered root) = 1 =⇒ Guard(separation) = 1,
+Prec(series) ≥ p0 =⇒ Res(tail modulus) = 1.
+The global transfer F joins all requirements whose thresholds fire. Threshold rules are monotone
+by construction: raising the input can only make more rules fire, and requirements are added by
+coordinatewise maximum.
+More general monotone transfer functions are allowed. A Lean formalization should demand a
+monotonicity proof for each such function. Threshold rules are preferred for generated plans because
+their monotonicity and provenance are immediate.
+
+4.4
+
+Plan normalization
+
+Before demand analysis, a plan is normalized as follows.
+1. Inline purely definitional aliases so each compute node has one fixed symbol and explicit
+equations.
+2. Replace each fixed bounded formula by a node that will generate its truth bit and reflection
+derivation.
+3. Isolate runtime cycles as explicit loop nodes with state and invariant. A cyclic dependency in
+precision or liveness is not a runtime loop; it remains in the monotone transfer network.
+4. Group mutually recursive finite witness choices into one relation node rather than choosing
+each witness independently.
+5. Attach every partial operation to a guard formula.
+6. Attach every unproved quantitative input to a producer node and a residual coordinate.
+7. Compute the strongly connected components of the remaining proof graph. After loop extraction,
+the condensation graph used for simultaneous-cut assembly must be acyclic.
+The normalization does not prove local mathematics. It makes proof obligations explicit and puts
+them in forms supported by the checked library.
+
+4.5
+
+Machine-readable representation
+
+The accompanying schema schema/darc_plan.schema.json records: resource names and capacities,
+threshold rules, node kinds, dependency lists, boundary formulas, certificate scope, Lean target,
+and status. The schema is not part of the trusted proof kernel. Its purpose is reproducibility: a
+reviewer can compare the human theorem, demand analysis, generated proof schedule, and final
+residual list against one common plan.
+A trustworthy generator should emit at least four artifacts:
+1. the closed demand state and its iteration history;
+2. the pruned node schedule;
+3. a theorem ledger mapping each node to a Lean declaration or residual;
+4. the final ordinary sequent, before any backend translation.
+The reference Python code emits the first item and small demonstrations of the finite strategy, trace,
+and viability algorithms. It intentionally does not parse or accept Lean proof certificates.
+16
+
+DARC-iPRA
+
+5
+
+Demand-aware proof compilation
+
+Unified backward demand analysis
+
+This section gives the finite-lattice theorem that makes DARC query-specific. Although the
+construction resembles a static-analysis fixed point, the proof is elementary and quantitative; no
+appeal to an infinitary fixed-point theorem is needed.
+
+5.1
+
+Finite product of resource chains
+
+Let R = {1, . . . , m} be the finite set of resource coordinates and let cr ∈ N be the capacity of
+coordinate r. Define
+m
+L=
+
+Y
+
+{0, 1, . . . , cr }.
+
+r=1
+
+For d, e ∈ L, write d ≤ e when dr ≤ er for every r, and let d ⊔ e be coordinatewise maximum. Define
+the rank
+m
+m
+rk(d) =
+
+X
+
+C=
+
+dr ,
+
+r=1
+
+X
+
+cr .
+
+r=1
+
+Thus 0 ≤ rk(d) ≤ C.
+A transfer map F : L → L is sound for a plan if every requirement reported by a live local node
+appears in F (d). It is monotone if d ≤ e implies F (d) ≤ F (e). Threshold-rule networks are monotone
+automatically.
+Given a public query seed q ∈ L, define
+d0 = q,
+
+ds+1 = ds ⊔ F (ds ).
+
+(5.1)
+
+This is an inflationary iteration even when F itself is not inflationary.
+Lemma 5.1 (Strict rank increase). If d ≤ e and d ̸= e, then rk(d) < rk(e).
+Proof. For every coordinate, er − dr ≥ 0. Since d ̸= e, at least one of these differences is positive.
+Hence
+X
+rk(e) − rk(d) =
+(er − dr ) > 0.
+r
+
+Theorem 5.2 (Finite stabilization). The sequence in (5.1) stabilizes after at most C − rk(q) strict
+steps, and therefore after at most C + 1 evaluations of the update. Its stable value d∗ satisfies
+F (d∗ ) ≤ d∗ .
+̸ ds , theorem 5.1 gives
+Proof. The sequence is coordinatewise nondecreasing. Whenever ds+1 =
+rk(ds+1 ) > rk(ds ). Rank starts at rk(q), is integral, and is bounded by C; hence there are at
+most C − rk(q) strict steps. At the first stationary stage, d∗ = d∗ ⊔ F (d∗ ), which is equivalent to
+F (d∗ ) ≤ d∗ .
+Remark 5.3. The useful bound is the sum of capacities, not the number r (cr + 1) of states. A
+plan may therefore have many Boolean resource coordinates while still converging in a number of
+strict rounds linear in the number of coordinates.
+Q
+
+17
+
+DARC-iPRA
+
+5.2
+
+Demand-aware proof compilation
+
+Leastness
+
+A demand state e is admissible above the query if
+q ≤ e and F (e) ≤ e.
+The second condition says that all requirements triggered by e are already included in e.
+Theorem 5.4 (Least prefixed point above the query). Assume F is monotone. The stable value d∗
+of (5.1) is below every admissible state e. Therefore it is the least prefixed point of F above q.
+Proof. We prove ds ≤ e by induction on s. The base case is q ≤ e. If ds ≤ e, monotonicity gives
+F (ds ) ≤ F (e) ≤ e. Since also ds ≤ e, their join satisfies ds+1 = ds ⊔ F (ds ) ≤ e. At stabilization this
+yields d∗ ≤ e.
+Corollary 5.5 (Relative resource minimality). No resource coordinate retained by d∗ can be lowered
+while preserving the query and all declared transfer summaries, unless some other coordinate is
+changed so that the resulting state is no longer below d∗ .
+The qualification “declared transfer summaries” is essential. If a local proof is replaced by a stronger
+lemma with a better modulus, the transfer map changes and the new least state may be smaller.
+DARC minimality is a precise audit statement, not a claim of proof-theoretic optimality.
+
+5.3
+
+Cycles are harmless when they are monotone
+
+Precision dependencies often contain cycles. For instance, evaluating a root may require an integral
+approximation, while the certified integration bound may itself use a rough root bound. Suppose
+y ≥ 1 ⇒ x ≥ 2,
+
+x ≥ 2 ⇒ y ≥ 4,
+
+y ≥ 4 ⇒ x ≥ 5.
+
+Starting from a query demanding y ≥ 1, the iteration obtains the finite closure x = 5, y = 4. No
+recursive theorem is being assumed. The cycle occurs in the finite resource analysis and terminates
+by rank.
+This distinction is important:
+• a cycle in the demand network is solved by finite monotone closure;
+• a cycle in mathematical execution is extracted as a loop node and proved by quantifier-free
+induction;
+• a cycle in witness compatibility is treated as a finite relational problem or requires an explicit
+extension producer.
+Conflating these three kinds of cycles produces either an unnecessary fixed point inside arithmetic
+or an unjustified infinite-choice step.
+
+5.4
+
+Soundness of transfer summaries
+
+The fixed-point theorems above are purely order-theoretic. To connect them to proofs, each transfer
+rule needs a local soundness justification. A typical precision rule has the form
+Prec(v) ≥ p
+
+=⇒
+
+Prec(ui ) ≥ ρi (p), Guard(gj ) = 1, Res(Bk ) = 1.
+
+Its soundness statement is:
+18
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+Whenever the input nodes satisfy the requested precisions, the guard formulas hold,
+and the listed residual producer formulas are available, the local Prf PRAAx derivation
+proves the requested output contract.
+This is not checked merely by the metalevel transfer function. It is tied to a specific local theorem.
+The Lean plan should package the summary and theorem together, or generate a theorem-ledger
+entry linking them.
+For threshold rules, the generated audit can list every firing rule at every iteration. The demonstration
+in examples/demo.json records this history. Such a trace is useful for review but does not replace
+the local object proof.
+
+5.5
+
+Pruning theorem
+
+Let a node v have an activation coordinate av , or let its activation be a monotone predicate of the
+resource state. Define the retained set
+V ∗ = {v ∈ V : av (d∗ ) > 0}.
+Proposition 5.6 (Safe dead-node elimination). Assume each node’s transfer summary includes all
+resources and dependency activation needed by its local proof. Then any node outside V ∗ can be
+removed from the proof schedule without changing the compiled conclusion or its residual boundary.
+Proof. Suppose a removed node were needed by an active node or by the public query. By soundness
+of the active node’s transfer summary, the removed node’s activation coordinate would be included
+in F (d∗ ). Since F (d∗ ) ≤ d∗ , that coordinate would be positive in d∗ , a contradiction. The same
+argument applies to a guard, residual, certificate field, or precision needed by a retained local
+proof.
+The proposition gives a single consistency check across liveness, precision, guards, and residuals. It
+is stronger than running four independent pruning passes and hoping they agree.
+
+5.6
+
+Compositionality of demand analyses
+
+Suppose plans P and Q have disjoint internal coordinates and share an explicit interface. Their
+combined transfer is the join of the extended transfers FP and FQ . Monotonicity is preserved. The
+least closure of the composite may be computed globally or by iterating the two component closures
+to mutual stability. This supports modular compilation: a library lemma can publish a compact
+transfer summary along with its open theorem, without exposing its internal proof graph.
+One should not, however, publish a summary that forgets a hidden residual. A summary is part of
+the trusted mathematical interface in the same sense as a modulus: an understated requirement can
+make the generated theorem false. The intended Lean representation therefore couples summaries
+with proofs of local contracts, while the Python reference implementation is only an audit model.
+
+19
+
+DARC-iPRA
+
+6
+
+Demand-aware proof compilation
+
+Static specialization and the universal-evaluator barrier
+
+A general proof framework naturally tempts one to define an object-language function that interprets
+arbitrary formulas, proof plans, or primitive-recursive programs. In iPRA, that temptation must be
+resisted. DARC obtains generality by a family of specialized compilers, not by one total universal
+evaluator inside the object theory.
+
+6.1
+
+Why a total universal evaluator is the wrong target
+
+Primitive-recursive functions are closed under a finite syntax of composition and primitive recursion,
+but there is no primitive-recursive function that, for every code of a primitive-recursive program
+and every input, returns that program’s value. A diagonal argument explains the obstruction. If
+U (e, x) were primitive recursive and evaluated every unary primitive-recursive function fe , then
+g(e) = U (e, e) + 1
+would itself be primitive recursive and hence equal to some fk . But then g(k) = U (k, k) + 1 =
+fk (k) + 1 = g(k) + 1, a contradiction.
+Clocked evaluators for a fixed instruction set and fixed fuel are primitive recursive. Partial universal
+evaluators can also be represented by step relations. Neither gives a total evaluator for arbitrary
+primitive-recursive programs. Therefore a framework that silently introduces such an evaluator has
+strengthened or changed the theory.
+
+6.2
+
+Specialization theorem schema
+
+DARC uses the following metatheoretic schema.
+Theorem 6.1 (Fixed-plan specialization). For each fixed finite DARC plan P , one can effectively
+construct:
+1. a finite list of concrete primitive-recursive symbols used by P ;
+2. their defining equations as instances of PRAAx;
+3. fixed truth-bit, strategy-checker, trace, and viability symbols for the bounded substructures
+appearing in P ;
+4. a finite Lean term whose target is the ordinary compiled sequent, provided the declared local
+proof obligations are supplied.
+No object-language variable ranges over plans or program codes.
+Proof. Proceed by external structural recursion on the finite plan. A producer node contributes a
+formula and either a derivation parameter or a residual. A compute node contributes the concrete
+PR syntax for its fixed function. A bounded-formula node is compiled by recursion on that fixed
+formula, producing finite folds. A loop node contributes a fixed primitive recursion or simultaneous
+recursion for its state. A relation node contributes a finite backward recursion over its fixed horizon.
+A proof node contributes a call to a local theorem and simultaneous cut. Since the plan is finite, the
+construction terminates and outputs finite syntax. The output contains no interpreter; it contains
+the syntax generated for this P .
+
+20
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+The phrase “effectively construct” belongs to the metatheory. Once the construction is run, the
+resulting theorem is a specific ordinary derivation.
+
+6.3
+
+Fixed instruction sets and clocked traces
+
+There is still an important place for interpreters. A theorem about a particular Turing machine,
+register machine, recurrence language, or algebraic rewriting system may use a fixed primitiverecursive step function stepP and a clocked iteration runP (t, x). These are concrete symbols
+generated from P . DARC permits:
+runP (0, x) = x,
+
+runP (St, x) = stepP (runP (t, x)).
+
+What is prohibited is replacing the subscript P by an arbitrary code and claiming total evaluation
+for all such codes.
+This policy aligns with existing exact machine proofs in the repository. A literal table or fixed
+equation is bound to a concrete endpoint; provenance and byte-level identity are preserved. Generality
+comes from reusable proof patterns around that concrete object, not from erasing its identity.
+
+6.4
+
+Specialization of bounded formulas
+
+A fixed bounded formula
+
+∀i < N (x) ∃j < M (i, x) R(i, j, x)
+
+is compiled to concrete primitive-recursive folds and strategy functions. The compiler may recurse
+on the displayed syntax to generate a bit bA (x). The object theorem is the particular formula
+bA (x) = 1 ↔ A(x).
+It is not
+
+∀e, x EvalFormula(e, x) = 1 ↔ Sat(e, x)
+
+
+
+for a total arbitrary-formula evaluator. This distinction also keeps the induction matrix quantifierfree: the matrix mentions only the generated bit.
+
+6.5
+
+Specialization cache and theorem reuse
+
+Static specialization need not duplicate proofs uncontrollably. A practical implementation should
+hash a normalized fixed definition and reuse:
+• the same generated PR symbol for identical bodies;
+• the same reflection theorem for identical bounded formulas;
+• the same transfer summary and local theorem for a reusable library component;
+• theorem instantiation through Prf.subst rather than rebuilding a closed derivation.
+The cache is an engineering optimization outside the trusted core. A cache hit is accepted only after
+Lean checks the reused declaration at its exact type.
+
+21
+
+DARC-iPRA
+
+6.6
+
+Demand-aware proof compilation
+
+What is and is not uniform
+
+DARC is uniform in a metamathematical sense: one generator handles a class of finite plans. It
+is nonuniform in the object language: each output theorem contains symbols specialized to one
+plan. This is not a weakness. It is the natural form of a theory whose language already contains a
+function symbol for every primitive-recursive definition.
+Uniform object theorems are still possible when their parameters are ordinary numbers or terms.
+For example, one symbol can compute a finite sum up to a variable bound, and one open derivation
+can prove its recurrence for all bounds. The boundary is syntax and unbounded program behavior,
+not numerical parameters.
+
+7
+
+Open contracts and proof-graph compilation
+
+The purpose of a contract is to make a local theorem independent of one preassembled ambient
+context. DARC uses a definition that is exactly equivalent to an ordinary sequent, so contracts are
+an organizational layer, not a new logic.
+
+7.1
+
+Open contracts
+
+For a list A = [A1 , . . . , Ak ] and formula ϕ in the same finite scope, define in the metatheory
+Contract(A, ϕ) ⇐
+: ⇒ ∀∆ (∀i ≤ k ∆ ⊢ Ai ) → ∆ ⊢ ϕ .
+
+
+Theorem 7.1 (Contract/sequent equivalence).
+Contract(A, ϕ)
+
+⇐⇒
+
+A ⊢PRAAx ϕ.
+
+Proof. If the contract holds, choose ∆ = A. Each Ai is derivable by the hypothesis rule, so the
+contract yields A ⊢ ϕ. Conversely, given A ⊢ ϕ and derivations ∆ ⊢ Ai , apply simultaneous cut
+theorem 3.3. This is the proof implemented in lean/DARC/StructuralKernel.lean.
+The contract form is convenient for a compiler because it describes a function from supplied
+dependencies to a conclusion. The sequent form is the canonical proof object checked by Lean.
+
+7.2
+
+Substitution and context independence
+
+A local theorem may be proved once with formal parameters x1 , . . . , xn . At a call site, the compiler
+substitutes arbitrary terms t1 , . . . , tn , including compound terms produced by other nodes. By the
+checked substitution theorem,
+A[⃗t/⃗x] ⊢ ϕ[⃗t/⃗x].
+It may then weaken the context or use the contract interpretation to insert the theorem under
+unrelated local hypotheses. Thus a node interface should avoid closing parameters unless closure is
+part of the mathematical statement.
+
+22
+
+DARC-iPRA
+
+7.3
+
+Demand-aware proof compilation
+
+Acyclic schedule compilation
+
+Assume the retained proof graph is acyclic and let v1 , . . . , vN be a topological order. Each node has
+a local theorem
+
+ϕu : u ∈ dep(vi ) , Bi ⊢ ϕvi ,
+(7.1)
+where every formula in Bi occurs in the global residual context B.
+Theorem 7.2 (Acyclic graph compilation). For every retained node vi , B ⊢ ϕvi . In particular, if q
+is the output node, then B ⊢ ϕq .
+Proof. Induct on the topological order. Every dependency of vi occurs earlier, so the induction
+hypothesis gives B ⊢ ϕu for each dependency. Every formula in Bi is a member of B and is therefore
+available by the hypothesis rule. Apply simultaneous cut to the local theorem (7.1). This yields
+B ⊢ ϕ vi .
+The proof is constructive and directly implementable as recursion over the finite schedule. The
+compiler need not add a primitive cut constructor.
+
+7.4
+
+Multiple outputs and shared subproofs
+
+If a query asks for several formulas ϕq1 , . . . , ϕqs , seed all output coordinates at once. Demand closure
+computes the union of their least backward slices, including interactions through precision and
+guards. Compile each retained node once, then combine the outputs by conjunction introduction or
+leave them as a family of sequents. This avoids duplicating expensive local proofs.
+A theorem library can expose a node with several observations but separate activation coordinates.
+For example, a Euclidean-algorithm node may provide only a gcd identity for one query, and
+additionally expose Bezout coefficients for another. The latter query activates certificate fields and
+arithmetic lemmas not needed by the former.
+
+7.5
+
+Residual boundary discharge
+
+Let the compiled endpoint be
+
+B1 , . . . , Br , Γ ⊢ Φ.
+
+Suppose later developments prove a subset Bi under Γ. Repeated or simultaneous cut removes
+exactly those boundaries.
+Corollary 7.3 (Incremental producer discharge). For S ⊆ {1, . . . , r}, if Γ ⊢ Bi for every i ∈ S,
+then
+(Bj : j ∈
+/ S), Γ ⊢ Φ.
+This permits useful partial formalization. A difficult analytic theorem can be compiled down to a
+small list of quantitative producer lemmas. Each producer can be proved independently without
+changing the downstream proof.
+
+23
+
+DARC-iPRA
+
+7.6
+
+Demand-aware proof compilation
+
+Local theorem strengthening
+
+Suppose a local node originally uses residual B, but a new theorem proves its conclusion without
+B or with a weaker precision. Replacing the local contract and transfer summary may reduce the
+global demand closure. Because leastness is recomputed, the improvement can propagate across
+cycles and remove other resources. The theorem ledger should record both the local proof change
+and the resulting endpoint change.
+
+7.7
+
+Proof-producing versus proof-checking architectures
+
+A standalone certificate checker can be useful as an experimental concise presentation, but DARC’s
+compiler has a different role. It constructs a term of the existing Prf inductive type. The local
+contracts are ordinary object theorems, and the global schedule uses ordinary structural lemmas.
+As a result:
+• all existing arithmetic derivations can be reused directly;
+• the existing axiom audit applies;
+• open Bridge transport applies;
+• a client need not trust a second checker or a semantic correspondence theorem that has not
+been integrated.
+This choice is central to resolving the current repository integration gap.
+
+8
+
+Certificate scope, observers, and canonical export
+
+Certificates are unavoidable in constructive mathematics: factorizations, paths, finite covers, branch
+choices, approximation traces, and bounded-search witnesses all carry information. The mistake is
+to make every internal certificate part of the public theorem. DARC performs certificate escape
+analysis within the same demand lattice used for precision and residuals.
+
+8.1
+
+Scoped certificates
+
+A scoped certificate contract over an outer context Γ and public goal Φ consists of:
+1. a validity formula V (c) in a scope with one additional variable;
+2. a consumer derivation V (c), Γ+ ⊢ Φ+ .
+A producer proves Γ ⊢ ∃c V (c). By theorem 3.4, the certificate is sealed.
+Theorem 8.1 (Local certificate erasure). If no demanded public formula or live observer contains
+the certificate variable, then a valid local certificate can be eliminated without selecting a canonical
+code.
+Proof. The demand condition ensures that all active uses of the certificate occur inside its consumer
+subgraph and that the subgraph’s exported conclusion is in the outer scope. Compile that subgraph
+to V (c), Γ+ ⊢ Φ+ , then apply existential elimination to the producer. Since the conclusion is scoped
+outside the binder, the certificate cannot occur in it.
+
+24
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+This is stronger and simpler than finding a least certificate. In particular, nonuniqueness causes no
+difficulty when only an invariant consequence is needed.
+
+8.2
+
+Observed certificates
+
+Sometimes the public result depends on an observation O(c) but not on the full certificate. There
+are three common compatibility modes.
+Exact stability. For all valid c, c′ , prove O(c) = O(c′ ). One may seal a local certificate, define
+the public value by any valid witness inside the proof, and use stability to show independence.
+Quotient stability. Prove an explicit equivalence relation E(O(c), O(c′ )). The public theorem
+states a quotient-invariant property or uses a canonical finite code for the equivalence class only
+when such a code has a bounded constructive normalization.
+Metric stability. At requested precision p, prove dist(O(c), O(c′ )) ≤ 2−p or another explicit
+tolerance. The observation is then well-defined at that finite precision. A global exact object requires
+additional coherence and a tail modulus; DARC does not infer one automatically.
+Theorem 8.2 (Stable observer elimination). Let V (c) be a local certificate predicate and let P (z)
+be a public property. Suppose:
+1. Γ ⊢ ∃c V (c);
+2. V (c), Γ+ ⊢ P (O(c));
+3. the public conclusion is invariant under the chosen exact, quotient, or finite-precision compatibility relation.
+Then the certificate may remain scoped, and only the observation contract is exported.
+Proof. Open the existential certificate. Derive the observed property from the local consumer.
+Use the compatibility theorem whenever the public statement compares this observation with one
+obtained through another local witness. Finally close the existential. No representative is selected
+outside the scope.
+The theorem is a schema because the exact public formula differs by compatibility mode. Its logical
+core is always existential elimination plus an ordinary compatibility derivation.
+
+8.3
+
+Named certificate export by bounded least search
+
+A public theorem may genuinely require a witness: for example, a least prime factor, a smallest
+repeated index, a canonical finite path, or a literal code used by a downstream endpoint. Then
+canonicalization is appropriate, but it requires two pieces of constructive data:
+1. a finite bound N (x);
+2. a fixed primitive-recursive validity bit f (i, x), with f (i, x) = 0 reflecting validity.
+The checked search symbol µf (N, x) returns the least zero below N , or N if none exists.
+25
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+Theorem 8.3 (Named export). Assume
+Γ ⊢ f (i, x) = 0,
+
+Γ ⊢ i < N.
+
+Then Γ proves
+µf (N, x) < N,
+f (µf (N, x), x) = 0,
+µf (N, x) ≤ i.
+Consequently the least valid code is a legitimate public term.
+Proof. This is the checked theorem Search.search_found. Its proof uses the primitive-recursive
+search recurrence and one quantifier-free induction. The DARC wrapper merely exposes it as the
+named-certificate operation.
+The theorem requires existence below a bound. It does not turn unbounded existence into a witness.
+A height bound or finite enumeration theorem must be proved or left residual.
+
+8.4
+
+Escape analysis as a demand transfer
+
+For each certificate field cj , introduce a Boolean coordinate Cert(cj ). A public field occurrence seeds
+that coordinate. An observer transfer may replace demand for the full certificate by demand for
+a stable observation. A named-export transfer adds the validity checker, bound, and any guards
+needed by canonicalization. If no rule reaches Cert(cj ), the field is dead and must not occur in the
+compiled endpoint.
+This analysis is field-sensitive. A certificate may contain:
+c = (trace, branch label, error bound, provenance).
+A value query may need only the error bound; a replay query may need the trace; a labeled-root
+query may need the branch and separation guard. Treating the certificate as one indivisible code
+would retain unnecessary information and residuals.
+
+8.5
+
+Certificate fusion
+
+Suppose two adjacent nodes produce certificates c and d, and the consumer uses only a relation
+R(c, d) and a stable observation. Rather than naming both separately, form one scoped certificate
+∃c, d [V (c) ∧ W (d) ∧ R(c, d)] and eliminate it locally. This is particularly useful for finite relational
+runs. It prevents the invalid move of choosing a valid c and a valid d independently when no
+compatible pair exists.
+
+8.6
+
+No hidden choice
+
+The three export modes make choice obligations visible:
+• sealed mode uses no choice beyond an existential proof;
+26
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+• observed mode uses a compatibility theorem;
+• named mode uses bounded least search.
+There is no fourth mode that silently extracts an arbitrary witness from an unbounded existential.
+This restriction is not bureaucratic; it is what keeps the compiled proof intuitionistic and primitive
+recursive.
+
+9
+
+Fixed bounded formulas, truth bits, and finite strategies
+
+Bounded quantifiers are mathematically finite, but they are still quantifiers. They therefore cannot
+appear directly in an induction matrix restricted to quantifier-free formulas. DARC removes them
+before induction by compiling each fixed bounded formula to a primitive-recursive truth bit. When
+a proof needs witness information rather than truth alone, the same syntax generates finite strategy
+certificates.
+
+9.1
+
+Reflected atoms
+
+An atomic interface consists of:
+1. a formula A(⃗x);
+2. a primitive-recursive bit χA (⃗x) ∈ {0, 1};
+3. ordinary derivations of bit range and reflection:
+⊢ χA (⃗x) = 0 ∨ χA (⃗x) = 1,
+
+⊢ A(⃗x) ↔ χA (⃗x) = 1.
+
+Equality of terms, order, divisibility with a fixed convention, finite code membership, and transition
+relations are typical reflected atoms. The atom interface is theorem-specific: DARC does not assert
+that every arbitrary formula has a characteristic bit.
+
+9.2
+
+Boolean operations
+
+Assume a, b ∈ {0, 1}. Primitive-recursive arithmetic can realize:
+a ∧ b := ab,
+a ∨ b := sg(a + b),
+¬a := 1 −̇ a,
+a ⇒ b := sg((1 −̇ a) + b),
+where −̇ is truncated subtraction and sg(z) = 0 iff z = 0, otherwise 1. On bits, the truth tables are
+proved by the decidable zero/successor decomposition available in the arithmetic library.
+The implication clause deserves comment. Intuitionistically, (P → Q) ↔ (¬P ∨ Q) is not valid for
+arbitrary P . It is valid when P is decidable. The reflected bit gives precisely that decidability. Thus
+the compiler may support implication in bounded formulas without importing unrestricted excluded
+middle.
+
+27
+
+DARC-iPRA
+
+9.3
+
+Demand-aware proof compilation
+
+Finite folds for bounded quantifiers
+
+Let b(i, ⃗x) ∈ {0, 1}. Define
+All(0, ⃗x) = 1,
+
+All(Sn, ⃗x) = All(n, ⃗x)b(n, ⃗x),
+
+Any(0, ⃗x) = 0,
+
+Any(Sn, ⃗x) = sg(Any(n, ⃗x) + b(n, ⃗x)).
+
+Both are primitive recursive. They represent bounded universal and existential quantification.
+Lemma 9.1 (Finite universal reflection). If b(i, ⃗x) = 1 ↔ B(i, ⃗x), then
+All(N, ⃗x) = 1
+
+↔
+
+∀i < N B(i, ⃗x).
+
+The displayed bounded universal is an abbreviation for its ordinary first-order formulation, not an
+induction matrix.
+Proof. Prove the finite-fold invariant by quantifier-free induction on N : the product is one exactly
+when every factor so far is one. The base is the empty product. At the successor step, use the bit
+range and multiplication truth table to split All(SN ) = 1 into All(N ) = 1 and b(N ) = 1. Translate
+the latter by atomic reflection. The final bounded-quantifier statement can then be assembled by
+ordinary quantifier rules or retained as the reflected bit, depending on the consumer.
+Lemma 9.2 (Finite existential reflection). If b(i, ⃗x) = 1 ↔ B(i, ⃗x), then
+Any(N, ⃗x) = 1
+
+↔
+
+∃i < N B(i, ⃗x).
+
+Proof. The forward direction can use bounded least search on the predicate 1 −̇ b(i, ⃗x) = 0. The
+recurrence for Any proves that if the final bit is one, some factor bit is one; search chooses the
+least such index. The reverse direction proves by induction that a true bit at an index below N
+makes the finite disjunction bit one. All induction matrices are equations and inequalities between
+primitive-recursive terms.
+
+9.4
+
+Structural reflection theorem
+
+Fix a bounded-formula syntax generated from reflected atoms by ∧, ∨, →, and bounded ∀, ∃. Let
+bA be generated recursively using the Boolean operations and folds above.
+Theorem 9.3 (Fixed bounded reflection). For each fixed bounded formula A(⃗x), the compiler
+constructs a primitive-recursive bit bA (⃗x) and an ordinary derivation
+⊢PRAAx bA (⃗x) = 1 ↔ A(⃗x) .
+
+
+It also constructs a bit-range derivation for bA .
+Proof. External induction on the finite syntax of A. The atom case is supplied by the atom interface.
+Conjunction and disjunction use the reflected subformulas and bit truth tables. Implication uses
+decidability of the antecedent bit. Bounded universal and existential cases use theorems 9.1 and 9.2.
+The recursion generates a concrete PR symbol and a finite derivation for the fixed A.
+The theorem is exactly the kind of metalevel schema described in section 6; it is not a universal
+satisfaction predicate.
+28
+
+DARC-iPRA
+
+9.5
+
+Demand-aware proof compilation
+
+Positive strategy certificates
+
+Truth bits are enough for invariants and closed decisions. A proof with bounded alternation may
+need the finite choices witnessing truth. Define a positive certificate recursively:
+• a true atom has a trivial certificate;
+• a conjunction has certificates for both conjuncts;
+• a disjunction stores a selected true side and its certificate;
+• ∃i < N B(i) stores an index i < N and a certificate for B(i);
+• ∀i < N B(i) stores one certificate for each i < N , encoded by a bounded sequence.
+All certificates are finite because all bounds are numerical terms evaluated at the current parameters.
+For a fixed formula, certificate encoding and checking are primitive recursive.
+Theorem 9.4 (Positive strategy soundness). For each fixed bounded formula A, the compiler
+constructs a validity bit okA (c, ⃗x) such that
+okA (c, ⃗x) = 1
+
+=⇒
+
+A(⃗x)
+
+is derivable in ordinary iPRA. Moreover, from bA (⃗x) = 1 it can construct a bounded canonical
+certificate by finite least search.
+Proof. Soundness is proved by external induction on A. Atom and conjunction cases are immediate.
+For a disjunction, the checked tag selects one branch, and the inductive theorem proves that branch.
+For an existential, the checker verifies the bound and the subcertificate, then existential introduction
+uses the stored index. For a universal, the checker verifies the bounded sequence of subcertificates;
+for an arbitrary i < N , sequence lookup and the inductive theorem yield B(i), allowing bounded
+universal assembly.
+For construction, use the reflected truth bits. At a disjunction select the left side if its bit is
+one, otherwise the right. At an existential use bounded least search for the first true body bit.
+At a universal build the bounded sequence by primitive recursion, recursively constructing each
+subcertificate. Since the formula is fixed, the nested construction is a fixed primitive-recursive
+program.
+
+9.6
+
+Negative certificates and two-sided decisions
+
+For robust reflection of games or proof search, one may define dual negative certificates:
+• falsity of a conjunction selects a false conjunct;
+• falsity of a disjunction contains negative certificates for both;
+• falsity of a universal stores one counterexample;
+• falsity of an existential stores negative certificates for every bounded index.
+Because the formula is decidable, exactly one side can be generated. This yields a finite two-sided
+strategy interface, useful when a local proof branches on whether a bounded condition holds. It
+does not decide unbounded formulas.
+
+29
+
+DARC-iPRA
+
+9.7
+
+Demand-aware proof compilation
+
+Alternation without nested ad hoc searches
+
+Consider
+∀i < I ∃j < J(i) ∀k < K(i, j) R(i, j, k).
+A naive proof may nest separate search routines and then struggle to show that the chosen witnesses
+fit one object-level term. The fixed strategy compiler instead generates one certificate type:
+• for every i < I, a chosen j < J(i);
+• for every k < K(i, j), an atomic certificate for R(i, j, k).
+One checker verifies the whole finite strategy. The public theorem can seal this strategy if only the
+final conclusion matters, observe selected outputs, or name the strategy through a bounded code if
+required.
+
+9.8
+
+Example used by the artifact
+
+The reference test compiles the finite statement
+∀i < 5 ∃j < 4 (i + j is even).
+Its canonical certificate chooses witnesses 0, 1, 0, 1, 0. The Python checker accepts the certificate
+and rejects a tampered witness. This validates the finite data algorithm only. A complete Lean
+integration must define the parity atom in PR, prove its reflection theorem, generate the strategy
+checker, and construct the ordinary derivation promised by theorem 9.4.
+
+10
+
+Normalized traces and quantifier-free loop reflection
+
+Many mathematical proofs are finite algorithms with an invariant: Euclid’s algorithm, Gaussian
+elimination under pivots, recurrence evaluation, finite search, interval refinement, dynamic programming, and certificate checking. The obstacle in iPRA is not iteration itself—primitive recursion
+is available—but keeping the induction matrix quantifier-free. DARC therefore normalizes each
+bounded loop to explicit state registers and reflected bits.
+
+10.1
+
+Trace normal form
+
+A normalized loop block consists of:
+1. a finite tuple of state terms s = (s1 , . . . , sk );
+2. concrete primitive-recursive initial values s0j (⃗x);
+3. concrete primitive-recursive step terms Tj (s1 , . . . , sk , ⃗x);
+4. a quantifier-free invariant I(s, ⃗x);
+5. an optional quantifier-free exit/output relation.
+The trace functions Sj (t, ⃗x) are generated by simultaneous primitive recursion. If the library’s
+simultaneous recursion is binary, larger tuples are encoded by checked pairing and projections. Their
+defining equations are proved at arbitrary arguments:
+Sj (0, ⃗x) = s0j (⃗x),
+Sj (St, ⃗x) = Tj (S1 (t, ⃗x), . . . , Sk (t, ⃗x), ⃗x).
+30
+
+DARC-iPRA
+
+10.2
+
+Demand-aware proof compilation
+
+Removing bounded formulas from invariants
+
+Suppose an informal invariant contains ∀i < n P (i, s). Before loop reflection, compile this bounded
+formula to a bit bP (n, s) by theorem 9.3 and replace the invariant clause by bP (n, s) = 1. Likewise,
+a bounded existential is replaced by its finite disjunction bit, and a finite data-structure validity
+condition is replaced by a reflected checker bit. The resulting formula is syntactically quantifier-free.
+This transformation is stronger than observing that bounded quantifiers are “morally finite.” The
+induction axiom is syntax-sensitive; only the explicit bit equality qualifies.
+
+10.3
+
+Trace invariant theorem
+
+Theorem 10.1 (Normalized trace reflection). Let S(t, ⃗x) be the generated state tuple and let I be
+quantifier-free. If ordinary derivations establish
+⊢ I(S(0, ⃗x), ⃗x)
+and
+I(s, ⃗x) ⊢ I(T (s, ⃗x), ⃗x),
+then the ordinary theory proves the open invariant
+⊢ I(S(t, ⃗x), ⃗x).
+Proof. Substitute the trace terms into the invariant and use their zero equations to obtain the
+base case. In the step case, assume I(S(t, ⃗x), ⃗x), instantiate the local preservation theorem at the
+current trace, and rewrite the result by the successor equations to obtain I(S(St, ⃗x), ⃗x). Apply
+quantifier-free induction theorem 3.5. Quantifier-freeness is preserved under term substitution.
+
+10.4
+
+Trace certificates versus trace functions
+
+An external proof may arrive with a list of all states. DARC distinguishes two uses.
+Recomputation. When the step is deterministic and cheap, define the trace by primitive recursion
+and prove the invariant as above. No trace certificate needs to escape.
+Checked trace. When a certificate stores auxiliary choices, encode a bounded sequence c and
+define a primitive-recursive checker for the initial state, transitions, and final condition. Reflection
+proves that an accepted trace has the required property. If the public theorem does not mention
+the trace, seal it existentially. If it asks for replay data, activate the trace certificate coordinate and
+export a bounded canonical code.
+The deterministic and certified modes may coexist: deterministic registers are recomputed while
+noncanonical hints remain in the local certificate.
+
+31
+
+DARC-iPRA
+
+10.5
+
+Demand-aware proof compilation
+
+Demand-directed state slicing
+
+A loop state can contain many registers. Backward demand determines which registers and precision
+levels affect the requested output. Let D ⊆ {1, . . . , k} be the demanded registers. A sound slice
+must satisfy closure: if Tj for j ∈ D reads register i, then i ∈ D. Iterating this register dependency
+is another finite monotone closure and can be folded into the global resource lattice.
+Proposition 10.2 (Loop slicing). If demanded registers are closed under the read dependencies
+of their step terms and the sliced invariant mentions only those registers, then the trace reflection
+theorem can be instantiated on the sliced state without retaining undemanded registers.
+Proof. The closed read condition makes every demanded next-state term definable from the sliced
+current state. Generate simultaneous recursion only for the slice. The base and step proofs for
+the sliced invariant are the corresponding specializations of the original local contracts. Apply
+theorem 10.1.
+The proposition is conditional on having local proofs that do not secretly use an erased register.
+The transfer summary must record all such dependencies.
+
+10.6
+
+Termination and fuel
+
+DARC never derives termination of an unbounded partial algorithm merely from a trace checker. A
+loop node has one of three forms:
+1. fixed or input-bounded fuel, so the trace exists by primitive recursion;
+2. a proved primitive-recursive ranking bound, such as the existing Euclidean-algorithm bound;
+3. an explicit termination-bound residual.
+The final theorem reflects exactly the available form. A fuel-bounded statement may be mathematically useful even when a uniform termination theorem is unavailable.
+
+10.7
+
+Worked invariant: sum of odd numbers
+
+Let the state be (n, a), initialized by (0, 0), with step
+(n, a) 7−→ (Sn, a + 2n + 1).
+The invariant is the polynomial equation a = n2 . At the step,
+a + 2n + 1 = n2 + 2n + 1 = (n + 1)2 .
+This identity is handled by the checked semiring/ring infrastructure, and the invariant is quantifierfree. The reference example executes five steps and checks the states; a full object proof is a direct
+instance of theorem 10.1.
+This simple example illustrates the intended division of labor: Python can show the generated
+fixture, but the mathematical theorem is the ordinary induction derivation.
+
+32
+
+DARC-iPRA
+
+11
+
+Demand-aware proof compilation
+
+Finite relational viability and coherent witness clouds
+
+Nonunique witnesses often appear at every finite stage. Choosing one witness independently at
+each stage may produce an incompatible sequence even when a compatible finite run exists. DARC
+resolves the finite problem by backward viability before making any choice.
+
+11.1
+
+Layered finite relations
+
+Fix a horizon H. For each 0 ≤ h ≤ H, let Xh = {0, . . . , Bh − 1} be a finite coded set, and for h < H
+let Eh (x, y) be a reflected compatibility relation between Xh and Xh+1 . Let GH (x) be the terminal
+acceptance bit. Define viability backward:
+VH (x) = GH (x),
+Vh (x) =
+
+_
+
+Eh (x, y) ∧ Vh+1 (y) .
+
+
+(11.1)
+
+y<Bh+1
+
+The finite disjunction is compiled to a primitive-recursive bit. Since the horizon is fixed or inputbounded with a fixed step definition, the family can be generated by primitive recursion on the
+remaining horizon.
+Theorem 11.1 (Finite viability). For each h ≤ H and x ∈ Xh ,
+Vh (x) = 1
+
+↔
+
+there exist xh+1 , . . . , xH forming an E-compatible run ending in GH .
+
+Proof. Backward induction on H − h. At the terminal layer, the claim is the reflection theorem
+for GH . At layer h, the finite-disjunction reflection theorem turns Vh (x) = 1 into existence of a
+y < Bh+1 with Eh (x, y) and Vh+1 (y) = 1. Apply the induction hypothesis to append a compatible
+tail. Conversely, the first element of any compatible tail provides a true disjunct, and the induction
+hypothesis proves its viability bit.
+
+11.2
+
+Least compatible path
+
+Once viability is known, define the successor at layer h to be the least y < Bh+1 satisfying
+Eh (x, y) ∧ Vh+1 (y).
+This is a bounded least search. Iterating the successor for H − h steps gives a canonical finite path.
+Theorem 11.2 (Canonical finite path). If V0 (x0 ) = 1, the least-successor construction yields a
+coded path x0 , . . . , xH satisfying every edge relation and the terminal goal. Each selected successor
+is least among viable successors.
+Proof. By theorem 11.1, a viable successor exists at every nonterminal state reached from a viable
+state. The bounded-search theorem selects its least code and proves validity. Equation (11.1)
+ensures the selected successor is itself viable. Quantifier-free induction on the number of steps proves
+every transition and terminal acceptance.
+The path may remain a local certificate. It is named only if the public query requests it.
+33
+
+DARC-iPRA
+
+11.3
+
+Demand-aware proof compilation
+
+Backward viability before choice
+
+Consider a relation in which each layer has many individually valid elements but only a few
+extend to the terminal goal. A forward greedy choice based only on local validity can get stuck.
+Backward viability removes all dead ends first. Therefore the subsequent least choice is compatible
+by construction. This resolves the “independent finite witnesses” difficulty without any appeal to
+dependent choice.
+
+11.4
+
+Stable observations on witness clouds
+
+Often the path itself is irrelevant. Suppose each state has an observation Oh (x), and compatible
+edges satisfy one of the following:
+Oh+1 (y) = Oh (x),
+
+exact stability,
+
+Oh+1 (y) ∼ Oh (x),
+
+quotient stability,
+
+d(Oh+1 (y), Oh (x)) ≤ εh ,
+
+metric stability.
+
+Then any viable finite path yields a root observation. In the metric case, triangle inequality gives
+d(OH (xH ), O0 (x0 )) ≤
+
+X
+
+εh .
+
+h<H
+
+This conclusion is finite and constructive. It avoids selecting an infinitary quotient representative.
+Theorem 11.3 (Finite observational descent). Assume V0 (x0 ) = 1 and edge-wise exact, quotient,
+or metric compatibility. Then every viable terminal witness has an observation related to O0 (x0 ) by
+the corresponding composed relation; in the metric case the explicit error is the finite sum of edge
+errors.
+Proof. Use theorem 11.2 or keep an arbitrary viable path scoped. Induct along the finite path. Exact
+equality composes by transitivity; a declared quotient relation must be supplied with transitivity;
+metric errors compose by triangle inequality and finite summation. The certificate can then be
+sealed if the conclusion mentions only the observation.
+
+11.5
+
+The infinite-path barrier
+
+For every H, existence of a compatible path of length H does not by itself give a primitive-recursive
+infinite path in iPRA. The least path for horizon H + 1 need not extend the least path for
+horizon H. Even a coherent family of nonempty finite levels requires an extension principle or a
+primitive-recursive section to choose one successor forever.
+DARC therefore recognizes three legitimate endpoints:
+1. a theorem for each finite horizon;
+2. a coherent path generated by an explicit primitive-recursive extension function, with its totality
+proof;
+3. a conditional theorem with the extension producer left residual.
+It rejects the unqualified leap from horizonwise existence to an infinite object.
+34
+
+DARC-iPRA
+
+11.6
+
+Demand-aware proof compilation
+
+The regular-name barrier
+
+Even a coherent infinite path of approximants does not automatically define a constructive real
+name. One also needs a quantitative tail condition, for example
+m, n ≥ M (p) =⇒ d(xm , xn ) ≤ 2−p ,
+with primitive-recursive modulus M . DARC represents M by a precision transfer or residual
+producer. Without it, finite observational descent remains valid, but a global Cauchy-name theorem
+is not emitted.
+
+11.7
+
+Applications
+
+The same pattern applies to:
+• compatible local coordinate charts;
+• branch choices in algebraic continuation over a finite mesh;
+• finite tiling patches and boundary states;
+• dynamic-programming witnesses;
+• finite model approximations;
+• staged Diophantine certificates whose constraints must agree across projections.
+In each case, viability separates finite compatibility from unjustified infinite choice.
+
+12
+
+Quantitative names, moduli, guards, and residual producers
+
+Effective analysis and continuous mathematics can be handled in iPRA only through finite quantitative statements. DARC does not introduce completed real or complex objects as a new domain.
+It compiles statements about primitive-recursive approximation programs, explicit error bounds,
+and requested finite precisions.
+
+12.1
+
+Finite-precision contracts
+
+A typical approximation node for an object x supplies a rational or dyadic code ax (p, ⃗u) and a
+correctness formula
+Approxx (p, ⃗u, ax (p, ⃗u)).
+The formula may mean an interval enclosure, a scaled integer inequality, or a metric bound encoded
+without division. The exact encoding is theorem-specific, but it must be decidable or reduced to
+reflected arithmetic atoms when used in an induction invariant.
+The public theorem asks for a fixed or variable numerical precision p. For a fixed artifact instance,
+the demand coordinate is capped at the maximum precision reachable from that query. Transfer
+rules propagate required input precisions and guards backward.
+
+35
+
+DARC-iPRA
+
+12.2
+
+Demand-aware proof compilation
+
+Addition and subtraction
+
+If |x − a| ≤ 2−(p+1) and |y − b| ≤ 2−(p+1) , then
+|(x + y) − (a + b)| ≤ 2−p .
+Thus a safe transfer for addition is
+Prec(x + y) ≥ p =⇒ Prec(x) ≥ p + 1,
+
+Prec(y) ≥ p + 1.
+
+The same applies to subtraction. In integer-scaled encodings, the proof is a finite inequality after
+clearing powers of two. A sharper local theorem may reduce the one-bit slack, but the transfer must
+match the theorem actually formalized.
+
+12.3
+
+Multiplication and magnitude bounds
+
+Multiplication needs magnitude information. With |x|, |y| ≤ M , |x − a| ≤ δ, and |y − b| ≤ δ, one has
+|xy − ab| ≤ |x| |y − b| + |b| |x − a|.
+Since |b| ≤ M + δ, it suffices to choose δ from an explicit function of p and a bound code for M .
+Accordingly, a multiplication node transfers output precision to:
+• higher input precisions;
+• magnitude-bound resources for both inputs;
+• any arithmetic overflow or denominator conventions used by the code.
+A magnitude bound is not silently inferred from existence of the numbers. It is a producer theorem
+or part of the representation contract.
+
+12.4
+
+Reciprocal and division
+
+A proof of x ̸= 0 is insufficient for a finite error modulus of reciprocal. One needs quantitative
+apartness, for example
+|x| ≥ 2−a .
+If |x − y| ≤ 2−b and the error is small enough to preserve a lower bound on |y|, then
+1 1
+|x − y|
+−
+=
+x y
+|x| |y|
+has an explicit bound depending on a and b. DARC records this quantitative precondition as a
+guard coordinate,
+Guard(denominator, a).
+The associated precision transfer has the schematic form
+Prec(1/x) ≥ p =⇒ Prec(x) ≥ p + 2a + c,
+
+Guard(|x| ≥ 2−a ).
+
+The constant c depends on the exact coding and safety slack. It must be proved in the local theorem,
+not guessed by the analysis.
+The same principle covers matrix pivots, normalization, logarithms, and analytic continuation across
+singular loci.
+36
+
+DARC-iPRA
+
+12.5
+
+Demand-aware proof compilation
+
+Roots, branches, and collisions
+
+Ordered root labels are discontinuous at collisions. A finite approximation proof should therefore
+export one of:
+1. symmetric polynomial observations;
+2. a multiset or cluster code;
+3. a labeled root under an explicit separation guard;
+4. a local branch continued along a finite path with compatibility and margin certificates.
+A value query for a symmetric observable need not activate branch labels or a separation guard. A
+query that names “the third root” must activate both. This is a canonical example of the benefit of
+joint certificate/guard demand analysis.
+Spectral theory has the same shape. At repeated eigenvalues, invariant subspaces or projectors are
+stable; individual eigenvectors require a gap, normalization, and often an orientation convention.
+DARC’s resource transfer makes the stronger assumptions appear only for the stronger output.
+
+12.6
+
+Finite nets instead of abstract compactness
+
+When an argument uses compactness to select finite data, the constructive interface is:
+1. a primitive-recursive finite net at requested scale;
+2. a coverage theorem;
+3. a modulus transferring local estimates from net points to the whole domain;
+4. a finite verification of the desired property on the net.
+The net and coverage theorem are producer nodes. If the repository packet has only an abstract
+compactness argument, DARC leaves the effective net or coverage modulus residual instead of
+presenting the finite check as a complete proof.
+
+12.7
+
+Series, integrals, and tail moduli
+
+A finite partial sum identity is often easy in iPRA. An analytic value requires a tail theorem. Let
+SN be a primitive-recursive partial sum and suppose a producer gives
+N ≥ M (p, ⃗u) =⇒ |SN − L| ≤ 2−p .
+Then the requested precision transfers to a cutoff M (p, ⃗u) and the arithmetic proof verifies the finite
+sum. If M is not proved, the final endpoint remains conditional on the exact tail formula. It is
+incorrect to replace a convergence assertion by a host-language numerical experiment.
+For integration, the same pattern uses a quadrature rule, mesh modulus, finite error estimate, and
+endpoint/magnitude guards. For special functions, one should separate exact algebraic identities of
+finite truncations from analytic continuation and asymptotic remainder producers.
+
+12.8
+
+Metastability versus convergence rates
+
+A metastable theorem has finite form
+∀p, g ∃N ≤ B(p, g) ∀i, j ∈ [N, N + g(N )] d(xi , xj ) ≤ 2−p .
+37
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+For fixed bounds this can be compiled to a bounded strategy theorem. It does not imply a global
+Cauchy modulus M (p). DARC keeps the finite-window endpoint unless a separate tail argument
+produces M . The demand system must not add a fictitious rate coordinate merely because repeated
+finite queries are available.
+
+12.9
+
+Diophantine finiteness and height bounds
+
+A theorem that a set of solutions is finite does not provide a number H such that every solution has
+height below H. A complete enumeration or least-solution search requires such a cutoff. DARC
+splits the task into:
+1. a primitive-recursive verifier for a proposed solution;
+2. finite enumeration below a supplied height;
+3. a producer theorem asserting completeness of that height.
+The first two can be fully compiled. The third remains residual for general Faltings-, Siegel-, or
+Mordell–Weil-type applications unless an effective bound is actually available.
+
+12.10
+
+Quantitative transfer as an auditable interface
+
+Each quantitative node should publish:
+1. the representation and error predicate;
+2. a monotone resource transfer;
+3. an ordinary local derivation proving that the transferred resources suffice;
+4. the conventions at singular or failed cases;
+5. a status for each producer theorem.
+This interface is analogous to a function type with preconditions and a modulus. It is the main
+mechanism by which DARC turns informal analytic reasoning into a sequence of finite proof
+obligations.
+
+13
+
+The global DARC compilation theorem
+
+We now assemble the preceding components into one conditional theorem. The statement is deliberately explicit about the boundary between generic compilation and theorem-specific mathematics.
+
+13.1
+
+Well-formed plans
+
+A normalized fixed plan P is well formed when the following data and proofs are supplied.
+1. A finite resource shape LP , a query seed qP , and a monotone transfer FP : LP → LP .
+2. A finite proof graph whose condensation after explicit loop extraction is acyclic.
+3. For each demand state d and each node active at d, an ordinary local contract from active
+dependencies and selected boundary formulas to the node conclusion.
+4. For each loop node, concrete trace symbols, defining equations, a quantifier-free invariant, and
+base/step derivations.
+
+38
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+5. For each bounded-formula node, reflected atoms and the generated fixed-formula reflection
+derivation.
+6. For each relation node, finite bounds and reflected edge/terminal bits.
+7. For each scoped certificate, a local producer and consumer, or an exact producer formula placed
+in the residual boundary.
+8. For each named certificate, a finite bound, validity bit, reflection theorem, and a proof that
+some valid code lies below the bound.
+9. For each quantitative operation, a sound transfer theorem connecting requested output resources
+to input precisions, guards, and residuals.
+10. For each backend export, checked vocabulary comparisons and a Bridge theorem preserving
+the required open or closed sequent.
+The plan may contain open residual producers. Well-formedness requires that they be named by
+exact formulas; it does not require derivations of them.
+
+13.2
+
+Compiler output
+
+Compute d∗ = clP (qP ) by the finite iteration of section 5. Define:
+• V ∗ (P ), the active nodes at d∗ ;
+• B ∗ (P ), the residual and guard formulas selected at d∗ that are not already discharged;
+• ΦP , the public conclusion specialized to the requested outputs and precisions;
+• S ∗ (P ), a topological schedule of the retained condensation graph, with loop, bounded-formula,
+relation, and certificate blocks expanded through their dedicated compilers.
+The compiler’s primary output type is
+B ∗ (P ) ⊢PRAAx ΦP .
+
+(13.1)
+
+If the query has free parameters, both context and conclusion remain in that finite scope.
+Theorem 13.1 (DARC soundness). Every well-formed fixed plan P has a finite compilation that
+constructs an ordinary derivation of (13.1).
+Proof. The proof has five stages.
+1. Demand closure. By theorem 5.2, computation of d∗ terminates. By theorem 5.4, it contains
+every resource forced by the query and local transfer summaries. By transfer soundness, all resources
+used by a retained local proof are present.
+2. Specialized block proofs. For each retained bounded-formula node, invoke the generated
+reflection theorem theorem 9.3. For each retained loop node, invoke normalized trace reflection
+theorem 10.1. For each relation node, invoke finite viability and, only if needed, canonical finite
+path construction theorems 11.1 and 11.2. These operations produce ordinary local sequents.
+3. Certificate handling. For every sealed certificate, compose its producer and consumer by
+existential elimination theorem 8.1. For an observed certificate, insert the supplied compatibility
+theorem and seal the witness. For a named certificate, invoke bounded least search theorem 8.3. If
+a producer is absent, keep its exact existential or quantitative formula in B ∗ (P ).
+39
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+4. Acyclic proof assembly. After block expansion, the retained condensation graph is acyclic.
+Compile it in topological order by theorem 7.2, using simultaneous cut to supply dependencies.
+Every selected boundary formula is available either by the hypothesis rule or by a producer derivation
+already inserted into the schedule.
+5. Output assembly. Combine retained public outputs by the ordinary logical introduction rules
+and specialize them at the requested terms. The result is a finite inhabitant of B ∗ (P ) ⊢PRAAx ΦP .
+
+13.3
+
+Residual exactness
+
+Soundness alone would allow the compiler to retain every conceivable hypothesis. Demand leastness
+gives a stronger audit property.
+Theorem 13.2 (Residual exactness relative to summaries). Let e be any demand state above the
+query that satisfies all declared local transfer summaries. Then d∗ ≤ e. Consequently every residual,
+guard, precision, or certificate coordinate selected by DARC is forced by the published summaries.
+Proof. This is theorem 5.4. The interpretation of the coordinates gives the consequence.
+The theorem does not say that every selected residual is logically necessary for ΦP . It says that
+it is necessary for this modular proof plan with these local contracts. A better local theorem can
+legitimately improve the endpoint.
+
+13.4
+
+Producer substitution and monotone improvement
+
+Let B ∗ (P ) = [B1 , . . . , Br ]. If later work supplies derivations of some Bi , theorem 7.3 removes them.
+If a supplied producer also has a better transfer summary, rerunning demand analysis may remove
+additional nodes and boundaries.
+Corollary 13.3 (Full discharge). If ⊢ Bi for every residual in B ∗ (P ), then
+⊢PRAAx ΦP .
+This is the preferred route from research packet to checked theorem: first compile an exact conditional
+endpoint, then discharge producers independently.
+
+13.5
+
+Query monotonicity
+
+If query seed q ≤ q ′ , monotonicity of the update implies
+clP (q) ≤ clP (q ′ ).
+Thus asking for more outputs cannot reduce the declared resource demand. A value-only query may
+hide a branch witness; a value-plus-witness query can only add the branch, separation guard, and
+supporting proof nodes.
+Proof. Induct simultaneously over the inflationary iterations from q and q ′ . The base inequality is
+given. Monotonicity of FP and of join preserves it at every stage. Pass to stable values.
+40
+
+DARC-iPRA
+
+13.6
+
+Demand-aware proof compilation
+
+Plan composition
+
+Let P compile a conclusion used as an input producer of Q. Form the composite by identifying that
+interface formula, extending each resource shape with zeros for the other component, and joining
+transfer maps. The global compiler may inline both schedules or retain the theorem boundary and
+use simultaneous cut. The latter is preferable when P is a stable library component.
+Proposition 13.4 (Compositional soundness). If P and Q are well formed and their shared formulas
+and resource interfaces agree, then the composite plan is well formed and its compiled endpoint is
+obtained by ordinary cut composition of the two endpoints, possibly after a smaller joint demand
+closure prunes unused outputs of P .
+Proof. Monotonicity is preserved by extending and joining the transfers. The combined graph is
+finite; any cross-component cycle is either a resource cycle, handled by demand closure, or must
+be normalized into an explicit loop block. Local contracts remain valid under weakening and
+substitution. Compile the joint retained graph by theorem 13.1; at the theorem boundary the
+composition is theorem 3.3.
+
+13.7
+
+Backend preservation
+
+After obtaining (13.1), an application may request a Foundation sequent. The checked open Bridge
+translates the context and conclusion under an explicit assignment. Symbol-comparison theorems
+rewrite the generic arithmetic vocabulary to the client’s existing codes. DARC treats this as a final
+node so that backend requirements do not contaminate the mathematical core.
+No theorem is identified merely because two Lean functions compute the same standard naturalnumber function. The bridge requires an object-level comparison or an exact syntax round trip.
+This preserves the theory and encoding stated by each endpoint.
+
+14
+
+Worked application templates
+
+This section illustrates how the framework changes proof shape. The examples are templates rather
+than claims that every listed deep theorem has now been formalized.
+
+14.1
+
+A value query with a dead branch witness
+
+Suppose a finite algebra procedure produces a certificate containing a root cluster C, an ordered
+branch label ℓ, a local trace t, and an error bound e. The public query asks only for a symmetric
+observable s(C) to precision p. The resource rules may be:
+query:value(p) ⇒ Prec(s) ≥ p,
+Prec(s) ≥ p ⇒ Prec(C) ≥ p + c,
+query:labeled-root ⇒ Cert(ℓ) = 1, Guard(separation) = 1,
+query:replay ⇒ Cert(t) = 1.
+For the value-only seed, the least closure leaves ℓ and t dead and never requests separation. The
+certificate producer is opened locally; the symmetric-observer theorem derives the value; existential
+41
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+elimination seals the full certificate. The endpoint is stronger and more stable than one that exports
+an arbitrary ordered root.
+If the query changes to a labeled root, query monotonicity activates the label, separation guard,
+and named export. The stronger theorem visibly has stronger hypotheses.
+
+14.2
+
+A cyclic precision closure
+
+The generated demonstration uses coordinates
+Prec(root) ∈ {0, . . . , 6},
+
+Prec(integral) ∈ {0, . . . , 6},
+
+with rules
+value query ⇒ Prec(root) ≥ 3,
+Prec(root) ≥ 1 ⇒ Prec(integral) ≥ 2, Guard(denominator) = 1,
+Prec(integral) ≥ 2 ⇒ Prec(root) ≥ 5,
+Prec(root) ≥ 5 ⇒ Prec(integral) ≥ 6, Res(tail modulus) = 1.
+The least closure is
+Prec(root) = 5,
+
+Prec(integral) = 6,
+
+Guard(denominator) = 1,
+
+Res(tail modulus) = 1.
+
+Branch and trace certificate coordinates remain zero; so do a separation guard and an unrelated
+height-bound residual. The cycle is solved entirely in the finite metalevel lattice. The object proof
+is a straight schedule at the chosen precision levels.
+
+14.3
+
+Bounded alternation
+
+Consider the finite statement
+∀i < I ∃j < J R(i, j).
+A direct nested proof can be awkward because the existential witness depends on i. DARC generates
+a strategy certificate coding the function i 7→ ji , together with a checker asserting ji < J and R(i, ji )
+for all i < I. The checker is primitive recursive and its validity reflects the original bounded formula.
+Three public endpoints are possible:
+1. seal the strategy and prove only the bounded formula;
+2. observe a stable aggregate, such as a finite sum of costs;
+3. name the least valid strategy code under a finite code bound.
+The reference artifact instantiates this with parity and verifies the finite certificate.
+
+14.4
+
+A deterministic recurrence
+
+For the loop
+
+(n, a) 7→ (n + 1, a + 2n + 1),
+
+the invariant a = n2 is polynomial and quantifier-free. DARC generates the trace functions and
+applies the semiring proof of (n + 1)2 = n2 + 2n + 1. No trace list is public. A replay query would
+activate a trace code, but the theorem of the recurrence itself does not need one.
+42
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+This pattern covers many existing checked derivations: finite sums, powers, recurrences, the Euclidean
+algorithm, and simultaneous recursions. DARC’s contribution is to package them as loop nodes
+with explicit transfer summaries and certificate scope.
+
+14.5
+
+Finite compatible approximation clouds
+
+Suppose each precision level h ≤ H has a finite set of approximation certificates Xh , and Eh (x, y)
+means that y refines x. Local nonemptiness of every Xh is insufficient: independently least elements
+may be incompatible. DARC computes viability backward from terminal accuracy, prunes dead
+certificates, and only then chooses least successors.
+If compatible edges preserve an observable within error εh , the public endpoint is the root observation
+P
+with total finite error h<H εh . The path is sealed. To pass from all finite horizons to a regular
+name, the plan must activate an extension function and a tail-modulus producer.
+
+14.6
+
+Special functions and analytic packets
+
+A special-function packet typically mixes four levels:
+1. exact identities of finite products, recurrences, or coefficients;
+2. formal power-series identities at a fixed truncation;
+3. effective convergence inside a guarded domain;
+4. continuation, branch selection, asymptotics, or special values.
+DARC separates these levels. Exact finite identities often compile with no residual. A truncation
+theorem requests a finite coefficient bound. An analytic value query activates a convergence or tail
+modulus and domain margins. A branch-specific query additionally activates a path and separation
+guards. A continuation theorem beyond the formalized domain remains residual.
+This prevents an exact coefficient proof from being overstated as a complete theorem about a global
+analytic function, while maximizing the portion that can be checked in iPRA.
+
+14.7
+
+Diophantine enumeration
+
+Suppose R(x, y) = 0 is a concrete polynomial or primitive-recursive relation. The verifier is
+straightforward. Given a height H, bounded search can enumerate all solutions with code below H,
+prove soundness of the list, and prove completeness below H. To claim global completeness, the
+plan needs
+R(x, y) = 0 =⇒ height(x, y) < H.
+If no effective height producer is known, DARC emits a conditional theorem with that formula as the
+sole deep residual. This is more informative than marking the whole application “unformalizable”:
+the verifier, enumeration, and downstream finite reasoning can still be completed.
+
+14.8
+
+Geometry and finite nets
+
+For a compact-domain geometric inequality, a DARC plan can contain:
+1. a rational mesh generator at scale p;
+43
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+2. a finite-net coverage producer;
+3. a Lipschitz or continuity modulus;
+4. exact checking of the inequality with slack on every mesh point;
+5. transfer from mesh slack to the full domain.
+The requested final slack determines mesh precision. Degenerate configurations activate separate
+guards or case nodes. If the coverage or modulus is not yet formalized, it remains an exact residual
+rather than being supplied by abstract compactness.
+
+14.9
+
+Busy Beaver and exact coded endpoints
+
+Machine and consistency applications demand exact provenance. A plan should bind the literal table,
+blank-start convention, proof predicate, and object theory at producer nodes. Generic arithmetic
+lemmas can be imported through ordinary open sequents; a final bridge node translates to the
+published Foundation endpoint. DARC does not identify two machines because their external
+simulations agree, nor does it replace a conditional object theorem by a stronger semantic statement.
+The endpoint inventory remains the source of truth.
+
+15
+
+Resolution of the identified difficulty classes
+
+The following table summarizes how the framework addresses recurring obstacles reported across
+the repository packets. “Resolved” means a generic proof-theoretic mechanism is supplied; it does
+not mean that every application-specific producer theorem has been proved.
+Area
+
+Failure mode
+
+DARC treatment
+
+Remaining input
+
+Host computation or a
+Python checker is mistaken for an object proof.
+
+Every retained node carries a literal
+Prf PRAAx local contract; metalevel
+computations only generate the proof
+schedule.
+
+Elaborated
+derivation.
+
+Contexts
+
+A local result is tied to one
+large concatenated context.
+
+Open contracts are exactly ordinary
+sequents; substitution, weakening, and
+simultaneous cut insert them into arbitrary contexts.
+
+None beyond local
+theorem.
+
+Induction
+
+Bounded quantifiers occur
+in an induction matrix.
+
+Compile each fixed bounded formula to
+a primitive-recursive truth bit before
+induction.
+
+Reflected atom interfaces.
+
+Alternation
+
+Nested bounded searches
+become ad hoc and incompatible.
+
+Generate one finite positive/negative
+strategy certificate and checker for the
+fixed formula.
+
+Lean compiler for
+the syntax.
+
+Precision
+
+Every precision is propagated through every loop,
+or cyclic moduli are handled informally.
+
+One finite monotone product-lattice
+closure computes the least declared demand, including cyclic dependencies.
+
+Sound local modulus theorems.
+
+Residuals
+
+Bounds and constants are
+hidden in host data.
+
+Producer formulas are coordinates;
+undischarged live producers become
+exact endpoint hypotheses.
+
+The producer theorem itself.
+
+Proof
+ary
+
+bound-
+
+44
+
+local
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+Area
+
+Failure mode
+
+DARC treatment
+
+Remaining input
+
+Universality
+
+A total universal primitiverecursive evaluator is assumed.
+
+Externally specialize every fixed plan
+and formula to concrete symbols; never
+quantify over arbitrary program syntax
+inside iPRA.
+
+Source generator.
+
+Certificate
+scope
+
+Noncanonical local witnesses are unnecessarily
+named.
+
+Classify each field as sealed, observed,
+or named. Use existential elimination
+unless public naming is demanded.
+
+Observer compatibility or finite
+bound.
+
+Nonunique
+runs
+
+Independently valid witnesses fail to form one compatible run.
+
+Backward viability prunes dead ends
+before least bounded choice.
+
+Reflected edge relations.
+
+Coherence
+
+Paths exist at every finite
+horizon, so an infinite path
+is asserted.
+
+Retain finite-horizon theorem; require
+an explicit primitive- recursive extension/section for an infinite path.
+
+Extension
+ducer.
+
+Regularity
+
+A coherent path is treated
+as a regular real name.
+
+Track a tail modulus as a precision
+resource or residual.
+
+Tail-modulus producer.
+
+Root ordering
+
+Ordered labels are selected
+through collisions.
+
+Prefer symmetric observations or clusters; labeled output activates a separation guard.
+
+Separation certificate.
+
+Spectral choice
+
+Eigenvectors are selected
+at repeated eigenvalues.
+
+Export projectors/subspaces; vectors
+require gap and normalization resources.
+
+Spectral-gap theorem.
+
+Partial operations
+
+Division or pivoting consumes mere nonzero.
+
+Guard coordinates carry quantitative
+apartness and transfer the needed margin.
+
+Positive margin.
+
+Compactness
+
+Abstract compactness selects finite data.
+
+Use explicit finite net, coverage proof,
+and continuity modulus nodes.
+
+Effective net/coverage.
+
+Metastability
+
+Finite windows are promoted to a global convergence rate.
+
+Compile the finite strategy theorem;
+require a separate tail modulus for a
+rate.
+
+Tail theorem.
+
+Diophantine
+finiteness
+
+Qualitative finiteness is
+treated as a search cutoff.
+
+Separate verifier and bounded enumeration from the height-bound producer.
+
+Effective
+bound.
+
+Classical logic
+
+An unbounded classical
+proof is assumed to recover
+witnesses.
+
+Reflection is limited to fixed finite decidable fragments; stronger witness recovery stays residual.
+
+Constructive
+ducer.
+
+Backend
+
+A theorem in another presentation is treated as definitionally the same.
+
+Prove in ordinary iPRA, use checked
+open Bridge transport, and prove symbol comparisons.
+
+Client-specific comparison.
+
+15.1
+
+What is genuinely resolved
+
+The framework gives complete generic human proofs for:
+• termination and leastness of unified demand closure;
+• context-polymorphic composition via ordinary sequents;
+• elimination of proof-local certificates;
+45
+
+pro-
+
+height
+pro-
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+• canonical bounded witness export;
+• reflection of each fixed bounded formula, conditional on reflected atoms;
+• normalized finite trace induction;
+• finite relational viability and observational descent;
+• exact residual exposure and incremental discharge;
+• global compilation from local ordinary derivations.
+These results reduce many packet-level proof plans to a common set of Lean modules and theoremspecific producers.
+
+15.2
+
+What no generic framework can supply
+
+A compiler cannot manufacture genuinely new quantitative mathematics. It cannot derive a global
+effective height bound from qualitative finiteness, produce a spectral gap where eigenvalues collide,
+infer a tail modulus from mere convergence, or select an infinite coherent branch from unrelated
+finite choices. It can only:
+1. state the missing producer exactly;
+2. ensure no unrelated assumptions are retained;
+3. compile every finite consequence around that producer;
+4. discharge the boundary automatically once a proof is supplied.
+This limitation is a feature. It prevents a sophisticated artifact from obscuring the one theorem
+that remains open.
+
+16
+
+Lean formalization architecture
+
+The supplied Lean files are organized so that useful results can be checked incrementally. The
+small structural kernel targets declarations already present in the repository; the remaining files
+state dependency-ordered blueprints. This section gives a concrete path from those blueprints to a
+kernel-checked compiler.
+
+46
+
+DARC-iPRA
+
+16.1
+
+Demand-aware proof compilation
+
+Module graph
+ConciseIPRA.PR
+IPRADerivations.Core
+
+DARC.StructuralKernel
+
+DARC.Demand
+
+DARC.BoundedReflection
+
+DARC.Trace
+
+DARC.Relational
+
+DARC.Compiler
+
+IPRABridge export checks
+
+The demand module is metatheory: it proves facts about finite plans and returns resource states.
+The structural, reflection, trace, relational, and compiler modules construct values of the ordinary
+Prf PRAAx type.
+
+16.2
+
+Structural kernel
+
+The file lean/DARC/StructuralKernel.lean contains no sorry, admit, or new axiom. It defines:
+• OpenContract and openContract_iff;
+• context replacement by Prf.trans;
+• free-variable specialization by Prf.subst;
+• a scoped certificate structure and sealing by Prf.exE;
+• a wrapper around Search.search_found for named export;
+• a quantifier-free loop structure and runner using IPRA.ind;
+• reuse of closed derivations under arbitrary hypotheses.
+The first formalization step is to place this file in the current Lake workspace and resolve any
+namespace or import drift. Since every proof is a direct call to a checked API, this step should be
+small and gives immediate value even before the full compiler exists.
+A representative declaration is:
+def OpenContract (Gamma : List (Fm PTm n)) (A : Fm PTm n) : Prop :=
+forall Delta, (forall C in Gamma, Delta |- [PRAAx] C) ->
+Delta |- [PRAAx] A
+theorem openContract_iff :
+OpenContract Gamma A <-> Gamma |- [PRAAx] A := ...
+
+47
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+The actual file uses Lean notation and scoped variables.
+
+16.3
+
+Demand formalization
+
+The metalevel demand module should avoid unnecessary abstract lattice machinery. Define a shape
+by capacities ci , a demand as a dependent vector of Fin (c i + 1), coordinatewise order, join,
+and rank. Prove:
+1. join is an upper bound;
+2. strict coordinatewise increase raises rank;
+3. rank is bounded by the sum of capacities;
+4. inflationary iteration stabilizes within that sum;
+5. monotonicity implies leastness.
+For executable plans, a threshold rule can be a finite map from trigger coordinates to levels and from
+required coordinates to levels. A generic lemma proves its transfer monotone. More complicated
+modules may provide a custom transfer and a monotonicity theorem.
+The blueprint lean/DARC/DemandBlueprint.lean records the intended signatures. Its proof milestones are metatheoretic and do not add object axioms.
+
+16.4
+
+Bounded reflection
+
+A robust representation should store atom evidence in the syntax. One option is a dependent
+structure:
+structure ReflectedAtom (n : Nat) where
+bit
+: PR n
+formula : Fm PTm n
+range
+: [] |- [PRAAx] bitTerm = 0 or bitTerm = 1
+reflect : [] |- [PRAAx] (bitTerm = 1 <-> formula)
+
+The fixed formula syntax then contains ReflectedAtom, Boolean connectives, and bounded binders.
+The generated bit and denote functions recurse in Lean. Reflection is proved by induction on
+the syntax. The bounded binder cases should reuse existing finite sums and products rather than
+inventing a second arithmetic library.
+Binder substitution is the main engineering risk. The implementation should first establish reusable
+lemmas for shifting the generated body symbol and instantiating it at the bounded index. Small
+tests with one free parameter under two nested binders should precede the strategy compiler.
+
+16.5
+
+Trace formalization
+
+A trace specification stores a finite state arity, initial terms, step terms, and a quantifier-free invariant.
+Generate state functions using existing primitive recursion and pairing/simultaneous recursion.
+Prove zero and successor equations at arbitrary terms. Then expose a theorem whose inputs are
+exactly the base and one-step invariant derivations and whose output is the open invariant.
+Do not encode the invariant as an arbitrary syntax code evaluated at runtime. It is a fixed Fm PTm
+48
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+value, and the theorem is generated for it. Bounded assertions inside the informal invariant must
+already have been replaced by reflected bits.
+
+16.6
+
+Relational formalization
+
+For a first implementation, use a uniform numerical bound at each layer and a fixed primitiverecursive edge bit. Define viability by primitive recursion on remaining depth, using a finite any
+fold. Prove the one-step theorem:
+Vh (x) = 1 → ∃y < Bh+1 [Eh (x, y) = 1 ∧ Vh+1 (y) = 1].
+Then use Search.search_found to define the least viable successor and prove the finite path
+invariant. General finite coded sets can be added after this numerical version works.
+
+16.7
+
+Proof plan and compiler
+
+The global plan exists in Lean metatheory and stores local theorem values. Because theorem types
+depend on node formulas, a fully generic dependent graph can become cumbersome. A practical
+staged implementation is:
+1. generate one Lean module per concrete plan;
+2. declare node formulas and local proof constants in that module;
+3. generate the topological schedule as ordinary Lean code using Prf.trans;
+4. use a generic metatheoretic demand library to decide which declarations are emitted;
+5. only later abstract common dependent graph machinery.
+This route gives checked application pilots sooner and avoids spending months formalizing a universal
+compiler representation before validating the local interfaces.
+The blueprint lean/DARC/CompilerBlueprint.lean states the ideal generic theorem, but the
+generated-module approach is an equally valid path to a complete checked result.
+
+16.8
+
+Axiom and dependency audit
+
+Every completed module should have a check file that:
+1. imports only the intended lower layers;
+2. prints the exact theorem types;
+3. runs #print axioms on exported declarations;
+4. scans for sorryAx;
+5. records the Lake command and repository commit;
+6. checks that the ordinary arithmetic layer does not import application endpoints or a second
+backend unexpectedly.
+A theorem is marked checked only after this audit succeeds. Source files with no visible placeholders
+but no elaboration record remain source candidates.
+
+16.9
+
+Suggested integration milestones
+
+M0. Elaborate the structural kernel and add axiom checks.
+49
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+M1. Check demand stabilization/leastness and reproduce the JSON example in Lean metatheory.
+M2. Reflect conjunction, disjunction, and one bounded existential; then add nested alternation.
+M3. Prove the square-accumulator trace and a finite viability path as ordinary sequents.
+M4. Generate one concrete proof graph module and compile it by simultaneous cut.
+M5. Export the result through the open Bridge and compare client symbols.
+M6. Migrate one real packet with a nontrivial residual modulus and show that discharging the
+producer removes the boundary.
+The detailed commands and acceptance criteria are in lean/FORMALIZATION_PLAN.md.
+
+17
+
+Verification status, limitations, and research program
+
+A framework of this scope is useful only if its claims are sharply separated. This section records
+what the artifact establishes and what remains to be checked.
+
+17.1
+
+Established at the human-proof level
+
+The report gives complete arguments for the following generic conditional results:
+1. stabilization and leastness of the finite unified demand analysis;
+2. safe pruning relative to sound transfer summaries;
+3. equivalence of open contracts and ordinary sequents;
+4. acyclic proof-graph compilation by simultaneous cut;
+5. local certificate sealing, stable observation, and bounded named export;
+6. fixed bounded-formula reflection from reflected atoms;
+7. soundness of finite positive strategy certificates;
+8. normalized quantifier-free trace reflection;
+9. finite backward viability, least compatible paths, and finite observational descent;
+10. guarded quantitative operation interfaces;
+11. the global DARC soundness and relative residual-exactness theorems.
+These are theorem schemas: an application must instantiate their stated local proof obligations.
+
+17.2
+
+Executable finite evidence
+
+The reference module reference/darc_reference.py implements:
+• finite product-chain demands and threshold rules;
+• least inflationary closure with a rank bound;
+• exhaustive monotonicity and leastness checks for small instances;
+• bounded least search;
+• positive bounded-formula strategy construction and checking;
+• deterministic trace execution/checking;
+• finite backward viability and least paths.
+The test suite exercises cyclic closure, query-specific liveness, residual reporting, malformed-rule
+rejection, strategy tampering, traces, and viable or nonviable relations. The generated JSON
+example records the demand history and finite certificates.
+50
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+This code is not an iPRA proof checker and is not in the trusted proof base. Its role is to test finite
+algorithms and make the compilation plan auditable.
+
+17.3
+
+Lean status
+
+The structural kernel is written without placeholders and uses current API names found in the
+pinned repository. It was not elaborated here because the runtime did not contain Lean. Therefore
+the artifact does not claim it as a new checked theorem. The demand, bounded-reflection, trace,
+relational, and compiler files are explicit blueprints containing marked sorry milestones.
+The theorem ledger in metadata/THEOREM_LEDGER.csv assigns one of: fully argued, checked upstream interface, source candidate, Lean blueprint, executable finite test, or open residual. No
+status is inferred from file names.
+
+17.4
+
+Deliberate nonclaims
+
+The artifact does not claim:
+• a general effective Faltings, Siegel, or Mordell–Weil theorem;
+• unrestricted exact branch, root, or eigenvector selection;
+• a global Cauchy modulus from metastability alone;
+• an infinite path from compatible finite horizons alone;
+• an effective height bound from qualitative finiteness;
+• a total universal primitive-recursive evaluator;
+• that the supplied Lean blueprints compile;
+• that any new main application theorem is kernel checked.
+The framework identifies the exact producer interfaces needed by such claims.
+
+17.5
+
+Research priorities
+
+The highest-value next step is not another large paper. It is an integrated Lean slice that proves
+one nontrivial endpoint through all layers:
+1. a fixed bounded formula with alternation;
+2. a loop whose invariant contains the generated truth bit;
+3. a local existential certificate that is sealed;
+4. one named witness selected by checked bounded search;
+5. a cyclic precision demand exposing one residual producer;
+6. a compiled ordinary open sequent;
+7. an open Bridge export to a Foundation client.
+Such a pilot would validate the architecture more decisively than separately elaborating many utility
+modules.
+A second priority is to attach transfer summaries to existing checked IPRADerivations lemmas.
+The arithmetic library already contains many proof components; a compact resource interface would
+make them available to generated plans without recoding their proofs.
+A third priority is producer-driven migration of analytic packets. Select one packet whose algebraic
+51
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+and finite parts are mature and whose only missing input is a clearly stated tail or domain modulus.
+Compile the exact conditional endpoint, then formalize that producer. This would demonstrate the
+practical value of residualization.
+
+17.6
+
+Conclusion
+
+DARC turns the broad question “can this mathematics be expressed in iPRA?” into a sequence of
+reviewable obligations:
+1. What is the exact finite public query?
+2. Which witnesses, precisions, guards, and producers does it force?
+3. Which bounded formulas must be reflected to bits?
+4. Which cycles are finite demand cycles, which are induction loops, and which require a genuine
+extension theorem?
+5. Which local results are ordinary open derivations?
+6. Which deep quantitative inputs remain residual?
+The least demand state provides one answer shared by proof scheduling, certificate escape, precision
+propagation, and residual exposure. The final object is not a semantic promise but an ordinary
+Prf PRAAx derivation. That combination gives a plausible path from the repository’s many rich
+proof outlines to a smaller number of reusable, checked, and accurately scoped formal theorems.
+
+A
+
+Reference algorithms and worked finite instance
+
+This appendix describes the exact finite algorithms in the artifact. They are included for reproducibility and testing, not as a substitute for the Lean formalization.
+
+A.1
+
+Demand closure pseudocode
+
+def close(seed, transfer, capacity_sum):
+d = seed
+history = [d]
+for _ in range(capacity_sum + 1):
+nxt = join(d, transfer(d))
+if nxt == d:
+return d, history
+assert rank(nxt) > rank(d)
+d = nxt
+history.append(d)
+raise Error("rank bound violated")
+
+The implementation validates coordinate names and levels. For small shapes it exhaustively checks
+every admissible candidate to verify leastness. It checks monotonicity on every comparable pair when
+that set is below a configurable limit; threshold-rule monotonicity is otherwise justified symbolically
+by the form of the rules.
+
+52
+
+DARC-iPRA
+
+A.2
+
+Demand-aware proof compilation
+
+Strategy checker pseudocode
+
+For a positive bounded formula:
+check(atom A, c, env) = (c.tag == atom and A(env))
+check(P and Q, c, env) =
+c.tag == and and check(P,c.left,env) and check(Q,c.right,env)
+check(P or Q, c, env) =
+c.side selects a branch whose subcertificate checks
+check(exists i<N. P, c, env) =
+0 <= c.witness < N and check(P,c.sub,env[i := c.witness])
+check(forall i<N. P, c, env) =
+c has N branches and each branch i checks under env[i := i]
+
+The builder chooses the leftmost true disjunct and least true existential witness. These canonical
+choices model the object-level bounded-search plan.
+
+A.3
+
+Backward viability pseudocode
+
+viable[H] = terminal layer
+for h = H-1 down to 0:
+viable[h] = [x in X[h] | exists y in viable[h+1], edge(h,x,y)]
+if start not in viable[0]: fail
+path = [start]
+for h = 0 .. H-1:
+path.append(least y in viable[h+1] with edge(h,path[h],y))
+
+The object formalization replaces host lists and predicates by bounded codes, truth bits, finite folds,
+and checked least search.
+
+A.4
+
+Generated demand instance
+
+The demonstration’s public seed requests an approximate value but not a named witness. The
+closure reaches:
+Coordinate
+
+Final level
+
+query:value
+query:witness
+cert:branch
+cert:trace
+precision:root
+precision:integral
+guard:separation
+guard:denominator
+residual:tail_modulus
+residual:height_bound
+53
+
+1
+0
+0
+0
+5
+6
+0
+1
+1
+0
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+Thus the generated endpoint needs a denominator guard and tail modulus but not branch separation,
+trace replay, or a Diophantine height bound. This is the kind of cross-category pruning that motivates
+the unified lattice.
+
+A.5
+
+Test inventory
+
+The eleven unit tests cover:
+1. a cyclic demand closure;
+2. exhaustive leastness for the small test lattice;
+3. exhaustive monotonicity over comparable pairs;
+4. query-specific certificate liveness;
+5. residual and guard reporting;
+6. rejection of out-of-range rules;
+7. bounded least search;
+8. valid strategy construction;
+9. rejection of a tampered strategy and of a false existential;
+10. deterministic trace checking;
+11. viable and nonviable layered relations.
+The build script reruns these tests before compiling the PDF.
+
+B
+
+Application proof-obligation template
+
+A new application should fill the following checklist. It is designed to keep mathematical status and
+compiler status separate.
+
+B.1
+
+Public theorem
+
+1. State the exact ordinary iPRA formula, including free parameters, coding conventions, and
+requested precision.
+2. State whether the endpoint is an open sequent, closed sentence, or a backend translation.
+3. Identify every public witness or code that must be named.
+
+B.2
+
+Representations
+
+For each mathematical object:
+1. give its numerical code and primitive-recursive operations;
+2. give validity and equality/compatibility formulas;
+3. specify failed or singular-case conventions;
+4. list checked upstream symbols that are reused;
+5. provide reflection theorems for every atom used in bounded formulas.
+
+B.3
+
+Plan nodes
+
+For each node record:
+54
+
+DARC-iPRA
+
+Demand-aware proof compilation
+
+1. node identifier and kind;
+2. dependency formulas;
+3. output formula;
+4. local Prf PRAAx theorem name or explicit residual status;
+5. certificate scope: none, local, observed, or named;
+6. transfer summary with a human proof of soundness;
+7. imports and replay command.
+
+B.4
+
+Loops and relations
+
+For every loop:
+1. list state registers and step terms;
+2. display the quantifier-free invariant after Boolean compilation;
+3. provide base and step derivations;
+4. provide a fuel or termination-bound theorem.
+For every relational cloud:
+1. state layer bounds and edge bits;
+2. state terminal acceptance;
+3. decide whether the path is local, observed, or named;
+4. state any extension or tail producer separately from finite viability.
+
+B.5
+
+Quantitative producers
+
+For every approximation operation:
+1. state the error predicate;
+2. prove the precision transfer and its monotonicity;
+3. state magnitude, apartness, gap, coverage, and tail requirements;
+4. classify each requirement as checked, to be proved, or residual.
+
+B.6
+
+Compilation audit
+
+The generated record should include:
+1. resource shape, query seed, fixed point, and iteration history;
+2. monotonicity evidence for every transfer;
+3. retained and pruned nodes;
+4. final residual formulas;
+5. exact ordinary endpoint;
+6. theorem names used in the simultaneous-cut schedule;
+7. axiom audit and absence of sorryAx;
+8. backend symbol comparisons and translated endpoint, if any.
+
+55
+
+DARC-iPRA
+
+B.7
+
+Demand-aware proof compilation
+
+Status vocabulary
+
+Use only the following status labels:
+Checked upstream. A declaration was built and audited in the pinned repository or a recorded
+compatible baseline.
+Checked in application. A new declaration was built and audited by the application replay.
+Human proof. A complete nonformal argument is supplied but no Lean elaboration is claimed.
+Source candidate. A no-placeholder source file exists but has not been elaborated in the recorded
+environment.
+Lean blueprint. Signatures and proof plan exist with explicit milestones.
+Executable finite test. Host code verifies finite examples only.
+Residual. The exact producer theorem remains an assumption.
+This vocabulary prevents a compiled PDF, passing Python test, or no-placeholder text file from
+being mistaken for a kernel-checked object theorem.
+
+References
+Reshetnikov,
+ProveIt:
+Primitive
+Recursive
+Arithmetic,
+[1] V.
+tory
+files
+under
+Logic/PrimitiveRecursiveArithmetic,
+baseline
+2ef31aa3e313d792df6b63bb28babfe48e1f982e, 2026.
+
+reposicommit
+
+[2] S. C. Kleene, Introduction to Metamathematics, North-Holland, 1952.
+[3] A. S. Troelstra and D. van Dalen, Constructivism in Mathematics, volumes I–II, North-Holland,
+1988.
+[4] A. Tarski, A lattice-theoretical fixpoint theorem and its applications, Pacific Journal of Mathematics 5 (1955), 285–309.
+[5] P. Cousot and R. Cousot, Abstract interpretation: a unified lattice model for static analysis of
+programs, POPL, 1977.
+[6] E. Bishop and D. Bridges, Constructive Analysis, Springer, 1985.
+
+56
+
+

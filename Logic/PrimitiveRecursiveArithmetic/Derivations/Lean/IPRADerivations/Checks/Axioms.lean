@@ -619,6 +619,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.prod_pos_bounded
 #print axioms LeanProofs.IPRA.prod_zero_of
 #print axioms LeanProofs.IPRA.Analysis.BarnesInteger.barnes_power_form
+#print axioms LeanProofs.IPRA.Analysis.RationalClosure.succ_le_two_pow
+#print axioms LeanProofs.IPRA.Analysis.RationalClosure.closure
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.add_formula
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.pell_norm
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.cop_XY
@@ -680,6 +682,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers.four_pow_ge
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers.apery_ge_succ
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers.apery_pos
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.CoprimeModulus.p_gt_one
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.CoprimeModulus.p_coprime
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.CoprimeModulus.poch_ge_pow
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.CoprimeModulus.fact_ge_pow
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.CoprimeModulus.factorial_estimate
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero

@@ -1,0 +1,144 @@
+\section{Open contracts and proof-graph compilation}
+\label{sec:contracts}
+
+The purpose of a contract is to make a local theorem independent of one
+preassembled ambient context.  DARC uses a definition that is exactly
+equivalent to an ordinary sequent, so contracts are an organizational layer,
+not a new logic.
+
+\subsection{Open contracts}
+
+For a list \(A=[A_1,\ldots,A_k]\) and formula \(\phi\) in the same finite
+scope, define in the metatheory
+\[
+  \Contract(A,\phi)
+  \;:\!\!\Longleftrightarrow\;
+  \forall\Delta\,
+  \bigl((\forall i\le k\;\Delta\vdash A_i)
+  \to \Delta\vdash\phi\bigr).
+\]
+
+\begin{theorem}[Contract/sequent equivalence]
+\label{thm:contract-sequent}
+\[
+  \Contract(A,\phi)
+  \quad\Longleftrightarrow\quad
+  A\vdash_{\PRAAx}\phi.
+\]
+\end{theorem}
+
+\begin{proof}
+If the contract holds, choose \(\Delta=A\).  Each \(A_i\) is derivable by the
+hypothesis rule, so the contract yields \(A\vdash\phi\).  Conversely, given
+\(A\vdash\phi\) and derivations \(\Delta\vdash A_i\), apply simultaneous cut
+\cref{lem:simcut}.  This is the proof implemented in
+\pathcode{lean/DARC/StructuralKernel.lean}.
+\end{proof}
+
+The contract form is convenient for a compiler because it describes a
+function from supplied dependencies to a conclusion.  The sequent form is the
+canonical proof object checked by Lean.
+
+\subsection{Substitution and context independence}
+
+A local theorem may be proved once with formal parameters
+\(x_1,\ldots,x_n\).  At a call site, the compiler substitutes arbitrary terms
+\(t_1,\ldots,t_n\), including compound terms produced by other nodes.  By the
+checked substitution theorem,
+\[
+  A[\vec t/\vec x]\vdash\phi[\vec t/\vec x].
+\]
+It may then weaken the context or use the contract interpretation to insert
+the theorem under unrelated local hypotheses.  Thus a node interface should
+avoid closing parameters unless closure is part of the mathematical
+statement.
+
+\subsection{Acyclic schedule compilation}
+
+Assume the retained proof graph is acyclic and let
+\(v_1,\ldots,v_N\) be a topological order.  Each node has a local theorem
+\[
+  \bigl(\phi_u:u\in\operatorname{dep}(v_i)\bigr),\;B_i
+  \vdash \phi_{v_i},
+  \tag{7.1}\label{eq:local-contract}
+\]
+where every formula in \(B_i\) occurs in the global residual context \(B\).
+
+\begin{theorem}[Acyclic graph compilation]
+\label{thm:acyclic-compile}
+For every retained node \(v_i\), \(B\vdash\phi_{v_i}\).  In particular, if
+\(q\) is the output node, then \(B\vdash\phi_q\).
+\end{theorem}
+
+\begin{proof}
+Induct on the topological order.  Every dependency of \(v_i\) occurs earlier,
+so the induction hypothesis gives \(B\vdash\phi_u\) for each dependency.
+Every formula in \(B_i\) is a member of \(B\) and is therefore available by
+the hypothesis rule.  Apply simultaneous cut to the local theorem
+\eqref{eq:local-contract}.  This yields \(B\vdash\phi_{v_i}\).
+\end{proof}
+
+The proof is constructive and directly implementable as recursion over the
+finite schedule.  The compiler need not add a primitive cut constructor.
+
+\subsection{Multiple outputs and shared subproofs}
+
+If a query asks for several formulas \(\phi_{q_1},\ldots,\phi_{q_s}\), seed all
+output coordinates at once.  Demand closure computes the union of their least
+backward slices, including interactions through precision and guards.  Compile
+each retained node once, then combine the outputs by conjunction introduction
+or leave them as a family of sequents.  This avoids duplicating expensive local
+proofs.
+
+A theorem library can expose a node with several observations but separate
+activation coordinates.  For example, a Euclidean-algorithm node may provide
+only a gcd identity for one query, and additionally expose Bezout coefficients
+for another.  The latter query activates certificate fields and arithmetic
+lemmas not needed by the former.
+
+\subsection{Residual boundary discharge}
+
+Let the compiled endpoint be
+\[
+  B_1,\ldots,B_r,\Gamma\vdash\Phi.
+\]
+Suppose later developments prove a subset \(B_i\) under \(\Gamma\).  Repeated
+or simultaneous cut removes exactly those boundaries.
+
+\begin{corollary}[Incremental producer discharge]
+\label{cor:incremental-discharge}
+For \(S\subseteq\{1,\ldots,r\}\), if
+\(\Gamma\vdash B_i\) for every \(i\in S\), then
+\[
+  (B_j:j\notin S),\Gamma\vdash\Phi.
+\]
+\end{corollary}
+
+This permits useful partial formalization.  A difficult analytic theorem can
+be compiled down to a small list of quantitative producer lemmas.  Each
+producer can be proved independently without changing the downstream proof.
+
+\subsection{Local theorem strengthening}
+
+Suppose a local node originally uses residual \(B\), but a new theorem proves
+its conclusion without \(B\) or with a weaker precision.  Replacing the local
+contract and transfer summary may reduce the global demand closure.  Because
+leastness is recomputed, the improvement can propagate across cycles and
+remove other resources.  The theorem ledger should record both the local
+proof change and the resulting endpoint change.
+
+\subsection{Proof-producing versus proof-checking architectures}
+
+A standalone certificate checker can be useful as an experimental concise
+presentation, but DARC's compiler has a different role.  It constructs a term
+of the existing \(\Prf\) inductive type.  The local contracts are ordinary
+object theorems, and the global schedule uses ordinary structural lemmas.  As a
+result:
+\begin{itemize}
+  \item all existing arithmetic derivations can be reused directly;
+  \item the existing axiom audit applies;
+  \item open Bridge transport applies;
+  \item a client need not trust a second checker or a semantic correspondence
+        theorem that has not been integrated.
+\end{itemize}
+This choice is central to resolving the current repository integration gap.

@@ -1,0 +1,227 @@
+\section{Fixed bounded formulas, truth bits, and finite strategies}
+\label{sec:bounded}
+
+Bounded quantifiers are mathematically finite, but they are still quantifiers.
+They therefore cannot appear directly in an induction matrix restricted to
+quantifier-free formulas.  DARC removes them before induction by compiling each
+fixed bounded formula to a primitive-recursive truth bit.  When a proof needs
+witness information rather than truth alone, the same syntax generates finite
+strategy certificates.
+
+\subsection{Reflected atoms}
+
+An atomic interface consists of:
+\begin{enumerate}
+  \item a formula \(A(\vec x)\);
+  \item a primitive-recursive bit \(\chi_A(\vec x)\in\{0,1\}\);
+  \item ordinary derivations of bit range and reflection:
+\[
+  \vdash \chi_A(\vec x)=0\vee\chi_A(\vec x)=1,
+  \qquad
+  \vdash A(\vec x)\leftrightarrow \chi_A(\vec x)=1.
+\]
+\end{enumerate}
+Equality of terms, order, divisibility with a fixed convention, finite code
+membership, and transition relations are typical reflected atoms.  The atom
+interface is theorem-specific: DARC does not assert that every arbitrary
+formula has a characteristic bit.
+
+\subsection{Boolean operations}
+
+Assume \(a,b\in\{0,1\}\).  Primitive-recursive arithmetic can realize:
+\begin{align*}
+  a\wedge b &: =ab,\\
+  a\vee b &: =\operatorname{sg}(a+b),\\
+  \neg a &: =1\monusop a,\\
+  a\Rightarrow b &: =\operatorname{sg}((1\monusop a)+b),
+\end{align*}
+where \(\monusop\) is truncated subtraction and
+\(\operatorname{sg}(z)=0\) iff \(z=0\), otherwise \(1\).  On bits, the truth
+tables are proved by the decidable zero/successor decomposition available in
+the arithmetic library.
+
+The implication clause deserves comment.  Intuitionistically,
+\((P\to Q)\leftrightarrow(\neg P\vee Q)\) is not valid for arbitrary \(P\).
+It is valid when \(P\) is decidable.  The reflected bit gives precisely that
+decidability.  Thus the compiler may support implication in bounded formulas
+without importing unrestricted excluded middle.
+
+\subsection{Finite folds for bounded quantifiers}
+
+Let \(b(i,\vec x)\in\{0,1\}\).  Define
+\begin{align*}
+  \operatorname{All}(0,\vec x)&=1,
+  &\operatorname{All}(S n,\vec x)&=
+      \operatorname{All}(n,\vec x)b(n,\vec x),\\
+  \operatorname{Any}(0,\vec x)&=0,
+  &\operatorname{Any}(S n,\vec x)&=
+      \operatorname{sg}(\operatorname{Any}(n,\vec x)+b(n,\vec x)).
+\end{align*}
+Both are primitive recursive.  They represent bounded universal and
+existential quantification.
+
+\begin{lemma}[Finite universal reflection]
+\label{lem:all-reflect}
+If \(b(i,\vec x)=1\leftrightarrow B(i,\vec x)\), then
+\[
+ \operatorname{All}(N,\vec x)=1
+ \quad\leftrightarrow\quad
+ \forall i<N\;B(i,\vec x).
+\]
+The displayed bounded universal is an abbreviation for its ordinary
+first-order formulation, not an induction matrix.
+\end{lemma}
+
+\begin{proof}
+Prove the finite-fold invariant by quantifier-free induction on \(N\): the
+product is one exactly when every factor so far is one.  The base is the empty
+product.  At the successor step, use the bit range and multiplication truth
+table to split
+\(\operatorname{All}(S N)=1\) into
+\(\operatorname{All}(N)=1\) and \(b(N)=1\).  Translate the latter by atomic
+reflection.  The final bounded-quantifier statement can then be assembled by
+ordinary quantifier rules or retained as the reflected bit, depending on the
+consumer.
+\end{proof}
+
+\begin{lemma}[Finite existential reflection]
+\label{lem:any-reflect}
+If \(b(i,\vec x)=1\leftrightarrow B(i,\vec x)\), then
+\[
+ \operatorname{Any}(N,\vec x)=1
+ \quad\leftrightarrow\quad
+ \exists i<N\;B(i,\vec x).
+\]
+\end{lemma}
+
+\begin{proof}
+The forward direction can use bounded least search on the predicate
+\(1\monusop b(i,\vec x)=0\).  The recurrence for \(\operatorname{Any}\)
+proves that if the final bit is one, some factor bit is one; search chooses the
+least such index.  The reverse direction proves by induction that a true bit at
+an index below \(N\) makes the finite disjunction bit one.  All induction
+matrices are equations and inequalities between primitive-recursive terms.
+\end{proof}
+
+\subsection{Structural reflection theorem}
+
+Fix a bounded-formula syntax generated from reflected atoms by
+\(\wedge,\vee,\to\), and bounded \(\forall,\exists\).  Let \(b_A\) be generated
+recursively using the Boolean operations and folds above.
+
+\begin{theorem}[Fixed bounded reflection]
+\label{thm:bounded-reflection}
+For each fixed bounded formula \(A(\vec x)\), the compiler constructs a
+primitive-recursive bit \(b_A(\vec x)\) and an ordinary derivation
+\[
+  \vdash_{\PRAAx}
+  \bigl(b_A(\vec x)=1\leftrightarrow A(\vec x)\bigr).
+\]
+It also constructs a bit-range derivation for \(b_A\).
+\end{theorem}
+
+\begin{proof}
+External induction on the finite syntax of \(A\).  The atom case is supplied
+by the atom interface.  Conjunction and disjunction use the reflected
+subformulas and bit truth tables.  Implication uses decidability of the
+antecedent bit.  Bounded universal and existential cases use
+\cref{lem:all-reflect,lem:any-reflect}.  The recursion generates a concrete
+\(\mathsf{PR}\) symbol and a finite derivation for the fixed \(A\).
+\end{proof}
+
+The theorem is exactly the kind of metalevel schema described in
+\cref{sec:specialization}; it is not a universal satisfaction predicate.
+
+\subsection{Positive strategy certificates}
+
+Truth bits are enough for invariants and closed decisions.  A proof with
+bounded alternation may need the finite choices witnessing truth.  Define a
+positive certificate recursively:
+\begin{itemize}
+  \item a true atom has a trivial certificate;
+  \item a conjunction has certificates for both conjuncts;
+  \item a disjunction stores a selected true side and its certificate;
+  \item \(\exists i<N\,B(i)\) stores an index \(i<N\) and a certificate for
+        \(B(i)\);
+  \item \(\forall i<N\,B(i)\) stores one certificate for each
+        \(i<N\), encoded by a bounded sequence.
+\end{itemize}
+All certificates are finite because all bounds are numerical terms evaluated
+at the current parameters.  For a fixed formula, certificate encoding and
+checking are primitive recursive.
+
+\begin{theorem}[Positive strategy soundness]
+\label{thm:strategy-sound}
+For each fixed bounded formula \(A\), the compiler constructs a validity bit
+\(\operatorname{ok}_A(c,\vec x)\) such that
+\[
+  \operatorname{ok}_A(c,\vec x)=1
+  \quad\Longrightarrow\quad A(\vec x)
+\]
+is derivable in ordinary \(\iPRA\).  Moreover, from
+\(b_A(\vec x)=1\) it can construct a bounded canonical certificate by finite
+least search.
+\end{theorem}
+
+\begin{proof}
+Soundness is proved by external induction on \(A\).  Atom and conjunction
+cases are immediate.  For a disjunction, the checked tag selects one branch,
+and the inductive theorem proves that branch.  For an existential, the checker
+verifies the bound and the subcertificate, then existential introduction uses
+the stored index.  For a universal, the checker verifies the bounded sequence
+of subcertificates; for an arbitrary \(i<N\), sequence lookup and the
+inductive theorem yield \(B(i)\), allowing bounded universal assembly.
+
+For construction, use the reflected truth bits.  At a disjunction select the
+left side if its bit is one, otherwise the right.  At an existential use
+bounded least search for the first true body bit.  At a universal build the
+bounded sequence by primitive recursion, recursively constructing each
+subcertificate.  Since the formula is fixed, the nested construction is a
+fixed primitive-recursive program.
+\end{proof}
+
+\subsection{Negative certificates and two-sided decisions}
+
+For robust reflection of games or proof search, one may define dual negative
+certificates:
+\begin{itemize}
+  \item falsity of a conjunction selects a false conjunct;
+  \item falsity of a disjunction contains negative certificates for both;
+  \item falsity of a universal stores one counterexample;
+  \item falsity of an existential stores negative certificates for every
+        bounded index.
+\end{itemize}
+Because the formula is decidable, exactly one side can be generated.  This
+yields a finite two-sided strategy interface, useful when a local proof
+branches on whether a bounded condition holds.  It does not decide unbounded
+formulas.
+
+\subsection{Alternation without nested ad hoc searches}
+
+Consider
+\[
+  \forall i<I\;\exists j<J(i)\;\forall k<K(i,j)\;R(i,j,k).
+\]
+A naive proof may nest separate search routines and then struggle to show that
+the chosen witnesses fit one object-level term.  The fixed strategy compiler
+instead generates one certificate type:
+\begin{itemize}
+  \item for every \(i<I\), a chosen \(j<J(i)\);
+  \item for every \(k<K(i,j)\), an atomic certificate for \(R(i,j,k)\).
+\end{itemize}
+One checker verifies the whole finite strategy.  The public theorem can seal
+this strategy if only the final conclusion matters, observe selected outputs,
+or name the strategy through a bounded code if required.
+
+\subsection{Example used by the artifact}
+
+The reference test compiles the finite statement
+\[
+  \forall i<5\;\exists j<4\; (i+j\text{ is even}).
+\]
+Its canonical certificate chooses witnesses \(0,1,0,1,0\).  The Python
+checker accepts the certificate and rejects a tampered witness.  This validates
+the finite data algorithm only.  A complete Lean integration must define the
+parity atom in \(\mathsf{PR}\), prove its reflection theorem, generate the
+strategy checker, and construct the ordinary derivation promised by
+\cref{thm:strategy-sound}.

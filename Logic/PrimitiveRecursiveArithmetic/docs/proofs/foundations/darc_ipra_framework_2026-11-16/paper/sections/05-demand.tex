@@ -1,0 +1,210 @@
+\section{Unified backward demand analysis}
+\label{sec:demand}
+
+This section gives the finite-lattice theorem that makes DARC query-specific.
+Although the construction resembles a static-analysis fixed point, the proof
+is elementary and quantitative; no appeal to an infinitary fixed-point theorem
+is needed.
+
+\subsection{Finite product of resource chains}
+
+Let \(R=\{1,\ldots,m\}\) be the finite set of resource coordinates and let
+\(c_r\in\Nat\) be the capacity of coordinate \(r\).  Define
+\[
+  L=\prod_{r=1}^{m}\{0,1,\ldots,c_r\}.
+\]
+For \(d,e\in L\), write \(d\le e\) when \(d_r\le e_r\) for every \(r\), and
+let \(d\join e\) be coordinatewise maximum.  Define the rank
+\[
+  \rank(d)=\sum_{r=1}^{m}d_r,
+  \qquad C=\sum_{r=1}^{m}c_r.
+\]
+Thus \(0\le\rank(d)\le C\).
+
+A transfer map \(F:L\to L\) is \emph{sound} for a plan if every requirement
+reported by a live local node appears in \(F(d)\).  It is \emph{monotone} if
+\(d\le e\) implies \(F(d)\le F(e)\).  Threshold-rule networks are monotone
+automatically.
+
+Given a public query seed \(q\in L\), define
+\[
+  d_0=q,
+  \qquad
+  d_{s+1}=d_s\join F(d_s).
+  \tag{5.1}\label{eq:demand-iteration}
+\]
+This is an inflationary iteration even when \(F\) itself is not inflationary.
+
+\begin{lemma}[Strict rank increase]
+\label{lem:rank-increase}
+If \(d\le e\) and \(d\ne e\), then \(\rank(d)<\rank(e)\).
+\end{lemma}
+
+\begin{proof}
+For every coordinate, \(e_r-d_r\ge0\).  Since \(d\ne e\), at least one of
+these differences is positive.  Hence
+\[
+ \rank(e)-\rank(d)=\sum_r(e_r-d_r)>0.
+\]
+\end{proof}
+
+\begin{theorem}[Finite stabilization]
+\label{thm:demand-stabilization}
+The sequence in \eqref{eq:demand-iteration} stabilizes after at most
+\(C-\rank(q)\) strict steps, and therefore after at most \(C+1\) evaluations
+of the update.  Its stable value \(d^*\) satisfies \(F(d^*)\le d^*\).
+\end{theorem}
+
+\begin{proof}
+The sequence is coordinatewise nondecreasing.  Whenever
+\(d_{s+1}\ne d_s\), \cref{lem:rank-increase} gives
+\(\rank(d_{s+1})>\rank(d_s)\).  Rank starts at \(\rank(q)\), is integral, and
+is bounded by \(C\); hence there are at most \(C-\rank(q)\) strict steps.
+At the first stationary stage,
+\(d^*=d^*\join F(d^*)\), which is equivalent to \(F(d^*)\le d^*\).
+\end{proof}
+
+\begin{remark}
+The useful bound is the sum of capacities, not the number
+\(\prod_r(c_r+1)\) of states.  A plan may therefore have many Boolean resource
+coordinates while still converging in a number of strict rounds linear in the
+number of coordinates.
+\end{remark}
+
+\subsection{Leastness}
+
+A demand state \(e\) is \emph{admissible above the query} if
+\[
+  q\le e
+  \quad\text{and}\quad
+  F(e)\le e.
+\]
+The second condition says that all requirements triggered by \(e\) are already
+included in \(e\).
+
+\begin{theorem}[Least prefixed point above the query]
+\label{thm:demand-least}
+Assume \(F\) is monotone.  The stable value \(d^*\) of
+\eqref{eq:demand-iteration} is below every admissible state \(e\).  Therefore
+it is the least prefixed point of \(F\) above \(q\).
+\end{theorem}
+
+\begin{proof}
+We prove \(d_s\le e\) by induction on \(s\).  The base case is \(q\le e\).
+If \(d_s\le e\), monotonicity gives \(F(d_s)\le F(e)\le e\).  Since also
+\(d_s\le e\), their join satisfies
+\(d_{s+1}=d_s\join F(d_s)\le e\).  At stabilization this yields
+\(d^*\le e\).
+\end{proof}
+
+\begin{corollary}[Relative resource minimality]
+\label{cor:relative-minimality}
+No resource coordinate retained by \(d^*\) can be lowered while preserving the
+query and all declared transfer summaries, unless some other coordinate is
+changed so that the resulting state is no longer below \(d^*\).
+\end{corollary}
+
+The qualification ``declared transfer summaries'' is essential.  If a local
+proof is replaced by a stronger lemma with a better modulus, the transfer map
+changes and the new least state may be smaller.  DARC minimality is a precise
+audit statement, not a claim of proof-theoretic optimality.
+
+\subsection{Cycles are harmless when they are monotone}
+
+Precision dependencies often contain cycles.  For instance, evaluating a
+root may require an integral approximation, while the certified integration
+bound may itself use a rough root bound.  Suppose
+\[
+  y\ge1\Rightarrow x\ge2,
+  \qquad
+  x\ge2\Rightarrow y\ge4,
+  \qquad
+  y\ge4\Rightarrow x\ge5.
+\]
+Starting from a query demanding \(y\ge1\), the iteration obtains the finite
+closure \(x=5,y=4\).  No recursive theorem is being assumed.  The cycle occurs
+in the finite resource analysis and terminates by rank.
+
+This distinction is important:
+\begin{itemize}
+  \item a cycle in the demand network is solved by finite monotone closure;
+  \item a cycle in mathematical execution is extracted as a loop node and
+        proved by quantifier-free induction;
+  \item a cycle in witness compatibility is treated as a finite relational
+        problem or requires an explicit extension producer.
+\end{itemize}
+Conflating these three kinds of cycles produces either an unnecessary fixed
+point inside arithmetic or an unjustified infinite-choice step.
+
+\subsection{Soundness of transfer summaries}
+
+The fixed-point theorems above are purely order-theoretic.  To connect them to
+proofs, each transfer rule needs a local soundness justification.  A typical
+precision rule has the form
+\[
+  \Prec(v)\ge p
+  \quad\Longrightarrow\quad
+  \Prec(u_i)\ge \rho_i(p),\;
+  \Guard(g_j)=1,\;
+  \Res(B_k)=1.
+\]
+Its soundness statement is:
+\begin{quote}
+Whenever the input nodes satisfy the requested precisions, the guard formulas
+hold, and the listed residual producer formulas are available, the local
+\(\Prf\;\PRAAx\) derivation proves the requested output contract.
+\end{quote}
+This is not checked merely by the metalevel transfer function.  It is tied to a
+specific local theorem.  The Lean plan should package the summary and theorem
+together, or generate a theorem-ledger entry linking them.
+
+For threshold rules, the generated audit can list every firing rule at every
+iteration.  The demonstration in \pathcode{examples/demo.json} records this
+history.  Such a trace is useful for review but does not replace the local
+object proof.
+
+\subsection{Pruning theorem}
+
+Let a node \(v\) have an activation coordinate \(a_v\), or let its activation
+be a monotone predicate of the resource state.  Define the retained set
+\[
+  V^*=\{v\in V: a_v(d^*)>0\}.
+\]
+
+\begin{proposition}[Safe dead-node elimination]
+\label{prop:dead-node}
+Assume each node's transfer summary includes all resources and dependency
+activation needed by its local proof.  Then any node outside \(V^*\) can be
+removed from the proof schedule without changing the compiled conclusion or
+its residual boundary.
+\end{proposition}
+
+\begin{proof}
+Suppose a removed node were needed by an active node or by the public query.
+By soundness of the active node's transfer summary, the removed node's
+activation coordinate would be included in \(F(d^*)\).  Since
+\(F(d^*)\le d^*\), that coordinate would be positive in \(d^*\), a
+contradiction.  The same argument applies to a guard, residual, certificate
+field, or precision needed by a retained local proof.
+\end{proof}
+
+The proposition gives a single consistency check across liveness, precision,
+guards, and residuals.  It is stronger than running four independent pruning
+passes and hoping they agree.
+
+\subsection{Compositionality of demand analyses}
+
+Suppose plans \(P\) and \(Q\) have disjoint internal coordinates and share an
+explicit interface.  Their combined transfer is the join of the extended
+transfers \(F_P\) and \(F_Q\).  Monotonicity is preserved.  The least closure
+of the composite may be computed globally or by iterating the two component
+closures to mutual stability.  This supports modular compilation: a library
+lemma can publish a compact transfer summary along with its open theorem,
+without exposing its internal proof graph.
+
+One should not, however, publish a summary that forgets a hidden residual.  A
+summary is part of the trusted mathematical interface in the same sense as a
+modulus: an understated requirement can make the generated theorem false.
+The intended Lean representation therefore couples summaries with proofs of
+local contracts, while the Python reference implementation is only an audit
+model.

@@ -1,0 +1,189 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,calc,shapes.geometric}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{url}
+\usepackage{csquotes}
+
+\definecolor{darcblue}{RGB}{28,75,121}
+\definecolor{darcteal}{RGB}{25,110,105}
+\definecolor{darcgray}{RGB}{245,247,249}
+\definecolor{darcred}{RGB}{145,45,45}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=darcblue,
+  citecolor=darcteal,
+  urlcolor=darcblue,
+  pdftitle={DARC-iPRA: Demand-Aware Residualizing Compilation for Intuitionistic Primitive Recursive Arithmetic},
+  pdfauthor={OpenAI},
+  pdfsubject={A general framework for compiling finitary mathematics into iPRA}
+}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{DARC-iPRA}
+\fancyhead[R]{Demand-aware proof compilation}
+\fancyfoot[C]{\thepage}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep,leftmargin=2em}
+\setcounter{tocdepth}{2}
+
+\lstdefinestyle{darc}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{darcgray},
+  frame=single,
+  rulecolor=\color{black!15},
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
+\lstset{style=darc}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{obligation}[theorem]{Residual obligation}
+
+\newcommand{\iPRA}{\mathrm{iPRA}}
+\newcommand{\PRAAx}{\mathsf{PRAAx}}
+\newcommand{\Prf}{\mathsf{Prf}}
+\newcommand{\DARC}{\mathsf{DARC}}
+\newcommand{\Contract}{\mathsf{Contract}}
+\newcommand{\Res}{\mathsf{Res}}
+\newcommand{\Guard}{\mathsf{Guard}}
+\newcommand{\Cert}{\mathsf{Cert}}
+\newcommand{\Prec}{\mathsf{Prec}}
+\newcommand{\Bool}{\mathbb{B}}
+\newcommand{\Nat}{\mathbb{N}}
+\newcommand{\seq}[2]{#1\;\vdash_{\PRAAx}\;#2}
+\newcommand{\join}{\mathbin{\sqcup}}
+\newcommand{\meet}{\mathbin{\sqcap}}
+\newcommand{\cl}{\operatorname{cl}}
+\newcommand{\rank}{\operatorname{rk}}
+\newcommand{\monusop}{\mathbin{\dot{-}}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\pathcode}[1]{\path{#1}}
+\newcommand{\status}[1]{\textsf{#1}}
+
+\title{\textbf{DARC-iPRA}\\[0.35em]
+\Large Demand-Aware Residualizing Compilation for\\
+Intuitionistic Primitive Recursive Arithmetic}
+\author{Research artifact prepared by OpenAI}
+\date{16 November 2026\\
+\small Repository baseline: \texttt{2ef31aa3e313d792df6b63bb28babfe48e1f982e}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This report develops a general method for translating fixed, finite,
+quantitative mathematical arguments into the ordinary object-theory judgment
+\(\Prf\;\PRAAx\;\Gamma\;\varphi\) used by the ProveIt formalization of
+intuitionistic primitive recursive arithmetic.  The central device is a single
+finite product-lattice analysis whose least prefixed point records, at once,
+which certificate fields must escape local scope, which approximation
+precisions are demanded, which guards or apartness margins are necessary, and
+which unproved quantitative producers must remain as explicit residual
+hypotheses.  This demand state prunes and specializes the proof graph before
+object-proof assembly.  Local noncanonical witnesses are eliminated by
+existential elimination; public named witnesses are canonicalized only when
+needed, using checked bounded search; fixed bounded formulas are compiled to
+primitive-recursive truth bits and finite strategy certificates; loops are
+normalized to quantifier-free trace invariants; and finite relational witness
+problems are solved by backward viability rather than incompatible independent
+choices.
+
+The report proves stabilization and leastness of the demand analysis, the
+open-contract/sequent equivalence, certificate escape and residualization
+theorems, bounded reflection and strategy soundness schemas, trace and
+viability schemas, and a global conditional compilation theorem.  It also
+isolates genuine barriers: no total universal evaluator is assumed, no
+infinite path follows from horizonwise existence, no regular name follows
+without a tail modulus, and no ordered root or eigenvector is selected through
+collisions.  A source-oriented Lean kernel, dependency-ordered Lean
+blueprints, exact finite reference algorithms, tests, and a machine-readable
+plan schema accompany the paper.  No new Lean-kernel-checked theorem is
+claimed by this artifact.
+\end{abstract}
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Verification status.}
+The mathematical arguments below are complete at the human-proof level for
+the stated generic conditional schemas.  The small Lean structural kernel has
+no placeholders but was not elaborated in this runtime.  The larger Lean files
+are blueprints with explicit milestones.  Python tests validate finite
+metalevel algorithms only; they are not proofs in \(\iPRA\).
+}}
+\end{center}
+
+\tableofcontents
+\clearpage
+
+\input{sections/01-executive}
+\input{sections/02-audit}
+\input{sections/03-setting}
+\input{sections/04-plan-language}
+\input{sections/05-demand}
+\input{sections/06-specialization}
+\input{sections/07-contracts}
+\input{sections/08-certificates}
+\input{sections/09-bounded-reflection}
+\input{sections/10-traces}
+\input{sections/11-relations}
+\input{sections/12-quantitative}
+\input{sections/13-global-theorem}
+\input{sections/14-applications}
+\input{sections/15-difficulties}
+\input{sections/16-lean}
+\input{sections/17-status}
+\appendix
+\input{sections/A-reference-algorithms}
+\input{sections/B-proof-obligations}
+
+\begin{thebibliography}{99}
+\bibitem{provit-readme}
+V. Reshetnikov, \emph{ProveIt: Primitive Recursive Arithmetic}, repository
+files under \pathcode{Logic/PrimitiveRecursiveArithmetic}, baseline commit
+\texttt{2ef31aa3e313d792df6b63bb28babfe48e1f982e}, 2026.
+
+\bibitem{kleene}
+S. C. Kleene, \emph{Introduction to Metamathematics}, North-Holland, 1952.
+
+\bibitem{troelstra}
+A. S. Troelstra and D. van Dalen, \emph{Constructivism in Mathematics},
+volumes I--II, North-Holland, 1988.
+
+\bibitem{tarski}
+A. Tarski, \emph{A lattice-theoretical fixpoint theorem and its applications},
+Pacific Journal of Mathematics 5 (1955), 285--309.
+
+\bibitem{cousot}
+P. Cousot and R. Cousot, \emph{Abstract interpretation: a unified lattice model
+for static analysis of programs}, POPL, 1977.
+
+\bibitem{bishop}
+E. Bishop and D. Bridges, \emph{Constructive Analysis}, Springer, 1985.
+\end{thebibliography}
+
+\end{document}

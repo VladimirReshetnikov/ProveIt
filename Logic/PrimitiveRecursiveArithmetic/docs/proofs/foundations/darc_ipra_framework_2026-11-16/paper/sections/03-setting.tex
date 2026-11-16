@@ -1,0 +1,160 @@
+\section{Formal setting: ordinary intuitionistic primitive recursive arithmetic}
+\label{sec:setting}
+
+This section fixes the proof-theoretic target and clarifies which constructions
+belong to the object theory and which belong to the metatheory.
+
+\subsection{Terms, formulas, and axioms}
+
+For each arity \(k\), let \(\mathsf{PR}_k\) be the inductively generated class
+of primitive-recursive function symbols: zero, successor, projections,
+composition, and primitive recursion.  A term over \(n\) free variables is a
+variable or an application of one such symbol.  The formula language is
+ordinary first-order intuitionistic logic with equality over these terms.
+
+The axiom family \(\PRAAx\) contains:
+\begin{enumerate}
+  \item defining equations for projections, composition, and primitive
+        recursion;
+  \item \(Sx\ne 0\) and injectivity of successor;
+  \item induction for every quantifier-free formula, with arbitrary free
+        parameters.
+\end{enumerate}
+A derivation is written
+\[
+  \Gamma\vdash_{\PRAAx}\varphi.
+\]
+In Lean this is a proposition whose inhabitants are derivation trees.  The
+metatheory may use ordinary mathematics to construct such a tree.  Soundness
+of the final mathematical statement comes from the fact that the tree uses
+only the constructors of the embedded calculus and instances of \(\PRAAx\).
+
+\subsection{The object/metalevel separation}
+
+The same word ``primitive recursive'' appears at two levels, and confusing
+those levels causes overclaims.
+
+\paragraph{Object level.}
+A concrete symbol \(f\in\mathsf{PR}_k\) occurs in a term and has defining
+axioms.  The object theory can reason about \(f(\vec x)\), prove its equations,
+and apply quantifier-free induction to formulas mentioning it.
+
+\paragraph{Metalevel.}
+Lean can inspect a finite syntax tree describing a formula, proof plan, or
+primitive-recursive definition and produce a concrete symbol or derivation.
+This inspection need not itself be represented by one total object-language
+function.  Each generated result is finite and fixed.
+
+The framework uses metalevel recursion on plans and formulas, but the emitted
+proof contains only concrete object-level symbols.  Thus a theorem schema of
+the form ``for each fixed bounded formula \(A\), there is a bit
+\(b_A\) and a derivation of \(A\leftrightarrow b_A=1\)'' does not assert an
+object theorem about a universal formula evaluator.
+
+\subsection{Open sequents as the unit of reuse}
+
+A reusable theorem should usually remain open.  For example, cancellation is
+most useful in the form
+\[
+  a+b=a+c\;\vdash_{\PRAAx}\;b=c
+\]
+with \(a,b,c\) arbitrary terms under an arbitrary surrounding context.  If
+one closes the theorem too early by universal quantification and implications,
+then every downstream use must repeatedly instantiate and reopen it.  The
+ordinary deduction API already supports the cleaner open form through
+substitution and weakening.
+
+DARC therefore treats an open sequent as the basic node interface.  A local
+node has:
+\begin{itemize}
+  \item a finite list of dependency formulas \(A_v\);
+  \item a finite list of residual boundary formulas \(B_v(d)\) selected by
+        demand \(d\);
+  \item a conclusion \(\phi_v(d)\);
+  \item a derivation
+        \(A_v,B_v(d)\vdash_{\PRAAx}\phi_v(d)\).
+\end{itemize}
+The same local derivation can be specialized at arbitrary terms and inserted
+into any larger context.
+
+\subsection{Structural lemmas used by the compiler}
+
+We record the logical facts on which proof assembly depends.
+
+\begin{lemma}[Substitution]
+If \(\Gamma\vdash\varphi\) over \(n\) free variables and
+\(\sigma\) maps those variables to terms over \(m\) variables, then
+\[
+  \Gamma[\sigma]\vdash\varphi[\sigma].
+\]
+\end{lemma}
+
+\begin{lemma}[Weakening]
+If \(\Gamma\vdash\varphi\) and every member of \(\Gamma\) occurs in
+\(\Delta\), then \(\Delta\vdash\varphi\).
+\end{lemma}
+
+\begin{lemma}[Simultaneous cut]
+\label{lem:simcut}
+If \(\Gamma\vdash\varphi\) and, for every \(\psi\in\Gamma\),
+\(\Delta\vdash\psi\), then \(\Delta\vdash\varphi\).
+\end{lemma}
+
+\begin{proof}
+The checked proof proceeds by induction on the list \(\Gamma\).  For the empty
+list, weaken the closed derivation to \(\Delta\).  For
+\(\Gamma=\psi::\Gamma'\), introduce \(\psi\) as an implication in the given
+derivation, apply the induction hypothesis to replace all assumptions in
+\(\Gamma'\), then use modus ponens with the supplied derivation of \(\psi\).
+No cut rule is added to the calculus; the lemma is derived from implication
+introduction and elimination.
+\end{proof}
+
+\begin{lemma}[Existential sealing]
+\label{lem:exseal}
+If
+\[
+  \Gamma\vdash\exists c\,V(c)
+  \quad\text{and}\quad
+  V(c),\Gamma^+\vdash\Phi^+,
+\]
+where \(+\) denotes the standard shift under the binder and \(\Phi\) does not
+contain \(c\), then \(\Gamma\vdash\Phi\).
+\end{lemma}
+
+\begin{proof}
+This is exactly existential elimination.  The freshness condition is enforced
+by the scoped representation of formulas: \(V\) lives over one more variable,
+while \(\Phi\) lives in the outer scope.
+\end{proof}
+
+\begin{lemma}[Quantifier-free induction interface]
+\label{lem:qfind}
+Let \(I(t,\vec x)\) be quantifier-free.  If
+\[
+ \vdash I(0,\vec x)
+ \quad\text{and}\quad
+ I(t,\vec x)\vdash I(S t,\vec x),
+\]
+then \(\vdash I(t,\vec x)\) as an open formula.
+\end{lemma}
+
+This is the checked \code{IPRA.ind} wrapper around the induction axiom.  A
+central obligation of DARC normalization is that every loop invariant supplied
+to this lemma is genuinely quantifier-free, not merely semantically bounded.
+
+\subsection{A note on metatheoretic classical axioms}
+
+The existing Lean developments may report standard Lean axioms such as
+propositional extensionality, quotient soundness, or choice in the
+metatheory.  This does not add those principles to \(\iPRA\).  The object
+proof remains a finite value of the inductive type \(\Prf\;\PRAAx\).  DARC's
+claim ledger therefore distinguishes:
+\begin{enumerate}
+  \item which object axioms a derivation uses;
+  \item which Lean axioms were used while constructing or representing the
+        derivation;
+  \item which mathematical producer lemmas remain assumptions of the object
+        endpoint.
+\end{enumerate}
+This separation is necessary for an honest strength audit.

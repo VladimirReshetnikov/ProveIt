@@ -1,0 +1,267 @@
+{
+  "artifact": "DARC-iPRA finite metalevel demonstration",
+  "bounded_strategy": {
+    "accepted": true,
+    "certificate": {
+      "branches": [
+        {
+          "sub": {
+            "name": "even-sum",
+            "tag": "atom"
+          },
+          "tag": "exists",
+          "var": "j",
+          "witness": 0
+        },
+        {
+          "sub": {
+            "name": "even-sum",
+            "tag": "atom"
+          },
+          "tag": "exists",
+          "var": "j",
+          "witness": 1
+        },
+        {
+          "sub": {
+            "name": "even-sum",
+            "tag": "atom"
+          },
+          "tag": "exists",
+          "var": "j",
+          "witness": 0
+        },
+        {
+          "sub": {
+            "name": "even-sum",
+            "tag": "atom"
+          },
+          "tag": "exists",
+          "var": "j",
+          "witness": 1
+        },
+        {
+          "sub": {
+            "name": "even-sum",
+            "tag": "atom"
+          },
+          "tag": "exists",
+          "var": "j",
+          "witness": 0
+        }
+      ],
+      "tag": "forall",
+      "var": "i"
+    },
+    "formula": "forall i<5 exists j<4, i+j is even"
+  },
+  "demand_analysis": {
+    "fired_rules": [
+      [
+        "value query seeds root precision"
+      ],
+      [
+        "value query seeds root precision",
+        "root evaluator requests integral precision"
+      ],
+      [
+        "value query seeds root precision",
+        "root evaluator requests integral precision",
+        "feedback modulus raises root precision"
+      ],
+      [
+        "value query seeds root precision",
+        "root evaluator requests integral precision",
+        "feedback modulus raises root precision",
+        "high precision exposes a tail modulus"
+      ],
+      [
+        "value query seeds root precision",
+        "root evaluator requests integral precision",
+        "feedback modulus raises root precision",
+        "high precision exposes a tail modulus"
+      ]
+    ],
+    "fixed_point": {
+      "cert:branch": 0,
+      "cert:trace": 0,
+      "guard:denominator": 1,
+      "guard:separation": 0,
+      "precision:integral": 6,
+      "precision:root": 5,
+      "query:value": 1,
+      "query:witness": 0,
+      "residual:height_bound": 0,
+      "residual:tail_modulus": 1
+    },
+    "history": [
+      {
+        "cert:branch": 0,
+        "cert:trace": 0,
+        "guard:denominator": 0,
+        "guard:separation": 0,
+        "precision:integral": 0,
+        "precision:root": 0,
+        "query:value": 1,
+        "query:witness": 0,
+        "residual:height_bound": 0,
+        "residual:tail_modulus": 0
+      },
+      {
+        "cert:branch": 0,
+        "cert:trace": 0,
+        "guard:denominator": 0,
+        "guard:separation": 0,
+        "precision:integral": 0,
+        "precision:root": 3,
+        "query:value": 1,
+        "query:witness": 0,
+        "residual:height_bound": 0,
+        "residual:tail_modulus": 0
+      },
+      {
+        "cert:branch": 0,
+        "cert:trace": 0,
+        "guard:denominator": 1,
+        "guard:separation": 0,
+        "precision:integral": 2,
+        "precision:root": 3,
+        "query:value": 1,
+        "query:witness": 0,
+        "residual:height_bound": 0,
+        "residual:tail_modulus": 0
+      },
+      {
+        "cert:branch": 0,
+        "cert:trace": 0,
+        "guard:denominator": 1,
+        "guard:separation": 0,
+        "precision:integral": 2,
+        "precision:root": 5,
+        "query:value": 1,
+        "query:witness": 0,
+        "residual:height_bound": 0,
+        "residual:tail_modulus": 0
+      },
+      {
+        "cert:branch": 0,
+        "cert:trace": 0,
+        "guard:denominator": 1,
+        "guard:separation": 0,
+        "precision:integral": 6,
+        "precision:root": 5,
+        "query:value": 1,
+        "query:witness": 0,
+        "residual:height_bound": 0,
+        "residual:tail_modulus": 1
+      }
+    ],
+    "least_prefixed_point_checked": true,
+    "live_certificates": [],
+    "monotone_checked": true,
+    "monotone_exhaustive": null,
+    "monotone_note": "symbolic threshold-rule argument; exhaustive monotonicity check would inspect 5143824 comparable pairs",
+    "rank_bound": 20,
+    "required_guards": [
+      "guard:denominator"
+    ],
+    "residuals": [
+      "residual:tail_modulus"
+    ],
+    "seed": {
+      "cert:branch": 0,
+      "cert:trace": 0,
+      "guard:denominator": 0,
+      "guard:separation": 0,
+      "precision:integral": 0,
+      "precision:root": 0,
+      "query:value": 1,
+      "query:witness": 0,
+      "residual:height_bound": 0,
+      "residual:tail_modulus": 0
+    },
+    "strict_steps": 4
+  },
+  "interpretation": {
+    "dead_certificates": [
+      "cert:branch",
+      "cert:trace"
+    ],
+    "exposed_residuals": [
+      "residual:tail_modulus"
+    ],
+    "note": "The JSON validates finite compiler analyses only; it is not an iPRA proof."
+  },
+  "normalized_trace": {
+    "accepted": true,
+    "invariant": "acc = n^2",
+    "states": [
+      {
+        "acc": 0,
+        "n": 0
+      },
+      {
+        "acc": 1,
+        "n": 1
+      },
+      {
+        "acc": 4,
+        "n": 2
+      },
+      {
+        "acc": 9,
+        "n": 3
+      },
+      {
+        "acc": 16,
+        "n": 4
+      },
+      {
+        "acc": 25,
+        "n": 5
+      }
+    ]
+  },
+  "relational_viability": {
+    "least_path": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "viable_layers": [
+      [
+        0,
+        1,
+        2
+      ],
+      [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    ]
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "name": "value-only cyclic precision demonstration",
+  "public_query": "approximate a stable value; do not expose a branch or trace",
+  "resources": [
+    {"name": "query:value", "kind": "query", "capacity": 1, "meaning": "the approximate value is requested"},
+    {"name": "query:witness", "kind": "query", "capacity": 1, "meaning": "a named witness is requested"},
+    {"name": "cert:branch", "kind": "certificate", "capacity": 1, "meaning": "ordered branch label escapes"},
+    {"name": "cert:trace", "kind": "certificate", "capacity": 1, "meaning": "trace replay data escape"},
+    {"name": "precision:root", "kind": "precision", "capacity": 6, "meaning": "root evaluator accuracy"},
+    {"name": "precision:integral", "kind": "precision", "capacity": 6, "meaning": "integral evaluator accuracy"},
+    {"name": "guard:separation", "kind": "guard", "capacity": 1, "meaning": "branch separation is available"},
+    {"name": "guard:denominator", "kind": "guard", "capacity": 1, "meaning": "a quantitative denominator margin is available"},
+    {"name": "residual:tail_modulus", "kind": "residual", "capacity": 1, "meaning": "a tail-modulus producer is still needed"},
+    {"name": "residual:height_bound", "kind": "residual", "capacity": 1, "meaning": "a complete-search height bound is still needed"}
+  ],
+  "rules": [
+    {
+      "label": "value query seeds root precision",
+      "triggers": {"query:value": 1},
+      "requirements": {"precision:root": 3},
+      "source_node": "public-value"
+    },
+    {
+      "label": "named root requires branch and separation",
+      "triggers": {"query:witness": 1},
+      "requirements": {"cert:branch": 1, "guard:separation": 1},
+      "source_node": "named-root"
+    },
+    {
+      "label": "root evaluator requests integral precision",
+      "triggers": {"precision:root": 1},
+      "requirements": {"precision:integral": 2, "guard:denominator": 1},
+      "source_node": "root-evaluator"
+    },
+    {
+      "label": "feedback modulus raises root precision",
+      "triggers": {"precision:integral": 2},
+      "requirements": {"precision:root": 5},
+      "source_node": "integral-evaluator"
+    },
+    {
+      "label": "high precision exposes a tail producer",
+      "triggers": {"precision:root": 5},
+      "requirements": {"precision:integral": 6, "residual:tail_modulus": 1},
+      "source_node": "tail-bound"
+    },
+    {
+      "label": "public trace requires a height bound",
+      "triggers": {"cert:trace": 1},
+      "requirements": {"residual:height_bound": 1},
+      "source_node": "trace-export"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "tail-bound",
+      "kind": "producer",
+      "conclusion": "TailModulus(parameters)",
+      "dependencies": [],
+      "boundary_formulas": ["TailModulus(parameters)"],
+      "certificate_scope": "none",
+      "lean_target": "residual formula in the compiled Prf PRAAx context",
+      "status": "residual"
+    },
+    {
+      "id": "integral-evaluator",
+      "kind": "compute",
+      "conclusion": "IntegralApprox(6, integralCode)",
+      "dependencies": ["tail-bound"],
+      "boundary_formulas": ["DenominatorMargin(parameters)"],
+      "certificate_scope": "local",
+      "lean_target": "Gamma |- [PRAAx] IntegralApprox 6 integralCode",
+      "status": "human-proof"
+    },
+    {
+      "id": "root-evaluator",
+      "kind": "observer",
+      "conclusion": "RootValueApprox(5, valueCode)",
+      "dependencies": ["integral-evaluator"],
+      "boundary_formulas": [],
+      "certificate_scope": "observed",
+      "lean_target": "Gamma |- [PRAAx] RootValueApprox 5 valueCode",
+      "status": "lean-blueprint"
+    },
+    {
+      "id": "public-value",
+      "kind": "verify",
+      "conclusion": "PublicApproximation(valueCode)",
+      "dependencies": ["root-evaluator"],
+      "boundary_formulas": [],
+      "certificate_scope": "none",
+      "lean_target": "Gamma |- [PRAAx] PublicApproximation valueCode",
+      "status": "lean-blueprint"
+    },
+    {
+      "id": "named-root",
+      "kind": "case",
+      "conclusion": "NamedRoot(branchCode)",
+      "dependencies": ["root-evaluator"],
+      "boundary_formulas": ["RootSeparation(parameters)"],
+      "certificate_scope": "named",
+      "lean_target": "Gamma |- [PRAAx] NamedRoot branchCode",
+      "status": "lean-blueprint"
+    }
+  ],
+  "seed": {"query:value": 1},
+  "expected_endpoint": "DenominatorMargin(parameters), TailModulus(parameters) |- [PRAAx] PublicApproximation(valueCode)"
+}
