@@ -128,6 +128,8 @@ import IPRADerivations.Geometry.Circumcircle
 import IPRADerivations.Geometry.ConwayAlgebra
 import IPRADerivations.Geometry.PentagonArithmetic
 import IPRADerivations.Geometry.PappusSegment
+import IPRADerivations.Geometry.TriangularNorm
+import IPRADerivations.Geometry.LocalizationWitness
 import IPRADerivations.Geometry.KerrNewmanAlgebra
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.Geometry.PowerOfPoint
