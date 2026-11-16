@@ -7,7 +7,7 @@ set_option autoImplicit false
 
 namespace IPRABridge.Checks
 
-open LO LO.FirstOrder LeanProofs.ConciseIPRA
+open LO LO.FirstOrder LO.Entailment LeanProofs.ConciseIPRA
 open DiophantineConsistency
 open IPRAStandardTheory (standardTheory)
 open IPRATheoryHilbertBridge (extended)
@@ -53,6 +53,21 @@ theorem twoHypothesesMappedBack (free : ℕ → PTm 2) :
   simpa only [List.map_cons, List.map_nil, toConciseProposition_inEnv, mapTerm] using
     standardToConciseSequent twoHypothesesAtCompoundTerms free
 
+private def successorEquality : Fm PTm 2 :=
+  .eq (PTm.succ (.var 0)) (PTm.succ (.var 1))
+
+/-- Apply the Concise successor-injectivity theorem under Foundation
+assumptions and at compound terms. -/
+theorem applyImportedSuccessorInjectivity :
+    [toStandardInEnv compoundEnv yEqX, toStandardInEnv compoundEnv successorEquality]
+      ⊢[extended standardTheory] toStandardInEnv compoundEnv xEqY := by
+  have portable : Prf PRAAx [] (.imp successorEquality xEqY) := Prf.axm PRAAx.succInj
+  have imported := conciseToStandardSequent portable compoundEnv
+  have implication : extended standardTheory ⊢!
+      toStandardInEnv compoundEnv successorEquality 🡒 toStandardInEnv compoundEnv xEqY :=
+    FiniteContext.emptyPrf imported.some
+  exact ⟨FiniteContext.of implication ⨀ FiniteContext.byAxm₁⟩
+
 private def parameterInduction (body : Fm PTm 2) : Fm PTm 1 :=
   .imp (body.subst (Syn.inst PTm.zero))
     (.imp (.all (.imp body (body.subst (Syn.repl (PTm.succ (.var 0)))))) (.all body))
@@ -94,6 +109,7 @@ theorem existentialEliminationMappedBack : Prf PRAAx witnessHypotheses witnessCo
   (conciseSequent_iff parameterLabel _ _).2 existentialElimination
 
 #print axioms twoHypothesesMappedBack
+#print axioms applyImportedSuccessorInjectivity
 #print axioms inductionMappedBack
 #print axioms existentialEliminationMappedBack
 

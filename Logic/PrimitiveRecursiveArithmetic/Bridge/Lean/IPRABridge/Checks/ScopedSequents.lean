@@ -33,13 +33,25 @@ private def orderWithUnaryZero : Semisentenceᵢ L 1 :=
 private def orderWithNullaryZero : Semisentenceᵢ L 1 :=
   .rel Language.ORing.Rel.lt ![.func (.zero 0) Fin.elim0, .bvar 0]
 
+private def orderHypotheses : List (Semisentenceᵢ L 1) :=
+  [orderWithUnaryZero 🡒 orderWithNullaryZero, orderWithUnaryZero]
+
 /-- The conclusion and both assumptions use the original native order
 syntax, with a free parameter at label 13. -/
 theorem reflectNativeOrderSequent :
-    [(orderWithUnaryZero 🡒 orderWithNullaryZero), orderWithUnaryZero].map (atLabels parameter)
+    orderHypotheses.map (atLabels parameter)
       ⊢[extended standardTheory] atLabels parameter orderWithNullaryZero :=
   (scopedStandardSequent_iff parameter _ _).2 (.impE Prf.hyp0 Prf.hyp1)
 
-#print axioms reflectNativeOrderSequent
+theorem closeNativeOrderSequent :
+    standardTheory ⊢ ∀⁰* (⋀orderHypotheses 🡒 orderWithNullaryZero) :=
+  (scopedStandardSequent_iff_closure parameter _ _).1 reflectNativeOrderSequent
+
+theorem reopenNativeOrderSequent :
+    orderHypotheses.map (atLabels parameter)
+      ⊢[extended standardTheory] atLabels parameter orderWithNullaryZero :=
+  (scopedStandardSequent_iff_closure parameter _ _).2 closeNativeOrderSequent
+
+#print axioms reopenNativeOrderSequent
 
 end IPRABridge.Checks

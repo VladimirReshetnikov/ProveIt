@@ -132,4 +132,36 @@ theorem scopedStandardSequent_iff {n : ℕ} (label : Fin n ↪ ℕ)
     have conclusion := FiniteContext.of (FiniteContext.toDef d.some) ⨀ premises
     exact ⟨FiniteContext.of (Entailment.K_right (scopeEquivalence label p)) ⨀ conclusion⟩
 
+/-- A proof at distinct free-variable labels is equivalent to a proof of
+the universally closed implication from the conjunction of the assumptions. -/
+theorem scopedStandardSequent_iff_closure {n : ℕ} (label : Fin n ↪ ℕ)
+    (Γ : List (Semisentenceᵢ L n)) (p : Semisentenceᵢ L n) :
+    (Γ.map (atLabels label) ⊢[extended standardTheory] atLabels label p) ↔
+      standardTheory ⊢ ∀⁰* (⋀Γ 🡒 p) := by
+  have openedImplication : atLabels label (⋀Γ 🡒 p) =
+      (⋀(Γ.map (atLabels label)) 🡒 atLabels label p) := by
+    show (labelRew label ▹ (⋀Γ 🡒 p)) = _
+    simp only [LogicalConnective.HomClass.map_imply, List.map_conj₂]
+    rfl
+  constructor
+  · intro h
+    have opened : extended standardTheory ⊢! atLabels label (⋀Γ 🡒 p) := by
+      rw [openedImplication]
+      exact FiniteContext.toDef h.some
+    refine ⟨IPRAReferenceCloseFamily.closeFamily standardTheory n _
+      (fun terms => ?_)⟩
+    let assign := Function.extend label terms (fun i => (.fvar i : Term L ℕ))
+    have rewLabel : (Rew.rewrite assign).comp (labelRew label) = Rew.embSubsts terms := by
+      ext i
+      · simp [labelRew, assign, Rew.comp_app, label.injective.extend_apply]
+      · exact Empty.elim i
+    simpa only [atLabels, ← TransitiveRewriting.comp_app, rewLabel] using
+      HilbertProofᵢ.rewrite assign opened
+  · intro h
+    have d := IPRATheoryInstantiation.instantiateTheory (⋀Γ 🡒 p) h.some
+      (fun i => .fvar (label i))
+    change extended standardTheory ⊢! atLabels label (⋀Γ 🡒 p) at d
+    rw [openedImplication] at d
+    exact ⟨FiniteContext.ofDef d⟩
+
 end IPRABridge

@@ -181,17 +181,14 @@ theorem toConciseProposition_inEnv {m n : ℕ} (free : ℕ → PTm n)
   congr 1
   exact funext isEmptyElim
 
-/-- Read each supplied label back as its corresponding Concise variable.
-Unused labels may be assigned zero. -/
-noncomputable def conciseLabelAssignment {n : ℕ} (label : Fin n ↪ ℕ) : ℕ → PTm n := by
-  classical
-  exact fun x =>
-    if hx : ∃ i, label i = x then Syn.var (Classical.choose hx) else PTm.zero
+/-- Read each supplied label back as its corresponding Concise variable,
+assigning zero to the remaining labels. -/
+noncomputable def conciseLabelAssignment {n : ℕ} (label : Fin n ↪ ℕ) : ℕ → PTm n :=
+  Function.extend label Syn.var (fun _ => PTm.zero)
 
 @[simp] theorem conciseLabelAssignment_apply {n : ℕ} (label : Fin n ↪ ℕ) (i : Fin n) :
-    conciseLabelAssignment label (label i) = Syn.var i := by
-  have hi : ∃ j, label j = label i := ⟨i, rfl⟩
-  simp only [conciseLabelAssignment, dif_pos hi, label.injective (Classical.choose_spec hi)]
+    conciseLabelAssignment label (label i) = Syn.var i :=
+  label.injective.extend_apply _ _ _
 
 /-- Reflection for the standard image of a Concise sequent. Distinct labels
 preserve the identity of each variable when transporting the sequent back. -/
