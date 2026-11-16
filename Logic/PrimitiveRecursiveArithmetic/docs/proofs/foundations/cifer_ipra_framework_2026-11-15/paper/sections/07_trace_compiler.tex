@@ -1,0 +1,185 @@
+\section{Finite traces and object-level proof compilation}
+
+\subsection{Trace normal form}
+
+A large class of constructive arguments can be put in the following form.  There is a coded state space, an initial state \(s_0(x)\), a primitive-recursive transition \(T(k,s,x)\), a fuel \(N(x)\), a quantifier-free invariant \(I(k,s,x)\), and a final extractor.  Define
+\[
+ s_{k+1}=T(k,s_k,x).
+\]
+The proof obligations are:
+\begin{align}
+ P(x)&\to I(0,s_0(x),x),\label{eq:trace-base}\\
+ P(x)\wedge I(k,s_k,x)&\to I(k+1,T(k,s_k,x),x),\label{eq:trace-step}\\
+ P(x)\wedge I(N,s_N,x)&\to G(x).\label{eq:trace-finish}
+\end{align}
+The precondition \(P\) may contain quantifiers.  It remains in the permanent context.  Only \(I\) must be quantifier-free.
+
+\begin{theorem}[Trace compilation]\label{thm:trace-compilation}
+Given embedded derivations of \eqref{eq:trace-base}--\eqref{eq:trace-finish}, \iPRA\ derives \(P(x)\to G(x)\).
+\end{theorem}
+
+\begin{proof}
+Work under hypothesis \(P(x)\).  Apply \code{PRA.qfInd} to the formula \(I\), using the base and step derivations.  Universal elimination at the primitive-recursive term \(N(x)\) gives \(I(N,s_N,x)\).  Cut this into the final extractor \eqref{eq:trace-finish}, then discharge \(P\) by implication introduction.
+\end{proof}
+
+The theorem is embodied by \code{CIFER.loop} in the Lean outline.  It is the main route by which executable finite algorithms become object-theory theorems.
+
+\subsection{State design}
+
+The success of a trace proof depends more on state design than on tactic automation.  The state should contain every finite quantity needed to make the induction step local.  Typical components are:
+
+\begin{itemize}
+\item the current algorithmic value;
+\item counters and bounds;
+\item Boolean accumulators for bounded universal facts;
+\item the least witness or best candidate seen so far;
+\item a rank or remaining fuel;
+\item a certificate accumulator, such as Bezout coefficients or a path predecessor table;
+\item an error numerator and denominator bound;
+\item a frozen terminal flag.
+\end{itemize}
+
+A common formalization failure is to keep too little state and then require an unbounded historical statement in the induction step.  The repair is to store a Boolean summary of the history.  For instance, instead of the formula ``every earlier candidate failed,'' store the fold
+\[
+ a_k=\bigwedge_{j<k}\neg p(j)
+\]
+and prove its update equation.
+
+\subsection{Freezing after termination}
+
+Many algorithms terminate before their coarse fuel is exhausted.  To retain primitive recursion with a fixed bound, add a Boolean \(done\).  The transition is
+\[
+ T'(s)=
+ \begin{cases}
+ s,&done(s)=1,\\
+ T(s),&done(s)=0.
+ \end{cases}
+\]
+The invariant includes
+\[
+ done(s)=1\to T'(s)=s.
+\]
+Then the state at the full fuel equals the actual terminal state.  This pattern removes partiality and avoids reasoning about the least termination time unless that time is itself requested.
+
+\subsection{Trace reflection versus trace replay}
+
+There are two ways to internalize a computation.
+
+\paragraph{Recompute.}
+Use the primitive-recursive state function \(s_k\) directly and prove its invariant.  This is compact when the transition is simple.
+
+\paragraph{Replay supplied evidence.}
+Accept a coded trace \(e=(s_0,\ldots,s_N)\), verify every adjacent transition, and derive the endpoint theorem.  This is useful when an external solver or expensive host computation generated the trace.  The verifier is still primitive recursive and the theorem is conditional on its acceptance.
+
+The second pattern is proof-carrying evidence.  It does not trust the external producer.  It can dramatically simplify object arithmetic because checking a step is often easier than reconstructing it.
+
+\subsection{Proof graph compilation}
+
+Let the target residual context \(B\) be fixed.  Maintain a list \(D\) of compiled node formulas and the invariant
+\[
+ \forall A\in D,\quad B,\Gamma\vdash A.
+\]
+For a new node \(A\) with dependency sublist \(E\subseteq D\), the local proof has type
+\[
+ E,B,\Gamma\vdash A.
+\]
+Simultaneous cut replaces every formula of \(E\) by the stored derivation, while formulas in \(B,\Gamma\) are retained by the hypothesis rule.  The new schedule proves every formula in \(A::D\).
+
+\begin{theorem}[Topological proof fold]\label{thm:proof-fold}
+A finite sequence of well-typed local node derivations compiles to a derivation of every node from the common residual and permanent context.
+\end{theorem}
+
+\begin{proof}
+Induct on the node sequence.  The empty schedule is vacuous.  The step is exactly simultaneous cut as described above.  Old node derivations remain available by the induction hypothesis.
+\end{proof}
+
+This theorem is logically simpler than the residual theorem because the common boundary context has already been computed.  Its Lean representation is the structure \code{ResidualBuild}.
+
+\subsection{Local proof constructors}
+
+A node generator should return more than a formula.  A useful host record contains:
+
+\begin{lstlisting}
+structure CompiledNode where
+  formula    : Fm PTm n
+  dependency : List Nat
+  localProof : dependencyFormulas ++ boundary ++ Gamma
+                 |- [PRAAx] formula
+  evidence   : Option Nat
+  sourceHash : String
+\end{lstlisting}
+
+The \code{sourceHash} is not mathematically necessary, but it permits audit tooling to check that a proof object corresponds to the intended generated source.  Evidence may be omitted when the node is a pure logical or algebraic lemma.
+
+\subsection{Substitution and parametric theorems}
+
+A local derivation is often proved once with variables and then instantiated at concrete terms.  The ConciseIPRA deduction system is closed under simultaneous substitution.  Therefore a library lemma
+\[
+ \Gamma(\vec x)\vdash A(\vec x)
+\]
+can be instantiated by a term tuple \(\vec t\) to obtain
+\[
+ \Gamma(\vec t)\vdash A(\vec t).
+\]
+This is how generic bounded-search, list, and arithmetic lemmas become application nodes without reproving their logical structure.
+
+Care is required under binders.  The checked syntax library already provides capture-avoiding simultaneous substitution and the needed shift/instantiation laws.  Application code should use those operations rather than implement ad hoc de Bruijn manipulation.
+
+\subsection{Equality transport}
+
+Finite calculations often produce a term definitionally different from the term expected by a theorem.  The deduction system includes a simultaneous Leibniz rule: pointwise provably equal substitutions may be exchanged in any formula.  Derived helpers provide symmetry, transitivity, and congruence.
+
+This supports a useful separation:
+
+\begin{itemize}
+\item arithmetic nodes prove equations between concrete terms;
+\item logical nodes transport formulas along those equations;
+\item the final theorem need not expose the implementation term.
+\end{itemize}
+
+The separation also helps proof compression.  A normalized term or certified rewrite system can reduce the number of equality transports without changing the interface theorem.
+
+\subsection{One large trace versus many local traces}
+
+PFIG-style normalization suggests combining a query-specific graph into one primitive recursion with one large invariant.  Local proof graphs suggest compiling each bounded loop separately.  Both are valid, and the choice is pragmatic.
+
+\paragraph{One large trace} can reduce repeated coding and make demand replay explicit.  It may, however, produce a very large invariant and make local debugging difficult.
+
+\paragraph{Many local traces} provide reusable lemmas and smaller invariants.  Their composition introduces more cut steps and intermediate formulas.
+
+\CIFER\ permits a hybrid.  Strongly coupled numerical nodes are fused into a trace component; semantically distinct components remain separate proof nodes.  The residual and demand passes are independent of this fusion choice.
+
+\subsection{Proof-term size and checker simplicity}
+
+A direct natural-deduction proof graph may repeat large subderivations after substitution.  Three techniques control size without changing trust assumptions:
+
+\begin{enumerate}
+\item use named Lean definitions so the kernel shares expression structure;
+\item package recurring object derivations as lemmas and instantiate them;
+\item normalize arithmetic certificates externally but verify compact identities internally.
+\end{enumerate}
+
+The trusted checker remains Lean's kernel plus the existing embedded calculus definitions.  The host compiler can be large and optimized because its output is independently checked.
+
+\subsection{Axiom and endpoint audit}
+
+A successful build should automatically report:
+
+\begin{enumerate}
+\item the exact type of the public theorem;
+\item the transitive Lean axioms reported by \code{\#print axioms};
+\item occurrences of \code{sorry}, \code{axiom}, and \code{unsafe} in new source;
+\item the residual boundary list;
+\item the hash of generated graph metadata;
+\item the toolchain and upstream commit.
+\end{enumerate}
+
+A clean native theorem with no \code{sorry} is not enough if its type is not \code{Prf PRAAx}.  Conversely, ordinary Lean axioms such as quotient soundness in the metatheory do not become object-theory axioms merely because the embedding is implemented in Lean; the audit should report both layers clearly.
+
+\subsection{The final export}
+
+Once the compiler produces
+\[
+ \Gamma\vdash_{\PRAAx}G,
+\]
+the checked theorem \code{pra\_iff\_native} gives a native derivation of the translated sequent.  Round-trip theorems show that translation preserves the intended proof content.  This final step is small by design.  All mathematical work has already occurred in the ordinary derivation.

@@ -1,0 +1,195 @@
+\section{Boolean reflection, bounded search, and finite enumeration}
+
+\subsection{Boolean conventions}
+
+Use \(0\) and \(1=S0\) as false and true.  Fix primitive-recursive operations
+\[
+ \operatorname{not},\quad \operatorname{and},\quad \operatorname{or},\quad
+ \operatorname{imp},\quad \operatorname{eqb},\quad \operatorname{leb}
+\]
+with truth-table equations.  For example,
+\[
+ \operatorname{and}(a,b)=
+ \begin{cases}
+ 1,&a=1\text{ and }b=1,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+The actual \iPRA\ development need not use case-defined notation; every operation is expressed by primitive recursion or a selector term.  The important facts are equations showing that outputs are Boolean and reflect the intended decidable relation.
+
+\subsection{Equality and order reflection}
+
+For natural numbers, define truncated subtraction and zero test primitively recursively.  Then
+\[
+ \operatorname{eqb}(a,b)=1
+ \quad\Longleftrightarrow\quad a=b
+\]
+and
+\[
+ \operatorname{leb}(a,b)=1
+ \quad\Longleftrightarrow\quad a\le b.
+\]
+Both directions are provable by quantifier-free induction.  The repository already contains arithmetic comparison modules that should be reused rather than rebuilt in each application.
+
+For signed integers and rationals, reflection is reduced to natural arithmetic on canonical codes.  Rational equality
+\[
+ \frac{a}{b}=\frac{c}{d}
+\]
+with positive denominators is checked by signed cross multiplication \(ad=cb\).  Rational order is similarly checked without division.  Canonical normalization is useful for output but not required for equality reflection if a certified setoid is used.
+
+\subsection{Fixed-formula Booleanization}
+
+Let \(A(\vec x)\) be a fixed quantifier-free formula.  Construct a Boolean term \(\beta_A(\vec x)\) recursively:
+\begin{align*}
+ \beta_{s=t} &= \operatorname{eqb}(s,t),\\
+ \beta_{\bot} &= 0,\\
+ \beta_{B\wedge C} &= \operatorname{and}(\beta_B,\beta_C),\\
+ \beta_{B\vee C} &= \operatorname{or}(\beta_B,\beta_C),\\
+ \beta_{B\to C} &= \operatorname{imp}(\beta_B,\beta_C).
+\end{align*}
+
+\begin{theorem}[Fixed quantifier-free reflection]\label{thm:qf-reflection}
+For every fixed quantifier-free formula \(A\), one can effectively construct a primitive-recursive Boolean term \(\beta_A\) and embedded derivations
+\begin{align*}
+ A &\to \beta_A=1,\\
+ \beta_A=1 &\to A.
+\end{align*}
+Moreover \(\iPRA\) proves \(\beta_A=0\vee\beta_A=1\).
+\end{theorem}
+
+\begin{proof}
+Recurse at the host level over the fixed syntax tree of \(A\).  Atomic equality is the equality-reflection theorem.  The false formula is immediate from successor nonzeroness.  For conjunction and disjunction, use the Boolean truth tables and the induction hypotheses.  For implication, reason intuitionistically as follows.
+
+If \(B\to C\), inspect the Boolean value of \(\beta_B\).  If it is \(0\), then Boolean implication is \(1\).  If it is \(1\), reflection gives \(B\), hence \(C\), and then \(\beta_C=1\); again Boolean implication is \(1\).  Conversely, assume \(\operatorname{imp}(\beta_B,\beta_C)=1\) and assume \(B\).  Reflection gives \(\beta_B=1\).  The truth table then yields \(\beta_C=1\), and reflection gives \(C\).  Thus \(B\to C\).
+
+Booleanness is proved simultaneously from the truth-table equations.  All syntax recursion occurs in the compiler; the generated proof contains only the fixed cases of \(A\).
+\end{proof}
+
+The implication case illustrates why intuitionistic logic is sufficient.  Decidability belongs to the Boolean value of the fixed quantifier-free formula, not to arbitrary formulas.
+
+\subsection{Strictly bounded formulas}
+
+Extend the grammar with
+\[
+ \exists z<t(\vec x)\,B(z,\vec x),
+ \qquad
+ \forall z<t(\vec x)\,B(z,\vec x),
+\]
+where \(B\) is already Booleanized.  Define finite folds
+\begin{align*}
+ E(0)&=0,&E(k+1)&=\operatorname{or}(E(k),\beta_B(k)),\\
+ U(0)&=1,&U(k+1)&=\operatorname{and}(U(k),\beta_B(k)).
+\end{align*}
+Then use \(E(t)\) and \(U(t)\) as the Booleanizers.
+
+\begin{theorem}[Bounded reflection]\label{thm:bounded-reflection}
+Every fixed strictly bounded formula has a primitive-recursive Booleanizer with the same two reflection directions as in \cref{thm:qf-reflection}.
+\end{theorem}
+
+\begin{proof}
+For the existential fold, prove by quantifier-free induction on \(k\) that
+\[
+ E(k)=1\quad\Longleftrightarrow\quad \exists z<k\;B(z).
+\]
+The induction step uses the disjunction
+\[
+ (\exists z<k\;B(z))\vee B(k).
+\]
+The bounded existential on the right is a human abbreviation for the finite fold already built at stage \(k\); the object invariant may be stated entirely through the Boolean equation \(E(k)=1\) plus the least-witness state described below.  Alternatively, prove both directions by iterating local introduction and elimination proofs along the fixed fold.
+
+The universal case is analogous with conjunction.  Nested bounded quantifiers are handled by host recursion on formula structure; every inner Booleanizer is fixed before the outer fold is generated.
+\end{proof}
+
+\subsection{Least bounded search state}
+
+Let \(P(z,\vec x)\) be represented by a Boolean checker \(p(z,\vec x)\).  Search the interval \([0,b)\).  A convenient state is a pair \((f,w)\):
+\begin{itemize}
+\item \(f=0\) means no witness has been seen;
+\item \(f=1\) means \(w\) is the least witness seen so far.
+\end{itemize}
+Initialize \((0,0)\).  At stage \(k\), if \(f=1\), preserve the state.  If \(f=0\) and \(p(k)=1\), set \((1,k)\).  Otherwise preserve \((0,0)\).
+
+All branches are primitive recursive because \(p\) is Boolean.  The invariant at stage \(k\) is the conjunction of the following quantifier-free or Booleanized clauses:
+\begin{enumerate}
+\item \(f=0\vee f=1\);
+\item if \(f=0\), then \(p(j)=0\) for every \(j<k\);
+\item if \(f=1\), then \(w<k\), \(p(w)=1\), and \(p(j)=0\) for every \(j<w\).
+\end{enumerate}
+The bounded universal clauses are represented by accumulated Boolean conjunctions, so the actual invariant is quantifier-free.
+
+\begin{theorem}[Least bounded search]\label{thm:least-search}
+The search state after \(b\) steps satisfies exactly one of:
+\begin{enumerate}
+\item \(f=0\) and no \(z<b\) satisfies \(P(z)\);
+\item \(f=1\), \(w<b\), \(P(w)\), and no \(z<w\) satisfies \(P(z)\).
+\end{enumerate}
+All conclusions have embedded \iPRA\ derivations generated from one quantifier-free induction invariant.
+\end{theorem}
+
+\begin{proof}
+The base state satisfies the invariant vacuously.  For the step, split on \(f\).  If a witness was already found, preservation is immediate.  Otherwise split on \(p(k)\).  If it is false, extend the accumulated no-witness conjunction.  If it is true, store \(k\); all earlier checks are false by the old invariant, so minimality holds.  Boolean exhaustiveness supplies the finite cases intuitionistically.
+
+Apply quantifier-free induction to obtain the invariant at \(b\).  Reflect the final Boolean clauses to the stated formulas.
+\end{proof}
+
+\subsection{Complete bounded enumeration}
+
+To enumerate all witnesses below \(b\), scan the interval and append \(k\) exactly when \(p(k)=1\).  Encode the output list in a bounded sequence state.  Maintain:
+\begin{enumerate}
+\item every stored entry is below the current stage and satisfies \(P\);
+\item entries are strictly increasing;
+\item every \(j<k\) satisfying \(P\) occurs exactly once;
+\item the list length is at most \(k\).
+\end{enumerate}
+Each clause is a bounded Boolean relation on the coded state.
+
+\begin{theorem}[Bounded enumeration]\label{thm:bounded-enumeration}
+For every fixed decidable predicate \(P\), there is a primitive-recursive function \(L(b,\vec x)\) such that \iPRA\ proves:
+\begin{align*}
+ &\forall i<|L|\;\bigl(L_i<b\wedge P(L_i)\bigr),\\
+ &\forall z<b\;\bigl(P(z)\to\exists i<|L|\;L_i=z\bigr),\\
+ &\text{the entries of }L\text{ are strictly increasing.}
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+Use the scan and invariant above.  Appending at the current stage preserves increasing order.  Soundness of old entries is preserved; soundness of the new entry follows from the branch condition.  Completeness below \(k+1\) splits a witness \(z<k+1\) into \(z<k\) or \(z=k\).  The first case uses the old invariant, and the second uses the append branch.  All comparisons and list accesses are bounded and Booleanized.
+\end{proof}
+
+\subsection{Finite maximum and argmin}
+
+Finite extrema are similarly primitive recursive.  For a nonempty list \(L\) and a natural-valued score \(h\), scan with state \((m,i)\) recording the maximum score and its first index.  The invariant states that \(m\) is the maximum of the processed prefix and \(i\) is its least attaining index.  A minimum uses the same pattern after initialization at the first entry.
+
+These routines support:
+\begin{itemize}
+\item list-to-height conversion by maximum;
+\item stable finite-net infima and suprema;
+\item canonical choice \emph{within a fixed finite cloud};
+\item lexicographically least viable paths;
+\item finite optimization certificates.
+\end{itemize}
+The last two are constructive because the search domain is explicitly finite.  They should not be confused with a global selector over an ideal infinite object.
+
+\subsection{Bounded descent}
+
+Suppose a transition \(T(s)\) strictly decreases a natural rank \(r(s)\) whenever a terminal predicate is false.  Then at most \(r(s_0)\) active steps are possible.  Run exactly that many iterations, freezing the state after termination.  The invariant states:
+\begin{enumerate}
+\item the state is valid;
+\item if terminal, it remains terminal and frozen;
+\item if not terminal, the rank has decreased by at least the number of active steps;
+\item the public relation between the current state and the input is preserved.
+\end{enumerate}
+This compiles Euclidean descent, coefficient reduction, finite group descent, lexicographic descent after mixed-radix ranking, and many normalization procedures.
+
+\subsection{Mixed-radix rank for fixed tuples}
+
+For a tuple \((a_0,\ldots,a_{d-1})\) with coordinate caps \(0\le a_i<C_i\), define
+\[
+ \rho(a)=a_0+C_0a_1+C_0C_1a_2+\cdots+
+ \left(\prod_{i<d-1}C_i\right)a_{d-1}.
+\]
+For fixed \(d\), \(\rho\) is primitive recursive.  Lexicographic decrease with the highest coordinate most significant implies strict decrease of \(\rho\), provided each coordinate remains under its cap.  Thus fixed-dimensional lexicographic descent receives an ordinary natural fuel.  The cap proof belongs in the invariant.
+
+\subsection{Why bounded search solves many apparent logical problems}
+
+Finite mathematical statements are often written with existential quantifiers even when a bound is available.  Once the bound and a decidable verifier are explicit, existential introduction is reduced to least bounded search.  Similarly, a finite universal is a Boolean fold, and a finite disjunction is a bounded route certificate.  This does not trivialize the mathematics: obtaining the correct bound may be the hard residual.  It does make the downstream constructive logic systematic.

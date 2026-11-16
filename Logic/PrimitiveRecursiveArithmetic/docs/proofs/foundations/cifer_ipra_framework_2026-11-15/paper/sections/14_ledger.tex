@@ -1,0 +1,78 @@
+\appendix
+\section{Theorem and implementation ledger}
+
+The status terms used below are:
+
+\begin{description}[style=nextline]
+\item[Human-complete.] A full mathematical argument is given in this report.
+\item[Finite-tested.] The exact Python reference exercises nontrivial finite instances.
+\item[Lean source.] Definitions or proof-composition source is supplied, but no build is claimed.
+\item[Formalization target.] A precise endpoint and dependency path are specified, but the embedded proof is not yet constructed.
+\item[Residual/open.] A theorem-specific producer is deliberately left as a boundary.
+\end{description}
+
+\small
+\begin{longtable}{p{0.07\textwidth}p{0.34\textwidth}p{0.16\textwidth}p{0.33\textwidth}}
+\toprule
+ID & Claim & Status & Formal route \\
+\midrule
+\endfirsthead
+\toprule
+ID & Claim & Status & Formal route \\
+\midrule
+\endhead
+R1 & Reachability marks exactly the dependency closure of a target in a finite topological graph. & Human-complete; finite-tested & \code{ResidualGraph.reachable\_correct}. \\
+R2 & Reachable primitive boundary leaves form the canonical dependency-normal residual. & Human-complete; finite-tested & \code{residual\_characterization}. \\
+R3 & Every graph node is derivable from its residual boundary plus the permanent context. & Human-complete; Lean source & Fold with \code{ResidualBuild.stepFrom}. \\
+R4 & Supplying embedded proofs of all residual formulas closes the target. & Human-complete; Lean source & \code{ResidualBuild.close}; simultaneous cut. \\
+R5 & Improving a producer substitutes its residual into all downstream residuals without changing downstream local proofs. & Human-complete & Recursive residual equation and context weakening. \\
+B1 & Every fixed quantifier-free formula has a primitive-recursive Booleanizer with two-way reflection. & Human-complete; formalization target & Host recursion on fixed syntax; equality reflection and truth tables. \\
+B2 & Every fixed strictly bounded formula has a reflected Boolean fold. & Human-complete; formalization target & \code{PRA.qfInd} on conjunction/disjunction folds. \\
+S1 & Least bounded search proves soundness, minimality, and the no-witness branch. & Human-complete; finite-tested pattern & Search-state invariant; \code{CIFER.loop}. \\
+S2 & Bounded filtering gives a sound, complete, increasing witness list. & Human-complete; formalization target & Sequence state and bounded completeness invariant. \\
+S3 & Finite maxima/minima and least attaining indices are primitive recursive and reflected. & Human-complete; finite-tested use & Scan invariant. \\
+D1 & Capped inflationary demand iteration stabilizes within the rank bound. & Human-complete; finite-tested; Lean source definitions & Complete proofs in \code{DemandClosure.lean}; object trace after tuple coding. \\
+D2 & Under monotonicity, the stabilized demand is the least prefixed point above the seed. & Human-complete & Induction comparing every iterate with an arbitrary prefixed point. \\
+T1 & A fixed bounded trace with QF invariant yields its invariant at arbitrary PR fuel. & Human-complete; Lean source & \code{invariantAt} from \code{PRA.qfInd}. \\
+T2 & A terminal extractor may conclude an arbitrary quantified formula. & Human-complete; Lean source & \code{CIFER.loop}; implication elimination. \\
+T3 & Freezing after termination turns partial early exit into a fixed-fuel primitive recursion. & Human-complete; formalization target & Boolean done flag in invariant. \\
+P1 & Topological proof schedules compose local embedded derivations by simultaneous cut. & Human-complete; Lean source & \code{ResidualBuild.step} and \code{stepFrom}. \\
+V1 & Backward viability is equivalent to existence of a finite compatible path. & Human-complete; finite-tested; Lean source definitions & Reverse-time Boolean table; induction on horizon. \\
+V2 & A nonempty viable system has a lexicographically least finite path. & Human-complete; finite-tested & Repeated least bounded search. \\
+O1 & Exact stable observations eliminate finite witness choice. & Human-complete; finite-tested; Lean composition source & Least viable member plus pairwise stability. \\
+O2 & Diameter-bounded observations determine an approximate branch-independent output. & Human-complete; finite-tested & Finite maximum of rational pairwise distances. \\
+O3 & A positive separation gap collapses an approximate cloud to one exact label. & Human-complete; formalization target & Triangle inequality plus finite label search. \\
+C1 & Changing finite horizons yield a Cauchy name under diameter and motion-tail moduli. & Human-complete; formalization target & Common-horizon comparison; no infinite branch choice. \\
+H1 & A positive height bound yields a complete finite list for a decidable coded predicate. & Human-complete & Bounded code enumeration and filter reflection. \\
+H2 & A complete finite list yields a height bound by finite maximum. & Human-complete & List completeness plus maximum theorem. \\
+H3 & A cardinality bound alone is not a search cutoff or complete list producer. & Logical distinction explained & Separate interface formulas; no conversion node. \\
+A1 & Finite auxiliary exhaustion avoids a global selector. & Human-complete & Bounded union of branch outputs plus target filter. \\
+E1 & Exact rational bisection preserves the bracket for \(y^3+y=x\). & Human-complete; finite-tested & Rational order reflection and QF trace invariant. \\
+E2 & Coarse primitive-recursive fuel gives interval width at most \(2^{-q}\). & Human-complete; finite-tested & Exponential lower bound and trace width equation. \\
+E3 & Midpoints form a regular name satisfying the cubic equation and uniqueness. & Human-complete; formalization target & Nested intervals, Lipschitz bound, strict monotonicity. \\
+X1 & General effective Faltings/Siegel height producer. & Residual/open & Supply an embedded \code{HeightBound} proof; downstream H1 closes. \\
+X2 & General rational Mordell--Weil covering representatives. & Residual/open & Supply \code{RationalCover}; bounded descent then closes. \\
+X3 & Full effective constants for strong uniform prime-distribution estimates. & Residual/open & Supply \code{EffectiveEstimate}; finite arithmetic consumer closes. \\
+X4 & Exact selector through arbitrary collisions without a gap. & Deliberately not claimed & Use a finite relation/stable observable, or supply a positive gap. \\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\section{Application migration checklist}
+
+For each proposed theorem, record the following items before writing a large proof script.
+
+\begin{enumerate}
+\item \textbf{Target formula.} State the exact \code{Fm PTm n} endpoint, including free parameters and guards.
+\item \textbf{Observation.} Identify the finite output actually consumed: Boolean, rational interval, list, finite relation, equality certificate, or represented name.
+\item \textbf{Codes.} Fix canonical or setoid codes and all validity predicates.
+\item \textbf{Producer list.} Name every algorithm or theorem that must output finite evidence.
+\item \textbf{Boundary list.} Mark producers not yet supplied by actual embedded derivations.
+\item \textbf{Demand map.} Give output-to-input precision and resource transformers, including caps for cycles.
+\item \textbf{Trace list.} Give each bounded loop a state, transition, fuel, and explicit QF invariant.
+\item \textbf{Local proof list.} Give each proof node an actual dependency sequent.
+\item \textbf{Relational choice audit.} Explain whether a selector is finite, stable, gap-guarded, or unnecessary.
+\item \textbf{Endpoint audit.} Confirm whether the public declaration is native Lean, \code{Prf PRAAx}, or \code{NPrf}.
+\item \textbf{Residual report.} Export reachable boundary formulas and remove irrelevant ones.
+\item \textbf{Validation report.} Separate finite tests, PDF/human proof review, Lean build, and axiom audit.
+\end{enumerate}

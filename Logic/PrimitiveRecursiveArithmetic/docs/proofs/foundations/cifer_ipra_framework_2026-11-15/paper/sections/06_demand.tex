@@ -1,0 +1,180 @@
+\section{Capped monotone demand closure}
+\label{sec:demand-closure}
+
+\subsection{Why demand propagation needs its own theorem}
+
+In a simple acyclic numerical program, one computes required input precision by traversing the graph backwards.  Real proof interfaces are often less simple.  A division node needs a lower bound on the denominator; obtaining that lower bound may require a finer approximation; the finer approximation changes the arithmetic size bound; and the size bound influences later precision.  Similar feedback occurs in root isolation, interval Newton methods, finite nets, normalization, and analytic estimates.
+
+This feedback is not a logical proof cycle.  It is a finite system of resource inequalities.  \CIFER\ solves it before forward execution.
+
+\subsection{Finite demand space}
+
+Fix \(d\) demand coordinates and caps \(C_0,\ldots,C_{d-1}\).  The demand space is
+\[
+ D=\prod_{i<d}\{0,1,\ldots,C_i\}
+\]
+with componentwise order.  A demand vector may contain requested bits of precision, loop fuel, coefficient height, finite-net depth, denominator exponent, list length, or any other natural resource.
+
+Let \(s\in D\) be the externally requested seed.  Let
+\[
+ F:D\to\Nat^d
+\]
+be the aggregate backward transformer.  The intended constraints are \(d\ge s\) and \(d\ge F(d)\).  Define the inflationary operator
+\[
+ H(d)=d\vee F(d),
+\]
+where \(\vee\) is componentwise maximum.  A valid closure is a fixed point of \(H\) below the cap.
+
+\subsection{Assumptions}
+
+The finite closure theorem uses three explicit assumptions.
+
+\begin{enumerate}
+\item \textbf{Monotonicity:} if \(a\le b\), then \(F(a)\le F(b)\).
+\item \textbf{Cap preservation along the trace:} starting at \(s\), every computed \(H^k(s)\) lies below \(C\).
+\item \textbf{Primitive recursiveness:} the fixed-dimensional transformer and componentwise maximum are primitive recursive.
+\end{enumerate}
+
+Cap preservation may be established in several ways.  A coarse application theorem may prove \(F(C)\le C\), which by monotonicity makes the entire box invariant.  Alternatively, the executable trace can reject cap overflow and return a residual obligation requesting a larger cap.  The framework never silently truncates an overflowing demand, because truncation could invalidate downstream accuracy.
+
+\subsection{Rank argument}
+
+Define
+\[
+ \rho(d)=\sum_{i<d} d_i.
+\]
+If \(H(d)\ne d\), then at least one coordinate strictly increases and no coordinate decreases, so
+\[
+ \rho(H(d))>\rho(d).
+\]
+Every point below the cap satisfies \(\rho(d)\le\rho(C)\).  Thus there are at most \(\rho(C)-\rho(s)\) strict steps.
+
+\begin{theorem}[Capped stabilization]\label{thm:demand-stabilization}
+Assume the iterates \(d_0=s\), \(d_{k+1}=H(d_k)\) remain below \(C\).  Then for some
+\[
+ k\le \rho(C)-\rho(s)
+\]
+we have \(d_{k+1}=d_k\).  Running
+\[
+ T=\rho(C)-\rho(s)+1
+\]
+steps and freezing after the first fixed point returns a fixed point.
+\end{theorem}
+
+\begin{proof}
+If every one of the first \(T\) transitions were strict, the rank would increase at least \(T\) times, giving
+\[
+ \rho(d_T)\ge\rho(s)+T>\rho(C),
+\]
+contrary to cap preservation.  Therefore some transition is stationary.  Since \(H(d)=d\), all later iterates remain equal to \(d\).
+\end{proof}
+
+The proof needs no classical principle and no appeal to an abstract lattice theorem.  It is a bounded natural descent argument suitable for quantifier-free induction.
+
+\subsection{Least fixed point}
+
+\begin{theorem}[Least demand closure]\label{thm:least-demand}
+Assume \(F\) is monotone and the capped iteration stabilizes at \(d^*\).  If \(e\in D\) satisfies \(s\le e\) and \(F(e)\le e\), then \(d^*\le e\).  Hence \(d^*\) is the least prefixed point above the seed.
+\end{theorem}
+
+\begin{proof}
+Induct on \(k\) to show \(d_k\le e\).  The base is \(s\le e\).  If \(d_k\le e\), monotonicity gives \(F(d_k)\le F(e)\le e\), and also \(d_k\le e\).  Therefore
+\[
+ d_{k+1}=d_k\vee F(d_k)\le e.
+\]
+At stabilization, \(d^*=d_k\le e\).
+\end{proof}
+
+Leastness matters because it prevents gratuitous precision blowup.  It also gives a canonical finite resource assignment without choosing among incomparable solutions.
+
+\subsection{Object-language trace invariant}
+
+For fixed dimension, encode a demand vector as one natural number with primitive-recursive projections and updates.  The closure trace uses state
+\[
+ (k,d,f),
+\]
+where \(k\) is the step counter, \(d\) the current vector, and \(f\) a Boolean fixed flag.  The transition computes \(d'=H(d)\); if \(d'=d\), it sets \(f=1\) and freezes; otherwise it stores \(d'\).
+
+A quantifier-free invariant records:
+\begin{enumerate}
+\item \(d\le C\);
+\item \(s\le d\);
+\item \(d\) is the declared \(k\)-th frozen iterate;
+\item the trace is componentwise inflationary;
+\item if \(f=1\), then \(H(d)=d\);
+\item if \(f=0\), then \(\rho(d)\ge\rho(s)+k\) for active steps, up to the first fixed point.
+\end{enumerate}
+All vector comparisons are finite Boolean conjunctions.  Apply \code{PRA.qfInd} for the explicit fuel \(T\), then use the rank contradiction to show the final flag is true.
+
+\subsection{Demand obligations as residuals}
+
+A cap is mathematical data.  If the proof cannot establish that the demand transformer remains below a proposed cap, the correct output is not an arbitrary large hard-coded integer.  There are two honest alternatives:
+
+\begin{enumerate}
+\item return a residual boundary formula asserting a sufficient cap and its preservation proof;
+\item return a partial conditional result: if closure stays below \(C\), then the downstream theorem holds at the requested precision.
+\end{enumerate}
+
+For many fixed finite applications, a crude primitive-recursive cap is easy.  For deep analytic applications, the cap may encode exactly the missing effective constant and should remain visible.
+
+\subsection{A three-coordinate example}
+
+Suppose a consumer needs output precision \(a\), an intermediate normalization needs \(b\), and a supplied denominator certificate has strength \(c\).  The constraints are
+\[
+ a\ge b+1,
+ \qquad
+ b\ge c+2,
+ \qquad
+ c\ge q.
+\]
+Starting from \((0,0,q)\), use
+\[
+ F(a,b,c)=(b+1,c+2,q).
+\]
+The inflationary iteration stabilizes at
+\[
+ (q+3,q+2,q).
+\]
+For \(q=3\), the reference implementation obtains \((6,5,3)\).  The example is trivial algebraically, but it models a common pattern: the demanded precision at one node depends on a bound produced downstream.
+
+\subsection{Combining acyclic and cyclic demand propagation}
+
+Most demand edges are acyclic.  It is wasteful to put the whole graph into one large fixed-point system.  Collapse strongly connected components of the demand graph.  The component graph is a DAG.  Process components in reverse topological order:
+
+\begin{itemize}
+\item a singleton without a self-loop uses direct backward propagation;
+\item a cyclic component uses capped monotone closure on only its coordinates;
+\item outgoing demands are then propagated to earlier components.
+\end{itemize}
+
+Strongly connected components are computed at the host level on the fixed graph.  The object theory receives the resulting fixed vector and, when desired, the finite closure trace and its verification theorem.
+
+\subsection{Changing-parameter recursion}
+
+Some algorithms change a parameter that affects future precision, such as a shrinking interval width, an evolving degree bound, or a denominator estimate.  The safest compilation is a two-pass bounded trace:
+
+\begin{enumerate}
+\item a reverse or summary pass computes the demand attached to each time step;
+\item a forward replay runs the actual state transition using those precomputed demands.
+\end{enumerate}
+
+Encode both arrays in one finite state if necessary.  The invariant says that the backward table satisfies every local demand constraint and that the forward prefix is valid at the stored demand.  This prevents an informal proof from choosing precision adaptively in a way that is not represented by a primitive-recursive term.
+
+\subsection{Demand closure and proof compilation commute}
+
+Demand closure determines terms and bounds used in local node formulas.  Therefore it must be completed before the final object formulas are frozen.  Once the fixed point is computed, graph specialization emits concrete terms at those demands.  The proof compiler then sees an ordinary acyclic graph.
+
+It is possible to internalize the demand trace itself and derive the fixed-point equations in \iPRA.  This is desirable when the demand assignment appears in the public theorem or when the generator must be independently audited.  It is not necessary to represent the host graph algorithm as a universal object program; only the fixed specialized recurrence is internalized.
+
+\subsection{Failure diagnostics}
+
+The finite closure algorithm has useful explicit failure modes:
+
+\begin{description}[style=nextline]
+\item[Nonmonotone transformer.] The least-fixed-point theorem is unavailable.  Split cases or strengthen the state until monotonicity holds.
+\item[Cap overflow.] Return the offending coordinate and a residual request for a larger cap or stronger side certificate.
+\item[Dimension mismatch.] This is a host graph error, not mathematics.
+\item[Unstable after rank fuel.] Either the cap invariant or the implementation is wrong; the rank proof makes this a checkable contradiction.
+\end{description}
+
+These diagnostics are preferable to a proof script that fails deep inside a numerical inequality with no indication of the missing resource theorem.

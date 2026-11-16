@@ -1,0 +1,213 @@
+\section{Resolution of recurring application difficulties}
+
+\subsection{Diophantine finiteness: height bounds, lists, and counts}
+
+Let \(R(u,z)\) be a decidable predicate saying that code \(z\) is a rational or integral point on the object with parameter \(u\).  Let \(h(z)\) be a primitive-recursive canonical height on codes, and assume that for each \(H\) the set of valid codes with \(h(z)\le H\) is contained in an explicitly enumerable finite interval.
+
+\begin{theorem}[Height bound to complete list]\label{thm:height-to-list}
+If \iPRA\ proves
+\[
+ \forall z\;(R(u,z)\to h(z)\le H(u)),
+\]
+then a primitive-recursive bounded filter produces a list \(L(u)\) such that \iPRA\ proves
+\[
+ \forall z\;\bigl(R(u,z)\leftrightarrow z\in L(u)\bigr),
+\]
+with membership interpreted through the canonical code convention.
+\end{theorem}
+
+\begin{proof}
+Use the height bound and coding theorem to compute a finite code cutoff \(C(u,H(u))\).  Enumerate all codes below the cutoff and retain exactly those satisfying the Boolean checker for \(R\).  Soundness follows from filtering.  For completeness, any solution has height at most \(H(u)\), hence has a canonical code below the cutoff, and therefore is inspected and retained.  The bounded enumeration theorem supplies the embedded list proof.
+\end{proof}
+
+\begin{theorem}[Complete list to height bound]\label{thm:list-to-height}
+If \iPRA\ proves that a finite list \(L(u)\) contains every solution, then the finite maximum of \(h\) on \(L(u)\) is a height bound for every solution.
+\end{theorem}
+
+\begin{proof}
+Compute \(M=\max\{h(z):z\in L(u)\}\), taking \(M=0\) for an empty list.  Given a solution \(z\), completeness gives an index \(i<|L|\) with \(z=L_i\); the maximum theorem gives \(h(z)\le M\).
+\end{proof}
+
+Thus positive height bounds and complete finite lists are constructively interconvertible for a decidable coded point relation.  This resolves the downstream part of the Faltings and Siegel packets.
+
+A cardinality bound
+\[
+ |\{z:R(u,z)\}|\le N(u)
+\]
+does not provide either construction.  It says how many solutions may exist, not where to stop searching.  Consequently, \CIFER\ assigns distinct boundary formulas:
+\begin{align*}
+ \operatorname{CountBound}(u,N),\qquad
+ \operatorname{HeightBound}(u,H),\qquad
+ \operatorname{CompleteList}(u,L).
+\end{align*}
+Only the last two are interchangeable by the generic nodes above.
+
+\paragraph{Residual for general Faltings/Siegel use.}
+The correct residual is not a vague statement ``make the classical proof effective.''  It is a formula asserting a primitive-recursive height cutoff for the chosen family and canonical coding, with an embedded proof that every point lies below it.  All list production, verification, maximum extraction, and finite consequences then close automatically.
+
+\subsection{Runge and concrete descent subcases}
+
+The repository's constructive Runge and concrete curve packets show that some height producers can be built directly from polynomial identities.  A typical certificate has the form
+\[
+ D^2f=A^2+R,
+ \qquad \deg R<\deg A,
+\]
+
+after which an elementary inequality bounds integral solutions.  In \CIFER\:
+
+\begin{enumerate}
+\item the polynomial identity is a finite certificate node;
+\item coefficient and degree checks are deterministic nodes;
+\item the inequality proof is a local arithmetic node;
+\item the resulting height bound discharges the generic list residual;
+\item bounded enumeration returns the exact solution list.
+\end{enumerate}
+
+This decomposition separates a reusable height-to-list compiler from theorem-specific algebra that produces the height.
+
+\subsection{Mordell--Weil descent and rational covering representatives}
+
+A finite descent theorem often has the following data:
+\begin{itemize}
+\item a coded abelian group operation on rational points;
+\item a height \(h\);
+\item a finite list \(R_0,\ldots,R_{r-1}\);
+\item a covering assertion that every point \(P\) can be written \(P=2Q+R_i\);
+\item an inequality \(2h(Q)\le h(P)+C\).
+\end{itemize}
+Once this data is present, repeated descent reaches a bounded-height region after explicit bit-length fuel.  The finite region can be enumerated; unwinding the trace yields generators and coordinates.
+
+The difficult point is the covering list of actual rational representatives.  Finite Selmer information can bound or describe a quotient abstractly without producing a rational point in every represented class.  \CIFER\ therefore uses a residual formula
+\[
+ \operatorname{RationalCover}(E,R)
+\]
+
+together with a separate verifier for the group equations and descent inequality.  The downstream theorem is
+\[
+ \operatorname{RationalCover}(E,R),
+ \operatorname{DescentBound}(E,R,C)
+ \vdash \operatorname{FiniteGenerators}(E,G).
+\]
+No selector from a point to its cover index is assumed.  Given the universal covering formula, bounded search over the finite list and a bounded rational halving verifier can find the least successful pair \((i,Q)\) at each descent stage.
+
+Concrete curves whose rational points are classified by an independent descent have no residual: the classification supplies the finite list directly.  General curves retain the covering formula visibly.
+
+\subsection{Exact axes, eigenvectors, and branch selectors}
+
+For a proper rotation matrix near the identity, the exact unit axis is unstable: at the identity every axis is valid, and arbitrarily small rotations may have unrelated axes.  A continuous or primitive-recursive exact selector from arbitrary Cauchy names would decide information not constructively available in general.
+
+\CIFER\ offers four statement levels.
+
+\begin{enumerate}
+\item \textbf{Quaternion level.}  Return an exact or approximate unit quaternion, allowing its vector part to vanish at the identity.  This avoids selecting an axis when none is distinguished.
+\item \textbf{Finite axis cloud.}  At precision \(q\), return finitely many rational axis-angle candidates whose induced rotations approximate the input.
+\item \textbf{Approximate stable observable.}  Prove that all viable candidates induce rotations within the requested matrix error; the axes themselves need not converge.
+\item \textbf{Gap-conditional exact axis.}  Under a supplied positive lower bound separating the rotation from the identity and other singular cases, normalize the vector part and recover an exact represented axis.
+\end{enumerate}
+
+The same pattern applies to a normalized eigenvector at a simple eigenvalue.  The residual is a spectral gap and, if a sign or phase is fixed, a nonzero coordinate bound.  Without the gap, the stable object is the invariant subspace, spectral projector, characteristic polynomial, or finite cloud.
+
+This resolves the formal difficulty by changing the default conclusion, not by pretending a discontinuous selector is primitive recursive.
+
+\subsection{Root ordering and singular branches}
+
+For a polynomial with represented coefficients, roots can collide as coefficients vary.  An exact global ordering of root names is therefore unstable.  The finite relation interface returns rational boxes with multiplicity and coverage certificates.  The consumer can compute:
+
+\begin{itemize}
+\item symmetric polynomials;
+\item total multiplicity in a region;
+\item cluster centers and diameters;
+\item signs or labels separated by a gap;
+\item resultants and gcd degrees.
+\end{itemize}
+
+If a discriminant lower bound or isolating separation is supplied, the gap-collapse theorem yields unique labels.  Otherwise, the cluster relation is the correct exact result.
+
+\subsection{Prime distribution and effective constants}
+
+Finite arithmetic after an explicit analytic estimate is generally compatible with \iPRA.  Given rational constants, cutoffs, and error inequalities, one can compute finite sums, verify divisor identities, clear denominators, and perform bounded prime search.  The difficult producer is often one of:
+
+\begin{itemize}
+\item an effective zero-free region;
+\item a density estimate with explicit constants;
+\item field-dependent discriminant and conductor parameters;
+\item control of an exceptional real zero;
+\item a mean-value estimate uniform in a conductor range.
+\end{itemize}
+
+A \CIFER\ analytic node therefore separates:
+\begin{enumerate}
+\item \(E(\alpha)\): a boundary formula saying that parameter code \(\alpha\) satisfies the required effective estimate;
+\item a finite verifier of every numerical side condition;
+\item a local derivation from \(E(\alpha)\) to the desired finite inequality or bounded prime witness.
+\end{enumerate}
+
+For constructive proofs such as explicit Dirichlet infinitude or finite sieve inequalities, the estimate producer may itself be elementary and the residual closes.  For Chebotarev, Siegel--Walfisz, or Bombieri--Vinogradov at full requested uniformity, the remaining analytic producer stays explicit.  The framework still completes all denominator clearing, finite identities, and final bounded search.
+
+\subsection{Finite nets and compactness surrogates}
+
+Classical analysis often invokes compactness to choose a finite subcover, a convergent subsequence, or an extremizer.  In a quantitative constructive setting, replace the invocation by explicit finite data:
+
+\begin{itemize}
+\item a modulus or total-boundedness function producing an \(\varepsilon\)-net;
+\item a finite coverage verifier;
+\item a uniform continuity modulus for the consumer;
+\item finite extrema or viability on the net.
+\end{itemize}
+
+If the total-boundedness modulus is known, approximate extrema and finite subcovers compile directly.  If not, it is a residual.  An ideal compact object is never used as an unexamined source of finite choice.
+
+\subsection{Local-to-global topology}
+
+A typical topological proof has a finite combinatorial core and a difficult approximation or cover theorem.  For example, after a triangulation and a simplicial approximation depth are supplied, chain maps, boundary identities, degrees, and homology calculations are finite integer algebra.  \CIFER\ makes the triangulation/approximation theorem a boundary and compiles the chain-level consequences.
+
+When exact representatives are noncanonical, the final theorem should concern a homology class or induced map, with equality witnessed by a boundary chain.  Stable-observable elimination removes dependence on the chosen simplicial approximation if a finite chain homotopy certificate is supplied.
+
+\subsection{Analysis with singular denominators}
+
+Division by a represented real is not uniformly total unless nonzeroness carries quantitative content.  A proposition \(x\ne0\) alone may not provide a primitive-recursive lower bound on \(|x|\) from an arbitrary name.  The correct interface is a guard
+\[
+ |x|\ge 2^{-a}
+\]
+with explicit exponent \(a\).  Then reciprocal precision is a primitive-recursive function of \(q\) and \(a\), and interval arithmetic proves correctness.
+
+Thus denominator guards become resource-bearing evidence.  If a classical theorem assumes only abstract nonzeroness, the constructive reformulation either adds a located gap, weakens the result to a relation, or keeps the gap as a residual.
+
+\subsection{Probability and limit theorems}
+
+Finite probability distributions and moments are straightforward finite sums.  The obstacle in a central limit or concentration theorem is quantitative convergence: a rate, truncation bound, smoothing parameter, or characteristic-function estimate.  \CIFER\ can compile the entire finite Fourier or moment calculation once those parameters are supplied.
+
+The result should be stated at finite precision:
+\[
+ \left|\Pr(S_n\le x)-\Phi(x)\right|\le 2^{-q}
+\]
+for an explicit primitive-recursive \(n\ge N(q,\text{data})\), with rational approximants to \(\Phi\).  A purely asymptotic statement without a rate does not by itself give the producer needed by \iPRA.
+
+\subsection{Transcendental functions}
+
+Sine, cosine, exponential, and logarithm can be represented by finite sums with explicit remainder bounds on bounded domains.  Argument reduction, domain guards, and precision propagation are the substantive interfaces.  Rather than formalize a completed real function first, compile the exact polynomial/rational approximation consumed by the theorem.
+
+For trigonometric identities, many statements are better expressed algebraically on a unit-circle pair \((c,s)\) satisfying \(c^2+s^2=1\).  Analytic sine/cosine names then become one producer of such pairs.  This separates polynomial identity proofs from convergence proofs.
+
+\subsection{What the framework has and has not resolved}
+
+The general obstacles divide cleanly.
+
+\begin{longtable}{p{0.32\textwidth}p{0.58\textwidth}}
+\toprule
+Obstacle & CIFER resolution \\
+\midrule
+\endhead
+Host computation not an iPRA proof & Require local \code{Prf PRAAx} constructors and compose by cut. \\
+Hidden precision/fuel & Backward demand plus capped monotone closure. \\
+Unbounded finite search & Demand an explicit cutoff; use bounded search and enumeration. \\
+Count mistaken for cutoff & Separate count, height, and complete-list formulas. \\
+Unstable exact choice & Preserve a finite relation; use stable observables or a gap. \\
+Infinite branch choice & Use fixed-horizon viability and shrinking finite-horizon coherence. \\
+Universal PR evaluation & Specialize a fixed graph to concrete \code{PR} syntax. \\
+Quotient equality & Use certified setoids and explicit equality witnesses. \\
+Deep ineffective theorem & Return its exact producer formula as a residual boundary. \\
+\bottomrule
+\end{longtable}
+
+The last row remains theorem-specific by necessity.  The framework's contribution is that every other row can be solved once, reused, and checked at the actual embedded endpoint.

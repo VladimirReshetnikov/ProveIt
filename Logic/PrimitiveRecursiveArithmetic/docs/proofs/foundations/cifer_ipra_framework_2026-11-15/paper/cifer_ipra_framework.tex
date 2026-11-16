@@ -1,0 +1,102 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={CIFER: Certified Interfaces, Finite Evidence, and Residualized Proof Compilation for Intuitionistic PRA},pdfauthor={Research report prepared for Vladimir Reshetnikov},pdfsubject={A general framework for embedding finite mathematical proofs into iPRA}}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\setlist{nosep,leftmargin=2em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\emergencystretch}{2em}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{CIFER for iPRA}
+\rhead{\thepage/\pageref{LastPage}}
+\cfoot{}
+
+\definecolor{codegray}{gray}{0.96}
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  columns=fullflexible,
+  breaklines=true,
+  keepspaces=true,
+  showstringspaces=false
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\iPRA}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\PRAAx}{\ensuremath{\mathsf{PRAAx}}}
+\newcommand{\Prf}{\ensuremath{\mathsf{Prf}}}
+\newcommand{\NPrf}{\ensuremath{\mathsf{NPrf}}}
+\newcommand{\Nat}{\ensuremath{\mathbb{N}}}
+\newcommand{\Bool}{\ensuremath{\mathbb{B}}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\CIFER}{\textsc{CIFER}}
+\newcommand{\res}{\operatorname{Res}}
+\newcommand{\Reach}{\operatorname{Reach}}
+\newcommand{\height}{\operatorname{ht}}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{\textbf{CIFER: Certified Interfaces, Finite Evidence, and\\Residualized Proof Compilation for Intuitionistic PRA}}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{15 November 2026 (America/Los Angeles)}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The existing ProveIt development contains a kernel-checked presentation of intuitionistic primitive recursive arithmetic and a large collection of finitary proof packets.  The packets repeatedly discover the same successful ingredients -- fixed primitive-recursive codes, bounded search, quantitative names, finite witness clouds, backward precision propagation, and proof-carrying traces -- but most applications stop one level before a derivation of type \(\Prf\,\PRAAx\).  Moreover, several difficult theorems depend on genuinely missing quantitative producers: a height bound, covering representatives, an effective analytic constant, or a separation gap.
+
+This report develops \CIFER, a framework that turns both facts into part of the formal statement.  A query is specialized to a finite interface graph.  Every executable node carries a local object-theory derivation constructor; every unavailable producer is represented by an explicit residual boundary formula.  A reverse dependency pass computes the canonical dependency-normal residual, a demand pass fixes all finite resources before induction, and a forward proof pass constructs
+\[
+   B_1,\ldots,B_r,\Gamma\ \vdash_{\PRAAx}\ G.
+\]
+Supplying embedded proofs of the \(B_i\) closes the theorem by simultaneous cut.  If no such proofs are available, the result remains a precise conditional theorem rather than an overstated solution.
+
+The report gives full finitary proofs of residual compilation, fixed-formula Booleanization, least bounded search, capped cyclic demand closure, finite-trace reflection, backward viability, stable-observable elimination, shrinking finite-horizon coherence, and height/list conversion.  It then applies the framework to the recurring obstructions in Diophantine geometry, represented analysis, exact branch selection, and effective prime distribution.  A detailed Lean integration plan targets the existing declarations \code{PR}, \code{PTm}, \code{PRAAx}, \code{Prf.trans}, \code{PRA.qfInd}, and \code{pra\_iff\_native}.  The package includes uncompiled Lean source with no admitted theorems, exact Python reference algorithms, regression tests, and a worked rational bisection example for \(y^3+y=x\).
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{sections/00_summary}
+\input{sections/01_audit}
+\input{sections/02_logic}
+\input{sections/03_interfaces}
+\input{sections/04_residual}
+\input{sections/05_boolean_search}
+\input{sections/06_demand}
+\input{sections/07_trace_compiler}
+\input{sections/08_relational}
+\input{sections/09_representations}
+\input{sections/10_difficulties}
+\input{sections/11_cubic}
+\input{sections/12_lean}
+\input{sections/13_limits}
+\input{sections/14_ledger}
+\input{sections/15_references}
+
+\end{document}

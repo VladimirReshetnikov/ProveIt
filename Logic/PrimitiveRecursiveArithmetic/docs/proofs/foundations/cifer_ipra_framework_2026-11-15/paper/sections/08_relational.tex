@@ -1,0 +1,186 @@
+\section{Finite relational witnesses and stable observations}
+
+\subsection{Why relations are sometimes the constructive object}
+
+A classical proof often treats an object as uniquely determined up to an equivalence that is harmless for the final theorem.  At finite precision, however, several candidates may be equally valid.  Forcing one canonical candidate can create a discontinuous selector that is stronger than the theorem actually needs.
+
+The constructive response is not to abandon computation.  It is to compute a finite relation of candidates and preserve enough compatibility information for the consumer.  The relation is finite, decidable, and amenable to bounded search.
+
+\subsection{Finite layered systems}
+
+Fix a horizon \(h\).  For each level \(k\le h\), let \(L_k\) be a nonempty finite list of candidates.  Let
+\[
+ E_k(x,y)
+\]
+be a decidable compatibility relation between \(x\in L_k\) and \(y\in L_{k+1}\).  A path is a tuple
+\[
+ x_0,\ldots,x_h
+\]
+with \(x_k\in L_k\) and \(E_k(x_k,x_{k+1})\) for every \(k<h\).
+
+This schema covers:
+\begin{itemize}
+\item nested rational enclosures;
+\item root clusters across increasing precision;
+\item approximate eigenvectors or invariant subspaces;
+\item local chart choices;
+\item finite covers and refinements;
+\item candidates in a bounded descent;
+\item proof routes or auxiliary witnesses.
+\end{itemize}
+
+\subsection{Backward viability}
+
+Define viable sets backwards:
+\begin{align*}
+ V_h&=L_h,\\
+ V_k&=\{x\in L_k:\exists y\in V_{k+1}\ E_k(x,y)\}.
+\end{align*}
+Every set is finite and its characteristic table is primitive recursive.
+
+\begin{theorem}[Viability/path equivalence]\label{thm:viability-path}
+For \(x\in L_k\), the following are equivalent:
+\begin{enumerate}
+\item \(x\in V_k\);
+\item there is a compatible path \(x=x_k,x_{k+1},\ldots,x_h\) to the horizon.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Use reverse induction on \(k\).  At \(k=h\), both statements reduce to \(x\in L_h\).  For \(k<h\), membership in \(V_k\) gives a compatible successor \(y\in V_{k+1}\).  Apply the induction hypothesis to extend \(y\) to a path.  Conversely, the first successor of any path belongs to \(V_{k+1}\) by the induction hypothesis, so the first vertex belongs to \(V_k\).
+\end{proof}
+
+The reverse induction is compiled as an ordinary forward primitive recursion on reversed time.  The invariant is a finite Boolean equivalence table.
+
+\subsection{Least finite path}
+
+If \(V_0\) is nonempty, choose its least coded element.  Given the chosen \(x_k\), search the finite list \(V_{k+1}\) for the least compatible successor.  Viability proves that this search succeeds.
+
+\begin{corollary}[Canonical finite path]\label{cor:least-finite-path}
+Whenever a path to the fixed horizon exists, a primitive-recursive bounded search returns the lexicographically least such path.
+\end{corollary}
+
+This is a legitimate canonical choice because the search domain is finite and explicitly bounded.  It does not define a canonical branch through an infinite tree.
+
+\subsection{Stable exact observations}
+
+Let \(O\) be a finite coded observation and \(\omega(x)\) an observer on candidates.  Suppose the verifier proves
+\[
+ \forall x,y\in V_k\quad \omega(x)=\omega(y).
+\]
+Then any viable candidate determines the same observation.
+
+\begin{theorem}[Stable-observer elimination]\label{thm:stable-observer}
+If \(V_k\) is nonempty and \(\omega\) is constant on \(V_k\), there is a primitive-recursive output \(o\) and an \iPRA\ proof that \(o=\omega(x)\) for every viable \(x\).  No selector coherent across horizons is required.
+\end{theorem}
+
+\begin{proof}
+Use least bounded search to choose the first viable element \(x_0\) and set \(o=\omega(x_0)\).  For an arbitrary viable \(x\), apply the stability theorem to \(x_0,x\).  The choice is internal to one fixed finite cloud; the conclusion is independent of it.
+\end{proof}
+
+Typical stable observations include a multiplicity, a sign separated from zero, a symmetric polynomial of roots, an induced map on a quotient, a finite truth value, and an interval enclosure common to all branches.
+
+\subsection{Approximate observations by diameter}
+
+Exact constancy is often stronger than needed.  Suppose observations are rational codes in a metric and the verifier proves
+\[
+ \diam\{\omega(x):x\in V_k\}\le 2^{-q}.
+\]
+Then the least viable observation is a valid \(q\)-approximation to every branch.
+
+\begin{theorem}[Diameter elimination]\label{thm:diameter-elimination}
+A nonempty finite cloud with observation diameter at most \(\varepsilon\) determines an \(\varepsilon\)-stable observable by bounded least choice.
+\end{theorem}
+
+\begin{proof}
+Choose any member \(x_0\) by bounded search.  The diameter inequality directly gives
+\[
+ d(\omega(x_0),\omega(x))\le\varepsilon
+\]
+for every member \(x\).  All maxima and pairwise comparisons are finite.
+\end{proof}
+
+This theorem is particularly useful for finite nets and root clusters.  The exact internal label can remain ambiguous while the requested numerical observable is determined to the desired precision.
+
+\subsection{Gap-guarded exact collapse}
+
+Suppose candidates carry labels from a finite set \(J\), and different labels are known to be separated by more than \(2\varepsilon\) in observation space.  If a cloud has diameter at most \(\varepsilon\), it cannot contain two different labels.
+
+\begin{theorem}[Exact recovery from a gap]\label{thm:gap-collapse}
+Let \(g>0\) be a certified lower separation between observations of distinct labels.  If every valid candidate lies within radius \(e\) of the true observation and \(2e<g\), then all valid candidates have the same label, which can be recovered by bounded search.
+\end{theorem}
+
+\begin{proof}
+Assume two valid candidates have different labels.  Their observations are at least \(g\) apart.  By the triangle inequality through the true observation, they are at most \(2e\) apart, contradicting \(2e<g\).  Stability then permits exact bounded choice.
+\end{proof}
+
+The gap is not a technical nuisance.  It is the positive information that makes a discontinuous label locally stable.
+
+\subsection{Changing horizons without infinite choice}
+
+For each requested precision \(q\), choose a finite horizon \(h(q)\), compute the viability table to that horizon, and let \(a_q\) be the least viable candidate at a designated level \(k(q)\).  The choices for different \(q\) need not lie on one infinite branch.  Nevertheless they can form a coherent name under quantitative conditions.
+
+Assume:
+\begin{enumerate}
+\item every full-horizon viable cloud at level \(k(q)\) has diameter at most \(\delta(q)\);
+\item compatible edges between levels \(r\) and \(r+1\) move observations by at most \(\eta(r)\);
+\item the tail \(\sum_{r\ge k(q)}\eta(r)\) has an explicit primitive-recursive bound \(\tau(q)\);
+\item \(\delta(q)+2\tau(q)\le 2^{-q}\).
+\end{enumerate}
+
+\begin{theorem}[Shrinking finite-horizon coherence]\label{thm:shrinking-coherence}
+Under the four assumptions, the sequence of least finite-horizon observations \(\omega(a_q)\) is Cauchy with the displayed modulus, even though no coherent infinite branch has been selected.
+\end{theorem}
+
+\begin{proof}
+Take precisions \(p,q\) and a common horizon extending both finite computations.  Extend each selected candidate to that common horizon using its viability path.  At a common comparison level, the two extended candidates lie in the same full-horizon viable cloud, so their observations differ by at most \(\delta(r)\).  Moving from the original selected levels to the comparison level costs at most one motion tail for each path.  The triangle inequality gives
+\[
+ d(\omega(a_p),\omega(a_q))
+ \le \tau(p)+\delta(r)+\tau(q).
+\]
+Choose the level and horizon functions so the right side is bounded by the requested dyadic error.  All paths are finite and chosen by bounded search.
+\end{proof}
+
+This theorem is a constructive substitute for an appeal to compactness plus choice of an infinite branch.  It is stronger than arbitrary finite satisfiability because it uses explicit shrinking and motion moduli.
+
+\subsection{Failure of naive least-at-each-level selection}
+
+Choosing the least candidate in each raw level \(L_k\) can fail in two ways.  The candidate may be a dead end, and least candidates at successive levels may be incompatible.  Backward viability fixes the first problem by removing dead ends.  It does not by itself fix changing-horizon jumps.  Shrinking diameter and motion bounds fix the second problem at the observational level.
+
+Thus there are three distinct least-choice operations:
+\begin{enumerate}
+\item least element of a finite cloud;
+\item least path to a fixed finite horizon;
+\item least viable candidate in a family of changing finite horizons.
+\end{enumerate}
+Only the third requires a coherence theorem, and its conclusion is usually observational rather than literal code convergence.
+
+\subsection{Finite auxiliary exhaustion}
+
+A target object may have several possible auxiliary witnesses, none canonically chosen.  Suppose there is an explicit finite list \(A_0,\ldots,A_{r-1}\) such that every target admits at least one auxiliary in the list.  Instead of defining a selector from targets to auxiliaries, run the downstream verifier for every \(A_i\), union the resulting finite candidate sets, and filter by the target relation.
+
+\begin{proposition}[Auxiliary exhaustion]
+If every valid target has some auxiliary in a complete finite list and the verifier is sound for each auxiliary, then the union-and-filter construction is sound and complete for targets.
+\end{proposition}
+
+\begin{proof}
+Soundness follows from the final target filter.  For completeness, take a target and use the finite-cover theorem to obtain an index \(i<r\).  Completeness of the verifier for \(A_i\) puts the target into that branch's candidate set, hence into the union, and the target filter retains it.
+\end{proof}
+
+This method is frequently preferable to a global target-to-auxiliary choice function.
+
+\subsection{Stable observations in proof graphs}
+
+A stable observation node has dependencies consisting of:
+\begin{itemize}
+\item one or more independently produced certificate formulas;
+\item a local comparison theorem showing they determine the same observation;
+\item optionally a nonemptiness or gap certificate.
+\end{itemize}
+The local proof may conclude an existential, equality, or approximation formula.  In the object compiler it is an ordinary derived node.  The special terminology records the constructive reason no selector is needed.
+
+\subsection{When relational output is the final theorem}
+
+Not every relation should be eliminated.  A theorem such as ``the roots at precision \(q\) are covered by these disjoint or overlapping rational boxes'' is already an exact finite mathematical statement.  For singular inputs, it may be strictly more informative and more stable than an arbitrary ordering of roots.  Similarly, a finite atlas, a set of compatible local solutions, or a list of possible group representatives can be a satisfactory final output.
+
+The framework therefore treats finite relations as first-class results, not merely intermediate failures to choose.

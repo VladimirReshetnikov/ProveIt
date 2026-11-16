@@ -1,0 +1,130 @@
+\section{Repository audit and recurring failure modes}
+
+\subsection{The checked foundation and the unverified packet layer}
+
+The audited repository has two sharply different layers.
+
+The first is \code{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.  It contains a deeply embedded syntax, intuitionistic natural deduction with equality, primitive-recursive function symbols, the usual \iPRA\ axioms, a native scalar calculus, and checked translations between the two presentations.  The declarations relevant to this report are:
+\begin{itemize}
+\item \code{Fm}, substitution, and \code{Fm.QF} in \code{Syntax.lean};
+\item \code{Prf}, \code{Prf.trans}, substitution, weakening, and equality transport in \code{Deduction.lean};
+\item \code{PR}, \code{PTm}, \code{PRAAx}, and \code{PRA.qfInd} in \code{PR.lean};
+\item \code{pra\_iff\_native} and \code{native\_iff\_pra} in \code{NativeBiInterpretation.lean}.
+\end{itemize}
+These declarations give a precise endpoint.  A completed theorem is not merely a Lean proposition about natural numbers; it is an inhabitant of an embedded derivability judgment.
+
+The second layer is \code{docs/proofs}.  At the audited snapshot it catalogs seventy-eight delivered packets across algebra, analysis, number theory, geometry, probability, topology, and foundations.  The repository README explicitly records that these packets were placed as delivered and were generally not rerun, compiled, or edited.  Many Lean files are honest blueprints; some native finite cores compile; a small number of framework combinators construct actual \code{Prf PRAAx} values.  The main mathematical packets, however, do not yet end in checked embedded derivations of their headline theorems.
+
+That distinction determines the proper research task.  It is not enough to invent another semantic interface at the host level.  The missing bridge is a repeatable route from a query-specific finite construction to an actual object-language derivation, while retaining explicit boundaries for mathematical producers not yet available.
+
+\subsection{Convergence among the existing framework proposals}
+
+The foundation packets use different terminology, but their strongest ideas converge on a common architecture.
+
+\begin{longtable}{p{0.22\textwidth}p{0.69\textwidth}}
+\toprule
+Recurring idea & Typical role \\
+\midrule
+\endhead
+Fixed finite presentation & Replace an ideal object by codes and finite observations used by one query. \\
+Primitive-recursive checker & Turn a certificate into a decidable, bounded arithmetic relation. \\
+Quantifier-free invariant & Justify a bounded trace using precisely the induction available in \iPRA. \\
+Backward demand & Determine required precision, fuel, or list size before running a producer. \\
+Relational witness cloud & Preserve nonunique or collision-prone approximate witnesses without forced selection. \\
+Stable observable & Eliminate witness choice when all valid branches give the same requested output. \\
+Finite viability & Remove dead-end approximate witnesses at a fixed horizon by backward dynamic programming. \\
+Proof graph & Compose local derivations in dependency order. \\
+Producer/verifier split & Isolate deep existence or bound information from elementary finite checking. \\
+Query specialization & Compile concrete \code{PR} syntax instead of postulating a universal evaluator. \\
+\bottomrule
+\end{longtable}
+
+The Proof-Carrying Observation Graph packet comes closest to a comprehensive synthesis.  OCiPRA gives a useful classification into deterministic contracts, bounded relational contracts, stable observables, and conditional theorems with explicit producer data.  The kernel finite-use packet gives source expressions for topological proof composition, bounded loops, stable observations, explicit boundaries, and export through \code{pra\_iff\_native}.  The PFIG packet emphasizes normalization of a fixed graph to one query-specific state machine.  Other packets contribute coherent finite observations, finite demand, local-to-global compilation, categorical gluing, and exact application adapters.
+
+The main opportunity is therefore consolidation around the checked endpoint, not proliferation of names.
+
+\subsection{Failure mode A: host truth in place of object derivability}
+
+A Lean theorem of type
+\[
+   \forall x:\Nat,\ P(x)
+\]
+can be valuable evidence about an algorithm, yet it is not automatically a theorem of the embedded arithmetic.  To obtain the latter, one must provide a formula \(\widehat P\), primitive-recursive terms for every operation, and a term of type
+\[
+  []\ \vdash_{\PRAAx}\ \forall x\,\widehat P(x).
+\]
+The gap cannot be closed by a cast.  The syntax and proof theory are data inside Lean, and their derivations must be constructed explicitly.
+
+This issue recurs whenever a packet proves a native theorem about lists, rational arithmetic, or a finite search and then supplies only a conditional bridge saying that an already constructed embedded derivation can be translated.  \CIFER\ resolves the architectural part by requiring every proof-graph node to carry an object-theory local derivation constructor.  Host computation may generate syntax and evidence, but it does not certify itself.
+
+\subsection{Failure mode B: hidden precision or fuel choices}
+
+An informal effective proof often says ``choose the input precision sufficiently large'' or ``iterate until the error is small.''  Such phrases hide an existential choice that may depend cyclically on other choices.  In \iPRA, all loop bounds must be represented by primitive-recursive terms, and the induction formula must be fixed before induction starts.
+
+The existing demand-passing proposals correctly move this choice into a reverse pass.  The remaining complication is feedback: an output tolerance may demand an input precision, which changes a denominator bound, which in turn changes the output tolerance.  \CIFER\ treats the demand vector as a point in a finite capped product order and computes an inflationary fixed point.  The explicit cap is part of the theorem interface; stabilization is proved by a rank argument.
+
+\subsection{Failure mode C: cardinality confused with search termination}
+
+Several Diophantine packets correctly emphasize that knowing there are at most \(N\) solutions does not tell a bounded search when all solutions have been found.  The distinction is simple but fundamental.
+
+A height bound \(H\) supplies a finite search domain.  A complete finite list supplies a height bound by taking a maximum.  A cardinality bound alone supplies neither a domain nor a completeness certificate.  Searching larger and larger boxes until \(N\) points have appeared is unsound when the true number is smaller than \(N\), and even when the true number equals \(N\), the equality itself may not be known constructively.
+
+\CIFER\ therefore uses separate formula types for \emph{count}, \emph{cutoff}, and \emph{complete list}.  Only the latter two are interchangeable under decidability.
+
+\subsection{Failure mode D: exact selectors through collisions}
+
+Many classical statements hide a discontinuous choice.  Examples include an axis for the identity rotation, one ordered root through a multiple-root collision, a normalized eigenvector through an eigenvalue collision, or one local analytic branch at a singular point.  A Cauchy name for the input need not determine a stable exact label.
+
+A common but invalid repair is to choose the lexicographically least approximate witness at each precision and call the resulting sequence the exact witness.  Tie-breaking can jump forever.  The correct constructive outputs are one of the following:
+\begin{enumerate}
+\item a finite relation of valid witnesses at each requested precision;
+\item an exact observable invariant across all those witnesses;
+\item an approximate observable with an explicit diameter bound;
+\item an exact label under a supplied positive separation gap.
+\end{enumerate}
+The framework makes the chosen output class part of the statement, not an implementation detail.
+
+\subsection{Failure mode E: infinite coherence demanded when only finite use is needed}
+
+A theorem consuming a represented real at precision \(q\) reads only finitely much of its name.  Nevertheless, formalizations often begin by constructing a globally coherent infinite witness sequence.  This introduces unnecessary choice and coherence obligations.
+
+The finite-use principle reverses the order.  Fix the query and its demanded precision.  Construct a finite compatible path to the corresponding horizon.  If the consumer observes only the endpoint or a stable quotient, no infinite object is needed.  A coherent Cauchy name is constructed only when the theorem itself requests one; even then, changing finite horizons plus explicit shrinking estimates can replace an actual infinite branch choice.
+
+\subsection{Failure mode F: a universal evaluator smuggled into PRA}
+
+The class of primitive-recursive functions is effectively enumerable, but there is no total primitive-recursive function that evaluates every primitive-recursive program on every input.  A universal evaluator for all programs would diagonalize out of the class.  Consequently, a framework must not put an unrestricted interpreter inside \iPRA\ and then appeal to its correctness.
+
+The repository's better proposals already avoid this.  A host compiler sees a fixed finite program or proof graph and emits its concrete \code{PR} syntax.  All subsequent induction concerns that fixed syntax.  \CIFER\ adopts this query-local specialization as a nonnegotiable design rule.
+
+\subsection{Failure mode G: genuinely missing quantitative producers}
+
+Some gaps are not proof-engineering gaps.  They are missing mathematical data.
+
+\begin{itemize}
+\item A general effective Siegel or Faltings application needs a positive height bound, not merely a finiteness or cardinality statement.
+\item A constructive Mordell--Weil descent needs actual rational representatives satisfying a covering assertion; finite Selmer information alone does not automatically provide them.
+\item Effective prime-distribution theorems need explicit field or conductor parameters, zero-free regions, density constants, or exceptional-zero control.
+\item Exact branch recovery needs a separation certificate when the input presentation permits collisions.
+\end{itemize}
+
+A general compiler cannot create these producers.  It can, however, prove every downstream consequence uniformly and return the producer formulas as residual obligations.  This is the key role of residualized compilation.
+
+\subsection{Failure mode H: quotient equality and local-to-global gluing}
+
+Finite presentations of algebraic and geometric objects frequently use noncanonical representatives.  Equality in a localization, ideal quotient, projective coordinate system, simplicial homology class, or sheaf section is witnessed by finite algebraic data.  Treating representation equality as literal code equality destroys extensionality; quotienting at the host type level may hide the witness needed by \iPRA.
+
+The robust pattern is a \emph{certified setoid}: codes, a primitive-recursive equality verifier, reflexivity/symmetry/transitivity constructors, and extensional operation proofs.  Gluing is then a finite compatibility theorem.  \CIFER\ uses certified setoids as one of its representation adapters and treats the equality certificate as ordinary finite evidence.
+
+\subsection{Audit conclusion}
+
+The repository already contains most ingredients of a successful methodology.  The remaining general task is to make the endpoint and boundaries unavoidable.  Every application should answer five questions:
+
+\begin{enumerate}
+\item What finite observation does the query actually consume?
+\item Which algorithms and verifiers are fixed primitive-recursive syntax?
+\item Which loops have explicit quantifier-free invariants and fuel?
+\item Which local conclusions are actual \code{Prf PRAAx} derivations?
+\item Which unavailable producers remain as formulas in the residual context?
+\end{enumerate}
+
+The rest of the report develops a calculus in which these questions are represented directly.

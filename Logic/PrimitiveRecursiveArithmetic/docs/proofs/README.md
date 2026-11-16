@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
-This directory holds the research packets that were delivered as archives on 14 and
-15 November 2026: 33 to `docs/drafts`, and 45 to
+This directory holds the research packets that were delivered as archives from 14 to
+16 November 2026: 33 to `docs/drafts`, and 46 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -62,7 +62,7 @@ manifests, build logs and `build/` files.
 
 ## Packets
 
-The 78 archives hold 2,296 members: 2,162 placed here, 87 ignored, 21 in bundled copies of
+The 79 archives hold 2,351 members: 2,217 placed here, 87 ignored, 21 in bundled copies of
 a sibling packet, 1 nested copy of a sibling archive and 25 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -146,6 +146,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 
 | Directory | Arrival | Wrapper in the archive | What the packet states | P | O |
 |---|---|---|---|---:|---:|
+| [`cifer_ipra_framework_2026-11-15`](foundations/cifer_ipra_framework_2026-11-15/) | *not committed* 2026-11-16 | `cifer_ipra_framework_2026-11-15` | CIFER (certified interfaces, finite evidence and residualised proof compilation): a query-specialised finite proof graph compiles to a target `B_1, …, B_r, Γ ⊢[PRAAx] Goal` whose hypotheses are exactly the unresolved producer boundaries, discharged by `Prf.trans` when proofs of them are supplied, or else kept as a precise conditional theorem. It also treats Boolean reflection, least bounded search, capped cyclic demand closure, trace reflection, backward viability, stable-observer and diameter elimination, height/list conversion and a rational bisection for the inverse of `y³ + y`. Its Lean files are an uncompiled integration outline. | 55 | 0 |
 | [`ipra_categorical_methods`](foundations/ipra_categorical_methods/) | *not committed* 2026-11-15 | `ipra_categorical_methods` | Finite presentations and categorical methods: composition of finite-demand proof contracts; category theory for fixed PR presentations, coded finite categories and specified program families (Yoneda, finite limits and colimits, adjunctions, finite Kan extensions); finite sheaf gluing; a capped Macaulay-matrix procedure giving complete rational-zero lists; and two computability obstructions. Its Lean files are uncompiled. `ObjectCategory.lean` gives source expressions concluding `Prf PRAAx` for inverse uniqueness, Yoneda components and contract cut. Its `provenance/` snapshots of the root `lakefile.toml` and `lake-manifest.json` are placed. | 49 | 0 |
 | [`ipra_certified_finitary_framework_2026-11-15`](foundations/ipra_certified_finitary_framework_2026-11-15/) | `7c91b67347` 2026-11-15 | `ipra_certified_finitary_framework_2026-11-15` | Certified finitary interfaces: demand-passing trace compilation that combines backward precision propagation with a primitive-recursion invariant transformer, stable-observable choice erasure from cross-precision stability estimates, backward viability only where adjacent refinements matter, finite-consumer metastability, and producer/verifier separation. Its Lean files are blueprints with `sorry` placeholders. | 44 | 0 |
 | [`ipra_cfp_contract_compiler_2026-11-15`](foundations/ipra_cfp_contract_compiler_2026-11-15/) | *not committed* 2026-11-15 | `ipra_cfp_contract_compiler_2026-11-15` | A contract-DAG compiler over certified finitary presentations, building on the frameworks here: local proof-producing PR transducers, a reverse pass computing precision and observation demands, a forward bounded trace with one quantifier-free invariant, finite-horizon relational refinement, and branch collapse only under an explicit isolation gap, with an exact bisection benchmark for y^3 + y = x. Its semantic Lean file keeps `sorry` placeholders, and it says the generic `Prf PRAAx` trace and DAG theorems are not implemented. | 43 | 0 |
