@@ -1,0 +1,58 @@
+\section{Normal forms for theorem statements}
+\label{app:normal-forms}
+
+The following normal forms make an intended iPRA theorem auditable.
+
+\subsection{Deterministic producer}
+
+A deterministic construction should be stated as
+\[
+ \forall x\;\bigl(\mathsf{Pre}(x)=1\to
+ \mathsf{Post}(x,F(x))=1\bigr),
+\]
+where $F$, \code{Pre}, and \code{Post} are fixed primitive-recursive functions or finite-observation predicates.  The proof artifact identifies the trace, invariant, and local obligations.
+
+\subsection{Precision-indexed represented output}
+
+A represented construction should be stated
+\[
+ \forall p\;\bigl(H(p)\to\forall k\;
+ \mathsf{Obs}(p,k,A(p,k))=1\bigr),
+\]
+with a primitive-recursive query planner for each free $k$.  The proof order is $p,k$ free; finite trace; output observation; universal introduction over $k$.
+
+\subsection{Relational output}
+
+A multivalued producer should expose
+\[
+ \forall x,h\;\bigl(\mathsf{Evidence}(x,h)=1\to
+ \Viable(x,h,\mathsf{start}(x))=1\bigr).
+\]
+A consumer theorem then concludes a successful transcript, an invariant observation, or a diameter-stable output.  It should not silently replace viability by an infinite selector.
+
+\subsection{Conditional certificate theorem}
+
+For an externally generated certificate $c$:
+\[
+ \forall x,c\;\bigl(\mathsf{Check}(x,c)=1\to
+ \mathsf{Conclusion}(x,\mathsf{output}(c))\bigr).
+\]
+The producer status is recorded separately.  A theorem that merely defines \code{Check} is not the soundness theorem.
+
+\subsection{Height/list theorem}
+
+A finite Diophantine result should name the producer:
+\[
+ \mathsf{CurveHyp}(x)\to
+ \exists B\le H(x)\;\forall z\,(P(x,z)\to\mathsf{height}(z)\le B),
+\]
+or, constructively stronger and more useful, give a concrete $B(x)$.  The generic enumerator theorem begins only after this field is available.
+
+\subsection{Exact choice under a gap}
+
+An exact branch theorem should have the form
+\[
+ \mathsf{Gap}(x,m)=1\to
+ \mathsf{ExactBranch}(x,\mathsf{select}(x,m))=1.
+\]
+Without \code{Gap}, use overlapping branches, a finite relation, or a quotient output.

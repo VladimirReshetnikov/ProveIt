@@ -1,0 +1,51 @@
+\section{Scope, baseline, and contribution}
+\label{sec:scope}
+
+\subsection{The repository situation}
+
+The target theory in the repository is ordinary first-order intuitionistic primitive recursive arithmetic: equality and intuitionistic first-order logic over a language containing a symbol for each fixed primitive-recursive function, the defining equations of those symbols, the successor axioms, and induction for quantifier-free formulas.  The checked \code{ConciseIPRA} library exposes this theory as terms \code{PTm}, symbols \code{PR}, axioms \code{PRAAx}, and derivations \code{Prf PRAAx}.  Its theorem \code{pra_iff_native} transports a completed ordinary iPRA derivation to the native scalar calculus.
+
+The surrounding proof collection is very different in status.  It contains dozens of research packets spanning algebra, analysis, number theory, geometry, probability, and topology.  Their useful mathematical content is considerable, but most are reports, exact-arithmetic experiments, semantic Lean developments, or formalization plans.  They are not interchangeable with inhabitants of \code{Prf PRAAx}.  In particular, the existence of a host-Lean theorem about \code{Nat}, \code{Rat}, polynomials, or Cauchy sequences does not by itself establish an object-theory theorem, even if its program is computable.
+
+Seven foundation packets already identify most of the recurring techniques:
+\begin{enumerate}[label=(\roman*)]
+\item bounded formulas are compiled to primitive-recursive Boolean tests;
+\item bounded loops are verified by quantifier-free invariants;
+\item represented objects are used through finite precision queries and explicit moduli;
+\item division, normalization, and branch selection are guarded by positive quantitative data;
+\item compactness is replaced by finite nets and checked refinements;
+\item Diophantine finiteness is separated into a finite verifier and a missing height or covering producer;
+\item exact-choice and non-effectivity barriers are recorded rather than hidden by coding.
+\end{enumerate}
+The most recent baseline is the Certified Finitary Presentation (CFP) packet.  It states a finite-trace reflection theorem and an architecture for object-level Lean, but leaves the generic \code{Prf PRAAx} construction unfinished.  Another packet develops finite relational outputs and a backward dynamic program, but stops short of a general theorem saying how such a multivalued producer composes with an adaptive downstream proof.
+
+\subsection{What is added here}
+
+The main new organizing theorem is a \emph{finite-use relational composition principle}.  Its input is not necessarily a function.  It is a primitive-recursive, finite relation of admissible answers, with local evidence and compatibility checks.  A downstream consumer may ask bounded, adaptive questions: its next query can depend on earlier answers.  Instead of selecting a global exact branch, one forms the finite interaction tree induced by the actual consumer and computes, backward, which states admit a successful continuation.  A forward bounded search then returns the least viable answer at each stage.  All tests are Boolean, all bounds are explicit, and the soundness invariant is quantifier free.
+
+This theorem has four consequences that are useful across the repository.
+
+\begin{enumerate}[label=\arabic*.]
+\item \textbf{A finite consumer does not need a global selector.}  Approximate roots, projective directions, local charts, and finite witness families may remain relational as long as the final proof uses only finitely many responses.
+\item \textbf{Branch-invariant conclusions can be exported exactly.}  If every admissible transcript gives the same coded output, or gives outputs provably equivalent under the requested observation, the arbitrary least viable transcript may be erased from the final theorem.
+\item \textbf{Quantitative stability replaces coherence when appropriate.}  If outputs from all admissible transcripts lie within a supplied error diameter, any transcript gives the required finite observation; no compatible infinite path is needed.
+\item \textbf{The obstruction boundary is explicit.}  When a theorem really demands an individually named exact branch at every precision, the finite-use theorem does not manufacture it.  The missing object is exposed as an additional choice, separation, or exact-algebraic certificate.
+\end{enumerate}
+
+The framework also sharpens the path to Lean.  It gives a source-level implementation of the generic induction wrapper over the current \code{PRA.qfInd} API, an exact record for relational consumers, and theorem signatures that can be completed without redesigning the mathematics.
+
+\subsection{Claim discipline}
+
+The report uses three status labels.
+
+\begin{description}[style=nextline]
+\item[Human theorem.] A complete mathematical proof is supplied, with primitive-recursive bounds and an induction audit.
+\item[Semantic executable.] A finite reference implementation has been run on exact data.  This is evidence about the algorithm, not an object-iPRA proof.
+\item[Embedded target.] A precise \code{Prf PRAAx} statement and construction path are given.  Unless explicitly stated otherwise, the generic object-language files in this archive have not been compiler-checked against the full repository.
+\end{description}
+
+No statement in this report should be read as a proof of a general ineffective theorem merely because the downstream verification is finite.  A certificate checker proves: \emph{if a certificate satisfying these finite equations is supplied, then the conclusion follows}.  Producing the certificate may contain the substantive unresolved mathematics.
+
+\subsection{Road map}
+
+\Cref{sec:logic} fixes the object-theory discipline.  \Cref{sec:diagnosis} classifies the recurring failures.  \Cref{sec:deterministic} develops deterministic finite traces.  \Cref{sec:relational} proves the finite-use relational composition theorem.  \Cref{sec:quantitative,sec:precision} build represented arithmetic and precision calculus.  \Cref{sec:algebraic,sec:compactness,sec:domains} apply the framework to algebraic choice, compactness, geometry, analysis, and Diophantine search.  \Cref{sec:lean} gives the Lean plan, and \Cref{sec:examples} works through exact finite examples.  The final sections record status, limitations, and further questions.
