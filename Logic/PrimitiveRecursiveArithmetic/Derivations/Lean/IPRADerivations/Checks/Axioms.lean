@@ -190,6 +190,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Order.phi_pos
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Order.order_minimal
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Order.order_divides_totient
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.OrderPower.gcd_A_N
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.OrderPower.ord_eq
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.OrderPower.zsigmondy
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
