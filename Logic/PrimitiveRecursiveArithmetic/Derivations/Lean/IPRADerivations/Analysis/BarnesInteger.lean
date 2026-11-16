@@ -1,6 +1,8 @@
 import IPRADerivations.Analysis.Products
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.Combinatorics.Binomial
+import IPRADerivations.AnalyticNumberTheory.Euler
+import IPRADerivations.Core.ProdLemmas
 
 /-!
 # The Barnes G-function at positive integers
@@ -14,7 +16,9 @@ integers `G(n + 1) = ∏_{j<n} j!`; this product is `barnes n`, the sequence `g_
 * `hyp_zero`, `hyp_succ`: the hyperfactorial `H(m) = ∏_{j=1}^{m} j^j`;
 * `hyper_cross` (`eq:hyper-cross`): `G(m + 1) H(m) = (m!)^m`;
 * `barnes_pos`, `hyp_pos`: both are positive;
-* `barnes_quotient` (`eq:G-over-H`): `G(m + 1) = (m!)^m / H(m)`, with the quotient exact.
+* `barnes_quotient` (`eq:G-over-H`): `G(m + 1) = (m!)^m / H(m)`, with the quotient exact;
+* `barnes_power_form`: `G(m + 2) = ∏_{i<m} (i + 1)^{m−i}`, the product behind
+  `log G(n + 1) = ∑_{j} (n − j) log j` in the packet's lower bound.
 
 The superfactorial identity `G(n + 2) = ∏_{j≤n} j!` is the definition of `barnes (n + 1)`.
 -/
@@ -29,6 +33,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul quo_of_eq)
+open LeanProofs.IPRA.AnalyticNumberTheory.Euler (prod_mul1)
 open Syn
 open scoped Fm
 open ConciseIPRA.PTm (app zero succ)
@@ -176,5 +181,72 @@ theorem hyp_pos (m : PTm n) : Γ ⊢[PRAAx] hyp m ≐ succ (pred (hyp m)) := by
 /-- `eq:G-over-H`: `G(m + 1) = (m!)^m / H(m)`, the quotient being exact. -/
 theorem barnes_quotient (m : PTm n) : Γ ⊢[PRAAx] quo (pw (fact m) m) (hyp m) ≐ barnes m :=
   quo_of_eq (hyp_pos m) ((hyper_cross m).eqSymm.eqTrans (mul_comm _ _))
+
+/-! ## The power form -/
+
+/-- `(i + 1)^{m ∸ i}`, with `m` the parameter. -/
+abbrev epB : PTm 2 := pw (succ (var 0)) (monus (var 1) (var 0))
+/-- `i + 1`: the body of the factorial. -/
+abbrev succB : PTm 2 := succ (var 0)
+
+theorem inst2_ep (i m : PTm n) : inst2 epB i m = pw (succ i) (monus m i) := by simp [inst2]
+
+theorem inst2_ep_mul (i m : PTm n) : inst2 (epB * succB) i m = pw (succ i) (monus m i) * succ i := by
+  simp [inst2]
+
+/-- `(i + 1)^{(m + 1) ∸ i} = (i + 1)^{m ∸ i} · (i + 1)` for `i < m`. -/
+theorem ep_shift_pt {i m : PTm n} (h : Γ ⊢[PRAAx] lt i m) :
+    Γ ⊢[PRAAx] inst2 epB i (succ m) ≐ inst2 (epB * succB) i m := by
+  rw [inst2_ep, inst2_ep_mul]
+  have e : Γ ⊢[PRAAx] succ m ≐ i + succ (monus m i) :=
+    (congrSucc (eq_add_of_le (le_of_lt h))).eqTrans (add_succ _ _).eqSymm
+  exact (congrAp2 powF ((congrMonus e (.eqRefl _)).eqTrans (add_monus' _ _)) (.eqRefl _)).eqTrans (pw_succ _ _)
+
+/-- `∏_{i<m} (i + 1) = m!`. -/
+theorem prod_succ_fact (m x : PTm n) : Γ ⊢[PRAAx] ap2 (prodF succB) m x ≐ fact m := by
+  refine prod_congr_bounded succB (succ (var 0)) x zero m (.allI (.impI ?_))
+  exact .eqRefl _
+
+/-- `∏_{i<m} (i + 1)^{m+1−i} = (∏_{i<m} (i + 1)^{m−i}) · m!`. -/
+theorem ep_shift (m : PTm n) :
+    Γ ⊢[PRAAx] ap2 (prodF epB) m (succ m) ≐ ap2 (prodF epB) m m * fact m := by
+  refine (prod_congr_bounded epB (epB * succB) (succ m) m m (.allI (.impI ?_))).eqTrans
+    ((prod_mul1 epB succB m m).eqTrans (congrMul (.eqRefl _) (prod_succ_fact m m)))
+  have es : Syn.shift (succ m) = succ (Syn.shift m) := by simp [Syn.shift]
+  rw [es]
+  exact ep_shift_pt Prf.hyp0
+
+theorem pf_step {m : PTm n} (ih : Γ ⊢[PRAAx] ap2 (prodF epB) m m ≐ barnes (succ m)) :
+    Γ ⊢[PRAAx] ap2 (prodF epB) (succ m) (succ m) ≐ barnes (succ (succ m)) := by
+  have e₁ := prod_succ (Γ := Γ) epB m (succ m)
+  have ee : Syn.subst ![m, succ m] epB = pw (succ m) (monus (succ m) m) := inst2_ep m (succ m)
+  rw [ee] at e₁
+  have p₁ : Γ ⊢[PRAAx] pw (succ m) (monus (succ m) m) ≐ succ m := by
+    have e : Γ ⊢[PRAAx] succ m ≐ m + succ zero := by apply deriveNat; ipra_simps; ring
+    exact (congrAp2 powF ((congrMonus e (.eqRefl _)).eqTrans (add_monus' _ _)) (.eqRefl _)).eqTrans
+      ((pw_succ _ _).eqTrans ((congrMul (pw_zero _) (.eqRefl _)).eqTrans (one_mul _)))
+  have a := natEq e₁; have sh := natEq (ep_shift (Γ := Γ) m); have p := natEq p₁
+  have bs := natEq (barnes_succ (Γ := Γ) (succ m)); have fs := natEq (fact_succ (Γ := Γ) m zero)
+  have i := natEq ih
+  apply deriveNat; ipra_simps
+  linear_combination a - bs + 𝔞(pw (succ m) (monus (succ m) m)) * sh +
+    𝔞(ap2 (prodF epB) m m) * 𝔞(fact m) * p + 𝔞(fact m) * (𝔞(m) + 1) * i - 𝔞(barnes (succ m)) * fs
+
+/-- Variables: `0 = m`. -/
+private abbrev pfF : Fm PTm 1 := ap2 (prodF epB) (var 0) (var 0) ≐ barnes (succ (var 0))
+
+private theorem pf₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] pfF := by
+  refine ind _ trivial ?_ ?_
+  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
+      ConciseIPRA.PTm.subst_succ]
+    exact (prod_zero _ _).eqTrans barnes_one.eqSymm
+  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
+      ConciseIPRA.PTm.subst_succ]
+    exact pf_step Prf.hyp0
+
+/-- `G(m + 2) = ∏_{i<m} (i + 1)^{m−i}`. -/
+theorem barnes_power_form (m : PTm n) : Γ ⊢[PRAAx] ap2 (prodF epB) m m ≐ barnes (succ m) := by
+  have h := inst (Γ := Γ) pf₀ (![m] : Fin 1 → PTm n)
+  simpa using h
 
 end LeanProofs.IPRA.Analysis.BarnesInteger

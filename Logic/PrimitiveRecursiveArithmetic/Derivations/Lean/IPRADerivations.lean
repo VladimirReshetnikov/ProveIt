@@ -22,6 +22,7 @@ import IPRADerivations.Core.SearchParameters
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.Fubini
+import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Algebra.CayleyHamilton
 import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Analysis.Chebyshev
