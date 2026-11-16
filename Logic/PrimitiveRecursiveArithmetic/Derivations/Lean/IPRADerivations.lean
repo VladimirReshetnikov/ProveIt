@@ -41,6 +41,7 @@ import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.DiophantineNumberTheory.Pythagoras
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
 import IPRADerivations.DiophantineNumberTheory.FermatQuartic
+import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Foundations.QuantitativeIdentities
 import IPRADerivations.Foundations.Termination
 import IPRADerivations.Foundations.ChineseRemainder
