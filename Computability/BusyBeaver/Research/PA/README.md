@@ -75,9 +75,12 @@ conditions; it is a model-uniform finite segment, not an all-site simulation. It
 have also been combined. A [native iPRA padding theorem](pa194/ipra/machine-code/HEADER-WIDTH-GLOBAL.md)
 rules out a gap below 21 under the explicit width-57 condition for every
 path-length lookup input. Outside the source table the lookup defaults to zero.
-A separate checked source-loop contract increases the gap on returning to the
-same path, so header width is not generally constant across such loops. A suitable
-reachable-state lower-bound invariant and a complete simulation remain open. Other native iPRA
+A [blank-reachable matched loop](pa194/ipra/machine-code/SEED-WIDTH-GROWTH.md)
+returns to the same path with its header width increased by one, so constant
+width does not describe the entire reachable run. A [conditional minimum-width
+lemma](pa194/ipra/machine-code/MINIMUM-WIDTH-SAFETY.md) shows that width at least
+48 gives a gap of at least 12 in every covered PRA model. Establishing that
+minimum for the run, and a complete simulation, remains open. Other native iPRA
 clocked equalities cover the [physical positive loop](pa194/ipra/machine-code/ACTUAL-PHYSICAL-NATIVE.md),
 [source fetch](pa194/ipra/machine-code/UNIFIED-FETCH-NATIVE.md),
 [decoder](pa194/ipra/machine-code/DECODER-NATIVE.md),
