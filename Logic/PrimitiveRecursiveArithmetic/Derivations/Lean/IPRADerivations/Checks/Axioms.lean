@@ -193,6 +193,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.OrderPower.gcd_A_N
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.OrderPower.ord_eq
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.OrderPower.zsigmondy
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Totatives.sum_perm
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Totatives.gcd_reflect
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Totatives.sigma_sigma
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Totatives.pointwise
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Totatives.sum_totatives
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Totatives.e_fixed
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Totatives.even_pointwise
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Totatives.phi_even
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
