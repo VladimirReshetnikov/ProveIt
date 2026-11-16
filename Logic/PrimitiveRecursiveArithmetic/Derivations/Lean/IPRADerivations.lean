@@ -13,6 +13,7 @@ import IPRADerivations.Core.Powers
 import IPRADerivations.Core.Parity
 import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Core.Descent
+import IPRADerivations.Core.DescentEx
 import IPRADerivations.Core.Division
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.Bezout
@@ -30,11 +31,13 @@ import IPRADerivations.Combinatorics.Binomial
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.AnalyticNumberTheory.Fermat
+import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.DiophantineNumberTheory.Hurwitz
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
 import IPRADerivations.DiophantineNumberTheory.Recurrences
 import IPRADerivations.DiophantineNumberTheory.Siegel
+import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Foundations.QuantitativeIdentities
 import IPRADerivations.Foundations.Termination
 import IPRADerivations.Foundations.ChineseRemainder
