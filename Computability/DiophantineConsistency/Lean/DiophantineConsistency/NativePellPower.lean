@@ -1,4 +1,5 @@
 import DiophantineConsistency.NativePellFirstIndex
+import DiophantineConsistency.IPRAPellSlack
 import Diophantine.Paper1980.PellRatio90
 
 /-!
@@ -42,8 +43,11 @@ theorem power_lt_twice_Y {X Y r k c a R η ζ : ℕ}
     (hck : c = k * Y + η) (hkη : k = η + ζ) (hζ : 0 < ζ) :
     X ^ r < 2 * (Y + 1) := by
   have hlow := doubled_ratio_lower hX hY hr hR ha hc hk
-  have hk0 : 0 < k := by omega
-  have hinterval : c < k * (Y + 1) := by rw [hck]; nlinarith
+  have hηk := IPRAPellSlack.nat_lt_of_row ⟨hζ, hkη⟩
+  have hk0 : 0 < k := (Nat.zero_le η).trans_lt hηk
+  have hinterval : c < k * (Y + 1) := by
+    rw [hck, Nat.mul_succ]
+    exact Nat.add_lt_add_left hηk (k * Y)
   have hXpow : 0 < X ^ r := pow_pos (by omega) _
   have hhigh := Nat.mul_lt_mul_of_pos_right hinterval hXpow
   have hcancel : k * (X + 1) ^ (2 * r) < k * (2 * (Y + 1) * X ^ r) := by

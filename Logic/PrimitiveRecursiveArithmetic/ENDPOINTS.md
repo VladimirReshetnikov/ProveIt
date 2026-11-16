@@ -397,8 +397,8 @@ The export object retained the SHA-256 of the preceding run.
 The [MRDP proof guide](../../Computability/HilbertTenthProblem/Lean/MRDP.md)
 covers `Diophantine.mrdp` and `mrdp_iff` over standard natural numbers.
 Use `lake build Diophantine` and the published `MRDPAxioms.lean` audit.
-The focused `lake env lean -j1` run of that audit passed all 18 axiom
-checks and the three explicit interface checks.
+After building the independent library, `lake env lean -j1` passed all 18
+axiom checks and the three explicit interface checks in 2.90 seconds.
 The [September 21 complete build receipt](../../Computability/HilbertTenthProblem/Lean/STATUS.md#validation--2026-09-21-concise-mrdp-proof-transplanted-into-the-article-library),
 published at `f336c11954`, records 3,773 jobs. `Paper1974.TableBounds`
 and its six local dependencies match that snapshot byte for byte, as do
@@ -406,16 +406,29 @@ the twelve PAListCoding modules in the current H10 closure. The current
 umbrella and Pell ratio sources differ from the historical snapshot.
 The root Lean toolchain and package manifest match the publication
 snapshot byte for byte.
-The fresh independent build is still at `Paper1974.TableBounds`.
+The fresh independent build completed all 3,773 jobs with the same H10
+sources. After the `TableBounds` worker stalled in swap, a targeted retry
+finished through `Paper1974.TableBounds`, `Paper1974.Doubling`, and the
+umbrella in 3m40s at 8,311,296 KiB peak resident memory. The retry used
+`lake --file` with a temporary copy of the root manifest adding
+`weakLeanArgs = ["-j1", "-DElab.async=false"]` to the `Diophantine` library.
+`lake --no-build build Diophantine` accepted all 3,773 jobs with the stock
+manifest.
 The [Pell slack row](../../Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRAPellSlack.lean)
 is the first object-theory client. It uses `Sys90.E10b` with
 `k = η + ζ` and a positive natural witness `ζ`, and proves both
 directions of the strict bound, using `k ∸ η` for the forward witness.
-The exact source ports also give the adjacent upper interval in ordinary
-iPRA. Independently build `+Diophantine.Paper1980.System90` and
-`+DiophantineConsistency.IPRAPellSlack`, then run
-`lake env lean -j1 Computability/DiophantineConsistency/Lean/checks/IPRAPellSlack.lean`
-to check the existing native consumer's interface. All three checks passed.
+The check at the exact native source ports proves both directions, recovers
+the supplied witness as `(η + ζ) ∸ η`, and derives the adjacent upper
+interval in `Prf PRAAx`. The production `NativePellPower.power_lt_twice_Y`
+proof reuses the natural-number reading `nat_lt_of_row`. Its public Pell
+estimate is over `ℕ`. Build `+DiophantineConsistency.NativeHalfBinomial`
+and run `lake env lean -j1 Computability/DiophantineConsistency/Lean/checks/IPRAPellSlack.lean`
+to verify the native reduction and the exact-port object proofs.
+The native build passed 3,065 jobs in 2m13s, followed by both this audit
+and the `NativeHalfBinomial` audit. The current compiled proof of the Pell
+estimate directly uses `IPRAPellSlack.nat_lt_of_row` and reports the three
+standard Lean axioms.
 
 | Interface | Preserved boundary and focused check |
 | --- | --- |
